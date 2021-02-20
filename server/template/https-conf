@@ -1,0 +1,20 @@
+server {
+    listen {{ http_listen_port }};
+    listen [::]:{{ http_listen_port }};
+
+    server_name {{ server_name }};
+
+    rewrite ^(.*)$  https://$host$1 permanent;
+}
+
+server {
+    listen {{ https_listen_port }};
+    listen [::]:{{ https_listen_port }};
+
+    server_name {{ server_name }};
+
+    root {{ root }}
+
+    # extra
+    {{ extra }}
+}

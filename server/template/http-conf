@@ -1,0 +1,11 @@
+server {
+    listen {{ http_listen_port }};
+    listen [::]:{{ http_listen_port }};
+
+    server_name {{ server_name }};
+
+    root {{ root }}
+
+    # extra
+    {{ extra }}
+}

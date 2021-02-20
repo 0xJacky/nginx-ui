@@ -1,0 +1,39 @@
+package router
+
+import (
+	"github.com/0xJacky/Nginx-UI/api"
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
+
+func InitRouter() *gin.Engine {
+	r := gin.New()
+	r.Use(gin.Logger())
+
+	r.Use(gin.Recovery())
+
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Hello World",
+		})
+	})
+
+	endpoint := r.Group("/")
+	{
+		endpoint.GET("domains", api.GetDomains)
+		endpoint.GET("domain/:name", api.GetDomain)
+		endpoint.POST("domain", api.AddDomain)
+		endpoint.POST("domain/:name", api.EditDomain)
+		endpoint.POST("domain/:name/enable", api.EnableDomain)
+		endpoint.POST("domain/:name/disable", api.DisableDomain)
+
+		endpoint.GET("configs", api.GetConfigs)
+		endpoint.GET("config/:name", api.GetConfig)
+		endpoint.POST("config/:name", api.EditConfig)
+
+		endpoint.GET("backups", api.GetFileBackupList)
+		endpoint.GET("backup/:id", api.GetFileBackup)
+	}
+
+	return r
+}
