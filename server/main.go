@@ -3,27 +3,20 @@ package main
 import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/router"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"log"
-	"os"
-	"os/exec"
-	"strings"
 )
 
-func getCurrentPath() string {
-	s, err := exec.LookPath(os.Args[0])
-	if err != nil {
-		log.Println(err)
-	}
-	i := strings.LastIndex(s, "\\")
-	path := string(s[0 : i+1])
-	return path
-}
-
-
 func main() {
+	settings.Init()
+
 	r := router.InitRouter()
 
-	model.Setup()
+	model.Init()
 
-	r.Run(":9000") // listen and serve on 0.0.0.0:9000
+	err := r.Run(":" + settings.ServerSettings.HttpPort)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }

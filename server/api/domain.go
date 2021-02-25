@@ -63,7 +63,7 @@ func GetDomain(c *gin.Context) {
 
 	if err != nil {
 		if os.IsNotExist(err) {
-			c.JSON(404, gin.H{
+			c.JSON(http.StatusNotFound, gin.H{
 				"message": err.Error(),
 			})
 		}
