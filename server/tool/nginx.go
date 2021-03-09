@@ -5,6 +5,7 @@ import (
 	"log"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 )
 
 func ReloadNginx() {
@@ -21,5 +22,17 @@ func ReloadNginx() {
 }
 
 func GetNginxConfPath(dir string) string {
-	return filepath.Join("/etc/nginx", dir)
+	out, err := exec.Command("nginx", "-V").CombinedOutput()
+	if err != nil {
+		log.Fatal(err)
+	}
+	// fmt.Printf("%s\n", out)
+
+	r, _ := regexp.Compile("--conf-path=(.*)/(.*.conf)")
+
+	confPath := r.FindStringSubmatch(string(out))[1]
+
+	// fmt.Println(confPath)
+
+	return filepath.Join(confPath, dir)
 }

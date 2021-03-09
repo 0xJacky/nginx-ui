@@ -4,7 +4,9 @@ server {
 
     server_name {{ server_name }};
 
-    root {{ root }}
+    {{ index }}
+
+    {{ root }}
 
     # extra
     {{ extra }}

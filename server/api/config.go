@@ -7,15 +7,17 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strconv"
 )
 
 func GetConfigs(c *gin.Context) {
-	configFiles, err := ioutil.ReadDir(filepath.Join("/usr/local/etc/nginx"))
+	configFiles, err := ioutil.ReadDir(tool.GetNginxConfPath("/"))
 
 	if err != nil {
-		log.Println(err)
+		ErrorHandler(c, err)
+		return
 	}
 
 	var configs []gin.H
@@ -25,9 +27,9 @@ func GetConfigs(c *gin.Context) {
 
 		if !file.IsDir() && "." != file.Name()[0:1] {
 			configs = append(configs, gin.H{
-				"name":    file.Name(),
-				"size":    file.Size(),
-				"modify":  file.ModTime(),
+				"name":   file.Name(),
+				"size":   file.Size(),
+				"modify": file.ModTime(),
 			})
 		}
 	}
@@ -39,12 +41,13 @@ func GetConfigs(c *gin.Context) {
 
 func GetConfig(c *gin.Context) {
 	name := c.Param("name")
-	path := filepath.Join("/usr/local/etc/nginx", name)
+	path := filepath.Join(tool.GetNginxConfPath("/"), name)
 
 	content, err := ioutil.ReadFile(path)
 
 	if err != nil {
-		log.Println(err)
+		ErrorHandler(c, err)
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
@@ -53,51 +56,82 @@ func GetConfig(c *gin.Context) {
 
 }
 
-func AddConfig(c *gin.Context) {
-	name := c.PostForm("name")
-	content := c.PostForm("content")
-	path := filepath.Join(tool.GetNginxConfPath("/"), name)
+type AddConfigJson struct {
+	Name    string `json:"name" binding:"required"`
+	Content string `json:"content" binding:"required"`
+}
 
-	s, err := strconv.Unquote(`"` + content + `"`)
+func AddConfig(c *gin.Context) {
+	var request AddConfigJson
+	err := c.BindJSON(&request)
 	if err != nil {
-		log.Println(err)
+		ErrorHandler(c, err)
+		return
 	}
 
-	if s != "" {
-		err := ioutil.WriteFile(path, []byte(s), 0644)
+	name := request.Name
+	content := request.Content
+
+	path := filepath.Join(tool.GetNginxConfPath("/"), name)
+
+	log.Println(path)
+	if _, err = os.Stat(path); err == nil {
+		c.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "config exist",
+		})
+		return
+	}
+
+	if content != "" {
+		err := ioutil.WriteFile(path, []byte(content), 0644)
 		if err != nil {
-			log.Println(err)
+			ErrorHandler(c, err)
+			return
 		}
 	}
 
 	tool.ReloadNginx()
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "ok",
+		"name":    name,
+		"content": content,
 	})
 
 }
 
+type EditConfigJson struct {
+	Content string `json:"content" binding:"required"`
+}
+
 func EditConfig(c *gin.Context) {
 	name := c.Param("name")
-	content := c.PostForm("content")
+	var request EditConfigJson
+	err := c.BindJSON(&request)
+	if err != nil {
+		ErrorHandler(c, err)
+		return
+	}
 	path := filepath.Join(tool.GetNginxConfPath("/"), name)
+	content := request.Content
 
 	s, err := strconv.Unquote(`"` + content + `"`)
 	if err != nil {
-		log.Println(err)
+		ErrorHandler(c, err)
+		return
 	}
 
 	origContent, err := ioutil.ReadFile(path)
 	if err != nil {
-		log.Println(err)
+		ErrorHandler(c, err)
+		return
 	}
 
 	if s != "" && s != string(origContent) {
 		model.CreateBackup(path)
 		err := ioutil.WriteFile(path, []byte(s), 0644)
 		if err != nil {
-			log.Println(err)
+			ErrorHandler(c, err)
+			return
 		}
 	}
 

@@ -8,12 +8,14 @@ server {
 }
 
 server {
-    listen {{ https_listen_port }};
-    listen [::]:{{ https_listen_port }};
+    listen {{ https_listen_port }} ssl http2;
+    listen [::]:{{ https_listen_port }} ssl http2;
 
     server_name {{ server_name }};
 
-    root {{ root }}
+    {{ index }}
+
+    {{ root }}
 
     # extra
     {{ extra }}

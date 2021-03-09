@@ -22,5 +22,12 @@ func Init() {
 	}
 
 	// Migrate the schema
-	db.AutoMigrate(&ConfigBackup{})
+	AutoMigrate(&ConfigBackup{})
+}
+
+func AutoMigrate(model interface{})  {
+	err := db.AutoMigrate(model)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

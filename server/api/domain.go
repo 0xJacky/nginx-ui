@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 )
 
@@ -17,7 +16,8 @@ func GetDomains(c *gin.Context) {
 	configFiles, err := ioutil.ReadDir(tool.GetNginxConfPath("sites-available"))
 
 	if err != nil {
-		log.Println(err)
+		ErrorHandler(c, err)
+		return
 	}
 
 	enabledConfig, err := ioutil.ReadDir(filepath.Join(tool.GetNginxConfPath("sites-enabled")))
@@ -28,7 +28,8 @@ func GetDomains(c *gin.Context) {
 	}
 
 	if err != nil {
-		log.Println(err)
+		ErrorHandler(c, err)
+		return
 	}
 
 	var configs []gin.H
@@ -67,7 +68,7 @@ func GetDomain(c *gin.Context) {
 				"message": err.Error(),
 			})
 		}
-		log.Println(err)
+		ErrorHandler(c, err)
 		return
 	}
 
@@ -79,28 +80,45 @@ func GetDomain(c *gin.Context) {
 }
 
 func AddDomain(c *gin.Context) {
-	name := c.PostForm("name")
-	SupportSSL := c.PostForm("support_ssl")
+	request := make(gin.H)
+	err := c.BindJSON(&request)
+	if err != nil {
+		ErrorHandler(c, err)
+		return
+	}
+
+	name := request["name"].(string)
+	path := filepath.Join(tool.GetNginxConfPath("sites-available"), name)
+	log.Println(path)
+	if _, err = os.Stat(path); err == nil {
+		c.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "site exist",
+		})
+		return
+	}
+
+	SupportSSL := request["support_ssl"]
 
 	baseKeys := []string{"http_listen_port",
 		"https_listen_port",
 		"server_name",
 		"ssl_certificate", "ssl_certificate_key",
-		"root", "extra",
+		"index", "root", "extra",
 	}
 
 	tmp, err := ioutil.ReadFile("template/http-conf")
 
-	log.Println(SupportSSL)
-	if SupportSSL == "true" {
+	if err != nil {
+		ErrorHandler(c, err)
+		return
+	}
+
+	if SupportSSL == true {
 		tmp, err = ioutil.ReadFile("template/https-conf")
 	}
 
 	if err != nil {
-		log.Println(err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "server error",
-		})
+		ErrorHandler(c, err)
 		return
 	}
 
@@ -109,12 +127,24 @@ func AddDomain(c *gin.Context) {
 	content := template
 
 	for i := range baseKeys {
-		content = strings.Replace(content, "{{ " + baseKeys[i] +" }}",
-			c.PostForm(baseKeys[i]),
-			-1)
+		val, ok := request[baseKeys[i]]
+		replace := ""
+		if ok {
+			replace = val.(string)
+		}
+		content = strings.Replace(content, "{{ "+baseKeys[i]+" }}",
+			replace, -1)
 	}
 
 	log.Println(name, content)
+
+	err = ioutil.WriteFile(path, []byte(content), 0644)
+
+	if err != nil {
+		ErrorHandler(c, err)
+		return
+	}
+
 
 	c.JSON(http.StatusOK, gin.H{
 		"name": name,
@@ -124,29 +154,36 @@ func AddDomain(c *gin.Context) {
 }
 
 func EditDomain(c *gin.Context) {
+	var err error
+	var origContent []byte
 	name := c.Param("name")
-	content := c.PostForm("content")
+	request := make(gin.H)
+	err = c.BindJSON(&request)
 	path := filepath.Join(tool.GetNginxConfPath("sites-available"), name)
 
-	s, err := strconv.Unquote(`"` + content + `"`)
-	if err != nil {
-		log.Println(err)
+	if _, err = os.Stat(path); os.IsNotExist(err) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "site not found",
+		})
+		return
 	}
 
-	origContent, err := ioutil.ReadFile(path)
+	origContent, err = ioutil.ReadFile(path)
 	if err != nil {
-		log.Println(err)
+		ErrorHandler(c, err)
+		return
 	}
 
-	if s != "" && s != string(origContent) {
+	if request["content"] != "" && request["content"] != string(origContent) {
 		model.CreateBackup(path)
-		err := ioutil.WriteFile(path, []byte(s), 0644)
+		err := ioutil.WriteFile(path, []byte(request["content"].(string)), 0644)
 		if err != nil {
-			log.Println(err)
+			ErrorHandler(c, err)
+			return
 		}
 	}
 
-	if _, err := os.Stat(filepath.Join(tool.GetNginxConfPath("sites-enabled"), name)); os.IsExist(err) {
+	if _, err := os.Stat(filepath.Join(tool.GetNginxConfPath("sites-enabled"), name)); err == nil {
 		tool.ReloadNginx()
 	}
 
@@ -160,13 +197,15 @@ func EnableDomain(c *gin.Context) {
 	_, err := os.Stat(configFilePath)
 
 	if err != nil {
-		log.Println(err)
+		ErrorHandler(c, err)
+		return
 	}
 
 	err = os.Symlink(configFilePath, enabledConfigFilePath)
 
 	if err != nil {
-		log.Println(err)
+		ErrorHandler(c, err)
+		return
 	}
 
 	tool.ReloadNginx()
@@ -182,13 +221,15 @@ func DisableDomain(c *gin.Context) {
 	_, err := os.Stat(enabledConfigFilePath)
 
 	if err != nil {
-		log.Println(err)
+		ErrorHandler(c, err)
+		return
 	}
 
 	err = os.Remove(enabledConfigFilePath)
 
 	if err != nil {
-		log.Println(err)
+		ErrorHandler(c, err)
+		return
 	}
 
 	tool.ReloadNginx()
@@ -199,5 +240,36 @@ func DisableDomain(c *gin.Context) {
 }
 
 func DeleteDomain(c *gin.Context)  {
+	var err error
+	name := c.Param("name")
+	request := make(gin.H)
+	err = c.BindJSON(request)
+	availablePath := filepath.Join(tool.GetNginxConfPath("sites-available"), name)
+	enabledPath := filepath.Join(tool.GetNginxConfPath("sites-enabled"), name)
+
+	if _, err = os.Stat(availablePath); os.IsNotExist(err) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "site not found",
+		})
+		return
+	}
+
+	if _, err = os.Stat(enabledPath); err == nil {
+		c.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "site is enabled",
+		})
+		return
+	}
+
+	err = os.Remove(availablePath)
+
+	if err != nil {
+		ErrorHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+	})
 
 }

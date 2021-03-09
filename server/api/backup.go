@@ -21,5 +21,4 @@ func GetFileBackup(c *gin.Context)  {
 	backup := model.GetBackup(com.StrTo(id).MustInt())
 
 	c.JSON(http.StatusOK, backup)
-
 }
