@@ -7,7 +7,11 @@
         </a-col>
         <a-col :md="12" :sm="24">
             <a-card title="配置文件实时编辑">
-                <a-textarea v-model="configText" :rows="36"/>
+                <a-textarea
+                    v-model="configText"
+                    :rows="36"
+                    @keydown.tab.prevent="pressTab"
+                />
             </a-card>
         </a-col>
         <footer-tool-bar>
@@ -222,6 +226,17 @@ export default {
                 console.log(r)
                 this.$message.error("保存错误")
             })
+        },
+        pressTab(event) {
+            if (event) {
+                let text = this.configText,
+                    originalSelectionStart = event.target.selectionStart,
+                    textStart = text.slice(0, originalSelectionStart),
+                    textEnd =  text.slice(originalSelectionStart);
+                event.target.selectionEnd = event.target.selectionStart + 1
+                this.configText = `${textStart}\t${textEnd}`
+                event.target.selectionEnd = event.target.selectionStart = originalSelectionStart + 1
+            }
         }
     }
 }
