@@ -7,10 +7,10 @@ import (
     "strconv"
 )
 
-func DiskUsage(path string) (string, string, string, error) {
+func DiskUsage(path string) (string, string, float64, error) {
     di, err := disk.GetInfo(path)
     if err != nil {
-        return "", "", "", err
+        return "", "", 0, err
     }
     percentage := (float64(di.Total-di.Free) / float64(di.Total)) * 100
     fmt.Printf("%s of %s disk space used (%0.2f%%)\n",
@@ -18,6 +18,8 @@ func DiskUsage(path string) (string, string, string, error) {
         humanize.Bytes(di.Total),
         percentage,
     )
+    percentage, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", percentage), 64)
+
     return humanize.Bytes(di.Total-di.Free), humanize.Bytes(di.Total),
-        strconv.FormatFloat(percentage, 'f', 2, 64), nil
+        percentage, nil
 }

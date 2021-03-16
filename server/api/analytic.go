@@ -45,9 +45,11 @@ func Analytic(c *gin.Context) {
                 return
             }
             response["memory_total"] = humanize.Bytes(memoryStat.Total)
-            response["memory_used"] = humanize.Bytes(memoryStat.Total)
+            response["memory_used"] = humanize.Bytes(memoryStat.Used)
             response["memory_cached"] = humanize.Bytes(memoryStat.Cached)
             response["memory_free"] = humanize.Bytes(memoryStat.Free)
+
+            response["memory_pressure"] = memoryStat.Used * 100 / memoryStat.Total
 
             before, err := cpu.Get()
             if err != nil {
@@ -61,19 +63,18 @@ func Analytic(c *gin.Context) {
 
             total := float64(after.Total - before.Total)
 
-            response["cpu_user"] = strconv.FormatFloat(
-                float64(after.User-before.User)/total*100,
-                'f', 2, 64)
+            response["cpu_user"], _ = strconv.ParseFloat(fmt.Sprintf("%.2f",
+                float64(after.User-before.User)/total*100), 64)
 
-            response["cpu_system"] = strconv.FormatFloat(float64(after.System-before.System)/total*100,
-                'f', 2, 64)
+            response["cpu_system"], _ = strconv.ParseFloat(fmt.Sprintf("%.2f",
+                float64(after.System-before.System)/total*100), 64)
 
-            response["cpu_idle"] = strconv.FormatFloat(float64(after.Idle-before.Idle)/total*100,
-                'f', 2, 64)
+            response["cpu_idle"], _ = strconv.ParseFloat(fmt.Sprintf("%.2f",
+                float64(after.Idle-before.Idle)/total*100), 64)
 
             used, _total, percentage, err := tool.DiskUsage(".")
 
-            response["disk_userd"] = used
+            response["disk_used"] = used
             response["disk_total"] = _total
             response["disk_percentage"] = percentage
 

@@ -1,10 +1,9 @@
 package router
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/gin-gonic/gin"
-	"net/http"
-    "github.com/gin-contrib/cors"
+    "github.com/0xJacky/Nginx-UI/api"
+    "github.com/gin-gonic/gin"
+    "net/http"
 )
 
 func InitRouter() *gin.Engine {
@@ -12,8 +11,6 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Logger())
 
 	r.Use(gin.Recovery())
-
-    r.Use(cors.Default())
 
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{

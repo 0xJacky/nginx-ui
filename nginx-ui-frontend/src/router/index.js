@@ -11,15 +11,15 @@ export const routes = [
         component: () => import('@/layouts/BaseLayout'),
         redirect: '/domain',
         children: [
-            /*{
+            {
                 path: 'dashboard',
-                //component: () => import('@/views/dashboard/DashBoard'),
+                component: () => import('@/views/DashBoard'),
                 name: '仪表盘',
                 meta: {
                     //hiddenHeaderContent: true,
                     icon: 'home'
                 }
-            },*/
+            },
             {
                 path: 'domain',
                 name: '网站管理',
