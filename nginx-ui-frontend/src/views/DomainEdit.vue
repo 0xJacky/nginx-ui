@@ -115,7 +115,7 @@ export default {
         if (this.name) {
             this.$api.domain.get(this.name).then(r => {
                 this.configText = r.config
-                this.parse(r.config)
+                this.parse(r)
             }).catch(r => {
                 console.log(r)
                 this.$message.error("服务器错误")
