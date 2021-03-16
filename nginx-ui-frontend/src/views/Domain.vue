@@ -4,6 +4,7 @@
             :api="api"
             :columns="columns"
             data_key="configs"
+            :disable_search="true"
             ref="table"
             @clickEdit="r => this.$router.push({
                 path: '/domain/' + r.name

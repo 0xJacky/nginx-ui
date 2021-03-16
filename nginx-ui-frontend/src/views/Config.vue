@@ -4,6 +4,7 @@
             :api="api"
             :columns="columns"
             :deletable="false"
+            :disable_search="true"
             data_key="configs"
             @clickEdit="item => {
                 $router.push({
