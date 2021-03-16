@@ -98,7 +98,14 @@ func AddConfig(c *gin.Context) {
 		}
 	}
 
-	tool.ReloadNginx()
+    output := tool.ReloadNginx()
+
+    if output != "" {
+        c.JSON(http.StatusInternalServerError, gin.H{
+            "message": output,
+        })
+        return
+    }
 
 	c.JSON(http.StatusOK, gin.H{
 		"name":    name,
@@ -137,7 +144,14 @@ func EditConfig(c *gin.Context) {
 		}
 	}
 
-	tool.ReloadNginx()
+    output := tool.ReloadNginx()
+
+    if output != "" {
+        c.JSON(http.StatusInternalServerError, gin.H{
+            "message": output,
+        })
+        return
+    }
 
 	GetConfig(c)
 }

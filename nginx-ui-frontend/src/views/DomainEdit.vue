@@ -224,18 +224,18 @@ export default {
                 this.$message.success("保存成功")
             }).catch(r => {
                 console.log(r)
-                this.$message.error("保存错误")
+                this.$message.error("保存错误" + r.message !== undefined ? " " + r.message : null, 10)
             })
         },
         pressTab(event) {
+            let target = event.target
+            let value = target.value
+            let start = target.selectionStart;
+            let end = target.selectionEnd;
             if (event) {
-                let text = this.configText,
-                    originalSelectionStart = event.target.selectionStart,
-                    textStart = text.slice(0, originalSelectionStart),
-                    textEnd =  text.slice(originalSelectionStart);
-                event.target.selectionEnd = event.target.selectionStart + 1
-                this.configText = `${textStart}\t${textEnd}`
-                event.target.selectionEnd = event.target.selectionStart = originalSelectionStart + 1
+                value = value.substring(0, start) + '\t' + value.substring(end);
+                event.target.value = value;
+                setTimeout(() => target.selectionStart = target.selectionEnd = start + 1, 0);
             }
         }
     }

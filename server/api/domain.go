@@ -115,7 +115,14 @@ func EditDomain(c *gin.Context) {
 	}
 
 	if _, err := os.Stat(filepath.Join(tool.GetNginxConfPath("sites-enabled"), name)); err == nil {
-		tool.ReloadNginx()
+        output := tool.ReloadNginx()
+
+        if output != "" {
+            c.JSON(http.StatusInternalServerError, gin.H{
+                "message": output,
+            })
+            return
+        }
 	}
 
 	GetDomain(c)
@@ -139,7 +146,14 @@ func EnableDomain(c *gin.Context) {
 		return
 	}
 
-	tool.ReloadNginx()
+    output := tool.ReloadNginx()
+
+    if output != "" {
+        c.JSON(http.StatusInternalServerError, gin.H{
+            "message": output,
+        })
+        return
+    }
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
@@ -163,7 +177,15 @@ func DisableDomain(c *gin.Context) {
 		return
 	}
 
-	tool.ReloadNginx()
+	output := tool.ReloadNginx()
+
+	if output != "" {
+        c.JSON(http.StatusInternalServerError, gin.H{
+            "message": output,
+        })
+        return
+    }
+
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",

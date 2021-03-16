@@ -4,6 +4,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/gin-gonic/gin"
 	"net/http"
+    "github.com/gin-contrib/cors"
 )
 
 func InitRouter() *gin.Engine {
@@ -11,6 +12,8 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Logger())
 
 	r.Use(gin.Recovery())
+
+    r.Use(cors.Default())
 
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -36,6 +39,8 @@ func InitRouter() *gin.Engine {
 		endpoint.GET("backup/:id", api.GetFileBackup)
 
         endpoint.GET("template/:name", api.GetTemplate)
+
+        endpoint.GET("analytic", api.Analytic)
 	}
 
 	return r

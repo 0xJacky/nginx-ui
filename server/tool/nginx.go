@@ -7,14 +7,17 @@ import (
     "regexp"
 )
 
-func ReloadNginx() {
+func ReloadNginx() string {
 	out, err := exec.Command("nginx", "-s", "reload").CombinedOutput()
 
 	if err != nil {
         log.Println(err)
     }
 
-	log.Println(string(out))
+    output := string(out)
+	log.Println(output)
+
+    return output
 }
 
 func GetNginxConfPath(dir string) string {
