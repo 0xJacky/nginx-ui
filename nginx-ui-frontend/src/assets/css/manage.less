@@ -1,0 +1,49 @@
+/* Copyright 2019 - 2020 0xJacky */
+
+@dark: ~"(prefers-color-scheme: dark)";
+
+p {
+    padding: 0 0 10px 0;
+}
+
+.ant-layout-sider {
+    background-color: #ffffff;
+    @media @dark {
+        background-color: #28292c;
+    }
+    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.01);
+}
+
+@media @dark {
+    .ant-checkbox-indeterminate {
+        .ant-checkbox-inner {
+            background-color: transparent !important;
+        }
+    }
+}
+
+.ant-layout-header {
+    padding: 0;
+}
+
+.ant-table-small {
+    font-size: 13px;
+}
+
+.ant-card-bordered {
+    border: unset;
+}
+
+.header-notice-wrapper .ant-tabs-content {
+    max-height: 250px;
+}
+
+.header-notice-wrapper .ant-tabs-tabpane-active {
+    overflow-y: scroll;
+}
+
+.ant-layout-footer {
+    @media (max-width: 320px) {
+        padding: 10px;
+    }
+}

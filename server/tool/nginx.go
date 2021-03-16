@@ -1,24 +1,20 @@
 package tool
 
 import (
-	"bytes"
-	"log"
-	"os/exec"
-	"path/filepath"
-	"regexp"
+    "log"
+    "os/exec"
+    "path/filepath"
+    "regexp"
 )
 
 func ReloadNginx() {
-	cmd := exec.Command("systemctl", "reload nginx")
-	var out bytes.Buffer
-	cmd.Stdout = &out
-	err := cmd.Run()
+	out, err := exec.Command("nginx", "-s", "reload").CombinedOutput()
 
 	if err != nil {
-		log.Println(err)
-	}
+        log.Println(err)
+    }
 
-	log.Println(out.String())
+	log.Println(string(out))
 }
 
 func GetNginxConfPath(dir string) string {

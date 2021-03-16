@@ -1,19 +1,25 @@
 package api
 
 import (
-	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/0xJacky/Nginx-UI/tool"
-	"github.com/gin-gonic/gin"
-	"io/ioutil"
-	"log"
-	"net/http"
-	"os"
-	"path/filepath"
-	"strconv"
+    "github.com/0xJacky/Nginx-UI/tool"
+    "github.com/gin-gonic/gin"
+    "io/ioutil"
+    "log"
+    "net/http"
+    "os"
+    "path/filepath"
 )
 
 func GetConfigs(c *gin.Context) {
-	configFiles, err := ioutil.ReadDir(tool.GetNginxConfPath("/"))
+    orderBy := c.Query("order_by")
+    sort := c.DefaultQuery("sort", "desc")
+
+    mySort := map[string]string{
+        "name": "string",
+        "modify": "time",
+    }
+
+    configFiles, err := ioutil.ReadDir(tool.GetNginxConfPath("/"))
 
 	if err != nil {
 		ErrorHandler(c, err)
@@ -33,6 +39,8 @@ func GetConfigs(c *gin.Context) {
 			})
 		}
 	}
+
+    configs = tool.Sort(orderBy, sort, mySort[orderBy], configs)
 
 	c.JSON(http.StatusOK, gin.H{
 		"configs": configs,
@@ -114,21 +122,15 @@ func EditConfig(c *gin.Context) {
 	path := filepath.Join(tool.GetNginxConfPath("/"), name)
 	content := request.Content
 
-	s, err := strconv.Unquote(`"` + content + `"`)
-	if err != nil {
-		ErrorHandler(c, err)
-		return
-	}
-
 	origContent, err := ioutil.ReadFile(path)
 	if err != nil {
 		ErrorHandler(c, err)
 		return
 	}
 
-	if s != "" && s != string(origContent) {
-		model.CreateBackup(path)
-		err := ioutil.WriteFile(path, []byte(s), 0644)
+	if content != "" && content != string(origContent) {
+		// model.CreateBackup(path)
+		err := ioutil.WriteFile(path, []byte(content), 0644)
 		if err != nil {
 			ErrorHandler(c, err)
 			return

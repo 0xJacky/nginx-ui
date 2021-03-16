@@ -22,7 +22,6 @@ func InitRouter() *gin.Engine {
 	{
 		endpoint.GET("domains", api.GetDomains)
 		endpoint.GET("domain/:name", api.GetDomain)
-		endpoint.POST("domain", api.AddDomain)
 		endpoint.POST("domain/:name", api.EditDomain)
 		endpoint.POST("domain/:name/enable", api.EnableDomain)
 		endpoint.POST("domain/:name/disable", api.DisableDomain)
@@ -35,6 +34,8 @@ func InitRouter() *gin.Engine {
 
 		endpoint.GET("backups", api.GetFileBackupList)
 		endpoint.GET("backup/:id", api.GetFileBackup)
+
+        endpoint.GET("template/:name", api.GetTemplate)
 	}
 
 	return r

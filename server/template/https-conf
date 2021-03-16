@@ -13,10 +13,10 @@ server {
 
     server_name {{ server_name }};
 
-    {{ index }}
+    ssl_certificate {{ ssl_certificate }};
+    ssl_certificate_key {{ ssl_certificate_key }};
 
-    {{ root }}
+    root ;
 
-    # extra
-    {{ extra }}
+    index ;
 }
