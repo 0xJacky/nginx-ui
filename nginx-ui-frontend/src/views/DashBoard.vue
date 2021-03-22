@@ -111,7 +111,8 @@ export default {
         }
     },
     created() {
-        this.websocket = new WebSocket(process.env["VUE_APP_API_WSS_ROOT"] + "/analytic")
+        this.websocket = new WebSocket(process.env["VUE_APP_API_WSS_ROOT"] + "/analytic?token="
+            + process.env["VUE_APP_API_WSS_TOKEN"])
         this.websocket.onmessage = this.wsOnMessage
         this.websocket.onopen = this.wsOpen
         this.websocket.onerror = this.wsOnError
@@ -167,19 +168,23 @@ export default {
 <style lang="less" scoped>
 .ant-card {
     margin: 10px;
-    @media (max-width: 512px) {
-        margin: 10px 0;
-    }
 
     .chart {
         max-height: 300px;
     }
 
     .chart_dashboard {
-        padding: 50px;
+        padding: 60px;
         .description {
             width: 120px;
             text-align: center
+        }
+    }
+
+    @media (max-width: 512px) {
+        margin: 10px 0;
+        .chart_dashboard {
+            padding: 20px;
         }
     }
 }

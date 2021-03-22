@@ -13,11 +13,6 @@ func DiskUsage(path string) (string, string, float64, error) {
         return "", "", 0, err
     }
     percentage := (float64(di.Total-di.Free) / float64(di.Total)) * 100
-    fmt.Printf("%s of %s disk space used (%0.2f%%)\n",
-        humanize.Bytes(di.Total-di.Free),
-        humanize.Bytes(di.Total),
-        percentage,
-    )
     percentage, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", percentage), 64)
 
     return humanize.Bytes(di.Total-di.Free), humanize.Bytes(di.Total),

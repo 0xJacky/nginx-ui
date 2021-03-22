@@ -18,7 +18,7 @@ module.exports = {
         },
     },
     devServer: {
-        proxy: 'https://nginx.jackyu.cn/'
+        proxy: 'https://nginx.jackyu.cn/api'
     },
 
     productionSourceMap: false,

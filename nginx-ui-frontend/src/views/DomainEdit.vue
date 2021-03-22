@@ -6,7 +6,7 @@
             </a-card>
         </a-col>
         <a-col :md="12" :sm="24">
-            <a-card title="配置文件实时编辑">
+            <a-card title="配置文件编辑">
                 <a-textarea
                     v-model="configText"
                     :rows="36"

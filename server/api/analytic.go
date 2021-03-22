@@ -3,14 +3,15 @@ package api
 import (
     "encoding/json"
     "fmt"
+    "github.com/0xJacky/Nginx-UI/settings"
     "github.com/0xJacky/Nginx-UI/tool"
     "github.com/dustin/go-humanize"
     "github.com/gin-gonic/gin"
     "github.com/gorilla/websocket"
     "github.com/mackerelio/go-osstat/cpu"
+    "github.com/mackerelio/go-osstat/loadavg"
     "github.com/mackerelio/go-osstat/memory"
     "github.com/mackerelio/go-osstat/uptime"
-    "github.com/mackerelio/go-osstat/loadavg"
     "net/http"
     "strconv"
     "time"
@@ -23,6 +24,14 @@ var upGrader = websocket.Upgrader{
 }
 
 func Analytic(c *gin.Context) {
+    token := c.Query("token")
+    if token != settings.ServerSettings.WebSocketToken {
+        c.JSON(http.StatusForbidden, gin.H{
+            "message": "auth fail",
+        })
+        return
+    }
+
     // upgrade http to websocket
     ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
     if err != nil {

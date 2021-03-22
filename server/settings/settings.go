@@ -10,6 +10,7 @@ var Conf *ini.File
 type Server struct {
 	HttpPort string
 	RunMode  string
+	WebSocketToken string
 }
 
 var ServerSettings = &Server{}
