@@ -1,5 +1,4 @@
 import axios from 'axios'
-import store from '../store'
 
 /* 创建 axios 实例 */
 let http = axios.create({
@@ -33,13 +32,6 @@ http.interceptors.response.use(
     },
     async error => {
         console.log(error)
-        switch (error.response.status) {
-            case 401:
-            case 403:
-                // 无权访问时，直接登出
-                await store.dispatch('logout')
-                break
-        }
         return Promise.reject(error.response.data)
     }
 )

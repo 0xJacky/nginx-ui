@@ -1,19 +1,13 @@
 <template>
     <div class="logo">
-        <img :src="logo"/>
-        <div class="text">Nginx UI</div>
+        <p class="text">Nginx UI</p>
         <div class="clear"></div>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'Logo',
-    data() {
-        return {
-            logo: require('@/assets/img/logo.png')
-        }
-    }
+    name: 'Logo'
 }
 </script>
 
@@ -33,13 +27,11 @@ export default {
     }
 
     .text {
-        float: left;
         font-weight: 300;
-        font-size: 22px;
+        font-size: 23px;
         line-height: 48px;
         height: 48px;
-        display: inline-block;
-        margin-left: 13px;
+        text-align: center;
     }
 }
 </style>

@@ -9,7 +9,7 @@ export const routes = [
         path: '/',
         name: '首页',
         component: () => import('@/layouts/BaseLayout'),
-        redirect: '/domain',
+        redirect: '/dashboard',
         children: [
             {
                 path: 'dashboard',

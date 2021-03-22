@@ -9,6 +9,8 @@ import (
     "github.com/gorilla/websocket"
     "github.com/mackerelio/go-osstat/cpu"
     "github.com/mackerelio/go-osstat/memory"
+    "github.com/mackerelio/go-osstat/uptime"
+    "github.com/mackerelio/go-osstat/loadavg"
     "net/http"
     "strconv"
     "time"
@@ -71,6 +73,10 @@ func Analytic(c *gin.Context) {
 
             response["cpu_idle"], _ = strconv.ParseFloat(fmt.Sprintf("%.2f",
                 float64(after.Idle-before.Idle)/total*100), 64)
+
+            response["uptime"], _ = uptime.Get()
+            response["uptime"] = response["uptime"].(time.Duration) / time.Second
+            response["loadavg"], _ = loadavg.Get()
 
             used, _total, percentage, err := tool.DiskUsage(".")
 
