@@ -2,16 +2,14 @@
     <a-row>
         <a-col :md="12" :sm="24">
             <a-card :title="name ? '编辑站点：' + name : '添加站点'">
+                <p>您的配置文件中应当有对应的字段时，下列表单中的设置才能生效。</p>
                 <std-data-entry :data-list="columns" v-model="config" @change_support_ssl="change_support_ssl"/>
+                <a-button @click="issue_cert" type="primary" v-show="config.support_ssl" ghost>自动申请 Let's Encrypt 证书</a-button>
             </a-card>
         </a-col>
         <a-col :md="12" :sm="24">
             <a-card title="配置文件编辑">
-                <a-textarea
-                    v-model="configText"
-                    :rows="36"
-                    @keydown.tab.prevent="pressTab"
-                />
+                <vue-itextarea v-model="configText"/>
             </a-card>
         </a-col>
         <footer-tool-bar>
@@ -23,6 +21,7 @@
 <script>
 import StdDataEntry from "@/components/StdDataEntry/StdDataEntry"
 import FooterToolBar from "@/components/FooterToolbar/FooterToolBar"
+import VueItextarea from "@/components/VueItextarea/VueItextarea";
 
 const columns = [{
     title: "配置文件名称",
@@ -33,6 +32,18 @@ const columns = [{
 }, {
     title: "网站域名 (server_name)",
     dataIndex: "server_name",
+    edit: {
+        type: "input"
+    }
+}, {
+    title: "网站根目录 (root)",
+    dataIndex: "root",
+    edit: {
+        type: "input"
+    }
+}, {
+    title: "网站首页 (index)",
+    dataIndex: "index",
     edit: {
         type: "input"
     }
@@ -69,30 +80,18 @@ const columns = [{
     edit: {
         type: "input"
     }
-}, {
-    title: "网站根目录 (root)",
-    dataIndex: "root",
-    edit: {
-        type: "input"
-    }
-}, {
-    title: "网站首页 (index)",
-    dataIndex: "index",
-    edit: {
-        type: "input"
-    }
 }]
 
 export default {
     name: "DomainEdit",
-    components: {FooterToolBar, StdDataEntry},
+    components: {FooterToolBar, StdDataEntry, VueItextarea},
     data() {
         return {
             name: this.$route.params.name,
             columns,
             config: {
                 http_listen_port: 80,
-                https_listen_port: 443,
+                https_listen_port: null,
                 server_name: "",
                 index: "",
                 root: "",
@@ -100,7 +99,8 @@ export default {
                 ssl_certificate_key: "",
                 support_ssl: false
             },
-            configText: ""
+            configText: "",
+            ws: null
         }
     },
     watch: {
@@ -127,7 +127,7 @@ export default {
         } else {
             this.config = {
                 http_listen_port: 80,
-                https_listen_port: 443,
+                https_listen_port: null,
                 server_name: "",
                 index: "",
                 root: "",
@@ -136,6 +136,11 @@ export default {
                 support_ssl: false
             }
             this.get_template()
+        }
+    },
+    destroyed() {
+        if (this.ws !== null) {
+            this.ws.close()
         }
     },
     methods: {
@@ -227,6 +232,38 @@ export default {
                 this.$message.error("保存错误" + r.message !== undefined ? " " + r.message : null, 10)
             })
         },
+        issue_cert() {
+            this.$message.info("请注意，当前配置中 server_name 必须为需要申请证书的域名，否则无法申请", 5)
+            this.$message.info("正在申请，请稍后")
+            this.ws = new WebSocket(this.getWebSocketRoot() + "/cert/issue/" + this.config.server_name
+                + "?token=" + process.env["VUE_APP_API_WSS_TOKEN"])
+
+            this.ws.onopen = () => {
+                this.ws.send("ping")
+            }
+
+            this.ws.onmessage = m => {
+                const r = JSON.parse(m.data)
+                console.log(r)
+                switch (r.status) {
+                    case "success":
+                        this.$message.success(r.message, 5)
+                        break
+                    case "info":
+                        this.$message.info(r.message, 5)
+                        break
+                    case "error":
+                        this.$message.error(r.message, 5)
+                        break
+                }
+
+                if (r.status === "success" && r.ssl_certificate !== undefined && r.ssl_certificate_key !== undefined) {
+                    this.config.ssl_certificate = r.ssl_certificate
+                    this.config.ssl_certificate_key = r.ssl_certificate_key
+                }
+            }
+
+        },
         pressTab(event) {
             let target = event.target
             let value = target.value
@@ -236,6 +273,26 @@ export default {
                 value = value.substring(0, start) + '\t' + value.substring(end);
                 event.target.value = value;
                 setTimeout(() => target.selectionStart = target.selectionEnd = start + 1, 0);
+            }
+        },
+        pressEnter(event) {
+            let target = event.target
+            let value = target.value
+            let start = target.selectionStart
+            let end = target.selectionEnd
+
+            if (event.key === 'Enter') {
+                let current_line = value.substr(0, start).split("\n").pop(); // line, we are currently on
+                if (current_line && current_line.startsWith('\t')) { // type tab
+                    event.preventDefault();
+                    // detect how many tabs in the begining and apply
+                    let spaces_count = current_line.search(/\S|$/); // position of first non white-space character
+                    let tabs_count = spaces_count ? spaces_count / this.TAB_SIZE : 0
+                    value = value.substring(0, start) + '\n' + '\t'.repeat(tabs_count) + value.substring(end)
+                    event.target.value = value
+                    setTimeout(() => target.selectionStart = target.selectionEnd =
+                        start + this.TAB_SIZE * tabs_count + 1, 0)
+                }
             }
         }
     }

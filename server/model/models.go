@@ -23,6 +23,8 @@ func Init() {
 
 	// Migrate the schema
 	AutoMigrate(&ConfigBackup{})
+    AutoMigrate(&Auth{})
+    AutoMigrate(&AuthToken{})
 }
 
 func AutoMigrate(model interface{})  {

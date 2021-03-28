@@ -1,10 +1,43 @@
 package router
 
 import (
+    "encoding/base64"
     "github.com/0xJacky/Nginx-UI/api"
+    "github.com/0xJacky/Nginx-UI/model"
     "github.com/gin-gonic/gin"
+    "log"
     "net/http"
 )
+
+func authRequired() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        token := c.GetHeader("Authorization")
+        if token == "" {
+            tmp, _ := base64.StdEncoding.DecodeString(c.Query("token"))
+            token = string(tmp)
+            if token == "" {
+                c.JSON(http.StatusForbidden, gin.H{
+                    "message": "auth fail",
+                })
+                c.Abort()
+                return
+            }
+        }
+        log.Println(c.Query("token"))
+        log.Println(token)
+
+        n := model.CheckToken(token)
+        log.Println(n)
+        if n < 1 {
+            c.JSON(http.StatusForbidden, gin.H{
+                "message": "auth fail",
+            })
+            c.Abort()
+            return
+        }
+        c.Next()
+    }
+}
 
 func InitRouter() *gin.Engine {
 	r := gin.New()
@@ -18,8 +51,12 @@ func InitRouter() *gin.Engine {
 		})
 	})
 
-	endpoint := r.Group("/")
+	r.POST("/login", api.Login)
+
+	endpoint := r.Group("/", authRequired())
 	{
+        endpoint.DELETE("/logout", api.Logout)
+
 		endpoint.GET("domains", api.GetDomains)
 		endpoint.GET("domain/:name", api.GetDomain)
 		endpoint.POST("domain/:name", api.EditDomain)
@@ -38,6 +75,8 @@ func InitRouter() *gin.Engine {
         endpoint.GET("template/:name", api.GetTemplate)
 
         endpoint.GET("analytic", api.Analytic)
+
+		endpoint.GET("cert/issue/:domain", api.IssueCert)
 	}
 
 	return r

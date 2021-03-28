@@ -1,6 +1,6 @@
 <template>
     <a-card title="配置文件实时编辑">
-        <a-textarea v-model="configText" :rows="36" @keydown.tab.prevent="pressTab"/>
+        <vue-itextarea v-model="configText"/>
         <footer-tool-bar>
             <a-button type="primary" @click="save">保存</a-button>
         </footer-tool-bar>
@@ -53,17 +53,6 @@ export default {
                 console.log(r)
                 this.$message.error("保存错误")
             })
-        },
-        pressTab(event) {
-            let target = event.target
-            let value = target.value
-            let start = target.selectionStart;
-            let end = target.selectionEnd;
-            if (event) {
-                value = value.substring(0, start) + '\t' + value.substring(end);
-                event.target.value = value;
-                setTimeout(() => target.selectionStart = target.selectionEnd = start + 1, 0);
-            }
         }
     }
 }

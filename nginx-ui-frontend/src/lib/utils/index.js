@@ -29,22 +29,15 @@ export default {
             return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i]
         }
 
-        Vue.prototype.transformUserType = (power) => {
-            const type = ['学生', '企业', '教师', '学院']
-            return type[power]
-        }
-
-        Vue.prototype.transformGrade = {
-            7: 'A+',
-            6: 'A',
-            5: 'B+',
-            4: 'B',
-            3: 'C+',
-            2: 'C',
-            1: 'D',
-            0: 'F'
-        }
-
         Vue.prototype.scrollPosition = scrollPosition
+
+        Vue.prototype.getWebSocketRoot = () => {
+            const protocol = location.protocol === "https:" ? "wss://" : "ws://"
+            if (process.env["VUE_APP_API_WSS_ROOT"]) {
+                return process.env["VUE_APP_API_WSS_ROOT"]
+            }
+            console.log(protocol, document.domain)
+            return protocol + document.domain + '/ws'
+        }
     }
 }

@@ -111,8 +111,8 @@ export default {
         }
     },
     created() {
-        this.websocket = new WebSocket(process.env["VUE_APP_API_WSS_ROOT"] + "/analytic?token="
-            + process.env["VUE_APP_API_WSS_TOKEN"])
+        this.websocket = new WebSocket(this.getWebSocketRoot() + "/analytic?token="
+            + btoa(this.$store.state.user.token))
         this.websocket.onmessage = this.wsOnMessage
         this.websocket.onopen = this.wsOpen
         this.websocket.onerror = this.wsOnError
@@ -128,7 +128,7 @@ export default {
             }, 1000)
         },
         wsOnError() {
-            this.websocket = new WebSocket(process.env["VUE_APP_API_WSS_ROOT"] + "/analytic")
+            this.websocket = new WebSocket(this.getWebSocketRoot() + "/analytic")
         },
         wsOnMessage(m) {
             const r = JSON.parse(m.data)

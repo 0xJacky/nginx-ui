@@ -9,6 +9,7 @@
         <p>Go</p>
         <p>Gin</p>
         <p>Vue</p>
+        <p>Websocket</p>
         <h3>开源协议</h3>
         <p>GNU General Public License v2.0</p>
         <p>Copyright © 2020 - {{ this_year }} 0xJacky </p>

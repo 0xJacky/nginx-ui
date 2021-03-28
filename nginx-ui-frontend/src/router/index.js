@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import axios from 'axios'
+import store from '@/lib/store'
 
 Vue.use(VueRouter)
 
@@ -72,6 +73,12 @@ export const routes = [
         ]
     },
     {
+        path: '/login',
+        name: '登录',
+        component: () => import('@/views/Login'),
+        meta: {noAuth: true}
+    },
+    {
         path: '/404',
         name: '404 Not Found',
         component: () => import('@/views/Error'),
@@ -108,7 +115,12 @@ router.beforeEach((to, from, next) => {
         })
     }
 
-    next()
+    if (to.meta.noAuth || store.getters.token) {
+        next()
+    } else {
+        next({path: '/login', query: {next: to.fullPath}})
+    }
+
 })
 
 export {router}

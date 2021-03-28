@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from '../store'
 
 /* 创建 axios 实例 */
 let http = axios.create({
@@ -18,6 +19,9 @@ let http = axios.create({
 /* http request 拦截器 */
 http.interceptors.request.use(
     config => {
+        if (store.state.user.token) {
+            config.headers.Authorization = `${store.state.user.token}`
+        }
         return config
     },
     err => {

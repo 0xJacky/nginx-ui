@@ -21,7 +21,7 @@ const scrollPosition = {
         Vue.prototype.$nextTick(() => {
             document.documentElement.scrollTop = document.body.scrollTop = 0
         })
-    }
+    },
 }
 
 export default scrollPosition
