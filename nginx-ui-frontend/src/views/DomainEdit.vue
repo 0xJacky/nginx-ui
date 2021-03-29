@@ -236,7 +236,7 @@ export default {
             this.$message.info("请注意，当前配置中 server_name 必须为需要申请证书的域名，否则无法申请", 5)
             this.$message.info("正在申请，请稍后")
             this.ws = new WebSocket(this.getWebSocketRoot() + "/cert/issue/" + this.config.server_name
-                + "?token=" + process.env["VUE_APP_API_WSS_TOKEN"])
+                + "?token=" + btoa(this.$store.state.user.token))
 
             this.ws.onopen = () => {
                 this.ws.send("ping")
