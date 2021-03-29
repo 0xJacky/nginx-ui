@@ -48,3 +48,9 @@ server {
 	}
 }
 ```
+4. 添加用户
+编辑 server/database.db (sqlite3)
+
+手动计算密码的 md5（md5 -s <text>)
+
+进入 auths 表，添加一行 name: 用户名，password: <md5 加密后的明文>
