@@ -4,8 +4,8 @@ Yet another Nginx Web UI
 Version: 0.1
 
 # 使用前注意
-Nginx UI 遵循 nginx 的标准，创建的网站配置文件位于 nginx 配置目录（自动检测）下的 sites-available 目录,
-启用后的网站将会创建一份软连接到 sites-enabled 目录中。因此，您可能需要调整配置文件的组织方式。
+Nginx UI 遵循 nginx 的标准，创建的网站配置文件位于 nginx 配置目录（自动检测）下的 sites-available 目录，
+启用后的网站的配置文件将会创建一份软连接到 sites-enabled 目录中。因此，您可能需要调整配置文件的组织方式。
 
 # 安装
 1. 克隆项目
