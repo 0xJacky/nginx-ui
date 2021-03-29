@@ -34,7 +34,8 @@ export default {
          * Keyboard shortcuts support, like <ctrl-v>
          */
         change(event) {
-            this.$emit('input', event.target.value);
+            this.$emit('input', event.target.value)
+            this.$emit('changeValue', event.target.value);
         },
         updateValue(event) {
             let target = event.target;

@@ -97,15 +97,15 @@ func EditDomain(c *gin.Context) {
 	err = c.BindJSON(&request)
 	path := filepath.Join(tool.GetNginxConfPath("sites-available"), name)
 
-	if _, err = os.Stat(path); err == nil {
+	/*if _, err = os.Stat(path); err == nil {
         origContent, err = ioutil.ReadFile(path)
         if err != nil {
             ErrorHandler(c, err)
             return
         }
-	}
+	}*/
 
-	if request["content"] != "" && request["content"] != string(origContent) {
+	if request["content"] != "" /*&& request["content"] != string(origContent)*/ {
 		// model.CreateBackup(path)
 		err := ioutil.WriteFile(path, []byte(request["content"].(string)), 0644)
 		if err != nil {

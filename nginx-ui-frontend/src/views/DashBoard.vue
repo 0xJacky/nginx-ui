@@ -128,7 +128,8 @@ export default {
             }, 1000)
         },
         wsOnError() {
-            this.websocket = new WebSocket(this.getWebSocketRoot() + "/analytic")
+            this.websocket = new WebSocket(this.getWebSocketRoot() + "/analytic?token="
+                + btoa(this.$store.state.user.token))
         },
         wsOnMessage(m) {
             const r = JSON.parse(m.data)
