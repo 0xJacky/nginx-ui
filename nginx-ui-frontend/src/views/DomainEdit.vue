@@ -263,37 +263,6 @@ export default {
                 }
             }
 
-        },
-        pressTab(event) {
-            let target = event.target
-            let value = target.value
-            let start = target.selectionStart;
-            let end = target.selectionEnd;
-            if (event) {
-                value = value.substring(0, start) + '\t' + value.substring(end);
-                event.target.value = value;
-                setTimeout(() => target.selectionStart = target.selectionEnd = start + 1, 0);
-            }
-        },
-        pressEnter(event) {
-            let target = event.target
-            let value = target.value
-            let start = target.selectionStart
-            let end = target.selectionEnd
-
-            if (event.key === 'Enter') {
-                let current_line = value.substr(0, start).split("\n").pop(); // line, we are currently on
-                if (current_line && current_line.startsWith('\t')) { // type tab
-                    event.preventDefault();
-                    // detect how many tabs in the begining and apply
-                    let spaces_count = current_line.search(/\S|$/); // position of first non white-space character
-                    let tabs_count = spaces_count ? spaces_count / this.TAB_SIZE : 0
-                    value = value.substring(0, start) + '\n' + '\t'.repeat(tabs_count) + value.substring(end)
-                    event.target.value = value
-                    setTimeout(() => target.selectionStart = target.selectionEnd =
-                        start + this.TAB_SIZE * tabs_count + 1, 0)
-                }
-            }
         }
     }
 }

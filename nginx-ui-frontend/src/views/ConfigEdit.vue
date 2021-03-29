@@ -1,5 +1,5 @@
 <template>
-    <a-card title="配置文件实时编辑">
+    <a-card title="配置文件编辑">
         <vue-itextarea v-model="configText"/>
         <footer-tool-bar>
             <a-button type="primary" @click="save">保存</a-button>
@@ -9,11 +9,11 @@
 
 <script>
 import FooterToolBar from "@/components/FooterToolbar/FooterToolBar"
-
+import VueItextarea from "@/components/VueItextarea/VueItextarea"
 
 export default {
     name: "DomainEdit",
-    components: {FooterToolBar},
+    components: {FooterToolBar, VueItextarea},
     data() {
         return {
             name: this.$route.params.name,

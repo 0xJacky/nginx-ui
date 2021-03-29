@@ -7,6 +7,10 @@
             <a href="/index.html">
                 <a-icon type="home"/>
             </a>
+
+            <a @click="logout" style="margin-left: 20px">
+                <a-icon type="logout"/>
+            </a>
         </div>
     </div>
 </template>
@@ -15,6 +19,14 @@
 export default {
     name: 'HeaderComponent',
     components: {},
+    methods: {
+        logout() {
+            this.$api.auth.logout().then(() => {
+                this.$message.success('注销成功')
+                this.$router.push('/login')
+            })
+        }
+    }
 }
 </script>
 
