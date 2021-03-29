@@ -38,13 +38,13 @@ server {
 	}
 
 	location /ws/ {
-		proxy_set_header Host $host;
+	    proxy_set_header Host $host;
         proxy_set_header X-Real_IP $remote_addr;
         proxy_set_header X-Forwarded-For $remote_addr:$remote_port;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection upgrade;
-		proxy_pass http://127.0.0.1:9000/;
+	    proxy_pass http://127.0.0.1:9000/;
 	}
 }
 ```
