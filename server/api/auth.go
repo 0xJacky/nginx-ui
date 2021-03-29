@@ -51,12 +51,14 @@ func Login(c *gin.Context) {
 
 func Logout(c *gin.Context) {
     token := c.GetHeader("Authorization")
-    err := model.DeleteToken(token)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{
-            "message": err.Error(),
-        })
-        return
+    if token != "" {
+        err := model.DeleteToken(token)
+        if err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{
+                "message": err.Error(),
+            })
+            return
+        }
     }
     c.JSON(http.StatusNoContent, gin.H{})
 }
