@@ -43,6 +43,7 @@
 
 <script>
 import LineChart from "@/components/Chart/LineChart"
+import ReconnectingWebSocket from 'reconnecting-websocket'
 
 export default {
     name: "DashBoard",
@@ -111,11 +112,10 @@ export default {
         }
     },
     created() {
-        this.websocket = new WebSocket(this.getWebSocketRoot() + "/analytic?token="
+        this.websocket = new ReconnectingWebSocket(this.getWebSocketRoot() + "/analytic?token="
             + btoa(this.$store.state.user.token))
         this.websocket.onmessage = this.wsOnMessage
         this.websocket.onopen = this.wsOpen
-        this.websocket.onerror = this.wsOnError
     },
     destroyed() {
         window.clearInterval(window.InitSetInterval)
@@ -125,18 +125,13 @@ export default {
         wsOpen() {
             window.InitSetInterval = setInterval(() => {
                 this.websocket.send("ping")
-            }, 1000)
-        },
-        wsOnError() {
-            this.websocket = new WebSocket(this.getWebSocketRoot() + "/analytic?token="
-                + btoa(this.$store.state.user.token))
+            }, 2000)
         },
         wsOnMessage(m) {
             const r = JSON.parse(m.data)
-            console.log(r)
+            // console.log(r)
             this.cpu = r.cpu_system + r.cpu_user
             const time = new Date()
-            //this.cpu_analytic.labels.push(time)
             this.cpu_analytic.datasets[0].data
                 .push({x: time, y: r.cpu_user})
             this.cpu_analytic.datasets[1].data

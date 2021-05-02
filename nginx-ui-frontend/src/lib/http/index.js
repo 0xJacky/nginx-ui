@@ -35,8 +35,13 @@ http.interceptors.response.use(
         return Promise.resolve(response.data)
     },
     async error => {
-        if (error.response.status === 403) {
-            await store.dispatch('logout')
+        switch (error.response.status) {
+            case 401:
+            case 403:
+                // 无权访问时，直接登出
+                await store.dispatch('logout')
+                location.reload()
+                break
         }
         return Promise.reject(error.response.data)
     }
