@@ -20,6 +20,10 @@ func TestAcme(t *testing.T) {
         if os.IsNotExist(err) {
             log.Println("[not found] acme.sh, installing...")
 
+            if _, err := os.Stat("../tmp"); os.IsNotExist(err) {
+                _ = os.Mkdir("../tmp", 0644)
+            }
+
             out, err := exec.Command("curl",  "-o", "../tmp/acme.sh", "https://get.acme.sh").
                 CombinedOutput()
             if err != nil {
