@@ -2,9 +2,9 @@
     <a-row>
         <a-col :md="12" :sm="24">
             <a-card :title="name ? '编辑站点：' + name : '添加站点'">
-                <p>您的配置文件中应当有对应的字段时，下列表单中的设置才能生效。</p>
+                <p>您的配置文件中应当有对应的字段时，下列表单中的设置才能生效，配置文件名称创建后不可修改。</p>
                 <std-data-entry :data-list="columns" v-model="config" @change_support_ssl="change_support_ssl"/>
-                <cert-info :domain="name"/>
+                <cert-info :domain="name" ref="cert-info" v-if="name"/>
                 <br/>
                 <a-space>
                     <a-button @click="issue_cert" type="primary" ghost>
@@ -176,6 +176,7 @@ export default {
             this.$api.domain.save(this.name ? this.name : this.config.name, {content: this.configText}).then(r => {
                 this.parse(r)
                 this.$message.success("保存成功")
+                this.$refs["cert-info"].get()
             }).catch(r => {
                 console.log(r)
                 this.$message.error("保存错误" + r.message !== undefined ? " " + r.message : null, 10)

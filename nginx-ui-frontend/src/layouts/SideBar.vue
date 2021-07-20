@@ -5,6 +5,7 @@
             :openKeys="openKeys"
             mode="inline"
             @openChange="onOpenChange"
+            :default-selected-keys="[$route.path.substring(1)]"
         >
             <template v-for="sidebar in visible(sidebars)">
                 <a-menu-item v-if="!sidebar.children" :key="sidebar.path"
@@ -67,15 +68,21 @@ export default {
 .sidebar {
     position: fixed;
     width: 200px;
+    .ant-menu-inline {
+        height: calc(100vh - 120px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        .ant-menu-item {
+            width: unset;
+        }
+    }
 }
 
 .ant-layout-sider-collapsed .logo {
-    width: 48px;
     overflow: hidden;
 }
 
 .ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
     border-right: unset;
 }
-
 </style>
