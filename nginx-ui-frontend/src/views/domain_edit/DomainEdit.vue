@@ -4,7 +4,13 @@
             <a-card :title="name ? '编辑站点：' + name : '添加站点'">
                 <p>您的配置文件中应当有对应的字段时，下列表单中的设置才能生效。</p>
                 <std-data-entry :data-list="columns" v-model="config" @change_support_ssl="change_support_ssl"/>
-                <a-button @click="issue_cert" type="primary" v-show="config.support_ssl" ghost>自动申请 Let's Encrypt 证书</a-button>
+                <cert-info :domain="name"/>
+                <br/>
+                <a-space>
+                    <a-button @click="issue_cert" type="primary" ghost>
+                        自动申请 Let's Encrypt 证书
+                    </a-button>
+                </a-space>
             </a-card>
         </a-col>
         <a-col :md="12" :sm="24">
@@ -21,70 +27,13 @@
 <script>
 import StdDataEntry from "@/components/StdDataEntry/StdDataEntry"
 import FooterToolBar from "@/components/FooterToolbar/FooterToolBar"
-import VueItextarea from "@/components/VueItextarea/VueItextarea";
-
-const columns = [{
-    title: "配置文件名称",
-    dataIndex: "name",
-    edit: {
-        type: "input"
-    }
-}, {
-    title: "网站域名 (server_name)",
-    dataIndex: "server_name",
-    edit: {
-        type: "input"
-    }
-}, {
-    title: "网站根目录 (root)",
-    dataIndex: "root",
-    edit: {
-        type: "input"
-    }
-}, {
-    title: "网站首页 (index)",
-    dataIndex: "index",
-    edit: {
-        type: "input"
-    }
-}, {
-    title: "http 监听端口",
-    dataIndex: "http_listen_port",
-    edit: {
-        type: "number",
-        min: 80
-    }
-}, {
-    title: "支持 SSL",
-    dataIndex: "support_ssl",
-    edit: {
-        type: "switch",
-        event: "change_support_ssl"
-    }
-}, {
-    title: "https 监听端口",
-    dataIndex: "https_listen_port",
-    edit: {
-        type: "number",
-        min: 443
-    }
-}, {
-    title: "SSL 证书路径 (ssl_certificate)",
-    dataIndex: "ssl_certificate",
-    edit: {
-        type: "input"
-    }
-}, {
-    title: "SSL 证书私钥路径 (ssl_certificate_key)",
-    dataIndex: "ssl_certificate_key",
-    edit: {
-        type: "input"
-    }
-}]
+import VueItextarea from "@/components/VueItextarea/VueItextarea"
+import columns from "@/views/domain_edit/columns"
+import CertInfo from "@/views/domain_edit/CertInfo";
 
 export default {
     name: "DomainEdit",
-    components: {FooterToolBar, StdDataEntry, VueItextarea},
+    components: {CertInfo, FooterToolBar, StdDataEntry, VueItextarea},
     data() {
         return {
             name: this.$route.params.name,
@@ -233,27 +182,26 @@ export default {
             })
         },
         issue_cert() {
-            this.$message.info("请注意，当前配置中 server_name 必须为需要申请证书的域名，否则无法申请", 5)
-            this.$message.info("正在申请，请稍后")
+            this.$message.info("请注意，当前配置中 server_name 必须为需要申请证书的域名，否则无法申请", 15)
+            this.$message.info("正在申请，请稍后",15)
             this.ws = new WebSocket(this.getWebSocketRoot() + "/cert/issue/" + this.config.server_name
                 + "?token=" + btoa(this.$store.state.user.token))
 
             this.ws.onopen = () => {
-                this.ws.send("ping")
+                this.ws.send("go")
             }
 
             this.ws.onmessage = m => {
                 const r = JSON.parse(m.data)
-                console.log(r)
                 switch (r.status) {
                     case "success":
-                        this.$message.success(r.message, 5)
+                        this.$message.success(r.message, 10)
                         break
                     case "info":
-                        this.$message.info(r.message, 5)
+                        this.$message.info(r.message, 10)
                         break
                     case "error":
-                        this.$message.error(r.message, 5)
+                        this.$message.error(r.message, 10)
                         break
                 }
 

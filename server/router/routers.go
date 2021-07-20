@@ -73,6 +73,7 @@ func InitRouter() *gin.Engine {
         endpoint.GET("analytic", api.Analytic)
 
 		endpoint.GET("cert/issue/:domain", api.IssueCert)
+        endpoint.GET("cert/:domain/info", api.CertInfo)
 	}
 
 	return r

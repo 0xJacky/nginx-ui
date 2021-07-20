@@ -46,7 +46,8 @@ import {
     Tooltip,
     Transfer,
     Upload,
-    Switch
+    Switch,
+    Space
 } from 'ant-design-vue'
 
 Vue.use(ConfigProvider)
@@ -95,6 +96,7 @@ Vue.use(Descriptions)
 Vue.use(Result)
 Vue.use(pageHeader)
 Vue.use(Switch)
+Vue.use(Space)
 
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message

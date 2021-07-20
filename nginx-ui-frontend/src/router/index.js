@@ -36,11 +36,11 @@ export const routes = [
                 }, {
                     path: 'add',
                     name: '添加站点',
-                    component: () => import('@/views/DomainEdit.vue'),
+                    component: () => import('@/views/domain_edit/DomainEdit.vue'),
                 }, {
                     path: ':name',
                     name: '编辑站点',
-                    component: () => import('@/views/DomainEdit.vue'),
+                    component: () => import('@/views/domain_edit/DomainEdit.vue'),
                     meta: {
                         hiddenInSidebar: true
                     }

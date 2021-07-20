@@ -12,6 +12,8 @@ type Server struct {
     RunMode        string
     WebSocketToken string
     JwtSecret      string
+    HTTPChallengePort     string
+    Email          string
 }
 
 var ServerSettings = &Server{}

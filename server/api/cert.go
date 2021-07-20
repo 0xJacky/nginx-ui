@@ -1,14 +1,71 @@
 package api
 
 import (
-    "bytes"
+    "crypto/tls"
     "encoding/json"
     "github.com/0xJacky/Nginx-UI/tool"
     "github.com/gin-gonic/gin"
+    "io"
     "log"
+    "net/http"
     "os"
-    "os/exec"
 )
+
+func CertInfo(c *gin.Context) {
+    domain := c.Param("domain")
+
+    /*sslCertificatePath := tool.GetNginxConfPath("ssl/" + domain +"/fullchain.cer")
+
+    content, err := ioutil.ReadFile(sslCertificatePath)
+
+    if err != nil {
+        ErrorHandler(c, err)
+        return
+    }
+
+    certDERBlock, _ := pem.Decode(content)
+
+    if certDERBlock == nil {
+        ErrorHandler(c, errors.New("pem decode error"))
+        return
+    }
+
+    var key *x509.Certificate
+    key, err = x509.ParseCertificate(certDERBlock.Bytes)
+
+    if err != nil {
+        ErrorHandler(c, err)
+        return
+    }*/
+
+    ts := &http.Transport{
+        TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+    }
+
+    client := &http.Client{Transport: ts}
+
+    response, err := client.Get("https://" + domain)
+    if err != nil {
+        ErrorHandler(c, err)
+        return
+    }
+    defer func(Body io.ReadCloser) {
+        err = Body.Close()
+        if err != nil {
+            ErrorHandler(c, err)
+            return
+        }
+    }(response.Body)
+
+    key := response.TLS.PeerCertificates[0]
+
+    c.JSON(http.StatusOK, gin.H{
+        "subject_name": key.Subject.CommonName,
+        "issuer_name": key.Issuer.CommonName,
+        "not_after": key.NotAfter,
+        "not_before": key.NotBefore,
+    })
+}
 
 func IssueCert(c *gin.Context)  {
     domain := c.Param("domain")
@@ -27,21 +84,11 @@ func IssueCert(c *gin.Context)  {
         if err != nil {
             break
         }
-        if string(message) == "ping" {
+        if string(message) == "go" {
             var m []byte
-            cmdOutput := bytes.NewBuffer(nil)
-            cmd := exec.Command("bash",  "/usr/local/acme.sh/acme.sh",
-                "--issue",
-                "-d", domain,
-                "--nginx", "--force", "--log")
 
-            cmd.Stdout = cmdOutput
-            cmd.Stderr = cmdOutput
-
-            err := cmd.Run()
-
+            err = tool.IssueCert(domain)
             if err != nil {
-                log.Println(err)
                 m, err = json.Marshal(gin.H{
                     "status": "error",
                     "message": err.Error(),
@@ -49,28 +96,18 @@ func IssueCert(c *gin.Context)  {
 
                 if err != nil {
                     log.Println(err)
+                    return
                 }
 
                 err = ws.WriteMessage(mt, m)
 
                 if err != nil {
                     log.Println(err)
+                    return
                 }
-            }
 
-            m, err = json.Marshal(gin.H{
-                "status": "info",
-                "message": cmdOutput.String(),
-            })
-
-            if err != nil {
                 log.Println(err)
-            }
-
-            err = ws.WriteMessage(mt, m)
-
-            if err != nil {
-                log.Println(err)
+                return
             }
 
             sslCertificatePath := tool.GetNginxConfPath("ssl/" + domain + "/fullchain.cer")
@@ -89,12 +126,14 @@ func IssueCert(c *gin.Context)  {
 
             if err != nil {
                 log.Println(err)
+                return
             }
 
             err = ws.WriteMessage(mt, m)
 
             if err != nil {
                 log.Println(err)
+                return
             }
 
             sslCertificateKeyPath := tool.GetNginxConfPath("ssl/" + domain +"/" + domain + ".key")
@@ -141,3 +180,4 @@ func IssueCert(c *gin.Context)  {
         }
     }
 }
+

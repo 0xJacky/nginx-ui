@@ -1,17 +1,24 @@
 package api
 
 import (
+    "github.com/0xJacky/Nginx-UI/settings"
     "github.com/gin-gonic/gin"
     "io/ioutil"
     "net/http"
     "os"
     "path/filepath"
+    "strings"
 )
 
 func GetTemplate(c *gin.Context)  {
     name := c.Param("name")
     path := filepath.Join("template", name)
     content, err := ioutil.ReadFile(path)
+
+    _content := string(content)
+    _content = strings.ReplaceAll(_content, "{{ HTTP01PORT }}",
+        settings.ServerSettings.HTTPChallengePort)
+
 
     if err != nil {
         if os.IsNotExist(err) {
@@ -26,6 +33,6 @@ func GetTemplate(c *gin.Context)  {
 
     c.JSON(http.StatusOK, gin.H{
         "message": "ok",
-        "template": string(content),
+        "template": _content,
     })
 }

@@ -29,6 +29,10 @@ const domain = {
 
     get_template(name) {
         return http.get('template/' + name)
+    },
+
+    cert_info(domain) {
+        return http.get('cert/' + domain + '/info')
     }
 }
 
