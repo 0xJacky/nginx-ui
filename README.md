@@ -24,7 +24,7 @@ server {
 	listen	[::]:80;
 
 	server_name	<Your server name>;
-  rewrite ^(.*)$  https://$host$1 permanent;
+    rewrite ^(.*)$  https://$host$1 permanent;
 }
 
 server {
@@ -34,7 +34,7 @@ server {
 	server_name	<Your server name>;
 
 	ssl_certificate	/path/to/ssl_cert;
-  ssl_certificate_key	/path/to/ssl_cert_key;
+    ssl_certificate_key	/path/to/ssl_cert_key;
 
 	root	/path/to/nginx-ui-frontend/dist;
 	
@@ -47,11 +47,11 @@ server {
 
 	location /ws/ {
 	      proxy_set_header Host $host;
-        proxy_set_header X-Real_IP $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr:$remote_port;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection upgrade;
+          proxy_set_header X-Real_IP $remote_addr;
+          proxy_set_header X-Forwarded-For $remote_addr:$remote_port;
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection upgrade;
 	      proxy_pass http://127.0.0.1:9000/;
 	}
 }
