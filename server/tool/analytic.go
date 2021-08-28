@@ -3,7 +3,7 @@ package tool
 import (
     "fmt"
     "github.com/dustin/go-humanize"
-    "github.com/minio/minio/pkg/disk"
+    "github.com/mackerelio/go-osstat/disk"
     "strconv"
 )
 
@@ -14,7 +14,6 @@ func DiskUsage(path string) (string, string, float64, error) {
     }
     percentage := (float64(di.Total-di.Free) / float64(di.Total)) * 100
     percentage, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", percentage), 64)
-
     return humanize.Bytes(di.Total-di.Free), humanize.Bytes(di.Total),
         percentage, nil
 }

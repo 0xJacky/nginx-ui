@@ -3,7 +3,7 @@ package api
 import (
     "encoding/json"
     "fmt"
-    "github.com/0xJacky/Nginx-UI/tool"
+    "github.com/0xJacky/Nginx-UI/server/tool"
     "github.com/dustin/go-humanize"
     "github.com/gin-gonic/gin"
     "github.com/gorilla/websocket"

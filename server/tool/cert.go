@@ -5,7 +5,7 @@ import (
     "crypto/ecdsa"
     "crypto/elliptic"
     "crypto/rand"
-    "github.com/0xJacky/Nginx-UI/settings"
+    "github.com/0xJacky/Nginx-UI/server/settings"
     "github.com/go-acme/lego/v4/certcrypto"
     "github.com/go-acme/lego/v4/certificate"
     "github.com/go-acme/lego/v4/challenge/http01"

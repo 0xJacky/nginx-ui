@@ -2,8 +2,8 @@ package router
 
 import (
     "encoding/base64"
-    "github.com/0xJacky/Nginx-UI/api"
-    "github.com/0xJacky/Nginx-UI/model"
+    "github.com/0xJacky/Nginx-UI/server/api"
+    "github.com/0xJacky/Nginx-UI/server/model"
     "github.com/gin-gonic/gin"
     "net/http"
 )

@@ -3,7 +3,7 @@ package api
 import (
     "crypto/md5"
     "fmt"
-    "github.com/0xJacky/Nginx-UI/model"
+    "github.com/0xJacky/Nginx-UI/server/model"
     "github.com/gin-gonic/gin"
     "log"
     "net/http"

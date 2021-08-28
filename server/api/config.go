@@ -1,7 +1,7 @@
 package api
 
 import (
-    "github.com/0xJacky/Nginx-UI/tool"
+    "github.com/0xJacky/Nginx-UI/server/tool"
     "github.com/gin-gonic/gin"
     "io/ioutil"
     "log"
