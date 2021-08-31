@@ -5,7 +5,8 @@ import (
 	"encoding/json"
 	"github.com/0xJacky/Nginx-UI/server/tool"
 	"github.com/gin-gonic/gin"
-	"io"
+    "github.com/gorilla/websocket"
+    "io"
 	"log"
 	"net/http"
 	"os"
@@ -69,6 +70,11 @@ func CertInfo(c *gin.Context) {
 
 func IssueCert(c *gin.Context) {
 	domain := c.Param("domain")
+    var upGrader = websocket.Upgrader{
+        CheckOrigin: func(r *http.Request) bool {
+            return true
+        },
+    }
 
 	// upgrade http to websocket
 	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)

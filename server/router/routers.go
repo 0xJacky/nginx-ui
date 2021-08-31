@@ -47,33 +47,37 @@ func InitRouter() *gin.Engine {
 			"message": "Hello World",
 		})
 	})
-
+    r.GET("/analytic", api.Analytic)
 	r.POST("/login", api.Login)
     r.DELETE("/logout", api.Logout)
 
-	endpoint := r.Group("/", authRequired())
+	g := r.Group("/", authRequired())
 	{
-		endpoint.GET("domains", api.GetDomains)
-		endpoint.GET("domain/:name", api.GetDomain)
-		endpoint.POST("domain/:name", api.EditDomain)
-		endpoint.POST("domain/:name/enable", api.EnableDomain)
-		endpoint.POST("domain/:name/disable", api.DisableDomain)
-		endpoint.DELETE("domain/:name", api.DeleteDomain)
+	    g.GET("/users", api.GetUsers)
+	    g.GET("/user/:id", api.GetUser)
+	    g.POST("/user", api.AddUser)
+	    g.POST("/user/:id", api.EditUser)
+        g.DELETE("/user/:id", api.DeleteUser)
 
-		endpoint.GET("configs", api.GetConfigs)
-		endpoint.GET("config/:name", api.GetConfig)
-		endpoint.POST("config", api.AddConfig)
-		endpoint.POST("config/:name", api.EditConfig)
+		g.GET("domains", api.GetDomains)
+		g.GET("domain/:name", api.GetDomain)
+		g.POST("domain/:name", api.EditDomain)
+		g.POST("domain/:name/enable", api.EnableDomain)
+		g.POST("domain/:name/disable", api.DisableDomain)
+		g.DELETE("domain/:name", api.DeleteDomain)
 
-		endpoint.GET("backups", api.GetFileBackupList)
-		endpoint.GET("backup/:id", api.GetFileBackup)
+		g.GET("configs", api.GetConfigs)
+		g.GET("config/:name", api.GetConfig)
+		g.POST("config", api.AddConfig)
+		g.POST("config/:name", api.EditConfig)
 
-        endpoint.GET("template/:name", api.GetTemplate)
+		g.GET("backups", api.GetFileBackupList)
+		g.GET("backup/:id", api.GetFileBackup)
 
-        endpoint.GET("analytic", api.Analytic)
+        g.GET("template/:name", api.GetTemplate)
 
-		endpoint.GET("cert/issue/:domain", api.IssueCert)
-        endpoint.GET("cert/:domain/info", api.CertInfo)
+		g.GET("cert/issue/:domain", api.IssueCert)
+        g.GET("cert/:domain/info", api.CertInfo)
 	}
 
 	return r

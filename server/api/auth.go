@@ -1,34 +1,38 @@
 package api
 
 import (
-    "crypto/md5"
-    "fmt"
     "github.com/0xJacky/Nginx-UI/server/model"
     "github.com/gin-gonic/gin"
+    "golang.org/x/crypto/bcrypt"
     "log"
     "net/http"
 )
 
 type LoginUser struct {
-    Name     string `json:"name"`
-    Password string `json:"password"`
+    Name     string `json:"name" binding:"required,max=255"`
+    Password string `json:"password" binding:"required,max=255"`
 }
 
 func Login(c *gin.Context) {
     var user LoginUser
-    err := c.BindJSON(&user)
+    ok, verrs := BindAndValid(c, &user)
+    if !ok {
+        c.JSON(http.StatusNotAcceptable, gin.H{
+            "errors": verrs,
+        })
+        return
+    }
+
+    u, err := model.GetUser(user.Name)
     if err != nil {
         log.Println(err)
+        c.JSON(http.StatusForbidden, gin.H{
+            "message": "Incorrect name or password",
+        })
+        return
     }
-    var u model.Auth
-    u, err = model.GetUser(user.Name)
-    if err != nil {
-        log.Println(err)
-    }
-    data := []byte(user.Password)
-    has := md5.Sum(data)
-    md5str := fmt.Sprintf("%x", has) // 将[]byte转成16进制
-    if u.Password != md5str {
+
+    if err = bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(user.Password)); err != nil {
         c.JSON(http.StatusForbidden, gin.H{
             "message": "Incorrect name or password",
         })

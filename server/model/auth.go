@@ -10,7 +10,7 @@ type Auth struct {
     Model
 
     Name     string `json:"name"`
-    Password string `json:"password"`
+    Password string `json:"-"`
 }
 
 type AuthToken struct {
