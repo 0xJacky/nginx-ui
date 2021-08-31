@@ -1,10 +1,12 @@
 package model
 
 import (
+    "github.com/0xJacky/Nginx-UI/server/settings"
     "gorm.io/driver/sqlite"
     "gorm.io/gorm"
     "gorm.io/gorm/logger"
     "log"
+    "path"
     "time"
 )
 
@@ -17,19 +19,16 @@ type Model struct {
 	DeletedAt *time.Time `gorm:"index" json:"deleted_at"`
 }
 
-func Init(dbPath string) {
+func Init() {
+    dbPath := path.Join(settings.DataDir, "database.db")
 	var err error
-
 	db, err = gorm.Open(sqlite.Open(dbPath), &gorm.Config{
         Logger:      logger.Default.LogMode(logger.Info),
         PrepareStmt: true,
     })
-	log.Println("database.db")
-
 	if err != nil {
 		log.Println(err)
 	}
-
 	// Migrate the schema
 	AutoMigrate(&ConfigBackup{})
 	AutoMigrate(&Auth{})

@@ -32,9 +32,11 @@ export default {
         Vue.prototype.scrollPosition = scrollPosition
 
         Vue.prototype.getWebSocketRoot = () => {
-           const protocol = location.protocol === "https:" ? "wss://" : "ws://"
-
-            return protocol + location.host + process.env["VUE_APP_API_WSS_ROOT"]
+            const protocol = location.protocol === "https:" ? "wss://" : "ws://"
+            if (process.env.NODE_ENV === 'development' && process.env["VUE_APP_API_WSS_ROOT"]) {
+                return process.env["VUE_APP_API_WSS_ROOT"]
+            }
+            return protocol + location.host + '/' + process.env["VUE_APP_API_WSS_ROOT"]
         }
     }
 }

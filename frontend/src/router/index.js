@@ -81,6 +81,12 @@ export const routes = [
         ]
     },
     {
+        path: '/install',
+        name: '安装',
+        component: () => import('@/views/Install'),
+        meta: {noAuth: true}
+    },
+    {
         path: '/login',
         name: '登录',
         component: () => import('@/views/Login'),

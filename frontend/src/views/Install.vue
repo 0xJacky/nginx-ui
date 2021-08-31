@@ -12,7 +12,25 @@
             <a-form-item>
                 <a-input
                     v-decorator="[
-          'name',
+          'email',
+          { rules: [{
+                type: 'email',
+                message: 'The input is not valid E-mail!',
+              },
+              {
+                required: true,
+                message: 'Please input your E-mail!',
+              },] },
+        ]"
+                    placeholder="Email"
+                >
+                    <a-icon slot="prefix" type="mail" style="color: rgba(0,0,0,.25)"/>
+                </a-input>
+            </a-form-item>
+            <a-form-item>
+                <a-input
+                    v-decorator="[
+          'username',
           { rules: [{ required: true, message: 'Please input your username!' }] },
         ]"
                     placeholder="Username"
@@ -34,7 +52,7 @@
             </a-form-item>
             <a-form-item>
                 <a-button type="primary" :block="true" html-type="submit" :loading="loading">
-                    登录
+                    安装
                 </a-button>
             </a-form-item>
         </a-form>
@@ -51,6 +69,7 @@ export default {
     data() {
         return {
             form: {},
+            lock: true,
             thisYear: new Date().getFullYear(),
             loading: false
         }
@@ -59,32 +78,21 @@ export default {
         this.form = this.$form.createForm(this)
     },
     mounted() {
-        this.$api.install.get_lock().then(r=>{
-            if (!r.lock) {
-                this.$router.push('/install')
+        this.$api.install.get_lock().then(r => {
+            if (r.lock) {
+                this.$router.push('/login')
             }
         })
-        if (this.$store.state.user.token) {
-            this.$router.push('/')
-        }
     },
     methods: {
-        login(values) {
-            this.$api.auth.login(values.name, values.password).then(async () => {
-                await this.$message.success('登录成功', 1)
-                const next = this.$route.query.next ? this.$route.query.next : '/'
-                await this.$router.push(next)
-            }).catch(r => {
-                console.log(r)
-                this.$message.error(r.message ?? '服务器错误')
-            })
-        },
         handleSubmit: async function (e) {
             e.preventDefault()
             this.loading = true
             await this.form.validateFields(async (err, values) => {
                 if (!err) {
-                    await this.login(values)
+                    this.$api.install.install_nginx_ui(values).then(() => {
+                        this.$router.push('/login')
+                    })
                 }
                 this.loading = false
             })

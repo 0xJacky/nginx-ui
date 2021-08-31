@@ -3,24 +3,21 @@ package main
 import (
     "flag"
     "github.com/0xJacky/Nginx-UI/server/model"
-	"github.com/0xJacky/Nginx-UI/server/router"
-	"github.com/0xJacky/Nginx-UI/server/settings"
-	"github.com/0xJacky/Nginx-UI/server/tool"
-	"log"
+    "github.com/0xJacky/Nginx-UI/server/router"
+    "github.com/0xJacky/Nginx-UI/server/settings"
+    "github.com/0xJacky/Nginx-UI/server/tool"
+    "log"
 )
 
 func main() {
-    var dbPath string
-    var confPath string
-    flag.StringVar(&confPath, "c", "app.ini", "Specify the conf path to load")
-    flag.StringVar(&dbPath, "d", "database.db", "Specify the database path to load")
+    var dataDir string
+    flag.StringVar(&dataDir, "d", ".", "Specify the data dir")
     flag.Parse()
 
-	settings.Init(confPath)
+    settings.Init(dataDir)
+    model.Init()
 
 	r := router.InitRouter()
-
-	model.Init(dbPath)
 
 	log.Printf("nginx config dir path: %s", tool.GetNginxConfPath(""))
 

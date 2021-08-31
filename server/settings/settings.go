@@ -3,6 +3,8 @@ package settings
 import (
     "gopkg.in/ini.v1"
     "log"
+    "os"
+    "path"
 )
 
 var Conf *ini.File
@@ -18,16 +20,26 @@ type Server struct {
 
 var ServerSettings = &Server{}
 
-func Init(confPath string) {
-	var err error
+var DataDir string
+var confPath string
 
-	Conf, err = ini.Load(confPath)
-	if err != nil {
-		log.Fatalf("setting.Setup, fail to parse '%s': %v", confPath, err)
-	}
+func Init(dataDir string)  {
+    DataDir = dataDir
+    confPath = path.Join(dataDir, "app.ini")
+    if _, err := os.Stat(confPath); os.IsNotExist(err) {
+        confPath = path.Join(dataDir, "app.example.ini")
+    }
+    Setup()
+}
 
-	mapTo("server", ServerSettings)
+func Setup()  {
+    var err error
+    Conf, err = ini.Load(confPath)
+    if err != nil {
+        log.Fatalf("setting.Setup, fail to parse '%s': %v", confPath, err)
+    }
 
+    mapTo("server", ServerSettings)
 }
 
 func mapTo(section string, v interface{}) {
@@ -35,4 +47,14 @@ func mapTo(section string, v interface{}) {
 	if err != nil {
 		log.Fatalf("Cfg.MapTo %s err: %v", section, err)
 	}
+}
+
+func Save() (err error) {
+    confPath = path.Join(DataDir, "app.ini")
+    err = Conf.SaveTo(confPath)
+    if err != nil {
+        return
+    }
+    Setup()
+    return
 }

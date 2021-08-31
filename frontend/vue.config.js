@@ -19,18 +19,7 @@ module.exports = {
         },
     },
     devServer: {
-        proxy: {
-            '/ws': {
-                target: 'wss://nginx.jackyu.cn/api',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/ws': '',
-                },
-            },
-            '': {
-                target: 'https://nginx.jackyu.cn/api',
-            }
-        }
+        proxy: 'https://nginx.jackyu.cn/api'
     },
 
     productionSourceMap: false,
