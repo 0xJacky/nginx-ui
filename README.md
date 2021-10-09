@@ -72,7 +72,12 @@ server {
 
     root	/path/to/nginx-ui/frontend/dist;
 
-    index	index.html;
+		location / {
+			# First attempt to serve request as file, then
+			# as directory, then fall back to displaying a 404.
+      index index.html;
+			try_files $uri $uri/ /index.html;
+		}
 
     location /api/ {
         proxy_set_header Host $host;
@@ -81,7 +86,7 @@ server {
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection upgrade;
-        proxy_pass http://127.0.0.1:9000/;
+        proxy_pass http://127.0.0.1:9100/;
     }
 }
 ```

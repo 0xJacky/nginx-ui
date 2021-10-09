@@ -109,5 +109,7 @@ func IssueCert(domain string) error {
         return err
     }
 
+    ReloadNginx()
+
     return nil
 }
