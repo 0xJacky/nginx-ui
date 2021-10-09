@@ -215,6 +215,7 @@ export default {
                 if (r.status === "success" && r.ssl_certificate !== undefined && r.ssl_certificate_key !== undefined) {
                     this.config.ssl_certificate = r.ssl_certificate
                     this.config.ssl_certificate_key = r.ssl_certificate_key
+                    this.$refs["cert-info"].get()
                 }
             }
 
