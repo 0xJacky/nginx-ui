@@ -72,12 +72,12 @@ server {
 
     root	/path/to/nginx-ui/frontend/dist;
 
-		location / {
-			# First attempt to serve request as file, then
-			# as directory, then fall back to displaying a 404.
-      index index.html;
-			try_files $uri $uri/ /index.html;
-		}
+    location / {
+        # First attempt to serve request as file, then
+        # as directory, then fall back to displaying a 404.
+        index index.html;
+        try_files $uri $uri/ /index.html;
+    }
 
     location /api/ {
         proxy_set_header Host $host;
