@@ -70,7 +70,7 @@ export default {
     },
     methods: {
         login(values) {
-            this.$api.auth.login(values.name, values.password).then(async () => {
+            return this.$api.auth.login(values.name, values.password).then(async () => {
                 await this.$message.success('登录成功', 1)
                 const next = this.$route.query.next ? this.$route.query.next : '/'
                 await this.$router.push(next)

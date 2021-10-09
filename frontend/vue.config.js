@@ -1,5 +1,4 @@
 const webpack = require('webpack')
-const {tuple} = require("ant-design-vue/lib/_util/type");
 
 module.exports = {
     pages: {

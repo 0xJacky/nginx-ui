@@ -165,7 +165,6 @@ export default {
 
 <style lang="less" scoped>
 .ant-card {
-    margin: 10px;
 
     .chart {
         max-height: 300px;

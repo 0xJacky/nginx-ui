@@ -24,9 +24,8 @@ export default {
         }
     },
     watch: {
-        $route() {
-            this.config = {}
-            this.configText = ""
+        '$route'() {
+            this.init()
         },
         config: {
             handler() {
@@ -36,18 +35,21 @@ export default {
         }
     },
     created() {
-        if (this.name) {
-            this.$api.config.get(this.name).then(r => {
-                this.configText = r.config
-            }).catch(r => {
-                console.log(r)
-                this.$message.error("服务器错误")
-            })
-        } else {
-            this.configText = ""
-        }
+       this.init()
     },
     methods: {
+        init() {
+            if (this.name) {
+                this.$api.config.get(this.name).then(r => {
+                    this.configText = r.config
+                }).catch(r => {
+                    console.log(r)
+                    this.$message.error("服务器错误")
+                })
+            } else {
+                this.configText = ""
+            }
+        },
         save() {
             this.$api.config.save(this.name ? this.name : this.config.name, {content: this.configText}).then(r => {
                 this.configText = r.config

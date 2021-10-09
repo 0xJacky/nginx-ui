@@ -57,9 +57,8 @@ export default {
         }
     },
     watch: {
-        $route() {
-            this.config = {}
-            this.configText = ""
+        '$route'() {
+            this.init()
         },
         config: {
             handler() {
@@ -69,27 +68,7 @@ export default {
         }
     },
     created() {
-        if (this.name) {
-            this.$api.domain.get(this.name).then(r => {
-                this.configText = r.config
-                this.parse(r)
-            }).catch(r => {
-                console.log(r)
-                this.$message.error("服务器错误")
-            })
-        } else {
-            this.config = {
-                http_listen_port: 80,
-                https_listen_port: null,
-                server_name: "",
-                index: "",
-                root: "",
-                ssl_certificate: "",
-                ssl_certificate_key: "",
-                support_ssl: false
-            }
-            this.get_template()
-        }
+        this.init()
     },
     destroyed() {
         if (this.ws !== null) {
@@ -97,6 +76,29 @@ export default {
         }
     },
     methods: {
+        init() {
+            if (this.name) {
+                this.$api.domain.get(this.name).then(r => {
+                    this.configText = r.config
+                    this.parse(r)
+                }).catch(r => {
+                    console.log(r)
+                    this.$message.error("服务器错误")
+                })
+            } else {
+                this.config = {
+                    http_listen_port: 80,
+                    https_listen_port: null,
+                    server_name: "",
+                    index: "",
+                    root: "",
+                    ssl_certificate: "",
+                    ssl_certificate_key: "",
+                    support_ssl: false
+                }
+                this.get_template()
+            }
+        },
         parse(r) {
             const text = r.config
             const reg = {

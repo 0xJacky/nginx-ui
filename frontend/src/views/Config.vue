@@ -7,9 +7,9 @@
             :disable_search="true"
             data_key="configs"
             row-key="name"
-            @clickEdit="item => {
+            @clickEdit="r => {
                 $router.push({
-                    path: '/config/' + item.name
+                    path: '/config/' + r
                 })
             }"
         />

@@ -11,10 +11,10 @@
                 path: '/domain/' + r
             })"
         >
-            <template #action="{record}">
+            <template #actions="{record}">
+                <a-divider type="vertical"/>
                 <a v-if="record.enabled" @click="disable(record.name)">禁用</a>
                 <a v-else @click="enable(record.name)">启用</a>
-                <a-divider type="vertical"/>
             </template>
         </std-table>
     </a-card>

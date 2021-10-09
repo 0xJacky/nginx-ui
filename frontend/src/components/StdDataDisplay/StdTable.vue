@@ -71,14 +71,14 @@
                         v-if="soft_delete&&params.trashed"
                         cancelText="再想想"
                         okText="是的" title="你确定要反删除?"
-                        @confirm="restore(record.id)">
+                        @confirm="restore(record[rowKey])">
                         <a href="javascript:;">反删除</a>
                     </a-popconfirm>
                     <a-popconfirm
                         v-else
                         cancelText="再想想"
                         okText="是的" title="你确定要删除?"
-                        @confirm="destroy(record.id)"
+                        @confirm="destroy(record[rowKey])"
                     >
                         <a href="javascript:;">删除</a>
                     </a-popconfirm>
