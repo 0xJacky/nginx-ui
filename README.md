@@ -70,7 +70,7 @@ server {
     ssl_certificate	/path/to/ssl_cert;
     ssl_certificate_key	/path/to/ssl_cert_key;
 
-    root	/path/to/nginx-ui-frontend/dist;
+    root	/path/to/nginx-ui/frontend/dist;
 
     index	index.html;
 
