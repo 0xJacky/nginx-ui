@@ -45,11 +45,8 @@ type UserJson struct {
 
 func AddUser(c *gin.Context) {
 	var json UserJson
-	ok, verrs := BindAndValid(c, &json)
+	ok := BindAndValid(c, &json)
 	if !ok {
-		c.JSON(http.StatusNotAcceptable, gin.H{
-			"errors": verrs,
-		})
         return
 	}
 	curd := model.NewCurd(&model.Auth{})
@@ -79,11 +76,9 @@ func AddUser(c *gin.Context) {
 
 func EditUser(c *gin.Context) {
 	var json UserJson
-	ok, verrs := BindAndValid(c, &json)
+	ok := BindAndValid(c, &json)
 	if !ok {
-		c.JSON(http.StatusNotAcceptable, gin.H{
-			"errors": verrs,
-		})
+        return
 	}
 	curd := model.NewCurd(&model.Auth{})
 

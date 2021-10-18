@@ -15,11 +15,8 @@ type LoginUser struct {
 
 func Login(c *gin.Context) {
     var user LoginUser
-    ok, verrs := BindAndValid(c, &user)
+    ok := BindAndValid(c, &user)
     if !ok {
-        c.JSON(http.StatusNotAcceptable, gin.H{
-            "errors": verrs,
-        })
         return
     }
 

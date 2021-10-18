@@ -40,11 +40,8 @@ func InstallNginxUI(c *gin.Context) {
         return
     }
     var json InstallJson
-    ok, verrs := BindAndValid(c, &json)
+    ok := BindAndValid(c, &json)
     if !ok {
-        c.JSON(http.StatusNotAcceptable, gin.H{
-            "errors": verrs,
-        })
         return
     }
 

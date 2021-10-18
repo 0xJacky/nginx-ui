@@ -1,14 +1,41 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
-	"log"
+    "bytes"
+    "encoding/json"
+    "github.com/gin-gonic/gin"
+    "github.com/gin-gonic/gin/binding"
+    "github.com/go-playground/locales/zh"
+    "log"
 	"net/http"
+    "regexp"
     "strings"
 
     ut "github.com/go-playground/universal-translator"
-	val "github.com/go-playground/validator/v10"
+    val "github.com/go-playground/validator/v10"
+    zhTranslations "github.com/go-playground/validator/v10/translations/zh"
 )
+
+type JsonSnakeCase struct {
+    Value interface{}
+}
+
+func (c JsonSnakeCase) MarshalJSON() ([]byte, error) {
+    // Regexp definitions
+    var keyMatchRegex = regexp.MustCompile(`\"(\w+)\":`)
+    var wordBarrierRegex = regexp.MustCompile(`(\w)([A-Z])`)
+    marshalled, err := json.Marshal(c.Value)
+    converted := keyMatchRegex.ReplaceAllFunc(
+        marshalled,
+        func(match []byte) []byte {
+            return bytes.ToLower(wordBarrierRegex.ReplaceAll(
+                match,
+                []byte(`${1}_${2}`),
+            ))
+        },
+    )
+    return converted, err
+}
 
 func ErrorHandler(c *gin.Context, err error) {
 	log.Println(err)
@@ -22,29 +49,41 @@ type ValidError struct {
 	Message string
 }
 
-type ValidErrors gin.H
-
-func BindAndValid(c *gin.Context, v interface{}) (bool, ValidErrors) {
-	errs := make(ValidErrors)
-	err := c.ShouldBind(v)
-	if err != nil {
+func BindAndValid(c *gin.Context, v interface{}) bool {
+    errs := make(map[string]string)
+    err := c.ShouldBindJSON(v)
+    if err != nil {
         log.Println(err)
-		v := c.Value("trans")
-		trans, _ := v.(ut.Translator)
+        uni := ut.New(zh.New())
+        trans, _ := uni.GetTranslator("zh")
+        v, ok := binding.Validator.Engine().(*val.Validate)
 
-		verrs, ok := err.(val.ValidationErrors)
-		if !ok {
-			return false, errs
-		}
+        if ok {
+            _ = zhTranslations.RegisterDefaultTranslations(v, trans)
+        }
 
-		for key, value := range verrs.Translate(trans) {
-		    k := strings.Split(key, ".")
-		    sub := strings.ToLower(k[1])
-			errs[sub] = value
-		}
+        verrs, ok := err.(val.ValidationErrors)
+        if !ok {
+            log.Println(verrs)
+            c.JSON(http.StatusNotAcceptable, gin.H{
+                "message": "请求参数错误",
+                "code":    http.StatusNotAcceptable,
+            })
+            return false
+        }
 
-		return false, errs
-	}
+        for key, value := range verrs.Translate(trans) {
+            errs[key[strings.Index(key, ".")+1:]] = value
+        }
 
-	return true, nil
+        c.JSON(http.StatusNotAcceptable, gin.H{
+            "errors":  JsonSnakeCase{errs},
+            "message": "请求参数错误",
+            "code":    http.StatusNotAcceptable,
+        })
+
+        return false
+    }
+
+    return true
 }

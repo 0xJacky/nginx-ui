@@ -3,7 +3,7 @@
         <a-collapse :bordered="false" default-active-key="1">
             <a-collapse-panel key="1" :header="name ? '编辑站点：' + name : '添加站点'">
                 <p>您的配置文件中应当有对应的字段时，下列表单中的设置才能生效，配置文件名称创建后不可修改。</p>
-                <std-data-entry :data-list="columns" v-model="config" @change_support_ssl="change_support_ssl"/>
+                <std-data-entry :data-list="columns" v-model="config" />
                 <cert-info :domain="name" ref="cert-info" v-if="name"/>
                 <br/>
                 <a-space>
@@ -53,7 +53,8 @@ export default {
                 support_ssl: false
             },
             configText: "",
-            ws: null
+            ws: null,
+            ok: false
         }
     },
     watch: {
@@ -65,6 +66,9 @@ export default {
                 this.unparse()
             },
             deep: true
+        },
+        'config.support_ssl'() {
+            if (this.ok) this.change_support_ssl()
         }
     },
     created() {
@@ -80,7 +84,9 @@ export default {
             if (this.name) {
                 this.$api.domain.get(this.name).then(r => {
                     this.configText = r.config
-                    this.parse(r)
+                    this.parse(r).then(()=>{
+                        this.ok = true
+                    })
                 }).catch(r => {
                     console.log(r)
                     this.$message.error("服务器错误")
@@ -99,7 +105,7 @@ export default {
                 this.get_template()
             }
         },
-        parse(r) {
+        async parse(r) {
             const text = r.config
             const reg = {
                 http_listen_port: /listen[\s](.*);/i,
@@ -126,7 +132,7 @@ export default {
                 this.config.support_ssl = true
             }
         },
-        unparse() {
+        async unparse() {
             let text = this.configText
             // http_listen_port: /listen (.*);/i,
             // https_listen_port: /listen (.*) ssl/i,
@@ -182,7 +188,9 @@ export default {
             this.$api.domain.save(this.name ? this.name : this.config.name, {content: this.configText}).then(r => {
                 this.parse(r)
                 this.$message.success("保存成功")
-                this.$refs["cert-info"].get()
+                if (this.name) {
+                    this.$refs["cert-info"].get()
+                }
             }).catch(r => {
                 console.log(r)
                 this.$message.error("保存错误" + r.message !== undefined ? " " + r.message : null, 10)

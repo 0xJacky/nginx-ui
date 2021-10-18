@@ -15,30 +15,6 @@ import (
 func CertInfo(c *gin.Context) {
 	domain := c.Param("domain")
 
-	/*sslCertificatePath := tool.GetNginxConfPath("ssl/" + domain +"/fullchain.cer")
-
-	  content, err := ioutil.ReadFile(sslCertificatePath)
-
-	  if err != nil {
-	      ErrorHandler(c, err)
-	      return
-	  }
-
-	  certDERBlock, _ := pem.Decode(content)
-
-	  if certDERBlock == nil {
-	      ErrorHandler(c, errors.New("pem decode error"))
-	      return
-	  }
-
-	  var key *x509.Certificate
-	  key, err = x509.ParseCertificate(certDERBlock.Bytes)
-
-	  if err != nil {
-	      ErrorHandler(c, err)
-	      return
-	  }*/
-
 	ts := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
