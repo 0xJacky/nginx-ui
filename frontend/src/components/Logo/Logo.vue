@@ -1,5 +1,6 @@
 <template>
     <div class="logo">
+        <img :src="logo" alt="logo" />
         <p class="text">Nginx UI</p>
         <div class="clear"></div>
     </div>
@@ -7,7 +8,12 @@
 
 <script>
 export default {
-    name: 'Logo'
+    name: 'Logo',
+    data() {
+        return {
+            logo: require('@/assets/img/logo.png')
+        }
+    }
 }
 </script>
 
@@ -31,7 +37,7 @@ export default {
         font-size: 23px;
         line-height: 48px;
         height: 48px;
-        text-align: center;
+        padding-left: 52px;
     }
 }
 </style>

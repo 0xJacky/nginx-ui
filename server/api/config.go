@@ -1,28 +1,28 @@
 package api
 
 import (
-    "github.com/0xJacky/Nginx-UI/server/tool"
-    "github.com/gin-gonic/gin"
-    "io/ioutil"
-    "log"
-    "net/http"
-    "os"
-    "path/filepath"
+	"github.com/0xJacky/Nginx-UI/server/tool"
+	"github.com/gin-gonic/gin"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
+	"path/filepath"
 )
 
 func GetConfigs(c *gin.Context) {
-    orderBy := c.Query("order_by")
-    sort := c.DefaultQuery("sort", "desc")
+	orderBy := c.Query("order_by")
+	sort := c.DefaultQuery("sort", "desc")
 
-    mySort := map[string]string{
-        "name": "string",
-        "modify": "time",
-    }
+	mySort := map[string]string{
+		"name":   "string",
+		"modify": "time",
+	}
 
-    configFiles, err := ioutil.ReadDir(tool.GetNginxConfPath("/"))
+	configFiles, err := ioutil.ReadDir(tool.GetNginxConfPath("/"))
 
 	if err != nil {
-		ErrorHandler(c, err)
+		ErrHandler(c, err)
 		return
 	}
 
@@ -40,7 +40,7 @@ func GetConfigs(c *gin.Context) {
 		}
 	}
 
-    configs = tool.Sort(orderBy, sort, mySort[orderBy], configs)
+	configs = tool.Sort(orderBy, sort, mySort[orderBy], configs)
 
 	c.JSON(http.StatusOK, gin.H{
 		"configs": configs,
@@ -54,7 +54,7 @@ func GetConfig(c *gin.Context) {
 	content, err := ioutil.ReadFile(path)
 
 	if err != nil {
-		ErrorHandler(c, err)
+		ErrHandler(c, err)
 		return
 	}
 
@@ -73,7 +73,7 @@ func AddConfig(c *gin.Context) {
 	var request AddConfigJson
 	err := c.BindJSON(&request)
 	if err != nil {
-		ErrorHandler(c, err)
+		ErrHandler(c, err)
 		return
 	}
 
@@ -93,19 +93,19 @@ func AddConfig(c *gin.Context) {
 	if content != "" {
 		err := ioutil.WriteFile(path, []byte(content), 0644)
 		if err != nil {
-			ErrorHandler(c, err)
+			ErrHandler(c, err)
 			return
 		}
 	}
 
-    output := tool.ReloadNginx()
+	output := tool.ReloadNginx()
 
-    if output != "" {
-        c.JSON(http.StatusInternalServerError, gin.H{
-            "message": output,
-        })
-        return
-    }
+	if output != "" {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": output,
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"name":    name,
@@ -123,7 +123,7 @@ func EditConfig(c *gin.Context) {
 	var request EditConfigJson
 	err := c.BindJSON(&request)
 	if err != nil {
-		ErrorHandler(c, err)
+		ErrHandler(c, err)
 		return
 	}
 	path := filepath.Join(tool.GetNginxConfPath("/"), name)
@@ -131,7 +131,7 @@ func EditConfig(c *gin.Context) {
 
 	origContent, err := ioutil.ReadFile(path)
 	if err != nil {
-		ErrorHandler(c, err)
+		ErrHandler(c, err)
 		return
 	}
 
@@ -139,19 +139,19 @@ func EditConfig(c *gin.Context) {
 		// model.CreateBackup(path)
 		err := ioutil.WriteFile(path, []byte(content), 0644)
 		if err != nil {
-			ErrorHandler(c, err)
+			ErrHandler(c, err)
 			return
 		}
 	}
 
-    output := tool.ReloadNginx()
+	output := tool.ReloadNginx()
 
-    if output != "" {
-        c.JSON(http.StatusInternalServerError, gin.H{
-            "message": output,
-        })
-        return
-    }
+	if output != "" {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": output,
+		})
+		return
+	}
 
 	GetConfig(c)
 }

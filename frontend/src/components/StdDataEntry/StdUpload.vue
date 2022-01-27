@@ -50,6 +50,7 @@
             :api="api"
             :auto-upload="autoUpload"
             @changeFileUrl="url => {$emit('changeFileUrl', url)}"
+            @uploaded="url => {$emit('uploaded', url)}"
             :disabled="disabled"
             ref="single-file"
         />
@@ -63,6 +64,7 @@
             :auto-upload="autoUpload"
             :api_delete="api_delete"
             @changeFileUrl="url => {$emit('changeFileUrl', url)}"
+            @uploaded="url => {$emit('uploaded', url)}"
             :disabled="disabled"
             ref="multi-file"
         />
@@ -73,9 +75,9 @@
 <script>
 import Vue from 'vue'
 import VueCropper from 'vue-cropper'
-import StdSingleFileUpload from "@/components/StdDataEntry/StdSingleFileUpload";
-import StdMultiFilesUpload from "@/components/StdDataEntry/StdMultiFilesUpload";
-import { v4 as uuidv4 } from 'uuid';
+import StdSingleFileUpload from '@/components/StdDataEntry/StdSingleFileUpload'
+import StdMultiFilesUpload from '@/components/StdDataEntry/StdMultiFilesUpload'
+import {v4 as uuidv4} from 'uuid'
 
 Vue.use(VueCropper)
 
@@ -134,7 +136,7 @@ export default {
             visible: false,
             fileList: [],
             M_list: this.list,
-            server: process.env["VUE_APP_API_UPLOAD_ROOT"]
+            server: process.env['VUE_APP_API_UPLOAD_ROOT']
         }
     },
     created() {
@@ -151,18 +153,18 @@ export default {
     },
     methods: {
         getFileUrl() {
-            return this.fileUrl.substring(0,5) === 'data:' ? this.fileUrl :
+            return this.fileUrl.substring(0, 5) === 'data:' ? this.fileUrl :
                 this.server + '/' + this.fileUrl
         },
         async upload() {
             if (this.type === 'multi-file') {
-                return await this.$refs["multi-file"].upload()
+                return await this.$refs['multi-file'].upload()
             }
             if (this.orig && this.fileUrl !== this.orig) {
                 return this.handleSingleUpload()
             }
             if (this.$refs['single-file']) {
-                return await this.$refs["single-file"].upload()
+                return await this.$refs['single-file'].upload()
             }
         },
         handleSingleUpload() {
@@ -192,6 +194,10 @@ export default {
                 r.onload = e => {
                     file.thumbUrl = e.target.result
                     this.$emit('changeFileUrl', e.target.result)
+                }
+                if (this.autoUpload) {
+                    this.handleSingleUpload()
+                    return false
                 }
             } else {
                 this.$emit('changeFileUrl', file.name)

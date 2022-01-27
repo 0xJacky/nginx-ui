@@ -1,10 +1,9 @@
 <template>
-    <div class="std-selector" @click="visible=true">
+    <div class="std-selector" @click="show()">
         <a-input v-model="_key" disabled hidden/>
-        <a-input
-            v-model="M_value"
-            disabled
-        />
+        <div class="value">
+            <p>{{ M_value }}</p>
+        </div>
         <a-modal
             :mask="false"
             :visible="visible"
@@ -16,6 +15,7 @@
             :width="600"
             destroyOnClose
         >
+            {{ description }}
             <std-table
                 :api="api"
                 :columns="columns"
@@ -24,8 +24,9 @@
                 :pithy="true"
                 :get_params="get_params"
                 :selectionType="selectionType"
+                :disable_query_params="true"
                 @selected="onSelect"
-                @selectedRecord="r => {record = r}"
+                @selectedRecord="onSelectedRecord"
             />
         </a-modal>
     </div>
@@ -61,7 +62,8 @@ export default {
             default() {
                 return {}
             }
-        }
+        },
+        description: String
     },
     model: {
         prop: '_key',
@@ -86,8 +88,14 @@ export default {
         }
     },
     methods: {
+        show() {
+            this.visible = true
+        },
         onSelect(selected) {
             this.selected = selected
+        },
+        onSelectedRecord(r) {
+            this.record = r
         },
         ok() {
             this.visible = false
@@ -102,15 +110,47 @@ export default {
 }
 </script>
 
+<style scoped>
+.ant-form-inline .std-selector {
+    height: 40px;
+}
+</style>
+
 <style lang="less" scoped>
 .std-selector {
-    .ant-input {
+    height: 38px;
+    min-width: 180px;
+    position: relative;
+
+    .value {
+        box-sizing: border-box;
+        font-variant: tabular-nums;
+        list-style: none;
+        font-feature-settings: 'tnum';
+        position: absolute;
+        top: 50%;
+        bottom: 50%;
+        left: 50%;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        display: inline-block;
+        width: 100%;
+        height: 32px;
+        padding: 4px 11px;
+        color: rgba(0, 0, 0, 0.65);
+        font-size: 14px;
+        line-height: 1.5;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+        transition: all 0.3s;
         margin: 0 10px 0 0;
         cursor: pointer;
-    }
-    .ant-input-disabled {
-        background: unset;
-        color: unset;
+        @media (prefers-color-scheme: dark) {
+            background-color: #1e1f20;
+            border: 1px solid #666666;
+            color: rgba(255, 255, 255, 0.99);
+        }
     }
 }
 </style>

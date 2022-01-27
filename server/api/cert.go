@@ -1,12 +1,10 @@
 package api
 
 import (
-	"crypto/tls"
 	"encoding/json"
 	"github.com/0xJacky/Nginx-UI/server/tool"
 	"github.com/gin-gonic/gin"
-    "github.com/gorilla/websocket"
-    "io"
+	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
 	"os"
@@ -15,26 +13,7 @@ import (
 func CertInfo(c *gin.Context) {
 	domain := c.Param("domain")
 
-	ts := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-
-	client := &http.Client{Transport: ts}
-
-	response, err := client.Get("https://" + domain)
-	if err != nil {
-		ErrorHandler(c, err)
-		return
-	}
-	defer func(Body io.ReadCloser) {
-		err = Body.Close()
-		if err != nil {
-			ErrorHandler(c, err)
-			return
-		}
-	}(response.Body)
-
-	key := response.TLS.PeerCertificates[0]
+	key := tool.GetCertInfo(domain)
 
 	c.JSON(http.StatusOK, gin.H{
 		"subject_name": key.Subject.CommonName,
@@ -46,19 +25,26 @@ func CertInfo(c *gin.Context) {
 
 func IssueCert(c *gin.Context) {
 	domain := c.Param("domain")
-    var upGrader = websocket.Upgrader{
-        CheckOrigin: func(r *http.Request) bool {
-            return true
-        },
-    }
+	var upGrader = websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+	}
 
 	// upgrade http to websocket
 	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
+		log.Println(err)
 		return
 	}
 
-	defer ws.Close()
+	defer func(ws *websocket.Conn) {
+		err := ws.Close()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+	}(ws)
 
 	for {
 		// read

@@ -7,8 +7,19 @@
             :file-list="uploadList"
             :remove="remove"
         >
-            <a-button :disabled="disabled"><a-icon type="upload"/>选择文件</a-button>
+            <a-button :disabled="disabled">
+                <a-icon type="upload"/>
+                选择文件
+            </a-button>
         </a-upload>
+        <a-progress
+            v-if="show_progress"
+            :stroke-color="{
+        from: '#108ee9',
+        to: '#87d068',
+      }"
+            :percent="progress"
+        />
         <a-button
             type="primary"
             :disabled="uploadList.length === 0 && !id"
@@ -37,7 +48,7 @@
 
 <script>
 export default {
-    name: "StdMultiFilesUpload",
+    name: 'StdMultiFilesUpload',
     props: {
         api: Function,
         id: {
@@ -67,11 +78,13 @@ export default {
     },
     data() {
         return {
+            show_progress: false,
             uploadList: [],
             uploaded: this.fileList,
             lastFileTime: 0,
-            server: process.env["VUE_APP_API_UPLOAD_ROOT"],
+            server: process.env['VUE_APP_API_UPLOAD_ROOT'],
             uploading: false,
+            progress: 0
         }
     },
     model: {
@@ -82,14 +95,25 @@ export default {
         async upload() {
             if (this.uploadList.length) {
                 this.uploading = true
+                this.show_progress = true
+                this.progress = 0
                 let formData = new FormData()
-                while (this.uploadList.length) {
-                    formData.append('file[]', this.uploadList.shift())
-                }
+                this.uploadList.forEach(v => {
+                    formData.append('file[]', v)
+                })
                 this.visible = false
                 this.uploading = true
                 this.$message.info('正在上传附件, 请不要关闭本页')
-                return this.api(this.id, formData).then(r => {
+                let config = {
+                    onUploadProgress: (progressEvent) => {
+                        // 使用本地 progress 事件
+                        if (progressEvent.lengthComputable) {
+                            this.progress = Math.round((progressEvent.loaded / progressEvent.total) * 100) // 使用某种 UI 进度条组件会用到的百分比
+                        }
+                    }
+                }
+                return this.api(this.id, formData, config).then(r => {
+                    this.uploadList = []
                     this.uploaded = [...this.uploaded, ...r]
                     this.uploading = false
                     this.$emit('uploaded', r)
@@ -112,7 +136,7 @@ export default {
         },
         getFileName(path) {
             // 从15开始找
-            const idx = path.indexOf("/", 15)
+            const idx = path.indexOf('/', 15)
             return path.substring(idx + 1)
         },
         remove(r) {

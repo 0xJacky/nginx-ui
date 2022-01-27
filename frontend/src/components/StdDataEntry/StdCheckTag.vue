@@ -14,13 +14,14 @@
 
 <script>
 export default {
-    name: "StdCheckTag",
+    name: 'StdCheckTag',
     data() {
         return {
             selectedTag: '',
         }
     },
     props: {
+        disabled: [Boolean],
         value: [Number, String, Boolean],
         options: [Array, Object],
         keyType: {
@@ -36,8 +37,10 @@ export default {
     },
     methods: {
         handleChange(tag) {
-            this.selectedTag = tag
-            this.$emit('change', isNaN(parseInt(tag)) || this.keyType === 'string' ? tag : parseInt(tag))
+            if (!this.disabled) {
+                this.selectedTag = tag
+                this.$emit('change', isNaN(parseInt(tag)) || this.keyType === 'string' ? tag : parseInt(tag))
+            }
         }
     },
     watch: {
@@ -55,6 +58,7 @@ export default {
 .ant-tag {
     background-color: rgba(0, 0, 0, 0.05);
 }
+
 .ant-tag-checkable-checked {
     background-color: #1890ff;
 }

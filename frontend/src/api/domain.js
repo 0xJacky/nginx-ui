@@ -33,6 +33,14 @@ const domain = {
 
     cert_info(domain) {
         return http.get('cert/' + domain + '/info')
+    },
+
+    add_auto_cert(domain) {
+        return http.post('cert/' + domain)
+    },
+
+    remove_auto_cert(domain) {
+        return http.delete('cert/' + domain)
     }
 }
 

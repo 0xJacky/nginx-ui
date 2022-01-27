@@ -10,7 +10,7 @@ import (
     "strings"
 )
 
-func GetTemplate(c *gin.Context)  {
+func GetTemplate(c *gin.Context) {
     name := c.Param("name")
     path := filepath.Join("template", name)
     content, err := ioutil.ReadFile(path)
@@ -19,7 +19,6 @@ func GetTemplate(c *gin.Context)  {
     _content = strings.ReplaceAll(_content, "{{ HTTP01PORT }}",
         settings.ServerSettings.HTTPChallengePort)
 
-
     if err != nil {
         if os.IsNotExist(err) {
             c.JSON(http.StatusNotFound, gin.H{
@@ -27,12 +26,12 @@ func GetTemplate(c *gin.Context)  {
             })
             return
         }
-        ErrorHandler(c, err)
+        ErrHandler(c, err)
         return
     }
 
     c.JSON(http.StatusOK, gin.H{
-        "message": "ok",
+        "message":  "ok",
         "template": _content,
     })
 }

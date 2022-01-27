@@ -17,13 +17,16 @@ func main() {
     settings.Init(dataDir)
     model.Init()
 
-	r := router.InitRouter()
+    r := router.InitRouter()
 
-	log.Printf("nginx config dir path: %s", tool.GetNginxConfPath(""))
+    log.Printf("nginx config dir path: %s", tool.GetNginxConfPath(""))
 
-	err := r.Run(":" + settings.ServerSettings.HttpPort)
+    go tool.AutoCert()
 
-	if err != nil {
-		log.Fatal(err)
-	}
+    err := r.Run(":" + settings.ServerSettings.HttpPort)
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
 }

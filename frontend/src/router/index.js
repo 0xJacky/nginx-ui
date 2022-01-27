@@ -14,7 +14,7 @@ export const routes = [
         children: [
             {
                 path: 'dashboard',
-                component: () => import('@/views/DashBoard'),
+                component: () => import('@/views/doashboard/DashBoard'),
                 name: '仪表盘',
                 meta: {
                     //hiddenHeaderContent: true,
@@ -24,7 +24,7 @@ export const routes = [
             {
                 path: 'user',
                 name: '用户管理',
-                component: () => import('@/views/User.vue'),
+                component: () => import('@/views/user/User.vue'),
                 meta: {
                     icon: 'user'
                 },
@@ -40,15 +40,15 @@ export const routes = [
                 children: [{
                     path: 'list',
                     name: '网站列表',
-                    component: () => import('@/views/Domain.vue'),
+                    component: () => import('@/views/domain/DomainList.vue'),
                 }, {
                     path: 'add',
                     name: '添加站点',
-                    component: () => import('@/views/domain_edit/DomainEdit.vue'),
+                    component: () => import('@/views/domain/DomainAdd.vue'),
                 }, {
                     path: ':name',
                     name: '编辑站点',
-                    component: () => import('@/views/domain_edit/DomainEdit.vue'),
+                    component: () => import('@/views/domain/DomainEdit.vue'),
                     meta: {
                         hiddenInSidebar: true
                     }
@@ -57,7 +57,7 @@ export const routes = [
             {
                 path: 'config',
                 name: '配置管理',
-                component: () => import('@/views/Config.vue'),
+                component: () => import('@/views/config/Config.vue'),
                 meta: {
                     icon: 'file'
                 },
@@ -65,7 +65,7 @@ export const routes = [
             {
                 path: 'config/:name',
                 name: '配置编辑',
-                component: () => import('@/views/ConfigEdit.vue'),
+                component: () => import('@/views/config/ConfigEdit.vue'),
                 meta: {
                     hiddenInSidebar: true
                 },
@@ -73,7 +73,7 @@ export const routes = [
             {
                 path: 'about',
                 name: '关于',
-                component: () => import('@/views/About.vue'),
+                component: () => import('@/views/other/About.vue'),
                 meta: {
                     icon: 'info-circle'
                 }
@@ -83,19 +83,19 @@ export const routes = [
     {
         path: '/install',
         name: '安装',
-        component: () => import('@/views/Install'),
+        component: () => import('@/views/other/Install'),
         meta: {noAuth: true}
     },
     {
         path: '/login',
         name: '登录',
-        component: () => import('@/views/Login'),
+        component: () => import('@/views/other/Login'),
         meta: {noAuth: true}
     },
     {
         path: '/404',
         name: '404 Not Found',
-        component: () => import('@/views/Error'),
+        component: () => import('@/views/other/Error'),
         meta: {noAuth: true, status_code: 404, error: 'Not Found'}
     },
     {

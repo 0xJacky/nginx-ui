@@ -4,7 +4,6 @@ import (
     "github.com/0xJacky/Nginx-UI/server/model"
     "github.com/gin-gonic/gin"
     "golang.org/x/crypto/bcrypt"
-    "log"
     "net/http"
 )
 
@@ -20,23 +19,16 @@ func Login(c *gin.Context) {
         return
     }
 
-    u, err := model.GetUser(user.Name)
-    if err != nil {
-        log.Println(err)
+    u, _ := model.GetUser(user.Name)
+
+    if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(user.Password)); err != nil {
         c.JSON(http.StatusForbidden, gin.H{
-            "message": "Incorrect name or password",
+            "message": "用户名或密码错误",
         })
         return
     }
 
-    if err = bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(user.Password)); err != nil {
-        c.JSON(http.StatusForbidden, gin.H{
-            "message": "Incorrect name or password",
-        })
-        return
-    }
-    var token string
-    token, err = model.GenerateJWT(u.Name)
+    token, err := model.GenerateJWT(u.Name)
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{
             "message": err.Error(),
@@ -46,7 +38,7 @@ func Login(c *gin.Context) {
 
     c.JSON(http.StatusOK, gin.H{
         "message": "ok",
-        "token": token,
+        "token":   token,
     })
 }
 
@@ -61,5 +53,5 @@ func Logout(c *gin.Context) {
             return
         }
     }
-    c.JSON(http.StatusNoContent, gin.H{})
+    c.JSON(http.StatusNoContent, nil)
 }

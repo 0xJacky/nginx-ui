@@ -16,7 +16,7 @@ func GetUsers(c *gin.Context) {
 	err := curd.GetList(&list)
 
 	if err != nil {
-		ErrorHandler(c, err)
+		ErrHandler(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -32,7 +32,7 @@ func GetUser(c *gin.Context) {
 	err := curd.First(&user, id)
 
 	if err != nil {
-		ErrorHandler(c, err)
+		ErrHandler(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, user)
@@ -47,16 +47,16 @@ func AddUser(c *gin.Context) {
 	var json UserJson
 	ok := BindAndValid(c, &json)
 	if !ok {
-        return
+		return
 	}
 	curd := model.NewCurd(&model.Auth{})
 
-    pwd, err := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
-    if err != nil {
-        ErrorHandler(c, err)
-        return
-    }
-    json.Password = string(pwd)
+	pwd, err := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+	json.Password = string(pwd)
 
 	user := model.Auth{
 		Name:     json.Name,
@@ -66,7 +66,7 @@ func AddUser(c *gin.Context) {
 	err = curd.Add(&user)
 
 	if err != nil {
-		ErrorHandler(c, err)
+		ErrHandler(c, err)
 		return
 	}
 
@@ -78,7 +78,7 @@ func EditUser(c *gin.Context) {
 	var json UserJson
 	ok := BindAndValid(c, &json)
 	if !ok {
-        return
+		return
 	}
 	curd := model.NewCurd(&model.Auth{})
 
@@ -87,7 +87,7 @@ func EditUser(c *gin.Context) {
 	err := curd.First(&user, c.Param("id"))
 
 	if err != nil {
-		ErrorHandler(c, err)
+		ErrHandler(c, err)
 		return
 	}
 	edit.Name = json.Name
@@ -97,7 +97,7 @@ func EditUser(c *gin.Context) {
 		var pwd []byte
 		pwd, err = bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
 		if err != nil {
-			ErrorHandler(c, err)
+			ErrHandler(c, err)
 			return
 		}
 		edit.Password = string(pwd)
@@ -106,7 +106,7 @@ func EditUser(c *gin.Context) {
 	err = curd.Edit(&user, &edit)
 
 	if err != nil {
-		ErrorHandler(c, err)
+		ErrHandler(c, err)
 		return
 	}
 
@@ -117,13 +117,13 @@ func DeleteUser(c *gin.Context) {
 	id := c.Param("id")
 
 	if cast.ToInt(id) == 1 {
-		ErrorHandler(c, errors.New("不允许删除默认账户"))
+		ErrHandler(c, errors.New("不允许删除默认账户"))
 		return
 	}
 	curd := model.NewCurd(&model.Auth{})
 	err := curd.Delete(&model.Auth{}, "id", id)
 	if err != nil {
-		ErrorHandler(c, err)
+		ErrHandler(c, err)
 		return
 	}
 	c.JSON(http.StatusNoContent, gin.H{})

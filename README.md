@@ -1,13 +1,14 @@
 # Nginx UI
 Yet another Nginx Web UI
 
-Version: 1.0.0
+Version: 1.1.0
 
 ## 项目特色
 
 1. 可在线查看服务器 CPU、内存、load average、磁盘使用率等指标
 2. 可一键申请 Let's encrypt 证书
-3. 在线编辑网站配置文件
+3. 可自动续签 Let's encrypt 证书
+4. 在线编辑网站配置文件
 
 ## 项目预览
 
