@@ -54,7 +54,7 @@ func (f serverFileSystemType) Exists(prefix string, path string) bool {
 
 func mustFS(dir string) (serverFileSystem static.ServeFileSystem) {
 
-	sub, err := fs.Sub(frontend.DistFS, filepath.Join("public", dir))
+	sub, err := fs.Sub(frontend.DistFS, filepath.Join("dist", dir))
 
 	if err != nil {
 		log.Println(err)
