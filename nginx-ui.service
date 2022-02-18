@@ -6,5 +6,6 @@ After=network.target
 [Service]
 Type=simple
 ExecStart=/usr/local/bin/nginx-ui -d /usr/local/etc/nginx-ui
+Restart=on-failure
 TimeoutStopSec=5
 KillMode=mixed

@@ -2,7 +2,7 @@ package api
 
 import (
 	"errors"
-	"github.com/0xJacky/Nginx-UI/model"
+	model2 "github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"golang.org/x/crypto/bcrypt"
@@ -10,9 +10,9 @@ import (
 )
 
 func GetUsers(c *gin.Context) {
-	curd := model.NewCurd(&model.Auth{})
+	curd := model2.NewCurd(&model2.Auth{})
 
-	var list []model.Auth
+	var list []model2.Auth
 	err := curd.GetList(&list)
 
 	if err != nil {
@@ -25,10 +25,10 @@ func GetUsers(c *gin.Context) {
 }
 
 func GetUser(c *gin.Context) {
-	curd := model.NewCurd(&model.Auth{})
+	curd := model2.NewCurd(&model2.Auth{})
 	id := c.Param("id")
 
-	var user model.Auth
+	var user model2.Auth
 	err := curd.First(&user, id)
 
 	if err != nil {
@@ -49,7 +49,7 @@ func AddUser(c *gin.Context) {
 	if !ok {
 		return
 	}
-	curd := model.NewCurd(&model.Auth{})
+	curd := model2.NewCurd(&model2.Auth{})
 
 	pwd, err := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -58,7 +58,7 @@ func AddUser(c *gin.Context) {
 	}
 	json.Password = string(pwd)
 
-	user := model.Auth{
+	user := model2.Auth{
 		Name:     json.Name,
 		Password: json.Password,
 	}
@@ -80,9 +80,9 @@ func EditUser(c *gin.Context) {
 	if !ok {
 		return
 	}
-	curd := model.NewCurd(&model.Auth{})
+	curd := model2.NewCurd(&model2.Auth{})
 
-	var user, edit model.Auth
+	var user, edit model2.Auth
 
 	err := curd.First(&user, c.Param("id"))
 
@@ -120,8 +120,8 @@ func DeleteUser(c *gin.Context) {
 		ErrHandler(c, errors.New("不允许删除默认账户"))
 		return
 	}
-	curd := model.NewCurd(&model.Auth{})
-	err := curd.Delete(&model.Auth{}, "id", id)
+	curd := model2.NewCurd(&model2.Auth{})
+	err := curd.Delete(&model2.Auth{}, "id", id)
 	if err != nil {
 		ErrHandler(c, err)
 		return

@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/0xJacky/Nginx-UI/router"
-	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/0xJacky/Nginx-UI/tool"
+	"github.com/0xJacky/Nginx-UI/server/model"
+	"github.com/0xJacky/Nginx-UI/server/router"
+	"github.com/0xJacky/Nginx-UI/server/settings"
+	tool2 "github.com/0xJacky/Nginx-UI/server/tool"
 	"log"
 	"net/http"
 	"os/signal"
@@ -31,9 +31,9 @@ func main() {
 		Handler: router.InitRouter(),
 	}
 
-	log.Printf("nginx config dir path: %s", tool.GetNginxConfPath(""))
+	log.Printf("nginx config dir path: %s", tool2.GetNginxConfPath(""))
 
-	go tool.AutoCert()
+	go tool2.AutoCert()
 
 	// Initializing the server in a goroutine so that
 	// it won't block the graceful shutdown handling below

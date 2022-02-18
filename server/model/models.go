@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/0xJacky/Nginx-UI/server/settings"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

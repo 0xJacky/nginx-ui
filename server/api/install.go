@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/0xJacky/Nginx-UI/settings"
+	model2 "github.com/0xJacky/Nginx-UI/server/model"
+	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
@@ -54,9 +54,9 @@ func InstallNginxUI(c *gin.Context) {
 		return
 	}
 
-	curd := model.NewCurd(&model.Auth{})
+	curd := model2.NewCurd(&model2.Auth{})
 	pwd, _ := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
-	err = curd.Add(&model.Auth{
+	err = curd.Add(&model2.Auth{
 		Name:     json.Username,
 		Password: string(pwd),
 	})

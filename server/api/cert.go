@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/0xJacky/Nginx-UI/tool"
+	tool2 "github.com/0xJacky/Nginx-UI/server/tool"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"log"
@@ -13,7 +13,7 @@ import (
 func CertInfo(c *gin.Context) {
 	domain := c.Param("domain")
 
-	key := tool.GetCertInfo(domain)
+	key := tool2.GetCertInfo(domain)
 
 	c.JSON(http.StatusOK, gin.H{
 		"subject_name": key.Subject.CommonName,
@@ -55,7 +55,7 @@ func IssueCert(c *gin.Context) {
 		if string(message) == "go" {
 			var m []byte
 
-			err = tool.IssueCert(domain)
+			err = tool2.IssueCert(domain)
 			if err != nil {
 				m, err = json.Marshal(gin.H{
 					"status":  "error",
@@ -78,7 +78,7 @@ func IssueCert(c *gin.Context) {
 				return
 			}
 
-			sslCertificatePath := tool.GetNginxConfPath("ssl/" + domain + "/fullchain.cer")
+			sslCertificatePath := tool2.GetNginxConfPath("ssl/" + domain + "/fullchain.cer")
 			_, err = os.Stat(sslCertificatePath)
 
 			if err != nil {
@@ -104,7 +104,7 @@ func IssueCert(c *gin.Context) {
 				return
 			}
 
-			sslCertificateKeyPath := tool.GetNginxConfPath("ssl/" + domain + "/" + domain + ".key")
+			sslCertificateKeyPath := tool2.GetNginxConfPath("ssl/" + domain + "/" + domain + ".key")
 			_, err = os.Stat(sslCertificateKeyPath)
 
 			if err != nil {
