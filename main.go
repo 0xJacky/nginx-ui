@@ -8,6 +8,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	tool2 "github.com/0xJacky/Nginx-UI/server/tool"
 	"log"
+	"mime"
 	"net/http"
 	"os/signal"
 	"syscall"
@@ -19,11 +20,15 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	var dataDir string
-	flag.StringVar(&dataDir, "d", ".", "Specify the data dir")
+	// Hack: fix wrong Content Type of .js file on some OS platforms
+	// See https://github.com/golang/go/issues/32350
+	_ = mime.AddExtensionType(".js", "text/javascript; charset=utf-8")
+
+	var confPath string
+	flag.StringVar(&confPath, "config", "./app.ini", "Specify the configuration file")
 	flag.Parse()
 
-	settings.Init(dataDir)
+	settings.Init(confPath)
 	model.Init()
 
 	srv := &http.Server{

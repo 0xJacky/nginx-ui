@@ -11,7 +11,7 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
-	"path/filepath"
+	"path"
 	"strings"
 )
 
@@ -47,14 +47,14 @@ type serverFileSystemType struct {
 	http.FileSystem
 }
 
-func (f serverFileSystemType) Exists(prefix string, path string) bool {
-	_, err := f.Open(filepath.Join(prefix, path))
+func (f serverFileSystemType) Exists(prefix string, filePath string) bool {
+	_, err := f.Open(path.Join(prefix, filePath))
 	return err == nil
 }
 
 func mustFS(dir string) (serverFileSystem static.ServeFileSystem) {
 
-	sub, err := fs.Sub(frontend.DistFS, filepath.Join("dist", dir))
+	sub, err := fs.Sub(frontend.DistFS, path.Join("dist", dir))
 
 	if err != nil {
 		log.Println(err)

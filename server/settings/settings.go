@@ -1,10 +1,9 @@
 package settings
 
 import (
-    "gopkg.in/ini.v1"
-    "log"
-    "os"
-    "path"
+	"gopkg.in/ini.v1"
+	"log"
+	"os"
 )
 
 var Conf *ini.File
@@ -16,30 +15,33 @@ type Server struct {
 	JwtSecret         string
 	HTTPChallengePort string
 	Email             string
+	Database          string
 }
 
-var ServerSettings = &Server{}
-
-var DataDir string
-var confPath string
-
-func Init(dataDir string)  {
-    DataDir = dataDir
-    confPath = path.Join(dataDir, "app.ini")
-    if _, err := os.Stat(confPath); os.IsNotExist(err) {
-        confPath = path.Join(dataDir, "app.example.ini")
-    }
-    Setup()
+var ServerSettings = &Server{
+	HttpPort:          "9000",
+	RunMode:           "debug",
+	HTTPChallengePort: "9180",
+	Database:          "database",
 }
 
-func Setup()  {
-    var err error
-    Conf, err = ini.Load(confPath)
-    if err != nil {
-        log.Fatalf("setting.Setup, fail to parse '%s': %v", confPath, err)
-    }
+var ConfPath string
 
-    mapTo("server", ServerSettings)
+func Init(confPath string) {
+	ConfPath = confPath
+	if _, err := os.Stat(ConfPath); os.IsExist(err) {
+		Setup()
+	}
+}
+
+func Setup() {
+	var err error
+	Conf, err = ini.Load(ConfPath)
+	if err != nil {
+		log.Fatalf("setting.Setup, fail to parse '%s': %v", ConfPath, err)
+	}
+
+	mapTo("server", ServerSettings)
 }
 
 func mapTo(section string, v interface{}) {
@@ -50,11 +52,10 @@ func mapTo(section string, v interface{}) {
 }
 
 func Save() (err error) {
-    confPath = path.Join(DataDir, "app.ini")
-    err = Conf.SaveTo(confPath)
-    if err != nil {
-        return
-    }
-    Setup()
-    return
+	err = Conf.SaveTo(ConfPath)
+	if err != nil {
+		return
+	}
+	Setup()
+	return
 }

@@ -8,11 +8,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"os"
-	"path"
 )
 
 func installLockStatus() bool {
-	lockPath := path.Join(settings.DataDir, "app.ini")
+	lockPath := settings.ConfPath
 	_, err := os.Stat(lockPath)
 
 	return !os.IsNotExist(err)
