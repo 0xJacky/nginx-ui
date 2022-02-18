@@ -1,6 +1,6 @@
 <template>
     <div class="footer center">
-        Copyright © 2020 - {{ thisYear }} 0xJacky
+        Copyright © 2020 - {{ thisYear }} Nginx UI
     </div>
 </template>
 

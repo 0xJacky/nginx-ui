@@ -25,20 +25,20 @@ func main() {
 	_ = mime.AddExtensionType(".js", "text/javascript; charset=utf-8")
 
 	var confPath string
-	flag.StringVar(&confPath, "config", "./app.ini", "Specify the configuration file")
+	flag.StringVar(&confPath, "config", "app.ini", "Specify the configuration file")
 	flag.Parse()
 
 	settings.Init(confPath)
-	model.Init()
+	log.Printf("nginx config dir path: %s", tool2.GetNginxConfPath(""))
+	if "" != settings.ServerSettings.JwtSecret {
+		model.Init()
+		go tool2.AutoCert()
+	}
 
 	srv := &http.Server{
 		Addr:    ":" + settings.ServerSettings.HttpPort,
 		Handler: router.InitRouter(),
 	}
-
-	log.Printf("nginx config dir path: %s", tool2.GetNginxConfPath(""))
-
-	go tool2.AutoCert()
 
 	// Initializing the server in a goroutine so that
 	// it won't block the graceful shutdown handling below

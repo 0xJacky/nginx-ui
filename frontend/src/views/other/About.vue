@@ -8,6 +8,7 @@
         <p>Version: {{ version }} ({{ build_id }})</p>
         <h3>项目组</h3>
         <p>Designer：<a href="https://jackyu.cn/">@0xJacky</a></p>
+        <p><a href="https://blog.kugeek.com/">@Hintay</a></p>
         <h3>技术栈</h3>
         <p>Go</p>
         <p>Gin</p>
@@ -15,7 +16,7 @@
         <p>Websocket</p>
         <h3>开源协议</h3>
         <p>GNU General Public License v2.0</p>
-        <p>Copyright © 2020 - {{ this_year }} 0xJacky </p>
+        <p>Copyright © 2020 - {{ this_year }} Nginx UI </p>
     </a-card>
 </template>
 
