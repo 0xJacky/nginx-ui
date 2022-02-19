@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -20,7 +21,7 @@ type Model struct {
 }
 
 func Init() {
-	dbPath := path.Join(settings.DataDir, "database.db")
+	dbPath := path.Join(path.Dir(settings.ConfPath), fmt.Sprintf("%s.db", settings.ServerSettings.Database))
 	var err error
 	db, err = gorm.Open(sqlite.Open(dbPath), &gorm.Config{
 		Logger:      logger.Default.LogMode(logger.Info),

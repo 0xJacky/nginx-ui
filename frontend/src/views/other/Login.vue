@@ -39,7 +39,7 @@
                 </a-form-item>
             </a-form>
             <div class="footer">
-                Copyright © 2020 - {{ thisYear }} 0xJacky
+                Copyright © 2020 - {{ thisYear }} Nginx UI
             </div>
         </div>
     </div>

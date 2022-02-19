@@ -3,6 +3,7 @@ package router
 import (
 	"bufio"
 	api2 "github.com/0xJacky/Nginx-UI/server/api"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -14,7 +15,7 @@ func InitRouter() *gin.Engine {
 
 	r.Use(gin.Recovery())
 
-	r.Use(tryStatic("/", mustFS("")))
+	r.Use(static.Serve("/", mustFS("")))
 
 	r.NoRoute(func(c *gin.Context) {
 		accept := c.Request.Header.Get("Accept")
