@@ -4,6 +4,8 @@
             <a-icon type="menu-unfold" @click="$emit('clickUnFold')"/>
         </div>
         <div class="user-wrapper">
+            <set-language class="set_lang" />
+
             <a href="/">
                 <a-icon type="home"/>
             </a>
@@ -16,9 +18,10 @@
 </template>
 
 <script>
+import SetLanguage from '@/components/SetLanguage/SetLanguage'
 export default {
     name: 'HeaderComponent',
-    components: {},
+    components: {SetLanguage},
     methods: {
         logout() {
             this.$api.auth.logout().then(() => {
@@ -58,5 +61,10 @@ export default {
 .user-wrapper {
     position: fixed;
     right: 20px;
+}
+
+.set_lang {
+    display: inline;
+    margin-right: 25px;
 }
 </style>
