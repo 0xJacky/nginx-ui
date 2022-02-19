@@ -113,6 +113,10 @@ export default {
             }
         }
 
+        .anticon {
+            color: #a8a5a5!important;
+        }
+
         .login-form-button {
 
         }
