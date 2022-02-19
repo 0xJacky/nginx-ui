@@ -4,19 +4,19 @@
 
 <script>
 
-import StdCurd from "@/components/StdDataDisplay/StdCurd"
+import StdCurd from '@/components/StdDataDisplay/StdCurd'
 
 const columns = [{
-    title: "用户名",
-    dataIndex: "name",
+    title: '用户名',
+    dataIndex: 'name',
     sorter: true,
     pithy: true,
     edit: {
         type: 'input'
     }
 }, {
-    title: "密码",
-    dataIndex: "password",
+    title: '密码',
+    dataIndex: 'password',
     sorter: true,
     pithy: true,
     edit: {
@@ -25,24 +25,24 @@ const columns = [{
     },
     display: false
 }, {
-    title: "创建时间",
-    dataIndex: "created_at",
+    title: '创建时间',
+    dataIndex: 'created_at',
     datetime: true,
     sorter: true,
     pithy: true
 }, {
-    title: "修改时间",
-    dataIndex: "updated_at",
+    title: '修改时间',
+    dataIndex: 'updated_at',
     datetime: true,
     sorter: true,
     pithy: true
 }, {
-    title: "操作",
-    dataIndex: "action"
+    title: '操作',
+    dataIndex: 'action'
 }]
 
 export default {
-    name: "User",
+    name: 'User',
     components: {StdCurd},
     data() {
         return {
@@ -50,9 +50,7 @@ export default {
             columns
         }
     },
-    methods: {
-
-    }
+    methods: {}
 }
 </script>
 

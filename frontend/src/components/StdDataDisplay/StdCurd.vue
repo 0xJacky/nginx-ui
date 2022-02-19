@@ -66,7 +66,7 @@
 <script>
 import StdTable from './StdTable'
 import StdDataEntry from '@/components/StdDataEntry/StdDataEntry'
-import FooterToolBar from "@/components/FooterToolbar/FooterToolBar"
+import FooterToolBar from '@/components/FooterToolbar/FooterToolBar'
 
 export default {
     name: 'StdCurd',

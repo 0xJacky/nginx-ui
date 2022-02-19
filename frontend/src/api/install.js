@@ -1,4 +1,4 @@
-import http from "@/lib/http";
+import http from '@/lib/http'
 
 const install = {
     get_lock() {

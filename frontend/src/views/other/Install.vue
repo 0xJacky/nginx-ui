@@ -109,7 +109,7 @@ export default {
             })
         },
     },
-};
+}
 </script>
 <style lang="less">
 .project-title {

@@ -21,40 +21,40 @@
 </template>
 
 <script>
-import StdTable from "@/components/StdDataDisplay/StdTable"
+import StdTable from '@/components/StdDataDisplay/StdTable'
 
 const columns = [{
-    title: "配置名称",
-    dataIndex: "name",
-    scopedSlots: {customRender: "名称"},
+    title: '配置名称',
+    dataIndex: 'name',
+    scopedSlots: {customRender: '名称'},
     sorter: true,
     pithy: true
 }, {
-    title: "状态",
-    dataIndex: "enabled",
+    title: '状态',
+    dataIndex: 'enabled',
     badge: true,
-    scopedSlots: {customRender: "enabled"},
+    scopedSlots: {customRender: 'enabled'},
     mask: {
-        true: "启用",
-        false: "未启用"
+        true: '启用',
+        false: '未启用'
     },
     sorter: true,
     pithy: true
 }, {
-    title: "修改时间",
-    dataIndex: "modify",
+    title: '修改时间',
+    dataIndex: 'modify',
     datetime: true,
-    scopedSlots: {customRender: "modify"},
+    scopedSlots: {customRender: 'modify'},
     sorter: true,
     pithy: true
 }, {
-    title: "操作",
-    dataIndex: "action",
-    scopedSlots: {customRender: "action"}
+    title: '操作',
+    dataIndex: 'action',
+    scopedSlots: {customRender: 'action'}
 }]
 
 export default {
-    name: "Domain",
+    name: 'Domain',
     components: {StdTable},
     data() {
         return {
@@ -65,20 +65,20 @@ export default {
     methods: {
         enable(name) {
             this.$api.domain.enable(name).then(() => {
-                this.$message.success("启用成功")
+                this.$message.success('启用成功')
                 this.$refs.table.get_list()
             }).catch(r => {
                 console.log(r)
-                this.$message.error("启用失败 " + (r.message??''), 10)
+                this.$message.error('启用失败 ' + (r.message ?? ''), 10)
             })
         },
         disable(name) {
             this.$api.domain.disable(name).then(() => {
-                this.$message.success("禁用成功")
+                this.$message.success('禁用成功')
                 this.$refs.table.get_list()
             }).catch(r => {
                 console.log(r)
-                this.$message.error("禁用失败")
+                this.$message.error('禁用失败')
             })
         }
     }

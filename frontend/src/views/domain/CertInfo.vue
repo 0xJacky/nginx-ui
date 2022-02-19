@@ -6,19 +6,21 @@
         <p>过期时间：{{ moment(cert.not_after).format('YYYY-MM-DD HH:mm:ss') }}</p>
         <p>在此之前无效：{{ moment(cert.not_before).format('YYYY-MM-DD HH:mm:ss') }}</p>
         <template v-if="new Date().toISOString() < cert.not_before || new Date().toISOString() > cert.not_after">
-            <a-icon :style="{ color: 'red' }" type="close-circle" /> 此证书已过期
+            <a-icon :style="{ color: 'red' }" type="close-circle"/>
+            此证书已过期
         </template>
         <template v-else>
-            <a-icon :style="{ color: 'green' }" type="check-circle" /> 证书处在有效期内
+            <a-icon :style="{ color: 'green' }" type="check-circle"/>
+            证书处在有效期内
         </template>
     </div>
 </template>
 
 <script>
-import moment from "moment"
+import moment from 'moment'
 
 export default {
-    name: "CertInfo",
+    name: 'CertInfo',
     data() {
         return {
             ok: false,

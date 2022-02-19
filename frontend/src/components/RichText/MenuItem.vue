@@ -1,7 +1,7 @@
 <template>
     <a-tooltip>
         <template slot="title">
-           {{ title }}
+            {{ title }}
         </template>
         <button
             class="menu-item"
@@ -10,7 +10,7 @@
             :title="title"
         >
             <svg class="remix">
-                <use :xlink:href="require('remixicon/fonts/remixicon.symbol.svg') + `#ri-${icon}`" />
+                <use :xlink:href="require('remixicon/fonts/remixicon.symbol.svg') + `#ri-${icon}`"/>
             </svg>
         </button>
     </a-tooltip>

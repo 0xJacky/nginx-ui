@@ -9,6 +9,9 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import utils from '@/lib/utils'
 import api from '@/api'
+import GetTextPlugin from 'vue-gettext'
+import {availableLanguages} from '@/lib/translate'
+import translations from '@/translations.json'
 
 Vue.use(utils)
 
@@ -16,6 +19,13 @@ Vue.config.productionTip = false
 
 Vue.prototype.$routeConfig = routes
 Vue.prototype.$api = api
+
+Vue.use(GetTextPlugin, {
+    availableLanguages,
+    defaultLanguage: store.getters.current_language,
+    translations: translations,
+    silent: true
+})
 
 NProgress.configure({
     easing: 'ease',

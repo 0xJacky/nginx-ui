@@ -1,7 +1,7 @@
 <template>
     <a-card style="text-align: center">
         <div class="logo">
-            <img :src="logo"  alt="logo" />
+            <img :src="logo" alt="logo"/>
         </div>
         <h2>Nginx UI</h2>
         <p>Yet another WebUI for Nginx</p>
@@ -37,7 +37,7 @@ export default {
         async changeUserPower(power) {
             await this.$store.dispatch('update_mock_user', {power: power})
             await this.$api.user.info()
-            await this.$message.success("修改成功")
+            await this.$message.success('修改成功')
         }
     }
 }
@@ -50,6 +50,7 @@ export default {
         max-width: 120px
     }
 }
+
 .egg {
     padding: 10px 0;
 }

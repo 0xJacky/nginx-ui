@@ -1,4 +1,5 @@
 # Nginx UI
+
 Yet another Nginx Web UI
 
 Version: 1.1.0
@@ -15,46 +16,59 @@ Version: 1.1.0
 ## 项目预览
 
 ### 登录
+
 ![](resources/screenshots/login.png)
 
 ### 仪表盘
+
 ![](resources/screenshots/dashboard.png)
 
 ### 用户列表
+
 ![](resources/screenshots/user-list.png)
 
 ### 域名列表
+
 ![](resources/screenshots/domain-list.png)
 
 ### 域名编辑
+
 ![](resources/screenshots/domain-edit.png)
 
 ### 配置列表
+
 ![](resources/screenshots/config-list.png)
 
 ### 配置编辑
+
 ![](resources/screenshots/config-edit.png)
 
 ## 使用前注意
 
-Nginx UI 遵循 Nginx 的标准，创建的网站配置文件位于 Nginx 配置目录（自动检测）下的 `sites-available` 目录，
-启用后的网站的配置文件将会创建一份软连接到 `sites-enabled` 目录中。因此，您可能需要调整配置文件的组织方式。
+Nginx UI 遵循 Nginx 的标准，创建的网站配置文件位于 Nginx 配置目录（自动检测）下的 `sites-available` 目录， 启用后的网站的配置文件将会创建一份软连接到 `sites-enabled`
+目录中。因此，您可能需要调整配置文件的组织方式。
 
 ## 安装
+
 1. 克隆项目
+
 ```
 git clone https://github.com/0xJacky/nginx-ui
 ```
+
 2. 编译后端
+
 ```
 cd server
 go build -o nginx-ui-server main.go
 ```
+
 3. 启动后端
     1. 前台启动 `./nginx-ui-server`
     2. 后台启动 `nohup ./nginx-ui-server &`
 
 4. 添加配置文件到 nginx
+
 ```
 server {
     listen	80;

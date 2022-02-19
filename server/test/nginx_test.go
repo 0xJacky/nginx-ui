@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestGetNginx(t *testing.T)  {
+func TestGetNginx(t *testing.T) {
 	out, err := exec.Command("nginx", "-V").CombinedOutput()
 	if err != nil {
 		log.Fatal(err)

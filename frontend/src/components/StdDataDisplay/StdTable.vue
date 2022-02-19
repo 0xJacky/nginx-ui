@@ -46,8 +46,8 @@
                     {{ c.mask ? c.mask[text] : text }}
                 </div>
                 <span v-else-if="c.datetime"
-                      :key="c.dataIndex">{{ text ? moment(text).format("yyyy-MM-DD HH:mm:ss") : '无' }}</span>
-                <span v-else-if="c.date" :key="c.dataIndex">{{ text ? moment(text).format("yyyy-MM-DD") : '无' }}</span>
+                      :key="c.dataIndex">{{ text ? moment(text).format('yyyy-MM-DD HH:mm:ss') : '无' }}</span>
+                <span v-else-if="c.date" :key="c.dataIndex">{{ text ? moment(text).format('yyyy-MM-DD') : '无' }}</span>
                 <div v-else-if="c.click" :key="c.dataIndex">
                     <a href="javascript:;"
                        @click="handleClick(
@@ -64,7 +64,7 @@
                     <template v-if="edit_text">{{ edit_text }}</template>
                     <template v-else>编辑</template>
                 </a>
-                <slot name="actions" :record="record" />
+                <slot name="actions" :record="record"/>
                 <template v-if="deletable">
                     <a-divider type="vertical"/>
                     <a-popconfirm
@@ -91,8 +91,8 @@
 
 <script>
 import StdPagination from './StdPagination'
-import moment from "moment"
-import StdDataEntry from "@/components/StdDataEntry/StdDataEntry"
+import moment from 'moment'
+import StdDataEntry from '@/components/StdDataEntry/StdDataEntry'
 
 export default {
     name: 'StdTable',
@@ -194,7 +194,7 @@ export default {
                 this.loading = false
             }).catch(e => {
                 console.log(e)
-                this.$message.error('系统错误')
+                this.$message.error(e?.message ?? '系统错误')
             })
         },
         stdChange(pagination, filters, sorter) {
@@ -212,11 +212,7 @@ export default {
                 this.$message.success('删除 ID: ' + id + ' 成功')
             }).catch(e => {
                 console.log(e)
-                if (e.message) {
-                    this.$message.error('错误 ' + e.message)
-                } else {
-                    this.$message.error('系统错误')
-                }
+                this.$message.error(e?.message ?? '系统错误')
             })
         },
         restore(id) {
@@ -225,11 +221,7 @@ export default {
                 this.$message.success('反删除 ID: ' + id + ' 成功')
             }).catch(e => {
                 console.log(e)
-                if (e.message) {
-                    this.$message.error('错误' + e.message)
-                } else {
-                    this.$message.error('系统错误')
-                }
+                this.$message.error(e?.message ?? '系统错误')
             })
         },
         get_searchColumns() {
@@ -240,9 +232,9 @@ export default {
                         && column.edit.type !== 'transfer') {
                         const tmp = Object.assign({}, column)
                         tmp.edit = Object.assign({}, column.edit)
-                        if (typeof column.search === "string") {
+                        if (typeof column.search === 'string') {
                             tmp.edit.type = column.search
-                        } else if (typeof column.search === "object") {
+                        } else if (typeof column.search === 'object') {
                             tmp.edit = column.search
                         }
                         searchColumns.push(tmp)
@@ -251,7 +243,7 @@ export default {
                     if (!column.edit) {
                         const tmp = Object.assign({}, column)
                         tmp.edit = Object.assign({}, column.edit)
-                        if (typeof column.search === "object") {
+                        if (typeof column.search === 'object') {
                             tmp.edit = column.search
                         }
                         searchColumns.push(tmp)
@@ -317,7 +309,7 @@ export default {
 <style lang="less">
 .ant-table-scroll {
     .ant-table-body {
-        overflow-x: auto!important;
+        overflow-x: auto !important;
     }
 }
 </style>

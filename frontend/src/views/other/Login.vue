@@ -90,7 +90,7 @@ export default {
             })
         },
     },
-};
+}
 </script>
 <style lang="less">
 .container {
@@ -98,9 +98,11 @@ export default {
     align-items: center;
     justify-content: center;
     height: 100%;
+
     .login-form {
         max-width: 400px;
         width: 80%;
+
         .project-title {
             margin: 50px;
 

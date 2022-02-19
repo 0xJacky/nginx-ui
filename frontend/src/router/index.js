@@ -2,20 +2,21 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import axios from 'axios'
 import store from '@/lib/store'
+import $gettext from '@/lib/translate/gettext'
 
 Vue.use(VueRouter)
 
 export const routes = [
     {
         path: '/',
-        name: '首页',
+        name: $gettext('Home'),
         component: () => import('@/layouts/BaseLayout'),
         redirect: '/dashboard',
         children: [
             {
                 path: 'dashboard',
-                component: () => import('@/views/doashboard/DashBoard'),
-                name: '仪表盘',
+                component: () => import('@/views/dashboard/DashBoard'),
+                name:  $gettext('Dashboard'),
                 meta: {
                     //hiddenHeaderContent: true,
                     icon: 'home'
@@ -23,7 +24,7 @@ export const routes = [
             },
             {
                 path: 'user',
-                name: '用户管理',
+                name: $gettext('Users'),
                 component: () => import('@/views/user/User.vue'),
                 meta: {
                     icon: 'user'
@@ -31,7 +32,7 @@ export const routes = [
             },
             {
                 path: 'domain',
-                name: '网站管理',
+                name: $gettext('Sites'),
                 component: () => import('@/layouts/BaseRouterView'),
                 meta: {
                     icon: 'cloud'
@@ -39,24 +40,24 @@ export const routes = [
                 redirect: '/domain/list',
                 children: [{
                     path: 'list',
-                    name: '网站列表',
+                    name: $gettext('Sites List'),
                     component: () => import('@/views/domain/DomainList.vue'),
                 }, {
                     path: 'add',
-                    name: '添加站点',
+                    name: $gettext('Add Sites'),
                     component: () => import('@/views/domain/DomainAdd.vue'),
                 }, {
                     path: ':name',
-                    name: '编辑站点',
+                    name: $gettext('Modify Sites'),
                     component: () => import('@/views/domain/DomainEdit.vue'),
                     meta: {
                         hiddenInSidebar: true
                     }
-                }, ]
+                },]
             },
             {
                 path: 'config',
-                name: '配置管理',
+                name: $gettext('Config'),
                 component: () => import('@/views/config/Config.vue'),
                 meta: {
                     icon: 'file'
@@ -64,7 +65,7 @@ export const routes = [
             },
             {
                 path: 'config/:name',
-                name: '配置编辑',
+                name: $gettext('Modify Config'),
                 component: () => import('@/views/config/ConfigEdit.vue'),
                 meta: {
                     hiddenInSidebar: true
@@ -72,7 +73,7 @@ export const routes = [
             },
             {
                 path: 'about',
-                name: '关于',
+                name: $gettext('About'),
                 component: () => import('@/views/other/About.vue'),
                 meta: {
                     icon: 'info-circle'
@@ -82,25 +83,25 @@ export const routes = [
     },
     {
         path: '/install',
-        name: '安装',
+        name: $gettext('Install'),
         component: () => import('@/views/other/Install'),
         meta: {noAuth: true}
     },
     {
         path: '/login',
-        name: '登录',
+        name: $gettext('Login'),
         component: () => import('@/views/other/Login'),
         meta: {noAuth: true}
     },
     {
         path: '/404',
-        name: '404 Not Found',
+        name: $gettext('404 Not Found'),
         component: () => import('@/views/other/Error'),
         meta: {noAuth: true, status_code: 404, error: 'Not Found'}
     },
     {
         path: '*',
-        name: '未找到页面',
+        name: $gettext('Not Found'),
         redirect: '/404',
         meta: {noAuth: true}
     }
@@ -119,12 +120,12 @@ router.beforeEach((to, from, next) => {
             if (!(process.env.VUE_APP_VERSION === r.data.version
                 && Number(process.env.VUE_APP_BUILD_ID) === r.data.build_id)) {
                 Vue.prototype.$info({
-                    title: '系统信息',
-                    content: '检测到版本更新，将会自动刷新本页',
+                    title: $gettext('System message'),
+                    content: $gettext('Detected version update, this page will automatically refresh.'),
                     onOk() {
                         location.reload()
                     },
-                    okText: '好的'
+                    okText: $gettext('OK')
                 })
             }
         })

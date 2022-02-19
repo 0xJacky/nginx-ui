@@ -11,12 +11,13 @@
                 {{ language }}
             </option>
         </select>
-        <pre><node-view-content as="code" /></pre>
+        <pre><node-view-content as="code"/></pre>
     </node-view-wrapper>
 </template>
 
 <script>
-import { NodeViewWrapper, NodeViewContent, nodeViewProps } from '@tiptap/vue-2'
+import {NodeViewContent, nodeViewProps, NodeViewWrapper} from '@tiptap/vue-2'
+
 export default {
     components: {
         NodeViewWrapper,
@@ -37,7 +38,7 @@ export default {
                 return (this.node.attrs.language ? this.node.attrs.language.split('')[0] : null)
             },
             set(language) {
-                this.updateAttributes({ language })
+                this.updateAttributes({language})
             },
         },
     },
@@ -48,10 +49,11 @@ export default {
 .code-block {
     position: relative;
 
-    select {
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-    }
+select {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+
 }
 </style>

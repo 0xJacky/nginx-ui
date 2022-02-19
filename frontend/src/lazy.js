@@ -38,16 +38,16 @@ import {
     Select,
     Skeleton,
     Slider,
+    Space,
     Spin,
     Statistic,
     Steps,
+    Switch,
     Table,
     Tabs,
     Tooltip,
     Transfer,
-    Upload,
-    Switch,
-    Space
+    Upload
 } from 'ant-design-vue'
 
 Vue.use(ConfigProvider)

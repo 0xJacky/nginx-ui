@@ -11,16 +11,16 @@
 </template>
 
 <script>
-import FooterToolBar from "@/components/FooterToolbar/FooterToolBar"
-import VueItextarea from "@/components/VueItextarea/VueItextarea"
+import FooterToolBar from '@/components/FooterToolbar/FooterToolBar'
+import VueItextarea from '@/components/VueItextarea/VueItextarea'
 
 export default {
-    name: "DomainEdit",
+    name: 'DomainEdit',
     components: {FooterToolBar, VueItextarea},
     data() {
         return {
             name: this.$route.params.name,
-            configText: ""
+            configText: ''
         }
     },
     watch: {
@@ -35,7 +35,7 @@ export default {
         }
     },
     created() {
-       this.init()
+        this.init()
     },
     methods: {
         init() {
@@ -44,19 +44,19 @@ export default {
                     this.configText = r.config
                 }).catch(r => {
                     console.log(r)
-                    this.$message.error("服务器错误")
+                    this.$message.error('服务器错误')
                 })
             } else {
-                this.configText = ""
+                this.configText = ''
             }
         },
         save() {
             this.$api.config.save(this.name ? this.name : this.config.name, {content: this.configText}).then(r => {
                 this.configText = r.config
-                this.$message.success("保存成功")
+                this.$message.success('保存成功')
             }).catch(r => {
                 console.log(r)
-                this.$message.error("保存错误")
+                this.$message.error('保存错误')
             })
         }
     }

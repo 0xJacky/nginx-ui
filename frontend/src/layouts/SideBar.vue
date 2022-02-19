@@ -82,10 +82,12 @@ export default {
 .sidebar {
     position: fixed;
     width: 200px;
+
     .ant-menu-inline {
         height: calc(100vh - 120px);
         overflow-y: auto;
         overflow-x: hidden;
+
         .ant-menu-item {
             width: unset;
         }

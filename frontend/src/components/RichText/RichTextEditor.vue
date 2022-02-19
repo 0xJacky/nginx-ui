@@ -116,7 +116,7 @@ export default {
         }
     }
     border: 1px solid @gray;
-    line-height: 1.5!important;
+    line-height: 1.5 !important;
 
     &__header {
         display: flex;

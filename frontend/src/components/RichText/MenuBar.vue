@@ -1,8 +1,8 @@
 <template>
     <div>
         <template v-for="(item, index) in items">
-            <div class="divider" v-if="item.type === 'divider'" :key="index" />
-            <menu-item v-else :key="index" v-bind="item" />
+            <div class="divider" v-if="item.type === 'divider'" :key="index"/>
+            <menu-item v-else :key="index" v-bind="item"/>
         </template>
     </div>
 </template>
@@ -61,14 +61,14 @@ export default {
                 {
                     icon: 'h-1',
                     title: '一级标题',
-                    action: () => this.editor.chain().focus().toggleHeading({ level: 1 }).run(),
-                    isActive: () => this.editor.isActive('heading', { level: 1 }),
+                    action: () => this.editor.chain().focus().toggleHeading({level: 1}).run(),
+                    isActive: () => this.editor.isActive('heading', {level: 1}),
                 },
                 {
                     icon: 'h-2',
                     title: '二级标题',
-                    action: () => this.editor.chain().focus().toggleHeading({ level: 2 }).run(),
-                    isActive: () => this.editor.isActive('heading', { level: 2 }),
+                    action: () => this.editor.chain().focus().toggleHeading({level: 2}).run(),
+                    isActive: () => this.editor.isActive('heading', {level: 2}),
                 },
                 {
                     icon: 'paragraph',

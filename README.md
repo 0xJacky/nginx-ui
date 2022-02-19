@@ -1,4 +1,5 @@
 # Nginx UI
+
 Yet another Nginx Web UI
 
 Version: 1.1.0
@@ -17,46 +18,60 @@ Version: 1.1.0
 ## Screenshots
 
 ### Login
+
 ![](resources/screenshots/login.png)
 
 ### Dashboard
+
 ![](resources/screenshots/dashboard.png)
 
 ### Users Management
+
 ![](resources/screenshots/user-list.png)
 
 ### Domains Management
+
 ![](resources/screenshots/domain-list.png)
 
 ### Domain Editor
+
 ![](resources/screenshots/domain-edit.png)
 
 ### Configurations Management
+
 ![](resources/screenshots/config-list.png)
 
 ### Configuration Editor
+
 ![](resources/screenshots/config-edit.png)
 
 ## Note Before Use
 
-The Nginx UI follows the Nginx standard of creating site configuration files in the `sites-available` directory under the Nginx configuration directory (auto-detected).
-The configuration files for an enabled site will create a soft link to the `sites-enabled` directory. Therefore, you may need to adjust the way the configuration files are organised.
+The Nginx UI follows the Nginx standard of creating site configuration files in the `sites-available` directory under
+the Nginx configuration directory (auto-detected). The configuration files for an enabled site will create a soft link
+to the `sites-enabled` directory. Therefore, you may need to adjust the way the configuration files are organised.
 
 ## Install
+
 1. Clone
+
 ```
 git clone https://github.com/0xJacky/nginx-ui
 ```
+
 2. Compiling the backend
+
 ```
 cd server
 go build -o nginx-ui-server main.go
 ```
+
 3. Start up the backend
-    1.  `./nginx-ui-server` for direct run.
-    2.  `nohup ./nginx-ui-server &` for run as service.
+    1. `./nginx-ui-server` for direct run.
+    2. `nohup ./nginx-ui-server &` for run as service.
 
 4. Adding a configuration file to nginx
+
 ```
 server {
     listen	80;

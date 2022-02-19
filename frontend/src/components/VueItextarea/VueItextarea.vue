@@ -3,11 +3,11 @@
 </template>
 <style lang="less">
 .cm-s-monokai {
-    height: auto!important;
+    height: auto !important;
 }
 </style>
 <script>
-import { codemirror } from 'vue-codemirror'
+import {codemirror} from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
 
@@ -46,7 +46,7 @@ export default {
                 defaultTextHeight: 1000,
                 // more CodeMirror options...
             }
-        };
+        }
     },
 }
 </script>

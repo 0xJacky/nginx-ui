@@ -2,7 +2,7 @@
     <div>
         <a-row class="row-two">
             <a-col :lg="24" :sm="24">
-                <a-card style="min-height: 400px" title="服务器状态">
+                <a-card style="min-height: 400px" :title="$gettext('Server status')">
                     <a-row>
                         <a-col :lg="12" :sm="24" class="chart">
                             <a-statistic :value="cpu" style="margin: 0 50px 10px 0" title="CPU">
@@ -10,27 +10,30 @@
                                     <span>%</span>
                                 </template>
                             </a-statistic>
-                            <p>运行时间 {{ uptime }}</p>
-                            <p>系统负载 1min:{{ loadavg.load1 }}  5min:{{ loadavg.load5 }}
+                            <p><translate>Uptime</translate> {{ uptime }}</p>
+                            <p><translate>Load averages</translate> 1min:{{ loadavg.load1 }} 5min:{{ loadavg.load5 }}
                                 15min:{{ loadavg.load15 }}</p>
                             <line-chart :chart-data="cpu_analytic" :options="cpu_analytic.options" :height="150"/>
                         </a-col>
                         <a-col :lg="6" :sm="8" :xs="12" class="chart_dashboard">
                             <div>
                                 <a-tooltip
-                                    :title="'已使用: '+ memory_used + ' 缓存: ' + memory_cached + '空闲:' + memory_free +
-                                     '  物理内存: ' + memory_total">
-                                    <a-progress :percent="memory_pressure" strokeColor="rgb(135, 208, 104)" type="dashboard" />
-                                    <p class="description">实际内存占用</p>
+                                    :title="$gettext('Used:') + memory_used + $gettext('Cached:') +
+                                     memory_cached + $gettext('Free:') + memory_free +
+                                     $gettext('Physical memory:') + memory_total">
+                                    <a-progress :percent="memory_pressure" strokeColor="rgb(135, 208, 104)"
+                                                type="dashboard"/>
+                                    <p class="description" v-translate>Memory</p>
                                 </a-tooltip>
                             </div>
                         </a-col>
                         <a-col :lg="6" :sm="8" :xs="12" class="chart_dashboard">
                             <div>
                                 <a-tooltip
-                                    :title="'已使用: '+ disk_used + ' / 总共: ' + disk_total">
-                                    <a-progress :percent="disk_percentage" type="dashboard" />
-                                    <p class="description">存储空间</p>
+                                    :title="$gettext('Used: ')+ disk_used +
+                                     ' / '+ $gettext('Total: ') + disk_total">
+                                    <a-progress :percent="disk_percentage" type="dashboard"/>
+                                    <p class="description" v-translate>Storage</p>
                                 </a-tooltip>
                             </div>
                         </a-col>
@@ -42,11 +45,11 @@
 </template>
 
 <script>
-import LineChart from "@/components/Chart/LineChart"
+import LineChart from '@/components/Chart/LineChart'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
 export default {
-    name: "DashBoard",
+    name: 'DashBoard',
     components: {
         LineChart
     },
@@ -56,10 +59,10 @@ export default {
             loading: true,
             stat: {},
             memory_pressure: 0,
-            memory_used: "",
-            memory_cached: "",
-            memory_free: "",
-            memory_total: "",
+            memory_used: '',
+            memory_cached: '',
+            memory_free: '',
+            memory_total: '',
             cpu_analytic: {
                 datasets: [{
                     label: 'cpu user',
@@ -76,7 +79,7 @@ export default {
                 }],
                 options: {
                     responsive: true,
-                    maintainAspectRatio:false,
+                    maintainAspectRatio: false,
                     responsiveAnimationDuration: 0, // 调整大小后的动画持续时间
                     elements: {
                         line: {
@@ -94,7 +97,7 @@ export default {
                         }],
                         xAxes: [
                             {
-                                type: "time",
+                                type: 'time',
                                 time: {
                                     unit: 'minute',
                                 }
@@ -105,14 +108,14 @@ export default {
             },
             cpu: 0,
             disk_percentage: 0,
-            disk_total: "",
-            disk_used: "",
-            uptime: "",
+            disk_total: '',
+            disk_used: '',
+            uptime: '',
             loadavg: {}
         }
     },
     created() {
-        this.websocket = new ReconnectingWebSocket(this.getWebSocketRoot() + "/analytic?token="
+        this.websocket = new ReconnectingWebSocket(this.getWebSocketRoot() + '/analytic?token='
             + btoa(this.$store.state.user.token))
         this.websocket.onmessage = this.wsOnMessage
         this.websocket.onopen = this.wsOpen
@@ -127,7 +130,7 @@ export default {
     },
     methods: {
         wsOpen() {
-            this.websocket.send("ping")
+            this.websocket.send('ping')
         },
         wsOnMessage(m) {
             const r = JSON.parse(m.data)
@@ -156,7 +159,7 @@ export default {
             uptime -= uptime_days * 86400
             let uptime_hours = Math.floor(uptime / 3600)
             uptime -= uptime_hours * 3600
-            this.uptime = uptime_days + 'd ' + uptime_hours + 'h ' +  Math.floor(uptime/60) + 'm'
+            this.uptime = uptime_days + 'd ' + uptime_hours + 'h ' + Math.floor(uptime / 60) + 'm'
             this.loadavg = r.loadavg
         }
     }
@@ -172,6 +175,7 @@ export default {
 
     .chart_dashboard {
         padding: 60px;
+
         .description {
             width: 120px;
             text-align: center

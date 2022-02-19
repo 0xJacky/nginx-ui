@@ -63,7 +63,6 @@ func Analytic(c *gin.Context) {
 			cpuUserUsage := (cpuTimesAfter[0].User - cpuTimesBefore[0].User) / (float64(1000*threadNum) / 1000)
 			cpuSystemUsage := (cpuTimesAfter[0].System - cpuTimesBefore[0].System) / (float64(1000*threadNum) / 1000)
 
-
 			response["cpu_user"], _ = strconv.ParseFloat(fmt.Sprintf("%.2f",
 				cpuUserUsage*100), 64)
 

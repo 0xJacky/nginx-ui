@@ -29,7 +29,7 @@ func GetBackupList(path string) (configs []ConfigBackupListItem) {
 	return
 }
 
-func GetBackup(id int) (config ConfigBackup)  {
+func GetBackup(id int) (config ConfigBackup) {
 	db.First(&config, id)
 
 	return

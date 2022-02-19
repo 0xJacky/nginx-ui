@@ -33,15 +33,15 @@
 
 
 <script>
-import StdDataEntry from "@/components/StdDataEntry/StdDataEntry"
-import FooterToolBar from "@/components/FooterToolbar/FooterToolBar"
-import VueItextarea from "@/components/VueItextarea/VueItextarea"
-import {columns, columnsSSL} from "@/views/domain/columns"
-import {unparse} from "@/views/domain/methods"
-import CertInfo from "@/views/domain/CertInfo"
+import StdDataEntry from '@/components/StdDataEntry/StdDataEntry'
+import FooterToolBar from '@/components/FooterToolbar/FooterToolBar'
+import VueItextarea from '@/components/VueItextarea/VueItextarea'
+import {columns, columnsSSL} from '@/views/domain/columns'
+import {unparse} from '@/views/domain/methods'
+import CertInfo from '@/views/domain/CertInfo'
 
 export default {
-    name: "DomainEdit",
+    name: 'DomainEdit',
     components: {CertInfo, FooterToolBar, StdDataEntry, VueItextarea},
     data() {
         return {
@@ -49,15 +49,15 @@ export default {
             config: {
                 http_listen_port: 80,
                 https_listen_port: null,
-                server_name: "",
-                index: "",
-                root: "",
-                ssl_certificate: "",
-                ssl_certificate_key: "",
+                server_name: '',
+                index: '',
+                root: '',
+                ssl_certificate: '',
+                ssl_certificate_key: '',
                 support_ssl: false,
                 auto_cert: false
             },
-            configText: "",
+            configText: '',
             ws: null,
             ok: false
         }
@@ -102,17 +102,17 @@ export default {
                     })
                 }).catch(r => {
                     console.log(r)
-                    this.$message.error("服务器错误")
+                    this.$message.error('服务器错误')
                 })
             } else {
                 this.config = {
                     http_listen_port: 80,
                     https_listen_port: null,
-                    server_name: "",
-                    index: "",
-                    root: "",
-                    ssl_certificate: "",
-                    ssl_certificate_key: "",
+                    server_name: '',
+                    index: '',
+                    root: '',
+                    ssl_certificate: '',
+                    ssl_certificate_key: '',
                     support_ssl: false,
                     auto_cert: false,
                 }
@@ -176,43 +176,43 @@ export default {
         save() {
             this.$api.domain.save(this.name, {content: this.configText}).then(r => {
                 this.parse(r)
-                this.$message.success("保存成功")
+                this.$message.success('保存成功')
                 if (this.name) {
-                    if (this.$refs["cert-info"]) this.$refs["cert-info"].get()
+                    if (this.$refs['cert-info']) this.$refs['cert-info'].get()
                 }
             }).catch(r => {
                 console.log(r)
-                this.$message.error("保存错误" + r.message !== undefined ? " " + r.message : null, 10)
+                this.$message.error('保存错误' + r.message !== undefined ? ' ' + r.message : null, 10)
             })
         },
         issue_cert() {
-            this.$message.info("请注意，当前配置中 server_name 必须为需要申请证书的域名，否则无法申请", 15)
-            this.$message.info("正在申请，请稍后", 15)
-            this.ws = new WebSocket(this.getWebSocketRoot() + "/cert/issue/" + this.config.server_name
-                + "?token=" + btoa(this.$store.state.user.token))
+            this.$message.info('请注意，当前配置中 server_name 必须为需要申请证书的域名，否则无法申请', 15)
+            this.$message.info('正在申请，请稍后', 15)
+            this.ws = new WebSocket(this.getWebSocketRoot() + '/cert/issue/' + this.config.server_name
+                + '?token=' + btoa(this.$store.state.user.token))
 
             this.ws.onopen = () => {
-                this.ws.send("go")
+                this.ws.send('go')
             }
 
             this.ws.onmessage = m => {
                 const r = JSON.parse(m.data)
                 switch (r.status) {
-                    case "success":
+                    case 'success':
                         this.$message.success(r.message, 10)
                         break
-                    case "info":
+                    case 'info':
                         this.$message.info(r.message, 10)
                         break
-                    case "error":
+                    case 'error':
                         this.$message.error(r.message, 10)
                         break
                 }
 
-                if (r.status === "success" && r.ssl_certificate !== undefined && r.ssl_certificate_key !== undefined) {
+                if (r.status === 'success' && r.ssl_certificate !== undefined && r.ssl_certificate_key !== undefined) {
                     this.config.ssl_certificate = r.ssl_certificate
                     this.config.ssl_certificate_key = r.ssl_certificate_key
-                    if (this.$refs["cert-info"]) this.$refs["cert-info"].get()
+                    if (this.$refs['cert-info']) this.$refs['cert-info'].get()
                 }
             }
         },

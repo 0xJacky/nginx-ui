@@ -17,29 +17,29 @@
 </template>
 
 <script>
-import StdTable from "@/components/StdDataDisplay/StdTable"
+import StdTable from '@/components/StdDataDisplay/StdTable'
 
 const columns = [{
-    title: "名称",
-    dataIndex: "name",
-    scopedSlots: {customRender: "名称"},
+    title: '名称',
+    dataIndex: 'name',
+    scopedSlots: {customRender: '名称'},
     sorter: true,
     pithy: true
 }, {
-    title: "修改时间",
-    dataIndex: "modify",
+    title: '修改时间',
+    dataIndex: 'modify',
     datetime: true,
-    scopedSlots: {customRender: "modify"},
+    scopedSlots: {customRender: 'modify'},
     sorter: true,
     pithy: true
 }, {
-    title: "操作",
-    dataIndex: "action",
-    scopedSlots: {customRender: "action"}
+    title: '操作',
+    dataIndex: 'action',
+    scopedSlots: {customRender: 'action'}
 }]
 
 export default {
-    name: "Config",
+    name: 'Config',
     components: {StdTable},
     data() {
         return {

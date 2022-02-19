@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '../store'
+import {router} from '@/router'
 
 /* 创建 axios 实例 */
 let http = axios.create({
@@ -40,6 +41,7 @@ http.interceptors.response.use(
             case 403:
                 // 无权访问时，直接登出
                 await store.dispatch('logout')
+                router.push('/login').catch()
                 break
         }
         return Promise.reject(error.response.data)

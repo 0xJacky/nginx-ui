@@ -1,24 +1,25 @@
 <script>
-import { Line, mixins } from 'vue-chartjs'
-const { reactiveProp } = mixins
+import {Line, mixins} from 'vue-chartjs'
+
+const {reactiveProp} = mixins
 
 export default {
-    name: "LineChart",
+    name: 'LineChart',
     extends: Line,
     mixins: [reactiveProp],
     props: ['options'],
     data() {
-      return {
-          updating: false
-      }
+        return {
+            updating: false
+        }
     },
-    mounted () {
+    mounted() {
         this.renderChart(this.chartData, this.options)
     },
     watch: {
         chartData: {
             deep: true,
-            handler () {
+            handler() {
                 if (!this.updating && this.$data && this.$data._chart) {
                     // Update the chart
                     this.updating = true

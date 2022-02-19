@@ -14,13 +14,13 @@
 </template>
 
 <script>
-import FooterToolBar from "@/components/FooterToolbar/FooterToolBar"
-import StdDataEntry from "@/components/StdDataEntry/StdDataEntry"
-import {columns} from "@/views/domain/columns"
-import {unparse} from "@/views/domain/methods"
+import FooterToolBar from '@/components/FooterToolbar/FooterToolBar'
+import StdDataEntry from '@/components/StdDataEntry/StdDataEntry'
+import {columns} from '@/views/domain/columns'
+import {unparse} from '@/views/domain/methods'
 
 export default {
-    name: "DomainAdd",
+    name: 'DomainAdd',
     components: {StdDataEntry, FooterToolBar},
     data() {
         return {
@@ -36,10 +36,10 @@ export default {
             this.$api.domain.get_template('http-conf').then(r => {
                 let text = unparse(r.template, this.config)
                 this.$api.domain.save(this.config.name, {content: text, enabled: true}).then(() => {
-                    this.$message.success("保存成功")
+                    this.$message.success('保存成功')
 
                     this.$api.domain.enable(this.config.name).then(() => {
-                        this.$message.success("启用成功")
+                        this.$message.success('启用成功')
 
                         this.$router.push('/domain/' + this.config.name)
 

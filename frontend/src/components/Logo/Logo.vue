@@ -1,6 +1,6 @@
 <template>
     <div class="logo">
-        <img :src="logo" alt="logo" />
+        <img :src="logo" alt="logo"/>
         <p class="text">Nginx UI</p>
         <div class="clear"></div>
     </div>
