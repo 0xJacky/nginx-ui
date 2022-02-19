@@ -1,7 +1,6 @@
 import {translate} from 'vue-gettext'
 import store from '@/lib/store'
 import {availableLanguages} from '@/lib/translate/index'
-import translations from '@/translations.json'
 
 let lang = window.navigator.language
 if (!lang.includes('zh')) {
@@ -24,6 +23,6 @@ const {
     gettext: $gettext,
 } = translate
 
-translate.initTranslations(translations, config)
+translate.initTranslations(store.state.settings.translations, config)
 
 export default $gettext

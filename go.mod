@@ -23,11 +23,13 @@ require (
 )
 
 require (
+	github.com/0xJacky/pofile v0.0.0-20220219022008-df96416310e5 // indirect
 	github.com/StackExchange/wmi v1.2.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-ole/go-ole v1.2.5 // indirect
 	github.com/golang/protobuf v1.3.4 // indirect
+	github.com/itchyny/timefmt-go v0.1.3 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.2 // indirect
 	github.com/json-iterator/go v1.1.9 // indirect
@@ -37,6 +39,7 @@ require (
 	github.com/miekg/dns v1.1.40 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/tklauser/go-sysconf v0.3.7 // indirect
 	github.com/tklauser/numcpus v0.2.3 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect

@@ -11,7 +11,7 @@ import utils from '@/lib/utils'
 import api from '@/api'
 import GetTextPlugin from 'vue-gettext'
 import {availableLanguages} from '@/lib/translate'
-import translations from '@/translations.json'
+import http from '@/lib/http'
 
 Vue.use(utils)
 
@@ -23,8 +23,12 @@ Vue.prototype.$api = api
 Vue.use(GetTextPlugin, {
     availableLanguages,
     defaultLanguage: store.getters.current_language,
-    translations: translations,
+    translations: store.state.settings.translations,
     silent: true
+})
+
+http.get('/translations.json').then(r => {
+    store.commit('update_translations', r)
 })
 
 NProgress.configure({

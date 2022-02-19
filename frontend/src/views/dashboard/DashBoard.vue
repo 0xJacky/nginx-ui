@@ -30,8 +30,8 @@
                         <a-col :lg="6" :sm="8" :xs="12" class="chart_dashboard">
                             <div>
                                 <a-tooltip
-                                    :title="$gettext('Used: ')+ disk_used +
-                                     ' / '+ $gettext('Total: ') + disk_total">
+                                    :title="$gettext('Used:')+ disk_used +
+                                     ' / '+ $gettext('Total:') + disk_total">
                                     <a-progress :percent="disk_percentage" type="dashboard"/>
                                     <p class="description" v-translate>Storage</p>
                                 </a-tooltip>
