@@ -11,8 +11,9 @@
                                 </template>
                             </a-statistic>
                             <p><translate>Uptime</translate> {{ uptime }}</p>
-                            <p><translate>Load averages</translate> 1min:{{ loadavg.load1 }} 5min:{{ loadavg.load5 }}
-                                15min:{{ loadavg.load15 }}</p>
+                            <p><translate>Load averages</translate> 1min:{{ loadavg.load1.toFixed(2) }}
+                                5min:{{ loadavg.load5.toFixed(2) }}
+                                15min:{{ loadavg.load15.toFixed(2) }}</p>
                             <line-chart :chart-data="cpu_analytic" :options="cpu_analytic.options" :height="150"/>
                         </a-col>
                         <a-col :lg="6" :sm="8" :xs="12" class="chart_dashboard">
