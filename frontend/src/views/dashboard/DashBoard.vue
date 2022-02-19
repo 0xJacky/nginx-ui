@@ -121,9 +121,9 @@ export default {
         this.websocket.onmessage = this.wsOnMessage
         this.websocket.onopen = this.wsOpen
         const time = new Date()
-        for (let i = 0; i < 120; i++) {
-            this.cpu_analytic.datasets[0].data.push({x: time, y: 0})
-            this.cpu_analytic.datasets[1].data.push({x: time, y: 0})
+        for (let i = 200; i > 0; i--) {
+            this.cpu_analytic.datasets[0].data.push({x: time-i*1000, y: 0})
+            this.cpu_analytic.datasets[1].data.push({x: time-i*1000, y: 0})
         }
     },
     destroyed() {
@@ -142,7 +142,7 @@ export default {
                 .push({x: time, y: r.cpu_user})
             this.cpu_analytic.datasets[1].data
                 .push({x: time, y: this.cpu})
-            if (this.cpu_analytic.datasets[0].data.length > 120) {
+            if (this.cpu_analytic.datasets[0].data.length > 200) {
                 this.cpu_analytic.datasets[0].data.shift()
                 this.cpu_analytic.datasets[1].data.shift()
             }

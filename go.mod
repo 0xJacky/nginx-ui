@@ -23,7 +23,7 @@ require (
 )
 
 require (
-	github.com/0xJacky/pofile v0.0.0-20220219022008-df96416310e5 // indirect
+	github.com/0xJacky/pofile v0.0.1 // indirect
 	github.com/StackExchange/wmi v1.2.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
