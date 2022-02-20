@@ -1,5 +1,6 @@
 <template>
-    <codemirror v-model="current_value" :options="cmOptions"/>
+<!--    <codemirror v-model="current_value" :options="cmOptions"/>-->
+    <editor v-model="current_value" @init="editorInit" lang="nginx" theme="monokai" width="100%" height="1000"></editor>
 </template>
 <style lang="less">
 .cm-s-monokai {
@@ -7,7 +8,7 @@
 }
 </style>
 <script>
-import {codemirror} from 'vue-codemirror'
+//import {codemirror} from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
 
@@ -16,7 +17,8 @@ import 'codemirror/mode/nginx/nginx'
 export default {
     name: 'vue-itextarea',
     components: {
-        codemirror
+       // codemirror
+        editor: require('vue2-ace-editor'),
     },
     props: {
         value: {},
@@ -48,5 +50,12 @@ export default {
             }
         }
     },
+    methods: {
+        editorInit: function () {
+            require('brace/ext/language_tools') //language extension prerequsite...
+            require('brace/mode/nginx')    //language
+            require('brace/theme/monokai')
+        }
+    }
 }
 </script>

@@ -19,13 +19,20 @@ export default {
 
 <style lang="less" scoped>
 .logo {
-    margin: 8px 18px;
-    border-bottom: 1px solid #e8e8e8;
+    padding: 8px 25px;
+    -webkit-box-shadow: 1px 1px 0 0 #e8e8e8;
+    box-shadow: 1px 1px 0 0 #e8e8e8;
     transition: all 0.3s;
-    height: 56px;
-    width: 80%;
+    height: 64px;
+    width: 100%;
     overflow: hidden;
     display: inline-block;
+    background-color: #ffffff;
+    @media (prefers-color-scheme: dark) {
+        background-color: transparent;
+        -webkit-box-shadow: 1px 1px 0 0 #404040;
+        box-shadow: 1px 1px 0 0 #404040;
+    }
 
     img {
         height: 46px;
@@ -33,11 +40,11 @@ export default {
     }
 
     .text {
-        font-weight: 300;
-        font-size: 23px;
+        float: left;
+        font-size: 22px;
         line-height: 48px;
         height: 48px;
-        padding-left: 52px;
+        display: inline-block;
     }
 }
 </style>

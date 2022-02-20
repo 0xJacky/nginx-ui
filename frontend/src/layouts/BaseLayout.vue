@@ -17,6 +17,7 @@
                 :collapsible="true"
                 :style="{zIndex: 11}"
                 theme="light"
+                class="layout-sider"
             >
                 <side-bar/>
             </a-layout-sider>
@@ -47,7 +48,7 @@ import HeaderLayout from './HeaderLayout'
 import SideBar from './SideBar'
 import FooterLayout from './FooterLayout'
 import PageHeader from '@/components/PageHeader/PageHeader'
-import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN'
+import zh_CN from 'ant-design-vue/es/locale/zh_CN'
 
 export default {
     name: 'BaseLayout',
@@ -55,7 +56,7 @@ export default {
         return {
             collapsed: this.collapse(),
             zh_CN,
-            clientWidth: document.body.clientWidth
+            clientWidth: document.body.clientWidth,
         }
     },
     mounted() {
@@ -73,7 +74,28 @@ export default {
     methods: {}
 }
 </script>
+<style lang="less">
+.layout-sider .sidebar {
+    position: fixed;
+    width: 200px;
 
+    ul.ant-menu-inline.ant-menu-root {
+        height: calc(100vh - 120px);
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        .ant-menu-item {
+            width: unset;
+        }
+    }
+
+    ul.ant-menu-inline-collapsed {
+        height: calc(100vh - 200px);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+</style>
 <style lang="less">
 @dark: ~"(prefers-color-scheme: dark)";
 
@@ -90,7 +112,17 @@ p {
     @media @dark {
         background-color: #28292c;
     }
-    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.01);
+    box-shadow: 2px 0 8px rgba(29, 35, 41, 0.05);
+}
+
+.ant-drawer-body {
+    .sidebar .logo {
+        box-shadow: 0 1px 0 0 #e8e8e8;
+    }
+
+    .ant-menu-inline .ant-menu-selected::after, .ant-menu-inline .ant-menu-item-selected::after {
+        border-right: 0 !important;
+    }
 }
 
 @media @dark {

@@ -34,17 +34,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
 .header {
     height: 64px;
     padding: 0 20px 0 0;
     background: #fff;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.05);
-    border-bottom: 1px solid #e8e8e8;
     @media (prefers-color-scheme: dark) {
         background: #28292c;
-        box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-        border-bottom: unset;
+        box-shadow: 1px 1px 0 0 #404040;
     }
     position: fixed;
     width: 100%;

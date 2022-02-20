@@ -68,7 +68,7 @@ export default {
     padding: 16px 32px 0;
     border-bottom: 1px solid #e8e8e8;
     @media (prefers-color-scheme: dark) {
-        background: transparent;
+        background: #28292c;
         border-bottom: unset;
     }
 

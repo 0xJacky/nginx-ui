@@ -9,6 +9,8 @@
     @text-color-secondary: #bdbdbd;
     @heading-color: #fff;
 
+    @item-hover-bg: @black_bg;
+
     @body-background: @black_bg;
     @component-background: @black_content;
     @layout-body-background: @black_bg;
@@ -22,7 +24,7 @@
 
     @item-active-bg: #161717;
 
-    @link-color: #fff;
+    @link-color: #bcbcbc;
     @table-row-hover-bg: @black_bg;
     @table-selected-row-bg: @black_bg;
 
@@ -45,7 +47,6 @@
     // ---
     @alert-message-color: @black;
 
-
     .ant-select-dropdown-menu-item:hover {
         background: @black_bg;
     }
@@ -63,6 +64,11 @@
     .ant-transfer-list-content-item:not(.ant-transfer-list-content-item-disabled):hover,
     .ant-transfer-list-content-item-highlight-enter, .ant-transfer-list-content-item-highlight-enter-active {
         background-color: @black_bg !important;
+    }
+
+    .ant-card {
+        // box-shadow: 0 0 30px rgb(0, 0, 0, 10%) !important;
+        box-shadow: none !important;
     }
 
 }

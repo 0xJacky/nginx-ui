@@ -248,6 +248,10 @@ export default {
 
 <style lang="less">
 .ant-collapse {
+    background: #ffffff;
+    @media (prefers-color-scheme: dark) {
+        background: #28292c;
+    }
     margin-bottom: 20px;
 
     .ant-collapse-item {

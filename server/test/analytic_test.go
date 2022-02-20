@@ -6,6 +6,7 @@ import (
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/load"
 	"github.com/shirou/gopsutil/v3/mem"
+	"github.com/shirou/gopsutil/v3/net"
 	"runtime"
 	"testing"
 	"time"
@@ -33,4 +34,10 @@ func TestGoPsutil(t *testing.T) {
 
 	diskUsage, _ := disk.Usage(".")
 	fmt.Println(diskUsage.String())
+
+	network, _ := net.IOCounters(false)
+	fmt.Println(network)
+	time.Sleep(time.Second)
+	network, _ = net.IOCounters(false)
+	fmt.Println(network)
 }

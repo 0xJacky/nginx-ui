@@ -70,7 +70,9 @@ export default {
         },
         visible(sidebars) {
             return sidebars.filter(c => {
-                return c.meta === undefined || (c.meta.hiddenInSidebar === undefined || c.meta.hiddenInSidebar !== true)
+                return c.meta === undefined ||
+                    (c.meta.hiddenInSidebar === undefined || c.meta.hiddenInSidebar !== true)
+                    && (c.meta.power === undefined || this.$store.state.user.power === c.meta.power)
             })
         }
     }
@@ -78,22 +80,7 @@ export default {
 </script>
 
 
-<style lang="less" scoped>
-.sidebar {
-    position: fixed;
-    width: 200px;
-
-    .ant-menu-inline {
-        height: calc(100vh - 120px);
-        overflow-y: auto;
-        overflow-x: hidden;
-
-        .ant-menu-item {
-            width: unset;
-        }
-    }
-}
-
+<style lang="less">
 .ant-layout-sider-collapsed .logo {
     overflow: hidden;
 }

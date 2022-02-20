@@ -31,7 +31,6 @@ a {
     text-decoration: none;
     -webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
-    -ms-transition: all .3s ease;
     -o-transition: all .3s ease;
     transition: all .3s ease;
 
@@ -149,9 +148,34 @@ button {
     box-shadow: 0 0 30px rgba(200, 200, 200, 0.25);
 }
 
-.ant-collapse {
-    background: #ffffff;
-    @media (prefers-color-scheme: dark) {
-        background: #28292c;
-    }
+.ant-list-item-action {
+    margin-left: 0 !important;
 }
+
+/*@media (max-width: 900px) {
+
+    .ant-steps-navigation > .ant-steps-item::after {
+        position: relative;
+        top: -2px;
+        left: 50%;
+        display: block;
+        width: 8px;
+        height: 8px;
+        margin-bottom: 8px;
+        text-align: center;
+        transform: rotate(135deg);
+    }
+
+    .ant-steps-navigation > .ant-steps-item.ant-steps-item-active::before {
+        top: 0;
+        right: 0;
+        left: unset;
+        display: block;
+        width: 3px;
+        height: calc(100% - 24px);
+    }
+
+    .ant-steps-horizontal.ant-steps-label-horizontal .ant-steps-item, .ant-steps-horizontal.ant-steps-label-horizontal {
+        display: block;
+    }
+}*/

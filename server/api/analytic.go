@@ -8,6 +8,7 @@ import (
 	"github.com/shirou/gopsutil/v3/host"
 	"github.com/shirou/gopsutil/v3/load"
 	"github.com/shirou/gopsutil/v3/mem"
+	"github.com/shirou/gopsutil/v3/net"
 	"net/http"
 	"runtime"
 	"strconv"
@@ -80,6 +81,9 @@ func Analytic(c *gin.Context) {
 			response["disk_used"] = humanize.Bytes(diskUsage.Used)
 			response["disk_total"] = humanize.Bytes(diskUsage.Total)
 			response["disk_percentage"], _ = strconv.ParseFloat(fmt.Sprintf("%.2f", diskUsage.UsedPercent), 64)
+
+			network, _ := net.IOCounters(false)
+			response["network"] = network
 
 			m, _ := json.Marshal(response)
 			message = m
