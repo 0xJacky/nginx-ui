@@ -1,7 +1,7 @@
 package api
 
 import (
-	tool2 "github.com/0xJacky/Nginx-UI/server/tool"
+	"github.com/0xJacky/Nginx-UI/server/tool"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"log"
@@ -19,7 +19,7 @@ func GetConfigs(c *gin.Context) {
 		"modify": "time",
 	}
 
-	configFiles, err := ioutil.ReadDir(tool2.GetNginxConfPath("/"))
+	configFiles, err := ioutil.ReadDir(tool.GetNginxConfPath("/"))
 
 	if err != nil {
 		ErrHandler(c, err)
@@ -40,7 +40,7 @@ func GetConfigs(c *gin.Context) {
 		}
 	}
 
-	configs = tool2.Sort(orderBy, sort, mySort[orderBy], configs)
+	configs = tool.Sort(orderBy, sort, mySort[orderBy], configs)
 
 	c.JSON(http.StatusOK, gin.H{
 		"configs": configs,
@@ -49,7 +49,7 @@ func GetConfigs(c *gin.Context) {
 
 func GetConfig(c *gin.Context) {
 	name := c.Param("name")
-	path := filepath.Join(tool2.GetNginxConfPath("/"), name)
+	path := filepath.Join(tool.GetNginxConfPath("/"), name)
 
 	content, err := ioutil.ReadFile(path)
 
@@ -80,7 +80,7 @@ func AddConfig(c *gin.Context) {
 	name := request.Name
 	content := request.Content
 
-	path := filepath.Join(tool2.GetNginxConfPath("/"), name)
+	path := filepath.Join(tool.GetNginxConfPath("/"), name)
 
 	log.Println(path)
 	if _, err = os.Stat(path); err == nil {
@@ -98,7 +98,7 @@ func AddConfig(c *gin.Context) {
 		}
 	}
 
-	output := tool2.ReloadNginx()
+	output := tool.ReloadNginx()
 
 	if output != "" {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -126,7 +126,7 @@ func EditConfig(c *gin.Context) {
 		ErrHandler(c, err)
 		return
 	}
-	path := filepath.Join(tool2.GetNginxConfPath("/"), name)
+	path := filepath.Join(tool.GetNginxConfPath("/"), name)
 	content := request.Content
 
 	origContent, err := ioutil.ReadFile(path)
@@ -144,7 +144,7 @@ func EditConfig(c *gin.Context) {
 		}
 	}
 
-	output := tool2.ReloadNginx()
+	output := tool.ReloadNginx()
 
 	if output != "" {
 		c.JSON(http.StatusInternalServerError, gin.H{
