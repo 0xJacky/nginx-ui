@@ -4,7 +4,7 @@
             <h1>Nginx UI</h1>
         </div>
         <a-form
-            id="components-form-demo-normal-login"
+            id="components-form-install"
             :form="form"
             class="login-form"
             @submit="handleSubmit"
@@ -15,14 +15,14 @@
           'email',
           { rules: [{
                 type: 'email',
-                message: 'The input is not valid E-mail!',
+                message: $gettext('Invalid E-mail!'),
               },
               {
                 required: true,
-                message: 'Please input your E-mail!',
+                message: $gettext('Please input your E-mail!'),
               },] },
         ]"
-                    placeholder="Email (*)"
+                    :placeholder="$gettext('Email (*)')"
                 >
                     <a-icon slot="prefix" type="mail" style="color: rgba(0,0,0,.25)"/>
                 </a-input>
@@ -31,9 +31,9 @@
                 <a-input
                     v-decorator="[
           'username',
-          { rules: [{ required: true, message: 'Please input your username!' }] },
+          { rules: [{ required: true, message: $gettext('Please input your username!') }] },
         ]"
-                    placeholder="Username (*)"
+                    :placeholder="$gettext('Username (*)')"
                 >
                     <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)"/>
                 </a-input>
@@ -42,10 +42,10 @@
                 <a-input
                     v-decorator="[
           'password',
-          { rules: [{ required: true, message: 'Please input your Password!' }] },
+          { rules: [{ required: true, message: $gettext('Please input your password!') }] },
         ]"
                     type="password"
-                    placeholder="Password (*)"
+                    :placeholder="$gettext('Password (*)')"
                 >
                     <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)"/>
                 </a-input>
@@ -54,16 +54,20 @@
                 <a-input
                     v-decorator="[
           'database',
-          { rules: [{ pattern: /^[^\\/:*?\x22<>|]{1,120}$/, message: 'Please input a legal file name!'}] },
+          { rules: [{ pattern: /^[^\\/:*?\x22<>|]{1,120}$/,
+          message: $gettextInterpolate(
+              $gettext('The filename cannot contain the following characters: %{c}'),
+              {c: '& &quot; ? < > # {} % ~ / \\'}
+          )}] },
         ]"
-                    placeholder="Database (Optional, default: database)"
+                    :placeholder="$gettext('Database (Optional, default: database)')"
                 >
                     <a-icon slot="prefix" type="database" style="color: rgba(0,0,0,.25)"/>
                 </a-input>
             </a-form-item>
             <a-form-item>
-                <a-button type="primary" :block="true" html-type="submit" :loading="loading">
-                    安装
+                <a-button type="primary" :block="true" html-type="submit" :loading="loading" v-translate>
+                    Install
                 </a-button>
             </a-form-item>
         </a-form>

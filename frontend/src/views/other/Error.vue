@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <h1 class="title">{{ $route.meta.status_code ? $route.meta.status_code : 404 }}</h1>
-        <p>{{ $route.meta.error ? $route.meta.error : '找不到文件' }}</p>
+        <p>{{ $route.meta.error ? $route.meta.error : $gettext('File Not Found') }}</p>
     </div>
 </template>
 

@@ -24,7 +24,7 @@ export const routes = [
             },
             {
                 path: 'user',
-                name: $gettext('Users'),
+                name: $gettext('Manage Users'),
                 component: () => import('@/views/user/User.vue'),
                 meta: {
                     icon: 'user'
@@ -32,7 +32,7 @@ export const routes = [
             },
             {
                 path: 'domain',
-                name: $gettext('Sites'),
+                name: $gettext('Manage Sites'),
                 component: () => import('@/layouts/BaseRouterView'),
                 meta: {
                     icon: 'cloud'
@@ -44,11 +44,11 @@ export const routes = [
                     component: () => import('@/views/domain/DomainList.vue'),
                 }, {
                     path: 'add',
-                    name: $gettext('Add Sites'),
+                    name: $gettext('Add Site'),
                     component: () => import('@/views/domain/DomainAdd.vue'),
                 }, {
                     path: ':name',
-                    name: $gettext('Modify Sites'),
+                    name: $gettext('Edit Site'),
                     component: () => import('@/views/domain/DomainEdit.vue'),
                     meta: {
                         hiddenInSidebar: true
@@ -57,20 +57,22 @@ export const routes = [
             },
             {
                 path: 'config',
-                name: $gettext('Config'),
+                name: $gettext('Manage Configs'),
                 component: () => import('@/views/config/Config.vue'),
                 meta: {
-                    icon: 'file'
+                    icon: 'file',
+                    hideChildren: true
                 },
+                children: [{
+                    path: 'config/:name',
+                    name: $gettext('Edit Configuration'),
+                    component: () => import('@/views/config/ConfigEdit.vue'),
+                    meta: {
+                        hiddenInSidebar: true
+                    },
+                },]
             },
-            {
-                path: 'config/:name',
-                name: $gettext('Modify Config'),
-                component: () => import('@/views/config/ConfigEdit.vue'),
-                meta: {
-                    hiddenInSidebar: true
-                },
-            },
+
             {
                 path: 'about',
                 name: $gettext('About'),
@@ -121,7 +123,7 @@ router.beforeEach((to, from, next) => {
                 && Number(process.env.VUE_APP_BUILD_ID) === r.data.build_id)) {
                 Vue.prototype.$info({
                     title: $gettext('System message'),
-                    content: $gettext('Detected version update, this page will automatically refresh.'),
+                    content: $gettext('Detected version update, this page will refresh.'),
                     onOk() {
                         location.reload()
                     },

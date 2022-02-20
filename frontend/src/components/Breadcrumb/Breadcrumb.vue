@@ -2,7 +2,7 @@
     <a-breadcrumb class="breadcrumb">
         <a-breadcrumb-item v-for="(item, index) in breadList" :key="item.name">
             <router-link
-                v-if="item.name != name && index != 1"
+                v-if="item.name !== name && index !== 1"
                 :to="{ path: item.path === '' ? '/' : item.path }"
             >{{ item.name }}
             </router-link>

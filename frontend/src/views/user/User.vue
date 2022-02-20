@@ -5,9 +5,10 @@
 <script>
 
 import StdCurd from '@/components/StdDataDisplay/StdCurd'
+import $gettext from "@/lib/translate/gettext";
 
 const columns = [{
-    title: '用户名',
+    title: $gettext('Username'),
     dataIndex: 'name',
     sorter: true,
     pithy: true,
@@ -15,29 +16,29 @@ const columns = [{
         type: 'input'
     }
 }, {
-    title: '密码',
+    title: $gettext('Password'),
     dataIndex: 'password',
     sorter: true,
     pithy: true,
     edit: {
         type: 'input',
-        placeholder: '留空不修改'
+        placeholder: $gettext('Leave blank for no change')
     },
     display: false
 }, {
-    title: '创建时间',
+    title: $gettext('Created at'),
     dataIndex: 'created_at',
     datetime: true,
     sorter: true,
     pithy: true
 }, {
-    title: '修改时间',
+    title: $gettext('Updated at'),
     dataIndex: 'updated_at',
     datetime: true,
     sorter: true,
     pithy: true
 }, {
-    title: '操作',
+    title: $gettext('Action'),
     dataIndex: 'action'
 }]
 

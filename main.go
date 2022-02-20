@@ -33,9 +33,9 @@ func main() {
 	log.Printf("nginx config dir path: %s", tool2.GetNginxConfPath(""))
 	if "" != settings.ServerSettings.JwtSecret {
 		model.Init()
-		frontend.InitTranslations()
 		go tool2.AutoCert()
 	}
+	frontend.InitTranslations()
 
 	srv := &http.Server{
 		Addr:    ":" + settings.ServerSettings.HttpPort,

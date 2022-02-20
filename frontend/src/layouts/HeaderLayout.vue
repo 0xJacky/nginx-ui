@@ -19,13 +19,14 @@
 
 <script>
 import SetLanguage from '@/components/SetLanguage/SetLanguage'
+import $gettext from "@/lib/translate/gettext";
 export default {
     name: 'HeaderComponent',
     components: {SetLanguage},
     methods: {
         logout() {
             this.$api.auth.logout().then(() => {
-                this.$message.success('注销成功')
+                this.$message.success($gettext('Logout successful'))
                 this.$router.push('/login')
             })
         }

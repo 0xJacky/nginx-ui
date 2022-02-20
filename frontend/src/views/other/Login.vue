@@ -13,9 +13,9 @@
                     <a-input
                         v-decorator="[
           'name',
-          { rules: [{ required: true, message: '请输入用户名' }] },
+          { rules: [{ required: true, message: $gettext('Please input your username!') }] },
         ]"
-                        placeholder="Username"
+                        :placeholder="$gettext('Username')"
                     >
                         <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)"/>
                     </a-input>
@@ -24,17 +24,17 @@
                     <a-input
                         v-decorator="[
           'password',
-          { rules: [{ required: true, message: '请输入密码' }] },
+          { rules: [{ required: true, message: $gettext('Please input your password!') }] },
         ]"
                         type="password"
-                        placeholder="Password"
+                        :placeholder="$gettext('Password')"
                     >
                         <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)"/>
                     </a-input>
                 </a-form-item>
                 <a-form-item>
-                    <a-button type="primary" :block="true" html-type="submit" :loading="loading">
-                        登录
+                    <a-button type="primary" :block="true" html-type="submit" :loading="loading" v-translate>
+                        Login
                     </a-button>
                 </a-form-item>
             </a-form>
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import $gettext from "@/lib/translate/gettext";
+
 export default {
     name: 'Login',
     data() {
@@ -71,12 +73,12 @@ export default {
     methods: {
         login(values) {
             return this.$api.auth.login(values.name, values.password).then(async () => {
-                await this.$message.success('登录成功', 1)
+                await this.$message.success($gettext('Login successful'), 1)
                 const next = this.$route.query.next ? this.$route.query.next : '/'
                 await this.$router.push(next)
             }).catch(r => {
                 console.log(r)
-                this.$message.error(r.message ?? '服务器错误')
+                this.$message.error(r.message ?? $gettext('Server error'))
             })
         },
         handleSubmit: async function (e) {

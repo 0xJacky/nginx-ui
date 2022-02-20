@@ -2,7 +2,7 @@
     <div>
         <a-row class="row-two">
             <a-col :lg="24" :sm="24">
-                <a-card style="min-height: 400px" :title="$gettext('Server status')">
+                <a-card style="min-height: 400px" :title="$gettext('Server Status')">
                     <a-row>
                         <a-col :lg="12" :sm="24" class="chart">
                             <a-statistic :value="cpu" style="margin: 0 50px 10px 0" title="CPU">
@@ -11,17 +11,17 @@
                                 </template>
                             </a-statistic>
                             <p><translate>Uptime</translate> {{ uptime }}</p>
-                            <p><translate>Load averages</translate> 1min:{{ loadavg?.load1?.toFixed(2) }}
-                                5min:{{ loadavg?.load5?.toFixed(2) }}
+                            <p><translate>Load Averages: </translate> 1min:{{ loadavg?.load1?.toFixed(2) }} |
+                                5min:{{ loadavg?.load5?.toFixed(2) }} |
                                 15min:{{ loadavg?.load15?.toFixed(2) }}</p>
                             <line-chart :chart-data="cpu_analytic" :options="cpu_analytic.options" :height="150"/>
                         </a-col>
                         <a-col :lg="6" :sm="8" :xs="12" class="chart_dashboard">
                             <div>
                                 <a-tooltip
-                                    :title="$gettext('Used:') + memory_used + $gettext('Cached:') +
-                                     memory_cached + $gettext('Free:') + memory_free +
-                                     $gettext('Physical memory:') + memory_total">
+                                    :title="$gettextInterpolate(
+                                        $gettext('Used: %{u}, Cached: %{c}, Free: %{f}, Physical Memory: %{p}'),
+                                         {u: memory_used, c: memory_cached, f:memory_free, p: memory_total})">
                                     <a-progress :percent="memory_pressure" strokeColor="rgb(135, 208, 104)"
                                                 type="dashboard"/>
                                     <p class="description" v-translate>Memory</p>
@@ -31,8 +31,8 @@
                         <a-col :lg="6" :sm="8" :xs="12" class="chart_dashboard">
                             <div>
                                 <a-tooltip
-                                    :title="$gettext('Used:')+ disk_used +
-                                     ' / '+ $gettext('Total:') + disk_total">
+                                    :title="$gettextInterpolate($gettext('Used: %{used} / Total: %{total}'),
+                                    {used: disk_used, total: disk_total})">
                                     <a-progress :percent="disk_percentage" type="dashboard"/>
                                     <p class="description" v-translate>Storage</p>
                                 </a-tooltip>
@@ -81,10 +81,10 @@ export default {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    responsiveAnimationDuration: 0, // 调整大小后的动画持续时间
+                    responsiveAnimationDuration: 0, // Duration of the animation after resizing 调整大小后的动画持续时间
                     elements: {
                         line: {
-                            tension: 0 // 禁用贝塞尔曲线
+                            tension: 0 // Disable Bessel curves 禁用贝塞尔曲线
                         }
                     },
                     scales: {

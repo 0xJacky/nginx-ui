@@ -6,7 +6,11 @@ LOGNAME ?= $(shell logname)
 
 # adding the name of the user's login name to the template file, so that
 # on a multi-user system several users can run this without interference
+ifeq ($(OS),Windows_NT)
+TEMPLATE_POT ?=  ./template-$(LOGNAME).pot
+else
 TEMPLATE_POT ?= /tmp/template-$(LOGNAME).pot
+endif
 
 # Where to find input files (it can be multiple paths).
 INPUT_FILES = ./src

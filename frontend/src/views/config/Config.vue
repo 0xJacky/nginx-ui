@@ -1,5 +1,5 @@
 <template>
-    <a-card title="配置文件">
+    <a-card :title="$gettext('Configurations')">
         <std-table
             :api="api"
             :columns="columns"
@@ -18,22 +18,23 @@
 
 <script>
 import StdTable from '@/components/StdDataDisplay/StdTable'
+import $gettext from "@/lib/translate/gettext";
 
 const columns = [{
-    title: '名称',
+    title: $gettext('Name'),
     dataIndex: 'name',
-    scopedSlots: {customRender: '名称'},
+    scopedSlots: {customRender: 'name'},
     sorter: true,
     pithy: true
 }, {
-    title: '修改时间',
+    title: $gettext('Updated at'),
     dataIndex: 'modify',
     datetime: true,
     scopedSlots: {customRender: 'modify'},
     sorter: true,
     pithy: true
 }, {
-    title: '操作',
+    title: $gettext('Action'),
     dataIndex: 'action',
     scopedSlots: {customRender: 'action'}
 }]

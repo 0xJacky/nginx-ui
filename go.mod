@@ -3,6 +3,7 @@ module github.com/0xJacky/Nginx-UI
 go 1.17
 
 require (
+	github.com/0xJacky/pofile v0.0.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/dustin/go-humanize v1.0.0
 	github.com/gin-contrib/static v0.0.1
@@ -23,7 +24,6 @@ require (
 )
 
 require (
-	github.com/0xJacky/pofile v0.0.1 // indirect
 	github.com/StackExchange/wmi v1.2.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect

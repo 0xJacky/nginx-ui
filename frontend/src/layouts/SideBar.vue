@@ -8,7 +8,7 @@
             v-model="selectedKey"
         >
             <template v-for="sidebar in visible(sidebars)">
-                <a-menu-item v-if="!sidebar.children" :key="sidebar.name"
+                <a-menu-item v-if="!sidebar.children || sidebar.meta.hideChildren === true" :key="sidebar.name"
                              @click="$router.push('/'+sidebar.path).catch(() => {})">
                     <a-icon :type="sidebar.meta.icon"/>
                     <span>{{ sidebar.name }}</span>

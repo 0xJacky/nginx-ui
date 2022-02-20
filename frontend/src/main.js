@@ -28,7 +28,7 @@ Vue.use(GetTextPlugin, {
 })
 
 http.get('/translations.json').then(r => {
-    store.commit('update_translations', r)
+    if(r) store.commit('update_translations', r)
 })
 
 NProgress.configure({

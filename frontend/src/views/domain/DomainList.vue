@@ -1,5 +1,5 @@
 <template>
-    <a-card title="网站管理">
+    <a-card :title="$gettext('Manage Sites')">
         <std-table
             :api="api"
             :columns="columns"
@@ -13,8 +13,8 @@
         >
             <template #actions="{record}">
                 <a-divider type="vertical"/>
-                <a v-if="record.enabled" @click="disable(record.name)">禁用</a>
-                <a v-else @click="enable(record.name)">启用</a>
+                <a v-if="record.enabled" @click="disable(record.name)" v-translate>Disabled</a>
+                <a v-else @click="enable(record.name)" v-translate>Enabled</a>
             </template>
         </std-table>
     </a-card>
@@ -22,33 +22,34 @@
 
 <script>
 import StdTable from '@/components/StdDataDisplay/StdTable'
+import $gettext, {$interpolate} from "@/lib/translate/gettext";
 
 const columns = [{
-    title: '配置名称',
+    title: $gettext('Name'),
     dataIndex: 'name',
-    scopedSlots: {customRender: '名称'},
+    scopedSlots: {customRender:  'name'},
     sorter: true,
     pithy: true
 }, {
-    title: '状态',
+    title: $gettext('Status'),
     dataIndex: 'enabled',
     badge: true,
     scopedSlots: {customRender: 'enabled'},
     mask: {
-        true: '启用',
-        false: '未启用'
+        true: $gettext('Enabled'),
+        false: $gettext('Disabled')
     },
     sorter: true,
     pithy: true
 }, {
-    title: '修改时间',
+    title: $gettext('Updated at'),
     dataIndex: 'modify',
     datetime: true,
     scopedSlots: {customRender: 'modify'},
     sorter: true,
     pithy: true
 }, {
-    title: '操作',
+    title: $gettext('Action'),
     dataIndex: 'action',
     scopedSlots: {customRender: 'action'}
 }]
@@ -65,20 +66,20 @@ export default {
     methods: {
         enable(name) {
             this.$api.domain.enable(name).then(() => {
-                this.$message.success('启用成功')
+                this.$message.success($gettext('Enabled successfully'))
                 this.$refs.table.get_list()
             }).catch(r => {
                 console.log(r)
-                this.$message.error('启用失败 ' + (r.message ?? ''), 10)
+                this.$message.error($interpolate($gettext('Failed to enable %{msg}'), {msg: r.message ?? ''}), 10)
             })
         },
         disable(name) {
             this.$api.domain.disable(name).then(() => {
-                this.$message.success('禁用成功')
+                this.$message.success($gettext('Disabled successfully'))
                 this.$refs.table.get_list()
             }).catch(r => {
                 console.log(r)
-                this.$message.error('禁用失败')
+                this.$message.error($interpolate($gettext('Failed to disable %{msg}'), {msg: r.message ?? ''}))
             })
         }
     }

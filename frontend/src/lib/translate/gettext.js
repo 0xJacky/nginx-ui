@@ -2,14 +2,14 @@ import {translate} from 'vue-gettext'
 import store from '@/lib/store'
 import {availableLanguages} from '@/lib/translate/index'
 
-let lang = window.navigator.language
-if (!lang.includes('zh')) {
-    lang = lang.split('-')[0]
-} else {
-    lang = lang.replace('-', '_')
+let lang = window.navigator.language.replace('-', '_')
+if(availableLanguages[lang] === undefined) {
+    lang = lang.split('_')[0]
+    if(availableLanguages[lang] === undefined)
+        lang = 'en'
 }
 store.getters.current_language ||
-store.commit('set_language', availableLanguages[lang] ? lang : 'en')
+store.commit('set_language', lang)
 
 const config = {
     language: store.getters.current_language,
@@ -19,8 +19,8 @@ const config = {
 }
 
 // easygettext aliases
-const {
-    gettext: $gettext,
+export const {
+    gettext: $gettext, gettextInterpolate: $interpolate
 } = translate
 
 translate.initTranslations(store.state.settings.translations, config)

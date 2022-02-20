@@ -50,6 +50,7 @@ import FooterLayout from './FooterLayout'
 import PageHeader from '@/components/PageHeader/PageHeader'
 import zh_CN from 'ant-design-vue/es/locale/zh_CN'
 
+// TODO： Change language for base layout.
 export default {
     name: 'BaseLayout',
     data() {

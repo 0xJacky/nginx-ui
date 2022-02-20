@@ -1,10 +1,10 @@
 <template>
-    <a-card title="配置文件编辑">
+    <a-card :title="$gettext('Edit Configuration')">
         <vue-itextarea v-model="configText"/>
         <footer-tool-bar>
             <a-space>
-                <a-button @click="$router.go(-1)">返回</a-button>
-                <a-button type="primary" @click="save">保存</a-button>
+                <a-button @click="$router.go(-1)" v-translate>Cancel</a-button>
+                <a-button type="primary" @click="save" v-translate>Save</a-button>
             </a-space>
         </footer-tool-bar>
     </a-card>
@@ -13,6 +13,7 @@
 <script>
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar'
 import VueItextarea from '@/components/VueItextarea/VueItextarea'
+import $gettext, {$interpolate} from "@/lib/translate/gettext";
 
 export default {
     name: 'DomainEdit',
@@ -44,7 +45,7 @@ export default {
                     this.configText = r.config
                 }).catch(r => {
                     console.log(r)
-                    this.$message.error('服务器错误')
+                    this.$message.error($gettext('Server error'))
                 })
             } else {
                 this.configText = ''
@@ -53,10 +54,10 @@ export default {
         save() {
             this.$api.config.save(this.name ? this.name : this.config.name, {content: this.configText}).then(r => {
                 this.configText = r.config
-                this.$message.success('保存成功')
+                this.$message.success($gettext('Saved successfully'))
             }).catch(r => {
                 console.log(r)
-                this.$message.error('保存错误')
+                this.$message.error($interpolate($gettext('Save error %{msg}'), {msg: r.message ?? ""}))
             })
         }
     }
