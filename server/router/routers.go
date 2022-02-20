@@ -29,7 +29,6 @@ func InitRouter() *gin.Engine {
 
 	g := r.Group("/api")
 	{
-		g.GET("translations.json", api.GetTranslations)
 		g.GET("install", api.InstallLockCheck)
 		g.POST("install", api.InstallNginxUI)
 

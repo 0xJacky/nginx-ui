@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/0xJacky/Nginx-UI/frontend"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/router"
 	"github.com/0xJacky/Nginx-UI/server/settings"
@@ -35,7 +34,6 @@ func main() {
 		model.Init()
 		go tool2.AutoCert()
 	}
-	frontend.InitTranslations()
 
 	srv := &http.Server{
 		Addr:    ":" + settings.ServerSettings.HttpPort,
