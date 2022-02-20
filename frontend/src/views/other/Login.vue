@@ -39,17 +39,19 @@
                 </a-form-item>
             </a-form>
             <div class="footer">
-                Copyright © 2020 - {{ thisYear }} Nginx UI
+                Copyright © 2020 - {{ thisYear }} Nginx UI | Language <set-language class="set_lang" style="display: inline"/>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import SetLanguage from '@/components/SetLanguage/SetLanguage'
 import $gettext from "@/lib/translate/gettext";
 
 export default {
     name: 'Login',
+    components: {SetLanguage},
     data() {
         return {
             form: {},
