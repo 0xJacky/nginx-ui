@@ -146,7 +146,7 @@ KillMode=mixed
 [Install]
 WantedBy=multi-user.target
 EOF
-    chmod 644 ServicePath
+    chmod 644 "$ServicePath"
     systemctl daemon-reload
 }
 
