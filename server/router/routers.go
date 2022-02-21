@@ -38,6 +38,7 @@ func InitRouter() *gin.Engine {
 		g := g.Group("/", authRequired())
 		{
 			g.GET("/analytic", api.Analytic)
+			g.GET("/analytic/cpu", api.GetCpuUsageRecord)
 
 			g.GET("/users", api.GetUsers)
 			g.GET("/user/:id", api.GetUser)

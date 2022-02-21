@@ -3,11 +3,13 @@ import config from './config'
 import auth from './auth'
 import user from './user'
 import install from './install'
+import analytic from './analytic'
 
 export default {
     domain,
     config,
     auth,
     user,
-    install
+    install,
+    analytic
 }

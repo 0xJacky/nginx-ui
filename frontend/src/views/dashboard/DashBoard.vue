@@ -10,10 +10,16 @@
                                     <span>%</span>
                                 </template>
                             </a-statistic>
-                            <p><translate>Uptime</translate> {{ uptime }}</p>
-                            <p><translate>Load Averages: </translate> 1min:{{ loadavg?.load1?.toFixed(2) }} |
+                            <p>
+                                <translate>Uptime</translate>
+                                {{ uptime }}
+                            </p>
+                            <p>
+                                <translate>Load Averages:</translate>
+                                1min:{{ loadavg?.load1?.toFixed(2) }} |
                                 5min:{{ loadavg?.load5?.toFixed(2) }} |
-                                15min:{{ loadavg?.load15?.toFixed(2) }}</p>
+                                15min:{{ loadavg?.load15?.toFixed(2) }}
+                            </p>
                             <line-chart :chart-data="cpu_analytic" :options="cpu_analytic.options" :height="150"/>
                         </a-col>
                         <a-col :lg="6" :sm="8" :xs="12" class="chart_dashboard">
@@ -120,11 +126,10 @@ export default {
             + btoa(this.$store.state.user.token))
         this.websocket.onmessage = this.wsOnMessage
         this.websocket.onopen = this.wsOpen
-        const time = new Date()
-        for (let i = 200; i > 0; i--) {
-            this.cpu_analytic.datasets[0].data.push({x: time-i*1000, y: 0})
-            this.cpu_analytic.datasets[1].data.push({x: time-i*1000, y: 0})
-        }
+        this.$api.analytic.cpu_usage().then(r => {
+            this.cpu_analytic.datasets[0].data.concat(r.user)
+            this.cpu_analytic.datasets[1].data.concat(r.total)
+        })
     },
     destroyed() {
         this.websocket.close()

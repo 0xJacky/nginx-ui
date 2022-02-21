@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/0xJacky/Nginx-UI/server/tool"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/host"
@@ -96,4 +97,11 @@ func Analytic(c *gin.Context) {
 			time.Sleep(800 * time.Microsecond)
 		}
 	}
+}
+
+func GetCpuUsageRecord(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"user":  tool.CpuUserBuffer,
+		"total": tool.CpuTotalBuffer,
+	})
 }
