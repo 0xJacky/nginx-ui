@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Data Path
-# DataPath=/usr/local/etc/nginx-ui
+DataPath=/usr/local/etc/nginx-ui
 # Bin Path
 # BinPath=/usr/local/bin/nginx-ui
 # Service Path
@@ -37,13 +37,13 @@ identify_the_operating_system_and_architecture() {
     if [[ "$(uname)" == 'Linux' ]]; then
         case "$(uname -m)" in
         'i386' | 'i686')
-            MACHINE='32'
+            MACHINE='386'
             ;;
         'amd64' | 'x86_64')
-            MACHINE='64'
+            MACHINE='amd64'
             ;;
         'armv8' | 'aarch64')
-            MACHINE='arm64-v8a'
+            MACHINE='arm64'
             ;;
         *)
             echo "error: The architecture is not supported."
@@ -102,13 +102,13 @@ install_software() {
 }
 
 download() {
-    LATEST_RELEASE=$(curl -L -s -H 'Accept: application/json' "$PROXY"https://github.com/0xJacky/nginx-ui/releases/latest)
+    LATEST_RELEASE=$(curl -L -s --insecure -H 'Accept: application/json' "$PROXY"https://api.github.com/repos/0xJacky/nginx-ui/releases/latest)
     # shellcheck disable=SC2001
-    LATEST_VERSION=$(echo "$LATEST_RELEASE" | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
+    LATEST_VERSION=$(echo "$LATEST_RELEASE" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
     DOWNLOAD_LINK=$PROXY"https://github.com/0xJacky/nginx-ui/releases/download/$LATEST_VERSION/nginx-ui-linux-$MACHINE.tar.gz"
 
     echo "Downloading NginxUI archive: $DOWNLOAD_LINK"
-    if ! curl -x "${PROXY}" -R -H 'Cache-Control: no-cache' -o "$TAR_FILE" "$DOWNLOAD_LINK"; then
+    if ! curl --insecure -R -H 'Cache-Control: no-cache' -L "$DOWNLOAD_LINK" > "$TAR_FILE"; then
         echo 'error: Download failed! Please check your network or try again.'
         return 1
     fi
@@ -116,7 +116,8 @@ download() {
 }
 
 decompression() {
-    if ! unzip -q "$1" -d "$TMP_DIRECTORY"; then
+    echo "$1"
+    if ! tar -zxvf "$1" -C "$TMP_DIRECTORY"; then
         echo 'error: Nginx UI decompression failed.'
         "rm" -r "$TMP_DIRECTORY"
         echo "removed: $TMP_DIRECTORY"
@@ -131,7 +132,21 @@ install_bin() {
 }
 
 install_service() {
-    install -m 644 "${TMP_DIRECTORY}/nginx-ui.service" "$ServicePath"
+cat > "$ServicePath" << EOF
+[Unit]
+Description=Yet another WebUI for Nginx
+Documentation=https://github.com/0xJacky/nginx-ui
+After=network.target
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/nginx-ui --config /usr/local/etc/nginx-ui/app.ini
+Restart=on-failure
+TimeoutStopSec=5
+KillMode=mixed
+[Install]
+WantedBy=multi-user.target
+EOF
+    chmod 644 ServicePath
 }
 
 start_nginx_ui() {
@@ -163,7 +178,9 @@ main() {
     # TMP
     TMP_DIRECTORY="$(mktemp -d)"
     # Tar
-    TAR_FILE="${TMP_DIRECTORY}/nginx-ui-linux-$ARCH.tar.gz"
+    TAR_FILE="${TMP_DIRECTORY}/nginx-ui-linux-$MACHINE.tar.gz"
+
+    identify_the_operating_system_and_architecture
 
     install_software 'curl' 'curl'
 
@@ -172,6 +189,8 @@ main() {
 
     install_bin
     install_service
+
+    mkdir DataPath
 
     start_nginx_ui
     stop_nginx_ui

@@ -2,10 +2,11 @@
 Description=Yet another WebUI for Nginx
 Documentation=https://github.com/0xJacky/nginx-ui
 After=network.target
-
 [Service]
 Type=simple
 ExecStart=/usr/local/bin/nginx-ui --config /usr/local/etc/nginx-ui/app.ini
 Restart=on-failure
 TimeoutStopSec=5
 KillMode=mixed
+[Install]
+WantedBy=multi-user.target
