@@ -2,7 +2,7 @@
 
 Yet another Nginx Web UI
 
-Version: 1.1.0
+Version: 1.2.0
 
 [For English](README.md)
 
@@ -12,6 +12,11 @@ Version: 1.1.0
 2. 可一键申请 Let's encrypt 证书
 3. 可自动续签 Let's encrypt 证书
 4. 在线编辑网站配置文件
+
+## 安装
+```shell
+curl -OL https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh && chmod +x install.sh && ./install.sh
+```
 
 ## 项目预览
 

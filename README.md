@@ -2,7 +2,7 @@
 
 Yet another Nginx Web UI
 
-Version: 1.1.0
+Version: 1.2.0
 
 *Note: Currently only available in Simplified Chinese.*
 
@@ -14,6 +14,11 @@ Version: 1.1.0
 2. One-click deployment Let's Encrypt certificates.
 3. Automatic renewal Let's Encrypt certificates.
 4. Online editing websites configuration files.
+
+## Install
+```shell
+curl -OL https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh && chmod +x install.sh && ./install.sh
+```
 
 ## Screenshots
 
