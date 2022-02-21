@@ -22,7 +22,9 @@ func RecordCpuUsage() {
 		threadNum := runtime.GOMAXPROCS(0)
 
 		cpuUserUsage := (cpuTimesAfter[0].User - cpuTimesBefore[0].User) / (float64(1000*threadNum) / 1000)
+		cpuUserUsage *= 100
 		cpuSystemUsage := (cpuTimesAfter[0].System - cpuTimesBefore[0].System) / (float64(1000*threadNum) / 1000)
+		cpuSystemUsage *= 100
 		now := time.Now()
 		u := cpuUsage{
 			Time:  now,

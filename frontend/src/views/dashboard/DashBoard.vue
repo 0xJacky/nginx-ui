@@ -127,8 +127,8 @@ export default {
         this.websocket.onmessage = this.wsOnMessage
         this.websocket.onopen = this.wsOpen
         this.$api.analytic.cpu_usage().then(r => {
-            this.cpu_analytic.datasets[0].data.concat(r.user)
-            this.cpu_analytic.datasets[1].data.concat(r.total)
+            this.cpu_analytic.datasets[0].data = this.cpu_analytic.datasets[0].data.concat(r.user)
+            this.cpu_analytic.datasets[1].data = this.cpu_analytic.datasets[1].data.concat(r.total)
         })
     },
     destroyed() {
