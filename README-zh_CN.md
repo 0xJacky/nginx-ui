@@ -9,20 +9,11 @@ Version: 1.2.0
 ## 项目特色
 
 1. 可在线查看服务器 CPU、内存、load average、磁盘使用率等指标
-2. 可一键申请 Let's encrypt 证书
-3. 可自动续签 Let's encrypt 证书
-4. 在线编辑网站配置文件
-
-## 安装
-```shell
-curl -OL https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh && chmod +x install.sh && ./install.sh
-```
+2. 可一键申请和自动续签 Let's encrypt 证书
+3. 在线编辑 Nginx 配置文件，编辑器支持 Nginx 配置语法高亮
+4. 使用 Go 和 Vue 开发，发行版本为单个可执行的二进制文件
 
 ## 项目预览
-
-### 登录
-
-![](resources/screenshots/login.png)
 
 ### 仪表盘
 
@@ -50,30 +41,38 @@ curl -OL https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh &&
 
 ## 使用前注意
 
-Nginx UI 遵循 Nginx 的标准，创建的网站配置文件位于 Nginx 配置目录（自动检测）下的 `sites-available` 目录， 启用后的网站的配置文件将会创建一份软连接到 `sites-enabled`
-目录中。因此，您可能需要调整配置文件的组织方式。
+Nginx UI 遵循 Nginx 的标准，创建的网站配置文件位于 Nginx 配置目录（自动检测）下的 `sites-available` 目录，
+启用后的网站的配置文件将会创建一份软连接到 `sites-enabled`
+目录中。因此，您可能需要提前调整配置文件的组织方式。
 
 ## 安装
+### 平台支持
+Nginx UI 可在以下平台中可用：
 
-1. 克隆项目
+Mac OS X 10.10 Yosemite 及之后版本（amd64 / arm64）;
 
+Linux 2.6.23 及之后版本（x86 / amd64 / arm64）；
+
+包括但不限于 Debian 7 / 8、Ubuntu 12.04 / 14.04 及后续版本、CentOS 6 / 7、Arch Linux；
+
+FreeBSD (x86 / amd64)；
+
+OpenBSD (x86 / amd64)；
+
+Dragonfly BSD (amd64)；
+
+您可以在 [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) 中下载最新发行版本
+
+### Linux 一键安装脚本
+```shell
+bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh)
 ```
-git clone https://github.com/0xJacky/nginx-ui
-```
+一键安装脚本默认设置的监听端口为 `9000`，HTTP Challenge 端口默认为 `9180`，
+如果出现端口冲突请进入 `/usr/local/etc/nginx-ui/app.ini` 修改，并使用 `systemctl restart nginx-ui` 重启 Nginx UI 服务。
 
-2. 编译后端
+服务启动成功后，在浏览器中访问 `http://<your_server_ip>:9000/install` 完成后续配置
 
-```
-cd server
-go build -o nginx-ui-server main.go
-```
-
-3. 启动后端
-    1. 前台启动 `./nginx-ui-server`
-    2. 后台启动 `nohup ./nginx-ui-server &`
-
-4. 添加配置文件到 nginx
-
+### Nginx 反向代理配置示例
 ```
 server {
     listen	80;
@@ -105,8 +104,5 @@ server {
 }
 ```
 
-4. 初始化系统
-
-在浏览器中访问 `https://<your_server_name>/install`
-
-输入用户名和密码创建初始账户。
+## 关于
+Nginx UI 由 [0xJacky](https://jackyu.cn/) 和 [Hintay](https://blog.kugeek.com/) 开发

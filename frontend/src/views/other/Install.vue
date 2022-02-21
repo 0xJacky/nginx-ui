@@ -67,7 +67,7 @@
             </a-form-item>
             <a-form-item>
                 <a-button type="primary" :block="true" html-type="submit" :loading="loading" v-translate>
-                    Install
+                    <translate>Install</translate>
                 </a-button>
             </a-form-item>
         </a-form>
