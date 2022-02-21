@@ -65,7 +65,7 @@ jobs:
               if: github.event_name == 'release'
               run: |
                   cp README*.md frontend/dist
-                  tar -C ./frontend/dist -zcvf frontend-dist.tar.gz .
+                  find frontend/dist -printf '%P\n' | tar -C frontend/dist --no-recursion -zcvf frontend-dist.tar.gz -T -
 
             - name: Publish
               uses: softprops/action-gh-release@v1
@@ -128,7 +128,7 @@ jobs:
               if: github.event_name == 'release'
               run: |
                   cp README*.md ./dist
-                  tar -C ./dist -zcvf ${{ env.DIST }}.tar.gz .
+                  find dist -printf '%P\n' | tar -C dist --no-recursion -zcvf ${{ env.DIST }}.tar.gz -T -
 
             - name: Publish
               uses: softprops/action-gh-release@v1
