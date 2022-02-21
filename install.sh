@@ -147,6 +147,23 @@ KillMode=mixed
 WantedBy=multi-user.target
 EOF
     chmod 644 ServicePath
+    systemctl daemon-reload
+}
+
+install_config() {
+    mkdir "$DataPath"
+    echo "Please input nginx-ui service listen port:"
+    read Port
+    echo "Please input nginx-ui http challenge port port:"
+    read HTTPChallengePort
+cat > "$DataPath/app.ini" << EOF
+[server]
+HttpPort = ${Port}
+RunMode = release
+JwtSecret = $(uuidgen)
+Email =
+HTTPChallengePort = ${HTTPChallengePort}
+EOF
 }
 
 start_nginx_ui() {
@@ -190,7 +207,7 @@ main() {
     install_bin
     install_service
 
-    mkdir DataPath
+    install_config
 
     start_nginx_ui
     stop_nginx_ui
