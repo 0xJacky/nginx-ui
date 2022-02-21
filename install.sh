@@ -101,14 +101,21 @@ judgment_parameters() {
     fi
 }
 
+cat_file_with_name() {
+    while [[ "$#" -gt '0' ]]; do
+        echo -e "${FontSkyBlue}# $1${FontSuffix}\n"
+        cat "$1"
+        echo ''
+        shift
+    done
+}
+
 systemd_cat_config() {
     if systemd-analyze --help | grep -qw 'cat-config'; then
         systemd-analyze --no-pager cat-config "$@"
         echo
     else
-        echo -e "${FontSkyBlue}~~~~~~~~~~~~~~~~"
-        cat "$@" "$1".d/*
-        echo -e "${FontSkyBlue}~~~~~~~~~~~~~~~~"
+        cat_file_with_name "$@" "$1".d/*
         echo -e "${FontYellow}warning: The systemd version on the current operating system is too low."
         echo -e "${FontYellow}warning: Please consider to upgrade the systemd or the operating system.${FontSuffix}"
         echo
@@ -281,9 +288,7 @@ EOF
 
     echo -e "${FontGreen}note: The following are the current configuration for the nginx-ui."
     echo -e "${FontGreen}note: Please change the information if needed.${FontSuffix}"
-    echo -e "${FontSkyBlue}~~~~~~~~~~~~~~~~"
-    cat "$DataPath/app.ini"
-    echo -e "${FontSkyBlue}~~~~~~~~~~~~~~~~${FontSuffix}"
+    cat_file_with_name "$DataPath/app.ini"
 }
 
 start_nginx_ui() {
