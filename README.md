@@ -4,27 +4,17 @@ Yet another Nginx Web UI
 
 Version: 1.2.0
 
-*Note: Currently only available in Simplified Chinese.*
-
 [简体中文说明](README-zh_CN.md)
 
 ## Features
 
 1. Online view of server CPU, Memory, Load Average, Disk Usage and other indicators.
-2. One-click deployment Let's Encrypt certificates.
-3. Automatic renewal Let's Encrypt certificates.
-4. Online editing websites configuration files.
-
-## Install
-```shell
-curl -OL https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh && chmod +x install.sh && ./install.sh
-```
+2. One-click deployment and automatic renewal Let's Encrypt certificates.
+3. Online editing websites configuration files, online editor support highlight nginx configuration syntax.
+4. Written in Go and Vue, distribution is a single executable binary.
+5. Support English and Simplified Chinese.
 
 ## Screenshots
-
-### Login
-
-![](resources/screenshots/login.png)
 
 ### Dashboard
 
@@ -58,25 +48,30 @@ to the `sites-enabled` directory. Therefore, you may need to adjust the way the 
 
 ## Install
 
-1. Clone
+Nginx UI is available on the following platforms:
+- Mac OS X 10.10 Yosemite and later（amd64 / arm64）;
+- Linux 2.6.23 and later（x86 / amd64 / arm64）；
+    - Including but not limited to Debian 7 / 8、Ubuntu 12.04 / 14.04 and later、CentOS 6 / 7、Arch Linux；
+- FreeBSD (x86 / amd64)；
+- OpenBSD (x86 / amd64)；
+- Dragonfly BSD (amd64)；
 
+You can visit [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) to download the latest distribution.
+
+### One-click installation shell for Linux
+```shell
+bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh)
 ```
-git clone https://github.com/0xJacky/nginx-ui
-```
+The default listing port set by one-click install shell is `9000`
+while HTTP challenge port is `9180`,
 
-2. Compiling the backend
+If a port conflict occurs, please modify `/usr/local/etc/nginx-ui/app.ini` manually,
+and use `systemctl restart nginx-ui` to reload the Nginx UI service.
 
-```
-cd server
-go build -o nginx-ui-server main.go
-```
+Once the service start successfully, please visit `http://<your_server_ip>:9000/install`
+in your browser to complete the follow-up configurations.
 
-3. Start up the backend
-    1. `./nginx-ui-server` for direct run.
-    2. `nohup ./nginx-ui-server &` for run as service.
-
-4. Adding a configuration file to nginx
-
+### Example of Nginx reverse proxy configuration
 ```
 server {
     listen	80;
@@ -108,9 +103,5 @@ server {
 }
 ```
 
-4. Installation
-
-Visit `https://<your_server_name>/install` in your browser.
-
-Enter your username and password to create initial account.
-
+## About
+Nginx UI developed by [0xJacky](https://jackyu.cn/) and [Hintay](https://blog.kugeek.com/).

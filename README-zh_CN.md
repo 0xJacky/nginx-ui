@@ -12,6 +12,7 @@ Version: 1.2.0
 2. 可一键申请和自动续签 Let's encrypt 证书
 3. 在线编辑 Nginx 配置文件，编辑器支持 Nginx 配置语法高亮
 4. 使用 Go 和 Vue 开发，发行版本为单个可执行的二进制文件
+5. 支持简体中文和英语
 
 ## 项目预览
 
@@ -48,18 +49,12 @@ Nginx UI 遵循 Nginx 的标准，创建的网站配置文件位于 Nginx 配置
 ## 安装
 ### 平台支持
 Nginx UI 可在以下平台中可用：
-
-Mac OS X 10.10 Yosemite 及之后版本（amd64 / arm64）;
-
-Linux 2.6.23 及之后版本（x86 / amd64 / arm64）；
-
-包括但不限于 Debian 7 / 8、Ubuntu 12.04 / 14.04 及后续版本、CentOS 6 / 7、Arch Linux；
-
-FreeBSD (x86 / amd64)；
-
-OpenBSD (x86 / amd64)；
-
-Dragonfly BSD (amd64)；
+- Mac OS X 10.10 Yosemite 及之后版本（amd64 / arm64）;
+- Linux 2.6.23 及之后版本（x86 / amd64 / arm64）；
+  - 包括但不限于 Debian 7 / 8、Ubuntu 12.04 / 14.04 及后续版本、CentOS 6 / 7、Arch Linux；
+- FreeBSD (x86 / amd64)；
+- OpenBSD (x86 / amd64)；
+- Dragonfly BSD (amd64)；
 
 您可以在 [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) 中下载最新发行版本
 
