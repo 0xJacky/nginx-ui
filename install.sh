@@ -160,7 +160,7 @@ cat > "$DataPath/app.ini" << EOF
 [server]
 HttpPort = ${Port}
 RunMode = release
-JwtSecret = $(uuidgen)
+JwtSecret = 
 Email =
 HTTPChallengePort = ${HTTPChallengePort}
 EOF
