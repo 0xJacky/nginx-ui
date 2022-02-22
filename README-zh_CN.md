@@ -10,8 +10,6 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
 
 [For English](README.md)
 
-[TOC]
-
 ## 关于项目
 ![](resources/screenshots/dashboard.png)
 ### 特色
