@@ -42,6 +42,5 @@ func RecordCpuUsage() {
 		if len(CpuTotalBuffer) > 200 {
 			CpuTotalBuffer = CpuTotalBuffer[1:]
 		}
-		// time.Sleep(1 * time.Second)
 	}
 }

@@ -1,10 +1,11 @@
 <div align="center">
-      <img src="/resources/logo.png" alt="Nginx UI Logo">
+      <img src="resources/logo.png" alt="Nginx UI Logo">
 </div>
 
-# Nginx UI 
+# Nginx UI
 
 Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay](https://blog.kugeek.com/).
+
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 
 [简体中文说明](README-zh_CN.md)
@@ -99,21 +100,36 @@ You can visit [latest release](https://github.com/0xJacky/nginx-ui/releases/late
 
 ### Usage
 
-**Manually Install**
-
+#### Manually Install
+- Start Nginx UI in foreground
 ```shell
-nginx-ui -config app.ini
+nginx-ui --config app.ini
 ```
+- Kill Nginx UI in foreground
+    - Keyboard shortcuts `Ctrl+C`
 
-**Installed by script**
-
+- Start Nginx UI in background
+```shell
+nohup ./nginx-ui --config app.ini &
+```
+- Kill Nginx UI in background
+```shell
+jobs
+kill %job_id
+```
+#### Installed by script
+- Start Nginx UI
 ```shell
 systemctl start nginx-ui
 ```
-
-Once the nginx-ui is running, please visit `http://<your_server_ip>:<listen_port>/install`
-in your browser to complete the follow-up configurations.
-
+- Stop Nginx UI
+```shell
+systemctl stop nginx-ui
+```
+- Restart Nginx UI
+```shell
+systemctl restart nginx-ui
+```
 ## Manual Build
 
 On platforms where installation scripts are not supported, they can be built manually.
@@ -158,6 +174,9 @@ go build -o nginx-ui -v main.go
 bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) @ install
 ```
 The default listening port is 9000, and the default HTTP Challenge port is 9180. If there is a port conflict, please modify `/usr/local/etc/nginx-ui/app.ini` manually, then use `systemctl restart nginx-ui` to reload the Nginx UI service.
+
+Once the nginx-ui is running, please visit `http://<your_server_ip>:<listen_port>/install`
+in your browser to complete the follow-up configurations.
 
 **Remove Nginx UI, except configuration and database files**
 
