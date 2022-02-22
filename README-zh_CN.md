@@ -17,6 +17,7 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
 - 一键申请和自动续签 Let's encrypt 证书
 - 在线编辑 Nginx 配置文件，编辑器支持 Nginx 配置语法高亮
 - 使用 Go 和 Vue 开发，发行版本为单个可执行的二进制文件
+- 前端支持暗夜模式
 
 ### 国际化
 - 英语

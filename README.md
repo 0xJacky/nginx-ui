@@ -60,6 +60,7 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
 - One-click deployment and automatic renewal Let's Encrypt certificates.
 - Online editing websites configuration files, the editor support highlight nginx configuration syntax.
 - Written in Go and Vue, distribution is a single executable binary.
+- Frontend support Dark Mode
 
 ### Internationalization
 
