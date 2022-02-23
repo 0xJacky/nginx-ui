@@ -10,13 +10,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: easygettext\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 3.0.1\n"
 
-#: src/router/index.js:100
+#: src/views/other/Install.vue:50
+msgid "<translate>Install</translate>"
+msgstr ""
+
+#: src/router/index.js:99
 msgid "404 Not Found"
 msgstr "404 未找到页面"
 
-#: src/router/index.js:78
+#: src/router/index.js:77
 msgid "About"
 msgstr "关于"
 
@@ -26,7 +30,7 @@ msgid "Action"
 msgstr "操作"
 
 #: src/router/index.js:47 src/views/domain/DomainAdd.vue:18
-#: src/views/domain/DomainEdit.vue:45
+#: src/views/domain/DomainEdit.vue:46
 msgid "Add Site"
 msgstr "添加站点"
 
@@ -79,6 +83,14 @@ msgstr "配置名称"
 msgid "Configurations"
 msgstr "配置"
 
+#: src/views/dashboard/DashBoard.vue:204
+msgid "CPU Status"
+msgstr "CPU 状态"
+
+#: src/views/dashboard/DashBoard.vue:22
+msgid "CPU:"
+msgstr ""
+
 #: src/views/user/User.vue:23
 msgid "Created at"
 msgstr "创建时间"
@@ -87,11 +99,11 @@ msgstr "创建时间"
 msgid "Dashboard"
 msgstr "仪表盘"
 
-#: src/views/other/Install.vue:105
+#: src/views/other/Install.vue:106
 msgid "Database (Optional, default: database)"
 msgstr "数据库 (可选，默认: database)"
 
-#: src/router/index.js:126
+#: src/router/index.js:125
 msgid "Detected version update, this page will refresh."
 msgstr "检测到版本更新，页面将会刷新。"
 
@@ -112,19 +124,23 @@ msgstr "禁用"
 msgid "Disabled successfully"
 msgstr "禁用成功"
 
+#: src/views/dashboard/DashBoard.vue:282
+msgid "Disk IO"
+msgstr "磁盘 IO"
+
 #: src/views/domain/DomainEdit.vue:133
 msgid "Do you want to change the template to support the TLS?"
 msgstr "你想要改变模板以支持 TLS 吗？"
 
-#: src/views/domain/DomainEdit.vue:45
+#: src/views/domain/DomainEdit.vue:46
 msgid "Edit %{n}"
 msgstr "编辑 %{n}"
 
-#: src/router/index.js:68 src/views/config/ConfigEdit.vue:15
+#: src/router/index.js:69 src/views/config/ConfigEdit.vue:15
 msgid "Edit Configuration"
 msgstr "编辑配置"
 
-#: src/views/domain/DomainEdit.vue:91
+#: src/views/domain/DomainEdit.vue:92
 msgid "Edit Configuration File"
 msgstr "编辑配置文件"
 
@@ -132,7 +148,7 @@ msgstr "编辑配置文件"
 msgid "Edit Site"
 msgstr "编辑站点"
 
-#: src/views/other/Install.vue:31
+#: src/views/other/Install.vue:32
 msgid "Email (*)"
 msgstr "邮箱 (*)"
 
@@ -197,7 +213,7 @@ msgstr "HTTPS 监听端口"
 msgid "Index (index)"
 msgstr "网站首页 (index)"
 
-#: src/router/index.js:88 src/views/other/Install.vue:50
+#: src/router/index.js:87 src/views/other/Install.vue:51
 msgid "Install"
 msgstr "安装"
 
@@ -205,7 +221,7 @@ msgstr "安装"
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "中级证书颁发机构: %{issuer}"
 
-#: src/views/other/Install.vue:46
+#: src/views/other/Install.vue:47
 msgid "Invalid E-mail!"
 msgstr "无效的邮箱！"
 
@@ -218,11 +234,11 @@ msgctxt "Project"
 msgid "License"
 msgstr "开源许可"
 
-#: src/views/dashboard/DashBoard.vue:13
+#: src/views/dashboard/DashBoard.vue:10
 msgid "Load Averages:"
 msgstr "系统负载:"
 
-#: src/router/index.js:94 src/views/other/Login.vue:24
+#: src/router/index.js:93 src/views/other/Login.vue:24
 msgid "Login"
 msgstr "登录"
 
@@ -240,8 +256,8 @@ msgid ""
 "directory to <code>HTTPChallengePort</code> (default: 9180) before getting "
 "the certificate."
 msgstr ""
-"在获取签发证书前，请确保配置文件中已将 <code>.well-known</code> 目录反向代理"
-"到<code>HTTPChallengePort</code> (默认: 9180)"
+"在获取签发证书前，请确保配置文件中已将 <code>.well-known</code> 目录反向代"
+"理到<code>HTTPChallengePort</code> (默认: 9180)"
 
 #: src/router/index.js:60
 msgid "Manage Configs"
@@ -255,7 +271,7 @@ msgstr "网站管理"
 msgid "Manage Users"
 msgstr "用户管理"
 
-#: src/views/dashboard/DashBoard.vue:24
+#: src/views/dashboard/DashBoard.vue:100
 msgid "Memory"
 msgstr "内存"
 
@@ -263,7 +279,19 @@ msgstr "内存"
 msgid "Name"
 msgstr "名称"
 
-#: src/router/index.js:106
+#: src/views/dashboard/DashBoard.vue:231
+msgid "Network"
+msgstr ""
+
+#: src/views/dashboard/DashBoard.vue:165
+msgid "Network Total Receive"
+msgstr "下载流量"
+
+#: src/views/dashboard/DashBoard.vue:174
+msgid "Network Total Send"
+msgstr "上传流量"
+
+#: src/router/index.js:105
 msgid "Not Found"
 msgstr "找不到页面"
 
@@ -277,27 +305,31 @@ msgid ""
 "you need to get the certificate."
 msgstr "注意：当前配置中的 server_name 必须为需要申请证书的域名。"
 
-#: src/router/index.js:130
+#: src/router/index.js:129
 msgid "OK"
 msgstr "确定"
+
+#: src/views/dashboard/DashBoard.vue:16
+msgid "OS:"
+msgstr ""
 
 #: src/views/other/Login.vue:56 src/views/user/User.vue:13
 msgid "Password"
 msgstr "密码"
 
-#: src/views/other/Install.vue:83
+#: src/views/other/Install.vue:84
 msgid "Password (*)"
 msgstr "密码 (*)"
 
-#: src/views/other/Install.vue:50
+#: src/views/other/Install.vue:51
 msgid "Please input your E-mail!"
 msgstr "请输入您的邮箱！"
 
-#: src/views/other/Install.vue:96 src/views/other/Login.vue:69
+#: src/views/other/Install.vue:97 src/views/other/Login.vue:69
 msgid "Please input your password!"
 msgstr "请输入您的密码！"
 
-#: src/views/other/Install.vue:73 src/views/other/Login.vue:46
+#: src/views/other/Install.vue:74 src/views/other/Login.vue:46
 msgid "Please input your username!"
 msgstr "请输入您的用户名！"
 
@@ -308,6 +340,14 @@ msgstr "私钥路径 (ssl_certificate_key)"
 #: src/views/other/About.vue:8
 msgid "Project Team"
 msgstr "项目团队"
+
+#: src/views/dashboard/DashBoard.vue:61 src/views/dashboard/DashBoard.vue:305
+msgid "Reads"
+msgstr "读"
+
+#: src/views/dashboard/DashBoard.vue:51 src/views/dashboard/DashBoard.vue:240
+msgid "Receive"
+msgstr "下载"
 
 #: src/views/domain/columns.js:16
 msgid "Root Directory (root)"
@@ -328,18 +368,22 @@ msgstr "保存错误 %{msg}"
 msgid "Saved successfully"
 msgstr "保存成功"
 
+#: src/views/dashboard/DashBoard.vue:54 src/views/dashboard/DashBoard.vue:254
+msgid "Send"
+msgstr "上传"
+
 #: src/views/config/ConfigEdit.vue:35 src/views/domain/DomainEdit.vue:71
 #: src/views/other/Login.vue:35
 msgid "Server error"
 msgstr "服务器错误"
 
+#: src/views/dashboard/DashBoard.vue:37
+msgid "Server Info"
+msgstr "服务器信息"
+
 #: src/views/domain/columns.js:10
 msgid "Server Names (server_name)"
 msgstr "网站域名 (server_name)"
-
-#: src/views/dashboard/DashBoard.vue:38
-msgid "Server Status"
-msgstr "服务器状态"
 
 #: src/router/index.js:43
 msgid "Sites List"
@@ -349,7 +393,7 @@ msgstr "站点列表"
 msgid "Status"
 msgstr "状态"
 
-#: src/views/dashboard/DashBoard.vue:33
+#: src/views/dashboard/DashBoard.vue:132
 msgid "Storage"
 msgstr "存储"
 
@@ -357,7 +401,11 @@ msgstr "存储"
 msgid "Subject Name: %{name}"
 msgstr "主体名称: %{name}"
 
-#: src/router/index.js:125
+#: src/views/dashboard/DashBoard.vue:116
+msgid "Swap"
+msgstr ""
+
+#: src/router/index.js:124
 msgid "System message"
 msgstr "系统消息"
 
@@ -371,7 +419,7 @@ msgstr ""
 "系统将会每小时检测一次该域名证书，若距离上次签发已超过1个月，则将自动续签。"
 "<br/>如果您之前没有证书，请先点击 \"从 Let's Encrypt 获取证书\"。"
 
-#: src/views/other/Install.vue:120
+#: src/views/other/Install.vue:121
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "文件名不能包含以下字符: %{c}"
 
@@ -381,8 +429,8 @@ msgid ""
 "fields in your configuration file. The configuration filename cannot be "
 "changed after it has been created."
 msgstr ""
-"只有在您的配置文件中有相应字段时，下列的配置才能生效。配置文件名称创建后不可"
-"修改。"
+"只有在您的配置文件中有相应字段时，下列的配置才能生效。配置文件名称创建后不"
+"可修改。"
 
 #: src/views/domain/DomainEdit.vue:134
 msgid "This operation will lose the custom configuration."
@@ -393,25 +441,30 @@ msgstr "该操作将会丢失自定义配置。"
 msgid "Updated at"
 msgstr "修改时间"
 
-#: src/views/dashboard/DashBoard.vue:12
-msgid "Uptime"
-msgstr "运行时间"
-
-#: src/views/dashboard/DashBoard.vue:95
-msgid "Used: %{u}, Cached: %{c}, Free: %{f}, Physical Memory: %{p}"
-msgstr "已使用: %{u}, 缓存: %{c}, 空闲: %{f}, 物理内存: %{p}"
-
-#: src/views/dashboard/DashBoard.vue:123
-msgid "Used: %{used} / Total: %{total}"
-msgstr "已使用: %{used} / 总共: %{total}"
+#: src/views/dashboard/DashBoard.vue:6
+msgid "Uptime:"
+msgstr "运行时间:"
 
 #: src/views/other/Login.vue:33 src/views/user/User.vue:5
 msgid "Username"
 msgstr "用户名"
 
-#: src/views/other/Install.vue:60
+#: src/views/other/Install.vue:61
 msgid "Username (*)"
 msgstr "用户名 (*)"
+
+#: src/views/dashboard/DashBoard.vue:58 src/views/dashboard/DashBoard.vue:291
+msgid "Writes"
+msgstr "写"
+
+#~ msgid "Server Status"
+#~ msgstr "服务器状态"
+
+#~ msgid "Used: %{u}, Cached: %{c}, Free: %{f}, Physical Memory: %{p}"
+#~ msgstr "已使用: %{u}, 缓存: %{c}, 空闲: %{f}, 物理内存: %{p}"
+
+#~ msgid "Used: %{used} / Total: %{total}"
+#~ msgstr "已使用: %{used} / 总共: %{total}"
 
 #~ msgid "CPU"
 #~ msgstr "CPU"

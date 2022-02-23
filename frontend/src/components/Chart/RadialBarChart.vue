@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <p class="text">{{ centerText }}</p>
+        <p class="bottom_text">{{ bottomText }}</p>
         <apexchart type="radialBar" height="205" :options="chartOptions" :series="series" ref="chart"/>
     </div>
 </template>
@@ -18,6 +19,7 @@ export default {
         centerText: String,
         colors: String,
         name: String,
+        bottomText: String,
     },
     watch: {
         series: {
@@ -49,9 +51,7 @@ export default {
                                 offsetY: 60,
                                 fontSize: '14px',
                                 color: undefined,
-                                formatter: function (val) {
-                                    return val + "%";
-                                }
+                                formatter: () => {return ''}
                             }
                         }
                     }
@@ -87,7 +87,13 @@ export default {
         top: calc(72px);
         width: 100%;
         text-align: center;
-
+    }
+    .bottom_text {
+        position: absolute;
+        top: calc(142px);
+        font-weight: 600;
+        width: 100%;
+        text-align: center;
     }
 }
 </style>

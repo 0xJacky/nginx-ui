@@ -1,7 +1,7 @@
 <template>
     <div>
         <a-row :gutter="[16,16]" class="first-row">
-            <a-col :lg="7" :md="24">
+            <a-col :xl="6" :lg="24" :md="24">
                 <a-card :title="$gettext('Server Info')">
                     <p>
                         <translate>Uptime:</translate>
@@ -23,37 +23,28 @@
                         <translate>CPU:</translate>
                         {{ cpu_info[0]?.modelName }} * {{ cpu_info.length }}
                     </p>
-<!--                    <p><translate>Memory</translate>: {{-->
-<!--                            $gettextInterpolate(-->
-<!--                                $gettext('Used: %{u}, Cached: %{c}, Free: %{f}, Physical Memory: %{p}'),-->
-<!--                                {u: memory_used, c: memory_cached, f: memory_free, p: memory_total})-->
-<!--                        }}</p>-->
-<!--                    <p><translate>Storage</translate>: {{-->
-<!--                            $gettextInterpolate($gettext('Used: %{used} / Total: %{total}'),-->
-<!--                                {used: disk_used, total: disk_total})-->
-<!--                        }}-->
-<!--                    </p>-->
                 </a-card>
             </a-col>
-            <a-col :lg="12" :md="24" class="chart_dashboard">
+            <a-col :xl="12" :lg="18" :md="24" class="chart_dashboard">
                 <a-card>
                     <a-row>
                         <a-col :xs="24" :sm="24" :md="8">
                             <radial-bar-chart :name="$gettext('Memory')" :series="[memory_pressure]"
-                                              :centerText="memory_used" colors="#36a3eb"/>
+                                              :centerText="memory_used" :bottom-text="memory_total" colors="#36a3eb"/>
                         </a-col>
                         <a-col :xs="24" :sm="12" :md="8">
                             <radial-bar-chart :name="$gettext('Swap')" :series="[memory_swap_percent]"
-                                              :centerText="memory_swap_used" colors="#ff6385"/>
+                                              :centerText="memory_swap_used"
+                                              :bottom-text="memory_swap_total" colors="#ff6385"/>
                         </a-col>
                         <a-col :xs="24" :sm="12" :md="8">
                             <radial-bar-chart :name="$gettext('Storage')" :series="[disk_percentage]"
-                                              :centerText="disk_used" colors="#87d068"/>
+                                              :centerText="disk_used" :bottom-text="disk_total" colors="#87d068"/>
                         </a-col>
                     </a-row>
                 </a-card>
             </a-col>
-            <a-col :lg="5" :sm="24" class="chart_dashboard">
+            <a-col :xl="6" :lg="6" :sm="24" class="chart_dashboard">
                 <a-card>
                     <a-row :gutter="16">
                         <a-col :span="24">
@@ -62,14 +53,14 @@
                         </a-col>
                         <a-col :span="24">
                             <a-statistic :value="bytesToSize(net.last_sent)"
-                                         :title="$gettext('Network Total Send')" />
+                                         :title="$gettext('Network Total Send')"/>
                         </a-col>
                     </a-row>
                 </a-card>
             </a-col>
         </a-row>
         <a-row class="row-two" :gutter="[16,32]">
-            <a-col :lg="8" :md="24" :sm="24">
+            <a-col :xl="7" :lg="24" :md="24" :sm="24">
                 <a-card :title="$gettext('CPU Status')">
                     <a-statistic :value="cpu" title="CPU">
                         <template v-slot:suffix>
@@ -79,7 +70,7 @@
                     <c-p-u-chart :series="cpu_analytic_series"/>
                 </a-card>
             </a-col>
-            <a-col :lg="8" :md="24" :sm="24">
+            <a-col :xl="10" :lg="12" :md="24" :sm="24">
                 <a-card :title="$gettext('Network')">
                     <a-row :gutter="16">
                         <a-col :span="12">
@@ -101,7 +92,7 @@
                     <net-chart :series="net_analytic"/>
                 </a-card>
             </a-col>
-            <a-col :lg="8" :md="24" :sm="24">
+            <a-col :xl="7" :lg="12" :md="24" :sm="24">
                 <a-card :title="$gettext('Disk IO')">
                     <a-row :gutter="16">
                         <a-col :span="12">
@@ -163,6 +154,7 @@ export default {
             }],
             cpu: 0,
             memory_swap_used: '',
+            memory_swap_total: '',
             memory_swap_percent: 0,
             disk_percentage: 0,
             disk_total: '',
@@ -253,6 +245,7 @@ export default {
             this.memory_total = r.memory_total
             this.memory_swap_percent = r.memory_swap_percent
             this.memory_swap_used = r.memory_swap_used
+            this.memory_swap_total = r.memory_swap_total
 
             // disk
             this.disk_percentage = r.disk_percentage
@@ -277,8 +270,8 @@ export default {
             this.net_analytic[1].data.push([time, this.net.sent])
 
             if (this.net_analytic[0].data.length > 100) {
-                this.net_analytic[1].data.shift()
                 this.net_analytic[0].data.shift()
+                this.net_analytic[1].data.shift()
             }
 
             // diskIO

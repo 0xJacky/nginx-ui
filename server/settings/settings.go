@@ -15,7 +15,6 @@ type Server struct {
 	HTTPChallengePort string
 	Email             string
 	Database          string
-	DiskName          string
 }
 
 var ServerSettings = &Server{
@@ -23,7 +22,6 @@ var ServerSettings = &Server{
 	RunMode:           "debug",
 	HTTPChallengePort: "9180",
 	Database:          "database",
-	DiskName:          "vda",
 }
 
 var ConfPath string

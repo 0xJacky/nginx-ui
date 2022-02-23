@@ -3,7 +3,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/server/tool"
+	"github.com/0xJacky/Nginx-UI/server/analytic"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/host"
@@ -89,8 +89,8 @@ func Analytic(c *gin.Context) {
 			response["disk_percentage"], _ = strconv.ParseFloat(fmt.Sprintf("%.2f", diskUsage.UsedPercent), 64)
 
 			response["diskIO"] = gin.H{
-				"writes": tool.DiskWriteBuffer[len(tool.DiskWriteBuffer)-1],
-				"reads":  tool.DiskReadBuffer[len(tool.DiskReadBuffer)-1],
+				"writes": analytic.DiskWriteRecord[len(analytic.DiskWriteRecord)-1],
+				"reads":  analytic.DiskReadRecord[len(analytic.DiskReadRecord)-1],
 			}
 
 			network, _ := net.IOCounters(false)
@@ -125,17 +125,17 @@ func GetAnalyticInit(c *gin.Context) {
 		"host": hostInfo,
 		"cpu": gin.H{
 			"info":  cpuInfo,
-			"user":  tool.CpuUserBuffer,
-			"total": tool.CpuTotalBuffer,
+			"user":  analytic.CpuUserRecord,
+			"total": analytic.CpuTotalRecord,
 		},
 		"network": gin.H{
 			"init":      _net,
-			"bytesRecv": tool.NetRecvBuffer,
-			"bytesSent": tool.NetSentBuffer,
+			"bytesRecv": analytic.NetRecvRecord,
+			"bytesSent": analytic.NetSentRecord,
 		},
 		"diskIO": gin.H{
-			"writes": tool.DiskWriteBuffer,
-			"reads":  tool.DiskReadBuffer,
+			"writes": analytic.DiskWriteRecord,
+			"reads":  analytic.DiskReadRecord,
 		},
 	})
 }

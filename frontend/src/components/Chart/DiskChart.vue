@@ -8,6 +8,10 @@ import Vue from 'vue'
 
 Vue.use(VueApexCharts)
 Vue.component('apexchart', VueApexCharts)
+
+const fontColor = () => {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? '#b4b4b4' : null
+}
 export default {
     name: 'DiskChart',
     props: {
@@ -19,6 +23,46 @@ export default {
             handler() {
                 this.$refs.chart.updateSeries(this.series)
             }
+        },
+    },
+    mounted() {
+        let media = window.matchMedia('(prefers-color-scheme: dark)')
+        let callback = () => {
+            this.chartOptions.xaxis = {
+                type: 'datetime',
+                    labels: {
+                    datetimeUTC: false,
+                        style: {
+                        colors: fontColor()
+                    }
+                }
+            }
+            this.chartOptions.yaxis = {
+                tickAmount: 3,
+                    min: 0,
+                    labels: {
+                    style: {
+                        colors: fontColor()
+                    }
+                }
+            }
+            this.chartOptions.legend = {
+                labels: {
+                    colors: fontColor()
+                },
+                onItemClick: {
+                    toggleDataSeries: false
+                },
+                onItemHover: {
+                    highlightDataSeries: false
+                },
+            }
+            this.$refs.chart.updateOptions(this.chartOptions)
+        }
+        if (typeof media.addEventListener === 'function') {
+            media.addEventListener('change', callback)
+        } else if (typeof media.addListener === 'function') {
+            media.addListener(callback)
         }
     },
     data() {
@@ -54,7 +98,12 @@ export default {
                 },
                 xaxis: {
                     type: 'datetime',
-                    labels: {datetimeUTC: false},
+                    labels: {
+                        datetimeUTC: false,
+                        style: {
+                            colors: fontColor()
+                        }
+                    }
                 },
                 tooltip: {
                     enabled: false
@@ -62,8 +111,16 @@ export default {
                 yaxis: {
                     tickAmount: 3,
                     min: 0,
+                    labels: {
+                        style: {
+                            colors: fontColor()
+                        }
+                    }
                 },
                 legend: {
+                    labels: {
+                        colors: fontColor()
+                    },
                     onItemClick: {
                         toggleDataSeries: false
                     },

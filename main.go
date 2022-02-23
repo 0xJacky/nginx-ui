@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"github.com/0xJacky/Nginx-UI/server/analytic"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/router"
 	"github.com/0xJacky/Nginx-UI/server/settings"
@@ -36,7 +37,7 @@ func main() {
 	if "" != settings.ServerSettings.JwtSecret {
 		model.Init()
 		go tool.AutoCert()
-		go tool.RecordServerAnalytic()
+		go analytic.RecordServerAnalytic()
 	}
 
 	srv := &http.Server{

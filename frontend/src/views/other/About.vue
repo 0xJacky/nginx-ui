@@ -15,7 +15,7 @@
         <p>Vue</p>
         <p>Websocket</p>
         <h3 v-translate translate-context="Project">License</h3>
-        <p>GNU General Public License v2.0</p>
+        <p>GNU General Public License v3.0</p>
         <p>Copyright © 2020 - {{ this_year }} Nginx UI </p>
     </a-card>
 </template>
