@@ -3,8 +3,8 @@
         <vue-itextarea v-model="configText"/>
         <footer-tool-bar>
             <a-space>
-                <a-button @click="$router.go(-1)" v-translate>Cancel</a-button>
-                <a-button type="primary" @click="save" v-translate>Save</a-button>
+                <a-button @click="$router.go(-1)"><translate>Cancel</translate></a-button>
+                <a-button type="primary" @click="save"><translate>Save</translate></a-button>
             </a-space>
         </footer-tool-bar>
     </a-card>

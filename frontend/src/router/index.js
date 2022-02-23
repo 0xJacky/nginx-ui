@@ -62,17 +62,16 @@ export const routes = [
                 meta: {
                     icon: 'file',
                     hideChildren: true
-                },
-                children: [{
-                    path: 'config/:name',
-                    name: $gettext('Edit Configuration'),
-                    component: () => import('@/views/config/ConfigEdit.vue'),
-                    meta: {
-                        hiddenInSidebar: true
-                    },
-                },]
+                }
             },
-
+            {
+                path: 'config/:name',
+                name: $gettext('Edit Configuration'),
+                component: () => import('@/views/config/ConfigEdit.vue'),
+                meta: {
+                    hiddenInSidebar: true
+                },
+            },
             {
                 path: 'about',
                 name: $gettext('About'),

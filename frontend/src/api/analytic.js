@@ -1,8 +1,8 @@
 import http from '@/lib/http'
 
 const analytic = {
-    cpu_usage() {
-        return http.get('/analytic/cpu')
+    init() {
+        return http.get('/analytic/init')
     }
 }
 

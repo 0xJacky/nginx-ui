@@ -36,7 +36,7 @@ func main() {
 	if "" != settings.ServerSettings.JwtSecret {
 		model.Init()
 		go tool.AutoCert()
-		go tool.RecordCpuUsage()
+		go tool.RecordServerAnalytic()
 	}
 
 	srv := &http.Server{
