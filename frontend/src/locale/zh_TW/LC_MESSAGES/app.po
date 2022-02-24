@@ -13,10 +13,6 @@ msgstr ""
 "Generated-By: easygettext\n"
 "X-Generator: Poedit 2.2\n"
 
-#: src/views/other/Install.vue:50
-msgid "<translate>Install</translate>"
-msgstr ""
-
 #: src/router/index.js:99
 msgid "404 Not Found"
 msgstr "404 未找到頁面"
@@ -31,7 +27,6 @@ msgid "Action"
 msgstr "操作"
 
 #: src/router/index.js:47 src/views/domain/DomainAdd.vue:18
-#: src/views/domain/DomainEdit.vue:46
 msgid "Add Site"
 msgstr "新增站點"
 
@@ -52,7 +47,7 @@ msgstr "成功啟用 %{name} 自動續簽"
 msgid "Build with"
 msgstr "構建基於"
 
-#: src/views/config/ConfigEdit.vue:5 src/views/domain/DomainEdit.vue:23
+#: src/views/config/ConfigEdit.vue:5 src/views/domain/DomainEdit.vue:24
 msgid "Cancel"
 msgstr "取消"
 
@@ -101,7 +96,7 @@ msgstr "建立時間"
 msgid "Dashboard"
 msgstr "儀表盤"
 
-#: src/views/other/Install.vue:106
+#: src/views/other/Install.vue:105
 msgid "Database (Optional, default: database)"
 msgstr "資料庫 (可選，預設: database)"
 
@@ -134,7 +129,7 @@ msgstr ""
 msgid "Do you want to change the template to support the TLS?"
 msgstr "你想要改變模板以支援 TLS 嗎？"
 
-#: src/views/domain/DomainEdit.vue:46
+#: src/views/domain/DomainEdit.vue:38
 msgid "Edit %{n}"
 msgstr "編輯 %{n}"
 
@@ -142,7 +137,7 @@ msgstr "編輯 %{n}"
 msgid "Edit Configuration"
 msgstr "編輯配置"
 
-#: src/views/domain/DomainEdit.vue:92
+#: src/views/domain/DomainEdit.vue:87
 msgid "Edit Configuration File"
 msgstr "編輯配置檔案"
 
@@ -150,7 +145,7 @@ msgstr "編輯配置檔案"
 msgid "Edit Site"
 msgstr "編輯站點"
 
-#: src/views/other/Install.vue:32
+#: src/views/other/Install.vue:31
 msgid "Email (*)"
 msgstr "郵箱 (*)"
 
@@ -191,7 +186,7 @@ msgstr "啟用失敗 %{msg}"
 msgid "File Not Found"
 msgstr "未找到檔案"
 
-#: src/views/domain/DomainEdit.vue:9 src/views/domain/DomainEdit.vue:3
+#: src/views/domain/DomainEdit.vue:10 src/views/domain/DomainEdit.vue:4
 msgid "Getting Certificate from Let's Encrypt"
 msgstr "從 Let's Encrypt 獲取證書"
 
@@ -223,7 +218,7 @@ msgstr "安裝"
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "中級證書頒發機構: %{issuer}"
 
-#: src/views/other/Install.vue:47
+#: src/views/other/Install.vue:46
 msgid "Invalid E-mail!"
 msgstr "無效的郵箱！"
 
@@ -252,11 +247,11 @@ msgstr "登入成功"
 msgid "Logout successful"
 msgstr "登出成功"
 
-#: src/views/domain/DomainEdit.vue:12 src/views/domain/DomainEdit.vue:6
+#: src/views/domain/DomainEdit.vue:13 src/views/domain/DomainEdit.vue:7
+#, fuzzy
 msgid ""
-"Make sure you have configured a reverse proxy for <code>.well-known</code> "
-"directory to <code>HTTPChallengePort</code> (default: 9180) before getting "
-"the certificate."
+"Make sure you have configured a reverse proxy for .well-known directory to "
+"HTTPChallengePort (default: 9180) before getting the certificate."
 msgstr ""
 "在獲取證書前，請確保配置檔案中已將 <code>.well-known</code> 目錄反向代理到"
 "<code>HTTPChallengePort</code> (預設: 9180)"
@@ -319,19 +314,19 @@ msgstr ""
 msgid "Password"
 msgstr "密碼"
 
-#: src/views/other/Install.vue:84
+#: src/views/other/Install.vue:83
 msgid "Password (*)"
 msgstr "密碼 (*)"
 
-#: src/views/other/Install.vue:51
+#: src/views/other/Install.vue:50
 msgid "Please input your E-mail!"
 msgstr "請輸入您的郵箱！"
 
-#: src/views/other/Install.vue:97 src/views/other/Login.vue:69
+#: src/views/other/Install.vue:96 src/views/other/Login.vue:69
 msgid "Please input your password!"
 msgstr "請輸入您的密碼！"
 
-#: src/views/other/Install.vue:74 src/views/other/Login.vue:46
+#: src/views/other/Install.vue:73 src/views/other/Login.vue:46
 msgid "Please input your username!"
 msgstr "請輸入您的使用者名稱！"
 
@@ -356,7 +351,7 @@ msgid "Root Directory (root)"
 msgstr "網站根目錄 (root)"
 
 #: src/views/config/ConfigEdit.vue:6 src/views/domain/DomainAdd.vue:6
-#: src/views/domain/DomainEdit.vue:24
+#: src/views/domain/DomainEdit.vue:25
 msgid "Save"
 msgstr "儲存"
 
@@ -422,7 +417,7 @@ msgstr ""
 "系統將會每小時檢測一次該域名證書，若距離上次簽發已超過1個月，則將自動續簽。"
 "<br/>如果您之前沒有證書，請先點選「從 Let's Encrypt 獲取證書」。"
 
-#: src/views/other/Install.vue:121
+#: src/views/other/Install.vue:120
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "檔名不能包含以下字元: %{c}"
 
@@ -453,7 +448,7 @@ msgstr "執行時間"
 msgid "Username"
 msgstr "使用者名稱"
 
-#: src/views/other/Install.vue:61
+#: src/views/other/Install.vue:60
 msgid "Username (*)"
 msgstr "使用者名稱 (*)"
 

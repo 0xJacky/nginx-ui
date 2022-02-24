@@ -1,16 +1,15 @@
 <template>
     <div>
         <a-collapse :bordered="false" default-active-key="1">
-            <a-collapse-panel key="1" :header="name ? $gettextInterpolate($gettext('Edit %{n}'), {n: name}) : $gettext('Add Site')">
+            <a-collapse-panel key="1" :header="$gettextInterpolate($gettext('Edit %{n}'), {n: name})">
                 <p v-translate>The following values will only take effect if you have the corresponding fields in your configuration file. The configuration filename cannot be changed after it has been created.</p>
                 <std-data-entry :data-list="columns" v-model="config"/>
                 <template v-if="config.support_ssl">
                     <cert-info :domain="name" ref="cert-info" v-if="name"/>
-                    <br/>
-                    <a-button @click="issue_cert" type="primary" ghost v-translate>
-                        Getting Certificate from Let's Encrypt
-                    </a-button><br/>
-                    <p v-translate>Make sure you have configured a reverse proxy for <code>.well-known</code> directory to <code>HTTPChallengePort</code> (default: 9180) before getting the certificate.</p>
+                    <a-button @click="issue_cert" type="primary" ghost style="margin: 10px 0">
+                        <translate>Getting Certificate from Let's Encrypt</translate>
+                    </a-button>
+                    <p v-translate>Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort (default: 9180) before getting the certificate.</p>
                 </template>
             </a-collapse-panel>
         </a-collapse>
