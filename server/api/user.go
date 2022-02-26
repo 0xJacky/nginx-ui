@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	"github.com/0xJacky/Nginx-UI/server/model"
+	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"golang.org/x/crypto/bcrypt"
@@ -75,6 +76,13 @@ func AddUser(c *gin.Context) {
 }
 
 func EditUser(c *gin.Context) {
+	userId := cast.ToInt(c.Param("id"))
+
+	if settings.ServerSettings.Demo && userId == 1 {
+		ErrHandler(c, errors.New("not allow to change the root password in demo"))
+		return
+	}
+
 	var json UserJson
 	ok := BindAndValid(c, &json)
 	if !ok {
@@ -84,7 +92,7 @@ func EditUser(c *gin.Context) {
 
 	var user, edit model.Auth
 
-	err := curd.First(&user, c.Param("id"))
+	err := curd.First(&user, userId)
 
 	if err != nil {
 		ErrHandler(c, err)
@@ -117,7 +125,7 @@ func DeleteUser(c *gin.Context) {
 	id := c.Param("id")
 
 	if cast.ToInt(id) == 1 {
-		ErrHandler(c, errors.New("不允许删除默认账户"))
+		ErrHandler(c, errors.New("not allow to delete the default user"))
 		return
 	}
 	curd := model.NewCurd(&model.Auth{})
