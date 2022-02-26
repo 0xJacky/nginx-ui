@@ -8,7 +8,9 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 
-[简体中文说明](README-zh_CN.md)
+[简体中文](README-zh_CN.md)
+
+[繁體中文](README-zh_TW.md)
 
 <details>
   <summary>Table of Contents</summary>
@@ -17,7 +19,7 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#features">Features</a></li>
-        <li><a href="#built-with">Internationalization</a></li>
+        <li><a href="#internationalization">Internationalization</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -26,7 +28,13 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
       <ul>
         <li><a href="#before-use">Before Use</a></li>
         <li><a href="#installation">Installation</a></li>
-        <li><a href="#usage">Usage</a></li>
+        <li>
+          <a href="#usage">Usage</a>
+          <ul>
+            <li><a href="#from-executable">From Executable</a></li>
+            <li><a href="#with-systemd">With Systemd</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
     <li>
@@ -38,10 +46,10 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
       </ul>
     </li>
     <li>
-      <a href="#scripts-for-linux">Scripts for Linux</a>
+      <a href="#script-for-linux">Script for Linux</a>
       <ul>
-        <li><a href="#prerequisites">Basic Usage</a></li>
-        <li><a href="#build-frontend">More Usage</a></li>
+        <li><a href="#basic-usage">Basic Usage</a></li>
+        <li><a href="#more-usage">More Usage</a></li>
       </ul>
     </li>
     <li><a href="#example-of-nginx-reverse-proxy-configuration">Example of Nginx Reverse Proxy Configuration</a></li>
@@ -101,39 +109,48 @@ You can visit [latest release](https://github.com/0xJacky/nginx-ui/releases/late
 
 ### Usage
 
-#### Manually Install
-- Start Nginx UI in foreground
-```shell
-nginx-ui --config app.ini
-```
-- Kill Nginx UI in foreground
-    - Keyboard shortcuts `Ctrl+C`
+In the first runtime of Nginx UI, please visit `http://<your_server_ip>:<listen_port>/install`
+in your browser to complete the follow-up configurations.
 
-- Start Nginx UI in background
+#### From Executable
+**Run Nginx UI in Terminal**
+
 ```shell
-nohup ./nginx-ui --config app.ini &
+nginx-ui -config app.ini
 ```
-- Kill Nginx UI in background
+Press `Control+C` in the terminal to exit Nginx UI.
+
+**Run Nginx UI in Background**
+
 ```shell
-jobs
-kill %job_id
+nohup ./nginx-ui -config app.ini &
 ```
-#### Installed by script
-- Start Nginx UI
+Stop Nginx UI with the follow commond.
+
+```shell
+kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
+```
+#### With Systemd
+If you are using the [installation script for Linux](#scripts-for-linux), the Nginx UI will be installed as `nginx-ui` service in systemd. Please use the `systemctl` command to control it.
+
+**Start Nginx UI**
+
 ```shell
 systemctl start nginx-ui
 ```
-- Stop Nginx UI
+**Stop Nginx UI**
+
 ```shell
 systemctl stop nginx-ui
 ```
-- Restart Nginx UI
+**Restart Nginx UI**
+
 ```shell
 systemctl restart nginx-ui
 ```
 ## Manual Build
 
-On platforms where installation scripts are not supported, they can be built manually.
+On platforms that do not have an official build version, they can be built manually.
 
 ### Prerequisites
 
@@ -165,7 +182,7 @@ Please build the frontend first, and then execute the following command in the p
 go build -o nginx-ui -v main.go
 ```
 
-## Scripts for Linux
+## Script for Linux
 
 ### Basic Usage
 
@@ -175,9 +192,6 @@ go build -o nginx-ui -v main.go
 bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) @ install
 ```
 The default listening port is 9000, and the default HTTP Challenge port is 9180. If there is a port conflict, please modify `/usr/local/etc/nginx-ui/app.ini` manually, then use `systemctl restart nginx-ui` to reload the Nginx UI service.
-
-Once the nginx-ui is running, please visit `http://<your_server_ip>:<listen_port>/install`
-in your browser to complete the follow-up configurations.
 
 **Remove Nginx UI, except configuration and database files**
 
@@ -228,7 +242,7 @@ server {
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you  make are **greatly appreciated**.
 
-If you have a suggestion that would make this better,  please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
