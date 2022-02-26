@@ -15,6 +15,7 @@ type Server struct {
 	HTTPChallengePort string
 	Email             string
 	Database          string
+	Demo              bool
 }
 
 var ServerSettings = &Server{
@@ -22,6 +23,7 @@ var ServerSettings = &Server{
 	RunMode:           "debug",
 	HTTPChallengePort: "9180",
 	Database:          "database",
+	Demo:              false,
 }
 
 var ConfPath string

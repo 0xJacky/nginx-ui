@@ -48,8 +48,8 @@ func TestLego(t *testing.T) {
 
 	config := lego.NewConfig(&myUser)
 
-	// This CA URL is configured for a local dev instance of Boulder running in Docker in a VM.
-	//config.CADirURL = "https://acme-staging-v02.api.letsencrypt.org/directory"
+	// This CA URL is configured for a local dev instance of Boulder running in Dockerfile in a VM.
+	config.CADirURL = "https://acme-staging-v02.api.letsencrypt.org/directory"
 	config.Certificate.KeyType = certcrypto.RSA2048
 
 	// A client facilitates communication with the CA server.

@@ -4,6 +4,7 @@ import auth from './auth'
 import user from './user'
 import install from './install'
 import analytic from './analytic'
+import settings from './settings'
 
 export default {
     domain,
@@ -11,5 +12,6 @@ export default {
     auth,
     user,
     install,
-    analytic
+    analytic,
+    settings
 }

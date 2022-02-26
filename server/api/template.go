@@ -2,18 +2,16 @@ package api
 
 import (
 	"github.com/0xJacky/Nginx-UI/server/settings"
+	"github.com/0xJacky/Nginx-UI/server/template"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strings"
 )
 
 func GetTemplate(c *gin.Context) {
 	name := c.Param("name")
-	path := filepath.Join("template", name)
-	content, err := ioutil.ReadFile(path)
+	content, err := template.DistFS.ReadFile(name)
 
 	_content := string(content)
 	_content = strings.ReplaceAll(_content, "{{ HTTP01PORT }}",

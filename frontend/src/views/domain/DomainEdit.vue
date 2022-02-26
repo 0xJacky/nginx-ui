@@ -6,10 +6,16 @@
                 <std-data-entry :data-list="columns" v-model="config"/>
                 <template v-if="config.support_ssl">
                     <cert-info :domain="name" ref="cert-info" v-if="name"/>
-                    <a-button @click="issue_cert" type="primary" ghost style="margin: 10px 0">
+                    <a-button
+                        @click="issue_cert"
+                        type="primary" ghost
+                        style="margin: 10px 0"
+                        :disabled="is_demo"
+                    >
                         <translate>Getting Certificate from Let's Encrypt</translate>
                     </a-button>
-                    <p v-translate>Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort (default: 9180) before getting the certificate.</p>
+                    <p v-if="is_demo" v-translate>This feature is not available in demo.</p>
+                    <p v-else v-translate>Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort (default: 9180) before getting the certificate.</p>
                 </template>
             </a-collapse-panel>
         </a-collapse>
@@ -238,6 +244,9 @@ export default {
                     return [...columns]
                 }
             }
+        },
+        is_demo() {
+            return this.$store.getters.env.demo===true
         }
     }
 }

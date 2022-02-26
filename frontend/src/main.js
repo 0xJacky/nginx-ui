@@ -20,6 +20,10 @@ Vue.config.productionTip = false
 Vue.prototype.$routeConfig = routes
 Vue.prototype.$api = api
 
+api.settings.get().then(r => {
+    store.commit('update_env', r)
+})
+
 Vue.use(GetTextPlugin, {
     availableLanguages,
     defaultLanguage: store.getters.current_language,
