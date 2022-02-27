@@ -35,7 +35,7 @@ export default {
                 series: this.series,
                 chart: {
                     type: 'radialBar',
-                    offsetY: -10
+                    offsetY: 0
                 },
                 plotOptions: {
                     radialBar: {
@@ -82,15 +82,16 @@ export default {
 .container {
     position: relative;
     margin: 0 auto;
+    height: 172px;
     .text {
         position: absolute;
-        top: calc(72px);
+        top: calc(50% - 3px);
         width: 100%;
         text-align: center;
     }
     .bottom_text {
         position: absolute;
-        top: calc(142px);
+        top: calc(152px);
         font-weight: 600;
         width: 100%;
         text-align: center;
