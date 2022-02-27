@@ -7,7 +7,6 @@ EXPOSE 80
 COPY ./resources/demo/nginx.conf /etc/nginx/sites-available/default
 COPY ./resources/demo/app.ini /app/app.ini
 COPY ./resources/demo/demo.db /app/database.db
-COPY ./resources/demo/install.sh /app/install.sh
 COPY ./resources/demo/start.sh /app/start.sh
 COPY ./nginx-ui-server /app/nginx-ui
 RUN cd /app && chmod a+x start.sh

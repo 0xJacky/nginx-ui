@@ -64,6 +64,11 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
 
 [![Dashboard](resources/screenshots/dashboard.png)]()
 
+### 在线预览
+网址：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
+- 用户名：admin
+- 密码：admin
+
 ### 特色
 
 - 在线查看服务器 CPU、内存、系统负载、磁盘使用率等指标

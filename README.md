@@ -62,6 +62,11 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
 
 [![Dashboard](resources/screenshots/dashboard.png)]()
 
+### Demo
+URL：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
+- username：admin
+- password：admin
+
 ### Features
 
 - Online view of server CPU, Memory, Load Average, Disk Usage and other indicators.
