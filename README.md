@@ -60,7 +60,7 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
 
 ## About The Project
 
-[![Dashboard](resources/screenshots/dashboard.png)]()
+[![Dashboard](resources/screenshots/dashboard_en.png)]()
 
 ### Demo
 URL：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
