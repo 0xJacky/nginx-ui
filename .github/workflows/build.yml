@@ -1,4 +1,4 @@
-name: Build and Publish
+name: Build
 
 on:
     push:
@@ -37,9 +37,9 @@ jobs:
             - name: Set up nodejs
               uses: actions/setup-node@v2
               with:
-                  node-version: '14.x'
+                  node-version: '16.x'
                   cache: 'yarn'
-                  cache-dependency-path: '**/yarn.lock'
+                  cache-dependency-path: 'frontend/yarn.lock'
 
             - name: Install dependencies
               run: yarn install
@@ -73,7 +73,7 @@ jobs:
               with:
                   files: frontend-dist.tar.gz
 
-    build_backend:
+    build:
         runs-on: ubuntu-latest
         needs: build_frontend
         strategy:
@@ -85,9 +85,12 @@ jobs:
                     - goarch: 386
                       goos: darwin
         env:
+            CGO_ENABLED: 1
             GOOS: ${{ matrix.goos }}
             GOARCH: ${{ matrix.goarch }}
-            DIST: nginx-ui-${{ matrix.goos }}-${{ matrix.goarch }}
+            DIST: nginx-ui-${{ matrix.GOOS }}-${{ matrix.GOARCH }}
+        outputs:
+            dist: ${{ env.DIST }}
         steps:
             - name: Checkout
               uses: actions/checkout@v2
@@ -107,6 +110,38 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-${{ env.GOOS }}-${{ env.GOARCH }}-go-
 
+            - name: Setup compiler environment
+              id: info
+              run: |
+                  export _ARCH=$(jq ".[\"$GOARCH\"].$GOOS" -r < .github/build/compiler_arch.json)
+                  echo "::set-output name=ARCH_NAME::$_ARCH"
+
+            - name: Install musl cross compiler
+              if: env.GOOS == 'linux'
+              uses: Lesmiscore/musl-cross-compilers@v0.5
+              id: musl
+              with:
+                  target: ${{ steps.info.outputs.ARCH_NAME }}-linux-musl
+
+            - name: Post install musl cross compiler
+              if: env.GOOS == 'linux'
+              run: |
+                  echo "PATH=${{ steps.musl.outputs.path }}:$PATH" >> $GITHUB_ENV
+                  echo "CC=${{ steps.info.outputs.ARCH_NAME }}-linux-musl-gcc" >> $GITHUB_ENV
+                  echo "CXX=${{ steps.info.outputs.ARCH_NAME }}-linux-musl-g++" >> $GITHUB_ENV
+                  echo "LD_FLAGS=--extldflags '-static'" >> $GITHUB_ENV
+
+            - name: Install darwin cross compiler
+              if: env.GOOS == 'darwin'
+              run: |
+                  curl -L https://github.com/Hintay/crossosx/releases/latest/download/crossosx.tar.zst -o crossosx.tar.zst
+                  tar xvaf crossosx.tar.zst
+                  echo "LD_LIBRARY_PATH=$(pwd)/crossosx/lib/" >> $GITHUB_ENV
+                  echo "PATH=$(pwd)/crossosx/bin/:$PATH" >> $GITHUB_ENV
+                  echo "CC=${{ steps.info.outputs.ARCH_NAME }}-clang" >> $GITHUB_ENV
+                  echo "CXX=${{ steps.info.outputs.ARCH_NAME }}-clang++" >> $GITHUB_ENV
+                  echo "LD_FLAGS=-s -w" >> $GITHUB_ENV
+
             - name: Download frontend artifacts
               uses: actions/download-artifact@v2
               with:
@@ -116,7 +151,7 @@ jobs:
             - name: Build
               run: |
                   mkdir -p dist
-                  go build -o dist/nginx-ui -v main.go
+                  go build -ldflags "$LD_FLAGS" -o dist/nginx-ui -v main.go
 
             - name: Archive backend artifacts
               uses: actions/upload-artifact@v2
@@ -124,14 +159,14 @@ jobs:
                   name: ${{ env.DIST }}
                   path: dist/nginx-ui
 
-            - name: Prepare publish
-              if: github.event_name == 'release'
-              run: |
-                  cp README*.md ./dist
-                  find dist -printf '%P\n' | tar -C dist --no-recursion -zcvf ${{ env.DIST }}.tar.gz -T -
+            -   name: Prepare publish
+                if: github.event_name == 'release'
+                run: |
+                    cp README*.md ./dist
+                    find dist -printf '%P\n' | tar -C dist --no-recursion -zcvf ${{ env.DIST }}.tar.gz -T -
 
-            - name: Publish
-              uses: softprops/action-gh-release@v1
-              if: github.event_name == 'release'
-              with:
-                  files: ${{ env.DIST }}.tar.gz
+            -   name: Publish
+                uses: softprops/action-gh-release@v1
+                if: github.event_name == 'release'
+                with:
+                    files: ${{ env.DIST }}.tar.gz
