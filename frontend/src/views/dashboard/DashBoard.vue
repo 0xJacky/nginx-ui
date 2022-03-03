@@ -19,7 +19,7 @@
                         {{ host.os }} {{ host.kernelVersion }}
                         {{ host.kernelArch }})
                     </p>
-                    <p>
+                    <p v-if="cpu_info">
                         <translate>CPU:</translate>
                         {{ cpu_info[0]?.modelName }} * {{ cpu_info.length }}
                     </p>
