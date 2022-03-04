@@ -195,20 +195,20 @@ go build -o nginx-ui -v main.go
 **安裝或升級**
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) @ install
+bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install
 ```
 一鍵安裝指令碼預設設定的監聽埠為 `9000`，HTTP Challenge 埠預設為 `9180`，如果出現埠衝突請進入 `/usr/local/etc/nginx-ui/app.ini` 修改，並使用 `systemctl restart nginx-ui` 重啟 Nginx UI 服務。
 
 **解除安裝 Nginx UI 但保留配置和資料庫檔案**
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) @ remove
+bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
 ```
 
 ### 更多用法
 
 ````shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) @ help
+bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) help
 ````
 
 ## Nginx 反向代理配置示例
