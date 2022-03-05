@@ -2,7 +2,7 @@ package model
 
 import (
 	"github.com/0xJacky/Nginx-UI/server/settings"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt"
 	"time"
 )
 
