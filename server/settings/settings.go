@@ -7,6 +7,10 @@ import (
 
 var Conf *ini.File
 
+var (
+	BuildTime string
+)
+
 type Server struct {
 	HttpPort          string
 	RunMode           string
