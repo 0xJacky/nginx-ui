@@ -7,7 +7,7 @@ tmp_dir = "tmp"
 
 [build]
 # Just plain old shell command. You could use `make` as well.
-cmd = "go build -ldflags=\"-X 'github.com/0xJacky/Nginx-UI/server/settings.BuildTime=$(date +%Y.%m.%d.%H%M%S)'\" -o ./tmp/main ."
+cmd = "go build -ldflags=\"-X 'github.com/0xJacky/Nginx-UI/server/settings.buildTime=$(date +%s)'\" -o ./tmp/main ."
 # Binary file yields from `cmd`.
 bin = "tmp/main"
 # Customize binary.

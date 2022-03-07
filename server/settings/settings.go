@@ -1,14 +1,18 @@
 package settings
 
 import (
+	"github.com/spf13/cast"
 	"gopkg.in/ini.v1"
 	"log"
+	"strings"
+	"time"
 )
 
 var Conf *ini.File
 
 var (
-	BuildTime string
+	buildTime    string
+	LastModified string
 )
 
 type Server struct {
@@ -34,6 +38,11 @@ var ConfPath string
 
 var sections = map[string]interface{}{
 	"server": ServerSettings,
+}
+
+func init() {
+	t := time.Unix(cast.ToInt64(buildTime), 0)
+	LastModified = strings.ReplaceAll(t.Format(time.RFC1123), "UTC", "GMT")
 }
 
 func Init(confPath string) {

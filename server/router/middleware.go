@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"path"
 	"strings"
-	"time"
 )
 
 func recovery() gin.HandlerFunc {
@@ -84,13 +83,10 @@ func cacheJs() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if strings.Contains(c.Request.URL.String(), "js") {
 			c.Header("Cache-Control", "max-age: 1296000")
-			t, _ := time.Parse("2006.01.02.150405", settings.BuildTime)
-			t = t.Add(-8 * time.Hour)
-			lastModified := strings.ReplaceAll(t.Format(time.RFC1123), "UTC", "GMT")
-			if c.Request.Header.Get("If-Modified-Since") == lastModified {
+			if c.Request.Header.Get("If-Modified-Since") == settings.LastModified {
 				c.AbortWithStatus(http.StatusNotModified)
 			}
-			c.Header("Last-Modified", lastModified)
+			c.Header("Last-Modified", settings.LastModified)
 		}
 	}
 }
