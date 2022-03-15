@@ -41,7 +41,7 @@ import VueItextarea from '@/components/VueItextarea/VueItextarea'
 import {columns, columnsSSL} from '@/views/domain/columns'
 import {unparse} from '@/views/domain/methods'
 import CertInfo from '@/views/domain/CertInfo'
-import $gettext, {$interpolate} from "@/lib/translate/gettext";
+import {$gettext, $interpolate} from "@/lib/translate/gettext"
 
 export default {
     name: 'DomainEdit',
@@ -222,15 +222,15 @@ export default {
         change_auto_cert() {
             if (this.config.auto_cert) {
                 this.$api.domain.add_auto_cert(this.name).then(() => {
-                    this.$message.success($interpolate($gettext('Auto-renewal enabled for %{name}', {name: this.name})))
+                    this.$message.success($interpolate($gettext('Auto-renewal enabled for %{name}'), {name: this.name}))
                 }).catch(e => {
-                    this.$message.error(e.message ?? $interpolate($gettext('Enable auto-renewal failed for %{name}', {name: this.name})))
+                    this.$message.error(e.message ?? $interpolate($gettext('Enable auto-renewal failed for %{name}'), {name: this.name}))
                 })
             } else {
                 this.$api.domain.remove_auto_cert(this.name).then(() => {
-                    this.$message.success($interpolate($gettext('Auto-renewal disabled for %{name}', {name: this.name})))
+                    this.$message.success($interpolate($gettext('Auto-renewal disabled for %{name}'), {name: this.name}))
                 }).catch(e => {
-                    this.$message.error(e.message ?? $interpolate($gettext('Disable auto-renewal failed for %{name}', {name: this.name})))
+                    this.$message.error(e.message ?? $interpolate($gettext('Disable auto-renewal failed for %{name}'), {name: this.name}))
                 })
             }
         }
