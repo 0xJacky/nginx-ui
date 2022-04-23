@@ -24,17 +24,22 @@ type ValidError struct {
 	Message string
 }
 
+var trans ut.Translator
+
+func init() {
+	uni := ut.New(zh.New())
+	trans, _ = uni.GetTranslator("zh")
+	v, ok := binding.Validator.Engine().(*val.Validate)
+	if ok {
+		_ = zhTranslations.RegisterDefaultTranslations(v, trans)
+	}
+}
+
 func BindAndValid(c *gin.Context, target interface{}) bool {
 	errs := make(map[string]string)
 	err := c.ShouldBindJSON(target)
 	if err != nil {
 		log.Println("raw err", err)
-		uni := ut.New(zh.New())
-		trans, _ := uni.GetTranslator("zh")
-		v, ok := binding.Validator.Engine().(*val.Validate)
-		if ok {
-			_ = zhTranslations.RegisterDefaultTranslations(v, trans)
-		}
 
 		verrs, ok := err.(val.ValidationErrors)
 
