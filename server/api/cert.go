@@ -14,7 +14,12 @@ import (
 func CertInfo(c *gin.Context) {
     domain := c.Param("domain")
 
-    key := tool.GetCertInfo(domain)
+    key, err := tool.GetCertInfo(domain)
+
+    if err != nil {
+        ErrHandler(c, err)
+        return
+    }
 
     c.JSON(http.StatusOK, gin.H{
         "subject_name": key.Subject.CommonName,
