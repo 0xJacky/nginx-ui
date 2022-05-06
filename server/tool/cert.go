@@ -46,13 +46,17 @@ func AutoCert() {
         autoCertList := model.GetAutoCertList()
         for i := range autoCertList {
             domain := autoCertList[i].Domain
-            key := GetCertInfo(domain)
+            key, err := GetCertInfo(domain)
+            if err != nil {
+                // 获取证书信息失败，本次跳过
+                continue
+            }
             // 未到一个月
             if time.Now().Before(key.NotBefore.AddDate(0, 1, 0)) {
                 continue
             }
-            // 过一个月了
-            err := IssueCert(domain)
+            // 过一个月了，重新申请证书
+            err = IssueCert(domain)
             if err != nil {
                 log.Println(err)
             }
@@ -61,14 +65,17 @@ func AutoCert() {
     }
 }
 
-func GetCertInfo(domain string) (key *x509.Certificate) {
+func GetCertInfo(domain string) (key *x509.Certificate, err error) {
+
+    var response *http.Response
+
     ts := &http.Transport{
         TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
     }
 
     client := &http.Client{Transport: ts}
 
-    response, err := client.Get("https://" + domain)
+    response, err = client.Get("https://" + domain)
 
     if err != nil {
         return
