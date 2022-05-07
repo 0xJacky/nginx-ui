@@ -1,5 +1,11 @@
 package model
 
+import (
+	"github.com/0xJacky/Nginx-UI/server/tool/nginx"
+	"io/ioutil"
+	"path/filepath"
+)
+
 type Cert struct {
 	Model
 	Domain string `json:"domain"`
@@ -19,7 +25,27 @@ func FirstOrCreateCert(domain string) (c Cert, err error) {
 }
 
 func GetAutoCertList() (c []Cert) {
-	db.Find(&c)
+	var t []Cert
+	db.Find(&t)
+	// check if this domain is enabled
+
+	enabledConfig, err := ioutil.ReadDir(filepath.Join(nginx.GetNginxConfPath("sites-enabled")))
+
+	if err != nil {
+		return
+	}
+
+	enabledConfigMap := make(map[string]bool)
+	for i := range enabledConfig {
+		enabledConfigMap[enabledConfig[i].Name()] = true
+	}
+
+	for _, v := range t {
+		if enabledConfigMap[v.Domain] == true {
+			c = append(c, v)
+		}
+	}
+
 	return
 }
 

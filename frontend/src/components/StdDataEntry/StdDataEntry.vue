@@ -115,7 +115,7 @@
 
             <p v-if="!dataSource[d.dataIndex] && d.empty_description" v-html="d.empty_description"/>
         </a-form-item>
-        <a-form-item>
+        <a-form-item v-if="$slots.supplement||$slots.action">
             <slot name="supplement"/>
             <slot name="action"/>
         </a-form-item>

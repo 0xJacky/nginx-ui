@@ -1,4 +1,4 @@
-package tool
+package nginx
 
 import (
 	"errors"
@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func TestNginxConf(filePath string) error {
+func TestNginxConf() error {
 	out, err := exec.Command("nginx", "-t").CombinedOutput()
 	if err != nil {
 		log.Println(err)

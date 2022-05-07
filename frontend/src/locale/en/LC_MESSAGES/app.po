@@ -23,28 +23,27 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: src/router/index.js:47 src/views/domain/DomainAdd.vue:18
+#: src/router/index.js:47 src/views/domain/DomainAdd.vue:27
 msgid "Add Site"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:2
-msgid ""
-"Add site here first, then you can configure TLS on the domain edit page."
-msgstr ""
-
-#: src/views/domain/DomainEdit.vue:194
+#: src/views/domain/DomainAdd.vue:86 src/views/domain/DomainEdit.vue:172
 msgid "Auto-renewal disabled for %{name}"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:188
+#: src/views/domain/DomainAdd.vue:80 src/views/domain/DomainEdit.vue:166
 msgid "Auto-renewal enabled for %{name}"
+msgstr ""
+
+#: src/views/domain/DomainAdd.vue:37
+msgid "Base information"
 msgstr ""
 
 #: src/views/other/About.vue:11
 msgid "Build with"
 msgstr ""
 
-#: src/views/config/ConfigEdit.vue:5 src/views/domain/DomainEdit.vue:23
+#: src/views/config/ConfigEdit.vue:5 src/views/domain/DomainEdit.vue:24
 msgid "Cancel"
 msgstr ""
 
@@ -76,12 +75,20 @@ msgstr ""
 msgid "Configurations"
 msgstr ""
 
+#: src/views/domain/DomainAdd.vue:40
+msgid "Configure SSL"
+msgstr ""
+
 #: src/views/dashboard/DashBoard.vue:207
 msgid "CPU Status"
 msgstr ""
 
 #: src/views/dashboard/DashBoard.vue:22
 msgid "CPU:"
+msgstr ""
+
+#: src/views/domain/DomainAdd.vue:31 src/views/domain/DomainAdd.vue:5
+msgid "Create Another"
 msgstr ""
 
 #: src/views/user/User.vue:23
@@ -104,7 +111,7 @@ msgstr ""
 msgid "Development Mode"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:196
+#: src/views/domain/DomainAdd.vue:88 src/views/domain/DomainEdit.vue:174
 msgid "Disable auto-renewal failed for %{name}"
 msgstr ""
 
@@ -121,8 +128,12 @@ msgstr ""
 msgid "Disk IO"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:133
+#: src/views/domain/DomainEdit.vue:134
 msgid "Do you want to change the template to support the TLS?"
+msgstr ""
+
+#: src/views/domain/DomainAdd.vue:111
+msgid "Domain Config Created Successfully"
 msgstr ""
 
 #: src/views/domain/DomainEdit.vue:42
@@ -145,11 +156,11 @@ msgstr ""
 msgid "Email (*)"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:190
+#: src/views/domain/DomainAdd.vue:82 src/views/domain/DomainEdit.vue:168
 msgid "Enable auto-renewal failed for %{name}"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:33
+#: src/views/domain/DomainAdd.vue:39
 msgid "Enable failed"
 msgstr ""
 
@@ -162,7 +173,7 @@ msgstr ""
 msgid "Enabled"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:27 src/views/domain/DomainList.vue:46
+#: src/views/domain/DomainAdd.vue:36 src/views/domain/DomainList.vue:46
 msgid "Enabled successfully"
 msgstr ""
 
@@ -182,11 +193,16 @@ msgstr ""
 msgid "File Not Found"
 msgstr ""
 
+#: src/views/domain/DomainAdd.vue:43
+msgid "Finished"
+msgstr ""
+
+#: src/views/domain/DomainAdd.vue:13 src/views/domain/DomainAdd.vue:2
 #: src/views/domain/DomainEdit.vue:9 src/views/domain/DomainEdit.vue:3
 msgid "Getting Certificate from Let's Encrypt"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:156
+#: src/views/domain/methods.js:34
 msgid "Getting the certificate, please wait..."
 msgstr ""
 
@@ -265,6 +281,10 @@ msgstr ""
 msgid "Memory"
 msgstr ""
 
+#: src/views/domain/DomainAdd.vue:28 src/views/domain/DomainAdd.vue:2
+msgid "Modify Config"
+msgstr ""
+
 #: src/views/config/Config.vue:5 src/views/domain/DomainList.vue:5
 msgid "Name"
 msgstr ""
@@ -281,6 +301,10 @@ msgstr ""
 msgid "Network Total Send"
 msgstr ""
 
+#: src/views/domain/DomainAdd.vue:38
+msgid "Next"
+msgstr ""
+
 #: src/router/index.js:105
 msgid "Not Found"
 msgstr ""
@@ -289,7 +313,7 @@ msgstr ""
 msgid "Not Valid Before: %{date}"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:155
+#: src/views/domain/methods.js:33
 msgid ""
 "Note: The server_name in the current configuration must be the domain name "
 "you need to get the certificate."
@@ -343,18 +367,17 @@ msgstr ""
 msgid "Root Directory (root)"
 msgstr ""
 
-#: src/views/config/ConfigEdit.vue:6 src/views/domain/DomainAdd.vue:6
-#: src/views/domain/DomainEdit.vue:24
+#: src/views/config/ConfigEdit.vue:6 src/views/domain/DomainEdit.vue:27
 msgid "Save"
 msgstr ""
 
-#: src/views/config/ConfigEdit.vue:47 src/views/domain/DomainAdd.vue:38
-#: src/views/domain/DomainEdit.vue:151
+#: src/views/config/ConfigEdit.vue:47 src/views/domain/DomainAdd.vue:43
+#: src/views/domain/DomainAdd.vue:54 src/views/domain/DomainEdit.vue:152
 msgid "Save error %{msg}"
 msgstr ""
 
-#: src/views/config/ConfigEdit.vue:44 src/views/domain/DomainAdd.vue:24
-#: src/views/domain/DomainEdit.vue:145
+#: src/views/config/ConfigEdit.vue:44 src/views/domain/DomainAdd.vue:33
+#: src/views/domain/DomainAdd.vue:51 src/views/domain/DomainEdit.vue:146
 msgid "Saved successfully"
 msgstr ""
 
@@ -362,7 +385,7 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
-#: src/views/config/ConfigEdit.vue:35 src/views/domain/DomainEdit.vue:71
+#: src/views/config/ConfigEdit.vue:35 src/views/domain/DomainEdit.vue:72
 #: src/views/other/Login.vue:35
 msgid "Server error"
 msgstr ""
@@ -377,6 +400,10 @@ msgstr ""
 
 #: src/router/index.js:43
 msgid "Sites List"
+msgstr ""
+
+#: src/views/domain/DomainAdd.vue:20 src/views/domain/DomainAdd.vue:9
+msgid "Skip"
 msgstr ""
 
 #: src/views/domain/DomainList.vue:11
@@ -418,11 +445,12 @@ msgid ""
 "changed after it has been created."
 msgstr ""
 
+#: src/views/domain/DomainAdd.vue:15 src/views/domain/DomainAdd.vue:4
 #: src/views/domain/DomainEdit.vue:11 src/views/domain/DomainEdit.vue:5
 msgid "This feature is not available in demo."
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:134
+#: src/views/domain/DomainEdit.vue:135
 msgid "This operation will lose the custom configuration."
 msgstr ""
 

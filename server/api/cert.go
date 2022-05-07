@@ -4,6 +4,7 @@ import (
     "encoding/json"
     "github.com/0xJacky/Nginx-UI/server/settings"
     "github.com/0xJacky/Nginx-UI/server/tool"
+    "github.com/0xJacky/Nginx-UI/server/tool/nginx"
     "github.com/gin-gonic/gin"
     "github.com/gorilla/websocket"
     "log"
@@ -96,7 +97,7 @@ func IssueCert(c *gin.Context) {
                 return
             }
 
-            sslCertificatePath := tool.GetNginxConfPath("ssl/" + domain + "/fullchain.cer")
+            sslCertificatePath := nginx.GetNginxConfPath("ssl/" + domain + "/fullchain.cer")
             _, err = os.Stat(sslCertificatePath)
 
             if err != nil {
@@ -122,7 +123,7 @@ func IssueCert(c *gin.Context) {
                 return
             }
 
-            sslCertificateKeyPath := tool.GetNginxConfPath("ssl/" + domain + "/" + domain + ".key")
+            sslCertificateKeyPath := nginx.GetNginxConfPath("ssl/" + domain + "/" + domain + ".key")
             _, err = os.Stat(sslCertificateKeyPath)
 
             if err != nil {

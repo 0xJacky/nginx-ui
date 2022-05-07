@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/0xJacky/Nginx-UI/server/tool"
+	"github.com/0xJacky/Nginx-UI/server/tool/nginx"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"log"
@@ -19,7 +20,7 @@ func GetConfigs(c *gin.Context) {
 		"modify": "time",
 	}
 
-	configFiles, err := ioutil.ReadDir(tool.GetNginxConfPath("/"))
+	configFiles, err := ioutil.ReadDir(nginx.GetNginxConfPath("/"))
 
 	if err != nil {
 		ErrHandler(c, err)
@@ -49,7 +50,7 @@ func GetConfigs(c *gin.Context) {
 
 func GetConfig(c *gin.Context) {
 	name := c.Param("name")
-	path := filepath.Join(tool.GetNginxConfPath("/"), name)
+	path := filepath.Join(nginx.GetNginxConfPath("/"), name)
 
 	content, err := ioutil.ReadFile(path)
 
@@ -80,7 +81,7 @@ func AddConfig(c *gin.Context) {
 	name := request.Name
 	content := request.Content
 
-	path := filepath.Join(tool.GetNginxConfPath("/"), name)
+	path := filepath.Join(nginx.GetNginxConfPath("/"), name)
 
 	log.Println(path)
 	if _, err = os.Stat(path); err == nil {
@@ -98,7 +99,7 @@ func AddConfig(c *gin.Context) {
 		}
 	}
 
-	output := tool.ReloadNginx()
+	output := nginx.ReloadNginx()
 
 	if output != "" {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -126,7 +127,7 @@ func EditConfig(c *gin.Context) {
 		ErrHandler(c, err)
 		return
 	}
-	path := filepath.Join(tool.GetNginxConfPath("/"), name)
+	path := filepath.Join(nginx.GetNginxConfPath("/"), name)
 	content := request.Content
 
 	origContent, err := ioutil.ReadFile(path)
@@ -144,7 +145,7 @@ func EditConfig(c *gin.Context) {
 		}
 	}
 
-	output := tool.ReloadNginx()
+	output := nginx.ReloadNginx()
 
 	if output != "" {
 		c.JSON(http.StatusInternalServerError, gin.H{

@@ -13,7 +13,7 @@
 <script>
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar'
 import VueItextarea from '@/components/VueItextarea/VueItextarea'
-import {$gettext, $interpolate} from "@/lib/translate/gettext"
+import $gettext, {$interpolate} from "@/lib/translate/gettext";
 
 export default {
     name: 'DomainEdit',

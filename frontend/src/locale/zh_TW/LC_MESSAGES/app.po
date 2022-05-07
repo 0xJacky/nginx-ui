@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: easygettext\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: src/router/index.js:99
 msgid "404 Not Found"
@@ -26,28 +26,27 @@ msgstr "關於"
 msgid "Action"
 msgstr "操作"
 
-#: src/router/index.js:47 src/views/domain/DomainAdd.vue:18
+#: src/router/index.js:47 src/views/domain/DomainAdd.vue:27
 msgid "Add Site"
 msgstr "新增站點"
 
-#: src/views/domain/DomainAdd.vue:2
-msgid ""
-"Add site here first, then you can configure TLS on the domain edit page."
-msgstr "在這裡新增站點，完成後可進入編輯頁面配置 TLS。"
-
-#: src/views/domain/DomainEdit.vue:194
+#: src/views/domain/DomainAdd.vue:86 src/views/domain/DomainEdit.vue:172
 msgid "Auto-renewal disabled for %{name}"
 msgstr "成功關閉 %{name} 自動續簽"
 
-#: src/views/domain/DomainEdit.vue:188
+#: src/views/domain/DomainAdd.vue:80 src/views/domain/DomainEdit.vue:166
 msgid "Auto-renewal enabled for %{name}"
 msgstr "成功啟用 %{name} 自動續簽"
+
+#: src/views/domain/DomainAdd.vue:37
+msgid "Base information"
+msgstr "基本訊息"
 
 #: src/views/other/About.vue:11
 msgid "Build with"
 msgstr "構建基於"
 
-#: src/views/config/ConfigEdit.vue:5 src/views/domain/DomainEdit.vue:23
+#: src/views/config/ConfigEdit.vue:5 src/views/domain/DomainEdit.vue:24
 msgid "Cancel"
 msgstr "取消"
 
@@ -79,6 +78,10 @@ msgstr "配置名稱"
 msgid "Configurations"
 msgstr "配置"
 
+#: src/views/domain/DomainAdd.vue:40
+msgid "Configure SSL"
+msgstr "配置 SSL"
+
 #: src/views/dashboard/DashBoard.vue:207
 msgid "CPU Status"
 msgstr "中央處理器狀態"
@@ -86,6 +89,10 @@ msgstr "中央處理器狀態"
 #: src/views/dashboard/DashBoard.vue:22
 msgid "CPU:"
 msgstr "中央處理器:"
+
+#: src/views/domain/DomainAdd.vue:31 src/views/domain/DomainAdd.vue:5
+msgid "Create Another"
+msgstr "再創建一個"
 
 #: src/views/user/User.vue:23
 msgid "Created at"
@@ -107,7 +114,7 @@ msgstr "檢測到版本更新，頁面將會重新整理。"
 msgid "Development Mode"
 msgstr "開發模式"
 
-#: src/views/domain/DomainEdit.vue:196
+#: src/views/domain/DomainAdd.vue:88 src/views/domain/DomainEdit.vue:174
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "關閉 %{name} 自動續簽失敗"
 
@@ -124,9 +131,13 @@ msgstr "禁用成功"
 msgid "Disk IO"
 msgstr "磁碟 IO"
 
-#: src/views/domain/DomainEdit.vue:133
+#: src/views/domain/DomainEdit.vue:134
 msgid "Do you want to change the template to support the TLS?"
 msgstr "你想要改變模板以支援 TLS 嗎？"
+
+#: src/views/domain/DomainAdd.vue:111
+msgid "Domain Config Created Successfully"
+msgstr "域名配置文件創建成功"
 
 #: src/views/domain/DomainEdit.vue:42
 msgid "Edit %{n}"
@@ -148,11 +159,11 @@ msgstr "編輯站點"
 msgid "Email (*)"
 msgstr "郵箱 (*)"
 
-#: src/views/domain/DomainEdit.vue:190
+#: src/views/domain/DomainAdd.vue:82 src/views/domain/DomainEdit.vue:168
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "啟用 %{name} 自動續簽失敗"
 
-#: src/views/domain/DomainAdd.vue:33
+#: src/views/domain/DomainAdd.vue:39
 msgid "Enable failed"
 msgstr "啟用失敗"
 
@@ -165,7 +176,7 @@ msgstr "啟用 TLS"
 msgid "Enabled"
 msgstr "啟用"
 
-#: src/views/domain/DomainAdd.vue:27 src/views/domain/DomainList.vue:46
+#: src/views/domain/DomainAdd.vue:36 src/views/domain/DomainList.vue:46
 msgid "Enabled successfully"
 msgstr "啟用成功"
 
@@ -185,11 +196,16 @@ msgstr "啟用失敗 %{msg}"
 msgid "File Not Found"
 msgstr "未找到檔案"
 
+#: src/views/domain/DomainAdd.vue:43
+msgid "Finished"
+msgstr "完成"
+
+#: src/views/domain/DomainAdd.vue:13 src/views/domain/DomainAdd.vue:2
 #: src/views/domain/DomainEdit.vue:9 src/views/domain/DomainEdit.vue:3
 msgid "Getting Certificate from Let's Encrypt"
 msgstr "從 Let's Encrypt 獲取證書"
 
-#: src/views/domain/DomainEdit.vue:156
+#: src/views/domain/methods.js:34
 msgid "Getting the certificate, please wait..."
 msgstr "正在獲取證書，請稍等..."
 
@@ -247,6 +263,7 @@ msgid "Logout successful"
 msgstr "登出成功"
 
 #: src/views/domain/DomainEdit.vue:12 src/views/domain/DomainEdit.vue:6
+#, fuzzy
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort (default: 9180) before getting the certificate."
@@ -270,6 +287,10 @@ msgstr "使用者管理"
 msgid "Memory"
 msgstr "記憶體"
 
+#: src/views/domain/DomainAdd.vue:28 src/views/domain/DomainAdd.vue:2
+msgid "Modify Config"
+msgstr "修改配置"
+
 #: src/views/config/Config.vue:5 src/views/domain/DomainList.vue:5
 msgid "Name"
 msgstr "名稱"
@@ -286,6 +307,10 @@ msgstr "下載流量"
 msgid "Network Total Send"
 msgstr "上傳流量"
 
+#: src/views/domain/DomainAdd.vue:38
+msgid "Next"
+msgstr "下一步"
+
 #: src/router/index.js:105
 msgid "Not Found"
 msgstr "找不到頁面"
@@ -294,7 +319,7 @@ msgstr "找不到頁面"
 msgid "Not Valid Before: %{date}"
 msgstr "此前無效: %{date}"
 
-#: src/views/domain/DomainEdit.vue:155
+#: src/views/domain/methods.js:33
 msgid ""
 "Note: The server_name in the current configuration must be the domain name "
 "you need to get the certificate."
@@ -348,18 +373,17 @@ msgstr "下載"
 msgid "Root Directory (root)"
 msgstr "網站根目錄 (root)"
 
-#: src/views/config/ConfigEdit.vue:6 src/views/domain/DomainAdd.vue:6
-#: src/views/domain/DomainEdit.vue:24
+#: src/views/config/ConfigEdit.vue:6 src/views/domain/DomainEdit.vue:27
 msgid "Save"
 msgstr "儲存"
 
-#: src/views/config/ConfigEdit.vue:47 src/views/domain/DomainAdd.vue:38
-#: src/views/domain/DomainEdit.vue:151
+#: src/views/config/ConfigEdit.vue:47 src/views/domain/DomainAdd.vue:43
+#: src/views/domain/DomainAdd.vue:54 src/views/domain/DomainEdit.vue:152
 msgid "Save error %{msg}"
 msgstr "儲存錯誤 %{msg}"
 
-#: src/views/config/ConfigEdit.vue:44 src/views/domain/DomainAdd.vue:24
-#: src/views/domain/DomainEdit.vue:145
+#: src/views/config/ConfigEdit.vue:44 src/views/domain/DomainAdd.vue:33
+#: src/views/domain/DomainAdd.vue:51 src/views/domain/DomainEdit.vue:146
 msgid "Saved successfully"
 msgstr "儲存成功"
 
@@ -367,7 +391,7 @@ msgstr "儲存成功"
 msgid "Send"
 msgstr "上傳"
 
-#: src/views/config/ConfigEdit.vue:35 src/views/domain/DomainEdit.vue:71
+#: src/views/config/ConfigEdit.vue:35 src/views/domain/DomainEdit.vue:72
 #: src/views/other/Login.vue:35
 msgid "Server error"
 msgstr "伺服器錯誤"
@@ -383,6 +407,10 @@ msgstr "網站域名 (server_name)"
 #: src/router/index.js:43
 msgid "Sites List"
 msgstr "站點列表"
+
+#: src/views/domain/DomainAdd.vue:20 src/views/domain/DomainAdd.vue:9
+msgid "Skip"
+msgstr "跳過"
 
 #: src/views/domain/DomainList.vue:11
 msgid "Status"
@@ -419,6 +447,7 @@ msgid "The filename cannot contain the following characters: %{c}"
 msgstr "檔名不能包含以下字元: %{c}"
 
 #: src/views/domain/DomainEdit.vue:4
+#, fuzzy
 msgid ""
 "The following values will only take effect if you have the corresponding "
 "fields in your configuration file. The configuration filename cannot be "
@@ -427,11 +456,12 @@ msgstr ""
 "只有在您的配置檔案中有相應欄位時，下列的配置才能生效。配置檔名稱建立後不可修"
 "改。"
 
+#: src/views/domain/DomainAdd.vue:15 src/views/domain/DomainAdd.vue:4
 #: src/views/domain/DomainEdit.vue:11 src/views/domain/DomainEdit.vue:5
 msgid "This feature is not available in demo."
 msgstr "此功能在演示中不可用。"
 
-#: src/views/domain/DomainEdit.vue:134
+#: src/views/domain/DomainEdit.vue:135
 msgid "This operation will lose the custom configuration."
 msgstr "該操作將會丟失自定義配置。"
 
@@ -455,6 +485,10 @@ msgstr "使用者名稱 (*)"
 #: src/views/dashboard/DashBoard.vue:58 src/views/dashboard/DashBoard.vue:294
 msgid "Writes"
 msgstr "寫"
+
+#~ msgid ""
+#~ "Add site here first, then you can configure TLS on the domain edit page."
+#~ msgstr "在這裡新增站點，完成後可進入編輯頁面配置 TLS。"
 
 #~ msgid "Server Status"
 #~ msgstr "伺服器狀態"

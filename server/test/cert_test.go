@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/server/tool"
+	"github.com/0xJacky/Nginx-UI/server/tool/nginx"
 	"log"
 	"os"
 	"os/exec"
@@ -20,14 +20,14 @@ func TestCert(t *testing.T) {
 	}
 	fmt.Printf("%s\n", out)
 
-	_, err = os.Stat(tool.GetNginxConfPath("ssl/test.ojbk.me/fullchain.cer"))
+	_, err = os.Stat(nginx.GetNginxConfPath("ssl/test.ojbk.me/fullchain.cer"))
 
 	if err != nil {
 		log.Println(err)
 		return
 	}
 	log.Println("[found]", "fullchain.cer")
-	_, err = os.Stat(tool.GetNginxConfPath("ssl/test.ojbk.me/test.ojbk.me.key"))
+	_, err = os.Stat(nginx.GetNginxConfPath("ssl/test.ojbk.me/test.ojbk.me.key"))
 
 	if err != nil {
 		log.Println(err)

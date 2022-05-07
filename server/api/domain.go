@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/tool"
+	"github.com/0xJacky/Nginx-UI/server/tool/nginx"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
@@ -20,23 +21,23 @@ func GetDomains(c *gin.Context) {
 		"modify":  "time",
 	}
 
-	configFiles, err := ioutil.ReadDir(tool.GetNginxConfPath("sites-available"))
+	configFiles, err := ioutil.ReadDir(nginx.GetNginxConfPath("sites-available"))
 
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
 
-	enabledConfig, err := ioutil.ReadDir(filepath.Join(tool.GetNginxConfPath("sites-enabled")))
+	enabledConfig, err := ioutil.ReadDir(filepath.Join(nginx.GetNginxConfPath("sites-enabled")))
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
 
 	enabledConfigMap := make(map[string]bool)
 	for i := range enabledConfig {
 		enabledConfigMap[enabledConfig[i].Name()] = true
-	}
-
-	if err != nil {
-		ErrHandler(c, err)
-		return
 	}
 
 	var configs []gin.H
@@ -62,10 +63,10 @@ func GetDomains(c *gin.Context) {
 
 func GetDomain(c *gin.Context) {
 	name := c.Param("name")
-	path := filepath.Join(tool.GetNginxConfPath("sites-available"), name)
+	path := filepath.Join(nginx.GetNginxConfPath("sites-available"), name)
 
 	enabled := true
-	if _, err := os.Stat(filepath.Join(tool.GetNginxConfPath("sites-enabled"), name)); os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(nginx.GetNginxConfPath("sites-enabled"), name)); os.IsNotExist(err) {
 		enabled = false
 	}
 
@@ -98,7 +99,7 @@ func EditDomain(c *gin.Context) {
 	name := c.Param("name")
 	request := make(gin.H)
 	err = c.BindJSON(&request)
-	path := filepath.Join(tool.GetNginxConfPath("sites-available"), name)
+	path := filepath.Join(nginx.GetNginxConfPath("sites-available"), name)
 
 	err = ioutil.WriteFile(path, []byte(request["content"].(string)), 0644)
 	if err != nil {
@@ -106,10 +107,10 @@ func EditDomain(c *gin.Context) {
 		return
 	}
 
-	enabledConfigFilePath := filepath.Join(tool.GetNginxConfPath("sites-enabled"), name)
+	enabledConfigFilePath := filepath.Join(nginx.GetNginxConfPath("sites-enabled"), name)
 	if _, err = os.Stat(enabledConfigFilePath); err == nil {
 		// 测试配置文件
-		err = tool.TestNginxConf(enabledConfigFilePath)
+		err = nginx.TestNginxConf()
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": err.Error(),
@@ -117,7 +118,7 @@ func EditDomain(c *gin.Context) {
 			return
 		}
 
-		output := tool.ReloadNginx()
+		output := nginx.ReloadNginx()
 
 		if output != "" {
 			c.JSON(http.StatusInternalServerError, gin.H{
@@ -131,8 +132,8 @@ func EditDomain(c *gin.Context) {
 }
 
 func EnableDomain(c *gin.Context) {
-	configFilePath := filepath.Join(tool.GetNginxConfPath("sites-available"), c.Param("name"))
-	enabledConfigFilePath := filepath.Join(tool.GetNginxConfPath("sites-enabled"), c.Param("name"))
+	configFilePath := filepath.Join(nginx.GetNginxConfPath("sites-available"), c.Param("name"))
+	enabledConfigFilePath := filepath.Join(nginx.GetNginxConfPath("sites-enabled"), c.Param("name"))
 
 	_, err := os.Stat(configFilePath)
 
@@ -149,7 +150,7 @@ func EnableDomain(c *gin.Context) {
 	}
 
 	// 测试配置文件，不通过则撤回启用
-	err = tool.TestNginxConf(enabledConfigFilePath)
+	err = nginx.TestNginxConf()
 	if err != nil {
 		_ = os.Remove(enabledConfigFilePath)
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -158,7 +159,7 @@ func EnableDomain(c *gin.Context) {
 		return
 	}
 
-	output := tool.ReloadNginx()
+	output := nginx.ReloadNginx()
 
 	if output != "" {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -173,7 +174,7 @@ func EnableDomain(c *gin.Context) {
 }
 
 func DisableDomain(c *gin.Context) {
-	enabledConfigFilePath := filepath.Join(tool.GetNginxConfPath("sites-enabled"), c.Param("name"))
+	enabledConfigFilePath := filepath.Join(nginx.GetNginxConfPath("sites-enabled"), c.Param("name"))
 
 	_, err := os.Stat(enabledConfigFilePath)
 
@@ -189,7 +190,15 @@ func DisableDomain(c *gin.Context) {
 		return
 	}
 
-	output := tool.ReloadNginx()
+	// delete auto cert record
+	cert := model.Cert{Domain: c.Param("name")}
+	err = cert.Remove()
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	output := nginx.ReloadNginx()
 
 	if output != "" {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -206,8 +215,8 @@ func DisableDomain(c *gin.Context) {
 func DeleteDomain(c *gin.Context) {
 	var err error
 	name := c.Param("name")
-	availablePath := filepath.Join(tool.GetNginxConfPath("sites-available"), name)
-	enabledPath := filepath.Join(tool.GetNginxConfPath("sites-enabled"), name)
+	availablePath := filepath.Join(nginx.GetNginxConfPath("sites-available"), name)
+	enabledPath := filepath.Join(nginx.GetNginxConfPath("sites-enabled"), name)
 
 	if _, err = os.Stat(availablePath); os.IsNotExist(err) {
 		c.JSON(http.StatusNotFound, gin.H{

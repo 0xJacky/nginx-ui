@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/server/tool"
+	"github.com/0xJacky/Nginx-UI/server/tool/nginx"
 	"io/ioutil"
 	"log"
 	"os"
@@ -46,7 +46,7 @@ func TestAcme(t *testing.T) {
 				"install",
 				"--log",
 				"--home", "/usr/local/acme.sh",
-				"--cert-home", tool.GetNginxConfPath("ssl")).
+				"--cert-home", nginx.GetNginxConfPath("ssl")).
 				CombinedOutput()
 			if err != nil {
 				log.Println(err)

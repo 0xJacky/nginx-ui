@@ -26,8 +26,12 @@
 
         <footer-tool-bar>
             <a-space>
-                <a-button @click="$router.go(-1)"><translate>Cancel</translate></a-button>
-                <a-button type="primary" @click="save"><translate>Save</translate></a-button>
+                <a-button @click="$router.go(-1)">
+                    <translate>Cancel</translate>
+                </a-button>
+                <a-button type="primary" @click="save">
+                    <translate>Save</translate>
+                </a-button>
             </a-space>
         </footer-tool-bar>
     </div>
@@ -39,9 +43,10 @@ import StdDataEntry from '@/components/StdDataEntry/StdDataEntry'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar'
 import VueItextarea from '@/components/VueItextarea/VueItextarea'
 import {columns, columnsSSL} from '@/views/domain/columns'
-import {unparse} from '@/views/domain/methods'
+import {unparse, issue_cert} from '@/views/domain/methods'
 import CertInfo from '@/views/domain/CertInfo'
-import {$gettext, $interpolate} from "@/lib/translate/gettext"
+import {$gettext, $interpolate} from '@/lib/translate/gettext'
+
 
 export default {
     name: 'DomainEdit',
@@ -185,52 +190,29 @@ export default {
                 }
             }).catch(r => {
                 console.log(r)
-                this.$message.error($interpolate($gettext('Save error %{msg}'), {msg: r.message ?? ""}), 10)
+                this.$message.error($interpolate($gettext('Save error %{msg}'), {msg: r.message ?? ''}), 10)
             })
         },
         issue_cert() {
-            this.$message.info($gettext('Note: The server_name in the current configuration must be the domain name you need to get the certificate.'), 15)
-            this.$message.info($gettext('Getting the certificate, please wait...'), 15)
-            this.ws = new WebSocket(this.getWebSocketRoot() + '/cert/issue/' + this.config.server_name
-                + '?token=' + btoa(this.$store.state.user.token))
-
-            this.ws.onopen = () => {
-                this.ws.send('go')
-            }
-
-            this.ws.onmessage = m => {
-                const r = JSON.parse(m.data)
-                switch (r.status) {
-                    case 'success':
-                        this.$message.success(r.message, 10)
-                        break
-                    case 'info':
-                        this.$message.info(r.message, 10)
-                        break
-                    case 'error':
-                        this.$message.error(r.message, 10)
-                        break
-                }
-
-                if (r.status === 'success' && r.ssl_certificate !== undefined && r.ssl_certificate_key !== undefined) {
-                    this.config.ssl_certificate = r.ssl_certificate
-                    this.config.ssl_certificate_key = r.ssl_certificate_key
-                    if (this.$refs['cert-info']) this.$refs['cert-info'].get()
-                }
-            }
+            issue_cert(this.config.server_name, this.callback)
+        },
+        callback(ssl_certificate, ssl_certificate_key) {
+            this.$set(this.config, 'ssl_certificate', ssl_certificate)
+            this.$set(this.config, 'ssl_certificate_key', ssl_certificate_key)
+            if (this.$refs['cert-info']) this.$refs['cert-info'].get()
         },
         change_auto_cert() {
             if (this.config.auto_cert) {
                 this.$api.domain.add_auto_cert(this.name).then(() => {
-                    this.$message.success($interpolate($gettext('Auto-renewal enabled for %{name}'), {name: this.name}))
+                    this.$message.success($interpolate($gettext('Auto-renewal enabled for %{name}', {name: this.name})))
                 }).catch(e => {
-                    this.$message.error(e.message ?? $interpolate($gettext('Enable auto-renewal failed for %{name}'), {name: this.name}))
+                    this.$message.error(e.message ?? $interpolate($gettext('Enable auto-renewal failed for %{name}', {name: this.name})))
                 })
             } else {
                 this.$api.domain.remove_auto_cert(this.name).then(() => {
-                    this.$message.success($interpolate($gettext('Auto-renewal disabled for %{name}'), {name: this.name}))
+                    this.$message.success($interpolate($gettext('Auto-renewal disabled for %{name}', {name: this.name})))
                 }).catch(e => {
-                    this.$message.error(e.message ?? $interpolate($gettext('Disable auto-renewal failed for %{name}'), {name: this.name}))
+                    this.$message.error(e.message ?? $interpolate($gettext('Disable auto-renewal failed for %{name}', {name: this.name})))
                 })
             }
         }
@@ -246,7 +228,7 @@ export default {
             }
         },
         is_demo() {
-            return this.$store.getters.env.demo===true
+            return this.$store.getters.env.demo === true
         }
     }
 }
