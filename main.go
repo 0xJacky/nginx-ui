@@ -8,6 +8,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/server/router"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/0xJacky/Nginx-UI/server/tool"
+	"github.com/0xJacky/Nginx-UI/server/tool/nginx"
 	"github.com/gin-gonic/gin"
 	"log"
 	"mime"
@@ -33,7 +34,7 @@ func main() {
 	gin.SetMode(settings.ServerSettings.RunMode)
 
 	settings.Init(confPath)
-	log.Printf("nginx config dir path: %s", tool.GetNginxConfPath(""))
+	log.Printf("nginx config dir path: %s", nginx.GetNginxConfPath(""))
 	if "" != settings.ServerSettings.JwtSecret {
 		model.Init()
 		go tool.AutoCert()
