@@ -30,13 +30,17 @@ msgstr "操作"
 msgid "Add Site"
 msgstr "新增站點"
 
-#: src/views/domain/DomainAdd.vue:86 src/views/domain/DomainEdit.vue:172
+#: src/views/domain/DomainAdd.vue:89 src/views/domain/DomainEdit.vue:164
 msgid "Auto-renewal disabled for %{name}"
 msgstr "成功關閉 %{name} 自動續簽"
 
-#: src/views/domain/DomainAdd.vue:80 src/views/domain/DomainEdit.vue:166
+#: src/views/domain/DomainAdd.vue:83 src/views/domain/DomainEdit.vue:158
 msgid "Auto-renewal enabled for %{name}"
 msgstr "成功啟用 %{name} 自動續簽"
+
+#: src/views/domain/DomainEdit.vue:38
+msgid "Back"
+msgstr "返回"
 
 #: src/views/domain/DomainAdd.vue:37
 msgid "Base information"
@@ -46,7 +50,7 @@ msgstr "基本訊息"
 msgid "Build with"
 msgstr "構建基於"
 
-#: src/views/config/ConfigEdit.vue:5 src/views/domain/DomainEdit.vue:24
+#: src/views/config/ConfigEdit.vue:5
 msgid "Cancel"
 msgstr "取消"
 
@@ -82,7 +86,7 @@ msgstr "配置"
 msgid "Configure SSL"
 msgstr "配置 SSL"
 
-#: src/views/dashboard/DashBoard.vue:207
+#: src/views/dashboard/DashBoard.vue:211
 msgid "CPU Status"
 msgstr "中央處理器狀態"
 
@@ -114,32 +118,32 @@ msgstr "檢測到版本更新，頁面將會重新整理。"
 msgid "Development Mode"
 msgstr "開發模式"
 
-#: src/views/domain/DomainAdd.vue:88 src/views/domain/DomainEdit.vue:174
+#: src/views/domain/DomainAdd.vue:91 src/views/domain/DomainEdit.vue:166
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "關閉 %{name} 自動續簽失敗"
 
-#: src/views/domain/DomainList.vue:7 src/views/domain/DomainList.vue:2
-#: src/views/domain/DomainList.vue:17
+#: src/views/domain/DomainEdit.vue:63 src/views/domain/DomainList.vue:7
+#: src/views/domain/DomainList.vue:2 src/views/domain/DomainList.vue:17
 msgid "Disabled"
 msgstr "禁用"
 
-#: src/views/domain/DomainList.vue:55
+#: src/views/domain/DomainEdit.vue:180 src/views/domain/DomainList.vue:55
 msgid "Disabled successfully"
 msgstr "禁用成功"
 
-#: src/views/dashboard/DashBoard.vue:285
+#: src/views/dashboard/DashBoard.vue:289
 msgid "Disk IO"
 msgstr "磁碟 IO"
 
-#: src/views/domain/DomainEdit.vue:134
+#: src/views/domain/DomainEdit.vue:124
 msgid "Do you want to change the template to support the TLS?"
 msgstr "你想要改變模板以支援 TLS 嗎？"
 
-#: src/views/domain/DomainAdd.vue:111
+#: src/views/domain/DomainAdd.vue:112
 msgid "Domain Config Created Successfully"
 msgstr "域名配置文件創建成功"
 
-#: src/views/domain/DomainEdit.vue:42
+#: src/views/domain/DomainEdit.vue:47
 msgid "Edit %{n}"
 msgstr "編輯 %{n}"
 
@@ -147,7 +151,7 @@ msgstr "編輯 %{n}"
 msgid "Edit Configuration"
 msgstr "編輯配置"
 
-#: src/views/domain/DomainEdit.vue:95
+#: src/views/domain/DomainEdit.vue:134
 msgid "Edit Configuration File"
 msgstr "編輯配置檔案"
 
@@ -159,11 +163,11 @@ msgstr "編輯站點"
 msgid "Email (*)"
 msgstr "郵箱 (*)"
 
-#: src/views/domain/DomainAdd.vue:82 src/views/domain/DomainEdit.vue:168
+#: src/views/domain/DomainAdd.vue:85 src/views/domain/DomainEdit.vue:160
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "啟用 %{name} 自動續簽失敗"
 
-#: src/views/domain/DomainAdd.vue:39
+#: src/views/domain/DomainAdd.vue:40
 msgid "Enable failed"
 msgstr "啟用失敗"
 
@@ -171,12 +175,14 @@ msgstr "啟用失敗"
 msgid "Enable TLS"
 msgstr "啟用 TLS"
 
+#: src/views/domain/DomainEdit.vue:54 src/views/domain/DomainEdit.vue:71
 #: src/views/domain/DomainList.vue:8 src/views/domain/DomainList.vue:3
 #: src/views/domain/DomainList.vue:16
 msgid "Enabled"
 msgstr "啟用"
 
-#: src/views/domain/DomainAdd.vue:36 src/views/domain/DomainList.vue:46
+#: src/views/domain/DomainAdd.vue:37 src/views/domain/DomainEdit.vue:172
+#: src/views/domain/DomainList.vue:46
 msgid "Enabled successfully"
 msgstr "啟用成功"
 
@@ -184,11 +190,11 @@ msgstr "啟用成功"
 msgid "Expiration Date: %{date}"
 msgstr "過期時間: %{date}"
 
-#: src/views/domain/DomainList.vue:59
+#: src/views/domain/DomainEdit.vue:183 src/views/domain/DomainList.vue:59
 msgid "Failed to disable %{msg}"
 msgstr "禁用失敗 %{msg}"
 
-#: src/views/domain/DomainList.vue:50
+#: src/views/domain/DomainEdit.vue:175 src/views/domain/DomainList.vue:50
 msgid "Failed to enable %{msg}"
 msgstr "啟用失敗 %{msg}"
 
@@ -201,7 +207,7 @@ msgid "Finished"
 msgstr "完成"
 
 #: src/views/domain/DomainAdd.vue:13 src/views/domain/DomainAdd.vue:2
-#: src/views/domain/DomainEdit.vue:9 src/views/domain/DomainEdit.vue:3
+#: src/views/domain/DomainEdit.vue:22 src/views/domain/DomainEdit.vue:3
 msgid "Getting Certificate from Let's Encrypt"
 msgstr "從 Let's Encrypt 獲取證書"
 
@@ -262,8 +268,7 @@ msgstr "登入成功"
 msgid "Logout successful"
 msgstr "登出成功"
 
-#: src/views/domain/DomainEdit.vue:12 src/views/domain/DomainEdit.vue:6
-#, fuzzy
+#: src/views/domain/DomainEdit.vue:25 src/views/domain/DomainEdit.vue:6
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort (default: 9180) before getting the certificate."
@@ -283,9 +288,13 @@ msgstr "網站管理"
 msgid "Manage Users"
 msgstr "使用者管理"
 
-#: src/views/dashboard/DashBoard.vue:103
+#: src/views/dashboard/DashBoard.vue:105
 msgid "Memory"
 msgstr "記憶體"
+
+#: src/views/dashboard/DashBoard.vue:93
+msgid "Memory and Storage"
+msgstr "記憶體和存儲"
 
 #: src/views/domain/DomainAdd.vue:28 src/views/domain/DomainAdd.vue:2
 msgid "Modify Config"
@@ -295,15 +304,19 @@ msgstr "修改配置"
 msgid "Name"
 msgstr "名稱"
 
-#: src/views/dashboard/DashBoard.vue:234
+#: src/views/dashboard/DashBoard.vue:238
 msgid "Network"
 msgstr "網路"
 
-#: src/views/dashboard/DashBoard.vue:168
+#: src/views/dashboard/DashBoard.vue:163
+msgid "Network Statistics"
+msgstr "網路統計"
+
+#: src/views/dashboard/DashBoard.vue:172
 msgid "Network Total Receive"
 msgstr "下載流量"
 
-#: src/views/dashboard/DashBoard.vue:177
+#: src/views/dashboard/DashBoard.vue:181
 msgid "Network Total Send"
 msgstr "上傳流量"
 
@@ -361,11 +374,11 @@ msgstr "私鑰路徑 (ssl_certificate_key)"
 msgid "Project Team"
 msgstr "專案團隊"
 
-#: src/views/dashboard/DashBoard.vue:61 src/views/dashboard/DashBoard.vue:308
+#: src/views/dashboard/DashBoard.vue:61 src/views/dashboard/DashBoard.vue:312
 msgid "Reads"
 msgstr "讀"
 
-#: src/views/dashboard/DashBoard.vue:51 src/views/dashboard/DashBoard.vue:243
+#: src/views/dashboard/DashBoard.vue:51 src/views/dashboard/DashBoard.vue:247
 msgid "Receive"
 msgstr "下載"
 
@@ -373,25 +386,25 @@ msgstr "下載"
 msgid "Root Directory (root)"
 msgstr "網站根目錄 (root)"
 
-#: src/views/config/ConfigEdit.vue:6 src/views/domain/DomainEdit.vue:27
+#: src/views/config/ConfigEdit.vue:6 src/views/domain/DomainEdit.vue:41
 msgid "Save"
 msgstr "儲存"
 
-#: src/views/config/ConfigEdit.vue:47 src/views/domain/DomainAdd.vue:43
-#: src/views/domain/DomainAdd.vue:54 src/views/domain/DomainEdit.vue:152
+#: src/views/config/ConfigEdit.vue:47 src/views/domain/DomainAdd.vue:44
+#: src/views/domain/DomainAdd.vue:55 src/views/domain/DomainEdit.vue:142
 msgid "Save error %{msg}"
 msgstr "儲存錯誤 %{msg}"
 
-#: src/views/config/ConfigEdit.vue:44 src/views/domain/DomainAdd.vue:33
-#: src/views/domain/DomainAdd.vue:51 src/views/domain/DomainEdit.vue:146
+#: src/views/config/ConfigEdit.vue:44 src/views/domain/DomainAdd.vue:34
+#: src/views/domain/DomainAdd.vue:52 src/views/domain/DomainEdit.vue:136
 msgid "Saved successfully"
 msgstr "儲存成功"
 
-#: src/views/dashboard/DashBoard.vue:54 src/views/dashboard/DashBoard.vue:257
+#: src/views/dashboard/DashBoard.vue:54 src/views/dashboard/DashBoard.vue:261
 msgid "Send"
 msgstr "上傳"
 
-#: src/views/config/ConfigEdit.vue:35 src/views/domain/DomainEdit.vue:72
+#: src/views/config/ConfigEdit.vue:35 src/views/domain/DomainEdit.vue:75
 #: src/views/other/Login.vue:35
 msgid "Server error"
 msgstr "伺服器錯誤"
@@ -416,7 +429,7 @@ msgstr "跳過"
 msgid "Status"
 msgstr "狀態"
 
-#: src/views/dashboard/DashBoard.vue:135
+#: src/views/dashboard/DashBoard.vue:137
 msgid "Storage"
 msgstr "儲存"
 
@@ -424,7 +437,7 @@ msgstr "儲存"
 msgid "Subject Name: %{name}"
 msgstr "主體名稱: %{name}"
 
-#: src/views/dashboard/DashBoard.vue:119
+#: src/views/dashboard/DashBoard.vue:121
 msgid "Swap"
 msgstr "交換空間"
 
@@ -446,22 +459,21 @@ msgstr ""
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "檔名不能包含以下字元: %{c}"
 
-#: src/views/domain/DomainEdit.vue:4
-#, fuzzy
+#: src/views/domain/DomainEdit.vue:17
 msgid ""
 "The following values will only take effect if you have the corresponding "
 "fields in your configuration file. The configuration filename cannot be "
 "changed after it has been created."
 msgstr ""
-"只有在您的配置檔案中有相應欄位時，下列的配置才能生效。配置檔名稱建立後不可修"
-"改。"
+"只有在您的配置檔案中有相應欄位時，下列的配置才能生效。配置檔名稱建立後不可"
+"修改。"
 
 #: src/views/domain/DomainAdd.vue:15 src/views/domain/DomainAdd.vue:4
-#: src/views/domain/DomainEdit.vue:11 src/views/domain/DomainEdit.vue:5
+#: src/views/domain/DomainEdit.vue:24 src/views/domain/DomainEdit.vue:5
 msgid "This feature is not available in demo."
 msgstr "此功能在演示中不可用。"
 
-#: src/views/domain/DomainEdit.vue:135
+#: src/views/domain/DomainEdit.vue:125
 msgid "This operation will lose the custom configuration."
 msgstr "該操作將會丟失自定義配置。"
 
@@ -482,7 +494,7 @@ msgstr "使用者名稱"
 msgid "Username (*)"
 msgstr "使用者名稱 (*)"
 
-#: src/views/dashboard/DashBoard.vue:58 src/views/dashboard/DashBoard.vue:294
+#: src/views/dashboard/DashBoard.vue:58 src/views/dashboard/DashBoard.vue:298
 msgid "Writes"
 msgstr "寫"
 
