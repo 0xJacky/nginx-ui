@@ -25,9 +25,9 @@
                     </p>
                 </a-card>
             </a-col>
-            <a-col :xl="10" :lg="18" :md="24" class="chart_dashboard">
-                <a-card>
-                    <a-row>
+            <a-col :xl="10" :lg="16" :md="24" class="chart_dashboard">
+                <a-card :title="$gettext('Memory and Storage')">
+                    <a-row :gutter="[0,16]">
                         <a-col :xs="24" :sm="24" :md="8">
                             <radial-bar-chart :name="$gettext('Memory')" :series="[memory_pressure]"
                                               :centerText="memory_used" :bottom-text="memory_total" colors="#36a3eb"/>
@@ -44,14 +44,14 @@
                     </a-row>
                 </a-card>
             </a-col>
-            <a-col :xl="7" :lg="6" :sm="24" class="chart_dashboard">
-                <a-card>
+            <a-col :xl="7" :lg="8" :sm="24" class="chart_dashboard">
+                <a-card :title="$gettext('Network Statistics')">
                     <a-row :gutter="16">
-                        <a-col :span="24">
+                        <a-col :span="12">
                             <a-statistic :value="bytesToSize(net.last_recv)"
                                          :title="$gettext('Network Total Receive')"/>
                         </a-col>
-                        <a-col :span="24">
+                        <a-col :span="12">
                             <a-statistic :value="bytesToSize(net.last_sent)"
                                          :title="$gettext('Network Total Send')"/>
                         </a-col>

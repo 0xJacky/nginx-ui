@@ -35,7 +35,7 @@ export default {
                 series: this.series,
                 chart: {
                     type: 'radialBar',
-                    offsetY: 0
+                    offsetY: -30
                 },
                 plotOptions: {
                     radialBar: {
@@ -43,12 +43,12 @@ export default {
                         endAngle: 135,
                         dataLabels: {
                             name: {
-                                fontSize: '15px',
+                                fontSize: '14px',
                                 color: this.colors,
-                                offsetY: 56
+                                offsetY: 36
                             },
                             value: {
-                                offsetY: 60,
+                                offsetY: 50,
                                 fontSize: '14px',
                                 color: undefined,
                                 formatter: () => {return ''}
@@ -82,16 +82,16 @@ export default {
 .container {
     position: relative;
     margin: 0 auto;
-    height: 172px;
+    height: 112px!important;
     .text {
         position: absolute;
-        top: calc(50% - 3px);
+        top: calc(50% - 5px);
         width: 100%;
         text-align: center;
     }
     .bottom_text {
         position: absolute;
-        top: calc(152px);
+        top: calc(106px);
         font-weight: 600;
         width: 100%;
         text-align: center;

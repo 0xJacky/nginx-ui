@@ -196,51 +196,51 @@ go build -o nginx-ui -v main.go
 **安装或升级**
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install
+bash <(curl -L -s https://ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install -r https://ghproxy.com/
 ```
 一键安装脚本默认设置的监听端口为 `9000`，HTTP Challenge 端口默认为 `9180`，如果出现端口冲突请进入 `/usr/local/etc/nginx-ui/app.ini` 修改，并使用 `systemctl restart nginx-ui` 重启 Nginx UI 服务。
 
 **卸载 Nginx UI 但保留配置和数据库文件**
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
+bash <(curl -L -s https://ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
 ```
 
 ### 更多用法
 
 ````shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) help
+bash <(curl -L -s https://ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) help
 ````
 
 ## Nginx 反向代理配置示例
 
 ```nginx
 server {
-    listen	80;
-    listen	[::]:80;
+    listen          80;
+    listen          [::]:80;
 
-    server_name	<your_server_name>;
+    server_name     <your_server_name>;
     rewrite ^(.*)$  https://$host$1 permanent;
 }
 
 server {
-    listen	443 ssl http2;
-    listen	[::]:443 ssl http2;
+    listen  443       ssl http2;
+    listen  [::]:443  ssl http2;
 
-    server_name	<your_server_name>;
+    server_name         <your_server_name>;
 
-    ssl_certificate	/path/to/ssl_cert;
-    ssl_certificate_key	/path/to/ssl_cert_key;
+    ssl_certificate     /path/to/ssl_cert;
+    ssl_certificate_key /path/to/ssl_cert_key;
 
     location / {
-        proxy_set_header Host $host;
-        proxy_set_header   X-Real-IP            $remote_addr;
-        proxy_set_header   X-Forwarded-For      $proxy_add_x_forwarded_for;
-        proxy_set_header   X-Forwarded-Proto    $scheme;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection upgrade;
-        proxy_pass http://127.0.0.1:9000/;
+        proxy_set_header    Host                $host;
+        proxy_set_header    X-Real-IP           $remote_addr;
+        proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Forwarded-Proto   $scheme;
+        proxy_http_version  1.1;
+        proxy_set_header    Upgrade             $http_upgrade;
+        proxy_set_header    Connection          upgrade;
+        proxy_pass          http://127.0.0.1:9000/;
     }
 }
 ```

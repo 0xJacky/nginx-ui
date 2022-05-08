@@ -215,31 +215,31 @@ bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/inst
 
 ```nginx
 server {
-    listen	80;
-    listen	[::]:80;
+    listen          80;
+    listen          [::]:80;
 
-    server_name	<your_server_name>;
+    server_name     <your_server_name>;
     rewrite ^(.*)$  https://$host$1 permanent;
 }
 
 server {
-    listen	443 ssl http2;
-    listen	[::]:443 ssl http2;
+    listen  443       ssl http2;
+    listen  [::]:443  ssl http2;
 
-    server_name	<your_server_name>;
+    server_name         <your_server_name>;
 
-    ssl_certificate	/path/to/ssl_cert;
-    ssl_certificate_key	/path/to/ssl_cert_key;
+    ssl_certificate     /path/to/ssl_cert;
+    ssl_certificate_key /path/to/ssl_cert_key;
 
     location / {
-        proxy_set_header Host $host;
-        proxy_set_header   X-Real-IP            $remote_addr;
-        proxy_set_header   X-Forwarded-For      $proxy_add_x_forwarded_for;
-        proxy_set_header   X-Forwarded-Proto    $scheme;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection upgrade;
-        proxy_pass http://127.0.0.1:9000/;
+        proxy_set_header    Host                $host;
+        proxy_set_header    X-Real-IP           $remote_addr;
+        proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Forwarded-Proto   $scheme;
+        proxy_http_version  1.1;
+        proxy_set_header    Upgrade             $http_upgrade;
+        proxy_set_header    Connection          upgrade;
+        proxy_pass          http://127.0.0.1:9000/;
     }
 }
 ```
