@@ -1,7 +1,7 @@
 <template>
     <div>
         <a-row :gutter="[16,16]" class="first-row">
-            <a-col :xl="6" :lg="24" :md="24">
+            <a-col :xl="7" :lg="24" :md="24">
                 <a-card :title="$gettext('Server Info')">
                     <p>
                         <translate>Uptime:</translate>
@@ -25,7 +25,7 @@
                     </p>
                 </a-card>
             </a-col>
-            <a-col :xl="12" :lg="18" :md="24" class="chart_dashboard">
+            <a-col :xl="10" :lg="18" :md="24" class="chart_dashboard">
                 <a-card>
                     <a-row>
                         <a-col :xs="24" :sm="24" :md="8">
@@ -44,7 +44,7 @@
                     </a-row>
                 </a-card>
             </a-col>
-            <a-col :xl="6" :lg="6" :sm="24" class="chart_dashboard">
+            <a-col :xl="7" :lg="6" :sm="24" class="chart_dashboard">
                 <a-card>
                     <a-row :gutter="16">
                         <a-col :span="24">
@@ -60,7 +60,7 @@
             </a-col>
         </a-row>
         <a-row class="row-two" :gutter="[16,32]">
-            <a-col :xl="7" :lg="24" :md="24" :sm="24">
+            <a-col :xl="8" :lg="24" :md="24" :sm="24">
                 <a-card :title="$gettext('CPU Status')">
                     <a-statistic :value="cpu" title="CPU">
                         <template v-slot:suffix>
@@ -70,7 +70,7 @@
                     <c-p-u-chart :series="cpu_analytic_series"/>
                 </a-card>
             </a-col>
-            <a-col :xl="10" :lg="12" :md="24" :sm="24">
+            <a-col :xl="8" :lg="12" :md="24" :sm="24">
                 <a-card :title="$gettext('Network')">
                     <a-row :gutter="16">
                         <a-col :span="12">
@@ -92,7 +92,7 @@
                     <net-chart :series="net_analytic"/>
                 </a-card>
             </a-col>
-            <a-col :xl="7" :lg="12" :md="24" :sm="24">
+            <a-col :xl="8" :lg="12" :md="24" :sm="24">
                 <a-card :title="$gettext('Disk IO')">
                     <a-row :gutter="16">
                         <a-col :span="12">

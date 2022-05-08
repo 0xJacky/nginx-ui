@@ -74,6 +74,7 @@ URL：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
 - Online editing websites configuration files, the editor support highlight nginx configuration syntax.
 - Written in Go and Vue, distribution is a single executable binary.
 - Frontend support Dark Mode
+- Automatically test configuration file and reload nginx after saving configuration.
 
 ### Internationalization
 

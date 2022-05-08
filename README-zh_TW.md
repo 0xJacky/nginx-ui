@@ -78,6 +78,7 @@ Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https
 - 線上編輯 Nginx 配置檔案，編輯器支援 Nginx 配置語法高亮
 - 使用 Go 和 Vue 開發，發行版本為單個可執行的二進位制檔案
 - 前端支援暗夜模式
+- 保存配置文件後自動測試配置文件並重載 Nginx
 
 ### 國際化
 

@@ -76,6 +76,7 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
 - 在线编辑 Nginx 配置文件，编辑器支持 Nginx 配置语法高亮
 - 使用 Go 和 Vue 开发，发行版本为单个可执行的二进制文件
 - 前端支持暗夜模式
+- 保存配置文件后自动测试配置文件并重载 Nginx
 
 ### 国际化
 
