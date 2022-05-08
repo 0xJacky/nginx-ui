@@ -1,22 +1,37 @@
 <template>
     <div>
         <a-collapse :bordered="false" default-active-key="1">
-            <a-collapse-panel key="1" :header="$gettextInterpolate($gettext('Edit %{n}'), {n: name})">
-                <p v-translate>The following values will only take effect if you have the corresponding fields in your configuration file. The configuration filename cannot be changed after it has been created.</p>
-                <std-data-entry :data-list="columns" v-model="config"/>
-                <template v-if="config.support_ssl">
-                    <cert-info :domain="name" ref="cert-info" v-if="name"/>
-                    <a-button
-                        @click="issue_cert"
-                        type="primary" ghost
-                        style="margin: 10px 0"
-                        :disabled="is_demo"
-                    >
-                        <translate>Getting Certificate from Let's Encrypt</translate>
-                    </a-button>
-                    <p v-if="is_demo" v-translate>This feature is not available in demo.</p>
-                    <p v-else v-translate>Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort (default: 9180) before getting the certificate.</p>
+            <a-collapse-panel key="1">
+                <template v-slot:header>
+                    <span style="margin-right: 10px">{{ $gettextInterpolate($gettext('Edit %{n}'), {n: name}) }}</span>
+                    <a-tag color="blue" v-if="enabled">
+                        {{ $gettext('Enabled') }}
+                    </a-tag>
+                    <a-tag color="orange" v-else>
+                        {{ $gettext('Disabled') }}
+                    </a-tag>
                 </template>
+                <div class="container">
+                    <a-form-item :label="$gettext('Enabled')">
+                        <a-switch v-model="enabled" @change="checked=>{checked?enable():disable()}"/>
+                    </a-form-item>
+                    <p v-translate>The following values will only take effect if you have the corresponding fields in your configuration file. The configuration filename cannot be changed after it has been created.</p>
+                    <std-data-entry :data-list="columns" v-model="config"/>
+                    <template v-if="config.support_ssl">
+                        <cert-info :domain="name" ref="cert-info" v-if="name"/>
+                        <a-button
+                            @click="issue_cert"
+                            type="primary" ghost
+                            style="margin: 10px 0"
+                            :disabled="is_demo"
+                            :loading="issuing_cert"
+                        >
+                            <translate>Getting Certificate from Let's Encrypt</translate>
+                        </a-button>
+                        <p v-if="is_demo" v-translate>This feature is not available in demo.</p>
+                        <p v-else v-translate>Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort (default: 9180) before getting the certificate.</p>
+                    </template>
+                </div>
             </a-collapse-panel>
         </a-collapse>
 
@@ -27,7 +42,7 @@
         <footer-tool-bar>
             <a-space>
                 <a-button @click="$router.go(-1)">
-                    <translate>Cancel</translate>
+                    <translate>Back</translate>
                 </a-button>
                 <a-button type="primary" @click="save">
                     <translate>Save</translate>
@@ -65,9 +80,11 @@ export default {
                 support_ssl: false,
                 auto_cert: false
             },
+            enabled: false,
             configText: '',
             ws: null,
-            ok: false
+            ok: false,
+            issuing_cert: false
         }
     },
     watch: {
@@ -105,6 +122,7 @@ export default {
                 this.$api.domain.get(this.name).then(r => {
                     this.configText = r.config
                     this.config.auto_cert = r.auto_cert
+                    this.enabled = r.enabled
                     this.parse(r).then(() => {
                         this.ok = true
                     })
@@ -112,19 +130,6 @@ export default {
                     console.log(r)
                     this.$message.error($gettext('Server error'))
                 })
-            } else {
-                this.config = {
-                    http_listen_port: 80,
-                    https_listen_port: null,
-                    server_name: '',
-                    index: '',
-                    root: '',
-                    ssl_certificate: '',
-                    ssl_certificate_key: '',
-                    support_ssl: false,
-                    auto_cert: false,
-                }
-                this.get_template()
             }
         },
         async parse(r) {
@@ -194,12 +199,14 @@ export default {
             })
         },
         issue_cert() {
+            this.issuing_cert = true
             issue_cert(this.config.server_name, this.callback)
         },
         callback(ssl_certificate, ssl_certificate_key) {
             this.$set(this.config, 'ssl_certificate', ssl_certificate)
             this.$set(this.config, 'ssl_certificate_key', ssl_certificate_key)
             if (this.$refs['cert-info']) this.$refs['cert-info'].get()
+            this.issuing_cert = false
         },
         change_auto_cert() {
             if (this.config.auto_cert) {
@@ -215,6 +222,22 @@ export default {
                     this.$message.error(e.message ?? $interpolate($gettext('Disable auto-renewal failed for %{name}', {name: this.name})))
                 })
             }
+        },
+        enable() {
+            this.$api.domain.enable(this.name).then(() => {
+                this.$message.success($gettext('Enabled successfully'))
+                this.enabled = true
+            }).catch(r => {
+                this.$message.error($interpolate($gettext('Failed to enable %{msg}'), {msg: r.message ?? ''}), 10)
+            })
+        },
+        disable() {
+            this.$api.domain.disable(this.name).then(() => {
+                this.$message.success($gettext('Disabled successfully'))
+                this.enabled = false
+            }).catch(r => {
+                this.$message.error($interpolate($gettext('Failed to disable %{msg}'), {msg: r.message ?? ''}))
+            })
         }
     },
     computed: {
@@ -257,6 +280,13 @@ export default {
     // margin: 10px;
     @media (max-width: 512px) {
         margin: 10px 0;
+    }
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    /deep/.ant-form-item-label > label::after {
+        content: none;
     }
 }
 

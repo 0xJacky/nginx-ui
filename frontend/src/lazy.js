@@ -47,7 +47,8 @@ import {
     Tabs,
     Tooltip,
     Transfer,
-    Upload
+    Upload,
+    Tag
 } from 'ant-design-vue'
 
 Vue.use(ConfigProvider)
@@ -97,6 +98,7 @@ Vue.use(Result)
 Vue.use(pageHeader)
 Vue.use(Switch)
 Vue.use(Space)
+Vue.use(Tag)
 
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message

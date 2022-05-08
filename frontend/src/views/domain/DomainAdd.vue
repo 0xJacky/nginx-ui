@@ -15,6 +15,7 @@
                     type="primary" ghost
                     style="margin: 10px 0"
                     :disabled="is_demo"
+                    :loading="issuing_cert"
                 >
                     <translate>Getting Certificate from Let's Encrypt</translate>
                 </a-button>
@@ -55,10 +56,7 @@
                     <translate>Next</translate>
                 </a-button>
             </a-space>
-
         </div>
-
-
     </a-card>
 </template>
 
@@ -80,7 +78,8 @@ export default {
             columns: columns.slice(0, -1), // 隐藏SSL支持开关
             error: {},
             current_step: 0,
-            columnsSSL
+            columnsSSL,
+            issuing_cert: false
         }
     },
     watch: {
@@ -123,11 +122,13 @@ export default {
 
         },
         issue_cert() {
+            this.issuing_cert = true
             issue_cert(this.config.server_name, this.callback)
         },
         callback(ssl_certificate, ssl_certificate_key) {
             this.$set(this.config, 'ssl_certificate', ssl_certificate)
             this.$set(this.config, 'ssl_certificate_key', ssl_certificate_key)
+            this.issuing_cert = false
         },
         goto_modify() {
             this.$router.push('/domain/'+this.config.name)
