@@ -61,26 +61,26 @@
             </template>
             <div class="std_action" v-if="!pithy" slot="action" slot-scope="text, record">
                 <a v-if="editable" @click="$emit('clickEdit', record[rowKey], record)">
-                    <template v-if="edit_text">{{ edit_text }}</template>
-                    <template v-else>编辑</template>
+                    {{ edit_text }}
                 </a>
                 <slot name="actions" :record="record"/>
                 <template v-if="deletable">
                     <a-divider type="vertical"/>
                     <a-popconfirm
                         v-if="soft_delete&&params.trashed"
-                        cancelText="再想想"
-                        okText="是的" title="你确定要反删除?"
-                        @confirm="restore(record[rowKey])">
-                        <a href="javascript:;">反删除</a>
+                        cancelText="{{restore.cancel_text}}"
+                        okText="{{restore.ok_text}}"
+                        title="{{restore.title_text}}"
+                        @confirm="restore.exec(record[rowKey])">
+                        <a href="javascript:;">{{restore.action_text}}</a>
                     </a-popconfirm>
                     <a-popconfirm
                         v-else
-                        cancelText="再想想"
-                        okText="是的" title="你确定要删除?"
-                        @confirm="destroy(record[rowKey])"
-                    >
-                        <a href="javascript:;">删除</a>
+                        cancelText="{{destroy.cancel_text}}"
+                        okText="{{destroy.ok_text}}"
+                        title="{{destroy.title_text}}"
+                        @confirm="destroy.exec(record[rowKey])">
+                        <a href="javascript:;">{{destroy.action_text}}</a>
                     </a-popconfirm>
                 </template>
             </div>
@@ -123,7 +123,82 @@ export default {
             type: Boolean,
             default: false
         },
-        edit_text: String,
+        edit_text: {
+            type: String,
+            default() {
+                return this.$gettext('Edit')
+            }
+        },
+        restore: {
+            title_text: {
+                type: String,
+                default() {
+                    return this.$gettext('Are you sure you want to restore?')
+                }
+            },
+            action_text: {
+                type: String,
+                default() {
+                    return this.$gettext('Restore')
+                }
+            },
+            ok_text: {
+                type: String,
+                default() {
+                    return this.$gettext('Yes, I\'m sure')
+                }
+            },
+            cancel_text: {
+                type: String,
+                default() {
+                    return this.$gettext('No, I\'m rethink')
+                }
+            },
+            exec(id) {
+                this.api.restore(id).then(() => {
+                    this.get_list()
+                    this.$message.success('反删除 ID: ' + id + ' 成功')
+                }).catch(e => {
+                    console.log(e)
+                    this.$message.error(e?.message ?? '系统错误')
+                })
+            },
+        },
+        destroy: {
+            title_text: {
+                type: String,
+                default() {
+                    return this.$gettext('Are you sure you want to destroy?')
+                }
+            },
+            action_text: {
+                type: String,
+                default() {
+                    return this.$gettext('Destroy')
+                }
+            },
+            ok_text: {
+                type: String,
+                default() {
+                    return this.$gettext('Yes, I\'m sure')
+                }
+            },
+            cancel_text: {
+                type: String,
+                default() {
+                    return this.$gettext('No, I\'m rethink')
+                }
+            },
+            exec(id) {
+                this.api.destroy(id).then(() => {
+                    this.get_list()
+                    this.$message.success('删除 ID: ' + id + ' 成功')
+                }).catch(e => {
+                    console.log(e)
+                    this.$message.error(e?.message ?? '系统错误')
+                })
+            },
+        },
         deletable: {
             type: Boolean,
             default: true
@@ -205,24 +280,6 @@ export default {
                     this.get_list()
                 })
             }
-        },
-        destroy(id) {
-            this.api.destroy(id).then(() => {
-                this.get_list()
-                this.$message.success('删除 ID: ' + id + ' 成功')
-            }).catch(e => {
-                console.log(e)
-                this.$message.error(e?.message ?? '系统错误')
-            })
-        },
-        restore(id) {
-            this.api.restore(id).then(() => {
-                this.get_list()
-                this.$message.success('反删除 ID: ' + id + ' 成功')
-            }).catch(e => {
-                console.log(e)
-                this.$message.error(e?.message ?? '系统错误')
-            })
         },
         get_searchColumns() {
             let searchColumns = []
