@@ -24,9 +24,11 @@ func InitRouter() *gin.Engine {
 		accept := c.Request.Header.Get("Accept")
 		if strings.Contains(accept, "text/html") {
 			file, _ := mustFS("").Open("index.html")
+			defer file.Close()
 			stat, _ := file.Stat()
 			c.DataFromReader(http.StatusOK, stat.Size(), "text/html",
 				bufio.NewReader(file), nil)
+			return
 		}
 	})
 

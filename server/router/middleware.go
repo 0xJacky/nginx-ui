@@ -59,7 +59,8 @@ type serverFileSystemType struct {
 }
 
 func (f serverFileSystemType) Exists(prefix string, _path string) bool {
-	_, err := f.Open(path.Join(prefix, _path))
+	file, err := f.Open(path.Join(prefix, _path))
+	defer file.Close()
 	return err == nil
 }
 

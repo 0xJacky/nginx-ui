@@ -5,7 +5,6 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
-	"crypto/tls"
 	"crypto/x509"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/settings"
@@ -15,9 +14,11 @@ import (
 	"github.com/go-acme/lego/v4/challenge/http01"
 	"github.com/go-acme/lego/v4/lego"
 	"github.com/go-acme/lego/v4/registration"
+	"github.com/pkg/errors"
 	"io"
 	"io/ioutil"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -70,15 +71,20 @@ func GetCertInfo(domain string) (key *x509.Certificate, err error) {
 
 	var response *http.Response
 
-	ts := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	client := &http.Client{
+		Transport: &http.Transport{
+			DialContext: (&net.Dialer{
+				Timeout: 5 * time.Second,
+			}).DialContext,
+			DisableKeepAlives: true,
+		},
+		Timeout: 5 * time.Second,
 	}
-
-	client := &http.Client{Transport: ts}
 
 	response, err = client.Get("https://" + domain)
 
 	if err != nil {
+		err = errors.Wrap(err, "get cert info error")
 		return
 	}
 
@@ -99,8 +105,7 @@ func IssueCert(domain string) error {
 	// Create a user. New accounts need an email and private key to start.
 	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
-		log.Println(err)
-		return err
+		return errors.Wrap(err, "issue cert generate key error")
 	}
 
 	myUser := MyUser{
@@ -118,8 +123,7 @@ func IssueCert(domain string) error {
 	// A client facilitates communication with the CA server.
 	client, err := lego.NewClient(config)
 	if err != nil {
-		log.Println(err)
-		return err
+		return errors.Wrap(err, "issue cert new client error")
 	}
 
 	err = client.Challenge.SetHTTP01Provider(
@@ -128,15 +132,14 @@ func IssueCert(domain string) error {
 		),
 	)
 	if err != nil {
-		log.Println(err)
-		return err
+		return errors.Wrap(err, "issue cert challenge fail")
 	}
 
 	// New users will need to register
 	reg, err := client.Registration.Register(registration.RegisterOptions{TermsOfServiceAgreed: true})
 	if err != nil {
 		log.Println(err)
-		return err
+		return errors.Wrap(err, "issue cert register fail")
 	}
 	myUser.Registration = reg
 
@@ -146,15 +149,13 @@ func IssueCert(domain string) error {
 	}
 	certificates, err := client.Certificate.Obtain(request)
 	if err != nil {
-		log.Println(err)
-		return err
+		return errors.Wrap(err, "issue cert fail to obtain")
 	}
 	saveDir := nginx.GetNginxConfPath("ssl/" + domain)
 	if _, err := os.Stat(saveDir); os.IsNotExist(err) {
 		err = os.Mkdir(saveDir, 0755)
 		if err != nil {
-			log.Println("fail to create", saveDir)
-			return err
+			return errors.Wrap(err, "issue cert fail to create")
 		}
 	}
 
@@ -164,13 +165,13 @@ func IssueCert(domain string) error {
 		certificates.Certificate, 0644)
 	if err != nil {
 		log.Println(err)
-		return err
+		return errors.Wrap(err, "issue cert write fullchain.cer fail")
 	}
 	err = ioutil.WriteFile(filepath.Join(saveDir, domain+".key"),
 		certificates.PrivateKey, 0644)
 	if err != nil {
 		log.Println(err)
-		return err
+		return errors.Wrap(err, "issue cert write key fail")
 	}
 
 	nginx.ReloadNginx()
