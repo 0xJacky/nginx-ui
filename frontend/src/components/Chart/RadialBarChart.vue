@@ -2,7 +2,7 @@
     <div class="container">
         <p class="text">{{ centerText }}</p>
         <p class="bottom_text">{{ bottomText }}</p>
-        <apexchart type="radialBar" height="205" :options="chartOptions" :series="series" ref="chart"/>
+        <apexchart class="radialBar" type="radialBar" height="205" :options="chartOptions" :series="series" ref="chart"/>
     </div>
 </template>
 
@@ -83,6 +83,14 @@ export default {
     position: relative;
     margin: 0 auto;
     height: 112px!important;
+    .radialBar {
+        position: absolute;
+        top: -30px;
+        @media(max-width: 768px) and (min-width: 290px) {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
     .text {
         position: absolute;
         top: calc(50% - 5px);
