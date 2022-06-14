@@ -35,7 +35,7 @@ export default {
                 series: this.series,
                 chart: {
                     type: 'radialBar',
-                    offsetY: -30
+                    offsetY: 0
                 },
                 plotOptions: {
                     radialBar: {
