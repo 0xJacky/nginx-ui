@@ -194,7 +194,6 @@ export default {
                     if (this.$refs['cert-info']) this.$refs['cert-info'].get()
                 }
             }).catch(r => {
-                console.log(r)
                 this.$message.error($interpolate($gettext('Save error %{msg}'), {msg: r.message ?? ''}), 10)
             })
         },
@@ -211,15 +210,15 @@ export default {
         change_auto_cert() {
             if (this.config.auto_cert) {
                 this.$api.domain.add_auto_cert(this.name).then(() => {
-                    this.$message.success($interpolate($gettext('Auto-renewal enabled for %{name}', {name: this.name})))
+                    this.$message.success($interpolate($gettext('Auto-renewal enabled for %{name}'), {name: this.name}))
                 }).catch(e => {
-                    this.$message.error(e.message ?? $interpolate($gettext('Enable auto-renewal failed for %{name}', {name: this.name})))
+                    this.$message.error(e.message ?? $interpolate($gettext('Enable auto-renewal failed for %{name}'), {name: this.name}))
                 })
             } else {
                 this.$api.domain.remove_auto_cert(this.name).then(() => {
-                    this.$message.success($interpolate($gettext('Auto-renewal disabled for %{name}', {name: this.name})))
+                    this.$message.success($interpolate($gettext('Auto-renewal disabled for %{name}'), {name: this.name}))
                 }).catch(e => {
-                    this.$message.error(e.message ?? $interpolate($gettext('Disable auto-renewal failed for %{name}', {name: this.name})))
+                    this.$message.error(e.message ?? $interpolate($gettext('Disable auto-renewal failed for %{name}'), {name: this.name}))
                 })
             }
         },

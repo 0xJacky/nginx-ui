@@ -5,6 +5,7 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
+	"crypto/tls"
 	"crypto/x509"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/settings"
@@ -50,6 +51,7 @@ func AutoCert() {
 			domain := autoCertList[i].Domain
 			key, err := GetCertInfo(domain)
 			if err != nil {
+				log.Println("GetCertInfo Err", err)
 				// 获取证书信息失败，本次跳过
 				continue
 			}
@@ -77,6 +79,7 @@ func GetCertInfo(domain string) (key *x509.Certificate, err error) {
 				Timeout: 5 * time.Second,
 			}).DialContext,
 			DisableKeepAlives: true,
+			TLSClientConfig:   &tls.Config{InsecureSkipVerify: true},
 		},
 		Timeout: 5 * time.Second,
 	}
