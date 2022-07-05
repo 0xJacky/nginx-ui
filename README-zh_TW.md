@@ -107,7 +107,7 @@ Nginx UI 遵循 Nginx 的標準，建立的網站配置檔案位於 Nginx 配置
 Nginx UI 可在以下平臺中使用：
 
 - Mac OS X 10.10 Yosemite 及之後版本（amd64 / arm64）
-- Linux 2.6.23 及之後版本（x86 / amd64 / arm64）
+- Linux 2.6.23 及之後版本（x86 / amd64 / arm64 / armv5 / armv6 / armv7）
   - 包括但不限於 Debian 7 / 8、Ubuntu 12.04 / 14.04 及後續版本、CentOS 6 / 7、Arch Linux
 - FreeBSD (x86 / amd64)
 - OpenBSD (x86 / amd64)

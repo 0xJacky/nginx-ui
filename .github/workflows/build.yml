@@ -84,13 +84,23 @@ jobs:
                     # Exclude i386 on darwin.
                     - goarch: 386
                       goos: darwin
+                include:
+                    # BEGIN Linux ARM 5 6 7
+                    - goos: linux
+                      goarch: arm
+                      goarm: 7
+                    - goos: linux
+                      goarch: arm
+                      goarm: 6
+                    - goos: linux
+                      goarch: arm
+                      goarm: 5
+                    # END Linux ARM 5 6 7
         env:
             CGO_ENABLED: 1
             GOOS: ${{ matrix.goos }}
             GOARCH: ${{ matrix.goarch }}
-            DIST: nginx-ui-${{ matrix.GOOS }}-${{ matrix.GOARCH }}
-        outputs:
-            dist: ${{ env.DIST }}
+            GOARM: ${{ matrix.goarm }}
         steps:
             - name: Checkout
               uses: actions/checkout@v2
@@ -106,29 +116,34 @@ jobs:
                   path: |
                       ~/.cache/go-build
                       ~/go/pkg/mod
-                  key: ${{ runner.os }}-${{ env.GOOS }}-${{ env.GOARCH }}-go-${{ hashFiles('**/go.sum') }}
+                  key: ${{ runner.os }}-${{ env.GOOS }}-${{ env.GOARCH }}${{ env.GOARM }}-go-${{ hashFiles('**/go.sum') }}
                   restore-keys: |
-                      ${{ runner.os }}-${{ env.GOOS }}-${{ env.GOARCH }}-go-
+                      ${{ runner.os }}-${{ env.GOOS }}-${{ env.GOARCH }}${{ env.GOARM }}-go-
 
             - name: Setup compiler environment
               id: info
               run: |
-                  export _ARCH=$(jq ".[\"$GOARCH\"].$GOOS" -r < .github/build/compiler_arch.json)
-                  echo "::set-output name=ARCH_NAME::$_ARCH"
+                  export _NAME=nginx-ui-$(jq ".$GOOS[\"$GOARCH$GOARM\"].name" -r < .github/build/build_info.json)
+                  export _ARCH=$(jq ".$GOOS[\"$GOARCH$GOARM\"].arch" -r < .github/build/build_info.json)
+                  export _ABI=$(jq ".$GOOS[\"$GOARCH$GOARM\"].abi // \"\"" -r < .github/build/build_info.json)
+                  echo "GOOS: $GOOS, GOARCH: $GOARCH, GOARM: $GOARM, ABI: $_ABI, RELEASE_NAME: $_NAME"
+                  echo "ARCH_NAME=$_ARCH" >> $GITHUB_ENV
+                  echo "ABI=$_ABI" >> $GITHUB_ENV
+                  echo "DIST=$_NAME" >> $GITHUB_ENV
 
             - name: Install musl cross compiler
               if: env.GOOS == 'linux'
               uses: Lesmiscore/musl-cross-compilers@v0.5
               id: musl
               with:
-                  target: ${{ steps.info.outputs.ARCH_NAME }}-linux-musl
+                  target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
 
             - name: Post install musl cross compiler
               if: env.GOOS == 'linux'
               run: |
                   echo "PATH=${{ steps.musl.outputs.path }}:$PATH" >> $GITHUB_ENV
-                  echo "CC=${{ steps.info.outputs.ARCH_NAME }}-linux-musl-gcc" >> $GITHUB_ENV
-                  echo "CXX=${{ steps.info.outputs.ARCH_NAME }}-linux-musl-g++" >> $GITHUB_ENV
+                  echo "CC=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-gcc" >> $GITHUB_ENV
+                  echo "CXX=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-g++" >> $GITHUB_ENV
                   echo "LD_FLAGS=--extldflags '-static'" >> $GITHUB_ENV
 
             - name: Install darwin cross compiler
@@ -138,8 +153,8 @@ jobs:
                   tar xvaf crossosx.tar.zst
                   echo "LD_LIBRARY_PATH=$(pwd)/crossosx/lib/" >> $GITHUB_ENV
                   echo "PATH=$(pwd)/crossosx/bin/:$PATH" >> $GITHUB_ENV
-                  echo "CC=${{ steps.info.outputs.ARCH_NAME }}-clang" >> $GITHUB_ENV
-                  echo "CXX=${{ steps.info.outputs.ARCH_NAME }}-clang++" >> $GITHUB_ENV
+                  echo "CC=${{ env.ARCH_NAME }}-clang" >> $GITHUB_ENV
+                  echo "CXX=${{ env.ARCH_NAME }}-clang++" >> $GITHUB_ENV
                   echo "LD_FLAGS=-s -w" >> $GITHUB_ENV
 
             - name: Download frontend artifacts
