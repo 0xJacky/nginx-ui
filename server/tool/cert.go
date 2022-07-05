@@ -44,28 +44,30 @@ func (u *MyUser) GetPrivateKey() crypto.PrivateKey {
 }
 
 func AutoCert() {
-	for {
-		log.Println("[AutoCert] Start")
-		autoCertList := model.GetAutoCertList()
-		for i := range autoCertList {
-			domain := autoCertList[i].Domain
-			key, err := GetCertInfo(domain)
-			if err != nil {
-				log.Println("GetCertInfo Err", err)
-				// 获取证书信息失败，本次跳过
-				continue
-			}
-			// 未到一个月
-			if time.Now().Before(key.NotBefore.AddDate(0, 1, 0)) {
-				continue
-			}
-			// 过一个月了，重新申请证书
-			err = IssueCert(domain)
-			if err != nil {
-				log.Println(err)
-			}
+	defer func() {
+		if err := recover(); err != nil {
+			log.Println("[AutoCert] Recover", err)
 		}
-		time.Sleep(1 * time.Hour)
+	}()
+	log.Println("[AutoCert] Start")
+	autoCertList := model.GetAutoCertList()
+	for i := range autoCertList {
+		domain := autoCertList[i].Domain
+		key, err := GetCertInfo(domain)
+		if err != nil {
+			log.Println("GetCertInfo Err", err)
+			// 获取证书信息失败，本次跳过
+			continue
+		}
+		// 未到一个月
+		if time.Now().Before(key.NotBefore.AddDate(0, 1, 0)) {
+			continue
+		}
+		// 过一个月了，重新申请证书
+		err = IssueCert(domain)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 }
 
