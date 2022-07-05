@@ -85,14 +85,17 @@ jobs:
                     - goarch: 386
                       goos: darwin
                 include:
-                    # BEGIN Linux ARM 5 7
+                    # BEGIN Linux ARM 5 6 7
                     - goos: linux
                       goarch: arm
                       goarm: 7
                     - goos: linux
                       goarch: arm
+                      goarm: 6
+                    - goos: linux
+                      goarch: arm
                       goarm: 5
-                    # END Linux ARM 5 7
+                    # END Linux ARM 5 6 7
         env:
             CGO_ENABLED: 1
             GOOS: ${{ matrix.goos }}

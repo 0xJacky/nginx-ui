@@ -134,13 +134,24 @@ identify_the_operating_system_and_architecture() {
     if [[ "$(uname)" == 'Linux' ]]; then
         case "$(uname -m)" in
         'i386' | 'i686')
-            MACHINE='386'
+            MACHINE='32'
             ;;
         'amd64' | 'x86_64')
-            MACHINE='amd64'
+            MACHINE='64'
+            ;;
+        'armv5tel')
+            MACHINE='arm32-v5'
+            ;;
+        'armv6l')
+            MACHINE='arm32-v6'
+            grep Features /proc/cpuinfo | grep -qw 'vfp' || MACHINE='arm32-v5'
+            ;;
+        'armv7' | 'armv7l')
+            MACHINE='arm32-v7a'
+            grep Features /proc/cpuinfo | grep -qw 'vfp' || MACHINE='arm32-v5'
             ;;
         'armv8' | 'aarch64')
-            MACHINE='arm64'
+            MACHINE='arm64-v8a'
             ;;
         *)
             echo -e "${FontRed}error: The architecture is not supported.${FontSuffix}"
