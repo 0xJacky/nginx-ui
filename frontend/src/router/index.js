@@ -73,6 +73,14 @@ export const routes = [
                 },
             },
             {
+                path: 'terminal',
+                name: $gettext('Terminal'),
+                component: () => import('@/views/pty/Terminal'),
+                meta: {
+                    icon: 'code'
+                }
+            },
+            {
                 path: 'about',
                 name: $gettext('About'),
                 component: () => import('@/views/other/About.vue'),
