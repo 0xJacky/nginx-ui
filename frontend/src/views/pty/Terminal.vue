@@ -82,7 +82,7 @@ export default {
             const that = this
             this.ping = setInterval(function () {
                 that.sendMessage({Type: 3})
-            }, 10000)
+            }, 30000)
         },
         sendMessage(data) {
             this.websocket.send(JSON.stringify(data))
