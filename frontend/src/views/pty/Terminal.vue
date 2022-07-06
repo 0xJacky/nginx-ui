@@ -2,7 +2,6 @@
     <a-card :title="$gettext('Terminal')">
         <div class="console" id="terminal"></div>
     </a-card>
-
 </template>
 
 <script>
@@ -34,6 +33,7 @@ export default {
         window.removeEventListener('resize', this.fit)
         clearInterval(this.ping)
         this.ping = null
+        this.term.close()
         this.websocket.close()
     },
     methods: {
@@ -46,13 +46,16 @@ export default {
                 convertEol: true,
                 fontSize: 14,
                 cursorStyle: 'block',
-                scrollback: 30,
+                scrollback: 1000,
+                theme: {
+                    background: 'rgba(3,14,32,0.7)'
+                },
             })
             const fitAddon = new FitAddon()
             term.loadAddon(fitAddon)
             this.fitAddon = fitAddon
             term.open(document.getElementById('terminal'))
-            setTimeout(()=>{
+            setTimeout(() => {
                 fitAddon.fit()
             }, 60)
             window.addEventListener('resize', this.fit)
@@ -71,7 +74,7 @@ export default {
                 that.sendMessage({Type: 1, Data: data})
             })
             term.onResize(data => {
-                that.sendMessage({Type:2, Data:{Cols:data.cols, Rows: data.rows}})
+                that.sendMessage({Type: 2, Data: {Cols: data.cols, Rows: data.rows}})
             })
             this.term = term
         },
@@ -93,6 +96,6 @@ export default {
 
 <style lang="less" scoped>
 .console {
-    min-height: 800px;
+    min-height: calc(100vh - 300px);
 }
 </style>
