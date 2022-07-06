@@ -105,8 +105,6 @@
                 :data-key="d.edit.dataKey"
             />
 
-            <rich-text-editor v-else-if="d.edit.type==='rich-text'" v-model="temp[d.dataIndex]"/>
-
             <p v-else-if="d.edit.type==='readonly'">
                 {{ d.mask ? d.mask[fn(temp, d.dataIndex)] : fn(temp, d.dataIndex) }}
             </p>
@@ -128,7 +126,6 @@ import StdSelector from './StdSelector'
 import StdUpload from './StdUpload'
 import StdDatePicker from './StdDatePicker'
 import StdTransfer from './StdTransfer'
-import RichTextEditor from '@/components/RichText/RichTextEditor'
 import StdCheckTag from '@/components/StdDataEntry/StdCheckTag'
 import StdMultiCheckTag from '@/components/StdDataEntry/StdMultiCheckTag'
 import StdCheckGroup from '@/components/StdDataEntry/StdCheckGroup'
@@ -141,7 +138,6 @@ export default {
         StdCheckGroup,
         StdMultiCheckTag,
         StdCheckTag,
-        RichTextEditor,
         StdTransfer,
         StdDatePicker,
         StdSelectOption,
