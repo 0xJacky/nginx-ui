@@ -46,7 +46,9 @@ func (p *Pipeline) ReadWsAndWritePty(errorChan chan error) {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseNoStatusReceived,
 				websocket.CloseNormalClosure) {
 				errorChan <- errors.Wrap(err, "Error ReadWsAndWritePty unexpected close")
+				return
 			}
+			errorChan <- err
 			return
 		}
 		if msgType != websocket.TextMessage {
@@ -118,7 +120,9 @@ func (p *Pipeline) ReadPtyAndWriteWs(errorChan chan error) {
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseNormalClosure) {
 				errorChan <- errors.Wrap(err, "Error ReadPtyAndWriteWs websocket write")
+				return
 			}
+			errorChan <- err
 			return
 		}
 	}
