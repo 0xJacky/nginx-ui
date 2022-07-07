@@ -76,7 +76,7 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
 - 在线编辑 Nginx 配置文件，编辑器支持 Nginx 配置语法高亮
 - 使用 Go 和 Vue 开发，发行版本为单个可执行的二进制文件
 - 保存配置文件后自动测试配置文件并重载 Nginx
-- 在线终端
+- 基于 Web 浏览器的高级命令行终端
 - 前端支持暗夜模式
 - 前端支持屏幕自适应
 
@@ -109,7 +109,7 @@ Nginx UI 遵循 Nginx 的标准，创建的网站配置文件位于 Nginx 配置
 Nginx UI 可在以下平台中使用：
 
 - Mac OS X 10.10 Yosemite 及之后版本（amd64 / arm64）
-- Linux 2.6.23 及之后版本（x86 / amd64 / arm64 / armv5 / armv6 / armv7 / armv8 ）
+- Linux 2.6.23 及之后版本（x86 / amd64 / arm64 / armv5 / armv6 / armv7）
   - 包括但不限于 Debian 7 / 8、Ubuntu 12.04 / 14.04 及后续版本、CentOS 6 / 7、Arch Linux
 - FreeBSD
 - OpenBSD
