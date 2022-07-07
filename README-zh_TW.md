@@ -224,6 +224,11 @@ server {
     rewrite ^(.*)$  https://$host$1 permanent;
 }
 
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
 server {
     listen  443       ssl http2;
     listen  [::]:443  ssl http2;
@@ -240,7 +245,7 @@ server {
         proxy_set_header    X-Forwarded-Proto   $scheme;
         proxy_http_version  1.1;
         proxy_set_header    Upgrade             $http_upgrade;
-        proxy_set_header    Connection          upgrade;
+        proxy_set_header    Connection          $connection_upgrade;
         proxy_pass          http://127.0.0.1:9000/;
     }
 }
