@@ -1,6 +1,6 @@
 <template>
     <a-card :title="$gettext('Add Site')">
-        <div class="container">
+        <div class="domain-add-container">
             <a-steps :current="current_step" size="small">
                 <a-step :title="$gettext('Base information')" />
                 <a-step :title="$gettext('Configure SSL')" />
@@ -22,6 +22,7 @@
                 <p v-if="is_demo" v-translate>This feature is not available in demo.</p>
 
                 <std-data-entry :data-list="columnsSSL" :data-source="config" :error="error" />
+
                 <a-space style="margin-right: 10px">
                     <a-button
                         v-if="current_step===1"
@@ -169,7 +170,7 @@ export default {
     padding: 10px 0 20px 0;
 }
 
-.container {
+.domain-add-container {
     max-width: 800px;
     margin: 0 auto
 }

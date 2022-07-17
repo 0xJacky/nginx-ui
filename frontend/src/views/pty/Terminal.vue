@@ -29,11 +29,10 @@ export default {
     mounted() {
         this.initTerm()
     },
-    destroyed() {
+    beforeDestroy() {
         window.removeEventListener('resize', this.fit)
         clearInterval(this.ping)
         this.ping = null
-        this.term.close()
         this.websocket.close()
     },
     methods: {

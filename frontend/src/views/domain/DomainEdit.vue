@@ -11,7 +11,7 @@
                         {{ $gettext('Disabled') }}
                     </a-tag>
                 </template>
-                <div class="container">
+                <div class="domain-edit-container">
                     <a-form-item :label="$gettext('Enabled')">
                         <a-switch v-model="enabled" @change="checked=>{checked?enable():disable()}"/>
                     </a-form-item>
@@ -281,7 +281,8 @@ export default {
         margin: 10px 0;
     }
 }
-.container {
+
+.domain-edit-container {
     max-width: 800px;
     margin: 0 auto;
     /deep/.ant-form-item-label > label::after {
