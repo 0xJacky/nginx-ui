@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func GetDomains(c *gin.Context) {
@@ -120,7 +121,7 @@ func EditDomain(c *gin.Context) {
 
 		output := nginx.ReloadNginx()
 
-		if output != "" {
+		if output != "" && strings.Contains(output, "error") {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": output,
 			})
@@ -161,7 +162,7 @@ func EnableDomain(c *gin.Context) {
 
 	output := nginx.ReloadNginx()
 
-	if output != "" {
+	if output != "" && strings.Contains(output, "error") {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": output,
 		})

@@ -27,6 +27,7 @@ func ReloadNginx() string {
 
 	if err != nil {
 		log.Println(err)
+		return err.Error()
 	}
 
 	output := string(out)

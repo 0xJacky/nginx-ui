@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func GetConfigs(c *gin.Context) {
@@ -101,7 +102,7 @@ func AddConfig(c *gin.Context) {
 
 	output := nginx.ReloadNginx()
 
-	if output != "" {
+	if output != "" && strings.Contains(output, "error") {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": output,
 		})
@@ -147,7 +148,7 @@ func EditConfig(c *gin.Context) {
 
 	output := nginx.ReloadNginx()
 
-	if output != "" {
+	if output != "" && strings.Contains(output, "error") {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": output,
 		})
