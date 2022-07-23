@@ -163,7 +163,7 @@ systemctl restart nginx-ui
 ## 使用 Docker
 
 Docker 示例
-- `nginx-ui:latest` 镜像基于 `nginx:latest` 构建，
+- `uozi/nginx-ui:latest` 镜像基于 `nginx:latest` 构建，
 您可以直接将该镜像监听到 80 和 443 端口以取代宿主机上的 Nginx
 
 - 映射到 `/etc/nginx` 的文件夹应该为一个空目录
@@ -176,7 +176,7 @@ docker run -dit \
   -v /mnt/user/appdata/nginx:/etc/nginx \
   -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
   -p 8080:80 -p 8443:443 \
-  nginx-ui:latest
+  uozi/nginx-ui:latest
 ```
 
 ## 手动构建

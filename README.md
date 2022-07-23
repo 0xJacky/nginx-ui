@@ -162,7 +162,7 @@ systemctl restart nginx-ui
 ## Use Docker
 
 Docker deploy example
-- `nginx-ui:latest` base on `nginx:latest`, you can replace the Nginx on host by publishing port 80 and 443 to host
+- `uozi/nginx-ui:latest` base on `nginx:latest`, you can replace the Nginx on host by publishing port 80 and 443 to host
 
 - The volume mapping to `/etc/nginx` should be empty.
 
@@ -174,7 +174,7 @@ docker run -dit \
   -v /mnt/user/appdata/nginx:/etc/nginx \
   -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
   -p 8080:80 -p 8443:443 \
-  nginx-ui:latest
+  uozi/nginx-ui:latest
 ```
 
 
