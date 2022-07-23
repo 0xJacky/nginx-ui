@@ -33,6 +33,7 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
           <ul>
             <li><a href="#from-executable">From Executable</a></li>
             <li><a href="#with-systemd">With Systemd</a></li>
+            <li><a href="#use-docker">Use Docker</a></li>
           </ul>
         </li>
       </ul>
@@ -157,6 +158,26 @@ systemctl stop nginx-ui
 ```shell
 systemctl restart nginx-ui
 ```
+
+## Use Docker
+
+Docker deploy example
+- `nginx-ui:latest` base on `nginx:latest`, you can replace the Nginx on host by publishing port 80 and 443 to host
+
+- The volume mapping to `/etc/nginx` should be empty.
+
+```
+docker run -dit \
+  --name=nginx-ui \
+  --restart=always \
+  -e TZ=Asia/Shanghai \
+  -v /mnt/user/appdata/nginx:/etc/nginx \
+  -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
+  -p 8080:80 -p 8443:443 \
+  nginx-ui:latest
+```
+
+
 ## Manual Build
 
 On platforms that do not have an official build version, they can be built manually.

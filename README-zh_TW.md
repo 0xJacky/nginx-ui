@@ -35,6 +35,7 @@ Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https
           <ul>
             <li><a href="#透過執行檔案執行">透過執行檔案執行</a></li>
             <li><a href="#使用-systemd">使用 Systemd</a></li>
+            <li><a href="#使用-docker">使用 Docker</a></li>
           </ul>
         </li>
       </ul>
@@ -158,6 +159,26 @@ systemctl stop nginx-ui
 ```shell
 systemctl restart nginx-ui
 ```
+
+## 使用 Docker
+
+Docker 示例
+- `nginx-ui:latest` 鏡像基於 `nginx:latest` 構建，
+  您可以直接將該鏡像監聽到 80 和 443 端口以取代宿主機上的 Nginx
+
+- 映射到 `/etc/nginx` 的文件夾應該為一個空目錄
+
+```
+docker run -dit \
+  --name=nginx-ui \
+  --restart=always \
+  -e TZ=Asia/Shanghai \
+  -v /mnt/user/appdata/nginx:/etc/nginx \
+  -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
+  -p 8080:80 -p 8443:443 \
+  nginx-ui:latest
+```
+
 ## 手動構建
 
 對於沒有官方構建版本的平臺，可以嘗試手動構建。

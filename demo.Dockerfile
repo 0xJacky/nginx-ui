@@ -10,7 +10,6 @@ COPY resources/docker/nginx-ui.conf /etc/nginx/conf.d/nginx-ui.conf
 COPY resources/docker/start.sh /app/start.sh
 COPY nginx-ui /app/nginx-ui
 
-RUN cd /app && chmod a+x start.sh
-
+RUN cd /app && chmod a+x start.sh && rm -f /etc/nginx/conf.d/default.conf
 
 ENTRYPOINT ["./start.sh"]
