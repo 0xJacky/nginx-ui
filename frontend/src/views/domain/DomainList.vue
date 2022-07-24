@@ -13,8 +13,12 @@
         >
             <template #actions="{record}">
                 <a-divider type="vertical"/>
-                <a v-if="record.enabled" @click="disable(record.name)" v-translate>Disabled</a>
-                <a v-else @click="enable(record.name)" v-translate>Enabled</a>
+                <a v-if="record.enabled" @click="disable(record.name)">
+                    {{ $gettext('Disabled') }}
+                </a>
+                <a v-else @click="enable(record.name)">
+                    {{ $gettext('Enabled') }}
+                </a>
             </template>
         </std-table>
     </a-card>
