@@ -2,6 +2,7 @@ package pty
 
 import (
 	"encoding/json"
+	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/creack/pty"
 	"github.com/gorilla/websocket"
 	"github.com/pkg/errors"
@@ -24,7 +25,7 @@ type Message struct {
 const bufferSize = 2048
 
 func NewPipeLine(conn *websocket.Conn) (p *Pipeline, err error) {
-	c := exec.Command("login")
+	c := exec.Command(settings.ServerSettings.StartCmd)
 
 	ptmx, err := pty.StartWithSize(c, &pty.Winsize{Cols: 90, Rows: 60})
 	if err != nil {

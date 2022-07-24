@@ -32,8 +32,10 @@ func ReloadNginx() string {
 
 	output := string(out)
 	log.Println(output)
-
-	return output
+	if strings.Contains(output, "failed") {
+		return output
+	}
+	return ""
 }
 
 func GetNginxConfPath(dir string) string {

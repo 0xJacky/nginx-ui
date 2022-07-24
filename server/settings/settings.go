@@ -23,6 +23,7 @@ type Server struct {
 	HTTPChallengePort string
 	Email             string
 	Database          string
+	StartCmd          string
 	Demo              bool
 }
 
@@ -31,6 +32,7 @@ var ServerSettings = &Server{
 	RunMode:           "debug",
 	HTTPChallengePort: "9180",
 	Database:          "database",
+	StartCmd:          "login",
 	Demo:              false,
 }
 
