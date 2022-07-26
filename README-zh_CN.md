@@ -187,7 +187,7 @@ docker run -dit \
 
 - Make
 
-- Golang 1.17+
+- Golang 1.18+
 
 - node.js 14+
 

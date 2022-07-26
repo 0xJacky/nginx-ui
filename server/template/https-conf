@@ -16,10 +16,6 @@ server {
     ssl_certificate {{ ssl_certificate }};
     ssl_certificate_key {{ ssl_certificate_key }};
 
-    root ;
-
-    index ;
-
     location /.well-known {
         proxy_set_header Host $host;
         proxy_set_header X-Real_IP $remote_addr;

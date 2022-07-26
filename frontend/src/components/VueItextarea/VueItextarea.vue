@@ -1,5 +1,4 @@
 <template>
-<!--    <codemirror v-model="current_value" :options="cmOptions"/>-->
     <editor v-model="current_value" @init="editorInit" lang="nginx" theme="monokai" width="100%" height="1000"></editor>
 </template>
 <style lang="less">
@@ -8,7 +7,6 @@
 }
 </style>
 <script>
-//import {codemirror} from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
 

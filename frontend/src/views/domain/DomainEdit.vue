@@ -1,17 +1,31 @@
 <template>
     <div>
-        <a-collapse :bordered="false" default-active-key="1">
-            <a-collapse-panel key="1">
-                <template v-slot:header>
-                    <span style="margin-right: 10px">{{ $gettextInterpolate($gettext('Edit %{n}'), {n: name}) }}</span>
-                    <a-tag color="blue" v-if="enabled">
-                        {{ $gettext('Enabled') }}
-                    </a-tag>
-                    <a-tag color="orange" v-else>
-                        {{ $gettext('Disabled') }}
-                    </a-tag>
+        <a-card :bordered="false">
+            <template v-slot:title>
+                <span style="margin-right: 10px">{{ $gettextInterpolate($gettext('Edit %{n}'), {n: name}) }}</span>
+                <a-tag color="blue" v-if="enabled">
+                    {{ $gettext('Enabled') }}
+                </a-tag>
+                <a-tag color="orange" v-else>
+                    {{ $gettext('Disabled') }}
+                </a-tag>
+            </template>
+            <template v-slot:extra>
+                <a-switch size="small" v-model="advance_mode"/>
+                <template v-if="advance_mode">
+                    {{ $gettext('Advance') }}
                 </template>
-                <div class="domain-edit-container">
+                <template v-else>
+                    {{ $gettext('Basic') }}
+                </template>
+            </template>
+
+            <transition name="slide-fade">
+                <div v-if="advance_mode" key="advance">
+                    <vue-itextarea v-model="configText"/>
+                </div>
+
+                <div class="domain-edit-container" key="basic" v-else>
                     <a-form-item :label="$gettext('Enabled')">
                         <a-switch v-model="enabled" @change="checked=>{checked?enable():disable()}"/>
                     </a-form-item>
@@ -32,11 +46,8 @@
                         <p v-else v-translate>Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort (default: 9180) before getting the certificate.</p>
                     </template>
                 </div>
-            </a-collapse-panel>
-        </a-collapse>
+            </transition>
 
-        <a-card :title="$gettext('Edit Configuration File')">
-            <vue-itextarea v-model="configText"/>
         </a-card>
 
         <footer-tool-bar>
@@ -84,7 +95,8 @@ export default {
             configText: '',
             ws: null,
             ok: false,
-            issuing_cert: false
+            issuing_cert: false,
+            advance_mode: false,
         }
     },
     watch: {
@@ -257,21 +269,7 @@ export default {
 </script>
 
 <style lang="less">
-.ant-collapse {
-    background: #ffffff;
-    @media (prefers-color-scheme: dark) {
-        background: #28292c;
-    }
-    margin-bottom: 20px;
 
-    .ant-collapse-item {
-        border-bottom: unset;
-    }
-}
-
-.ant-collapse-content-box {
-    padding: 24px !important;
-}
 </style>
 
 <style lang="less" scoped>
@@ -290,4 +288,15 @@ export default {
     }
 }
 
+.slide-fade-enter-active {
+    transition: all .5s ease-in-out;
+}
+.slide-fade-leave-active {
+    transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateX(10px);
+    opacity: 0;
+}
 </style>

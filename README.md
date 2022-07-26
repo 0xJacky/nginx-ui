@@ -186,7 +186,7 @@ On platforms that do not have an official build version, they can be built manua
 
 - Make
 
-- Golang 1.17+
+- Golang 1.18+
 
 - node.js 14+
 

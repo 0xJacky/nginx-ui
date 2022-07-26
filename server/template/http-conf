@@ -4,10 +4,6 @@ server {
 
     server_name {{ server_name }};
 
-    root ;
-
-    index ;
-
     location /.well-known {
         proxy_set_header Host $host;
         proxy_set_header X-Real_IP $remote_addr;
