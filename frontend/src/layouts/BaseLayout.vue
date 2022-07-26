@@ -1,5 +1,5 @@
 <template>
-    <a-config-provider :locale="zh_CN">
+    <a-config-provider :locale="lang">
         <a-layout style="min-height: 100%;">
             <a-drawer
                 v-show="clientWidth<512"
@@ -49,8 +49,9 @@ import SideBar from './SideBar'
 import FooterLayout from './FooterLayout'
 import PageHeader from '@/components/PageHeader/PageHeader'
 import zh_CN from 'ant-design-vue/es/locale/zh_CN'
+import zh_TW from 'ant-design-vue/es/locale/zh_TW'
+import en_US from 'ant-design-vue/es/locale/en_US'
 
-// TODO： Change language for base layout.
 export default {
     name: 'BaseLayout',
     data() {
@@ -72,7 +73,21 @@ export default {
         HeaderLayout,
         FooterLayout
     },
-    methods: {}
+    methods: {},
+    computed: {
+        lang: {
+            get() {
+                switch (this.$language.current) {
+                    case 'zh_CN':
+                        return zh_CN
+                    case 'zh_TW':
+                        return zh_TW
+                    default:
+                        return en_US
+                }
+            }
+        }
+    }
 }
 </script>
 <style lang="less">
@@ -143,7 +158,7 @@ p {
 }
 
 .ant-card-bordered {
-    border: unset;
+
 }
 
 .header-notice-wrapper .ant-tabs-content {
