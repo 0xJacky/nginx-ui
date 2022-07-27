@@ -18,6 +18,7 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#demo">Demo</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#internationalization">Internationalization</a></li>
         <li><a href="#built-with">Built With</a></li>
@@ -33,7 +34,7 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
           <ul>
             <li><a href="#from-executable">From Executable</a></li>
             <li><a href="#with-systemd">With Systemd</a></li>
-            <li><a href="#use-docker">Use Docker</a></li>
+            <li><a href="#with-docker">With Docker</a></li>
           </ul>
         </li>
       </ul>
@@ -59,14 +60,15 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
   </ol>
 </details>
 
+
 ## About The Project
 
 ![Dashboard](resources/screenshots/dashboard_en.png)
 
 ### Demo
 URL：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
-- username：admin
-- password：admin
+- Username：admin
+- Password：admin
 
 ### Features
 
@@ -76,8 +78,8 @@ URL：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
 - Written in Go and Vue, distribution is a single executable binary.
 - Automatically test configuration file and reload nginx after saving configuration.
 - Web Terminal
-- Frontend support Dark Mode
-- Frontend use Responsive Web Design
+- Dark Mode
+- Responsive Web Design
 
 ### Internationalization
 
@@ -99,9 +101,19 @@ We welcome translations into any language.
 
 ### Before Use
 
-The Nginx UI follows the Nginx standard of creating site configuration files in the `sites-available` directory under
-the Nginx configuration directory (auto-detected). The configuration files for an enabled site will create a soft link
-to the `sites-enabled` directory. Therefore, you may need to adjust the way the configuration files are organised.
+The Nginx UI follows the Debian web server configuration file standard. Created site configuration files will be placed in the `sites-available` folder that under the Nginx configuration folder (auto-detected). The configuration files for an enabled site will create a soft link to the `sites-enabled` folder. You may need to adjust the way the configuration files are organised.
+
+For non-Debian (and Ubuntu) systems, you may need to change the contents of the `nginx.conf` configuration file to the Debian style as shown below.
+
+```nginx
+http {
+	# ...
+	include /etc/nginx/conf.d/*.conf;
+	include /etc/nginx/sites-enabled/*;
+}
+```
+
+For more information: [debian/conf/nginx.conf](https://salsa.debian.org/nginx-team/nginx/-/blob/master/debian/conf/nginx.conf#L59-L60)
 
 ### Installation
 
@@ -159,14 +171,15 @@ systemctl stop nginx-ui
 systemctl restart nginx-ui
 ```
 
-## Use Docker
+#### With Docker
 
-Docker deploy example
-- `uozi/nginx-ui:latest` base on `nginx:latest`, you can replace the Nginx on host by publishing port 80 and 443 to host
+You can use our `uozi/nginx-ui:latest` [image](https://hub.docker.com/r/uozi/nginx-ui) in docker, which is base on `nginx:latest`. You can replace the Nginx on host by publishing port 80 and 443 to host.
 
-- The volume mapping to `/etc/nginx` should be empty.
+Note: The volume mapping to `/etc/nginx` should be empty.
 
-```
+**Docker Deploy Example**
+
+```bash
 docker run -dit \
   --name=nginx-ui \
   --restart=always \

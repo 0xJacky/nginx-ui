@@ -20,6 +20,7 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
     <li>
       <a href="#关于项目">关于项目</a>
       <ul>
+        <li><a href="#在线预览">在线预览</a></li>
         <li><a href="#特色">特色</a></li>
         <li><a href="#国际化">国际化</a></li>
         <li><a href="#构建基于">构建基于</a></li>
@@ -61,6 +62,7 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
   </ol>
 </details>
 
+
 ## 关于项目
 
 ![Dashboard](resources/screenshots/dashboard_zh_CN.png)
@@ -76,10 +78,10 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
 - 一键申请和自动续签 Let's encrypt 证书
 - 在线编辑 Nginx 配置文件，编辑器支持 Nginx 配置语法高亮
 - 使用 Go 和 Vue 开发，发行版本为单个可执行的二进制文件
-- 保存配置文件后自动测试配置文件并重载 Nginx
-- 基于 Web 浏览器的高级命令行终端
-- 前端支持暗夜模式
-- 前端支持屏幕自适应
+- 保存配置后自动测试配置文件并重载 Nginx
+- 基于网页浏览器的高级命令行终端
+- 支持深色模式
+- 自适应网页设计
 
 ### 国际化
 
@@ -101,9 +103,19 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
 
 ### 使用前注意
 
-Nginx UI 遵循 Nginx 的标准，创建的网站配置文件位于 Nginx 配置目录（自动检测）下的 `sites-available` 目录，
-启用后的网站的配置文件将会创建一份软连接到 `sites-enabled`
-目录中。因此，您可能需要提前调整配置文件的组织方式。
+Nginx UI 遵循 Debian 的网页服务器配置文件标准。创建的网站配置文件将会放置于 Nginx 配置文件夹（自动检测）下的 `sites-available` 中，启用后的网站将会创建一份配置文件软连接到 `sites-enabled` 文件夹。您可能需要提前调整配置文件的组织方式。
+
+对于非 Debian (及 Ubuntu) 系统，您可能需要将 `nginx.conf` 配置文件中的内容修改为如下所示的 Debian 风格。
+
+```nginx
+http {
+	# ...
+	include /etc/nginx/conf.d/*.conf;
+	include /etc/nginx/sites-enabled/*;
+}
+```
+
+更多信息请参阅：[debian/conf/nginx.conf](https://salsa.debian.org/nginx-team/nginx/-/blob/master/debian/conf/nginx.conf#L59-L60)
 
 ### 安装
 
@@ -117,7 +129,7 @@ Nginx UI 可在以下平台中使用：
 - Dragonfly BSD
 - Openwrt
 
-您可以在 [最新发行 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest) 中下载最新版本，或使用 [Linux 安装脚本](#scripts-for-linux).
+您可以在 [最新发行 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest) 中下载最新版本，或使用 [Linux 安装脚本](#scripts-for-linux)。
 
 ### 使用方法
 
@@ -160,15 +172,15 @@ systemctl stop nginx-ui
 systemctl restart nginx-ui
 ```
 
-## 使用 Docker
+#### 使用 Docker
 
-Docker 示例
-- `uozi/nginx-ui:latest` 镜像基于 `nginx:latest` 构建，
-您可以直接将该镜像监听到 80 和 443 端口以取代宿主机上的 Nginx
+您可以在 docker 中使用我们提供的 `uozi/nginx-ui:latest` [镜像](https://hub.docker.com/r/uozi/nginx-ui)，此镜像基于 `nginx:latest` 构建。您可以直接将其监听到 80 和 443 端口以取代宿主机上的 Nginx。
 
-- 映射到 `/etc/nginx` 的文件夹应该为一个空目录
+注意：映射到 `/etc/nginx` 的文件夹应该为一个空目录。
 
-```
+**Docker 示例**
+
+```bash
 docker run -dit \
   --name=nginx-ui \
   --restart=always \

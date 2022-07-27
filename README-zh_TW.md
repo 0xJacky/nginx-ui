@@ -20,6 +20,7 @@ Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https
     <li>
       <a href="#關於專案">關於專案</a>
       <ul>
+        <li><a href="#線上預覽">線上預覽</a></li>
         <li><a href="#特色">特色</a></li>
         <li><a href="#國際化">國際化</a></li>
         <li><a href="#構建基於">構建基於</a></li>
@@ -57,31 +58,32 @@ Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https
     </li>
     <li><a href="#nginx-反向代理配置示例">Nginx 反向代理配置示例</a></li>
     <li><a href="#貢獻">貢獻</a></li>
-    <li><a href="#開源許可">開源許可</a></li>
+    <li><a href="#開源軟體授權條款">開源軟體授權條款</a></li>
   </ol>
 </details>
+
 
 ## 關於專案
 
 ![Dashboard](resources/screenshots/dashboard_zh_TW.png)
 
-### 在线预览
+### 線上預覽
 
-网址：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
+位址：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
 
-- 用户名：admin
-- 密码：admin
+- 使用者：admin
+- 密碼：admin
 
 ### 特色
 
 - 線上檢視伺服器 CPU、記憶體、系統負載、磁碟使用率等指標
-- 一鍵申請和自動續簽 Let's encrypt 證書
-- 線上編輯 Nginx 配置檔案，編輯器支援 Nginx 配置語法高亮
-- 使用 Go 和 Vue 開發，發行版本為單個可執行的二進位制檔案
-- 保存配置文件後自動測試配置文件並重載 Nginx
-- 基於 Web 瀏覽器的高級命令行終端
-- 前端支援暗夜模式
-- 前端支持屏幕自適應
+- 一鍵申請和自動續簽 Let's encrypt 憑證
+- 線上編輯 Nginx 配置檔案，編輯器支援 Nginx 配置語法突顯
+- 使用 Go 和 Vue 開發，發行版本為單個可執行檔案
+- 保存配置後自動測試配置檔案並重載 Nginx
+- 基於網頁瀏覽器的高級命令行終端
+- 支援暗黑模式
+- 自適應網頁設計
 
 ### 國際化
 
@@ -103,11 +105,23 @@ Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https
 
 ### 使用前注意
 
-Nginx UI 遵循 Nginx 的標準，建立的網站配置檔案位於 Nginx 配置目錄（自動檢測）下的 `sites-available` 目錄，啟用後的網站的配置檔案將會建立一份軟連線到 `sites-enabled`目錄中。因此，您可能需要提前調整配置檔案的組織方式。
+Nginx UI 遵循 Debian 的網頁伺服器配置檔案標準。建立的網站配置檔案將會放置於 Nginx 配置資料夾（自動檢測）下的 `sites-available` 中，啟用後的網站將會建立一份配置檔案軟連結檔到 `sites-enabled` 資料夾。您可能需要提前調整配置檔案的組織方式。
+
+對於非 Debian (及 Ubuntu) 作業系統，您可能需要將 `nginx.conf` 配置檔案中的內容修改為如下所示的 Debian 風格。
+
+```nginx
+http {
+	# ...
+	include /etc/nginx/conf.d/*.conf;
+	include /etc/nginx/sites-enabled/*;
+}
+```
+
+更多資訊請參閱：[debian/conf/nginx.conf](https://salsa.debian.org/nginx-team/nginx/-/blob/master/debian/conf/nginx.conf#L59-L60)
 
 ### 安裝
 
-Nginx UI 可在以下平臺中使用：
+Nginx UI 可在以下作業系統中使用：
 
 - Mac OS X 10.10 Yosemite 及之後版本（amd64 / arm64）
 - Linux 2.6.23 及之後版本（x86 / amd64 / arm64 / armv5 / armv6 / armv7）
@@ -117,11 +131,11 @@ Nginx UI 可在以下平臺中使用：
 - Dragonfly BSD
 - Openwrt
 
-您可以在 [最新發行 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest) 中下載最新版本，或使用 [Linux 安裝指令碼](#scripts-for-linux).
+您可以在 [最新释出 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest) 中下載最新版本，或使用 [Linux 安裝指令碼](#scripts-for-linux)。
 
 ### 使用方法
 
-第一次執行 Nginx UI 時，請在瀏覽器中訪問 `http://<your_server_ip>:<listen_port>/install` 完成後續配置。
+第一次執行 Nginx UI 時，請在網頁瀏覽器中訪問 `http://<your_server_ip>:<listen_port>/install` 完成後續配置。
 
 #### 透過執行檔案執行
 **在終端中執行 Nginx UI**
@@ -131,7 +145,7 @@ nginx-ui -config app.ini
 ```
 在終端使用 `Control+C` 退出 Nginx UI。
 
-**在後臺執行 Nginx UI**
+**在背景執行 Nginx UI**
 
 ```shell
 nohup ./nginx-ui -config app.ini &
@@ -142,7 +156,7 @@ nohup ./nginx-ui -config app.ini &
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
 ```
 #### 使用 Systemd
-如果你使用的是 [Linux 安裝指令碼](#scripts-for-linux)，Nginx UI 將作為 `nginx-ui` 服務安裝在 systemd 中。請使用 `systemctl` 命令控制。
+如果你使用的是 [Linux 安裝指令碼](#scripts-for-linux)，Nginx UI 將作為 `nginx-ui` 守護行程安裝在 systemd 中。請使用 `systemctl` 指令控制。
 
 **啟動 Nginx UI**
 
@@ -160,15 +174,15 @@ systemctl stop nginx-ui
 systemctl restart nginx-ui
 ```
 
-## 使用 Docker
+#### 使用 Docker
 
-Docker 示例
-- `uozi/nginx-ui:latest` 鏡像基於 `nginx:latest` 構建，
-  您可以直接將該鏡像監聽到 80 和 443 端口以取代宿主機上的 Nginx
+您可以在 docker 中使用我們提供的 `uozi/nginx-ui:latest`  [鏡像](https://hub.docker.com/r/uozi/nginx-ui)，此鏡像基於 `nginx:latest` 構建。您可以直接將其監聽到 80 和 443 埠以取代宿主機上的 Nginx。
 
-- 映射到 `/etc/nginx` 的文件夾應該為一個空目錄
+注意：映射到 `/etc/nginx` 的資料夾應是一個空資料夾。
 
-```
+**Docker 示例**
+
+```bash
 docker run -dit \
   --name=nginx-ui \
   --restart=always \
@@ -181,7 +195,7 @@ docker run -dit \
 
 ## 手動構建
 
-對於沒有官方構建版本的平臺，可以嘗試手動構建。
+對於沒有官方構建版本的作業系統，可以嘗試手動構建。
 
 ### 依賴
 
@@ -197,7 +211,7 @@ docker run -dit \
 
 ### 構建前端
 
-請在 `frontend` 目錄中執行以下命令。
+請在 `frontend` 資料夾中執行以下命令。
 
 ```shell
 yarn install
@@ -222,7 +236,7 @@ go build -o nginx-ui -v main.go
 ```shell
 bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install
 ```
-一鍵安裝指令碼預設設定的監聽埠為 `9000`，HTTP Challenge 埠預設為 `9180`，如果出現埠衝突請進入 `/usr/local/etc/nginx-ui/app.ini` 修改，並使用 `systemctl restart nginx-ui` 重啟 Nginx UI 服務。
+一鍵安裝指令碼預設的監聽埠為 `9000`，HTTP Challenge 埠預設為 `9180`，如果出現埠衝突請修改 `/usr/local/etc/nginx-ui/app.ini`，並使用 `systemctl restart nginx-ui` 重啟 Nginx UI 守護行程。
 
 **解除安裝 Nginx UI 但保留配置和資料庫檔案**
 
@@ -278,7 +292,7 @@ server {
 
 貢獻使開源社群成為學習、啟發和創造的絕佳場所。我們**非常感謝**您所做的任何貢獻。
 
-如果您有讓這個專案變得更強的建議，歡迎 fork 這個倉庫並建立一個 Pull Request。您也可以建立一個帶有 `enhancement` （加強）標籤的 Issue。最後，不要忘記給我們的專案點個 Star！再次感謝！
+如果您有讓這個專案變得更強的建議，歡迎 fork 這個程式庫 (repository) 並建立一個 Pull Request。您也可以建立一個帶有 `enhancement` （加強）標籤的 Issue。最後，不要忘記給我們的專案點個 Star！再次感謝！
 
 1. Fork 專案
 2. 建立您的分支 (`git checkout -b feature/AmazingFeature`)
@@ -286,6 +300,6 @@ server {
 4. 推送到您的分支 (`git push origin feature/AmazingFeature`)
 5. 建立一個 Pull Request
 
-## 開源許可
+## 開源軟體授權條款
 
-此專案基於 GNU Affero Public License v3.0 (AGPLv3) 許可，請參閱 [LICENSE](LICENSE) 檔案。透過使用、分發或對本專案做出貢獻，表明您已同意本許可證的條款和條件。
+此專案基於 GNU Affero Public License v3.0 (AGPLv3) 授權條款，請參閱 [LICENSE](LICENSE) 檔案。透過使用、分發或對本專案做出貢獻，表明您已同意本許可證的條款和條件。
