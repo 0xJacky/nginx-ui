@@ -15,6 +15,7 @@ const (
 	Upstream     = "upstream"
 	CommentStart = "#"
 	Empty        = ""
+	If           = "if"
 )
 
 func matchParentheses(stack *linkedliststack.Stack, v int32) {
@@ -44,20 +45,25 @@ func parseDirective(scanner *bufio.Scanner) (d NgxDirective) {
 		return
 	}
 
-	sep := len(text) - 1
-	for k, v := range text {
-		if unicode.IsSpace(v) {
-			sep = k
-			break
+	if len(text) > 1 {
+		sep := len(text) - 1
+		for k, v := range text {
+			if unicode.IsSpace(v) {
+				sep = k
+				break
+			}
 		}
-	}
 
-	d.Directive = text[0:sep]
-	d.Params = text[sep:]
+		d.Directive = text[0:sep]
+		d.Params = text[sep:]
+	} else {
+		d.Directive = text
+		return
+	}
 
 	stack := linkedliststack.New()
 
-	if d.Directive == Server || d.Directive == Upstream || d.Directive == Location {
+	if d.Directive == Server || d.Directive == Upstream || d.Directive == Location || d.Directive == If {
 		// { } in one line
 		// location = /.well-known/carddav { return 301 /remote.php/dav/; }
 		if strings.Contains(d.Params, "{") {
@@ -118,11 +124,20 @@ func ParseNgxConfig(filename string) (c *NgxConfig, err error) {
 			c.parseUpstream(paramsScanner)
 		case CommentStart:
 			c.commentQueue.Enqueue(d.Params)
+		case Empty:
+			continue
+		default:
+			c.Custom += d.Orig() + "\n"
 		}
 	}
 
 	if err = scanner.Err(); err != nil {
 		return nil, errors.Wrap(err, "error scanner in ParseNgxConfig")
+	}
+
+	// Attach the rest of the comments to the last server
+	if len(c.Servers) > 0 {
+		c.Servers[len(c.Servers)-1].Comments += c.commentQueue.DequeueAllComments()
 	}
 
 	return c, nil

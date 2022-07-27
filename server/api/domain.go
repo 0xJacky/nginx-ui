@@ -71,15 +71,9 @@ func GetDomain(c *gin.Context) {
 		enabled = false
 	}
 
-	content, err := ioutil.ReadFile(path)
+	config, err := nginx.ParseNgxConfig(path)
 
 	if err != nil {
-		if os.IsNotExist(err) {
-			c.JSON(http.StatusNotFound, gin.H{
-				"message": err.Error(),
-			})
-			return
-		}
 		ErrHandler(c, err)
 		return
 	}
@@ -89,8 +83,8 @@ func GetDomain(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"enabled":   enabled,
 		"name":      name,
-		"config":    string(content),
-		"auto_cert": err == nil,
+		"config":    config.BuildConfig(),
+		"tokenized": config,
 	})
 
 }
@@ -150,7 +144,7 @@ func EnableDomain(c *gin.Context) {
 		return
 	}
 
-	// 测试配置文件，不通过则撤回启用
+	// Test nginx config, if not pass then rollback.
 	err = nginx.TestNginxConf()
 	if err != nil {
 		_ = os.Remove(enabledConfigFilePath)
