@@ -26,12 +26,12 @@
 
 <script>
 import StdTable from '@/components/StdDataDisplay/StdTable'
-import $gettext, {$interpolate} from "@/lib/translate/gettext";
+import $gettext, {$interpolate} from '@/lib/translate/gettext'
 
 const columns = [{
     title: $gettext('Name'),
     dataIndex: 'name',
-    scopedSlots: {customRender:  'name'},
+    scopedSlots: {customRender: 'name'},
     sorter: true,
     pithy: true
 }, {

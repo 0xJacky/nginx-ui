@@ -23,32 +23,53 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: src/router/index.js:47 src/views/domain/DomainAdd.vue:27
+#: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:89
+msgid "Add Directive Below"
+msgstr ""
+
+#: src/views/domain/ngx_conf/LocationEditor.vue:70
+#: src/views/domain/ngx_conf/LocationEditor.vue:120
+msgid "Add Location"
+msgstr ""
+
+#: src/router/index.js:47 src/views/domain/DomainAdd.vue:32
 msgid "Add Site"
 msgstr ""
 
-#: src/components/StdDataDisplay/StdTable.vue:67
+#: src/views/domain/DomainEdit.vue:57
+msgid "Advance Mode"
+msgstr ""
+
+#: src/components/StdDataDisplay/StdTable.vue:68
 msgid "Are you sure you want to destroy?"
 msgstr ""
 
-#: src/components/StdDataDisplay/StdTable.vue:43
+#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:46
+msgid "Are you sure you want to remove this directive?"
+msgstr ""
+
+#: src/components/StdDataDisplay/StdTable.vue:44
 msgid "Are you sure you want to restore?"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:89 src/views/domain/DomainEdit.vue:163
+#: src/views/domain/cert/IssueCert.vue:82
 msgid "Auto-renewal disabled for %{name}"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:83 src/views/domain/DomainEdit.vue:157
+#: src/views/domain/cert/IssueCert.vue:76
 msgid "Auto-renewal enabled for %{name}"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:38
+#: src/views/domain/DomainEdit.vue:41
 msgid "Back"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:37
+#: src/views/domain/DomainAdd.vue:42
 msgid "Base information"
+msgstr ""
+
+#: src/views/domain/DomainEdit.vue:60
+msgid "Basic Mode"
 msgstr ""
 
 #: src/views/other/About.vue:11
@@ -59,27 +80,26 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/views/domain/columns.js:44
-msgid "Certificate Auto-renewal"
-msgstr ""
-
-#: src/views/domain/CertInfo.vue:12 src/views/domain/CertInfo.vue:2
+#: src/views/domain/cert/CertInfo.vue:12 src/views/domain/cert/CertInfo.vue:2
 msgid "Certificate has expired"
 msgstr ""
 
-#: src/views/domain/CertInfo.vue:16 src/views/domain/CertInfo.vue:2
+#: src/views/domain/cert/CertInfo.vue:16 src/views/domain/cert/CertInfo.vue:2
 msgid "Certificate is valid"
 msgstr ""
 
-#: src/views/domain/columns.js:61
-msgid "Certificate Path (ssl_certificate)"
-msgstr ""
-
-#: src/views/domain/CertInfo.vue:2
+#: src/views/domain/cert/CertInfo.vue:2
 msgid "Certificate Status"
 msgstr ""
 
-#: src/views/domain/columns.js:4
+#: src/views/domain/ngx_conf/LocationEditor.vue:33
+#: src/views/domain/ngx_conf/LocationEditor.vue:77
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:52
+#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:67
+msgid "Comments"
+msgstr ""
+
+#: src/views/domain/DomainAdd.vue:56
 msgid "Configuration Name"
 msgstr ""
 
@@ -87,8 +107,13 @@ msgstr ""
 msgid "Configurations"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:40
+#: src/views/domain/DomainAdd.vue:45
 msgid "Configure SSL"
+msgstr ""
+
+#: src/views/domain/ngx_conf/LocationEditor.vue:54
+#: src/views/domain/ngx_conf/LocationEditor.vue:100
+msgid "Content"
 msgstr ""
 
 #: src/views/dashboard/DashBoard.vue:211
@@ -99,7 +124,7 @@ msgstr ""
 msgid "CPU:"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:31 src/views/domain/DomainAdd.vue:5
+#: src/views/domain/DomainAdd.vue:50 src/views/domain/DomainAdd.vue:5
 msgid "Create Another"
 msgstr ""
 
@@ -115,7 +140,11 @@ msgstr ""
 msgid "Database (Optional, default: database)"
 msgstr ""
 
-#: src/components/StdDataDisplay/StdTable.vue:73
+#: src/components/StdDataDisplay/StdTable.vue:142
+msgid "Delete ID: %{id}"
+msgstr ""
+
+#: src/components/StdDataDisplay/StdTable.vue:74
 msgid "Destroy"
 msgstr ""
 
@@ -127,16 +156,24 @@ msgstr ""
 msgid "Development Mode"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:91 src/views/domain/DomainEdit.vue:165
+#: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:57
+msgid "Directive"
+msgstr ""
+
+#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:20
+msgid "Directives"
+msgstr ""
+
+#: src/views/domain/cert/IssueCert.vue:84
 msgid "Disable auto-renewal failed for %{name}"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:63 src/views/domain/DomainList.vue:7
-#: src/views/domain/DomainList.vue:2 src/views/domain/DomainList.vue:17
+#: src/views/domain/DomainEdit.vue:43 src/views/domain/DomainList.vue:17
+#: src/views/domain/DomainList.vue:32
 msgid "Disabled"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:179 src/views/domain/DomainList.vue:55
+#: src/views/domain/DomainEdit.vue:106 src/views/domain/DomainList.vue:55
 msgid "Disabled successfully"
 msgstr ""
 
@@ -144,28 +181,20 @@ msgstr ""
 msgid "Disk IO"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:124
-msgid "Do you want to change the template to support the TLS?"
-msgstr ""
-
-#: src/views/domain/DomainAdd.vue:112
+#: src/views/domain/DomainAdd.vue:135
 msgid "Domain Config Created Successfully"
 msgstr ""
 
-#: src/components/StdDataDisplay/StdTable.vue:37
+#: src/components/StdDataDisplay/StdTable.vue:38
 msgid "Edit"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:47
+#: src/views/domain/DomainEdit.vue:27
 msgid "Edit %{n}"
 msgstr ""
 
 #: src/router/index.js:69 src/views/config/ConfigEdit.vue:15
 msgid "Edit Configuration"
-msgstr ""
-
-#: src/views/domain/DomainEdit.vue:134
-msgid "Edit Configuration File"
 msgstr ""
 
 #: src/router/index.js:51
@@ -176,38 +205,41 @@ msgstr ""
 msgid "Email (*)"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:85 src/views/domain/DomainEdit.vue:159
+#: src/views/domain/cert/IssueCert.vue:78
 msgid "Enable auto-renewal failed for %{name}"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:40
+#: src/views/domain/DomainAdd.vue:39
 msgid "Enable failed"
 msgstr ""
 
-#: src/views/domain/columns.js:35
+#: src/views/domain/DomainAdd.vue:94
 msgid "Enable TLS"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:54 src/views/domain/DomainEdit.vue:71
-#: src/views/domain/DomainList.vue:8 src/views/domain/DomainList.vue:3
-#: src/views/domain/DomainList.vue:16
+#: src/views/domain/DomainEdit.vue:34 src/views/domain/DomainEdit.vue:75
+#: src/views/domain/DomainList.vue:16 src/views/domain/DomainList.vue:36
 msgid "Enabled"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:37 src/views/domain/DomainEdit.vue:171
+#: src/views/domain/DomainAdd.vue:36 src/views/domain/DomainEdit.vue:98
 #: src/views/domain/DomainList.vue:46
 msgid "Enabled successfully"
 msgstr ""
 
-#: src/views/domain/CertInfo.vue:5
+#: src/views/domain/cert/IssueCert.vue:36
+msgid "Encrypt website with Let's Encrypt"
+msgstr ""
+
+#: src/views/domain/cert/CertInfo.vue:5
 msgid "Expiration Date: %{date}"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:182 src/views/domain/DomainList.vue:59
+#: src/views/domain/DomainEdit.vue:109 src/views/domain/DomainList.vue:59
 msgid "Failed to disable %{msg}"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:174 src/views/domain/DomainList.vue:50
+#: src/views/domain/DomainEdit.vue:101 src/views/domain/DomainList.vue:50
 msgid "Failed to enable %{msg}"
 msgstr ""
 
@@ -215,16 +247,11 @@ msgstr ""
 msgid "File Not Found"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:43
+#: src/views/domain/DomainAdd.vue:48
 msgid "Finished"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:13 src/views/domain/DomainAdd.vue:2
-#: src/views/domain/DomainEdit.vue:22 src/views/domain/DomainEdit.vue:3
-msgid "Getting Certificate from Let's Encrypt"
-msgstr ""
-
-#: src/views/domain/methods.js:34
+#: src/views/domain/methods.js:6
 msgid "Getting the certificate, please wait..."
 msgstr ""
 
@@ -232,23 +259,11 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: src/views/domain/columns.js:28
-msgid "HTTP Listen Port"
-msgstr ""
-
-#: src/views/domain/columns.js:54
-msgid "HTTPS Listen Port"
-msgstr ""
-
-#: src/views/domain/columns.js:22
-msgid "Index (index)"
-msgstr ""
-
 #: src/router/index.js:95 src/views/other/Install.vue:51
 msgid "Install"
 msgstr ""
 
-#: src/views/domain/CertInfo.vue:3
+#: src/views/domain/cert/CertInfo.vue:3
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr ""
 
@@ -269,6 +284,14 @@ msgstr ""
 msgid "Load Averages:"
 msgstr ""
 
+#: src/views/domain/ngx_conf/LocationEditor.vue:26
+msgid "Location"
+msgstr ""
+
+#: src/views/domain/ngx_conf/LocationEditor.vue:16
+msgid "Locations"
+msgstr ""
+
 #: src/router/index.js:101 src/views/other/Login.vue:25
 msgid "Login"
 msgstr ""
@@ -281,17 +304,18 @@ msgstr ""
 msgid "Logout successful"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:25 src/views/domain/DomainEdit.vue:6
+#: src/views/domain/cert/IssueCert.vue:19
 msgid ""
-"Make sure you have configured a reverse proxy for .well-known directory to "
-"HTTPChallengePort (default: 9180) before getting the certificate."
+"Make sure you have configured a reverse proxy for .well-known\n"
+"            directory to HTTPChallengePort (default: 9180) before getting "
+"the certificate."
 msgstr ""
 
 #: src/router/index.js:60
 msgid "Manage Configs"
 msgstr ""
 
-#: src/router/index.js:35 src/views/domain/DomainList.vue:21
+#: src/router/index.js:35 src/views/domain/DomainList.vue:12
 msgid "Manage Sites"
 msgstr ""
 
@@ -307,7 +331,7 @@ msgstr ""
 msgid "Memory and Storage"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:28 src/views/domain/DomainAdd.vue:2
+#: src/views/domain/DomainAdd.vue:47 src/views/domain/DomainAdd.vue:2
 msgid "Modify Config"
 msgstr ""
 
@@ -331,11 +355,15 @@ msgstr ""
 msgid "Network Total Send"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:38
+#: src/views/domain/DomainAdd.vue:40
 msgid "Next"
 msgstr ""
 
-#: src/components/StdDataDisplay/StdTable.vue:61
+#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:48
+msgid "No"
+msgstr ""
+
+#: src/components/StdDataDisplay/StdTable.vue:62
 msgid "No, I'm rethink"
 msgstr ""
 
@@ -343,14 +371,15 @@ msgstr ""
 msgid "Not Found"
 msgstr ""
 
-#: src/views/domain/CertInfo.vue:7
+#: src/views/domain/cert/CertInfo.vue:7
 msgid "Not Valid Before: %{date}"
 msgstr ""
 
-#: src/views/domain/methods.js:33
+#: src/views/domain/cert/IssueCert.vue:15
 msgid ""
 "Note: The server_name in the current configuration must be the domain name "
-"you need to get the certificate."
+"you need to get the\n"
+"            certificate."
 msgstr ""
 
 #: src/router/index.js:137
@@ -361,12 +390,21 @@ msgstr ""
 msgid "OS:"
 msgstr ""
 
+#: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:63
+msgid "Params"
+msgstr ""
+
 #: src/views/other/Login.vue:56 src/views/user/User.vue:13
 msgid "Password"
 msgstr ""
 
 #: src/views/other/Install.vue:83
 msgid "Password (*)"
+msgstr ""
+
+#: src/views/domain/ngx_conf/LocationEditor.vue:42
+#: src/views/domain/ngx_conf/LocationEditor.vue:88
+msgid "Path"
 msgstr ""
 
 #: src/views/other/Install.vue:50
@@ -381,10 +419,6 @@ msgstr ""
 msgid "Please input your username!"
 msgstr ""
 
-#: src/views/domain/columns.js:67
-msgid "Private Key Path (ssl_certificate_key)"
-msgstr ""
-
 #: src/views/other/About.vue:8
 msgid "Project Team"
 msgstr ""
@@ -397,25 +431,25 @@ msgstr ""
 msgid "Receive"
 msgstr ""
 
-#: src/components/StdDataDisplay/StdTable.vue:49
+#: src/components/StdDataDisplay/StdTable.vue:50
 msgid "Restore"
 msgstr ""
 
-#: src/views/domain/columns.js:16
-msgid "Root Directory (root)"
-msgstr ""
-
-#: src/views/config/ConfigEdit.vue:6 src/views/domain/DomainEdit.vue:41
+#: src/views/config/ConfigEdit.vue:6 src/views/domain/DomainEdit.vue:44
 msgid "Save"
 msgstr ""
 
-#: src/views/config/ConfigEdit.vue:47 src/views/domain/DomainAdd.vue:44
-#: src/views/domain/DomainAdd.vue:55 src/views/domain/DomainEdit.vue:141
+#: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:101
+msgid "Save Directive"
+msgstr ""
+
+#: src/views/config/ConfigEdit.vue:47 src/views/domain/DomainAdd.vue:43
+#: src/views/domain/DomainEdit.vue:90
 msgid "Save error %{msg}"
 msgstr ""
 
-#: src/views/config/ConfigEdit.vue:44 src/views/domain/DomainAdd.vue:34
-#: src/views/domain/DomainAdd.vue:52 src/views/domain/DomainEdit.vue:136
+#: src/views/config/ConfigEdit.vue:44 src/views/domain/DomainAdd.vue:33
+#: src/views/domain/DomainEdit.vue:85
 msgid "Saved successfully"
 msgstr ""
 
@@ -423,7 +457,9 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
-#: src/views/config/ConfigEdit.vue:35 src/views/domain/DomainEdit.vue:75
+#: src/components/StdDataDisplay/StdTable.vue:145
+#: src/views/config/ConfigEdit.vue:35 src/views/domain/DomainEdit.vue:52
+#: src/views/domain/DomainEdit.vue:63 src/views/domain/DomainEdit.vue:71
 #: src/views/other/Login.vue:35
 msgid "Server error"
 msgstr ""
@@ -432,16 +468,27 @@ msgstr ""
 msgid "Server Info"
 msgstr ""
 
-#: src/views/domain/columns.js:10
-msgid "Server Names (server_name)"
+#: src/views/domain/cert/IssueCert.vue:33
+msgid "server_name not found in directives"
+msgstr ""
+
+#: src/views/domain/DomainAdd.vue:20 src/views/domain/DomainAdd.vue:11
+#: src/views/domain/DomainAdd.vue:1 src/views/domain/cert/IssueCert.vue:6
+#: src/views/domain/cert/IssueCert.vue:1
+msgid "server_name parameter is required"
+msgstr ""
+
+#: src/views/domain/cert/IssueCert.vue:9 src/views/domain/cert/IssueCert.vue:4
+#: src/views/domain/cert/IssueCert.vue:39
+msgid "server_name parameters more than one"
+msgstr ""
+
+#: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:30
+msgid "Single Directive"
 msgstr ""
 
 #: src/router/index.js:43
 msgid "Sites List"
-msgstr ""
-
-#: src/views/domain/DomainAdd.vue:20 src/views/domain/DomainAdd.vue:9
-msgid "Skip"
 msgstr ""
 
 #: src/views/domain/DomainList.vue:11
@@ -452,7 +499,7 @@ msgstr ""
 msgid "Storage"
 msgstr ""
 
-#: src/views/domain/CertInfo.vue:4
+#: src/views/domain/cert/CertInfo.vue:4
 msgid "Subject Name: %{name}"
 msgstr ""
 
@@ -464,36 +511,19 @@ msgstr ""
 msgid "System message"
 msgstr ""
 
-#: src/router/index.js:77
+#: src/router/index.js:77 src/views/pty/Terminal.vue:12
 msgid "Terminal"
 msgstr ""
 
-#: src/views/domain/columns.js:50
+#: src/views/domain/cert/IssueCert.vue:17
 msgid ""
-"The certificate for the domain will be checked every hour, and will be "
-"renewed if it has been more than 1 month since it was last issued.<br/>If "
-"you do not have a certificate before, please click \"Getting Certificate "
-"from Let's Encrypt\" first."
+"The certificate for the domain will be checked every hour,\n"
+"            and will be renewed if it has been more than 1 month since it "
+"was last issued."
 msgstr ""
 
 #: src/views/other/Install.vue:120
 msgid "The filename cannot contain the following characters: %{c}"
-msgstr ""
-
-#: src/views/domain/DomainEdit.vue:17
-msgid ""
-"The following values will only take effect if you have the corresponding "
-"fields in your configuration file. The configuration filename cannot be "
-"changed after it has been created."
-msgstr ""
-
-#: src/views/domain/DomainAdd.vue:15 src/views/domain/DomainAdd.vue:4
-#: src/views/domain/DomainEdit.vue:24 src/views/domain/DomainEdit.vue:5
-msgid "This feature is not available in demo."
-msgstr ""
-
-#: src/views/domain/DomainEdit.vue:125
-msgid "This operation will lose the custom configuration."
 msgstr ""
 
 #: src/views/config/Config.vue:11 src/views/domain/DomainList.vue:22
@@ -513,10 +543,18 @@ msgstr ""
 msgid "Username (*)"
 msgstr ""
 
+#: src/views/domain/DomainAdd.vue:75 src/views/domain/cert/IssueCert.vue:49
+msgid "Warning"
+msgstr ""
+
 #: src/views/dashboard/DashBoard.vue:58 src/views/dashboard/DashBoard.vue:298
 msgid "Writes"
 msgstr ""
 
-#: src/components/StdDataDisplay/StdTable.vue:55
+#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:47
+msgid "Yes"
+msgstr ""
+
+#: src/components/StdDataDisplay/StdTable.vue:56
 msgid "Yes, I'm sure"
 msgstr ""
