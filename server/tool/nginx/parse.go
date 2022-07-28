@@ -105,15 +105,9 @@ func parseDirective(scanner *bufio.Scanner) (d NgxDirective) {
 	return
 }
 
-func ParseNgxConfig(filename string) (c *NgxConfig, err error) {
-	file, err := os.Open(filename)
-	if err != nil {
-		return nil, errors.Wrap(err, "error open file in ParseNgxConfig")
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
+func ParseNgxConfigByScanner(filename string, scanner *bufio.Scanner) (c *NgxConfig, err error) {
 	c = NewNgxConfig(filename)
+
 	for scanner.Scan() {
 		d := parseDirective(scanner)
 		paramsScanner := bufio.NewScanner(strings.NewReader(d.Params))
@@ -141,4 +135,16 @@ func ParseNgxConfig(filename string) (c *NgxConfig, err error) {
 	}
 
 	return c, nil
+}
+
+func ParseNgxConfig(filename string) (c *NgxConfig, err error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, errors.Wrap(err, "error open file in ParseNgxConfig")
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+
+	return ParseNgxConfigByScanner(filename, scanner)
 }

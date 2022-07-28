@@ -2,34 +2,58 @@ package api
 
 import (
 	"github.com/0xJacky/Nginx-UI/server/settings"
-	"github.com/0xJacky/Nginx-UI/server/template"
+	"github.com/0xJacky/Nginx-UI/server/tool/nginx"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"os"
 	"strings"
 )
 
 func GetTemplate(c *gin.Context) {
-	name := c.Param("name")
-	content, err := template.DistFS.ReadFile(name)
-
-	_content := string(content)
-	_content = strings.ReplaceAll(_content, "{{ HTTP01PORT }}",
+	content := `proxy_set_header Host $host;
+proxy_set_header X-Real_IP $remote_addr;
+proxy_set_header X-Forwarded-For $remote_addr:$remote_port;
+proxy_pass http://127.0.0.1:{{ HTTP01PORT }};
+`
+	content = strings.ReplaceAll(content, "{{ HTTP01PORT }}",
 		settings.ServerSettings.HTTPChallengePort)
 
-	if err != nil {
-		if os.IsNotExist(err) {
-			c.JSON(http.StatusNotFound, gin.H{
-				"message": err.Error(),
-			})
-			return
-		}
-		ErrHandler(c, err)
-		return
+	var ngxConfig *nginx.NgxConfig
+
+	ngxConfig = &nginx.NgxConfig{
+		Servers: []*nginx.NgxServer{
+			{
+				Directives: []*nginx.NgxDirective{
+					{
+						Directive: "listen",
+						Params:    "80",
+					},
+					{
+						Directive: "listen",
+						Params:    "[::]:80",
+					},
+					{
+						Directive: "server_name",
+					},
+					{
+						Directive: "root",
+					},
+					{
+						Directive: "index",
+					},
+				},
+				Locations: []*nginx.NgxLocation{
+					{
+						Path:    "/.well-known/acme-challenge",
+						Content: content,
+					},
+				},
+			},
+		},
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message":  "ok",
-		"template": _content,
+		"message":   "ok",
+		"template":  ngxConfig.BuildConfig(),
+		"tokenized": ngxConfig,
 	})
 }

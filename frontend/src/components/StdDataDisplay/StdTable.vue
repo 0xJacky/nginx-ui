@@ -72,7 +72,7 @@
                         :okText="ok_text"
                         :title="restore_title_text"
                         @confirm="restore(record[rowKey])">
-                        <a href="javascript:;">{{restore_action_text}}</a>
+                        <a href="javascript:;">{{ restore_action_text }}</a>
                     </a-popconfirm>
                     <a-popconfirm
                         v-else
@@ -80,7 +80,7 @@
                         :okText="ok_text"
                         :title="destroy_title_text"
                         @confirm="destroy(record[rowKey])">
-                        <a href="javascript:;">{{destroy_action_text}}</a>
+                        <a href="javascript:;">{{ destroy_action_text }}</a>
                     </a-popconfirm>
                 </template>
             </div>
@@ -93,6 +93,7 @@
 import StdPagination from './StdPagination'
 import moment from 'moment'
 import StdDataEntry from '@/components/StdDataEntry/StdDataEntry'
+import $gettext, {$interpolate} from '@/lib/translate/gettext'
 
 export default {
     name: 'StdTable',
@@ -230,10 +231,10 @@ export default {
         destroy(id) {
             this.api.destroy(id).then(() => {
                 this.get_list()
-                this.$message.success('删除 ID: ' + id + ' 成功')
+                this.$message.success($interpolate($gettext('Delete ID: %{id}'), {id: id}))
             }).catch(e => {
                 console.log(e)
-                this.$message.error(e?.message ?? '系统错误')
+                this.$message.error(e?.message ?? $gettext('Server error'))
             })
         },
         get_list(page_num = null) {

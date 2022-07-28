@@ -34,7 +34,7 @@ func authRequired() gin.HandlerFunc {
 			token = string(tmp)
 			if token == "" {
 				c.JSON(http.StatusForbidden, gin.H{
-					"message": "auth fail",
+					"message": "Authorization failed",
 				})
 				c.Abort()
 				return
@@ -45,7 +45,7 @@ func authRequired() gin.HandlerFunc {
 
 		if n < 1 {
 			c.JSON(http.StatusForbidden, gin.H{
-				"message": "auth fail",
+				"message": "Authorization failed",
 			})
 			c.Abort()
 			return

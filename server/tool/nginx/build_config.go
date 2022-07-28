@@ -50,7 +50,7 @@ func (c *NgxConfig) BuildConfig() (content string) {
 			}
 			if directive.Directive == If {
 				server += fmt.Sprintf("%s%s\n", comments, fmtCodeWithIndent(directive.Params, 1))
-			} else {
+			} else if directive.Params != "" {
 				server += fmt.Sprintf("%s\t%s;\n", comments, directive.Orig())
 			}
 		}

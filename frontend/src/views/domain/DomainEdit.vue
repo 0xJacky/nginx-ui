@@ -11,12 +11,12 @@
                 </a-tag>
             </template>
             <template v-slot:extra>
-                <a-switch size="small" v-model="advance_mode"/>
+                <a-switch size="small" v-model="advance_mode" @change="on_mode_change"/>
                 <template v-if="advance_mode">
-                    {{ $gettext('Advance') }}
+                    {{ $gettext('Advance Mode') }}
                 </template>
                 <template v-else>
-                    {{ $gettext('Basic') }}
+                    {{ $gettext('Basic Mode') }}
                 </template>
             </template>
 
@@ -29,22 +29,13 @@
                     <a-form-item :label="$gettext('Enabled')">
                         <a-switch v-model="enabled" @change="checked=>{checked?enable():disable()}"/>
                     </a-form-item>
-                    <p v-translate>The following values will only take effect if you have the corresponding fields in your configuration file. The configuration filename cannot be changed after it has been created.</p>
-                    <std-data-entry :data-list="columns" v-model="config"/>
-                    <template v-if="config.support_ssl">
-                        <cert-info :domain="name" ref="cert-info" v-if="name"/>
-                        <a-button
-                            @click="issue_cert"
-                            type="primary" ghost
-                            style="margin: 10px 0"
-                            :disabled="is_demo"
-                            :loading="issuing_cert"
-                        >
-                            <translate>Getting Certificate from Let's Encrypt</translate>
-                        </a-button>
-                        <p v-if="is_demo" v-translate>This feature is not available in demo.</p>
-                        <p v-else v-translate>Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort (default: 9180) before getting the certificate.</p>
-                    </template>
+
+                    <ngx-config-editor
+                        ref="ngx_config"
+                        :ngx_config="ngx_config"
+                        v-model="auto_cert"
+                        :enabled="enabled"
+                    />
                 </div>
             </transition>
 
@@ -55,7 +46,7 @@
                 <a-button @click="$router.go(-1)">
                     <translate>Back</translate>
                 </a-button>
-                <a-button type="primary" @click="save">
+                <a-button type="primary" @click="save" :loading="saving">
                     <translate>Save</translate>
                 </a-button>
             </a-space>
@@ -65,60 +56,39 @@
 
 
 <script>
-import StdDataEntry from '@/components/StdDataEntry/StdDataEntry'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar'
 import VueItextarea from '@/components/VueItextarea/VueItextarea'
-import {columns, columnsSSL} from '@/views/domain/columns'
-import {unparse, issue_cert} from '@/views/domain/methods'
-import CertInfo from '@/views/domain/CertInfo'
 import {$gettext, $interpolate} from '@/lib/translate/gettext'
+import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor'
 
 
 export default {
     name: 'DomainEdit',
-    components: {CertInfo, FooterToolBar, StdDataEntry, VueItextarea},
+    components: {NgxConfigEditor, FooterToolBar, VueItextarea},
     data() {
         return {
             name: this.$route.params.name.toString(),
-            config: {
-                http_listen_port: 80,
-                https_listen_port: null,
-                server_name: '',
-                index: '',
-                root: '',
-                ssl_certificate: '',
-                ssl_certificate_key: '',
-                support_ssl: false,
-                auto_cert: false
+            update: 0,
+            ngx_config: {
+                filename: '',
+                upstreams: [],
+                servers: []
             },
+            auto_cert: false,
+            current_server_index: 0,
             enabled: false,
             configText: '',
             ws: null,
             ok: false,
             issuing_cert: false,
             advance_mode: false,
+            saving: false
         }
     },
     watch: {
         '$route'() {
             this.init()
         },
-        config: {
-            handler() {
-                this.unparse()
-            },
-            deep: true
-        },
-        'config.support_ssl'() {
-            if (this.ok) {
-                this.change_support_ssl()
-            }
-        },
-        'config.auto_cert'() {
-            if (this.ok) {
-                this.change_auto_cert()
-            }
-        }
     },
     created() {
         this.init()
@@ -133,106 +103,53 @@ export default {
             if (this.name) {
                 this.$api.domain.get(this.name).then(r => {
                     this.configText = r.config
-                    this.config.auto_cert = r.auto_cert
                     this.enabled = r.enabled
-                    this.parse(r).then(() => {
-                        this.ok = true
-                    })
+                    this.ngx_config = r.tokenized
+                    this.auto_cert = r.auto_cert
                 }).catch(r => {
-                    console.log(r)
-                    this.$message.error($gettext('Server error'))
+                    this.$message.error(r.message ?? $gettext('Server error'))
                 })
             }
         },
-        async parse(r) {
-            const text = r.config
-            const reg = {
-                http_listen_port: /listen[\s](.*);/i,
-                https_listen_port: /listen[\s](.*) ssl/i,
-                server_name: /server_name[\s](.*);/i,
-                index: /index[\s](.*);/i,
-                root: /root[\s](.*);/i,
-                ssl_certificate: /ssl_certificate[\s](.*);/i,
-                ssl_certificate_key: /ssl_certificate_key[\s](.*);/i
-            }
-            this.config['name'] = r.name
-            for (let r in reg) {
-                const match = text.match(reg[r])
-                // console.log(r, match)
-                if (match !== null) {
-                    if (match[1] !== undefined) {
-                        this.config[r] = match[1].trim()
-                    } else {
-                        this.config[r] = match[0].trim()
-                    }
-                }
-            }
-            if (this.config.https_listen_port) {
-                this.config.support_ssl = true
-            }
-        },
-        async unparse() {
-            this.configText = unparse(this.configText, this.config)
-        },
-        async get_template() {
-            if (this.config.support_ssl) {
-                await this.$api.domain.get_template('https-conf').then(r => {
-                    this.configText = r.template
-                })
+        on_mode_change(advance_mode) {
+            if (advance_mode) {
+                this.build_config()
             } else {
-                await this.$api.domain.get_template('http-conf').then(r => {
-                    this.configText = r.template
+                return this.$api.ngx.tokenize_config(this.configText).then(r => {
+                    this.ngx_config = r
+                }).catch(r => {
+                    this.$message.error(r.message ?? $gettext('Server error'))
                 })
             }
-            await this.unparse()
         },
-        change_support_ssl() {
-            const that = this
-            this.$confirm({
-                title: $gettext('Do you want to change the template to support the TLS?'),
-                content: $gettext('This operation will lose the custom configuration.'),
-                onOk() {
-                    that.get_template()
-                },
-                onCancel() {
-                },
+        build_config() {
+            return this.$api.ngx.build_config(this.ngx_config).then(r => {
+                this.configText = r.content
+            }).catch(r => {
+                this.$message.error(r.message ?? $gettext('Server error'))
             })
         },
-        save() {
+        async save() {
+            this.saving = true
+
+            if (!this.advance_mode) {
+                await this.build_config()
+            }
+
             this.$api.domain.save(this.name, {content: this.configText}).then(r => {
-                this.parse(r)
+                this.configText = r.config
+                this.enabled = r.enabled
+                this.ngx_config = r.tokenized
                 this.$message.success($gettext('Saved successfully'))
-                if (this.name) {
-                    if (this.$refs['cert-info']) this.$refs['cert-info'].get()
-                }
+
+                this.$refs.ngx_config.update_cert_info()
+
             }).catch(r => {
                 this.$message.error($interpolate($gettext('Save error %{msg}'), {msg: r.message ?? ''}), 10)
+            }).finally(() => {
+                this.saving = false
             })
-        },
-        issue_cert() {
-            this.issuing_cert = true
-            issue_cert(this.config.server_name, this.callback)
-        },
-        callback(ssl_certificate, ssl_certificate_key) {
-            this.$set(this.config, 'ssl_certificate', ssl_certificate)
-            this.$set(this.config, 'ssl_certificate_key', ssl_certificate_key)
-            if (this.$refs['cert-info']) this.$refs['cert-info'].get()
-            this.issuing_cert = false
-        },
-        change_auto_cert() {
-            if (this.config.auto_cert) {
-                this.$api.domain.add_auto_cert(this.name).then(() => {
-                    this.$message.success($interpolate($gettext('Auto-renewal enabled for %{name}'), {name: this.name}))
-                }).catch(e => {
-                    this.$message.error(e.message ?? $interpolate($gettext('Enable auto-renewal failed for %{name}'), {name: this.name}))
-                })
-            } else {
-                this.$api.domain.remove_auto_cert(this.name).then(() => {
-                    this.$message.success($interpolate($gettext('Auto-renewal disabled for %{name}'), {name: this.name}))
-                }).catch(e => {
-                    this.$message.error(e.message ?? $interpolate($gettext('Disable auto-renewal failed for %{name}'), {name: this.name}))
-                })
-            }
+
         },
         enable() {
             this.$api.domain.enable(this.name).then(() => {
@@ -252,15 +169,6 @@ export default {
         }
     },
     computed: {
-        columns: {
-            get() {
-                if (this.config.support_ssl) {
-                    return [...columns, ...columnsSSL]
-                } else {
-                    return [...columns]
-                }
-            }
-        },
         is_demo() {
             return this.$store.getters.env.demo === true
         }
@@ -274,16 +182,15 @@ export default {
 
 <style lang="less" scoped>
 .ant-card {
-    // margin: 10px;
-    @media (max-width: 512px) {
-        margin: 10px 0;
-    }
+    margin: 10px 0;
+    box-shadow: unset;
 }
 
 .domain-edit-container {
     max-width: 800px;
     margin: 0 auto;
-    /deep/.ant-form-item-label > label::after {
+
+    /deep/ .ant-form-item-label > label::after {
         content: none;
     }
 }
@@ -291,12 +198,26 @@ export default {
 .slide-fade-enter-active {
     transition: all .5s ease-in-out;
 }
+
 .slide-fade-leave-active {
     transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
+
 .slide-fade-enter, .slide-fade-leave-to
     /* .slide-fade-leave-active for below version 2.1.8 */ {
     transform: translateX(10px);
     opacity: 0;
+}
+
+.location-block {
+
+}
+
+.directive-params-wrapper {
+    margin: 10px 0;
+}
+
+.tab-content {
+    padding: 10px;
 }
 </style>

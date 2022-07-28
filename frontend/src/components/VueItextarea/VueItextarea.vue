@@ -1,5 +1,5 @@
 <template>
-    <editor v-model="current_value" @init="editorInit" lang="nginx" theme="monokai" width="100%" height="1000"></editor>
+    <editor v-model="current_value" @init="editorInit" lang="nginx" theme="monokai" width="100%" :height="defaultTextHeight"></editor>
 </template>
 <style lang="less">
 .cm-s-monokai {
@@ -20,6 +20,10 @@ export default {
     },
     props: {
         value: {},
+        defaultTextHeight: {
+            type: Number,
+            default: 1000
+        }
     },
     model: {
         prop: 'value',
@@ -36,16 +40,6 @@ export default {
     data() {
         return {
             current_value: this.value ?? '',
-            cmOptions: {
-                tabSize: 4,
-                mode: 'text/x-nginx-conf',
-                theme: 'monokai',
-                lineNumbers: true,
-                line: true,
-                highlightDifferences: true,
-                defaultTextHeight: 1000,
-                // more CodeMirror options...
-            }
         }
     },
     methods: {

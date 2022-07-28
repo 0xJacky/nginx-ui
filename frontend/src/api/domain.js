@@ -27,8 +27,8 @@ const domain = {
         return http.post(base_url + '/' + name + '/disable')
     },
 
-    get_template(name) {
-        return http.get('template/' + name)
+    get_template() {
+        return http.get('template')
     },
 
     cert_info(domain) {

@@ -1,6 +1,6 @@
 <template>
-    <div v-if="ok">
-        <h3 v-translate>Certificate Status</h3>
+    <div class="cert-info" v-if="ok">
+        <h4 v-translate>Certificate Status</h4>
         <p v-translate="{issuer: cert.issuer_name}">Intermediate Certification Authorities: %{issuer}</p>
         <p v-translate="{name: cert.subject_name}">Subject Name: %{name}</p>
         <p v-translate="{date: moment(cert.not_after).format('YYYY-MM-DD HH:mm:ss').toString()}">
@@ -57,6 +57,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
+h4 {
+    padding-bottom: 10px;
+}
+
+.cert-info {
+    padding-bottom: 10px;
+}
+
 .status {
     span {
         margin-left: 10px;

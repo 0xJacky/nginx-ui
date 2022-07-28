@@ -5,6 +5,7 @@ import user from './user'
 import install from './install'
 import analytic from './analytic'
 import settings from './settings'
+import ngx from './ngx'
 
 export default {
     domain,
@@ -13,5 +14,6 @@ export default {
     user,
     install,
     analytic,
-    settings
+    settings,
+    ngx
 }

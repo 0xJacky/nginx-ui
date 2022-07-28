@@ -36,8 +36,6 @@ type NgxDirective struct {
 	Comments  string `json:"comments"`
 }
 
-type NgxDirectives map[string][]NgxDirective
-
 type NgxLocation struct {
 	Path     string `json:"path"`
 	Content  string `json:"content"`

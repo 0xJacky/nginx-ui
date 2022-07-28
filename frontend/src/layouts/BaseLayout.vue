@@ -57,7 +57,6 @@ export default {
     data() {
         return {
             collapsed: this.collapse(),
-            zh_CN,
             clientWidth: document.body.clientWidth,
         }
     },
