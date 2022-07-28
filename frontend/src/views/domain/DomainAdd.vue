@@ -33,10 +33,6 @@
 
             <template v-else-if="current_step===1">
 
-                <a-form-item :label="$gettext('Enable TLS')">
-                    <a-switch @change="change_tls"/>
-                </a-form-item>
-
                 <ngx-config-editor
                     ref="ngx_config"
                     :ngx_config="ngx_config"
@@ -132,64 +128,6 @@ export default {
                 servers: [{}]
             }
         },
-        change_tls(r) {
-            if (r) {
-                // deep copy servers[0] to servers[1]
-                const server = JSON.parse(JSON.stringify(this.ngx_config.servers[0]))
-
-                this.ngx_config.servers.push(server)
-
-                this.$refs.ngx_config.current_server_index = 1
-
-                const servers = this.ngx_config.servers
-
-
-                let i = 0
-                while (i < servers[1].directives.length) {
-                    const v = servers[1].directives[i]
-                    if (v.directive === 'listen') {
-                        servers[1].directives.splice(i, 1)
-                    } else {
-                        i++
-                    }
-                }
-
-                servers[1].directives.splice(0, 0, {
-                    directive: 'listen',
-                    params: '443 ssl http2'
-                }, {
-                    directive: 'listen',
-                    params: '[::]:443 ssl http2'
-                })
-
-                const directivesMap = this.$refs.ngx_config.directivesMap
-
-                const server_name = directivesMap['server_name'][0]
-
-                if (!directivesMap['ssl_certificate']) {
-                    servers[1].directives.splice(server_name.idx + 1, 0, {
-                        directive: 'ssl_certificate',
-                        params: ''
-                    })
-                }
-
-                setTimeout(() => {
-                    if (!directivesMap['ssl_certificate_key']) {
-                        servers[1].directives.splice(server_name.idx + 2, 0, {
-                            directive: 'ssl_certificate_key',
-                            params: ''
-                        })
-                    }
-                }, 100)
-
-            } else {
-                // remove servers[1]
-                this.$refs.ngx_config.current_server_index = 0
-                if (this.ngx_config.servers.length === 2) {
-                    this.ngx_config.servers.splice(1, 1)
-                }
-            }
-        }
     },
     computed: {
         has_server_name() {
