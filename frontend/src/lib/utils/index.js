@@ -33,10 +33,10 @@ export default {
 
         Vue.prototype.getWebSocketRoot = () => {
             const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://'
-            if (process.env.NODE_ENV === 'development' && process.env['VUE_APP_API_WSS_ROOT']) {
-                return process.env['VUE_APP_API_WSS_ROOT']
+            if (import.meta.env.MODE === 'development' && import.meta.env.VITE_API_WSS_ROOT) {
+                return import.meta.env.VITE_API_WSS_ROOT
             }
-            return protocol + location.host + process.env['VUE_APP_API_WSS_ROOT']
+            return protocol + location.host + import.meta.env.VITE_API_WSS_ROOT
         }
     }
 }

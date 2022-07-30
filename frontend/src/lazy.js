@@ -27,7 +27,7 @@ import {
     message,
     Modal,
     notification,
-    pageHeader,
+    PageHeader,
     Pagination,
     Popconfirm,
     Popover,
@@ -95,7 +95,7 @@ Vue.use(Transfer)
 Vue.use(Comment)
 Vue.use(Descriptions)
 Vue.use(Result)
-Vue.use(pageHeader)
+Vue.use(PageHeader)
 Vue.use(Switch)
 Vue.use(Space)
 Vue.use(Tag)

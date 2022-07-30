@@ -3,7 +3,9 @@ module github.com/0xJacky/Nginx-UI
 go 1.18
 
 require (
+	github.com/creack/pty v1.1.18
 	github.com/dustin/go-humanize v1.0.0
+	github.com/emirpasic/gods v1.18.1
 	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.7.4
 	github.com/go-acme/lego/v4 v4.4.0
@@ -27,8 +29,6 @@ require (
 require (
 	github.com/StackExchange/wmi v1.2.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.0 // indirect
-	github.com/creack/pty v1.1.18 // indirect
-	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-ole/go-ole v1.2.5 // indirect
 	github.com/golang/protobuf v1.3.4 // indirect

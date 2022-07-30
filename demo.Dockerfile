@@ -3,6 +3,7 @@ FROM --platform=linux/amd64 uozi/nginx-ui-base:latest
 WORKDIR /app
 EXPOSE 80
 
+COPY resources/demo/ojbk.me /etc/nginx/sites-available/ojbk.me
 COPY resources/demo/app.ini /etc/nginx-ui/app.ini
 COPY resources/demo/demo.db /etc/nginx-ui/database.db
 COPY resources/docker/nginx.conf /etc/nginx/nginx.conf

@@ -5,7 +5,7 @@
 <script>
 
 import StdCurd from '@/components/StdDataDisplay/StdCurd'
-import $gettext from "@/lib/translate/gettext";
+import $gettext from '@/lib/translate/gettext'
 
 const columns = [{
     title: $gettext('Username'),

@@ -1,0 +1,44 @@
+{
+    "name": "nginx-ui-frontend-next",
+    "private": true,
+    "version": "0.0.0",
+    "type": "commonjs",
+    "scripts": {
+        "dev": "vite",
+        "build": "vue-tsc --noEmit && vite build",
+        "preview": "vite preview",
+        "gettext:extract": "vue-gettext-extract",
+        "gettext:compile": "vue-gettext-compile"
+    },
+    "dependencies": {
+        "@ant-design/icons-vue": "^6.1.0",
+        "ant-design-vue": "^3.2.10",
+        "axios": "^0.27.2",
+        "lodash": "^4.17.21",
+        "moment": "^2.29.4",
+        "path": "^0.12.7",
+        "pinia": "^2.0.17",
+        "pinia-plugin-persistedstate": "^1.6.3",
+        "reconnecting-websocket": "^4.4.0",
+        "vue": "^3.2.37",
+        "vue-apexcharts": "^1.6.2",
+        "vue-chartjs": "^4.1.1",
+        "vue-router": "4",
+        "vue3-gettext": "^2.3.0",
+        "vuex": "^4.0.2",
+        "xterm": "^4.19.0",
+        "xterm-addon-attach": "^0.6.0",
+        "xterm-addon-fit": "^0.5.0"
+    },
+    "devDependencies": {
+        "@types/lodash": "^4.14.182",
+        "@vitejs/plugin-vue": "^3.0.0",
+        "@zougt/vite-plugin-theme-preprocessor": "^1.4.5",
+        "less": "^4.1.3",
+        "typescript": "^4.6.4",
+        "unplugin-vue-components": "^0.21.2",
+        "vite": "^3.0.0",
+        "vite-plugin-html": "^3.2.0",
+        "vue-tsc": "^0.38.4"
+    }
+}

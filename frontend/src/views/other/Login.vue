@@ -39,7 +39,8 @@
                 </a-form-item>
             </a-form>
             <div class="footer">
-                Copyright © 2020 - {{ thisYear }} Nginx UI | Language <set-language class="set_lang" style="display: inline"/>
+                Copyright © 2020 - {{ thisYear }} Nginx UI | Language
+                <set-language class="set_lang" style="display: inline"/>
             </div>
         </div>
     </div>
@@ -47,7 +48,7 @@
 
 <script>
 import SetLanguage from '@/components/SetLanguage/SetLanguage'
-import $gettext from "@/lib/translate/gettext";
+import $gettext from '@/lib/translate/gettext'
 
 export default {
     name: 'Login',
@@ -118,7 +119,7 @@ export default {
         }
 
         .anticon {
-            color: #a8a5a5!important;
+            color: #a8a5a5 !important;
         }
 
         .login-form-button {

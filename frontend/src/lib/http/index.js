@@ -4,7 +4,7 @@ import {router} from '@/router'
 
 /* 创建 axios 实例 */
 let http = axios.create({
-    baseURL: process.env.VUE_APP_API_ROOT,
+    baseURL: import.meta.env.VITE_API_ROOT,
     timeout: 50000,
     headers: {'Content-Type': 'application/json'},
     transformRequest: [function (data, headers) {
