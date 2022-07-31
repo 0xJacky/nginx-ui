@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import gettext from "@/gettext"
+import gettext from '@/gettext'
 
 
-import {ref, watch, nextTick} from "vue"
+import {ref, watch} from 'vue'
 
-import {useSettingsStore} from "@/pinia/settings"
+import {useSettingsStore} from '@/pinia/settings'
+import {useRoute} from 'vue-router'
+
 const settings = useSettingsStore()
 
+const route = useRoute()
 
 const current = ref(gettext.current)
 
@@ -14,9 +17,8 @@ const languageAvailable = gettext.available
 watch(current, (v) => {
     settings.set_language(v)
     gettext.current = v
-    // nextTick(() => {
-    //     location.reload()
-    // })
+    // @ts-ignored
+    document.title = route.name() + ' | Nginx UI'
 })
 
 </script>

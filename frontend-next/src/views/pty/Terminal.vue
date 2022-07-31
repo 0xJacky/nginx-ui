@@ -2,9 +2,9 @@
 import 'xterm/css/xterm.css'
 import {Terminal} from 'xterm'
 import {FitAddon} from 'xterm-addon-fit'
-import {onMounted, onUnmounted} from "vue"
+import {onMounted, onUnmounted} from 'vue'
 import _ from 'lodash'
-import ws from "@/lib/websocket"
+import ws from '@/lib/websocket'
 
 let term: Terminal | null
 let ping: null | NodeJS.Timer

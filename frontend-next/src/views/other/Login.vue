@@ -1,12 +1,11 @@
 <script setup lang="ts">
 const thisYear = new Date().getFullYear()
 
-import app from '@/main'
-import {UserOutlined, LockOutlined} from '@ant-design/icons-vue'
+import {LockOutlined, UserOutlined} from '@ant-design/icons-vue'
 import {reactive, ref} from 'vue'
-import {useRouter, useRoute} from "vue-router"
-import gettext from "@/gettext"
-import {Form, message} from "ant-design-vue"
+import {useRoute, useRouter} from 'vue-router'
+import gettext from '@/gettext'
+import {Form, message} from 'ant-design-vue'
 import auth from '@/api/auth'
 
 const route = useRoute()
@@ -40,12 +39,11 @@ const {validate, validateInfos} = Form.useForm(modelRef, rulesRef)
 const onSubmit = () => {
     validate().then(() => {
         // modelRef
-        auth.login(modelRef.username, modelRef.password).then(async ()=>{
+        auth.login(modelRef.username, modelRef.password).then(async () => {
             message.success($gettext('Login successful'), 1)
-            const next = (route.query?.next||'').toString() || '/'
+            const next = (route.query?.next || '').toString() || '/'
             await router.push(next)
-        }).
-        catch(e=>{
+        }).catch(e => {
             message.error(e.message)
         })
     })
@@ -88,7 +86,8 @@ const onSubmit = () => {
             </a-form>
             <div class="footer">
                 <p>Copyright © 2020 - {{ thisYear }} Nginx UI</p>
-                Language <set-language class="set_lang" style="display: inline"/>
+                Language
+                <set-language class="set_lang" style="display: inline"/>
             </div>
         </div>
     </div>

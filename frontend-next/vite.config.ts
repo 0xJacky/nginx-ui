@@ -3,13 +3,15 @@ import vue from '@vitejs/plugin-vue'
 import {createHtmlPlugin} from 'vite-plugin-html'
 import Components from 'unplugin-vue-components/vite'
 import {AntDesignVueResolver} from 'unplugin-vue-components/resolvers'
-import {fileURLToPath, URL} from "url"
+import {fileURLToPath, URL} from 'url'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
     resolve: {
         alias: {
-            "@": fileURLToPath(new URL("./src", import.meta.url)),
+            '@': fileURLToPath(new URL('./src', import.meta.url)),
         },
         extensions: [
             '.mjs',
@@ -22,7 +24,7 @@ export default defineConfig({
             '.less'
         ]
     },
-    plugins: [vue(),
+    plugins: [vue(), vueJsx(),
         Components({
             resolvers: [AntDesignVueResolver({importStyle: false})]
         }),

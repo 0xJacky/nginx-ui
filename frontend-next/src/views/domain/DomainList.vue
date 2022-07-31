@@ -1,9 +1,80 @@
+<script setup lang="tsx">
+import StdTable from '@/components/StdDataDisplay/StdTable.vue'
+
+import {badge, customRender, datetime} from '@/components/StdDataDisplay/StdTableTransformer'
+import {useGettext} from 'vue3-gettext'
+
+const {$gettext, interpolate} = useGettext()
+
+import domain from '@/api/domain'
+import {Badge, message} from 'ant-design-vue'
+import {h, ref} from 'vue'
+
+const columns = [{
+    title: () => $gettext('Name'),
+    dataIndex: 'name',
+    sorter: true,
+    pithy: true
+}, {
+    title: () => $gettext('Status'),
+    dataIndex: 'enabled',
+    customRender: (args: customRender) => {
+        const template: any = []
+        const {text, column} = args
+        if (text === true || text > 0) {
+            template.push(<Badge status="success"/>)
+            template.push($gettext('Enabled'))
+        } else {
+            template.push(<Badge status="error"/>)
+            template.push($gettext('Disabled'))
+        }
+        return h('div', template)
+    },
+    sorter: true,
+    pithy: true
+}, {
+    title: () => $gettext('Updated at'),
+    dataIndex: 'modify',
+    customRender: datetime,
+    sorter: true,
+    pithy: true
+}, {
+    title: () => $gettext('Action'),
+    dataIndex: 'action',
+}]
+
+const table = ref(null)
+
+interface Table {
+    get_list(): void
+}
+
+function enable(name: any) {
+    domain.enable(name).then(() => {
+        message.success($gettext('Enabled successfully'))
+        const t: Table | null = table.value
+        t!.get_list()
+    }).catch(r => {
+        message.error(interpolate($gettext('Failed to enable %{msg}'), {msg: r.message ?? ''}), 10)
+    })
+}
+
+function disable(name: any) {
+    domain.disable(name).then(() => {
+        message.success($gettext('Disabled successfully'))
+        const t: Table | null = table.value
+        t!.get_list()
+    }).catch(r => {
+        message.error(interpolate($gettext('Failed to disable %{msg}'), {msg: r.message ?? ''}))
+    })
+}
+</script>
+
 <template>
     <a-card :title="$gettext('Manage Sites')">
         <std-table
-            :api="api"
+            :api="domain"
             :columns="columns"
-            data_key="configs"
             :disable_search="true"
             row-key="name"
             ref="table"
@@ -23,72 +94,6 @@
         </std-table>
     </a-card>
 </template>
-
-<script>
-import StdTable from '@/components/StdDataDisplay/StdTable'
-import $gettext, {$interpolate} from '@/lib/translate/gettext'
-
-const columns = [{
-    title: $gettext('Name'),
-    dataIndex: 'name',
-    scopedSlots: {customRender: 'name'},
-    sorter: true,
-    pithy: true
-}, {
-    title: $gettext('Status'),
-    dataIndex: 'enabled',
-    badge: true,
-    scopedSlots: {customRender: 'enabled'},
-    mask: {
-        true: $gettext('Enabled'),
-        false: $gettext('Disabled')
-    },
-    sorter: true,
-    pithy: true
-}, {
-    title: $gettext('Updated at'),
-    dataIndex: 'modify',
-    datetime: true,
-    scopedSlots: {customRender: 'modify'},
-    sorter: true,
-    pithy: true
-}, {
-    title: $gettext('Action'),
-    dataIndex: 'action',
-    scopedSlots: {customRender: 'action'}
-}]
-
-export default {
-    name: 'Domain',
-    components: {StdTable},
-    data() {
-        return {
-            api: this.$api.domain,
-            columns
-        }
-    },
-    methods: {
-        enable(name) {
-            this.$api.domain.enable(name).then(() => {
-                this.$message.success($gettext('Enabled successfully'))
-                this.$refs.table.get_list()
-            }).catch(r => {
-                console.log(r)
-                this.$message.error($interpolate($gettext('Failed to enable %{msg}'), {msg: r.message ?? ''}), 10)
-            })
-        },
-        disable(name) {
-            this.$api.domain.disable(name).then(() => {
-                this.$message.success($gettext('Disabled successfully'))
-                this.$refs.table.get_list()
-            }).catch(r => {
-                console.log(r)
-                this.$message.error($interpolate($gettext('Failed to disable %{msg}'), {msg: r.message ?? ''}))
-            })
-        }
-    }
-}
-</script>
 
 <style scoped>
 

@@ -1,27 +1,24 @@
 <script setup lang="ts">
-import {computed, reactive, ref, watch} from "vue";
-import {useRoute} from "vue-router"
-import {useGettext} from "vue3-gettext";
-
-const {$gettext} = useGettext()
+import {computed, ref} from 'vue'
+import {useRoute} from 'vue-router'
 
 interface bread {
-    name: string
+    name: any
     path: string
 }
 
-const name = ref('')
+const name = ref()
 const route = useRoute()
 
 const breadList = computed(() => {
     let _breadList: bread[] = []
 
-    name.value = (route.name || '').toString()
+    name.value = route.name
 
     route.matched.forEach(item => {
         //item.name !== 'index' && this.breadList.push(item)
         _breadList.push({
-            name: (item.name || '').toString(),
+            name: item.name,
             path: item.path
         })
     })
@@ -38,9 +35,9 @@ const breadList = computed(() => {
             <router-link
                 v-if="item.name !== name && index !== 1"
                 :to="{ path: item.path === '' ? '/' : item.path }"
-            >{{ $gettext(item.name) }}
+            >{{ item.name() }}
             </router-link>
-            <span v-else>{{ $gettext(item.name) }}</span>
+            <span v-else>{{ item.name() }}</span>
         </a-breadcrumb-item>
     </a-breadcrumb>
 </template>

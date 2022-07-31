@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import VueApexCharts from 'vue3-apexcharts'
-import app from '@/main'
-import {reactive} from "vue";
+import {reactive} from 'vue'
 
 const {series, centerText, colors, name, bottomText}
     = defineProps(['series', 'centerText', 'colors', 'name', 'bottomText'])

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import gettext from '@/gettext'
-const {$gettext} = gettext
 import logo from '@/assets/img/logo.png'
+
+const {$gettext} = gettext
 
 const this_year = new Date().getFullYear()
 const version = import.meta.env.VITE_APP_VERSION
@@ -18,7 +19,7 @@ const api_root = import.meta.env.VITE_API_ROOT
         <p>Yet another WebUI for Nginx</p>
         <p>Version: {{ version }} ({{ build_id }})</p>
         <h3 v-translate>Project Team</h3>
-        <p><a href="https://jackyu.cn/">@0xJacky</a>  <a href="https://blog.kugeek.com/">@Hintay</a></p>
+        <p><a href="https://jackyu.cn/">@0xJacky</a> <a href="https://blog.kugeek.com/">@Hintay</a></p>
         <h3 v-translate>Build with</h3>
         <p>❤️</p>
         <p>Go</p>

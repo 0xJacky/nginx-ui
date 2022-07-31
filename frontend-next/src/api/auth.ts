@@ -1,5 +1,5 @@
-import http from "@/lib/http"
-import {useUserStore} from "@/pinia/user"
+import http from '@/lib/http'
+import {useUserStore} from '@/pinia/user'
 
 const user = useUserStore()
 const {login, logout} = user

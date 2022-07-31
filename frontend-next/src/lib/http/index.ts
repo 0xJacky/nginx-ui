@@ -1,6 +1,6 @@
 import axios, {AxiosRequestConfig} from 'axios'
-import {useUserStore} from "@/pinia/user"
-import {storeToRefs} from "pinia";
+import {useUserStore} from '@/pinia/user'
+import {storeToRefs} from 'pinia'
 
 const user = useUserStore()
 

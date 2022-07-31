@@ -170,7 +170,7 @@ func GetAnalyticInit(c *gin.Context) {
 		return
 	}
 
-	disk, err := getDiskStat()
+	diskStat, err := getDiskStat()
 
 	if err != nil {
 		log.Println(err)
@@ -200,6 +200,6 @@ func GetAnalyticInit(c *gin.Context) {
 			"reads":  analytic.DiskReadRecord,
 		},
 		"memory": memory,
-		"disk":   disk,
+		"disk":   diskStat,
 	})
 }

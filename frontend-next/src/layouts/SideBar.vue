@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import Logo from '@/components/Logo/Logo.vue'
 import {routes} from '@/routes'
-import {useRoute} from "vue-router"
-import {computed, ref, watch} from "vue"
-import {useGettext} from "vue3-gettext"
-
-const {$gettext} = useGettext()
+import {useRoute} from 'vue-router'
+import {computed, ref, watch} from 'vue'
 
 const route = useRoute()
 
@@ -37,7 +34,7 @@ interface meta {
 
 interface sidebar {
     path: string
-    name: string
+    name: Function
     meta: meta,
     children: sidebar[]
 }
@@ -57,7 +54,7 @@ const visible = computed(() => {
             children: []
         };
 
-        (s.children || []).forEach(c => {
+        (s.children || []).forEach((c: any) => {
             if (c.meta && c.meta.hiddenInSidebar) {
                 return
             }
@@ -85,17 +82,17 @@ const visible = computed(() => {
                              :key="sidebar.name"
                              @click="$router.push('/'+sidebar.path).catch(() => {})">
                     <component :is="sidebar.meta.icon"/>
-                    <span>{{ $gettext(sidebar.name) }}</span>
+                    <span>{{ sidebar.name() }}</span>
                 </a-menu-item>
 
                 <a-sub-menu v-else :key="sidebar.path">
                     <template #title>
                         <component :is="sidebar.meta.icon"/>
-                        <span>{{ $gettext(sidebar.name) }}</span>
+                        <span>{{ sidebar.name() }}</span>
                     </template>
                     <a-menu-item v-for="child in sidebar.children" :key="child.name">
                         <router-link :to="'/'+sidebar.path+'/'+child.path">
-                            {{ $gettext(child.name) }}
+                            {{ child.name() }}
                         </router-link>
                     </a-menu-item>
                 </a-sub-menu>

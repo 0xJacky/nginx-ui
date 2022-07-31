@@ -1,10 +1,9 @@
-<template>
-    <std-curd :columns="columns" :api="api" :disable_search="true"/>
-</template>
-
-<script lang="ts">
+<script setup lang="ts">
 import StdCurd from '@/components/StdDataDisplay/StdCurd.vue'
 import gettext from '@/gettext'
+import user from '@/api/user'
+import {datetime} from '@/components/StdDataDisplay/StdTableTransformer'
+
 const {$gettext} = gettext
 
 const columns = [{
@@ -28,32 +27,25 @@ const columns = [{
 }, {
     title: $gettext('Created at'),
     dataIndex: 'created_at',
-    datetime: true,
+    customRender: datetime,
     sorter: true,
     pithy: true
 }, {
     title: $gettext('Updated at'),
     dataIndex: 'updated_at',
-    datetime: true,
+    customRender: datetime,
     sorter: true,
     pithy: true
 }, {
     title: $gettext('Action'),
     dataIndex: 'action'
 }]
-
-export default {
-    name: 'User',
-    components: {StdCurd},
-    data() {
-        return {
-            api: this.$api.user,
-            columns
-        }
-    },
-    methods: {}
-}
 </script>
+
+<template>
+    <std-curd :columns="columns" :api="user" :disable_search="true"/>
+</template>
+
 
 <style scoped>
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import VueApexCharts from 'vue3-apexcharts'
-import {ref, watch} from "vue"
-import {useSettingsStore} from "@/pinia/settings"
-import {storeToRefs} from "pinia"
+import {ref, watch} from 'vue'
+import {useSettingsStore} from '@/pinia/settings'
+import {storeToRefs} from 'pinia'
 
 const {series, max, y_formatter} = defineProps(['series', 'max', 'y_formatter'])
 
@@ -117,7 +117,7 @@ const callback = () => {
                 },
             }
         }
-    };
+    }
     instance!.updateOptions(chartOptions)
 }
 

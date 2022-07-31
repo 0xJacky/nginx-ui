@@ -3,10 +3,10 @@ import AreaChart from '@/components/Chart/AreaChart.vue'
 
 import RadialBarChart from '@/components/Chart/RadialBarChart.vue'
 import {useGettext} from 'vue3-gettext'
-import {onMounted, onUnmounted, reactive, ref} from "vue"
-import analytic from "@/api/analytic"
-import ws from "@/lib/websocket"
-import {bytesToSize} from "@/lib/helper"
+import {onMounted, onUnmounted, reactive, ref} from 'vue'
+import analytic from '@/api/analytic'
+import ws from '@/lib/websocket'
+import {bytesToSize} from '@/lib/helper'
 
 const {$gettext} = useGettext()
 

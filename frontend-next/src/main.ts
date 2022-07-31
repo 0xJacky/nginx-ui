@@ -1,11 +1,11 @@
 import {createApp} from 'vue'
-import {createPinia} from "pinia"
-import gettext from "./gettext"
+import {createPinia} from 'pinia'
+import gettext from './gettext'
 import App from './App.vue'
-import router from "./routes"
+import router from './routes'
 import 'ant-design-vue/dist/antd.less'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import {useSettingsStore} from "@/pinia/settings"
+import {useSettingsStore} from '@/pinia/settings'
 
 
 const pinia = createPinia()

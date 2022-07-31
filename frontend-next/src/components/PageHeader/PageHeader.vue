@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb.vue'
-import {useRoute} from "vue-router"
-import {computed, ref, watch} from "vue"
-import {useGettext} from "vue3-gettext";
-
-const {$gettext} = useGettext()
+import {useRoute} from 'vue-router'
+import {computed, ref, watch} from 'vue'
 
 const {title, logo, avatar} = defineProps(['title', 'logo', 'avatar'])
 
@@ -16,7 +13,7 @@ const display = computed(() => {
 
 const name = ref(route.name)
 watch(() => route.name, () => {
-    name.value = (route.name || '').toString()
+    name.value = route.name
 })
 
 </script>
@@ -30,25 +27,11 @@ watch(() => route.name, () => {
                     <div class="row">
                         <img v-if="logo" :src="logo" class="logo"/>
                         <h1 class="title">
-                            {{ $gettext(name.toString()) }}
+                            {{ name() }}
                         </h1>
                         <div class="action">
                             <slot name="action"></slot>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div v-if="avatar" class="avatar">
-                            <a-avatar :src="avatar"/>
-                        </div>
-                        <div v-if="this.$slots.content" class="headerContent">
-                            <slot name="content"></slot>
-                        </div>
-                        <div v-if="this.$slots.extra" class="extra">
-                            <slot name="extra"></slot>
-                        </div>
-                    </div>
-                    <div>
-                        <slot name="pageMenu"></slot>
                     </div>
                 </div>
             </div>

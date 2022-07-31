@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import gettext from '@/gettext'
-import {message} from "ant-design-vue"
+import {message} from 'ant-design-vue'
 import auth from '@/api/auth'
-// import {HomeOutlined, LogoutOutlined} from "@ant-design/icons-vue"
+import {HomeOutlined, LogoutOutlined, MenuUnfoldOutlined} from '@ant-design/icons-vue'
+import {useRouter} from 'vue-router'
 
 const {$gettext} = gettext
-import {useRouter} from "vue-router"
 
 const router = useRouter()
 
 function logout() {
     auth.logout().then(() => {
         message.success($gettext('Logout successful'))
-        window.location.reload()
+    }).then(() => {
+        router.push('/login')
     })
 }
 
@@ -21,15 +22,19 @@ function logout() {
 
 <template>
     <div class="header">
+        <div class="tool">
+            <MenuUnfoldOutlined @click="$emit('clickUnFold')"/>
+        </div>
+
         <div class="user-wrapper">
             <set-language class="set_lang"/>
 
             <a href="/">
-                <!--                <HomeOutlined/>-->
+                <HomeOutlined/>
             </a>
 
             <a @click="logout" style="margin-left: 20px">
-                <!--                <LogoutOutlined/>-->
+                <LogoutOutlined/>
             </a>
         </div>
     </div>
