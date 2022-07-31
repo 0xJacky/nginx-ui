@@ -1,24 +1,16 @@
 <script setup lang="ts">
-import ReconnectingWebSocket from 'reconnecting-websocket'
 import 'xterm/css/xterm.css'
 import {Terminal} from 'xterm'
 import {FitAddon} from 'xterm-addon-fit'
 import {onMounted, onUnmounted} from "vue"
-import {useUserStore} from "@/pinia/user"
-import {storeToRefs} from "pinia"
 import _ from 'lodash'
-
-const user = useUserStore()
-const {token} = storeToRefs(user)
+import ws from "@/lib/websocket"
 
 let term: Terminal | null
 let ping: null | NodeJS.Timer
 
-const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://'
 
-const websocket = new ReconnectingWebSocket(
-    protocol + window.location.host + '/api/pty?token='
-    + btoa(token.value))
+const websocket = ws('/api/pty')
 
 onMounted(() => {
     initTerm()

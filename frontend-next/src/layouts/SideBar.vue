@@ -4,14 +4,14 @@ import {routes} from '@/routes'
 import {useRoute} from "vue-router"
 import {computed, ref, watch} from "vue"
 import {useGettext} from "vue3-gettext"
+
 const {$gettext} = useGettext()
 
 const route = useRoute()
 
 let openKeys = [openSub()]
 
-const selectedKey = ref()
-
+const selectedKey = ref([route.name])
 
 function openSub() {
     let path = route.path
@@ -19,23 +19,14 @@ function openSub() {
     return path.substring(1, lastSepIndex)
 }
 
-function onOpenChange(_openKeys: Array<any>) {
-    const latestOpenKey = openKeys.find(key => openKeys.indexOf(key) === -1) || ''
-    if ((sidebars.value||[]).indexOf(latestOpenKey) === -1) {
-        openKeys = _openKeys
-    } else {
-        openKeys = latestOpenKey ? [latestOpenKey] : []
-    }
-}
-
-watch(route, ()=>{
-    const selectedKey = [route.name]
+watch(route, () => {
+    selectedKey.value = [route.name]
     const sub = openSub()
     const p = openKeys.indexOf(sub)
     if (p === -1) openKeys.push(sub)
 })
 
-const sidebars = computed(()=>{
+const sidebars = computed(() => {
     return routes[0]['children']
 })
 
@@ -51,11 +42,11 @@ interface sidebar {
     children: sidebar[]
 }
 
-const visible = computed(()=>{
+const visible = computed(() => {
 
     const res: sidebar[] = [];
 
-    (sidebars.value||[]).forEach((s)=> {
+    (sidebars.value || []).forEach((s) => {
         if (s.meta && s.meta.hiddenInSidebar) {
             return
         }
@@ -66,7 +57,7 @@ const visible = computed(()=>{
             children: []
         };
 
-        (s.children||[]).forEach(c => {
+        (s.children || []).forEach(c => {
             if (c.meta && c.meta.hiddenInSidebar) {
                 return
             }
@@ -76,9 +67,8 @@ const visible = computed(()=>{
     })
 
 
-   return res
+    return res
 })
-
 </script>
 
 <template>
@@ -87,19 +77,20 @@ const visible = computed(()=>{
         <a-menu
             :openKeys="openKeys"
             mode="inline"
-            @openChange="onOpenChange"
-            v-model="selectedKey"
+            v-model:openKeys="openKeys"
+            v-model:selectedKeys="selectedKey"
         >
             <template v-for="sidebar in visible">
-                <a-menu-item v-if="sidebar.children.length===0 || sidebar.meta.hideChildren === true" :key="sidebar.name"
+                <a-menu-item v-if="sidebar.children.length===0 || sidebar.meta.hideChildren === true"
+                             :key="sidebar.name"
                              @click="$router.push('/'+sidebar.path).catch(() => {})">
-                    <component :is="sidebar.meta.icon" />
+                    <component :is="sidebar.meta.icon"/>
                     <span>{{ $gettext(sidebar.name) }}</span>
                 </a-menu-item>
 
                 <a-sub-menu v-else :key="sidebar.path">
                     <template #title>
-                        <component :is="sidebar.meta.icon" />
+                        <component :is="sidebar.meta.icon"/>
                         <span>{{ $gettext(sidebar.name) }}</span>
                     </template>
                     <a-menu-item v-for="child in sidebar.children" :key="child.name">

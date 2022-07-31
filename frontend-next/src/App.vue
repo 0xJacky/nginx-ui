@@ -1,18 +1,19 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import {toggleTheme} from '@zougt/vite-plugin-theme-preprocessor/dist/browser-utils.js'
+//@ts-ignore
+import {useSettingsStore} from "@/pinia/settings"
+import {dark_mode} from "@/lib/theme"
 
 let media = window.matchMedia('(prefers-color-scheme: dark)')
 const callback = (media: { matches: any; }) => {
+    const settings = useSettingsStore()
     if (media.matches) {
-        toggleTheme({
-            scopeName: 'theme-dark'
-        })
+        dark_mode(true)
+        settings.set_theme('dark')
     } else {
-        toggleTheme({
-            scopeName: 'theme-default'
-        })
+        dark_mode(false)
+        settings.set_theme('default')
     }
 }
 callback(media)

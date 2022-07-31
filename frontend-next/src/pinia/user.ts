@@ -1,15 +1,16 @@
-import { defineStore } from "pinia"
+import {defineStore} from "pinia"
 
 export const useUserStore = defineStore('user', {
     state: () => ({
-        token: '',
+        token: ''
     }),
     getters: {
-        is_login(state): boolean
-        {return !!state.token}
+        is_login(state): boolean {
+            return !!state.token
+        }
     },
     actions: {
-        login(token:string) {
+        login(token: string) {
             this.token = token
         },
         logout() {

@@ -6,18 +6,18 @@ import (
 	"time"
 )
 
-type usage struct {
+type Usage struct {
 	Time  time.Time   `json:"x"`
 	Usage interface{} `json:"y"`
 }
 
 var (
-	CpuUserRecord   []usage
-	CpuTotalRecord  []usage
-	NetRecvRecord   []usage
-	NetSentRecord   []usage
-	DiskWriteRecord []usage
-	DiskReadRecord  []usage
+	CpuUserRecord   []Usage
+	CpuTotalRecord  []Usage
+	NetRecvRecord   []Usage
+	NetSentRecord   []Usage
+	DiskWriteRecord []Usage
+	DiskReadRecord  []Usage
 	LastDiskWrites  uint64
 	LastDiskReads   uint64
 	LastNetSent     uint64
@@ -37,7 +37,7 @@ func init() {
 	now := time.Now()
 	// init record slices
 	for i := 100; i > 0; i-- {
-		u := usage{Time: now.Add(time.Duration(-i) * time.Second), Usage: 0}
+		u := Usage{Time: now.Add(time.Duration(-i) * time.Second), Usage: 0}
 		CpuUserRecord = append(CpuUserRecord, u)
 		CpuTotalRecord = append(CpuTotalRecord, u)
 		NetRecvRecord = append(NetRecvRecord, u)

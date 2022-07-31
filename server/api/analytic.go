@@ -1,25 +1,97 @@
 package api
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/server/analytic"
+	"github.com/pkg/errors"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/host"
 	"github.com/shirou/gopsutil/v3/load"
 	"github.com/shirou/gopsutil/v3/mem"
 	"github.com/shirou/gopsutil/v3/net"
+	"github.com/spf13/cast"
+	"log"
 	"math"
 	"net/http"
 	"runtime"
-	"strconv"
 	"time"
 
 	"github.com/dustin/go-humanize"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
+
+type CPUStat struct {
+	User   float64 `json:"user"`
+	System float64 `json:"system"`
+	Idle   float64 `json:"idle"`
+	Total  float64 `json:"total"`
+}
+
+type MemStat struct {
+	Total       string  `json:"total"`
+	Used        string  `json:"used"`
+	Cached      string  `json:"cached"`
+	Free        string  `json:"free"`
+	SwapUsed    string  `json:"swap_used"`
+	SwapTotal   string  `json:"swap_total"`
+	SwapCached  string  `json:"swap_cached"`
+	SwapPercent float64 `json:"swap_percent"`
+	Pressure    float64 `json:"pressure"`
+}
+
+type DiskStat struct {
+	Total      string         `json:"total"`
+	Used       string         `json:"used"`
+	Percentage float64        `json:"percentage"`
+	Writes     analytic.Usage `json:"writes"`
+	Reads      analytic.Usage `json:"reads"`
+}
+
+type Stat struct {
+	Uptime  uint64             `json:"uptime"`
+	LoadAvg *load.AvgStat      `json:"loadavg"`
+	CPU     CPUStat            `json:"cpu"`
+	Memory  MemStat            `json:"memory"`
+	Disk    DiskStat           `json:"disk"`
+	Network net.IOCountersStat `json:"network"`
+}
+
+func getMemoryStat() (MemStat, error) {
+	memoryStat, err := mem.VirtualMemory()
+	if err != nil {
+		return MemStat{}, errors.Wrap(err, "error analytic getMemoryStat")
+	}
+	return MemStat{
+		Total:      humanize.Bytes(memoryStat.Total),
+		Used:       humanize.Bytes(memoryStat.Used),
+		Cached:     humanize.Bytes(memoryStat.Cached),
+		Free:       humanize.Bytes(memoryStat.Free),
+		SwapUsed:   humanize.Bytes(memoryStat.SwapTotal - memoryStat.SwapFree),
+		SwapTotal:  humanize.Bytes(memoryStat.SwapTotal),
+		SwapCached: humanize.Bytes(memoryStat.SwapCached),
+		SwapPercent: cast.ToFloat64(fmt.Sprintf("%.2f",
+			float64(memoryStat.SwapFree)/math.Max(float64(memoryStat.SwapTotal), 1))),
+		Pressure: cast.ToFloat64(fmt.Sprintf("%.2f", memoryStat.UsedPercent)),
+	}, nil
+}
+
+func getDiskStat() (DiskStat, error) {
+	diskUsage, err := disk.Usage(".")
+
+	if err != nil {
+		return DiskStat{}, errors.Wrap(err, "error analytic getDiskStat")
+	}
+
+	return DiskStat{
+		Used:       humanize.Bytes(diskUsage.Used),
+		Total:      humanize.Bytes(diskUsage.Total),
+		Percentage: cast.ToFloat64(fmt.Sprintf("%.2f", diskUsage.UsedPercent)),
+		Writes:     analytic.DiskWriteRecord[len(analytic.DiskWriteRecord)-1],
+		Reads:      analytic.DiskReadRecord[len(analytic.DiskReadRecord)-1],
+	}, nil
+}
 
 func Analytic(c *gin.Context) {
 	var upGrader = websocket.Upgrader{
@@ -30,91 +102,81 @@ func Analytic(c *gin.Context) {
 	// upgrade http to websocket
 	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
+		log.Println("[Error] Analytic Upgrade", err)
 		return
 	}
 
 	defer ws.Close()
 
-	response := make(gin.H)
+	var stat Stat
 
 	for {
-		// read
-		mt, message, err := ws.ReadMessage()
+		stat.Memory, err = getMemoryStat()
+
 		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		cpuTimesBefore, _ := cpu.Times(false)
+		time.Sleep(1000 * time.Millisecond)
+		cpuTimesAfter, _ := cpu.Times(false)
+		threadNum := runtime.GOMAXPROCS(0)
+		cpuUserUsage := (cpuTimesAfter[0].User - cpuTimesBefore[0].User) / (float64(1000*threadNum) / 1000)
+		cpuSystemUsage := (cpuTimesAfter[0].System - cpuTimesBefore[0].System) / (float64(1000*threadNum) / 1000)
+
+		stat.CPU = CPUStat{
+			User:   cast.ToFloat64(fmt.Sprintf("%.2f", cpuUserUsage*100)),
+			System: cast.ToFloat64(fmt.Sprintf("%.2f", cpuSystemUsage*100)),
+			Idle:   cast.ToFloat64(fmt.Sprintf("%.2f", (1-cpuUserUsage-cpuSystemUsage)*100)),
+			Total:  cast.ToFloat64(fmt.Sprintf("%.2f", (cpuUserUsage+cpuSystemUsage)*100)),
+		}
+
+		stat.Uptime, _ = host.Uptime()
+
+		stat.LoadAvg, _ = load.Avg()
+
+		stat.Disk, err = getDiskStat()
+
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		network, _ := net.IOCounters(false)
+
+		if len(network) > 0 {
+			stat.Network = network[0]
+		}
+
+		// write
+		err = ws.WriteJSON(stat)
+		if err != nil {
+			log.Println("[Error] analytic WriteJSON", err)
 			break
 		}
-		for {
-
-			memoryStat, err := mem.VirtualMemory()
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-
-			response["memory_total"] = humanize.Bytes(memoryStat.Total)
-			response["memory_used"] = humanize.Bytes(memoryStat.Used)
-			response["memory_cached"] = humanize.Bytes(memoryStat.Cached)
-			response["memory_free"] = humanize.Bytes(memoryStat.Free)
-			response["memory_swap_used"] = humanize.Bytes(memoryStat.SwapTotal - memoryStat.SwapFree)
-			response["memory_swap_total"] = humanize.Bytes(memoryStat.SwapTotal)
-			response["memory_swap_cached"] = humanize.Bytes(memoryStat.SwapCached)
-			response["memory_swap_percent"] = float64(memoryStat.SwapFree) / math.Max(float64(memoryStat.SwapTotal), 1)
-
-			response["memory_pressure"], _ = strconv.ParseFloat(fmt.Sprintf("%.2f", memoryStat.UsedPercent), 64)
-
-			cpuTimesBefore, _ := cpu.Times(false)
-			time.Sleep(1000 * time.Millisecond)
-			cpuTimesAfter, _ := cpu.Times(false)
-			threadNum := runtime.GOMAXPROCS(0)
-
-			cpuUserUsage := (cpuTimesAfter[0].User - cpuTimesBefore[0].User) / (float64(1000*threadNum) / 1000)
-			cpuSystemUsage := (cpuTimesAfter[0].System - cpuTimesBefore[0].System) / (float64(1000*threadNum) / 1000)
-
-			response["cpu_user"], _ = strconv.ParseFloat(fmt.Sprintf("%.2f",
-				cpuUserUsage*100), 64)
-
-			response["cpu_system"], _ = strconv.ParseFloat(fmt.Sprintf("%.2f",
-				cpuSystemUsage*100), 64)
-
-			response["cpu_idle"], _ = strconv.ParseFloat(fmt.Sprintf("%.2f",
-				(1-cpuUserUsage+cpuSystemUsage)*100), 64)
-
-			response["uptime"], _ = host.Uptime()
-			response["loadavg"], _ = load.Avg()
-
-			diskUsage, _ := disk.Usage(".")
-
-			response["disk_used"] = humanize.Bytes(diskUsage.Used)
-			response["disk_total"] = humanize.Bytes(diskUsage.Total)
-			response["disk_percentage"], _ = strconv.ParseFloat(fmt.Sprintf("%.2f", diskUsage.UsedPercent), 64)
-
-			response["diskIO"] = gin.H{
-				"writes": analytic.DiskWriteRecord[len(analytic.DiskWriteRecord)-1],
-				"reads":  analytic.DiskReadRecord[len(analytic.DiskReadRecord)-1],
-			}
-
-			network, _ := net.IOCounters(false)
-
-			if len(network) > 0 {
-				response["network"] = network[0]
-			}
-
-			m, _ := json.Marshal(response)
-			message = m
-
-			// write
-			err = ws.WriteMessage(mt, message)
-			if err != nil {
-				break
-			}
-			time.Sleep(800 * time.Microsecond)
-		}
+		time.Sleep(800 * time.Microsecond)
 	}
+
 }
 
 func GetAnalyticInit(c *gin.Context) {
 	cpuInfo, _ := cpu.Info()
 	network, _ := net.IOCounters(false)
+	memory, err := getMemoryStat()
+
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	disk, err := getDiskStat()
+
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
 	var _net net.IOCountersStat
 	if len(network) > 0 {
 		_net = network[0]
@@ -133,9 +195,11 @@ func GetAnalyticInit(c *gin.Context) {
 			"bytesRecv": analytic.NetRecvRecord,
 			"bytesSent": analytic.NetSentRecord,
 		},
-		"diskIO": gin.H{
+		"disk_io": gin.H{
 			"writes": analytic.DiskWriteRecord,
 			"reads":  analytic.DiskReadRecord,
 		},
+		"memory": memory,
+		"disk":   disk,
 	})
 }

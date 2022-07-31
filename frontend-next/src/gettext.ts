@@ -9,4 +9,5 @@ export default createGettext({
     },
     defaultLanguage: "en",
     translations: translations,
+    silent: true
 })

@@ -1,8 +1,138 @@
+<script setup lang="ts">
+import AreaChart from '@/components/Chart/AreaChart.vue'
+
+import RadialBarChart from '@/components/Chart/RadialBarChart.vue'
+import {useGettext} from 'vue3-gettext'
+import {onMounted, onUnmounted, reactive, ref} from "vue"
+import analytic from "@/api/analytic"
+import ws from "@/lib/websocket"
+import {bytesToSize} from "@/lib/helper"
+
+const {$gettext} = useGettext()
+
+const websocket = ws('/api/analytic')
+websocket.onmessage = wsOnMessage
+
+const host = reactive({})
+const cpu = ref('0.0')
+const cpu_info = reactive([])
+const cpu_analytic_series = reactive([{name: 'User', data: <any>[]}, {name: 'Total', data: <any>[]}])
+const net_analytic = reactive([{name: $gettext('Receive'), data: <any>[]},
+    {name: $gettext('Send'), data: <any>[]}])
+const disk_io_analytic = reactive([{name: $gettext('Writes'), data: <any>[]},
+    {name: $gettext('Writes'), data: <any>[]}])
+const memory = reactive({})
+const disk = reactive({})
+const disk_io = reactive({writes: 0, reads: 0})
+const uptime = ref('')
+const loadavg = reactive({})
+const net = reactive({recv: 0, sent: 0, last_recv: 0, last_sent: 0})
+
+const net_formatter = (bytes: number) => {
+    return bytesToSize(bytes) + '/s'
+}
+
+interface Usage {
+    x: number
+    y: number
+}
+
+onMounted(() => {
+    analytic.init().then(r => {
+        Object.assign(host, r.host)
+        Object.assign(cpu_info, r.cpu.info)
+        Object.assign(memory, r.memory)
+        Object.assign(disk, r.disk)
+
+        net.last_recv = r.network.init.bytesRecv
+        net.last_sent = r.network.init.bytesSent
+        r.cpu.user.forEach((u: Usage) => {
+            cpu_analytic_series[0].data.push([u.x, u.y.toFixed(2)])
+        })
+        r.cpu.total.forEach((u: Usage) => {
+            cpu_analytic_series[1].data.push([u.x, u.y.toFixed(2)])
+        })
+        r.network.bytesRecv.forEach((u: Usage) => {
+            net_analytic[0].data.push([u.x, u.y.toFixed(2)])
+        })
+        r.network.bytesSent.forEach((u: Usage) => {
+            net_analytic[1].data.push([u.x, u.y.toFixed(2)])
+        })
+        disk_io_analytic[0].data = disk_io_analytic[0].data.concat(r.disk_io.writes)
+        disk_io_analytic[1].data = disk_io_analytic[1].data.concat(r.disk_io.reads)
+
+    })
+})
+
+onUnmounted(() => {
+    websocket.close()
+})
+
+function wsOnMessage(m: { data: any }) {
+    const r = JSON.parse(m.data)
+
+    const cpu_usage = r.cpu.system + r.cpu.user
+    cpu.value = cpu_usage.toFixed(2)
+
+    const time = new Date().getTime()
+
+    cpu_analytic_series[0].data.push([time, r.cpu.user.toFixed(2)])
+    cpu_analytic_series[1].data.push([time, cpu.value])
+
+    if (cpu_analytic_series[0].data.length > 100) {
+        cpu_analytic_series[0].data.shift()
+        cpu_analytic_series[1].data.shift()
+    }
+
+    // mem
+    Object.assign(memory, r.memory)
+
+    // disk
+    Object.assign(disk, r.disk)
+    disk_io.writes = r.disk.writes.y
+    disk_io.reads = r.disk.reads.y
+
+    // uptime
+    let _uptime = Math.floor(r.uptime)
+    let uptime_days = Math.floor(_uptime / 86400)
+    _uptime -= uptime_days * 86400
+    let uptime_hours = Math.floor(_uptime / 3600)
+    _uptime -= uptime_hours * 3600
+    uptime.value = uptime_days + 'd ' + uptime_hours + 'h ' + Math.floor(_uptime / 60) + 'm'
+
+    // loadavg
+    Object.assign(loadavg, r.loadavg)
+
+    // network
+    Object.assign(net, r.network)
+    net.recv = r.network.bytesRecv - net.last_recv
+    net.sent = r.network.bytesSent - net.last_sent
+    net.last_recv = r.network.bytesRecv
+    net.last_sent = r.network.bytesSent
+
+    net_analytic[0].data.push([time, net.recv])
+    net_analytic[1].data.push([time, net.sent])
+
+    if (net_analytic[0].data.length > 100) {
+        net_analytic[0].data.shift()
+        net_analytic[1].data.shift()
+    }
+
+    disk_io_analytic[0].data.push(r.disk.writes)
+    disk_io_analytic[1].data.push(r.disk.reads)
+
+    if (disk_io_analytic[0].data.length > 100) {
+        disk_io_analytic[0].data.shift()
+        disk_io_analytic[1].data.shift()
+    }
+}
+</script>
+
 <template>
     <div>
         <a-row :gutter="[16,16]" class="first-row">
             <a-col :xl="7" :lg="24" :md="24">
-                <a-card :title="$gettext('Server Info')">
+                <a-card :title="$gettext('Server Info')" :bordered="false">
                     <p>
                         <translate>Uptime:</translate>
                         {{ uptime }}
@@ -26,26 +156,26 @@
                 </a-card>
             </a-col>
             <a-col :xl="10" :lg="16" :md="24" class="chart_dashboard">
-                <a-card :title="$gettext('Memory and Storage')">
+                <a-card :title="$gettext('Memory and Storage')" :bordered="false">
                     <a-row :gutter="[0,16]">
                         <a-col :xs="24" :sm="24" :md="8">
-                            <radial-bar-chart :name="$gettext('Memory')" :series="[memory_pressure]"
-                                              :centerText="memory_used" :bottom-text="memory_total" colors="#36a3eb"/>
+                            <radial-bar-chart :name="$gettext('Memory')" :series="[memory.pressure]"
+                                              :centerText="memory.used" :bottom-text="memory.total" colors="#36a3eb"/>
                         </a-col>
                         <a-col :xs="24" :sm="12" :md="8">
-                            <radial-bar-chart :name="$gettext('Swap')" :series="[memory_swap_percent]"
-                                              :centerText="memory_swap_used"
-                                              :bottom-text="memory_swap_total" colors="#ff6385"/>
+                            <radial-bar-chart :name="$gettext('Swap')" :series="[memory.swap_percent]"
+                                              :centerText="memory.swap_used"
+                                              :bottom-text="memory.swap_total" colors="#ff6385"/>
                         </a-col>
                         <a-col :xs="24" :sm="12" :md="8">
-                            <radial-bar-chart :name="$gettext('Storage')" :series="[disk_percentage]"
-                                              :centerText="disk_used" :bottom-text="disk_total" colors="#87d068"/>
+                            <radial-bar-chart :name="$gettext('Storage')" :series="[disk.percentage]"
+                                              :centerText="disk.used" :bottom-text="disk.total" colors="#87d068"/>
                         </a-col>
                     </a-row>
                 </a-card>
             </a-col>
             <a-col :xl="7" :lg="8" :sm="24" class="chart_dashboard">
-                <a-card :title="$gettext('Network Statistics')">
+                <a-card :title="$gettext('Network Statistics')" :bordered="false">
                     <a-row :gutter="16">
                         <a-col :span="12">
                             <a-statistic :value="bytesToSize(net.last_recv)"
@@ -61,13 +191,13 @@
         </a-row>
         <a-row class="row-two" :gutter="[16,32]">
             <a-col :xl="8" :lg="24" :md="24" :sm="24">
-                <a-card :title="$gettext('CPU Status')">
+                <a-card :title="$gettext('CPU Status')" :bordered="false">
                     <a-statistic :value="cpu" title="CPU">
                         <template v-slot:suffix>
                             <span>%</span>
                         </template>
                     </a-statistic>
-                    <c-p-u-chart :series="cpu_analytic_series"/>
+                    <area-chart :series="cpu_analytic_series" :max="100"/>
                 </a-card>
             </a-col>
             <a-col :xl="8" :lg="12" :md="24" :sm="24">
@@ -89,14 +219,14 @@
                             </a-statistic>
                         </a-col>
                     </a-row>
-                    <net-chart :series="net_analytic"/>
+                    <area-chart :series="net_analytic" :y_formatter="net_formatter"/>
                 </a-card>
             </a-col>
             <a-col :xl="8" :lg="12" :md="24" :sm="24">
                 <a-card :title="$gettext('Disk IO')">
                     <a-row :gutter="16">
                         <a-col :span="12">
-                            <a-statistic :value="diskIO.writes"
+                            <a-statistic :value="disk_io.writes"
                                          :title="$gettext('Writes')">
                                 <template v-slot:suffix>
                                     <span>/s</span>
@@ -104,197 +234,31 @@
                             </a-statistic>
                         </a-col>
                         <a-col :span="12">
-                            <a-statistic :value="diskIO.reads" :title="$gettext('Reads')">
+                            <a-statistic :value="disk_io.reads" :title="$gettext('Reads')">
                                 <template v-slot:suffix>
                                     <span>/s</span>
                                 </template>
                             </a-statistic>
                         </a-col>
                     </a-row>
-                    <disk-chart :series="diskIO_analytic"/>
+                    <area-chart :series="disk_io_analytic"/>
                 </a-card>
             </a-col>
         </a-row>
-
     </div>
 </template>
-
-<script>
-import ReconnectingWebSocket from 'reconnecting-websocket'
-import CPUChart from '@/components/Chart/CPUChart.vue'
-import NetChart from '@/components/Chart/NetChart.vue'
-import $gettext from '@/lib/translate/gettext.vue'
-import RadialBarChart from '@/components/Chart/RadialBarChart.vue'
-import DiskChart from '@/components/Chart/DiskChart.vue'
-
-export default {
-    name: 'DashBoard',
-    components: {
-        DiskChart,
-        RadialBarChart,
-        NetChart,
-        CPUChart,
-    },
-    data() {
-        return {
-            websocket: null,
-            loading: true,
-            stat: {},
-            memory_pressure: 0,
-            memory_used: '',
-            memory_cached: '',
-            memory_free: '',
-            memory_total: '',
-            cpu_analytic_series: [{
-                name: 'CPU User',
-                data: []
-            }, {
-                name: 'CPU Total',
-                data: []
-            }],
-            cpu: 0,
-            memory_swap_used: '',
-            memory_swap_total: '',
-            memory_swap_percent: 0,
-            disk_percentage: 0,
-            disk_total: '',
-            disk_used: '',
-            net: {
-                recv: 0,
-                sent: 0,
-                last_recv: 0,
-                last_sent: 0,
-            },
-            diskIO: {
-                writes: 0,
-                reads: 0,
-            },
-            net_analytic: [{
-                name: $gettext('Receive'),
-                data: []
-            }, {
-                name: $gettext('Send'),
-                data: []
-            }],
-            diskIO_analytic: [{
-                name: $gettext('Writes'),
-                data: []
-            }, {
-                name: $gettext('Reads'),
-                data: []
-            }],
-            uptime: '',
-            loadavg: {},
-            cpu_info: [],
-            host: {}
-        }
-    },
-    created() {
-        this.websocket = new ReconnectingWebSocket(this.getWebSocketRoot() + '/analytic?token='
-            + btoa(this.$store.state.user.token))
-        this.websocket.onmessage = this.wsOnMessage
-        this.websocket.onopen = this.wsOpen
-        this.$api.analytic.init().then(r => {
-            this.cpu_info = r.cpu.info
-            this.net.last_recv = r.network.init.bytesRecv
-            this.net.last_sent = r.network.init.bytesSent
-            this.host = r.host
-            r.cpu.user.forEach(u => {
-                this.cpu_analytic_series[0].data.push([u.x, u.y.toFixed(2)])
-            })
-            r.cpu.total.forEach(u => {
-                this.cpu_analytic_series[1].data.push([u.x, u.y.toFixed(2)])
-            })
-            r.network.bytesRecv.forEach(u => {
-                this.net_analytic[0].data.push([u.x, u.y.toFixed(2)])
-            })
-            r.network.bytesSent.forEach(u => {
-                this.net_analytic[1].data.push([u.x, u.y.toFixed(2)])
-            })
-            this.diskIO_analytic[0].data = this.diskIO_analytic[0].data.concat(r.diskIO.writes)
-            this.diskIO_analytic[1].data = this.diskIO_analytic[1].data.concat(r.diskIO.reads)
-        })
-    },
-    destroyed() {
-        this.websocket.close()
-    },
-    methods: {
-        wsOpen() {
-            this.websocket.send('ping')
-        },
-        wsOnMessage(m) {
-            const r = JSON.parse(m.data)
-            // console.log(r)
-            this.cpu = r.cpu_system + r.cpu_user
-            this.cpu = this.cpu.toFixed(2)
-            const time = new Date().getTime()
-
-            this.cpu_analytic_series[0].data.push([time, r.cpu_user.toFixed(2)])
-            this.cpu_analytic_series[1].data.push([time, this.cpu])
-
-            if (this.cpu_analytic_series[0].data.length > 100) {
-                this.cpu_analytic_series[0].data.shift()
-                this.cpu_analytic_series[1].data.shift()
-            }
-
-            // mem
-            this.memory_pressure = r.memory_pressure
-            this.memory_used = r.memory_used
-            this.memory_cached = r.memory_cached
-            this.memory_free = r.memory_free
-            this.memory_total = r.memory_total
-            this.memory_swap_percent = r.memory_swap_percent
-            this.memory_swap_used = r.memory_swap_used
-            this.memory_swap_total = r.memory_swap_total
-
-            // disk
-            this.disk_percentage = r.disk_percentage
-            this.disk_used = r.disk_used
-            this.disk_total = r.disk_total
-
-            let uptime = Math.floor(r.uptime)
-            let uptime_days = Math.floor(uptime / 86400)
-            uptime -= uptime_days * 86400
-            let uptime_hours = Math.floor(uptime / 3600)
-            uptime -= uptime_hours * 3600
-            this.uptime = uptime_days + 'd ' + uptime_hours + 'h ' + Math.floor(uptime / 60) + 'm'
-            this.loadavg = r.loadavg
-
-            // net
-            this.net.recv = r.network.bytesRecv - this.net.last_recv
-            this.net.sent = r.network.bytesSent - this.net.last_sent
-            this.net.last_recv = r.network.bytesRecv
-            this.net.last_sent = r.network.bytesSent
-
-            this.net_analytic[0].data.push([time, this.net.recv])
-            this.net_analytic[1].data.push([time, this.net.sent])
-
-            if (this.net_analytic[0].data.length > 100) {
-                this.net_analytic[0].data.shift()
-                this.net_analytic[1].data.shift()
-            }
-
-            // diskIO
-            this.diskIO.writes = r.diskIO.writes.y
-            this.diskIO.reads = r.diskIO.reads.y
-
-            this.diskIO_analytic[0].data.push(r.diskIO.writes)
-            this.diskIO_analytic[1].data.push(r.diskIO.reads)
-
-            if (this.diskIO_analytic[0].data.length > 100) {
-                this.diskIO_analytic[0].data.shift()
-                this.diskIO_analytic[1].data.shift()
-            }
-        }
-    }
-}
-</script>
 
 <style lang="less" scoped>
 .first-row {
     .ant-card {
         min-height: 227px;
+
+        p {
+            margin-bottom: 8px;
+        }
     }
+
+    margin-bottom: 20px;
 }
 
 .ant-card {

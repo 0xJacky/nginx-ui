@@ -10,7 +10,7 @@ const auth = {
             name: name,
             password: password
         }).then(r => {
-            login(r.data.token)
+            login(r.token)
         })
     },
     logout() {

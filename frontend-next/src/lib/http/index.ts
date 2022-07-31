@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, {AxiosRequestConfig} from 'axios'
 import {useUserStore} from "@/pinia/user"
 import {storeToRefs} from "pinia";
 
@@ -6,8 +6,12 @@ const user = useUserStore()
 
 const {token} = storeToRefs(user)
 
-/* 创建 axios 实例 */
-let http = axios.create({
+declare module 'axios' {
+    export interface AxiosResponse<T = any> extends Promise<T> {
+    }
+}
+
+let instance = axios.create({
     baseURL: import.meta.env.VITE_API_ROOT,
     timeout: 50000,
     headers: {'Content-Type': 'application/json'},
@@ -21,8 +25,8 @@ let http = axios.create({
     }],
 })
 
-/* http request 拦截器 */
-http.interceptors.request.use(
+
+instance.interceptors.request.use(
     config => {
         if (token) {
             (config.headers || {}).Authorization = token.value
@@ -34,10 +38,10 @@ http.interceptors.request.use(
     }
 )
 
-/* response 拦截器 */
-http.interceptors.response.use(
-    response =>{
-        return Promise.resolve(response)
+
+instance.interceptors.response.use(
+    response => {
+        return Promise.resolve(response.data)
     },
     async error => {
         switch (error.response.status) {
@@ -48,5 +52,21 @@ http.interceptors.response.use(
         return Promise.reject(error.response.data)
     }
 )
+
+const http = {
+    get(url: string, config: AxiosRequestConfig = {}) {
+        return instance.get<any, any>(url, config)
+    },
+    post(url: string, data: any = undefined, config: AxiosRequestConfig = {}) {
+        return instance.post<any, any>(url, data, config)
+    },
+    put(url: string, data: any = undefined, config: AxiosRequestConfig = {}) {
+        return instance.put<any, any>(url, data, config)
+    },
+    delete(url: string, config: AxiosRequestConfig = {}) {
+        return instance.delete<any, any>(url, config)
+    }
+}
+
 
 export default http
