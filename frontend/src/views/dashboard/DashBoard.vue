@@ -131,7 +131,7 @@ function wsOnMessage(m: { data: any }) {
 <template>
     <div>
         <a-row :gutter="[16,16]" class="first-row">
-            <a-col :xl="7" :lg="24" :md="24">
+            <a-col :xl="7" :lg="24" :md="24" :xs="24">
                 <a-card :title="$gettext('Server Info')" :bordered="false">
                     <p>
                         <translate>Uptime:</translate>
@@ -155,7 +155,7 @@ function wsOnMessage(m: { data: any }) {
                     </p>
                 </a-card>
             </a-col>
-            <a-col :xl="10" :lg="16" :md="24" class="chart_dashboard">
+            <a-col :xl="10" :lg="16" :md="24" :xs="24" class="chart_dashboard">
                 <a-card :title="$gettext('Memory and Storage')" :bordered="false">
                     <a-row :gutter="[0,16]">
                         <a-col :xs="24" :sm="24" :md="8">
@@ -174,7 +174,7 @@ function wsOnMessage(m: { data: any }) {
                     </a-row>
                 </a-card>
             </a-col>
-            <a-col :xl="7" :lg="8" :sm="24" class="chart_dashboard">
+            <a-col :xl="7" :lg="8" :sm="24" :xs="24" class="chart_dashboard">
                 <a-card :title="$gettext('Network Statistics')" :bordered="false">
                     <a-row :gutter="16">
                         <a-col :span="12">
@@ -190,7 +190,7 @@ function wsOnMessage(m: { data: any }) {
             </a-col>
         </a-row>
         <a-row class="row-two" :gutter="[16,32]">
-            <a-col :xl="8" :lg="24" :md="24" :sm="24">
+            <a-col :xl="8" :lg="24" :md="24" :sm="24" :xs="24">
                 <a-card :title="$gettext('CPU Status')" :bordered="false">
                     <a-statistic :value="cpu" title="CPU">
                         <template v-slot:suffix>
@@ -200,7 +200,7 @@ function wsOnMessage(m: { data: any }) {
                     <area-chart :series="cpu_analytic_series" :max="100"/>
                 </a-card>
             </a-col>
-            <a-col :xl="8" :lg="12" :md="24" :sm="24">
+            <a-col :xl="8" :lg="12" :md="24" :sm="24" :xs="24">
                 <a-card :title="$gettext('Network')">
                     <a-row :gutter="16">
                         <a-col :span="12">
@@ -222,7 +222,7 @@ function wsOnMessage(m: { data: any }) {
                     <area-chart :series="net_analytic" :y_formatter="net_formatter"/>
                 </a-card>
             </a-col>
-            <a-col :xl="8" :lg="12" :md="24" :sm="24">
+            <a-col :xl="8" :lg="12" :md="24" :sm="24" :xs="24">
                 <a-card :title="$gettext('Disk IO')">
                     <a-row :gutter="16">
                         <a-col :span="12">

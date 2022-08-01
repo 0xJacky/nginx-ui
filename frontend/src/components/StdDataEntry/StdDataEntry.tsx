@@ -1,5 +1,6 @@
 import {defineComponent} from 'vue'
 import {Form, FormItem} from 'ant-design-vue'
+import './style.less'
 
 export default defineComponent({
     props: ['dataList', 'dataSource', 'error', 'layout'],
@@ -18,7 +19,7 @@ export default defineComponent({
             })
 
             if (slots.action) {
-                template.push(<div>{slots.action()}</div>)
+                template.push(<div class={'std-data-entry-action'}>{slots.action()}</div>)
             }
 
             return <Form layout={props.layout || 'vertical'}>{template}</Form>

@@ -1,19 +1,60 @@
+<script setup lang="ts">
+import HeaderLayout from './HeaderLayout.vue'
+import SideBar from './SideBar.vue'
+import FooterLayout from './FooterLayout.vue'
+import PageHeader from '@/components/PageHeader/PageHeader.vue'
+import zh_CN from 'ant-design-vue/es/locale/zh_CN'
+import zh_TW from 'ant-design-vue/es/locale/zh_TW'
+import en_US from 'ant-design-vue/es/locale/en_US'
+import {computed, ref} from 'vue'
+import _ from 'lodash'
+
+import gettext from '@/gettext'
+
+const drawer_visible = ref(false)
+const collapsed = ref(collapse())
+const clientWidth = ref(getClientWidth())
+
+addEventListener('resize', _.throttle(() => {
+    collapsed.value = collapse()
+}, 50))
+
+function getClientWidth() {
+    return document.body.clientWidth
+}
+
+function collapse() {
+    return getClientWidth() < 768
+}
+
+const lang = computed(() => {
+    switch (gettext.current) {
+        case 'zh_CN':
+            return zh_CN
+        case 'zh_TW':
+            return zh_TW
+        default:
+            return en_US
+    }
+})
+
+</script>
 <template>
     <a-config-provider :locale="lang">
         <a-layout style="min-height: 100%;">
-            <a-drawer
-                v-show="clientWidth<512"
-                :closable="false"
-                :visible="collapsed"
-                placement="left"
-                @close="collapsed=false"
-            >
-                <side-bar/>
-            </a-drawer>
+            <template v-show="clientWidth.value<512">
+                <a-drawer
+                    :closable="false"
+                    v-model:visible="drawer_visible"
+                    placement="left"
+                    @close="drawer_visible=false"
+                >
+                    <side-bar/>
+                </a-drawer>
+            </template>
 
             <a-layout-sider
-                v-show="clientWidth>=512"
-                v-model="collapsed"
+                v-model:collapsed="collapsed"
                 :collapsible="true"
                 :style="{zIndex: 11}"
                 theme="light"
@@ -24,7 +65,7 @@
 
             <a-layout>
                 <a-layout-header :style="{position: 'fixed', zIndex: 10, width:'100%'}">
-                    <header-layout @clickUnFold="collapsed=true"/>
+                    <header-layout @clickUnFold="drawer_visible=true"/>
                 </a-layout-header>
 
                 <a-layout-content>
@@ -43,59 +84,14 @@
     </a-config-provider>
 </template>
 
-<script>
-import HeaderLayout from './HeaderLayout.vue'
-import SideBar from './SideBar.vue'
-import FooterLayout from './FooterLayout.vue'
-import PageHeader from '@/components/PageHeader/PageHeader.vue'
-import zh_CN from 'ant-design-vue/es/locale/zh_CN'
-import zh_TW from 'ant-design-vue/es/locale/zh_TW'
-import en_US from 'ant-design-vue/es/locale/en_US'
-
-export default {
-    name: 'BaseLayout',
-    data() {
-        return {
-            collapsed: this.collapse(),
-            clientWidth: document.body.clientWidth,
-        }
-    },
-    mounted() {
-        window.onresize = () => {
-            this.collapsed = this.collapse()
-            this.clientWidth = this.getClientWidth()
-        }
-    },
-    components: {
-        SideBar,
-        PageHeader,
-        HeaderLayout,
-        FooterLayout
-    },
-    methods: {
-        getClientWidth() {
-            return document.body.clientWidth
-        },
-        collapse() {
-            return !(this.getClientWidth() > 768 || this.getClientWidth() < 512)
-        }
-    },
-    computed: {
-        lang: {
-            get() {
-                switch (this.$language.current) {
-                    case 'zh_CN':
-                        return zh_CN
-                    case 'zh_TW':
-                        return zh_TW
-                    default:
-                        return en_US
-                }
-            }
-        }
+<style lang="less" scoped>
+.layout-sider {
+    @media (max-width: 600px) {
+        display: none;
     }
 }
-</script>
+</style>
+
 <style lang="less">
 .layout-sider .sidebar {
     //position: fixed;

@@ -176,7 +176,9 @@ const reset_search = async () => {
             layout="inline"
         >
             <template #action>
-                <a-button @click="reset_search">重置</a-button>
+                <div class="reset-btn">
+                    <a-button @click="reset_search">重置</a-button>
+                </div>
             </template>
         </std-data-entry>
         <a-table
@@ -237,5 +239,12 @@ const reset_search = async () => {
     .ant-table-wrapper {
         // overflow-x: scroll;
     }
+}
+
+.reset-btn {
+    // min-height: 50px;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
 }
 </style>

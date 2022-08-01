@@ -68,7 +68,7 @@ function logout() {
 .tool {
     position: fixed;
     left: 20px;
-    @media (min-width: 512px) {
+    @media (min-width: 600px) {
         display: none;
     }
 }
