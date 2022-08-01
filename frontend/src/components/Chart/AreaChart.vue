@@ -118,7 +118,7 @@ const callback = () => {
             }
         }
     }
-    instance!.updateOptions(chartOptions)
+    instance?.updateOptions?.(chartOptions)
 }
 
 

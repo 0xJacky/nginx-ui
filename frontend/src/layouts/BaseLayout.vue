@@ -134,7 +134,8 @@ body {
 }
 
 .ant-layout-header {
-    background-color: #fff;
+    padding: 0 !important;
+    background-color: #fff !important;
     @media @dark {
         background-color: #1f1f1f !important;
     }
@@ -182,10 +183,6 @@ body {
             background-color: transparent !important;
         }
     }
-}
-
-.ant-layout-header {
-    padding: 0 !important;
 }
 
 .ant-table-small {
