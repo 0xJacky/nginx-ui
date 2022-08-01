@@ -3,7 +3,10 @@ import {VAceEditor} from 'vue3-ace-editor'
 import 'ace-builds/src-noconflict/mode-nginx'
 import 'ace-builds/src-noconflict/theme-monokai'
 
-const {content} = defineProps(['content'])
+const {content, defaultHeight} = defineProps<{
+    content?: string
+    defaultHeight?: string
+}>()
 </script>
 
 <template>
@@ -11,7 +14,9 @@ const {content} = defineProps(['content'])
         v-model:value="content"
         lang="nginx"
         theme="monokai"
-        style="min-height: 100vh"/>
+        :style="{
+            minHeight: defaultHeight || '100vh'
+        }"/>
 </template>
 
 <style scoped>

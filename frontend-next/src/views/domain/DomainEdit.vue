@@ -2,7 +2,7 @@
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 
-// import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor'
+import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor'
 import {useGettext} from 'vue3-gettext'
 import {reactive, ref} from 'vue'
 import {useRoute} from 'vue-router'
@@ -17,6 +17,7 @@ const route = useRoute()
 
 const name = ref(route.params.name.toString())
 const update = ref(0)
+
 const ngx_config = reactive({
     filename: '',
     upstreams: [],
@@ -141,13 +142,12 @@ function disable() {
                     <a-form-item :label="$gettext('Enabled')">
                         <a-switch v-model="enabled" @change="checked=>{checked?enable():disable()}"/>
                     </a-form-item>
-
-                    <!--                    <ngx-config-editor-->
-                    <!--                        ref="ngx_config"-->
-                    <!--                        :ngx_config="ngx_config"-->
-                    <!--                        v-model="auto_cert"-->
-                    <!--                        :enabled="enabled"-->
-                    <!--                    />-->
+                    <ngx-config-editor
+                        ref="ngx_config_editor"
+                        :ngx_config="ngx_config"
+                        v-model:auto_cert="auto_cert"
+                        :enabled="enabled"
+                    />
                 </div>
             </transition>
 

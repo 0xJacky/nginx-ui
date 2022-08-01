@@ -1,75 +1,77 @@
+<script setup lang="ts">
+import CodeEditor from '@/components/CodeEditor'
+import {If} from '@/views/domain/ngx_conf'
+import DirectiveAdd from '@/views/domain/ngx_conf/directive/DirectiveAdd'
+import {useGettext} from 'vue3-gettext'
+import {reactive, ref} from 'vue'
+import {CloseOutlined} from '@ant-design/icons-vue'
+
+const {$gettext} = useGettext()
+
+const {ngx_directives} = defineProps<{
+    ngx_directives: any[]
+}>()
+
+const adding = ref(false)
+
+let directive = reactive({})
+
+const current_idx = ref(-1)
+
+function add() {
+    adding.value = true
+    directive = reactive({})
+}
+
+function save() {
+    adding.value = false
+    ngx_directives.push(directive)
+}
+
+function remove(index: number) {
+    ngx_directives.splice(index, 1)
+}
+
+function onSave(idx: number) {
+    setTimeout(() => {
+        current_idx.value = idx + 1
+    }, 50)
+}
+</script>
+
 <template>
-    <a-form-item :label="$gettext('Directives')">
-        <div v-for="(directive,k) in ngx_directives" :key="k" @click="current_idx=k">
-            <vue-itextarea v-if="directive.directive === If" v-model="directive.params" :default-text-height="100"/>
-            <a-input :addon-before="directive.directive" v-model="directive.params" @click="current_idx=k" v-else>
-                <a-popconfirm slot="suffix" @confirm="remove(k)"
+    <h2>{{ $gettext('Directives') }}</h2>
+
+    <a-form-item v-for="(directive,index) in ngx_directives" @click="current_idx=index">
+        <code-editor v-if="directive.directive === If" v-model:content="directive.params"
+                     defaultHeight="100px"/>
+        <a-input :addon-before="directive.directive" v-model:value="directive.params" @click="current_idx=k"
+                 v-else>
+            <template #suffix>
+                <a-popconfirm @confirm="remove(index)"
                               :title="$gettext('Are you sure you want to remove this directive?')"
                               :ok-text="$gettext('Yes')"
                               :cancel-text="$gettext('No')">
-                    <a-icon type="close"
-                            style="color: rgba(0,0,0,.45);font-size: 10px;"
-                    />
+                    <CloseOutlined style="color: rgba(0,0,0,.45);font-size: 10px;"/>
                 </a-popconfirm>
-            </a-input>
-            <transition name="slide">
-                <div v-if="current_idx===k" class="extra">
-                    <div class="extra-content">
+            </template>
+        </a-input>
+        <transition name="slide">
+            <div v-if="current_idx===index" class="extra">
+                <div class="extra-content">
+                    <a-form layout="vertical">
                         <a-form-item :label="$gettext('Comments')">
                             <a-textarea v-model="directive.comments"/>
                         </a-form-item>
-                        <directive-add :ngx_directives="ngx_directives" :idx="k" @save="onSave(k)"/>
-                    </div>
+                    </a-form>
+                    <directive-add :ngx_directives="ngx_directives" :idx="index" @save="onSave(index)"/>
                 </div>
-            </transition>
-        </div>
-        <directive-add :ngx_directives="ngx_directives"/>
+            </div>
+        </transition>
     </a-form-item>
+
+    <directive-add :ngx_directives="ngx_directives"/>
 </template>
-
-<script>
-import VueItextarea from '@/components/VueItextarea/VueItextarea'
-import {If} from '../ngx_constant'
-import DirectiveAdd from '@/views/domain/ngx_conf/directive/DirectiveAdd'
-
-export default {
-    name: 'DirectiveEditor',
-    props: {
-        ngx_directives: Array
-    },
-    components: {
-        DirectiveAdd,
-        VueItextarea
-    },
-    data() {
-        return {
-            adding: false,
-            directive: {},
-            If,
-            current_idx: -1,
-        }
-    },
-    methods: {
-        add() {
-            this.adding = true
-            this.directive = {}
-        },
-        save() {
-            this.adding = false
-            this.ngx_directives.push(this.directive)
-        },
-        remove(index) {
-            this.ngx_directives.splice(index, 1)
-        },
-        onSave(idx) {
-            const that = this
-            setTimeout(() => {
-                that.current_idx = idx + 1
-            }, 50)
-        }
-    }
-}
-</script>
 
 <style lang="less" scoped>
 .extra {
@@ -79,14 +81,14 @@ export default {
 }
 
 .slide-enter-active, .slide-leave-active {
-    transition: max-height .5s ease;
+    transition: max-height .3s ease;
 }
 
-.slide-enter, .slide-leave-to {
+.slide-enter-from, .slide-leave-to {
     max-height: 0;
 }
 
-.slide-enter-to, .slide-leave {
+.slide-enter-to, .slide-leave-from {
     max-height: 600px;
 }
 </style>
