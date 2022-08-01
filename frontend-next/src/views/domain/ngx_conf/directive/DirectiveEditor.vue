@@ -61,7 +61,7 @@ function onSave(idx: number) {
                 <div class="extra-content">
                     <a-form layout="vertical">
                         <a-form-item :label="$gettext('Comments')">
-                            <a-textarea v-model="directive.comments"/>
+                            <a-textarea v-model:value="directive.comments"/>
                         </a-form-item>
                     </a-form>
                     <directive-add :ngx_directives="ngx_directives" :idx="index" @save="onSave(index)"/>

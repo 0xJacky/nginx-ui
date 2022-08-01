@@ -68,6 +68,16 @@ function disable(name: any) {
         message.error(interpolate($gettext('Failed to disable %{msg}'), {msg: r.message ?? ''}))
     })
 }
+
+function destroy(site_name: any) {
+    domain.destroy(site_name).then(() => {
+        const t: Table | null = table.value
+        t!.get_list()
+        message.success(interpolate($gettext('Delete site: %{site_name}'), {site_name: site_name}))
+    }).catch((e: any) => {
+        message.error(e?.message ?? $gettext('Server error'))
+    })
+}
 </script>
 
 <template>
@@ -81,8 +91,19 @@ function disable(name: any) {
             @clickEdit="r => this.$router.push({
                 path: '/domain/' + r
             })"
+            :deletable="false"
         >
             <template #actions="{record}">
+                <template v-if="!record.enabled">
+                    <a-divider type="vertical"/>
+                    <a-popconfirm
+                        :cancelText="$gettext('No')"
+                        :okText="$gettext('OK')"
+                        :title="$gettext('Are you sure you want to delete ?')"
+                        @confirm="destroy(record['name'])">
+                        <a v-translate>Delete</a>
+                    </a-popconfirm>
+                </template>
                 <a-divider type="vertical"/>
                 <a v-if="record.enabled" @click="disable(record.name)">
                     {{ $gettext('Disabled') }}

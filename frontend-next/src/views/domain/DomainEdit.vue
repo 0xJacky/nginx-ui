@@ -140,7 +140,7 @@ function disable() {
 
                 <div class="domain-edit-container" key="basic" v-else>
                     <a-form-item :label="$gettext('Enabled')">
-                        <a-switch v-model="enabled" @change="checked=>{checked?enable():disable()}"/>
+                        <a-switch v-model:checked="enabled" @change="checked=>{checked?enable():disable()}"/>
                     </a-form-item>
                     <ngx-config-editor
                         ref="ngx_config_editor"

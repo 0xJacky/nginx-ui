@@ -52,7 +52,7 @@ export const routes = [
                 }, {
                     path: 'add',
                     name: () => $gettext('Add Site'),
-                    // component: () => import('@/views/domain/DomainAdd.vue'),
+                    component: () => import('@/views/domain/DomainAdd.vue'),
                 }, {
                     path: ':name',
                     name: () => $gettext('Edit Site'),

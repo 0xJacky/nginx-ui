@@ -19,6 +19,7 @@ const name = ref(route.params.name)
 const init_ssl_status = ref(false)
 
 function update_cert_info() {
+    // TODO
     // if (name.value && this.$refs['cert-info' + this.current_server_index]) {
     //     this.$refs['cert-info' + this.current_server_index].get()
     // }
@@ -153,7 +154,7 @@ const current_support_ssl = computed(() => {
                     </template>
 
                     <directive-editor :ngx_directives="v.directives"/>
-
+                    <br/>
                     <location-editor :locations="v.locations"/>
                 </div>
 
