@@ -1,74 +1,77 @@
-<template>
-    <a-form-item :label="$gettext('Locations')" :key="update">
-        <a-empty v-if="!locations"/>
-        <a-card v-for="(v,k) in locations" :key="k"
-                :title="$gettext('Location')" size="small">
-            <a-form-item :label="$gettext('Comments')" v-if="v.comments">
-                <p style="white-space: pre-wrap;">{{ v.comments }}</p>
-            </a-form-item>
-            <a-form-item :label="$gettext('Path')">
-                <a-input addon-before="location" v-model="v.path"/>
-            </a-form-item>
-            <a-form-item :label="$gettext('Content')">
-                <vue-itextarea v-model="v.content" :default-text-height="200"/>
-            </a-form-item>
-        </a-card>
+<script setup lang="ts">
+import CodeEditor from '@/components/CodeEditor'
+import {useGettext} from 'vue3-gettext'
+import {reactive, ref} from 'vue'
 
-        <a-modal :title="$gettext('Add Location')" v-model="adding" @ok="save">
-            <a-form-item :label="$gettext('Comments')">
-                <a-textarea v-model="location.comments"></a-textarea>
-            </a-form-item>
-            <a-form-item :label="$gettext('Path')">
-                <a-input addon-before="location" v-model="location.path"/>
-            </a-form-item>
-            <a-form-item :label="$gettext('Content')">
-                <vue-itextarea v-model="location.content" :default-text-height="200"/>
-            </a-form-item>
-        </a-modal>
+const {$gettext} = useGettext()
 
-        <div>
-            <a-button block @click="add">{{ $gettext('Add Location') }}</a-button>
-        </div>
-    </a-form-item>
-</template>
+const {locations} = defineProps<{
+    locations?: any[]
+}>()
 
-<script>
-import VueItextarea from '@/components/VueItextarea/VueItextarea'
+let location = reactive({
+    comments: '',
+    path: '',
+    content: '',
+})
 
-export default {
-    name: 'LocationEditor',
-    components: {VueItextarea},
-    props: {
-        locations: Array
-    },
-    data() {
-        return {
-            adding: false,
-            location: {},
-            update: 0
-        }
-    },
-    methods: {
-        add() {
-            this.adding = true
-            this.location = {}
-        },
-        save() {
-            this.adding = false
-            if (this.locations) {
-                this.locations.push(this.location)
-            } else {
-                this.locations = [this.location]
-            }
-            this.update++
-        },
-        remove(index) {
-            this.update++
-            this.locations.splice(index, 1)
-        }
-    }
+const adding = ref(false)
+
+function add() {
+    adding.value = true
+    location = reactive({
+        comments: '',
+        path: '',
+        content: '',
+    })
+}
+
+function save() {
+    adding.value = false
+    locations.push(this.location)
+}
+
+function remove(index) {
+    locations.splice(index, 1)
 }
 </script>
+
+<template>
+    <h2 v-translate>Locations</h2>
+    <a-empty v-if="!locations"/>
+    <a-card v-for="(v,k) in locations" :key="k"
+            :title="$gettext('Location')" size="small">
+        <a-form layout="vertical">
+            <a-form-item :label="$gettext('Comments')">
+                <a-textarea v-model:value="v.comments"/>
+            </a-form-item>
+            <a-form-item :label="$gettext('Path')">
+                <a-input addon-before="location" v-model:value="v.path"/>
+            </a-form-item>
+            <a-form-item :label="$gettext('Content')">
+                <code-editor v-model:content="v.content" default-height="200px"/>
+            </a-form-item>
+        </a-form>
+    </a-card>
+
+    <a-modal :title="$gettext('Add Location')" v-model:visible="adding" @ok="save">
+        <a-form layout="vertical">
+            <a-form-item :label="$gettext('Comments')">
+                <a-textarea v-model:value="location.comments"/>
+            </a-form-item>
+            <a-form-item :label="$gettext('Path')">
+                <a-input addon-before="location" v-model:value="location.path"/>
+            </a-form-item>
+            <a-form-item :label="$gettext('Content')">
+                <code-editor v-model:content="location.content" default-height="200px"/>
+            </a-form-item>
+        </a-form>
+    </a-modal>
+
+    <div>
+        <a-button block @click="add">{{ $gettext('Add Location') }}</a-button>
+    </div>
+</template>
 
 <style lang="less" scoped>
 .ant-card {

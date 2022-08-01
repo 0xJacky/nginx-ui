@@ -72,14 +72,15 @@
             </a-form-item>
         </a-form>
         <footer>
-            Copyright © 2020 - {{ thisYear }} Nginx UI | Language <set-language class="set_lang" style="display: inline"/>
+            Copyright © 2020 - {{ thisYear }} Nginx UI | Language
+            <set-language class="set_lang" style="display: inline"/>
         </footer>
     </div>
 
 </template>
 
 <script>
-import SetLanguage from "@/components/SetLanguage/SetLanguage";
+import SetLanguage from '@/components/SetLanguage/SetLanguage'
 
 export default {
     name: 'Login',

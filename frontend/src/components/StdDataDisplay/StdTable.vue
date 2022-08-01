@@ -1,352 +1,220 @@
+<script setup lang="ts">
+import gettext from '@/gettext'
+
+const {$gettext, interpolate} = gettext
+
+import StdDataEntry from '@/components/StdDataEntry'
+import StdPagination from './StdPagination.vue'
+import {nextTick, reactive, ref} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
+import {message} from 'ant-design-vue'
+
+const props = defineProps({
+    api: Object,
+    columns: Array,
+    data_key: {
+        type: String,
+        default: 'data'
+    },
+    disable_search: {
+        type: Boolean,
+        default: false
+    },
+    disable_add: {
+        type: Boolean,
+        default: false
+    },
+    edit_text: String,
+    deletable: {
+        type: Boolean,
+        default: true
+    },
+    get_params: {
+        type: Object,
+        default() {
+            return {}
+        }
+    },
+    editable: {
+        type: Boolean,
+        default: true
+    },
+    selectionType: {
+        type: String,
+        default: 'checkbox',
+        validator: function (value: string) {
+            return ['checkbox', 'radio'].indexOf(value) !== -1
+        }
+    },
+    pithy: {
+        type: Boolean,
+        default: false
+    },
+    scrollX: {
+        type: [Number, Boolean],
+        default: true
+    },
+    rowKey: {
+        type: String,
+        default: 'id'
+    }
+})
+
+
+const data_source = reactive([])
+const loading = ref(true)
+const pagination = ({
+    total: 1,
+    per_page: 10,
+    current_page: 1,
+    total_pages: 1
+})
+const route = useRoute()
+let params = reactive({
+    ...route.query,
+    ...props.get_params
+})
+let selectedRowKeys = ref([])
+const rowSelection = reactive({})
+
+const searchColumns = getSearchColumns()
+const pithyColumns = getPithyColumns()
+
+
+get_list()
+
+defineExpose({
+    get_list
+})
+
+function destroy(id: any) {
+    props.api!.destroy(id).then(() => {
+        get_list()
+        message.success(interpolate($gettext('Delete ID: %{id}'), {id: id}))
+    }).catch((e: any) => {
+        message.error(e?.message ?? $gettext('Server error'))
+    })
+}
+
+function get_list(page_num = null) {
+    loading.value = true
+    if (page_num) {
+        params['page'] = page_num
+    }
+    props.api!.get_list(params).then((r: any) => {
+        Object.assign(data_source, r.data)
+
+        if (r.pagination !== undefined) {
+            Object.assign(pagination, r.pagination)
+        }
+
+        loading.value = false
+    }).catch((e: any) => {
+        message.error(e?.message ?? $gettext('Server error'))
+    })
+}
+
+function stdChange(pagination: any, filters: any, sorter: any) {
+    if (sorter) {
+        params['order_by'] = sorter.field
+        params['sort'] = sorter.order === 'ascend' ? 'asc' : 'desc'
+        nextTick(() => {
+            get_list()
+        })
+    }
+}
+
+function getSearchColumns() {
+    let searchColumns: any = []
+    props.columns!.forEach((column: any) => {
+        if (column.search) {
+            searchColumns.push(column)
+        }
+    })
+    return searchColumns
+}
+
+function getPithyColumns() {
+    if (props.pithy) {
+        return props.columns!.filter((c: any, index: any, columns: any) => {
+            return c.pithy === true && c.display !== false
+        })
+    }
+    return props.columns!.filter((c: any, index: any, columns: any) => {
+        return c.display !== false
+    })
+}
+
+function checked(c: any) {
+    params[c.target.value] = c.target.checked
+}
+
+function onSelectChange(_selectedRowKeys: any) {
+    selectedRowKeys = reactive(_selectedRowKeys)
+    // this.$emit('selected', selectedRowKeys)
+}
+
+function onSelect(record: any) {
+    // this.$emit('selectedRecord', record)
+}
+
+const router = useRouter()
+
+const reset_search = async () => {
+    params = reactive({})
+    router.push({query: {}}).catch(() => {
+    })
+}
+</script>
+
 <template>
     <div class="std-table">
         <std-data-entry
             v-if="!disable_search"
             :data-list="searchColumns"
-            v-model="params"
+            v-model:data-source="params"
             layout="inline"
         >
-            <div slot="action">
-                <a-form-item :wrapper-col="{span:8}">
-                    <a-button type="primary" @click="$router.push({
-                        query: Object.assign({}, params),
-                    }).catch(() => {})">查询
-                    </a-button>
-                </a-form-item>
-                <a-form-item :wrapper-col="{span:8}">
-                    <a-button @click="reset_search">重置</a-button>
-                </a-form-item>
-            </div>
+            <template #action>
+                <a-button @click="reset_search">重置</a-button>
+            </template>
         </std-data-entry>
-        <div v-if="soft_delete" style="text-align: right">
-            <a v-if="params['trashed']" href="javascript:;"
-               @click="params['trashed']=false; get_list()">返回</a>
-            <a v-else href="javascript:;" @click="params['trashed']=true; get_list()">回收站</a>
-        </div>
         <a-table
             :columns="pithyColumns"
-            :customRow="row"
             :data-source="data_source"
             :loading="loading"
             :pagination="false"
             :row-key="rowKey"
             :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange,
-            onSelect: onSelect, type: selectionType,}"
+            onSelect: onSelect, type: selectionType}"
             @change="stdChange"
             :scroll="{ x: scrollX }"
         >
             <template
-                v-for="c in pithyColumns"
-                :slot="c.scopedSlots.customRender"
-                slot-scope="text, record"
+                v-slot:bodyCell="{text, record, index, column}"
             >
-                <div v-if="c.badge" :key="c.dataIndex">
-                    <a-badge v-if="text === true || text > 0" status="success"/>
-                    <a-badge v-else status="error"/>
-                    {{ c.mask ? c.mask[text] : text }}
-                </div>
-                <span v-else-if="c.datetime"
-                      :key="c.dataIndex">{{ text ? moment(text).format('yyyy-MM-DD HH:mm:ss') : '无' }}</span>
-                <span v-else-if="c.date" :key="c.dataIndex">{{ text ? moment(text).format('yyyy-MM-DD') : '无' }}</span>
-                <div v-else-if="c.click" :key="c.dataIndex">
-                    <a href="javascript:;"
-                       @click="handleClick(
-                           record[c.click.index?c.click.index:c.dataIndex],
-                           c.click.index?c.click.index:c.dataIndex,
-                           c.click.method, c.click.path)">
-                        {{ text != null ? text : c.default }}
+                <template v-if="column.dataIndex === 'action'">
+                    <a v-if="props.editable" @click="$emit('clickEdit', record[props.rowKey], record)">
+                        {{ props.edit_text || $gettext('Modify') }}
                     </a>
-                </div>
-                <span v-else :key="c.dataIndex">{{ text != null ? (c.mask ? c.mask[text] : text) : c.default }}</span>
-            </template>
-            <div class="std_action" v-if="!pithy" slot="action" slot-scope="text, record">
-                <a v-if="editable" @click="$emit('clickEdit', record[rowKey], record)">
-                    {{ edit_text }}
-                </a>
-                <slot name="actions" :record="record"/>
-                <template v-if="deletable">
-                    <a-divider type="vertical"/>
-                    <a-popconfirm
-                        v-if="soft_delete&&params.trashed"
-                        :cancelText="cancel_text"
-                        :okText="ok_text"
-                        :title="restore_title_text"
-                        @confirm="restore(record[rowKey])">
-                        <a href="javascript:;">{{ restore_action_text }}</a>
-                    </a-popconfirm>
-                    <a-popconfirm
-                        v-else
-                        :cancelText="cancel_text"
-                        :okText="ok_text"
-                        :title="destroy_title_text"
-                        @confirm="destroy(record[rowKey])">
-                        <a href="javascript:;">{{ destroy_action_text }}</a>
-                    </a-popconfirm>
+                    <slot name="actions" :record="record"/>
+                    <template v-if="props.deletable">
+                        <a-divider type="vertical"/>
+                        <a-popconfirm
+                            :cancelText="$gettext('No')"
+                            :okText="$gettext('OK')"
+                            :title="$gettext('Are you sure you want to delete ?')"
+                            @confirm="destroy(record[rowKey])">
+                            <a v-translate>Delete</a>
+                        </a-popconfirm>
+                    </template>
                 </template>
-            </div>
+            </template>
+
         </a-table>
         <std-pagination :pagination="pagination" @changePage="get_list"/>
     </div>
 </template>
-
-<script>
-import StdPagination from './StdPagination'
-import moment from 'moment'
-import StdDataEntry from '@/components/StdDataEntry/StdDataEntry'
-import $gettext, {$interpolate} from '@/lib/translate/gettext'
-
-export default {
-    name: 'StdTable',
-    components: {
-        StdDataEntry,
-        StdPagination,
-    },
-    props: {
-        columns: Array,
-        api: Object,
-        data_key: String,
-        selectionType: {
-            type: String,
-            default: 'checkbox',
-            validator: function (value) {
-                return ['checkbox', 'radio'].indexOf(value) !== -1
-            }
-        },
-        pithy: {
-            type: Boolean,
-            default: false
-        },
-        disable_search: {
-            type: Boolean,
-            default: false
-        },
-        soft_delete: {
-            type: Boolean,
-            default: false
-        },
-        edit_text: {
-            type: String,
-            default() {
-                return this.$gettext('Edit')
-            }
-        },
-        restore_title_text: {
-            type: String,
-            default() {
-                return this.$gettext('Are you sure you want to restore?')
-            }
-        },
-        restore_action_text: {
-            type: String,
-            default() {
-                return this.$gettext('Restore')
-            }
-        },
-        ok_text: {
-            type: String,
-            default() {
-                return this.$gettext('Yes, I\'m sure')
-            }
-        },
-        cancel_text: {
-            type: String,
-            default() {
-                return this.$gettext('No, I\'m rethink')
-            }
-        },
-        destroy_title_text: {
-            type: String,
-            default() {
-                return this.$gettext('Are you sure you want to destroy?')
-            }
-        },
-        destroy_action_text: {
-            type: String,
-            default() {
-                return this.$gettext('Destroy')
-            }
-        },
-        deletable: {
-            type: Boolean,
-            default: true
-        },
-        editable: {
-            type: Boolean,
-            default: true
-        },
-        get_params: {
-            type: Object,
-            default() {
-                return {}
-            }
-        },
-        scrollX: {
-            type: [Number, Boolean],
-            default: true
-        },
-        rowKey: {
-            type: String,
-            default: 'id'
-        }
-    },
-    data() {
-        return {
-            moment,
-            data_source: [],
-            loading: true,
-            pagination: {
-                total: 1,
-                per_page: 10,
-                current_page: 1,
-                total_pages: 1
-            },
-            params: {
-                ...this.$route.query,
-                ...this.get_params
-            },
-            selectedRowKeys: [],
-            rowSelection: {},
-            searchColumns: this.get_searchColumns(),
-            pithyColumns: this.get_pithyColumns(),
-        }
-    },
-    watch: {
-        $route() {
-            this.get_list()
-        }
-    },
-    created() {
-        this.get_list()
-    },
-    methods: {
-        restore(id) {
-            this.api.restore(id).then(() => {
-                this.get_list()
-                this.$message.success('反删除 ID: ' + id + ' 成功')
-            }).catch(e => {
-                console.log(e)
-                this.$message.error(e?.message ?? '系统错误')
-            })
-        },
-        destroy(id) {
-            this.api.destroy(id).then(() => {
-                this.get_list()
-                this.$message.success($interpolate($gettext('Delete ID: %{id}'), {id: id}))
-            }).catch(e => {
-                console.log(e)
-                this.$message.error(e?.message ?? $gettext('Server error'))
-            })
-        },
-        get_list(page_num = null) {
-            this.loading = true
-            if (page_num) {
-                this.params['page'] = page_num
-            }
-            this.api.get_list(this.params).then(response => {
-                if (response[this.data_key] === undefined && response.data !== undefined) {
-                    this.data_source = response.data
-                } else {
-                    this.data_source = response[this.data_key]
-                }
-                if (response.pagination !== undefined) {
-                    this.pagination = response.pagination
-                }
-                this.loading = false
-            }).catch(e => {
-                console.log(e)
-                this.$message.error(e?.message ?? '系统错误')
-            })
-        },
-        stdChange(pagination, filters, sorter) {
-            if (sorter) {
-                this.params['order_by'] = sorter.field
-                this.params['sort'] = sorter.order === 'ascend' ? 'asc' : 'desc'
-                this.$nextTick(() => {
-                    this.get_list()
-                })
-            }
-        },
-        get_searchColumns() {
-            let searchColumns = []
-            this.columns.forEach(column => {
-                if (column.search) {
-                    if (column.edit && column.edit.type !== 'upload'
-                        && column.edit.type !== 'transfer') {
-                        const tmp = Object.assign({}, column)
-                        tmp.edit = Object.assign({}, column.edit)
-                        if (typeof column.search === 'string') {
-                            tmp.edit.type = column.search
-                        } else if (typeof column.search === 'object') {
-                            tmp.edit = column.search
-                        }
-                        searchColumns.push(tmp)
-                    }
-                    // search 覆盖 edit
-                    if (!column.edit) {
-                        const tmp = Object.assign({}, column)
-                        tmp.edit = Object.assign({}, column.edit)
-                        if (typeof column.search === 'object') {
-                            tmp.edit = column.search
-                        }
-                        searchColumns.push(tmp)
-                    }
-                }
-            })
-            return searchColumns
-        },
-        get_pithyColumns() {
-            if (this.pithy) {
-                return this.columns.filter((c, index, columns) => {
-                    let display = c.pithy === true && c.display !== false
-                    columns[index]['scopedSlots'] = {}
-                    columns[index]['scopedSlots']['customRender'] =
-                        c.dataIndex !== 'title' ? c.dataIndex : '_' + c.dataIndex
-                    return display
-                })
-            }
-            return this.columns.filter((c, index, columns) => {
-                let display = c.display !== false
-                columns[index]['scopedSlots'] = {}
-                columns[index]['scopedSlots']['customRender'] =
-                    c.dataIndex !== 'title' ? c.dataIndex : '_' + c.dataIndex
-                return display
-            })
-        },
-        checked(c) {
-            this.params[c.target.value] = c.target.checked
-        },
-        onSelectChange(selectedRowKeys) {
-            this.selectedRowKeys = selectedRowKeys
-            this.$emit('selected', selectedRowKeys)
-        },
-        onSelect(record) {
-            this.$emit('selectedRecord', record)
-        },
-        handleClick(data, index, method = '', path = '') {
-            if (method === 'router') {
-                this.$router.push(path + '/' + data).then()
-            } else {
-                this.params[index] = data
-                this.get_list()
-            }
-        },
-        row(record) {
-            return {
-                on: {
-                    click: () => {
-                        this.$emit('clickRow', record.id)
-                    }
-                }
-            }
-        },
-        async reset_search() {
-            this.params = {}
-            await this.$router.push({query: {}}).catch(() => {
-            })
-        }
-    }
-}
-</script>
 
 <style lang="less">
 .ant-table-scroll {

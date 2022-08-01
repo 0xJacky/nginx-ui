@@ -1,102 +1,98 @@
+<script setup lang="ts">
+const thisYear = new Date().getFullYear()
+
+import {LockOutlined, UserOutlined} from '@ant-design/icons-vue'
+import {reactive, ref} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
+import gettext from '@/gettext'
+import {Form, message} from 'ant-design-vue'
+import auth from '@/api/auth'
+
+const route = useRoute()
+const router = useRouter()
+
+const {$gettext} = gettext
+const loading = ref(false)
+
+const modelRef = reactive({
+    username: '',
+    password: ''
+})
+
+const rulesRef = reactive({
+    username: [
+        {
+            required: true,
+            message: $gettext('Please input your username!'),
+        }
+    ],
+    password: [
+        {
+            required: true,
+            message: $gettext('Please input your password!'),
+        }
+    ]
+})
+
+const {validate, validateInfos} = Form.useForm(modelRef, rulesRef)
+
+const onSubmit = () => {
+    validate().then(() => {
+        // modelRef
+        auth.login(modelRef.username, modelRef.password).then(async () => {
+            message.success($gettext('Login successful'), 1)
+            const next = (route.query?.next || '').toString() || '/'
+            await router.push(next)
+        }).catch(e => {
+            message.error(e.message)
+        })
+    })
+}
+
+</script>
+
 <template>
     <div class="container">
         <div class="login-form">
             <div class="project-title">
                 <h1>Nginx UI</h1>
             </div>
-            <a-form
-                id="components-form-demo-normal-login"
-                :form="form"
-                @submit="handleSubmit"
-            >
-                <a-form-item>
+            <a-form id="components-form-demo-normal-login">
+                <a-form-item v-bind="validateInfos.username">
                     <a-input
-                        v-decorator="[
-          'name',
-          { rules: [{ required: true, message: $gettext('Please input your username!') }] },
-        ]"
+                        v-model:value="modelRef.username"
                         :placeholder="$gettext('Username')"
                     >
-                        <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)"/>
+                        <template #prefix>
+                            <UserOutlined style="color: rgba(0, 0, 0, 0.25)"/>
+                        </template>
                     </a-input>
                 </a-form-item>
-                <a-form-item>
-                    <a-input
-                        v-decorator="[
-          'password',
-          { rules: [{ required: true, message: $gettext('Please input your password!') }] },
-        ]"
-                        type="password"
+                <a-form-item v-bind="validateInfos.password">
+                    <a-input-password
+                        v-model:value="modelRef.password"
                         :placeholder="$gettext('Password')"
                     >
-                        <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)"/>
-                    </a-input>
+                        <template #prefix>
+                            <LockOutlined style="color: rgba(0, 0, 0, 0.25)"/>
+                        </template>
+                    </a-input-password>
                 </a-form-item>
                 <a-form-item>
-                    <a-button type="primary" :block="true" html-type="submit" :loading="loading">
+                    <a-button @click="onSubmit" type="primary" :block="true" html-type="submit" :loading="loading">
                         <translate>Login</translate>
                     </a-button>
                 </a-form-item>
             </a-form>
             <div class="footer">
-                Copyright © 2020 - {{ thisYear }} Nginx UI | Language
+                <p>Copyright © 2020 - {{ thisYear }} Nginx UI</p>
+                Language
                 <set-language class="set_lang" style="display: inline"/>
             </div>
         </div>
     </div>
 </template>
 
-<script>
-import SetLanguage from '@/components/SetLanguage/SetLanguage'
-import $gettext from '@/lib/translate/gettext'
-
-export default {
-    name: 'Login',
-    components: {SetLanguage},
-    data() {
-        return {
-            form: {},
-            thisYear: new Date().getFullYear(),
-            loading: false
-        }
-    },
-    created() {
-        this.form = this.$form.createForm(this)
-    },
-    mounted() {
-        this.$api.install.get_lock().then(r => {
-            if (!r.lock) {
-                this.$router.push('/install')
-            }
-        })
-        if (this.$store.state.user.token) {
-            this.$router.push('/')
-        }
-    },
-    methods: {
-        login(values) {
-            return this.$api.auth.login(values.name, values.password).then(async () => {
-                await this.$message.success($gettext('Login successful'), 1)
-                const next = this.$route.query.next ? this.$route.query.next : '/'
-                await this.$router.push(next)
-            }).catch(r => {
-                console.log(r)
-                this.$message.error(r.message ?? $gettext('Server error'))
-            })
-        },
-        handleSubmit: async function (e) {
-            e.preventDefault()
-            this.loading = true
-            await this.form.validateFields(async (err, values) => {
-                if (!err) {
-                    await this.login(values)
-                }
-                this.loading = false
-            })
-        },
-    },
-}
-</script>
 <style lang="less">
 .container {
     display: flex;

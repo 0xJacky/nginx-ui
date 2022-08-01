@@ -1,51 +1,68 @@
+<script setup lang="ts">
+import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
+import gettext from '@/gettext'
+import {message} from 'ant-design-vue'
+import auth from '@/api/auth'
+import {HomeOutlined, LogoutOutlined, MenuUnfoldOutlined} from '@ant-design/icons-vue'
+import {useRouter} from 'vue-router'
+
+const {$gettext} = gettext
+
+const router = useRouter()
+
+function logout() {
+    auth.logout().then(() => {
+        message.success($gettext('Logout successful'))
+    }).then(() => {
+        router.push('/login')
+    })
+}
+
+</script>
+
 <template>
     <div class="header">
         <div class="tool">
-            <a-icon type="menu-unfold" @click="$emit('clickUnFold')"/>
+            <MenuUnfoldOutlined @click="$emit('clickUnFold')"/>
         </div>
+
         <div class="user-wrapper">
-            <set-language class="set_lang" />
+            <set-language class="set_lang"/>
 
             <a href="/">
-                <a-icon type="home"/>
+                <HomeOutlined/>
             </a>
 
             <a @click="logout" style="margin-left: 20px">
-                <a-icon type="logout"/>
+                <LogoutOutlined/>
             </a>
         </div>
     </div>
 </template>
 
-<script>
-import SetLanguage from '@/components/SetLanguage/SetLanguage'
-import $gettext from "@/lib/translate/gettext";
-export default {
-    name: 'HeaderComponent',
-    components: {SetLanguage},
-    methods: {
-        logout() {
-            this.$api.auth.logout().then(() => {
-                this.$message.success($gettext('Logout successful'))
-                this.$router.push('/login')
-            })
-        }
-    }
-}
-</script>
 
 <style lang="less" scoped>
 .header {
     height: 64px;
     padding: 0 20px 0 0;
-    background: #fff;
+    background: transparent;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.05);
-    @media (prefers-color-scheme: dark) {
-        background: #28292c;
-        box-shadow: 1px 1px 0 0 #404040;
-    }
     position: fixed;
     width: 100%;
+
+    a {
+        color: #000000;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .header {
+        box-shadow: 1px 1px 0 0 #404040;
+
+        a {
+            color: #fafafa;
+        }
+    }
 }
 
 .tool {

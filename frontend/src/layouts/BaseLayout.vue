@@ -28,7 +28,7 @@
                 </a-layout-header>
 
                 <a-layout-content>
-                    <page-header :title="$route.name"/>
+                    <page-header/>
                     <div class="router-view">
                         <router-view/>
                     </div>
@@ -44,10 +44,10 @@
 </template>
 
 <script>
-import HeaderLayout from './HeaderLayout'
-import SideBar from './SideBar'
-import FooterLayout from './FooterLayout'
-import PageHeader from '@/components/PageHeader/PageHeader'
+import HeaderLayout from './HeaderLayout.vue'
+import SideBar from './SideBar.vue'
+import FooterLayout from './FooterLayout.vue'
+import PageHeader from '@/components/PageHeader/PageHeader.vue'
 import zh_CN from 'ant-design-vue/es/locale/zh_CN'
 import zh_TW from 'ant-design-vue/es/locale/zh_TW'
 import en_US from 'ant-design-vue/es/locale/en_US'
@@ -72,7 +72,14 @@ export default {
         HeaderLayout,
         FooterLayout
     },
-    methods: {},
+    methods: {
+        getClientWidth() {
+            return document.body.clientWidth
+        },
+        collapse() {
+            return !(this.getClientWidth() > 768 || this.getClientWidth() < 512)
+        }
+    },
     computed: {
         lang: {
             get() {
@@ -91,8 +98,8 @@ export default {
 </script>
 <style lang="less">
 .layout-sider .sidebar {
-    position: fixed;
-    width: 200px;
+    //position: fixed;
+    //width: 200px;
 
     ul.ant-menu-inline.ant-menu-root {
         height: calc(100vh - 120px);
@@ -111,6 +118,7 @@ export default {
     }
 }
 </style>
+
 <style lang="less">
 @dark: ~"(prefers-color-scheme: dark)";
 
@@ -118,15 +126,43 @@ body {
     overflow: unset !important;
 }
 
-p {
-    padding: 0 0 10px 0;
+@media @dark {
+    h1, h2, h3, h4, h5, h6, p {
+        color: #fafafa !important;
+    }
+
+}
+
+.ant-layout-header {
+    background-color: #fff;
+    @media @dark {
+        background-color: #1f1f1f !important;
+    }
+}
+
+.ant-card {
+    @media @dark {
+        background-color: #1f1f1f !important;
+    }
 }
 
 .ant-layout-sider {
     background-color: #ffffff;
     @media @dark {
-        background-color: #28292c;
+        background-color: rgb(20, 20, 20) !important;
+        .ant-layout-sider-trigger {
+            background-color: rgb(20, 20, 20) !important;
+        }
+
+        .ant-menu {
+            border-right: 0 !important;
+        }
     }
+
+    &.ant-layout-sider-has-trigger {
+        padding-bottom: 0;
+    }
+
     box-shadow: 2px 0 8px rgba(29, 35, 41, 0.05);
 }
 
@@ -149,7 +185,7 @@ p {
 }
 
 .ant-layout-header {
-    padding: 0;
+    padding: 0 !important;
 }
 
 .ant-table-small {
@@ -185,5 +221,9 @@ p {
         }
         position: relative;
     }
+}
+
+.ant-layout-footer {
+    text-align: center;
 }
 </style>

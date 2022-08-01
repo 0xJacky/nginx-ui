@@ -1,91 +1,47 @@
 {
-  "name": "nginx-ui-frontend",
-  "version": "1.5.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve --port 8021",
-    "build": "vue-cli-service build --dest dist --modern",
-    "lint": "vue-cli-service lint",
-    "serve-vite": "vite",
-    "build-vite": "vite build",
-    "preview-vite": "vite preview"
-  },
-  "dependencies": {
-    "@vitejs/plugin-react": "^2.0.0",
-    "ant-design-vue": "^1.7.3",
-    "apexcharts": "^3.33.1",
-    "axios": "^0.21.2",
-    "brace": "https://github.com/nightwing/brace",
-    "chart.js": "^2.9.4",
-    "core-js": "^3.9.0",
-    "less": "^3.11.1",
-    "less-loader": "^5.0.0",
-    "lodash": "^4.17.21",
-    "moment": "^2.24.0",
-    "node-sass": "^6.0.1",
-    "nprogress": "^0.2.0",
-    "reconnecting-websocket": "^4.4.0",
-    "vite-plugin-antdv1-momentjs-resolver": "^1.1.1",
-    "vue": "^2.7.8",
-    "vue-apexcharts": "^1.6.2",
-    "vue-chartjs": "^3.5.1",
-    "vue-cli-plugin-generate-build-id": "^0.2.0",
-    "vue-codemirror": "^4.0.6",
-    "vue-cropper": "^0.5.8",
-    "vue-gettext": "^2.1.12",
-    "vue-itextarea": "^1.0.9",
-    "vue-router": "^3.5.1",
-    "vue-template-babel-compiler": "^1.1.3",
-    "vue-template-compiler": "^2.7.8",
-    "vue2-ace-editor": "^0.0.15",
-    "vuex": "^3.6.2",
-    "vuex-persist": "^3.1.3",
-    "xterm": "^4.19.0",
-    "xterm-addon-attach": "^0.6.0",
-    "xterm-addon-fit": "^0.5.0"
-  },
-  "devDependencies": {
-    "@originjs/vite-plugin-commonjs": "^1.0.1",
-    "@vue/cli-plugin-babel": "~4.5.15",
-    "@vue/cli-plugin-eslint": "~4.5.15",
-    "@vue/cli-plugin-router": "~4.5.15",
-    "@vue/cli-plugin-vuex": "~4.5.15",
-    "@vue/cli-service": "~4.5.0",
-    "babel-eslint": "^10.1.0",
-    "babel-plugin-import": "^1.13.3",
-    "easygettext": "^2.17.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
-    "vite": "^3.0.3",
-    "vite-plugin-env-compatible": "^1.1.1",
-    "vite-plugin-html": "^3.2.0",
-    "vite-plugin-importer": "^0.2.5",
-    "vite-plugin-style-import": "^1.4.1",
-    "vite-plugin-vue2": "^1.9.0",
-    "yarn-audit-fix": "^9.3.2"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
+    "name": "nginx-ui-frontend-next",
+    "private": true,
+    "version": "1.5.0",
+    "type": "commonjs",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "gettext:extract": "vue-gettext-extract",
+        "gettext:compile": "vue-gettext-compile"
     },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
+    "dependencies": {
+        "@ant-design/icons-vue": "^6.1.0",
+        "ant-design-vue": "^3.2.10",
+        "apexcharts": "^3.35.4",
+        "axios": "^0.27.2",
+        "dayjs": "^1.11.4",
+        "lodash": "^4.17.21",
+        "pinia": "^2.0.17",
+        "pinia-plugin-persistedstate": "^1.6.3",
+        "reconnecting-websocket": "^4.4.0",
+        "vite-plugin-build-id": "^0.1.1",
+        "vue": "^3.2.37",
+        "vue-chartjs": "^4.1.1",
+        "vue-router": "4",
+        "vue3-ace-editor": "^2.2.2",
+        "vue3-apexcharts": "^1.4.1",
+        "vue3-gettext": "^2.3.0",
+        "vuex": "^4.0.2",
+        "xterm": "^4.19.0",
+        "xterm-addon-attach": "^0.6.0",
+        "xterm-addon-fit": "^0.5.0"
     },
-    "rules": {}
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
+    "devDependencies": {
+        "@types/lodash": "^4.14.182",
+        "@vitejs/plugin-vue": "^3.0.0",
+        "@vitejs/plugin-vue-jsx": "^2.0.0",
+        "@zougt/vite-plugin-theme-preprocessor": "^1.4.5",
+        "less": "^4.1.3",
+        "typescript": "^4.6.4",
+        "unplugin-vue-components": "^0.21.2",
+        "vite": "^3.0.0",
+        "vite-plugin-html": "^3.2.0",
+        "vue-tsc": "^0.38.4"
     }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
 }

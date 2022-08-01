@@ -1,5 +1,17 @@
+<script setup lang="ts">
+import gettext from '@/gettext'
+import logo from '@/assets/img/logo.png'
+
+const {$gettext} = gettext
+
+const this_year = new Date().getFullYear()
+const version = import.meta.env.VITE_APP_VERSION // import.meta.env.VITE_APP_VERSION
+const build_id = import.meta.env.VITE_APP_TOTAL_BUILD ?? $gettext('Development Mode')
+console.log(import.meta)
+</script>
+
 <template>
-    <a-card style="text-align: center">
+    <a-card style="text-align: center" :bordered="false">
         <div class="logo">
             <img :src="logo" alt="logo"/>
         </div>
@@ -7,12 +19,12 @@
         <p>Yet another WebUI for Nginx</p>
         <p>Version: {{ version }} ({{ build_id }})</p>
         <h3 v-translate>Project Team</h3>
-        <p><a href="https://jackyu.cn/">@0xJacky</a></p>
-        <p><a href="https://blog.kugeek.com/">@Hintay</a></p>
+        <p><a href="https://jackyu.cn/">@0xJacky</a> <a href="https://blog.kugeek.com/">@Hintay</a></p>
         <h3 v-translate>Build with</h3>
+        <p>❤️</p>
         <p>Go</p>
         <p>Gin</p>
-        <p>Vue</p>
+        <p>Vue3 + Vite + TypeScript</p>
         <p>Websocket</p>
         <h3 v-translate translate-context="Project">License</h3>
         <p>GNU General Public License v3.0</p>
@@ -20,26 +32,7 @@
     </a-card>
 </template>
 
-<script>
-import $gettext from "@/lib/translate/gettext";
-
-export default {
-    name: 'About',
-    data() {
-        const date = new Date()
-        return {
-            logo: require('@/assets/img/logo.png'),
-            this_year: date.getFullYear(),
-            version: process.env.VUE_APP_VERSION,
-            build_id: process.env.VUE_APP_TOTAL_BUILD ?? $gettext('Development Mode'),
-            api_root: process.env.VUE_APP_API_ROOT
-        }
-    }
-}
-</script>
-
 <style lang="less" scoped>
-
 .logo {
     img {
         max-width: 120px

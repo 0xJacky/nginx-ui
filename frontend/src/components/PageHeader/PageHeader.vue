@@ -1,29 +1,37 @@
+<script setup lang="ts">
+import Breadcrumb from '@/components/Breadcrumb/Breadcrumb.vue'
+import {useRoute} from 'vue-router'
+import {computed, ref, watch} from 'vue'
+
+const {title, logo, avatar} = defineProps(['title', 'logo', 'avatar'])
+
+const route = useRoute()
+
+const display = computed(() => {
+    return !route.meta.hiddenHeaderContent
+})
+
+const name = ref(route.name)
+watch(() => route.name, () => {
+    name.value = route.name
+})
+
+</script>
+
 <template>
-    <div v-if="!$route.meta.hiddenHeaderContent" class="page-header">
+    <div v-if="display" class="page-header">
         <div class="page-header-index-wide">
-            <s-breadcrumb/>
+            <Breadcrumb/>
             <div class="detail">
                 <div class="main">
                     <div class="row">
                         <img v-if="logo" :src="logo" class="logo"/>
-                        <h1 v-if="title" class="title">{{ title }}</h1>
+                        <h1 class="title">
+                            {{ name() }}
+                        </h1>
                         <div class="action">
                             <slot name="action"></slot>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div v-if="avatar" class="avatar">
-                            <a-avatar :src="avatar"/>
-                        </div>
-                        <div v-if="this.$slots.content" class="headerContent">
-                            <slot name="content"></slot>
-                        </div>
-                        <div v-if="this.$slots.extra" class="extra">
-                            <slot name="extra"></slot>
-                        </div>
-                    </div>
-                    <div>
-                        <slot name="pageMenu"></slot>
                     </div>
                 </div>
             </div>
@@ -31,46 +39,19 @@
     </div>
 </template>
 
-<script>
-import Breadcrumb from '@/components/Breadcrumb/Breadcrumb'
-
-export default {
-    name: 'PageHeader',
-    components: {
-        's-breadcrumb': Breadcrumb
-    },
-    props: {
-        title: {
-            type: [String, Boolean],
-            default: true,
-            required: false
-        },
-        logo: {
-            type: String,
-            default: '',
-            required: false
-        },
-        avatar: {
-            type: String,
-            default: '',
-            required: false
-        }
-    },
-    data() {
-        return {}
-    }
-}
-</script>
-
 <style lang="less" scoped>
 .page-header {
     background: #fff;
     padding: 16px 32px 0;
     border-bottom: 1px solid #e8e8e8;
     @media (prefers-color-scheme: dark) {
-        background: #28292c;
+        background: #28292c !important;
         border-bottom: unset;
+        h1 {
+            color: #fafafa;
+        }
     }
+
 
     .breadcrumb {
         margin-bottom: 16px;

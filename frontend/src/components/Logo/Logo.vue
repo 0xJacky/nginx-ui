@@ -1,3 +1,6 @@
+<script setup lang="ts">
+import logo from '@/assets/img/logo.png'</script>
+
 <template>
     <div class="logo">
         <img :src="logo" alt="logo"/>
@@ -5,17 +8,6 @@
         <div class="clear"></div>
     </div>
 </template>
-
-<script>
-export default {
-    name: 'Logo',
-    data() {
-        return {
-            logo: require('@/assets/img/logo.png')
-        }
-    }
-}
-</script>
 
 <style lang="less" scoped>
 .logo {
