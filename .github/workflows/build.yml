@@ -2,7 +2,8 @@ name: Build
 
 on:
     push:
-        branches: [ master ]
+        branches:
+            - '*'
         paths:
             - "**/*.js"
             - "**/*.vue"
@@ -37,7 +38,7 @@ jobs:
             - name: Set up nodejs
               uses: actions/setup-node@v2
               with:
-                  node-version: '16.x'
+                  node-version: '18.x'
                   cache: 'yarn'
                   cache-dependency-path: 'frontend/yarn.lock'
 
@@ -46,7 +47,7 @@ jobs:
               working-directory: frontend
 
             - name: Update tranlations
-              run: make translations
+              run: yarn gettext:compile
               working-directory: frontend
 
             - name: Build

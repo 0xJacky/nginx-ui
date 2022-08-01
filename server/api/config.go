@@ -45,7 +45,7 @@ func GetConfigs(c *gin.Context) {
 	configs = tool.Sort(orderBy, sort, mySort[orderBy], configs)
 
 	c.JSON(http.StatusOK, gin.H{
-		"configs": configs,
+		"data": configs,
 	})
 }
 

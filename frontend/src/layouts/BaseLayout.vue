@@ -1,19 +1,60 @@
+<script setup lang="ts">
+import HeaderLayout from './HeaderLayout.vue'
+import SideBar from './SideBar.vue'
+import FooterLayout from './FooterLayout.vue'
+import PageHeader from '@/components/PageHeader/PageHeader.vue'
+import zh_CN from 'ant-design-vue/es/locale/zh_CN'
+import zh_TW from 'ant-design-vue/es/locale/zh_TW'
+import en_US from 'ant-design-vue/es/locale/en_US'
+import {computed, ref} from 'vue'
+import _ from 'lodash'
+
+import gettext from '@/gettext'
+
+const drawer_visible = ref(false)
+const collapsed = ref(collapse())
+const clientWidth = ref(getClientWidth())
+
+addEventListener('resize', _.throttle(() => {
+    collapsed.value = collapse()
+}, 50))
+
+function getClientWidth() {
+    return document.body.clientWidth
+}
+
+function collapse() {
+    return getClientWidth() < 768
+}
+
+const lang = computed(() => {
+    switch (gettext.current) {
+        case 'zh_CN':
+            return zh_CN
+        case 'zh_TW':
+            return zh_TW
+        default:
+            return en_US
+    }
+})
+
+</script>
 <template>
     <a-config-provider :locale="lang">
         <a-layout style="min-height: 100%;">
-            <a-drawer
-                v-show="clientWidth<512"
-                :closable="false"
-                :visible="collapsed"
-                placement="left"
-                @close="collapsed=false"
-            >
-                <side-bar/>
-            </a-drawer>
+            <template v-show="clientWidth.value<512">
+                <a-drawer
+                    :closable="false"
+                    v-model:visible="drawer_visible"
+                    placement="left"
+                    @close="drawer_visible=false"
+                >
+                    <side-bar/>
+                </a-drawer>
+            </template>
 
             <a-layout-sider
-                v-show="clientWidth>=512"
-                v-model="collapsed"
+                v-model:collapsed="collapsed"
                 :collapsible="true"
                 :style="{zIndex: 11}"
                 theme="light"
@@ -24,11 +65,11 @@
 
             <a-layout>
                 <a-layout-header :style="{position: 'fixed', zIndex: 10, width:'100%'}">
-                    <header-layout @clickUnFold="collapsed=true"/>
+                    <header-layout @clickUnFold="drawer_visible=true"/>
                 </a-layout-header>
 
                 <a-layout-content>
-                    <page-header :title="$route.name"/>
+                    <page-header/>
                     <div class="router-view">
                         <router-view/>
                     </div>
@@ -43,56 +84,18 @@
     </a-config-provider>
 </template>
 
-<script>
-import HeaderLayout from './HeaderLayout'
-import SideBar from './SideBar'
-import FooterLayout from './FooterLayout'
-import PageHeader from '@/components/PageHeader/PageHeader'
-import zh_CN from 'ant-design-vue/es/locale/zh_CN'
-import zh_TW from 'ant-design-vue/es/locale/zh_TW'
-import en_US from 'ant-design-vue/es/locale/en_US'
-
-export default {
-    name: 'BaseLayout',
-    data() {
-        return {
-            collapsed: this.collapse(),
-            clientWidth: document.body.clientWidth,
-        }
-    },
-    mounted() {
-        window.onresize = () => {
-            this.collapsed = this.collapse()
-            this.clientWidth = this.getClientWidth()
-        }
-    },
-    components: {
-        SideBar,
-        PageHeader,
-        HeaderLayout,
-        FooterLayout
-    },
-    methods: {},
-    computed: {
-        lang: {
-            get() {
-                switch (this.$language.current) {
-                    case 'zh_CN':
-                        return zh_CN
-                    case 'zh_TW':
-                        return zh_TW
-                    default:
-                        return en_US
-                }
-            }
-        }
+<style lang="less" scoped>
+.layout-sider {
+    @media (max-width: 600px) {
+        display: none;
     }
 }
-</script>
+</style>
+
 <style lang="less">
 .layout-sider .sidebar {
-    position: fixed;
-    width: 200px;
+    //position: fixed;
+    //width: 200px;
 
     ul.ant-menu-inline.ant-menu-root {
         height: calc(100vh - 120px);
@@ -111,6 +114,7 @@ export default {
     }
 }
 </style>
+
 <style lang="less">
 @dark: ~"(prefers-color-scheme: dark)";
 
@@ -118,15 +122,44 @@ body {
     overflow: unset !important;
 }
 
-p {
-    padding: 0 0 10px 0;
+@media @dark {
+    h1, h2, h3, h4, h5, h6, p {
+        color: #fafafa !important;
+    }
+
+}
+
+.ant-layout-header {
+    padding: 0 !important;
+    background-color: #fff !important;
+    @media @dark {
+        background-color: #1f1f1f !important;
+    }
+}
+
+.ant-card {
+    @media @dark {
+        background-color: #1f1f1f !important;
+    }
 }
 
 .ant-layout-sider {
     background-color: #ffffff;
     @media @dark {
-        background-color: #28292c;
+        background-color: rgb(20, 20, 20) !important;
+        .ant-layout-sider-trigger {
+            background-color: rgb(20, 20, 20) !important;
+        }
+
+        .ant-menu {
+            border-right: 0 !important;
+        }
     }
+
+    &.ant-layout-sider-has-trigger {
+        padding-bottom: 0;
+    }
+
     box-shadow: 2px 0 8px rgba(29, 35, 41, 0.05);
 }
 
@@ -146,10 +179,6 @@ p {
             background-color: transparent !important;
         }
     }
-}
-
-.ant-layout-header {
-    padding: 0;
 }
 
 .ant-table-small {
@@ -185,5 +214,9 @@ p {
         }
         position: relative;
     }
+}
+
+.ant-layout-footer {
+    text-align: center;
 }
 </style>

@@ -1,8 +1,117 @@
+<script setup lang="ts">
+import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
+import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
+
+import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor'
+import {useGettext} from 'vue3-gettext'
+import {reactive, ref} from 'vue'
+import {useRoute} from 'vue-router'
+import domain from '@/api/domain'
+import ngx from '@/api/ngx'
+import {message} from 'ant-design-vue'
+
+
+const {$gettext, interpolate} = useGettext()
+
+const route = useRoute()
+
+const name = ref(route.params.name.toString())
+const update = ref(0)
+
+const ngx_config = reactive({
+    filename: '',
+    upstreams: [],
+    servers: []
+})
+
+const auto_cert = ref(false)
+const enabled = ref(false)
+const configText = ref('')
+const ok = ref(false)
+const advance_mode = ref(false)
+const saving = ref(false)
+
+init()
+
+function init() {
+    if (name.value) {
+        domain.get(name.value).then((r: any) => {
+            configText.value = r.config
+            enabled.value = r.enabled
+            auto_cert.value = r.auto_cert
+            Object.assign(ngx_config, r.tokenized)
+        }).catch(r => {
+            message.error(r.message ?? $gettext('Server error'))
+        })
+    }
+}
+
+function on_mode_change(advance_mode: boolean) {
+    if (advance_mode) {
+        build_config()
+    } else {
+        return ngx.tokenize_config(configText.value).then((r: any) => {
+            Object.assign(ngx_config, r.tokenized)
+        }).catch((e: any) => {
+            message.error(e?.message ?? $gettext('Server error'))
+        })
+    }
+}
+
+function build_config() {
+    return ngx.build_config(ngx_config).then((r: any) => {
+        configText.value = r.content
+    }).catch((e: any) => {
+        message.error(e?.message ?? $gettext('Server error'))
+    })
+}
+
+const save = async () => {
+    saving.value = true
+
+    if (!advance_mode.value) {
+        await build_config()
+    }
+
+    domain.save(name.value, {content: configText.value}).then(r => {
+        configText.value = r.config
+        enabled.value = r.enabled
+        Object.assign(ngx_config, r.tokenized)
+        message.success($gettext('Saved successfully'))
+
+        // TODO this.$refs.ngx_config.update_cert_info()
+
+    }).catch((e: any) => {
+        message.error(e?.message ?? $gettext('Server error'))
+    }).finally(() => {
+        saving.value = false
+    })
+
+}
+
+function enable() {
+    domain.enable(name.value).then(() => {
+        message.success($gettext('Enabled successfully'))
+        enabled.value = true
+    }).catch(r => {
+        message.error(interpolate($gettext('Failed to enable %{msg}'), {msg: r.message ?? ''}), 10)
+    })
+}
+
+function disable() {
+    domain.disable(name.value).then(() => {
+        message.success($gettext('Disabled successfully'))
+        enabled.value = false
+    }).catch(r => {
+        message.error(interpolate($gettext('Failed to disable %{msg}'), {msg: r.message ?? ''}))
+    })
+}
+</script>
 <template>
     <div>
         <a-card :bordered="false">
-            <template v-slot:title>
-                <span style="margin-right: 10px">{{ $gettextInterpolate($gettext('Edit %{n}'), {n: name}) }}</span>
+            <template #title>
+                <span style="margin-right: 10px">{{ interpolate($gettext('Edit %{n}'), {n: name}) }}</span>
                 <a-tag color="blue" v-if="enabled">
                     {{ $gettext('Enabled') }}
                 </a-tag>
@@ -10,30 +119,33 @@
                     {{ $gettext('Disabled') }}
                 </a-tag>
             </template>
-            <template v-slot:extra>
-                <a-switch size="small" v-model="advance_mode" @change="on_mode_change"/>
-                <template v-if="advance_mode">
-                    {{ $gettext('Advance Mode') }}
-                </template>
-                <template v-else>
-                    {{ $gettext('Basic Mode') }}
-                </template>
+            <template #extra>
+                <div class="mode-switch">
+                    <div class="switch">
+                        <a-switch size="small" v-model:checked="advance_mode" @change="on_mode_change"/>
+                    </div>
+                    <template v-if="advance_mode">
+                        <div>{{ $gettext('Advance Mode') }}</div>
+                    </template>
+                    <template v-else>
+                        <div>{{ $gettext('Basic Mode') }}</div>
+                    </template>
+                </div>
             </template>
 
             <transition name="slide-fade">
                 <div v-if="advance_mode" key="advance">
-                    <vue-itextarea v-model="configText"/>
+                    <code-editor v-model:content="configText"/>
                 </div>
 
                 <div class="domain-edit-container" key="basic" v-else>
                     <a-form-item :label="$gettext('Enabled')">
-                        <a-switch v-model="enabled" @change="checked=>{checked?enable():disable()}"/>
+                        <a-switch v-model:checked="enabled" @change="checked=>{checked?enable():disable()}"/>
                     </a-form-item>
-
                     <ngx-config-editor
-                        ref="ngx_config"
+                        ref="ngx_config_editor"
                         :ngx_config="ngx_config"
-                        v-model="auto_cert"
+                        v-model:auto_cert="auto_cert"
                         :enabled="enabled"
                     />
                 </div>
@@ -54,128 +166,6 @@
     </div>
 </template>
 
-
-<script>
-import FooterToolBar from '@/components/FooterToolbar/FooterToolBar'
-import VueItextarea from '@/components/VueItextarea/VueItextarea'
-import {$gettext, $interpolate} from '@/lib/translate/gettext'
-import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor'
-
-
-export default {
-    name: 'DomainEdit',
-    components: {NgxConfigEditor, FooterToolBar, VueItextarea},
-    data() {
-        return {
-            name: this.$route.params.name.toString(),
-            update: 0,
-            ngx_config: {
-                filename: '',
-                upstreams: [],
-                servers: []
-            },
-            auto_cert: false,
-            current_server_index: 0,
-            enabled: false,
-            configText: '',
-            ws: null,
-            ok: false,
-            issuing_cert: false,
-            advance_mode: false,
-            saving: false
-        }
-    },
-    watch: {
-        '$route'() {
-            this.init()
-        },
-    },
-    created() {
-        this.init()
-    },
-    destroyed() {
-        if (this.ws !== null) {
-            this.ws.close()
-        }
-    },
-    methods: {
-        init() {
-            if (this.name) {
-                this.$api.domain.get(this.name).then(r => {
-                    this.configText = r.config
-                    this.enabled = r.enabled
-                    this.ngx_config = r.tokenized
-                    this.auto_cert = r.auto_cert
-                }).catch(r => {
-                    this.$message.error(r.message ?? $gettext('Server error'))
-                })
-            }
-        },
-        on_mode_change(advance_mode) {
-            if (advance_mode) {
-                this.build_config()
-            } else {
-                return this.$api.ngx.tokenize_config(this.configText).then(r => {
-                    this.ngx_config = r
-                }).catch(r => {
-                    this.$message.error(r.message ?? $gettext('Server error'))
-                })
-            }
-        },
-        build_config() {
-            return this.$api.ngx.build_config(this.ngx_config).then(r => {
-                this.configText = r.content
-            }).catch(r => {
-                this.$message.error(r.message ?? $gettext('Server error'))
-            })
-        },
-        async save() {
-            this.saving = true
-
-            if (!this.advance_mode) {
-                await this.build_config()
-            }
-
-            this.$api.domain.save(this.name, {content: this.configText}).then(r => {
-                this.configText = r.config
-                this.enabled = r.enabled
-                this.ngx_config = r.tokenized
-                this.$message.success($gettext('Saved successfully'))
-
-                this.$refs.ngx_config.update_cert_info()
-
-            }).catch(r => {
-                this.$message.error($interpolate($gettext('Save error %{msg}'), {msg: r.message ?? ''}), 10)
-            }).finally(() => {
-                this.saving = false
-            })
-
-        },
-        enable() {
-            this.$api.domain.enable(this.name).then(() => {
-                this.$message.success($gettext('Enabled successfully'))
-                this.enabled = true
-            }).catch(r => {
-                this.$message.error($interpolate($gettext('Failed to enable %{msg}'), {msg: r.message ?? ''}), 10)
-            })
-        },
-        disable() {
-            this.$api.domain.disable(this.name).then(() => {
-                this.$message.success($gettext('Disabled successfully'))
-                this.enabled = false
-            }).catch(r => {
-                this.$message.error($interpolate($gettext('Failed to disable %{msg}'), {msg: r.message ?? ''}))
-            })
-        }
-    },
-    computed: {
-        is_demo() {
-            return this.$store.getters.env.demo === true
-        }
-    }
-}
-</script>
-
 <style lang="less">
 
 </style>
@@ -186,13 +176,19 @@ export default {
     box-shadow: unset;
 }
 
+.mode-switch {
+    display: flex;
+
+    .switch {
+        display: flex;
+        align-items: center;
+        margin-right: 5px;
+    }
+}
+
 .domain-edit-container {
     max-width: 800px;
     margin: 0 auto;
-
-    /deep/ .ant-form-item-label > label::after {
-        content: none;
-    }
 }
 
 .slide-fade-enter-active {

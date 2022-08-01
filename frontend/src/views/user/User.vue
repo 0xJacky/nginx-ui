@@ -1,59 +1,52 @@
-<template>
-    <std-curd :columns="columns" :api="api" :disable_search="true"/>
-</template>
+<script setup lang="ts">
+import StdCurd from '@/components/StdDataDisplay/StdCurd.vue'
+import gettext from '@/gettext'
+import user from '@/api/user'
+import {datetime} from '@/components/StdDataDisplay/StdTableTransformer'
+import {input} from '@/components/StdDataEntry'
 
-<script>
-
-import StdCurd from '@/components/StdDataDisplay/StdCurd'
-import $gettext from '@/lib/translate/gettext'
+const {$gettext} = gettext
 
 const columns = [{
-    title: $gettext('Username'),
+    title: () => $gettext('Username'),
     dataIndex: 'name',
     sorter: true,
     pithy: true,
     edit: {
-        type: 'input'
-    }
+        type: input
+    },
+    search: true
 }, {
-    title: $gettext('Password'),
+    title: () => $gettext('Password'),
     dataIndex: 'password',
     sorter: true,
     pithy: true,
     edit: {
-        type: 'input',
-        placeholder: $gettext('Leave blank for no change')
+        type: input,
+        placeholder: () => $gettext('Leave blank for no change')
     },
     display: false
 }, {
-    title: $gettext('Created at'),
+    title: () => $gettext('Created at'),
     dataIndex: 'created_at',
-    datetime: true,
+    customRender: datetime,
     sorter: true,
     pithy: true
 }, {
-    title: $gettext('Updated at'),
+    title: () => $gettext('Updated at'),
     dataIndex: 'updated_at',
-    datetime: true,
+    customRender: datetime,
     sorter: true,
     pithy: true
 }, {
-    title: $gettext('Action'),
+    title: () => $gettext('Action'),
     dataIndex: 'action'
 }]
-
-export default {
-    name: 'User',
-    components: {StdCurd},
-    data() {
-        return {
-            api: this.$api.user,
-            columns
-        }
-    },
-    methods: {}
-}
 </script>
+
+<template>
+    <std-curd :columns="columns" :api="user"/>
+</template>
 
 <style scoped>
 
