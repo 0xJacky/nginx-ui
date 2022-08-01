@@ -5,6 +5,7 @@ import Components from 'unplugin-vue-components/vite'
 import {AntDesignVueResolver} from 'unplugin-vue-components/resolvers'
 import {fileURLToPath, URL} from 'url'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import vitePluginBuildId from 'vite-plugin-build-id'
 
 
 // https://vitejs.dev/config/
@@ -24,7 +25,7 @@ export default defineConfig({
             '.less'
         ]
     },
-    plugins: [vue(), vueJsx(),
+    plugins: [vue(), vueJsx(), vitePluginBuildId(),
         Components({
             resolvers: [AntDesignVueResolver({importStyle: false})]
         }),
@@ -51,6 +52,9 @@ export default defineConfig({
             },
         }),
     ],
+    define: {
+        'APP_VERSION': JSON.stringify(process.env.npm_package_version)
+    },
     css: {
         preprocessorOptions: {
             less: {

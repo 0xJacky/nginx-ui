@@ -11,7 +11,7 @@ const {content} = defineProps(['content'])
         v-model:value="content"
         lang="nginx"
         theme="monokai"
-        style="height: 300px"/>
+        style="min-height: 100vh"/>
 </template>
 
 <style scoped>

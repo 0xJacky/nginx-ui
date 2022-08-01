@@ -109,7 +109,7 @@ function disable() {
 <template>
     <div>
         <a-card :bordered="false">
-            <template v-slot:title>
+            <template #title>
                 <span style="margin-right: 10px">{{ interpolate($gettext('Edit %{n}'), {n: name}) }}</span>
                 <a-tag color="blue" v-if="enabled">
                     {{ $gettext('Enabled') }}
@@ -118,14 +118,18 @@ function disable() {
                     {{ $gettext('Disabled') }}
                 </a-tag>
             </template>
-            <template v-slot:extra>
-                <a-switch size="small" v-model:checked="advance_mode" @change="on_mode_change"/>
-                <template v-if="advance_mode">
-                    {{ $gettext('Advance Mode') }}
-                </template>
-                <template v-else>
-                    {{ $gettext('Basic Mode') }}
-                </template>
+            <template #extra>
+                <div class="mode-switch">
+                    <div class="switch">
+                        <a-switch size="small" v-model:checked="advance_mode" @change="on_mode_change"/>
+                    </div>
+                    <template v-if="advance_mode">
+                        <div>{{ $gettext('Advance Mode') }}</div>
+                    </template>
+                    <template v-else>
+                        <div>{{ $gettext('Basic Mode') }}</div>
+                    </template>
+                </div>
             </template>
 
             <transition name="slide-fade">
@@ -172,13 +176,19 @@ function disable() {
     box-shadow: unset;
 }
 
+.mode-switch {
+    display: flex;
+
+    .switch {
+        display: flex;
+        align-items: center;
+        margin-right: 5px;
+    }
+}
+
 .domain-edit-container {
     max-width: 800px;
     margin: 0 auto;
-
-    /deep/ .ant-form-item-label > label::after {
-        content: none;
-    }
 }
 
 .slide-fade-enter-active {

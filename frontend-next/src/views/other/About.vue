@@ -5,9 +5,9 @@ import logo from '@/assets/img/logo.png'
 const {$gettext} = gettext
 
 const this_year = new Date().getFullYear()
-const version = import.meta.env.VITE_APP_VERSION
+const version = import.meta.env.VITE_APP_VERSION // import.meta.env.VITE_APP_VERSION
 const build_id = import.meta.env.VITE_APP_TOTAL_BUILD ?? $gettext('Development Mode')
-const api_root = import.meta.env.VITE_API_ROOT
+console.log(import.meta)
 </script>
 
 <template>

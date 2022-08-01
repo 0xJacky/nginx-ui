@@ -1,11 +1,11 @@
 {
     "name": "nginx-ui-frontend-next",
     "private": true,
-    "version": "0.0.0",
+    "version": "1.5.0",
     "type": "commonjs",
     "scripts": {
         "dev": "vite",
-        "build": "vue-tsc --noEmit && vite build",
+        "build": "vite build",
         "preview": "vite preview",
         "gettext:extract": "vue-gettext-extract",
         "gettext:compile": "vue-gettext-compile"
@@ -21,6 +21,7 @@
         "pinia": "^2.0.17",
         "pinia-plugin-persistedstate": "^1.6.3",
         "reconnecting-websocket": "^4.4.0",
+        "vite-plugin-build-id": "^0.1.1",
         "vue": "^3.2.37",
         "vue-chartjs": "^4.1.1",
         "vue-router": "4",
