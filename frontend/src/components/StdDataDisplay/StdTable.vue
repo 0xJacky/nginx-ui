@@ -5,7 +5,7 @@ const {$gettext, interpolate} = gettext
 
 import StdDataEntry from '@/components/StdDataEntry'
 import StdPagination from './StdPagination.vue'
-import {nextTick, reactive, ref} from 'vue'
+import {nextTick, reactive, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import {message} from 'ant-design-vue'
 
@@ -61,9 +61,9 @@ const props = defineProps({
 })
 
 
-const data_source = reactive([])
+const data_source = ref([])
 const loading = ref(true)
-const pagination = ({
+const pagination = reactive({
     total: 1,
     per_page: 10,
     current_page: 1,
@@ -79,7 +79,6 @@ const rowSelection = reactive({})
 
 const searchColumns = getSearchColumns()
 const pithyColumns = getPithyColumns()
-
 
 get_list()
 
@@ -102,7 +101,7 @@ function get_list(page_num = null) {
         params['page'] = page_num
     }
     props.api!.get_list(params).then((r: any) => {
-        Object.assign(data_source, r.data)
+        data_source.value = r.data
 
         if (r.pagination !== undefined) {
             Object.assign(pagination, r.pagination)
@@ -161,10 +160,17 @@ function onSelect(record: any) {
 const router = useRouter()
 
 const reset_search = async () => {
-    params = reactive({})
+    Object.keys(params).forEach(v => {
+        delete params[v]
+    })
     router.push({query: {}}).catch(() => {
     })
 }
+
+watch(params, () => {
+    router.push({query: params})
+    get_list()
+})
 </script>
 
 <template>
@@ -212,7 +218,6 @@ const reset_search = async () => {
                     </template>
                 </template>
             </template>
-
         </a-table>
         <std-pagination :pagination="pagination" @changePage="get_list"/>
     </div>

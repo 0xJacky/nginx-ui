@@ -4,7 +4,7 @@ import {If} from '@/views/domain/ngx_conf'
 import DirectiveAdd from '@/views/domain/ngx_conf/directive/DirectiveAdd'
 import {useGettext} from 'vue3-gettext'
 import {reactive, ref} from 'vue'
-import {CloseOutlined} from '@ant-design/icons-vue'
+import {DeleteOutlined} from '@ant-design/icons-vue'
 
 const {$gettext} = useGettext()
 
@@ -45,19 +45,23 @@ function onSave(idx: number) {
     <a-form-item v-for="(directive,index) in ngx_directives" @click="current_idx=index">
         <code-editor v-if="directive.directive === If" v-model:content="directive.params"
                      defaultHeight="100px"/>
-        <a-input :addon-before="directive.directive" v-model:value="directive.params" @click="current_idx=k"
-                 v-else>
-            <template #suffix>
-                <a-popconfirm @confirm="remove(index)"
-                              :title="$gettext('Are you sure you want to remove this directive?')"
-                              :ok-text="$gettext('Yes')"
-                              :cancel-text="$gettext('No')">
-                    <CloseOutlined style="color: rgba(0,0,0,.45);font-size: 10px;"/>
-                </a-popconfirm>
-            </template>
-        </a-input>
+        <div class="input-wrapper" v-else>
+            <a-input :addon-before="directive.directive" v-model:value="directive.params" @click="current_idx=k"
+            >
+            </a-input>
+            <a-popconfirm @confirm="remove(index)"
+                          :title="$gettext('Are you sure you want to remove this directive?')"
+                          :ok-text="$gettext('Yes')"
+                          :cancel-text="$gettext('No')">
+                <a-button>
+                    <template #icon>
+                        <DeleteOutlined style="font-size: 14px;"/>
+                    </template>
+                </a-button>
+            </a-popconfirm>
+        </div>
         <transition name="slide">
-            <div v-if="current_idx===index" class="extra">
+            <div v-if="current_idx===index" class="directive-editor-extra">
                 <div class="extra-content">
                     <a-form layout="vertical">
                         <a-form-item :label="$gettext('Comments')">
@@ -74,7 +78,7 @@ function onSave(idx: number) {
 </template>
 
 <style lang="less" scoped>
-.extra {
+.directive-editor-extra {
     background-color: #fafafa;
     padding: 10px 20px 20px;
     margin-bottom: 10px;
@@ -90,5 +94,10 @@ function onSave(idx: number) {
 
 .slide-enter-to, .slide-leave-from {
     max-height: 600px;
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 10px;
 }
 </style>

@@ -28,11 +28,11 @@ function add() {
 
 function save() {
     adding.value = false
-    locations.push(this.location)
+    locations?.push(location)
 }
 
-function remove(index) {
-    locations.splice(index, 1)
+function remove(index: number) {
+    locations?.splice(index, 1)
 }
 </script>
 
@@ -43,7 +43,7 @@ function remove(index) {
             :title="$gettext('Location')" size="small">
         <a-form layout="vertical">
             <a-form-item :label="$gettext('Comments')">
-                <a-textarea v-model:value="v.comments"/>
+                <a-textarea v-model:value="v.comments" :bordered="false"/>
             </a-form-item>
             <a-form-item :label="$gettext('Path')">
                 <a-input addon-before="location" v-model:value="v.path"/>

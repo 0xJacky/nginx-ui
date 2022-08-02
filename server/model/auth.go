@@ -2,6 +2,7 @@ package model
 
 import (
 	"github.com/0xJacky/Nginx-UI/server/settings"
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"time"
 )
@@ -28,6 +29,23 @@ func GetUser(name string) (user Auth, err error) {
 		return Auth{}, err
 	}
 	return user, err
+}
+
+func GetUserList(c *gin.Context, username interface{}) (data DataList) {
+	var total int64
+	db.Model(&Auth{}).Count(&total)
+	var users []Auth
+
+	result := db.Model(&Auth{}).Scopes(orderAndPaginate(c))
+
+	if username != "" {
+		result = result.Where("name LIKE ?", "%"+username.(string)+"%")
+	}
+
+	result.Find(&users)
+
+	data = GetListWithPagination(&users, c, total)
+	return
 }
 
 func DeleteToken(token string) error {

@@ -25,6 +25,7 @@ type Server struct {
 	Database          string
 	StartCmd          string
 	Demo              bool
+	PageSize          int
 }
 
 var ServerSettings = &Server{
@@ -34,6 +35,7 @@ var ServerSettings = &Server{
 	Database:          "database",
 	StartCmd:          "login",
 	Demo:              false,
+	PageSize:          10,
 }
 
 var ConfPath string

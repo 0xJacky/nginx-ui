@@ -11,18 +11,9 @@ import (
 )
 
 func GetUsers(c *gin.Context) {
-	curd := model.NewCurd(&model.Auth{})
+	data := model.GetUserList(c, c.Query("name"))
 
-	var list []model.Auth
-	err := curd.GetList(&list)
-
-	if err != nil {
-		ErrHandler(c, err)
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": list,
-	})
+	c.JSON(http.StatusOK, data)
 }
 
 func GetUser(c *gin.Context) {
