@@ -51,12 +51,15 @@ function save() {
                 </a-select>
             </a-form-item>
             <a-form-item>
-                <code-editor v-if="mode===If" default-height="100px" v-model:content="directive.params"/>
-                <div class="input-wrapper" v-else>
-                    <a-input-group compact>
+
+                <div class="input-wrapper">
+                    <code-editor v-if="mode===If" default-height="100px" style="width: 100%;"
+                                 v-model:content="directive.params"/>
+                    <a-input-group v-else compact>
                         <a-input style="width: 30%" :placeholder="$gettext('Directive')" v-model="directive.directive"/>
                         <a-input style="width: 70%" :placeholder="$gettext('Params')" v-model="directive.params"/>
                     </a-input-group>
+
                     <a-button @click="adding=false">
                         <template #icon>
                             <DeleteOutlined style="font-size: 14px;"/>
@@ -77,5 +80,6 @@ function save() {
 .input-wrapper {
     display: flex;
     gap: 10px;
+    align-items: center;
 }
 </style>

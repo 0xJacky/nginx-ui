@@ -74,7 +74,7 @@ URL：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
 
 - Online view of server CPU, Memory, Load Average, Disk Usage and other indicators.
 - One-click deployment and automatic renewal Let's Encrypt certificates.
-- Online editing websites configuration files, the editor support highlight nginx configuration syntax.
+- Online editing websites configurations with our self-designed **NgxConfigEditor** which is a user-friendly block editor or **Ace Code Editor** which support highlight nginx configuration syntax.
 - Written in Go and Vue, distribution is a single executable binary.
 - Automatically test configuration file and reload nginx after saving configuration.
 - Web Terminal
@@ -91,11 +91,15 @@ We welcome translations into any language.
 
 ### Built With
 
-- [The Go Programming Language](https://go.dev/)
+- [The Go Programming Language](https://go.dev)
 - [Gin Web Framework](https://gin-gonic.com)
-- [GORM](http://gorm.io/index.html)
-- [Vue 2](https://vuejs.org)
-- [vue-gettext](https://github.com/Polyconseil/vue-gettext)
+- [GORM](http://gorm.io)
+- [Vue 3](https://v3.vuejs.org)
+- [Vite](https://vitejs.dev)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Ant Design Vue](https://antdv.com)
+- [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
+- [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
 
 ## Getting Started
 
@@ -175,7 +179,9 @@ systemctl restart nginx-ui
 
 You can use our `uozi/nginx-ui:latest` [image](https://hub.docker.com/r/uozi/nginx-ui) in docker, which is base on `nginx:latest`. You can replace the Nginx on host by publishing port 80 and 443 to host.
 
-Note: The volume mapping to `/etc/nginx` should be empty.
+##### Note
+1. The volume mapping to `/etc/nginx` should be empty.
+2. If you want to host static files, map a directory to container.
 
 **Docker Deploy Example**
 
@@ -186,6 +192,7 @@ docker run -dit \
   -e TZ=Asia/Shanghai \
   -v /mnt/user/appdata/nginx:/etc/nginx \
   -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
+  -v /var/www:/var/www \
   -p 8080:80 -p 8443:443 \
   uozi/nginx-ui:latest
 ```
@@ -201,7 +208,7 @@ On platforms that do not have an official build version, they can be built manua
 
 - Golang 1.18+
 
-- node.js 14+
+- node.js 18+
 
   ```shell
   npx browserslist@latest --update-db
@@ -213,7 +220,6 @@ Please execute the following command in `frontend` directory.
 
 ```shell
 yarn install
-make translations
 yarn build
 ```
 
