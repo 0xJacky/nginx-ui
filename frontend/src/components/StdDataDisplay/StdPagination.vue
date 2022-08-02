@@ -17,7 +17,6 @@ function changePage(num: number) {
             :pageSize="pagination.per_page"
             :size="size"
             :total="pagination.total"
-            :show-total="(total, range) => `当前显示${range[0]}-${range[1]}条数据，共${total}条数据`"
             class="pagination"
             @change="changePage"
         />

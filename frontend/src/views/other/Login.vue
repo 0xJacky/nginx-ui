@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {useUserStore} from '@/pinia'
+
 const thisYear = new Date().getFullYear()
 
 import {LockOutlined, UserOutlined} from '@ant-design/icons-vue'
@@ -23,13 +25,13 @@ const rulesRef = reactive({
     username: [
         {
             required: true,
-            message: $gettext('Please input your username!'),
+            message: () => $gettext('Please input your username!'),
         }
     ],
     password: [
         {
             required: true,
-            message: $gettext('Please input your password!'),
+            message: () => $gettext('Please input your password!'),
         }
     ]
 })
@@ -44,9 +46,16 @@ const onSubmit = () => {
             const next = (route.query?.next || '').toString() || '/'
             await router.push(next)
         }).catch(e => {
-            message.error(e.message)
+            message.error(e.message ?? $gettext('Server error'))
         })
     })
+}
+
+const user = useUserStore()
+
+if (user.is_login) {
+    const next = (route.query?.next || '').toString() || '/dashboard'
+    router.push(next)
 }
 
 </script>

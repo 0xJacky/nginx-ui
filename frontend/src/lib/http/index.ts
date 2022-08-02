@@ -2,14 +2,11 @@ import axios, {AxiosRequestConfig} from 'axios'
 import {useUserStore} from '@/pinia'
 import {storeToRefs} from 'pinia'
 
+import router from '@/routes'
+
 const user = useUserStore()
 
 const {token} = storeToRefs(user)
-
-declare module 'axios' {
-    export interface AxiosResponse<T = any> extends Promise<T> {
-    }
-}
 
 let instance = axios.create({
     baseURL: import.meta.env.VITE_API_ROOT,
@@ -38,7 +35,6 @@ instance.interceptors.request.use(
     }
 )
 
-
 instance.interceptors.response.use(
     response => {
         return Promise.resolve(response.data)
@@ -47,6 +43,8 @@ instance.interceptors.response.use(
         switch (error.response.status) {
             case 401:
             case 403:
+                user.logout()
+                await router.push('/login')
                 break
         }
         return Promise.reject(error.response.data)
