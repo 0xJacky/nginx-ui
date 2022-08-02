@@ -43,12 +43,15 @@ function onSave(idx: number) {
     <h2>{{ $gettext('Directives') }}</h2>
 
     <a-form-item v-for="(directive,index) in ngx_directives" @click="current_idx=index">
-        <code-editor v-if="directive.directive === If" v-model:content="directive.params"
-                     defaultHeight="100px"/>
-        <div class="input-wrapper" v-else>
-            <a-input :addon-before="directive.directive" v-model:value="directive.params" @click="current_idx=k"
-            >
-            </a-input>
+
+        <div class="input-wrapper">
+            <code-editor v-if="directive.directive === If" v-model:content="directive.params"
+                         defaultHeight="100px" style="width: 100%;"/>
+
+            <a-input v-else
+                     :addon-before="directive.directive"
+                     v-model:value="directive.params" @click="current_idx=index"/>
+
             <a-popconfirm @confirm="remove(index)"
                           :title="$gettext('Are you sure you want to remove this directive?')"
                           :ok-text="$gettext('Yes')"
@@ -99,5 +102,6 @@ function onSave(idx: number) {
 .input-wrapper {
     display: flex;
     gap: 10px;
+    align-items: center;
 }
 </style>
