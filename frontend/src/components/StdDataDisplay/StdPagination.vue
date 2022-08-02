@@ -1,35 +1,27 @@
+<script setup lang="ts">
+import {useGettext} from 'vue3-gettext'
+
+const {pagination, size} = defineProps(['pagination', 'size'])
+const emit = defineEmits(['changePage'])
+const {$gettext} = useGettext()
+
+function changePage(num: number) {
+    emit('changePage', num)
+}
+</script>
+
 <template>
-    <div v-if="Object.keys(pagination).length !== 0">
+    <div v-if="pagination.total>pagination.per_page">
         <a-pagination
             :current="pagination.current_page"
-            :hideOnSinglePage="true"
             :pageSize="pagination.per_page"
             :size="size"
             :total="pagination.total"
-            :show-total="(total, range) => `当前显示${range[0]}-${range[1]}条数据，共${total}条数据`"
             class="pagination"
             @change="changePage"
         />
-        <div class="clear"></div>
     </div>
 </template>
-
-<script>
-export default {
-    name: 'StdPagination',
-    props: {
-        pagination: Object,
-        size: {
-            default: ''
-        }
-    },
-    methods: {
-        changePage(num) {
-            return this.$emit('changePage', num)
-        }
-    }
-}
-</script>
 
 <style lang="less">
 .ant-pagination-total-text {

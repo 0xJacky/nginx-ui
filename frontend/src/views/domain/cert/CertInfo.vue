@@ -19,6 +19,10 @@ function get() {
         ok.value = false
     })
 }
+
+defineExpose({
+    get
+})
 </script>
 
 <template>

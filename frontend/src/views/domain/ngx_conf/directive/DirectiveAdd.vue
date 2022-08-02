@@ -3,7 +3,7 @@ import {If} from '@/views/domain/ngx_conf'
 import CodeEditor from '@/components/CodeEditor'
 import {reactive, ref} from 'vue'
 import {useGettext} from 'vue3-gettext'
-import {CloseOutlined} from '@ant-design/icons-vue'
+import {DeleteOutlined} from '@ant-design/icons-vue'
 
 const {$gettext} = useGettext()
 
@@ -52,17 +52,18 @@ function save() {
             </a-form-item>
             <a-form-item>
                 <code-editor v-if="mode===If" default-height="100px" v-model:content="directive.params"/>
-
-                <a-input-group compact v-else>
-
-                    <a-input style="width: 30%" :placeholder="$gettext('Directive')" v-model="directive.directive"/>
-
-                    <a-input style="width: 70%" :placeholder="$gettext('Params')" v-model="directive.params">
-                        <template #suffix>
-                            <CloseOutlined @click="adding=false" style="color: rgba(0,0,0,.45);font-size: 10px;"/>
+                <div class="input-wrapper" v-else>
+                    <a-input-group compact>
+                        <a-input style="width: 30%" :placeholder="$gettext('Directive')" v-model="directive.directive"/>
+                        <a-input style="width: 70%" :placeholder="$gettext('Params')" v-model="directive.params"/>
+                    </a-input-group>
+                    <a-button @click="adding=false">
+                        <template #icon>
+                            <DeleteOutlined style="font-size: 14px;"/>
                         </template>
-                    </a-input>
-                </a-input-group>
+                    </a-button>
+
+                </div>
             </a-form-item>
         </div>
         <a-button block v-if="!adding" @click="add">{{ $gettext('Add Directive Below') }}</a-button>
@@ -73,5 +74,8 @@ function save() {
 </template>
 
 <style lang="less" scoped>
-
+.input-wrapper {
+    display: flex;
+    gap: 10px;
+}
 </style>

@@ -45,7 +45,7 @@ const columns = [{
 </script>
 
 <template>
-    <std-curd :columns="columns" :api="user"/>
+    <std-curd :title="$gettext('Manage Users')" :columns="columns" :api="user"/>
 </template>
 
 <style scoped>

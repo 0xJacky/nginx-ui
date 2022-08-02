@@ -100,7 +100,7 @@ export const routes = [
     {
         path: '/install',
         name: () => $gettext('Install'),
-        // component: () => import('@/views/other/Install.vue'),
+        component: () => import('@/views/other/Install.vue'),
         meta: {noAuth: true}
     },
     {
@@ -110,16 +110,10 @@ export const routes = [
         meta: {noAuth: true}
     },
     {
-        path: '/404',
-        name: () => $gettext('404 Not Found'),
-        component: () => import('@/views/other/Error.vue'),
-        meta: {noAuth: true, status_code: 404, error: 'Not Found'}
-    },
-    {
-        path: '/*',
+        path: '/:pathMatch(.*)*',
         name: () => $gettext('Not Found'),
-        redirect: '/404',
-        meta: {noAuth: true}
+        component: () => import('@/views/other/Error.vue'),
+        meta: {noAuth: true, status_code: 404, error: () => $gettext('Not Found')}
     }
 ]
 
@@ -130,25 +124,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-
     // @ts-ignore
-    document.title = to.name() + ' | Nginx UI'
-
-    if (import.meta.env.MODE === 'production') {
-        // axios.get('/version.json?' + Date.now()).then(r => {
-        //     if (!(process.env.VUE_APP_VERSION === r.data.version
-        //         && Number(process.env.VUE_APP_BUILD_ID) === r.data.build_id)) {
-        //         Vue.prototype.$info({
-        //             title: $gettext('System message'),
-        //             content: $gettext('Detected version update, this page will refresh.'),
-        //             onOk() {
-        //                 location.reload()
-        //             },
-        //             okText: $gettext('OK')
-        //         })
-        //     }
-        // })
-    }
+    document.title = to.name?.() + ' | Nginx UI'
 
     const user = useUserStore()
     const {is_login} = user

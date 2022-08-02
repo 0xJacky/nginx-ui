@@ -1,72 +1,130 @@
+<script setup lang="ts">
+import {Form, message} from 'ant-design-vue'
+import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
+import {reactive, ref} from 'vue'
+import gettext from '@/gettext'
+import install from '@/api'
+import {useRoute, useRouter} from 'vue-router'
+import {MailOutlined, UserOutlined, LockOutlined, DatabaseOutlined} from '@ant-design/icons-vue'
+
+const {$gettext, interpolate} = gettext
+
+const thisYear = new Date().getFullYear()
+const loading = ref(false)
+
+const route = useRoute()
+const router = useRouter()
+
+install.get_lock().then(async (r: { lock: boolean }) => {
+    if (r.lock) {
+        await router.push('/login')
+    }
+})
+
+const modelRef = reactive({
+    email: '',
+    username: '',
+    password: '',
+    database: ''
+})
+
+const rulesRef = reactive({
+    email: [
+        {
+            required: true,
+            type: 'email',
+            message: () => $gettext('Please input your E-mail!'),
+        }
+    ],
+    username: [
+        {
+            required: true,
+            message: () => $gettext('Please input your username!'),
+        }
+    ],
+    password: [
+        {
+            required: true,
+            message: () => $gettext('Please input your password!'),
+        }
+    ],
+    database: [
+        {
+            message: () => interpolate(
+                $gettext('The filename cannot contain the following characters: %{c}'),
+                {c: '& &quot; ? < > # {} % ~ / \\'}
+            ),
+        }
+    ],
+})
+
+const {validate, validateInfos} = Form.useForm(modelRef, rulesRef)
+
+const onSubmit = () => {
+    validate().then(() => {
+        // modelRef
+        loading.value = true
+        install.install_nginx_ui(modelRef).then(async () => {
+            message.success($gettext('Install successfully'))
+            await router.push('/login')
+        }).catch(e => {
+            message.error(e.message ?? $gettext('Server error'))
+        }).finally(() => {
+            loading.value = false
+        })
+    })
+}
+</script>
+
 <template>
     <div class="login-form">
         <div class="project-title">
             <h1>Nginx UI</h1>
         </div>
-        <a-form
-            id="components-form-install"
-            :form="form"
-            class="login-form"
-            @submit="handleSubmit"
-        >
-            <a-form-item>
+        <a-form id="components-form-install" class="login-form">
+            <a-form-item v-bind="validateInfos.email">
                 <a-input
-                    v-decorator="[
-          'email',
-          { rules: [{
-                type: 'email',
-                message: $gettext('Invalid E-mail!'),
-              },
-              {
-                required: true,
-                message: $gettext('Please input your E-mail!'),
-              },] },
-        ]"
+                    v-model:value="modelRef.email"
                     :placeholder="$gettext('Email (*)')"
                 >
-                    <a-icon slot="prefix" type="mail" style="color: rgba(0,0,0,.25)"/>
+                    <template #prefix>
+                        <MailOutlined/>
+                    </template>
                 </a-input>
             </a-form-item>
-            <a-form-item>
+            <a-form-item v-bind="validateInfos.username">
                 <a-input
-                    v-decorator="[
-          'username',
-          { rules: [{ required: true, message: $gettext('Please input your username!') }] },
-        ]"
+                    v-model:value="modelRef.username"
                     :placeholder="$gettext('Username (*)')"
                 >
-                    <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)"/>
+                    <template #prefix>
+                        <UserOutlined/>
+                    </template>
                 </a-input>
             </a-form-item>
-            <a-form-item>
-                <a-input
-                    v-decorator="[
-          'password',
-          { rules: [{ required: true, message: $gettext('Please input your password!') }] },
-        ]"
-                    type="password"
+            <a-form-item v-bind="validateInfos.password">
+                <a-input-password
+                    v-model:value="modelRef.password"
                     :placeholder="$gettext('Password (*)')"
                 >
-                    <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)"/>
-                </a-input>
+                    <template #prefix>
+                        <LockOutlined/>
+                    </template>
+                </a-input-password>
             </a-form-item>
             <a-form-item>
                 <a-input
-                    v-decorator="[
-          'database',
-          { rules: [{ pattern: /^[^\\/:*?\x22<>|]{1,120}$/,
-          message: $gettextInterpolate(
-              $gettext('The filename cannot contain the following characters: %{c}'),
-              {c: '& &quot; ? < > # {} % ~ / \\'}
-          )}] },
-        ]"
+                    v-bind="validateInfos.database"
+                    v-model:value="modelRef.database"
                     :placeholder="$gettext('Database (Optional, default: database)')"
                 >
-                    <a-icon slot="prefix" type="database" style="color: rgba(0,0,0,.25)"/>
+                    <template #prefix>
+                        <DatabaseOutlined/>
+                    </template>
                 </a-input>
             </a-form-item>
             <a-form-item>
-                <a-button type="primary" :block="true" html-type="submit" :loading="loading">
+                <a-button type="primary" :block="true" @click="onSubmit" html-type="submit" :loading="loading">
                     <translate>Install</translate>
                 </a-button>
             </a-form-item>
@@ -79,46 +137,6 @@
 
 </template>
 
-<script>
-import SetLanguage from '@/components/SetLanguage/SetLanguage'
-
-export default {
-    name: 'Login',
-    components: {SetLanguage},
-    data() {
-        return {
-            form: {},
-            lock: true,
-            thisYear: new Date().getFullYear(),
-            loading: false
-        }
-    },
-    created() {
-        this.form = this.$form.createForm(this)
-    },
-    mounted() {
-        this.$api.install.get_lock().then(r => {
-            if (r.lock) {
-                this.$router.push('/login')
-            }
-        })
-    },
-    methods: {
-        handleSubmit: async function (e) {
-            e.preventDefault()
-            this.loading = true
-            await this.form.validateFields(async (err, values) => {
-                if (!err) {
-                    this.$api.install.install_nginx_ui(values).then(() => {
-                        this.$router.push('/login')
-                    })
-                }
-                this.loading = false
-            })
-        },
-    },
-}
-</script>
 <style lang="less">
 .project-title {
     margin: 50px;

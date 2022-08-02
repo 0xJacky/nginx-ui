@@ -1,15 +1,16 @@
+<script setup lang="ts">
+import {useGettext} from 'vue3-gettext'
+
+const {$gettext} = useGettext()
+</script>
+
 <template>
     <div class="wrapper">
-        <h1 class="title">{{ $route.meta.status_code ? $route.meta.status_code : 404 }}</h1>
-        <p>{{ $route.meta.error ? $route.meta.error : $gettext('File Not Found') }}</p>
+        <h1 class="title">{{ $route.meta.status_code || 404 }}</h1>
+        <p>{{ $route.meta.error?.() ?? $gettext('File Not Found') }}</p>
+        <a-button type="primary" v-translate @click="$router.push('/')">Back Home</a-button>
     </div>
 </template>
-
-<script>
-export default {
-    name: 'Error'
-}
-</script>
 
 <style lang="less" scoped>
 body, div, h1, html {
@@ -27,7 +28,8 @@ body, html {
 
 h1 {
     font-size: 8em;
-    font-weight: 100
+    font-weight: 100;
+    margin: 10px 0;
 }
 
 a {

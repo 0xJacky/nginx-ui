@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import CertInfo from '@/views/domain/cert/CertInfo'
-// import IssueCert from '@/views/domain/cert/IssueCert'
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor'
 import {computed, ref} from 'vue'
 import {useRoute} from 'vue-router'
 import {useGettext} from 'vue3-gettext'
+import Cert from '@/views/domain/cert/Cert.vue'
 
 const {$gettext} = useGettext()
 
@@ -15,15 +14,6 @@ const route = useRoute()
 
 const current_server_index = ref(0)
 const name = ref(route.params.name)
-
-const init_ssl_status = ref(false)
-
-function update_cert_info() {
-    // TODO
-    // if (name.value && this.$refs['cert-info' + this.current_server_index]) {
-    //     this.$refs['cert-info' + this.current_server_index].get()
-    // }
-}
 
 function change_tls(r: any) {
     if (r) {
@@ -140,17 +130,16 @@ const current_support_ssl = computed(() => {
 
                 <div class="tab-content">
                     <template v-if="current_support_ssl&&enabled">
-                        <cert-info :domain="name" v-if="current_support_ssl"/>
-                        <!--                        <issue-cert-->
-                        <!--                            :current_server_directives="current_server_directives"-->
-                        <!--                            :directives-map="directivesMap"-->
-                        <!--                            v-model="auto_cert"-->
-                        <!--                        />-->
+                        <cert
+                            v-if="current_support_ssl"
+                            :current_server_directives="current_server_directives"
+                            :directives-map="directivesMap"
+                            v-model:enabled="auto_cert"/>
                     </template>
 
                     <template v-if="v.comments">
                         <h3 v-translate>Comments</h3>
-                        <p style="white-space: pre-wrap;">{{ v.comments }}</p>
+                        <a-textarea v-model:value="v.comments" :bordered="false"/>
                     </template>
 
                     <directive-editor :ngx_directives="v.directives"/>
