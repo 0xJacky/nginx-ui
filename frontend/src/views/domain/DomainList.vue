@@ -88,7 +88,7 @@ function destroy(site_name: any) {
             :disable_search="true"
             row-key="name"
             ref="table"
-            @clickEdit="r => this.$router.push({
+            @clickEdit="r => $router.push({
                 path: '/domain/' + r
             })"
             :deletable="false"

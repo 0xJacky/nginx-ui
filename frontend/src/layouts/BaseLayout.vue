@@ -48,6 +48,7 @@ const lang = computed(() => {
                     v-model:visible="drawer_visible"
                     placement="left"
                     @close="drawer_visible=false"
+                    width="256"
                 >
                     <side-bar/>
                 </a-drawer>

@@ -130,7 +130,7 @@ function wsOnMessage(m: { data: any }) {
 
 <template>
     <div>
-        <a-row :gutter="[16,16]" class="first-row">
+        <a-row :gutter="[{xs: 0, sm: 16}, 16]" class="first-row">
             <a-col :xl="7" :lg="24" :md="24" :xs="24">
                 <a-card :title="$gettext('Server Info')" :bordered="false">
                     <p>
@@ -189,7 +189,7 @@ function wsOnMessage(m: { data: any }) {
                 </a-card>
             </a-col>
         </a-row>
-        <a-row class="row-two" :gutter="[16,32]">
+        <a-row :gutter="[{xs: 0, sm: 16}, 16]" class="row-two">
             <a-col :xl="8" :lg="24" :md="24" :sm="24" :xs="24">
                 <a-card :title="$gettext('CPU Status')" :bordered="false">
                     <a-statistic :value="cpu" title="CPU">
