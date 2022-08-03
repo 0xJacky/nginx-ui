@@ -169,7 +169,7 @@ body {
         box-shadow: 0 1px 0 0 #e8e8e8;
     }
 
-    .ant-menu-inline .ant-menu-selected::after, .ant-menu-inline .ant-menu-item-selected::after {
+    .ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
         border-right: 0 !important;
     }
 }
@@ -180,6 +180,11 @@ body {
             background-color: transparent !important;
         }
     }
+
+    .ant-menu {
+        background: unset !important;
+    }
+
 }
 
 .ant-table-small {

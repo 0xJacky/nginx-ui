@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {CloseCircleOutlined, CheckCircleOutlined} from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
-import {defineProps, reactive, ref} from 'vue'
+import {reactive, ref} from 'vue'
 import domain from '@/api/domain'
 
 const props = defineProps(['domain'])

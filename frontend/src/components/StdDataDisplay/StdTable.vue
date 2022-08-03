@@ -183,7 +183,7 @@ watch(params, () => {
         >
             <template #action>
                 <div class="reset-btn">
-                    <a-button @click="reset_search">重置</a-button>
+                    <a-button @click="reset_search" v-translate>Reset</a-button>
                 </div>
             </template>
         </std-data-entry>
