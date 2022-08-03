@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import StdTable from '@/components/StdDataDisplay/StdTable.vue'
 
-import {badge, customRender, datetime} from '@/components/StdDataDisplay/StdTableTransformer'
+import {customRender, datetime} from '@/components/StdDataDisplay/StdTableTransformer'
 import {useGettext} from 'vue3-gettext'
 
 const {$gettext, interpolate} = useGettext()

@@ -7,7 +7,6 @@ import {fileURLToPath, URL} from 'url'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vitePluginBuildId from 'vite-plugin-build-id'
 
-
 // https://vitejs.dev/config/
 export default defineConfig({
     resolve: {
@@ -52,9 +51,6 @@ export default defineConfig({
             },
         }),
     ],
-    define: {
-        'APP_VERSION': JSON.stringify(process.env.npm_package_version)
-    },
     css: {
         preprocessorOptions: {
             less: {

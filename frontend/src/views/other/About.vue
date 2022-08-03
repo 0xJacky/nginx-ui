@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import gettext from '@/gettext'
 import logo from '@/assets/img/logo.png'
+import version from '@/version.json'
 
 const {$gettext} = gettext
 
 const this_year = new Date().getFullYear()
-const version = import.meta.env.VITE_APP_VERSION // import.meta.env.VITE_APP_VERSION
-const build_id = import.meta.env.VITE_APP_TOTAL_BUILD ?? $gettext('Development Mode')
-console.log(import.meta)
 </script>
 
 <template>
@@ -17,7 +15,7 @@ console.log(import.meta)
         </div>
         <h2>Nginx UI</h2>
         <p>Yet another WebUI for Nginx</p>
-        <p>Version: {{ version }} ({{ build_id }})</p>
+        <p>Version: {{ version.version }} ({{ version.build_id || $gettext('Development Mode') }})</p>
         <h3 v-translate>Project Team</h3>
         <p><a href="https://jackyu.cn/">@0xJacky</a> <a href="https://blog.kugeek.com/">@Hintay</a></p>
         <h3 v-translate>Build with</h3>
