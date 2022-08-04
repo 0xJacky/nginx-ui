@@ -123,7 +123,7 @@ func IssueCert(domain string) error {
     if settings.ServerSettings.Demo {
         config.CADirURL = "https://acme-staging-v02.api.letsencrypt.org/directory"
     }
-    
+
     config.Certificate.KeyType = certcrypto.RSA2048
 
     // A client facilitates communication with the CA server.

@@ -3,7 +3,7 @@ import {Form, message} from 'ant-design-vue'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import {reactive, ref} from 'vue'
 import gettext from '@/gettext'
-import install from '@/api'
+import install from '@/api/install'
 import {useRoute, useRouter} from 'vue-router'
 import {MailOutlined, UserOutlined, LockOutlined, DatabaseOutlined} from '@ant-design/icons-vue'
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor'
-import LocationEditor from '@/views/domain/ngx_conf/LocationEditor'
-import {computed, defineEmits, ref} from 'vue'
-import {useRoute} from 'vue-router'
+import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
+import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
+import {computed, ref} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
 import {useGettext} from 'vue3-gettext'
 import Cert from '@/views/domain/cert/Cert.vue'
 

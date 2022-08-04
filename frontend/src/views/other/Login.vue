@@ -9,9 +9,16 @@ import {useRoute, useRouter} from 'vue-router'
 import gettext from '@/gettext'
 import {Form, message} from 'ant-design-vue'
 import auth from '@/api/auth'
+import install from '@/api/install'
 
 const route = useRoute()
 const router = useRouter()
+
+install.get_lock().then(async (r: { lock: boolean }) => {
+    if (!r.lock) {
+        await router.push('/install')
+    }
+})
 
 const {$gettext} = gettext
 const loading = ref(false)
