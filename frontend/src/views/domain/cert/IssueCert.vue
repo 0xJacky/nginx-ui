@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import {issue_cert} from '../methods'
 import {useGettext} from 'vue3-gettext'
 import {computed, nextTick, ref, watch} from 'vue'
 import {message} from 'ant-design-vue'
 import domain from '@/api/domain'
+import websocket from '@/lib/websocket'
 
 const {$gettext, interpolate} = useGettext()
 
-const {directivesMap, current_server_directives, enabled} = defineProps<{
-    directivesMap: any
-    current_server_directives: Array<any>
-    enabled: boolean
-}>()
+const props = defineProps(['directivesMap', 'current_server_directives', 'enabled'])
 
 const emit = defineEmits(['changeEnabled', 'callback', 'update:enabled'])
 
@@ -40,35 +36,32 @@ function job() {
         return
     }
 
-    const server_name = directivesMap['server_name'][0]
+    const server_name = props.directivesMap['server_name'][0]
 
-    if (!directivesMap['ssl_certificate']) {
-        current_server_directives.splice(server_name.idx + 1, 0, {
+    if (!props.directivesMap['ssl_certificate']) {
+        props.current_server_directives.splice(server_name.idx + 1, 0, {
             directive: 'ssl_certificate',
             params: ''
         })
     }
 
     nextTick(() => {
-        if (!directivesMap['ssl_certificate_key']) {
-            const ssl_certificate = directivesMap['ssl_certificate'][0]
-            current_server_directives.splice(ssl_certificate.idx + 1, 0, {
+        if (!props.directivesMap['ssl_certificate_key']) {
+            const ssl_certificate = props.directivesMap['ssl_certificate'][0]
+            props.current_server_directives.splice(ssl_certificate.idx + 1, 0, {
                 directive: 'ssl_certificate_key',
                 params: ''
             })
         }
-    })
-
-    setTimeout(() => {
+    }).then(() => {
         issue_cert(name.value, callback)
-    }, 100)
+    })
 }
 
 function callback(ssl_certificate: string, ssl_certificate_key: string) {
-    directivesMap['ssl_certificate'][0]['params'] = ssl_certificate
-    directivesMap['ssl_certificate_key'][0]['params'] = ssl_certificate_key
+    props.directivesMap['ssl_certificate'][0]['params'] = ssl_certificate
+    props.directivesMap['ssl_certificate_key'][0]['params'] = ssl_certificate_key
 
-    issuing_cert.value = false
     emit('callback')
 }
 
@@ -88,17 +81,48 @@ function change_auto_cert(r: boolean) {
     }
 }
 
+const issue_cert = async (server_name: string, callback: Function) => {
+    message.info($gettext('Getting the certificate, please wait...'), 15)
+
+    const ws = websocket('/api/cert/issue/' + server_name, false)
+
+    ws.onopen = () => {
+        ws.send('go')
+    }
+
+    ws.onmessage = m => {
+        const r = JSON.parse(m.data)
+        switch (r.status) {
+            case 'success':
+                message.success(r.message, 10)
+                break
+            case 'info':
+                message.info(r.message, 10)
+                break
+            case 'error':
+                message.error(r.message, 10)
+                break
+        }
+
+        if (r.status === 'success' && r.ssl_certificate !== undefined && r.ssl_certificate_key !== undefined) {
+            callback(r.ssl_certificate, r.ssl_certificate_key)
+        }
+
+        issuing_cert.value = false
+    }
+}
+
 const server_name_more_than_one = computed(() => {
-    return directivesMap['server_name'] && (directivesMap['server_name'].length > 1 ||
-        directivesMap['server_name'][0].params.trim().indexOf(' ') > 0)
+    return props.directivesMap['server_name'] && (props.directivesMap['server_name'].length > 1 ||
+        props.directivesMap['server_name'][0].params.trim().indexOf(' ') > 0)
 })
 
 const no_server_name = computed(() => {
-    return directivesMap['server_name'].length === 0
+    return props.directivesMap['server_name'].length === 0
 })
 
 const name = computed(() => {
-    return directivesMap['server_name'][0].params.trim()
+    return props.directivesMap['server_name'][0].params.trim()
 })
 
 watch(server_name_more_than_one, () => {

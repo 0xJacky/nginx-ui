@@ -51,7 +51,7 @@ function on_mode_change(advance_mode: boolean) {
         build_config()
     } else {
         return ngx.tokenize_config(configText.value).then((r: any) => {
-            Object.assign(ngx_config, r.tokenized)
+            Object.assign(ngx_config, r)
         }).catch((e: any) => {
             message.error(e?.message ?? $gettext('Server error'))
         })
@@ -78,8 +78,6 @@ const save = async () => {
         enabled.value = r.enabled
         Object.assign(ngx_config, r.tokenized)
         message.success($gettext('Saved successfully'))
-
-        // TODO this.$refs.ngx_config.update_cert_info()
 
     }).catch((e: any) => {
         message.error(e?.message ?? $gettext('Server error'))
@@ -147,6 +145,7 @@ function disable() {
                         :ngx_config="ngx_config"
                         v-model:auto_cert="auto_cert"
                         :enabled="enabled"
+                        @callback="save()"
                     />
                 </div>
             </transition>

@@ -70,7 +70,7 @@ const has_server_name = computed(() => {
     const servers = ngx_config.servers
     for (const server_key in servers) {
         for (const k in servers[server_key].directives) {
-            const v = servers[server_key].directives[k]
+            const v: any = servers[server_key].directives[k]
             if (v.directive === 'server_name' && v.params.trim() !== '') {
                 return true
             }

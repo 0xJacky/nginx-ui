@@ -94,6 +94,13 @@ function destroy(site_name: any) {
             :deletable="false"
         >
             <template #actions="{record}">
+                <a-divider type="vertical"/>
+                <a v-if="record.enabled" @click="disable(record.name)">
+                    {{ $gettext('Disabled') }}
+                </a>
+                <a v-else @click="enable(record.name)">
+                    {{ $gettext('Enabled') }}
+                </a>
                 <template v-if="!record.enabled">
                     <a-divider type="vertical"/>
                     <a-popconfirm
@@ -104,13 +111,6 @@ function destroy(site_name: any) {
                         <a v-translate>Delete</a>
                     </a-popconfirm>
                 </template>
-                <a-divider type="vertical"/>
-                <a v-if="record.enabled" @click="disable(record.name)">
-                    {{ $gettext('Disabled') }}
-                </a>
-                <a v-else @click="enable(record.name)">
-                    {{ $gettext('Enabled') }}
-                </a>
             </template>
         </std-table>
     </a-card>

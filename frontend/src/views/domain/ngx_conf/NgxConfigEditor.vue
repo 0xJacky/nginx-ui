@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor'
-import {computed, ref} from 'vue'
+import {computed, defineEmits, ref} from 'vue'
 import {useRoute} from 'vue-router'
 import {useGettext} from 'vue3-gettext'
 import Cert from '@/views/domain/cert/Cert.vue'
@@ -9,6 +9,8 @@ import Cert from '@/views/domain/cert/Cert.vue'
 const {$gettext} = useGettext()
 
 const {ngx_config, auto_cert, enabled} = defineProps(['ngx_config', 'auto_cert', 'enabled'])
+
+const emit = defineEmits(['callback'])
 
 const route = useRoute()
 
@@ -134,7 +136,9 @@ const current_support_ssl = computed(() => {
                             v-if="current_support_ssl"
                             :current_server_directives="current_server_directives"
                             :directives-map="directivesMap"
-                            v-model:enabled="auto_cert"/>
+                            v-model:enabled="auto_cert"
+                            @callback="$emit('callback')"
+                        />
                     </template>
 
                     <template v-if="v.comments">

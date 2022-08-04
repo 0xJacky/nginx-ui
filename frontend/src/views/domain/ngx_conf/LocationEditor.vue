@@ -5,9 +5,7 @@ import {reactive, ref} from 'vue'
 
 const {$gettext} = useGettext()
 
-const {locations} = defineProps<{
-    locations?: any[]
-}>()
+const props = defineProps(['locations'])
 
 let location = reactive({
     comments: '',
@@ -19,20 +17,18 @@ const adding = ref(false)
 
 function add() {
     adding.value = true
-    location = reactive({
-        comments: '',
-        path: '',
-        content: '',
-    })
+    location.comments = ''
+    location.path = ''
+    location.content = ''
 }
 
 function save() {
     adding.value = false
-    locations?.push(location)
+    props.locations?.push(location)
 }
 
 function remove(index: number) {
-    locations?.splice(index, 1)
+    props.locations?.splice(index, 1)
 }
 </script>
 

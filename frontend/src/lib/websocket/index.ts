@@ -3,14 +3,20 @@ import {useUserStore} from '@/pinia'
 import {storeToRefs} from 'pinia'
 
 
-function ws(url: string): ReconnectingWebSocket {
+function ws(url: string, reconnect: boolean = true): ReconnectingWebSocket | WebSocket {
     const user = useUserStore()
     const {token} = storeToRefs(user)
 
     const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://'
 
-    return new ReconnectingWebSocket(
-        protocol + window.location.host + url + '?token=' + btoa(token.value))
+    const _url = protocol + window.location.host + url + '?token=' + btoa(token.value)
+
+    if (reconnect) {
+        return new ReconnectingWebSocket(_url)
+    }
+
+    return new WebSocket(_url)
+
 }
 
 export default ws

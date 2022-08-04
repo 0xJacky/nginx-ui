@@ -46,7 +46,7 @@ msgid "Advance Mode"
 msgstr "高级模式"
 
 #: src/components/StdDataDisplay/StdTable.vue:39
-#: src/views/domain/DomainList.vue:20
+#: src/views/domain/DomainList.vue:27
 msgid "Are you sure you want to delete ?"
 msgstr "您确定要删除吗？"
 
@@ -54,15 +54,15 @@ msgstr "您确定要删除吗？"
 msgid "Are you sure you want to remove this directive?"
 msgstr "您确定要删除这条指令？"
 
-#: src/views/domain/cert/IssueCert.vue:84
+#: src/views/domain/cert/IssueCert.vue:77
 msgid "Auto-renewal disabled for %{name}"
 msgstr "成功关闭 %{name} 自动续签"
 
-#: src/views/domain/cert/IssueCert.vue:78
+#: src/views/domain/cert/IssueCert.vue:71
 msgid "Auto-renewal enabled for %{name}"
 msgstr "成功启用 %{name} 自动续签"
 
-#: src/views/domain/DomainEdit.vue:159
+#: src/views/domain/DomainEdit.vue:157
 msgid "Back"
 msgstr "返回"
 
@@ -148,7 +148,7 @@ msgid "Database (Optional, default: database)"
 msgstr "数据库 (可选，默认: database)"
 
 #: src/components/StdDataDisplay/StdTable.vue:216
-#: src/views/domain/DomainList.vue:104
+#: src/views/domain/DomainList.vue:111
 msgid "Delete"
 msgstr "删除"
 
@@ -172,16 +172,16 @@ msgstr "指令"
 msgid "Directives"
 msgstr "指令"
 
-#: src/views/domain/cert/IssueCert.vue:86
+#: src/views/domain/cert/IssueCert.vue:79
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "关闭 %{name} 自动续签失败"
 
-#: src/views/domain/DomainEdit.vue:10 src/views/domain/DomainList.vue:27
+#: src/views/domain/DomainEdit.vue:10 src/views/domain/DomainList.vue:17
 #: src/views/domain/DomainList.vue:29
 msgid "Disabled"
 msgstr "禁用"
 
-#: src/views/domain/DomainEdit.vue:103 src/views/domain/DomainList.vue:64
+#: src/views/domain/DomainEdit.vue:101 src/views/domain/DomainList.vue:64
 msgid "Disabled successfully"
 msgstr "禁用成功"
 
@@ -209,7 +209,7 @@ msgstr "编辑站点"
 msgid "Email (*)"
 msgstr "邮箱 (*)"
 
-#: src/views/domain/cert/IssueCert.vue:80
+#: src/views/domain/cert/IssueCert.vue:73
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "启用 %{name} 自动续签失败"
 
@@ -222,12 +222,12 @@ msgid "Enable TLS"
 msgstr "启用 TLS"
 
 #: src/views/domain/DomainEdit.vue:33 src/views/domain/DomainEdit.vue:7
-#: src/views/domain/DomainList.vue:16 src/views/domain/DomainList.vue:18
-#: src/views/domain/DomainList.vue:26 src/views/domain/DomainList.vue:30
+#: src/views/domain/DomainList.vue:12 src/views/domain/DomainList.vue:20
+#: src/views/domain/DomainList.vue:26
 msgid "Enabled"
 msgstr "启用"
 
-#: src/views/domain/DomainAdd.vue:46 src/views/domain/DomainEdit.vue:94
+#: src/views/domain/DomainAdd.vue:46 src/views/domain/DomainEdit.vue:92
 #: src/views/domain/DomainList.vue:54
 msgid "Enabled successfully"
 msgstr "启用成功"
@@ -240,11 +240,11 @@ msgstr "用 Let's Encrypt 对网站进行加密"
 msgid "Expiration Date: %{date}"
 msgstr "过期时间: %{date}"
 
-#: src/views/domain/DomainEdit.vue:106 src/views/domain/DomainList.vue:68
+#: src/views/domain/DomainEdit.vue:104 src/views/domain/DomainList.vue:68
 msgid "Failed to disable %{msg}"
 msgstr "禁用失败 %{msg}"
 
-#: src/views/domain/DomainEdit.vue:97 src/views/domain/DomainList.vue:58
+#: src/views/domain/DomainEdit.vue:95 src/views/domain/DomainList.vue:58
 msgid "Failed to enable %{msg}"
 msgstr "启用失败 %{msg}"
 
@@ -255,6 +255,10 @@ msgstr "未找到文件"
 #: src/views/domain/DomainAdd.vue:7
 msgid "Finished"
 msgstr "完成"
+
+#: src/views/domain/cert/IssueCert.vue:85
+msgid "Getting the certificate, please wait..."
+msgstr "正在获取证书，请稍等..."
 
 #: src/routes/index.ts:19
 msgid "Home"
@@ -284,7 +288,7 @@ msgstr "系统负载:"
 msgid "Location"
 msgstr "Location"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:40
+#: src/views/domain/ngx_conf/LocationEditor.vue:36
 msgid "Locations"
 msgstr "Locations"
 
@@ -300,7 +304,7 @@ msgstr "登录成功"
 msgid "Logout successful"
 msgstr "登出成功"
 
-#: src/views/domain/cert/IssueCert.vue:148
+#: src/views/domain/cert/IssueCert.vue:172
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort (default: 9180) before getting the certificate."
@@ -366,7 +370,7 @@ msgid "Next"
 msgstr "下一步"
 
 #: src/components/StdDataDisplay/StdTable.vue:37
-#: src/views/domain/DomainList.vue:18
+#: src/views/domain/DomainList.vue:25
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:17
 msgid "No"
 msgstr "取消"
@@ -379,7 +383,7 @@ msgstr "找不到页面"
 msgid "Not Valid Before: %{date}"
 msgstr "此前无效: %{date}"
 
-#: src/views/domain/cert/IssueCert.vue:140
+#: src/views/domain/cert/IssueCert.vue:164
 msgid ""
 "Note: The server_name in the current configuration must be the domain name "
 "you need to get the certificate."
@@ -387,7 +391,7 @@ msgstr "注意：当前配置中的 server_name 必须为需要申请证书的�
 
 #: src/components/StdDataDisplay/StdCurd.vue:27
 #: src/components/StdDataDisplay/StdTable.vue:38
-#: src/views/domain/DomainList.vue:19
+#: src/views/domain/DomainList.vue:26
 msgid "OK"
 msgstr "确定"
 
@@ -440,7 +444,7 @@ msgstr "下载"
 msgid "Reset"
 msgstr "重置"
 
-#: src/views/config/ConfigEdit.vue:52 src/views/domain/DomainEdit.vue:162
+#: src/views/config/ConfigEdit.vue:52 src/views/domain/DomainEdit.vue:160
 msgid "Save"
 msgstr "保存"
 
@@ -473,7 +477,7 @@ msgstr "上传"
 #: src/components/StdDataDisplay/StdTable.vue:94
 #: src/views/config/ConfigEdit.vue:22 src/views/domain/DomainEdit.vue:44
 #: src/views/domain/DomainEdit.vue:56 src/views/domain/DomainEdit.vue:65
-#: src/views/domain/DomainEdit.vue:85 src/views/domain/DomainList.vue:78
+#: src/views/domain/DomainEdit.vue:83 src/views/domain/DomainList.vue:78
 #: src/views/other/Install.vue:71 src/views/other/Login.vue:49
 msgid "Server error"
 msgstr "服务器错误"
@@ -482,16 +486,16 @@ msgstr "服务器错误"
 msgid "Server Info"
 msgstr "服务器信息"
 
-#: src/views/domain/cert/IssueCert.vue:32
+#: src/views/domain/cert/IssueCert.vue:28
 msgid "server_name not found in directives"
 msgstr "未在指令集合中找到 server_name"
 
-#: src/views/domain/cert/IssueCert.vue:131 src/views/domain/DomainAdd.vue:112
+#: src/views/domain/cert/IssueCert.vue:155 src/views/domain/DomainAdd.vue:112
 msgid "server_name parameter is required"
 msgstr "必须为 server_name 指令指明参数"
 
-#: src/views/domain/cert/IssueCert.vue:134
-#: src/views/domain/cert/IssueCert.vue:38
+#: src/views/domain/cert/IssueCert.vue:158
+#: src/views/domain/cert/IssueCert.vue:34
 msgid "server_name parameters more than one"
 msgstr "server_name 指令包含多个参数"
 
@@ -527,7 +531,7 @@ msgstr "列表"
 msgid "Terminal"
 msgstr "终端"
 
-#: src/views/domain/cert/IssueCert.vue:144
+#: src/views/domain/cert/IssueCert.vue:168
 msgid ""
 "The certificate for the domain will be checked every hour, and will be "
 "renewed if it has been more than 1 month since it was last issued."
@@ -575,9 +579,6 @@ msgstr "开源许可"
 
 #~ msgid "404 Not Found"
 #~ msgstr "404 未找到页面"
-
-#~ msgid "Getting the certificate, please wait..."
-#~ msgstr "正在获取证书，请稍等..."
 
 #~ msgid "Invalid E-mail!"
 #~ msgstr "无效的邮箱！"

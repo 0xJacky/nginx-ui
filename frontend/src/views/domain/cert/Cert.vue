@@ -3,11 +3,9 @@ import CertInfo from '@/views/domain/cert/CertInfo.vue'
 import IssueCert from '@/views/domain/cert/IssueCert.vue'
 import {computed, ref} from 'vue'
 
-const {directivesMap, current_server_directives, enabled} = defineProps<{
-    directivesMap: any
-    current_server_directives: Array<any>
-    enabled: boolean
-}>()
+const props = defineProps(['directivesMap', 'current_server_directives', 'enabled'])
+
+const emit = defineEmits(['callback'])
 
 const info = ref(null)
 
@@ -18,10 +16,11 @@ interface Info {
 function callback() {
     const t: Info | null = info.value
     t!.get()
+    emit('callback')
 }
 
 const name = computed(() => {
-    return directivesMap['server_name'][0].params.trim()
+    return props.directivesMap['server_name'][0].params.trim()
 })
 </script>
 
@@ -29,9 +28,9 @@ const name = computed(() => {
     <div>
         <cert-info ref="info" :domain="name" v-if="name"/>
         <issue-cert
-            :current_server_directives="current_server_directives"
-            :directives-map="directivesMap"
-            v-model:enabled="enabled"
+            :current_server_directives="props.current_server_directives"
+            :directives-map="props.directivesMap"
+            v-model:enabled="props.enabled"
             @callback="callback"
         />
     </div>

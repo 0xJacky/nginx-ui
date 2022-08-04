@@ -38,7 +38,7 @@ msgid "Advance Mode"
 msgstr ""
 
 #: src/components/StdDataDisplay/StdTable.vue:39
-#: src/views/domain/DomainList.vue:20
+#: src/views/domain/DomainList.vue:27
 msgid "Are you sure you want to delete ?"
 msgstr ""
 
@@ -46,15 +46,15 @@ msgstr ""
 msgid "Are you sure you want to remove this directive?"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:84
+#: src/views/domain/cert/IssueCert.vue:77
 msgid "Auto-renewal disabled for %{name}"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:78
+#: src/views/domain/cert/IssueCert.vue:71
 msgid "Auto-renewal enabled for %{name}"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:159
+#: src/views/domain/DomainEdit.vue:157
 msgid "Back"
 msgstr ""
 
@@ -140,7 +140,7 @@ msgid "Database (Optional, default: database)"
 msgstr ""
 
 #: src/components/StdDataDisplay/StdTable.vue:216
-#: src/views/domain/DomainList.vue:104
+#: src/views/domain/DomainList.vue:111
 msgid "Delete"
 msgstr ""
 
@@ -165,17 +165,17 @@ msgstr ""
 msgid "Directives"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:86
+#: src/views/domain/cert/IssueCert.vue:79
 msgid "Disable auto-renewal failed for %{name}"
 msgstr ""
 
 #: src/views/domain/DomainEdit.vue:10
-#: src/views/domain/DomainList.vue:27
+#: src/views/domain/DomainList.vue:17
 #: src/views/domain/DomainList.vue:29
 msgid "Disabled"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:103
+#: src/views/domain/DomainEdit.vue:101
 #: src/views/domain/DomainList.vue:64
 msgid "Disabled successfully"
 msgstr ""
@@ -205,7 +205,7 @@ msgstr ""
 msgid "Email (*)"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:80
+#: src/views/domain/cert/IssueCert.vue:73
 msgid "Enable auto-renewal failed for %{name}"
 msgstr ""
 
@@ -219,15 +219,14 @@ msgstr ""
 
 #: src/views/domain/DomainEdit.vue:33
 #: src/views/domain/DomainEdit.vue:7
-#: src/views/domain/DomainList.vue:16
-#: src/views/domain/DomainList.vue:18
+#: src/views/domain/DomainList.vue:12
+#: src/views/domain/DomainList.vue:20
 #: src/views/domain/DomainList.vue:26
-#: src/views/domain/DomainList.vue:30
 msgid "Enabled"
 msgstr ""
 
 #: src/views/domain/DomainAdd.vue:46
-#: src/views/domain/DomainEdit.vue:94
+#: src/views/domain/DomainEdit.vue:92
 #: src/views/domain/DomainList.vue:54
 msgid "Enabled successfully"
 msgstr ""
@@ -240,12 +239,12 @@ msgstr ""
 msgid "Expiration Date: %{date}"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:106
+#: src/views/domain/DomainEdit.vue:104
 #: src/views/domain/DomainList.vue:68
 msgid "Failed to disable %{msg}"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:97
+#: src/views/domain/DomainEdit.vue:95
 #: src/views/domain/DomainList.vue:58
 msgid "Failed to enable %{msg}"
 msgstr ""
@@ -257,6 +256,10 @@ msgstr ""
 
 #: src/views/domain/DomainAdd.vue:7
 msgid "Finished"
+msgstr ""
+
+#: src/views/domain/cert/IssueCert.vue:85
+msgid "Getting the certificate, please wait..."
 msgstr ""
 
 #: src/routes/index.ts:19
@@ -288,7 +291,7 @@ msgstr ""
 msgid "Location"
 msgstr ""
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:40
+#: src/views/domain/ngx_conf/LocationEditor.vue:36
 msgid "Locations"
 msgstr ""
 
@@ -305,7 +308,7 @@ msgstr ""
 msgid "Logout successful"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:148
+#: src/views/domain/cert/IssueCert.vue:172
 msgid "Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort (default: 9180) before getting the certificate."
 msgstr ""
 
@@ -370,7 +373,7 @@ msgid "Next"
 msgstr ""
 
 #: src/components/StdDataDisplay/StdTable.vue:37
-#: src/views/domain/DomainList.vue:18
+#: src/views/domain/DomainList.vue:25
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:17
 msgid "No"
 msgstr ""
@@ -384,13 +387,13 @@ msgstr ""
 msgid "Not Valid Before: %{date}"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:140
+#: src/views/domain/cert/IssueCert.vue:164
 msgid "Note: The server_name in the current configuration must be the domain name you need to get the certificate."
 msgstr ""
 
 #: src/components/StdDataDisplay/StdCurd.vue:27
 #: src/components/StdDataDisplay/StdTable.vue:38
-#: src/views/domain/DomainList.vue:19
+#: src/views/domain/DomainList.vue:26
 msgid "OK"
 msgstr ""
 
@@ -448,7 +451,7 @@ msgid "Reset"
 msgstr ""
 
 #: src/views/config/ConfigEdit.vue:52
-#: src/views/domain/DomainEdit.vue:162
+#: src/views/domain/DomainEdit.vue:160
 msgid "Save"
 msgstr ""
 
@@ -486,7 +489,7 @@ msgstr ""
 #: src/views/domain/DomainEdit.vue:44
 #: src/views/domain/DomainEdit.vue:56
 #: src/views/domain/DomainEdit.vue:65
-#: src/views/domain/DomainEdit.vue:85
+#: src/views/domain/DomainEdit.vue:83
 #: src/views/domain/DomainList.vue:78
 #: src/views/other/Install.vue:71
 #: src/views/other/Login.vue:49
@@ -497,17 +500,17 @@ msgstr ""
 msgid "Server Info"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:32
+#: src/views/domain/cert/IssueCert.vue:28
 msgid "server_name not found in directives"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:131
+#: src/views/domain/cert/IssueCert.vue:155
 #: src/views/domain/DomainAdd.vue:112
 msgid "server_name parameter is required"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:134
-#: src/views/domain/cert/IssueCert.vue:38
+#: src/views/domain/cert/IssueCert.vue:158
+#: src/views/domain/cert/IssueCert.vue:34
 msgid "server_name parameters more than one"
 msgstr ""
 
@@ -544,7 +547,7 @@ msgstr ""
 msgid "Terminal"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:144
+#: src/views/domain/cert/IssueCert.vue:168
 msgid "The certificate for the domain will be checked every hour, and will be renewed if it has been more than 1 month since it was last issued."
 msgstr ""
 
