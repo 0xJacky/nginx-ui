@@ -203,6 +203,7 @@ jobs:
                 if: github.event_name == 'release' && env.GOOS == 'linux' && env.GOARCH == 'amd64'
                 run: |
                     cp ./Dockerfile ./dist
+                    cp -rp ./resources ./dist
 
             -   name: Build and push
                 if: github.event_name == 'release' && env.GOOS == 'linux' && env.GOARCH == 'amd64'
