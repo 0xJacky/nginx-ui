@@ -32,70 +32,70 @@ jobs:
     build_frontend:
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout
-              uses: actions/checkout@v2
+            -   name: Checkout
+                uses: actions/checkout@v2
 
-            - name: Set up nodejs
-              uses: actions/setup-node@v2
-              with:
-                  node-version: '18.x'
-                  cache: 'yarn'
-                  cache-dependency-path: 'frontend/yarn.lock'
+            -   name: Set up nodejs
+                uses: actions/setup-node@v2
+                with:
+                    node-version: '18.x'
+                    cache: 'yarn'
+                    cache-dependency-path: 'frontend/yarn.lock'
 
-            - name: Install dependencies
-              run: yarn install
-              working-directory: frontend
+            -   name: Install dependencies
+                run: yarn install
+                working-directory: frontend
 
-            - name: Update tranlations
-              run: yarn gettext:compile
-              working-directory: frontend
+            -   name: Update translations
+                run: yarn gettext:compile
+                working-directory: frontend
 
-            - name: Build
-              run: |
-                  npx browserslist@latest --update-db
-                  yarn build
-              working-directory: frontend
+            -   name: Build
+                run: |
+                    npx browserslist@latest --update-db
+                    yarn build
+                working-directory: frontend
 
-            - name: Archive frontend artifacts
-              uses: actions/upload-artifact@v2
-              with:
-                  name: frontend-dist
-                  path: frontend/dist
+            -   name: Archive frontend artifacts
+                uses: actions/upload-artifact@v2
+                with:
+                    name: frontend-dist
+                    path: frontend/dist
 
-            - name: Prepare publish
-              if: github.event_name == 'release'
-              run: |
-                  cp README*.md frontend/dist
-                  find frontend/dist -printf '%P\n' | tar -C frontend/dist --no-recursion -zcvf frontend-dist.tar.gz -T -
+            -   name: Prepare publish
+                if: github.event_name == 'release'
+                run: |
+                    cp README*.md frontend/dist
+                    find frontend/dist -printf '%P\n' | tar -C frontend/dist --no-recursion -zcvf frontend-dist.tar.gz -T -
 
-            - name: Publish
-              uses: softprops/action-gh-release@v1
-              if: github.event_name == 'release'
-              with:
-                  files: frontend-dist.tar.gz
+            -   name: Publish
+                uses: softprops/action-gh-release@v1
+                if: github.event_name == 'release'
+                with:
+                    files: frontend-dist.tar.gz
 
     build:
         runs-on: ubuntu-latest
         needs: build_frontend
         strategy:
             matrix:
-                goos: [linux, darwin]
-                goarch: [amd64, 386, arm64]
+                goos: [ linux, darwin ]
+                goarch: [ amd64, 386, arm64 ]
                 exclude:
                     # Exclude i386 on darwin.
-                    - goarch: 386
-                      goos: darwin
+                    -   goarch: 386
+                        goos: darwin
                 include:
                     # BEGIN Linux ARM 5 6 7
-                    - goos: linux
-                      goarch: arm
-                      goarm: 7
-                    - goos: linux
-                      goarch: arm
-                      goarm: 6
-                    - goos: linux
-                      goarch: arm
-                      goarm: 5
+                    -   goos: linux
+                        goarch: arm
+                        goarm: 7
+                    -   goos: linux
+                        goarch: arm
+                        goarm: 6
+                    -   goos: linux
+                        goarch: arm
+                        goarm: 5
                     # END Linux ARM 5 6 7
         env:
             CGO_ENABLED: 1
@@ -103,77 +103,77 @@ jobs:
             GOARCH: ${{ matrix.goarch }}
             GOARM: ${{ matrix.goarm }}
         steps:
-            - name: Checkout
-              uses: actions/checkout@v2
+            -   name: Checkout
+                uses: actions/checkout@v2
 
-            - name: Set up Go
-              uses: actions/setup-go@v2
-              with:
-                  go-version: ^1.19.0
+            -   name: Set up Go
+                uses: actions/setup-go@v2
+                with:
+                    go-version: ^1.19.0
 
-            - name: Set up cache
-              uses: actions/cache@v2
-              with:
-                  path: |
-                      ~/.cache/go-build
-                      ~/go/pkg/mod
-                  key: ${{ runner.os }}-${{ env.GOOS }}-${{ env.GOARCH }}${{ env.GOARM }}-go-${{ hashFiles('**/go.sum') }}
-                  restore-keys: |
-                      ${{ runner.os }}-${{ env.GOOS }}-${{ env.GOARCH }}${{ env.GOARM }}-go-
+            -   name: Set up cache
+                uses: actions/cache@v2
+                with:
+                    path: |
+                        ~/.cache/go-build
+                        ~/go/pkg/mod
+                    key: ${{ runner.os }}-${{ env.GOOS }}-${{ env.GOARCH }}${{ env.GOARM }}-go-${{ hashFiles('**/go.sum') }}
+                    restore-keys: |
+                        ${{ runner.os }}-${{ env.GOOS }}-${{ env.GOARCH }}${{ env.GOARM }}-go-
 
-            - name: Setup compiler environment
-              id: info
-              run: |
-                  export _NAME=nginx-ui-$(jq ".$GOOS[\"$GOARCH$GOARM\"].name" -r < .github/build/build_info.json)
-                  export _ARCH=$(jq ".$GOOS[\"$GOARCH$GOARM\"].arch" -r < .github/build/build_info.json)
-                  export _ABI=$(jq ".$GOOS[\"$GOARCH$GOARM\"].abi // \"\"" -r < .github/build/build_info.json)
-                  echo "GOOS: $GOOS, GOARCH: $GOARCH, GOARM: $GOARM, ABI: $_ABI, RELEASE_NAME: $_NAME"
-                  echo "ARCH_NAME=$_ARCH" >> $GITHUB_ENV
-                  echo "ABI=$_ABI" >> $GITHUB_ENV
-                  echo "DIST=$_NAME" >> $GITHUB_ENV
+            -   name: Setup compiler environment
+                id: info
+                run: |
+                    export _NAME=nginx-ui-$(jq ".$GOOS[\"$GOARCH$GOARM\"].name" -r < .github/build/build_info.json)
+                    export _ARCH=$(jq ".$GOOS[\"$GOARCH$GOARM\"].arch" -r < .github/build/build_info.json)
+                    export _ABI=$(jq ".$GOOS[\"$GOARCH$GOARM\"].abi // \"\"" -r < .github/build/build_info.json)
+                    echo "GOOS: $GOOS, GOARCH: $GOARCH, GOARM: $GOARM, ABI: $_ABI, RELEASE_NAME: $_NAME"
+                    echo "ARCH_NAME=$_ARCH" >> $GITHUB_ENV
+                    echo "ABI=$_ABI" >> $GITHUB_ENV
+                    echo "DIST=$_NAME" >> $GITHUB_ENV
 
-            - name: Install musl cross compiler
-              if: env.GOOS == 'linux'
-              uses: Lesmiscore/musl-cross-compilers@v0.5
-              id: musl
-              with:
-                  target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
+            -   name: Install musl cross compiler
+                if: env.GOOS == 'linux'
+                uses: Lesmiscore/musl-cross-compilers@v0.5
+                id: musl
+                with:
+                    target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
 
-            - name: Post install musl cross compiler
-              if: env.GOOS == 'linux'
-              run: |
-                  echo "PATH=${{ steps.musl.outputs.path }}:$PATH" >> $GITHUB_ENV
-                  echo "CC=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-gcc" >> $GITHUB_ENV
-                  echo "CXX=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-g++" >> $GITHUB_ENV
-                  echo "LD_FLAGS=--extldflags '-static'" >> $GITHUB_ENV
+            -   name: Post install musl cross compiler
+                if: env.GOOS == 'linux'
+                run: |
+                    echo "PATH=${{ steps.musl.outputs.path }}:$PATH" >> $GITHUB_ENV
+                    echo "CC=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-gcc" >> $GITHUB_ENV
+                    echo "CXX=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-g++" >> $GITHUB_ENV
+                    echo "LD_FLAGS=--extldflags '-static'" >> $GITHUB_ENV
 
-            - name: Install darwin cross compiler
-              if: env.GOOS == 'darwin'
-              run: |
-                  curl -L https://github.com/Hintay/crossosx/releases/latest/download/crossosx.tar.zst -o crossosx.tar.zst
-                  tar xvaf crossosx.tar.zst
-                  echo "LD_LIBRARY_PATH=$(pwd)/crossosx/lib/" >> $GITHUB_ENV
-                  echo "PATH=$(pwd)/crossosx/bin/:$PATH" >> $GITHUB_ENV
-                  echo "CC=${{ env.ARCH_NAME }}-clang" >> $GITHUB_ENV
-                  echo "CXX=${{ env.ARCH_NAME }}-clang++" >> $GITHUB_ENV
-                  echo "LD_FLAGS=-s -w" >> $GITHUB_ENV
+            -   name: Install darwin cross compiler
+                if: env.GOOS == 'darwin'
+                run: |
+                    curl -L https://github.com/Hintay/crossosx/releases/latest/download/crossosx.tar.zst -o crossosx.tar.zst
+                    tar xvaf crossosx.tar.zst
+                    echo "LD_LIBRARY_PATH=$(pwd)/crossosx/lib/" >> $GITHUB_ENV
+                    echo "PATH=$(pwd)/crossosx/bin/:$PATH" >> $GITHUB_ENV
+                    echo "CC=${{ env.ARCH_NAME }}-clang" >> $GITHUB_ENV
+                    echo "CXX=${{ env.ARCH_NAME }}-clang++" >> $GITHUB_ENV
+                    echo "LD_FLAGS=-s -w" >> $GITHUB_ENV
 
-            - name: Download frontend artifacts
-              uses: actions/download-artifact@v2
-              with:
-                  name: frontend-dist
-                  path: frontend/dist
+            -   name: Download frontend artifacts
+                uses: actions/download-artifact@v2
+                with:
+                    name: frontend-dist
+                    path: frontend/dist
 
-            - name: Build
-              run: |
-                  mkdir -p dist
-                  go build -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/server/settings.buildTime=$(date +%s)'" -o dist/nginx-ui -v main.go
+            -   name: Build
+                run: |
+                    mkdir -p dist
+                    go build -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/server/settings.buildTime=$(date +%s)'" -o dist/nginx-ui -v main.go
 
-            - name: Archive backend artifacts
-              uses: actions/upload-artifact@v2
-              with:
-                  name: ${{ env.DIST }}
-                  path: dist/nginx-ui
+            -   name: Archive backend artifacts
+                uses: actions/upload-artifact@v2
+                with:
+                    name: ${{ env.DIST }}
+                    path: dist/nginx-ui
 
             -   name: Prepare publish
                 if: github.event_name == 'release'
@@ -186,3 +186,31 @@ jobs:
                 if: github.event_name == 'release'
                 with:
                     files: ${{ env.DIST }}.tar.gz
+
+            -   name: Set up Docker Buildx
+                if: github.event_name == 'release' && env.GOOS == 'linux' && env.GOOS == 'amd64'
+                id: buildx
+                uses: docker/setup-buildx-action@v1
+
+            -   name: Login to DockerHub
+                if: github.event_name == 'release' && env.GOOS == 'linux' && env.GOOS == 'amd64'
+                uses: docker/login-action@v1
+                with:
+                    username: ${{ secrets.DOCKERHUB_USER }}
+                    password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+            -   name: Prepare Dockerfile
+                if: github.event_name == 'release' && env.GOOS == 'linux' && env.GOOS == 'amd64'
+                run: |
+                    cp ./Dockerfile ./dist
+
+            -   name: Build and push
+                if: github.event_name == 'release' && env.GOOS == 'linux' && env.GOOS == 'amd64'
+                uses: docker/build-push-action@v2
+                with:
+                    context: ./dist
+                    file: ./dist/Dockerfile
+                    platforms: linux/amd64
+                    push: ${{ github.event_name != 'pull_request' }}
+                    tags: |
+                        uozi/nginx-ui:latest
