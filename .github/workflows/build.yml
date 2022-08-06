@@ -106,6 +106,10 @@ jobs:
             -   name: Checkout
                 uses: actions/checkout@v2
 
+            -   name: Get the version
+                id: get_version
+                run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
             -   name: Set up Go
                 uses: actions/setup-go@v2
                 with:
@@ -215,3 +219,4 @@ jobs:
                     push: ${{ github.event_name != 'pull_request' }}
                     tags: |
                         uozi/nginx-ui:latest
+                        uozi/nginx-ui:${{ steps.get_version.outputs.VERSION }}
