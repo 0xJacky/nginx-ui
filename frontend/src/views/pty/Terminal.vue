@@ -5,6 +5,9 @@ import {FitAddon} from 'xterm-addon-fit'
 import {onMounted, onUnmounted} from 'vue'
 import _ from 'lodash'
 import ws from '@/lib/websocket'
+import {useGettext} from 'vue3-gettext'
+
+const {$gettext} = useGettext()
 
 let term: Terminal | null
 let ping: null | NodeJS.Timer
@@ -43,7 +46,6 @@ function initTerm() {
     })
 
     term.loadAddon(fitAddon)
-    // this.fitAddon = fitAddon
     term.open(document.getElementById('terminal')!)
     setTimeout(() => {
         fitAddon.fit()
@@ -83,6 +85,7 @@ function wsOnOpen() {
 onUnmounted(() => {
     window.removeEventListener('resize', fit)
     clearInterval(ping!)
+    term?.dispose()
     ping = null
     websocket.close()
 })
