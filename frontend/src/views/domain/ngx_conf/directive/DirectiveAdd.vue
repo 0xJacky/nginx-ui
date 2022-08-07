@@ -11,14 +11,15 @@ const emit = defineEmits(['save'])
 
 const {ngx_directives, idx} = defineProps(['ngx_directives', 'idx'])
 
-let directive = reactive({directive: '', params: ''})
+const directive = reactive({directive: '', params: ''})
 const adding = ref(false)
 const mode = ref('default')
 
 
 function add() {
     adding.value = true
-    directive = reactive({directive: '', params: ''})
+    directive.directive = ''
+    directive.params = ''
 }
 
 function save() {
@@ -28,9 +29,9 @@ function save() {
     }
 
     if (idx) {
-        ngx_directives.splice(idx + 1, 0, directive)
+        ngx_directives.splice(idx + 1, 0, {directive: directive.directive, params: directive.params})
     } else {
-        ngx_directives.push(directive)
+        ngx_directives.push({directive: directive.directive, params: directive.params})
     }
 
     emit('save', idx)
@@ -56,8 +57,9 @@ function save() {
                     <code-editor v-if="mode===If" default-height="100px" style="width: 100%;"
                                  v-model:content="directive.params"/>
                     <a-input-group v-else compact>
-                        <a-input style="width: 30%" :placeholder="$gettext('Directive')" v-model="directive.directive"/>
-                        <a-input style="width: 70%" :placeholder="$gettext('Params')" v-model="directive.params"/>
+                        <a-input style="width: 30%" :placeholder="$gettext('Directive')"
+                                 v-model:value="directive.directive"/>
+                        <a-input style="width: 70%" :placeholder="$gettext('Params')" v-model:value="directive.params"/>
                     </a-input-group>
 
                     <a-button @click="adding=false">
@@ -71,7 +73,7 @@ function save() {
         </div>
         <a-button block v-if="!adding" @click="add">{{ $gettext('Add Directive Below') }}</a-button>
         <a-button type="primary" v-else block @click="save"
-                  :disabled="!directive.directive&&!directive.params">{{ $gettext('Save Directive') }}
+                  :disabled="!directive.directive||!directive.params">{{ $gettext('Save Directive') }}
         </a-button>
     </div>
 </template>
