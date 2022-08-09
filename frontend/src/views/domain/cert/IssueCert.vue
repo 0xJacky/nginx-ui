@@ -125,6 +125,15 @@ const name = computed(() => {
     return props.directivesMap['server_name'][0].params.trim()
 })
 
+const enabled = computed({
+    get() {
+        return props.enabled
+    },
+    set(value) {
+        emit('update:enabled', value)
+    }
+})
+
 watch(server_name_more_than_one, () => {
     emit('update:enabled', false)
     onchange(false)

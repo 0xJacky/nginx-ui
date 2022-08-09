@@ -104,6 +104,14 @@ function disable() {
         message.error(interpolate($gettext('Failed to disable %{msg}'), {msg: r.message ?? ''}))
     })
 }
+
+function on_change_enabled(checked: boolean) {
+    if (checked) {
+        enable()
+    } else {
+        disable()
+    }
+}
 </script>
 <template>
     <div>
@@ -138,7 +146,7 @@ function disable() {
 
                 <div class="domain-edit-container" key="basic" v-else>
                     <a-form-item :label="$gettext('Enabled')">
-                        <a-switch v-model:checked="enabled" @change="checked=>{checked?enable():disable()}"/>
+                        <a-switch v-model:checked="enabled" @change="on_change_enabled"/>
                     </a-form-item>
                     <ngx-config-editor
                         ref="ngx_config_editor"

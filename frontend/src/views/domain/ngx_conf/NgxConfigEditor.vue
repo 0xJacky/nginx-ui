@@ -2,15 +2,15 @@
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
 import {computed, ref} from 'vue'
-import {useRoute, useRouter} from 'vue-router'
+import {useRoute} from 'vue-router'
 import {useGettext} from 'vue3-gettext'
 import Cert from '@/views/domain/cert/Cert.vue'
 
 const {$gettext} = useGettext()
 
-const {ngx_config, auto_cert, enabled} = defineProps(['ngx_config', 'auto_cert', 'enabled'])
+const props = defineProps(['ngx_config', 'auto_cert', 'enabled'])
 
-const emit = defineEmits(['callback'])
+const emit = defineEmits(['callback', 'update:auto_cert'])
 
 const route = useRoute()
 
@@ -20,13 +20,13 @@ const name = ref(route.params.name)
 function change_tls(r: any) {
     if (r) {
         // deep copy servers[0] to servers[1]
-        const server = JSON.parse(JSON.stringify(ngx_config.servers[0]))
+        const server = JSON.parse(JSON.stringify(props.ngx_config.servers[0]))
 
-        ngx_config.servers.push(server)
+        props.ngx_config.servers.push(server)
 
         current_server_index.value = 1
 
-        const servers = ngx_config.servers
+        const servers = props.ngx_config.servers
 
         let i = 0
         while (i < servers[1].directives.length) {
@@ -67,14 +67,14 @@ function change_tls(r: any) {
     } else {
         // remove servers[1]
         current_server_index.value = 0
-        if (ngx_config.servers.length === 2) {
-            ngx_config.servers.splice(1, 1)
+        if (props.ngx_config.servers.length === 2) {
+            props.ngx_config.servers.splice(1, 1)
         }
     }
 }
 
 const current_server_directives = computed(() => {
-    return ngx_config.servers[current_server_index.value].directives
+    return props.ngx_config.servers[current_server_index.value].directives
 })
 
 const directivesMap = computed(() => {
@@ -94,7 +94,7 @@ const directivesMap = computed(() => {
 
 
 const support_ssl = computed(() => {
-    const servers = ngx_config.servers
+    const servers = props.ngx_config.servers
     for (const server_key in servers) {
         for (const k in servers[server_key].directives) {
             const v = servers[server_key].directives[k]
@@ -119,6 +119,15 @@ const current_support_ssl = computed(() => {
 
 })
 
+const autoCertRef = computed({
+    get() {
+        return props.auto_cert
+    },
+    set(value) {
+        emit('update:auto_cert', value)
+    }
+})
+
 </script>
 
 <template>
@@ -128,7 +137,7 @@ const current_support_ssl = computed(() => {
         </a-form-item>
 
         <a-tabs v-model:activeKey="current_server_index">
-            <a-tab-pane :tab="'Server '+(k+1)" v-for="(v,k) in ngx_config.servers" :key="k">
+            <a-tab-pane :tab="'Server '+(k+1)" v-for="(v,k) in props.ngx_config.servers" :key="k">
 
                 <div class="tab-content">
                     <template v-if="current_support_ssl&&enabled">
@@ -136,7 +145,7 @@ const current_support_ssl = computed(() => {
                             v-if="current_support_ssl"
                             :current_server_directives="current_server_directives"
                             :directives-map="directivesMap"
-                            v-model:enabled="auto_cert"
+                            v-model:enabled="autoCertRef"
                             @callback="$emit('callback')"
                         />
                     </template>

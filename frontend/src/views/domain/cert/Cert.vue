@@ -5,7 +5,7 @@ import {computed, ref} from 'vue'
 
 const props = defineProps(['directivesMap', 'current_server_directives', 'enabled'])
 
-const emit = defineEmits(['callback'])
+const emit = defineEmits(['callback', 'update:enabled'])
 
 const info = ref(null)
 
@@ -22,6 +22,16 @@ function callback() {
 const name = computed(() => {
     return props.directivesMap['server_name'][0].params.trim()
 })
+
+const enabled = computed({
+    get() {
+        return props.enabled
+    },
+    set(value) {
+        emit('update:enabled', value)
+    }
+})
+
 </script>
 
 <template>
@@ -30,7 +40,7 @@ const name = computed(() => {
         <issue-cert
             :current_server_directives="props.current_server_directives"
             :directives-map="props.directivesMap"
-            v-model:enabled="props.enabled"
+            v-model:enabled="enabled"
             @callback="callback"
         />
     </div>
