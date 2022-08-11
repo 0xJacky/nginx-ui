@@ -17,7 +17,8 @@ func CertInfo(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
-			"error": err,
+			"message": "Failed to get cert information",
+			"error":   err,
 		})
 		return
 	}

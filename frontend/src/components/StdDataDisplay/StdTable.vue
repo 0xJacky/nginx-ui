@@ -74,7 +74,7 @@ let params = reactive({
     ...route.query,
     ...props.get_params
 })
-let selectedRowKeys = ref([])
+const selectedRowKeys = ref([])
 const rowSelection = reactive({})
 
 const searchColumns = getSearchColumns()
@@ -91,7 +91,7 @@ function destroy(id: any) {
         get_list()
         message.success(interpolate($gettext('Delete ID: %{id}'), {id: id}))
     }).catch((e: any) => {
-        message.error(e?.message ?? $gettext('Server error'))
+        message.error($gettext(e?.message ?? 'Server error'))
     })
 }
 
@@ -149,7 +149,7 @@ function checked(c: any) {
 }
 
 function onSelectChange(_selectedRowKeys: any) {
-    selectedRowKeys = reactive(_selectedRowKeys)
+    selectedRowKeys.value = _selectedRowKeys
     // this.$emit('selected', selectedRowKeys)
 }
 

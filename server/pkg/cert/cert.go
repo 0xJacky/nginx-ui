@@ -5,9 +5,6 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
-	"crypto/tls"
-	"crypto/x509"
-	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/go-acme/lego/v4/certcrypto"
@@ -16,13 +13,9 @@ import (
 	"github.com/go-acme/lego/v4/lego"
 	"github.com/go-acme/lego/v4/registration"
 	"github.com/pkg/errors"
-	"io"
 	"log"
-	"net"
-	"net/http"
 	"os"
 	"path/filepath"
-	"time"
 )
 
 // MyUser You'll need a user or account type that implements acme.User
@@ -40,69 +33,6 @@ func (u *MyUser) GetRegistration() *registration.Resource {
 }
 func (u *MyUser) GetPrivateKey() crypto.PrivateKey {
 	return u.key
-}
-
-func AutoCert() {
-	defer func() {
-		if err := recover(); err != nil {
-			log.Println("[AutoCert] Recover", err)
-		}
-	}()
-	log.Println("[AutoCert] Start")
-	autoCertList := model.GetAutoCertList()
-	for i := range autoCertList {
-		domain := autoCertList[i].Domain
-		key, err := GetCertInfo(domain)
-		if err != nil {
-			log.Println("GetCertInfo Err", err)
-			// Get certificate info error, ignore this domain
-			continue
-		}
-		// before 1 mo
-		if time.Now().Before(key.NotBefore.AddDate(0, 1, 0)) {
-			continue
-		}
-		// after 1 mo, reissue certificate
-		err = IssueCert(domain)
-		if err != nil {
-			log.Println(err)
-		}
-	}
-}
-
-func GetCertInfo(domain string) (key *x509.Certificate, err error) {
-
-	var response *http.Response
-
-	client := &http.Client{
-		Transport: &http.Transport{
-			DialContext: (&net.Dialer{
-				Timeout: 5 * time.Second,
-			}).DialContext,
-			DisableKeepAlives: true,
-			TLSClientConfig:   &tls.Config{InsecureSkipVerify: true},
-		},
-		Timeout: 5 * time.Second,
-	}
-
-	response, err = client.Get("https://" + domain)
-
-	if err != nil {
-		err = errors.Wrap(err, "get cert info error")
-		return
-	}
-
-	defer func(Body io.ReadCloser) {
-		err = Body.Close()
-		if err != nil {
-			log.Println(err)
-			return
-		}
-	}(response.Body)
-
-	key = response.TLS.PeerCertificates[0]
-
-	return
 }
 
 func IssueCert(domain string) error {

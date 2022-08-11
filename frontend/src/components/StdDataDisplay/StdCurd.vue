@@ -48,8 +48,8 @@ const props = defineProps({
 
 const visible = ref(false)
 const update = ref(0)
-let data = reactive({id: null})
-let error = reactive({})
+const data: any = reactive({id: null})
+const error: any = reactive({})
 const params = reactive({})
 const selected = reactive([])
 
@@ -64,9 +64,11 @@ function editableColumns() {
 }
 
 function add() {
-    data = reactive({
-        id: null
+    Object.keys(data).forEach(v => {
+        delete data[v]
     })
+    
+    clear_error()
     visible.value = true
 }
 
@@ -76,8 +78,15 @@ interface Table {
     get_list(): void
 }
 
+function clear_error() {
+    Object.keys(error).forEach(v => {
+        delete error[v]
+    })
+}
+
 const ok = async () => {
-    error = reactive({})
+    clear_error()
+
     props.api!.save(data.id, data).then((r: any) => {
         message.success($gettext('Save Successfully'))
         Object.assign(data, r)
@@ -85,14 +94,15 @@ const ok = async () => {
         t!.get_list()
 
     }).catch((e: any) => {
-        message.error((e?.message ?? $gettext('Server error')), 5)
-        error = e.errors
+        message.error($gettext(e?.message ?? 'Server error'), 5)
+        Object.assign(error, e.errors)
     })
 }
 
 function cancel() {
     visible.value = false
-    error = reactive({})
+
+    clear_error()
 }
 
 function edit(id: any) {
@@ -100,7 +110,7 @@ function edit(id: any) {
         Object.assign(data, r)
         visible.value = true
     }).catch((e: any) => {
-        message.error((e?.message ?? $gettext('Server error')), 5)
+        message.error($gettext(e?.message ?? 'Server error'), 5)
     })
 }
 
