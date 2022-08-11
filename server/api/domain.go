@@ -248,6 +248,7 @@ func DeleteDomain(c *gin.Context) {
 
 func AddDomainToAutoCert(c *gin.Context) {
 	domain := c.Param("domain")
+
 	cert, err := model.FirstOrCreateCert(domain)
 	if err != nil {
 		ErrHandler(c, err)

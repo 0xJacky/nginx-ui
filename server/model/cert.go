@@ -8,7 +8,8 @@ import (
 
 type Cert struct {
 	Model
-	Domain string `json:"domain"`
+	Domain             string `json:"domain"`
+	SSLCertificatePath string `json:"ssl_certificate_path"`
 }
 
 func FirstCert(domain string) (c Cert, err error) {
@@ -27,8 +28,8 @@ func FirstOrCreateCert(domain string) (c Cert, err error) {
 func GetAutoCertList() (c []Cert) {
 	var t []Cert
 	db.Find(&t)
-	// check if this domain is enabled
 
+	// check if this domain is enabled
 	enabledConfig, err := os.ReadDir(filepath.Join(nginx.GetNginxConfPath("sites-enabled")))
 
 	if err != nil {
@@ -47,6 +48,10 @@ func GetAutoCertList() (c []Cert) {
 	}
 
 	return
+}
+
+func (c *Cert) Updates(n *Cert) error {
+	return db.Model(c).Updates(n).Error
 }
 
 func (c *Cert) Remove() error {

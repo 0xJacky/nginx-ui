@@ -16,14 +16,28 @@ func AutoCert() {
 	autoCertList := model.GetAutoCertList()
 	for i := range autoCertList {
 		domain := autoCertList[i].Domain
-		key, err := GetCertInfo(domain)
+
+		certModel, err := model.FirstCert(domain)
+
+		if err != nil {
+			log.Println("[AutoCert] Error get certificate from database", err)
+			continue
+		}
+
+		if certModel.SSLCertificatePath != "" {
+			log.Println("[AutoCert] Error ssl_certificate_path is empty, " +
+				"try to reopen auto-cert for this domain:" + domain)
+			continue
+		}
+
+		cert, err := GetCertInfo(certModel.SSLCertificatePath)
 		if err != nil {
 			log.Println("GetCertInfo Err", err)
 			// Get certificate info error, ignore this domain
 			continue
 		}
 		// before 1 mo
-		if time.Now().Before(key.NotBefore.AddDate(0, 1, 0)) {
+		if time.Now().Before(cert.NotBefore.AddDate(0, 1, 0)) {
 			continue
 		}
 		// after 1 mo, reissue certificate

@@ -23,6 +23,11 @@ const name = computed(() => {
     return props.directivesMap['server_name'][0].params.trim()
 })
 
+const ssl_certificate_path = computed(() => {
+    return props.directivesMap['ssl_certificate']?.[0].params.trim() ?? null
+})
+
+
 const enabled = computed({
     get() {
         return props.enabled
@@ -36,7 +41,7 @@ const enabled = computed({
 
 <template>
     <div>
-        <cert-info ref="info" :domain="name" v-if="name"/>
+        <cert-info ref="info" :ssl_certificate_path="ssl_certificate_path" v-if="ssl_certificate_path"/>
         <issue-cert
             :current_server_directives="props.current_server_directives"
             :directives-map="props.directivesMap"

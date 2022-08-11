@@ -1,47 +1,33 @@
 package cert
 
 import (
-	"crypto/tls"
 	"crypto/x509"
+	"encoding/pem"
 	"github.com/pkg/errors"
-	"io"
-	"log"
-	"net"
-	"net/http"
-	"time"
+	"os"
 )
 
-func GetCertInfo(domain string) (key *x509.Certificate, err error) {
-
-	var response *http.Response
-
-	client := &http.Client{
-		Transport: &http.Transport{
-			DialContext: (&net.Dialer{
-				Timeout: 5 * time.Second,
-			}).DialContext,
-			DisableKeepAlives: true,
-			TLSClientConfig:   &tls.Config{InsecureSkipVerify: true},
-		},
-		Timeout: 5 * time.Second,
-	}
-
-	response, err = client.Get("https://" + domain)
+func GetCertInfo(sslCertificatePath string) (cert *x509.Certificate, err error) {
+	certData, err := os.ReadFile(sslCertificatePath)
 
 	if err != nil {
-		err = errors.Wrap(err, "get cert info error")
+		err = errors.Wrap(err, "error read certificate")
 		return
 	}
 
-	defer func(Body io.ReadCloser) {
-		err = Body.Close()
-		if err != nil {
-			log.Println(err)
-			return
-		}
-	}(response.Body)
+	block, _ := pem.Decode(certData)
 
-	key = response.TLS.PeerCertificates[0]
+	if block == nil || block.Type != "CERTIFICATE" {
+		err = errors.New("certificate decoding error")
+		return
+	}
+
+	cert, err = x509.ParseCertificate(block.Bytes)
+
+	if err != nil {
+		err = errors.Wrap(err, "certificate parsing error")
+		return
+	}
 
 	return
 }

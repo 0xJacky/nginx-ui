@@ -84,7 +84,7 @@ func InitRouter() *gin.Engine {
 			g.GET("template", api.GetTemplate)
 
 			g.GET("cert/issue/:domain", api.IssueCert)
-			g.GET("cert/:domain/info", api.CertInfo)
+			g.GET("cert_info", api.CertInfo)
 
 			// Add domain to auto-renew cert list
 			g.POST("cert/:domain", api.AddDomainToAutoCert)
