@@ -2,14 +2,14 @@ package api
 
 import (
 	"bufio"
-	"github.com/0xJacky/Nginx-UI/server/tool/nginx"
+	nginx2 "github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
 )
 
 func BuildNginxConfig(c *gin.Context) {
-	var ngxConf nginx.NgxConfig
+	var ngxConf nginx2.NgxConfig
 	if !BindAndValid(c, &ngxConf) {
 		return
 	}
@@ -30,7 +30,7 @@ func TokenizeNginxConfig(c *gin.Context) {
 
 	scanner := bufio.NewScanner(strings.NewReader(json.Content))
 
-	ngxConfig, err := nginx.ParseNgxConfigByScanner("", scanner)
+	ngxConfig, err := nginx2.ParseNgxConfigByScanner("", scanner)
 
 	if err != nil {
 		ErrHandler(c, err)

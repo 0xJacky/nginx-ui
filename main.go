@@ -5,10 +5,10 @@ import (
     "flag"
     "github.com/0xJacky/Nginx-UI/server/analytic"
     "github.com/0xJacky/Nginx-UI/server/model"
+    "github.com/0xJacky/Nginx-UI/server/pkg/cert"
+    "github.com/0xJacky/Nginx-UI/server/pkg/nginx"
     "github.com/0xJacky/Nginx-UI/server/router"
     "github.com/0xJacky/Nginx-UI/server/settings"
-    "github.com/0xJacky/Nginx-UI/server/tool"
-    "github.com/0xJacky/Nginx-UI/server/tool/nginx"
     "github.com/gin-gonic/gin"
     "github.com/go-co-op/gocron"
     "log"
@@ -40,7 +40,7 @@ func main() {
         model.Init()
 
         s := gocron.NewScheduler(time.UTC)
-        job, err := s.Every(1).Hour().SingletonMode().Do(tool.AutoCert)
+        job, err := s.Every(1).Hour().SingletonMode().Do(cert.AutoCert)
 
         if err != nil {
             log.Fatalf("AutoCert Job: %v, Err: %v\n", job, err)

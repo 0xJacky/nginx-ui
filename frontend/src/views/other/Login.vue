@@ -53,7 +53,7 @@ const onSubmit = () => {
             const next = (route.query?.next || '').toString() || '/'
             await router.push(next)
         }).catch(e => {
-            message.error(e.message ?? $gettext('Server error'))
+            message.error($gettext(e.message ?? 'Server error'))
         })
     })
 }

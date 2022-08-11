@@ -23,7 +23,7 @@ func Login(c *gin.Context) {
 
 	if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(user.Password)); err != nil {
 		c.JSON(http.StatusForbidden, gin.H{
-			"message": "用户名或密码错误",
+			"message": "The username or password is incorrect",
 		})
 		return
 	}

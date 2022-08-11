@@ -91,7 +91,7 @@ func EditUser(c *gin.Context) {
 	}
 	edit.Name = json.Name
 
-	// 改密码加密
+	// encrypt passowrd
 	if json.Password != "" {
 		var pwd []byte
 		pwd, err = bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)

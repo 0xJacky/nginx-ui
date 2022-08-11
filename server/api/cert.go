@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/0xJacky/Nginx-UI/server/tool"
-	"github.com/0xJacky/Nginx-UI/server/tool/nginx"
+	"github.com/0xJacky/Nginx-UI/server/pkg/cert"
+	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"log"
@@ -13,7 +13,7 @@ import (
 func CertInfo(c *gin.Context) {
 	domain := c.Param("domain")
 
-	key, err := tool.GetCertInfo(domain)
+	key, err := cert.GetCertInfo(domain)
 
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -61,7 +61,7 @@ func IssueCert(c *gin.Context) {
 
 	if mt == websocket.TextMessage && string(message) == "go" {
 
-		err = tool.IssueCert(domain)
+		err = cert.IssueCert(domain)
 
 		if err != nil {
 

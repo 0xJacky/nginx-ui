@@ -1,8 +1,8 @@
 package model
 
 import (
-	"github.com/0xJacky/Nginx-UI/server/tool/nginx"
-	"io/ioutil"
+	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+	"os"
 	"path/filepath"
 )
 
@@ -29,7 +29,7 @@ func GetAutoCertList() (c []Cert) {
 	db.Find(&t)
 	// check if this domain is enabled
 
-	enabledConfig, err := ioutil.ReadDir(filepath.Join(nginx.GetNginxConfPath("sites-enabled")))
+	enabledConfig, err := os.ReadDir(filepath.Join(nginx.GetNginxConfPath("sites-enabled")))
 
 	if err != nil {
 		return

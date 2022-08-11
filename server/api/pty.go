@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/0xJacky/Nginx-UI/server/tool/pty"
+	"github.com/0xJacky/Nginx-UI/server/pkg/pty"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"log"

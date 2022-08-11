@@ -1,8 +1,8 @@
 package api
 
 import (
+	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/0xJacky/Nginx-UI/server/settings"
-	"github.com/0xJacky/Nginx-UI/server/tool/nginx"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"

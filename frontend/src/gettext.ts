@@ -11,3 +11,6 @@ export default createGettext({
     translations: translations,
     silent: true
 })
+
+export class useGettext {
+}

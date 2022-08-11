@@ -1,4 +1,4 @@
-package tool
+package config_list
 
 import (
 	"github.com/gin-gonic/gin"

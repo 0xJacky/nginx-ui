@@ -41,8 +41,9 @@ func BindAndValid(c *gin.Context, target interface{}) bool {
 		if !ok {
 			log.Println("verrs", verrs)
 			c.JSON(http.StatusNotAcceptable, gin.H{
-				"message": "请求参数错误",
+				"message": "Requested with wrong parameters",
 				"code":    http.StatusNotAcceptable,
+				"error":   verrs,
 			})
 			return false
 		}
@@ -56,7 +57,7 @@ func BindAndValid(c *gin.Context, target interface{}) bool {
 
 		c.JSON(http.StatusNotAcceptable, gin.H{
 			"errors":  errs,
-			"message": "请求参数错误",
+			"message": "Requested with wrong parameters",
 			"code":    http.StatusNotAcceptable,
 		})
 

@@ -1,8 +1,8 @@
 package model
 
 import (
-	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 )
 
@@ -36,7 +36,7 @@ func GetBackup(id int) (config ConfigBackup) {
 }
 
 func CreateBackup(path string) {
-	content, err := ioutil.ReadFile(path)
+	content, err := os.ReadFile(path)
 	if err != nil {
 		log.Println(err)
 	}

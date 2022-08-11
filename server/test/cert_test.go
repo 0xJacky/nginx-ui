@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/server/tool/nginx"
+	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"log"
 	"os"
 	"os/exec"
@@ -35,6 +35,4 @@ func TestCert(t *testing.T) {
 	}
 
 	log.Println("[found]", "cert key")
-
-	log.Println("申请成功")
 }

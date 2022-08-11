@@ -1,10 +1,9 @@
 package api
 
 import (
-	"github.com/0xJacky/Nginx-UI/server/tool"
-	"github.com/0xJacky/Nginx-UI/server/tool/nginx"
+	"github.com/0xJacky/Nginx-UI/server/pkg/config_list"
+	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -21,7 +20,7 @@ func GetConfigs(c *gin.Context) {
 		"modify": "time",
 	}
 
-	configFiles, err := ioutil.ReadDir(nginx.GetNginxConfPath("/"))
+	configFiles, err := os.ReadDir(nginx.GetNginxConfPath("/"))
 
 	if err != nil {
 		ErrHandler(c, err)
@@ -32,17 +31,18 @@ func GetConfigs(c *gin.Context) {
 
 	for i := range configFiles {
 		file := configFiles[i]
+		fileInfo, _ := file.Info()
 
 		if !file.IsDir() && "." != file.Name()[0:1] {
 			configs = append(configs, gin.H{
 				"name":   file.Name(),
-				"size":   file.Size(),
-				"modify": file.ModTime(),
+				"size":   fileInfo.Size(),
+				"modify": fileInfo.ModTime(),
 			})
 		}
 	}
 
-	configs = tool.Sort(orderBy, sort, mySort[orderBy], configs)
+	configs = config_list.Sort(orderBy, sort, mySort[orderBy], configs)
 
 	c.JSON(http.StatusOK, gin.H{
 		"data": configs,
@@ -53,7 +53,7 @@ func GetConfig(c *gin.Context) {
 	name := c.Param("name")
 	path := filepath.Join(nginx.GetNginxConfPath("/"), name)
 
-	content, err := ioutil.ReadFile(path)
+	content, err := os.ReadFile(path)
 
 	if err != nil {
 		ErrHandler(c, err)
@@ -93,7 +93,7 @@ func AddConfig(c *gin.Context) {
 	}
 
 	if content != "" {
-		err := ioutil.WriteFile(path, []byte(content), 0644)
+		err = os.WriteFile(path, []byte(content), 0644)
 		if err != nil {
 			ErrHandler(c, err)
 			return
@@ -131,7 +131,7 @@ func EditConfig(c *gin.Context) {
 	path := filepath.Join(nginx.GetNginxConfPath("/"), name)
 	content := request.Content
 
-	origContent, err := ioutil.ReadFile(path)
+	origContent, err := os.ReadFile(path)
 	if err != nil {
 		ErrHandler(c, err)
 		return
@@ -139,7 +139,7 @@ func EditConfig(c *gin.Context) {
 
 	if content != "" && content != string(origContent) {
 		// model.CreateBackup(path)
-		err := ioutil.WriteFile(path, []byte(content), 0644)
+		err = os.WriteFile(path, []byte(content), 0644)
 		if err != nil {
 			ErrHandler(c, err)
 			return
