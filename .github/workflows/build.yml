@@ -220,3 +220,20 @@ jobs:
                     tags: |
                         uozi/nginx-ui:latest
                         uozi/nginx-ui:${{ steps.get_version.outputs.VERSION }}
+
+            -   name: Prepare Demo Dockerfile
+                if: env.GOOS == 'linux' && env.GOARCH == 'amd64'
+                run: |
+                    cp ./demo.Dockerfile ./dist
+                    cp -rp ./resources ./dist
+
+            -   name: Build and push demo
+                if: env.GOOS == 'linux' && env.GOARCH == 'amd64'
+                uses: docker/build-push-action@v2
+                with:
+                    context: ./dist
+                    file: ./dist/Dockerfile
+                    platforms: linux/amd64
+                    push: ${{ github.event_name != 'pull_request' }}
+                    tags: |
+                        uozi/nginx-ui-demo:latest
