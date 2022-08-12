@@ -32,22 +32,22 @@ func InitRouter() *gin.Engine {
 		}
 	})
 
-	g := r.Group("/api")
+	root := r.Group("/api")
 	{
 
-		g.GET("settings", func(c *gin.Context) {
+		root.GET("settings", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"demo": settings.ServerSettings.Demo,
 			})
 		})
 
-		g.GET("install", api.InstallLockCheck)
-		g.POST("install", api.InstallNginxUI)
+		root.GET("install", api.InstallLockCheck)
+		root.POST("install", api.InstallNginxUI)
 
-		g.POST("/login", api.Login)
-		g.DELETE("/logout", api.Logout)
+		root.POST("/login", api.Login)
+		root.DELETE("/logout", api.Logout)
 
-		g := g.Group("/", authRequired())
+		g := root.Group("/", authRequired())
 		{
 			g.GET("analytic", api.Analytic)
 			g.GET("analytic/init", api.GetAnalyticInit)
@@ -84,7 +84,6 @@ func InitRouter() *gin.Engine {
 			g.GET("template", api.GetTemplate)
 
 			g.GET("cert/issue/:domain", api.IssueCert)
-			g.GET("cert_info", api.CertInfo)
 
 			// Add domain to auto-renew cert list
 			g.POST("cert/:domain", api.AddDomainToAutoCert)

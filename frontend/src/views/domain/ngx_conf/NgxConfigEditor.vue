@@ -8,7 +8,7 @@ import Cert from '@/views/domain/cert/Cert.vue'
 
 const {$gettext} = useGettext()
 
-const props = defineProps(['ngx_config', 'auto_cert', 'enabled'])
+const props = defineProps(['ngx_config', 'auto_cert', 'enabled', 'cert_info'])
 
 const emit = defineEmits(['callback', 'update:auto_cert'])
 
@@ -143,6 +143,7 @@ const autoCertRef = computed({
                     <template v-if="current_support_ssl&&enabled">
                         <cert
                             v-if="current_support_ssl"
+                            :cert_info="props.cert_info[k]"
                             :current_server_directives="current_server_directives"
                             :directives-map="directivesMap"
                             v-model:enabled="autoCertRef"

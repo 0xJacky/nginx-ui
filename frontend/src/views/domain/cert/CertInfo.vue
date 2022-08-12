@@ -4,29 +4,13 @@ import dayjs from 'dayjs'
 import {reactive, ref} from 'vue'
 import domain from '@/api/domain'
 
-const props = defineProps(['ssl_certificate_path'])
+const props = defineProps(['cert'])
 
-const ok = ref(false)
-const cert = reactive({issuer_name: '', subject_name: '', not_after: '', not_before: ''})
-
-get()
-
-function get() {
-    domain.cert_info(props.ssl_certificate_path).then((r: any) => {
-        Object.assign(cert, r)
-        ok.value = true
-    }).catch(() => {
-        ok.value = false
-    })
-}
-
-defineExpose({
-    get
-})
+const cert = props.cert
 </script>
 
 <template>
-    <div class="cert-info" v-if="ok">
+    <div class="cert-info" v-if="cert">
         <h2 v-translate>Certificate Status</h2>
         <p v-translate="{issuer: cert.issuer_name}">Intermediate Certification Authorities: %{issuer}</p>
         <p v-translate="{name: cert.subject_name}">Subject Name: %{name}</p>

@@ -24,6 +24,8 @@ const ngx_config = reactive({
     servers: []
 })
 
+const cert_info_map: any = reactive({})
+
 const auto_cert = ref(false)
 const enabled = ref(false)
 const configText = ref('')
@@ -33,13 +35,23 @@ const saving = ref(false)
 
 init()
 
+function handle_response(r: any) {
+
+    Object.keys(cert_info_map).forEach(v => {
+        delete cert_info_map[v]
+    })
+
+    configText.value = r.config
+    enabled.value = r.enabled
+    auto_cert.value = r.auto_cert
+    Object.assign(ngx_config, r.tokenized)
+    Object.assign(cert_info_map, r.cert_info)
+}
+
 function init() {
     if (name.value) {
         domain.get(name.value).then((r: any) => {
-            configText.value = r.config
-            enabled.value = r.enabled
-            auto_cert.value = r.auto_cert
-            Object.assign(ngx_config, r.tokenized)
+            handle_response(r)
         }).catch(r => {
             message.error(r.message ?? $gettext('Server error'))
         })
@@ -74,9 +86,8 @@ const save = async () => {
     }
 
     domain.save(name.value, {content: configText.value}).then(r => {
-        configText.value = r.config
-        enabled.value = r.enabled
-        Object.assign(ngx_config, r.tokenized)
+        handle_response(r)
+
         message.success($gettext('Saved successfully'))
 
     }).catch((e: any) => {
@@ -151,6 +162,7 @@ function on_change_enabled(checked: boolean) {
                     <ngx-config-editor
                         ref="ngx_config_editor"
                         :ngx_config="ngx_config"
+                        :cert_info="cert_info_map"
                         v-model:auto_cert="auto_cert"
                         :enabled="enabled"
                         @callback="save()"

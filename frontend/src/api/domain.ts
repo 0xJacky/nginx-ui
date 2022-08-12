@@ -13,11 +13,7 @@ class Domain extends Curd {
     get_template() {
         return http.get('template')
     }
-
-    cert_info(path: string) {
-        return http.get('cert_info?ssl_certificate_path=' + path)
-    }
-
+    
     add_auto_cert(domain: string) {
         return http.post('cert/' + domain)
     }
