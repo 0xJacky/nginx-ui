@@ -221,6 +221,13 @@ jobs:
                         uozi/nginx-ui:latest
                         uozi/nginx-ui:${{ steps.get_version.outputs.VERSION }}
 
+            -   name: Login to DockerHub Again
+                if: github.event_name == 'release' && env.GOOS == 'linux' && env.GOARCH == 'amd64'
+                uses: docker/login-action@v1
+                with:
+                    username: ${{ secrets.DOCKERHUB_USER }}
+                    password: ${{ secrets.DOCKERHUB_TOKEN }}
+
             -   name: Prepare Demo Dockerfile
                 if: env.GOOS == 'linux' && env.GOARCH == 'amd64'
                 run: |
