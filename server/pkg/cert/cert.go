@@ -35,13 +35,22 @@ func (u *MyUser) GetPrivateKey() crypto.PrivateKey {
 	return u.key
 }
 
-func IssueCert(domain string) error {
+func IssueCert(domain string, logChan chan string, errChan chan error) {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Println("Issue Cert recover", err)
+		}
+	}()
+
 	// Create a user. New accounts need an email and private key to start.
+	logChan <- "Generating private key for registering account"
 	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
-		return errors.Wrap(err, "issue cert generate key error")
+		errChan <- errors.Wrap(err, "issue cert generate key error")
+		return
 	}
 
+	logChan <- "Preparing lego configurations"
 	myUser := MyUser{
 		Email: settings.ServerSettings.Email,
 		key:   privateKey,
@@ -55,26 +64,32 @@ func IssueCert(domain string) error {
 
 	config.Certificate.KeyType = certcrypto.RSA2048
 
+	logChan <- "Creating client facilitates communication with the CA server"
 	// A client facilitates communication with the CA server.
 	client, err := lego.NewClient(config)
 	if err != nil {
-		return errors.Wrap(err, "issue cert new client error")
+		errChan <- errors.Wrap(err, "issue cert new client error")
+		return
 	}
 
+	logChan <- "Using HTTP01 challenge provider"
 	err = client.Challenge.SetHTTP01Provider(
 		http01.NewProviderServer("",
 			settings.ServerSettings.HTTPChallengePort,
 		),
 	)
+
 	if err != nil {
-		return errors.Wrap(err, "issue cert challenge fail")
+		errChan <- errors.Wrap(err, "issue cert challenge fail")
+		return
 	}
 
 	// New users will need to register
+	logChan <- "Registering user"
 	reg, err := client.Registration.Register(registration.RegisterOptions{TermsOfServiceAgreed: true})
 	if err != nil {
-		log.Println(err)
-		return errors.Wrap(err, "issue cert register fail")
+		errChan <- errors.Wrap(err, "issue cert register fail")
+		return
 	}
 	myUser.Registration = reg
 
@@ -82,37 +97,46 @@ func IssueCert(domain string) error {
 		Domains: []string{domain},
 		Bundle:  true,
 	}
+
+	logChan <- "Obtaining certificate"
 	certificates, err := client.Certificate.Obtain(request)
 	if err != nil {
-		return errors.Wrap(err, "issue cert fail to obtain")
+		errChan <- errors.Wrap(err, "issue cert fail to obtain")
+		return
 	}
 	saveDir := nginx.GetNginxConfPath("ssl/" + domain)
 	if _, err = os.Stat(saveDir); os.IsNotExist(err) {
 		err = os.Mkdir(saveDir, 0755)
 		if err != nil {
-			return errors.Wrap(err, "issue cert fail to create")
+			errChan <- errors.Wrap(err, "issue cert fail to create")
+			return
 		}
 	}
 
 	// Each certificate comes back with the cert bytes, the bytes of the client's
 	// private key, and a certificate URL. SAVE THESE TO DISK.
+	logChan <- "Writing certificate to disk"
 	err = os.WriteFile(filepath.Join(saveDir, "fullchain.cer"),
 		certificates.Certificate, 0644)
 
 	if err != nil {
-		log.Println(err)
-		return errors.Wrap(err, "issue cert write fullchain.cer fail")
+		errChan <- errors.Wrap(err, "error issue cert write fullchain.cer")
+		return
 	}
 
+	logChan <- "Writing certificate private key to disk"
 	err = os.WriteFile(filepath.Join(saveDir, domain+".key"),
 		certificates.PrivateKey, 0644)
 
 	if err != nil {
-		log.Println(err)
-		return errors.Wrap(err, "issue cert write key fail")
+		errChan <- errors.Wrap(err, "error issue cert write key")
+		return
 	}
+
+	close(errChan)
+	logChan <- "Reloading nginx"
 
 	nginx.ReloadNginx()
 
-	return nil
+	logChan <- "Finished"
 }

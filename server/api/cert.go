@@ -8,8 +8,42 @@ import (
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
-	"os"
 )
+
+const (
+	Success = "success"
+	Info    = "info"
+	Error   = "error"
+)
+
+type IssueCertResponse struct {
+	Status            string `json:"status"`
+	Message           string `json:"message"`
+	SSLCertificate    string `json:"ssl_certificate,omitempty"`
+	SSLCertificateKey string `json:"ssl_certificate_key,omitempty"`
+}
+
+func handleIssueCertLogChan(conn *websocket.Conn, logChan chan string) {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Println("api.handleIssueCertLogChan recover", err)
+		}
+	}()
+
+	for logString := range logChan {
+
+		err := conn.WriteJSON(IssueCertResponse{
+			Status:  Info,
+			Message: logString,
+		})
+
+		if err != nil {
+			log.Println("Error handleIssueCertLogChan", err)
+			return
+		}
+
+	}
+}
 
 func IssueCert(c *gin.Context) {
 	domain := c.Param("domain")
@@ -36,97 +70,71 @@ func IssueCert(c *gin.Context) {
 
 	// read
 	mt, message, err := ws.ReadMessage()
+
 	if err != nil {
 		log.Println(err)
 		return
 	}
 
-	if mt == websocket.TextMessage && string(message) == "go" {
-
-		err = cert.IssueCert(domain)
-
-		if err != nil {
-
-			log.Println(err)
-
-			err = ws.WriteJSON(gin.H{
-				"status":  "error",
-				"message": err.Error(),
-			})
-
-			if err != nil {
-				log.Println(err)
-				return
-			}
-
-			return
-		}
-
-		sslCertificatePath := nginx.GetNginxConfPath("ssl/" + domain + "/fullchain.cer")
-		_, err = os.Stat(sslCertificatePath)
-
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		log.Println("[found]", "fullchain.cer")
-
-		err = ws.WriteJSON(gin.H{
-			"status":  "success",
-			"message": "[found] fullchain.cer",
-		})
-
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		sslCertificateKeyPath := nginx.GetNginxConfPath("ssl/" + domain + "/" + domain + ".key")
-		_, err = os.Stat(sslCertificateKeyPath)
-
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		log.Println("[found]", "cert key")
-		err = ws.WriteJSON(gin.H{
-			"status":  "success",
-			"message": "[found] Certificate Key",
-		})
-
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		certModel, err := model.FirstCert(domain)
-
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		err = certModel.Updates(&model.Cert{
-			SSLCertificatePath: sslCertificatePath,
-		})
-
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		err = ws.WriteJSON(gin.H{
-			"status":              "success",
-			"message":             "Issued certificate successfully",
-			"ssl_certificate":     sslCertificatePath,
-			"ssl_certificate_key": sslCertificateKeyPath,
-		})
-
-		if err != nil {
-			log.Println(err)
-			return
-		}
+	if mt != websocket.TextMessage || string(message) != "go" {
+		return
 	}
+
+	logChan := make(chan string, 1)
+	errChan := make(chan error, 1)
+
+	go cert.IssueCert(domain, logChan, errChan)
+
+	go handleIssueCertLogChan(ws, logChan)
+
+	// block, unless errChan closed
+	for err = range errChan {
+		log.Println("Error cert.IssueCert", err)
+
+		err = ws.WriteJSON(IssueCertResponse{
+			Status:  Error,
+			Message: err.Error(),
+		})
+
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		return
+	}
+
+	close(logChan)
+
+	sslCertificatePath := nginx.GetNginxConfPath("ssl/" + domain + "/fullchain.cer")
+	sslCertificateKeyPath := nginx.GetNginxConfPath("ssl/" + domain + "/" + domain + ".key")
+
+	certModel, err := model.FirstCert(domain)
+
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	err = certModel.Updates(&model.Cert{
+		SSLCertificatePath: sslCertificatePath,
+	})
+
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	err = ws.WriteJSON(IssueCertResponse{
+		Status:            Success,
+		Message:           "Issued certificate successfully",
+		SSLCertificate:    sslCertificatePath,
+		SSLCertificateKey: sslCertificateKeyPath,
+	})
+
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
 }

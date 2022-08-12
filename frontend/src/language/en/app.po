@@ -60,7 +60,7 @@ msgstr "Auto-renewal disabled for %{name}"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "Auto-renewal enabled for %{name}"
 
-#: src/views/domain/DomainEdit.vue:166
+#: src/views/domain/DomainEdit.vue:178
 msgid "Back"
 msgstr "Back"
 
@@ -86,22 +86,22 @@ msgstr "Build with"
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/views/domain/cert/CertInfo.vue:40
+#: src/views/domain/cert/CertInfo.vue:24
 msgid "Certificate has expired"
 msgstr "Certificate has expired"
 
-#: src/views/domain/cert/CertInfo.vue:44
+#: src/views/domain/cert/CertInfo.vue:28
 msgid "Certificate is valid"
 msgstr "Certificate is valid"
 
-#: src/views/domain/cert/CertInfo.vue:30
+#: src/views/domain/cert/CertInfo.vue:14
 msgid "Certificate Status"
 msgstr "Certificate Status"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:29
 #: src/views/domain/ngx_conf/LocationEditor.vue:21
 #: src/views/domain/ngx_conf/LocationEditor.vue:7
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:154
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:155
 msgid "Comments"
 msgstr "Comments"
 
@@ -137,6 +137,10 @@ msgstr "Create Another"
 #: src/views/user/User.vue:30
 msgid "Created at"
 msgstr "Created at"
+
+#: src/language/constants.ts:13
+msgid "Creating client facilitates communication with the CA server"
+msgstr ""
 
 #: src/routes/index.ts:26
 msgid "Dashboard"
@@ -180,7 +184,7 @@ msgstr "Disable auto-renewal failed for %{name}"
 msgid "Disabled"
 msgstr "Disabled"
 
-#: src/views/domain/DomainEdit.vue:101 src/views/domain/DomainList.vue:64
+#: src/views/domain/DomainEdit.vue:112 src/views/domain/DomainList.vue:64
 msgid "Disabled successfully"
 msgstr "Disabled successfully"
 
@@ -226,7 +230,7 @@ msgstr "Enable TLS"
 msgid "Enabled"
 msgstr "Enabled"
 
-#: src/views/domain/DomainAdd.vue:46 src/views/domain/DomainEdit.vue:92
+#: src/views/domain/DomainAdd.vue:46 src/views/domain/DomainEdit.vue:103
 #: src/views/domain/DomainList.vue:54
 msgid "Enabled successfully"
 msgstr "Enabled successfully"
@@ -235,15 +239,15 @@ msgstr "Enabled successfully"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Encrypt website with Let's Encrypt"
 
-#: src/views/domain/cert/CertInfo.vue:33
+#: src/views/domain/cert/CertInfo.vue:17
 msgid "Expiration Date: %{date}"
 msgstr "Expiration Date: %{date}"
 
-#: src/views/domain/DomainEdit.vue:104 src/views/domain/DomainList.vue:68
+#: src/views/domain/DomainEdit.vue:115 src/views/domain/DomainList.vue:68
 msgid "Failed to disable %{msg}"
 msgstr "Failed to disable %{msg}"
 
-#: src/views/domain/DomainEdit.vue:95 src/views/domain/DomainList.vue:58
+#: src/views/domain/DomainEdit.vue:106 src/views/domain/DomainList.vue:58
 msgid "Failed to enable %{msg}"
 msgstr "Failed to enable %{msg}"
 
@@ -255,9 +259,13 @@ msgstr ""
 msgid "File Not Found"
 msgstr "File Not Found"
 
-#: src/views/domain/DomainAdd.vue:7
+#: src/language/constants.ts:20 src/views/domain/DomainAdd.vue:7
 msgid "Finished"
 msgstr "Finished"
+
+#: src/language/constants.ts:11
+msgid "Generating private key for registering account"
+msgstr ""
 
 #: src/views/domain/cert/IssueCert.vue:85
 msgid "Getting the certificate, please wait..."
@@ -276,7 +284,7 @@ msgstr "Install"
 msgid "Install successfully"
 msgstr "Enabled successfully"
 
-#: src/views/domain/cert/CertInfo.vue:31
+#: src/views/domain/cert/CertInfo.vue:15
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "Intermediate Certification Authorities: %{issuer}"
 
@@ -384,7 +392,7 @@ msgstr "No"
 msgid "Not Found"
 msgstr "Not Found"
 
-#: src/views/domain/cert/CertInfo.vue:35
+#: src/views/domain/cert/CertInfo.vue:19
 msgid "Not Valid Before: %{date}"
 msgstr "Not Valid Before: %{date}"
 
@@ -395,6 +403,10 @@ msgid ""
 msgstr ""
 "Note: The server_name in the current configuration must be the domain name "
 "you need to get the certificate."
+
+#: src/language/constants.ts:16
+msgid "Obtaining certificate"
+msgstr ""
 
 #: src/components/StdDataDisplay/StdCurd.vue:27
 #: src/components/StdDataDisplay/StdTable.vue:40
@@ -435,6 +447,11 @@ msgstr "Please input your password!"
 msgid "Please input your username!"
 msgstr "Please input your username!"
 
+#: src/language/constants.ts:12
+#, fuzzy
+msgid "Preparing lego configurations"
+msgstr "Configurations"
+
 #: src/language/constants.ts:7
 msgid "Prohibit changing root password in demo"
 msgstr ""
@@ -455,11 +472,19 @@ msgstr "Reads"
 msgid "Receive"
 msgstr "Receive"
 
+#: src/language/constants.ts:15
+msgid "Registering user"
+msgstr ""
+
+#: src/language/constants.ts:19
+msgid "Reloading nginx"
+msgstr ""
+
 #: src/components/StdDataDisplay/StdTable.vue:187
 msgid "Reset"
 msgstr ""
 
-#: src/views/config/ConfigEdit.vue:52 src/views/domain/DomainEdit.vue:169
+#: src/views/config/ConfigEdit.vue:52 src/views/domain/DomainEdit.vue:181
 msgid "Save"
 msgstr "Save"
 
@@ -479,7 +504,7 @@ msgid "Save Successfully"
 msgstr "Saved successfully"
 
 #: src/views/config/ConfigEdit.vue:34 src/views/domain/DomainAdd.vue:43
-#: src/views/domain/DomainEdit.vue:80
+#: src/views/domain/DomainEdit.vue:91
 msgid "Saved successfully"
 msgstr "Saved successfully"
 
@@ -488,10 +513,9 @@ msgid "Send"
 msgstr "Send"
 
 #: src/components/StdDataDisplay/StdTable.vue:112
-#: src/components/StdDataDisplay/StdTable.vue:94
-#: src/views/config/ConfigEdit.vue:22 src/views/domain/DomainEdit.vue:44
-#: src/views/domain/DomainEdit.vue:56 src/views/domain/DomainEdit.vue:65
-#: src/views/domain/DomainEdit.vue:83 src/views/domain/DomainList.vue:78
+#: src/views/config/ConfigEdit.vue:22 src/views/domain/DomainEdit.vue:56
+#: src/views/domain/DomainEdit.vue:68 src/views/domain/DomainEdit.vue:77
+#: src/views/domain/DomainEdit.vue:94 src/views/domain/DomainList.vue:78
 #: src/views/other/Install.vue:71
 msgid "Server error"
 msgstr "Server error"
@@ -529,7 +553,7 @@ msgstr "Status"
 msgid "Storage"
 msgstr "Storage"
 
-#: src/views/domain/cert/CertInfo.vue:32
+#: src/views/domain/cert/CertInfo.vue:16
 msgid "Subject Name: %{name}"
 msgstr "Subject Name: %{name}"
 
@@ -579,6 +603,10 @@ msgstr "Username"
 msgid "Username (*)"
 msgstr "Username (*)"
 
+#: src/language/constants.ts:14
+msgid "Using HTTP01 challenge provider"
+msgstr ""
+
 #: src/views/domain/cert/IssueCert.vue:12 src/views/domain/DomainAdd.vue:24
 msgid "Warning"
 msgstr "Warning"
@@ -587,6 +615,14 @@ msgstr "Warning"
 #: src/views/dashboard/DashBoard.vue:23
 msgid "Writes"
 msgstr "Writes"
+
+#: src/language/constants.ts:18
+msgid "Writing certificate private key to disk"
+msgstr ""
+
+#: src/language/constants.ts:17
+msgid "Writing certificate to disk"
+msgstr ""
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:16
 msgid "Yes"

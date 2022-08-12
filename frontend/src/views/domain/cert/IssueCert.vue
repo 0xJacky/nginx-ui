@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
-import {computed, nextTick, ref, watch} from 'vue'
+import {computed, h, nextTick, onMounted, ref, VNode, watch} from 'vue'
 import {message} from 'ant-design-vue'
 import domain from '@/api/domain'
 import websocket from '@/lib/websocket'
@@ -12,6 +12,7 @@ const props = defineProps(['directivesMap', 'current_server_directives', 'enable
 const emit = defineEmits(['changeEnabled', 'callback', 'update:enabled'])
 
 const issuing_cert = ref(false)
+const modalVisible = ref(false)
 
 function onchange(r: boolean) {
     emit('changeEnabled', r)
@@ -81,8 +82,25 @@ function change_auto_cert(r: boolean) {
     }
 }
 
+const logContainer = ref(null)
+
+function log(msg: string) {
+    const para = document.createElement('p')
+    para.appendChild(document.createTextNode($gettext(msg)));
+
+    (logContainer.value as any as Node).appendChild(para);
+
+    (logContainer.value as any as Element).scroll({top: 320, left: 0, behavior: 'smooth'})
+}
+
 const issue_cert = async (server_name: string, callback: Function) => {
-    message.info($gettext('Getting the certificate, please wait...'), 15)
+    progressStatus.value = 'active'
+    modalClosable.value = false
+    modalVisible.value = true
+    progressPercent.value = 0;
+    (logContainer.value as any as Element).innerHTML = ''
+
+    log($gettext('Getting the certificate, please wait...'))
 
     const ws = websocket('/api/cert/issue/' + server_name, false)
 
@@ -92,23 +110,25 @@ const issue_cert = async (server_name: string, callback: Function) => {
 
     ws.onmessage = m => {
         const r = JSON.parse(m.data)
+        log(r.message)
+
         switch (r.status) {
-            case 'success':
-                message.success(r.message, 10)
-                break
             case 'info':
-                message.info(r.message, 10)
+                progressPercent.value += 5
                 break
-            case 'error':
-                message.error(r.message, 10)
+            default:
+                modalClosable.value = true
+                issuing_cert.value = false
+
+                if (r.status === 'success' && r.ssl_certificate !== undefined && r.ssl_certificate_key !== undefined) {
+                    progressStatus.value = 'success'
+                    progressPercent.value = 100
+                    callback(r.ssl_certificate, r.ssl_certificate_key)
+                } else {
+                    progressStatus.value = 'exception'
+                }
                 break
         }
-
-        if (r.status === 'success' && r.ssl_certificate !== undefined && r.ssl_certificate_key !== undefined) {
-            callback(r.ssl_certificate, r.ssl_certificate_key)
-        }
-
-        issuing_cert.value = false
     }
 }
 
@@ -143,9 +163,34 @@ watch(no_server_name, () => {
     emit('update:enabled', false)
     onchange(false)
 })
+
+const progressStrokeColor = {
+    from: '#108ee9',
+    to: '#87d068',
+}
+
+const progressPercent = ref(0)
+
+const progressStatus = ref('active')
+
+const modalClosable = ref(false)
 </script>
 
 <template>
+    <a-modal
+        :title="$gettext('Obtaining certificate')"
+        v-model:visible="modalVisible"
+        :footer="null" :closable="modalClosable" force-render>
+        <a-progress
+            :stroke-color="progressStrokeColor"
+            :percent="progressPercent"
+            :status="progressStatus"
+        />
+
+        <div class="issue-cert-log-container" ref="logContainer">
+        </div>
+
+    </a-modal>
     <div>
         <a-form-item :label="$gettext('Encrypt website with Let\'s Encrypt')">
             <a-switch
@@ -184,6 +229,22 @@ watch(no_server_name, () => {
         </p>
     </div>
 </template>
+
+<style lang="less">
+.issue-cert-log-container {
+    height: 320px;
+    overflow: scroll;
+    background-color: #f3f3f3;
+    border-radius: 4px;
+    margin-top: 15px;
+    padding: 10px;
+
+    p {
+        font-size: 12px;
+        line-height: 1.3;
+    }
+}
+</style>
 
 <style lang="less" scoped>
 .switch-wrapper {

@@ -6,6 +6,18 @@ import (
 	"time"
 )
 
+func handleIssueCertLogChan(logChan chan string) {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Println("[Auto Cert] handleIssueCertLogChan", err)
+		}
+	}()
+
+	for logString := range logChan {
+		log.Println("[Auto Cert] Info", logString)
+	}
+}
+
 func AutoCert() {
 	defer func() {
 		if err := recover(); err != nil {
@@ -24,7 +36,7 @@ func AutoCert() {
 			continue
 		}
 
-		if certModel.SSLCertificatePath != "" {
+		if certModel.SSLCertificatePath == "" {
 			log.Println("[AutoCert] Error ssl_certificate_path is empty, " +
 				"try to reopen auto-cert for this domain:" + domain)
 			continue
@@ -41,9 +53,18 @@ func AutoCert() {
 			continue
 		}
 		// after 1 mo, reissue certificate
-		err = IssueCert(domain)
-		if err != nil {
-			log.Println(err)
+		logChan := make(chan string, 1)
+		errChan := make(chan error, 1)
+
+		go IssueCert(domain, logChan, errChan)
+
+		go handleIssueCertLogChan(logChan)
+
+		// block, unless errChan closed
+		for err = range errChan {
+			log.Println("Error cert.IssueCert", err)
 		}
+
+		close(logChan)
 	}
 }
