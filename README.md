@@ -177,10 +177,11 @@ systemctl restart nginx-ui
 
 #### With Docker
 
-You can use our `uozi/nginx-ui:latest` [image](https://hub.docker.com/r/uozi/nginx-ui) in docker, which is base on `nginx:latest`. You can replace the Nginx on host by publishing port 80 and 443 to host.
+You can use our `uozi/nginx-ui:latest` [image](https://hub.docker.com/r/uozi/nginx-ui) in docker, which is base on `nginx:latest`.
+You can replace the Nginx on host by publishing port 80 and 443 to host.
 
 ##### Note
-1. The volume mapping to `/etc/nginx` should be empty.
+1. When used for the first time, the volume mapping to `/etc/nginx` should be empty.
 2. If you want to host static files, map a directory to container.
 
 **Docker Deploy Example**
@@ -206,7 +207,7 @@ On platforms that do not have an official build version, they can be built manua
 
 - Make
 
-- Golang 1.18+
+- Golang 1.19+
 
 - node.js 18+
 

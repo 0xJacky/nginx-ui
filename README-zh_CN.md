@@ -178,7 +178,11 @@ systemctl restart nginx-ui
 
 注意：映射到 `/etc/nginx` 的文件夹应该为一个空目录。
 
-**Docker 示例**
+#### 注意
+1. 首次使用时，映射到 `/etc/nginx` 的目录必须为空文件夹。
+2. 如果你想要托管静态文件，可以直接将文件夹映射入容器中。
+
+**Docker 部署示例**
 
 ```bash
 docker run -dit \
@@ -199,9 +203,9 @@ docker run -dit \
 
 - Make
 
-- Golang 1.18+
+- Golang 1.19+
 
-- node.js 14+
+- node.js 18+
 
   ```shell
   npx browserslist@latest --update-db
