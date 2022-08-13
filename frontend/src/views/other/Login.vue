@@ -4,7 +4,7 @@ import {useUserStore} from '@/pinia'
 const thisYear = new Date().getFullYear()
 
 import {LockOutlined, UserOutlined} from '@ant-design/icons-vue'
-import {reactive, ref} from 'vue'
+import {reactive, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import gettext from '@/gettext'
 import {Form, message} from 'ant-design-vue'
@@ -43,7 +43,7 @@ const rulesRef = reactive({
     ]
 })
 
-const {validate, validateInfos} = Form.useForm(modelRef, rulesRef)
+const {validate, validateInfos, clearValidate} = Form.useForm(modelRef, rulesRef)
 
 const onSubmit = () => {
     validate().then(() => {
@@ -64,6 +64,10 @@ if (user.is_login) {
     const next = (route.query?.next || '').toString() || '/dashboard'
     router.push(next)
 }
+
+watch(() => gettext.current, () => {
+    clearValidate()
+})
 
 </script>
 
