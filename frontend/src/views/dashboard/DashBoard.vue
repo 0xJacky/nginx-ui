@@ -201,7 +201,7 @@ function wsOnMessage(m: { data: any }) {
                 </a-card>
             </a-col>
             <a-col :xl="8" :lg="12" :md="24" :sm="24" :xs="24">
-                <a-card :title="$gettext('Network')">
+                <a-card :title="$gettext('Network')" :bordered="false">
                     <a-row :gutter="16">
                         <a-col :span="12">
                             <a-statistic :value="bytesToSize(net.recv)"
@@ -223,7 +223,7 @@ function wsOnMessage(m: { data: any }) {
                 </a-card>
             </a-col>
             <a-col :xl="8" :lg="12" :md="24" :sm="24" :xs="24">
-                <a-card :title="$gettext('Disk IO')">
+                <a-card :title="$gettext('Disk IO')" :bordered="false">
                     <a-row :gutter="16">
                         <a-col :span="12">
                             <a-statistic :value="disk_io.writes"
