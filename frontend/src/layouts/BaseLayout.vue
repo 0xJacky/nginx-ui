@@ -13,7 +13,6 @@ import gettext from '@/gettext'
 
 const drawer_visible = ref(false)
 const collapsed = ref(collapse())
-const clientWidth = ref(getClientWidth())
 
 addEventListener('resize', _.throttle(() => {
     collapsed.value = collapse()
@@ -42,7 +41,7 @@ const lang = computed(() => {
 <template>
     <a-config-provider :locale="lang">
         <a-layout style="min-height: 100%;">
-            <template v-show="clientWidth.value<512">
+            <div class="drawer-sidebar">
                 <a-drawer
                     :closable="false"
                     v-model:visible="drawer_visible"
@@ -52,7 +51,7 @@ const lang = computed(() => {
                 >
                     <side-bar/>
                 </a-drawer>
-            </template>
+            </div>
 
             <a-layout-sider
                 v-model:collapsed="collapsed"
@@ -88,6 +87,12 @@ const lang = computed(() => {
 <style lang="less" scoped>
 .layout-sider {
     @media (max-width: 600px) {
+        display: none;
+    }
+}
+
+.drawer-sidebar {
+    @media (min-width: 600px) {
         display: none;
     }
 }
