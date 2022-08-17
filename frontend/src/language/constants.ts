@@ -17,5 +17,6 @@ export const msg = [
     $gettext('Writing certificate to disk'),
     $gettext('Writing certificate private key to disk'),
     $gettext('Reloading nginx'),
-    $gettext('Finished')
+    $gettext('Finished'),
+    $gettext('Issued certificate successfully')
 ]

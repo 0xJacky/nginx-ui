@@ -33,8 +33,8 @@ msgstr ""
 msgid "Add Directive Below"
 msgstr "在下面新增指令"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:19
-#: src/views/domain/ngx_conf/LocationEditor.vue:34
+#: src/views/domain/ngx_conf/LocationEditor.vue:31
+#: src/views/domain/ngx_conf/LocationEditor.vue:46
 msgid "Add Location"
 msgstr "新增 Location"
 
@@ -56,11 +56,16 @@ msgstr "您确定要删除？"
 msgid "Are you sure you want to remove this directive?"
 msgstr "您確定要刪除這條指令？"
 
-#: src/views/domain/cert/IssueCert.vue:77
+#: src/views/domain/ngx_conf/LocationEditor.vue:17
+#, fuzzy
+msgid "Are you sure you want to remove this location?"
+msgstr "您確定要刪除這條指令？"
+
+#: src/views/domain/cert/IssueCert.vue:78
 msgid "Auto-renewal disabled for %{name}"
 msgstr "已關閉 %{name} 自動續簽"
 
-#: src/views/domain/cert/IssueCert.vue:71
+#: src/views/domain/cert/IssueCert.vue:72
 msgid "Auto-renewal enabled for %{name}"
 msgstr "已啟用 %{name} 自動續簽"
 
@@ -103,9 +108,9 @@ msgid "Certificate Status"
 msgstr "憑證狀態"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:29
-#: src/views/domain/ngx_conf/LocationEditor.vue:21
+#: src/views/domain/ngx_conf/LocationEditor.vue:33
 #: src/views/domain/ngx_conf/LocationEditor.vue:7
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:155
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:156
 msgid "Comments"
 msgstr "註釋"
 
@@ -122,7 +127,7 @@ msgid "Configure SSL"
 msgstr "配置 SSL"
 
 #: src/views/domain/ngx_conf/LocationEditor.vue:13
-#: src/views/domain/ngx_conf/LocationEditor.vue:27
+#: src/views/domain/ngx_conf/LocationEditor.vue:39
 msgid "Content"
 msgstr "內容"
 
@@ -180,7 +185,7 @@ msgstr "指令"
 msgid "Directives"
 msgstr "指令"
 
-#: src/views/domain/cert/IssueCert.vue:79
+#: src/views/domain/cert/IssueCert.vue:80
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "關閉 %{name} 自動續簽失敗"
 
@@ -217,7 +222,7 @@ msgstr "編輯站點"
 msgid "Email (*)"
 msgstr "郵箱 (*)"
 
-#: src/views/domain/cert/IssueCert.vue:73
+#: src/views/domain/cert/IssueCert.vue:74
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "啟用 %{name} 自動續簽失敗"
 
@@ -240,7 +245,7 @@ msgstr "啟用"
 msgid "Enabled successfully"
 msgstr "啟用成功"
 
-#: src/views/domain/cert/IssueCert.vue:3
+#: src/views/domain/cert/IssueCert.vue:17
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 對網站進行加密"
 
@@ -272,7 +277,7 @@ msgstr "完成"
 msgid "Generating private key for registering account"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:85
+#: src/views/domain/cert/IssueCert.vue:103
 msgid "Getting the certificate, please wait..."
 msgstr "正在獲取憑證，請稍等..."
 
@@ -293,6 +298,11 @@ msgstr "啟用成功"
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "中級憑證頒發機構: %{issuer}"
 
+#: src/language/constants.ts:21
+#, fuzzy
+msgid "Issued certificate successfully"
+msgstr "啟用成功"
+
 #: src/views/user/User.vue:26
 msgid "Leave blank for no change"
 msgstr "留空表示不修改"
@@ -305,11 +315,11 @@ msgstr "系統負載:"
 msgid "Location"
 msgstr "Location"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:36
+#: src/views/domain/ngx_conf/LocationEditor.vue:39
 msgid "Locations"
 msgstr "Locations"
 
-#: src/routes/index.ts:108 src/views/other/Login.vue:99
+#: src/routes/index.ts:108 src/views/other/Login.vue:103
 msgid "Login"
 msgstr "登入"
 
@@ -321,7 +331,7 @@ msgstr "登入成功"
 msgid "Logout successful"
 msgstr "登出成功"
 
-#: src/views/domain/cert/IssueCert.vue:181
+#: src/views/domain/cert/IssueCert.vue:226
 #, fuzzy
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
@@ -391,6 +401,7 @@ msgstr "下一步"
 #: src/components/StdDataDisplay/StdTable.vue:39
 #: src/views/domain/DomainList.vue:25
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:17
+#: src/views/domain/ngx_conf/LocationEditor.vue:19
 msgid "No"
 msgstr "取消"
 
@@ -402,14 +413,14 @@ msgstr "找不到頁面"
 msgid "Not Valid Before: %{date}"
 msgstr "此前無效: %{date}"
 
-#: src/views/domain/cert/IssueCert.vue:173
+#: src/views/domain/cert/IssueCert.vue:218
 #, fuzzy
 msgid ""
 "Note: The server_name in the current configuration must be the domain name "
 "you need to get the certificate."
 msgstr "注意：當前配置中的 server_name 必須為需要申請憑證的域名。"
 
-#: src/language/constants.ts:16
+#: src/language/constants.ts:16 src/views/domain/cert/IssueCert.vue:3
 msgid "Obtaining certificate"
 msgstr ""
 
@@ -436,7 +447,7 @@ msgid "Password (*)"
 msgstr "密碼 (*)"
 
 #: src/views/domain/ngx_conf/LocationEditor.vue:10
-#: src/views/domain/ngx_conf/LocationEditor.vue:24
+#: src/views/domain/ngx_conf/LocationEditor.vue:36
 msgid "Path"
 msgstr "路徑"
 
@@ -529,16 +540,16 @@ msgstr "伺服器錯誤"
 msgid "Server Info"
 msgstr "伺服器資訊"
 
-#: src/views/domain/cert/IssueCert.vue:28
+#: src/views/domain/cert/IssueCert.vue:29
 msgid "server_name not found in directives"
 msgstr "未在指令集合中找到 server_name"
 
-#: src/views/domain/cert/IssueCert.vue:164 src/views/domain/DomainAdd.vue:112
+#: src/views/domain/cert/IssueCert.vue:209 src/views/domain/DomainAdd.vue:112
 msgid "server_name parameter is required"
 msgstr "必須為 server_name 指令指明參數"
 
-#: src/views/domain/cert/IssueCert.vue:167
-#: src/views/domain/cert/IssueCert.vue:34
+#: src/views/domain/cert/IssueCert.vue:212
+#: src/views/domain/cert/IssueCert.vue:35
 msgid "server_name parameters more than one"
 msgstr "server_name 指令包含多個參數"
 
@@ -575,7 +586,7 @@ msgstr "啟用"
 msgid "Terminal"
 msgstr "終端"
 
-#: src/views/domain/cert/IssueCert.vue:177
+#: src/views/domain/cert/IssueCert.vue:222
 #, fuzzy
 msgid ""
 "The certificate for the domain will be checked every hour, and will be "
@@ -613,7 +624,7 @@ msgstr "使用者名稱 (*)"
 msgid "Using HTTP01 challenge provider"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:12 src/views/domain/DomainAdd.vue:24
+#: src/views/domain/cert/IssueCert.vue:26 src/views/domain/DomainAdd.vue:24
 msgid "Warning"
 msgstr "警告"
 
@@ -631,6 +642,7 @@ msgid "Writing certificate to disk"
 msgstr ""
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:16
+#: src/views/domain/ngx_conf/LocationEditor.vue:18
 msgid "Yes"
 msgstr "是的"
 
