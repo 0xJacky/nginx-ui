@@ -20,6 +20,7 @@ const name = ref(route.params.name)
 function change_tls(r: any) {
     if (r) {
         // deep copy servers[0] to servers[1]
+        console.log(props.ngx_config)
         const server = JSON.parse(JSON.stringify(props.ngx_config.servers[0]))
 
         props.ngx_config.servers.push(server)
@@ -143,7 +144,7 @@ const autoCertRef = computed({
                     <template v-if="current_support_ssl&&enabled">
                         <cert
                             v-if="current_support_ssl"
-                            :cert_info="props.cert_info[k]"
+                            :cert_info="props.cert_info?.[k]"
                             :current_server_directives="current_server_directives"
                             :directives-map="directivesMap"
                             v-model:enabled="autoCertRef"

@@ -50,7 +50,7 @@ function onSave(idx: number) {
 
             <a-input v-else
                      :addon-before="directive.directive"
-                     v-model:value="directive.params" @click="current_idx=index"/>
+                     v-model:value="directive.params" @click="current_idx=index" @blur="current_idx=-1"/>
 
             <a-popconfirm @confirm="remove(index)"
                           :title="$gettext('Are you sure you want to remove this directive?')"
@@ -88,7 +88,8 @@ function onSave(idx: number) {
 }
 
 .slide-enter-active, .slide-leave-active {
-    transition: max-height .3s ease;
+    transition: max-height .2s ease;
+    overflow: hidden;
 }
 
 .slide-enter-from, .slide-leave-to {

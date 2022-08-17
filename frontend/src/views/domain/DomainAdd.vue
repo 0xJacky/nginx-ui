@@ -12,7 +12,7 @@ import {useRouter} from 'vue-router'
 const {$gettext, interpolate} = useGettext()
 
 const config = reactive({name: ''})
-let ngx_config = reactive({
+const ngx_config = reactive({
     servers: [{
         directives: [],
         locations: []

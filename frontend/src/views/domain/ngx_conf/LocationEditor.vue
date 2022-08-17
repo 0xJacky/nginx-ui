@@ -2,6 +2,7 @@
 import CodeEditor from '@/components/CodeEditor'
 import {useGettext} from 'vue3-gettext'
 import {reactive, ref} from 'vue'
+import {DeleteOutlined} from '@ant-design/icons-vue'
 
 const {$gettext} = useGettext()
 
@@ -24,7 +25,9 @@ function add() {
 
 function save() {
     adding.value = false
-    props.locations?.push(location)
+    props.locations?.push({
+        ...location
+    })
 }
 
 function remove(index: number) {
@@ -45,7 +48,19 @@ function remove(index: number) {
                 <a-input addon-before="location" v-model:value="v.path"/>
             </a-form-item>
             <a-form-item :label="$gettext('Content')">
-                <code-editor v-model:content="v.content" default-height="200px"/>
+                <div class="input-wrapper">
+                    <code-editor v-model:content="v.content" default-height="200px" style="width: 100%;"/>
+                    <a-popconfirm @confirm="remove(k)"
+                                  :title="$gettext('Are you sure you want to remove this location?')"
+                                  :ok-text="$gettext('Yes')"
+                                  :cancel-text="$gettext('No')">
+                        <a-button>
+                            <template #icon>
+                                <DeleteOutlined style="font-size: 14px;"/>
+                            </template>
+                        </a-button>
+                    </a-popconfirm>
+                </div>
             </a-form-item>
         </a-form>
     </a-card>
@@ -73,5 +88,12 @@ function remove(index: number) {
 .ant-card {
     margin: 10px 0;
     box-shadow: unset;
+
+    .input-wrapper {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+    }
 }
 </style>

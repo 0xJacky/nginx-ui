@@ -33,13 +33,38 @@ func GetConfigs(c *gin.Context) {
 		file := configFiles[i]
 		fileInfo, _ := file.Info()
 
-		if !file.IsDir() && "." != file.Name()[0:1] {
-			configs = append(configs, gin.H{
-				"name":   file.Name(),
-				"size":   fileInfo.Size(),
-				"modify": fileInfo.ModTime(),
-			})
+		switch mode := fileInfo.Mode(); {
+		case mode.IsRegular(): // regular file, not a hidden file
+			if "." == file.Name()[0:1] {
+				continue
+			}
+		case mode&os.ModeSymlink != 0: // is a symbol
+			var targetPath string
+			targetPath, err = os.Readlink(nginx.GetNginxConfPath(file.Name()))
+			if err != nil {
+				log.Println("GetConfigs Read Symlink Error", targetPath, err)
+				continue
+			}
+
+			var targetInfo os.FileInfo
+			targetInfo, err = os.Stat(targetPath)
+			if err != nil {
+				log.Println("GetConfigs Stat Error", targetPath, err)
+				continue
+			}
+			// but target file is not a dir
+			if targetInfo.IsDir() {
+				continue
+			}
+		default:
+			continue
 		}
+
+		configs = append(configs, gin.H{
+			"name":   file.Name(),
+			"size":   fileInfo.Size(),
+			"modify": fileInfo.ModTime(),
+		})
 	}
 
 	configs = config_list.Sort(orderBy, sort, mySort[orderBy], configs)
