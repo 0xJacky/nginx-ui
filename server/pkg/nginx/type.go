@@ -64,9 +64,17 @@ func (d *NgxDirective) TrimParams() {
 }
 
 func NewNgxServer() *NgxServer {
-	return &NgxServer{commentQueue: &CommentQueue{linkedlistqueue.New()}}
+	return &NgxServer{
+		Locations:    make([]*NgxLocation, 0),
+		Directives:   make([]*NgxDirective, 0),
+		commentQueue: &CommentQueue{linkedlistqueue.New()},
+	}
 }
 
 func NewNgxConfig(filename string) *NgxConfig {
-	return &NgxConfig{FileName: filename, commentQueue: &CommentQueue{linkedlistqueue.New()}}
+	return &NgxConfig{
+		FileName:     filename,
+		commentQueue: &CommentQueue{linkedlistqueue.New()},
+		Upstreams:    make([]*NgxUpstream, 0),
+	}
 }
