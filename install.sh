@@ -303,7 +303,7 @@ EOF
 }
 
 start_nginx_ui() {
-    if [[ -f ServicePath ]]; then
+    if [[ -f "$ServicePath" ]]; then
         systemctl start nginx-ui
         sleep 1s
         if systemctl -q is-active nginx-ui; then
