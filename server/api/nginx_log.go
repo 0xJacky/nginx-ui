@@ -14,6 +14,7 @@ import (
 
 type controlStruct struct {
 	Fetch string `json:"fetch"`
+	Type  string `json:"type"`
 }
 
 func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan chan error) {
@@ -33,10 +34,15 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 			seek.Whence = io.SeekEnd
 		}
 
+		logPath := settings.NginxLogSettings.AccessLogPath
+
+		if control.Type == "error" {
+			logPath = settings.NginxLogSettings.ErrorLogPath
+		}
+
 		// Create a tail
-		t, err := tail.TailFile(
-			settings.NginxLogSettings.AccessLogPath, tail.Config{Follow: true,
-				ReOpen: true, Location: &seek})
+		t, err := tail.TailFile(logPath, tail.Config{Follow: true,
+			ReOpen: true, Location: &seek})
 
 		if err != nil {
 			errChan <- errors.Wrap(err, "error NginxAccessLog Tail")

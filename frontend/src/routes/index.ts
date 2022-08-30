@@ -91,10 +91,18 @@ export const routes = [
             {
                 path: 'nginx_log',
                 name: () => $gettext('Nginx Log'),
-                component: () => import('@/views/nginx_log/NginxLog.vue'),
                 meta: {
                     icon: FileTextOutlined
-                }
+                },
+                children: [{
+                    path: 'access',
+                    name: () => $gettext('Access Logs'),
+                    component: () => import('@/views/nginx_log/NginxLog.vue'),
+                }, {
+                    path: 'error',
+                    name: () => $gettext('Error Logs'),
+                    component: () => import('@/views/nginx_log/NginxLog.vue'),
+                }]
             },
             {
                 path: 'about',

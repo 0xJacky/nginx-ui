@@ -1,25 +1,29 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
 import ws from '@/lib/websocket'
-import {nextTick, onMounted, reactive, ref, watch} from 'vue'
+import {computed, nextTick, onMounted, onUnmounted, reactive, ref, watch} from 'vue'
 import ReconnectingWebSocket from 'reconnecting-websocket'
+import {useRoute} from 'vue-router'
 
 const {$gettext} = useGettext()
 
 const logContainer = ref(null)
 
 let websocket: ReconnectingWebSocket | WebSocket
+const route = useRoute()
+
+function logType() {
+    return route.path.indexOf('access') > 0 ? 'access' : 'error'
+}
 
 const control = reactive({
-    fetch: 'new'
+    fetch: 'new',
+    type: logType()
 })
 
 function openWs() {
     websocket = ws('/api/nginx_log')
     websocket.send(JSON.stringify(control))
-    websocket.onopen = () => {
-        (logContainer.value as any as Element).innerHTML = ''
-    }
     websocket.onmessage = (m: any) => {
         const para = document.createElement('p')
         para.appendChild(document.createTextNode(m.data.trim()));
@@ -42,10 +46,21 @@ const auto_refresh = ref(true)
 
 watch(auto_refresh, (value) => {
     if (value) {
-        openWs()
+        openWs();
+        (logContainer.value as any as Element).innerHTML = ''
+
     } else {
         websocket.close()
     }
+})
+
+watch(route, () => {
+    control.type = logType();
+    (logContainer.value as any as Element).innerHTML = ''
+
+    nextTick(() => {
+        websocket.send(JSON.stringify(control))
+    })
 })
 
 watch(control, () => {
@@ -55,6 +70,10 @@ watch(control, () => {
     nextTick(() => {
         websocket.send(JSON.stringify(control))
     })
+})
+
+onUnmounted(() => {
+    websocket.close()
 })
 
 </script>
