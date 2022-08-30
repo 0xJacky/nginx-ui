@@ -9,7 +9,7 @@ const {$gettext} = useGettext()
 
 const emit = defineEmits(['save'])
 
-const {ngx_directives, idx} = defineProps(['ngx_directives', 'idx'])
+const props = defineProps(['ngx_directives', 'idx'])
 
 const directive = reactive({directive: '', params: ''})
 const adding = ref(false)
@@ -28,13 +28,13 @@ function save() {
         directive.directive = If
     }
 
-    if (idx) {
-        ngx_directives.splice(idx + 1, 0, {directive: directive.directive, params: directive.params})
+    if (props.idx) {
+        props.ngx_directives.splice(props.idx + 1, 0, {directive: directive.directive, params: directive.params})
     } else {
-        ngx_directives.push({directive: directive.directive, params: directive.params})
+        props.ngx_directives.push({directive: directive.directive, params: directive.params})
     }
 
-    emit('save', idx)
+    emit('save', props.idx)
 }
 </script>
 

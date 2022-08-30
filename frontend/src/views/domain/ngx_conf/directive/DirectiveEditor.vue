@@ -8,7 +8,7 @@ import {DeleteOutlined} from '@ant-design/icons-vue'
 
 const {$gettext} = useGettext()
 
-const {ngx_directives} = defineProps<{
+const props = defineProps<{
     ngx_directives: any[]
 }>()
 
@@ -25,11 +25,11 @@ function add() {
 
 function save() {
     adding.value = false
-    ngx_directives.push(directive)
+    props.ngx_directives.push(directive)
 }
 
 function remove(index: number) {
-    ngx_directives.splice(index, 1)
+    props.ngx_directives.splice(index, 1)
 }
 
 function onSave(idx: number) {
@@ -42,7 +42,7 @@ function onSave(idx: number) {
 <template>
     <h2>{{ $gettext('Directives') }}</h2>
 
-    <a-form-item v-for="(directive,index) in ngx_directives" @click="current_idx=index">
+    <a-form-item v-for="(directive,index) in props.ngx_directives" @click="current_idx=index">
 
         <div class="input-wrapper">
             <code-editor v-if="directive.directive === If" v-model:content="directive.params"
@@ -71,13 +71,13 @@ function onSave(idx: number) {
                             <a-textarea v-model:value="directive.comments"/>
                         </a-form-item>
                     </a-form>
-                    <directive-add :ngx_directives="ngx_directives" :idx="index" @save="onSave(index)"/>
+                    <directive-add :ngx_directives="props.ngx_directives" :idx="index" @save="onSave(index)"/>
                 </div>
             </div>
         </transition>
     </a-form-item>
 
-    <directive-add :ngx_directives="ngx_directives"/>
+    <directive-add :ngx_directives="props.ngx_directives"/>
 </template>
 
 <style lang="less" scoped>
