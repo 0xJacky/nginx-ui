@@ -8,7 +8,8 @@ import {
     FileOutlined,
     HomeOutlined,
     InfoCircleOutlined,
-    UserOutlined
+    UserOutlined,
+    FileTextOutlined
 } from '@ant-design/icons-vue'
 
 const {$gettext} = gettext
@@ -85,6 +86,14 @@ export const routes = [
                 component: () => import('@/views/pty/Terminal.vue'),
                 meta: {
                     icon: CodeOutlined
+                }
+            },
+            {
+                path: 'nginx_log',
+                name: () => $gettext('Nginx Log'),
+                component: () => import('@/views/nginx_log/NginxLog.vue'),
+                meta: {
+                    icon: FileTextOutlined
                 }
             },
             {

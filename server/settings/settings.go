@@ -28,6 +28,11 @@ type Server struct {
 	PageSize          int
 }
 
+type NginxLog struct {
+	AccessLogPath string
+	ErrorLogPath  string
+}
+
 var ServerSettings = &Server{
 	HttpPort:          "9000",
 	RunMode:           "debug",
@@ -38,10 +43,16 @@ var ServerSettings = &Server{
 	PageSize:          10,
 }
 
+var NginxLogSettings = &NginxLog{
+	AccessLogPath: "",
+	ErrorLogPath:  "",
+}
+
 var ConfPath string
 
 var sections = map[string]interface{}{
-	"server": ServerSettings,
+	"server":    ServerSettings,
+	"nginx_log": NginxLogSettings,
 }
 
 func init() {

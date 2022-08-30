@@ -20,7 +20,6 @@ const name = ref(route.params.name)
 function change_tls(r: any) {
     if (r) {
         // deep copy servers[0] to servers[1]
-        console.log(props.ngx_config)
         const server = JSON.parse(JSON.stringify(props.ngx_config.servers[0]))
 
         props.ngx_config.servers.push(server)

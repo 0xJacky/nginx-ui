@@ -224,8 +224,8 @@ func DisableDomain(c *gin.Context) {
 	}
 
 	// delete auto cert record
-	cert := model.Cert{Domain: c.Param("name")}
-	err = cert.Remove()
+	certModel := model.Cert{Domain: c.Param("name")}
+	err = certModel.Remove()
 	if err != nil {
 		ErrHandler(c, err)
 		return
@@ -265,8 +265,8 @@ func DeleteDomain(c *gin.Context) {
 		return
 	}
 
-	cert := model.Cert{Domain: name}
-	_ = cert.Remove()
+	certModel := model.Cert{Domain: name}
+	_ = certModel.Remove()
 
 	err = os.Remove(availablePath)
 
@@ -284,19 +284,19 @@ func DeleteDomain(c *gin.Context) {
 func AddDomainToAutoCert(c *gin.Context) {
 	domain := c.Param("domain")
 
-	cert, err := model.FirstOrCreateCert(domain)
+	certModel, err := model.FirstOrCreateCert(domain)
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, cert)
+	c.JSON(http.StatusOK, certModel)
 }
 
 func RemoveDomainFromAutoCert(c *gin.Context) {
-	cert := model.Cert{
+	certModel := model.Cert{
 		Domain: c.Param("domain"),
 	}
-	err := cert.Remove()
+	err := certModel.Remove()
 
 	if err != nil {
 		ErrHandler(c, err)

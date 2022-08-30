@@ -92,6 +92,9 @@ func InitRouter() *gin.Engine {
 
 			// pty
 			g.GET("pty", api.Pty)
+
+			// Nginx log
+			g.GET("nginx_log", api.NginxLog)
 		}
 	}
 
