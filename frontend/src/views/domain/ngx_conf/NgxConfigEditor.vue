@@ -5,6 +5,7 @@ import {computed, ref} from 'vue'
 import {useRoute} from 'vue-router'
 import {useGettext} from 'vue3-gettext'
 import Cert from '@/views/domain/cert/Cert.vue'
+import LogEntry from '@/views/domain/ngx_conf/LogEntry.vue'
 
 const {$gettext} = useGettext()
 
@@ -138,6 +139,11 @@ const autoCertRef = computed({
 
         <a-tabs v-model:activeKey="current_server_index">
             <a-tab-pane :tab="'Server '+(k+1)" v-for="(v,k) in props.ngx_config.servers" :key="k">
+                <log-entry
+                    :ngx_config="props.ngx_config"
+                    :current_server_idx="current_server_index"
+                    :name="name"
+                />
 
                 <div class="tab-content">
                     <template v-if="current_support_ssl&&enabled">

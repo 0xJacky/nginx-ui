@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
 import ws from '@/lib/websocket'
-import {computed, nextTick, onMounted, onUnmounted, reactive, ref, watch} from 'vue'
+import {nextTick, onMounted, onUnmounted, reactive, ref, watch} from 'vue'
 import ReconnectingWebSocket from 'reconnecting-websocket'
-import {useRoute} from 'vue-router'
+import {useRoute, useRouter} from 'vue-router'
+import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 
 const {$gettext} = useGettext()
 
@@ -13,17 +14,24 @@ let websocket: ReconnectingWebSocket | WebSocket
 const route = useRoute()
 
 function logType() {
-    return route.path.indexOf('access') > 0 ? 'access' : 'error'
+    return route.path.indexOf('access') > 0 ? 'access' : route.path.indexOf('error') > 0 ? 'error' : 'site'
 }
 
 const control = reactive({
     fetch: 'new',
-    type: logType()
+    type: logType(),
+    conf_name: route.query.conf_name,
+    server_idx: parseInt(route.query.server_idx as string),
+    directive_idx: parseInt(route.query.directive_idx as string),
 })
 
 function openWs() {
     websocket = ws('/api/nginx_log')
-    websocket.send(JSON.stringify(control))
+
+    websocket.onopen = () => {
+        websocket.send(JSON.stringify(control))
+    }
+
     websocket.onmessage = (m: any) => {
         const para = document.createElement('p')
         para.appendChild(document.createTextNode(m.data.trim()));
@@ -76,6 +84,8 @@ onUnmounted(() => {
     websocket.close()
 })
 
+const router = useRouter()
+
 </script>
 
 <template>
@@ -96,6 +106,11 @@ onUnmounted(() => {
             <pre class="nginx-log-container" ref="logContainer"></pre>
         </a-card>
     </a-card>
+    <footer-tool-bar v-if="control.type==='site'">
+        <a-button @click="router.go(-1)">
+            <translate>Back</translate>
+        </a-button>
+    </footer-tool-bar>
 </template>
 
 <style lang="less">

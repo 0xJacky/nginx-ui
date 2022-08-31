@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -10,11 +11,15 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"path/filepath"
 )
 
 type controlStruct struct {
-	Fetch string `json:"fetch"`
-	Type  string `json:"type"`
+	Fetch        string `json:"fetch"`
+	Type         string `json:"type"`
+	ConfName     string `json:"conf_name"`
+	ServerIdx    int    `json:"server_idx"`
+	DirectiveIdx int    `json:"directive_idx"`
 }
 
 func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan chan error) {
@@ -33,11 +38,40 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 			seek.Offset = 0
 			seek.Whence = io.SeekEnd
 		}
+		var logPath string
+		switch control.Type {
+		case "site":
+			path := filepath.Join(nginx.GetNginxConfPath("sites-available"), control.ConfName)
+			config, err := nginx.ParseNgxConfig(path)
+			if err != nil {
+				errChan <- errors.Wrap(err, "error parsing ngx config")
+				return
+			}
 
-		logPath := settings.NginxLogSettings.AccessLogPath
+			if control.ServerIdx >= len(config.Servers) {
+				errChan <- errors.New("serverIdx out of range")
+				return
+			}
+			if control.DirectiveIdx >= len(config.Servers[control.ServerIdx].Directives) {
+				errChan <- errors.New("DirectiveIdx out of range")
+				return
+			}
+			directive := config.Servers[control.ServerIdx].Directives[control.DirectiveIdx]
 
-		if control.Type == "error" {
+			switch directive.Directive {
+			case "access_log", "error_log":
+				// ok
+			default:
+				errChan <- errors.New("directive.Params neither access_log nor error_log")
+				return
+			}
+
+			logPath = directive.Params
+
+		case "error":
 			logPath = settings.NginxLogSettings.ErrorLogPath
+		default:
+			logPath = settings.NginxLogSettings.AccessLogPath
 		}
 
 		// Create a tail
@@ -61,7 +95,6 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 					return
 				}
 			case control = <-controlChan:
-				log.Println("control change")
 				next = true
 				break
 			}
@@ -125,6 +158,7 @@ func NginxLog(c *gin.Context) {
 
 	if err = <-errChan; err != nil {
 		log.Println(err)
+		_ = ws.WriteMessage(websocket.TextMessage, []byte(err.Error()))
 		return
 	}
 }

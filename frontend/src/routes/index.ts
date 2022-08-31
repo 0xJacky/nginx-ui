@@ -102,6 +102,13 @@ export const routes = [
                     path: 'error',
                     name: () => $gettext('Error Logs'),
                     component: () => import('@/views/nginx_log/NginxLog.vue'),
+                }, {
+                    path: 'site',
+                    name: () => $gettext('Site Logs'),
+                    component: () => import('@/views/nginx_log/NginxLog.vue'),
+                    meta: {
+                        hiddenInSidebar: true
+                    },
                 }]
             },
             {
