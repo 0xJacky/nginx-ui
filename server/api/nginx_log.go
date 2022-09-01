@@ -87,7 +87,7 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 		default:
 			if settings.NginxLogSettings.AccessLogPath == "" {
 				errChan <- errors.New("settings.NginxLogSettings.AccessLogPath is empty," +
-					" see https://github.com/0xJacky/nginx-ui/wiki/Nginx-Log-Configuration for more information\"")
+					" see https://github.com/0xJacky/nginx-ui/wiki/Nginx-Log-Configuration for more information")
 				return
 			}
 			logPath = settings.NginxLogSettings.AccessLogPath
