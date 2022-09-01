@@ -26,11 +26,12 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 	defer func() {
 		if err := recover(); err != nil {
 			log.Println("tailNginxLog recovery", err)
+			_ = ws.WriteMessage(websocket.TextMessage, err.([]byte))
 			return
 		}
 	}()
 
-	var control controlStruct
+	control := <-controlChan
 
 	for {
 		var seek tail.SeekInfo
@@ -52,10 +53,12 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 				errChan <- errors.New("serverIdx out of range")
 				return
 			}
+
 			if control.DirectiveIdx >= len(config.Servers[control.ServerIdx].Directives) {
 				errChan <- errors.New("DirectiveIdx out of range")
 				return
 			}
+
 			directive := config.Servers[control.ServerIdx].Directives[control.DirectiveIdx]
 
 			switch directive.Directive {
@@ -66,11 +69,27 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 				return
 			}
 
+			if directive.Params == "" {
+				errChan <- errors.New("directive.Params is empty")
+				return
+			}
+
 			logPath = directive.Params
 
 		case "error":
+			if settings.NginxLogSettings.ErrorLogPath == "" {
+				errChan <- errors.New("settings.NginxLogSettings.ErrorLogPath is empty," +
+					" see https://github.com/0xJacky/nginx-ui/wiki/Nginx-Log-Configuration for more information")
+				return
+			}
 			logPath = settings.NginxLogSettings.ErrorLogPath
+
 		default:
+			if settings.NginxLogSettings.AccessLogPath == "" {
+				errChan <- errors.New("settings.NginxLogSettings.AccessLogPath is empty," +
+					" see https://github.com/0xJacky/nginx-ui/wiki/Nginx-Log-Configuration for more information\"")
+				return
+			}
 			logPath = settings.NginxLogSettings.AccessLogPath
 		}
 
@@ -88,6 +107,10 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 			select {
 			case line := <-t.Lines:
 				// Print the text of each received line
+				if line == nil {
+					continue
+				}
+
 				err = ws.WriteMessage(websocket.TextMessage, []byte(line.Text))
 
 				if err != nil {
@@ -109,6 +132,7 @@ func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errCha
 	defer func() {
 		if err := recover(); err != nil {
 			log.Println("tailNginxLog recovery", err)
+			_ = ws.WriteMessage(websocket.TextMessage, err.([]byte))
 			return
 		}
 	}()

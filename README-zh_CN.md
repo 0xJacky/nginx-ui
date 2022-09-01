@@ -77,6 +77,7 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
 - 在线查看服务器 CPU、内存、系统负载、磁盘使用率等指标
 - 一键申请和自动续签 Let's encrypt 证书
 - 在线编辑 Nginx 配置文件，编辑器支持 Nginx 配置语法高亮
+- 在线查看 Nginx 日志
 - 使用 Go 和 Vue 开发，发行版本为单个可执行的二进制文件
 - 保存配置后自动测试配置文件并重载 Nginx
 - 基于网页浏览器的高级命令行终端

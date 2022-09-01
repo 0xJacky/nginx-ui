@@ -61,11 +61,11 @@ function on_click_error_log() {
     <a-space style="margin-left: -15px;margin-bottom: 5px" v-if="hasAccessLog||hasErrorLog">
         <a-button type="link" v-if="hasAccessLog" @click="on_click_access_log">
             <FileTextOutlined/>
-            Access Logs
+            <translate>Access Logs</translate>
         </a-button>
         <a-button type="link" v-if="hasErrorLog" @click="on_click_error_log">
             <FileExclamationOutlined/>
-            Error Logs
+            <translate>Error Logs</translate>
         </a-button>
     </a-space>
 </template>

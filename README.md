@@ -75,6 +75,7 @@ URL：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
 - Online view of server CPU, Memory, Load Average, Disk Usage and other indicators.
 - One-click deployment and automatic renewal Let's Encrypt certificates.
 - Online editing websites configurations with our self-designed **NgxConfigEditor** which is a user-friendly block editor or **Ace Code Editor** which support highlight nginx configuration syntax.
+- Online view Nginx logs
 - Written in Go and Vue, distribution is a single executable binary.
 - Automatically test configuration file and reload nginx after saving configuration.
 - Web Terminal

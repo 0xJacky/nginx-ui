@@ -79,6 +79,7 @@ Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https
 - 線上檢視伺服器 CPU、記憶體、系統負載、磁碟使用率等指標
 - 一鍵申請和自動續簽 Let's encrypt 憑證
 - 線上編輯 Nginx 配置檔案，編輯器支援 Nginx 配置語法突顯
+- 線上查看 Nginx 日誌
 - 使用 Go 和 Vue 開發，發行版本為單個可執行檔案
 - 保存配置後自動測試配置檔案並重載 Nginx
 - 基於網頁瀏覽器的高級命令行終端

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
-import {computed, ref} from 'vue'
-import {useRoute} from 'vue-router'
+import {computed, onMounted, ref, watch} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
 import {useGettext} from 'vue3-gettext'
 import Cert from '@/views/domain/cert/Cert.vue'
 import LogEntry from '@/views/domain/ngx_conf/LogEntry.vue'
@@ -127,6 +127,20 @@ const autoCertRef = computed({
     set(value) {
         emit('update:auto_cert', value)
     }
+})
+
+onMounted(() => {
+    current_server_index.value = parseInt((route.query?.server_idx ?? 0) as string)
+})
+
+const router = useRouter()
+
+watch(current_server_index, () => {
+    router.push({
+        query: {
+            server_idx: current_server_index.value.toString()
+        }
+    })
 })
 
 </script>

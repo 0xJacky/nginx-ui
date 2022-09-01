@@ -12,9 +12,13 @@ msgstr ""
 "Generated-By: easygettext\n"
 "X-Generator: Poedit 3.1.1\n"
 
-#: src/routes/index.ts:92
+#: src/routes/index.ts:116
 msgid "About"
 msgstr "关于"
+
+#: src/routes/index.ts:99
+msgid "Access Logs"
+msgstr "访问日志"
 
 #: src/views/config/Config.vue:24 src/views/domain/DomainList.vue:42
 #: src/views/user/User.vue:42
@@ -32,18 +36,22 @@ msgstr "添加"
 msgid "Add Directive Below"
 msgstr "在下面添加指令"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:31
-#: src/views/domain/ngx_conf/LocationEditor.vue:46
+#: src/views/domain/ngx_conf/LocationEditor.vue:33
+#: src/views/domain/ngx_conf/LocationEditor.vue:48
 msgid "Add Location"
 msgstr "添加 Location"
 
-#: src/routes/index.ts:54 src/views/domain/DomainAdd.vue:2
+#: src/routes/index.ts:55 src/views/domain/DomainAdd.vue:2
 msgid "Add Site"
 msgstr "添加站点"
 
 #: src/views/domain/DomainEdit.vue:19
 msgid "Advance Mode"
 msgstr "高级模式"
+
+#: src/views/nginx_log/NginxLog.vue:100
+msgid "All logs"
+msgstr "所有日志"
 
 #: src/components/StdDataDisplay/StdTable.vue:41
 #: src/views/domain/DomainList.vue:27
@@ -54,9 +62,13 @@ msgstr "您确定要删除吗？"
 msgid "Are you sure you want to remove this directive?"
 msgstr "您确定要删除这条指令？"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:17
+#: src/views/domain/ngx_conf/LocationEditor.vue:9
 msgid "Are you sure you want to remove this location?"
 msgstr "您确定要删除这个 Location？"
+
+#: src/views/nginx_log/NginxLog.vue:4
+msgid "Auto Refresh"
+msgstr "自动刷新"
 
 #: src/views/domain/cert/IssueCert.vue:78
 msgid "Auto-renewal disabled for %{name}"
@@ -66,7 +78,7 @@ msgstr "成功关闭 %{name} 自动续签"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "成功启用 %{name} 自动续签"
 
-#: src/views/domain/DomainEdit.vue:178
+#: src/views/domain/DomainEdit.vue:178 src/views/nginx_log/NginxLog.vue:115
 msgid "Back"
 msgstr "返回"
 
@@ -104,9 +116,9 @@ msgid "Certificate Status"
 msgstr "证书状态"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:29
-#: src/views/domain/ngx_conf/LocationEditor.vue:33
-#: src/views/domain/ngx_conf/LocationEditor.vue:7
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:156
+#: src/views/domain/ngx_conf/LocationEditor.vue:21
+#: src/views/domain/ngx_conf/LocationEditor.vue:35
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:161
 msgid "Comments"
 msgstr "注释"
 
@@ -122,8 +134,8 @@ msgstr "配置"
 msgid "Configure SSL"
 msgstr "配置 SSL"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:13
-#: src/views/domain/ngx_conf/LocationEditor.vue:39
+#: src/views/domain/ngx_conf/LocationEditor.vue:27
+#: src/views/domain/ngx_conf/LocationEditor.vue:41
 msgid "Content"
 msgstr "内容"
 
@@ -147,7 +159,7 @@ msgstr "创建时间"
 msgid "Creating client facilitates communication with the CA server"
 msgstr "正在创建客户端用于与 CA 服务器通信"
 
-#: src/routes/index.ts:26
+#: src/routes/index.ts:27
 msgid "Dashboard"
 msgstr "仪表盘"
 
@@ -205,11 +217,11 @@ msgstr "域名配置文件创建成功"
 msgid "Edit %{n}"
 msgstr "编辑 %{n}"
 
-#: src/routes/index.ts:76 src/views/config/ConfigEdit.vue:2
+#: src/routes/index.ts:77 src/views/config/ConfigEdit.vue:2
 msgid "Edit Configuration"
 msgstr "编辑配置"
 
-#: src/routes/index.ts:58
+#: src/routes/index.ts:59
 msgid "Edit Site"
 msgstr "编辑站点"
 
@@ -244,6 +256,10 @@ msgstr "启用成功"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 对网站进行加密"
 
+#: src/routes/index.ts:103
+msgid "Error Logs"
+msgstr "错误日志"
+
 #: src/views/domain/cert/CertInfo.vue:17
 msgid "Expiration Date: %{date}"
 msgstr "过期时间: %{date}"
@@ -259,6 +275,10 @@ msgstr "启用失败 %{msg}"
 #: src/language/constants.ts:9
 msgid "Failed to get certificate information"
 msgstr "获取证书信息失败"
+
+#: src/views/nginx_log/NginxLog.vue:7
+msgid "Fetch"
+msgstr "日志范围"
 
 #: src/views/other/Error.vue:3 src/views/other/Error.vue:4
 msgid "File Not Found"
@@ -276,11 +296,11 @@ msgstr "正在生成私钥用于注册账户"
 msgid "Getting the certificate, please wait..."
 msgstr "正在获取证书，请稍等..."
 
-#: src/routes/index.ts:19
+#: src/routes/index.ts:20
 msgid "Home"
 msgstr "首页"
 
-#: src/routes/index.ts:102 src/views/other/Install.vue:128
+#: src/routes/index.ts:126 src/views/other/Install.vue:128
 msgid "Install"
 msgstr "安装"
 
@@ -312,7 +332,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/routes/index.ts:108 src/views/other/Login.vue:103
+#: src/routes/index.ts:132 src/views/other/Login.vue:103
 msgid "Login"
 msgstr "登录"
 
@@ -332,15 +352,15 @@ msgstr ""
 "在获取签发证书前，请确保配置文件中已将 .well-known 目录反向代理到 "
 "HTTPChallengePort (默认: 9180)"
 
-#: src/routes/index.ts:67
+#: src/routes/index.ts:68
 msgid "Manage Configs"
 msgstr "配置管理"
 
-#: src/routes/index.ts:42 src/views/domain/DomainList.vue:2
+#: src/routes/index.ts:43 src/views/domain/DomainList.vue:2
 msgid "Manage Sites"
 msgstr "网站管理"
 
-#: src/routes/index.ts:34 src/views/user/User.vue:2
+#: src/routes/index.ts:35 src/views/user/User.vue:2
 msgid "Manage Users"
 msgstr "用户管理"
 
@@ -385,18 +405,26 @@ msgstr "下载流量"
 msgid "Network Total Send"
 msgstr "上传流量"
 
+#: src/views/nginx_log/NginxLog.vue:103
+msgid "New logs"
+msgstr "新增日志"
+
 #: src/views/domain/DomainAdd.vue:137
 msgid "Next"
 msgstr "下一步"
 
+#: src/routes/index.ts:93 src/views/nginx_log/NginxLog.vue:2
+msgid "Nginx Log"
+msgstr "Nginx 日志"
+
 #: src/components/StdDataDisplay/StdTable.vue:39
 #: src/views/domain/DomainList.vue:25
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:17
-#: src/views/domain/ngx_conf/LocationEditor.vue:19
+#: src/views/domain/ngx_conf/LocationEditor.vue:11
 msgid "No"
 msgstr "取消"
 
-#: src/routes/index.ts:114 src/routes/index.ts:116
+#: src/routes/index.ts:138 src/routes/index.ts:140
 msgid "Not Found"
 msgstr "找不到页面"
 
@@ -436,8 +464,8 @@ msgstr "密码"
 msgid "Password (*)"
 msgstr "密码 (*)"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:10
-#: src/views/domain/ngx_conf/LocationEditor.vue:36
+#: src/views/domain/ngx_conf/LocationEditor.vue:24
+#: src/views/domain/ngx_conf/LocationEditor.vue:38
 msgid "Path"
 msgstr "路径"
 
@@ -545,7 +573,11 @@ msgstr "server_name 指令包含多个参数"
 msgid "Single Directive"
 msgstr "单行指令"
 
-#: src/routes/index.ts:50
+#: src/routes/index.ts:107
+msgid "Site Logs"
+msgstr "站点列表"
+
+#: src/routes/index.ts:51
 msgid "Sites List"
 msgstr "站点列表"
 
@@ -569,7 +601,7 @@ msgstr ""
 msgid "Table"
 msgstr "列表"
 
-#: src/routes/index.ts:84 src/views/pty/Terminal.vue:2
+#: src/routes/index.ts:85 src/views/pty/Terminal.vue:2
 msgid "Terminal"
 msgstr "终端"
 
@@ -627,7 +659,7 @@ msgid "Writing certificate to disk"
 msgstr "正在将证书写入磁盘"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:16
-#: src/views/domain/ngx_conf/LocationEditor.vue:18
+#: src/views/domain/ngx_conf/LocationEditor.vue:10
 msgid "Yes"
 msgstr "是的"
 

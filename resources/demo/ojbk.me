@@ -3,6 +3,9 @@ server {
 	listen [::]:80;
 	server_name ojbk.me;
 
+	access_log /var/log/nginx/ojbk.me.log;
+	error_log /var/log/nginx/ojbk.me.error.log;
+
 	location /.well-known/acme-challenge {
 		proxy_set_header Host $host;
 		proxy_set_header X-Real_IP $remote_addr;

@@ -96,8 +96,12 @@ const router = useRouter()
             </a-form-item>
             <a-form-item :label="$gettext('Fetch')">
                 <a-select v-model:value="control.fetch" style="max-width: 200px">
-                    <a-select-option value="all">All logs</a-select-option>
-                    <a-select-option value="new">New logs</a-select-option>
+                    <a-select-option value="all">
+                        <translate>All logs</translate>
+                    </a-select-option>
+                    <a-select-option value="new">
+                        <translate>New logs</translate>
+                    </a-select-option>
                 </a-select>
             </a-form-item>
         </a-form>
