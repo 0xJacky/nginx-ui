@@ -29,7 +29,10 @@ function openWs() {
     websocket = ws('/api/nginx_log')
 
     websocket.onopen = () => {
-        websocket.send(JSON.stringify(control))
+        websocket.send(JSON.stringify({
+            ...control,
+            fetch: 'new'
+        }))
     }
 
     websocket.onmessage = (m: any) => {
