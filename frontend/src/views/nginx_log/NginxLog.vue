@@ -5,6 +5,8 @@ import {nextTick, onMounted, onUnmounted, reactive, ref, watch} from 'vue'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import {useRoute, useRouter} from 'vue-router'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
+import nginx_log from '@/api/nginx_log'
+import {debounce} from 'lodash'
 
 const {$gettext} = useGettext()
 
@@ -18,7 +20,6 @@ function logType() {
 }
 
 const control = reactive({
-    fetch: 'new',
     type: logType(),
     conf_name: route.query.conf_name,
     server_idx: parseInt(route.query.server_idx as string),
@@ -30,26 +31,51 @@ function openWs() {
 
     websocket.onopen = () => {
         websocket.send(JSON.stringify({
-            ...control,
-            fetch: 'new'
+            ...control
         }))
     }
 
     websocket.onmessage = (m: any) => {
-        const para = document.createElement('p')
-        para.appendChild(document.createTextNode(m.data.trim()));
-
-        (logContainer.value as any as Node).appendChild(para);
-
-        (logContainer.value as any as Element).scroll({
-            top: (logContainer.value as any as Element).scrollHeight,
-            left: 0,
-            behavior: 'smooth'
-        })
+        addLog(m.data)
     }
 }
 
+function addLog(data: string, prepend: boolean = false) {
+    const para = document.createElement('p')
+    para.appendChild(document.createTextNode(data.trim()))
+
+    const node = (logContainer.value as any as Node)
+
+    if (prepend) {
+        node.insertBefore(para, node.firstChild)
+    } else {
+        node.appendChild(para)
+    }
+    const elem = (logContainer.value as any as Element)
+    elem.scroll({
+        top: elem.scrollHeight,
+        left: 0,
+    })
+}
+
+const page = ref(0)
+
+function init() {
+    nginx_log.page(0, {
+        conf_name: (route.query.conf_name as string),
+        type: logType(),
+        server_idx: 0,
+        directive_idx: 0
+    }).then(r => {
+        page.value = r.page - 1
+        r.content.split('\n').forEach((v: string) => {
+            addLog(v)
+        })
+    })
+}
+
 onMounted(() => {
+    init()
     openWs()
 })
 
@@ -66,6 +92,8 @@ watch(auto_refresh, (value) => {
 })
 
 watch(route, () => {
+    init()
+
     control.type = logType();
     (logContainer.value as any as Element).innerHTML = ''
 
@@ -88,6 +116,31 @@ onUnmounted(() => {
 })
 
 const router = useRouter()
+const loading = ref(false)
+
+function on_scroll_log() {
+    if (!loading.value && page.value > 0) {
+        loading.value = true
+        const elem = (logContainer.value as any as Element)
+        if (elem.scrollTop / elem.scrollHeight < 0.333) {
+            nginx_log.page(page.value, {
+                conf_name: (route.query.conf_name as string),
+                type: logType(),
+                server_idx: 0,
+                directive_idx: 0
+            }).then(r => {
+                page.value = r.page - 1
+                r.content.split('\n').forEach((v: string) => {
+                    addLog(v, true)
+                })
+            }).finally(() => {
+                loading.value = false
+            })
+        } else {
+            loading.value = false
+        }
+    }
+}
 
 </script>
 
@@ -97,20 +150,11 @@ const router = useRouter()
             <a-form-item :label="$gettext('Auto Refresh')">
                 <a-switch v-model:checked="auto_refresh"/>
             </a-form-item>
-            <a-form-item :label="$gettext('Fetch')">
-                <a-select v-model:value="control.fetch" style="max-width: 200px">
-                    <a-select-option value="all">
-                        <translate>All logs</translate>
-                    </a-select-option>
-                    <a-select-option value="new">
-                        <translate>New logs</translate>
-                    </a-select-option>
-                </a-select>
-            </a-form-item>
         </a-form>
 
         <a-card>
-            <pre class="nginx-log-container" ref="logContainer"></pre>
+            <pre class="nginx-log-container" ref="logContainer"
+                 @scroll="debounce(on_scroll_log,100, null)()"></pre>
         </a-card>
     </a-card>
     <footer-tool-bar v-if="control.type==='site'">
@@ -125,6 +169,7 @@ const router = useRouter()
     height: 60vh;
     overflow: scroll;
     padding: 5px;
+    margin-bottom: 0;
 
     p {
         font-size: 12px;

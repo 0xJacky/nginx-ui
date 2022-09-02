@@ -95,6 +95,7 @@ func InitRouter() *gin.Engine {
 
 			// Nginx log
 			g.GET("nginx_log", api.NginxLog)
+			g.POST("nginx_log", api.GetNginxLogPage)
 		}
 	}
 
