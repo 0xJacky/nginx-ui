@@ -60,6 +60,9 @@ declare module '@vue/runtime-core' {
     SetLanguage: typeof import('./src/components/SetLanguage/SetLanguage.vue')['default']
     StdCurd: typeof import('./src/components/StdDataDisplay/StdCurd.vue')['default']
     StdPagination: typeof import('./src/components/StdDataDisplay/StdPagination.vue')['default']
+    StdPassword: typeof import('./src/components/StdDataEntry/compontents/StdPassword.vue')['default']
+    StdSelect: typeof import('./src/components/StdDataEntry/compontents/StdSelect.vue')['default']
+    StdSelector: typeof import('./src/components/StdDataEntry/compontents/StdSelector.vue')['default']
     StdTable: typeof import('./src/components/StdDataDisplay/StdTable.vue')['default']
   }
 }

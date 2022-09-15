@@ -13,12 +13,12 @@ function changePage(num: number) {
 <template>
     <div v-if="pagination.total>pagination.per_page">
         <a-pagination
-            :current="pagination.current_page"
-            :pageSize="pagination.per_page"
-            :size="size"
-            :total="pagination.total"
-            class="pagination"
-            @change="changePage"
+                :current="pagination.current_page"
+                :pageSize="pagination.per_page"
+                :size="size"
+                :total="pagination.total"
+                class="pagination"
+                @change="changePage"
         />
     </div>
 </template>

@@ -3,7 +3,7 @@ import StdCurd from '@/components/StdDataDisplay/StdCurd.vue'
 import gettext from '@/gettext'
 import user from '@/api/user'
 import {datetime} from '@/components/StdDataDisplay/StdTableTransformer'
-import {input} from '@/components/StdDataEntry'
+import {input, password} from '@/components/StdDataEntry'
 
 const {$gettext} = gettext
 
@@ -22,8 +22,9 @@ const columns = [{
     sorter: true,
     pithy: true,
     edit: {
-        type: input,
-        placeholder: () => $gettext('Leave blank for no change')
+        type: password,
+        placeholder: () => $gettext('Leave blank for no change'),
+        generate: true
     },
     display: false
 }, {

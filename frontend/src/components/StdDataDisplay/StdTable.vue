@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import gettext from '@/gettext'
+import StdDataEntry from '@/components/StdDataEntry'
+import StdPagination from './StdPagination.vue'
+import {computed, onMounted, reactive, ref, watch} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
+import {message} from 'ant-design-vue'
+import {downloadCsv} from '@/lib/helper'
 
 const {$gettext, interpolate} = gettext
 
-import StdDataEntry from '@/components/StdDataEntry'
-import StdPagination from './StdPagination.vue'
-import {nextTick, reactive, ref, watch} from 'vue'
-import {useRoute, useRouter} from 'vue-router'
-import {message} from 'ant-design-vue'
+const emit = defineEmits(['onSelected', 'onSelectedRecord', 'clickEdit'])
 
 const props = defineProps({
     api: Object,
@@ -17,6 +19,10 @@ const props = defineProps({
         default: 'data'
     },
     disable_search: {
+        type: Boolean,
+        default: false
+    },
+    disable_query_params: {
         type: Boolean,
         default: false
     },
@@ -41,7 +47,6 @@ const props = defineProps({
     },
     selectionType: {
         type: String,
-        default: 'checkbox',
         validator: function (value: string) {
             return ['checkbox', 'radio'].indexOf(value) !== -1
         }
@@ -57,6 +62,10 @@ const props = defineProps({
     rowKey: {
         type: String,
         default: 'id'
+    },
+    exportCsv: {
+        type: Boolean,
+        default: false
     }
 })
 
@@ -70,17 +79,21 @@ const pagination = reactive({
     total_pages: 1
 })
 const route = useRoute()
-let params = reactive({
-    ...route.query,
+const params = reactive({
     ...props.get_params
 })
+
 const selectedRowKeys = ref([])
-const rowSelection = reactive({})
 
 const searchColumns = getSearchColumns()
 const pithyColumns = getPithyColumns()
 
-get_list()
+onMounted(() => {
+    if (!props.disable_query_params) {
+        Object.assign(params, route.query)
+    }
+    get_list()
+})
 
 defineExpose({
     get_list
@@ -117,9 +130,17 @@ function stdChange(pagination: any, filters: any, sorter: any) {
     if (sorter) {
         params['order_by'] = sorter.field
         params['sort'] = sorter.order === 'ascend' ? 'asc' : 'desc'
-        nextTick(() => {
-            get_list()
-        })
+        switch (sorter.order) {
+            case 'ascend':
+                params['sort'] = 'asc'
+                break
+            case 'descend':
+                params['sort'] = 'desc'
+                break
+            default:
+                params['sort'] = null
+                break
+        }
     }
 }
 
@@ -150,11 +171,11 @@ function checked(c: any) {
 
 function onSelectChange(_selectedRowKeys: any) {
     selectedRowKeys.value = _selectedRowKeys
-    // this.$emit('selected', selectedRowKeys)
+    emit('onSelected', selectedRowKeys.value)
 }
 
 function onSelect(record: any) {
-    // this.$emit('selectedRecord', record)
+    emit('onSelectedRecord', record)
 }
 
 const router = useRouter()
@@ -163,6 +184,11 @@ const reset_search = async () => {
     Object.keys(params).forEach(v => {
         delete params[v]
     })
+
+    Object.assign(params, {
+        ...props.get_params
+    })
+
     router.push({query: {}}).catch(() => {
     })
 }
@@ -171,37 +197,125 @@ watch(params, () => {
     router.push({query: params})
     get_list()
 })
+
+const rowSelection = computed(() => {
+    if (props.selectionType) {
+        return {
+            selectedRowKeys: selectedRowKeys, onChange: onSelectChange,
+            onSelect: onSelect, type: props.selectionType
+        }
+    } else {
+        return null
+    }
+})
+
+function fn(obj: Object, desc: string) {
+    const arr: string[] = desc.split('.')
+    while (arr.length) {
+        // @ts-ignore
+        const top = obj[arr.shift()]
+        if (top === undefined) {
+            return null
+        }
+        obj = top
+    }
+    return obj
+}
+
+async function export_csv() {
+    let header = []
+    let headerKeys: any[] = []
+    const showColumnsMap: any = {}
+    // @ts-ignore
+    for (let showColumnsKey in pithyColumns) {
+        // @ts-ignore
+        if (pithyColumns[showColumnsKey].dataIndex === 'action') continue
+        // @ts-ignore
+        let t = pithyColumns[showColumnsKey].title
+
+        if (typeof t === 'function') {
+            t = t()
+        }
+        header.push({
+            title: t,
+            // @ts-ignore
+            key: pithyColumns[showColumnsKey].dataIndex
+        })
+        // @ts-ignore
+        headerKeys.push(pithyColumns[showColumnsKey].dataIndex)
+        // @ts-ignore
+        showColumnsMap[pithyColumns[showColumnsKey].dataIndex] = pithyColumns[showColumnsKey]
+    }
+
+    let dataSource: any = []
+    let hasMore = true
+    let page = 1
+    while (hasMore) {
+        // 准备 DataSource
+        await props.api!.get_list({page}).then((response: any) => {
+            if (response.data.length === 0) {
+                hasMore = false
+                return
+            }
+            if (response[props.data_key] === undefined) {
+                dataSource = dataSource.concat(...response.data)
+            } else {
+                dataSource = dataSource.concat(...response[props.data_key])
+            }
+        }).catch((e: any) => {
+            message.error(e.message ?? '系统错误')
+        })
+        page += 1
+    }
+    const data: any[] = []
+    dataSource.forEach((row: Object) => {
+        let obj: any = {}
+        headerKeys.forEach(key => {
+            console.log(row, key)
+            let data = fn(row, key)
+            const c = showColumnsMap[key]
+            console.log(c)
+            data = c?.customRender?.({text: data}) ?? data
+            obj[c.dataIndex] = data
+        })
+        data.push(obj)
+    })
+    console.log(header, data)
+    downloadCsv(header, data, '测试.csv')
+}
 </script>
 
 <template>
     <div class="std-table">
         <std-data-entry
-            v-if="!disable_search"
-            :data-list="searchColumns"
-            v-model:data-source="params"
-            layout="inline"
+                v-if="!disable_search"
+                :data-list="searchColumns"
+                v-model:data-source="params"
+                layout="inline"
         >
             <template #action>
-                <div class="reset-btn">
+                <a-space class="reset-btn">
+                    <a-button @click="export_csv" type="primary" ghost>
+                        <translate>Export</translate>
+                    </a-button>
                     <a-button @click="reset_search">
                         <translate>Reset</translate>
                     </a-button>
-                </div>
+                </a-space>
             </template>
         </std-data-entry>
         <a-table
-            :columns="pithyColumns"
-            :data-source="data_source"
-            :loading="loading"
-            :pagination="false"
-            :row-key="rowKey"
-            :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange,
-            onSelect: onSelect, type: selectionType}"
-            @change="stdChange"
-            :scroll="{ x: scrollX }"
+                :columns="pithyColumns"
+                :data-source="data_source"
+                :loading="loading"
+                :pagination="false"
+                :row-key="rowKey"
+                :rowSelection="rowSelection"
+                @change="stdChange"
+                :scroll="{ x: scrollX }"
         >
             <template
-                v-slot:bodyCell="{text, record, index, column}"
+                    v-slot:bodyCell="{text, record, index, column}"
             >
                 <template v-if="column.dataIndex === 'action'">
                     <a v-if="props.editable" @click="$emit('clickEdit', record[props.rowKey], record)">
@@ -211,10 +325,10 @@ watch(params, () => {
                     <template v-if="props.deletable">
                         <a-divider type="vertical"/>
                         <a-popconfirm
-                            :cancelText="$gettext('No')"
-                            :okText="$gettext('OK')"
-                            :title="$gettext('Are you sure you want to delete ?')"
-                            @confirm="destroy(record[rowKey])">
+                                :cancelText="$gettext('No')"
+                                :okText="$gettext('OK')"
+                                :title="$gettext('Are you sure you want to delete ?')"
+                                @confirm="destroy(record[rowKey])">
                             <a v-translate>Delete</a>
                         </a-popconfirm>
                     </template>
@@ -252,6 +366,10 @@ watch(params, () => {
     // min-height: 50px;
     height: 100%;
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
+}
+
+:deep(.ant-form-inline .ant-form-item) {
+    margin-bottom: 10px;
 }
 </style>

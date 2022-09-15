@@ -16,17 +16,17 @@ msgstr ""
 msgid "About"
 msgstr "关于"
 
-#: src/routes/index.ts:99
+#: src/routes/index.ts:99 src/views/domain/ngx_conf/LogEntry.vue:64
 msgid "Access Logs"
 msgstr "访问日志"
 
 #: src/views/config/Config.vue:24 src/views/domain/DomainList.vue:42
-#: src/views/user/User.vue:42
+#: src/views/user/User.vue:43
 msgid "Action"
 msgstr "操作"
 
-#: src/components/StdDataDisplay/StdCurd.vue:123
-#: src/components/StdDataDisplay/StdCurd.vue:24
+#: src/components/StdDataDisplay/StdCurd.vue:130
+#: src/components/StdDataDisplay/StdCurd.vue:26
 msgid "Add"
 msgstr "添加"
 
@@ -49,11 +49,7 @@ msgstr "添加站点"
 msgid "Advance Mode"
 msgstr "高级模式"
 
-#: src/views/nginx_log/NginxLog.vue:100
-msgid "All logs"
-msgstr "所有日志"
-
-#: src/components/StdDataDisplay/StdTable.vue:41
+#: src/components/StdDataDisplay/StdTable.vue:43
 #: src/views/domain/DomainList.vue:27
 msgid "Are you sure you want to delete ?"
 msgstr "您确定要删除吗？"
@@ -78,7 +74,7 @@ msgstr "成功关闭 %{name} 自动续签"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "成功启用 %{name} 自动续签"
 
-#: src/views/domain/DomainEdit.vue:178 src/views/nginx_log/NginxLog.vue:115
+#: src/views/domain/DomainEdit.vue:178 src/views/nginx_log/NginxLog.vue:162
 msgid "Back"
 msgstr "返回"
 
@@ -98,7 +94,7 @@ msgstr "基本模式"
 msgid "Build with"
 msgstr "构建基于"
 
-#: src/components/StdDataDisplay/StdCurd.vue:26
+#: src/components/StdDataDisplay/StdCurd.vue:28
 #: src/views/config/ConfigEdit.vue:49
 msgid "Cancel"
 msgstr "取消"
@@ -118,7 +114,7 @@ msgstr "证书状态"
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:29
 #: src/views/domain/ngx_conf/LocationEditor.vue:21
 #: src/views/domain/ngx_conf/LocationEditor.vue:35
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:161
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:175
 msgid "Comments"
 msgstr "注释"
 
@@ -151,7 +147,7 @@ msgstr ""
 msgid "Create Another"
 msgstr "再创建一个"
 
-#: src/views/user/User.vue:30
+#: src/views/user/User.vue:31
 msgid "Created at"
 msgstr "创建时间"
 
@@ -167,12 +163,12 @@ msgstr "仪表盘"
 msgid "Database (Optional, default: database)"
 msgstr "数据库 (可选，默认: database)"
 
-#: src/components/StdDataDisplay/StdTable.vue:218
+#: src/components/StdDataDisplay/StdTable.vue:332
 #: src/views/domain/DomainList.vue:111
 msgid "Delete"
 msgstr "删除"
 
-#: src/components/StdDataDisplay/StdTable.vue:92
+#: src/components/StdDataDisplay/StdTable.vue:105
 msgid "Delete ID: %{id}"
 msgstr "删除 ID: %{id}"
 
@@ -256,13 +252,17 @@ msgstr "启用成功"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 对网站进行加密"
 
-#: src/routes/index.ts:103
+#: src/routes/index.ts:103 src/views/domain/ngx_conf/LogEntry.vue:68
 msgid "Error Logs"
 msgstr "错误日志"
 
 #: src/views/domain/cert/CertInfo.vue:17
 msgid "Expiration Date: %{date}"
 msgstr "过期时间: %{date}"
+
+#: src/components/StdDataDisplay/StdTable.vue:299
+msgid "Export"
+msgstr ""
 
 #: src/views/domain/DomainEdit.vue:115 src/views/domain/DomainList.vue:68
 msgid "Failed to disable %{msg}"
@@ -276,10 +276,6 @@ msgstr "启用失败 %{msg}"
 msgid "Failed to get certificate information"
 msgstr "获取证书信息失败"
 
-#: src/views/nginx_log/NginxLog.vue:7
-msgid "Fetch"
-msgstr "日志范围"
-
 #: src/views/other/Error.vue:3 src/views/other/Error.vue:4
 msgid "File Not Found"
 msgstr "未找到文件"
@@ -287,6 +283,10 @@ msgstr "未找到文件"
 #: src/language/constants.ts:20 src/views/domain/DomainAdd.vue:7
 msgid "Finished"
 msgstr "完成"
+
+#: src/components/StdDataEntry/compontents/StdPassword.vue:42
+msgid "Generate"
+msgstr "生成"
 
 #: src/language/constants.ts:11
 msgid "Generating private key for registering account"
@@ -372,12 +372,12 @@ msgstr "内存"
 msgid "Memory and Storage"
 msgstr "内存与存储"
 
-#: src/components/StdDataDisplay/StdCurd.vue:24
-#: src/components/StdDataDisplay/StdTable.vue:16
-#: src/components/StdDataDisplay/StdTable.vue:17
-#: src/components/StdDataDisplay/StdTable.vue:21
-#: src/components/StdDataDisplay/StdTable.vue:31
+#: src/components/StdDataDisplay/StdCurd.vue:26
+#: src/components/StdDataDisplay/StdTable.vue:18
+#: src/components/StdDataDisplay/StdTable.vue:19
+#: src/components/StdDataDisplay/StdTable.vue:24
 #: src/components/StdDataDisplay/StdTable.vue:33
+#: src/components/StdDataDisplay/StdTable.vue:35
 msgid "Modify"
 msgstr "修改"
 
@@ -405,10 +405,6 @@ msgstr "下载流量"
 msgid "Network Total Send"
 msgstr "上传流量"
 
-#: src/views/nginx_log/NginxLog.vue:103
-msgid "New logs"
-msgstr "新增日志"
-
 #: src/views/domain/DomainAdd.vue:137
 msgid "Next"
 msgstr "下一步"
@@ -417,7 +413,7 @@ msgstr "下一步"
 msgid "Nginx Log"
 msgstr "Nginx 日志"
 
-#: src/components/StdDataDisplay/StdTable.vue:39
+#: src/components/StdDataDisplay/StdTable.vue:41
 #: src/views/domain/DomainList.vue:25
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:17
 #: src/views/domain/ngx_conf/LocationEditor.vue:11
@@ -442,8 +438,8 @@ msgstr "注意：当前配置中的 server_name 必须为需要申请证书的�
 msgid "Obtaining certificate"
 msgstr "正在获取证书"
 
-#: src/components/StdDataDisplay/StdCurd.vue:27
-#: src/components/StdDataDisplay/StdTable.vue:40
+#: src/components/StdDataDisplay/StdCurd.vue:29
+#: src/components/StdDataDisplay/StdTable.vue:42
 #: src/views/domain/DomainList.vue:26
 msgid "OK"
 msgstr "确定"
@@ -513,7 +509,7 @@ msgstr "正在注册用户"
 msgid "Reloading nginx"
 msgstr "正在重载 Nginx"
 
-#: src/components/StdDataDisplay/StdTable.vue:187
+#: src/components/StdDataDisplay/StdTable.vue:302
 msgid "Reset"
 msgstr "重置"
 
@@ -531,7 +527,7 @@ msgstr "保存指令"
 msgid "Save error %{msg}"
 msgstr "保存错误 %{msg}"
 
-#: src/components/StdDataDisplay/StdCurd.vue:91
+#: src/components/StdDataDisplay/StdCurd.vue:98
 msgid "Save Successfully"
 msgstr "保存成功"
 
@@ -544,7 +540,7 @@ msgstr "保存成功"
 msgid "Send"
 msgstr "上传"
 
-#: src/components/StdDataDisplay/StdTable.vue:112
+#: src/components/StdDataDisplay/StdTable.vue:125
 #: src/views/config/ConfigEdit.vue:22 src/views/domain/DomainEdit.vue:56
 #: src/views/domain/DomainEdit.vue:68 src/views/domain/DomainEdit.vue:77
 #: src/views/domain/DomainEdit.vue:94 src/views/domain/DomainList.vue:78
@@ -621,7 +617,7 @@ msgid "The username or password is incorrect"
 msgstr "用户名或密码错误"
 
 #: src/views/config/Config.vue:17 src/views/domain/DomainList.vue:36
-#: src/views/user/User.vue:36
+#: src/views/user/User.vue:37
 msgid "Updated at"
 msgstr "修改时间"
 
@@ -667,6 +663,15 @@ msgstr "是的"
 msgctxt "Project"
 msgid "License"
 msgstr "开源许可"
+
+#~ msgid "All logs"
+#~ msgstr "所有日志"
+
+#~ msgid "Fetch"
+#~ msgstr "日志范围"
+
+#~ msgid "New logs"
+#~ msgstr "新增日志"
 
 #~ msgid "404 Not Found"
 #~ msgstr "404 未找到页面"
