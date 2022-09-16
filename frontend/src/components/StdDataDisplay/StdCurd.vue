@@ -51,6 +51,10 @@ const props = defineProps({
     exportCsv: {
         type: Boolean,
         default: false
+    },
+    modalWidth: {
+        type: Number,
+        default: 600
     }
 })
 
@@ -131,13 +135,13 @@ function edit(id: any) {
             </template>
 
             <std-table
-                ref="table"
-                v-bind="props"
-                @clickEdit="edit"
-                @selected="onSelect"
-                :key="update"
-                :get_params="get_params"
-                :exportCsv="exportCsv"
+                    ref="table"
+                    v-bind="props"
+                    @clickEdit="edit"
+                    @selected="onSelect"
+                    :key="update"
+                    :get_params="get_params"
+                    :exportCsv="exportCsv"
             >
                 <template v-slot:actions="slotProps">
                     <slot name="actions" :actions="slotProps.record"/>
@@ -146,22 +150,22 @@ function edit(id: any) {
         </a-card>
 
         <a-modal
-            class="std-curd-edit-modal"
-            :mask="false"
-            :title="data.id ? $gettext('Modify') : $gettext('Add')"
-            :visible="visible"
-            :cancel-text="$gettext('Cancel')"
-            :ok-text="$gettext('OK')"
-            @cancel="cancel"
-            @ok="ok"
-            :width="600"
-            destroyOnClose
+                class="std-curd-edit-modal"
+                :mask="false"
+                :title="data.id ? $gettext('Modify') : $gettext('Add')"
+                :visible="visible"
+                :cancel-text="$gettext('Cancel')"
+                :ok-text="$gettext('OK')"
+                @cancel="cancel"
+                @ok="ok"
+                :width="modalWidth"
+                destroyOnClose
         >
             <std-data-entry
-                ref="std_data_entry"
-                :data-list="editableColumns()"
-                v-model:data-source="data"
-                :error="error"
+                    ref="std_data_entry"
+                    :data-list="editableColumns()"
+                    v-model:data-source="data"
+                    :error="error"
             />
             <slot name="edit" :data="data"/>
         </a-modal>

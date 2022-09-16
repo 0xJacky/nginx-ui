@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import {onMounted, reactive, ref, watch} from 'vue'
 import StdTable from '@/components/StdDataDisplay/StdTable.vue'
+import gettext from '@/gettext'
 
+const {$gettext} = gettext
 const props = defineProps(['selectedKey', 'value', 'recordValueIndex',
     'selectionType', 'api', 'columns', 'data_key',
     'disable_search', 'get_params', 'description'])
@@ -70,9 +72,9 @@ watch(props, () => {
             <a-modal
                     :mask="false"
                     :visible="visible"
-                    cancel-text="取消"
-                    ok-text="选择"
-                    title="选择器"
+                    :cancel-text="$gettext('Cancel')"
+                    :ok-text="$gettext('Ok')"
+                    :title="$gettext('Selector')"
                     @cancel="visible=false"
                     @ok="ok()"
                     :width="800"

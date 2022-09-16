@@ -11,13 +11,12 @@ function changePage(num: number) {
 </script>
 
 <template>
-    <div v-if="pagination.total>pagination.per_page">
+    <div class="pagination-container" v-if="pagination.total>pagination.per_page">
         <a-pagination
                 :current="pagination.current_page"
                 :pageSize="pagination.per_page"
                 :size="size"
                 :total="pagination.total"
-                class="pagination"
                 @change="changePage"
         />
     </div>
@@ -32,12 +31,12 @@ function changePage(num: number) {
 </style>
 
 <style lang="less" scoped>
-.pagination {
+.pagination-container {
     padding: 10px 0 0 0;
-    float: right;
+    display: flex;
+    justify-content: right;
     @media (max-width: 450px) {
-        float: unset;
-        text-align: center;
+        justify-content: center;
     }
 }
 </style>

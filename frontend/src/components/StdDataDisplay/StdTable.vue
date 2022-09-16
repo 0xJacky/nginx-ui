@@ -6,10 +6,11 @@ import {computed, onMounted, reactive, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import {message} from 'ant-design-vue'
 import {downloadCsv} from '@/lib/helper'
+import dayjs from 'dayjs'
 
 const {$gettext, interpolate} = gettext
 
-const emit = defineEmits(['onSelected', 'onSelectedRecord', 'clickEdit'])
+const emit = defineEmits(['onSelected', 'onSelectedRecord', 'clickEdit', 'update:selectedRowKeys'])
 
 const props = defineProps({
     api: Object,
@@ -66,6 +67,11 @@ const props = defineProps({
     exportCsv: {
         type: Boolean,
         default: false
+    },
+    size: String,
+    selectedRowKeys: {
+        type: Array,
+        default: []
     }
 })
 
@@ -83,7 +89,14 @@ const params = reactive({
     ...props.get_params
 })
 
-const selectedRowKeys = ref([])
+const selectedRowKeysBuffer = computed({
+    get() {
+        return props?.selectedRowKeys ?? []
+    },
+    set(v) {
+        emit('update:selectedRowKeys', v)
+    }
+})
 
 const searchColumns = getSearchColumns()
 const pithyColumns = getPithyColumns()
@@ -170,8 +183,13 @@ function checked(c: any) {
 }
 
 function onSelectChange(_selectedRowKeys: any) {
-    selectedRowKeys.value = _selectedRowKeys
-    emit('onSelected', selectedRowKeys.value)
+    const n: any = [..._selectedRowKeys]
+    const t = [...selectedRowKeysBuffer.value].concat(n)
+
+    const set = new Set(t)
+    selectedRowKeysBuffer.value = Array.from(set)
+
+    emit('onSelected', selectedRowKeysBuffer.value)
 }
 
 function onSelect(record: any) {
@@ -201,7 +219,7 @@ watch(params, () => {
 const rowSelection = computed(() => {
     if (props.selectionType) {
         return {
-            selectedRowKeys: selectedRowKeys, onChange: onSelectChange,
+            selectedRowKeys: selectedRowKeysBuffer, onChange: onSelectChange,
             onSelect: onSelect, type: props.selectionType
         }
     } else {
@@ -263,7 +281,9 @@ async function export_csv() {
                 dataSource = dataSource.concat(...response[props.data_key])
             }
         }).catch((e: any) => {
-            message.error(e.message ?? '系统错误')
+            message.error(e.message ?? $gettext('Server error'))
+            hasMore = false
+            return
         })
         page += 1
     }
@@ -271,17 +291,16 @@ async function export_csv() {
     dataSource.forEach((row: Object) => {
         let obj: any = {}
         headerKeys.forEach(key => {
-            console.log(row, key)
             let data = fn(row, key)
             const c = showColumnsMap[key]
-            console.log(c)
             data = c?.customRender?.({text: data}) ?? data
             obj[c.dataIndex] = data
         })
         data.push(obj)
     })
-    console.log(header, data)
-    downloadCsv(header, data, '测试.csv')
+
+    downloadCsv(header, data,
+            `${$gettext('Export')}-${dayjs().format('YYYYMMDDHHmmss')}.csv`)
 }
 </script>
 
@@ -295,11 +314,11 @@ async function export_csv() {
         >
             <template #action>
                 <a-space class="reset-btn">
-                    <a-button @click="export_csv" type="primary" ghost>
-                        <translate>Export</translate>
+                    <a-button v-if="exportCsv" @click="export_csv" type="primary" ghost>
+                        {{ $gettext('Export') }}
                     </a-button>
                     <a-button @click="reset_search">
-                        <translate>Reset</translate>
+                        {{ $gettext('Reset') }}
                     </a-button>
                 </a-space>
             </template>
@@ -313,6 +332,7 @@ async function export_csv() {
                 :rowSelection="rowSelection"
                 @change="stdChange"
                 :scroll="{ x: scrollX }"
+                :size="size"
         >
             <template
                     v-slot:bodyCell="{text, record, index, column}"
@@ -335,7 +355,7 @@ async function export_csv() {
                 </template>
             </template>
         </a-table>
-        <std-pagination :pagination="pagination" @changePage="get_list"/>
+        <std-pagination :size="size" :pagination="pagination" @changePage="get_list"/>
     </div>
 </template>
 
