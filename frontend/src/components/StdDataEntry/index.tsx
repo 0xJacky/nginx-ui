@@ -22,8 +22,27 @@ interface IEdit {
     generate: boolean
 }
 
+function fn(obj: Object, desc: any) {
+    let arr: string[]
+    if (typeof desc === 'string') {
+        arr = desc.split('.')
+    } else {
+        arr = [...desc]
+    }
+
+    while (arr.length) {
+        // @ts-ignore
+        const top = obj[arr.shift()]
+        if (top === undefined) {
+            return null
+        }
+        obj = top
+    }
+    return obj
+}
+
 function readonly(edit: IEdit, dataSource: any, dataIndex: any) {
-    return h('p', dataSource[dataIndex])
+    return h('p', fn(dataSource, dataIndex))
 }
 
 function input(edit: IEdit, dataSource: any, dataIndex: any) {

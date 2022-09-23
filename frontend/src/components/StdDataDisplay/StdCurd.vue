@@ -152,7 +152,7 @@ function edit(id: any) {
         <a-modal
                 class="std-curd-edit-modal"
                 :mask="false"
-                :title="data.id ? $gettext('Modify') : $gettext('Add')"
+                :title="edit_text?edit_text:(data.id ? $gettext('Modify') : $gettext('Add'))"
                 :visible="visible"
                 :cancel-text="$gettext('Cancel')"
                 :ok-text="$gettext('OK')"
@@ -161,17 +161,24 @@ function edit(id: any) {
                 :width="modalWidth"
                 destroyOnClose
         >
+            <div class="before-edit" v-if="$slots.beforeEdit">
+                <slot name="beforeEdit" :data="data"/>
+            </div>
+
             <std-data-entry
                     ref="std_data_entry"
                     :data-list="editableColumns()"
                     v-model:data-source="data"
                     :error="error"
             />
+
             <slot name="edit" :data="data"/>
         </a-modal>
     </div>
 </template>
 
 <style lang="less" scoped>
-
+.before-edit {
+    margin-bottom: 20px;
+}
 </style>

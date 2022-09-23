@@ -73,7 +73,7 @@ watch(props, () => {
                     :mask="false"
                     :visible="visible"
                     :cancel-text="$gettext('Cancel')"
-                    :ok-text="$gettext('Ok')"
+                    :ok-text="$gettext('OK')"
                     :title="$gettext('Selector')"
                     @cancel="visible=false"
                     @ok="ok()"
@@ -102,7 +102,7 @@ watch(props, () => {
 .std-selector-container {
     height: 39.9px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 
     .std-selector {
         box-sizing: border-box;

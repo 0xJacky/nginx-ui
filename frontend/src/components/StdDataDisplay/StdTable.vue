@@ -70,8 +70,7 @@ const props = defineProps({
     },
     size: String,
     selectedRowKeys: {
-        type: Array,
-        default: []
+        type: Array
     }
 })
 
@@ -89,11 +88,14 @@ const params = reactive({
     ...props.get_params
 })
 
+const selectedKeysLocalBuffer: any = ref([])
+
 const selectedRowKeysBuffer = computed({
     get() {
-        return props?.selectedRowKeys ?? []
+        return props.selectedRowKeys || selectedKeysLocalBuffer.value
     },
     set(v) {
+        selectedKeysLocalBuffer.value = v
         emit('update:selectedRowKeys', v)
     }
 })
@@ -182,13 +184,23 @@ function checked(c: any) {
     params[c.target.value] = c.target.checked
 }
 
-function onSelectChange(_selectedRowKeys: any) {
-    const n: any = [..._selectedRowKeys]
-    const t = [...selectedRowKeysBuffer.value].concat(n)
+const crossPageSelect: any = {}
 
+async function onSelectChange(_selectedRowKeys: any) {
+
+    const page = params.page || 1
+
+    crossPageSelect[page] = await _selectedRowKeys
+
+    let t: any = []
+    Object.keys(crossPageSelect).forEach(v => {
+        t.push(...crossPageSelect[v])
+    })
+    const n: any = [..._selectedRowKeys]
+    t = await t.concat(n)
+    // console.log(crossPageSelect)
     const set = new Set(t)
     selectedRowKeysBuffer.value = Array.from(set)
-
     emit('onSelected', selectedRowKeysBuffer.value)
 }
 
@@ -212,14 +224,16 @@ const reset_search = async () => {
 }
 
 watch(params, () => {
-    router.push({query: params})
+    if (!props.disable_query_params) {
+        router.push({query: params})
+    }
     get_list()
 })
 
 const rowSelection = computed(() => {
     if (props.selectionType) {
         return {
-            selectedRowKeys: selectedRowKeysBuffer, onChange: onSelectChange,
+            selectedRowKeys: selectedRowKeysBuffer.value, onChange: onSelectChange,
             onSelect: onSelect, type: props.selectionType
         }
     } else {
@@ -307,7 +321,7 @@ async function export_csv() {
 <template>
     <div class="std-table">
         <std-data-entry
-                v-if="!disable_search"
+                v-if="!disable_search && searchColumns.length"
                 :data-list="searchColumns"
                 v-model:data-source="params"
                 layout="inline"
