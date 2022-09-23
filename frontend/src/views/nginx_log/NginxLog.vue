@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
 import ws from '@/lib/websocket'
-import {nextTick, onMounted, onUnmounted, reactive, ref, watch} from 'vue'
+import {computed, nextTick, onMounted, onUnmounted, reactive, ref, watch} from 'vue'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import {useRoute, useRouter} from 'vue-router'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
@@ -41,22 +41,25 @@ function openWs() {
 }
 
 function addLog(data: string, prepend: boolean = false) {
-    const para = document.createElement('p')
-    para.appendChild(document.createTextNode(data.trim()))
-
-    const node = (logContainer.value as any as Node)
+    // const para = document.createElement('p')
+    // para.appendChild(document.createTextNode(data.trim()))
+    //
+    // const node = (logContainer.value as any as Node)
 
     if (prepend) {
-        node.insertBefore(para, node.firstChild)
+        buffer.value = data + buffer.value
     } else {
-        node.appendChild(para)
+        buffer.value += data
     }
+
     const elem = (logContainer.value as any as Element)
     elem.scroll({
         top: elem.scrollHeight,
         left: 0,
     })
 }
+
+const buffer = ref('')
 
 const page = ref(0)
 
@@ -68,9 +71,7 @@ function init() {
         directive_idx: 0
     }).then(r => {
         page.value = r.page - 1
-        r.content.split('\n').forEach((v: string) => {
-            addLog(v)
-        })
+        addLog(r.content)
     })
 }
 
@@ -130,9 +131,7 @@ function on_scroll_log() {
                 directive_idx: 0
             }).then(r => {
                 page.value = r.page - 1
-                r.content.split('\n').forEach((v: string) => {
-                    addLog(v, true)
-                })
+                addLog(r.content, true)
             }).finally(() => {
                 loading.value = false
             })
@@ -142,6 +141,14 @@ function on_scroll_log() {
     }
 }
 
+const filter = ref('')
+
+const computedBuffer = computed(() => {
+    if (filter.value) {
+        return buffer.value.split('\n').filter(line => line.match(filter.value)).join('\n')
+    }
+    return buffer.value
+})
 </script>
 
 <template>
@@ -150,11 +157,14 @@ function on_scroll_log() {
             <a-form-item :label="$gettext('Auto Refresh')">
                 <a-switch v-model:checked="auto_refresh"/>
             </a-form-item>
+            <a-form-item :label="$gettext('Filter')">
+                <a-input v-model:value="filter" style="max-width: 300px"/>
+            </a-form-item>
         </a-form>
 
         <a-card>
             <pre class="nginx-log-container" ref="logContainer"
-                 @scroll="debounce(on_scroll_log,100, null)()"></pre>
+                 @scroll="debounce(on_scroll_log,100, null)()" v-html="computedBuffer"/>
         </a-card>
     </a-card>
     <footer-tool-bar v-if="control.type==='site'">
@@ -171,9 +181,7 @@ function on_scroll_log() {
     padding: 5px;
     margin-bottom: 0;
 
-    p {
-        font-size: 12px;
-        line-height: 1;
-    }
+    font-size: 12px;
+    line-height: 2;
 }
 </style>

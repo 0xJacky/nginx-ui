@@ -228,7 +228,6 @@ func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errCha
 	defer func() {
 		if err := recover(); err != nil {
 			log.Println("tailNginxLog recovery", err)
-			_ = ws.WriteMessage(websocket.TextMessage, err.([]byte))
 			return
 		}
 	}()
