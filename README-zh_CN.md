@@ -10,9 +10,7 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 
-[For English](README.md)
-
-[繁體中文](README-zh_TW.md)
+[English](README.md) | 简体中文 | [繁體中文](README-zh_TW.md)
 
 <details>
   <summary>目录</summary>
@@ -130,7 +128,7 @@ Nginx UI 可在以下平台中使用：
 - Dragonfly BSD
 - Openwrt
 
-您可以在 [最新发行 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest) 中下载最新版本，或使用 [Linux 安装脚本](#scripts-for-linux)。
+您可以在 [最新发行 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest) 中下载最新版本，或使用 [Linux 安装脚本](#linux-安装脚本)。
 
 ### 使用方法
 
@@ -155,7 +153,7 @@ nohup ./nginx-ui -config app.ini &
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
 ```
 #### 使用 Systemd
-如果你使用的是[Linux 安装脚本](#scripts-for-linux)，Nginx UI 将作为 `nginx-ui` 服务安装在 systemd 中。请使用 `systemctl` 命令控制。
+如果你使用的是[Linux 安装脚本](#linux-安装脚本)，Nginx UI 将作为 `nginx-ui` 服务安装在 systemd 中。请使用 `systemctl` 命令控制。
 
 **启动 Nginx UI**
 

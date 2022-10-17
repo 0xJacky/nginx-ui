@@ -8,9 +8,7 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 
-[简体中文](README-zh_CN.md)
-
-[繁體中文](README-zh_TW.md)
+English | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md)
 
 <details>
   <summary>Table of Contents</summary>
@@ -132,7 +130,7 @@ Nginx UI is available on the following platforms:
 - Dragonfly BSD
 - Openwrt
 
-You can visit [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) to download the latest distribution, or just use [installation scripts for Linux](#scripts-for-linux).
+You can visit [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) to download the latest distribution, or just use [installation scripts for Linux](#script-for-linux).
 
 ### Usage
 
@@ -158,7 +156,7 @@ Stop Nginx UI with the follow commond.
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
 ```
 #### With Systemd
-If you are using the [installation script for Linux](#scripts-for-linux), the Nginx UI will be installed as `nginx-ui` service in systemd. Please use the `systemctl` command to control it.
+If you are using the [installation script for Linux](#script-for-linux), the Nginx UI will be installed as `nginx-ui` service in systemd. Please use the `systemctl` command to control it.
 
 **Start Nginx UI**
 
