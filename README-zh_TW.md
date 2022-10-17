@@ -132,7 +132,7 @@ Nginx UI 可在以下作業系統中使用：
 - Dragonfly BSD
 - Openwrt
 
-您可以在 [最新释出 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest) 中下載最新版本，或使用 [Linux 安裝指令碼](#scripts-for-linux)。
+您可以在 [最新释出 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest) 中下載最新版本，或使用 [Linux 安裝指令碼](https://github.com/0xJacky/nginx-ui/blob/master/install.sh)。
 
 ### 使用方法
 
@@ -157,7 +157,7 @@ nohup ./nginx-ui -config app.ini &
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
 ```
 #### 使用 Systemd
-如果你使用的是 [Linux 安裝指令碼](#scripts-for-linux)，Nginx UI 將作為 `nginx-ui` 守護行程安裝在 systemd 中。請使用 `systemctl` 指令控制。
+如果你使用的是 [Linux 安裝指令碼](https://github.com/0xJacky/nginx-ui/blob/master/install.sh)，Nginx UI 將作為 `nginx-ui` 守護行程安裝在 systemd 中。請使用 `systemctl` 指令控制。
 
 **啟動 Nginx UI**
 

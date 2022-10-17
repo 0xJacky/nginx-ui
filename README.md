@@ -132,7 +132,7 @@ Nginx UI is available on the following platforms:
 - Dragonfly BSD
 - Openwrt
 
-You can visit [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) to download the latest distribution, or just use [installation scripts for Linux](#scripts-for-linux).
+You can visit [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) to download the latest distribution, or just use [installation scripts for Linux](https://github.com/0xJacky/nginx-ui/blob/master/install.sh).
 
 ### Usage
 
@@ -158,7 +158,7 @@ Stop Nginx UI with the follow commond.
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
 ```
 #### With Systemd
-If you are using the [installation script for Linux](#scripts-for-linux), the Nginx UI will be installed as `nginx-ui` service in systemd. Please use the `systemctl` command to control it.
+If you are using the [installation script for Linux](https://github.com/0xJacky/nginx-ui/blob/master/install.sh), the Nginx UI will be installed as `nginx-ui` service in systemd. Please use the `systemctl` command to control it.
 
 **Start Nginx UI**
 
