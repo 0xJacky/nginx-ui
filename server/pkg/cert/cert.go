@@ -106,7 +106,7 @@ func IssueCert(domain string, logChan chan string, errChan chan error) {
 	}
 	saveDir := nginx.GetNginxConfPath("ssl/" + domain)
 	if _, err = os.Stat(saveDir); os.IsNotExist(err) {
-		err = os.Mkdir(saveDir, 0755)
+		err = os.MkdirAll(saveDir, 0755)
 		if err != nil {
 			errChan <- errors.Wrap(err, "issue cert fail to create")
 			return
