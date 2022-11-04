@@ -138,7 +138,7 @@ jobs:
 
             -   name: Install musl cross compiler
                 if: env.GOOS == 'linux'
-                uses: Lesmiscore/musl-cross-compilers@v0.5
+                uses: 0xJacky/musl-cross-compilers@v0.5-patch
                 id: musl
                 with:
                     target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
@@ -198,7 +198,7 @@ jobs:
 
             -   name: Login to DockerHub
                 if: env.GOOS == 'linux' && env.GOARCH == 'amd64'
-                uses: docker/login-action@v1
+                uses: docker/login-action@v2
                 with:
                     username: ${{ secrets.DOCKERHUB_USER }}
                     password: ${{ secrets.DOCKERHUB_TOKEN }}
