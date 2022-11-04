@@ -33,7 +33,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout
-                uses: actions/checkout@v2
+                uses: actions/checkout@v3
 
             -   name: Set up nodejs
                 uses: actions/setup-node@v3
@@ -104,7 +104,7 @@ jobs:
             GOARM: ${{ matrix.goarm }}
         steps:
             -   name: Checkout
-                uses: actions/checkout@v2
+                uses: actions/checkout@v3
 
             -   name: Get the version
                 id: get_version
@@ -194,7 +194,7 @@ jobs:
             -   name: Set up Docker Buildx
                 if: env.GOOS == 'linux' && env.GOARCH == 'amd64'
                 id: buildx
-                uses: docker/setup-buildx-action@v1
+                uses: docker/setup-buildx-action@v2
 
             -   name: Login to DockerHub
                 if: env.GOOS == 'linux' && env.GOARCH == 'amd64'
@@ -211,7 +211,7 @@ jobs:
 
             -   name: Build and push
                 if: github.event_name == 'release' && env.GOOS == 'linux' && env.GOARCH == 'amd64'
-                uses: docker/build-push-action@v2
+                uses: docker/build-push-action@v3
                 with:
                     context: ./dist
                     file: ./dist/Dockerfile
@@ -229,7 +229,7 @@ jobs:
 
             -   name: Build and push demo
                 if: env.GOOS == 'linux' && env.GOARCH == 'amd64'
-                uses: docker/build-push-action@v2
+                uses: docker/build-push-action@v3
                 with:
                     context: ./dist
                     file: ./dist/demo.Dockerfile
