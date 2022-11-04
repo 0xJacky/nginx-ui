@@ -15,6 +15,7 @@ import (
 )
 
 func GetDomains(c *gin.Context) {
+	name := c.Query("name")
 	orderBy := c.Query("order_by")
 	sort := c.DefaultQuery("sort", "desc")
 
@@ -49,6 +50,9 @@ func GetDomains(c *gin.Context) {
 		file := configFiles[i]
 		fileInfo, _ := file.Info()
 		if !file.IsDir() {
+			if name != "" && !strings.Contains(file.Name(), name) {
+				continue
+			}
 			configs = append(configs, gin.H{
 				"name":    file.Name(),
 				"size":    fileInfo.Size(),

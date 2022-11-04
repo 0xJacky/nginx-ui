@@ -9,12 +9,17 @@ const {$gettext, interpolate} = useGettext()
 import domain from '@/api/domain'
 import {Badge, message} from 'ant-design-vue'
 import {h, ref} from 'vue'
+import {input} from '@/components/StdDataEntry'
 
 const columns = [{
     title: () => $gettext('Name'),
     dataIndex: 'name',
     sorter: true,
-    pithy: true
+    pithy: true,
+    edit: {
+        type: input
+    },
+    search: true
 }, {
     title: () => $gettext('Status'),
     dataIndex: 'enabled',
@@ -40,7 +45,7 @@ const columns = [{
     pithy: true
 }, {
     title: () => $gettext('Action'),
-    dataIndex: 'action',
+    dataIndex: 'action'
 }]
 
 const table = ref(null)
@@ -85,7 +90,6 @@ function destroy(site_name: any) {
         <std-table
             :api="domain"
             :columns="columns"
-            :disable_search="true"
             row-key="name"
             ref="table"
             @clickEdit="r => $router.push({
