@@ -33,12 +33,12 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout
-                uses: actions/checkout@v2
+                uses: actions/checkout@v3
 
             -   name: Set up nodejs
-                uses: actions/setup-node@v2
+                uses: actions/setup-node@v3
                 with:
-                    node-version: '18.x'
+                    node-version: 18.x
                     cache: 'yarn'
                     cache-dependency-path: 'frontend/yarn.lock'
 
@@ -57,7 +57,7 @@ jobs:
                 working-directory: frontend
 
             -   name: Archive frontend artifacts
-                uses: actions/upload-artifact@v2
+                uses: actions/upload-artifact@v3
                 with:
                     name: frontend-dist
                     path: frontend/dist
@@ -104,19 +104,19 @@ jobs:
             GOARM: ${{ matrix.goarm }}
         steps:
             -   name: Checkout
-                uses: actions/checkout@v2
+                uses: actions/checkout@v3
 
             -   name: Get the version
                 id: get_version
-                run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+                run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
 
             -   name: Set up Go
-                uses: actions/setup-go@v2
+                uses: actions/setup-go@v3
                 with:
                     go-version: ^1.19.0
 
             -   name: Set up cache
-                uses: actions/cache@v2
+                uses: actions/cache@v3
                 with:
                     path: |
                         ~/.cache/go-build
@@ -138,7 +138,7 @@ jobs:
 
             -   name: Install musl cross compiler
                 if: env.GOOS == 'linux'
-                uses: Lesmiscore/musl-cross-compilers@v0.5
+                uses: 0xJacky/musl-cross-compilers@v0.6.5
                 id: musl
                 with:
                     target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
@@ -163,7 +163,7 @@ jobs:
                     echo "LD_FLAGS=-s -w" >> $GITHUB_ENV
 
             -   name: Download frontend artifacts
-                uses: actions/download-artifact@v2
+                uses: actions/download-artifact@v3
                 with:
                     name: frontend-dist
                     path: frontend/dist
@@ -174,7 +174,7 @@ jobs:
                     go build -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/server/settings.buildTime=$(date +%s)'" -o dist/nginx-ui -v main.go
 
             -   name: Archive backend artifacts
-                uses: actions/upload-artifact@v2
+                uses: actions/upload-artifact@v3
                 with:
                     name: ${{ env.DIST }}
                     path: dist/nginx-ui
@@ -194,11 +194,11 @@ jobs:
             -   name: Set up Docker Buildx
                 if: env.GOOS == 'linux' && env.GOARCH == 'amd64'
                 id: buildx
-                uses: docker/setup-buildx-action@v1
+                uses: docker/setup-buildx-action@v2
 
             -   name: Login to DockerHub
                 if: env.GOOS == 'linux' && env.GOARCH == 'amd64'
-                uses: docker/login-action@v1
+                uses: docker/login-action@v2
                 with:
                     username: ${{ secrets.DOCKERHUB_USER }}
                     password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -211,7 +211,7 @@ jobs:
 
             -   name: Build and push
                 if: github.event_name == 'release' && env.GOOS == 'linux' && env.GOARCH == 'amd64'
-                uses: docker/build-push-action@v2
+                uses: docker/build-push-action@v3
                 with:
                     context: ./dist
                     file: ./dist/Dockerfile
@@ -229,7 +229,7 @@ jobs:
 
             -   name: Build and push demo
                 if: env.GOOS == 'linux' && env.GOARCH == 'amd64'
-                uses: docker/build-push-action@v2
+                uses: docker/build-push-action@v3
                 with:
                     context: ./dist
                     file: ./dist/demo.Dockerfile
