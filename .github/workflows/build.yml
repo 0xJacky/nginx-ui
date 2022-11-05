@@ -138,7 +138,7 @@ jobs:
 
             -   name: Install musl cross compiler
                 if: env.GOOS == 'linux'
-                uses: 0xJacky/musl-cross-compilers@v0.6.3
+                uses: 0xJacky/musl-cross-compilers@v0.6.5
                 id: musl
                 with:
                     target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
