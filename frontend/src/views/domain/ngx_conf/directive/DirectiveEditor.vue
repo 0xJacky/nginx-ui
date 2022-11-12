@@ -4,7 +4,8 @@ import {If} from '@/views/domain/ngx_conf'
 import DirectiveAdd from '@/views/domain/ngx_conf/directive/DirectiveAdd'
 import {useGettext} from 'vue3-gettext'
 import {reactive, ref} from 'vue'
-import {DeleteOutlined} from '@ant-design/icons-vue'
+import {DeleteOutlined, HolderOutlined} from '@ant-design/icons-vue'
+import draggable from 'vuedraggable'
 
 const {$gettext} = useGettext()
 
@@ -42,40 +43,53 @@ function onSave(idx: number) {
 <template>
     <h2>{{ $gettext('Directives') }}</h2>
 
-    <a-form-item v-for="(directive,index) in props.ngx_directives" @click="current_idx=index">
+    <draggable
+        :list="props.ngx_directives"
+        item-key="name"
+        class="list-group"
+        ghost-class="ghost"
+        handle=".ant-input-group-addon"
+    >
+        <template #item="{ element: directive, index }">
+            <a-form-item @click="current_idx=index">
 
-        <div class="input-wrapper">
-            <code-editor v-if="directive.directive === If" v-model:content="directive.params"
-                         defaultHeight="100px" style="width: 100%;"/>
+                <div class="input-wrapper">
+                    <code-editor v-if="directive.directive === If" v-model:content="directive.params"
+                                 defaultHeight="100px" style="width: 100%;"/>
 
-            <a-input v-else
-                     :addon-before="directive.directive"
-                     v-model:value="directive.params" @click="current_idx=index" @blur="current_idx=-1"/>
+                    <a-input v-else
+                             v-model:value="directive.params" @click="current_idx=index" @blur="current_idx=-1">
+                        <template #addonBefore>
+                            <HolderOutlined/>
+                            {{ directive.directive }}
+                        </template>
+                    </a-input>
 
-            <a-popconfirm @confirm="remove(index)"
-                          :title="$gettext('Are you sure you want to remove this directive?')"
-                          :ok-text="$gettext('Yes')"
-                          :cancel-text="$gettext('No')">
-                <a-button>
-                    <template #icon>
-                        <DeleteOutlined style="font-size: 14px;"/>
-                    </template>
-                </a-button>
-            </a-popconfirm>
-        </div>
-        <transition name="slide">
-            <div v-if="current_idx===index" class="directive-editor-extra">
-                <div class="extra-content">
-                    <a-form layout="vertical">
-                        <a-form-item :label="$gettext('Comments')">
-                            <a-textarea v-model:value="directive.comments"/>
-                        </a-form-item>
-                    </a-form>
-                    <directive-add :ngx_directives="props.ngx_directives" :idx="index" @save="onSave(index)"/>
+                    <a-popconfirm @confirm="remove(index)"
+                                  :title="$gettext('Are you sure you want to remove this directive?')"
+                                  :ok-text="$gettext('Yes')"
+                                  :cancel-text="$gettext('No')">
+                        <a-button>
+                            <template #icon>
+                                <DeleteOutlined style="font-size: 14px;"/>
+                            </template>
+                        </a-button>
+                    </a-popconfirm>
                 </div>
-            </div>
-        </transition>
-    </a-form-item>
+                <transition name="slide">
+                    <div v-if="current_idx===index" class="directive-editor-extra">
+                        <div class="extra-content">
+                            <a-form layout="vertical">
+                                <a-form-item :label="$gettext('Comments')">
+                                    <a-textarea v-model:value="directive.comments"/>
+                                </a-form-item>
+                            </a-form>
+                        </div>
+                    </div>
+                </transition>
+            </a-form-item>
+        </template>
+    </draggable>
 
     <directive-add :ngx_directives="props.ngx_directives"/>
 </template>
@@ -83,7 +97,7 @@ function onSave(idx: number) {
 <style lang="less" scoped>
 .directive-editor-extra {
     background-color: #fafafa;
-    padding: 10px 20px 20px;
+    padding: 10px 20px;
     margin-bottom: 10px;
 }
 

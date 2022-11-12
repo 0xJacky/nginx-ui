@@ -2,7 +2,8 @@
 import CodeEditor from '@/components/CodeEditor'
 import {useGettext} from 'vue3-gettext'
 import {reactive, ref} from 'vue'
-import {DeleteOutlined} from '@ant-design/icons-vue'
+import {DeleteOutlined, HolderOutlined} from '@ant-design/icons-vue'
+import draggable from 'vuedraggable'
 
 const {$gettext} = useGettext()
 
@@ -11,7 +12,7 @@ const props = defineProps(['locations'])
 let location = reactive({
     comments: '',
     path: '',
-    content: '',
+    content: ''
 })
 
 const adding = ref(false)
@@ -38,34 +39,46 @@ function remove(index: number) {
 <template>
     <h2 v-translate>Locations</h2>
     <a-empty v-if="!locations"/>
-    <a-card v-for="(v,k) in locations" :key="k"
-            :title="$gettext('Location')" size="small">
+    <draggable
+        :list="locations"
+        item-key="name"
+        class="list-group"
+        ghost-class="ghost"
+        handle=".ant-card-head"
+    >
+        <template #item="{ element: v, index }">
+            <a-card :key="index" size="small">
+                <template #title>
+                    <HolderOutlined/>
+                    {{ $gettext('Location') }}
+                </template>
+                <template #extra>
+                    <a-popconfirm @confirm="remove(index)"
+                                  :title="$gettext('Are you sure you want to remove this location?')"
+                                  :ok-text="$gettext('Yes')"
+                                  :cancel-text="$gettext('No')">
+                        <a-button type="text">
+                            <template #icon>
+                                <DeleteOutlined style="font-size: 14px;"/>
+                            </template>
+                        </a-button>
+                    </a-popconfirm>
+                </template>
 
-        <template #extra>
-            <a-popconfirm @confirm="remove(k)"
-                          :title="$gettext('Are you sure you want to remove this location?')"
-                          :ok-text="$gettext('Yes')"
-                          :cancel-text="$gettext('No')">
-                <a-button type="text">
-                    <template #icon>
-                        <DeleteOutlined style="font-size: 14px;"/>
-                    </template>
-                </a-button>
-            </a-popconfirm>
+                <a-form layout="vertical">
+                    <a-form-item :label="$gettext('Comments')">
+                        <a-textarea v-model:value="v.comments" :bordered="false"/>
+                    </a-form-item>
+                    <a-form-item :label="$gettext('Path')">
+                        <a-input addon-before="location" v-model:value="v.path"/>
+                    </a-form-item>
+                    <a-form-item :label="$gettext('Content')">
+                        <code-editor v-model:content="v.content" default-height="200px" style="width: 100%;"/>
+                    </a-form-item>
+                </a-form>
+            </a-card>
         </template>
-
-        <a-form layout="vertical">
-            <a-form-item :label="$gettext('Comments')">
-                <a-textarea v-model:value="v.comments" :bordered="false"/>
-            </a-form-item>
-            <a-form-item :label="$gettext('Path')">
-                <a-input addon-before="location" v-model:value="v.path"/>
-            </a-form-item>
-            <a-form-item :label="$gettext('Content')">
-                <code-editor v-model:content="v.content" default-height="200px" style="width: 100%;"/>
-            </a-form-item>
-        </a-form>
-    </a-card>
+    </draggable>
 
     <a-modal :title="$gettext('Add Location')" v-model:visible="adding" @ok="save">
         <a-form layout="vertical">
