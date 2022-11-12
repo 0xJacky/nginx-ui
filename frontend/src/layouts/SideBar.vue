@@ -102,6 +102,11 @@ const visible = computed(() => {
 </template>
 
 <style lang="less">
+.sidebar {
+    position: sticky;
+    top: 0;
+}
+
 .ant-layout-sider-collapsed .logo {
     overflow: hidden;
 }
