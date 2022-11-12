@@ -7,10 +7,13 @@ import {useRoute, useRouter} from 'vue-router'
 import {message} from 'ant-design-vue'
 import {downloadCsv} from '@/lib/helper'
 import dayjs from 'dayjs'
+import Sortable from 'sortablejs'
+import {HolderOutlined} from '@ant-design/icons-vue'
+import {toRaw} from '@vue/reactivity'
 
 const {$gettext, interpolate} = gettext
 
-const emit = defineEmits(['onSelected', 'onSelectedRecord', 'clickEdit', 'update:selectedRowKeys'])
+const emit = defineEmits(['onSelected', 'onSelectedRecord', 'clickEdit', 'update:selectedRowKeys', 'clickBatchModify'])
 
 const props = defineProps({
     api: Object,
@@ -71,11 +74,14 @@ const props = defineProps({
     size: String,
     selectedRowKeys: {
         type: Array
-    }
+    },
+    useSortable: Boolean
 })
 
+const data_source: any = ref([])
+const expand_keys_list: any = ref([])
+const rows_key_index_map: any = ref({})
 
-const data_source = ref([])
 const loading = ref(true)
 const pagination = reactive({
     total: 1,
@@ -83,6 +89,7 @@ const pagination = reactive({
     current_page: 1,
     total_pages: 1
 })
+
 const route = useRoute()
 const params = reactive({
     ...props.get_params
@@ -102,12 +109,17 @@ const selectedRowKeysBuffer = computed({
 
 const searchColumns = getSearchColumns()
 const pithyColumns = getPithyColumns()
+const batchColumns = getBatchEditColumns()
 
 onMounted(() => {
     if (!props.disable_query_params) {
         Object.assign(params, route.query)
     }
     get_list()
+
+    if (props.useSortable) {
+        initSortable()
+    }
 })
 
 defineExpose({
@@ -123,13 +135,29 @@ function destroy(id: any) {
     })
 }
 
-function get_list(page_num = null) {
+function get_list(page_num = null, page_size = 20) {
     loading.value = true
     if (page_num) {
         params['page'] = page_num
+        params['page_size'] = page_size
     }
-    props.api!.get_list(params).then((r: any) => {
+    props.api!.get_list(params).then(async (r: any) => {
         data_source.value = r.data
+        rows_key_index_map.value = {}
+        if (props.useSortable) {
+            function buildIndexMap(data: any, level: number = 0, index: number = 0, total: number[] = []) {
+                if (data && data.length > 0) {
+                    data.forEach((v: any) => {
+                        v.level = level
+                        let current_index = [...total, index++]
+                        rows_key_index_map.value[v.id] = current_index
+                        if (v.children) buildIndexMap(v.children, level + 1, 0, current_index)
+                    })
+                }
+            }
+
+            buildIndexMap(r.data)
+        }
 
         if (r.pagination !== undefined) {
             Object.assign(pagination, r.pagination)
@@ -159,6 +187,10 @@ function stdChange(pagination: any, filters: any, sorter: any) {
     }
 }
 
+function expandedTable(keys: any) {
+    expand_keys_list.value = keys
+}
+
 function getSearchColumns() {
     let searchColumns: any = []
     props.columns!.forEach((column: any) => {
@@ -167,6 +199,16 @@ function getSearchColumns() {
         }
     })
     return searchColumns
+}
+
+function getBatchEditColumns() {
+    let batch: any = []
+    props.columns!.forEach((column: any) => {
+        if (column.batch) {
+            batch.push(column)
+        }
+    })
+    return batch
 }
 
 function getPithyColumns() {
@@ -187,7 +229,6 @@ function checked(c: any) {
 const crossPageSelect: any = {}
 
 async function onSelectChange(_selectedRowKeys: any) {
-
     const page = params.page || 1
 
     crossPageSelect[page] = await _selectedRowKeys
@@ -231,10 +272,10 @@ watch(params, () => {
 })
 
 const rowSelection = computed(() => {
-    if (props.selectionType) {
+    if (batchColumns.length > 0 || props.selectionType) {
         return {
             selectedRowKeys: selectedRowKeysBuffer.value, onChange: onSelectChange,
-            onSelect: onSelect, type: props.selectionType
+            onSelect: onSelect, type: batchColumns.length > 0 ? 'checkbox' : props.selectionType
         }
     } else {
         return null
@@ -316,6 +357,112 @@ async function export_csv() {
     downloadCsv(header, data,
             `${$gettext('Export')}-${dayjs().format('YYYYMMDDHHmmss')}.csv`)
 }
+
+const hasSelectedRow = computed(() => {
+    return batchColumns.length > 0 && selectedRowKeysBuffer.value.length > 0
+})
+
+function click_batch_edit() {
+    emit('clickBatchModify', batchColumns, selectedRowKeysBuffer.value)
+}
+
+function getLeastIndex(index: number) {
+    return index >= 1 ? index : 1
+}
+
+function getTargetData(data: any, indexList: number[]): any {
+    let target: any = {children: data}
+    indexList.forEach((index: number) => {
+        target.children[index].parent = target
+        target = target.children[index]
+    })
+    return target
+}
+
+function initSortable() {
+    const table: any = document.querySelector('#std-table tbody')
+    new Sortable(table, {
+        handle: '.ant-table-drag-icon',
+        animation: 150,
+        sort: true,
+        forceFallback: true,
+        setData: function (dataTransfer) {
+            dataTransfer.setData('Text', '')
+        },
+        onStart({item}) {
+            let targetRowKey = Number(item.dataset.rowKey)
+            if (targetRowKey) {
+                expand_keys_list.value = expand_keys_list.value.filter((item: number) => item !== targetRowKey)
+            }
+        },
+        onMove({dragged, related}) {
+            const oldRow: number[] = rows_key_index_map.value?.[Number(dragged.dataset.rowKey)]
+            const newRow: number[] = rows_key_index_map.value?.[Number(related.dataset.rowKey)]
+            if (oldRow.length !== newRow.length || oldRow[oldRow.length - 2] != newRow[newRow.length - 2]) {
+                return false
+            }
+        },
+        async onEnd({item, newIndex, oldIndex}) {
+            if (newIndex === oldIndex) return
+
+            const indexDelta: number = Number(oldIndex) - Number(newIndex)
+            const direction: number = indexDelta > 0 ? +1 : -1
+
+            let rowIndex: number[] = rows_key_index_map.value?.[Number(item.dataset.rowKey)]
+            const newRow = getTargetData(data_source.value, rowIndex)
+            const newRowParent = newRow.parent
+            const level: number = newRow.level
+
+            let currentRowIndex: number[] = [...rows_key_index_map.value?.
+                    [Number(table.children[Number(newIndex) + direction].dataset.rowKey)]]
+            let currentRow: any = getTargetData(data_source.value, currentRowIndex)
+            // Reset parent
+            currentRow.parent = newRow.parent = null
+            newRowParent.children.splice(rowIndex[level], 1)
+            newRowParent.children.splice(currentRowIndex[level], 0, toRaw(newRow))
+
+            let changeIds: number[] = []
+
+            function processChanges(row: any, children: boolean = false, newIndex: number | undefined = undefined) {
+                // Build changes ID list expect new row
+                if (children || newIndex === undefined) changeIds.push(row.id)
+
+                if (newIndex !== undefined)
+                    rows_key_index_map.value[row.id][level] = newIndex
+                else if (children)
+                    rows_key_index_map.value[row.id][level] += direction
+
+                row.parent = null
+                if (row.children) {
+                    row.children.forEach((v: any) => processChanges(v, true, newIndex))
+                }
+            }
+
+            // Replace row index for new row
+            processChanges(newRow, false, currentRowIndex[level])
+            // Rebuild row index maps for changes row
+            for (let i = Number(oldIndex); i != newIndex; i -= direction) {
+                let rowIndex: number[] = rows_key_index_map.value?.[table.children[i].dataset.rowKey]
+                rowIndex[level] += direction
+                processChanges(getTargetData(data_source.value, rowIndex))
+            }
+            console.log('Change row id', newRow.id, 'order', newRow.id, '=>', currentRow.id, ', direction: ', direction,
+                    ', changes IDs:', changeIds)
+
+            props.api!.update_order({
+                target_id: newRow.id,
+                direction: direction,
+                affected_ids: changeIds
+            }).then(() => {
+                message.success($gettext('Updated successfully'))
+            }).catch((e: any) => {
+                message.error(e?.message ?? $gettext('Server error'))
+            })
+        }
+    })
+}
+
+
 </script>
 
 <template>
@@ -327,12 +474,15 @@ async function export_csv() {
                 layout="inline"
         >
             <template #action>
-                <a-space class="reset-btn">
+                <a-space class="action-btn">
                     <a-button v-if="exportCsv" @click="export_csv" type="primary" ghost>
                         {{ $gettext('Export') }}
                     </a-button>
                     <a-button @click="reset_search">
                         {{ $gettext('Reset') }}
+                    </a-button>
+                    <a-button v-if="hasSelectedRow" @click="click_batch_edit">
+                        {{ $gettext('Batch Modify') }}
                     </a-button>
                 </a-space>
             </template>
@@ -347,10 +497,17 @@ async function export_csv() {
                 @change="stdChange"
                 :scroll="{ x: scrollX }"
                 :size="size"
+                id="std-table"
+                @expandedRowsChange="expandedTable"
+                :expandedRowKeys="expand_keys_list"
         >
             <template
                     v-slot:bodyCell="{text, record, index, column}"
             >
+                <template v-if="column.handle === true">
+                    <span class="ant-table-drag-icon"><HolderOutlined/></span>
+                    {{ text }}
+                </template>
                 <template v-if="column.dataIndex === 'action'">
                     <a v-if="props.editable" @click="$emit('clickEdit', record[props.rowKey], record)">
                         {{ props.edit_text || $gettext('Modify') }}
@@ -361,7 +518,7 @@ async function export_csv() {
                         <a-popconfirm
                                 :cancelText="$gettext('No')"
                                 :okText="$gettext('OK')"
-                                :title="$gettext('Are you sure you want to delete ?')"
+                                :title="$gettext('Are you sure you want to delete?')"
                                 @confirm="destroy(record[rowKey])">
                             <a v-translate>Delete</a>
                         </a-popconfirm>
@@ -369,7 +526,7 @@ async function export_csv() {
                 </template>
             </template>
         </a-table>
-        <std-pagination :size="size" :pagination="pagination" @changePage="get_list"/>
+        <std-pagination :size="size" :pagination="pagination" @change="get_list"/>
     </div>
 </template>
 
@@ -396,7 +553,7 @@ async function export_csv() {
     }
 }
 
-.reset-btn {
+.action-btn {
     // min-height: 50px;
     height: 100%;
     display: flex;
@@ -405,5 +562,17 @@ async function export_csv() {
 
 :deep(.ant-form-inline .ant-form-item) {
     margin-bottom: 10px;
+}
+</style>
+
+<style lang="less">
+.ant-table-drag-icon {
+    float: left;
+    margin-right: 16px;
+    cursor: grab;
+}
+
+.sortable-ghost *, .sortable-chosen * {
+    cursor: grabbing !important;
 }
 </style>

@@ -2,11 +2,11 @@
 import {useGettext} from 'vue3-gettext'
 
 const {pagination, size} = defineProps(['pagination', 'size'])
-const emit = defineEmits(['changePage'])
+const emit = defineEmits(['change'])
 const {$gettext} = useGettext()
 
-function changePage(num: number) {
-    emit('changePage', num)
+function change(num: number, pageSize: number) {
+    emit('change', num, pageSize)
 }
 </script>
 
@@ -17,7 +17,7 @@ function changePage(num: number) {
                 :pageSize="pagination.per_page"
                 :size="size"
                 :total="pagination.total"
-                @change="changePage"
+                @change="change"
         />
     </div>
 </template>

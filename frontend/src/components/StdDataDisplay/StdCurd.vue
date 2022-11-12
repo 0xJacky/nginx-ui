@@ -55,17 +55,18 @@ const props = defineProps({
     modalWidth: {
         type: Number,
         default: 600
-    }
+    },
+    useSortable: Boolean
 })
 
 const visible = ref(false)
 const update = ref(0)
 const data: any = reactive({id: null})
 const error: any = reactive({})
-const selected = reactive([])
+const selected = ref([])
 
 function onSelect(keys: any) {
-    selected.concat(...keys)
+    selected.value = keys
 }
 
 function editableColumns() {
@@ -82,6 +83,11 @@ function add() {
     clear_error()
     visible.value = true
 }
+
+defineExpose({
+    add,
+    data
+})
 
 const table = ref(null)
 
@@ -125,6 +131,7 @@ function edit(id: any) {
     })
 }
 
+const selectedRowKeys = ref([])
 </script>
 
 <template>
@@ -136,12 +143,11 @@ function edit(id: any) {
 
             <std-table
                     ref="table"
+                    v-model:selected-row-keys="selectedRowKeys"
                     v-bind="props"
                     @clickEdit="edit"
                     @selected="onSelect"
                     :key="update"
-                    :get_params="get_params"
-                    :exportCsv="exportCsv"
             >
                 <template v-slot:actions="slotProps">
                     <slot name="actions" :actions="slotProps.record"/>

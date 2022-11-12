@@ -11,7 +11,7 @@ export default defineComponent({
             props.dataList.forEach((v: any) => {
                 if (v.edit.type) {
                     template.push(
-                        <FormItem label={v.title()}>
+                        <FormItem label={v.title()} extra={v.extra}>
                             {v.edit.type(v.edit, props.dataSource, v.dataIndex)}
                         </FormItem>
                     )

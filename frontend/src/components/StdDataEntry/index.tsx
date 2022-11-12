@@ -1,9 +1,9 @@
 import StdDataEntry from './StdDataEntry.js'
 import {h} from 'vue'
-import {Input, Textarea, InputPassword} from 'ant-design-vue'
-import StdSelector from './compontents/StdSelector.vue'
-import StdSelect from './compontents/StdSelect.vue'
-import StdPassword from './compontents/StdPassword.vue'
+import {Input, Textarea, InputPassword, InputNumber} from 'ant-design-vue'
+import StdSelector from './components/StdSelector.vue'
+import StdSelect from './components/StdSelect.vue'
+import StdPassword from './components/StdPassword.vue'
 
 interface IEdit {
     type: Function
@@ -20,6 +20,9 @@ interface IEdit {
     get_params: Object,
     description: string
     generate: boolean
+    min: number
+    max: number,
+    extra: string
 }
 
 function fn(obj: Object, desc: any) {
@@ -48,6 +51,18 @@ function readonly(edit: IEdit, dataSource: any, dataIndex: any) {
 function input(edit: IEdit, dataSource: any, dataIndex: any) {
     return h(Input, {
         placeholder: edit.placeholder?.() ?? '',
+        value: dataSource?.[dataIndex],
+        'onUpdate:value': value => {
+            dataSource[dataIndex] = value
+        }
+    })
+}
+
+function inputNumber(edit: IEdit, dataSource: any, dataIndex: any) {
+    return h(InputNumber, {
+        placeholder: edit.placeholder?.() ?? '',
+        min: edit.min,
+        max: edit.max,
         value: dataSource?.[dataIndex],
         'onUpdate:value': value => {
             dataSource[dataIndex] = value
@@ -101,7 +116,8 @@ export {
     textarea,
     select,
     selector,
-    password
+    password,
+    inputNumber
 }
 
 export default StdDataEntry

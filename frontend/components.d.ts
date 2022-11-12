@@ -58,11 +58,12 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SetLanguage: typeof import('./src/components/SetLanguage/SetLanguage.vue')['default']
+    StdBatchEdit: typeof import('./src/components/StdDataDisplay/StdBatchEdit.vue')['default']
     StdCurd: typeof import('./src/components/StdDataDisplay/StdCurd.vue')['default']
     StdPagination: typeof import('./src/components/StdDataDisplay/StdPagination.vue')['default']
-    StdPassword: typeof import('./src/components/StdDataEntry/compontents/StdPassword.vue')['default']
-    StdSelect: typeof import('./src/components/StdDataEntry/compontents/StdSelect.vue')['default']
-    StdSelector: typeof import('./src/components/StdDataEntry/compontents/StdSelector.vue')['default']
+    StdPassword: typeof import('./src/components/StdDataEntry/components/StdPassword.vue')['default']
+    StdSelect: typeof import('./src/components/StdDataEntry/components/StdSelect.vue')['default']
+    StdSelector: typeof import('./src/components/StdDataEntry/components/StdSelector.vue')['default']
     StdTable: typeof import('./src/components/StdDataDisplay/StdTable.vue')['default']
   }
 }

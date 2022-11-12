@@ -2,6 +2,7 @@
 import dayjs from 'dayjs'
 
 export interface customRender {
+    value: any
     text: any
     record: any
     index: any
