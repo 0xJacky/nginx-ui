@@ -23,7 +23,7 @@ const control = reactive({
     type: logType(),
     conf_name: route.query.conf_name,
     server_idx: parseInt(route.query.server_idx as string),
-    directive_idx: parseInt(route.query.directive_idx as string),
+    directive_idx: parseInt(route.query.directive_idx as string)
 })
 
 function openWs() {
@@ -51,11 +51,12 @@ function addLog(data: string, prepend: boolean = false) {
     } else {
         buffer.value += data
     }
-
-    const elem = (logContainer.value as any as Element)
-    elem.scroll({
-        top: elem.scrollHeight,
-        left: 0,
+    nextTick(() => {
+        const elem = (logContainer.value as any as Element)
+        elem?.scroll({
+            top: elem.scrollHeight,
+            left: 0
+        })
     })
 }
 
