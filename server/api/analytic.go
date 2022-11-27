@@ -72,7 +72,7 @@ func getMemoryStat() (MemStat, error) {
 		SwapTotal:  humanize.Bytes(memoryStat.SwapTotal),
 		SwapCached: humanize.Bytes(memoryStat.SwapCached),
 		SwapPercent: cast.ToFloat64(fmt.Sprintf("%.2f",
-			float64(memoryStat.SwapFree)/math.Max(float64(memoryStat.SwapTotal), 1))),
+			100*float64(memoryStat.SwapTotal-memoryStat.SwapFree)/math.Max(float64(memoryStat.SwapTotal), 1))),
 		Pressure: cast.ToFloat64(fmt.Sprintf("%.2f", memoryStat.UsedPercent)),
 	}, nil
 }
