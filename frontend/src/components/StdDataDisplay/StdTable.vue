@@ -171,6 +171,7 @@ function get_list(page_num = null, page_size = 20) {
 
 function stdChange(pagination: any, filters: any, sorter: any) {
     if (sorter) {
+        selectedRowKeysBuffer.value = []
         params['order_by'] = sorter.field
         params['sort'] = sorter.order === 'ascend' ? 'asc' : 'desc'
         switch (sorter.order) {
@@ -184,6 +185,9 @@ function stdChange(pagination: any, filters: any, sorter: any) {
                 params['sort'] = null
                 break
         }
+    }
+    if (pagination) {
+        selectedRowKeysBuffer.value = []
     }
 }
 
@@ -526,7 +530,7 @@ function initSortable() {
                 </template>
             </template>
         </a-table>
-        <std-pagination :size="size" :pagination="pagination" @change="get_list"/>
+        <std-pagination :size="size" :pagination="pagination" @change="get_list" @changePageSize="stdChange"/>
     </div>
 </template>
 

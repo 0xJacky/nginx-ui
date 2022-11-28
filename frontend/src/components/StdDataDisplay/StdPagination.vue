@@ -1,20 +1,31 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
+import {computed} from 'vue'
 
-const {pagination, size} = defineProps(['pagination', 'size'])
-const emit = defineEmits(['change'])
+const props = defineProps(['pagination', 'size'])
+const emit = defineEmits(['change', 'changePageSize'])
 const {$gettext} = useGettext()
 
 function change(num: number, pageSize: number) {
     emit('change', num, pageSize)
 }
+
+const pageSize = computed({
+    get() {
+        return props.pagination.per_page
+    },
+    set(v) {
+        emit('changePageSize', v)
+        props.pagination.per_page = v
+    }
+})
 </script>
 
 <template>
     <div class="pagination-container" v-if="pagination.total>pagination.per_page">
         <a-pagination
                 :current="pagination.current_page"
-                :pageSize="pagination.per_page"
+                v-model:pageSize="pageSize"
                 :size="size"
                 :total="pagination.total"
                 @change="change"

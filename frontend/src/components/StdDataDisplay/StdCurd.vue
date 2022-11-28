@@ -123,7 +123,11 @@ function cancel() {
 }
 
 function edit(id: any) {
-    props.api!.get(id).then((r: any) => {
+    props.api!.get(id).then(async (r: any) => {
+        Object.keys(data).forEach(k => {
+            delete data[k]
+        })
+        data.id = null
         Object.assign(data, r)
         visible.value = true
     }).catch((e: any) => {

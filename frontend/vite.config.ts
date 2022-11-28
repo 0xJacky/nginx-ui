@@ -11,7 +11,7 @@ import vitePluginBuildId from 'vite-plugin-build-id'
 export default defineConfig({
     resolve: {
         alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url)),
+            '@': fileURLToPath(new URL('./src', import.meta.url))
         },
         extensions: [
             '.mjs',
@@ -26,7 +26,8 @@ export default defineConfig({
     },
     plugins: [vue(), vueJsx(), vitePluginBuildId(),
         Components({
-            resolvers: [AntDesignVueResolver({importStyle: false})]
+            resolvers: [AntDesignVueResolver({importStyle: false})],
+            directoryAsNamespace: true
         }),
         createHtmlPlugin({
             minify: true,
@@ -46,20 +47,20 @@ export default defineConfig({
              */
             inject: {
                 data: {
-                    title: 'Nginx UI',
-                },
-            },
-        }),
+                    title: 'Nginx UI'
+                }
+            }
+        })
     ],
     css: {
         preprocessorOptions: {
             less: {
                 modifyVars: {
-                    'border-radius-base': '4px',
+                    'border-radius-base': '4px'
                 },
-                javascriptEnabled: true,
+                javascriptEnabled: true
             }
-        },
+        }
     },
     server: {
         proxy: {
@@ -67,9 +68,9 @@ export default defineConfig({
                 target: 'https://nginx.jackyu.cn/',
                 changeOrigin: true,
                 secure: false,
-                ws: true,
-            },
-        },
+                ws: true
+            }
+        }
     },
     build: {
         chunkSizeWarningLimit: 600

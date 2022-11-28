@@ -40,7 +40,7 @@ async function ok() {
         message.success($gettext('Save successfully'))
         emit('onSave')
     }).catch((e: any) => {
-        message.error(e?.message ?? $gettext('Server error'))
+        message.error($gettext(e?.message) ?? $gettext('Server error'))
     }).finally(() => {
         loading.value = false
     })
