@@ -36,7 +36,7 @@ function openWs() {
     }
 
     websocket.onmessage = (m: any) => {
-        addLog(m.data)
+        addLog(m.data + '\n')
     }
 }
 
