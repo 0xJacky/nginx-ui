@@ -16,6 +16,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // MyUser You'll need a user or account type that implements acme.User
@@ -35,7 +36,7 @@ func (u *MyUser) GetPrivateKey() crypto.PrivateKey {
 	return u.key
 }
 
-func IssueCert(domain string, logChan chan string, errChan chan error) {
+func IssueCert(domain []string, logChan chan string, errChan chan error) {
 	defer func() {
 		if err := recover(); err != nil {
 			log.Println("Issue Cert recover", err)
@@ -94,7 +95,7 @@ func IssueCert(domain string, logChan chan string, errChan chan error) {
 	myUser.Registration = reg
 
 	request := certificate.ObtainRequest{
-		Domains: []string{domain},
+		Domains: domain,
 		Bundle:  true,
 	}
 
@@ -104,7 +105,8 @@ func IssueCert(domain string, logChan chan string, errChan chan error) {
 		errChan <- errors.Wrap(err, "issue cert fail to obtain")
 		return
 	}
-	saveDir := nginx.GetNginxConfPath("ssl/" + domain)
+	name := strings.Join(domain, "_")
+	saveDir := nginx.GetNginxConfPath("ssl/" + name)
 	if _, err = os.Stat(saveDir); os.IsNotExist(err) {
 		err = os.MkdirAll(saveDir, 0755)
 		if err != nil {
@@ -125,7 +127,7 @@ func IssueCert(domain string, logChan chan string, errChan chan error) {
 	}
 
 	logChan <- "Writing certificate private key to disk"
-	err = os.WriteFile(filepath.Join(saveDir, domain+".key"),
+	err = os.WriteFile(filepath.Join(saveDir, name+".key"),
 		certificates.PrivateKey, 0644)
 
 	if err != nil {

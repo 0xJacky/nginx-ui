@@ -56,7 +56,7 @@ func AutoCert() {
 		logChan := make(chan string, 1)
 		errChan := make(chan error, 1)
 
-		go IssueCert(domain, logChan, errChan)
+		go IssueCert([]string{domain}, logChan, errChan)
 
 		go handleIssueCertLogChan(logChan)
 

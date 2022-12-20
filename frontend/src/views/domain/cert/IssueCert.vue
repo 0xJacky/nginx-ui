@@ -31,12 +31,6 @@ function job() {
         return
     }
 
-    if (server_name_more_than_one.value) {
-        message.error($gettext('server_name parameters more than one'))
-        issuing_cert.value = false
-        return
-    }
-
     const server_name = props.directivesMap['server_name'][0]
 
     if (!props.directivesMap['ssl_certificate']) {
@@ -102,10 +96,12 @@ const issue_cert = async (server_name: string, callback: Function) => {
 
     log($gettext('Getting the certificate, please wait...'))
 
-    const ws = websocket('/api/cert/issue/' + server_name, false)
+    const ws = websocket('/api/cert/issue', false)
 
     ws.onopen = () => {
-        ws.send('go')
+        ws.send(JSON.stringify({
+            server_name: server_name.trim().split(' ')
+        }))
     }
 
     ws.onmessage = m => {
@@ -132,11 +128,6 @@ const issue_cert = async (server_name: string, callback: Function) => {
     }
 }
 
-const server_name_more_than_one = computed(() => {
-    return props.directivesMap['server_name'] && (props.directivesMap['server_name'].length > 1 ||
-        props.directivesMap['server_name'][0].params.trim().indexOf(' ') > 0)
-})
-
 const no_server_name = computed(() => {
     return props.directivesMap['server_name'].length === 0
 })
@@ -154,11 +145,6 @@ const enabled = computed({
     }
 })
 
-watch(server_name_more_than_one, () => {
-    emit('update:enabled', false)
-    onchange(false)
-})
-
 watch(no_server_name, () => {
     emit('update:enabled', false)
     onchange(false)
@@ -166,7 +152,7 @@ watch(no_server_name, () => {
 
 const progressStrokeColor = {
     from: '#108ee9',
-    to: '#87d068',
+    to: '#87d068'
 }
 
 const progressPercent = ref(0)
@@ -197,10 +183,10 @@ const modalClosable = ref(false)
                 :loading="issuing_cert"
                 v-model:checked="enabled"
                 @change="onchange"
-                :disabled="no_server_name||server_name_more_than_one"
+                :disabled="no_server_name"
             />
             <a-alert
-                v-if="no_server_name||server_name_more_than_one"
+                v-if="no_server_name"
                 :message="$gettext('Warning')"
                 type="warning"
                 show-icon
@@ -208,9 +194,6 @@ const modalClosable = ref(false)
                 <template slot="description">
                     <span v-if="no_server_name" v-translate>
                         server_name parameter is required
-                    </span>
-                    <span v-if="server_name_more_than_one" v-translate>
-                        server_name parameters more than one
                     </span>
                 </template>
             </a-alert>
