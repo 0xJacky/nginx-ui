@@ -40,18 +40,21 @@ watch(() => route.name, () => {
 </template>
 
 <style lang="less" scoped>
-.page-header {
-    background: #fff;
-    padding: 16px 32px 0;
-    border-bottom: 1px solid #e8e8e8;
-    @media (prefers-color-scheme: dark) {
+.dark {
+    .page-header {
         background: #28292c !important;
         border-bottom: unset;
+
         h1 {
             color: #fafafa;
         }
     }
+}
 
+.page-header {
+    background: #fff;
+    padding: 16px 32px 0;
+    border-bottom: 1px solid #e8e8e8;
 
     .breadcrumb {
         margin-bottom: 16px;

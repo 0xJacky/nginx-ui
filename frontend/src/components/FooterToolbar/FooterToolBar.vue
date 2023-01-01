@@ -26,6 +26,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.dark {
+    .ant-pro-footer-toolbar {
+        background: rgba(24, 24, 24, 0.62);
+        border-top: unset;
+    }
+}
+
 .ant-pro-footer-toolbar {
     position: fixed;
     width: 100%;
@@ -36,10 +43,6 @@ export default {
     box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.03);
     background: #ffffff8c;
     border-top: 1px solid #e8e8e8;
-    @media (prefers-color-scheme: dark) {
-        background: rgba(24, 24, 24, 0.62);
-        border-top: unset;
-    }
     padding: 0 24px;
     z-index: 9;
 

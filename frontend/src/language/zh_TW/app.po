@@ -11,25 +11,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: easygettext\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 3.2.2\n"
 
-#: src/routes/index.ts:116
+#: src/routes/index.ts:125
 msgid "About"
 msgstr "關於"
 
-#: src/routes/index.ts:99 src/views/domain/ngx_conf/LogEntry.vue:64
+#: src/routes/index.ts:100 src/views/domain/ngx_conf/LogEntry.vue:64
 msgid "Access Logs"
-msgstr ""
+msgstr "訪問日誌"
 
-#: src/views/config/Config.vue:24 src/views/domain/DomainList.vue:42
+#: src/views/config/Config.vue:24 src/views/domain/DomainList.vue:47
 #: src/views/user/User.vue:43
 msgid "Action"
 msgstr "操作"
 
-#: src/components/StdDataDisplay/StdCurd.vue:134
-#: src/components/StdDataDisplay/StdCurd.vue:26
+#: src/components/StdDataDisplay/StdCurd.vue:145
+#: src/components/StdDataDisplay/StdCurd.vue:25
 msgid "Add"
-msgstr ""
+msgstr "新增"
 
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:31
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:32
@@ -37,68 +37,80 @@ msgstr ""
 msgid "Add Directive Below"
 msgstr "在下面新增指令"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:33
-#: src/views/domain/ngx_conf/LocationEditor.vue:48
+#: src/views/domain/ngx_conf/LocationEditor.vue:45
+#: src/views/domain/ngx_conf/LocationEditor.vue:50
+#: src/views/domain/ngx_conf/LocationEditor.vue:51
+#: src/views/domain/ngx_conf/LocationEditor.vue:60
 msgid "Add Location"
 msgstr "新增 Location"
 
-#: src/routes/index.ts:55 src/views/domain/DomainAdd.vue:2
+#: src/routes/index.ts:56 src/views/domain/DomainAdd.vue:2
 msgid "Add Site"
 msgstr "新增站點"
 
-#: src/views/domain/DomainEdit.vue:19
+#: src/views/domain/DomainEdit.vue:18 src/views/domain/DomainEdit.vue:19
 msgid "Advance Mode"
 msgstr "高階模式"
 
-#: src/components/StdDataDisplay/StdTable.vue:44
-#: src/views/domain/DomainList.vue:27
-#, fuzzy
-msgid "Are you sure you want to delete ?"
-msgstr "您确定要删除？"
+#: src/components/StdDataDisplay/StdTable.vue:54
+#: src/views/domain/DomainList.vue:26
+msgid "Are you sure you want to delete?"
+msgstr "你確定你要刪除？"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:15
+#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:27
 msgid "Are you sure you want to remove this directive?"
 msgstr "您確定要刪除這條指令？"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:9
-#, fuzzy
+#: src/views/domain/ngx_conf/LocationEditor.vue:19
 msgid "Are you sure you want to remove this location?"
-msgstr "您確定要刪除這條指令？"
+msgstr "您確定要刪除此 Location 嗎？"
+
+#: src/views/preference/Preference.vue:7 src/views/preference/Preference.vue:8
+msgid "Auto"
+msgstr "自動"
 
 #: src/views/nginx_log/NginxLog.vue:4
 msgid "Auto Refresh"
-msgstr ""
+msgstr "自動刷新"
 
-#: src/views/domain/cert/IssueCert.vue:78
+#: src/views/domain/cert/IssueCert.vue:72
 msgid "Auto-renewal disabled for %{name}"
 msgstr "已關閉 %{name} 自動續簽"
 
-#: src/views/domain/cert/IssueCert.vue:72
+#: src/views/domain/cert/IssueCert.vue:66
 msgid "Auto-renewal enabled for %{name}"
 msgstr "已啟用 %{name} 自動續簽"
 
-#: src/views/domain/DomainEdit.vue:178 src/views/nginx_log/NginxLog.vue:172
+#: src/views/domain/DomainEdit.vue:187 src/views/nginx_log/NginxLog.vue:173
 msgid "Back"
 msgstr "返回"
 
 #: src/views/other/Error.vue:12
-#, fuzzy
 msgid "Back Home"
-msgstr "返回"
+msgstr "回到首頁"
 
 #: src/views/domain/DomainAdd.vue:5
 msgid "Base information"
 msgstr "基本訊息"
 
-#: src/views/domain/DomainEdit.vue:22
+#: src/views/domain/DomainEdit.vue:21 src/views/domain/DomainEdit.vue:22
 msgid "Basic Mode"
 msgstr "基本模式"
+
+#: src/components/StdDataDisplay/StdBatchEdit.vue:5
+#: src/components/StdDataDisplay/StdTable.vue:12
+#: src/components/StdDataDisplay/StdTable.vue:13
+#: src/components/StdDataDisplay/StdTable.vue:18
+msgid "Batch Modify"
+msgstr "批量修改"
 
 #: src/views/other/About.vue:21
 msgid "Build with"
 msgstr "構建基於"
 
-#: src/components/StdDataDisplay/StdCurd.vue:28
+#: src/components/StdDataDisplay/StdBatchEdit.vue:7
+#: src/components/StdDataDisplay/StdCurd.vue:27
+#: src/components/StdDataEntry/components/StdSelector.vue:11
 #: src/components/StdDataEntry/compontents/StdSelector.vue:11
 #: src/views/config/ConfigEdit.vue:49
 msgid "Cancel"
@@ -116,9 +128,9 @@ msgstr "此憑證有效"
 msgid "Certificate Status"
 msgstr "憑證狀態"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:29
-#: src/views/domain/ngx_conf/LocationEditor.vue:21
-#: src/views/domain/ngx_conf/LocationEditor.vue:35
+#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:41
+#: src/views/domain/ngx_conf/LocationEditor.vue:31
+#: src/views/domain/ngx_conf/LocationEditor.vue:47
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:175
 msgid "Comments"
 msgstr "註釋"
@@ -135,8 +147,8 @@ msgstr "配置"
 msgid "Configure SSL"
 msgstr "配置 SSL"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:27
-#: src/views/domain/ngx_conf/LocationEditor.vue:41
+#: src/views/domain/ngx_conf/LocationEditor.vue:37
+#: src/views/domain/ngx_conf/LocationEditor.vue:53
 msgid "Content"
 msgstr "內容"
 
@@ -158,9 +170,14 @@ msgstr "建立時間"
 
 #: src/language/constants.ts:13
 msgid "Creating client facilitates communication with the CA server"
-msgstr ""
+msgstr "創建客戶端方便與CA服務器通信"
 
-#: src/routes/index.ts:27
+#: src/views/preference/Preference.vue:13
+#: src/views/preference/Preference.vue:14
+msgid "Dark"
+msgstr "深色"
+
+#: src/routes/index.ts:28
 msgid "Dashboard"
 msgstr "儀表盤"
 
@@ -168,19 +185,18 @@ msgstr "儀表盤"
 msgid "Database (Optional, default: database)"
 msgstr "資料庫 (可選，預設: database)"
 
-#: src/components/StdDataDisplay/StdTable.vue:366
-#: src/views/domain/DomainList.vue:111
+#: src/components/StdDataDisplay/StdTable.vue:527
+#: src/views/domain/DomainList.vue:115
 msgid "Delete"
-msgstr ""
+msgstr "刪除"
 
-#: src/components/StdDataDisplay/StdTable.vue:120
+#: src/components/StdDataDisplay/StdTable.vue:132
 msgid "Delete ID: %{id}"
 msgstr "刪除 ID: %{id}"
 
-#: src/views/domain/DomainList.vue:76
-#, fuzzy
+#: src/views/domain/DomainList.vue:81
 msgid "Delete site: %{site_name}"
-msgstr "刪除 ID: %{id}"
+msgstr "刪除站點：%{site_name}"
 
 #: src/views/other/About.vue:7 src/views/other/About.vue:8
 msgid "Development Mode"
@@ -190,20 +206,23 @@ msgstr "開發模式"
 msgid "Directive"
 msgstr "指令"
 
+#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:1
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:2
 msgid "Directives"
 msgstr "指令"
 
-#: src/views/domain/cert/IssueCert.vue:80
+#: src/views/domain/cert/IssueCert.vue:74
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "關閉 %{name} 自動續簽失敗"
 
-#: src/views/domain/DomainEdit.vue:10 src/views/domain/DomainList.vue:17
-#: src/views/domain/DomainList.vue:29
+#: src/views/domain/DomainEdit.vue:10 src/views/domain/DomainEdit.vue:9
+#: src/views/domain/DomainList.vue:16 src/views/domain/DomainList.vue:34
+#: src/views/domain/DomainList.vue:7 src/views/domain/DomainList.vue:8
+#: src/views/domain/DomainList.vue:9
 msgid "Disabled"
 msgstr "禁用"
 
-#: src/views/domain/DomainEdit.vue:112 src/views/domain/DomainList.vue:64
+#: src/views/domain/DomainEdit.vue:118 src/views/domain/DomainList.vue:69
 msgid "Disabled successfully"
 msgstr "禁用成功"
 
@@ -215,15 +234,15 @@ msgstr "磁碟 IO"
 msgid "Domain Config Created Successfully"
 msgstr "域名配置文件創建成功"
 
-#: src/views/domain/DomainEdit.vue:5
+#: src/views/domain/DomainEdit.vue:4 src/views/domain/DomainEdit.vue:5
 msgid "Edit %{n}"
 msgstr "編輯 %{n}"
 
-#: src/routes/index.ts:77 src/views/config/ConfigEdit.vue:2
+#: src/routes/index.ts:78 src/views/config/ConfigEdit.vue:2
 msgid "Edit Configuration"
 msgstr "編輯配置"
 
-#: src/routes/index.ts:59
+#: src/routes/index.ts:60
 msgid "Edit Site"
 msgstr "編輯站點"
 
@@ -231,7 +250,7 @@ msgstr "編輯站點"
 msgid "Email (*)"
 msgstr "郵箱 (*)"
 
-#: src/views/domain/cert/IssueCert.vue:74
+#: src/views/domain/cert/IssueCert.vue:68
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "啟用 %{name} 自動續簽失敗"
 
@@ -243,14 +262,15 @@ msgstr "啟用失敗"
 msgid "Enable TLS"
 msgstr "啟用 TLS"
 
-#: src/views/domain/DomainEdit.vue:33 src/views/domain/DomainEdit.vue:7
-#: src/views/domain/DomainList.vue:12 src/views/domain/DomainList.vue:20
-#: src/views/domain/DomainList.vue:26
+#: src/views/domain/DomainEdit.vue:33 src/views/domain/DomainEdit.vue:6
+#: src/views/domain/DomainEdit.vue:7 src/views/domain/DomainList.vue:10
+#: src/views/domain/DomainList.vue:11 src/views/domain/DomainList.vue:12
+#: src/views/domain/DomainList.vue:19 src/views/domain/DomainList.vue:31
 msgid "Enabled"
 msgstr "啟用"
 
-#: src/views/domain/DomainAdd.vue:46 src/views/domain/DomainEdit.vue:103
-#: src/views/domain/DomainList.vue:54
+#: src/views/domain/DomainAdd.vue:46 src/views/domain/DomainEdit.vue:109
+#: src/views/domain/DomainList.vue:59
 msgid "Enabled successfully"
 msgstr "啟用成功"
 
@@ -258,30 +278,32 @@ msgstr "啟用成功"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 對網站進行加密"
 
-#: src/routes/index.ts:103 src/views/domain/ngx_conf/LogEntry.vue:68
+#: src/routes/index.ts:104 src/views/domain/ngx_conf/LogEntry.vue:68
 msgid "Error Logs"
-msgstr ""
+msgstr "錯誤日志"
 
 #: src/views/domain/cert/CertInfo.vue:17
 msgid "Expiration Date: %{date}"
 msgstr "過期時間: %{date}"
 
 #: src/components/StdDataDisplay/StdTable.vue:12
-#: src/components/StdDataDisplay/StdTable.vue:317
+#: src/components/StdDataDisplay/StdTable.vue:362
+#: src/components/StdDataDisplay/StdTable.vue:6
+#: src/components/StdDataDisplay/StdTable.vue:7
 msgid "Export"
-msgstr ""
+msgstr "導出"
 
-#: src/views/domain/DomainEdit.vue:115 src/views/domain/DomainList.vue:68
+#: src/views/domain/DomainEdit.vue:121 src/views/domain/DomainList.vue:73
 msgid "Failed to disable %{msg}"
 msgstr "禁用失敗 %{msg}"
 
-#: src/views/domain/DomainEdit.vue:106 src/views/domain/DomainList.vue:58
+#: src/views/domain/DomainEdit.vue:112 src/views/domain/DomainList.vue:63
 msgid "Failed to enable %{msg}"
 msgstr "啟用失敗 %{msg}"
 
 #: src/language/constants.ts:9
 msgid "Failed to get certificate information"
-msgstr ""
+msgstr "獲取證書信息失敗"
 
 #: src/views/other/Error.vue:3 src/views/other/Error.vue:4
 msgid "File Not Found"
@@ -289,63 +311,69 @@ msgstr "未找到檔案"
 
 #: src/views/nginx_log/NginxLog.vue:7
 msgid "Filter"
-msgstr ""
+msgstr "篩選"
 
 #: src/language/constants.ts:20 src/views/domain/DomainAdd.vue:7
 msgid "Finished"
 msgstr "完成"
 
+#: src/components/StdDataEntry/components/StdPassword.vue:42
 #: src/components/StdDataEntry/compontents/StdPassword.vue:42
 msgid "Generate"
-msgstr ""
+msgstr "生成"
 
 #: src/language/constants.ts:11
 msgid "Generating private key for registering account"
-msgstr ""
+msgstr "生成註冊賬號私鑰"
 
-#: src/views/domain/cert/IssueCert.vue:103
+#: src/views/domain/cert/IssueCert.vue:97
 msgid "Getting the certificate, please wait..."
 msgstr "正在獲取憑證，請稍等..."
 
-#: src/routes/index.ts:20
+#: src/routes/index.ts:21
 msgid "Home"
 msgstr "首頁"
 
-#: src/routes/index.ts:126 src/views/other/Install.vue:128
+#: src/routes/index.ts:135 src/views/other/Install.vue:128
 msgid "Install"
 msgstr "安裝"
 
 #: src/views/other/Install.vue:68
-#, fuzzy
 msgid "Install successfully"
-msgstr "啟用成功"
+msgstr "安裝成功"
 
 #: src/views/domain/cert/CertInfo.vue:15
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "中級憑證頒發機構: %{issuer}"
 
 #: src/language/constants.ts:21
-#, fuzzy
 msgid "Issued certificate successfully"
-msgstr "啟用成功"
+msgstr "頒發證書成功"
 
 #: src/views/user/User.vue:26
 msgid "Leave blank for no change"
 msgstr "留空表示不修改"
 
+#: src/views/preference/Preference.vue:10
+#: src/views/preference/Preference.vue:11
+msgid "Light"
+msgstr "淺色"
+
 #: src/views/dashboard/DashBoard.vue:141
 msgid "Load Averages:"
 msgstr "系統負載:"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:5
+#: src/views/domain/ngx_conf/LocationEditor.vue:15
+#: src/views/domain/ngx_conf/LocationEditor.vue:8
+#: src/views/domain/ngx_conf/LocationEditor.vue:9
 msgid "Location"
 msgstr "Location"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:39
+#: src/views/domain/ngx_conf/LocationEditor.vue:40
 msgid "Locations"
 msgstr "Locations"
 
-#: src/routes/index.ts:132 src/views/other/Login.vue:103
+#: src/routes/index.ts:141 src/views/other/Login.vue:103
 msgid "Login"
 msgstr "登入"
 
@@ -357,24 +385,23 @@ msgstr "登入成功"
 msgid "Logout successful"
 msgstr "登出成功"
 
-#: src/views/domain/cert/IssueCert.vue:226
-#, fuzzy
+#: src/views/domain/cert/IssueCert.vue:209
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort (default: 9180) before getting the certificate."
 msgstr ""
-"在獲取憑證前，請確保配置檔案中已將 .well-known 目錄反向代理到 "
+"在獲取證書前，請確保配置檔案中已將 .well-known 目錄反向代理到 "
 "HTTPChallengePort (預設: 9180)"
 
-#: src/routes/index.ts:68
+#: src/routes/index.ts:69
 msgid "Manage Configs"
 msgstr "配置管理"
 
-#: src/routes/index.ts:43 src/views/domain/DomainList.vue:2
+#: src/routes/index.ts:44 src/views/domain/DomainList.vue:2
 msgid "Manage Sites"
 msgstr "網站管理"
 
-#: src/routes/index.ts:35 src/views/user/User.vue:2
+#: src/routes/index.ts:36 src/views/user/User.vue:2
 msgid "Manage Users"
 msgstr "使用者管理"
 
@@ -386,21 +413,21 @@ msgstr "記憶體"
 msgid "Memory and Storage"
 msgstr "記憶體和存儲"
 
-#: src/components/StdDataDisplay/StdCurd.vue:26
-#: src/components/StdDataDisplay/StdTable.vue:18
-#: src/components/StdDataDisplay/StdTable.vue:19
-#: src/components/StdDataDisplay/StdTable.vue:24
-#: src/components/StdDataDisplay/StdTable.vue:34
-#: src/components/StdDataDisplay/StdTable.vue:36
-#, fuzzy
+#: src/components/StdDataDisplay/StdCurd.vue:25
+#: src/components/StdDataDisplay/StdTable.vue:25
+#: src/components/StdDataDisplay/StdTable.vue:26
+#: src/components/StdDataDisplay/StdTable.vue:31
+#: src/components/StdDataDisplay/StdTable.vue:44
+#: src/components/StdDataDisplay/StdTable.vue:46
 msgid "Modify"
-msgstr "修改配置"
+msgstr "修改"
 
 #: src/views/domain/DomainAdd.vue:147
 msgid "Modify Config"
 msgstr "修改配置"
 
-#: src/views/config/Config.vue:12 src/views/domain/DomainList.vue:14
+#: src/views/config/Config.vue:12 src/views/domain/DomainEdit.vue:36
+#: src/views/domain/DomainList.vue:15
 msgid "Name"
 msgstr "名稱"
 
@@ -424,18 +451,18 @@ msgstr "上傳流量"
 msgid "Next"
 msgstr "下一步"
 
-#: src/routes/index.ts:93 src/views/nginx_log/NginxLog.vue:2
+#: src/routes/index.ts:94 src/views/nginx_log/NginxLog.vue:2
 msgid "Nginx Log"
-msgstr ""
+msgstr "Nginx 日誌"
 
-#: src/components/StdDataDisplay/StdTable.vue:42
-#: src/views/domain/DomainList.vue:25
-#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:17
-#: src/views/domain/ngx_conf/LocationEditor.vue:11
+#: src/components/StdDataDisplay/StdTable.vue:52
+#: src/views/domain/DomainList.vue:24
+#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:29
+#: src/views/domain/ngx_conf/LocationEditor.vue:21
 msgid "No"
 msgstr "取消"
 
-#: src/routes/index.ts:138 src/routes/index.ts:140
+#: src/routes/index.ts:147 src/routes/index.ts:149
 msgid "Not Found"
 msgstr "找不到頁面"
 
@@ -443,21 +470,22 @@ msgstr "找不到頁面"
 msgid "Not Valid Before: %{date}"
 msgstr "此前無效: %{date}"
 
-#: src/views/domain/cert/IssueCert.vue:218
-#, fuzzy
+#: src/views/domain/cert/IssueCert.vue:201
 msgid ""
 "Note: The server_name in the current configuration must be the domain name "
 "you need to get the certificate."
-msgstr "注意：當前配置中的 server_name 必須為需要申請憑證的域名。"
+msgstr "注意：當前配置中的 server_name 必須為需要申請證書的域名。"
 
 #: src/language/constants.ts:16 src/views/domain/cert/IssueCert.vue:3
 msgid "Obtaining certificate"
-msgstr ""
+msgstr "正在獲取證書，請稍等..."
 
-#: src/components/StdDataDisplay/StdCurd.vue:29
-#: src/components/StdDataDisplay/StdTable.vue:43
+#: src/components/StdDataDisplay/StdBatchEdit.vue:8
+#: src/components/StdDataDisplay/StdCurd.vue:28
+#: src/components/StdDataDisplay/StdTable.vue:53
+#: src/components/StdDataEntry/components/StdSelector.vue:12
 #: src/components/StdDataEntry/compontents/StdSelector.vue:12
-#: src/views/domain/DomainList.vue:26
+#: src/views/domain/DomainList.vue:25
 msgid "OK"
 msgstr "確定"
 
@@ -477,8 +505,8 @@ msgstr "密碼"
 msgid "Password (*)"
 msgstr "密碼 (*)"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:24
-#: src/views/domain/ngx_conf/LocationEditor.vue:38
+#: src/views/domain/ngx_conf/LocationEditor.vue:34
+#: src/views/domain/ngx_conf/LocationEditor.vue:50
 msgid "Path"
 msgstr "路徑"
 
@@ -494,18 +522,21 @@ msgstr "請輸入您的密碼！"
 msgid "Please input your username!"
 msgstr "請輸入您的使用者名稱！"
 
+#: src/routes/index.ts:117 src/views/preference/Preference.vue:2
+msgid "Preference"
+msgstr "設定"
+
 #: src/language/constants.ts:12
-#, fuzzy
 msgid "Preparing lego configurations"
-msgstr "配置"
+msgstr "準備 Lego 配置"
 
 #: src/language/constants.ts:7
 msgid "Prohibit changing root password in demo"
-msgstr ""
+msgstr "禁止在demo中修改root密碼"
 
 #: src/language/constants.ts:8
 msgid "Prohibit deleting the default user"
-msgstr ""
+msgstr "禁止刪除默認用戶"
 
 #: src/views/other/About.vue:19
 msgid "Project Team"
@@ -521,17 +552,21 @@ msgstr "下載"
 
 #: src/language/constants.ts:15
 msgid "Registering user"
-msgstr ""
+msgstr "註冊用戶"
 
 #: src/language/constants.ts:19
 msgid "Reloading nginx"
-msgstr ""
+msgstr "重载 Nginx"
 
+#: src/components/StdDataDisplay/StdTable.vue:10
 #: src/components/StdDataDisplay/StdTable.vue:15
+#: src/components/StdDataDisplay/StdTable.vue:9
 msgid "Reset"
-msgstr ""
+msgstr "重設"
 
-#: src/views/config/ConfigEdit.vue:52 src/views/domain/DomainEdit.vue:181
+#: src/views/config/ConfigEdit.vue:52 src/views/domain/DomainEdit.vue:190
+#: src/views/preference/Preference.vue:22
+#: src/views/preference/Preference.vue:23
 msgid "Save"
 msgstr "儲存"
 
@@ -545,29 +580,35 @@ msgstr "儲存指令"
 msgid "Save error %{msg}"
 msgstr "儲存錯誤 %{msg}"
 
-#: src/components/StdDataDisplay/StdCurd.vue:102
-#, fuzzy
+#: src/components/StdDataDisplay/StdBatchEdit.vue:40
+msgid "Save successfully"
+msgstr "保存成功"
+
+#: src/components/StdDataDisplay/StdCurd.vue:108
 msgid "Save Successfully"
-msgstr "儲存成功"
+msgstr "保存成功"
 
 #: src/views/config/ConfigEdit.vue:34 src/views/domain/DomainAdd.vue:43
-#: src/views/domain/DomainEdit.vue:91
+#: src/views/domain/DomainEdit.vue:97
 msgid "Saved successfully"
 msgstr "儲存成功"
 
+#: src/components/StdDataEntry/components/StdSelector.vue:13
 #: src/components/StdDataEntry/compontents/StdSelector.vue:13
 msgid "Selector"
-msgstr ""
+msgstr "選擇器"
 
 #: src/views/dashboard/DashBoard.vue:21 src/views/dashboard/DashBoard.vue:85
 msgid "Send"
 msgstr "上傳"
 
-#: src/components/StdDataDisplay/StdTable.vue:140
-#: src/components/StdDataDisplay/StdTable.vue:298
-#: src/views/config/ConfigEdit.vue:22 src/views/domain/DomainEdit.vue:56
-#: src/views/domain/DomainEdit.vue:68 src/views/domain/DomainEdit.vue:77
-#: src/views/domain/DomainEdit.vue:94 src/views/domain/DomainList.vue:78
+#: src/components/StdDataDisplay/StdBatchEdit.vue:43
+#: src/components/StdDataDisplay/StdTable.vue:168
+#: src/components/StdDataDisplay/StdTable.vue:343
+#: src/components/StdDataDisplay/StdTable.vue:463
+#: src/views/config/ConfigEdit.vue:22 src/views/domain/DomainEdit.vue:100
+#: src/views/domain/DomainEdit.vue:62 src/views/domain/DomainEdit.vue:74
+#: src/views/domain/DomainEdit.vue:83 src/views/domain/DomainList.vue:83
 #: src/views/other/Install.vue:71
 msgid "Server error"
 msgstr "伺服器錯誤"
@@ -580,29 +621,24 @@ msgstr "伺服器資訊"
 msgid "server_name not found in directives"
 msgstr "未在指令集合中找到 server_name"
 
-#: src/views/domain/cert/IssueCert.vue:209 src/views/domain/DomainAdd.vue:112
+#: src/views/domain/cert/IssueCert.vue:195 src/views/domain/DomainAdd.vue:112
 msgid "server_name parameter is required"
 msgstr "必須為 server_name 指令指明參數"
 
-#: src/views/domain/cert/IssueCert.vue:212
-#: src/views/domain/cert/IssueCert.vue:35
-msgid "server_name parameters more than one"
-msgstr "server_name 指令包含多個參數"
-
+#: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:6
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:7
 msgid "Single Directive"
 msgstr "單行指令"
 
-#: src/routes/index.ts:107
-#, fuzzy
+#: src/routes/index.ts:108
 msgid "Site Logs"
-msgstr "站點列表"
+msgstr "網站日誌"
 
-#: src/routes/index.ts:51
+#: src/routes/index.ts:52
 msgid "Sites List"
 msgstr "站點列表"
 
-#: src/views/domain/DomainList.vue:19
+#: src/views/domain/DomainList.vue:24
 msgid "Status"
 msgstr "狀態"
 
@@ -619,22 +655,20 @@ msgid "Swap"
 msgstr "交換空間"
 
 #: src/components/StdDataDisplay/StdCurd.vue:3
-#, fuzzy
 msgid "Table"
-msgstr "啟用"
+msgstr "表格"
 
-#: src/routes/index.ts:85 src/views/pty/Terminal.vue:2
+#: src/routes/index.ts:86 src/views/pty/Terminal.vue:2
 msgid "Terminal"
 msgstr "終端"
 
-#: src/views/domain/cert/IssueCert.vue:222
-#, fuzzy
+#: src/views/domain/cert/IssueCert.vue:205
 msgid ""
 "The certificate for the domain will be checked every hour, and will be "
 "renewed if it has been more than 1 month since it was last issued."
 msgstr ""
-"系統將會每小時檢測一次該域名憑證，若距離上次簽發已超過1個月，則將自動續簽。"
-"<br/>如果您之前沒有憑證，請先點選「從 Let's Encrypt 獲取憑證」。"
+"系統將會每小時檢測一次該域名證書，若距離上次簽發已超過1個月，則將自動續簽。"
+"<br/>如果您之前沒有證書，請先點選「從 Let's Encrypt 獲取證書」。"
 
 #: src/views/other/Install.vue:54
 msgid "The filename cannot contain the following characters: %{c}"
@@ -642,12 +676,20 @@ msgstr "檔名不能包含以下字元: %{c}"
 
 #: src/language/constants.ts:6
 msgid "The username or password is incorrect"
-msgstr ""
+msgstr "用戶名或密碼不正確"
 
-#: src/views/config/Config.vue:17 src/views/domain/DomainList.vue:36
+#: src/views/preference/Preference.vue:5
+msgid "Theme"
+msgstr "外觀樣式"
+
+#: src/views/config/Config.vue:17 src/views/domain/DomainList.vue:41
 #: src/views/user/User.vue:37
 msgid "Updated at"
 msgstr "修改時間"
+
+#: src/components/StdDataDisplay/StdTable.vue:461
+msgid "Updated successfully"
+msgstr "已成功更新"
 
 #: src/views/dashboard/DashBoard.vue:137
 msgid "Uptime:"
@@ -663,7 +705,7 @@ msgstr "使用者名稱 (*)"
 
 #: src/language/constants.ts:14
 msgid "Using HTTP01 challenge provider"
-msgstr ""
+msgstr "使用 HTTP01 挑戰提供者"
 
 #: src/views/domain/cert/IssueCert.vue:26 src/views/domain/DomainAdd.vue:24
 msgid "Warning"
@@ -676,14 +718,14 @@ msgstr "寫"
 
 #: src/language/constants.ts:18
 msgid "Writing certificate private key to disk"
-msgstr ""
+msgstr "將證書私鑰寫入磁盤"
 
 #: src/language/constants.ts:17
 msgid "Writing certificate to disk"
-msgstr ""
+msgstr "將證書寫入磁盤"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:16
-#: src/views/domain/ngx_conf/LocationEditor.vue:10
+#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:28
+#: src/views/domain/ngx_conf/LocationEditor.vue:20
 msgid "Yes"
 msgstr "是的"
 
@@ -691,6 +733,13 @@ msgstr "是的"
 msgctxt "Project"
 msgid "License"
 msgstr "開源軟體授權條款"
+
+#, fuzzy
+#~ msgid "Are you sure you want to delete ?"
+#~ msgstr "您确定要删除？"
+
+#~ msgid "server_name parameters more than one"
+#~ msgstr "server_name 指令包含多個參數"
 
 #~ msgid "404 Not Found"
 #~ msgstr "404 未找到頁面"

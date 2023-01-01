@@ -5,17 +5,22 @@ import {useSettingsStore} from '@/pinia'
 import {dark_mode} from '@/lib/theme'
 
 let media = window.matchMedia('(prefers-color-scheme: dark)')
+
 const callback = (media: { matches: any; }) => {
     const settings = useSettingsStore()
-    if (media.matches) {
-        dark_mode(true)
-        settings.set_theme('dark')
-    } else {
-        dark_mode(false)
-        settings.set_theme('default')
+    if (settings.preference_theme === 'auto') {
+        if (media.matches) {
+            dark_mode(true)
+            settings.set_theme('dark')
+        } else {
+            dark_mode(false)
+            settings.set_theme('auto')
+        }
     }
 }
+
 callback(media)
+
 if (typeof media.addEventListener === 'function') {
     media.addEventListener('change', callback)
 } else if (typeof media.addListener === 'function') {

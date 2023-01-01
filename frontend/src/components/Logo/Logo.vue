@@ -10,6 +10,14 @@ import logo from '@/assets/img/logo.png'</script>
 </template>
 
 <style lang="less" scoped>
+.dark {
+    .logo {
+        background-color: transparent;
+        -webkit-box-shadow: 1px 1px 0 0 #404040;
+        box-shadow: 1px 1px 0 0 #404040;
+    }
+}
+
 .logo {
     padding: 8px 25px;
     -webkit-box-shadow: 1px 1px 0 0 #e8e8e8;
@@ -20,11 +28,6 @@ import logo from '@/assets/img/logo.png'</script>
     overflow: hidden;
     display: inline-block;
     background-color: #ffffff;
-    @media (prefers-color-scheme: dark) {
-        background-color: transparent;
-        -webkit-box-shadow: 1px 1px 0 0 #404040;
-        box-shadow: 1px 1px 0 0 #404040;
-    }
 
     img {
         height: 46px;
