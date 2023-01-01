@@ -76,7 +76,7 @@ func (s *NgxServer) parseDirective(d NgxDirective) {
 		return
 	}
 
-	regExp := regexp.MustCompile("(\\S+?)\\s+?{?(.+?)[;|}]")
+	regExp := regexp.MustCompile("(\\S+?)\\s+?{?(.+)[;|}]")
 	matchSlice := regExp.FindAllStringSubmatch(str, -1)
 
 	for k, v := range matchSlice {

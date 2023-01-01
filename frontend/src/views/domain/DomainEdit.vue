@@ -18,7 +18,7 @@ const router = useRouter()
 
 const name = ref(route.params.name.toString())
 watch(route, () => {
-    name.value = route.params.name.toString()
+    name.value = route.params?.name?.toString() ?? ''
 })
 
 const update = ref(0)
