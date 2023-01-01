@@ -105,7 +105,7 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 		errChan <- errors.Wrap(err, "issue cert fail to obtain")
 		return
 	}
-	name := strings.Join(domain, "_")
+	name := strings.Join(domain, " ")
 	saveDir := nginx.GetNginxConfPath("ssl/" + name)
 	if _, err = os.Stat(saveDir); os.IsNotExist(err) {
 		err = os.MkdirAll(saveDir, 0755)
@@ -127,7 +127,7 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 	}
 
 	logChan <- "Writing certificate private key to disk"
-	err = os.WriteFile(filepath.Join(saveDir, name+".key"),
+	err = os.WriteFile(filepath.Join(saveDir, "private.key"),
 		certificates.PrivateKey, 0644)
 
 	if err != nil {
