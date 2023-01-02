@@ -2,7 +2,7 @@
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import gettext from '@/gettext'
 import {useRoute} from 'vue-router'
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
 import config from '@/api/config'
 import {message} from 'ant-design-vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
@@ -10,7 +10,13 @@ import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 const {$gettext, interpolate} = gettext
 const route = useRoute()
 
-const name = ref(route.params.name)
+const name = computed(() => {
+    const n = route.params.name
+    if (typeof n === 'string') {
+        return n
+    }
+    return n?.join('/')
+})
 
 const configText = ref('')
 
@@ -46,7 +52,7 @@ function save() {
         <footer-tool-bar>
             <a-space>
                 <a-button @click="$router.go(-1)">
-                    <translate>Cancel</translate>
+                    <translate>Back</translate>
                 </a-button>
                 <a-button type="primary" @click="save">
                     <translate>Save</translate>
