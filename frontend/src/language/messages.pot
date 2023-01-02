@@ -2,15 +2,16 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: src/routes/index.ts:135
+#: src/routes/index.ts:144
 msgid "About"
 msgstr ""
 
-#: src/routes/index.ts:110
+#: src/routes/index.ts:119
 #: src/views/domain/ngx_conf/LogEntry.vue:64
 msgid "Access Logs"
 msgstr ""
 
+#: src/views/cert/Cert.vue:75
 #: src/views/config/config.ts:36
 #: src/views/domain/DomainList.vue:47
 #: src/views/user/User.vue:43
@@ -35,7 +36,7 @@ msgstr ""
 msgid "Add Location"
 msgstr ""
 
-#: src/routes/index.ts:56
+#: src/routes/index.ts:57
 #: src/views/domain/DomainAdd.vue:2
 msgid "Add Site"
 msgstr ""
@@ -61,6 +62,10 @@ msgstr ""
 #: src/views/preference/Preference.vue:22
 #: src/views/preference/Preference.vue:23
 msgid "Auto"
+msgstr ""
+
+#: src/views/cert/Cert.vue:38
+msgid "Auto Cert"
 msgstr ""
 
 #: src/views/nginx_log/NginxLog.vue:4
@@ -128,6 +133,11 @@ msgstr ""
 msgid "Certificate Status"
 msgstr ""
 
+#: src/routes/index.ts:97
+#: src/views/cert/Cert.vue:2
+msgid "Certification"
+msgstr ""
+
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:30
 #: src/views/domain/ngx_conf/LocationEditor.vue:31
 #: src/views/domain/ngx_conf/LocationEditor.vue:47
@@ -178,7 +188,7 @@ msgstr ""
 msgid "Dark"
 msgstr ""
 
-#: src/routes/index.ts:28
+#: src/routes/index.ts:29
 msgid "Dashboard"
 msgstr ""
 
@@ -221,6 +231,7 @@ msgstr ""
 msgid "Disable auto-renewal failed for %{name}"
 msgstr ""
 
+#: src/views/cert/Cert.vue:48
 #: src/views/domain/DomainEdit.vue:10
 #: src/views/domain/DomainEdit.vue:9
 #: src/views/domain/DomainList.vue:16
@@ -240,6 +251,10 @@ msgstr ""
 msgid "Disk IO"
 msgstr ""
 
+#: src/views/cert/Cert.vue:29
+msgid "Domain"
+msgstr ""
+
 #: src/views/domain/DomainAdd.vue:60
 msgid "Domain Config Created Successfully"
 msgstr ""
@@ -249,12 +264,12 @@ msgstr ""
 msgid "Edit %{n}"
 msgstr ""
 
-#: src/routes/index.ts:88
+#: src/routes/index.ts:89
 #: src/views/config/ConfigEdit.vue:2
 msgid "Edit Configuration"
 msgstr ""
 
-#: src/routes/index.ts:60
+#: src/routes/index.ts:61
 msgid "Edit Site"
 msgstr ""
 
@@ -274,6 +289,7 @@ msgstr ""
 msgid "Enable TLS"
 msgstr ""
 
+#: src/views/cert/Cert.vue:45
 #: src/views/domain/DomainEdit.vue:33
 #: src/views/domain/DomainEdit.vue:6
 #: src/views/domain/DomainEdit.vue:7
@@ -295,7 +311,7 @@ msgstr ""
 msgid "Encrypt website with Let's Encrypt"
 msgstr ""
 
-#: src/routes/index.ts:114
+#: src/routes/index.ts:123
 #: src/views/domain/ngx_conf/LogEntry.vue:68
 msgid "Error Logs"
 msgstr ""
@@ -356,7 +372,7 @@ msgstr ""
 msgid "Getting the certificate, please wait..."
 msgstr ""
 
-#: src/routes/index.ts:21
+#: src/routes/index.ts:22
 msgid "Home"
 msgstr ""
 
@@ -368,7 +384,7 @@ msgstr ""
 msgid "HTTP Port"
 msgstr ""
 
-#: src/routes/index.ts:145
+#: src/routes/index.ts:154
 #: src/views/other/Install.vue:128
 msgid "Install"
 msgstr ""
@@ -412,7 +428,7 @@ msgstr ""
 msgid "Locations"
 msgstr ""
 
-#: src/routes/index.ts:151
+#: src/routes/index.ts:160
 #: src/views/other/Login.vue:103
 msgid "Login"
 msgstr ""
@@ -429,17 +445,17 @@ msgstr ""
 msgid "Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort (default: 9180) before getting the certificate."
 msgstr ""
 
-#: src/routes/index.ts:69
-#: src/routes/index.ts:78
+#: src/routes/index.ts:70
+#: src/routes/index.ts:79
 msgid "Manage Configs"
 msgstr ""
 
-#: src/routes/index.ts:44
+#: src/routes/index.ts:45
 #: src/views/domain/DomainList.vue:2
 msgid "Manage Sites"
 msgstr ""
 
-#: src/routes/index.ts:36
+#: src/routes/index.ts:37
 #: src/views/user/User.vue:2
 msgid "Manage Users"
 msgstr ""
@@ -465,6 +481,7 @@ msgstr ""
 msgid "Modify Config"
 msgstr ""
 
+#: src/views/cert/Cert.vue:13
 #: src/views/config/config.ts:9
 #: src/views/domain/DomainEdit.vue:36
 #: src/views/domain/DomainList.vue:15
@@ -499,7 +516,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr ""
 
-#: src/routes/index.ts:104
+#: src/routes/index.ts:113
 #: src/views/nginx_log/NginxLog.vue:2
 msgid "Nginx Log"
 msgstr ""
@@ -511,8 +528,8 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: src/routes/index.ts:157
-#: src/routes/index.ts:159
+#: src/routes/index.ts:166
+#: src/routes/index.ts:168
 msgid "Not Found"
 msgstr ""
 
@@ -574,7 +591,7 @@ msgstr ""
 msgid "Please input your username!"
 msgstr ""
 
-#: src/routes/index.ts:127
+#: src/routes/index.ts:136
 #: src/views/preference/Preference.vue:2
 msgid "Preference"
 msgstr ""
@@ -704,12 +721,20 @@ msgstr ""
 msgid "Single Directive"
 msgstr ""
 
-#: src/routes/index.ts:118
+#: src/routes/index.ts:127
 msgid "Site Logs"
 msgstr ""
 
-#: src/routes/index.ts:52
+#: src/routes/index.ts:53
 msgid "Sites List"
+msgstr ""
+
+#: src/views/cert/Cert.vue:62
+msgid "SSL Certificate Key Path"
+msgstr ""
+
+#: src/views/cert/Cert.vue:55
+msgid "SSL Certificate Path"
 msgstr ""
 
 #: src/views/domain/DomainList.vue:24
@@ -732,7 +757,7 @@ msgstr ""
 msgid "Table"
 msgstr ""
 
-#: src/routes/index.ts:96
+#: src/routes/index.ts:105
 #: src/views/pty/Terminal.vue:2
 msgid "Terminal"
 msgstr ""
@@ -757,11 +782,11 @@ msgstr ""
 msgid "Theme"
 msgstr ""
 
-#: src/language/constants.ts:23
 #: src/views/config/config.ts:14
 msgid "Type"
 msgstr ""
 
+#: src/views/cert/Cert.vue:69
 #: src/views/config/config.ts:29
 #: src/views/domain/DomainList.vue:41
 #: src/views/user/User.vue:37
