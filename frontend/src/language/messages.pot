@@ -2,16 +2,15 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: src/routes/index.ts:125
+#: src/routes/index.ts:135
 msgid "About"
 msgstr ""
 
-#: src/routes/index.ts:100
+#: src/routes/index.ts:110
 #: src/views/domain/ngx_conf/LogEntry.vue:64
 msgid "Access Logs"
 msgstr ""
 
-#: src/views/config/Config.vue:24
 #: src/views/domain/DomainList.vue:47
 #: src/views/user/User.vue:43
 msgid "Action"
@@ -50,7 +49,7 @@ msgstr ""
 msgid "Are you sure you want to delete?"
 msgstr ""
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:27
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:16
 msgid "Are you sure you want to remove this directive?"
 msgstr ""
 
@@ -58,8 +57,8 @@ msgstr ""
 msgid "Are you sure you want to remove this location?"
 msgstr ""
 
-#: src/views/preference/Preference.vue:7
-#: src/views/preference/Preference.vue:8
+#: src/views/preference/Preference.vue:22
+#: src/views/preference/Preference.vue:23
 msgid "Auto"
 msgstr ""
 
@@ -75,6 +74,11 @@ msgstr ""
 msgid "Auto-renewal enabled for %{name}"
 msgstr ""
 
+#: src/views/config/Config.vue:14
+#: src/views/config/Config.vue:15
+#: src/views/config/Config.vue:25
+#: src/views/config/Config.vue:5
+#: src/views/config/ConfigEdit.vue:55
 #: src/views/domain/DomainEdit.vue:187
 #: src/views/nginx_log/NginxLog.vue:173
 msgid "Back"
@@ -108,7 +112,6 @@ msgstr ""
 #: src/components/StdDataDisplay/StdCurd.vue:27
 #: src/components/StdDataEntry/components/StdSelector.vue:11
 #: src/components/StdDataEntry/compontents/StdSelector.vue:11
-#: src/views/config/ConfigEdit.vue:49
 msgid "Cancel"
 msgstr ""
 
@@ -124,7 +127,7 @@ msgstr ""
 msgid "Certificate Status"
 msgstr ""
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:41
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:30
 #: src/views/domain/ngx_conf/LocationEditor.vue:31
 #: src/views/domain/ngx_conf/LocationEditor.vue:47
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:175
@@ -143,6 +146,7 @@ msgstr ""
 msgid "Configure SSL"
 msgstr ""
 
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
 #: src/views/domain/ngx_conf/LocationEditor.vue:37
 #: src/views/domain/ngx_conf/LocationEditor.vue:53
 msgid "Content"
@@ -168,8 +172,8 @@ msgstr ""
 msgid "Creating client facilitates communication with the CA server"
 msgstr ""
 
-#: src/views/preference/Preference.vue:13
-#: src/views/preference/Preference.vue:14
+#: src/views/preference/Preference.vue:28
+#: src/views/preference/Preference.vue:29
 msgid "Dark"
 msgstr ""
 
@@ -240,7 +244,7 @@ msgstr ""
 msgid "Edit %{n}"
 msgstr ""
 
-#: src/routes/index.ts:78
+#: src/routes/index.ts:88
 #: src/views/config/ConfigEdit.vue:2
 msgid "Edit Configuration"
 msgstr ""
@@ -286,7 +290,7 @@ msgstr ""
 msgid "Encrypt website with Let's Encrypt"
 msgstr ""
 
-#: src/routes/index.ts:104
+#: src/routes/index.ts:114
 #: src/views/domain/ngx_conf/LogEntry.vue:68
 msgid "Error Logs"
 msgstr ""
@@ -347,7 +351,15 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: src/routes/index.ts:135
+#: src/views/preference/Preference.vue:17
+msgid "HTTP Challenge Port"
+msgstr ""
+
+#: src/views/preference/Preference.vue:5
+msgid "HTTP Port"
+msgstr ""
+
+#: src/routes/index.ts:145
 #: src/views/other/Install.vue:128
 msgid "Install"
 msgstr ""
@@ -364,12 +376,16 @@ msgstr ""
 msgid "Issued certificate successfully"
 msgstr ""
 
+#: src/views/preference/Preference.vue:11
+msgid "Jwt Secret"
+msgstr ""
+
 #: src/views/user/User.vue:26
 msgid "Leave blank for no change"
 msgstr ""
 
-#: src/views/preference/Preference.vue:10
-#: src/views/preference/Preference.vue:11
+#: src/views/preference/Preference.vue:25
+#: src/views/preference/Preference.vue:26
 msgid "Light"
 msgstr ""
 
@@ -387,7 +403,7 @@ msgstr ""
 msgid "Locations"
 msgstr ""
 
-#: src/routes/index.ts:141
+#: src/routes/index.ts:151
 #: src/views/other/Login.vue:103
 msgid "Login"
 msgstr ""
@@ -405,6 +421,7 @@ msgid "Make sure you have configured a reverse proxy for .well-known directory t
 msgstr ""
 
 #: src/routes/index.ts:69
+#: src/routes/index.ts:78
 msgid "Manage Configs"
 msgstr ""
 
@@ -439,7 +456,6 @@ msgstr ""
 msgid "Modify Config"
 msgstr ""
 
-#: src/views/config/Config.vue:12
 #: src/views/domain/DomainEdit.vue:36
 #: src/views/domain/DomainList.vue:15
 msgid "Name"
@@ -465,20 +481,28 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: src/routes/index.ts:94
+#: src/views/preference/Preference.vue:33
+msgid "Nginx Access Log Path"
+msgstr ""
+
+#: src/views/preference/Preference.vue:36
+msgid "Nginx Error Log Path"
+msgstr ""
+
+#: src/routes/index.ts:104
 #: src/views/nginx_log/NginxLog.vue:2
 msgid "Nginx Log"
 msgstr ""
 
 #: src/components/StdDataDisplay/StdTable.vue:52
 #: src/views/domain/DomainList.vue:24
-#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:29
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:18
 #: src/views/domain/ngx_conf/LocationEditor.vue:21
 msgid "No"
 msgstr ""
 
-#: src/routes/index.ts:147
-#: src/routes/index.ts:149
+#: src/routes/index.ts:157
+#: src/routes/index.ts:159
 msgid "Not Found"
 msgstr ""
 
@@ -540,7 +564,7 @@ msgstr ""
 msgid "Please input your username!"
 msgstr ""
 
-#: src/routes/index.ts:117
+#: src/routes/index.ts:127
 #: src/views/preference/Preference.vue:2
 msgid "Preference"
 msgstr ""
@@ -584,10 +608,18 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
-#: src/views/config/ConfigEdit.vue:52
+#: src/views/preference/Preference.vue:8
+msgid "Run Mode"
+msgstr ""
+
+#: src/views/config/ConfigEdit.vue:58
 #: src/views/domain/DomainEdit.vue:190
-#: src/views/preference/Preference.vue:22
-#: src/views/preference/Preference.vue:23
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:30
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:31
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:36
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:37
+#: src/views/preference/Preference.vue:43
+#: src/views/preference/Preference.vue:44
 msgid "Save"
 msgstr ""
 
@@ -597,12 +629,14 @@ msgstr ""
 msgid "Save Directive"
 msgstr ""
 
-#: src/views/config/ConfigEdit.vue:36
+#: src/views/config/ConfigEdit.vue:42
 #: src/views/domain/DomainAdd.vue:54
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:37
 msgid "Save error %{msg}"
 msgstr ""
 
 #: src/components/StdDataDisplay/StdBatchEdit.vue:40
+#: src/views/preference/Preference.vue:39
 msgid "Save successfully"
 msgstr ""
 
@@ -610,9 +644,10 @@ msgstr ""
 msgid "Save Successfully"
 msgstr ""
 
-#: src/views/config/ConfigEdit.vue:34
+#: src/views/config/ConfigEdit.vue:40
 #: src/views/domain/DomainAdd.vue:43
 #: src/views/domain/DomainEdit.vue:97
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:35
 msgid "Saved successfully"
 msgstr ""
 
@@ -630,13 +665,14 @@ msgstr ""
 #: src/components/StdDataDisplay/StdTable.vue:168
 #: src/components/StdDataDisplay/StdTable.vue:343
 #: src/components/StdDataDisplay/StdTable.vue:463
-#: src/views/config/ConfigEdit.vue:22
+#: src/views/config/ConfigEdit.vue:28
 #: src/views/domain/DomainEdit.vue:100
 #: src/views/domain/DomainEdit.vue:62
 #: src/views/domain/DomainEdit.vue:74
 #: src/views/domain/DomainEdit.vue:83
 #: src/views/domain/DomainList.vue:83
 #: src/views/other/Install.vue:71
+#: src/views/preference/Preference.vue:41
 msgid "Server error"
 msgstr ""
 
@@ -658,7 +694,7 @@ msgstr ""
 msgid "Single Directive"
 msgstr ""
 
-#: src/routes/index.ts:108
+#: src/routes/index.ts:118
 msgid "Site Logs"
 msgstr ""
 
@@ -686,9 +722,13 @@ msgstr ""
 msgid "Table"
 msgstr ""
 
-#: src/routes/index.ts:86
+#: src/routes/index.ts:96
 #: src/views/pty/Terminal.vue:2
 msgid "Terminal"
+msgstr ""
+
+#: src/views/preference/Preference.vue:14
+msgid "Terminal Start Command"
 msgstr ""
 
 #: src/views/domain/cert/IssueCert.vue:205
@@ -703,11 +743,10 @@ msgstr ""
 msgid "The username or password is incorrect"
 msgstr ""
 
-#: src/views/preference/Preference.vue:5
+#: src/views/preference/Preference.vue:20
 msgid "Theme"
 msgstr ""
 
-#: src/views/config/Config.vue:17
 #: src/views/domain/DomainList.vue:41
 #: src/views/user/User.vue:37
 msgid "Updated at"
@@ -753,7 +792,7 @@ msgstr ""
 msgid "Writing certificate to disk"
 msgstr ""
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:28
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:17
 #: src/views/domain/ngx_conf/LocationEditor.vue:20
 msgid "Yes"
 msgstr ""
