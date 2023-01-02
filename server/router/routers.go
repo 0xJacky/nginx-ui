@@ -74,9 +74,9 @@ func InitRouter() *gin.Engine {
 			g.DELETE("domain/:name", api.DeleteDomain)
 
 			g.GET("configs", api.GetConfigs)
-			g.GET("config/:name", api.GetConfig)
+			g.GET("config/*name", api.GetConfig)
 			g.POST("config", api.AddConfig)
-			g.POST("config/:name", api.EditConfig)
+			g.POST("config/*name", api.EditConfig)
 
 			//g.GET("backups", api.GetFileBackupList)
 			//g.GET("backup/:id", api.GetFileBackup)
