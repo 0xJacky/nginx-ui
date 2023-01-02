@@ -3,7 +3,6 @@ package router
 import (
 	"bufio"
 	"github.com/0xJacky/Nginx-UI/server/api"
-	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -34,13 +33,6 @@ func InitRouter() *gin.Engine {
 
 	root := r.Group("/api")
 	{
-
-		root.GET("settings", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{
-				"demo": settings.ServerSettings.Demo,
-			})
-		})
-
 		root.GET("install", api.InstallLockCheck)
 		root.POST("install", api.InstallNginxUI)
 
@@ -96,6 +88,10 @@ func InitRouter() *gin.Engine {
 			// Nginx log
 			g.GET("nginx_log", api.NginxLog)
 			g.POST("nginx_log", api.GetNginxLogPage)
+
+			// Settings
+			g.GET("settings", api.GetSettings)
+			g.POST("settings", api.SaveSettings)
 		}
 	}
 

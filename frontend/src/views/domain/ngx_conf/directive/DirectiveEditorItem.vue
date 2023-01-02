@@ -40,7 +40,7 @@ function save() {
 </script>
 
 <template>
-    <div>
+    <div class="dir-editor-item">
         <div class="input-wrapper">
             <code-editor v-if="directive.directive === If" v-model:content="directive.params"
                          defaultHeight="100px" style="width: 100%;"/>
@@ -71,7 +71,7 @@ function save() {
                         <a-form-item :label="$gettext('Comments')">
                             <a-textarea v-model:value="directive.comments"/>
                         </a-form-item>
-                        <a-form-item :label="$gettext('Include Content')" v-if="directive.directive==='include'">
+                        <a-form-item :label="$gettext('Content')" v-if="directive.directive==='include'">
                             <code-editor v-model:content="content"
                                          defaultHeight="200px" style="width: 100%;"/>
                             <div class="save-btn">
@@ -87,6 +87,10 @@ function save() {
 </template>
 
 <style lang="less" scoped>
+.dir-editor-item {
+    margin: 15px 0;
+}
+
 .directive-editor-extra {
     background-color: #fafafa;
     padding: 10px 20px;
@@ -116,6 +120,5 @@ function save() {
     display: flex;
     gap: 10px;
     align-items: center;
-    margin: 15px 0;
 }
 </style>
