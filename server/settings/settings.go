@@ -24,6 +24,7 @@ type Server struct {
 	Email             string
 	Database          string
 	StartCmd          string
+	CADir             string
 	Demo              bool
 	PageSize          int
 }
@@ -41,6 +42,7 @@ var ServerSettings = &Server{
 	StartCmd:          "login",
 	Demo:              false,
 	PageSize:          10,
+	CADir:             "",
 }
 
 var NginxLogSettings = &NginxLog{

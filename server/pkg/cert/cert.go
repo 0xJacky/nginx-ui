@@ -63,6 +63,10 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 		config.CADirURL = "https://acme-staging-v02.api.letsencrypt.org/directory"
 	}
 
+	if settings.ServerSettings.CADir != "" {
+		config.CADirURL = settings.ServerSettings.CADir
+	}
+
 	config.Certificate.KeyType = certcrypto.RSA2048
 
 	logChan <- "Creating client facilitates communication with the CA server"

@@ -13,7 +13,6 @@ const data = reactive({
     theme: settingsStore.theme
 })
 
-
 function save() {
     settingsStore.set_theme(data.theme)
     settingsStore.set_preference_theme(data.theme)
