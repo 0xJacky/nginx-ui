@@ -6,6 +6,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/spf13/cast"
 	"log"
 	"net/http"
 	"strings"
@@ -117,7 +118,8 @@ func IssueCert(c *gin.Context) {
 	}
 
 	err = certModel.Updates(&model.Cert{
-		SSLCertificatePath: sslCertificatePath,
+		SSLCertificatePath:    sslCertificatePath,
+		SSLCertificateKeyPath: sslCertificateKeyPath,
 	})
 
 	if err != nil {
@@ -136,4 +138,109 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
+}
+
+func GetCertList(c *gin.Context) {
+	certList := model.GetCertList(c.Query("name"), c.Query("domain"))
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": certList,
+	})
+}
+
+func GetCert(c *gin.Context) {
+	certModel, err := model.FirstCertByID(cast.ToInt(c.Param("id")))
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, certModel)
+}
+
+func AddCert(c *gin.Context) {
+	var json struct {
+		Name                  string `json:"name" binding:"required"`
+		Domain                string `json:"domain" binding:"required"`
+		SSLCertificatePath    string `json:"ssl_certificate_path" binding:"required"`
+		SSLCertificateKeyPath string `json:"ssl_certificate_key_path" binding:"required"`
+	}
+	if !BindAndValid(c, &json) {
+		return
+	}
+	certModel, err := model.FirstOrCreateCert(json.Domain)
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	err = certModel.Updates(&model.Cert{
+		Name:                  json.Name,
+		Domain:                json.Domain,
+		SSLCertificatePath:    json.SSLCertificatePath,
+		SSLCertificateKeyPath: json.SSLCertificateKeyPath,
+	})
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, nil)
+}
+
+func ModifyCert(c *gin.Context) {
+	id := cast.ToInt(c.Param("id"))
+	certModel, err := model.FirstCertByID(id)
+
+	var json struct {
+		Name                  string `json:"name" binding:"required"`
+		Domain                string `json:"domain" binding:"required"`
+		SSLCertificatePath    string `json:"ssl_certificate_path" binding:"required"`
+		SSLCertificateKeyPath string `json:"ssl_certificate_key_path" binding:"required"`
+	}
+
+	if !BindAndValid(c, &json) {
+		return
+	}
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	err = certModel.Updates(&model.Cert{
+		Name:                  json.Name,
+		Domain:                json.Domain,
+		SSLCertificatePath:    json.SSLCertificatePath,
+		SSLCertificateKeyPath: json.SSLCertificateKeyPath,
+	})
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, certModel)
+}
+
+func RemoveCert(c *gin.Context) {
+	id := cast.ToInt(c.Param("id"))
+	certModel, err := model.FirstCertByID(id)
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	err = certModel.Remove()
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, nil)
 }

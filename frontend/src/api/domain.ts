@@ -13,13 +13,13 @@ class Domain extends Curd {
     get_template() {
         return http.get('template')
     }
-    
+
     add_auto_cert(domain: string) {
-        return http.post('cert/' + domain)
+        return http.post('auto_cert/' + domain)
     }
 
     remove_auto_cert(domain: string) {
-        return http.delete('cert/' + domain)
+        return http.delete('auto_cert/' + domain)
     }
 }
 

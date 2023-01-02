@@ -3,7 +3,6 @@ import gettext from '@/gettext'
 
 const {$gettext} = gettext
 
-import {Badge} from 'ant-design-vue'
 import {h} from 'vue'
 
 const configColumns = [{

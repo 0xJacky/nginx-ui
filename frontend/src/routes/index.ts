@@ -10,7 +10,8 @@ import {
     InfoCircleOutlined,
     UserOutlined,
     FileTextOutlined,
-    SettingOutlined
+    SettingOutlined,
+    SafetyCertificateOutlined
 } from '@ant-design/icons-vue'
 
 const {$gettext} = gettext
@@ -89,6 +90,14 @@ export const routes = [
                 component: () => import('@/views/config/ConfigEdit.vue'),
                 meta: {
                     hiddenInSidebar: true
+                }
+            },
+            {
+                path: 'cert',
+                name: () => $gettext('Certification'),
+                component: () => import('@/views/cert/Cert.vue'),
+                meta: {
+                    icon: SafetyCertificateOutlined
                 }
             },
             {
