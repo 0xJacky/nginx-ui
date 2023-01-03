@@ -125,7 +125,6 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 		}
 
 		directive := config.Servers[control.ServerIdx].Directives[control.DirectiveIdx]
-
 		switch directive.Directive {
 		case "access_log", "error_log":
 			// ok

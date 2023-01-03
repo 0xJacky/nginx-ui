@@ -68,8 +68,8 @@ function init() {
     nginx_log.page(0, {
         conf_name: (route.query.conf_name as string),
         type: logType(),
-        server_idx: 0,
-        directive_idx: 0
+        server_idx: parseInt(route.query.server_idx as string),
+        directive_idx: parseInt(route.query.directive_idx as string)
     }).then(r => {
         page.value = r.page - 1
         addLog(r.content)
