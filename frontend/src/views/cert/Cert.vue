@@ -6,6 +6,9 @@ import {h} from 'vue'
 import {Badge} from 'ant-design-vue'
 import cert from '@/api/cert'
 import StdCurd from '@/components/StdDataDisplay/StdCurd.vue'
+import Template from '@/views/template/Template.vue'
+import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
+import CertInfo from '@/views/domain/cert/CertInfo.vue'
 
 const {$gettext} = useGettext()
 
@@ -44,7 +47,7 @@ const columns = [{
             template.push(<Badge status="success"/>)
             template.push($gettext('Enabled'))
         } else {
-            template.push(<Badge status="error"/>)
+            template.push(<Badge status="warning"/>)
             template.push($gettext('Disabled'))
         }
         return h('div', template)
@@ -80,7 +83,30 @@ const columns = [{
 <template>
     <std-curd :title="$gettext('Certification')" :api="cert" :columns="columns"
               row-key="name"
-    />
+    >
+        <template #beforeEdit="{data}">
+            <div v-if="data.auto_cert===1" style="margin-bottom: 15px">
+                <a-alert
+                    :message="$gettext('Auto cert is enabled, please do not modify this certification.')" type="info"
+                    show-icon/>
+            </div>
+            <a-form layout="vertical" v-if="data.certificate_info">
+                <a-form-item :label="$gettext('Certificate Status')">
+                    <cert-info :cert="data.certificate_info"/>
+                </a-form-item>
+            </a-form>
+        </template>
+        <template #edit="{data}">
+            <a-form layout="vertical">
+                <a-form-item :label="$gettext('SSL Certification Content')">
+                    <code-editor v-model:content="data.ssl_certification" default-height="200px"/>
+                </a-form-item>
+                <a-form-item :label="$gettext('SSL Certification Key Content')">
+                    <code-editor v-model:content="data.ssl_certification_key" default-height="200px"/>
+                </a-form-item>
+            </a-form>
+        </template>
+    </std-curd>
 </template>
 
 <style lang="less" scoped>

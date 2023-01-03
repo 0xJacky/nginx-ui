@@ -28,6 +28,7 @@ const enabled = computed({
 
 <template>
     <div>
+        <h2 v-translate>Certificate Status</h2>
         <cert-info ref="info" :cert="props.cert_info"/>
 
         <issue-cert

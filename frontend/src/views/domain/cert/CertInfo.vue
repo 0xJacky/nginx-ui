@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import {CloseCircleOutlined, CheckCircleOutlined} from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
-import {reactive, ref} from 'vue'
-import domain from '@/api/domain'
 
 const props = defineProps(['cert'])
-
-const cert = props.cert
 </script>
 
 <template>
     <div class="cert-info" v-if="cert">
-        <h2 v-translate>Certificate Status</h2>
         <p v-translate="{issuer: cert.issuer_name}">Intermediate Certification Authorities: %{issuer}</p>
         <p v-translate="{name: cert.subject_name}">Subject Name: %{name}</p>
         <p v-translate="{date: dayjs(cert.not_after).format('YYYY-MM-DD HH:mm:ss').toString()}">
