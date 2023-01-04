@@ -30,7 +30,7 @@ const columns = [{
             template.push(<Badge status="success"/>)
             template.push($gettext('Enabled'))
         } else {
-            template.push(<Badge status="error"/>)
+            template.push(<Badge status="warning"/>)
             template.push($gettext('Disabled'))
         }
         return h('div', template)

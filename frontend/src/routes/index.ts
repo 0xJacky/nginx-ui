@@ -75,16 +75,6 @@ export const routes = [
                 }
             },
             {
-                path: 'config/:dir*',
-                name: () => $gettext('Manage Configs'),
-                component: () => import('@/views/config/Config.vue'),
-                meta: {
-                    icon: FileOutlined,
-                    hideChildren: true,
-                    hiddenInSidebar: true
-                }
-            },
-            {
                 path: 'config/:name+/edit',
                 name: () => $gettext('Edit Configuration'),
                 component: () => import('@/views/config/ConfigEdit.vue'),

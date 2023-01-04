@@ -129,7 +129,7 @@ const issue_cert = async (server_name: string, callback: Function) => {
 }
 
 const no_server_name = computed(() => {
-    return props.directivesMap['server_name'].length === 0
+    return props.directivesMap['server_name']?.length === 0
 })
 
 const name = computed(() => {

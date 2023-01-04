@@ -42,8 +42,11 @@ function save() {
 <template>
     <div class="dir-editor-item">
         <div class="input-wrapper">
-            <code-editor v-if="directive.directive === If" v-model:content="directive.params"
-                         defaultHeight="100px" style="width: 100%;"/>
+            <div class="code-editor-wrapper" v-if="directive.directive === ''">
+                <HolderOutlined style="padding: 5px"/>
+                <code-editor v-model:content="directive.params"
+                             defaultHeight="100px" style="width: 100%;"/>
+            </div>
 
             <a-input v-else
                      v-model:value="directive.params" @click="current_idx=index">
@@ -89,6 +92,16 @@ function save() {
 <style lang="less" scoped>
 .dir-editor-item {
     margin: 15px 0;
+}
+
+.code-editor-wrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.anticon-holder {
+    cursor: grab;
 }
 
 .directive-editor-extra {

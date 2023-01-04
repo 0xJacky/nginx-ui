@@ -2,10 +2,11 @@ module github.com/0xJacky/Nginx-UI
 
 go 1.19
 
+replace github.com/tufanbarisyildirim/gonginx v0.0.0-20220829083426-44da4d61ef9a => github.com/0xJacky/gonginx v0.0.0-20230104051937-4c3a63627efb
+
 require (
 	github.com/creack/pty v1.1.18
 	github.com/dustin/go-humanize v1.0.0
-	github.com/emirpasic/gods v1.18.1
 	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.7.4
 	github.com/go-acme/lego/v4 v4.4.0
@@ -16,9 +17,11 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/uuid v1.1.1
 	github.com/gorilla/websocket v1.4.2
+	github.com/hpcloud/tail v1.0.0
 	github.com/pkg/errors v0.9.1
 	github.com/shirou/gopsutil/v3 v3.21.7
 	github.com/spf13/cast v1.3.1
+	github.com/tufanbarisyildirim/gonginx v0.0.0-20220829083426-44da4d61ef9a
 	github.com/unknwon/com v1.0.1
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
 	gopkg.in/ini.v1 v1.62.0
@@ -32,7 +35,6 @@ require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-ole/go-ole v1.2.5 // indirect
 	github.com/golang/protobuf v1.3.4 // indirect
-	github.com/hpcloud/tail v1.0.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.2 // indirect
 	github.com/json-iterator/go v1.1.9 // indirect

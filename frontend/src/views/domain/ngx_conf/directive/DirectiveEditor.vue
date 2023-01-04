@@ -32,7 +32,7 @@ function onSave(idx: number) {
         item-key="name"
         class="list-group"
         ghost-class="ghost"
-        handle=".ant-input-group-addon"
+        handle=".anticon-holder"
     >
         <template #item="{ element: directive, index }">
             <directive-editor-item @click="current_idx=index"

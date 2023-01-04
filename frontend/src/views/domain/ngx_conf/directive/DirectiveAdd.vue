@@ -24,8 +24,8 @@ function add() {
 
 function save() {
     adding.value = false
-    if (mode.value === If) {
-        directive.directive = If
+    if (mode.value === 'multi-line') {
+        directive.directive = ''
     }
 
     if (props.idx) {
@@ -42,19 +42,19 @@ function save() {
     <div>
         <div class="add-directive-temp" v-if="adding">
             <a-form-item>
-                <a-select v-model:value="mode" default-value="default" style="width: 150px">
+                <a-select v-model:value="mode" default-value="default" style="width: 180px">
                     <a-select-option value="default">
                         {{ $gettext('Single Directive') }}
                     </a-select-option>
-                    <a-select-option value="if">
-                        if
+                    <a-select-option value="multi-line">
+                        {{ $gettext('Multi-line Directive') }}
                     </a-select-option>
                 </a-select>
             </a-form-item>
             <a-form-item>
 
                 <div class="input-wrapper">
-                    <code-editor v-if="mode===If" default-height="100px" style="width: 100%;"
+                    <code-editor v-if="mode==='multi-line'" default-height="100px" style="width: 100%;"
                                  v-model:content="directive.params"/>
                     <a-input-group v-else compact>
                         <a-input style="width: 30%" :placeholder="$gettext('Directive')"
@@ -73,7 +73,9 @@ function save() {
         </div>
         <a-button block v-if="!adding" @click="add">{{ $gettext('Add Directive Below') }}</a-button>
         <a-button type="primary" v-else block @click="save"
-                  :disabled="!directive.directive||!directive.params">{{ $gettext('Save Directive') }}
+                  :disabled="(mode==='default'&&(!directive.directive||!directive.params))
+                  ||(!directive.params&&mode==='multi-line')">
+            {{ $gettext('Save Directive') }}
         </a-button>
     </div>
 </template>

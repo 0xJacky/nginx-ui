@@ -18,7 +18,7 @@ const table = ref(null)
 const route = useRoute()
 
 const basePath = computed(() => {
-    let dir = route?.params?.dir ? (route?.params?.dir as string[])?.join('/') : ''
+    let dir = route?.query?.dir ?? ''
     if (dir) dir += '/'
     return dir
 })
@@ -54,7 +54,9 @@ watch(get_params, () => {
                     })
                 } else {
                     $router.push({
-                        path: '/config/' + basePath + r
+                        query: {
+                            dir: basePath + r
+                        }
                     })
                 }
             }"
