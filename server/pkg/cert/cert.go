@@ -109,7 +109,7 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 		errChan <- errors.Wrap(err, "issue cert fail to obtain")
 		return
 	}
-	name := strings.Join(domain, " ")
+	name := strings.Join(domain, "_")
 	saveDir := nginx.GetNginxConfPath("ssl/" + name)
 	if _, err = os.Stat(saveDir); os.IsNotExist(err) {
 		err = os.MkdirAll(saveDir, 0755)
