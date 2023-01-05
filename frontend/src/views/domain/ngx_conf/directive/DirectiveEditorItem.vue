@@ -10,7 +10,7 @@ import {message} from 'ant-design-vue'
 
 const {$gettext, interpolate} = useGettext()
 
-const props = defineProps(['directive', 'current_idx', 'index', 'ngx_directives'])
+const props = defineProps(['directive', 'current_idx', 'index', 'ngx_directives', 'readonly'])
 
 function remove(index: number) {
     props.ngx_directives.splice(index, 1)
@@ -56,7 +56,8 @@ function save() {
                 </template>
             </a-input>
 
-            <a-popconfirm @confirm="remove(index)"
+            <a-popconfirm v-if="!readonly"
+                          @confirm="remove(index)"
                           :title="$gettext('Are you sure you want to remove this directive?')"
                           :ok-text="$gettext('Yes')"
                           :cancel-text="$gettext('No')">

@@ -13,6 +13,10 @@ const (
 	Upstream = "upstream"
 )
 
+func (s *NgxServer) ParseServer(directive gonginx.IDirective) {
+	s.parseServer(directive)
+}
+
 func (s *NgxServer) parseServer(directive gonginx.IDirective) {
 	if directive.GetBlock() == nil {
 		return
@@ -36,7 +40,9 @@ func (s *NgxServer) parseServer(directive gonginx.IDirective) {
 		}
 	}
 }
-
+func (l *NgxLocation) ParseLocation(directive gonginx.IDirective, deep int) {
+	l.parseLocation(directive, deep)
+}
 func (l *NgxLocation) parseLocation(directive gonginx.IDirective, deep int) {
 	if directive.GetBlock() == nil {
 		return
@@ -50,6 +56,10 @@ func (l *NgxLocation) parseLocation(directive gonginx.IDirective, deep int) {
 		l.Content += strings.Repeat("\t", deep) + location.GetName() + " " + strings.Join(location.GetParameters(), " ") + ";\n"
 		l.parseLocation(location, deep+1)
 	}
+}
+
+func (d *NgxDirective) ParseDirective(directive gonginx.IDirective, deep int) {
+	d.parseDirective(directive, deep)
 }
 
 func (d *NgxDirective) parseDirective(directive gonginx.IDirective, deep int) {
@@ -134,6 +144,7 @@ func parse(block gonginx.IBlock, ngxConfig *NgxConfig) {
 			ngxConfig.parseCustom(v)
 		}
 	}
+	ngxConfig.Custom = FmtCode(ngxConfig.Custom)
 }
 
 func ParseNgxConfigByContent(content string) (ngxConfig *NgxConfig) {

@@ -39,7 +39,7 @@ const lang = computed(() => {
 
 </script>
 <template>
-    <a-config-provider :locale="lang">
+    <a-config-provider :locale="lang" :autoInsertSpaceInButton="false">
         <a-layout style="min-height: 100%;">
             <div class="drawer-sidebar">
                 <a-drawer

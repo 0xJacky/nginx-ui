@@ -7,9 +7,7 @@ import DirectiveEditorItem from '@/views/domain/ngx_conf/directive/DirectiveEdit
 
 const {$gettext} = useGettext()
 
-const props = defineProps<{
-    ngx_directives: any[]
-}>()
+const props = defineProps(['ngx_directives', 'readonly'])
 
 const adding = ref(false)
 
@@ -38,11 +36,13 @@ function onSave(idx: number) {
             <directive-editor-item @click="current_idx=index"
                                    :directive="directive"
                                    :current_idx="current_idx" :index="index"
-                                   :ngx_directives="ngx_directives"/>
+                                   :ngx_directives="ngx_directives"
+                                   :readonly="readonly"
+            />
         </template>
     </draggable>
 
-    <directive-add :ngx_directives="ngx_directives"/>
+    <directive-add v-if="!readonly" :ngx_directives="ngx_directives"/>
 </template>
 
 <style lang="less" scoped>

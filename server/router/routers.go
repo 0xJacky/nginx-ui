@@ -77,6 +77,8 @@ func InitRouter() *gin.Engine {
 
 			g.GET("template", api.GetTemplate)
 			g.GET("template/configs", api.GetTemplateConfList)
+			g.GET("template/blocks", api.GetTemplateBlockList)
+			g.GET("template/block/:name", api.GetTemplateBlock)
 
 			g.GET("cert/issue", api.IssueCert)
 

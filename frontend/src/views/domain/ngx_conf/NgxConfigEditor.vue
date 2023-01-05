@@ -6,6 +6,8 @@ import {useRoute, useRouter} from 'vue-router'
 import {useGettext} from 'vue3-gettext'
 import Cert from '@/views/domain/cert/Cert.vue'
 import LogEntry from '@/views/domain/ngx_conf/LogEntry.vue'
+import ConfigTemplate from '@/views/domain/ngx_conf/ConfigTemplate.vue'
+import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 
 const {$gettext} = useGettext()
 
@@ -151,6 +153,9 @@ watch(current_server_index, () => {
             <a-switch @change="change_tls"/>
         </a-form-item>
 
+        <h2>{{ $gettext('Custom') }}</h2>
+        <code-editor v-model:content="ngx_config.custom" default-height="150px"/>
+
         <a-tabs v-model:activeKey="current_server_index">
             <a-tab-pane :tab="'Server '+(k+1)" v-for="(v,k) in props.ngx_config.servers" :key="k">
                 <log-entry
@@ -175,8 +180,10 @@ watch(current_server_index, () => {
                         <h3 v-translate>Comments</h3>
                         <a-textarea v-model:value="v.comments" :bordered="false"/>
                     </template>
-
                     <directive-editor :ngx_directives="v.directives"/>
+                    <br/>
+                    <config-template :ngx_config="ngx_config"
+                                     :current_server_index="current_server_index"/>
                     <br/>
                     <location-editor :locations="v.locations"/>
                 </div>

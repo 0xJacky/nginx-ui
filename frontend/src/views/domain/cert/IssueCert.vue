@@ -166,6 +166,7 @@ const modalClosable = ref(false)
     <a-modal
         :title="$gettext('Obtaining certificate')"
         v-model:visible="modalVisible"
+        :mask-closable="modalClosable"
         :footer="null" :closable="modalClosable" force-render>
         <a-progress
             :stroke-color="progressStrokeColor"
