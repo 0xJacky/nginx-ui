@@ -12,11 +12,11 @@ msgstr ""
 "Generated-By: easygettext\n"
 "X-Generator: Poedit 3.2.2\n"
 
-#: src/routes/index.ts:144
+#: src/routes/index.ts:134
 msgid "About"
 msgstr "关于"
 
-#: src/routes/index.ts:119 src/views/domain/ngx_conf/LogEntry.vue:64
+#: src/routes/index.ts:109 src/views/domain/ngx_conf/LogEntry.vue:64
 msgid "Access Logs"
 msgstr "访问日志"
 
@@ -27,6 +27,7 @@ msgstr "操作"
 
 #: src/components/StdDataDisplay/StdCurd.vue:145
 #: src/components/StdDataDisplay/StdCurd.vue:25
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:26
 msgid "Add"
 msgstr "添加"
 
@@ -56,13 +57,23 @@ msgstr "高级模式"
 msgid "Are you sure you want to delete?"
 msgstr "您确定要删除吗？"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:16
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:20
 msgid "Are you sure you want to remove this directive?"
 msgstr "您确定要删除这条指令？"
 
 #: src/views/domain/ngx_conf/LocationEditor.vue:19
 msgid "Are you sure you want to remove this location?"
 msgstr "您确定要删除这个 Location？"
+
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:11
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:12
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:15
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:19
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:20
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:23
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:29
+msgid "Author"
+msgstr "作者"
 
 #: src/views/preference/Preference.vue:22
 #: src/views/preference/Preference.vue:23
@@ -89,9 +100,9 @@ msgstr "成功关闭 %{name} 自动续签"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "成功启用 %{name} 自动续签"
 
-#: src/views/config/Config.vue:14 src/views/config/Config.vue:15
-#: src/views/config/Config.vue:25 src/views/config/Config.vue:5
-#: src/views/config/ConfigEdit.vue:55 src/views/domain/DomainEdit.vue:187
+#: src/views/config/Config.vue:16 src/views/config/Config.vue:17
+#: src/views/config/Config.vue:27 src/views/config/Config.vue:5
+#: src/views/config/ConfigEdit.vue:64 src/views/domain/DomainEdit.vue:187
 #: src/views/nginx_log/NginxLog.vue:173
 msgid "Back"
 msgstr "返回"
@@ -138,18 +149,22 @@ msgstr "此证书有效"
 msgid "Certificate Status"
 msgstr "证书状态"
 
-#: src/routes/index.ts:97 src/views/cert/Cert.vue:2
+#: src/routes/index.ts:87 src/views/cert/Cert.vue:2
 msgid "Certification"
 msgstr "证书"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:30
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
 #: src/views/domain/ngx_conf/LocationEditor.vue:31
 #: src/views/domain/ngx_conf/LocationEditor.vue:47
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:175
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:180
 msgid "Comments"
 msgstr "注释"
 
-#: src/views/domain/DomainAdd.vue:12
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:61
+msgid "Config Templates"
+msgstr "配置"
+
+#: src/views/domain/DomainAdd.vue:11
 msgid "Configuration Name"
 msgstr "配置名称"
 
@@ -161,7 +176,7 @@ msgstr "配置"
 msgid "Configure SSL"
 msgstr "配置 SSL"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:37
 #: src/views/domain/ngx_conf/LocationEditor.vue:37
 #: src/views/domain/ngx_conf/LocationEditor.vue:53
 msgid "Content"
@@ -175,7 +190,7 @@ msgstr "CPU 状态"
 msgid "CPU:"
 msgstr "CPU:"
 
-#: src/views/domain/DomainAdd.vue:150
+#: src/views/domain/DomainAdd.vue:149
 msgid "Create Another"
 msgstr "再创建一个"
 
@@ -186,6 +201,15 @@ msgstr "创建时间"
 #: src/language/constants.ts:13
 msgid "Creating client facilitates communication with the CA server"
 msgstr "正在创建客户端用于与 CA 服务器通信"
+
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:22
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:23
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:26
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:32
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:6
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:7
+msgid "Custom"
+msgstr "自定义"
 
 #: src/views/preference/Preference.vue:28
 #: src/views/preference/Preference.vue:29
@@ -212,6 +236,16 @@ msgstr "删除 ID: %{id}"
 #: src/views/domain/DomainList.vue:81
 msgid "Delete site: %{site_name}"
 msgstr "删除站点: %{site_name}"
+
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:12
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:13
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:16
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:20
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:21
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:24
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:30
+msgid "Description"
+msgstr "描述"
 
 #: src/views/other/About.vue:7 src/views/other/About.vue:8
 msgid "Development Mode"
@@ -253,7 +287,7 @@ msgstr "磁盘 IO"
 msgid "Domain"
 msgstr "域名"
 
-#: src/views/domain/DomainAdd.vue:60
+#: src/views/domain/DomainAdd.vue:58
 msgid "Domain Config Created Successfully"
 msgstr "域名配置文件创建成功"
 
@@ -261,7 +295,7 @@ msgstr "域名配置文件创建成功"
 msgid "Edit %{n}"
 msgstr "编辑 %{n}"
 
-#: src/routes/index.ts:89 src/views/config/ConfigEdit.vue:2
+#: src/routes/index.ts:79 src/views/config/ConfigEdit.vue:2
 msgid "Edit Configuration"
 msgstr "编辑配置"
 
@@ -277,7 +311,7 @@ msgstr "邮箱 (*)"
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "启用 %{name} 自动续签失败"
 
-#: src/views/domain/DomainAdd.vue:50
+#: src/views/domain/DomainAdd.vue:51
 msgid "Enable failed"
 msgstr "启用失败"
 
@@ -293,16 +327,16 @@ msgstr "启用 TLS"
 msgid "Enabled"
 msgstr "启用"
 
-#: src/views/domain/DomainAdd.vue:46 src/views/domain/DomainEdit.vue:109
+#: src/views/domain/DomainAdd.vue:47 src/views/domain/DomainEdit.vue:109
 #: src/views/domain/DomainList.vue:59
 msgid "Enabled successfully"
 msgstr "启用成功"
 
-#: src/views/domain/cert/IssueCert.vue:17
+#: src/views/domain/cert/IssueCert.vue:18
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 对网站进行加密"
 
-#: src/routes/index.ts:123 src/views/domain/ngx_conf/LogEntry.vue:68
+#: src/routes/index.ts:113 src/views/domain/ngx_conf/LogEntry.vue:68
 msgid "Error Logs"
 msgstr "错误日志"
 
@@ -345,6 +379,18 @@ msgstr "过滤"
 msgid "Finished"
 msgstr "完成"
 
+#: src/views/config/ConfigEdit.vue:67
+msgid "Format Code"
+msgstr "代码格式化"
+
+#: src/views/config/ConfigEdit.vue:52
+msgid "Format error %{msg}"
+msgstr "保存错误 %{msg}"
+
+#: src/views/config/ConfigEdit.vue:50
+msgid "Format successfully"
+msgstr "保存成功"
+
 #: src/components/StdDataEntry/components/StdPassword.vue:42
 #: src/components/StdDataEntry/compontents/StdPassword.vue:42
 msgid "Generate"
@@ -370,7 +416,7 @@ msgstr "HTTP Challenge 监听端口"
 msgid "HTTP Port"
 msgstr "HTTP 监听端口"
 
-#: src/routes/index.ts:154 src/views/other/Install.vue:128
+#: src/routes/index.ts:144 src/views/other/Install.vue:128
 msgid "Install"
 msgstr "安装"
 
@@ -413,7 +459,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/routes/index.ts:160 src/views/other/Login.vue:103
+#: src/routes/index.ts:150 src/views/other/Login.vue:103
 msgid "Login"
 msgstr "登录"
 
@@ -425,7 +471,7 @@ msgstr "登录成功"
 msgid "Logout successful"
 msgstr "登出成功"
 
-#: src/views/domain/cert/IssueCert.vue:209
+#: src/views/domain/cert/IssueCert.vue:210
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort (default: 9180) before getting the certificate."
@@ -433,7 +479,7 @@ msgstr ""
 "在获取签发证书前，请确保配置文件中已将 .well-known 目录反向代理到 "
 "HTTPChallengePort (默认: 9180)"
 
-#: src/routes/index.ts:70 src/routes/index.ts:79
+#: src/routes/index.ts:70
 msgid "Manage Configs"
 msgstr "配置管理"
 
@@ -462,9 +508,14 @@ msgstr "内存与存储"
 msgid "Modify"
 msgstr "修改"
 
-#: src/views/domain/DomainAdd.vue:147
+#: src/views/domain/DomainAdd.vue:146
 msgid "Modify Config"
 msgstr "修改配置文件"
+
+#: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:10
+#: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:9
+msgid "Multi-line Directive"
+msgstr "单行指令"
 
 #: src/views/cert/Cert.vue:16 src/views/config/config.ts:9
 #: src/views/domain/DomainEdit.vue:36 src/views/domain/DomainList.vue:15
@@ -487,7 +538,7 @@ msgstr "下载流量"
 msgid "Network Total Send"
 msgstr "上传流量"
 
-#: src/views/domain/DomainAdd.vue:137
+#: src/views/domain/DomainAdd.vue:136
 msgid "Next"
 msgstr "下一步"
 
@@ -499,18 +550,18 @@ msgstr "Nginx 访问日志路径"
 msgid "Nginx Error Log Path"
 msgstr "Nginx 错误日志路径"
 
-#: src/routes/index.ts:113 src/views/nginx_log/NginxLog.vue:2
+#: src/routes/index.ts:103 src/views/nginx_log/NginxLog.vue:2
 msgid "Nginx Log"
 msgstr "Nginx 日志"
 
 #: src/components/StdDataDisplay/StdTable.vue:52
 #: src/views/domain/DomainList.vue:24
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:18
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:22
 #: src/views/domain/ngx_conf/LocationEditor.vue:21
 msgid "No"
 msgstr "取消"
 
-#: src/routes/index.ts:166 src/routes/index.ts:168
+#: src/routes/index.ts:156 src/routes/index.ts:158
 msgid "Not Found"
 msgstr "找不到页面"
 
@@ -518,7 +569,7 @@ msgstr "找不到页面"
 msgid "Not Valid Before: %{date}"
 msgstr "此前无效: %{date}"
 
-#: src/views/domain/cert/IssueCert.vue:201
+#: src/views/domain/cert/IssueCert.vue:202
 msgid ""
 "Note: The server_name in the current configuration must be the domain name "
 "you need to get the certificate."
@@ -570,7 +621,7 @@ msgstr "请输入您的密码！"
 msgid "Please input your username!"
 msgstr "请输入您的用户名！"
 
-#: src/routes/index.ts:136 src/views/preference/Preference.vue:2
+#: src/routes/index.ts:126 src/views/preference/Preference.vue:2
 msgid "Preference"
 msgstr "偏好设置"
 
@@ -616,23 +667,23 @@ msgstr "重置"
 msgid "Run Mode"
 msgstr "运行模式"
 
-#: src/views/config/ConfigEdit.vue:58 src/views/domain/DomainEdit.vue:190
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:30
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:31
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:36
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:37
+#: src/views/config/ConfigEdit.vue:70 src/views/domain/DomainEdit.vue:190
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:40
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:41
 #: src/views/preference/Preference.vue:43
 #: src/views/preference/Preference.vue:44
 msgid "Save"
 msgstr "保存"
 
-#: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:32
-#: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:33
+#: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:34
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:35
+#: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:36
 msgid "Save Directive"
 msgstr "保存指令"
 
-#: src/views/config/ConfigEdit.vue:42 src/views/domain/DomainAdd.vue:54
+#: src/views/config/ConfigEdit.vue:43 src/views/domain/DomainAdd.vue:55
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:37
 msgid "Save error %{msg}"
 msgstr "保存错误 %{msg}"
@@ -646,7 +697,7 @@ msgstr "保存成功"
 msgid "Save Successfully"
 msgstr "保存成功"
 
-#: src/views/config/ConfigEdit.vue:40 src/views/domain/DomainAdd.vue:43
+#: src/views/config/ConfigEdit.vue:41 src/views/domain/DomainAdd.vue:44
 #: src/views/domain/DomainEdit.vue:97
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:35
 msgid "Saved successfully"
@@ -665,7 +716,7 @@ msgstr "上传"
 #: src/components/StdDataDisplay/StdTable.vue:168
 #: src/components/StdDataDisplay/StdTable.vue:343
 #: src/components/StdDataDisplay/StdTable.vue:463
-#: src/views/config/ConfigEdit.vue:28 src/views/domain/DomainEdit.vue:100
+#: src/views/config/ConfigEdit.vue:29 src/views/domain/DomainEdit.vue:100
 #: src/views/domain/DomainEdit.vue:62 src/views/domain/DomainEdit.vue:74
 #: src/views/domain/DomainEdit.vue:83 src/views/domain/DomainList.vue:83
 #: src/views/other/Install.vue:71 src/views/preference/Preference.vue:41
@@ -680,7 +731,7 @@ msgstr "服务器信息"
 msgid "server_name not found in directives"
 msgstr "未在指令集合中找到 server_name"
 
-#: src/views/domain/cert/IssueCert.vue:195 src/views/domain/DomainAdd.vue:112
+#: src/views/domain/cert/IssueCert.vue:196 src/views/domain/DomainAdd.vue:111
 msgid "server_name parameter is required"
 msgstr "必须为 server_name 指令指明参数"
 
@@ -689,7 +740,7 @@ msgstr "必须为 server_name 指令指明参数"
 msgid "Single Directive"
 msgstr "单行指令"
 
-#: src/routes/index.ts:127
+#: src/routes/index.ts:117
 msgid "Site Logs"
 msgstr "站点列表"
 
@@ -733,7 +784,7 @@ msgstr "Swap"
 msgid "Table"
 msgstr "列表"
 
-#: src/routes/index.ts:105 src/views/pty/Terminal.vue:2
+#: src/routes/index.ts:95 src/views/pty/Terminal.vue:2
 msgid "Terminal"
 msgstr "终端"
 
@@ -741,7 +792,7 @@ msgstr "终端"
 msgid "Terminal Start Command"
 msgstr "终端启动命令"
 
-#: src/views/domain/cert/IssueCert.vue:205
+#: src/views/domain/cert/IssueCert.vue:206
 msgid ""
 "The certificate for the domain will be checked every hour, and will be "
 "renewed if it has been more than 1 month since it was last issued."
@@ -789,7 +840,13 @@ msgstr "用户名 (*)"
 msgid "Using HTTP01 challenge provider"
 msgstr "使用 HTTP01 challenge provider"
 
-#: src/views/domain/cert/IssueCert.vue:26 src/views/domain/DomainAdd.vue:24
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:10
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:13
+#: src/views/domain/ngx_conf/ConfigTemplate.vue:9
+msgid "View"
+msgstr "查看"
+
+#: src/views/domain/cert/IssueCert.vue:27 src/views/domain/DomainAdd.vue:22
 msgid "Warning"
 msgstr "警告"
 
@@ -806,7 +863,7 @@ msgstr "正在将证书私钥写入磁盘"
 msgid "Writing certificate to disk"
 msgstr "正在将证书写入磁盘"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:17
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:21
 #: src/views/domain/ngx_conf/LocationEditor.vue:20
 msgid "Yes"
 msgstr "是的"
