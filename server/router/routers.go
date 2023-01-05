@@ -60,6 +60,8 @@ func InitRouter() *gin.Engine {
 			g.POST("ngx/build_config", api.BuildNginxConfig)
 			// Tokenized nginx configuration to NgxConf
 			g.POST("ngx/tokenize_config", api.TokenizeNginxConfig)
+			// Format nginx configuration code
+			g.POST("ngx/format_code", api.FormatNginxConfig)
 
 			g.POST("domain/:name/enable", api.EnableDomain)
 			g.POST("domain/:name/disable", api.DisableDomain)
@@ -74,6 +76,7 @@ func InitRouter() *gin.Engine {
 			//g.GET("backup/:id", api.GetFileBackup)
 
 			g.GET("template", api.GetTemplate)
+			g.GET("template/configs", api.GetTemplateConfList)
 
 			g.GET("cert/issue", api.IssueCert)
 

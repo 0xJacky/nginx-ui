@@ -6,6 +6,7 @@ import {computed, ref} from 'vue'
 import config from '@/api/config'
 import {message} from 'ant-design-vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
+import ngx from '@/api/ngx'
 
 const {$gettext, interpolate} = gettext
 const route = useRoute()
@@ -43,6 +44,14 @@ function save() {
     })
 }
 
+function format_code() {
+    ngx.format_code(configText.value).then(r => {
+        configText.value = r.content
+        message.success($gettext('Format successfully'))
+    }).catch(r => {
+        message.error(interpolate($gettext('Format error %{msg}'), {msg: r.message ?? ''}))
+    })
+}
 </script>
 
 
@@ -53,6 +62,9 @@ function save() {
             <a-space>
                 <a-button @click="$router.go(-1)">
                     <translate>Back</translate>
+                </a-button>
+                <a-button @click="format_code">
+                    <translate>Format Code</translate>
                 </a-button>
                 <a-button type="primary" @click="save">
                     <translate>Save</translate>

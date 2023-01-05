@@ -2,8 +2,6 @@ module github.com/0xJacky/Nginx-UI
 
 go 1.19
 
-replace github.com/tufanbarisyildirim/gonginx v0.0.0-20220829083426-44da4d61ef9a => github.com/0xJacky/gonginx v0.0.0-20230104051937-4c3a63627efb
-
 require (
 	github.com/creack/pty v1.1.18
 	github.com/dustin/go-humanize v1.0.0
@@ -21,7 +19,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/shirou/gopsutil/v3 v3.21.7
 	github.com/spf13/cast v1.3.1
-	github.com/tufanbarisyildirim/gonginx v0.0.0-20220829083426-44da4d61ef9a
+	github.com/tufanbarisyildirim/gonginx v0.0.0-20230104065106-9ae864d29eed
 	github.com/unknwon/com v1.0.1
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
 	gopkg.in/ini.v1 v1.62.0
