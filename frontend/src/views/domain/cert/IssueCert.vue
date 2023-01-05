@@ -4,6 +4,7 @@ import {computed, h, nextTick, onMounted, ref, VNode, watch} from 'vue'
 import {message} from 'ant-design-vue'
 import domain from '@/api/domain'
 import websocket from '@/lib/websocket'
+import Template from '@/views/template/Template.vue'
 
 const {$gettext, interpolate} = useGettext()
 
@@ -56,8 +57,6 @@ function job() {
 function callback(ssl_certificate: string, ssl_certificate_key: string) {
     props.directivesMap['ssl_certificate'][0]['params'] = ssl_certificate
     props.directivesMap['ssl_certificate_key'][0]['params'] = ssl_certificate_key
-
-    emit('callback')
 }
 
 function change_auto_cert(r: boolean) {
@@ -178,7 +177,7 @@ const modalClosable = ref(false)
         </div>
 
     </a-modal>
-    <div>
+    <div class="issue-cert">
         <a-form-item :label="$gettext('Encrypt website with Let\'s Encrypt')">
             <a-switch
                 :loading="issuing_cert"
@@ -199,18 +198,22 @@ const modalClosable = ref(false)
                 </template>
             </a-alert>
         </a-form-item>
-        <p v-translate>
-            Note: The server_name in the current configuration must be the domain name
-            you need to get the certificate.
-        </p>
-        <p v-translate>
-            The certificate for the domain will be checked every hour,
-            and will be renewed if it has been more than 1 month since it was last issued.
-        </p>
-        <p v-translate>
-            Make sure you have configured a reverse proxy for .well-known
-            directory to HTTPChallengePort (default: 9180) before getting the certificate.
-        </p>
+        <a-alert type="info" closable :message="$gettext('Note')">
+            <template #description>
+                <p v-translate>
+                    The server_name in the current configuration must be the domain name
+                    you need to get the certificate.
+                </p>
+                <p v-translate>
+                    The certificate for the domain will be checked every hour,
+                    and will be renewed if it has been more than 1 month since it was last issued.
+                </p>
+                <p v-translate>
+                    Make sure you have configured a reverse proxy for .well-known
+                    directory to HTTPChallengePort (default: 9180) before getting the certificate.
+                </p>
+            </template>
+        </a-alert>
     </div>
 </template>
 
@@ -231,6 +234,10 @@ const modalClosable = ref(false)
 </style>
 
 <style lang="less" scoped>
+.issue-cert {
+    margin: 15px 0;
+}
+
 .switch-wrapper {
     position: relative;
 

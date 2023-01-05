@@ -92,11 +92,11 @@ msgstr "自动更新已启用，请勿修改此证书配置。"
 msgid "Auto Refresh"
 msgstr "自动刷新"
 
-#: src/views/domain/cert/IssueCert.vue:72
+#: src/views/domain/cert/IssueCert.vue:71
 msgid "Auto-renewal disabled for %{name}"
 msgstr "成功关闭 %{name} 自动续签"
 
-#: src/views/domain/cert/IssueCert.vue:66
+#: src/views/domain/cert/IssueCert.vue:65
 msgid "Auto-renewal enabled for %{name}"
 msgstr "成功启用 %{name} 自动续签"
 
@@ -133,7 +133,6 @@ msgstr "构建基于"
 #: src/components/StdDataDisplay/StdBatchEdit.vue:7
 #: src/components/StdDataDisplay/StdCurd.vue:27
 #: src/components/StdDataEntry/components/StdSelector.vue:11
-#: src/components/StdDataEntry/compontents/StdSelector.vue:11
 msgid "Cancel"
 msgstr "取消"
 
@@ -145,13 +144,19 @@ msgstr "此证书已过期"
 msgid "Certificate is valid"
 msgstr "此证书有效"
 
-#: src/views/cert/Cert.vue:12 src/views/domain/cert/Cert.vue:31
+#: src/views/cert/Cert.vue:12 src/views/domain/cert/Cert.vue:35
 msgid "Certificate Status"
 msgstr "证书状态"
 
 #: src/routes/index.ts:87 src/views/cert/Cert.vue:2
 msgid "Certification"
 msgstr "证书"
+
+#: src/views/domain/cert/ChangeCert.vue:2
+#: src/views/domain/cert/ChangeCert.vue:3
+#: src/views/domain/cert/ChangeCert.vue:5
+msgid "Change Certificate"
+msgstr "更改证书"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
 #: src/views/domain/ngx_conf/LocationEditor.vue:31
@@ -264,7 +269,7 @@ msgstr "指令"
 msgid "Directives"
 msgstr "指令"
 
-#: src/views/domain/cert/IssueCert.vue:74
+#: src/views/domain/cert/IssueCert.vue:73
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "关闭 %{name} 自动续签失败"
 
@@ -307,7 +312,7 @@ msgstr "编辑站点"
 msgid "Email (*)"
 msgstr "邮箱 (*)"
 
-#: src/views/domain/cert/IssueCert.vue:68
+#: src/views/domain/cert/IssueCert.vue:67
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "启用 %{name} 自动续签失败"
 
@@ -392,7 +397,6 @@ msgid "Format successfully"
 msgstr "保存成功"
 
 #: src/components/StdDataEntry/components/StdPassword.vue:42
-#: src/components/StdDataEntry/compontents/StdPassword.vue:42
 msgid "Generate"
 msgstr "生成"
 
@@ -400,7 +404,7 @@ msgstr "生成"
 msgid "Generating private key for registering account"
 msgstr "正在生成私钥用于注册账户"
 
-#: src/views/domain/cert/IssueCert.vue:97
+#: src/views/domain/cert/IssueCert.vue:96
 msgid "Getting the certificate, please wait..."
 msgstr "正在获取证书，请稍等..."
 
@@ -471,7 +475,7 @@ msgstr "登录成功"
 msgid "Logout successful"
 msgstr "登出成功"
 
-#: src/views/domain/cert/IssueCert.vue:210
+#: src/views/domain/cert/IssueCert.vue:211
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort (default: 9180) before getting the certificate."
@@ -569,11 +573,9 @@ msgstr "找不到页面"
 msgid "Not Valid Before: %{date}"
 msgstr "此前无效: %{date}"
 
-#: src/views/domain/cert/IssueCert.vue:202
-msgid ""
-"Note: The server_name in the current configuration must be the domain name "
-"you need to get the certificate."
-msgstr "注意：当前配置中的 server_name 必须为需要申请证书的域名。"
+#: src/views/domain/cert/IssueCert.vue:38
+msgid "Note"
+msgstr "注意"
 
 #: src/language/constants.ts:16 src/views/domain/cert/IssueCert.vue:3
 msgid "Obtaining certificate"
@@ -583,7 +585,6 @@ msgstr "正在获取证书"
 #: src/components/StdDataDisplay/StdCurd.vue:28
 #: src/components/StdDataDisplay/StdTable.vue:53
 #: src/components/StdDataEntry/components/StdSelector.vue:12
-#: src/components/StdDataEntry/compontents/StdSelector.vue:12
 #: src/views/domain/DomainList.vue:25
 msgid "OK"
 msgstr "确定"
@@ -704,7 +705,6 @@ msgid "Saved successfully"
 msgstr "保存成功"
 
 #: src/components/StdDataEntry/components/StdSelector.vue:13
-#: src/components/StdDataEntry/compontents/StdSelector.vue:13
 msgid "Selector"
 msgstr "选择器"
 
@@ -727,11 +727,11 @@ msgstr "服务器错误"
 msgid "Server Info"
 msgstr "服务器信息"
 
-#: src/views/domain/cert/IssueCert.vue:29
+#: src/views/domain/cert/IssueCert.vue:30
 msgid "server_name not found in directives"
 msgstr "未在指令集合中找到 server_name"
 
-#: src/views/domain/cert/IssueCert.vue:196 src/views/domain/DomainAdd.vue:111
+#: src/views/domain/cert/IssueCert.vue:195 src/views/domain/DomainAdd.vue:111
 msgid "server_name parameter is required"
 msgstr "必须为 server_name 指令指明参数"
 
@@ -792,7 +792,7 @@ msgstr "终端"
 msgid "Terminal Start Command"
 msgstr "终端启动命令"
 
-#: src/views/domain/cert/IssueCert.vue:206
+#: src/views/domain/cert/IssueCert.vue:207
 msgid ""
 "The certificate for the domain will be checked every hour, and will be "
 "renewed if it has been more than 1 month since it was last issued."
@@ -802,6 +802,12 @@ msgstr ""
 #: src/views/other/Install.vue:54
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "文件名不能包含以下字符: %{c}"
+
+#: src/views/domain/cert/IssueCert.vue:203
+msgid ""
+"The server_name in the current configuration must be the domain name you "
+"need to get the certificate."
+msgstr "当前配置中的 server_name 必须为需要申请证书的域名。"
 
 #: src/language/constants.ts:6
 msgid "The username or password is incorrect"

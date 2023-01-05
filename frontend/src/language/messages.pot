@@ -87,11 +87,11 @@ msgstr ""
 msgid "Auto Refresh"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:72
+#: src/views/domain/cert/IssueCert.vue:71
 msgid "Auto-renewal disabled for %{name}"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:66
+#: src/views/domain/cert/IssueCert.vue:65
 msgid "Auto-renewal enabled for %{name}"
 msgstr ""
 
@@ -132,7 +132,6 @@ msgstr ""
 #: src/components/StdDataDisplay/StdBatchEdit.vue:7
 #: src/components/StdDataDisplay/StdCurd.vue:27
 #: src/components/StdDataEntry/components/StdSelector.vue:11
-#: src/components/StdDataEntry/compontents/StdSelector.vue:11
 msgid "Cancel"
 msgstr ""
 
@@ -145,13 +144,19 @@ msgid "Certificate is valid"
 msgstr ""
 
 #: src/views/cert/Cert.vue:12
-#: src/views/domain/cert/Cert.vue:31
+#: src/views/domain/cert/Cert.vue:35
 msgid "Certificate Status"
 msgstr ""
 
 #: src/routes/index.ts:87
 #: src/views/cert/Cert.vue:2
 msgid "Certification"
+msgstr ""
+
+#: src/views/domain/cert/ChangeCert.vue:2
+#: src/views/domain/cert/ChangeCert.vue:3
+#: src/views/domain/cert/ChangeCert.vue:5
+msgid "Change Certificate"
 msgstr ""
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
@@ -266,7 +271,7 @@ msgstr ""
 msgid "Directives"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:74
+#: src/views/domain/cert/IssueCert.vue:73
 msgid "Disable auto-renewal failed for %{name}"
 msgstr ""
 
@@ -316,7 +321,7 @@ msgstr ""
 msgid "Email (*)"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:68
+#: src/views/domain/cert/IssueCert.vue:67
 msgid "Enable auto-renewal failed for %{name}"
 msgstr ""
 
@@ -411,7 +416,6 @@ msgid "Format successfully"
 msgstr ""
 
 #: src/components/StdDataEntry/components/StdPassword.vue:42
-#: src/components/StdDataEntry/compontents/StdPassword.vue:42
 msgid "Generate"
 msgstr ""
 
@@ -419,7 +423,7 @@ msgstr ""
 msgid "Generating private key for registering account"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:97
+#: src/views/domain/cert/IssueCert.vue:96
 msgid "Getting the certificate, please wait..."
 msgstr ""
 
@@ -492,7 +496,7 @@ msgstr ""
 msgid "Logout successful"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:210
+#: src/views/domain/cert/IssueCert.vue:211
 msgid "Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort (default: 9180) before getting the certificate."
 msgstr ""
 
@@ -592,8 +596,8 @@ msgstr ""
 msgid "Not Valid Before: %{date}"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:202
-msgid "Note: The server_name in the current configuration must be the domain name you need to get the certificate."
+#: src/views/domain/cert/IssueCert.vue:38
+msgid "Note"
 msgstr ""
 
 #: src/language/constants.ts:16
@@ -605,7 +609,6 @@ msgstr ""
 #: src/components/StdDataDisplay/StdCurd.vue:28
 #: src/components/StdDataDisplay/StdTable.vue:53
 #: src/components/StdDataEntry/components/StdSelector.vue:12
-#: src/components/StdDataEntry/compontents/StdSelector.vue:12
 #: src/views/domain/DomainList.vue:25
 msgid "OK"
 msgstr ""
@@ -734,7 +737,6 @@ msgid "Saved successfully"
 msgstr ""
 
 #: src/components/StdDataEntry/components/StdSelector.vue:13
-#: src/components/StdDataEntry/compontents/StdSelector.vue:13
 msgid "Selector"
 msgstr ""
 
@@ -762,11 +764,11 @@ msgstr ""
 msgid "Server Info"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:29
+#: src/views/domain/cert/IssueCert.vue:30
 msgid "server_name not found in directives"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:196
+#: src/views/domain/cert/IssueCert.vue:195
 #: src/views/domain/DomainAdd.vue:111
 msgid "server_name parameter is required"
 msgstr ""
@@ -829,12 +831,16 @@ msgstr ""
 msgid "Terminal Start Command"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:206
+#: src/views/domain/cert/IssueCert.vue:207
 msgid "The certificate for the domain will be checked every hour, and will be renewed if it has been more than 1 month since it was last issued."
 msgstr ""
 
 #: src/views/other/Install.vue:54
 msgid "The filename cannot contain the following characters: %{c}"
+msgstr ""
+
+#: src/views/domain/cert/IssueCert.vue:203
+msgid "The server_name in the current configuration must be the domain name you need to get the certificate."
 msgstr ""
 
 #: src/language/constants.ts:6

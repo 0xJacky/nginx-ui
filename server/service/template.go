@@ -118,11 +118,15 @@ func ParseTemplate(path, name string) (c ConfigDetail, err error) {
 	for _, d := range config.GetDirectives() {
 		switch d.GetName() {
 		case nginx.Location:
-			l := &nginx.NgxLocation{}
+			l := &nginx.NgxLocation{
+				Path: strings.Join(d.GetParameters(), " "),
+			}
 			l.ParseLocation(d, 0)
 			c.NgxServer.Locations = append(c.NgxServer.Locations, l)
 		default:
-			dir := &nginx.NgxDirective{}
+			dir := &nginx.NgxDirective{
+				Directive: d.GetName(),
+			}
 			dir.ParseDirective(d, 0)
 			c.NgxServer.Directives = append(c.NgxServer.Directives, dir)
 		}
