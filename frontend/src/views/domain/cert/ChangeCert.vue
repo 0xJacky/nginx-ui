@@ -13,6 +13,8 @@ const props = defineProps(['directivesMap'])
 
 const visible = ref(false)
 
+const record: any = ref({})
+
 const columns = [{
     title: () => $gettext('Name'),
     dataIndex: 'name',
@@ -25,15 +27,6 @@ const columns = [{
         }
         return h('div', text)
     },
-    edit: {
-        type: input
-    },
-    search: true
-}, {
-    title: () => $gettext('Domain'),
-    dataIndex: 'domain',
-    sorter: true,
-    pithy: true,
     edit: {
         type: input
     },
@@ -55,41 +48,20 @@ const columns = [{
     },
     sorter: true,
     pithy: true
-}, {
-    title: () => $gettext('SSL Certificate Path'),
-    dataIndex: 'ssl_certificate_path',
-    edit: {
-        type: input
-    },
-    display: false
-}, {
-    title: () => $gettext('SSL Certificate Key Path'),
-    dataIndex: 'ssl_certificate_key_path',
-    edit: {
-        type: input
-    },
-    display: false
-}, {
-    title: () => $gettext('Updated at'),
-    dataIndex: 'updated_at',
-    customRender: datetime,
-    sorter: true,
-    pithy: true
-}, {
-    title: () => $gettext('Action'),
-    dataIndex: 'action'
 }]
 
 function open() {
     visible.value = true
 }
 
-function onSelect() {
-
+function onSelectedRecord(r: any) {
+    record.value = r
 }
 
-function onSelectedRecord() {
-
+function ok() {
+    props.directivesMap['ssl_certificate'][0]['params'] = record.value.ssl_certificate_path
+    props.directivesMap['ssl_certificate_key'][0]['params'] = record.value.ssl_certificate_key_path
+    visible.value = false
 }
 </script>
 
@@ -100,12 +72,13 @@ function onSelectedRecord() {
             :title="$gettext('Change Certificate')"
             v-model:visible="visible"
             :mask="false"
+            @ok="ok"
         >
             <std-table
                 :api="cert"
                 :pithy="true"
                 :columns="columns"
-                @onSelected="onSelect"
+                selectionType="radio"
                 @onSelectedRecord="onSelectedRecord"
             />
         </a-modal>
