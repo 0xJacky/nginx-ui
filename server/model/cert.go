@@ -6,10 +6,18 @@ import (
 	"path/filepath"
 )
 
+const (
+	AutoCertEnabled  = 1
+	AutoCertDisabled = -1
+)
+
 type Cert struct {
 	Model
-	Domain             string `json:"domain"`
-	SSLCertificatePath string `json:"ssl_certificate_path"`
+	Name                  string `json:"name"`
+	Domain                string `json:"domain"`
+	SSLCertificatePath    string `json:"ssl_certificate_path"`
+	SSLCertificateKeyPath string `json:"ssl_certificate_key_path"`
+	AutoCert              int    `json:"auto_cert"`
 }
 
 func FirstCert(domain string) (c Cert, err error) {
@@ -27,7 +35,7 @@ func FirstOrCreateCert(domain string) (c Cert, err error) {
 
 func GetAutoCertList() (c []Cert) {
 	var t []Cert
-	db.Find(&t)
+	db.Where("auto_cert", AutoCertEnabled).Find(&t)
 
 	// check if this domain is enabled
 	enabledConfig, err := os.ReadDir(filepath.Join(nginx.GetNginxConfPath("sites-enabled")))
@@ -46,6 +54,24 @@ func GetAutoCertList() (c []Cert) {
 			c = append(c, v)
 		}
 	}
+
+	return
+}
+
+func GetCertList(name, domain string) (c []Cert) {
+	tx := db
+	if name != "" {
+		tx = tx.Where("name LIKE ? or domain LIKE ?", "%"+name+"%", "%"+name+"%")
+	}
+	if domain != "" {
+		tx = tx.Where("domain LIKE ?", "%"+domain+"%")
+	}
+	tx.Find(&c)
+	return
+}
+
+func FirstCertByID(id int) (c Cert, err error) {
+	err = db.First(&c, id).Error
 
 	return
 }

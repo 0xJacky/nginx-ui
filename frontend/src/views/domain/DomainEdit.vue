@@ -4,8 +4,8 @@ import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 
 import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor'
 import {useGettext} from 'vue3-gettext'
-import {reactive, ref} from 'vue'
-import {useRoute} from 'vue-router'
+import {reactive, ref, watch} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
 import domain from '@/api/domain'
 import ngx from '@/api/ngx'
 import {message} from 'ant-design-vue'
@@ -14,8 +14,13 @@ import {message} from 'ant-design-vue'
 const {$gettext, interpolate} = useGettext()
 
 const route = useRoute()
+const router = useRouter()
 
 const name = ref(route.params.name.toString())
+watch(route, () => {
+    name.value = route.params?.name?.toString() ?? ''
+})
+
 const update = ref(0)
 
 const ngx_config = reactive({
@@ -32,6 +37,7 @@ const configText = ref('')
 const ok = ref(false)
 const advance_mode = ref(false)
 const saving = ref(false)
+const filename = ref('')
 
 init()
 
@@ -40,7 +46,7 @@ function handle_response(r: any) {
     Object.keys(cert_info_map).forEach(v => {
         delete cert_info_map[v]
     })
-
+    filename.value = r.name
     configText.value = r.config
     enabled.value = r.enabled
     auto_cert.value = r.auto_cert
@@ -85,9 +91,9 @@ const save = async () => {
         await build_config()
     }
 
-    domain.save(name.value, {content: configText.value}).then(r => {
+    domain.save(name.value, {name: filename.value, content: configText.value}).then(r => {
         handle_response(r)
-
+        router.push('/domain/' + filename.value)
         message.success($gettext('Saved successfully'))
 
     }).catch((e: any) => {
@@ -158,6 +164,9 @@ function on_change_enabled(checked: boolean) {
                 <div class="domain-edit-container" key="basic" v-else>
                     <a-form-item :label="$gettext('Enabled')">
                         <a-switch v-model:checked="enabled" @change="on_change_enabled"/>
+                    </a-form-item>
+                    <a-form-item :label="$gettext('Name')">
+                        <a-input v-model:value="filename"/>
                     </a-form-item>
                     <ngx-config-editor
                         ref="ngx_config_editor"

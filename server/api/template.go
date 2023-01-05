@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+	"github.com/0xJacky/Nginx-UI/server/service"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -55,5 +56,47 @@ proxy_pass http://127.0.0.1:{{ HTTP01PORT }};
 		"message":   "ok",
 		"template":  ngxConfig.BuildConfig(),
 		"tokenized": ngxConfig,
+	})
+}
+
+func GetTemplateConfList(c *gin.Context) {
+	configList, err := service.GetTemplateList("conf")
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": configList,
+	})
+}
+
+func GetTemplateBlockList(c *gin.Context) {
+	configList, err := service.GetTemplateList("block")
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": configList,
+	})
+}
+
+func GetTemplateBlock(c *gin.Context) {
+	type resp struct {
+		service.ConfigInfoItem
+		service.ConfigDetail
+	}
+	detail, err := service.ParseTemplate("block", c.Param("name"))
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, resp{
+		service.GetTemplateInfo("block", c.Param("name")),
+		detail,
 	})
 }

@@ -77,7 +77,15 @@ type CertificateInfo struct {
 }
 
 func GetDomain(c *gin.Context) {
+	rewriteName, ok := c.Get("rewriteConfigFileName")
+
 	name := c.Param("name")
+
+	// for modify filename
+	if ok {
+		name = rewriteName.(string)
+	}
+
 	path := filepath.Join(nginx.GetNginxConfPath("sites-available"), name)
 
 	enabled := true
@@ -93,8 +101,15 @@ func GetDomain(c *gin.Context) {
 	}
 
 	certInfoMap := make(map[int]CertificateInfo)
+	var serverName string
 	for serverIdx, server := range config.Servers {
 		for _, directive := range server.Directives {
+
+			if directive.Directive == "server_name" {
+				serverName = strings.ReplaceAll(directive.Params, " ", "_")
+				continue
+			}
+
 			if directive.Directive == "ssl_certificate" {
 
 				pubKey, err := cert.GetCertInfo(directive.Params)
@@ -116,33 +131,73 @@ func GetDomain(c *gin.Context) {
 		}
 	}
 
-	_, err = model.FirstCert(name)
+	certModel, _ := model.FirstCert(serverName)
 
 	c.JSON(http.StatusOK, gin.H{
 		"enabled":   enabled,
 		"name":      name,
-		"config":    config.BuildConfig(),
+		"config":    config.FmtCode(),
 		"tokenized": config,
-		"auto_cert": err == nil,
+		"auto_cert": certModel.AutoCert == model.AutoCertEnabled,
 		"cert_info": certInfoMap,
 	})
 
 }
 
 func EditDomain(c *gin.Context) {
-	var err error
 	name := c.Param("name")
-	request := make(gin.H)
-	err = c.BindJSON(&request)
+
+	if name == "" {
+		c.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "param name is empty",
+		})
+		return
+	}
+
+	var json struct {
+		Name    string `json:"name" binding:"required"`
+		Content string `json:"content"`
+	}
+
+	if !BindAndValid(c, &json) {
+		return
+	}
+
 	path := filepath.Join(nginx.GetNginxConfPath("sites-available"), name)
 
-	err = os.WriteFile(path, []byte(request["content"].(string)), 0644)
+	err := os.WriteFile(path, []byte(json.Content), 0644)
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
-
 	enabledConfigFilePath := filepath.Join(nginx.GetNginxConfPath("sites-enabled"), name)
+	// rename the config file if needed
+	if name != json.Name {
+		newPath := filepath.Join(nginx.GetNginxConfPath("sites-available"), json.Name)
+		// recreate soft link
+		log.Println(enabledConfigFilePath)
+		if _, err = os.Stat(enabledConfigFilePath); err == nil {
+			log.Println(enabledConfigFilePath)
+			_ = os.Remove(enabledConfigFilePath)
+			enabledConfigFilePath = filepath.Join(nginx.GetNginxConfPath("sites-enabled"), json.Name)
+			err = os.Symlink(newPath, enabledConfigFilePath)
+
+			if err != nil {
+				ErrHandler(c, err)
+				return
+			}
+		}
+		err = os.Rename(path, newPath)
+		if err != nil {
+			ErrHandler(c, err)
+			return
+		}
+		name = json.Name
+		c.Set("rewriteConfigFileName", name)
+
+	}
+
+	enabledConfigFilePath = filepath.Join(nginx.GetNginxConfPath("sites-enabled"), name)
 	if _, err = os.Stat(enabledConfigFilePath); err == nil {
 		// Test nginx configuration
 		err = nginx.TestNginxConf()
@@ -287,20 +342,36 @@ func DeleteDomain(c *gin.Context) {
 
 func AddDomainToAutoCert(c *gin.Context) {
 	domain := c.Param("domain")
-
+	domain = strings.ReplaceAll(domain, " ", "_")
 	certModel, err := model.FirstOrCreateCert(domain)
+
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
+
+	err = certModel.Updates(&model.Cert{
+		AutoCert: model.AutoCertEnabled,
+	})
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
 	c.JSON(http.StatusOK, certModel)
 }
 
 func RemoveDomainFromAutoCert(c *gin.Context) {
+	domain := c.Param("domain")
+	domain = strings.ReplaceAll(domain, " ", "_")
 	certModel := model.Cert{
-		Domain: c.Param("domain"),
+		Domain: domain,
 	}
-	err := certModel.Remove()
+
+	err := certModel.Updates(&model.Cert{
+		AutoCert: model.AutoCertDisabled,
+	})
 
 	if err != nil {
 		ErrHandler(c, err)

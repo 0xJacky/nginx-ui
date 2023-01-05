@@ -1,150 +1,169 @@
 package nginx
 
 import (
-	"bufio"
-	"github.com/emirpasic/gods/stacks/linkedliststack"
 	"github.com/pkg/errors"
-	"os"
+	"github.com/tufanbarisyildirim/gonginx"
+	"github.com/tufanbarisyildirim/gonginx/parser"
 	"strings"
-	"unicode"
 )
 
 const (
-	Server       = "server"
-	Location     = "location"
-	Upstream     = "upstream"
-	CommentStart = "#"
-	Empty        = ""
-	If           = "if"
+	Server   = "server"
+	Location = "location"
+	Upstream = "upstream"
 )
 
-func matchParentheses(stack *linkedliststack.Stack, v int32) {
-	if v == '{' {
-		stack.Push(v)
-	} else if v == '}' {
-		// stack is not empty and the top is == '{'
-		if top, ok := stack.Peek(); ok && top == '{' {
-			stack.Pop()
-		} else {
-			// fail
-			stack.Push(v)
+func (s *NgxServer) ParseServer(directive gonginx.IDirective) {
+	s.parseServer(directive)
+}
+
+func (s *NgxServer) parseServer(directive gonginx.IDirective) {
+	if directive.GetBlock() == nil {
+		return
+	}
+	for _, d := range directive.GetBlock().GetDirectives() {
+		switch d.GetName() {
+		case Location:
+			location := &NgxLocation{
+				Path:     strings.Join(d.GetParameters(), " "),
+				Comments: buildComment(d.GetComment()),
+			}
+			location.parseLocation(d, 0)
+			s.Locations = append(s.Locations, location)
+		default:
+			dir := &NgxDirective{
+				Directive: d.GetName(),
+				Comments:  buildComment(d.GetComment()),
+			}
+			dir.parseDirective(d, 0)
+			s.Directives = append(s.Directives, dir)
 		}
 	}
 }
-
-func parseDirective(scanner *bufio.Scanner) (d NgxDirective) {
-	text := strings.TrimSpace(scanner.Text())
-	// escape empty line or comment line
-	if len(text) < 1 {
+func (l *NgxLocation) ParseLocation(directive gonginx.IDirective, deep int) {
+	l.parseLocation(directive, deep)
+}
+func (l *NgxLocation) parseLocation(directive gonginx.IDirective, deep int) {
+	if directive.GetBlock() == nil {
 		return
 	}
-
-	if text[0] == '#' {
-		d.Directive = "#"
-		d.Params = strings.TrimLeft(text, "#")
-		return
-	}
-
-	if len(text) > 1 {
-		sep := len(text) - 1
-		for k, v := range text {
-			if unicode.IsSpace(v) {
-				sep = k
-				break
+	for _, location := range directive.GetBlock().GetDirectives() {
+		if len(location.GetComment()) > 0 {
+			for _, c := range location.GetComment() {
+				l.Content += strings.Repeat("\t", deep) + c + "\n"
 			}
 		}
-
-		d.Directive = text[0:sep]
-		d.Params = text[sep:]
-	} else {
-		d.Directive = text
-		return
+		l.Content += strings.Repeat("\t", deep) + location.GetName() + " " + strings.Join(location.GetParameters(), " ") + ";\n"
+		l.parseLocation(location, deep+1)
 	}
+}
 
-	stack := linkedliststack.New()
+func (d *NgxDirective) ParseDirective(directive gonginx.IDirective, deep int) {
+	d.parseDirective(directive, deep)
+}
 
-	if d.Directive == Server || d.Directive == Upstream || d.Directive == Location || d.Directive == If {
-		// { } in one line
-		// location = /.well-known/carddav { return 301 /remote.php/dav/; }
-		if strings.Contains(d.Params, "{") {
-			for _, v := range d.Params {
-				matchParentheses(stack, v)
-			}
-
-			if stack.Empty() {
-				return
-			}
-		}
-
-		// location ^~ /.well-known {
-		// location ^~ /.well-known
-		// {
-		// location ^~ /.well-known
-		//
-		//    {
-		// { } not in one line
-		for scanner.Scan() {
-			text = strings.TrimSpace(scanner.Text())
-			// escape empty line
-			if text == "" {
-				continue
-			}
-			d.Params += "\n" + scanner.Text()
-			for _, v := range text {
-				matchParentheses(stack, v)
-				if stack.Empty() {
-					break
+func (d *NgxDirective) parseDirective(directive gonginx.IDirective, deep int) {
+	if directive.GetBlock() != nil {
+		d.Params += directive.GetName() + " "
+		d.Directive = ""
+	}
+	d.Params += strings.Join(directive.GetParameters(), " ")
+	if directive.GetBlock() != nil {
+		d.Params += " {\n"
+		for _, location := range directive.GetBlock().GetDirectives() {
+			if len(location.GetComment()) > 0 {
+				for _, c := range location.GetComment() {
+					d.Params += strings.Repeat("\t", deep) + c + "\n"
 				}
 			}
-			if stack.Empty() {
-				break
+			d.Params += strings.Repeat("\t", deep+1) + location.GetName() + " " +
+				strings.Join(location.GetParameters(), " ") + ";\n"
+			// d.parseDirective(location, deep+1)
+			if location.GetBlock() == nil {
+				continue
+			}
+			for _, v := range location.GetBlock().GetDirectives() {
+				d.parseDirective(v, deep+1)
 			}
 		}
+		d.Params += "}\n"
+		return
 	}
-	d.Params = strings.TrimSpace(d.Params)
+}
+
+func (u *NgxUpstream) parseUpstream(directive gonginx.IDirective) {
+	if directive.GetBlock() == nil {
+		return
+	}
+	for _, us := range directive.GetBlock().GetDirectives() {
+		d := &NgxDirective{
+			Directive: us.GetName(),
+			Params:    strings.Join(us.GetParameters(), " "),
+			Comments:  buildComment(us.GetComment()),
+		}
+		u.Directives = append(u.Directives, d)
+	}
+}
+
+func (c *NgxConfig) parseCustom(directive gonginx.IDirective) {
+	if directive.GetBlock() == nil {
+		return
+	}
+	c.Custom += "{\n"
+	for _, v := range directive.GetBlock().GetDirectives() {
+		c.Custom += strings.Join(v.GetComment(), "\n") + "\n" +
+			v.GetName() + " " + strings.Join(v.GetParameters(), " ") + ";\n"
+	}
+	c.Custom += "}\n"
+}
+
+func buildComment(c []string) string {
+	return strings.ReplaceAll(strings.Join(c, "\n"), "#", "")
+}
+
+func parse(block gonginx.IBlock, ngxConfig *NgxConfig) {
+	if block == nil {
+		return
+	}
+	for _, v := range block.GetDirectives() {
+		comments := buildComment(v.GetComment())
+		switch v.GetName() {
+		case Server:
+			server := NewNgxServer()
+			server.Comments = comments
+			server.parseServer(v)
+			ngxConfig.Servers = append(ngxConfig.Servers, server)
+		case Upstream:
+			upstream := &NgxUpstream{}
+			upstream.Comments = comments
+			upstream.parseUpstream(v)
+			ngxConfig.Upstreams = append(ngxConfig.Upstreams, upstream)
+		default:
+			ngxConfig.Custom += strings.Join(v.GetComment(), "\n") + "\n" +
+				v.GetName() + " " + strings.Join(v.GetParameters(), " ") + "\n"
+			ngxConfig.parseCustom(v)
+		}
+	}
+	ngxConfig.Custom = FmtCode(ngxConfig.Custom)
+}
+
+func ParseNgxConfigByContent(content string) (ngxConfig *NgxConfig) {
+	p := parser.NewStringParser(content)
+	c := p.Parse()
+	ngxConfig = NewNgxConfig("")
+	ngxConfig.c = c
+	parse(c.Block, ngxConfig)
 	return
 }
 
-func ParseNgxConfigByScanner(filename string, scanner *bufio.Scanner) (c *NgxConfig, err error) {
-	c = NewNgxConfig(filename)
-
-	for scanner.Scan() {
-		d := parseDirective(scanner)
-		paramsScanner := bufio.NewScanner(strings.NewReader(d.Params))
-		switch d.Directive {
-		case Server:
-			c.parseServer(paramsScanner)
-		case Upstream:
-			c.parseUpstream(paramsScanner)
-		case CommentStart:
-			c.commentQueue.Enqueue(d.Params)
-		case Empty:
-			continue
-		default:
-			c.Custom += d.Orig() + "\n"
-		}
-	}
-
-	if err = scanner.Err(); err != nil {
-		return nil, errors.Wrap(err, "error scanner in ParseNgxConfig")
-	}
-
-	// Attach the rest of the comments to the last server
-	if len(c.Servers) > 0 {
-		c.Servers[len(c.Servers)-1].Comments += c.commentQueue.DequeueAllComments()
-	}
-
-	return c, nil
-}
-
-func ParseNgxConfig(filename string) (c *NgxConfig, err error) {
-	file, err := os.Open(filename)
+func ParseNgxConfig(filename string) (ngxConfig *NgxConfig, err error) {
+	p, err := parser.NewParser(filename)
 	if err != nil {
-		return nil, errors.Wrap(err, "error open file in ParseNgxConfig")
+		return nil, errors.Wrap(err, "error ParseNgxConfig")
 	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-
-	return ParseNgxConfigByScanner(filename, scanner)
+	c := p.Parse()
+	ngxConfig = NewNgxConfig(filename)
+	ngxConfig.c = c
+	parse(c.Block, ngxConfig)
+	return
 }

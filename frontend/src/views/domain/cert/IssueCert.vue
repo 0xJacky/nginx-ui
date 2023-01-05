@@ -4,6 +4,7 @@ import {computed, h, nextTick, onMounted, ref, VNode, watch} from 'vue'
 import {message} from 'ant-design-vue'
 import domain from '@/api/domain'
 import websocket from '@/lib/websocket'
+import Template from '@/views/template/Template.vue'
 
 const {$gettext, interpolate} = useGettext()
 
@@ -27,12 +28,6 @@ function job() {
 
     if (no_server_name.value) {
         message.error($gettext('server_name not found in directives'))
-        issuing_cert.value = false
-        return
-    }
-
-    if (server_name_more_than_one.value) {
-        message.error($gettext('server_name parameters more than one'))
         issuing_cert.value = false
         return
     }
@@ -62,8 +57,6 @@ function job() {
 function callback(ssl_certificate: string, ssl_certificate_key: string) {
     props.directivesMap['ssl_certificate'][0]['params'] = ssl_certificate
     props.directivesMap['ssl_certificate_key'][0]['params'] = ssl_certificate_key
-
-    emit('callback')
 }
 
 function change_auto_cert(r: boolean) {
@@ -102,10 +95,12 @@ const issue_cert = async (server_name: string, callback: Function) => {
 
     log($gettext('Getting the certificate, please wait...'))
 
-    const ws = websocket('/api/cert/issue/' + server_name, false)
+    const ws = websocket('/api/cert/issue', false)
 
     ws.onopen = () => {
-        ws.send('go')
+        ws.send(JSON.stringify({
+            server_name: server_name.trim().split(' ')
+        }))
     }
 
     ws.onmessage = m => {
@@ -132,13 +127,8 @@ const issue_cert = async (server_name: string, callback: Function) => {
     }
 }
 
-const server_name_more_than_one = computed(() => {
-    return props.directivesMap['server_name'] && (props.directivesMap['server_name'].length > 1 ||
-        props.directivesMap['server_name'][0].params.trim().indexOf(' ') > 0)
-})
-
 const no_server_name = computed(() => {
-    return props.directivesMap['server_name'].length === 0
+    return props.directivesMap['server_name']?.length === 0
 })
 
 const name = computed(() => {
@@ -154,11 +144,6 @@ const enabled = computed({
     }
 })
 
-watch(server_name_more_than_one, () => {
-    emit('update:enabled', false)
-    onchange(false)
-})
-
 watch(no_server_name, () => {
     emit('update:enabled', false)
     onchange(false)
@@ -166,7 +151,7 @@ watch(no_server_name, () => {
 
 const progressStrokeColor = {
     from: '#108ee9',
-    to: '#87d068',
+    to: '#87d068'
 }
 
 const progressPercent = ref(0)
@@ -180,6 +165,7 @@ const modalClosable = ref(false)
     <a-modal
         :title="$gettext('Obtaining certificate')"
         v-model:visible="modalVisible"
+        :mask-closable="modalClosable"
         :footer="null" :closable="modalClosable" force-render>
         <a-progress
             :stroke-color="progressStrokeColor"
@@ -191,16 +177,16 @@ const modalClosable = ref(false)
         </div>
 
     </a-modal>
-    <div>
+    <div class="issue-cert">
         <a-form-item :label="$gettext('Encrypt website with Let\'s Encrypt')">
             <a-switch
                 :loading="issuing_cert"
                 v-model:checked="enabled"
                 @change="onchange"
-                :disabled="no_server_name||server_name_more_than_one"
+                :disabled="no_server_name"
             />
             <a-alert
-                v-if="no_server_name||server_name_more_than_one"
+                v-if="no_server_name"
                 :message="$gettext('Warning')"
                 type="warning"
                 show-icon
@@ -209,24 +195,25 @@ const modalClosable = ref(false)
                     <span v-if="no_server_name" v-translate>
                         server_name parameter is required
                     </span>
-                    <span v-if="server_name_more_than_one" v-translate>
-                        server_name parameters more than one
-                    </span>
                 </template>
             </a-alert>
         </a-form-item>
-        <p v-translate>
-            Note: The server_name in the current configuration must be the domain name
-            you need to get the certificate.
-        </p>
-        <p v-translate>
-            The certificate for the domain will be checked every hour,
-            and will be renewed if it has been more than 1 month since it was last issued.
-        </p>
-        <p v-translate>
-            Make sure you have configured a reverse proxy for .well-known
-            directory to HTTPChallengePort (default: 9180) before getting the certificate.
-        </p>
+        <a-alert type="info" closable :message="$gettext('Note')">
+            <template #description>
+                <p v-translate>
+                    The server_name in the current configuration must be the domain name
+                    you need to get the certificate.
+                </p>
+                <p v-translate>
+                    The certificate for the domain will be checked every hour,
+                    and will be renewed if it has been more than 1 month since it was last issued.
+                </p>
+                <p v-translate>
+                    Make sure you have configured a reverse proxy for .well-known
+                    directory to HTTPChallengePort (default: 9180) before getting the certificate.
+                </p>
+            </template>
+        </a-alert>
     </div>
 </template>
 
@@ -247,6 +234,10 @@ const modalClosable = ref(false)
 </style>
 
 <style lang="less" scoped>
+.issue-cert {
+    margin: 15px 0;
+}
+
 .switch-wrapper {
     position: relative;
 

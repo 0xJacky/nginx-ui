@@ -91,12 +91,16 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
 我们欢迎您将项目翻译成任何语言。
 
 ### 构建基于
-
-- [The Go Programming Language](https://go.dev/)
+- [The Go Programming Language](https://go.dev)
 - [Gin Web Framework](https://gin-gonic.com)
-- [GORM](http://gorm.io/index.html)
-- [Vue 2](https://vuejs.org)
-- [vue-gettext](https://github.com/Polyconseil/vue-gettext)
+- [GORM](http://gorm.io)
+- [Vue 3](https://v3.vuejs.org)
+- [Vite](https://vitejs.dev)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Ant Design Vue](https://antdv.com)
+- [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
+- [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
+- [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
 
 ## 入门指南
 

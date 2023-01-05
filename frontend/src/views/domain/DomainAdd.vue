@@ -8,6 +8,7 @@ import ngx from '@/api/ngx'
 import {computed, reactive, ref} from 'vue'
 import {message} from 'ant-design-vue'
 import {useRouter} from 'vue-router'
+import template from '@/api/template'
 
 const {$gettext, interpolate} = useGettext()
 
@@ -39,7 +40,7 @@ function init() {
 
 function save() {
     ngx.build_config(ngx_config).then(r => {
-        domain.save(config.name, {content: r.content, enabled: true}).then(() => {
+        domain.save(config.name, {name: config.name, content: r.content, enabled: true}).then(() => {
             message.success($gettext('Saved successfully'))
 
             domain.enable(config.name).then(() => {
@@ -89,14 +90,12 @@ const has_server_name = computed(() => {
                 <a-step :title="$gettext('Configure SSL')"/>
                 <a-step :title="$gettext('Finished')"/>
             </a-steps>
-
             <template v-if="current_step===0">
                 <a-form layout="vertical">
                     <a-form-item :label="$gettext('Configuration Name')">
                         <a-input v-model:value="config.name"/>
                     </a-form-item>
                 </a-form>
-
 
                 <directive-editor :ngx_directives="ngx_config.servers[0].directives"/>
                 <br/>

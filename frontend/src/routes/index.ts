@@ -9,7 +9,9 @@ import {
     HomeOutlined,
     InfoCircleOutlined,
     UserOutlined,
-    FileTextOutlined
+    FileTextOutlined,
+    SettingOutlined,
+    SafetyCertificateOutlined
 } from '@ant-design/icons-vue'
 
 const {$gettext} = gettext
@@ -36,7 +38,7 @@ export const routes = [
                 component: () => import('@/views/user/User.vue'),
                 meta: {
                     icon: UserOutlined
-                },
+                }
             },
             {
                 path: 'domain',
@@ -49,11 +51,11 @@ export const routes = [
                 children: [{
                     path: 'list',
                     name: () => $gettext('Sites List'),
-                    component: () => import('@/views/domain/DomainList.vue'),
+                    component: () => import('@/views/domain/DomainList.vue')
                 }, {
                     path: 'add',
                     name: () => $gettext('Add Site'),
-                    component: () => import('@/views/domain/DomainAdd.vue'),
+                    component: () => import('@/views/domain/DomainAdd.vue')
                 }, {
                     path: ':name',
                     name: () => $gettext('Edit Site'),
@@ -61,7 +63,7 @@ export const routes = [
                     meta: {
                         hiddenInSidebar: true
                     }
-                },]
+                }]
             },
             {
                 path: 'config',
@@ -73,12 +75,20 @@ export const routes = [
                 }
             },
             {
-                path: 'config/:name',
+                path: 'config/:name+/edit',
                 name: () => $gettext('Edit Configuration'),
                 component: () => import('@/views/config/ConfigEdit.vue'),
                 meta: {
                     hiddenInSidebar: true
-                },
+                }
+            },
+            {
+                path: 'cert',
+                name: () => $gettext('Certification'),
+                component: () => import('@/views/cert/Cert.vue'),
+                meta: {
+                    icon: SafetyCertificateOutlined
+                }
             },
             {
                 path: 'terminal',
@@ -97,19 +107,27 @@ export const routes = [
                 children: [{
                     path: 'access',
                     name: () => $gettext('Access Logs'),
-                    component: () => import('@/views/nginx_log/NginxLog.vue'),
+                    component: () => import('@/views/nginx_log/NginxLog.vue')
                 }, {
                     path: 'error',
                     name: () => $gettext('Error Logs'),
-                    component: () => import('@/views/nginx_log/NginxLog.vue'),
+                    component: () => import('@/views/nginx_log/NginxLog.vue')
                 }, {
                     path: 'site',
                     name: () => $gettext('Site Logs'),
                     component: () => import('@/views/nginx_log/NginxLog.vue'),
                     meta: {
                         hiddenInSidebar: true
-                    },
+                    }
                 }]
+            },
+            {
+                path: 'preference',
+                name: () => $gettext('Preference'),
+                component: () => import('@/views/preference/Preference.vue'),
+                meta: {
+                    icon: SettingOutlined
+                }
             },
             {
                 path: 'about',
@@ -118,7 +136,7 @@ export const routes = [
                 meta: {
                     icon: InfoCircleOutlined
                 }
-            },
+            }
         ]
     },
     {
@@ -144,7 +162,7 @@ export const routes = [
 const router = createRouter({
     history: createWebHistory(),
     // @ts-ignore
-    routes: routes,
+    routes: routes
 })
 
 router.beforeEach((to, from, next) => {

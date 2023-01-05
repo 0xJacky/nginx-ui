@@ -16,21 +16,21 @@ var (
 )
 
 type Server struct {
-	HttpPort          string
-	RunMode           string
-	WebSocketToken    string
-	JwtSecret         string
-	HTTPChallengePort string
-	Email             string
-	Database          string
-	StartCmd          string
-	Demo              bool
-	PageSize          int
+	HttpPort          string `json:"http_port"`
+	RunMode           string `json:"run_mode"`
+	JwtSecret         string `json:"jwt_secret"`
+	HTTPChallengePort string `json:"http_challenge_port"`
+	Email             string `json:"email"`
+	Database          string `json:"database"`
+	StartCmd          string `json:"start_cmd"`
+	CADir             string `json:"ca_dir"`
+	Demo              bool   `json:"demo"`
+	PageSize          int    `json:"page_size"`
 }
 
 type NginxLog struct {
-	AccessLogPath string
-	ErrorLogPath  string
+	AccessLogPath string `json:"access_log_path"`
+	ErrorLogPath  string `json:"error_log_path"`
 }
 
 var ServerSettings = &Server{
@@ -41,6 +41,7 @@ var ServerSettings = &Server{
 	StartCmd:          "login",
 	Demo:              false,
 	PageSize:          10,
+	CADir:             "",
 }
 
 var NginxLogSettings = &NginxLog{

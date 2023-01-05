@@ -3,6 +3,7 @@ package cert
 import (
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"log"
+	"strings"
 	"time"
 )
 
@@ -56,7 +57,8 @@ func AutoCert() {
 		logChan := make(chan string, 1)
 		errChan := make(chan error, 1)
 
-		go IssueCert(domain, logChan, errChan)
+		// support SAN certification
+		go IssueCert(strings.Split(domain, "_"), logChan, errChan)
 
 		go handleIssueCertLogChan(logChan)
 

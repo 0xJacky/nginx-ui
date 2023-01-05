@@ -14,13 +14,15 @@ import (
 func GetConfigs(c *gin.Context) {
 	orderBy := c.Query("order_by")
 	sort := c.DefaultQuery("sort", "desc")
+	dir := c.DefaultQuery("dir", "/")
 
 	mySort := map[string]string{
 		"name":   "string",
 		"modify": "time",
+		"is_dir": "bool",
 	}
 
-	configFiles, err := os.ReadDir(nginx.GetNginxConfPath("/"))
+	configFiles, err := os.ReadDir(nginx.GetNginxConfPath(dir))
 
 	if err != nil {
 		ErrHandler(c, err)
@@ -56,14 +58,13 @@ func GetConfigs(c *gin.Context) {
 			if targetInfo.IsDir() {
 				continue
 			}
-		default:
-			continue
 		}
 
 		configs = append(configs, gin.H{
 			"name":   file.Name(),
 			"size":   fileInfo.Size(),
 			"modify": fileInfo.ModTime(),
+			"is_dir": file.IsDir(),
 		})
 	}
 
@@ -109,7 +110,6 @@ func AddConfig(c *gin.Context) {
 
 	path := filepath.Join(nginx.GetNginxConfPath("/"), name)
 
-	log.Println(path)
 	if _, err = os.Stat(path); err == nil {
 		c.JSON(http.StatusNotAcceptable, gin.H{
 			"message": "config exist",

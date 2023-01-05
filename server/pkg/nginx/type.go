@@ -1,27 +1,22 @@
 package nginx
 
 import (
-	"github.com/emirpasic/gods/queues/linkedlistqueue"
+	"github.com/tufanbarisyildirim/gonginx"
 	"strings"
 )
 
-type CommentQueue struct {
-	*linkedlistqueue.Queue
-}
-
 type NgxConfig struct {
-	FileName     string         `json:"file_name"`
-	Upstreams    []*NgxUpstream `json:"upstreams"`
-	Servers      []*NgxServer   `json:"servers"`
-	Custom       string         `json:"custom"`
-	commentQueue *CommentQueue
+	FileName  string         `json:"file_name"`
+	Upstreams []*NgxUpstream `json:"upstreams"`
+	Servers   []*NgxServer   `json:"servers"`
+	Custom    string         `json:"custom"`
+	c         *gonginx.Config
 }
 
 type NgxServer struct {
-	Directives   []*NgxDirective `json:"directives"`
-	Locations    []*NgxLocation  `json:"locations"`
-	Comments     string          `json:"comments"`
-	commentQueue *CommentQueue
+	Directives []*NgxDirective `json:"directives"`
+	Locations  []*NgxLocation  `json:"locations"`
+	Comments   string          `json:"comments"`
 }
 
 type NgxUpstream struct {
@@ -42,18 +37,6 @@ type NgxLocation struct {
 	Comments string `json:"comments"`
 }
 
-func (c *CommentQueue) DequeueAllComments() (comments string) {
-	for !c.Empty() {
-		comment, ok := c.Dequeue()
-
-		if ok {
-			comments += strings.TrimSpace(comment.(string)) + "\n"
-		}
-	}
-
-	return
-}
-
 func (d *NgxDirective) Orig() string {
 	return d.Directive + " " + d.Params
 }
@@ -65,16 +48,14 @@ func (d *NgxDirective) TrimParams() {
 
 func NewNgxServer() *NgxServer {
 	return &NgxServer{
-		Locations:    make([]*NgxLocation, 0),
-		Directives:   make([]*NgxDirective, 0),
-		commentQueue: &CommentQueue{linkedlistqueue.New()},
+		Locations:  make([]*NgxLocation, 0),
+		Directives: make([]*NgxDirective, 0),
 	}
 }
 
 func NewNgxConfig(filename string) *NgxConfig {
 	return &NgxConfig{
-		FileName:     filename,
-		commentQueue: &CommentQueue{linkedlistqueue.New()},
-		Upstreams:    make([]*NgxUpstream, 0),
+		FileName:  filename,
+		Upstreams: make([]*NgxUpstream, 0),
 	}
 }

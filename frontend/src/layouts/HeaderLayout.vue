@@ -55,7 +55,7 @@ function logout() {
     }
 }
 
-@media (prefers-color-scheme: dark) {
+.dark {
     .header {
         box-shadow: 1px 1px 0 0 #404040;
 

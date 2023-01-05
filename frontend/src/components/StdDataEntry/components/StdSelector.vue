@@ -79,28 +79,28 @@ const _selectedKey = computed({
                 {{ M_value }}
             </div>
             <a-modal
-                    :mask="false"
-                    :visible="visible"
-                    :cancel-text="$gettext('Cancel')"
-                    :ok-text="$gettext('OK')"
-                    :title="$gettext('Selector')"
-                    @cancel="visible=false"
-                    @ok="ok()"
-                    :width="800"
-                    destroyOnClose
+                :mask="false"
+                :visible="visible"
+                :cancel-text="$gettext('Cancel')"
+                :ok-text="$gettext('OK')"
+                :title="$gettext('Selector')"
+                @cancel="visible=false"
+                @ok="ok()"
+                :width="800"
+                destroyOnClose
             >
                 {{ description }}
                 <std-table
-                        :api="api"
-                        :columns="columns"
-                        :data_key="data_key"
-                        :disable_search="disable_search"
-                        :pithy="true"
-                        :get_params="get_params"
-                        :selectionType="selectionType"
-                        :disable_query_params="true"
-                        @onSelected="onSelect"
-                        @onSelectedRecord="onSelectedRecord"
+                    :api="api"
+                    :columns="columns"
+                    :data_key="data_key"
+                    :disable_search="disable_search"
+                    :pithy="true"
+                    :get_params="get_params"
+                    :selectionType="selectionType"
+                    :disable_query_params="true"
+                    @onSelected="onSelect"
+                    @onSelectedRecord="onSelectedRecord"
                 />
             </a-modal>
         </div>
@@ -108,6 +108,7 @@ const _selectedKey = computed({
 </template>
 
 <style lang="less" scoped>
+.dark .std-selector-container
 .std-selector-container {
     height: 39.9px;
     display: flex;
@@ -131,12 +132,6 @@ const _selectedKey = computed({
         margin: 0 10px 0 0;
         cursor: pointer;
         min-width: 180px;
-
-        @media (prefers-color-scheme: dark) {
-            background-color: #1e1f20;
-            border: 1px solid #666666;
-            color: rgba(255, 255, 255, 0.99);
-        }
 
         .value {
 

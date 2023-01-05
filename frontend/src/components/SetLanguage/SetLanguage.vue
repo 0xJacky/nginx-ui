@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import gettext from '@/gettext'
 
-
 import {ref, watch} from 'vue'
 
 import {useSettingsStore} from '@/pinia'

@@ -4,16 +4,13 @@ import 'ace-builds/src-noconflict/mode-nginx'
 import 'ace-builds/src-noconflict/theme-monokai'
 import {computed} from 'vue'
 
-const props = defineProps<{
-    content: string
-    defaultHeight?: string
-}>()
+const props = defineProps(['content', 'defaultHeight'])
 
 const emit = defineEmits(['update:content'])
 
 const value = computed({
     get() {
-        return props.content
+        return props.content ?? ''
     },
     set(value) {
         emit('update:content', value)
@@ -27,7 +24,7 @@ const value = computed({
         lang="nginx"
         theme="monokai"
         :style="{
-            minHeight: props.defaultHeight || '100vh'
+            minHeight: defaultHeight || '100vh'
         }"/>
 </template>
 

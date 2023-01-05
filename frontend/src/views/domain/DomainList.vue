@@ -30,7 +30,7 @@ const columns = [{
             template.push(<Badge status="success"/>)
             template.push($gettext('Enabled'))
         } else {
-            template.push(<Badge status="error"/>)
+            template.push(<Badge status="warning"/>)
             template.push($gettext('Disabled'))
         }
         return h('div', template)
@@ -110,7 +110,7 @@ function destroy(site_name: any) {
                     <a-popconfirm
                         :cancelText="$gettext('No')"
                         :okText="$gettext('OK')"
-                        :title="$gettext('Are you sure you want to delete ?')"
+                        :title="$gettext('Are you sure you want to delete?')"
                         @confirm="destroy(record['name'])">
                         <a v-translate>Delete</a>
                     </a-popconfirm>

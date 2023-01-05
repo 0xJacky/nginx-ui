@@ -7,7 +7,7 @@ import draggable from 'vuedraggable'
 
 const {$gettext} = useGettext()
 
-const props = defineProps(['locations'])
+const props = defineProps(['locations', 'readonly'])
 
 let location = reactive({
     comments: '',
@@ -52,7 +52,7 @@ function remove(index: number) {
                     <HolderOutlined/>
                     {{ $gettext('Location') }}
                 </template>
-                <template #extra>
+                <template #extra v-if="!readonly">
                     <a-popconfirm @confirm="remove(index)"
                                   :title="$gettext('Are you sure you want to remove this location?')"
                                   :ok-text="$gettext('Yes')"
@@ -94,7 +94,7 @@ function remove(index: number) {
         </a-form>
     </a-modal>
 
-    <div>
+    <div v-if="!readonly">
         <a-button block @click="add">{{ $gettext('Add Location') }}</a-button>
     </div>
 </template>

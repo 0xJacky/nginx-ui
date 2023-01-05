@@ -7,6 +7,10 @@ const ngx = {
 
     tokenize_config(content: string) {
         return http.post('/ngx/tokenize_config', {content})
+    },
+
+    format_code(content: string) {
+        return http.post('/ngx/format_code', {content})
     }
 }
 

@@ -39,7 +39,7 @@ const lang = computed(() => {
 
 </script>
 <template>
-    <a-config-provider :locale="lang">
+    <a-config-provider :locale="lang" :autoInsertSpaceInButton="false">
         <a-layout style="min-height: 100%;">
             <div class="drawer-sidebar">
                 <a-drawer
@@ -122,37 +122,36 @@ const lang = computed(() => {
 </style>
 
 <style lang="less">
-@dark: ~"(prefers-color-scheme: dark)";
-
 body {
     overflow: unset !important;
 }
 
-@media @dark {
+.dark {
     h1, h2, h3, h4, h5, h6, p {
         color: #fafafa !important;
     }
 
-}
+    .ant-checkbox-indeterminate {
+        .ant-checkbox-inner {
+            background-color: transparent !important;
+        }
+    }
 
-.ant-layout-header {
-    padding: 0 !important;
-    background-color: #fff !important;
-    @media @dark {
+    .ant-menu {
+        background: unset !important;
+    }
+
+    .ant-layout-header {
         background-color: #1f1f1f !important;
     }
-}
 
-.ant-card {
-    @media @dark {
+    .ant-card {
         background-color: #1f1f1f !important;
     }
-}
 
-.ant-layout-sider {
-    background-color: #ffffff;
-    @media @dark {
+    .ant-layout-sider {
         background-color: rgb(20, 20, 20) !important;
+
         .ant-layout-sider-trigger {
             background-color: rgb(20, 20, 20) !important;
         }
@@ -160,7 +159,24 @@ body {
         .ant-menu {
             border-right: 0 !important;
         }
+
+        &.ant-layout-sider-has-trigger {
+            padding-bottom: 0;
+        }
+
+        box-shadow: 2px 0 8px rgba(29, 35, 41, 0.05);
     }
+
+}
+
+.ant-layout-header {
+    padding: 0 !important;
+    background-color: #fff !important;
+}
+
+
+.ant-layout-sider {
+    background-color: #ffffff;
 
     &.ant-layout-sider-has-trigger {
         padding-bottom: 0;
@@ -179,18 +195,6 @@ body {
     }
 }
 
-@media @dark {
-    .ant-checkbox-indeterminate {
-        .ant-checkbox-inner {
-            background-color: transparent !important;
-        }
-    }
-
-    .ant-menu {
-        background: unset !important;
-    }
-
-}
 
 .ant-table-small {
     font-size: 13px;

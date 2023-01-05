@@ -13,6 +13,7 @@ function changeTheme(theme: string) {
 }
 
 export const dark_mode = async (enabled: Boolean) => {
+    document.body.setAttribute('class', enabled ? 'dark' : 'light')
     if (enabled) {
         changeTheme((await import('@/dark.less?inline')).default)
         changeCss('--page-bg-color', '#141414')

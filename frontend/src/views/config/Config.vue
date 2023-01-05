@@ -2,43 +2,68 @@
 import StdTable from '@/components/StdDataDisplay/StdTable.vue'
 import gettext from '@/gettext'
 import config from '@/api/config'
-import {datetime} from '@/components/StdDataDisplay/StdTableTransformer'
+import {customRender, datetime} from '@/components/StdDataDisplay/StdTableTransformer'
+import {computed, h, nextTick, ref, watch} from 'vue'
 
 const {$gettext} = gettext
 
 const api = config
 
-const columns = [{
-    title: () => $gettext('Name'),
-    dataIndex: 'name',
-    sorter: true,
-    pithy: true
-}, {
-    title: () => $gettext('Updated at'),
-    dataIndex: 'modify',
-    customRender: datetime,
-    datetime: true,
-    sorter: true,
-    pithy: true
-}, {
-    title: () => $gettext('Action'),
-    dataIndex: 'action'
-}]
+import configColumns from '@/views/config/config'
+import {useRoute} from 'vue-router'
+import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
+import router from '@/routes'
+
+const table = ref(null)
+const route = useRoute()
+
+const basePath = computed(() => {
+    let dir = route?.query?.dir ?? ''
+    if (dir) dir += '/'
+    return dir
+})
+
+const get_params = computed(() => {
+    return {
+        dir: basePath.value
+    }
+})
+
+const update = ref(1)
+
+watch(get_params, () => {
+    update.value++
+})
 </script>
+
 <template>
     <a-card :title="$gettext('Configurations')">
         <std-table
+            :key="update"
+            ref="table"
             :api="api"
-            :columns="columns"
+            :columns="configColumns"
             :deletable="false"
             :disable_search="true"
             row-key="name"
-            @clickEdit="r => {
-                $router.push({
-                    path: '/config/' + r
-                })
+            :get_params="get_params"
+            @clickEdit="(r, row) => {
+                if (!row.is_dir) {
+                    $router.push({
+                        path: '/config/' + basePath + r + '/edit'
+                    })
+                } else {
+                    $router.push({
+                        query: {
+                            dir: basePath + r
+                        }
+                    })
+                }
             }"
         />
+        <footer-tool-bar v-if="basePath">
+            <a-button @click="router.go(-1)">{{ $gettext('Back') }}</a-button>
+        </footer-tool-bar>
     </a-card>
 </template>
 
