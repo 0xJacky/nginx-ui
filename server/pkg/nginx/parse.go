@@ -134,7 +134,9 @@ func parse(block gonginx.IBlock, ngxConfig *NgxConfig) {
 			server.parseServer(v)
 			ngxConfig.Servers = append(ngxConfig.Servers, server)
 		case Upstream:
-			upstream := &NgxUpstream{}
+			upstream := &NgxUpstream{
+				Name: strings.Join(v.GetParameters(), " "),
+			}
 			upstream.Comments = comments
 			upstream.parseUpstream(v)
 			ngxConfig.Upstreams = append(ngxConfig.Upstreams, upstream)
