@@ -32,13 +32,13 @@ const rulesRef = reactive({
     username: [
         {
             required: true,
-            message: () => $gettext('Please input your username!'),
+            message: () => $gettext('Please input your username!')
         }
     ],
     password: [
         {
             required: true,
-            message: () => $gettext('Please input your password!'),
+            message: () => $gettext('Please input your password!')
         }
     ]
 })
@@ -46,15 +46,16 @@ const rulesRef = reactive({
 const {validate, validateInfos, clearValidate} = Form.useForm(modelRef, rulesRef)
 
 const onSubmit = () => {
-    validate().then(() => {
-        // modelRef
-        auth.login(modelRef.username, modelRef.password).then(async () => {
+    validate().then(async () => {
+        loading.value = true
+        await auth.login(modelRef.username, modelRef.password).then(async () => {
             message.success($gettext('Login successful'), 1)
             const next = (route.query?.next || '').toString() || '/'
             await router.push(next)
         }).catch(e => {
             message.error($gettext(e.message ?? 'Server error'))
         })
+        loading.value = false
     })
 }
 
