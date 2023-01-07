@@ -50,6 +50,7 @@ msgid "Add Site"
 msgstr "新增站點"
 
 #: src/views/domain/DomainEdit.vue:18 src/views/domain/DomainEdit.vue:19
+#: src/views/domain/DomainEdit.vue:20
 msgid "Advance Mode"
 msgstr "高階模式"
 
@@ -81,7 +82,7 @@ msgstr ""
 msgid "Auto"
 msgstr "自動"
 
-#: src/views/cert/Cert.vue:41
+#: src/views/cert/Cert.vue:41 src/views/domain/cert/ChangeCert.vue:35
 #, fuzzy
 msgid "Auto Cert"
 msgstr "自動刷新"
@@ -104,7 +105,7 @@ msgstr "已啟用 %{name} 自動續簽"
 
 #: src/views/config/Config.vue:16 src/views/config/Config.vue:17
 #: src/views/config/Config.vue:27 src/views/config/Config.vue:5
-#: src/views/config/ConfigEdit.vue:64 src/views/domain/DomainEdit.vue:187
+#: src/views/config/ConfigEdit.vue:64 src/views/domain/DomainEdit.vue:222
 #: src/views/nginx_log/NginxLog.vue:173
 msgid "Back"
 msgstr "返回"
@@ -118,6 +119,7 @@ msgid "Base information"
 msgstr "基本訊息"
 
 #: src/views/domain/DomainEdit.vue:21 src/views/domain/DomainEdit.vue:22
+#: src/views/domain/DomainEdit.vue:23
 msgid "Basic Mode"
 msgstr "基本模式"
 
@@ -278,14 +280,15 @@ msgstr "指令"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "關閉 %{name} 自動續簽失敗"
 
-#: src/views/cert/Cert.vue:51 src/views/domain/DomainEdit.vue:10
-#: src/views/domain/DomainEdit.vue:9 src/views/domain/DomainList.vue:16
-#: src/views/domain/DomainList.vue:34 src/views/domain/DomainList.vue:7
-#: src/views/domain/DomainList.vue:8 src/views/domain/DomainList.vue:9
+#: src/views/cert/Cert.vue:51 src/views/domain/cert/ChangeCert.vue:45
+#: src/views/domain/DomainEdit.vue:10 src/views/domain/DomainEdit.vue:9
+#: src/views/domain/DomainList.vue:16 src/views/domain/DomainList.vue:34
+#: src/views/domain/DomainList.vue:7 src/views/domain/DomainList.vue:8
+#: src/views/domain/DomainList.vue:9
 msgid "Disabled"
 msgstr "禁用"
 
-#: src/views/domain/DomainEdit.vue:118 src/views/domain/DomainList.vue:69
+#: src/views/domain/DomainEdit.vue:143 src/views/domain/DomainList.vue:69
 msgid "Disabled successfully"
 msgstr "禁用成功"
 
@@ -329,15 +332,15 @@ msgstr "啟用失敗"
 msgid "Enable TLS"
 msgstr "啟用 TLS"
 
-#: src/views/cert/Cert.vue:48 src/views/domain/DomainEdit.vue:33
-#: src/views/domain/DomainEdit.vue:6 src/views/domain/DomainEdit.vue:7
-#: src/views/domain/DomainList.vue:10 src/views/domain/DomainList.vue:11
-#: src/views/domain/DomainList.vue:12 src/views/domain/DomainList.vue:19
-#: src/views/domain/DomainList.vue:31
+#: src/views/cert/Cert.vue:48 src/views/domain/cert/ChangeCert.vue:42
+#: src/views/domain/DomainEdit.vue:43 src/views/domain/DomainEdit.vue:6
+#: src/views/domain/DomainEdit.vue:7 src/views/domain/DomainList.vue:10
+#: src/views/domain/DomainList.vue:11 src/views/domain/DomainList.vue:12
+#: src/views/domain/DomainList.vue:19 src/views/domain/DomainList.vue:31
 msgid "Enabled"
 msgstr "啟用"
 
-#: src/views/domain/DomainAdd.vue:47 src/views/domain/DomainEdit.vue:109
+#: src/views/domain/DomainAdd.vue:47 src/views/domain/DomainEdit.vue:134
 #: src/views/domain/DomainList.vue:59
 msgid "Enabled successfully"
 msgstr "啟用成功"
@@ -361,17 +364,21 @@ msgstr "過期時間: %{date}"
 msgid "Export"
 msgstr "導出"
 
-#: src/views/domain/DomainEdit.vue:121 src/views/domain/DomainList.vue:73
+#: src/views/domain/DomainEdit.vue:146 src/views/domain/DomainList.vue:73
 msgid "Failed to disable %{msg}"
 msgstr "禁用失敗 %{msg}"
 
-#: src/views/domain/DomainEdit.vue:112 src/views/domain/DomainList.vue:63
+#: src/views/domain/DomainEdit.vue:137 src/views/domain/DomainList.vue:63
 msgid "Failed to enable %{msg}"
 msgstr "啟用失敗 %{msg}"
 
 #: src/language/constants.ts:9
 msgid "Failed to get certificate information"
 msgstr "獲取證書信息失敗"
+
+#: src/views/domain/DomainEdit.vue:117
+msgid "Failed to save, syntax error(s) was detected in the configuration."
+msgstr ""
 
 #: src/views/config/config.ts:22
 msgid "File"
@@ -472,7 +479,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/routes/index.ts:150 src/views/other/Login.vue:103
+#: src/routes/index.ts:150 src/views/other/Login.vue:104
 msgid "Login"
 msgstr "登入"
 
@@ -532,7 +539,8 @@ msgid "Multi-line Directive"
 msgstr "單行指令"
 
 #: src/views/cert/Cert.vue:16 src/views/config/config.ts:9
-#: src/views/domain/DomainEdit.vue:36 src/views/domain/DomainList.vue:15
+#: src/views/domain/cert/ChangeCert.vue:19 src/views/domain/DomainEdit.vue:46
+#: src/views/domain/DomainList.vue:15
 msgid "Name"
 msgstr "名稱"
 
@@ -560,6 +568,11 @@ msgstr "下一步"
 #, fuzzy
 msgid "Nginx Access Log Path"
 msgstr "訪問日誌"
+
+#: src/views/domain/DomainEdit.vue:31
+#, fuzzy
+msgid "Nginx Configuration Parse Error"
+msgstr "配置名稱"
 
 #: src/views/preference/Preference.vue:36
 #, fuzzy
@@ -681,7 +694,7 @@ msgstr "重設"
 msgid "Run Mode"
 msgstr "高階模式"
 
-#: src/views/config/ConfigEdit.vue:70 src/views/domain/DomainEdit.vue:190
+#: src/views/config/ConfigEdit.vue:70 src/views/domain/DomainEdit.vue:225
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:40
@@ -712,7 +725,7 @@ msgid "Save Successfully"
 msgstr "保存成功"
 
 #: src/views/config/ConfigEdit.vue:41 src/views/domain/DomainAdd.vue:44
-#: src/views/domain/DomainEdit.vue:97
+#: src/views/domain/DomainEdit.vue:125
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:35
 msgid "Saved successfully"
 msgstr "儲存成功"
@@ -729,10 +742,9 @@ msgstr "上傳"
 #: src/components/StdDataDisplay/StdTable.vue:168
 #: src/components/StdDataDisplay/StdTable.vue:343
 #: src/components/StdDataDisplay/StdTable.vue:463
-#: src/views/config/ConfigEdit.vue:29 src/views/domain/DomainEdit.vue:100
-#: src/views/domain/DomainEdit.vue:62 src/views/domain/DomainEdit.vue:74
-#: src/views/domain/DomainEdit.vue:83 src/views/domain/DomainList.vue:83
-#: src/views/other/Install.vue:71 src/views/preference/Preference.vue:41
+#: src/views/config/ConfigEdit.vue:29 src/views/domain/DomainEdit.vue:87
+#: src/views/domain/DomainList.vue:83 src/views/other/Install.vue:71
+#: src/views/preference/Preference.vue:41
 msgid "Server error"
 msgstr "伺服器錯誤"
 
