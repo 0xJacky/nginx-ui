@@ -16,6 +16,8 @@ const callback = (media: { matches: any; }) => {
             dark_mode(false)
             settings.set_theme('auto')
         }
+    } else {
+        dark_mode(settings.preference_theme === 'dark')
     }
 }
 

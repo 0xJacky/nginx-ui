@@ -10,7 +10,7 @@ import {message} from 'ant-design-vue'
 const {$gettext} = useGettext()
 
 const settingsStore = useSettingsStore()
-const theme = ref('auto')
+const theme = ref(settingsStore.theme)
 const data = ref({
     server: {
         http_port: 9000,
