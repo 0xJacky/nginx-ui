@@ -4,11 +4,12 @@ import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 
 import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor'
 import {useGettext} from 'vue3-gettext'
-import {reactive, ref, watch} from 'vue'
+import {computed, reactive, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import domain from '@/api/domain'
 import ngx from '@/api/ngx'
 import {message} from 'ant-design-vue'
+import config from '@/api/config'
 
 
 const {$gettext, interpolate} = useGettext()
@@ -35,17 +36,30 @@ const auto_cert = ref(false)
 const enabled = ref(false)
 const configText = ref('')
 const ok = ref(false)
-const advance_mode = ref(false)
+const advance_mode_ref = ref(false)
 const saving = ref(false)
 const filename = ref('')
+const parse_error_status = ref(false)
+const parse_error_message = ref('')
 
 init()
+
+const advance_mode = computed({
+    get() {
+        return advance_mode_ref.value || parse_error_status.value
+    },
+    set(v) {
+        advance_mode_ref.value = v
+    }
+})
 
 function handle_response(r: any) {
 
     Object.keys(cert_info_map).forEach(v => {
         delete cert_info_map[v]
     })
+    parse_error_status.value = false
+    parse_error_message.value = ''
     filename.value = r.name
     configText.value = r.config
     enabled.value = r.enabled
@@ -58,10 +72,22 @@ function init() {
     if (name.value) {
         domain.get(name.value).then((r: any) => {
             handle_response(r)
-        }).catch(r => {
-            message.error(r.message ?? $gettext('Server error'))
-        })
+        }).catch(handle_parse_error)
     }
+}
+
+function handle_parse_error(r: any) {
+    if (r?.error === 'nginx_config_syntax_error') {
+        parse_error_status.value = true
+        parse_error_message.value = r.message
+        config.get('sites-available/' + name.value).then(r => {
+            configText.value = r.config
+        })
+    } else {
+        message.error(r.message ?? $gettext('Server error'))
+    }
+
+    throw r
 }
 
 function on_mode_change(advance_mode: boolean) {
@@ -70,17 +96,13 @@ function on_mode_change(advance_mode: boolean) {
     } else {
         return ngx.tokenize_config(configText.value).then((r: any) => {
             Object.assign(ngx_config, r)
-        }).catch((e: any) => {
-            message.error(e?.message ?? $gettext('Server error'))
-        })
+        }).catch(handle_parse_error)
     }
 }
 
 function build_config() {
     return ngx.build_config(ngx_config).then((r: any) => {
         configText.value = r.content
-    }).catch((e: any) => {
-        message.error(e?.message ?? $gettext('Server error'))
     })
 }
 
@@ -88,17 +110,20 @@ const save = async () => {
     saving.value = true
 
     if (!advance_mode.value) {
-        await build_config()
+        try {
+            await build_config()
+        } catch (e) {
+            saving.value = false
+            message.error($gettext('Failed to save, syntax error(s) was detected in the configuration.'))
+            return
+        }
     }
 
-    domain.save(name.value, {name: filename.value, content: configText.value}).then(r => {
+    domain.save(name.value, {name: filename.value || name.value, content: configText.value}).then(r => {
         handle_response(r)
         router.push('/domain/' + filename.value)
         message.success($gettext('Saved successfully'))
-
-    }).catch((e: any) => {
-        message.error(e?.message ?? $gettext('Server error'))
-    }).finally(() => {
+    }).catch(handle_parse_error).finally(() => {
         saving.value = false
     })
 
@@ -145,7 +170,8 @@ function on_change_enabled(checked: boolean) {
             <template #extra>
                 <div class="mode-switch">
                     <div class="switch">
-                        <a-switch size="small" v-model:checked="advance_mode" @change="on_mode_change"/>
+                        <a-switch size="small" :disabled="parse_error_status"
+                                  v-model:checked="advance_mode" @change="on_mode_change"/>
                     </div>
                     <template v-if="advance_mode">
                         <div>{{ $gettext('Advance Mode') }}</div>
@@ -158,7 +184,16 @@ function on_change_enabled(checked: boolean) {
 
             <transition name="slide-fade">
                 <div v-if="advance_mode" key="advance">
-                    <code-editor v-model:content="configText"/>
+                    <div class="parse-error-alert-wrapper" v-if="parse_error_status">
+                        <a-alert :message="$gettext('Nginx Configuration Parse Error')"
+                                 :description="parse_error_message"
+                                 type="error"
+                                 show-icon
+                        />
+                    </div>
+                    <div>
+                        <code-editor v-model:content="configText"/>
+                    </div>
                 </div>
 
                 <div class="domain-edit-container" key="basic" v-else>
@@ -212,6 +247,10 @@ function on_change_enabled(checked: boolean) {
         align-items: center;
         margin-right: 5px;
     }
+}
+
+.parse-error-alert-wrapper {
+    margin-bottom: 20px;
 }
 
 .domain-edit-container {

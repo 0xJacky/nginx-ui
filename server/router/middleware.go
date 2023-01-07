@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/cast"
 	"io/fs"
 	"log"
 	"net/http"
@@ -18,7 +19,18 @@ func recovery() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
-				log.Println(err)
+				errorAction := "panic"
+				if action, ok := c.Get("maybe_error"); ok {
+					errorActionMsg := cast.ToString(action)
+					if errorActionMsg != "" {
+						errorAction = errorActionMsg
+					}
+				}
+				log.Println(err.(error).Error())
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"message": err.(error).Error(),
+					"error":   errorAction,
+				})
 			}
 		}()
 
