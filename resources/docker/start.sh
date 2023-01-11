@@ -6,5 +6,5 @@ if [ "$(ls -A /etc/nginx)" = "" ]; then
     echo "Initialed Nginx config dir"
 fi
 
-nginx
+nginx &
 /app/nginx-ui --config /etc/nginx-ui/app.ini
