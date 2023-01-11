@@ -102,6 +102,11 @@ func InitRouter() *gin.Engine {
 			// Settings
 			g.GET("settings", api.GetSettings)
 			g.POST("settings", api.SaveSettings)
+
+			// Upgrade
+			g.GET("upgrade/release", api.GetRelease)
+			g.GET("upgrade/current", api.GetCurrentVersion)
+			g.GET("upgrade/perform", api.PerformCoreUpgrade)
 		}
 	}
 

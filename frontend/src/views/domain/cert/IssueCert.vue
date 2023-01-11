@@ -173,8 +173,7 @@ const modalClosable = ref(false)
             :status="progressStatus"
         />
 
-        <div class="issue-cert-log-container" ref="logContainer">
-        </div>
+        <div class="issue-cert-log-container" ref="logContainer"/>
 
     </a-modal>
     <div class="issue-cert">

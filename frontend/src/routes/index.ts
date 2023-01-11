@@ -130,12 +130,21 @@ export const routes = [
                 }
             },
             {
-                path: 'about',
-                name: () => $gettext('About'),
-                component: () => import('@/views/other/About.vue'),
+                path: 'system',
+                name: () => $gettext('System'),
+                redirect: 'system/about',
                 meta: {
                     icon: InfoCircleOutlined
-                }
+                },
+                children: [{
+                    path: 'about',
+                    name: () => $gettext('About'),
+                    component: () => import('@/views/system/About.vue')
+                }, {
+                    path: 'upgrade',
+                    name: () => $gettext('Upgrade'),
+                    component: () => import('@/views/system/Upgrade.vue')
+                }]
             }
         ]
     },

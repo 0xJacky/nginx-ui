@@ -12,7 +12,7 @@ msgstr ""
 "Generated-By: easygettext\n"
 "X-Generator: Poedit 3.2.2\n"
 
-#: src/routes/index.ts:134
+#: src/routes/index.ts:141
 msgid "About"
 msgstr "关于"
 
@@ -52,6 +52,11 @@ msgstr "添加站点"
 #: src/views/domain/DomainEdit.vue:20
 msgid "Advance Mode"
 msgstr "高级模式"
+
+#: src/views/system/Upgrade.vue:12 src/views/system/Upgrade.vue:13
+#: src/views/system/Upgrade.vue:17 src/views/system/Upgrade.vue:21
+msgid "Arch"
+msgstr "架构"
 
 #: src/components/StdDataDisplay/StdTable.vue:54
 #: src/views/domain/DomainList.vue:26
@@ -128,7 +133,7 @@ msgstr "基本模式"
 msgid "Batch Modify"
 msgstr "批量修改"
 
-#: src/views/other/About.vue:21
+#: src/views/system/About.vue:21
 msgid "Build with"
 msgstr "构建基于"
 
@@ -160,6 +165,11 @@ msgstr "证书"
 msgid "Change Certificate"
 msgstr "更改证书"
 
+#: src/views/system/Upgrade.vue:16 src/views/system/Upgrade.vue:17
+#: src/views/system/Upgrade.vue:21 src/views/system/Upgrade.vue:25
+msgid "Check again"
+msgstr "重新检查"
+
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
 #: src/views/domain/ngx_conf/LocationEditor.vue:31
 #: src/views/domain/ngx_conf/LocationEditor.vue:47
@@ -189,6 +199,11 @@ msgstr "配置 SSL"
 msgid "Content"
 msgstr "内容"
 
+#: src/views/system/Upgrade.vue:3
+#, fuzzy
+msgid "Core Upgrade"
+msgstr "升级"
+
 #: src/views/dashboard/DashBoard.vue:64
 msgid "CPU Status"
 msgstr "CPU 状态"
@@ -208,6 +223,11 @@ msgstr "创建时间"
 #: src/language/constants.ts:13
 msgid "Creating client facilitates communication with the CA server"
 msgstr "正在创建客户端用于与 CA 服务器通信"
+
+#: src/views/system/Upgrade.vue:10 src/views/system/Upgrade.vue:11
+#: src/views/system/Upgrade.vue:15 src/views/system/Upgrade.vue:19
+msgid "Current Version"
+msgstr "当前版本"
 
 #: src/views/domain/ngx_conf/ConfigTemplate.vue:22
 #: src/views/domain/ngx_conf/ConfigTemplate.vue:23
@@ -254,7 +274,7 @@ msgstr "删除站点: %{site_name}"
 msgid "Description"
 msgstr "描述"
 
-#: src/views/other/About.vue:7 src/views/other/About.vue:8
+#: src/views/system/About.vue:7 src/views/system/About.vue:8
 msgid "Development Mode"
 msgstr "开发模式"
 
@@ -340,13 +360,18 @@ msgstr "启用"
 msgid "Enabled successfully"
 msgstr "启用成功"
 
-#: src/views/domain/cert/IssueCert.vue:18
+#: src/views/domain/cert/IssueCert.vue:17
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 对网站进行加密"
 
 #: src/routes/index.ts:113 src/views/domain/ngx_conf/LogEntry.vue:68
 msgid "Error Logs"
 msgstr "错误日志"
+
+#: src/views/system/Upgrade.vue:13 src/views/system/Upgrade.vue:14
+#: src/views/system/Upgrade.vue:18 src/views/system/Upgrade.vue:22
+msgid "Executable Path"
+msgstr "可执行文件路径"
 
 #: src/views/domain/cert/CertInfo.vue:12
 msgid "Expiration Date: %{date}"
@@ -427,7 +452,7 @@ msgstr "HTTP Challenge 监听端口"
 msgid "HTTP Port"
 msgstr "HTTP 监听端口"
 
-#: src/routes/index.ts:144 src/views/other/Install.vue:128
+#: src/routes/index.ts:153 src/views/other/Install.vue:128
 msgid "Install"
 msgstr "安装"
 
@@ -446,6 +471,11 @@ msgstr "证书申请成功"
 #: src/views/preference/Preference.vue:11
 msgid "Jwt Secret"
 msgstr "Jwt 密钥"
+
+#: src/views/system/Upgrade.vue:14 src/views/system/Upgrade.vue:15
+#: src/views/system/Upgrade.vue:19 src/views/system/Upgrade.vue:23
+msgid "Last checked at"
+msgstr "最后检查时间"
 
 #: src/views/user/User.vue:26
 msgid "Leave blank for no change"
@@ -470,7 +500,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/routes/index.ts:150 src/views/other/Login.vue:104
+#: src/routes/index.ts:159 src/views/other/Login.vue:104
 msgid "Login"
 msgstr "登录"
 
@@ -482,7 +512,7 @@ msgstr "登录成功"
 msgid "Logout successful"
 msgstr "登出成功"
 
-#: src/views/domain/cert/IssueCert.vue:211
+#: src/views/domain/cert/IssueCert.vue:210
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort (default: 9180) before getting the certificate."
@@ -550,6 +580,10 @@ msgstr "下载流量"
 msgid "Network Total Send"
 msgstr "上传流量"
 
+#: src/views/system/Upgrade.vue:34
+msgid "New version released"
+msgstr "新版本发布"
+
 #: src/views/domain/DomainAdd.vue:136
 msgid "Next"
 msgstr "下一步"
@@ -577,7 +611,7 @@ msgstr "Nginx 日志"
 msgid "No"
 msgstr "取消"
 
-#: src/routes/index.ts:156 src/routes/index.ts:158
+#: src/routes/index.ts:165 src/routes/index.ts:167
 msgid "Not Found"
 msgstr "找不到页面"
 
@@ -585,7 +619,7 @@ msgstr "找不到页面"
 msgid "Not Valid Before: %{date}"
 msgstr "此前无效: %{date}"
 
-#: src/views/domain/cert/IssueCert.vue:38
+#: src/views/domain/cert/IssueCert.vue:37
 msgid "Note"
 msgstr "注意"
 
@@ -600,6 +634,11 @@ msgstr "正在获取证书"
 #: src/views/domain/DomainList.vue:25
 msgid "OK"
 msgstr "确定"
+
+#: src/views/system/Upgrade.vue:11 src/views/system/Upgrade.vue:12
+#: src/views/system/Upgrade.vue:16 src/views/system/Upgrade.vue:20
+msgid "OS"
+msgstr "OS"
 
 #: src/views/dashboard/DashBoard.vue:147
 msgid "OS:"
@@ -650,7 +689,7 @@ msgstr "禁止在演示模式下修改 root 账户的密码"
 msgid "Prohibit deleting the default user"
 msgstr "禁止删除默认用户"
 
-#: src/views/other/About.vue:19
+#: src/views/system/About.vue:19
 msgid "Project Team"
 msgstr "项目团队"
 
@@ -665,6 +704,18 @@ msgstr "下载"
 #: src/language/constants.ts:15
 msgid "Registering user"
 msgstr "正在注册用户"
+
+#: src/views/system/Upgrade.vue:24 src/views/system/Upgrade.vue:25
+#: src/views/system/Upgrade.vue:29 src/views/system/Upgrade.vue:33
+#: src/views/system/Upgrade.vue:36 src/views/system/Upgrade.vue:39
+msgid "Reinstall"
+msgstr "重新安装"
+
+#: src/views/system/Upgrade.vue:31 src/views/system/Upgrade.vue:32
+#: src/views/system/Upgrade.vue:36 src/views/system/Upgrade.vue:40
+#: src/views/system/Upgrade.vue:43 src/views/system/Upgrade.vue:48
+msgid "Release Note"
+msgstr "发行日志"
 
 #: src/language/constants.ts:19
 msgid "Reloading nginx"
@@ -742,7 +793,7 @@ msgstr "服务器信息"
 msgid "server_name not found in directives"
 msgstr "未在指令集合中找到 server_name"
 
-#: src/views/domain/cert/IssueCert.vue:195 src/views/domain/DomainAdd.vue:111
+#: src/views/domain/cert/IssueCert.vue:194 src/views/domain/DomainAdd.vue:111
 msgid "server_name parameter is required"
 msgstr "必须为 server_name 指令指明参数"
 
@@ -791,6 +842,10 @@ msgstr "主体名称: %{name}"
 msgid "Swap"
 msgstr "Swap"
 
+#: src/routes/index.ts:134
+msgid "System"
+msgstr "系统"
+
 #: src/components/StdDataDisplay/StdCurd.vue:3
 msgid "Table"
 msgstr "列表"
@@ -803,7 +858,7 @@ msgstr "终端"
 msgid "Terminal Start Command"
 msgstr "终端启动命令"
 
-#: src/views/domain/cert/IssueCert.vue:207
+#: src/views/domain/cert/IssueCert.vue:206
 msgid ""
 "The certificate for the domain will be checked every hour, and will be "
 "renewed if it has been more than 1 month since it was last issued."
@@ -814,7 +869,7 @@ msgstr ""
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "文件名不能包含以下字符: %{c}"
 
-#: src/views/domain/cert/IssueCert.vue:203
+#: src/views/domain/cert/IssueCert.vue:202
 msgid ""
 "The server_name in the current configuration must be the domain name you "
 "need to get the certificate."
@@ -841,6 +896,18 @@ msgstr "修改时间"
 msgid "Updated successfully"
 msgstr "更新成功"
 
+#: src/routes/index.ts:145 src/views/system/Upgrade.vue:16
+#: src/views/system/Upgrade.vue:26 src/views/system/Upgrade.vue:27
+#: src/views/system/Upgrade.vue:31 src/views/system/Upgrade.vue:35
+#: src/views/system/Upgrade.vue:38 src/views/system/Upgrade.vue:41
+#: src/views/system/Upgrade.vue:42
+msgid "Upgrade"
+msgstr "升级"
+
+#: src/views/system/Upgrade.vue:63
+msgid "Upgrading Nginx UI, please wait..."
+msgstr ""
+
 #: src/views/dashboard/DashBoard.vue:137
 msgid "Uptime:"
 msgstr "运行时间:"
@@ -863,7 +930,7 @@ msgstr "使用 HTTP01 challenge provider"
 msgid "View"
 msgstr "查看"
 
-#: src/views/domain/cert/IssueCert.vue:27 src/views/domain/DomainAdd.vue:22
+#: src/views/domain/cert/IssueCert.vue:26 src/views/domain/DomainAdd.vue:22
 msgid "Warning"
 msgstr "警告"
 
@@ -885,7 +952,16 @@ msgstr "正在将证书写入磁盘"
 msgid "Yes"
 msgstr "是的"
 
-#: src/views/other/About.vue:27
+#: src/views/system/Upgrade.vue:30
+msgid "You are using the latest version"
+msgstr "您使用的是最新版本"
+
+#: src/views/system/Upgrade.vue:10 src/views/system/Upgrade.vue:14
+#: src/views/system/Upgrade.vue:18 src/views/system/Upgrade.vue:9
+msgid "You can check Nginx UI upgrade at this page."
+msgstr "你可以在这个页面检查Nginx UI的升级。"
+
+#: src/views/system/About.vue:27
 msgctxt "Project"
 msgid "License"
 msgstr "开源许可"
@@ -928,9 +1004,6 @@ msgstr "开源许可"
 
 #~ msgid "Restore"
 #~ msgstr "反删除"
-
-#~ msgid "System message"
-#~ msgstr "系统消息"
 
 #~ msgid "Yes, I'm sure"
 #~ msgstr "是的"

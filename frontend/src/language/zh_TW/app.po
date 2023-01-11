@@ -13,7 +13,7 @@ msgstr ""
 "Generated-By: easygettext\n"
 "X-Generator: Poedit 3.2.2\n"
 
-#: src/routes/index.ts:134
+#: src/routes/index.ts:141
 msgid "About"
 msgstr "關於"
 
@@ -53,6 +53,11 @@ msgstr "新增站點"
 #: src/views/domain/DomainEdit.vue:20
 msgid "Advance Mode"
 msgstr "高階模式"
+
+#: src/views/system/Upgrade.vue:12 src/views/system/Upgrade.vue:13
+#: src/views/system/Upgrade.vue:17 src/views/system/Upgrade.vue:21
+msgid "Arch"
+msgstr ""
 
 #: src/components/StdDataDisplay/StdTable.vue:54
 #: src/views/domain/DomainList.vue:26
@@ -130,7 +135,7 @@ msgstr "基本模式"
 msgid "Batch Modify"
 msgstr "批量修改"
 
-#: src/views/other/About.vue:21
+#: src/views/system/About.vue:21
 msgid "Build with"
 msgstr "構建基於"
 
@@ -164,6 +169,11 @@ msgstr "此憑證有效"
 msgid "Change Certificate"
 msgstr "正在獲取證書，請稍等..."
 
+#: src/views/system/Upgrade.vue:16 src/views/system/Upgrade.vue:17
+#: src/views/system/Upgrade.vue:21 src/views/system/Upgrade.vue:25
+msgid "Check again"
+msgstr ""
+
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
 #: src/views/domain/ngx_conf/LocationEditor.vue:31
 #: src/views/domain/ngx_conf/LocationEditor.vue:47
@@ -194,6 +204,10 @@ msgstr "配置 SSL"
 msgid "Content"
 msgstr "內容"
 
+#: src/views/system/Upgrade.vue:3
+msgid "Core Upgrade"
+msgstr ""
+
 #: src/views/dashboard/DashBoard.vue:64
 msgid "CPU Status"
 msgstr "中央處理器狀態"
@@ -213,6 +227,11 @@ msgstr "建立時間"
 #: src/language/constants.ts:13
 msgid "Creating client facilitates communication with the CA server"
 msgstr "創建客戶端方便與CA服務器通信"
+
+#: src/views/system/Upgrade.vue:10 src/views/system/Upgrade.vue:11
+#: src/views/system/Upgrade.vue:15 src/views/system/Upgrade.vue:19
+msgid "Current Version"
+msgstr ""
 
 #: src/views/domain/ngx_conf/ConfigTemplate.vue:22
 #: src/views/domain/ngx_conf/ConfigTemplate.vue:23
@@ -259,7 +278,7 @@ msgstr "刪除站點：%{site_name}"
 msgid "Description"
 msgstr ""
 
-#: src/views/other/About.vue:7 src/views/other/About.vue:8
+#: src/views/system/About.vue:7 src/views/system/About.vue:8
 msgid "Development Mode"
 msgstr "開發模式"
 
@@ -345,13 +364,18 @@ msgstr "啟用"
 msgid "Enabled successfully"
 msgstr "啟用成功"
 
-#: src/views/domain/cert/IssueCert.vue:18
+#: src/views/domain/cert/IssueCert.vue:17
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 對網站進行加密"
 
 #: src/routes/index.ts:113 src/views/domain/ngx_conf/LogEntry.vue:68
 msgid "Error Logs"
 msgstr "錯誤日志"
+
+#: src/views/system/Upgrade.vue:13 src/views/system/Upgrade.vue:14
+#: src/views/system/Upgrade.vue:18 src/views/system/Upgrade.vue:22
+msgid "Executable Path"
+msgstr ""
 
 #: src/views/domain/cert/CertInfo.vue:12
 msgid "Expiration Date: %{date}"
@@ -436,7 +460,7 @@ msgstr "HTTP 監聽埠"
 msgid "HTTP Port"
 msgstr "HTTP 監聽埠"
 
-#: src/routes/index.ts:144 src/views/other/Install.vue:128
+#: src/routes/index.ts:153 src/views/other/Install.vue:128
 msgid "Install"
 msgstr "安裝"
 
@@ -454,6 +478,11 @@ msgstr "頒發證書成功"
 
 #: src/views/preference/Preference.vue:11
 msgid "Jwt Secret"
+msgstr ""
+
+#: src/views/system/Upgrade.vue:14 src/views/system/Upgrade.vue:15
+#: src/views/system/Upgrade.vue:19 src/views/system/Upgrade.vue:23
+msgid "Last checked at"
 msgstr ""
 
 #: src/views/user/User.vue:26
@@ -479,7 +508,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/routes/index.ts:150 src/views/other/Login.vue:104
+#: src/routes/index.ts:159 src/views/other/Login.vue:104
 msgid "Login"
 msgstr "登入"
 
@@ -491,7 +520,7 @@ msgstr "登入成功"
 msgid "Logout successful"
 msgstr "登出成功"
 
-#: src/views/domain/cert/IssueCert.vue:211
+#: src/views/domain/cert/IssueCert.vue:210
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort (default: 9180) before getting the certificate."
@@ -560,6 +589,10 @@ msgstr "下載流量"
 msgid "Network Total Send"
 msgstr "上傳流量"
 
+#: src/views/system/Upgrade.vue:34
+msgid "New version released"
+msgstr ""
+
 #: src/views/domain/DomainAdd.vue:136
 msgid "Next"
 msgstr "下一步"
@@ -590,7 +623,7 @@ msgstr "Nginx 日誌"
 msgid "No"
 msgstr "取消"
 
-#: src/routes/index.ts:156 src/routes/index.ts:158
+#: src/routes/index.ts:165 src/routes/index.ts:167
 msgid "Not Found"
 msgstr "找不到頁面"
 
@@ -598,7 +631,7 @@ msgstr "找不到頁面"
 msgid "Not Valid Before: %{date}"
 msgstr "此前無效: %{date}"
 
-#: src/views/domain/cert/IssueCert.vue:38
+#: src/views/domain/cert/IssueCert.vue:37
 msgid "Note"
 msgstr ""
 
@@ -613,6 +646,12 @@ msgstr "正在獲取證書，請稍等..."
 #: src/views/domain/DomainList.vue:25
 msgid "OK"
 msgstr "確定"
+
+#: src/views/system/Upgrade.vue:11 src/views/system/Upgrade.vue:12
+#: src/views/system/Upgrade.vue:16 src/views/system/Upgrade.vue:20
+#, fuzzy
+msgid "OS"
+msgstr "作業系統:"
 
 #: src/views/dashboard/DashBoard.vue:147
 msgid "OS:"
@@ -663,7 +702,7 @@ msgstr "禁止在demo中修改root密碼"
 msgid "Prohibit deleting the default user"
 msgstr "禁止刪除默認用戶"
 
-#: src/views/other/About.vue:19
+#: src/views/system/About.vue:19
 msgid "Project Team"
 msgstr "專案團隊"
 
@@ -678,6 +717,19 @@ msgstr "下載"
 #: src/language/constants.ts:15
 msgid "Registering user"
 msgstr "註冊用戶"
+
+#: src/views/system/Upgrade.vue:24 src/views/system/Upgrade.vue:25
+#: src/views/system/Upgrade.vue:29 src/views/system/Upgrade.vue:33
+#: src/views/system/Upgrade.vue:36 src/views/system/Upgrade.vue:39
+#, fuzzy
+msgid "Reinstall"
+msgstr "安裝"
+
+#: src/views/system/Upgrade.vue:31 src/views/system/Upgrade.vue:32
+#: src/views/system/Upgrade.vue:36 src/views/system/Upgrade.vue:40
+#: src/views/system/Upgrade.vue:43 src/views/system/Upgrade.vue:48
+msgid "Release Note"
+msgstr ""
 
 #: src/language/constants.ts:19
 msgid "Reloading nginx"
@@ -756,7 +808,7 @@ msgstr "伺服器資訊"
 msgid "server_name not found in directives"
 msgstr "未在指令集合中找到 server_name"
 
-#: src/views/domain/cert/IssueCert.vue:195 src/views/domain/DomainAdd.vue:111
+#: src/views/domain/cert/IssueCert.vue:194 src/views/domain/DomainAdd.vue:111
 msgid "server_name parameter is required"
 msgstr "必須為 server_name 指令指明參數"
 
@@ -809,6 +861,11 @@ msgstr "主體名稱: %{name}"
 msgid "Swap"
 msgstr "交換空間"
 
+#: src/routes/index.ts:134
+#, fuzzy
+msgid "System"
+msgstr "系統訊息"
+
 #: src/components/StdDataDisplay/StdCurd.vue:3
 msgid "Table"
 msgstr "表格"
@@ -821,7 +878,7 @@ msgstr "終端"
 msgid "Terminal Start Command"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:207
+#: src/views/domain/cert/IssueCert.vue:206
 msgid ""
 "The certificate for the domain will be checked every hour, and will be "
 "renewed if it has been more than 1 month since it was last issued."
@@ -833,7 +890,7 @@ msgstr ""
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "檔名不能包含以下字元: %{c}"
 
-#: src/views/domain/cert/IssueCert.vue:203
+#: src/views/domain/cert/IssueCert.vue:202
 #, fuzzy
 msgid ""
 "The server_name in the current configuration must be the domain name you "
@@ -861,6 +918,18 @@ msgstr "修改時間"
 msgid "Updated successfully"
 msgstr "已成功更新"
 
+#: src/routes/index.ts:145 src/views/system/Upgrade.vue:16
+#: src/views/system/Upgrade.vue:26 src/views/system/Upgrade.vue:27
+#: src/views/system/Upgrade.vue:31 src/views/system/Upgrade.vue:35
+#: src/views/system/Upgrade.vue:38 src/views/system/Upgrade.vue:41
+#: src/views/system/Upgrade.vue:42
+msgid "Upgrade"
+msgstr ""
+
+#: src/views/system/Upgrade.vue:63
+msgid "Upgrading Nginx UI, please wait..."
+msgstr ""
+
 #: src/views/dashboard/DashBoard.vue:137
 msgid "Uptime:"
 msgstr "執行時間:"
@@ -883,7 +952,7 @@ msgstr "使用 HTTP01 挑戰提供者"
 msgid "View"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:27 src/views/domain/DomainAdd.vue:22
+#: src/views/domain/cert/IssueCert.vue:26 src/views/domain/DomainAdd.vue:22
 msgid "Warning"
 msgstr "警告"
 
@@ -905,7 +974,16 @@ msgstr "將證書寫入磁盤"
 msgid "Yes"
 msgstr "是的"
 
-#: src/views/other/About.vue:27
+#: src/views/system/Upgrade.vue:30
+msgid "You are using the latest version"
+msgstr ""
+
+#: src/views/system/Upgrade.vue:10 src/views/system/Upgrade.vue:14
+#: src/views/system/Upgrade.vue:18 src/views/system/Upgrade.vue:9
+msgid "You can check Nginx UI upgrade at this page."
+msgstr ""
+
+#: src/views/system/About.vue:27
 msgctxt "Project"
 msgid "License"
 msgstr "開源軟體授權條款"
@@ -940,9 +1018,6 @@ msgstr "開源軟體授權條款"
 
 #~ msgid "Restore"
 #~ msgstr "恢復"
-
-#~ msgid "System message"
-#~ msgstr "系統訊息"
 
 #~ msgid "Yes, I'm sure"
 #~ msgstr "是的"

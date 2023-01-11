@@ -26,6 +26,7 @@ type Server struct {
 	CADir             string `json:"ca_dir"`
 	Demo              bool   `json:"demo"`
 	PageSize          int    `json:"page_size"`
+	GithubProxy       string `json:"github_proxy"`
 }
 
 type NginxLog struct {
@@ -42,6 +43,7 @@ var ServerSettings = &Server{
 	Demo:              false,
 	PageSize:          10,
 	CADir:             "",
+	GithubProxy:       "",
 }
 
 var NginxLogSettings = &NginxLog{

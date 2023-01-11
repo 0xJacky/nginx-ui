@@ -30,11 +30,14 @@ require (
 require (
 	github.com/StackExchange/wmi v1.2.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.0 // indirect
+	github.com/fvbock/endless v0.0.0-20170109170031-447134032cb6 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-ole/go-ole v1.2.5 // indirect
 	github.com/golang/protobuf v1.3.4 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.2 // indirect
+	github.com/jpillora/overseer v1.1.6 // indirect
+	github.com/jpillora/s3 v1.1.4 // indirect
 	github.com/json-iterator/go v1.1.9 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
