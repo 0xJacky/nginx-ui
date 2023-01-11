@@ -31,7 +31,6 @@ func main() {
 		Program:          prog,
 		Address:          fmt.Sprintf(":%s", settings.ServerSettings.HttpPort),
 		Fetcher:          &fetcher.File{Path: r.ExPath},
-		Debug:            gin.IsDebugging(),
 		TerminateTimeout: 0,
 	})
 

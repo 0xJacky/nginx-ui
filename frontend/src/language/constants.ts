@@ -18,5 +18,13 @@ export const msg = [
     $gettext('Writing certificate private key to disk'),
     $gettext('Reloading nginx'),
     $gettext('Finished'),
-    $gettext('Issued certificate successfully')
+    $gettext('Issued certificate successfully'),
+
+    $gettext('Initialing core upgrader'),
+    $gettext('Initial core upgrader error'),
+    $gettext('Downloading latest release'),
+    $gettext('Download latest release error'),
+    $gettext('Performing core upgrade'),
+    $gettext('Perform core upgrade error'),
+    $gettext('Upgraded successfully')
 ]

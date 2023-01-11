@@ -46,7 +46,7 @@ func PerformCoreUpgrade(c *gin.Context) {
 
 	_ = ws.WriteJSON(gin.H{
 		"status":  "info",
-		"message": "Initialing Core Upgrader",
+		"message": "Initialing core upgrader",
 	})
 
 	u, err := service.NewUpgrader()
@@ -54,7 +54,11 @@ func PerformCoreUpgrade(c *gin.Context) {
 	if err != nil {
 		_ = ws.WriteJSON(gin.H{
 			"status":  "error",
-			"message": "Initialing core upgrader error",
+			"message": "Initial core upgrader error",
+		})
+		_ = ws.WriteJSON(gin.H{
+			"status":  "error",
+			"message": err.Error(),
 		})
 		log.Println("[Error] PerformCoreUpgrade service.NewUpgrader()", err)
 		return
@@ -68,6 +72,10 @@ func PerformCoreUpgrade(c *gin.Context) {
 		_ = ws.WriteJSON(gin.H{
 			"status":  "error",
 			"message": "Download latest release error",
+		})
+		_ = ws.WriteJSON(gin.H{
+			"status":  "error",
+			"message": err.Error(),
 		})
 		log.Println("[Error] PerformCoreUpgrade DownloadLatestRelease", err)
 		return
@@ -83,6 +91,10 @@ func PerformCoreUpgrade(c *gin.Context) {
 		_ = ws.WriteJSON(gin.H{
 			"status":  "error",
 			"message": "Perform core upgrade error",
+		})
+		_ = ws.WriteJSON(gin.H{
+			"status":  "error",
+			"message": err.Error(),
 		})
 		log.Println("[Error] PerformCoreUpgrade PerformCoreUpgrade", err)
 		return

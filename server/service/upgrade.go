@@ -5,6 +5,7 @@ import (
 	"fmt"
 	_github "github.com/0xJacky/Nginx-UI/.github"
 	"github.com/0xJacky/Nginx-UI/frontend"
+	"github.com/0xJacky/Nginx-UI/server/pkg/helper"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/pkg/errors"
 	"io"
@@ -185,11 +186,11 @@ func (u *Upgrader) DownloadLatestRelease() (tarName string, err error) {
 }
 
 func (u *Upgrader) PerformCoreUpgrade(dir, tarPath string) (err error) {
-	//err = helper.UnTar(dir, tarPath)
-	//if err != nil {
-	//    err = errors.Wrap(err, "PerformCoreUpgrade unTar error")
-	//    return
-	//}
+	err = helper.UnTar(dir, tarPath)
+	if err != nil {
+		err = errors.Wrap(err, "PerformCoreUpgrade unTar error")
+		return
+	}
 
 	_ = os.Remove(tarPath)
 
