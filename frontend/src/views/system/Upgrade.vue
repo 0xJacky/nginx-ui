@@ -88,6 +88,7 @@ async function perform_upgrade() {
                 clearInterval(t)
                 progressStatus.value = 'success'
                 progressPercent.value = 100
+                modalClosable.value = true
                 log('Upgraded successfully')
             })
         }, 2000)
