@@ -20,14 +20,14 @@ func TestCert(t *testing.T) {
 	}
 	fmt.Printf("%s\n", out)
 
-	_, err = os.Stat(nginx.GetNginxConfPath("ssl/test.ojbk.me/fullchain.cer"))
+	_, err = os.Stat(nginx.GetConfPath("ssl/test.ojbk.me/fullchain.cer"))
 
 	if err != nil {
 		log.Println(err)
 		return
 	}
 	log.Println("[found]", "fullchain.cer")
-	_, err = os.Stat(nginx.GetNginxConfPath("ssl/test.ojbk.me/test.ojbk.me.key"))
+	_, err = os.Stat(nginx.GetConfPath("ssl/test.ojbk.me/test.ojbk.me.key"))
 
 	if err != nil {
 		log.Println(err)

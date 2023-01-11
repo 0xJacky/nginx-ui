@@ -48,7 +48,7 @@ func prog(state overseer.State) {
 	gin.SetMode(settings.ServerSettings.RunMode)
 
 	settings.Init(confPath)
-	log.Printf("Nginx config dir path: %s", nginx.GetNginxConfPath(""))
+	log.Printf("Nginx config dir path: %s", nginx.GetConfPath())
 	if "" != settings.ServerSettings.JwtSecret {
 		model.Init()
 

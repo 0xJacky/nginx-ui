@@ -1,14 +1,13 @@
 package api
 
 import (
-	"github.com/0xJacky/Nginx-UI/server/pkg/config_list"
-	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
-	"github.com/gin-gonic/gin"
-	"log"
-	"net/http"
-	"os"
-	"path/filepath"
-	"strings"
+    "github.com/0xJacky/Nginx-UI/server/pkg/config_list"
+    "github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+    "github.com/gin-gonic/gin"
+    "log"
+    "net/http"
+    "os"
+    "strings"
 )
 
 func GetConfigs(c *gin.Context) {
@@ -22,7 +21,7 @@ func GetConfigs(c *gin.Context) {
 		"is_dir": "bool",
 	}
 
-	configFiles, err := os.ReadDir(nginx.GetNginxConfPath(dir))
+	configFiles, err := os.ReadDir(nginx.GetConfPath(dir))
 
 	if err != nil {
 		ErrHandler(c, err)
@@ -42,7 +41,7 @@ func GetConfigs(c *gin.Context) {
 			}
 		case mode&os.ModeSymlink != 0: // is a symbol
 			var targetPath string
-			targetPath, err = os.Readlink(nginx.GetNginxConfPath(file.Name()))
+			targetPath, err = os.Readlink(nginx.GetConfPath(file.Name()))
 			if err != nil {
 				log.Println("GetConfigs Read Symlink Error", targetPath, err)
 				continue
@@ -77,7 +76,7 @@ func GetConfigs(c *gin.Context) {
 
 func GetConfig(c *gin.Context) {
 	name := c.Param("name")
-	path := filepath.Join(nginx.GetNginxConfPath("/"), name)
+	path := nginx.GetConfPath("/", name)
 
 	content, err := os.ReadFile(path)
 
@@ -108,7 +107,7 @@ func AddConfig(c *gin.Context) {
 	name := request.Name
 	content := request.Content
 
-	path := filepath.Join(nginx.GetNginxConfPath("/"), name)
+	path := nginx.GetConfPath("/", name)
 
 	if _, err = os.Stat(path); err == nil {
 		c.JSON(http.StatusNotAcceptable, gin.H{
@@ -125,7 +124,7 @@ func AddConfig(c *gin.Context) {
 		}
 	}
 
-	output := nginx.ReloadNginx()
+	output := nginx.Reload()
 
 	if output != "" && strings.Contains(output, "error") {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -153,7 +152,7 @@ func EditConfig(c *gin.Context) {
 		ErrHandler(c, err)
 		return
 	}
-	path := filepath.Join(nginx.GetNginxConfPath("/"), name)
+	path := nginx.GetConfPath("/", name)
 	content := request.Content
 
 	origContent, err := os.ReadFile(path)
@@ -171,7 +170,7 @@ func EditConfig(c *gin.Context) {
 		}
 	}
 
-	output := nginx.ReloadNginx()
+	output := nginx.Reload()
 
 	if output != "" && strings.Contains(output, "error") {
 		c.JSON(http.StatusInternalServerError, gin.H{

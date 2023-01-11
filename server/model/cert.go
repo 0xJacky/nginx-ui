@@ -3,7 +3,6 @@ package model
 import (
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"os"
-	"path/filepath"
 )
 
 const (
@@ -38,7 +37,7 @@ func GetAutoCertList() (c []Cert) {
 	db.Where("auto_cert", AutoCertEnabled).Find(&t)
 
 	// check if this domain is enabled
-	enabledConfig, err := os.ReadDir(filepath.Join(nginx.GetNginxConfPath("sites-enabled")))
+	enabledConfig, err := os.ReadDir(nginx.GetConfPath("sites-enabled"))
 
 	if err != nil {
 		return

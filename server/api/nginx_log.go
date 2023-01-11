@@ -13,7 +13,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 )
 
 const (
@@ -107,7 +106,7 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 	switch control.Type {
 	case "site":
 		var config *nginx.NgxConfig
-		path := filepath.Join(nginx.GetNginxConfPath("sites-available"), control.ConfName)
+		path := nginx.GetConfPath("sites-available", control.ConfName)
 		config, err = nginx.ParseNgxConfig(path)
 		if err != nil {
 			err = errors.Wrap(err, "error parsing ngx config")

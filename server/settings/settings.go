@@ -27,6 +27,7 @@ type Server struct {
 	Demo              bool   `json:"demo"`
 	PageSize          int    `json:"page_size"`
 	GithubProxy       string `json:"github_proxy"`
+	NginxConfigDir    string `json:"nginx_config_dir"`
 }
 
 type NginxLog struct {

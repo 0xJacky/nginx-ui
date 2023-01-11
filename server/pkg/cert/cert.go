@@ -110,7 +110,7 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 		return
 	}
 	name := strings.Join(domain, "_")
-	saveDir := nginx.GetNginxConfPath("ssl/" + name)
+	saveDir := nginx.GetConfPath("ssl/" + name)
 	if _, err = os.Stat(saveDir); os.IsNotExist(err) {
 		err = os.MkdirAll(saveDir, 0755)
 		if err != nil {
@@ -142,7 +142,7 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 	close(errChan)
 	logChan <- "Reloading nginx"
 
-	nginx.ReloadNginx()
+	nginx.Reload()
 
 	logChan <- "Finished"
 }

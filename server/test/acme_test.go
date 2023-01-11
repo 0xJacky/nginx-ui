@@ -46,7 +46,7 @@ func TestAcme(t *testing.T) {
 				"install",
 				"--log",
 				"--home", "/usr/local/acme.sh",
-				"--cert-home", nginx.GetNginxConfPath("ssl")).
+				"--cert-home", nginx.GetConfPath("ssl")).
 				CombinedOutput()
 			if err != nil {
 				log.Println(err)
