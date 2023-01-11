@@ -10,6 +10,7 @@ import gettext from '@/gettext'
 import {Form, message} from 'ant-design-vue'
 import auth from '@/api/auth'
 import install from '@/api/install'
+import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 
 const route = useRoute()
 const router = useRouter()
