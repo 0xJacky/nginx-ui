@@ -31,7 +31,18 @@ function downloadCsv(header: any, data: any[], fileName: string) {
     window.URL.revokeObjectURL(csvContent)
 }
 
+const urlJoin = (...args: string[]) =>
+    args
+        .join('/')
+        .replace(/[\/]+/g, '/')
+        .replace(/^(.+):\//, '$1://')
+        .replace(/^file:/, 'file:/')
+        .replace(/\/(\?|&|#[^!])/g, '$1')
+        .replace(/\?/g, '&')
+        .replace('&', '?')
+
 export {
     bytesToSize,
-    downloadCsv
+    downloadCsv,
+    urlJoin
 }

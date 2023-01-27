@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
 import gettext from '../gettext'
 import {useUserStore} from '@/pinia'
 
@@ -169,7 +169,7 @@ export const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     // @ts-ignore
     routes: routes
 })

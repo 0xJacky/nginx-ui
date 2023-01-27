@@ -198,7 +198,6 @@ func EditDomain(c *gin.Context) {
 		}
 		name = json.Name
 		c.Set("rewriteConfigFileName", name)
-
 	}
 
 	enabledConfigFilePath = nginx.GetConfPath("sites-enabled", name)
@@ -212,7 +211,6 @@ func EditDomain(c *gin.Context) {
 			})
 			return
 		}
-
 		output := nginx.Reload()
 
 		if output != "" && strings.Contains(output, "error") {

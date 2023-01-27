@@ -7,11 +7,11 @@ import {onMounted, onUnmounted, reactive, ref} from 'vue'
 import analytic from '@/api/analytic'
 import ws from '@/lib/websocket'
 import {bytesToSize} from '@/lib/helper'
+import ReconnectingWebSocket from 'reconnecting-websocket'
 
 const {$gettext} = useGettext()
 
-const websocket = ws('/api/analytic')
-websocket.onmessage = wsOnMessage
+let websocket: ReconnectingWebSocket | WebSocket
 
 const host = reactive({})
 const cpu = ref('0.0')
@@ -60,6 +60,9 @@ onMounted(() => {
         })
         disk_io_analytic[0].data = disk_io_analytic[0].data.concat(r.disk_io.writes)
         disk_io_analytic[1].data = disk_io_analytic[1].data.concat(r.disk_io.reads)
+
+        websocket = ws('api/analytic')
+        websocket.onmessage = wsOnMessage
 
     })
 })

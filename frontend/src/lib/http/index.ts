@@ -19,14 +19,14 @@ let instance = axios.create({
             headers['Content-Type'] = 'application/json'
         }
         return JSON.stringify(data)
-    }],
+    }]
 })
 
 
 instance.interceptors.request.use(
     config => {
         if (token) {
-            (config.headers || {}).Authorization = token.value
+            (config.headers as any).Authorization = token.value
         }
         return config
     },
