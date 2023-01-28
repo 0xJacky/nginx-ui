@@ -61,7 +61,7 @@ onMounted(() => {
         disk_io_analytic[0].data = disk_io_analytic[0].data.concat(r.disk_io.writes)
         disk_io_analytic[1].data = disk_io_analytic[1].data.concat(r.disk_io.reads)
 
-        websocket = ws('api/analytic')
+        websocket = ws('/api/analytic')
         websocket.onmessage = wsOnMessage
 
     })
