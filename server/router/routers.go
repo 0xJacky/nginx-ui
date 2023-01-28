@@ -62,6 +62,8 @@ func InitRouter() *gin.Engine {
 			g.POST("ngx/tokenize_config", api.TokenizeNginxConfig)
 			// Format nginx configuration code
 			g.POST("ngx/format_code", api.FormatNginxConfig)
+			// nginx reload
+			g.POST("nginx/reload", api.ReloadNginx)
 
 			g.POST("domain/:name/enable", api.EnableDomain)
 			g.POST("domain/:name/disable", api.DisableDomain)

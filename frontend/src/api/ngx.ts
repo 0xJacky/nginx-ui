@@ -11,6 +11,10 @@ const ngx = {
 
     format_code(content: string) {
         return http.post('/ngx/format_code', {content})
+    },
+
+    reload() {
+        return http.post('/nginx/reload')
     }
 }
 

@@ -3,8 +3,9 @@ import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import gettext from '@/gettext'
 import {message} from 'ant-design-vue'
 import auth from '@/api/auth'
-import {HomeOutlined, LogoutOutlined, MenuUnfoldOutlined} from '@ant-design/icons-vue'
+import {HomeOutlined, LogoutOutlined, MenuUnfoldOutlined, ReloadOutlined} from '@ant-design/icons-vue'
 import {useRouter} from 'vue-router'
+import ngx from '@/api/ngx'
 
 const {$gettext} = gettext
 
@@ -18,6 +19,13 @@ function logout() {
     })
 }
 
+function reload_nginx() {
+    ngx.reload().then(r => {
+        message.success($gettext('Nginx reloaded successfully'))
+    }).catch(e => {
+        message.error($gettext('Server error') + ' ' + e?.message)
+    })
+}
 </script>
 
 <template>
@@ -26,17 +34,29 @@ function logout() {
             <MenuUnfoldOutlined @click="$emit('clickUnFold')"/>
         </div>
 
-        <div class="user-wrapper">
+        <a-space class="user-wrapper" :size="24">
             <set-language class="set_lang"/>
 
             <a href="/">
                 <HomeOutlined/>
             </a>
 
-            <a @click="logout" style="margin-left: 20px">
+            <a-popconfirm
+                :title="$gettext('Do you want to reload Nginx?')"
+                :ok-text="$gettext('Yes')"
+                :cancel-text="$gettext('No')"
+                @confirm="reload_nginx"
+                placement="bottomRight"
+            >
+                <a>
+                    <ReloadOutlined/>
+                </a>
+            </a-popconfirm>
+
+            <a @click="logout">
                 <LogoutOutlined/>
             </a>
-        </div>
+        </a-space>
     </div>
 </template>
 
@@ -75,11 +95,10 @@ function logout() {
 
 .user-wrapper {
     position: fixed;
-    right: 20px;
+    right: 28px;
 }
 
 .set_lang {
     display: inline;
-    margin-right: 25px;
 }
 </style>

@@ -218,7 +218,7 @@ function on_change_enabled(checked: boolean) {
 
         <footer-tool-bar>
             <a-space>
-                <a-button @click="$router.go(-1)">
+                <a-button @click="$router.push('/domain/list')">
                     <translate>Back</translate>
                 </a-button>
                 <a-button type="primary" @click="save" :loading="saving">

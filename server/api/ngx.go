@@ -4,6 +4,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strings"
 )
 
 func BuildNginxConfig(c *gin.Context) {
@@ -45,5 +46,20 @@ func FormatNginxConfig(c *gin.Context) {
 	c.Set("maybe_error", "nginx_config_syntax_error")
 	c.JSON(http.StatusOK, gin.H{
 		"content": nginx.FmtCode(json.Content),
+	})
+}
+
+func ReloadNginx(c *gin.Context) {
+	output := nginx.Reload()
+
+	if output != "" && strings.Contains(output, "error") {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": output,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
 	})
 }
