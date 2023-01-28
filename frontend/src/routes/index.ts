@@ -13,6 +13,8 @@ import {
     SettingOutlined,
     SafetyCertificateOutlined
 } from '@ant-design/icons-vue'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 const {$gettext} = gettext
 
@@ -174,9 +176,13 @@ const router = createRouter({
     routes: routes
 })
 
+NProgress.configure({showSpinner: false})
+
 router.beforeEach((to, from, next) => {
     // @ts-ignore
     document.title = to.name?.() + ' | Nginx UI'
+
+    NProgress.start()
 
     const user = useUserStore()
     const {is_login} = user
@@ -187,6 +193,10 @@ router.beforeEach((to, from, next) => {
         next({path: '/login', query: {next: to.fullPath}})
     }
 
+})
+
+router.afterEach(() => {
+    NProgress.done()
 })
 
 export default router
