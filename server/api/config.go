@@ -1,13 +1,12 @@
 package api
 
 import (
-    "github.com/0xJacky/Nginx-UI/server/pkg/config_list"
-    "github.com/0xJacky/Nginx-UI/server/pkg/nginx"
-    "github.com/gin-gonic/gin"
-    "log"
-    "net/http"
-    "os"
-    "strings"
+	"github.com/0xJacky/Nginx-UI/server/pkg/config_list"
+	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+	"github.com/gin-gonic/gin"
+	"log"
+	"net/http"
+	"os"
 )
 
 func GetConfigs(c *gin.Context) {
@@ -126,7 +125,7 @@ func AddConfig(c *gin.Context) {
 
 	output := nginx.Reload()
 
-	if output != "" && strings.Contains(output, "error") {
+	if nginx.GetLogLevel(output) >= nginx.Warn {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": output,
 		})
@@ -172,7 +171,7 @@ func EditConfig(c *gin.Context) {
 
 	output := nginx.Reload()
 
-	if output != "" && strings.Contains(output, "error") {
+	if nginx.GetLogLevel(output) >= nginx.Warn {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": output,
 		})

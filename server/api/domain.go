@@ -203,17 +203,18 @@ func EditDomain(c *gin.Context) {
 	enabledConfigFilePath = nginx.GetConfPath("sites-enabled", name)
 	if _, err = os.Stat(enabledConfigFilePath); err == nil {
 		// Test nginx configuration
-		err = nginx.TestConf()
-		if err != nil {
+		output := nginx.TestConf()
+		if nginx.GetLogLevel(output) >= nginx.Warn {
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": err.Error(),
+				"message": output,
 				"error":   "nginx_config_syntax_error",
 			})
 			return
 		}
-		output := nginx.Reload()
 
-		if output != "" && strings.Contains(output, "error") {
+		output = nginx.Reload()
+
+		if nginx.GetLogLevel(output) >= nginx.Warn {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": output,
 			})
@@ -245,18 +246,19 @@ func EnableDomain(c *gin.Context) {
 	}
 
 	// Test nginx config, if not pass then rollback.
-	err = nginx.TestConf()
-	if err != nil {
+	output := nginx.TestConf()
+
+	if nginx.GetLogLevel(output) >= nginx.Warn {
 		_ = os.Remove(enabledConfigFilePath)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
+			"message": output,
 		})
 		return
 	}
 
-	output := nginx.Reload()
+	output = nginx.Reload()
 
-	if output != "" && strings.Contains(output, "error") {
+	if nginx.GetLogLevel(output) >= nginx.Warn {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": output,
 		})
@@ -295,7 +297,7 @@ func DisableDomain(c *gin.Context) {
 
 	output := nginx.Reload()
 
-	if output != "" {
+	if nginx.GetLogLevel(output) >= nginx.Warn {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": output,
 		})
