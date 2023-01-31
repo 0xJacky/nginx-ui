@@ -106,9 +106,9 @@ msgstr "成功关闭 %{name} 自动续签"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "成功启用 %{name} 自动续签"
 
-#: src/views/config/Config.vue:16 src/views/config/Config.vue:17
-#: src/views/config/Config.vue:27 src/views/config/Config.vue:5
-#: src/views/config/ConfigEdit.vue:64 src/views/domain/DomainEdit.vue:222
+#: src/views/config/Config.vue:18 src/views/config/Config.vue:19
+#: src/views/config/Config.vue:29 src/views/config/Config.vue:7
+#: src/views/config/ConfigEdit.vue:72 src/views/domain/DomainEdit.vue:222
 #: src/views/nginx_log/NginxLog.vue:173
 msgid "Back"
 msgstr "返回"
@@ -181,11 +181,15 @@ msgstr "注释"
 msgid "Config Templates"
 msgstr "配置"
 
+#: src/views/config/InspectConfig.vue:3
+msgid "Configuration file is test successful"
+msgstr "配置文件测试成功"
+
 #: src/views/domain/DomainAdd.vue:11
 msgid "Configuration Name"
 msgstr "配置名称"
 
-#: src/views/config/Config.vue:2
+#: src/views/config/Config.vue:4
 msgid "Configurations"
 msgstr "配置"
 
@@ -334,7 +338,7 @@ msgstr "下载最新版本"
 msgid "Edit %{n}"
 msgstr "编辑 %{n}"
 
-#: src/routes/index.ts:81 src/views/config/ConfigEdit.vue:2
+#: src/routes/index.ts:81 src/views/config/ConfigEdit.vue:4
 msgid "Edit Configuration"
 msgstr "编辑配置"
 
@@ -374,6 +378,10 @@ msgstr "启用成功"
 #: src/views/domain/cert/IssueCert.vue:17
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 对网站进行加密"
+
+#: src/views/config/InspectConfig.vue:17
+msgid "Error"
+msgstr "错误"
 
 #: src/routes/index.ts:115 src/views/domain/ngx_conf/LogEntry.vue:68
 msgid "Error Logs"
@@ -427,17 +435,17 @@ msgstr "过滤"
 msgid "Finished"
 msgstr "完成"
 
-#: src/views/config/ConfigEdit.vue:67
+#: src/views/config/ConfigEdit.vue:75
 msgid "Format Code"
 msgstr "代码格式化"
 
-#: src/views/config/ConfigEdit.vue:52
+#: src/views/config/ConfigEdit.vue:57
 msgid "Format error %{msg}"
 msgstr "保存错误 %{msg}"
 
-#: src/views/config/ConfigEdit.vue:50
+#: src/views/config/ConfigEdit.vue:55
 msgid "Format successfully"
-msgstr "保存成功"
+msgstr "格式化成功"
 
 #: src/components/StdDataEntry/components/StdPassword.vue:42
 msgid "Generate"
@@ -470,6 +478,10 @@ msgstr "初始化核心升级程序错误"
 #: src/language/constants.ts:23
 msgid "Initialing core upgrader"
 msgstr "初始化核心升级器"
+
+#: src/views/config/InspectConfig.vue:2
+msgid "Inspect Configurations"
+msgstr "检查配置"
 
 #: src/routes/index.ts:155 src/views/other/Install.vue:128
 msgid "Install"
@@ -762,7 +774,7 @@ msgstr "重置"
 msgid "Run Mode"
 msgstr "运行模式"
 
-#: src/views/config/ConfigEdit.vue:70 src/views/domain/DomainEdit.vue:225
+#: src/views/config/ConfigEdit.vue:78 src/views/domain/DomainEdit.vue:225
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:40
@@ -778,7 +790,7 @@ msgstr "保存"
 msgid "Save Directive"
 msgstr "保存指令"
 
-#: src/views/config/ConfigEdit.vue:43 src/views/domain/DomainAdd.vue:55
+#: src/views/config/ConfigEdit.vue:46 src/views/domain/DomainAdd.vue:55
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:37
 msgid "Save error %{msg}"
 msgstr "保存错误 %{msg}"
@@ -792,7 +804,7 @@ msgstr "保存成功"
 msgid "Save Successfully"
 msgstr "保存成功"
 
-#: src/views/config/ConfigEdit.vue:41 src/views/domain/DomainAdd.vue:44
+#: src/views/config/ConfigEdit.vue:44 src/views/domain/DomainAdd.vue:44
 #: src/views/domain/DomainEdit.vue:125
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:35
 msgid "Saved successfully"
@@ -810,7 +822,7 @@ msgstr "上传"
 #: src/components/StdDataDisplay/StdTable.vue:168
 #: src/components/StdDataDisplay/StdTable.vue:343
 #: src/components/StdDataDisplay/StdTable.vue:463
-#: src/layouts/HeaderLayout.vue:26 src/views/config/ConfigEdit.vue:29
+#: src/layouts/HeaderLayout.vue:26 src/views/config/ConfigEdit.vue:32
 #: src/views/domain/DomainEdit.vue:87 src/views/domain/DomainList.vue:83
 #: src/views/other/Install.vue:71 src/views/preference/Preference.vue:41
 msgid "Server error"
@@ -965,7 +977,8 @@ msgstr "使用 HTTP01 challenge provider"
 msgid "View"
 msgstr "查看"
 
-#: src/views/domain/cert/IssueCert.vue:26 src/views/domain/DomainAdd.vue:22
+#: src/views/config/InspectConfig.vue:6 src/views/domain/cert/IssueCert.vue:26
+#: src/views/domain/DomainAdd.vue:22
 msgid "Warning"
 msgstr "警告"
 

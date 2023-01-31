@@ -6,6 +6,7 @@ import auth from '@/api/auth'
 import {HomeOutlined, LogoutOutlined, MenuUnfoldOutlined, ReloadOutlined} from '@ant-design/icons-vue'
 import {useRouter} from 'vue-router'
 import ngx from '@/api/ngx'
+import logLevel from '@/views/config/constants'
 
 const {$gettext} = gettext
 
@@ -21,7 +22,13 @@ function logout() {
 
 function reload_nginx() {
     ngx.reload().then(r => {
-        message.success($gettext('Nginx reloaded successfully'))
+        if (r.level < logLevel.Warn) {
+            message.success($gettext('Nginx reloaded successfully'))
+        } else if (r.level === logLevel.Warn) {
+            message.warn(r.message)
+        } else {
+            message.error(r.message)
+        }
     }).catch(e => {
         message.error($gettext('Server error') + ' ' + e?.message)
     })

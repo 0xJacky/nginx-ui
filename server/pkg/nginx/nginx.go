@@ -1,40 +1,30 @@
 package nginx
 
 import (
-	"errors"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"log"
 	"os/exec"
 	"path/filepath"
 	"regexp"
-	"strings"
 )
 
-func TestConf() error {
+func TestConf() string {
 	out, err := exec.Command("nginx", "-t").CombinedOutput()
 	if err != nil {
-		log.Println(err)
+		log.Println("[error] nginx.TestConf", err)
 	}
-	output := string(out)
-	if strings.Contains(output, "failed") {
-		return errors.New(output)
-	}
-	return nil
+
+	return string(out)
 }
 
 func Reload() string {
 	out, err := exec.Command("nginx", "-s", "reload").CombinedOutput()
 
 	if err != nil {
-		log.Println(err)
-		return err.Error()
+		log.Println("[error] nginx.Reload", err)
 	}
 
-	output := string(out)
-	if strings.Contains(output, "failed") {
-		return output
-	}
-	return ""
+	return string(out)
 }
 
 func GetConfPath(dir ...string) string {

@@ -41,8 +41,28 @@ const urlJoin = (...args: string[]) =>
         .replace(/\?/g, '&')
         .replace('&', '?')
 
+function createEnum(definition: any) {
+    const strToValueMap: any = {}
+    const numToDescMap: any = {}
+    for (const enumName of Object.keys(definition)) {
+        const [value, desc] = definition[enumName]
+        strToValueMap[enumName] = value
+        numToDescMap[value] = desc
+    }
+    return {
+        ...strToValueMap,
+        getDesc(enumName: any) {
+            return (definition[enumName] && definition[enumName][1]) || ''
+        },
+        getDescFromValue(value: any) {
+            return numToDescMap[value] || ''
+        }
+    }
+}
+
 export {
     bytesToSize,
     downloadCsv,
-    urlJoin
+    urlJoin,
+    createEnum
 }

@@ -15,6 +15,10 @@ const ngx = {
 
     reload() {
         return http.post('/nginx/reload')
+    },
+
+    test() {
+        return http.post('/nginx/test')
     }
 }
 

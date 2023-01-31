@@ -13,6 +13,7 @@ import configColumns from '@/views/config/config'
 import {useRoute} from 'vue-router'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import router from '@/routes'
+import InspectConfig from '@/views/config/InspectConfig.vue'
 
 const table = ref(null)
 const route = useRoute()
@@ -34,9 +35,17 @@ const update = ref(1)
 watch(get_params, () => {
     update.value++
 })
+
+const inspect_config = ref()
+
+watch(route, () => {
+    inspect_config.value?.test()
+})
 </script>
 
 <template>
+    <inspect-config ref="inspect_config"/>
+
     <a-card :title="$gettext('Configurations')">
         <std-table
             :key="update"
