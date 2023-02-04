@@ -21,6 +21,14 @@ import (
 )
 
 func main() {
+	var confPath string
+	flag.StringVar(&confPath, "config", "app.ini", "Specify the configuration file")
+	flag.Parse()
+
+	settings.Init(confPath)
+
+	gin.SetMode(settings.ServerSettings.RunMode)
+
 	r, err := service.GetRuntimeInfo()
 
 	if err != nil {
@@ -33,7 +41,6 @@ func main() {
 		Fetcher:          &fetcher.File{Path: r.ExPath},
 		TerminateTimeout: 0,
 	})
-
 }
 
 func prog(state overseer.State) {
@@ -41,13 +48,6 @@ func prog(state overseer.State) {
 	// See https://github.com/golang/go/issues/32350
 	_ = mime.AddExtensionType(".js", "text/javascript; charset=utf-8")
 
-	var confPath string
-	flag.StringVar(&confPath, "config", "app.ini", "Specify the configuration file")
-	flag.Parse()
-
-	gin.SetMode(settings.ServerSettings.RunMode)
-
-	settings.Init(confPath)
 	log.Printf("Nginx config dir path: %s", nginx.GetConfPath())
 	if "" != settings.ServerSettings.JwtSecret {
 		model.Init()
