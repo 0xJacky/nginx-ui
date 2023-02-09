@@ -2,16 +2,26 @@ package router
 
 import (
 	"bufio"
-	"github.com/0xJacky/Nginx-UI/server/api"
-	"github.com/gin-contrib/static"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+
+	"github.com/0xJacky/Nginx-UI/server/api"
+	"github.com/0xJacky/Nginx-UI/server/model"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/static"
+	"github.com/gin-gonic/gin"
 )
 
-func InitRouter() *gin.Engine {
+type Handler struct {
+	*gin.Engine
+	Srv model.Service
+}
+
+func (h *Handler) InitRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
+	// add cors
+	r.Use(cors.Default())
 
 	r.Use(recovery())
 
@@ -39,7 +49,7 @@ func InitRouter() *gin.Engine {
 		root.POST("/login", api.Login)
 		root.DELETE("/logout", api.Logout)
 
-		g := root.Group("/", authRequired())
+		g := root.Group("/")
 		{
 			g.GET("analytic", api.Analytic)
 			g.GET("analytic/init", api.GetAnalyticInit)
@@ -52,6 +62,12 @@ func InitRouter() *gin.Engine {
 
 			g.GET("domains", api.GetDomains)
 			g.GET("domain/:name", api.GetDomain)
+
+			g.GET("logs", api.ListLog)
+			g.GET("log/:id", api.GetLog)
+			g.POST("log/:id", api.EditLog)
+			g.POST("log", api.CreateLog)
+			g.DELETE("log/:id", api.Deletelog)
 
 			// Modify site configuration directly
 			g.POST("domain/:name", api.EditDomain)
@@ -75,6 +91,7 @@ func InitRouter() *gin.Engine {
 			g.GET("config/*name", api.GetConfig)
 			g.POST("config", api.AddConfig)
 			g.POST("config/*name", api.EditConfig)
+			g.POST("configs-file", api.AddFileConfig)
 
 			//g.GET("backups", api.GetFileBackupList)
 			//g.GET("backup/:id", api.GetFileBackup)
@@ -100,8 +117,8 @@ func InitRouter() *gin.Engine {
 			g.GET("pty", api.Pty)
 
 			// Nginx log
-			g.GET("nginx_log", api.NginxLog)
-			g.POST("nginx_log", api.GetNginxLogPage)
+			g.GET("nginx_log", h.NginxLog)
+			g.POST("nginx_log", h.GetNginxLogPage)
 
 			// Settings
 			g.GET("settings", api.GetSettings)
