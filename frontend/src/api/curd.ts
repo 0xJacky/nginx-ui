@@ -15,7 +15,7 @@ class Curd {
     }
 
     _get_list(params: any = null) {
-        return http.get(this.plural, {params: params})
+        return http.get(this.plural, { params: params })
     }
 
     _get(id: any = null) {
