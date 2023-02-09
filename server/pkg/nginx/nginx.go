@@ -1,11 +1,12 @@
 package nginx
 
 import (
-	"github.com/0xJacky/Nginx-UI/server/settings"
 	"log"
 	"os/exec"
 	"path/filepath"
 	"regexp"
+
+	"github.com/0xJacky/Nginx-UI/server/settings"
 )
 
 func TestConf() string {
