@@ -2,6 +2,12 @@ package api
 
 import (
 	"encoding/json"
+	"io"
+	"log"
+	"net/http"
+	"os"
+
+	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-gonic/gin"
@@ -9,10 +15,6 @@ import (
 	"github.com/hpcloud/tail"
 	"github.com/pkg/errors"
 	"github.com/spf13/cast"
-	"io"
-	"log"
-	"net/http"
-	"os"
 )
 
 const (
@@ -20,6 +22,7 @@ const (
 )
 
 type controlStruct struct {
+	LogName      string `json:"log_name"`
 	Type         string `json:"type"`
 	ConfName     string `json:"conf_name"`
 	ServerIdx    int    `json:"server_idx"`
@@ -31,34 +34,32 @@ type nginxLogPageResp struct {
 	Page    int64  `json:"page"`
 }
 
-func GetNginxLogPage(c *gin.Context) {
+func GetNginxLogPage(c *gin.Context, srv model.Service) {
 	page := cast.ToInt64(c.Query("page"))
 	if page < 0 {
 		page = 0
 	}
 
-	var control controlStruct
-	if !BindAndValid(c, &control) {
+	var req controlStruct
+	if !BindAndValid(c, &req) {
 		return
 	}
 
-	logPath, err := getLogPath(&control)
-
+	l, err := getLog(srv, req.LogName)
 	if err != nil {
-		log.Println("error GetNginxLogPage", err)
+		c.JSON(http.StatusOK, nginxLogPageResp{})
+		log.Println("error GetNginxLogPage getLog", err)
 		return
 	}
 
-	f, err := os.Open(logPath)
-
+	f, err := os.Open(l.Name)
 	if err != nil {
 		c.JSON(http.StatusOK, nginxLogPageResp{})
 		log.Println("error GetNginxLogPage open file", err)
 		return
 	}
 
-	logFileStat, err := os.Stat(logPath)
-
+	logFileStat, err := os.Stat(l.Name)
 	if err != nil {
 		c.JSON(http.StatusOK, nginxLogPageResp{})
 		log.Println("error GetNginxLogPage stat", err)
@@ -66,7 +67,6 @@ func GetNginxLogPage(c *gin.Context) {
 	}
 
 	totalPage := logFileStat.Size() / PageSize
-
 	if logFileStat.Size()%PageSize > 0 {
 		totalPage++
 	}
@@ -89,7 +89,6 @@ func GetNginxLogPage(c *gin.Context) {
 	}
 
 	n, err := f.Read(buf)
-
 	if err != nil && err != io.EOF {
 		c.JSON(http.StatusOK, nginxLogPageResp{})
 		log.Println("error GetNginxLogPage read buf", err)
@@ -124,6 +123,7 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 		}
 
 		directive := config.Servers[control.ServerIdx].Directives[control.DirectiveIdx]
+
 		switch directive.Directive {
 		case "access_log", "error_log":
 			// ok
@@ -156,7 +156,14 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 		logPath = settings.NginxLogSettings.AccessLogPath
 	}
 
-	return
+	return logPath, nil
+}
+
+func getLog(s model.Service, name string) (l model.Log, err error) {
+	if err := s.DB.Where("name = ?", name).First(&l).Error; err != nil {
+		return model.Log{}, err
+	}
+	return l, err
 }
 
 func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan chan error) {
@@ -176,7 +183,6 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 
 	for {
 		logPath, err := getLogPath(&control)
-
 		if err != nil {
 			errChan <- err
 			return
@@ -264,7 +270,6 @@ func NginxLog(c *gin.Context) {
 		log.Println("[Error] NginxAccessLog Upgrade", err)
 		return
 	}
-
 	defer ws.Close()
 
 	errChan := make(chan error, 1)
