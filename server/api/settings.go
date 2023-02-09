@@ -1,15 +1,16 @@
 package api
 
 import (
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func GetSettings(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"server":    settings.ServerSettings,
-		"nginx_log": settings.NginxLogSettings,
+		"server": settings.ServerSettings,
+		// "nginx_log": settings.NginxLogSettings,
 	})
 }
 
@@ -18,7 +19,6 @@ func SaveSettings(c *gin.Context) {
 		Server   settings.Server   `json:"server"`
 		NginxLog settings.NginxLog `json:"nginx_log"`
 	}
-
 	if !BindAndValid(c, &json) {
 		return
 	}

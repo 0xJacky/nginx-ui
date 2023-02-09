@@ -1,12 +1,13 @@
 package api
 
 import (
-	"github.com/0xJacky/Nginx-UI/server/pkg/config_list"
-	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/0xJacky/Nginx-UI/server/pkg/config_list"
+	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+	"github.com/gin-gonic/gin"
 )
 
 func GetConfigs(c *gin.Context) {
@@ -21,7 +22,6 @@ func GetConfigs(c *gin.Context) {
 	}
 
 	configFiles, err := os.ReadDir(nginx.GetConfPath(dir))
-
 	if err != nil {
 		ErrHandler(c, err)
 		return
@@ -92,7 +92,8 @@ func GetConfig(c *gin.Context) {
 
 type AddConfigJson struct {
 	Name    string `json:"name" binding:"required"`
-	Content string `json:"content" binding:"required"`
+	Content string `json:"content"`
+	IsDir   bool   `json:"is_dir"`
 }
 
 func AddConfig(c *gin.Context) {
@@ -116,7 +117,15 @@ func AddConfig(c *gin.Context) {
 	}
 
 	if content != "" {
-		err = os.WriteFile(path, []byte(content), 0644)
+		err = os.WriteFile(path, []byte(content), 0777)
+		if err != nil {
+			ErrHandler(c, err)
+			return
+		}
+	}
+
+	if content == "" {
+		err = os.WriteFile(path, []byte("{}"), 0777)
 		if err != nil {
 			ErrHandler(c, err)
 			return
@@ -179,4 +188,11 @@ func EditConfig(c *gin.Context) {
 	}
 
 	GetConfig(c)
+}
+
+func AddFileConfig(c *gin.Context) {
+	dir := c.DefaultQuery("dir", "/")
+	c.JSON(http.StatusOK, gin.H{
+		"dir": nginx.GetConfPath(dir),
+	})
 }
