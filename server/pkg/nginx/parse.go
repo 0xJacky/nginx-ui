@@ -53,8 +53,14 @@ func (l *NgxLocation) parseLocation(directive gonginx.IDirective, deep int) {
 				l.Content += strings.Repeat("\t", deep) + c + "\n"
 			}
 		}
-		l.Content += strings.Repeat("\t", deep) + location.GetName() + " " + strings.Join(location.GetParameters(), " ") + ";\n"
-		l.parseLocation(location, deep+1)
+		l.Content += strings.Repeat("\t", deep) + location.GetName() + " " + strings.Join(location.GetParameters(), " ")
+		if location.GetBlock() != nil && location.GetBlock().GetDirectives() != nil {
+			l.Content += " { \n"
+			l.parseLocation(location, deep+1)
+			l.Content += " } \n"
+		} else {
+			l.Content += ";\n"
+		}
 	}
 }
 
