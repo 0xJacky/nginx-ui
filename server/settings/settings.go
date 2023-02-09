@@ -1,11 +1,12 @@
 package settings
 
 import (
-	"github.com/spf13/cast"
-	"gopkg.in/ini.v1"
 	"log"
 	"strings"
 	"time"
+
+	"github.com/spf13/cast"
+	"gopkg.in/ini.v1"
 )
 
 var Conf *ini.File
@@ -36,7 +37,7 @@ type NginxLog struct {
 }
 
 var ServerSettings = &Server{
-	HttpPort:          "9000",
+	HttpPort:          "9001",
 	RunMode:           "debug",
 	HTTPChallengePort: "9180",
 	Database:          "database",
