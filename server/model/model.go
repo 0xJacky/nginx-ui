@@ -2,18 +2,27 @@ package model
 
 import (
 	"fmt"
+	"log"
+	"path"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"log"
-	"path"
-	"time"
 )
 
 var db *gorm.DB
+
+type Service struct {
+	DB *gorm.DB
+}
+
+func NewService(db *gorm.DB) Service {
+	return Service{DB: db}
+}
 
 type Model struct {
 	ID        uint       `gorm:"primary_key" json:"id"`
@@ -22,7 +31,7 @@ type Model struct {
 	DeletedAt *time.Time `gorm:"index" json:"deleted_at"`
 }
 
-func Init() {
+func Init() (*gorm.DB, error) {
 	dbPath := path.Join(path.Dir(settings.ConfPath), fmt.Sprintf("%s.db", settings.ServerSettings.Database))
 	var err error
 	db, err = gorm.Open(sqlite.Open(dbPath), &gorm.Config{
@@ -30,13 +39,15 @@ func Init() {
 		PrepareStmt: true,
 	})
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	// Migrate the schema
 	AutoMigrate(&ConfigBackup{})
 	AutoMigrate(&Auth{})
 	AutoMigrate(&AuthToken{})
 	AutoMigrate(&Cert{})
+	AutoMigrate(&Log{})
+	return db, nil
 }
 
 func AutoMigrate(model interface{}) {
