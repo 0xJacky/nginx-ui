@@ -1,6 +1,6 @@
-import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import gettext from '../gettext'
-import {useUserStore} from '@/pinia'
+import { useUserStore } from '@/pinia'
 
 import {
     CloudOutlined,
@@ -16,7 +16,7 @@ import {
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
-const {$gettext} = gettext
+const { $gettext } = gettext
 
 export const routes = [
     {
@@ -101,27 +101,40 @@ export const routes = [
                 }
             },
             {
+                path: 'logs',
+                name: () => $gettext('Nginx Log'),
+                component: () => import('@/views/log/Log.vue'),
+                meta: {
+                    icon: FileTextOutlined
+                }
+            },
+            {
                 path: 'nginx_log',
                 name: () => $gettext('Nginx Log'),
                 meta: {
-                    icon: FileTextOutlined
+                    icon: FileTextOutlined,
+                    hiddenInSidebar: true
                 },
-                children: [{
-                    path: 'access',
-                    name: () => $gettext('Access Logs'),
-                    component: () => import('@/views/nginx_log/NginxLog.vue')
-                }, {
-                    path: 'error',
-                    name: () => $gettext('Error Logs'),
-                    component: () => import('@/views/nginx_log/NginxLog.vue')
-                }, {
-                    path: 'site',
-                    name: () => $gettext('Site Logs'),
-                    component: () => import('@/views/nginx_log/NginxLog.vue'),
-                    meta: {
-                        hiddenInSidebar: true
-                    }
-                }]
+                children: [
+                    {
+                        path: ':log_name',
+                        name: () => $gettext('Access Logs'),
+                        component: () => import('@/views/nginx_log/NginxLog.vue')
+                    },
+                    // {
+                    //     path: 'error',
+                    //     name: () => $gettext('Error Logs'),
+                    //     component: () => import('@/views/nginx_log/NginxLog.vue')
+                    // },
+                    // {
+                    //     path: 'site',
+                    //     name: () => $gettext('Site Logs'),
+                    //     component: () => import('@/views/nginx_log/NginxLog.vue'),
+                    //     meta: {
+                    //         hiddenInSidebar: true
+                    //     }
+                    // },
+                ]
             },
             {
                 path: 'preference',
@@ -154,19 +167,19 @@ export const routes = [
         path: '/install',
         name: () => $gettext('Install'),
         component: () => import('@/views/other/Install.vue'),
-        meta: {noAuth: true}
+        meta: { noAuth: true }
     },
     {
         path: '/login',
         name: () => $gettext('Login'),
         component: () => import('@/views/other/Login.vue'),
-        meta: {noAuth: true}
+        meta: { noAuth: true }
     },
     {
         path: '/:pathMatch(.*)*',
         name: () => $gettext('Not Found'),
         component: () => import('@/views/other/Error.vue'),
-        meta: {noAuth: true, status_code: 404, error: () => $gettext('Not Found')}
+        meta: { noAuth: true, status_code: 404, error: () => $gettext('Not Found') }
     }
 ]
 
@@ -176,7 +189,7 @@ const router = createRouter({
     routes: routes
 })
 
-NProgress.configure({showSpinner: false})
+NProgress.configure({ showSpinner: false })
 
 router.beforeEach((to, from, next) => {
     // @ts-ignore
@@ -185,12 +198,12 @@ router.beforeEach((to, from, next) => {
     NProgress.start()
 
     const user = useUserStore()
-    const {is_login} = user
+    const { is_login } = user
 
     if (to.meta.noAuth || is_login) {
         next()
     } else {
-        next({path: '/login', query: {next: to.fullPath}})
+        next({ path: '/login', query: { next: to.fullPath } })
     }
 
 })
