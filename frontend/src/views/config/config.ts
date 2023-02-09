@@ -1,9 +1,13 @@
-import {customRender, datetime} from '@/components/StdDataDisplay/StdTableTransformer'
+import { customRender, datetime } from '@/components/StdDataDisplay/StdTableTransformer'
 import gettext from '@/gettext'
 
-const {$gettext} = gettext
+const { $gettext } = gettext
 
-import {h} from 'vue'
+import { h } from 'vue'
+
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const configColumns = [{
     title: () => $gettext('Name'),
@@ -15,7 +19,8 @@ const configColumns = [{
     dataIndex: 'is_dir',
     customRender: (args: customRender) => {
         const template: any = []
-        const {text, column} = args
+        const { text, column } = args
+        console.log("args....", args)
         if (text === true || text > 0) {
             template.push($gettext('Dir'))
         } else {
@@ -32,9 +37,11 @@ const configColumns = [{
     datetime: true,
     sorter: true,
     pithy: true
-}, {
-    title: () => $gettext('Action'),
-    dataIndex: 'action'
-}]
+},
+{
+    title: () => $gettext('action'),
+    dataIndex: 'action',
+}
+]
 
 export default configColumns

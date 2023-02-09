@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import StdTable from '@/components/StdDataDisplay/StdTable.vue'
+import StdCurd from '@/components/StdDataDisplay/StdCurd.vue'
+
 import gettext from '@/gettext'
 import config from '@/api/config'
 import {customRender, datetime} from '@/components/StdDataDisplay/StdTableTransformer'

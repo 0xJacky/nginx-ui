@@ -13,7 +13,7 @@ const settingsStore = useSettingsStore()
 const theme = ref(settingsStore.theme)
 const data = ref({
     server: {
-        http_port: 9000,
+        http_port: 1234,
         run_mode: 'debug',
         jwt_secret: '',
         start_cmd: '',
@@ -75,12 +75,12 @@ function save() {
                         </a-select-option>
                     </a-select>
                 </a-form-item>
-                <a-form-item :label="$gettext('Nginx Access Log Path')">
+                <!-- <a-form-item :label="$gettext('Nginx Access Log Path')">
                     <a-input v-model:value="data.nginx_log.access_log_path"/>
                 </a-form-item>
                 <a-form-item :label="$gettext('Nginx Error Log Path')">
                     <a-input v-model:value="data.nginx_log.error_log_path"/>
-                </a-form-item>
+                </a-form-item> -->
             </a-form>
         </div>
     </a-card>

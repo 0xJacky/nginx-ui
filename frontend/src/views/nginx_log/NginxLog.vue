@@ -20,6 +20,7 @@ function logType() {
 }
 
 const control = reactive({
+    log_name : route.params.log_name,
     type: logType(),
     conf_name: route.query.conf_name,
     server_idx: parseInt(route.query.server_idx as string),
@@ -65,11 +66,21 @@ const buffer = ref('')
 const page = ref(0)
 
 function init() {
+    var server_idx = parseInt(route.query.server_idx as string)
+    if (isNaN(server_idx)) {
+        server_idx = 0
+    }
+    var directive_idx = parseInt(route.query.directive_idx as string)
+    if (isNaN(directive_idx)) {
+        directive_idx = 0
+    }
+
     nginx_log.page(0, {
+        log_name : route.params.log_name,
         conf_name: (route.query.conf_name as string),
         type: logType(),
-        server_idx: parseInt(route.query.server_idx as string),
-        directive_idx: parseInt(route.query.directive_idx as string)
+        server_idx: server_idx,
+        directive_idx: directive_idx
     }).then(r => {
         page.value = r.page - 1
         addLog(r.content)
@@ -155,14 +166,13 @@ const computedBuffer = computed(() => {
 <template>
     <a-card :title="$gettext('Nginx Log')" :bordered="false">
         <a-form layout="vertical">
-            <a-form-item :label="$gettext('Auto Refresh')">
+            <!-- <a-form-item :label="$gettext('Auto Refresh')">
                 <a-switch v-model:checked="auto_refresh"/>
-            </a-form-item>
+            </a-form-item> -->
             <a-form-item :label="$gettext('Filter')">
                 <a-input v-model:value="filter" style="max-width: 300px"/>
             </a-form-item>
         </a-form>
-
         <a-card>
             <pre class="nginx-log-container" ref="logContainer"
                  @scroll="debounce(on_scroll_log,100, null)()" v-html="computedBuffer"/>
