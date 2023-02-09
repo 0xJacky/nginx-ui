@@ -3,6 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
+	"mime"
+	"net/http"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/server/analytic"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/pkg/cert"
@@ -14,10 +19,6 @@ import (
 	"github.com/go-co-op/gocron"
 	"github.com/jpillora/overseer"
 	"github.com/jpillora/overseer/fetcher"
-	"log"
-	"mime"
-	"net/http"
-	"time"
 )
 
 func main() {
@@ -30,11 +31,9 @@ func main() {
 	gin.SetMode(settings.ServerSettings.RunMode)
 
 	r, err := service.GetRuntimeInfo()
-
 	if err != nil {
 		log.Fatalln(err)
 	}
-
 	overseer.Run(overseer.Config{
 		Program:          prog,
 		Address:          fmt.Sprintf(":%s", settings.ServerSettings.HttpPort),
@@ -63,7 +62,17 @@ func prog(state overseer.State) {
 
 		go analytic.RecordServerAnalytic()
 	}
-	err := http.Serve(state.Listener, router.InitRouter())
+
+	db, err := model.Init()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	srv := model.NewService(db)
+	log.Println("server starting on", state.Listener.Addr().String())
+	h := router.Handler{
+		Srv: srv,
+	}
+	err = http.Serve(state.Listener, h.InitRouter())
 	if err != nil {
 		log.Fatalln(err)
 	}
