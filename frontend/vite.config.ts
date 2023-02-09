@@ -1,9 +1,9 @@
-import {defineConfig} from 'vite'
+import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import {createHtmlPlugin} from 'vite-plugin-html'
+import { createHtmlPlugin } from 'vite-plugin-html'
 import Components from 'unplugin-vue-components/vite'
-import {AntDesignVueResolver} from 'unplugin-vue-components/resolvers'
-import {fileURLToPath, URL} from 'url'
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
+import { fileURLToPath, URL } from 'url'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vitePluginBuildId from 'vite-plugin-build-id'
 
@@ -26,32 +26,32 @@ export default defineConfig({
         ]
     },
     plugins: [vue(), vueJsx(), vitePluginBuildId(),
-        Components({
-            resolvers: [AntDesignVueResolver({importStyle: false})],
-            directoryAsNamespace: true
-        }),
-        createHtmlPlugin({
-            minify: true,
-            /**
-             * After writing entry here, you will not need to add script tags in `index.html`, the original tags need to be deleted
-             * @default src/main.ts
-             */
-            entry: '/src/main.ts',
-            /**
-             * If you want to store `index.html` in the specified folder, you can modify it, otherwise no configuration is required
-             * @default index.html
-             */
-            template: 'index.html',
+    Components({
+        resolvers: [AntDesignVueResolver({ importStyle: false })],
+        directoryAsNamespace: true
+    }),
+    createHtmlPlugin({
+        minify: true,
+        /**
+         * After writing entry here, you will not need to add script tags in `index.html`, the original tags need to be deleted
+         * @default src/main.ts
+         */
+        entry: '/src/main.ts',
+        /**
+         * If you want to store `index.html` in the specified folder, you can modify it, otherwise no configuration is required
+         * @default index.html
+         */
+        template: 'index.html',
 
-            /**
-             * Data that needs to be injected into the index.html ejs template
-             */
-            inject: {
-                data: {
-                    title: 'Nginx UI'
-                }
+        /**
+         * Data that needs to be injected into the index.html ejs template
+         */
+        inject: {
+            data: {
+                title: 'Nginx UI'
             }
-        })
+        }
+    })
     ],
     css: {
         preprocessorOptions: {
@@ -66,7 +66,7 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: 'https://nginx.jackyu.cn/',
+                target: 'http://localhost:9001/',
                 changeOrigin: true,
                 secure: false,
                 ws: true
