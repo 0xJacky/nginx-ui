@@ -6,7 +6,7 @@ require (
 	github.com/creack/pty v1.1.18
 	github.com/dustin/go-humanize v1.0.0
 	github.com/gin-contrib/static v0.0.1
-	github.com/gin-gonic/gin v1.7.4
+	github.com/gin-gonic/gin v1.7.7
 	github.com/go-acme/lego/v4 v4.4.0
 	github.com/go-co-op/gocron v1.15.0
 	github.com/go-playground/locales v0.13.0
