@@ -28,6 +28,7 @@ type Server struct {
 	PageSize          int    `json:"page_size"`
 	GithubProxy       string `json:"github_proxy"`
 	NginxConfigDir    string `json:"nginx_config_dir"`
+	NginxPIDPath      string `json:"nginx_pid_path"`
 }
 
 type NginxLog struct {

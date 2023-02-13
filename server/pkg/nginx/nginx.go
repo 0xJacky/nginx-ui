@@ -27,8 +27,17 @@ func Reload() string {
 	return string(out)
 }
 
-func GetConfPath(dir ...string) string {
+func Restart() string {
+	out, err := exec.Command("nginx", "-s", "reopen").CombinedOutput()
 
+	if err != nil {
+		log.Println("[error] nginx.Restart", err)
+	}
+
+	return string(out)
+}
+
+func GetConfPath(dir ...string) string {
 	var confPath string
 
 	if settings.ServerSettings.NginxConfigDir == "" {
@@ -49,4 +58,27 @@ func GetConfPath(dir ...string) string {
 	}
 
 	return filepath.Join(confPath, filepath.Join(dir...))
+}
+
+func GetNginxPIDPath() string {
+	var confPath string
+
+	if settings.ServerSettings.NginxPIDPath == "" {
+		out, err := exec.Command("nginx", "-V").CombinedOutput()
+		if err != nil {
+			log.Println("nginx.GetNginxPIDPath exec.Command error", err)
+			return ""
+		}
+		r, _ := regexp.Compile("--pid-path=(.*.pid)")
+		match := r.FindStringSubmatch(string(out))
+		if len(match) < 1 {
+			log.Println("nginx.GetNginxPIDPath len(match) < 1")
+			return ""
+		}
+		confPath = r.FindStringSubmatch(string(out))[1]
+	} else {
+		confPath = settings.ServerSettings.NginxPIDPath
+	}
+
+	return confPath
 }

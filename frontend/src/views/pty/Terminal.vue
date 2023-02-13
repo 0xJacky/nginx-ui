@@ -35,14 +35,13 @@ const fit = _.throttle(function () {
 
 function initTerm() {
     term = new Terminal({
-        rendererType: 'canvas',
         convertEol: true,
         fontSize: 14,
         cursorStyle: 'block',
         scrollback: 1000,
         theme: {
-            background: '#000',
-        },
+            background: '#000'
+        }
     })
 
     term.loadAddon(fitAddon)

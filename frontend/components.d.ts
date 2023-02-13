@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AAlert: typeof import('ant-design-vue/es')['Alert']
+    ABadge: typeof import('ant-design-vue/es')['Badge']
     ABreadcrumb: typeof import('ant-design-vue/es')['Breadcrumb']
     ABreadcrumbItem: typeof import('ant-design-vue/es')['BreadcrumbItem']
     AButton: typeof import('ant-design-vue/es')['Button']
@@ -37,6 +38,7 @@ declare module '@vue/runtime-core' {
     AModal: typeof import('ant-design-vue/es')['Modal']
     APagination: typeof import('ant-design-vue/es')['Pagination']
     APopconfirm: typeof import('ant-design-vue/es')['Popconfirm']
+    APopover: typeof import('ant-design-vue/es')['Popover']
     AProgress: typeof import('ant-design-vue/es')['Progress']
     AResult: typeof import('ant-design-vue/es')['Result']
     ARow: typeof import('ant-design-vue/es')['Row']
@@ -59,6 +61,7 @@ declare module '@vue/runtime-core' {
     CodeEditorCodeEditor: typeof import('./src/components/CodeEditor/CodeEditor.vue')['default']
     FooterToolbarFooterToolBar: typeof import('./src/components/FooterToolbar/FooterToolBar.vue')['default']
     LogoLogo: typeof import('./src/components/Logo/Logo.vue')['default']
+    NginxControlNginxControl: typeof import('./src/components/NginxControl/NginxControl.vue')['default']
     PageHeaderPageHeader: typeof import('./src/components/PageHeader/PageHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

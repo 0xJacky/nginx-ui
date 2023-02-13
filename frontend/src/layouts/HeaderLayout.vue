@@ -3,10 +3,9 @@ import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import gettext from '@/gettext'
 import {message} from 'ant-design-vue'
 import auth from '@/api/auth'
-import {HomeOutlined, LogoutOutlined, MenuUnfoldOutlined, ReloadOutlined} from '@ant-design/icons-vue'
+import {HomeOutlined, LogoutOutlined, MenuUnfoldOutlined} from '@ant-design/icons-vue'
 import {useRouter} from 'vue-router'
-import ngx from '@/api/ngx'
-import logLevel from '@/views/config/constants'
+import NginxControl from '@/components/NginxControl/NginxControl.vue'
 
 const {$gettext} = gettext
 
@@ -17,20 +16,6 @@ function logout() {
         message.success($gettext('Logout successful'))
     }).then(() => {
         router.push('/login')
-    })
-}
-
-function reload_nginx() {
-    ngx.reload().then(r => {
-        if (r.level < logLevel.Warn) {
-            message.success($gettext('Nginx reloaded successfully'))
-        } else if (r.level === logLevel.Warn) {
-            message.warn(r.message)
-        } else {
-            message.error(r.message)
-        }
-    }).catch(e => {
-        message.error($gettext('Server error') + ' ' + e?.message)
     })
 }
 </script>
@@ -48,17 +33,7 @@ function reload_nginx() {
                 <HomeOutlined/>
             </a>
 
-            <a-popconfirm
-                :title="$gettext('Do you want to reload Nginx?')"
-                :ok-text="$gettext('Yes')"
-                :cancel-text="$gettext('No')"
-                @confirm="reload_nginx"
-                placement="bottomRight"
-            >
-                <a>
-                    <ReloadOutlined/>
-                </a>
-            </a-popconfirm>
+            <NginxControl/>
 
             <a @click="logout">
                 <LogoutOutlined/>

@@ -1,6 +1,8 @@
 import axios, {AxiosRequestConfig} from 'axios'
 import {useUserStore} from '@/pinia'
 import {storeToRefs} from 'pinia'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 import router from '@/routes'
 
@@ -25,6 +27,7 @@ let instance = axios.create({
 
 instance.interceptors.request.use(
     config => {
+        NProgress.start()
         if (token) {
             (config.headers as any).Authorization = token.value
         }
@@ -37,9 +40,11 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
     response => {
+        NProgress.done()
         return Promise.resolve(response.data)
     },
     async error => {
+        NProgress.done()
         switch (error.response.status) {
             case 401:
             case 403:

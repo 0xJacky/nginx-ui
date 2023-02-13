@@ -4,6 +4,7 @@ import (
     "github.com/0xJacky/Nginx-UI/server/pkg/nginx"
     "github.com/gin-gonic/gin"
     "net/http"
+    "os"
 )
 
 func BuildNginxConfig(c *gin.Context) {
@@ -48,6 +49,19 @@ func FormatNginxConfig(c *gin.Context) {
     })
 }
 
+func NginxStatus(c *gin.Context) {
+    pidPath := nginx.GetNginxPIDPath()
+
+    running := true
+    if _, err := os.Stat(pidPath); err != nil {
+        running = false
+    }
+
+    c.JSON(http.StatusOK, gin.H{
+        "running": running,
+    })
+}
+
 func ReloadNginx(c *gin.Context) {
     output := nginx.Reload()
 
@@ -59,6 +73,15 @@ func ReloadNginx(c *gin.Context) {
 
 func TestNginx(c *gin.Context) {
     output := nginx.TestConf()
+
+    c.JSON(http.StatusOK, gin.H{
+        "message": output,
+        "level":   nginx.GetLogLevel(output),
+    })
+}
+
+func RestartNginx(c *gin.Context) {
+    output := nginx.Restart()
 
     c.JSON(http.StatusOK, gin.H{
         "message": output,

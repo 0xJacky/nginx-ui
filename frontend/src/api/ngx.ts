@@ -13,8 +13,16 @@ const ngx = {
         return http.post('/ngx/format_code', {content})
     },
 
+    status() {
+        return http.get('/nginx/status')
+    },
+
     reload() {
         return http.post('/nginx/reload')
+    },
+
+    restart() {
+        return http.post('/nginx/restart')
     },
 
     test() {
