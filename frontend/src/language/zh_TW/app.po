@@ -59,8 +59,8 @@ msgstr "高階模式"
 msgid "Arch"
 msgstr "架搆"
 
-#: src/components/StdDataDisplay/StdTable.vue:54
-#: src/views/domain/DomainList.vue:26
+#: src/components/StdDataDisplay/StdTable.vue:55
+#: src/views/domain/DomainList.vue:29
 msgid "Are you sure you want to delete?"
 msgstr "你確定你要刪除？"
 
@@ -109,7 +109,7 @@ msgstr "已啟用 %{name} 自動續簽"
 
 #: src/views/config/Config.vue:18 src/views/config/Config.vue:19
 #: src/views/config/Config.vue:29 src/views/config/Config.vue:7
-#: src/views/config/ConfigEdit.vue:72 src/views/domain/DomainEdit.vue:222
+#: src/views/config/ConfigEdit.vue:72 src/views/domain/DomainEdit.vue:225
 #: src/views/nginx_log/NginxLog.vue:173
 msgid "Back"
 msgstr "返回"
@@ -208,11 +208,11 @@ msgstr "內容"
 msgid "Core Upgrade"
 msgstr "核心升級"
 
-#: src/views/dashboard/DashBoard.vue:64
+#: src/views/dashboard/DashBoard.vue:66
 msgid "CPU Status"
 msgstr "中央處理器狀態"
 
-#: src/views/dashboard/DashBoard.vue:156
+#: src/views/dashboard/DashBoard.vue:22 src/views/dashboard/DashBoard.vue:23
 msgid "CPU:"
 msgstr "中央處理器:"
 
@@ -255,8 +255,10 @@ msgstr "儀表盤"
 msgid "Database (Optional, default: database)"
 msgstr "資料庫 (可選，預設: database)"
 
-#: src/components/StdDataDisplay/StdTable.vue:527
-#: src/views/domain/DomainList.vue:115
+#: src/components/StdDataDisplay/StdTable.vue:528
+#: src/views/domain/DomainList.vue:19 src/views/domain/DomainList.vue:20
+#: src/views/domain/DomainList.vue:21 src/views/domain/DomainList.vue:28
+#: src/views/domain/DomainList.vue:32
 msgid "Delete"
 msgstr "刪除"
 
@@ -307,17 +309,13 @@ msgstr "關閉 %{name} 自動續簽失敗"
 msgid "Disabled"
 msgstr "禁用"
 
-#: src/views/domain/DomainEdit.vue:143 src/views/domain/DomainList.vue:69
+#: src/views/domain/DomainEdit.vue:146 src/views/domain/DomainList.vue:69
 msgid "Disabled successfully"
 msgstr "禁用成功"
 
-#: src/views/dashboard/DashBoard.vue:96
+#: src/views/dashboard/DashBoard.vue:98
 msgid "Disk IO"
 msgstr "磁碟 IO"
-
-#: src/layouts/HeaderLayout.vue:15
-msgid "Do you want to reload Nginx?"
-msgstr "你想重載 Nginx 嗎？"
 
 #: src/views/cert/Cert.vue:32
 msgid "Domain"
@@ -334,6 +332,11 @@ msgstr "下載最新版本錯誤"
 #: src/language/constants.ts:25
 msgid "Downloading latest release"
 msgstr "正在下載最新版本"
+
+#: src/views/domain/DomainList.vue:14 src/views/domain/DomainList.vue:15
+#: src/views/domain/DomainList.vue:16 src/views/domain/DomainList.vue:23
+msgid "Duplicate"
+msgstr "複製"
 
 #: src/views/domain/DomainEdit.vue:4 src/views/domain/DomainEdit.vue:5
 msgid "Edit %{n}"
@@ -371,7 +374,7 @@ msgstr "啟用 TLS"
 msgid "Enabled"
 msgstr "啟用"
 
-#: src/views/domain/DomainAdd.vue:47 src/views/domain/DomainEdit.vue:134
+#: src/views/domain/DomainAdd.vue:47 src/views/domain/DomainEdit.vue:137
 #: src/views/domain/DomainList.vue:59
 msgid "Enabled successfully"
 msgstr "啟用成功"
@@ -404,11 +407,11 @@ msgstr "過期時間: %{date}"
 msgid "Export"
 msgstr "導出"
 
-#: src/views/domain/DomainEdit.vue:146 src/views/domain/DomainList.vue:73
+#: src/views/domain/DomainEdit.vue:149 src/views/domain/DomainList.vue:73
 msgid "Failed to disable %{msg}"
 msgstr "禁用失敗 %{msg}"
 
-#: src/views/domain/DomainEdit.vue:137 src/views/domain/DomainList.vue:63
+#: src/views/domain/DomainEdit.vue:140 src/views/domain/DomainList.vue:63
 msgid "Failed to enable %{msg}"
 msgstr "啟用失敗 %{msg}"
 
@@ -423,6 +426,10 @@ msgstr "保存失敗，在配置中檢測到語法錯誤。"
 #: src/views/config/config.ts:22
 msgid "File"
 msgstr "文件"
+
+#: src/language/constants.ts:31
+msgid "File exists"
+msgstr "文件已存在"
 
 #: src/views/other/Error.vue:3 src/views/other/Error.vue:4
 msgid "File Not Found"
@@ -518,7 +525,7 @@ msgstr "留空表示不修改"
 msgid "Light"
 msgstr "淺色"
 
-#: src/views/dashboard/DashBoard.vue:144
+#: src/views/dashboard/DashBoard.vue:154
 msgid "Load Averages:"
 msgstr "系統負載:"
 
@@ -564,11 +571,11 @@ msgstr "網站管理"
 msgid "Manage Users"
 msgstr "使用者管理"
 
-#: src/views/dashboard/DashBoard.vue:32
+#: src/views/dashboard/DashBoard.vue:34
 msgid "Memory"
 msgstr "記憶體"
 
-#: src/views/dashboard/DashBoard.vue:29
+#: src/views/dashboard/DashBoard.vue:31
 msgid "Memory and Storage"
 msgstr "記憶體和存儲"
 
@@ -596,19 +603,19 @@ msgstr "多行指令"
 msgid "Name"
 msgstr "名稱"
 
-#: src/views/dashboard/DashBoard.vue:74
+#: src/views/dashboard/DashBoard.vue:76
 msgid "Network"
 msgstr "網路"
 
-#: src/views/dashboard/DashBoard.vue:48
+#: src/views/dashboard/DashBoard.vue:50
 msgid "Network Statistics"
 msgstr "網路統計"
 
-#: src/views/dashboard/DashBoard.vue:52
+#: src/views/dashboard/DashBoard.vue:54
 msgid "Network Total Receive"
 msgstr "下載流量"
 
-#: src/views/dashboard/DashBoard.vue:56
+#: src/views/dashboard/DashBoard.vue:58
 msgid "Network Total Send"
 msgstr "上傳流量"
 
@@ -628,6 +635,12 @@ msgstr "Nginx 訪問日誌路徑"
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 配置解析錯誤"
 
+#: src/components/NginxControl/NginxControl.vue:4
+#: src/components/NginxControl/NginxControl.vue:5
+#: src/components/NginxControl/NginxControl.vue:9
+msgid "Nginx Control"
+msgstr "Nginx 控件"
+
 #: src/views/preference/Preference.vue:36
 msgid "Nginx Error Log Path"
 msgstr "Nginx 錯誤日誌路徑"
@@ -636,12 +649,16 @@ msgstr "Nginx 錯誤日誌路徑"
 msgid "Nginx Log"
 msgstr "Nginx 日誌"
 
-#: src/layouts/HeaderLayout.vue:24
+#: src/components/NginxControl/NginxControl.vue:26
 msgid "Nginx reloaded successfully"
 msgstr "Nginx 重載成功"
 
-#: src/components/StdDataDisplay/StdTable.vue:52
-#: src/layouts/HeaderLayout.vue:17 src/views/domain/DomainList.vue:24
+#: src/components/NginxControl/NginxControl.vue:43
+msgid "Nginx restarted successfully"
+msgstr "Nginx 重啟成功"
+
+#: src/components/StdDataDisplay/StdTable.vue:53
+#: src/views/domain/DomainList.vue:27
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:22
 #: src/views/domain/ngx_conf/LocationEditor.vue:26
 msgid "No"
@@ -665,9 +682,9 @@ msgstr "正在獲取證書"
 
 #: src/components/StdDataDisplay/StdBatchEdit.vue:8
 #: src/components/StdDataDisplay/StdCurd.vue:28
-#: src/components/StdDataDisplay/StdTable.vue:53
+#: src/components/StdDataDisplay/StdTable.vue:54
 #: src/components/StdDataEntry/components/StdSelector.vue:12
-#: src/views/domain/DomainList.vue:25
+#: src/views/domain/DomainList.vue:28
 msgid "OK"
 msgstr "確定"
 
@@ -676,7 +693,7 @@ msgstr "確定"
 msgid "OS"
 msgstr "作業系統"
 
-#: src/views/dashboard/DashBoard.vue:150
+#: src/views/dashboard/DashBoard.vue:160
 msgid "OS:"
 msgstr "作業系統:"
 
@@ -737,11 +754,11 @@ msgstr "禁止刪除默認用戶"
 msgid "Project Team"
 msgstr "專案團隊"
 
-#: src/views/dashboard/DashBoard.vue:107
+#: src/views/dashboard/DashBoard.vue:109
 msgid "Reads"
 msgstr "讀"
 
-#: src/views/dashboard/DashBoard.vue:20 src/views/dashboard/DashBoard.vue:78
+#: src/views/dashboard/DashBoard.vue:20 src/views/dashboard/DashBoard.vue:80
 msgid "Receive"
 msgstr "下載"
 
@@ -761,6 +778,16 @@ msgstr "安裝"
 msgid "Release Note"
 msgstr "發行公告"
 
+#: src/components/NginxControl/NginxControl.vue:12
+#: src/components/NginxControl/NginxControl.vue:13
+#: src/components/NginxControl/NginxControl.vue:17
+msgid "Reload"
+msgstr "重新載入"
+
+#: src/components/NginxControl/NginxControl.vue:11
+msgid "Reloading"
+msgstr "换弹中"
+
 #: src/language/constants.ts:19
 msgid "Reloading nginx"
 msgstr "重载 Nginx"
@@ -771,11 +798,25 @@ msgstr "重载 Nginx"
 msgid "Reset"
 msgstr "重設"
 
+#: src/components/NginxControl/NginxControl.vue:11
+#: src/components/NginxControl/NginxControl.vue:12
+#: src/components/NginxControl/NginxControl.vue:16
+msgid "Restart"
+msgstr "重新啟動"
+
+#: src/components/NginxControl/NginxControl.vue:12
+msgid "Restarting"
+msgstr "重啟"
+
 #: src/views/preference/Preference.vue:8
 msgid "Run Mode"
 msgstr "高階模式"
 
-#: src/views/config/ConfigEdit.vue:78 src/views/domain/DomainEdit.vue:225
+#: src/components/NginxControl/NginxControl.vue:10
+msgid "Running"
+msgstr "運行中"
+
+#: src/views/config/ConfigEdit.vue:78 src/views/domain/DomainEdit.vue:228
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:40
@@ -806,7 +847,7 @@ msgid "Save Successfully"
 msgstr "保存成功"
 
 #: src/views/config/ConfigEdit.vue:44 src/views/domain/DomainAdd.vue:44
-#: src/views/domain/DomainEdit.vue:125
+#: src/views/domain/DomainEdit.vue:128
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:35
 msgid "Saved successfully"
 msgstr "儲存成功"
@@ -815,17 +856,19 @@ msgstr "儲存成功"
 msgid "Selector"
 msgstr "選擇器"
 
-#: src/views/dashboard/DashBoard.vue:21 src/views/dashboard/DashBoard.vue:85
+#: src/views/dashboard/DashBoard.vue:21 src/views/dashboard/DashBoard.vue:87
 msgid "Send"
 msgstr "上傳"
 
+#: src/components/NginxControl/NginxControl.vue:33
+#: src/components/NginxControl/NginxControl.vue:50
 #: src/components/StdDataDisplay/StdBatchEdit.vue:43
 #: src/components/StdDataDisplay/StdTable.vue:168
 #: src/components/StdDataDisplay/StdTable.vue:343
 #: src/components/StdDataDisplay/StdTable.vue:463
-#: src/layouts/HeaderLayout.vue:26 src/views/config/ConfigEdit.vue:32
-#: src/views/domain/DomainEdit.vue:87 src/views/domain/DomainList.vue:83
-#: src/views/other/Install.vue:71 src/views/preference/Preference.vue:41
+#: src/views/config/ConfigEdit.vue:32 src/views/domain/DomainEdit.vue:87
+#: src/views/domain/DomainList.vue:83 src/views/other/Install.vue:71
+#: src/views/preference/Preference.vue:41
 msgid "Server error"
 msgstr "伺服器錯誤"
 
@@ -874,7 +917,11 @@ msgstr "SSL 證書密鑰內容"
 msgid "Status"
 msgstr "狀態"
 
-#: src/views/dashboard/DashBoard.vue:41
+#: src/components/NginxControl/NginxControl.vue:13
+msgid "Stopped"
+msgstr "已停止"
+
+#: src/views/dashboard/DashBoard.vue:43
 msgid "Storage"
 msgstr "儲存"
 
@@ -882,7 +929,7 @@ msgstr "儲存"
 msgid "Subject Name: %{name}"
 msgstr "主體名稱: %{name}"
 
-#: src/views/dashboard/DashBoard.vue:36
+#: src/views/dashboard/DashBoard.vue:38
 msgid "Swap"
 msgstr "交換空間"
 
@@ -957,7 +1004,7 @@ msgstr "升級成功"
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "正在升級 Nginx UI，請稍候..."
 
-#: src/views/dashboard/DashBoard.vue:140
+#: src/views/dashboard/DashBoard.vue:150
 msgid "Uptime:"
 msgstr "執行時間:"
 
@@ -984,7 +1031,7 @@ msgstr "查看"
 msgid "Warning"
 msgstr "警告"
 
-#: src/views/dashboard/DashBoard.vue:100 src/views/dashboard/DashBoard.vue:22
+#: src/views/dashboard/DashBoard.vue:102 src/views/dashboard/DashBoard.vue:22
 #: src/views/dashboard/DashBoard.vue:23
 msgid "Writes"
 msgstr "寫"
@@ -997,7 +1044,6 @@ msgstr "將證書私鑰寫入磁盤"
 msgid "Writing certificate to disk"
 msgstr "將證書寫入磁盤"
 
-#: src/layouts/HeaderLayout.vue:16
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:21
 #: src/views/domain/ngx_conf/LocationEditor.vue:25
 msgid "Yes"
@@ -1016,6 +1062,9 @@ msgstr "您可以在此頁面查看 Nginx UI 升級。"
 msgctxt "Project"
 msgid "License"
 msgstr "開源軟體授權條款"
+
+#~ msgid "Do you want to reload Nginx?"
+#~ msgstr "你想重載 Nginx 嗎？"
 
 #, fuzzy
 #~ msgid "Are you sure you want to delete ?"
@@ -1044,9 +1093,6 @@ msgstr "開源軟體授權條款"
 
 #~ msgid "No, I'm rethink"
 #~ msgstr "再想想"
-
-#~ msgid "Restore"
-#~ msgstr "恢復"
 
 #~ msgid "Yes, I'm sure"
 #~ msgstr "是的"

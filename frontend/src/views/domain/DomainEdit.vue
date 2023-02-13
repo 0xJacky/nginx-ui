@@ -84,7 +84,7 @@ function handle_parse_error(r: any) {
             configText.value = r.config
         })
     } else {
-        message.error(r.message ?? $gettext('Server error'))
+        message.error($gettext(r?.message ?? 'Server error'))
     }
 
     throw r
@@ -119,7 +119,10 @@ const save = async () => {
         }
     }
 
-    domain.save(name.value, {name: filename.value || name.value, content: configText.value}).then(r => {
+    domain.save(name.value, {
+        name: filename.value || name.value,
+        content: configText.value, overwrite: true
+    }).then(r => {
         handle_response(r)
         router.push('/domain/' + filename.value)
         message.success($gettext('Saved successfully'))

@@ -21,6 +21,10 @@ class Domain extends Curd {
     remove_auto_cert(domain: string) {
         return http.delete('auto_cert/' + domain)
     }
+
+    duplicate(name: string, data: any) {
+        return http.post(this.baseUrl + '/' + name + '/duplicate', data)
+    }
 }
 
 const domain = new Domain('/domain')

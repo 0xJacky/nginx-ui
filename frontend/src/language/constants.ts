@@ -26,5 +26,7 @@ export const msg = [
     $gettext('Download latest release error'),
     $gettext('Performing core upgrade'),
     $gettext('Perform core upgrade error'),
-    $gettext('Upgraded successfully')
+    $gettext('Upgraded successfully'),
+    
+    $gettext('File exists')
 ]

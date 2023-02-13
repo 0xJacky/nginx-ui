@@ -359,7 +359,7 @@ async function export_csv() {
     })
 
     downloadCsv(header, data,
-            `${$gettext('Export')}-${dayjs().format('YYYYMMDDHHmmss')}.csv`)
+        `${$gettext('Export')}-${dayjs().format('YYYYMMDDHHmmss')}.csv`)
 }
 
 const hasSelectedRow = computed(() => {
@@ -418,7 +418,7 @@ function initSortable() {
             const level: number = newRow.level
 
             let currentRowIndex: number[] = [...rows_key_index_map.value?.
-                    [Number(table.children[Number(newIndex) + direction].dataset.rowKey)]]
+                [Number(table.children[Number(newIndex) + direction].dataset.rowKey)]]
             let currentRow: any = getTargetData(data_source.value, currentRowIndex)
             // Reset parent
             currentRow.parent = newRow.parent = null
@@ -451,7 +451,7 @@ function initSortable() {
                 processChanges(getTargetData(data_source.value, rowIndex))
             }
             console.log('Change row id', newRow.id, 'order', newRow.id, '=>', currentRow.id, ', direction: ', direction,
-                    ', changes IDs:', changeIds)
+                ', changes IDs:', changeIds)
 
             props.api!.update_order({
                 target_id: newRow.id,
@@ -472,10 +472,10 @@ function initSortable() {
 <template>
     <div class="std-table">
         <std-data-entry
-                v-if="!disable_search && searchColumns.length"
-                :data-list="searchColumns"
-                v-model:data-source="params"
-                layout="inline"
+            v-if="!disable_search && searchColumns.length"
+            :data-list="searchColumns"
+            v-model:data-source="params"
+            layout="inline"
         >
             <template #action>
                 <a-space class="action-btn">
@@ -492,39 +492,40 @@ function initSortable() {
             </template>
         </std-data-entry>
         <a-table
-                :columns="pithyColumns"
-                :data-source="data_source"
-                :loading="loading"
-                :pagination="false"
-                :row-key="rowKey"
-                :rowSelection="rowSelection"
-                @change="stdChange"
-                :scroll="{ x: scrollX }"
-                :size="size"
-                id="std-table"
-                @expandedRowsChange="expandedTable"
-                :expandedRowKeys="expand_keys_list"
+            :columns="pithyColumns"
+            :data-source="data_source"
+            :loading="loading"
+            :pagination="false"
+            :row-key="rowKey"
+            :rowSelection="rowSelection"
+            @change="stdChange"
+            :scroll="{ x: scrollX }"
+            :size="size"
+            id="std-table"
+            @expandedRowsChange="expandedTable"
+            :expandedRowKeys="expand_keys_list"
         >
             <template
-                    v-slot:bodyCell="{text, record, index, column}"
+                v-slot:bodyCell="{text, record, index, column}"
             >
                 <template v-if="column.handle === true">
                     <span class="ant-table-drag-icon"><HolderOutlined/></span>
                     {{ text }}
                 </template>
                 <template v-if="column.dataIndex === 'action'">
-                    <a v-if="props.editable" @click="$emit('clickEdit', record[props.rowKey], record)">
+                    <a-button type="link" size="small" v-if="props.editable"
+                              @click="$emit('clickEdit', record[props.rowKey], record)">
                         {{ props.edit_text || $gettext('Modify') }}
-                    </a>
+                    </a-button>
                     <slot name="actions" :record="record"/>
                     <template v-if="props.deletable">
                         <a-divider type="vertical"/>
                         <a-popconfirm
-                                :cancelText="$gettext('No')"
-                                :okText="$gettext('OK')"
-                                :title="$gettext('Are you sure you want to delete?')"
-                                @confirm="destroy(record[rowKey])">
-                            <a v-translate>Delete</a>
+                            :cancelText="$gettext('No')"
+                            :okText="$gettext('OK')"
+                            :title="$gettext('Are you sure you want to delete?')"
+                            @confirm="destroy(record[rowKey])">
+                            <a-button type="link" size="small" v-translate>Delete</a-button>
                         </a-popconfirm>
                     </template>
                 </template>

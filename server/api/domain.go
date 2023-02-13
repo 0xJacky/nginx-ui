@@ -4,6 +4,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/pkg/cert"
 	"github.com/0xJacky/Nginx-UI/server/pkg/config_list"
+	"github.com/0xJacky/Nginx-UI/server/pkg/helper"
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -148,7 +149,7 @@ func GetDomain(c *gin.Context) {
 
 }
 
-func EditDomain(c *gin.Context) {
+func SaveDomain(c *gin.Context) {
 	name := c.Param("name")
 
 	if name == "" {
@@ -159,8 +160,9 @@ func EditDomain(c *gin.Context) {
 	}
 
 	var json struct {
-		Name    string `json:"name" binding:"required"`
-		Content string `json:"content" binding:"required"`
+		Name      string `json:"name" binding:"required"`
+		Content   string `json:"content" binding:"required"`
+		Overwrite bool   `json:"overwrite"`
 	}
 
 	if !BindAndValid(c, &json) {
@@ -168,6 +170,13 @@ func EditDomain(c *gin.Context) {
 	}
 
 	path := nginx.GetConfPath("sites-available", name)
+
+	if !json.Overwrite && helper.FileExists(path) {
+		c.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "File exists",
+		})
+		return
+	}
 
 	err := os.WriteFile(path, []byte(json.Content), 0644)
 	if err != nil {
@@ -178,10 +187,15 @@ func EditDomain(c *gin.Context) {
 	// rename the config file if needed
 	if name != json.Name {
 		newPath := nginx.GetConfPath("sites-available", json.Name)
+		// check if dst file exists, do not rename
+		if helper.FileExists(newPath) {
+			c.JSON(http.StatusNotAcceptable, gin.H{
+				"message": "File exists",
+			})
+			return
+		}
 		// recreate soft link
-		log.Println(enabledConfigFilePath)
-		if _, err = os.Stat(enabledConfigFilePath); err == nil {
-			log.Println(enabledConfigFilePath)
+		if helper.FileExists(enabledConfigFilePath) {
 			_ = os.Remove(enabledConfigFilePath)
 			enabledConfigFilePath = nginx.GetConfPath("sites-enabled", json.Name)
 			err = os.Symlink(newPath, enabledConfigFilePath)
@@ -191,17 +205,19 @@ func EditDomain(c *gin.Context) {
 				return
 			}
 		}
+
 		err = os.Rename(path, newPath)
 		if err != nil {
 			ErrHandler(c, err)
 			return
 		}
+
 		name = json.Name
 		c.Set("rewriteConfigFileName", name)
 	}
 
 	enabledConfigFilePath = nginx.GetConfPath("sites-enabled", name)
-	if _, err = os.Stat(enabledConfigFilePath); err == nil {
+	if helper.FileExists(enabledConfigFilePath) {
 		// Test nginx configuration
 		output := nginx.TestConf()
 		if nginx.GetLogLevel(output) >= nginx.Warn {
@@ -245,7 +261,7 @@ func EnableDomain(c *gin.Context) {
 		}
 	}
 
-	// Test nginx config, if not pass then rollback.
+	// Test nginx config, if not pass then disable the site.
 	output := nginx.TestConf()
 
 	if nginx.GetLogLevel(output) >= nginx.Warn {
@@ -383,4 +399,37 @@ func RemoveDomainFromAutoCert(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, nil)
+}
+
+func DuplicateSite(c *gin.Context) {
+	name := c.Param("name")
+
+	var json struct {
+		Name string `json:"name"`
+	}
+
+	if !BindAndValid(c, &json) {
+		return
+	}
+
+	src := nginx.GetConfPath("sites-available", name)
+	dst := nginx.GetConfPath("sites-available", json.Name)
+
+	if helper.FileExists(dst) {
+		c.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "file exists",
+		})
+		return
+	}
+
+	_, err := helper.CopyFile(src, dst)
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"dst": dst,
+	})
 }

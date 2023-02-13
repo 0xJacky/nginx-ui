@@ -54,7 +54,7 @@ func InitRouter() *gin.Engine {
 			g.GET("domain/:name", api.GetDomain)
 
 			// Modify site configuration directly
-			g.POST("domain/:name", api.EditDomain)
+			g.POST("domain/:name", api.SaveDomain)
 
 			// Transform NgxConf to nginx configuration
 			g.POST("ngx/build_config", api.BuildNginxConfig)
@@ -74,6 +74,8 @@ func InitRouter() *gin.Engine {
 			g.POST("domain/:name/enable", api.EnableDomain)
 			g.POST("domain/:name/disable", api.DisableDomain)
 			g.DELETE("domain/:name", api.DeleteDomain)
+			// duplicate site
+			g.POST("domain/:name/duplicate", api.DuplicateSite)
 
 			g.GET("configs", api.GetConfigs)
 			g.GET("config/*name", api.GetConfig)

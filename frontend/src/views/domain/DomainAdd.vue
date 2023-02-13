@@ -40,7 +40,7 @@ function init() {
 
 function save() {
     ngx.build_config(ngx_config).then(r => {
-        domain.save(config.name, {name: config.name, content: r.content, enabled: true}).then(() => {
+        domain.save(config.name, {name: config.name, content: r.content}).then(() => {
             message.success($gettext('Saved successfully'))
 
             domain.enable(config.name).then(() => {
@@ -48,11 +48,11 @@ function save() {
                 current_step.value++
                 window.scroll({top: 0, left: 0, behavior: 'smooth'})
             }).catch(r => {
-                message.error(r.message ?? $gettext('Enable failed'), 10)
+                message.error(r.message ?? $gettext('Enable failed'), 5)
             })
 
         }).catch(r => {
-            message.error(interpolate($gettext('Save error %{msg}'), {msg: r.message ?? ''}), 10)
+            message.error(interpolate($gettext('Save error %{msg}'), {msg: $gettext(r.message) ?? ''}), 5)
         })
     })
 }
