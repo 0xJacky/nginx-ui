@@ -23,7 +23,7 @@ function getClientWidth() {
 }
 
 function collapse() {
-    return getClientWidth() < 768
+    return getClientWidth() < 1280
 }
 
 const lang = computed(() => {

@@ -183,6 +183,8 @@ func GetAnalyticInit(c *gin.Context) {
 	}
 	hostInfo, _ := host.Info()
 
+	loadAvg, _ := load.Avg()
+
 	c.JSON(http.StatusOK, gin.H{
 		"host": hostInfo,
 		"cpu": gin.H{
@@ -199,7 +201,8 @@ func GetAnalyticInit(c *gin.Context) {
 			"writes": analytic.DiskWriteRecord,
 			"reads":  analytic.DiskReadRecord,
 		},
-		"memory": memory,
-		"disk":   diskStat,
+		"memory":  memory,
+		"disk":    diskStat,
+		"loadavg": loadAvg,
 	})
 }

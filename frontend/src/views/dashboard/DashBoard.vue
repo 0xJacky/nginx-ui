@@ -44,6 +44,11 @@ onMounted(() => {
         Object.assign(memory, r.memory)
         Object.assign(disk, r.disk)
 
+        // uptime
+        handle_uptime(r.host?.uptime)
+        // load_avg
+        Object.assign(loadavg, r.loadavg)
+
         net.last_recv = r.network.init.bytesRecv
         net.last_sent = r.network.init.bytesSent
         r.cpu.user.forEach((u: Usage) => {
@@ -71,6 +76,16 @@ onUnmounted(() => {
     websocket.close()
 })
 
+function handle_uptime(t: number) {
+    // uptime
+    let _uptime = Math.floor(t)
+    let uptime_days = Math.floor(_uptime / 86400)
+    _uptime -= uptime_days * 86400
+    let uptime_hours = Math.floor(_uptime / 3600)
+    _uptime -= uptime_hours * 3600
+    uptime.value = uptime_days + 'd ' + uptime_hours + 'h ' + Math.floor(_uptime / 60) + 'm'
+}
+
 function wsOnMessage(m: { data: any }) {
     const r = JSON.parse(m.data)
 
@@ -96,12 +111,7 @@ function wsOnMessage(m: { data: any }) {
     disk_io.reads = r.disk.reads.y
 
     // uptime
-    let _uptime = Math.floor(r.uptime)
-    let uptime_days = Math.floor(_uptime / 86400)
-    _uptime -= uptime_days * 86400
-    let uptime_hours = Math.floor(_uptime / 3600)
-    _uptime -= uptime_hours * 3600
-    uptime.value = uptime_days + 'd ' + uptime_hours + 'h ' + Math.floor(_uptime / 60) + 'm'
+    handle_uptime(r.uptime)
 
     // loadavg
     Object.assign(loadavg, r.loadavg)
@@ -142,19 +152,21 @@ function wsOnMessage(m: { data: any }) {
                     </p>
                     <p>
                         <translate>Load Averages:</translate>
-                        1min:{{ loadavg?.load1?.toFixed(2) }} |
-                        5min:{{ loadavg?.load5?.toFixed(2) }} |
-                        15min:{{ loadavg?.load15?.toFixed(2) }}
+                        <span class="load-avg-describe"> 1min:</span>{{ ' ' + loadavg?.load1?.toFixed(2) }}
+                        <span class="load-avg-describe"> | 5min:</span>{{ loadavg?.load5?.toFixed(2) }}
+                        <span class="load-avg-describe"> | 15min:</span>{{ loadavg?.load15?.toFixed(2) }}
                     </p>
                     <p>
                         <translate>OS:</translate>
-                        {{ host.platform }} ({{ host.platformVersion }}
-                        {{ host.os }} {{ host.kernelVersion }}
-                        {{ host.kernelArch }})
+                        <span class="os-platform">{{ ' ' + host.platform }}</span> {{ host.platformVersion }}
+                        <span class="os-info">({{ host.os }} {{ host.kernelVersion }}
+                        {{ host.kernelArch }})</span>
                     </p>
                     <p v-if="cpu_info">
-                        <translate>CPU:</translate>
-                        {{ cpu_info[0]?.modelName }} * {{ cpu_info.length }}
+                        {{ $gettext('CPU:') + ' ' }}
+                        <span class="cpu-model">{{ cpu_info[0]?.modelName }}</span>
+                        <span class="cpu-mhz">{{ (cpu_info[0]?.mhz / 1000).toFixed(2) + 'GHz' }}</span>
+                        * {{ cpu_info.length }}
                     </p>
                 </a-card>
             </a-col>
@@ -177,7 +189,7 @@ function wsOnMessage(m: { data: any }) {
                     </a-row>
                 </a-card>
             </a-col>
-            <a-col :xl="7" :lg="8" :sm="24" :xs="24" class="chart_dashboard">
+            <a-col :xl="7" :lg="8" :sm="24" :xs="24" class="chart_dashboard network-total">
                 <a-card :title="$gettext('Network Statistics')" :bordered="false">
                     <a-row :gutter="16">
                         <a-col :span="12">
@@ -266,7 +278,7 @@ function wsOnMessage(m: { data: any }) {
 
 .ant-card {
     .ant-statistic {
-        margin: 0 50px 10px 10px
+        margin: 0 0 10px 10px
     }
 
     .chart {
@@ -288,6 +300,34 @@ function wsOnMessage(m: { data: any }) {
         .chart_dashboard {
             padding: 20px;
         }
+    }
+}
+
+.os-platform {
+    text-transform: capitalize;
+}
+
+.load-avg-describe {
+    @media (max-width: 1600px) and (min-width: 1200px) {
+        display: none;
+    }
+}
+
+.os-info {
+    @media (max-width: 1600px) and (min-width: 1200px) {
+        display: none;
+    }
+}
+
+.cpu-model {
+    @media (max-width: 1790px) and (min-width: 1200px) {
+        display: none;
+    }
+}
+
+.cpu-mhz {
+    @media (min-width: 1790px) or (max-width: 1200px) {
+        display: none;
     }
 }
 </style>
