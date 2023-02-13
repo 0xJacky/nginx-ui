@@ -10,6 +10,7 @@ import domain from '@/api/domain'
 import {Badge, message} from 'ant-design-vue'
 import {h, ref} from 'vue'
 import {input} from '@/components/StdDataEntry'
+import SiteDuplicate from '@/views/domain/SiteDuplicate.vue'
 
 const columns = [{
     title: () => $gettext('Name'),
@@ -25,7 +26,7 @@ const columns = [{
     dataIndex: 'enabled',
     customRender: (args: customRender) => {
         const template: any = []
-        const {text, column} = args
+        const {text} = args
         if (text === true || text > 0) {
             template.push(<Badge status="success"/>)
             template.push($gettext('Enabled'))
@@ -83,6 +84,15 @@ function destroy(site_name: any) {
         message.error(e?.message ?? $gettext('Server error'))
     })
 }
+
+const show_duplicator = ref(false)
+
+const target = ref('')
+
+function handle_click_duplicate(name: string) {
+    show_duplicator.value = true
+    target.value = name
+}
 </script>
 
 <template>
@@ -99,25 +109,30 @@ function destroy(site_name: any) {
         >
             <template #actions="{record}">
                 <a-divider type="vertical"/>
-                <a v-if="record.enabled" @click="disable(record.name)">
+                <a-button type="link" size="small" v-if="record.enabled" @click="disable(record.name)">
                     {{ $gettext('Disabled') }}
-                </a>
-                <a v-else @click="enable(record.name)">
+                </a-button>
+                <a-button type="link" size="small" v-else @click="enable(record.name)">
                     {{ $gettext('Enabled') }}
-                </a>
-                <template v-if="!record.enabled">
-                    <a-divider type="vertical"/>
-                    <a-popconfirm
-                        :cancelText="$gettext('No')"
-                        :okText="$gettext('OK')"
-                        :title="$gettext('Are you sure you want to delete?')"
-                        @confirm="destroy(record['name'])">
-                        <a v-translate>Delete</a>
-                    </a-popconfirm>
-                </template>
+                </a-button>
+                <a-divider type="vertical"/>
+                <a-button type="link" size="small" @click="handle_click_duplicate(record.name)">
+                    {{ $gettext('Duplicate') }}
+                </a-button>
+                <a-divider type="vertical"/>
+                <a-popconfirm
+                    :cancelText="$gettext('No')"
+                    :okText="$gettext('OK')"
+                    :title="$gettext('Are you sure you want to delete?')"
+                    @confirm="destroy(record['name'])">
+                    <a-button type="link" size="small" :disabled="record.enabled">
+                        {{ $gettext('Delete') }}
+                    </a-button>
+                </a-popconfirm>
             </template>
         </std-table>
     </a-card>
+    <site-duplicate v-model:visible="show_duplicator" :name="target" @duplicated="table.get_list()"/>
 </template>
 
 <style scoped>
