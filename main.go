@@ -51,19 +51,20 @@ func prog(state overseer.State) {
 	log.Printf("Nginx config dir path: %s", nginx.GetConfPath())
 	if "" != settings.ServerSettings.JwtSecret {
 		model.Init()
-
-		s := gocron.NewScheduler(time.UTC)
-		job, err := s.Every(1).Hour().SingletonMode().Do(cert.AutoCert)
-
-		if err != nil {
-			log.Fatalf("AutoCert Job: %v, Err: %v\n", job, err)
-		}
-
-		s.StartAsync()
-
-		go analytic.RecordServerAnalytic()
 	}
-	err := http.Serve(state.Listener, router.InitRouter())
+
+	s := gocron.NewScheduler(time.UTC)
+	job, err := s.Every(1).Hour().SingletonMode().Do(cert.AutoCert)
+
+	if err != nil {
+		log.Fatalf("AutoCert Job: %v, Err: %v\n", job, err)
+	}
+
+	s.StartAsync()
+
+	go analytic.RecordServerAnalytic()
+
+	err = http.Serve(state.Listener, router.InitRouter())
 	if err != nil {
 		log.Fatalln(err)
 	}
