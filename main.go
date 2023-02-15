@@ -54,7 +54,7 @@ func prog(state overseer.State) {
 	}
 
 	s := gocron.NewScheduler(time.UTC)
-	job, err := s.Every(1).Minute().SingletonMode().Do(cert.AutoObtain)
+	job, err := s.Every(30).Minute().SingletonMode().Do(cert.AutoObtain)
 
 	if err != nil {
 		log.Fatalf("AutoCert Job: %v, Err: %v\n", job, err)
