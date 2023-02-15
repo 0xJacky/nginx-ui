@@ -525,7 +525,7 @@ function initSortable() {
                             :okText="$gettext('OK')"
                             :title="$gettext('Are you sure you want to delete?')"
                             @confirm="destroy(record[rowKey])">
-                            <a-button type="link" size="small" v-translate>Delete</a-button>
+                            <a-button type="link" size="small">{{ $gettext('Delete') }}</a-button>
                         </a-popconfirm>
                     </template>
                 </template>

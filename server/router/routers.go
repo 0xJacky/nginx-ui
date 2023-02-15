@@ -76,6 +76,7 @@ func InitRouter() *gin.Engine {
 			g.DELETE("domain/:name", api.DeleteDomain)
 			// duplicate site
 			g.POST("domain/:name/duplicate", api.DuplicateSite)
+			g.GET("domain/:name/cert", api.IssueCert)
 
 			g.GET("configs", api.GetConfigs)
 			g.GET("config/*name", api.GetConfig)
@@ -90,17 +91,15 @@ func InitRouter() *gin.Engine {
 			g.GET("template/blocks", api.GetTemplateBlockList)
 			g.GET("template/block/:name", api.GetTemplateBlock)
 
-			g.GET("cert/issue", api.IssueCert)
-
 			g.GET("certs", api.GetCertList)
 			g.GET("cert/:id", api.GetCert)
 			g.POST("cert", api.AddCert)
 			g.POST("cert/:id", api.ModifyCert)
 			g.DELETE("cert/:id", api.RemoveCert)
 			// Add domain to auto-renew cert list
-			g.POST("auto_cert/:domain", api.AddDomainToAutoCert)
+			g.POST("auto_cert/:name", api.AddDomainToAutoCert)
 			// Delete domain from auto-renew cert list
-			g.DELETE("auto_cert/:domain", api.RemoveDomainFromAutoCert)
+			g.DELETE("auto_cert/:name", api.RemoveDomainFromAutoCert)
 
 			// pty
 			g.GET("pty", api.Pty)

@@ -87,8 +87,6 @@ func IssueCert(c *gin.Context) {
 
 	go cert.IssueCert(buffer.ServerName, logChan, errChan)
 
-	domain := strings.Join(buffer.ServerName, "_")
-
 	go handleIssueCertLogChan(ws, logChan)
 
 	// block, unless errChan closed
@@ -110,22 +108,29 @@ func IssueCert(c *gin.Context) {
 
 	close(logChan)
 
-	sslCertificatePath := nginx.GetConfPath("ssl", domain, "fullchain.cer")
-	sslCertificateKeyPath := nginx.GetConfPath("ssl", domain, "private.key")
+	certDirName := strings.Join(buffer.ServerName, "_")
+	sslCertificatePath := nginx.GetConfPath("ssl", certDirName, "fullchain.cer")
+	sslCertificateKeyPath := nginx.GetConfPath("ssl", certDirName, "private.key")
 
-	certModel, err := model.FirstOrCreateCert(domain)
+	certModel, err := model.FirstOrCreateCert(c.Param("name"))
 
 	if err != nil {
 		log.Println(err)
 	}
 
 	err = certModel.Updates(&model.Cert{
+		Domains:               buffer.ServerName,
 		SSLCertificatePath:    sslCertificatePath,
 		SSLCertificateKeyPath: sslCertificateKeyPath,
 	})
 
 	if err != nil {
 		log.Println(err)
+		err = ws.WriteJSON(IssueCertResponse{
+			Status:  Error,
+			Message: err.Error(),
+		})
+		return
 	}
 
 	err = ws.WriteJSON(IssueCertResponse{
@@ -150,9 +155,9 @@ func GetCertList(c *gin.Context) {
 	})
 }
 
-func getCert(c *gin.Context, certModel model.Cert) {
+func getCert(c *gin.Context, certModel *model.Cert) {
 	type resp struct {
-		model.Cert
+		*model.Cert
 		SSLCertification    string           `json:"ssl_certification"`
 		SSLCertificationKey string           `json:"ssl_certification_key"`
 		CertificateInfo     *CertificateInfo `json:"certificate_info,omitempty"`
@@ -202,13 +207,12 @@ func GetCert(c *gin.Context) {
 		return
 	}
 
-	getCert(c, certModel)
+	getCert(c, &certModel)
 }
 
 func AddCert(c *gin.Context) {
 	var json struct {
 		Name                  string `json:"name"`
-		Domain                string `json:"domain" binding:"required"`
 		SSLCertificatePath    string `json:"ssl_certificate_path" binding:"required"`
 		SSLCertificateKeyPath string `json:"ssl_certificate_key_path" binding:"required"`
 		SSLCertification      string `json:"ssl_certification"`
@@ -217,19 +221,13 @@ func AddCert(c *gin.Context) {
 	if !BindAndValid(c, &json) {
 		return
 	}
-	certModel, err := model.FirstOrCreateCert(json.Domain)
-
-	if err != nil {
-		ErrHandler(c, err)
-		return
-	}
-
-	err = certModel.Updates(&model.Cert{
+	certModel := &model.Cert{
 		Name:                  json.Name,
-		Domain:                json.Domain,
 		SSLCertificatePath:    json.SSLCertificatePath,
 		SSLCertificateKeyPath: json.SSLCertificateKeyPath,
-	})
+	}
+
+	err := certModel.Insert()
 
 	if err != nil {
 		ErrHandler(c, err)
@@ -291,7 +289,6 @@ func ModifyCert(c *gin.Context) {
 
 	err = certModel.Updates(&model.Cert{
 		Name:                  json.Name,
-		Domain:                json.Domain,
 		SSLCertificatePath:    json.SSLCertificatePath,
 		SSLCertificateKeyPath: json.SSLCertificateKeyPath,
 	})

@@ -25,7 +25,7 @@ watch(route, () => {
 const update = ref(0)
 
 const ngx_config = reactive({
-    filename: '',
+    name: '',
     upstreams: [],
     servers: []
 })

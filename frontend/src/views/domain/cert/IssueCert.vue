@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
-import {computed, h, nextTick, onMounted, ref, VNode, watch} from 'vue'
+import {computed, nextTick, ref, watch} from 'vue'
 import {message} from 'ant-design-vue'
 import domain from '@/api/domain'
 import websocket from '@/lib/websocket'
@@ -8,7 +8,7 @@ import Template from '@/views/template/Template.vue'
 
 const {$gettext, interpolate} = useGettext()
 
-const props = defineProps(['directivesMap', 'current_server_directives', 'enabled'])
+const props = defineProps(['config_name', 'directivesMap', 'current_server_directives', 'enabled'])
 
 const emit = defineEmits(['changeEnabled', 'callback', 'update:enabled'])
 
@@ -50,7 +50,7 @@ function job() {
             })
         }
     }).then(() => {
-        issue_cert(name.value, callback)
+        issue_cert(props.config_name, name.value, callback)
     })
 }
 
@@ -61,13 +61,13 @@ function callback(ssl_certificate: string, ssl_certificate_key: string) {
 
 function change_auto_cert(r: boolean) {
     if (r) {
-        domain.add_auto_cert(name.value).then(() => {
+        domain.add_auto_cert(props.config_name).then(() => {
             message.success(interpolate($gettext('Auto-renewal enabled for %{name}'), {name: name.value}))
         }).catch(e => {
             message.error(e.message ?? interpolate($gettext('Enable auto-renewal failed for %{name}'), {name: name.value}))
         })
     } else {
-        domain.remove_auto_cert(name.value).then(() => {
+        domain.remove_auto_cert(props.config_name).then(() => {
             message.success(interpolate($gettext('Auto-renewal disabled for %{name}'), {name: name.value}))
         }).catch(e => {
             message.error(e.message ?? interpolate($gettext('Disable auto-renewal failed for %{name}'), {name: name.value}))
@@ -86,7 +86,7 @@ function log(msg: string) {
     (logContainer.value as any as Element).scroll({top: 320, left: 0, behavior: 'smooth'})
 }
 
-const issue_cert = async (server_name: string, callback: Function) => {
+const issue_cert = async (config_name: string, server_name: string, callback: Function) => {
     progressStatus.value = 'active'
     modalClosable.value = false
     modalVisible.value = true
@@ -95,7 +95,7 @@ const issue_cert = async (server_name: string, callback: Function) => {
 
     log($gettext('Getting the certificate, please wait...'))
 
-    const ws = websocket('/api/cert/issue', false)
+    const ws = websocket(`/api/domain/${config_name}/cert`, false)
 
     ws.onopen = () => {
         ws.send(JSON.stringify({

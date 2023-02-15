@@ -164,7 +164,7 @@ function wsOnMessage(m: { data: any }) {
                     </p>
                     <p v-if="cpu_info">
                         {{ $gettext('CPU:') + ' ' }}
-                        <span class="cpu-model">{{ cpu_info[0]?.modelName }}</span>
+                        <span class="cpu-model">{{ cpu_info[0]?.modelName || 'core' }}</span>
                         <span class="cpu-mhz">{{ (cpu_info[0]?.mhz / 1000).toFixed(2) + 'GHz' }}</span>
                         * {{ cpu_info.length }}
                     </p>
@@ -301,10 +301,6 @@ function wsOnMessage(m: { data: any }) {
             padding: 20px;
         }
     }
-}
-
-.os-platform {
-    text-transform: capitalize;
 }
 
 .load-avg-describe {

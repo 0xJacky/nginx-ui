@@ -39,6 +39,7 @@ require (
 	github.com/jpillora/s3 v1.1.4 // indirect
 	github.com/json-iterator/go v1.1.9 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
+	github.com/lib/pq v1.10.7 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/mattn/go-sqlite3 v1.14.5 // indirect
 	github.com/miekg/dns v1.1.40 // indirect

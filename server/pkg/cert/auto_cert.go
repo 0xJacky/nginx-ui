@@ -3,7 +3,6 @@ package cert
 import (
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"log"
-	"strings"
 	"time"
 )
 
@@ -19,7 +18,7 @@ func handleIssueCertLogChan(logChan chan string) {
 	}
 }
 
-func AutoCert() {
+func AutoObtain() {
 	defer func() {
 		if err := recover(); err != nil {
 			log.Println("[AutoCert] Recover", err)
@@ -27,19 +26,12 @@ func AutoCert() {
 	}()
 	log.Println("[AutoCert] Start")
 	autoCertList := model.GetAutoCertList()
-	for i := range autoCertList {
-		domain := autoCertList[i].Domain
-
-		certModel, err := model.FirstCert(domain)
-
-		if err != nil {
-			log.Println("[AutoCert] Error get certificate from database", err)
-			continue
-		}
+	for _, certModel := range autoCertList {
+		confName := certModel.Filename
 
 		if certModel.SSLCertificatePath == "" {
 			log.Println("[AutoCert] Error ssl_certificate_path is empty, " +
-				"try to reopen auto-cert for this domain:" + domain)
+				"try to reopen auto-cert for this config:" + confName)
 			continue
 		}
 
@@ -49,16 +41,17 @@ func AutoCert() {
 			// Get certificate info error, ignore this domain
 			continue
 		}
-		// before 1 mo
-		if time.Now().Before(cert.NotBefore.AddDate(0, 1, 0)) {
+		// every week
+		if time.Now().Sub(cert.NotBefore).Hours()/24 < 7 {
 			continue
 		}
+		//
 		// after 1 mo, reissue certificate
 		logChan := make(chan string, 1)
 		errChan := make(chan error, 1)
 
 		// support SAN certification
-		go IssueCert(strings.Split(domain, "_"), logChan, errChan)
+		go IssueCert(certModel.Domains, logChan, errChan)
 
 		go handleIssueCertLogChan(logChan)
 
@@ -69,4 +62,5 @@ func AutoCert() {
 
 		close(logChan)
 	}
+	log.Println("[AutoCert] End")
 }

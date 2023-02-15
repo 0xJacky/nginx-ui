@@ -7,7 +7,7 @@ import ChangeCert from '@/views/domain/cert/ChangeCert.vue'
 
 const {$gettext} = useGettext()
 
-const props = defineProps(['directivesMap', 'current_server_directives', 'enabled', 'cert_info'])
+const props = defineProps(['config_name', 'directivesMap', 'current_server_directives', 'enabled', 'cert_info'])
 
 const emit = defineEmits(['callback', 'update:enabled'])
 
@@ -38,6 +38,7 @@ const enabled = computed({
         <change-cert :directives-map="props.directivesMap"/>
 
         <issue-cert
+            :config_name="config_name"
             :current_server_directives="props.current_server_directives"
             :directives-map="props.directivesMap"
             v-model:enabled="enabled"

@@ -2,6 +2,7 @@ package model
 
 import (
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+	"github.com/lib/pq"
 	"os"
 )
 
@@ -10,26 +11,33 @@ const (
 	AutoCertDisabled = -1
 )
 
+type CertDomains []string
+
 type Cert struct {
 	Model
-	Name                  string `json:"name"`
-	Domain                string `json:"domain"`
-	SSLCertificatePath    string `json:"ssl_certificate_path"`
-	SSLCertificateKeyPath string `json:"ssl_certificate_key_path"`
-	AutoCert              int    `json:"auto_cert"`
+	Name                  string         `json:"name"`
+	Domains               pq.StringArray `json:"domains" gorm:"type:text[]"`
+	Filename              string         `json:"filename"`
+	SSLCertificatePath    string         `json:"ssl_certificate_path"`
+	SSLCertificateKeyPath string         `json:"ssl_certificate_key_path"`
+	AutoCert              int            `json:"auto_cert"`
 }
 
-func FirstCert(domain string) (c Cert, err error) {
+func FirstCert(confName string) (c Cert, err error) {
 	err = db.First(&c, &Cert{
-		Domain: domain,
+		Filename: confName,
 	}).Error
 
 	return
 }
 
-func FirstOrCreateCert(domain string) (c Cert, err error) {
-	err = db.FirstOrCreate(&c, &Cert{Domain: domain}).Error
+func FirstOrCreateCert(confName string) (c Cert, err error) {
+	err = db.FirstOrCreate(&c, &Cert{Filename: confName}).Error
 	return
+}
+
+func (c *Cert) Insert() error {
+	return db.Create(c).Error
 }
 
 func GetAutoCertList() (c []Cert) {
@@ -49,7 +57,7 @@ func GetAutoCertList() (c []Cert) {
 	}
 
 	for _, v := range t {
-		if enabledConfigMap[v.Domain] == true {
+		if enabledConfigMap[v.Filename] == true {
 			c = append(c, v)
 		}
 	}
@@ -76,9 +84,9 @@ func FirstCertByID(id int) (c Cert, err error) {
 }
 
 func (c *Cert) Updates(n *Cert) error {
-	return db.Model(c).Updates(n).Error
+	return db.Model(&Cert{}).Where("filename", c.Filename).Updates(n).Error
 }
 
 func (c *Cert) Remove() error {
-	return db.Where("domain", c.Domain).Delete(c).Error
+	return db.Where("filename", c.Filename).Delete(c).Error
 }
