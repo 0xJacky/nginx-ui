@@ -61,7 +61,7 @@ function callback(ssl_certificate: string, ssl_certificate_key: string) {
 
 function change_auto_cert(r: boolean) {
     if (r) {
-        domain.add_auto_cert(props.config_name).then(() => {
+        domain.add_auto_cert(props.config_name, {domains: name.value.trim().split(' ')}).then(() => {
             message.success(interpolate($gettext('Auto-renewal enabled for %{name}'), {name: name.value}))
         }).catch(e => {
             message.error(e.message ?? interpolate($gettext('Enable auto-renewal failed for %{name}'), {name: name.value}))
