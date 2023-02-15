@@ -1,0 +1,26 @@
+server {
+	listen	80;
+	listen	[::]:80;
+	server_name	qi.jackyu.cn;
+	rewrite ^(.*)$  https://$host$1 permanent;
+
+}
+
+server {
+	server_name	qi.jackyu.cn;
+	ssl_certificate	/etc/nginx/ssl/jackyu.cn/alpha/jackyu.cn_server_cert.pem;
+	ssl_certificate_key	/etc/nginx/ssl/jackyu.cn/alpha/jackyu.cn_key.pem;
+	listen	443 ssl;
+	listen	[::]:443 ssl;
+
+	location / {
+		proxy_pass         http://127.0.0.1:5001/;
+		proxy_redirect     off;
+		proxy_set_header   Host                 $host;
+		proxy_set_header   X-Real-IP            $remote_addr;
+		proxy_set_header   X-Forwarded-For      $proxy_add_x_forwarded_for;
+		proxy_set_header   X-Forwarded-Proto    $scheme;
+	}
+
+}
+
