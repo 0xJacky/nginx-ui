@@ -1,7 +1,9 @@
 package cert
 
 import (
+	"fmt"
 	"github.com/0xJacky/Nginx-UI/server/model"
+	"github.com/pkg/errors"
 	"log"
 	"time"
 )
@@ -18,6 +20,42 @@ func handleIssueCertLogChan(logChan chan string) {
 	}
 }
 
+type AutoCertErrorLog struct {
+	buffer []string
+	cert   *model.Cert
+}
+
+func (t *AutoCertErrorLog) SetCertModel(cert *model.Cert) {
+	t.cert = cert
+}
+
+func (t *AutoCertErrorLog) Push(text string, err error) {
+	t.buffer = append(t.buffer, text+" "+err.Error())
+	log.Println("[AutoCert Error]", text, err)
+}
+
+func (t *AutoCertErrorLog) Exit(text string, err error) {
+	t.buffer = append(t.buffer, text+" "+err.Error())
+	log.Println("[AutoCert Error]", text, err)
+
+	if t.cert == nil {
+		return
+	}
+
+	_ = t.cert.Updates(&model.Cert{
+		Log: t.ToString(),
+	})
+}
+
+func (t *AutoCertErrorLog) ToString() (content string) {
+
+	for _, v := range t.buffer {
+		content += fmt.Sprintf("[AutoCert Error] %s\n", v)
+	}
+
+	return
+}
+
 func AutoObtain() {
 	defer func() {
 		if err := recover(); err != nil {
@@ -29,15 +67,29 @@ func AutoObtain() {
 	for _, certModel := range autoCertList {
 		confName := certModel.Filename
 
+		errLog := &AutoCertErrorLog{}
+		errLog.SetCertModel(certModel)
+
+		if len(certModel.Filename) == 0 {
+			errLog.Exit("", errors.New("filename is empty"))
+			continue
+		}
+
+		if len(certModel.Domains) == 0 {
+			errLog.Exit(confName, errors.New("domains list is empty, "+
+				"try to reopen auto-cert for this config:"+confName))
+			continue
+		}
+
 		if certModel.SSLCertificatePath == "" {
-			log.Println("[AutoCert] Error ssl_certificate_path is empty, " +
-				"try to reopen auto-cert for this config:" + confName)
+			errLog.Exit(confName, errors.New("ssl_certificate_path is empty, "+
+				"try to reopen auto-cert for this config:"+confName))
 			continue
 		}
 
 		cert, err := GetCertInfo(certModel.SSLCertificatePath)
 		if err != nil {
-			log.Println("GetCertInfo Err", err)
+			errLog.Push("get cert info", err)
 			// Get certificate info error, ignore this domain
 			continue
 		}
@@ -57,8 +109,12 @@ func AutoObtain() {
 
 		// block, unless errChan closed
 		for err = range errChan {
-			log.Println("Error cert.IssueCert", err)
+			errLog.Push("issue cert", err)
 		}
+		// store error log to db
+		_ = certModel.Updates(&model.Cert{
+			Log: errLog.ToString(),
+		})
 
 		close(logChan)
 	}

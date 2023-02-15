@@ -21,6 +21,7 @@ type Cert struct {
 	SSLCertificatePath    string         `json:"ssl_certificate_path"`
 	SSLCertificateKeyPath string         `json:"ssl_certificate_key_path"`
 	AutoCert              int            `json:"auto_cert"`
+	Log                   string         `json:"log"`
 }
 
 func FirstCert(confName string) (c Cert, err error) {
@@ -40,8 +41,8 @@ func (c *Cert) Insert() error {
 	return db.Create(c).Error
 }
 
-func GetAutoCertList() (c []Cert) {
-	var t []Cert
+func GetAutoCertList() (c []*Cert) {
+	var t []*Cert
 	db.Where("auto_cert", AutoCertEnabled).Find(&t)
 
 	// check if this domain is enabled
@@ -84,7 +85,7 @@ func FirstCertByID(id int) (c Cert, err error) {
 }
 
 func (c *Cert) Updates(n *Cert) error {
-	return db.Model(&Cert{}).Where("filename", c.Filename).Updates(n).Error
+	return db.Model(&Cert{}).Where("id", c.ID).Updates(n).Error
 }
 
 func (c *Cert) Remove() error {

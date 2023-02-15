@@ -377,11 +377,14 @@ func AddDomainToAutoCert(c *gin.Context) {
 
 func RemoveDomainFromAutoCert(c *gin.Context) {
 	name := c.Param("name")
-	certModel := model.Cert{
-		Filename: name,
+	certModel, err := model.FirstCert(name)
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
 	}
 
-	err := certModel.Updates(&model.Cert{
+	err = certModel.Updates(&model.Cert{
 		AutoCert: model.AutoCertDisabled,
 	})
 
