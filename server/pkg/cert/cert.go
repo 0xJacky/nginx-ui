@@ -5,6 +5,7 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
+	"crypto/tls"
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/go-acme/lego/v4/certcrypto"
@@ -14,6 +15,7 @@ import (
 	"github.com/go-acme/lego/v4/registration"
 	"github.com/pkg/errors"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -65,6 +67,11 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 
 	if settings.ServerSettings.CADir != "" {
 		config.CADirURL = settings.ServerSettings.CADir
+		if config.HTTPClient != nil {
+			config.HTTPClient.Transport = &http.Transport{
+				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+			}
+		}
 	}
 
 	config.Certificate.KeyType = certcrypto.RSA2048
@@ -85,7 +92,7 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 	)
 
 	if err != nil {
-		errChan <- errors.Wrap(err, "issue cert challenge fail")
+		errChan <- errors.Wrap(err, "fail to challenge")
 		return
 	}
 
@@ -93,7 +100,7 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 	logChan <- "Registering user"
 	reg, err := client.Registration.Register(registration.RegisterOptions{TermsOfServiceAgreed: true})
 	if err != nil {
-		errChan <- errors.Wrap(err, "issue cert register fail")
+		errChan <- errors.Wrap(err, "fail to register")
 		return
 	}
 	myUser.Registration = reg
@@ -106,7 +113,7 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 	logChan <- "Obtaining certificate"
 	certificates, err := client.Certificate.Obtain(request)
 	if err != nil {
-		errChan <- errors.Wrap(err, "issue cert fail to obtain")
+		errChan <- errors.Wrap(err, "fail to obtain")
 		return
 	}
 	name := strings.Join(domain, "_")
@@ -114,7 +121,7 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 	if _, err = os.Stat(saveDir); os.IsNotExist(err) {
 		err = os.MkdirAll(saveDir, 0755)
 		if err != nil {
-			errChan <- errors.Wrap(err, "issue cert fail to create")
+			errChan <- errors.Wrap(err, "fail to mkdir")
 			return
 		}
 	}
@@ -135,7 +142,7 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 		certificates.PrivateKey, 0644)
 
 	if err != nil {
-		errChan <- errors.Wrap(err, "error issue cert write key")
+		errChan <- errors.Wrap(err, "fail to write key")
 		return
 	}
 
@@ -145,4 +152,6 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 	nginx.Reload()
 
 	logChan <- "Finished"
+
+	close(logChan)
 }

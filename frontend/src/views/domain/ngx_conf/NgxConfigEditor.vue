@@ -168,6 +168,7 @@ watch(current_server_index, () => {
                     <template v-if="current_support_ssl&&enabled">
                         <cert
                             v-if="current_support_ssl"
+                            :config_name="ngx_config.name"
                             :cert_info="props.cert_info?.[k]"
                             :current_server_directives="current_server_directives"
                             :directives-map="directivesMap"

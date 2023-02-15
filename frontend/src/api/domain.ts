@@ -14,8 +14,8 @@ class Domain extends Curd {
         return http.get('template')
     }
 
-    add_auto_cert(domain: string) {
-        return http.post('auto_cert/' + domain)
+    add_auto_cert(domain: string, data: any) {
+        return http.post('auto_cert/' + domain, data)
     }
 
     remove_auto_cert(domain: string) {

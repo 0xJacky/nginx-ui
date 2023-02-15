@@ -1,72 +1,123 @@
 package cert
 
 import (
-	"github.com/0xJacky/Nginx-UI/server/model"
-	"log"
-	"strings"
-	"time"
+    "fmt"
+    "github.com/0xJacky/Nginx-UI/server/model"
+    "github.com/pkg/errors"
+    "log"
+    "time"
 )
 
 func handleIssueCertLogChan(logChan chan string) {
-	defer func() {
-		if err := recover(); err != nil {
-			log.Println("[Auto Cert] handleIssueCertLogChan", err)
-		}
-	}()
+    defer func() {
+        if err := recover(); err != nil {
+            log.Println("[Auto Cert] handleIssueCertLogChan", err)
+        }
+    }()
 
-	for logString := range logChan {
-		log.Println("[Auto Cert] Info", logString)
-	}
+    for logString := range logChan {
+        log.Println("[Auto Cert] Info", logString)
+    }
 }
 
-func AutoCert() {
-	defer func() {
-		if err := recover(); err != nil {
-			log.Println("[AutoCert] Recover", err)
-		}
-	}()
-	log.Println("[AutoCert] Start")
-	autoCertList := model.GetAutoCertList()
-	for i := range autoCertList {
-		domain := autoCertList[i].Domain
+type AutoCertErrorLog struct {
+    buffer []string
+    cert   *model.Cert
+}
 
-		certModel, err := model.FirstCert(domain)
+func (t *AutoCertErrorLog) SetCertModel(cert *model.Cert) {
+    t.cert = cert
+}
 
-		if err != nil {
-			log.Println("[AutoCert] Error get certificate from database", err)
-			continue
-		}
+func (t *AutoCertErrorLog) Push(text string, err error) {
+    t.buffer = append(t.buffer, text+" "+err.Error())
+    log.Println("[AutoCert Error]", text, err)
+}
 
-		if certModel.SSLCertificatePath == "" {
-			log.Println("[AutoCert] Error ssl_certificate_path is empty, " +
-				"try to reopen auto-cert for this domain:" + domain)
-			continue
-		}
+func (t *AutoCertErrorLog) Exit(text string, err error) {
+    t.buffer = append(t.buffer, text+" "+err.Error())
+    log.Println("[AutoCert Error]", text, err)
 
-		cert, err := GetCertInfo(certModel.SSLCertificatePath)
-		if err != nil {
-			log.Println("GetCertInfo Err", err)
-			// Get certificate info error, ignore this domain
-			continue
-		}
-		// before 1 mo
-		if time.Now().Before(cert.NotBefore.AddDate(0, 1, 0)) {
-			continue
-		}
-		// after 1 mo, reissue certificate
-		logChan := make(chan string, 1)
-		errChan := make(chan error, 1)
+    if t.cert == nil {
+        return
+    }
 
-		// support SAN certification
-		go IssueCert(strings.Split(domain, "_"), logChan, errChan)
+    _ = t.cert.Updates(&model.Cert{
+        Log: t.ToString(),
+    })
+}
 
-		go handleIssueCertLogChan(logChan)
+func (t *AutoCertErrorLog) ToString() (content string) {
 
-		// block, unless errChan closed
-		for err = range errChan {
-			log.Println("Error cert.IssueCert", err)
-		}
+    for _, v := range t.buffer {
+        content += fmt.Sprintf("[AutoCert Error] %s\n", v)
+    }
 
-		close(logChan)
-	}
+    return
+}
+
+func AutoObtain() {
+    defer func() {
+        if err := recover(); err != nil {
+            log.Println("[AutoCert] Recover", err)
+        }
+    }()
+    log.Println("[AutoCert] Start")
+    autoCertList := model.GetAutoCertList()
+    for _, certModel := range autoCertList {
+        confName := certModel.Filename
+
+        errLog := &AutoCertErrorLog{}
+        errLog.SetCertModel(certModel)
+
+        if len(certModel.Filename) == 0 {
+            errLog.Exit("", errors.New("filename is empty"))
+            continue
+        }
+
+        if len(certModel.Domains) == 0 {
+            errLog.Exit(confName, errors.New("domains list is empty, "+
+                "try to reopen auto-cert for this config:"+confName))
+            continue
+        }
+
+        if certModel.SSLCertificatePath != "" {
+            cert, err := GetCertInfo(certModel.SSLCertificatePath)
+            if err != nil {
+                errLog.Push("get cert info", err)
+                // Get certificate info error, ignore this domain
+                continue
+            }
+            // every week
+            if time.Now().Sub(cert.NotBefore).Hours()/24 < 7 {
+                continue
+            }
+        }
+        // after 1 mo, reissue certificate
+        logChan := make(chan string, 1)
+        errChan := make(chan error, 1)
+
+        // support SAN certification
+        go IssueCert(certModel.Domains, logChan, errChan)
+
+        go handleIssueCertLogChan(logChan)
+
+        // block, unless errChan closed
+        for err := range errChan {
+            errLog.Push("issue cert", err)
+        }
+
+        logStr := errLog.ToString()
+        if logStr != "" {
+            // store error log to db
+            _ = certModel.Updates(&model.Cert{
+                Log: errLog.ToString(),
+            })
+        } else {
+            certModel.ClearLog()
+        }
+
+        close(logChan)
+    }
+    log.Println("[AutoCert] End")
 }

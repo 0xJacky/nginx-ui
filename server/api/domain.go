@@ -104,15 +104,8 @@ func GetDomain(c *gin.Context) {
     c.Set("maybe_error", "")
 
     certInfoMap := make(map[int]CertificateInfo)
-    var serverName string
     for serverIdx, server := range config.Servers {
         for _, directive := range server.Directives {
-
-            if directive.Directive == "server_name" {
-                serverName = strings.ReplaceAll(directive.Params, " ", "_")
-                continue
-            }
-
             if directive.Directive == "ssl_certificate" {
 
                 pubKey, err := cert.GetCertInfo(directive.Params)
@@ -134,7 +127,7 @@ func GetDomain(c *gin.Context) {
         }
     }
 
-    certModel, _ := model.FirstCert(serverName)
+    certModel, _ := model.FirstCert(name)
 
     c.Set("maybe_error", "nginx_config_syntax_error")
 
@@ -304,7 +297,7 @@ func DisableDomain(c *gin.Context) {
     }
 
     // delete auto cert record
-    certModel := model.Cert{Domain: c.Param("name")}
+    certModel := model.Cert{Filename: c.Param("name")}
     err = certModel.Remove()
     if err != nil {
         ErrHandler(c, err)
@@ -345,7 +338,7 @@ func DeleteDomain(c *gin.Context) {
         return
     }
 
-    certModel := model.Cert{Domain: name}
+    certModel := model.Cert{Filename: name}
     _ = certModel.Remove()
 
     err = os.Remove(availablePath)
@@ -362,9 +355,17 @@ func DeleteDomain(c *gin.Context) {
 }
 
 func AddDomainToAutoCert(c *gin.Context) {
-    domain := c.Param("domain")
-    domain = strings.ReplaceAll(domain, " ", "_")
-    certModel, err := model.FirstOrCreateCert(domain)
+    name := c.Param("name")
+
+    var json struct {
+        Domains []string `json:"domains"`
+    }
+
+    if !BindAndValid(c, &json) {
+        return
+    }
+
+    certModel, err := model.FirstOrCreateCert(name)
 
     if err != nil {
         ErrHandler(c, err)
@@ -372,6 +373,8 @@ func AddDomainToAutoCert(c *gin.Context) {
     }
 
     err = certModel.Updates(&model.Cert{
+        Name:     name,
+        Domains:  json.Domains,
         AutoCert: model.AutoCertEnabled,
     })
 
@@ -384,13 +387,15 @@ func AddDomainToAutoCert(c *gin.Context) {
 }
 
 func RemoveDomainFromAutoCert(c *gin.Context) {
-    domain := c.Param("domain")
-    domain = strings.ReplaceAll(domain, " ", "_")
-    certModel := model.Cert{
-        Domain: domain,
+    name := c.Param("name")
+    certModel, err := model.FirstCert(name)
+
+    if err != nil {
+        ErrHandler(c, err)
+        return
     }
 
-    err := certModel.Updates(&model.Cert{
+    err = certModel.Updates(&model.Cert{
         AutoCert: model.AutoCertDisabled,
     })
 
