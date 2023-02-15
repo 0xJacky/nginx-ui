@@ -29,14 +29,10 @@ const columns = [{
     },
     search: true
 }, {
-    title: () => $gettext('Domain'),
-    dataIndex: 'domain',
+    title: () => $gettext('Config Name'),
+    dataIndex: 'filename',
     sorter: true,
-    pithy: true,
-    edit: {
-        type: input
-    },
-    search: true
+    pithy: true
 }, {
     title: () => $gettext('Auto Cert'),
     dataIndex: 'auto_cert',

@@ -364,6 +364,7 @@ func AddDomainToAutoCert(c *gin.Context) {
 	}
 
 	err = certModel.Updates(&model.Cert{
+		Name:     name,
 		AutoCert: model.AutoCertEnabled,
 	})
 

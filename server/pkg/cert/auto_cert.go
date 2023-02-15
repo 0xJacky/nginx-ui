@@ -81,23 +81,18 @@ func AutoObtain() {
 			continue
 		}
 
-		if certModel.SSLCertificatePath == "" {
-			errLog.Exit(confName, errors.New("ssl_certificate_path is empty, "+
-				"try to reopen auto-cert for this config:"+confName))
-			continue
+		if certModel.SSLCertificatePath != "" {
+			cert, err := GetCertInfo(certModel.SSLCertificatePath)
+			if err != nil {
+				errLog.Push("get cert info", err)
+				// Get certificate info error, ignore this domain
+				continue
+			}
+			// every week
+			if time.Now().Sub(cert.NotBefore).Hours()/24 < 7 {
+				continue
+			}
 		}
-
-		cert, err := GetCertInfo(certModel.SSLCertificatePath)
-		if err != nil {
-			errLog.Push("get cert info", err)
-			// Get certificate info error, ignore this domain
-			continue
-		}
-		// every week
-		if time.Now().Sub(cert.NotBefore).Hours()/24 < 7 {
-			continue
-		}
-		//
 		// after 1 mo, reissue certificate
 		logChan := make(chan string, 1)
 		errChan := make(chan error, 1)
@@ -108,7 +103,7 @@ func AutoObtain() {
 		go handleIssueCertLogChan(logChan)
 
 		// block, unless errChan closed
-		for err = range errChan {
+		for err := range errChan {
 			errLog.Push("issue cert", err)
 		}
 		// store error log to db
