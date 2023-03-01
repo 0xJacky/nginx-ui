@@ -6,7 +6,7 @@ function bytesToSize(bytes: number) {
     const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
 
     const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i]
+    return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i]
 }
 
 function downloadCsv(header: any, data: any[], fileName: string) {
