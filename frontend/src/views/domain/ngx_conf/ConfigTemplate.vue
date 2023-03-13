@@ -68,7 +68,9 @@ async function add() {
                     <a-list-item>
                         <a-card size="small" :title="item.name">
                             <template #extra>
-                                <a-button type="link" @click="view(item.filename)">{{ $gettext('View') }}</a-button>
+                                <a-button type="link"
+                                          size="small" @click="view(item.filename)">{{ $gettext('View') }}
+                                </a-button>
                             </template>
                             <p>{{ $gettext('Author') }}: {{ item.author }}</p>
                             <p>{{ $gettext('Description') }}: {{ trans_description(item) }}</p>

@@ -8,6 +8,7 @@ import Cert from '@/views/domain/cert/Cert.vue'
 import LogEntry from '@/views/domain/ngx_conf/LogEntry.vue'
 import ConfigTemplate from '@/views/domain/ngx_conf/ConfigTemplate.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
+import {PlusOutlined} from '@ant-design/icons-vue'
 
 const {$gettext} = useGettext()
 
@@ -145,6 +146,13 @@ watch(current_server_index, () => {
     })
 })
 
+function add_server() {
+    props.ngx_config.servers.push({
+        comments: '',
+        locations: [],
+        directives: []
+    })
+}
 </script>
 
 <template>
@@ -190,6 +198,13 @@ watch(current_server_index, () => {
                 </div>
 
             </a-tab-pane>
+            
+            <template #rightExtra>
+                <a-button @click="add_server" type="link" size="small">
+                    <PlusOutlined/>
+                    {{ $gettext('Add') }}
+                </a-button>
+            </template>
         </a-tabs>
     </div>
 
