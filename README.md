@@ -70,9 +70,9 @@ URL：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
 
 ### Features
 
-- Online view of server CPU, Memory, Load Average, Disk Usage and other indicators.
+- Online statistics for server indicators such as CPU usage, memory usage, load average, and disk usage.
 - One-click deployment and automatic renewal Let's Encrypt certificates.
-- Online editing websites configurations with our self-designed **NgxConfigEditor** which is a user-friendly block editor or **Ace Code Editor** which support highlight nginx configuration syntax.
+- Online editing websites configurations with our self-designed **NgxConfigEditor** which is a user-friendly block editor for nginx configurations or **Ace Code Editor** which supports highlighting nginx configuration syntax.
 - Online view Nginx logs
 - Written in Go and Vue, distribution is a single executable binary.
 - Automatically test configuration file and reload nginx after saving configuration.
@@ -176,13 +176,13 @@ systemctl restart nginx-ui
 ```
 
 #### With Docker
-
-You can use our `uozi/nginx-ui:latest` [image](https://hub.docker.com/r/uozi/nginx-ui) in docker, which is base on `nginx:latest`.
-You can replace the Nginx on host by publishing port 80 and 443 to host.
+Our docker image [uozi/nginx-ui:latest](https://hub.docker.com/r/uozi/nginx-ui) is based on the latest nginx image and
+can be used to replace the Nginx on the host. By publishing the container's port 80 and 443 to the host,
+you can easily make the switch.
 
 ##### Note
-1. When used for the first time, the volume mapping to `/etc/nginx` should be empty.
-2. If you want to host static files, map a directory to container.
+1. When using this container for the first time, ensure that the volume mapped to /etc/nginx is empty.
+2. If you want to host static files, you can map directories to container.
 
 **Docker Deploy Example**
 
@@ -197,7 +197,6 @@ docker run -dit \
   -p 8080:80 -p 8443:443 \
   uozi/nginx-ui:latest
 ```
-
 
 ## Manual Build
 
@@ -241,7 +240,9 @@ go build -o nginx-ui -v main.go
 ```shell
 bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install
 ```
-The default listening port is 9000, and the default HTTP Challenge port is 9180. If there is a port conflict, please modify `/usr/local/etc/nginx-ui/app.ini` manually, then use `systemctl restart nginx-ui` to reload the Nginx UI service.
+The default listening port is `9000`, and the default HTTP Challenge port is `9180`.
+If there is a port conflict, please modify `/usr/local/etc/nginx-ui/app.ini` manually,
+then use `systemctl restart nginx-ui` to reload the Nginx UI service.
 
 **Remove Nginx UI, except configuration and database files**
 
