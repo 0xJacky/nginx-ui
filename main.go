@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/pkg/cert"
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+	"github.com/0xJacky/Nginx-UI/server/query"
 	"github.com/0xJacky/Nginx-UI/server/router"
 	"github.com/0xJacky/Nginx-UI/server/service"
 	"github.com/0xJacky/Nginx-UI/server/settings"
@@ -50,7 +51,8 @@ func prog(state overseer.State) {
 
 	log.Printf("Nginx config dir path: %s", nginx.GetConfPath())
 	if "" != settings.ServerSettings.JwtSecret {
-		model.Init()
+		db := model.Init()
+		query.Init(db)
 	}
 
 	s := gocron.NewScheduler(time.UTC)

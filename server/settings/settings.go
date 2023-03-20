@@ -36,6 +36,13 @@ type NginxLog struct {
 	ErrorLogPath  string `json:"error_log_path"`
 }
 
+type OpenAI struct {
+	BaseUrl string `json:"base_url"`
+	Token   string `json:"token"`
+	Proxy   string `json:"proxy"`
+	Model   string `json:"model"`
+}
+
 var ServerSettings = &Server{
 	HttpPort:          "9000",
 	RunMode:           "debug",
@@ -53,11 +60,14 @@ var NginxLogSettings = &NginxLog{
 	ErrorLogPath:  "",
 }
 
+var OpenAISettings = &OpenAI{}
+
 var ConfPath string
 
 var sections = map[string]interface{}{
 	"server":    ServerSettings,
 	"nginx_log": NginxLogSettings,
+	"openai":    OpenAISettings,
 }
 
 func init() {

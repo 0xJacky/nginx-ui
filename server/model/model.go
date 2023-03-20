@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"gorm.io/driver/sqlite"
+	"gorm.io/gen"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"
@@ -22,28 +23,37 @@ type Model struct {
 	DeletedAt *time.Time `gorm:"index" json:"deleted_at"`
 }
 
-func Init() {
+func GenerateAllModel() []any {
+	return []any{
+		ConfigBackup{},
+		Auth{},
+		AuthToken{},
+		Cert{},
+		ChatGPTLog{},
+	}
+}
+
+func Init() *gorm.DB {
 	dbPath := path.Join(path.Dir(settings.ConfPath), fmt.Sprintf("%s.db", settings.ServerSettings.Database))
+
 	var err error
 	db, err = gorm.Open(sqlite.Open(dbPath), &gorm.Config{
-		Logger:      logger.Default.LogMode(logger.Info),
-		PrepareStmt: true,
+		Logger:                                   logger.Default.LogMode(logger.Info),
+		PrepareStmt:                              true,
+		DisableForeignKeyConstraintWhenMigrating: true,
 	})
+
 	if err != nil {
 		log.Println(err)
 	}
-	// Migrate the schema
-	AutoMigrate(&ConfigBackup{})
-	AutoMigrate(&Auth{})
-	AutoMigrate(&AuthToken{})
-	AutoMigrate(&Cert{})
-}
 
-func AutoMigrate(model interface{}) {
-	err := db.AutoMigrate(model)
+	// Migrate the schema
+	err = db.AutoMigrate(GenerateAllModel()...)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	return db
 }
 
 func orderAndPaginate(c *gin.Context) func(db *gorm.DB) *gorm.DB {
@@ -113,4 +123,11 @@ func GetListWithPagination(models interface{},
 	}
 
 	return
+}
+
+type Method interface {
+	// FirstByID Where("id=@id")
+	FirstByID(id int) (*gen.T, error)
+	// DeleteByID update @@table set deleted_at=NOW() where id=@id
+	DeleteByID(id int) error
 }

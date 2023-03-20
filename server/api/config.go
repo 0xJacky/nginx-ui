@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/0xJacky/Nginx-UI/server/pkg/config_list"
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+	"github.com/0xJacky/Nginx-UI/server/query"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -84,8 +85,17 @@ func GetConfig(c *gin.Context) {
 		return
 	}
 
+	g := query.ChatGPTLog
+	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{
-		"config": string(content),
+		"config":           string(content),
+		"chatgpt_messages": chatgpt.Content,
 	})
 
 }

@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/0xJacky/Nginx-UI/server/model"
+	"github.com/0xJacky/Nginx-UI/server/query"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -54,7 +55,8 @@ func InstallNginxUI(c *gin.Context) {
 	}
 
 	// Init model
-	model.Init()
+	db := model.Init()
+	query.Init(db)
 
 	curd := model.NewCurd(&model.Auth{})
 	pwd, _ := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
@@ -70,5 +72,4 @@ func InstallNginxUI(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})
-
 }

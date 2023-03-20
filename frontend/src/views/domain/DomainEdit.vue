@@ -10,6 +10,7 @@ import domain from '@/api/domain'
 import ngx from '@/api/ngx'
 import {message} from 'ant-design-vue'
 import config from '@/api/config'
+import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
 
 
 const {$gettext, interpolate} = useGettext()
@@ -52,6 +53,7 @@ const advance_mode = computed({
         advance_mode_ref.value = v
     }
 })
+const history_chatgpt_record = ref([])
 
 function handle_response(r: any) {
 
@@ -64,6 +66,7 @@ function handle_response(r: any) {
     configText.value = r.config
     enabled.value = r.enabled
     auto_cert.value = r.auto_cert
+    history_chatgpt_record.value = r.chatgpt_messages
     Object.assign(ngx_config, r.tokenized)
     Object.assign(cert_info_map, r.cert_info)
 }
@@ -73,6 +76,8 @@ function init() {
         domain.get(name.value).then((r: any) => {
             handle_response(r)
         }).catch(handle_parse_error)
+    } else {
+        history_chatgpt_record.value = []
     }
 }
 
@@ -159,65 +164,71 @@ function on_change_enabled(checked: boolean) {
 }
 </script>
 <template>
-    <div>
-        <a-card :bordered="false">
-            <template #title>
-                <span style="margin-right: 10px">{{ interpolate($gettext('Edit %{n}'), {n: name}) }}</span>
-                <a-tag color="blue" v-if="enabled">
-                    {{ $gettext('Enabled') }}
-                </a-tag>
-                <a-tag color="orange" v-else>
-                    {{ $gettext('Disabled') }}
-                </a-tag>
-            </template>
-            <template #extra>
-                <div class="mode-switch">
-                    <div class="switch">
-                        <a-switch size="small" :disabled="parse_error_status"
-                                  v-model:checked="advance_mode" @change="on_mode_change"/>
+    <a-row :gutter="16">
+        <a-col :xs="24" :sm="18" :md="16">
+            <a-card :bordered="false">
+                <template #title>
+                    <span style="margin-right: 10px">{{ interpolate($gettext('Edit %{n}'), {n: name}) }}</span>
+                    <a-tag color="blue" v-if="enabled">
+                        {{ $gettext('Enabled') }}
+                    </a-tag>
+                    <a-tag color="orange" v-else>
+                        {{ $gettext('Disabled') }}
+                    </a-tag>
+                </template>
+                <template #extra>
+                    <div class="mode-switch">
+                        <div class="switch">
+                            <a-switch size="small" :disabled="parse_error_status"
+                                      v-model:checked="advance_mode" @change="on_mode_change"/>
+                        </div>
+                        <template v-if="advance_mode">
+                            <div>{{ $gettext('Advance Mode') }}</div>
+                        </template>
+                        <template v-else>
+                            <div>{{ $gettext('Basic Mode') }}</div>
+                        </template>
                     </div>
-                    <template v-if="advance_mode">
-                        <div>{{ $gettext('Advance Mode') }}</div>
-                    </template>
-                    <template v-else>
-                        <div>{{ $gettext('Basic Mode') }}</div>
-                    </template>
-                </div>
-            </template>
+                </template>
 
-            <transition name="slide-fade">
-                <div v-if="advance_mode" key="advance">
-                    <div class="parse-error-alert-wrapper" v-if="parse_error_status">
-                        <a-alert :message="$gettext('Nginx Configuration Parse Error')"
-                                 :description="parse_error_message"
-                                 type="error"
-                                 show-icon
+                <transition name="slide-fade">
+                    <div v-if="advance_mode" key="advance">
+                        <div class="parse-error-alert-wrapper" v-if="parse_error_status">
+                            <a-alert :message="$gettext('Nginx Configuration Parse Error')"
+                                     :description="parse_error_message"
+                                     type="error"
+                                     show-icon
+                            />
+                        </div>
+                        <div>
+                            <code-editor v-model:content="configText"/>
+                        </div>
+                    </div>
+
+                    <div class="domain-edit-container" key="basic" v-else>
+                        <a-form-item :label="$gettext('Enabled')">
+                            <a-switch v-model:checked="enabled" @change="on_change_enabled"/>
+                        </a-form-item>
+                        <a-form-item :label="$gettext('Name')">
+                            <a-input v-model:value="filename"/>
+                        </a-form-item>
+                        <ngx-config-editor
+                            ref="ngx_config_editor"
+                            :ngx_config="ngx_config"
+                            :cert_info="cert_info_map"
+                            v-model:auto_cert="auto_cert"
+                            :enabled="enabled"
+                            @callback="save()"
                         />
                     </div>
-                    <div>
-                        <code-editor v-model:content="configText"/>
-                    </div>
-                </div>
+                </transition>
+            </a-card>
+        </a-col>
 
-                <div class="domain-edit-container" key="basic" v-else>
-                    <a-form-item :label="$gettext('Enabled')">
-                        <a-switch v-model:checked="enabled" @change="on_change_enabled"/>
-                    </a-form-item>
-                    <a-form-item :label="$gettext('Name')">
-                        <a-input v-model:value="filename"/>
-                    </a-form-item>
-                    <ngx-config-editor
-                        ref="ngx_config_editor"
-                        :ngx_config="ngx_config"
-                        :cert_info="cert_info_map"
-                        v-model:auto_cert="auto_cert"
-                        :enabled="enabled"
-                        @callback="save()"
-                    />
-                </div>
-            </transition>
-
-        </a-card>
+        <a-col class="col-right" :xs="24" :sm="6" :md="8">
+            <chat-g-p-t class="chatgpt" :content="configText" :path="ngx_config.file_name"
+                        :history_messages="history_chatgpt_record"/>
+        </a-col>
 
         <footer-tool-bar>
             <a-space>
@@ -229,7 +240,7 @@ function on_change_enabled(checked: boolean) {
                 </a-button>
             </a-space>
         </footer-tool-bar>
-    </div>
+    </a-row>
 </template>
 
 <style lang="less">
@@ -237,6 +248,15 @@ function on_change_enabled(checked: boolean) {
 </style>
 
 <style lang="less" scoped>
+.col-right {
+    position: relative;
+
+    .chatgpt {
+        position: sticky;
+        top: 78px;
+    }
+}
+
 .ant-card {
     margin: 10px 0;
     box-shadow: unset;
