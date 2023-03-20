@@ -26,19 +26,7 @@ const messages: any = ref([])
 const loading = ref(false)
 const ask_buffer = ref('')
 
-async function send() {
-    if (messages.value.length === 0) {
-        messages.value.push({
-            role: 'user',
-            content: props.content + '\n\nCurrent Language Code: ' + current
-        })
-    } else {
-        messages.value.push({
-            role: 'user',
-            content: ask_buffer.value
-        })
-        ask_buffer.value = ''
-    }
+async function request() {
     loading.value = true
     const t = ref({
         role: 'assistant',
@@ -110,6 +98,22 @@ async function send() {
 
 }
 
+async function send() {
+    if (messages.value.length === 0) {
+        messages.value.push({
+            role: 'user',
+            content: props.content + '\n\nCurrent Language Code: ' + current
+        })
+    } else {
+        messages.value.push({
+            role: 'user',
+            content: ask_buffer.value
+        })
+        ask_buffer.value = ''
+    }
+    await request()
+}
+
 const renderer = new marked.Renderer()
 renderer.code = (code, lang: string) => {
     const language = hljs.getLanguage(lang) ? lang : 'nginx'
@@ -134,6 +138,22 @@ function store_record() {
         messages: messages.value
     })
 }
+
+function clear_record() {
+    openai.store_record({
+        file_name: props.path,
+        messages: []
+    })
+    messages.value = []
+}
+
+async function regenerate(index: number) {
+    editing_idx.value = -1
+    messages.value = messages.value.slice(0, index)
+    await request()
+}
+
+const editing_idx = ref(-1)
 </script>
 
 <template>
@@ -145,17 +165,46 @@ function store_record() {
                     item-layout="horizontal"
                     :data-source="messages"
                 >
-                    <template #renderItem="{ item }">
+                    <template #renderItem="{ item, index }">
                         <a-list-item>
                             <a-comment :author="item.role" :avatar="item.avatar">
                                 <template #content>
-                                    <div class="content" v-html="marked.parse(item.content)"></div>
+                                    <div class="content" v-if="item.role==='assistant'||editing_idx!=index"
+                                         v-html="marked.parse(item.content)"></div>
+                                    <a-input style="padding: 0" v-else v-model:value="item.content"
+                                             :bordered="false"/>
+                                </template>
+                                <template #actions>
+                                    <span v-if="item.role==='user'&&editing_idx!==index" @click="editing_idx=index">
+                                        {{ $gettext('Modify') }}
+                                    </span>
+                                    <template v-else-if="editing_idx==index">
+                                        <span @click="regenerate(index+1)">{{ $gettext('Save') }}</span>
+                                        <span @click="editing_idx=-1">{{ $gettext('Cancel') }}</span>
+                                    </template>
+                                    <span v-else-if="!loading" @click="regenerate(index)" :disabled="loading">
+                                        {{ $gettext('Reload') }}
+                                    </span>
                                 </template>
                             </a-comment>
                         </a-list-item>
                     </template>
                 </a-list>
                 <div class="input-msg">
+                    <div class="control-btn">
+                        <a-space v-show="!loading">
+                            <a-popconfirm
+                                :cancelText="$gettext('No')"
+                                :okText="$gettext('OK')"
+                                :title="$gettext('Are you sure you want to clear the record of chat?')"
+                                @confirm="clear_record">
+                                <a-button type="text">{{ $gettext('Clear') }}</a-button>
+                            </a-popconfirm>
+                            <a-button type="text" @click="regenerate(messages?.length-1)">
+                                {{ $gettext('Regenerate response') }}
+                            </a-button>
+                        </a-space>
+                    </div>
                     <a-textarea auto-size v-model:value="ask_buffer"/>
                     <div class="sned-btn">
                         <a-button size="small" type="text" :loading="loading" @click="send">
@@ -208,6 +257,11 @@ function store_record() {
 
     .input-msg {
         position: relative;
+
+        .control-btn {
+            display: flex;
+            justify-content: center;
+        }
 
         .sned-btn {
             position: absolute;

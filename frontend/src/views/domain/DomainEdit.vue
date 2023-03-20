@@ -165,7 +165,7 @@ function on_change_enabled(checked: boolean) {
 </script>
 <template>
     <a-row :gutter="16">
-        <a-col :xs="24" :sm="18" :md="16">
+        <a-col :xs="24" :sm="24" :md="16">
             <a-card :bordered="false">
                 <template #title>
                     <span style="margin-right: 10px">{{ interpolate($gettext('Edit %{n}'), {n: name}) }}</span>
@@ -225,7 +225,7 @@ function on_change_enabled(checked: boolean) {
             </a-card>
         </a-col>
 
-        <a-col class="col-right" :xs="24" :sm="6" :md="8">
+        <a-col class="col-right" :xs="24" :sm="24" :md="8">
             <chat-g-p-t class="chatgpt" :content="configText" :path="ngx_config.file_name"
                         :history_messages="history_chatgpt_record"/>
         </a-col>
