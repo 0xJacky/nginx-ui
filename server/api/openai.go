@@ -71,7 +71,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
     ctx := context.Background()
 
     req := openai.ChatCompletionRequest{
-        Model:    openai.GPT3Dot5Turbo0301,
+        Model:    settings.OpenAISettings.Model,
         Messages: messages,
         Stream:   true,
     }

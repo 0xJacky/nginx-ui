@@ -23,6 +23,12 @@ const data = ref({
     nginx_log: {
         access_log_path: '',
         error_log_path: ''
+    },
+    openai: {
+        model: '',
+        base_url: '',
+        proxy: '',
+        token: ''
     }
 })
 
@@ -47,6 +53,7 @@ function save() {
     <a-card :title="$gettext('Preference')">
         <div class="preference-container">
             <a-form layout="vertical">
+                <h4>{{ $gettext('Basic') }}</h4>
                 <a-form-item :label="$gettext('HTTP Port')">
                     <p>{{ data.server.http_port }}</p>
                 </a-form-item>
@@ -75,11 +82,36 @@ function save() {
                         </a-select-option>
                     </a-select>
                 </a-form-item>
+                <h4>{{ $gettext('Nginx Log') }}</h4>
                 <a-form-item :label="$gettext('Nginx Access Log Path')">
                     <a-input v-model:value="data.nginx_log.access_log_path"/>
                 </a-form-item>
                 <a-form-item :label="$gettext('Nginx Error Log Path')">
                     <a-input v-model:value="data.nginx_log.error_log_path"/>
+                </a-form-item>
+                <h4>{{ $gettext('OpenAI') }}</h4>
+                <a-form-item :label="$gettext('ChatGPT Model')">
+                    <a-select v-model:value="data.openai.model">
+                        <a-select-option value="gpt-4">
+                            {{ $gettext('GPT-4') }}
+                        </a-select-option>
+                        <a-select-option value="gpt-4-32k">
+                            {{ $gettext('GPT-4-32K') }}
+                        </a-select-option>
+                        <a-select-option value="gpt-3.5-turbo">
+                            {{ $gettext('GPT-3.5-Turbo') }}
+                        </a-select-option>
+                    </a-select>
+                </a-form-item>
+                <a-form-item :label="$gettext('API Base Url')">
+                    <a-input v-model:value="data.openai.base_url"
+                             :placeholder="$gettext('Leave blank for the default: https://api.openai.com/')"/>
+                </a-form-item>
+                <a-form-item :label="$gettext('API Proxy')">
+                    <a-input v-model:value="data.openai.proxy" placeholder="http://127.0.0.1:1087"/>
+                </a-form-item>
+                <a-form-item :label="$gettext('API Token')">
+                    <a-input-password v-model:value="data.openai.token"/>
                 </a-form-item>
             </a-form>
         </div>
