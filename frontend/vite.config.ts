@@ -6,6 +6,7 @@ import {AntDesignVueResolver} from 'unplugin-vue-components/resolvers'
 import {fileURLToPath, URL} from 'url'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vitePluginBuildId from 'vite-plugin-build-id'
+import svgLoader from 'vite-svg-loader'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -25,7 +26,7 @@ export default defineConfig({
             '.less'
         ]
     },
-    plugins: [vue(), vueJsx(), vitePluginBuildId(),
+    plugins: [vue(), vueJsx(), vitePluginBuildId(), svgLoader(),
         Components({
             resolvers: [AntDesignVueResolver({importStyle: false})],
             directoryAsNamespace: true

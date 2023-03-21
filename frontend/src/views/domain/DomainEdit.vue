@@ -162,10 +162,13 @@ function on_change_enabled(checked: boolean) {
         disable()
     }
 }
+
+const editor_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 16 : 24)
+const chat_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 8 : 24)
 </script>
 <template>
     <a-row :gutter="16">
-        <a-col :xs="24" :sm="24" :md="16">
+        <a-col :xs="24" :sm="24" :md="editor_md">
             <a-card :bordered="false">
                 <template #title>
                     <span style="margin-right: 10px">{{ interpolate($gettext('Edit %{n}'), {n: name}) }}</span>
@@ -225,9 +228,9 @@ function on_change_enabled(checked: boolean) {
             </a-card>
         </a-col>
 
-        <a-col class="col-right" :xs="24" :sm="24" :md="8">
-            <chat-g-p-t class="chatgpt" :content="configText" :path="ngx_config.file_name"
-                        :history_messages="history_chatgpt_record"/>
+        <a-col class="col-right" :xs="24" :sm="24" :md="chat_md">
+            <chat-g-p-t :content="configText" :path="ngx_config.file_name"
+                        v-model:history_messages="history_chatgpt_record"/>
         </a-col>
 
         <footer-tool-bar>
@@ -250,11 +253,6 @@ function on_change_enabled(checked: boolean) {
 <style lang="less" scoped>
 .col-right {
     position: relative;
-
-    .chatgpt {
-        position: sticky;
-        top: 78px;
-    }
 }
 
 .ant-card {

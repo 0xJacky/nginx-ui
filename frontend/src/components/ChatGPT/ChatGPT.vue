@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref, watch} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import {useGettext} from 'vue3-gettext'
 import {useUserStore} from '@/pinia'
 import {storeToRefs} from 'pinia'
@@ -10,12 +10,20 @@ import 'highlight.js/styles/vs2015.css'
 import {SendOutlined} from '@ant-design/icons-vue'
 import Template from '@/views/template/Template.vue'
 import openai from '@/api/openai'
+import ChatGPT_logo from '@/assets/svg/ChatGPT_logo.svg'
+import Icon from '@ant-design/icons-vue'
 
 const {$gettext} = useGettext()
 
 const props = defineProps(['content', 'path', 'history_messages'])
+const emit = defineEmits(['update:history_messages'])
+const history_messages = computed(() => props.history_messages)
 
-watch(computed(() => props.history_messages), () => {
+onMounted(() => {
+    messages.value = props.history_messages
+})
+
+watch(history_messages, () => {
     messages.value = props.history_messages
 })
 
@@ -99,6 +107,9 @@ async function request() {
 }
 
 async function send() {
+    if (!messages.value) {
+        messages.value = []
+    }
     if (messages.value.length === 0) {
         messages.value.push({
             role: 'user',
@@ -145,6 +156,7 @@ function clear_record() {
         messages: []
     })
     messages.value = []
+    emit('update:history_messages', [])
 }
 
 async function regenerate(index: number) {
@@ -154,73 +166,88 @@ async function regenerate(index: number) {
 }
 
 const editing_idx = ref(-1)
+
+const button_shape = computed(() => loading.value ? 'square' : 'circle')
 </script>
 
 <template>
-    <a-card title="ChatGPT">
+    <a-card class="chatgpt" title="ChatGPT" v-if="messages?.length>1">
         <div class="chatgpt-container">
-            <template v-if="messages?.length>0">
-                <a-list
-                    class="chatgpt-log"
-                    item-layout="horizontal"
-                    :data-source="messages"
-                >
-                    <template #renderItem="{ item, index }">
-                        <a-list-item>
-                            <a-comment :author="item.role" :avatar="item.avatar">
-                                <template #content>
-                                    <div class="content" v-if="item.role==='assistant'||editing_idx!=index"
-                                         v-html="marked.parse(item.content)"></div>
-                                    <a-input style="padding: 0" v-else v-model:value="item.content"
-                                             :bordered="false"/>
-                                </template>
-                                <template #actions>
+            <a-list
+                class="chatgpt-log"
+                item-layout="horizontal"
+                :data-source="messages"
+            >
+                <template #renderItem="{ item, index }">
+                    <a-list-item>
+                        <a-comment :author="item.role" :avatar="item.avatar">
+                            <template #content>
+                                <div class="content" v-if="item.role==='assistant'||editing_idx!=index"
+                                     v-html="marked.parse(item.content)"></div>
+                                <a-input style="padding: 0" v-else v-model:value="item.content"
+                                         :bordered="false"/>
+                            </template>
+                            <template #actions>
                                     <span v-if="item.role==='user'&&editing_idx!==index" @click="editing_idx=index">
                                         {{ $gettext('Modify') }}
                                     </span>
-                                    <template v-else-if="editing_idx==index">
-                                        <span @click="regenerate(index+1)">{{ $gettext('Save') }}</span>
-                                        <span @click="editing_idx=-1">{{ $gettext('Cancel') }}</span>
-                                    </template>
-                                    <span v-else-if="!loading" @click="regenerate(index)" :disabled="loading">
+                                <template v-else-if="editing_idx==index">
+                                    <span @click="regenerate(index+1)">{{ $gettext('Save') }}</span>
+                                    <span @click="editing_idx=-1">{{ $gettext('Cancel') }}</span>
+                                </template>
+                                <span v-else-if="!loading" @click="regenerate(index)" :disabled="loading">
                                         {{ $gettext('Reload') }}
                                     </span>
-                                </template>
-                            </a-comment>
-                        </a-list-item>
-                    </template>
-                </a-list>
-                <div class="input-msg">
-                    <div class="control-btn">
-                        <a-space v-show="!loading">
-                            <a-popconfirm
-                                :cancelText="$gettext('No')"
-                                :okText="$gettext('OK')"
-                                :title="$gettext('Are you sure you want to clear the record of chat?')"
-                                @confirm="clear_record">
-                                <a-button type="text">{{ $gettext('Clear') }}</a-button>
-                            </a-popconfirm>
-                            <a-button type="text" @click="regenerate(messages?.length-1)">
-                                {{ $gettext('Regenerate response') }}
-                            </a-button>
-                        </a-space>
-                    </div>
-                    <a-textarea auto-size v-model:value="ask_buffer"/>
-                    <div class="sned-btn">
-                        <a-button size="small" type="text" :loading="loading" @click="send">
-                            <send-outlined/>
+                            </template>
+                        </a-comment>
+                    </a-list-item>
+                </template>
+            </a-list>
+            <div class="input-msg">
+                <div class="control-btn">
+                    <a-space v-show="!loading">
+                        <a-popconfirm
+                            :cancelText="$gettext('No')"
+                            :okText="$gettext('OK')"
+                            :title="$gettext('Are you sure you want to clear the record of chat?')"
+                            @confirm="clear_record">
+                            <a-button type="text">{{ $gettext('Clear') }}</a-button>
+                        </a-popconfirm>
+                        <a-button type="text" @click="regenerate(messages?.length-1)">
+                            {{ $gettext('Regenerate response') }}
                         </a-button>
-                    </div>
+                    </a-space>
                 </div>
-            </template>
-            <template v-else>
-                <a-button @click="send">{{ $gettext('Chat with ChatGPT') }}</a-button>
-            </template>
+                <a-textarea auto-size v-model:value="ask_buffer"/>
+                <div class="sned-btn">
+                    <a-button size="small" type="text" :loading="loading" @click="send">
+                        <send-outlined/>
+                    </a-button>
+                </div>
+            </div>
         </div>
     </a-card>
+    <template v-else>
+        <div class="chat-start">
+            <a-button size="large" shape="circle" @click="send" :loading="loading">
+                <Icon v-if="!loading" :component="ChatGPT_logo"/>
+            </a-button>
+        </div>
+    </template>
 </template>
 
 <style lang="less" scoped>
+.chatgpt {
+    position: sticky;
+    top: 78px;
+}
+
+.chat-start {
+    position: fixed !important;
+    right: 36px;
+    bottom: 78px;
+}
+
 .chatgpt-container {
     margin: 0 auto;
     max-width: 800px;
