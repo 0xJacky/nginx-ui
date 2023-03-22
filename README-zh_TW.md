@@ -75,6 +75,7 @@ Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https
 ### 特色
 
 - 線上檢視伺服器 CPU、記憶體、系統負載、磁碟使用率等指標
+- 線上 ChatGPT 助理
 - 一鍵申請和自動續簽 Let's encrypt 憑證
 - 線上編輯 Nginx 配置檔案，編輯器支援 Nginx 配置語法突顯
 - 線上查看 Nginx 日誌

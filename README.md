@@ -71,6 +71,7 @@ URL：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
 ### Features
 
 - Online statistics for server indicators such as CPU usage, memory usage, load average, and disk usage.
+- Online ChatGPT Assistant
 - One-click deployment and automatic renewal Let's Encrypt certificates.
 - Online editing websites configurations with our self-designed **NgxConfigEditor** which is a user-friendly block editor for nginx configurations or **Ace Code Editor** which supports highlighting nginx configuration syntax.
 - Online view Nginx logs

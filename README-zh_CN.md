@@ -73,6 +73,7 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
 ### 特色
 
 - 在线查看服务器 CPU、内存、系统负载、磁盘使用率等指标
+- 在线 ChatGPT 助理
 - 一键申请和自动续签 Let's encrypt 证书
 - 在线编辑 Nginx 配置文件，编辑器支持 Nginx 配置语法高亮
 - 在线查看 Nginx 日志
