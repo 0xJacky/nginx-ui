@@ -10,7 +10,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/sashabaranov/go-openai"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -39,7 +38,17 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	c.Writer.Header().Set("Cache-Control", "no-cache")
 	c.Writer.Header().Set("Connection", "keep-alive")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-	log.Println(settings.OpenAISettings.Token)
+
+	if settings.OpenAISettings.Token == "" {
+		c.Stream(func(w io.Writer) bool {
+			c.SSEvent("message", gin.H{
+				"type":    "error",
+				"content": "[Error] OpenAI token is empty",
+			})
+			return false
+		})
+		return
+	}
 
 	config := openai.DefaultConfig(settings.OpenAISettings.Token)
 
@@ -104,9 +113,8 @@ func MakeChatCompletionRequest(c *gin.Context) {
 				return
 			}
 
-			// Send SSE to client
 			message := fmt.Sprintf("%s", response.Choices[0].Delta.Content)
-			fmt.Printf("%s", response.Choices[0].Delta.Content)
+			fmt.Printf("%s", message)
 			_ = os.Stdout.Sync()
 
 			msgChan <- message
