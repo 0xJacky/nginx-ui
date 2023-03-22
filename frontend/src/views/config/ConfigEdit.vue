@@ -8,6 +8,7 @@ import {message} from 'ant-design-vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import ngx from '@/api/ngx'
 import InspectConfig from '@/views/config/InspectConfig.vue'
+import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
 
 const {$gettext, interpolate} = gettext
 const route = useRoute()
@@ -23,16 +24,22 @@ const name = computed(() => {
 })
 
 const configText = ref('')
+const history_chatgpt_record = ref([])
+const file_path = ref('')
 
 function init() {
     if (name.value) {
         config.get(name.value).then(r => {
             configText.value = r.config
+            history_chatgpt_record.value = r.chatgpt_messages
+            file_path.value = r.file_path
         }).catch(r => {
             message.error(r.message ?? $gettext('Server error'))
         })
     } else {
         configText.value = ''
+        history_chatgpt_record.value = []
+        file_path.value = ''
     }
 }
 
@@ -58,28 +65,39 @@ function format_code() {
     })
 }
 
+const editor_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 16 : 24)
+const chat_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 8 : 24)
+
 </script>
 
 
 <template>
     <inspect-config ref="inspect_config"/>
+    <a-row :gutter="16">
+        <a-col :xs="24" :sm="24" :md="editor_md">
+            <a-card :title="$gettext('Edit Configuration')">
+                <code-editor v-model:content="configText"/>
+                <footer-tool-bar>
+                    <a-space>
+                        <a-button @click="$router.go(-1)">
+                            <translate>Back</translate>
+                        </a-button>
+                        <a-button @click="format_code">
+                            <translate>Format Code</translate>
+                        </a-button>
+                        <a-button type="primary" @click="save">
+                            <translate>Save</translate>
+                        </a-button>
+                    </a-space>
+                </footer-tool-bar>
+            </a-card>
+        </a-col>
 
-    <a-card :title="$gettext('Edit Configuration')">
-        <code-editor v-model:content="configText"/>
-        <footer-tool-bar>
-            <a-space>
-                <a-button @click="$router.go(-1)">
-                    <translate>Back</translate>
-                </a-button>
-                <a-button @click="format_code">
-                    <translate>Format Code</translate>
-                </a-button>
-                <a-button type="primary" @click="save">
-                    <translate>Save</translate>
-                </a-button>
-            </a-space>
-        </footer-tool-bar>
-    </a-card>
+        <a-col class="col-right" :xs="24" :sm="24" :md="chat_md">
+            <chat-g-p-t :content="configText" :path="file_path"
+                        v-model:history_messages="history_chatgpt_record"/>
+        </a-col>
+    </a-row>
 </template>
 
 <style lang="less" scoped>

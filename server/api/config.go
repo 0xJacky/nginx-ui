@@ -96,6 +96,7 @@ func GetConfig(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"config":           string(content),
 		"chatgpt_messages": chatgpt.Content,
+		"file_path":        path,
 	})
 
 }

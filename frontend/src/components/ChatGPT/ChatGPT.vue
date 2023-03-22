@@ -46,13 +46,15 @@ async function request() {
 
     console.log('fetching...')
 
+    messages.value.push(t.value)
+
+    emit('update:history_messages', messages.value)
+
     let res = await fetch(urlJoin(window.location.pathname, '/api/chat_gpt'), {
         method: 'POST',
         headers: {'Accept': 'text/event-stream', Authorization: token.value},
-        body: JSON.stringify({messages: messages.value})
+        body: JSON.stringify({messages: messages.value.slice(0, messages.value?.length - 1)})
     })
-
-    messages.value.push(t.value)
     // read body as stream
     console.log('reading...')
     let reader = res.body!.getReader()
@@ -61,6 +63,8 @@ async function request() {
     console.log('reading stream...')
 
     let buffer = ''
+
+    let hasCodeBlockIndicator = false
 
     while (true) {
         let {done, value} = await reader.read()
@@ -78,17 +82,32 @@ async function request() {
         const decoder = new TextDecoder('utf-8')
         const raw = decoder.decode(input)
 
-        const regex = /{"content":"(.+?)"}/g
-        const matches = raw.match(regex)
+        // console.log(input, raw)
 
-        matches?.forEach(v => {
-            const content = JSON.parse(v).content
+        const line = raw.split('\n\n')
+
+        line?.forEach(v => {
+            const data = v.slice('event:message\ndata:'.length)
+            if (!data) {
+                return
+            }
+            const content = JSON.parse(data).content
+
+            if (!hasCodeBlockIndicator) {
+                hasCodeBlockIndicator = content.indexOf('`') > -1
+            }
+
             for (let c of content) {
                 buffer += c
-                if (isCodeBlockComplete(buffer)) {
-                    t.value.content = buffer
+                if (hasCodeBlockIndicator) {
+                    if (isCodeBlockComplete(buffer)) {
+                        t.value.content = buffer
+                        hasCodeBlockIndicator = false
+                    } else {
+                        t.value.content = buffer + '\n```'
+                    }
                 } else {
-                    t.value.content = buffer + '\n```'
+                    t.value.content = buffer
                 }
             }
         })
@@ -167,11 +186,12 @@ async function regenerate(index: number) {
 
 const editing_idx = ref(-1)
 
-const button_shape = computed(() => loading.value ? 'square' : 'circle')
+const show = computed(() => messages?.value?.length > 1)
+
 </script>
 
 <template>
-    <a-card class="chatgpt" title="ChatGPT" v-if="messages?.length>1">
+    <a-card class="chatgpt" title="ChatGPT" v-if="show">
         <div class="chatgpt-container">
             <a-list
                 class="chatgpt-log"
