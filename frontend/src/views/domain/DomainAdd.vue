@@ -12,8 +12,8 @@ import template from '@/api/template'
 
 const {$gettext, interpolate} = useGettext()
 
-const config = reactive({name: ''})
 const ngx_config = reactive({
+    name: '',
     servers: [{
         directives: [],
         locations: []
@@ -40,10 +40,10 @@ function init() {
 
 function save() {
     ngx.build_config(ngx_config).then(r => {
-        domain.save(config.name, {name: config.name, content: r.content}).then(() => {
+        domain.save(ngx_config.name, {name: ngx_config.name, content: r.content, overwrite: true}).then(() => {
             message.success($gettext('Saved successfully'))
 
-            domain.enable(config.name).then(() => {
+            domain.enable(ngx_config.name).then(() => {
                 message.success($gettext('Enabled successfully'))
                 current_step.value++
                 window.scroll({top: 0, left: 0, behavior: 'smooth'})
@@ -93,7 +93,7 @@ const has_server_name = computed(() => {
             <template v-if="current_step===0">
                 <a-form layout="vertical">
                     <a-form-item :label="$gettext('Configuration Name')">
-                        <a-input v-model:value="config.name"/>
+                        <a-input v-model:value="ngx_config.name"/>
                     </a-form-item>
                 </a-form>
 
@@ -131,7 +131,7 @@ const has_server_name = computed(() => {
                 <a-button
                     type="primary"
                     @click="save"
-                    :disabled="!config.name||!has_server_name"
+                    :disabled="!ngx_config.name||!has_server_name"
                 >
                     <translate>Next</translate>
                 </a-button>
