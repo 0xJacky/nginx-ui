@@ -20,7 +20,7 @@ require (
 	github.com/lib/pq v1.10.7
 	github.com/pkg/errors v0.9.1
 	github.com/sashabaranov/go-openai v1.5.8
-	github.com/shirou/gopsutil/v3 v3.23.3
+	github.com/shirou/gopsutil/v3 v3.23.1
 	github.com/spf13/cast v1.5.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20230325082000-26dcb15a9df4
 	github.com/unknwon/com v1.0.1
@@ -57,7 +57,6 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.7 // indirect
 	github.com/power-devops/perfstat v0.0.0-20221212215047-62379fc7944b // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
-	github.com/shoenig/go-m1cpu v0.1.4 // indirect
 	github.com/tklauser/go-sysconf v0.3.11 // indirect
 	github.com/tklauser/numcpus v0.6.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
