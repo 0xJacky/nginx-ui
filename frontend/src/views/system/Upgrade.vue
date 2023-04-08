@@ -90,6 +90,10 @@ async function perform_upgrade() {
                 progressPercent.value = 100
                 modalClosable.value = true
                 log('Upgraded successfully')
+
+                setInterval(() => {
+                    location.reload()
+                }, 1000)
             })
         }, 2000)
     }
@@ -100,7 +104,7 @@ async function perform_upgrade() {
     <a-modal
         :title="$gettext('Core Upgrade')"
         v-model:visible="modalVisible"
-        :mask-closable="modalClosable"
+        :mask-closable="false"
         :footer="null" :closable="modalClosable" force-render>
         <a-progress
             :stroke-color="progressStrokeColor"
@@ -109,7 +113,6 @@ async function perform_upgrade() {
         />
 
         <div class="core-upgrade-log-container" ref="logContainer"/>
-
     </a-modal>
     <a-card :title="$gettext('Upgrade')">
         <div class="upgrade-container">
@@ -119,9 +122,8 @@ async function perform_upgrade() {
             <p>{{ $gettext('Arch') }}: {{ data.arch }}</p>
             <p>{{ $gettext('Executable Path') }}: {{ data.ex_path }}</p>
             <p>{{ $gettext('Last checked at') }}: {{ last_check }}
-                <a-button type="link" @click="get_release_list" :loading="loading">{{
-                        $gettext('Check again')
-                    }}
+                <a-button type="link" @click="get_release_list" :loading="loading">
+                    {{ $gettext('Check again') }}
                 </a-button>
             </p>
             <a-alert type="success" v-if="is_latest_ver"
