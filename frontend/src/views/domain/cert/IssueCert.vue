@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
 import {computed, nextTick, ref, watch} from 'vue'
-import {message} from 'ant-design-vue'
+import {message, Modal} from 'ant-design-vue'
 import domain from '@/api/domain'
 import websocket from '@/lib/websocket'
 import Template from '@/views/template/Template.vue'
@@ -14,6 +14,29 @@ const emit = defineEmits(['changeEnabled', 'callback', 'update:enabled'])
 
 const issuing_cert = ref(false)
 const modalVisible = ref(false)
+
+const enabled = computed({
+    get() {
+        return props.enabled
+    },
+    set(value) {
+        emit('update:enabled', value)
+    }
+})
+
+function confirm() {
+    Modal.confirm({
+        title: enabled.value ? $gettext('Do you want to disable auto-cert renewal?') :
+            $gettext('Do you want to enable auto-cert renewal?'),
+        mask: false,
+        centered: true,
+        onOk() {
+            enabled.value = !enabled.value
+        }
+    })
+}
+
+watch(enabled, onchange)
 
 function onchange(r: boolean) {
     emit('changeEnabled', r)
@@ -135,15 +158,6 @@ const name = computed(() => {
     return props.directivesMap['server_name'][0].params.trim()
 })
 
-const enabled = computed({
-    get() {
-        return props.enabled
-    },
-    set(value) {
-        emit('update:enabled', value)
-    }
-})
-
 watch(no_server_name, () => {
     emit('update:enabled', false)
     onchange(false)
@@ -180,8 +194,8 @@ const modalClosable = ref(false)
         <a-form-item :label="$gettext('Encrypt website with Let\'s Encrypt')">
             <a-switch
                 :loading="issuing_cert"
-                v-model:checked="enabled"
-                @change="onchange"
+                :checked="enabled"
+                @change="confirm"
                 :disabled="no_server_name"
             />
             <a-alert
