@@ -31,6 +31,7 @@ function onSave(idx: number) {
         class="list-group"
         ghost-class="ghost"
         handle=".anticon-holder"
+        v-auto-animate
     >
         <template #item="{ element: directive, index }">
             <directive-editor-item @click="current_idx=index"
@@ -38,11 +39,12 @@ function onSave(idx: number) {
                                    :current_idx="current_idx" :index="index"
                                    :ngx_directives="ngx_directives"
                                    :readonly="readonly"
+                                   v-auto-animate
             />
         </template>
     </draggable>
 
-    <directive-add v-if="!readonly" :ngx_directives="ngx_directives"/>
+    <directive-add v-if="!readonly" :ngx_directives="ngx_directives" v-auto-animate/>
 </template>
 
 <style lang="less" scoped>

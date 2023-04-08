@@ -26,7 +26,7 @@ defineExpose({
 </script>
 
 <template>
-    <a-card class="inspect-container" :title="$gettext('Inspect Configurations')">
+    <div class="inspect-container">
         <a-alert :message="$gettext('Configuration file is test successful')" type="success"
                  show-icon v-if="data?.level<logLevel.Debug"/>
         <a-alert
@@ -50,7 +50,7 @@ defineExpose({
                 {{ data.message }}
             </template>
         </a-alert>
-    </a-card>
+    </div>
 </template>
 
 <style lang="less" scoped>

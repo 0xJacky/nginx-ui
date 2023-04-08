@@ -115,12 +115,12 @@ function save() {
                 </a-form-item>
             </a-form>
         </div>
+        <footer-tool-bar>
+            <a-button type="primary" @click="save">
+                {{ $gettext('Save') }}
+            </a-button>
+        </footer-tool-bar>
     </a-card>
-    <footer-tool-bar>
-        <a-button type="primary" @click="save">
-            {{ $gettext('Save') }}
-        </a-button>
-    </footer-tool-bar>
 </template>
 
 <style lang="less" scoped>

@@ -280,14 +280,14 @@ const chat_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 8 : 2
 }
 
 .slide-fade-enter-active {
-    transition: all .5s ease-in-out;
+    transition: all .3s ease-in-out;
 }
 
 .slide-fade-leave-active {
-    transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 
-.slide-fade-enter, .slide-fade-leave-to
+.slide-fade-enter-from, .slide-fade-enter-to, .slide-fade-leave-to
     /* .slide-fade-leave-active for below version 2.1.8 */ {
     transform: translateX(10px);
     opacity: 0;

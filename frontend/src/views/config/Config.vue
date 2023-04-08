@@ -44,9 +44,8 @@ watch(route, () => {
 </script>
 
 <template>
-    <inspect-config ref="inspect_config"/>
-
     <a-card :title="$gettext('Configurations')">
+        <inspect-config ref="inspect_config"/>
         <std-table
             :key="update"
             ref="table"

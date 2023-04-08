@@ -101,20 +101,20 @@ async function perform_upgrade() {
 </script>
 
 <template>
-    <a-modal
-        :title="$gettext('Core Upgrade')"
-        v-model:visible="modalVisible"
-        :mask-closable="false"
-        :footer="null" :closable="modalClosable" force-render>
-        <a-progress
-            :stroke-color="progressStrokeColor"
-            :percent="progressPercent"
-            :status="progressStatus"
-        />
-
-        <div class="core-upgrade-log-container" ref="logContainer"/>
-    </a-modal>
     <a-card :title="$gettext('Upgrade')">
+        <a-modal
+            :title="$gettext('Core Upgrade')"
+            v-model:visible="modalVisible"
+            :mask-closable="false"
+            :footer="null" :closable="modalClosable" force-render>
+            <a-progress
+                :stroke-color="progressStrokeColor"
+                :percent="progressPercent"
+                :status="progressStatus"
+            />
+
+            <div class="core-upgrade-log-container" ref="logContainer"/>
+        </a-modal>
         <div class="upgrade-container">
             <p>{{ $gettext('You can check Nginx UI upgrade at this page.') }}</p>
             <h3>{{ $gettext('Current Version') }}: v{{ version.version }}</h3>

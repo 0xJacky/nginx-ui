@@ -131,8 +131,8 @@ function handle_click_duplicate(name: string) {
                 </a-popconfirm>
             </template>
         </std-table>
+        <site-duplicate v-model:visible="show_duplicator" :name="target" @duplicated="table.get_list()"/>
     </a-card>
-    <site-duplicate v-model:visible="show_duplicator" :name="target" @duplicated="table.get_list()"/>
 </template>
 
 <style scoped>

@@ -198,7 +198,7 @@ function add_server() {
                 </div>
 
             </a-tab-pane>
-            
+
             <template #rightExtra>
                 <a-button @click="add_server" type="link" size="small">
                     <PlusOutlined/>

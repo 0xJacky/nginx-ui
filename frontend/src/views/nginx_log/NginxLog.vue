@@ -167,12 +167,12 @@ const computedBuffer = computed(() => {
             <pre class="nginx-log-container" ref="logContainer"
                  @scroll="debounce(on_scroll_log,100, null)()" v-html="computedBuffer"/>
         </a-card>
+        <footer-tool-bar v-if="control.type==='site'">
+            <a-button @click="router.go(-1)">
+                <translate>Back</translate>
+            </a-button>
+        </footer-tool-bar>
     </a-card>
-    <footer-tool-bar v-if="control.type==='site'">
-        <a-button @click="router.go(-1)">
-            <translate>Back</translate>
-        </a-button>
-    </footer-tool-bar>
 </template>
 
 <style lang="less">
