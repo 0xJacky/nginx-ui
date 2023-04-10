@@ -60,7 +60,7 @@ function save() {
 const router = useRouter()
 
 function goto_modify() {
-    router.push('/domain/' + config.name)
+    router.push('/domain/' + ngx_config.name)
 }
 
 function create_another() {

@@ -129,7 +129,10 @@ const save = async () => {
         content: configText.value, overwrite: true
     }).then(r => {
         handle_response(r)
-        router.push('/domain/' + filename.value)
+        router.push({
+            path: '/domain/' + filename.value,
+            query: route.query
+        })
         message.success($gettext('Saved successfully'))
     }).catch(handle_parse_error).finally(() => {
         saving.value = false
