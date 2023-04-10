@@ -1,26 +1,33 @@
 server {
-	listen	80;
-	listen	[::]:80;
-	server_name	qi.jackyu.cn;
-	rewrite ^(.*)$  https://$host$1 permanent;
-
+    listen 80;
+    listen [::]:80;
+    server_name qi.jackyu.cn amstourship.jackyu.cn;
+    rewrite ^(.*)$ https://$host$1 permanent;
+    location /.well-known/acme-challenge {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real_IP $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr:$remote_port;
+        proxy_pass http://127.0.0.1:5002;
+    }
 }
-
 server {
-	server_name	qi.jackyu.cn;
-	ssl_certificate	/etc/nginx/ssl/jackyu.cn/alpha/jackyu.cn_server_cert.pem;
-	ssl_certificate_key	/etc/nginx/ssl/jackyu.cn/alpha/jackyu.cn_key.pem;
-	listen	443 ssl;
-	listen	[::]:443 ssl;
-
-	location / {
-		proxy_pass         http://127.0.0.1:5001/;
-		proxy_redirect     off;
-		proxy_set_header   Host                 $host;
-		proxy_set_header   X-Real-IP            $remote_addr;
-		proxy_set_header   X-Forwarded-For      $proxy_add_x_forwarded_for;
-		proxy_set_header   X-Forwarded-Proto    $scheme;
-	}
-
+    server_name qi.jackyu.cn amstourship.jackyu.cn;
+    ssl_certificate /etc/nginx/ssl/qi.jackyu.cn_amstourship.jackyu.cn/fullchain.cer;
+    ssl_certificate_key /etc/nginx/ssl/qi.jackyu.cn_amstourship.jackyu.cn/private.key;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    location / {
+        proxy_pass http://127.0.0.1:5001/;
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    location /.well-known/acme-challenge {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real_IP $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr:$remote_port;
+        proxy_pass http://127.0.0.1:5002;
+    }
 }
-

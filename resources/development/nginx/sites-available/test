@@ -1,7 +1,7 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name ojbk.me;
+    server_name test.jackyu.cn;
     location /.well-known/acme-challenge {
         proxy_set_header Host $host;
         proxy_set_header X-Real_IP $remote_addr;
@@ -12,9 +12,9 @@ server {
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
-    server_name ojbk.me;
-    ssl_certificate /etc/nginx/ssl/ojbk.me/fullchain.cer;
-    ssl_certificate_key /etc/nginx/ssl/ojbk.me/private.key;
+    server_name test.jackyu.cn;
+    ssl_certificate /etc/nginx/ssl/test.jackyu.cn/fullchain.cer;
+    ssl_certificate_key /etc/nginx/ssl/test.jackyu.cn/private.key;
     location /.well-known/acme-challenge {
         proxy_set_header Host $host;
         proxy_set_header X-Real_IP $remote_addr;

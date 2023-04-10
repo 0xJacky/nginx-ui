@@ -4,7 +4,7 @@ import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 
 import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor'
 import {useGettext} from 'vue3-gettext'
-import {computed, reactive, ref, watch} from 'vue'
+import {computed, provide, reactive, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import domain from '@/api/domain'
 import ngx from '@/api/ngx'
@@ -124,7 +124,7 @@ const save = async () => {
         }
     }
 
-    domain.save(name.value, {
+    await domain.save(name.value, {
         name: filename.value || name.value,
         content: configText.value, overwrite: true
     }).then(r => {
@@ -134,7 +134,6 @@ const save = async () => {
     }).catch(handle_parse_error).finally(() => {
         saving.value = false
     })
-
 }
 
 function enable() {
@@ -165,6 +164,8 @@ function on_change_enabled(checked: boolean) {
 
 const editor_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 16 : 24)
 const chat_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 8 : 24)
+
+provide('save_site_config', save)
 </script>
 <template>
     <a-row :gutter="16">

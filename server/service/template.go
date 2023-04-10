@@ -3,6 +3,7 @@ package service
 import (
 	"bufio"
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/0xJacky/Nginx-UI/template"
 	"github.com/pkg/errors"
 	"github.com/tufanbarisyildirim/gonginx/parser"
@@ -112,6 +113,7 @@ func ParseTemplate(path, name string) (c ConfigDetail, err error) {
 			content += orig + "\n"
 		}
 	}
+	content = strings.ReplaceAll(content, "{{ HTTP01PORT }}", settings.ServerSettings.HTTPChallengePort)
 	p := parser.NewStringParser(content)
 	config := p.Parse()
 	c.Custom = custom

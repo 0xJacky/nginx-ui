@@ -177,9 +177,11 @@ function add_server() {
                         <cert
                             v-if="current_support_ssl"
                             :config_name="ngx_config.name"
-                            :cert_info="props.cert_info?.[k]"
+                            :cert_info="cert_info?.[k]"
                             :current_server_directives="current_server_directives"
                             :directives-map="directivesMap"
+                            :current_server_index="current_server_index"
+                            :ngx_config="ngx_config"
                             v-model:enabled="autoCertRef"
                             @callback="$emit('callback')"
                         />

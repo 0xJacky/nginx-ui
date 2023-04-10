@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
-import {computed, nextTick, ref, watch} from 'vue'
+import {computed, inject, nextTick, ref, watch} from 'vue'
 import {message, Modal} from 'ant-design-vue'
 import domain from '@/api/domain'
 import websocket from '@/lib/websocket'
 import Template from '@/views/template/Template.vue'
+import template from '@/api/template'
+import _ from 'lodash'
 
 const {$gettext, interpolate} = useGettext()
 
-const props = defineProps(['config_name', 'directivesMap', 'current_server_directives', 'enabled'])
+const props = defineProps(['config_name', 'directivesMap', 'current_server_directives',
+    'enabled', 'ngx_config'])
 
 const emit = defineEmits(['changeEnabled', 'callback', 'update:enabled'])
+
+const save_site_config: Function = inject('save_site_config')!
 
 const issuing_cert = ref(false)
 const modalVisible = ref(false)
@@ -28,21 +33,40 @@ function confirm() {
     Modal.confirm({
         title: enabled.value ? $gettext('Do you want to disable auto-cert renewal?') :
             $gettext('Do you want to enable auto-cert renewal?'),
+        content: enabled.value ? $gettext('We need to add the HTTPChallenge configuration to ' +
+                'this file and reload the Nginx. Are you sure you want to continue?') :
+            $gettext('We will need to remove the HTTPChallenge configuration from this file and ' +
+                'reload the Nginx configuration file. Are you sure you want to continue?'),
         mask: false,
         centered: true,
         onOk() {
-            enabled.value = !enabled.value
+            if (enabled.value) {
+                onchange(false)
+            } else {
+                onchange(true)
+            }
         }
     })
 }
 
-watch(enabled, onchange)
-
-function onchange(r: boolean) {
+async function onchange(r: boolean) {
     emit('changeEnabled', r)
     change_auto_cert(r)
     if (r) {
+        await template.get_block('letsencrypt.conf').then(r => {
+            props.ngx_config.servers.forEach(async (v: any) => {
+                v.locations = v.locations.filter((l: any) => l.path !== '/.well-known/acme-challenge')
+
+                v.locations.push(...r.locations)
+            })
+        })
+        await save_site_config()
         job()
+    } else {
+        await props.ngx_config.servers.forEach((v: any) => {
+            v.locations = v.locations.filter((l: any) => l.path !== '/.well-known/acme-challenge')
+        })
+        save_site_config()
     }
 }
 
@@ -77,9 +101,10 @@ function job() {
     })
 }
 
-function callback(ssl_certificate: string, ssl_certificate_key: string) {
+async function callback(ssl_certificate: string, ssl_certificate_key: string) {
     props.directivesMap['ssl_certificate'][0]['params'] = ssl_certificate
     props.directivesMap['ssl_certificate_key'][0]['params'] = ssl_certificate_key
+    save_site_config()
 }
 
 function change_auto_cert(r: boolean) {
