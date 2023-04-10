@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
 import template from '@/api/template'
-import {computed, ref} from 'vue'
+import {computed, provide, ref, watch} from 'vue'
 import {storeToRefs} from 'pinia'
 import {useSettingsStore} from '@/pinia'
 import Template from '@/views/template/Template.vue'
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
+import TemplateForm from '@/views/domain/ngx_conf/config_template/TemplateForm.vue'
+import * as wasi from 'wasi'
+import _ from 'lodash'
 
 const {$gettext} = useGettext()
 const {language} = storeToRefs(useSettingsStore())
@@ -16,6 +19,7 @@ const props = defineProps(['ngx_config', 'current_server_index'])
 const blocks = ref([])
 const data: any = ref({})
 const visible = ref(false)
+const name = ref('')
 
 function get_block_list() {
     template.get_block_list().then(r => {
@@ -25,9 +29,11 @@ function get_block_list() {
 
 get_block_list()
 
-function view(name: string) {
+
+function view(n: string) {
     visible.value = true
-    template.get_block(name).then(r => {
+    name.value = n
+    template.get_block(n).then(r => {
         data.value = r
     })
 }
@@ -54,6 +60,20 @@ async function add() {
 
     visible.value = false
 }
+
+const variables = computed(() => {
+    return data.value.variables
+})
+
+function build_template() {
+    template.build_block(name.value, variables.value).then(r => {
+        data.value.directives = r.directives
+        data.value.locations = r.locations
+        data.value.custom = r.custom
+    })
+}
+
+provide('build_template', build_template)
 </script>
 
 <template>
@@ -88,6 +108,7 @@ async function add() {
         >
             <p>{{ $gettext('Author') }}: {{ data.author }}</p>
             <p>{{ $gettext('Description') }}: {{ trans_description(data) }}</p>
+            <template-form :data="data.variables"/>
             <template v-if="data.custom">
                 <h2>{{ $gettext('Custom') }}</h2>
                 <code-editor v-model:content="data.custom" default-height="150px"/>

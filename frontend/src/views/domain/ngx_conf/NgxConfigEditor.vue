@@ -6,7 +6,7 @@ import {useRoute, useRouter} from 'vue-router'
 import {useGettext} from 'vue3-gettext'
 import Cert from '@/views/domain/cert/Cert.vue'
 import LogEntry from '@/views/domain/ngx_conf/LogEntry.vue'
-import ConfigTemplate from '@/views/domain/ngx_conf/ConfigTemplate.vue'
+import ConfigTemplate from '@/views/domain/ngx_conf/config_template/ConfigTemplate.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import {PlusOutlined} from '@ant-design/icons-vue'
 

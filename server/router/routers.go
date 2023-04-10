@@ -80,6 +80,7 @@ func InitRouter() *gin.Engine {
 			g.GET("template/configs", api.GetTemplateConfList)
 			g.GET("template/blocks", api.GetTemplateBlockList)
 			g.GET("template/block/:name", api.GetTemplateBlock)
+			g.POST("template/block/:name", api.GetTemplateBlock)
 
 			g.GET("certs", api.GetCertList)
 			g.GET("cert/:id", api.GetCert)

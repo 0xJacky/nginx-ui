@@ -18,6 +18,10 @@ class Template extends Curd {
         return http.get('template/block/' + name)
     }
 
+    build_block(name: string, data: any) {
+        return http.post('template/block/' + name, data)
+    }
+
 }
 
 const template = new Template('/template')

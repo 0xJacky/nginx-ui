@@ -74,13 +74,22 @@ func GetTemplateBlock(c *gin.Context) {
 		service.ConfigInfoItem
 		service.ConfigDetail
 	}
-	detail, err := service.ParseTemplate("block", c.Param("name"))
+	var bindData map[string]service.TVariable
+	_ = c.ShouldBindJSON(&bindData)
+	info := service.GetTemplateInfo("block", c.Param("name"))
+
+	if bindData == nil {
+		bindData = info.Variables
+	}
+
+	detail, err := service.ParseTemplate("block", c.Param("name"), bindData)
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
+	info.Variables = bindData
 	c.JSON(http.StatusOK, resp{
-		service.GetTemplateInfo("block", c.Param("name")),
+		info,
 		detail,
 	})
 }

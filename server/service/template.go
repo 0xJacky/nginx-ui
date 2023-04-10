@@ -2,22 +2,33 @@ package service
 
 import (
 	"bufio"
+	"bytes"
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/0xJacky/Nginx-UI/server/settings"
-	"github.com/0xJacky/Nginx-UI/template"
+	templ "github.com/0xJacky/Nginx-UI/template"
+	"github.com/BurntSushi/toml"
+	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/tufanbarisyildirim/gonginx/parser"
 	"io"
+	"log"
 	"path/filepath"
-	"regexp"
 	"strings"
+	"text/template"
 )
 
+type TVariable struct {
+	Type  string            `json:"type"`
+	Name  map[string]string `json:"name"`
+	Value interface{}       `json:"value"`
+}
+
 type ConfigInfoItem struct {
-	Name        string            `json:"name"`
-	Description map[string]string `json:"description"`
-	Author      string            `json:"author"`
-	Filename    string            `json:"filename"`
+	Name        string               `json:"name"`
+	Description map[string]string    `json:"description"`
+	Author      string               `json:"author"`
+	Filename    string               `json:"filename"`
+	Variables   map[string]TVariable `json:"variables"`
 }
 
 func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
@@ -26,7 +37,7 @@ func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
 		Filename:    name,
 	}
 
-	file, _ := template.DistFS.Open(filepath.Join(path, name))
+	file, _ := templ.DistFS.Open(filepath.Join(path, name))
 	defer file.Close()
 	r := bufio.NewReader(file)
 	bytes, _, err := r.ReadLine()
@@ -50,31 +61,11 @@ func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
 		}
 		content += line + "\n"
 	}
-	re := regexp.MustCompile(`# (\S+): (.*)`)
-	matches := re.FindAllStringSubmatch(content, -1)
-	for _, match := range matches {
-		if len(match) < 3 {
-			continue
-		}
-		key := match[1]
-		switch {
-		case key == "Name":
-			configListItem.Name = match[2]
-		case key == "Author":
-			configListItem.Author = match[2]
-		case strings.Contains(key, "Description"):
-			re = regexp.MustCompile(`(\w+)\[(\w+)\]`)
-			matches = re.FindAllStringSubmatch(key, -1)
-			for _, m := range matches {
-				if len(m) < 3 {
-					continue
-				}
-				// lang => description
-				configListItem.Description[m[2]] = match[2]
-			}
-		}
-	}
 
+	_, err = toml.Decode(content, &configListItem)
+	if err != nil {
+		log.Println("toml.Decode", err.Error())
+	}
 	return
 }
 
@@ -83,8 +74,8 @@ type ConfigDetail struct {
 	nginx.NgxServer
 }
 
-func ParseTemplate(path, name string) (c ConfigDetail, err error) {
-	file, err := template.DistFS.Open(filepath.Join(path, name))
+func ParseTemplate(path, name string, bindData map[string]TVariable) (c ConfigDetail, err error) {
+	file, err := templ.DistFS.Open(filepath.Join(path, name))
 	if err != nil {
 		err = errors.Wrap(err, "error tokenized template")
 		return
@@ -113,7 +104,59 @@ func ParseTemplate(path, name string) (c ConfigDetail, err error) {
 			content += orig + "\n"
 		}
 	}
-	content = strings.ReplaceAll(content, "{{ HTTP01PORT }}", settings.ServerSettings.HTTPChallengePort)
+
+	data := gin.H{
+		"HTTPPORT":   settings.ServerSettings.HttpPort,
+		"HTTP01PORT": settings.ServerSettings.HTTPChallengePort,
+	}
+
+	for k, v := range bindData {
+		data[k] = v.Value
+	}
+
+	t, err := template.New(name).Parse(custom)
+
+	if err != nil {
+		err = errors.Wrap(err, "error parse template.custom")
+		return
+	}
+
+	var buf bytes.Buffer
+
+	err = t.Execute(&buf, data)
+	if err != nil {
+		err = errors.Wrap(err, "error execute template")
+		return
+	}
+
+	custom = strings.TrimSpace(buf.String())
+
+	templatePart := strings.Split(content, "# Nginx UI Template End")
+	if len(templatePart) < 2 {
+		return
+	}
+
+	content = templatePart[1]
+
+	t, err = template.New(name).Parse(content)
+
+	if err != nil {
+		err = errors.Wrap(err, "error parse template")
+		return
+	}
+
+	buf.Reset()
+
+	err = t.Execute(&buf, data)
+	if err != nil {
+		err = errors.Wrap(err, "error execute template")
+		return
+	}
+
+	content = buf.String()
+
+	log.Println(content)
+
 	p := parser.NewStringParser(content)
 	config := p.Parse()
 	c.Custom = custom
@@ -137,7 +180,7 @@ func ParseTemplate(path, name string) (c ConfigDetail, err error) {
 }
 
 func GetTemplateList(path string) (configList []ConfigInfoItem, err error) {
-	configs, err := template.DistFS.ReadDir(path)
+	configs, err := templ.DistFS.ReadDir(path)
 	if err != nil {
 		err = errors.Wrap(err, "error get template list")
 		return

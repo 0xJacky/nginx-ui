@@ -33,6 +33,7 @@ require (
 )
 
 require (
+	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/StackExchange/wmi v1.2.1 // indirect
 	github.com/bytedance/sonic v1.8.7 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.0 // indirect
