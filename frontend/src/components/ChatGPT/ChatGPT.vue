@@ -260,6 +260,11 @@ const show = computed(() => messages?.value?.length > 1)
 .chatgpt {
     position: sticky;
     top: 78px;
+
+    :deep(.ant-card-body) {
+        max-height: 100vh;
+        overflow-y: scroll;
+    }
 }
 
 .chat-start {
