@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 )
 
 func GetRelease(c *gin.Context) {
@@ -67,7 +66,16 @@ func PerformCoreUpgrade(c *gin.Context) {
 		"status":  "info",
 		"message": "Downloading latest release",
 	})
-	tarName, err := u.DownloadLatestRelease()
+	progressChan := make(chan float64)
+	go func() {
+		for progress := range progressChan {
+			_ = ws.WriteJSON(gin.H{
+				"status":   "progress",
+				"progress": progress,
+			})
+		}
+	}()
+	tarName, err := u.DownloadLatestRelease(progressChan)
 	if err != nil {
 		_ = ws.WriteJSON(gin.H{
 			"status":  "error",
@@ -86,7 +94,7 @@ func PerformCoreUpgrade(c *gin.Context) {
 	})
 	_ = os.Remove(u.Release.ExPath)
 	// bye, overseer will restart nginx-ui
-	err = u.PerformCoreUpgrade(filepath.Dir(u.Release.ExPath), tarName)
+	err = u.PerformCoreUpgrade(u.Release.ExPath, tarName)
 	if err != nil {
 		_ = ws.WriteJSON(gin.H{
 			"status":  "error",
@@ -96,7 +104,7 @@ func PerformCoreUpgrade(c *gin.Context) {
 			"status":  "error",
 			"message": err.Error(),
 		})
-		log.Println("[Error] PerformCoreUpgrade PerformCoreUpgrade", err)
+		log.Println("[Error] PerformCoreUpgrade", err)
 		return
 	}
 }

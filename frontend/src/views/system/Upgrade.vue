@@ -7,6 +7,7 @@ import dayjs from 'dayjs'
 import {marked} from 'marked'
 import Template from '@/views/template/Template.vue'
 import websocket from '@/lib/websocket'
+import {message} from 'ant-design-vue'
 
 const {$gettext} = useGettext()
 
@@ -20,15 +21,23 @@ const progressStrokeColor = {
 }
 
 const modalVisible = ref(false)
-const progressPercent = ref(0)
+const progressPercent: any = ref(0)
 const progressStatus = ref('active')
 const modalClosable = ref(false)
+const get_release_error = ref(false)
 
-function get_release_list() {
+const progressPercentComputed = computed(() => {
+    return parseFloat(progressPercent.value.toFixed(1))
+})
+
+function get_latest_release() {
     loading.value = true
     upgrade.get_latest_release().then(r => {
         data.value = r
         last_check.value = dayjs().format('YYYY-MM-DD HH:mm:ss')
+    }).catch(e => {
+        get_release_error.value = e?.message
+        message.error(e?.message ?? $gettext('Server error'))
     }).finally(() => {
         setTimeout(() => {
             loading.value = false
@@ -36,7 +45,7 @@ function get_release_list() {
     })
 }
 
-get_release_list()
+get_latest_release()
 
 const is_latest_ver = computed(() => {
     return data.value.name === `v${version.version}`
@@ -64,13 +73,19 @@ async function perform_upgrade() {
 
     const ws = websocket('/api/upgrade/perform', false)
 
-    ws.onmessage = m => {
-        const r = JSON.parse(m.data)
-        log(r.message)
+    let last = 0
 
+    ws.onmessage = async m => {
+        const r = JSON.parse(m.data)
+        if (r.message) log(r.message)
+        console.log(r.status)
         switch (r.status) {
             case 'info':
                 progressPercent.value += 10
+                break
+            case 'progress':
+                progressPercent.value += (r.progress - last) / 2
+                last = r.progress
                 break
             case 'error':
                 progressStatus.value = 'exception'
@@ -109,7 +124,7 @@ async function perform_upgrade() {
             :footer="null" :closable="modalClosable" force-render>
             <a-progress
                 :stroke-color="progressStrokeColor"
-                :percent="progressPercent"
+                :percent="progressPercentComputed"
                 :status="progressStatus"
             />
 
@@ -118,32 +133,41 @@ async function perform_upgrade() {
         <div class="upgrade-container">
             <p>{{ $gettext('You can check Nginx UI upgrade at this page.') }}</p>
             <h3>{{ $gettext('Current Version') }}: v{{ version.version }}</h3>
-            <p>{{ $gettext('OS') }}: {{ data.os }}</p>
-            <p>{{ $gettext('Arch') }}: {{ data.arch }}</p>
-            <p>{{ $gettext('Executable Path') }}: {{ data.ex_path }}</p>
-            <p>{{ $gettext('Last checked at') }}: {{ last_check }}
-                <a-button type="link" @click="get_release_list" :loading="loading">
-                    {{ $gettext('Check again') }}
-                </a-button>
-            </p>
-            <a-alert type="success" v-if="is_latest_ver"
-                     :message="$gettext('You are using the latest version')"
-                     banner
-            />
-            <a-alert type="info" v-else
-                     :message="$gettext('New version released')"
-                     banner
-            />
-            <div class="control-btn">
-                <a-space>
-                    <a-button type="primary" @click="perform_upgrade"
-                              ghost v-if="is_latest_ver">{{ $gettext('Reinstall') }}
+            <template v-if="get_release_error">
+                <a-alert type="error"
+                         :title="$gettext('Get release information error')"
+                         :message="get_release_error"
+                         banner
+                />
+            </template>
+            <template v-else>
+                <p>{{ $gettext('OS') }}: {{ data.os }}</p>
+                <p>{{ $gettext('Arch') }}: {{ data.arch }}</p>
+                <p>{{ $gettext('Executable Path') }}: {{ data.ex_path }}</p>
+                <p>{{ $gettext('Last checked at') }}: {{ last_check }}
+                    <a-button type="link" @click="get_latest_release" :loading="loading">
+                        {{ $gettext('Check again') }}
                     </a-button>
-                    <a-button type="primary" @click="perform_upgrade"
-                              ghost v-else>{{ $gettext('Upgrade') }}
-                    </a-button>
-                </a-space>
-            </div>
+                </p>
+                <a-alert type="success" v-if="is_latest_ver"
+                         :message="$gettext('You are using the latest version')"
+                         banner
+                />
+                <a-alert type="info" v-else
+                         :message="$gettext('New version released')"
+                         banner
+                />
+                <div class="control-btn">
+                    <a-space>
+                        <a-button type="primary" @click="perform_upgrade"
+                                  ghost v-if="is_latest_ver">{{ $gettext('Reinstall') }}
+                        </a-button>
+                        <a-button type="primary" @click="perform_upgrade"
+                                  ghost v-else>{{ $gettext('Upgrade') }}
+                        </a-button>
+                    </a-space>
+                </div>
+            </template>
             <template v-if="data.body">
                 <h2>{{ $gettext('Release Note') }}</h2>
                 <div v-html="marked.parse(data.body)"></div>

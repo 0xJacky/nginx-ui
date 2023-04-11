@@ -9,11 +9,13 @@ import (
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/pkg/errors"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"time"
 )
 
@@ -72,6 +74,12 @@ func GetRelease() (data TRelease, err error) {
 		err = errors.Wrap(err, "service.GetReleaseList io.ReadAll err")
 		return
 	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		err = errors.New(string(body))
+		log.Println(string(body))
+		return
+	}
 	err = json.Unmarshal(body, &data)
 	if err != nil {
 		err = errors.Wrap(err, "service.GetReleaseList json.Unmarshal err")
@@ -118,7 +126,56 @@ func NewUpgrader() (u *Upgrader, err error) {
 	return
 }
 
-func (u *Upgrader) DownloadLatestRelease() (tarName string, err error) {
+type ProgressWriter struct {
+	io.Writer
+	totalSize    int64
+	currentSize  int64
+	progressChan chan<- float64
+}
+
+func (pw *ProgressWriter) Write(p []byte) (int, error) {
+	n, err := pw.Writer.Write(p)
+	pw.currentSize += int64(n)
+	progress := float64(pw.currentSize) / float64(pw.totalSize) * 100
+	pw.progressChan <- progress
+	return n, err
+}
+
+func downloadRelease(url string, dir string, progressChan chan float64) (tarName string, err error) {
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
+
+	totalSize, err := strconv.ParseInt(resp.Header.Get("Content-Length"), 10, 64)
+	if err != nil {
+		return
+	}
+
+	file, err := os.CreateTemp(dir, "nginx-ui-temp-*.tar.gz")
+	if err != nil {
+		err = errors.Wrap(err, "service.DownloadLatestRelease CreateTemp error")
+		return
+	}
+	defer file.Close()
+
+	progressWriter := &ProgressWriter{Writer: file, totalSize: totalSize, progressChan: progressChan}
+	multiWriter := io.MultiWriter(progressWriter)
+
+	_, err = io.Copy(multiWriter, resp.Body)
+	close(progressChan)
+
+	tarName = file.Name()
+	return
+}
+
+func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName string, err error) {
 	bytes, err := _github.DistFS.ReadFile("build/build_info.json")
 	if err != nil {
 		err = errors.Wrap(err, "service.DownloadLatestRelease Read build_info.json error")
@@ -156,12 +213,7 @@ func (u *Upgrader) DownloadLatestRelease() (tarName string, err error) {
 	}
 
 	dir := filepath.Dir(u.Release.ExPath)
-	file, err := os.CreateTemp(dir, "nginx-ui-temp-*.tar.gz")
-	if err != nil {
-		err = errors.Wrap(err, "service.DownloadLatestRelease CreateTemp error")
-		return
-	}
-	defer file.Close()
+
 	if settings.ServerSettings.GithubProxy != "" {
 		downloadUrl, err = url.JoinPath(settings.ServerSettings.GithubProxy, downloadUrl)
 		if err != nil {
@@ -169,30 +221,31 @@ func (u *Upgrader) DownloadLatestRelease() (tarName string, err error) {
 			return
 		}
 	}
-	client := &http.Client{}
-	resp, err := client.Get(downloadUrl)
+	tarName, err = downloadRelease(downloadUrl, dir, progressChan)
 	if err != nil {
-		err = errors.Wrap(err, "service.DownloadLatestRelease client.Get() error")
+		err = errors.Wrap(err, "service.DownloadLatestRelease downloadFile error")
 		return
 	}
-	defer resp.Body.Close()
-	_, err = io.Copy(file, resp.Body)
-	if err != nil {
-		err = errors.Wrap(err, "service.DownloadLatestRelease io.Copy error")
-		return
-	}
-	tarName = file.Name()
 	return
 }
 
-func (u *Upgrader) PerformCoreUpgrade(dir, tarPath string) (err error) {
+func (u *Upgrader) PerformCoreUpgrade(exPath string, tarPath string) (err error) {
+	dir := filepath.Dir(exPath)
 	err = helper.UnTar(dir, tarPath)
 	if err != nil {
 		err = errors.Wrap(err, "PerformCoreUpgrade unTar error")
 		return
 	}
+	err = os.Rename(filepath.Join(dir, "nginx-ui"), exPath)
+	if err != nil {
+		err = errors.Wrap(err, "PerformCoreUpgrade rename error")
+		return
+	}
 
-	_ = os.Remove(tarPath)
-
+	err = os.Remove(tarPath)
+	if err != nil {
+		err = errors.Wrap(err, "PerformCoreUpgrade remove tar error")
+		return
+	}
 	return
 }
