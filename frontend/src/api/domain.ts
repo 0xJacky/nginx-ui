@@ -25,6 +25,10 @@ class Domain extends Curd {
     duplicate(name: string, data: any) {
         return http.post(this.baseUrl + '/' + name + '/duplicate', data)
     }
+
+    advance_mode(name: string, data: any) {
+        return http.post(this.baseUrl + '/' + name + '/advance', data)
+    }
 }
 
 const domain = new Domain('/domain')

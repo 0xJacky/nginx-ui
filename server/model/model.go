@@ -30,6 +30,7 @@ func GenerateAllModel() []any {
 		AuthToken{},
 		Cert{},
 		ChatGPTLog{},
+		Site{},
 	}
 }
 

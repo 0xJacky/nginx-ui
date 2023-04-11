@@ -22,6 +22,7 @@ var (
 	Cert         *cert
 	ChatGPTLog   *chatGPTLog
 	ConfigBackup *configBackup
+	Site         *site
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
@@ -31,6 +32,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Cert = &Q.Cert
 	ChatGPTLog = &Q.ChatGPTLog
 	ConfigBackup = &Q.ConfigBackup
+	Site = &Q.Site
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
@@ -41,6 +43,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Cert:         newCert(db, opts...),
 		ChatGPTLog:   newChatGPTLog(db, opts...),
 		ConfigBackup: newConfigBackup(db, opts...),
+		Site:         newSite(db, opts...),
 	}
 }
 
@@ -52,6 +55,7 @@ type Query struct {
 	Cert         cert
 	ChatGPTLog   chatGPTLog
 	ConfigBackup configBackup
+	Site         site
 }
 
 func (q *Query) Available() bool { return q.db != nil }
@@ -64,6 +68,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Cert:         q.Cert.clone(db),
 		ChatGPTLog:   q.ChatGPTLog.clone(db),
 		ConfigBackup: q.ConfigBackup.clone(db),
+		Site:         q.Site.clone(db),
 	}
 }
 
@@ -83,6 +88,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Cert:         q.Cert.replaceDB(db),
 		ChatGPTLog:   q.ChatGPTLog.replaceDB(db),
 		ConfigBackup: q.ConfigBackup.replaceDB(db),
+		Site:         q.Site.replaceDB(db),
 	}
 }
 
@@ -92,6 +98,7 @@ type queryCtx struct {
 	Cert         *certDo
 	ChatGPTLog   *chatGPTLogDo
 	ConfigBackup *configBackupDo
+	Site         *siteDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
@@ -101,6 +108,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Cert:         q.Cert.WithContext(ctx),
 		ChatGPTLog:   q.ChatGPTLog.WithContext(ctx),
 		ConfigBackup: q.ConfigBackup.WithContext(ctx),
+		Site:         q.Site.WithContext(ctx),
 	}
 }
 

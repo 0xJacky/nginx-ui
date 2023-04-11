@@ -8,10 +8,9 @@ import {computed, provide, reactive, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import domain from '@/api/domain'
 import ngx from '@/api/ngx'
-import {message} from 'ant-design-vue'
+import {message, Modal} from 'ant-design-vue'
 import config from '@/api/config'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
-
 
 const {$gettext, interpolate} = useGettext()
 
@@ -25,7 +24,7 @@ watch(route, () => {
 
 const update = ref(0)
 
-const ngx_config = reactive({
+const ngx_config: any = reactive({
     name: '',
     upstreams: [],
     servers: []
@@ -56,6 +55,10 @@ const advance_mode = computed({
 const history_chatgpt_record = ref([])
 
 function handle_response(r: any) {
+
+    if (r.advanced) {
+        advance_mode.value = true
+    }
 
     Object.keys(cert_info_map).forEach(v => {
         delete cert_info_map[v]
@@ -95,14 +98,17 @@ function handle_parse_error(r: any) {
     throw r
 }
 
-function on_mode_change(advance_mode: boolean) {
-    if (advance_mode) {
-        build_config()
-    } else {
-        return ngx.tokenize_config(configText.value).then((r: any) => {
-            Object.assign(ngx_config, r)
-        }).catch(handle_parse_error)
-    }
+function on_mode_change(advanced: boolean) {
+    domain.advance_mode(name.value, {advanced}).then(() => {
+        advance_mode.value = advanced
+        if (advanced) {
+            build_config()
+        } else {
+            return ngx.tokenize_config(configText.value).then((r: any) => {
+                Object.assign(ngx_config, r)
+            }).catch(handle_parse_error)
+        }
+    })
 }
 
 function build_config() {
@@ -140,6 +146,7 @@ const save = async () => {
 }
 
 function enable() {
+    enabled.value = true
     domain.enable(name.value).then(() => {
         message.success($gettext('Enabled successfully'))
         enabled.value = true
@@ -149,6 +156,7 @@ function enable() {
 }
 
 function disable() {
+    enabled.value = false
     domain.disable(name.value).then(() => {
         message.success($gettext('Disabled successfully'))
         enabled.value = false
@@ -158,11 +166,18 @@ function disable() {
 }
 
 function on_change_enabled(checked: boolean) {
-    if (checked) {
-        enable()
-    } else {
-        disable()
-    }
+    Modal.confirm({
+        title: checked ? $gettext('Do you want to enable this site?') : $gettext('Do you want to disable this site?'),
+        mask: false,
+        centered: true,
+        async onOk() {
+            if (checked) {
+                enable()
+            } else {
+                disable()
+            }
+        }
+    })
 }
 
 const editor_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 16 : 24)
@@ -187,7 +202,7 @@ provide('save_site_config', save)
                     <div class="mode-switch">
                         <div class="switch">
                             <a-switch size="small" :disabled="parse_error_status"
-                                      v-model:checked="advance_mode" @change="on_mode_change"/>
+                                      :checked="advance_mode" @change="on_mode_change"/>
                         </div>
                         <template v-if="advance_mode">
                             <div>{{ $gettext('Advance Mode') }}</div>
@@ -197,6 +212,13 @@ provide('save_site_config', save)
                         </template>
                     </div>
                 </template>
+
+                <a-form-item :label="$gettext('Enabled')">
+                    <a-switch :checked="enabled" @change="on_change_enabled"/>
+                </a-form-item>
+                <a-form-item :label="$gettext('Name')">
+                    <a-input v-model:value="filename"/>
+                </a-form-item>
 
                 <transition name="slide-fade">
                     <div v-if="advance_mode" key="advance">
@@ -213,12 +235,6 @@ provide('save_site_config', save)
                     </div>
 
                     <div class="domain-edit-container" key="basic" v-else>
-                        <a-form-item :label="$gettext('Enabled')">
-                            <a-switch v-model:checked="enabled" @change="on_change_enabled"/>
-                        </a-form-item>
-                        <a-form-item :label="$gettext('Name')">
-                            <a-input v-model:value="filename"/>
-                        </a-form-item>
                         <ngx-config-editor
                             ref="ngx_config_editor"
                             :ngx_config="ngx_config"

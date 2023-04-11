@@ -63,6 +63,8 @@ func InitRouter() *gin.Engine {
 
 			g.POST("domain/:name/enable", api.EnableDomain)
 			g.POST("domain/:name/disable", api.DisableDomain)
+			g.POST("domain/:name/advance", api.DomainEditByAdvancedMode)
+
 			g.DELETE("domain/:name", api.DeleteDomain)
 			// duplicate site
 			g.POST("domain/:name/duplicate", api.DuplicateSite)
