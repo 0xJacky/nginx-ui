@@ -138,6 +138,18 @@ onMounted(() => {
 
 const router = useRouter()
 
+const servers = computed(() => {
+    return props.ngx_config.servers
+})
+
+watch(servers, () => {
+    if (current_server_index.value >= servers.value.length) {
+        current_server_index.value = servers.value.length - 1
+    } else if (current_server_index.value < 0) {
+        current_server_index.value = 0
+    }
+})
+
 watch(current_server_index, () => {
     router.push({
         query: {
