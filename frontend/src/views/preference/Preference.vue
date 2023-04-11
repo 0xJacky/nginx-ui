@@ -18,7 +18,8 @@ const data = ref({
         jwt_secret: '',
         start_cmd: '',
         email: '',
-        http_challenge_port: 9180
+        http_challenge_port: 9180,
+        github_proxy: ''
     },
     nginx_log: {
         access_log_path: '',
@@ -68,6 +69,10 @@ function save() {
                 </a-form-item>
                 <a-form-item :label="$gettext('HTTP Challenge Port')">
                     <a-input-number v-model:value="data.server.http_challenge_port"/>
+                </a-form-item>
+                <a-form-item :label="$gettext('Github Proxy')">
+                    <a-input v-model:value="data.server.github_proxy"
+                             :placeholder="$gettext('Chinese user: https://ghproxy.com/')"/>
                 </a-form-item>
                 <a-form-item :label="$gettext('Theme')">
                     <a-select v-model:value="theme">

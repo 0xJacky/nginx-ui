@@ -241,16 +241,17 @@ const modalClosable = ref(false)
         <a-alert type="info" closable :message="$gettext('Note')">
             <template #description>
                 <p v-translate>
-                    The server_name in the current configuration must be the domain name
-                    you need to get the certificate.
+                    The server_name
+                    in the current configuration must be the domain name you need to get the certificate, support
+                    multiple domains.
                 </p>
                 <p v-translate>
                     The certificate for the domain will be checked every hour,
-                    and will be renewed if it has been more than 1 month since it was last issued.
+                    and will be renewed if it has been more than 1 week since it was last issued.
                 </p>
                 <p v-translate>
                     Make sure you have configured a reverse proxy for .well-known
-                    directory to HTTPChallengePort (default: 9180) before getting the certificate.
+                    directory to HTTPChallengePort before obtaining the certificate.
                 </p>
             </template>
         </a-alert>
@@ -274,6 +275,10 @@ const modalClosable = ref(false)
 </style>
 
 <style lang="less" scoped>
+.ant-tag {
+    margin: 0;
+}
+
 .issue-cert {
     margin: 15px 0;
 }
