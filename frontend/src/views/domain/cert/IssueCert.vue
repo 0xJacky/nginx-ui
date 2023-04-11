@@ -6,7 +6,6 @@ import domain from '@/api/domain'
 import websocket from '@/lib/websocket'
 import Template from '@/views/template/Template.vue'
 import template from '@/api/template'
-import _ from 'lodash'
 
 const {$gettext, interpolate} = useGettext()
 
@@ -35,7 +34,7 @@ function confirm() {
             $gettext('Do you want to enable auto-cert renewal?'),
         content: enabled.value ? $gettext('We need to add the HTTPChallenge configuration to ' +
                 'this file and reload the Nginx. Are you sure you want to continue?') :
-            $gettext('We will need to remove the HTTPChallenge configuration from this file and ' +
+            $gettext('We will remove the HTTPChallenge configuration from this file and ' +
                 'reload the Nginx configuration file. Are you sure you want to continue?'),
         mask: false,
         centered: true,
@@ -60,7 +59,10 @@ async function onchange(r: boolean) {
                 v.locations.push(...r.locations)
             })
         })
-        await save_site_config()
+        // if ssl_certificate is empty, do not save, just use the config from last step.
+        if (!props.directivesMap['ssl_certificate']?.[0]) {
+            await save_site_config()
+        }
         job()
     } else {
         await props.ngx_config.servers.forEach((v: any) => {

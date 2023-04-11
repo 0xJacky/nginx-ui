@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
-import {computed, onMounted, ref, watch} from 'vue'
+import {computed, inject, onMounted, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import {useGettext} from 'vue3-gettext'
 import Cert from '@/views/domain/cert/Cert.vue'
@@ -9,6 +9,8 @@ import LogEntry from '@/views/domain/ngx_conf/LogEntry.vue'
 import ConfigTemplate from '@/views/domain/ngx_conf/config_template/ConfigTemplate.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import {PlusOutlined} from '@ant-design/icons-vue'
+import {Modal} from 'ant-design-vue'
+import template from '@/api/template'
 
 const {$gettext} = useGettext()
 
@@ -16,10 +18,33 @@ const props = defineProps(['ngx_config', 'auto_cert', 'enabled', 'cert_info'])
 
 const emit = defineEmits(['callback', 'update:auto_cert'])
 
+const save_site_config: Function = inject('save_site_config')!
+
 const route = useRoute()
 
 const current_server_index = ref(0)
 const name = ref(route.params.name)
+
+function confirm_change_tls(r: boolean) {
+    Modal.confirm({
+        title: $gettext('Do you want to enable TLS?'),
+        content: $gettext('To make sure the certification auto-renewal can work normally, ' +
+            'we need to add a location which can proxy the request from authority to backend, ' +
+            'and we need to save this file and reload the Nginx. Are you sure you want to continue?'),
+        mask: false,
+        centered: true,
+        async onOk() {
+            await template.get_block('letsencrypt.conf').then(r => {
+                const first = props.ngx_config.servers[0]
+                first.locations = first.locations.filter((l: any) => l.path !== '/.well-known/acme-challenge')
+                first.locations.push(...r.locations)
+            })
+            await save_site_config()
+
+            change_tls(r)
+        }
+    })
+}
 
 function change_tls(r: any) {
     if (r) {
@@ -78,7 +103,7 @@ function change_tls(r: any) {
 }
 
 const current_server_directives = computed(() => {
-    return props.ngx_config.servers[current_server_index.value].directives
+    return props.ngx_config.servers?.[current_server_index.value]?.directives
 })
 
 const directivesMap = computed(() => {
@@ -170,7 +195,7 @@ function add_server() {
 <template>
     <div>
         <a-form-item :label="$gettext('Enable TLS')" v-if="!support_ssl">
-            <a-switch @change="change_tls"/>
+            <a-switch @change="confirm_change_tls"/>
         </a-form-item>
 
         <h2>{{ $gettext('Custom') }}</h2>
