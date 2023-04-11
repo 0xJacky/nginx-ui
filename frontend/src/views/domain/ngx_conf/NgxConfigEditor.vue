@@ -11,6 +11,7 @@ import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import {PlusOutlined} from '@ant-design/icons-vue'
 import {Modal} from 'ant-design-vue'
 import template from '@/api/template'
+import {MoreOutlined} from '@ant-design/icons-vue'
 
 const {$gettext} = useGettext()
 
@@ -163,13 +164,13 @@ onMounted(() => {
 
 const router = useRouter()
 
-const servers = computed(() => {
-    return props.ngx_config.servers
+const servers_length = computed(() => {
+    return props.ngx_config.servers.length
 })
 
-watch(servers, () => {
-    if (current_server_index.value >= servers.value.length) {
-        current_server_index.value = servers.value.length - 1
+watch(servers_length, () => {
+    if (current_server_index.value >= servers_length.value) {
+        current_server_index.value = servers_length.value - 1
     } else if (current_server_index.value < 0) {
         current_server_index.value = 0
     }
@@ -190,6 +191,10 @@ function add_server() {
         directives: []
     })
 }
+
+function remove_server(index: number) {
+    props.ngx_config?.servers?.splice(index, 1)
+}
 </script>
 
 <template>
@@ -202,7 +207,20 @@ function add_server() {
         <code-editor v-model:content="ngx_config.custom" default-height="150px"/>
 
         <a-tabs v-model:activeKey="current_server_index">
-            <a-tab-pane :tab="'Server '+(k+1)" v-for="(v,k) in props.ngx_config.servers" :key="k">
+            <a-tab-pane v-for="(v,k) in props.ngx_config.servers" :key="k">
+                <template #tab>
+                    Server {{ (k + 1) }}
+                    <a-dropdown>
+                        <MoreOutlined/>
+                        <template #overlay>
+                            <a-menu>
+                                <a-menu-item>
+                                    <a href="javascript:;" @click="remove_server(k)">{{ $gettext('Delete') }}</a>
+                                </a-menu-item>
+                            </a-menu>
+                        </template>
+                    </a-dropdown>
+                </template>
                 <log-entry
                     :ngx_config="props.ngx_config"
                     :current_server_idx="current_server_index"
@@ -249,6 +267,8 @@ function add_server() {
 
 </template>
 
-<style scoped>
-
+<style lang="less" scoped>
+:deep(.ant-tabs-tab-btn) {
+    margin-left: 16px;
+}
 </style>
