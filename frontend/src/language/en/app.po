@@ -25,9 +25,9 @@ msgstr "Action"
 #: src/components/StdDataDisplay/StdCurd.vue:145
 #: src/components/StdDataDisplay/StdCurd.vue:25
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:28
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:34
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:35
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:50
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:47
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:48
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:63
 msgid "Add"
 msgstr ""
 
@@ -48,25 +48,33 @@ msgstr "Add Location"
 msgid "Add Site"
 msgstr "Add Site"
 
+#: src/views/domain/cert/components/DNSChallenge.vue:12
+#: src/views/domain/cert/components/DNSChallenge.vue:13
+#: src/views/domain/cert/components/DNSChallenge.vue:14
+#, fuzzy
+msgid "Additional"
+msgstr "Add Location"
+
 #: src/views/domain/DomainEdit.vue:19 src/views/domain/DomainEdit.vue:20
 #: src/views/domain/DomainEdit.vue:21
 msgid "Advance Mode"
 msgstr "Advance Mode"
 
-#: src/views/preference/Preference.vue:55
+#: src/views/preference/OpenAISettings.vue:16
 msgid "API Base Url"
 msgstr ""
 
-#: src/views/preference/Preference.vue:59
+#: src/views/preference/OpenAISettings.vue:20
 msgid "API Proxy"
 msgstr ""
 
-#: src/views/preference/Preference.vue:62
+#: src/views/preference/OpenAISettings.vue:23
 msgid "API Token"
 msgstr ""
 
-#: src/views/system/Upgrade.vue:11 src/views/system/Upgrade.vue:12
-#: src/views/system/Upgrade.vue:16 src/views/system/Upgrade.vue:20
+#: src/views/system/Upgrade.vue:15 src/views/system/Upgrade.vue:16
+#: src/views/system/Upgrade.vue:20 src/views/system/Upgrade.vue:24
+#: src/views/system/Upgrade.vue:28
 msgid "Arch"
 msgstr ""
 
@@ -101,8 +109,8 @@ msgstr "Are you sure you want to remove this directive?"
 msgid "Author"
 msgstr ""
 
-#: src/views/preference/Preference.vue:23
-#: src/views/preference/Preference.vue:24
+#: src/views/preference/BasicSettings.vue:5
+#: src/views/preference/BasicSettings.vue:6
 msgid "Auto"
 msgstr ""
 
@@ -122,17 +130,17 @@ msgstr ""
 msgid "Auto-Cert Log"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:121
+#: src/views/domain/cert/components/ObtainCert.vue:56
 msgid "Auto-renewal disabled for %{name}"
 msgstr "Auto-renewal disabled for %{name}"
 
-#: src/views/domain/cert/IssueCert.vue:115
+#: src/views/domain/cert/components/ObtainCert.vue:50
 msgid "Auto-renewal enabled for %{name}"
 msgstr "Auto-renewal enabled for %{name}"
 
 #: src/views/config/Config.vue:17 src/views/config/Config.vue:18
 #: src/views/config/Config.vue:28 src/views/config/Config.vue:6
-#: src/views/config/ConfigEdit.vue:83 src/views/domain/DomainEdit.vue:243
+#: src/views/config/ConfigEdit.vue:83 src/views/domain/DomainEdit.vue:257
 #: src/views/nginx_log/NginxLog.vue:172
 msgid "Back"
 msgstr "Back"
@@ -146,7 +154,7 @@ msgstr "Back"
 msgid "Base information"
 msgstr "Base information"
 
-#: src/views/preference/Preference.vue:4 src/views/preference/Preference.vue:5
+#: src/views/preference/Preference.vue:5
 #, fuzzy
 msgid "Basic"
 msgstr "Basic Mode"
@@ -184,7 +192,7 @@ msgstr "Certificate has expired"
 msgid "Certificate is valid"
 msgstr "Certificate is valid"
 
-#: src/views/cert/Cert.vue:34 src/views/domain/cert/Cert.vue:36
+#: src/views/cert/Cert.vue:34 src/views/domain/cert/Cert.vue:37
 msgid "Certificate Status"
 msgstr "Certificate Status"
 
@@ -193,6 +201,10 @@ msgstr "Certificate Status"
 msgid "Certification"
 msgstr "Certificate is valid"
 
+#: src/views/domain/cert/components/AutoCertStepOne.vue:42
+msgid "Challenge Method"
+msgstr ""
+
 #: src/views/domain/cert/ChangeCert.vue:2
 #: src/views/domain/cert/ChangeCert.vue:3
 #: src/views/domain/cert/ChangeCert.vue:5
@@ -200,13 +212,22 @@ msgstr "Certificate is valid"
 msgid "Change Certificate"
 msgstr "Certificate is valid"
 
-#: src/views/preference/Preference.vue:42
+#: src/views/preference/OpenAISettings.vue:3
 msgid "ChatGPT Model"
 msgstr ""
 
-#: src/views/system/Upgrade.vue:15 src/views/system/Upgrade.vue:16
-#: src/views/system/Upgrade.vue:20 src/views/system/Upgrade.vue:24
+#: src/views/system/Upgrade.vue:19 src/views/system/Upgrade.vue:20
+#: src/views/system/Upgrade.vue:24 src/views/system/Upgrade.vue:28
+#: src/views/system/Upgrade.vue:32
 msgid "Check again"
+msgstr ""
+
+#: src/views/preference/BasicSettings.vue:33
+msgid "Chinese user: https://ghproxy.com/"
+msgstr ""
+
+#: src/language/constants.ts:17
+msgid "Cleaning environment variables"
 msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:31 src/components/ChatGPT/ChatGPT.vue:32
@@ -217,7 +238,7 @@ msgstr ""
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
 #: src/views/domain/ngx_conf/LocationEditor.vue:35
 #: src/views/domain/ngx_conf/LocationEditor.vue:52
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:228
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:246
 msgid "Comments"
 msgstr "Comments"
 
@@ -277,6 +298,11 @@ msgstr "Created at"
 msgid "Creating client facilitates communication with the CA server"
 msgstr ""
 
+#: src/views/domain/cert/components/DNSChallenge.vue:6
+#: src/views/domain/cert/components/DNSChallenge.vue:7
+msgid "Credentials"
+msgstr ""
+
 #: src/views/system/Upgrade.vue:10 src/views/system/Upgrade.vue:14
 #: src/views/system/Upgrade.vue:18 src/views/system/Upgrade.vue:9
 msgid "Current Version"
@@ -291,8 +317,8 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: src/views/preference/Preference.vue:29
-#: src/views/preference/Preference.vue:30
+#: src/views/preference/BasicSettings.vue:11
+#: src/views/preference/BasicSettings.vue:12
 msgid "Dark"
 msgstr ""
 
@@ -314,6 +340,8 @@ msgstr "Database (Optional, default: database)"
 #: src/views/domain/DomainList.vue:19 src/views/domain/DomainList.vue:20
 #: src/views/domain/DomainList.vue:21 src/views/domain/DomainList.vue:28
 #: src/views/domain/DomainList.vue:32
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:18
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:19
 msgid "Delete"
 msgstr ""
 
@@ -353,7 +381,7 @@ msgstr "Directive"
 msgid "Directives"
 msgstr "Directives"
 
-#: src/views/domain/cert/IssueCert.vue:123
+#: src/views/domain/cert/components/ObtainCert.vue:58
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Disable auto-renewal failed for %{name}"
 
@@ -365,7 +393,7 @@ msgstr "Disable auto-renewal failed for %{name}"
 msgid "Disabled"
 msgstr "Disabled"
 
-#: src/views/domain/DomainEdit.vue:153 src/views/domain/DomainList.vue:70
+#: src/views/domain/DomainEdit.vue:159 src/views/domain/DomainList.vue:70
 msgid "Disabled successfully"
 msgstr "Disabled successfully"
 
@@ -373,15 +401,31 @@ msgstr "Disabled successfully"
 msgid "Disk IO"
 msgstr "Disk IO"
 
-#: src/views/domain/cert/IssueCert.vue:33
+#: src/views/domain/cert/components/DNSChallenge.vue:3
+msgid "DNS Provider"
+msgstr ""
+
+#: src/views/domain/cert/components/AutoCertStepOne.vue:32
+#: src/views/domain/cert/components/AutoCertStepOne.vue:43
+#: src/views/domain/cert/components/AutoCertStepOne.vue:48
+msgid "DNS01"
+msgstr ""
+
+#: src/views/domain/cert/components/ObtainCert.vue:180
 msgid "Do you want to disable auto-cert renewal?"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:34
-msgid "Do you want to enable auto-cert renewal?"
-msgstr ""
+#: src/views/domain/DomainEdit.vue:168
+#, fuzzy
+msgid "Do you want to disable this site?"
+msgstr "Are you sure you want to remove this directive?"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:30
+#: src/views/domain/DomainEdit.vue:168
+#, fuzzy
+msgid "Do you want to enable this site?"
+msgstr "Are you sure you want to remove this directive?"
+
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:31
 #, fuzzy
 msgid "Do you want to enable TLS?"
 msgstr "Are you sure you want to remove this directive?"
@@ -394,11 +438,11 @@ msgstr "Domain Config Created Successfully"
 msgid "Domains list is empty, try to reopen auto-cert for %{config}"
 msgstr ""
 
-#: src/language/constants.ts:26
+#: src/language/constants.ts:29
 msgid "Download latest release error"
 msgstr ""
 
-#: src/language/constants.ts:25
+#: src/language/constants.ts:28
 msgid "Downloading latest release"
 msgstr ""
 
@@ -429,7 +473,7 @@ msgstr "Edit Site"
 msgid "Email (*)"
 msgstr "Email (*)"
 
-#: src/views/domain/cert/IssueCert.vue:117
+#: src/views/domain/cert/components/ObtainCert.vue:52
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "Enable auto-renewal failed for %{name}"
 
@@ -442,19 +486,19 @@ msgid "Enable TLS"
 msgstr "Enable TLS"
 
 #: src/views/cert/Cert.vue:44 src/views/domain/cert/ChangeCert.vue:42
-#: src/views/domain/DomainEdit.vue:44 src/views/domain/DomainEdit.vue:7
+#: src/views/domain/DomainEdit.vue:29 src/views/domain/DomainEdit.vue:7
 #: src/views/domain/DomainEdit.vue:8 src/views/domain/DomainList.vue:10
 #: src/views/domain/DomainList.vue:11 src/views/domain/DomainList.vue:12
 #: src/views/domain/DomainList.vue:19 src/views/domain/DomainList.vue:32
 msgid "Enabled"
 msgstr "Enabled"
 
-#: src/views/domain/DomainAdd.vue:47 src/views/domain/DomainEdit.vue:144
+#: src/views/domain/DomainAdd.vue:47 src/views/domain/DomainEdit.vue:150
 #: src/views/domain/DomainList.vue:60
 msgid "Enabled successfully"
 msgstr "Enabled successfully"
 
-#: src/views/domain/cert/IssueCert.vue:17
+#: src/views/domain/cert/IssueCert.vue:4
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Encrypt website with Let's Encrypt"
 
@@ -466,8 +510,9 @@ msgstr ""
 msgid "Error Logs"
 msgstr ""
 
-#: src/views/system/Upgrade.vue:12 src/views/system/Upgrade.vue:13
-#: src/views/system/Upgrade.vue:17 src/views/system/Upgrade.vue:21
+#: src/views/system/Upgrade.vue:16 src/views/system/Upgrade.vue:17
+#: src/views/system/Upgrade.vue:21 src/views/system/Upgrade.vue:25
+#: src/views/system/Upgrade.vue:29
 msgid "Executable Path"
 msgstr ""
 
@@ -482,11 +527,11 @@ msgstr "Expiration Date: %{date}"
 msgid "Export"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:156 src/views/domain/DomainList.vue:74
+#: src/views/domain/DomainEdit.vue:162 src/views/domain/DomainList.vue:74
 msgid "Failed to disable %{msg}"
 msgstr "Failed to disable %{msg}"
 
-#: src/views/domain/DomainEdit.vue:147 src/views/domain/DomainList.vue:64
+#: src/views/domain/DomainEdit.vue:153 src/views/domain/DomainList.vue:64
 msgid "Failed to enable %{msg}"
 msgstr "Failed to enable %{msg}"
 
@@ -494,7 +539,7 @@ msgstr "Failed to enable %{msg}"
 msgid "Failed to get certificate information"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:122
+#: src/views/domain/DomainEdit.vue:128
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr ""
 
@@ -502,7 +547,7 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-#: src/language/constants.ts:31
+#: src/language/constants.ts:34
 msgid "File exists"
 msgstr ""
 
@@ -514,7 +559,7 @@ msgstr "File Not Found"
 msgid "Filter"
 msgstr ""
 
-#: src/language/constants.ts:20 src/views/domain/DomainAdd.vue:7
+#: src/language/constants.ts:23 src/views/domain/DomainAdd.vue:7
 msgid "Finished"
 msgstr "Finished"
 
@@ -540,22 +585,35 @@ msgstr ""
 msgid "Generating private key for registering account"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:146
+#: src/views/system/Upgrade.vue:21
+#, fuzzy
+msgid "Get release information error"
+msgstr "Base information"
+
+#: src/views/domain/cert/components/ObtainCert.vue:134
 msgid "Getting the certificate, please wait..."
 msgstr "Getting the certificate, please wait..."
 
-#: src/views/preference/Preference.vue:50
-#: src/views/preference/Preference.vue:51
+#: src/views/preference/Preference.vue:14
+msgid "Git"
+msgstr ""
+
+#: src/views/preference/BasicSettings.vue:31
+msgid "Github Proxy"
+msgstr ""
+
+#: src/views/preference/OpenAISettings.vue:11
+#: src/views/preference/OpenAISettings.vue:12
 msgid "GPT-3.5-Turbo"
 msgstr ""
 
-#: src/views/preference/Preference.vue:44
-#: src/views/preference/Preference.vue:45
+#: src/views/preference/OpenAISettings.vue:5
+#: src/views/preference/OpenAISettings.vue:6
 msgid "GPT-4"
 msgstr ""
 
-#: src/views/preference/Preference.vue:47
-#: src/views/preference/Preference.vue:48
+#: src/views/preference/OpenAISettings.vue:8
+#: src/views/preference/OpenAISettings.vue:9
 msgid "GPT-4-32K"
 msgstr ""
 
@@ -563,19 +621,25 @@ msgstr ""
 msgid "Home"
 msgstr "Home"
 
-#: src/views/preference/Preference.vue:18
+#: src/views/preference/BasicSettings.vue:28
 msgid "HTTP Challenge Port"
 msgstr ""
 
-#: src/views/preference/Preference.vue:6
+#: src/views/preference/BasicSettings.vue:16
 msgid "HTTP Port"
 msgstr ""
 
-#: src/language/constants.ts:24
+#: src/views/domain/cert/components/AutoCertStepOne.vue:29
+#: src/views/domain/cert/components/AutoCertStepOne.vue:40
+#: src/views/domain/cert/components/AutoCertStepOne.vue:45
+msgid "HTTP01"
+msgstr ""
+
+#: src/language/constants.ts:27
 msgid "Initial core upgrader error"
 msgstr ""
 
-#: src/language/constants.ts:23
+#: src/language/constants.ts:26
 msgid "Initialing core upgrader"
 msgstr ""
 
@@ -592,17 +656,18 @@ msgstr "Enabled successfully"
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "Intermediate Certification Authorities: %{issuer}"
 
-#: src/language/constants.ts:21
+#: src/language/constants.ts:24
 #, fuzzy
 msgid "Issued certificate successfully"
 msgstr "Enabled successfully"
 
-#: src/views/preference/Preference.vue:12
+#: src/views/preference/BasicSettings.vue:22
 msgid "Jwt Secret"
 msgstr ""
 
-#: src/views/system/Upgrade.vue:13 src/views/system/Upgrade.vue:14
-#: src/views/system/Upgrade.vue:18 src/views/system/Upgrade.vue:22
+#: src/views/system/Upgrade.vue:17 src/views/system/Upgrade.vue:18
+#: src/views/system/Upgrade.vue:22 src/views/system/Upgrade.vue:26
+#: src/views/system/Upgrade.vue:30
 msgid "Last checked at"
 msgstr ""
 
@@ -610,12 +675,12 @@ msgstr ""
 msgid "Leave blank for no change"
 msgstr "Leave blank for no change"
 
-#: src/views/preference/Preference.vue:57
+#: src/views/preference/OpenAISettings.vue:18
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr ""
 
-#: src/views/preference/Preference.vue:26
-#: src/views/preference/Preference.vue:27
+#: src/views/preference/BasicSettings.vue:8
+#: src/views/preference/BasicSettings.vue:9
 msgid "Light"
 msgstr ""
 
@@ -645,7 +710,7 @@ msgstr "Login successful"
 msgid "Logout successful"
 msgstr "Logout successful"
 
-#: src/views/domain/cert/IssueCert.vue:252
+#: src/views/domain/cert/components/AutoCertStepOne.vue:38
 #, fuzzy
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
@@ -697,7 +762,7 @@ msgid "Multi-line Directive"
 msgstr "Single Directive"
 
 #: src/views/cert/Cert.vue:16 src/views/config/config.ts:9
-#: src/views/domain/cert/ChangeCert.vue:19 src/views/domain/DomainEdit.vue:47
+#: src/views/domain/cert/ChangeCert.vue:19 src/views/domain/DomainEdit.vue:32
 #: src/views/domain/DomainList.vue:16 src/views/domain/SiteDuplicate.vue:5
 msgid "Name"
 msgstr "Name"
@@ -718,19 +783,22 @@ msgstr "Network Total Receive"
 msgid "Network Total Send"
 msgstr "Network Total Send"
 
-#: src/views/system/Upgrade.vue:32
+#: src/views/system/Upgrade.vue:40
 msgid "New version released"
 msgstr ""
 
+#: src/views/domain/cert/components/ObtainCert.vue:12
+#: src/views/domain/cert/components/ObtainCert.vue:13
+#: src/views/domain/cert/components/ObtainCert.vue:21
 #: src/views/domain/DomainAdd.vue:136
 msgid "Next"
 msgstr "Next"
 
-#: src/views/preference/Preference.vue:35
+#: src/views/preference/NginxLogSettings.vue:3
 msgid "Nginx Access Log Path"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:32
+#: src/views/domain/DomainEdit.vue:39
 #, fuzzy
 msgid "Nginx Configuration Parse Error"
 msgstr "Configuration Name"
@@ -741,13 +809,12 @@ msgstr "Configuration Name"
 msgid "Nginx Control"
 msgstr ""
 
-#: src/views/preference/Preference.vue:38
+#: src/views/preference/NginxLogSettings.vue:6
 msgid "Nginx Error Log Path"
 msgstr ""
 
 #: src/routes/index.ts:105 src/views/nginx_log/NginxLog.vue:2
-#: src/views/preference/Preference.vue:33
-#: src/views/preference/Preference.vue:34
+#: src/views/preference/Preference.vue:8
 msgid "Nginx Log"
 msgstr ""
 
@@ -777,11 +844,16 @@ msgstr "Not Found"
 msgid "Not Valid Before: %{date}"
 msgstr "Not Valid Before: %{date}"
 
-#: src/views/domain/cert/IssueCert.vue:37
+#: src/views/domain/cert/components/AutoCertStepOne.vue:17
 msgid "Note"
 msgstr ""
 
-#: src/language/constants.ts:16 src/views/domain/cert/IssueCert.vue:3
+#: src/views/domain/cert/components/ObtainCert.vue:3
+#, fuzzy
+msgid "Obtain certificate"
+msgstr "Certificate is valid"
+
+#: src/language/constants.ts:19
 msgid "Obtaining certificate"
 msgstr ""
 
@@ -794,13 +866,13 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: src/views/preference/Preference.vue:40
-#: src/views/preference/Preference.vue:41
+#: src/views/preference/Preference.vue:11
 msgid "OpenAI"
 msgstr ""
 
-#: src/views/system/Upgrade.vue:10 src/views/system/Upgrade.vue:11
-#: src/views/system/Upgrade.vue:15 src/views/system/Upgrade.vue:19
+#: src/views/system/Upgrade.vue:14 src/views/system/Upgrade.vue:15
+#: src/views/system/Upgrade.vue:19 src/views/system/Upgrade.vue:23
+#: src/views/system/Upgrade.vue:27
 #, fuzzy
 msgid "OS"
 msgstr "OS:"
@@ -826,12 +898,21 @@ msgstr "Password (*)"
 msgid "Path"
 msgstr "Path"
 
-#: src/language/constants.ts:28
+#: src/language/constants.ts:31
 msgid "Perform core upgrade error"
 msgstr ""
 
-#: src/language/constants.ts:27
+#: src/language/constants.ts:30
 msgid "Performing core upgrade"
+msgstr ""
+
+#: src/views/domain/cert/components/AutoCertStepOne.vue:42
+msgid ""
+"Please fill in the API authentication credentials provided by your DNS "
+"provider. We will add a TXT record to the DNS records of your domain for "
+"ownership verification. Once the verification is complete, the record will "
+"be removed. Please note that the time configurations below are all in "
+"seconds."
 msgstr ""
 
 #: src/views/domain/SiteDuplicate.vue:28
@@ -886,20 +967,21 @@ msgstr "Receive"
 msgid "Regenerate response"
 msgstr ""
 
-#: src/language/constants.ts:15
+#: src/language/constants.ts:18
 msgid "Registering user"
 msgstr ""
 
-#: src/views/system/Upgrade.vue:22 src/views/system/Upgrade.vue:23
-#: src/views/system/Upgrade.vue:27 src/views/system/Upgrade.vue:31
-#: src/views/system/Upgrade.vue:34 src/views/system/Upgrade.vue:37
+#: src/views/system/Upgrade.vue:26 src/views/system/Upgrade.vue:27
+#: src/views/system/Upgrade.vue:31 src/views/system/Upgrade.vue:35
+#: src/views/system/Upgrade.vue:39 src/views/system/Upgrade.vue:42
+#: src/views/system/Upgrade.vue:45
 #, fuzzy
 msgid "Reinstall"
 msgstr "Install"
 
-#: src/views/system/Upgrade.vue:29 src/views/system/Upgrade.vue:30
-#: src/views/system/Upgrade.vue:34 src/views/system/Upgrade.vue:38
-#: src/views/system/Upgrade.vue:41 src/views/system/Upgrade.vue:46
+#: src/views/system/Upgrade.vue:34 src/views/system/Upgrade.vue:35
+#: src/views/system/Upgrade.vue:39 src/views/system/Upgrade.vue:43
+#: src/views/system/Upgrade.vue:55
 msgid "Release Note"
 msgstr ""
 
@@ -915,8 +997,12 @@ msgstr ""
 msgid "Reloading"
 msgstr ""
 
-#: src/language/constants.ts:19
+#: src/language/constants.ts:22
 msgid "Reloading nginx"
+msgstr ""
+
+#: src/views/preference/GitSettings.vue:3
+msgid "Repo url"
 msgstr ""
 
 #: src/components/StdDataDisplay/StdTable.vue:10
@@ -935,7 +1021,7 @@ msgstr ""
 msgid "Restarting"
 msgstr ""
 
-#: src/views/preference/Preference.vue:9
+#: src/views/preference/BasicSettings.vue:19
 #, fuzzy
 msgid "Run Mode"
 msgstr "Advance Mode"
@@ -946,14 +1032,13 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:16 src/components/ChatGPT/ChatGPT.vue:17
 #: src/components/ChatGPT/ChatGPT.vue:21 src/components/ChatGPT/ChatGPT.vue:23
-#: src/views/config/ConfigEdit.vue:89 src/views/domain/DomainEdit.vue:246
+#: src/views/config/ConfigEdit.vue:89 src/views/domain/DomainEdit.vue:260
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:32
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:40
-#: src/views/preference/Preference.vue:67
-#: src/views/preference/Preference.vue:68
-#: src/views/preference/Preference.vue:69
+#: src/views/preference/Preference.vue:20
+#: src/views/preference/Preference.vue:21
 msgid "Save"
 msgstr "Save"
 
@@ -969,7 +1054,7 @@ msgid "Save error %{msg}"
 msgstr "Save error %{msg}"
 
 #: src/components/StdDataDisplay/StdBatchEdit.vue:40
-#: src/views/preference/Preference.vue:45
+#: src/views/preference/Preference.vue:60
 #, fuzzy
 msgid "Save successfully"
 msgstr "Saved successfully"
@@ -980,7 +1065,7 @@ msgid "Save Successfully"
 msgstr "Saved successfully"
 
 #: src/views/config/ConfigEdit.vue:51 src/views/domain/DomainAdd.vue:44
-#: src/views/domain/DomainEdit.vue:136
+#: src/views/domain/DomainEdit.vue:142
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:35
 msgid "Saved successfully"
 msgstr "Saved successfully"
@@ -1000,7 +1085,8 @@ msgstr "Send"
 #: src/components/StdDataDisplay/StdTable.vue:343
 #: src/components/StdDataDisplay/StdTable.vue:463
 #: src/views/config/ConfigEdit.vue:37 src/views/domain/DomainList.vue:84
-#: src/views/other/Install.vue:71 src/views/preference/Preference.vue:47
+#: src/views/other/Install.vue:71 src/views/preference/Preference.vue:62
+#: src/views/system/Upgrade.vue:40
 msgid "Server error"
 msgstr "Server error"
 
@@ -1008,13 +1094,20 @@ msgstr "Server error"
 msgid "Server Info"
 msgstr "Server Info"
 
-#: src/views/domain/cert/IssueCert.vue:79
+#: src/views/domain/cert/components/ObtainCert.vue:91
 msgid "server_name not found in directives"
 msgstr "server_name not found in directives"
 
-#: src/views/domain/cert/IssueCert.vue:235 src/views/domain/DomainAdd.vue:111
+#: src/views/domain/cert/components/AutoCertStepOne.vue:10
+#: src/views/domain/cert/components/AutoCertStepOne.vue:5
+#: src/views/domain/cert/components/AutoCertStepOne.vue:6
+#: src/views/domain/DomainAdd.vue:111
 msgid "server_name parameter is required"
 msgstr "server_name parameter is required"
+
+#: src/language/constants.ts:16
+msgid "Setting environment variables"
+msgstr ""
 
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:6
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:7
@@ -1083,11 +1176,11 @@ msgstr "Enabled"
 msgid "Terminal"
 msgstr "Terminal"
 
-#: src/views/preference/Preference.vue:15
+#: src/views/preference/BasicSettings.vue:25
 msgid "Terminal Start Command"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:248
+#: src/views/domain/cert/components/AutoCertStepOne.vue:34
 #, fuzzy
 msgid ""
 "The certificate for the domain will be checked every hour, and will be "
@@ -1100,7 +1193,7 @@ msgstr ""
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "The filename cannot contain the following characters: %{c}"
 
-#: src/views/domain/cert/IssueCert.vue:243
+#: src/views/domain/cert/components/AutoCertStepOne.vue:29
 #, fuzzy
 msgid ""
 "The server_name in the current configuration must be the domain name you "
@@ -1113,7 +1206,7 @@ msgstr ""
 msgid "The username or password is incorrect"
 msgstr ""
 
-#: src/views/preference/Preference.vue:21
+#: src/views/preference/BasicSettings.vue:3
 msgid "Theme"
 msgstr ""
 
@@ -1121,7 +1214,7 @@ msgstr ""
 msgid "This auto-cert item is invalid, please remove it."
 msgstr ""
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:31
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:32
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
 "add a location which can proxy the request from authority to backend, and we "
@@ -1144,19 +1237,19 @@ msgid "Updated successfully"
 msgstr "Saved successfully"
 
 #: src/routes/index.ts:147 src/views/system/Upgrade.vue:2
-#: src/views/system/Upgrade.vue:24 src/views/system/Upgrade.vue:25
-#: src/views/system/Upgrade.vue:29 src/views/system/Upgrade.vue:33
-#: src/views/system/Upgrade.vue:36 src/views/system/Upgrade.vue:39
-#: src/views/system/Upgrade.vue:40
+#: src/views/system/Upgrade.vue:28 src/views/system/Upgrade.vue:29
+#: src/views/system/Upgrade.vue:33 src/views/system/Upgrade.vue:37
+#: src/views/system/Upgrade.vue:41 src/views/system/Upgrade.vue:44
+#: src/views/system/Upgrade.vue:47 src/views/system/Upgrade.vue:48
 msgid "Upgrade"
 msgstr ""
 
-#: src/language/constants.ts:29
+#: src/language/constants.ts:32
 #, fuzzy
 msgid "Upgraded successfully"
 msgstr "Saved successfully"
 
-#: src/views/system/Upgrade.vue:63
+#: src/views/system/Upgrade.vue:72
 msgid "Upgrading Nginx UI, please wait..."
 msgstr ""
 
@@ -1164,13 +1257,18 @@ msgstr ""
 msgid "Uptime:"
 msgstr "Uptime:"
 
-#: src/views/other/Login.vue:11 src/views/user/User.vue:11
+#: src/views/other/Login.vue:11 src/views/preference/GitSettings.vue:6
+#: src/views/user/User.vue:11
 msgid "Username"
 msgstr "Username"
 
 #: src/views/other/Install.vue:20
 msgid "Username (*)"
 msgstr "Username (*)"
+
+#: src/language/constants.ts:15
+msgid "Using DNS01 challenge provider"
+msgstr ""
 
 #: src/language/constants.ts:14
 msgid "Using HTTP01 challenge provider"
@@ -1182,21 +1280,16 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: src/views/config/InspectConfig.vue:6 src/views/domain/cert/IssueCert.vue:26
+#: src/views/config/InspectConfig.vue:6
+#: src/views/domain/cert/components/AutoCertStepOne.vue:4
 #: src/views/domain/DomainAdd.vue:22
 msgid "Warning"
 msgstr "Warning"
 
-#: src/views/domain/cert/IssueCert.vue:35
-msgid ""
-"We need to add the HTTPChallenge configuration to this file and reload the "
-"Nginx. Are you sure you want to continue?"
-msgstr ""
-
-#: src/views/domain/cert/IssueCert.vue:37
+#: src/views/domain/cert/components/ObtainCert.vue:181
 msgid ""
 "We will remove the HTTPChallenge configuration from this file and reload the "
-"Nginx configuration file. Are you sure you want to continue?"
+"Nginx. Are you sure you want to continue?"
 msgstr ""
 
 #: src/views/dashboard/DashBoard.vue:102 src/views/dashboard/DashBoard.vue:22
@@ -1204,11 +1297,11 @@ msgstr ""
 msgid "Writes"
 msgstr "Writes"
 
-#: src/language/constants.ts:18
+#: src/language/constants.ts:21
 msgid "Writing certificate private key to disk"
 msgstr ""
 
-#: src/language/constants.ts:17
+#: src/language/constants.ts:20
 msgid "Writing certificate to disk"
 msgstr ""
 
@@ -1217,7 +1310,7 @@ msgstr ""
 msgid "Yes"
 msgstr "Yes"
 
-#: src/views/system/Upgrade.vue:28
+#: src/views/system/Upgrade.vue:36
 msgid "You are using the latest version"
 msgstr ""
 

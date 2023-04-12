@@ -108,6 +108,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 			),
 		)
 	case DNS01:
+		logChan <- "Using DNS01 challenge provider"
 		code := payload.Config.Code
 		pConfig, ok := dns2.GetProvider(code)
 

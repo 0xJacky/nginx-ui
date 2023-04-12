@@ -12,6 +12,9 @@ export const msg = [
     $gettext('Preparing lego configurations'),
     $gettext('Creating client facilitates communication with the CA server'),
     $gettext('Using HTTP01 challenge provider'),
+    $gettext('Using DNS01 challenge provider'),
+    $gettext('Setting environment variables'),
+    $gettext('Cleaning environment variables'),
     $gettext('Registering user'),
     $gettext('Obtaining certificate'),
     $gettext('Writing certificate to disk'),
@@ -27,6 +30,6 @@ export const msg = [
     $gettext('Performing core upgrade'),
     $gettext('Perform core upgrade error'),
     $gettext('Upgraded successfully'),
-    
+
     $gettext('File exists')
 ]

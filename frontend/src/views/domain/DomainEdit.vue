@@ -146,7 +146,6 @@ const save = async () => {
 }
 
 function enable() {
-    enabled.value = true
     domain.enable(name.value).then(() => {
         message.success($gettext('Enabled successfully'))
         enabled.value = true
@@ -156,7 +155,6 @@ function enable() {
 }
 
 function disable() {
-    enabled.value = false
     domain.disable(name.value).then(() => {
         message.success($gettext('Disabled successfully'))
         enabled.value = false
