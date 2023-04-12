@@ -31,7 +31,6 @@ function onSave(idx: number) {
         class="list-group"
         ghost-class="ghost"
         handle=".anticon-holder"
-        v-auto-animate
     >
         <template #item="{ element: directive, index }">
             <directive-editor-item @click="current_idx=index"

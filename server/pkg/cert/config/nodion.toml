@@ -1,0 +1,22 @@
+Name = "Nodion"
+Description = ''''''
+URL = "https://www.nodion.com"
+Code = "nodion"
+Since = "v4.11.0"
+
+Example = '''
+NODION_API_TOKEN="xxxxxxxxxxxxxxxxxxxxx" \
+lego --email myemail@example.com --dns nodion --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    NODION_API_TOKEN = "The API token"
+  [Configuration.Additional]
+    NODION_POLLING_INTERVAL = "Time between DNS propagation check"
+    NODION_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    NODION_TTL = "The TTL of the TXT record used for the DNS challenge"
+    NODION_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://www.nodion.com/en/docs/dns/api/"

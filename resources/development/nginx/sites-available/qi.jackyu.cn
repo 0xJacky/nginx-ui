@@ -1,7 +1,7 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name qi.jackyu.cn amstourship.jackyu.cn;
+    server_name qi.jackyu.cn;
     rewrite ^(.*)$ https://$host$1 permanent;
     location /.well-known/acme-challenge {
         proxy_set_header Host $host;
@@ -11,9 +11,9 @@ server {
     }
 }
 server {
-    server_name qi.jackyu.cn amstourship.jackyu.cn;
-    ssl_certificate /etc/nginx/ssl/qi.jackyu.cn_amstourship.jackyu.cn/fullchain.cer;
-    ssl_certificate_key /etc/nginx/ssl/qi.jackyu.cn_amstourship.jackyu.cn/private.key;
+    server_name qi.jackyu.cn;
+    ssl_certificate /etc/nginx/ssl/qi.jackyu.cn/fullchain.cer;
+    ssl_certificate_key /etc/nginx/ssl/qi.jackyu.cn/private.key;
     listen 443 ssl;
     listen [::]:443 ssl;
     location / {

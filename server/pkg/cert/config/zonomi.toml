@@ -1,0 +1,22 @@
+Name = "Zonomi"
+Description = ''''''
+URL = "https://zonomi.com"
+Code = "zonomi"
+Since = "v3.5.0"
+
+Example = '''
+ZONOMI_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
+lego --email you@example.com --dns zonomi --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    ZONOMI_API_KEY = "User API key"
+  [Configuration.Additional]
+    ZONOMI_POLLING_INTERVAL = "Time between DNS propagation check"
+    ZONOMI_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    ZONOMI_TTL = "The TTL of the TXT record used for the DNS challenge"
+    ZONOMI_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://zonomi.com/app/dns/dyndns.jsp"

@@ -1,0 +1,25 @@
+Name = "Ultradns"
+Description = ''''''
+URL = "https://vercara.com/authoritative-dns"
+Code = "ultradns"
+Since = "v4.10.0"
+
+Example = '''
+ULTRADNS_USERNAME=username \
+ULTRADNS_PASSWORD=password \
+lego --email you@example.com --dns ultradns --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    ULTRADNS_USERNAME = "API Username"
+    ULTRADNS_PASSWORD = "API Password"
+  [Configuration.Additional]
+    ULTRADNS_ENDPOINT = "API endpoint URL, defaults to https://api.ultradns.com/"
+    ULTRADNS_TTL = "The TTL of the TXT record used for the DNS challenge"
+    ULTRADNS_POLLING_INTERVAL = "Time between DNS propagation check"
+    ULTRADNS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+
+[Links]
+  API = "https://ultra-portalstatic.ultradns.com/static/docs/REST-API_User_Guide.pdf"
+  GoClient = "https://github.com/ultradns/ultradns-go-sdk"

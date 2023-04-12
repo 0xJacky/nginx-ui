@@ -1,0 +1,23 @@
+Name = "Vercel"
+Description = ''''''
+URL = "https://vercel.com"
+Code = "vercel"
+Since = "v4.7.0"
+
+Example = '''
+VERCEL_API_TOKEN=xxxxxx \
+lego --email you@example.com --dns vercel --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    VERCEL_API_TOKEN = "Authentication token"
+  [Configuration.Additional]
+    VERCEL_TEAM_ID = "Team ID (ex: team_xxxxxxxxxxxxxxxxxxxxxxxx)"
+    VERCEL_POLLING_INTERVAL = "Time between DNS propagation check"
+    VERCEL_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    VERCEL_TTL = "The TTL of the TXT record used for the DNS challenge"
+    VERCEL_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://vercel.com/docs/rest-api#endpoints/dns"

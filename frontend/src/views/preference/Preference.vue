@@ -1,24 +1,29 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
-import {reactive, ref} from 'vue'
+import {provide, reactive, ref} from 'vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import {useSettingsStore} from '@/pinia'
 import {dark_mode} from '@/lib/theme'
 import settings from '@/api/settings'
 import {message} from 'ant-design-vue'
+import BasicSettings from '@/views/preference/BasicSettings.vue'
+import OpenAISettings from '@/views/preference/OpenAISettings.vue'
+import NginxLogSettings from '@/views/preference/NginxLogSettings.vue'
+import GitSettings from '@/views/preference/GitSettings.vue'
+import {IData} from '@/views/preference/typedef'
 
 const {$gettext} = useGettext()
 
 const settingsStore = useSettingsStore()
 const theme = ref(settingsStore.theme)
-const data = ref({
+const data = ref<IData>({
     server: {
-        http_port: 9000,
+        http_port: '9000',
         run_mode: 'debug',
         jwt_secret: '',
         start_cmd: '',
         email: '',
-        http_challenge_port: 9180,
+        http_challenge_port: '9180',
         github_proxy: ''
     },
     nginx_log: {
@@ -30,6 +35,13 @@ const data = ref({
         base_url: '',
         proxy: '',
         token: ''
+    },
+    git: {
+        url: '',
+        auth_method: '',
+        username: '',
+        password: '',
+        private_key_file_path: ''
     }
 })
 
@@ -37,10 +49,12 @@ settings.get().then(r => {
     data.value = r
 })
 
-function save() {
+async function save() {
     settingsStore.set_theme(theme.value)
     settingsStore.set_preference_theme(theme.value)
-    dark_mode(theme.value === 'dark')
+    await dark_mode(theme.value === 'dark')
+    // fix type
+    data.value.server.http_challenge_port = data.value.server.http_challenge_port.toString()
     settings.save(data.value).then(r => {
         data.value = r
         message.success($gettext('Save successfully'))
@@ -48,77 +62,30 @@ function save() {
         message.error(e?.message ?? $gettext('Server error'))
     })
 }
+
+provide('data', data)
+provide('theme', theme)
+
+const activeKey = ref('1')
 </script>
 
 <template>
     <a-card :title="$gettext('Preference')">
         <div class="preference-container">
-            <a-form layout="vertical">
-                <h4>{{ $gettext('Basic') }}</h4>
-                <a-form-item :label="$gettext('HTTP Port')">
-                    <p>{{ data.server.http_port }}</p>
-                </a-form-item>
-                <a-form-item :label="$gettext('Run Mode')">
-                    <p>{{ data.server.run_mode }}</p>
-                </a-form-item>
-                <a-form-item :label="$gettext('Jwt Secret')">
-                    <p>{{ data.server.jwt_secret }}</p>
-                </a-form-item>
-                <a-form-item :label="$gettext('Terminal Start Command')">
-                    <p>{{ data.server.start_cmd }}</p>
-                </a-form-item>
-                <a-form-item :label="$gettext('HTTP Challenge Port')">
-                    <a-input-number v-model:value="data.server.http_challenge_port"/>
-                </a-form-item>
-                <a-form-item :label="$gettext('Github Proxy')">
-                    <a-input v-model:value="data.server.github_proxy"
-                             :placeholder="$gettext('Chinese user: https://ghproxy.com/')"/>
-                </a-form-item>
-                <a-form-item :label="$gettext('Theme')">
-                    <a-select v-model:value="theme">
-                        <a-select-option value="auto">
-                            {{ $gettext('Auto') }}
-                        </a-select-option>
-                        <a-select-option value="light">
-                            {{ $gettext('Light') }}
-                        </a-select-option>
-                        <a-select-option value="dark">
-                            {{ $gettext('Dark') }}
-                        </a-select-option>
-                    </a-select>
-                </a-form-item>
-                <h4>{{ $gettext('Nginx Log') }}</h4>
-                <a-form-item :label="$gettext('Nginx Access Log Path')">
-                    <a-input v-model:value="data.nginx_log.access_log_path"/>
-                </a-form-item>
-                <a-form-item :label="$gettext('Nginx Error Log Path')">
-                    <a-input v-model:value="data.nginx_log.error_log_path"/>
-                </a-form-item>
-                <h4>{{ $gettext('OpenAI') }}</h4>
-                <a-form-item :label="$gettext('ChatGPT Model')">
-                    <a-select v-model:value="data.openai.model">
-                        <a-select-option value="gpt-4">
-                            {{ $gettext('GPT-4') }}
-                        </a-select-option>
-                        <a-select-option value="gpt-4-32k">
-                            {{ $gettext('GPT-4-32K') }}
-                        </a-select-option>
-                        <a-select-option value="gpt-3.5-turbo">
-                            {{ $gettext('GPT-3.5-Turbo') }}
-                        </a-select-option>
-                    </a-select>
-                </a-form-item>
-                <a-form-item :label="$gettext('API Base Url')">
-                    <a-input v-model:value="data.openai.base_url"
-                             :placeholder="$gettext('Leave blank for the default: https://api.openai.com/')"/>
-                </a-form-item>
-                <a-form-item :label="$gettext('API Proxy')">
-                    <a-input v-model:value="data.openai.proxy" placeholder="http://127.0.0.1:1087"/>
-                </a-form-item>
-                <a-form-item :label="$gettext('API Token')">
-                    <a-input-password v-model:value="data.openai.token"/>
-                </a-form-item>
-            </a-form>
+            <a-tabs v-model:activeKey="activeKey">
+                <a-tab-pane :tab="$gettext('Basic')" key="1">
+                    <basic-settings/>
+                </a-tab-pane>
+                <a-tab-pane :tab="$gettext('Nginx Log')" key="2">
+                    <nginx-log-settings/>
+                </a-tab-pane>
+                <a-tab-pane :tab="$gettext('OpenAI')" key="3">
+                    <open-a-i-settings/>
+                </a-tab-pane>
+                <a-tab-pane :tab="$gettext('Git')" key="4">
+                    <git-settings/>
+                </a-tab-pane>
+            </a-tabs>
         </div>
         <footer-tool-bar>
             <a-button type="primary" @click="save">

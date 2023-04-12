@@ -1,0 +1,25 @@
+Name = "Sakura Cloud"
+Description = ''''''
+URL = "https://cloud.sakura.ad.jp/"
+Code = "sakuracloud"
+Since = "v1.1.0"
+
+Example = '''
+SAKURACLOUD_ACCESS_TOKEN=xxxxx \
+SAKURACLOUD_ACCESS_TOKEN_SECRET=yyyyy \
+lego --email you@example.com --dns sakuracloud --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    SAKURACLOUD_ACCESS_TOKEN = "Access token"
+    SAKURACLOUD_ACCESS_TOKEN_SECRET = "Access token secret"
+  [Configuration.Additional]
+    SAKURACLOUD_POLLING_INTERVAL = "Time between DNS propagation check"
+    SAKURACLOUD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    SAKURACLOUD_TTL = "The TTL of the TXT record used for the DNS challenge"
+    SAKURACLOUD_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://developer.sakura.ad.jp/cloud/api/1.1/"
+  GoClient = "https://github.com/sacloud/iaas-api-go"

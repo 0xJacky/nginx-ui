@@ -1,0 +1,26 @@
+Name = "Internet Initiative Japan"
+Description = ''''''
+URL = "https://www.iij.ad.jp/en/"
+Code = "iij"
+Since = "v1.1.0"
+
+Example = '''
+IIJ_API_ACCESS_KEY=xxxxxxxx \
+IIJ_API_SECRET_KEY=yyyyyy \
+IIJ_DO_SERVICE_CODE=zzzzzz \
+lego --email you@example.com --dns iij --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    IIJ_API_ACCESS_KEY = "API access key"
+    IIJ_API_SECRET_KEY = "API secret key"
+    IIJ_DO_SERVICE_CODE = "DO service code"
+  [Configuration.Additional]
+    IIJ_POLLING_INTERVAL = "Time between DNS propagation check"
+    IIJ_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    IIJ_TTL = "The TTL of the TXT record used for the DNS challenge"
+
+[Links]
+  API = "https://manual.iij.jp/p2/pubapi/"
+  GoClient = "https://github.com/iij/doapi"

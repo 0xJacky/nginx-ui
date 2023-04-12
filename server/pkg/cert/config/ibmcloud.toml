@@ -1,0 +1,25 @@
+Name = "IBM Cloud (SoftLayer)"
+Description = ''''''
+URL = "https://www.ibm.com/cloud/"
+Code = "ibmcloud"
+Since = "v4.5.0"
+
+Example = '''
+SOFTLAYER_USERNAME=xxxxx \
+SOFTLAYER_API_KEY=yyyyy \
+lego --email you@example.com --dns ibmcloud --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    SOFTLAYER_USERNAME = "User name (IBM Cloud is <accountID>_<emailAddress>)"
+    SOFTLAYER_API_KEY = "Classic Infrastructure API key"
+  [Configuration.Additional]
+    SOFTLAYER_POLLING_INTERVAL = "Time between DNS propagation check"
+    SOFTLAYER_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    SOFTLAYER_TTL = "The TTL of the TXT record used for the DNS challenge"
+    SOFTLAYER_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://cloud.ibm.com/docs/dns?topic=dns-getting-started-with-the-dns-api"
+  GoClient = "https://github.com/softlayer/softlayer-go"

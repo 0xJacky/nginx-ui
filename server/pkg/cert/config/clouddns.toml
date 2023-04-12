@@ -1,0 +1,28 @@
+Name = "CloudDNS"
+Description = ''''''
+URL = "https://vshosting.eu/"
+Code = "clouddns"
+Since = "v3.6.0"
+
+Example = '''
+CLOUDDNS_CLIENT_ID=bLsdFAks23429841238feb177a572aX \
+CLOUDDNS_EMAIL=you@example.com \
+CLOUDDNS_PASSWORD=b9841238feb177a84330f \
+lego --email you@example.com --dns clouddns --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    CLOUDDNS_CLIENT_ID = "Client ID"
+    CLOUDDNS_EMAIL = "Account email"
+    CLOUDDNS_PASSWORD = "Account password"
+  [Configuration.Additional]
+    CLOUDDNS_POLLING_INTERVAL = "Time between DNS propagation check"
+    CLOUDDNS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    CLOUDDNS_TTL = "The TTL of the TXT record used for the DNS challenge"
+    CLOUDDNS_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://admin.vshosting.cloud/clouddns/swagger/"
+  APIAdmin = "https://admin.vshosting.cloud/api/public/swagger/"
+  Documentation = "https://github.com/vshosting/clouddns"

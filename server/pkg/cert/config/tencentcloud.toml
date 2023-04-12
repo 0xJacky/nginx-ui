@@ -1,0 +1,27 @@
+Name = "Tencent Cloud DNS"
+Description = ''''''
+URL = "https://cloud.tencent.com/product/cns"
+Code = "tencentcloud"
+Since = "v4.6.0"
+
+Example = '''
+TENCENTCLOUD_SECRET_ID=abcdefghijklmnopqrstuvwx \
+TENCENTCLOUD_SECRET_KEY=your-secret-key \
+lego --email you@example.com --dns tencentcloud --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    TENCENTCLOUD_SECRET_ID = "Access key ID"
+    TENCENTCLOUD_SECRET_KEY = "Access Key secret"
+  [Configuration.Additional]
+    TENCENTCLOUD_SESSION_TOKEN = "Access Key token"
+    TENCENTCLOUD_REGION = "Region"
+    TENCENTCLOUD_POLLING_INTERVAL = "Time between DNS propagation check"
+    TENCENTCLOUD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    TENCENTCLOUD_TTL = "The TTL of the TXT record used for the DNS challenge"
+    TENCENTCLOUD_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://cloud.tencent.com/document/product/1427/56153"
+  GoClient = "https://github.com/tencentcloud/tencentcloud-sdk-go"

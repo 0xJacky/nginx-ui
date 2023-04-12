@@ -89,11 +89,13 @@ func InitRouter() *gin.Engine {
 			g.POST("cert", api.AddCert)
 			g.POST("cert/:id", api.ModifyCert)
 			g.DELETE("cert/:id", api.RemoveCert)
+
 			// Add domain to auto-renew cert list
 			g.POST("auto_cert/:name", api.AddDomainToAutoCert)
 			// Delete domain from auto-renew cert list
 			g.DELETE("auto_cert/:name", api.RemoveDomainFromAutoCert)
-
+			g.GET("auto_cert/dns/providers", api.GetDNSProvidersList)
+			g.GET("auto_cert/dns/provider/:code", api.GetDNSProvider)
 			// pty
 			g.GET("pty", api.Pty)
 

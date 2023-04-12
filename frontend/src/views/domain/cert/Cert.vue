@@ -4,6 +4,7 @@ import IssueCert from '@/views/domain/cert/IssueCert.vue'
 import {computed, ref} from 'vue'
 import {useGettext} from 'vue3-gettext'
 import ChangeCert from '@/views/domain/cert/ChangeCert.vue'
+import DNSChallenge from '@/views/domain/cert/components/DNSChallenge.vue'
 
 const {$gettext} = useGettext()
 

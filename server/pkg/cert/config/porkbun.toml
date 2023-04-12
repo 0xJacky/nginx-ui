@@ -1,0 +1,24 @@
+Name = "Porkbun"
+Description = ''''''
+URL = "https://porkbun.com/"
+Code = "porkbun"
+Since = "v4.4.0"
+
+Example = '''
+PORKBUN_SECRET_API_KEY=xxxxxx \
+PORKBUN_API_KEY=yyyyyy \
+lego --email you@example.com --dns porkbun --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    PORKBUN_SECRET_API_KEY = "secret API key"
+    PORKBUN_API_KEY = "API key"
+  [Configuration.Additional]
+    PORKBUN_POLLING_INTERVAL = "Time between DNS propagation check"
+    PORKBUN_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    PORKBUN_TTL = "The TTL of the TXT record used for the DNS challenge"
+    PORKBUN_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://porkbun.com/api/json/v3/documentation"

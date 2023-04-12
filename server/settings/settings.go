@@ -43,6 +43,14 @@ type OpenAI struct {
 	Model   string `json:"model"`
 }
 
+type Git struct {
+	Url                string `json:"url"`
+	AuthMethod         string `json:"auth_method"`
+	Username           string `json:"username"`
+	Password           string `json:"password"`
+	PrivateKeyFilePath string `json:"private_key_file_path"`
+}
+
 var ServerSettings = &Server{
 	HttpPort:          "9000",
 	RunMode:           "debug",
@@ -62,12 +70,15 @@ var NginxLogSettings = &NginxLog{
 
 var OpenAISettings = &OpenAI{}
 
+var GitSettings = &Git{}
+
 var ConfPath string
 
 var sections = map[string]interface{}{
 	"server":    ServerSettings,
 	"nginx_log": NginxLogSettings,
 	"openai":    OpenAISettings,
+	"git":       GitSettings,
 }
 
 func init() {

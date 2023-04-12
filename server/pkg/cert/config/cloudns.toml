@@ -1,0 +1,25 @@
+Name = "ClouDNS"
+Description = ''''''
+URL = "https://www.cloudns.net"
+Code = "cloudns"
+Since = "v2.3.0"
+
+Example = '''
+CLOUDNS_AUTH_ID=xxxx \
+CLOUDNS_AUTH_PASSWORD=yyyy \
+lego --email you@example.com --dns cloudns --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    CLOUDNS_AUTH_ID = "The API user ID"
+    CLOUDNS_AUTH_PASSWORD = "The password for API user ID"
+  [Configuration.Additional]
+    CLOUDNS_SUB_AUTH_ID = "The API sub user ID"
+    CLOUDNS_POLLING_INTERVAL = "Time between DNS propagation check"
+    CLOUDNS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    CLOUDNS_TTL = "The TTL of the TXT record used for the DNS challenge"
+    CLOUDNS_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://www.cloudns.net/wiki/article/42/"

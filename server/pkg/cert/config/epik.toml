@@ -1,0 +1,22 @@
+Name = "Epik"
+Description = ''''''
+URL = "https://www.epik.com/"
+Code = "epik"
+Since = "v4.5.0"
+
+Example = '''
+EPIK_SIGNATURE=xxxxxxxxxxxxxxxxxxxxxxxxxx \
+lego --email you@example.com --dns epik --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    EPIK_SIGNATURE = "Epik API signature (https://registrar.epik.com/account/api-settings/)"
+  [Configuration.Additional]
+    EPIK_POLLING_INTERVAL = "Time between DNS propagation check"
+    EPIK_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    EPIK_TTL = "The TTL of the TXT record used for the DNS challenge"
+    EPIK_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://docs.userapi.epik.com/v2/#/"

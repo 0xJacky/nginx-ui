@@ -1,0 +1,25 @@
+Name = "DNSPod (deprecated)"
+Description = '''
+Use the Tencent Cloud provider instead.
+'''
+URL = "https://www.dnspod.com/"
+Code = "dnspod"
+Since = "v0.4.0"
+
+Example = '''
+DNSPOD_API_KEY=xxxxxx \
+lego --email you@example.com --dns dnspod --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    DNSPOD_API_KEY = "The user token"
+  [Configuration.Additional]
+    DNSPOD_POLLING_INTERVAL = "Time between DNS propagation check"
+    DNSPOD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    DNSPOD_TTL = "The TTL of the TXT record used for the DNS challenge"
+    DNSPOD_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://docs.dnspod.com/api/"
+  GoClient = "https://github.com/nrdcg/dnspod-go"
