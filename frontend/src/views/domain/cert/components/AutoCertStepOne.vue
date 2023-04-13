@@ -40,10 +40,8 @@ const data: Ref = inject('data')!
                 directory to HTTPChallengePort before obtaining the certificate.
             </p>
             <p v-else-if="data.challenge_method==='dns01'" v-translate>
-                Please fill in the API authentication credentials provided by your DNS provider.
-                We will add a TXT record to the DNS records of your domain for ownership verification.
-                Once the verification is complete, the record will be removed.
-                Please note that the time configurations below are all in seconds.
+                Please first add credentials in Certification > DNS Credentials, and then select one of the credentials
+                below to request the API of the DNS provider.
             </p>
         </template>
     </a-alert>

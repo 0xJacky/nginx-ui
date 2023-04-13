@@ -34,6 +34,7 @@ func newDnsCredential(db *gorm.DB, opts ...gen.DOOption) dnsCredential {
 	_dnsCredential.DeletedAt = field.NewTime(tableName, "deleted_at")
 	_dnsCredential.Name = field.NewString(tableName, "name")
 	_dnsCredential.Config = field.NewField(tableName, "config")
+	_dnsCredential.Provider = field.NewString(tableName, "provider")
 
 	_dnsCredential.fillFieldMap()
 
@@ -50,6 +51,7 @@ type dnsCredential struct {
 	DeletedAt field.Time
 	Name      field.String
 	Config    field.Field
+	Provider  field.String
 
 	fieldMap map[string]field.Expr
 }
@@ -72,6 +74,7 @@ func (d *dnsCredential) updateTableName(table string) *dnsCredential {
 	d.DeletedAt = field.NewTime(table, "deleted_at")
 	d.Name = field.NewString(table, "name")
 	d.Config = field.NewField(table, "config")
+	d.Provider = field.NewString(table, "provider")
 
 	d.fillFieldMap()
 
@@ -88,13 +91,14 @@ func (d *dnsCredential) GetFieldByName(fieldName string) (field.OrderExpr, bool)
 }
 
 func (d *dnsCredential) fillFieldMap() {
-	d.fieldMap = make(map[string]field.Expr, 6)
+	d.fieldMap = make(map[string]field.Expr, 7)
 	d.fieldMap["id"] = d.ID
 	d.fieldMap["created_at"] = d.CreatedAt
 	d.fieldMap["updated_at"] = d.UpdatedAt
 	d.fieldMap["deleted_at"] = d.DeletedAt
 	d.fieldMap["name"] = d.Name
 	d.fieldMap["config"] = d.Config
+	d.fieldMap["provider"] = d.Provider
 }
 
 func (d dnsCredential) clone(db *gorm.DB) dnsCredential {

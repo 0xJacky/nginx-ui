@@ -8,6 +8,7 @@ import (
 	"crypto/tls"
 	dns2 "github.com/0xJacky/Nginx-UI/server/pkg/cert/dns"
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+	"github.com/0xJacky/Nginx-UI/server/query"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/go-acme/lego/v4/certificate"
@@ -46,9 +47,9 @@ func (u *MyUser) GetPrivateKey() crypto.PrivateKey {
 }
 
 type ConfigPayload struct {
-	ServerName      []string    `json:"server_name"`
-	ChallengeMethod string      `json:"challenge_method"`
-	Config          dns2.Config `json:"config"`
+	ServerName      []string `json:"server_name"`
+	ChallengeMethod string   `json:"challenge_method"`
+	DNSCredentialID int      `json:"dns_credential_id"`
 }
 
 func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) {
@@ -108,16 +109,23 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 			),
 		)
 	case DNS01:
+		d := query.DnsCredential
+		dnsCredential, err := d.FirstByID(payload.DNSCredentialID)
+		if err != nil {
+			errChan <- errors.Wrap(err, "get dns credential error")
+			return
+		}
+
 		logChan <- "Using DNS01 challenge provider"
-		code := payload.Config.Code
+		code := dnsCredential.Config.Code
 		pConfig, ok := dns2.GetProvider(code)
 
 		if !ok {
 			errChan <- errors.Wrap(err, "provider not found")
 		}
 		logChan <- "Setting environment variables"
-		if payload.Config.Configuration != nil {
-			err = pConfig.SetEnv(*payload.Config.Configuration)
+		if dnsCredential.Config.Configuration != nil {
+			err = pConfig.SetEnv(*dnsCredential.Config.Configuration)
 			if err != nil {
 				break
 			}

@@ -44,8 +44,8 @@ async function callback(ssl_certificate: string, ssl_certificate_key: string) {
     save_site_config()
 }
 
-function change_auto_cert(r: boolean) {
-    if (r) {
+function change_auto_cert(status: boolean) {
+    if (status) {
         domain.add_auto_cert(props.config_name, {domains: name.value.trim().split(' ')}).then(() => {
             message.success(interpolate($gettext('Auto-renewal enabled for %{name}'), {name: name.value}))
         }).catch(e => {
@@ -61,7 +61,6 @@ function change_auto_cert(r: boolean) {
 }
 
 async function onchange(r: boolean) {
-    change_auto_cert(r)
     if (r) {
         await template.get_block('letsencrypt.conf').then(r => {
             props.ngx_config.servers.forEach(async (v: any) => {
@@ -80,6 +79,7 @@ async function onchange(r: boolean) {
             v.locations = v.locations.filter((l: any) => l.path !== '/.well-known/acme-challenge')
         })
         save_site_config()
+        change_auto_cert(r)
     }
 }
 
@@ -138,10 +138,7 @@ const issue_cert = async (config_name: string, server_name: string, callback: Fu
     ws.onopen = () => {
         ws.send(JSON.stringify({
             server_name: server_name.trim().split(' '),
-            challenge_method: data.challenge_method,
-            config: {
-                ...data
-            }
+            ...data
         }))
     }
 
@@ -161,6 +158,7 @@ const issue_cert = async (config_name: string, server_name: string, callback: Fu
                     progressStatus.value = 'success'
                     progressPercent.value = 100
                     callback(r.ssl_certificate, r.ssl_certificate_key)
+                    change_auto_cert(true)
                 } else {
                     progressStatus.value = 'exception'
                 }

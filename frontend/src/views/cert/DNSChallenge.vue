@@ -3,11 +3,9 @@ import {computed, inject, ref, watch} from 'vue'
 import auto_cert from '@/api/auto_cert'
 import {useGettext} from 'vue3-gettext'
 import {SelectProps} from 'ant-design-vue'
-import dns_credential from '@/api/dns_credential'
 
 const {$gettext} = useGettext()
 const providers: any = ref([])
-const credentials: any = ref([])
 
 const data: any = inject('data')!
 
@@ -39,19 +37,10 @@ const current: any = computed(() => {
 watch(code, init)
 
 watch(current, () => {
-    credentials.value = []
     data.code = current.value.code
     data.provider = current.value.name
-    data.dns_credential_id = null
-
-    dns_credential.get_list({provider: data.provider}).then(r => {
-        r.data.forEach((v: any) => {
-            credentials.value.push({
-                value: v.id,
-                label: v.name
-            })
-        })
-
+    auto_cert.get_dns_provider(current.value.code).then(r => {
+        Object.assign(current.value, r)
     })
 })
 
@@ -78,9 +67,19 @@ const filterOption = (input: string, option: any) => {
         <a-form-item :label="$gettext('DNS Provider')">
             <a-select v-model:value="provider_idx" show-search :options="options" :filter-option="filterOption"/>
         </a-form-item>
-        <a-form-item v-if="provider_idx>-1" :label="$gettext('Credential')" :rules="[{ required: true }]">
-            <a-select :options="credentials" v-model:value="data.dns_credential_id"/>
-        </a-form-item>
+        <template v-if="current?.configuration?.credentials">
+            <h4>{{ $gettext('Credentials') }}</h4>
+            <a-form-item :label="k" v-for="(v,k) in current?.configuration?.credentials"
+                         :extra="v" :rules="[{ required: true }]">
+                <a-input v-model:value="data.configuration.credentials[k]"/>
+            </a-form-item>
+        </template>
+        <template v-if="current?.configuration?.additional">
+            <h4>{{ $gettext('Additional') }}</h4>
+            <a-form-item :label="k" v-for="(v,k) in current?.configuration?.additional" :extra="v">
+                <a-input v-model:value="data.configuration.additional[k]"/>
+            </a-form-item>
+        </template>
     </a-form>
 </template>
 

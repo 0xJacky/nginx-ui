@@ -21,6 +21,9 @@ type Cert struct {
 	SSLCertificatePath    string         `json:"ssl_certificate_path"`
 	SSLCertificateKeyPath string         `json:"ssl_certificate_key_path"`
 	AutoCert              int            `json:"auto_cert"`
+	ChallengeMethod       string         `json:"challenge_method"`
+	DnsCredentialID       int            `json:"dns_credential_id"`
+	DnsCredential         *DnsCredential `json:"dns_credential,omitempty"`
 	Log                   string         `json:"log"`
 }
 
