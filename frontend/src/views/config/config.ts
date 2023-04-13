@@ -1,9 +1,8 @@
 import {customRender, datetime} from '@/components/StdDataDisplay/StdTableTransformer'
 import gettext from '@/gettext'
+import {h} from 'vue'
 
 const {$gettext} = gettext
-
-import {h} from 'vue'
 
 const configColumns = [{
     title: () => $gettext('Name'),

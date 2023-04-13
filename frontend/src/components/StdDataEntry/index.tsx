@@ -1,6 +1,6 @@
 import StdDataEntry from './StdDataEntry.js'
 import {h} from 'vue'
-import {Input, Textarea, InputPassword, InputNumber} from 'ant-design-vue'
+import {Input, InputNumber, Textarea} from 'ant-design-vue'
 import StdSelector from './components/StdSelector.vue'
 import StdSelect from './components/StdSelect.vue'
 import StdPassword from './components/StdPassword.vue'

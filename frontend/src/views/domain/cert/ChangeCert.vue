@@ -3,7 +3,7 @@ import {useGettext} from 'vue3-gettext'
 import {h, ref} from 'vue'
 import StdTable from '@/components/StdDataDisplay/StdTable.vue'
 import cert from '@/api/cert'
-import {customRender, datetime} from '@/components/StdDataDisplay/StdTableTransformer'
+import {customRender} from '@/components/StdDataDisplay/StdTableTransformer'
 import {input} from '@/components/StdDataEntry'
 import {Badge} from 'ant-design-vue'
 

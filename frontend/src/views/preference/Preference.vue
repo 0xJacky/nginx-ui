@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
-import {provide, reactive, ref} from 'vue'
+import {provide, ref} from 'vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import {useSettingsStore} from '@/pinia'
 import {dark_mode} from '@/lib/theme'

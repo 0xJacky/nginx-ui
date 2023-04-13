@@ -2,7 +2,6 @@
 import DirectiveAdd from '@/views/domain/ngx_conf/directive/DirectiveAdd'
 import {useGettext} from 'vue3-gettext'
 import {reactive, ref} from 'vue'
-import draggable from 'vuedraggable'
 import DirectiveEditorItem from '@/views/domain/ngx_conf/directive/DirectiveEditorItem.vue'
 
 const {$gettext} = useGettext()

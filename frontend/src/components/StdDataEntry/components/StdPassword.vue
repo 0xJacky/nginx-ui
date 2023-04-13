@@ -34,9 +34,9 @@ function handle_generate() {
 <template>
     <a-input-group compact>
         <a-input-password
-                v-if="!visibility"
-                :class="{compact: generate}"
-                v-model:value="M_value" :placeholoder="placeholder"/>
+            v-if="!visibility"
+            :class="{compact: generate}"
+            v-model:value="M_value" :placeholoder="placeholder"/>
         <a-input v-else :class="{compact: generate}" v-model:value="M_value" :placeholoder="placeholder"/>
         <a-button @click="handle_generate" v-if="generate" type="primary">
             <translate>Generate</translate>

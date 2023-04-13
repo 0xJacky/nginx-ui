@@ -8,7 +8,6 @@ import ngx from '@/api/ngx'
 import {computed, reactive, ref} from 'vue'
 import {message} from 'ant-design-vue'
 import {useRouter} from 'vue-router'
-import template from '@/api/template'
 
 const {$gettext, interpolate} = useGettext()
 

@@ -8,10 +8,9 @@ import Cert from '@/views/domain/cert/Cert.vue'
 import LogEntry from '@/views/domain/ngx_conf/LogEntry.vue'
 import ConfigTemplate from '@/views/domain/ngx_conf/config_template/ConfigTemplate.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
-import {PlusOutlined} from '@ant-design/icons-vue'
+import {MoreOutlined, PlusOutlined} from '@ant-design/icons-vue'
 import {Modal} from 'ant-design-vue'
 import template from '@/api/template'
-import {MoreOutlined} from '@ant-design/icons-vue'
 
 const {$gettext} = useGettext()
 

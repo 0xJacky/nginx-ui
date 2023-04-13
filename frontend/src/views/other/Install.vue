@@ -5,7 +5,7 @@ import {reactive, ref} from 'vue'
 import gettext from '@/gettext'
 import install from '@/api/install'
 import {useRoute, useRouter} from 'vue-router'
-import {MailOutlined, UserOutlined, LockOutlined, DatabaseOutlined} from '@ant-design/icons-vue'
+import {DatabaseOutlined, LockOutlined, MailOutlined, UserOutlined} from '@ant-design/icons-vue'
 
 const {$gettext, interpolate} = gettext
 
@@ -33,19 +33,19 @@ const rulesRef = reactive({
         {
             required: true,
             type: 'email',
-            message: () => $gettext('Please input your E-mail!'),
+            message: () => $gettext('Please input your E-mail!')
         }
     ],
     username: [
         {
             required: true,
-            message: () => $gettext('Please input your username!'),
+            message: () => $gettext('Please input your username!')
         }
     ],
     password: [
         {
             required: true,
-            message: () => $gettext('Please input your password!'),
+            message: () => $gettext('Please input your password!')
         }
     ],
     database: [
@@ -53,9 +53,9 @@ const rulesRef = reactive({
             message: () => interpolate(
                 $gettext('The filename cannot contain the following characters: %{c}'),
                 {c: '& &quot; ? < > # {} % ~ / \\'}
-            ),
+            )
         }
-    ],
+    ]
 })
 
 const {validate, validateInfos} = Form.useForm(modelRef, rulesRef)

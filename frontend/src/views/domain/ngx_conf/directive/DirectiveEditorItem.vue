@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import CodeEditor from '@/components/CodeEditor'
 import {DeleteOutlined, HolderOutlined} from '@ant-design/icons-vue'
-import {If} from '@/views/domain/ngx_conf'
 
 import {useGettext} from 'vue3-gettext'
 import {onMounted, ref, watch} from 'vue'

@@ -4,7 +4,7 @@ import StdTable from './StdTable.vue'
 
 import StdDataEntry from '@/components/StdDataEntry'
 
-import {reactive, ref} from 'vue'
+import {provide, reactive, ref} from 'vue'
 import {message} from 'ant-design-vue'
 
 const {$gettext} = gettext
@@ -62,6 +62,7 @@ const props = defineProps({
 const visible = ref(false)
 const update = ref(0)
 const data: any = reactive({id: null})
+provide('data', data)
 const error: any = reactive({})
 const selected = ref([])
 
@@ -146,12 +147,12 @@ const selectedRowKeys = ref([])
             </template>
 
             <std-table
-                    ref="table"
-                    v-model:selected-row-keys="selectedRowKeys"
-                    v-bind="props"
-                    @clickEdit="edit"
-                    @selected="onSelect"
-                    :key="update"
+                ref="table"
+                v-model:selected-row-keys="selectedRowKeys"
+                v-bind="props"
+                @clickEdit="edit"
+                @selected="onSelect"
+                :key="update"
             >
                 <template v-slot:actions="slotProps">
                     <slot name="actions" :actions="slotProps.record"/>
@@ -160,26 +161,26 @@ const selectedRowKeys = ref([])
         </a-card>
 
         <a-modal
-                class="std-curd-edit-modal"
-                :mask="false"
-                :title="edit_text?edit_text:(data.id ? $gettext('Modify') : $gettext('Add'))"
-                :visible="visible"
-                :cancel-text="$gettext('Cancel')"
-                :ok-text="$gettext('OK')"
-                @cancel="cancel"
-                @ok="ok"
-                :width="modalWidth"
-                destroyOnClose
+            class="std-curd-edit-modal"
+            :mask="false"
+            :title="edit_text?edit_text:(data.id ? $gettext('Modify') : $gettext('Add'))"
+            :visible="visible"
+            :cancel-text="$gettext('Cancel')"
+            :ok-text="$gettext('OK')"
+            @cancel="cancel"
+            @ok="ok"
+            :width="modalWidth"
+            destroyOnClose
         >
             <div class="before-edit" v-if="$slots.beforeEdit">
                 <slot name="beforeEdit" :data="data"/>
             </div>
 
             <std-data-entry
-                    ref="std_data_entry"
-                    :data-list="editableColumns()"
-                    v-model:data-source="data"
-                    :error="error"
+                ref="std_data_entry"
+                :data-list="editableColumns()"
+                v-model:data-source="data"
+                :error="error"
             />
 
             <slot name="edit" :data="data"/>

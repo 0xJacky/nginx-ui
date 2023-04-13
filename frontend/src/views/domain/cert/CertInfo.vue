@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {CloseCircleOutlined, CheckCircleOutlined} from '@ant-design/icons-vue'
+import {CheckCircleOutlined, CloseCircleOutlined} from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 
 const props = defineProps(['cert'])

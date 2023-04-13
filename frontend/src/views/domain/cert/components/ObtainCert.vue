@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
-import {computed, inject, nextTick, provide, reactive, Ref, ref, watch} from 'vue'
+import {computed, inject, nextTick, provide, reactive, Ref, ref} from 'vue'
 import websocket from '@/lib/websocket'
 import {message, Modal} from 'ant-design-vue'
 import template from '@/api/template'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {inject, ref, Ref} from 'vue'
+import {inject, Ref} from 'vue'
 import {useGettext} from 'vue3-gettext'
 import DNSChallenge from '@/views/domain/cert/components/DNSChallenge.vue'
 

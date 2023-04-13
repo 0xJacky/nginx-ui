@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, inject, Ref, ref, watch} from 'vue'
+import {computed, inject, ref, watch} from 'vue'
 import auto_cert from '@/api/auto_cert'
 import {useGettext} from 'vue3-gettext'
 import {SelectProps} from 'ant-design-vue'
@@ -9,8 +9,22 @@ const providers: any = ref([])
 
 const data: any = inject('data')!
 
+const code = computed(() => {
+    return data.code
+})
+
+function init() {
+    providers.value?.forEach((v: any, k: number) => {
+        if (v.code === code.value) {
+            provider_idx.value = k
+        }
+    })
+}
+
 auto_cert.get_dns_providers().then(r => {
     providers.value = r
+}).then(() => {
+    init()
 })
 
 const provider_idx = ref()
@@ -19,8 +33,12 @@ const current: any = computed(() => {
     return providers.value?.[provider_idx.value]
 })
 
+
+watch(code, init)
+
 watch(current, () => {
     data.code = current.value.code
+    data.provider = current.value.name
     auto_cert.get_dns_provider(current.value.code).then(r => {
         Object.assign(current.value, r)
     })

@@ -3,7 +3,6 @@ import CodeEditor from '@/components/CodeEditor'
 import {useGettext} from 'vue3-gettext'
 import {reactive, ref} from 'vue'
 import {DeleteOutlined, HolderOutlined} from '@ant-design/icons-vue'
-import draggable from 'vuedraggable'
 
 const {$gettext} = useGettext()
 

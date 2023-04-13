@@ -31,6 +31,7 @@ func GenerateAllModel() []any {
 		Cert{},
 		ChatGPTLog{},
 		Site{},
+		DnsCredential{},
 	}
 }
 

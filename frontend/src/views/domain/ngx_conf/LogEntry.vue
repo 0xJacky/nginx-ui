@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {FileTextOutlined, FileExclamationOutlined} from '@ant-design/icons-vue'
+import {FileExclamationOutlined, FileTextOutlined} from '@ant-design/icons-vue'
 import {computed, ref} from 'vue'
 import {useRouter} from 'vue-router'
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
 import template from '@/api/template'
-import {computed, provide, ref, watch} from 'vue'
+import {computed, provide, ref} from 'vue'
 import {storeToRefs} from 'pinia'
 import {useSettingsStore} from '@/pinia'
 import Template from '@/views/template/Template.vue'
@@ -9,8 +9,6 @@ import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.v
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import TemplateForm from '@/views/domain/ngx_conf/config_template/TemplateForm.vue'
-import * as wasi from 'wasi'
-import _ from 'lodash'
 
 const {$gettext} = useGettext()
 const {language} = storeToRefs(useSettingsStore())
