@@ -193,7 +193,12 @@ function add_server() {
 }
 
 function remove_server(index: number) {
-    props.ngx_config?.servers?.splice(index, 1)
+    Modal.confirm({
+        title: $gettext('Do you want to remove this server?'),
+        mask: false,
+        centered: true,
+        onOk: () => props.ngx_config?.servers?.splice(index, 1)
+    })
 }
 </script>
 

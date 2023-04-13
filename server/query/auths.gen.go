@@ -28,7 +28,7 @@ func newAuth(db *gorm.DB, opts ...gen.DOOption) auth {
 
 	tableName := _auth.authDo.TableName()
 	_auth.ALL = field.NewAsterisk(tableName)
-	_auth.ID = field.NewUint(tableName, "id")
+	_auth.ID = field.NewInt(tableName, "id")
 	_auth.CreatedAt = field.NewTime(tableName, "created_at")
 	_auth.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_auth.DeletedAt = field.NewTime(tableName, "deleted_at")
@@ -44,7 +44,7 @@ type auth struct {
 	authDo
 
 	ALL       field.Asterisk
-	ID        field.Uint
+	ID        field.Int
 	CreatedAt field.Time
 	UpdatedAt field.Time
 	DeletedAt field.Time
@@ -66,7 +66,7 @@ func (a auth) As(alias string) *auth {
 
 func (a *auth) updateTableName(table string) *auth {
 	a.ALL = field.NewAsterisk(table)
-	a.ID = field.NewUint(table, "id")
+	a.ID = field.NewInt(table, "id")
 	a.CreatedAt = field.NewTime(table, "created_at")
 	a.UpdatedAt = field.NewTime(table, "updated_at")
 	a.DeletedAt = field.NewTime(table, "deleted_at")

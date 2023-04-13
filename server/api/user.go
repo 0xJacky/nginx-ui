@@ -2,6 +2,7 @@ package api
 
 import (
     "github.com/0xJacky/Nginx-UI/server/model"
+    "github.com/0xJacky/Nginx-UI/server/query"
     "github.com/0xJacky/Nginx-UI/server/settings"
     "github.com/gin-gonic/gin"
     "github.com/spf13/cast"
@@ -16,16 +17,17 @@ func GetUsers(c *gin.Context) {
 }
 
 func GetUser(c *gin.Context) {
-    curd := model.NewCurd(&model.Auth{})
-    id := c.Param("id")
+    id := cast.ToInt(c.Param("id"))
 
-    var user model.Auth
-    err := curd.First(&user, id)
+    u := query.Auth
+
+    user, err := u.FirstByID(id)
 
     if err != nil {
         ErrHandler(c, err)
         return
     }
+
     c.JSON(http.StatusOK, user)
 }
 
@@ -40,7 +42,8 @@ func AddUser(c *gin.Context) {
     if !ok {
         return
     }
-    curd := model.NewCurd(&model.Auth{})
+
+    u := query.Auth
 
     pwd, err := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
     if err != nil {
@@ -54,7 +57,7 @@ func AddUser(c *gin.Context) {
         Password: json.Password,
     }
 
-    err = curd.Add(&user)
+    err = u.Create(&user)
 
     if err != nil {
         ErrHandler(c, err)
@@ -80,17 +83,17 @@ func EditUser(c *gin.Context) {
     if !ok {
         return
     }
-    curd := model.NewCurd(&model.Auth{})
 
-    var user, edit model.Auth
-
-    err := curd.First(&user, userId)
+    u := query.Auth
+    user, err := u.FirstByID(userId)
 
     if err != nil {
         ErrHandler(c, err)
         return
     }
-    edit.Name = json.Name
+    edit := &model.Auth{
+        Name: json.Name,
+    }
 
     // encrypt password
     if json.Password != "" {
@@ -103,7 +106,7 @@ func EditUser(c *gin.Context) {
         edit.Password = string(pwd)
     }
 
-    err = curd.Edit(&user, &edit)
+    _, err = u.Where(u.ID.Eq(userId)).Updates(&edit)
 
     if err != nil {
         ErrHandler(c, err)
@@ -114,7 +117,7 @@ func EditUser(c *gin.Context) {
 }
 
 func DeleteUser(c *gin.Context) {
-    id := c.Param("id")
+    id := cast.ToInt(c.Param("id"))
 
     if cast.ToInt(id) == 1 {
         c.JSON(http.StatusNotAcceptable, gin.H{
@@ -123,8 +126,8 @@ func DeleteUser(c *gin.Context) {
         return
     }
 
-    curd := model.NewCurd(&model.Auth{})
-    err := curd.Delete(&model.Auth{}, "id", id)
+    u := query.Auth
+    err := u.DeleteByID(id)
     if err != nil {
         ErrHandler(c, err)
         return

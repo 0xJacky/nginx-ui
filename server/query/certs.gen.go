@@ -28,7 +28,7 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 
 	tableName := _cert.certDo.TableName()
 	_cert.ALL = field.NewAsterisk(tableName)
-	_cert.ID = field.NewUint(tableName, "id")
+	_cert.ID = field.NewInt(tableName, "id")
 	_cert.CreatedAt = field.NewTime(tableName, "created_at")
 	_cert.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_cert.DeletedAt = field.NewTime(tableName, "deleted_at")
@@ -49,7 +49,7 @@ type cert struct {
 	certDo
 
 	ALL                   field.Asterisk
-	ID                    field.Uint
+	ID                    field.Int
 	CreatedAt             field.Time
 	UpdatedAt             field.Time
 	DeletedAt             field.Time
@@ -76,7 +76,7 @@ func (c cert) As(alias string) *cert {
 
 func (c *cert) updateTableName(table string) *cert {
 	c.ALL = field.NewAsterisk(table)
-	c.ID = field.NewUint(table, "id")
+	c.ID = field.NewInt(table, "id")
 	c.CreatedAt = field.NewTime(table, "created_at")
 	c.UpdatedAt = field.NewTime(table, "updated_at")
 	c.DeletedAt = field.NewTime(table, "deleted_at")

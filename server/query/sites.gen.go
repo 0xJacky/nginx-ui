@@ -28,7 +28,7 @@ func newSite(db *gorm.DB, opts ...gen.DOOption) site {
 
 	tableName := _site.siteDo.TableName()
 	_site.ALL = field.NewAsterisk(tableName)
-	_site.ID = field.NewUint(tableName, "id")
+	_site.ID = field.NewInt(tableName, "id")
 	_site.CreatedAt = field.NewTime(tableName, "created_at")
 	_site.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_site.DeletedAt = field.NewTime(tableName, "deleted_at")
@@ -44,7 +44,7 @@ type site struct {
 	siteDo
 
 	ALL       field.Asterisk
-	ID        field.Uint
+	ID        field.Int
 	CreatedAt field.Time
 	UpdatedAt field.Time
 	DeletedAt field.Time
@@ -66,7 +66,7 @@ func (s site) As(alias string) *site {
 
 func (s *site) updateTableName(table string) *site {
 	s.ALL = field.NewAsterisk(table)
-	s.ID = field.NewUint(table, "id")
+	s.ID = field.NewInt(table, "id")
 	s.CreatedAt = field.NewTime(table, "created_at")
 	s.UpdatedAt = field.NewTime(table, "updated_at")
 	s.DeletedAt = field.NewTime(table, "deleted_at")
