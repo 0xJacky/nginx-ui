@@ -124,13 +124,13 @@ func (a authDo) FirstByID(id int) (result *model.Auth, err error) {
 	return
 }
 
-// DeleteByID update @@table set deleted_at=NOW() where id=@id
+// DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
 func (a authDo) DeleteByID(id int) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
 	params = append(params, id)
-	generateSQL.WriteString("update auths set deleted_at=NOW() where id=? ")
+	generateSQL.WriteString("update auths set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=? ")
 
 	var executeSQL *gorm.DB
 	executeSQL = a.UnderlyingDB().Exec(generateSQL.String(), params...) // ignore_security_alert

@@ -179,7 +179,7 @@ const selectedRowKeys = ref([])
             <std-data-entry
                 ref="std_data_entry"
                 :data-list="editableColumns()"
-                v-model:data-source="data"
+                :data-source="data"
                 :error="error"
             />
 

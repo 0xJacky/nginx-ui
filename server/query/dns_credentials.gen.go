@@ -128,13 +128,13 @@ func (d dnsCredentialDo) FirstByID(id int) (result *model.DnsCredential, err err
 	return
 }
 
-// DeleteByID update @@table set deleted_at=NOW() where id=@id
+// DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
 func (d dnsCredentialDo) DeleteByID(id int) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
 	params = append(params, id)
-	generateSQL.WriteString("update dns_credentials set deleted_at=NOW() where id=? ")
+	generateSQL.WriteString("update dns_credentials set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=? ")
 
 	var executeSQL *gorm.DB
 	executeSQL = d.UnderlyingDB().Exec(generateSQL.String(), params...) // ignore_security_alert

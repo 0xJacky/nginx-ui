@@ -128,13 +128,13 @@ func (c configBackupDo) FirstByID(id int) (result *model.ConfigBackup, err error
 	return
 }
 
-// DeleteByID update @@table set deleted_at=NOW() where id=@id
+// DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
 func (c configBackupDo) DeleteByID(id int) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
 	params = append(params, id)
-	generateSQL.WriteString("update config_backups set deleted_at=NOW() where id=? ")
+	generateSQL.WriteString("update config_backups set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=? ")
 
 	var executeSQL *gorm.DB
 	executeSQL = c.UnderlyingDB().Exec(generateSQL.String(), params...) // ignore_security_alert

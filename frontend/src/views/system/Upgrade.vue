@@ -5,7 +5,7 @@ import {computed, ref} from 'vue'
 import version from '@/version.json'
 import dayjs from 'dayjs'
 import {marked} from 'marked'
-import Template from '@/views/template/Template.vue'
+
 import websocket from '@/lib/websocket'
 import {message} from 'ant-design-vue'
 

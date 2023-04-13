@@ -4,7 +4,7 @@ import template from '@/api/template'
 import {computed, provide, ref} from 'vue'
 import {storeToRefs} from 'pinia'
 import {useSettingsStore} from '@/pinia'
-import Template from '@/views/template/Template.vue'
+
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'

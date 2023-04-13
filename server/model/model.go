@@ -130,6 +130,6 @@ func GetListWithPagination(models interface{},
 type Method interface {
 	// FirstByID Where("id=@id")
 	FirstByID(id int) (*gen.T, error)
-	// DeleteByID update @@table set deleted_at=NOW() where id=@id
+	// DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
 	DeleteByID(id int) error
 }

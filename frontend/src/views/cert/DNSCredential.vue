@@ -3,7 +3,6 @@ import {useGettext} from 'vue3-gettext'
 import {datetime} from '@/components/StdDataDisplay/StdTableTransformer'
 import dns_credential from '@/api/dns_credential'
 import StdCurd from '@/components/StdDataDisplay/StdCurd.vue'
-import Template from '@/views/template/Template.vue'
 import DNSChallenge from './DNSChallenge.vue'
 import {input} from '@/components/StdDataEntry'
 

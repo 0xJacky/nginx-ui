@@ -3,7 +3,7 @@ import ngx from '@/api/ngx'
 import {useGettext} from 'vue3-gettext'
 import {ref} from 'vue'
 import logLevel from '@/views/config/constants'
-import Template from '@/views/template/Template.vue'
+
 
 const {$gettext} = useGettext()
 

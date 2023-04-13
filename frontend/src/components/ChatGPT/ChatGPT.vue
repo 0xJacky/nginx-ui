@@ -8,7 +8,7 @@ import {marked} from 'marked'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/vs2015.css'
 import Icon, {SendOutlined} from '@ant-design/icons-vue'
-import Template from '@/views/template/Template.vue'
+
 import openai from '@/api/openai'
 import ChatGPT_logo from '@/assets/svg/ChatGPT_logo.svg'
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
 import {computed, nextTick, provide, ref, watch} from 'vue'
-import Template from '@/views/template/Template.vue'
+
 import ObtainCert from '@/views/domain/cert/components/ObtainCert.vue'
 
 const {$gettext, interpolate} = useGettext()
