@@ -14,6 +14,10 @@ const code = computed(() => {
 })
 
 function init() {
+    data.configuration = {
+        credentials: {},
+        additional: {}
+    }
     providers.value?.forEach((v: any, k: number) => {
         if (v.code === code.value) {
             provider_idx.value = k
