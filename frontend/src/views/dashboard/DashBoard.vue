@@ -20,7 +20,7 @@ const cpu_analytic_series = reactive([{name: 'User', data: <any>[]}, {name: 'Tot
 const net_analytic = reactive([{name: $gettext('Receive'), data: <any>[]},
     {name: $gettext('Send'), data: <any>[]}])
 const disk_io_analytic = reactive([{name: $gettext('Writes'), data: <any>[]},
-    {name: $gettext('Writes'), data: <any>[]}])
+    {name: $gettext('Reads'), data: <any>[]}])
 const memory = reactive({})
 const disk = reactive({})
 const disk_io = reactive({writes: 0, reads: 0})
