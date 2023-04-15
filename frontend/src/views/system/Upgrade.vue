@@ -177,6 +177,12 @@ async function perform_upgrade() {
 </template>
 
 <style lang="less">
+.dark {
+    .core-upgrade-log-container {
+        background-color: rgba(0, 0, 0, 0.84);
+    }
+}
+
 .core-upgrade-log-container {
     height: 320px;
     overflow: scroll;

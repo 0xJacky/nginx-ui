@@ -28,7 +28,7 @@ export default {
 <style lang="less" scoped>
 .dark {
     .ant-pro-footer-toolbar {
-        background: rgba(24, 24, 24, 0.62);
+        background: rgba(24, 24, 24, 1);
         border-top: unset;
     }
 }
