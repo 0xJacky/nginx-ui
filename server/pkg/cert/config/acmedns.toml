@@ -1,0 +1,20 @@
+Name = "Joohoi's ACME-DNS"
+Description = ''''''
+URL = "https://github.com/joohoi/acme-dns"
+Code = "acme-dns"
+Since = "v1.1.0"
+
+Example = '''
+ACME_DNS_API_BASE=http://10.0.0.8:4443 \
+ACME_DNS_STORAGE_PATH=/root/.lego-acme-dns-accounts.json \
+lego --email you@example.com --dns acme-dns --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    ACME_DNS_API_BASE  = "The ACME-DNS API address"
+    ACME_DNS_STORAGE_PATH = "The ACME-DNS JSON account data file. A per-domain account will be registered/persisted to this file and used for TXT updates."
+
+[Links]
+  API = "https://github.com/joohoi/acme-dns#api"
+  GoClient = "https://github.com/cpu/goacmedns"

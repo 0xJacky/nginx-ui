@@ -28,7 +28,7 @@ func newConfigBackup(db *gorm.DB, opts ...gen.DOOption) configBackup {
 
 	tableName := _configBackup.configBackupDo.TableName()
 	_configBackup.ALL = field.NewAsterisk(tableName)
-	_configBackup.ID = field.NewUint(tableName, "id")
+	_configBackup.ID = field.NewInt(tableName, "id")
 	_configBackup.CreatedAt = field.NewTime(tableName, "created_at")
 	_configBackup.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_configBackup.DeletedAt = field.NewTime(tableName, "deleted_at")
@@ -45,7 +45,7 @@ type configBackup struct {
 	configBackupDo
 
 	ALL       field.Asterisk
-	ID        field.Uint
+	ID        field.Int
 	CreatedAt field.Time
 	UpdatedAt field.Time
 	DeletedAt field.Time
@@ -68,7 +68,7 @@ func (c configBackup) As(alias string) *configBackup {
 
 func (c *configBackup) updateTableName(table string) *configBackup {
 	c.ALL = field.NewAsterisk(table)
-	c.ID = field.NewUint(table, "id")
+	c.ID = field.NewInt(table, "id")
 	c.CreatedAt = field.NewTime(table, "created_at")
 	c.UpdatedAt = field.NewTime(table, "updated_at")
 	c.DeletedAt = field.NewTime(table, "deleted_at")
@@ -128,13 +128,13 @@ func (c configBackupDo) FirstByID(id int) (result *model.ConfigBackup, err error
 	return
 }
 
-// DeleteByID update @@table set deleted_at=NOW() where id=@id
+// DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
 func (c configBackupDo) DeleteByID(id int) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
 	params = append(params, id)
-	generateSQL.WriteString("update config_backups set deleted_at=NOW() where id=? ")
+	generateSQL.WriteString("update config_backups set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=? ")
 
 	var executeSQL *gorm.DB
 	executeSQL = c.UnderlyingDB().Exec(generateSQL.String(), params...) // ignore_security_alert

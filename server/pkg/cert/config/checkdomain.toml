@@ -1,0 +1,25 @@
+Name = "Checkdomain"
+Description = ''''''
+URL = "https://checkdomain.de/"
+Code = "checkdomain"
+Since = "v3.3.0"
+
+Example = '''
+CHECKDOMAIN_TOKEN=yoursecrettoken \
+lego --email you@example.com --dns checkdomain --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    CHECKDOMAIN_TOKEN = "API token"
+  [Configuration.Additional]
+    CHECKDOMAIN_ENDPOINT = "API endpoint URL, defaults to https://api.checkdomain.de"
+    CHECKDOMAIN_TTL = "The TTL of the TXT record used for the DNS challenge"
+    CHECKDOMAIN_POLLING_INTERVAL = "Time between DNS propagation check"
+    CHECKDOMAIN_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    CHECKDOMAIN_HTTP_TIMEOUT = "API request timeout, defaults to 30 seconds"
+
+[Links]
+  API = "https://developer.checkdomain.de/reference/"
+  Guide = "https://developer.checkdomain.de/guide/"
+  Settings = "https://www.checkdomain.net/en/login/data/api/"

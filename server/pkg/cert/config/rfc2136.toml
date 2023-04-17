@@ -1,0 +1,39 @@
+Name = "RFC2136"
+Description = ''''''
+URL = "https://www.rfc-editor.org/rfc/rfc2136.html"
+Code = "rfc2136"
+Since = "v0.3.0"
+
+Example = '''
+RFC2136_NAMESERVER=127.0.0.1 \
+RFC2136_TSIG_KEY=lego \
+RFC2136_TSIG_ALGORITHM=hmac-sha256. \
+RFC2136_TSIG_SECRET=YWJjZGVmZGdoaWprbG1ub3BxcnN0dXZ3eHl6MTIzNDU= \
+lego --email you@example.com --dns rfc2136 --domains my.example.org run
+
+## ---
+
+keyname=lego; keyfile=lego.key; tsig-keygen $keyname > $keyfile
+
+RFC2136_NAMESERVER=127.0.0.1 \
+RFC2136_TSIG_KEY="$keyname" \
+RFC2136_TSIG_ALGORITHM="$( awk -F'[ ";]' '/algorithm/ { print $2 }' $keyfile )." \
+RFC2136_TSIG_SECRET="$( awk -F'[ ";]' '/secret/ { print $3 }' $keyfile )" \
+lego --email you@example.com --dns rfc2136 --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    RFC2136_TSIG_KEY = "Name of the secret key as defined in DNS server configuration. To disable TSIG authentication, leave the `RFC2136_TSIG*` variables unset."
+    RFC2136_TSIG_SECRET = "Secret key payload. To disable TSIG authentication, leave the` RFC2136_TSIG*` variables unset."
+    RFC2136_TSIG_ALGORITHM = "TSIG algorithm. See [miekg/dns#tsig.go](https://github.com/miekg/dns/blob/master/tsig.go) for supported values. To disable TSIG authentication, leave the `RFC2136_TSIG*` variables unset."
+    RFC2136_NAMESERVER = 'Network address in the form "host" or "host:port"'
+  [Configuration.Additional]
+    RFC2136_POLLING_INTERVAL = "Time between DNS propagation check"
+    RFC2136_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    RFC2136_TTL = "The TTL of the TXT record used for the DNS challenge"
+    RFC2136_DNS_TIMEOUT = "API request timeout"
+    RFC2136_SEQUENCE_INTERVAL = "Time between sequential requests"
+
+[Links]
+  API = "https://www.rfc-editor.org/rfc/rfc2136.html"

@@ -1,0 +1,23 @@
+Name = "Vultr"
+Description = ''''''
+URL = "https://www.vultr.com/"
+Code = "vultr"
+Since = "v0.3.1"
+
+Example = '''
+VULTR_API_KEY=xxxxx \
+lego --email you@example.com --dns vultr --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    VULTR_API_KEY = "API key"
+  [Configuration.Additional]
+    VULTR_POLLING_INTERVAL = "Time between DNS propagation check"
+    VULTR_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    VULTR_TTL = "The TTL of the TXT record used for the DNS challenge"
+    VULTR_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://www.vultr.com/api/#dns"
+  GoClient = "https://github.com/vultr/govultr"

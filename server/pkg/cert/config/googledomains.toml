@@ -1,0 +1,22 @@
+Name = "Google Domains"
+Description = ''''''
+URL = "https://domains.google"
+Code = "googledomains"
+Since = "v4.11.0"
+
+Example = '''
+GOOGLE_DOMAINS_ACCESS_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
+lego --email you@example.com --dns gdomains --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    GOOGLE_DOMAINS_ACCESS_TOKEN = "Access token"
+  [Configuration.Additional]
+    GOOGLE_DOMAINS_POLLING_INTERVAL = "Time between DNS propagation check"
+    GOOGLE_DOMAINS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    GOOGLE_DOMAINS_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  GoClient = "https://github.com/googleapis/google-api-go-client"
+

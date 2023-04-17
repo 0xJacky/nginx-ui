@@ -1,0 +1,22 @@
+Name = "dnsHome.de"
+Description = ''''''
+URL = "https://www.dnshome.de"
+Code = "dnshomede"
+Since = "v4.10.0"
+
+Example = '''
+DNSHOMEDE_CREDENTIALS=sub.example.org:password \
+lego --email you@example.com --dns dnshomede --domains example.org --domains '*.example.org' run
+
+DNSHOMEDE_CREDENTIALS=my.example.org:password1,demo.example.org:password2 \
+lego --email you@example.com --dns dnshomede --domains my.example.org --domains demo.example.org
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    DNSHOMEDE_CREDENTIALS = "Comma-separated list of domain:password credential pairs"
+  [Configuration.Addtional]
+    DNSHOMEDE_POLLING_INTERVAL = "Time between DNS propagation checks"
+    DNSHOMEDE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation; defaults to 300s (5 minutes)"
+    DNSHOMEDE_SEQUENCE_INTERVAL = "Time between sequential requests"
+    DNSHOMEDE_HTTP_TIMEOUT = "API request timeout"

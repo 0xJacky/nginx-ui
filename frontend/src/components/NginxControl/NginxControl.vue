@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import gettext from '@/gettext'
-
-const {$gettext} = gettext
 import ngx from '@/api/ngx'
 import logLevel from '@/views/config/constants'
 import {message} from 'ant-design-vue'
 import {ReloadOutlined} from '@ant-design/icons-vue'
-import Template from '@/views/template/Template.vue'
+
 import {ref, watch} from 'vue'
+
+const {$gettext} = gettext
 
 function get_status() {
     ngx.status().then(r => {

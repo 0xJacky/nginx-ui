@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
+import {createRouter, createWebHashHistory} from 'vue-router'
 import gettext from '../gettext'
 import {useUserStore} from '@/pinia'
 
@@ -6,12 +6,12 @@ import {
     CloudOutlined,
     CodeOutlined,
     FileOutlined,
+    FileTextOutlined,
     HomeOutlined,
     InfoCircleOutlined,
-    UserOutlined,
-    FileTextOutlined,
+    SafetyCertificateOutlined,
     SettingOutlined,
-    SafetyCertificateOutlined
+    UserOutlined
 } from '@ant-design/icons-vue'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -87,10 +87,22 @@ export const routes = [
             {
                 path: 'cert',
                 name: () => $gettext('Certification'),
-                component: () => import('@/views/cert/Cert.vue'),
+                component: () => import('@/layouts/BaseRouterView.vue'),
                 meta: {
                     icon: SafetyCertificateOutlined
-                }
+                },
+                children: [
+                    {
+                        path: 'list',
+                        name: () => $gettext('Certification List'),
+                        component: () => import('@/views/cert/Cert.vue')
+                    },
+                    {
+                        path: 'dns_credential',
+                        name: () => $gettext('DNS Credentials'),
+                        component: () => import('@/views/cert/DNSCredential.vue')
+                    }
+                ]
             },
             {
                 path: 'terminal',

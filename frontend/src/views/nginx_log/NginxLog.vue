@@ -124,7 +124,7 @@ function on_scroll_log() {
     if (!loading.value && page.value > 0) {
         loading.value = true
         const elem = (logContainer.value as any as Element)
-        if (elem.scrollTop / elem.scrollHeight < 0.333) {
+        if (elem?.scrollTop / elem?.scrollHeight < 0.333) {
             nginx_log.page(page.value, {
                 conf_name: (route.query.conf_name as string),
                 type: logType(),
@@ -167,12 +167,12 @@ const computedBuffer = computed(() => {
             <pre class="nginx-log-container" ref="logContainer"
                  @scroll="debounce(on_scroll_log,100, null)()" v-html="computedBuffer"/>
         </a-card>
+        <footer-tool-bar v-if="control.type==='site'">
+            <a-button @click="router.go(-1)">
+                <translate>Back</translate>
+            </a-button>
+        </footer-tool-bar>
     </a-card>
-    <footer-tool-bar v-if="control.type==='site'">
-        <a-button @click="router.go(-1)">
-            <translate>Back</translate>
-        </a-button>
-    </footer-tool-bar>
 </template>
 
 <style lang="less">

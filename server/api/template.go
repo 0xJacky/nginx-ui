@@ -3,21 +3,11 @@ package api
 import (
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/0xJacky/Nginx-UI/server/service"
-	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strings"
 )
 
 func GetTemplate(c *gin.Context) {
-	content := `proxy_set_header Host $host;
-proxy_set_header X-Real_IP $remote_addr;
-proxy_set_header X-Forwarded-For $remote_addr:$remote_port;
-proxy_pass http://127.0.0.1:{{ HTTP01PORT }};
-`
-	content = strings.ReplaceAll(content, "{{ HTTP01PORT }}",
-		settings.ServerSettings.HTTPChallengePort)
-
 	var ngxConfig *nginx.NgxConfig
 
 	ngxConfig = &nginx.NgxConfig{
@@ -40,12 +30,6 @@ proxy_pass http://127.0.0.1:{{ HTTP01PORT }};
 					},
 					{
 						Directive: "index",
-					},
-				},
-				Locations: []*nginx.NgxLocation{
-					{
-						Path:    "/.well-known/acme-challenge",
-						Content: content,
 					},
 				},
 			},
@@ -90,13 +74,22 @@ func GetTemplateBlock(c *gin.Context) {
 		service.ConfigInfoItem
 		service.ConfigDetail
 	}
-	detail, err := service.ParseTemplate("block", c.Param("name"))
+	var bindData map[string]service.TVariable
+	_ = c.ShouldBindJSON(&bindData)
+	info := service.GetTemplateInfo("block", c.Param("name"))
+
+	if bindData == nil {
+		bindData = info.Variables
+	}
+
+	detail, err := service.ParseTemplate("block", c.Param("name"), bindData)
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
+	info.Variables = bindData
 	c.JSON(http.StatusOK, resp{
-		service.GetTemplateInfo("block", c.Param("name")),
+		info,
 		detail,
 	})
 }

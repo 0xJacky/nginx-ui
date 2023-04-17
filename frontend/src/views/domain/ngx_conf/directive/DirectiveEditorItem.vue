@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import CodeEditor from '@/components/CodeEditor'
 import {DeleteOutlined, HolderOutlined} from '@ant-design/icons-vue'
-import {If} from '@/views/domain/ngx_conf'
 
 import {useGettext} from 'vue3-gettext'
 import {onMounted, ref, watch} from 'vue'
@@ -68,24 +67,22 @@ function save() {
                 </a-button>
             </a-popconfirm>
         </div>
-        <transition name="slide">
-            <div v-if="current_idx===index" class="directive-editor-extra">
-                <div class="extra-content">
-                    <a-form layout="vertical">
-                        <a-form-item :label="$gettext('Comments')">
-                            <a-textarea v-model:value="directive.comments"/>
-                        </a-form-item>
-                        <a-form-item :label="$gettext('Content')" v-if="directive.directive==='include'">
-                            <code-editor v-model:content="content"
-                                         defaultHeight="200px" style="width: 100%;"/>
-                            <div class="save-btn">
-                                <a-button @click="save">{{ $gettext('Save') }}</a-button>
-                            </div>
-                        </a-form-item>
-                    </a-form>
-                </div>
+        <div v-if="current_idx===index" class="directive-editor-extra">
+            <div class="extra-content">
+                <a-form layout="vertical">
+                    <a-form-item :label="$gettext('Comments')">
+                        <a-textarea v-model:value="directive.comments"/>
+                    </a-form-item>
+                    <a-form-item :label="$gettext('Content')" v-if="directive.directive==='include'">
+                        <code-editor v-model:content="content"
+                                     defaultHeight="200px" style="width: 100%;"/>
+                        <div class="save-btn">
+                            <a-button @click="save">{{ $gettext('Save') }}</a-button>
+                        </div>
+                    </a-form-item>
+                </a-form>
             </div>
-        </transition>
+        </div>
     </div>
 
 </template>
@@ -115,19 +112,6 @@ function save() {
         justify-content: flex-end;
         margin-top: 15px;
     }
-}
-
-.slide-enter-active, .slide-leave-active {
-    transition: max-height .2s ease;
-    overflow: hidden;
-}
-
-.slide-enter-from, .slide-leave-to {
-    max-height: 0;
-}
-
-.slide-enter-to, .slide-leave-from {
-    max-height: 600px;
 }
 
 .input-wrapper {

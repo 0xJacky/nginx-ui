@@ -1,0 +1,22 @@
+Name = "deSEC.io"
+Description = ''''''
+URL = "https://desec.io"
+Code = "desec"
+Since = "v3.7.0"
+
+Example = '''
+DESEC_TOKEN=x-xxxxxxxxxxxxxxxxxxxxxxxxxx \
+lego --email you@example.com --dns desec --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    DESEC_TOKEN = "Domain token"
+  [Configuration.Additional]
+    DESEC_POLLING_INTERVAL = "Time between DNS propagation check"
+    DESEC_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    DESEC_TTL = "The TTL of the TXT record used for the DNS challenge"
+    DESEC_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://desec.readthedocs.io/en/latest/"

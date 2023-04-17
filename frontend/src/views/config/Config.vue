@@ -2,18 +2,16 @@
 import StdTable from '@/components/StdDataDisplay/StdTable.vue'
 import gettext from '@/gettext'
 import config from '@/api/config'
-import {customRender, datetime} from '@/components/StdDataDisplay/StdTableTransformer'
-import {computed, h, nextTick, ref, watch} from 'vue'
-
-const {$gettext} = gettext
-
-const api = config
-
+import {computed, ref, watch} from 'vue'
 import configColumns from '@/views/config/config'
 import {useRoute} from 'vue-router'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import router from '@/routes'
 import InspectConfig from '@/views/config/InspectConfig.vue'
+
+const {$gettext} = gettext
+
+const api = config
 
 const table = ref(null)
 const route = useRoute()
@@ -44,9 +42,8 @@ watch(route, () => {
 </script>
 
 <template>
-    <inspect-config ref="inspect_config"/>
-
     <a-card :title="$gettext('Configurations')">
+        <inspect-config ref="inspect_config"/>
         <std-table
             :key="update"
             ref="table"

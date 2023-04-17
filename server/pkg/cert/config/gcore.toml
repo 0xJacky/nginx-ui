@@ -1,0 +1,22 @@
+Name = "G-Core Labs"
+Description = ''''''
+URL = "https://gcorelabs.com/dns/"
+Code = "gcore"
+Since = "v4.5.0"
+
+Example = '''
+GCORE_PERMANENT_API_TOKEN=xxxxx \
+lego --email you@example.com --dns gcore --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    GCORE_PERMANENT_API_TOKEN = "Permanent API tokene (https://gcorelabs.com/blog/permanent-api-token-explained/)"
+  [Configuration.Additional]
+    GCORE_POLLING_INTERVAL = "Time between DNS propagation check"
+    GCORE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    GCORE_TTL = "The TTL of the TXT record used for the DNS challenge"
+    GCORE_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://dnsapi.gcorelabs.com/docs#tag/zonesV2"

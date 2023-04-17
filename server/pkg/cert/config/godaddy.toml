@@ -1,0 +1,24 @@
+Name = "Go Daddy"
+Description = ''''''
+URL = "https://godaddy.com"
+Code = "godaddy"
+Since = "v0.5.0"
+
+Example = '''
+GODADDY_API_KEY=xxxxxxxx \
+GODADDY_API_SECRET=yyyyyyyy \
+lego --email you@example.com --dns godaddy --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    GODADDY_API_KEY = "API key"
+    GODADDY_API_SECRET = "API secret"
+  [Configuration.Additional]
+    GODADDY_POLLING_INTERVAL = "Time between DNS propagation check"
+    GODADDY_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    GODADDY_TTL = "The TTL of the TXT record used for the DNS challenge"
+    GODADDY_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://developer.godaddy.com/doc/endpoint/domains"

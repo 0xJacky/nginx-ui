@@ -7,11 +7,10 @@ import {urlJoin} from '@/lib/helper'
 import {marked} from 'marked'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/vs2015.css'
-import {SendOutlined} from '@ant-design/icons-vue'
-import Template from '@/views/template/Template.vue'
+import Icon, {SendOutlined} from '@ant-design/icons-vue'
+
 import openai from '@/api/openai'
 import ChatGPT_logo from '@/assets/svg/ChatGPT_logo.svg'
-import Icon from '@ant-design/icons-vue'
 
 const {$gettext} = useGettext()
 
@@ -260,6 +259,11 @@ const show = computed(() => messages?.value?.length > 1)
 .chatgpt {
     position: sticky;
     top: 78px;
+
+    :deep(.ant-card-body) {
+        max-height: 100vh;
+        overflow-y: scroll;
+    }
 }
 
 .chat-start {

@@ -1,0 +1,30 @@
+Name = "EasyDNS"
+Description = ''''''
+URL = "https://easydns.com/"
+Code = "easydns"
+Since = "v2.6.0"
+
+Example = '''
+EASYDNS_TOKEN=<your token> \
+EASYDNS_KEY=<your key> \
+lego --email you@example.com --dns easydns --domains my.example.org run
+'''
+
+Additional = '''
+To test with the sandbox environment set ```EASYDNS_ENDPOINT=https://sandbox.rest.easydns.net```
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    EASYDNS_TOKEN = "API Token"
+    EASYDNS_KEY = "API Key"
+  [Configuration.Additional]
+    EASYDNS_ENDPOINT = "The endpoint URL of the API Server"
+    EASYDNS_POLLING_INTERVAL = "Time between DNS propagation check"
+    EASYDNS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    EASYDNS_SEQUENCE_INTERVAL = "Time between sequential requests"
+    EASYDNS_TTL = "The TTL of the TXT record used for the DNS challenge"
+    EASYDNS_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://docs.sandbox.rest.easydns.net"

@@ -1,0 +1,22 @@
+Name = "Ionos"
+Description = ''''''
+URL = "https://ionos.com"
+Code = "ionos"
+Since = "v4.2.0"
+
+Example = '''
+IONOS_API_KEY=xxxxxxxx \
+lego --email you@example.com --dns ionos --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    IONOS_API_KEY = "API key `<prefix>.<secret>` https://developer.hosting.ionos.com/docs/getstarted"
+  [Configuration.Additional]
+    IONOS_POLLING_INTERVAL = "Time between DNS propagation check"
+    IONOS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    IONOS_TTL = "The TTL of the TXT record used for the DNS challenge"
+    IONOS_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://developer.hosting.ionos.com/docs/dns"

@@ -6,12 +6,15 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/tls"
+	dns2 "github.com/0xJacky/Nginx-UI/server/pkg/cert/dns"
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+	"github.com/0xJacky/Nginx-UI/server/query"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/go-acme/lego/v4/certificate"
 	"github.com/go-acme/lego/v4/challenge/http01"
 	"github.com/go-acme/lego/v4/lego"
+	"github.com/go-acme/lego/v4/providers/dns"
 	"github.com/go-acme/lego/v4/registration"
 	"github.com/pkg/errors"
 	"log"
@@ -21,11 +24,16 @@ import (
 	"strings"
 )
 
+const (
+	HTTP01 = "http01"
+	DNS01  = "dns01"
+)
+
 // MyUser You'll need a user or account type that implements acme.User
 type MyUser struct {
 	Email        string
 	Registration *registration.Resource
-	key          crypto.PrivateKey
+	Key          crypto.PrivateKey
 }
 
 func (u *MyUser) GetEmail() string {
@@ -35,15 +43,23 @@ func (u *MyUser) GetRegistration() *registration.Resource {
 	return u.Registration
 }
 func (u *MyUser) GetPrivateKey() crypto.PrivateKey {
-	return u.key
+	return u.Key
 }
 
-func IssueCert(domain []string, logChan chan string, errChan chan error) {
+type ConfigPayload struct {
+	ServerName      []string `json:"server_name"`
+	ChallengeMethod string   `json:"challenge_method"`
+	DNSCredentialID int      `json:"dns_credential_id"`
+}
+
+func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) {
 	defer func() {
 		if err := recover(); err != nil {
 			log.Println("Issue Cert recover", err)
 		}
 	}()
+
+	domain := payload.ServerName
 
 	// Create a user. New accounts need an email and private key to start.
 	logChan <- "Generating private key for registering account"
@@ -56,7 +72,7 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 	logChan <- "Preparing lego configurations"
 	myUser := MyUser{
 		Email: settings.ServerSettings.Email,
-		key:   privateKey,
+		Key:   privateKey,
 	}
 
 	config := lego.NewConfig(&myUser)
@@ -84,12 +100,50 @@ func IssueCert(domain []string, logChan chan string, errChan chan error) {
 		return
 	}
 
-	logChan <- "Using HTTP01 challenge provider"
-	err = client.Challenge.SetHTTP01Provider(
-		http01.NewProviderServer("",
-			settings.ServerSettings.HTTPChallengePort,
-		),
-	)
+	switch payload.ChallengeMethod {
+	case HTTP01:
+		logChan <- "Using HTTP01 challenge provider"
+		err = client.Challenge.SetHTTP01Provider(
+			http01.NewProviderServer("",
+				settings.ServerSettings.HTTPChallengePort,
+			),
+		)
+	case DNS01:
+		d := query.DnsCredential
+		dnsCredential, err := d.FirstByID(payload.DNSCredentialID)
+		if err != nil {
+			errChan <- errors.Wrap(err, "get dns credential error")
+			return
+		}
+
+		logChan <- "Using DNS01 challenge provider"
+		code := dnsCredential.Config.Code
+		pConfig, ok := dns2.GetProvider(code)
+
+		if !ok {
+			errChan <- errors.Wrap(err, "provider not found")
+		}
+		logChan <- "Setting environment variables"
+		if dnsCredential.Config.Configuration != nil {
+			err = pConfig.SetEnv(*dnsCredential.Config.Configuration)
+			if err != nil {
+				break
+			}
+			defer func() {
+				logChan <- "Cleaning environment variables"
+				pConfig.CleanEnv()
+			}()
+			provider, err := dns.NewDNSChallengeProviderByName(code)
+			if err != nil {
+				break
+			}
+			err = client.Challenge.SetDNS01Provider(provider)
+		} else {
+			errChan <- errors.Wrap(err, "environment configuration is empty")
+			return
+		}
+
+	}
 
 	if err != nil {
 		errChan <- errors.Wrap(err, "fail to challenge")

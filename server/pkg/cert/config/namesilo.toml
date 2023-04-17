@@ -1,0 +1,22 @@
+Name = "Namesilo"
+Description = ''''''
+URL = "https://www.namesilo.com/"
+Code = "namesilo"
+Since = "v2.7.0"
+
+Example = '''
+NAMESILO_API_KEY=b9841238feb177a84330febba8a83208921177bffe733 \
+lego --email you@example.com --dns namesilo --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    NAMESILO_API_KEY = "Client ID"
+  [Configuration.Additional]
+    NAMESILO_POLLING_INTERVAL = "Time between DNS propagation check"
+    NAMESILO_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation, it is better to set larger than 15m"
+    NAMESILO_TTL = "The TTL of the TXT record used for the DNS challenge, should be in [3600, 2592000]"
+
+[Links]
+  API = "https://www.namesilo.com/api_reference.php"
+  GoClient = "https://github.com/nrdcg/namesilo"

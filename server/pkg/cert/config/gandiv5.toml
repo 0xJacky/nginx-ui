@@ -1,0 +1,22 @@
+Name = "Gandi Live DNS (v5)"
+Description = ''''''
+URL = "https://www.gandi.net"
+Code = "gandiv5"
+Since = "v0.5.0"
+
+Example = '''
+GANDIV5_API_KEY=abcdefghijklmnopqrstuvwx \
+lego --email you@example.com --dns gandiv5 --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    GANDIV5_API_KEY = "API key"
+  [Configuration.Additional]
+    GANDIV5_POLLING_INTERVAL = "Time between DNS propagation check"
+    GANDIV5_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    GANDIV5_TTL = "The TTL of the TXT record used for the DNS challenge"
+    GANDIV5_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://api.gandi.net/docs/livedns/"

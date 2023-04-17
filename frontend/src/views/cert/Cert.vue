@@ -5,7 +5,7 @@ import {customRender, datetime} from '@/components/StdDataDisplay/StdTableTransf
 import {Badge} from 'ant-design-vue'
 import cert from '@/api/cert'
 import StdCurd from '@/components/StdDataDisplay/StdCurd.vue'
-import Template from '@/views/template/Template.vue'
+
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import CertInfo from '@/views/domain/cert/CertInfo.vue'
 import {h} from 'vue'

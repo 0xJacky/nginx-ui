@@ -1,0 +1,24 @@
+Name = "Servercow"
+Description = ''''''
+URL = "https://servercow.de/"
+Code = "servercow"
+Since = "v3.4.0"
+
+Example = '''
+SERVERCOW_USERNAME=xxxxxxxx \
+SERVERCOW_PASSWORD=xxxxxxxx \
+lego --email you@example.com --dns servercow --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    SERVERCOW_USERNAME = "API username"
+    SERVERCOW_PASSWORD = "API password"
+  [Configuration.Additional]
+    SERVERCOW_POLLING_INTERVAL = "Time between DNS propagation check"
+    SERVERCOW_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    SERVERCOW_TTL = "The TTL of the TXT record used for the DNS challenge"
+    SERVERCOW_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://cp.servercow.de/client/plugin/support_manager/knowledgebase/view/34/dns-api-v1/7/"

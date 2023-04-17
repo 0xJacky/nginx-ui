@@ -24,11 +24,11 @@ const pageSize = computed({
 <template>
     <div class="pagination-container" v-if="pagination.total>pagination.per_page">
         <a-pagination
-                :current="pagination.current_page"
-                v-model:pageSize="pageSize"
-                :size="size"
-                :total="pagination.total"
-                @change="change"
+            :current="pagination.current_page"
+            v-model:pageSize="pageSize"
+            :size="size"
+            :total="pagination.total"
+            @change="change"
         />
     </div>
 </template>

@@ -1,0 +1,24 @@
+Name = "MyDNS.jp"
+Description = ''''''
+URL = "https://www.mydns.jp"
+Code = "mydnsjp"
+Since = "v1.2.0"
+
+Example = '''
+MYDNSJP_MASTER_ID=xxxxx \
+MYDNSJP_PASSWORD=xxxxx \
+lego --email you@example.com --dns mydnsjp --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    MYDNSJP_MASTER_ID = "Master ID"
+    MYDNSJP_PASSWORD = "Password"
+  [Configuration.Additional]
+    MYDNSJP_POLLING_INTERVAL = "Time between DNS propagation check"
+    MYDNSJP_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    MYDNSJP_TTL = "The TTL of the TXT record used for the DNS challenge"
+    MYDNSJP_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://www.mydns.jp/?MENU=030"

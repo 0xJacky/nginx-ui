@@ -6,6 +6,7 @@ import router from './routes'
 //import 'ant-design-vue/dist/antd.less'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import {useSettingsStore} from '@/pinia'
+import {autoAnimatePlugin} from '@formkit/auto-animate/vue'
 
 
 const pinia = createPinia()
@@ -19,6 +20,6 @@ app.use(gettext)
 const settings = useSettingsStore()
 gettext.current = settings.language || 'en'
 
-app.use(router).mount('#app')
+app.use(router).use(autoAnimatePlugin).mount('#app')
 
 export default app

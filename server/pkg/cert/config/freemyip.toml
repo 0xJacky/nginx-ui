@@ -1,0 +1,23 @@
+Name = "freemyip.com"
+Description = ''''''
+URL = "https://freemyip.com/"
+Code = "freemyip"
+Since = "v4.5.0"
+
+Example = '''
+FREEMYIP_TOKEN=xxxxxx \
+lego --email you@example.com --dns freemyip --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    FREEMYIP_TOKEN = "Account token"
+  [Configuration.Additional]
+    FREEMYIP_POLLING_INTERVAL = "Time between DNS propagation check"
+    FREEMYIP_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    FREEMYIP_TTL = "The TTL of the TXT record used for the DNS challenge"
+    FREEMYIP_HTTP_TIMEOUT = "API request timeout"
+    FREEMYIP_SEQUENCE_INTERVAL = "Time between sequential requests"
+
+[Links]
+  API = "https://freemyip.com/help"

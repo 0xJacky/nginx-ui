@@ -71,7 +71,11 @@ const lang = computed(() => {
                 <a-layout-content>
                     <page-header/>
                     <div class="router-view">
-                        <router-view/>
+                        <router-view v-slot="{ Component, route }">
+                            <transition name="slide-fade">
+                                <component :is="Component" :key="route.path"/>
+                            </transition>
+                        </router-view>
                     </div>
                 </a-layout-content>
 
@@ -122,6 +126,20 @@ const lang = computed(() => {
 </style>
 
 <style lang="less">
+.slide-fade-enter-active {
+    transition: all .3s ease-in-out;
+}
+
+.slide-fade-leave-active {
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+
+.slide-fade-enter-from, .slide-fade-enter-to, .slide-fade-leave-to
+    /* .slide-fade-leave-active for below version 2.1.8 */ {
+    transform: translateX(10px);
+    opacity: 0;
+}
+
 body {
     overflow: unset !important;
 }
