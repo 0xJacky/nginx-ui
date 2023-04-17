@@ -2,6 +2,7 @@
 import gettext from '@/gettext'
 import logo from '@/assets/img/logo.png'
 import version from '@/version.json'
+import GithubButton from 'vue-github-button'
 
 const {$gettext} = gettext
 
@@ -16,6 +17,12 @@ const this_year = new Date().getFullYear()
         <h2>Nginx UI</h2>
         <p>Yet another WebUI for Nginx</p>
         <p>Version: {{ version.version }} ({{ version.build_id || $gettext('Development Mode') }})</p>
+        <div class="star-on-github">
+            <github-button href="https://github.com/0xJacky/nginx-ui"
+                           data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large"
+                           data-show-count="true" aria-label="Star 0xJacky/nginx-ui on GitHub">Star
+            </github-button>
+        </div>
         <h3 v-translate>Project Team</h3>
         <p><a href="https://jackyu.cn/">@0xJacky</a> <a href="https://blog.kugeek.com/">@Hintay</a></p>
         <h3 v-translate>Build with</h3>
@@ -43,5 +50,9 @@ const this_year = new Date().getFullYear()
 
 .ant-btn {
     margin: 10px 10px 0 0;
+}
+
+.star-on-github {
+    margin-bottom: 10px;
 }
 </style>

@@ -49,13 +49,16 @@ const advance_mode = computed({
     get() {
         return advance_mode_ref.value || parse_error_status.value
     },
-    set(v) {
+    set(v: boolean) {
         advance_mode_ref.value = v
     }
 })
 const history_chatgpt_record = ref([])
 
 function handle_response(r: any) {
+    if (r.advanced) {
+        advance_mode.value = true
+    }
 
     Object.keys(cert_info_map).forEach(v => {
         delete cert_info_map[v]
