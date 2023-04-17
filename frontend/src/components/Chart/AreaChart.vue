@@ -22,11 +22,11 @@ let chartOptions = {
             enabled: false
         },
         animations: {
-            enabled: false,
+            enabled: false
         },
         toolbar: {
             show: false
-        },
+        }
     },
     colors: ['#ff6385', '#36a3eb'],
     fill: {
@@ -41,7 +41,7 @@ let chartOptions = {
     },
     stroke: {
         curve: 'smooth',
-        width: 0,
+        width: 0
     },
     xaxis: {
         type: 'datetime',
@@ -75,7 +75,7 @@ let chartOptions = {
         },
         onItemHover: {
             highlightDataSeries: false
-        },
+        }
     }
 }
 
@@ -114,7 +114,7 @@ const callback = () => {
                 },
                 onItemHover: {
                     highlightDataSeries: false
-                },
+                }
             }
         }
     }

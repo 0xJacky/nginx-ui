@@ -1,0 +1,26 @@
+Name = "plesk.com"
+Description = ''''''
+URL = "https://www.plesk.com/"
+Code = "plesk"
+Since = "v4.11.0"
+
+Example = '''
+PLESK_SERVER_BASE_URL="https://plesk.myserver.com:8443" \
+PLESK_USERNAME=xxxxxx \
+PLESK_PASSWORD=yyyyyy \
+lego --email you@example.com --dns plesk --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    PLESK_SERVER_BASE_URL = "Base URL of the server (ex: https://plesk.myserver.com:8443)"
+    PLESK_USERNAME = "API username"
+    PLESK_PASSWORD = "API password"
+  [Configuration.Additional]
+    PLESK_POLLING_INTERVAL = "Time between DNS propagation check"
+    PLESK_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    PLESK_TTL = "The TTL of the TXT record used for the DNS challenge"
+    PLESK_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://docs.plesk.com/en-US/obsidian/api-rpc/about-xml-api/reference.28784/"

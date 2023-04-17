@@ -94,6 +94,39 @@ func GetDomain(c *gin.Context) {
 		enabled = false
 	}
 
+	g := query.ChatGPTLog
+	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	s := query.Site
+	site, err := s.Where(s.Path.Eq(path)).FirstOrInit()
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	if site.Advanced {
+		origContent, err := os.ReadFile(path)
+		if err != nil {
+			ErrHandler(c, err)
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"advanced":         site.Advanced,
+			"enabled":          enabled,
+			"name":             name,
+			"config":           string(origContent),
+			"chatgpt_messages": chatgpt.Content,
+		})
+		return
+	}
+
 	c.Set("maybe_error", "nginx_config_syntax_error")
 	config, err := nginx.ParseNgxConfig(path)
 
@@ -130,17 +163,10 @@ func GetDomain(c *gin.Context) {
 
 	certModel, _ := model.FirstCert(name)
 
-	g := query.ChatGPTLog
-	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
-
-	if err != nil {
-		ErrHandler(c, err)
-		return
-	}
-
 	c.Set("maybe_error", "nginx_config_syntax_error")
 
 	c.JSON(http.StatusOK, gin.H{
+		"advanced":         site.Advanced,
 		"enabled":          enabled,
 		"name":             name,
 		"config":           config.FmtCode(),
@@ -190,6 +216,9 @@ func SaveDomain(c *gin.Context) {
 	// rename the config file if needed
 	if name != json.Name {
 		newPath := nginx.GetConfPath("sites-available", json.Name)
+		s := query.Site
+		_, err = s.Where(s.Path.Eq(path)).Update(s.Path, newPath)
+
 		// check if dst file exists, do not rename
 		if helper.FileExists(newPath) {
 			c.JSON(http.StatusNotAcceptable, gin.H{
@@ -447,4 +476,37 @@ func DuplicateSite(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"dst": dst,
 	})
+}
+
+func DomainEditByAdvancedMode(c *gin.Context) {
+	var json struct {
+		Advanced bool `json:"advanced"`
+	}
+
+	if !BindAndValid(c, &json) {
+		return
+	}
+
+	name := c.Param("name")
+	path := nginx.GetConfPath("sites-available", name)
+
+	s := query.Site
+
+	_, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	_, err = s.Where(s.Path.Eq(path)).Update(s.Advanced, json.Advanced)
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+	})
+
 }

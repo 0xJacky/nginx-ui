@@ -2,8 +2,8 @@
 import DirectiveAdd from '@/views/domain/ngx_conf/directive/DirectiveAdd'
 import {useGettext} from 'vue3-gettext'
 import {reactive, ref} from 'vue'
-import draggable from 'vuedraggable'
 import DirectiveEditorItem from '@/views/domain/ngx_conf/directive/DirectiveEditorItem.vue'
+import draggable from 'vuedraggable'
 
 const {$gettext} = useGettext()
 
@@ -38,11 +38,12 @@ function onSave(idx: number) {
                                    :current_idx="current_idx" :index="index"
                                    :ngx_directives="ngx_directives"
                                    :readonly="readonly"
+                                   v-auto-animate
             />
         </template>
     </draggable>
 
-    <directive-add v-if="!readonly" :ngx_directives="ngx_directives"/>
+    <directive-add v-if="!readonly" :ngx_directives="ngx_directives" v-auto-animate/>
 </template>
 
 <style lang="less" scoped>

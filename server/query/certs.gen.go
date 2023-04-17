@@ -28,7 +28,7 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 
 	tableName := _cert.certDo.TableName()
 	_cert.ALL = field.NewAsterisk(tableName)
-	_cert.ID = field.NewUint(tableName, "id")
+	_cert.ID = field.NewInt(tableName, "id")
 	_cert.CreatedAt = field.NewTime(tableName, "created_at")
 	_cert.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_cert.DeletedAt = field.NewTime(tableName, "deleted_at")
@@ -38,7 +38,14 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.SSLCertificatePath = field.NewString(tableName, "ssl_certificate_path")
 	_cert.SSLCertificateKeyPath = field.NewString(tableName, "ssl_certificate_key_path")
 	_cert.AutoCert = field.NewInt(tableName, "auto_cert")
+	_cert.ChallengeMethod = field.NewString(tableName, "challenge_method")
+	_cert.DnsCredentialID = field.NewInt(tableName, "dns_credential_id")
 	_cert.Log = field.NewString(tableName, "log")
+	_cert.DnsCredential = certBelongsToDnsCredential{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("DnsCredential", "model.DnsCredential"),
+	}
 
 	_cert.fillFieldMap()
 
@@ -49,7 +56,7 @@ type cert struct {
 	certDo
 
 	ALL                   field.Asterisk
-	ID                    field.Uint
+	ID                    field.Int
 	CreatedAt             field.Time
 	UpdatedAt             field.Time
 	DeletedAt             field.Time
@@ -59,7 +66,10 @@ type cert struct {
 	SSLCertificatePath    field.String
 	SSLCertificateKeyPath field.String
 	AutoCert              field.Int
+	ChallengeMethod       field.String
+	DnsCredentialID       field.Int
 	Log                   field.String
+	DnsCredential         certBelongsToDnsCredential
 
 	fieldMap map[string]field.Expr
 }
@@ -76,7 +86,7 @@ func (c cert) As(alias string) *cert {
 
 func (c *cert) updateTableName(table string) *cert {
 	c.ALL = field.NewAsterisk(table)
-	c.ID = field.NewUint(table, "id")
+	c.ID = field.NewInt(table, "id")
 	c.CreatedAt = field.NewTime(table, "created_at")
 	c.UpdatedAt = field.NewTime(table, "updated_at")
 	c.DeletedAt = field.NewTime(table, "deleted_at")
@@ -86,6 +96,8 @@ func (c *cert) updateTableName(table string) *cert {
 	c.SSLCertificatePath = field.NewString(table, "ssl_certificate_path")
 	c.SSLCertificateKeyPath = field.NewString(table, "ssl_certificate_key_path")
 	c.AutoCert = field.NewInt(table, "auto_cert")
+	c.ChallengeMethod = field.NewString(table, "challenge_method")
+	c.DnsCredentialID = field.NewInt(table, "dns_credential_id")
 	c.Log = field.NewString(table, "log")
 
 	c.fillFieldMap()
@@ -103,7 +115,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 11)
+	c.fieldMap = make(map[string]field.Expr, 14)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -114,7 +126,10 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["ssl_certificate_path"] = c.SSLCertificatePath
 	c.fieldMap["ssl_certificate_key_path"] = c.SSLCertificateKeyPath
 	c.fieldMap["auto_cert"] = c.AutoCert
+	c.fieldMap["challenge_method"] = c.ChallengeMethod
+	c.fieldMap["dns_credential_id"] = c.DnsCredentialID
 	c.fieldMap["log"] = c.Log
+
 }
 
 func (c cert) clone(db *gorm.DB) cert {
@@ -125,6 +140,72 @@ func (c cert) clone(db *gorm.DB) cert {
 func (c cert) replaceDB(db *gorm.DB) cert {
 	c.certDo.ReplaceDB(db)
 	return c
+}
+
+type certBelongsToDnsCredential struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a certBelongsToDnsCredential) Where(conds ...field.Expr) *certBelongsToDnsCredential {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a certBelongsToDnsCredential) WithContext(ctx context.Context) *certBelongsToDnsCredential {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a certBelongsToDnsCredential) Model(m *model.Cert) *certBelongsToDnsCredentialTx {
+	return &certBelongsToDnsCredentialTx{a.db.Model(m).Association(a.Name())}
+}
+
+type certBelongsToDnsCredentialTx struct{ tx *gorm.Association }
+
+func (a certBelongsToDnsCredentialTx) Find() (result *model.DnsCredential, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a certBelongsToDnsCredentialTx) Append(values ...*model.DnsCredential) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a certBelongsToDnsCredentialTx) Replace(values ...*model.DnsCredential) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a certBelongsToDnsCredentialTx) Delete(values ...*model.DnsCredential) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a certBelongsToDnsCredentialTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a certBelongsToDnsCredentialTx) Count() int64 {
+	return a.tx.Count()
 }
 
 type certDo struct{ gen.DO }
@@ -144,13 +225,13 @@ func (c certDo) FirstByID(id int) (result *model.Cert, err error) {
 	return
 }
 
-// DeleteByID update @@table set deleted_at=NOW() where id=@id
+// DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
 func (c certDo) DeleteByID(id int) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
 	params = append(params, id)
-	generateSQL.WriteString("update certs set deleted_at=NOW() where id=? ")
+	generateSQL.WriteString("update certs set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=? ")
 
 	var executeSQL *gorm.DB
 	executeSQL = c.UnderlyingDB().Exec(generateSQL.String(), params...) // ignore_security_alert

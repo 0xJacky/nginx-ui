@@ -1,0 +1,24 @@
+Name = "LuaDNS"
+Description = ''''''
+URL = "https://luadns.com"
+Code = "luadns"
+Since = "v3.7.0"
+
+Example = '''
+LUADNS_API_USERNAME=youremail \
+LUADNS_API_TOKEN=xxxxxxxx \
+lego --email you@example.com --dns luadns --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    LUADNS_API_USERNAME = "Username (your email)"
+    LUADNS_API_TOKEN = "API token"
+  [Configuration.Additional]
+    LUADNS_POLLING_INTERVAL = "Time between DNS propagation check"
+    LUADNS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    LUADNS_TTL = "The TTL of the TXT record used for the DNS challenge"
+    LUADNS_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://luadns.com/api.html"

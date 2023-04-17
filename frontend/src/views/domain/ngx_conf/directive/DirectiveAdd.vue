@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {If} from '@/views/domain/ngx_conf'
 import CodeEditor from '@/components/CodeEditor'
 import {reactive, ref} from 'vue'
 import {useGettext} from 'vue3-gettext'

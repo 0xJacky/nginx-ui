@@ -1,0 +1,25 @@
+Name = "Websupport"
+Description = ''''''
+URL = "https://websupport.sk"
+Code = "websupport"
+Since = "v4.10.0"
+
+Example = '''
+WEBSUPPORT_API_KEY="xxxxxxxxxxxxxxxxxxxxx" \
+WEBSUPPORT_SECRET="yyyyyyyyyyyyyyyyyyyyy" \
+lego --email myemail@example.com --dns websupport --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    WEBSUPPORT_API_KEY = "API key"
+    WEBSUPPORT_SECRET = "API secret"
+  [Configuration.Additional]
+    WEBSUPPORT_POLLING_INTERVAL = "Time between DNS propagation check"
+    WEBSUPPORT_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    WEBSUPPORT_SEQUENCE_INTERVAL = "Time between sequential requests"
+    WEBSUPPORT_TTL = "The TTL of the TXT record used for the DNS challenge"
+    WEBSUPPORT_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://rest.websupport.sk/docs/v1.zone"

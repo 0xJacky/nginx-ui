@@ -1,0 +1,22 @@
+Name = "Dynu"
+Description = ''''''
+URL = "https://www.dynu.com/"
+Code = "dynu"
+Since = "v3.5.0"
+
+Example = '''
+DYNU_API_KEY=1234567890abcdefghijklmnopqrstuvwxyz \
+lego --email you@example.com --dns dynu --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    DYNU_API_KEY = "API key"
+  [Configuration.Additional]
+    DYNU_POLLING_INTERVAL = "Time between DNS propagation check"
+    DYNU_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    DYNU_TTL = "The TTL of the TXT record used for the DNS challenge"
+    DYNU_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://www.dynu.com/en-US/Support/API"

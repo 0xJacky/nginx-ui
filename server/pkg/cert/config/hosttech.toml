@@ -1,0 +1,23 @@
+Name = "Hosttech"
+Description = ''''''
+URL = "https://www.hosttech.eu/"
+Code = "hosttech"
+Since = "v4.5.0"
+
+Example = '''
+HOSTTECH_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxx \
+lego --email you@example.com --dns hosttech --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    HOSTTECH_API_KEY = "API login"
+    HOSTTECH_PASSWORD = "API password"
+  [Configuration.Additional]
+    HOSTTECH_POLLING_INTERVAL = "Time between DNS propagation check"
+    HOSTTECH_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    HOSTTECH_TTL = "The TTL of the TXT record used for the DNS challenge"
+    HOSTTECH_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://api.ns1.hosttech.eu/api/documentation"

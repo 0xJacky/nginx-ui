@@ -63,6 +63,8 @@ func InitRouter() *gin.Engine {
 
 			g.POST("domain/:name/enable", api.EnableDomain)
 			g.POST("domain/:name/disable", api.DisableDomain)
+			g.POST("domain/:name/advance", api.DomainEditByAdvancedMode)
+
 			g.DELETE("domain/:name", api.DeleteDomain)
 			// duplicate site
 			g.POST("domain/:name/duplicate", api.DuplicateSite)
@@ -80,16 +82,27 @@ func InitRouter() *gin.Engine {
 			g.GET("template/configs", api.GetTemplateConfList)
 			g.GET("template/blocks", api.GetTemplateBlockList)
 			g.GET("template/block/:name", api.GetTemplateBlock)
+			g.POST("template/block/:name", api.GetTemplateBlock)
 
 			g.GET("certs", api.GetCertList)
 			g.GET("cert/:id", api.GetCert)
 			g.POST("cert", api.AddCert)
 			g.POST("cert/:id", api.ModifyCert)
 			g.DELETE("cert/:id", api.RemoveCert)
+
 			// Add domain to auto-renew cert list
 			g.POST("auto_cert/:name", api.AddDomainToAutoCert)
 			// Delete domain from auto-renew cert list
 			g.DELETE("auto_cert/:name", api.RemoveDomainFromAutoCert)
+			g.GET("auto_cert/dns/providers", api.GetDNSProvidersList)
+			g.GET("auto_cert/dns/provider/:code", api.GetDNSProvider)
+
+			// DNS Credential
+			g.GET("dns_credentials", api.GetDnsCredentialList)
+			g.GET("dns_credential/:id", api.GetDnsCredential)
+			g.POST("dns_credential", api.AddDnsCredential)
+			g.POST("dns_credential/:id", api.EditDnsCredential)
+			g.DELETE("dns_credential/:id", api.DeleteDnsCredential)
 
 			// pty
 			g.GET("pty", api.Pty)

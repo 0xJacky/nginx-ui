@@ -3,14 +3,13 @@ import StdTable from '@/components/StdDataDisplay/StdTable.vue'
 
 import {customRender, datetime} from '@/components/StdDataDisplay/StdTableTransformer'
 import {useGettext} from 'vue3-gettext'
-
-const {$gettext, interpolate} = useGettext()
-
 import domain from '@/api/domain'
 import {Badge, message} from 'ant-design-vue'
 import {h, ref} from 'vue'
 import {input} from '@/components/StdDataEntry'
 import SiteDuplicate from '@/views/domain/SiteDuplicate.vue'
+
+const {$gettext, interpolate} = useGettext()
 
 const columns = [{
     title: () => $gettext('Name'),
@@ -131,8 +130,8 @@ function handle_click_duplicate(name: string) {
                 </a-popconfirm>
             </template>
         </std-table>
+        <site-duplicate v-model:visible="show_duplicator" :name="target" @duplicated="table.get_list()"/>
     </a-card>
-    <site-duplicate v-model:visible="show_duplicator" :name="target" @duplicated="table.get_list()"/>
 </template>
 
 <style scoped>

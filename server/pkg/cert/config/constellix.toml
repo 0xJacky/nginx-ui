@@ -1,0 +1,24 @@
+Name = "Constellix"
+Description = ''''''
+URL = "https://constellix.com"
+Code = "constellix"
+Since = "v3.4.0"
+
+Example = '''
+CONSTELLIX_API_KEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx \
+CONSTELLIX_SECRET_KEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx \
+lego --email you@example.com --dns constellix --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    CONSTELLIX_API_KEY = "User API key"
+    CONSTELLIX_SECRET_KEY = "User secret key"
+  [Configuration.Additional]
+    CONSTELLIX_POLLING_INTERVAL = "Time between DNS propagation check"
+    CONSTELLIX_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    CONSTELLIX_TTL = "The TTL of the TXT record used for the DNS challenge"
+    CONSTELLIX_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://api-docs.constellix.com"

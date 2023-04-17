@@ -1,0 +1,22 @@
+Name = "Netlify"
+Description = ''''''
+URL = "https://www.netlify.com"
+Code = "netlify"
+Since = "v3.7.0"
+
+Example = '''
+NETLIFY_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
+lego --email you@example.com --dns netlify --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    NETLIFY_TOKEN = "Token"
+  [Configuration.Additional]
+    NETLIFY_POLLING_INTERVAL = "Time between DNS propagation check"
+    NETLIFY_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    NETLIFY_TTL = "The TTL of the TXT record used for the DNS challenge"
+    NETLIFY_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://open-api.netlify.com/"

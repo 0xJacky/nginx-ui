@@ -1,0 +1,52 @@
+Name = "OVH"
+Description = ''''''
+URL = "https://www.ovh.com/"
+Code = "ovh"
+Since = "v0.4.0"
+
+Example = '''
+OVH_APPLICATION_KEY=1234567898765432 \
+OVH_APPLICATION_SECRET=b9841238feb177a84330febba8a832089 \
+OVH_CONSUMER_KEY=256vfsd347245sdfg \
+OVH_ENDPOINT=ovh-eu \
+lego --email you@example.com --dns ovh --domains my.example.org run
+'''
+
+Additional = '''
+## Application Key and Secret
+
+Application key and secret can be created by following the [OVH guide](https://docs.ovh.com/gb/en/customer/first-steps-with-ovh-api/).
+
+When requesting the consumer key, the following configuration can be use to define access rights:
+
+```json
+{
+  "accessRules": [
+    {
+      "method": "POST",
+      "path": "/domain/zone/*"
+    },
+    {
+      "method": "DELETE",
+      "path": "/domain/zone/*"
+    }
+  ]
+}
+```
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    OVH_ENDPOINT = "Endpoint URL (ovh-eu or ovh-ca)"
+    OVH_APPLICATION_KEY = "Application key"
+    OVH_APPLICATION_SECRET = "Application secret"
+    OVH_CONSUMER_KEY = "Consumer key"
+  [Configuration.Additional]
+    OVH_POLLING_INTERVAL = "Time between DNS propagation check"
+    OVH_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    OVH_TTL = "The TTL of the TXT record used for the DNS challenge"
+    OVH_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://eu.api.ovh.com/"
+  GoClient = "https://github.com/ovh/go-ovh"

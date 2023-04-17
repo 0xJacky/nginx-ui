@@ -1,0 +1,22 @@
+Name = "Bindman"
+Description = ''''''
+URL = "https://github.com/labbsr0x/bindman-dns-webhook"
+Code = "bindman"
+Since = "v2.6.0"
+
+Example = '''
+BINDMAN_MANAGER_ADDRESS=<your bindman manager address> \
+lego --email you@example.com --dns bindman --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    BINDMAN_MANAGER_ADDRESS = "The server URL, should have scheme, hostname, and port (if required) of the Bindman-DNS Manager server"
+  [Configuration.Additional]
+    BINDMAN_POLLING_INTERVAL = "Time between DNS propagation check"
+    BINDMAN_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    BINDMAN_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://gitlab.isc.org/isc-projects/bind9"
+  GoClient = "https://github.com/labbsr0x/bindman-dns-webhook"

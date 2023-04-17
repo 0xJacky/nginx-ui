@@ -11,7 +11,7 @@ import (
 func buildComments(orig string, indent int) (content string) {
 	scanner := bufio.NewScanner(strings.NewReader(orig))
 	for scanner.Scan() {
-		content += strings.Repeat("\t", indent) + "# " + scanner.Text() + "\n"
+		content += strings.Repeat("\t", indent) + "# " + strings.TrimSpace(scanner.Text()) + "\n"
 	}
 	content = strings.TrimLeft(content, "\n")
 	return

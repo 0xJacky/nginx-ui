@@ -474,7 +474,7 @@ function initSortable() {
         <std-data-entry
             v-if="!disable_search && searchColumns.length"
             :data-list="searchColumns"
-            v-model:data-source="params"
+            :data-source="params"
             layout="inline"
         >
             <template #action>

@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
-import {computed, onMounted, ref, watch} from 'vue'
+import {computed, inject, onMounted, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import {useGettext} from 'vue3-gettext'
 import Cert from '@/views/domain/cert/Cert.vue'
 import LogEntry from '@/views/domain/ngx_conf/LogEntry.vue'
-import ConfigTemplate from '@/views/domain/ngx_conf/ConfigTemplate.vue'
+import ConfigTemplate from '@/views/domain/ngx_conf/config_template/ConfigTemplate.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
-import {PlusOutlined} from '@ant-design/icons-vue'
+import {MoreOutlined, PlusOutlined} from '@ant-design/icons-vue'
+import {Modal} from 'ant-design-vue'
+import template from '@/api/template'
 
 const {$gettext} = useGettext()
 
@@ -16,10 +18,33 @@ const props = defineProps(['ngx_config', 'auto_cert', 'enabled', 'cert_info'])
 
 const emit = defineEmits(['callback', 'update:auto_cert'])
 
+const save_site_config: Function = inject('save_site_config')!
+
 const route = useRoute()
 
 const current_server_index = ref(0)
 const name = ref(route.params.name)
+
+function confirm_change_tls(r: boolean) {
+    Modal.confirm({
+        title: $gettext('Do you want to enable TLS?'),
+        content: $gettext('To make sure the certification auto-renewal can work normally, ' +
+            'we need to add a location which can proxy the request from authority to backend, ' +
+            'and we need to save this file and reload the Nginx. Are you sure you want to continue?'),
+        mask: false,
+        centered: true,
+        async onOk() {
+            await template.get_block('letsencrypt.conf').then(r => {
+                const first = props.ngx_config.servers[0]
+                first.locations = first.locations.filter((l: any) => l.path !== '/.well-known/acme-challenge')
+                first.locations.push(...r.locations)
+            })
+            await save_site_config()
+
+            change_tls(r)
+        }
+    })
+}
 
 function change_tls(r: any) {
     if (r) {
@@ -78,7 +103,7 @@ function change_tls(r: any) {
 }
 
 const current_server_directives = computed(() => {
-    return props.ngx_config.servers[current_server_index.value].directives
+    return props.ngx_config.servers?.[current_server_index.value]?.directives
 })
 
 const directivesMap = computed(() => {
@@ -138,6 +163,18 @@ onMounted(() => {
 
 const router = useRouter()
 
+const servers_length = computed(() => {
+    return props.ngx_config.servers.length
+})
+
+watch(servers_length, () => {
+    if (current_server_index.value >= servers_length.value) {
+        current_server_index.value = servers_length.value - 1
+    } else if (current_server_index.value < 0) {
+        current_server_index.value = 0
+    }
+})
+
 watch(current_server_index, () => {
     router.push({
         query: {
@@ -153,19 +190,41 @@ function add_server() {
         directives: []
     })
 }
+
+function remove_server(index: number) {
+    Modal.confirm({
+        title: $gettext('Do you want to remove this server?'),
+        mask: false,
+        centered: true,
+        onOk: () => props.ngx_config?.servers?.splice(index, 1)
+    })
+}
 </script>
 
 <template>
     <div>
         <a-form-item :label="$gettext('Enable TLS')" v-if="!support_ssl">
-            <a-switch @change="change_tls"/>
+            <a-switch @change="confirm_change_tls"/>
         </a-form-item>
 
         <h2>{{ $gettext('Custom') }}</h2>
         <code-editor v-model:content="ngx_config.custom" default-height="150px"/>
 
         <a-tabs v-model:activeKey="current_server_index">
-            <a-tab-pane :tab="'Server '+(k+1)" v-for="(v,k) in props.ngx_config.servers" :key="k">
+            <a-tab-pane v-for="(v,k) in props.ngx_config.servers" :key="k">
+                <template #tab>
+                    Server {{ (k + 1) }}
+                    <a-dropdown>
+                        <MoreOutlined/>
+                        <template #overlay>
+                            <a-menu>
+                                <a-menu-item>
+                                    <a href="javascript:;" @click="remove_server(k)">{{ $gettext('Delete') }}</a>
+                                </a-menu-item>
+                            </a-menu>
+                        </template>
+                    </a-dropdown>
+                </template>
                 <log-entry
                     :ngx_config="props.ngx_config"
                     :current_server_idx="current_server_index"
@@ -177,9 +236,11 @@ function add_server() {
                         <cert
                             v-if="current_support_ssl"
                             :config_name="ngx_config.name"
-                            :cert_info="props.cert_info?.[k]"
+                            :cert_info="cert_info?.[k]"
                             :current_server_directives="current_server_directives"
                             :directives-map="directivesMap"
+                            :current_server_index="current_server_index"
+                            :ngx_config="ngx_config"
                             v-model:enabled="autoCertRef"
                             @callback="$emit('callback')"
                         />
@@ -198,7 +259,7 @@ function add_server() {
                 </div>
 
             </a-tab-pane>
-            
+
             <template #rightExtra>
                 <a-button @click="add_server" type="link" size="small">
                     <PlusOutlined/>
@@ -210,6 +271,8 @@ function add_server() {
 
 </template>
 
-<style scoped>
-
+<style lang="less" scoped>
+:deep(.ant-tabs-tab-btn) {
+    margin-left: 16px;
+}
 </style>

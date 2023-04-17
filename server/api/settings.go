@@ -11,6 +11,7 @@ func GetSettings(c *gin.Context) {
 		"server":    settings.ServerSettings,
 		"nginx_log": settings.NginxLogSettings,
 		"openai":    settings.OpenAISettings,
+		"git":       settings.GitSettings,
 	})
 }
 
@@ -27,6 +28,8 @@ func SaveSettings(c *gin.Context) {
 
 	settings.Conf.Section("server").Key("Email").SetValue(json.Server.Email)
 	settings.Conf.Section("server").Key("HTTPChallengePort").SetValue(json.Server.HTTPChallengePort)
+	settings.Conf.Section("server").Key("GithubProxy").SetValue(json.Server.GithubProxy)
+
 	settings.Conf.Section("nginx_log").Key("AccessLogPath").SetValue(json.NginxLog.AccessLogPath)
 	settings.Conf.Section("nginx_log").Key("ErrorLogPath").SetValue(json.NginxLog.ErrorLogPath)
 

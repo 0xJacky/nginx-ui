@@ -1,0 +1,24 @@
+Name = "WEDOS"
+Description = ''''''
+URL = "https://www.wedos.com"
+Code = "wedos"
+Since = "v4.4.0"
+
+Example = '''
+WEDOS_USERNAME=xxxxxxxx \
+WEDOS_WAPI_PASSWORD=xxxxxxxx \
+lego --email you@example.com --dns wedos --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    WEDOS_USERNAME = "Username is the same as for the admin account"
+    WEDOS_WAPI_PASSWORD = "Password needs to be generated and IP allowed in the admin interface"
+  [Configuration.Additional]
+    WEDOS_POLLING_INTERVAL = "Time between DNS propagation check"
+    WEDOS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    WEDOS_HTTP_TIMEOUT = "API request timeout"
+    WEDOS_TTL = "The TTL of the TXT record used for the DNS challenge"
+
+[Links]
+  API = "https://kb.wedos.com/en/kategorie/wapi-api-interface/wdns-en/"

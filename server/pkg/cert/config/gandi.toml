@@ -1,0 +1,22 @@
+Name = "Gandi"
+Description = """"""
+URL = "https://www.gandi.net"
+Code = "gandi"
+Since = "v0.3.0"
+
+Example = '''
+GANDI_API_KEY=abcdefghijklmnopqrstuvwx \
+lego --email you@example.com --dns gandi --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    GANDI_API_KEY = "API key"
+  [Configuration.Additional]
+    GANDI_POLLING_INTERVAL = "Time between DNS propagation check"
+    GANDI_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    GANDI_TTL = "The TTL of the TXT record used for the DNS challenge"
+    GANDI_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://doc.rpc.gandi.net/index.html"

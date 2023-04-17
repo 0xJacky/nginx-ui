@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import {useUserStore} from '@/pinia'
-
-const thisYear = new Date().getFullYear()
-
 import {LockOutlined, UserOutlined} from '@ant-design/icons-vue'
 import {reactive, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
@@ -11,6 +8,8 @@ import {Form, message} from 'ant-design-vue'
 import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
+
+const thisYear = new Date().getFullYear()
 
 const route = useRoute()
 const router = useRouter()

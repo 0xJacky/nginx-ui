@@ -72,10 +72,10 @@ const chat_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 8 : 2
 
 
 <template>
-    <inspect-config ref="inspect_config"/>
     <a-row :gutter="16">
         <a-col :xs="24" :sm="24" :md="editor_md">
             <a-card :title="$gettext('Edit Configuration')">
+                <inspect-config ref="inspect_config"/>
                 <code-editor v-model:content="configText"/>
                 <footer-tool-bar>
                     <a-space>

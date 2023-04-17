@@ -1,0 +1,22 @@
+Name = "Liara"
+Description = ''''''
+URL = "https://liara.ir"
+Code = "liara"
+Since = "v4.10.0"
+
+Example = '''
+LIARA_API_KEY="xxxxxxxxxxxxxxxxxxxxx" \
+lego --email myemail@example.com --dns liara --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    LIARA_API_KEY = "The API key"
+  [Configuration.Additional]
+    LIARA_POLLING_INTERVAL = "Time between DNS propagation check"
+    LIARA_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    LIARA_TTL = "The TTL of the TXT record used for the DNS challenge"
+    LIARA_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://dns-service.iran.liara.ir/swagger"

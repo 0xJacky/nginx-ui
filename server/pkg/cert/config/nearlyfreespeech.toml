@@ -1,0 +1,25 @@
+Name = "NearlyFreeSpeech.NET"
+Description = ''''''
+URL = "https://nearlyfreespeech.net/"
+Code = "nearlyfreespeech"
+Since = "v4.8.0"
+
+Example = '''
+NEARLYFREESPEECH_API_KEY=xxxxxx \
+NEARLYFREESPEECH_LOGIN=xxxx \
+lego --email you@example.com --dns nearlyfreespeech --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    NEARLYFREESPEECH_API_KEY = "API Key for API requests"
+    NEARLYFREESPEECH_LOGIN = "Username for API requests"
+  [Configuration.Additional]
+    NEARLYFREESPEECH_POLLING_INTERVAL = "Time between DNS propagation check"
+    NEARLYFREESPEECH_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    NEARLYFREESPEECH_TTL = "The TTL of the TXT record used for the DNS challenge"
+    NEARLYFREESPEECH_HTTP_TIMEOUT = "API request timeout"
+    NEARLYFREESPEECH_SEQUENCE_INTERVAL = "Time between sequential requests"
+
+[Links]
+  API = "https://members.nearlyfreespeech.net/wiki/API/Reference"

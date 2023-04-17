@@ -1,0 +1,22 @@
+Name = "Hetzner"
+Description = ''''''
+URL = "https://hetzner.com"
+Code = "hetzner"
+Since = "v3.7.0"
+
+Example = '''
+HETZNER_API_KEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx \
+lego --email you@example.com --dns hetzner --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    HETZNER_API_KEY = "API key"
+  [Configuration.Additional]
+    HETZNER_POLLING_INTERVAL = "Time between DNS propagation check"
+    HETZNER_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    HETZNER_TTL = "The TTL of the TXT record used for the DNS challenge"
+    HETZNER_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://dns.hetzner.com/api-docs"

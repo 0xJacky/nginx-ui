@@ -1,0 +1,21 @@
+Name = "Civo"
+Description = ''''''
+URL = "https://civo.com"
+Code = "civo"
+Since = "v4.9.0"
+
+Example = '''
+CIVO_TOKEN=xxxxxx \
+lego --email you@example.com --dns civo --domains my.example.org run
+'''
+
+[Configuration]
+    [Configuration.Credentials]
+        CIVO_TOKEN = "Authentication token"
+    [Configuration.Additional]
+        CIVO_POLLING_INTERVAL = "Time between DNS propagation check"
+        CIVO_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+        CIVO_TTL = "The TTL of the TXT record used for the DNS challenge"
+
+[Links]
+    API = "https://www.civo.com/api/dns"

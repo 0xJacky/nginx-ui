@@ -8,7 +8,6 @@ import ngx from '@/api/ngx'
 import {computed, reactive, ref} from 'vue'
 import {message} from 'ant-design-vue'
 import {useRouter} from 'vue-router'
-import template from '@/api/template'
 
 const {$gettext, interpolate} = useGettext()
 
@@ -60,7 +59,7 @@ function save() {
 const router = useRouter()
 
 function goto_modify() {
-    router.push('/domain/' + config.name)
+    router.push('/domain/' + ngx_config.name)
 }
 
 function create_another() {

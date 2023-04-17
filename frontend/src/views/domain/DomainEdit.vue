@@ -4,14 +4,13 @@ import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 
 import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor'
 import {useGettext} from 'vue3-gettext'
-import {computed, reactive, ref, watch} from 'vue'
+import {computed, provide, reactive, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import domain from '@/api/domain'
 import ngx from '@/api/ngx'
-import {message} from 'ant-design-vue'
+import {message, Modal} from 'ant-design-vue'
 import config from '@/api/config'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
-
 
 const {$gettext, interpolate} = useGettext()
 
@@ -25,7 +24,7 @@ watch(route, () => {
 
 const update = ref(0)
 
-const ngx_config = reactive({
+const ngx_config: any = reactive({
     name: '',
     upstreams: [],
     servers: []
@@ -56,6 +55,10 @@ const advance_mode = computed({
 const history_chatgpt_record = ref([])
 
 function handle_response(r: any) {
+    if (r.advanced) {
+        advance_mode.value = true
+    }
+
     if (r.advanced) {
         advance_mode.value = true
     }
@@ -98,14 +101,17 @@ function handle_parse_error(r: any) {
     throw r
 }
 
-function on_mode_change(advance_mode: boolean) {
-    if (advance_mode) {
-        build_config()
-    } else {
-        return ngx.tokenize_config(configText.value).then((r: any) => {
-            Object.assign(ngx_config, r)
-        }).catch(handle_parse_error)
-    }
+function on_mode_change(advanced: boolean) {
+    domain.advance_mode(name.value, {advanced}).then(() => {
+        advance_mode.value = advanced
+        if (advanced) {
+            build_config()
+        } else {
+            return ngx.tokenize_config(configText.value).then((r: any) => {
+                Object.assign(ngx_config, r)
+            }).catch(handle_parse_error)
+        }
+    })
 }
 
 function build_config() {
@@ -127,17 +133,19 @@ const save = async () => {
         }
     }
 
-    domain.save(name.value, {
+    await domain.save(name.value, {
         name: filename.value || name.value,
         content: configText.value, overwrite: true
     }).then(r => {
         handle_response(r)
-        router.push('/domain/' + filename.value)
+        router.push({
+            path: '/domain/' + filename.value,
+            query: route.query
+        })
         message.success($gettext('Saved successfully'))
     }).catch(handle_parse_error).finally(() => {
         saving.value = false
     })
-
 }
 
 function enable() {
@@ -159,15 +167,24 @@ function disable() {
 }
 
 function on_change_enabled(checked: boolean) {
-    if (checked) {
-        enable()
-    } else {
-        disable()
-    }
+    Modal.confirm({
+        title: checked ? $gettext('Do you want to enable this site?') : $gettext('Do you want to disable this site?'),
+        mask: false,
+        centered: true,
+        async onOk() {
+            if (checked) {
+                enable()
+            } else {
+                disable()
+            }
+        }
+    })
 }
 
 const editor_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 16 : 24)
 const chat_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 8 : 24)
+
+provide('save_site_config', save)
 </script>
 <template>
     <a-row :gutter="16">
@@ -186,7 +203,7 @@ const chat_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 8 : 2
                     <div class="mode-switch">
                         <div class="switch">
                             <a-switch size="small" :disabled="parse_error_status"
-                                      v-model:checked="advance_mode" @change="on_mode_change"/>
+                                      :checked="advance_mode" @change="on_mode_change"/>
                         </div>
                         <template v-if="advance_mode">
                             <div>{{ $gettext('Advance Mode') }}</div>
@@ -196,6 +213,13 @@ const chat_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 8 : 2
                         </template>
                     </div>
                 </template>
+
+                <a-form-item :label="$gettext('Enabled')">
+                    <a-switch :checked="enabled" @change="on_change_enabled"/>
+                </a-form-item>
+                <a-form-item :label="$gettext('Name')">
+                    <a-input v-model:value="filename"/>
+                </a-form-item>
 
                 <transition name="slide-fade">
                     <div v-if="advance_mode" key="advance">
@@ -212,12 +236,6 @@ const chat_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 8 : 2
                     </div>
 
                     <div class="domain-edit-container" key="basic" v-else>
-                        <a-form-item :label="$gettext('Enabled')">
-                            <a-switch v-model:checked="enabled" @change="on_change_enabled"/>
-                        </a-form-item>
-                        <a-form-item :label="$gettext('Name')">
-                            <a-input v-model:value="filename"/>
-                        </a-form-item>
                         <ngx-config-editor
                             ref="ngx_config_editor"
                             :ngx_config="ngx_config"
@@ -283,14 +301,14 @@ const chat_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 8 : 2
 }
 
 .slide-fade-enter-active {
-    transition: all .5s ease-in-out;
+    transition: all .3s ease-in-out;
 }
 
 .slide-fade-leave-active {
-    transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 
-.slide-fade-enter, .slide-fade-leave-to
+.slide-fade-enter-from, .slide-fade-enter-to, .slide-fade-leave-to
     /* .slide-fade-leave-active for below version 2.1.8 */ {
     transform: translateX(10px);
     opacity: 0;

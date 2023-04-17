@@ -1,0 +1,31 @@
+Name = "VinylDNS"
+Description = ''''''
+URL = "https://www.vinyldns.io"
+Code = "vinyldns"
+Since = "v4.4.0"
+
+Example = '''
+VINYLDNS_ACCESS_KEY=xxxxxx \
+VINYLDNS_SECRET_KEY=yyyyy \
+VINYLDNS_HOST=https://api.vinyldns.example.org:9443 \
+lego --email you@example.com --dns vinyldns --domains my.example.org run
+'''
+
+Additional = '''
+The vinyldns integration makes use of dotted hostnames to ease permission management.
+Users are required to have DELETE ACL level or zone admin permissions on the VinylDNS zone containing the target host.
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    VINYLDNS_ACCESS_KEY = "The VinylDNS API key"
+    VINYLDNS_SECRET_KEY = "The VinylDNS API Secret key"
+    VINYLDNS_HOST = "The VinylDNS API URL"
+  [Configuration.Additional]
+    VINYLDNS_POLLING_INTERVAL = "Time between DNS propagation check"
+    VINYLDNS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    VINYLDNS_TTL = "The TTL of the TXT record used for the DNS challenge"
+
+[Links]
+  API = "https://www.vinyldns.io/api/"
+  GoClient = "https://github.com/vinyldns/go-vinyldns"

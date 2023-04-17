@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import {reactive, ref} from 'vue'
 import gettext from '@/gettext'
-
-const {$gettext} = gettext
-
 import StdDataEntry from '@/components/StdDataEntry'
 import {message} from 'ant-design-vue'
+
+const {$gettext} = gettext
 
 const emit = defineEmits(['onSave'])
 
@@ -49,23 +48,23 @@ async function ok() {
 
 <template>
     <a-modal
-            class="std-curd-edit-modal"
-            :mask="false"
-            :title="$gettext('Batch Modify')"
-            v-model:visible="visible"
-            :cancel-text="$gettext('Cancel')"
-            :ok-text="$gettext('OK')"
-            @ok="ok"
-            :confirm-loading="loading"
-            :width="600"
-            destroyOnClose
+        class="std-curd-edit-modal"
+        :mask="false"
+        :title="$gettext('Batch Modify')"
+        v-model:visible="visible"
+        :cancel-text="$gettext('Cancel')"
+        :ok-text="$gettext('OK')"
+        @ok="ok"
+        :confirm-loading="loading"
+        :width="600"
+        destroyOnClose
     >
 
         <std-data-entry
-                ref="std_data_entry"
-                :data-list="batchColumns"
-                v-model:data-source="data"
-                :error="error"
+            ref="std_data_entry"
+            :data-list="batchColumns"
+            :data-source="data"
+            :error="error"
         />
 
         <slot name="extra"/>

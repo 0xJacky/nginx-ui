@@ -1,0 +1,24 @@
+Name = "Glesys"
+Description = ''''''
+URL = "https://glesys.com/"
+Code = "glesys"
+Since = "v0.5.0"
+
+Example = '''
+GLESYS_API_USER=xxxxx \
+GLESYS_API_KEY=yyyyy \
+lego --email you@example.com --dns glesys --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    GLESYS_API_USER = "API user"
+    GLESYS_API_KEY = "API key"
+  [Configuration.Additional]
+    GLESYS_POLLING_INTERVAL = "Time between DNS propagation check"
+    GLESYS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    GLESYS_TTL = "The TTL of the TXT record used for the DNS challenge"
+    GLESYS_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://github.com/GleSYS/API/wiki/API-Documentation"

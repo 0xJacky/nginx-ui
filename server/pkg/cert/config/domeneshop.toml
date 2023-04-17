@@ -1,0 +1,31 @@
+Name = "Domeneshop"
+Description = ''''''
+URL = "https://domene.shop"
+Code = "domeneshop"
+Since = "v4.3.0"
+
+Example = '''
+DOMENESHOP_API_TOKEN=<token> \
+DOMENESHOP_API_SECRET=<secret> \
+lego --email example@example.com --dns domeneshop --domains example.com run
+'''
+
+Additional = '''
+### API credentials
+
+Visit the following page for information on how to create API credentials with Domeneshop:
+
+  https://api.domeneshop.no/docs/#section/Authentication
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    DOMENESHOP_API_TOKEN = "API token"
+    DOMENESHOP_API_SECRET = "API secret"
+  [Configuration.Additional]
+    DOMENESHOP_POLLING_INTERVAL = "Time between DNS propagation check"
+    DOMENESHOP_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    DOMENESHOP_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://api.domeneshop.no/docs"

@@ -1,0 +1,48 @@
+Name = "Hurricane Electric DNS"
+Description = ''''''
+URL = "https://dns.he.net/"
+Code = "hurricane"
+Since = "v4.3.0"
+
+Example = '''
+HURRICANE_TOKENS=example.org:token \
+lego --email you@example.com --dns hurricane --domains example.org --domains '*.example.org' run
+
+HURRICANE_TOKENS=my.example.org:token1,demo.example.org:token2 \
+lego --email you@example.com --dns hurricane --domains my.example.org --domains demo.example.org
+'''
+
+Additional = """
+Before using lego to request a certificate for a given domain or wildcard (such as `my.example.org` or `*.my.example.org`),
+create a TXT record named `_acme-challenge.my.example.org`, and enable dynamic updates on it.
+Generate a token for each URL with Hurricane Electric's UI, and copy it down.
+Stick to alphanumeric tokens for greatest reliability.
+
+To authenticate with the Hurricane Electric API,
+add each record name/token pair you want to update to the `HURRICANE_TOKENS` environment variable, as shown in the examples.
+Record names (without the `_acme-challenge.` component) and their tokens are separated with colons,
+while the credential pairs are concatenated into a comma-separated list, like so:
+
+```
+HURRICANE_TOKENS=my.example.org:token1,demo.example.org:token2
+```
+
+If you are issuing both a wildcard certificate and a standard certificate for a given subdomain,
+you should not have repeat entries for that name, as both will use the same credential.
+
+```
+HURRICANE_TOKENS=example.org:token
+```
+"""
+
+[Configuration]
+  [Configuration.Credentials]
+    HURRICANE_TOKENS = "TXT record names and tokens"
+  [Configuration.Addtional]
+    HURRICANE_POLLING_INTERVAL = "Time between DNS propagation checks"
+    HURRICANE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation; defaults to 300s (5 minutes)"
+    HURRICANE_SEQUENCE_INTERVAL = "Time between sequential requests"
+    HURRICANE_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://dns.he.net/"

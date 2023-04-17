@@ -1,0 +1,22 @@
+Name = "Bunny"
+Description = ''''''
+URL = "https://bunny.net"
+Code = "bunny"
+Since = "v4.11.0"
+
+Example = '''
+BUNNY_API_KEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxxxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx \
+lego --email you@example.com --dns bunny --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    BUNNY_API_KEY = "API key"
+  [Configuration.Additional]
+    BUNNY_POLLING_INTERVAL = "Time between DNS propagation check"
+    BUNNY_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    BUNNY_TTL = "The TTL of the TXT record used for the DNS challenge"
+
+[Links]
+  API = "https://docs.bunny.net/reference/dnszonepublic_index"
+  bunny-go = "https://github.com/simplesurance/bunny-go"

@@ -1,0 +1,33 @@
+Name = "MythicBeasts"
+Description = ''''''
+URL = "https://www.mythic-beasts.com/"
+Code = "mythicbeasts"
+Since = "v0.3.7"
+
+Example = '''
+MYTHICBEASTS_USERNAME=myuser \
+MYTHICBEASTS_PASSWORD=mypass \
+lego --email you@example.com --dns mythicbeasts --domains my.example.org run
+'''
+
+Additional = '''
+If you are using specific API keys, then the username is the API ID for your API key, and the password is the API secret.
+
+Your API key name is not needed to operate lego.
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    MYTHICBEASTS_USERNAME = "User name"
+    MYTHICBEASTS_PASSWORD = "Password"
+  [Configuration.Additional]
+    MYTHICBEASTS_API_ENDPOINT = "The endpoint for the API (must implement v2)"
+    MYTHICBEASTS_AUTH_API_ENDPOINT = "The endpoint for Mythic Beasts' Authentication"
+    MYTHICBEASTS_POLLING_INTERVAL = "Time between DNS propagation check"
+    MYTHICBEASTS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    MYTHICBEASTS_TTL = "The TTL of the TXT record used for the DNS challenge"
+    MYTHICBEASTS_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://www.mythic-beasts.com/support/api/dnsv2"
+  APIAuth = "https://auth.mythic-beasts.com/login"

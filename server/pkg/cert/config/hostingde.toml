@@ -1,0 +1,25 @@
+Name = "Hosting.de"
+Description = ''''''
+URL = "https://www.hosting.de/"
+Code = "hostingde"
+Since = "v1.1.0"
+
+Example = '''
+HOSTINGDE_API_KEY=xxxxxxxx \
+lego --email you@example.com --dns hostingde --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    HOSTINGDE_API_KEY = "API key"
+  [Configuration.Additional]
+    HOSTINGDE_ZONE_NAME = "Zone name in ACE format"
+    HOSTINGDE_POLLING_INTERVAL = "Time between DNS propagation check"
+    HOSTINGDE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    HOSTINGDE_TTL = "The TTL of the TXT record used for the DNS challenge"
+    HOSTINGDE_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://www.hosting.de/api/#dns"
+
+

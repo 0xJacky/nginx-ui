@@ -17,10 +17,10 @@ import (
 var db *gorm.DB
 
 type Model struct {
-	ID        uint       `gorm:"primary_key" json:"id"`
-	CreatedAt time.Time  `json:"created_at"`
-	UpdatedAt time.Time  `json:"updated_at"`
-	DeletedAt *time.Time `gorm:"index" json:"deleted_at"`
+	ID        int             `gorm:"primary_key" json:"id"`
+	CreatedAt time.Time       `json:"created_at"`
+	UpdatedAt time.Time       `json:"updated_at"`
+	DeletedAt *gorm.DeletedAt `gorm:"index" json:"deleted_at"`
 }
 
 func GenerateAllModel() []any {
@@ -30,6 +30,8 @@ func GenerateAllModel() []any {
 		AuthToken{},
 		Cert{},
 		ChatGPTLog{},
+		Site{},
+		DnsCredential{},
 	}
 }
 
@@ -128,6 +130,6 @@ func GetListWithPagination(models interface{},
 type Method interface {
 	// FirstByID Where("id=@id")
 	FirstByID(id int) (*gen.T, error)
-	// DeleteByID update @@table set deleted_at=NOW() where id=@id
+	// DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
 	DeleteByID(id int) error
 }

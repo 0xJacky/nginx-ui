@@ -1,0 +1,38 @@
+Name = "Loopia"
+Description = ''''''
+URL = "https://loopia.com"
+Code = "loopia"
+Since = "v4.2.0"
+
+Example = '''
+LOOPIA_API_USER=xxxxxxxx \
+LOOPIA_API_PASSWORD=yyyyyyyy \
+lego --email my@email.com --dns loopia --domains my.domain.com run
+'''
+
+Additional = '''
+### API user
+
+You can [generate a new API user](https://customerzone.loopia.com/api/) from your account page.
+
+It needs to have the following permissions:
+
+* addZoneRecord
+* getZoneRecords
+* removeZoneRecord
+* removeSubdomain
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    LOOPIA_API_USER = "API username"
+    LOOPIA_API_PASSWORD = "API password"
+  [Configuration.Additional]
+    LOOPIA_API_URL = "API endpoint. Ex: https://api.loopia.se/RPCSERV or https://api.loopia.rs/RPCSERV"
+    LOOPIA_POLLING_INTERVAL = "Time between DNS propagation check"
+    LOOPIA_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    LOOPIA_TTL = "The TTL of the TXT record used for the DNS challenge"
+    LOOPIA_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://www.loopia.com/api"
