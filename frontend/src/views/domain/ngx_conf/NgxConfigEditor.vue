@@ -33,6 +33,8 @@ function confirm_change_tls(r: boolean) {
             'and we need to save this file and reload the Nginx. Are you sure you want to continue?'),
         mask: false,
         centered: true,
+        okText: $gettext('OK'),
+        cancelText: $gettext('Cancel'),
         async onOk() {
             await template.get_block('letsencrypt.conf').then(r => {
                 const first = props.ngx_config.servers[0]
@@ -196,6 +198,8 @@ function remove_server(index: number) {
         title: $gettext('Do you want to remove this server?'),
         mask: false,
         centered: true,
+        okText: $gettext('OK'),
+        cancelText: $gettext('Cancel'),
         onOk: () => props.ngx_config?.servers?.splice(index, 1)
     })
 }

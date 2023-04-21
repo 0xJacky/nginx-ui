@@ -179,6 +179,8 @@ function toggle(status: boolean) {
             title: $gettext('Do you want to disable auto-cert renewal?'),
             content: $gettext('We will remove the HTTPChallenge configuration from ' +
                 'this file and reload the Nginx. Are you sure you want to continue?'),
+            okText: $gettext('OK'),
+            cancelText: $gettext('Cancel'),
             mask: false,
             centered: true,
             onOk: () => onchange(false)

@@ -172,6 +172,8 @@ function on_change_enabled(checked: boolean) {
         title: checked ? $gettext('Do you want to enable this site?') : $gettext('Do you want to disable this site?'),
         mask: false,
         centered: true,
+        okText: $gettext('OK'),
+        cancelText: $gettext('Cancel'),
         async onOk() {
             if (checked) {
                 enable()
