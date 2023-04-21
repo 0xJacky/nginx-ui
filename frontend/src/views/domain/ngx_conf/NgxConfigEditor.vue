@@ -18,7 +18,7 @@ const props = defineProps(['ngx_config', 'auto_cert', 'enabled', 'cert_info'])
 
 const emit = defineEmits(['callback', 'update:auto_cert'])
 
-const save_site_config: Function = inject('save_site_config')!
+const save_site_config = inject('save_site_config')!
 
 const route = useRoute()
 
