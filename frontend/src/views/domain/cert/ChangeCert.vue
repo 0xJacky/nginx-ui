@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import {useGettext} from 'vue3-gettext'
-import {h, ref} from 'vue'
+import {ComputedRef, h, inject, ref} from 'vue'
 import StdTable from '@/components/StdDataDisplay/StdTable.vue'
 import cert from '@/api/cert'
 import {customRender} from '@/components/StdDataDisplay/StdTableTransformer'
@@ -10,6 +10,8 @@ import {Badge} from 'ant-design-vue'
 const {$gettext} = useGettext()
 
 const props = defineProps(['directivesMap'])
+
+const current_server_directives: ComputedRef<any> | undefined = inject('current_server_directives')
 
 const visible = ref(false)
 
@@ -59,8 +61,22 @@ function onSelectedRecord(r: any) {
 }
 
 function ok() {
-    props.directivesMap['ssl_certificate'][0]['params'] = record.value.ssl_certificate_path
-    props.directivesMap['ssl_certificate_key'][0]['params'] = record.value.ssl_certificate_key_path
+    if (props.directivesMap['ssl_certificate']?.[0]) {
+        props.directivesMap['ssl_certificate'][0]['params'] = record.value.ssl_certificate_path
+    } else {
+        current_server_directives?.value.push({
+            directive: 'ssl_certificate',
+            params: record.value.ssl_certificate_path
+        })
+    }
+    if (props.directivesMap['ssl_certificate_key']?.[0]) {
+        props.directivesMap['ssl_certificate_key'][0]['params'] = record.value.ssl_certificate_key_path
+    } else {
+        current_server_directives?.value.push({
+            directive: 'ssl_certificate_key',
+            params: record.value.ssl_certificate_key_path
+        })
+    }
     visible.value = false
 }
 </script>

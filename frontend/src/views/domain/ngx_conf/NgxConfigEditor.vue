@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
-import {computed, inject, onMounted, ref, watch} from 'vue'
+import {computed, inject, onMounted, provide, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import {useGettext} from 'vue3-gettext'
 import Cert from '@/views/domain/cert/Cert.vue'
@@ -107,6 +107,8 @@ function change_tls(r: any) {
 const current_server_directives = computed(() => {
     return props.ngx_config.servers?.[current_server_index.value]?.directives
 })
+
+provide('current_server_directives', current_server_directives)
 
 const directivesMap = computed(() => {
     const map = <any>{}
