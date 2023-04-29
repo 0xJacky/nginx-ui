@@ -19,6 +19,7 @@ server {
     ssl_certificate_key /etc/nginx/ssl/amstourship.jackyu.cn_t.jackyu.cn/private.key;
     root /var/www/amstourship;
     index index.html;
+    access_log /var/www/logs/amstourship.jackyu.cn.log;
     location /.well-known/acme-challenge {
         proxy_set_header Host $host;
         proxy_set_header X-Real_IP $remote_addr;

@@ -1,30 +1,34 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
 import ws from '@/lib/websocket'
-import {computed, nextTick, onMounted, onUnmounted, reactive, ref, watch} from 'vue'
+import {computed, nextTick, onMounted, onUnmounted, reactive, Ref, ref, UnwrapNestedRefs, watch} from 'vue'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import {useRoute, useRouter} from 'vue-router'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
-import nginx_log from '@/api/nginx_log'
+import nginx_log, {INginxLogData} from '@/api/nginx_log'
 import {debounce} from 'lodash'
 
 const {$gettext} = useGettext()
-
-const logContainer = ref(null)
-
+const logContainer: Ref<Element> = ref()!
 let websocket: ReconnectingWebSocket | WebSocket
 const route = useRoute()
+const buffer = ref('')
+const page = ref(0)
+const auto_refresh = ref(true)
+const router = useRouter()
+const loading = ref(false)
+const filter = ref('')
+
+const control: UnwrapNestedRefs<INginxLogData> = reactive({
+    type: logType(),
+    conf_name: route.query.conf_name as string,
+    server_idx: parseInt(route.query.server_idx as string),
+    directive_idx: parseInt(route.query.directive_idx as string)
+})
 
 function logType() {
     return route.path.indexOf('access') > 0 ? 'access' : route.path.indexOf('error') > 0 ? 'error' : 'site'
 }
-
-const control = reactive({
-    type: logType(),
-    conf_name: route.query.conf_name,
-    server_idx: parseInt(route.query.server_idx as string),
-    directive_idx: parseInt(route.query.directive_idx as string)
-})
 
 function openWs() {
     websocket = ws('/api/nginx_log')
@@ -41,18 +45,13 @@ function openWs() {
 }
 
 function addLog(data: string, prepend: boolean = false) {
-    // const para = document.createElement('p')
-    // para.appendChild(document.createTextNode(data.trim()))
-    //
-    // const node = (logContainer.value as any as Node)
-
     if (prepend) {
         buffer.value = data + buffer.value
     } else {
         buffer.value += data
     }
     nextTick(() => {
-        const elem = (logContainer.value as any as Element)
+        const elem = (logContainer.value as Element)
         elem?.scroll({
             top: elem.scrollHeight,
             left: 0
@@ -60,20 +59,15 @@ function addLog(data: string, prepend: boolean = false) {
     })
 }
 
-const buffer = ref('')
-
-const page = ref(0)
-
 function init() {
-    nginx_log.page(0, {
-        conf_name: (route.query.conf_name as string),
-        type: logType(),
-        server_idx: parseInt(route.query.server_idx as string),
-        directive_idx: parseInt(route.query.directive_idx as string)
-    }).then(r => {
+    nginx_log.page(0, control).then(r => {
         page.value = r.page - 1
         addLog(r.content)
     })
+}
+
+function clearLog() {
+    logContainer.value.innerHTML = ''
 }
 
 onMounted(() => {
@@ -81,12 +75,14 @@ onMounted(() => {
     openWs()
 })
 
-const auto_refresh = ref(true)
+onUnmounted(() => {
+    websocket.close()
+})
 
 watch(auto_refresh, (value) => {
     if (value) {
-        openWs();
-        (logContainer.value as any as Element).innerHTML = ''
+        openWs()
+        clearLog()
 
     } else {
         websocket.close()
@@ -96,8 +92,10 @@ watch(auto_refresh, (value) => {
 watch(route, () => {
     init()
 
-    control.type = logType();
-    (logContainer.value as any as Element).innerHTML = ''
+    control.type = logType()
+    control.directive_idx = parseInt(route.query.server_idx as string)
+    control.server_idx = parseInt(route.query.directive_idx as string)
+    clearLog()
 
     nextTick(() => {
         websocket.send(JSON.stringify(control))
@@ -105,7 +103,7 @@ watch(route, () => {
 })
 
 watch(control, () => {
-    (logContainer.value as any as Element).innerHTML = ''
+    clearLog()
     auto_refresh.value = true
 
     nextTick(() => {
@@ -113,24 +111,13 @@ watch(control, () => {
     })
 })
 
-onUnmounted(() => {
-    websocket.close()
-})
-
-const router = useRouter()
-const loading = ref(false)
 
 function on_scroll_log() {
     if (!loading.value && page.value > 0) {
         loading.value = true
-        const elem = (logContainer.value as any as Element)
+        const elem = logContainer.value
         if (elem?.scrollTop / elem?.scrollHeight < 0.333) {
-            nginx_log.page(page.value, {
-                conf_name: (route.query.conf_name as string),
-                type: logType(),
-                server_idx: 0,
-                directive_idx: 0
-            }).then(r => {
+            nginx_log.page(page.value, control).then(r => {
                 page.value = r.page - 1
                 addLog(r.content, true)
             }).finally(() => {
@@ -142,7 +129,9 @@ function on_scroll_log() {
     }
 }
 
-const filter = ref('')
+function debounce_scroll_log() {
+    return debounce(on_scroll_log, 100)()
+}
 
 const computedBuffer = computed(() => {
     if (filter.value) {
@@ -165,7 +154,7 @@ const computedBuffer = computed(() => {
 
         <a-card>
             <pre class="nginx-log-container" ref="logContainer"
-                 @scroll="debounce(on_scroll_log,100, null)()" v-html="computedBuffer"/>
+                 @scroll="debounce_scroll_log" v-html="computedBuffer"/>
         </a-card>
         <footer-tool-bar v-if="control.type==='site'">
             <a-button @click="router.go(-1)">

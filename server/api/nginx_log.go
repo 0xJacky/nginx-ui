@@ -207,7 +207,7 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 
 				err = ws.WriteMessage(websocket.TextMessage, []byte(line.Text))
 
-				if err != nil {
+				if err != nil && websocket.IsUnexpectedCloseError(err, websocket.CloseNormalClosure) {
 					errChan <- errors.Wrap(err, "error NginxAccessLog write message")
 					return
 				}
