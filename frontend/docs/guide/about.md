@@ -1,6 +1,6 @@
 # What is Nginx UI?
 
-![Dashboard](../public/dashboard_en.png)
+![Dashboard](/dashboard_en.png)
 
 Nginx UI is a comprehensive web-based interface designed to simplify the management and configuration of Nginx servers.
 It offers real-time server statistics, AI-powered ChatGPT assistance, one-click deployment, automatic renewal of Let's

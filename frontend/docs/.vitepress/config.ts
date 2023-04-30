@@ -15,7 +15,6 @@ export default defineConfig({
         nav: [
             {text: 'Home', link: '/'},
             {text: 'Guide', link: '/guide/about'},
-            {text: 'Reference', link: '/reference/api-examples'},
             {text: 'Demo', link: 'https://nginxui.jackyu.cn'}
         ],
 
@@ -30,8 +29,20 @@ export default defineConfig({
                         {text: 'Contributing', link: '/guide/contributing'},
                         {text: 'License', link: '/guide/license'}
                     ]
+                },
+                {
+                    text: 'Configuration',
+                    items: [
+                        {text: 'Server', link: '/guide/config-server'},
+                        {text: 'Nginx Log', link: '/guide/config-nginx-log'},
+                        {text: 'Open AI', link: '/guide/config-openai'}
+                    ]
                 }
             ]
+        },
+
+        search: {
+            provider: 'local'
         },
 
         footer: {
