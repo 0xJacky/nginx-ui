@@ -12,7 +12,7 @@ hero:
     actions:
         -   theme: brand
             text: Get Started
-            link: /markdown-examples
+            link: /guide/about
         -   theme: alt
             text: View on Github
             link: https://github.com/0xJacky/nginx-ui

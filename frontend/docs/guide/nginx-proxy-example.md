@@ -1,7 +1,7 @@
 # Example of Nginx Reverse Proxy
 
 In this guide, we'll walk you through the process of configuring an Nginx server to redirect HTTP traffic to HTTPS and
-set up a reverse proxy for the Nginx UI running on http://127.0.0.1:9000/.
+set up a reverse proxy for the Nginx UI running on `http://127.0.0.1:9000/`.
 
 ```nginx
 server {

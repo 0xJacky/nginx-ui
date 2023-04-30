@@ -46,6 +46,9 @@ func (c *Cert) Insert() error {
 
 func GetAutoCertList() (c []*Cert) {
 	var t []*Cert
+	if db == nil {
+		return
+	}
 	db.Where("auto_cert", AutoCertEnabled).Find(&t)
 
 	// check if this domain is enabled
