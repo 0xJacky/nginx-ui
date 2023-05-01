@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"github.com/0xJacky/Nginx-UI/server/pkg/helper"
 	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-gonic/gin"
@@ -163,11 +164,6 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 	defer func() {
 		if err := recover(); err != nil {
 			log.Println("tailNginxLog recovery", err)
-			err = ws.WriteMessage(websocket.TextMessage, err.([]byte))
-			if err != nil {
-				log.Println(err)
-				return
-			}
 			return
 		}
 	}()
@@ -187,12 +183,17 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 			Whence: io.SeekEnd,
 		}
 
+		if !helper.FileExists(logPath) {
+			errChan <- errors.New("error log path not exists")
+			return
+		}
+
 		// Create a tail
 		t, err := tail.TailFile(logPath, tail.Config{Follow: true,
 			ReOpen: true, Location: &seek})
 
 		if err != nil {
-			errChan <- errors.Wrap(err, "error NginxAccessLog Tail")
+			errChan <- errors.Wrap(err, "error tailing log")
 			return
 		}
 
@@ -208,7 +209,7 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 				err = ws.WriteMessage(websocket.TextMessage, []byte(line.Text))
 
 				if err != nil && websocket.IsUnexpectedCloseError(err, websocket.CloseNormalClosure) {
-					errChan <- errors.Wrap(err, "error NginxAccessLog write message")
+					errChan <- errors.Wrap(err, "error tailNginxLog write message")
 					return
 				}
 			case control = <-controlChan:
@@ -225,27 +226,27 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errChan chan error) {
 	defer func() {
 		if err := recover(); err != nil {
-			log.Println("tailNginxLog recovery", err)
+			log.Println("handleLogControl recovery", err)
 			return
 		}
 	}()
 
 	for {
 		msgType, payload, err := ws.ReadMessage()
-		if err != nil {
-			errChan <- errors.Wrap(err, "error NginxAccessLog read message")
+		if err != nil && websocket.IsUnexpectedCloseError(err, websocket.CloseNormalClosure) {
+			errChan <- errors.Wrap(err, "error handleLogControl read message")
 			return
 		}
 
 		if msgType != websocket.TextMessage {
-			errChan <- errors.New("error NginxAccessLog message type")
+			errChan <- errors.New("error handleLogControl message type")
 			return
 		}
 
 		var msg controlStruct
 		err = json.Unmarshal(payload, &msg)
 		if err != nil {
-			errChan <- errors.Wrap(err, "Error ReadWsAndWritePty json.Unmarshal")
+			errChan <- errors.Wrap(err, "error ReadWsAndWritePty json.Unmarshal")
 			return
 		}
 		controlChan <- msg
@@ -261,7 +262,7 @@ func NginxLog(c *gin.Context) {
 	// upgrade http to websocket
 	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		log.Println("[Error] NginxAccessLog Upgrade", err)
+		log.Println("[Error] NginxLog Upgrade", err)
 		return
 	}
 
