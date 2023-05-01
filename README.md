@@ -70,7 +70,7 @@ English | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md)
 ![Dashboard](resources/screenshots/dashboard_en.png)
 
 ### Demo
-URL：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
+URL：[https://demo.nginxui.com](https://demo.nginxui.com)
 - Username：admin
 - Password：admin
 

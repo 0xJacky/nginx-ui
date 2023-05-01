@@ -66,7 +66,7 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
 ![Dashboard](resources/screenshots/dashboard_zh_CN.png)
 
 ### 在线预览
-网址：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
+网址：[https://demo.nginxui.com](https://demo.nginxui.com)
 - 用户名：admin
 - 密码：admin
 

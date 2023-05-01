@@ -67,7 +67,7 @@ Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https
 
 ### 線上預覽
 
-位址：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
+位址：[https://demo.nginxui.com](https://demo.nginxui.com)
 
 - 使用者：admin
 - 密碼：admin
