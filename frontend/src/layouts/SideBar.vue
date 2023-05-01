@@ -105,6 +105,16 @@ const visible = computed(() => {
 .sidebar {
     position: sticky;
     top: 0;
+
+    .logo {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            margin-left: -18px;
+        }
+    }
 }
 
 .ant-layout-sider-collapsed .logo {
@@ -113,5 +123,18 @@ const visible = computed(() => {
 
 .ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
     border-right: unset;
+}
+
+.ant-layout-sider-collapsed {
+    .logo {
+        img {
+            margin-left: 0;
+        }
+
+
+        .text {
+            display: none;
+        }
+    }
 }
 </style>
