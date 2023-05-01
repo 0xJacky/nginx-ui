@@ -38,7 +38,7 @@ managing your Nginx server.
 
 ## Demo
 
-URL：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
+URL：[https://demo.nginxui.com](https://demo.nginxui.com)
 
 - Username：admin
 - Password：admin

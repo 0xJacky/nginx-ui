@@ -36,9 +36,13 @@ function confirm_change_tls(r: boolean) {
         okText: $gettext('OK'),
         cancelText: $gettext('Cancel'),
         async onOk() {
-            await template.get_block('letsencrypt.conf').then(r => {
+            await template.get_block('letsencrypt.conf').then(async r => {
                 const first = props.ngx_config.servers[0]
-                first.locations = first.locations.filter((l: any) => l.path !== '/.well-known/acme-challenge')
+                if (!first.locations) {
+                    first.locations = []
+                } else {
+                    first.locations = first.locations.filter((l: any) => l.path !== '/.well-known/acme-challenge')
+                }
                 first.locations.push(...r.locations)
             })
             await save_site_config()

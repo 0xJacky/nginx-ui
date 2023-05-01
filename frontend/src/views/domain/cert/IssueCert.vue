@@ -48,7 +48,7 @@ async function onchange() {
 </script>
 
 <template>
-    <obtain-cert ref="obtain_cert" :key="update"/>
+    <obtain-cert ref="obtain_cert" :key="update" @update:auto_cert="r=>enabled=r"/>
     <div class="issue-cert">
         <a-form-item :label="$gettext('Encrypt website with Let\'s Encrypt')">
             <a-switch

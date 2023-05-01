@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
-import {computed, inject, nextTick, provide, reactive, Ref, ref} from 'vue'
+import {computed, inject, nextTick, provide, reactive, ref} from 'vue'
 import websocket from '@/lib/websocket'
 import Modal from 'ant-design-vue/lib/modal'
 import {message} from 'ant-design-vue'
@@ -9,6 +9,8 @@ import domain from '@/api/domain'
 import AutoCertStepOne from '@/views/domain/cert/components/AutoCertStepOne.vue'
 
 const {$gettext, interpolate} = useGettext()
+
+const emit = defineEmits(['update:auto_cert'])
 
 const modalVisible = ref(false)
 
@@ -34,10 +36,10 @@ provide('data', data)
 
 const logContainer = ref(null)
 
-const save_site_config: Function = inject('save_site_config')!
-const no_server_name: Ref = inject('no_server_name')!
+const save_site_config = inject('save_site_config')!
+const no_server_name = inject('no_server_name')!
 const props: any = inject('props')!
-const issuing_cert: Ref<boolean> = inject('issuing_cert')!
+const issuing_cert = inject('issuing_cert')!
 
 async function callback(ssl_certificate: string, ssl_certificate_key: string) {
     props.directivesMap['ssl_certificate'][0]['params'] = ssl_certificate
@@ -69,12 +71,13 @@ async function onchange(r: boolean) {
 
                 v.locations.push(...r.locations)
             })
+        }).then(async () => {
+            // if ssl_certificate is empty, do not save, just use the config from last step.
+            if (props.directivesMap['ssl_certificate']?.[0]) {
+                await save_site_config()
+            }
+            job()
         })
-        // if ssl_certificate is empty, do not save, just use the config from last step.
-        if (!props.directivesMap['ssl_certificate']?.[0]) {
-            await save_site_config()
-        }
-        job()
     } else {
         await props.ngx_config.servers.forEach((v: any) => {
             v.locations = v.locations.filter((l: any) => l.path !== '/.well-known/acme-challenge')
@@ -82,6 +85,8 @@ async function onchange(r: boolean) {
         save_site_config()
         change_auto_cert(r)
     }
+
+    emit('update:auto_cert', r)
 }
 
 function job() {

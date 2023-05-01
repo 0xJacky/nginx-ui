@@ -5,7 +5,7 @@ import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor.vue'
 import {useGettext} from 'vue3-gettext'
 import domain from '@/api/domain'
 import ngx from '@/api/ngx'
-import {computed, reactive, ref} from 'vue'
+import {computed, provide, reactive, ref} from 'vue'
 import {message} from 'ant-design-vue'
 import {useRouter} from 'vue-router'
 
@@ -38,13 +38,12 @@ function init() {
 }
 
 function save() {
-    ngx.build_config(ngx_config).then(r => {
+    return ngx.build_config(ngx_config).then(r => {
         domain.save(ngx_config.name, {name: ngx_config.name, content: r.content, overwrite: true}).then(() => {
             message.success($gettext('Saved successfully'))
 
             domain.enable(ngx_config.name).then(() => {
                 message.success($gettext('Enabled successfully'))
-                current_step.value++
                 window.scroll({top: 0, left: 0, behavior: 'smooth'})
             }).catch(r => {
                 message.error(r.message ?? $gettext('Enable failed'), 5)
@@ -79,6 +78,13 @@ const has_server_name = computed(() => {
 
     return false
 })
+
+provide('save_site_config', save)
+
+async function next() {
+    await save()
+    current_step.value++
+}
 </script>
 
 <template>
@@ -129,7 +135,7 @@ const has_server_name = computed(() => {
             <a-space v-if="current_step<2">
                 <a-button
                     type="primary"
-                    @click="save"
+                    @click="next"
                     :disabled="!ngx_config.name||!has_server_name"
                 >
                     <translate>Next</translate>

@@ -29,7 +29,7 @@ export default defineConfig({
         nav: [
             {text: 'Home', link: '/'},
             {text: 'Guide', link: '/guide/about'},
-            {text: 'Demo', link: 'https://nginxui.jackyu.cn'}
+            {text: 'Demo', link: 'https://demo.nginxui.com'}
         ],
 
         sidebar: sidebar(),

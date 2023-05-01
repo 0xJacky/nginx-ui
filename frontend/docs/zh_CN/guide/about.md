@@ -36,7 +36,7 @@ Nginx UI 是一个全新的 Nginx 网络管理界面，旨在简化 Nginx 服务
 
 ## 在线预览
 
-网址：[https://nginxui.jackyu.cn](https://nginxui.jackyu.cn)
+网址：[https://demo.nginxui.com](https://demo.nginxui.com)
 
 - 用户名：admin
 - 密码：admin

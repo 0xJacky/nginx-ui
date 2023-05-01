@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {inject, Ref} from 'vue'
+import {inject} from 'vue'
 import {useGettext} from 'vue3-gettext'
 import DNSChallenge from '@/views/domain/cert/components/DNSChallenge.vue'
 
 const {$gettext} = useGettext()
-const no_server_name: Ref = inject('no_server_name')!
-const data: Ref = inject('data')!
+const no_server_name = inject('no_server_name')
+const data = inject('data')
 </script>
 
 <template>
