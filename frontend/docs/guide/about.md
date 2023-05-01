@@ -1,3 +1,26 @@
+<script setup>
+import { VPTeamMembers } from 'vitepress/theme'
+
+const members = [
+  {
+    avatar: 'https://www.github.com/0xJacky.png',
+    name: '0xJacky',
+    title: 'Creator',
+    links: [
+      { icon: 'github', link: 'https://github.com/0xJacky' },
+    ]
+  },
+{
+    avatar: 'https://www.github.com/Hintay.png',
+    name: 'Hintay',
+    title: 'Developer',
+    links: [
+      { icon: 'github', link: 'https://github.com/Hintay' },
+    ]
+  },
+]
+</script>
+
 # What is Nginx UI?
 
 ![Dashboard](/dashboard_en.png)
@@ -8,6 +31,10 @@ Encrypt certificates, and user-friendly editing tools for website configurations
 features such as online access to Nginx logs, automatic testing and reloading of configuration files, a web terminal,
 dark mode, and responsive web design. Built with Go and Vue, Nginx UI ensures a seamless and efficient experience for
 managing your Nginx server.
+
+## Our Team
+
+<VPTeamMembers size="small" :members="members" />
 
 ## Demo
 

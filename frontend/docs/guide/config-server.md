@@ -56,7 +56,7 @@ terminal, please set it to `bash` or `zsh` (if installed).
 - Default: 10
 
 This option is used to set the page size of list pagination in the Nginx UI. Adjusting the page size can help in
-managing large amounts of data more effectively.
+managing large amounts of data more effectively, but a too large number can increase the load on the server.
 
 ## CADir
 
