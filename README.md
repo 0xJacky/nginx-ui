@@ -8,6 +8,8 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 
+# Documentation
+To check out docs, visit [nginxui.com](https://nginxui.com).
 
 ## Stargazers over time
 
