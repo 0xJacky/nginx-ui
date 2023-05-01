@@ -110,6 +110,8 @@ func GetDomain(c *gin.Context) {
 		return
 	}
 
+	certModel, _ := model.FirstCert(name)
+
 	if site.Advanced {
 		origContent, err := os.ReadFile(path)
 		if err != nil {
@@ -122,6 +124,7 @@ func GetDomain(c *gin.Context) {
 			"enabled":          enabled,
 			"name":             name,
 			"config":           string(origContent),
+			"auto_cert":        certModel.AutoCert == model.AutoCertEnabled,
 			"chatgpt_messages": chatgpt.Content,
 		})
 		return
@@ -160,8 +163,6 @@ func GetDomain(c *gin.Context) {
 			}
 		}
 	}
-
-	certModel, _ := model.FirstCert(name)
 
 	c.Set("maybe_error", "nginx_config_syntax_error")
 
