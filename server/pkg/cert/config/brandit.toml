@@ -1,0 +1,24 @@
+Name = "BRANDIT"
+Description = ''''''
+URL = "https://www.brandit.com/"
+Code = "brandit"
+Since = "v4.11.0"
+
+Example = '''
+BRANDIT_API_KEY=xxxxxxxxxxxxxxxxxxxxx \
+BRANDIT_API_USERNAME=yyyyyyyyyyyyyyyyyyyy \
+lego --email myemail@example.com --dns brandit --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    BRANDIT_API_KEY = "The API key"
+    BRANDIT_API_USERNAME = "The API username"
+  [Configuration.Additional]
+    BRANDIT_POLLING_INTERVAL = "Time between DNS propagation check"
+    BRANDIT_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    BRANDIT_TTL = "The TTL of the TXT record used for the DNS challenge"
+    BRANDIT_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://portal.brandit.com/apidocv3"
