@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
 	"io/ioutil"
 	"log"
 	"os"

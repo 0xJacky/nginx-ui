@@ -1,11 +1,11 @@
 package api
 
 import (
+	"github.com/0xJacky/Nginx-UI/server/internal/cert"
+	"github.com/0xJacky/Nginx-UI/server/internal/config_list"
+	"github.com/0xJacky/Nginx-UI/server/internal/helper"
+	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/server/model"
-	"github.com/0xJacky/Nginx-UI/server/pkg/cert"
-	"github.com/0xJacky/Nginx-UI/server/pkg/config_list"
-	"github.com/0xJacky/Nginx-UI/server/pkg/helper"
-	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
 	"github.com/0xJacky/Nginx-UI/server/query"
 	"github.com/gin-gonic/gin"
 	"log"

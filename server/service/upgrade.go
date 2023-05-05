@@ -5,7 +5,7 @@ import (
 	"fmt"
 	_github "github.com/0xJacky/Nginx-UI/.github"
 	"github.com/0xJacky/Nginx-UI/frontend"
-	"github.com/0xJacky/Nginx-UI/server/pkg/helper"
+	"github.com/0xJacky/Nginx-UI/server/internal/helper"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/pkg/errors"
 	"io"

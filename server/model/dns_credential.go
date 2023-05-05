@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/0xJacky/Nginx-UI/server/pkg/cert/dns"
+	"github.com/0xJacky/Nginx-UI/server/internal/cert/dns"
 )
 
 type DnsCredential struct {

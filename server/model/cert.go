@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
 	"github.com/lib/pq"
 	"os"
 )

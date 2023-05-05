@@ -2,8 +2,8 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/0xJacky/Nginx-UI/server/pkg/helper"
-	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+	"github.com/0xJacky/Nginx-UI/server/internal/helper"
+	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"

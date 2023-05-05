@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/0xJacky/Nginx-UI/server/pkg/nginx"
+	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/server/service"
 	"github.com/gin-gonic/gin"
 	"net/http"

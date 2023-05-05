@@ -1,8 +1,8 @@
 package api
 
 import (
+    "github.com/0xJacky/Nginx-UI/server/internal/cert/dns"
     "github.com/0xJacky/Nginx-UI/server/model"
-    "github.com/0xJacky/Nginx-UI/server/pkg/cert/dns"
     "github.com/0xJacky/Nginx-UI/server/query"
     "github.com/gin-gonic/gin"
     "github.com/spf13/cast"
