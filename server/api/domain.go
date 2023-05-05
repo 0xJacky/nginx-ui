@@ -398,6 +398,7 @@ func AddDomainToAutoCert(c *gin.Context) {
 	name := c.Param("name")
 
 	var json struct {
+		model.Cert
 		Domains []string `json:"domains"`
 	}
 
@@ -413,9 +414,11 @@ func AddDomainToAutoCert(c *gin.Context) {
 	}
 
 	err = certModel.Updates(&model.Cert{
-		Name:     name,
-		Domains:  json.Domains,
-		AutoCert: model.AutoCertEnabled,
+		Name:            name,
+		Domains:         json.Domains,
+		AutoCert:        model.AutoCertEnabled,
+		DnsCredentialID: json.DnsCredentialID,
+		ChallengeMethod: json.ChallengeMethod,
 	})
 
 	if err != nil {

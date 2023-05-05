@@ -101,6 +101,8 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 	}
 
 	switch payload.ChallengeMethod {
+	default:
+		fallthrough
 	case HTTP01:
 		logChan <- "Using HTTP01 challenge provider"
 		err = client.Challenge.SetHTTP01Provider(

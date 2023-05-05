@@ -49,7 +49,7 @@ async function callback(ssl_certificate: string, ssl_certificate_key: string) {
 
 function change_auto_cert(status: boolean) {
     if (status) {
-        domain.add_auto_cert(props.config_name, {domains: name.value.trim().split(' ')}).then(() => {
+        domain.add_auto_cert(props.config_name, {domains: name.value.trim().split(' '), ...data}).then(() => {
             message.success(interpolate($gettext('Auto-renewal enabled for %{name}'), {name: name.value}))
         }).catch(e => {
             message.error(e.message ?? interpolate($gettext('Enable auto-renewal failed for %{name}'), {name: name.value}))
@@ -127,7 +127,7 @@ function log(msg: string) {
 
     (logContainer.value as any as Node).appendChild(para);
 
-    (logContainer.value as any as Element).scroll({top: 320, left: 0, behavior: 'smooth'})
+    (logContainer.value as any as Element).scroll({top: 100000, left: 0, behavior: 'smooth'})
 }
 
 const issue_cert = async (config_name: string, server_name: string, callback: Function) => {

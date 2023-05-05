@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/0xJacky/Nginx-UI/server/analytic"
+	"github.com/0xJacky/Nginx-UI/server/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/server/internal/cert"
 	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/server/model"
