@@ -64,7 +64,7 @@ const lang = computed(() => {
             </a-layout-sider>
 
             <a-layout>
-                <a-layout-header :style="{position: 'fixed', zIndex: 10, width:'100%'}">
+                <a-layout-header :style="{position: 'sticky', top: '0', zIndex: 10, width:'100%'}">
                     <header-layout @clickUnFold="drawer_visible=true"/>
                 </a-layout-header>
 
@@ -104,9 +104,6 @@ const lang = computed(() => {
 
 <style lang="less">
 .layout-sider .sidebar {
-    //position: fixed;
-    //width: 200px;
-
     ul.ant-menu-inline.ant-menu-root {
         height: calc(100vh - 120px);
         overflow-y: auto;
@@ -237,7 +234,6 @@ body {
 }
 
 .ant-layout-content {
-    margin: 64px 0;
     min-height: auto;
 
     .router-view {

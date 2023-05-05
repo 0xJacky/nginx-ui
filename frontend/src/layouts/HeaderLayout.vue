@@ -49,7 +49,6 @@ function logout() {
     padding: 0 20px 0 0;
     background: transparent;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.05);
-    position: fixed;
     width: 100%;
 
     a {
@@ -68,7 +67,7 @@ function logout() {
 }
 
 .tool {
-    position: fixed;
+    position: absolute;
     left: 20px;
     @media (min-width: 600px) {
         display: none;
@@ -76,7 +75,7 @@ function logout() {
 }
 
 .user-wrapper {
-    position: fixed;
+    position: absolute;
     right: 28px;
 }
 
