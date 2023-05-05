@@ -1,1 +1,0 @@
-/etc/nginx/sites-available/test.nginxui.com
