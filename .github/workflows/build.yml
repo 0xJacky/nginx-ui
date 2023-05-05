@@ -148,7 +148,7 @@ jobs:
                     echo "PATH=${{ steps.musl.outputs.path }}:$PATH" >> $GITHUB_ENV
                     echo "CC=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-gcc" >> $GITHUB_ENV
                     echo "CXX=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-g++" >> $GITHUB_ENV
-                    echo "LD_FLAGS=--extldflags '-static'" >> $GITHUB_ENV
+                    echo "LD_FLAGS=-w --extldflags '-static'" >> $GITHUB_ENV
 
             -   name: Install darwin cross compiler
                 if: env.GOOS == 'darwin'
@@ -159,7 +159,7 @@ jobs:
                     echo "PATH=$(pwd)/crossosx/bin/:$PATH" >> $GITHUB_ENV
                     echo "CC=${{ env.ARCH_NAME }}-clang" >> $GITHUB_ENV
                     echo "CXX=${{ env.ARCH_NAME }}-clang++" >> $GITHUB_ENV
-                    echo "LD_FLAGS=-s -w" >> $GITHUB_ENV
+                    echo "LD_FLAGS=-w" >> $GITHUB_ENV
 
             -   name: Download frontend artifacts
                 uses: actions/download-artifact@v3
@@ -183,7 +183,7 @@ jobs:
                 run: |
                     cp README*.md ./dist
                     find dist -printf '%P\n' | tar -C dist --no-recursion -zcvf ${{ env.DIST }}.tar.gz -T -
-                    openssl dgst -sha512 ${{ env.DIST }}.tar.gz | sed 's/([^)]*)//g' >> ${{ env.DIST }}.tar.gz.digest
+                    openssl dgst -sha512 ${{ env.DIST }}.tar.gz | sed 's/([^)]*)//g' | awk '{print $NF}' >> ${{ env.DIST }}.tar.gz.digest
 
             -   name: Publish
                 uses: softprops/action-gh-release@v1
