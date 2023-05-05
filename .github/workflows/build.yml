@@ -183,12 +183,15 @@ jobs:
                 run: |
                     cp README*.md ./dist
                     find dist -printf '%P\n' | tar -C dist --no-recursion -zcvf ${{ env.DIST }}.tar.gz -T -
+                    openssl dgst -sha512 ${{ env.DIST }}.tar.gz | sed 's/([^)]*)//g' >> ${{ env.DIST }}.tar.gz.digest
 
             -   name: Publish
                 uses: softprops/action-gh-release@v1
                 if: github.event_name == 'release'
                 with:
-                    files: ${{ env.DIST }}.tar.gz
+                    files: |
+                        ${{ env.DIST }}.tar.gz
+                        ${{ env.DIST }}.tar.gz.digest
 
     docker-build:
         runs-on: ubuntu-latest
