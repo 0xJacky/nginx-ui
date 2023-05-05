@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/server/analytic"
+	"github.com/0xJacky/Nginx-UI/server/internal/analytic"
 	"github.com/pkg/errors"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"
