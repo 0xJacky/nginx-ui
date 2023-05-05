@@ -82,9 +82,6 @@ const activeKey = ref('1')
                 <a-tab-pane :tab="$gettext('OpenAI')" key="3">
                     <open-a-i-settings/>
                 </a-tab-pane>
-                <a-tab-pane :tab="$gettext('Git')" key="4">
-                    <git-settings/>
-                </a-tab-pane>
             </a-tabs>
         </div>
         <footer-tool-bar>

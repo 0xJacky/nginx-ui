@@ -42,6 +42,9 @@ const theme = inject('theme')
             <a-input v-model:value="data.server.github_proxy"
                      :placeholder="$gettext('Chinese user: https://ghproxy.com/')"/>
         </a-form-item>
+        <a-form-item :label="$gettext('CADir')">
+            <a-input v-model:value="data.server.ca_dir"/>
+        </a-form-item>
     </a-form>
 </template>
 

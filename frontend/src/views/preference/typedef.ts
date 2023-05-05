@@ -6,7 +6,8 @@ export interface IData {
         start_cmd: string
         http_challenge_port: string
         github_proxy: string,
-        email: string
+        email: string,
+        ca_dir: string
     },
     nginx_log: {
         access_log_path: string
