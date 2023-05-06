@@ -16,10 +16,14 @@ import (
 	"path/filepath"
 	"runtime"
 	"strconv"
+	"strings"
 	"time"
 )
 
-const GithubLatestReleaseAPI = "https://api.github.com/repos/0xJacky/nginx-ui/releases/latest"
+const (
+	GithubLatestReleaseAPI = "https://api.github.com/repos/0xJacky/nginx-ui/releases/latest"
+	GithubReleasesListAPI  = "https://api.github.com/repos/0xJacky/nginx-ui/releases"
+)
 
 type RuntimeInfo struct {
 	OS     string `json:"os"`
@@ -59,34 +63,88 @@ type TRelease struct {
 	Name        string          `json:"name"`
 	PublishedAt time.Time       `json:"published_at"`
 	Body        string          `json:"body"`
+	Prerelease  bool            `json:"prerelease"`
 	Assets      []TReleaseAsset `json:"assets"`
-	RuntimeInfo
 }
 
-func GetRelease() (data TRelease, err error) {
+func (t *TRelease) GetAssetsMap() (m map[string]TReleaseAsset) {
+	m = make(map[string]TReleaseAsset)
+	for _, v := range t.Assets {
+		m[v.Name] = v
+	}
+	return
+}
+
+func getLatestRelease() (data TRelease, err error) {
 	resp, err := http.Get(GithubLatestReleaseAPI)
 	if err != nil {
-		err = errors.Wrap(err, "service.GetReleaseList http.Get err")
+		err = errors.Wrap(err, "service.getLatestRelease http.Get err")
 		return
 	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		err = errors.Wrap(err, "service.GetReleaseList io.ReadAll err")
+		err = errors.Wrap(err, "service.getLatestRelease io.ReadAll err")
 		return
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
 		err = errors.New(string(body))
-		log.Println(string(body))
 		return
 	}
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		err = errors.Wrap(err, "service.GetReleaseList json.Unmarshal err")
+		err = errors.Wrap(err, "service.getLatestRelease json.Unmarshal err")
 		return
 	}
-	data.RuntimeInfo, err = GetRuntimeInfo()
 	return
+}
+
+func getLatestPrerelease() (data TRelease, err error) {
+	resp, err := http.Get(GithubReleasesListAPI)
+	if err != nil {
+		err = errors.Wrap(err, "service.getLatestPrerelease http.Get err")
+		return
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		err = errors.Wrap(err, "service.getLatestPrerelease io.ReadAll err")
+		return
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		err = errors.New(string(body))
+		return
+	}
+
+	var releaseList []TRelease
+
+	err = json.Unmarshal(body, &releaseList)
+	if err != nil {
+		err = errors.Wrap(err, "service.getLatestPrerelease json.Unmarshal err")
+		return
+	}
+
+	latestDate := time.Time{}
+
+	for _, release := range releaseList {
+		if release.Prerelease && release.PublishedAt.After(latestDate) {
+			data = release
+			latestDate = release.PublishedAt
+		}
+	}
+
+	return
+}
+
+func GetRelease(channel string) (data TRelease, err error) {
+	switch channel {
+	default:
+		fallthrough
+	case "stable":
+		return getLatestRelease()
+	case "prerelease":
+		return getLatestPrerelease()
+	}
 }
 
 type CurVersion struct {
@@ -113,15 +171,21 @@ func GetCurrentVersion() (c CurVersion, err error) {
 
 type Upgrader struct {
 	Release TRelease
+	RuntimeInfo
 }
 
-func NewUpgrader() (u *Upgrader, err error) {
-	data, err := GetRelease()
+func NewUpgrader(channel string) (u *Upgrader, err error) {
+	data, err := GetRelease(channel)
+	if err != nil {
+		return
+	}
+	runtimeInfo, err := GetRuntimeInfo()
 	if err != nil {
 		return
 	}
 	u = &Upgrader{
-		Release: data,
+		Release:     data,
+		RuntimeInfo: runtimeInfo,
 	}
 	return
 }
@@ -189,30 +253,51 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 
 	_ = json.Unmarshal(bytes, &buildJson)
 
-	build, ok := buildJson[u.Release.OS]
+	build, ok := buildJson[u.OS]
 	if !ok {
 		err = errors.Wrap(err, "os not support upgrade")
 		return
 	}
-	arch, ok := build[u.Release.Arch]
+	arch, ok := build[u.Arch]
 	if !ok {
 		err = errors.Wrap(err, "arch not support upgrade")
 		return
 	}
-	var downloadUrl string
-	for _, v := range u.Release.Assets {
-		if fmt.Sprintf("nginx-ui-%s.tar.gz", arch.Name) == v.Name {
-			downloadUrl = v.BrowserDownloadUrl
-			break
-		}
-	}
 
-	if downloadUrl == "" {
-		err = errors.Wrap(err, "Nginx UI core downloadUrl is empty")
+	assetsMap := u.Release.GetAssetsMap()
+
+	// asset
+	asset, ok := assetsMap[fmt.Sprintf("nginx-ui-%s.tar.gz", arch.Name)]
+
+	if !ok {
+		err = errors.Wrap(err, "upgrader core asset is empty")
 		return
 	}
 
-	dir := filepath.Dir(u.Release.ExPath)
+	downloadUrl := asset.BrowserDownloadUrl
+	if downloadUrl == "" {
+		err = errors.New("upgrader core downloadUrl is empty")
+		return
+	}
+
+	// digest
+	digest, ok := assetsMap[fmt.Sprintf("nginx-ui-%s.tar.gz.digest", arch.Name)]
+
+	if !ok || digest.BrowserDownloadUrl == "" {
+		err = errors.New("upgrader core digest is empty")
+		return
+	}
+
+	resp, err := http.Get(digest.BrowserDownloadUrl)
+
+	if err != nil {
+		err = errors.Wrap(err, "upgrader core download digest fail")
+		return
+	}
+
+	defer resp.Body.Close()
+
+	dir := filepath.Dir(u.ExPath)
 
 	if settings.ServerSettings.GithubProxy != "" {
 		downloadUrl, err = url.JoinPath(settings.ServerSettings.GithubProxy, downloadUrl)
@@ -221,11 +306,30 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 			return
 		}
 	}
+
 	tarName, err = downloadRelease(downloadUrl, dir, progressChan)
 	if err != nil {
 		err = errors.Wrap(err, "service.DownloadLatestRelease downloadFile error")
 		return
 	}
+
+	// check tar digest
+	digestFileBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		err = errors.Wrap(err, "digestFileContent read error")
+		return
+	}
+
+	digestFileContent := strings.TrimSpace(string(digestFileBytes))
+
+	log.Println("DownloadLatestRelease tar digest", helper.DigestSHA512(tarName))
+	log.Println("DownloadLatestRelease digestFileContent", digestFileContent)
+
+	if digestFileContent != helper.DigestSHA512(tarName) {
+		err = errors.Wrap(err, "digest not equal")
+		return
+	}
+
 	return
 }
 

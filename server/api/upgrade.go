@@ -10,13 +10,23 @@ import (
 )
 
 func GetRelease(c *gin.Context) {
-	data, err := service.GetRelease()
+	data, err := service.GetRelease(c.Query("channel"))
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
-
-	c.JSON(http.StatusOK, data)
+	runtimeInfo, err := service.GetRuntimeInfo()
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+	type resp struct {
+		service.TRelease
+		service.RuntimeInfo
+	}
+	c.JSON(http.StatusOK, resp{
+		data, runtimeInfo,
+	})
 }
 
 func GetCurrentVersion(c *gin.Context) {
@@ -43,12 +53,24 @@ func PerformCoreUpgrade(c *gin.Context) {
 	}
 	defer ws.Close()
 
+	var control struct {
+		DryRun  bool   `json:"dry_run"`
+		Channel string `json:"channel"`
+	}
+
+	err = ws.ReadJSON(&control)
+
+	if err != nil {
+		log.Println("[Error] PerformCoreUpgrade ws.ReadJSON(&control)", err)
+		return
+	}
+
 	_ = ws.WriteJSON(gin.H{
 		"status":  "info",
 		"message": "Initialing core upgrader",
 	})
 
-	u, err := service.NewUpgrader()
+	u, err := service.NewUpgrader(control.Channel)
 
 	if err != nil {
 		_ = ws.WriteJSON(gin.H{
@@ -75,7 +97,9 @@ func PerformCoreUpgrade(c *gin.Context) {
 			})
 		}
 	}()
+
 	tarName, err := u.DownloadLatestRelease(progressChan)
+
 	if err != nil {
 		_ = ws.WriteJSON(gin.H{
 			"status":  "error",
@@ -88,13 +112,23 @@ func PerformCoreUpgrade(c *gin.Context) {
 		log.Println("[Error] PerformCoreUpgrade DownloadLatestRelease", err)
 		return
 	}
+
+	defer func() {
+		_ = os.Remove(tarName)
+		_ = os.Remove(tarName + ".digest")
+	}()
 	_ = ws.WriteJSON(gin.H{
 		"status":  "info",
 		"message": "Performing core upgrade",
 	})
-	_ = os.Remove(u.Release.ExPath)
+	// dry run
+	if control.DryRun {
+		return
+	}
+
+	_ = os.Remove(u.ExPath)
 	// bye, overseer will restart nginx-ui
-	err = u.PerformCoreUpgrade(u.Release.ExPath, tarName)
+	err = u.PerformCoreUpgrade(u.ExPath, tarName)
 	if err != nil {
 		_ = ws.WriteJSON(gin.H{
 			"status":  "error",

@@ -20,7 +20,7 @@ msgstr "关于"
 msgid "Access Logs"
 msgstr "访问日志"
 
-#: src/views/cert/Cert.vue:74 src/views/cert/DNSCredential.vue:32
+#: src/views/cert/Cert.vue:74 src/views/cert/DNSCredential.vue:31
 #: src/views/config/config.ts:35 src/views/domain/DomainList.vue:47
 #: src/views/user/User.vue:43
 msgid "Action"
@@ -113,7 +113,7 @@ msgstr "作者"
 msgid "Auto"
 msgstr "自动"
 
-#: src/views/cert/Cert.vue:37 src/views/domain/cert/ChangeCert.vue:35
+#: src/views/cert/Cert.vue:37 src/views/domain/cert/ChangeCert.vue:37
 msgid "Auto Cert"
 msgstr "自动更新"
 
@@ -129,18 +129,18 @@ msgstr "自动刷新"
 msgid "Auto-Cert Log"
 msgstr "证书自动续期日志"
 
-#: src/views/domain/cert/components/ObtainCert.vue:56
+#: src/views/domain/cert/components/ObtainCert.vue:59
 msgid "Auto-renewal disabled for %{name}"
 msgstr "成功关闭 %{name} 自动续签"
 
-#: src/views/domain/cert/components/ObtainCert.vue:50
+#: src/views/domain/cert/components/ObtainCert.vue:53
 msgid "Auto-renewal enabled for %{name}"
 msgstr "成功启用 %{name} 自动续签"
 
 #: src/views/config/Config.vue:17 src/views/config/Config.vue:18
 #: src/views/config/Config.vue:28 src/views/config/Config.vue:6
-#: src/views/config/ConfigEdit.vue:83 src/views/domain/DomainEdit.vue:257
-#: src/views/nginx_log/NginxLog.vue:172
+#: src/views/config/ConfigEdit.vue:83 src/views/domain/DomainEdit.vue:263
+#: src/views/nginx_log/NginxLog.vue:161
 msgid "Back"
 msgstr "返回"
 
@@ -168,15 +168,23 @@ msgstr "基本模式"
 msgid "Batch Modify"
 msgstr "批量修改"
 
-#: src/views/system/About.vue:21
+#: src/views/system/About.vue:28
 msgid "Build with"
 msgstr "构建基于"
+
+#: src/views/preference/BasicSettings.vue:35
+msgid "CADir"
+msgstr "CADir"
 
 #: src/components/ChatGPT/ChatGPT.vue:17 src/components/ChatGPT/ChatGPT.vue:18
 #: src/components/ChatGPT/ChatGPT.vue:22 src/components/ChatGPT/ChatGPT.vue:24
 #: src/components/StdDataDisplay/StdBatchEdit.vue:7
 #: src/components/StdDataDisplay/StdCurd.vue:27
 #: src/components/StdDataEntry/components/StdSelector.vue:11
+#: src/views/domain/cert/components/ObtainCert.vue:188
+#: src/views/domain/DomainEdit.vue:176
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:208
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:37
 msgid "Cancel"
 msgstr "取消"
 
@@ -210,6 +218,10 @@ msgstr "挑战方法"
 msgid "Change Certificate"
 msgstr "更改证书"
 
+#: src/views/system/Upgrade.vue:35
+msgid "Channel"
+msgstr "通道"
+
 #: src/views/preference/OpenAISettings.vue:3
 msgid "ChatGPT Model"
 msgstr "ChatGPT 模型"
@@ -236,7 +248,7 @@ msgstr "清空"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
 #: src/views/domain/ngx_conf/LocationEditor.vue:35
 #: src/views/domain/ngx_conf/LocationEditor.vue:52
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:250
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:260
 msgid "Comments"
 msgstr "注释"
 
@@ -282,7 +294,7 @@ msgstr "CPU 状态"
 msgid "CPU:"
 msgstr "CPU:"
 
-#: src/views/domain/DomainAdd.vue:148
+#: src/views/domain/DomainAdd.vue:154
 msgid "Create Another"
 msgstr "再创建一个"
 
@@ -380,11 +392,11 @@ msgstr "指令"
 msgid "Directives"
 msgstr "指令"
 
-#: src/views/domain/cert/components/ObtainCert.vue:58
+#: src/views/domain/cert/components/ObtainCert.vue:61
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "关闭 %{name} 自动续签失败"
 
-#: src/views/cert/Cert.vue:47 src/views/domain/cert/ChangeCert.vue:45
+#: src/views/cert/Cert.vue:47 src/views/domain/cert/ChangeCert.vue:47
 #: src/views/domain/DomainEdit.vue:10 src/views/domain/DomainEdit.vue:11
 #: src/views/domain/DomainList.vue:16 src/views/domain/DomainList.vue:34
 #: src/views/domain/DomainList.vue:7 src/views/domain/DomainList.vue:8
@@ -392,7 +404,7 @@ msgstr "关闭 %{name} 自动续签失败"
 msgid "Disabled"
 msgstr "禁用"
 
-#: src/views/domain/DomainEdit.vue:159 src/views/domain/DomainList.vue:69
+#: src/views/domain/DomainEdit.vue:163 src/views/domain/DomainList.vue:69
 msgid "Disabled successfully"
 msgstr "禁用成功"
 
@@ -415,15 +427,15 @@ msgstr "DNS供应商"
 msgid "DNS01"
 msgstr "DNS01"
 
-#: src/views/domain/cert/components/ObtainCert.vue:178
+#: src/views/domain/cert/components/ObtainCert.vue:184
 msgid "Do you want to disable auto-cert renewal?"
 msgstr "你想禁用自动更新证书吗？"
 
-#: src/views/domain/DomainEdit.vue:168
+#: src/views/domain/DomainEdit.vue:172
 msgid "Do you want to disable this site?"
 msgstr "你想停用这个网站吗？"
 
-#: src/views/domain/DomainEdit.vue:168
+#: src/views/domain/DomainEdit.vue:172
 msgid "Do you want to enable this site?"
 msgstr "你想启用这个网站吗？"
 
@@ -431,7 +443,7 @@ msgstr "你想启用这个网站吗？"
 msgid "Do you want to enable TLS?"
 msgstr "你想启用TLS吗？"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:196
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:204
 msgid "Do you want to remove this server?"
 msgstr "你想删除这个服务器吗？"
 
@@ -450,6 +462,10 @@ msgstr "下载最新版本错误"
 #: src/language/constants.ts:28
 msgid "Downloading latest release"
 msgstr "下载最新版本"
+
+#: src/views/system/Upgrade.vue:53
+msgid "Dry run mode enabled"
+msgstr "试运行模式已启动"
 
 #: src/views/domain/DomainList.vue:14 src/views/domain/DomainList.vue:15
 #: src/views/domain/DomainList.vue:16 src/views/domain/DomainList.vue:23
@@ -477,11 +493,11 @@ msgstr "编辑站点"
 msgid "Email (*)"
 msgstr "邮箱 (*)"
 
-#: src/views/domain/cert/components/ObtainCert.vue:52
+#: src/views/domain/cert/components/ObtainCert.vue:55
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "启用 %{name} 自动续签失败"
 
-#: src/views/domain/DomainAdd.vue:50
+#: src/views/domain/DomainAdd.vue:49
 msgid "Enable failed"
 msgstr "启用失败"
 
@@ -489,7 +505,7 @@ msgstr "启用失败"
 msgid "Enable TLS"
 msgstr "启用 TLS"
 
-#: src/views/cert/Cert.vue:44 src/views/domain/cert/ChangeCert.vue:42
+#: src/views/cert/Cert.vue:44 src/views/domain/cert/ChangeCert.vue:44
 #: src/views/domain/DomainEdit.vue:29 src/views/domain/DomainEdit.vue:7
 #: src/views/domain/DomainEdit.vue:8 src/views/domain/DomainList.vue:10
 #: src/views/domain/DomainList.vue:11 src/views/domain/DomainList.vue:12
@@ -497,7 +513,7 @@ msgstr "启用 TLS"
 msgid "Enabled"
 msgstr "启用"
 
-#: src/views/domain/DomainAdd.vue:46 src/views/domain/DomainEdit.vue:150
+#: src/views/domain/DomainAdd.vue:46 src/views/domain/DomainEdit.vue:154
 #: src/views/domain/DomainList.vue:59
 msgid "Enabled successfully"
 msgstr "启用成功"
@@ -531,11 +547,11 @@ msgstr "过期时间: %{date}"
 msgid "Export"
 msgstr "导出"
 
-#: src/views/domain/DomainEdit.vue:162 src/views/domain/DomainList.vue:73
+#: src/views/domain/DomainEdit.vue:166 src/views/domain/DomainList.vue:73
 msgid "Failed to disable %{msg}"
 msgstr "禁用失败 %{msg}"
 
-#: src/views/domain/DomainEdit.vue:153 src/views/domain/DomainList.vue:63
+#: src/views/domain/DomainEdit.vue:157 src/views/domain/DomainList.vue:63
 msgid "Failed to enable %{msg}"
 msgstr "启用失败 %{msg}"
 
@@ -543,7 +559,7 @@ msgstr "启用失败 %{msg}"
 msgid "Failed to get certificate information"
 msgstr "获取证书信息失败"
 
-#: src/views/domain/DomainEdit.vue:128
+#: src/views/domain/DomainEdit.vue:132
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "保存失败，在配置中检测到语法错误。"
 
@@ -591,13 +607,9 @@ msgstr "正在生成私钥用于注册账户"
 msgid "Get release information error"
 msgstr "获取发布信息错误"
 
-#: src/views/domain/cert/components/ObtainCert.vue:134
+#: src/views/domain/cert/components/ObtainCert.vue:140
 msgid "Getting the certificate, please wait..."
 msgstr "正在获取证书，请稍等..."
-
-#: src/views/preference/Preference.vue:14
-msgid "Git"
-msgstr "Git"
 
 #: src/views/preference/BasicSettings.vue:31
 msgid "Github Proxy"
@@ -748,7 +760,7 @@ msgstr "内存与存储"
 msgid "Modify"
 msgstr "修改"
 
-#: src/views/domain/DomainAdd.vue:145
+#: src/views/domain/DomainAdd.vue:151
 msgid "Modify Config"
 msgstr "修改配置文件"
 
@@ -757,8 +769,8 @@ msgstr "修改配置文件"
 msgid "Multi-line Directive"
 msgstr "单行指令"
 
-#: src/views/cert/Cert.vue:16 src/views/cert/DNSCredential.vue:13
-#: src/views/config/config.ts:8 src/views/domain/cert/ChangeCert.vue:19
+#: src/views/cert/Cert.vue:16 src/views/cert/DNSCredential.vue:12
+#: src/views/config/config.ts:8 src/views/domain/cert/ChangeCert.vue:21
 #: src/views/domain/DomainEdit.vue:32 src/views/domain/DomainList.vue:15
 #: src/views/domain/SiteDuplicate.vue:5
 msgid "Name"
@@ -780,14 +792,14 @@ msgstr "下载流量"
 msgid "Network Total Send"
 msgstr "上传流量"
 
-#: src/views/system/Upgrade.vue:40
+#: src/views/system/Upgrade.vue:47
 msgid "New version released"
 msgstr "新版本发布"
 
 #: src/views/domain/cert/components/ObtainCert.vue:12
 #: src/views/domain/cert/components/ObtainCert.vue:13
 #: src/views/domain/cert/components/ObtainCert.vue:21
-#: src/views/domain/DomainAdd.vue:135
+#: src/views/domain/DomainAdd.vue:141
 msgid "Next"
 msgstr "下一步"
 
@@ -856,7 +868,10 @@ msgstr "正在获取证书"
 #: src/components/StdDataDisplay/StdCurd.vue:28
 #: src/components/StdDataDisplay/StdTable.vue:54
 #: src/components/StdDataEntry/components/StdSelector.vue:12
-#: src/views/domain/DomainList.vue:28
+#: src/views/domain/cert/components/ObtainCert.vue:187
+#: src/views/domain/DomainEdit.vue:175 src/views/domain/DomainList.vue:28
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:207
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:36
 msgid "OK"
 msgstr "确定"
 
@@ -899,7 +914,7 @@ msgstr "执行核心升级错误"
 msgid "Performing core upgrade"
 msgstr "正在进行核心升级"
 
-#: src/views/cert/DNSCredential.vue:44
+#: src/views/cert/DNSCredential.vue:43
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider. We will add one or more TXT records to the DNS records of your "
@@ -937,6 +952,14 @@ msgstr "请输入您的密码！"
 msgid "Please input your username!"
 msgstr "请输入您的用户名！"
 
+#: src/views/system/Upgrade.vue:25 src/views/system/Upgrade.vue:26
+#: src/views/system/Upgrade.vue:30 src/views/system/Upgrade.vue:34
+#: src/views/system/Upgrade.vue:38 src/views/system/Upgrade.vue:48
+#: src/views/system/Upgrade.vue:49 src/views/system/Upgrade.vue:53
+#: src/views/system/Upgrade.vue:57 src/views/system/Upgrade.vue:72
+msgid "Pre-release"
+msgstr "预发布"
+
 #: src/routes/index.ts:140 src/views/preference/Preference.vue:2
 msgid "Preference"
 msgstr "偏好设置"
@@ -953,15 +976,15 @@ msgstr "禁止在演示模式下修改 root 账户的密码"
 msgid "Prohibit deleting the default user"
 msgstr "禁止删除默认用户"
 
-#: src/views/system/About.vue:19
+#: src/views/system/About.vue:26
 msgid "Project Team"
 msgstr "项目团队"
 
-#: src/views/cert/DNSCredential.vue:21
+#: src/views/cert/DNSCredential.vue:20
 msgid "Provider"
 msgstr "提供商"
 
-#: src/views/dashboard/DashBoard.vue:109
+#: src/views/dashboard/DashBoard.vue:109 src/views/dashboard/DashBoard.vue:23
 msgid "Reads"
 msgstr "读"
 
@@ -978,16 +1001,16 @@ msgstr "重新生成响应"
 msgid "Registering user"
 msgstr "正在注册用户"
 
-#: src/views/system/Upgrade.vue:26 src/views/system/Upgrade.vue:27
-#: src/views/system/Upgrade.vue:31 src/views/system/Upgrade.vue:35
-#: src/views/system/Upgrade.vue:39 src/views/system/Upgrade.vue:42
-#: src/views/system/Upgrade.vue:45
+#: src/views/system/Upgrade.vue:37 src/views/system/Upgrade.vue:38
+#: src/views/system/Upgrade.vue:42 src/views/system/Upgrade.vue:46
+#: src/views/system/Upgrade.vue:50 src/views/system/Upgrade.vue:53
+#: src/views/system/Upgrade.vue:59
 msgid "Reinstall"
 msgstr "重新安装"
 
-#: src/views/system/Upgrade.vue:34 src/views/system/Upgrade.vue:35
-#: src/views/system/Upgrade.vue:39 src/views/system/Upgrade.vue:43
-#: src/views/system/Upgrade.vue:55
+#: src/views/system/Upgrade.vue:51 src/views/system/Upgrade.vue:52
+#: src/views/system/Upgrade.vue:56 src/views/system/Upgrade.vue:60
+#: src/views/system/Upgrade.vue:75
 msgid "Release Note"
 msgstr "发行日志"
 
@@ -1006,10 +1029,6 @@ msgstr "重载中"
 #: src/language/constants.ts:22
 msgid "Reloading nginx"
 msgstr "正在重载 Nginx"
-
-#: src/views/preference/GitSettings.vue:3
-msgid "Repo url"
-msgstr ""
 
 #: src/components/StdDataDisplay/StdTable.vue:10
 #: src/components/StdDataDisplay/StdTable.vue:15
@@ -1037,13 +1056,13 @@ msgstr "运行中"
 
 #: src/components/ChatGPT/ChatGPT.vue:16 src/components/ChatGPT/ChatGPT.vue:17
 #: src/components/ChatGPT/ChatGPT.vue:21 src/components/ChatGPT/ChatGPT.vue:23
-#: src/views/config/ConfigEdit.vue:89 src/views/domain/DomainEdit.vue:260
+#: src/views/config/ConfigEdit.vue:89 src/views/domain/DomainEdit.vue:266
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:32
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:40
-#: src/views/preference/Preference.vue:20
-#: src/views/preference/Preference.vue:21
+#: src/views/preference/Preference.vue:17
+#: src/views/preference/Preference.vue:18
 msgid "Save"
 msgstr "保存"
 
@@ -1053,7 +1072,7 @@ msgstr "保存"
 msgid "Save Directive"
 msgstr "保存指令"
 
-#: src/views/config/ConfigEdit.vue:53 src/views/domain/DomainAdd.vue:54
+#: src/views/config/ConfigEdit.vue:53 src/views/domain/DomainAdd.vue:53
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:36
 msgid "Save error %{msg}"
 msgstr "保存错误 %{msg}"
@@ -1068,7 +1087,7 @@ msgid "Save Successfully"
 msgstr "保存成功"
 
 #: src/views/config/ConfigEdit.vue:51 src/views/domain/DomainAdd.vue:43
-#: src/views/domain/DomainEdit.vue:142
+#: src/views/domain/DomainEdit.vue:146
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
 msgid "Saved successfully"
 msgstr "保存成功"
@@ -1089,7 +1108,7 @@ msgstr "上传"
 #: src/components/StdDataDisplay/StdTable.vue:463
 #: src/views/config/ConfigEdit.vue:37 src/views/domain/DomainList.vue:83
 #: src/views/other/Install.vue:71 src/views/preference/Preference.vue:62
-#: src/views/system/Upgrade.vue:40
+#: src/views/system/Upgrade.vue:54
 msgid "Server error"
 msgstr "服务器错误"
 
@@ -1097,14 +1116,14 @@ msgstr "服务器错误"
 msgid "Server Info"
 msgstr "服务器信息"
 
-#: src/views/domain/cert/components/ObtainCert.vue:91
+#: src/views/domain/cert/components/ObtainCert.vue:97
 msgid "server_name not found in directives"
 msgstr "未在指令集合中找到 server_name"
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:10
 #: src/views/domain/cert/components/AutoCertStepOne.vue:5
 #: src/views/domain/cert/components/AutoCertStepOne.vue:6
-#: src/views/domain/DomainAdd.vue:110
+#: src/views/domain/DomainAdd.vue:116
 msgid "server_name parameter is required"
 msgstr "必须为 server_name 指令指明参数"
 
@@ -1140,6 +1159,14 @@ msgstr "SSL证书内容"
 #: src/views/cert/Cert.vue:44
 msgid "SSL Certification Key Content"
 msgstr "SSL证书密钥内容"
+
+#: src/views/system/Upgrade.vue:24 src/views/system/Upgrade.vue:25
+#: src/views/system/Upgrade.vue:29 src/views/system/Upgrade.vue:33
+#: src/views/system/Upgrade.vue:37 src/views/system/Upgrade.vue:47
+#: src/views/system/Upgrade.vue:48 src/views/system/Upgrade.vue:52
+#: src/views/system/Upgrade.vue:56 src/views/system/Upgrade.vue:71
+msgid "Stable"
+msgstr "稳定"
 
 #: src/views/domain/DomainList.vue:24
 msgid "Status"
@@ -1220,7 +1247,7 @@ msgstr ""
 msgid "Type"
 msgstr "类型"
 
-#: src/views/cert/Cert.vue:68 src/views/cert/DNSCredential.vue:26
+#: src/views/cert/Cert.vue:68 src/views/cert/DNSCredential.vue:25
 #: src/views/config/config.ts:28 src/views/domain/DomainList.vue:41
 #: src/views/user/User.vue:37
 msgid "Updated at"
@@ -1231,10 +1258,10 @@ msgid "Updated successfully"
 msgstr "更新成功"
 
 #: src/routes/index.ts:159 src/views/system/Upgrade.vue:2
-#: src/views/system/Upgrade.vue:28 src/views/system/Upgrade.vue:29
-#: src/views/system/Upgrade.vue:33 src/views/system/Upgrade.vue:37
-#: src/views/system/Upgrade.vue:41 src/views/system/Upgrade.vue:44
-#: src/views/system/Upgrade.vue:47 src/views/system/Upgrade.vue:48
+#: src/views/system/Upgrade.vue:39 src/views/system/Upgrade.vue:40
+#: src/views/system/Upgrade.vue:44 src/views/system/Upgrade.vue:48
+#: src/views/system/Upgrade.vue:52 src/views/system/Upgrade.vue:55
+#: src/views/system/Upgrade.vue:61 src/views/system/Upgrade.vue:62
 msgid "Upgrade"
 msgstr "升级"
 
@@ -1242,7 +1269,7 @@ msgstr "升级"
 msgid "Upgraded successfully"
 msgstr "升级成功"
 
-#: src/views/system/Upgrade.vue:72
+#: src/views/system/Upgrade.vue:90
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "正在升级Nginx UI，请等待..."
 
@@ -1250,8 +1277,7 @@ msgstr "正在升级Nginx UI，请等待..."
 msgid "Uptime:"
 msgstr "运行时间:"
 
-#: src/views/other/Login.vue:11 src/views/preference/GitSettings.vue:6
-#: src/views/user/User.vue:11
+#: src/views/other/Login.vue:11 src/views/user/User.vue:11
 msgid "Username"
 msgstr "用户名"
 
@@ -1279,7 +1305,7 @@ msgstr "查看"
 msgid "Warning"
 msgstr "警告"
 
-#: src/views/domain/cert/components/ObtainCert.vue:179
+#: src/views/domain/cert/components/ObtainCert.vue:185
 msgid ""
 "We will remove the HTTPChallenge configuration from this file and reload the "
 "Nginx. Are you sure you want to continue?"
@@ -1287,7 +1313,6 @@ msgstr ""
 "我们将从这个文件中删除HTTPChallenge的配置，并重新加载Nginx。你确定要继续吗？"
 
 #: src/views/dashboard/DashBoard.vue:102 src/views/dashboard/DashBoard.vue:22
-#: src/views/dashboard/DashBoard.vue:23
 msgid "Writes"
 msgstr "写"
 
@@ -1304,7 +1329,7 @@ msgstr "正在将证书写入磁盘"
 msgid "Yes"
 msgstr "是的"
 
-#: src/views/system/Upgrade.vue:36
+#: src/views/system/Upgrade.vue:43
 msgid "You are using the latest version"
 msgstr "您使用的是最新版本"
 
@@ -1313,10 +1338,13 @@ msgstr "您使用的是最新版本"
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "你可以在这个页面检查Nginx UI的升级。"
 
-#: src/views/system/About.vue:27
+#: src/views/system/About.vue:34
 msgctxt "Project"
 msgid "License"
 msgstr "开源许可"
+
+#~ msgid "Git"
+#~ msgstr "Git"
 
 #~ msgid "Do you want to enable auto-cert renewal?"
 #~ msgstr "你想启用自动更新证书吗？"

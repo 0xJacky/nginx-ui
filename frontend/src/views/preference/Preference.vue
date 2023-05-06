@@ -9,7 +9,6 @@ import {message} from 'ant-design-vue'
 import BasicSettings from '@/views/preference/BasicSettings.vue'
 import OpenAISettings from '@/views/preference/OpenAISettings.vue'
 import NginxLogSettings from '@/views/preference/NginxLogSettings.vue'
-import GitSettings from '@/views/preference/GitSettings.vue'
 import {IData} from '@/views/preference/typedef'
 
 const {$gettext} = useGettext()
@@ -24,7 +23,8 @@ const data = ref<IData>({
         start_cmd: '',
         email: '',
         http_challenge_port: '9180',
-        github_proxy: ''
+        github_proxy: '',
+        ca_dir: ''
     },
     nginx_log: {
         access_log_path: '',
