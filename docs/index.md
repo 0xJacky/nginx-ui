@@ -10,7 +10,7 @@ hero:
     text: "Yet another Nginx Web UI"
     tagline: Simple, powerful, and fast.
     image:
-        src: /icon.svg
+        src: /assets/icon.svg
         alt: Nginx UI
     actions:
         -   theme: brand

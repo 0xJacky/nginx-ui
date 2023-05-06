@@ -10,7 +10,7 @@ hero:
     text: "Nginx 网络管理界面的新选择"
     tagline: 简单、强大、高速
     image:
-        src: /icon.svg
+        src: /assets/icon.svg
         alt: Nginx UI
     actions:
         -   theme: brand

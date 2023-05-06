@@ -23,7 +23,7 @@ const members = [
 
 # 何为 Nginx UI?
 
-![Dashboard](/dashboard_zh_CN.png)
+![Dashboard](/assets/dashboard_zh_CN.png)
 
 Nginx UI 是一个全新的 Nginx 网络管理界面，旨在简化 Nginx 服务器的管理和配置。它提供实时服务器统计数据、ChatGPT
 助手、一键部署、Let's Encrypt 证书的自动续签以及用户友好的网站配置编辑工具。此外，Nginx UI 还提供了在线访问 Nginx
