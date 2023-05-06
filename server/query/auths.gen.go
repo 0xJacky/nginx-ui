@@ -31,7 +31,7 @@ func newAuth(db *gorm.DB, opts ...gen.DOOption) auth {
 	_auth.ID = field.NewInt(tableName, "id")
 	_auth.CreatedAt = field.NewTime(tableName, "created_at")
 	_auth.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_auth.DeletedAt = field.NewTime(tableName, "deleted_at")
+	_auth.DeletedAt = field.NewField(tableName, "deleted_at")
 	_auth.Name = field.NewString(tableName, "name")
 	_auth.Password = field.NewString(tableName, "password")
 
@@ -47,7 +47,7 @@ type auth struct {
 	ID        field.Int
 	CreatedAt field.Time
 	UpdatedAt field.Time
-	DeletedAt field.Time
+	DeletedAt field.Field
 	Name      field.String
 	Password  field.String
 
@@ -69,7 +69,7 @@ func (a *auth) updateTableName(table string) *auth {
 	a.ID = field.NewInt(table, "id")
 	a.CreatedAt = field.NewTime(table, "created_at")
 	a.UpdatedAt = field.NewTime(table, "updated_at")
-	a.DeletedAt = field.NewTime(table, "deleted_at")
+	a.DeletedAt = field.NewField(table, "deleted_at")
 	a.Name = field.NewString(table, "name")
 	a.Password = field.NewString(table, "password")
 

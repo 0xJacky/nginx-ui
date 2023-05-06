@@ -31,7 +31,7 @@ func newConfigBackup(db *gorm.DB, opts ...gen.DOOption) configBackup {
 	_configBackup.ID = field.NewInt(tableName, "id")
 	_configBackup.CreatedAt = field.NewTime(tableName, "created_at")
 	_configBackup.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_configBackup.DeletedAt = field.NewTime(tableName, "deleted_at")
+	_configBackup.DeletedAt = field.NewField(tableName, "deleted_at")
 	_configBackup.Name = field.NewString(tableName, "name")
 	_configBackup.FilePath = field.NewString(tableName, "file_path")
 	_configBackup.Content = field.NewString(tableName, "content")
@@ -48,7 +48,7 @@ type configBackup struct {
 	ID        field.Int
 	CreatedAt field.Time
 	UpdatedAt field.Time
-	DeletedAt field.Time
+	DeletedAt field.Field
 	Name      field.String
 	FilePath  field.String
 	Content   field.String
@@ -71,7 +71,7 @@ func (c *configBackup) updateTableName(table string) *configBackup {
 	c.ID = field.NewInt(table, "id")
 	c.CreatedAt = field.NewTime(table, "created_at")
 	c.UpdatedAt = field.NewTime(table, "updated_at")
-	c.DeletedAt = field.NewTime(table, "deleted_at")
+	c.DeletedAt = field.NewField(table, "deleted_at")
 	c.Name = field.NewString(table, "name")
 	c.FilePath = field.NewString(table, "file_path")
 	c.Content = field.NewString(table, "content")

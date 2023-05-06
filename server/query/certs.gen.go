@@ -31,7 +31,7 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.ID = field.NewInt(tableName, "id")
 	_cert.CreatedAt = field.NewTime(tableName, "created_at")
 	_cert.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_cert.DeletedAt = field.NewTime(tableName, "deleted_at")
+	_cert.DeletedAt = field.NewField(tableName, "deleted_at")
 	_cert.Name = field.NewString(tableName, "name")
 	_cert.Domains = field.NewField(tableName, "domains")
 	_cert.Filename = field.NewString(tableName, "filename")
@@ -59,7 +59,7 @@ type cert struct {
 	ID                    field.Int
 	CreatedAt             field.Time
 	UpdatedAt             field.Time
-	DeletedAt             field.Time
+	DeletedAt             field.Field
 	Name                  field.String
 	Domains               field.Field
 	Filename              field.String
@@ -89,7 +89,7 @@ func (c *cert) updateTableName(table string) *cert {
 	c.ID = field.NewInt(table, "id")
 	c.CreatedAt = field.NewTime(table, "created_at")
 	c.UpdatedAt = field.NewTime(table, "updated_at")
-	c.DeletedAt = field.NewTime(table, "deleted_at")
+	c.DeletedAt = field.NewField(table, "deleted_at")
 	c.Name = field.NewString(table, "name")
 	c.Domains = field.NewField(table, "domains")
 	c.Filename = field.NewString(table, "filename")

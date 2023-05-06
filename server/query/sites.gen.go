@@ -31,7 +31,7 @@ func newSite(db *gorm.DB, opts ...gen.DOOption) site {
 	_site.ID = field.NewInt(tableName, "id")
 	_site.CreatedAt = field.NewTime(tableName, "created_at")
 	_site.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_site.DeletedAt = field.NewTime(tableName, "deleted_at")
+	_site.DeletedAt = field.NewField(tableName, "deleted_at")
 	_site.Path = field.NewString(tableName, "path")
 	_site.Advanced = field.NewBool(tableName, "advanced")
 
@@ -47,7 +47,7 @@ type site struct {
 	ID        field.Int
 	CreatedAt field.Time
 	UpdatedAt field.Time
-	DeletedAt field.Time
+	DeletedAt field.Field
 	Path      field.String
 	Advanced  field.Bool
 
@@ -69,7 +69,7 @@ func (s *site) updateTableName(table string) *site {
 	s.ID = field.NewInt(table, "id")
 	s.CreatedAt = field.NewTime(table, "created_at")
 	s.UpdatedAt = field.NewTime(table, "updated_at")
-	s.DeletedAt = field.NewTime(table, "deleted_at")
+	s.DeletedAt = field.NewField(table, "deleted_at")
 	s.Path = field.NewString(table, "path")
 	s.Advanced = field.NewBool(table, "advanced")
 

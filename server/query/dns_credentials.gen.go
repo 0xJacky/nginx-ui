@@ -31,7 +31,7 @@ func newDnsCredential(db *gorm.DB, opts ...gen.DOOption) dnsCredential {
 	_dnsCredential.ID = field.NewInt(tableName, "id")
 	_dnsCredential.CreatedAt = field.NewTime(tableName, "created_at")
 	_dnsCredential.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_dnsCredential.DeletedAt = field.NewTime(tableName, "deleted_at")
+	_dnsCredential.DeletedAt = field.NewField(tableName, "deleted_at")
 	_dnsCredential.Name = field.NewString(tableName, "name")
 	_dnsCredential.Config = field.NewField(tableName, "config")
 	_dnsCredential.Provider = field.NewString(tableName, "provider")
@@ -48,7 +48,7 @@ type dnsCredential struct {
 	ID        field.Int
 	CreatedAt field.Time
 	UpdatedAt field.Time
-	DeletedAt field.Time
+	DeletedAt field.Field
 	Name      field.String
 	Config    field.Field
 	Provider  field.String
@@ -71,7 +71,7 @@ func (d *dnsCredential) updateTableName(table string) *dnsCredential {
 	d.ID = field.NewInt(table, "id")
 	d.CreatedAt = field.NewTime(table, "created_at")
 	d.UpdatedAt = field.NewTime(table, "updated_at")
-	d.DeletedAt = field.NewTime(table, "deleted_at")
+	d.DeletedAt = field.NewField(table, "deleted_at")
 	d.Name = field.NewString(table, "name")
 	d.Config = field.NewField(table, "config")
 	d.Provider = field.NewString(table, "provider")
