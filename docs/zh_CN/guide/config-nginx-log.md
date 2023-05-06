@@ -7,7 +7,7 @@ Nginx 日志对于监控、排查问题和维护您的 Web 服务器至关重要
 
 在 Nginx-UI 容器中，`/var/log/nginx/access.log` 是一个指向 `/dev/stdout` 的符号链接，而 `/var/log/nginx/error.log`
 是一个指向 `/dev/stderr` 的符号链接。这种设置允许您使用 `docker logs nginx-ui` 命令查看 Nginx 和 Nginx-UI 日志。然而，这两个设备不支持
-tail 命令，因此有必要使用额外的日志文件来记录 Nginx 日志。
+`tail` 命令，因此有必要使用额外的日志文件来记录 Nginx 日志。
 
 示例：
 

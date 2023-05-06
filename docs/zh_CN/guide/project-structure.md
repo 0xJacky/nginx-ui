@@ -64,7 +64,7 @@
 │  │  └─ ...
 │  ├─ api                  # 向前端提供的 API
 │  ├─ model                # 自动生成的模型
-│  ├─ query                # gen 自动生成的请求文件
+│  ├─ query                # gen 自动生成的数据库请求文件
 │  ├─ router               # 路由和中间件
 │  ├─ service              # 服务文件
 │  ├─ settings             # 配置接口

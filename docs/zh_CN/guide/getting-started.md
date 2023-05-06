@@ -75,8 +75,8 @@ docker run -dit \
 
 ## 通过执行文件运行
 
-不建议直接运行Nginx UI可执行文件用于非测试目的。
-我们建议在Linux上将其配置为守护进程或使用[安装脚本](./install-script-linux)。
+不建议直接运行 Nginx UI 可执行文件用于非测试目的。
+我们建议在 Linux 上将其配置为守护进程或使用 [安装脚本](./install-script-linux)。
 
 ### 配置
 

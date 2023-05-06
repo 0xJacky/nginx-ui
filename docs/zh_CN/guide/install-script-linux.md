@@ -30,7 +30,7 @@ bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/inst
 ```
 
 一键安装脚本默认设置的监听端口为 `9000`，HTTP Challenge 端口默认为 `9180`。如果有端口冲突，请手动修改 `/usr/local/etc/nginx-ui/app.ini`，
-并使用 `systemctl restart nginx-ui` 重启 Nginx UI 服务。有关更多信息，请查看 [配置参考](./config-server)。
+并使用 `systemctl restart nginx-ui` 重启 Nginx UI 服务。更多有关信息，请查看 [配置参考](./config-server)。
 
 ## 卸载
 

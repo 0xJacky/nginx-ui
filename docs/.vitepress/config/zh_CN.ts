@@ -30,7 +30,7 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
                     collapsed: false,
                     items: [
                         {text: '构建', link: '/zh_CN/guide/build'},
-                        {text: '目录结构', link: '/zh_CN/guide/project-structure'},
+                        {text: '项目结构', link: '/zh_CN/guide/project-structure'},
                         {text: '贡献代码', link: '/zh_CN/guide/contributing'}
                     ]
                 },
