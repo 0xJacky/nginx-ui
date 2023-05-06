@@ -35,8 +35,7 @@ const help = computed(() => {
 </script>
 
 <template>
-    <a-form-item :label="label" :extra="extra" :validate-status="valid_status" :help="help?.()"
-                 :required="tag.indexOf('required')>-1">
+    <a-form-item :label="label" :extra="extra" :validate-status="valid_status" :help="help?.()">
         <slot/>
     </a-form-item>
 </template>

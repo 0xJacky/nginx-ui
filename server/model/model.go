@@ -35,12 +35,23 @@ func GenerateAllModel() []any {
 	}
 }
 
+func logMode() gormlogger.Interface {
+	switch settings.ServerSettings.RunMode {
+	case gin.ReleaseMode:
+		return gormlogger.Default.LogMode(gormlogger.Warn)
+	default:
+		fallthrough
+	case gin.DebugMode:
+		return gormlogger.Default.LogMode(gormlogger.Info)
+	}
+}
+
 func Init() *gorm.DB {
 	dbPath := path.Join(path.Dir(settings.ConfPath), fmt.Sprintf("%s.db", settings.ServerSettings.Database))
 
 	var err error
 	db, err = gorm.Open(sqlite.Open(dbPath), &gorm.Config{
-		Logger:                                   gormlogger.Default.LogMode(gormlogger.Info),
+		Logger:                                   logMode(),
 		PrepareStmt:                              true,
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})

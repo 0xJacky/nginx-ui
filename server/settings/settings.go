@@ -95,10 +95,9 @@ func Setup() {
 	var err error
 	Conf, err = ini.LooseLoad(ConfPath)
 	if err != nil {
-		log.Printf("setting.Setup: %v", err)
-	} else {
-		MapTo()
+		log.Fatalf("setting.Setup: %v\n", err)
 	}
+	MapTo()
 }
 
 func MapTo() {
