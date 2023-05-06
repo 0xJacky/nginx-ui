@@ -2,21 +2,21 @@ package cert
 
 import (
 	"fmt"
+	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/pkg/errors"
-	"log"
 	"time"
 )
 
 func handleIssueCertLogChan(logChan chan string) {
 	defer func() {
 		if err := recover(); err != nil {
-			log.Println("[Auto Cert] handleIssueCertLogChan", err)
+			logger.Error(err)
 		}
 	}()
 
 	for logString := range logChan {
-		log.Println("[Auto Cert] Info", logString)
+		logger.Info("Auto Cert", logString)
 	}
 }
 
@@ -31,12 +31,12 @@ func (t *AutoCertErrorLog) SetCertModel(cert *model.Cert) {
 
 func (t *AutoCertErrorLog) Push(text string, err error) {
 	t.buffer = append(t.buffer, text+" "+err.Error())
-	log.Println("[AutoCert Error]", text, err)
+	logger.Error("AutoCert", text, err)
 }
 
 func (t *AutoCertErrorLog) Exit(text string, err error) {
 	t.buffer = append(t.buffer, text+" "+err.Error())
-	log.Println("[AutoCert Error]", text, err)
+	logger.Error("AutoCert", text, err)
 
 	if t.cert == nil {
 		return
@@ -59,10 +59,10 @@ func (t *AutoCertErrorLog) ToString() (content string) {
 func AutoObtain() {
 	defer func() {
 		if err := recover(); err != nil {
-			log.Println("[AutoCert] Recover", err)
+			logger.Error("AutoCert Recover", err)
 		}
 	}()
-	log.Println("[AutoCert] Start")
+	logger.Info("AutoCert Worker Started")
 	autoCertList := model.GetAutoCertList()
 	for _, certModel := range autoCertList {
 		confName := certModel.Filename
@@ -124,5 +124,5 @@ func AutoObtain() {
 
 		close(logChan)
 	}
-	log.Println("[AutoCert] End")
+	logger.Info("AutoCert Worker End")
 }

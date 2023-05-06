@@ -3,6 +3,7 @@ package service
 import (
 	"bufio"
 	"bytes"
+	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	templ "github.com/0xJacky/Nginx-UI/template"
@@ -11,7 +12,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/tufanbarisyildirim/gonginx/parser"
 	"io"
-	"log"
 	"path/filepath"
 	"strings"
 	"text/template"
@@ -64,7 +64,7 @@ func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
 
 	_, err = toml.Decode(content, &configListItem)
 	if err != nil {
-		log.Println("toml.Decode", err.Error())
+		logger.Error(err)
 	}
 	return
 }

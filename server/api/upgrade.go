@@ -1,10 +1,10 @@
 package api
 
 import (
+	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/0xJacky/Nginx-UI/server/service"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"log"
 	"net/http"
 	"os"
 )
@@ -48,7 +48,7 @@ func PerformCoreUpgrade(c *gin.Context) {
 	// upgrade http to websocket
 	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		log.Println("[Error] PerformCoreUpgrade Upgrade", err)
+		logger.Error(err)
 		return
 	}
 	defer ws.Close()
@@ -61,7 +61,7 @@ func PerformCoreUpgrade(c *gin.Context) {
 	err = ws.ReadJSON(&control)
 
 	if err != nil {
-		log.Println("[Error] PerformCoreUpgrade ws.ReadJSON(&control)", err)
+		logger.Error(err)
 		return
 	}
 
@@ -81,7 +81,7 @@ func PerformCoreUpgrade(c *gin.Context) {
 			"status":  "error",
 			"message": err.Error(),
 		})
-		log.Println("[Error] PerformCoreUpgrade service.NewUpgrader()", err)
+		logger.Error(err)
 		return
 	}
 	_ = ws.WriteJSON(gin.H{
@@ -109,7 +109,7 @@ func PerformCoreUpgrade(c *gin.Context) {
 			"status":  "error",
 			"message": err.Error(),
 		})
-		log.Println("[Error] PerformCoreUpgrade DownloadLatestRelease", err)
+		logger.Error(err)
 		return
 	}
 
@@ -138,7 +138,7 @@ func PerformCoreUpgrade(c *gin.Context) {
 			"status":  "error",
 			"message": err.Error(),
 		})
-		log.Println("[Error] PerformCoreUpgrade", err)
+		logger.Error(err)
 		return
 	}
 }

@@ -3,13 +3,13 @@ package router
 import (
 	"encoding/base64"
 	"github.com/0xJacky/Nginx-UI/frontend"
+	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"io/fs"
-	"log"
 	"net/http"
 	"path"
 	"strings"
@@ -26,7 +26,7 @@ func recovery() gin.HandlerFunc {
 						errorAction = errorActionMsg
 					}
 				}
-				log.Println(err.(error).Error())
+				logger.Error(err)
 				c.JSON(http.StatusInternalServerError, gin.H{
 					"message": err.(error).Error(),
 					"error":   errorAction,
@@ -83,7 +83,7 @@ func mustFS(dir string) (serverFileSystem static.ServeFileSystem) {
 	sub, err := fs.Sub(frontend.DistFS, path.Join("dist", dir))
 
 	if err != nil {
-		log.Println(err)
+		logger.Error(err)
 		return
 	}
 

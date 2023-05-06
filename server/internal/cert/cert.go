@@ -6,6 +6,7 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/tls"
+	"github.com/0xJacky/Nginx-UI/logger"
 	dns2 "github.com/0xJacky/Nginx-UI/server/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/server/query"
@@ -17,7 +18,6 @@ import (
 	"github.com/go-acme/lego/v4/providers/dns"
 	"github.com/go-acme/lego/v4/registration"
 	"github.com/pkg/errors"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -55,7 +55,7 @@ type ConfigPayload struct {
 func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) {
 	defer func() {
 		if err := recover(); err != nil {
-			log.Println("Issue Cert recover", err)
+			logger.Error(err)
 		}
 	}()
 

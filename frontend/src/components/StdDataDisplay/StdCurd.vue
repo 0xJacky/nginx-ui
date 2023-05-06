@@ -189,7 +189,7 @@ const selectedRowKeys = ref([])
 </template>
 
 <style lang="less" scoped>
-.before-edit {
-    margin-bottom: 20px;
+.before-edit:last-child {
+    margin-bottom: 10px;
 }
 </style>

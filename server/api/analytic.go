@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/0xJacky/Nginx-UI/server/internal/analytic"
 	"github.com/pkg/errors"
 	"github.com/shirou/gopsutil/v3/cpu"
@@ -11,7 +12,6 @@ import (
 	"github.com/shirou/gopsutil/v3/mem"
 	"github.com/shirou/gopsutil/v3/net"
 	"github.com/spf13/cast"
-	"log"
 	"math"
 	"net/http"
 	"runtime"
@@ -102,7 +102,7 @@ func Analytic(c *gin.Context) {
 	// upgrade http to websocket
 	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		log.Println("[Error] Analytic Upgrade", err)
+		logger.Error(err)
 		return
 	}
 
@@ -114,7 +114,7 @@ func Analytic(c *gin.Context) {
 		stat.Memory, err = getMemoryStat()
 
 		if err != nil {
-			log.Println(err)
+			logger.Error(err)
 			return
 		}
 
@@ -139,7 +139,7 @@ func Analytic(c *gin.Context) {
 		stat.Disk, err = getDiskStat()
 
 		if err != nil {
-			log.Println(err)
+			logger.Error(err)
 			return
 		}
 
@@ -152,7 +152,7 @@ func Analytic(c *gin.Context) {
 		// write
 		err = ws.WriteJSON(stat)
 		if err != nil {
-			log.Println("[Error] analytic WriteJSON", err)
+			logger.Error(err)
 			break
 		}
 		time.Sleep(800 * time.Microsecond)
@@ -166,14 +166,14 @@ func GetAnalyticInit(c *gin.Context) {
 	memory, err := getMemoryStat()
 
 	if err != nil {
-		log.Println(err)
+		logger.Error(err)
 		return
 	}
 
 	diskStat, err := getDiskStat()
 
 	if err != nil {
-		log.Println(err)
+		logger.Error(err)
 		return
 	}
 

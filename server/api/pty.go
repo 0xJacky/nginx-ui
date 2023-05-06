@@ -1,10 +1,10 @@
 package api
 
 import (
+	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/0xJacky/Nginx-UI/server/internal/pty"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
-	"log"
 	"net/http"
 )
 
@@ -17,7 +17,7 @@ func Pty(c *gin.Context) {
 	// upgrade http to websocket
 	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		log.Println("pty ws upgrade error", err)
+		logger.Error(err)
 		return
 	}
 
@@ -26,7 +26,7 @@ func Pty(c *gin.Context) {
 	p, err := pty.NewPipeLine(ws)
 
 	if err != nil {
-		log.Println("pty.NewPipLine error", err)
+		logger.Error(err)
 		return
 	}
 
@@ -38,8 +38,9 @@ func Pty(c *gin.Context) {
 
 	err = <-errorChan
 
-	if err != nil {
-		log.Println(err)
+	if err != nil && websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseNoStatusReceived,
+		websocket.CloseNormalClosure) {
+		logger.Error(err)
 	}
 
 	return

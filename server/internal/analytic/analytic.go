@@ -1,8 +1,8 @@
 package analytic
 
 import (
+	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/shirou/gopsutil/v3/net"
-	"log"
 	"time"
 )
 
@@ -48,7 +48,7 @@ func init() {
 }
 
 func RecordServerAnalytic() {
-	log.Println("[Nginx UI] RecordServerAnalytic Started")
+	logger.Info("RecordServerAnalytic Started")
 	for {
 		now := time.Now()
 		recordCpu(now) // this func will spend more than 1 second.

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/0xJacky/Nginx-UI/server/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/server/internal/cert"
 	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
@@ -21,7 +22,8 @@ func Program(state overseer.State) {
 	// See https://github.com/golang/go/issues/32350
 	_ = mime.AddExtensionType(".js", "text/javascript; charset=utf-8")
 
-	log.Printf("Nginx config dir path: %s", nginx.GetConfPath())
+	logger.Info("Nginx config dir path: " + nginx.GetConfPath())
+
 	if "" != settings.ServerSettings.JwtSecret {
 		db := model.Init()
 		query.Init(db)
@@ -31,7 +33,7 @@ func Program(state overseer.State) {
 	job, err := s.Every(30).Minute().SingletonMode().Do(cert.AutoObtain)
 
 	if err != nil {
-		log.Fatalf("AutoCert Job: %v, Err: %v\n", job, err)
+		logger.Fatalf("AutoCert Job: %v, Err: %v\n", job, err)
 	}
 
 	s.StartAsync()
@@ -42,5 +44,5 @@ func Program(state overseer.State) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	log.Println("[Nginx UI] server exiting")
+	logger.Info("Server exiting")
 }

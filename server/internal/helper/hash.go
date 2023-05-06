@@ -3,15 +3,15 @@ package helper
 import (
 	"crypto/sha512"
 	"fmt"
+	"github.com/0xJacky/Nginx-UI/logger"
 	"io"
-	"log"
 	"os"
 )
 
 func DigestSHA512(filepath string) (hashString string) {
 	file, err := os.Open(filepath)
 	if err != nil {
-		log.Println("DigestSHA512 open file error")
+		logger.Error(err)
 		return
 	}
 	defer file.Close()
@@ -20,7 +20,7 @@ func DigestSHA512(filepath string) (hashString string) {
 
 	_, err = io.Copy(hash, file)
 	if err != nil {
-		log.Println("DigestSHA512 io.Copy error")
+		logger.Error(err)
 		return
 	}
 

@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/0xJacky/Nginx-UI/server/internal/helper"
 	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/server/settings"
@@ -11,7 +12,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/cast"
 	"io"
-	"log"
 	"net/http"
 	"os"
 )
@@ -46,7 +46,7 @@ func GetNginxLogPage(c *gin.Context) {
 	logPath, err := getLogPath(&control)
 
 	if err != nil {
-		log.Println("error GetNginxLogPage", err)
+		logger.Error(err)
 		return
 	}
 
@@ -54,7 +54,7 @@ func GetNginxLogPage(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusOK, nginxLogPageResp{})
-		log.Println("error GetNginxLogPage open file", err)
+		logger.Error(err)
 		return
 	}
 
@@ -62,7 +62,7 @@ func GetNginxLogPage(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusOK, nginxLogPageResp{})
-		log.Println("error GetNginxLogPage stat", err)
+		logger.Error(err)
 		return
 	}
 
@@ -85,7 +85,7 @@ func GetNginxLogPage(c *gin.Context) {
 	_, err = f.Seek(offset, io.SeekStart)
 	if err != nil && err != io.EOF {
 		c.JSON(http.StatusOK, nginxLogPageResp{})
-		log.Println("error GetNginxLogPage seek", err)
+		logger.Error(err)
 		return
 	}
 
@@ -93,7 +93,7 @@ func GetNginxLogPage(c *gin.Context) {
 
 	if err != nil && err != io.EOF {
 		c.JSON(http.StatusOK, nginxLogPageResp{})
-		log.Println("error GetNginxLogPage read buf", err)
+		logger.Error(err)
 		return
 	}
 
@@ -163,7 +163,7 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan chan error) {
 	defer func() {
 		if err := recover(); err != nil {
-			log.Println("tailNginxLog recovery", err)
+			logger.Error(err)
 			return
 		}
 	}()
@@ -226,7 +226,7 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errChan chan error) {
 	defer func() {
 		if err := recover(); err != nil {
-			log.Println("handleLogControl recovery", err)
+			logger.Error(err)
 			return
 		}
 	}()
@@ -262,7 +262,7 @@ func NginxLog(c *gin.Context) {
 	// upgrade http to websocket
 	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		log.Println("[Error] NginxLog Upgrade", err)
+		logger.Error(err)
 		return
 	}
 
@@ -275,7 +275,7 @@ func NginxLog(c *gin.Context) {
 	go handleLogControl(ws, controlChan, errChan)
 
 	if err = <-errChan; err != nil {
-		log.Println(err)
+		logger.Error(err)
 		_ = ws.WriteMessage(websocket.TextMessage, []byte(err.Error()))
 		return
 	}

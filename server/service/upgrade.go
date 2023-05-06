@@ -5,11 +5,11 @@ import (
 	"fmt"
 	_github "github.com/0xJacky/Nginx-UI/.github"
 	"github.com/0xJacky/Nginx-UI/frontend"
+	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/0xJacky/Nginx-UI/server/internal/helper"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/pkg/errors"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -322,8 +322,8 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 
 	digestFileContent := strings.TrimSpace(string(digestFileBytes))
 
-	log.Println("DownloadLatestRelease tar digest", helper.DigestSHA512(tarName))
-	log.Println("DownloadLatestRelease digestFileContent", digestFileContent)
+	logger.Debug("DownloadLatestRelease tar digest", helper.DigestSHA512(tarName))
+	logger.Debug("DownloadLatestRelease digestFileContent", digestFileContent)
 
 	if digestFileContent != helper.DigestSHA512(tarName) {
 		err = errors.Wrap(err, "digest not equal")

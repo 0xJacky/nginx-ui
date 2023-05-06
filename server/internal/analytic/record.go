@@ -1,7 +1,7 @@
 package analytic
 
 import (
-	"github.com/go-acme/lego/v4/log"
+	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/net"
@@ -12,7 +12,7 @@ import (
 func getTotalDiskIO() (read, write uint64) {
 	diskIOCounters, err := disk.IOCounters()
 	if err != nil {
-		log.Println("getTotalDiskIO: get diskIOCounters err", err)
+		logger.Error(err.Error())
 		return
 	}
 	for _, v := range diskIOCounters {
@@ -25,13 +25,13 @@ func getTotalDiskIO() (read, write uint64) {
 func recordCpu(now time.Time) {
 	cpuTimesBefore, err := cpu.Times(false)
 	if err != nil {
-		log.Println("recordCpu: get cpuTimesBefore err", err)
+		logger.Error(err.Error())
 		return
 	}
 	time.Sleep(1000 * time.Millisecond)
 	cpuTimesAfter, err := cpu.Times(false)
 	if err != nil {
-		log.Println("recordCpu: get cpuTimesAfter err", err)
+		logger.Error(err.Error())
 		return
 	}
 	threadNum := runtime.GOMAXPROCS(0)
@@ -68,7 +68,7 @@ func recordNetwork(now time.Time) {
 	network, err := net.IOCounters(false)
 
 	if err != nil {
-		log.Println("recordNetwork: get network err", err)
+		logger.Error(err.Error())
 		return
 	}
 

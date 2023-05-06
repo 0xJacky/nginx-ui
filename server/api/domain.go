@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/0xJacky/Nginx-UI/server/internal/cert"
 	"github.com/0xJacky/Nginx-UI/server/internal/config_list"
 	"github.com/0xJacky/Nginx-UI/server/internal/helper"
@@ -8,7 +9,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/query"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -148,7 +148,7 @@ func GetDomain(c *gin.Context) {
 				pubKey, err := cert.GetCertInfo(directive.Params)
 
 				if err != nil {
-					log.Println("Failed to get certificate information", err)
+					logger.Error("Failed to get certificate information", err)
 					break
 				}
 

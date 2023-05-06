@@ -31,5 +31,6 @@ export const msg = [
     $gettext('Perform core upgrade error'),
     $gettext('Upgraded successfully'),
 
-    $gettext('File exists')
+    $gettext('File exists'),
+    $gettext('Requested with wrong parameters')
 ]

@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/0xJacky/Nginx-UI/server/internal/cert"
 	"github.com/0xJacky/Nginx-UI/server/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
@@ -8,7 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/spf13/cast"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -31,7 +31,7 @@ type IssueCertResponse struct {
 func handleIssueCertLogChan(conn *websocket.Conn, logChan chan string) {
 	defer func() {
 		if err := recover(); err != nil {
-			log.Println("api.handleIssueCertLogChan recover", err)
+			logger.Error(err)
 		}
 	}()
 
@@ -43,7 +43,7 @@ func handleIssueCertLogChan(conn *websocket.Conn, logChan chan string) {
 		})
 
 		if err != nil {
-			log.Println("Error handleIssueCertLogChan", err)
+			logger.Error(err)
 			return
 		}
 
@@ -60,15 +60,12 @@ func IssueCert(c *gin.Context) {
 	// upgrade http to websocket
 	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		log.Println(err)
+		logger.Error(err)
 		return
 	}
 
 	defer func(ws *websocket.Conn) {
-		err := ws.Close()
-		if err != nil {
-			log.Println("defer websocket close err", err)
-		}
+		_ = ws.Close()
 	}(ws)
 
 	// read
@@ -77,14 +74,15 @@ func IssueCert(c *gin.Context) {
 	err = ws.ReadJSON(buffer)
 
 	if err != nil {
-		log.Println(err)
+		logger.Error(err)
 		return
 	}
 
 	certModel, err := model.FirstOrCreateCert(c.Param("name"))
 
 	if err != nil {
-		log.Println(err)
+		logger.Error(err)
+		return
 	}
 
 	logChan := make(chan string, 1)
@@ -106,7 +104,7 @@ func IssueCert(c *gin.Context) {
 		})
 
 		if err != nil {
-			log.Println("Error WriteJSON", err)
+			logger.Error(err)
 			return
 		}
 
@@ -124,7 +122,7 @@ func IssueCert(c *gin.Context) {
 	})
 
 	if err != nil {
-		log.Println(err)
+		logger.Error(err)
 		err = ws.WriteJSON(IssueCertResponse{
 			Status:  Error,
 			Message: err.Error(),
@@ -142,7 +140,7 @@ func IssueCert(c *gin.Context) {
 	})
 
 	if err != nil {
-		log.Println(err)
+		logger.Error(err)
 		return
 	}
 
@@ -268,7 +266,6 @@ func AddCert(c *gin.Context) {
 
 func ModifyCert(c *gin.Context) {
 	id := cast.ToInt(c.Param("id"))
-	certModel, err := model.FirstCertByID(id)
 
 	var json struct {
 		Name                  string `json:"name"`
@@ -282,6 +279,7 @@ func ModifyCert(c *gin.Context) {
 		return
 	}
 
+	certModel, err := model.FirstCertByID(id)
 	if err != nil {
 		ErrHandler(c, err)
 		return

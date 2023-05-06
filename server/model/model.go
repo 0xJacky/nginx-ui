@@ -2,14 +2,14 @@ package model
 
 import (
 	"fmt"
+	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gen"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
-	"log"
+	gormlogger "gorm.io/gorm/logger"
 	"path"
 	"time"
 )
@@ -40,19 +40,19 @@ func Init() *gorm.DB {
 
 	var err error
 	db, err = gorm.Open(sqlite.Open(dbPath), &gorm.Config{
-		Logger:                                   logger.Default.LogMode(logger.Info),
+		Logger:                                   gormlogger.Default.LogMode(gormlogger.Info),
 		PrepareStmt:                              true,
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 
 	if err != nil {
-		log.Println(err)
+		logger.Fatal(err.Error())
 	}
 
 	// Migrate the schema
 	err = db.AutoMigrate(GenerateAllModel()...)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err.Error())
 	}
 
 	return db
