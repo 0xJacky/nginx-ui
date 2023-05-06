@@ -46,7 +46,8 @@ const props = defineProps({
     },
     beforeSave: {
         type: Function,
-        default: null
+        default: () => {
+        }
     },
     exportCsv: {
         type: Boolean,
@@ -104,11 +105,11 @@ function clear_error() {
 
 const ok = async () => {
     clear_error()
-    await props?.beforeSave?.(data)
+    await props?.beforeSave!?.(data)
     props.api!.save(data.id, data).then((r: any) => {
         message.success($gettext('Save Successfully'))
         Object.assign(data, r)
-        const t: Table | null = table.value
+        const t: Table = table.value!
         t!.get_list()
 
     }).catch((e: any) => {
@@ -189,7 +190,7 @@ const selectedRowKeys = ref([])
 </template>
 
 <style lang="less" scoped>
-.before-edit:last-child {
-    margin-bottom: 10px;
+:deep(.before-edit:last-child) {
+    margin-bottom: 20px;
 }
 </style>

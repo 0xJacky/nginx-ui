@@ -78,5 +78,6 @@ declare module '@vue/runtime-core' {
     StdDataEntryComponentsStdPassword: typeof import('./src/components/StdDataEntry/components/StdPassword.vue')['default']
     StdDataEntryComponentsStdSelect: typeof import('./src/components/StdDataEntry/components/StdSelect.vue')['default']
     StdDataEntryComponentsStdSelector: typeof import('./src/components/StdDataEntry/components/StdSelector.vue')['default']
+    StdDataEntryStdFormItem: typeof import('./src/components/StdDataEntry/StdFormItem.vue')['default']
   }
 }

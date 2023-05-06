@@ -1,5 +1,6 @@
 import {defineComponent} from 'vue'
-import {Form, FormItem} from 'ant-design-vue'
+import {Form} from 'ant-design-vue'
+import StdFormItem from '@/components/StdDataEntry/StdFormItem.vue'
 import './style.less'
 
 export default defineComponent({
@@ -11,9 +12,9 @@ export default defineComponent({
             props.dataList.forEach((v: any) => {
                 if (v.edit.type) {
                     template.push(
-                        <FormItem label={v.title()} extra={v.extra}>
+                        <StdFormItem dataIndex={v.dataIndex} label={v.title()} extra={v.extra} error={props.error}>
                             {v.edit.type(v.edit, props.dataSource, v.dataIndex)}
-                        </FormItem>
+                        </StdFormItem>
                     )
                 }
             })
