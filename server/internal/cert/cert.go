@@ -7,7 +7,7 @@ import (
 	"crypto/rand"
 	"crypto/tls"
 	"github.com/0xJacky/Nginx-UI/logger"
-	dns2 "github.com/0xJacky/Nginx-UI/server/internal/cert/dns"
+	"github.com/0xJacky/Nginx-UI/server/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/server/query"
 	"github.com/0xJacky/Nginx-UI/server/settings"
@@ -15,9 +15,12 @@ import (
 	"github.com/go-acme/lego/v4/certificate"
 	"github.com/go-acme/lego/v4/challenge/http01"
 	"github.com/go-acme/lego/v4/lego"
-	"github.com/go-acme/lego/v4/providers/dns"
+	lego_log "github.com/go-acme/lego/v4/log"
+	dns_providers "github.com/go-acme/lego/v4/providers/dns"
 	"github.com/go-acme/lego/v4/registration"
 	"github.com/pkg/errors"
+	"io"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -52,12 +55,28 @@ type ConfigPayload struct {
 	DNSCredentialID int      `json:"dns_credential_id"`
 }
 
+type channelWriter struct {
+	ch chan []byte
+}
+
+func (cw *channelWriter) Write(p []byte) (n int, err error) {
+	n = len(p)
+	temp := make([]byte, n)
+	copy(temp, p)
+	cw.ch <- temp
+	return n, nil
+}
+
 func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) {
 	defer func() {
 		if err := recover(); err != nil {
 			logger.Error(err)
 		}
 	}()
+
+	// Use a channel to receive lego log
+	logChannel := make(chan []byte, 1024)
+	defer close(logChannel)
 
 	domain := payload.ServerName
 
@@ -74,6 +93,20 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		Email: settings.ServerSettings.Email,
 		Key:   privateKey,
 	}
+
+	// Hijack lego's log
+	cw := &channelWriter{ch: logChannel}
+	multiWriter := io.MultiWriter(os.Stderr, cw)
+	l := log.New(os.Stderr, "", log.LstdFlags)
+	l.SetOutput(multiWriter)
+	lego_log.Logger = l
+
+	// Start a goroutine to fetch and process logs from channel
+	go func() {
+		for msg := range logChannel {
+			logChan <- string(msg)
+		}
+	}()
 
 	config := lego.NewConfig(&myUser)
 
@@ -120,7 +153,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 
 		logChan <- "Using DNS01 challenge provider"
 		code := dnsCredential.Config.Code
-		pConfig, ok := dns2.GetProvider(code)
+		pConfig, ok := dns.GetProvider(code)
 
 		if !ok {
 			errChan <- errors.Wrap(err, "provider not found")
@@ -135,7 +168,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 				logChan <- "Cleaning environment variables"
 				pConfig.CleanEnv()
 			}()
-			provider, err := dns.NewDNSChallengeProviderByName(code)
+			provider, err := dns_providers.NewDNSChallengeProviderByName(code)
 			if err != nil {
 				break
 			}

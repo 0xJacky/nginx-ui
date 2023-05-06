@@ -154,7 +154,10 @@ const issue_cert = async (config_name: string, server_name: string, callback: Fu
 
         switch (r.status) {
             case 'info':
-                progressPercent.value += 5
+                // If it's a lego log, do not increase the percent.
+                if (r.message.indexOf('[INFO]') == -1) {
+                    progressPercent.value += 5
+                }
                 break
             default:
                 modalClosable.value = true
