@@ -1,0 +1,60 @@
+name: Build
+
+on:
+    push:
+        branches:
+            - '*'
+        paths:
+            - "docs/**/*.js"
+            - "docs/**/*.ts"
+            - "docs/**/*.vue"
+            - "docs/package.json"
+            - "docs/.env*"
+            - ".github/workflows/doc*.yml"
+    pull_request:
+        types: [ opened, synchronize, reopened ]
+        paths:
+            - "docs/**/*.js"
+            - "docs/**/*.ts"
+            - "docs/**/*.vue"
+            - "docs/package.json"
+            - "docs/.env*"
+            - ".github/workflows/doc*.yml"
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Set up nodejs
+                uses: actions/setup-node@v3
+                with:
+                    node-version: 18.x
+                    cache: 'yarn'
+                    cache-dependency-path: 'docs/yarn.lock'
+
+            -   name: Install dependencies
+                run: yarn install
+                working-directory: docs
+
+            -   name: Build
+                run: yarn docs:build
+                working-directory: docs
+
+            -   name: Archive artifacts
+                uses: actions/upload-artifact@v3
+                with:
+                    name: dist
+                    path: docs/.vitepress/dist
+
+            -   name: Deploy to server
+                uses: easingthemes/ssh-deploy@main
+                env:
+                    REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+                    REMOTE_USER: ${{ secrets.REMOTE_USER }}
+                    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+                    TARGET: ${{ secrets.REMOTE_TARGET }}
+                    SOURCE: "docs/.vitepress/dist/"
+                    ARGS: "-rlgoDzvc -i --delete"
