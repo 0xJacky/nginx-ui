@@ -1,4 +1,9 @@
 import { defineConfig } from 'vitepress'
+import {projectUrl, editLinkPattern} from './common'
+
+export const commitRef = process.env.COMMIT_REF ?
+    `<a href="${projectUrl}/commit/${process.env.COMMIT_REF}">` + process.env.COMMIT_REF.slice(0, 8) + '</a>':
+    'dev'
 
 function thisYear() {
     return new Date().getFullYear()
@@ -7,6 +12,11 @@ function thisYear() {
 export const sharedConfig = defineConfig({
     title: 'Nginx UI',
     description: 'Yet another Nginx Web UI',
+
+    head: [
+        ['link', { rel: 'icon', type: 'image/svg+xml', href: '/assets/logo.svg' }],
+        ['meta', { name: 'theme-color', content: '#3682D8' }]
+    ],
 
     lastUpdated: true,
 
@@ -18,16 +28,16 @@ export const sharedConfig = defineConfig({
         },
 
         editLink: {
-            pattern: 'https://github.com/0xJacky/nginx-ui/edit/master/docs/:path'
+            pattern: editLinkPattern
         },
 
         footer: {
-            message: 'Released under the AGPL-3.0 License.',
+            message: `Released under the AGPL-3.0 License. (${commitRef})`,
             copyright: 'Copyright © 2021-' + thisYear() + ' Nginx UI Team'
         },
 
         socialLinks: [
-            {icon: 'github', link: 'https://github.com/0xJacky/nginx-ui'}
+            {icon: 'github', link: projectUrl}
         ]
     }
 })

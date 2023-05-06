@@ -40,7 +40,7 @@ jobs:
                 working-directory: docs
 
             -   name: Build
-                run: yarn docs:build
+                run: COMMIT_REF=$(git rev-parse HEAD) yarn docs:build
                 working-directory: docs
 
             -   name: Archive artifacts

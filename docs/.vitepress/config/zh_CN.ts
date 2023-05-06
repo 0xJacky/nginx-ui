@@ -1,16 +1,17 @@
 import {LocaleSpecificConfig, DefaultTheme} from "vitepress"
+import {demoUrl, editLinkPattern} from './common'
 
 export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     themeConfig: {
         nav: [
             {text: '首页', link: '/zh_CN/'},
             {text: '手册', link: '/zh_CN/guide/about'},
-            {text: '演示', link: 'https://demo.nginxui.com'}
+            {text: '演示', link: demoUrl}
         ],
 
         editLink: {
             text: '编辑此页',
-            pattern: 'https://github.com/0xJacky/nginx-ui/edit/master/docs/:path'
+            pattern: editLinkPattern
         },
 
         sidebar: {

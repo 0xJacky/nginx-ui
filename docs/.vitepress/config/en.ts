@@ -1,11 +1,12 @@
 import {LocaleSpecificConfig, DefaultTheme} from "vitepress"
+import {demoUrl} from './common'
 
 export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     themeConfig: {
         nav: [
             {text: 'Home', link: '/'},
             {text: 'Guide', link: '/guide/about'},
-            {text: 'Demo', link: 'https://demo.nginxui.com'}
+            {text: 'Demo', link: demoUrl}
         ],
 
         sidebar: {
