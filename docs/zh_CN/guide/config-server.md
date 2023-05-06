@@ -14,7 +14,7 @@ Nginx UI 服务器监听端口。此选项用于配置 Nginx UI 服务器监听�
 - 类型：`string`
 - 支持的值：`release`，`debug`
 
-::: tip
+::: tip 提示
 目前，我们尚未适应此选项，在使用方面，`release` 和 `debug` 之间不会有显著差异。
 :::
 
@@ -40,7 +40,7 @@ Nginx UI 服务器监听端口。此选项用于配置 Nginx UI 服务器监听�
 
 此选项用于设置 Web 终端的启动命令。
 
-::: warning
+::: warning 警告
 出于安全原因，我们将启动命令设置为 `login`，因此您必须通过 Linux 的默认身份验证方法登录。如果您不想每次访问 Web
 终端时都输入用户名和密码进行验证，请将其设置为 `bash` 或 `zsh`（如果已安装）。
 :::
@@ -59,7 +59,7 @@ Nginx UI 服务器监听端口。此选项用于配置 Nginx UI 服务器监听�
 在申请 Let's Encrypt 证书时，我们使用 Let's Encrypt 的默认 CA 地址。如果您需要调试或从其他提供商获取证书，您可以将 CADir
 设置为他们的地址。
 
-::: tip
+::: tip 提示
 请注意，CADir 提供的地址需要符合 `RFC 8555` 标准。
 :::
 
@@ -68,4 +68,4 @@ Nginx UI 服务器监听端口。此选项用于配置 Nginx UI 服务器监听�
 - 类型：`string`
 - 建议：`https://ghproxy.com/`
 
-对于可能在从 Github 下载资源时遇到困难的中国大陆用户，此选项允许他们为 github.com 设置代理，以提高可访问性。
+对于可能在从 Github 下载资源时遇到困难的用户（如在中国大陆），此选项允许他们为 github.com 设置代理，以提高可访问性。

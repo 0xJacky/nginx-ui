@@ -75,5 +75,5 @@ CADir needs to comply with the `RFC 8555` standard.
 - Type: `string`
 - Suggestion: `https://ghproxy.com/`
 
-For users in mainland China who may experience difficulties downloading resources from Github, this option allows them
-to set a proxy for github.com to improve accessibility.
+For users who may experience difficulties downloading resources from Github (such as in mainland China), this option
+allows them to set a proxy for github.com to improve accessibility.

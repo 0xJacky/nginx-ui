@@ -45,7 +45,7 @@ server {
 第二个服务器块监听 443 端口（HTTPS）以及 HTTP/2 协议。同样，它也监听 IPv6 地址。将 `<your_server_name>` 替换为您的服务器名称，并将
 SSL 证书和密钥的路径替换为 `/path/to/ssl_cert` 和 `/path/to/ssl_cert_key`。
 
-::: warning
+::: warning 警告
 为了避免在 Nginx v1.24+ 版本中出现警告，我们需要删除 `listen 443 ssl http2;` 和 `listen  [::]:443 ssl http2;`
 中的 `http2` 指令，因为 `ssl` 指令默认支持 `http2`。
 :::

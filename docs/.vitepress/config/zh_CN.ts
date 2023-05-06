@@ -22,9 +22,16 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
                     items: [
                         {text: '何为 Nginx UI?', link: '/zh_CN/guide/about'},
                         {text: '即刻开始', link: '/zh_CN/guide/getting-started'},
-                        {text: 'Nginx 代理示例', link: '/zh_CN/guide/nginx-proxy-example'},
-                        {text: '贡献代码', link: '/zh_CN/guide/contributing'},
-                        {text: '开源协议', link: '/zh_CN/guide/license'}
+                        {text: '安装脚本', link: '/zh_CN/guide/install-script-linux'}
+                    ]
+                },
+                {
+                    text: '开发',
+                    collapsed: false,
+                    items: [
+                        {text: '构建', link: '/zh_CN/guide/build'},
+                        {text: '目录结构', link: '/zh_CN/guide/project-structure'},
+                        {text: '贡献代码', link: '/zh_CN/guide/contributing'}
                     ]
                 },
                 {
@@ -34,6 +41,14 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
                         {text: '服务端', link: '/zh_CN/guide/config-server'},
                         {text: 'Nginx 日志', link: '/zh_CN/guide/config-nginx-log'},
                         {text: 'Open AI', link: '/zh_CN/guide/config-openai'}
+                    ]
+                },
+                {
+                    text: '附录',
+                    collapsed: false,
+                    items: [
+                        {text: 'Nginx 代理示例', link: '/zh_CN/guide/nginx-proxy-example'},
+                        {text: '开源协议', link: '/zh_CN/guide/license'}
                     ]
                 }
             ]

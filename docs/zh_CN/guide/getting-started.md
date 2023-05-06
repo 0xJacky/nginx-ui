@@ -1,5 +1,12 @@
 # 即刻开始
 
+## 尝试一下
+
+您可以通过 [演示](https://demo.nginxui.com) 直接试用 Nginx UI。
+
+- 用户名：admin
+- 密码：admin
+
 ## 使用前注意
 
 Nginx UI 遵循 Debian 的网页服务器配置文件标准。创建的网站配置文件将会放置于 Nginx
@@ -20,81 +27,36 @@ http {
 
 ## 安装
 
-Nginx UI 可在以下平台中使用：
-
-- Mac OS X 10.10 Yosemite 及之后版本（amd64 / arm64）
-- Linux 2.6.23 及之后版本（x86 / amd64 / arm64 / armv5 / armv6 / armv7）
-    - 包括但不限于 Debian 7 / 8、Ubuntu 12.04 / 14.04 及后续版本、CentOS 6 / 7、Arch Linux
-- FreeBSD
-- OpenBSD
-- Dragonfly BSD
-- Openwrt
-
-您可以在 [最新发行 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest)
-中下载最新版本，或使用 [Linux 安装脚本](#linux-安装脚本)。
-
-## 使用方法
+我们建议Linux用户使用 [安装脚本](./install-script-linux)，这样您可以直接控制主机上的 Nginx。您也可以通过 [Docker 安装](#使用-docker)，
+我们提供的镜像包含 Nginx 并可以直接使用。对于高级用户，您也可以在 [最新发行 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest)
+中下载最新版本并 [通过执行文件运行](#通过执行文件运行)，或者 [手动构建](./build)。
 
 第一次运行 Nginx UI 时，请在浏览器中访问 `http://<your_server_ip>:<listen_port>/install` 完成后续配置。
 
-#### 通过执行文件运行
+此外，我们提供了一个使用 Nginx 反向代理 Nginx UI 的 [示例](./nginx-proxy-example)，您可在安装完成后使用。
 
-**在终端中运行 Nginx UI**
 
-```shell
-nginx-ui -config app.ini
-```
-
-在终端使用 `Control+C` 退出 Nginx UI。
-
-**在后台运行 Nginx UI**
-
-```shell
-nohup ./nginx-ui -config app.ini &
-```
-
-使用以下命令停止 Nginx UI。
-
-```shell
-kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
-```
-
-#### 使用 Systemd
-
-如果你使用的是[Linux 安装脚本](#linux-安装脚本)，Nginx UI 将作为 `nginx-ui` 服务安装在 systemd 中。请使用 `systemctl`
-命令控制。
-
-**启动 Nginx UI**
-
-```shell
-systemctl start nginx-ui
-```
-
-**停止 Nginx UI**
-
-```shell
-systemctl stop nginx-ui
-```
-
-**重启 Nginx UI**
-
-```shell
-systemctl restart nginx-ui
-```
-
-#### 使用 Docker
+## 使用 Docker
 
 您可以在 docker 中使用我们提供的 `uozi/nginx-ui:latest` [镜像](https://hub.docker.com/r/uozi/nginx-ui)
 ，此镜像基于 `nginx:latest` 构建。您可以直接将其监听到 80 和 443 端口以取代宿主机上的 Nginx。
 
-注意：映射到 `/etc/nginx` 的文件夹应该为一个空目录。
+::: tip 提示
 
-#### 注意
+默认情况下，Nginx UI 会被反向代理到容器的 `8080` 端口。
+首次使用时，映射到 `/etc/nginx` 的目录必须为空文件夹。
+如果你想要托管静态文件，可以直接将文件夹映射入容器中。
 
-1. 首次使用时，映射到 `/etc/nginx` 的目录必须为空文件夹。
-2. 如果你想要托管静态文件，可以直接将文件夹映射入容器中。
+:::
 
-**Docker 部署示例**
+::: warning 警告
+
+如果您想要管理主机上的 Nginx，请选择其他安装方式。
+如果您在使用 Linux，我们建议使用 [安装脚本](./install-script-linux) 安装。
+
+:::
+
+### Docker 部署示例
 
 ```bash
 docker run -dit \
@@ -103,65 +65,56 @@ docker run -dit \
   -e TZ=Asia/Shanghai \
   -v /mnt/user/appdata/nginx:/etc/nginx \
   -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
+  -v /var/www:/var/www \
   -p 8080:80 -p 8443:443 \
   uozi/nginx-ui:latest
 ```
 
-## 手动构建
+在这个示例中，容器的`8080`端口和`8443`端口分别映射到主机的`80`端口和`443`端口。
+您需要访问`http://<your_server_ip>`来访问 Nginx UI。
 
-对于没有官方构建版本的平台，可以尝试手动构建。
+## 通过执行文件运行
 
-## 依赖
+不建议直接运行Nginx UI可执行文件用于非测试目的。
+我们建议在Linux上将其配置为守护进程或使用[安装脚本](./install-script-linux)。
 
-- Make
-
-- Golang 1.19+
-
-- node.js 18+
-
-  ```shell
-  npx browserslist@latest --update-db
-  ```
-
-## 构建前端
-
-请在 `frontend` 目录中执行以下命令。
+### 配置
 
 ```shell
-yarn install
-make translations
-yarn build
+echo '[server]\nHttpPort = 9000' > app.ini
 ```
 
-## 构建后端
+::: tip 提示
 
-请先完成前端编译，再回到项目的根目录执行以下命令。
+在没有 `app.ini` 时服务器仍然可以启动，它将默认侦听端口 `9000`。
 
-```shell
-go build -o nginx-ui -v main.go
+:::
+
+### 运行
+
+::: code-group
+
+```shell [终端]
+nginx-ui -config app.ini
 ```
 
-## Linux 安装脚本
-
-## 基本用法
-
-**安装或升级**
-
-```shell
-bash <(curl -L -s https://ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install -r https://ghproxy.com/
+```shell [后台]
+nohup ./nginx-ui -config app.ini &
 ```
 
-一键安装脚本默认设置的监听端口为 `9000`，HTTP Challenge 端口默认为 `9180`
-，如果出现端口冲突请进入 `/usr/local/etc/nginx-ui/app.ini` 修改，并使用 `systemctl restart nginx-ui` 重启 Nginx UI 服务。
+:::
 
-**卸载 Nginx UI 但保留配置和数据库文件**
 
-```shell
-bash <(curl -L -s https://ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
+### 停止
+
+::: code-group
+
+```shell [终端]
+^C   # 按住 Ctrl+C
 ```
 
-## 更多用法
+```shell [后台]
+kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
+```
 
-````shell
-bash <(curl -L -s https://ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) help
-````
+:::

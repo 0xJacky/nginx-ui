@@ -17,9 +17,16 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
                     items: [
                         {text: 'What is Nginx UI?', link: '/guide/about'},
                         {text: 'Getting Started', link: '/guide/getting-started'},
-                        {text: 'Nginx Proxy Example', link: '/guide/nginx-proxy-example'},
-                        {text: 'Contributing', link: '/guide/contributing'},
-                        {text: 'License', link: '/guide/license'}
+                        {text: 'Install Script', link: '/guide/install-script-linux'}
+                    ]
+                },
+                {
+                    text: 'Development',
+                    collapsed: false,
+                    items: [
+                        {text: 'Build', link: '/guide/build'},
+                        {text: 'Project Structure', link: '/guide/project-structure'},
+                        {text: 'Contributing', link: '/guide/contributing'}
                     ]
                 },
                 {
@@ -29,6 +36,14 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
                         {text: 'Server', link: '/guide/config-server'},
                         {text: 'Nginx Log', link: '/guide/config-nginx-log'},
                         {text: 'Open AI', link: '/guide/config-openai'}
+                    ]
+                },
+                {
+                    text: 'Appendix',
+                    collapsed: false,
+                    items: [
+                        {text: 'Nginx Proxy Example', link: '/guide/nginx-proxy-example'},
+                        {text: 'License', link: '/guide/license'}
                     ]
                 }
             ],

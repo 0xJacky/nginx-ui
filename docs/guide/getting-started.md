@@ -1,5 +1,12 @@
 # Getting Started
 
+## Try It Now
+
+You can try Nginx UI directly by the [demo](https://demo.nginxui.com).
+
+- Username：admin
+- Password：admin
+
 ## Before Use
 
 The Nginx UI follows the Debian web server configuration file standard. Created site configuration files will be placed
@@ -23,81 +30,41 @@ information: [debian/conf/nginx.conf](https://salsa.debian.org/nginx-team/nginx/
 
 ## Installation
 
-Nginx UI is available on the following platforms:
-
-- Mac OS X 10.10 Yosemite and later (amd64 / arm64)
-- Linux 2.6.23 and later (x86 / amd64 / arm64 / armv5 / armv6 / armv7)
-    - Including but not limited to Debian 7 / 8, Ubuntu 12.04 / 14.04 and later, CentOS 6 / 7, Arch Linux
-- FreeBSD
-- OpenBSD
-- Dragonfly BSD
-- Openwrt
-
-You can visit [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) to download the latest distribution,
-or just use [installation scripts for Linux](#script-for-linux).
-
-## Usage
+We recommend using the [installation script](./install-script-linux) for Linux users, in which case you can directly
+control the host machine's Nginx. You can also [install via Docker](#install-with-docker), where our provided image
+includes Nginx and can be used bundled. For advanced users, you may also visit the [latest release](https://github.com/0xJacky/nginx-ui/releases/latest)
+to download the latest distribution and [run executable directly](#run-executable-directly), or [manually build it](./build).
 
 In the first runtime of Nginx UI, please visit `http://<your_server_ip>:<listen_port>/install`
 in your browser to complete the follow-up configurations.
 
-### From Executable
+In addition, we provide [an example](./nginx-proxy-example) of using Nginx to reverse proxy Nginx UI,
+which can be used after installation is complete.
 
-**Run Nginx UI in Terminal**
 
-```shell
-nginx-ui -config app.ini
-```
-
-Press `Control+C` in the terminal to exit Nginx UI.
-
-**Run Nginx UI in Background**
-
-```shell
-nohup ./nginx-ui -config app.ini &
-```
-
-Stop Nginx UI with the follow commond.
-
-```shell
-kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
-```
-
-### With Systemd
-
-If you are using the [installation script for Linux](#script-for-linux), the Nginx UI will be installed as `nginx-ui`
-service in systemd. Please use the `systemctl` command to control it.
-
-**Start Nginx UI**
-
-```shell
-systemctl start nginx-ui
-```
-
-**Stop Nginx UI**
-
-```shell
-systemctl stop nginx-ui
-```
-
-**Restart Nginx UI**
-
-```shell
-systemctl restart nginx-ui
-```
-
-### With Docker
+## Install with Docker
 
 Our docker image [uozi/nginx-ui:latest](https://hub.docker.com/r/uozi/nginx-ui) is based on the latest nginx image and
 can be used to replace the Nginx on the host. By publishing the container's port 80 and 443 to the host,
 you can easily make the switch.
 
-#### Note
+::: tip
 
-1. When using this container for the first time, ensure that the volume mapped to /etc/nginx is empty.
-2. If you want to host static files, you can map directories to container.
+Nginx UI is by default proxied to port `8080` of the container.
+When using this container for the first time, ensure that the volume mapped to `/etc/nginx` is empty.
+If you want to host static files, you can map directories to container.
 
-**Docker Deploy Example**
+:::
+
+::: warning
+
+
+If you want to manage the Nginx of the host, please choose another installation method.
+We recommend using the [installation script](./install-script-linux) if you are using Linux.
+
+:::
+
+### Docker Deploy Example
 
 ```bash
 docker run -dit \
@@ -111,61 +78,51 @@ docker run -dit \
   uozi/nginx-ui:latest
 ```
 
-## Manual Build
+In this example, port `8080` and `8443` of the container are mapped to port `80` and `443` of the host respectively.
+You need to visit `http://<your_server_ip>` to access Nginx UI.
 
-On platforms that do not have an official build version, they can be built manually.
+## Run Executable Directly
 
-### Prerequisites
+It is not recommended to run the Nginx UI executable directly for non-testing purposes.
+We recommend configuring it as a daemon or using the [installation script](./install-script-linux) on Linux.
 
-- Make
-
-- Golang 1.19+
-
-- node.js 18+
-
-  ```shell
-  npx browserslist@latest --update-db
-  ```
-
-### Build Frontend
-
-Please execute the following command in `frontend` directory.
+### Config
 
 ```shell
-yarn install
-yarn build
+echo '[server]\nHttpPort = 9000' > app.ini
 ```
 
-### Build Backend
+::: tip
 
-Please build the frontend first, and then execute the following command in the project root directory.
+The server can still be started without `app.ini`, it will listen on the default port `9000`.
 
-```shell
-go build -o nginx-ui -v main.go
+:::
+
+### Run
+
+::: code-group
+
+```shell [In Terminal]
+nginx-ui -config app.ini
 ```
 
-## Script for Linux
-
-### Basic Usage
-
-**Install and Upgrade**
-
-```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install
+```shell [In Background]
+nohup ./nginx-ui -config app.ini &
 ```
 
-The default listening port is `9000`, and the default HTTP Challenge port is `9180`.
-If there is a port conflict, please modify `/usr/local/etc/nginx-ui/app.ini` manually,
-then use `systemctl restart nginx-ui` to reload the Nginx UI service.
+:::
 
-**Remove Nginx UI, except configuration and database files**
 
-```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
+### Stop
+
+::: code-group
+
+```shell [In Terminal]
+^C   # Press Ctrl+C
 ```
 
-### More Usage
+```shell [In Background]
+kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
+```
 
-````shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) help
-````
+:::
