@@ -71,7 +71,7 @@ docker run -dit \
 ```
 
 在這個示例中，容器的`8080`埠和`8443`埠分別映射到主機的`80`埠和`443`埠。
-您需要訪問`http://<your_server_ip>`來訪問 Nginx UI。
+您需要訪問`http://<your_server_ip>:8080`來訪問 Nginx UI。
 
 ## 透過執行檔案執行
 

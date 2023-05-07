@@ -79,7 +79,7 @@ docker run -dit \
 ```
 
 In this example, port `8080` and `8443` of the container are mapped to port `80` and `443` of the host respectively.
-You need to visit `http://<your_server_ip>` to access Nginx UI.
+You need to visit `http://<your_server_ip>:8080` to access Nginx UI.
 
 ## Run Executable Directly
 
