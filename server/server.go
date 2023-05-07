@@ -1,9 +1,9 @@
 package server
 
 import (
-	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/0xJacky/Nginx-UI/server/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/server/internal/cert"
+	"github.com/0xJacky/Nginx-UI/server/internal/logger"
 	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/query"
@@ -18,6 +18,7 @@ import (
 )
 
 func Program(state overseer.State) {
+	defer logger.Sync()
 	// Hack: fix wrong Content Type of .js file on some OS platforms
 	// See https://github.com/golang/go/issues/32350
 	_ = mime.AddExtensionType(".js", "text/javascript; charset=utf-8")

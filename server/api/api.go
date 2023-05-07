@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/0xJacky/Nginx-UI/logger"
+	"github.com/0xJacky/Nginx-UI/server/internal/logger"
 	"github.com/gin-gonic/gin"
 	val "github.com/go-playground/validator/v10"
 	"net/http"

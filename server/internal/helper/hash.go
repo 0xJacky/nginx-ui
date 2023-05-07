@@ -3,7 +3,7 @@ package helper
 import (
 	"crypto/sha512"
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/logger"
+	"github.com/0xJacky/Nginx-UI/server/internal/logger"
 	"io"
 	"os"
 )

@@ -1,9 +1,9 @@
 package api
 
 import (
-	"github.com/0xJacky/Nginx-UI/logger"
 	"github.com/0xJacky/Nginx-UI/server/internal/cert"
 	"github.com/0xJacky/Nginx-UI/server/internal/cert/dns"
+	"github.com/0xJacky/Nginx-UI/server/internal/logger"
 	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/gin-gonic/gin"

@@ -3,7 +3,7 @@ package router
 import (
 	"encoding/base64"
 	"github.com/0xJacky/Nginx-UI/frontend"
-	"github.com/0xJacky/Nginx-UI/logger"
+	"github.com/0xJacky/Nginx-UI/server/internal/logger"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-contrib/static"

@@ -1,21 +1,22 @@
 package logger
 
 import (
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
-	"os"
+    "github.com/0xJacky/Nginx-UI/server/settings"
+    "github.com/gin-gonic/gin"
+    "go.uber.org/zap"
+    "go.uber.org/zap/zapcore"
+    "os"
 )
 
 var logger *zap.SugaredLogger
 
-func Init(runMode string) {
+func init() {
 	// First, define our level-handling logic.
 	highPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
 		return lvl >= zapcore.ErrorLevel
 	})
 	lowPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
-		switch runMode {
+		switch settings.ServerSettings.RunMode {
 		case gin.ReleaseMode:
 			return lvl >= zapcore.InfoLevel && lvl < zapcore.ErrorLevel
 		default:

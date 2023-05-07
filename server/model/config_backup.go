@@ -1,9 +1,9 @@
 package model
 
 import (
-    "github.com/0xJacky/Nginx-UI/logger"
-    "os"
-    "path/filepath"
+	"github.com/0xJacky/Nginx-UI/server/internal/logger"
+	"os"
+	"path/filepath"
 )
 
 type ConfigBackup struct {
@@ -38,12 +38,12 @@ func GetBackup(id int) (config ConfigBackup) {
 func CreateBackup(path string) {
 	content, err := os.ReadFile(path)
 	if err != nil {
-        logger.Error(err)
+		logger.Error(err)
 	}
 
 	config := ConfigBackup{Name: filepath.Base(path), FilePath: path, Content: string(content)}
 	result := db.Create(&config)
 	if result.Error != nil {
-        logger.Error(result.Error)
+		logger.Error(result.Error)
 	}
 }

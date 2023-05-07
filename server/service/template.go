@@ -3,7 +3,7 @@ package service
 import (
 	"bufio"
 	"bytes"
-	"github.com/0xJacky/Nginx-UI/logger"
+	"github.com/0xJacky/Nginx-UI/server/internal/logger"
 	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	templ "github.com/0xJacky/Nginx-UI/template"

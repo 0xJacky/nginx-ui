@@ -2,7 +2,7 @@ package model
 
 import (
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/logger"
+	"github.com/0xJacky/Nginx-UI/server/internal/logger"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
