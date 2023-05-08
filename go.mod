@@ -11,8 +11,6 @@ require (
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-acme/lego/v4 v4.10.2
 	github.com/go-co-op/gocron v1.20.1
-	github.com/go-playground/locales v0.14.1
-	github.com/go-playground/universal-translator v0.18.1
 	github.com/go-playground/validator/v10 v10.12.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/uuid v1.3.0
@@ -24,7 +22,7 @@ require (
 	github.com/sashabaranov/go-openai v1.7.0
 	github.com/shirou/gopsutil/v3 v3.23.3
 	github.com/spf13/cast v1.5.0
-	github.com/tufanbarisyildirim/gonginx v0.0.0-20230325082000-26dcb15a9df4
+	github.com/tufanbarisyildirim/gonginx v0.0.0-20230508112508-44b3f58122c3
 	github.com/unknwon/com v1.0.1
 	go.uber.org/zap v1.24.0
 	golang.org/x/crypto v0.8.0
@@ -75,6 +73,8 @@ require (
 	github.com/go-errors/errors v1.4.2 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
+	github.com/go-playground/locales v0.14.1 // indirect
+	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-resty/resty/v2 v2.7.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
