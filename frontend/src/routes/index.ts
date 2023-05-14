@@ -131,7 +131,7 @@ export const routes = [
             {
                 path: 'environment',
                 name: () => $gettext('Environment'),
-                component: () => import('@/views/environment/environment.vue'),
+                component: () => import('@/views/environment/Environment.vue'),
                 meta: {
                     icon: DatabaseOutlined
                 }

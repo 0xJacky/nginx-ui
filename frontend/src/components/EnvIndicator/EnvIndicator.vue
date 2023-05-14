@@ -28,7 +28,6 @@ watch(node_id, () => {
     router.push('/dashboard')
     location.reload()
 })
-
 </script>
 
 <template>
