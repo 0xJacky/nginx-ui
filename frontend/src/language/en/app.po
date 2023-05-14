@@ -9,22 +9,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/routes/index.ts:155
+#: src/routes/index.ts:164
 msgid "About"
 msgstr "About"
 
-#: src/routes/index.ts:123 src/views/domain/ngx_conf/LogEntry.vue:64
+#: src/routes/index.ts:116 src/views/domain/ngx_conf/LogEntry.vue:64
 msgid "Access Logs"
 msgstr ""
 
 #: src/views/cert/Cert.vue:74 src/views/cert/DNSCredential.vue:31
 #: src/views/config/config.ts:35 src/views/domain/DomainList.vue:47
-#: src/views/user/User.vue:43
+#: src/views/environment/Environment.vue:61 src/views/user/User.vue:43
 msgid "Action"
 msgstr "Action"
 
-#: src/components/StdDataDisplay/StdCurd.vue:147
 #: src/components/StdDataDisplay/StdCurd.vue:25
+#: src/components/StdDataDisplay/StdCurd.vue:4
+#: src/components/StdDataDisplay/StdCurd.vue:5
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:28
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:47
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:48
@@ -45,7 +46,7 @@ msgstr "Add Directive Below"
 msgid "Add Location"
 msgstr "Add Location"
 
-#: src/routes/index.ts:59 src/views/domain/DomainAdd.vue:2
+#: src/routes/index.ts:52 src/views/domain/DomainAdd.vue:2
 msgid "Add Site"
 msgstr "Add Site"
 
@@ -185,7 +186,7 @@ msgstr ""
 #: src/components/StdDataDisplay/StdBatchEdit.vue:7
 #: src/components/StdDataDisplay/StdCurd.vue:27
 #: src/components/StdDataEntry/components/StdSelector.vue:11
-#: src/views/domain/cert/components/ObtainCert.vue:188
+#: src/views/domain/cert/components/ObtainCert.vue:191
 #: src/views/domain/DomainEdit.vue:176
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:208
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:37
@@ -204,12 +205,12 @@ msgstr "Certificate is valid"
 msgid "Certificate Status"
 msgstr "Certificate Status"
 
-#: src/routes/index.ts:89 src/views/cert/Cert.vue:2
+#: src/routes/index.ts:82 src/views/cert/Cert.vue:2
 #, fuzzy
 msgid "Certification"
 msgstr "Certificate is valid"
 
-#: src/routes/index.ts:97
+#: src/routes/index.ts:90
 #, fuzzy
 msgid "Certification List"
 msgstr "Certificate is valid"
@@ -285,6 +286,11 @@ msgstr "Configurations"
 msgid "Configure SSL"
 msgstr "Configure SSL"
 
+#: src/views/dashboard/Environments.vue:8
+#: src/views/dashboard/Environments.vue:9
+msgid "Connected"
+msgstr ""
+
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:36
 #: src/views/domain/ngx_conf/LocationEditor.vue:41
 #: src/views/domain/ngx_conf/LocationEditor.vue:58
@@ -295,11 +301,12 @@ msgstr "Content"
 msgid "Core Upgrade"
 msgstr ""
 
-#: src/views/dashboard/DashBoard.vue:66
+#: src/views/dashboard/ServerAnalytic.vue:66
 msgid "CPU Status"
 msgstr "CPU Status"
 
-#: src/views/dashboard/DashBoard.vue:22 src/views/dashboard/DashBoard.vue:23
+#: src/views/dashboard/ServerAnalytic.vue:22
+#: src/views/dashboard/ServerAnalytic.vue:23
 msgid "CPU:"
 msgstr "CPU:"
 
@@ -342,7 +349,7 @@ msgstr ""
 msgid "Dark"
 msgstr ""
 
-#: src/routes/index.ts:31
+#: src/routes/index.ts:32
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -417,11 +424,11 @@ msgstr "Disabled"
 msgid "Disabled successfully"
 msgstr "Disabled successfully"
 
-#: src/views/dashboard/DashBoard.vue:98
+#: src/views/dashboard/ServerAnalytic.vue:98
 msgid "Disk IO"
 msgstr "Disk IO"
 
-#: src/routes/index.ts:102 src/views/cert/DNSCredential.vue:2
+#: src/routes/index.ts:95 src/views/cert/DNSCredential.vue:2
 msgid "DNS Credentials"
 msgstr ""
 
@@ -436,7 +443,7 @@ msgstr ""
 msgid "DNS01"
 msgstr ""
 
-#: src/views/domain/cert/components/ObtainCert.vue:184
+#: src/views/domain/cert/components/ObtainCert.vue:187
 msgid "Do you want to disable auto-cert renewal?"
 msgstr ""
 
@@ -495,11 +502,11 @@ msgstr "Saved successfully"
 msgid "Edit %{n}"
 msgstr "Edit %{n}"
 
-#: src/routes/index.ts:81 src/views/config/ConfigEdit.vue:4
+#: src/routes/index.ts:74 src/views/config/ConfigEdit.vue:4
 msgid "Edit Configuration"
 msgstr "Edit Configuration"
 
-#: src/routes/index.ts:63
+#: src/routes/index.ts:56
 msgid "Edit Site"
 msgstr "Edit Site"
 
@@ -536,11 +543,20 @@ msgstr "Enabled successfully"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Encrypt website with Let's Encrypt"
 
+#: src/routes/index.ts:133 src/views/environment/Environment.vue:2
+msgid "Environment"
+msgstr ""
+
+#: src/views/dashboard/Environments.vue:2
+#, fuzzy
+msgid "Environments"
+msgstr "Comments"
+
 #: src/views/config/InspectConfig.vue:17
 msgid "Error"
 msgstr ""
 
-#: src/routes/index.ts:127 src/views/domain/ngx_conf/LogEntry.vue:68
+#: src/routes/index.ts:120 src/views/domain/ngx_conf/LogEntry.vue:68
 msgid "Error Logs"
 msgstr ""
 
@@ -647,7 +663,7 @@ msgstr ""
 msgid "GPT-4-32K"
 msgstr ""
 
-#: src/routes/index.ts:24
+#: src/routes/index.ts:25
 msgid "Home"
 msgstr "Home"
 
@@ -673,7 +689,7 @@ msgstr ""
 msgid "Initialing core upgrader"
 msgstr ""
 
-#: src/routes/index.ts:167 src/views/other/Install.vue:128
+#: src/routes/index.ts:176 src/views/other/Install.vue:128
 msgid "Install"
 msgstr "Install"
 
@@ -714,9 +730,20 @@ msgstr ""
 msgid "Light"
 msgstr ""
 
-#: src/views/dashboard/DashBoard.vue:154
+#: src/views/dashboard/Environments.vue:8
+#: src/views/dashboard/Environments.vue:9
+msgid "Link Start"
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:154
 msgid "Load Averages:"
 msgstr "Load Averages:"
+
+#: src/components/EnvIndicator/EnvIndicator.vue:5
+#: src/components/EnvIndicator/EnvIndicator.vue:6
+#, fuzzy
+msgid "Local"
+msgstr "Location"
 
 #: src/views/domain/ngx_conf/LocationEditor.vue:10
 #: src/views/domain/ngx_conf/LocationEditor.vue:11
@@ -728,7 +755,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/routes/index.ts:173 src/views/other/Login.vue:104
+#: src/routes/index.ts:182 src/views/other/Login.vue:104
 msgid "Login"
 msgstr "Login"
 
@@ -749,23 +776,23 @@ msgstr ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort (default: 9180) before getting the certificate."
 
-#: src/routes/index.ts:72
+#: src/routes/index.ts:65
 msgid "Manage Configs"
 msgstr "Manage Configs"
 
-#: src/routes/index.ts:47 src/views/domain/DomainList.vue:2
+#: src/routes/index.ts:40 src/views/domain/DomainList.vue:2
 msgid "Manage Sites"
 msgstr "Manage Sites"
 
-#: src/routes/index.ts:39 src/views/user/User.vue:2
+#: src/routes/index.ts:141 src/views/user/User.vue:2
 msgid "Manage Users"
 msgstr "Manage Users"
 
-#: src/views/dashboard/DashBoard.vue:34
+#: src/views/dashboard/ServerAnalytic.vue:34
 msgid "Memory"
 msgstr "Memory"
 
-#: src/views/dashboard/DashBoard.vue:31
+#: src/views/dashboard/ServerAnalytic.vue:31
 msgid "Memory and Storage"
 msgstr "Memory and Storage"
 
@@ -795,22 +822,23 @@ msgstr "Single Directive"
 #: src/views/config/config.ts:8 src/views/domain/cert/ChangeCert.vue:21
 #: src/views/domain/DomainEdit.vue:32 src/views/domain/DomainList.vue:15
 #: src/views/domain/SiteDuplicate.vue:5
+#: src/views/environment/Environment.vue:13
 msgid "Name"
 msgstr "Name"
 
-#: src/views/dashboard/DashBoard.vue:76
+#: src/views/dashboard/ServerAnalytic.vue:76
 msgid "Network"
 msgstr "Network"
 
-#: src/views/dashboard/DashBoard.vue:50
+#: src/views/dashboard/ServerAnalytic.vue:50
 msgid "Network Statistics"
 msgstr "Network Statistics"
 
-#: src/views/dashboard/DashBoard.vue:54
+#: src/views/dashboard/ServerAnalytic.vue:54
 msgid "Network Total Receive"
 msgstr "Network Total Receive"
 
-#: src/views/dashboard/DashBoard.vue:58
+#: src/views/dashboard/ServerAnalytic.vue:58
 msgid "Network Total Send"
 msgstr "Network Total Send"
 
@@ -844,7 +872,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr ""
 
-#: src/routes/index.ts:117 src/views/nginx_log/NginxLog.vue:2
+#: src/routes/index.ts:110 src/views/nginx_log/NginxLog.vue:2
 #: src/views/preference/Preference.vue:8
 msgid "Nginx Log"
 msgstr ""
@@ -867,7 +895,7 @@ msgstr "Saved successfully"
 msgid "No"
 msgstr "No"
 
-#: src/routes/index.ts:179 src/routes/index.ts:181
+#: src/routes/index.ts:188 src/routes/index.ts:190
 msgid "Not Found"
 msgstr "Not Found"
 
@@ -889,16 +917,28 @@ msgstr "Certificate is valid"
 msgid "Obtaining certificate"
 msgstr ""
 
+#: src/views/dashboard/Environments.vue:15
+#: src/views/dashboard/Environments.vue:16
+#: src/views/environment/Environment.vue:48
+msgid "Offline"
+msgstr ""
+
 #: src/components/ChatGPT/ChatGPT.vue:39
 #: src/components/StdDataDisplay/StdBatchEdit.vue:8
 #: src/components/StdDataDisplay/StdCurd.vue:28
 #: src/components/StdDataDisplay/StdTable.vue:54
 #: src/components/StdDataEntry/components/StdSelector.vue:12
-#: src/views/domain/cert/components/ObtainCert.vue:187
+#: src/views/domain/cert/components/ObtainCert.vue:190
 #: src/views/domain/DomainEdit.vue:175 src/views/domain/DomainList.vue:28
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:207
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:36
 msgid "OK"
+msgstr ""
+
+#: src/views/dashboard/Environments.vue:14
+#: src/views/dashboard/Environments.vue:15
+#: src/views/environment/Environment.vue:45
+msgid "Online"
 msgstr ""
 
 #: src/views/preference/Preference.vue:11
@@ -912,7 +952,7 @@ msgstr ""
 msgid "OS"
 msgstr "OS:"
 
-#: src/views/dashboard/DashBoard.vue:160
+#: src/views/dashboard/ServerAnalytic.vue:160
 msgid "OS:"
 msgstr "OS:"
 
@@ -982,7 +1022,7 @@ msgstr "Please input your username!"
 msgid "Pre-release"
 msgstr ""
 
-#: src/routes/index.ts:140 src/views/preference/Preference.vue:2
+#: src/routes/index.ts:149 src/views/preference/Preference.vue:2
 msgid "Preference"
 msgstr ""
 
@@ -1007,11 +1047,13 @@ msgstr "Project Team"
 msgid "Provider"
 msgstr ""
 
-#: src/views/dashboard/DashBoard.vue:109 src/views/dashboard/DashBoard.vue:23
+#: src/views/dashboard/ServerAnalytic.vue:109
+#: src/views/dashboard/ServerAnalytic.vue:23
 msgid "Reads"
 msgstr "Reads"
 
-#: src/views/dashboard/DashBoard.vue:20 src/views/dashboard/DashBoard.vue:80
+#: src/views/dashboard/ServerAnalytic.vue:20
+#: src/views/dashboard/ServerAnalytic.vue:80
 msgid "Receive"
 msgstr "Receive"
 
@@ -1112,7 +1154,7 @@ msgstr "Save error %{msg}"
 msgid "Save successfully"
 msgstr "Saved successfully"
 
-#: src/components/StdDataDisplay/StdCurd.vue:110
+#: src/components/StdDataDisplay/StdCurd.vue:116
 #, fuzzy
 msgid "Save Successfully"
 msgstr "Saved successfully"
@@ -1127,7 +1169,8 @@ msgstr "Saved successfully"
 msgid "Selector"
 msgstr ""
 
-#: src/views/dashboard/DashBoard.vue:21 src/views/dashboard/DashBoard.vue:87
+#: src/views/dashboard/ServerAnalytic.vue:21
+#: src/views/dashboard/ServerAnalytic.vue:87
 msgid "Send"
 msgstr "Send"
 
@@ -1143,7 +1186,7 @@ msgstr "Send"
 msgid "Server error"
 msgstr "Server error"
 
-#: src/views/dashboard/DashBoard.vue:5
+#: src/views/dashboard/ServerAnalytic.vue:5
 msgid "Server Info"
 msgstr "Server Info"
 
@@ -1167,12 +1210,12 @@ msgstr ""
 msgid "Single Directive"
 msgstr "Single Directive"
 
-#: src/routes/index.ts:131
+#: src/routes/index.ts:124
 #, fuzzy
 msgid "Site Logs"
 msgstr "Sites List"
 
-#: src/routes/index.ts:55
+#: src/routes/index.ts:48
 msgid "Sites List"
 msgstr "Sites List"
 
@@ -1205,7 +1248,7 @@ msgstr "Certificate Status"
 msgid "Stable"
 msgstr "Enabled"
 
-#: src/views/domain/DomainList.vue:24
+#: src/views/domain/DomainList.vue:24 src/views/environment/Environment.vue:38
 msgid "Status"
 msgstr "Status"
 
@@ -1213,7 +1256,7 @@ msgstr "Status"
 msgid "Stopped"
 msgstr ""
 
-#: src/views/dashboard/DashBoard.vue:43
+#: src/views/dashboard/ServerAnalytic.vue:43
 msgid "Storage"
 msgstr "Storage"
 
@@ -1221,11 +1264,11 @@ msgstr "Storage"
 msgid "Subject Name: %{name}"
 msgstr "Subject Name: %{name}"
 
-#: src/views/dashboard/DashBoard.vue:38
+#: src/views/dashboard/ServerAnalytic.vue:38
 msgid "Swap"
 msgstr "Swap"
 
-#: src/routes/index.ts:148
+#: src/routes/index.ts:157
 msgid "System"
 msgstr ""
 
@@ -1234,7 +1277,7 @@ msgstr ""
 msgid "Table"
 msgstr "Enabled"
 
-#: src/routes/index.ts:109 src/views/pty/Terminal.vue:2
+#: src/routes/index.ts:102 src/views/pty/Terminal.vue:2
 msgid "Terminal"
 msgstr "Terminal"
 
@@ -1288,13 +1331,17 @@ msgid ""
 "continue?"
 msgstr ""
 
+#: src/views/environment/Environment.vue:30
+msgid "Token"
+msgstr ""
+
 #: src/views/config/config.ts:13
 msgid "Type"
 msgstr ""
 
 #: src/views/cert/Cert.vue:68 src/views/cert/DNSCredential.vue:25
 #: src/views/config/config.ts:28 src/views/domain/DomainList.vue:41
-#: src/views/user/User.vue:37
+#: src/views/environment/Environment.vue:55 src/views/user/User.vue:37
 msgid "Updated at"
 msgstr "Updated at"
 
@@ -1303,7 +1350,7 @@ msgstr "Updated at"
 msgid "Updated successfully"
 msgstr "Saved successfully"
 
-#: src/routes/index.ts:159 src/views/system/Upgrade.vue:2
+#: src/routes/index.ts:168 src/views/system/Upgrade.vue:2
 #: src/views/system/Upgrade.vue:39 src/views/system/Upgrade.vue:40
 #: src/views/system/Upgrade.vue:44 src/views/system/Upgrade.vue:48
 #: src/views/system/Upgrade.vue:52 src/views/system/Upgrade.vue:55
@@ -1320,9 +1367,13 @@ msgstr "Saved successfully"
 msgid "Upgrading Nginx UI, please wait..."
 msgstr ""
 
-#: src/views/dashboard/DashBoard.vue:150
+#: src/views/dashboard/ServerAnalytic.vue:150
 msgid "Uptime:"
 msgstr "Uptime:"
+
+#: src/views/environment/Environment.vue:21
+msgid "URL"
+msgstr ""
 
 #: src/views/other/Login.vue:11 src/views/user/User.vue:11
 msgid "Username"
@@ -1352,13 +1403,14 @@ msgstr ""
 msgid "Warning"
 msgstr "Warning"
 
-#: src/views/domain/cert/components/ObtainCert.vue:185
+#: src/views/domain/cert/components/ObtainCert.vue:188
 msgid ""
 "We will remove the HTTPChallenge configuration from this file and reload the "
 "Nginx. Are you sure you want to continue?"
 msgstr ""
 
-#: src/views/dashboard/DashBoard.vue:102 src/views/dashboard/DashBoard.vue:22
+#: src/views/dashboard/ServerAnalytic.vue:102
+#: src/views/dashboard/ServerAnalytic.vue:22
 msgid "Writes"
 msgstr "Writes"
 
