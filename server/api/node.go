@@ -1,0 +1,35 @@
+package api
+
+import (
+	"github.com/0xJacky/Nginx-UI/server/service"
+	"github.com/gin-gonic/gin"
+	"github.com/shirou/gopsutil/v3/cpu"
+	"net/http"
+)
+
+func GetCurrentNode(c *gin.Context) {
+	if _, ok := c.Get("NodeSecret"); !ok {
+		c.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "node secret not exist",
+		})
+		return
+	}
+
+	runtimeInfo, err := service.GetRuntimeInfo()
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
+	cpuInfo, _ := cpu.Info()
+	memory, _ := getMemoryStat()
+	ver, _ := service.GetCurrentVersion()
+
+	c.JSON(http.StatusOK, gin.H{
+		"request_node_secret": c.MustGet("NodeSecret"),
+		"node_runtime_info":   runtimeInfo,
+		"cpu_num":             len(cpuInfo),
+		"memory_total":        memory.Total,
+		"version":             ver.Version,
+	})
+}

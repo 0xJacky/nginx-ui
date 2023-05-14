@@ -11,8 +11,8 @@ RUN set -x \
     && adduser --system --disabled-login --ingroup nginx --no-create-home --home /nonexistent --gecos "nginx user" --shell /bin/false --uid 101 nginx \
     && apt update && apt install -y wget nginx gcc curl
 
-RUN wget https://go.dev/dl/go1.20.1.linux-arm64.tar.gz && \
-    rm -rf /usr/local/go && tar -C /usr/local -xzf go1.20.1.linux-arm64.tar.gz && rm -f go1.20.1.linux-arm64.tar.gz
+RUN wget https://go.dev/dl/go1.20.4.linux-arm64.tar.gz && \
+    rm -rf /usr/local/go && tar -C /usr/local -xzf go1.20.4.linux-arm64.tar.gz && rm -f go1.20.4.linux-arm64.tar.gz
 
 ENV PATH="${PATH}:/usr/local/go/bin"
 

@@ -10,6 +10,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/server/router"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/go-co-op/gocron"
+	"github.com/google/uuid"
 	"github.com/jpillora/overseer"
 	"log"
 	"mime"
@@ -28,6 +29,18 @@ func Program(state overseer.State) {
 	if "" != settings.ServerSettings.JwtSecret {
 		db := model.Init()
 		query.Init(db)
+	}
+
+	if "" == settings.ServerSettings.NodeSecret {
+		logger.Warn("NodeSecret is empty")
+		settings.ServerSettings.NodeSecret = uuid.New().String()
+		settings.ReflectFrom()
+
+		err := settings.Save()
+		if err != nil {
+			logger.Error("Error save settings")
+		}
+		logger.Warn("Generated NodeSecret: ", settings.ServerSettings.NodeSecret)
 	}
 
 	s := gocron.NewScheduler(time.UTC)

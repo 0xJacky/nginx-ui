@@ -23,6 +23,7 @@ var (
 	ChatGPTLog    *chatGPTLog
 	ConfigBackup  *configBackup
 	DnsCredential *dnsCredential
+	Environment   *environment
 	Site          *site
 )
 
@@ -34,6 +35,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	ChatGPTLog = &Q.ChatGPTLog
 	ConfigBackup = &Q.ConfigBackup
 	DnsCredential = &Q.DnsCredential
+	Environment = &Q.Environment
 	Site = &Q.Site
 }
 
@@ -46,6 +48,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		ChatGPTLog:    newChatGPTLog(db, opts...),
 		ConfigBackup:  newConfigBackup(db, opts...),
 		DnsCredential: newDnsCredential(db, opts...),
+		Environment:   newEnvironment(db, opts...),
 		Site:          newSite(db, opts...),
 	}
 }
@@ -59,6 +62,7 @@ type Query struct {
 	ChatGPTLog    chatGPTLog
 	ConfigBackup  configBackup
 	DnsCredential dnsCredential
+	Environment   environment
 	Site          site
 }
 
@@ -73,6 +77,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		ChatGPTLog:    q.ChatGPTLog.clone(db),
 		ConfigBackup:  q.ConfigBackup.clone(db),
 		DnsCredential: q.DnsCredential.clone(db),
+		Environment:   q.Environment.clone(db),
 		Site:          q.Site.clone(db),
 	}
 }
@@ -94,6 +99,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		ChatGPTLog:    q.ChatGPTLog.replaceDB(db),
 		ConfigBackup:  q.ConfigBackup.replaceDB(db),
 		DnsCredential: q.DnsCredential.replaceDB(db),
+		Environment:   q.Environment.replaceDB(db),
 		Site:          q.Site.replaceDB(db),
 	}
 }
@@ -105,6 +111,7 @@ type queryCtx struct {
 	ChatGPTLog    *chatGPTLogDo
 	ConfigBackup  *configBackupDo
 	DnsCredential *dnsCredentialDo
+	Environment   *environmentDo
 	Site          *siteDo
 }
 
@@ -116,6 +123,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		ChatGPTLog:    q.ChatGPTLog.WithContext(ctx),
 		ConfigBackup:  q.ConfigBackup.WithContext(ctx),
 		DnsCredential: q.DnsCredential.WithContext(ctx),
+		Environment:   q.Environment.WithContext(ctx),
 		Site:          q.Site.WithContext(ctx),
 	}
 }
@@ -125,10 +133,14 @@ func (q *Query) Transaction(fc func(tx *Query) error, opts ...*sql.TxOptions) er
 }
 
 func (q *Query) Begin(opts ...*sql.TxOptions) *QueryTx {
-	return &QueryTx{q.clone(q.db.Begin(opts...))}
+	tx := q.db.Begin(opts...)
+	return &QueryTx{Query: q.clone(tx), Error: tx.Error}
 }
 
-type QueryTx struct{ *Query }
+type QueryTx struct {
+	*Query
+	Error error
+}
 
 func (q *QueryTx) Commit() error {
 	return q.db.Commit().Error

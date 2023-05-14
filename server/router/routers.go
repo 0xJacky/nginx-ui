@@ -18,7 +18,9 @@ func InitRouter() *gin.Engine {
 	r.Use(static.Serve("/", mustFS("")))
 
 	r.NoRoute(func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "/")
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "not found",
+		})
 	})
 
 	root := r.Group("/api")
@@ -29,9 +31,19 @@ func InitRouter() *gin.Engine {
 		root.POST("/login", api.Login)
 		root.DELETE("/logout", api.Logout)
 
-		g := root.Group("/", authRequired())
+		w := root.Group("/", authRequired(), proxyWs())
 		{
-			g.GET("analytic", api.Analytic)
+			// Analytic
+			w.GET("analytic", api.Analytic)
+			// pty
+			w.GET("pty", api.Pty)
+			// Nginx log
+			w.GET("nginx_log", api.NginxLog)
+		}
+
+		g := root.Group("/", authRequired(), proxy())
+		{
+
 			g.GET("analytic/init", api.GetAnalyticInit)
 
 			g.GET("users", api.GetUsers)
@@ -52,13 +64,10 @@ func InitRouter() *gin.Engine {
 			g.POST("ngx/tokenize_config", api.TokenizeNginxConfig)
 			// Format nginx configuration code
 			g.POST("ngx/format_code", api.FormatNginxConfig)
-			// nginx reload
+
 			g.POST("nginx/reload", api.ReloadNginx)
-			// nginx restart
 			g.POST("nginx/restart", api.RestartNginx)
-			// nginx test
 			g.POST("nginx/test", api.TestNginx)
-			// nginx status
 			g.GET("nginx/status", api.NginxStatus)
 
 			g.POST("domain/:name/enable", api.EnableDomain)
@@ -66,7 +75,7 @@ func InitRouter() *gin.Engine {
 			g.POST("domain/:name/advance", api.DomainEditByAdvancedMode)
 
 			g.DELETE("domain/:name", api.DeleteDomain)
-			// duplicate site
+
 			g.POST("domain/:name/duplicate", api.DuplicateSite)
 			g.GET("domain/:name/cert", api.IssueCert)
 
@@ -104,11 +113,6 @@ func InitRouter() *gin.Engine {
 			g.POST("dns_credential/:id", api.EditDnsCredential)
 			g.DELETE("dns_credential/:id", api.DeleteDnsCredential)
 
-			// pty
-			g.GET("pty", api.Pty)
-
-			// Nginx log
-			g.GET("nginx_log", api.NginxLog)
 			g.POST("nginx_log", api.GetNginxLogPage)
 
 			// Settings
@@ -121,8 +125,21 @@ func InitRouter() *gin.Engine {
 			g.GET("upgrade/perform", api.PerformCoreUpgrade)
 
 			// ChatGPT
-			g.POST("/chat_gpt", api.MakeChatCompletionRequest)
-			g.POST("/chat_gpt_record", api.StoreChatGPTRecord)
+			g.POST("chat_gpt", api.MakeChatCompletionRequest)
+			g.POST("chat_gpt_record", api.StoreChatGPTRecord)
+
+			// Environment
+			g.GET("environments", api.GetEnvironmentList)
+			envGroup := g.Group("environment")
+			{
+				envGroup.GET("/:id", api.GetEnvironment)
+				envGroup.POST("", api.AddEnvironment)
+				envGroup.POST("/:id", api.EditEnvironment)
+				envGroup.DELETE("/:id", api.DeleteEnvironment)
+			}
+
+			// node
+			g.GET("node", api.GetCurrentNode)
 		}
 	}
 

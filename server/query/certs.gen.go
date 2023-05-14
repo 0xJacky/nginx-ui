@@ -166,6 +166,11 @@ func (a certBelongsToDnsCredential) WithContext(ctx context.Context) *certBelong
 	return &a
 }
 
+func (a certBelongsToDnsCredential) Session(session *gorm.Session) *certBelongsToDnsCredential {
+	a.db = a.db.Session(session)
+	return &a
+}
+
 func (a certBelongsToDnsCredential) Model(m *model.Cert) *certBelongsToDnsCredentialTx {
 	return &certBelongsToDnsCredentialTx{a.db.Model(m).Association(a.Name())}
 }

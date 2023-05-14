@@ -2,7 +2,8 @@
 import Logo from '@/components/Logo/Logo.vue'
 import {routes} from '@/routes'
 import {useRoute} from 'vue-router'
-import {computed, ref, watch} from 'vue'
+import {computed, ComputedRef, ref, watch} from 'vue'
+import EnvIndicator from '@/components/EnvIndicator/EnvIndicator.vue'
 
 const route = useRoute()
 
@@ -30,6 +31,7 @@ const sidebars = computed(() => {
 interface meta {
     icon: any
     hiddenInSidebar: boolean
+    hideChildren: boolean
 }
 
 interface sidebar {
@@ -39,7 +41,7 @@ interface sidebar {
     children: sidebar[]
 }
 
-const visible = computed(() => {
+const visible: ComputedRef<sidebar[]> = computed(() => {
 
     const res: sidebar[] = [];
 
@@ -71,6 +73,9 @@ const visible = computed(() => {
 <template>
     <div class="sidebar">
         <logo/>
+
+        <env-indicator/>
+
         <a-menu
             :openKeys="openKeys"
             mode="inline"
@@ -78,7 +83,7 @@ const visible = computed(() => {
             v-model:selectedKeys="selectedKey"
         >
             <template v-for="sidebar in visible">
-                <a-menu-item v-if="sidebar.children.length===0 || sidebar.meta.hideChildren === true"
+                <a-menu-item v-if="sidebar.children.length===0 || sidebar.meta.hideChildren"
                              :key="sidebar.name"
                              @click="$router.push('/'+sidebar.path).catch(() => {})">
                     <component :is="sidebar.meta.icon"/>

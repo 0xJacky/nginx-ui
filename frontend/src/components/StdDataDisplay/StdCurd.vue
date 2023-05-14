@@ -86,8 +86,14 @@ function add() {
     visible.value = true
 }
 
+function get_list() {
+    const t: Table = table.value!
+    t!.get_list()
+}
+
 defineExpose({
     add,
+    get_list,
     data
 })
 
@@ -109,8 +115,7 @@ const ok = async () => {
     props.api!.save(data.id, data).then((r: any) => {
         message.success($gettext('Save Successfully'))
         Object.assign(data, r)
-        const t: Table = table.value!
-        t!.get_list()
+        get_list()
 
     }).catch((e: any) => {
         message.error($gettext(e?.message ?? 'Server error'), 5)
@@ -144,7 +149,7 @@ const selectedRowKeys = ref([])
     <div class="std-curd">
         <a-card :title="title||$gettext('Table')">
             <template v-if="!disable_add" #extra>
-                <a @click="add" v-translate>Add</a>
+                <a @click="add">{{ $gettext('Add') }}</a>
             </template>
 
             <std-table

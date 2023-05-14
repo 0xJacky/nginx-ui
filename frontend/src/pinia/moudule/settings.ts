@@ -4,7 +4,11 @@ export const useSettingsStore = defineStore('settings', {
     state: () => ({
         language: '',
         theme: 'light',
-        preference_theme: 'auto'
+        preference_theme: 'auto',
+        environment: {
+            id: 0,
+            name: 'Local'
+        }
     }),
     getters: {},
     actions: {
@@ -16,6 +20,10 @@ export const useSettingsStore = defineStore('settings', {
         },
         set_preference_theme(t: string) {
             this.preference_theme = t
+        },
+        clear_environment() {
+            this.environment.id = 0
+            this.environment.name = 'Local'
         }
     },
     persist: true

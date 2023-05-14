@@ -1,3 +1,6 @@
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
 function bytesToSize(bytes: number) {
     if (bytes === 0) return '0 B'
 
@@ -60,9 +63,25 @@ function createEnum(definition: any) {
     }
 }
 
+function fromNow(t: string) {
+    dayjs.extend(relativeTime)
+    return dayjs(t).fromNow()
+}
+
+function formatDate(t: string) {
+    return dayjs(t).format('YYYY.MM.DD')
+}
+
+function formatDateTime(t: string) {
+    return dayjs(t).format('YYYY-MM-DD HH:mm:ss')
+}
+
 export {
     bytesToSize,
     downloadCsv,
     urlJoin,
-    createEnum
+    createEnum,
+    fromNow,
+    formatDate,
+    formatDateTime
 }

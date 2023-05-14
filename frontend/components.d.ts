@@ -10,6 +10,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AAlert: typeof import('ant-design-vue/es')['Alert']
+    AAvatar: typeof import('ant-design-vue/es')['Avatar']
     ABadge: typeof import('ant-design-vue/es')['Badge']
     ABreadcrumb: typeof import('ant-design-vue/es')['Breadcrumb']
     ABreadcrumbItem: typeof import('ant-design-vue/es')['BreadcrumbItem']
@@ -37,6 +38,7 @@ declare module '@vue/runtime-core' {
     ALayoutSider: typeof import('ant-design-vue/es')['LayoutSider']
     AList: typeof import('ant-design-vue/es')['List']
     AListItem: typeof import('ant-design-vue/es')['ListItem']
+    AListItemMeta: typeof import('ant-design-vue/es')['ListItemMeta']
     AMenu: typeof import('ant-design-vue/es')['Menu']
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
     AModal: typeof import('ant-design-vue/es')['Modal']
@@ -64,6 +66,7 @@ declare module '@vue/runtime-core' {
     ChartRadialBarChart: typeof import('./src/components/Chart/RadialBarChart.vue')['default']
     ChatGPTChatGPT: typeof import('./src/components/ChatGPT/ChatGPT.vue')['default']
     CodeEditorCodeEditor: typeof import('./src/components/CodeEditor/CodeEditor.vue')['default']
+    EnvIndicatorEnvIndicator: typeof import('./src/components/EnvIndicator/EnvIndicator.vue')['default']
     FooterToolbarFooterToolBar: typeof import('./src/components/FooterToolbar/FooterToolBar.vue')['default']
     LogoLogo: typeof import('./src/components/Logo/Logo.vue')['default']
     NginxControlNginxControl: typeof import('./src/components/NginxControl/NginxControl.vue')['default']

@@ -5,6 +5,7 @@ import {useUserStore} from '@/pinia'
 import {
     CloudOutlined,
     CodeOutlined,
+    DatabaseOutlined,
     FileOutlined,
     FileTextOutlined,
     HomeOutlined,
@@ -32,14 +33,6 @@ export const routes = [
                 meta: {
                     // hiddenHeaderContent: true,
                     icon: HomeOutlined
-                }
-            },
-            {
-                path: 'user',
-                name: () => $gettext('Manage Users'),
-                component: () => import('@/views/user/User.vue'),
-                meta: {
-                    icon: UserOutlined
                 }
             },
             {
@@ -134,6 +127,22 @@ export const routes = [
                         hiddenInSidebar: true
                     }
                 }]
+            },
+            {
+                path: 'environment',
+                name: () => $gettext('Environment'),
+                component: () => import('@/views/environment/environment.vue'),
+                meta: {
+                    icon: DatabaseOutlined
+                }
+            },
+            {
+                path: 'user',
+                name: () => $gettext('Manage Users'),
+                component: () => import('@/views/user/User.vue'),
+                meta: {
+                    icon: UserOutlined
+                }
             },
             {
                 path: 'preference',

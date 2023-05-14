@@ -40,28 +40,38 @@ func recovery() gin.HandlerFunc {
 
 func authRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		abortWithAuthFailure := func() {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+				"message": "Authorization failed",
+			})
+		}
+
 		token := c.GetHeader("Authorization")
 		if token == "" {
-			tmp, _ := base64.StdEncoding.DecodeString(c.Query("token"))
-			token = string(tmp)
-			if token == "" {
-				c.JSON(http.StatusForbidden, gin.H{
-					"message": "Authorization failed",
-				})
-				c.Abort()
+			if token = c.GetHeader("X-Node-Secret"); token != "" && token == settings.ServerSettings.NodeSecret {
+				c.Set("NodeSecret", token)
+				c.Next()
 				return
+			} else {
+				c.Set("ProxyNodeID", c.Query("x_node_id"))
+				tokenBytes, _ := base64.StdEncoding.DecodeString(c.Query("token"))
+				token = string(tokenBytes)
+				if token == "" {
+					abortWithAuthFailure()
+					return
+				}
 			}
 		}
 
-		n := model.CheckToken(token)
-
-		if n < 1 {
-			c.JSON(http.StatusForbidden, gin.H{
-				"message": "Authorization failed",
-			})
-			c.Abort()
+		if model.CheckToken(token) < 1 {
+			abortWithAuthFailure()
 			return
 		}
+
+		if nodeID := c.GetHeader("X-Node-ID"); nodeID != "" {
+			c.Set("ProxyNodeID", nodeID)
+		}
+
 		c.Next()
 	}
 }
@@ -73,7 +83,12 @@ type serverFileSystemType struct {
 func (f serverFileSystemType) Exists(prefix string, _path string) bool {
 	file, err := f.Open(path.Join(prefix, _path))
 	if file != nil {
-		defer file.Close()
+		defer func(file http.File) {
+			err = file.Close()
+			if err != nil {
+				logger.Error("file not found", err)
+			}
+		}(file)
 	}
 	return err == nil
 }

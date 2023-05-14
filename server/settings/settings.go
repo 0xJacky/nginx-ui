@@ -19,6 +19,7 @@ type Server struct {
 	HttpPort          string `json:"http_port"`
 	RunMode           string `json:"run_mode"`
 	JwtSecret         string `json:"jwt_secret"`
+	NodeSecret        string `json:"node_secret"`
 	HTTPChallengePort string `json:"http_challenge_port"`
 	Email             string `json:"email"`
 	Database          string `json:"database"`

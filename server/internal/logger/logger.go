@@ -1,11 +1,11 @@
 package logger
 
 import (
-    "github.com/0xJacky/Nginx-UI/server/settings"
-    "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
-    "go.uber.org/zap/zapcore"
-    "os"
+	"github.com/0xJacky/Nginx-UI/server/settings"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+	"os"
 )
 
 var logger *zap.SugaredLogger
@@ -31,7 +31,7 @@ func init() {
 	consoleErrors := zapcore.Lock(os.Stderr)
 	encoderConfig := zap.NewDevelopmentEncoderConfig()
 	encoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout("2006-01-02 15:04:05")
-	encoderConfig.ConsoleSeparator = " "
+	encoderConfig.ConsoleSeparator = "\t"
 	encoderConfig.EncodeLevel = colorLevelEncoder
 	consoleEncoder := zapcore.NewConsoleEncoder(encoderConfig)
 

@@ -1,5 +1,5 @@
 import axios, {AxiosRequestConfig} from 'axios'
-import {useUserStore} from '@/pinia'
+import {useSettingsStore, useUserStore} from '@/pinia'
 import {storeToRefs} from 'pinia'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -7,7 +7,7 @@ import 'nprogress/nprogress.css'
 import router from '@/routes'
 
 const user = useUserStore()
-
+const settings = useSettingsStore()
 const {token} = storeToRefs(user)
 
 let instance = axios.create({
@@ -30,6 +30,9 @@ instance.interceptors.request.use(
         NProgress.start()
         if (token) {
             (config.headers as any).Authorization = token.value
+        }
+        if (settings.environment.id) {
+            (config.headers as any)['X-Node-ID'] = settings.environment.id
         }
         return config
     },
