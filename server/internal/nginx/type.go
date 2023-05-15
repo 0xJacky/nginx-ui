@@ -9,21 +9,21 @@ import (
 type NgxConfig struct {
 	FileName  string         `json:"file_name"`
 	Name      string         `json:"name"`
-	Upstreams []*NgxUpstream `json:"upstreams,omitempty"`
-	Servers   []*NgxServer   `json:"servers,omitempty"`
+	Upstreams []*NgxUpstream `json:"upstreams"`
+	Servers   []*NgxServer   `json:"servers"`
 	Custom    string         `json:"custom"`
 	c         *gonginx.Config
 }
 
 type NgxServer struct {
-	Directives []*NgxDirective `json:"directives,omitempty"`
-	Locations  []*NgxLocation  `json:"locations,omitempty"`
+	Directives []*NgxDirective `json:"directives"`
+	Locations  []*NgxLocation  `json:"locations"`
 	Comments   string          `json:"comments"`
 }
 
 type NgxUpstream struct {
 	Name       string          `json:"name"`
-	Directives []*NgxDirective `json:"directives,omitempty"`
+	Directives []*NgxDirective `json:"directives"`
 	Comments   string          `json:"comments"`
 }
 
