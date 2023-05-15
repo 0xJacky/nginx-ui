@@ -13,7 +13,14 @@ const {$gettext} = useGettext()
 
 let websocket: ReconnectingWebSocket | WebSocket
 
-const host = reactive({})
+const host: any = reactive({
+    platform: '',
+    platformVersion: '',
+    os: '',
+    kernelVersion: '',
+    kernelArch: ''
+})
+
 const cpu = ref('0.0')
 const cpu_info = reactive([])
 const cpu_analytic_series = reactive([{name: 'User', data: <any>[]}, {name: 'Total', data: <any>[]}])
@@ -21,11 +28,11 @@ const net_analytic = reactive([{name: $gettext('Receive'), data: <any>[]},
     {name: $gettext('Send'), data: <any>[]}])
 const disk_io_analytic = reactive([{name: $gettext('Writes'), data: <any>[]},
     {name: $gettext('Reads'), data: <any>[]}])
-const memory = reactive({})
-const disk = reactive({})
+const memory: any = reactive({swap_used: '', swap_percent: '', swap_total: ''})
+const disk: any = reactive({percentage: '', used: ''})
 const disk_io = reactive({writes: 0, reads: 0})
 const uptime = ref('')
-const loadavg = reactive({})
+const loadavg = reactive({load1: 0, load5: 0, load15: 0})
 const net = reactive({recv: 0, sent: 0, last_recv: 0, last_sent: 0})
 
 const net_formatter = (bytes: number) => {
@@ -164,8 +171,10 @@ function wsOnMessage(m: { data: any }) {
                     </p>
                     <p v-if="cpu_info">
                         {{ $gettext('CPU:') + ' ' }}
-                        <span class="cpu-model">{{ cpu_info[0]?.modelName || 'core' }}</span>
-                        <span class="cpu-mhz">{{ (cpu_info[0]?.mhz / 1000).toFixed(2) + 'GHz' }}</span>
+                        <span class="cpu-model">{{ cpu_info[0]?.modelName || 'Core' }}</span>
+                        <span class="cpu-mhz">{{
+                                cpu_info[0]?.mhz > 0.01 ? (cpu_info[0]?.mhz / 1000).toFixed(2) + 'GHz' : 'Core'
+                            }}</span>
                         * {{ cpu_info.length }}
                     </p>
                 </a-card>

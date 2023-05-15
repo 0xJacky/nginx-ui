@@ -105,7 +105,7 @@ const lang = computed(() => {
 <style lang="less">
 .layout-sider .sidebar {
     ul.ant-menu-inline.ant-menu-root {
-        height: calc(100vh - 120px);
+        height: calc(100vh - 160px);
         overflow-y: auto;
         overflow-x: hidden;
 

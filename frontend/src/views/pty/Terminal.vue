@@ -10,7 +10,7 @@ import {useGettext} from 'vue3-gettext'
 const {$gettext} = useGettext()
 
 let term: Terminal | null
-let ping: null | NodeJS.Timer
+let ping: NodeJS.Timer
 
 
 const websocket = ws('/api/pty')
@@ -83,7 +83,7 @@ function wsOnOpen() {
 
 onUnmounted(() => {
     window.removeEventListener('resize', fit)
-    clearInterval(ping!)
+    clearInterval(ping)
     term?.dispose()
     ping = null
     websocket.close()

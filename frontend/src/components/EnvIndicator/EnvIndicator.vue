@@ -62,7 +62,7 @@ watch(node_id, () => {
 }
 
 .indicator {
-    padding: 20px;
+    padding: 20px 20px 16px 20px;
 
     .container {
         border-radius: 16px;

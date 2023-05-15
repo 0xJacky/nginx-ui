@@ -183,6 +183,13 @@ func GetAnalyticInit(c *gin.Context) {
 	}
 	hostInfo, _ := host.Info()
 
+	switch hostInfo.Platform {
+	case "ubuntu":
+		hostInfo.Platform = "Ubuntu"
+	case "centos":
+		hostInfo.Platform = "CentOS"
+	}
+
 	loadAvg, _ := load.Avg()
 
 	c.JSON(http.StatusOK, gin.H{

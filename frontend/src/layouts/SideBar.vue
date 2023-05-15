@@ -74,14 +74,14 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
     <div class="sidebar">
         <logo/>
 
-        <env-indicator/>
-
         <a-menu
             :openKeys="openKeys"
             mode="inline"
             v-model:openKeys="openKeys"
             v-model:selectedKeys="selectedKey"
         >
+            <env-indicator/>
+            
             <template v-for="sidebar in visible">
                 <a-menu-item v-if="sidebar.children.length===0 || sidebar.meta.hideChildren"
                              :key="sidebar.name"
