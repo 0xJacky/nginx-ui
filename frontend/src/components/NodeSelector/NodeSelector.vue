@@ -43,7 +43,7 @@ const value = computed({
             <a-col :span="8" v-for="node in data">
                 <a-checkbox :value="node.id">{{ node.name }}</a-checkbox>
                 <a-badge color="green" v-if="node.status"/>
-                <a-badge color="error" v-else/>
+                <a-badge color="red" v-else/>
             </a-col>
         </a-row>
     </a-checkbox-group>
