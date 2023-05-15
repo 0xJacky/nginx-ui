@@ -32,6 +32,7 @@ func GetTemplate(c *gin.Context) {
 						Directive: "index",
 					},
 				},
+				Locations: []*nginx.NgxLocation{},
 			},
 		},
 	}

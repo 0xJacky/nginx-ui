@@ -5,7 +5,7 @@ import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor.vue'
 import {useGettext} from 'vue3-gettext'
 import domain from '@/api/domain'
 import ngx from '@/api/ngx'
-import {computed, provide, reactive, ref} from 'vue'
+import {computed, onMounted, provide, reactive, ref} from 'vue'
 import {message} from 'ant-design-vue'
 import {useRouter} from 'vue-router'
 
@@ -29,7 +29,10 @@ const auto_cert = ref(false)
 
 const update = ref(0)
 
-init()
+
+onMounted(() => {
+    init()
+})
 
 function init() {
     domain.get_template().then(r => {

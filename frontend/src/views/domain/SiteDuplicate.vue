@@ -76,7 +76,7 @@ function onSubmit() {
                     }).catch(e => {
                         notification.error({
                             message: $gettext('Duplicate failed'),
-                            description: $gettext(e.message)
+                            description: $gettext(e?.message ?? 'Server error')
                         })
                     })
                 })
