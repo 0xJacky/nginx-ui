@@ -22,8 +22,8 @@ class Curd {
         return http.get(this.baseUrl + (id ? '/' + id : ''))
     }
 
-    _save(id: any = null, data: any) {
-        return http.post(this.baseUrl + (id ? '/' + id : ''), data)
+    _save(id: any = null, data: any, config: any = undefined) {
+        return http.post(this.baseUrl + (id ? '/' + id : ''), data, config)
     }
 
     _destroy(id: any = null) {

@@ -75,6 +75,10 @@ watch(node_id, () => {
         align-items: center;
         justify-content: space-between;
 
+        .env-name {
+            max-width: 50px;
+        }
+
         .ant-tag {
             cursor: pointer;
             margin-right: 0;

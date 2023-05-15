@@ -10,7 +10,11 @@ export const useSettingsStore = defineStore('settings', {
             name: 'Local'
         }
     }),
-    getters: {},
+    getters: {
+        is_remote(): boolean {
+            return this.environment.id !== 0
+        }
+    },
     actions: {
         set_language(lang: string) {
             this.language = lang
