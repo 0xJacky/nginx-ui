@@ -24,7 +24,8 @@ const value = computed({
         lang="nginx"
         theme="monokai"
         :style="{
-            minHeight: defaultHeight || '100vh'
+            minHeight: defaultHeight || '100vh',
+            borderRadius: '5px'
         }"/>
 </template>
 

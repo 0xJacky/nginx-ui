@@ -100,5 +100,13 @@ onUnmounted(() => {
 <style lang="less" scoped>
 .console {
     min-height: calc(100vh - 300px);
+
+    :deep(.terminal) {
+        padding: 10px;
+    }
+
+    :deep(.xterm-viewport) {
+        border-radius: 5px;
+    }
 }
 </style>
