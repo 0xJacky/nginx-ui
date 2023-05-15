@@ -38,9 +38,12 @@ const value = computed({
         <a-row>
             <a-col :span="8">
                 <a-checkbox :value="0">{{ $gettext('Local') }}</a-checkbox>
+                <a-badge color="green"/>
             </a-col>
             <a-col :span="8" v-for="node in data">
                 <a-checkbox :value="node.id">{{ node.name }}</a-checkbox>
+                <a-badge color="green" v-if="node.status"/>
+                <a-badge color="error" v-else/>
             </a-col>
         </a-row>
     </a-checkbox-group>
