@@ -58,8 +58,10 @@ const visible = computed(() => {
                             <a-tag color="blue" v-if="item.status">{{ $gettext('Online') }}</a-tag>
                             <a-tag color="error" v-else>{{ $gettext('Offline') }}</a-tag>
                             <div class="runtime-meta">
-                                <span><Icon :component="pulse"/> {{ formatDateTime(item.response_at) }}</span>
-                                <span><thunderbolt-outlined/>{{ item.version }}</span>
+                                <template v-if="item.status">
+                                    <span><Icon :component="pulse"/> {{ formatDateTime(item.response_at) }}</span>
+                                    <span><thunderbolt-outlined/>{{ item.version }}</span>
+                                </template>
                                 <span><link-outlined/>{{ item.url }}</span>
                             </div>
                         </template>
@@ -85,7 +87,6 @@ const visible = computed(() => {
 
     .runtime-meta {
         display: inline-flex;
-        margin-left: 8px;
 
         span {
             font-weight: 400;

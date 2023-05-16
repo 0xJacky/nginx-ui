@@ -8,10 +8,9 @@ import {computed, provide, reactive, ref, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
 import domain from '@/api/domain'
 import ngx from '@/api/ngx'
-import Modal from 'ant-design-vue/lib/modal'
 import {message} from 'ant-design-vue'
 import config from '@/api/config'
-import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
+import RightSettings from '@/views/domain/components/RightSettings.vue'
 
 const {$gettext, interpolate} = useGettext()
 
@@ -42,6 +41,7 @@ const saving = ref(false)
 const filename = ref('')
 const parse_error_status = ref(false)
 const parse_error_message = ref('')
+const data = ref({})
 
 init()
 
@@ -74,6 +74,7 @@ function handle_response(r: any) {
     enabled.value = r.enabled
     auto_cert.value = r.auto_cert
     history_chatgpt_record.value = r.chatgpt_messages
+    data.value = r
     Object.assign(ngx_config, r.tokenized)
     Object.assign(cert_info_map, r.cert_info)
 }
@@ -149,49 +150,18 @@ const save = async () => {
     })
 }
 
-function enable() {
-    domain.enable(name.value).then(() => {
-        message.success($gettext('Enabled successfully'))
-        enabled.value = true
-    }).catch(r => {
-        message.error(interpolate($gettext('Failed to enable %{msg}'), {msg: r.message ?? ''}), 10)
-    })
-}
-
-function disable() {
-    domain.disable(name.value).then(() => {
-        message.success($gettext('Disabled successfully'))
-        enabled.value = false
-    }).catch(r => {
-        message.error(interpolate($gettext('Failed to disable %{msg}'), {msg: r.message ?? ''}))
-    })
-}
-
-function on_change_enabled(checked: boolean) {
-    Modal.confirm({
-        title: checked ? $gettext('Do you want to enable this site?') : $gettext('Do you want to disable this site?'),
-        mask: false,
-        centered: true,
-        okText: $gettext('OK'),
-        cancelText: $gettext('Cancel'),
-        async onOk() {
-            if (checked) {
-                enable()
-            } else {
-                disable()
-            }
-        }
-    })
-}
-
-const editor_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 16 : 24)
-const chat_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 8 : 24)
-
 provide('save_site_config', save)
+provide('configText', configText)
+provide('ngx_config', ngx_config)
+provide('history_chatgpt_record', history_chatgpt_record)
+provide('enabled', enabled)
+provide('name', name)
+provide('filename', filename)
+provide('data', data)
 </script>
 <template>
     <a-row :gutter="16">
-        <a-col :xs="24" :sm="24" :md="editor_md">
+        <a-col :xs="24" :sm="24" :md="18">
             <a-card :bordered="false">
                 <template #title>
                     <span style="margin-right: 10px">{{ interpolate($gettext('Edit %{n}'), {n: name}) }}</span>
@@ -216,13 +186,6 @@ provide('save_site_config', save)
                         </template>
                     </div>
                 </template>
-
-                <a-form-item :label="$gettext('Enabled')">
-                    <a-switch :checked="enabled" @change="on_change_enabled"/>
-                </a-form-item>
-                <a-form-item :label="$gettext('Name')">
-                    <a-input v-model:value="filename"/>
-                </a-form-item>
 
                 <transition name="slide-fade">
                     <div v-if="advance_mode" key="advance">
@@ -252,9 +215,8 @@ provide('save_site_config', save)
             </a-card>
         </a-col>
 
-        <a-col class="col-right" :xs="24" :sm="24" :md="chat_md">
-            <chat-g-p-t :content="configText" :path="ngx_config.file_name"
-                        v-model:history_messages="history_chatgpt_record"/>
+        <a-col class="col-right" :xs="24" :sm="24" :md="6">
+            <right-settings/>
         </a-col>
 
         <footer-tool-bar>

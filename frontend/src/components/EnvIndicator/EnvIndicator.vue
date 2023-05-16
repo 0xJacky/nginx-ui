@@ -12,9 +12,8 @@ const settingsStore = useSettingsStore()
 const {environment} = storeToRefs(settingsStore)
 const router = useRouter()
 
-function clear_env() {
-    router.push('/dashboard')
-    location.reload()
+async function clear_env() {
+    await router.push('/dashboard')
     settingsStore.clear_environment()
 }
 
@@ -24,8 +23,8 @@ const is_local = computed(() => {
 
 const node_id = computed(() => environment.value.id)
 
-watch(node_id, () => {
-    router.push('/dashboard')
+watch(node_id, async () => {
+    await router.push('/dashboard')
     location.reload()
 })
 </script>

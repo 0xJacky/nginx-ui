@@ -5,7 +5,7 @@ import {useGettext} from 'vue3-gettext'
 
 const {$gettext} = useGettext()
 
-const props = defineProps(['target', 'map'])
+const props = defineProps(['target', 'map', 'hidden_local'])
 const emit = defineEmits(['update:target'])
 
 const data = ref([])
@@ -35,15 +35,15 @@ const value = computed({
 
 <template>
     <a-checkbox-group v-model:value="value" style="width: 100%">
-        <a-row>
-            <a-col :span="8">
+        <a-row :gutter="[16,16]">
+            <a-col :span="8" v-if="!hidden_local">
                 <a-checkbox :value="0">{{ $gettext('Local') }}</a-checkbox>
-                <a-badge color="green"/>
+                <a-tag color="blue">{{ $gettext('Online') }}</a-tag>
             </a-col>
             <a-col :span="8" v-for="node in data">
                 <a-checkbox :value="node.id">{{ node.name }}</a-checkbox>
-                <a-badge color="green" v-if="node.status"/>
-                <a-badge color="red" v-else/>
+                <a-tag color="blue" v-if="node.status">{{ $gettext('Online') }}</a-tag>
+                <a-tag color="error" v-else>{{ $gettext('Offline') }}</a-tag>
             </a-col>
         </a-row>
     </a-checkbox-group>

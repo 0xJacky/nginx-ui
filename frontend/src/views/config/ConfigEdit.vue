@@ -65,15 +65,12 @@ function format_code() {
     })
 }
 
-const editor_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 16 : 24)
-const chat_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 8 : 24)
-
 </script>
 
 
 <template>
     <a-row :gutter="16">
-        <a-col :xs="24" :sm="24" :md="editor_md">
+        <a-col :xs="24" :sm="24" :md="18">
             <a-card :title="$gettext('Edit Configuration')">
                 <inspect-config ref="inspect_config"/>
                 <code-editor v-model:content="configText"/>
@@ -93,9 +90,11 @@ const chat_md = computed(() => history_chatgpt_record?.value?.length > 1 ? 8 : 2
             </a-card>
         </a-col>
 
-        <a-col class="col-right" :xs="24" :sm="24" :md="chat_md">
-            <chat-g-p-t :content="configText" :path="file_path"
-                        v-model:history_messages="history_chatgpt_record"/>
+        <a-col class="col-right" :xs="24" :sm="24" :md="6">
+            <a-card>
+                <chat-g-p-t :content="configText" :path="file_path"
+                            v-model:history_messages="history_chatgpt_record"/>
+            </a-card>
         </a-col>
     </a-row>
 </template>

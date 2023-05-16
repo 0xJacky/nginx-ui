@@ -9,6 +9,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/query"
 	"github.com/gin-gonic/gin"
+	"github.com/sashabaranov/go-openai"
 	"net/http"
 	"os"
 	"strings"
@@ -88,8 +89,16 @@ func GetDomain(c *gin.Context) {
 	}
 
 	path := nginx.GetConfPath("sites-available", name)
+	file, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "file not found",
+		})
+		return
+	}
 
 	enabled := true
+
 	if _, err := os.Stat(nginx.GetConfPath("sites-enabled", name)); os.IsNotExist(err) {
 		enabled = false
 	}
@@ -102,6 +111,10 @@ func GetDomain(c *gin.Context) {
 		return
 	}
 
+	if chatgpt.Content == nil {
+		chatgpt.Content = make([]openai.ChatCompletionMessage, 0)
+	}
+
 	s := query.Site
 	site, err := s.Where(s.Path.Eq(path)).FirstOrInit()
 
@@ -110,7 +123,11 @@ func GetDomain(c *gin.Context) {
 		return
 	}
 
-	certModel, _ := model.FirstCert(name)
+	certModel, err := model.FirstCert(name)
+
+	if err != nil {
+		logger.Warn("cert", err)
+	}
 
 	if site.Advanced {
 		origContent, err := os.ReadFile(path)
@@ -120,6 +137,7 @@ func GetDomain(c *gin.Context) {
 		}
 
 		c.JSON(http.StatusOK, gin.H{
+			"modified_at":      file.ModTime(),
 			"advanced":         site.Advanced,
 			"enabled":          enabled,
 			"name":             name,
@@ -167,6 +185,7 @@ func GetDomain(c *gin.Context) {
 	c.Set("maybe_error", "nginx_config_syntax_error")
 
 	c.JSON(http.StatusOK, gin.H{
+		"modified_at":      file.ModTime(),
 		"advanced":         site.Advanced,
 		"enabled":          enabled,
 		"name":             name,
@@ -253,7 +272,7 @@ func SaveDomain(c *gin.Context) {
 	if helper.FileExists(enabledConfigFilePath) {
 		// Test nginx configuration
 		output := nginx.TestConf()
-		if nginx.GetLogLevel(output) >= nginx.Warn {
+		if nginx.GetLogLevel(output) > nginx.Warn {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": output,
 				"error":   "nginx_config_syntax_error",
@@ -263,7 +282,7 @@ func SaveDomain(c *gin.Context) {
 
 		output = nginx.Reload()
 
-		if nginx.GetLogLevel(output) >= nginx.Warn {
+		if nginx.GetLogLevel(output) > nginx.Warn {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": output,
 			})

@@ -19,9 +19,10 @@ require (
 	github.com/jpillora/overseer v1.1.6
 	github.com/lib/pq v1.10.9
 	github.com/pkg/errors v0.9.1
+	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/sashabaranov/go-openai v1.9.4
 	github.com/shirou/gopsutil/v3 v3.23.4
-	github.com/spf13/cast v1.5.0
+	github.com/spf13/cast v1.5.1
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20230508164033-d7b72d6cd0d5
 	github.com/unknwon/com v1.0.1
 	go.uber.org/zap v1.24.0
@@ -50,10 +51,10 @@ require (
 	github.com/OpenDNS/vegadns2client v0.0.0-20180418235048-a3fa4a771d87 // indirect
 	github.com/StackExchange/wmi v1.2.1 // indirect
 	github.com/akamai/AkamaiOPEN-edgegrid-golang v1.2.2 // indirect
-	github.com/aliyun/alibaba-cloud-sdk-go v1.62.318 // indirect
+	github.com/aliyun/alibaba-cloud-sdk-go v1.62.320 // indirect
 	github.com/andres-erbsen/clock v0.0.0-20160526145045-9e14626cd129 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
-	github.com/aws/aws-sdk-go v1.44.262 // indirect
+	github.com/aws/aws-sdk-go v1.44.263 // indirect
 	github.com/boombuler/barcode v1.0.1 // indirect
 	github.com/bytedance/sonic v1.8.8 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
@@ -139,7 +140,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20221212215047-62379fc7944b // indirect
 	github.com/pquerna/otp v1.4.0 // indirect
-	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/sacloud/api-client-go v0.2.7 // indirect
 	github.com/sacloud/go-http v0.1.5 // indirect
@@ -154,8 +154,8 @@ require (
 	github.com/softlayer/xmlrpc v0.0.0-20200409220501-5f089df7cb7e // indirect
 	github.com/stretchr/objx v0.5.0 // indirect
 	github.com/stretchr/testify v1.8.2 // indirect
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.655 // indirect
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.0.655 // indirect
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.657 // indirect
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.0.657 // indirect
 	github.com/tklauser/go-sysconf v0.3.11 // indirect
 	github.com/tklauser/numcpus v0.6.0 // indirect
 	github.com/transip/gotransip/v6 v6.20.0 // indirect
@@ -164,8 +164,8 @@ require (
 	github.com/ultradns/ultradns-go-sdk v1.5.0-20230427130837-23c9b0c // indirect
 	github.com/vinyldns/go-vinyldns v0.9.16 // indirect
 	github.com/vultr/govultr/v2 v2.17.2 // indirect
-	github.com/yandex-cloud/go-genproto v0.0.0-20230511103421-ecb0cd1514ab // indirect
-	github.com/yandex-cloud/go-sdk v0.0.0-20230511104317-0ccfef4d3a91 // indirect
+	github.com/yandex-cloud/go-genproto v0.0.0-20230515103554-c6064682c41e // indirect
+	github.com/yandex-cloud/go-sdk v0.0.0-20230515104003-a4cf880c2959 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect

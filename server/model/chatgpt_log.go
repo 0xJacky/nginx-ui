@@ -17,7 +17,7 @@ func (j *JSON) Scan(value interface{}) error {
 		return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
 	}
 
-	var result []openai.ChatCompletionMessage
+	result := make([]openai.ChatCompletionMessage, 0)
 	err := json.Unmarshal(bytes, &result)
 	*j = result
 	return err

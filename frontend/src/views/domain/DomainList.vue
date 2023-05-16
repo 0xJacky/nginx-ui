@@ -7,7 +7,7 @@ import domain from '@/api/domain'
 import {Badge, message} from 'ant-design-vue'
 import {h, ref} from 'vue'
 import {input} from '@/components/StdDataEntry'
-import SiteDuplicate from '@/views/domain/SiteDuplicate.vue'
+import SiteDuplicate from '@/views/domain/components/SiteDuplicate.vue'
 
 const {$gettext, interpolate} = useGettext()
 
