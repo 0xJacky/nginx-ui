@@ -9,6 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "Generated-By: easygettext\n"
 "X-Generator: Poedit 3.2.2\n"
 
@@ -81,7 +82,7 @@ msgstr "API Token"
 msgid "Arch"
 msgstr "架构"
 
-#: src/components/ChatGPT/ChatGPT.vue:40
+#: src/components/ChatGPT/ChatGPT.vue:45
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "你确定你要清除聊天记录吗？"
 
@@ -97,6 +98,14 @@ msgstr "您确定要删除这条指令？"
 #: src/views/domain/ngx_conf/LocationEditor.vue:24
 msgid "Are you sure you want to remove this location?"
 msgstr "您确定要删除这个 Location？"
+
+#: src/components/ChatGPT/ChatGPT.vue:4 src/components/ChatGPT/ChatGPT.vue:5
+msgid "Ask ChatGPT for Help"
+msgstr "与ChatGPT聊天"
+
+#: src/components/ChatGPT/ChatGPT.vue:16
+msgid "Assistant"
+msgstr "助手"
 
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:12
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:13
@@ -140,7 +149,7 @@ msgstr "成功启用 %{name} 自动续签"
 
 #: src/views/config/Config.vue:17 src/views/config/Config.vue:18
 #: src/views/config/Config.vue:28 src/views/config/Config.vue:6
-#: src/views/config/ConfigEdit.vue:83 src/views/domain/DomainEdit.vue:263
+#: src/views/config/ConfigEdit.vue:80 src/views/domain/DomainEdit.vue:225
 #: src/views/nginx_log/NginxLog.vue:161
 msgid "Back"
 msgstr "返回"
@@ -153,6 +162,7 @@ msgstr "返回首页"
 msgid "Base information"
 msgstr "基本信息"
 
+#: src/views/domain/components/RightSettings.vue:4
 #: src/views/preference/Preference.vue:5
 msgid "Basic"
 msgstr "基本"
@@ -177,13 +187,14 @@ msgstr "构建基于"
 msgid "CADir"
 msgstr "CADir"
 
-#: src/components/ChatGPT/ChatGPT.vue:17 src/components/ChatGPT/ChatGPT.vue:18
-#: src/components/ChatGPT/ChatGPT.vue:22 src/components/ChatGPT/ChatGPT.vue:24
+#: src/components/ChatGPT/ChatGPT.vue:22 src/components/ChatGPT/ChatGPT.vue:23
+#: src/components/ChatGPT/ChatGPT.vue:27 src/components/ChatGPT/ChatGPT.vue:29
 #: src/components/StdDataDisplay/StdBatchEdit.vue:7
 #: src/components/StdDataDisplay/StdCurd.vue:27
 #: src/components/StdDataEntry/components/StdSelector.vue:11
 #: src/views/domain/cert/components/ObtainCert.vue:191
-#: src/views/domain/DomainEdit.vue:176
+#: src/views/domain/components/Deploy.vue:26
+#: src/views/domain/components/RightSettings.vue:48
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:208
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:37
 msgid "Cancel"
@@ -241,8 +252,8 @@ msgstr "中国用户：https://ghproxy.com/"
 msgid "Cleaning environment variables"
 msgstr "正在清理环境变量"
 
-#: src/components/ChatGPT/ChatGPT.vue:31 src/components/ChatGPT/ChatGPT.vue:32
-#: src/components/ChatGPT/ChatGPT.vue:38 src/components/ChatGPT/ChatGPT.vue:42
+#: src/components/ChatGPT/ChatGPT.vue:36 src/components/ChatGPT/ChatGPT.vue:37
+#: src/components/ChatGPT/ChatGPT.vue:43 src/components/ChatGPT/ChatGPT.vue:47
 msgid "Clear"
 msgstr "清空"
 
@@ -292,7 +303,7 @@ msgstr "内容"
 msgid "Core Upgrade"
 msgstr "核心升级"
 
-#: src/views/dashboard/ServerAnalytic.vue:66
+#: src/views/dashboard/ServerAnalytic.vue:68
 msgid "CPU Status"
 msgstr "CPU 状态"
 
@@ -301,7 +312,7 @@ msgstr "CPU 状态"
 msgid "CPU:"
 msgstr "CPU:"
 
-#: src/views/domain/DomainAdd.vue:154
+#: src/views/domain/DomainAdd.vue:157
 msgid "Create Another"
 msgstr "再创建一个"
 
@@ -371,6 +382,23 @@ msgstr "删除 ID: %{id}"
 msgid "Delete site: %{site_name}"
 msgstr "删除站点: %{site_name}"
 
+#: src/views/domain/components/Deploy.vue:12
+#: src/views/domain/components/Deploy.vue:13
+msgid "Deploy"
+msgstr "部署"
+
+#: src/views/domain/components/Deploy.vue:63
+msgid "Deploy %{conf_name} to %{node_name} failed"
+msgstr "部署%{conf_name}到%{node_name}失败"
+
+#: src/views/domain/components/Deploy.vue:40
+msgid "Deploy %{conf_name} to %{node_name} successfully"
+msgstr "成功地将%{conf_name}部署到%{node_name}。"
+
+#: src/views/domain/components/Deploy.vue:38
+msgid "Deploy successfully"
+msgstr "部署成功"
+
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:13
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:14
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:17
@@ -411,11 +439,12 @@ msgstr "关闭 %{name} 自动续签失败"
 msgid "Disabled"
 msgstr "禁用"
 
-#: src/views/domain/DomainEdit.vue:163 src/views/domain/DomainList.vue:69
+#: src/views/domain/components/RightSettings.vue:35
+#: src/views/domain/DomainList.vue:69
 msgid "Disabled successfully"
 msgstr "禁用成功"
 
-#: src/views/dashboard/ServerAnalytic.vue:98
+#: src/views/dashboard/ServerAnalytic.vue:100
 msgid "Disk IO"
 msgstr "磁盘 IO"
 
@@ -434,15 +463,20 @@ msgstr "DNS供应商"
 msgid "DNS01"
 msgstr "DNS01"
 
+#: src/views/domain/components/Deploy.vue:21
+msgid "Do you want to deploy this file to remote server?"
+msgid_plural "Do you want to deploy this file to remote servers?"
+msgstr[0] "你想把这个文件部署到远程服务器上吗？"
+
 #: src/views/domain/cert/components/ObtainCert.vue:187
 msgid "Do you want to disable auto-cert renewal?"
 msgstr "你想禁用自动更新证书吗？"
 
-#: src/views/domain/DomainEdit.vue:172
+#: src/views/domain/components/RightSettings.vue:44
 msgid "Do you want to disable this site?"
 msgstr "你想停用这个网站吗？"
 
-#: src/views/domain/DomainEdit.vue:172
+#: src/views/domain/components/RightSettings.vue:44
 msgid "Do you want to enable this site?"
 msgstr "你想启用这个网站吗？"
 
@@ -474,15 +508,27 @@ msgstr "下载最新版本"
 msgid "Dry run mode enabled"
 msgstr "试运行模式已启动"
 
+#: src/views/domain/components/SiteDuplicate.vue:2
 #: src/views/domain/DomainList.vue:14 src/views/domain/DomainList.vue:15
 #: src/views/domain/DomainList.vue:16 src/views/domain/DomainList.vue:23
-#: src/views/domain/SiteDuplicate.vue:2
 msgid "Duplicate"
 msgstr "复制"
 
-#: src/views/domain/SiteDuplicate.vue:43
-msgid "Duplicated successfully"
+#: src/views/domain/components/SiteDuplicate.vue:73
+msgid "Duplicate %{conf_name} to %{node_name} successfully"
+msgstr "成功地将%{conf_name}复制到%{node_name}。"
+
+#: src/views/domain/components/SiteDuplicate.vue:78
+msgid "Duplicate failed"
+msgstr "复制失败"
+
+#: src/views/domain/components/SiteDuplicate.vue:71
+msgid "Duplicate successfully"
 msgstr "复制成功"
+
+#: src/views/domain/components/SiteDuplicate.vue:57
+msgid "Duplicate to local successfully"
+msgstr "成功复制到本地"
 
 #: src/views/domain/DomainEdit.vue:5 src/views/domain/DomainEdit.vue:6
 msgid "Edit %{n}"
@@ -500,28 +546,43 @@ msgstr "编辑站点"
 msgid "Email (*)"
 msgstr "邮箱 (*)"
 
+#: src/views/domain/components/Deploy.vue:53
+msgid "Enable %{conf_name} in %{node_name} failed"
+msgstr "在%{node_name}中启用%{conf_name}失败"
+
+#: src/views/domain/components/Deploy.vue:48
+msgid "Enable %{conf_name} in %{node_name} successfully"
+msgstr "成功启用%{node_name}中的%{conf_name}。"
+
 #: src/views/domain/cert/components/ObtainCert.vue:55
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "启用 %{name} 自动续签失败"
 
-#: src/views/domain/DomainAdd.vue:49
+#: src/views/domain/DomainAdd.vue:52
 msgid "Enable failed"
 msgstr "启用失败"
+
+#: src/views/domain/components/Deploy.vue:46
+msgid "Enable successfully"
+msgstr "启用成功"
 
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:3
 msgid "Enable TLS"
 msgstr "启用 TLS"
 
 #: src/views/cert/Cert.vue:44 src/views/domain/cert/ChangeCert.vue:44
-#: src/views/domain/DomainEdit.vue:29 src/views/domain/DomainEdit.vue:7
-#: src/views/domain/DomainEdit.vue:8 src/views/domain/DomainList.vue:10
-#: src/views/domain/DomainList.vue:11 src/views/domain/DomainList.vue:12
-#: src/views/domain/DomainList.vue:19 src/views/domain/DomainList.vue:31
+#: src/views/domain/components/Deploy.vue:3
+#: src/views/domain/components/Deploy.vue:4
+#: src/views/domain/components/RightSettings.vue:5
+#: src/views/domain/DomainEdit.vue:7 src/views/domain/DomainEdit.vue:8
+#: src/views/domain/DomainList.vue:10 src/views/domain/DomainList.vue:11
+#: src/views/domain/DomainList.vue:12 src/views/domain/DomainList.vue:19
+#: src/views/domain/DomainList.vue:31
 msgid "Enabled"
 msgstr "启用"
 
-#: src/views/domain/DomainAdd.vue:46 src/views/domain/DomainEdit.vue:154
-#: src/views/domain/DomainList.vue:59
+#: src/views/domain/components/RightSettings.vue:26
+#: src/views/domain/DomainAdd.vue:49 src/views/domain/DomainList.vue:59
 msgid "Enabled successfully"
 msgstr "启用成功"
 
@@ -562,11 +623,13 @@ msgstr "过期时间: %{date}"
 msgid "Export"
 msgstr "导出"
 
-#: src/views/domain/DomainEdit.vue:166 src/views/domain/DomainList.vue:73
+#: src/views/domain/components/RightSettings.vue:38
+#: src/views/domain/DomainList.vue:73
 msgid "Failed to disable %{msg}"
 msgstr "禁用失败 %{msg}"
 
-#: src/views/domain/DomainEdit.vue:157 src/views/domain/DomainList.vue:63
+#: src/views/domain/components/RightSettings.vue:29
+#: src/views/domain/DomainList.vue:63
 msgid "Failed to enable %{msg}"
 msgstr "启用失败 %{msg}"
 
@@ -574,7 +637,7 @@ msgstr "启用失败 %{msg}"
 msgid "Failed to get certificate information"
 msgstr "获取证书信息失败"
 
-#: src/views/domain/DomainEdit.vue:132
+#: src/views/domain/DomainEdit.vue:133
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "保存失败，在配置中检测到语法错误。"
 
@@ -598,7 +661,7 @@ msgstr "过滤"
 msgid "Finished"
 msgstr "完成"
 
-#: src/views/config/ConfigEdit.vue:86
+#: src/views/config/ConfigEdit.vue:83
 msgid "Format Code"
 msgstr "代码格式化"
 
@@ -715,12 +778,14 @@ msgstr "浅色"
 msgid "Link Start"
 msgstr "链接"
 
-#: src/views/dashboard/ServerAnalytic.vue:154
+#: src/views/dashboard/ServerAnalytic.vue:161
 msgid "Load Averages:"
 msgstr "系统负载:"
 
 #: src/components/EnvIndicator/EnvIndicator.vue:5
 #: src/components/EnvIndicator/EnvIndicator.vue:6
+#: src/components/NodeSelector/NodeSelector.vue:4
+#: src/components/NodeSelector/NodeSelector.vue:5
 msgid "Local"
 msgstr "本地"
 
@@ -766,16 +831,16 @@ msgstr "网站管理"
 msgid "Manage Users"
 msgstr "用户管理"
 
-#: src/views/dashboard/ServerAnalytic.vue:34
+#: src/views/dashboard/ServerAnalytic.vue:36
 msgid "Memory"
 msgstr "内存"
 
-#: src/views/dashboard/ServerAnalytic.vue:31
+#: src/views/dashboard/ServerAnalytic.vue:33
 msgid "Memory and Storage"
 msgstr "内存与存储"
 
-#: src/components/ChatGPT/ChatGPT.vue:13 src/components/ChatGPT/ChatGPT.vue:14
-#: src/components/ChatGPT/ChatGPT.vue:18 src/components/ChatGPT/ChatGPT.vue:20
+#: src/components/ChatGPT/ChatGPT.vue:18 src/components/ChatGPT/ChatGPT.vue:19
+#: src/components/ChatGPT/ChatGPT.vue:23 src/components/ChatGPT/ChatGPT.vue:25
 #: src/components/StdDataDisplay/StdCurd.vue:25
 #: src/components/StdDataDisplay/StdTable.vue:25
 #: src/components/StdDataDisplay/StdTable.vue:26
@@ -785,7 +850,7 @@ msgstr "内存与存储"
 msgid "Modify"
 msgstr "修改"
 
-#: src/views/domain/DomainAdd.vue:151
+#: src/views/domain/DomainAdd.vue:154
 msgid "Modify Config"
 msgstr "修改配置文件"
 
@@ -796,25 +861,25 @@ msgstr "单行指令"
 
 #: src/views/cert/Cert.vue:16 src/views/cert/DNSCredential.vue:12
 #: src/views/config/config.ts:8 src/views/domain/cert/ChangeCert.vue:21
-#: src/views/domain/DomainEdit.vue:32 src/views/domain/DomainList.vue:15
-#: src/views/domain/SiteDuplicate.vue:5
-#: src/views/environment/Environment.vue:13
+#: src/views/domain/components/RightSettings.vue:8
+#: src/views/domain/components/SiteDuplicate.vue:5
+#: src/views/domain/DomainList.vue:15 src/views/environment/Environment.vue:13
 msgid "Name"
 msgstr "名称"
 
-#: src/views/dashboard/ServerAnalytic.vue:76
+#: src/views/dashboard/ServerAnalytic.vue:78
 msgid "Network"
 msgstr "网络"
 
-#: src/views/dashboard/ServerAnalytic.vue:50
+#: src/views/dashboard/ServerAnalytic.vue:52
 msgid "Network Statistics"
 msgstr "流量统计"
 
-#: src/views/dashboard/ServerAnalytic.vue:54
+#: src/views/dashboard/ServerAnalytic.vue:56
 msgid "Network Total Receive"
 msgstr "下载流量"
 
-#: src/views/dashboard/ServerAnalytic.vue:58
+#: src/views/dashboard/ServerAnalytic.vue:60
 msgid "Network Total Send"
 msgstr "上传流量"
 
@@ -825,7 +890,7 @@ msgstr "新版本发布"
 #: src/views/domain/cert/components/ObtainCert.vue:12
 #: src/views/domain/cert/components/ObtainCert.vue:13
 #: src/views/domain/cert/components/ObtainCert.vue:21
-#: src/views/domain/DomainAdd.vue:141
+#: src/views/domain/DomainAdd.vue:144
 msgid "Next"
 msgstr "下一步"
 
@@ -833,7 +898,7 @@ msgstr "下一步"
 msgid "Nginx Access Log Path"
 msgstr "Nginx 访问日志路径"
 
-#: src/views/domain/DomainEdit.vue:39
+#: src/views/domain/DomainEdit.vue:32
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 配置解析错误"
 
@@ -860,7 +925,7 @@ msgstr "Nginx 重载成功"
 msgid "Nginx restarted successfully"
 msgstr "Nginx 重启成功"
 
-#: src/components/ChatGPT/ChatGPT.vue:38
+#: src/components/ChatGPT/ChatGPT.vue:43
 #: src/components/StdDataDisplay/StdTable.vue:53
 #: src/views/domain/DomainList.vue:27
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:22
@@ -889,24 +954,32 @@ msgstr "获取证书"
 msgid "Obtaining certificate"
 msgstr "正在获取证书"
 
+#: src/components/NodeSelector/NodeSelector.vue:10
+#: src/components/NodeSelector/NodeSelector.vue:11
 #: src/views/dashboard/Environments.vue:15
 #: src/views/dashboard/Environments.vue:16
 #: src/views/environment/Environment.vue:48
 msgid "Offline"
 msgstr "离线"
 
-#: src/components/ChatGPT/ChatGPT.vue:39
+#: src/components/ChatGPT/ChatGPT.vue:44
 #: src/components/StdDataDisplay/StdBatchEdit.vue:8
 #: src/components/StdDataDisplay/StdCurd.vue:28
 #: src/components/StdDataDisplay/StdTable.vue:54
 #: src/components/StdDataEntry/components/StdSelector.vue:12
 #: src/views/domain/cert/components/ObtainCert.vue:190
-#: src/views/domain/DomainEdit.vue:175 src/views/domain/DomainList.vue:28
+#: src/views/domain/components/Deploy.vue:25
+#: src/views/domain/components/RightSettings.vue:47
+#: src/views/domain/DomainList.vue:28
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:207
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:36
 msgid "OK"
 msgstr "确定"
 
+#: src/components/NodeSelector/NodeSelector.vue:10
+#: src/components/NodeSelector/NodeSelector.vue:5
+#: src/components/NodeSelector/NodeSelector.vue:6
+#: src/components/NodeSelector/NodeSelector.vue:9
 #: src/views/dashboard/Environments.vue:14
 #: src/views/dashboard/Environments.vue:15
 #: src/views/environment/Environment.vue:45
@@ -923,9 +996,19 @@ msgstr "OpenAI"
 msgid "OS"
 msgstr "OS"
 
-#: src/views/dashboard/ServerAnalytic.vue:160
+#: src/views/dashboard/ServerAnalytic.vue:167
 msgid "OS:"
 msgstr "OS:"
+
+#: src/views/domain/components/Deploy.vue:5
+#: src/views/domain/components/Deploy.vue:6
+msgid "Overwrite"
+msgstr "覆盖"
+
+#: src/views/domain/components/Deploy.vue:7
+#: src/views/domain/components/Deploy.vue:8
+msgid "Overwrite exist file"
+msgstr "覆盖现有文件"
 
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:22
 msgid "Params"
@@ -972,7 +1055,7 @@ msgstr ""
 "请首先在 “证书”>”DNS凭证 \"中添加凭证，然后在下方选择一个凭证，请求DNS提供商"
 "的API。"
 
-#: src/views/domain/SiteDuplicate.vue:28
+#: src/views/domain/components/SiteDuplicate.vue:32
 msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration!"
@@ -989,6 +1072,10 @@ msgstr "请输入您的密码！"
 #: src/views/other/Install.vue:42 src/views/other/Login.vue:35
 msgid "Please input your username!"
 msgstr "请输入您的用户名！"
+
+#: src/views/domain/components/SiteDuplicate.vue:39
+msgid "Please select at least one node!"
+msgstr "请至少选择一个节点!"
 
 #: src/views/system/Upgrade.vue:25 src/views/system/Upgrade.vue:26
 #: src/views/system/Upgrade.vue:30 src/views/system/Upgrade.vue:34
@@ -1022,18 +1109,18 @@ msgstr "项目团队"
 msgid "Provider"
 msgstr "提供商"
 
-#: src/views/dashboard/ServerAnalytic.vue:109
-#: src/views/dashboard/ServerAnalytic.vue:23
+#: src/views/dashboard/ServerAnalytic.vue:111
+#: src/views/dashboard/ServerAnalytic.vue:30
 msgid "Reads"
 msgstr "读"
 
-#: src/views/dashboard/ServerAnalytic.vue:20
-#: src/views/dashboard/ServerAnalytic.vue:80
+#: src/views/dashboard/ServerAnalytic.vue:27
+#: src/views/dashboard/ServerAnalytic.vue:82
 msgid "Receive"
 msgstr "下载"
 
-#: src/components/ChatGPT/ChatGPT.vue:34 src/components/ChatGPT/ChatGPT.vue:35
-#: src/components/ChatGPT/ChatGPT.vue:41 src/components/ChatGPT/ChatGPT.vue:45
+#: src/components/ChatGPT/ChatGPT.vue:39 src/components/ChatGPT/ChatGPT.vue:40
+#: src/components/ChatGPT/ChatGPT.vue:46 src/components/ChatGPT/ChatGPT.vue:50
 msgid "Regenerate response"
 msgstr "重新生成响应"
 
@@ -1054,8 +1141,8 @@ msgstr "重新安装"
 msgid "Release Note"
 msgstr "发行日志"
 
-#: src/components/ChatGPT/ChatGPT.vue:20 src/components/ChatGPT/ChatGPT.vue:21
-#: src/components/ChatGPT/ChatGPT.vue:25 src/components/ChatGPT/ChatGPT.vue:27
+#: src/components/ChatGPT/ChatGPT.vue:25 src/components/ChatGPT/ChatGPT.vue:26
+#: src/components/ChatGPT/ChatGPT.vue:30 src/components/ChatGPT/ChatGPT.vue:32
 #: src/components/NginxControl/NginxControl.vue:12
 #: src/components/NginxControl/NginxControl.vue:13
 #: src/components/NginxControl/NginxControl.vue:17
@@ -1098,9 +1185,9 @@ msgstr "运行模式"
 msgid "Running"
 msgstr "运行中"
 
-#: src/components/ChatGPT/ChatGPT.vue:16 src/components/ChatGPT/ChatGPT.vue:17
-#: src/components/ChatGPT/ChatGPT.vue:21 src/components/ChatGPT/ChatGPT.vue:23
-#: src/views/config/ConfigEdit.vue:89 src/views/domain/DomainEdit.vue:266
+#: src/components/ChatGPT/ChatGPT.vue:21 src/components/ChatGPT/ChatGPT.vue:22
+#: src/components/ChatGPT/ChatGPT.vue:26 src/components/ChatGPT/ChatGPT.vue:28
+#: src/views/config/ConfigEdit.vue:86 src/views/domain/DomainEdit.vue:228
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:32
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
@@ -1116,7 +1203,7 @@ msgstr "保存"
 msgid "Save Directive"
 msgstr "保存指令"
 
-#: src/views/config/ConfigEdit.vue:53 src/views/domain/DomainAdd.vue:53
+#: src/views/config/ConfigEdit.vue:53 src/views/domain/DomainAdd.vue:56
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:36
 msgid "Save error %{msg}"
 msgstr "保存错误 %{msg}"
@@ -1130,8 +1217,8 @@ msgstr "保存成功"
 msgid "Save Successfully"
 msgstr "保存成功"
 
-#: src/views/config/ConfigEdit.vue:51 src/views/domain/DomainAdd.vue:43
-#: src/views/domain/DomainEdit.vue:146
+#: src/views/config/ConfigEdit.vue:51 src/views/domain/DomainAdd.vue:46
+#: src/views/domain/DomainEdit.vue:147
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
 msgid "Saved successfully"
 msgstr "保存成功"
@@ -1140,8 +1227,8 @@ msgstr "保存成功"
 msgid "Selector"
 msgstr "选择器"
 
-#: src/views/dashboard/ServerAnalytic.vue:21
-#: src/views/dashboard/ServerAnalytic.vue:87
+#: src/views/dashboard/ServerAnalytic.vue:28
+#: src/views/dashboard/ServerAnalytic.vue:89
 msgid "Send"
 msgstr "上传"
 
@@ -1168,7 +1255,7 @@ msgstr "未在指令集合中找到 server_name"
 #: src/views/domain/cert/components/AutoCertStepOne.vue:10
 #: src/views/domain/cert/components/AutoCertStepOne.vue:5
 #: src/views/domain/cert/components/AutoCertStepOne.vue:6
-#: src/views/domain/DomainAdd.vue:116
+#: src/views/domain/DomainAdd.vue:119
 msgid "server_name parameter is required"
 msgstr "必须为 server_name 指令指明参数"
 
@@ -1221,7 +1308,7 @@ msgstr "状态"
 msgid "Stopped"
 msgstr "已停止"
 
-#: src/views/dashboard/ServerAnalytic.vue:43
+#: src/views/dashboard/ServerAnalytic.vue:45
 msgid "Storage"
 msgstr "存储"
 
@@ -1229,7 +1316,7 @@ msgstr "存储"
 msgid "Subject Name: %{name}"
 msgstr "主体名称: %{name}"
 
-#: src/views/dashboard/ServerAnalytic.vue:38
+#: src/views/dashboard/ServerAnalytic.vue:40
 msgid "Swap"
 msgstr "Swap"
 
@@ -1240,6 +1327,10 @@ msgstr "系统"
 #: src/components/StdDataDisplay/StdCurd.vue:3
 msgid "Table"
 msgstr "列表"
+
+#: src/views/domain/components/SiteDuplicate.vue:8
+msgid "Target"
+msgstr "目标"
 
 #: src/routes/index.ts:102 src/views/pty/Terminal.vue:2
 msgid "Terminal"
@@ -1301,8 +1392,10 @@ msgid "Type"
 msgstr "类型"
 
 #: src/views/cert/Cert.vue:68 src/views/cert/DNSCredential.vue:25
-#: src/views/config/config.ts:28 src/views/domain/DomainList.vue:41
-#: src/views/environment/Environment.vue:55 src/views/user/User.vue:37
+#: src/views/config/config.ts:28
+#: src/views/domain/components/RightSettings.vue:11
+#: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:55
+#: src/views/user/User.vue:37
 msgid "Updated at"
 msgstr "修改时间"
 
@@ -1326,13 +1419,17 @@ msgstr "升级成功"
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "正在升级Nginx UI，请等待..."
 
-#: src/views/dashboard/ServerAnalytic.vue:150
+#: src/views/dashboard/ServerAnalytic.vue:157
 msgid "Uptime:"
 msgstr "运行时间:"
 
 #: src/views/environment/Environment.vue:21
 msgid "URL"
 msgstr "URL"
+
+#: src/components/ChatGPT/ChatGPT.vue:16
+msgid "User"
+msgstr "用户"
 
 #: src/views/other/Login.vue:11 src/views/user/User.vue:11
 msgid "Username"
@@ -1369,8 +1466,8 @@ msgid ""
 msgstr ""
 "我们将从这个文件中删除HTTPChallenge的配置，并重新加载Nginx。你确定要继续吗？"
 
-#: src/views/dashboard/ServerAnalytic.vue:102
-#: src/views/dashboard/ServerAnalytic.vue:22
+#: src/views/dashboard/ServerAnalytic.vue:104
+#: src/views/dashboard/ServerAnalytic.vue:29
 msgid "Writes"
 msgstr "写"
 
