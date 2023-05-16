@@ -74,6 +74,10 @@ func Debug(args ...interface{}) {
 	logger.Debugln(args...)
 }
 
+func DPanic(args ...interface{}) {
+	logger.DPanic(args...)
+}
+
 func Infof(format string, args ...interface{}) {
 	logger.Infof(format, args...)
 }
@@ -84,6 +88,10 @@ func Errorf(format string, args ...interface{}) {
 
 func Fatalf(format string, args ...interface{}) {
 	logger.Fatalf(format, args...)
+}
+
+func DPanicf(format string, args ...interface{}) {
+	logger.DPanicf(format, args...)
 }
 
 func Warnf(format string, args ...interface{}) {

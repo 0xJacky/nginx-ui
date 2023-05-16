@@ -12,6 +12,7 @@ import (
 	"io/fs"
 	"net/http"
 	"path"
+	"runtime"
 	"strings"
 )
 
@@ -26,7 +27,9 @@ func recovery() gin.HandlerFunc {
 						errorAction = errorActionMsg
 					}
 				}
-				logger.Error(err)
+				buf := make([]byte, 1024)
+				runtime.Stack(buf, false)
+				logger.Errorf("%s\n%s", err, buf)
 				c.JSON(http.StatusInternalServerError, gin.H{
 					"message": err.(error).Error(),
 					"error":   errorAction,
