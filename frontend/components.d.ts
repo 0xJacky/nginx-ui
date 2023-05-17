@@ -67,6 +67,7 @@ declare module '@vue/runtime-core' {
     BreadcrumbBreadcrumb: typeof import('./src/components/Breadcrumb/Breadcrumb.vue')['default']
     ChartAreaChart: typeof import('./src/components/Chart/AreaChart.vue')['default']
     ChartRadialBarChart: typeof import('./src/components/Chart/RadialBarChart.vue')['default']
+    ChartUsageProgressLine: typeof import('./src/components/Chart/UsageProgressLine.vue')['default']
     ChatGPTChatGPT: typeof import('./src/components/ChatGPT/ChatGPT.vue')['default']
     CodeEditorCodeEditor: typeof import('./src/components/CodeEditor/CodeEditor.vue')['default']
     EnvIndicatorEnvIndicator: typeof import('./src/components/EnvIndicator/EnvIndicator.vue')['default']

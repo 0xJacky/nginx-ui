@@ -53,6 +53,7 @@ func Program(state overseer.State) {
 	s.StartAsync()
 
 	go analytic.RecordServerAnalytic()
+	go analytic.RetrieveNodesStatus()
 
 	err = http.Serve(state.Listener, router.InitRouter())
 	if err != nil {

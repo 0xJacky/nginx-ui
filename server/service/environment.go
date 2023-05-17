@@ -47,6 +47,7 @@ type NodeInfo struct {
 	Version           string      `json:"version"`
 	CPUNum            int         `json:"cpu_num"`
 	MemoryTotal       string      `json:"memory_total"`
+	DiskTotal         string      `json:"disk_total"`
 	ResponseAt        time.Time   `json:"response_at"`
 }
 

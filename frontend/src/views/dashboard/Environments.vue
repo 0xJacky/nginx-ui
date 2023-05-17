@@ -1,22 +1,51 @@
 <script setup lang="ts">
 import {useSettingsStore} from '@/pinia'
 import {useGettext} from 'vue3-gettext'
-import {computed, ref} from 'vue'
+import {computed, onMounted, onUnmounted, ref} from 'vue'
 import environment from '@/api/environment'
 import Icon, {LinkOutlined, SendOutlined, ThunderboltOutlined} from '@ant-design/icons-vue'
 import logo from '@/assets/img/logo.png'
 import pulse from '@/assets/svg/pulse.svg'
-import cpu from '@/assets/svg/cpu.svg'
-import memory from '@/assets/svg/memory.svg'
 import {formatDateTime} from '@/lib/helper'
+import ws from '@/lib/websocket'
+import ReconnectingWebSocket from 'reconnecting-websocket'
+import NodeAnalyticItem from '@/views/dashboard/components/NodeAnalyticItem.vue'
 
 const settingsStore = useSettingsStore()
 const {$gettext} = useGettext()
 
 const data = ref([])
 
+const node_map = computed(() => {
+    const o = {}
+    data.value.forEach(v => {
+        o[v.id] = v
+    })
+    return o
+})
+
 environment.get_list().then(r => {
     data.value = r.data
+})
+
+let websocket: ReconnectingWebSocket | WebSocket
+
+onMounted(() => {
+    websocket = ws('/api/analytic/nodes')
+    websocket.onmessage = m => {
+        const nodes = JSON.parse(m.data)
+        for (let key in nodes) {
+            // update node online status
+            if (node_map.value[key]) {
+                Object.assign(node_map.value[key], nodes[key])
+                node_map.value[key].response_at = new Date()
+            }
+        }
+    }
+})
+
+onUnmounted(() => {
+    websocket.close()
 })
 
 export interface Node {
@@ -69,10 +98,7 @@ const visible = computed(() => {
                             <a-avatar :src="logo"/>
                         </template>
                         <template #description>
-                            <div class="runtime-meta">
-                                <span><Icon :component="cpu"/> {{ item.cpu_num }} CPU</span>
-                                <span><Icon :component="memory"/> {{ item.memory_total }}</span>
-                            </div>
+                            <node-analytic-item :item="item"/>
                         </template>
                     </a-list-item-meta>
                 </a-list-item>

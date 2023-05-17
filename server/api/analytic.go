@@ -157,7 +157,6 @@ func Analytic(c *gin.Context) {
 		}
 		time.Sleep(800 * time.Microsecond)
 	}
-
 }
 
 func GetAnalyticInit(c *gin.Context) {
@@ -212,4 +211,106 @@ func GetAnalyticInit(c *gin.Context) {
 		"disk":    diskStat,
 		"loadavg": loadAvg,
 	})
+}
+
+func GetIntroAnalytic(c *gin.Context) {
+	var upGrader = websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+	}
+	// upgrade http to websocket
+	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+
+	defer ws.Close()
+
+	for {
+		memory, err := getMemoryStat()
+
+		if err != nil {
+			logger.Error(err)
+			return
+		}
+
+		cpuTimesBefore, _ := cpu.Times(false)
+		time.Sleep(1000 * time.Millisecond)
+		cpuTimesAfter, _ := cpu.Times(false)
+		threadNum := runtime.GOMAXPROCS(0)
+		cpuUserUsage := (cpuTimesAfter[0].User - cpuTimesBefore[0].User) / (float64(1000*threadNum) / 1000)
+		cpuSystemUsage := (cpuTimesAfter[0].System - cpuTimesBefore[0].System) / (float64(1000*threadNum) / 1000)
+
+		loadAvg, err := load.Avg()
+
+		if err != nil {
+			logger.Error(err)
+			return
+		}
+
+		diskStat, err := getDiskStat()
+
+		if err != nil {
+			logger.Error(err)
+			return
+		}
+
+		netIO, err := net.IOCounters(false)
+
+		if err != nil {
+			logger.Error(err)
+			return
+		}
+
+		var network net.IOCountersStat
+		if len(netIO) > 0 {
+			network = netIO[0]
+		}
+
+		data := analytic.Node{
+			AvgLoad:       loadAvg,
+			CPUPercent:    math.Min((cpuUserUsage+cpuSystemUsage)*100, 100),
+			MemoryPercent: memory.Pressure,
+			DiskPercent:   diskStat.Percentage,
+			Network:       network,
+		}
+
+		// write
+		err = ws.WriteJSON(data)
+		if err != nil {
+			logger.Error(err)
+			break
+		}
+
+		time.Sleep(5 * time.Second)
+	}
+}
+
+func GetNodesAnalytic(c *gin.Context) {
+	var upGrader = websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+	}
+	// upgrade http to websocket
+	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+
+	defer ws.Close()
+
+	for {
+		// write
+		err = ws.WriteJSON(analytic.NodeMap)
+		if err != nil {
+			logger.Error(err)
+			break
+		}
+
+		time.Sleep(5 * time.Second)
+	}
 }
