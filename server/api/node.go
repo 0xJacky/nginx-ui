@@ -24,7 +24,7 @@ func GetCurrentNode(c *gin.Context) {
 		return
 	}
 	cpuInfo, _ := cpu.Info()
-	memory, _ := getMemoryStat()
+	memory, _ := analytic.GetMemoryStat()
 	ver, _ := upgrader.GetCurrentVersion()
 	diskUsage, _ := disk.Usage(".")
 

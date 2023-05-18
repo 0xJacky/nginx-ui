@@ -4,20 +4,15 @@ import (
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/server/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/server/internal/logger"
-	"github.com/pkg/errors"
 	"github.com/shirou/gopsutil/v3/cpu"
-	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/shirou/gopsutil/v3/host"
 	"github.com/shirou/gopsutil/v3/load"
-	"github.com/shirou/gopsutil/v3/mem"
 	"github.com/shirou/gopsutil/v3/net"
 	"github.com/spf13/cast"
-	"math"
 	"net/http"
 	"runtime"
 	"time"
 
-	"github.com/dustin/go-humanize"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
@@ -29,68 +24,13 @@ type CPUStat struct {
 	Total  float64 `json:"total"`
 }
 
-type MemStat struct {
-	Total       string  `json:"total"`
-	Used        string  `json:"used"`
-	Cached      string  `json:"cached"`
-	Free        string  `json:"free"`
-	SwapUsed    string  `json:"swap_used"`
-	SwapTotal   string  `json:"swap_total"`
-	SwapCached  string  `json:"swap_cached"`
-	SwapPercent float64 `json:"swap_percent"`
-	Pressure    float64 `json:"pressure"`
-}
-
-type DiskStat struct {
-	Total      string         `json:"total"`
-	Used       string         `json:"used"`
-	Percentage float64        `json:"percentage"`
-	Writes     analytic.Usage `json:"writes"`
-	Reads      analytic.Usage `json:"reads"`
-}
-
 type Stat struct {
 	Uptime  uint64             `json:"uptime"`
 	LoadAvg *load.AvgStat      `json:"loadavg"`
 	CPU     CPUStat            `json:"cpu"`
-	Memory  MemStat            `json:"memory"`
-	Disk    DiskStat           `json:"disk"`
+	Memory  analytic.MemStat   `json:"memory"`
+	Disk    analytic.DiskStat  `json:"disk"`
 	Network net.IOCountersStat `json:"network"`
-}
-
-func getMemoryStat() (MemStat, error) {
-	memoryStat, err := mem.VirtualMemory()
-	if err != nil {
-		return MemStat{}, errors.Wrap(err, "error analytic getMemoryStat")
-	}
-	return MemStat{
-		Total:      humanize.Bytes(memoryStat.Total),
-		Used:       humanize.Bytes(memoryStat.Used),
-		Cached:     humanize.Bytes(memoryStat.Cached),
-		Free:       humanize.Bytes(memoryStat.Free),
-		SwapUsed:   humanize.Bytes(memoryStat.SwapTotal - memoryStat.SwapFree),
-		SwapTotal:  humanize.Bytes(memoryStat.SwapTotal),
-		SwapCached: humanize.Bytes(memoryStat.SwapCached),
-		SwapPercent: cast.ToFloat64(fmt.Sprintf("%.2f",
-			100*float64(memoryStat.SwapTotal-memoryStat.SwapFree)/math.Max(float64(memoryStat.SwapTotal), 1))),
-		Pressure: cast.ToFloat64(fmt.Sprintf("%.2f", memoryStat.UsedPercent)),
-	}, nil
-}
-
-func getDiskStat() (DiskStat, error) {
-	diskUsage, err := disk.Usage(".")
-
-	if err != nil {
-		return DiskStat{}, errors.Wrap(err, "error analytic getDiskStat")
-	}
-
-	return DiskStat{
-		Used:       humanize.Bytes(diskUsage.Used),
-		Total:      humanize.Bytes(diskUsage.Total),
-		Percentage: cast.ToFloat64(fmt.Sprintf("%.2f", diskUsage.UsedPercent)),
-		Writes:     analytic.DiskWriteRecord[len(analytic.DiskWriteRecord)-1],
-		Reads:      analytic.DiskReadRecord[len(analytic.DiskReadRecord)-1],
-	}, nil
 }
 
 func Analytic(c *gin.Context) {
@@ -111,7 +51,7 @@ func Analytic(c *gin.Context) {
 	var stat Stat
 
 	for {
-		stat.Memory, err = getMemoryStat()
+		stat.Memory, err = analytic.GetMemoryStat()
 
 		if err != nil {
 			logger.Error(err)
@@ -136,7 +76,7 @@ func Analytic(c *gin.Context) {
 
 		stat.LoadAvg, _ = load.Avg()
 
-		stat.Disk, err = getDiskStat()
+		stat.Disk, err = analytic.GetDiskStat()
 
 		if err != nil {
 			logger.Error(err)
@@ -162,14 +102,14 @@ func Analytic(c *gin.Context) {
 func GetAnalyticInit(c *gin.Context) {
 	cpuInfo, _ := cpu.Info()
 	network, _ := net.IOCounters(false)
-	memory, err := getMemoryStat()
+	memory, err := analytic.GetMemoryStat()
 
 	if err != nil {
 		logger.Error(err)
 		return
 	}
 
-	diskStat, err := getDiskStat()
+	diskStat, err := analytic.GetDiskStat()
 
 	if err != nil {
 		logger.Error(err)
@@ -213,7 +153,7 @@ func GetAnalyticInit(c *gin.Context) {
 	})
 }
 
-func GetIntroAnalytic(c *gin.Context) {
+func GetNodeStat(c *gin.Context) {
 	var upGrader = websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {
 			return true
@@ -263,6 +203,6 @@ func GetNodesAnalytic(c *gin.Context) {
 			break
 		}
 
-		time.Sleep(5 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 }

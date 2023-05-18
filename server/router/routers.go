@@ -35,7 +35,7 @@ func InitRouter() *gin.Engine {
 		{
 			// Analytic
 			w.GET("analytic", api.Analytic)
-			w.GET("analytic/intro", api.GetIntroAnalytic)
+			w.GET("analytic/intro", api.GetNodeStat)
 			w.GET("analytic/nodes", api.GetNodesAnalytic)
 			// pty
 			w.GET("pty", api.Pty)
