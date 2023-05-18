@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/server/service"
+	"github.com/0xJacky/Nginx-UI/server/internal/template"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -45,7 +45,7 @@ func GetTemplate(c *gin.Context) {
 }
 
 func GetTemplateConfList(c *gin.Context) {
-	configList, err := service.GetTemplateList("conf")
+	configList, err := template.GetTemplateList("conf")
 
 	if err != nil {
 		ErrHandler(c, err)
@@ -58,7 +58,7 @@ func GetTemplateConfList(c *gin.Context) {
 }
 
 func GetTemplateBlockList(c *gin.Context) {
-	configList, err := service.GetTemplateList("block")
+	configList, err := template.GetTemplateList("block")
 
 	if err != nil {
 		ErrHandler(c, err)
@@ -72,18 +72,18 @@ func GetTemplateBlockList(c *gin.Context) {
 
 func GetTemplateBlock(c *gin.Context) {
 	type resp struct {
-		service.ConfigInfoItem
-		service.ConfigDetail
+		template.ConfigInfoItem
+		template.ConfigDetail
 	}
-	var bindData map[string]service.TVariable
+	var bindData map[string]template.TVariable
 	_ = c.ShouldBindJSON(&bindData)
-	info := service.GetTemplateInfo("block", c.Param("name"))
+	info := template.GetTemplateInfo("block", c.Param("name"))
 
 	if bindData == nil {
 		bindData = info.Variables
 	}
 
-	detail, err := service.ParseTemplate("block", c.Param("name"), bindData)
+	detail, err := template.ParseTemplate("block", c.Param("name"), bindData)
 	if err != nil {
 		ErrHandler(c, err)
 		return

@@ -5,6 +5,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/server/internal/cert"
 	"github.com/0xJacky/Nginx-UI/server/internal/logger"
 	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/server/internal/upgrader"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/query"
 	"github.com/0xJacky/Nginx-UI/server/router"
@@ -17,6 +18,10 @@ import (
 	"net/http"
 	"time"
 )
+
+func GetRuntimeInfo() (r upgrader.RuntimeInfo, err error) {
+	return upgrader.GetRuntimeInfo()
+}
 
 func Program(state overseer.State) {
 	defer logger.Sync()

@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/0xJacky/Nginx-UI/server/internal/logger"
-	"github.com/0xJacky/Nginx-UI/server/service"
+	"github.com/0xJacky/Nginx-UI/server/internal/upgrader"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"net/http"
@@ -10,19 +10,19 @@ import (
 )
 
 func GetRelease(c *gin.Context) {
-	data, err := service.GetRelease(c.Query("channel"))
+	data, err := upgrader.GetRelease(c.Query("channel"))
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
-	runtimeInfo, err := service.GetRuntimeInfo()
+	runtimeInfo, err := upgrader.GetRuntimeInfo()
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
 	type resp struct {
-		service.TRelease
-		service.RuntimeInfo
+		upgrader.TRelease
+		upgrader.RuntimeInfo
 	}
 	c.JSON(http.StatusOK, resp{
 		data, runtimeInfo,
@@ -30,7 +30,7 @@ func GetRelease(c *gin.Context) {
 }
 
 func GetCurrentVersion(c *gin.Context) {
-	curVer, err := service.GetCurrentVersion()
+	curVer, err := upgrader.GetCurrentVersion()
 	if err != nil {
 		ErrHandler(c, err)
 		return
@@ -70,7 +70,7 @@ func PerformCoreUpgrade(c *gin.Context) {
 		"message": "Initialing core upgrader",
 	})
 
-	u, err := service.NewUpgrader(control.Channel)
+	u, err := upgrader.NewUpgrader(control.Channel)
 
 	if err != nil {
 		_ = ws.WriteJSON(gin.H{

@@ -1,9 +1,9 @@
 package api
 
 import (
+	"github.com/0xJacky/Nginx-UI/server/internal/environment"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/query"
-	"github.com/0xJacky/Nginx-UI/server/service"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"net/http"
@@ -24,7 +24,7 @@ func GetEnvironment(c *gin.Context) {
 }
 
 func GetEnvironmentList(c *gin.Context) {
-	data, err := service.RetrieveEnvironmentList()
+	data, err := environment.RetrieveEnvironmentList()
 	if err != nil {
 		ErrHandler(c, err)
 		return

@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/0xJacky/Nginx-UI/server/internal/analytic"
-	"github.com/0xJacky/Nginx-UI/server/service"
+	"github.com/0xJacky/Nginx-UI/server/internal/upgrader"
 	"github.com/dustin/go-humanize"
 	"github.com/gin-gonic/gin"
 	"github.com/shirou/gopsutil/v3/cpu"
@@ -18,28 +18,28 @@ func GetCurrentNode(c *gin.Context) {
 		return
 	}
 
-	runtimeInfo, err := service.GetRuntimeInfo()
+	runtimeInfo, err := upgrader.GetRuntimeInfo()
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
-
 	cpuInfo, _ := cpu.Info()
 	memory, _ := getMemoryStat()
-	ver, _ := service.GetCurrentVersion()
+	ver, _ := upgrader.GetCurrentVersion()
 	diskUsage, _ := disk.Usage(".")
 
-	intro := analytic.GetNodeAnalyticIntro()
-
-	nodeInfo := service.NodeInfo{
-		RequestNodeSecret: c.MustGet("NodeSecret").(string),
-		NodeRuntimeInfo:   runtimeInfo,
-		CPUNum:            len(cpuInfo),
-		MemoryTotal:       memory.Total,
-		DiskTotal:         humanize.Bytes(diskUsage.Total),
-		Version:           ver.Version,
-		Node:              intro,
+	nodeInfo := analytic.NodeInfo{
+		NodeRuntimeInfo: runtimeInfo,
+		CPUNum:          len(cpuInfo),
+		MemoryTotal:     memory.Total,
+		DiskTotal:       humanize.Bytes(diskUsage.Total),
+		Version:         ver.Version,
 	}
 
-	c.JSON(http.StatusOK, nodeInfo)
+	stat := analytic.GetNodeStat()
+
+	c.JSON(http.StatusOK, analytic.Node{
+		NodeInfo: nodeInfo,
+		NodeStat: stat,
+	})
 }

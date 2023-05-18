@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/server"
-	"github.com/0xJacky/Nginx-UI/server/service"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/jpillora/overseer"
@@ -21,7 +20,7 @@ func main() {
 
 	gin.SetMode(settings.ServerSettings.RunMode)
 
-	r, err := service.GetRuntimeInfo()
+	r, err := server.GetRuntimeInfo()
 
 	if err != nil {
 		log.Fatalln(err)

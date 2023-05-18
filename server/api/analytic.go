@@ -230,13 +230,13 @@ func GetIntroAnalytic(c *gin.Context) {
 
 	for {
 		// write
-		err = ws.WriteJSON(analytic.GetNodeAnalyticIntro())
+		err = ws.WriteJSON(analytic.GetNodeStat())
 		if err != nil {
 			logger.Error(err)
 			break
 		}
 
-		time.Sleep(5 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 }
 

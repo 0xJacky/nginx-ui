@@ -1,4 +1,4 @@
-package service
+package upgrader
 
 import (
 	"encoding/json"
