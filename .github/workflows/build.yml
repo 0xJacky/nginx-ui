@@ -45,8 +45,6 @@ jobs:
                 uses: actions/setup-node@v3
                 with:
                     node-version: 18.x
-                    cache: 'yarn'
-                    cache-dependency-path: 'frontend/yarn.lock'
 
             -   name: Install dependencies
                 run: yarn install
