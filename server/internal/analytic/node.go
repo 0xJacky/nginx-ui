@@ -7,9 +7,13 @@ import (
 	"github.com/0xJacky/Nginx-UI/server/query"
 	"github.com/gorilla/websocket"
 	"github.com/opentracing/opentracing-go/log"
+	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/load"
 	"github.com/shirou/gopsutil/v3/net"
+	"math"
 	"net/http"
+	"runtime"
+	"sync"
 	"time"
 )
 
@@ -23,6 +27,9 @@ type Node struct {
 	Network       net.IOCountersStat `json:"network"`
 	Status        bool               `json:"status"`
 }
+
+var mutex sync.Mutex
+
 type TNodeMap map[int]*Node
 
 var NodeMap TNodeMap
@@ -85,8 +92,9 @@ func nodeAnalyticRecord(env *model.Environment) (err error) {
 		nodeAnalytic.Name = env.Name
 		// set online
 		nodeAnalytic.Status = true
-
+		mutex.Lock()
 		NodeMap[env.ID] = &nodeAnalytic
+		mutex.Unlock()
 	}
 }
 
@@ -111,5 +119,55 @@ func RetrieveNodesStatus() {
 	// block at here
 	for err = range errChan {
 		log.Error(err)
+	}
+}
+
+func GetNodeAnalyticIntro() (data Node) {
+	memory, err := GetMemoryStat()
+
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+
+	cpuTimesBefore, _ := cpu.Times(false)
+	time.Sleep(1000 * time.Millisecond)
+	cpuTimesAfter, _ := cpu.Times(false)
+	threadNum := runtime.GOMAXPROCS(0)
+	cpuUserUsage := (cpuTimesAfter[0].User - cpuTimesBefore[0].User) / (float64(1000*threadNum) / 1000)
+	cpuSystemUsage := (cpuTimesAfter[0].System - cpuTimesBefore[0].System) / (float64(1000*threadNum) / 1000)
+
+	loadAvg, err := load.Avg()
+
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+
+	diskStat, err := GetDiskStat()
+
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+
+	netIO, err := net.IOCounters(false)
+
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+
+	var network net.IOCountersStat
+	if len(netIO) > 0 {
+		network = netIO[0]
+	}
+
+	return Node{
+		AvgLoad:       loadAvg,
+		CPUPercent:    math.Min((cpuUserUsage+cpuSystemUsage)*100, 100),
+		MemoryPercent: memory.Pressure,
+		DiskPercent:   diskStat.Percentage,
+		Network:       network,
 	}
 }

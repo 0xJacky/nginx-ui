@@ -40,7 +40,7 @@ const fixed_percent = computed(() => {
     margin-right: 5px;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1000px) and  (min-width: 600px) {
     .dot {
         display: none;
     }

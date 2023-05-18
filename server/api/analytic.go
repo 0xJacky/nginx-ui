@@ -229,56 +229,8 @@ func GetIntroAnalytic(c *gin.Context) {
 	defer ws.Close()
 
 	for {
-		memory, err := getMemoryStat()
-
-		if err != nil {
-			logger.Error(err)
-			return
-		}
-
-		cpuTimesBefore, _ := cpu.Times(false)
-		time.Sleep(1000 * time.Millisecond)
-		cpuTimesAfter, _ := cpu.Times(false)
-		threadNum := runtime.GOMAXPROCS(0)
-		cpuUserUsage := (cpuTimesAfter[0].User - cpuTimesBefore[0].User) / (float64(1000*threadNum) / 1000)
-		cpuSystemUsage := (cpuTimesAfter[0].System - cpuTimesBefore[0].System) / (float64(1000*threadNum) / 1000)
-
-		loadAvg, err := load.Avg()
-
-		if err != nil {
-			logger.Error(err)
-			return
-		}
-
-		diskStat, err := getDiskStat()
-
-		if err != nil {
-			logger.Error(err)
-			return
-		}
-
-		netIO, err := net.IOCounters(false)
-
-		if err != nil {
-			logger.Error(err)
-			return
-		}
-
-		var network net.IOCountersStat
-		if len(netIO) > 0 {
-			network = netIO[0]
-		}
-
-		data := analytic.Node{
-			AvgLoad:       loadAvg,
-			CPUPercent:    math.Min((cpuUserUsage+cpuSystemUsage)*100, 100),
-			MemoryPercent: memory.Pressure,
-			DiskPercent:   diskStat.Percentage,
-			Network:       network,
-		}
-
 		// write
-		err = ws.WriteJSON(data)
+		err = ws.WriteJSON(analytic.GetNodeAnalyticIntro())
 		if err != nil {
 			logger.Error(err)
 			break

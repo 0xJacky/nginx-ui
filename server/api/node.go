@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/0xJacky/Nginx-UI/server/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/server/service"
 	"github.com/dustin/go-humanize"
 	"github.com/gin-gonic/gin"
@@ -28,12 +29,17 @@ func GetCurrentNode(c *gin.Context) {
 	ver, _ := service.GetCurrentVersion()
 	diskUsage, _ := disk.Usage(".")
 
-	c.JSON(http.StatusOK, gin.H{
-		"request_node_secret": c.MustGet("NodeSecret"),
-		"node_runtime_info":   runtimeInfo,
-		"cpu_num":             len(cpuInfo),
-		"memory_total":        memory.Total,
-		"disk_total":          humanize.Bytes(diskUsage.Total),
-		"version":             ver.Version,
-	})
+	intro := analytic.GetNodeAnalyticIntro()
+
+	nodeInfo := service.NodeInfo{
+		RequestNodeSecret: c.MustGet("NodeSecret").(string),
+		NodeRuntimeInfo:   runtimeInfo,
+		CPUNum:            len(cpuInfo),
+		MemoryTotal:       memory.Total,
+		DiskTotal:         humanize.Bytes(diskUsage.Total),
+		Version:           ver.Version,
+		Node:              intro,
+	}
+
+	c.JSON(http.StatusOK, nodeInfo)
 }

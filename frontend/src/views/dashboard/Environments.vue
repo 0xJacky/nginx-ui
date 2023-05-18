@@ -24,13 +24,12 @@ const node_map = computed(() => {
     return o
 })
 
-environment.get_list().then(r => {
-    data.value = r.data
-})
-
 let websocket: ReconnectingWebSocket | WebSocket
 
 onMounted(() => {
+    environment.get_list().then(r => {
+        data.value = r.data
+    })
     websocket = ws('/api/analytic/nodes')
     websocket.onmessage = m => {
         const nodes = JSON.parse(m.data)
@@ -113,6 +112,14 @@ const visible = computed(() => {
 
     .runtime-meta {
         display: inline-flex;
+        @media (max-width: 700px) {
+            display: block;
+            margin-top: 5px;
+            span {
+                display: flex;
+                align-items: center;
+            }
+        }
 
         span {
             font-weight: 400;

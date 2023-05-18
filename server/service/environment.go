@@ -3,6 +3,7 @@ package service
 import (
 	"crypto/tls"
 	"encoding/json"
+	"github.com/0xJacky/Nginx-UI/server/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/server/internal/logger"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/query"
@@ -49,6 +50,7 @@ type NodeInfo struct {
 	MemoryTotal       string      `json:"memory_total"`
 	DiskTotal         string      `json:"disk_total"`
 	ResponseAt        time.Time   `json:"response_at"`
+	analytic.Node
 }
 
 func (env *Environment) GetNode() (node NodeInfo, status bool) {
