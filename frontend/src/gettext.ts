@@ -7,6 +7,7 @@ export default createGettext({
         zh_CN: '简',
         zh_TW: '繁',
         fr_FR: 'Fr',
+        es: 'Es'
     },
     defaultLanguage: 'en',
     translations: translations,
