@@ -1,0 +1,17 @@
+version: '3'
+services:
+    nginx-demo-1:
+        image: uozi/nginx-ui-demo:latest
+        restart: always
+        networks:
+            - nginx-ui-network
+        ports:
+            - "9003:80"
+
+    nginx-demo-2:
+        image: uozi/nginx-ui-demo:latest
+        restart: always
+        networks:
+            - nginx-ui-network
+networks:
+    nginx-ui-network:

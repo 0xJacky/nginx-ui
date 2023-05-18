@@ -16,6 +16,10 @@ func RetrieveNodesStatus() {
 
 	env := query.Environment
 
+	if env == nil {
+		return
+	}
+
 	envs, err := env.Find()
 
 	if err != nil {
