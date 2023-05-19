@@ -1,24 +1,33 @@
 package analytic
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/0xJacky/Nginx-UI/server/internal/logger"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/query"
 	"github.com/gorilla/websocket"
-	"github.com/opentracing/opentracing-go/log"
 	"net/http"
 	"time"
 )
 
+var stopNodeRecordChan = make(chan struct{})
+
+func RestartRetrieveNodesStatus() {
+	stopNodeRecordChan <- struct{}{}
+	time.Sleep(10 * time.Second)
+	go RetrieveNodesStatus()
+}
+
 func RetrieveNodesStatus() {
 	NodeMap = make(TNodeMap)
+	errChan := make(chan error)
+
+	ctx, cancel := context.WithCancel(context.Background())
+
+	defer cancel()
 
 	env := query.Environment
-
-	if env == nil {
-		return
-	}
 
 	envs, err := env.Find()
 
@@ -27,21 +36,24 @@ func RetrieveNodesStatus() {
 		return
 	}
 
-	errChan := make(chan error)
-
 	for _, v := range envs {
-		go nodeAnalyticLive(v, errChan)
+		go nodeAnalyticLive(v, errChan, ctx)
 	}
 
-	// block at here
-	for err = range errChan {
-		log.Error(err)
+	for {
+		select {
+		case err = <-errChan:
+			logger.Error(err)
+		case <-stopNodeRecordChan:
+			logger.Info("RetrieveNodesStatus exited normally")
+			return // will execute defer cancel()
+		}
 	}
 }
 
-func nodeAnalyticLive(env *model.Environment, errChan chan error) {
+func nodeAnalyticLive(env *model.Environment, errChan chan error, ctx context.Context) {
 	for {
-		err := nodeAnalyticRecord(env)
+		err := nodeAnalyticRecord(env, ctx)
 
 		if err != nil {
 			// set node offline
@@ -58,7 +70,7 @@ func nodeAnalyticLive(env *model.Environment, errChan chan error) {
 	}
 }
 
-func nodeAnalyticRecord(env *model.Environment) (err error) {
+func nodeAnalyticRecord(env *model.Environment, ctx context.Context) (err error) {
 	mutex.Lock()
 	NodeMap[env.ID] = InitNode(env)
 	mutex.Unlock()
@@ -82,9 +94,16 @@ func nodeAnalyticRecord(env *model.Environment) (err error) {
 
 	var nodeStat NodeStat
 
+	go func() {
+		// shutdown
+		<-ctx.Done()
+		_ = c.Close()
+	}()
+
 	for {
 		_, message, err := c.ReadMessage()
-		if err != nil {
+		if err != nil || websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseNoStatusReceived,
+			websocket.CloseNormalClosure) {
 			return err
 		}
 		logger.Debugf("recv: %s %s", env.Name, message)

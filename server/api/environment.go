@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/0xJacky/Nginx-UI/server/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/server/internal/environment"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/query"
@@ -14,13 +15,13 @@ func GetEnvironment(c *gin.Context) {
 
 	envQuery := query.Environment
 
-	environment, err := envQuery.FirstByID(id)
+	env, err := envQuery.FirstByID(id)
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, environment)
+	c.JSON(http.StatusOK, env)
 }
 
 func GetEnvironmentList(c *gin.Context) {
@@ -46,7 +47,7 @@ func AddEnvironment(c *gin.Context) {
 		return
 	}
 
-	environment := model.Environment{
+	env := model.Environment{
 		Name:  json.Name,
 		URL:   json.URL,
 		Token: json.Token,
@@ -54,13 +55,15 @@ func AddEnvironment(c *gin.Context) {
 
 	envQuery := query.Environment
 
-	err := envQuery.Create(&environment)
+	err := envQuery.Create(&env)
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, environment)
+	go analytic.RestartRetrieveNodesStatus()
+
+	c.JSON(http.StatusOK, env)
 }
 
 func EditEnvironment(c *gin.Context) {
@@ -73,13 +76,13 @@ func EditEnvironment(c *gin.Context) {
 
 	envQuery := query.Environment
 
-	environment, err := envQuery.FirstByID(id)
+	env, err := envQuery.FirstByID(id)
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
 
-	_, err = envQuery.Where(envQuery.ID.Eq(environment.ID)).Updates(&model.Environment{
+	_, err = envQuery.Where(envQuery.ID.Eq(env.ID)).Updates(&model.Environment{
 		Name:  json.Name,
 		URL:   json.URL,
 		Token: json.Token,
@@ -90,6 +93,8 @@ func EditEnvironment(c *gin.Context) {
 		return
 	}
 
+	go analytic.RestartRetrieveNodesStatus()
+
 	GetEnvironment(c)
 }
 
@@ -97,15 +102,18 @@ func DeleteEnvironment(c *gin.Context) {
 	id := cast.ToInt(c.Param("id"))
 	envQuery := query.Environment
 
-	environment, err := envQuery.FirstByID(id)
+	env, err := envQuery.FirstByID(id)
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
-	err = envQuery.DeleteByID(environment.ID)
+	err = envQuery.DeleteByID(env.ID)
 	if err != nil {
 		ErrHandler(c, err)
 		return
 	}
+
+	go analytic.RestartRetrieveNodesStatus()
+
 	c.JSON(http.StatusNoContent, nil)
 }

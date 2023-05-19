@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/0xJacky/Nginx-UI/server/internal/boot"
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/query"
 	"github.com/0xJacky/Nginx-UI/server/settings"
@@ -56,8 +57,7 @@ func InstallNginxUI(c *gin.Context) {
 	}
 
 	// Init model
-	db := model.Init()
-	query.Init(db)
+	boot.InitDatabase()
 
 	pwd, _ := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
 
