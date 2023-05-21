@@ -45,11 +45,6 @@ server {
 第二個伺服器塊監聽 443 埠（HTTPS）以及 HTTP/2 協議。同樣，它也監聽 IPv6 地址。將 `<your_server_name>` 替換為您的伺服器名稱，並將
 SSL 證書和金鑰的路徑替換為 `/path/to/ssl_cert` 和 `/path/to/ssl_cert_key`。
 
-::: warning 警告
-為了避免在 Nginx v1.24+ 版本中出現警告，我們需要刪除 `listen 443 ssl http2;` 和 `listen  [::]:443 ssl http2;`
-中的 `http2` 指令，因為 `ssl` 指令預設支援 `http2`。
-:::
-
 此外，配置包括一個 `map` 指令，用於根據 `$http_upgrade` 變數設定 `$connection_upgrade` 變數的值，該變數用於 WebSocket 連線。
 
 在第二個伺服器塊中，`location /` 部分包含代理設定，將請求轉發到本地埠 `9000`

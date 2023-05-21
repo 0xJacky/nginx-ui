@@ -48,11 +48,6 @@ The second server block listens on port 443 (HTTPS) along with the HTTP/2 protoc
 as well. Replace `<your_server_name>` with your server name and the paths for the SSL certificate and key with
 `/path/to/ssl_cert` and `/path/to/ssl_cert_key`.
 
-::: warning
-We might need to remove `http2` in `listen 443 ssl http2;` and `listen  [::]:443 ssl http2;` to avoid the warning in
-Nginx v1.24+ versions.
-:::
-
 Additionally, the configuration includes a map directive for setting the value of the `$connection_upgrade` variable
 based on the $http_upgrade variable, which is used for WebSocket connections.
 
