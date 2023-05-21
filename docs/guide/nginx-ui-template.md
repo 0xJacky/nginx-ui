@@ -77,7 +77,7 @@ value = ""
 
 The name, author, and description will be displayed in the configuration list as a summary.
 
-![Config template list](/assets/nginx-ui-template/zh_CN/config-template-list.png)
+![Config template list](/assets/nginx-ui-template/en/config-template-list.png)
 
 When you click the "View" button, a dialog will appear, as shown below.
 
