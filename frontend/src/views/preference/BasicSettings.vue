@@ -4,7 +4,7 @@ import {inject} from 'vue'
 import {IData} from '@/views/preference/typedef'
 
 const {$gettext} = useGettext()
-const data: IData = inject('data')!
+const data: IData = inject('data') as IData
 const theme = inject('theme')
 </script>
 
@@ -31,6 +31,9 @@ const theme = inject('theme')
         </a-form-item>
         <a-form-item :label="$gettext('Jwt Secret')">
             <p>{{ data.server.jwt_secret }}</p>
+        </a-form-item>
+        <a-form-item :label="$gettext('Node Secret')">
+            <p>{{ data.server.node_secret }}</p>
         </a-form-item>
         <a-form-item :label="$gettext('Terminal Start Command')">
             <p>{{ data.server.start_cmd }}</p>

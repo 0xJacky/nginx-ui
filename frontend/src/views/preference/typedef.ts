@@ -3,6 +3,7 @@ export interface IData {
         http_port: string
         run_mode: string
         jwt_secret: string
+        node_secret: string
         start_cmd: string
         http_challenge_port: string
         github_proxy: string,
