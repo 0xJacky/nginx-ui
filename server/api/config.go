@@ -6,6 +6,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/server/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/server/query"
 	"github.com/gin-gonic/gin"
+	"github.com/sashabaranov/go-openai"
 	"net/http"
 	"os"
 )
@@ -78,6 +79,13 @@ func GetConfig(c *gin.Context) {
 	name := c.Param("name")
 	path := nginx.GetConfPath("/", name)
 
+	stat, err := os.Stat(path)
+
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
+
 	content, err := os.ReadFile(path)
 
 	if err != nil {
@@ -93,10 +101,15 @@ func GetConfig(c *gin.Context) {
 		return
 	}
 
+	if chatgpt.Content == nil {
+		chatgpt.Content = make([]openai.ChatCompletionMessage, 0)
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"config":           string(content),
 		"chatgpt_messages": chatgpt.Content,
 		"file_path":        path,
+		"modified_at":      stat.ModTime(),
 	})
 
 }

@@ -46,6 +46,7 @@ const value = computed({
                 <a-tag color="error" v-else>{{ $gettext('Offline') }}</a-tag>
             </a-col>
         </a-row>
+        <a-empty v-if="hidden_local&&data.length===0"/>
     </a-checkbox-group>
 </template>
 

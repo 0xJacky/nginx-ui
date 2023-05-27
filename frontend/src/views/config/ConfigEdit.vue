@@ -9,6 +9,7 @@ import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import ngx from '@/api/ngx'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
+import {formatDateTime} from '../../lib/helper'
 
 const {$gettext, interpolate} = gettext
 const route = useRoute()
@@ -26,6 +27,8 @@ const name = computed(() => {
 const configText = ref('')
 const history_chatgpt_record = ref([])
 const file_path = ref('')
+const active_key = ref(['1', '2'])
+const modified_at = ref('')
 
 function init() {
     if (name.value) {
@@ -33,6 +36,7 @@ function init() {
             configText.value = r.config
             history_chatgpt_record.value = r.chatgpt_messages
             file_path.value = r.file_path
+            modified_at.value = r.modified_at
         }).catch(r => {
             message.error(r.message ?? $gettext('Server error'))
         })
@@ -90,15 +94,45 @@ function format_code() {
             </a-card>
         </a-col>
 
-        <a-col class="col-right" :xs="24" :sm="24" :md="6">
-            <a-card>
-                <chat-g-p-t :content="configText" :path="file_path"
-                            v-model:history_messages="history_chatgpt_record"/>
+        <a-col :xs="24" :sm="24" :md="6">
+            <a-card class="col-right">
+                <a-collapse v-model:activeKey="active_key" ghost>
+                    <a-collapse-panel key="1" :header="$gettext('Basic')">
+                        <a-form layout="vertical">
+                            <a-form-item :label="$gettext('Path')">
+                                {{ file_path }}
+                            </a-form-item>
+                            <a-form-item :label="$gettext('Updated at')">
+                                {{ formatDateTime(modified_at) }}
+                            </a-form-item>
+                        </a-form>
+                    </a-collapse-panel>
+                    <a-collapse-panel key="2" header="ChatGPT">
+                        <chat-g-p-t :content="configText" :path="file_path"
+                                    v-model:history_messages="history_chatgpt_record"/>
+                    </a-collapse-panel>
+                </a-collapse>
             </a-card>
         </a-col>
     </a-row>
 </template>
 
 <style lang="less" scoped>
+.col-right {
+    position: sticky;
+    top: 78px;
 
+    :deep(.ant-card-body) {
+        max-height: 100vh;
+        overflow-y: scroll;
+    }
+}
+
+:deep(.ant-collapse-ghost > .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box) {
+    padding: 0;
+}
+
+:deep(.ant-collapse > .ant-collapse-item > .ant-collapse-header) {
+    padding: 0 0 10px 0;
+}
 </style>

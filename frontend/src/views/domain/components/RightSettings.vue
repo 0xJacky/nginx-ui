@@ -19,7 +19,7 @@ const history_chatgpt_record = inject('history_chatgpt_record')
 const filename = inject('filename')
 const data: any = inject('data')
 
-const active_key = ref('1')
+const active_key = ref(['1', '2', '3'])
 
 function enable() {
     domain.enable(name.value).then(() => {
