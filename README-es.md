@@ -95,7 +95,7 @@ URL：[https://demo.nginxui.com](https://demo.nginxui.com)
 - Chino Simplificado
 - Chino Tradicional
 
-We welcome translations into any language.
+Aceptamos traducciones a cualquier idioma.
 
 ### Desarrollado con
 
