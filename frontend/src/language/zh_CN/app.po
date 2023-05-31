@@ -149,7 +149,7 @@ msgstr "成功启用 %{name} 自动续签"
 
 #: src/views/config/Config.vue:17 src/views/config/Config.vue:18
 #: src/views/config/Config.vue:28 src/views/config/Config.vue:6
-#: src/views/config/ConfigEdit.vue:80 src/views/domain/DomainEdit.vue:225
+#: src/views/config/ConfigEdit.vue:84 src/views/domain/DomainEdit.vue:225
 #: src/views/nginx_log/NginxLog.vue:161
 msgid "Back"
 msgstr "返回"
@@ -162,6 +162,7 @@ msgstr "返回首页"
 msgid "Base information"
 msgstr "基本信息"
 
+#: src/views/config/ConfigEdit.vue:26
 #: src/views/domain/components/RightSettings.vue:4
 #: src/views/preference/Preference.vue:5
 msgid "Basic"
@@ -183,7 +184,7 @@ msgstr "批量修改"
 msgid "Build with"
 msgstr "构建基于"
 
-#: src/views/preference/BasicSettings.vue:35
+#: src/views/preference/BasicSettings.vue:38
 msgid "CADir"
 msgstr "CADir"
 
@@ -244,7 +245,7 @@ msgstr "ChatGPT 模型"
 msgid "Check again"
 msgstr "重新检查"
 
-#: src/views/preference/BasicSettings.vue:33
+#: src/views/preference/BasicSettings.vue:36
 msgid "Chinese user: https://ghproxy.com/"
 msgstr "中国用户：https://ghproxy.com/"
 
@@ -384,6 +385,7 @@ msgstr "删除站点: %{site_name}"
 
 #: src/views/domain/components/Deploy.vue:12
 #: src/views/domain/components/Deploy.vue:13
+#: src/views/domain/components/RightSettings.vue:15
 msgid "Deploy"
 msgstr "部署"
 
@@ -661,15 +663,15 @@ msgstr "过滤"
 msgid "Finished"
 msgstr "完成"
 
-#: src/views/config/ConfigEdit.vue:83
+#: src/views/config/ConfigEdit.vue:87
 msgid "Format Code"
 msgstr "代码格式化"
 
-#: src/views/config/ConfigEdit.vue:64
+#: src/views/config/ConfigEdit.vue:68
 msgid "Format error %{msg}"
 msgstr "保存错误 %{msg}"
 
-#: src/views/config/ConfigEdit.vue:62
+#: src/views/config/ConfigEdit.vue:66
 msgid "Format successfully"
 msgstr "格式化成功"
 
@@ -689,7 +691,7 @@ msgstr "获取发布信息错误"
 msgid "Getting the certificate, please wait..."
 msgstr "正在获取证书，请稍等..."
 
-#: src/views/preference/BasicSettings.vue:31
+#: src/views/preference/BasicSettings.vue:34
 msgid "Github Proxy"
 msgstr "Github代理"
 
@@ -712,7 +714,7 @@ msgstr "GPT-4-32K"
 msgid "Home"
 msgstr "首页"
 
-#: src/views/preference/BasicSettings.vue:28
+#: src/views/preference/BasicSettings.vue:31
 msgid "HTTP Challenge Port"
 msgstr "HTTP Challenge 监听端口"
 
@@ -933,6 +935,11 @@ msgstr "Nginx 重启成功"
 msgid "No"
 msgstr "取消"
 
+#: src/views/preference/BasicSettings.vue:25
+#, fuzzy
+msgid "Node Secret"
+msgstr "Jwt 密钥"
+
 #: src/routes/index.ts:188 src/routes/index.ts:190
 msgid "Not Found"
 msgstr "找不到页面"
@@ -1022,6 +1029,7 @@ msgstr "密码"
 msgid "Password (*)"
 msgstr "密码 (*)"
 
+#: src/views/config/ConfigEdit.vue:28
 #: src/views/domain/ngx_conf/LocationEditor.vue:38
 #: src/views/domain/ngx_conf/LocationEditor.vue:55
 msgid "Path"
@@ -1187,7 +1195,7 @@ msgstr "运行中"
 
 #: src/components/ChatGPT/ChatGPT.vue:21 src/components/ChatGPT/ChatGPT.vue:22
 #: src/components/ChatGPT/ChatGPT.vue:26 src/components/ChatGPT/ChatGPT.vue:28
-#: src/views/config/ConfigEdit.vue:86 src/views/domain/DomainEdit.vue:228
+#: src/views/config/ConfigEdit.vue:90 src/views/domain/DomainEdit.vue:228
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:32
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
@@ -1203,7 +1211,7 @@ msgstr "保存"
 msgid "Save Directive"
 msgstr "保存指令"
 
-#: src/views/config/ConfigEdit.vue:53 src/views/domain/DomainAdd.vue:56
+#: src/views/config/ConfigEdit.vue:57 src/views/domain/DomainAdd.vue:56
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:36
 msgid "Save error %{msg}"
 msgstr "保存错误 %{msg}"
@@ -1217,7 +1225,7 @@ msgstr "保存成功"
 msgid "Save Successfully"
 msgstr "保存成功"
 
-#: src/views/config/ConfigEdit.vue:51 src/views/domain/DomainAdd.vue:46
+#: src/views/config/ConfigEdit.vue:55 src/views/domain/DomainAdd.vue:46
 #: src/views/domain/DomainEdit.vue:147
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
 msgid "Saved successfully"
@@ -1238,7 +1246,7 @@ msgstr "上传"
 #: src/components/StdDataDisplay/StdTable.vue:168
 #: src/components/StdDataDisplay/StdTable.vue:343
 #: src/components/StdDataDisplay/StdTable.vue:463
-#: src/views/config/ConfigEdit.vue:37 src/views/domain/DomainList.vue:83
+#: src/views/config/ConfigEdit.vue:41 src/views/domain/DomainList.vue:83
 #: src/views/other/Install.vue:71 src/views/preference/Preference.vue:62
 #: src/views/system/Upgrade.vue:54
 msgid "Server error"
@@ -1336,7 +1344,7 @@ msgstr "目标"
 msgid "Terminal"
 msgstr "终端"
 
-#: src/views/preference/BasicSettings.vue:25
+#: src/views/preference/BasicSettings.vue:28
 msgid "Terminal Start Command"
 msgstr "终端启动命令"
 
@@ -1392,7 +1400,7 @@ msgid "Type"
 msgstr "类型"
 
 #: src/views/cert/Cert.vue:68 src/views/cert/DNSCredential.vue:25
-#: src/views/config/config.ts:28
+#: src/views/config/config.ts:28 src/views/config/ConfigEdit.vue:31
 #: src/views/domain/components/RightSettings.vue:11
 #: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:55
 #: src/views/user/User.vue:37
