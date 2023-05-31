@@ -149,7 +149,7 @@ msgstr "Auto-renewal enabled for %{name}"
 
 #: src/views/config/Config.vue:17 src/views/config/Config.vue:18
 #: src/views/config/Config.vue:28 src/views/config/Config.vue:6
-#: src/views/config/ConfigEdit.vue:80 src/views/domain/DomainEdit.vue:225
+#: src/views/config/ConfigEdit.vue:84 src/views/domain/DomainEdit.vue:225
 #: src/views/nginx_log/NginxLog.vue:161
 msgid "Back"
 msgstr "Back"
@@ -163,6 +163,7 @@ msgstr "Back"
 msgid "Base information"
 msgstr "Base information"
 
+#: src/views/config/ConfigEdit.vue:26
 #: src/views/domain/components/RightSettings.vue:4
 #: src/views/preference/Preference.vue:5
 #, fuzzy
@@ -186,7 +187,7 @@ msgstr "Modify Config"
 msgid "Build with"
 msgstr "Build with"
 
-#: src/views/preference/BasicSettings.vue:35
+#: src/views/preference/BasicSettings.vue:38
 msgid "CADir"
 msgstr ""
 
@@ -250,7 +251,7 @@ msgstr ""
 msgid "Check again"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:33
+#: src/views/preference/BasicSettings.vue:36
 msgid "Chinese user: https://ghproxy.com/"
 msgstr ""
 
@@ -392,6 +393,7 @@ msgstr ""
 
 #: src/views/domain/components/Deploy.vue:12
 #: src/views/domain/components/Deploy.vue:13
+#: src/views/domain/components/RightSettings.vue:15
 msgid "Deploy"
 msgstr ""
 
@@ -682,16 +684,16 @@ msgstr ""
 msgid "Finished"
 msgstr "Finished"
 
-#: src/views/config/ConfigEdit.vue:83
+#: src/views/config/ConfigEdit.vue:87
 msgid "Format Code"
 msgstr ""
 
-#: src/views/config/ConfigEdit.vue:64
+#: src/views/config/ConfigEdit.vue:68
 #, fuzzy
 msgid "Format error %{msg}"
 msgstr "Save error %{msg}"
 
-#: src/views/config/ConfigEdit.vue:62
+#: src/views/config/ConfigEdit.vue:66
 #, fuzzy
 msgid "Format successfully"
 msgstr "Saved successfully"
@@ -713,7 +715,7 @@ msgstr "Base information"
 msgid "Getting the certificate, please wait..."
 msgstr "Getting the certificate, please wait..."
 
-#: src/views/preference/BasicSettings.vue:31
+#: src/views/preference/BasicSettings.vue:34
 msgid "Github Proxy"
 msgstr ""
 
@@ -736,7 +738,7 @@ msgstr ""
 msgid "Home"
 msgstr "Home"
 
-#: src/views/preference/BasicSettings.vue:28
+#: src/views/preference/BasicSettings.vue:31
 msgid "HTTP Challenge Port"
 msgstr ""
 
@@ -966,6 +968,10 @@ msgstr "Saved successfully"
 msgid "No"
 msgstr "No"
 
+#: src/views/preference/BasicSettings.vue:25
+msgid "Node Secret"
+msgstr ""
+
 #: src/routes/index.ts:188 src/routes/index.ts:190
 msgid "Not Found"
 msgstr "Not Found"
@@ -1057,6 +1063,7 @@ msgstr "Password"
 msgid "Password (*)"
 msgstr "Password (*)"
 
+#: src/views/config/ConfigEdit.vue:28
 #: src/views/domain/ngx_conf/LocationEditor.vue:38
 #: src/views/domain/ngx_conf/LocationEditor.vue:55
 msgid "Path"
@@ -1220,7 +1227,7 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:21 src/components/ChatGPT/ChatGPT.vue:22
 #: src/components/ChatGPT/ChatGPT.vue:26 src/components/ChatGPT/ChatGPT.vue:28
-#: src/views/config/ConfigEdit.vue:86 src/views/domain/DomainEdit.vue:228
+#: src/views/config/ConfigEdit.vue:90 src/views/domain/DomainEdit.vue:228
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:32
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
@@ -1236,7 +1243,7 @@ msgstr "Save"
 msgid "Save Directive"
 msgstr "Save Directive"
 
-#: src/views/config/ConfigEdit.vue:53 src/views/domain/DomainAdd.vue:56
+#: src/views/config/ConfigEdit.vue:57 src/views/domain/DomainAdd.vue:56
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:36
 msgid "Save error %{msg}"
 msgstr "Save error %{msg}"
@@ -1252,7 +1259,7 @@ msgstr "Saved successfully"
 msgid "Save Successfully"
 msgstr "Saved successfully"
 
-#: src/views/config/ConfigEdit.vue:51 src/views/domain/DomainAdd.vue:46
+#: src/views/config/ConfigEdit.vue:55 src/views/domain/DomainAdd.vue:46
 #: src/views/domain/DomainEdit.vue:147
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
 msgid "Saved successfully"
@@ -1273,7 +1280,7 @@ msgstr "Send"
 #: src/components/StdDataDisplay/StdTable.vue:168
 #: src/components/StdDataDisplay/StdTable.vue:343
 #: src/components/StdDataDisplay/StdTable.vue:463
-#: src/views/config/ConfigEdit.vue:37 src/views/domain/DomainList.vue:83
+#: src/views/config/ConfigEdit.vue:41 src/views/domain/DomainList.vue:83
 #: src/views/other/Install.vue:71 src/views/preference/Preference.vue:62
 #: src/views/system/Upgrade.vue:54
 msgid "Server error"
@@ -1378,7 +1385,7 @@ msgstr ""
 msgid "Terminal"
 msgstr "Terminal"
 
-#: src/views/preference/BasicSettings.vue:25
+#: src/views/preference/BasicSettings.vue:28
 msgid "Terminal Start Command"
 msgstr ""
 
@@ -1437,7 +1444,7 @@ msgid "Type"
 msgstr ""
 
 #: src/views/cert/Cert.vue:68 src/views/cert/DNSCredential.vue:25
-#: src/views/config/config.ts:28
+#: src/views/config/config.ts:28 src/views/config/ConfigEdit.vue:31
 #: src/views/domain/components/RightSettings.vue:11
 #: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:55
 #: src/views/user/User.vue:37
