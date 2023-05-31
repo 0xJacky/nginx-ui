@@ -160,7 +160,7 @@ Press `Control+C` in the terminal to exit Nginx UI.
 ```shell
 nohup ./nginx-ui -config app.ini &
 ```
-Stop Nginx UI with the follow commond.
+Stop Nginx UI with the follow command.
 
 ```shell
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
