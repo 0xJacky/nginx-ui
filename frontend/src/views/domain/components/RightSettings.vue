@@ -72,7 +72,7 @@ function on_change_enabled(checked: boolean) {
                     {{ formatDateTime(data.modified_at) }}
                 </a-form-item>
             </a-collapse-panel>
-            <a-collapse-panel key="2" header="Deploy" v-if="!settings.is_remote">
+            <a-collapse-panel key="2" :header="$gettext('Deploy')" v-if="!settings.is_remote">
                 <deploy/>
             </a-collapse-panel>
             <a-collapse-panel key="3" header="ChatGPT">
