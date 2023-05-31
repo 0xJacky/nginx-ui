@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: en\n"
+"Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -99,6 +99,14 @@ msgstr "Вы уверены, что хотите удалить эту дире�
 msgid "Are you sure you want to remove this location?"
 msgstr "Вы уверены, что хотите удалить эту директиву?"
 
+#: src/components/ChatGPT/ChatGPT.vue:4 src/components/ChatGPT/ChatGPT.vue:5
+msgid "Ask ChatGPT for Help"
+msgstr ""
+
+#: src/components/ChatGPT/ChatGPT.vue:16
+msgid "Assistant"
+msgstr ""
+
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:12
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:13
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:16
@@ -141,7 +149,7 @@ msgstr "Автообновление включено для %{name}"
 
 #: src/views/config/Config.vue:17 src/views/config/Config.vue:18
 #: src/views/config/Config.vue:28 src/views/config/Config.vue:6
-#: src/views/config/ConfigEdit.vue:80 src/views/domain/DomainEdit.vue:225
+#: src/views/config/ConfigEdit.vue:84 src/views/domain/DomainEdit.vue:225
 #: src/views/nginx_log/NginxLog.vue:161
 msgid "Back"
 msgstr "Назад"
@@ -155,6 +163,7 @@ msgstr "Вернутся"
 msgid "Base information"
 msgstr "Основная информация"
 
+#: src/views/config/ConfigEdit.vue:26
 #: src/views/domain/components/RightSettings.vue:4
 #: src/views/preference/Preference.vue:5
 #, fuzzy
@@ -178,7 +187,7 @@ msgstr "Изменение конфигурации"
 msgid "Build with"
 msgstr "Собрать с"
 
-#: src/views/preference/BasicSettings.vue:35
+#: src/views/preference/BasicSettings.vue:38
 msgid "CADir"
 msgstr ""
 
@@ -228,6 +237,10 @@ msgstr "Метод Challenge"
 msgid "Change Certificate"
 msgstr "Сертификат действителен"
 
+#: src/views/system/Upgrade.vue:35
+msgid "Channel"
+msgstr ""
+
 #: src/views/preference/OpenAISettings.vue:3
 msgid "ChatGPT Model"
 msgstr ""
@@ -238,7 +251,7 @@ msgstr ""
 msgid "Check again"
 msgstr "Проверить повторно"
 
-#: src/views/preference/BasicSettings.vue:33
+#: src/views/preference/BasicSettings.vue:36
 msgid "Chinese user: https://ghproxy.com/"
 msgstr ""
 
@@ -283,6 +296,11 @@ msgstr "Конфигурации"
 #: src/views/domain/DomainAdd.vue:6
 msgid "Configure SSL"
 msgstr "Настроить SSL"
+
+#: src/views/dashboard/Environments.vue:8
+#: src/views/dashboard/Environments.vue:9
+msgid "Connected"
+msgstr ""
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:36
 #: src/views/domain/ngx_conf/LocationEditor.vue:41
@@ -375,6 +393,7 @@ msgstr ""
 
 #: src/views/domain/components/Deploy.vue:12
 #: src/views/domain/components/Deploy.vue:13
+#: src/views/domain/components/RightSettings.vue:15
 msgid "Deploy"
 msgstr ""
 
@@ -416,7 +435,7 @@ msgstr "Деректива"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:1
 #: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:2
-msgid "Directive"
+msgid "Directives"
 msgstr "Дерективы"
 
 #: src/views/domain/cert/components/ObtainCert.vue:61
@@ -492,7 +511,8 @@ msgstr "Конфигурация домена успешно создана"
 
 #: src/views/cert/Cert.vue:21
 msgid "Domains list is empty, try to reopen auto-cert for %{config}"
-msgstr "Список доменов пуст, попробуйте заново открыть авто-сертификат для %{config}"
+msgstr ""
+"Список доменов пуст, попробуйте заново открыть авто-сертификат для %{config}"
 
 #: src/language/constants.ts:29
 msgid "Download latest release error"
@@ -564,6 +584,11 @@ msgstr "Не удалось включить автоматическое про
 msgid "Enable failed"
 msgstr "Включить не удалось"
 
+#: src/views/domain/components/Deploy.vue:46
+#, fuzzy
+msgid "Enable successfully"
+msgstr "Активировано успешно"
+
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:3
 msgid "Enable TLS"
 msgstr "Включить TLS"
@@ -587,6 +612,15 @@ msgstr "Активировано успешно"
 #: src/views/domain/cert/IssueCert.vue:4
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Использовать для сайта Let's Encrypt"
+
+#: src/routes/index.ts:133 src/views/environment/Environment.vue:2
+msgid "Environment"
+msgstr ""
+
+#: src/views/dashboard/Environments.vue:2
+#, fuzzy
+msgid "Environments"
+msgstr "Комментарии"
 
 #: src/views/config/InspectConfig.vue:17
 msgid "Error"
@@ -651,16 +685,16 @@ msgstr "Фильтр"
 msgid "Finished"
 msgstr "Готово"
 
-#: src/views/config/ConfigEdit.vue:83
+#: src/views/config/ConfigEdit.vue:87
 msgid "Format Code"
 msgstr "Форматировать код"
 
-#: src/views/config/ConfigEdit.vue:64
+#: src/views/config/ConfigEdit.vue:68
 #, fuzzy
 msgid "Format error %{msg}"
 msgstr "Ошибка форматирования %{msg}"
 
-#: src/views/config/ConfigEdit.vue:62
+#: src/views/config/ConfigEdit.vue:66
 #, fuzzy
 msgid "Format successfully"
 msgstr "Форматирование успешно"
@@ -682,11 +716,7 @@ msgstr "Ошибка получения информации о релизе"
 msgid "Getting the certificate, please wait..."
 msgstr "Получение сертификата, пожалуйста, подождите..."
 
-#: src/views/preference/Preference.vue:14
-msgid "Git"
-msgstr ""
-
-#: src/views/preference/BasicSettings.vue:31
+#: src/views/preference/BasicSettings.vue:34
 msgid "Github Proxy"
 msgstr ""
 
@@ -709,7 +739,7 @@ msgstr ""
 msgid "Home"
 msgstr "Главная"
 
-#: src/views/preference/BasicSettings.vue:28
+#: src/views/preference/BasicSettings.vue:31
 msgid "HTTP Challenge Port"
 msgstr ""
 
@@ -772,9 +802,22 @@ msgstr "Оставьте пустым для значения по умолча�
 msgid "Light"
 msgstr "Светлая"
 
+#: src/views/dashboard/Environments.vue:8
+#: src/views/dashboard/Environments.vue:9
+msgid "Link Start"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:161
 msgid "Load Averages:"
 msgstr "Средняя нагрузка:"
+
+#: src/components/EnvIndicator/EnvIndicator.vue:5
+#: src/components/EnvIndicator/EnvIndicator.vue:6
+#: src/components/NodeSelector/NodeSelector.vue:4
+#: src/components/NodeSelector/NodeSelector.vue:5
+#, fuzzy
+msgid "Local"
+msgstr "Location"
 
 #: src/views/domain/ngx_conf/LocationEditor.vue:10
 #: src/views/domain/ngx_conf/LocationEditor.vue:11
@@ -804,8 +847,8 @@ msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort before obtaining the certificate."
 msgstr ""
-"Убедитесь, что вы настроили обратный прокси-сервер для каталога .well-known на "
-"HTTPChallengePort перед получением сертификата»."
+"Убедитесь, что вы настроили обратный прокси-сервер для каталога .well-known "
+"на HTTPChallengePort перед получением сертификата»."
 
 #: src/routes/index.ts:65
 msgid "Manage Configs"
@@ -926,6 +969,10 @@ msgstr "Nginx успешно перезапущен"
 msgid "No"
 msgstr "Нет"
 
+#: src/views/preference/BasicSettings.vue:25
+msgid "Node Secret"
+msgstr ""
+
 #: src/routes/index.ts:188 src/routes/index.ts:190
 msgid "Not Found"
 msgstr "Не найден"
@@ -1017,6 +1064,7 @@ msgstr "Пароль"
 msgid "Password (*)"
 msgstr "Пароль (*)"
 
+#: src/views/config/ConfigEdit.vue:28
 #: src/views/domain/ngx_conf/LocationEditor.vue:38
 #: src/views/domain/ngx_conf/LocationEditor.vue:55
 msgid "Path"
@@ -1064,6 +1112,18 @@ msgstr "Введите ваш пароль!"
 #: src/views/other/Install.vue:42 src/views/other/Login.vue:35
 msgid "Please input your username!"
 msgstr "Введите ваше имя пользователя!"
+
+#: src/views/domain/components/SiteDuplicate.vue:39
+msgid "Please select at least one node!"
+msgstr ""
+
+#: src/views/system/Upgrade.vue:25 src/views/system/Upgrade.vue:26
+#: src/views/system/Upgrade.vue:30 src/views/system/Upgrade.vue:34
+#: src/views/system/Upgrade.vue:38 src/views/system/Upgrade.vue:48
+#: src/views/system/Upgrade.vue:49 src/views/system/Upgrade.vue:53
+#: src/views/system/Upgrade.vue:57 src/views/system/Upgrade.vue:72
+msgid "Pre-release"
+msgstr ""
 
 #: src/routes/index.ts:149 src/views/preference/Preference.vue:2
 msgid "Preference"
@@ -1170,7 +1230,7 @@ msgstr "Выполняется"
 
 #: src/components/ChatGPT/ChatGPT.vue:21 src/components/ChatGPT/ChatGPT.vue:22
 #: src/components/ChatGPT/ChatGPT.vue:26 src/components/ChatGPT/ChatGPT.vue:28
-#: src/views/config/ConfigEdit.vue:86 src/views/domain/DomainEdit.vue:228
+#: src/views/config/ConfigEdit.vue:90 src/views/domain/DomainEdit.vue:228
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:32
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
@@ -1186,7 +1246,7 @@ msgstr "Сохранить"
 msgid "Save Directive"
 msgstr "Сохранить директиву"
 
-#: src/views/config/ConfigEdit.vue:53 src/views/domain/DomainAdd.vue:56
+#: src/views/config/ConfigEdit.vue:57 src/views/domain/DomainAdd.vue:56
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:36
 msgid "Save error %{msg}"
 msgstr "Ошибка сохранения %{msg}"
@@ -1202,7 +1262,7 @@ msgstr "Успешно сохранено"
 msgid "Save Successfully"
 msgstr "Успешно сохранено"
 
-#: src/views/config/ConfigEdit.vue:51 src/views/domain/DomainAdd.vue:46
+#: src/views/config/ConfigEdit.vue:55 src/views/domain/DomainAdd.vue:46
 #: src/views/domain/DomainEdit.vue:147
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
 msgid "Saved successfully"
@@ -1223,7 +1283,7 @@ msgstr "Отправлено"
 #: src/components/StdDataDisplay/StdTable.vue:168
 #: src/components/StdDataDisplay/StdTable.vue:343
 #: src/components/StdDataDisplay/StdTable.vue:463
-#: src/views/config/ConfigEdit.vue:37 src/views/domain/DomainList.vue:83
+#: src/views/config/ConfigEdit.vue:41 src/views/domain/DomainList.vue:83
 #: src/views/other/Install.vue:71 src/views/preference/Preference.vue:62
 #: src/views/system/Upgrade.vue:54
 msgid "Server error"
@@ -1282,6 +1342,15 @@ msgstr "Содержание сертификата SSL"
 msgid "SSL Certification Key Content"
 msgstr "Содержание ключа сертификата SSL"
 
+#: src/views/system/Upgrade.vue:24 src/views/system/Upgrade.vue:25
+#: src/views/system/Upgrade.vue:29 src/views/system/Upgrade.vue:33
+#: src/views/system/Upgrade.vue:37 src/views/system/Upgrade.vue:47
+#: src/views/system/Upgrade.vue:48 src/views/system/Upgrade.vue:52
+#: src/views/system/Upgrade.vue:56 src/views/system/Upgrade.vue:71
+#, fuzzy
+msgid "Stable"
+msgstr "Таблица"
+
 #: src/views/domain/DomainList.vue:24 src/views/environment/Environment.vue:38
 msgid "Status"
 msgstr "Статус"
@@ -1311,11 +1380,15 @@ msgstr "Система"
 msgid "Table"
 msgstr "Таблица"
 
+#: src/views/domain/components/SiteDuplicate.vue:8
+msgid "Target"
+msgstr ""
+
 #: src/routes/index.ts:102 src/views/pty/Terminal.vue:2
 msgid "Terminal"
 msgstr "Терминал"
 
-#: src/views/preference/BasicSettings.vue:25
+#: src/views/preference/BasicSettings.vue:28
 msgid "Terminal Start Command"
 msgstr "Терминальная команда запуска"
 
@@ -1353,6 +1426,10 @@ msgstr "Тема"
 msgid "This auto-cert item is invalid, please remove it."
 msgstr "Этот элемент автосертификата недействителен, удалите его.."
 
+#: src/components/StdDataEntry/StdFormItem.vue:30
+msgid "This field should not be empty"
+msgstr ""
+
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:31
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
@@ -1370,7 +1447,7 @@ msgid "Type"
 msgstr "Тип"
 
 #: src/views/cert/Cert.vue:68 src/views/cert/DNSCredential.vue:25
-#: src/views/config/config.ts:28
+#: src/views/config/config.ts:28 src/views/config/ConfigEdit.vue:31
 #: src/views/domain/components/RightSettings.vue:11
 #: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:55
 #: src/views/user/User.vue:37
@@ -1402,6 +1479,15 @@ msgstr "Обновление Nginx UI, подождите..."
 #: src/views/dashboard/ServerAnalytic.vue:157
 msgid "Uptime:"
 msgstr "Аптайм:"
+
+#: src/views/environment/Environment.vue:21
+msgid "URL"
+msgstr ""
+
+#: src/components/ChatGPT/ChatGPT.vue:16
+#, fuzzy
+msgid "User"
+msgstr "Имя пользователя"
 
 #: src/views/other/Login.vue:11 src/views/user/User.vue:11
 msgid "Username"
