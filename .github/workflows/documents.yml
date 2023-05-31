@@ -52,6 +52,7 @@ jobs:
                     path: docs/.vitepress/dist
 
             -   name: Deploy to server
+                if: github.event_name != 'pull_request'
                 uses: easingthemes/ssh-deploy@main
                 env:
                     REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
