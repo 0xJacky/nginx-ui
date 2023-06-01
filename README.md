@@ -15,8 +15,7 @@ To check out docs, visit [nginxui.com](https://nginxui.com).
 
 [![Stargazers over time](https://starchart.cc/0xJacky/nginx-ui.svg)](https://starchart.cc/0xJacky/nginx-ui)
 
-
-English | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md)
+English | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md)
 
 <details>
   <summary>Table of Contents</summary>
@@ -160,7 +159,7 @@ Press `Control+C` in the terminal to exit Nginx UI.
 ```shell
 nohup ./nginx-ui -config app.ini &
 ```
-Stop Nginx UI with the follow commond.
+Stop Nginx UI with the follow command.
 
 ```shell
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')

@@ -10,7 +10,7 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 
-[English](README.md) | 简体中文 | [繁體中文](README-zh_TW.md)
+[English](README.md) | [Español](README-es.md) | 简体中文 | [繁體中文](README-zh_TW.md)
 
 <details>
   <summary>目录</summary>
