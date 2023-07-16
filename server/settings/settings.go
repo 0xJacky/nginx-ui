@@ -28,13 +28,15 @@ type Server struct {
 	Demo              bool   `json:"demo"`
 	PageSize          int    `json:"page_size"`
 	GithubProxy       string `json:"github_proxy"`
-	NginxConfigDir    string `json:"nginx_config_dir"`
-	NginxPIDPath      string `json:"nginx_pid_path"`
 }
 
-type NginxLog struct {
+type Nginx struct {
 	AccessLogPath string `json:"access_log_path"`
 	ErrorLogPath  string `json:"error_log_path"`
+	ConfigDir     string `json:"nginx_config_dir"`
+	PIDPath       string `json:"nginx_pid_path"`
+	ReloadCmd     string `json:"reload_cmd"`
+	RestartCmd    string `json:"restart_cmd"`
 }
 
 type OpenAI struct {
@@ -64,7 +66,7 @@ var ServerSettings = &Server{
 	GithubProxy:       "",
 }
 
-var NginxLogSettings = &NginxLog{
+var NginxSettings = &Nginx{
 	AccessLogPath: "",
 	ErrorLogPath:  "",
 }
@@ -76,10 +78,10 @@ var GitSettings = &Git{}
 var ConfPath string
 
 var sections = map[string]interface{}{
-	"server":    ServerSettings,
-	"nginx_log": NginxLogSettings,
-	"openai":    OpenAISettings,
-	"git":       GitSettings,
+	"server": ServerSettings,
+	"nginx":  NginxSettings,
+	"openai": OpenAISettings,
+	"git":    GitSettings,
 }
 
 func init() {

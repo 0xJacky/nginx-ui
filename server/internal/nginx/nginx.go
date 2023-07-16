@@ -8,6 +8,12 @@ import (
 	"regexp"
 )
 
+func execShell(cmd string) (out string, err error) {
+	bytes, err := exec.Command("/bin/sh", "-c", cmd).CombinedOutput()
+	out = string(bytes)
+	return
+}
+
 func TestConf() string {
 	out, err := exec.Command("nginx", "-t").CombinedOutput()
 	if err != nil {
@@ -18,29 +24,53 @@ func TestConf() string {
 }
 
 func Reload() string {
-	out, err := exec.Command("nginx", "-s", "reload").CombinedOutput()
+	if settings.NginxSettings.ReloadCmd != "" {
+		out, err := execShell(settings.NginxSettings.ReloadCmd)
 
-	if err != nil {
-		logger.Error(err)
+		if err != nil {
+			logger.Error(err)
+		}
+
+		return out
+
+	} else {
+		out, err := exec.Command("nginx", "-s", "reload").CombinedOutput()
+
+		if err != nil {
+			logger.Error(err)
+		}
+
+		return string(out)
 	}
 
-	return string(out)
 }
 
 func Restart() string {
-	out, err := exec.Command("nginx", "-s", "reopen").CombinedOutput()
+	if settings.NginxSettings.RestartCmd != "" {
+		out, err := execShell(settings.NginxSettings.RestartCmd)
 
-	if err != nil {
-		logger.Error(err)
+		if err != nil {
+			logger.Error(err)
+		}
+
+		return out
+	} else {
+
+		out, err := exec.Command("nginx", "-s", "reopen").CombinedOutput()
+
+		if err != nil {
+			logger.Error(err)
+		}
+
+		return string(out)
 	}
 
-	return string(out)
 }
 
 func GetConfPath(dir ...string) string {
 	var confPath string
 
-	if settings.ServerSettings.NginxConfigDir == "" {
+	if settings.NginxSettings.ConfigDir == "" {
 		out, err := exec.Command("nginx", "-V").CombinedOutput()
 		if err != nil {
 			logger.Error(err)
@@ -54,7 +84,7 @@ func GetConfPath(dir ...string) string {
 		}
 		confPath = r.FindStringSubmatch(string(out))[1]
 	} else {
-		confPath = settings.ServerSettings.NginxConfigDir
+		confPath = settings.NginxSettings.ConfigDir
 	}
 
 	return filepath.Join(confPath, filepath.Join(dir...))
@@ -63,7 +93,7 @@ func GetConfPath(dir ...string) string {
 func GetNginxPIDPath() string {
 	var confPath string
 
-	if settings.ServerSettings.NginxPIDPath == "" {
+	if settings.NginxSettings.PIDPath == "" {
 		out, err := exec.Command("nginx", "-V").CombinedOutput()
 		if err != nil {
 			logger.Error(err)
@@ -77,7 +107,7 @@ func GetNginxPIDPath() string {
 		}
 		confPath = r.FindStringSubmatch(string(out))[1]
 	} else {
-		confPath = settings.ServerSettings.NginxPIDPath
+		confPath = settings.NginxSettings.PIDPath
 	}
 
 	return confPath
