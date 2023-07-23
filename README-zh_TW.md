@@ -6,7 +6,7 @@
 
 Yet another Nginx Web UI
 
-Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https://blog.kugeek.com/) 開發。
+Nginx 網路管理介面，由 [0xJacky](https://jackyu.cn/) 與 [Hintay](https://blog.kugeek.com/) 開發。
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 
@@ -21,7 +21,7 @@ Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https
         <li><a href="#線上預覽">線上預覽</a></li>
         <li><a href="#特色">特色</a></li>
         <li><a href="#國際化">國際化</a></li>
-        <li><a href="#構建基於">構建基於</a></li>
+        <li><a href="#建置基於">建置基於</a></li>
       </ul>
     </li>
     <li>
@@ -40,21 +40,21 @@ Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https
       </ul>
     </li>
     <li>
-      <a href="#手動構建">手動構建</a>
+      <a href="#手動建置">手動建置</a>
       <ul>
-        <li><a href="#依賴">依賴</a></li>
-        <li><a href="#構建前端">構建前端</a></li>
-        <li><a href="#構建後端">構建後端</a></li>
+        <li><a href="#相依性">相依性</a></li>
+        <li><a href="#建置前端">建置前端</a></li>
+        <li><a href="#建置後端">建置後端</a></li>
       </ul>
     </li>
     <li>
-      <a href="#linux-安裝指令碼">Linux 安裝指令碼</a>
+      <a href="#linux-安裝指令">Linux 安裝指令</a>
       <ul>
         <li><a href="#基本用法">基本用法</a></li>
         <li><a href="#更多用法">更多用法</a></li>
       </ul>
     </li>
-    <li><a href="#nginx-反向代理配置示例">Nginx 反向代理配置示例</a></li>
+    <li><a href="#nginx-反向代理設定範例">Nginx 反向代理設定範例</a></li>
     <li><a href="#貢獻">貢獻</a></li>
     <li><a href="#開源軟體授權條款">開源軟體授權條款</a></li>
   </ol>
@@ -67,7 +67,7 @@ Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https
 
 ### 線上預覽
 
-位址：[https://demo.nginxui.com](https://demo.nginxui.com)
+網址：[https://demo.nginxui.com](https://demo.nginxui.com)
 
 - 使用者：admin
 - 密碼：admin
@@ -77,11 +77,11 @@ Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https
 - 線上檢視伺服器 CPU、記憶體、系統負載、磁碟使用率等指標
 - 線上 ChatGPT 助理
 - 一鍵申請和自動續簽 Let's encrypt 憑證
-- 線上編輯 Nginx 配置檔案，編輯器支援 Nginx 配置語法突顯
-- 線上查看 Nginx 日誌
+- 線上編輯 Nginx 設定檔，編輯器支援 Nginx 設定語法醒目提示
+- 線上檢視 Nginx 日誌
 - 使用 Go 和 Vue 開發，發行版本為單個可執行檔案
-- 保存配置後自動測試配置檔案並重載 Nginx
-- 基於網頁瀏覽器的高級命令行終端
+- 儲存設定後自動測試設定檔並重新載入 Nginx
+- 基於網頁瀏覽器的高階命令列終端
 - 支援暗黑模式
 - 自適應網頁設計
 
@@ -93,7 +93,8 @@ Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https
 
 我們歡迎您將專案翻譯成任何語言。
 
-### 構建基於
+### 建置基於
+
 - [The Go Programming Language](https://go.dev)
 - [Gin Web Framework](https://gin-gonic.com)
 - [GORM](http://gorm.io)
@@ -109,9 +110,9 @@ Nginx 網路管理介面，由  [0xJacky](https://jackyu.cn/) 與 [Hintay](https
 
 ### 使用前注意
 
-Nginx UI 遵循 Debian 的網頁伺服器配置檔案標準。建立的網站配置檔案將會放置於 Nginx 配置資料夾（自動檢測）下的 `sites-available` 中，啟用後的網站將會建立一份配置檔案軟連結檔到 `sites-enabled` 資料夾。您可能需要提前調整配置檔案的組織方式。
+Nginx UI 遵循 Debian 的網頁伺服器設定檔標準。建立的網站設定檔將會放置於 Nginx 設定資料夾（自動檢測）下的 `sites-available` 中，啟用後的網站將會建立一份設定檔軟連結檔到 `sites-enabled` 資料夾。您可能需要提前調整設定檔的組織方式。
 
-對於非 Debian (及 Ubuntu) 作業系統，您可能需要將 `nginx.conf` 配置檔案中的內容修改為如下所示的 Debian 風格。
+對於非 Debian (及 Ubuntu) 作業系統，您可能需要將 `nginx.conf` 設定檔中的內容修改為如下所示的 Debian 風格。
 
 ```nginx
 http {
@@ -135,13 +136,14 @@ Nginx UI 可在以下作業系統中使用：
 - Dragonfly BSD
 - Openwrt
 
-您可以在 [最新释出 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest) 中下載最新版本，或使用 [Linux 安裝指令碼](#linux-安裝指令碼)。
+您可以在 [最新釋出 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest) 中下載最新版本，或使用 [Linux 安裝指令](#linux-安裝指令)。
 
 ### 使用方法
 
-第一次執行 Nginx UI 時，請在網頁瀏覽器中訪問 `http://<your_server_ip>:<listen_port>/install` 完成後續配置。
+第一次執行 Nginx UI 時，請在網頁瀏覽器中訪問 `http://<your_server_ip>:<listen_port>/install` 完成後續設定。
 
 #### 透過執行檔案執行
+
 **在終端中執行 Nginx UI**
 
 ```shell
@@ -154,24 +156,29 @@ nginx-ui -config app.ini
 ```shell
 nohup ./nginx-ui -config app.ini &
 ```
+
 使用以下命令停止 Nginx UI。
 
 ```shell
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
 ```
+
 #### 使用 Systemd
-如果你使用的是 [Linux 安裝指令碼](#linux-安裝指令碼)，Nginx UI 將作為 `nginx-ui` 守護行程安裝在 systemd 中。請使用 `systemctl` 指令控制。
+
+如果你使用的是 [Linux 安裝指令](#linux-安裝指令)，Nginx UI 將作為 `nginx-ui` 守護行程安裝在 systemd 中。請使用 `systemctl` 指令控制。
 
 **啟動 Nginx UI**
 
 ```shell
 systemctl start nginx-ui
 ```
+
 **停止 Nginx UI**
 
 ```shell
 systemctl stop nginx-ui
 ```
+
 **重啟 Nginx UI**
 
 ```shell
@@ -180,11 +187,11 @@ systemctl restart nginx-ui
 
 #### 使用 Docker
 
-您可以在 docker 中使用我們提供的 `uozi/nginx-ui:latest`  [鏡像](https://hub.docker.com/r/uozi/nginx-ui)，此鏡像基於 `nginx:latest` 構建。您可以直接將其監聽到 80 和 443 埠以取代宿主機上的 Nginx。
+您可以在 docker 中使用我們提供的 `uozi/nginx-ui:latest`  [映象](https://hub.docker.com/r/uozi/nginx-ui)，此映象基於 `nginx:latest` 建置。您可以直接將其監聽到 80 和 443 埠以取代宿主機上的 Nginx。
 
-注意：映射到 `/etc/nginx` 的資料夾應是一個空資料夾。
+注意：對映到 `/etc/nginx` 的資料夾應是一個空資料夾。
 
-**Docker 示例**
+**Docker 範例**
 
 ```bash
 docker run -dit \
@@ -197,11 +204,11 @@ docker run -dit \
   uozi/nginx-ui:latest
 ```
 
-## 手動構建
+## 手動建置
 
-對於沒有官方構建版本的作業系統，可以嘗試手動構建。
+對於沒有官方建置版本的作業系統，可以嘗試手動建置。
 
-### 依賴
+### 相依性
 
 - Make
 
@@ -213,7 +220,7 @@ docker run -dit \
   npx browserslist@latest --update-db
   ```
 
-### 構建前端
+### 建置前端
 
 請在 `frontend` 資料夾中執行以下命令。
 
@@ -223,7 +230,7 @@ make translations
 yarn build
 ```
 
-### 構建後端
+### 建置後端
 
 請先完成前端編譯，再回到專案的根目錄執行以下命令。
 
@@ -231,7 +238,7 @@ yarn build
 go build -o nginx-ui -v main.go
 ```
 
-## Linux 安裝指令碼
+## Linux 安裝指令
 
 ### 基本用法
 
@@ -240,9 +247,10 @@ go build -o nginx-ui -v main.go
 ```shell
 bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install
 ```
-一鍵安裝指令碼預設的監聽埠為 `9000`，HTTP Challenge 埠預設為 `9180`，如果出現埠衝突請修改 `/usr/local/etc/nginx-ui/app.ini`，並使用 `systemctl restart nginx-ui` 重啟 Nginx UI 守護行程。
 
-**解除安裝 Nginx UI 但保留配置和資料庫檔案**
+一鍵安裝指令預設的監聽連接埠為 `9000`，HTTP Challenge 埠預設為 `9180`，如果出現連接埠衝突請修改 `/usr/local/etc/nginx-ui/app.ini`，並使用 `systemctl restart nginx-ui` 重啟 Nginx UI 守護行程。
+
+**解除安裝 Nginx UI 但保留設定和資料庫檔案**
 
 ```shell
 bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
@@ -254,7 +262,7 @@ bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/inst
 bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) help
 ````
 
-## Nginx 反向代理配置示例
+## Nginx 反向代理設定範例
 
 ```nginx
 server {
@@ -306,4 +314,4 @@ server {
 
 ## 開源軟體授權條款
 
-此專案基於 GNU Affero Public License v3.0 (AGPLv3) 授權條款，請參閱 [LICENSE](LICENSE) 檔案。透過使用、分發或對本專案做出貢獻，表明您已同意本許可證的條款和條件。
+此專案基於 GNU Affero Public License v3.0 (AGPLv3) 授權條款，請參閱 [LICENSE](LICENSE) 檔案。透過使用、散佈或對本專案做出貢獻，表明您已同意本授權條款的條款和條件。
