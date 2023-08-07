@@ -116,7 +116,7 @@ const ok = async () => {
         message.success($gettext('Save Successfully'))
         Object.assign(data, r)
         get_list()
-
+        visible.value = false
     }).catch((e: any) => {
         message.error($gettext(e?.message ?? 'Server error'), 5)
         Object.assign(error, e.errors)

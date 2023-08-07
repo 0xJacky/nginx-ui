@@ -57,11 +57,9 @@ func GetNode(env *model.Environment) (n *Node) {
 	}
 	n, ok := NodeMap[env.ID]
 	if !ok {
-		n = &Node{
-			Environment: env,
-		}
+		n = &Node{}
 	}
-
+	n.Environment = env
 	return n
 }
 

@@ -76,6 +76,8 @@ watch(node_id, async () => {
 
         .env-name {
             max-width: 50px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .ant-tag {
