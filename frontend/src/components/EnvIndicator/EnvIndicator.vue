@@ -87,4 +87,12 @@ watch(node_id, async () => {
         }
     }
 }
+
+.dark {
+    .container {
+        border: 1px solid #545454;
+        background: transparent;
+        color: #bebebe;
+    }
+}
 </style>
