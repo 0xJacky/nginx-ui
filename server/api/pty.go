@@ -38,8 +38,7 @@ func Pty(c *gin.Context) {
 
 	err = <-errorChan
 
-	if err != nil && websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseNoStatusReceived,
-		websocket.CloseNormalClosure) {
+	if err != nil {
 		logger.Error(err)
 	}
 
