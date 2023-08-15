@@ -33,8 +33,8 @@ type Server struct {
 type Nginx struct {
 	AccessLogPath string `json:"access_log_path"`
 	ErrorLogPath  string `json:"error_log_path"`
-	ConfigDir     string `json:"nginx_config_dir"`
-	PIDPath       string `json:"nginx_pid_path"`
+	ConfigDir     string `json:"config_dir"`
+	PIDPath       string `json:"pid_path"`
 	ReloadCmd     string `json:"reload_cmd"`
 	RestartCmd    string `json:"restart_cmd"`
 }
@@ -46,15 +46,7 @@ type OpenAI struct {
 	Model   string `json:"model"`
 }
 
-type Git struct {
-	Url                string `json:"url"`
-	AuthMethod         string `json:"auth_method"`
-	Username           string `json:"username"`
-	Password           string `json:"password"`
-	PrivateKeyFilePath string `json:"private_key_file_path"`
-}
-
-var ServerSettings = &Server{
+var ServerSettings = Server{
 	HttpPort:          "9000",
 	RunMode:           "debug",
 	HTTPChallengePort: "9180",
@@ -66,22 +58,19 @@ var ServerSettings = &Server{
 	GithubProxy:       "",
 }
 
-var NginxSettings = &Nginx{
+var NginxSettings = Nginx{
 	AccessLogPath: "",
 	ErrorLogPath:  "",
 }
 
-var OpenAISettings = &OpenAI{}
-
-var GitSettings = &Git{}
+var OpenAISettings = OpenAI{}
 
 var ConfPath string
 
 var sections = map[string]interface{}{
-	"server": ServerSettings,
-	"nginx":  NginxSettings,
-	"openai": OpenAISettings,
-	"git":    GitSettings,
+	"server": &ServerSettings,
+	"nginx":  &NginxSettings,
+	"openai": &OpenAISettings,
 }
 
 func init() {
@@ -123,6 +112,7 @@ func mapTo(section string, v interface{}) {
 }
 
 func reflectFrom(section string, v interface{}) {
+	log.Print(section, v)
 	err := Conf.Section(section).ReflectFrom(v)
 	if err != nil {
 		log.Fatalf("Cfg.ReflectFrom %s err: %v", section, err)
