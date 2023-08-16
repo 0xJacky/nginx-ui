@@ -27,7 +27,7 @@ const columns = [{
         placeholder: () => 'https://10.0.0.1:9000'
     }
 }, {
-    title: () => $gettext('Token'),
+    title: () => 'NodeSecret',
     dataIndex: 'token',
     sorter: true,
     display: false,

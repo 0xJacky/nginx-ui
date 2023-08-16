@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useGettext} from 'vue3-gettext'
-import {provide, ref} from 'vue'
+import {onMounted, provide, ref, watch} from 'vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import {useSettingsStore} from '@/pinia'
 import {dark_mode} from '@/lib/theme'
@@ -8,8 +8,9 @@ import settings from '@/api/settings'
 import {message} from 'ant-design-vue'
 import BasicSettings from '@/views/preference/BasicSettings.vue'
 import OpenAISettings from '@/views/preference/OpenAISettings.vue'
-import NginxLogSettings from '@/views/preference/NginxLogSettings.vue'
+import NginxSettings from '@/views/preference/NginxSettings.vue'
 import {IData} from '@/views/preference/typedef'
+import {useRoute, useRouter} from 'vue-router'
 
 const {$gettext} = useGettext()
 
@@ -24,11 +25,16 @@ const data = ref<IData>({
         email: '',
         http_challenge_port: '9180',
         github_proxy: '',
-        ca_dir: ''
+        ca_dir: '',
+        node_secret: ''
     },
-    nginx_log: {
+    nginx: {
         access_log_path: '',
-        error_log_path: ''
+        error_log_path: '',
+        config_dir: '',
+        pid_path: '',
+        reload_cmd: '',
+        restart_cmd: ''
     },
     openai: {
         model: '',
@@ -66,20 +72,36 @@ async function save() {
 provide('data', data)
 provide('theme', theme)
 
-const activeKey = ref('1')
+const router = useRouter()
+const route = useRoute()
+const activeKey = ref('basic')
+
+watch(activeKey, () => {
+    router.push({
+        query: {
+            tab: activeKey.value
+        }
+    })
+})
+
+onMounted(() => {
+    if (route.query?.tab) {
+        activeKey.value = route.query.tab.toString()
+    }
+})
 </script>
 
 <template>
     <a-card :title="$gettext('Preference')">
         <div class="preference-container">
             <a-tabs v-model:activeKey="activeKey">
-                <a-tab-pane :tab="$gettext('Basic')" key="1">
+                <a-tab-pane :tab="$gettext('Basic')" key="basic">
                     <basic-settings/>
                 </a-tab-pane>
-                <a-tab-pane :tab="$gettext('Nginx Log')" key="2">
-                    <nginx-log-settings/>
+                <a-tab-pane :tab="$gettext('Nginx')" key="nginx">
+                    <nginx-settings/>
                 </a-tab-pane>
-                <a-tab-pane :tab="$gettext('OpenAI')" key="3">
+                <a-tab-pane :tab="$gettext('OpenAI')" key="openai">
                     <open-a-i-settings/>
                 </a-tab-pane>
             </a-tabs>

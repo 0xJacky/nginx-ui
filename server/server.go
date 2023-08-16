@@ -21,9 +21,11 @@ func Program(state overseer.State) {
 
 	boot.Kernel()
 
-	err := http.Serve(state.Listener, router.InitRouter())
-	if err != nil {
-		logger.Error(err)
+	if state.Listener != nil {
+		err := http.Serve(state.Listener, router.InitRouter())
+		if err != nil {
+			logger.Error(err)
+		}
 	}
 
 	logger.Info("Server exiting")

@@ -11,10 +11,10 @@ const data: IData = inject('data')!
 <template>
     <a-form layout="vertical">
         <a-form-item :label="$gettext('Nginx Access Log Path')">
-            <a-input v-model:value="data.nginx_log.access_log_path"/>
+            <a-input v-model:value="data.nginx.access_log_path"/>
         </a-form-item>
         <a-form-item :label="$gettext('Nginx Error Log Path')">
-            <a-input v-model:value="data.nginx_log.error_log_path"/>
+            <a-input v-model:value="data.nginx.error_log_path"/>
         </a-form-item>
     </a-form>
 </template>

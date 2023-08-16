@@ -10,9 +10,13 @@ export interface IData {
         email: string,
         ca_dir: string
     },
-    nginx_log: {
+    nginx: {
         access_log_path: string
         error_log_path: string
+        config_dir: string
+        pid_path: string
+        reload_cmd: string
+        restart_cmd: string
     },
     openai: {
         model: string

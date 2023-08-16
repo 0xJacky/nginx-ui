@@ -11,7 +11,6 @@ func GetSettings(c *gin.Context) {
 		"server": settings.ServerSettings,
 		"nginx":  settings.NginxSettings,
 		"openai": settings.OpenAISettings,
-		"git":    settings.GitSettings,
 	})
 }
 
@@ -26,9 +25,9 @@ func SaveSettings(c *gin.Context) {
 		return
 	}
 
-	settings.ServerSettings = &json.Server
-	settings.NginxSettings = &json.Nginx
-	settings.OpenAISettings = &json.Openai
+	settings.ServerSettings = json.Server
+	settings.NginxSettings = json.Nginx
+	settings.OpenAISettings = json.Openai
 
 	settings.ReflectFrom()
 
