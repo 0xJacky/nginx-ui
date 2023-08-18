@@ -15,6 +15,8 @@ func InitRouter() *gin.Engine {
 
 	r.Use(cacheJs())
 
+	r.Use(OperationSync())
+
 	r.Use(static.Serve("/", mustFS("")))
 
 	r.NoRoute(func(c *gin.Context) {

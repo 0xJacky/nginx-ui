@@ -147,8 +147,11 @@ func AddConfig(c *gin.Context) {
 		}
 	}
 
-	output := nginx.Reload()
-
+	output, err := nginx.Reload()
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
 	if nginx.GetLogLevel(output) >= nginx.Warn {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": output,
@@ -193,8 +196,11 @@ func EditConfig(c *gin.Context) {
 		}
 	}
 
-	output := nginx.Reload()
-
+	output, err := nginx.Reload()
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
 	if nginx.GetLogLevel(output) >= nginx.Warn {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": output,
