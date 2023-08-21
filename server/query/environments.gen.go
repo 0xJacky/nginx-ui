@@ -35,6 +35,8 @@ func newEnvironment(db *gorm.DB, opts ...gen.DOOption) environment {
 	_environment.Name = field.NewString(tableName, "name")
 	_environment.URL = field.NewString(tableName, "url")
 	_environment.Token = field.NewString(tableName, "token")
+	_environment.OperationSync = field.NewBool(tableName, "operation_sync")
+	_environment.SyncApiRegex = field.NewString(tableName, "sync_api_regex")
 
 	_environment.fillFieldMap()
 
@@ -44,14 +46,16 @@ func newEnvironment(db *gorm.DB, opts ...gen.DOOption) environment {
 type environment struct {
 	environmentDo
 
-	ALL       field.Asterisk
-	ID        field.Int
-	CreatedAt field.Time
-	UpdatedAt field.Time
-	DeletedAt field.Field
-	Name      field.String
-	URL       field.String
-	Token     field.String
+	ALL           field.Asterisk
+	ID            field.Int
+	CreatedAt     field.Time
+	UpdatedAt     field.Time
+	DeletedAt     field.Field
+	Name          field.String
+	URL           field.String
+	Token         field.String
+	OperationSync field.Bool
+	SyncApiRegex  field.String
 
 	fieldMap map[string]field.Expr
 }
@@ -75,6 +79,8 @@ func (e *environment) updateTableName(table string) *environment {
 	e.Name = field.NewString(table, "name")
 	e.URL = field.NewString(table, "url")
 	e.Token = field.NewString(table, "token")
+	e.OperationSync = field.NewBool(table, "operation_sync")
+	e.SyncApiRegex = field.NewString(table, "sync_api_regex")
 
 	e.fillFieldMap()
 
@@ -91,7 +97,7 @@ func (e *environment) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (e *environment) fillFieldMap() {
-	e.fieldMap = make(map[string]field.Expr, 7)
+	e.fieldMap = make(map[string]field.Expr, 9)
 	e.fieldMap["id"] = e.ID
 	e.fieldMap["created_at"] = e.CreatedAt
 	e.fieldMap["updated_at"] = e.UpdatedAt
@@ -99,6 +105,8 @@ func (e *environment) fillFieldMap() {
 	e.fieldMap["name"] = e.Name
 	e.fieldMap["url"] = e.URL
 	e.fieldMap["token"] = e.Token
+	e.fieldMap["operation_sync"] = e.OperationSync
+	e.fieldMap["sync_api_regex"] = e.SyncApiRegex
 }
 
 func (e environment) clone(db *gorm.DB) environment {

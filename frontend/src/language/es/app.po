@@ -22,7 +22,7 @@ msgstr "Registros de acceso"
 
 #: src/views/cert/Cert.vue:74 src/views/cert/DNSCredential.vue:31
 #: src/views/config/config.ts:35 src/views/domain/DomainList.vue:47
-#: src/views/environment/Environment.vue:61 src/views/user/User.vue:43
+#: src/views/environment/Environment.vue:92 src/views/user/User.vue:43
 msgid "Action"
 msgstr "Acción"
 
@@ -588,6 +588,7 @@ msgid "Enabled"
 msgstr "Habilitado"
 
 #: src/views/domain/components/RightSettings.vue:26
+#: src/views/domain/components/SiteDuplicate.vue:85
 #: src/views/domain/DomainAdd.vue:49 src/views/domain/DomainList.vue:59
 msgid "Enabled successfully"
 msgstr "Habilitado con éxito"
@@ -901,7 +902,12 @@ msgstr "Se liberó una nueva versión"
 msgid "Next"
 msgstr "Siguiente"
 
-#: src/views/preference/NginxLogSettings.vue:3
+#: src/views/preference/Preference.vue:8
+#, fuzzy
+msgid "Nginx"
+msgstr "Registro Nginx"
+
+#: src/views/preference/NginxSettings.vue:3
 msgid "Nginx Access Log Path"
 msgstr "Ruta de registro de acceso de Nginx"
 
@@ -915,12 +921,11 @@ msgstr "Error de análisis de configuración de Nginx"
 msgid "Nginx Control"
 msgstr "Control de Nginx"
 
-#: src/views/preference/NginxLogSettings.vue:6
+#: src/views/preference/NginxSettings.vue:6
 msgid "Nginx Error Log Path"
 msgstr "Ruta de registro de errores de Nginx"
 
 #: src/routes/index.ts:110 src/views/nginx_log/NginxLog.vue:2
-#: src/views/preference/Preference.vue:8
 msgid "Nginx Log"
 msgstr "Registro Nginx"
 
@@ -969,7 +974,7 @@ msgstr "Obteniendo certificado"
 #: src/components/NodeSelector/NodeSelector.vue:11
 #: src/views/dashboard/Environments.vue:15
 #: src/views/dashboard/Environments.vue:16
-#: src/views/environment/Environment.vue:48
+#: src/views/environment/Environment.vue:79
 msgid "Offline"
 msgstr "Desconectado"
 
@@ -993,13 +998,17 @@ msgstr "OK"
 #: src/components/NodeSelector/NodeSelector.vue:9
 #: src/views/dashboard/Environments.vue:14
 #: src/views/dashboard/Environments.vue:15
-#: src/views/environment/Environment.vue:45
+#: src/views/environment/Environment.vue:76
 msgid "Online"
 msgstr "Conectado"
 
 #: src/views/preference/Preference.vue:11
 msgid "OpenAI"
 msgstr "OpenAI"
+
+#: src/views/environment/Environment.vue:38
+msgid "OperationSync"
+msgstr ""
 
 #: src/views/system/Upgrade.vue:14 src/views/system/Upgrade.vue:15
 #: src/views/system/Upgrade.vue:19 src/views/system/Upgrade.vue:23
@@ -1226,7 +1235,7 @@ msgid "Save error %{msg}"
 msgstr "Error al guardar %{msg}"
 
 #: src/components/StdDataDisplay/StdBatchEdit.vue:39
-#: src/views/preference/Preference.vue:60
+#: src/views/preference/Preference.vue:66
 msgid "Save successfully"
 msgstr "Guardado con éxito"
 
@@ -1256,7 +1265,7 @@ msgstr "Enviado"
 #: src/components/StdDataDisplay/StdTable.vue:343
 #: src/components/StdDataDisplay/StdTable.vue:463
 #: src/views/config/ConfigEdit.vue:41 src/views/domain/DomainList.vue:83
-#: src/views/other/Install.vue:71 src/views/preference/Preference.vue:62
+#: src/views/other/Install.vue:71 src/views/preference/Preference.vue:68
 #: src/views/system/Upgrade.vue:54
 msgid "Server error"
 msgstr "Error del servidor"
@@ -1317,7 +1326,7 @@ msgstr "Contenido de la llave del certificado SSL"
 msgid "Stable"
 msgstr "Estable"
 
-#: src/views/domain/DomainList.vue:24 src/views/environment/Environment.vue:38
+#: src/views/domain/DomainList.vue:24 src/views/environment/Environment.vue:69
 msgid "Status"
 msgstr "Estado"
 
@@ -1333,9 +1342,19 @@ msgstr "Almacenamiento"
 msgid "Subject Name: %{name}"
 msgstr "Nombre del asunto: %{name}"
 
+#: src/views/environment/Environment.vue:67
+msgid ""
+"Such as Reload and Configs, regex can configure as `/api/nginx/reload|/api/"
+"nginx/test|/api/config/.+`, please see system api"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:40
 msgid "Swap"
 msgstr "Swap"
+
+#: src/views/environment/Environment.vue:55
+msgid "SyncApiRegex"
+msgstr ""
 
 #: src/routes/index.ts:157
 msgid "System"
@@ -1406,10 +1425,6 @@ msgstr ""
 "de la autoridad al backend, y debemos guardar este archivo y volver a cargar "
 "Nginx. ¿Estás seguro de que quieres continuar?"
 
-#: src/views/environment/Environment.vue:30
-msgid "Token"
-msgstr "Token"
-
 #: src/views/config/config.ts:13
 msgid "Type"
 msgstr "Tipo"
@@ -1417,7 +1432,7 @@ msgstr "Tipo"
 #: src/views/cert/Cert.vue:68 src/views/cert/DNSCredential.vue:25
 #: src/views/config/config.ts:28 src/views/config/ConfigEdit.vue:31
 #: src/views/domain/components/RightSettings.vue:11
-#: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:55
+#: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:86
 #: src/views/user/User.vue:37
 msgid "Updated at"
 msgstr "Actualizado a"
@@ -1490,6 +1505,10 @@ msgstr ""
 "Eliminaremos la configuración de HTTPChallenge de este archivo y "
 "recargaremos Nginx. ¿Estás seguro de que quieres continuar?"
 
+#: src/views/environment/Environment.vue:45
+msgid "Whether config api regex that will redo on this environment"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:104
 #: src/views/dashboard/ServerAnalytic.vue:29
 msgid "Writes"
@@ -1521,3 +1540,6 @@ msgstr "Puede consultar la actualización de Nginx UI en esta página."
 msgctxt "Project"
 msgid "License"
 msgstr "Licencia"
+
+#~ msgid "Token"
+#~ msgstr "Token"

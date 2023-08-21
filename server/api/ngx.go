@@ -53,7 +53,7 @@ func NginxStatus(c *gin.Context) {
 	pidPath := nginx.GetNginxPIDPath()
 
 	running := true
-	if _, err := os.Stat(pidPath); err != nil {
+	if fileInfo, err := os.Stat(pidPath); err != nil || fileInfo.Size() == 0 { // fileInfo.Size() == 0 no process id
 		running = false
 	}
 
@@ -63,7 +63,11 @@ func NginxStatus(c *gin.Context) {
 }
 
 func ReloadNginx(c *gin.Context) {
-	output := nginx.Reload()
+	output, err := nginx.Reload()
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": output,
@@ -72,7 +76,11 @@ func ReloadNginx(c *gin.Context) {
 }
 
 func TestNginx(c *gin.Context) {
-	output := nginx.TestConf()
+	output, err := nginx.TestConf()
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": output,
@@ -81,7 +89,11 @@ func TestNginx(c *gin.Context) {
 }
 
 func RestartNginx(c *gin.Context) {
-	output := nginx.Restart()
+	output, err := nginx.Restart()
+	if err != nil {
+		ErrHandler(c, err)
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": output,

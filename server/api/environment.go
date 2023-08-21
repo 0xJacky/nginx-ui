@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"net/http"
+	"regexp"
 )
 
 func GetEnvironment(c *gin.Context) {
@@ -36,9 +37,19 @@ func GetEnvironmentList(c *gin.Context) {
 }
 
 type EnvironmentManageJson struct {
-	Name  string `json:"name" binding:"required"`
-	URL   string `json:"url" binding:"required"`
-	Token string `json:"token"  binding:"required"`
+	Name          string `json:"name" binding:"required"`
+	URL           string `json:"url" binding:"required"`
+	Token         string `json:"token"  binding:"required"`
+	OperationSync bool   `json:"operation_sync"`
+	SyncApiRegex  string `json:"sync_api_regex"`
+}
+
+func validateRegex(data EnvironmentManageJson) error {
+	if data.OperationSync {
+		_, err := regexp.Compile(data.SyncApiRegex)
+		return err
+	}
+	return nil
 }
 
 func AddEnvironment(c *gin.Context) {
@@ -46,11 +57,17 @@ func AddEnvironment(c *gin.Context) {
 	if !BindAndValid(c, &json) {
 		return
 	}
+	if err := validateRegex(json); err != nil {
+		ErrHandler(c, err)
+		return
+	}
 
 	env := model.Environment{
-		Name:  json.Name,
-		URL:   json.URL,
-		Token: json.Token,
+		Name:          json.Name,
+		URL:           json.URL,
+		Token:         json.Token,
+		OperationSync: &json.OperationSync,
+		SyncApiRegex:  json.SyncApiRegex,
 	}
 
 	envQuery := query.Environment
@@ -73,6 +90,10 @@ func EditEnvironment(c *gin.Context) {
 	if !BindAndValid(c, &json) {
 		return
 	}
+	if err := validateRegex(json); err != nil {
+		ErrHandler(c, err)
+		return
+	}
 
 	envQuery := query.Environment
 
@@ -83,9 +104,11 @@ func EditEnvironment(c *gin.Context) {
 	}
 
 	_, err = envQuery.Where(envQuery.ID.Eq(env.ID)).Updates(&model.Environment{
-		Name:  json.Name,
-		URL:   json.URL,
-		Token: json.Token,
+		Name:          json.Name,
+		URL:           json.URL,
+		Token:         json.Token,
+		OperationSync: &json.OperationSync,
+		SyncApiRegex:  json.SyncApiRegex,
 	})
 
 	if err != nil {

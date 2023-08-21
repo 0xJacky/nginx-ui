@@ -75,9 +75,11 @@ watch(node_id, async () => {
         justify-content: space-between;
 
         .env-name {
-            max-width: 50px;
+            max-width: 85px;
             text-overflow: ellipsis;
             white-space: nowrap;
+            line-height: 1em;
+            overflow: hidden;
         }
 
         .ant-tag {

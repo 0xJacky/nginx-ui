@@ -79,6 +79,13 @@ function onSubmit() {
                             description: $gettext(e?.message ?? 'Server error')
                         })
                     })
+                    if (r.enabled) {
+                      domain.enable(modelRef.name, {headers: {'X-Node-ID': id}}).then(() => {
+                        notification.success({
+                          message: $gettext('Enabled successfully')
+                        })
+                      })
+                    }
                 })
             }
         })
@@ -89,7 +96,7 @@ function onSubmit() {
 
 watch(() => props.visible, (v) => {
     if (v) {
-        modelRef.name = ''
+        modelRef.name = props.name  // default with source name
         modelRef.target = [0]
         nextTick(() => clearValidate())
     }

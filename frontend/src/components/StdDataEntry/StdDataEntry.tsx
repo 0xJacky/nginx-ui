@@ -10,7 +10,15 @@ export default defineComponent({
         return () => {
             const template: any = []
             props.dataList.forEach((v: any) => {
-                if (v.edit.type) {
+                let show = true
+                if (v.edit.show) {
+                    if (typeof v.edit.show === "boolean") {
+                        show = v.edit.show
+                    } else if (typeof v.edit.show === "function") {
+                        show = v.edit.show(props.dataSource)
+                    }
+                }
+                if (v.edit.type && show) {
                     template.push(
                         <StdFormItem dataIndex={v.dataIndex} label={v.title()} extra={v.extra} error={props.error}>
                             {v.edit.type(v.edit, props.dataSource, v.dataIndex)}

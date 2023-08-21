@@ -1,9 +1,10 @@
 import Curd from '@/api/curd'
 import http from '@/lib/http'
+import {AxiosRequestConfig} from "axios/index";
 
 class Domain extends Curd {
-    enable(name: string) {
-        return http.post(this.baseUrl + '/' + name + '/enable')
+    enable(name: string, config: AxiosRequestConfig) {
+        return http.post(this.baseUrl + '/' + name + '/enable', undefined, config)
     }
 
     disable(name: string) {

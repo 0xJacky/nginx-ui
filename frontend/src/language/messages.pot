@@ -15,7 +15,7 @@ msgstr ""
 #: src/views/cert/DNSCredential.vue:31
 #: src/views/config/config.ts:35
 #: src/views/domain/DomainList.vue:47
-#: src/views/environment/Environment.vue:61
+#: src/views/environment/Environment.vue:92
 #: src/views/user/User.vue:43
 msgid "Action"
 msgstr ""
@@ -616,6 +616,7 @@ msgid "Enabled"
 msgstr ""
 
 #: src/views/domain/components/RightSettings.vue:26
+#: src/views/domain/components/SiteDuplicate.vue:85
 #: src/views/domain/DomainAdd.vue:49
 #: src/views/domain/DomainList.vue:59
 msgid "Enabled successfully"
@@ -942,7 +943,11 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: src/views/preference/NginxLogSettings.vue:3
+#: src/views/preference/Preference.vue:8
+msgid "Nginx"
+msgstr ""
+
+#: src/views/preference/NginxSettings.vue:3
 msgid "Nginx Access Log Path"
 msgstr ""
 
@@ -956,13 +961,12 @@ msgstr ""
 msgid "Nginx Control"
 msgstr ""
 
-#: src/views/preference/NginxLogSettings.vue:6
+#: src/views/preference/NginxSettings.vue:6
 msgid "Nginx Error Log Path"
 msgstr ""
 
 #: src/routes/index.ts:110
 #: src/views/nginx_log/NginxLog.vue:2
-#: src/views/preference/Preference.vue:8
 msgid "Nginx Log"
 msgstr ""
 
@@ -1012,7 +1016,7 @@ msgstr ""
 #: src/components/NodeSelector/NodeSelector.vue:11
 #: src/views/dashboard/Environments.vue:15
 #: src/views/dashboard/Environments.vue:16
-#: src/views/environment/Environment.vue:48
+#: src/views/environment/Environment.vue:79
 msgid "Offline"
 msgstr ""
 
@@ -1036,12 +1040,16 @@ msgstr ""
 #: src/components/NodeSelector/NodeSelector.vue:9
 #: src/views/dashboard/Environments.vue:14
 #: src/views/dashboard/Environments.vue:15
-#: src/views/environment/Environment.vue:45
+#: src/views/environment/Environment.vue:76
 msgid "Online"
 msgstr ""
 
 #: src/views/preference/Preference.vue:11
 msgid "OpenAI"
+msgstr ""
+
+#: src/views/environment/Environment.vue:38
+msgid "OperationSync"
 msgstr ""
 
 #: src/views/system/Upgrade.vue:14
@@ -1274,7 +1282,7 @@ msgid "Save error %{msg}"
 msgstr ""
 
 #: src/components/StdDataDisplay/StdBatchEdit.vue:39
-#: src/views/preference/Preference.vue:60
+#: src/views/preference/Preference.vue:66
 msgid "Save successfully"
 msgstr ""
 
@@ -1307,7 +1315,7 @@ msgstr ""
 #: src/views/config/ConfigEdit.vue:41
 #: src/views/domain/DomainList.vue:83
 #: src/views/other/Install.vue:71
-#: src/views/preference/Preference.vue:62
+#: src/views/preference/Preference.vue:68
 #: src/views/system/Upgrade.vue:54
 msgid "Server error"
 msgstr ""
@@ -1374,7 +1382,7 @@ msgid "Stable"
 msgstr ""
 
 #: src/views/domain/DomainList.vue:24
-#: src/views/environment/Environment.vue:38
+#: src/views/environment/Environment.vue:69
 msgid "Status"
 msgstr ""
 
@@ -1390,8 +1398,16 @@ msgstr ""
 msgid "Subject Name: %{name}"
 msgstr ""
 
+#: src/views/environment/Environment.vue:67
+msgid "Such as Reload and Configs, regex can configure as `/api/nginx/reload|/api/nginx/test|/api/config/.+`, please see system api"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:40
 msgid "Swap"
+msgstr ""
+
+#: src/views/environment/Environment.vue:55
+msgid "SyncApiRegex"
 msgstr ""
 
 #: src/routes/index.ts:157
@@ -1447,10 +1463,6 @@ msgstr ""
 msgid "To make sure the certification auto-renewal can work normally, we need to add a location which can proxy the request from authority to backend, and we need to save this file and reload the Nginx. Are you sure you want to continue?"
 msgstr ""
 
-#: src/views/environment/Environment.vue:30
-msgid "Token"
-msgstr ""
-
 #: src/views/config/config.ts:13
 msgid "Type"
 msgstr ""
@@ -1461,7 +1473,7 @@ msgstr ""
 #: src/views/config/ConfigEdit.vue:31
 #: src/views/domain/components/RightSettings.vue:11
 #: src/views/domain/DomainList.vue:41
-#: src/views/environment/Environment.vue:55
+#: src/views/environment/Environment.vue:86
 #: src/views/user/User.vue:37
 msgid "Updated at"
 msgstr ""
@@ -1534,6 +1546,10 @@ msgstr ""
 
 #: src/views/domain/cert/components/ObtainCert.vue:188
 msgid "We will remove the HTTPChallenge configuration from this file and reload the Nginx. Are you sure you want to continue?"
+msgstr ""
+
+#: src/views/environment/Environment.vue:45
+msgid "Whether config api regex that will redo on this environment"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:104

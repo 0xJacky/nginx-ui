@@ -7,9 +7,11 @@ import (
 
 type Environment struct {
 	Model
-	Name  string `json:"name"`
-	URL   string `json:"url"`
-	Token string `json:"token"`
+	Name          string `json:"name"`
+	URL           string `json:"url"`
+	Token         string `json:"token"`
+	OperationSync *bool  `json:"operation_sync"`
+	SyncApiRegex  string `json:"sync_api_regex"`
 }
 
 func (e *Environment) GetWebSocketURL(uri string) (decodedUri string, err error) {

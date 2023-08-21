@@ -14,55 +14,60 @@ func execShell(cmd string) (out string, err error) {
 	return
 }
 
-func TestConf() string {
+func TestConf() (string, error) {
 	out, err := exec.Command("nginx", "-t").CombinedOutput()
 	if err != nil {
 		logger.Error(err)
+		return string(out), err
 	}
 
-	return string(out)
+	return string(out), nil
 }
 
-func Reload() string {
+func Reload() (string, error) {
 	if settings.NginxSettings.ReloadCmd != "" {
 		out, err := execShell(settings.NginxSettings.ReloadCmd)
 
 		if err != nil {
 			logger.Error(err)
+			return out, err
 		}
 
-		return out
+		return out, nil
 
 	} else {
 		out, err := exec.Command("nginx", "-s", "reload").CombinedOutput()
 
 		if err != nil {
 			logger.Error(err)
+			return string(out), err
 		}
 
-		return string(out)
+		return string(out), nil
 	}
 
 }
 
-func Restart() string {
+func Restart() (string, error) {
 	if settings.NginxSettings.RestartCmd != "" {
 		out, err := execShell(settings.NginxSettings.RestartCmd)
 
 		if err != nil {
 			logger.Error(err)
+			return "", err
 		}
 
-		return out
+		return out, nil
 	} else {
 
 		out, err := exec.Command("nginx", "-s", "reopen").CombinedOutput()
 
 		if err != nil {
 			logger.Error(err)
+			return "", err
 		}
 
-		return string(out)
+		return string(out), nil
 	}
 
 }
