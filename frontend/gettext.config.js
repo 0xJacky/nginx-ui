@@ -1,5 +1,7 @@
+const i18n = require('./i18n.json')
+
 module.exports = {
     output: {
-        locales: ['en', 'es', 'zh_CN', 'zh_TW', 'fr_FR', 'ru_RU'],
+        locales: Object.keys(i18n),
     },
 }

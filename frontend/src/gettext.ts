@@ -1,14 +1,8 @@
 import {createGettext} from 'vue3-gettext'
+import i18n from '../i18n.json'
 
 export default createGettext({
-    availableLanguages: {
-        en: 'En',
-        zh_CN: '简',
-        zh_TW: '繁',
-        fr_FR: 'Fr',
-        es: 'Es',
-        ru_RU: 'Ru'
-    },
+    availableLanguages: i18n,
     defaultLanguage: 'en',
     translations: {},
     silent: true
