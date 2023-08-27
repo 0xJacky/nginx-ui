@@ -144,6 +144,9 @@ func InitRouter() *gin.Engine {
 
 			// node
 			g.GET("node", api.GetCurrentNode)
+
+			// translation
+			g.GET("translation/:code", api.GetTranslation)
 		}
 	}
 

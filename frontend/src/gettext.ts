@@ -1,5 +1,4 @@
 import {createGettext} from 'vue3-gettext'
-import translations from './language/translations.json'
 
 export default createGettext({
     availableLanguages: {
@@ -11,7 +10,7 @@ export default createGettext({
         ru_RU: 'Ru'
     },
     defaultLanguage: 'en',
-    translations: translations,
+    translations: {},
     silent: true
 })
 
