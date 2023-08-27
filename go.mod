@@ -1,6 +1,8 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.20
+go 1.21
+
+toolchain go1.21.0
 
 require (
 	github.com/0xJacky/pofile v0.2.1

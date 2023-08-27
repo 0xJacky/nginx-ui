@@ -50,10 +50,6 @@ jobs:
                 run: yarn install
                 working-directory: frontend
 
-            -   name: Update translations
-                run: yarn gettext:compile
-                working-directory: frontend
-
             -   name: Build
                 run: |
                     npx browserslist@latest --update-db
