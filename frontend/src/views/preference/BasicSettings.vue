@@ -23,6 +23,9 @@ const theme = inject('theme')
                 </a-select-option>
             </a-select>
         </a-form-item>
+        <a-form-item :label="$gettext('HTTP Host')">
+            <p>{{ data.server.http_host }}</p>
+        </a-form-item>
         <a-form-item :label="$gettext('HTTP Port')">
             <p>{{ data.server.http_port }}</p>
         </a-form-item>

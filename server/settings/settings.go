@@ -16,6 +16,7 @@ var (
 )
 
 type Server struct {
+	HttpHost          string `json:"http_host"`
 	HttpPort          string `json:"http_port"`
 	RunMode           string `json:"run_mode"`
 	JwtSecret         string `json:"jwt_secret"`
@@ -47,6 +48,7 @@ type OpenAI struct {
 }
 
 var ServerSettings = Server{
+	HttpHost:          "0.0.0.0",
 	HttpPort:          "9000",
 	RunMode:           "debug",
 	HTTPChallengePort: "9180",
