@@ -1,5 +1,6 @@
 export interface IData {
     server: {
+        http_host: string
         http_port: string
         run_mode: string
         jwt_secret: string

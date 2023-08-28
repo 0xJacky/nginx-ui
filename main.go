@@ -28,7 +28,7 @@ func main() {
 
 	overseer.Run(overseer.Config{
 		Program:          server.Program,
-		Address:          fmt.Sprintf(":%s", settings.ServerSettings.HttpPort),
+		Address:          fmt.Sprintf("%s:%s", settings.ServerSettings.HttpHost, settings.ServerSettings.HttpPort),
 		Fetcher:          &fetcher.File{Path: r.ExPath},
 		TerminateTimeout: 0,
 	})
