@@ -13,7 +13,6 @@ dist
 dist-ssr
 *.local
 .yarn
-yarn.lock
 cache
 
 # Editor directories and files
@@ -26,3 +25,12 @@ cache
 *.njsproj
 *.sln
 *.sw?
+
+# Yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

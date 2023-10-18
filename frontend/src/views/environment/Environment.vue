@@ -46,9 +46,9 @@ const columns = [{
     customRender: (args: customRender) => {
         const {operation_sync} = args.record
         if (operation_sync) {
-            return h(Tag, {color: 'success'}, {default: ()=> h('span', '是')})
+            return h(Tag, {color: 'success'}, {default: ()=> h('span', $gettext('Yes'))})
         } else {
-            return h(Tag, {color: 'default'}, {default: ()=> h('span', '否')})
+            return h(Tag, {color: 'default'}, {default: ()=> h('span', $gettext('No'))})
         }
     },
 }, {
