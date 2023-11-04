@@ -125,7 +125,6 @@ func (p *Pipeline) ReadPtyAndWriteWs(errorChan chan error) {
 }
 
 func (p *Pipeline) Close() {
-	logger.Debug("close pipeline", p.cmd.Process.Pid)
 	err := p.Pty.Close()
 
 	if err != nil {
