@@ -41,7 +41,6 @@ func OperationSync() gin.HandlerFunc {
 
 		c.Next()
 		if c.Request.Method == "GET" || !statusValid(c.Writer.Status()) { // 请求有问题，无需执行同步操作
-			wb.ResponseWriter.Write(wb.body.Bytes())
 			return
 		}
 
@@ -52,9 +51,10 @@ func OperationSync() gin.HandlerFunc {
 		wg := sync.WaitGroup{}
 		for _, node := range analytic.NodeMap {
 			wg.Add(1)
+			node := node
 			go func(data analytic.Node) {
 				defer wg.Done()
-				if *node.OperationSync && node.Status && requestUrlMatch(c.Request.URL.Path, data) { // 开启操作同步且当前状态正常
+				if node.OperationSync && node.Status && requestUrlMatch(c.Request.URL.Path, data) { // 开启操作同步且当前状态正常
 					totalCount++
 					if err := syncNodeOperation(c, data, bodyBytes); err != nil {
 						detailMsg += fmt.Sprintf("node_name: %s, err_msg: %s; ", data.Name, err)
@@ -76,9 +76,16 @@ func OperationSync() gin.HandlerFunc {
 				Message: fmt.Sprintf("operation sync failed, total: %d, success: %d, fail: %d, detail: %s", totalCount, successCount, totalCount-successCount, detailMsg),
 			}
 			byts, _ := json.Marshal(errorRes)
-			wb.Write(byts)
+			_, err := wb.Write(byts)
+
+			if err != nil {
+				logger.Error(err)
+			}
 		}
-		wb.ResponseWriter.Write(wb.body.Bytes())
+		_, err := wb.ResponseWriter.Write(wb.body.Bytes())
+		if err != nil {
+			logger.Error(err)
+		}
 	}
 }
 

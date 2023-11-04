@@ -30,7 +30,7 @@ func Pty(c *gin.Context) {
 		return
 	}
 
-	defer p.Pty.Close()
+	defer p.Close()
 
 	errorChan := make(chan error, 1)
 	go p.ReadPtyAndWriteWs(errorChan)

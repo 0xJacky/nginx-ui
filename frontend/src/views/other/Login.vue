@@ -101,7 +101,7 @@ watch(() => gettext.current, () => {
                 </a-form-item>
                 <a-form-item>
                     <a-button @click="onSubmit" type="primary" :block="true" html-type="submit" :loading="loading">
-                        <translate>Login</translate>
+                        {{ $gettext('Login') }}
                     </a-button>
                 </a-form-item>
             </a-form>

@@ -10,7 +10,7 @@ type Environment struct {
 	Name          string `json:"name"`
 	URL           string `json:"url"`
 	Token         string `json:"token"`
-	OperationSync *bool  `json:"operation_sync"`
+	OperationSync bool   `json:"operation_sync"`
 	SyncApiRegex  string `json:"sync_api_regex"`
 }
 

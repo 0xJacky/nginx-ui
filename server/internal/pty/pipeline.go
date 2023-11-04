@@ -2,6 +2,7 @@ package pty
 
 import (
 	"encoding/json"
+	"github.com/0xJacky/Nginx-UI/server/internal/logger"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/creack/pty"
 	"github.com/gorilla/websocket"
@@ -14,6 +15,7 @@ import (
 
 type Pipeline struct {
 	Pty *os.File
+	cmd *exec.Cmd
 	ws  *websocket.Conn
 }
 
@@ -34,6 +36,7 @@ func NewPipeLine(conn *websocket.Conn) (p *Pipeline, err error) {
 
 	p = &Pipeline{
 		Pty: ptmx,
+		cmd: c,
 		ws:  conn,
 	}
 
@@ -118,6 +121,27 @@ func (p *Pipeline) ReadPtyAndWriteWs(errorChan chan error) {
 			errorChan <- errors.Wrap(err, "Error ReadPtyAndWriteWs websocket write")
 			return
 		}
+	}
+}
+
+func (p *Pipeline) Close() {
+	logger.Debug("close pipeline", p.cmd.Process.Pid)
+	err := p.Pty.Close()
+
+	if err != nil {
+		logger.Error(err)
+	}
+
+	err = p.cmd.Process.Kill()
+
+	if err != nil {
+		logger.Error(err)
+	}
+
+	_, err = p.cmd.Process.Wait()
+
+	if err != nil {
+		logger.Error(err)
 	}
 }
 

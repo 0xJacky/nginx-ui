@@ -66,7 +66,7 @@ func AddEnvironment(c *gin.Context) {
 		Name:          json.Name,
 		URL:           json.URL,
 		Token:         json.Token,
-		OperationSync: &json.OperationSync,
+		OperationSync: json.OperationSync,
 		SyncApiRegex:  json.SyncApiRegex,
 	}
 
@@ -107,7 +107,7 @@ func EditEnvironment(c *gin.Context) {
 		Name:          json.Name,
 		URL:           json.URL,
 		Token:         json.Token,
-		OperationSync: &json.OperationSync,
+		OperationSync: json.OperationSync,
 		SyncApiRegex:  json.SyncApiRegex,
 	})
 

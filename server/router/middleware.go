@@ -30,6 +30,7 @@ func recovery() gin.HandlerFunc {
 				buf := make([]byte, 1024)
 				runtime.Stack(buf, false)
 				logger.Errorf("%s\n%s", err, buf)
+
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 					"message": err.(error).Error(),
 					"error":   errorAction,
