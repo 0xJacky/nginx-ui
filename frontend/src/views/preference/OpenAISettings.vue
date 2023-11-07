@@ -12,6 +12,9 @@ const data: IData = inject('data')!
     <a-form layout="vertical">
         <a-form-item :label="$gettext('ChatGPT Model')">
             <a-select v-model:value="data.openai.model">
+                <a-select-option value="gpt-4-1106-preview">
+                    {{ $gettext('GPT-4-Turbo') }}
+                </a-select-option>
                 <a-select-option value="gpt-4">
                     {{ $gettext('GPT-4') }}
                 </a-select-option>
