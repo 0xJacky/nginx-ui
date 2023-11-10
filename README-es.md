@@ -280,8 +280,9 @@ map $http_upgrade $connection_upgrade {
 }
 
 server {
-    listen  443       ssl http2;
-    listen  [::]:443  ssl http2;
+    listen  443       ssl;
+    listen  [::]:443  ssl;
+    http2   on;
 
     server_name         <your_server_name>;
 

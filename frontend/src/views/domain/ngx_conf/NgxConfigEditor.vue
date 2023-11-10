@@ -75,10 +75,13 @@ function change_tls(r: any) {
 
         servers[1].directives.splice(0, 0, {
             directive: 'listen',
-            params: '443 ssl http2'
+            params: '443 ssl'
         }, {
             directive: 'listen',
-            params: '[::]:443 ssl http2'
+            params: '[::]:443 ssl'
+        }, {
+            directive: 'http2',
+            params: 'on'
         })
 
         const server_name = directivesMap.value['server_name'][0]
