@@ -34,38 +34,40 @@ const columns = [{
     edit: {
         type: input
     }
-}, {
-    title: () => $gettext('OperationSync'),
-    dataIndex: 'operation_sync',
-    sorter: true,
-    pithy: true,
-    edit: {
-        type: antSwitch
-    },
-    extra: $gettext('Whether config api regex that will redo on this environment'),
-    customRender: (args: customRender) => {
-        const {operation_sync} = args.record
-        if (operation_sync) {
-            return h(Tag, {color: 'success'}, {default: ()=> h('span', $gettext('Yes'))})
-        } else {
-            return h(Tag, {color: 'default'}, {default: ()=> h('span', $gettext('No'))})
-        }
-    },
-}, {
-    title: () => $gettext('SyncApiRegex'),
-    dataIndex: 'sync_api_regex',
-    sorter: true,
-    pithy: true,
-    display: false,
-    edit: {
-      type: textarea,
-      show: (data) => {
-        const {operation_sync} = data
-        return operation_sync
-      }
-    },
-    extra: $gettext('Such as Reload and Configs, regex can configure as `/api/nginx/reload|/api/nginx/test|/api/config/.+`, please see system api'),
-}, {
+},
+//     {
+//     title: () => $gettext('OperationSync'),
+//     dataIndex: 'operation_sync',
+//     sorter: true,
+//     pithy: true,
+//     edit: {
+//         type: antSwitch
+//     },
+//     extra: $gettext('Whether config api regex that will redo on this environment'),
+//     customRender: (args: customRender) => {
+//         const {operation_sync} = args.record
+//         if (operation_sync) {
+//             return h(Tag, {color: 'success'}, {default: ()=> h('span', $gettext('Yes'))})
+//         } else {
+//             return h(Tag, {color: 'default'}, {default: ()=> h('span', $gettext('No'))})
+//         }
+//     },
+// }, {
+//     title: () => $gettext('SyncApiRegex'),
+//     dataIndex: 'sync_api_regex',
+//     sorter: true,
+//     pithy: true,
+//     display: false,
+//     edit: {
+//       type: textarea,
+//       show: (data) => {
+//         const {operation_sync} = data
+//         return operation_sync
+//       }
+//     },
+//     extra: $gettext('Such as Reload and Configs, regex can configure as `/api/nginx/reload|/api/nginx/test|/api/config/.+`, please see system api'),
+// },
+    {
     title: () => $gettext('Status'),
     dataIndex: 'status',
     customRender: (args: customRender) => {
