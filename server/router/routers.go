@@ -33,6 +33,9 @@ func InitRouter() *gin.Engine {
 		root.POST("/login", api.Login)
 		root.DELETE("/logout", api.Logout)
 
+		// translation
+		root.GET("translation/:code", api.GetTranslation)
+
 		w := root.Group("/", authRequired(), proxyWs())
 		{
 			// Analytic
@@ -144,9 +147,6 @@ func InitRouter() *gin.Engine {
 
 			// node
 			g.GET("node", api.GetCurrentNode)
-
-			// translation
-			g.GET("translation/:code", api.GetTranslation)
 		}
 	}
 
