@@ -15,6 +15,17 @@ func execShell(cmd string) (out string, err error) {
 }
 
 func TestConf() (string, error) {
+	if settings.NginxSettings.TestConfigCmd != "" {
+		out, err := execShell(settings.NginxSettings.TestConfigCmd)
+
+		if err != nil {
+			logger.Error(err)
+			return out, err
+		}
+
+		return out, nil
+	}
+
 	out, err := exec.Command("nginx", "-t").CombinedOutput()
 	if err != nil {
 		logger.Error(err)

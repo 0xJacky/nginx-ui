@@ -36,6 +36,7 @@ type Nginx struct {
 	ErrorLogPath  string `json:"error_log_path"`
 	ConfigDir     string `json:"config_dir"`
 	PIDPath       string `json:"pid_path"`
+	TestConfigCmd string `json:"test_config_cmd"`
 	ReloadCmd     string `json:"reload_cmd"`
 	RestartCmd    string `json:"restart_cmd"`
 }
