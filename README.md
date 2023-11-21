@@ -7,6 +7,16 @@
 Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay](https://blog.kugeek.com/).
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
+[![GitHub license](https://img.shields.io/github/license/0xJacky/nginx-ui?label=License&logo=github)](https://github.com/0xJacky/nginx-ui "Click to view the repo on Github")
+[![Release Version](https://img.shields.io/github/release/0xJacky/nginx-ui?include_prereleases&label=Release&logo=github)](https://github.com/0xJacky/nginx-ui/releases/latest "Click to view the repo on Github")
+[![GitHub Star](https://img.shields.io/github/stars/0xJacky/nginx-ui?label=Stars&logo=github)](https://github.com/0xJacky/nginx-ui "Click to view the repo on Github")
+[![GitHub Fork](https://img.shields.io/github/forks/0xJacky/nginx-ui?label=Forks&logo=github)](https://github.com/0xJacky/nginx-ui "Click to view the repo on Github")
+[![Repo Size](https://img.shields.io/github/repo-size/0xJacky/nginx-ui?label=Size&logo=github)](https://github.com/0xJacky/nginx-ui "Click to view the repo on Github")
+[![GitHub Fork](https://img.shields.io/github/issues-closed-raw/0xJacky/nginx-ui?label=Closed%20Issue&logo=github)](https://github.com/0xJacky/nginx-ui/issue "Click to view the repo on Github")
+
+[![Docker Stars](https://img.shields.io/docker/stars/uozi/nginx-ui?label=Stars&logo=docker)](https://hub.docker.com/r/uozi/nginx-ui "Click to view the image on Docker Hub")
+[![Docker Pulls](https://img.shields.io/docker/pulls/uozi/nginx-ui?label=Pulls&logo=docker)](https://hub.docker.com/r/uozi/nginx-ui "Click to view the image on Docker Hub")
+[![Image Size](https://img.shields.io/docker/image-size/uozi/nginx-ui/latest?label=Image%20Size&logo=docker)](https://hub.docker.com/r/uozi/nginx-ui "Click to view the image on Docker Hub")
 
 ## Documentation
 To check out docs, visit [nginxui.com](https://nginxui.com).
@@ -64,7 +74,6 @@ English | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體�
     <li><a href="#license">License</a></li>
   </ol>
 </details>
-
 
 ## About The Project
 
@@ -164,6 +173,7 @@ Stop Nginx UI with the follow command.
 ```shell
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
 ```
+
 #### With Systemd
 If you are using the [installation script for Linux](#script-for-linux), the Nginx UI will be installed as `nginx-ui` service in systemd. Please use the `systemctl` command to control it.
 
@@ -192,19 +202,69 @@ you can easily make the switch.
 1. When using this container for the first time, ensure that the volume mapped to /etc/nginx is empty.
 2. If you want to host static files, you can map directories to container.
 
-**Docker Deploy Example**
+<details>
+<summary><b>Deploy with Docker</b></summary>
+
+1. [Install Docker.](https://docs.docker.com/install/)
+
+2. Then deploy nginx-ui like this:
 
 ```bash
 docker run -dit \
-  --name=nginx-ui \
-  --restart=always \
-  -e TZ=Asia/Shanghai \
-  -v /mnt/user/appdata/nginx:/etc/nginx \
-  -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
-  -v /var/www:/var/www \
-  -p 8080:80 -p 8443:443 \
-  uozi/nginx-ui:latest
+--name=nginx-ui \
+--restart=always \
+-e TZ=Asia/Shanghai \
+-v /mnt/user/appdata/nginx:/etc/nginx \
+-v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
+-v /var/www:/var/www \
+-p 8080:80 -p 8443:443 \
+uozi/nginx-ui:latest
 ```
+
+3. When your docker container is running, Log in to nginx-ui panel with `http://<your_server_ip>:<listen_port>/install`.
+</details>
+
+<details>
+<summary><b>Deploy with Docker-Compose</b></summary>
+
+1. [Install Docker-Compose.](https://docs.docker.com/compose/install/)
+
+2. Creat a docker-compose.yml file like this:
+
+```yml
+version: '3.3'
+services:
+    nginx-ui:
+        stdin_open: true
+        tty: true
+        container_name: nginx-ui
+        restart: always
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - '/mnt/user/appdata/nginx:/etc/nginx'
+            - '/mnt/user/appdata/nginx-ui:/etc/nginx-ui'
+            - ' /var/www:/var/www'
+        ports:
+            - 8080:80
+            - 8443:443
+        image: 'uozi/nginx-ui:latest'
+```
+
+3. Then creat your container by:
+
+```bash
+docker-compose up -d
+```
+
+```bash
+# If using docker-compose-plugin
+docker compose up -d
+```
+
+4. When your docker container is running, Log in to nginx-ui panel with `http://<your_server_ip>:<listen_port>/install`.
+
+</details>
 
 ## Manual Build
 
