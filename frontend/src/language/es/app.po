@@ -24,7 +24,7 @@ msgstr "Registros de acceso"
 
 #: src/views/cert/Cert.vue:74 src/views/cert/DNSCredential.vue:31
 #: src/views/config/config.ts:35 src/views/domain/DomainList.vue:47
-#: src/views/environment/Environment.vue:92 src/views/user/User.vue:43
+#: src/views/environment/Environment.vue:94 src/views/user/User.vue:43
 msgid "Action"
 msgstr "Acción"
 
@@ -65,15 +65,15 @@ msgstr "Adicional"
 msgid "Advance Mode"
 msgstr "Modo avanzado"
 
-#: src/views/preference/OpenAISettings.vue:16
+#: src/views/preference/OpenAISettings.vue:19
 msgid "API Base Url"
 msgstr "URL Base de la API"
 
-#: src/views/preference/OpenAISettings.vue:20
+#: src/views/preference/OpenAISettings.vue:23
 msgid "API Proxy"
 msgstr "Proxy de la API"
 
-#: src/views/preference/OpenAISettings.vue:23
+#: src/views/preference/OpenAISettings.vue:26
 msgid "API Token"
 msgstr "Token de la API"
 
@@ -199,7 +199,7 @@ msgstr "Directorio CA"
 #: src/views/domain/cert/components/ObtainCert.vue:191
 #: src/views/domain/components/Deploy.vue:26
 #: src/views/domain/components/RightSettings.vue:48
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:208
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:211
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:37
 msgid "Cancel"
 msgstr "Cancelar"
@@ -264,7 +264,7 @@ msgstr "Limpiar"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
 #: src/views/domain/ngx_conf/LocationEditor.vue:35
 #: src/views/domain/ngx_conf/LocationEditor.vue:52
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:260
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:263
 msgid "Comments"
 msgstr "Comentarios"
 
@@ -432,15 +432,19 @@ msgstr "Directiva"
 msgid "Directives"
 msgstr "Directivas"
 
+#: src/views/domain/DomainList.vue:34
+#, fuzzy
+msgid "Disable"
+msgstr "Desactivado"
+
 #: src/views/domain/cert/components/ObtainCert.vue:61
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "No se pudo desactivar la renovación automática por %{name}"
 
 #: src/views/cert/Cert.vue:47 src/views/domain/cert/ChangeCert.vue:47
 #: src/views/domain/DomainEdit.vue:10 src/views/domain/DomainEdit.vue:11
-#: src/views/domain/DomainList.vue:16 src/views/domain/DomainList.vue:34
-#: src/views/domain/DomainList.vue:7 src/views/domain/DomainList.vue:8
-#: src/views/domain/DomainList.vue:9
+#: src/views/domain/DomainList.vue:16 src/views/domain/DomainList.vue:7
+#: src/views/domain/DomainList.vue:8 src/views/domain/DomainList.vue:9
 msgid "Disabled"
 msgstr "Desactivado"
 
@@ -490,7 +494,7 @@ msgstr "¿Quieres habilitar este sitio?"
 msgid "Do you want to enable TLS?"
 msgstr "¿Quieres habilitar TLS?"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:204
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:207
 msgid "Do you want to remove this server?"
 msgstr "¿Quieres eliminar este servidor?"
 
@@ -554,6 +558,11 @@ msgstr "Editar Sitio"
 msgid "Email (*)"
 msgstr "Correo (*)"
 
+#: src/views/domain/DomainList.vue:31
+#, fuzzy
+msgid "Enable"
+msgstr "Habilitado"
+
 #: src/views/domain/components/Deploy.vue:53
 msgid "Enable %{conf_name} in %{node_name} failed"
 msgstr "Falló el habilitado de %{conf_name} en %{node_name}"
@@ -585,7 +594,6 @@ msgstr "Habilitar TLS"
 #: src/views/domain/DomainEdit.vue:7 src/views/domain/DomainEdit.vue:8
 #: src/views/domain/DomainList.vue:10 src/views/domain/DomainList.vue:11
 #: src/views/domain/DomainList.vue:12 src/views/domain/DomainList.vue:19
-#: src/views/domain/DomainList.vue:31
 msgid "Enabled"
 msgstr "Habilitado"
 
@@ -703,20 +711,26 @@ msgstr "Obteniendo el certificado, por favor espere..."
 msgid "Github Proxy"
 msgstr "Proxy Github"
 
-#: src/views/preference/OpenAISettings.vue:11
-#: src/views/preference/OpenAISettings.vue:12
+#: src/views/preference/OpenAISettings.vue:14
+#: src/views/preference/OpenAISettings.vue:15
 msgid "GPT-3.5-Turbo"
 msgstr "GPT-3.5-Turbo"
 
-#: src/views/preference/OpenAISettings.vue:5
-#: src/views/preference/OpenAISettings.vue:6
+#: src/views/preference/OpenAISettings.vue:8
+#: src/views/preference/OpenAISettings.vue:9
 msgid "GPT-4"
 msgstr "GPT-4"
 
-#: src/views/preference/OpenAISettings.vue:8
-#: src/views/preference/OpenAISettings.vue:9
+#: src/views/preference/OpenAISettings.vue:11
+#: src/views/preference/OpenAISettings.vue:12
 msgid "GPT-4-32K"
 msgstr "GPT-4-32K"
+
+#: src/views/preference/OpenAISettings.vue:5
+#: src/views/preference/OpenAISettings.vue:6
+#, fuzzy
+msgid "GPT-4-Turbo"
+msgstr "GPT-3.5-Turbo"
 
 #: src/routes/index.ts:25
 msgid "Home"
@@ -778,7 +792,7 @@ msgstr "Comprobado por última vez el"
 msgid "Leave blank for no change"
 msgstr "Para no modificar dejar en blanco"
 
-#: src/views/preference/OpenAISettings.vue:18
+#: src/views/preference/OpenAISettings.vue:21
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Dejar en blanco para el valor predeterminado: https://api.openai.com/"
 
@@ -813,7 +827,8 @@ msgstr "Ubicación"
 msgid "Locations"
 msgstr "Ubicaciones"
 
-#: src/routes/index.ts:182 src/views/other/Login.vue:104
+#: src/routes/index.ts:182 src/views/other/Login.vue:23
+#: src/views/other/Login.vue:24 src/views/other/Login.vue:30
 msgid "Login"
 msgstr "Acceso"
 
@@ -979,7 +994,7 @@ msgstr "Obteniendo certificado"
 #: src/components/NodeSelector/NodeSelector.vue:11
 #: src/views/dashboard/Environments.vue:15
 #: src/views/dashboard/Environments.vue:16
-#: src/views/environment/Environment.vue:79
+#: src/views/environment/Environment.vue:81
 msgid "Offline"
 msgstr "Desconectado"
 
@@ -992,7 +1007,7 @@ msgstr "Desconectado"
 #: src/views/domain/components/Deploy.vue:25
 #: src/views/domain/components/RightSettings.vue:47
 #: src/views/domain/DomainList.vue:28
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:207
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:210
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:36
 msgid "OK"
 msgstr "OK"
@@ -1003,17 +1018,13 @@ msgstr "OK"
 #: src/components/NodeSelector/NodeSelector.vue:9
 #: src/views/dashboard/Environments.vue:14
 #: src/views/dashboard/Environments.vue:15
-#: src/views/environment/Environment.vue:76
+#: src/views/environment/Environment.vue:78
 msgid "Online"
 msgstr "Conectado"
 
 #: src/views/preference/Preference.vue:11
 msgid "OpenAI"
 msgstr "OpenAI"
-
-#: src/views/environment/Environment.vue:38
-msgid "OperationSync"
-msgstr "Sincronización de operaciones"
 
 #: src/views/system/Upgrade.vue:14 src/views/system/Upgrade.vue:15
 #: src/views/system/Upgrade.vue:19 src/views/system/Upgrade.vue:23
@@ -1331,7 +1342,7 @@ msgstr "Contenido de la llave del certificado SSL"
 msgid "Stable"
 msgstr "Estable"
 
-#: src/views/domain/DomainList.vue:24 src/views/environment/Environment.vue:69
+#: src/views/domain/DomainList.vue:24 src/views/environment/Environment.vue:71
 msgid "Status"
 msgstr "Estado"
 
@@ -1347,22 +1358,9 @@ msgstr "Almacenamiento"
 msgid "Subject Name: %{name}"
 msgstr "Nombre del asunto: %{name}"
 
-#: src/views/environment/Environment.vue:67
-msgid ""
-"Such as Reload and Configs, regex can configure as `/api/nginx/reload|/api/"
-"nginx/test|/api/config/.+`, please see system api"
-msgstr ""
-"Las reglas de sincronización de operación de `Recarga` y `Gestión de "
-"Configuración` se pueden configurar como `/api/nginx/reload|/api/nginx/test|/"
-"api/config/.+`, consulte la API del sistema para obtener más detalles"
-
 #: src/views/dashboard/ServerAnalytic.vue:40
 msgid "Swap"
 msgstr "Swap"
-
-#: src/views/environment/Environment.vue:55
-msgid "SyncApiRegex"
-msgstr "Expresión Regular de la API"
 
 #: src/routes/index.ts:157
 msgid "System"
@@ -1440,7 +1438,7 @@ msgstr "Tipo"
 #: src/views/cert/Cert.vue:68 src/views/cert/DNSCredential.vue:25
 #: src/views/config/config.ts:28 src/views/config/ConfigEdit.vue:31
 #: src/views/domain/components/RightSettings.vue:11
-#: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:86
+#: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:88
 #: src/views/user/User.vue:37
 msgid "Updated at"
 msgstr "Actualizado a"
@@ -1513,12 +1511,6 @@ msgstr ""
 "Eliminaremos la configuración de HTTPChallenge de este archivo y "
 "recargaremos Nginx. ¿Estás seguro de que quieres continuar?"
 
-#: src/views/environment/Environment.vue:45
-msgid "Whether config api regex that will redo on this environment"
-msgstr ""
-"Si se deben configurar las expresiones regulares de API para que se "
-"sincronicen con este entorno"
-
 #: src/views/dashboard/ServerAnalytic.vue:104
 #: src/views/dashboard/ServerAnalytic.vue:29
 msgid "Writes"
@@ -1550,6 +1542,26 @@ msgstr "Puede consultar la actualización de Nginx UI en esta página."
 msgctxt "Project"
 msgid "License"
 msgstr "Licencia"
+
+#~ msgid "OperationSync"
+#~ msgstr "Sincronización de operaciones"
+
+#~ msgid ""
+#~ "Such as Reload and Configs, regex can configure as `/api/nginx/reload|/"
+#~ "api/nginx/test|/api/config/.+`, please see system api"
+#~ msgstr ""
+#~ "Las reglas de sincronización de operación de `Recarga` y `Gestión de "
+#~ "Configuración` se pueden configurar como `/api/nginx/reload|/api/nginx/"
+#~ "test|/api/config/.+`, consulte la API del sistema para obtener más "
+#~ "detalles"
+
+#~ msgid "SyncApiRegex"
+#~ msgstr "Expresión Regular de la API"
+
+#~ msgid "Whether config api regex that will redo on this environment"
+#~ msgstr ""
+#~ "Si se deben configurar las expresiones regulares de API para que se "
+#~ "sincronicen con este entorno"
 
 #~ msgid "Token"
 #~ msgstr "Token"

@@ -10,8 +10,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "Generated-By: easygettext\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
 #: src/routes/index.ts:164
 msgid "About"
@@ -23,7 +24,7 @@ msgstr "存取日誌"
 
 #: src/views/cert/Cert.vue:74 src/views/cert/DNSCredential.vue:31
 #: src/views/config/config.ts:35 src/views/domain/DomainList.vue:47
-#: src/views/environment/Environment.vue:92 src/views/user/User.vue:43
+#: src/views/environment/Environment.vue:94 src/views/user/User.vue:43
 msgid "Action"
 msgstr "操作"
 
@@ -64,15 +65,15 @@ msgstr "其他設定"
 msgid "Advance Mode"
 msgstr "進階模式"
 
-#: src/views/preference/OpenAISettings.vue:16
+#: src/views/preference/OpenAISettings.vue:19
 msgid "API Base Url"
 msgstr "API 基礎網址"
 
-#: src/views/preference/OpenAISettings.vue:20
+#: src/views/preference/OpenAISettings.vue:23
 msgid "API Proxy"
 msgstr "API 代理"
 
-#: src/views/preference/OpenAISettings.vue:23
+#: src/views/preference/OpenAISettings.vue:26
 msgid "API Token"
 msgstr "API Token"
 
@@ -186,7 +187,7 @@ msgstr "構建基於"
 
 #: src/views/preference/BasicSettings.vue:41
 msgid "CADir"
-msgstr ""
+msgstr "CADir"
 
 #: src/components/ChatGPT/ChatGPT.vue:22 src/components/ChatGPT/ChatGPT.vue:23
 #: src/components/ChatGPT/ChatGPT.vue:27 src/components/ChatGPT/ChatGPT.vue:29
@@ -196,7 +197,7 @@ msgstr ""
 #: src/views/domain/cert/components/ObtainCert.vue:191
 #: src/views/domain/components/Deploy.vue:26
 #: src/views/domain/components/RightSettings.vue:48
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:208
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:211
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:37
 msgid "Cancel"
 msgstr "取消"
@@ -233,7 +234,7 @@ msgstr "更換憑證"
 
 #: src/views/system/Upgrade.vue:35
 msgid "Channel"
-msgstr ""
+msgstr "通道"
 
 #: src/views/preference/OpenAISettings.vue:3
 msgid "ChatGPT Model"
@@ -261,7 +262,7 @@ msgstr "清除"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:33
 #: src/views/domain/ngx_conf/LocationEditor.vue:35
 #: src/views/domain/ngx_conf/LocationEditor.vue:52
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:260
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:263
 msgid "Comments"
 msgstr "備註"
 
@@ -292,7 +293,7 @@ msgstr "設定 SSL"
 #: src/views/dashboard/Environments.vue:8
 #: src/views/dashboard/Environments.vue:9
 msgid "Connected"
-msgstr ""
+msgstr "已連結"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:36
 #: src/views/domain/ngx_conf/LocationEditor.vue:41
@@ -429,15 +430,18 @@ msgstr "指令"
 msgid "Directives"
 msgstr "指令"
 
+#: src/views/domain/DomainList.vue:34
+msgid "Disable"
+msgstr "停用"
+
 #: src/views/domain/cert/components/ObtainCert.vue:61
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "關閉 %{name} 自動續簽失敗"
 
 #: src/views/cert/Cert.vue:47 src/views/domain/cert/ChangeCert.vue:47
 #: src/views/domain/DomainEdit.vue:10 src/views/domain/DomainEdit.vue:11
-#: src/views/domain/DomainList.vue:16 src/views/domain/DomainList.vue:34
-#: src/views/domain/DomainList.vue:7 src/views/domain/DomainList.vue:8
-#: src/views/domain/DomainList.vue:9
+#: src/views/domain/DomainList.vue:16 src/views/domain/DomainList.vue:7
+#: src/views/domain/DomainList.vue:8 src/views/domain/DomainList.vue:9
 msgid "Disabled"
 msgstr "停用"
 
@@ -469,7 +473,6 @@ msgstr "DNS01"
 msgid "Do you want to deploy this file to remote server?"
 msgid_plural "Do you want to deploy this file to remote servers?"
 msgstr[0] "您要將此檔案部署至遠端伺服器嗎？"
-msgstr[1] "您要將此檔案部署至遠端伺服器嗎？"
 
 #: src/views/domain/cert/components/ObtainCert.vue:187
 msgid "Do you want to disable auto-cert renewal?"
@@ -487,7 +490,7 @@ msgstr "您要啟用此網站嗎？"
 msgid "Do you want to enable TLS?"
 msgstr "您想啟用 TLS 嗎？"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:204
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:207
 msgid "Do you want to remove this server?"
 msgstr "您要移除此伺服器嗎？"
 
@@ -509,7 +512,7 @@ msgstr "正在下載最新版本"
 
 #: src/views/system/Upgrade.vue:53
 msgid "Dry run mode enabled"
-msgstr ""
+msgstr "試運轉模式已啟用"
 
 #: src/views/domain/components/SiteDuplicate.vue:2
 #: src/views/domain/DomainList.vue:14 src/views/domain/DomainList.vue:15
@@ -549,6 +552,10 @@ msgstr "編輯網站"
 msgid "Email (*)"
 msgstr "電子郵件 (*)"
 
+#: src/views/domain/DomainList.vue:31
+msgid "Enable"
+msgstr "啟用"
+
 #: src/views/domain/components/Deploy.vue:53
 msgid "Enable %{conf_name} in %{node_name} failed"
 msgstr "在 %{node_name} 啟用 %{conf_name} 失敗"
@@ -580,7 +587,6 @@ msgstr "啟用 TLS"
 #: src/views/domain/DomainEdit.vue:7 src/views/domain/DomainEdit.vue:8
 #: src/views/domain/DomainList.vue:10 src/views/domain/DomainList.vue:11
 #: src/views/domain/DomainList.vue:12 src/views/domain/DomainList.vue:19
-#: src/views/domain/DomainList.vue:31
 msgid "Enabled"
 msgstr "已啟用"
 
@@ -697,20 +703,25 @@ msgstr "正在取得憑證，請稍候..."
 msgid "Github Proxy"
 msgstr "Github 代理"
 
-#: src/views/preference/OpenAISettings.vue:11
-#: src/views/preference/OpenAISettings.vue:12
+#: src/views/preference/OpenAISettings.vue:14
+#: src/views/preference/OpenAISettings.vue:15
 msgid "GPT-3.5-Turbo"
 msgstr "GPT-3.5-Turbo"
 
-#: src/views/preference/OpenAISettings.vue:5
-#: src/views/preference/OpenAISettings.vue:6
+#: src/views/preference/OpenAISettings.vue:8
+#: src/views/preference/OpenAISettings.vue:9
 msgid "GPT-4"
 msgstr "GPT-4"
 
-#: src/views/preference/OpenAISettings.vue:8
-#: src/views/preference/OpenAISettings.vue:9
+#: src/views/preference/OpenAISettings.vue:11
+#: src/views/preference/OpenAISettings.vue:12
 msgid "GPT-4-32K"
 msgstr "GPT-4-32K"
+
+#: src/views/preference/OpenAISettings.vue:5
+#: src/views/preference/OpenAISettings.vue:6
+msgid "GPT-4-Turbo"
+msgstr "GPT-4-Turbo"
 
 #: src/routes/index.ts:25
 msgid "Home"
@@ -772,7 +783,7 @@ msgstr "上次檢查時間"
 msgid "Leave blank for no change"
 msgstr "留空表示不修改"
 
-#: src/views/preference/OpenAISettings.vue:18
+#: src/views/preference/OpenAISettings.vue:21
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "預設留空：https://api.openai.com/"
 
@@ -784,7 +795,7 @@ msgstr "淺色"
 #: src/views/dashboard/Environments.vue:8
 #: src/views/dashboard/Environments.vue:9
 msgid "Link Start"
-msgstr ""
+msgstr "連結開始"
 
 #: src/views/dashboard/ServerAnalytic.vue:161
 msgid "Load Averages:"
@@ -807,7 +818,8 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/routes/index.ts:182 src/views/other/Login.vue:104
+#: src/routes/index.ts:182 src/views/other/Login.vue:23
+#: src/views/other/Login.vue:24 src/views/other/Login.vue:30
 msgid "Login"
 msgstr "登入"
 
@@ -902,9 +914,8 @@ msgid "Next"
 msgstr "下一步"
 
 #: src/views/preference/Preference.vue:8
-#, fuzzy
 msgid "Nginx"
-msgstr "Nginx 日誌"
+msgstr "Nginx"
 
 #: src/views/preference/NginxSettings.vue:3
 msgid "Nginx Access Log Path"
@@ -973,7 +984,7 @@ msgstr "正在取得憑證"
 #: src/components/NodeSelector/NodeSelector.vue:11
 #: src/views/dashboard/Environments.vue:15
 #: src/views/dashboard/Environments.vue:16
-#: src/views/environment/Environment.vue:79
+#: src/views/environment/Environment.vue:81
 msgid "Offline"
 msgstr "離線"
 
@@ -986,7 +997,7 @@ msgstr "離線"
 #: src/views/domain/components/Deploy.vue:25
 #: src/views/domain/components/RightSettings.vue:47
 #: src/views/domain/DomainList.vue:28
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:207
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:210
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:36
 msgid "OK"
 msgstr "確定"
@@ -997,17 +1008,13 @@ msgstr "確定"
 #: src/components/NodeSelector/NodeSelector.vue:9
 #: src/views/dashboard/Environments.vue:14
 #: src/views/dashboard/Environments.vue:15
-#: src/views/environment/Environment.vue:76
+#: src/views/environment/Environment.vue:78
 msgid "Online"
 msgstr "線上"
 
 #: src/views/preference/Preference.vue:11
 msgid "OpenAI"
 msgstr "OpenAI"
-
-#: src/views/environment/Environment.vue:38
-msgid "OperationSync"
-msgstr ""
 
 #: src/views/system/Upgrade.vue:14 src/views/system/Upgrade.vue:15
 #: src/views/system/Upgrade.vue:19 src/views/system/Upgrade.vue:23
@@ -1320,7 +1327,7 @@ msgstr "SSL 憑證金鑰內容"
 msgid "Stable"
 msgstr "穩定"
 
-#: src/views/domain/DomainList.vue:24 src/views/environment/Environment.vue:69
+#: src/views/domain/DomainList.vue:24 src/views/environment/Environment.vue:71
 msgid "Status"
 msgstr "狀態"
 
@@ -1336,19 +1343,9 @@ msgstr "儲存空間"
 msgid "Subject Name: %{name}"
 msgstr "主體名稱: %{name}"
 
-#: src/views/environment/Environment.vue:67
-msgid ""
-"Such as Reload and Configs, regex can configure as `/api/nginx/reload|/api/"
-"nginx/test|/api/config/.+`, please see system api"
-msgstr ""
-
 #: src/views/dashboard/ServerAnalytic.vue:40
 msgid "Swap"
 msgstr "交換空間"
-
-#: src/views/environment/Environment.vue:55
-msgid "SyncApiRegex"
-msgstr ""
 
 #: src/routes/index.ts:157
 msgid "System"
@@ -1421,7 +1418,7 @@ msgstr "類型"
 #: src/views/cert/Cert.vue:68 src/views/cert/DNSCredential.vue:25
 #: src/views/config/config.ts:28 src/views/config/ConfigEdit.vue:31
 #: src/views/domain/components/RightSettings.vue:11
-#: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:86
+#: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:88
 #: src/views/user/User.vue:37
 msgid "Updated at"
 msgstr "更新時間"
@@ -1493,10 +1490,6 @@ msgid ""
 msgstr ""
 "我們將從該檔案中刪除 HTTPChallenge 設定並重新載入 Nginx 設定檔案。你確定你要"
 "繼續嗎？"
-
-#: src/views/environment/Environment.vue:45
-msgid "Whether config api regex that will redo on this environment"
-msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:104
 #: src/views/dashboard/ServerAnalytic.vue:29

@@ -28,10 +28,10 @@ const columns = [{
         const {text} = args
         if (text === true || text > 0) {
             template.push(<Badge status="success"/>)
-            template.push($gettext('Enabled'))
+            template.push($gettext('Enable'))
         } else {
             template.push(<Badge status="warning"/>)
-            template.push($gettext('Disabled'))
+            template.push($gettext('Disable'))
         }
         return h('div', template)
     },

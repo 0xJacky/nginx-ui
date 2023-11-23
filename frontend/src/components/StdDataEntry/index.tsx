@@ -1,6 +1,6 @@
 import StdDataEntry from './StdDataEntry.js'
 import {h} from 'vue'
-import {Input, InputNumber, Textarea, Switch} from 'ant-design-vue'
+import {Input, InputNumber, Switch, Textarea} from 'ant-design-vue'
 import StdSelector from './components/StdSelector.vue'
 import StdSelect from './components/StdSelect.vue'
 import StdPassword from './components/StdPassword.vue'
@@ -113,7 +113,7 @@ function selector(edit: IEdit, dataSource: any, dataIndex: any) {
 function antSwitch(edit: IEdit, dataSource: any, dataIndex: any) {
     return h(Switch, {
         checked: dataSource?.[dataIndex],
-        'onUpdate:checked': value => {
+        'onUpdate:checked': (value: any) => {
             dataSource[dataIndex] = value
         }
     })
