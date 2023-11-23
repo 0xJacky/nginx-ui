@@ -211,17 +211,16 @@ you can easily make the switch.
 
 ```bash
 docker run -dit \
---name=nginx-ui \
---restart=always \
--e TZ=Asia/Shanghai \
--v /mnt/user/appdata/nginx:/etc/nginx \
--v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
--v /var/www:/var/www \
--p 8080:80 -p 8443:443 \
-uozi/nginx-ui:latest
+  --name=nginx-ui \
+  --restart=always \
+  -e TZ=Asia/Shanghai \
+  -v /mnt/user/appdata/nginx:/etc/nginx \
+  -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
+  -p 8080:80 -p 8443:443 \
+  uozi/nginx-ui:latest
 ```
 
-3. When your docker container is running, Log in to nginx-ui panel with `http://<your_server_ip>:<listen_port>/install`.
+3. When your docker container is running, Log in to nginx-ui panel with `http://<your_server_ip>:8080/install`.
 </details>
 
 <details>
@@ -244,7 +243,7 @@ services:
         volumes:
             - '/mnt/user/appdata/nginx:/etc/nginx'
             - '/mnt/user/appdata/nginx-ui:/etc/nginx-ui'
-            - ' /var/www:/var/www'
+            - '/var/www:/var/www'
         ports:
             - 8080:80
             - 8443:443
@@ -262,7 +261,7 @@ docker-compose up -d
 docker compose up -d
 ```
 
-4. When your docker container is running, Log in to nginx-ui panel with `http://<your_server_ip>:<listen_port>/install`.
+4. When your docker container is running, Log in to nginx-ui panel with `http://<your_server_ip>:8080/install`.
 
 </details>
 
