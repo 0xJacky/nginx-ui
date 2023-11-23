@@ -324,6 +324,7 @@ func EnableDomain(c *gin.Context) {
 	// Test nginx config, if not pass then disable the site.
 	output, err := nginx.TestConf()
 	if err != nil {
+		_ = os.Remove(enabledConfigFilePath)
 		ErrHandler(c, err)
 		return
 	}
