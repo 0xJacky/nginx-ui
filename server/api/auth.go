@@ -2,12 +2,15 @@ package api
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/server/model"
 	"github.com/0xJacky/Nginx-UI/server/settings"
 	"github.com/casdoor/casdoor-go-sdk/casdoorsdk"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
-	"net/http"
+	"gorm.io/gorm"
 )
 
 type LoginUser struct {
@@ -81,6 +84,7 @@ func CasdoorCallback(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Casdoor is not configured",
 		})
+		return
 	}
 	casdoorsdk.InitConfig(endpoint, clientId, clientSecret, certificate, organization, application)
 	token, err := casdoorsdk.GetOAuthToken(loginUser.Code, loginUser.State)
@@ -99,9 +103,16 @@ func CasdoorCallback(c *gin.Context) {
 	}
 	u, err := model.GetUser(claims.Name)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": err.Error(),
-		})
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			c.JSON(http.StatusForbidden, gin.H{
+				"message": "User not exist",
+			})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"message": err.Error(),
+			})
+		}
+		return
 	}
 
 	userToken, err := model.GenerateJWT(u.Name)
