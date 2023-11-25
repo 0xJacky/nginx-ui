@@ -44,18 +44,19 @@ jobs:
             -   name: Set up nodejs
                 uses: actions/setup-node@v3
                 with:
-                    node-version: 18.x
+                    node-version: 21.x
 
             -   name: Install dependencies
                 run: |
                     corepack enable
-                    yarn install
+                    corepack prepare pnpm@latest --activate
+                    pnpm install
                 working-directory: frontend
 
             -   name: Build
                 run: |
                     npx browserslist@latest --update-db
-                    yarn build
+                    pnpm build
                 working-directory: frontend
 
             -   name: Archive frontend artifacts
