@@ -17,43 +17,43 @@ const table = ref(null)
 const route = useRoute()
 
 const basePath = computed(() => {
-    let dir = route?.query?.dir ?? ''
-    if (dir) dir += '/'
-    return dir
+  let dir = route?.query?.dir ?? ''
+  if (dir) dir += '/'
+  return dir
 })
 
 const get_params = computed(() => {
-    return {
-        dir: basePath.value
-    }
+  return {
+    dir: basePath.value
+  }
 })
 
 const update = ref(1)
 
 watch(get_params, () => {
-    update.value++
+  update.value++
 })
 
 const inspect_config = ref()
 
 watch(route, () => {
-    inspect_config.value?.test()
+  inspect_config.value?.test()
 })
 </script>
 
 <template>
-    <a-card :title="$gettext('Configurations')">
-        <inspect-config ref="inspect_config"/>
-        <std-table
-            :key="update"
-            ref="table"
-            :api="api"
-            :columns="configColumns"
-            :deletable="false"
-            :disable_search="true"
-            row-key="name"
-            :get_params="get_params"
-            @clickEdit="(r, row) => {
+  <a-card :title="$gettext('Configurations')">
+    <inspect-config ref="inspect_config"/>
+    <std-table
+      :key="update"
+      ref="table"
+      :api="api"
+      :columns="configColumns"
+      :deletable="false"
+      :disable_search="true"
+      row-key="name"
+      :get_params="get_params"
+      @clickEdit="(r, row) => {
                 if (!row.is_dir) {
                     $router.push({
                         path: '/config/' + basePath + r + '/edit'
@@ -66,11 +66,11 @@ watch(route, () => {
                     })
                 }
             }"
-        />
-        <footer-tool-bar v-if="basePath">
-            <a-button @click="router.go(-1)">{{ $gettext('Back') }}</a-button>
-        </footer-tool-bar>
-    </a-card>
+    />
+    <footer-tool-bar v-if="basePath">
+      <a-button @click="router.go(-1)">{{ $gettext('Back') }}</a-button>
+    </footer-tool-bar>
+  </a-card>
 </template>
 
 <style scoped>

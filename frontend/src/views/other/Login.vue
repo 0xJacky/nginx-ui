@@ -9,7 +9,6 @@ import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import http from '@/lib/http'
-import {onMounted} from 'vue'
 
 const thisYear = new Date().getFullYear()
 
@@ -17,173 +16,173 @@ const route = useRoute()
 const router = useRouter()
 
 install.get_lock().then(async (r: { lock: boolean }) => {
-    if (!r.lock) {
-        await router.push('/install')
-    }
+  if (!r.lock) {
+    await router.push('/install')
+  }
 })
 
 const {$gettext} = gettext
 const loading = ref(false)
 
 const modelRef = reactive({
-    username: '',
-    password: ''
+  username: '',
+  password: ''
 })
 
 const rulesRef = reactive({
-    username: [
-        {
-            required: true,
-            message: () => $gettext('Please input your username!')
-        }
-    ],
-    password: [
-        {
-            required: true,
-            message: () => $gettext('Please input your password!')
-        }
-    ]
+  username: [
+    {
+      required: true,
+      message: () => $gettext('Please input your username!')
+    }
+  ],
+  password: [
+    {
+      required: true,
+      message: () => $gettext('Please input your password!')
+    }
+  ]
 })
 
 const {validate, validateInfos, clearValidate} = Form.useForm(modelRef, rulesRef)
 
 const onSubmit = () => {
-    validate().then(async () => {
-        loading.value = true
-        await auth.login(modelRef.username, modelRef.password).then(async () => {
-            message.success($gettext('Login successful'), 1)
-            const next = (route.query?.next || '').toString() || '/'
-            await router.push(next)
-        }).catch(e => {
-            message.error($gettext(e.message ?? 'Server error'))
-        })
-        loading.value = false
+  validate().then(async () => {
+    loading.value = true
+    await auth.login(modelRef.username, modelRef.password).then(async () => {
+      message.success($gettext('Login successful'), 1)
+      const next = (route.query?.next || '').toString() || '/'
+      await router.push(next)
+    }).catch(e => {
+      message.error($gettext(e.message ?? 'Server error'))
     })
+    loading.value = false
+  })
 }
 
 const user = useUserStore()
 
 if (user.is_login) {
-    const next = (route.query?.next || '').toString() || '/dashboard'
-    router.push(next)
+  const next = (route.query?.next || '').toString() || '/dashboard'
+  router.push(next)
 }
 
 watch(() => gettext.current, () => {
-    clearValidate()
+  clearValidate()
 })
 
 const has_casdoor = ref(false)
 const casdoor_uri = ref('')
 
-http.get("/casdoor_uri")
-    .then((response) => {
-        if (response?.uri) {
-            has_casdoor.value = true
-            casdoor_uri.value = response.uri
-        }
-    })
-    .catch((e) => {
-        message.error($gettext(e.message ?? 'Server error'))
-    });
+http.get('/casdoor_uri')
+  .then((response) => {
+    if (response?.uri) {
+      has_casdoor.value = true
+      casdoor_uri.value = response.uri
+    }
+  })
+  .catch((e) => {
+    message.error($gettext(e.message ?? 'Server error'))
+  })
 
 const loginWithCasdoor = () => {
-    window.location.href = casdoor_uri.value
+  window.location.href = casdoor_uri.value
 }
 
 if (route.query?.code != undefined && route.query?.state != undefined) {
-    loading.value = true
-    auth.casdoorLogin(route.query.code.toString(), route.query.state.toString()).then(async () => {
-        message.success($gettext('Login successful'), 1)
-        const next = (route.query?.next || '').toString() || '/'
-        await router.push(next)
-    }).catch(e => {
-        message.error($gettext(e.message ?? 'Server error'))
-    })
-    loading.value = false
+  loading.value = true
+  auth.casdoorLogin(route.query.code.toString(), route.query.state.toString()).then(async () => {
+    message.success($gettext('Login successful'), 1)
+    const next = (route.query?.next || '').toString() || '/'
+    await router.push(next)
+  }).catch(e => {
+    message.error($gettext(e.message ?? 'Server error'))
+  })
+  loading.value = false
 }
 
 
 </script>
 
 <template>
-    <div class="container">
-        <div class="login-form">
-            <div class="project-title">
-                <h1>Nginx UI</h1>
-            </div>
-            <a-form id="components-form-demo-normal-login">
-                <a-form-item v-bind="validateInfos.username">
-                    <a-input
-                        v-model:value="modelRef.username"
-                        :placeholder="$gettext('Username')"
-                    >
-                        <template #prefix>
-                            <UserOutlined style="color: rgba(0, 0, 0, 0.25)"/>
-                        </template>
-                    </a-input>
-                </a-form-item>
-                <a-form-item v-bind="validateInfos.password">
-                    <a-input-password
-                        v-model:value="modelRef.password"
-                        :placeholder="$gettext('Password')"
-                    >
-                        <template #prefix>
-                            <LockOutlined style="color: rgba(0, 0, 0, 0.25)"/>
-                        </template>
-                    </a-input-password>
-                </a-form-item>
-                <a-form-item>
-                    <a-button @click="onSubmit" type="primary" :block="true" html-type="submit" :loading="loading">
-                        {{ $gettext('Login') }}
-                    </a-button>
-                </a-form-item>
-            </a-form>
-            <a-button @click="loginWithCasdoor" :block="true" html-type="submit" :loading="loading" v-if="has_casdoor">
-                {{ $gettext('SSO Login') }}
-            </a-button>
-            <div class="footer">
-                <p>Copyright © 2020 - {{ thisYear }} Nginx UI</p>
-                Language
-                <set-language class="set_lang" style="display: inline"/>
-            </div>
-        </div>
+  <div class="container">
+    <div class="login-form">
+      <div class="project-title">
+        <h1>Nginx UI</h1>
+      </div>
+      <a-form id="components-form-demo-normal-login">
+        <a-form-item v-bind="validateInfos.username">
+          <a-input
+            v-model:value="modelRef.username"
+            :placeholder="$gettext('Username')"
+          >
+            <template #prefix>
+              <UserOutlined style="color: rgba(0, 0, 0, 0.25)"/>
+            </template>
+          </a-input>
+        </a-form-item>
+        <a-form-item v-bind="validateInfos.password">
+          <a-input-password
+            v-model:value="modelRef.password"
+            :placeholder="$gettext('Password')"
+          >
+            <template #prefix>
+              <LockOutlined style="color: rgba(0, 0, 0, 0.25)"/>
+            </template>
+          </a-input-password>
+        </a-form-item>
+        <a-form-item>
+          <a-button @click="onSubmit" type="primary" :block="true" html-type="submit" :loading="loading">
+            {{ $gettext('Login') }}
+          </a-button>
+        </a-form-item>
+      </a-form>
+      <a-button @click="loginWithCasdoor" :block="true" html-type="submit" :loading="loading" v-if="has_casdoor">
+        {{ $gettext('SSO Login') }}
+      </a-button>
+      <div class="footer">
+        <p>Copyright © 2020 - {{ thisYear }} Nginx UI</p>
+        Language
+        <set-language class="set_lang" style="display: inline"/>
+      </div>
     </div>
+  </div>
 </template>
 
 <style lang="less">
 .container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 
-    .login-form {
-        max-width: 400px;
-        width: 80%;
+  .login-form {
+    max-width: 400px;
+    width: 80%;
 
-        .project-title {
-            margin: 50px;
+    .project-title {
+      margin: 50px;
 
-            h1 {
-                font-size: 50px;
-                font-weight: 100;
-                text-align: center;
-            }
-        }
-
-        .anticon {
-            color: #a8a5a5 !important;
-        }
-
-        .login-form-button {
-
-        }
-
-        .footer {
-            padding: 30px;
-            text-align: center;
-        }
+      h1 {
+        font-size: 50px;
+        font-weight: 100;
+        text-align: center;
+      }
     }
+
+    .anticon {
+      color: #a8a5a5 !important;
+    }
+
+    .login-form-button {
+
+    }
+
+    .footer {
+      padding: 30px;
+      text-align: center;
+    }
+  }
 }
 
 </style>

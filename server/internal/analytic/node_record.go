@@ -106,7 +106,6 @@ func nodeAnalyticRecord(env *model.Environment, ctx context.Context) (err error)
 			websocket.CloseNormalClosure) {
 			return err
 		}
-		logger.Debugf("recv: %s %s", env.Name, message)
 
 		err = json.Unmarshal(message, &nodeStat)
 

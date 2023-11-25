@@ -10,81 +10,81 @@ const providers: any = ref([])
 const data: any = inject('data')!
 
 const code = computed(() => {
-    return data.code
+  return data.code
 })
 
 function init() {
-    data.configuration = {
-        credentials: {},
-        additional: {}
+  data.configuration = {
+    credentials: {},
+    additional: {}
+  }
+  providers.value?.forEach((v: any, k: number) => {
+    if (v.code === code.value) {
+      provider_idx.value = k
     }
-    providers.value?.forEach((v: any, k: number) => {
-        if (v.code === code.value) {
-            provider_idx.value = k
-        }
-    })
+  })
 }
 
 auto_cert.get_dns_providers().then(r => {
-    providers.value = r
+  providers.value = r
 }).then(() => {
-    init()
+  init()
 })
 
 const provider_idx = ref()
 
 const current: any = computed(() => {
-    return providers.value?.[provider_idx.value]
+  return providers.value?.[provider_idx.value]
 })
 
 
 watch(code, init)
 
 watch(current, () => {
-    data.code = current.value.code
-    data.provider = current.value.name
-    auto_cert.get_dns_provider(current.value.code).then(r => {
-        Object.assign(current.value, r)
-    })
+  data.code = current.value.code
+  data.provider = current.value.name
+  auto_cert.get_dns_provider(current.value.code).then(r => {
+    Object.assign(current.value, r)
+  })
 })
 
 const options = computed<SelectProps['options']>(() => {
-    let list: SelectProps['options'] = []
+  let list: SelectProps['options'] = []
 
-    providers.value.forEach((v: any, k: number) => {
-        list!.push({
-            value: k,
-            label: v.name
-        })
+  providers.value.forEach((v: any, k: number) => {
+    list!.push({
+      value: k,
+      label: v.name
     })
+  })
 
-    return list
+  return list
 })
 
 const filterOption = (input: string, option: any) => {
-    return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
 }
 </script>
 
 <template>
-    <a-form layout="vertical">
-        <a-form-item :label="$gettext('DNS Provider')">
-            <a-select v-model:value="provider_idx" show-search :options="options" :filter-option="filterOption"/>
-        </a-form-item>
-        <template v-if="current?.configuration?.credentials">
-            <h4>{{ $gettext('Credentials') }}</h4>
-            <a-form-item :label="k" v-for="(v,k) in current?.configuration?.credentials"
-                         :extra="v" :rules="[{ required: true }]">
-                <a-input v-model:value="data.configuration.credentials[k]"/>
-            </a-form-item>
-        </template>
-        <template v-if="current?.configuration?.additional">
-            <h4>{{ $gettext('Additional') }}</h4>
-            <a-form-item :label="k" v-for="(v,k) in current?.configuration?.additional" :extra="v">
-                <a-input v-model:value="data.configuration.additional[k]"/>
-            </a-form-item>
-        </template>
-    </a-form>
+  <a-form layout="vertical">
+    <a-form-item :label="$gettext('DNS Provider')">
+      <a-select v-model:value="provider_idx" show-search :options="options" :filter-option="filterOption"/>
+    </a-form-item>
+    <template v-if="current?.configuration?.credentials">
+      <h4>{{ $gettext('Credentials') }}</h4>
+      <a-form-item :label="k" v-for="(v,k) in current?.configuration?.credentials"
+                   :extra="v" :rules="[{ required: true }]">
+        <a-input v-model:value="data.configuration.credentials[k]"/>
+      </a-form-item>
+    </template>
+    <template v-if="current?.configuration?.additional">
+      <h4>{{ $gettext('Additional') }}</h4>
+      <a-form-item :label="k" v-for="(v,k) in current?.configuration?.additional" :extra="v">
+        <a-input v-model:value="data.configuration.additional[k]"/>
+      </a-form-item>
+    </template>
+  </a-form>
 </template>
 
 <style lang="less" scoped>

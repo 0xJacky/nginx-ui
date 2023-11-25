@@ -10,115 +10,115 @@ const settings = useSettingsStore()
 const {theme} = storeToRefs(settings)
 
 const fontColor = () => {
-    return theme.value === 'dark' ? '#b4b4b4' : undefined
+  return theme.value === 'dark' ? '#b4b4b4' : undefined
 }
 
 const chart = ref(null)
 
 let chartOptions = {
-    chart: {
-        type: 'area',
-        zoom: {
-            enabled: false
-        },
-        animations: {
-            enabled: false
-        },
-        toolbar: {
-            show: false
-        }
+  chart: {
+    type: 'area',
+    zoom: {
+      enabled: false
     },
-    colors: ['#ff6385', '#36a3eb'],
-    fill: {
-        // type: ['solid', 'gradient'],
-        gradient: {
-            shade: 'light'
-        }
-        //colors:  ['#ff6385', '#36a3eb'],
+    animations: {
+      enabled: false
     },
-    dataLabels: {
-        enabled: false
-    },
-    stroke: {
-        curve: 'smooth',
-        width: 0
-    },
-    xaxis: {
-        type: 'datetime',
-        labels: {
-            datetimeUTC: false,
-            style: {
-                colors: fontColor()
-            }
-        }
-    },
-    tooltip: {
-        enabled: false
-    },
-    yaxis: {
-        max: max,
-        tickAmount: 4,
-        min: 0,
-        labels: {
-            style: {
-                colors: fontColor()
-            },
-            formatter: y_formatter
-        }
-    },
-    legend: {
-        labels: {
-            colors: fontColor()
-        },
-        onItemClick: {
-            toggleDataSeries: false
-        },
-        onItemHover: {
-            highlightDataSeries: false
-        }
+    toolbar: {
+      show: false
     }
+  },
+  colors: ['#ff6385', '#36a3eb'],
+  fill: {
+    // type: ['solid', 'gradient'],
+    gradient: {
+      shade: 'light'
+    }
+    //colors:  ['#ff6385', '#36a3eb'],
+  },
+  dataLabels: {
+    enabled: false
+  },
+  stroke: {
+    curve: 'smooth',
+    width: 0
+  },
+  xaxis: {
+    type: 'datetime',
+    labels: {
+      datetimeUTC: false,
+      style: {
+        colors: fontColor()
+      }
+    }
+  },
+  tooltip: {
+    enabled: false
+  },
+  yaxis: {
+    max: max,
+    tickAmount: 4,
+    min: 0,
+    labels: {
+      style: {
+        colors: fontColor()
+      },
+      formatter: y_formatter
+    }
+  },
+  legend: {
+    labels: {
+      colors: fontColor()
+    },
+    onItemClick: {
+      toggleDataSeries: false
+    },
+    onItemHover: {
+      highlightDataSeries: false
+    }
+  }
 }
 
 let instance: ApexCharts | null = chart.value
 
 const callback = () => {
-    chartOptions = {
-        ...chartOptions,
-        ...{
-            xaxis: {
-                type: 'datetime',
-                labels: {
-                    datetimeUTC: false,
-                    style: {
-                        colors: fontColor()
-                    }
-                }
-            },
-            yaxis: {
-                max: max,
-                tickAmount: 4,
-                min: 0,
-                labels: {
-                    style: {
-                        colors: fontColor()
-                    },
-                    formatter: y_formatter
-                }
-            },
-            legend: {
-                labels: {
-                    colors: fontColor()
-                },
-                onItemClick: {
-                    toggleDataSeries: false
-                },
-                onItemHover: {
-                    highlightDataSeries: false
-                }
-            }
+  chartOptions = {
+    ...chartOptions,
+    ...{
+      xaxis: {
+        type: 'datetime',
+        labels: {
+          datetimeUTC: false,
+          style: {
+            colors: fontColor()
+          }
         }
+      },
+      yaxis: {
+        max: max,
+        tickAmount: 4,
+        min: 0,
+        labels: {
+          style: {
+            colors: fontColor()
+          },
+          formatter: y_formatter
+        }
+      },
+      legend: {
+        labels: {
+          colors: fontColor()
+        },
+        onItemClick: {
+          toggleDataSeries: false
+        },
+        onItemHover: {
+          highlightDataSeries: false
+        }
+      }
     }
-    instance?.updateOptions?.(chartOptions)
+  }
+  instance?.updateOptions?.(chartOptions)
 }
 
 
@@ -129,7 +129,7 @@ watch(theme, callback)
 </script>
 
 <template>
-    <VueApexCharts type="area" height="200" :options="chartOptions" :series="series" ref="chart"/>
+  <VueApexCharts type="area" height="200" :options="chartOptions" :series="series" ref="chart"/>
 </template>
 
 

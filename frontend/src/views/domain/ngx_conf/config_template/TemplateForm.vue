@@ -5,9 +5,9 @@ const props = defineProps(['data'])
 </script>
 
 <template>
-    <a-form layout="vertical">
-        <template-form-item v-for="(v,k) in data" :name="k" :data="v"/>
-    </a-form>
+  <a-form layout="vertical">
+    <template-form-item v-for="(v,k) in data" :name="k" :data="v"/>
+  </a-form>
 </template>
 
 <style lang="less" scoped>

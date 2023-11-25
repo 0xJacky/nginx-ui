@@ -16,34 +16,34 @@ let directive = reactive({})
 const current_idx = ref(-1)
 
 function onSave(idx: number) {
-    setTimeout(() => {
-        current_idx.value = idx + 1
-    }, 50)
+  setTimeout(() => {
+    current_idx.value = idx + 1
+  }, 50)
 }
 </script>
 
 <template>
-    <h2>{{ $gettext('Directives') }}</h2>
+  <h2>{{ $gettext('Directives') }}</h2>
 
-    <draggable
-        :list="props.ngx_directives"
-        item-key="name"
-        class="list-group"
-        ghost-class="ghost"
-        handle=".anticon-holder"
-    >
-        <template #item="{ element: directive, index }">
-            <directive-editor-item @click="current_idx=index"
-                                   :directive="directive"
-                                   :current_idx="current_idx" :index="index"
-                                   :ngx_directives="ngx_directives"
-                                   :readonly="readonly"
-                                   v-auto-animate
-            />
-        </template>
-    </draggable>
+  <draggable
+    :list="props.ngx_directives"
+    item-key="name"
+    class="list-group"
+    ghost-class="ghost"
+    handle=".anticon-holder"
+  >
+    <template #item="{ element: directive, index }">
+      <directive-editor-item @click="current_idx=index"
+                             :directive="directive"
+                             :current_idx="current_idx" :index="index"
+                             :ngx_directives="ngx_directives"
+                             :readonly="readonly"
+                             v-auto-animate
+      />
+    </template>
+  </draggable>
 
-    <directive-add v-if="!readonly" :ngx_directives="ngx_directives" v-auto-animate/>
+  <directive-add v-if="!readonly" :ngx_directives="ngx_directives" v-auto-animate/>
 </template>
 
 <style lang="less" scoped>

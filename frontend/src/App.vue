@@ -2,38 +2,41 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import {useSettingsStore} from '@/pinia'
-import {dark_mode} from '@/lib/theme'
+import {computed, provide} from 'vue'
 
-let media = window.matchMedia('(prefers-color-scheme: dark)')
+const media = window.matchMedia('(prefers-color-scheme: dark)')
 
 const callback = (media: { matches: any; }) => {
-    const settings = useSettingsStore()
-    if (settings.preference_theme === 'auto') {
-        if (media.matches) {
-            dark_mode(true)
-            settings.set_theme('dark')
-        } else {
-            dark_mode(false)
-            settings.set_theme('auto')
-        }
+  const settings = useSettingsStore()
+  if (settings.preference_theme === 'auto') {
+    if (media.matches) {
+      settings.set_theme('dark')
     } else {
-        dark_mode(settings.preference_theme === 'dark')
+      settings.set_theme('light')
     }
+  } else {
+    settings.set_theme(settings.preference_theme)
+  }
 }
 
 callback(media)
 
-if (typeof media.addEventListener === 'function') {
-    media.addEventListener('change', callback)
-} else if (typeof media.addListener === 'function') {
-    media.addListener(callback)
-}
+const devicePrefersTheme = computed(() => {
+  return media.matches ? 'dark' : 'light'
+})
 
+provide('devicePrefersTheme', devicePrefersTheme)
+
+media.addEventListener('change', callback)
 </script>
 
 <template>
-    <router-view/>
+  <router-view/>
 </template>
+
+<style lang="less">
+@import "ant-design-vue/dist/reset.css";
+</style>
 
 <style lang="less" scoped>
 

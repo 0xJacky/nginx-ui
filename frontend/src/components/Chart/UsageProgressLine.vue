@@ -2,51 +2,51 @@
 import {computed} from 'vue'
 
 const props = withDefaults(defineProps<{
-    percent: number
+  percent: number
 }>(), {
-    percent: 0
+  percent: 0
 })
 
 const color = computed(() => {
-    if (props.percent < 80) {
-        return '#1890ff'
-    } else if (props.percent >= 80 && props.percent < 90) {
-        return '#faad14'
-    } else {
-        return '#ff6385'
-    }
+  if (props.percent < 80) {
+    return '#1890ff'
+  } else if (props.percent >= 80 && props.percent < 90) {
+    return '#faad14'
+  } else {
+    return '#ff6385'
+  }
 })
 
 const fixed_percent = computed(() => {
-    return parseFloat(props.percent.toFixed(2))
+  return parseFloat(props.percent.toFixed(2))
 })
 </script>
 
 <template>
+  <div>
     <div>
-        <div>
-            <span class="slot-icon"><slot name="icon"></slot></span>
-            <span class="slot">
+      <span class="slot-icon"><slot name="icon"></slot></span>
+      <span class="slot">
                 <slot></slot>
             </span>
-            <span class="dot"> ·</span> {{ fixed_percent + '%' }}
-        </div>
-        <a-progress :percent="fixed_percent" :stroke-color="color" :show-info="false"/>
+      <span class="dot"> ·</span> {{ fixed_percent + '%' }}
     </div>
+    <a-progress :percent="fixed_percent" :stroke-color="color" :show-info="false"/>
+  </div>
 </template>
 
 <style scoped lang="less">
 .slot-icon {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 @media (max-width: 1000px) and  (min-width: 600px) {
-    .dot {
-        display: none;
-    }
+  .dot {
+    display: none;
+  }
 
-    .slot {
-        display: none;
-    }
+  .slot {
+    display: none;
+  }
 }
 </style>

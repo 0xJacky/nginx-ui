@@ -16,97 +16,97 @@ let ping: NodeJS.Timer
 const websocket = ws('/api/pty')
 
 onMounted(() => {
-    initTerm()
+  initTerm()
 
-    websocket.onmessage = wsOnMessage
-    websocket.onopen = wsOnOpen
+  websocket.onmessage = wsOnMessage
+  websocket.onopen = wsOnOpen
 })
 
 interface Message {
-    Type: Number,
-    Data: any | null
+  Type: Number,
+  Data: any | null
 }
 
 const fitAddon = new FitAddon()
 
 const fit = _.throttle(function () {
-    fitAddon.fit()
+  fitAddon.fit()
 }, 50)
 
 function initTerm() {
-    term = new Terminal({
-        convertEol: true,
-        fontSize: 14,
-        cursorStyle: 'block',
-        scrollback: 1000,
-        theme: {
-            background: '#000'
-        }
-    })
+  term = new Terminal({
+    convertEol: true,
+    fontSize: 14,
+    cursorStyle: 'block',
+    scrollback: 1000,
+    theme: {
+      background: '#000'
+    }
+  })
 
-    term.loadAddon(fitAddon)
-    term.open(document.getElementById('terminal')!)
-    setTimeout(() => {
-        fitAddon.fit()
-    }, 60)
-    window.addEventListener('resize', fit)
-    term.focus()
+  term.loadAddon(fitAddon)
+  term.open(document.getElementById('terminal')!)
+  setTimeout(() => {
+    fitAddon.fit()
+  }, 60)
+  window.addEventListener('resize', fit)
+  term.focus()
 
-    term.onData(function (key) {
-        let order: Message = {
-            Data: key,
-            Type: 1
-        }
-        sendMessage(order)
-    })
-    term.onBinary(data => {
-        sendMessage({Type: 1, Data: data})
-    })
-    term.onResize(data => {
-        sendMessage({Type: 2, Data: {Cols: data.cols, Rows: data.rows}})
-    })
+  term.onData(function (key) {
+    let order: Message = {
+      Data: key,
+      Type: 1
+    }
+    sendMessage(order)
+  })
+  term.onBinary(data => {
+    sendMessage({Type: 1, Data: data})
+  })
+  term.onResize(data => {
+    sendMessage({Type: 2, Data: {Cols: data.cols, Rows: data.rows}})
+  })
 }
 
 function sendMessage(data: Message) {
-    websocket.send(JSON.stringify(data))
+  websocket.send(JSON.stringify(data))
 }
 
 function wsOnMessage(msg: { data: any }) {
-    term!.write(msg.data)
+  term!.write(msg.data)
 }
 
 function wsOnOpen() {
-    ping = setInterval(function () {
-        sendMessage({Type: 3, Data: null})
-    }, 30000)
+  ping = setInterval(function () {
+    sendMessage({Type: 3, Data: null})
+  }, 30000)
 }
 
 onUnmounted(() => {
-    window.removeEventListener('resize', fit)
-    clearInterval(ping)
-    term?.dispose()
-    ping = null
-    websocket.close()
+  window.removeEventListener('resize', fit)
+  clearInterval(ping)
+  term?.dispose()
+  ping = null
+  websocket.close()
 })
 
 </script>
 
 <template>
-    <a-card :title="$gettext('Terminal')">
-        <div class="console" id="terminal"></div>
-    </a-card>
+  <a-card :title="$gettext('Terminal')">
+    <div class="console" id="terminal"></div>
+  </a-card>
 </template>
 
 <style lang="less" scoped>
 .console {
-    min-height: calc(100vh - 300px);
+  min-height: calc(100vh - 300px);
 
-    :deep(.terminal) {
-        padding: 10px;
-    }
+  :deep(.terminal) {
+    padding: 10px;
+  }
 
-    :deep(.xterm-viewport) {
-        border-radius: 5px;
-    }
+  :deep(.xterm-viewport) {
+    border-radius: 5px;
+  }
 }
 </style>

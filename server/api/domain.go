@@ -325,8 +325,6 @@ func EnableDomain(c *gin.Context) {
 	output, err := nginx.TestConf()
 	if err != nil {
 		_ = os.Remove(enabledConfigFilePath)
-		ErrHandler(c, err)
-		return
 	}
 
 	if nginx.GetLogLevel(output) > nginx.Warn {
@@ -337,11 +335,7 @@ func EnableDomain(c *gin.Context) {
 		return
 	}
 
-	output, err = nginx.Reload()
-	if err != nil {
-		ErrHandler(c, err)
-		return
-	}
+	output, _ = nginx.Reload()
 
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -380,11 +374,7 @@ func DisableDomain(c *gin.Context) {
 		return
 	}
 
-	output, err := nginx.Reload()
-	if err != nil {
-		ErrHandler(c, err)
-		return
-	}
+	output, _ := nginx.Reload()
 
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		c.JSON(http.StatusInternalServerError, gin.H{
