@@ -8,6 +8,8 @@ import {Form, message} from 'ant-design-vue'
 import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
+import http from '@/lib/http'
+import {onMounted} from 'vue'
 
 const thisYear = new Date().getFullYear()
 
@@ -70,6 +72,37 @@ watch(() => gettext.current, () => {
     clearValidate()
 })
 
+const has_casdoor = ref(false)
+const casdoor_uri = ref('')
+
+http.get("/casdoor_uri")
+    .then((response) => {
+        if (response?.uri) {
+            has_casdoor.value = true
+            casdoor_uri.value = response.uri
+        }
+    })
+    .catch((e) => {
+        message.error($gettext(e.message ?? 'Server error'))
+    });
+
+const loginWithCasdoor = () => {
+    window.location.href = casdoor_uri.value
+}
+
+if (route.query?.code != undefined && route.query?.state != undefined) {
+    loading.value = true
+    auth.casdoorLogin(route.query.code.toString(), route.query.state.toString()).then(async () => {
+        message.success($gettext('Login successful'), 1)
+        const next = (route.query?.next || '').toString() || '/'
+        await router.push(next)
+    }).catch(e => {
+        message.error($gettext(e.message ?? 'Server error'))
+    })
+    loading.value = false
+}
+
+
 </script>
 
 <template>
@@ -105,6 +138,9 @@ watch(() => gettext.current, () => {
                     </a-button>
                 </a-form-item>
             </a-form>
+            <a-button @click="loginWithCasdoor" :block="true" html-type="submit" :loading="loading" v-if="has_casdoor">
+                {{ $gettext('SSO Login') }}
+            </a-button>
             <div class="footer">
                 <p>Copyright © 2020 - {{ thisYear }} Nginx UI</p>
                 Language

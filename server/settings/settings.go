@@ -16,19 +16,26 @@ var (
 )
 
 type Server struct {
-	HttpHost          string `json:"http_host"`
-	HttpPort          string `json:"http_port"`
-	RunMode           string `json:"run_mode"`
-	JwtSecret         string `json:"jwt_secret"`
-	NodeSecret        string `json:"node_secret"`
-	HTTPChallengePort string `json:"http_challenge_port"`
-	Email             string `json:"email"`
-	Database          string `json:"database"`
-	StartCmd          string `json:"start_cmd"`
-	CADir             string `json:"ca_dir"`
-	Demo              bool   `json:"demo"`
-	PageSize          int    `json:"page_size"`
-	GithubProxy       string `json:"github_proxy"`
+	HttpHost            string `json:"http_host"`
+	HttpPort            string `json:"http_port"`
+	RunMode             string `json:"run_mode"`
+	JwtSecret           string `json:"jwt_secret"`
+	NodeSecret          string `json:"node_secret"`
+	HTTPChallengePort   string `json:"http_challenge_port"`
+	Email               string `json:"email"`
+	Database            string `json:"database"`
+	StartCmd            string `json:"start_cmd"`
+	CADir               string `json:"ca_dir"`
+	Demo                bool   `json:"demo"`
+	PageSize            int    `json:"page_size"`
+	GithubProxy         string `json:"github_proxy"`
+	CasdoorEndpoint     string `json:"casdoor_endpoint"`
+	CasdoorClientId     string `json:"casdoor_client_id"`
+	CasdoorClientSecret string `json:"casdoor_client_secret"`
+	CasdoorCertificate  string `json:"casdoor_certificate"`
+	CasdoorOrganization string `json:"casdoor_organization"`
+	CasdoorApplication  string `json:"casdoor_application"`
+	CasdoorRedirectUri  string `json:"casdoor_redirect_uri"`
 }
 
 type Nginx struct {
@@ -49,16 +56,23 @@ type OpenAI struct {
 }
 
 var ServerSettings = Server{
-	HttpHost:          "0.0.0.0",
-	HttpPort:          "9000",
-	RunMode:           "debug",
-	HTTPChallengePort: "9180",
-	Database:          "database",
-	StartCmd:          "login",
-	Demo:              false,
-	PageSize:          10,
-	CADir:             "",
-	GithubProxy:       "",
+	HttpHost:            "0.0.0.0",
+	HttpPort:            "9000",
+	RunMode:             "debug",
+	HTTPChallengePort:   "9180",
+	Database:            "database",
+	StartCmd:            "login",
+	Demo:                false,
+	PageSize:            10,
+	CADir:               "",
+	GithubProxy:         "",
+	CasdoorEndpoint:     "",
+	CasdoorClientId:     "",
+	CasdoorClientSecret: "",
+	CasdoorCertificate:  "",
+	CasdoorOrganization: "",
+	CasdoorApplication:  "",
+	CasdoorRedirectUri:  "",
 }
 
 var NginxSettings = Nginx{
