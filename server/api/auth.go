@@ -1,7 +1,10 @@
 package api
 
 import (
+	"fmt"
 	"github.com/0xJacky/Nginx-UI/server/model"
+	"github.com/0xJacky/Nginx-UI/server/settings"
+	"github.com/casdoor/casdoor-go-sdk/casdoorsdk"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
@@ -54,4 +57,63 @@ func Logout(c *gin.Context) {
 		}
 	}
 	c.JSON(http.StatusNoContent, nil)
+}
+
+type CasdoorLoginUser struct {
+	Code  string `json:"code" binding:"required,max=255"`
+	State string `json:"state" binding:"required,max=255"`
+}
+
+func CasdoorCallback(c *gin.Context) {
+	var loginUser CasdoorLoginUser
+	fmt.Println("CasdoorCallback called")
+	ok := BindAndValid(c, &loginUser)
+	if !ok {
+		return
+	}
+	endpoint := settings.ServerSettings.CasdoorEndpoint
+	clientId := settings.ServerSettings.CasdoorClientId
+	clientSecret := settings.ServerSettings.CasdoorClientSecret
+	certificate := settings.ServerSettings.CasdoorCertificate
+	organization := settings.ServerSettings.CasdoorOrganization
+	application := settings.ServerSettings.CasdoorApplication
+	if endpoint == "" || clientId == "" || clientSecret == "" || certificate == "" || organization == "" || application == "" {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Casdoor is not configured",
+		})
+	}
+	casdoorsdk.InitConfig(endpoint, clientId, clientSecret, certificate, organization, application)
+	token, err := casdoorsdk.GetOAuthToken(loginUser.Code, loginUser.State)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+	claims, err := casdoorsdk.ParseJwtToken(token.AccessToken)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+	u, err := model.GetUser(claims.Name)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+	}
+
+	userToken, err := model.GenerateJWT(u.Name)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+		"token":   userToken,
+	})
 }

@@ -13,6 +13,15 @@ const auth = {
             login(r.token)
         })
     },
+    async casdoorLogin(code: string, state: string) {
+        await http.post("/casdoor_callback", {
+            code: code,
+            state: state,
+        })
+        .then((r) => {
+            login(r.token)
+        })
+    },
     logout() {
         return http.delete('/logout').then(async () => {
             logout()

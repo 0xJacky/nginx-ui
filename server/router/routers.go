@@ -33,6 +33,9 @@ func InitRouter() *gin.Engine {
 		root.POST("/login", api.Login)
 		root.DELETE("/logout", api.Logout)
 
+		root.GET("/casdoor_uri", api.GetCasdoorUri)
+		root.POST("/casdoor_callback", api.CasdoorCallback)
+
 		// translation
 		root.GET("translation/:code", api.GetTranslation)
 

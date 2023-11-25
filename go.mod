@@ -7,6 +7,7 @@ toolchain go1.21.0
 require (
 	github.com/0xJacky/pofile v0.2.1
 	github.com/BurntSushi/toml v1.3.2
+	github.com/casdoor/casdoor-go-sdk v0.32.1
 	github.com/creack/pty v1.1.20
 	github.com/dustin/go-humanize v1.0.1
 	github.com/fatih/color v1.15.0
@@ -236,7 +237,7 @@ require (
 	golang.org/x/arch v0.5.0 // indirect
 	golang.org/x/mod v0.12.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
-	golang.org/x/oauth2 v0.12.0 // indirect
+	golang.org/x/oauth2 v0.13.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
