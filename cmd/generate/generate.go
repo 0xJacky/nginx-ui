@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/server/model"
-	"github.com/0xJacky/Nginx-UI/server/settings"
+	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gen"
 	"gorm.io/gorm"
