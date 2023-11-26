@@ -33,16 +33,17 @@ jobs:
             -   name: Set up nodejs
                 uses: actions/setup-node@v3
                 with:
-                    node-version: 18.x
-                    cache: 'yarn'
-                    cache-dependency-path: 'docs/yarn.lock'
+                    node-version: 21.x
 
             -   name: Install dependencies
-                run: yarn install
+                run: |
+                    corepack enable
+                    corepack prepare pnpm@latest --activate
+                    pnpm install
                 working-directory: docs
 
             -   name: Build
-                run: COMMIT_REF=$(git rev-parse HEAD) yarn docs:build
+                run: COMMIT_REF=$(git rev-parse HEAD) pnpm docs:build
                 working-directory: docs
 
             -   name: Archive artifacts
