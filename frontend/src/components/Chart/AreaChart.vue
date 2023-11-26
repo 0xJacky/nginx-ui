@@ -120,16 +120,12 @@ const callback = () => {
   }
   instance?.updateOptions?.(chartOptions)
 }
-
-
 watch(theme, callback)
-// watch(series, () => {
-//     instance?.updateSeries(series)
-// })
 </script>
 
 <template>
-  <VueApexCharts type="area" height="200" :options="chartOptions" :series="series" ref="chart"/>
+  <!-- Use theme as key to rerender the chart when theme changes to prevent style issues -->
+  <VueApexCharts :key="theme" type="area" height="200" :options="chartOptions" :series="series" ref="chart"/>
 </template>
 
 

@@ -8,79 +8,51 @@ import (
 	"regexp"
 )
 
-func execShell(cmd string) (out string, err error) {
-	bytes, err := exec.Command("/bin/sh", "-c", cmd).CombinedOutput()
+func execShell(cmdArgs ...string) (out string) {
+	cmd := []string{"-c"}
+	cmd = append(cmd, cmdArgs...)
+
+	bytes, err := exec.Command("/bin/sh", cmd...).CombinedOutput()
 	out = string(bytes)
+	if err != nil {
+		out += " " + err.Error()
+	}
 	return
 }
 
-func TestConf() (string, error) {
+func TestConf() (out string) {
 	if settings.NginxSettings.TestConfigCmd != "" {
-		out, err := execShell(settings.NginxSettings.TestConfigCmd)
+		out = execShell(settings.NginxSettings.TestConfigCmd)
 
-		if err != nil {
-			logger.Error(err)
-			return out, err
-		}
-
-		return out, nil
+		return
 	}
 
-	out, err := exec.Command("nginx", "-t").CombinedOutput()
-	if err != nil {
-		logger.Error(err)
-		return string(out), err
-	}
+	out = execShell("nginx", "-t")
 
-	return string(out), nil
+	return
 }
 
-func Reload() (string, error) {
+func Reload() (out string) {
 	if settings.NginxSettings.ReloadCmd != "" {
-		out, err := execShell(settings.NginxSettings.ReloadCmd)
-
-		if err != nil {
-			logger.Error(err)
-			return out, err
-		}
-
-		return out, nil
-
-	} else {
-		out, err := exec.Command("nginx", "-s", "reload").CombinedOutput()
-
-		if err != nil {
-			logger.Error(err)
-			return string(out), err
-		}
-
-		return string(out), nil
+		out = execShell(settings.NginxSettings.ReloadCmd)
+		return
 	}
 
+	out = execShell("nginx", "-s", "reload")
+
+	return
 }
 
-func Restart() (string, error) {
+func Restart() (out string) {
 	if settings.NginxSettings.RestartCmd != "" {
-		out, err := execShell(settings.NginxSettings.RestartCmd)
+		out = execShell(settings.NginxSettings.RestartCmd)
 
-		if err != nil {
-			logger.Error(err)
-			return "", err
-		}
-
-		return out, nil
-	} else {
-
-		out, err := exec.Command("nginx", "-s", "reopen").CombinedOutput()
-
-		if err != nil {
-			logger.Error(err)
-			return "", err
-		}
-
-		return string(out), nil
+		return
 	}
 
+	out = execShell("nginx", "-s", "reopen")
+
+	return
 }
 
 func GetConfPath(dir ...string) string {

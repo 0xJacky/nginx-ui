@@ -63,12 +63,7 @@ func NginxStatus(c *gin.Context) {
 }
 
 func ReloadNginx(c *gin.Context) {
-	output, err := nginx.Reload()
-	if err != nil {
-		ErrHandler(c, err)
-		return
-	}
-
+	output := nginx.Reload()
 	c.JSON(http.StatusOK, gin.H{
 		"message": output,
 		"level":   nginx.GetLogLevel(output),
@@ -76,12 +71,7 @@ func ReloadNginx(c *gin.Context) {
 }
 
 func TestNginx(c *gin.Context) {
-	output, err := nginx.TestConf()
-	if err != nil {
-		ErrHandler(c, err)
-		return
-	}
-
+	output := nginx.TestConf()
 	c.JSON(http.StatusOK, gin.H{
 		"message": output,
 		"level":   nginx.GetLogLevel(output),
@@ -89,12 +79,7 @@ func TestNginx(c *gin.Context) {
 }
 
 func RestartNginx(c *gin.Context) {
-	output, err := nginx.Restart()
-	if err != nil {
-		ErrHandler(c, err)
-		return
-	}
-
+	output := nginx.Restart()
 	c.JSON(http.StatusOK, gin.H{
 		"message": output,
 		"level":   nginx.GetLogLevel(output),
