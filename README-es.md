@@ -49,7 +49,7 @@ Para consultar la documentación, visite [nginxui.com](https://nginxui.com).
       <a href="#manual-build">Compilación manual</a>
       <ul>
         <li><a href="#prerequisites">Prerequisitos</a></li>
-        <li><a href="#build-frontend">Compilación del Frontend</a></li>
+        <li><a href="#build-app">Compilación del Frontend</a></li>
         <li><a href="#build-backend">Compilación del Backend</a></li>
       </ul>
     </li>
@@ -223,7 +223,7 @@ En plataformas que no tienen una versión de compilación oficial, pueden compil
 
 ### Compilación del Frontend
 
-Ejecute el siguiente comando en el directorio `frontend`.
+Ejecute el siguiente comando en el directorio `app`.
 
 ```shell
 yarn install

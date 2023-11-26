@@ -6,7 +6,7 @@
 .
 ├─ docs                    # 文档目录
 ├─ cmd                     # 命令行工具
-├─ frontend                # 使用 Vue 3 构建的前端
+├─ app                # 使用 Vue 3 构建的前端
 ├─ server                  # 使用 Golang 构建的后端
 ├─ resources               # 其他资源，不参与构建
 ├─ template                # 用于 Nginx 的模板文件
@@ -35,7 +35,7 @@
 
 ```
 .
-├─ frontend
+├─ app
 │  ├─ public              # 公共资源
 │  ├─ src                 # 源代码
 │  │  ├─ api              # 向后端发起请求的 API

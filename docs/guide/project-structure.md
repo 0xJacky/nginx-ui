@@ -6,7 +6,7 @@
 .
 ├─ docs                    # documentations
 ├─ cmd                     # command-line tool
-├─ frontend                # frontend build with vue 3
+├─ app                # app build with vue 3
 ├─ server                  # backend build with golang
 ├─ resources               # additional resources, not for build
 ├─ template                # templates for nginx
@@ -35,7 +35,7 @@
 
 ```
 .
-├─ frontend
+├─ app
 │  ├─ public              # public resources
 │  ├─ src                 # source code
 │  │  ├─ api              # api to backend

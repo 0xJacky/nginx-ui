@@ -7,8 +7,8 @@ on:
         paths:
             - "**/*.js"
             - "**/*.vue"
-            - "frontend/package.json"
-            - "frontend/.env*"
+            - "app/package.json"
+            - "app/.env*"
             - "**/*.go"
             - "go.mod"
             - "go.sum"
@@ -21,8 +21,8 @@ on:
         paths:
             - "**/*.js"
             - "**/*.vue"
-            - "frontend/package.json"
-            - "frontend/.env*"
+            - "app/package.json"
+            - "app/.env*"
             - "**/*.go"
             - "go.mod"
             - "go.sum"
@@ -35,7 +35,7 @@ on:
             - published
 
 jobs:
-    build_frontend:
+    build_app:
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout
@@ -51,35 +51,35 @@ jobs:
                     corepack enable
                     corepack prepare pnpm@latest --activate
                     pnpm install
-                working-directory: frontend
+                working-directory: app
 
             -   name: Build
                 run: |
                     npx browserslist@latest --update-db
                     pnpm build
-                working-directory: frontend
+                working-directory: app
 
-            -   name: Archive frontend artifacts
+            -   name: Archive app artifacts
                 uses: actions/upload-artifact@v3
                 with:
-                    name: frontend-dist
-                    path: frontend/dist
+                    name: app-dist
+                    path: app/dist
 
             -   name: Prepare publish
                 if: github.event_name == 'release'
                 run: |
-                    cp README*.md frontend/dist
-                    find frontend/dist -printf '%P\n' | tar -C frontend/dist --no-recursion -zcvf frontend-dist.tar.gz -T -
+                    cp README*.md app/dist
+                    find app/dist -printf '%P\n' | tar -C app/dist --no-recursion -zcvf app-dist.tar.gz -T -
 
             -   name: Publish
                 uses: softprops/action-gh-release@v1
                 if: github.event_name == 'release'
                 with:
-                    files: frontend-dist.tar.gz
+                    files: app-dist.tar.gz
 
     build:
         runs-on: ubuntu-latest
-        needs: build_frontend
+        needs: build_app
         strategy:
             matrix:
                 goos: [ linux, darwin ]
@@ -163,11 +163,11 @@ jobs:
                     echo "CXX=${{ env.ARCH_NAME }}-clang++" >> $GITHUB_ENV
                     echo "LD_FLAGS=-w" >> $GITHUB_ENV
 
-            -   name: Download frontend artifacts
+            -   name: Download app artifacts
                 uses: actions/download-artifact@v3
                 with:
-                    name: frontend-dist
-                    path: frontend/dist
+                    name: app-dist
+                    path: app/dist
 
             -   name: Build
                 run: |

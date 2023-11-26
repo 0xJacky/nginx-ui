@@ -15,7 +15,7 @@
 
 ## 構建前端
 
-請在 `frontend` 資料夾中執行以下命令。
+請在 `app` 資料夾中執行以下命令。
 
 ```shell
 yarn install

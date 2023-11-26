@@ -1,7 +1,7 @@
 package api
 
 import (
-	cert2 "github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -69,7 +69,7 @@ func IssueCert(c *gin.Context) {
 	}(ws)
 
 	// read
-	buffer := &cert2.ConfigPayload{}
+	buffer := &cert.ConfigPayload{}
 
 	err = ws.ReadJSON(buffer)
 
@@ -88,13 +88,13 @@ func IssueCert(c *gin.Context) {
 	logChan := make(chan string, 1)
 	errChan := make(chan error, 1)
 
-	go cert2.IssueCert(buffer, logChan, errChan)
+	go cert.IssueCert(buffer, logChan, errChan)
 
 	go handleIssueCertLogChan(ws, logChan)
 
 	// block, until errChan closes
 	for err = range errChan {
-		errLog := &cert2.AutoCertErrorLog{}
+		errLog := &cert.AutoCertErrorLog{}
 		errLog.SetCertModel(&certModel)
 		errLog.Exit("issue cert", err)
 
@@ -169,7 +169,7 @@ func getCert(c *gin.Context, certModel *model.Cert) {
 			sslCertificationBytes, _ = os.ReadFile(certModel.SSLCertificatePath)
 		}
 
-		pubKey, err := cert2.GetCertInfo(certModel.SSLCertificatePath)
+		pubKey, err := cert.GetCertInfo(certModel.SSLCertificatePath)
 
 		if err != nil {
 			ErrHandler(c, err)

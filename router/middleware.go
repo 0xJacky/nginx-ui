@@ -1,19 +1,19 @@
 package router
 
 import (
-    "encoding/base64"
-    "github.com/0xJacky/Nginx-UI/app"
-    "github.com/0xJacky/Nginx-UI/internal/logger"
-    "github.com/0xJacky/Nginx-UI/model"
-    "github.com/0xJacky/Nginx-UI/settings"
-    "github.com/gin-contrib/static"
-    "github.com/gin-gonic/gin"
-    "github.com/spf13/cast"
-    "io/fs"
-    "net/http"
-    "path"
-    "runtime"
-    "strings"
+	"encoding/base64"
+	"github.com/0xJacky/Nginx-UI/app"
+	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/gin-contrib/static"
+	"github.com/gin-gonic/gin"
+	"github.com/spf13/cast"
+	"io/fs"
+	"net/http"
+	"path"
+	"runtime"
+	"strings"
 )
 
 func recovery() gin.HandlerFunc {
@@ -99,7 +99,7 @@ func (f serverFileSystemType) Exists(prefix string, _path string) bool {
 
 func mustFS(dir string) (serverFileSystem static.ServeFileSystem) {
 
-	sub, err := fs.Sub(frontend.DistFS, path.Join("dist", dir))
+	sub, err := fs.Sub(app.DistFS, path.Join("dist", dir))
 
 	if err != nil {
 		logger.Error(err)

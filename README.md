@@ -58,7 +58,7 @@ English | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體�
       <a href="#manual-build">Manual Build</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#build-frontend">Build Frontend</a></li>
+        <li><a href="#build-app">Build Frontend</a></li>
         <li><a href="#build-backend">Build Backend</a></li>
       </ul>
     </li>
@@ -283,7 +283,7 @@ On platforms that do not have an official build version, they can be built manua
 
 ### Build Frontend
 
-Please execute the following command in `frontend` directory.
+Please execute the following command in `app` directory.
 
 ```shell
 yarn install
@@ -292,7 +292,7 @@ yarn build
 
 ### Build Backend
 
-Please build the frontend first, and then execute the following command in the project root directory.
+Please build the app first, and then execute the following command in the project root directory.
 
 ```shell
 go build -o nginx-ui -v main.go

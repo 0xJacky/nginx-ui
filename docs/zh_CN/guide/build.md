@@ -15,7 +15,7 @@
 
 ## 构建前端
 
-请在 `frontend` 目录中执行以下命令。
+请在 `app` 目录中执行以下命令。
 
 ```shell
 yarn install

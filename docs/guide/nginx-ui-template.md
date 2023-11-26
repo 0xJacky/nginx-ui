@@ -103,7 +103,7 @@ location ~ .*\.(jpg|png|js|css)$ {
 }
 ```
 
-When users input variable values in the frontend input boxes, the system will automatically generate new configuration content, as shown below:
+When users input variable values in the app input boxes, the system will automatically generate new configuration content, as shown below:
 
 <img src="/assets/nginx-ui-template/en/config-ui-after-input.png" width="350px" title="Config Modal" />
 

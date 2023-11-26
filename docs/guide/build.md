@@ -16,7 +16,7 @@ You should execute the following command to update browser list database before 
 
 ## Build Frontend
 
-Please execute the following command in `frontend` directory.
+Please execute the following command in `app` directory.
 
 ```shell
 yarn install
@@ -27,7 +27,7 @@ yarn build
 ## Build Backend
 
 ::: warning
-Before building the backend, the frontend should be built first because the backend will embed the frontend distribution.
+Before building the backend, the app should be built first because the backend will embed the app distribution.
 :::
 
 Please execute the following command in the project root directory.
