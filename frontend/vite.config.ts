@@ -7,7 +7,7 @@ import {fileURLToPath, URL} from 'url'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vitePluginBuildId from 'vite-plugin-build-id'
 import svgLoader from 'vite-svg-loader'
-import VueMacros from 'unplugin-vue-macros/vite'
+import DefineOptions from 'unplugin-vue-define-options/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -27,17 +27,16 @@ export default defineConfig({
       '.less'
     ]
   },
-  plugins: [vitePluginBuildId(), svgLoader(),
+  plugins: [
+    vue(),
+    vueJsx(),
+
+    vitePluginBuildId(), svgLoader(),
     Components({
       resolvers: [AntDesignVueResolver({importStyle: false})],
       directoryAsNamespace: true
     }),
-    VueMacros({
-      plugins: {
-        vue: vue(),
-        vueJsx: vueJsx(),
-      },
-    }),
+    DefineOptions(),
     createHtmlPlugin({
       minify: true,
       /**

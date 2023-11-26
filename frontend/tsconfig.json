@@ -20,27 +20,6 @@
       "@/*": [
         "./src/*"
       ]
-    },
-    "types": [
-      "unplugin-vue-macros/macros-global",
-    ],
-    "vueCompilerOptions": {
-      "plugins": [
-        "@vue-macros/volar/export-render",
-        "@vue-macros/volar/export-expose",
-        "@vue-macros/volar/export-props"
-      ],
-      "vueMacros": {
-        "exportExpose": {
-          "include": ["**/export-expose/**"]
-        },
-        "exportProps": {
-          "include": ["**/export-props/**"]
-        },
-        "exportRender": {
-          "include": ["**/export-render/**"]
-        }
-      }
     }
   },
   "include": [
