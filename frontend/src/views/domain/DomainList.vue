@@ -5,9 +5,10 @@ import {customRender, datetime} from '@/components/StdDataDisplay/StdTableTransf
 import {useGettext} from 'vue3-gettext'
 import domain from '@/api/domain'
 import {Badge, message} from 'ant-design-vue'
-import {h, ref} from 'vue'
+import {h, ref, watch} from 'vue'
 import {input} from '@/components/StdDataEntry'
 import SiteDuplicate from '@/views/domain/components/SiteDuplicate.vue'
+import InspectConfig from '@/views/config/InspectConfig.vue'
 
 const {$gettext, interpolate} = useGettext()
 
@@ -92,10 +93,20 @@ function handle_click_duplicate(name: string) {
   show_duplicator.value = true
   target.value = name
 }
+
+const inspect_config = ref()
+
+const route = useRoute()
+
+watch(route, () => {
+  inspect_config.value?.test()
+})
 </script>
 
 <template>
   <a-card :title="$gettext('Manage Sites')">
+    <inspect-config ref="inspect_config"/>
+
     <std-table
       :api="domain"
       :columns="columns"

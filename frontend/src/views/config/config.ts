@@ -16,7 +16,7 @@ const configColumns = [{
     const template: any = []
     const {text, column} = args
     if (text === true || text > 0) {
-      template.push($gettext('Dir'))
+      template.push($gettext('Directory'))
     } else {
       template.push($gettext('File'))
     }

@@ -7,6 +7,7 @@ import {fileURLToPath, URL} from 'url'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vitePluginBuildId from 'vite-plugin-build-id'
 import svgLoader from 'vite-svg-loader'
+import AutoImport from 'unplugin-auto-import/vite'
 import DefineOptions from 'unplugin-vue-define-options/vite'
 
 // https://vitejs.dev/config/
@@ -35,6 +36,10 @@ export default defineConfig({
     Components({
       resolvers: [AntDesignVueResolver({importStyle: false})],
       directoryAsNamespace: true
+    }),
+    AutoImport({
+      imports: ['vue', 'vue-router', 'pinia'],
+      vueTemplate: true,
     }),
     DefineOptions(),
     createHtmlPlugin({
