@@ -90,6 +90,7 @@ function init() {
 }
 
 function handle_parse_error(r: any) {
+  console.error(r)
   if (r?.error === 'nginx_config_syntax_error') {
     parse_error_status.value = true
     parse_error_message.value = r.message
@@ -99,8 +100,6 @@ function handle_parse_error(r: any) {
   } else {
     message.error($gettext(r?.message ?? 'Server error'))
   }
-
-  throw r
 }
 
 function on_mode_change(advanced: boolean) {

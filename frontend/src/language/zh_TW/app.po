@@ -23,7 +23,7 @@ msgid "Access Logs"
 msgstr "存取日誌"
 
 #: src/views/cert/Cert.vue:74 src/views/cert/DNSCredential.vue:31
-#: src/views/config/config.ts:35 src/views/domain/DomainList.vue:47
+#: src/views/config/config.ts:35 src/views/domain/DomainList.vue:48
 #: src/views/environment/Environment.vue:94 src/views/user/User.vue:43
 msgid "Action"
 msgstr "操作"
@@ -52,7 +52,7 @@ msgstr "新增網站"
 msgid "Additional"
 msgstr "其他設定"
 
-#: src/views/domain/DomainEdit.vue:182
+#: src/views/domain/DomainEdit.vue:181
 msgid "Advance Mode"
 msgstr "進階模式"
 
@@ -77,7 +77,7 @@ msgid "Are you sure you want to clear the record of chat?"
 msgstr "您確定要清除聊天記錄嗎？"
 
 #: src/components/StdDataDisplay/StdTable.vue:526
-#: src/views/domain/DomainList.vue:125
+#: src/views/domain/DomainList.vue:136
 msgid "Are you sure you want to delete?"
 msgstr "您確定要刪除嗎？"
 
@@ -127,7 +127,7 @@ msgid "Auto-renewal enabled for %{name}"
 msgstr "已啟用 %{name} 的自動續簽"
 
 #: src/views/config/Config.vue:71 src/views/config/ConfigEdit.vue:84
-#: src/views/domain/DomainEdit.vue:225 src/views/nginx_log/NginxLog.vue:161
+#: src/views/domain/DomainEdit.vue:224 src/views/nginx_log/NginxLog.vue:161
 msgid "Back"
 msgstr "返回"
 
@@ -145,7 +145,7 @@ msgstr "基本資訊"
 msgid "Basic"
 msgstr "基本"
 
-#: src/views/domain/DomainEdit.vue:185
+#: src/views/domain/DomainEdit.vue:184
 msgid "Basic Mode"
 msgstr "基本模式"
 
@@ -318,7 +318,7 @@ msgid "Database (Optional, default: database)"
 msgstr "資料庫 (可選，預設: database)"
 
 #: src/components/StdDataDisplay/StdTable.vue:528
-#: src/views/domain/DomainList.vue:128
+#: src/views/domain/DomainList.vue:139
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:235
 msgid "Delete"
 msgstr "刪除"
@@ -327,7 +327,7 @@ msgstr "刪除"
 msgid "Delete ID: %{id}"
 msgstr "刪除 ID: %{id}"
 
-#: src/views/domain/DomainList.vue:81
+#: src/views/domain/DomainList.vue:82
 msgid "Delete site: %{site_name}"
 msgstr "刪除網站：%{site_name}"
 
@@ -357,10 +357,6 @@ msgstr "描述"
 msgid "Development Mode"
 msgstr "開發模式"
 
-#: src/views/config/config.ts:19
-msgid "Dir"
-msgstr "目錄"
-
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:59
 msgid "Directive"
 msgstr "指令"
@@ -369,7 +365,12 @@ msgstr "指令"
 msgid "Directives"
 msgstr "指令"
 
-#: src/views/domain/DomainList.vue:34
+#: src/views/config/config.ts:19
+#, fuzzy
+msgid "Directory"
+msgstr "指令"
+
+#: src/views/domain/DomainList.vue:35
 msgid "Disable"
 msgstr "停用"
 
@@ -378,12 +379,12 @@ msgid "Disable auto-renewal failed for %{name}"
 msgstr "關閉 %{name} 自動續簽失敗"
 
 #: src/views/cert/Cert.vue:47 src/views/domain/cert/ChangeCert.vue:47
-#: src/views/domain/DomainEdit.vue:172 src/views/domain/DomainList.vue:112
+#: src/views/domain/DomainEdit.vue:171 src/views/domain/DomainList.vue:123
 msgid "Disabled"
 msgstr "停用"
 
 #: src/views/domain/components/RightSettings.vue:35
-#: src/views/domain/DomainList.vue:69
+#: src/views/domain/DomainList.vue:70
 msgid "Disabled successfully"
 msgstr "成功停用"
 
@@ -450,7 +451,7 @@ msgid "Dry run mode enabled"
 msgstr "試運轉模式已啟用"
 
 #: src/views/domain/components/SiteDuplicate.vue:111
-#: src/views/domain/DomainList.vue:119
+#: src/views/domain/DomainList.vue:130
 msgid "Duplicate"
 msgstr "複製"
 
@@ -470,7 +471,7 @@ msgstr "複製成功"
 msgid "Duplicate to local successfully"
 msgstr "成功複製至本機"
 
-#: src/views/domain/DomainEdit.vue:167
+#: src/views/domain/DomainEdit.vue:166
 msgid "Edit %{n}"
 msgstr "編輯 %{n}"
 
@@ -486,7 +487,7 @@ msgstr "編輯網站"
 msgid "Email (*)"
 msgstr "電子郵件 (*)"
 
-#: src/views/domain/DomainList.vue:31
+#: src/views/domain/DomainList.vue:32
 msgid "Enable"
 msgstr "啟用"
 
@@ -517,13 +518,13 @@ msgstr "啟用 TLS"
 #: src/views/cert/Cert.vue:44 src/views/domain/cert/ChangeCert.vue:44
 #: src/views/domain/components/Deploy.vue:80
 #: src/views/domain/components/RightSettings.vue:65
-#: src/views/domain/DomainEdit.vue:169 src/views/domain/DomainList.vue:115
+#: src/views/domain/DomainEdit.vue:168 src/views/domain/DomainList.vue:126
 msgid "Enabled"
 msgstr "已啟用"
 
 #: src/views/domain/components/RightSettings.vue:26
 #: src/views/domain/components/SiteDuplicate.vue:85
-#: src/views/domain/DomainAdd.vue:49 src/views/domain/DomainList.vue:59
+#: src/views/domain/DomainAdd.vue:49 src/views/domain/DomainList.vue:60
 msgid "Enabled successfully"
 msgstr "成功啟用"
 
@@ -561,12 +562,12 @@ msgid "Export"
 msgstr "匯出"
 
 #: src/views/domain/components/RightSettings.vue:38
-#: src/views/domain/DomainList.vue:73
+#: src/views/domain/DomainList.vue:74
 msgid "Failed to disable %{msg}"
 msgstr "停用 %{msg} 失敗"
 
 #: src/views/domain/components/RightSettings.vue:29
-#: src/views/domain/DomainList.vue:63
+#: src/views/domain/DomainList.vue:64
 msgid "Failed to enable %{msg}"
 msgstr "啟用 %{msg} 失敗"
 
@@ -574,7 +575,7 @@ msgstr "啟用 %{msg} 失敗"
 msgid "Failed to get certificate information"
 msgstr "取得憑證資訊失敗"
 
-#: src/views/domain/DomainEdit.vue:133
+#: src/views/domain/DomainEdit.vue:132
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "儲存失敗，在設定中檢測到語法錯誤。"
 
@@ -727,11 +728,11 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/routes/index.ts:182 src/views/other/Login.vue:104
+#: src/routes/index.ts:182 src/views/other/Login.vue:136
 msgid "Login"
 msgstr "登入"
 
-#: src/views/other/Login.vue:52
+#: src/views/other/Login.vue:53 src/views/other/Login.vue:95
 msgid "Login successful"
 msgstr "登入成功"
 
@@ -750,7 +751,7 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "管理設定"
 
-#: src/routes/index.ts:40 src/views/domain/DomainList.vue:98
+#: src/routes/index.ts:40 src/views/domain/DomainList.vue:107
 msgid "Manage Sites"
 msgstr "管理網站"
 
@@ -784,7 +785,7 @@ msgstr "多行指令"
 #: src/views/config/config.ts:8 src/views/domain/cert/ChangeCert.vue:21
 #: src/views/domain/components/RightSettings.vue:68
 #: src/views/domain/components/SiteDuplicate.vue:114
-#: src/views/domain/DomainList.vue:15 src/views/environment/Environment.vue:13
+#: src/views/domain/DomainList.vue:16 src/views/environment/Environment.vue:13
 msgid "Name"
 msgstr "名稱"
 
@@ -821,7 +822,7 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Nginx 存取日誌路徑"
 
-#: src/views/domain/DomainEdit.vue:193
+#: src/views/domain/DomainEdit.vue:192
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 設定解析錯誤"
 
@@ -847,7 +848,7 @@ msgstr "Nginx 重啟成功"
 
 #: src/components/ChatGPT/ChatGPT.vue:234
 #: src/components/StdDataDisplay/StdTable.vue:524
-#: src/views/domain/DomainList.vue:123
+#: src/views/domain/DomainList.vue:134
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:62
 #: src/views/domain/ngx_conf/LocationEditor.vue:64
 msgid "No"
@@ -892,7 +893,7 @@ msgstr "離線"
 #: src/views/domain/cert/components/ObtainCert.vue:190
 #: src/views/domain/components/Deploy.vue:25
 #: src/views/domain/components/RightSettings.vue:47
-#: src/views/domain/DomainList.vue:124
+#: src/views/domain/DomainList.vue:135
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:210
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:36
 msgid "OK"
@@ -929,7 +930,7 @@ msgstr "覆蓋現有檔案"
 msgid "Params"
 msgstr "參數"
 
-#: src/views/other/Login.vue:95 src/views/user/User.vue:20
+#: src/views/other/Login.vue:127 src/views/user/User.vue:20
 msgid "Password"
 msgstr "密碼"
 
@@ -981,11 +982,11 @@ msgstr "請輸入名稱，這將作為新設定的檔名！"
 msgid "Please input your E-mail!"
 msgstr "請輸入您的電子郵件！"
 
-#: src/views/other/Install.vue:48 src/views/other/Login.vue:41
+#: src/views/other/Install.vue:48 src/views/other/Login.vue:42
 msgid "Please input your password!"
 msgstr "請輸入您的密碼！"
 
-#: src/views/other/Install.vue:42 src/views/other/Login.vue:35
+#: src/views/other/Install.vue:42 src/views/other/Login.vue:36
 msgid "Please input your username!"
 msgstr "請輸入您的使用者名稱！"
 
@@ -1085,7 +1086,7 @@ msgid "Running"
 msgstr "執行中"
 
 #: src/components/ChatGPT/ChatGPT.vue:219 src/views/config/ConfigEdit.vue:90
-#: src/views/domain/DomainEdit.vue:228
+#: src/views/domain/DomainEdit.vue:227
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:80
 #: src/views/preference/Preference.vue:104
 msgid "Save"
@@ -1110,7 +1111,7 @@ msgid "Save Successfully"
 msgstr "儲存成功"
 
 #: src/views/config/ConfigEdit.vue:55 src/views/domain/DomainAdd.vue:46
-#: src/views/domain/DomainEdit.vue:147
+#: src/views/domain/DomainEdit.vue:146
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
 msgid "Saved successfully"
 msgstr "儲存成功"
@@ -1130,7 +1131,7 @@ msgstr "傳送"
 #: src/components/StdDataDisplay/StdTable.vue:168
 #: src/components/StdDataDisplay/StdTable.vue:343
 #: src/components/StdDataDisplay/StdTable.vue:463
-#: src/views/config/ConfigEdit.vue:41 src/views/domain/DomainList.vue:83
+#: src/views/config/ConfigEdit.vue:41 src/views/domain/DomainList.vue:84
 #: src/views/other/Install.vue:71 src/views/preference/Preference.vue:62
 #: src/views/system/Upgrade.vue:54
 msgid "Server error"
@@ -1181,11 +1182,16 @@ msgstr "SSL 認證內容"
 msgid "SSL Certification Key Content"
 msgstr "SSL 憑證金鑰內容"
 
+#: src/views/other/Login.vue:141
+#, fuzzy
+msgid "SSO Login"
+msgstr "登入"
+
 #: src/views/system/Upgrade.vue:185 src/views/system/Upgrade.vue:219
 msgid "Stable"
 msgstr "穩定"
 
-#: src/views/domain/DomainList.vue:24 src/views/environment/Environment.vue:71
+#: src/views/domain/DomainList.vue:25 src/views/environment/Environment.vue:71
 msgid "Status"
 msgstr "狀態"
 
@@ -1205,11 +1211,11 @@ msgstr "主體名稱: %{name}"
 msgid "Swap"
 msgstr "交換空間"
 
-#: src/components/SwitchAppearance/SwitchAppearance.vue:15
+#: src/components/SwitchAppearance/SwitchAppearance.vue:16
 msgid "Switch to dark theme"
 msgstr ""
 
-#: src/components/SwitchAppearance/SwitchAppearance.vue:15
+#: src/components/SwitchAppearance/SwitchAppearance.vue:16
 msgid "Switch to light theme"
 msgstr ""
 
@@ -1280,7 +1286,7 @@ msgstr "類型"
 #: src/views/cert/Cert.vue:68 src/views/cert/DNSCredential.vue:25
 #: src/views/config/config.ts:28 src/views/config/ConfigEdit.vue:105
 #: src/views/domain/components/RightSettings.vue:71
-#: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:88
+#: src/views/domain/DomainList.vue:42 src/views/environment/Environment.vue:88
 #: src/views/user/User.vue:37
 msgid "Updated at"
 msgstr "更新時間"
@@ -1314,7 +1320,7 @@ msgstr "URL"
 msgid "User"
 msgstr "使用者名稱"
 
-#: src/views/other/Login.vue:85 src/views/user/User.vue:11
+#: src/views/other/Login.vue:117 src/views/user/User.vue:11
 msgid "Username"
 msgstr "使用者名稱"
 
@@ -1378,6 +1384,9 @@ msgstr "您可以在此頁面檢查 Nginx UI 的升級。"
 msgctxt "Project"
 msgid "License"
 msgstr "授權條款"
+
+#~ msgid "Dir"
+#~ msgstr "目錄"
 
 #~ msgid "Auto"
 #~ msgstr "自動"

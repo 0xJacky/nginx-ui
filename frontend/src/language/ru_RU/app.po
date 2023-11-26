@@ -18,7 +18,7 @@ msgid "Access Logs"
 msgstr "Журнал доступа"
 
 #: src/views/cert/Cert.vue:74 src/views/cert/DNSCredential.vue:31
-#: src/views/config/config.ts:35 src/views/domain/DomainList.vue:47
+#: src/views/config/config.ts:35 src/views/domain/DomainList.vue:48
 #: src/views/environment/Environment.vue:94 src/views/user/User.vue:43
 msgid "Action"
 msgstr "Действие"
@@ -48,7 +48,7 @@ msgstr "Добавть Сайт"
 msgid "Additional"
 msgstr "Дополнительно"
 
-#: src/views/domain/DomainEdit.vue:182
+#: src/views/domain/DomainEdit.vue:181
 msgid "Advance Mode"
 msgstr "Расширенный режим"
 
@@ -74,7 +74,7 @@ msgid "Are you sure you want to clear the record of chat?"
 msgstr "Вы уверены, что хотите удалить эту директиву?"
 
 #: src/components/StdDataDisplay/StdTable.vue:526
-#: src/views/domain/DomainList.vue:125
+#: src/views/domain/DomainList.vue:136
 #, fuzzy
 msgid "Are you sure you want to delete?"
 msgstr "Вы уверены, что хотите удалить эту директиву?"
@@ -126,7 +126,7 @@ msgid "Auto-renewal enabled for %{name}"
 msgstr "Автообновление включено для %{name}"
 
 #: src/views/config/Config.vue:71 src/views/config/ConfigEdit.vue:84
-#: src/views/domain/DomainEdit.vue:225 src/views/nginx_log/NginxLog.vue:161
+#: src/views/domain/DomainEdit.vue:224 src/views/nginx_log/NginxLog.vue:161
 msgid "Back"
 msgstr "Назад"
 
@@ -146,7 +146,7 @@ msgstr "Основная информация"
 msgid "Basic"
 msgstr "Простой режим"
 
-#: src/views/domain/DomainEdit.vue:185
+#: src/views/domain/DomainEdit.vue:184
 msgid "Basic Mode"
 msgstr "Простой режим"
 
@@ -325,7 +325,7 @@ msgid "Database (Optional, default: database)"
 msgstr "База данных (Опционально, по умолчанию: database)"
 
 #: src/components/StdDataDisplay/StdTable.vue:528
-#: src/views/domain/DomainList.vue:128
+#: src/views/domain/DomainList.vue:139
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:235
 msgid "Delete"
 msgstr "Удалить"
@@ -334,7 +334,7 @@ msgstr "Удалить"
 msgid "Delete ID: %{id}"
 msgstr "Удалить ID: %{id}"
 
-#: src/views/domain/DomainList.vue:81
+#: src/views/domain/DomainList.vue:82
 msgid "Delete site: %{site_name}"
 msgstr ""
 
@@ -365,10 +365,6 @@ msgstr "Описание"
 msgid "Development Mode"
 msgstr "Режим разработки"
 
-#: src/views/config/config.ts:19
-msgid "Dir"
-msgstr "Директория"
-
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:59
 msgid "Directive"
 msgstr "Деректива"
@@ -377,7 +373,12 @@ msgstr "Деректива"
 msgid "Directives"
 msgstr "Дерективы"
 
-#: src/views/domain/DomainList.vue:34
+#: src/views/config/config.ts:19
+#, fuzzy
+msgid "Directory"
+msgstr "Деректива"
+
+#: src/views/domain/DomainList.vue:35
 #, fuzzy
 msgid "Disable"
 msgstr "Отключено"
@@ -387,12 +388,12 @@ msgid "Disable auto-renewal failed for %{name}"
 msgstr "Не удалось отключить автоматическое продление для %{name}"
 
 #: src/views/cert/Cert.vue:47 src/views/domain/cert/ChangeCert.vue:47
-#: src/views/domain/DomainEdit.vue:172 src/views/domain/DomainList.vue:112
+#: src/views/domain/DomainEdit.vue:171 src/views/domain/DomainList.vue:123
 msgid "Disabled"
 msgstr "Отключено"
 
 #: src/views/domain/components/RightSettings.vue:35
-#: src/views/domain/DomainList.vue:69
+#: src/views/domain/DomainList.vue:70
 msgid "Disabled successfully"
 msgstr "Отключено успешно"
 
@@ -466,7 +467,7 @@ msgid "Dry run mode enabled"
 msgstr "Включен пробный режим"
 
 #: src/views/domain/components/SiteDuplicate.vue:111
-#: src/views/domain/DomainList.vue:119
+#: src/views/domain/DomainList.vue:130
 msgid "Duplicate"
 msgstr "Дублировать"
 
@@ -490,7 +491,7 @@ msgstr "Продублированно"
 msgid "Duplicate to local successfully"
 msgstr "Saved successfully"
 
-#: src/views/domain/DomainEdit.vue:167
+#: src/views/domain/DomainEdit.vue:166
 msgid "Edit %{n}"
 msgstr "Редактировать %{n}"
 
@@ -506,7 +507,7 @@ msgstr "Редактировать Сайт"
 msgid "Email (*)"
 msgstr "Email (*)"
 
-#: src/views/domain/DomainList.vue:31
+#: src/views/domain/DomainList.vue:32
 #, fuzzy
 msgid "Enable"
 msgstr "Влючено"
@@ -539,13 +540,13 @@ msgstr "Включить TLS"
 #: src/views/cert/Cert.vue:44 src/views/domain/cert/ChangeCert.vue:44
 #: src/views/domain/components/Deploy.vue:80
 #: src/views/domain/components/RightSettings.vue:65
-#: src/views/domain/DomainEdit.vue:169 src/views/domain/DomainList.vue:115
+#: src/views/domain/DomainEdit.vue:168 src/views/domain/DomainList.vue:126
 msgid "Enabled"
 msgstr "Влючено"
 
 #: src/views/domain/components/RightSettings.vue:26
 #: src/views/domain/components/SiteDuplicate.vue:85
-#: src/views/domain/DomainAdd.vue:49 src/views/domain/DomainList.vue:59
+#: src/views/domain/DomainAdd.vue:49 src/views/domain/DomainList.vue:60
 msgid "Enabled successfully"
 msgstr "Активировано успешно"
 
@@ -584,12 +585,12 @@ msgid "Export"
 msgstr "Экспорт"
 
 #: src/views/domain/components/RightSettings.vue:38
-#: src/views/domain/DomainList.vue:73
+#: src/views/domain/DomainList.vue:74
 msgid "Failed to disable %{msg}"
 msgstr "Не удалось отключить %{msg}"
 
 #: src/views/domain/components/RightSettings.vue:29
-#: src/views/domain/DomainList.vue:63
+#: src/views/domain/DomainList.vue:64
 msgid "Failed to enable %{msg}"
 msgstr "Не удалось включить %{msg}"
 
@@ -597,7 +598,7 @@ msgstr "Не удалось включить %{msg}"
 msgid "Failed to get certificate information"
 msgstr "Не удалось получить информацию о сертификате"
 
-#: src/views/domain/DomainEdit.vue:133
+#: src/views/domain/DomainEdit.vue:132
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "Не удалось сохранить, обнаружены синтаксические ошибки в конфигурации."
 
@@ -756,11 +757,11 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/routes/index.ts:182 src/views/other/Login.vue:104
+#: src/routes/index.ts:182 src/views/other/Login.vue:136
 msgid "Login"
 msgstr "Логин"
 
-#: src/views/other/Login.vue:52
+#: src/views/other/Login.vue:53 src/views/other/Login.vue:95
 msgid "Login successful"
 msgstr "Авторизация успешна"
 
@@ -781,7 +782,7 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "Конфигурации"
 
-#: src/routes/index.ts:40 src/views/domain/DomainList.vue:98
+#: src/routes/index.ts:40 src/views/domain/DomainList.vue:107
 msgid "Manage Sites"
 msgstr "Сайты"
 
@@ -817,7 +818,7 @@ msgstr "Одиночная директива"
 #: src/views/config/config.ts:8 src/views/domain/cert/ChangeCert.vue:21
 #: src/views/domain/components/RightSettings.vue:68
 #: src/views/domain/components/SiteDuplicate.vue:114
-#: src/views/domain/DomainList.vue:15 src/views/environment/Environment.vue:13
+#: src/views/domain/DomainList.vue:16 src/views/environment/Environment.vue:13
 msgid "Name"
 msgstr "Имя"
 
@@ -855,7 +856,7 @@ msgstr "Журнал"
 msgid "Nginx Access Log Path"
 msgstr "Путь для Nginx Access Log"
 
-#: src/views/domain/DomainEdit.vue:193
+#: src/views/domain/DomainEdit.vue:192
 #, fuzzy
 msgid "Nginx Configuration Parse Error"
 msgstr "Ошибка синтаксического анализа конфигурации Nginx"
@@ -884,7 +885,7 @@ msgstr "Nginx успешно перезапущен"
 
 #: src/components/ChatGPT/ChatGPT.vue:234
 #: src/components/StdDataDisplay/StdTable.vue:524
-#: src/views/domain/DomainList.vue:123
+#: src/views/domain/DomainList.vue:134
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:62
 #: src/views/domain/ngx_conf/LocationEditor.vue:64
 msgid "No"
@@ -930,7 +931,7 @@ msgstr ""
 #: src/views/domain/cert/components/ObtainCert.vue:190
 #: src/views/domain/components/Deploy.vue:25
 #: src/views/domain/components/RightSettings.vue:47
-#: src/views/domain/DomainList.vue:124
+#: src/views/domain/DomainList.vue:135
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:210
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:36
 msgid "OK"
@@ -968,7 +969,7 @@ msgstr ""
 msgid "Params"
 msgstr "Параметры"
 
-#: src/views/other/Login.vue:95 src/views/user/User.vue:20
+#: src/views/other/Login.vue:127 src/views/user/User.vue:20
 msgid "Password"
 msgstr "Пароль"
 
@@ -1017,11 +1018,11 @@ msgstr ""
 msgid "Please input your E-mail!"
 msgstr "Введите ваш E-mail!"
 
-#: src/views/other/Install.vue:48 src/views/other/Login.vue:41
+#: src/views/other/Install.vue:48 src/views/other/Login.vue:42
 msgid "Please input your password!"
 msgstr "Введите ваш пароль!"
 
-#: src/views/other/Install.vue:42 src/views/other/Login.vue:35
+#: src/views/other/Install.vue:42 src/views/other/Login.vue:36
 msgid "Please input your username!"
 msgstr "Введите ваше имя пользователя!"
 
@@ -1124,7 +1125,7 @@ msgid "Running"
 msgstr "Выполняется"
 
 #: src/components/ChatGPT/ChatGPT.vue:219 src/views/config/ConfigEdit.vue:90
-#: src/views/domain/DomainEdit.vue:228
+#: src/views/domain/DomainEdit.vue:227
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:80
 #: src/views/preference/Preference.vue:104
 msgid "Save"
@@ -1151,7 +1152,7 @@ msgid "Save Successfully"
 msgstr "Успешно сохранено"
 
 #: src/views/config/ConfigEdit.vue:55 src/views/domain/DomainAdd.vue:46
-#: src/views/domain/DomainEdit.vue:147
+#: src/views/domain/DomainEdit.vue:146
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:34
 msgid "Saved successfully"
 msgstr "Успешно сохранено"
@@ -1171,7 +1172,7 @@ msgstr "Отправлено"
 #: src/components/StdDataDisplay/StdTable.vue:168
 #: src/components/StdDataDisplay/StdTable.vue:343
 #: src/components/StdDataDisplay/StdTable.vue:463
-#: src/views/config/ConfigEdit.vue:41 src/views/domain/DomainList.vue:83
+#: src/views/config/ConfigEdit.vue:41 src/views/domain/DomainList.vue:84
 #: src/views/other/Install.vue:71 src/views/preference/Preference.vue:62
 #: src/views/system/Upgrade.vue:54
 msgid "Server error"
@@ -1227,12 +1228,17 @@ msgstr "Содержание сертификата SSL"
 msgid "SSL Certification Key Content"
 msgstr "Содержание ключа сертификата SSL"
 
+#: src/views/other/Login.vue:141
+#, fuzzy
+msgid "SSO Login"
+msgstr "Логин"
+
 #: src/views/system/Upgrade.vue:185 src/views/system/Upgrade.vue:219
 #, fuzzy
 msgid "Stable"
 msgstr "Таблица"
 
-#: src/views/domain/DomainList.vue:24 src/views/environment/Environment.vue:71
+#: src/views/domain/DomainList.vue:25 src/views/environment/Environment.vue:71
 msgid "Status"
 msgstr "Статус"
 
@@ -1252,11 +1258,11 @@ msgstr "Название темы: %{name}"
 msgid "Swap"
 msgstr "Своп"
 
-#: src/components/SwitchAppearance/SwitchAppearance.vue:15
+#: src/components/SwitchAppearance/SwitchAppearance.vue:16
 msgid "Switch to dark theme"
 msgstr ""
 
-#: src/components/SwitchAppearance/SwitchAppearance.vue:15
+#: src/components/SwitchAppearance/SwitchAppearance.vue:16
 msgid "Switch to light theme"
 msgstr ""
 
@@ -1330,7 +1336,7 @@ msgstr "Тип"
 #: src/views/cert/Cert.vue:68 src/views/cert/DNSCredential.vue:25
 #: src/views/config/config.ts:28 src/views/config/ConfigEdit.vue:105
 #: src/views/domain/components/RightSettings.vue:71
-#: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:88
+#: src/views/domain/DomainList.vue:42 src/views/environment/Environment.vue:88
 #: src/views/user/User.vue:37
 msgid "Updated at"
 msgstr "Обновлено в"
@@ -1367,7 +1373,7 @@ msgstr ""
 msgid "User"
 msgstr "Имя пользователя"
 
-#: src/views/other/Login.vue:85 src/views/user/User.vue:11
+#: src/views/other/Login.vue:117 src/views/user/User.vue:11
 msgid "Username"
 msgstr "Имя пользователя"
 
@@ -1429,6 +1435,9 @@ msgstr "Вы можете проверить обновление Nginx UI на 
 msgctxt "Project"
 msgid "License"
 msgstr "Лицензия"
+
+#~ msgid "Dir"
+#~ msgstr "Директория"
 
 #~ msgid "Dark"
 #~ msgstr "Тёмный"

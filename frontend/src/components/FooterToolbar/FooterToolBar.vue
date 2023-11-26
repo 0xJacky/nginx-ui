@@ -1,29 +1,22 @@
-<template>
-  <div class="ant-pro-footer-toolbar">
-    <div style="float: left">
-      <slot name="extra">{{ extra }}</slot>
-    </div>
-    <div style="float: right">
-      <slot></slot>
-    </div>
-  </div>
-</template>
-
-<script>
-export default {
-  name: 'FooterToolBar',
-  props: {
-    prefixCls: {
-      type: String,
-      default: 'ant-pro-footer-toolbar'
-    },
-    extra: {
-      type: [String, Object],
-      default: ''
-    }
-  }
-}
+<script setup lang="ts">
+defineProps<{
+  prefixCls?: string
+  extra?: string | object
+}>()
 </script>
+
+<template>
+  <teleport to="body">
+    <div class="ant-pro-footer-toolbar" ref="refToolBar">
+      <div style="float: left">
+        <slot name="extra">{{ extra }}</slot>
+      </div>
+      <div style="float: right">
+        <slot></slot>
+      </div>
+    </div>
+  </teleport>
+</template>
 
 <style lang="less" scoped>
 .dark {
@@ -34,11 +27,11 @@ export default {
 }
 
 .ant-pro-footer-toolbar {
-  position: fixed;
+  position: sticky;
   width: 100%;
+  height: 56px;
   bottom: 0;
   right: 0;
-  height: 56px;
   line-height: 56px;
   box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.03);
   background: #ffffff8c;
