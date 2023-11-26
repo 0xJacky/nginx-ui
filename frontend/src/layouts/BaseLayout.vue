@@ -41,11 +41,12 @@ const lang = computed(() => {
 const settings = useSettingsStore()
 const is_theme_dark = computed(() => settings.theme == 'dark')
 </script>
+
 <template>
   <a-config-provider :theme="{
       algorithm: is_theme_dark?theme.darkAlgorithm:theme.defaultAlgorithm,
     }" :locale="lang" :autoInsertSpaceInButton="false">
-    <a-layout style="min-height: 100%;">
+    <a-layout style="min-height: 100vh">
       <div class="drawer-sidebar">
         <a-drawer
           :closable="false"
