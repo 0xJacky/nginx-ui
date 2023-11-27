@@ -209,7 +209,9 @@ function remove_server(index: number) {
     centered: true,
     okText: $gettext('OK'),
     cancelText: $gettext('Cancel'),
-    onOk: () => props.ngx_config?.servers?.splice(index, 1)
+    onOk() {
+      props.ngx_config?.servers?.splice(index, 1)
+    }
   })
 }
 </script>

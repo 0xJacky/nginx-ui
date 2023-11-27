@@ -105,7 +105,7 @@ if (route.query?.code != undefined && route.query?.state != undefined) {
 </script>
 
 <template>
-  <div class="container">
+  <div class="login-container">
     <div class="login-form">
       <div class="project-title">
         <h1>Nginx UI</h1>
@@ -150,11 +150,11 @@ if (route.query?.code != undefined && route.query?.state != undefined) {
 </template>
 
 <style lang="less">
-.container {
+.login-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: 100vh;
 
   .login-form {
     max-width: 400px;
@@ -181,6 +181,7 @@ if (route.query?.code != undefined && route.query?.state != undefined) {
     .footer {
       padding: 30px;
       text-align: center;
+      font-size: 14px;
     }
   }
 }
