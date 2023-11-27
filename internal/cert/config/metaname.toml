@@ -1,0 +1,24 @@
+Name = "Metaname"
+Description = ''''''
+URL = "https://metaname.net"
+Code = "metaname"
+Since = "v4.13.0"
+
+Example = '''
+METANAME_ACCOUNT_REFERENCE=xxxx \
+METANAME_API_KEY=yyyyyyy \
+lego --email you@example.com --dns metaname --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    METANAME_ACCOUNT_REFERENCE = "The four-digit reference of a Metaname account"
+    METANAME_API_KEY = "API Key"
+  [Configuration.Additional]
+    METANAME_POLLING_INTERVAL = "Time between DNS propagation check"
+    METANAME_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    METANAME_TTL = "The TTL of the TXT record used for the DNS challenge"
+
+[Links]
+  API = "https://metaname.net/api/1.1/doc"
+  GoClient = "https://github.com/nzdjb/go-metaname"

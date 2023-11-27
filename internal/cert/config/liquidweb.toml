@@ -5,24 +5,23 @@ Code = "liquidweb"
 Since = "v3.1.0"
 
 Example = '''
-LIQUID_WEB_USERNAME=someuser \
-LIQUID_WEB_PASSWORD=somepass \
-LIQUID_WEB_ZONE=tacoman.com.net \
+LWAPI_USERNAME=someuser \
+LWAPI_PASSWORD=somepass \
 lego --email you@example.com --dns liquidweb --domains my.example.org run
 '''
 
 [Configuration]
   [Configuration.Credentials]
-    LIQUID_WEB_USERNAME = "Storm API Username"
-    LIQUID_WEB_PASSWORD = "Storm API Password"
-    LIQUID_WEB_ZONE = "DNS Zone"
+    LWAPI_USERNAME = "Liquid Web API Username"
+    LWAPI_PASSWORD = "Liquid Web API Password"
   [Configuration.Additional]
-    LIQUID_WEB_URL = "Storm API endpoint"
-    LIQUID_WEB_TTL = "The TTL of the TXT record used for the DNS challenge"
-    LIQUID_WEB_POLLING_INTERVAL = "Time between DNS propagation check"
-    LIQUID_WEB_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    LIQUID_WEB_HTTP_TIMEOUT = "Maximum waiting time for the DNS records to be created (not verified)"
+    LWAPI_ZONE = "DNS Zone"
+    LWAPI_URL = "Liquid Web API endpoint"
+    LWAPI_TTL = "The TTL of the TXT record used for the DNS challenge"
+    LWAPI_POLLING_INTERVAL = "Time between DNS propagation check"
+    LWAPI_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    LWAPI_HTTP_TIMEOUT = "Maximum waiting time for the DNS records to be created (not verified)"
 
 [Links]
-  API = "https://cart.liquidweb.com/storm/api/docs/v1/"
+  API = "https://api.liquidweb.com/docs/"
   GoClient = "https://github.com/liquidweb/liquidweb-go"

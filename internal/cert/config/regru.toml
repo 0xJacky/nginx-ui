@@ -15,6 +15,8 @@ lego --email you@example.com --dns regru --domains my.example.org run
     REGRU_USERNAME = "API username"
     REGRU_PASSWORD = "API password"
   [Configuration.Additional]
+    REGRU_TLS_CERT = "authentication certificate"
+    REGRU_TLS_KEY = "authentication private key"
     REGRU_POLLING_INTERVAL = "Time between DNS propagation check"
     REGRU_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
     REGRU_TTL = "The TTL of the TXT record used for the DNS challenge"

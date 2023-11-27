@@ -1,0 +1,22 @@
+Name = "IPv64"
+Description = ''''''
+URL = "https://ipv64.net/"
+Code = "ipv64"
+Since = "v4.13.0"
+
+Example = '''
+IPV64_API_KEY=xxxxxx \
+lego --email you@example.com --dns ipv64 --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    IPV64_API_KEY = "Account API Key"
+  [Configuration.Additional]
+    IPV64_POLLING_INTERVAL = "Time between DNS propagation check"
+    IPV64_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    IPV64_TTL = "The TTL of the TXT record used for the DNS challenge"
+    IPV64_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://ipv64.net/dyndns_updater_api"

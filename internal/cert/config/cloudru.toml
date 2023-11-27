@@ -1,0 +1,27 @@
+Name = "Cloud.ru"
+Description = ''''''
+URL = "https://cloud.ru"
+Code = "cloudru"
+Since = "v4.14.0"
+
+Example = '''
+CLOUDRU_SERVICE_INSTANCE_ID=ppp \
+CLOUDRU_KEY_ID=xxx \
+CLOUDRU_SECRET=yyy \
+lego --email you@example.com --dns cloudru --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    CLOUDRU_SERVICE_INSTANCE_ID = "Service Instance ID (parentId)"
+    CLOUDRU_KEY_ID = "Key ID (login)"
+    CLOUDRU_SECRET = "Key Secret"
+  [Configuration.Additional]
+    CLOUDRU_POLLING_INTERVAL = "Time between DNS propagation check"
+    CLOUDRU_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    CLOUDRU_TTL = "The TTL of the TXT record used for the DNS challenge"
+    CLOUDRU_HTTP_TIMEOUT = "API request timeout"
+    CLOUDRU_SEQUENCE_INTERVAL = "Time between sequential requests"
+
+[Links]
+  API = "https://cloud.ru/ru/docs/clouddns/ug/topics/api-ref.html"

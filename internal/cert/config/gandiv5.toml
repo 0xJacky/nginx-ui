@@ -5,13 +5,14 @@ Code = "gandiv5"
 Since = "v0.5.0"
 
 Example = '''
-GANDIV5_API_KEY=abcdefghijklmnopqrstuvwx \
+GANDIV5_PERSONAL_ACCESS_TOKEN=abcdefghijklmnopqrstuvwx \
 lego --email you@example.com --dns gandiv5 --domains my.example.org run
 '''
 
 [Configuration]
   [Configuration.Credentials]
-    GANDIV5_API_KEY = "API key"
+    GANDIV5_PERSONAL_ACCESS_TOKEN = "Personal Access Token"
+    GANDIV5_API_KEY = "API key (Deprecated)"
   [Configuration.Additional]
     GANDIV5_POLLING_INTERVAL = "Time between DNS propagation check"
     GANDIV5_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"

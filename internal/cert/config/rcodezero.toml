@@ -1,0 +1,33 @@
+Name = "RcodeZero"
+Description = ''''''
+URL = "https://www.rcodezero.at/"
+Code = "rcodezero"
+Since = "v4.13"
+
+Example = '''
+RCODEZERO_API_TOKEN=<mytoken> \
+lego --email you@example.com --dns rcodezero --domains my.example.org run
+'''
+
+Additional = '''
+## Description
+
+Generate your API Token via https://my.rcodezero.at with the `ACME` permissions.
+These are special tokens with limited access for ACME requests only.
+
+RcodeZero is an Anycast Network so the distribution of the DNS01-Challenge can take up to 2 minutes.
+
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    RCODEZERO_API_TOKEN = "API token"
+  [Configuration.Additional]
+    RCODEZERO_POLLING_INTERVAL = "Time between DNS propagation check"
+    RCODEZERO_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    RCODEZERO_TTL = "The TTL of the TXT record used for the DNS challenge"
+    RCODEZERO_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  # Note: the API endpoint used inside the client is not documented.
+  API = "https://my.rcodezero.at/openapi"

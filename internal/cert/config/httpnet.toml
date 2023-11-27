@@ -1,0 +1,25 @@
+Name = "http.net"
+Description = ''''''
+URL = "https://www.http.net/"
+Code = "httpnet"
+Since = "v4.15.0"
+
+Example = '''
+HTTPNET_API_KEY=xxxxxxxx \
+lego --email you@example.com --dns httpnet --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    HTTPNET_API_KEY = "API key"
+  [Configuration.Additional]
+    HTTPNET_ZONE_NAME = "Zone name in ACE format"
+    HTTPNET_POLLING_INTERVAL = "Time between DNS propagation check"
+    HTTPNET_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    HTTPNET_TTL = "The TTL of the TXT record used for the DNS challenge"
+    HTTPNET_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://www.http.net/docs/api/#dns"
+
+

@@ -69,7 +69,7 @@ EXEC_PATH=./update-dns.sh \
 It will then call the program `./update-dns.sh` like this:
 
 ```bash
-./update-dns.sh "present" "my.example.org." "--" "some-token" "KxAy-J3NwUmg9ZQuM-gP_Mq1nStaYSaP9tYQs5_-YsE.ksT-qywTd8058G-SHHWA3RAN72Pr0yWtPYmmY5UBpQ8"
+./update-dns.sh "present" "--" "my.example.org." "some-token" "KxAy-J3NwUmg9ZQuM-gP_Mq1nStaYSaP9tYQs5_-YsE.ksT-qywTd8058G-SHHWA3RAN72Pr0yWtPYmmY5UBpQ8"
 ```
 
 ## Commands
@@ -84,29 +84,14 @@ you can use the `--` delimiter to specify the start of positional arguments, and
 
 | Mode    | Command                                            |
 |---------|----------------------------------------------------|
-| default | `myprogram present -- <FQDN> <record>`             |
+| default | `myprogram present <FQDN> <record>`                |
 | `RAW`   | `myprogram present -- <domain> <token> <key_auth>` |
 
 ### Cleanup
 
 | Mode    | Command                                            |
 |---------|----------------------------------------------------|
-| default | `myprogram cleanup -- <FQDN> <record>`             |
+| default | `myprogram cleanup <FQDN> <record>`                |
 | `RAW`   | `myprogram cleanup -- <domain> <token> <key_auth>` |
-
-### Timeout
-
-The command have to display propagation timeout and polling interval into Stdout.
-
-The values must be formatted as JSON, and times are in seconds.
-Example: `{"timeout": 30, "interval": 5}`
-
-If an error occurs or if the command is not provided:
-the default display propagation timeout and polling interval are used.
-
-| Mode    | Command                                            |
-|---------|----------------------------------------------------|
-| default | `myprogram timeout`                                |
-| `RAW`   | `myprogram timeout`                                |
 
 '''

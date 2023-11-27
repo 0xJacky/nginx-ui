@@ -1,0 +1,54 @@
+Name = "Amazon S3"
+Description = ''''''
+URL = "https://aws.amazon.com/s3/"
+Code = "s3"
+Since = "v4.14.0"
+
+Example = '''
+AWS_ACCESS_KEY_ID=your_key_id \
+AWS_SECRET_ACCESS_KEY=your_secret_access_key \
+AWS_REGION=aws-region \
+lego --domains example.com --email your_example@email.com --http --http.s3-bucket your_s3_bucket --accept-tos=true run
+'''
+
+Additional = '''
+## Description
+
+AWS Credentials are automatically detected in the following locations and prioritized in the following order:
+
+1. Environment variables: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, [`AWS_SESSION_TOKEN`]
+2. Shared credentials file (defaults to `~/.aws/credentials`, profiles can be specified using `AWS_PROFILE`)
+3. Amazon EC2 IAM role
+
+The AWS Region is automatically detected in the following locations and prioritized in the following order:
+
+1. Environment variables: `AWS_REGION`
+2. Shared configuration file if `AWS_SDK_LOAD_CONFIG` is set (defaults to `~/.aws/config`, profiles can be specified using `AWS_PROFILE`)
+
+See also: https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/
+
+### Broad privileges for testing purposes
+
+Will need to create an S3 bucket which has read permissions set for Everyone (public access).
+The S3 bucket doesn't require static website hosting to be enabled.
+AWS_REGION must match the region where the s3 bucket is hosted.
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    AWS_ACCESS_KEY_ID = "Managed by the AWS client. Access key ID (`AWS_ACCESS_KEY_ID_FILE` is not supported, use `AWS_SHARED_CREDENTIALS_FILE` instead)"
+    AWS_SECRET_ACCESS_KEY = "Managed by the AWS client. Secret access key (`AWS_SECRET_ACCESS_KEY_FILE` is not supported, use `AWS_SHARED_CREDENTIALS_FILE` instead)"
+    AWS_REGION = "Managed by the AWS client (`AWS_REGION_FILE` is not supported)"
+    S3_BUCKET = "Name of the s3 bucket"
+    AWS_PROFILE = "Managed by the AWS client (`AWS_PROFILE_FILE` is not supported)"
+    AWS_SDK_LOAD_CONFIG = "Managed by the AWS client. Retrieve the region from the CLI config file (`AWS_SDK_LOAD_CONFIG_FILE` is not supported)"
+    AWS_ASSUME_ROLE_ARN = "Managed by the AWS Role ARN (`AWS_ASSUME_ROLE_ARN_FILE` is not supported)"
+    AWS_EXTERNAL_ID = "Managed by STS AssumeRole API operation (`AWS_EXTERNAL_ID_FILE` is not supported)"
+  [Configuration.Additional]
+    AWS_SHARED_CREDENTIALS_FILE = "Managed by the AWS client. Shared credentials file."
+    AWS_MAX_RETRIES = "The number of maximum returns the service will use to make an individual API request"
+
+[Links]
+  API = "https://docs.aws.amazon.com/AmazonS3/latest/userguide//Welcome.html"
+  GoClient = "https://docs.aws.amazon.com/sdk-for-go/"
+

@@ -20,7 +20,7 @@ download_and_extract() {
 # Copy .toml files from providers to the specified directory
 copy_toml_files() {
     local source_dir="$1/lego-master/providers"
-    local target_dir="server/pkg/cert/config"
+    local target_dir="internal/cert/config"
 
     # Remove the lego-master folder
     if [ ! -d "$target_dir" ]; then
