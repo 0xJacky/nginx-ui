@@ -1,7 +1,8 @@
-package api
+package user
 
 import (
 	"fmt"
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"net/http"
@@ -20,7 +21,7 @@ type LoginUser struct {
 
 func Login(c *gin.Context) {
 	var user LoginUser
-	ok := BindAndValid(c, &user)
+	ok := api.BindAndValid(c, &user)
 	if !ok {
 		return
 	}
@@ -70,7 +71,7 @@ type CasdoorLoginUser struct {
 func CasdoorCallback(c *gin.Context) {
 	var loginUser CasdoorLoginUser
 	fmt.Println("CasdoorCallback called")
-	ok := BindAndValid(c, &loginUser)
+	ok := api.BindAndValid(c, &loginUser)
 	if !ok {
 		return
 	}

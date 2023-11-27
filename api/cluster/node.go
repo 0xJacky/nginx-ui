@@ -1,6 +1,7 @@
-package api
+package cluster
 
 import (
+	"github.com/0xJacky/Nginx-UI/api"
 	analytic2 "github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/upgrader"
 	"github.com/dustin/go-humanize"
@@ -20,7 +21,7 @@ func GetCurrentNode(c *gin.Context) {
 
 	runtimeInfo, err := upgrader.GetRuntimeInfo()
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 	cpuInfo, _ := cpu.Info()

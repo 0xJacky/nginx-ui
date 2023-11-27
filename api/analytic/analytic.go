@@ -1,4 +1,4 @@
-package api
+package analytic
 
 import (
 	"fmt"
@@ -26,9 +26,9 @@ type CPUStat struct {
 
 type Stat struct {
 	Uptime  uint64             `json:"uptime"`
-	LoadAvg *load.AvgStat      `json:"loadavg"`
-	CPU     CPUStat            `json:"cpu"`
-	Memory  analytic2.MemStat  `json:"memory"`
+	LoadAvg *load.AvgStat     `json:"loadavg"`
+	CPU     CPUStat           `json:"cpu"`
+	Memory  analytic2.MemStat `json:"memory"`
 	Disk    analytic2.DiskStat `json:"disk"`
 	Network net.IOCountersStat `json:"network"`
 }

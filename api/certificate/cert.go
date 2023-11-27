@@ -1,6 +1,8 @@
-package api
+package certificate
 
 import (
+	"github.com/0xJacky/Nginx-UI/api"
+	"github.com/0xJacky/Nginx-UI/api/sites"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
@@ -157,13 +159,13 @@ func GetCertList(c *gin.Context) {
 func getCert(c *gin.Context, certModel *model.Cert) {
 	type resp struct {
 		*model.Cert
-		SSLCertification    string           `json:"ssl_certification"`
-		SSLCertificationKey string           `json:"ssl_certification_key"`
-		CertificateInfo     *CertificateInfo `json:"certificate_info,omitempty"`
+		SSLCertification    string                 `json:"ssl_certification"`
+		SSLCertificationKey string                 `json:"ssl_certification_key"`
+		CertificateInfo     *sites.CertificateInfo `json:"certificate_info,omitempty"`
 	}
 
 	var sslCertificationBytes, sslCertificationKeyBytes []byte
-	var certificateInfo *CertificateInfo
+	var certificateInfo *sites.CertificateInfo
 	if certModel.SSLCertificatePath != "" {
 		if _, err := os.Stat(certModel.SSLCertificatePath); err == nil {
 			sslCertificationBytes, _ = os.ReadFile(certModel.SSLCertificatePath)
@@ -172,11 +174,11 @@ func getCert(c *gin.Context, certModel *model.Cert) {
 		pubKey, err := cert.GetCertInfo(certModel.SSLCertificatePath)
 
 		if err != nil {
-			ErrHandler(c, err)
+			api.ErrHandler(c, err)
 			return
 		}
 
-		certificateInfo = &CertificateInfo{
+		certificateInfo = &sites.CertificateInfo{
 			SubjectName: pubKey.Subject.CommonName,
 			IssuerName:  pubKey.Issuer.CommonName,
 			NotAfter:    pubKey.NotAfter,
@@ -202,7 +204,7 @@ func GetCert(c *gin.Context) {
 	certModel, err := model.FirstCertByID(cast.ToInt(c.Param("id")))
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -217,7 +219,7 @@ func AddCert(c *gin.Context) {
 		SSLCertification      string `json:"ssl_certification"`
 		SSLCertificationKey   string `json:"ssl_certification_key"`
 	}
-	if !BindAndValid(c, &json) {
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 	certModel := &model.Cert{
@@ -229,26 +231,26 @@ func AddCert(c *gin.Context) {
 	err := certModel.Insert()
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
 	err = os.MkdirAll(filepath.Dir(json.SSLCertificatePath), 0644)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
 	err = os.MkdirAll(filepath.Dir(json.SSLCertificateKeyPath), 0644)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
 	if json.SSLCertification != "" {
 		err = os.WriteFile(json.SSLCertificatePath, []byte(json.SSLCertification), 0644)
 		if err != nil {
-			ErrHandler(c, err)
+			api.ErrHandler(c, err)
 			return
 		}
 	}
@@ -256,7 +258,7 @@ func AddCert(c *gin.Context) {
 	if json.SSLCertificationKey != "" {
 		err = os.WriteFile(json.SSLCertificateKeyPath, []byte(json.SSLCertificationKey), 0644)
 		if err != nil {
-			ErrHandler(c, err)
+			api.ErrHandler(c, err)
 			return
 		}
 	}
@@ -275,13 +277,13 @@ func ModifyCert(c *gin.Context) {
 		SSLCertificationKey   string `json:"ssl_certification_key"`
 	}
 
-	if !BindAndValid(c, &json) {
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 
 	certModel, err := model.FirstCertByID(id)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -292,26 +294,26 @@ func ModifyCert(c *gin.Context) {
 	})
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
 	err = os.MkdirAll(filepath.Dir(json.SSLCertificatePath), 0644)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
 	err = os.MkdirAll(filepath.Dir(json.SSLCertificateKeyPath), 0644)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
 	if json.SSLCertification != "" {
 		err = os.WriteFile(json.SSLCertificatePath, []byte(json.SSLCertification), 0644)
 		if err != nil {
-			ErrHandler(c, err)
+			api.ErrHandler(c, err)
 			return
 		}
 	}
@@ -319,7 +321,7 @@ func ModifyCert(c *gin.Context) {
 	if json.SSLCertificationKey != "" {
 		err = os.WriteFile(json.SSLCertificateKeyPath, []byte(json.SSLCertificationKey), 0644)
 		if err != nil {
-			ErrHandler(c, err)
+			api.ErrHandler(c, err)
 			return
 		}
 	}
@@ -332,14 +334,14 @@ func RemoveCert(c *gin.Context) {
 	certModel, err := model.FirstCertByID(id)
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
 	err = certModel.Remove()
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 

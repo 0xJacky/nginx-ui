@@ -1,6 +1,7 @@
-package api
+package system
 
 import (
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/upgrader"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -13,12 +14,12 @@ import (
 func GetRelease(c *gin.Context) {
 	data, err := upgrader.GetRelease(c.Query("channel"))
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 	runtimeInfo, err := upgrader.GetRuntimeInfo()
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 	type resp struct {
@@ -33,7 +34,7 @@ func GetRelease(c *gin.Context) {
 func GetCurrentVersion(c *gin.Context) {
 	curVer, err := upgrader.GetCurrentVersion()
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 

@@ -1,19 +1,20 @@
-package api
+package sites
 
 import (
-    "github.com/0xJacky/Nginx-UI/internal/cert"
-    "github.com/0xJacky/Nginx-UI/internal/config_list"
-    helper2 "github.com/0xJacky/Nginx-UI/internal/helper"
-    "github.com/0xJacky/Nginx-UI/internal/logger"
-    nginx2 "github.com/0xJacky/Nginx-UI/internal/nginx"
-    "github.com/0xJacky/Nginx-UI/model"
-    "github.com/0xJacky/Nginx-UI/query"
-    "github.com/gin-gonic/gin"
-    "github.com/sashabaranov/go-openai"
-    "net/http"
-    "os"
-    "strings"
-    "time"
+	"github.com/0xJacky/Nginx-UI/api"
+	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/config_list"
+	helper2 "github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/logger"
+	nginx2 "github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/gin-gonic/gin"
+	"github.com/sashabaranov/go-openai"
+	"net/http"
+	"os"
+	"strings"
+	"time"
 )
 
 func GetDomains(c *gin.Context) {
@@ -30,14 +31,14 @@ func GetDomains(c *gin.Context) {
 	configFiles, err := os.ReadDir(nginx2.GetConfPath("sites-available"))
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
 	enabledConfig, err := os.ReadDir(nginx2.GetConfPath("sites-enabled"))
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -107,7 +108,7 @@ func GetDomain(c *gin.Context) {
 	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -119,7 +120,7 @@ func GetDomain(c *gin.Context) {
 	site, err := s.Where(s.Path.Eq(path)).FirstOrInit()
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -132,7 +133,7 @@ func GetDomain(c *gin.Context) {
 	if site.Advanced {
 		origContent, err := os.ReadFile(path)
 		if err != nil {
-			ErrHandler(c, err)
+			api.ErrHandler(c, err)
 			return
 		}
 
@@ -152,7 +153,7 @@ func GetDomain(c *gin.Context) {
 	config, err := nginx2.ParseNgxConfig(path)
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -214,7 +215,7 @@ func SaveDomain(c *gin.Context) {
 		Overwrite bool   `json:"overwrite"`
 	}
 
-	if !BindAndValid(c, &json) {
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 
@@ -229,7 +230,7 @@ func SaveDomain(c *gin.Context) {
 
 	err := os.WriteFile(path, []byte(json.Content), 0644)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 	enabledConfigFilePath := nginx2.GetConfPath("sites-enabled", name)
@@ -253,14 +254,14 @@ func SaveDomain(c *gin.Context) {
 			err = os.Symlink(newPath, enabledConfigFilePath)
 
 			if err != nil {
-				ErrHandler(c, err)
+				api.ErrHandler(c, err)
 				return
 			}
 		}
 
 		err = os.Rename(path, newPath)
 		if err != nil {
-			ErrHandler(c, err)
+			api.ErrHandler(c, err)
 			return
 		}
 
@@ -301,7 +302,7 @@ func EnableDomain(c *gin.Context) {
 	_, err := os.Stat(configFilePath)
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -309,7 +310,7 @@ func EnableDomain(c *gin.Context) {
 		err = os.Symlink(configFilePath, enabledConfigFilePath)
 
 		if err != nil {
-			ErrHandler(c, err)
+			api.ErrHandler(c, err)
 			return
 		}
 	}
@@ -345,14 +346,14 @@ func DisableDomain(c *gin.Context) {
 	_, err := os.Stat(enabledConfigFilePath)
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
 	err = os.Remove(enabledConfigFilePath)
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -360,7 +361,7 @@ func DisableDomain(c *gin.Context) {
 	certModel := model.Cert{Filename: c.Param("name")}
 	err = certModel.Remove()
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -404,7 +405,7 @@ func DeleteDomain(c *gin.Context) {
 	err = os.Remove(availablePath)
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -418,18 +419,18 @@ func AddDomainToAutoCert(c *gin.Context) {
 	name := c.Param("name")
 
 	var json struct {
-        model.Cert
+		model.Cert
 		Domains []string `json:"domains"`
 	}
 
-	if !BindAndValid(c, &json) {
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 
 	certModel, err := model.FirstOrCreateCert(name)
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -442,7 +443,7 @@ func AddDomainToAutoCert(c *gin.Context) {
 	})
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -454,7 +455,7 @@ func RemoveDomainFromAutoCert(c *gin.Context) {
 	certModel, err := model.FirstCert(name)
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -463,7 +464,7 @@ func RemoveDomainFromAutoCert(c *gin.Context) {
 	})
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, nil)
@@ -476,7 +477,7 @@ func DuplicateSite(c *gin.Context) {
 		Name string `json:"name" binding:"required"`
 	}
 
-	if !BindAndValid(c, &json) {
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 
@@ -493,7 +494,7 @@ func DuplicateSite(c *gin.Context) {
 	_, err := helper2.CopyFile(src, dst)
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -507,7 +508,7 @@ func DomainEditByAdvancedMode(c *gin.Context) {
 		Advanced bool `json:"advanced"`
 	}
 
-	if !BindAndValid(c, &json) {
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 
@@ -518,14 +519,14 @@ func DomainEditByAdvancedMode(c *gin.Context) {
 
 	_, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
 	_, err = s.Where(s.Path.Eq(path)).Update(s.Advanced, json.Advanced)
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 

@@ -1,7 +1,8 @@
-package api
+package nginx
 
 import (
 	"encoding/json"
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	nginx2 "github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -39,7 +40,7 @@ func GetNginxLogPage(c *gin.Context) {
 	}
 
 	var control controlStruct
-	if !BindAndValid(c, &control) {
+	if !api.BindAndValid(c, &control) {
 		return
 	}
 

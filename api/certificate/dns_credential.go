@@ -1,6 +1,7 @@
-package api
+package certificate
 
 import (
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	model2 "github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -16,7 +17,7 @@ func GetDnsCredential(c *gin.Context) {
 
 	dnsCredential, err := d.FirstByID(id)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 	type apiDnsCredential struct {
@@ -43,7 +44,7 @@ func GetDnsCredentialList(c *gin.Context) {
 	}
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -59,7 +60,7 @@ type DnsCredentialManageJson struct {
 
 func AddDnsCredential(c *gin.Context) {
 	var json DnsCredentialManageJson
-	if !BindAndValid(c, &json) {
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 
@@ -74,7 +75,7 @@ func AddDnsCredential(c *gin.Context) {
 
 	err := d.Create(&dnsCredential)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -85,7 +86,7 @@ func EditDnsCredential(c *gin.Context) {
 	id := cast.ToInt(c.Param("id"))
 
 	var json DnsCredentialManageJson
-	if !BindAndValid(c, &json) {
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 
@@ -93,7 +94,7 @@ func EditDnsCredential(c *gin.Context) {
 
 	dnsCredential, err := d.FirstByID(id)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -105,7 +106,7 @@ func EditDnsCredential(c *gin.Context) {
 	})
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -118,12 +119,12 @@ func DeleteDnsCredential(c *gin.Context) {
 
 	dnsCredential, err := d.FirstByID(id)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 	err = d.DeleteByID(dnsCredential.ID)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 	c.JSON(http.StatusNoContent, nil)

@@ -1,4 +1,4 @@
-package api
+package terminal
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/logger"

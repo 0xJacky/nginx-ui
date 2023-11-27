@@ -1,8 +1,9 @@
-package api
+package openai
 
 import (
 	"context"
 	"fmt"
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -22,7 +23,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
 		Messages []openai.ChatCompletionMessage `json:"messages"`
 	}
 
-	if !BindAndValid(c, &json) {
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 
@@ -139,7 +140,7 @@ func StoreChatGPTRecord(c *gin.Context) {
 		Messages []openai.ChatCompletionMessage `json:"messages"`
 	}
 
-	if !BindAndValid(c, &json) {
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 
@@ -148,7 +149,7 @@ func StoreChatGPTRecord(c *gin.Context) {
 	_, err := g.Where(g.Name.Eq(name)).FirstOrCreate()
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -158,7 +159,7 @@ func StoreChatGPTRecord(c *gin.Context) {
 	})
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 

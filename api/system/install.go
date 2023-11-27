@@ -1,6 +1,7 @@
-package api
+package system
 
 import (
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/boot"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -37,7 +38,7 @@ func InstallNginxUI(c *gin.Context) {
 		return
 	}
 	var json InstallJson
-	ok := BindAndValid(c, &json)
+	ok := api.BindAndValid(c, &json)
 	if !ok {
 		return
 	}
@@ -52,7 +53,7 @@ func InstallNginxUI(c *gin.Context) {
 
 	err := settings.Save()
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -68,7 +69,7 @@ func InstallNginxUI(c *gin.Context) {
 	})
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{

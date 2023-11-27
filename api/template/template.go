@@ -1,6 +1,7 @@
-package api
+package template
 
 import (
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/template"
 	"github.com/gin-gonic/gin"
@@ -48,7 +49,7 @@ func GetTemplateConfList(c *gin.Context) {
 	configList, err := template.GetTemplateList("conf")
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -61,7 +62,7 @@ func GetTemplateBlockList(c *gin.Context) {
 	configList, err := template.GetTemplateList("block")
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -85,7 +86,7 @@ func GetTemplateBlock(c *gin.Context) {
 
 	detail, err := template.ParseTemplate("block", c.Param("name"), bindData)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 	info.Variables = bindData

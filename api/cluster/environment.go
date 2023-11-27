@@ -1,6 +1,7 @@
-package api
+package cluster
 
 import (
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/environment"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -18,7 +19,7 @@ func GetEnvironment(c *gin.Context) {
 
 	env, err := envQuery.FirstByID(id)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -28,7 +29,7 @@ func GetEnvironment(c *gin.Context) {
 func GetEnvironmentList(c *gin.Context) {
 	data, err := environment.RetrieveEnvironmentList()
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -54,11 +55,11 @@ func validateRegex(data EnvironmentManageJson) error {
 
 func AddEnvironment(c *gin.Context) {
 	var json EnvironmentManageJson
-	if !BindAndValid(c, &json) {
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 	if err := validateRegex(json); err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -74,7 +75,7 @@ func AddEnvironment(c *gin.Context) {
 
 	err := envQuery.Create(&env)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -87,11 +88,11 @@ func EditEnvironment(c *gin.Context) {
 	id := cast.ToInt(c.Param("id"))
 
 	var json EnvironmentManageJson
-	if !BindAndValid(c, &json) {
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 	if err := validateRegex(json); err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -99,7 +100,7 @@ func EditEnvironment(c *gin.Context) {
 
 	env, err := envQuery.FirstByID(id)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -112,7 +113,7 @@ func EditEnvironment(c *gin.Context) {
 	})
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -127,12 +128,12 @@ func DeleteEnvironment(c *gin.Context) {
 
 	env, err := envQuery.FirstByID(id)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 	err = envQuery.DeleteByID(env.ID)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 

@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/gin-gonic/gin"
 	val "github.com/go-playground/validator/v10"
@@ -26,7 +27,8 @@ func BindAndValid(c *gin.Context, target interface{}) bool {
 	if err != nil {
 		logger.Error("bind err", err)
 
-		verrs, ok := err.(val.ValidationErrors)
+		var verrs val.ValidationErrors
+		ok := errors.As(err, &verrs)
 
 		if !ok {
 			logger.Error("valid err", verrs)

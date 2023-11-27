@@ -1,6 +1,7 @@
-package api
+package config
 
 import (
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/config_list"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	nginx2 "github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -25,7 +26,7 @@ func GetConfigs(c *gin.Context) {
 	configFiles, err := os.ReadDir(nginx2.GetConfPath(dir))
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -82,14 +83,14 @@ func GetConfig(c *gin.Context) {
 	stat, err := os.Stat(path)
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
 	content, err := os.ReadFile(path)
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -97,7 +98,7 @@ func GetConfig(c *gin.Context) {
 	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
 
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -123,7 +124,7 @@ func AddConfig(c *gin.Context) {
 	var request AddConfigJson
 	err := c.BindJSON(&request)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -142,7 +143,7 @@ func AddConfig(c *gin.Context) {
 	if content != "" {
 		err = os.WriteFile(path, []byte(content), 0644)
 		if err != nil {
-			ErrHandler(c, err)
+			api.ErrHandler(c, err)
 			return
 		}
 	}
@@ -171,7 +172,7 @@ func EditConfig(c *gin.Context) {
 	var request EditConfigJson
 	err := c.BindJSON(&request)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 	path := nginx2.GetConfPath("/", name)
@@ -179,7 +180,7 @@ func EditConfig(c *gin.Context) {
 
 	origContent, err := os.ReadFile(path)
 	if err != nil {
-		ErrHandler(c, err)
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -187,7 +188,7 @@ func EditConfig(c *gin.Context) {
 		// model.CreateBackup(path)
 		err = os.WriteFile(path, []byte(content), 0644)
 		if err != nil {
-			ErrHandler(c, err)
+			api.ErrHandler(c, err)
 			return
 		}
 	}

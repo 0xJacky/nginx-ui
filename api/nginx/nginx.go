@@ -1,15 +1,16 @@
-package api
+package nginx
 
 import (
-    nginx2 "github.com/0xJacky/Nginx-UI/internal/nginx"
-    "github.com/gin-gonic/gin"
-    "net/http"
-    "os"
+	"github.com/0xJacky/Nginx-UI/api"
+	nginx2 "github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/gin-gonic/gin"
+	"net/http"
+	"os"
 )
 
 func BuildNginxConfig(c *gin.Context) {
 	var ngxConf nginx2.NgxConfig
-	if !BindAndValid(c, &ngxConf) {
+	if !api.BindAndValid(c, &ngxConf) {
 		return
 	}
 	c.Set("maybe_error", "nginx_config_syntax_error")
@@ -23,7 +24,7 @@ func TokenizeNginxConfig(c *gin.Context) {
 		Content string `json:"content" binding:"required"`
 	}
 
-	if !BindAndValid(c, &json) {
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 
@@ -39,7 +40,7 @@ func FormatNginxConfig(c *gin.Context) {
 		Content string `json:"content" binding:"required"`
 	}
 
-	if !BindAndValid(c, &json) {
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 
@@ -49,7 +50,7 @@ func FormatNginxConfig(c *gin.Context) {
 	})
 }
 
-func NginxStatus(c *gin.Context) {
+func Status(c *gin.Context) {
 	pidPath := nginx2.GetNginxPIDPath()
 
 	running := true
@@ -62,26 +63,3 @@ func NginxStatus(c *gin.Context) {
 	})
 }
 
-func ReloadNginx(c *gin.Context) {
-	output := nginx2.Reload()
-	c.JSON(http.StatusOK, gin.H{
-		"message": output,
-		"level":   nginx2.GetLogLevel(output),
-	})
-}
-
-func TestNginx(c *gin.Context) {
-	output := nginx2.TestConf()
-	c.JSON(http.StatusOK, gin.H{
-		"message": output,
-		"level":   nginx2.GetLogLevel(output),
-	})
-}
-
-func RestartNginx(c *gin.Context) {
-	output := nginx2.Restart()
-	c.JSON(http.StatusOK, gin.H{
-		"message": output,
-		"level":   nginx2.GetLogLevel(output),
-	})
-}
