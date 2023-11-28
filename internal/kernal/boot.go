@@ -1,7 +1,7 @@
-package boot
+package kernal
 
 import (
-	analytic2 "github.com/0xJacky/Nginx-UI/internal/analytic"
+	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-func Kernel() {
+func Boot() {
 	defer recovery()
 
 	async := []func(){
@@ -24,7 +24,7 @@ func Kernel() {
 	}
 
 	syncs := []func(){
-		analytic2.RecordServerAnalytic,
+		analytic.RecordServerAnalytic,
 	}
 
 	for _, v := range async {
@@ -39,7 +39,7 @@ func Kernel() {
 func InitAfterDatabase() {
 	syncs := []func(){
 		InitAutoObtainCert,
-		analytic2.RetrieveNodesStatus,
+		analytic.RetrieveNodesStatus,
 	}
 
 	for _, v := range syncs {

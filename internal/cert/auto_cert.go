@@ -50,7 +50,7 @@ func (t *AutoCertErrorLog) Exit(text string, err error) {
 func (t *AutoCertErrorLog) ToString() (content string) {
 
 	for _, v := range t.buffer {
-		content += fmt.Sprintf("[AutoCert Error] %s\n", v)
+		content += fmt.Sprintf("[Error] %s\n", v)
 	}
 
 	return
@@ -103,6 +103,8 @@ func AutoObtain() {
 			ChallengeMethod: certModel.ChallengeMethod,
 			DNSCredentialID: certModel.DnsCredentialID,
 		}
+
+		// logChan and errChan should be closed inside IssueCert
 		go IssueCert(payload, logChan, errChan)
 
 		go handleIssueCertLogChan(logChan)
@@ -121,8 +123,6 @@ func AutoObtain() {
 		} else {
 			certModel.ClearLog()
 		}
-
-		close(logChan)
 	}
 	logger.Info("AutoCert Worker End")
 }

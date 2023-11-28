@@ -14,10 +14,10 @@ require (
 	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-acme/lego/v4 v4.14.0
-	github.com/go-co-op/gocron v1.33.1
+	github.com/go-co-op/gocron v1.36.0
 	github.com/go-playground/validator/v10 v10.15.3
 	github.com/golang-jwt/jwt v3.2.2+incompatible
-	github.com/google/uuid v1.3.1
+	github.com/google/uuid v1.4.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/hpcloud/tail v1.0.0
 	github.com/jpillora/overseer v1.1.6

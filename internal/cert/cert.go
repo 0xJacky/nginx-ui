@@ -1,30 +1,30 @@
 package cert
 
 import (
-    "crypto"
-    "crypto/ecdsa"
-    "crypto/elliptic"
-    "crypto/rand"
-    "crypto/tls"
-    "github.com/0xJacky/Nginx-UI/internal/cert/dns"
-    "github.com/0xJacky/Nginx-UI/internal/logger"
-    "github.com/0xJacky/Nginx-UI/internal/nginx"
-    "github.com/0xJacky/Nginx-UI/query"
-    "github.com/0xJacky/Nginx-UI/settings"
-    "github.com/go-acme/lego/v4/certcrypto"
-    "github.com/go-acme/lego/v4/certificate"
-    "github.com/go-acme/lego/v4/challenge/http01"
-    "github.com/go-acme/lego/v4/lego"
-    lego_log "github.com/go-acme/lego/v4/log"
-    dns_providers "github.com/go-acme/lego/v4/providers/dns"
-    "github.com/go-acme/lego/v4/registration"
-    "github.com/pkg/errors"
-    "io"
-    "log"
-    "net/http"
-    "os"
-    "path/filepath"
-    "strings"
+	"crypto"
+	"crypto/ecdsa"
+	"crypto/elliptic"
+	"crypto/rand"
+	"crypto/tls"
+	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
+	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/go-acme/lego/v4/certcrypto"
+	"github.com/go-acme/lego/v4/certificate"
+	"github.com/go-acme/lego/v4/challenge/http01"
+	"github.com/go-acme/lego/v4/lego"
+	lego_log "github.com/go-acme/lego/v4/log"
+	dns_providers "github.com/go-acme/lego/v4/providers/dns"
+	"github.com/go-acme/lego/v4/registration"
+	"github.com/pkg/errors"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 const (
@@ -74,6 +74,9 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		}
 	}()
 
+    defer close(logChan)
+    defer close(errChan)
+
 	// Use a channel to receive lego log
 	logChannel := make(chan []byte, 1024)
 	defer close(logChannel)
@@ -94,7 +97,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		Key:   privateKey,
 	}
 
-	// Hijack lego's log
+	// Hijack the (logger) of lego
 	cw := &channelWriter{ch: logChannel}
 	multiWriter := io.MultiWriter(os.Stderr, cw)
 	l := log.New(os.Stderr, "", log.LstdFlags)
@@ -235,12 +238,9 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		return
 	}
 
-	close(errChan)
 	logChan <- "Reloading nginx"
 
 	nginx.Reload()
 
 	logChan <- "Finished"
-
-	close(logChan)
 }

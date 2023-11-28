@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/internal/boot"
+	"github.com/0xJacky/Nginx-UI/internal/kernal"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/upgrader"
@@ -21,7 +21,7 @@ func Program(state overseer.State) {
 
 	logger.Infof("Nginx configuration directory: %s", nginx.GetConfPath())
 
-	boot.Kernel()
+	kernal.Boot()
 
 	if state.Listener != nil {
 		err := http.Serve(state.Listener, router.InitRouter())
