@@ -6,7 +6,7 @@ import router from './routes'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import {useSettingsStore} from '@/pinia'
 import {autoAnimatePlugin} from '@formkit/auto-animate/vue'
-
+import './style.css'
 
 const pinia = createPinia()
 

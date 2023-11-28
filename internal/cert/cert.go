@@ -42,9 +42,11 @@ type MyUser struct {
 func (u *MyUser) GetEmail() string {
 	return u.Email
 }
+
 func (u *MyUser) GetRegistration() *registration.Resource {
 	return u.Registration
 }
+
 func (u *MyUser) GetPrivateKey() crypto.PrivateKey {
 	return u.Key
 }
@@ -74,8 +76,8 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		}
 	}()
 
-    defer close(logChan)
-    defer close(errChan)
+	defer close(logChan)
+	defer close(errChan)
 
 	// Use a channel to receive lego log
 	logChannel := make(chan []byte, 1024)

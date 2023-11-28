@@ -38,7 +38,7 @@ const columns = [{
             row-key="name"
   >
     <template #beforeEdit>
-      <a-alert type="info" show-icon :message="$gettext('Note')">
+      <a-alert class="mb-4" type="info" show-icon :message="$gettext('Note')">
         <template #description>
           <p v-translate>
             Please fill in the API authentication credentials provided by your DNS provider.
