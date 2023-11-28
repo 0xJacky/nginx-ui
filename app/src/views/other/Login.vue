@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {useUserStore} from '@/pinia'
-import {LockOutlined, UserOutlined} from '@ant-design/icons-vue'
-import {reactive, ref, watch} from 'vue'
-import {useRoute, useRouter} from 'vue-router'
+import { LockOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { reactive, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { Form, message } from 'ant-design-vue'
 import gettext from '@/gettext'
-import {Form, message} from 'ant-design-vue'
+import { useUserStore } from '@/pinia'
 import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
@@ -16,43 +16,46 @@ const route = useRoute()
 const router = useRouter()
 
 install.get_lock().then(async (r: { lock: boolean }) => {
-  if (!r.lock) {
+  if (!r.lock)
     await router.push('/install')
-  }
 })
 
-const {$gettext} = gettext
+const { $gettext } = gettext
 const loading = ref(false)
 
 const modelRef = reactive({
   username: '',
-  password: ''
+  password: '',
 })
 
 const rulesRef = reactive({
   username: [
     {
       required: true,
-      message: () => $gettext('Please input your username!')
-    }
+      message: () => $gettext('Please input your username!'),
+    },
   ],
   password: [
     {
       required: true,
-      message: () => $gettext('Please input your password!')
-    }
-  ]
+      message: () => $gettext('Please input your password!'),
+    },
+  ],
 })
 
-const {validate, validateInfos, clearValidate} = Form.useForm(modelRef, rulesRef)
+const { validate, validateInfos, clearValidate } = Form.useForm(modelRef, rulesRef)
 
 const onSubmit = () => {
   validate().then(async () => {
     loading.value = true
+    // eslint-disable-next-line promise/no-nesting
     await auth.login(modelRef.username, modelRef.password).then(async () => {
       message.success($gettext('Login successful'), 1)
+
       const next = (route.query?.next || '').toString() || '/'
+
       await router.push(next)
+      // eslint-disable-next-line promise/no-nesting
     }).catch(e => {
       message.error($gettext(e.message ?? 'Server error'))
     })
@@ -64,6 +67,7 @@ const user = useUserStore()
 
 if (user.is_login) {
   const next = (route.query?.next || '').toString() || '/dashboard'
+
   router.push(next)
 }
 
@@ -75,13 +79,13 @@ const has_casdoor = ref(false)
 const casdoor_uri = ref('')
 
 http.get('/casdoor_uri')
-  .then((response) => {
+  .then(response => {
     if (response?.uri) {
       has_casdoor.value = true
       casdoor_uri.value = response.uri
     }
   })
-  .catch((e) => {
+  .catch(e => {
     message.error($gettext(e.message ?? 'Server error'))
   })
 
@@ -89,18 +93,19 @@ const loginWithCasdoor = () => {
   window.location.href = casdoor_uri.value
 }
 
-if (route.query?.code != undefined && route.query?.state != undefined) {
+if (route.query?.code !== undefined && route.query?.state !== undefined) {
   loading.value = true
-  auth.casdoorLogin(route.query.code.toString(), route.query.state.toString()).then(async () => {
+  auth.casdoor_login(route.query.code.toString(), route.query.state.toString()).then(async () => {
     message.success($gettext('Login successful'), 1)
+
     const next = (route.query?.next || '').toString() || '/'
+
     await router.push(next)
   }).catch(e => {
     message.error($gettext(e.message ?? 'Server error'))
   })
   loading.value = false
 }
-
 
 </script>
 
@@ -110,40 +115,55 @@ if (route.query?.code != undefined && route.query?.state != undefined) {
       <div class="project-title">
         <h1>Nginx UI</h1>
       </div>
-      <a-form id="components-form-demo-normal-login">
-        <a-form-item v-bind="validateInfos.username">
-          <a-input
+      <AForm id="components-form-demo-normal-login">
+        <AFormItem v-bind="validateInfos.username">
+          <AInput
             v-model:value="modelRef.username"
             :placeholder="$gettext('Username')"
           >
             <template #prefix>
-              <UserOutlined style="color: rgba(0, 0, 0, 0.25)"/>
+              <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
             </template>
-          </a-input>
-        </a-form-item>
-        <a-form-item v-bind="validateInfos.password">
-          <a-input-password
+          </AInput>
+        </AFormItem>
+        <AFormItem v-bind="validateInfos.password">
+          <AInputPassword
             v-model:value="modelRef.password"
             :placeholder="$gettext('Password')"
           >
             <template #prefix>
-              <LockOutlined style="color: rgba(0, 0, 0, 0.25)"/>
+              <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
             </template>
-          </a-input-password>
-        </a-form-item>
-        <a-form-item>
-          <a-button @click="onSubmit" type="primary" :block="true" html-type="submit" :loading="loading">
+          </AInputPassword>
+        </AFormItem>
+        <AFormItem>
+          <AButton
+            type="primary"
+            block
+            html-type="submit"
+            :loading="loading"
+            @click="onSubmit"
+          >
             {{ $gettext('Login') }}
-          </a-button>
-        </a-form-item>
-      </a-form>
-      <a-button @click="loginWithCasdoor" :block="true" html-type="submit" :loading="loading" v-if="has_casdoor">
+          </AButton>
+        </AFormItem>
+      </AForm>
+      <AButton
+        v-if="has_casdoor"
+        block
+        html-type="submit"
+        :loading="loading"
+        @click="loginWithCasdoor"
+      >
         {{ $gettext('SSO Login') }}
-      </a-button>
+      </AButton>
       <div class="footer">
         <p>Copyright © 2020 - {{ thisYear }} Nginx UI</p>
         Language
-        <set-language class="set_lang" style="display: inline"/>
+        <SetLanguage
+          class="set_lang"
+          style="display: inline"
+        />
       </div>
     </div>
   </div>

@@ -1,13 +1,25 @@
 <script setup lang="ts">
-import {computed, onMounted, reactive, ref, watch} from 'vue'
-import StdTable from '@/components/StdDataDisplay/StdTable.vue'
+import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import gettext from '@/gettext'
+import type Curd from '@/api/curd'
 
-const {$gettext} = gettext
-const props = defineProps(['selectedKey', 'value', 'recordValueIndex',
-  'selectionType', 'api', 'columns', 'data_key',
-  'disable_search', 'get_params', 'description'])
+const props = defineProps<{
+  selectedKey: string | number
+  value: string | number
+  recordValueIndex: string
+  selectionType: 'radio' | 'checkbox'
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  api: Curd<any>
+  columns: any[]
+  dataKey: string
+  disableSearch: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getParams: any
+  description: string
+}>()
+
 const emit = defineEmits(['update:selectedKey', 'changeSelect'])
+const { $gettext } = gettext
 const visible = ref(false)
 const M_value = ref('')
 
@@ -17,10 +29,11 @@ onMounted(() => {
 
 const selected = ref([])
 
-const record: any = reactive({})
+const record = reactive({})
 
 function init() {
   if (props.selectedKey && !props.value && props.selectionType === 'radio') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     props.api.get(props.selectedKey).then((r: any) => {
       Object.assign(record, r)
       M_value.value = r[props.recordValueIndex]
@@ -31,34 +44,33 @@ function init() {
 function show() {
   visible.value = true
 }
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function onSelect(_selected: any) {
   selected.value = _selected
 }
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function onSelectedRecord(r: any) {
   Object.assign(record, r)
 }
 
 function ok() {
   visible.value = false
-  if (props.selectionType == 'radio') {
+  if (props.selectionType === 'radio')
     emit('update:selectedKey', selected.value[0])
-  } else {
+  else
     emit('update:selectedKey', selected.value)
-  }
+
   M_value.value = record[props.recordValueIndex]
   emit('changeSelect', record)
 }
 
 watch(props, () => {
-  if (!props?.selectedKey) {
+  if (!props?.selectedKey)
     M_value.value = ''
-  } else if (props.value) {
-    M_value.value = props.value
-  } else {
+  else if (props.value)
+    M_value.value = props.value as string
+  else
     init()
-  }
 })
 
 const _selectedKey = computed({
@@ -67,48 +79,54 @@ const _selectedKey = computed({
   },
   set(v) {
     emit('update:selectedKey', v)
-  }
+  },
 })
 </script>
 
 <template>
   <div class="std-selector-container">
-    <div class="std-selector" @click="show()">
-      <a-input v-model="_selectedKey" disabled hidden/>
+    <div
+      class="std-selector"
+      @click="show"
+    >
+      <AInput
+        v-model="_selectedKey"
+        disabled
+        hidden
+      />
       <div class="value">
         {{ M_value }}
       </div>
-      <a-modal
+      <AModal
         :mask="false"
         :open="visible"
         :cancel-text="$gettext('Cancel')"
         :ok-text="$gettext('OK')"
         :title="$gettext('Selector')"
-        @cancel="visible=false"
-        @ok="ok()"
         :width="800"
-        destroyOnClose
+        destroy-on-close
+        @cancel="visible = false"
+        @ok="ok"
       >
         {{ description }}
-        <std-table
+        <StdTable
           :api="api"
           :columns="columns"
-          :data_key="data_key"
-          :disable_search="disable_search"
-          :pithy="true"
-          :get_params="get_params"
-          :selectionType="selectionType"
-          :disable_query_params="true"
-          @onSelected="onSelect"
-          @onSelectedRecord="onSelectedRecord"
+          :data_key="dataKey"
+          :disable_search="disableSearch"
+          pithy
+          :get_params="getParams"
+          :selection-type="selectionType"
+          disable_query_params
+          @on-selected="onSelect"
+          @on-selected-record="onSelectedRecord"
         />
-      </a-modal>
+      </AModal>
     </div>
   </div>
 </template>
 
 <style lang="less" scoped>
-.dark .std-selector-container
 .std-selector-container {
   height: 39.9px;
   display: flex;
@@ -132,10 +150,6 @@ const _selectedKey = computed({
     margin: 0 10px 0 0;
     cursor: pointer;
     min-width: 180px;
-
-    .value {
-
-    }
   }
 }
 </style>

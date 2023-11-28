@@ -1,31 +1,29 @@
 <script setup lang="ts">
-import {Form, message} from 'ant-design-vue'
+import { Form, message } from 'ant-design-vue'
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { DatabaseOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons-vue'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
-import {reactive, ref} from 'vue'
 import gettext from '@/gettext'
 import install from '@/api/install'
-import {useRoute, useRouter} from 'vue-router'
-import {DatabaseOutlined, LockOutlined, MailOutlined, UserOutlined} from '@ant-design/icons-vue'
 
-const {$gettext, interpolate} = gettext
+const { $gettext, interpolate } = gettext
 
 const thisYear = new Date().getFullYear()
 const loading = ref(false)
 
-const route = useRoute()
 const router = useRouter()
 
 install.get_lock().then(async (r: { lock: boolean }) => {
-  if (r.lock) {
+  if (r.lock)
     await router.push('/login')
-  }
 })
 
 const modelRef = reactive({
   email: '',
   username: '',
   password: '',
-  database: ''
+  database: '',
 })
 
 const rulesRef = reactive({
@@ -33,40 +31,42 @@ const rulesRef = reactive({
     {
       required: true,
       type: 'email',
-      message: () => $gettext('Please input your E-mail!')
-    }
+      message: () => $gettext('Please input your E-mail!'),
+    },
   ],
   username: [
     {
       required: true,
-      message: () => $gettext('Please input your username!')
-    }
+      message: () => $gettext('Please input your username!'),
+    },
   ],
   password: [
     {
       required: true,
-      message: () => $gettext('Please input your password!')
-    }
+      message: () => $gettext('Please input your password!'),
+    },
   ],
   database: [
     {
       message: () => interpolate(
         $gettext('The filename cannot contain the following characters: %{c}'),
-        {c: '& &quot; ? < > # {} % ~ / \\'}
-      )
-    }
-  ]
+        { c: '& &quot; ? < > # {} % ~ / \\' },
+      ),
+    },
+  ],
 })
 
-const {validate, validateInfos} = Form.useForm(modelRef, rulesRef)
+const { validate, validateInfos } = Form.useForm(modelRef, rulesRef)
 
 const onSubmit = () => {
   validate().then(() => {
     // modelRef
     loading.value = true
+    // eslint-disable-next-line promise/no-nesting
     install.install_nginx_ui(modelRef).then(async () => {
       message.success($gettext('Install successfully'))
       await router.push('/login')
+      // eslint-disable-next-line promise/no-nesting
     }).catch(e => {
       message.error(e.message ?? $gettext('Server error'))
     }).finally(() => {
@@ -81,60 +81,71 @@ const onSubmit = () => {
     <div class="project-title">
       <h1>Nginx UI</h1>
     </div>
-    <a-form id="components-form-install" class="login-form">
-      <a-form-item v-bind="validateInfos.email">
-        <a-input
+    <AForm
+      id="components-form-install"
+      class="login-form"
+    >
+      <AFormItem v-bind="validateInfos.email">
+        <AInput
           v-model:value="modelRef.email"
           :placeholder="$gettext('Email (*)')"
         >
           <template #prefix>
-            <MailOutlined/>
+            <MailOutlined />
           </template>
-        </a-input>
-      </a-form-item>
-      <a-form-item v-bind="validateInfos.username">
-        <a-input
+        </AInput>
+      </AFormItem>
+      <AFormItem v-bind="validateInfos.username">
+        <AInput
           v-model:value="modelRef.username"
           :placeholder="$gettext('Username (*)')"
         >
           <template #prefix>
-            <UserOutlined/>
+            <UserOutlined />
           </template>
-        </a-input>
-      </a-form-item>
-      <a-form-item v-bind="validateInfos.password">
-        <a-input-password
+        </AInput>
+      </AFormItem>
+      <AFormItem v-bind="validateInfos.password">
+        <AInputPassword
           v-model:value="modelRef.password"
           :placeholder="$gettext('Password (*)')"
         >
           <template #prefix>
-            <LockOutlined/>
+            <LockOutlined />
           </template>
-        </a-input-password>
-      </a-form-item>
-      <a-form-item>
-        <a-input
+        </AInputPassword>
+      </AFormItem>
+      <AFormItem>
+        <AInput
           v-bind="validateInfos.database"
           v-model:value="modelRef.database"
           :placeholder="$gettext('Database (Optional, default: database)')"
         >
           <template #prefix>
-            <DatabaseOutlined/>
+            <DatabaseOutlined />
           </template>
-        </a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-button type="primary" :block="true" @click="onSubmit" html-type="submit" :loading="loading">
-          <translate>Install</translate>
-        </a-button>
-      </a-form-item>
-    </a-form>
+        </AInput>
+      </AFormItem>
+      <AFormItem>
+        <AButton
+          type="primary"
+          block
+          html-type="submit"
+          :loading="loading"
+          @click="onSubmit"
+        >
+          {{ $gettext('Install') }}
+        </AButton>
+      </AFormItem>
+    </AForm>
     <footer>
       Copyright © 2020 - {{ thisYear }} Nginx UI | Language
-      <set-language class="set_lang" style="display: inline"/>
+      <SetLanguage
+        class="set_lang"
+        style="display: inline"
+      />
     </footer>
   </div>
-
 </template>
 
 <style lang="less">

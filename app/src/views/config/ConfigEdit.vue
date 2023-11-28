@@ -1,26 +1,26 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
+import { computed, ref } from 'vue'
+import { message } from 'ant-design-vue'
+import { formatDateTime } from '@/lib/helper'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import gettext from '@/gettext'
-import {useRoute} from 'vue-router'
-import {computed, ref} from 'vue'
 import config from '@/api/config'
-import {message} from 'ant-design-vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import ngx from '@/api/ngx'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
-import {formatDateTime} from '../../lib/helper'
 
-const {$gettext, interpolate} = gettext
+const { $gettext, interpolate } = gettext
 const route = useRoute()
 
 const inspect_config = ref()
 
 const name = computed(() => {
   const n = route.params.name
-  if (typeof n === 'string') {
+  if (typeof n === 'string')
     return n
-  }
+
   return n?.join('/')
 })
 
@@ -33,14 +33,15 @@ const modified_at = ref('')
 function init() {
   if (name.value) {
     config.get(name.value).then(r => {
-      configText.value = r.config
+      configText.value = r.content
       history_chatgpt_record.value = r.chatgpt_messages
       file_path.value = r.file_path
       modified_at.value = r.modified_at
     }).catch(r => {
       message.error(r.message ?? $gettext('Server error'))
     })
-  } else {
+  }
+  else {
     configText.value = ''
     history_chatgpt_record.value = []
     file_path.value = ''
@@ -50,11 +51,11 @@ function init() {
 init()
 
 function save() {
-  config.save(name.value, {content: configText.value}).then(r => {
+  config.save(name.value, { content: configText.value }).then(r => {
     configText.value = r.config
     message.success($gettext('Saved successfully'))
   }).catch(r => {
-    message.error(interpolate($gettext('Save error %{msg}'), {msg: r.message ?? ''}))
+    message.error(interpolate($gettext('Save error %{msg}'), { msg: r.message ?? '' }))
   }).finally(() => {
     inspect_config.value.test()
   })
@@ -65,56 +66,78 @@ function format_code() {
     configText.value = r.content
     message.success($gettext('Format successfully'))
   }).catch(r => {
-    message.error(interpolate($gettext('Format error %{msg}'), {msg: r.message ?? ''}))
+    message.error(interpolate($gettext('Format error %{msg}'), { msg: r.message ?? '' }))
   })
 }
 
 </script>
 
-
 <template>
-  <a-row :gutter="16">
-    <a-col :xs="24" :sm="24" :md="18">
-      <a-card :title="$gettext('Edit Configuration')">
-        <inspect-config ref="inspect_config"/>
-        <code-editor v-model:content="configText"/>
-        <footer-tool-bar>
-          <a-space>
-            <a-button @click="$router.go(-1)">
-              <translate>Back</translate>
-            </a-button>
-            <a-button @click="format_code">
-              <translate>Format Code</translate>
-            </a-button>
-            <a-button type="primary" @click="save">
-              <translate>Save</translate>
-            </a-button>
-          </a-space>
-        </footer-tool-bar>
-      </a-card>
-    </a-col>
+  <ARow :gutter="16">
+    <ACol
+      :xs="24"
+      :sm="24"
+      :md="18"
+    >
+      <ACard :title="$gettext('Edit Configuration')">
+        <InspectConfig ref="inspect_config" />
+        <CodeEditor v-model:content="configText" />
+        <FooterToolBar>
+          <ASpace>
+            <AButton @click="$router.go(-1)">
+              {{ $gettext('Back') }}
+            </AButton>
+            <AButton @click="format_code">
+              {{ $gettext('Format Code') }}
+            </AButton>
+            <AButton
+              type="primary"
+              @click="save"
+            >
+              {{ $gettext('Save') }}
+            </AButton>
+          </ASpace>
+        </FooterToolBar>
+      </ACard>
+    </ACol>
 
-    <a-col :xs="24" :sm="24" :md="6">
-      <a-card class="col-right">
-        <a-collapse v-model:activeKey="active_key" ghost>
-          <a-collapse-panel key="1" :header="$gettext('Basic')">
-            <a-form layout="vertical">
-              <a-form-item :label="$gettext('Path')">
+    <ACol
+      :xs="24"
+      :sm="24"
+      :md="6"
+    >
+      <ACard class="col-right">
+        <ACollapse
+          v-model:activeKey="active_key"
+          ghost
+        >
+          <ACollapsePanel
+            key="1"
+            :header="$gettext('Basic')"
+          >
+            <AForm layout="vertical">
+              <AFormItem :label="$gettext('Path')">
                 {{ file_path }}
-              </a-form-item>
-              <a-form-item :label="$gettext('Updated at')">
+              </AFormItem>
+              <AFormItem :label="$gettext('Updated at')">
                 {{ formatDateTime(modified_at) }}
-              </a-form-item>
-            </a-form>
-          </a-collapse-panel>
-          <a-collapse-panel key="2" header="ChatGPT">
-            <chat-g-p-t :content="configText" :path="file_path"
-                        v-model:history_messages="history_chatgpt_record"/>
-          </a-collapse-panel>
-        </a-collapse>
-      </a-card>
-    </a-col>
-  </a-row>
+              </AFormItem>
+            </AForm>
+          </ACollapsePanel>
+          <ACollapsePanel
+            key="2"
+            header="ChatGPT"
+          >
+            <ChatGPT
+              v-model:history-messages="history_chatgpt_record"
+              :content="configText"
+              :path="file_path"
+            />
+          </ACollapsePanel>
+        </ACollapse>
+      </ACard>
+    </ACol>
+  </ARow>
 </template>
 
 <style lang="less" scoped>

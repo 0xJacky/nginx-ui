@@ -13,11 +13,11 @@ bin = "tmp/main"
 # Customize binary.
 full_bin = "APP_ENV=dev APP_USER=air ./tmp/main"
 # Watch these filename extensions.
-include_ext = ["go", "tpl", "tmpl", "html", "toml"]
+include_ext = ["go", "tpl", "tmpl", "html", "toml", "po"]
 # Ignore these filename extensions or directories.
-exclude_dir = ["assets", "tmp", "vendor", "app/node_modules", "upload", "docs", "resources", .ts", ".vue", ".tsx", ".idea"]
+exclude_dir = ["assets", "tmp", "vendor", "app/node_modules", "upload", "docs", "resources", ".idea"]
 # Watch these directories if you specified.
-include_dir = ["app/src/language"]
+include_dir = []
 # Exclude files.
 exclude_file = []
 # Exclude specific regular expressions.
@@ -51,3 +51,6 @@ runner = "green"
 [misc]
 # Delete tmp directory on exit
 clean_on_exit = true
+
+[screen]
+keep_scroll = true

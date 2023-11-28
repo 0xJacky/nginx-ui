@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import gettext from '@/gettext'
+import { provide, reactive, ref } from 'vue'
+import { message } from 'ant-design-vue'
 import StdTable from './StdTable.vue'
+import gettext from '@/gettext'
 
-import StdDataEntry from '@/components/StdDataEntry'
-
-import {provide, reactive, ref} from 'vue'
-import {message} from 'ant-design-vue'
-
-const {$gettext} = gettext
+import StdDataEntry from '@/components/StdDesign/StdDataEntry'
 
 const props = defineProps({
   api: Object,
@@ -15,55 +12,59 @@ const props = defineProps({
   title: String,
   data_key: {
     type: String,
-    default: 'data'
+    default: 'data',
   },
   disable_search: {
     type: Boolean,
-    default: false
+    default: false,
   },
   disable_add: {
     type: Boolean,
-    default: false
+    default: false,
   },
   soft_delete: {
     type: Boolean,
-    default: false
+    default: false,
   },
   edit_text: String,
   deletable: {
     type: Boolean,
-    default: true
+    default: true,
   },
   get_params: {
     type: Object,
     default() {
       return {}
-    }
+    },
   },
   editable: {
     type: Boolean,
-    default: true
+    default: true,
   },
   beforeSave: {
     type: Function,
     default: () => {
-    }
+    },
   },
   exportCsv: {
     type: Boolean,
-    default: false
+    default: false,
   },
   modalWidth: {
     type: Number,
-    default: 600
+    default: 600,
   },
-  useSortable: Boolean
+  useSortable: Boolean,
 })
+
+const { $gettext } = gettext
 
 const visible = ref(false)
 const update = ref(0)
-const data: any = reactive({id: null})
+const data: any = reactive({ id: null })
+
 provide('data', data)
+
 const error: any = reactive({})
 const selected = ref([])
 
@@ -88,13 +89,14 @@ function add() {
 
 function get_list() {
   const t: Table = table.value!
+
   t!.get_list()
 }
 
 defineExpose({
   add,
   get_list,
-  data
+  data,
 })
 
 const table = ref(null)
@@ -111,7 +113,7 @@ function clear_error() {
 
 const ok = async () => {
   clear_error()
-  await props?.beforeSave!?.(data)
+  await props?.beforeSave?.(data)
   props.api!.save(data.id, data).then((r: any) => {
     message.success($gettext('Save Successfully'))
     Object.assign(data, r)
@@ -147,50 +149,65 @@ const selectedRowKeys = ref([])
 
 <template>
   <div class="std-curd">
-    <a-card :title="title||$gettext('Table')">
-      <template v-if="!disable_add" #extra>
+    <ACard :title="title || $gettext('Table')">
+      <template
+        v-if="!disable_add"
+        #extra
+      >
         <a @click="add">{{ $gettext('Add') }}</a>
       </template>
 
-      <std-table
+      <StdTable
         ref="table"
-        v-model:selected-row-keys="selectedRowKeys"
         v-bind="props"
+        :key="update"
+        v-model:selected-row-keys="selectedRowKeys"
         @clickEdit="edit"
         @selected="onSelect"
-        :key="update"
       >
-        <template v-slot:actions="slotProps">
-          <slot name="actions" :actions="slotProps.record"/>
+        <template #actions="slotProps">
+          <slot
+            name="actions"
+            :actions="slotProps.record"
+          />
         </template>
-      </std-table>
-    </a-card>
+      </StdTable>
+    </ACard>
 
-    <a-modal
+    <AModal
       class="std-curd-edit-modal"
       :mask="false"
-      :title="edit_text?edit_text:(data.id ? $gettext('Modify') : $gettext('Add'))"
+      :title="edit_text ? edit_text : (data.id ? $gettext('Modify') : $gettext('Add'))"
       :open="visible"
       :cancel-text="$gettext('Cancel')"
       :ok-text="$gettext('OK')"
+      :width="modalWidth"
+      destroy-on-close
       @cancel="cancel"
       @ok="ok"
-      :width="modalWidth"
-      destroyOnClose
     >
-      <div class="before-edit" v-if="$slots.beforeEdit">
-        <slot name="beforeEdit" :data="data"/>
+      <div
+        v-if="$slots.beforeEdit"
+        class="before-edit"
+      >
+        <slot
+          name="beforeEdit"
+          :data="data"
+        />
       </div>
 
-      <std-data-entry
+      <StdDataEntry
         ref="std_data_entry"
         :data-list="editableColumns()"
         :data-source="data"
         :error="error"
       />
 
-      <slot name="edit" :data="data"/>
-    </a-modal>
+      <slot
+        name="edit"
+        :data="data"
+      />
+    </AModal>
   </div>
 </template>
 

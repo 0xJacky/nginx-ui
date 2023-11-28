@@ -1,34 +1,57 @@
 import Curd from '@/api/curd'
 import http from '@/lib/http'
-import {AxiosRequestConfig} from 'axios/index'
+import type { ChatComplicationMessage } from '@/api/openai'
+import type { CertificateInfo } from '@/api/cert'
+import type { NgxConfig } from '@/api/ngx'
 
-class Domain extends Curd {
-  enable(name: string, config: AxiosRequestConfig) {
-    return http.post(this.baseUrl + '/' + name + '/enable', undefined, config)
+export interface Site {
+  modified_at: string
+  advanced: boolean
+  enabled: boolean
+  name: string
+  config: string
+  auto_cert: boolean
+  chatgpt_messages: ChatComplicationMessage[]
+  tokenized?: NgxConfig
+  cert_info?: {
+    [key: number]: CertificateInfo
+  }
+}
+
+export interface AutoCertRequest {
+  dns_credential_id: number
+  challenge_method: string
+  domains: string[]
+}
+
+class Domain extends Curd<Site> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  enable(name: string, config?: any) {
+    return http.post(`${this.baseUrl}/${name}/enable`, undefined, config)
   }
 
   disable(name: string) {
-    return http.post(this.baseUrl + '/' + name + '/disable')
+    return http.post(`${this.baseUrl}/${name}/disable`)
   }
 
   get_template() {
     return http.get('template')
   }
 
-  add_auto_cert(domain: string, data: any) {
-    return http.post('auto_cert/' + domain, data)
+  add_auto_cert(domain: string, data: AutoCertRequest) {
+    return http.post(`auto_cert/${domain}`, data)
   }
 
   remove_auto_cert(domain: string) {
-    return http.delete('auto_cert/' + domain)
+    return http.delete(`auto_cert/${domain}`)
   }
 
-  duplicate(name: string, data: any) {
-    return http.post(this.baseUrl + '/' + name + '/duplicate', data)
+  duplicate(name: string, data: { name: string }): Promise<{ dst: string }> {
+    return http.post(`${this.baseUrl}/${name}/duplicate`, data)
   }
 
-  advance_mode(name: string, data: any) {
-    return http.post(this.baseUrl + '/' + name + '/advance', data)
+  advance_mode(name: string, data: { advanced: boolean }) {
+    return http.post(`${this.baseUrl}/${name}/advance`, data)
   }
 }
 

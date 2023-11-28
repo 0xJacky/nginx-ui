@@ -76,7 +76,7 @@ func GetTemplateBlock(c *gin.Context) {
 		template.ConfigInfoItem
 		template.ConfigDetail
 	}
-	var bindData map[string]template.TVariable
+	var bindData map[string]template.Variable
 	_ = c.ShouldBindJSON(&bindData)
 	info := template.GetTemplateInfo("block", c.Param("name"))
 

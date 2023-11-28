@@ -1,18 +1,25 @@
 <script setup lang="ts">
+import { useGettext } from 'vue3-gettext'
+import { reactive, ref } from 'vue'
+import { DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
+import Draggable from 'vuedraggable'
 import CodeEditor from '@/components/CodeEditor'
-import {useGettext} from 'vue3-gettext'
-import {reactive, ref} from 'vue'
-import {DeleteOutlined, HolderOutlined} from '@ant-design/icons-vue'
-import draggable from 'vuedraggable'
+import type { NgxConfig, NgxLocation } from '@/api/ngx'
 
-const {$gettext} = useGettext()
+const props = defineProps<{
+  locations?: NgxLocation[]
+  readonly?: boolean
+  currentServerIndex?: number
+}>()
 
-const props = defineProps(['locations', 'readonly'])
+const ngx_config = inject('ngx_config') as NgxConfig
 
-let location = reactive({
+const { $gettext } = useGettext()
+
+const location = reactive({
   comments: '',
   path: '',
-  content: ''
+  content: '',
 })
 
 const adding = ref(false)
@@ -26,20 +33,22 @@ function add() {
 
 function save() {
   adding.value = false
-  props.locations?.push({
-    ...location
+  ngx_config.servers[props.currentServerIndex].locations?.push({
+    ...location,
   })
 }
 
 function remove(index: number) {
-  props.locations?.splice(index, 1)
+  ngx_config.servers[props.currentServerIndex].locations?.splice(index, 1)
 }
 </script>
 
 <template>
-  <h2 v-translate>Locations</h2>
-  <a-empty v-if="!locations"/>
-  <draggable
+  <h2>
+    {{ $gettext('Locations') }}
+  </h2>
+  <AEmpty v-if="!locations" />
+  <Draggable
     v-else
     :list="locations"
     item-key="name"
@@ -48,59 +57,92 @@ function remove(index: number) {
     handle=".ant-collapse-header"
   >
     <template #item="{ element: v, index }">
-      <a-collapse :bordered="false">
-        <a-collapse-panel>
+      <ACollapse :bordered="false">
+        <ACollapsePanel>
           <template #header>
             <div>
-              <HolderOutlined/>
+              <HolderOutlined />
               {{ $gettext('Location') }}
               {{ v.path }}
             </div>
           </template>
-          <template #extra v-if="!readonly">
-            <a-popconfirm @confirm="remove(index)"
-                          :title="$gettext('Are you sure you want to remove this location?')"
-                          :ok-text="$gettext('Yes')"
-                          :cancel-text="$gettext('No')">
-              <a-button type="text" size="small">
+          <template
+            v-if="!readonly"
+            #extra
+          >
+            <APopconfirm
+              :title="$gettext('Are you sure you want to remove this location?')"
+              :ok-text="$gettext('Yes')"
+              :cancel-text="$gettext('No')"
+              @confirm="remove(index)"
+            >
+              <AButton
+                type="text"
+                size="small"
+              >
                 <template #icon>
-                  <DeleteOutlined style="font-size: 14px;"/>
+                  <DeleteOutlined style="font-size: 14px;" />
                 </template>
-              </a-button>
-            </a-popconfirm>
+              </AButton>
+            </APopconfirm>
           </template>
-          <a-form layout="vertical">
-            <a-form-item :label="$gettext('Comments')">
-              <a-textarea v-model:value="v.comments" :bordered="false"/>
-            </a-form-item>
-            <a-form-item :label="$gettext('Path')">
-              <a-input addon-before="location" v-model:value="v.path"/>
-            </a-form-item>
-            <a-form-item :label="$gettext('Content')">
-              <code-editor v-model:content="v.content" default-height="200px" style="width: 100%;"/>
-            </a-form-item>
-          </a-form>
-        </a-collapse-panel>
-      </a-collapse>
+          <AForm layout="vertical">
+            <AFormItem :label="$gettext('Comments')">
+              <ATextarea
+                v-model:value="v.comments"
+                :bordered="false"
+              />
+            </AFormItem>
+            <AFormItem :label="$gettext('Path')">
+              <AInput
+                v-model:value="v.path"
+                addon-before="location"
+              />
+            </AFormItem>
+            <AFormItem :label="$gettext('Content')">
+              <CodeEditor
+                v-model:content="v.content"
+                default-height="200px"
+                style="width: 100%;"
+              />
+            </AFormItem>
+          </AForm>
+        </ACollapsePanel>
+      </ACollapse>
     </template>
-  </draggable>
+  </Draggable>
 
-  <a-modal :title="$gettext('Add Location')" v-model:open="adding" @ok="save">
-    <a-form layout="vertical">
-      <a-form-item :label="$gettext('Comments')">
-        <a-textarea v-model:value="location.comments"/>
-      </a-form-item>
-      <a-form-item :label="$gettext('Path')">
-        <a-input addon-before="location" v-model:value="location.path"/>
-      </a-form-item>
-      <a-form-item :label="$gettext('Content')">
-        <code-editor v-model:content="location.content" default-height="200px"/>
-      </a-form-item>
-    </a-form>
-  </a-modal>
+  <AModal
+    v-model:open="adding"
+    :title="$gettext('Add Location')"
+    @ok="save"
+  >
+    <AForm layout="vertical">
+      <AFormItem :label="$gettext('Comments')">
+        <ATextarea v-model:value="location.comments" />
+      </AFormItem>
+      <AFormItem :label="$gettext('Path')">
+        <AInput
+          v-model:value="location.path"
+          addon-before="location"
+        />
+      </AFormItem>
+      <AFormItem :label="$gettext('Content')">
+        <CodeEditor
+          v-model:content="location.content"
+          default-height="200px"
+        />
+      </AFormItem>
+    </AForm>
+  </AModal>
 
   <div v-if="!readonly">
-    <a-button block @click="add">{{ $gettext('Add Location') }}</a-button>
+    <AButton
+      block
+      @click="add"
+    >
+      {{ $gettext('Add Location') }}
+    </AButton>
   </div>
 </template>
 

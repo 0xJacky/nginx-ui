@@ -1,7 +1,13 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import { computed, ref } from 'vue'
+import { useGettext } from 'vue3-gettext'
 
-const props = defineProps(['value', 'generate', 'placeholder'])
+const props = defineProps<{
+  value: string
+  generate: boolean
+  placeholder: string
+}>()
+
 const emit = defineEmits(['update:value'])
 
 const M_value = computed({
@@ -10,10 +16,11 @@ const M_value = computed({
   },
   set(v) {
     emit('update:value', v)
-  }
+  },
 })
-const visibility = ref(false)
 
+const visibility = ref(false)
+const { $gettext } = useGettext()
 function handle_generate() {
   visibility.value = true
   M_value.value = 'xxxx'
@@ -23,25 +30,36 @@ function handle_generate() {
   let password = ''
   for (let i = 0; i <= passwordLength; i++) {
     const randomNumber = Math.floor(Math.random() * chars.length)
+
     password += chars.substring(randomNumber, randomNumber + 1)
   }
 
   M_value.value = password
-
 }
 </script>
 
 <template>
-  <a-input-group compact>
-    <a-input-password
+  <AInputGroup compact>
+    <AInputPassword
       v-if="!visibility"
-      :class="{compact: generate}"
-      v-model:value="M_value" :placeholoder="placeholder"/>
-    <a-input v-else :class="{compact: generate}" v-model:value="M_value" :placeholoder="placeholder"/>
-    <a-button @click="handle_generate" v-if="generate" type="primary">
-      <translate>Generate</translate>
-    </a-button>
-  </a-input-group>
+      v-model:value="M_value"
+      :class="{ compact: generate }"
+      :placeholoder="placeholder"
+    />
+    <AInput
+      v-else
+      v-model:value="M_value"
+      :class="{ compact: generate }"
+      :placeholoder="placeholder"
+    />
+    <AButton
+      v-if="generate"
+      type="primary"
+      @click="handle_generate"
+    >
+      {{ $gettext('Generate') }}
+    </AButton>
+  </AInputGroup>
 </template>
 
 <style scoped>

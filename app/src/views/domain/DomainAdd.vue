@@ -1,34 +1,28 @@
 <script setup lang="ts">
+import { useGettext } from 'vue3-gettext'
+import { message } from 'ant-design-vue'
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
 import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor.vue'
-import {useGettext} from 'vue3-gettext'
 import domain from '@/api/domain'
+import type { NgxConfig } from '@/api/ngx'
 import ngx from '@/api/ngx'
-import {computed, onMounted, provide, reactive, ref} from 'vue'
-import {message} from 'ant-design-vue'
-import {useRouter} from 'vue-router'
 
-const {$gettext, interpolate} = useGettext()
+const { $gettext } = useGettext()
 
-const ngx_config = reactive({
+const ngx_config: NgxConfig = reactive({
   name: '',
   servers: [{
     directives: [],
-    locations: []
-  }]
+    locations: [],
+  }],
 })
-
-const error = reactive({})
 
 const current_step = ref(0)
 
 const enabled = ref(true)
 
 const auto_cert = ref(false)
-
-const update = ref(0)
-
 
 onMounted(() => {
   init()
@@ -42,18 +36,21 @@ function init() {
 
 function save() {
   return ngx.build_config(ngx_config).then(r => {
-    domain.save(ngx_config.name, {name: ngx_config.name, content: r.content, overwrite: true}).then(() => {
+    // eslint-disable-next-line promise/no-nesting
+    domain.save(ngx_config.name, { name: ngx_config.name, content: r.content, overwrite: true }).then(() => {
       message.success($gettext('Saved successfully'))
 
+      // eslint-disable-next-line promise/no-nesting
       domain.enable(ngx_config.name).then(() => {
         message.success($gettext('Enabled successfully'))
-        window.scroll({top: 0, left: 0, behavior: 'smooth'})
-      }).catch(r => {
-        message.error(r.message ?? $gettext('Enable failed'), 5)
+        window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+        // eslint-disable-next-line promise/no-nesting
+      }).catch(e => {
+        message.error(e.message ?? $gettext('Enable failed'), 5)
       })
-
-    }).catch(r => {
-      message.error(interpolate($gettext('Save error %{msg}'), {msg: $gettext(r.message) ?? ''}), 5)
+      // eslint-disable-next-line promise/no-nesting
+    }).catch(e => {
+      message.error($gettext('Save error %{msg}', { msg: $gettext(e.message) ?? '' }), 5)
     })
   })
 }
@@ -61,7 +58,7 @@ function save() {
 const router = useRouter()
 
 function goto_modify() {
-  router.push('/domain/' + ngx_config.name)
+  router.push(`/domain/${ngx_config.name}`)
 }
 
 function create_another() {
@@ -72,95 +69,96 @@ const has_server_name = computed(() => {
   const servers = ngx_config.servers
   for (const server_key in servers) {
     for (const k in servers[server_key].directives) {
-      const v: any = servers[server_key].directives[k]
-      if (v.directive === 'server_name' && v.params.trim() !== '') {
+      const v = servers[server_key].directives[k]
+      if (v.directive === 'server_name' && v.params.trim() !== '')
         return true
-      }
     }
   }
 
   return false
 })
 
-provide('save_site_config', save)
-
 async function next() {
   await save()
   current_step.value++
 }
+provide('save_site_config', save)
+provide('ngx_directives', ngx_config.servers[0].directives)
+provide('ngx_config', ngx_config)
 </script>
 
 <template>
-  <a-card :title="$gettext('Add Site')">
+  <ACard :title="$gettext('Add Site')">
     <div class="domain-add-container">
-      <a-steps :current="current_step" size="small">
-        <a-step :title="$gettext('Base information')"/>
-        <a-step :title="$gettext('Configure SSL')"/>
-        <a-step :title="$gettext('Finished')"/>
-      </a-steps>
-      <template v-if="current_step===0">
-        <a-form layout="vertical">
-          <a-form-item :label="$gettext('Configuration Name')">
-            <a-input v-model:value="ngx_config.name"/>
-          </a-form-item>
-        </a-form>
+      <ASteps
+        :current="current_step"
+        size="small"
+      >
+        <AStep :title="$gettext('Base information')" />
+        <AStep :title="$gettext('Configure SSL')" />
+        <AStep :title="$gettext('Finished')" />
+      </ASteps>
+      <template v-if="current_step === 0">
+        <AForm layout="vertical">
+          <AFormItem :label="$gettext('Configuration Name')">
+            <AInput v-model:value="ngx_config.name" />
+          </AFormItem>
+        </AForm>
 
-        <directive-editor :ngx_directives="ngx_config.servers[0].directives"/>
-        <br/>
-        <location-editor :locations="ngx_config.servers[0].locations"/>
-        <br/>
-        <a-alert
+        <DirectiveEditor />
+        <br>
+        <LocationEditor :locations="ngx_config.servers[0].locations" />
+        <br>
+        <AAlert
           v-if="!has_server_name"
           :message="$gettext('Warning')"
           type="warning"
           show-icon
         >
           <template #description>
-            <span v-translate>server_name parameter is required</span>
+            <span>{{ $gettext('server_name parameter is required') }}</span>
           </template>
-        </a-alert>
-        <br/>
+        </AAlert>
+        <br>
       </template>
 
-      <template v-else-if="current_step===1">
-
-        <ngx-config-editor
-          ref="ngx-config-editor"
-          :ngx_config="ngx_config"
-          v-model:auto_cert="auto_cert"
+      <template v-else-if="current_step === 1">
+        <NgxConfigEditor
+          v-model:auto-cert="auto_cert"
           :enabled="enabled"
         />
 
-        <br/>
-
+        <br>
       </template>
 
-      <a-space v-if="current_step<2">
-        <a-button
+      <ASpace v-if="current_step < 2">
+        <AButton
           type="primary"
+          :disabled="!ngx_config.name || !has_server_name"
           @click="next"
-          :disabled="!ngx_config.name||!has_server_name"
         >
-          <translate>Next</translate>
-        </a-button>
-      </a-space>
-      <a-result
-        v-else-if="current_step===2"
+          {{ $gettext('Next') }}
+        </AButton>
+      </ASpace>
+      <AResult
+        v-else-if="current_step === 2"
         status="success"
         :title="$gettext('Domain Config Created Successfully')"
       >
         <template #extra>
-          <a-button type="primary" @click="goto_modify">
-            <translate>Modify Config</translate>
-          </a-button>
-          <a-button @click="create_another">
-            <translate>Create Another</translate>
-          </a-button>
+          <AButton
+            type="primary"
+            @click="goto_modify"
+          >
+            {{ $gettext('Modify Config') }}
+          </AButton>
+          <AButton @click="create_another">
+            {{ $gettext('Create Another') }}
+          </AButton>
         </template>
-      </a-result>
-
+      </AResult>
     </div>
-  </a-card>
+  </ACard>
 </template>
 
 <style lang="less" scoped>

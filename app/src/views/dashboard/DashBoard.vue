@@ -5,8 +5,8 @@ import Environments from '@/views/dashboard/Environments.vue'
 
 <template>
   <div>
-    <server-analytic/>
-    <environments/>
+    <ServerAnalytic />
+    <Environments />
   </div>
 </template>
 

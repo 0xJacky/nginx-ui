@@ -1,43 +1,49 @@
 <script setup lang="ts">
-import {computed} from 'vue'
-import {useGettext} from 'vue3-gettext'
+import { computed } from 'vue'
+import { useGettext } from 'vue3-gettext'
 
-const {$gettext} = useGettext()
+const props = defineProps<Props>()
+
+const { $gettext } = useGettext()
 
 export interface Props {
   dataIndex?: string
   label?: string
   extra?: string
-  error?: any
+  error?: {
+    [key: string]: string
+  }
 }
-
-const props = defineProps<Props>()
 
 const tag = computed(() => {
   return props.error?.[props.dataIndex] ?? ''
 })
 
 const valid_status = computed(() => {
-  if (!!tag.value) {
+  if (tag.value)
     return 'error'
-  } else {
+  else
     return 'success'
-  }
 })
 
 const help = computed(() => {
-  if (tag.value.indexOf('required') > -1) {
+  if (tag.value.includes('required'))
     return () => $gettext('This field should not be empty')
-  }
+
   return () => {
   }
 })
 </script>
 
 <template>
-  <a-form-item :label="label" :extra="extra" :validate-status="valid_status" :help="help?.()">
-    <slot/>
-  </a-form-item>
+  <AFormItem
+    :label="label"
+    :extra="extra"
+    :validate-status="valid_status"
+    :help="help?.()"
+  >
+    <slot />
+  </AFormItem>
 </template>
 
 <style scoped lang="less">

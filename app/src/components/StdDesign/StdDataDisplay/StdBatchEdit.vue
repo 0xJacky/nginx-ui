@@ -1,21 +1,24 @@
 <script setup lang="ts">
-import {reactive, ref} from 'vue'
+import { message } from 'ant-design-vue'
 import gettext from '@/gettext'
-import StdDataEntry from '@/components/StdDataEntry'
-import {message} from 'ant-design-vue'
+import StdDataEntry from '@/components/StdDesign/StdDataEntry'
 
-const {$gettext} = gettext
+const props = defineProps<{
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  api: (ids: number[], data: any) => Promise<void>
+  beforeSave?: () => Promise<void>
+}>()
 
 const emit = defineEmits(['onSave'])
 
-const props = defineProps(['api', 'beforeSave'])
+const { $gettext } = gettext
 
 const batchColumns = ref([])
 
 const visible = ref(false)
 
 const selectedRowKeys = ref([])
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function showModal(c: any, rowKeys: any) {
   visible.value = true
   selectedRowKeys.value = rowKeys
@@ -23,7 +26,7 @@ function showModal(c: any, rowKeys: any) {
 }
 
 defineExpose({
-  showModal
+  showModal,
 })
 
 const data = reactive({})
@@ -38,7 +41,7 @@ async function ok() {
   await props.api(selectedRowKeys.value, data).then(async () => {
     message.success($gettext('Save successfully'))
     emit('onSave')
-  }).catch((e: any) => {
+  }).catch(e => {
     message.error($gettext(e?.message) ?? $gettext('Server error'))
   }).finally(() => {
     loading.value = false
@@ -47,28 +50,26 @@ async function ok() {
 </script>
 
 <template>
-  <a-modal
+  <AModal
+    v-model:open="visible"
     class="std-curd-edit-modal"
     :mask="false"
     :title="$gettext('Batch Modify')"
-    v-model:open="visible"
     :cancel-text="$gettext('Cancel')"
     :ok-text="$gettext('OK')"
-    @ok="ok"
     :confirm-loading="loading"
     :width="600"
-    destroyOnClose
+    destroy-on-close
+    @ok="ok"
   >
-
-    <std-data-entry
-      ref="std_data_entry"
+    <StdDataEntry
       :data-list="batchColumns"
       :data-source="data"
       :error="error"
     />
 
-    <slot name="extra"/>
-  </a-modal>
+    <slot name="extra" />
+  </AModal>
 </template>
 
 <style scoped>

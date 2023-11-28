@@ -7,10 +7,10 @@ export interface IData {
     node_secret: string
     start_cmd: string
     http_challenge_port: string
-    github_proxy: string,
-    email: string,
+    github_proxy: string
+    email: string
     ca_dir: string
-  },
+  }
   nginx: {
     access_log_path: string
     error_log_path: string
@@ -18,13 +18,13 @@ export interface IData {
     pid_path: string
     reload_cmd: string
     restart_cmd: string
-  },
+  }
   openai: {
     model: string
     base_url: string
     proxy: string
     token: string
-  },
+  }
   git: {
     url: string
     auth_method: string

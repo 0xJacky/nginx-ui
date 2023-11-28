@@ -2,10 +2,9 @@ package openai
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
@@ -35,7 +34,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	}
 	messages = append(messages, json.Messages...)
 	// sse server
-	c.Writer.Header().Set("Content-Type", "text/event-stream")
+	c.Writer.Header().Set("Content-Type", "text/event-stream; charset=utf-8")
 	c.Writer.Header().Set("Cache-Control", "no-cache")
 	c.Writer.Header().Set("Connection", "keep-alive")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -66,7 +65,8 @@ func MakeChatCompletionRequest(c *gin.Context) {
 			return
 		}
 		transport := &http.Transport{
-			Proxy: http.ProxyURL(proxyUrl),
+			Proxy:           http.ProxyURL(proxyUrl),
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		}
 		config.HTTPClient = &http.Client{
 			Transport: transport,
@@ -100,17 +100,16 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	defer stream.Close()
 	msgChan := make(chan string)
 	go func() {
+		defer close(msgChan)
 		for {
 			response, err := stream.Recv()
 			if errors.Is(err, io.EOF) {
-				close(msgChan)
 				fmt.Println()
 				return
 			}
 
 			if err != nil {
 				fmt.Printf("Stream error: %v\n", err)
-				close(msgChan)
 				return
 			}
 
@@ -131,39 +130,5 @@ func MakeChatCompletionRequest(c *gin.Context) {
 			return true
 		}
 		return false
-	})
-}
-
-func StoreChatGPTRecord(c *gin.Context) {
-	var json struct {
-		FileName string                         `json:"file_name"`
-		Messages []openai.ChatCompletionMessage `json:"messages"`
-	}
-
-	if !api.BindAndValid(c, &json) {
-		return
-	}
-
-	name := json.FileName
-	g := query.ChatGPTLog
-	_, err := g.Where(g.Name.Eq(name)).FirstOrCreate()
-
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	_, err = g.Where(g.Name.Eq(name)).Updates(&model.ChatGPTLog{
-		Name:    name,
-		Content: json.Messages,
-	})
-
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"message": "ok",
 	})
 }

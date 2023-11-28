@@ -17,6 +17,6 @@ func InitCertificateRouter(r *gin.RouterGroup) {
 	r.POST("cert", AddCert)
 	r.POST("cert/:id", ModifyCert)
 	r.DELETE("cert/:id", RemoveCert)
-	r.GET("auto_cert/dns/providers", GetDNSProvidersList)
-	r.GET("auto_cert/dns/provider/:code", GetDNSProvider)
+	r.GET("certificate/dns_providers", GetDNSProvidersList)
+	r.GET("certificate/dns_provider/:code", GetDNSProvider)
 }

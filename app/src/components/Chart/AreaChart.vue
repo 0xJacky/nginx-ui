@@ -1,85 +1,89 @@
 <script setup lang="ts">
 import VueApexCharts from 'vue3-apexcharts'
-import {ref, watch} from 'vue'
-import {useSettingsStore} from '@/pinia'
-import {storeToRefs} from 'pinia'
+import { storeToRefs } from 'pinia'
+import type { Ref } from 'vue'
+import { useSettingsStore } from '@/pinia'
+import type { Series } from '@/components/Chart/types'
 
-const {series, max, y_formatter} = defineProps(['series', 'max', 'y_formatter'])
+const { series, max, y_formatter } = defineProps<{
+  series: Series[]
+  max?: number
+  yFormatter?: (value: number) => string
+}>()
 
 const settings = useSettingsStore()
-const {theme} = storeToRefs(settings)
+const { theme } = storeToRefs(settings)
 
 const fontColor = () => {
   return theme.value === 'dark' ? '#b4b4b4' : undefined
 }
 
-const chart = ref(null)
+const chart: Ref<ApexCharts | undefined> = ref()
 
 let chartOptions = {
   chart: {
     type: 'area',
     zoom: {
-      enabled: false
+      enabled: false,
     },
     animations: {
-      enabled: false
+      enabled: false,
     },
     toolbar: {
-      show: false
-    }
+      show: false,
+    },
   },
   colors: ['#ff6385', '#36a3eb'],
   fill: {
     // type: ['solid', 'gradient'],
     gradient: {
-      shade: 'light'
-    }
-    //colors:  ['#ff6385', '#36a3eb'],
+      shade: 'light',
+    },
+
+    // colors:  ['#ff6385', '#36a3eb'],
   },
   dataLabels: {
-    enabled: false
+    enabled: false,
   },
   stroke: {
     curve: 'smooth',
-    width: 0
+    width: 0,
   },
   xaxis: {
     type: 'datetime',
     labels: {
       datetimeUTC: false,
       style: {
-        colors: fontColor()
-      }
-    }
+        colors: fontColor(),
+      },
+    },
   },
   tooltip: {
-    enabled: false
+    enabled: false,
   },
   yaxis: {
-    max: max,
+    max,
     tickAmount: 4,
     min: 0,
     labels: {
       style: {
-        colors: fontColor()
+        colors: fontColor(),
       },
-      formatter: y_formatter
-    }
+      formatter: y_formatter,
+    },
   },
   legend: {
     labels: {
-      colors: fontColor()
+      colors: fontColor(),
     },
     onItemClick: {
-      toggleDataSeries: false
+      toggleDataSeries: false,
     },
     onItemHover: {
-      highlightDataSeries: false
-    }
-  }
+      highlightDataSeries: false,
+    },
+  },
 }
-
-let instance: ApexCharts | null = chart.value
 
 const callback = () => {
   chartOptions = {
@@ -90,44 +94,51 @@ const callback = () => {
         labels: {
           datetimeUTC: false,
           style: {
-            colors: fontColor()
-          }
-        }
+            colors: fontColor(),
+          },
+        },
       },
       yaxis: {
-        max: max,
+        max,
         tickAmount: 4,
         min: 0,
         labels: {
           style: {
-            colors: fontColor()
+            colors: fontColor(),
           },
-          formatter: y_formatter
-        }
+          formatter: y_formatter,
+        },
       },
       legend: {
         labels: {
-          colors: fontColor()
+          colors: fontColor(),
         },
         onItemClick: {
-          toggleDataSeries: false
+          toggleDataSeries: false,
         },
         onItemHover: {
-          highlightDataSeries: false
-        }
-      }
-    }
+          highlightDataSeries: false,
+        },
+      },
+    },
   }
-  instance?.updateOptions?.(chartOptions)
+  chart.value?.updateOptions?.(chartOptions)
 }
+
 watch(theme, callback)
 </script>
 
 <template>
   <!-- Use theme as key to rerender the chart when theme changes to prevent style issues -->
-  <VueApexCharts :key="theme" type="area" height="200" :options="chartOptions" :series="series" ref="chart"/>
+  <VueApexCharts
+    :key="theme"
+    ref="chart"
+    type="area"
+    height="200"
+    :options="chartOptions"
+    :series="series"
+  />
 </template>
-
 
 <style scoped>
 

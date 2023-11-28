@@ -1,19 +1,21 @@
 <script setup lang="ts">
+import { reactive, ref } from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { DeleteOutlined } from '@ant-design/icons-vue'
 import CodeEditor from '@/components/CodeEditor'
-import {reactive, ref} from 'vue'
-import {useGettext} from 'vue3-gettext'
-import {DeleteOutlined} from '@ant-design/icons-vue'
 
-const {$gettext} = useGettext()
+const props = defineProps<{
+  idx?: number
+}>()
 
 const emit = defineEmits(['save'])
 
-const props = defineProps(['ngx_directives', 'idx'])
+const { $gettext } = useGettext()
 
-const directive = reactive({directive: '', params: ''})
+const ngx_directives = inject('ngx_directives')
+const directive = reactive({ directive: '', params: '' })
 const adding = ref(false)
 const mode = ref('default')
-
 
 function add() {
   adding.value = true
@@ -23,15 +25,13 @@ function add() {
 
 function save() {
   adding.value = false
-  if (mode.value === 'multi-line') {
+  if (mode.value === 'multi-line')
     directive.directive = ''
-  }
 
-  if (props.idx) {
-    props.ngx_directives.splice(props.idx + 1, 0, {directive: directive.directive, params: directive.params})
-  } else {
-    props.ngx_directives.push({directive: directive.directive, params: directive.params})
-  }
+  if (props.idx)
+    ngx_directives.splice(props.idx + 1, 0, { directive: directive.directive, params: directive.params })
+  else
+    ngx_directives.push({ directive: directive.directive, params: directive.params })
 
   emit('save', props.idx)
 }
@@ -39,43 +39,73 @@ function save() {
 
 <template>
   <div>
-    <div class="add-directive-temp" v-if="adding">
-      <a-form-item>
-        <a-select v-model:value="mode" default-value="default" style="width: 180px">
-          <a-select-option value="default">
+    <div
+      v-if="adding"
+      class="add-directive-temp"
+    >
+      <AFormItem>
+        <ASelect
+          v-model:value="mode"
+          default-value="default"
+          style="width: 180px"
+        >
+          <ASelectOption value="default">
             {{ $gettext('Single Directive') }}
-          </a-select-option>
-          <a-select-option value="multi-line">
+          </ASelectOption>
+          <ASelectOption value="multi-line">
             {{ $gettext('Multi-line Directive') }}
-          </a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item>
-
+          </ASelectOption>
+        </ASelect>
+      </AFormItem>
+      <AFormItem>
         <div class="input-wrapper">
-          <code-editor v-if="mode==='multi-line'" default-height="100px" style="width: 100%;"
-                       v-model:content="directive.params"/>
-          <a-input-group v-else compact>
-            <a-input style="width: 30%" :placeholder="$gettext('Directive')"
-                     v-model:value="directive.directive"/>
-            <a-input style="width: 70%" :placeholder="$gettext('Params')" v-model:value="directive.params"/>
-          </a-input-group>
+          <CodeEditor
+            v-if="mode === 'multi-line'"
+            v-model:content="directive.params"
+            default-height="100px"
+            style="width: 100%;"
+          />
+          <AInputGroup
+            v-else
+            compact
+          >
+            <AInput
+              v-model:value="directive.directive"
+              style="width: 30%"
+              :placeholder="$gettext('Directive')"
+            />
+            <AInput
+              v-model:value="directive.params"
+              style="width: 70%"
+              :placeholder="$gettext('Params')"
+            />
+          </AInputGroup>
 
-          <a-button @click="adding=false">
+          <AButton @click="adding = false">
             <template #icon>
-              <DeleteOutlined style="font-size: 14px;"/>
+              <DeleteOutlined style="font-size: 14px;" />
             </template>
-          </a-button>
-
+          </AButton>
         </div>
-      </a-form-item>
+      </AFormItem>
     </div>
-    <a-button block v-if="!adding" @click="add">{{ $gettext('Add Directive Below') }}</a-button>
-    <a-button type="primary" v-else block @click="save"
-              :disabled="(mode==='default'&&(!directive.directive||!directive.params))
-                  ||(!directive.params&&mode==='multi-line')">
+    <AButton
+      v-if="!adding"
+      block
+      @click="add"
+    >
+      {{ $gettext('Add Directive Below') }}
+    </AButton>
+    <AButton
+      v-else
+      type="primary"
+      block
+      :disabled="(mode === 'default' && (!directive.directive || !directive.params))
+        || (!directive.params && mode === 'multi-line')"
+      @click="save"
+    >
       {{ $gettext('Save Directive') }}
-    </a-button>
+    </AButton>
   </div>
 </template>
 

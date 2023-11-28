@@ -1,15 +1,14 @@
 <script setup lang="ts">
+import { useGettext } from 'vue3-gettext'
+import { ref } from 'vue'
 import ngx from '@/api/ngx'
-import {useGettext} from 'vue3-gettext'
-import {ref} from 'vue'
-import logLevel from '@/views/config/constants'
+import { logLevel } from '@/views/config/constants'
 
-
-const {$gettext} = useGettext()
+const { $gettext } = useGettext()
 
 const data = ref({
   level: 0,
-  message: ''
+  message: '',
 })
 
 test()
@@ -21,35 +20,39 @@ function test() {
 }
 
 defineExpose({
-  test
+  test,
 })
 </script>
 
 <template>
   <div class="inspect-container">
-    <a-alert :message="$gettext('Configuration file is test successful')" type="success"
-             show-icon v-if="data?.level<logLevel.Debug"/>
-    <a-alert
+    <AAlert
+      v-if="data?.level < logLevel.Debug"
+      :message="$gettext('Configuration file is test successful')"
+      type="success"
+      show-icon
+    />
+    <AAlert
+      v-else-if="data?.level === logLevel.Warn"
       :message="$gettext('Warning')"
       type="warning"
       show-icon
-      v-else-if="data?.level===logLevel.Warn"
     >
       <template #description>
         {{ data.message }}
       </template>
-    </a-alert>
+    </AAlert>
 
-    <a-alert
+    <AAlert
+      v-else-if="data?.level > logLevel.Warn"
       :message="$gettext('Error')"
       type="error"
       show-icon
-      v-else-if="data?.level>logLevel.Warn"
     >
       <template #description>
         {{ data.message }}
       </template>
-    </a-alert>
+    </AAlert>
   </div>
 </template>
 

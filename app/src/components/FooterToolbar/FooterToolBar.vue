@@ -6,16 +6,18 @@ defineProps<{
 </script>
 
 <template>
-  <teleport to="body">
-    <div class="ant-pro-footer-toolbar" ref="refToolBar">
+  <Teleport to="body">
+    <div class="ant-pro-footer-toolbar">
       <div style="float: left">
-        <slot name="extra">{{ extra }}</slot>
+        <slot name="extra">
+          {{ extra }}
+        </slot>
       </div>
       <div style="float: right">
-        <slot></slot>
+        <slot />
       </div>
     </div>
-  </teleport>
+  </Teleport>
 </template>
 
 <style lang="less" scoped>

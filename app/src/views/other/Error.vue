@@ -1,16 +1,21 @@
 <script setup lang="ts">
-import {useGettext} from 'vue3-gettext'
+import { useGettext } from 'vue3-gettext'
 
-const {$gettext} = useGettext()
+const { $gettext } = useGettext()
 </script>
 
 <template>
   <div class="wrapper">
-    <h1 class="title">{{ $route.meta.status_code || 404 }}</h1>
+    <h1 class="title">
+      {{ $route.meta.status_code || 404 }}
+    </h1>
     <p>{{ $route.meta.error?.() ?? $gettext('File Not Found') }}</p>
-    <a-button type="primary" @click="$router.push('/')">
-      <translate>Back Home</translate>
-    </a-button>
+    <AButton
+      type="primary"
+      @click="$router.push('/')"
+    >
+      {{ $gettext('Back Home') }}
+    </AButton>
   </div>
 </template>
 

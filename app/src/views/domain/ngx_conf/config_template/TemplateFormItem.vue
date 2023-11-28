@@ -1,20 +1,34 @@
 <script setup lang="ts">
-import {computed, inject, watch} from 'vue'
-import {storeToRefs} from 'pinia'
-import {useSettingsStore} from '@/pinia'
-import {useGettext} from 'vue3-gettext'
+import { storeToRefs } from 'pinia'
 import _ from 'lodash'
+import { useSettingsStore } from '@/pinia'
+import type { Variable } from '@/api/template'
 
-const {$gettext} = useGettext()
+const props = defineProps<{
+  data: Variable
+  name: string
+}>()
 
-const {language} = storeToRefs(useSettingsStore())
-const props = defineProps(['data', 'name'])
+const emit = defineEmits<{
+  'update:data': (data: Variable) => void
+}>()
+
+const data = computed({
+  get() {
+    return props.data
+  },
+  set(v) {
+    emit('update:data', v)
+  },
+})
+
+const { language } = storeToRefs(useSettingsStore())
 
 const trans_name = computed(() => {
   return props.data?.name?.[language.value] ?? props.data?.name?.en ?? ''
 })
 
-const build_template: any = inject('build_template')!
+const build_template = inject('build_template') as () => void
 
 const value = computed(() => props.data.value)
 
@@ -22,10 +36,16 @@ watch(value, _.throttle(build_template, 500))
 </script>
 
 <template>
-  <a-form-item :label="trans_name">
-    <a-input v-if="data.type === 'string'" v-model:value="data.value"/>
-    <a-switch v-else-if="data.type === 'boolean'" v-model:checked="data.value"/>
-  </a-form-item>
+  <AFormItem :label="trans_name">
+    <AInput
+      v-if="data.type === 'string'"
+      v-model:value="data.value"
+    />
+    <ASwitch
+      v-else-if="data.type === 'boolean'"
+      v-model:checked="data.value"
+    />
+  </AFormItem>
 </template>
 
 <style lang="less" scoped>

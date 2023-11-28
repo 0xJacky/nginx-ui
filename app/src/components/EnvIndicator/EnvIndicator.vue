@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import {useGettext} from 'vue3-gettext'
-import {CloseOutlined, DashboardOutlined, DatabaseOutlined} from '@ant-design/icons-vue'
-import {useSettingsStore} from '@/pinia'
-import {storeToRefs} from 'pinia'
-import {useRouter} from 'vue-router'
-import {computed, watch} from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { CloseOutlined, DashboardOutlined, DatabaseOutlined } from '@ant-design/icons-vue'
+import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
+import { computed, watch } from 'vue'
+import { useSettingsStore } from '@/pinia'
 
-const {$gettext} = useGettext()
+const { $gettext } = useGettext()
 const settingsStore = useSettingsStore()
 
-const {environment} = storeToRefs(settingsStore)
+const { environment } = storeToRefs(settingsStore)
 const router = useRouter()
 
 async function clear_env() {
@@ -32,17 +32,23 @@ watch(node_id, async () => {
 <template>
   <div class="indicator">
     <div class="container">
-      <database-outlined/>
-      <span class="env-name" v-if="is_local">
-                 {{ $gettext('Local') }}
-            </span>
-      <span class="env-name" v-else>
-                 {{ environment.name }}
-            </span>
-      <a-tag @click="clear_env">
-        <dashboard-outlined v-if="is_local"/>
-        <close-outlined v-else/>
-      </a-tag>
+      <DatabaseOutlined />
+      <span
+        v-if="is_local"
+        class="env-name"
+      >
+        {{ $gettext('Local') }}
+      </span>
+      <span
+        v-else
+        class="env-name"
+      >
+        {{ environment.name }}
+      </span>
+      <ATag @click="clear_env">
+        <DashboardOutlined v-if="is_local" />
+        <CloseOutlined v-else />
+      </ATag>
     </div>
   </div>
 </template>

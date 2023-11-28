@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
-import {useGettext} from 'vue3-gettext'
-import {inject, ref} from 'vue'
+import { useGettext } from 'vue3-gettext'
 import Modal from 'ant-design-vue/lib/modal'
+import { message } from 'ant-design-vue'
+import type { Ref } from 'vue'
+import type { Site } from '@/api/domain'
 import domain from '@/api/domain'
-import {message} from 'ant-design-vue'
-import {formatDateTime} from '@/lib/helper'
+import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
+import { formatDateTime } from '@/lib/helper'
 import Deploy from '@/views/domain/components/Deploy.vue'
-import {useSettingsStore} from '@/pinia'
+import { useSettingsStore } from '@/pinia'
 
 const settings = useSettingsStore()
-const {$gettext} = useGettext()
+const { $gettext } = useGettext()
 const configText = inject('configText')
 const ngx_config = inject('ngx_config')
 const enabled = inject('enabled')
 const name = inject('name')
 const history_chatgpt_record = inject('history_chatgpt_record')
 const filename = inject('filename')
-const data: any = inject('data')
+const data: Ref<Site> = inject('data') as Ref<Site>
 
 const active_key = ref(['1', '2', '3'])
 
@@ -26,7 +27,7 @@ function enable() {
     message.success($gettext('Enabled successfully'))
     enabled.value = true
   }).catch(r => {
-    message.error($gettext('Failed to enable %{msg}', {msg: r.message ?? ''}), 10)
+    message.error($gettext('Failed to enable %{msg}', { msg: r.message ?? '' }), 10)
   })
 }
 
@@ -35,7 +36,7 @@ function disable() {
     message.success($gettext('Disabled successfully'))
     enabled.value = false
   }).catch(r => {
-    message.error($gettext('Failed to disable %{msg}', {msg: r.message ?? ''}))
+    message.error($gettext('Failed to disable %{msg}', { msg: r.message ?? '' }))
   })
 }
 
@@ -47,40 +48,58 @@ function on_change_enabled(checked: boolean) {
     okText: $gettext('OK'),
     cancelText: $gettext('Cancel'),
     async onOk() {
-      if (checked) {
+      if (checked)
         enable()
-      } else {
+      else
         disable()
-      }
-    }
+    },
   })
 }
 
 </script>
 
 <template>
-  <a-card class="right-settings">
-    <a-collapse v-model:activeKey="active_key" ghost>
-      <a-collapse-panel key="1" :header="$gettext('Basic')">
-        <a-form-item :label="$gettext('Enabled')">
-          <a-switch :checked="enabled" @change="on_change_enabled"/>
-        </a-form-item>
-        <a-form-item :label="$gettext('Name')">
-          <a-input v-model:value="filename"/>
-        </a-form-item>
-        <a-form-item :label="$gettext('Updated at')">
+  <ACard class="right-settings">
+    <ACollapse
+      v-model:activeKey="active_key"
+      ghost
+    >
+      <ACollapsePanel
+        key="1"
+        :header="$gettext('Basic')"
+      >
+        <AFormItem :label="$gettext('Enabled')">
+          <ASwitch
+            :checked="enabled"
+            @change="on_change_enabled"
+          />
+        </AFormItem>
+        <AFormItem :label="$gettext('Name')">
+          <AInput v-model:value="filename" />
+        </AFormItem>
+        <AFormItem :label="$gettext('Updated at')">
           {{ formatDateTime(data.modified_at) }}
-        </a-form-item>
-      </a-collapse-panel>
-      <a-collapse-panel key="2" :header="$gettext('Deploy')" v-if="!settings.is_remote">
-        <deploy/>
-      </a-collapse-panel>
-      <a-collapse-panel key="3" header="ChatGPT">
-        <chat-g-p-t :content="configText" :path="ngx_config.file_name"
-                    v-model:history_messages="history_chatgpt_record"/>
-      </a-collapse-panel>
-    </a-collapse>
-  </a-card>
+        </AFormItem>
+      </ACollapsePanel>
+      <ACollapsePanel
+        v-if="!settings.is_remote"
+        key="2"
+        :header="$gettext('Deploy')"
+      >
+        <Deploy />
+      </ACollapsePanel>
+      <ACollapsePanel
+        key="3"
+        header="ChatGPT"
+      >
+        <ChatGPT
+          v-model:history-messages="history_chatgpt_record"
+          :content="configText"
+          :path="ngx_config.file_name"
+        />
+      </ACollapsePanel>
+    </ACollapse>
+  </ACard>
 </template>
 
 <style scoped lang="less">

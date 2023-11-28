@@ -47,6 +47,10 @@ func logMode() gormlogger.Interface {
 	}
 }
 
+func UseDB() *gorm.DB {
+	return db
+}
+
 func Init() *gorm.DB {
 	dbPath := path.Join(path.Dir(settings.ConfPath), fmt.Sprintf("%s.db", settings.ServerSettings.Database))
 

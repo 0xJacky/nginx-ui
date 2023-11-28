@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import {useGettext} from 'vue3-gettext'
-import ws from '@/lib/websocket'
-import {computed, nextTick, onMounted, onUnmounted, reactive, Ref, ref, UnwrapNestedRefs, watch} from 'vue'
-import ReconnectingWebSocket from 'reconnecting-websocket'
-import {useRoute, useRouter} from 'vue-router'
+import { useGettext } from 'vue3-gettext'
+import type { Ref, UnwrapNestedRefs } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import type ReconnectingWebSocket from 'reconnecting-websocket'
+import { useRoute, useRouter } from 'vue-router'
+import { debounce } from 'lodash'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
-import nginx_log, {INginxLogData} from '@/api/nginx_log'
-import {debounce} from 'lodash'
+import type { INginxLogData } from '@/api/nginx_log'
+import nginx_log from '@/api/nginx_log'
+import ws from '@/lib/websocket'
 
-const {$gettext} = useGettext()
+const { $gettext } = useGettext()
 const logContainer: Ref<Element> = ref()!
 let websocket: ReconnectingWebSocket | WebSocket
 const route = useRoute()
@@ -22,8 +24,8 @@ const filter = ref('')
 const control: UnwrapNestedRefs<INginxLogData> = reactive({
   type: logType(),
   conf_name: route.query.conf_name as string,
-  server_idx: parseInt(route.query.server_idx as string),
-  directive_idx: parseInt(route.query.directive_idx as string)
+  server_idx: Number.parseInt(route.query.server_idx as string),
+  directive_idx: Number.parseInt(route.query.directive_idx as string),
 })
 
 function logType() {
@@ -35,26 +37,27 @@ function openWs() {
 
   websocket.onopen = () => {
     websocket.send(JSON.stringify({
-      ...control
+      ...control,
     }))
   }
 
-  websocket.onmessage = (m: any) => {
-    addLog(m.data + '\n')
+  websocket.onmessage = (m: { data: string }) => {
+    addLog(`${m.data}\n`)
   }
 }
 
 function addLog(data: string, prepend: boolean = false) {
-  if (prepend) {
+  if (prepend)
     buffer.value = data + buffer.value
-  } else {
+  else
     buffer.value += data
-  }
+
   nextTick(() => {
     const elem = (logContainer.value as Element)
+
     elem?.scroll({
       top: elem.scrollHeight,
-      left: 0
+      left: 0,
     })
   })
 }
@@ -79,12 +82,12 @@ onUnmounted(() => {
   websocket.close()
 })
 
-watch(auto_refresh, (value) => {
+watch(auto_refresh, value => {
   if (value) {
     openWs()
     clearLog()
-
-  } else {
+  }
+  else {
     websocket.close()
   }
 })
@@ -93,8 +96,8 @@ watch(route, () => {
   init()
 
   control.type = logType()
-  control.directive_idx = parseInt(route.query.server_idx as string)
-  control.server_idx = parseInt(route.query.directive_idx as string)
+  control.directive_idx = Number.parseInt(route.query.server_idx as string)
+  control.server_idx = Number.parseInt(route.query.directive_idx as string)
   clearLog()
 
   nextTick(() => {
@@ -111,10 +114,10 @@ watch(control, () => {
   })
 })
 
-
 function on_scroll_log() {
   if (!loading.value && page.value > 0) {
     loading.value = true
+
     const elem = logContainer.value
     if (elem?.scrollTop / elem?.scrollHeight < 0.333) {
       nginx_log.page(page.value, control).then(r => {
@@ -123,7 +126,8 @@ function on_scroll_log() {
       }).finally(() => {
         loading.value = false
       })
-    } else {
+    }
+    else {
       loading.value = false
     }
   }
@@ -134,34 +138,44 @@ function debounce_scroll_log() {
 }
 
 const computedBuffer = computed(() => {
-  if (filter.value) {
+  if (filter.value)
     return buffer.value.split('\n').filter(line => line.match(filter.value)).join('\n')
-  }
+
   return buffer.value
 })
 </script>
 
 <template>
-  <a-card :title="$gettext('Nginx Log')" :bordered="false">
-    <a-form layout="vertical">
-      <a-form-item :label="$gettext('Auto Refresh')">
-        <a-switch v-model:checked="auto_refresh"/>
-      </a-form-item>
-      <a-form-item :label="$gettext('Filter')">
-        <a-input v-model:value="filter" style="max-width: 300px"/>
-      </a-form-item>
-    </a-form>
+  <ACard
+    :title="$gettext('Nginx Log')"
+    :bordered="false"
+  >
+    <AForm layout="vertical">
+      <AFormItem :label="$gettext('Auto Refresh')">
+        <ASwitch v-model:checked="auto_refresh" />
+      </AFormItem>
+      <AFormItem :label="$gettext('Filter')">
+        <AInput
+          v-model:value="filter"
+          style="max-width: 300px"
+        />
+      </AFormItem>
+    </AForm>
 
-    <a-card>
-            <pre class="nginx-log-container" ref="logContainer"
-                 @scroll="debounce_scroll_log" v-html="computedBuffer"/>
-    </a-card>
-    <footer-tool-bar v-if="control.type==='site'">
-      <a-button @click="router.go(-1)">
-        <translate>Back</translate>
-      </a-button>
-    </footer-tool-bar>
-  </a-card>
+    <ACard>
+      <pre
+        ref="logContainer"
+        class="nginx-log-container"
+        @scroll="debounce_scroll_log"
+        v-html="computedBuffer"
+      />
+    </ACard>
+    <FooterToolBar v-if="control.type === 'site'">
+      <AButton @click="router.go(-1)">
+        {{ $gettext('Back') }}
+      </AButton>
+    </FooterToolBar>
+  </ACard>
 </template>
 
 <style lang="less">

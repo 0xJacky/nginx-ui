@@ -1,70 +1,73 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
+import type { ComputedRef } from 'vue'
+import { computed, ref, watch } from 'vue'
+import type { AntdIconType } from '@ant-design/icons-vue/lib/components/AntdIcon'
 import Logo from '@/components/Logo/Logo.vue'
-import {routes} from '@/routes'
-import {useRoute} from 'vue-router'
-import {computed, ComputedRef, ref, watch} from 'vue'
+import { routes } from '@/routes'
 import EnvIndicator from '@/components/EnvIndicator/EnvIndicator.vue'
 
 const route = useRoute()
 
-let openKeys = [openSub()]
+const openKeys = [openSub()]
 
 const selectedKey = ref([route.name])
 
 function openSub() {
-  let path = route.path
-  let lastSepIndex = path.lastIndexOf('/')
+  const path = route.path
+  const lastSepIndex = path.lastIndexOf('/')
+
   return path.substring(1, lastSepIndex)
 }
 
 watch(route, () => {
   selectedKey.value = [route.name]
+
   const sub = openSub()
   const p = openKeys.indexOf(sub)
-  if (p === -1) openKeys.push(sub)
+  if (p === -1)
+    openKeys.push(sub)
 })
 
 const sidebars = computed(() => {
-  return routes[0]['children']
+  return routes[0].children
 })
 
 interface meta {
-  icon: any
+  icon: AntdIconType
   hiddenInSidebar: boolean
   hideChildren: boolean
 }
 
 interface sidebar {
   path: string
-  name: Function
-  meta: meta,
+  name: () => string
+  meta: meta
   children: sidebar[]
 }
 
 const visible: ComputedRef<sidebar[]> = computed(() => {
-
   const res: sidebar[] = [];
 
-  (sidebars.value || []).forEach((s) => {
-    if (s.meta && s.meta.hiddenInSidebar) {
+  (sidebars.value || []).forEach(s => {
+    if (s.meta && s.meta.hiddenInSidebar)
       return
-    }
+
     const t: sidebar = {
       path: s.path,
       name: s.name,
       meta: s.meta as meta,
-      children: []
+      children: [],
     };
 
-    (s.children || []).forEach((c: any) => {
-      if (c.meta && c.meta.hiddenInSidebar) {
+    (s.children || []).forEach(c => {
+      if (c.meta && c.meta.hiddenInSidebar)
         return
-      }
+
       t.children.push((c as sidebar))
     })
     res.push(t)
   })
-
 
   return res
 })
@@ -72,37 +75,45 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
 
 <template>
   <div class="sidebar">
-    <logo/>
+    <Logo />
 
-    <a-menu
-      :openKeys="openKeys"
-      mode="inline"
+    <AMenu
       v-model:openKeys="openKeys"
       v-model:selectedKeys="selectedKey"
+      :open-keys="openKeys"
+      mode="inline"
     >
-      <env-indicator/>
+      <EnvIndicator />
 
-      <template v-for="sidebar in visible">
-        <a-menu-item v-if="sidebar.children.length===0 || sidebar.meta.hideChildren"
-                     :key="sidebar.name"
-                     @click="$router.push('/'+sidebar.path).catch(() => {})">
-          <component :is="sidebar.meta.icon"/>
-          <span>{{ sidebar.name() }}</span>
-        </a-menu-item>
+      <template v-for="s in visible">
+        <AMenuItem
+          v-if="s.children.length === 0 || s.meta.hideChildren"
+          :key="s.name"
+          @click="$router.push(`/${s.path}`).catch(() => {})"
+        >
+          <component :is="s.meta.icon" />
+          <span>{{ s.name() }}</span>
+        </AMenuItem>
 
-        <a-sub-menu v-else :key="sidebar.path">
+        <ASubMenu
+          v-else
+          :key="s.path"
+        >
           <template #title>
-            <component :is="sidebar.meta.icon"/>
-            <span>{{ sidebar.name() }}</span>
+            <component :is="s.meta.icon" />
+            <span>{{ s.name() }}</span>
           </template>
-          <a-menu-item v-for="child in sidebar.children" :key="child.name">
-            <router-link :to="'/'+sidebar.path+'/'+child.path">
+          <AMenuItem
+            v-for="child in s.children"
+            :key="child.name"
+          >
+            <RouterLink :to="`/${s.path}/${child.path}`">
               {{ child.name() }}
-            </router-link>
-          </a-menu-item>
-        </a-sub-menu>
+            </RouterLink>
+          </AMenuItem>
+        </ASubMenu>
       </template>
-    </a-menu>
+    </AMenu>
   </div>
 </template>
 
@@ -135,7 +146,6 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
     img {
       margin-left: 0;
     }
-
 
     .text {
       display: none;

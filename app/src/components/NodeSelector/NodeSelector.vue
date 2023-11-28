@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import { computed, ref } from 'vue'
+import { useGettext } from 'vue3-gettext'
 import environment from '@/api/environment'
-import {useGettext} from 'vue3-gettext'
 
-const {$gettext} = useGettext()
+const props = defineProps<{
+  target: number[]
+  map?: Record<number, string>
+  hiddenLocal?: boolean
+}>()
 
-const props = defineProps(['target', 'map', 'hidden_local'])
-const emit = defineEmits(['update:target'])
+const emit = defineEmits(['update:target', 'update:map'])
+
+const { $gettext } = useGettext()
 
 const data = ref([])
 const data_map = ref({})
@@ -25,29 +30,56 @@ const value = computed({
   set(v) {
     if (typeof props.map === 'object') {
       v.forEach(id => {
-        if (id !== 0) props.map[id] = data_map[id].name
+        if (id !== 0)
+          emit('update:map', { ...props.map, [id]: data_map[id].name })
       })
     }
     emit('update:target', v)
-  }
+  },
 })
 </script>
 
 <template>
-  <a-checkbox-group v-model:value="value" style="width: 100%">
-    <a-row :gutter="[16,16]">
-      <a-col :span="8" v-if="!hidden_local">
-        <a-checkbox :value="0">{{ $gettext('Local') }}</a-checkbox>
-        <a-tag color="blue">{{ $gettext('Online') }}</a-tag>
-      </a-col>
-      <a-col :span="8" v-for="node in data">
-        <a-checkbox :value="node.id">{{ node.name }}</a-checkbox>
-        <a-tag color="blue" v-if="node.status">{{ $gettext('Online') }}</a-tag>
-        <a-tag color="error" v-else>{{ $gettext('Offline') }}</a-tag>
-      </a-col>
-    </a-row>
-    <a-empty v-if="hidden_local&&data.length===0"/>
-  </a-checkbox-group>
+  <ACheckboxGroup
+    v-model:value="value"
+    style="width: 100%"
+  >
+    <ARow :gutter="[16, 16]">
+      <ACol
+        v-if="!hiddenLocal"
+        :span="8"
+      >
+        <ACheckbox :value="0">
+          {{ $gettext('Local') }}
+        </ACheckbox>
+        <ATag color="blue">
+          {{ $gettext('Online') }}
+        </ATag>
+      </ACol>
+      <ACol
+        v-for="(node, index) in data"
+        :key="index"
+        :span="8"
+      >
+        <ACheckbox :value="node.id">
+          {{ node.name }}
+        </ACheckbox>
+        <ATag
+          v-if="node.status"
+          color="blue"
+        >
+          {{ $gettext('Online') }}
+        </ATag>
+        <ATag
+          v-else
+          color="error"
+        >
+          {{ $gettext('Offline') }}
+        </ATag>
+      </ACol>
+    </ARow>
+    <AEmpty v-if="hiddenLocal && data.length === 0" />
+  </ACheckboxGroup>
 </template>
 
 <style scoped lang="less">

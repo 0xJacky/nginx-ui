@@ -1,25 +1,26 @@
 <script setup lang="ts">
+
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import {useSettingsStore} from '@/pinia'
-import {computed, provide} from 'vue'
+import { computed, provide } from 'vue'
+import { useSettingsStore } from '@/pinia'
 
 const media = window.matchMedia('(prefers-color-scheme: dark)')
 
-const callback = (media: { matches: any; }) => {
+const callback = () => {
   const settings = useSettingsStore()
   if (settings.preference_theme === 'auto') {
-    if (media.matches) {
+    if (media.matches)
       settings.set_theme('dark')
-    } else {
+    else
       settings.set_theme('light')
-    }
-  } else {
+  }
+  else {
     settings.set_theme(settings.preference_theme)
   }
 }
 
-callback(media)
+callback()
 
 const devicePrefersTheme = computed(() => {
   return media.matches ? 'dark' : 'light'
@@ -31,7 +32,7 @@ media.addEventListener('change', callback)
 </script>
 
 <template>
-  <router-view/>
+  <RouterView />
 </template>
 
 <style lang="less">

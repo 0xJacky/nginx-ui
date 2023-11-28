@@ -1,6 +1,6 @@
 import gettext from '@/gettext'
 
-const {$gettext} = gettext
+const { $gettext } = gettext
 
 export const msg = [
   $gettext('The username or password is incorrect'),
@@ -32,5 +32,5 @@ export const msg = [
   $gettext('Upgraded successfully'),
 
   $gettext('File exists'),
-  $gettext('Requested with wrong parameters')
+  $gettext('Requested with wrong parameters'),
 ]

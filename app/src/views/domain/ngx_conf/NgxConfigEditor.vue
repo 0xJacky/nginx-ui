@@ -1,204 +1,208 @@
 <script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router'
+import { useGettext } from 'vue3-gettext'
+import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
+import Modal from 'ant-design-vue/lib/modal'
+import type { ComputedRef, Ref } from 'vue'
+import { provide } from 'vue'
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
-import {computed, inject, onMounted, provide, ref, watch} from 'vue'
-import {useRoute, useRouter} from 'vue-router'
-import {useGettext} from 'vue3-gettext'
 import Cert from '@/views/domain/cert/Cert.vue'
 import LogEntry from '@/views/domain/ngx_conf/LogEntry.vue'
 import ConfigTemplate from '@/views/domain/ngx_conf/config_template/ConfigTemplate.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
-import {MoreOutlined, PlusOutlined} from '@ant-design/icons-vue'
-import Modal from 'ant-design-vue/lib/modal'
 import template from '@/api/template'
+import type { NgxConfig, NgxDirective } from '@/api/ngx'
+import type { CertificateInfo } from '@/api/cert'
 
-const {$gettext} = useGettext()
-
-const props = defineProps(['ngx_config', 'auto_cert', 'enabled', 'cert_info'])
+const props = defineProps<{
+  autoCert: boolean
+  enabled: boolean
+  certInfo?: {
+    [key: number]: CertificateInfo
+  }
+}>()
 
 const emit = defineEmits(['callback', 'update:auto_cert'])
+
+const { $gettext } = useGettext()
 
 const save_site_config = inject('save_site_config')!
 
 const route = useRoute()
 
 const current_server_index = ref(0)
-const name = ref(route.params.name)
+const name = ref(route.params.name) as Ref<string>
 
-function confirm_change_tls(r: boolean) {
+const ngx_config = inject('ngx_config') as NgxConfig
+
+function confirm_change_tls(status: boolean) {
   Modal.confirm({
     title: $gettext('Do you want to enable TLS?'),
-    content: $gettext('To make sure the certification auto-renewal can work normally, ' +
-      'we need to add a location which can proxy the request from authority to backend, ' +
-      'and we need to save this file and reload the Nginx. Are you sure you want to continue?'),
+    content: $gettext('To make sure the certification auto-renewal can work normally, '
+      + 'we need to add a location which can proxy the request from authority to backend, '
+      + 'and we need to save this file and reload the Nginx. Are you sure you want to continue?'),
     mask: false,
     centered: true,
     okText: $gettext('OK'),
     cancelText: $gettext('Cancel'),
     async onOk() {
       await template.get_block('letsencrypt.conf').then(async r => {
-        const first = props.ngx_config.servers[0]
-        if (!first.locations) {
+        const first = ngx_config.servers[0]
+        if (!first.locations)
           first.locations = []
-        } else {
-          first.locations = first.locations.filter((l: any) => l.path !== '/.well-known/acme-challenge')
-        }
+        else
+          first.locations = first.locations.filter(l => l.path !== '/.well-known/acme-challenge')
+
         first.locations.push(...r.locations)
       })
       await save_site_config()
 
-      change_tls(r)
-    }
+      change_tls(status)
+    },
   })
 }
 
-function change_tls(r: any) {
-  if (r) {
-    // deep copy servers[0] to servers[1]
-    const server = JSON.parse(JSON.stringify(props.ngx_config.servers[0]))
-
-    props.ngx_config.servers.push(server)
-
-    current_server_index.value = 1
-
-    const servers = props.ngx_config.servers
-
-    let i = 0
-    while (i < servers[1].directives.length) {
-      const v = servers[1].directives[i]
-      if (v.directive === 'listen') {
-        servers[1].directives.splice(i, 1)
-      } else {
-        i++
-      }
-    }
-
-    servers[1].directives.splice(0, 0, {
-      directive: 'listen',
-      params: '443 ssl'
-    }, {
-      directive: 'listen',
-      params: '[::]:443 ssl'
-    }, {
-      directive: 'http2',
-      params: 'on'
-    })
-
-    const server_name = directivesMap.value['server_name'][0]
-
-    if (!directivesMap.value['ssl_certificate']) {
-      servers[1].directives.splice(server_name.idx + 1, 0, {
-        directive: 'ssl_certificate',
-        params: ''
-      })
-    }
-
-    setTimeout(() => {
-      if (!directivesMap.value['ssl_certificate_key']) {
-        servers[1].directives.splice(server_name.idx + 2, 0, {
-          directive: 'ssl_certificate_key',
-          params: ''
-        })
-      }
-    }, 100)
-
-  } else {
-    // remove servers[1]
-    current_server_index.value = 0
-    if (props.ngx_config.servers.length === 2) {
-      props.ngx_config.servers.splice(1, 1)
-    }
-  }
-}
-
 const current_server_directives = computed(() => {
-  return props.ngx_config.servers?.[current_server_index.value]?.directives
+  return ngx_config.servers?.[current_server_index.value]?.directives
 })
 
-provide('current_server_directives', current_server_directives)
+const directivesMap: ComputedRef<Record<string, NgxDirective[]>> = computed(() => {
+  const map = {}
 
-const directivesMap = computed(() => {
-  const map = <any>{}
-
-  current_server_directives.value.forEach((v: any, k: any) => {
+  current_server_directives.value?.forEach((v, k) => {
     v.idx = k
-    if (map[v.directive]) {
+    if (map[v.directive])
       map[v.directive].push(v)
-    } else {
+    else
       map[v.directive] = [v]
-    }
   })
 
   return map
 })
 
+function change_tls(status: boolean) {
+  if (status) {
+    // deep copy servers[0] to servers[1]
+    const server = JSON.parse(JSON.stringify(ngx_config.servers[0]))
+
+    ngx_config.servers.push(server)
+
+    current_server_index.value = 1
+
+    const servers = ngx_config.servers
+
+    let i = 0
+    while (i < servers[1].directives.length) {
+      const v = servers[1].directives[i]
+      if (v.directive === 'listen')
+        servers[1].directives.splice(i, 1)
+      else
+        i++
+    }
+
+    servers[1].directives.splice(0, 0, {
+      directive: 'listen',
+      params: '443 ssl',
+    }, {
+      directive: 'listen',
+      params: '[::]:443 ssl',
+    }, {
+      directive: 'http2',
+      params: 'on',
+    })
+
+    const server_name = directivesMap.value.server_name[0]
+
+    if (!directivesMap.value.ssl_certificate) {
+      servers[1].directives.splice(server_name.idx + 1, 0, {
+        directive: 'ssl_certificate',
+        params: '',
+      })
+    }
+
+    setTimeout(() => {
+      if (!directivesMap.value.ssl_certificate_key) {
+        servers[1].directives.splice(server_name.idx + 2, 0, {
+          directive: 'ssl_certificate_key',
+          params: '',
+        })
+      }
+    }, 100)
+  }
+  else {
+    // remove servers[1]
+    current_server_index.value = 0
+    if (ngx_config.servers.length === 2)
+      ngx_config.servers.splice(1, 1)
+  }
+}
+
+provide('current_server_directives', current_server_directives)
 
 const support_ssl = computed(() => {
-  const servers = props.ngx_config.servers
+  const servers = ngx_config.servers
   for (const server_key in servers) {
     for (const k in servers[server_key].directives) {
       const v = servers[server_key].directives[k]
-      if (v.directive === 'listen' && v.params.indexOf('ssl') > 0) {
+      if (v.directive === 'listen' && v.params.indexOf('ssl') > 0)
         return true
-      }
     }
   }
+
   return false
 })
-
 
 const current_support_ssl = computed(() => {
   if (directivesMap.value.listen) {
     for (const v of directivesMap.value.listen) {
-      if (v?.params.indexOf('ssl') > 0) {
+      if (v?.params.indexOf('ssl') > 0)
         return true
-      }
     }
   }
-  return false
 
+  return false
 })
 
 const autoCertRef = computed({
   get() {
-    return props.auto_cert
+    return props.autoCert
   },
   set(value) {
     emit('update:auto_cert', value)
-  }
+  },
 })
 
 onMounted(() => {
-  current_server_index.value = parseInt((route.query?.server_idx ?? 0) as string)
+  current_server_index.value = Number.parseInt((route.query?.server_idx ?? 0) as string)
 })
 
 const router = useRouter()
 
 const servers_length = computed(() => {
-  return props.ngx_config.servers.length
+  return ngx_config.servers.length
 })
 
 watch(servers_length, () => {
-  if (current_server_index.value >= servers_length.value) {
+  if (current_server_index.value >= servers_length.value)
     current_server_index.value = servers_length.value - 1
-  } else if (current_server_index.value < 0) {
+  else if (current_server_index.value < 0)
     current_server_index.value = 0
-  }
 })
 
 watch(current_server_index, () => {
   router.push({
     query: {
-      server_idx: current_server_index.value.toString()
-    }
+      server_idx: current_server_index.value.toString(),
+    },
   })
 })
 
 function add_server() {
-  props.ngx_config.servers.push({
+  ngx_config.servers.push({
     comments: '',
     locations: [],
-    directives: []
+    directives: [],
   })
 }
 
@@ -210,80 +214,100 @@ function remove_server(index: number) {
     okText: $gettext('OK'),
     cancelText: $gettext('Cancel'),
     onOk() {
-      props.ngx_config?.servers?.splice(index, 1)
-    }
+      ngx_config?.servers?.splice(index, 1)
+    },
   })
 }
+
+const ngx_directives = computed(() => {
+  return ngx_config?.servers?.[current_server_index.value]?.directives
+})
+
+provide('ngx_directives', ngx_directives)
+provide('directivesMap', directivesMap)
 </script>
 
 <template>
   <div>
-    <a-form-item :label="$gettext('Enable TLS')" v-if="!support_ssl">
-      <a-switch @change="confirm_change_tls"/>
-    </a-form-item>
+    <AFormItem
+      v-if="!support_ssl"
+      :label="$gettext('Enable TLS')"
+    >
+      <ASwitch @change="confirm_change_tls" />
+    </AFormItem>
 
     <h2>{{ $gettext('Custom') }}</h2>
-    <code-editor v-model:content="ngx_config.custom" default-height="150px"/>
+    <CodeEditor
+      v-model:content="ngx_config.custom"
+      default-height="150px"
+    />
 
-    <a-tabs v-model:activeKey="current_server_index">
-      <a-tab-pane v-for="(v,k) in props.ngx_config.servers" :key="k">
+    <ATabs v-model:activeKey="current_server_index">
+      <ATabPane
+        v-for="(v, k) in ngx_config.servers"
+        :key="k"
+      >
         <template #tab>
-          Server {{ (k + 1) }}
-          <a-dropdown>
-            <MoreOutlined/>
+          Server {{ k + 1 }}
+          <ADropdown>
+            <MoreOutlined />
             <template #overlay>
-              <a-menu>
-                <a-menu-item>
-                  <a href="javascript:;" @click="remove_server(k)">{{ $gettext('Delete') }}</a>
-                </a-menu-item>
-              </a-menu>
+              <AMenu>
+                <AMenuItem>
+                  <a @click="remove_server(k)">{{ $gettext('Delete') }}</a>
+                </AMenuItem>
+              </AMenu>
             </template>
-          </a-dropdown>
+          </ADropdown>
         </template>
-        <log-entry
-          :ngx_config="props.ngx_config"
-          :current_server_idx="current_server_index"
+        <LogEntry
+          :ngx-config="ngx_config"
+          :current-server-idx="current_server_index"
           :name="name"
         />
 
         <div class="tab-content">
-          <template v-if="current_support_ssl&&enabled">
-            <cert
+          <template v-if="current_support_ssl && enabled">
+            <Cert
               v-if="current_support_ssl"
-              :config_name="ngx_config.name"
-              :cert_info="cert_info?.[k]"
-              :current_server_directives="current_server_directives"
-              :directives-map="directivesMap"
-              :current_server_index="current_server_index"
-              :ngx_config="ngx_config"
               v-model:enabled="autoCertRef"
+              :config-name="ngx_config.name"
+              :cert-info="certInfo?.[k]"
+              :current-server-index="current_server_index"
               @callback="$emit('callback')"
             />
           </template>
 
           <template v-if="v.comments">
-            <h3 v-translate>Comments</h3>
-            <a-textarea v-model:value="v.comments" :bordered="false"/>
+            <h3>{{ $gettext('Comments') }}</h3>
+            <ATextarea
+              v-model:value="v.comments"
+              :bordered="false"
+            />
           </template>
-          <directive-editor :ngx_directives="v.directives"/>
-          <br/>
-          <config-template :ngx_config="ngx_config"
-                           :current_server_index="current_server_index"/>
-          <br/>
-          <location-editor :locations="v.locations"/>
+          <DirectiveEditor />
+          <br>
+          <ConfigTemplate :current-server-index="current_server_index" />
+          <br>
+          <LocationEditor
+            :current-server-index="current_server_index"
+            :locations="v.locations"
+          />
         </div>
-
-      </a-tab-pane>
+      </ATabPane>
 
       <template #rightExtra>
-        <a-button @click="add_server" type="link" size="small">
-          <PlusOutlined/>
+        <AButton
+          type="link"
+          size="small"
+          @click="add_server"
+        >
+          <PlusOutlined />
           {{ $gettext('Add') }}
-        </a-button>
+        </AButton>
       </template>
-    </a-tabs>
+    </ATabs>
   </div>
-
 </template>
 
 <style lang="less" scoped>
