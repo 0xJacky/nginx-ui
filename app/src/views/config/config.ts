@@ -1,39 +1,40 @@
-import {customRender, datetime} from '@/components/StdDataDisplay/StdTableTransformer'
+import { h } from 'vue'
+import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import gettext from '@/gettext'
-import {h} from 'vue'
 
-const {$gettext} = gettext
+const { $gettext } = gettext
 
 const configColumns = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
   sorter: true,
-  pithy: true
+  pithy: true,
 }, {
   title: () => $gettext('Type'),
   dataIndex: 'is_dir',
   customRender: (args: customRender) => {
-    const template: any = []
-    const {text, column} = args
-    if (text === true || text > 0) {
+    const template = []
+    const { text } = args
+    if (text === true || text > 0)
       template.push($gettext('Directory'))
-    } else {
+    else
       template.push($gettext('File'))
-    }
+
     return h('div', template)
   },
   sorter: true,
-  pithy: true
+  pithy: true,
 }, {
   title: () => $gettext('Updated at'),
-  dataIndex: 'modify',
+  dataIndex: 'modified_at',
   customRender: datetime,
   datetime: true,
   sorter: true,
-  pithy: true
+  pithy: true,
 }, {
   title: () => $gettext('Action'),
-  dataIndex: 'action'
+  dataIndex: 'action',
 }]
 
 export default configColumns

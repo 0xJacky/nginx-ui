@@ -53,6 +53,16 @@ jobs:
                     pnpm install
                 working-directory: app
 
+            - name: Check frontend code style
+              run: |
+                pnpm run lint
+              working-directory: app
+
+            -   name: Check frontend types
+                run: |
+                    pnpm run typecheck
+                working-directory: app
+
             -   name: Build
                 run: |
                     npx browserslist@latest --update-db

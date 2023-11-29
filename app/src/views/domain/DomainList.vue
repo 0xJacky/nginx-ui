@@ -1,86 +1,81 @@
 <script setup lang="tsx">
-import StdTable from '@/components/StdDataDisplay/StdTable.vue'
-
-import {customRender, datetime} from '@/components/StdDataDisplay/StdTableTransformer'
-import {useGettext} from 'vue3-gettext'
+import { useGettext } from 'vue3-gettext'
+import { Badge, message } from 'ant-design-vue'
+import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
+import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import domain from '@/api/domain'
-import {Badge, message} from 'ant-design-vue'
-import {h, ref, watch} from 'vue'
-import {input} from '@/components/StdDataEntry'
+import { input } from '@/components/StdDesign/StdDataEntry'
 import SiteDuplicate from '@/views/domain/components/SiteDuplicate.vue'
 import InspectConfig from '@/views/config/InspectConfig.vue'
+import type { Column } from '@/components/StdDesign/types'
 
-const {$gettext, interpolate} = useGettext()
+const { $gettext } = useGettext()
 
-const columns = [{
+const columns: Column[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
-  sorter: true,
+  sortable: true,
   pithy: true,
   edit: {
-    type: input
+    type: input,
   },
-  search: true
+  search: true,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'enabled',
   customRender: (args: customRender) => {
-    const template: any = []
-    const {text} = args
+    const template = []
+    const { text } = args
     if (text === true || text > 0) {
       template.push(<Badge status="success"/>)
       template.push($gettext('Enable'))
-    } else {
+    }
+    else {
       template.push(<Badge status="warning"/>)
       template.push($gettext('Disable'))
     }
+
     return h('div', template)
   },
-  sorter: true,
-  pithy: true
+  sortable: true,
+  pithy: true,
 }, {
   title: () => $gettext('Updated at'),
-  dataIndex: 'modify',
+  dataIndex: 'modified_at',
   customRender: datetime,
-  sorter: true,
-  pithy: true
+  sortable: true,
+  pithy: true,
 }, {
   title: () => $gettext('Action'),
-  dataIndex: 'action'
+  dataIndex: 'action',
 }]
 
-const table = ref(null)
+const table = ref()
 
-interface Table {
-  get_list(): void
-}
-
-function enable(name: any) {
+function enable(name: string) {
   domain.enable(name).then(() => {
     message.success($gettext('Enabled successfully'))
-    const t: Table | null = table.value
-    t!.get_list()
+    table.value?.get_list()
   }).catch(r => {
-    message.error(interpolate($gettext('Failed to enable %{msg}'), {msg: r.message ?? ''}), 10)
+    message.error($gettext('Failed to enable %{msg}', { msg: r.message ?? '' }), 10)
   })
 }
 
-function disable(name: any) {
+function disable(name: string) {
   domain.disable(name).then(() => {
     message.success($gettext('Disabled successfully'))
-    const t: Table | null = table.value
-    t!.get_list()
+    table.value?.get_list()
   }).catch(r => {
-    message.error(interpolate($gettext('Failed to disable %{msg}'), {msg: r.message ?? ''}))
+    message.error($gettext('Failed to disable %{msg}', { msg: r.message ?? '' }))
   })
 }
 
-function destroy(site_name: any) {
+function destroy(site_name: string) {
   domain.destroy(site_name).then(() => {
-    const t: Table | null = table.value
-    t!.get_list()
-    message.success(interpolate($gettext('Delete site: %{site_name}'), {site_name: site_name}))
-  }).catch((e: any) => {
+    table.value.get_list()
+    message.success($gettext('Delete site: %{site_name}', { site_name }))
+  }).catch(e => {
     message.error(e?.message ?? $gettext('Server error'))
   })
 }
@@ -104,45 +99,68 @@ watch(route, () => {
 </script>
 
 <template>
-  <a-card :title="$gettext('Manage Sites')">
-    <inspect-config ref="inspect_config"/>
+  <ACard :title="$gettext('Manage Sites')">
+    <InspectConfig ref="inspect_config" />
 
-    <std-table
+    <StdTable
+      ref="table"
       :api="domain"
       :columns="columns"
       row-key="name"
-      ref="table"
-      @clickEdit="r => $router.push({
-                path: '/domain/' + r
-            })"
       :deletable="false"
+      @click-edit="r => $router.push({
+        path: `/domain/${r}`,
+      })"
     >
-      <template #actions="{record}">
-        <a-divider type="vertical"/>
-        <a-button type="link" size="small" v-if="record.enabled" @click="disable(record.name)">
+      <template #actions="{ record }">
+        <ADivider type="vertical" />
+        <AButton
+          v-if="record.enabled"
+          type="link"
+          size="small"
+          @click="disable(record.name)"
+        >
           {{ $gettext('Disabled') }}
-        </a-button>
-        <a-button type="link" size="small" v-else @click="enable(record.name)">
+        </AButton>
+        <AButton
+          v-else
+          type="link"
+          size="small"
+          @click="enable(record.name)"
+        >
           {{ $gettext('Enabled') }}
-        </a-button>
-        <a-divider type="vertical"/>
-        <a-button type="link" size="small" @click="handle_click_duplicate(record.name)">
+        </AButton>
+        <ADivider type="vertical" />
+        <AButton
+          type="link"
+          size="small"
+          @click="handle_click_duplicate(record.name)"
+        >
           {{ $gettext('Duplicate') }}
-        </a-button>
-        <a-divider type="vertical"/>
-        <a-popconfirm
-          :cancelText="$gettext('No')"
-          :okText="$gettext('OK')"
+        </AButton>
+        <ADivider type="vertical" />
+        <APopconfirm
+          :cancel-text="$gettext('No')"
+          :ok-text="$gettext('OK')"
           :title="$gettext('Are you sure you want to delete?')"
-          @confirm="destroy(record['name'])">
-          <a-button type="link" size="small" :disabled="record.enabled">
+          @confirm="destroy(record.name)"
+        >
+          <AButton
+            type="link"
+            size="small"
+            :disabled="record.enabled"
+          >
             {{ $gettext('Delete') }}
-          </a-button>
-        </a-popconfirm>
+          </AButton>
+        </APopconfirm>
       </template>
-    </std-table>
-    <site-duplicate v-model:visible="show_duplicator" :name="target" @duplicated="table.get_list()"/>
-  </a-card>
+    </StdTable>
+    <SiteDuplicate
+      v-model:visible="show_duplicator"
+      :name="target"
+      @duplicated="() => table.get_list()"
+    />
+  </ACard>
 </template>
 
 <style scoped>

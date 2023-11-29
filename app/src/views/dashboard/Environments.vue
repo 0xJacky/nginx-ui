@@ -1,26 +1,28 @@
 <script setup lang="ts">
-import {useSettingsStore} from '@/pinia'
-import {useGettext} from 'vue3-gettext'
-import {computed, onMounted, onUnmounted, ref} from 'vue'
+import { useGettext } from 'vue3-gettext'
+import Icon, { LinkOutlined, SendOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
+import type ReconnectingWebSocket from 'reconnecting-websocket'
+import type { Ref } from 'vue'
+import { useSettingsStore } from '@/pinia'
+import type { Node } from '@/api/environment'
 import environment from '@/api/environment'
-import Icon, {LinkOutlined, SendOutlined, ThunderboltOutlined} from '@ant-design/icons-vue'
 import logo from '@/assets/img/logo.png'
 import pulse from '@/assets/svg/pulse.svg'
-import {formatDateTime} from '@/lib/helper'
-import ws from '@/lib/websocket'
-import ReconnectingWebSocket from 'reconnecting-websocket'
+import { formatDateTime } from '@/lib/helper'
 import NodeAnalyticItem from '@/views/dashboard/components/NodeAnalyticItem.vue'
+import analytic from '@/api/analytic'
 
-const settingsStore = useSettingsStore()
-const {$gettext} = useGettext()
+const { $gettext } = useGettext()
 
-const data = ref([])
+const data = ref([]) as Ref<Node[]>
 
 const node_map = computed(() => {
-  const o = {}
+  const o = {} as Record<number, Node>
+
   data.value.forEach(v => {
     o[v.id] = v
   })
+
   return o
 })
 
@@ -30,16 +32,19 @@ onMounted(() => {
   environment.get_list().then(r => {
     data.value = r.data
   })
-  websocket = ws('/api/analytic/nodes')
-  websocket.onmessage = m => {
+  websocket = analytic.nodes()
+  websocket.onmessage = async m => {
     const nodes = JSON.parse(m.data)
-    for (let key in nodes) {
+
+    Object.keys(nodes).forEach((v: string) => {
+      const key = Number.parseInt(v)
+
       // update node online status
       if (node_map.value[key]) {
         Object.assign(node_map.value[key], nodes[key])
         node_map.value[key].response_at = new Date()
       }
-    }
+    })
   }
 })
 
@@ -47,13 +52,7 @@ onUnmounted(() => {
   websocket.close()
 })
 
-export interface Node {
-  id: number
-  name: string
-  token: string
-}
-
-const {environment: env} = settingsStore
+const { environment: env } = useSettingsStore()
 
 function link_start(node: Node) {
   env.id = node.id
@@ -61,49 +60,70 @@ function link_start(node: Node) {
 }
 
 const visible = computed(() => {
-  if (env.id > 0) {
+  if (env.id > 0)
     return false
-  } else {
+  else
     return data.value?.length
-  }
 })
 </script>
 
 <template>
-  <a-card class="env-list-card" :title="$gettext('Environments')" v-if="visible">
-    <a-list item-layout="horizontal" :data-source="data">
+  <ACard
+    v-if="visible"
+    class="env-list-card"
+    :title="$gettext('Environments')"
+  >
+    <AList
+      item-layout="horizontal"
+      :data-source="data"
+    >
       <template #renderItem="{ item }">
-        <a-list-item>
+        <AListItem>
           <template #actions>
-            <a-button type="primary" @click="link_start(item)" :disabled="env.id===item.id" ghost>
-              <send-outlined/>
+            <AButton
+              type="primary"
+              :disabled="env.id === item.id"
+              ghost
+              @click="link_start(item)"
+            >
+              <SendOutlined />
               {{ env.id !== item.id ? $gettext('Link Start') : $gettext('Connected') }}
-            </a-button>
+            </AButton>
           </template>
-          <a-list-item-meta>
+          <AListItemMeta>
             <template #title>
               {{ item.name }}
-              <a-tag color="blue" v-if="item.status">{{ $gettext('Online') }}</a-tag>
-              <a-tag color="error" v-else>{{ $gettext('Offline') }}</a-tag>
+              <ATag
+                v-if="item.status"
+                color="blue"
+              >
+                {{ $gettext('Online') }}
+              </ATag>
+              <ATag
+                v-else
+                color="error"
+              >
+                {{ $gettext('Offline') }}
+              </ATag>
               <div class="runtime-meta">
                 <template v-if="item.status">
-                  <span><Icon :component="pulse"/> {{ formatDateTime(item.response_at) }}</span>
-                  <span><thunderbolt-outlined/>{{ item.version }}</span>
+                  <span><Icon :component="pulse" /> {{ formatDateTime(item.response_at) }}</span>
+                  <span><ThunderboltOutlined />{{ item.version }}</span>
                 </template>
-                <span><link-outlined/>{{ item.url }}</span>
+                <span><LinkOutlined />{{ item.url }}</span>
               </div>
             </template>
             <template #avatar>
-              <a-avatar :src="logo"/>
+              <AAvatar :src="logo" />
             </template>
             <template #description>
-              <node-analytic-item :item="item"/>
+              <NodeAnalyticItem :item="item" />
             </template>
-          </a-list-item-meta>
-        </a-list-item>
+          </AListItemMeta>
+        </AListItem>
       </template>
-    </a-list>
-  </a-card>
+    </AList>
+  </ACard>
 </template>
 
 <style scoped lang="less">

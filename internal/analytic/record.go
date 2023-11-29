@@ -41,14 +41,14 @@ func recordCpu(now time.Time) {
 	cpuSystemUsage := (cpuTimesAfter[0].System - cpuTimesBefore[0].System) / (float64(1000*threadNum) / 1000)
 	cpuSystemUsage *= 100
 
-	u := Usage{
+	u := Usage[float64]{
 		Time:  now,
 		Usage: cpuUserUsage,
 	}
 
 	CpuUserRecord = append(CpuUserRecord, u)
 
-	s := Usage{
+	s := Usage[float64]{
 		Time:  now,
 		Usage: cpuUserUsage + cpuSystemUsage,
 	}
@@ -75,11 +75,11 @@ func recordNetwork(now time.Time) {
 	if len(network) == 0 {
 		return
 	}
-	NetRecvRecord = append(NetRecvRecord, Usage{
+	NetRecvRecord = append(NetRecvRecord, Usage[uint64]{
 		Time:  now,
 		Usage: network[0].BytesRecv - LastNetRecv,
 	})
-	NetSentRecord = append(NetSentRecord, Usage{
+	NetSentRecord = append(NetSentRecord, Usage[uint64]{
 		Time:  now,
 		Usage: network[0].BytesSent - LastNetSent,
 	})
@@ -96,11 +96,11 @@ func recordNetwork(now time.Time) {
 func recordDiskIO(now time.Time) {
 	readCount, writeCount := getTotalDiskIO()
 
-	DiskReadRecord = append(DiskReadRecord, Usage{
+	DiskReadRecord = append(DiskReadRecord, Usage[uint64]{
 		Time:  now,
 		Usage: readCount - LastDiskReads,
 	})
-	DiskWriteRecord = append(DiskWriteRecord, Usage{
+	DiskWriteRecord = append(DiskWriteRecord, Usage[uint64]{
 		Time:  now,
 		Usage: writeCount - LastDiskWrites,
 	})

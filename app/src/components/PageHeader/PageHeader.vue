@@ -1,9 +1,6 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb.vue'
-import {useRoute} from 'vue-router'
-import {computed, ref, watch} from 'vue'
-
-const {title, logo, avatar} = defineProps(['title', 'logo', 'avatar'])
 
 const route = useRoute()
 
@@ -11,26 +8,26 @@ const display = computed(() => {
   return !route.meta.hiddenHeaderContent
 })
 
-const name = ref(route.name)
-watch(() => route.name, () => {
-  name.value = route.name
+const name = computed(() => {
+  return (route.name as never as () => string)()
 })
-
 </script>
 
 <template>
-  <div v-if="display" class="page-header">
+  <div
+    v-if="display"
+    class="page-header"
+  >
     <div class="page-header-index-wide">
-      <Breadcrumb/>
+      <Breadcrumb />
       <div class="detail">
         <div class="main">
           <div class="row">
-            <img v-if="logo" :src="logo" class="logo"/>
             <h1 class="title">
-              {{ name() }}
+              {{ name }}
             </h1>
             <div class="action">
-              <slot name="action"></slot>
+              <slot name="action" />
             </div>
           </div>
         </div>

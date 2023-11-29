@@ -1,46 +1,37 @@
 <script setup lang="ts">
-import {useGettext} from 'vue3-gettext'
-import upgrade from '@/api/upgrade'
-import {computed, Ref, ref, watch} from 'vue'
-import version from '@/version.json'
+import { useGettext } from 'vue3-gettext'
+import type { Ref } from 'vue'
 import dayjs from 'dayjs'
-import {marked} from 'marked'
+import { marked } from 'marked'
 
+import { message } from 'ant-design-vue'
+import { useRoute } from 'vue-router'
 import websocket from '@/lib/websocket'
-import {message} from 'ant-design-vue'
-import {useRoute} from 'vue-router'
+import version from '@/version.json'
+import type { RuntimeInfo } from '@/api/upgrade'
+import upgrade from '@/api/upgrade'
 
-const {$gettext} = useGettext()
+const { $gettext } = useGettext()
 
 const route = useRoute()
-
-interface APIData {
-  name: string
-  os: string,
-  arch: string,
-  ex_path: string,
-  body: string,
-  published_at: string
-}
-
-const data: Ref<APIData> = ref({})
+const data = ref({}) as Ref<RuntimeInfo>
 const last_check = ref('')
 const loading = ref(false)
 const channel = ref('stable')
 
 const progressStrokeColor = {
   from: '#108ee9',
-  to: '#87d068'
+  to: '#87d068',
 }
 
 const modalVisible = ref(false)
-const progressPercent: any = ref(0)
+const progressPercent = ref(0)
 const progressStatus = ref('active')
 const modalClosable = ref(false)
 const get_release_error = ref(false)
 
 const progressPercentComputed = computed(() => {
-  return parseFloat(progressPercent.value.toFixed(1))
+  return Number.parseFloat(progressPercent.value.toFixed(1))
 })
 
 function get_latest_release() {
@@ -65,15 +56,16 @@ const is_latest_ver = computed(() => {
   return data.value.name === `v${version.version}`
 })
 
-const logContainer = ref(null)
+const logContainer = ref()
 
 function log(msg: string) {
   const para = document.createElement('p')
-  para.appendChild(document.createTextNode($gettext(msg)));
 
-  (logContainer.value as any as Node).appendChild(para);
+  para.appendChild(document.createTextNode($gettext(msg)))
 
-  (logContainer.value as any as Element).scroll({top: 320, left: 0, behavior: 'smooth'})
+  logContainer.value.appendChild(para)
+
+  logContainer.value.scroll({ top: 320, left: 0, behavior: 'smooth' })
 }
 
 const dry_run = computed(() => {
@@ -84,8 +76,8 @@ async function perform_upgrade() {
   progressStatus.value = 'active'
   modalClosable.value = false
   modalVisible.value = true
-  progressPercent.value = 0;
-  (logContainer.value as any as Element).innerHTML = ''
+  progressPercent.value = 0
+  logContainer.value.innerHTML = ''
 
   log($gettext('Upgrading Nginx UI, please wait...'))
 
@@ -96,7 +88,7 @@ async function perform_upgrade() {
   ws.onopen = () => {
     ws.send(JSON.stringify({
       dry_run: dry_run.value,
-      channel: channel.value
+      channel: channel.value,
     }))
   }
 
@@ -104,7 +96,8 @@ async function perform_upgrade() {
 
   ws.onmessage = async m => {
     const r = JSON.parse(m.data)
-    if (r.message) log(r.message)
+    if (r.message)
+      log(r.message)
     console.log(r.status)
     switch (r.status) {
       case 'info':
@@ -126,9 +119,9 @@ async function perform_upgrade() {
   }
 
   ws.onclose = async () => {
-    if (is_fail) {
+    if (is_fail)
       return
-    }
+
     const t = setInterval(() => {
       upgrade.current_version().then(() => {
         clearInterval(t)
@@ -147,84 +140,126 @@ async function perform_upgrade() {
 </script>
 
 <template>
-  <a-card :title="$gettext('Upgrade')">
-    <a-modal
-      :title="$gettext('Core Upgrade')"
+  <ACard :title="$gettext('Upgrade')">
+    <AModal
       v-model:open="modalVisible"
+      :title="$gettext('Core Upgrade')"
       :mask-closable="false"
-      :footer="null" :closable="modalClosable" force-render>
-      <a-progress
+      :footer="null"
+      :closable="modalClosable"
+      force-render
+    >
+      <AProgress
         :stroke-color="progressStrokeColor"
         :percent="progressPercentComputed"
         :status="progressStatus"
       />
 
-      <div class="core-upgrade-log-container" ref="logContainer"/>
-    </a-modal>
+      <div
+        ref="logContainer"
+        class="core-upgrade-log-container"
+      />
+    </AModal>
     <div class="upgrade-container">
       <p>{{ $gettext('You can check Nginx UI upgrade at this page.') }}</p>
       <h3>{{ $gettext('Current Version') }}: v{{ version.version }}</h3>
       <template v-if="get_release_error">
-        <a-alert type="error"
-                 :title="$gettext('Get release information error')"
-                 :message="get_release_error"
-                 banner
+        <AAlert
+          type="error"
+          :title="$gettext('Get release information error')"
+          :message="get_release_error"
+          banner
         />
       </template>
       <template v-else>
         <p>{{ $gettext('OS') }}: {{ data.os }}</p>
         <p>{{ $gettext('Arch') }}: {{ data.arch }}</p>
         <p>{{ $gettext('Executable Path') }}: {{ data.ex_path }}</p>
-        <p>{{ $gettext('Last checked at') }}: {{ last_check }}
-          <a-button type="link" @click="get_latest_release" :loading="loading">
+        <p>
+          {{ $gettext('Last checked at') }}: {{ last_check }}
+          <AButton
+            type="link"
+            :loading="loading"
+            @click="get_latest_release"
+          >
             {{ $gettext('Check again') }}
-          </a-button>
+          </AButton>
         </p>
-        <a-form-item :label="$gettext('Channel')">
-          <a-select v-model:value="channel">
-            <a-select-option key="stable">{{ $gettext('Stable') }}</a-select-option>
-            <a-select-option key="prerelease">{{ $gettext('Pre-release') }}</a-select-option>
-          </a-select>
-        </a-form-item>
+        <AFormItem :label="$gettext('Channel')">
+          <ASelect v-model:value="channel">
+            <ASelectOption key="stable">
+              {{ $gettext('Stable') }}
+            </ASelectOption>
+            <ASelectOption key="prerelease">
+              {{ $gettext('Pre-release') }}
+            </ASelectOption>
+          </ASelect>
+        </AFormItem>
         <template v-if="!loading">
-          <a-alert type="success" v-if="is_latest_ver"
-                   :message="$gettext('You are using the latest version')"
-                   banner
+          <AAlert
+            v-if="is_latest_ver"
+            type="success"
+            :message="$gettext('You are using the latest version')"
+            banner
           />
-          <a-alert type="info" v-else
-                   :message="$gettext('New version released')"
-                   banner
+          <AAlert
+            v-else
+            type="info"
+            :message="$gettext('New version released')"
+            banner
           />
           <template v-if="dry_run">
-            <br/>
-            <a-alert type="info"
-                     :message="$gettext('Dry run mode enabled')"
-                     banner
+            <br>
+            <AAlert
+              type="info"
+              :message="$gettext('Dry run mode enabled')"
+              banner
             />
           </template>
           <div class="control-btn">
-            <a-space>
-              <a-button type="primary" @click="perform_upgrade"
-                        ghost v-if="is_latest_ver">{{ $gettext('Reinstall') }}
-              </a-button>
-              <a-button type="primary" @click="perform_upgrade"
-                        ghost v-else>{{ $gettext('Upgrade') }}
-              </a-button>
-            </a-space>
+            <ASpace>
+              <AButton
+                v-if="is_latest_ver"
+                type="primary"
+                ghost
+                @click="perform_upgrade"
+              >
+                {{ $gettext('Reinstall') }}
+              </AButton>
+              <AButton
+                v-else
+                type="primary"
+                ghost
+                @click="perform_upgrade"
+              >
+                {{ $gettext('Upgrade') }}
+              </AButton>
+            </ASpace>
           </div>
         </template>
       </template>
       <template v-if="data.body">
-        <h2 class="latest-version">{{ data.name }}
-          <a-tag color="green" v-if="channel==='stable'">{{ $gettext('Stable') }}</a-tag>
-          <a-tag color="blue" v-if="channel==='prerelease'">{{ $gettext('Pre-release') }}</a-tag>
+        <h2 class="latest-version">
+          {{ data.name }}
+          <ATag
+            v-if="channel === 'stable'"
+            color="green"
+          >
+            {{ $gettext('Stable') }}
+          </ATag>
+          <ATag
+            v-if="channel === 'prerelease'"
+            color="blue"
+          >
+            {{ $gettext('Pre-release') }}
+          </ATag>
         </h2>
 
         <h3>{{ $gettext('Release Note') }}</h3>
-        <div v-html="marked.parse(data.body)"></div>
+        <div v-html="marked.parse(data.body)" />
       </template>
     </div>
-  </a-card>
+  </ACard>
 </template>
 
 <style lang="less">

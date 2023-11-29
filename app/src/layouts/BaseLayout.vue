@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import HeaderLayout from './HeaderLayout.vue'
-import SideBar from './SideBar.vue'
-import FooterLayout from './FooterLayout.vue'
-import PageHeader from '@/components/PageHeader/PageHeader.vue'
 import zh_CN from 'ant-design-vue/es/locale/zh_CN'
 import zh_TW from 'ant-design-vue/es/locale/zh_TW'
 import en_US from 'ant-design-vue/es/locale/en_US'
-import {computed, ref} from 'vue'
-import {theme} from 'ant-design-vue'
+import { computed, ref } from 'vue'
+import { theme } from 'ant-design-vue'
 import _ from 'lodash'
+import FooterLayout from './FooterLayout.vue'
+import SideBar from './SideBar.vue'
+import HeaderLayout from './HeaderLayout.vue'
+import PageHeader from '@/components/PageHeader/PageHeader.vue'
 
 import gettext from '@/gettext'
-import {useSettingsStore} from '@/pinia'
+import { useSettingsStore } from '@/pinia'
 
 const drawer_visible = ref(false)
 const collapsed = ref(collapse())
@@ -38,60 +38,67 @@ const lang = computed(() => {
       return en_US
   }
 })
+
 const settings = useSettingsStore()
-const is_theme_dark = computed(() => settings.theme == 'dark')
+const is_theme_dark = computed(() => settings.theme === 'dark')
 </script>
 
 <template>
-  <a-config-provider :theme="{
-      algorithm: is_theme_dark?theme.darkAlgorithm:theme.defaultAlgorithm,
-    }" :locale="lang" :autoInsertSpaceInButton="false">
-    <a-layout style="min-height: 100vh">
+  <AConfigProvider
+    :theme="{
+      algorithm: is_theme_dark ? theme.darkAlgorithm : theme.defaultAlgorithm,
+    }"
+    :locale="lang"
+    :auto-insert-space-in-button="false"
+  >
+    <ALayout style="min-height: 100vh">
       <div class="drawer-sidebar">
-        <a-drawer
-          :closable="false"
+        <ADrawer
           v-model:open="drawer_visible"
+          :closable="false"
           placement="left"
-          @close="drawer_visible=false"
           width="256"
+          @close="drawer_visible = false"
         >
-          <side-bar/>
-        </a-drawer>
+          <SideBar />
+        </ADrawer>
       </div>
 
-      <a-layout-sider
+      <ALayoutSider
         v-model:collapsed="collapsed"
-        :collapsible="true"
-        :style="{zIndex: 11}"
+        collapsible
+        :style="{ zIndex: 11 }"
         theme="light"
         class="layout-sider"
       >
-        <side-bar/>
-      </a-layout-sider>
+        <SideBar />
+      </ALayoutSider>
 
-      <a-layout>
-        <a-layout-header :style="{position: 'sticky', top: '0', zIndex: 10, width:'100%'}">
-          <header-layout @clickUnFold="drawer_visible=true"/>
-        </a-layout-header>
+      <ALayout>
+        <ALayoutHeader :style="{ position: 'sticky', top: '0', zIndex: 10, width: '100%' }">
+          <HeaderLayout @click-un-fold="drawer_visible = true" />
+        </ALayoutHeader>
 
-        <a-layout-content>
-          <page-header/>
+        <ALayoutContent>
+          <PageHeader />
           <div class="router-view">
-            <router-view v-slot="{ Component, route }">
-              <transition name="slide-fade">
-                <component :is="Component" :key="route.path"/>
-              </transition>
-            </router-view>
+            <RouterView v-slot="{ Component, route }">
+              <Transition name="slide-fade">
+                <component
+                  :is="Component"
+                  :key="route.path"
+                />
+              </Transition>
+            </RouterView>
           </div>
-        </a-layout-content>
+        </ALayoutContent>
 
-        <a-layout-footer>
-          <footer-layout/>
-        </a-layout-footer>
-      </a-layout>
-
-    </a-layout>
-  </a-config-provider>
+        <ALayoutFooter>
+          <FooterLayout />
+        </ALayoutFooter>
+      </ALayout>
+    </ALayout>
+  </AConfigProvider>
 </template>
 
 <style lang="less" scoped>
@@ -195,7 +202,6 @@ body {
   background-color: #fff !important;
 }
 
-
 .ant-layout-sider {
   background-color: #ffffff;
 
@@ -215,7 +221,6 @@ body {
     border-right: 0 !important;
   }
 }
-
 
 .ant-table-small {
   font-size: 13px;

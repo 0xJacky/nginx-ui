@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
-	nginx2 "github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 	templ "github.com/0xJacky/Nginx-UI/template"
 	"github.com/BurntSushi/toml"
@@ -12,23 +12,24 @@ import (
 	"github.com/pkg/errors"
 	"github.com/tufanbarisyildirim/gonginx/parser"
 	"io"
+	"io/fs"
 	"path/filepath"
 	"strings"
 	"text/template"
 )
 
-type TVariable struct {
+type Variable struct {
 	Type  string            `json:"type"`
 	Name  map[string]string `json:"name"`
 	Value interface{}       `json:"value"`
 }
 
 type ConfigInfoItem struct {
-	Name        string               `json:"name"`
-	Description map[string]string    `json:"description"`
-	Author      string               `json:"author"`
-	Filename    string               `json:"filename"`
-	Variables   map[string]TVariable `json:"variables"`
+	Name        string              `json:"name"`
+	Description map[string]string   `json:"description"`
+	Author      string              `json:"author"`
+	Filename    string              `json:"filename"`
+	Variables   map[string]Variable `json:"variables"`
 }
 
 func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
@@ -38,7 +39,14 @@ func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
 	}
 
 	file, _ := templ.DistFS.Open(filepath.Join(path, name))
-	defer file.Close()
+
+	defer func(file fs.File) {
+		err := file.Close()
+		if err != nil {
+			logger.Error(err)
+		}
+	}(file)
+
 	r := bufio.NewReader(file)
 	bytes, _, err := r.ReadLine()
 	if err == io.EOF {
@@ -71,10 +79,10 @@ func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
 
 type ConfigDetail struct {
 	Custom string `json:"custom"`
-	nginx2.NgxServer
+	nginx.NgxServer
 }
 
-func ParseTemplate(path, name string, bindData map[string]TVariable) (c ConfigDetail, err error) {
+func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDetail, err error) {
 	file, err := templ.DistFS.Open(filepath.Join(path, name))
 	if err != nil {
 		err = errors.Wrap(err, "error tokenized template")
@@ -160,14 +168,14 @@ func ParseTemplate(path, name string, bindData map[string]TVariable) (c ConfigDe
 	c.Custom = custom
 	for _, d := range config.GetDirectives() {
 		switch d.GetName() {
-		case nginx2.Location:
-			l := &nginx2.NgxLocation{
+		case nginx.Location:
+			l := &nginx.NgxLocation{
 				Path: strings.Join(d.GetParameters(), " "),
 			}
 			l.ParseLocation(d, 0)
 			c.NgxServer.Locations = append(c.NgxServer.Locations, l)
 		default:
-			dir := &nginx2.NgxDirective{
+			dir := &nginx.NgxDirective{
 				Directive: d.GetName(),
 			}
 			dir.ParseDirective(d, 0)

@@ -3,8 +3,13 @@ import logo from '@/assets/img/logo.png'</script>
 
 <template>
   <div class="logo">
-    <img :src="logo" alt="logo"/>
-    <p class="text">Nginx UI</p>
+    <img
+      :src="logo"
+      alt="logo"
+    >
+    <p class="text">
+      Nginx UI
+    </p>
   </div>
 </template>
 

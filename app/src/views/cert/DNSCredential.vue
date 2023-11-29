@@ -1,59 +1,66 @@
 <script setup lang="tsx">
-import {useGettext} from 'vue3-gettext'
-import {datetime} from '@/components/StdDataDisplay/StdTableTransformer'
-import dns_credential from '@/api/dns_credential'
-import StdCurd from '@/components/StdDataDisplay/StdCurd.vue'
+import { useGettext } from 'vue3-gettext'
 import DNSChallenge from './DNSChallenge.vue'
-import {input} from '@/components/StdDataEntry'
+import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import dns_credential from '@/api/dns_credential'
+import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
+import { input } from '@/components/StdDesign/StdDataEntry'
+import type { Column } from '@/components/StdDesign/types'
 
-const {$gettext, interpolate} = useGettext()
+const { $gettext } = useGettext()
 
-const columns = [{
+const columns: Column[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
-  sorter: true,
+  sortable: true,
   pithy: true,
   edit: {
-    type: input
-  }
+    type: input,
+  },
 }, {
   title: () => $gettext('Provider'),
   dataIndex: ['config', 'name'],
-  sorter: true,
-  pithy: true
+  sortable: true,
+  pithy: true,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
   customRender: datetime,
-  sorter: true,
-  pithy: true
+  sortable: true,
+  pithy: true,
 }, {
   title: () => $gettext('Action'),
-  dataIndex: 'action'
+  dataIndex: 'action',
 }]
 </script>
 
 <template>
-  <std-curd :title="$gettext('DNS Credentials')" :api="dns_credential" :columns="columns"
-            row-key="name"
+  <StdCurd
+    :title="$gettext('DNS Credentials')"
+    :api="dns_credential"
+    :columns="columns"
   >
     <template #beforeEdit>
-      <a-alert class="mb-4" type="info" show-icon :message="$gettext('Note')">
+      <AAlert
+        class="mb-4"
+        type="info"
+        show-icon
+        :message="$gettext('Note')"
+      >
         <template #description>
-          <p v-translate>
-            Please fill in the API authentication credentials provided by your DNS provider.
-            We will add one or more TXT records to the DNS records of your domain for ownership
-            verification.
-            Once the verification is complete, the records will be removed.
-            Please note that the time configurations below are all in seconds.
+          <p>
+            {{ $gettext('Please fill in the API authentication credentials provided by your DNS provider.\n'
+              + 'We will add one or more TXT records to the DNS records of your domain for ownership verification.\n'
+              + 'Once the verification is complete, the records will be removed.\n'
+              + 'Please note that the time configurations below are all in seconds.') }}
           </p>
         </template>
-      </a-alert>
+      </AAlert>
     </template>
-    <template #edit="{data}">
-      <d-n-s-challenge/>
+    <template #edit>
+      <DNSChallenge />
     </template>
-  </std-curd>
+  </StdCurd>
 </template>
 
 <style lang="less" scoped>

@@ -2,14 +2,14 @@ package nginx
 
 import (
 	"github.com/0xJacky/Nginx-UI/api"
-	nginx2 "github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
 )
 
 func BuildNginxConfig(c *gin.Context) {
-	var ngxConf nginx2.NgxConfig
+	var ngxConf nginx.NgxConfig
 	if !api.BindAndValid(c, &ngxConf) {
 		return
 	}
@@ -29,7 +29,7 @@ func TokenizeNginxConfig(c *gin.Context) {
 	}
 
 	c.Set("maybe_error", "nginx_config_syntax_error")
-	ngxConfig := nginx2.ParseNgxConfigByContent(json.Content)
+	ngxConfig := nginx.ParseNgxConfigByContent(json.Content)
 
 	c.JSON(http.StatusOK, ngxConfig)
 
@@ -46,12 +46,12 @@ func FormatNginxConfig(c *gin.Context) {
 
 	c.Set("maybe_error", "nginx_config_syntax_error")
 	c.JSON(http.StatusOK, gin.H{
-		"content": nginx2.FmtCode(json.Content),
+		"content": nginx.FmtCode(json.Content),
 	})
 }
 
 func Status(c *gin.Context) {
-	pidPath := nginx2.GetNginxPIDPath()
+	pidPath := nginx.GetNginxPIDPath()
 
 	running := true
 	if fileInfo, err := os.Stat(pidPath); err != nil || fileInfo.Size() == 0 { // fileInfo.Size() == 0 no process id
@@ -62,4 +62,3 @@ func Status(c *gin.Context) {
 		"running": running,
 	})
 }
-

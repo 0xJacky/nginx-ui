@@ -3,7 +3,7 @@ package certificate
 import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
-	model2 "github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
@@ -21,7 +21,7 @@ func GetDnsCredential(c *gin.Context) {
 		return
 	}
 	type apiDnsCredential struct {
-		model2.Model
+		model.Model
 		Name string `json:"name"`
 		dns.Config
 	}
@@ -35,7 +35,7 @@ func GetDnsCredential(c *gin.Context) {
 func GetDnsCredentialList(c *gin.Context) {
 	d := query.DnsCredential
 	provider := c.Query("provider")
-	var data []*model2.DnsCredential
+	var data []*model.DnsCredential
 	var err error
 	if provider != "" {
 		data, err = d.Where(d.Provider.Eq(provider)).Find()
@@ -65,7 +65,7 @@ func AddDnsCredential(c *gin.Context) {
 	}
 
 	json.Config.Name = json.Provider
-	dnsCredential := model2.DnsCredential{
+	dnsCredential := model.DnsCredential{
 		Name:     json.Name,
 		Config:   &json.Config,
 		Provider: json.Provider,
@@ -99,7 +99,7 @@ func EditDnsCredential(c *gin.Context) {
 	}
 
 	json.Config.Name = json.Provider
-	_, err = d.Where(d.ID.Eq(dnsCredential.ID)).Updates(&model2.DnsCredential{
+	_, err = d.Where(d.ID.Eq(dnsCredential.ID)).Updates(&model.DnsCredential{
 		Name:     json.Name,
 		Config:   &json.Config,
 		Provider: json.Provider,

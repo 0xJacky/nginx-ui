@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import {useGettext} from 'vue3-gettext'
-import {computed, nextTick, provide, ref, watch} from 'vue'
-
+import { useGettext } from 'vue3-gettext'
 import ObtainCert from '@/views/domain/cert/components/ObtainCert.vue'
+import type { NgxDirective } from '@/api/ngx'
 
-const {$gettext, interpolate} = useGettext()
+export interface Props {
+  enabled: boolean
+  configName: string
+}
 
-const props = defineProps(['config_name', 'directivesMap', 'current_server_directives',
-  'enabled', 'ngx_config'])
+const props = defineProps<Props>()
 
 const emit = defineEmits(['callback', 'update:enabled'])
 
+const { $gettext } = useGettext()
 const issuing_cert = ref(false)
-
-const obtain_cert: any = ref()
+const obtain_cert = ref()
+const directivesMap = inject('directivesMap') as Ref<Record<string, NgxDirective[]>>
 
 const enabled = computed({
   get() {
@@ -21,15 +23,14 @@ const enabled = computed({
   },
   set(value) {
     emit('update:enabled', value)
-  }
+  },
 })
 
 const no_server_name = computed(() => {
-  if (props.directivesMap['server_name'] === undefined) {
+  if (!directivesMap.value.server_name)
     return true
-  }
 
-  return props.directivesMap['server_name'].length === 0
+  return directivesMap.value.server_name.length === 0
 })
 
 provide('no_server_name', no_server_name)
@@ -37,6 +38,7 @@ provide('props', props)
 provide('issuing_cert', issuing_cert)
 
 watch(no_server_name, () => emit('update:enabled', false))
+
 const update = ref(0)
 
 async function onchange() {
@@ -48,16 +50,20 @@ async function onchange() {
 </script>
 
 <template>
-  <obtain-cert ref="obtain_cert" :key="update" @update:auto_cert="r=>enabled=r"/>
+  <ObtainCert
+    ref="obtain_cert"
+    :key="update"
+    @update:auto_cert="r => enabled = r"
+  />
   <div class="issue-cert">
-    <a-form-item :label="$gettext('Encrypt website with Let\'s Encrypt')">
-      <a-switch
+    <AFormItem :label="$gettext('Encrypt website with Let\'s Encrypt')">
+      <ASwitch
         :loading="issuing_cert"
         :checked="enabled"
         :disabled="no_server_name"
         @change="onchange"
       />
-    </a-form-item>
+    </AFormItem>
   </div>
 </template>
 

@@ -1,14 +1,18 @@
 <script setup lang="ts">
+import { message } from 'ant-design-vue'
+import { HomeOutlined, LogoutOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
+import { useRouter } from 'vue-router'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import gettext from '@/gettext'
-import {message} from 'ant-design-vue'
 import auth from '@/api/auth'
-import {HomeOutlined, LogoutOutlined, MenuUnfoldOutlined} from '@ant-design/icons-vue'
-import {useRouter} from 'vue-router'
 import NginxControl from '@/components/NginxControl/NginxControl.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
 
-const {$gettext} = gettext
+const emit = defineEmits<{
+  clickUnFold: [void]
+}>()
+
+const { $gettext } = gettext
 
 const router = useRouter()
 
@@ -24,27 +28,29 @@ function logout() {
 <template>
   <div class="header">
     <div class="tool">
-      <MenuUnfoldOutlined @click="$emit('clickUnFold')"/>
+      <MenuUnfoldOutlined @click="emit('clickUnFold')" />
     </div>
 
-    <a-space class="user-wrapper" :size="24">
-      <SetLanguage class="set_lang"/>
+    <ASpace
+      class="user-wrapper"
+      :size="24"
+    >
+      <SetLanguage class="set_lang" />
 
-      <SwitchAppearance/>
+      <SwitchAppearance />
 
       <a href="/">
-        <HomeOutlined/>
+        <HomeOutlined />
       </a>
 
-      <NginxControl/>
+      <NginxControl />
 
       <a @click="logout">
-        <LogoutOutlined/>
+        <LogoutOutlined />
       </a>
-    </a-space>
+    </ASpace>
   </div>
 </template>
-
 
 <style lang="less" scoped>
 .header {

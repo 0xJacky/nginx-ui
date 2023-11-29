@@ -9,7 +9,8 @@ export interface INginxLogData {
 
 const nginx_log = {
   page(page = 0, data: INginxLogData) {
-    return http.post('/nginx_log?page=' + page, data)
-  }
+    return http.post(`/nginx_log?page=${page}`, data)
+  },
 }
+
 export default nginx_log

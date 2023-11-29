@@ -1,20 +1,19 @@
 package sites
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/internal/cert"
-	"github.com/0xJacky/Nginx-UI/internal/config_list"
-	helper2 "github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/logger"
-	nginx2 "github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/gin-gonic/gin"
-	"github.com/sashabaranov/go-openai"
-	"net/http"
-	"os"
-	"strings"
-	"time"
+    "github.com/0xJacky/Nginx-UI/api"
+    "github.com/0xJacky/Nginx-UI/internal/cert"
+    "github.com/0xJacky/Nginx-UI/internal/config"
+    "github.com/0xJacky/Nginx-UI/internal/helper"
+    "github.com/0xJacky/Nginx-UI/internal/logger"
+    "github.com/0xJacky/Nginx-UI/internal/nginx"
+    "github.com/0xJacky/Nginx-UI/model"
+    "github.com/0xJacky/Nginx-UI/query"
+    "github.com/gin-gonic/gin"
+    "github.com/sashabaranov/go-openai"
+    "net/http"
+    "os"
+    "strings"
 )
 
 func GetDomains(c *gin.Context) {
@@ -22,20 +21,14 @@ func GetDomains(c *gin.Context) {
 	orderBy := c.Query("order_by")
 	sort := c.DefaultQuery("sort", "desc")
 
-	mySort := map[string]string{
-		"enabled": "bool",
-		"name":    "string",
-		"modify":  "time",
-	}
-
-	configFiles, err := os.ReadDir(nginx2.GetConfPath("sites-available"))
+	configFiles, err := os.ReadDir(nginx.GetConfPath("sites-available"))
 
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
 
-	enabledConfig, err := os.ReadDir(nginx2.GetConfPath("sites-enabled"))
+	enabledConfig, err := os.ReadDir(nginx.GetConfPath("sites-enabled"))
 
 	if err != nil {
 		api.ErrHandler(c, err)
@@ -47,7 +40,7 @@ func GetDomains(c *gin.Context) {
 		enabledConfigMap[enabledConfig[i].Name()] = true
 	}
 
-	var configs []gin.H
+	var configs []config.Config
 
 	for i := range configFiles {
 		file := configFiles[i]
@@ -56,27 +49,21 @@ func GetDomains(c *gin.Context) {
 			if name != "" && !strings.Contains(file.Name(), name) {
 				continue
 			}
-			configs = append(configs, gin.H{
-				"name":    file.Name(),
-				"size":    fileInfo.Size(),
-				"modify":  fileInfo.ModTime(),
-				"enabled": enabledConfigMap[file.Name()],
+			configs = append(configs, config.Config{
+				Name:       file.Name(),
+				ModifiedAt: fileInfo.ModTime(),
+				Size:       fileInfo.Size(),
+				IsDir:      fileInfo.IsDir(),
+				Enabled:    enabledConfigMap[file.Name()],
 			})
 		}
 	}
 
-	configs = config_list.Sort(orderBy, sort, mySort[orderBy], configs)
+	configs = config.Sort(orderBy, sort, configs)
 
 	c.JSON(http.StatusOK, gin.H{
 		"data": configs,
 	})
-}
-
-type CertificateInfo struct {
-	SubjectName string    `json:"subject_name"`
-	IssuerName  string    `json:"issuer_name"`
-	NotAfter    time.Time `json:"not_after"`
-	NotBefore   time.Time `json:"not_before"`
 }
 
 func GetDomain(c *gin.Context) {
@@ -89,7 +76,7 @@ func GetDomain(c *gin.Context) {
 		name = rewriteName.(string)
 	}
 
-	path := nginx2.GetConfPath("sites-available", name)
+	path := nginx.GetConfPath("sites-available", name)
 	file, err := os.Stat(path)
 	if os.IsNotExist(err) {
 		c.JSON(http.StatusNotFound, gin.H{
@@ -100,7 +87,7 @@ func GetDomain(c *gin.Context) {
 
 	enabled := true
 
-	if _, err := os.Stat(nginx2.GetConfPath("sites-enabled", name)); os.IsNotExist(err) {
+	if _, err := os.Stat(nginx.GetConfPath("sites-enabled", name)); os.IsNotExist(err) {
 		enabled = false
 	}
 
@@ -127,7 +114,7 @@ func GetDomain(c *gin.Context) {
 	certModel, err := model.FirstCert(name)
 
 	if err != nil {
-		logger.Warn("cert", err)
+		logger.Warn(err)
 	}
 
 	if site.Advanced {
@@ -137,20 +124,20 @@ func GetDomain(c *gin.Context) {
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{
-			"modified_at":      file.ModTime(),
-			"advanced":         site.Advanced,
-			"enabled":          enabled,
-			"name":             name,
-			"config":           string(origContent),
-			"auto_cert":        certModel.AutoCert == model.AutoCertEnabled,
-			"chatgpt_messages": chatgpt.Content,
+		c.JSON(http.StatusOK, Site{
+			ModifiedAt:      file.ModTime(),
+			Advanced:        site.Advanced,
+			Enabled:         enabled,
+			Name:            name,
+			Config:          string(origContent),
+			AutoCert:        certModel.AutoCert == model.AutoCertEnabled,
+			ChatGPTMessages: chatgpt.Content,
 		})
 		return
 	}
 
 	c.Set("maybe_error", "nginx_config_syntax_error")
-	config, err := nginx2.ParseNgxConfig(path)
+	nginxConfig, err := nginx.ParseNgxConfig(path)
 
 	if err != nil {
 		api.ErrHandler(c, err)
@@ -160,7 +147,7 @@ func GetDomain(c *gin.Context) {
 	c.Set("maybe_error", "")
 
 	certInfoMap := make(map[int]CertificateInfo)
-	for serverIdx, server := range config.Servers {
+	for serverIdx, server := range nginxConfig.Servers {
 		for _, directive := range server.Directives {
 			if directive.Directive == "ssl_certificate" {
 
@@ -185,18 +172,17 @@ func GetDomain(c *gin.Context) {
 
 	c.Set("maybe_error", "nginx_config_syntax_error")
 
-	c.JSON(http.StatusOK, gin.H{
-		"modified_at":      file.ModTime(),
-		"advanced":         site.Advanced,
-		"enabled":          enabled,
-		"name":             name,
-		"config":           config.FmtCode(),
-		"tokenized":        config,
-		"auto_cert":        certModel.AutoCert == model.AutoCertEnabled,
-		"cert_info":        certInfoMap,
-		"chatgpt_messages": chatgpt.Content,
+	c.JSON(http.StatusOK, Site{
+		ModifiedAt:      file.ModTime(),
+		Advanced:        site.Advanced,
+		Enabled:         enabled,
+		Name:            name,
+		Config:          nginxConfig.FmtCode(),
+		Tokenized:       nginxConfig,
+		AutoCert:        certModel.AutoCert == model.AutoCertEnabled,
+		CertInfo:        certInfoMap,
+		ChatGPTMessages: chatgpt.Content,
 	})
-
 }
 
 func SaveDomain(c *gin.Context) {
@@ -219,9 +205,9 @@ func SaveDomain(c *gin.Context) {
 		return
 	}
 
-	path := nginx2.GetConfPath("sites-available", name)
+	path := nginx.GetConfPath("sites-available", name)
 
-	if !json.Overwrite && helper2.FileExists(path) {
+	if !json.Overwrite && helper.FileExists(path) {
 		c.JSON(http.StatusNotAcceptable, gin.H{
 			"message": "File exists",
 		})
@@ -233,24 +219,24 @@ func SaveDomain(c *gin.Context) {
 		api.ErrHandler(c, err)
 		return
 	}
-	enabledConfigFilePath := nginx2.GetConfPath("sites-enabled", name)
+	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", name)
 	// rename the config file if needed
 	if name != json.Name {
-		newPath := nginx2.GetConfPath("sites-available", json.Name)
+		newPath := nginx.GetConfPath("sites-available", json.Name)
 		s := query.Site
 		_, err = s.Where(s.Path.Eq(path)).Update(s.Path, newPath)
 
 		// check if dst file exists, do not rename
-		if helper2.FileExists(newPath) {
+		if helper.FileExists(newPath) {
 			c.JSON(http.StatusNotAcceptable, gin.H{
 				"message": "File exists",
 			})
 			return
 		}
 		// recreate soft link
-		if helper2.FileExists(enabledConfigFilePath) {
+		if helper.FileExists(enabledConfigFilePath) {
 			_ = os.Remove(enabledConfigFilePath)
-			enabledConfigFilePath = nginx2.GetConfPath("sites-enabled", json.Name)
+			enabledConfigFilePath = nginx.GetConfPath("sites-enabled", json.Name)
 			err = os.Symlink(newPath, enabledConfigFilePath)
 
 			if err != nil {
@@ -269,12 +255,12 @@ func SaveDomain(c *gin.Context) {
 		c.Set("rewriteConfigFileName", name)
 	}
 
-	enabledConfigFilePath = nginx2.GetConfPath("sites-enabled", name)
-	if helper2.FileExists(enabledConfigFilePath) {
+	enabledConfigFilePath = nginx.GetConfPath("sites-enabled", name)
+	if helper.FileExists(enabledConfigFilePath) {
 		// Test nginx configuration
-		output := nginx2.TestConf()
+		output := nginx.TestConf()
 
-		if nginx2.GetLogLevel(output) > nginx2.Warn {
+		if nginx.GetLogLevel(output) > nginx.Warn {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": output,
 				"error":   "nginx_config_syntax_error",
@@ -282,9 +268,9 @@ func SaveDomain(c *gin.Context) {
 			return
 		}
 
-		output = nginx2.Reload()
+		output = nginx.Reload()
 
-		if nginx2.GetLogLevel(output) > nginx2.Warn {
+		if nginx.GetLogLevel(output) > nginx.Warn {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": output,
 			})
@@ -296,8 +282,8 @@ func SaveDomain(c *gin.Context) {
 }
 
 func EnableDomain(c *gin.Context) {
-	configFilePath := nginx2.GetConfPath("sites-available", c.Param("name"))
-	enabledConfigFilePath := nginx2.GetConfPath("sites-enabled", c.Param("name"))
+	configFilePath := nginx.GetConfPath("sites-available", c.Param("name"))
+	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", c.Param("name"))
 
 	_, err := os.Stat(configFilePath)
 
@@ -316,9 +302,9 @@ func EnableDomain(c *gin.Context) {
 	}
 
 	// Test nginx config, if not pass then disable the site.
-	output := nginx2.TestConf()
+	output := nginx.TestConf()
 
-	if nginx2.GetLogLevel(output) > nginx2.Warn {
+	if nginx.GetLogLevel(output) > nginx.Warn {
 		_ = os.Remove(enabledConfigFilePath)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": output,
@@ -326,9 +312,9 @@ func EnableDomain(c *gin.Context) {
 		return
 	}
 
-	output = nginx2.Reload()
+	output = nginx.Reload()
 
-	if nginx2.GetLogLevel(output) > nginx2.Warn {
+	if nginx.GetLogLevel(output) > nginx.Warn {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": output,
 		})
@@ -341,7 +327,7 @@ func EnableDomain(c *gin.Context) {
 }
 
 func DisableDomain(c *gin.Context) {
-	enabledConfigFilePath := nginx2.GetConfPath("sites-enabled", c.Param("name"))
+	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", c.Param("name"))
 
 	_, err := os.Stat(enabledConfigFilePath)
 
@@ -365,9 +351,9 @@ func DisableDomain(c *gin.Context) {
 		return
 	}
 
-	output := nginx2.Reload()
+	output := nginx.Reload()
 
-	if nginx2.GetLogLevel(output) > nginx2.Warn {
+	if nginx.GetLogLevel(output) > nginx.Warn {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": output,
 		})
@@ -382,8 +368,8 @@ func DisableDomain(c *gin.Context) {
 func DeleteDomain(c *gin.Context) {
 	var err error
 	name := c.Param("name")
-	availablePath := nginx2.GetConfPath("sites-available", name)
-	enabledPath := nginx2.GetConfPath("sites-enabled", name)
+	availablePath := nginx.GetConfPath("sites-available", name)
+	enabledPath := nginx.GetConfPath("sites-enabled", name)
 
 	if _, err = os.Stat(availablePath); os.IsNotExist(err) {
 		c.JSON(http.StatusNotFound, gin.H{
@@ -412,126 +398,4 @@ func DeleteDomain(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})
-
-}
-
-func AddDomainToAutoCert(c *gin.Context) {
-	name := c.Param("name")
-
-	var json struct {
-		model.Cert
-		Domains []string `json:"domains"`
-	}
-
-	if !api.BindAndValid(c, &json) {
-		return
-	}
-
-	certModel, err := model.FirstOrCreateCert(name)
-
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	err = certModel.Updates(&model.Cert{
-		Name:            name,
-		Domains:         json.Domains,
-		AutoCert:        model.AutoCertEnabled,
-		DnsCredentialID: json.DnsCredentialID,
-		ChallengeMethod: json.ChallengeMethod,
-	})
-
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	c.JSON(http.StatusOK, certModel)
-}
-
-func RemoveDomainFromAutoCert(c *gin.Context) {
-	name := c.Param("name")
-	certModel, err := model.FirstCert(name)
-
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	err = certModel.Updates(&model.Cert{
-		AutoCert: model.AutoCertDisabled,
-	})
-
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-	c.JSON(http.StatusOK, nil)
-}
-
-func DuplicateSite(c *gin.Context) {
-	name := c.Param("name")
-
-	var json struct {
-		Name string `json:"name" binding:"required"`
-	}
-
-	if !api.BindAndValid(c, &json) {
-		return
-	}
-
-	src := nginx2.GetConfPath("sites-available", name)
-	dst := nginx2.GetConfPath("sites-available", json.Name)
-
-	if helper2.FileExists(dst) {
-		c.JSON(http.StatusNotAcceptable, gin.H{
-			"message": "File exists",
-		})
-		return
-	}
-
-	_, err := helper2.CopyFile(src, dst)
-
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"dst": dst,
-	})
-}
-
-func DomainEditByAdvancedMode(c *gin.Context) {
-	var json struct {
-		Advanced bool `json:"advanced"`
-	}
-
-	if !api.BindAndValid(c, &json) {
-		return
-	}
-
-	name := c.Param("name")
-	path := nginx2.GetConfPath("sites-available", name)
-
-	s := query.Site
-
-	_, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	_, err = s.Where(s.Path.Eq(path)).Update(s.Advanced, json.Advanced)
-
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"message": "ok",
-	})
-
 }

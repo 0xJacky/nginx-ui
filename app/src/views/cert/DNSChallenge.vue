@@ -1,27 +1,32 @@
 <script setup lang="ts">
-import {computed, inject, ref, watch} from 'vue'
+import { useGettext } from 'vue3-gettext'
+import type { SelectProps } from 'ant-design-vue'
+import type { Ref } from 'vue'
+import type { DNSProvider } from '@/api/auto_cert'
 import auto_cert from '@/api/auto_cert'
-import {useGettext} from 'vue3-gettext'
-import {SelectProps} from 'ant-design-vue'
 
-const {$gettext} = useGettext()
-const providers: any = ref([])
+const { $gettext } = useGettext()
+const providers = ref([]) as Ref<DNSProvider[]>
 
-const data: any = inject('data')!
+// This data is provided by the Top StdCurd component,
+// is the object that you are trying to modify it
+const data = inject('data') as DNSProvider
 
 const code = computed(() => {
   return data.code
 })
 
+const provider_idx = ref()
 function init() {
-  data.configuration = {
-    credentials: {},
-    additional: {}
-  }
-  providers.value?.forEach((v: any, k: number) => {
-    if (v.code === code.value) {
-      provider_idx.value = k
+  if (!data.configuration) {
+    data.configuration = {
+      credentials: {},
+      additional: {},
     }
+  }
+  providers.value?.forEach((v: { code: string }, k: number) => {
+    if (v.code === code.value)
+      provider_idx.value = k
   })
 }
 
@@ -31,60 +36,73 @@ auto_cert.get_dns_providers().then(r => {
   init()
 })
 
-const provider_idx = ref()
-
-const current: any = computed(() => {
+const current = computed(() => {
   return providers.value?.[provider_idx.value]
 })
-
 
 watch(code, init)
 
 watch(current, () => {
   data.code = current.value.code
   data.provider = current.value.name
+
   auto_cert.get_dns_provider(current.value.code).then(r => {
     Object.assign(current.value, r)
   })
 })
 
 const options = computed<SelectProps['options']>(() => {
-  let list: SelectProps['options'] = []
+  const list: SelectProps['options'] = []
 
-  providers.value.forEach((v: any, k: number) => {
+  providers.value.forEach((v: DNSProvider, k: number) => {
     list!.push({
       value: k,
-      label: v.name
+      label: v.name,
     })
   })
 
   return list
 })
 
-const filterOption = (input: string, option: any) => {
-  return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+const filterOption = (input: string, option: { label: string }) => {
+  return option.label.toLowerCase().includes(input.toLowerCase())
 }
 </script>
 
 <template>
-  <a-form layout="vertical">
-    <a-form-item :label="$gettext('DNS Provider')">
-      <a-select v-model:value="provider_idx" show-search :options="options" :filter-option="filterOption"/>
-    </a-form-item>
+  <AForm layout="vertical">
+    <AFormItem :label="$gettext('DNS Provider')">
+      <ASelect
+        v-model:value="provider_idx"
+        show-search
+        :options="options"
+        :filter-option="filterOption"
+      />
+    </AFormItem>
     <template v-if="current?.configuration?.credentials">
       <h4>{{ $gettext('Credentials') }}</h4>
-      <a-form-item :label="k" v-for="(v,k) in current?.configuration?.credentials"
-                   :extra="v" :rules="[{ required: true }]">
-        <a-input v-model:value="data.configuration.credentials[k]"/>
-      </a-form-item>
+      <AFormItem
+        v-for="(v, k) in current?.configuration?.credentials"
+        :key="k"
+        :label="k"
+        :extra="v"
+        :rules="[{ required: true }]"
+      >
+        <AInput v-model:value="data.configuration.credentials[k]" />
+      </AFormItem>
     </template>
     <template v-if="current?.configuration?.additional">
       <h4>{{ $gettext('Additional') }}</h4>
-      <a-form-item :label="k" v-for="(v,k) in current?.configuration?.additional" :extra="v">
-        <a-input v-model:value="data.configuration.additional[k]"/>
-      </a-form-item>
+      <AFormItem
+        v-for="(v, k) in current?.configuration?.additional"
+        :key="k"
+        :label="k"
+        :extra="v"
+      >
+        <AInput v-model:value="data.configuration.additional[k]" />
+      </AFormItem>
     </template>
-  </a-form>
+  </AForm>
 </template>
 
 <style lang="less" scoped>

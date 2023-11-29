@@ -23,11 +23,11 @@ type MemStat struct {
 }
 
 type DiskStat struct {
-	Total      string  `json:"total"`
-	Used       string  `json:"used"`
-	Percentage float64 `json:"percentage"`
-	Writes     Usage   `json:"writes"`
-	Reads      Usage   `json:"reads"`
+	Total      string        `json:"total"`
+	Used       string        `json:"used"`
+	Percentage float64       `json:"percentage"`
+	Writes     Usage[uint64] `json:"writes"`
+	Reads      Usage[uint64] `json:"reads"`
 }
 
 func GetMemoryStat() (MemStat, error) {

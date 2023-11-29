@@ -1,49 +1,48 @@
 <script setup lang="ts">
-import DirectiveAdd from '@/views/domain/ngx_conf/directive/DirectiveAdd'
-import {useGettext} from 'vue3-gettext'
-import {reactive, ref} from 'vue'
+import { useGettext } from 'vue3-gettext'
+import Draggable from 'vuedraggable'
+import { provide } from 'vue'
+import DirectiveAdd from './DirectiveAdd.vue'
 import DirectiveEditorItem from '@/views/domain/ngx_conf/directive/DirectiveEditorItem.vue'
-import draggable from 'vuedraggable'
+import type { NgxDirective } from '@/api/ngx'
 
-const {$gettext} = useGettext()
+defineProps<{
+  readonly?: boolean
+}>()
 
-const props = defineProps(['ngx_directives', 'readonly'])
-
-const adding = ref(false)
-
-let directive = reactive({})
-
+const { $gettext } = useGettext()
 const current_idx = ref(-1)
 
-function onSave(idx: number) {
-  setTimeout(() => {
-    current_idx.value = idx + 1
-  }, 50)
-}
+const ngx_directives = inject('ngx_directives') as NgxDirective[]
+
+provide('current_idx', current_idx)
 </script>
 
 <template>
   <h2>{{ $gettext('Directives') }}</h2>
 
-  <draggable
-    :list="props.ngx_directives"
+  <Draggable
+    :list="ngx_directives"
     item-key="name"
     class="list-group"
     ghost-class="ghost"
     handle=".anticon-holder"
   >
-    <template #item="{ element: directive, index }">
-      <directive-editor-item @click="current_idx=index"
-                             :directive="directive"
-                             :current_idx="current_idx" :index="index"
-                             :ngx_directives="ngx_directives"
-                             :readonly="readonly"
-                             v-auto-animate
+    <template #item="{ index }">
+      <DirectiveEditorItem
+        v-auto-animate
+        :index="index"
+        :readonly="readonly"
+        @click="current_idx = index"
       />
     </template>
-  </draggable>
+  </Draggable>
 
-  <directive-add v-if="!readonly" :ngx_directives="ngx_directives" v-auto-animate/>
+  <DirectiveAdd
+    v-if="!readonly"
+    v-auto-animate
+    :ngx_directives="ngx_directives"
+  />
 </template>
 
 <style lang="less" scoped>

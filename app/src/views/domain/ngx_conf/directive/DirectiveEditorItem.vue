@@ -1,90 +1,121 @@
 <script setup lang="ts">
-import CodeEditor from '@/components/CodeEditor'
-import {DeleteOutlined, HolderOutlined} from '@ant-design/icons-vue'
+import { DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
 
-import {useGettext} from 'vue3-gettext'
-import {onMounted, ref, watch} from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { ref, watch } from 'vue'
+import { message } from 'ant-design-vue'
 import config from '@/api/config'
-import {message} from 'ant-design-vue'
+import CodeEditor from '@/components/CodeEditor'
+import type { NgxDirective } from '@/api/ngx'
 
-const {$gettext, interpolate} = useGettext()
+const props = defineProps<{
+  index: number
+  readonly?: boolean
+}>()
 
-const props = defineProps(['directive', 'current_idx', 'index', 'ngx_directives', 'readonly'])
+const { $gettext, interpolate } = useGettext()
+
+const ngx_directives = inject('ngx_directives') as NgxDirective[]
 
 function remove(index: number) {
-  props.ngx_directives.splice(index, 1)
+  ngx_directives.splice(index, 1)
 }
 
 const content = ref('')
 
 function init() {
-  if (props.directive.directive === 'include')
-    config.get(props.directive.params).then(r => {
-      content.value = r.config
+  if (ngx_directives[props.index].directive === 'include') {
+    config.get(ngx_directives[props.index].params).then(r => {
+      content.value = r.content
     })
+  }
 }
-
-onMounted(init)
 
 watch(props, init)
 
 function save() {
-  config.save(props.directive.params, {content: content.value}).then(r => {
-    content.value = r.config
+  config.save(ngx_directives[props.index].params, { content: content.value }).then(r => {
+    content.value = r.content
     message.success($gettext('Saved successfully'))
   }).catch(r => {
-    message.error(interpolate($gettext('Save error %{msg}'), {msg: r.message ?? ''}))
+    message.error(interpolate($gettext('Save error %{msg}'), { msg: r.message ?? '' }))
   })
 }
+
+const currentIdx = inject('current_idx')
 </script>
 
 <template>
-  <div class="dir-editor-item">
+  <div
+    v-if="ngx_directives[props.index]"
+    class="dir-editor-item"
+  >
     <div class="input-wrapper">
-      <div class="code-editor-wrapper" v-if="directive.directive === ''">
-        <HolderOutlined style="padding: 5px"/>
-        <code-editor v-model:content="directive.params"
-                     defaultHeight="100px" style="width: 100%;"/>
+      <div
+        v-if="ngx_directives[props.index].directive === ''"
+        class="code-editor-wrapper"
+      >
+        <HolderOutlined style="padding: 5px" />
+        <CodeEditor
+          v-model:content="ngx_directives[props.index].params"
+          default-height="100px"
+          style="width: 100%;"
+        />
       </div>
 
-      <a-input v-else
-               v-model:value="directive.params" @click="current_idx=index">
+      <AInput
+        v-else
+        v-model:value="ngx_directives[props.index].params"
+        @click="currentIdx = index"
+      >
         <template #addonBefore>
-          <HolderOutlined/>
-          {{ directive.directive }}
+          <HolderOutlined />
+          {{ ngx_directives[props.index].directive }}
         </template>
-      </a-input>
+      </AInput>
 
-      <a-popconfirm v-if="!readonly"
-                    @confirm="remove(index)"
-                    :title="$gettext('Are you sure you want to remove this directive?')"
-                    :ok-text="$gettext('Yes')"
-                    :cancel-text="$gettext('No')">
-        <a-button>
+      <APopconfirm
+        v-if="!readonly"
+        :title="$gettext('Are you sure you want to remove this directive?')"
+        :ok-text="$gettext('Yes')"
+        :cancel-text="$gettext('No')"
+        @confirm="remove(index)"
+      >
+        <AButton>
           <template #icon>
-            <DeleteOutlined style="font-size: 14px;"/>
+            <DeleteOutlined style="font-size: 14px;" />
           </template>
-        </a-button>
-      </a-popconfirm>
+        </AButton>
+      </APopconfirm>
     </div>
-    <div v-if="current_idx===index" class="directive-editor-extra">
+    <div
+      v-if="currentIdx === index"
+      class="directive-editor-extra"
+    >
       <div class="extra-content">
-        <a-form layout="vertical">
-          <a-form-item :label="$gettext('Comments')">
-            <a-textarea v-model:value="directive.comments"/>
-          </a-form-item>
-          <a-form-item :label="$gettext('Content')" v-if="directive.directive==='include'">
-            <code-editor v-model:content="content"
-                         defaultHeight="200px" style="width: 100%;"/>
+        <AForm layout="vertical">
+          <AFormItem :label="$gettext('Comments')">
+            <ATextarea v-model:value="ngx_directives[props.index].comments" />
+          </AFormItem>
+          <AFormItem
+            v-if="ngx_directives[props.index].directive === 'include'"
+            :label="$gettext('Content')"
+          >
+            <CodeEditor
+              v-model:content="content"
+              default-height="200px"
+              style="width: 100%;"
+            />
             <div class="save-btn">
-              <a-button @click="save">{{ $gettext('Save') }}</a-button>
+              <AButton @click="save">
+                {{ $gettext('Save') }}
+              </AButton>
             </div>
-          </a-form-item>
-        </a-form>
+          </AFormItem>
+        </AForm>
       </div>
     </div>
   </div>
-
 </template>
 
 <style lang="less" scoped>

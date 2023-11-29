@@ -1,41 +1,43 @@
 <script setup lang="ts">
+import { useGettext } from 'vue3-gettext'
+import { useRoute, useRouter } from 'vue-router'
+import { message } from 'ant-design-vue'
+import type { Ref } from 'vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 
-import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor'
-import {useGettext} from 'vue3-gettext'
-import {computed, provide, reactive, ref, watch} from 'vue'
-import {useRoute, useRouter} from 'vue-router'
+import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor.vue'
+import type { Site } from '@/api/domain'
 import domain from '@/api/domain'
+import type { NgxConfig } from '@/api/ngx'
 import ngx from '@/api/ngx'
-import {message} from 'ant-design-vue'
 import config from '@/api/config'
 import RightSettings from '@/views/domain/components/RightSettings.vue'
+import type { CertificateInfo } from '@/api/cert'
+import type { ChatComplicationMessage } from '@/api/openai'
 
-const {$gettext, interpolate} = useGettext()
+const { $gettext, interpolate } = useGettext()
 
 const route = useRoute()
 const router = useRouter()
 
 const name = ref(route.params.name.toString())
+
 watch(route, () => {
   name.value = route.params?.name?.toString() ?? ''
 })
 
-const update = ref(0)
-
-const ngx_config: any = reactive({
+const ngx_config: NgxConfig = reactive({
   name: '',
   upstreams: [],
-  servers: []
+  servers: [],
 })
 
-const cert_info_map: any = reactive({})
+const cert_info_map: Record<string, CertificateInfo> = reactive({})
 
 const auto_cert = ref(false)
 const enabled = ref(false)
 const configText = ref('')
-const ok = ref(false)
 const advance_mode_ref = ref(false)
 const saving = ref(false)
 const filename = ref('')
@@ -51,20 +53,19 @@ const advance_mode = computed({
   },
   set(v: boolean) {
     advance_mode_ref.value = v
-  }
+  },
 })
-const history_chatgpt_record = ref([])
 
-function handle_response(r: any) {
-  if (r.advanced) {
+const history_chatgpt_record = ref([]) as Ref<ChatComplicationMessage[]>
+
+function handle_response(r: Site) {
+  if (r.advanced)
     advance_mode.value = true
-  }
 
-  if (r.advanced) {
+  if (r.advanced)
     advance_mode.value = true
-  }
 
-  Object.keys(cert_info_map).forEach(v => {
+  Object.keys(cert_info_map).forEach((v: string) => {
     delete cert_info_map[v]
   })
   parse_error_status.value = false
@@ -81,42 +82,47 @@ function handle_response(r: any) {
 
 function init() {
   if (name.value) {
-    domain.get(name.value).then((r: any) => {
+    domain.get(name.value).then(r => {
       handle_response(r)
     }).catch(handle_parse_error)
-  } else {
+  }
+  else {
     history_chatgpt_record.value = []
   }
 }
 
-function handle_parse_error(r: any) {
-  console.error(r)
-  if (r?.error === 'nginx_config_syntax_error') {
+function handle_parse_error(e: { error?: string; message: string }) {
+  console.error(e)
+  if (e?.error === 'nginx_config_syntax_error') {
     parse_error_status.value = true
-    parse_error_message.value = r.message
-    config.get('sites-available/' + name.value).then(r => {
-      configText.value = r.config
+    parse_error_message.value = e.message
+    config.get(`sites-available/${name.value}`).then(r => {
+      configText.value = r.content
     })
-  } else {
-    message.error($gettext(r?.message ?? 'Server error'))
+  }
+  else {
+    message.error($gettext(e?.message ?? 'Server error'))
   }
 }
 
 function on_mode_change(advanced: boolean) {
-  domain.advance_mode(name.value, {advanced}).then(() => {
+  domain.advance_mode(name.value, { advanced }).then(() => {
     advance_mode.value = advanced
     if (advanced) {
       build_config()
-    } else {
-      return ngx.tokenize_config(configText.value).then((r: any) => {
+    }
+    else {
+      // eslint-disable-next-line promise/no-nesting
+      return ngx.tokenize_config(configText.value).then(r => {
         Object.assign(ngx_config, r)
+        // eslint-disable-next-line promise/no-nesting
       }).catch(handle_parse_error)
     }
   })
 }
 
-function build_config() {
-  return ngx.build_config(ngx_config).then((r: any) => {
+async function build_config() {
+  return ngx.build_config(ngx_config).then(r => {
     configText.value = r.content
   })
 }
@@ -127,21 +133,24 @@ const save = async () => {
   if (!advance_mode.value) {
     try {
       await build_config()
-    } catch (e) {
+    }
+    catch (e) {
       saving.value = false
       message.error($gettext('Failed to save, syntax error(s) was detected in the configuration.'))
+
       return
     }
   }
 
   await domain.save(name.value, {
     name: filename.value || name.value,
-    content: configText.value, overwrite: true
+    content: configText.value,
+    overwrite: true,
   }).then(r => {
     handle_response(r)
     router.push({
-      path: '/domain/' + filename.value,
-      query: route.query
+      path: `/domain/${filename.value}`,
+      query: route.query,
     })
     message.success($gettext('Saved successfully'))
   }).catch(handle_parse_error).finally(() => {
@@ -158,24 +167,39 @@ provide('name', name)
 provide('filename', filename)
 provide('data', data)
 </script>
+
 <template>
-  <a-row :gutter="16">
-    <a-col :xs="24" :sm="24" :md="18">
-      <a-card :bordered="false">
+  <ARow :gutter="16">
+    <ACol
+      :xs="24"
+      :sm="24"
+      :md="18"
+    >
+      <ACard :bordered="false">
         <template #title>
-          <span style="margin-right: 10px">{{ interpolate($gettext('Edit %{n}'), {n: name}) }}</span>
-          <a-tag color="blue" v-if="enabled">
+          <span style="margin-right: 10px">{{ interpolate($gettext('Edit %{n}'), { n: name }) }}</span>
+          <ATag
+            v-if="enabled"
+            color="blue"
+          >
             {{ $gettext('Enabled') }}
-          </a-tag>
-          <a-tag color="orange" v-else>
+          </ATag>
+          <ATag
+            v-else
+            color="orange"
+          >
             {{ $gettext('Disabled') }}
-          </a-tag>
+          </ATag>
         </template>
         <template #extra>
           <div class="mode-switch">
             <div class="switch">
-              <a-switch size="small" :disabled="parse_error_status"
-                        :checked="advance_mode" @change="on_mode_change"/>
+              <ASwitch
+                size="small"
+                :disabled="parse_error_status"
+                :checked="advance_mode"
+                @change="on_mode_change"
+              />
             </div>
             <template v-if="advance_mode">
               <div>{{ $gettext('Advance Mode') }}</div>
@@ -186,49 +210,67 @@ provide('data', data)
           </div>
         </template>
 
-        <transition name="slide-fade">
-          <div v-if="advance_mode" key="advance">
-            <div class="parse-error-alert-wrapper" v-if="parse_error_status">
-              <a-alert :message="$gettext('Nginx Configuration Parse Error')"
-                       :description="parse_error_message"
-                       type="error"
-                       show-icon
+        <Transition name="slide-fade">
+          <div
+            v-if="advance_mode"
+            key="advance"
+          >
+            <div
+              v-if="parse_error_status"
+              class="parse-error-alert-wrapper"
+            >
+              <AAlert
+                :message="$gettext('Nginx Configuration Parse Error')"
+                :description="parse_error_message"
+                type="error"
+                show-icon
               />
             </div>
             <div>
-              <code-editor v-model:content="configText"/>
+              <CodeEditor v-model:content="configText" />
             </div>
           </div>
 
-          <div class="domain-edit-container" key="basic" v-else>
-            <ngx-config-editor
-              ref="ngx_config_editor"
-              :ngx_config="ngx_config"
-              :cert_info="cert_info_map"
-              v-model:auto_cert="auto_cert"
+          <div
+            v-else
+            key="basic"
+            class="domain-edit-container"
+          >
+            <NgxConfigEditor
+              v-model:auto-cert="auto_cert"
+              :cert-info="cert_info_map"
               :enabled="enabled"
-              @callback="save()"
+              @callback="save"
             />
           </div>
-        </transition>
-      </a-card>
-    </a-col>
+        </Transition>
+      </ACard>
+    </ACol>
 
-    <a-col class="col-right" :xs="24" :sm="24" :md="6">
-      <right-settings/>
-    </a-col>
+    <ACol
+      class="col-right"
+      :xs="24"
+      :sm="24"
+      :md="6"
+    >
+      <RightSettings />
+    </ACol>
 
-    <footer-tool-bar>
-      <a-space>
-        <a-button @click="$router.push('/domain/list')">
-          <translate>Back</translate>
-        </a-button>
-        <a-button type="primary" @click="save" :loading="saving">
-          <translate>Save</translate>
-        </a-button>
-      </a-space>
-    </footer-tool-bar>
-  </a-row>
+    <FooterToolBar>
+      <ASpace>
+        <AButton @click="$router.push('/domain/list')">
+          {{ $gettext('Back') }}
+        </AButton>
+        <AButton
+          type="primary"
+          :loading="saving"
+          @click="save"
+        >
+          {{ $gettext('Save') }}
+        </AButton>
+      </ASpace>
+    </FooterToolBar>
+  </ARow>
 </template>
 
 <style lang="less">
@@ -276,10 +318,6 @@ provide('data', data)
   /* .slide-fade-leave-active for below version 2.1.8 */ {
   transform: translateX(10px);
   opacity: 0;
-}
-
-.location-block {
-
 }
 
 .directive-params-wrapper {

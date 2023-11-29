@@ -1,21 +1,28 @@
 <script setup lang="ts">
 import VueApexCharts from 'vue3-apexcharts'
-import {reactive} from 'vue'
-import {useSettingsStore} from '@/pinia'
-import {storeToRefs} from 'pinia'
+import { reactive } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useSettingsStore } from '@/pinia'
+import type { Series } from '@/components/Chart/types'
 
-const {series, centerText, colors, name, bottomText}
-  = defineProps(['series', 'centerText', 'colors', 'name', 'bottomText'])
+const { series, centerText, colors, name, bottomText }
+  = defineProps<{
+    series: Series[] | number[]
+    centerText?: string
+    colors?: string
+    name?: string
+    bottomText?: string
+  }>()
 
 const settings = useSettingsStore()
 
-const {theme} = storeToRefs(settings)
+const { theme } = storeToRefs(settings)
 
 const chartOptions = reactive({
-  series: series,
+  series,
   chart: {
     type: 'radialBar',
-    offsetY: 0
+    offsetY: 0,
   },
   plotOptions: {
     radialBar: {
@@ -25,7 +32,7 @@ const chartOptions = reactive({
         name: {
           fontSize: '14px',
           color: colors,
-          offsetY: 36
+          offsetY: 36,
         },
         value: {
           offsetY: 50,
@@ -33,41 +40,52 @@ const chartOptions = reactive({
           color: undefined,
           formatter: () => {
             return ''
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   },
   fill: {
-    colors: colors
+    colors,
   },
   labels: [name],
   states: {
     hover: {
       filter: {
-        type: 'none'
-      }
+        type: 'none',
+      },
     },
     active: {
       filter: {
-        type: 'none'
-      }
-    }
-  }
+        type: 'none',
+      },
+    },
+  },
 })
 </script>
 
 <template>
   <!-- Use theme as key to rerender the chart when theme changes to prevent style issues -->
-  <div class="radial-bar-container" :key="theme">
-    <p class="text">{{ centerText }}</p>
-    <p class="bottom_text">{{ bottomText }}</p>
-    <VueApexCharts v-if="centerText" class="radialBar" type="radialBar" height="205" :options="chartOptions"
-                   :series="series"
-                   ref="chart"/>
+  <div
+    :key="theme"
+    class="radial-bar-container"
+  >
+    <p class="text">
+      {{ centerText }}
+    </p>
+    <p class="bottom_text">
+      {{ bottomText }}
+    </p>
+    <VueApexCharts
+      v-if="centerText"
+      class="radialBar"
+      type="radialBar"
+      height="205"
+      :options="chartOptions"
+      :series="series"
+    />
   </div>
 </template>
-
 
 <style lang="less" scoped>
 .radial-bar-container {

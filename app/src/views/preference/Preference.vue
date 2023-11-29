@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import {useGettext} from 'vue3-gettext'
-import {onMounted, provide, ref, watch} from 'vue'
+import { useGettext } from 'vue3-gettext'
+import { onMounted, provide, ref, watch } from 'vue'
+import { message } from 'ant-design-vue'
+import { useRoute, useRouter } from 'vue-router'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import settings from '@/api/settings'
-import {message} from 'ant-design-vue'
 import BasicSettings from '@/views/preference/BasicSettings.vue'
 import OpenAISettings from '@/views/preference/OpenAISettings.vue'
 import NginxSettings from '@/views/preference/NginxSettings.vue'
-import {IData} from '@/views/preference/typedef'
-import {useRoute, useRouter} from 'vue-router'
+import type { IData } from '@/views/preference/typedef'
 
-const {$gettext} = useGettext()
+const { $gettext } = useGettext()
 
 const data = ref<IData>({
   server: {
@@ -23,7 +23,7 @@ const data = ref<IData>({
     http_challenge_port: '9180',
     github_proxy: '',
     ca_dir: '',
-    node_secret: ''
+    node_secret: '',
   },
   nginx: {
     access_log_path: '',
@@ -31,21 +31,21 @@ const data = ref<IData>({
     config_dir: '',
     pid_path: '',
     reload_cmd: '',
-    restart_cmd: ''
+    restart_cmd: '',
   },
   openai: {
     model: '',
     base_url: '',
     proxy: '',
-    token: ''
+    token: '',
   },
   git: {
     url: '',
     auth_method: '',
     username: '',
     password: '',
-    private_key_file_path: ''
-  }
+    private_key_file_path: '',
+  },
 })
 
 settings.get().then(r => {
@@ -72,39 +72,50 @@ const activeKey = ref('basic')
 watch(activeKey, () => {
   router.push({
     query: {
-      tab: activeKey.value
-    }
+      tab: activeKey.value,
+    },
   })
 })
 
 onMounted(() => {
-  if (route.query?.tab) {
+  if (route.query?.tab)
     activeKey.value = route.query.tab.toString()
-  }
 })
 </script>
 
 <template>
-  <a-card :title="$gettext('Preference')">
+  <ACard :title="$gettext('Preference')">
     <div class="preference-container">
-      <a-tabs v-model:activeKey="activeKey">
-        <a-tab-pane :tab="$gettext('Basic')" key="basic">
-          <basic-settings/>
-        </a-tab-pane>
-        <a-tab-pane :tab="$gettext('Nginx')" key="nginx">
-          <nginx-settings/>
-        </a-tab-pane>
-        <a-tab-pane :tab="$gettext('OpenAI')" key="openai">
-          <open-a-i-settings/>
-        </a-tab-pane>
-      </a-tabs>
+      <ATabs v-model:activeKey="activeKey">
+        <ATabPane
+          key="basic"
+          :tab="$gettext('Basic')"
+        >
+          <BasicSettings />
+        </ATabPane>
+        <ATabPane
+          key="nginx"
+          :tab="$gettext('Nginx')"
+        >
+          <NginxSettings />
+        </ATabPane>
+        <ATabPane
+          key="openai"
+          :tab="$gettext('OpenAI')"
+        >
+          <OpenAISettings />
+        </ATabPane>
+      </ATabs>
     </div>
-    <footer-tool-bar>
-      <a-button type="primary" @click="save">
+    <FooterToolBar>
+      <AButton
+        type="primary"
+        @click="save"
+      >
         {{ $gettext('Save') }}
-      </a-button>
-    </footer-tool-bar>
-  </a-card>
+      </AButton>
+    </FooterToolBar>
+  </ACard>
 </template>
 
 <style lang="less" scoped>

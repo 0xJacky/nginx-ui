@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import {useGettext} from 'vue3-gettext'
+import { useGettext } from 'vue3-gettext'
+import { storeToRefs } from 'pinia'
+import type { Ref } from 'vue'
+import type { Template } from '@/api/template'
 import template from '@/api/template'
-import {computed, provide, ref} from 'vue'
-import {storeToRefs} from 'pinia'
-import {useSettingsStore} from '@/pinia'
+import { useSettingsStore } from '@/pinia'
 
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import TemplateForm from '@/views/domain/ngx_conf/config_template/TemplateForm.vue'
+import type { NgxConfig } from '@/api/ngx'
 
-const {$gettext} = useGettext()
-const {language} = storeToRefs(useSettingsStore())
-const props = defineProps(['ngx_config', 'current_server_index'])
+const props = defineProps<{
+  currentServerIndex: number
+}>()
 
+const { $gettext } = useGettext()
+const { language } = storeToRefs(useSettingsStore())
+const ngx_config = inject('ngx_config') as NgxConfig
 const blocks = ref([])
-const data: any = ref({})
+const data = ref({}) as Ref<Template>
 const visible = ref(false)
 const name = ref('')
 
@@ -27,7 +32,6 @@ function get_block_list() {
 
 get_block_list()
 
-
 function view(n: string) {
   visible.value = true
   name.value = n
@@ -37,24 +41,21 @@ function view(n: string) {
 }
 
 const trans_description = computed(() => {
-  return (item: any) => item.description?.[language.value] ?? item.description?.en ?? ''
+  return (item: { description: { [key: string]: string } }) =>
+    item.description?.[language.value] ?? item.description?.en ?? ''
 })
 
 async function add() {
+  if (data.value.custom)
+    ngx_config.custom += `\n${data.value.custom}`
 
-  if (data.value.custom) {
-    props.ngx_config.custom += '\n' + data.value.custom
-  }
+  ngx_config.custom = ngx_config.custom?.trim()
 
-  props.ngx_config.custom = props.ngx_config.custom.trim()
+  if (data.value.locations)
+    ngx_config?.servers?.[props.currentServerIndex]?.locations?.push(...data.value.locations)
 
-  if (data.value.locations) {
-    props.ngx_config.servers[props.current_server_index].locations.push(...data.value.locations)
-  }
-
-  if (data.value.directives) {
-    props.ngx_config.servers[props.current_server_index].directives.push(...data.value.directives)
-  }
+  if (data.value.directives)
+    ngx_config?.servers?.[props.currentServerIndex]?.directives?.push(...data.value.directives)
 
   visible.value = false
 }
@@ -72,49 +73,69 @@ function build_template() {
 }
 
 provide('build_template', build_template)
+provide('ngx_directives', data.value?.directives)
 </script>
 
 <template>
   <div>
-    <h2 v-translate>Config Templates</h2>
+    <h2>
+      {{ $gettext('Config Templates') }}
+    </h2>
     <div class="config-list-wrapper">
-      <a-list
+      <AList
         :grid="{ gutter: 16, xs: 1, sm: 2, md: 2, lg: 2, xl: 2, xxl: 2, xxxl: 2 }"
         :data-source="blocks"
       >
         <template #renderItem="{ item }">
-          <a-list-item>
-            <a-card size="small" :title="item.name">
+          <AListItem>
+            <ACard
+              size="small"
+              :title="item.name"
+            >
               <template #extra>
-                <a-button type="link"
-                          size="small" @click="view(item.filename)">{{ $gettext('View') }}
-                </a-button>
+                <AButton
+                  type="link"
+                  size="small"
+                  @click="view(item.filename)"
+                >
+                  {{ $gettext('View') }}
+                </AButton>
               </template>
               <p>{{ $gettext('Author') }}: {{ item.author }}</p>
               <p>{{ $gettext('Description') }}: {{ trans_description(item) }}</p>
-            </a-card>
-          </a-list-item>
+            </ACard>
+          </AListItem>
         </template>
-      </a-list>
+      </AList>
     </div>
-    <a-modal
-      :title="data.name"
+    <AModal
       v-model:open="visible"
+      :title="data.name"
       :mask="false"
       :ok-text="$gettext('Add')"
       @ok="add"
     >
       <p>{{ $gettext('Author') }}: {{ data.author }}</p>
       <p>{{ $gettext('Description') }}: {{ trans_description(data) }}</p>
-      <template-form :data="data.variables"/>
+      <TemplateForm v-model:data="data.variables" />
       <template v-if="data.custom">
         <h2>{{ $gettext('Custom') }}</h2>
-        <code-editor v-model:content="data.custom" default-height="150px"/>
+        <CodeEditor
+          v-model:content="data.custom"
+          default-height="150px"
+        />
       </template>
-      <directive-editor v-if="data.directives" :ngx_directives="data.directives" :readonly="true"/>
-      <br/>
-      <location-editor v-if="data.locations" :locations="data.locations" :readonly="true"/>
-    </a-modal>
+      <DirectiveEditor
+        v-if="data.directives"
+        readonly
+      />
+      <br>
+      <LocationEditor
+        v-if="data.locations"
+        :locations="data.locations"
+        readonly
+      />
+    </AModal>
   </div>
 </template>
 

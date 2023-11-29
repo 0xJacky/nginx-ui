@@ -1,24 +1,27 @@
 import http from '@/lib/http'
-import {useUserStore} from '@/pinia'
+import { useUserStore } from '@/pinia'
 
-const user = useUserStore()
-const {login, logout} = user
+const { login, logout } = useUserStore()
+
+export interface AuthResponse {
+  token: string
+}
 
 const auth = {
   async login(name: string, password: string) {
     return http.post('/login', {
-      name: name,
-      password: password
-    }).then(r => {
+      name,
+      password,
+    }).then((r: AuthResponse) => {
       login(r.token)
     })
   },
-  async casdoorLogin(code: string, state: string) {
+  async casdoor_login(code?: string, state?: string) {
     await http.post('/casdoor_callback', {
-      code: code,
-      state: state
+      code,
+      state,
     })
-      .then((r) => {
+      .then((r: AuthResponse) => {
         login(r.token)
       })
   },
@@ -26,7 +29,7 @@ const auth = {
     return http.delete('/logout').then(async () => {
       logout()
     })
-  }
+  },
 }
 
 export default auth

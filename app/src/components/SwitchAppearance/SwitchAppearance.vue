@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-import {computed, inject, Ref} from 'vue'
-import VPSwitch from '@/components/VPSwitch/VPSwitch.vue'
+import type { Ref } from 'vue'
+import { computed, inject } from 'vue'
+import { useGettext } from 'vue3-gettext'
 import VPIconMoon from './icons/VPIconMoon.vue'
 import VPIconSun from './icons/VPIconSun.vue'
-import {useSettingsStore} from '@/pinia'
-import {useGettext} from 'vue3-gettext'
+import VPSwitch from '@/components/VPSwitch/VPSwitch.vue'
+import { useSettingsStore } from '@/pinia'
 
-const {$gettext} = useGettext()
+const { $gettext } = useGettext()
 
 const settings = useSettingsStore()
 const devicePrefersTheme = inject('devicePrefersTheme') as Ref<string>
@@ -17,17 +18,15 @@ const switchTitle = computed(() => {
 })
 
 async function toggleAppearance() {
-  if (isDark.value) {
+  if (isDark.value)
     settings.set_theme('light')
-  } else {
+  else
     settings.set_theme('dark')
-  }
 
-  if (devicePrefersTheme.value === settings.theme) {
+  if (devicePrefersTheme.value === settings.theme)
     settings.set_preference_theme('auto')
-  } else {
+  else
     settings.set_preference_theme(settings.theme)
-  }
 }
 </script>
 
@@ -38,8 +37,8 @@ async function toggleAppearance() {
     :aria-checked="isDark"
     @click="toggleAppearance"
   >
-    <VPIconSun class="sun"/>
-    <VPIconMoon class="moon"/>
+    <VPIconSun class="sun" />
+    <VPIconMoon class="moon" />
   </VPSwitch>
 </template>
 

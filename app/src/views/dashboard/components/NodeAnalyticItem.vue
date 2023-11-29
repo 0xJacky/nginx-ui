@@ -1,52 +1,70 @@
 <script setup lang="ts">
+import Icon, { ArrowDownOutlined, ArrowUpOutlined, DatabaseOutlined, LineChartOutlined } from '@ant-design/icons-vue'
 import cpu from '@/assets/svg/cpu.svg'
 import memory from '@/assets/svg/memory.svg'
-import {bytesToSize} from '@/lib/helper'
-import Icon, {ArrowDownOutlined, ArrowUpOutlined, DatabaseOutlined, LineChartOutlined} from '@ant-design/icons-vue'
+import { bytesToSize } from '@/lib/helper'
 import UsageProgressLine from '@/components/Chart/UsageProgressLine.vue'
 
-const props = defineProps(['item'])
+defineProps<{
+  item: {
+    avg_load: {
+      load1: number
+      load5: number
+      load15: number
+    }
+    network: {
+      bytesSent: number
+      bytesRecv: number
+    }
+    cpu_percent: number
+    cpu_num: number
+    memory_percent: number
+    memory_total: string
+    disk_percent: number
+    disk_total: string
+  }
+}>()
 </script>
 
 <template>
   <div class="hardware-monitor">
     <div class="hardware-monitor-item longer">
       <div>
-        <line-chart-outlined/>
-        <span class="load-avg-describe">1min:</span>{{ ' ' + item.avg_load?.load1?.toFixed(2) }} ·
+        <LineChartOutlined />
+        <span class="load-avg-describe">1min:</span>{{ ` ${item.avg_load?.load1?.toFixed(2)}` }} ·
         <span class="load-avg-describe">5min:</span>{{ item.avg_load?.load5?.toFixed(2) }} ·
         <span class="load-avg-describe">15min:</span>{{ item.avg_load?.load15?.toFixed(2) }}
       </div>
       <div>
-        <arrow-up-outlined/>
+        <ArrowUpOutlined />
         {{ bytesToSize(item?.network?.bytesSent) }}
-        <arrow-down-outlined/>
+        <ArrowDownOutlined />
         {{ bytesToSize(item?.network?.bytesRecv) }}
       </div>
     </div>
     <div class="hardware-monitor-item">
-      <usage-progress-line :percent="item.cpu_percent">
+      <UsageProgressLine :percent="item.cpu_percent">
         <template #icon>
-          <Icon :component="cpu"/>
+          <Icon :component="cpu" />
         </template>
         <span>{{ item.cpu_num }} CPU</span>
-      </usage-progress-line>
+      </UsageProgressLine>
     </div>
     <div class="hardware-monitor-item">
-      <usage-progress-line :percent="item.memory_percent">
+      <UsageProgressLine :percent="item.memory_percent">
         <template #icon>
-          <Icon :component="memory"/>
+          <Icon :component="memory" />
         </template>
         <span>{{ item.memory_total }}</span>
-      </usage-progress-line>
+      </UsageProgressLine>
     </div>
     <div class="hardware-monitor-item">
-      <usage-progress-line :percent="item.disk_percent">
+      <UsageProgressLine :percent="item.disk_percent">
         <template #icon>
-          <database-outlined/>
+          <DatabaseOutlined />
         </template>
         <span>{{ item.disk_total }}</span>
-      </usage-progress-line>
+      </UsageProgressLine>
     </div>
   </div>
 </template>
