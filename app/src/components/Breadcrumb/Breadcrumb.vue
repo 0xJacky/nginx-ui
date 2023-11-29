@@ -17,7 +17,7 @@ const breadList = computed(() => {
   route.matched.forEach(item => {
     // item.name !== 'index' && this.breadList.push(item)
     _breadList.push({
-      name: item.name as () => string,
+      name: item.name as never as () => string,
       path: item.path,
     })
   })

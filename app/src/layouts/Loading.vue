@@ -1,13 +1,7 @@
-<script>
-export default {
-  name: 'Loading',
-  props: {
-    loading: {
-      type: [Boolean, String],
-      default: false,
-    },
-  },
-}
+<script setup lang="ts">
+defineProps<{
+  loading: boolean | string
+}>()
 </script>
 
 <template>

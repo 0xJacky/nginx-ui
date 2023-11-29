@@ -5,7 +5,25 @@ import memory from '@/assets/svg/memory.svg'
 import { bytesToSize } from '@/lib/helper'
 import UsageProgressLine from '@/components/Chart/UsageProgressLine.vue'
 
-defineProps(['item'])
+defineProps<{
+  item: {
+    avg_load: {
+      load1: number
+      load5: number
+      load15: number
+    }
+    network: {
+      bytesSent: number
+      bytesRecv: number
+    }
+    cpu_percent: number
+    cpu_num: number
+    memory_percent: number
+    memory_total: string
+    disk_percent: number
+    disk_total: string
+  }
+}>()
 </script>
 
 <template>

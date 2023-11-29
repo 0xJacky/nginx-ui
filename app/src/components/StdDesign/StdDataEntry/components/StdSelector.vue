@@ -2,6 +2,7 @@
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import gettext from '@/gettext'
 import type Curd from '@/api/curd'
+import type { Column } from '@/components/StdDesign/types'
 
 const props = defineProps<{
   selectedKey: string | number
@@ -10,7 +11,7 @@ const props = defineProps<{
   selectionType: 'radio' | 'checkbox'
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   api: Curd<any>
-  columns: any[]
+  columns: Column[]
   dataKey: string
   disableSearch: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

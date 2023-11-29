@@ -26,6 +26,7 @@ class Curd<T> {
   get = this._get.bind(this)
   save = this._save.bind(this)
   destroy = this._destroy.bind(this)
+  update_order = this._update_order.bind(this)
 
   constructor(baseUrl: string, plural: string | null = null) {
     this.baseUrl = baseUrl
@@ -50,6 +51,14 @@ class Curd<T> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   _destroy(id: any = null) {
     return http.delete(`${this.baseUrl}/${id}`)
+  }
+
+  _update_order(data: {
+    target_id: number
+    direction: number
+    affected_ids: number[]
+  }) {
+    return http.post(`${this.plural}/order`, data)
   }
 }
 

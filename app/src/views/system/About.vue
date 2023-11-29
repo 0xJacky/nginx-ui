@@ -11,7 +11,7 @@ const this_year = new Date().getFullYear()
 
 <template>
   <ACard
-    style="text-align: center"
+    class="text-center"
     :bordered="false"
   >
     <div class="logo">
@@ -34,26 +34,23 @@ const this_year = new Date().getFullYear()
         Star
       </GithubButton>
     </div>
-    <h3 v-translate>
-      Project Team
+    <h3>
+      {{ $gettext('Project Team') }}
     </h3>
     <p><a href="https://jackyu.cn/">@0xJacky</a> <a href="https://blog.kugeek.com/">@Hintay</a></p>
-    <h3 v-translate>
-      Build with
+    <h3>
+      {{ $gettext('Build with') }}
     </h3>
     <p>❤️</p>
     <p>Go</p>
     <p>Gin</p>
     <p>Vue3 + Vite + TypeScript</p>
     <p>Websocket</p>
-    <h3
-      v-translate
-      translate-context="Project"
-    >
-      License
+    <h3>
+      {{ $gettext('License') }}
     </h3>
     <p>GNU General Public License v3.0</p>
-    <p>Copyright © 2020 - {{ this_year }} Nginx UI </p>
+    <p>Copyright © 2020 - {{ this_year }} Nginx UI Team</p>
   </ACard>
 </template>
 
@@ -62,14 +59,6 @@ const this_year = new Date().getFullYear()
   img {
     max-width: 120px
   }
-}
-
-.egg {
-  padding: 10px 0;
-}
-
-.ant-btn {
-  margin: 10px 10px 0 0;
 }
 
 .star-on-github {

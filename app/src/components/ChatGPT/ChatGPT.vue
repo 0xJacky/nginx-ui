@@ -295,7 +295,7 @@ const show = computed(() => !messages.value || messages.value?.length === 0)
         v-model:value="ask_buffer"
         auto-size
       />
-      <div class="sned-btn">
+      <div class="send-btn">
         <AButton
           size="small"
           type="text"
@@ -356,7 +356,7 @@ const show = computed(() => !messages.value || messages.value?.length === 0)
       justify-content: center;
     }
 
-    .sned-btn {
+    .send-btn {
       position: absolute;
       right: 0;
       bottom: 3px;

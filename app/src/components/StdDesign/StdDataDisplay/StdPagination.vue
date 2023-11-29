@@ -4,7 +4,7 @@ import type { Pagination } from '@/api/curd'
 
 const props = defineProps<{
   pagination: Pagination
-  size?: 'small' | 'default'
+  size?: string
 }>()
 
 const emit = defineEmits(['change', 'changePageSize', 'update:pagination'])

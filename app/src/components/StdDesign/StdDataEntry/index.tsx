@@ -1,7 +1,7 @@
 import { h } from 'vue'
 import { Input, InputNumber, Switch, Textarea } from 'ant-design-vue'
 import _ from 'lodash'
-import StdDataEntry from './StdDataEntry'
+import StdDataEntry from './StdDataEntry.vue'
 import StdSelector from './components/StdSelector.vue'
 import StdSelect from './components/StdSelect.vue'
 import StdPassword from './components/StdPassword.vue'

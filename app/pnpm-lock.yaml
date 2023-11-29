@@ -11,15 +11,6 @@ dependencies:
   '@formkit/auto-animate':
     specifier: ^0.8.0
     version: 0.8.1
-  '@types/lodash':
-    specifier: ^4.14.202
-    version: 4.14.202
-  '@types/nprogress':
-    specifier: ^0.2.0
-    version: 0.2.3
-  '@types/sortablejs':
-    specifier: ^1.15.0
-    version: 1.15.7
   '@vue/reactivity':
     specifier: ^3.3.9
     version: 3.3.9
@@ -103,6 +94,15 @@ devDependencies:
   '@antfu/eslint-config-vue':
     specifier: ^0.43.1
     version: 0.43.1(@typescript-eslint/eslint-plugin@6.13.0)(@typescript-eslint/parser@6.13.0)(eslint-import-resolver-typescript@3.6.1)(eslint@8.54.0)(typescript@5.3.2)
+  '@types/lodash':
+    specifier: ^4.14.202
+    version: 4.14.202
+  '@types/nprogress':
+    specifier: ^0.2.0
+    version: 0.2.3
+  '@types/sortablejs':
+    specifier: ^1.15.0
+    version: 1.15.7
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.13.0
     version: 6.13.0(@typescript-eslint/parser@6.13.0)(eslint@8.54.0)(typescript@5.3.2)
@@ -111,13 +111,16 @@ devDependencies:
     version: 6.13.0(eslint@8.54.0)(typescript@5.3.2)
   '@vitejs/plugin-vue':
     specifier: ^4.5.0
-    version: 4.5.0(vite@5.0.2)(vue@3.3.9)
+    version: 4.5.0(vite@5.0.3)(vue@3.3.9)
   '@vitejs/plugin-vue-jsx':
     specifier: ^3.1.0
-    version: 3.1.0(vite@5.0.2)(vue@3.3.9)
+    version: 3.1.0(vite@5.0.3)(vue@3.3.9)
   '@vue/compiler-sfc':
     specifier: ^3.3.9
     version: 3.3.9
+  '@vue/tsconfig':
+    specifier: ^0.4.0
+    version: 0.4.0
   ace-builds:
     specifier: ^1.31.2
     version: 1.31.2
@@ -167,11 +170,11 @@ devDependencies:
     specifier: ^1.4.0
     version: 1.4.0(vue@3.3.9)
   vite:
-    specifier: ^5.0.2
-    version: 5.0.2(less@4.2.0)
+    specifier: ^5.0.3
+    version: 5.0.3(less@4.2.0)
   vite-plugin-html:
     specifier: ^3.2.0
-    version: 3.2.0(vite@5.0.2)
+    version: 3.2.0(vite@5.0.3)
   vite-svg-loader:
     specifier: ^5.1.0
     version: 5.1.0(vue@3.3.9)
@@ -1297,7 +1300,7 @@ packages:
 
   /@types/lodash@4.14.202:
     resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
-    dev: false
+    dev: true
 
   /@types/mdast@3.0.15:
     resolution: {integrity: sha512-LnwD+mUEfxWMa1QpDraczIn6k0Ee3SMicuYSSzS6ZYl2gKS09EClnJYGd8Du6rfc5r/GZEk5o1mRb8TaTj03sQ==}
@@ -1327,7 +1330,7 @@ packages:
 
   /@types/nprogress@0.2.3:
     resolution: {integrity: sha512-k7kRA033QNtC+gLc4VPlfnue58CM1iQLgn1IMAU8VPHGOj7oIHPp9UlhedEnD/Gl8evoCjwkZjlBORtZ3JByUA==}
-    dev: false
+    dev: true
 
   /@types/parse-json@4.0.2:
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
@@ -1343,7 +1346,7 @@ packages:
 
   /@types/sortablejs@1.15.7:
     resolution: {integrity: sha512-PvgWCx1Lbgm88FdQ6S7OGvLIjWS66mudKPlfdrWil0TjsO5zmoZmzoKiiwRShs1dwPgrlkr0N4ewuy0/+QUXYQ==}
-    dev: false
+    dev: true
 
   /@types/unist@2.0.10:
     resolution: {integrity: sha512-IfYcSBWE3hLpBg8+X2SEa8LVkJdJEkT2Ese2aaLs3ptGdVtABxndrMaxuFlQ1qdFf9Q5rDvDpxI3WwgvKFAsQA==}
@@ -1549,7 +1552,7 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
-  /@vitejs/plugin-vue-jsx@3.1.0(vite@5.0.2)(vue@3.3.9):
+  /@vitejs/plugin-vue-jsx@3.1.0(vite@5.0.3)(vue@3.3.9):
     resolution: {integrity: sha512-w9M6F3LSEU5kszVb9An2/MmXNxocAnUb3WhRr8bHlimhDrXNt6n6D2nJQR3UXpGlZHh/EsgouOHCsM8V3Ln+WA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -1559,20 +1562,20 @@ packages:
       '@babel/core': 7.23.3
       '@babel/plugin-transform-typescript': 7.23.4(@babel/core@7.23.3)
       '@vue/babel-plugin-jsx': 1.1.5(@babel/core@7.23.3)
-      vite: 5.0.2(less@4.2.0)
+      vite: 5.0.3(less@4.2.0)
       vue: 3.3.9(typescript@5.3.2)
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@vitejs/plugin-vue@4.5.0(vite@5.0.2)(vue@3.3.9):
+  /@vitejs/plugin-vue@4.5.0(vite@5.0.3)(vue@3.3.9):
     resolution: {integrity: sha512-a2WSpP8X8HTEww/U00bU4mX1QpLINNuz/2KMNpLsdu3BzOpak3AGI1CJYBTXcc4SPhaD0eNRUp7IyQK405L5dQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.0.0 || ^5.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 5.0.2(less@4.2.0)
+      vite: 5.0.3(less@4.2.0)
       vue: 3.3.9(typescript@5.3.2)
     dev: true
 
@@ -1733,6 +1736,10 @@ packages:
 
   /@vue/shared@3.3.9:
     resolution: {integrity: sha512-ZE0VTIR0LmYgeyhurPTpy4KzKsuDyQbMSdM49eKkMnT5X4VfFBLysMzjIZhLEFQYjjOVVfbvUDHckwjDFiO2eA==}
+
+  /@vue/tsconfig@0.4.0:
+    resolution: {integrity: sha512-CPuIReonid9+zOG/CGTT05FXrPYATEqoDGNrEaqS4hwcw5BUNM2FguC0mOwJD4Jr16UpRVl9N0pY3P+srIbqmg==}
+    dev: true
 
   /@vueuse/core@10.6.1(vue@3.3.9):
     resolution: {integrity: sha512-Pc26IJbqgC9VG1u6VY/xrXXfxD33hnvxBnKrLlA2LJlyHII+BSrRoTPJgGYq7qZOu61itITFUnm6QbacwZ4H8Q==}
@@ -5360,7 +5367,7 @@ packages:
       - terser
     dev: false
 
-  /vite-plugin-html@3.2.0(vite@5.0.2):
+  /vite-plugin-html@3.2.0(vite@5.0.3):
     resolution: {integrity: sha512-2VLCeDiHmV/BqqNn5h2V+4280KRgQzCFN47cst3WiNK848klESPQnzuC3okH5XHtgwHH/6s1Ho/YV6yIO0pgoQ==}
     peerDependencies:
       vite: '>=2.0.0'
@@ -5377,7 +5384,7 @@ packages:
       html-minifier-terser: 6.1.0
       node-html-parser: 5.4.2
       pathe: 0.2.0
-      vite: 5.0.2(less@4.2.0)
+      vite: 5.0.3(less@4.2.0)
     dev: true
 
   /vite-svg-loader@5.1.0(vue@3.3.9):
@@ -5426,8 +5433,8 @@ packages:
       fsevents: 2.3.3
     dev: false
 
-  /vite@5.0.2(less@4.2.0):
-    resolution: {integrity: sha512-6CCq1CAJCNM1ya2ZZA7+jS2KgnhbzvxakmlIjN24cF/PXhRMzpM/z8QgsVJA/Dm5fWUWnVEsmtBoMhmerPxT0g==}
+  /vite@5.0.3(less@4.2.0):
+    resolution: {integrity: sha512-WgEq8WEKpZ8c0DL4M1+E+kBZEJyjBmGVrul6z8Ljfhv+PPbNF4aGq014DwNYxGz2FGq6NKL0N8usdiESWd2l2w==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:

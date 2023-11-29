@@ -1,7 +1,4 @@
-<script>
-export default {
-  name: 'BaseRouterView',
-}
+<script setup lang="ts">
 </script>
 
 <template>

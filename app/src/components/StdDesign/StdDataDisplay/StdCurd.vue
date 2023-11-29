@@ -1,82 +1,45 @@
 <script setup lang="ts">
-import { provide, reactive, ref } from 'vue'
 import { message } from 'ant-design-vue'
+import type { ComputedRef } from 'vue'
+import type { StdTableProps } from './StdTable.vue'
 import StdTable from './StdTable.vue'
 import gettext from '@/gettext'
-
 import StdDataEntry from '@/components/StdDesign/StdDataEntry'
+import type { Column } from '@/components/StdDesign/types'
 
-const props = defineProps({
-  api: Object,
-  columns: Array,
-  title: String,
-  data_key: {
-    type: String,
-    default: 'data',
-  },
-  disable_search: {
-    type: Boolean,
-    default: false,
-  },
-  disable_add: {
-    type: Boolean,
-    default: false,
-  },
-  soft_delete: {
-    type: Boolean,
-    default: false,
-  },
-  edit_text: String,
-  deletable: {
-    type: Boolean,
-    default: true,
-  },
-  get_params: {
-    type: Object,
-    default() {
-      return {}
-    },
-  },
-  editable: {
-    type: Boolean,
-    default: true,
-  },
-  beforeSave: {
-    type: Function,
-    default: () => {
-    },
-  },
-  exportCsv: {
-    type: Boolean,
-    default: false,
-  },
-  modalWidth: {
-    type: Number,
-    default: 600,
-  },
-  useSortable: Boolean,
-})
+export interface StdCurdProps {
+  cardTitleKey?: string
+  modalMaxWidth?: string | number
+  disableAdd?: boolean
+  onClickAdd?: () => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onClickEdit?: (id: number | string, record: any, index: number) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  beforeSave?: (data: any) => void
+}
+
+const props = defineProps<StdTableProps & StdCurdProps>()
 
 const { $gettext } = gettext
 
 const visible = ref(false)
 const update = ref(0)
-const data: any = reactive({ id: null })
+const data = reactive({ id: null })
 
 provide('data', data)
 
-const error: any = reactive({})
+const error = reactive({})
 const selected = ref([])
 
-function onSelect(keys: any) {
+function onSelect(keys) {
   selected.value = keys
 }
 
-function editableColumns() {
-  return props.columns!.filter((c: any) => {
+const editableColumns = computed(() => {
+  return props.columns!.filter(c => {
     return c.edit
   })
-}
+}) as ComputedRef<Column[]>
 
 function add() {
   Object.keys(data).forEach(v => {
@@ -86,11 +49,9 @@ function add() {
   clear_error()
   visible.value = true
 }
-
+const table = ref()
 function get_list() {
-  const t: Table = table.value!
-
-  t!.get_list()
+  table.value?.get_list()
 }
 
 defineExpose({
@@ -98,12 +59,6 @@ defineExpose({
   get_list,
   data,
 })
-
-const table = ref(null)
-
-interface Table {
-  get_list(): void
-}
 
 function clear_error() {
   Object.keys(error).forEach(v => {
@@ -114,12 +69,12 @@ function clear_error() {
 const ok = async () => {
   clear_error()
   await props?.beforeSave?.(data)
-  props.api!.save(data.id, data).then((r: any) => {
+  props.api!.save(data.id, data).then(r => {
     message.success($gettext('Save Successfully'))
     Object.assign(data, r)
     get_list()
     visible.value = false
-  }).catch((e: any) => {
+  }).catch(e => {
     message.error($gettext(e?.message ?? 'Server error'), 5)
     Object.assign(error, e.errors)
   })
@@ -131,15 +86,15 @@ function cancel() {
   clear_error()
 }
 
-function edit(id: any) {
-  props.api!.get(id).then(async (r: any) => {
+function edit(id) {
+  props.api!.get(id).then(async r => {
     Object.keys(data).forEach(k => {
       delete data[k]
     })
     data.id = null
     Object.assign(data, r)
     visible.value = true
-  }).catch((e: any) => {
+  }).catch(e => {
     message.error($gettext(e?.message ?? 'Server error'), 5)
   })
 }
@@ -151,7 +106,7 @@ const selectedRowKeys = ref([])
   <div class="std-curd">
     <ACard :title="title || $gettext('Table')">
       <template
-        v-if="!disable_add"
+        v-if="!disableAdd"
         #extra
       >
         <a @click="add">{{ $gettext('Add') }}</a>
@@ -162,7 +117,7 @@ const selectedRowKeys = ref([])
         v-bind="props"
         :key="update"
         v-model:selected-row-keys="selectedRowKeys"
-        @clickEdit="edit"
+        @click-edit="edit"
         @selected="onSelect"
       >
         <template #actions="slotProps">
@@ -177,11 +132,11 @@ const selectedRowKeys = ref([])
     <AModal
       class="std-curd-edit-modal"
       :mask="false"
-      :title="edit_text ? edit_text : (data.id ? $gettext('Modify') : $gettext('Add'))"
+      :title="data.id ? $gettext('Modify') : $gettext('Add')"
       :open="visible"
       :cancel-text="$gettext('Cancel')"
       :ok-text="$gettext('OK')"
-      :width="modalWidth"
+      :width="modalMaxWidth"
       destroy-on-close
       @cancel="cancel"
       @ok="ok"
@@ -197,8 +152,7 @@ const selectedRowKeys = ref([])
       </div>
 
       <StdDataEntry
-        ref="std_data_entry"
-        :data-list="editableColumns()"
+        :data-list="editableColumns"
         :data-source="data"
         :error="error"
       />

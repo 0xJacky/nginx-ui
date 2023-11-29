@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import environment from '@/api/environment'
 

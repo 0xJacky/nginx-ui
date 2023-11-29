@@ -1,103 +1,71 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, toRaw, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
-import dayjs from 'dayjs'
-import Sortable from 'sortablejs'
 import { HolderOutlined } from '@ant-design/icons-vue'
-import _ from 'lodash'
+import { useGettext } from 'vue3-gettext'
+import type { ComputedRef } from 'vue'
+import type { SorterResult } from 'ant-design-vue/lib/table/interface'
 import StdPagination from './StdPagination.vue'
-import { downloadCsv } from '@/lib/helper'
 import StdDataEntry from '@/components/StdDesign/StdDataEntry'
-import gettext from '@/gettext'
+import type { Pagination } from '@/api/curd'
+import type { Column } from '@/components/StdDesign/types'
+import exportCsvHandler from '@/components/StdDesign/StdDataDisplay/methods/exportCsv'
+import useSortable from '@/components/StdDesign/StdDataDisplay/methods/sortable'
+import type Curd from '@/api/curd'
 
-const props = defineProps({
-  api: Object,
-  columns: Array,
-  data_key: {
-    type: String,
-    default: 'data',
-  },
-  disable_search: {
-    type: Boolean,
-    default: false,
-  },
-  disable_query_params: {
-    type: Boolean,
-    default: false,
-  },
-  disable_add: {
-    type: Boolean,
-    default: false,
-  },
-  edit_text: String,
-  deletable: {
-    type: Boolean,
-    default: true,
-  },
-  get_params: {
-    type: Object,
-    default() {
-      return {}
-    },
-  },
-  editable: {
-    type: Boolean,
-    default: true,
-  },
-  selectionType: {
-    type: String,
-    validator(value: string) {
-      return ['checkbox', 'radio'].includes(value)
-    },
-  },
-  pithy: {
-    type: Boolean,
-    default: false,
-  },
-  scrollX: {
-    type: [Number, Boolean],
-    default: true,
-  },
-  rowKey: {
-    type: String,
-    default: 'id',
-  },
-  exportCsv: {
-    type: Boolean,
-    default: false,
-  },
-  size: String,
-  selectedRowKeys: {
-    type: Array,
-  },
-  useSortable: Boolean,
+export interface StdTableProps {
+  title?: string
+  mode?: string
+  rowKey?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  api: Curd<any>
+  columns: Column[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getParams?: Record<string, any>
+  size?: string
+  disableQueryParams?: boolean
+  disableSearch?: boolean
+  pithy?: boolean
+  exportCsv?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  overwriteParams?: Record<string, any>
+  disabledModify?: boolean
+  selectionType?: string
+  sortable?: boolean
+  disableDelete?: boolean
+  disablePagination?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  selectedRowKeys?: any | any[]
+  sortableMoveHook?: (oldRow: number[], newRow: number[]) => boolean
+  scrollX?: string | number
+}
+
+const props = withDefaults(defineProps<StdTableProps>(), {
+  rowKey: 'id',
 })
 
 const emit = defineEmits(['onSelected', 'onSelectedRecord', 'clickEdit', 'update:selectedRowKeys', 'clickBatchModify'])
-
-const { $gettext, interpolate } = gettext
-
-const data_source: any = ref([])
-const expand_keys_list: any = ref([])
-const rows_key_index_map: any = ref({})
-
+const { $gettext } = useGettext()
+const route = useRoute()
+const dataSource = ref([])
+const expandKeysList = ref([])
+const rowsKeyIndexMap = ref({})
 const loading = ref(true)
 
-const pagination = reactive({
+// This can be useful if there are more than one StdTable in the same page.
+const randomId = ref(Math.random().toString(36).substring(2, 8))
+
+const pagination: Pagination = reactive({
   total: 1,
   per_page: 10,
   current_page: 1,
   total_pages: 1,
 })
 
-const route = useRoute()
-
 const params = reactive({
-  ...props.get_params,
+  ...props.getParams,
 })
 
-const selectedKeysLocalBuffer: any = ref([])
+const selectedKeysLocalBuffer = ref([])
 
 const selectedRowKeysBuffer = computed({
   get() {
@@ -109,17 +77,47 @@ const selectedRowKeysBuffer = computed({
   },
 })
 
-const searchColumns = getSearchColumns()
-const pithyColumns = getPithyColumns()
-const batchColumns = getBatchEditColumns()
+const searchColumns = computed(() => {
+  const _searchColumns = []
+
+  props.columns?.forEach(column => {
+    if (column.search)
+      _searchColumns.push(column)
+  })
+
+  return _searchColumns
+})
+
+const pithyColumns = computed(() => {
+  if (props.pithy) {
+    return props.columns?.filter(c => {
+      return c.pithy === true && !c.hidden
+    })
+  }
+
+  return props.columns?.filter(c => {
+    return !c.hidden
+  })
+}) as ComputedRef<Column[]>
+
+const batchColumns = computed(() => {
+  const batch = []
+
+  props.columns?.forEach(column => {
+    if (column.batch)
+      batch.push(column)
+  })
+
+  return batch
+})
 
 onMounted(() => {
-  if (!props.disable_query_params)
+  if (!props.disableQueryParams)
     Object.assign(params, route.query)
 
   get_list()
 
-  if (props.useSortable)
+  if (props.sortable)
     initSortable()
 })
 
@@ -127,11 +125,11 @@ defineExpose({
   get_list,
 })
 
-function destroy(id: any) {
+function destroy(id) {
   props.api!.destroy(id).then(() => {
     get_list()
-    message.success(interpolate($gettext('Delete ID: %{id}'), { id }))
-  }).catch((e: any) => {
+    message.success($gettext('Deleted successfully'))
+  }).catch(e => {
     message.error($gettext(e?.message ?? 'Server error'))
   })
 }
@@ -142,37 +140,35 @@ function get_list(page_num = null, page_size = 20) {
     params.page = page_num
     params.page_size = page_size
   }
-  props.api!.get_list(params).then(async (r: any) => {
-    data_source.value = r.data
-    rows_key_index_map.value = {}
-    if (props.useSortable) {
-      function buildIndexMap(data: any, level: number = 0, index: number = 0, total: number[] = []) {
-        if (data && data.length > 0) {
-          data.forEach((v: any) => {
-            v.level = level
-
-            const current_index = [...total, index++]
-
-            rows_key_index_map.value[v.id] = current_index
-            if (v.children)
-              buildIndexMap(v.children, level + 1, 0, current_index)
-          })
-        }
-      }
+  props.api?.get_list(params).then(async r => {
+    dataSource.value = r.data
+    rowsKeyIndexMap.value = {}
+    if (props.sortable)
 
       buildIndexMap(r.data)
-    }
 
-    if (r.pagination !== undefined)
+    if (r.pagination)
       Object.assign(pagination, r.pagination)
 
     loading.value = false
-  }).catch((e: any) => {
+  }).catch(e => {
     message.error(e?.message ?? $gettext('Server error'))
   })
 }
+function buildIndexMap(data, level: number = 0, index: number = 0, total: number[] = []) {
+  if (data && data.length > 0) {
+    data.forEach(v => {
+      v.level = level
 
-function stdChange(pagination: any, filters: any, sorter: any) {
+      const current_indexes = [...total, index++]
+
+      rowsKeyIndexMap.value[v.id] = current_indexes
+      if (v.children)
+        buildIndexMap(v.children, level + 1, 0, current_indexes)
+    })
+  }
+}
+function orderPaginationChange(_pagination: Pagination, filters, sorter: SorterResult) {
   if (sorter) {
     selectedRowKeysBuffer.value = []
     params.order_by = sorter.field
@@ -189,67 +185,29 @@ function stdChange(pagination: any, filters: any, sorter: any) {
         break
     }
   }
-  if (pagination)
+  if (_pagination)
     selectedRowKeysBuffer.value = []
 }
 
-function expandedTable(keys: any) {
-  expand_keys_list.value = keys
+function expandedTable(keys) {
+  expandKeysList.value = keys
 }
 
-function getSearchColumns() {
-  const searchColumns: any = []
+const crossPageSelect = {}
 
-  props.columns!.forEach((column: any) => {
-    if (column.search)
-      searchColumns.push(column)
-  })
-
-  return searchColumns
-}
-
-function getBatchEditColumns() {
-  const batch: any = []
-
-  props.columns!.forEach((column: any) => {
-    if (column.batch)
-      batch.push(column)
-  })
-
-  return batch
-}
-
-function getPithyColumns() {
-  if (props.pithy) {
-    return props.columns!.filter((c: any, index: any, columns: any) => {
-      return c.pithy === true && c.display !== false
-    })
-  }
-
-  return props.columns!.filter((c: any, index: any, columns: any) => {
-    return c.display !== false
-  })
-}
-
-function checked(c: any) {
-  params[c.target.value] = c.target.checked
-}
-
-const crossPageSelect: any = {}
-
-async function onSelectChange(_selectedRowKeys: any) {
+async function onSelectChange(_selectedRowKeys) {
   const page = params.page || 1
 
   crossPageSelect[page] = await _selectedRowKeys
 
-  let t: any = []
+  let t = []
   Object.keys(crossPageSelect).forEach(v => {
     t.push(...crossPageSelect[v])
   })
 
-  const n: any = [..._selectedRowKeys]
+  const n = [..._selectedRowKeys]
 
-  t = await t.concat(n)
+  t = t.concat(n)
 
   // console.log(crossPageSelect)
   const set = new Set(t)
@@ -258,7 +216,7 @@ async function onSelectChange(_selectedRowKeys: any) {
   emit('onSelected', selectedRowKeysBuffer.value)
 }
 
-function onSelect(record: any) {
+function onSelect(record) {
   emit('onSelectedRecord', record)
 }
 
@@ -270,7 +228,7 @@ const reset_search = async () => {
   })
 
   Object.assign(params, {
-    ...props.get_params,
+    ...props.getParams,
   })
 
   router.push({ query: {} }).catch(() => {
@@ -278,19 +236,19 @@ const reset_search = async () => {
 }
 
 watch(params, () => {
-  if (!props.disable_query_params)
+  if (!props.disableQueryParams)
     router.push({ query: params })
 
   get_list()
 })
 
 const rowSelection = computed(() => {
-  if (batchColumns.length > 0 || props.selectionType) {
+  if (batchColumns.value.length > 0 || props.selectionType) {
     return {
       selectedRowKeys: selectedRowKeysBuffer.value,
       onChange: onSelectChange,
       onSelect,
-      type: batchColumns.length > 0 ? 'checkbox' : props.selectionType,
+      type: batchColumns.value.length > 0 ? 'checkbox' : props.selectionType,
     }
   }
   else {
@@ -298,188 +256,27 @@ const rowSelection = computed(() => {
   }
 })
 
-const fn = _.get
-
-async function export_csv() {
-  const header = []
-  const headerKeys: any[] = []
-  const showColumnsMap: any = {}
-
-  for (const showColumnsKey in pithyColumns) {
-    if (pithyColumns[showColumnsKey].dataIndex === 'action')
-      continue
-
-    let t = pithyColumns[showColumnsKey].title
-
-    if (typeof t === 'function')
-      t = t()
-
-    header.push({
-      title: t,
-
-      key: pithyColumns[showColumnsKey].dataIndex,
-    })
-
-    headerKeys.push(pithyColumns[showColumnsKey].dataIndex)
-
-    showColumnsMap[pithyColumns[showColumnsKey].dataIndex] = pithyColumns[showColumnsKey]
-  }
-
-  let dataSource: any = []
-  let hasMore = true
-  let page = 1
-  while (hasMore) {
-    // 准备 DataSource
-    await props.api!.get_list({ page }).then((response: any) => {
-      if (response.data.length === 0) {
-        hasMore = false
-
-        return
-      }
-      if (response[props.data_key] === undefined)
-        dataSource = dataSource.concat(...response.data)
-      else
-        dataSource = dataSource.concat(...response[props.data_key])
-    }).catch((e: any) => {
-      message.error(e.message ?? $gettext('Server error'))
-      hasMore = false
-    })
-    page += 1
-  }
-  const data: any[] = []
-
-  dataSource.forEach((row: Object) => {
-    const obj: any = {}
-
-    headerKeys.forEach(key => {
-      let data = fn(row, key)
-      const c = showColumnsMap[key]
-
-      data = c?.customRender?.({ text: data }) ?? data
-      obj[c.dataIndex] = data
-    })
-    data.push(obj)
-  })
-
-  downloadCsv(header, data,
-    `${$gettext('Export')}-${dayjs().format('YYYYMMDDHHmmss')}.csv`)
-}
-
 const hasSelectedRow = computed(() => {
-  return batchColumns.length > 0 && selectedRowKeysBuffer.value.length > 0
+  return batchColumns.value.length > 0 && selectedRowKeysBuffer.value.length > 0
 })
 
-function click_batch_edit() {
-  emit('clickBatchModify', batchColumns, selectedRowKeysBuffer.value)
-}
-
-function getLeastIndex(index: number) {
-  return index >= 1 ? index : 1
-}
-
-function getTargetData(data: any, indexList: number[]): any {
-  let target: any = { children: data }
-  indexList.forEach((index: number) => {
-    target.children[index].parent = target
-    target = target.children[index]
-  })
-
-  return target
+function clickBatchEdit() {
+  emit('clickBatchModify', batchColumns.value, selectedRowKeysBuffer.value)
 }
 
 function initSortable() {
-  const table: any = document.querySelector('#std-table tbody')
-
-  new Sortable(table, {
-    handle: '.ant-table-drag-icon',
-    animation: 150,
-    sort: true,
-    forceFallback: true,
-    setData(dataTransfer) {
-      dataTransfer.setData('Text', '')
-    },
-    onStart({ item }) {
-      const targetRowKey = Number(item.dataset.rowKey)
-      if (targetRowKey)
-        expand_keys_list.value = expand_keys_list.value.filter((item: number) => item !== targetRowKey)
-    },
-    onMove({ dragged, related }) {
-      const oldRow: number[] = rows_key_index_map.value?.[Number(dragged.dataset.rowKey)]
-      const newRow: number[] = rows_key_index_map.value?.[Number(related.dataset.rowKey)]
-      if (oldRow.length !== newRow.length || oldRow[oldRow.length - 2] != newRow[newRow.length - 2])
-        return false
-    },
-    async onEnd({ item, newIndex, oldIndex }) {
-      if (newIndex === oldIndex)
-        return
-
-      const indexDelta: number = Number(oldIndex) - Number(newIndex)
-      const direction: number = indexDelta > 0 ? +1 : -1
-
-      const rowIndex: number[] = rows_key_index_map.value?.[Number(item.dataset.rowKey)]
-      const newRow = getTargetData(data_source.value, rowIndex)
-      const newRowParent = newRow.parent
-      const level: number = newRow.level
-
-      const currentRowIndex: number[] = [...rows_key_index_map.value?.
-        [Number(table.children[Number(newIndex) + direction].dataset.rowKey)]]
-
-      const currentRow: any = getTargetData(data_source.value, currentRowIndex)
-
-      // Reset parent
-      currentRow.parent = newRow.parent = null
-      newRowParent.children.splice(rowIndex[level], 1)
-      newRowParent.children.splice(currentRowIndex[level], 0, toRaw(newRow))
-
-      const changeIds: number[] = []
-
-      function processChanges(row: any, children: boolean = false, newIndex: number | undefined = undefined) {
-        // Build changes ID list expect new row
-        if (children || newIndex === undefined)
-          changeIds.push(row.id)
-
-        if (newIndex !== undefined)
-          rows_key_index_map.value[row.id][level] = newIndex
-        else if (children)
-          rows_key_index_map.value[row.id][level] += direction
-
-        row.parent = null
-        if (row.children)
-          row.children.forEach((v: any) => processChanges(v, true, newIndex))
-      }
-
-      // Replace row index for new row
-      processChanges(newRow, false, currentRowIndex[level])
-
-      // Rebuild row index maps for changes row
-      for (let i = Number(oldIndex); i != newIndex; i -= direction) {
-        const rowIndex: number[] = rows_key_index_map.value?.[table.children[i].dataset.rowKey]
-
-        rowIndex[level] += direction
-        processChanges(getTargetData(data_source.value, rowIndex))
-      }
-      console.log('Change row id', newRow.id, 'order', newRow.id, '=>', currentRow.id, ', direction: ', direction,
-        ', changes IDs:', changeIds)
-
-      props.api!.update_order({
-        target_id: newRow.id,
-        direction,
-        affected_ids: changeIds,
-      }).then(() => {
-        message.success($gettext('Updated successfully'))
-      }).catch((e: any) => {
-        message.error(e?.message ?? $gettext('Server error'))
-      })
-    },
-  })
+  useSortable(props, randomId, dataSource, rowsKeyIndexMap, expandKeysList)
 }
 
+function export_csv() {
+  exportCsvHandler(props, pithyColumns)
+}
 </script>
 
 <template>
   <div class="std-table">
     <StdDataEntry
-      v-if="!disable_search && searchColumns.length"
+      v-if="!disableSearch && searchColumns.length"
       :data-list="searchColumns"
       :data-source="params"
       layout="inline"
@@ -487,7 +284,7 @@ function initSortable() {
       <template #action>
         <ASpace class="action-btn">
           <AButton
-            v-if="exportCsv"
+            v-if="props.exportCsv"
             type="primary"
             ghost
             @click="export_csv"
@@ -499,7 +296,7 @@ function initSortable() {
           </AButton>
           <AButton
             v-if="hasSelectedRow"
-            @click="click_batch_edit"
+            @click="clickBatchEdit"
           >
             {{ $gettext('Batch Modify') }}
           </AButton>
@@ -509,36 +306,36 @@ function initSortable() {
     <ATable
       id="std-table"
       :columns="pithyColumns"
-      :data-source="data_source"
+      :data-source="dataSource"
       :loading="loading"
       :pagination="false"
       :row-key="rowKey"
       :row-selection="rowSelection"
       :scroll="{ x: scrollX }"
       :size="size"
-      :expanded-row-keys="expand_keys_list"
-      @change="stdChange"
-      @expandedRowsChange="expandedTable"
+      :expanded-row-keys="expandKeysList"
+      @change="orderPaginationChange"
+      @expanded-rows-change="expandedTable"
     >
-      <template #bodyCell="{ text, record, index, column }">
+      <template #bodyCell="{ text, record, column }">
         <template v-if="column.handle === true">
           <span class="ant-table-drag-icon"><HolderOutlined /></span>
           {{ text }}
         </template>
         <template v-if="column.dataIndex === 'action'">
           <AButton
-            v-if="props.editable"
+            v-if="!props.disabledModify"
             type="link"
             size="small"
             @click="$emit('clickEdit', record[props.rowKey], record)"
           >
-            {{ props.edit_text || $gettext('Modify') }}
+            {{ $gettext('Modify') }}
           </AButton>
           <slot
             name="actions"
             :record="record"
           />
-          <template v-if="props.deletable">
+          <template v-if="!props.disableDelete">
             <ADivider type="vertical" />
             <APopconfirm
               :cancel-text="$gettext('No')"
@@ -561,7 +358,7 @@ function initSortable() {
       :size="size"
       :pagination="pagination"
       @change="get_list"
-      @changePageSize="stdChange"
+      @change-page-size="orderPaginationChange"
     />
   </div>
 </template>

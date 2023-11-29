@@ -5,7 +5,7 @@ import type { Ref } from 'vue'
 import { useSettingsStore } from '@/pinia'
 import type { Series } from '@/components/Chart/types'
 
-const { series, max, y_formatter } = defineProps<{
+const { series, max, yFormatter } = defineProps<{
   series: Series[]
   max?: number
   yFormatter?: (value: number) => string
@@ -69,7 +69,7 @@ let chartOptions = {
       style: {
         colors: fontColor(),
       },
-      formatter: y_formatter,
+      formatter: yFormatter,
     },
   },
   legend: {
@@ -106,7 +106,7 @@ const callback = () => {
           style: {
             colors: fontColor(),
           },
-          formatter: y_formatter,
+          formatter: yFormatter,
         },
       },
       legend: {

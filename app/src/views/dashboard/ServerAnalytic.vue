@@ -97,7 +97,7 @@ function handle_uptime(t: number) {
   uptime.value = `${uptime_days}d ${uptime_hours}h ${Math.floor(_uptime / 60)}m`
 }
 
-function wsOnMessage(m: { data: any }) {
+function wsOnMessage(m) {
   const r = JSON.parse(m.data)
 
   const cpu_usage = r.cpu.system + r.cpu.user

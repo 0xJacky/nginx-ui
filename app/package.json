@@ -1,11 +1,10 @@
 {
   "name": "nginx-ui-app-next",
-  "private": true,
   "version": "2.0.0-beta.4",
-  "type": "commonjs",
   "scripts": {
     "dev": "vite",
-    "lint": "eslint . -c .eslintrc.js --fix --ext .ts,.vue,.tsx",
+    "typecheck": "vue-tsc --noEmit",
+    "lint": "eslint . -c .eslintrc.js --fix --ext .ts,.vue,.tsx,.d.ts",
     "build": "vite build",
     "preview": "vite preview",
     "gettext:extract": "vue-gettext-extract",
@@ -14,9 +13,6 @@
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
     "@formkit/auto-animate": "^0.8.0",
-    "@types/lodash": "^4.14.202",
-    "@types/nprogress": "^0.2.0",
-    "@types/sortablejs": "^1.15.0",
     "@vue/reactivity": "^3.3.9",
     "@vue/shared": "^3.3.9",
     "@vueuse/core": "^10.6.1",
@@ -45,6 +41,10 @@
     "xterm-addon-fit": "^0.8.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.202",
+    "@types/nprogress": "^0.2.0",
+    "@types/sortablejs": "^1.15.0",
+    "@vue/tsconfig": "^0.4.0",
     "@antfu/eslint-config-vue": "^0.43.1",
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0",
@@ -67,7 +67,7 @@
     "unplugin-auto-import": "^0.17.1",
     "unplugin-vue-components": "^0.25.2",
     "unplugin-vue-define-options": "^1.4.0",
-    "vite": "^5.0.2",
+    "vite": "^5.0.3",
     "vite-plugin-html": "^3.2.0",
     "vite-svg-loader": "^5.1.0",
     "vue-tsc": "^1.8.22"

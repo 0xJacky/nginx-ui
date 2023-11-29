@@ -52,10 +52,6 @@ const columns = [{
 
 const table = ref()
 
-interface Table {
-  get_list(): void
-}
-
 function enable(name) {
   domain.enable(name).then(() => {
     message.success($gettext('Enabled successfully'))
@@ -76,9 +72,7 @@ function disable(name) {
 
 function destroy(site_name) {
   domain.destroy(site_name).then(() => {
-    const t: Table | null = table.value
-
-    t!.get_list()
+    table.value.get_list()
     message.success($gettext('Delete site: %{site_name}', { site_name }))
   }).catch(e => {
     message.error(e?.message ?? $gettext('Server error'))
@@ -163,7 +157,7 @@ watch(route, () => {
     <SiteDuplicate
       v-model:visible="show_duplicator"
       :name="target"
-      @duplicated="table.get_list()"
+      @duplicated="() => table.get_list()"
     />
   </ACard>
 </template>
