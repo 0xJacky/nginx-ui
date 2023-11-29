@@ -4,8 +4,8 @@ import { useGettext } from 'vue3-gettext'
 
 const props = defineProps<{
   value: string
-  generate: boolean
-  placeholder: string
+  generate?: boolean
+  placeholder?: string
 }>()
 
 const emit = defineEmits(['update:value'])

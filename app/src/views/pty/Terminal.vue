@@ -10,7 +10,7 @@ import ws from '@/lib/websocket'
 const { $gettext } = useGettext()
 
 let term: Terminal | null
-let ping: NodeJS.Timer | null
+let ping: number
 
 const websocket = ws('/api/pty')
 
@@ -83,9 +83,9 @@ function wsOnOpen() {
 
 onUnmounted(() => {
   window.removeEventListener('resize', fit)
-  clearInterval(ping as number)
+  clearInterval(ping)
   term?.dispose()
-  ping = null
+  ping = 0
   websocket.close()
 })
 

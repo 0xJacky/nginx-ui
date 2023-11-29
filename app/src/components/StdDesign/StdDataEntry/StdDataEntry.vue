@@ -8,12 +8,12 @@ const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dataSource: Record<string, any>
   errors?: Record<string, string>
-  layout?: 'horizontal' | 'vertical'
+  layout?: 'horizontal' | 'vertical' | 'inline'
 }>()
 
 const emit = defineEmits<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  'update:dataSource': (v: any[]) => void
+  'update:dataSource': [data: Record<string, any>]
 }>()
 
 const dataSource = computed({

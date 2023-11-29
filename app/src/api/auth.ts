@@ -16,7 +16,7 @@ const auth = {
       login(r.token)
     })
   },
-  async casdoor_login(code: string, state: string) {
+  async casdoor_login(code?: string, state?: string) {
     await http.post('/casdoor_callback', {
       code,
       state,

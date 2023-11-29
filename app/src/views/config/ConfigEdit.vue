@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { computed, ref } from 'vue'
 import { message } from 'ant-design-vue'
+import type { Ref } from 'vue'
 import { formatDateTime } from '@/lib/helper'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import gettext from '@/gettext'
@@ -10,6 +10,7 @@ import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import ngx from '@/api/ngx'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
+import type { ChatComplicationMessage } from '@/api/openai'
 
 const { $gettext, interpolate } = gettext
 const route = useRoute()
@@ -25,7 +26,7 @@ const name = computed(() => {
 })
 
 const configText = ref('')
-const history_chatgpt_record = ref([])
+const history_chatgpt_record = ref([]) as Ref<ChatComplicationMessage[]>
 const file_path = ref('')
 const active_key = ref(['1', '2'])
 const modified_at = ref('')
@@ -52,7 +53,7 @@ init()
 
 function save() {
   config.save(name.value, { content: configText.value }).then(r => {
-    configText.value = r.config
+    configText.value = r.content
     message.success($gettext('Saved successfully'))
   }).catch(r => {
     message.error(interpolate($gettext('Save error %{msg}'), { msg: r.message ?? '' }))

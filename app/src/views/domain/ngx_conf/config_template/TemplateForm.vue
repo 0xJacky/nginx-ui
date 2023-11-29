@@ -9,9 +9,9 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'update:data': (data: {
+  'update:data': [data: {
     [key: string]: Variable
-  }) => void
+  }]
 }>()
 
 const data = computed({
@@ -30,7 +30,7 @@ const data = computed({
       v-for="(_, k) in data"
       :key="k"
       v-model:data="data[k]"
-      :name="k"
+      :name="k.toString()"
     />
   </AForm>
 </template>

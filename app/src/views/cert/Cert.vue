@@ -9,13 +9,14 @@ import cert from '@/api/cert'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import CertInfo from '@/views/domain/cert/CertInfo.vue'
+import type { Column } from '@/components/StdDesign/types'
 
-const { $gettext, interpolate } = useGettext()
+const { $gettext } = useGettext()
 
-const columns = [{
+const columns: Column[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
-  sorter: true,
+  sortable: true,
   pithy: true,
   customRender: (args: customRender) => {
     const { text, record } = args
@@ -31,7 +32,7 @@ const columns = [{
 }, {
   title: () => $gettext('Config Name'),
   dataIndex: 'filename',
-  sorter: true,
+  sortable: true,
   pithy: true,
 }, {
   title: () => $gettext('Auto Cert'),
@@ -50,7 +51,7 @@ const columns = [{
 
     return h('div', template)
   },
-  sorter: true,
+  sortable: true,
   pithy: true,
 }, {
   title: () => $gettext('SSL Certificate Path'),
@@ -58,19 +59,19 @@ const columns = [{
   edit: {
     type: input,
   },
-  display: false,
+  hidden: true,
 }, {
   title: () => $gettext('SSL Certificate Key Path'),
   dataIndex: 'ssl_certificate_key_path',
   edit: {
     type: input,
   },
-  display: false,
+  hidden: true,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
   customRender: datetime,
-  sorter: true,
+  sortable: true,
   pithy: true,
 }, {
   title: () => $gettext('Action'),
@@ -83,7 +84,6 @@ const columns = [{
     :title="$gettext('Certification')"
     :api="cert"
     :columns="columns"
-    row-key="name"
   >
     <template #beforeEdit="{ data }">
       <template v-if="data.auto_cert === 1">
@@ -109,7 +109,7 @@ const columns = [{
           style="margin-bottom: 15px"
         >
           <AAlert
-            :message="interpolate($gettext('Domains list is empty, try to reopen auto-cert for %{config}'), { config: data.filename })"
+            :message="$gettext('Domains list is empty, try to reopen auto-cert for %{config}', { config: data.filename })"
             type="error"
             show-icon
           />

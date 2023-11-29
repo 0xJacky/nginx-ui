@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { useGettext } from 'vue3-gettext'
 import type { SelectProps } from 'ant-design-vue'
+import type { Ref } from 'vue'
+import type { DNSProvider } from '@/api/auto_cert'
 import auto_cert from '@/api/auto_cert'
 
 const { $gettext } = useGettext()
-const providers = ref([])
+const providers = ref([]) as Ref<DNSProvider[]>
 
-const data = inject('data')
+// This data is provided by the Top StdCurd component,
+// is the object that you are trying to modify it
+const data = inject('data') as DNSProvider
 
 const code = computed(() => {
   return data.code
@@ -14,9 +18,11 @@ const code = computed(() => {
 
 const provider_idx = ref()
 function init() {
-  data.configuration = {
-    credentials: {},
-    additional: {},
+  if (!data.configuration) {
+    data.configuration = {
+      credentials: {},
+      additional: {},
+    }
   }
   providers.value?.forEach((v: { code: string }, k: number) => {
     if (v.code === code.value)
@@ -39,6 +45,7 @@ watch(code, init)
 watch(current, () => {
   data.code = current.value.code
   data.provider = current.value.name
+
   auto_cert.get_dns_provider(current.value.code).then(r => {
     Object.assign(current.value, r)
   })
@@ -47,7 +54,7 @@ watch(current, () => {
 const options = computed<SelectProps['options']>(() => {
   const list: SelectProps['options'] = []
 
-  providers.value.forEach((v: { name: string }, k: number) => {
+  providers.value.forEach((v: DNSProvider, k: number) => {
     list!.push({
       value: k,
       label: v.name,

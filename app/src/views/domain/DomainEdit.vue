@@ -2,15 +2,19 @@
 import { useGettext } from 'vue3-gettext'
 import { useRoute, useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
+import type { Ref } from 'vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 
 import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor.vue'
+import type { Site } from '@/api/domain'
 import domain from '@/api/domain'
 import type { NgxConfig } from '@/api/ngx'
 import ngx from '@/api/ngx'
 import config from '@/api/config'
 import RightSettings from '@/views/domain/components/RightSettings.vue'
+import type { CertificateInfo } from '@/api/cert'
+import type { ChatComplicationMessage } from '@/api/openai'
 
 const { $gettext, interpolate } = useGettext()
 
@@ -29,7 +33,7 @@ const ngx_config: NgxConfig = reactive({
   servers: [],
 })
 
-const cert_info_map = reactive({})
+const cert_info_map: Record<string, CertificateInfo> = reactive({})
 
 const auto_cert = ref(false)
 const enabled = ref(false)
@@ -52,16 +56,16 @@ const advance_mode = computed({
   },
 })
 
-const history_chatgpt_record = ref([])
+const history_chatgpt_record = ref([]) as Ref<ChatComplicationMessage[]>
 
-function handle_response(r) {
+function handle_response(r: Site) {
   if (r.advanced)
     advance_mode.value = true
 
   if (r.advanced)
     advance_mode.value = true
 
-  Object.keys(cert_info_map).forEach(v => {
+  Object.keys(cert_info_map).forEach((v: string) => {
     delete cert_info_map[v]
   })
   parse_error_status.value = false
@@ -87,13 +91,13 @@ function init() {
   }
 }
 
-function handle_parse_error(e) {
+function handle_parse_error(e: { error?: string; message: string }) {
   console.error(e)
   if (e?.error === 'nginx_config_syntax_error') {
     parse_error_status.value = true
     parse_error_message.value = e.message
     config.get(`sites-available/${name.value}`).then(r => {
-      configText.value = r.config
+      configText.value = r.content
     })
   }
   else {
@@ -117,7 +121,7 @@ function on_mode_change(advanced: boolean) {
   })
 }
 
-function build_config() {
+async function build_config() {
   return ngx.build_config(ngx_config).then(r => {
     configText.value = r.content
   })
@@ -314,10 +318,6 @@ provide('data', data)
   /* .slide-fade-leave-active for below version 2.1.8 */ {
   transform: translateX(10px);
   opacity: 0;
-}
-
-.location-block {
-
 }
 
 .directive-params-wrapper {

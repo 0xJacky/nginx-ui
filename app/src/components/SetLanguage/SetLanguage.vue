@@ -28,7 +28,7 @@ watch(current, v => {
   settings.set_language(v)
   gettext.current = v
 
-  const name = route.name as () => string
+  const name = route.name as never as () => string
 
   document.title = `${name()} | Nginx UI`
 })

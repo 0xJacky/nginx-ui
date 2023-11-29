@@ -8,22 +8,13 @@ import { message } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
 import websocket from '@/lib/websocket'
 import version from '@/version.json'
+import type { RuntimeInfo } from '@/api/upgrade'
 import upgrade from '@/api/upgrade'
 
 const { $gettext } = useGettext()
 
 const route = useRoute()
-
-interface APIData {
-  name: string
-  os: string
-  arch: string
-  ex_path: string
-  body: string
-  published_at: string
-}
-
-const data: Ref<APIData> = ref({})
+const data = ref({}) as Ref<RuntimeInfo>
 const last_check = ref('')
 const loading = ref(false)
 const channel = ref('stable')
@@ -65,16 +56,16 @@ const is_latest_ver = computed(() => {
   return data.value.name === `v${version.version}`
 })
 
-const logContainer = ref(null)
+const logContainer = ref()
 
 function log(msg: string) {
   const para = document.createElement('p')
 
-  para.appendChild(document.createTextNode($gettext(msg)));
+  para.appendChild(document.createTextNode($gettext(msg)))
 
-  (logContainer.value as Element).appendChild(para);
+  logContainer.value.appendChild(para)
 
-  (logContainer.value as Element).scroll({ top: 320, left: 0, behavior: 'smooth' })
+  logContainer.value.scroll({ top: 320, left: 0, behavior: 'smooth' })
 }
 
 const dry_run = computed(() => {
@@ -85,8 +76,8 @@ async function perform_upgrade() {
   progressStatus.value = 'active'
   modalClosable.value = false
   modalVisible.value = true
-  progressPercent.value = 0;
-  (logContainer.value as Element).innerHTML = ''
+  progressPercent.value = 0
+  logContainer.value.innerHTML = ''
 
   log($gettext('Upgrading Nginx UI, please wait...'))
 

@@ -3,6 +3,7 @@ import { useRoute } from 'vue-router'
 import type { ComputedRef } from 'vue'
 import { computed, ref, watch } from 'vue'
 import type { AntdIconType } from '@ant-design/icons-vue/lib/components/AntdIcon'
+import type { IconComponentProps } from '@ant-design/icons-vue/es/components/Icon'
 import Logo from '@/components/Logo/Logo.vue'
 import { routes } from '@/routes'
 import EnvIndicator from '@/components/EnvIndicator/EnvIndicator.vue'
@@ -56,7 +57,7 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
     const t: sidebar = {
       path: s.path,
       name: s.name,
-      meta: s.meta as meta,
+      meta: s.meta as unknown as meta,
       children: [],
     };
 
@@ -64,7 +65,7 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
       if (c.meta && c.meta.hiddenInSidebar)
         return
 
-      t.children.push((c as sidebar))
+      t.children.push((c as unknown as sidebar))
     })
     res.push(t)
   })
@@ -80,7 +81,6 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
     <AMenu
       v-model:openKeys="openKeys"
       v-model:selectedKeys="selectedKey"
-      :open-keys="openKeys"
       mode="inline"
     >
       <EnvIndicator />
@@ -91,7 +91,7 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
           :key="s.name"
           @click="$router.push(`/${s.path}`).catch(() => {})"
         >
-          <component :is="s.meta.icon" />
+          <Component :is="s.meta.icon as IconComponentProps" />
           <span>{{ s.name() }}</span>
         </AMenuItem>
 
@@ -100,7 +100,7 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
           :key="s.path"
         >
           <template #title>
-            <component :is="s.meta.icon" />
+            <Component :is="s.meta.icon as IconComponentProps" />
             <span>{{ s.name() }}</span>
           </template>
           <AMenuItem

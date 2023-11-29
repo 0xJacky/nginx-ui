@@ -2,7 +2,7 @@ package analytic
 
 import (
 	"fmt"
-	analytic2 "github.com/0xJacky/Nginx-UI/internal/analytic"
+	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/host"
@@ -16,22 +16,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
-
-type CPUStat struct {
-	User   float64 `json:"user"`
-	System float64 `json:"system"`
-	Idle   float64 `json:"idle"`
-	Total  float64 `json:"total"`
-}
-
-type Stat struct {
-	Uptime  uint64             `json:"uptime"`
-	LoadAvg *load.AvgStat     `json:"loadavg"`
-	CPU     CPUStat           `json:"cpu"`
-	Memory  analytic2.MemStat `json:"memory"`
-	Disk    analytic2.DiskStat `json:"disk"`
-	Network net.IOCountersStat `json:"network"`
-}
 
 func Analytic(c *gin.Context) {
 	var upGrader = websocket.Upgrader{
@@ -51,7 +35,7 @@ func Analytic(c *gin.Context) {
 	var stat Stat
 
 	for {
-		stat.Memory, err = analytic2.GetMemoryStat()
+		stat.Memory, err = analytic.GetMemoryStat()
 
 		if err != nil {
 			logger.Error(err)
@@ -76,7 +60,7 @@ func Analytic(c *gin.Context) {
 
 		stat.LoadAvg, _ = load.Avg()
 
-		stat.Disk, err = analytic2.GetDiskStat()
+		stat.Disk, err = analytic.GetDiskStat()
 
 		if err != nil {
 			logger.Error(err)
@@ -103,20 +87,24 @@ func Analytic(c *gin.Context) {
 }
 
 func GetAnalyticInit(c *gin.Context) {
-	cpuInfo, _ := cpu.Info()
-	network, _ := net.IOCounters(false)
-	memory, err := analytic2.GetMemoryStat()
-
+	cpuInfo, err := cpu.Info()
 	if err != nil {
 		logger.Error(err)
-		return
 	}
 
-	diskStat, err := analytic2.GetDiskStat()
-
+	network, err := net.IOCounters(false)
 	if err != nil {
 		logger.Error(err)
-		return
+	}
+
+	memory, err := analytic.GetMemoryStat()
+	if err != nil {
+		logger.Error(err)
+	}
+
+	diskStat, err := analytic.GetDiskStat()
+	if err != nil {
+		logger.Error(err)
 	}
 
 	var _net net.IOCountersStat
@@ -132,86 +120,30 @@ func GetAnalyticInit(c *gin.Context) {
 		hostInfo.Platform = "CentOS"
 	}
 
-	loadAvg, _ := load.Avg()
+	loadAvg, err := load.Avg()
 
-	c.JSON(http.StatusOK, gin.H{
-		"host": hostInfo,
-		"cpu": gin.H{
-			"info":  cpuInfo,
-			"user":  analytic2.CpuUserRecord,
-			"total": analytic2.CpuTotalRecord,
+	if err != nil {
+		logger.Error(err)
+	}
+
+	c.JSON(http.StatusOK, InitResp{
+		Host: hostInfo,
+		CPU: CPURecords{
+			Info:  cpuInfo,
+			User:  analytic.CpuUserRecord,
+			Total: analytic.CpuTotalRecord,
 		},
-		"network": gin.H{
-			"init":      _net,
-			"bytesRecv": analytic2.NetRecvRecord,
-			"bytesSent": analytic2.NetSentRecord,
+		Network: NetworkRecords{
+			Init:      _net,
+			BytesRecv: analytic.NetRecvRecord,
+			BytesSent: analytic.NetSentRecord,
 		},
-		"disk_io": gin.H{
-			"writes": analytic2.DiskWriteRecord,
-			"reads":  analytic2.DiskReadRecord,
+		DiskIO: DiskIORecords{
+			Writes: analytic.DiskWriteRecord,
+			Reads:  analytic.DiskReadRecord,
 		},
-		"memory":  memory,
-		"disk":    diskStat,
-		"loadavg": loadAvg,
+		Memory:  memory,
+		Disk:    diskStat,
+		LoadAvg: loadAvg,
 	})
-}
-
-func GetNodeStat(c *gin.Context) {
-	var upGrader = websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool {
-			return true
-		},
-	}
-	// upgrade http to websocket
-	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-
-	defer ws.Close()
-
-	for {
-		// write
-		err = ws.WriteJSON(analytic2.GetNodeStat())
-		if err != nil || websocket.IsUnexpectedCloseError(err,
-			websocket.CloseGoingAway,
-			websocket.CloseNoStatusReceived,
-			websocket.CloseNormalClosure) {
-			logger.Error(err)
-			break
-		}
-
-		time.Sleep(10 * time.Second)
-	}
-}
-
-func GetNodesAnalytic(c *gin.Context) {
-	var upGrader = websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool {
-			return true
-		},
-	}
-	// upgrade http to websocket
-	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-
-	defer ws.Close()
-
-	for {
-		// write
-		err = ws.WriteJSON(analytic2.NodeMap)
-		if err != nil || websocket.IsUnexpectedCloseError(err,
-			websocket.CloseGoingAway,
-			websocket.CloseNoStatusReceived,
-			websocket.CloseNormalClosure) {
-			logger.Error(err)
-			break
-		}
-
-		time.Sleep(10 * time.Second)
-	}
 }

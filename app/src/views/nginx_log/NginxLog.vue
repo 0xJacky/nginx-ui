@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { useGettext } from 'vue3-gettext'
-import type { Ref, UnwrapNestedRefs } from 'vue'
-import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import type ReconnectingWebSocket from 'reconnecting-websocket'
 import { useRoute, useRouter } from 'vue-router'
 import { debounce } from 'lodash'
@@ -11,7 +9,7 @@ import nginx_log from '@/api/nginx_log'
 import ws from '@/lib/websocket'
 
 const { $gettext } = useGettext()
-const logContainer: Ref<Element> = ref()!
+const logContainer = ref()
 let websocket: ReconnectingWebSocket | WebSocket
 const route = useRoute()
 const buffer = ref('')
@@ -21,7 +19,7 @@ const router = useRouter()
 const loading = ref(false)
 const filter = ref('')
 
-const control: UnwrapNestedRefs<INginxLogData> = reactive({
+const control: INginxLogData = reactive({
   type: logType(),
   conf_name: route.query.conf_name as string,
   server_idx: Number.parseInt(route.query.server_idx as string),
@@ -53,10 +51,8 @@ function addLog(data: string, prepend: boolean = false) {
     buffer.value += data
 
   nextTick(() => {
-    const elem = (logContainer.value as Element)
-
-    elem?.scroll({
-      top: elem.scrollHeight,
+    logContainer.value?.scroll({
+      top: logContainer.value.scrollHeight,
       left: 0,
     })
   })

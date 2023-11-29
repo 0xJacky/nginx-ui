@@ -3,6 +3,7 @@ import { reactive, ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { DeleteOutlined } from '@ant-design/icons-vue'
 import CodeEditor from '@/components/CodeEditor'
+import type { NgxDirective } from '@/api/ngx'
 
 const props = defineProps<{
   idx?: number
@@ -12,7 +13,7 @@ const emit = defineEmits(['save'])
 
 const { $gettext } = useGettext()
 
-const ngx_directives = inject('ngx_directives')
+const ngx_directives = inject('ngx_directives') as NgxDirective[]
 const directive = reactive({ directive: '', params: '' })
 const adding = ref(false)
 const mode = ref('default')

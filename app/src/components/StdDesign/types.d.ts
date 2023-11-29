@@ -8,20 +8,18 @@ export interface StdDesignEdit {
 
   batch?: boolean // batch edit
 
-  mask?: {
-    [key: string]: () => string
-  } // use for select-option
+  mask?: Record<string, () => string> // use for select-option
 
   rules?: [] // validator rules
 
   selector?: {
-    get_params?: {}
+    getParams?: {}
     recordValueIndex: any // relative to api return
     selectionType: any
     api: Curd,
     valueApi?: Curd,
     columns: any
-    disable_search?: boolean
+    disableSearch?: boolean
     description?: string
     bind?: any
     itemKey?: any // default is id
@@ -52,7 +50,7 @@ export interface Flex {
 
 export interface Column {
   title?: string | (() => string);
-  dataIndex: string;
+  dataIndex: string | string[];
   edit?: StdDesignEdit;
   customRender?: function;
   extra?: string | (() => string);

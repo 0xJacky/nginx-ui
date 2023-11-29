@@ -9,14 +9,16 @@ import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
 import { formatDateTime } from '@/lib/helper'
 import Deploy from '@/views/domain/components/Deploy.vue'
 import { useSettingsStore } from '@/pinia'
+import type { ChatComplicationMessage } from '@/api/openai'
+import type { NgxConfig } from '@/api/ngx'
 
 const settings = useSettingsStore()
 const { $gettext } = useGettext()
-const configText = inject('configText')
-const ngx_config = inject('ngx_config')
-const enabled = inject('enabled')
-const name = inject('name')
-const history_chatgpt_record = inject('history_chatgpt_record')
+const configText = inject('configText') as Ref<string>
+const ngx_config = inject('ngx_config') as Ref<NgxConfig>
+const enabled = inject('enabled') as Ref<boolean>
+const name = inject('name') as Ref<string>
+const history_chatgpt_record = inject('history_chatgpt_record') as Ref<ChatComplicationMessage[]>
 const filename = inject('filename')
 const data: Ref<Site> = inject('data') as Ref<Site>
 

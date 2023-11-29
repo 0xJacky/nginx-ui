@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, nextTick, reactive, ref, watch } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { Form, message, notification } from 'ant-design-vue'
 import gettext from '@/gettext'
@@ -27,7 +26,12 @@ const show = computed({
   },
 })
 
-const modelRef = reactive({ name: '', target: [] })
+interface Model {
+  name: string // site name
+  target: number[] // ids of deploy targets
+}
+
+const modelRef: Model = reactive({ name: '', target: [] })
 
 const rulesRef = reactive({
   name: [
@@ -49,7 +53,7 @@ const { validate, validateInfos, clearValidate } = Form.useForm(modelRef, rulesR
 
 const loading = ref(false)
 
-const node_map = reactive({})
+const node_map: Record<number, string> = reactive({})
 
 function onSubmit() {
   validate().then(async () => {

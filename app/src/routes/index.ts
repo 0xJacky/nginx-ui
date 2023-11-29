@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import type { AntDesignOutlinedIconType } from '@ant-design/icons-vue/lib/icons/AntDesignOutlined'
 
 import {
   CloudOutlined,
@@ -13,7 +14,6 @@ import {
   UserOutlined,
 } from '@ant-design/icons-vue'
 import NProgress from 'nprogress'
-import type { AntDesignOutlinedIconType } from '@ant-design/icons-vue/lib/icons/AntDesignOutlined'
 
 import gettext from '../gettext'
 import { useUserStore } from '@/pinia'

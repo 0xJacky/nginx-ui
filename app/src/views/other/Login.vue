@@ -95,7 +95,7 @@ const loginWithCasdoor = () => {
 
 if (route.query?.code !== undefined && route.query?.state !== undefined) {
   loading.value = true
-  auth.casdoor_login(route.query.code.toString(), route.query.state.toString()).then(async () => {
+  auth.casdoor_login(route.query?.code?.toString(), route.query?.state?.toString()).then(async () => {
     message.success($gettext('Login successful'), 1)
 
     const next = (route.query?.next || '').toString() || '/'

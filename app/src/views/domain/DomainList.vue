@@ -8,13 +8,14 @@ import domain from '@/api/domain'
 import { input } from '@/components/StdDesign/StdDataEntry'
 import SiteDuplicate from '@/views/domain/components/SiteDuplicate.vue'
 import InspectConfig from '@/views/config/InspectConfig.vue'
+import type { Column } from '@/components/StdDesign/types'
 
 const { $gettext } = useGettext()
 
-const columns = [{
+const columns: Column[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
-  sorter: true,
+  sortable: true,
   pithy: true,
   edit: {
     type: input,
@@ -37,13 +38,13 @@ const columns = [{
 
     return h('div', template)
   },
-  sorter: true,
+  sortable: true,
   pithy: true,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'modified_at',
   customRender: datetime,
-  sorter: true,
+  sortable: true,
   pithy: true,
 }, {
   title: () => $gettext('Action'),
@@ -52,7 +53,7 @@ const columns = [{
 
 const table = ref()
 
-function enable(name) {
+function enable(name: string) {
   domain.enable(name).then(() => {
     message.success($gettext('Enabled successfully'))
     table.value?.get_list()
@@ -61,7 +62,7 @@ function enable(name) {
   })
 }
 
-function disable(name) {
+function disable(name: string) {
   domain.disable(name).then(() => {
     message.success($gettext('Disabled successfully'))
     table.value?.get_list()
@@ -70,7 +71,7 @@ function disable(name) {
   })
 }
 
-function destroy(site_name) {
+function destroy(site_name: string) {
   domain.destroy(site_name).then(() => {
     table.value.get_list()
     message.success($gettext('Delete site: %{site_name}', { site_name }))

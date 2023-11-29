@@ -7,13 +7,14 @@ import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransfor
 import environment from '@/api/environment'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import { input } from '@/components/StdDesign/StdDataEntry'
+import type { Column } from '@/components/StdDesign/types'
 
 const { $gettext } = useGettext()
 
-const columns = [{
+const columns: Column[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
-  sorter: true,
+  sortable: true,
   pithy: true,
   edit: {
     type: input,
@@ -22,18 +23,20 @@ const columns = [{
 {
   title: () => $gettext('URL'),
   dataIndex: 'url',
-  sorter: true,
+  sortable: true,
   pithy: true,
   edit: {
     type: input,
-    placeholder: () => 'https://10.0.0.1:9000',
+    config: {
+      placeholder: () => 'https://10.0.0.1:9000',
+    },
   },
 },
 {
   title: () => 'NodeSecret',
   dataIndex: 'token',
-  sorter: true,
-  display: false,
+  sortable: true,
+  hidden: true,
   edit: {
     type: input,
   },
@@ -88,14 +91,14 @@ const columns = [{
 
     return h('div', template)
   },
-  sorter: true,
+  sortable: true,
   pithy: true,
 },
 {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
   customRender: datetime,
-  sorter: true,
+  sortable: true,
   pithy: true,
 },
 {

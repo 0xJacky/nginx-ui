@@ -15,7 +15,7 @@ export interface StdCurdProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onClickEdit?: (id: number | string, record: any, index: number) => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  beforeSave?: (data: any) => void
+  beforeSave?: (data: any) => Promise<void>
 }
 
 const props = defineProps<StdTableProps & StdCurdProps>()
@@ -24,14 +24,16 @@ const { $gettext } = gettext
 
 const visible = ref(false)
 const update = ref(0)
-const data = reactive({ id: null })
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const data: any = reactive({ id: null })
 
 provide('data', data)
 
-const error = reactive({})
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const error: any = reactive({})
 const selected = ref([])
-
-function onSelect(keys) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function onSelect(keys: any) {
   selected.value = keys
 }
 
@@ -86,7 +88,7 @@ function cancel() {
   clear_error()
 }
 
-function edit(id) {
+function edit(id: number | string) {
   props.api!.get(id).then(async r => {
     Object.keys(data).forEach(k => {
       delete data[k]

@@ -7,7 +7,7 @@ const props = defineProps<Props>()
 const { $gettext } = useGettext()
 
 export interface Props {
-  dataIndex?: string
+  dataIndex?: string | string[]
   label?: string
   extra?: string
   error?: {
@@ -16,7 +16,7 @@ export interface Props {
 }
 
 const tag = computed(() => {
-  return props.error?.[props.dataIndex] ?? ''
+  return props.error?.[props.dataIndex!.toString()] ?? ''
 })
 
 const valid_status = computed(() => {

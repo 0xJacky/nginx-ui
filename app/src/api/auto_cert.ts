@@ -1,8 +1,9 @@
 import http from '@/lib/http'
 
 export interface DNSProvider {
-  name: string
+  name?: string
   code: string
+  provider?: string
   configuration: {
     credentials: {
       [key: string]: string
@@ -11,10 +12,14 @@ export interface DNSProvider {
       [key: string]: string
     }
   }
-  links: {
+  links?: {
     api: string
     go_client: string
   }
+}
+export interface DnsChallenge extends DNSProvider {
+  dns_credential_id: number
+  challenge_method: string
 }
 
 const auto_cert = {

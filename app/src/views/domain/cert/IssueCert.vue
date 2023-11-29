@@ -3,16 +3,19 @@ import { useGettext } from 'vue3-gettext'
 import ObtainCert from '@/views/domain/cert/components/ObtainCert.vue'
 import type { NgxDirective } from '@/api/ngx'
 
-const props = defineProps<{
+export interface Props {
   enabled: boolean
-}>()
+  configName: string
+}
+
+const props = defineProps<Props>()
 
 const emit = defineEmits(['callback', 'update:enabled'])
 
 const { $gettext } = useGettext()
 const issuing_cert = ref(false)
 const obtain_cert = ref()
-const directivesMap = inject('directivesMap') as Record<string, NgxDirective[]>
+const directivesMap = inject('directivesMap') as Ref<Record<string, NgxDirective[]>>
 
 const enabled = computed({
   get() {
@@ -24,10 +27,10 @@ const enabled = computed({
 })
 
 const no_server_name = computed(() => {
-  if (!directivesMap.server_name)
+  if (!directivesMap.value.server_name)
     return true
 
-  return directivesMap.server_name.length === 0
+  return directivesMap.value.server_name.length === 0
 })
 
 provide('no_server_name', no_server_name)

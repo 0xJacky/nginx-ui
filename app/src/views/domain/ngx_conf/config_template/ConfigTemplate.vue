@@ -52,10 +52,10 @@ async function add() {
   ngx_config.custom = ngx_config.custom?.trim()
 
   if (data.value.locations)
-    ngx_config.servers[props.currentServerIndex].locations.push(...data.value.locations)
+    ngx_config?.servers?.[props.currentServerIndex]?.locations?.push(...data.value.locations)
 
   if (data.value.directives)
-    ngx_config.servers[props.currentServerIndex].directives.push(...data.value.directives)
+    ngx_config?.servers?.[props.currentServerIndex]?.directives?.push(...data.value.directives)
 
   visible.value = false
 }

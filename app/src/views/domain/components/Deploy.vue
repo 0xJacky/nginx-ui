@@ -13,7 +13,7 @@ const node_map = reactive({})
 const target = ref([])
 const overwrite = ref(false)
 const enabled = ref(false)
-const name = inject('name')
+const name = inject('name') as Ref<string>
 
 function deploy() {
   Modal.confirm({

@@ -27,7 +27,7 @@ const emit = defineEmits(['callback', 'update:auto_cert'])
 
 const { $gettext } = useGettext()
 
-const save_site_config = inject('save_site_config')!
+const save_site_config = inject('save_site_config') as () => Promise<void>
 
 const route = useRoute()
 
@@ -68,7 +68,7 @@ const current_server_directives = computed(() => {
 })
 
 const directivesMap: ComputedRef<Record<string, NgxDirective[]>> = computed(() => {
-  const map = {}
+  const map: Record<string, NgxDirective[]> = {}
 
   current_server_directives.value?.forEach((v, k) => {
     v.idx = k
@@ -81,6 +81,7 @@ const directivesMap: ComputedRef<Record<string, NgxDirective[]>> = computed(() =
   return map
 })
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 function change_tls(status: boolean) {
   if (status) {
     // deep copy servers[0] to servers[1]
@@ -93,15 +94,15 @@ function change_tls(status: boolean) {
     const servers = ngx_config.servers
 
     let i = 0
-    while (i < servers[1].directives.length) {
-      const v = servers[1].directives[i]
-      if (v.directive === 'listen')
-        servers[1].directives.splice(i, 1)
+    while (i < (servers?.[1].directives?.length ?? 0)) {
+      const v = servers?.[1]?.directives?.[i]
+      if (v?.directive === 'listen')
+        servers[1]?.directives?.splice(i, 1)
       else
         i++
     }
 
-    servers[1].directives.splice(0, 0, {
+    servers?.[1]?.directives?.splice(0, 0, {
       directive: 'listen',
       params: '443 ssl',
     }, {
@@ -112,10 +113,10 @@ function change_tls(status: boolean) {
       params: 'on',
     })
 
-    const server_name = directivesMap.value.server_name[0]
+    const server_name_idx = directivesMap.value?.server_name?.[0].idx ?? 0
 
     if (!directivesMap.value.ssl_certificate) {
-      servers[1].directives.splice(server_name.idx + 1, 0, {
+      servers?.[1]?.directives?.splice(server_name_idx + 1, 0, {
         directive: 'ssl_certificate',
         params: '',
       })
@@ -123,7 +124,7 @@ function change_tls(status: boolean) {
 
     setTimeout(() => {
       if (!directivesMap.value.ssl_certificate_key) {
-        servers[1].directives.splice(server_name.idx + 2, 0, {
+        servers?.[1]?.directives?.splice(server_name_idx + 2, 0, {
           directive: 'ssl_certificate_key',
           params: '',
         })
@@ -144,8 +145,8 @@ const support_ssl = computed(() => {
   const servers = ngx_config.servers
   for (const server_key in servers) {
     for (const k in servers[server_key].directives) {
-      const v = servers[server_key].directives[k]
-      if (v.directive === 'listen' && v.params.indexOf('ssl') > 0)
+      const v = servers?.[server_key]?.directives?.[Number.parseInt(k)]
+      if (v?.directive === 'listen' && v?.params?.indexOf('ssl') > 0)
         return true
     }
   }

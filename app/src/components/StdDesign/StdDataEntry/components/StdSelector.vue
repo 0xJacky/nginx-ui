@@ -6,17 +6,16 @@ import type { Column } from '@/components/StdDesign/types'
 
 const props = defineProps<{
   selectedKey: string | number
-  value: string | number
+  value?: string | number
   recordValueIndex: string
   selectionType: 'radio' | 'checkbox'
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   api: Curd<any>
   columns: Column[]
-  dataKey: string
-  disableSearch: boolean
+  disableSearch?: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getParams: any
-  description: string
+  description?: string
 }>()
 
 const emit = defineEmits(['update:selectedKey', 'changeSelect'])
@@ -29,8 +28,8 @@ onMounted(() => {
 })
 
 const selected = ref([])
-
-const record = reactive({})
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const record: any = reactive({})
 
 function init() {
   if (props.selectedKey && !props.value && props.selectionType === 'radio') {
@@ -113,12 +112,11 @@ const _selectedKey = computed({
         <StdTable
           :api="api"
           :columns="columns"
-          :data_key="dataKey"
-          :disable_search="disableSearch"
+          :disable-search="disableSearch"
           pithy
-          :get_params="getParams"
+          :get-params="getParams"
           :selection-type="selectionType"
-          disable_query_params
+          disable-query-params
           @on-selected="onSelect"
           @on-selected-record="onSelectedRecord"
         />

@@ -52,6 +52,7 @@ function textarea(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
 function password(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
   return <StdPassword
     v-model:value={dataSource[dataIndex]}
+    value={dataSource[dataIndex]}
     generate={edit.config?.generate}
     placeholder={placeholder_helper(edit)}
   />
@@ -60,19 +61,21 @@ function password(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
 function select(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
   return <StdSelect
     v-model:value={dataSource[dataIndex]}
-    mask={edit.mask}
+    value={dataSource[dataIndex]}
+    mask={edit.mask as Record<string, () => string>}
   />
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function selector(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
   return <StdSelector
     v-model:selectedKey={dataSource[dataIndex]}
+    selectedKey={dataSource[dataIndex]}
     recordValueIndex={edit.selector?.recordValueIndex}
     selectionType={edit.selector?.selectionType}
     api={edit.selector?.api}
     columns={edit.selector?.columns}
-    disableSearch={edit.selector?.disable_search}
-    getParams={edit.selector?.get_params}
+    disableSearch={edit.selector?.disableSearch}
+    getParams={edit.selector?.getParams}
     description={edit.selector?.description}
   />
 }

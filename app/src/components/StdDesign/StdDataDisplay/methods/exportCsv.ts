@@ -9,7 +9,7 @@ import type { StdTableProps } from '@/components/StdDesign/StdDataDisplay/StdTab
 
 const { $gettext } = gettext
 async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[]>) {
-  const header: { title?: string; key: string }[] = []
+  const header: { title?: string; key: string | string[] }[] = []
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const headerKeys: any[] = []
   const showColumnsMap: Record<string, Column> = {}
@@ -24,8 +24,8 @@ async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[
       title: t,
       key: column.dataIndex,
     })
-    headerKeys.push(column.dataIndex)
-    showColumnsMap[column.dataIndex] = column
+    headerKeys.push(column.dataIndex.toString())
+    showColumnsMap[column.dataIndex.toString()] = column
   })
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -59,7 +59,7 @@ async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[
       const c = showColumnsMap[key]
 
       _data = c?.customRender?.({ text: _data }) ?? _data
-      obj[c.dataIndex] = _data
+      _.set(obj, c.dataIndex, _data)
     })
     data.push(obj)
   })

@@ -17,7 +17,7 @@ const errorIdx = ref()
 
 const hasAccessLog = computed(() => {
   let flag = false
-  props.ngxConfig.servers[props.currentServerIdx].directives.forEach((v, k) => {
+  props.ngxConfig?.servers[props.currentServerIdx].directives?.forEach((v, k) => {
     if (v.directive === 'access_log') {
       flag = true
       accessIdx.value = k
@@ -29,7 +29,7 @@ const hasAccessLog = computed(() => {
 
 const hasErrorLog = computed(() => {
   let flag = false
-  props.ngxConfig.servers[props.currentServerIdx].directives.forEach((v, k) => {
+  props.ngxConfig?.servers[props.currentServerIdx].directives?.forEach((v, k) => {
     if (v.directive === 'error_log') {
       flag = true
       errorIdx.value = k

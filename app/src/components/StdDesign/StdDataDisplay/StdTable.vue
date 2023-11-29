@@ -2,7 +2,7 @@
 import { message } from 'ant-design-vue'
 import { HolderOutlined } from '@ant-design/icons-vue'
 import { useGettext } from 'vue3-gettext'
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import type { SorterResult } from 'ant-design-vue/lib/table/interface'
 import StdPagination from './StdPagination.vue'
 import StdDataEntry from '@/components/StdDesign/StdDataEntry'
@@ -46,9 +46,11 @@ const props = withDefaults(defineProps<StdTableProps>(), {
 const emit = defineEmits(['onSelected', 'onSelectedRecord', 'clickEdit', 'update:selectedRowKeys', 'clickBatchModify'])
 const { $gettext } = useGettext()
 const route = useRoute()
-const dataSource = ref([])
-const expandKeysList = ref([])
-const rowsKeyIndexMap = ref({})
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const dataSource: Ref<any[]> = ref([])
+const expandKeysList: Ref<number[]> = ref([])
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const rowsKeyIndexMap: Ref<Record<number, any>> = ref({})
 const loading = ref(true)
 
 // This can be useful if there are more than one StdTable in the same page.
@@ -78,7 +80,7 @@ const selectedRowKeysBuffer = computed({
 })
 
 const searchColumns = computed(() => {
-  const _searchColumns = []
+  const _searchColumns: Column[] = []
 
   props.columns?.forEach(column => {
     if (column.search)
@@ -101,7 +103,7 @@ const pithyColumns = computed(() => {
 }) as ComputedRef<Column[]>
 
 const batchColumns = computed(() => {
-  const batch = []
+  const batch: Column[] = []
 
   props.columns?.forEach(column => {
     if (column.batch)
@@ -125,7 +127,7 @@ defineExpose({
   get_list,
 })
 
-function destroy(id) {
+function destroy(id: number | string) {
   props.api!.destroy(id).then(() => {
     get_list()
     message.success($gettext('Deleted successfully'))
@@ -155,9 +157,11 @@ function get_list(page_num = null, page_size = 20) {
     message.error(e?.message ?? $gettext('Server error'))
   })
 }
-function buildIndexMap(data, level: number = 0, index: number = 0, total: number[] = []) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function buildIndexMap(data: any, level: number = 0, index: number = 0, total: number[] = []) {
   if (data && data.length > 0) {
-    data.forEach(v => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data.forEach((v: any) => {
       v.level = level
 
       const current_indexes = [...total, index++]
@@ -168,7 +172,7 @@ function buildIndexMap(data, level: number = 0, index: number = 0, total: number
     })
   }
 }
-function orderPaginationChange(_pagination: Pagination, filters, sorter: SorterResult) {
+function orderPaginationChange(_pagination: Pagination, filters: never, sorter: SorterResult) {
   if (sorter) {
     selectedRowKeysBuffer.value = []
     params.order_by = sorter.field
@@ -189,19 +193,19 @@ function orderPaginationChange(_pagination: Pagination, filters, sorter: SorterR
     selectedRowKeysBuffer.value = []
 }
 
-function expandedTable(keys) {
+function expandedTable(keys: number[]) {
   expandKeysList.value = keys
 }
 
-const crossPageSelect = {}
+const crossPageSelect: Record<string, number[]> = {}
 
-async function onSelectChange(_selectedRowKeys) {
+async function onSelectChange(_selectedRowKeys: number[]) {
   const page = params.page || 1
 
-  crossPageSelect[page] = await _selectedRowKeys
+  crossPageSelect[page] = _selectedRowKeys
 
-  let t = []
-  Object.keys(crossPageSelect).forEach(v => {
+  let t: number[] = []
+  Object.keys(crossPageSelect).forEach((v: string) => {
     t.push(...crossPageSelect[v])
   })
 
@@ -215,8 +219,8 @@ async function onSelectChange(_selectedRowKeys) {
   selectedRowKeysBuffer.value = Array.from(set)
   emit('onSelected', selectedRowKeysBuffer.value)
 }
-
-function onSelect(record) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function onSelect(record: any) {
   emit('onSelectedRecord', record)
 }
 

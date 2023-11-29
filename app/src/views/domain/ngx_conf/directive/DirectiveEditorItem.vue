@@ -26,7 +26,7 @@ const content = ref('')
 function init() {
   if (ngx_directives[props.index].directive === 'include') {
     config.get(ngx_directives[props.index].params).then(r => {
-      content.value = r.config
+      content.value = r.content
     })
   }
 }
@@ -35,7 +35,7 @@ watch(props, init)
 
 function save() {
   config.save(ngx_directives[props.index].params, { content: content.value }).then(r => {
-    content.value = r.config
+    content.value = r.content
     message.success($gettext('Saved successfully'))
   }).catch(r => {
     message.error(interpolate($gettext('Save error %{msg}'), { msg: r.message ?? '' }))

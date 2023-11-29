@@ -3,9 +3,10 @@ import { useGettext } from 'vue3-gettext'
 import type ReconnectingWebSocket from 'reconnecting-websocket'
 import AreaChart from '@/components/Chart/AreaChart.vue'
 import RadialBarChart from '@/components/Chart/RadialBarChart.vue'
+import type { CPUInfoStat, DiskStat, HostInfoStat, LoadStat, MemStat } from '@/api/analytic'
 import analytic from '@/api/analytic'
-import ws from '@/lib/websocket'
 import { bytesToSize } from '@/lib/helper'
+import type { Series } from '@/components/Chart/types'
 
 const { $gettext } = useGettext()
 
@@ -17,32 +18,42 @@ const host = reactive({
   os: '',
   kernelVersion: '',
   kernelArch: '',
-})
+}) as HostInfoStat
 
 const cpu = ref('0.0')
-const cpu_info = reactive([])
-const cpu_analytic_series = reactive([{ name: 'User', data: [] }, { name: 'Total', data: [] }])
+const cpu_info = reactive([]) as CPUInfoStat[]
+const cpu_analytic_series = reactive([{ name: 'User', data: [] }, { name: 'Total', data: [] }]) as Series[]
 
 const net_analytic = reactive([{ name: $gettext('Receive'), data: [] },
-  { name: $gettext('Send'), data: [] }])
+  { name: $gettext('Send'), data: [] }]) as Series[]
 
 const disk_io_analytic = reactive([{ name: $gettext('Writes'), data: [] },
-  { name: $gettext('Reads'), data: [] }])
+  { name: $gettext('Reads'), data: [] }]) as Series[]
 
-const memory = reactive({ swap_used: '', swap_percent: '', swap_total: '' })
-const disk = reactive({ percentage: '', used: '' })
+const memory = reactive({
+  total: '',
+  used: '',
+  cached: '',
+  free: '',
+  swap_used: '',
+  swap_cached: '',
+  swap_percent: 0,
+  swap_total: '',
+  pressure: 0,
+}) as MemStat
+
+const disk = reactive({ percentage: 0, used: '', total: '', writes: { x: '', y: 0 }, reads: { x: '', y: 0 } }) as DiskStat
 const disk_io = reactive({ writes: 0, reads: 0 })
 const uptime = ref('')
-const loadavg = reactive({ load1: 0, load5: 0, load15: 0 })
+const loadavg = reactive({ load1: 0, load5: 0, load15: 0 }) as LoadStat
 const net = reactive({ recv: 0, sent: 0, last_recv: 0, last_sent: 0 })
 
 const net_formatter = (bytes: number) => {
   return `${bytesToSize(bytes)}/s`
 }
 
-interface Usage {
-  x: number
-  y: number
+const cpu_formatter = (usage: number) => {
+  return usage.toFixed(2)
 }
 
 onMounted(() => {
@@ -60,22 +71,15 @@ onMounted(() => {
 
     net.last_recv = r.network.init.bytesRecv
     net.last_sent = r.network.init.bytesSent
-    r.cpu.user.forEach((u: Usage) => {
-      cpu_analytic_series[0].data.push([u.x, u.y.toFixed(2)])
-    })
-    r.cpu.total.forEach((u: Usage) => {
-      cpu_analytic_series[1].data.push([u.x, u.y.toFixed(2)])
-    })
-    r.network.bytesRecv.forEach((u: Usage) => {
-      net_analytic[0].data.push([u.x, u.y.toFixed(2)])
-    })
-    r.network.bytesSent.forEach((u: Usage) => {
-      net_analytic[1].data.push([u.x, u.y.toFixed(2)])
-    })
+
+    cpu_analytic_series[0].data = cpu_analytic_series[0].data.concat(r.cpu.user)
+    cpu_analytic_series[1].data = cpu_analytic_series[1].data.concat(r.cpu.total)
+    net_analytic[0].data = net_analytic[0].data.concat(r.network.bytesRecv)
+    net_analytic[1].data = net_analytic[1].data.concat(r.network.bytesSent)
     disk_io_analytic[0].data = disk_io_analytic[0].data.concat(r.disk_io.writes)
     disk_io_analytic[1].data = disk_io_analytic[1].data.concat(r.disk_io.reads)
 
-    websocket = ws('/api/analytic')
+    websocket = analytic.server()
     websocket.onmessage = wsOnMessage
   })
 })
@@ -97,17 +101,17 @@ function handle_uptime(t: number) {
   uptime.value = `${uptime_days}d ${uptime_hours}h ${Math.floor(_uptime / 60)}m`
 }
 
-function wsOnMessage(m) {
+function wsOnMessage(m: MessageEvent) {
   const r = JSON.parse(m.data)
 
-  const cpu_usage = r.cpu.system + r.cpu.user
+  const cpu_usage = Math.min(r.cpu.system + r.cpu.user, 100)
 
   cpu.value = cpu_usage.toFixed(2)
 
-  const time = new Date().getTime()
+  const time = new Date().toLocaleString()
 
-  cpu_analytic_series[0].data.push([time, r.cpu.user.toFixed(2)])
-  cpu_analytic_series[1].data.push([time, cpu.value])
+  cpu_analytic_series[0].data.push({ x: time, y: r.cpu.user.toFixed(2) })
+  cpu_analytic_series[1].data.push({ x: time, y: cpu_usage })
 
   if (cpu_analytic_series[0].data.length > 100) {
     cpu_analytic_series[0].data.shift()
@@ -135,8 +139,8 @@ function wsOnMessage(m) {
   net.last_recv = r.network.bytesRecv
   net.last_sent = r.network.bytesSent
 
-  net_analytic[0].data.push([time, net.recv])
-  net_analytic[1].data.push([time, net.sent])
+  net_analytic[0].data.push({ x: time, y: net.recv })
+  net_analytic[1].data.push({ x: time, y: net.sent })
 
   if (net_analytic[0].data.length > 100) {
     net_analytic[0].data.shift()
@@ -302,6 +306,7 @@ function wsOnMessage(m) {
           </AStatistic>
           <AreaChart
             :series="cpu_analytic_series"
+            :y-formatter="cpu_formatter"
             :max="100"
           />
         </ACard>

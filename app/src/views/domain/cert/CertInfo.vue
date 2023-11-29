@@ -37,7 +37,7 @@ const now = computed(() => new Date().toISOString())
       </template>
       <template v-else>
         <CheckCircleOutlined class="text-green-500" />
-        <span class="ml-2">{{ $gettext('Certificate is valid<') }}</span>
+        <span class="ml-2">{{ $gettext('Certificate is valid') }}</span>
       </template>
     </div>
   </div>

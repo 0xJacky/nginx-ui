@@ -67,10 +67,10 @@ function create_another() {
 
 const has_server_name = computed(() => {
   const servers = ngx_config.servers
-  for (const server_key in servers) {
-    for (const k in servers[server_key].directives) {
-      const v = servers[server_key].directives[k]
-      if (v.directive === 'server_name' && v.params.trim() !== '')
+
+  for (const server of Object.values(servers)) {
+    for (const directive of Object.values(server.directives!)) {
+      if (directive.directive === 'server_name' && directive.params.trim() !== '')
         return true
     }
   }

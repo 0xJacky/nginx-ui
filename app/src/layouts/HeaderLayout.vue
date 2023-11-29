@@ -9,7 +9,7 @@ import NginxControl from '@/components/NginxControl/NginxControl.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
 
 const emit = defineEmits<{
-  clickUnFold: () => void
+  clickUnFold: [void]
 }>()
 
 const { $gettext } = gettext

@@ -5,13 +5,14 @@ import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransfor
 import dns_credential from '@/api/dns_credential'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import { input } from '@/components/StdDesign/StdDataEntry'
+import type { Column } from '@/components/StdDesign/types'
 
 const { $gettext } = useGettext()
 
-const columns = [{
+const columns: Column[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
-  sorter: true,
+  sortable: true,
   pithy: true,
   edit: {
     type: input,
@@ -19,13 +20,13 @@ const columns = [{
 }, {
   title: () => $gettext('Provider'),
   dataIndex: ['config', 'name'],
-  sorter: true,
+  sortable: true,
   pithy: true,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
   customRender: datetime,
-  sorter: true,
+  sortable: true,
   pithy: true,
 }, {
   title: () => $gettext('Action'),
@@ -38,7 +39,6 @@ const columns = [{
     :title="$gettext('DNS Credentials')"
     :api="dns_credential"
     :columns="columns"
-    row-key="name"
   >
     <template #beforeEdit>
       <AAlert

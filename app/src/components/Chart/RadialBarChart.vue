@@ -7,7 +7,7 @@ import type { Series } from '@/components/Chart/types'
 
 const { series, centerText, colors, name, bottomText }
   = defineProps<{
-    series: Series[]
+    series: Series[] | number[]
     centerText?: string
     colors?: string
     name?: string

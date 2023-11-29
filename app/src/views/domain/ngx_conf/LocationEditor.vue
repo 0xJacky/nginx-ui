@@ -33,13 +33,13 @@ function add() {
 
 function save() {
   adding.value = false
-  ngx_config.servers[props.currentServerIndex].locations?.push({
+  ngx_config.servers[props.currentServerIndex!].locations?.push({
     ...location,
   })
 }
 
 function remove(index: number) {
-  ngx_config.servers[props.currentServerIndex].locations?.splice(index, 1)
+  ngx_config.servers[props.currentServerIndex!].locations?.splice(index, 1)
 }
 </script>
 

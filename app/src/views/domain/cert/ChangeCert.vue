@@ -1,23 +1,26 @@
 <script setup lang="tsx">
 import { useGettext } from 'vue3-gettext'
 import { Badge } from 'ant-design-vue'
+import type { ComputedRef, Ref } from 'vue'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
+import type { Cert } from '@/api/cert'
 import cert from '@/api/cert'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input } from '@/components/StdDesign/StdDataEntry'
 import type { NgxDirective } from '@/api/ngx'
+import type { Column } from '@/components/StdDesign/types'
 
 const { $gettext } = useGettext()
 
-const current_server_directives = inject('current_server_directives')
-const directivesMap = inject('directivesMap') as Record<string, NgxDirective[]>
+const current_server_directives = inject('current_server_directives') as ComputedRef<NgxDirective[]>
+const directivesMap = inject('directivesMap') as Ref<Record<string, NgxDirective[]>>
 const visible = ref(false)
-const record = ref({})
+const record = ref({}) as Ref<Cert>
 
-const columns = [{
+const columns: Column[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
-  sorter: true,
+  sortable: true,
   pithy: true,
   customRender: (args: customRender) => {
     const { text, record: r } = args
@@ -47,7 +50,7 @@ const columns = [{
 
     return h('div', template)
   },
-  sorter: true,
+  sortable: true,
   pithy: true,
 }]
 
@@ -55,13 +58,13 @@ function open() {
   visible.value = true
 }
 
-function onSelectedRecord(r) {
+function onSelectedRecord(r: Cert) {
   record.value = r
 }
 
 function ok() {
-  if (directivesMap.ssl_certificate?.[0]) {
-    directivesMap.ssl_certificate[0].params = record.value.ssl_certificate_path
+  if (directivesMap.value.ssl_certificate?.[0]) {
+    directivesMap.value.ssl_certificate[0].params = record.value.ssl_certificate_path
   }
   else {
     current_server_directives?.value.push({
@@ -69,8 +72,8 @@ function ok() {
       params: record.value.ssl_certificate_path,
     })
   }
-  if (directivesMap.ssl_certificate_key?.[0]) {
-    directivesMap.ssl_certificate_key[0].params = record.value.ssl_certificate_key_path
+  if (directivesMap.value.ssl_certificate_key?.[0]) {
+    directivesMap.value.ssl_certificate_key[0].params = record.value.ssl_certificate_key_path
   }
   else {
     current_server_directives?.value.push({

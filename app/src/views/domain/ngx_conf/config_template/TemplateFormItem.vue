@@ -10,7 +10,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'update:data': (data: Variable) => void
+  'update:data': [data: Variable]
 }>()
 
 const data = computed({

@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import { useGettext } from 'vue3-gettext'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
 import Icon, { LinkOutlined, SendOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
 import type ReconnectingWebSocket from 'reconnecting-websocket'
+import type { Ref } from 'vue'
 import { useSettingsStore } from '@/pinia'
+import type { Node } from '@/api/environment'
 import environment from '@/api/environment'
 import logo from '@/assets/img/logo.png'
 import pulse from '@/assets/svg/pulse.svg'
 import { formatDateTime } from '@/lib/helper'
-import ws from '@/lib/websocket'
 import NodeAnalyticItem from '@/views/dashboard/components/NodeAnalyticItem.vue'
+import analytic from '@/api/analytic'
 
-const settingsStore = useSettingsStore()
 const { $gettext } = useGettext()
 
-const data = ref([])
+const data = ref([]) as Ref<Node[]>
 
 const node_map = computed(() => {
-  const o = {}
+  const o = {} as Record<number, Node>
 
   data.value.forEach(v => {
     o[v.id] = v
@@ -32,16 +32,19 @@ onMounted(() => {
   environment.get_list().then(r => {
     data.value = r.data
   })
-  websocket = ws('/api/analytic/nodes')
-  websocket.onmessage = m => {
+  websocket = analytic.nodes()
+  websocket.onmessage = async m => {
     const nodes = JSON.parse(m.data)
-    for (const key in nodes) {
+
+    Object.keys(nodes).forEach((v: string) => {
+      const key = Number.parseInt(v)
+
       // update node online status
       if (node_map.value[key]) {
         Object.assign(node_map.value[key], nodes[key])
         node_map.value[key].response_at = new Date()
       }
-    }
+    })
   }
 })
 
@@ -49,13 +52,7 @@ onUnmounted(() => {
   websocket.close()
 })
 
-export interface Node {
-  id: number
-  name: string
-  token: string
-}
-
-const { environment: env } = settingsStore
+const { environment: env } = useSettingsStore()
 
 function link_start(node: Node) {
   env.id = node.id

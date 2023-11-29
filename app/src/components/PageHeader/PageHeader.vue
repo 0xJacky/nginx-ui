@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import type { Ref } from 'vue'
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb.vue'
 
 const route = useRoute()
@@ -9,10 +8,8 @@ const display = computed(() => {
   return !route.meta.hiddenHeaderContent
 })
 
-const name = ref(route.name) as Ref<() => string>
-
-watch(() => route.name, () => {
-  name.value = route.name as () => string
+const name = computed(() => {
+  return (route.name as never as () => string)()
 })
 </script>
 
@@ -27,7 +24,7 @@ watch(() => route.name, () => {
         <div class="main">
           <div class="row">
             <h1 class="title">
-              {{ name() }}
+              {{ name }}
             </h1>
             <div class="action">
               <slot name="action" />

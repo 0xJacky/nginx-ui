@@ -3,10 +3,10 @@ import http from '@/lib/http'
 import type { NgxServer } from '@/api/ngx'
 
 export interface Variable {
-  type: string
-  name: { [key: string]: string }
+  type?: string
+  name?: { [key: string]: string }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  value: any
+  value?: any
 }
 
 export interface Template extends NgxServer {

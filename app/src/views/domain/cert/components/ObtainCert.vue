@@ -2,12 +2,14 @@
 import { useGettext } from 'vue3-gettext'
 import Modal from 'ant-design-vue/lib/modal'
 import { message } from 'ant-design-vue'
+import type { Ref } from 'vue'
 import websocket from '@/lib/websocket'
 import template from '@/api/template'
 import domain from '@/api/domain'
 import AutoCertStepOne from '@/views/domain/cert/components/AutoCertStepOne.vue'
-import type DNSChallenge from '@/views/domain/cert/components/DNSChallenge.vue'
-import type { NgxDirective } from '@/api/ngx'
+import type { NgxConfig, NgxDirective } from '@/api/ngx'
+import type { Props } from '@/views/domain/cert/IssueCert.vue'
+import type { DnsChallenge } from '@/api/auto_cert'
 
 const emit = defineEmits(['update:auto_cert'])
 
@@ -15,14 +17,14 @@ const { $gettext, interpolate } = useGettext()
 
 const modalVisible = ref(false)
 const step = ref(1)
-const directivesMap = inject('directivesMap') as Record<string, NgxDirective[]>
+const directivesMap = inject('directivesMap') as Ref<Record<string, NgxDirective[]>>
 
 const progressStrokeColor = {
   from: '#108ee9',
   to: '#87d068',
 }
 
-const data: DNSChallenge = reactive({
+const data: DnsChallenge = reactive({
   dns_credential_id: 0,
   challenge_method: 'http01',
   code: '',
@@ -40,15 +42,15 @@ provide('data', data)
 
 const logContainer = ref()
 
-const save_site_config = inject('save_site_config')
-const no_server_name = inject('no_server_name')
-const props = inject('props')
-const issuing_cert = inject('issuing_cert')
-const ngx_config = inject('ngx_config')
-const current_server_directives = inject('current_server_directives')
+const save_site_config = inject('save_site_config') as () => Promise<void>
+const no_server_name = inject('no_server_name') as Ref<boolean>
+const props = inject('props') as Props
+const issuing_cert = inject('issuing_cert') as Ref<boolean>
+const ngx_config = inject('ngx_config') as NgxConfig
+const current_server_directives = inject('current_server_directives') as NgxDirective[]
 
 const name = computed(() => {
-  return directivesMap.server_name[0].params.trim()
+  return directivesMap.value.server_name[0].params.trim()
 })
 
 const issue_cert = async (config_name: string, server_name: string) => {
@@ -101,9 +103,9 @@ const issue_cert = async (config_name: string, server_name: string) => {
 }
 
 async function callback(ssl_certificate: string, ssl_certificate_key: string) {
-  directivesMap.ssl_certificate[0].params = ssl_certificate
-  directivesMap.ssl_certificate_key[0].params = ssl_certificate_key
-  save_site_config()
+  directivesMap.value.ssl_certificate[0].params = ssl_certificate
+  directivesMap.value.ssl_certificate_key[0].params = ssl_certificate_key
+  await save_site_config()
 }
 
 function change_auto_cert(status: boolean) {
@@ -119,7 +121,7 @@ function change_auto_cert(status: boolean) {
     })
   }
   else {
-    domain.remove_auto_cert(props.config_name).then(() => {
+    domain.remove_auto_cert(props.configName).then(() => {
       message.success(interpolate($gettext('Auto-renewal disabled for %{name}'), { name: name.value }))
     }).catch(e => {
       message.error(e.message ?? interpolate($gettext('Disable auto-renewal failed for %{name}'), { name: name.value }))
@@ -131,23 +133,23 @@ async function onchange(status: boolean) {
   if (status) {
     await template.get_block('letsencrypt.conf').then(r => {
       ngx_config.servers.forEach(async v => {
-        v.locations = v.locations.filter(l => l.path !== '/.well-known/acme-challenge')
+        v.locations = v?.locations?.filter(l => l.path !== '/.well-known/acme-challenge')
 
-        v.locations.push(...r.locations)
+        v.locations?.push(...r.locations)
       })
     }).then(async () => {
       // if ssl_certificate is empty, do not save, just use the config from last step.
-      if (directivesMap.ssl_certificate?.[0])
+      if (directivesMap.value.ssl_certificate?.[0])
         await save_site_config()
 
       job()
     })
   }
   else {
-    await ngx_config.servers.forEach(v => {
-      v.locations = v.locations.filter(l => l.path !== '/.well-known/acme-challenge')
+    ngx_config.servers.forEach(v => {
+      v.locations = v?.locations?.filter(l => l.path !== '/.well-known/acme-challenge')
     })
-    save_site_config()
+    await save_site_config()
     change_auto_cert(status)
   }
 
@@ -165,26 +167,26 @@ function job() {
     return
   }
 
-  const server_name = directivesMap.server_name[0]
+  const server_name_idx = directivesMap.value.server_name[0]?.idx ?? 0
 
-  if (!directivesMap.ssl_certificate) {
-    current_server_directives.splice(server_name.idx + 1, 0, {
+  if (!directivesMap.value.ssl_certificate) {
+    current_server_directives.splice(server_name_idx + 1, 0, {
       directive: 'ssl_certificate',
       params: '',
     })
   }
 
   nextTick(() => {
-    if (!directivesMap.ssl_certificate_key) {
-      const ssl_certificate = directivesMap.ssl_certificate[0]
+    if (!directivesMap.value.ssl_certificate_key) {
+      const ssl_certificate_idx = directivesMap.value.ssl_certificate[0]?.idx ?? 0
 
-      current_server_directives.splice(ssl_certificate.idx + 1, 0, {
+      current_server_directives.splice(ssl_certificate_idx + 1, 0, {
         directive: 'ssl_certificate_key',
         params: '',
       })
     }
   }).then(() => {
-    issue_cert(props.config_name, name.value)
+    issue_cert(props.configName, name.value)
   })
 }
 
