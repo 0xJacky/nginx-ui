@@ -23,7 +23,7 @@ const props = defineProps<{
   }
 }>()
 
-const emit = defineEmits(['callback', 'update:auto_cert'])
+const emit = defineEmits(['callback', 'update:autoCert'])
 
 const { $gettext } = useGettext()
 
@@ -170,7 +170,7 @@ const autoCertRef = computed({
     return props.autoCert
   },
   set(value) {
-    emit('update:auto_cert', value)
+    emit('update:autoCert', value)
   },
 })
 

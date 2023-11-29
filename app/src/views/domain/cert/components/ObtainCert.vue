@@ -210,7 +210,9 @@ function toggle(status: boolean) {
       cancelText: $gettext('Cancel'),
       mask: false,
       centered: true,
-      onOk: () => onchange(false),
+      onOk() {
+        onchange(false)
+      },
     })
   }
   else {

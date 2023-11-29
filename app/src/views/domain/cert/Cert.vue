@@ -27,7 +27,6 @@ const enabled = computed({
     emit('update:enabled', value)
   },
 })
-
 </script>
 
 <template>

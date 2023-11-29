@@ -34,11 +34,11 @@ const data = inject('data') as DnsChallenge
     <template #description>
       <p>
         {{ $gettext('The server_name'
-          + 'in the current configuration must be the domain name you need to get the certificate, support'
+          + ' in the current configuration must be the domain name you need to get the certificate, support'
           + 'multiple domains.') }}
       </p>
       <p>
-        {{ $gettext('The certificate for the domain will be checked 5 minutes,'
+        {{ $gettext('The certificate for the domain will be checked 5 minutes, '
           + 'and will be renewed if it has been more than 1 week since it was last issued.') }}
       </p>
       <p v-if="data.challenge_method === 'http01'">
