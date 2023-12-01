@@ -68,6 +68,11 @@ async function onchange() {
 </template>
 
 <style lang="less">
+.dark {
+  .issue-cert-log-container {
+    background-color: rgba(0, 0, 0, 0.84);
+  }
+}
 .issue-cert-log-container {
   height: 320px;
   overflow: scroll;

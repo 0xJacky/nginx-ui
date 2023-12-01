@@ -50,7 +50,6 @@ export const routes: Route[] = [
         component: () => import('@/views/dashboard/DashBoard.vue'),
         name: () => $gettext('Dashboard'),
         meta: {
-          // hiddenHeaderContent: true,
           icon: HomeOutlined,
         },
       },

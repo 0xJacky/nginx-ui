@@ -39,7 +39,7 @@ const name = computed(() => {
 <style lang="less" scoped>
 .dark {
   .page-header {
-    background: #28292c !important;
+    background: #090909 !important;
     border-bottom: unset;
 
     h1 {

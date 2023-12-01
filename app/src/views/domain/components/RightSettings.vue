@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useGettext } from 'vue3-gettext'
-import Modal from 'ant-design-vue/lib/modal'
-import { message } from 'ant-design-vue'
+import { Modal, message } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import type { Site } from '@/api/domain'
 import domain from '@/api/domain'
@@ -21,6 +20,8 @@ const name = inject('name') as Ref<string>
 const history_chatgpt_record = inject('history_chatgpt_record') as Ref<ChatComplicationMessage[]>
 const filename = inject('filename')
 const data: Ref<Site> = inject('data') as Ref<Site>
+
+const [modal, ContextHolder] = Modal.useModal()
 
 const active_key = ref(['1', '2', '3'])
 
@@ -43,7 +44,7 @@ function disable() {
 }
 
 function on_change_enabled(checked: boolean) {
-  Modal.confirm({
+  modal.confirm({
     title: checked ? $gettext('Do you want to enable this site?') : $gettext('Do you want to disable this site?'),
     mask: false,
     centered: true,
@@ -62,6 +63,7 @@ function on_change_enabled(checked: boolean) {
 
 <template>
   <ACard class="right-settings">
+    <ContextHolder />
     <ACollapse
       v-model:activeKey="active_key"
       ghost

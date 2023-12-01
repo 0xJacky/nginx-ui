@@ -1,17 +1,9 @@
 <script setup lang="ts">
-import zh_CN from 'ant-design-vue/es/locale/zh_CN'
-import zh_TW from 'ant-design-vue/es/locale/zh_TW'
-import en_US from 'ant-design-vue/es/locale/en_US'
-import { computed, ref } from 'vue'
-import { theme } from 'ant-design-vue'
 import _ from 'lodash'
 import FooterLayout from './FooterLayout.vue'
 import SideBar from './SideBar.vue'
 import HeaderLayout from './HeaderLayout.vue'
 import PageHeader from '@/components/PageHeader/PageHeader.vue'
-
-import gettext from '@/gettext'
-import { useSettingsStore } from '@/pinia'
 
 const drawer_visible = ref(false)
 const collapsed = ref(collapse())
@@ -27,78 +19,56 @@ function getClientWidth() {
 function collapse() {
   return getClientWidth() < 1280
 }
-
-const lang = computed(() => {
-  switch (gettext.current) {
-    case 'zh_CN':
-      return zh_CN
-    case 'zh_TW':
-      return zh_TW
-    default:
-      return en_US
-  }
-})
-
-const settings = useSettingsStore()
-const is_theme_dark = computed(() => settings.theme === 'dark')
 </script>
 
 <template>
-  <AConfigProvider
-    :theme="{
-      algorithm: is_theme_dark ? theme.darkAlgorithm : theme.defaultAlgorithm,
-    }"
-    :locale="lang"
-    :auto-insert-space-in-button="false"
-  >
-    <ALayout style="min-height: 100vh">
-      <div class="drawer-sidebar">
-        <ADrawer
-          v-model:open="drawer_visible"
-          :closable="false"
-          placement="left"
-          width="256"
-          @close="drawer_visible = false"
-        >
-          <SideBar />
-        </ADrawer>
-      </div>
-
-      <ALayoutSider
-        v-model:collapsed="collapsed"
-        collapsible
-        :style="{ zIndex: 11 }"
-        theme="light"
-        class="layout-sider"
+  <ALayout class="min-h-screen">
+    <div class="drawer-sidebar">
+      <ADrawer
+        v-model:open="drawer_visible"
+        :closable="false"
+        placement="left"
+        width="256"
+        @close="drawer_visible = false"
       >
         <SideBar />
-      </ALayoutSider>
+      </ADrawer>
+    </div>
 
-      <ALayout>
-        <ALayoutHeader :style="{ position: 'sticky', top: '0', zIndex: 10, width: '100%' }">
-          <HeaderLayout @click-un-fold="drawer_visible = true" />
-        </ALayoutHeader>
+    <ALayoutSider
+      v-model:collapsed="collapsed"
+      collapsible
+      :style="{ zIndex: 11 }"
+      theme="light"
+      class="layout-sider"
+    >
+      <SideBar />
+    </ALayoutSider>
 
-        <ALayoutContent>
-          <PageHeader />
-          <div class="router-view">
-            <RouterView v-slot="{ Component, route }">
-              <Transition name="slide-fade">
-                <component
-                  :is="Component"
-                  :key="route.path"
-                />
-              </Transition>
-            </RouterView>
-          </div>
-        </ALayoutContent>
+    <ALayout>
+      <ALayoutHeader :style="{ position: 'sticky', top: '0', zIndex: 10, width: '100%' }">
+        <HeaderLayout @click-un-fold="drawer_visible = true" />
+      </ALayoutHeader>
 
-        <ALayoutFooter>
-          <FooterLayout />
-        </ALayoutFooter>
-      </ALayout>
+      <ALayoutContent>
+        <PageHeader />
+        <div class="router-view">
+          <RouterView v-slot="{ Component, route }">
+            <Transition name="slide-fade">
+              <component
+                :is="Component"
+                :key="route.path"
+              />
+            </Transition>
+          </RouterView>
+        </div>
+      </ALayoutContent>
+
+      <ALayoutFooter>
+        <FooterLayout />
+      </ALayoutFooter>
     </ALayout>
-  </AConfigProvider>
+  </ALayout>
 </template>
 
 <style lang="less" scoped>
@@ -154,57 +124,11 @@ body {
   overflow: unset !important;
 }
 
-.dark {
-  h1, h2, h3, h4, h5, h6, p {
-    color: #fafafa !important;
-  }
-
-  .ant-checkbox-indeterminate {
-    .ant-checkbox-inner {
-      background-color: transparent !important;
-    }
-  }
-
-  .ant-menu {
-    background: unset !important;
-  }
-
-  .ant-layout-header {
-    background-color: #1f1f1f !important;
-  }
-
-  .ant-card {
-    background-color: #1f1f1f !important;
-  }
-
-  .ant-layout-sider {
-    background-color: rgb(20, 20, 20) !important;
-
-    .ant-layout-sider-trigger {
-      background-color: rgb(20, 20, 20) !important;
-    }
-
-    .ant-menu {
-      border-right: 0 !important;
-    }
-
-    &.ant-layout-sider-has-trigger {
-      padding-bottom: 0;
-    }
-
-    box-shadow: 2px 0 8px rgba(29, 35, 41, 0.05);
-  }
-
-}
-
 .ant-layout-header {
   padding: 0 !important;
-  background-color: #fff !important;
 }
 
 .ant-layout-sider {
-  background-color: #ffffff;
-
   &.ant-layout-sider-has-trigger {
     padding-bottom: 0;
   }

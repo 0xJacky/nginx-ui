@@ -138,10 +138,8 @@ const _selectedKey = computed({
     font-feature-settings: 'tnum';
     height: 32px;
     padding: 4px 11px;
-    color: rgba(0, 0, 0, 0.85);
     font-size: 14px;
     line-height: 1.5;
-    background-color: #fff;
     background-image: none;
     border: 1px solid #d9d9d9;
     border-radius: 4px;

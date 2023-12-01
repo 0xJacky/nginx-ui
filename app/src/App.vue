@@ -3,6 +3,11 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import { computed, provide } from 'vue'
+import { theme } from 'ant-design-vue'
+import zh_CN from 'ant-design-vue/es/locale/zh_CN'
+import zh_TW from 'ant-design-vue/es/locale/zh_TW'
+import en_US from 'ant-design-vue/es/locale/en_US'
+import gettext from '@/gettext'
 import { useSettingsStore } from '@/pinia'
 
 const media = window.matchMedia('(prefers-color-scheme: dark)')
@@ -29,14 +34,72 @@ const devicePrefersTheme = computed(() => {
 provide('devicePrefersTheme', devicePrefersTheme)
 
 media.addEventListener('change', callback)
+
+const lang = computed(() => {
+  switch (gettext.current) {
+    case 'zh_CN':
+      return zh_CN
+    case 'zh_TW':
+      return zh_TW
+    default:
+      return en_US
+  }
+})
+
+const settings = useSettingsStore()
+const is_theme_dark = computed(() => settings.theme === 'dark')
 </script>
 
 <template>
-  <RouterView />
+  <AConfigProvider
+    :theme="{
+      algorithm: is_theme_dark ? theme.darkAlgorithm : theme.defaultAlgorithm,
+    }"
+    :locale="lang"
+    :auto-insert-space-in-button="false"
+  >
+    <RouterView />
+  </AConfigProvider>
 </template>
 
 <style lang="less">
 @import "ant-design-vue/dist/reset.css";
+
+.dark {
+  h1, h2, h3, h4, h5, h6, p, div {
+    color: #fafafa;
+  }
+
+  .ant-checkbox-indeterminate {
+    .ant-checkbox-inner {
+      background-color: transparent !important;
+    }
+  }
+
+  .ant-layout-header {
+    background-color: #141414 !important;
+  }
+
+  .ant-layout-sider {
+    .ant-menu {
+      border-right: 0 !important;
+    }
+    &.ant-layout-sider-has-trigger {
+      padding-bottom: 0;
+    }
+  }
+}
+
+.ant-layout-header {
+  padding: 0 !important;
+  background-color: #fff !important;
+}
+
+.ant-layout-sider {
+  .ant-menu {
+    border-inline-end: none !important;
+  }
+}
 </style>
 
 <style lang="less" scoped>

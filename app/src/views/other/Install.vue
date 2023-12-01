@@ -6,6 +6,7 @@ import { DatabaseOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import gettext from '@/gettext'
 import install from '@/api/install'
+import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
 
 const { $gettext, interpolate } = gettext
 
@@ -77,75 +78,75 @@ const onSubmit = () => {
 </script>
 
 <template>
-  <div class="login-form">
-    <div class="project-title">
-      <h1>Nginx UI</h1>
+  <ALayout>
+    <div class="login-form">
+      <div class="project-title">
+        <h1>Nginx UI</h1>
+      </div>
+      <AForm
+        id="components-form-install"
+        class="login-form"
+      >
+        <AFormItem v-bind="validateInfos.email">
+          <AInput
+            v-model:value="modelRef.email"
+            :placeholder="$gettext('Email (*)')"
+          >
+            <template #prefix>
+              <MailOutlined />
+            </template>
+          </AInput>
+        </AFormItem>
+        <AFormItem v-bind="validateInfos.username">
+          <AInput
+            v-model:value="modelRef.username"
+            :placeholder="$gettext('Username (*)')"
+          >
+            <template #prefix>
+              <UserOutlined />
+            </template>
+          </AInput>
+        </AFormItem>
+        <AFormItem v-bind="validateInfos.password">
+          <AInputPassword
+            v-model:value="modelRef.password"
+            :placeholder="$gettext('Password (*)')"
+          >
+            <template #prefix>
+              <LockOutlined />
+            </template>
+          </AInputPassword>
+        </AFormItem>
+        <AFormItem>
+          <AInput
+            v-bind="validateInfos.database"
+            v-model:value="modelRef.database"
+            :placeholder="$gettext('Database (Optional, default: database)')"
+          >
+            <template #prefix>
+              <DatabaseOutlined />
+            </template>
+          </AInput>
+        </AFormItem>
+        <AFormItem>
+          <AButton
+            type="primary"
+            block
+            html-type="submit"
+            :loading="loading"
+            @click="onSubmit"
+          >
+            {{ $gettext('Install') }}
+          </AButton>
+        </AFormItem>
+      </AForm>
+      <footer>
+        Copyright © 2020 - {{ thisYear }} Nginx UI | Language
+        <SetLanguage class="inline" />
+        <SwitchAppearance />
+      </footer>
     </div>
-    <AForm
-      id="components-form-install"
-      class="login-form"
-    >
-      <AFormItem v-bind="validateInfos.email">
-        <AInput
-          v-model:value="modelRef.email"
-          :placeholder="$gettext('Email (*)')"
-        >
-          <template #prefix>
-            <MailOutlined />
-          </template>
-        </AInput>
-      </AFormItem>
-      <AFormItem v-bind="validateInfos.username">
-        <AInput
-          v-model:value="modelRef.username"
-          :placeholder="$gettext('Username (*)')"
-        >
-          <template #prefix>
-            <UserOutlined />
-          </template>
-        </AInput>
-      </AFormItem>
-      <AFormItem v-bind="validateInfos.password">
-        <AInputPassword
-          v-model:value="modelRef.password"
-          :placeholder="$gettext('Password (*)')"
-        >
-          <template #prefix>
-            <LockOutlined />
-          </template>
-        </AInputPassword>
-      </AFormItem>
-      <AFormItem>
-        <AInput
-          v-bind="validateInfos.database"
-          v-model:value="modelRef.database"
-          :placeholder="$gettext('Database (Optional, default: database)')"
-        >
-          <template #prefix>
-            <DatabaseOutlined />
-          </template>
-        </AInput>
-      </AFormItem>
-      <AFormItem>
-        <AButton
-          type="primary"
-          block
-          html-type="submit"
-          :loading="loading"
-          @click="onSubmit"
-        >
-          {{ $gettext('Install') }}
-        </AButton>
-      </AFormItem>
-    </AForm>
-    <footer>
-      Copyright © 2020 - {{ thisYear }} Nginx UI | Language
-      <SetLanguage
-        class="set_lang"
-        style="display: inline"
-      />
-    </footer>
-  </div>
+  </ALayout>
 </template>
 
 <style lang="less">
@@ -162,10 +163,6 @@ const onSubmit = () => {
 .login-form {
   max-width: 500px;
   margin: 0 auto;
-}
-
-.login-form-button {
-
 }
 
 footer {

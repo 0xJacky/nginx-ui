@@ -2,8 +2,7 @@
 import { useGettext } from 'vue3-gettext'
 import { inject, reactive, ref } from 'vue'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
-import Modal from 'ant-design-vue/lib/modal'
-import { notification } from 'ant-design-vue'
+import { Modal, notification } from 'ant-design-vue'
 import domain from '@/api/domain'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 
@@ -14,9 +13,9 @@ const target = ref([])
 const overwrite = ref(false)
 const enabled = ref(false)
 const name = inject('name') as Ref<string>
-
+const [modal, ContextHolder] = Modal.useModal()
 function deploy() {
-  Modal.confirm({
+  modal.confirm({
     title: () => $ngettext('Do you want to deploy this file to remote server?',
       'Do you want to deploy this file to remote servers?', target.value.length),
     mask: false,
@@ -79,6 +78,7 @@ function deploy() {
 </script>
 
 <template>
+  <ContextHolder />
   <NodeSelector
     v-model:target="target"
     hidden-local

@@ -29,6 +29,8 @@ const { $gettext } = useGettext()
 
 const save_site_config = inject('save_site_config') as () => Promise<void>
 
+const [modal, ContextHolder] = Modal.useModal()
+
 const route = useRoute()
 
 const current_server_index = ref(0)
@@ -37,7 +39,7 @@ const name = ref(route.params.name) as Ref<string>
 const ngx_config = inject('ngx_config') as NgxConfig
 
 function confirm_change_tls(status: boolean) {
-  Modal.confirm({
+  modal.confirm({
     title: $gettext('Do you want to enable TLS?'),
     content: $gettext('To make sure the certification auto-renewal can work normally, '
       + 'we need to add a location which can proxy the request from authority to backend, '
@@ -208,7 +210,7 @@ function add_server() {
 }
 
 function remove_server(index: number) {
-  Modal.confirm({
+  modal.confirm({
     title: $gettext('Do you want to remove this server?'),
     mask: false,
     centered: true,
@@ -230,6 +232,7 @@ provide('directivesMap', directivesMap)
 
 <template>
   <div>
+    <ContextHolder />
     <AFormItem
       v-if="!support_ssl"
       :label="$gettext('Enable TLS')"

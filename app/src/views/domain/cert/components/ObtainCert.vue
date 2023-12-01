@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useGettext } from 'vue3-gettext'
-import Modal from 'ant-design-vue/lib/modal'
-import { message } from 'ant-design-vue'
+import { Modal, message } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import websocket from '@/lib/websocket'
 import template from '@/api/template'
@@ -18,6 +17,8 @@ const { $gettext, interpolate } = useGettext()
 const modalVisible = ref(false)
 const step = ref(1)
 const directivesMap = inject('directivesMap') as Ref<Record<string, NgxDirective[]>>
+
+const [modal, ContextHolder] = Modal.useModal()
 
 const progressStrokeColor = {
   from: '#108ee9',
@@ -202,7 +203,7 @@ function log(msg: string) {
 
 function toggle(status: boolean) {
   if (status) {
-    Modal.confirm({
+    modal.confirm({
       title: $gettext('Do you want to disable auto-cert renewal?'),
       content: $gettext('We will remove the HTTPChallenge configuration from '
         + 'this file and reload the Nginx. Are you sure you want to continue?'),
@@ -244,41 +245,44 @@ function next() {
 </script>
 
 <template>
-  <AModal
-    v-model:open="modalVisible"
-    :title="$gettext('Obtain certificate')"
-    :mask-closable="modalClosable"
-    :footer="null"
-    :closable="modalClosable"
-    force-render
-  >
-    <template v-if="step === 1">
-      <AutoCertStepOne />
-    </template>
-    <template v-else-if="step === 2">
-      <AProgress
-        :stroke-color="progressStrokeColor"
-        :percent="progressPercent"
-        :status="progressStatus"
-      />
-
-      <div
-        ref="logContainer"
-        class="issue-cert-log-container"
-      />
-    </template>
-    <div
-      v-if="can_next"
-      class="control-btn"
+  <div>
+    <ContextHolder />
+    <AModal
+      v-model:open="modalVisible"
+      :title="$gettext('Obtain certificate')"
+      :mask-closable="modalClosable"
+      :footer="null"
+      :closable="modalClosable"
+      force-render
     >
-      <AButton
-        type="primary"
-        @click="next"
+      <template v-if="step === 1">
+        <AutoCertStepOne />
+      </template>
+      <template v-else-if="step === 2">
+        <AProgress
+          :stroke-color="progressStrokeColor"
+          :percent="progressPercent"
+          :status="progressStatus"
+        />
+
+        <div
+          ref="logContainer"
+          class="issue-cert-log-container"
+        />
+      </template>
+      <div
+        v-if="can_next"
+        class="control-btn"
       >
-        {{ $gettext('Next') }}
-      </AButton>
-    </div>
-  </AModal>
+        <AButton
+          type="primary"
+          @click="next"
+        >
+          {{ $gettext('Next') }}
+        </AButton>
+      </div>
+    </AModal>
+  </div>
 </template>
 
 <style lang="less" scoped>

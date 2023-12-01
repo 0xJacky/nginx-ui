@@ -9,6 +9,7 @@ import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import http from '@/lib/http'
+import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
 
 const thisYear = new Date().getFullYear()
 
@@ -110,66 +111,78 @@ if (route.query?.code !== undefined && route.query?.state !== undefined) {
 </script>
 
 <template>
-  <div class="login-container">
-    <div class="login-form">
-      <div class="project-title">
-        <h1>Nginx UI</h1>
-      </div>
-      <AForm id="components-form-demo-normal-login">
-        <AFormItem v-bind="validateInfos.username">
-          <AInput
-            v-model:value="modelRef.username"
-            :placeholder="$gettext('Username')"
-          >
-            <template #prefix>
-              <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
-            </template>
-          </AInput>
-        </AFormItem>
-        <AFormItem v-bind="validateInfos.password">
-          <AInputPassword
-            v-model:value="modelRef.password"
-            :placeholder="$gettext('Password')"
-          >
-            <template #prefix>
-              <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
-            </template>
-          </AInputPassword>
-        </AFormItem>
-        <AFormItem>
+  <ALayout>
+    <ALayoutContent>
+      <div class="login-container">
+        <div class="login-form">
+          <div class="project-title">
+            <h1>Nginx UI</h1>
+          </div>
+          <AForm id="components-form-demo-normal-login">
+            <AFormItem v-bind="validateInfos.username">
+              <AInput
+                v-model:value="modelRef.username"
+                :placeholder="$gettext('Username')"
+              >
+                <template #prefix>
+                  <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
+                </template>
+              </AInput>
+            </AFormItem>
+            <AFormItem v-bind="validateInfos.password">
+              <AInputPassword
+                v-model:value="modelRef.password"
+                :placeholder="$gettext('Password')"
+              >
+                <template #prefix>
+                  <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
+                </template>
+              </AInputPassword>
+            </AFormItem>
+            <AFormItem>
+              <AButton
+                type="primary"
+                block
+                html-type="submit"
+                :loading="loading"
+                @click="onSubmit"
+              >
+                {{ $gettext('Login') }}
+              </AButton>
+            </AFormItem>
+          </AForm>
           <AButton
-            type="primary"
+            v-if="has_casdoor"
             block
             html-type="submit"
             :loading="loading"
-            @click="onSubmit"
+            @click="loginWithCasdoor"
           >
-            {{ $gettext('Login') }}
+            {{ $gettext('SSO Login') }}
           </AButton>
-        </AFormItem>
-      </AForm>
-      <AButton
-        v-if="has_casdoor"
-        block
-        html-type="submit"
-        :loading="loading"
-        @click="loginWithCasdoor"
-      >
-        {{ $gettext('SSO Login') }}
-      </AButton>
-      <div class="footer">
-        <p>Copyright © 2020 - {{ thisYear }} Nginx UI</p>
-        Language
-        <SetLanguage
-          class="set_lang"
-          style="display: inline"
-        />
+          <div class="footer">
+            <p>Copyright © 2020 - {{ thisYear }} Nginx UI</p>
+            Language
+            <SetLanguage class="inline" />
+            <div class="flex justify-center mt-4">
+              <SwitchAppearance />
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </ALayoutContent>
+  </ALayout>
 </template>
 
-<style lang="less">
+<style lang="less" scoped>
+.ant-layout-content {
+  background: #fff;
+}
+
+.dark .ant-layout-content {
+  background: transparent;
+}
+
 .login-container {
   display: flex;
   align-items: center;
@@ -192,10 +205,6 @@ if (route.query?.code !== undefined && route.query?.state !== undefined) {
 
     .anticon {
       color: #a8a5a5 !important;
-    }
-
-    .login-form-button {
-
     }
 
     .footer {
