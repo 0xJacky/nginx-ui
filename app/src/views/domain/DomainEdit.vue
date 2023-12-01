@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useGettext } from 'vue3-gettext'
-import { useRoute, useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'

@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { LockOutlined, UserOutlined } from '@ant-design/icons-vue'
-import { reactive, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import { Form, message } from 'ant-design-vue'
 import gettext from '@/gettext'
 import { useUserStore } from '@/pinia'

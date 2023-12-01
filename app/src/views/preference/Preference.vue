@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { useGettext } from 'vue3-gettext'
-import { onMounted, provide, ref, watch } from 'vue'
 import { message } from 'ant-design-vue'
-import { useRoute, useRouter } from 'vue-router'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import settings from '@/api/settings'
 import BasicSettings from '@/views/preference/BasicSettings.vue'

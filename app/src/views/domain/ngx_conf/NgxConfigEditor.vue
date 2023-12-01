@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
 import { useGettext } from 'vue3-gettext'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import Modal from 'ant-design-vue/lib/modal'
 import type { ComputedRef, Ref } from 'vue'
-import { provide } from 'vue'
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
 import Cert from '@/views/domain/cert/Cert.vue'

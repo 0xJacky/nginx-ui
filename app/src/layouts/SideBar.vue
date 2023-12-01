@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
 import type { ComputedRef } from 'vue'
 import type { AntdIconType } from '@ant-design/icons-vue/lib/components/AntdIcon'
 import type { IconComponentProps } from '@ant-design/icons-vue/es/components/Icon'

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useGettext } from 'vue3-gettext'
 import type ReconnectingWebSocket from 'reconnecting-websocket'
-import { useRoute, useRouter } from 'vue-router'
 import { debounce } from 'lodash'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import type { INginxLogData } from '@/api/nginx_log'
