@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import type { ComputedRef } from 'vue'
-import { computed, ref, watch } from 'vue'
 import type { AntdIconType } from '@ant-design/icons-vue/lib/components/AntdIcon'
 import type { IconComponentProps } from '@ant-design/icons-vue/es/components/Icon'
 import Logo from '@/components/Logo/Logo.vue'
@@ -10,7 +9,7 @@ import EnvIndicator from '@/components/EnvIndicator/EnvIndicator.vue'
 
 const route = useRoute()
 
-const openKeys = [openSub()]
+const openKeys = ref([openSub()])
 
 const selectedKey = ref([route.name])
 
@@ -25,9 +24,9 @@ watch(route, () => {
   selectedKey.value = [route.name]
 
   const sub = openSub()
-  const p = openKeys.indexOf(sub)
+  const p = openKeys.value.indexOf(sub)
   if (p === -1)
-    openKeys.push(sub)
+    openKeys.value.push(sub)
 })
 
 const sidebars = computed(() => {
