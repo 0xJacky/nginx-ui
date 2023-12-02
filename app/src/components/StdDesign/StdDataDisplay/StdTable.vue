@@ -172,7 +172,7 @@ function buildIndexMap(data: any, level: number = 0, index: number = 0, total: n
     })
   }
 }
-function orderPaginationChange(_pagination: Pagination, filters: never, sorter: SorterResult) {
+function orderPaginationChange(_pagination: Pagination, _: never, sorter: SorterResult) {
   if (sorter) {
     selectedRowKeysBuffer.value = []
     params.order_by = sorter.field
