@@ -9,7 +9,7 @@ import type { StdDesignEdit } from '@/components/StdDesign/types'
 
 const fn = _.get
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function readonly(_: StdDesignEdit, dataSource: any, dataIndex: any) {
+function readonly(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
   return h('p', fn(dataSource, dataIndex))
 }
 
@@ -80,7 +80,7 @@ function selector(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
   />
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function switcher(_: StdDesignEdit, dataSource: any, dataIndex: any) {
+function switcher(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
   return h(Switch, {
     'checked': dataSource?.[dataIndex],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
