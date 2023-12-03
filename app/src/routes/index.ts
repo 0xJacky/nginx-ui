@@ -15,7 +15,7 @@ import {
 } from '@ant-design/icons-vue'
 import NProgress from 'nprogress'
 
-import gettext from '../gettext'
+import gettext from '@/gettext'
 import { useUserStore } from '@/pinia'
 
 import 'nprogress/nprogress.css'

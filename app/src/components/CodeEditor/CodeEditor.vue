@@ -7,6 +7,7 @@ import { computed } from 'vue'
 const props = defineProps<{
   content?: string
   defaultHeight?: string
+  readonly?: boolean
 }>()
 
 const emit = defineEmits(['update:content'])
@@ -30,6 +31,7 @@ const value = computed({
       minHeight: defaultHeight || '100vh',
       borderRadius: '5px',
     }"
+    :readonly="readonly"
   />
 </template>
 

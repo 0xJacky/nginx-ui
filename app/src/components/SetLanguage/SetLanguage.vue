@@ -13,11 +13,14 @@ const current = ref(gettext.current)
 
 const languageAvailable = gettext.available
 
-function init() {
+async function init() {
   if (current.value !== 'en') {
-    http.get(`/translation/${current.value}`).then(r => {
+    await http.get(`/translation/${current.value}`).then(r => {
       gettext.translations[current.value] = r
     })
+
+    // @ts-expect-error name type
+    document.title = `${route.name?.()} | Nginx UI`
   }
 }
 

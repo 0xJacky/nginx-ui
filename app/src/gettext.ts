@@ -8,5 +8,4 @@ export default createGettext({
   silent: true,
 })
 
-export class useGettext {
-}
+export class useGettext {}
