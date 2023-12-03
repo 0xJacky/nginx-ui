@@ -10,7 +10,6 @@ defineProps<{
 
 const { $gettext } = useGettext()
 
-const now = computed(() => new Date().toISOString())
 </script>
 
 <template>
@@ -25,13 +24,13 @@ const now = computed(() => new Date().toISOString())
       {{ $gettext('Subject Name: %{subject}', { subject: cert.subject_name }) }}
     </p>
     <p>
-      {{ $gettext(' Expiration Date: %{date}', { date: dayjs(cert.not_after).format('YYYY-MM-DD HH:mm:ss').toString() }) }}
+      {{ $gettext('Expiration Date: %{date}', { date: dayjs(cert.not_after).format('YYYY-MM-DD HH:mm:ss').toString() }) }}
     </p>
     <p>
       {{ $gettext('Not Valid Before: %{date}', { date: dayjs(cert.not_before).format('YYYY-MM-DD HH:mm:ss').toString() }) }}
     </p>
     <div class="status">
-      <template v-if="dayjs(now).isBefore(cert.not_before) || dayjs(now).isAfter(cert.not_after)">
+      <template v-if="dayjs().isBefore(cert.not_before) || dayjs().isAfter(cert.not_after)">
         <CloseCircleOutlined class="text-red-600" />
         <span class="ml-2">{{ $gettext('Certificate has expired') }}</span>
       </template>
