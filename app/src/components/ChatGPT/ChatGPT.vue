@@ -16,7 +16,7 @@ import ChatGPT_logo from '@/assets/svg/ChatGPT_logo.svg'
 const props = defineProps<{
   content: string
   path?: string
-  historyMessages: ChatComplicationMessage[]
+  historyMessages?: ChatComplicationMessage[]
 }>()
 
 const emit = defineEmits(['update:history_messages'])
@@ -26,7 +26,7 @@ const { $gettext } = useGettext()
 const { language: current } = storeToRefs(useSettingsStore())
 
 const history_messages = computed(() => props.historyMessages)
-const messages = ref([]) as Ref<ChatComplicationMessage[]>
+const messages = ref([]) as Ref<ChatComplicationMessage[] | undefined >
 
 onMounted(() => {
   messages.value = props.historyMessages
@@ -54,14 +54,14 @@ async function request() {
 
   console.log('fetching...')
 
-  messages.value.push(t.value)
+  messages.value?.push(t.value)
 
   emit('update:history_messages', messages.value)
 
   const res = await fetch(urlJoin(window.location.pathname, '/api/chat_gpt'), {
     method: 'POST',
     headers: { Accept: 'text/event-stream', Authorization: token.value },
-    body: JSON.stringify({ messages: messages.value.slice(0, messages.value?.length - 1) }),
+    body: JSON.stringify({ messages: messages.value?.slice(0, messages.value?.length - 1) }),
   })
 
   // read body as stream
@@ -200,7 +200,7 @@ function clear_record() {
 const editing_idx = ref(-1)
 async function regenerate(index: number) {
   editing_idx.value = -1
-  messages.value = messages.value.slice(0, index)
+  messages.value = messages.value?.slice(0, index)
   await request()
 }
 
@@ -285,7 +285,7 @@ const show = computed(() => !messages.value || messages.value?.length === 0)
           </APopconfirm>
           <AButton
             type="text"
-            @click="regenerate(messages?.length - 1)"
+            @click="regenerate((messages?.length ?? 1) - 1)"
           >
             {{ $gettext('Regenerate response') }}
           </AButton>

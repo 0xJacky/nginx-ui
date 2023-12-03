@@ -28,15 +28,11 @@ function init() {
   })
 }
 
-auto_cert.get_dns_providers().then(r => {
-  providers.value = r
-}).then(() => {
-  init()
-})
-
 const current = computed(() => {
   return providers.value?.[provider_idx.value]
 })
+
+const mounted = ref(false)
 
 watch(code, init)
 
@@ -44,7 +40,8 @@ watch(current, () => {
   credentials.value = []
   data.code = current.value.code
   data.provider = current.value.name
-  data.dns_credential_id = null
+  if (mounted.value)
+    data.dns_credential_id = null
 
   dns_credential.get_list({ provider: data.provider }).then(r => {
     r.data.forEach(v => {
@@ -54,6 +51,25 @@ watch(current, () => {
       })
     })
   })
+})
+
+onMounted(async () => {
+  await auto_cert.get_dns_providers().then(r => {
+    providers.value = r
+  }).then(() => {
+    init()
+  })
+
+  if (data.dns_credential_id) {
+    await dns_credential.get(data.dns_credential_id).then(r => {
+      data.code = r.code
+      data.provider = r.provider
+      provider_idx.value = providers.value.findIndex(v => v.code === r.code)
+    })
+  }
+
+  // prevent the dns_credential_id from being overwritten
+  mounted.value = true
 })
 
 const options = computed<SelectProps['options']>(() => {

@@ -133,7 +133,7 @@ func (c *Ctx[T]) PagingListData() (*model.DataList, bool) {
 		page = 1
 	}
 
-	pageSize := settings.AppSettings.PageSize
+	pageSize := settings.ServerSettings.PageSize
 	if reqPageSize := c.ctx.Query("page_size"); reqPageSize != "" {
 		pageSize = cast.ToInt(reqPageSize)
 	}

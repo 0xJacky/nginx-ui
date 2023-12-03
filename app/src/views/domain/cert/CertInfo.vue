@@ -24,7 +24,7 @@ const { $gettext } = useGettext()
       {{ $gettext('Subject Name: %{subject}', { subject: cert.subject_name }) }}
     </p>
     <p>
-      {{ $gettext('Expiration Date: %{date}', { date: dayjs(cert.not_after).format('YYYY-MM-DD HH:mm:ss').toString() }) }}
+      {{ $gettext('Expired At: %{date}', { date: dayjs(cert.not_after).format('YYYY-MM-DD HH:mm:ss').toString() }) }}
     </p>
     <p>
       {{ $gettext('Not Valid Before: %{date}', { date: dayjs(cert.not_before).format('YYYY-MM-DD HH:mm:ss').toString() }) }}

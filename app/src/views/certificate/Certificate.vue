@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { useGettext } from 'vue3-gettext'
 import { Badge } from 'ant-design-vue'
-import { h } from 'vue'
+import { h, provide } from 'vue'
 import { input } from '@/components/StdDesign/StdDataEntry'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
@@ -10,8 +10,15 @@ import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import CertInfo from '@/views/domain/cert/CertInfo.vue'
 import type { Column } from '@/components/StdDesign/types'
+import type { Cert } from '@/api/cert'
+import { AutoCertState } from '@/constants'
+import AutoCertStepOne from '@/views/domain/cert/components/AutoCertStepOne.vue'
 
 const { $gettext } = useGettext()
+
+function notShowInAutoCert(record: Cert) {
+  return record.auto_cert !== AutoCertState.Enable
+}
 
 const columns: Column[] = [{
   title: () => $gettext('Name'),
@@ -27,6 +34,7 @@ const columns: Column[] = [{
   },
   edit: {
     type: input,
+    show: notShowInAutoCert,
   },
   search: true,
 }, {
@@ -58,6 +66,7 @@ const columns: Column[] = [{
   dataIndex: 'ssl_certificate_path',
   edit: {
     type: input,
+    show: notShowInAutoCert,
   },
   hidden: true,
 }, {
@@ -65,6 +74,7 @@ const columns: Column[] = [{
   dataIndex: 'ssl_certificate_key_path',
   edit: {
     type: input,
+    show: notShowInAutoCert,
   },
   hidden: true,
 }, {
@@ -77,49 +87,56 @@ const columns: Column[] = [{
   title: () => $gettext('Action'),
   dataIndex: 'action',
 }]
+
+const no_server_name = computed(() => {
+  return false
+})
+
+provide('no_server_name', no_server_name)
 </script>
 
 <template>
   <StdCurd
-    :title="$gettext('Certification')"
+    :title="$gettext('Certificates')"
     :api="cert"
     :columns="columns"
+    :modal-max-width="600"
   >
-    <template #beforeEdit="{ data }">
-      <template v-if="data.auto_cert === 1">
-        <div style="margin-bottom: 15px">
+    <template #beforeEdit="{ data }: {data: Cert}">
+      <template v-if="data.auto_cert === AutoCertState.Enable">
+        <div class="mt-4 mb-4">
           <AAlert
-            :message="$gettext('Auto cert is enabled, please do not modify this certification.')"
-            type="info"
+            :message="$gettext('Auto Cert is enabled')"
+            type="success"
             show-icon
           />
         </div>
         <div
           v-if="!data.filename"
-          style="margin-bottom: 15px"
+          class="mt-4 mb-4"
         >
           <AAlert
-            :message="$gettext('This auto-cert item is invalid, please remove it.')"
+            :message="$gettext('This Auto Cert item is invalid, please remove it.')"
             type="error"
             show-icon
           />
         </div>
         <div
           v-else-if="!data.domains"
-          style="margin-bottom: 15px"
+          class="mt-4 mb-4"
         >
           <AAlert
-            :message="$gettext('Domains list is empty, try to reopen auto-cert for %{config}', { config: data.filename })"
+            :message="$gettext('Domains list is empty, try to reopen Auto Cert for %{config}', { config: data.filename })"
             type="error"
             show-icon
           />
         </div>
         <div
           v-if="data.log"
-          style="margin-bottom: 15px"
+          class="mt-4 mb-4"
         >
           <AForm layout="vertical">
-            <AFormItem :label="$gettext('Auto-Cert Log')">
+            <AFormItem :label="$gettext('Auto Cert Log')">
               <p>{{ data.log }}</p>
             </AFormItem>
           </AForm>
@@ -133,19 +150,23 @@ const columns: Column[] = [{
           <CertInfo :cert="data.certificate_info" />
         </AFormItem>
       </AForm>
+
+      <AutoCertStepOne hide-note />
     </template>
-    <template #edit="{ data }">
+    <template #edit="{ data }: {data: Cert}">
       <AForm layout="vertical">
-        <AFormItem :label="$gettext('SSL Certification Content')">
+        <AFormItem :label="$gettext('SSL Certificate Content')">
           <CodeEditor
-            v-model:content="data.ssl_certification"
+            v-model:content="data.ssl_certificate"
             default-height="200px"
+            :readonly="!notShowInAutoCert(data)"
           />
         </AFormItem>
-        <AFormItem :label="$gettext('SSL Certification Key Content')">
+        <AFormItem :label="$gettext('SSL Certificate Key Content')">
           <CodeEditor
-            v-model:content="data.ssl_certification_key"
+            v-model:content="data.ssl_certificate_key"
             default-height="200px"
+            :readonly="!notShowInAutoCert(data)"
           />
         </AFormItem>
       </AForm>

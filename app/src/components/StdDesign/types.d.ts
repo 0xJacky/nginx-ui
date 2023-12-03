@@ -4,7 +4,7 @@ import { Ref } from 'vue'
 export interface StdDesignEdit {
   type?: function // component type
 
-  show?: function // show component
+  show?: (dataSource: any) => boolean // show component or not
 
   batch?: boolean // batch edit
 

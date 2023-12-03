@@ -7,12 +7,15 @@ export interface Cert extends ModelBase {
   domains: string[]
   filename: string
   ssl_certificate_path: string
+  ssl_certificate: string
   ssl_certificate_key_path: string
+  ssl_certificate_key: string
   auto_cert: number
   challenge_method: string
   dns_credential_id: number
   dns_credential?: DnsCredential
   log: string
+  certificate_info: CertificateInfo
 }
 
 export interface CertificateInfo {

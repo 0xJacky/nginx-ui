@@ -96,8 +96,8 @@ export const routes: Route[] = [
         },
       },
       {
-        path: 'cert',
-        name: () => $gettext('Certification'),
+        path: 'certificates',
+        name: () => $gettext('Certificates'),
         component: () => import('@/layouts/BaseRouterView.vue'),
         meta: {
           icon: SafetyCertificateOutlined,
@@ -105,13 +105,13 @@ export const routes: Route[] = [
         children: [
           {
             path: 'list',
-            name: () => $gettext('Certification List'),
-            component: () => import('@/views/cert/Cert.vue'),
+            name: () => $gettext('Certificates List'),
+            component: () => import('@/views/certificate/Certificate.vue'),
           },
           {
             path: 'dns_credential',
             name: () => $gettext('DNS Credentials'),
-            component: () => import('@/views/cert/DNSCredential.vue'),
+            component: () => import('@/views/certificate/DNSCredential.vue'),
           },
         ],
       },

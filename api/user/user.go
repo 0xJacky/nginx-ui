@@ -2,6 +2,7 @@ package user
 
 import (
 	"github.com/0xJacky/Nginx-UI/api"
+	"github.com/0xJacky/Nginx-UI/api/cosy"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -12,9 +13,7 @@ import (
 )
 
 func GetUsers(c *gin.Context) {
-	data := model.GetUserList(c, c.Query("name"))
-
-	c.JSON(http.StatusOK, data)
+	cosy.Core[model.Auth](c).SetFussy("name").PagingList()
 }
 
 func GetUser(c *gin.Context) {
@@ -74,7 +73,7 @@ func EditUser(c *gin.Context) {
 
 	if settings.ServerSettings.Demo && userId == 1 {
 		c.JSON(http.StatusNotAcceptable, gin.H{
-			"message": "Prohibit changing root password in demo",
+			"message": "Changing user password is forbidden in demo mode",
 		})
 		return
 	}
@@ -133,5 +132,5 @@ func DeleteUser(c *gin.Context) {
 		api.ErrHandler(c, err)
 		return
 	}
-	c.JSON(http.StatusNoContent, gin.H{})
+	c.JSON(http.StatusNoContent, nil)
 }

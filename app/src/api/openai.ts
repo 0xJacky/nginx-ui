@@ -7,7 +7,7 @@ export interface ChatComplicationMessage {
 }
 
 const openai = {
-  store_record(data: { file_name?: string; messages: ChatComplicationMessage[] }) {
+  store_record(data: { file_name?: string; messages?: ChatComplicationMessage[] }) {
     return http.post('/chat_gpt_record', data)
   },
 }

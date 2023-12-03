@@ -2,7 +2,7 @@ import http from '@/lib/http'
 
 export interface DNSProvider {
   name?: string
-  code: string
+  code?: string
   provider?: string
   configuration: {
     credentials: {

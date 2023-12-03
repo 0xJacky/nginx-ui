@@ -6,6 +6,15 @@ export interface DnsCredential extends ModelBase {
   name: string
   config?: DNSProvider
   provider: string
+  code: string
+  configuration: {
+    credentials: {
+      [key: string]: string
+    }
+    additional: {
+      [key: string]: string
+    }
+  }
 }
 
 const dns_credential: Curd<DnsCredential> = new Curd('/dns_credential')

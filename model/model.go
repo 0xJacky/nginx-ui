@@ -11,6 +11,7 @@ import (
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 	"path"
+	"strings"
 	"time"
 )
 
@@ -74,35 +75,6 @@ func Init() *gorm.DB {
 	return db
 }
 
-func orderAndPaginate(c *gin.Context) func(db *gorm.DB) *gorm.DB {
-	return func(db *gorm.DB) *gorm.DB {
-		sort := c.DefaultQuery("sort", "desc")
-		order := c.DefaultQuery("order_by", "id") +
-			" " + sort
-
-		page := cast.ToInt(c.Query("page"))
-		if page == 0 {
-			page = 1
-		}
-		pageSize := settings.ServerSettings.PageSize
-		reqPageSize := c.Query("page_size")
-		if reqPageSize != "" {
-			pageSize = cast.ToInt(reqPageSize)
-		}
-		offset := (page - 1) * pageSize
-
-		return db.Order(order).Offset(offset).Limit(pageSize)
-	}
-}
-
-func totalPage(total int64, pageSize int) int64 {
-	n := total / int64(pageSize)
-	if total%int64(pageSize) > 0 {
-		n++
-	}
-	return n
-}
-
 type Pagination struct {
 	Total       int64 `json:"total"`
 	PerPage     int   `json:"per_page"`
@@ -115,32 +87,206 @@ type DataList struct {
 	Pagination Pagination  `json:"pagination,omitempty"`
 }
 
-func GetListWithPagination(models interface{},
-	c *gin.Context, totalRecords int64) (result DataList) {
+func SortOrder(c *gin.Context) func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		sort := c.DefaultQuery("order", "desc")
+		order := fmt.Sprintf("`%s` %s", DefaultQuery(c, "sort_by", "id"), sort)
+		return db.Order(order)
+	}
+}
 
-	page := cast.ToInt(c.Query("page"))
-	if page == 0 {
-		page = 1
+func OrderAndPaginate(c *gin.Context) func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		sort := c.DefaultQuery("order", "desc")
+
+		sortBy := DefaultQuery(c, "sort_by", "")
+
+		if sortBy != "" {
+			order := fmt.Sprintf("`%s` %s", DefaultQuery(c, "sort_by", "id"), sort)
+			db = db.Order(order)
+		}
+
+		page := cast.ToInt(c.Query("page"))
+		if page == 0 {
+			page = 1
+		}
+		pageSize := settings.ServerSettings.PageSize
+		reqPageSize := c.Query("page_size")
+		if reqPageSize != "" {
+			pageSize = cast.ToInt(reqPageSize)
+		}
+		offset := (page - 1) * pageSize
+
+		return db.Offset(offset).Limit(pageSize)
+	}
+}
+
+func QueryToInSearch(c *gin.Context, db *gorm.DB, keys ...string) *gorm.DB {
+	for _, v := range keys {
+		queryArray := c.QueryArray(v + "[]")
+		if len(queryArray) == 0 {
+			queryArray = c.QueryArray(v)
+		}
+		if len(queryArray) > 0 {
+			var sb strings.Builder
+
+			_, err := fmt.Fprintf(&sb, "`%s` IN ?", v)
+			if err != nil {
+				logger.Error(err)
+				continue
+			}
+
+			db = db.Where(sb.String(), queryArray)
+		}
+	}
+	return db
+}
+
+func QueryToEqualSearch(c *gin.Context, db *gorm.DB, keys ...string) *gorm.DB {
+	for _, v := range keys {
+		if c.Query(v) != "" {
+			var sb strings.Builder
+
+			_, err := fmt.Fprintf(&sb, "`%s` = ?", v)
+			if err != nil {
+				logger.Error(err)
+				continue
+			}
+
+			db = db.Where(sb.String(), c.Query(v))
+		}
+	}
+	return db
+}
+
+func QueryToFussySearch(c *gin.Context, db *gorm.DB, keys ...string) *gorm.DB {
+	for _, v := range keys {
+		if c.Query(v) != "" {
+			var sb strings.Builder
+
+			_, err := fmt.Fprintf(&sb, "`%s` LIKE ?", v)
+			if err != nil {
+				logger.Error(err)
+				continue
+			}
+
+			var sbValue strings.Builder
+
+			_, err = fmt.Fprintf(&sbValue, "%%%s%%", c.Query(v))
+
+			if err != nil {
+				logger.Error(err)
+				continue
+			}
+
+			db = db.Where(sb.String(), sbValue.String())
+		}
+	}
+	return db
+}
+
+func QueryToFussyKeysSearch(c *gin.Context, db *gorm.DB, value string, keys ...string) *gorm.DB {
+	if c.Query(value) == "" {
+		return db
 	}
 
-	result = DataList{}
+	var condition *gorm.DB
+	for i, v := range keys {
+		sb := v + " LIKE ?"
+		sv := "%" + c.Query(value) + "%"
 
-	result.Data = models
-
-	pageSize := settings.ServerSettings.PageSize
-	reqPageSize := c.Query("page_size")
-	if reqPageSize != "" {
-		pageSize = cast.ToInt(reqPageSize)
+		switch i {
+		case 0:
+			condition = db.Where(db.Where(sb, sv))
+		default:
+			condition = condition.Or(sb, sv)
+		}
 	}
 
-	result.Pagination = Pagination{
-		Total:       totalRecords,
-		PerPage:     pageSize,
-		CurrentPage: page,
-		TotalPages:  totalPage(totalRecords, pageSize),
-	}
+	return db.Where(condition)
+}
 
-	return
+func QueryToOrInSearch(c *gin.Context, db *gorm.DB, keys ...string) *gorm.DB {
+	for _, v := range keys {
+		queryArray := c.QueryArray(v + "[]")
+		if len(queryArray) == 0 {
+			queryArray = c.QueryArray(v)
+		}
+		if len(queryArray) > 0 {
+			var sb strings.Builder
+
+			_, err := fmt.Fprintf(&sb, "`%s` IN ?", v)
+			if err != nil {
+				logger.Error(err)
+				continue
+			}
+
+			db = db.Or(sb.String(), queryArray)
+		}
+	}
+	return db
+}
+
+func QueryToOrEqualSearch(c *gin.Context, db *gorm.DB, keys ...string) *gorm.DB {
+	for _, v := range keys {
+		if c.Query(v) != "" {
+			var sb strings.Builder
+
+			_, err := fmt.Fprintf(&sb, "`%s` = ?", v)
+			if err != nil {
+				logger.Error(err)
+				continue
+			}
+
+			db = db.Or(sb.String(), c.Query(v))
+		}
+	}
+	return db
+}
+
+func QueryToOrFussySearch(c *gin.Context, db *gorm.DB, keys ...string) *gorm.DB {
+	for _, v := range keys {
+		if c.Query(v) != "" {
+			var sb strings.Builder
+
+			_, err := fmt.Fprintf(&sb, "`%s` LIKE ?", v)
+			if err != nil {
+				logger.Error(err)
+				continue
+			}
+
+			var sbValue strings.Builder
+
+			_, err = fmt.Fprintf(&sbValue, "%%%s%%", c.Query(v))
+
+			if err != nil {
+				logger.Error(err)
+				continue
+			}
+
+			db = db.Or(sb.String(), sbValue.String())
+		}
+	}
+	return db
+}
+
+func TotalPage(total int64, pageSize int) int64 {
+	n := total / int64(pageSize)
+	if total%int64(pageSize) > 0 {
+		n++
+	}
+	return n
+}
+
+func DefaultValue(c *gin.Context, key string, defaultValue any) any {
+	if value, ok := c.Get(key); ok {
+		return value
+	}
+	return defaultValue
+}
+
+func DefaultQuery(c *gin.Context, key string, defaultValue any) string {
+	return c.DefaultQuery(key, DefaultValue(c, key, defaultValue).(string))
 }
 
 type Method interface {

@@ -3,7 +3,12 @@ import { useGettext } from 'vue3-gettext'
 import type { DnsChallenge } from '@/api/auto_cert'
 import DNSChallenge from '@/views/domain/cert/components/DNSChallenge.vue'
 
+defineProps<{
+  hideNote?: boolean
+}>()
+
 const { $gettext } = useGettext()
+
 const no_server_name = inject('no_server_name')
 
 // Provide by ObtainCert.vue
@@ -27,9 +32,11 @@ const data = inject('data') as DnsChallenge
   </template>
 
   <AAlert
+    v-if="!hideNote"
     type="info"
     show-icon
     :message="$gettext('Note')"
+    class="mb-4"
   >
     <template #description>
       <p>
@@ -52,7 +59,6 @@ const data = inject('data') as DnsChallenge
       </p>
     </template>
   </AAlert>
-  <br>
   <AForm layout="vertical">
     <AFormItem :label="$gettext('Challenge Method')">
       <ASelect v-model:value="data.challenge_method">

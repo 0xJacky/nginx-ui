@@ -2,6 +2,7 @@ package certificate
 
 import (
 	"github.com/0xJacky/Nginx-UI/api"
+	"github.com/0xJacky/Nginx-UI/api/cosy"
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -33,23 +34,7 @@ func GetDnsCredential(c *gin.Context) {
 }
 
 func GetDnsCredentialList(c *gin.Context) {
-	d := query.DnsCredential
-	provider := c.Query("provider")
-	var data []*model.DnsCredential
-	var err error
-	if provider != "" {
-		data, err = d.Where(d.Provider.Eq(provider)).Find()
-	} else {
-		data, err = d.Find()
-	}
-
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": data,
-	})
+	cosy.Core[model.DnsCredential](c).SetFussy("provider").PagingList()
 }
 
 type DnsCredentialManageJson struct {
@@ -114,18 +99,5 @@ func EditDnsCredential(c *gin.Context) {
 }
 
 func DeleteDnsCredential(c *gin.Context) {
-	id := cast.ToInt(c.Param("id"))
-	d := query.DnsCredential
-
-	dnsCredential, err := d.FirstByID(id)
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-	err = d.DeleteByID(dnsCredential.ID)
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-	c.JSON(http.StatusNoContent, nil)
+	cosy.Core[model.DnsCredential](c).Destroy()
 }

@@ -24,8 +24,8 @@ function init() {
       additional: {},
     }
   }
-  providers.value?.forEach((v: { code: string }, k: number) => {
-    if (v.code === code.value)
+  providers.value?.forEach((v: { code?: string }, k: number) => {
+    if (v?.code === code.value)
       provider_idx.value = k
   })
 }
@@ -46,7 +46,7 @@ watch(current, () => {
   data.code = current.value.code
   data.provider = current.value.name
 
-  auto_cert.get_dns_provider(current.value.code).then(r => {
+  auto_cert.get_dns_provider(current.value.code!).then(r => {
     Object.assign(current.value, r)
   })
 })
