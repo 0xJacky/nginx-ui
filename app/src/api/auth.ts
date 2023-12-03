@@ -4,6 +4,7 @@ import { useUserStore } from '@/pinia'
 const { login, logout } = useUserStore()
 
 export interface AuthResponse {
+  message: string
   token: string
 }
 
@@ -25,10 +26,13 @@ const auth = {
         login(r.token)
       })
   },
-  logout() {
+  async logout() {
     return http.delete('/logout').then(async () => {
       logout()
     })
+  },
+  async get_casdoor_uri(): Promise<{ uri: string }> {
+    return http.get('/casdoor_uri')
   },
 }
 

@@ -6,7 +6,6 @@ import { useUserStore } from '@/pinia'
 import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
-import http from '@/lib/http'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
 
 const thisYear = new Date().getFullYear()
@@ -77,11 +76,11 @@ watch(() => gettext.current, () => {
 const has_casdoor = ref(false)
 const casdoor_uri = ref('')
 
-http.get('/casdoor_uri')
-  .then(response => {
-    if (response?.uri) {
+auth.get_casdoor_uri()
+  .then(r => {
+    if (r?.uri) {
       has_casdoor.value = true
-      casdoor_uri.value = response.uri
+      casdoor_uri.value = r.uri
     }
   })
   .catch(e => {
