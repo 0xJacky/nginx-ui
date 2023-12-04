@@ -3,10 +3,19 @@ defineProps<{
   prefixCls?: string
   extra?: string | object
 }>()
+
+const mounted = ref(false)
+
+onMounted(() => {
+  mounted.value = true
+})
 </script>
 
 <template>
-  <Teleport to="body">
+  <Teleport
+    v-if="mounted"
+    to=".main-container"
+  >
     <div class="ant-pro-footer-toolbar">
       <div style="float: left">
         <slot name="extra">
