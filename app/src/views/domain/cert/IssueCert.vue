@@ -67,27 +67,6 @@ async function onchange() {
   </div>
 </template>
 
-<style lang="less">
-.dark {
-  .issue-cert-log-container {
-    background-color: rgba(0, 0, 0, 0.84);
-  }
-}
-.issue-cert-log-container {
-  height: 320px;
-  overflow: scroll;
-  background-color: #f3f3f3;
-  border-radius: 4px;
-  margin-top: 15px;
-  padding: 10px;
-
-  p {
-    font-size: 12px;
-    line-height: 1.3;
-  }
-}
-</style>
-
 <style lang="less" scoped>
 .ant-tag {
   margin: 0;

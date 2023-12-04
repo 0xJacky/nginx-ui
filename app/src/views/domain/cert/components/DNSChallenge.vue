@@ -14,10 +14,10 @@ const credentials = ref<SelectProps['options']>([])
 // is the object that you are trying to modify it
 // we externalize the dns_credential_id to the parent component,
 // this is used to tell the backend which dns_credential to use
-const data = inject('data') as DNSProvider & { dns_credential_id: number | null }
+const data = inject('data') as Ref<DNSProvider & { dns_credential_id: number | null }>
 
 const code = computed(() => {
-  return data.code
+  return data.value.code
 })
 
 const provider_idx = ref()
@@ -38,12 +38,12 @@ watch(code, init)
 
 watch(current, () => {
   credentials.value = []
-  data.code = current.value.code
-  data.provider = current.value.name
+  data.value.code = current.value.code
+  data.value.provider = current.value.name
   if (mounted.value)
-    data.dns_credential_id = null
+    data.value.dns_credential_id = null
 
-  dns_credential.get_list({ provider: data.provider }).then(r => {
+  dns_credential.get_list({ provider: data.value.provider }).then(r => {
     r.data.forEach(v => {
       credentials.value?.push({
         value: v.id,
@@ -60,10 +60,10 @@ onMounted(async () => {
     init()
   })
 
-  if (data.dns_credential_id) {
-    await dns_credential.get(data.dns_credential_id).then(r => {
-      data.code = r.code
-      data.provider = r.provider
+  if (data.value.dns_credential_id) {
+    await dns_credential.get(data.value.dns_credential_id).then(r => {
+      data.value.code = r.code
+      data.value.provider = r.provider
       provider_idx.value = providers.value.findIndex(v => v.code === r.code)
     })
   }

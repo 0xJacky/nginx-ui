@@ -99,6 +99,7 @@ export const routes: Route[] = [
         path: 'certificates',
         name: () => $gettext('Certificates'),
         component: () => import('@/layouts/BaseRouterView.vue'),
+        redirect: '/certificates/list',
         meta: {
           icon: SafetyCertificateOutlined,
         },
@@ -107,6 +108,22 @@ export const routes: Route[] = [
             path: 'list',
             name: () => $gettext('Certificates List'),
             component: () => import('@/views/certificate/Certificate.vue'),
+          },
+          {
+            path: ':id',
+            name: () => $gettext('Modify Certificate'),
+            component: () => import('@/views/certificate/CertificateEditor.vue'),
+            meta: {
+              hiddenInSidebar: true,
+            },
+          },
+          {
+            path: 'add',
+            name: () => $gettext('Add Certificate'),
+            component: () => import('@/views/certificate/CertificateEditor.vue'),
+            meta: {
+              hiddenInSidebar: true,
+            },
           },
           {
             path: 'dns_credential',

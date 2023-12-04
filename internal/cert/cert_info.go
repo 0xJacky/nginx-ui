@@ -5,9 +5,17 @@ import (
 	"encoding/pem"
 	"github.com/pkg/errors"
 	"os"
+	"time"
 )
 
-func GetCertInfo(sslCertificatePath string) (cert *x509.Certificate, err error) {
+type Info struct {
+	SubjectName string    `json:"subject_name"`
+	IssuerName  string    `json:"issuer_name"`
+	NotAfter    time.Time `json:"not_after"`
+	NotBefore   time.Time `json:"not_before"`
+}
+
+func GetCertInfo(sslCertificatePath string) (info *Info, err error) {
 	certData, err := os.ReadFile(sslCertificatePath)
 
 	if err != nil {
@@ -22,11 +30,18 @@ func GetCertInfo(sslCertificatePath string) (cert *x509.Certificate, err error) 
 		return
 	}
 
-	cert, err = x509.ParseCertificate(block.Bytes)
+	cert, err := x509.ParseCertificate(block.Bytes)
 
 	if err != nil {
 		err = errors.Wrap(err, "certificate parsing error")
 		return
+	}
+
+	info = &Info{
+		SubjectName: cert.Subject.CommonName,
+		IssuerName:  cert.Issuer.CommonName,
+		NotAfter:    cert.NotAfter,
+		NotBefore:   cert.NotBefore,
 	}
 
 	return

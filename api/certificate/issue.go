@@ -24,7 +24,7 @@ type IssueCertResponse struct {
 	SSLCertificateKey string `json:"ssl_certificate_key,omitempty"`
 }
 
-func handleIssueCertLogChan(conn *websocket.Conn, logChan chan string) {
+func handleIssueCertLogChan(conn *websocket.Conn, log *cert.Logger, logChan chan string) {
 	defer func() {
 		if err := recover(); err != nil {
 			logger.Error(err)
@@ -32,6 +32,8 @@ func handleIssueCertLogChan(conn *websocket.Conn, logChan chan string) {
 	}()
 
 	for logString := range logChan {
+
+		log.Info(logString)
 
 		err := conn.WriteJSON(IssueCertResponse{
 			Status:  Info,
@@ -42,7 +44,6 @@ func handleIssueCertLogChan(conn *websocket.Conn, logChan chan string) {
 			logger.Error(err)
 			return
 		}
-
 	}
 }
 
@@ -65,9 +66,9 @@ func IssueCert(c *gin.Context) {
 	}(ws)
 
 	// read
-	buffer := &cert.ConfigPayload{}
+	payload := &cert.ConfigPayload{}
 
-	err = ws.ReadJSON(buffer)
+	err = ws.ReadJSON(payload)
 
 	if err != nil {
 		logger.Error(err)
@@ -84,15 +85,20 @@ func IssueCert(c *gin.Context) {
 	logChan := make(chan string, 1)
 	errChan := make(chan error, 1)
 
-	go cert.IssueCert(buffer, logChan, errChan)
+	log := &cert.Logger{}
+	log.SetCertModel(&certModel)
 
-	go handleIssueCertLogChan(ws, logChan)
+	go cert.IssueCert(payload, logChan, errChan)
+
+	go handleIssueCertLogChan(ws, log, logChan)
 
 	// block, until errChan closes
 	for err = range errChan {
-		errLog := &cert.AutoCertErrorLog{}
-		errLog.SetCertModel(&certModel)
-		errLog.Exit("issue cert", err)
+
+		log.Error(err)
+
+		// Save logs to db
+		log.Exit()
 
 		err = ws.WriteJSON(IssueCertResponse{
 			Status:  Error,
@@ -107,12 +113,12 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
-	certDirName := strings.Join(buffer.ServerName, "_")
+	certDirName := strings.Join(payload.ServerName, "_")
 	sslCertificatePath := nginx.GetConfPath("ssl", certDirName, "fullchain.cer")
 	sslCertificateKeyPath := nginx.GetConfPath("ssl", certDirName, "private.key")
 
 	err = certModel.Updates(&model.Cert{
-		Domains:               buffer.ServerName,
+		Domains:               payload.ServerName,
 		SSLCertificatePath:    sslCertificatePath,
 		SSLCertificateKeyPath: sslCertificateKeyPath,
 	})
@@ -126,7 +132,8 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
-	certModel.ClearLog()
+	// Save logs to db
+	log.Exit()
 
 	err = ws.WriteJSON(IssueCertResponse{
 		Status:            Success,

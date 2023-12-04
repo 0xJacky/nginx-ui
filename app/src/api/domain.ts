@@ -19,7 +19,7 @@ export interface Site {
 }
 
 export interface AutoCertRequest {
-  dns_credential_id: number
+  dns_credential_id: number | null
   challenge_method: string
   domains: string[]
 }

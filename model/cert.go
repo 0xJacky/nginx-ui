@@ -72,24 +72,6 @@ func GetAutoCertList() (c []*Cert) {
 	return
 }
 
-func GetCertList(name, domain string) (c []Cert) {
-	tx := db
-	if name != "" {
-		tx = tx.Where("name LIKE ? or domain LIKE ?", "%"+name+"%", "%"+name+"%")
-	}
-	if domain != "" {
-		tx = tx.Where("domain LIKE ?", "%"+domain+"%")
-	}
-	tx.Find(&c)
-	return
-}
-
-func FirstCertByID(id int) (c Cert, err error) {
-	err = db.First(&c, id).Error
-
-	return
-}
-
 func (c *Cert) Updates(n *Cert) error {
 	return db.Model(&Cert{}).Where("id", c.ID).Updates(n).Error
 }

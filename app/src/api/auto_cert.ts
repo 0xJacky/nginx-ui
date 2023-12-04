@@ -18,7 +18,7 @@ export interface DNSProvider {
   }
 }
 export interface DnsChallenge extends DNSProvider {
-  dns_credential_id: number
+  dns_credential_id: number | null
   challenge_method: string
 }
 

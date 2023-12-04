@@ -63,7 +63,6 @@ func mapTo(section string, v interface{}) {
 }
 
 func reflectFrom(section string, v interface{}) {
-	log.Print(section, v)
 	err := Conf.Section(section).ReflectFrom(v)
 	if err != nil {
 		log.Fatalf("Cfg.ReflectFrom %s err: %v", section, err)

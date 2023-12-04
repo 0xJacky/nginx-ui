@@ -15,7 +15,7 @@ const { $gettext } = useGettext()
 <template>
   <div
     v-if="cert"
-    class="cert-info pb-4"
+    class="cert-info"
   >
     <p>
       {{ $gettext('Intermediate Certification Authorities: %{issuer}', { issuer: cert.issuer_name }) }}

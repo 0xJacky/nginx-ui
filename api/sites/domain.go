@@ -1,19 +1,19 @@
 package sites
 
 import (
-    "github.com/0xJacky/Nginx-UI/api"
-    "github.com/0xJacky/Nginx-UI/internal/cert"
-    "github.com/0xJacky/Nginx-UI/internal/config"
-    "github.com/0xJacky/Nginx-UI/internal/helper"
-    "github.com/0xJacky/Nginx-UI/internal/logger"
-    "github.com/0xJacky/Nginx-UI/internal/nginx"
-    "github.com/0xJacky/Nginx-UI/model"
-    "github.com/0xJacky/Nginx-UI/query"
-    "github.com/gin-gonic/gin"
-    "github.com/sashabaranov/go-openai"
-    "net/http"
-    "os"
-    "strings"
+	"github.com/0xJacky/Nginx-UI/api"
+	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/config"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/gin-gonic/gin"
+	"github.com/sashabaranov/go-openai"
+	"net/http"
+	"os"
+	"strings"
 )
 
 func GetDomains(c *gin.Context) {
@@ -146,7 +146,7 @@ func GetDomain(c *gin.Context) {
 
 	c.Set("maybe_error", "")
 
-	certInfoMap := make(map[int]CertificateInfo)
+	certInfoMap := make(map[int]*cert.Info)
 	for serverIdx, server := range nginxConfig.Servers {
 		for _, directive := range server.Directives {
 			if directive.Directive == "ssl_certificate" {
@@ -158,12 +158,7 @@ func GetDomain(c *gin.Context) {
 					break
 				}
 
-				certInfoMap[serverIdx] = CertificateInfo{
-					SubjectName: pubKey.Subject.CommonName,
-					IssuerName:  pubKey.Issuer.CommonName,
-					NotAfter:    pubKey.NotAfter,
-					NotBefore:   pubKey.NotBefore,
-				}
+				certInfoMap[serverIdx] = pubKey
 
 				break
 			}

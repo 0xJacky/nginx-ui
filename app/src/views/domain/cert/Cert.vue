@@ -34,7 +34,10 @@ const enabled = computed({
     <h2>
       {{ $gettext('Certificate Status') }}
     </h2>
-    <CertInfo :cert="certInfo" />
+    <CertInfo
+      :cert="certInfo"
+      class="mb-4"
+    />
 
     <ChangeCert />
 
