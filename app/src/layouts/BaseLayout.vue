@@ -45,7 +45,7 @@ function collapse() {
       <SideBar />
     </ALayoutSider>
 
-    <ALayout>
+    <ALayout class="main-container">
       <ALayoutHeader :style="{ position: 'sticky', top: '0', zIndex: 10, width: '100%' }">
         <HeaderLayout @click-un-fold="drawer_visible = true" />
       </ALayoutHeader>
