@@ -108,12 +108,9 @@ provide('no_server_name', no_server_name)
 <template>
   <ACard :title="$gettext('Certificates')">
     <template #extra>
-      <AButton
-        type="link"
-        @click="$router.push('/certificates/add')"
-      >
-        {{ $gettext('Add Certificate') }}
-      </AButton>
+      <a @click="$router.push('/certificates/add')">
+        {{ $gettext('Add') }}
+      </a>
     </template>
     <StdTable
       :api="cert"

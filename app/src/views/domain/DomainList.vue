@@ -107,7 +107,7 @@ watch(route, () => {
       :api="domain"
       :columns="columns"
       row-key="name"
-      :deletable="false"
+      disable-delete
       @click-edit="r => $router.push({
         path: `/domain/${r}`,
       })"
@@ -143,6 +143,7 @@ watch(route, () => {
           :cancel-text="$gettext('No')"
           :ok-text="$gettext('OK')"
           :title="$gettext('Are you sure you want to delete?')"
+          :disabled="record.enabled"
           @confirm="destroy(record.name)"
         >
           <AButton

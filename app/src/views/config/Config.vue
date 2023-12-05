@@ -51,7 +51,7 @@ watch(route, () => {
       ref="table"
       :api="api"
       :columns="configColumns"
-      :deletable="false"
+      disable-delete
       disable_search
       row-key="name"
       :get_params="get_params"
