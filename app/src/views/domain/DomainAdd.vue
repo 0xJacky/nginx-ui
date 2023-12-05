@@ -34,7 +34,7 @@ function init() {
   })
 }
 
-function save() {
+async function save() {
   return ngx.build_config(ngx_config).then(r => {
     // eslint-disable-next-line promise/no-nesting
     domain.save(ngx_config.name, { name: ngx_config.name, content: r.content, overwrite: true }).then(() => {
@@ -82,8 +82,13 @@ async function next() {
   await save()
   current_step.value++
 }
+
+const ngx_directives = computed(() => {
+  return ngx_config.servers[0].directives
+})
+
 provide('save_site_config', save)
-provide('ngx_directives', ngx_config.servers[0].directives)
+provide('ngx_directives', ngx_directives)
 provide('ngx_config', ngx_config)
 </script>
 

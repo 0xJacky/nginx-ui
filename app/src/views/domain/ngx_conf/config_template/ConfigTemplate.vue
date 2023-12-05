@@ -72,8 +72,12 @@ function build_template() {
   })
 }
 
+const ngx_directives = computed(() => {
+  return data.value?.directives
+})
+
 provide('build_template', build_template)
-provide('ngx_directives', data.value?.directives)
+provide('ngx_directives', ngx_directives)
 </script>
 
 <template>
