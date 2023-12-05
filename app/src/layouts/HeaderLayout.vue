@@ -7,6 +7,7 @@ import gettext from '@/gettext'
 import auth from '@/api/auth'
 import NginxControl from '@/components/NginxControl/NginxControl.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
+import Notification from '@/components/Notification/Notification.vue'
 
 const emit = defineEmits<{
   clickUnFold: [void]
@@ -38,6 +39,8 @@ function logout() {
       <SetLanguage class="set_lang" />
 
       <SwitchAppearance />
+
+      <Notification />
 
       <a href="/">
         <HomeOutlined />

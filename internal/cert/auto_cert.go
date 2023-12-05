@@ -2,8 +2,10 @@ package cert
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/pkg/errors"
+	"runtime"
 	"strings"
 	"time"
 )
@@ -11,7 +13,9 @@ import (
 func AutoObtain() {
 	defer func() {
 		if err := recover(); err != nil {
-			logger.Error("AutoCert Recover", err)
+			buf := make([]byte, 1024)
+			runtime.Stack(buf, false)
+			logger.Error("AutoCert Recover", err, string(buf))
 		}
 	}()
 	logger.Info("AutoCert Worker Started")
@@ -38,21 +42,29 @@ func renew(certModel *model.Cert) {
 	if len(certModel.Domains) == 0 {
 		log.Error(errors.New("domains list is empty, " +
 			"try to reopen auto-cert for this config:" + confName))
+		notification.Error("Renew Certificate Error", confName)
 		return
 	}
 
-	if certModel.SSLCertificatePath != "" {
-		cert, err := GetCertInfo(certModel.SSLCertificatePath)
-		if err != nil {
-			// Get certificate info error, ignore this certificate
-			log.Error(errors.Wrap(err, "get certificate info error"))
-			return
-		}
-		if time.Now().Sub(cert.NotBefore).Hours()/24 < 7 {
-			// not between 1 week, ignore this certificate
-			return
-		}
+	if certModel.SSLCertificatePath == "" {
+		log.Error(errors.New("ssl certificate path is empty, " +
+			"try to reopen auto-cert for this config:" + confName))
+		notification.Error("Renew Certificate Error", confName)
+		return
 	}
+
+	cert, err := GetCertInfo(certModel.SSLCertificatePath)
+	if err != nil {
+		// Get certificate info error, ignore this certificate
+		log.Error(errors.Wrap(err, "get certificate info error"))
+		notification.Error("Renew Certificate Error", strings.Join(certModel.Domains, ", "))
+		return
+	}
+	if time.Now().Sub(cert.NotBefore).Hours()/24 < 7 {
+		// not between 1 week, ignore this certificate
+		return
+	}
+
 	// after 1 mo, reissue certificate
 	logChan := make(chan string, 1)
 	errChan := make(chan error, 1)
@@ -76,5 +88,9 @@ func renew(certModel *model.Cert) {
 	// block, unless errChan closed
 	for err := range errChan {
 		log.Error(err)
+		notification.Error("Renew Certificate Error", strings.Join(payload.ServerName, ", "))
+		return
 	}
+
+	notification.Success("Renew Certificate Success", strings.Join(payload.ServerName, ", "))
 }

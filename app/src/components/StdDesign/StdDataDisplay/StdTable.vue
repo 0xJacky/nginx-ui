@@ -327,20 +327,26 @@ function export_csv() {
           {{ text }}
         </template>
         <template v-if="column.dataIndex === 'action'">
-          <AButton
-            v-if="!props.disabledModify"
-            type="link"
-            size="small"
-            @click="$emit('clickEdit', record[props.rowKey], record)"
-          >
-            {{ $gettext('Modify') }}
-          </AButton>
+          <template v-if="!props.disabledModify">
+            <AButton
+              type="link"
+              size="small"
+              @click="$emit('clickEdit', record[props.rowKey], record)"
+            >
+              {{ $gettext('Modify') }}
+            </AButton>
+            <ADivider
+              v-if="!props.disableDelete"
+              type="vertical"
+            />
+          </template>
+
           <slot
             name="actions"
             :record="record"
           />
+
           <template v-if="!props.disableDelete">
-            <ADivider type="vertical" />
             <APopconfirm
               :cancel-text="$gettext('No')"
               :ok-text="$gettext('OK')"

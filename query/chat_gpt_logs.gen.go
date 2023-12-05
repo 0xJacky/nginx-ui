@@ -6,7 +6,6 @@ package query
 
 import (
 	"context"
-	"github.com/0xJacky/Nginx-UI/model"
 	"strings"
 
 	"gorm.io/gorm"
@@ -17,6 +16,8 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/0xJacky/Nginx-UI/model"
 )
 
 func newChatGPTLog(db *gorm.DB, opts ...gen.DOOption) chatGPTLog {
@@ -164,10 +165,6 @@ func (c chatGPTLogDo) Select(conds ...field.Expr) *chatGPTLogDo {
 
 func (c chatGPTLogDo) Where(conds ...gen.Condition) *chatGPTLogDo {
 	return c.withDO(c.DO.Where(conds...))
-}
-
-func (c chatGPTLogDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *chatGPTLogDo {
-	return c.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
 func (c chatGPTLogDo) Order(conds ...field.Expr) *chatGPTLogDo {

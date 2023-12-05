@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 export const useUserStore = defineStore('user', {
   state: () => ({
     token: '',
+    unreadCount: 0,
   }),
   getters: {
     is_login(state): boolean {

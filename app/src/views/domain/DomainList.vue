@@ -113,7 +113,6 @@ watch(route, () => {
       })"
     >
       <template #actions="{ record }">
-        <ADivider type="vertical" />
         <AButton
           v-if="record.enabled"
           type="link"

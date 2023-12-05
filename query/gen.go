@@ -24,6 +24,7 @@ var (
 	ConfigBackup  *configBackup
 	DnsCredential *dnsCredential
 	Environment   *environment
+	Notification  *notification
 	Site          *site
 )
 
@@ -36,6 +37,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	ConfigBackup = &Q.ConfigBackup
 	DnsCredential = &Q.DnsCredential
 	Environment = &Q.Environment
+	Notification = &Q.Notification
 	Site = &Q.Site
 }
 
@@ -49,6 +51,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		ConfigBackup:  newConfigBackup(db, opts...),
 		DnsCredential: newDnsCredential(db, opts...),
 		Environment:   newEnvironment(db, opts...),
+		Notification:  newNotification(db, opts...),
 		Site:          newSite(db, opts...),
 	}
 }
@@ -63,6 +66,7 @@ type Query struct {
 	ConfigBackup  configBackup
 	DnsCredential dnsCredential
 	Environment   environment
+	Notification  notification
 	Site          site
 }
 
@@ -78,6 +82,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		ConfigBackup:  q.ConfigBackup.clone(db),
 		DnsCredential: q.DnsCredential.clone(db),
 		Environment:   q.Environment.clone(db),
+		Notification:  q.Notification.clone(db),
 		Site:          q.Site.clone(db),
 	}
 }
@@ -100,6 +105,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		ConfigBackup:  q.ConfigBackup.replaceDB(db),
 		DnsCredential: q.DnsCredential.replaceDB(db),
 		Environment:   q.Environment.replaceDB(db),
+		Notification:  q.Notification.replaceDB(db),
 		Site:          q.Site.replaceDB(db),
 	}
 }
@@ -112,6 +118,7 @@ type queryCtx struct {
 	ConfigBackup  *configBackupDo
 	DnsCredential *dnsCredentialDo
 	Environment   *environmentDo
+	Notification  *notificationDo
 	Site          *siteDo
 }
 
@@ -124,6 +131,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		ConfigBackup:  q.ConfigBackup.WithContext(ctx),
 		DnsCredential: q.DnsCredential.WithContext(ctx),
 		Environment:   q.Environment.WithContext(ctx),
+		Notification:  q.Notification.WithContext(ctx),
 		Site:          q.Site.WithContext(ctx),
 	}
 }

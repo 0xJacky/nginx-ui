@@ -41,11 +41,19 @@ const columns: Column[] = [{
   customRender: (args: customRender) => {
     const template = []
     const { text } = args
-    if (text === true || text > 0)
-      template.push(<Tag bordered={false} color="processing">{$gettext('Managed Certificate')}</Tag>)
+    const managed = $gettext('Managed Certificate')
+    const general = $gettext('General Certificate')
+    if (text === true || text > 0) {
+      template.push(<Tag bordered={false} color="processing">
+        { managed }
+      </Tag>)
+    }
 
-    else
-      template.push(<Tag bordered={false} color="purple">{$gettext('General Certificate')}</Tag>)
+    else {
+      template.push(<Tag bordered={false} color="purple">{
+      general }
+      </Tag>)
+    }
 
     return h('div', template)
   },

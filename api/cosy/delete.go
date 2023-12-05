@@ -29,6 +29,10 @@ func (c *Ctx[T]) Destroy() {
 		return
 	}
 
+	if c.permanentlyDelete {
+		result = result.Unscoped()
+	}
+
 	err = result.Delete(&dbModel).Error
 	if err != nil {
 		errHandler(c.ctx, err)

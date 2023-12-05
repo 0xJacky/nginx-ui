@@ -33,4 +33,7 @@ export const msg = [
 
   $gettext('File exists'),
   $gettext('Requested with wrong parameters'),
+
+  $gettext('Renew Certificate Success'),
+  $gettext('Renew Certificate Error'),
 ]

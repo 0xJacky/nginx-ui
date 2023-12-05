@@ -6,7 +6,6 @@ package query
 
 import (
 	"context"
-	"github.com/0xJacky/Nginx-UI/model"
 	"strings"
 
 	"gorm.io/gorm"
@@ -17,6 +16,8 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/0xJacky/Nginx-UI/model"
 )
 
 func newEnvironment(db *gorm.DB, opts ...gen.DOOption) environment {
@@ -192,10 +193,6 @@ func (e environmentDo) Select(conds ...field.Expr) *environmentDo {
 
 func (e environmentDo) Where(conds ...gen.Condition) *environmentDo {
 	return e.withDO(e.DO.Where(conds...))
-}
-
-func (e environmentDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *environmentDo {
-	return e.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
 func (e environmentDo) Order(conds ...field.Expr) *environmentDo {

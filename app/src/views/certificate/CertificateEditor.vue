@@ -40,10 +40,14 @@ onMounted(() => {
   init()
 })
 
+const router = useRouter()
 function save() {
   cert.save(data.value.id, data.value).then(r => {
     data.value = r
     message.success($gettext('Save successfully'))
+    router.push(`/certificates/${r.id}`)
+  }).catch(e => {
+    message.error($gettext(e?.message ?? 'Server error'))
   })
 }
 
@@ -70,12 +74,16 @@ const log = computed(() => {
 
   return logs.join('\n')
 })
+
+const isManaged = computed(() => {
+  return data.value.auto_cert === AutoCertState.Enable
+})
 </script>
 
 <template>
   <ACard :title="id > 0 ? $gettext('Modify Certificate') : $gettext('Add Certificate')">
     <div
-      v-if="data.auto_cert === AutoCertState.Enable"
+      v-if="isManaged"
       class="mb-4"
     >
       <div class="mb-2">
@@ -121,25 +129,45 @@ const log = computed(() => {
           </AFormItem>
         </AForm>
 
-        <RenewCert
-          v-if="data.auto_cert === AutoCertState.Enable"
-          @renewed="init"
-        />
+        <template v-if="isManaged">
+          <RenewCert @renewed="init" />
 
-        <AutoCertStepOne
-          v-if="data.auto_cert === AutoCertState.Enable"
-          style="max-width: 600px"
-          hide-note
-        />
+          <AutoCertStepOne
+            style="max-width: 600px"
+            hide-note
+          />
+        </template>
+
         <AForm
           layout="vertical"
           style="max-width: 600px"
         >
+          <AFormItem :label="$gettext('Name')">
+            <p v-if="isManaged">
+              {{ data.name }}
+            </p>
+            <AInput
+              v-else
+              v-model:value="data.name"
+            />
+          </AFormItem>
           <AFormItem :label="$gettext('SSL Certificate Path')">
-            <AInput v-model:value="data.ssl_certificate_path" />
+            <p v-if="isManaged">
+              {{ data.ssl_certificate_path }}
+            </p>
+            <AInput
+              v-else
+              v-model:value="data.ssl_certificate_path"
+            />
           </AFormItem>
           <AFormItem :label="$gettext('SSL Certificate Key Path')">
-            <AInput v-model:value="data.ssl_certificate_key_path" />
+            <p v-if="isManaged">
+              {{ data.ssl_certificate_key_path }}
+            </p>
+            <AInput
+              v-else
+              v-model:value="data.ssl_certificate_key_path"
+            />
           </AFormItem>
           <AFormItem :label="$gettext('SSL Certificate Content')">
             <CodeEditor

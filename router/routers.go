@@ -6,6 +6,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/cluster"
 	"github.com/0xJacky/Nginx-UI/api/config"
 	"github.com/0xJacky/Nginx-UI/api/nginx"
+	"github.com/0xJacky/Nginx-UI/api/notification"
 	"github.com/0xJacky/Nginx-UI/api/openai"
 	"github.com/0xJacky/Nginx-UI/api/sites"
 	"github.com/0xJacky/Nginx-UI/api/system"
@@ -54,6 +55,7 @@ func InitRouter() *gin.Engine {
 			system.InitPrivateRouter(g)
 			openai.InitRouter(g)
 			cluster.InitRouter(g)
+			notification.InitRouter(g)
 		}
 
 		// Authorization required and websocket request

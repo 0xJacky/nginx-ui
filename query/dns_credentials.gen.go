@@ -6,7 +6,6 @@ package query
 
 import (
 	"context"
-	"github.com/0xJacky/Nginx-UI/model"
 	"strings"
 
 	"gorm.io/gorm"
@@ -17,6 +16,8 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/0xJacky/Nginx-UI/model"
 )
 
 func newDnsCredential(db *gorm.DB, opts ...gen.DOOption) dnsCredential {
@@ -184,10 +185,6 @@ func (d dnsCredentialDo) Select(conds ...field.Expr) *dnsCredentialDo {
 
 func (d dnsCredentialDo) Where(conds ...gen.Condition) *dnsCredentialDo {
 	return d.withDO(d.DO.Where(conds...))
-}
-
-func (d dnsCredentialDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *dnsCredentialDo {
-	return d.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
 func (d dnsCredentialDo) Order(conds ...field.Expr) *dnsCredentialDo {

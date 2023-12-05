@@ -27,6 +27,7 @@ type Ctx[T any] struct {
 	preloads              []string
 	scan                  func(tx *gorm.DB) any
 	transformer           func(*T) any
+	permanentlyDelete     bool
 	SelectedFields        []string
 }
 
@@ -126,6 +127,11 @@ func (c *Ctx[T]) AbortWithError(err error) {
 
 func (c *Ctx[T]) Abort() {
 	c.abort = true
+}
+
+func (c *Ctx[T]) PermanentlyDelete() *Ctx[T] {
+	c.permanentlyDelete = true
+	return c
 }
 
 func (c *Ctx[T]) GormScope(hook func(tx *gorm.DB) *gorm.DB) *Ctx[T] {

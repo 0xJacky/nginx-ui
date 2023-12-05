@@ -107,11 +107,15 @@ const selectedRowKeys = ref([])
 <template>
   <div class="std-curd">
     <ACard :title="title || $gettext('Table')">
-      <template
-        v-if="!disableAdd"
-        #extra
-      >
-        <a @click="add">{{ $gettext('Add') }}</a>
+      <template #extra>
+        <ASpace>
+          <a
+            v-if="!disableAdd"
+            @click="add"
+          >{{ $gettext('Add') }}</a>
+
+          <slot name="extra" />
+        </ASpace>
       </template>
 
       <StdTable

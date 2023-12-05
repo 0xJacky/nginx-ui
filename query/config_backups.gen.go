@@ -6,7 +6,6 @@ package query
 
 import (
 	"context"
-	"github.com/0xJacky/Nginx-UI/model"
 	"strings"
 
 	"gorm.io/gorm"
@@ -17,6 +16,8 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/0xJacky/Nginx-UI/model"
 )
 
 func newConfigBackup(db *gorm.DB, opts ...gen.DOOption) configBackup {
@@ -184,10 +185,6 @@ func (c configBackupDo) Select(conds ...field.Expr) *configBackupDo {
 
 func (c configBackupDo) Where(conds ...gen.Condition) *configBackupDo {
 	return c.withDO(c.DO.Where(conds...))
-}
-
-func (c configBackupDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *configBackupDo {
-	return c.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
 func (c configBackupDo) Order(conds ...field.Expr) *configBackupDo {

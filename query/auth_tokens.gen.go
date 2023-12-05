@@ -6,7 +6,6 @@ package query
 
 import (
 	"context"
-	"github.com/0xJacky/Nginx-UI/model"
 	"strings"
 
 	"gorm.io/gorm"
@@ -17,6 +16,8 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/0xJacky/Nginx-UI/model"
 )
 
 func newAuthToken(db *gorm.DB, opts ...gen.DOOption) authToken {
@@ -160,10 +161,6 @@ func (a authTokenDo) Select(conds ...field.Expr) *authTokenDo {
 
 func (a authTokenDo) Where(conds ...gen.Condition) *authTokenDo {
 	return a.withDO(a.DO.Where(conds...))
-}
-
-func (a authTokenDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *authTokenDo {
-	return a.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
 func (a authTokenDo) Order(conds ...field.Expr) *authTokenDo {

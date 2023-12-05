@@ -34,6 +34,7 @@ func GenerateAllModel() []any {
 		Site{},
 		DnsCredential{},
 		Environment{},
+		Notification{},
 	}
 }
 
@@ -99,12 +100,8 @@ func OrderAndPaginate(c *gin.Context) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		sort := c.DefaultQuery("order", "desc")
 
-		sortBy := DefaultQuery(c, "sort_by", "")
-
-		if sortBy != "" {
-			order := fmt.Sprintf("`%s` %s", DefaultQuery(c, "sort_by", "id"), sort)
-			db = db.Order(order)
-		}
+		order := fmt.Sprintf("`%s` %s", DefaultQuery(c, "sort_by", "id"), sort)
+		db = db.Order(order)
 
 		page := cast.ToInt(c.Query("page"))
 		if page == 0 {

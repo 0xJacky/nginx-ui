@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import type { AntDesignOutlinedIconType } from '@ant-design/icons-vue/lib/icons/AntDesignOutlined'
 
 import {
+  BellOutlined,
   CloudOutlined,
   CodeOutlined,
   DatabaseOutlined,
@@ -169,6 +170,14 @@ export const routes: Route[] = [
         component: () => import('@/views/environment/Environment.vue'),
         meta: {
           icon: DatabaseOutlined,
+        },
+      },
+      {
+        path: 'notifications',
+        name: () => $gettext('Notifications'),
+        component: () => import('@/views/notification/Notification.vue'),
+        meta: {
+          icon: BellOutlined,
         },
       },
       {

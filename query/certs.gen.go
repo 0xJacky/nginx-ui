@@ -6,7 +6,6 @@ package query
 
 import (
 	"context"
-	model2 "github.com/0xJacky/Nginx-UI/model"
 	"strings"
 
 	"gorm.io/gorm"
@@ -17,13 +16,15 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/0xJacky/Nginx-UI/model"
 )
 
 func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert := cert{}
 
 	_cert.certDo.UseDB(db, opts...)
-	_cert.certDo.UseModel(&model2.Cert{})
+	_cert.certDo.UseModel(&model.Cert{})
 
 	tableName := _cert.certDo.TableName()
 	_cert.ALL = field.NewAsterisk(tableName)
@@ -67,8 +68,8 @@ type cert struct {
 	AutoCert              field.Int
 	ChallengeMethod       field.String
 	DnsCredentialID       field.Int
-	Log           field.String
-	DnsCredential certBelongsToDnsCredential
+	Log                   field.String
+	DnsCredential         certBelongsToDnsCredential
 
 	fieldMap map[string]field.Expr
 }
@@ -170,17 +171,17 @@ func (a certBelongsToDnsCredential) Session(session *gorm.Session) *certBelongsT
 	return &a
 }
 
-func (a certBelongsToDnsCredential) Model(m *model2.Cert) *certBelongsToDnsCredentialTx {
+func (a certBelongsToDnsCredential) Model(m *model.Cert) *certBelongsToDnsCredentialTx {
 	return &certBelongsToDnsCredentialTx{a.db.Model(m).Association(a.Name())}
 }
 
 type certBelongsToDnsCredentialTx struct{ tx *gorm.Association }
 
-func (a certBelongsToDnsCredentialTx) Find() (result *model2.DnsCredential, err error) {
+func (a certBelongsToDnsCredentialTx) Find() (result *model.DnsCredential, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a certBelongsToDnsCredentialTx) Append(values ...*model2.DnsCredential) (err error) {
+func (a certBelongsToDnsCredentialTx) Append(values ...*model.DnsCredential) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -188,7 +189,7 @@ func (a certBelongsToDnsCredentialTx) Append(values ...*model2.DnsCredential) (e
 	return a.tx.Append(targetValues...)
 }
 
-func (a certBelongsToDnsCredentialTx) Replace(values ...*model2.DnsCredential) (err error) {
+func (a certBelongsToDnsCredentialTx) Replace(values ...*model.DnsCredential) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -196,7 +197,7 @@ func (a certBelongsToDnsCredentialTx) Replace(values ...*model2.DnsCredential) (
 	return a.tx.Replace(targetValues...)
 }
 
-func (a certBelongsToDnsCredentialTx) Delete(values ...*model2.DnsCredential) (err error) {
+func (a certBelongsToDnsCredentialTx) Delete(values ...*model.DnsCredential) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -215,7 +216,7 @@ func (a certBelongsToDnsCredentialTx) Count() int64 {
 type certDo struct{ gen.DO }
 
 // FirstByID Where("id=@id")
-func (c certDo) FirstByID(id int) (result *model2.Cert, err error) {
+func (c certDo) FirstByID(id int) (result *model.Cert, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -288,10 +289,6 @@ func (c certDo) Where(conds ...gen.Condition) *certDo {
 	return c.withDO(c.DO.Where(conds...))
 }
 
-func (c certDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *certDo {
-	return c.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
-}
-
 func (c certDo) Order(conds ...field.Expr) *certDo {
 	return c.withDO(c.DO.Order(conds...))
 }
@@ -340,57 +337,57 @@ func (c certDo) Unscoped() *certDo {
 	return c.withDO(c.DO.Unscoped())
 }
 
-func (c certDo) Create(values ...*model2.Cert) error {
+func (c certDo) Create(values ...*model.Cert) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return c.DO.Create(values)
 }
 
-func (c certDo) CreateInBatches(values []*model2.Cert, batchSize int) error {
+func (c certDo) CreateInBatches(values []*model.Cert, batchSize int) error {
 	return c.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (c certDo) Save(values ...*model2.Cert) error {
+func (c certDo) Save(values ...*model.Cert) error {
 	if len(values) == 0 {
 		return nil
 	}
 	return c.DO.Save(values)
 }
 
-func (c certDo) First() (*model2.Cert, error) {
+func (c certDo) First() (*model.Cert, error) {
 	if result, err := c.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model2.Cert), nil
+		return result.(*model.Cert), nil
 	}
 }
 
-func (c certDo) Take() (*model2.Cert, error) {
+func (c certDo) Take() (*model.Cert, error) {
 	if result, err := c.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model2.Cert), nil
+		return result.(*model.Cert), nil
 	}
 }
 
-func (c certDo) Last() (*model2.Cert, error) {
+func (c certDo) Last() (*model.Cert, error) {
 	if result, err := c.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model2.Cert), nil
+		return result.(*model.Cert), nil
 	}
 }
 
-func (c certDo) Find() ([]*model2.Cert, error) {
+func (c certDo) Find() ([]*model.Cert, error) {
 	result, err := c.DO.Find()
-	return result.([]*model2.Cert), err
+	return result.([]*model.Cert), err
 }
 
-func (c certDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model2.Cert, err error) {
-	buf := make([]*model2.Cert, 0, batchSize)
+func (c certDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.Cert, err error) {
+	buf := make([]*model.Cert, 0, batchSize)
 	err = c.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
@@ -398,7 +395,7 @@ func (c certDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error)
 	return results, err
 }
 
-func (c certDo) FindInBatches(result *[]*model2.Cert, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+func (c certDo) FindInBatches(result *[]*model.Cert, batchSize int, fc func(tx gen.Dao, batch int) error) error {
 	return c.DO.FindInBatches(result, batchSize, fc)
 }
 
@@ -424,23 +421,23 @@ func (c certDo) Preload(fields ...field.RelationField) *certDo {
 	return &c
 }
 
-func (c certDo) FirstOrInit() (*model2.Cert, error) {
+func (c certDo) FirstOrInit() (*model.Cert, error) {
 	if result, err := c.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model2.Cert), nil
+		return result.(*model.Cert), nil
 	}
 }
 
-func (c certDo) FirstOrCreate() (*model2.Cert, error) {
+func (c certDo) FirstOrCreate() (*model.Cert, error) {
 	if result, err := c.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model2.Cert), nil
+		return result.(*model.Cert), nil
 	}
 }
 
-func (c certDo) FindByPage(offset int, limit int) (result []*model2.Cert, count int64, err error) {
+func (c certDo) FindByPage(offset int, limit int) (result []*model.Cert, count int64, err error) {
 	result, err = c.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
@@ -469,7 +466,7 @@ func (c certDo) Scan(result interface{}) (err error) {
 	return c.DO.Scan(result)
 }
 
-func (c certDo) Delete(models ...*model2.Cert) (result gen.ResultInfo, err error) {
+func (c certDo) Delete(models ...*model.Cert) (result gen.ResultInfo, err error) {
 	return c.DO.Delete(models)
 }
 
