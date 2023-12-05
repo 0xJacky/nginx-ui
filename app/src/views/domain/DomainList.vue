@@ -29,11 +29,11 @@ const columns: Column[] = [{
     const { text } = args
     if (text === true || text > 0) {
       template.push(<Badge status="success"/>)
-      template.push($gettext('Enable'))
+      template.push($gettext('Enabled'))
     }
     else {
       template.push(<Badge status="warning"/>)
-      template.push($gettext('Disable'))
+      template.push($gettext('Disabled'))
     }
 
     return h('div', template)
@@ -119,7 +119,7 @@ watch(route, () => {
           size="small"
           @click="disable(record.name)"
         >
-          {{ $gettext('Disabled') }}
+          {{ $gettext('Disable') }}
         </AButton>
         <AButton
           v-else
@@ -127,7 +127,7 @@ watch(route, () => {
           size="small"
           @click="enable(record.name)"
         >
-          {{ $gettext('Enabled') }}
+          {{ $gettext('Enable') }}
         </AButton>
         <ADivider type="vertical" />
         <AButton

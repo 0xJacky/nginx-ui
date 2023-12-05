@@ -34,7 +34,7 @@ require (
 	golang.org/x/crypto v0.16.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/sqlite v1.5.4
-	gorm.io/gen v0.3.23
+	gorm.io/gen v0.3.24
 	gorm.io/gorm v1.25.5
 	gorm.io/plugin/dbresolver v1.5.0
 )
