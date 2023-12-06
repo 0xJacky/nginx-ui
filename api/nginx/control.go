@@ -1,31 +1,31 @@
 package nginx
 
 import (
-	nginx2 "github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func Reload(c *gin.Context) {
-	output := nginx2.Reload()
+	output := nginx.Reload()
 	c.JSON(http.StatusOK, gin.H{
 		"message": output,
-		"level":   nginx2.GetLogLevel(output),
+		"level":   nginx.GetLogLevel(output),
 	})
 }
 
 func Test(c *gin.Context) {
-	output := nginx2.TestConf()
+	output := nginx.TestConf()
 	c.JSON(http.StatusOK, gin.H{
 		"message": output,
-		"level":   nginx2.GetLogLevel(output),
+		"level":   nginx.GetLogLevel(output),
 	})
 }
 
 func Restart(c *gin.Context) {
-	output := nginx2.Restart()
+	output := nginx.Restart()
 	c.JSON(http.StatusOK, gin.H{
 		"message": output,
-		"level":   nginx2.GetLogLevel(output),
+		"level":   nginx.GetLogLevel(output),
 	})
 }
