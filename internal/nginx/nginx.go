@@ -9,7 +9,7 @@ import (
 )
 
 func execShell(cmd string) (out string) {
-	bytes, err := exec.Command("/bin/sh -c", cmd).CombinedOutput()
+	bytes, err := exec.Command("/bin/sh", "-c", cmd).CombinedOutput()
 	out = string(bytes)
 	if err != nil {
 		out += " " + err.Error()
@@ -59,8 +59,6 @@ func Restart() (out string) {
 	out = execCommand("nginx", "-s", "stop")
 
 	out += execCommand("nginx")
-
-	logger.Debug(out)
 
 	return
 }

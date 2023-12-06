@@ -57,6 +57,7 @@ function enable(name: string) {
   domain.enable(name).then(() => {
     message.success($gettext('Enabled successfully'))
     table.value?.get_list()
+    inspect_config.value?.test()
   }).catch(r => {
     message.error($gettext('Failed to enable %{msg}', { msg: r.message ?? '' }), 10)
   })
@@ -66,6 +67,7 @@ function disable(name: string) {
   domain.disable(name).then(() => {
     message.success($gettext('Disabled successfully'))
     table.value?.get_list()
+    inspect_config.value?.test()
   }).catch(r => {
     message.error($gettext('Failed to disable %{msg}', { msg: r.message ?? '' }))
   })
@@ -75,6 +77,7 @@ function destroy(site_name: string) {
   domain.destroy(site_name).then(() => {
     table.value.get_list()
     message.success($gettext('Delete site: %{site_name}', { site_name }))
+    inspect_config.value?.test()
   }).catch(e => {
     message.error(e?.message ?? $gettext('Server error'))
   })
