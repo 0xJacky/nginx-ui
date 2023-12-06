@@ -5,8 +5,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
-	nginx2 "github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/hpcloud/tail"
@@ -107,9 +106,9 @@ func GetNginxLogPage(c *gin.Context) {
 func getLogPath(control *controlStruct) (logPath string, err error) {
 	switch control.Type {
 	case "site":
-		var config *nginx2.NgxConfig
-		path := nginx2.GetConfPath("sites-available", control.ConfName)
-		config, err = nginx2.ParseNgxConfig(path)
+		var config *nginx.NgxConfig
+		path := nginx.GetConfPath("sites-available", control.ConfName)
+		config, err = nginx.ParseNgxConfig(path)
 		if err != nil {
 			err = errors.Wrap(err, "error parsing ngx config")
 			return
@@ -142,20 +141,25 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 		logPath = directive.Params
 
 	case "error":
-		if settings.NginxSettings.ErrorLogPath == "" {
+		path := nginx.GetErrorLogPath()
+
+		if path == "" {
 			err = errors.New("settings.NginxLogSettings.ErrorLogPath is empty," +
 				" refer to https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information")
 			return
 		}
-		logPath = settings.NginxSettings.ErrorLogPath
 
+		logPath = path
 	default:
-		if settings.NginxSettings.AccessLogPath == "" {
+		path := nginx.GetAccessLogPath()
+
+		if path == "" {
 			err = errors.New("settings.NginxLogSettings.AccessLogPath is empty," +
 				" refer to https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information")
 			return
 		}
-		logPath = settings.NginxSettings.AccessLogPath
+
+		logPath = path
 	}
 
 	return
@@ -185,7 +189,7 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 		}
 
 		if !helper.FileExists(logPath) {
-			errChan <- errors.New("error log path not exists")
+			errChan <- errors.New("error log path not exists " + logPath)
 			return
 		}
 
@@ -254,7 +258,7 @@ func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errCha
 	}
 }
 
-func NginxLog(c *gin.Context) {
+func Log(c *gin.Context) {
 	var upGrader = websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {
 			return true
