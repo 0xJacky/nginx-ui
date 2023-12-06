@@ -53,6 +53,8 @@ const columns: Column[] = [{
 
 const table = ref()
 
+const inspect_config = ref()
+
 function enable(name: string) {
   domain.enable(name).then(() => {
     message.success($gettext('Enabled successfully'))
@@ -91,8 +93,6 @@ function handle_click_duplicate(name: string) {
   show_duplicator.value = true
   target.value = name
 }
-
-const inspect_config = ref()
 
 const route = useRoute()
 
