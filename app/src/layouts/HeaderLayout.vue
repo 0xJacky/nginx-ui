@@ -42,11 +42,11 @@ function logout() {
 
       <Notification />
 
+      <NginxControl />
+
       <a href="/">
         <HomeOutlined />
       </a>
-
-      <NginxControl />
 
       <a @click="logout">
         <LogoutOutlined />

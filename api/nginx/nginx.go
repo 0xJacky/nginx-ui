@@ -51,7 +51,7 @@ func FormatNginxConfig(c *gin.Context) {
 }
 
 func Status(c *gin.Context) {
-	pidPath := nginx.GetNginxPIDPath()
+	pidPath := nginx.GetPIDPath()
 
 	running := true
 	if fileInfo, err := os.Stat(pidPath); err != nil || fileInfo.Size() == 0 { // fileInfo.Size() == 0 no process id

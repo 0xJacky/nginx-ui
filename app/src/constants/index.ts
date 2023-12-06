@@ -19,3 +19,10 @@ export const NotificationType = {
   [NotificationTypeT.Info]: () => $gettext('Info'),
   [NotificationTypeT.Success]: () => $gettext('Success'),
 } as const
+
+export enum NginxStatus {
+  Running,
+  Reloading,
+  Restarting,
+  Stopped,
+}

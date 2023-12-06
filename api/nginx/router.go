@@ -14,5 +14,5 @@ func InitRouter(r *gin.RouterGroup) {
 }
 
 func InitNginxLogRouter(r *gin.RouterGroup) {
-	r.GET("nginx_log", NginxLog)
+	r.GET("nginx_log", Log)
 }

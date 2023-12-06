@@ -1,11 +1,8 @@
 package nginx
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"os/exec"
-	"path/filepath"
-	"regexp"
 )
 
 func execShell(cmd string) (out string) {
@@ -56,55 +53,18 @@ func Restart() (out string) {
 		return
 	}
 
-	out = execCommand("nginx", "-s", "stop")
+	pidPath := GetPIDPath()
+	daemon := GetSbinPath()
 
-	out += execCommand("nginx")
+	out = execCommand("start-stop-daemon", "--stop", "--quiet", "--oknodo", "--retry=TERM/30/KILL/5", "--pidfile", pidPath)
+
+	if daemon == "" {
+		out += execCommand("nginx")
+
+		return
+	}
+
+	out += execCommand("start-stop-daemon", "--start", "--quiet", "--pidfile", pidPath, "--exec", daemon)
 
 	return
-}
-
-func GetConfPath(dir ...string) string {
-	var confPath string
-
-	if settings.NginxSettings.ConfigDir == "" {
-		out, err := exec.Command("nginx", "-V").CombinedOutput()
-		if err != nil {
-			logger.Error(err)
-			return ""
-		}
-		r, _ := regexp.Compile("--conf-path=(.*)/(.*.conf)")
-		match := r.FindStringSubmatch(string(out))
-		if len(match) < 1 {
-			logger.Error("nginx.GetConfPath len(match) < 1")
-			return ""
-		}
-		confPath = r.FindStringSubmatch(string(out))[1]
-	} else {
-		confPath = settings.NginxSettings.ConfigDir
-	}
-
-	return filepath.Join(confPath, filepath.Join(dir...))
-}
-
-func GetNginxPIDPath() string {
-	var confPath string
-
-	if settings.NginxSettings.PIDPath == "" {
-		out, err := exec.Command("nginx", "-V").CombinedOutput()
-		if err != nil {
-			logger.Error(err)
-			return ""
-		}
-		r, _ := regexp.Compile("--pid-path=(.*.pid)")
-		match := r.FindStringSubmatch(string(out))
-		if len(match) < 1 {
-			logger.Error("nginx.GetNginxPIDPath len(match) < 1")
-			return ""
-		}
-		confPath = r.FindStringSubmatch(string(out))[1]
-	} else {
-		confPath = settings.NginxSettings.PIDPath
-	}
-
-	return confPath
 }

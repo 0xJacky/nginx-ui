@@ -4,20 +4,22 @@ import { ReloadOutlined } from '@ant-design/icons-vue'
 import gettext from '@/gettext'
 import ngx from '@/api/ngx'
 import { logLevel } from '@/views/config/constants'
+import { NginxStatus } from '@/constants'
 
 const { $gettext } = gettext
+
 const status = ref(0)
 function get_status() {
   ngx.status().then(r => {
     if (r?.running === true)
-      status.value = 0
+      status.value = NginxStatus.Running
     else
-      status.value = -1
+      status.value = NginxStatus.Stopped
   })
 }
 
 function reload_nginx() {
-  status.value = 1
+  status.value = NginxStatus.Reloading
   ngx.reload().then(r => {
     if (r.level < logLevel.Warn)
       message.success($gettext('Nginx reloaded successfully'))
@@ -27,13 +29,11 @@ function reload_nginx() {
       message.error(r.message)
   }).catch(e => {
     message.error(`${$gettext('Server error')} ${e?.message}`)
-  }).finally(() => {
-    status.value = 0
-  })
+  }).finally(() => get_status())
 }
 
 function restart_nginx() {
-  status.value = 2
+  status.value = NginxStatus.Restarting
   ngx.restart().then(r => {
     if (r.level < logLevel.Warn)
       message.success($gettext('Nginx restarted successfully'))
@@ -43,9 +43,7 @@ function restart_nginx() {
       message.error(r.message)
   }).catch(e => {
     message.error(`${$gettext('Server error')} ${e?.message}`)
-  }).finally(() => {
-    status.value = 0
-  })
+  }).finally(() => get_status())
 }
 
 const visible = ref(false)
@@ -66,17 +64,17 @@ watch(visible, v => {
       <div class="content-wrapper">
         <h4>{{ $gettext('Nginx Control') }}</h4>
         <ABadge
-          v-if="status === 0"
+          v-if="status === NginxStatus.Running"
           color="green"
           :text="$gettext('Running')"
         />
         <ABadge
-          v-else-if="status === 1"
+          v-else-if="status === NginxStatus.Reloading"
           color="blue"
           :text="$gettext('Reloading')"
         />
         <ABadge
-          v-else-if="status === 2"
+          v-else-if="status === NginxStatus.Restarting"
           color="orange"
           :text="$gettext('Restarting')"
         />
