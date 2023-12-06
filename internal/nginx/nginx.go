@@ -17,6 +17,15 @@ func execShell(cmd string) (out string) {
 	return
 }
 
+func execCommand(name string, cmd ...string) (out string) {
+	bytes, err := exec.Command(name, cmd...).CombinedOutput()
+	out = string(bytes)
+	if err != nil {
+		out += " " + err.Error()
+	}
+	return
+}
+
 func TestConf() (out string) {
 	if settings.NginxSettings.TestConfigCmd != "" {
 		out = execShell(settings.NginxSettings.TestConfigCmd)
@@ -24,7 +33,7 @@ func TestConf() (out string) {
 		return
 	}
 
-	out = execShell("nginx -t")
+	out = execCommand("nginx", "-t")
 
 	return
 }
@@ -35,7 +44,7 @@ func Reload() (out string) {
 		return
 	}
 
-	out = execShell("nginx -s reload")
+	out = execCommand("nginx", "-s", "reload")
 
 	return
 }
@@ -47,7 +56,11 @@ func Restart() (out string) {
 		return
 	}
 
-	out = execShell("nginx -s reopen")
+	out = execCommand("nginx", "-s", "stop")
+
+	out += execCommand("nginx")
+
+	logger.Debug(out)
 
 	return
 }

@@ -6,7 +6,8 @@ import "strings"
 // nginx log level: debug, info, notice, warn, error, crit, alert, or emerg
 
 const (
-	Debug = iota
+	Unknown = -1
+	Debug   = iota
 	Info
 	Notice
 	Warn
