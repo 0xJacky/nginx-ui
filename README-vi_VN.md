@@ -160,7 +160,7 @@ Bạn có thể truy cập [latest release](https://github.com/0xJacky/nginx-ui/
 
 Trong lần chạy đầu tiên, vui lòng truy cập `http://<your_server_ip>:<listen_port>/install` bằng trình duyệt của bạn để hoàn tất các cấu hình.
 
-#### From Executable
+#### Chạy với Executable
 **Chạy giao diện người dùng Nginx trong Terminal**
 
 ```shell
@@ -168,7 +168,7 @@ nginx-ui -config app.ini
 ```
 Bấm `Ctrl + C` vào terminal để thoát Nginx UI.
 
-**Run Nginx UI in Background**
+**Chạy nền (Background)**
 
 ```shell
 nohup ./nginx-ui -config app.ini &
@@ -318,6 +318,12 @@ hãy nhớ restart nginx-ui bằng lệnh `systemctl restart nginx-ui` mỗi khi
 
 ```shell
 bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
+```
+
+**Gỡ bỏ Nginx UI đồng thời xoá các tệp cấu hình, cơ sở dữ liệu**
+
+```shell
+bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove --purge
 ```
 
 ### Trợ giúp
