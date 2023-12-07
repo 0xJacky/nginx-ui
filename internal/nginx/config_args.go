@@ -75,7 +75,7 @@ func GetAccessLogPath() (path string) {
 		}
 		path = match[1]
 	} else {
-		path = settings.NginxSettings.PIDPath
+		path = settings.NginxSettings.AccessLogPath
 	}
 
 	return path
