@@ -35,7 +35,7 @@ English | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體�
       <ul>
         <li><a href="#demo">Demo</a></li>
         <li><a href="#features">Tính năng</a></li>
-        <li><a href="#internationalization">Quốc tế hoá</a></li>
+        <li><a href="#internationalization">Ngôn ngữ hiển thị</a></li>
         <li><a href="#built-with">Được xây dựng với</a></li>
       </ul>
     </li>
@@ -97,7 +97,7 @@ URL：[https://demo.nginxui.com](https://demo.nginxui.com)
 - Dark Mode
 - Responsive Web Design
 
-### Internationalization
+### Ngôn ngữ hiển thị
 
 - Tiếng Việt
 - Tiếng Anh
