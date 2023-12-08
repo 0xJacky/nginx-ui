@@ -13,7 +13,7 @@ var Dict map[string]pofile.Dict
 func init() {
 	Dict = make(map[string]pofile.Dict)
 
-	langCode := []string{"zh_CN", "zh_TW", "ru_RU", "fr_FR", "es"}
+	langCode := []string{"zh_CN", "zh_TW", "ru_RU", "fr_FR", "es", "vi_VN"}
 
 	for _, v := range langCode {
 		handlePo(v)
