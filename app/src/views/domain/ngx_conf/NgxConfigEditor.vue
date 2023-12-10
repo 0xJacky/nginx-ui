@@ -108,9 +108,6 @@ function change_tls(status: boolean) {
     }, {
       directive: 'listen',
       params: '[::]:443 ssl',
-    }, {
-      directive: 'http2',
-      params: 'on',
     })
 
     const server_name_idx = directivesMap.value?.server_name?.[0].idx ?? 0

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useGettext } from 'vue3-gettext'
 import { Modal, message } from 'ant-design-vue'
-import type { Ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import template from '@/api/template'
 import domain from '@/api/domain'
 import AutoCertStepOne from '@/views/domain/cert/components/AutoCertStepOne.vue'
@@ -39,7 +39,7 @@ const no_server_name = inject('no_server_name') as Ref<boolean>
 const props = inject('props') as Props
 const issuing_cert = inject('issuing_cert') as Ref<boolean>
 const ngx_config = inject('ngx_config') as NgxConfig
-const current_server_directives = inject('current_server_directives') as NgxDirective[]
+const current_server_directives = inject('current_server_directives') as ComputedRef<NgxDirective[]>
 
 const name = computed(() => {
   return directivesMap.value.server_name[0].params.trim()
@@ -121,7 +121,7 @@ function job() {
   const server_name_idx = directivesMap.value.server_name[0]?.idx ?? 0
 
   if (!directivesMap.value.ssl_certificate) {
-    current_server_directives.splice(server_name_idx + 1, 0, {
+    current_server_directives.value.splice(server_name_idx + 1, 0, {
       directive: 'ssl_certificate',
       params: '',
     })
@@ -131,7 +131,7 @@ function job() {
     if (!directivesMap.value.ssl_certificate_key) {
       const ssl_certificate_idx = directivesMap.value.ssl_certificate[0]?.idx ?? 0
 
-      current_server_directives.splice(ssl_certificate_idx + 1, 0, {
+      current_server_directives.value.splice(ssl_certificate_idx + 1, 0, {
         directive: 'ssl_certificate_key',
         params: '',
       })
