@@ -19,9 +19,8 @@ You should execute the following command to update browser list database before 
 Please execute the following command in `app` directory.
 
 ```shell
-yarn install
-make translations
-yarn build
+pnpm install
+pnpm build
 ```
 
 ## Build Backend

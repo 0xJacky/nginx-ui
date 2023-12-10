@@ -225,9 +225,8 @@ docker run -dit \
 請在 `app` 資料夾中執行以下命令。
 
 ```shell
-yarn install
-make translations
-yarn build
+pnpm install
+pnpm build
 ```
 
 ### 建置後端

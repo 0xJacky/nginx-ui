@@ -286,8 +286,8 @@ On platforms that do not have an official build version, they can be built manua
 Please execute the following command in `app` directory.
 
 ```shell
-yarn install
-yarn build
+pnpm install
+pnpm build
 ```
 
 ### Build Backend

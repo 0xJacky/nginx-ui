@@ -226,8 +226,8 @@ En plataformas que no tienen una versión de compilación oficial, pueden compil
 Ejecute el siguiente comando en el directorio `app`.
 
 ```shell
-yarn install
-yarn build
+pnpm install
+pnpm build
 ```
 
 ### Compilación del Backend

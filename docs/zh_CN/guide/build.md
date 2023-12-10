@@ -18,9 +18,8 @@
 请在 `app` 目录中执行以下命令。
 
 ```shell
-yarn install
-make translations
-yarn build
+pnpm install
+pnpm build
 ```
 
 ## 构建后端

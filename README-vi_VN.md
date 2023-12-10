@@ -289,8 +289,8 @@ Trên các nền tảng không có phiên bản xây dựng chính thức, chún
 Vui lòng thực hiện lệnh sau trong thư mục `app`.
 
 ```shell
-yarn install
-yarn build
+pnpm install
+pnpm build
 ```
 
 ### Build Backend
