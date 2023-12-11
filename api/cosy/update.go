@@ -28,6 +28,8 @@ func (c *Ctx[T]) Modify() {
 		return
 	}
 
+	var dbModel T
+
 	db := model.UseDB()
 
 	result := db
@@ -35,7 +37,7 @@ func (c *Ctx[T]) Modify() {
 		result = result.Scopes(c.gormScopes...)
 	}
 
-	err := result.Session(&gorm.Session{}).First(&c.Model, id).Error
+	err := result.Session(&gorm.Session{}).First(&dbModel, id).Error
 
 	if err != nil {
 		c.AbortWithError(err)
@@ -65,7 +67,7 @@ func (c *Ctx[T]) Modify() {
 		return
 	}
 
-	err = db.Model(&c.Model).Select(selectedFields).Updates(&c.Model).Error
+	err = db.Model(&dbModel).Select(selectedFields).Updates(&c.Model).Error
 
 	if err != nil {
 		c.AbortWithError(err)
@@ -85,6 +87,6 @@ func (c *Ctx[T]) Modify() {
 	if c.nextHandler != nil {
 		(*c.nextHandler)(c.ctx)
 	} else {
-		c.ctx.JSON(http.StatusOK, c.Model)
+		c.ctx.JSON(http.StatusOK, dbModel)
 	}
 }

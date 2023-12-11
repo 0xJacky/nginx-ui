@@ -4,58 +4,39 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"gorm.io/gorm"
 	"net/http"
 )
 
-func (c *Ctx[T]) SetFussy(keys ...string) *Ctx[T] {
-	c.gormScopes = append(c.gormScopes, func(tx *gorm.DB) *gorm.DB {
-		return model.QueryToFussySearch(c.ctx, tx, keys...)
-	})
-	return c
+func GetPagingParams(c *gin.Context) (page, offset, pageSize int) {
+	page = cast.ToInt(c.Query("page"))
+	if page == 0 {
+		page = 1
+	}
+	pageSize = settings.ServerSettings.PageSize
+	reqPageSize := c.Query("page_size")
+	if reqPageSize != "" {
+		pageSize = cast.ToInt(reqPageSize)
+	}
+	offset = (page - 1) * pageSize
+	return
 }
 
-func (c *Ctx[T]) SetFussyKeys(value string, keys ...string) *Ctx[T] {
-	c.gormScopes = append(c.gormScopes, func(tx *gorm.DB) *gorm.DB {
-		return model.QueryToFussyKeysSearch(c.ctx, tx, value, keys...)
-	})
-	return c
-}
+func (c *Ctx[T]) combineStdSelectorRequest() {
+	var StdSelectorInitParams struct {
+		ID []int `json:"id"`
+	}
 
-func (c *Ctx[T]) SetEqual(keys ...string) *Ctx[T] {
-	c.gormScopes = append(c.gormScopes, func(tx *gorm.DB) *gorm.DB {
-		return model.QueryToEqualSearch(c.ctx, tx, keys...)
-	})
-	return c
-}
+	if err := c.ctx.ShouldBindJSON(&StdSelectorInitParams); err != nil {
+		logger.Error(err)
+		return
+	}
 
-func (c *Ctx[T]) SetIn(keys ...string) *Ctx[T] {
-	c.gormScopes = append(c.gormScopes, func(tx *gorm.DB) *gorm.DB {
-		return model.QueryToInSearch(c.ctx, tx, keys...)
+	c.GormScope(func(tx *gorm.DB) *gorm.DB {
+		return tx.Where(c.itemKey+" IN ?", StdSelectorInitParams.ID)
 	})
-	return c
-}
-
-func (c *Ctx[T]) SetOrFussy(keys ...string) *Ctx[T] {
-	c.gormScopes = append(c.gormScopes, func(tx *gorm.DB) *gorm.DB {
-		return model.QueryToOrFussySearch(c.ctx, tx, keys...)
-	})
-	return c
-}
-
-func (c *Ctx[T]) SetOrEqual(keys ...string) *Ctx[T] {
-	c.gormScopes = append(c.gormScopes, func(tx *gorm.DB) *gorm.DB {
-		return model.QueryToOrEqualSearch(c.ctx, tx, keys...)
-	})
-	return c
-}
-
-func (c *Ctx[T]) SetOrIn(keys ...string) *Ctx[T] {
-	c.gormScopes = append(c.gormScopes, func(tx *gorm.DB) *gorm.DB {
-		return model.QueryToOrInSearch(c.ctx, tx, keys...)
-	})
-	return c
 }
 
 func (c *Ctx[T]) result() (*gorm.DB, bool) {
@@ -72,7 +53,7 @@ func (c *Ctx[T]) result() (*gorm.DB, bool) {
 	var dbModel T
 	result := model.UseDB()
 
-	if c.ctx.Query("trash") == "true" {
+	if cast.ToBool(c.ctx.Query("trash")) {
 		stmt := &gorm.Statement{DB: model.UseDB()}
 		err := stmt.Parse(&dbModel)
 		if err != nil {
@@ -83,6 +64,8 @@ func (c *Ctx[T]) result() (*gorm.DB, bool) {
 	}
 
 	result = result.Model(&dbModel)
+
+	c.combineStdSelectorRequest()
 
 	if len(c.gormScopes) > 0 {
 		result = result.Scopes(c.gormScopes...)
@@ -97,7 +80,7 @@ func (c *Ctx[T]) ListAllData() ([]*T, bool) {
 		return nil, false
 	}
 
-	result = result.Scopes(model.SortOrder(c.ctx))
+	result = result.Scopes(c.SortOrder())
 	models := make([]*T, 0)
 	result.Find(&models)
 	return models, true
@@ -109,7 +92,7 @@ func (c *Ctx[T]) PagingListData() (*model.DataList, bool) {
 		return nil, false
 	}
 
-	result = result.Scopes(model.OrderAndPaginate(c.ctx))
+	result = result.Scopes(c.OrderAndPaginate())
 	data := &model.DataList{}
 	if c.scan == nil {
 		models := make([]*T, 0)

@@ -6,6 +6,11 @@ import (
 	"net/http"
 )
 
+func (c *Ctx[T]) PermanentlyDelete() *Ctx[T] {
+	c.permanentlyDelete = true
+	return c
+}
+
 func (c *Ctx[T]) Destroy() {
 	if c.abort {
 		return

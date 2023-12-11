@@ -29,6 +29,7 @@ type Ctx[T any] struct {
 	transformer           func(*T) any
 	permanentlyDelete     bool
 	SelectedFields        []string
+	itemKey               string
 }
 
 func Core[T any](c *gin.Context) *Ctx[T] {
@@ -37,7 +38,13 @@ func Core[T any](c *gin.Context) *Ctx[T] {
 		gormScopes:            make([]func(tx *gorm.DB) *gorm.DB, 0),
 		beforeExecuteHookFunc: make([]func(ctx *Ctx[T]), 0),
 		beforeDecodeHookFunc:  make([]func(ctx *Ctx[T]), 0),
+		itemKey:               "`id`",
 	}
+}
+
+func (c *Ctx[T]) SetItemKey(key string) *Ctx[T] {
+	c.itemKey = key
+	return c
 }
 
 func (c *Ctx[T]) SetValidRules(rules gin.H) *Ctx[T] {
@@ -46,40 +53,9 @@ func (c *Ctx[T]) SetValidRules(rules gin.H) *Ctx[T] {
 	return c
 }
 
-func (c *Ctx[T]) BeforeDecodeHook(hook ...func(ctx *Ctx[T])) *Ctx[T] {
-	c.beforeDecodeHookFunc = append(c.beforeDecodeHookFunc, hook...)
-	return c
-}
-
-func (c *Ctx[T]) BeforeExecuteHook(hook ...func(ctx *Ctx[T])) *Ctx[T] {
-	c.beforeExecuteHookFunc = append(c.beforeExecuteHookFunc, hook...)
-	return c
-}
-
-func (c *Ctx[T]) ExecutedHook(hook ...func(ctx *Ctx[T])) *Ctx[T] {
-	c.executedHookFunc = append(c.executedHookFunc, hook...)
-	return c
-}
-
 func (c *Ctx[T]) SetPreloads(args ...string) *Ctx[T] {
 	c.preloads = append(c.preloads, args...)
 	return c
-}
-
-func (c *Ctx[T]) beforeExecuteHook() {
-	if len(c.beforeExecuteHookFunc) > 0 {
-		for _, v := range c.beforeExecuteHookFunc {
-			v(c)
-		}
-	}
-}
-
-func (c *Ctx[T]) beforeDecodeHook() {
-	if len(c.beforeDecodeHookFunc) > 0 {
-		for _, v := range c.beforeDecodeHookFunc {
-			v(c)
-		}
-	}
 }
 
 func (c *Ctx[T]) validate() (errs gin.H) {
@@ -127,14 +103,4 @@ func (c *Ctx[T]) AbortWithError(err error) {
 
 func (c *Ctx[T]) Abort() {
 	c.abort = true
-}
-
-func (c *Ctx[T]) PermanentlyDelete() *Ctx[T] {
-	c.permanentlyDelete = true
-	return c
-}
-
-func (c *Ctx[T]) GormScope(hook func(tx *gorm.DB) *gorm.DB) *Ctx[T] {
-	c.gormScopes = append(c.gormScopes, hook)
-	return c
 }
