@@ -86,7 +86,6 @@ const filterOption = (input: string, option: { label: string }) => {
         :key="k"
         :label="k"
         :extra="v"
-        :rules="[{ required: true }]"
       >
         <AInput v-model:value="data.configuration.credentials[k]" />
       </AFormItem>
