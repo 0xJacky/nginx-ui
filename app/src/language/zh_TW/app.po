@@ -22,7 +22,7 @@ msgstr "關於"
 msgid "Access Logs"
 msgstr "存取日誌"
 
-#: src/views/certificate/Certificate.vue:104
+#: src/views/certificate/Certificate.vue:106
 #: src/views/certificate/DNSCredential.vue:32 src/views/config/config.ts:36
 #: src/views/domain/DomainList.vue:50 src/views/environment/Environment.vue:105
 #: src/views/notification/Notification.vue:38 src/views/user/User.vue:46
@@ -187,7 +187,7 @@ msgstr "此憑證有效"
 msgid "Certificate Status"
 msgstr "憑證狀態"
 
-#: src/routes/index.ts:101 src/views/certificate/Certificate.vue:117
+#: src/routes/index.ts:101 src/views/certificate/Certificate.vue:122
 #, fuzzy
 msgid "Certificates"
 msgstr "憑證狀態"
@@ -442,6 +442,10 @@ msgstr "您想啟用 TLS 嗎？"
 msgid "Do you want to remove this server?"
 msgstr "您要移除此伺服器嗎？"
 
+#: src/views/certificate/WildcardCertificate.vue:69
+msgid "Domain"
+msgstr "網域"
+
 #: src/views/domain/DomainAdd.vue:151
 msgid "Domain Config Created Successfully"
 msgstr "網域設定檔成功建立"
@@ -565,7 +569,7 @@ msgstr "錯誤日誌"
 msgid "Executable Path"
 msgstr "可執行檔路徑"
 
-#: src/views/certificate/Certificate.vue:92
+#: src/views/certificate/Certificate.vue:94
 msgid "Expired"
 msgstr ""
 
@@ -629,7 +633,7 @@ msgstr "格式錯誤 %{msg}"
 msgid "Format successfully"
 msgstr "成功格式化"
 
-#: src/views/certificate/Certificate.vue:45
+#: src/views/certificate/Certificate.vue:47
 #, fuzzy
 msgid "General Certificate"
 msgstr "更換憑證"
@@ -690,7 +694,7 @@ msgstr "HTTP 監聽埠"
 msgid "HTTP01"
 msgstr "HTTP01"
 
-#: src/views/certificate/Certificate.vue:120
+#: src/views/certificate/Certificate.vue:129
 #, fuzzy
 msgid "Import"
 msgstr "匯出"
@@ -723,6 +727,20 @@ msgstr "安裝成功"
 #: src/views/domain/cert/CertInfo.vue:21
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "中級憑證頒發機構: %{issuer}"
+
+#: src/views/certificate/WildcardCertificate.vue:84
+msgid "Issue"
+msgstr ""
+
+#: src/views/certificate/Certificate.vue:137
+#, fuzzy
+msgid "Issue wildcard certificate"
+msgstr "取得憑證"
+
+#: src/views/certificate/WildcardCertificate.vue:58
+#, fuzzy
+msgid "Issue Wildcard Certificate"
+msgstr "憑證狀態"
 
 #: src/language/constants.ts:24
 msgid "Issued certificate successfully"
@@ -813,7 +831,7 @@ msgstr "管理網站"
 msgid "Manage Users"
 msgstr "管理使用者"
 
-#: src/views/certificate/Certificate.vue:44
+#: src/views/certificate/Certificate.vue:46
 #, fuzzy
 msgid "Managed Certificate"
 msgstr "更換憑證"
@@ -845,7 +863,7 @@ msgstr "修改設定"
 msgid "Multi-line Directive"
 msgstr "多行指令"
 
-#: src/views/certificate/Certificate.vue:22
+#: src/views/certificate/Certificate.vue:24
 #: src/views/certificate/CertificateEditor.vue:145
 #: src/views/certificate/DNSCredential.vue:13 src/views/config/config.ts:9
 #: src/views/domain/cert/ChangeCert.vue:21
@@ -926,7 +944,7 @@ msgstr "取消"
 msgid "Node Secret"
 msgstr "Node Secret"
 
-#: src/views/certificate/Certificate.vue:98
+#: src/views/certificate/Certificate.vue:100
 msgid "Not After"
 msgstr ""
 
@@ -1171,6 +1189,7 @@ msgid "Renew Certificate Success"
 msgstr "更換憑證"
 
 #: src/views/certificate/RenewCert.vue:25
+#: src/views/certificate/WildcardCertificate.vue:47
 #, fuzzy
 msgid "Renew successfully"
 msgstr "啟用成功"
@@ -1302,12 +1321,12 @@ msgstr "SSL 認證內容"
 msgid "SSL Certificate Key Content"
 msgstr "SSL 憑證金鑰內容"
 
-#: src/views/certificate/Certificate.vue:71
+#: src/views/certificate/Certificate.vue:73
 #: src/views/certificate/CertificateEditor.vue:163
 msgid "SSL Certificate Key Path"
 msgstr "SSL 憑證金鑰路徑"
 
-#: src/views/certificate/Certificate.vue:63
+#: src/views/certificate/Certificate.vue:65
 #: src/views/certificate/CertificateEditor.vue:154
 msgid "SSL Certificate Path"
 msgstr "SSL 憑證路徑"
@@ -1321,7 +1340,7 @@ msgstr "登入"
 msgid "Stable"
 msgstr "穩定"
 
-#: src/views/certificate/Certificate.vue:79 src/views/domain/DomainList.vue:25
+#: src/views/certificate/Certificate.vue:81 src/views/domain/DomainList.vue:25
 #: src/views/environment/Environment.vue:78
 msgid "Status"
 msgstr "狀態"
@@ -1426,7 +1445,7 @@ msgstr ""
 "為了確保憑證自動續期能夠正常運作，我們需要新增一個 Location 來代理從授權後端"
 "的請求，我們需要儲存這個檔案並重新載入 Nginx。你確定你要繼續嗎？"
 
-#: src/views/certificate/Certificate.vue:39 src/views/config/config.ts:14
+#: src/views/certificate/Certificate.vue:41 src/views/config/config.ts:14
 #: src/views/notification/Notification.vue:15
 msgid "Type"
 msgstr "類型"
@@ -1476,7 +1495,7 @@ msgstr "使用者名稱"
 msgid "Username (*)"
 msgstr "使用者名稱 (*)"
 
-#: src/views/certificate/Certificate.vue:88
+#: src/views/certificate/Certificate.vue:90
 msgid "Valid"
 msgstr ""
 
@@ -1536,16 +1555,8 @@ msgid "You can check Nginx UI upgrade at this page."
 msgstr "您可以在此頁面檢查 Nginx UI 的升級。"
 
 #, fuzzy
-#~ msgid "Add Certificate"
-#~ msgstr "憑證狀態"
-
-#, fuzzy
 #~ msgid "Leave blank will not change anything."
 #~ msgstr "留空表示不修改"
-
-#, fuzzy
-#~ msgid "Renew certificate"
-#~ msgstr "取得憑證"
 
 #, fuzzy
 #~ msgid "Auto Cert is enabled"
@@ -1613,9 +1624,6 @@ msgstr "您可以在此頁面檢查 Nginx UI 的升級。"
 
 #~ msgid "Inspect Configurations"
 #~ msgstr "檢查設定"
-
-#~ msgid "Domain"
-#~ msgstr "網域"
 
 #~ msgid "server_name parameters more than one"
 #~ msgstr "server_name 指令包含多個參數"

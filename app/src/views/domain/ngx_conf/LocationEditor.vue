@@ -44,9 +44,7 @@ function remove(index: number) {
 </script>
 
 <template>
-  <h2>
-    {{ $gettext('Locations') }}
-  </h2>
+  <h3>{{ $gettext('Locations') }}</h3>
   <AEmpty v-if="!locations" />
   <Draggable
     v-else

@@ -2,7 +2,7 @@
 import { DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
 
 import { useGettext } from 'vue3-gettext'
-import { ref, watch } from 'vue'
+import { type ComputedRef, ref, watch } from 'vue'
 import { message } from 'ant-design-vue'
 import config from '@/api/config'
 import CodeEditor from '@/components/CodeEditor'
@@ -15,17 +15,17 @@ const props = defineProps<{
 
 const { $gettext, interpolate } = useGettext()
 
-const ngx_directives = inject('ngx_directives') as NgxDirective[]
+const ngx_directives = inject('ngx_directives') as ComputedRef<NgxDirective[]>
 
 function remove(index: number) {
-  ngx_directives.splice(index, 1)
+  ngx_directives.value.splice(index, 1)
 }
 
 const content = ref('')
 
 function init() {
-  if (ngx_directives[props.index].directive === 'include') {
-    config.get(ngx_directives[props.index].params).then(r => {
+  if (ngx_directives.value[props.index].directive === 'include') {
+    config.get(ngx_directives.value[props.index].params).then(r => {
       content.value = r.content
     })
   }
@@ -34,7 +34,7 @@ function init() {
 watch(props, init)
 
 function save() {
-  config.save(ngx_directives[props.index].params, { content: content.value }).then(r => {
+  config.save(ngx_directives.value[props.index].params, { content: content.value }).then(r => {
     content.value = r.content
     message.success($gettext('Saved successfully'))
   }).catch(r => {

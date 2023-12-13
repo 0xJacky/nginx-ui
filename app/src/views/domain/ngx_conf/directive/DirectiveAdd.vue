@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { type ComputedRef, reactive, ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { DeleteOutlined } from '@ant-design/icons-vue'
 import CodeEditor from '@/components/CodeEditor'
@@ -13,7 +13,7 @@ const emit = defineEmits(['save'])
 
 const { $gettext } = useGettext()
 
-const ngx_directives = inject('ngx_directives') as NgxDirective[]
+const ngx_directives = inject('ngx_directives') as ComputedRef<NgxDirective[]>
 const directive = reactive({ directive: '', params: '' })
 const adding = ref(false)
 const mode = ref('default')
@@ -30,9 +30,9 @@ function save() {
     directive.directive = ''
 
   if (props.idx)
-    ngx_directives.splice(props.idx + 1, 0, { directive: directive.directive, params: directive.params })
+    ngx_directives.value.splice(props.idx + 1, 0, { directive: directive.directive, params: directive.params })
   else
-    ngx_directives.push({ directive: directive.directive, params: directive.params })
+    ngx_directives.value.push({ directive: directive.directive, params: directive.params })
 
   emit('save', props.idx)
 }

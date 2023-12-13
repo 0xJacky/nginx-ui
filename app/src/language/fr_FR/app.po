@@ -19,7 +19,7 @@ msgstr "À propos"
 msgid "Access Logs"
 msgstr "Journaux d'accès"
 
-#: src/views/certificate/Certificate.vue:104
+#: src/views/certificate/Certificate.vue:106
 #: src/views/certificate/DNSCredential.vue:32 src/views/config/config.ts:36
 #: src/views/domain/DomainList.vue:50 src/views/environment/Environment.vue:105
 #: src/views/notification/Notification.vue:38 src/views/user/User.vue:46
@@ -188,7 +188,7 @@ msgstr "Le certificat est valide"
 msgid "Certificate Status"
 msgstr "État du certificat"
 
-#: src/routes/index.ts:101 src/views/certificate/Certificate.vue:117
+#: src/routes/index.ts:101 src/views/certificate/Certificate.vue:122
 #, fuzzy
 msgid "Certificates"
 msgstr "État du certificat"
@@ -447,6 +447,10 @@ msgstr "Voulez-vous activer TLS ?"
 msgid "Do you want to remove this server?"
 msgstr "Voulez-vous supprimer ce serveur ?"
 
+#: src/views/certificate/WildcardCertificate.vue:69
+msgid "Domain"
+msgstr ""
+
 #: src/views/domain/DomainAdd.vue:151
 msgid "Domain Config Created Successfully"
 msgstr "La configuration du domaine a été créée avec succès"
@@ -579,7 +583,7 @@ msgstr "Journaux d'erreurs"
 msgid "Executable Path"
 msgstr "Chemin exécutable"
 
-#: src/views/certificate/Certificate.vue:92
+#: src/views/certificate/Certificate.vue:94
 msgid "Expired"
 msgstr ""
 
@@ -645,7 +649,7 @@ msgstr "Erreur de format %{msg}"
 msgid "Format successfully"
 msgstr "Formaté avec succès"
 
-#: src/views/certificate/Certificate.vue:45
+#: src/views/certificate/Certificate.vue:47
 #, fuzzy
 msgid "General Certificate"
 msgstr "Changer de certificat"
@@ -707,7 +711,7 @@ msgstr "Port HTTP"
 msgid "HTTP01"
 msgstr "HTTP01"
 
-#: src/views/certificate/Certificate.vue:120
+#: src/views/certificate/Certificate.vue:129
 #, fuzzy
 msgid "Import"
 msgstr "Exporter"
@@ -740,6 +744,20 @@ msgstr "Installé avec succès"
 #: src/views/domain/cert/CertInfo.vue:21
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "Autorités de certification intermédiaires : %{issuer}"
+
+#: src/views/certificate/WildcardCertificate.vue:84
+msgid "Issue"
+msgstr ""
+
+#: src/views/certificate/Certificate.vue:137
+#, fuzzy
+msgid "Issue wildcard certificate"
+msgstr "Obtenir un certificat"
+
+#: src/views/certificate/WildcardCertificate.vue:58
+#, fuzzy
+msgid "Issue Wildcard Certificate"
+msgstr "État du certificat"
 
 #: src/language/constants.ts:24
 msgid "Issued certificate successfully"
@@ -835,7 +853,7 @@ msgstr "Gérer les sites"
 msgid "Manage Users"
 msgstr "Gérer les utilisateurs"
 
-#: src/views/certificate/Certificate.vue:44
+#: src/views/certificate/Certificate.vue:46
 #, fuzzy
 msgid "Managed Certificate"
 msgstr "Changer de certificat"
@@ -867,7 +885,7 @@ msgstr "Modifier la configuration"
 msgid "Multi-line Directive"
 msgstr "Directive multiligne"
 
-#: src/views/certificate/Certificate.vue:22
+#: src/views/certificate/Certificate.vue:24
 #: src/views/certificate/CertificateEditor.vue:145
 #: src/views/certificate/DNSCredential.vue:13 src/views/config/config.ts:9
 #: src/views/domain/cert/ChangeCert.vue:21
@@ -950,7 +968,7 @@ msgstr "Non"
 msgid "Node Secret"
 msgstr "Secret Jwt"
 
-#: src/views/certificate/Certificate.vue:98
+#: src/views/certificate/Certificate.vue:100
 msgid "Not After"
 msgstr ""
 
@@ -1202,6 +1220,7 @@ msgid "Renew Certificate Success"
 msgstr "Changer de certificat"
 
 #: src/views/certificate/RenewCert.vue:25
+#: src/views/certificate/WildcardCertificate.vue:47
 #, fuzzy
 msgid "Renew successfully"
 msgstr "Activé avec succès"
@@ -1333,12 +1352,12 @@ msgstr "Contenu de la certification SSL"
 msgid "SSL Certificate Key Content"
 msgstr "Contenu de la clé de certification SSL"
 
-#: src/views/certificate/Certificate.vue:71
+#: src/views/certificate/Certificate.vue:73
 #: src/views/certificate/CertificateEditor.vue:163
 msgid "SSL Certificate Key Path"
 msgstr "Chemin de la clé du certificat SSL"
 
-#: src/views/certificate/Certificate.vue:63
+#: src/views/certificate/Certificate.vue:65
 #: src/views/certificate/CertificateEditor.vue:154
 msgid "SSL Certificate Path"
 msgstr "Chemin du certificat SSL"
@@ -1353,7 +1372,7 @@ msgstr "Connexion"
 msgid "Stable"
 msgstr "Tableau"
 
-#: src/views/certificate/Certificate.vue:79 src/views/domain/DomainList.vue:25
+#: src/views/certificate/Certificate.vue:81 src/views/domain/DomainList.vue:25
 #: src/views/environment/Environment.vue:78
 msgid "Status"
 msgstr "Statut"
@@ -1466,7 +1485,7 @@ msgstr ""
 "transmettre la demande de l'autorité au backend, et nous devons enregistrer "
 "ce fichier et recharger le Nginx. Êtes-vous sûr de vouloir continuer?"
 
-#: src/views/certificate/Certificate.vue:39 src/views/config/config.ts:14
+#: src/views/certificate/Certificate.vue:41 src/views/config/config.ts:14
 #: src/views/notification/Notification.vue:15
 msgid "Type"
 msgstr "Type"
@@ -1517,7 +1536,7 @@ msgstr "Nom d'utilisateur"
 msgid "Username (*)"
 msgstr "Nom d'utilisateur (*)"
 
-#: src/views/certificate/Certificate.vue:88
+#: src/views/certificate/Certificate.vue:90
 msgid "Valid"
 msgstr ""
 
@@ -1577,16 +1596,8 @@ msgid "You can check Nginx UI upgrade at this page."
 msgstr "Vous pouvez vérifier la mise à niveau de Nginx UI sur cette page."
 
 #, fuzzy
-#~ msgid "Add Certificate"
-#~ msgstr "État du certificat"
-
-#, fuzzy
 #~ msgid "Leave blank will not change anything."
 #~ msgstr "Laisser vide pour aucun changement"
-
-#, fuzzy
-#~ msgid "Renew certificate"
-#~ msgstr "Obtenir un certificat"
 
 #, fuzzy
 #~ msgid "Auto Cert is enabled"

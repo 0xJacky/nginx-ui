@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import { useGettext } from 'vue3-gettext'
-import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import Modal from 'ant-design-vue/lib/modal'
-import type { ComputedRef, Ref } from 'vue'
-import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
-import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
-import Cert from '@/views/domain/cert/Cert.vue'
-import LogEntry from '@/views/domain/ngx_conf/LogEntry.vue'
-import ConfigTemplate from '@/views/domain/ngx_conf/config_template/ConfigTemplate.vue'
+import type { ComputedRef } from 'vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import template from '@/api/template'
 import type { NgxConfig, NgxDirective } from '@/api/ngx'
 import type { CertificateInfo } from '@/api/cert'
+import NgxServer from '@/views/domain/ngx_conf/NgxServer.vue'
+import NgxUpstream from '@/views/domain/ngx_conf/NgxUpstream.vue'
 
 const props = defineProps<{
   autoCert: boolean
@@ -29,10 +25,15 @@ const save_site_config = inject('save_site_config') as () => Promise<void>
 
 const [modal, ContextHolder] = Modal.useModal()
 
+const current_server_index = ref(0)
+
+provide('current_server_index', current_server_index)
+
 const route = useRoute()
 
-const current_server_index = ref(0)
-const name = ref(route.params.name) as Ref<string>
+onMounted(() => {
+  current_server_index.value = Number.parseInt((route.query?.server_idx ?? 0) as string)
+})
 
 const ngx_config = inject('ngx_config') as NgxConfig
 
@@ -66,6 +67,8 @@ function confirm_change_tls(status: boolean) {
 const current_server_directives = computed(() => {
   return ngx_config.servers?.[current_server_index.value]?.directives
 })
+
+provide('current_server_directives', current_server_directives)
 
 const directivesMap: ComputedRef<Record<string, NgxDirective[]>> = computed(() => {
   const map: Record<string, NgxDirective[]> = {}
@@ -136,25 +139,12 @@ function change_tls(status: boolean) {
   }
 }
 
-provide('current_server_directives', current_server_directives)
-
 const support_ssl = computed(() => {
   const servers = ngx_config.servers
   for (const server_key in servers) {
     for (const k in servers[server_key].directives) {
       const v = servers?.[server_key]?.directives?.[Number.parseInt(k)]
       if (v?.directive === 'listen' && v?.params?.indexOf('ssl') > 0)
-        return true
-    }
-  }
-
-  return false
-})
-
-const current_support_ssl = computed(() => {
-  if (directivesMap.value.listen) {
-    for (const v of directivesMap.value.listen) {
-      if (v?.params.indexOf('ssl') > 0)
         return true
     }
   }
@@ -171,57 +161,6 @@ const autoCertRef = computed({
   },
 })
 
-onMounted(() => {
-  current_server_index.value = Number.parseInt((route.query?.server_idx ?? 0) as string)
-})
-
-const router = useRouter()
-
-const servers_length = computed(() => {
-  return ngx_config.servers.length
-})
-
-watch(servers_length, () => {
-  if (current_server_index.value >= servers_length.value)
-    current_server_index.value = servers_length.value - 1
-  else if (current_server_index.value < 0)
-    current_server_index.value = 0
-})
-
-watch(current_server_index, () => {
-  router.push({
-    query: {
-      server_idx: current_server_index.value.toString(),
-    },
-  })
-})
-
-function add_server() {
-  ngx_config.servers.push({
-    comments: '',
-    locations: [],
-    directives: [],
-  })
-}
-
-function remove_server(index: number) {
-  modal.confirm({
-    title: $gettext('Do you want to remove this server?'),
-    mask: false,
-    centered: true,
-    okText: $gettext('OK'),
-    cancelText: $gettext('Cancel'),
-    onOk() {
-      ngx_config?.servers?.splice(index, 1)
-    },
-  })
-}
-
-const ngx_directives = computed(() => {
-  return ngx_config?.servers?.[current_server_index.value]?.directives
-})
-
-provide('ngx_directives', ngx_directives)
 provide('directivesMap', directivesMap)
 </script>
 
@@ -235,77 +174,23 @@ provide('directivesMap', directivesMap)
       <ASwitch @change="confirm_change_tls" />
     </AFormItem>
 
-    <h2>{{ $gettext('Custom') }}</h2>
-    <CodeEditor
-      v-model:content="ngx_config.custom"
-      default-height="150px"
+    <div class="mb-4">
+      <h2>{{ $gettext('Custom') }}</h2>
+      <CodeEditor
+        v-model:content="ngx_config.custom"
+        default-height="150px"
+      />
+    </div>
+
+    <NgxUpstream />
+
+    <ADivider />
+
+    <NgxServer
+      v-model:auto-cert="autoCertRef"
+      :enabled="enabled"
+      :cert-info="certInfo"
     />
-
-    <ATabs v-model:activeKey="current_server_index">
-      <ATabPane
-        v-for="(v, k) in ngx_config.servers"
-        :key="k"
-      >
-        <template #tab>
-          Server {{ k + 1 }}
-          <ADropdown>
-            <MoreOutlined />
-            <template #overlay>
-              <AMenu>
-                <AMenuItem>
-                  <a @click="remove_server(k)">{{ $gettext('Delete') }}</a>
-                </AMenuItem>
-              </AMenu>
-            </template>
-          </ADropdown>
-        </template>
-        <LogEntry
-          :ngx-config="ngx_config"
-          :current-server-idx="current_server_index"
-          :name="name"
-        />
-
-        <div class="tab-content">
-          <template v-if="current_support_ssl && enabled">
-            <Cert
-              v-if="current_support_ssl"
-              v-model:enabled="autoCertRef"
-              :config-name="ngx_config.name"
-              :cert-info="certInfo?.[k]"
-              :current-server-index="current_server_index"
-              @callback="$emit('callback')"
-            />
-          </template>
-
-          <template v-if="v.comments">
-            <h3>{{ $gettext('Comments') }}</h3>
-            <ATextarea
-              v-model:value="v.comments"
-              :bordered="false"
-            />
-          </template>
-          <DirectiveEditor />
-          <br>
-          <ConfigTemplate :current-server-index="current_server_index" />
-          <br>
-          <LocationEditor
-            :current-server-index="current_server_index"
-            :locations="v.locations"
-          />
-        </div>
-      </ATabPane>
-
-      <template #rightExtra>
-        <AButton
-          type="link"
-          size="small"
-          @click="add_server"
-        >
-          <PlusOutlined />
-          {{ $gettext('Add') }}
-        </AButton>
-      </template>
-    </ATabs>
   </div>
 </template>
 

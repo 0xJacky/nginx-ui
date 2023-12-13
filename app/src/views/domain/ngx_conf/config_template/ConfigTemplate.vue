@@ -82,9 +82,9 @@ provide('ngx_directives', ngx_directives)
 
 <template>
   <div>
-    <h2>
+    <h3>
       {{ $gettext('Config Templates') }}
-    </h2>
+    </h3>
     <div class="config-list-wrapper">
       <AList
         :grid="{ gutter: 16, xs: 1, sm: 2, md: 2, lg: 2, xl: 2, xxl: 2, xxxl: 2 }"

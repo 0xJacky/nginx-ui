@@ -21,7 +21,7 @@ msgstr "关于"
 msgid "Access Logs"
 msgstr "访问日志"
 
-#: src/views/certificate/Certificate.vue:104
+#: src/views/certificate/Certificate.vue:106
 #: src/views/certificate/DNSCredential.vue:32 src/views/config/config.ts:36
 #: src/views/domain/DomainList.vue:50 src/views/environment/Environment.vue:105
 #: src/views/notification/Notification.vue:38 src/views/user/User.vue:46
@@ -185,7 +185,7 @@ msgstr "此证书有效"
 msgid "Certificate Status"
 msgstr "证书状态"
 
-#: src/routes/index.ts:101 src/views/certificate/Certificate.vue:117
+#: src/routes/index.ts:101 src/views/certificate/Certificate.vue:122
 msgid "Certificates"
 msgstr "证书"
 
@@ -435,6 +435,10 @@ msgstr "你想启用TLS吗？"
 msgid "Do you want to remove this server?"
 msgstr "你想删除这个服务器吗？"
 
+#: src/views/certificate/WildcardCertificate.vue:69
+msgid "Domain"
+msgstr "域名"
+
 #: src/views/domain/DomainAdd.vue:151
 msgid "Domain Config Created Successfully"
 msgstr "域名配置文件创建成功"
@@ -557,7 +561,7 @@ msgstr "错误日志"
 msgid "Executable Path"
 msgstr "可执行文件路径"
 
-#: src/views/certificate/Certificate.vue:92
+#: src/views/certificate/Certificate.vue:94
 msgid "Expired"
 msgstr "已过期"
 
@@ -620,7 +624,7 @@ msgstr "保存错误 %{msg}"
 msgid "Format successfully"
 msgstr "格式化成功"
 
-#: src/views/certificate/Certificate.vue:45
+#: src/views/certificate/Certificate.vue:47
 msgid "General Certificate"
 msgstr "普通证书"
 
@@ -680,7 +684,7 @@ msgstr "HTTP 监听端口"
 msgid "HTTP01"
 msgstr "HTTP01"
 
-#: src/views/certificate/Certificate.vue:120
+#: src/views/certificate/Certificate.vue:129
 msgid "Import"
 msgstr "导入"
 
@@ -711,6 +715,20 @@ msgstr "安装成功"
 #: src/views/domain/cert/CertInfo.vue:21
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "中级证书颁发机构: %{issuer}"
+
+#: src/views/certificate/WildcardCertificate.vue:84
+msgid "Issue"
+msgstr ""
+
+#: src/views/certificate/Certificate.vue:137
+#, fuzzy
+msgid "Issue wildcard certificate"
+msgstr "更新证书"
+
+#: src/views/certificate/WildcardCertificate.vue:58
+#, fuzzy
+msgid "Issue Wildcard Certificate"
+msgstr "添加证书"
 
 #: src/language/constants.ts:24
 msgid "Issued certificate successfully"
@@ -798,7 +816,7 @@ msgstr "网站管理"
 msgid "Manage Users"
 msgstr "用户管理"
 
-#: src/views/certificate/Certificate.vue:44
+#: src/views/certificate/Certificate.vue:46
 msgid "Managed Certificate"
 msgstr "托管证书"
 
@@ -828,7 +846,7 @@ msgstr "修改配置文件"
 msgid "Multi-line Directive"
 msgstr "多行指令"
 
-#: src/views/certificate/Certificate.vue:22
+#: src/views/certificate/Certificate.vue:24
 #: src/views/certificate/CertificateEditor.vue:145
 #: src/views/certificate/DNSCredential.vue:13 src/views/config/config.ts:9
 #: src/views/domain/cert/ChangeCert.vue:21
@@ -909,7 +927,7 @@ msgstr "取消"
 msgid "Node Secret"
 msgstr "节点密钥"
 
-#: src/views/certificate/Certificate.vue:98
+#: src/views/certificate/Certificate.vue:100
 msgid "Not After"
 msgstr "有效期"
 
@@ -1147,6 +1165,7 @@ msgid "Renew Certificate Success"
 msgstr "证书续期成功"
 
 #: src/views/certificate/RenewCert.vue:25
+#: src/views/certificate/WildcardCertificate.vue:47
 msgid "Renew successfully"
 msgstr "更新成功"
 
@@ -1273,12 +1292,12 @@ msgstr "SSL 证书内容"
 msgid "SSL Certificate Key Content"
 msgstr "SSL 证书密钥内容"
 
-#: src/views/certificate/Certificate.vue:71
+#: src/views/certificate/Certificate.vue:73
 #: src/views/certificate/CertificateEditor.vue:163
 msgid "SSL Certificate Key Path"
 msgstr "SSL证书密钥路径"
 
-#: src/views/certificate/Certificate.vue:63
+#: src/views/certificate/Certificate.vue:65
 #: src/views/certificate/CertificateEditor.vue:154
 msgid "SSL Certificate Path"
 msgstr "SSL证书路径"
@@ -1291,7 +1310,7 @@ msgstr "SSO 登录"
 msgid "Stable"
 msgstr "稳定"
 
-#: src/views/certificate/Certificate.vue:79 src/views/domain/DomainList.vue:25
+#: src/views/certificate/Certificate.vue:81 src/views/domain/DomainList.vue:25
 #: src/views/environment/Environment.vue:78
 msgid "Status"
 msgstr "状态"
@@ -1392,7 +1411,7 @@ msgstr ""
 "为了确保认证自动更新能够正常工作，我们需要添加一个能够代理从权威机构到后端的"
 "请求的 Location，并且我们需要保存这个文件并重新加载Nginx。你确定要继续吗？"
 
-#: src/views/certificate/Certificate.vue:39 src/views/config/config.ts:14
+#: src/views/certificate/Certificate.vue:41 src/views/config/config.ts:14
 #: src/views/notification/Notification.vue:15
 msgid "Type"
 msgstr "类型"
@@ -1442,7 +1461,7 @@ msgstr "用户名"
 msgid "Username (*)"
 msgstr "用户名 (*)"
 
-#: src/views/certificate/Certificate.vue:88
+#: src/views/certificate/Certificate.vue:90
 msgid "Valid"
 msgstr "有效的"
 
@@ -1499,14 +1518,8 @@ msgstr "您使用的是最新版本"
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "你可以在这个页面检查Nginx UI的升级。"
 
-#~ msgid "Add Certificate"
-#~ msgstr "添加证书"
-
 #~ msgid "Leave blank will not change anything."
 #~ msgstr "留空不会有任何变化。"
-
-#~ msgid "Renew certificate"
-#~ msgstr "更新证书"
 
 #~ msgid "Auto Cert is enabled"
 #~ msgstr "自动更新已启用"
@@ -1590,9 +1603,6 @@ msgstr "你可以在这个页面检查Nginx UI的升级。"
 
 #~ msgid "Inspect Configurations"
 #~ msgstr "检查配置"
-
-#~ msgid "Domain"
-#~ msgstr "域名"
 
 #~ msgid "server_name parameters more than one"
 #~ msgstr "server_name 指令包含多个参数"

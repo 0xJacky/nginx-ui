@@ -17,7 +17,7 @@ msgstr "Tác giả"
 msgid "Access Logs"
 msgstr "Log truy cập"
 
-#: src/views/certificate/Certificate.vue:104
+#: src/views/certificate/Certificate.vue:106
 #: src/views/certificate/DNSCredential.vue:32 src/views/config/config.ts:36
 #: src/views/domain/DomainList.vue:50 src/views/environment/Environment.vue:105
 #: src/views/notification/Notification.vue:38 src/views/user/User.vue:46
@@ -189,7 +189,7 @@ msgstr "Chứng chỉ SSL hợp lệ"
 msgid "Certificate Status"
 msgstr "Trạng thái chứng chỉ"
 
-#: src/routes/index.ts:101 src/views/certificate/Certificate.vue:117
+#: src/routes/index.ts:101 src/views/certificate/Certificate.vue:122
 #, fuzzy
 msgid "Certificates"
 msgstr "Chứng chỉ"
@@ -454,6 +454,10 @@ msgstr "Bạn muốn bật TLS ?"
 msgid "Do you want to remove this server?"
 msgstr "Bạn muốn xóa máy chủ này ?"
 
+#: src/views/certificate/WildcardCertificate.vue:69
+msgid "Domain"
+msgstr ""
+
 #: src/views/domain/DomainAdd.vue:151
 msgid "Domain Config Created Successfully"
 msgstr "Tên miền đã được tạo"
@@ -585,7 +589,7 @@ msgstr "Log lỗi"
 msgid "Executable Path"
 msgstr "Đường dẫn thực thi"
 
-#: src/views/certificate/Certificate.vue:92
+#: src/views/certificate/Certificate.vue:94
 msgid "Expired"
 msgstr "Đã hết hạn"
 
@@ -651,7 +655,7 @@ msgstr "Lưu lỗi %{msg}"
 msgid "Format successfully"
 msgstr "Định dạng thành công"
 
-#: src/views/certificate/Certificate.vue:45
+#: src/views/certificate/Certificate.vue:47
 #, fuzzy
 msgid "General Certificate"
 msgstr "Chứng chỉ chung"
@@ -713,7 +717,7 @@ msgstr ""
 msgid "HTTP01"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:120
+#: src/views/certificate/Certificate.vue:129
 #, fuzzy
 msgid "Import"
 msgstr "Xuất"
@@ -747,6 +751,20 @@ msgstr "Cài đặt thành công"
 #: src/views/domain/cert/CertInfo.vue:21
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "Cơ quan cấp chứng chỉ: %{issuer}"
+
+#: src/views/certificate/WildcardCertificate.vue:84
+msgid "Issue"
+msgstr ""
+
+#: src/views/certificate/Certificate.vue:137
+#, fuzzy
+msgid "Issue wildcard certificate"
+msgstr "Gia hạn SSL"
+
+#: src/views/certificate/WildcardCertificate.vue:58
+#, fuzzy
+msgid "Issue Wildcard Certificate"
+msgstr "Thêm chứng chỉ SSL"
 
 #: src/language/constants.ts:24
 #, fuzzy
@@ -841,7 +859,7 @@ msgstr "Quản lý Website"
 msgid "Manage Users"
 msgstr "Người dùng"
 
-#: src/views/certificate/Certificate.vue:44
+#: src/views/certificate/Certificate.vue:46
 msgid "Managed Certificate"
 msgstr ""
 
@@ -874,7 +892,7 @@ msgstr "Sửa cấu hình"
 msgid "Multi-line Directive"
 msgstr "Single Directive"
 
-#: src/views/certificate/Certificate.vue:22
+#: src/views/certificate/Certificate.vue:24
 #: src/views/certificate/CertificateEditor.vue:145
 #: src/views/certificate/DNSCredential.vue:13 src/views/config/config.ts:9
 #: src/views/domain/cert/ChangeCert.vue:21
@@ -958,7 +976,7 @@ msgstr "Không"
 msgid "Node Secret"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:98
+#: src/views/certificate/Certificate.vue:100
 msgid "Not After"
 msgstr "Không phải sau khi"
 
@@ -1208,6 +1226,7 @@ msgid "Renew Certificate Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
 
 #: src/views/certificate/RenewCert.vue:25
+#: src/views/certificate/WildcardCertificate.vue:47
 #, fuzzy
 msgid "Renew successfully"
 msgstr "Gia hạn chứng chỉ SSL"
@@ -1340,12 +1359,12 @@ msgstr ""
 msgid "SSL Certificate Key Content"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:71
+#: src/views/certificate/Certificate.vue:73
 #: src/views/certificate/CertificateEditor.vue:163
 msgid "SSL Certificate Key Path"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:63
+#: src/views/certificate/Certificate.vue:65
 #: src/views/certificate/CertificateEditor.vue:154
 msgid "SSL Certificate Path"
 msgstr ""
@@ -1359,7 +1378,7 @@ msgstr ""
 msgid "Stable"
 msgstr "Ổn định"
 
-#: src/views/certificate/Certificate.vue:79 src/views/domain/DomainList.vue:25
+#: src/views/certificate/Certificate.vue:81 src/views/domain/DomainList.vue:25
 #: src/views/environment/Environment.vue:78
 msgid "Status"
 msgstr "Trạng thái"
@@ -1467,7 +1486,7 @@ msgstr ""
 "quyền đến chương trình phụ trợ và chúng tôi cần lưu tệp này và tải lại "
 "Nginx. Bạn có chắc chắn muốn Tiếp tục?"
 
-#: src/views/certificate/Certificate.vue:39 src/views/config/config.ts:14
+#: src/views/certificate/Certificate.vue:41 src/views/config/config.ts:14
 #: src/views/notification/Notification.vue:15
 msgid "Type"
 msgstr "Loại"
@@ -1520,7 +1539,7 @@ msgstr "Username"
 msgid "Username (*)"
 msgstr "Username (*)"
 
-#: src/views/certificate/Certificate.vue:88
+#: src/views/certificate/Certificate.vue:90
 msgid "Valid"
 msgstr "Hợp lệ"
 
@@ -1582,16 +1601,8 @@ msgid "You can check Nginx UI upgrade at this page."
 msgstr "Bạn có thể kiểm tra nâng cấp Nginx UI tại trang này"
 
 #, fuzzy
-#~ msgid "Add Certificate"
-#~ msgstr "Thêm chứng chỉ SSL"
-
-#, fuzzy
 #~ msgid "Leave blank will not change anything."
 #~ msgstr "Bỏ trống nếu không thay đổi"
-
-#, fuzzy
-#~ msgid "Renew certificate"
-#~ msgstr "Gia hạn SSL"
 
 #, fuzzy
 #~ msgid "Config Name"

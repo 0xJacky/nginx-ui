@@ -62,7 +62,10 @@ function on_change_enabled(checked: boolean) {
 </script>
 
 <template>
-  <ACard class="right-settings">
+  <ACard
+    class="right-settings"
+    :bordered="false"
+  >
     <ContextHolder />
     <ACollapse
       v-model:activeKey="active_key"

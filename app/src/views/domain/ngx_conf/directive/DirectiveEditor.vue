@@ -19,7 +19,7 @@ provide('current_idx', current_idx)
 </script>
 
 <template>
-  <h2>{{ $gettext('Directives') }}</h2>
+  <h3>{{ $gettext('Directives') }}</h3>
 
   <Draggable
     :list="ngx_directives"
@@ -41,7 +41,6 @@ provide('current_idx', current_idx)
   <DirectiveAdd
     v-if="!readonly"
     v-auto-animate
-    :ngx_directives="ngx_directives"
   />
 </template>
 
