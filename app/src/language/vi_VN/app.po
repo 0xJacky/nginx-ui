@@ -26,16 +26,10 @@ msgstr "Hành động"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:115
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:141
-#: src/views/certificate/Certificate.vue:120
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:119
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:308
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:305
 msgid "Add"
 msgstr "Thêm"
-
-#: src/routes/index.ts:123 src/views/certificate/CertificateEditor.vue:84
-#, fuzzy
-msgid "Add Certificate"
-msgstr "Thêm chứng chỉ SSL"
 
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:98
 msgid "Add Directive Below"
@@ -50,7 +44,7 @@ msgstr "Thêm Location"
 msgid "Add Site"
 msgstr "Thêm Website"
 
-#: src/views/certificate/DNSChallenge.vue:95
+#: src/views/certificate/DNSChallenge.vue:94
 #, fuzzy
 msgid "Additional"
 msgstr "Tùy chọn bổ sung"
@@ -122,15 +116,15 @@ msgstr "Tự động ký chứng chỉ SSL"
 msgid "Auto Refresh"
 msgstr "Tự động làm mới"
 
-#: src/views/domain/cert/components/ObtainCert.vue:76
+#: src/views/domain/cert/components/ObtainCert.vue:75
 msgid "Auto-renewal disabled for %{name}"
 msgstr "Đã tắt tự động gia hạn SSL cho %{name}"
 
-#: src/views/domain/cert/components/ObtainCert.vue:69
+#: src/views/domain/cert/components/ObtainCert.vue:68
 msgid "Auto-renewal enabled for %{name}"
 msgstr "Đã bật tự động gia hạn SSL cho %{name}"
 
-#: src/views/certificate/CertificateEditor.vue:205
+#: src/views/certificate/CertificateEditor.vue:207
 #: src/views/config/Config.vue:75 src/views/config/ConfigEdit.vue:89
 #: src/views/domain/DomainEdit.vue:261 src/views/nginx_log/NginxLog.vue:170
 msgid "Back"
@@ -174,10 +168,10 @@ msgstr ""
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:58
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:143
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:103
-#: src/views/domain/cert/components/ObtainCert.vue:150
+#: src/views/domain/cert/components/ObtainCert.vue:137
 #: src/views/domain/components/Deploy.vue:24
 #: src/views/domain/components/RightSettings.vue:52
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:216
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:213
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:48
 msgid "Cancel"
 msgstr "Huỷ"
@@ -250,7 +244,7 @@ msgstr "Đã xóa thành công"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/domain/ngx_conf/LocationEditor.vue:121
 #: src/views/domain/ngx_conf/LocationEditor.vue:90
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:284
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:281
 msgid "Comments"
 msgstr "Bình luận"
 
@@ -322,7 +316,7 @@ msgid "Current Version"
 msgstr "Phiên bản hiện tại"
 
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:126
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:241
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:238
 msgid "Custom"
 msgstr "Tuỳ chỉnh"
 
@@ -336,7 +330,7 @@ msgstr "Tên cơ sở dữ liệu (Tuỳ chọn, Mặc định là: database)"
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:360
 #: src/views/domain/DomainList.vue:156
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:259
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:256
 msgid "Delete"
 msgstr "Xoá"
 
@@ -398,7 +392,7 @@ msgstr "Thư mục"
 msgid "Disable"
 msgstr "Tắt"
 
-#: src/views/domain/cert/components/ObtainCert.vue:78
+#: src/views/domain/cert/components/ObtainCert.vue:77
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Tắt tự động gia hạn SSL cho %{name} thất bại"
 
@@ -436,7 +430,7 @@ msgid_plural "Do you want to deploy this file to remote servers?"
 msgstr[0] "Bạn có muốn triển khai tệp này đến máy chủ từ xa không?"
 msgstr[1] "Bạn có muốn triển khai tệp này đến máy chủ từ xa không?"
 
-#: src/views/domain/cert/components/ObtainCert.vue:146
+#: src/views/domain/cert/components/ObtainCert.vue:133
 msgid "Do you want to disable auto-cert renewal?"
 msgstr "Bạn muốn tắt tự động gia hạn chứng chỉ SSL ?"
 
@@ -455,7 +449,7 @@ msgstr "Bạn muốn bật trang web này ?"
 msgid "Do you want to enable TLS?"
 msgstr "Bạn muốn bật TLS ?"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:212
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:209
 #, fuzzy
 msgid "Do you want to remove this server?"
 msgstr "Bạn muốn xóa máy chủ này ?"
@@ -536,7 +530,7 @@ msgstr "Không thể bật %{conf_name} trên %{node_name}"
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "Đã bật %{conf_name} trên %{node_name}"
 
-#: src/views/domain/cert/components/ObtainCert.vue:71
+#: src/views/domain/cert/components/ObtainCert.vue:70
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "Không thể bật tự động gia hạn SSL cho %{name}"
 
@@ -549,7 +543,7 @@ msgstr "Bật không thành công"
 msgid "Enable successfully"
 msgstr "Đã bật"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:236
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:233
 msgid "Enable TLS"
 msgstr "Bật TLS"
 
@@ -719,6 +713,16 @@ msgstr ""
 msgid "HTTP01"
 msgstr ""
 
+#: src/views/certificate/Certificate.vue:120
+#, fuzzy
+msgid "Import"
+msgstr "Xuất"
+
+#: src/routes/index.ts:123 src/views/certificate/CertificateEditor.vue:84
+#, fuzzy
+msgid "Import Certificate"
+msgstr "Chứng chỉ"
+
 #: src/constants/index.ts:19
 msgid "Info"
 msgstr "Thông tin"
@@ -765,6 +769,12 @@ msgstr "Bỏ trống nếu không thay đổi"
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Bỏ trống để sử dụng địa chỉ mặc định: https://api.openai.com/"
 
+#: src/views/certificate/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:185
+#, fuzzy
+msgid "Leave blank will not change anything"
+msgstr "Bỏ trống nếu không thay đổi"
+
 #: src/views/system/About.vue:50
 #, fuzzy
 msgid "License"
@@ -793,7 +803,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/views/certificate/CertificateEditor.vue:193
+#: src/views/certificate/CertificateEditor.vue:195
 #, fuzzy
 msgid "Log"
 msgstr "Log"
@@ -894,7 +904,7 @@ msgstr "Tổng lưu lượng mạng đã gửi"
 msgid "New version released"
 msgstr "Đã có phiên bản mới"
 
-#: src/views/domain/cert/components/ObtainCert.vue:216
+#: src/views/domain/cert/components/ObtainCert.vue:203
 #: src/views/domain/DomainAdd.vue:145
 msgid "Next"
 msgstr "Tiếp theo"
@@ -975,7 +985,7 @@ msgstr "Thông báo"
 msgid "Notifications"
 msgstr "Thông báo"
 
-#: src/views/domain/cert/components/ObtainCert.vue:191
+#: src/views/domain/cert/components/ObtainCert.vue:178
 #, fuzzy
 msgid "Obtain certificate"
 msgstr "Nhận chứng chỉ"
@@ -996,11 +1006,11 @@ msgstr "Ngoại tuyến"
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:144
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:352
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:104
-#: src/views/domain/cert/components/ObtainCert.vue:149
+#: src/views/domain/cert/components/ObtainCert.vue:136
 #: src/views/domain/components/Deploy.vue:23
 #: src/views/domain/components/RightSettings.vue:51
 #: src/views/domain/DomainList.vue:146
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:215
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:212
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:47
 #: src/views/notification/Notification.vue:72
 msgid "OK"
@@ -1228,7 +1238,7 @@ msgid "Running"
 msgstr "Running"
 
 #: src/components/ChatGPT/ChatGPT.vue:259
-#: src/views/certificate/CertificateEditor.vue:212
+#: src/views/certificate/CertificateEditor.vue:214
 #: src/views/config/ConfigEdit.vue:98 src/views/domain/DomainEdit.vue:268
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
 #: src/views/preference/Preference.vue:113
@@ -1287,7 +1297,7 @@ msgstr "Lỗi máy chủ"
 msgid "Server Info"
 msgstr "Thông tin máy chủ"
 
-#: src/views/domain/cert/components/ObtainCert.vue:115
+#: src/views/domain/cert/components/ObtainCert.vue:102
 msgid "server_name not found in directives"
 msgstr "không tìm thấy server_name trong directives"
 
@@ -1326,7 +1336,7 @@ msgstr "Danh sách Website"
 msgid "SSL Certificate Content"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/CertificateEditor.vue:180
 msgid "SSL Certificate Key Content"
 msgstr ""
 
@@ -1537,7 +1547,7 @@ msgstr ""
 "Chúng tôi sẽ thêm một hoặc nhiều bản ghi TXT để xác minh quyền sở hữu tên "
 "miền của bạn."
 
-#: src/views/domain/cert/components/ObtainCert.vue:147
+#: src/views/domain/cert/components/ObtainCert.vue:134
 msgid ""
 "We will remove the HTTPChallenge configuration from this file and reload the "
 "Nginx. Are you sure you want to continue?"
@@ -1570,6 +1580,14 @@ msgstr "Bạn đang sử dụng phiên bản mới nhất"
 #: src/views/system/Upgrade.vue:164
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "Bạn có thể kiểm tra nâng cấp Nginx UI tại trang này"
+
+#, fuzzy
+#~ msgid "Add Certificate"
+#~ msgstr "Thêm chứng chỉ SSL"
+
+#, fuzzy
+#~ msgid "Leave blank will not change anything."
+#~ msgstr "Bỏ trống nếu không thay đổi"
 
 #, fuzzy
 #~ msgid "Renew certificate"

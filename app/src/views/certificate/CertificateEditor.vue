@@ -81,7 +81,7 @@ const isManaged = computed(() => {
 </script>
 
 <template>
-  <ACard :title="id > 0 ? $gettext('Modify Certificate') : $gettext('Add Certificate')">
+  <ACard :title="id > 0 ? $gettext('Modify Certificate') : $gettext('Import Certificate')">
     <div
       v-if="isManaged"
       class="mb-4"
@@ -174,6 +174,7 @@ const isManaged = computed(() => {
               v-model:content="data.ssl_certificate"
               default-height="300px"
               :readonly="!notShowInAutoCert"
+              :placeholder="$gettext('Leave blank will not change anything')"
             />
           </AFormItem>
           <AFormItem :label="$gettext('SSL Certificate Key Content')">
@@ -181,6 +182,7 @@ const isManaged = computed(() => {
               v-model:content="data.ssl_certificate_key"
               default-height="300px"
               :readonly="!notShowInAutoCert"
+              :placeholder="$gettext('Leave blank will not change anything')"
             />
           </AFormItem>
         </AForm>

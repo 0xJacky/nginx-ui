@@ -18,7 +18,7 @@ const refObtainCertLive = ref()
 
 const data = inject('data') as Ref<Cert>
 
-const issue_cert = () => {
+const issueCert = () => {
   modalVisible.value = true
 
   refObtainCertLive.value.issue_cert(data.value.name, data.value.domains, () => {
@@ -38,7 +38,7 @@ provide('issuing_cert', issuing_cert)
       type="primary"
       ghost
       class="mb-6"
-      @click="issue_cert"
+      @click="issueCert"
     >
       {{ $gettext('Renew Certificate') }}
     </AButton>

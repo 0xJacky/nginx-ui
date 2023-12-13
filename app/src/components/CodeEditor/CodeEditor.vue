@@ -8,6 +8,7 @@ const props = defineProps<{
   content?: string
   defaultHeight?: string
   readonly?: boolean
+  placeholder?: string
 }>()
 
 const emit = defineEmits(['update:content'])
@@ -32,9 +33,13 @@ const value = computed({
       borderRadius: '5px',
     }"
     :readonly="readonly"
+    :placeholder="placeholder"
   />
 </template>
 
 <style scoped>
-
+:deep(.ace_placeholder) {
+  z-index: 1;
+  position: relative;
+}
 </style>

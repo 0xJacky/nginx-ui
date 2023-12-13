@@ -119,8 +119,8 @@ export const routes: Route[] = [
             },
           },
           {
-            path: 'add',
-            name: () => $gettext('Add Certificate'),
+            path: 'import',
+            name: () => $gettext('Import Certificate'),
             component: () => import('@/views/certificate/CertificateEditor.vue'),
             meta: {
               hiddenInSidebar: true,

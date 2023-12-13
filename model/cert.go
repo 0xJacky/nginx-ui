@@ -7,8 +7,10 @@ import (
 )
 
 const (
-	AutoCertEnabled  = 1
-	AutoCertDisabled = -1
+	AutoCertEnabled           = 1
+	AutoCertDisabled          = -1
+	CertChallengeMethodHTTP01 = "http01"
+	CertChallengeMethodDNS01  = "dns01"
 )
 
 type CertDomains []string
@@ -36,7 +38,8 @@ func FirstCert(confName string) (c Cert, err error) {
 }
 
 func FirstOrCreateCert(confName string) (c Cert, err error) {
-	err = db.FirstOrCreate(&c, &Cert{Filename: confName}).Error
+	// Filename is used to check whether this site is enabled
+	err = db.FirstOrCreate(&c, &Cert{Name: confName, Filename: confName}).Error
 	return
 }
 
@@ -64,7 +67,7 @@ func GetAutoCertList() (c []*Cert) {
 	}
 
 	for _, v := range t {
-		if enabledConfigMap[v.Filename] == true {
+		if v.ChallengeMethod == CertChallengeMethodDNS01 || enabledConfigMap[v.Filename] == true {
 			c = append(c, v)
 		}
 	}

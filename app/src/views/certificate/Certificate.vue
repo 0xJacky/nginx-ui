@@ -3,6 +3,7 @@ import { useGettext } from 'vue3-gettext'
 import { Badge, Tag } from 'ant-design-vue'
 import { h, provide } from 'vue'
 import dayjs from 'dayjs'
+import { CloudUploadOutlined, SafetyCertificateOutlined } from '@ant-design/icons-vue'
 import { input } from '@/components/StdDesign/StdDataEntry'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
@@ -11,6 +12,7 @@ import type { Column } from '@/components/StdDesign/types'
 import type { Cert } from '@/api/cert'
 import { AutoCertState } from '@/constants'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
+import WildcardCertificate from '@/views/certificate/WildcardCertificate.vue'
 
 const { $gettext } = useGettext()
 
@@ -111,19 +113,39 @@ const no_server_name = computed(() => {
 })
 
 provide('no_server_name', no_server_name)
+
+const refWildcard = ref()
+const refTable = ref()
 </script>
 
 <template>
   <ACard :title="$gettext('Certificates')">
     <template #extra>
-      <a @click="$router.push('/certificates/add')">
-        {{ $gettext('Add') }}
-      </a>
+      <AButton
+        type="link"
+        @click="$router.push('/certificates/import')"
+      >
+        <CloudUploadOutlined />
+        {{ $gettext('Import') }}
+      </AButton>
+
+      <AButton
+        type="link"
+        @click="() => refWildcard.open()"
+      >
+        <SafetyCertificateOutlined />
+        {{ $gettext('Issue wildcard certificate') }}
+      </AButton>
     </template>
     <StdTable
+      ref="refTable"
       :api="cert"
       :columns="columns"
       @click-edit="id => $router.push(`/certificates/${id}`)"
+    />
+    <WildcardCertificate
+      ref="refWildcard"
+      @issued="() => refTable.get_list()"
     />
   </ACard>
 </template>
