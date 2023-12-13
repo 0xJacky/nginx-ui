@@ -10,6 +10,24 @@ import svgLoader from 'vite-svg-loader'
 import AutoImport from 'unplugin-auto-import/vite'
 import DefineOptions from 'unplugin-vue-define-options/vite'
 
+function fixAntdvWarningPlugin() {
+  return {
+    name: 'fix-antd-vue-warning', //
+    transform(code: string, id: string) {
+      // replace antdv js only
+      if (id.includes('ant-design-vue/es/_util/hooks/_vueuse')) {
+        // replace /* #__PURE__ */ with empty string
+        const newCode = code.replace(/\/\* #__PURE__ \*\//g, '')
+
+        return {
+          code: newCode,
+          map: null,
+        }
+      }
+    },
+  }
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   // eslint-disable-next-line n/prefer-global/process
@@ -33,6 +51,8 @@ export default defineConfig(({ mode }) => {
       ],
     },
     plugins: [
+      fixAntdvWarningPlugin(),
+
       vue(),
       vueJsx(),
 
