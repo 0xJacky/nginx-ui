@@ -8,7 +8,7 @@ import type { NgxConfig } from '@/api/ngx'
 const props = defineProps<{
   ngxConfig: NgxConfig
   currentServerIdx: number
-  name: string
+  name?: string
 }>()
 
 const { $gettext } = useGettext()

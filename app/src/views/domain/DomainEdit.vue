@@ -141,7 +141,7 @@ const save = async () => {
     }
   }
 
-  await domain.save(name.value, {
+  return domain.save(name.value, {
     name: filename.value || name.value,
     content: configText.value,
     overwrite: true,

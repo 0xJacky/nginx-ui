@@ -2,7 +2,6 @@
 import { useGettext } from 'vue3-gettext'
 import { Modal, message } from 'ant-design-vue'
 import type { ComputedRef, Ref } from 'vue'
-import template from '@/api/template'
 import domain from '@/api/domain'
 import AutoCertStepOne from '@/views/domain/cert/components/AutoCertStepOne.vue'
 import type { NgxConfig, NgxDirective } from '@/api/ngx'
@@ -82,19 +81,7 @@ function change_auto_cert(status: boolean) {
 
 async function onchange(status: boolean) {
   if (status) {
-    await template.get_block('letsencrypt.conf').then(r => {
-      ngx_config.servers.forEach(async v => {
-        v.locations = v?.locations?.filter(l => l.path !== '/.well-known/acme-challenge')
-
-        v.locations?.push(...r.locations)
-      })
-    }).then(async () => {
-      // if ssl_certificate is empty, do not save, just use the config from last step.
-      if (directivesMap.value.ssl_certificate?.[0])
-        await save_site_config()
-
-      job()
-    })
+    job()
   }
   else {
     ngx_config.servers.forEach(v => {
