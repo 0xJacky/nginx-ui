@@ -29,14 +29,12 @@ func (c *Ctx[T]) combineStdSelectorRequest() {
 		ID []int `json:"id"`
 	}
 
-	if err := c.ctx.ShouldBindJSON(&StdSelectorInitParams); err != nil {
-		logger.Error(err)
-		return
+	_ = c.ctx.ShouldBindJSON(&StdSelectorInitParams)
+	if len(StdSelectorInitParams.ID) > 0 {
+		c.GormScope(func(tx *gorm.DB) *gorm.DB {
+			return tx.Where(c.itemKey+" IN ?", StdSelectorInitParams.ID)
+		})
 	}
-
-	c.GormScope(func(tx *gorm.DB) *gorm.DB {
-		return tx.Where(c.itemKey+" IN ?", StdSelectorInitParams.ID)
-	})
 }
 
 func (c *Ctx[T]) result() (*gorm.DB, bool) {
