@@ -81,7 +81,7 @@ const issueCert = () => {
             type="primary"
             @click="issueCert"
           >
-            {{ $gettext('Issue') }}
+            {{ $gettext('Next') }}
           </AButton>
         </div>
       </template>

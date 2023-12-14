@@ -27,7 +27,8 @@ msgstr "Действие"
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:115
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:141
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:119
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:305
+#: src/views/domain/ngx_conf/NgxServer.vue:163
+#: src/views/domain/ngx_conf/NgxUpstream.vue:96
 msgid "Add"
 msgstr "Добавить"
 
@@ -35,8 +36,8 @@ msgstr "Добавить"
 msgid "Add Directive Below"
 msgstr "Добавить директиву ниже"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:117
-#: src/views/domain/ngx_conf/LocationEditor.vue:144
+#: src/views/domain/ngx_conf/LocationEditor.vue:115
+#: src/views/domain/ngx_conf/LocationEditor.vue:142
 msgid "Add Location"
 msgstr "Добавить Location"
 
@@ -90,7 +91,7 @@ msgstr "Вы уверены, что хотите удалить эту дире�
 msgid "Are you sure you want to remove this directive?"
 msgstr "Вы уверены, что хотите удалить эту директиву?"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:74
+#: src/views/domain/ngx_conf/LocationEditor.vue:72
 #, fuzzy
 msgid "Are you sure you want to remove this location?"
 msgstr "Вы уверены, что хотите удалить эту директиву?"
@@ -140,7 +141,7 @@ msgid "Base information"
 msgstr "Основная информация"
 
 #: src/views/config/ConfigEdit.vue:117
-#: src/views/domain/components/RightSettings.vue:73
+#: src/views/domain/components/RightSettings.vue:76
 #: src/views/preference/Preference.vue:90
 #, fuzzy
 msgid "Basic"
@@ -171,8 +172,9 @@ msgstr ""
 #: src/views/domain/cert/components/ObtainCert.vue:137
 #: src/views/domain/components/Deploy.vue:24
 #: src/views/domain/components/RightSettings.vue:52
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:213
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:48
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:49
+#: src/views/domain/ngx_conf/NgxServer.vue:84
+#: src/views/domain/ngx_conf/NgxUpstream.vue:28
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -242,9 +244,9 @@ msgid "Cleared successfully"
 msgstr "Отключено успешно"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:97
-#: src/views/domain/ngx_conf/LocationEditor.vue:121
-#: src/views/domain/ngx_conf/LocationEditor.vue:90
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:281
+#: src/views/domain/ngx_conf/LocationEditor.vue:119
+#: src/views/domain/ngx_conf/LocationEditor.vue:88
+#: src/views/domain/ngx_conf/NgxServer.vue:139
 msgid "Comments"
 msgstr "Комментарии"
 
@@ -274,8 +276,8 @@ msgid "Connected"
 msgstr "Подключено"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:102
-#: src/views/domain/ngx_conf/LocationEditor.vue:102
-#: src/views/domain/ngx_conf/LocationEditor.vue:130
+#: src/views/domain/ngx_conf/LocationEditor.vue:100
+#: src/views/domain/ngx_conf/LocationEditor.vue:128
 msgid "Content"
 msgstr "Содержание"
 
@@ -316,7 +318,7 @@ msgid "Current Version"
 msgstr "Текущяя версия"
 
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:126
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:238
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:185
 msgid "Custom"
 msgstr "Пользовательский"
 
@@ -330,7 +332,8 @@ msgstr "База данных (Опционально, по умолчанию: 
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:360
 #: src/views/domain/DomainList.vue:156
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:256
+#: src/views/domain/ngx_conf/NgxServer.vue:114
+#: src/views/domain/ngx_conf/NgxUpstream.vue:77
 msgid "Delete"
 msgstr "Удалить"
 
@@ -344,7 +347,7 @@ msgid "Deleted successfully"
 msgstr "Отключено успешно"
 
 #: src/views/domain/components/Deploy.vue:109
-#: src/views/domain/components/RightSettings.vue:91
+#: src/views/domain/components/RightSettings.vue:94
 msgid "Deploy"
 msgstr ""
 
@@ -444,14 +447,19 @@ msgstr "Вы хотите отключить этот сайт?"
 msgid "Do you want to enable this site?"
 msgstr "Вы хотите включить этот сайт?"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:41
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:42
 #, fuzzy
 msgid "Do you want to enable TLS?"
 msgstr "Включить TLS?"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:209
+#: src/views/domain/ngx_conf/NgxServer.vue:80
 #, fuzzy
 msgid "Do you want to remove this server?"
+msgstr "Вы хотите удалить этот сервер?"
+
+#: src/views/domain/ngx_conf/NgxUpstream.vue:24
+#, fuzzy
+msgid "Do you want to remove this upstream?"
 msgstr "Вы хотите удалить этот сервер?"
 
 #: src/views/certificate/WildcardCertificate.vue:69
@@ -521,6 +529,7 @@ msgstr "Редактировать Сайт"
 msgid "Email (*)"
 msgstr "Email (*)"
 
+#: src/views/domain/components/Deploy.vue:89
 #: src/views/domain/DomainList.vue:133
 #, fuzzy
 msgid "Enable"
@@ -547,13 +556,12 @@ msgstr "Включить не удалось"
 msgid "Enable successfully"
 msgstr "Активировано успешно"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:233
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:174
 msgid "Enable TLS"
 msgstr "Включить TLS"
 
 #: src/views/domain/cert/ChangeCert.vue:44
-#: src/views/domain/components/Deploy.vue:89
-#: src/views/domain/components/RightSettings.vue:75
+#: src/views/domain/components/RightSettings.vue:78
 #: src/views/domain/DomainEdit.vue:184 src/views/domain/DomainList.vue:32
 msgid "Enabled"
 msgstr "Включено"
@@ -752,10 +760,6 @@ msgstr "Установленно"
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "Промежуточные центры сертификации: %{issuer}"
 
-#: src/views/certificate/WildcardCertificate.vue:84
-msgid "Issue"
-msgstr ""
-
 #: src/views/certificate/Certificate.vue:137
 #, fuzzy
 msgid "Issue wildcard certificate"
@@ -813,11 +817,11 @@ msgstr "Средняя нагрузка:"
 msgid "Local"
 msgstr "Location"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:65
+#: src/views/domain/ngx_conf/LocationEditor.vue:63
 msgid "Location"
 msgstr "Location"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:48
+#: src/views/domain/ngx_conf/LocationEditor.vue:47
 msgid "Locations"
 msgstr "Locations"
 
@@ -897,9 +901,11 @@ msgstr "Одиночная директива"
 #: src/views/certificate/CertificateEditor.vue:145
 #: src/views/certificate/DNSCredential.vue:13 src/views/config/config.ts:9
 #: src/views/domain/cert/ChangeCert.vue:21
-#: src/views/domain/components/RightSettings.vue:81
+#: src/views/domain/components/RightSettings.vue:84
 #: src/views/domain/components/SiteDuplicate.vue:135
-#: src/views/domain/DomainList.vue:16 src/views/environment/Environment.vue:15
+#: src/views/domain/DomainList.vue:16
+#: src/views/domain/ngx_conf/NgxUpstream.vue:108
+#: src/views/environment/Environment.vue:15
 msgid "Name"
 msgstr "Имя"
 
@@ -923,6 +929,7 @@ msgstr "Всего отправлено"
 msgid "New version released"
 msgstr "Вышла новая версия"
 
+#: src/views/certificate/WildcardCertificate.vue:84
 #: src/views/domain/cert/components/ObtainCert.vue:203
 #: src/views/domain/DomainAdd.vue:145
 msgid "Next"
@@ -969,7 +976,7 @@ msgstr "Nginx успешно перезапущен"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:351
 #: src/views/domain/DomainList.vue:145
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:81
-#: src/views/domain/ngx_conf/LocationEditor.vue:76
+#: src/views/domain/ngx_conf/LocationEditor.vue:74
 #: src/views/notification/Notification.vue:71
 msgid "No"
 msgstr "Нет"
@@ -1030,8 +1037,9 @@ msgstr ""
 #: src/views/domain/components/Deploy.vue:23
 #: src/views/domain/components/RightSettings.vue:51
 #: src/views/domain/DomainList.vue:146
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:212
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:47
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:48
+#: src/views/domain/ngx_conf/NgxServer.vue:83
+#: src/views/domain/ngx_conf/NgxUpstream.vue:27
 #: src/views/notification/Notification.vue:72
 msgid "OK"
 msgstr ""
@@ -1081,8 +1089,8 @@ msgid "Password (*)"
 msgstr "Пароль (*)"
 
 #: src/views/config/ConfigEdit.vue:120
-#: src/views/domain/ngx_conf/LocationEditor.vue:124
-#: src/views/domain/ngx_conf/LocationEditor.vue:96
+#: src/views/domain/ngx_conf/LocationEditor.vue:122
+#: src/views/domain/ngx_conf/LocationEditor.vue:94
 msgid "Path"
 msgstr "Путь"
 
@@ -1208,6 +1216,15 @@ msgstr "Перезагружается nginx"
 #, fuzzy
 msgid "Removed successfully"
 msgstr "Успешно сохранено"
+
+#: src/views/domain/ngx_conf/NgxUpstream.vue:74
+#, fuzzy
+msgid "Rename"
+msgstr "Имя пользователя"
+
+#: src/views/domain/ngx_conf/NgxUpstream.vue:103
+msgid "Rename Upstream"
+msgstr ""
 
 #: src/views/certificate/RenewCert.vue:43
 #: src/views/certificate/RenewCert.vue:47
@@ -1480,7 +1497,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:42
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:43
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
 "add a location which can proxy the request from authority to backend, and we "
@@ -1495,7 +1512,7 @@ msgstr "Тип"
 
 #: src/views/certificate/DNSCredential.vue:26 src/views/config/config.ts:29
 #: src/views/config/ConfigEdit.vue:123
-#: src/views/domain/components/RightSettings.vue:84
+#: src/views/domain/components/RightSettings.vue:87
 #: src/views/domain/DomainList.vue:44 src/views/environment/Environment.vue:98
 #: src/views/user/User.vue:40
 msgid "Updated at"
@@ -1586,7 +1603,7 @@ msgid "Writing certificate to disk"
 msgstr "Запись сертификата на диск"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:80
-#: src/views/domain/ngx_conf/LocationEditor.vue:75
+#: src/views/domain/ngx_conf/LocationEditor.vue:73
 msgid "Yes"
 msgstr "Да"
 
@@ -1597,6 +1614,10 @@ msgstr "Вы используете последнюю версию"
 #: src/views/system/Upgrade.vue:164
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "Вы можете проверить обновление Nginx UI на этой странице."
+
+#, fuzzy
+#~ msgid "Server"
+#~ msgstr "Информация о сервере"
 
 #, fuzzy
 #~ msgid "Leave blank will not change anything."

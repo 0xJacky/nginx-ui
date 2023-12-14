@@ -19,7 +19,7 @@ const enabled = inject('enabled') as Ref<boolean>
 const name = inject('name') as Ref<string>
 const history_chatgpt_record = inject('history_chatgpt_record') as Ref<ChatComplicationMessage[]>
 const filename = inject('filename')
-const data: Ref<Site> = inject('data') as Ref<Site>
+const data = inject('data') as Ref<Site>
 
 const [modal, ContextHolder] = Modal.useModal()
 

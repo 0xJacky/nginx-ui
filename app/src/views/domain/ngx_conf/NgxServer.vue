@@ -12,15 +12,14 @@ import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.v
 import type { NgxConfig, NgxDirective } from '@/api/ngx'
 import type { CertificateInfo } from '@/api/cert'
 
-const props = defineProps<{
-  autoCert: boolean
+defineProps<{
   enabled: boolean
   certInfo?: {
     [key: number]: CertificateInfo
   }
 }>()
 
-const emit = defineEmits(['callback', 'update:autoCert'])
+const emit = defineEmits(['callback'])
 
 const { $gettext } = useGettext()
 
@@ -45,14 +44,7 @@ const current_support_ssl = computed(() => {
   return false
 })
 
-const autoCertRef = computed({
-  get() {
-    return props.autoCert
-  },
-  set(value) {
-    emit('update:autoCert', value)
-  },
-})
+const autoCert = defineModel<boolean>('autoCert', { default: false })
 
 const router = useRouter()
 
@@ -106,7 +98,6 @@ provide('ngx_directives', ngx_directives)
 
 <template>
   <div>
-    <h2>Server</h2>
     <ContextHolder />
     <ATabs v-model:activeKey="current_server_index">
       <ATabPane
@@ -136,11 +127,11 @@ provide('ngx_directives', ngx_directives)
           <template v-if="current_support_ssl && enabled">
             <Cert
               v-if="current_support_ssl"
-              v-model:enabled="autoCertRef"
+              v-model:enabled="autoCert"
               :config-name="ngx_config.name"
               :cert-info="certInfo?.[k]"
               :current-server-index="current_server_index"
-              @callback="$emit('callback')"
+              @callback="emit('callback')"
             />
           </template>
 

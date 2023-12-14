@@ -31,7 +31,8 @@ msgstr "操作"
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:115
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:141
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:119
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:305
+#: src/views/domain/ngx_conf/NgxServer.vue:163
+#: src/views/domain/ngx_conf/NgxUpstream.vue:96
 msgid "Add"
 msgstr "添加"
 
@@ -39,8 +40,8 @@ msgstr "添加"
 msgid "Add Directive Below"
 msgstr "在下面添加指令"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:117
-#: src/views/domain/ngx_conf/LocationEditor.vue:144
+#: src/views/domain/ngx_conf/LocationEditor.vue:115
+#: src/views/domain/ngx_conf/LocationEditor.vue:142
 msgid "Add Location"
 msgstr "添加 Location"
 
@@ -90,7 +91,7 @@ msgstr "您确定要删除吗？"
 msgid "Are you sure you want to remove this directive?"
 msgstr "您确定要删除这条指令？"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:74
+#: src/views/domain/ngx_conf/LocationEditor.vue:72
 msgid "Are you sure you want to remove this location?"
 msgstr "您确定要删除这个 Location？"
 
@@ -138,7 +139,7 @@ msgid "Base information"
 msgstr "基本信息"
 
 #: src/views/config/ConfigEdit.vue:117
-#: src/views/domain/components/RightSettings.vue:73
+#: src/views/domain/components/RightSettings.vue:76
 #: src/views/preference/Preference.vue:90
 msgid "Basic"
 msgstr "基本"
@@ -167,8 +168,9 @@ msgstr "CADir"
 #: src/views/domain/cert/components/ObtainCert.vue:137
 #: src/views/domain/components/Deploy.vue:24
 #: src/views/domain/components/RightSettings.vue:52
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:213
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:48
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:49
+#: src/views/domain/ngx_conf/NgxServer.vue:84
+#: src/views/domain/ngx_conf/NgxUpstream.vue:28
 msgid "Cancel"
 msgstr "取消"
 
@@ -234,9 +236,9 @@ msgid "Cleared successfully"
 msgstr "清除成功"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:97
-#: src/views/domain/ngx_conf/LocationEditor.vue:121
-#: src/views/domain/ngx_conf/LocationEditor.vue:90
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:281
+#: src/views/domain/ngx_conf/LocationEditor.vue:119
+#: src/views/domain/ngx_conf/LocationEditor.vue:88
+#: src/views/domain/ngx_conf/NgxServer.vue:139
 msgid "Comments"
 msgstr "注释"
 
@@ -265,8 +267,8 @@ msgid "Connected"
 msgstr "已连接"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:102
-#: src/views/domain/ngx_conf/LocationEditor.vue:102
-#: src/views/domain/ngx_conf/LocationEditor.vue:130
+#: src/views/domain/ngx_conf/LocationEditor.vue:100
+#: src/views/domain/ngx_conf/LocationEditor.vue:128
 msgid "Content"
 msgstr "内容"
 
@@ -307,7 +309,7 @@ msgid "Current Version"
 msgstr "当前版本"
 
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:126
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:238
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:185
 msgid "Custom"
 msgstr "自定义"
 
@@ -321,7 +323,8 @@ msgstr "数据库 (可选，默认: database)"
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:360
 #: src/views/domain/DomainList.vue:156
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:256
+#: src/views/domain/ngx_conf/NgxServer.vue:114
+#: src/views/domain/ngx_conf/NgxUpstream.vue:77
 msgid "Delete"
 msgstr "删除"
 
@@ -334,7 +337,7 @@ msgid "Deleted successfully"
 msgstr "删除成功"
 
 #: src/views/domain/components/Deploy.vue:109
-#: src/views/domain/components/RightSettings.vue:91
+#: src/views/domain/components/RightSettings.vue:94
 msgid "Deploy"
 msgstr "部署"
 
@@ -427,13 +430,17 @@ msgstr "你想停用这个网站吗？"
 msgid "Do you want to enable this site?"
 msgstr "你想启用这个网站吗？"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:41
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:42
 msgid "Do you want to enable TLS?"
 msgstr "你想启用TLS吗？"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:209
+#: src/views/domain/ngx_conf/NgxServer.vue:80
 msgid "Do you want to remove this server?"
 msgstr "你想删除这个服务器吗？"
+
+#: src/views/domain/ngx_conf/NgxUpstream.vue:24
+msgid "Do you want to remove this upstream?"
+msgstr "你想删除这个 Upstream 吗？"
 
 #: src/views/certificate/WildcardCertificate.vue:69
 msgid "Domain"
@@ -496,6 +503,7 @@ msgstr "编辑站点"
 msgid "Email (*)"
 msgstr "邮箱 (*)"
 
+#: src/views/domain/components/Deploy.vue:89
 #: src/views/domain/DomainList.vue:133
 msgid "Enable"
 msgstr "启用"
@@ -520,13 +528,12 @@ msgstr "启用失败"
 msgid "Enable successfully"
 msgstr "启用成功"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:233
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:174
 msgid "Enable TLS"
 msgstr "启用 TLS"
 
 #: src/views/domain/cert/ChangeCert.vue:44
-#: src/views/domain/components/Deploy.vue:89
-#: src/views/domain/components/RightSettings.vue:75
+#: src/views/domain/components/RightSettings.vue:78
 #: src/views/domain/DomainEdit.vue:184 src/views/domain/DomainList.vue:32
 msgid "Enabled"
 msgstr "启用"
@@ -716,19 +723,13 @@ msgstr "安装成功"
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "中级证书颁发机构: %{issuer}"
 
-#: src/views/certificate/WildcardCertificate.vue:84
-msgid "Issue"
-msgstr ""
-
 #: src/views/certificate/Certificate.vue:137
-#, fuzzy
 msgid "Issue wildcard certificate"
-msgstr "更新证书"
+msgstr "签发通配符证书"
 
 #: src/views/certificate/WildcardCertificate.vue:58
-#, fuzzy
 msgid "Issue Wildcard Certificate"
-msgstr "添加证书"
+msgstr "颁发通配符证书"
 
 #: src/language/constants.ts:24
 msgid "Issued certificate successfully"
@@ -772,11 +773,11 @@ msgstr "系统负载:"
 msgid "Local"
 msgstr "本地"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:65
+#: src/views/domain/ngx_conf/LocationEditor.vue:63
 msgid "Location"
 msgstr "Location"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:48
+#: src/views/domain/ngx_conf/LocationEditor.vue:47
 msgid "Locations"
 msgstr "Locations"
 
@@ -850,9 +851,11 @@ msgstr "多行指令"
 #: src/views/certificate/CertificateEditor.vue:145
 #: src/views/certificate/DNSCredential.vue:13 src/views/config/config.ts:9
 #: src/views/domain/cert/ChangeCert.vue:21
-#: src/views/domain/components/RightSettings.vue:81
+#: src/views/domain/components/RightSettings.vue:84
 #: src/views/domain/components/SiteDuplicate.vue:135
-#: src/views/domain/DomainList.vue:16 src/views/environment/Environment.vue:15
+#: src/views/domain/DomainList.vue:16
+#: src/views/domain/ngx_conf/NgxUpstream.vue:108
+#: src/views/environment/Environment.vue:15
 msgid "Name"
 msgstr "名称"
 
@@ -876,6 +879,7 @@ msgstr "上传流量"
 msgid "New version released"
 msgstr "新版本发布"
 
+#: src/views/certificate/WildcardCertificate.vue:84
 #: src/views/domain/cert/components/ObtainCert.vue:203
 #: src/views/domain/DomainAdd.vue:145
 msgid "Next"
@@ -918,7 +922,7 @@ msgstr "Nginx 重启成功"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:351
 #: src/views/domain/DomainList.vue:145
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:81
-#: src/views/domain/ngx_conf/LocationEditor.vue:76
+#: src/views/domain/ngx_conf/LocationEditor.vue:74
 #: src/views/notification/Notification.vue:71
 msgid "No"
 msgstr "取消"
@@ -976,8 +980,9 @@ msgstr "离线"
 #: src/views/domain/components/Deploy.vue:23
 #: src/views/domain/components/RightSettings.vue:51
 #: src/views/domain/DomainList.vue:146
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:212
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:47
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:48
+#: src/views/domain/ngx_conf/NgxServer.vue:83
+#: src/views/domain/ngx_conf/NgxUpstream.vue:27
 #: src/views/notification/Notification.vue:72
 msgid "OK"
 msgstr "确定"
@@ -1026,8 +1031,8 @@ msgid "Password (*)"
 msgstr "密码 (*)"
 
 #: src/views/config/ConfigEdit.vue:120
-#: src/views/domain/ngx_conf/LocationEditor.vue:124
-#: src/views/domain/ngx_conf/LocationEditor.vue:96
+#: src/views/domain/ngx_conf/LocationEditor.vue:122
+#: src/views/domain/ngx_conf/LocationEditor.vue:94
 msgid "Path"
 msgstr "路径"
 
@@ -1150,6 +1155,14 @@ msgstr "正在重载 Nginx"
 #: src/components/Notification/Notification.vue:52
 msgid "Removed successfully"
 msgstr "删除成功"
+
+#: src/views/domain/ngx_conf/NgxUpstream.vue:74
+msgid "Rename"
+msgstr "重命名"
+
+#: src/views/domain/ngx_conf/NgxUpstream.vue:103
+msgid "Rename Upstream"
+msgstr "重新命名 Upstream"
 
 #: src/views/certificate/RenewCert.vue:43
 #: src/views/certificate/RenewCert.vue:47
@@ -1401,7 +1414,7 @@ msgstr "该字段不能为空"
 msgid "Title"
 msgstr "标题"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:42
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:43
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
 "add a location which can proxy the request from authority to backend, and we "
@@ -1418,7 +1431,7 @@ msgstr "类型"
 
 #: src/views/certificate/DNSCredential.vue:26 src/views/config/config.ts:29
 #: src/views/config/ConfigEdit.vue:123
-#: src/views/domain/components/RightSettings.vue:84
+#: src/views/domain/components/RightSettings.vue:87
 #: src/views/domain/DomainList.vue:44 src/views/environment/Environment.vue:98
 #: src/views/user/User.vue:40
 msgid "Updated at"
@@ -1506,7 +1519,7 @@ msgid "Writing certificate to disk"
 msgstr "正在将证书写入磁盘"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:80
-#: src/views/domain/ngx_conf/LocationEditor.vue:75
+#: src/views/domain/ngx_conf/LocationEditor.vue:73
 msgid "Yes"
 msgstr "是的"
 
@@ -1517,6 +1530,12 @@ msgstr "您使用的是最新版本"
 #: src/views/system/Upgrade.vue:164
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "你可以在这个页面检查Nginx UI的升级。"
+
+#~ msgid "Server"
+#~ msgstr "Server"
+
+#~ msgid "Upstream"
+#~ msgstr "Upstream"
 
 #~ msgid "Leave blank will not change anything."
 #~ msgstr "留空不会有任何变化。"

@@ -38,11 +38,26 @@ const ngx_directives = computed(() => {
 })
 
 provide('ngx_directives', ngx_directives)
+
+const open = ref(false)
+const renameIdx = ref(-1)
+const buffer = ref('')
+
+function rename(idx: number) {
+  open.value = true
+  renameIdx.value = idx
+  buffer.value = ngx_config?.upstreams?.[renameIdx.value].name ?? ''
+}
+
+function ok() {
+  if (ngx_config?.upstreams?.[renameIdx.value])
+    ngx_config.upstreams[renameIdx.value].name = buffer.value
+  open.value = false
+}
 </script>
 
 <template>
   <div>
-    <h2>Upstream</h2>
     <ContextHolder />
     <ATabs v-model:activeKey="current_upstream_index">
       <ATabPane
@@ -56,6 +71,9 @@ provide('ngx_directives', ngx_directives)
             <template #overlay>
               <AMenu>
                 <AMenuItem>
+                  <a @click="rename(k)">{{ $gettext('Rename') }}</a>
+                </AMenuItem>
+                <AMenuItem>
                   <a @click="remove_upstream(k)">{{ $gettext('Delete') }}</a>
                 </AMenuItem>
               </AMenu>
@@ -64,16 +82,6 @@ provide('ngx_directives', ngx_directives)
         </template>
 
         <div class="tab-content">
-          <div class="mb-4">
-            <h2>{{ $gettext('Name') }}</h2>
-            <AInput v-model:value="v.name" />
-          </div>
-
-          <div class="mb-4">
-            <h2>{{ $gettext('Comments') }}</h2>
-            <ATextarea v-model:value="v.comments" />
-          </div>
-
           <DirectiveEditor />
         </div>
       </ATabPane>
@@ -89,6 +97,19 @@ provide('ngx_directives', ngx_directives)
         </AButton>
       </template>
     </ATabs>
+
+    <AModal
+      v-model:open="open"
+      :title="$gettext('Rename Upstream')"
+      centered
+      @ok="ok"
+    >
+      <AForm layout="vertical">
+        <AFormItem :label="$gettext('Name')">
+          <AInput v-model:value="buffer" />
+        </AFormItem>
+      </AForm>
+    </AModal>
   </div>
 </template>
 

@@ -53,7 +53,11 @@ export default defineConfig(({ mode }) => {
     plugins: [
       fixAntdvWarningPlugin(),
 
-      vue(),
+      vue({
+        script: {
+          defineModel: true,
+        },
+      }),
       vueJsx(),
 
       vitePluginBuildId(),

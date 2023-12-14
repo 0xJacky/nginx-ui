@@ -162,6 +162,8 @@ const autoCertRef = computed({
 })
 
 provide('directivesMap', directivesMap)
+
+const activeKey = ref(['3'])
 </script>
 
 <template>
@@ -174,23 +176,38 @@ provide('directivesMap', directivesMap)
       <ASwitch @change="confirm_change_tls" />
     </AFormItem>
 
-    <div class="mb-4">
-      <h2>{{ $gettext('Custom') }}</h2>
-      <CodeEditor
-        v-model:content="ngx_config.custom"
-        default-height="150px"
-      />
-    </div>
-
-    <NgxUpstream />
-
-    <ADivider />
-
-    <NgxServer
-      v-model:auto-cert="autoCertRef"
-      :enabled="enabled"
-      :cert-info="certInfo"
-    />
+    <ACollapse
+      v-model:activeKey="activeKey"
+      ghost
+    >
+      <ACollapsePanel
+        key="1"
+        :header="$gettext('Custom')"
+      >
+        <div class="mb-4">
+          <CodeEditor
+            v-model:content="ngx_config.custom"
+            default-height="150px"
+          />
+        </div>
+      </ACollapsePanel>
+      <ACollapsePanel
+        key="2"
+        header="Upstream"
+      >
+        <NgxUpstream />
+      </ACollapsePanel>
+      <ACollapsePanel
+        key="3"
+        header="Server"
+      >
+        <NgxServer
+          v-model:auto-cert="autoCertRef"
+          :enabled="enabled"
+          :cert-info="certInfo"
+        />
+      </ACollapsePanel>
+    </ACollapse>
   </div>
 </template>
 
