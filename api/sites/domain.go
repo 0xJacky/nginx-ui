@@ -148,7 +148,7 @@ func GetDomain(c *gin.Context) {
 
 	certInfoMap := make(map[int]*cert.Info)
 
-    for serverIdx, server := range nginxConfig.Servers {
+	for serverIdx, server := range nginxConfig.Servers {
 		for _, directive := range server.Directives {
 			if directive.Directive == "ssl_certificate" {
 
@@ -229,7 +229,7 @@ func SaveDomain(c *gin.Context) {
 			})
 			return
 		}
-		// recreate soft link
+		// recreate a soft link
 		if helper.FileExists(enabledConfigFilePath) {
 			_ = os.Remove(enabledConfigFilePath)
 			enabledConfigFilePath = nginx.GetConfPath("sites-enabled", json.Name)

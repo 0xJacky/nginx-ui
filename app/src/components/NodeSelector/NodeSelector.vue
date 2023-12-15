@@ -19,7 +19,7 @@ const data_map = ref({}) as Ref<Record<number, Environment>>
 
 environment.get_list().then(r => {
   data.value = r.data
-  r.data.forEach(node => {
+  r.data?.forEach(node => {
     data_map.value[node.id] = node
   })
 })
@@ -79,7 +79,7 @@ const value = computed({
         </ATag>
       </ACol>
     </ARow>
-    <AEmpty v-if="hiddenLocal && data.length === 0" />
+    <AEmpty v-if="hiddenLocal && data?.length === 0" />
   </ACheckboxGroup>
 </template>
 
