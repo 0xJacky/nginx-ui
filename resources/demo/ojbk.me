@@ -1,3 +1,11 @@
+upstream api-1 {
+    server 127.0.0.1:9000;
+    server 127.0.0.1:443;
+}
+upstream api-2 {
+    server 127.0.0.1:9003;
+    server 127.0.0.1:9005;
+}
 server {
 	listen 80;
 	listen [::]:80;
