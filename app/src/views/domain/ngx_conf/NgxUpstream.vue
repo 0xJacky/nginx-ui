@@ -2,8 +2,11 @@
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { useGettext } from 'vue3-gettext'
 import Modal from 'ant-design-vue/lib/modal'
-import type { NgxConfig } from '@/api/ngx'
+import _ from 'lodash'
+import type { NgxConfig, NgxDirective } from '@/api/ngx'
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
+import type { UpstreamStatus } from '@/api/upstream.ts'
+import upstream from '@/api/upstream.ts'
 
 const { $gettext } = useGettext()
 
@@ -11,12 +14,17 @@ const [modal, ContextHolder] = Modal.useModal()
 
 const ngx_config = inject('ngx_config') as NgxConfig
 const current_upstream_index = ref(0)
-function add_upstream() {
+async function add_upstream() {
+  if (!ngx_config.upstreams)
+    ngx_config.upstreams = []
+
   ngx_config.upstreams?.push({
     name: '',
     comments: '',
     directives: [],
   })
+
+  rename(ngx_config.upstreams.length - 1)
 }
 
 function remove_upstream(index: number) {
@@ -54,12 +62,54 @@ function ok() {
     ngx_config.upstreams[renameIdx.value].name = buffer.value
   open.value = false
 }
+
+const availabilityResult = ref({}) as Ref<Record<string, UpstreamStatus>>
+const websocket = ref()
+function availability_test() {
+  const sockets: string[] = []
+  for (const u of ngx_config.upstreams ?? []) {
+    for (const d of u.directives ?? []) {
+      if (d.directive === 'server')
+        sockets.push(d.params.split(' ')[0])
+    }
+  }
+
+  websocket.value = upstream.availability_test()
+  websocket.value.onopen = () => {
+    websocket.value.send(JSON.stringify(sockets))
+  }
+  websocket.value.onmessage = (e: MessageEvent) => {
+    availabilityResult.value = JSON.parse(e.data)
+  }
+}
+
+onMounted(() => {
+  availability_test()
+})
+
+onBeforeUnmount(() => {
+  websocket.value?.close()
+})
+
+async function _restartTest() {
+  websocket.value?.close()
+  availability_test()
+}
+
+const restartTest = _.throttle(_restartTest, 5000)
+
+watch(ngx_directives, () => {
+  restartTest()
+}, { deep: true })
 </script>
 
 <template>
   <div>
     <ContextHolder />
-    <ATabs v-model:activeKey="current_upstream_index">
+    <ATabs
+      v-if="ngx_config.upstreams && ngx_config.upstreams.length > 0"
+      v-model:activeKey="current_upstream_index"
+    >
       <ATabPane
         v-for="(v, k) in ngx_config.upstreams"
         :key="k"
@@ -82,7 +132,14 @@ function ok() {
         </template>
 
         <div class="tab-content">
-          <DirectiveEditor />
+          <DirectiveEditor>
+            <template #directiveSuffix="{ directive }: {directive: NgxDirective}">
+              <template v-if="availabilityResult[directive.params]?.online">
+                <ABadge color="green" />
+                {{ availabilityResult[directive.params]?.latency.toFixed(2) }}ms
+              </template>
+            </template>
+          </DirectiveEditor>
         </div>
       </ATabPane>
 
@@ -97,10 +154,21 @@ function ok() {
         </AButton>
       </template>
     </ATabs>
+    <div v-else>
+      <AEmpty />
+      <div class="flex justify-center">
+        <AButton
+          type="primary"
+          @click="add_upstream"
+        >
+          {{ $gettext('Create') }}
+        </AButton>
+      </div>
+    </div>
 
     <AModal
       v-model:open="open"
-      :title="$gettext('Rename Upstream')"
+      :title="$gettext('Upstream Name')"
       centered
       @ok="ok"
     >

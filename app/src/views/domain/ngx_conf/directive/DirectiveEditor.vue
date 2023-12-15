@@ -8,6 +8,7 @@ import type { NgxDirective } from '@/api/ngx'
 
 defineProps<{
   readonly?: boolean
+  context?: string
 }>()
 
 const { $gettext } = useGettext()
@@ -33,8 +34,19 @@ provide('current_idx', current_idx)
         v-auto-animate
         :index="index"
         :readonly="readonly"
+        :context="context"
         @click="current_idx = index"
-      />
+      >
+        <template
+          v-if="$slots.directiveSuffix"
+          #suffix="{ directive }"
+        >
+          <slot
+            name="directiveSuffix"
+            :directive="directive"
+          />
+        </template>
+      </DirectiveEditorItem>
     </template>
   </Draggable>
 

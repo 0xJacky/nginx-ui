@@ -11,6 +11,7 @@ import type { NgxDirective } from '@/api/ngx'
 const props = defineProps<{
   index: number
   readonly?: boolean
+  context?: string
 }>()
 
 const { $gettext, interpolate } = useGettext()
@@ -71,6 +72,15 @@ const currentIdx = inject('current_idx')
         <template #addonBefore>
           <HolderOutlined />
           {{ ngx_directives[props.index].directive }}
+        </template>
+        <template
+          v-if="$slots.suffix"
+          #suffix
+        >
+          <slot
+            name="suffix"
+            :directive="ngx_directives[props.index]"
+          />
         </template>
       </AInput>
 

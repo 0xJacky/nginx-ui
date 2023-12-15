@@ -12,6 +12,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/system"
 	"github.com/0xJacky/Nginx-UI/api/template"
 	"github.com/0xJacky/Nginx-UI/api/terminal"
+	"github.com/0xJacky/Nginx-UI/api/upstream"
 	"github.com/0xJacky/Nginx-UI/api/user"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -64,6 +65,7 @@ func InitRouter() *gin.Engine {
 			analytic.InitWebSocketRouter(w)
 			terminal.InitRouter(w)
 			nginx.InitNginxLogRouter(w)
+			upstream.InitRouter(w)
 		}
 
 	}
