@@ -32,6 +32,7 @@ func GenerateAllModel() []any {
 		Cert{},
 		ChatGPTLog{},
 		Site{},
+		Stream{},
 		DnsCredential{},
 		Environment{},
 		Notification{},

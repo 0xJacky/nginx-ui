@@ -33,7 +33,7 @@ const modalClosable = ref(true)
 
 provide('data', data)
 
-const save_site_config = inject('save_site_config') as () => Promise<void>
+const save_config = inject('save_config') as () => Promise<void>
 const no_server_name = inject('no_server_name') as Ref<boolean>
 const props = inject('props') as Props
 const issuing_cert = inject('issuing_cert') as Ref<boolean>
@@ -53,7 +53,7 @@ const issue_cert = (config_name: string, server_name: string) => {
 async function callback(ssl_certificate: string, ssl_certificate_key: string) {
   directivesMap.value.ssl_certificate[0].params = ssl_certificate
   directivesMap.value.ssl_certificate_key[0].params = ssl_certificate_key
-  await save_site_config()
+  await save_config()
   change_auto_cert(true)
   emit('update:auto_cert', true)
 }
@@ -87,7 +87,7 @@ async function onchange(status: boolean) {
     ngx_config.servers.forEach(v => {
       v.locations = v?.locations?.filter(l => l.path !== '/.well-known/acme-challenge')
     })
-    await save_site_config()
+    await save_config()
     change_auto_cert(status)
   }
 

@@ -12,12 +12,15 @@ import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.v
 import type { NgxConfig, NgxDirective } from '@/api/ngx'
 import type { CertificateInfo } from '@/api/cert'
 
-defineProps<{
+withDefaults(defineProps<{
   enabled: boolean
   certInfo?: {
     [key: number]: CertificateInfo
   }
-}>()
+  context: 'http' | 'stream'
+}>(), {
+  context: 'http',
+})
 
 const emit = defineEmits(['callback'])
 
@@ -144,9 +147,13 @@ provide('ngx_directives', ngx_directives)
           </template>
           <DirectiveEditor />
           <br>
-          <ConfigTemplate :current-server-index="current_server_index" />
+          <ConfigTemplate
+            v-if="context === 'http'"
+            :current-server-index="current_server_index"
+          />
           <br>
           <LocationEditor
+            v-if="context === 'http'"
             :current-server-index="current_server_index"
             :locations="v.locations"
           />

@@ -9,6 +9,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/notification"
 	"github.com/0xJacky/Nginx-UI/api/openai"
 	"github.com/0xJacky/Nginx-UI/api/sites"
+	"github.com/0xJacky/Nginx-UI/api/streams"
 	"github.com/0xJacky/Nginx-UI/api/system"
 	"github.com/0xJacky/Nginx-UI/api/template"
 	"github.com/0xJacky/Nginx-UI/api/terminal"
@@ -49,6 +50,7 @@ func InitRouter() *gin.Engine {
 			user.InitManageUserRouter(g)
 			nginx.InitRouter(g)
 			sites.InitRouter(g)
+			streams.InitRouter(g)
 			config.InitRouter(g)
 			template.InitRouter(g)
 			certificate.InitCertificateRouter(g)

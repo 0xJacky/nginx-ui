@@ -6,14 +6,13 @@ import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 
 import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor.vue'
-import type { Site } from '@/api/domain'
-import domain from '@/api/domain'
 import type { NgxConfig } from '@/api/ngx'
 import ngx from '@/api/ngx'
 import config from '@/api/config'
-import RightSettings from '@/views/domain/components/RightSettings.vue'
-import type { CertificateInfo } from '@/api/cert'
+import RightSettings from '@/views/stream/components/RightSettings.vue'
 import type { ChatComplicationMessage } from '@/api/openai'
+import type { Stream } from '@/api/stream'
+import stream from '@/api/stream'
 
 const { $gettext, interpolate } = useGettext()
 
@@ -32,9 +31,6 @@ const ngx_config: NgxConfig = reactive({
   servers: [],
 })
 
-const cert_info_map: Record<string, CertificateInfo> = reactive({})
-
-const auto_cert = ref(false)
 const enabled = ref(false)
 const configText = ref('')
 const advance_mode_ref = ref(false)
@@ -57,31 +53,26 @@ const advance_mode = computed({
 
 const history_chatgpt_record = ref([]) as Ref<ChatComplicationMessage[]>
 
-function handle_response(r: Site) {
+function handle_response(r: Stream) {
   if (r.advanced)
     advance_mode.value = true
 
   if (r.advanced)
     advance_mode.value = true
 
-  Object.keys(cert_info_map).forEach((v: string) => {
-    delete cert_info_map[v]
-  })
   parse_error_status.value = false
   parse_error_message.value = ''
   filename.value = r.name
   configText.value = r.config
   enabled.value = r.enabled
-  auto_cert.value = r.auto_cert
   history_chatgpt_record.value = r.chatgpt_messages
   data.value = r
   Object.assign(ngx_config, r.tokenized)
-  Object.assign(cert_info_map, r.cert_info)
 }
 
 function init() {
   if (name.value) {
-    domain.get(name.value).then(r => {
+    stream.get(name.value).then(r => {
       handle_response(r)
     }).catch(handle_parse_error)
   }
@@ -95,7 +86,7 @@ function handle_parse_error(e: { error?: string; message: string }) {
   if (e?.error === 'nginx_config_syntax_error') {
     parse_error_status.value = true
     parse_error_message.value = e.message
-    config.get(`sites-available/${name.value}`).then(r => {
+    config.get(`streams-available/${name.value}`).then(r => {
       configText.value = r.content
     })
   }
@@ -105,7 +96,7 @@ function handle_parse_error(e: { error?: string; message: string }) {
 }
 
 function on_mode_change(advanced: boolean) {
-  domain.advance_mode(name.value, { advanced }).then(() => {
+  stream.advance_mode(name.value, { advanced }).then(() => {
     advance_mode.value = advanced
     if (advanced) {
       build_config()
@@ -141,14 +132,14 @@ const save = async () => {
     }
   }
 
-  return domain.save(name.value, {
+  return stream.save(name.value, {
     name: filename.value || name.value,
     content: configText.value,
     overwrite: true,
   }).then(r => {
     handle_response(r)
     router.push({
-      path: `/domain/${filename.value}`,
+      path: `/stream/${filename.value}`,
       query: route.query,
     })
     message.success($gettext('Saved successfully'))
@@ -236,9 +227,8 @@ provide('data', data)
             class="domain-edit-container"
           >
             <NgxConfigEditor
-              v-model:auto-cert="auto_cert"
-              :cert-info="cert_info_map"
               :enabled="enabled"
+              context="stream"
               @callback="save"
             />
           </div>
@@ -257,7 +247,7 @@ provide('data', data)
 
     <FooterToolBar>
       <ASpace>
-        <AButton @click="$router.push('/domain/list')">
+        <AButton @click="$router.push('/streams')">
           {{ $gettext('Back') }}
         </AButton>
         <AButton

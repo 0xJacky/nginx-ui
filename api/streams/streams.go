@@ -1,34 +1,42 @@
-package sites
+package streams
 
 import (
 	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/sashabaranov/go-openai"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
-func GetDomains(c *gin.Context) {
+type Stream struct {
+	ModifiedAt      time.Time                      `json:"modified_at"`
+	Advanced        bool                           `json:"advanced"`
+	Enabled         bool                           `json:"enabled"`
+	Name            string                         `json:"name"`
+	Config          string                         `json:"config"`
+	ChatGPTMessages []openai.ChatCompletionMessage `json:"chatgpt_messages,omitempty"`
+	Tokenized       *nginx.NgxConfig               `json:"tokenized,omitempty"`
+}
+
+func GetStreams(c *gin.Context) {
 	name := c.Query("name")
 	orderBy := c.Query("order_by")
 	sort := c.DefaultQuery("sort", "desc")
 
-	configFiles, err := os.ReadDir(nginx.GetConfPath("sites-available"))
+	configFiles, err := os.ReadDir(nginx.GetConfPath("streams-available"))
 
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
 
-	enabledConfig, err := os.ReadDir(nginx.GetConfPath("sites-enabled"))
+	enabledConfig, err := os.ReadDir(nginx.GetConfPath("streams-enabled"))
 
 	if err != nil {
 		api.ErrHandler(c, err)
@@ -66,7 +74,7 @@ func GetDomains(c *gin.Context) {
 	})
 }
 
-func GetDomain(c *gin.Context) {
+func GetStream(c *gin.Context) {
 	rewriteName, ok := c.Get("rewriteConfigFileName")
 
 	name := c.Param("name")
@@ -76,7 +84,7 @@ func GetDomain(c *gin.Context) {
 		name = rewriteName.(string)
 	}
 
-	path := nginx.GetConfPath("sites-available", name)
+	path := nginx.GetConfPath("streams-available", name)
 	file, err := os.Stat(path)
 	if os.IsNotExist(err) {
 		c.JSON(http.StatusNotFound, gin.H{
@@ -87,51 +95,32 @@ func GetDomain(c *gin.Context) {
 
 	enabled := true
 
-	if _, err := os.Stat(nginx.GetConfPath("sites-enabled", name)); os.IsNotExist(err) {
+	if _, err := os.Stat(nginx.GetConfPath("streams-enabled", name)); os.IsNotExist(err) {
 		enabled = false
 	}
 
-	g := query.ChatGPTLog
-	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
+	s := query.Stream
+	stream, err := s.Where(s.Path.Eq(path)).FirstOrInit()
 
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
 
-	if chatgpt.Content == nil {
-		chatgpt.Content = make([]openai.ChatCompletionMessage, 0)
-	}
-
-	s := query.Site
-	site, err := s.Where(s.Path.Eq(path)).FirstOrInit()
-
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	certModel, err := model.FirstCert(name)
-
-	if err != nil {
-		logger.Warn(err)
-	}
-
-	if site.Advanced {
+	if stream.Advanced {
 		origContent, err := os.ReadFile(path)
 		if err != nil {
 			api.ErrHandler(c, err)
 			return
 		}
 
-		c.JSON(http.StatusOK, Site{
+		c.JSON(http.StatusOK, Stream{
 			ModifiedAt:      file.ModTime(),
-			Advanced:        site.Advanced,
+			Advanced:        stream.Advanced,
 			Enabled:         enabled,
 			Name:            name,
 			Config:          string(origContent),
-			AutoCert:        certModel.AutoCert == model.AutoCertEnabled,
-			ChatGPTMessages: chatgpt.Content,
+			ChatGPTMessages: stream.ChatGPTMessages,
 		})
 		return
 	}
@@ -144,44 +133,20 @@ func GetDomain(c *gin.Context) {
 		return
 	}
 
-	c.Set("maybe_error", "")
-
-	certInfoMap := make(map[int]*cert.Info)
-
-    for serverIdx, server := range nginxConfig.Servers {
-		for _, directive := range server.Directives {
-			if directive.Directive == "ssl_certificate" {
-
-				pubKey, err := cert.GetCertInfo(directive.Params)
-
-				if err != nil {
-					logger.Error("Failed to get certificate information", err)
-					break
-				}
-
-				certInfoMap[serverIdx] = pubKey
-
-				break
-			}
-		}
-	}
-
 	c.Set("maybe_error", "nginx_config_syntax_error")
 
-	c.JSON(http.StatusOK, Site{
+	c.JSON(http.StatusOK, Stream{
 		ModifiedAt:      file.ModTime(),
-		Advanced:        site.Advanced,
+		Advanced:        stream.Advanced,
 		Enabled:         enabled,
 		Name:            name,
 		Config:          nginxConfig.FmtCode(),
 		Tokenized:       nginxConfig,
-		AutoCert:        certModel.AutoCert == model.AutoCertEnabled,
-		CertInfo:        certInfoMap,
-		ChatGPTMessages: chatgpt.Content,
+		ChatGPTMessages: stream.ChatGPTMessages,
 	})
 }
 
-func SaveDomain(c *gin.Context) {
+func SaveStream(c *gin.Context) {
 	name := c.Param("name")
 
 	if name == "" {
@@ -201,7 +166,7 @@ func SaveDomain(c *gin.Context) {
 		return
 	}
 
-	path := nginx.GetConfPath("sites-available", name)
+	path := nginx.GetConfPath("streams-available", name)
 
 	if !json.Overwrite && helper.FileExists(path) {
 		c.JSON(http.StatusNotAcceptable, gin.H{
@@ -215,11 +180,11 @@ func SaveDomain(c *gin.Context) {
 		api.ErrHandler(c, err)
 		return
 	}
-	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", name)
+	enabledConfigFilePath := nginx.GetConfPath("streams-enabled", name)
 	// rename the config file if needed
 	if name != json.Name {
-		newPath := nginx.GetConfPath("sites-available", json.Name)
-		s := query.Site
+		newPath := nginx.GetConfPath("streams-available", json.Name)
+		s := query.Stream
 		_, err = s.Where(s.Path.Eq(path)).Update(s.Path, newPath)
 
 		// check if dst file exists, do not rename
@@ -229,10 +194,10 @@ func SaveDomain(c *gin.Context) {
 			})
 			return
 		}
-		// recreate soft link
+		// recreate a soft link
 		if helper.FileExists(enabledConfigFilePath) {
 			_ = os.Remove(enabledConfigFilePath)
-			enabledConfigFilePath = nginx.GetConfPath("sites-enabled", json.Name)
+			enabledConfigFilePath = nginx.GetConfPath("streams-enabled", json.Name)
 			err = os.Symlink(newPath, enabledConfigFilePath)
 
 			if err != nil {
@@ -251,7 +216,7 @@ func SaveDomain(c *gin.Context) {
 		c.Set("rewriteConfigFileName", name)
 	}
 
-	enabledConfigFilePath = nginx.GetConfPath("sites-enabled", name)
+	enabledConfigFilePath = nginx.GetConfPath("streams-enabled", name)
 	if helper.FileExists(enabledConfigFilePath) {
 		// Test nginx configuration
 		output := nginx.TestConf()
@@ -274,12 +239,12 @@ func SaveDomain(c *gin.Context) {
 		}
 	}
 
-	GetDomain(c)
+	GetStream(c)
 }
 
-func EnableDomain(c *gin.Context) {
-	configFilePath := nginx.GetConfPath("sites-available", c.Param("name"))
-	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", c.Param("name"))
+func EnableStream(c *gin.Context) {
+	configFilePath := nginx.GetConfPath("streams-available", c.Param("name"))
+	enabledConfigFilePath := nginx.GetConfPath("streams-enabled", c.Param("name"))
 
 	_, err := os.Stat(configFilePath)
 
@@ -297,7 +262,7 @@ func EnableDomain(c *gin.Context) {
 		}
 	}
 
-	// Test nginx config, if not pass then disable the site.
+	// Test nginx config, if not pass, then disable the stream.
 	output := nginx.TestConf()
 
 	if nginx.GetLogLevel(output) > nginx.Warn {
@@ -322,8 +287,8 @@ func EnableDomain(c *gin.Context) {
 	})
 }
 
-func DisableDomain(c *gin.Context) {
-	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", c.Param("name"))
+func DisableStream(c *gin.Context) {
+	enabledConfigFilePath := nginx.GetConfPath("streams-enabled", c.Param("name"))
 
 	_, err := os.Stat(enabledConfigFilePath)
 
@@ -338,15 +303,6 @@ func DisableDomain(c *gin.Context) {
 		api.ErrHandler(c, err)
 		return
 	}
-
-	// delete auto cert record
-	certModel := model.Cert{Filename: c.Param("name")}
-	err = certModel.Remove()
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
 	output := nginx.Reload()
 
 	if nginx.GetLogLevel(output) > nginx.Warn {
@@ -361,33 +317,23 @@ func DisableDomain(c *gin.Context) {
 	})
 }
 
-func DeleteDomain(c *gin.Context) {
+func DeleteStream(c *gin.Context) {
 	var err error
 	name := c.Param("name")
-	availablePath := nginx.GetConfPath("sites-available", name)
-	enabledPath := nginx.GetConfPath("sites-enabled", name)
+	availablePath := nginx.GetConfPath("streams-available", name)
+	enabledPath := nginx.GetConfPath("streams-enabled", name)
 
 	if _, err = os.Stat(availablePath); os.IsNotExist(err) {
 		c.JSON(http.StatusNotFound, gin.H{
-			"message": "site not found",
+			"message": "stream not found",
 		})
 		return
 	}
 
 	if _, err = os.Stat(enabledPath); err == nil {
 		c.JSON(http.StatusNotAcceptable, gin.H{
-			"message": "site is enabled",
+			"message": "stream is enabled",
 		})
-		return
-	}
-
-	certModel := model.Cert{Filename: name}
-	_ = certModel.Remove()
-
-	err = os.Remove(availablePath)
-
-	if err != nil {
-		api.ErrHandler(c, err)
 		return
 	}
 

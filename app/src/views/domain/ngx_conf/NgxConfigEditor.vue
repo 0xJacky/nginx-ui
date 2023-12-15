@@ -9,19 +9,22 @@ import type { CertificateInfo } from '@/api/cert'
 import NgxServer from '@/views/domain/ngx_conf/NgxServer.vue'
 import NgxUpstream from '@/views/domain/ngx_conf/NgxUpstream.vue'
 
-const props = defineProps<{
-  autoCert: boolean
+const props = withDefaults(defineProps<{
+  autoCert?: boolean
   enabled: boolean
-  certInfo?: {
-    [key: number]: CertificateInfo
-  }
-}>()
+  certInfo?: Record<number, CertificateInfo>
+  context?: 'http' | 'stream'
+}>(), {
+  autoCert: false,
+  enabled: false,
+  context: 'http',
+})
 
 const emit = defineEmits(['callback', 'update:autoCert'])
 
 const { $gettext } = useGettext()
 
-const save_site_config = inject('save_site_config') as () => Promise<void>
+const save_config = inject('save_config') as () => Promise<void>
 
 const [modal, ContextHolder] = Modal.useModal()
 
@@ -57,7 +60,7 @@ function confirm_change_tls(status: boolean) {
 
         first.locations.push(...r.locations)
       })
-      await save_site_config()
+      await save_config()
 
       change_tls(status)
     },
@@ -170,7 +173,7 @@ const activeKey = ref(['3'])
   <div>
     <ContextHolder />
     <AFormItem
-      v-if="!support_ssl"
+      v-if="!support_ssl && context === 'http'"
       :label="$gettext('Enable TLS')"
     >
       <ASwitch @change="confirm_change_tls" />
@@ -205,6 +208,7 @@ const activeKey = ref(['3'])
           v-model:auto-cert="autoCertRef"
           :enabled="enabled"
           :cert-info="certInfo"
+          :context="context"
         />
       </ACollapsePanel>
     </ACollapse>

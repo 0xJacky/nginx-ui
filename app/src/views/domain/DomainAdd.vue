@@ -87,7 +87,7 @@ const ngx_directives = computed(() => {
   return ngx_config.servers[0].directives
 })
 
-provide('save_site_config', save)
+provide('save_config', save)
 provide('ngx_directives', ngx_directives)
 provide('ngx_config', ngx_config)
 </script>

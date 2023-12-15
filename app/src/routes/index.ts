@@ -12,6 +12,7 @@ import {
   InfoCircleOutlined,
   SafetyCertificateOutlined,
   SettingOutlined,
+  ShareAltOutlined,
   UserOutlined,
 } from '@ant-design/icons-vue'
 import NProgress from 'nprogress'
@@ -78,6 +79,22 @@ export const routes: Route[] = [
             hiddenInSidebar: true,
           },
         }],
+      },
+      {
+        path: 'streams',
+        name: () => $gettext('Manage Streams'),
+        component: () => import('@/views/stream/StreamList.vue'),
+        meta: {
+          icon: ShareAltOutlined,
+        },
+      },
+      {
+        path: 'stream/:name',
+        name: () => $gettext('Edit Stream'),
+        component: () => import('@/views/stream/StreamEdit.vue'),
+        meta: {
+          hiddenInSidebar: true,
+        },
       },
       {
         path: 'config',

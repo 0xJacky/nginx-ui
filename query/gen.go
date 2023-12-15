@@ -26,6 +26,7 @@ var (
 	Environment   *environment
 	Notification  *notification
 	Site          *site
+	Stream        *stream
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
@@ -39,6 +40,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	Environment = &Q.Environment
 	Notification = &Q.Notification
 	Site = &Q.Site
+	Stream = &Q.Stream
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
@@ -53,6 +55,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		Environment:   newEnvironment(db, opts...),
 		Notification:  newNotification(db, opts...),
 		Site:          newSite(db, opts...),
+		Stream:        newStream(db, opts...),
 	}
 }
 
@@ -68,6 +71,7 @@ type Query struct {
 	Environment   environment
 	Notification  notification
 	Site          site
+	Stream        stream
 }
 
 func (q *Query) Available() bool { return q.db != nil }
@@ -84,6 +88,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Environment:   q.Environment.clone(db),
 		Notification:  q.Notification.clone(db),
 		Site:          q.Site.clone(db),
+		Stream:        q.Stream.clone(db),
 	}
 }
 
@@ -107,6 +112,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		Environment:   q.Environment.replaceDB(db),
 		Notification:  q.Notification.replaceDB(db),
 		Site:          q.Site.replaceDB(db),
+		Stream:        q.Stream.replaceDB(db),
 	}
 }
 
@@ -120,6 +126,7 @@ type queryCtx struct {
 	Environment   *environmentDo
 	Notification  *notificationDo
 	Site          *siteDo
+	Stream        *streamDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
@@ -133,6 +140,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		Environment:   q.Environment.WithContext(ctx),
 		Notification:  q.Notification.WithContext(ctx),
 		Site:          q.Site.WithContext(ctx),
+		Stream:        q.Stream.WithContext(ctx),
 	}
 }
 

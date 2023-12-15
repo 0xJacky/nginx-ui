@@ -9,26 +9,28 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/routes/index.ts:208
+#: src/routes/index.ts:225
 msgid "About"
 msgstr "About"
 
-#: src/routes/index.ts:152 src/views/domain/ngx_conf/LogEntry.vue:78
+#: src/routes/index.ts:169 src/views/domain/ngx_conf/LogEntry.vue:78
 msgid "Access Logs"
 msgstr ""
 
 #: src/views/certificate/Certificate.vue:106
 #: src/views/certificate/DNSCredential.vue:32 src/views/config/config.ts:36
 #: src/views/domain/DomainList.vue:50 src/views/environment/Environment.vue:105
-#: src/views/notification/Notification.vue:38 src/views/user/User.vue:46
+#: src/views/notification/Notification.vue:38
+#: src/views/stream/StreamList.vue:50 src/views/user/User.vue:46
 msgid "Action"
 msgstr "Action"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:115
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:141
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:119
-#: src/views/domain/ngx_conf/NgxServer.vue:163
-#: src/views/domain/ngx_conf/NgxUpstream.vue:96
+#: src/views/domain/ngx_conf/NgxServer.vue:170
+#: src/views/domain/ngx_conf/NgxUpstream.vue:153
+#: src/views/stream/StreamList.vue:124
 msgid "Add"
 msgstr ""
 
@@ -41,16 +43,26 @@ msgstr "Add Directive Below"
 msgid "Add Location"
 msgstr "Add Location"
 
-#: src/routes/index.ts:71 src/views/domain/DomainAdd.vue:96
+#: src/routes/index.ts:72 src/views/domain/DomainAdd.vue:96
 msgid "Add Site"
 msgstr "Add Site"
+
+#: src/views/stream/StreamList.vue:184
+#, fuzzy
+msgid "Add Stream"
+msgstr "Add Site"
+
+#: src/views/stream/StreamList.vue:114
+#, fuzzy
+msgid "Added successfully"
+msgstr "Saved successfully"
 
 #: src/views/certificate/DNSChallenge.vue:94
 #, fuzzy
 msgid "Additional"
 msgstr "Add Location"
 
-#: src/views/domain/DomainEdit.vue:204
+#: src/views/domain/DomainEdit.vue:204 src/views/stream/StreamEdit.vue:195
 msgid "Advance Mode"
 msgstr "Advance Mode"
 
@@ -82,12 +94,12 @@ msgid "Are you sure you want to clear the record of chat?"
 msgstr "Are you sure you want to remove this directive?"
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:353
-#: src/views/domain/DomainList.vue:147
+#: src/views/domain/DomainList.vue:147 src/views/stream/StreamList.vue:168
 #, fuzzy
 msgid "Are you sure you want to delete?"
 msgstr "Are you sure you want to remove this directive?"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:79
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 msgid "Are you sure you want to remove this directive?"
 msgstr "Are you sure you want to remove this directive?"
 
@@ -128,6 +140,7 @@ msgstr "Auto-renewal enabled for %{name}"
 #: src/views/certificate/CertificateEditor.vue:207
 #: src/views/config/Config.vue:75 src/views/config/ConfigEdit.vue:89
 #: src/views/domain/DomainEdit.vue:261 src/views/nginx_log/NginxLog.vue:170
+#: src/views/stream/StreamEdit.vue:251
 msgid "Back"
 msgstr "Back"
 
@@ -143,11 +156,12 @@ msgstr "Base information"
 #: src/views/config/ConfigEdit.vue:117
 #: src/views/domain/components/RightSettings.vue:76
 #: src/views/preference/Preference.vue:90
+#: src/views/stream/components/RightSettings.vue:76
 #, fuzzy
 msgid "Basic"
 msgstr "Basic Mode"
 
-#: src/views/domain/DomainEdit.vue:207
+#: src/views/domain/DomainEdit.vue:207 src/views/stream/StreamEdit.vue:198
 msgid "Basic Mode"
 msgstr "Basic Mode"
 
@@ -172,9 +186,11 @@ msgstr ""
 #: src/views/domain/cert/components/ObtainCert.vue:137
 #: src/views/domain/components/Deploy.vue:24
 #: src/views/domain/components/RightSettings.vue:52
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:49
-#: src/views/domain/ngx_conf/NgxServer.vue:84
-#: src/views/domain/ngx_conf/NgxUpstream.vue:28
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:52
+#: src/views/domain/ngx_conf/NgxServer.vue:87
+#: src/views/domain/ngx_conf/NgxUpstream.vue:36
+#: src/views/stream/components/Deploy.vue:24
+#: src/views/stream/components/RightSettings.vue:52
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -191,12 +207,12 @@ msgstr "Certificate is valid"
 msgid "Certificate Status"
 msgstr "Certificate Status"
 
-#: src/routes/index.ts:101 src/views/certificate/Certificate.vue:122
+#: src/routes/index.ts:118 src/views/certificate/Certificate.vue:122
 #, fuzzy
 msgid "Certificates"
 msgstr "Certificate Status"
 
-#: src/routes/index.ts:110
+#: src/routes/index.ts:127
 #, fuzzy
 msgid "Certificates List"
 msgstr "Certificate is valid"
@@ -243,10 +259,10 @@ msgstr ""
 msgid "Cleared successfully"
 msgstr "Disabled successfully"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:97
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:107
 #: src/views/domain/ngx_conf/LocationEditor.vue:119
 #: src/views/domain/ngx_conf/LocationEditor.vue:88
-#: src/views/domain/ngx_conf/NgxServer.vue:139
+#: src/views/domain/ngx_conf/NgxServer.vue:142
 msgid "Comments"
 msgstr "Comments"
 
@@ -275,7 +291,7 @@ msgstr "Configure SSL"
 msgid "Connected"
 msgstr ""
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:102
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:112
 #: src/views/domain/ngx_conf/LocationEditor.vue:100
 #: src/views/domain/ngx_conf/LocationEditor.vue:128
 msgid "Content"
@@ -292,6 +308,11 @@ msgstr "CPU Status"
 #: src/views/dashboard/ServerAnalytic.vue:193
 msgid "CPU:"
 msgstr "CPU:"
+
+#: src/views/domain/ngx_conf/NgxUpstream.vue:164
+#, fuzzy
+msgid "Create"
+msgstr "Created at"
 
 #: src/views/domain/DomainAdd.vue:161
 msgid "Create Another"
@@ -318,11 +339,11 @@ msgid "Current Version"
 msgstr ""
 
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:126
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:185
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:188
 msgid "Custom"
 msgstr ""
 
-#: src/routes/index.ts:52
+#: src/routes/index.ts:53
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -332,13 +353,18 @@ msgstr "Database (Optional, default: database)"
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:360
 #: src/views/domain/DomainList.vue:156
-#: src/views/domain/ngx_conf/NgxServer.vue:114
-#: src/views/domain/ngx_conf/NgxUpstream.vue:77
+#: src/views/domain/ngx_conf/NgxServer.vue:117
+#: src/views/domain/ngx_conf/NgxUpstream.vue:127
+#: src/views/stream/StreamList.vue:177
 msgid "Delete"
 msgstr ""
 
 #: src/views/domain/DomainList.vue:81
 msgid "Delete site: %{site_name}"
+msgstr ""
+
+#: src/views/stream/StreamList.vue:81
+msgid "Delete stream: %{stream_name}"
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:133
@@ -348,18 +374,23 @@ msgstr "Disabled successfully"
 
 #: src/views/domain/components/Deploy.vue:109
 #: src/views/domain/components/RightSettings.vue:94
+#: src/views/stream/components/Deploy.vue:109
+#: src/views/stream/components/RightSettings.vue:94
 msgid "Deploy"
 msgstr ""
 
 #: src/views/domain/components/Deploy.vue:66
+#: src/views/stream/components/Deploy.vue:66
 msgid "Deploy %{conf_name} to %{node_name} failed"
 msgstr ""
 
 #: src/views/domain/components/Deploy.vue:40
+#: src/views/stream/components/Deploy.vue:40
 msgid "Deploy %{conf_name} to %{node_name} successfully"
 msgstr ""
 
 #: src/views/domain/components/Deploy.vue:38
+#: src/views/stream/components/Deploy.vue:38
 #, fuzzy
 msgid "Deploy successfully"
 msgstr "Saved successfully"
@@ -381,7 +412,7 @@ msgstr "Development Mode"
 msgid "Directive"
 msgstr "Directive"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:22
+#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:23
 msgid "Directives"
 msgstr "Directives"
 
@@ -390,7 +421,7 @@ msgstr "Directives"
 msgid "Directory"
 msgstr "Directive"
 
-#: src/views/domain/DomainList.vue:125
+#: src/views/domain/DomainList.vue:125 src/views/stream/StreamList.vue:146
 #, fuzzy
 msgid "Disable"
 msgstr "Disabled"
@@ -400,12 +431,15 @@ msgid "Disable auto-renewal failed for %{name}"
 msgstr "Disable auto-renewal failed for %{name}"
 
 #: src/views/domain/cert/ChangeCert.vue:48 src/views/domain/DomainEdit.vue:190
-#: src/views/domain/DomainList.vue:36
+#: src/views/domain/DomainList.vue:36 src/views/stream/StreamEdit.vue:181
+#: src/views/stream/StreamList.vue:36
 msgid "Disabled"
 msgstr "Disabled"
 
 #: src/views/domain/components/RightSettings.vue:39
 #: src/views/domain/DomainList.vue:70
+#: src/views/stream/components/RightSettings.vue:39
+#: src/views/stream/StreamList.vue:70
 msgid "Disabled successfully"
 msgstr "Disabled successfully"
 
@@ -413,7 +447,7 @@ msgstr "Disabled successfully"
 msgid "Disk IO"
 msgstr "Disk IO"
 
-#: src/routes/index.ts:131 src/views/certificate/DNSCredential.vue:39
+#: src/routes/index.ts:148 src/views/certificate/DNSCredential.vue:39
 msgid "DNS Credentials"
 msgstr ""
 
@@ -427,6 +461,7 @@ msgid "DNS01"
 msgstr ""
 
 #: src/views/domain/components/Deploy.vue:19
+#: src/views/stream/components/Deploy.vue:19
 #, fuzzy
 msgid "Do you want to deploy this file to remote server?"
 msgid_plural "Do you want to deploy this file to remote servers?"
@@ -442,22 +477,32 @@ msgstr ""
 msgid "Do you want to disable this site?"
 msgstr "Are you sure you want to remove this directive?"
 
+#: src/views/stream/components/RightSettings.vue:48
+#, fuzzy
+msgid "Do you want to disable this stream?"
+msgstr "Are you sure you want to remove this directive?"
+
 #: src/views/domain/components/RightSettings.vue:48
 #, fuzzy
 msgid "Do you want to enable this site?"
 msgstr "Are you sure you want to remove this directive?"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:42
+#: src/views/stream/components/RightSettings.vue:48
+#, fuzzy
+msgid "Do you want to enable this stream?"
+msgstr "Are you sure you want to remove this directive?"
+
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:45
 #, fuzzy
 msgid "Do you want to enable TLS?"
 msgstr "Are you sure you want to remove this directive?"
 
-#: src/views/domain/ngx_conf/NgxServer.vue:80
+#: src/views/domain/ngx_conf/NgxServer.vue:83
 #, fuzzy
 msgid "Do you want to remove this server?"
 msgstr "Are you sure you want to remove this directive?"
 
-#: src/views/domain/ngx_conf/NgxUpstream.vue:24
+#: src/views/domain/ngx_conf/NgxUpstream.vue:32
 #, fuzzy
 msgid "Do you want to remove this upstream?"
 msgstr "Are you sure you want to remove this directive?"
@@ -488,39 +533,50 @@ msgstr ""
 
 #: src/views/domain/components/SiteDuplicate.vue:128
 #: src/views/domain/DomainList.vue:141
+#: src/views/stream/components/StreamDuplicate.vue:128
+#: src/views/stream/StreamList.vue:162
 msgid "Duplicate"
 msgstr ""
 
 #: src/views/domain/components/SiteDuplicate.vue:86
+#: src/views/stream/components/StreamDuplicate.vue:86
 #, fuzzy
 msgid "Duplicate %{conf_name} to %{node_name} successfully"
 msgstr "Saved successfully"
 
 #: src/views/domain/components/SiteDuplicate.vue:92
+#: src/views/stream/components/StreamDuplicate.vue:92
 #, fuzzy
 msgid "Duplicate failed"
 msgstr "Enable failed"
 
 #: src/views/domain/components/SiteDuplicate.vue:84
+#: src/views/stream/components/StreamDuplicate.vue:84
 #, fuzzy
 msgid "Duplicate successfully"
 msgstr "Saved successfully"
 
 #: src/views/domain/components/SiteDuplicate.vue:66
+#: src/views/stream/components/StreamDuplicate.vue:66
 #, fuzzy
 msgid "Duplicate to local successfully"
 msgstr "Saved successfully"
 
-#: src/views/domain/DomainEdit.vue:179
+#: src/views/domain/DomainEdit.vue:179 src/views/stream/StreamEdit.vue:170
 msgid "Edit %{n}"
 msgstr "Edit %{n}"
 
-#: src/routes/index.ts:93 src/views/config/ConfigEdit.vue:83
+#: src/routes/index.ts:110 src/views/config/ConfigEdit.vue:83
 msgid "Edit Configuration"
 msgstr "Edit Configuration"
 
-#: src/routes/index.ts:75
+#: src/routes/index.ts:76
 msgid "Edit Site"
+msgstr "Edit Site"
+
+#: src/routes/index.ts:93
+#, fuzzy
+msgid "Edit Stream"
 msgstr "Edit Site"
 
 #: src/views/other/Install.vue:93
@@ -529,15 +585,19 @@ msgstr "Email (*)"
 
 #: src/views/domain/components/Deploy.vue:89
 #: src/views/domain/DomainList.vue:133
+#: src/views/stream/components/Deploy.vue:89
+#: src/views/stream/StreamList.vue:154
 #, fuzzy
 msgid "Enable"
 msgstr "Enabled"
 
 #: src/views/domain/components/Deploy.vue:55
+#: src/views/stream/components/Deploy.vue:55
 msgid "Enable %{conf_name} in %{node_name} failed"
 msgstr ""
 
 #: src/views/domain/components/Deploy.vue:49
+#: src/views/stream/components/Deploy.vue:49
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr ""
 
@@ -550,23 +610,29 @@ msgid "Enable failed"
 msgstr "Enable failed"
 
 #: src/views/domain/components/Deploy.vue:47
+#: src/views/stream/components/Deploy.vue:47
 #, fuzzy
 msgid "Enable successfully"
 msgstr "Enabled successfully"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:174
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:177
 msgid "Enable TLS"
 msgstr "Enable TLS"
 
 #: src/views/domain/cert/ChangeCert.vue:44
 #: src/views/domain/components/RightSettings.vue:78
 #: src/views/domain/DomainEdit.vue:184 src/views/domain/DomainList.vue:32
+#: src/views/stream/components/RightSettings.vue:78
+#: src/views/stream/StreamEdit.vue:175 src/views/stream/StreamList.vue:32
 msgid "Enabled"
 msgstr "Enabled"
 
 #: src/views/domain/components/RightSettings.vue:30
 #: src/views/domain/components/SiteDuplicate.vue:100
 #: src/views/domain/DomainAdd.vue:45 src/views/domain/DomainList.vue:60
+#: src/views/stream/components/RightSettings.vue:30
+#: src/views/stream/components/StreamDuplicate.vue:100
+#: src/views/stream/StreamList.vue:60
 msgid "Enabled successfully"
 msgstr "Enabled successfully"
 
@@ -574,7 +640,7 @@ msgstr "Enabled successfully"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Encrypt website with Let's Encrypt"
 
-#: src/routes/index.ts:169 src/views/environment/Environment.vue:113
+#: src/routes/index.ts:186 src/views/environment/Environment.vue:113
 msgid "Environment"
 msgstr ""
 
@@ -587,7 +653,7 @@ msgstr "Comments"
 msgid "Error"
 msgstr ""
 
-#: src/routes/index.ts:156 src/views/domain/ngx_conf/LogEntry.vue:86
+#: src/routes/index.ts:173 src/views/domain/ngx_conf/LogEntry.vue:86
 msgid "Error Logs"
 msgstr ""
 
@@ -611,11 +677,15 @@ msgstr ""
 
 #: src/views/domain/components/RightSettings.vue:42
 #: src/views/domain/DomainList.vue:74
+#: src/views/stream/components/RightSettings.vue:42
+#: src/views/stream/StreamList.vue:74
 msgid "Failed to disable %{msg}"
 msgstr "Failed to disable %{msg}"
 
 #: src/views/domain/components/RightSettings.vue:33
 #: src/views/domain/DomainList.vue:64
+#: src/views/stream/components/RightSettings.vue:33
+#: src/views/stream/StreamList.vue:64
 msgid "Failed to enable %{msg}"
 msgstr "Failed to enable %{msg}"
 
@@ -623,7 +693,7 @@ msgstr "Failed to enable %{msg}"
 msgid "Failed to get certificate information"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:138
+#: src/views/domain/DomainEdit.vue:138 src/views/stream/StreamEdit.vue:129
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr ""
 
@@ -703,7 +773,7 @@ msgstr ""
 msgid "GPT-4-Turbo"
 msgstr ""
 
-#: src/routes/index.ts:45
+#: src/routes/index.ts:46
 msgid "Home"
 msgstr "Home"
 
@@ -727,7 +797,7 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: src/routes/index.ts:123 src/views/certificate/CertificateEditor.vue:84
+#: src/routes/index.ts:140 src/views/certificate/CertificateEditor.vue:84
 #, fuzzy
 msgid "Import Certificate"
 msgstr "Certificate Status"
@@ -744,7 +814,7 @@ msgstr ""
 msgid "Initialing core upgrader"
 msgstr ""
 
-#: src/routes/index.ts:220 src/views/other/Install.vue:139
+#: src/routes/index.ts:237 src/views/other/Install.vue:139
 msgid "Install"
 msgstr "Install"
 
@@ -827,7 +897,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Login"
 
-#: src/routes/index.ts:226 src/views/other/Login.vue:147
+#: src/routes/index.ts:243 src/views/other/Login.vue:147
 msgid "Login"
 msgstr "Login"
 
@@ -848,15 +918,20 @@ msgstr ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort (default: 9180) before getting the certificate."
 
-#: src/routes/index.ts:84
+#: src/routes/index.ts:101
 msgid "Manage Configs"
 msgstr "Manage Configs"
 
-#: src/routes/index.ts:59 src/views/domain/DomainList.vue:105
+#: src/routes/index.ts:60 src/views/domain/DomainList.vue:105
 msgid "Manage Sites"
 msgstr "Manage Sites"
 
-#: src/routes/index.ts:185 src/views/user/User.vue:53
+#: src/routes/index.ts:85 src/views/stream/StreamList.vue:122
+#, fuzzy
+msgid "Manage Streams"
+msgstr "Manage Sites"
+
+#: src/routes/index.ts:202 src/views/user/User.vue:53
 msgid "Manage Users"
 msgstr "Manage Users"
 
@@ -880,7 +955,7 @@ msgstr "Memory and Storage"
 msgid "Modify"
 msgstr "Modify Config"
 
-#: src/routes/index.ts:115 src/views/certificate/CertificateEditor.vue:84
+#: src/routes/index.ts:132 src/views/certificate/CertificateEditor.vue:84
 #, fuzzy
 msgid "Modify Certificate"
 msgstr "Certificate Status"
@@ -901,8 +976,11 @@ msgstr "Single Directive"
 #: src/views/domain/components/RightSettings.vue:84
 #: src/views/domain/components/SiteDuplicate.vue:135
 #: src/views/domain/DomainList.vue:16
-#: src/views/domain/ngx_conf/NgxUpstream.vue:108
+#: src/views/domain/ngx_conf/NgxUpstream.vue:176
 #: src/views/environment/Environment.vue:15
+#: src/views/stream/components/RightSettings.vue:84
+#: src/views/stream/components/StreamDuplicate.vue:135
+#: src/views/stream/StreamList.vue:16 src/views/stream/StreamList.vue:188
 msgid "Name"
 msgstr "Name"
 
@@ -940,7 +1018,7 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:222
+#: src/views/domain/DomainEdit.vue:222 src/views/stream/StreamEdit.vue:213
 #, fuzzy
 msgid "Nginx Configuration Parse Error"
 msgstr "Configuration Name"
@@ -953,7 +1031,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr ""
 
-#: src/routes/index.ts:146 src/views/nginx_log/NginxLog.vue:145
+#: src/routes/index.ts:163 src/views/nginx_log/NginxLog.vue:145
 msgid "Nginx Log"
 msgstr ""
 
@@ -971,9 +1049,10 @@ msgstr "Saved successfully"
 #: src/components/Notification/Notification.vue:84
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:351
 #: src/views/domain/DomainList.vue:145
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:81
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:91
 #: src/views/domain/ngx_conf/LocationEditor.vue:74
 #: src/views/notification/Notification.vue:71
+#: src/views/stream/StreamList.vue:166
 msgid "No"
 msgstr "No"
 
@@ -985,7 +1064,7 @@ msgstr ""
 msgid "Not After"
 msgstr ""
 
-#: src/routes/index.ts:232 src/routes/index.ts:234
+#: src/routes/index.ts:249 src/routes/index.ts:251
 msgid "Not Found"
 msgstr "Not Found"
 
@@ -1003,7 +1082,7 @@ msgstr ""
 msgid "Notification"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/Notification.vue:82 src/routes/index.ts:177
+#: src/components/Notification/Notification.vue:82 src/routes/index.ts:194
 #, fuzzy
 msgid "Notifications"
 msgstr "Certificate is valid"
@@ -1033,10 +1112,13 @@ msgstr ""
 #: src/views/domain/components/Deploy.vue:23
 #: src/views/domain/components/RightSettings.vue:51
 #: src/views/domain/DomainList.vue:146
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:48
-#: src/views/domain/ngx_conf/NgxServer.vue:83
-#: src/views/domain/ngx_conf/NgxUpstream.vue:27
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:51
+#: src/views/domain/ngx_conf/NgxServer.vue:86
+#: src/views/domain/ngx_conf/NgxUpstream.vue:35
 #: src/views/notification/Notification.vue:72
+#: src/views/stream/components/Deploy.vue:23
+#: src/views/stream/components/RightSettings.vue:51
+#: src/views/stream/StreamList.vue:167
 msgid "OK"
 msgstr ""
 
@@ -1065,10 +1147,12 @@ msgid "OS:"
 msgstr "OS:"
 
 #: src/views/domain/components/Deploy.vue:93
+#: src/views/stream/components/Deploy.vue:93
 msgid "Overwrite"
 msgstr ""
 
 #: src/views/domain/components/Deploy.vue:97
+#: src/views/stream/components/Deploy.vue:97
 msgid "Overwrite exist file"
 msgstr ""
 
@@ -1111,6 +1195,7 @@ msgid ""
 msgstr ""
 
 #: src/views/domain/components/SiteDuplicate.vue:40
+#: src/views/stream/components/StreamDuplicate.vue:40
 msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration!"
@@ -1134,6 +1219,7 @@ msgid ""
 msgstr ""
 
 #: src/views/domain/components/SiteDuplicate.vue:47
+#: src/views/stream/components/StreamDuplicate.vue:47
 msgid "Please select at least one node!"
 msgstr ""
 
@@ -1141,7 +1227,7 @@ msgstr ""
 msgid "Pre-release"
 msgstr ""
 
-#: src/routes/index.ts:193 src/views/preference/Preference.vue:85
+#: src/routes/index.ts:210 src/views/preference/Preference.vue:85
 msgid "Preference"
 msgstr ""
 
@@ -1211,14 +1297,10 @@ msgstr ""
 msgid "Removed successfully"
 msgstr "Saved successfully"
 
-#: src/views/domain/ngx_conf/NgxUpstream.vue:74
+#: src/views/domain/ngx_conf/NgxUpstream.vue:124
 #, fuzzy
 msgid "Rename"
 msgstr "Username"
-
-#: src/views/domain/ngx_conf/NgxUpstream.vue:103
-msgid "Rename Upstream"
-msgstr ""
 
 #: src/views/certificate/RenewCert.vue:43
 #: src/views/certificate/RenewCert.vue:47
@@ -1270,8 +1352,8 @@ msgstr ""
 #: src/components/ChatGPT/ChatGPT.vue:259
 #: src/views/certificate/CertificateEditor.vue:214
 #: src/views/config/ConfigEdit.vue:98 src/views/domain/DomainEdit.vue:268
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
-#: src/views/preference/Preference.vue:113
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:121
+#: src/views/preference/Preference.vue:113 src/views/stream/StreamEdit.vue:258
 msgid "Save"
 msgstr "Save"
 
@@ -1280,7 +1362,7 @@ msgid "Save Directive"
 msgstr "Save Directive"
 
 #: src/views/config/ConfigEdit.vue:59 src/views/domain/DomainAdd.vue:53
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:41
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:42
 msgid "Save error %{msg}"
 msgstr "Save error %{msg}"
 
@@ -1298,7 +1380,8 @@ msgstr "Saved successfully"
 
 #: src/views/config/ConfigEdit.vue:57 src/views/domain/DomainAdd.vue:41
 #: src/views/domain/DomainEdit.vue:154
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:40
+#: src/views/stream/StreamEdit.vue:145
 msgid "Saved successfully"
 msgstr "Saved successfully"
 
@@ -1319,6 +1402,7 @@ msgstr "Send"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:157
 #: src/views/config/ConfigEdit.vue:42 src/views/domain/DomainList.vue:84
 #: src/views/other/Install.vue:72 src/views/preference/Preference.vue:60
+#: src/views/stream/StreamList.vue:116 src/views/stream/StreamList.vue:84
 #: src/views/system/Upgrade.vue:45
 msgid "Server error"
 msgstr "Server error"
@@ -1352,12 +1436,12 @@ msgstr ""
 msgid "Single Directive"
 msgstr "Single Directive"
 
-#: src/routes/index.ts:160
+#: src/routes/index.ts:177
 #, fuzzy
 msgid "Site Logs"
 msgstr "Sites List"
 
-#: src/routes/index.ts:67
+#: src/routes/index.ts:68
 msgid "Sites List"
 msgstr "Sites List"
 
@@ -1394,7 +1478,7 @@ msgid "Stable"
 msgstr "Enabled"
 
 #: src/views/certificate/Certificate.vue:81 src/views/domain/DomainList.vue:25
-#: src/views/environment/Environment.vue:78
+#: src/views/environment/Environment.vue:78 src/views/stream/StreamList.vue:25
 msgid "Status"
 msgstr "Status"
 
@@ -1427,7 +1511,7 @@ msgstr ""
 msgid "Switch to light theme"
 msgstr ""
 
-#: src/routes/index.ts:201
+#: src/routes/index.ts:218
 msgid "System"
 msgstr ""
 
@@ -1437,10 +1521,11 @@ msgid "Table"
 msgstr "Enabled"
 
 #: src/views/domain/components/SiteDuplicate.vue:142
+#: src/views/stream/components/StreamDuplicate.vue:142
 msgid "Target"
 msgstr ""
 
-#: src/routes/index.ts:138 src/views/pty/Terminal.vue:95
+#: src/routes/index.ts:155 src/views/pty/Terminal.vue:95
 msgid "Terminal"
 msgstr "Terminal"
 
@@ -1490,7 +1575,7 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:43
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:46
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
 "add a location which can proxy the request from authority to backend, and we "
@@ -1507,7 +1592,8 @@ msgstr ""
 #: src/views/config/ConfigEdit.vue:123
 #: src/views/domain/components/RightSettings.vue:87
 #: src/views/domain/DomainList.vue:44 src/views/environment/Environment.vue:98
-#: src/views/user/User.vue:40
+#: src/views/stream/components/RightSettings.vue:87
+#: src/views/stream/StreamList.vue:44 src/views/user/User.vue:40
 msgid "Updated at"
 msgstr "Updated at"
 
@@ -1516,7 +1602,7 @@ msgstr "Updated at"
 msgid "Updated successfully"
 msgstr "Saved successfully"
 
-#: src/routes/index.ts:212 src/views/system/Upgrade.vue:143
+#: src/routes/index.ts:229 src/views/system/Upgrade.vue:143
 #: src/views/system/Upgrade.vue:235
 msgid "Upgrade"
 msgstr ""
@@ -1528,6 +1614,10 @@ msgstr "Saved successfully"
 
 #: src/views/system/Upgrade.vue:82
 msgid "Upgrading Nginx UI, please wait..."
+msgstr ""
+
+#: src/views/domain/ngx_conf/NgxUpstream.vue:171
+msgid "Upstream Name"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:177
@@ -1595,7 +1685,7 @@ msgstr ""
 msgid "Writing certificate to disk"
 msgstr ""
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:80
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:73
 msgid "Yes"
 msgstr "Yes"

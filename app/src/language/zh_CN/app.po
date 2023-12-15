@@ -13,26 +13,28 @@ msgstr ""
 "Generated-By: easygettext\n"
 "X-Generator: Poedit 3.4.1\n"
 
-#: src/routes/index.ts:208
+#: src/routes/index.ts:225
 msgid "About"
 msgstr "关于"
 
-#: src/routes/index.ts:152 src/views/domain/ngx_conf/LogEntry.vue:78
+#: src/routes/index.ts:169 src/views/domain/ngx_conf/LogEntry.vue:78
 msgid "Access Logs"
 msgstr "访问日志"
 
 #: src/views/certificate/Certificate.vue:106
 #: src/views/certificate/DNSCredential.vue:32 src/views/config/config.ts:36
 #: src/views/domain/DomainList.vue:50 src/views/environment/Environment.vue:105
-#: src/views/notification/Notification.vue:38 src/views/user/User.vue:46
+#: src/views/notification/Notification.vue:38
+#: src/views/stream/StreamList.vue:50 src/views/user/User.vue:46
 msgid "Action"
 msgstr "操作"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:115
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:141
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:119
-#: src/views/domain/ngx_conf/NgxServer.vue:163
-#: src/views/domain/ngx_conf/NgxUpstream.vue:96
+#: src/views/domain/ngx_conf/NgxServer.vue:170
+#: src/views/domain/ngx_conf/NgxUpstream.vue:153
+#: src/views/stream/StreamList.vue:124
 msgid "Add"
 msgstr "添加"
 
@@ -45,15 +47,23 @@ msgstr "在下面添加指令"
 msgid "Add Location"
 msgstr "添加 Location"
 
-#: src/routes/index.ts:71 src/views/domain/DomainAdd.vue:96
+#: src/routes/index.ts:72 src/views/domain/DomainAdd.vue:96
 msgid "Add Site"
 msgstr "添加站点"
+
+#: src/views/stream/StreamList.vue:184
+msgid "Add Stream"
+msgstr "添加 Stream"
+
+#: src/views/stream/StreamList.vue:114
+msgid "Added successfully"
+msgstr "添加成功"
 
 #: src/views/certificate/DNSChallenge.vue:94
 msgid "Additional"
 msgstr "额外选项"
 
-#: src/views/domain/DomainEdit.vue:204
+#: src/views/domain/DomainEdit.vue:204 src/views/stream/StreamEdit.vue:195
 msgid "Advance Mode"
 msgstr "高级模式"
 
@@ -83,11 +93,11 @@ msgid "Are you sure you want to clear the record of chat?"
 msgstr "你确定你要清除聊天记录吗？"
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:353
-#: src/views/domain/DomainList.vue:147
+#: src/views/domain/DomainList.vue:147 src/views/stream/StreamList.vue:168
 msgid "Are you sure you want to delete?"
 msgstr "您确定要删除吗？"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:79
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 msgid "Are you sure you want to remove this directive?"
 msgstr "您确定要删除这条指令？"
 
@@ -127,6 +137,7 @@ msgstr "成功启用 %{name} 自动续签"
 #: src/views/certificate/CertificateEditor.vue:207
 #: src/views/config/Config.vue:75 src/views/config/ConfigEdit.vue:89
 #: src/views/domain/DomainEdit.vue:261 src/views/nginx_log/NginxLog.vue:170
+#: src/views/stream/StreamEdit.vue:251
 msgid "Back"
 msgstr "返回"
 
@@ -141,10 +152,11 @@ msgstr "基本信息"
 #: src/views/config/ConfigEdit.vue:117
 #: src/views/domain/components/RightSettings.vue:76
 #: src/views/preference/Preference.vue:90
+#: src/views/stream/components/RightSettings.vue:76
 msgid "Basic"
 msgstr "基本"
 
-#: src/views/domain/DomainEdit.vue:207
+#: src/views/domain/DomainEdit.vue:207 src/views/stream/StreamEdit.vue:198
 msgid "Basic Mode"
 msgstr "基本模式"
 
@@ -168,9 +180,11 @@ msgstr "CADir"
 #: src/views/domain/cert/components/ObtainCert.vue:137
 #: src/views/domain/components/Deploy.vue:24
 #: src/views/domain/components/RightSettings.vue:52
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:49
-#: src/views/domain/ngx_conf/NgxServer.vue:84
-#: src/views/domain/ngx_conf/NgxUpstream.vue:28
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:52
+#: src/views/domain/ngx_conf/NgxServer.vue:87
+#: src/views/domain/ngx_conf/NgxUpstream.vue:36
+#: src/views/stream/components/Deploy.vue:24
+#: src/views/stream/components/RightSettings.vue:52
 msgid "Cancel"
 msgstr "取消"
 
@@ -187,11 +201,11 @@ msgstr "此证书有效"
 msgid "Certificate Status"
 msgstr "证书状态"
 
-#: src/routes/index.ts:101 src/views/certificate/Certificate.vue:122
+#: src/routes/index.ts:118 src/views/certificate/Certificate.vue:122
 msgid "Certificates"
 msgstr "证书"
 
-#: src/routes/index.ts:110
+#: src/routes/index.ts:127
 msgid "Certificates List"
 msgstr "证书列表"
 
@@ -235,10 +249,10 @@ msgstr "清空"
 msgid "Cleared successfully"
 msgstr "清除成功"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:97
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:107
 #: src/views/domain/ngx_conf/LocationEditor.vue:119
 #: src/views/domain/ngx_conf/LocationEditor.vue:88
-#: src/views/domain/ngx_conf/NgxServer.vue:139
+#: src/views/domain/ngx_conf/NgxServer.vue:142
 msgid "Comments"
 msgstr "注释"
 
@@ -266,7 +280,7 @@ msgstr "配置 SSL"
 msgid "Connected"
 msgstr "已连接"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:102
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:112
 #: src/views/domain/ngx_conf/LocationEditor.vue:100
 #: src/views/domain/ngx_conf/LocationEditor.vue:128
 msgid "Content"
@@ -283,6 +297,10 @@ msgstr "CPU 状态"
 #: src/views/dashboard/ServerAnalytic.vue:193
 msgid "CPU:"
 msgstr "CPU:"
+
+#: src/views/domain/ngx_conf/NgxUpstream.vue:164
+msgid "Create"
+msgstr "创建"
 
 #: src/views/domain/DomainAdd.vue:161
 msgid "Create Another"
@@ -309,11 +327,11 @@ msgid "Current Version"
 msgstr "当前版本"
 
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:126
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:185
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:188
 msgid "Custom"
 msgstr "自定义"
 
-#: src/routes/index.ts:52
+#: src/routes/index.ts:53
 msgid "Dashboard"
 msgstr "仪表盘"
 
@@ -323,8 +341,9 @@ msgstr "数据库 (可选，默认: database)"
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:360
 #: src/views/domain/DomainList.vue:156
-#: src/views/domain/ngx_conf/NgxServer.vue:114
-#: src/views/domain/ngx_conf/NgxUpstream.vue:77
+#: src/views/domain/ngx_conf/NgxServer.vue:117
+#: src/views/domain/ngx_conf/NgxUpstream.vue:127
+#: src/views/stream/StreamList.vue:177
 msgid "Delete"
 msgstr "删除"
 
@@ -332,24 +351,33 @@ msgstr "删除"
 msgid "Delete site: %{site_name}"
 msgstr "删除站点: %{site_name}"
 
+#: src/views/stream/StreamList.vue:81
+msgid "Delete stream: %{stream_name}"
+msgstr "删除 Stream: %{stream_name}"
+
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:133
 msgid "Deleted successfully"
 msgstr "删除成功"
 
 #: src/views/domain/components/Deploy.vue:109
 #: src/views/domain/components/RightSettings.vue:94
+#: src/views/stream/components/Deploy.vue:109
+#: src/views/stream/components/RightSettings.vue:94
 msgid "Deploy"
 msgstr "部署"
 
 #: src/views/domain/components/Deploy.vue:66
+#: src/views/stream/components/Deploy.vue:66
 msgid "Deploy %{conf_name} to %{node_name} failed"
 msgstr "部署%{conf_name}到%{node_name}失败"
 
 #: src/views/domain/components/Deploy.vue:40
+#: src/views/stream/components/Deploy.vue:40
 msgid "Deploy %{conf_name} to %{node_name} successfully"
 msgstr "成功地将%{conf_name}部署到%{node_name}"
 
 #: src/views/domain/components/Deploy.vue:38
+#: src/views/stream/components/Deploy.vue:38
 msgid "Deploy successfully"
 msgstr "部署成功"
 
@@ -370,7 +398,7 @@ msgstr "开发模式"
 msgid "Directive"
 msgstr "指令"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:22
+#: src/views/domain/ngx_conf/directive/DirectiveEditor.vue:23
 msgid "Directives"
 msgstr "指令"
 
@@ -378,7 +406,7 @@ msgstr "指令"
 msgid "Directory"
 msgstr "目录"
 
-#: src/views/domain/DomainList.vue:125
+#: src/views/domain/DomainList.vue:125 src/views/stream/StreamList.vue:146
 msgid "Disable"
 msgstr "禁用"
 
@@ -387,12 +415,15 @@ msgid "Disable auto-renewal failed for %{name}"
 msgstr "关闭 %{name} 自动续签失败"
 
 #: src/views/domain/cert/ChangeCert.vue:48 src/views/domain/DomainEdit.vue:190
-#: src/views/domain/DomainList.vue:36
+#: src/views/domain/DomainList.vue:36 src/views/stream/StreamEdit.vue:181
+#: src/views/stream/StreamList.vue:36
 msgid "Disabled"
 msgstr "禁用"
 
 #: src/views/domain/components/RightSettings.vue:39
 #: src/views/domain/DomainList.vue:70
+#: src/views/stream/components/RightSettings.vue:39
+#: src/views/stream/StreamList.vue:70
 msgid "Disabled successfully"
 msgstr "禁用成功"
 
@@ -400,7 +431,7 @@ msgstr "禁用成功"
 msgid "Disk IO"
 msgstr "磁盘 IO"
 
-#: src/routes/index.ts:131 src/views/certificate/DNSCredential.vue:39
+#: src/routes/index.ts:148 src/views/certificate/DNSCredential.vue:39
 msgid "DNS Credentials"
 msgstr "DNS 凭证"
 
@@ -414,6 +445,7 @@ msgid "DNS01"
 msgstr "DNS01"
 
 #: src/views/domain/components/Deploy.vue:19
+#: src/views/stream/components/Deploy.vue:19
 msgid "Do you want to deploy this file to remote server?"
 msgid_plural "Do you want to deploy this file to remote servers?"
 msgstr[0] "你想把这个文件部署到远程服务器上吗？"
@@ -426,19 +458,27 @@ msgstr "你想禁用自动更新证书吗？"
 msgid "Do you want to disable this site?"
 msgstr "你想停用这个网站吗？"
 
+#: src/views/stream/components/RightSettings.vue:48
+msgid "Do you want to disable this stream?"
+msgstr "你想停用这个 Stream 吗？"
+
 #: src/views/domain/components/RightSettings.vue:48
 msgid "Do you want to enable this site?"
 msgstr "你想启用这个网站吗？"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:42
+#: src/views/stream/components/RightSettings.vue:48
+msgid "Do you want to enable this stream?"
+msgstr "你想启用这个 Stream 吗？"
+
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:45
 msgid "Do you want to enable TLS?"
 msgstr "你想启用TLS吗？"
 
-#: src/views/domain/ngx_conf/NgxServer.vue:80
+#: src/views/domain/ngx_conf/NgxServer.vue:83
 msgid "Do you want to remove this server?"
 msgstr "你想删除这个服务器吗？"
 
-#: src/views/domain/ngx_conf/NgxUpstream.vue:24
+#: src/views/domain/ngx_conf/NgxUpstream.vue:32
 msgid "Do you want to remove this upstream?"
 msgstr "你想删除这个 Upstream 吗？"
 
@@ -468,36 +508,46 @@ msgstr "试运行模式已启动"
 
 #: src/views/domain/components/SiteDuplicate.vue:128
 #: src/views/domain/DomainList.vue:141
+#: src/views/stream/components/StreamDuplicate.vue:128
+#: src/views/stream/StreamList.vue:162
 msgid "Duplicate"
 msgstr "复制"
 
 #: src/views/domain/components/SiteDuplicate.vue:86
+#: src/views/stream/components/StreamDuplicate.vue:86
 msgid "Duplicate %{conf_name} to %{node_name} successfully"
 msgstr "成功地将%{conf_name}复制到%{node_name}"
 
 #: src/views/domain/components/SiteDuplicate.vue:92
+#: src/views/stream/components/StreamDuplicate.vue:92
 msgid "Duplicate failed"
 msgstr "复制失败"
 
 #: src/views/domain/components/SiteDuplicate.vue:84
+#: src/views/stream/components/StreamDuplicate.vue:84
 msgid "Duplicate successfully"
 msgstr "复制成功"
 
 #: src/views/domain/components/SiteDuplicate.vue:66
+#: src/views/stream/components/StreamDuplicate.vue:66
 msgid "Duplicate to local successfully"
 msgstr "成功复制到本地"
 
-#: src/views/domain/DomainEdit.vue:179
+#: src/views/domain/DomainEdit.vue:179 src/views/stream/StreamEdit.vue:170
 msgid "Edit %{n}"
 msgstr "编辑 %{n}"
 
-#: src/routes/index.ts:93 src/views/config/ConfigEdit.vue:83
+#: src/routes/index.ts:110 src/views/config/ConfigEdit.vue:83
 msgid "Edit Configuration"
 msgstr "编辑配置"
 
-#: src/routes/index.ts:75
+#: src/routes/index.ts:76
 msgid "Edit Site"
 msgstr "编辑站点"
+
+#: src/routes/index.ts:93
+msgid "Edit Stream"
+msgstr "编辑 Stream"
 
 #: src/views/other/Install.vue:93
 msgid "Email (*)"
@@ -505,14 +555,18 @@ msgstr "邮箱 (*)"
 
 #: src/views/domain/components/Deploy.vue:89
 #: src/views/domain/DomainList.vue:133
+#: src/views/stream/components/Deploy.vue:89
+#: src/views/stream/StreamList.vue:154
 msgid "Enable"
 msgstr "启用"
 
 #: src/views/domain/components/Deploy.vue:55
+#: src/views/stream/components/Deploy.vue:55
 msgid "Enable %{conf_name} in %{node_name} failed"
 msgstr "在%{node_name}中启用%{conf_name}失败"
 
 #: src/views/domain/components/Deploy.vue:49
+#: src/views/stream/components/Deploy.vue:49
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "成功启用%{node_name}中的%{conf_name}"
 
@@ -525,22 +579,28 @@ msgid "Enable failed"
 msgstr "启用失败"
 
 #: src/views/domain/components/Deploy.vue:47
+#: src/views/stream/components/Deploy.vue:47
 msgid "Enable successfully"
 msgstr "启用成功"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:174
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:177
 msgid "Enable TLS"
 msgstr "启用 TLS"
 
 #: src/views/domain/cert/ChangeCert.vue:44
 #: src/views/domain/components/RightSettings.vue:78
 #: src/views/domain/DomainEdit.vue:184 src/views/domain/DomainList.vue:32
+#: src/views/stream/components/RightSettings.vue:78
+#: src/views/stream/StreamEdit.vue:175 src/views/stream/StreamList.vue:32
 msgid "Enabled"
 msgstr "启用"
 
 #: src/views/domain/components/RightSettings.vue:30
 #: src/views/domain/components/SiteDuplicate.vue:100
 #: src/views/domain/DomainAdd.vue:45 src/views/domain/DomainList.vue:60
+#: src/views/stream/components/RightSettings.vue:30
+#: src/views/stream/components/StreamDuplicate.vue:100
+#: src/views/stream/StreamList.vue:60
 msgid "Enabled successfully"
 msgstr "启用成功"
 
@@ -548,7 +608,7 @@ msgstr "启用成功"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 对网站进行加密"
 
-#: src/routes/index.ts:169 src/views/environment/Environment.vue:113
+#: src/routes/index.ts:186 src/views/environment/Environment.vue:113
 msgid "Environment"
 msgstr "环境"
 
@@ -560,7 +620,7 @@ msgstr "环境"
 msgid "Error"
 msgstr "错误"
 
-#: src/routes/index.ts:156 src/views/domain/ngx_conf/LogEntry.vue:86
+#: src/routes/index.ts:173 src/views/domain/ngx_conf/LogEntry.vue:86
 msgid "Error Logs"
 msgstr "错误日志"
 
@@ -583,11 +643,15 @@ msgstr "导出"
 
 #: src/views/domain/components/RightSettings.vue:42
 #: src/views/domain/DomainList.vue:74
+#: src/views/stream/components/RightSettings.vue:42
+#: src/views/stream/StreamList.vue:74
 msgid "Failed to disable %{msg}"
 msgstr "禁用失败 %{msg}"
 
 #: src/views/domain/components/RightSettings.vue:33
 #: src/views/domain/DomainList.vue:64
+#: src/views/stream/components/RightSettings.vue:33
+#: src/views/stream/StreamList.vue:64
 msgid "Failed to enable %{msg}"
 msgstr "启用失败 %{msg}"
 
@@ -595,7 +659,7 @@ msgstr "启用失败 %{msg}"
 msgid "Failed to get certificate information"
 msgstr "获取证书信息失败"
 
-#: src/views/domain/DomainEdit.vue:138
+#: src/views/domain/DomainEdit.vue:138 src/views/stream/StreamEdit.vue:129
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "保存失败，在配置中检测到语法错误。"
 
@@ -671,7 +735,7 @@ msgstr "GPT-4-32K"
 msgid "GPT-4-Turbo"
 msgstr "GPT-4-Turbo"
 
-#: src/routes/index.ts:45
+#: src/routes/index.ts:46
 msgid "Home"
 msgstr "首页"
 
@@ -695,7 +759,7 @@ msgstr "HTTP01"
 msgid "Import"
 msgstr "导入"
 
-#: src/routes/index.ts:123 src/views/certificate/CertificateEditor.vue:84
+#: src/routes/index.ts:140 src/views/certificate/CertificateEditor.vue:84
 msgid "Import Certificate"
 msgstr "导入证书"
 
@@ -711,7 +775,7 @@ msgstr "初始化核心升级程序错误"
 msgid "Initialing core upgrader"
 msgstr "初始化核心升级器"
 
-#: src/routes/index.ts:220 src/views/other/Install.vue:139
+#: src/routes/index.ts:237 src/views/other/Install.vue:139
 msgid "Install"
 msgstr "安装"
 
@@ -785,7 +849,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日志"
 
-#: src/routes/index.ts:226 src/views/other/Login.vue:147
+#: src/routes/index.ts:243 src/views/other/Login.vue:147
 msgid "Login"
 msgstr "登录"
 
@@ -805,15 +869,19 @@ msgstr ""
 "在获取签发证书前，请确保配置文件中已将 .well-known 目录反向代理到 "
 "HTTPChallengePort。"
 
-#: src/routes/index.ts:84
+#: src/routes/index.ts:101
 msgid "Manage Configs"
 msgstr "配置管理"
 
-#: src/routes/index.ts:59 src/views/domain/DomainList.vue:105
+#: src/routes/index.ts:60 src/views/domain/DomainList.vue:105
 msgid "Manage Sites"
 msgstr "网站管理"
 
-#: src/routes/index.ts:185 src/views/user/User.vue:53
+#: src/routes/index.ts:85 src/views/stream/StreamList.vue:122
+msgid "Manage Streams"
+msgstr "管理 Stream"
+
+#: src/routes/index.ts:202 src/views/user/User.vue:53
 msgid "Manage Users"
 msgstr "用户管理"
 
@@ -835,7 +903,7 @@ msgstr "内存与存储"
 msgid "Modify"
 msgstr "修改"
 
-#: src/routes/index.ts:115 src/views/certificate/CertificateEditor.vue:84
+#: src/routes/index.ts:132 src/views/certificate/CertificateEditor.vue:84
 msgid "Modify Certificate"
 msgstr "修改证书"
 
@@ -854,8 +922,11 @@ msgstr "多行指令"
 #: src/views/domain/components/RightSettings.vue:84
 #: src/views/domain/components/SiteDuplicate.vue:135
 #: src/views/domain/DomainList.vue:16
-#: src/views/domain/ngx_conf/NgxUpstream.vue:108
+#: src/views/domain/ngx_conf/NgxUpstream.vue:176
 #: src/views/environment/Environment.vue:15
+#: src/views/stream/components/RightSettings.vue:84
+#: src/views/stream/components/StreamDuplicate.vue:135
+#: src/views/stream/StreamList.vue:16 src/views/stream/StreamList.vue:188
 msgid "Name"
 msgstr "名称"
 
@@ -893,7 +964,7 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Nginx 访问日志路径"
 
-#: src/views/domain/DomainEdit.vue:222
+#: src/views/domain/DomainEdit.vue:222 src/views/stream/StreamEdit.vue:213
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 配置解析错误"
 
@@ -905,7 +976,7 @@ msgstr "控制 Nginx"
 msgid "Nginx Error Log Path"
 msgstr "Nginx 错误日志路径"
 
-#: src/routes/index.ts:146 src/views/nginx_log/NginxLog.vue:145
+#: src/routes/index.ts:163 src/views/nginx_log/NginxLog.vue:145
 msgid "Nginx Log"
 msgstr "Nginx 日志"
 
@@ -921,9 +992,10 @@ msgstr "Nginx 重启成功"
 #: src/components/Notification/Notification.vue:84
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:351
 #: src/views/domain/DomainList.vue:145
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:81
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:91
 #: src/views/domain/ngx_conf/LocationEditor.vue:74
 #: src/views/notification/Notification.vue:71
+#: src/views/stream/StreamList.vue:166
 msgid "No"
 msgstr "取消"
 
@@ -935,7 +1007,7 @@ msgstr "节点密钥"
 msgid "Not After"
 msgstr "有效期"
 
-#: src/routes/index.ts:232 src/routes/index.ts:234
+#: src/routes/index.ts:249 src/routes/index.ts:251
 msgid "Not Found"
 msgstr "找不到页面"
 
@@ -952,7 +1024,7 @@ msgstr "注意"
 msgid "Notification"
 msgstr "通知"
 
-#: src/components/Notification/Notification.vue:82 src/routes/index.ts:177
+#: src/components/Notification/Notification.vue:82 src/routes/index.ts:194
 msgid "Notifications"
 msgstr "通知"
 
@@ -980,10 +1052,13 @@ msgstr "离线"
 #: src/views/domain/components/Deploy.vue:23
 #: src/views/domain/components/RightSettings.vue:51
 #: src/views/domain/DomainList.vue:146
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:48
-#: src/views/domain/ngx_conf/NgxServer.vue:83
-#: src/views/domain/ngx_conf/NgxUpstream.vue:27
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:51
+#: src/views/domain/ngx_conf/NgxServer.vue:86
+#: src/views/domain/ngx_conf/NgxUpstream.vue:35
 #: src/views/notification/Notification.vue:72
+#: src/views/stream/components/Deploy.vue:23
+#: src/views/stream/components/RightSettings.vue:51
+#: src/views/stream/StreamList.vue:167
 msgid "OK"
 msgstr "确定"
 
@@ -1011,10 +1086,12 @@ msgid "OS:"
 msgstr "OS:"
 
 #: src/views/domain/components/Deploy.vue:93
+#: src/views/stream/components/Deploy.vue:93
 msgid "Overwrite"
 msgstr "覆盖"
 
 #: src/views/domain/components/Deploy.vue:97
+#: src/views/stream/components/Deploy.vue:97
 msgid "Overwrite exist file"
 msgstr "覆盖现有文件"
 
@@ -1059,6 +1136,7 @@ msgstr ""
 "的API。"
 
 #: src/views/domain/components/SiteDuplicate.vue:40
+#: src/views/stream/components/StreamDuplicate.vue:40
 msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration!"
@@ -1082,6 +1160,7 @@ msgid ""
 msgstr "请注意，下面的时间单位配置均以秒为单位。"
 
 #: src/views/domain/components/SiteDuplicate.vue:47
+#: src/views/stream/components/StreamDuplicate.vue:47
 msgid "Please select at least one node!"
 msgstr "请至少选择一个节点!"
 
@@ -1089,7 +1168,7 @@ msgstr "请至少选择一个节点!"
 msgid "Pre-release"
 msgstr "预发布"
 
-#: src/routes/index.ts:193 src/views/preference/Preference.vue:85
+#: src/routes/index.ts:210 src/views/preference/Preference.vue:85
 msgid "Preference"
 msgstr "偏好设置"
 
@@ -1156,13 +1235,9 @@ msgstr "正在重载 Nginx"
 msgid "Removed successfully"
 msgstr "删除成功"
 
-#: src/views/domain/ngx_conf/NgxUpstream.vue:74
+#: src/views/domain/ngx_conf/NgxUpstream.vue:124
 msgid "Rename"
 msgstr "重命名"
-
-#: src/views/domain/ngx_conf/NgxUpstream.vue:103
-msgid "Rename Upstream"
-msgstr "重新命名 Upstream"
 
 #: src/views/certificate/RenewCert.vue:43
 #: src/views/certificate/RenewCert.vue:47
@@ -1209,8 +1284,8 @@ msgstr "运行中"
 #: src/components/ChatGPT/ChatGPT.vue:259
 #: src/views/certificate/CertificateEditor.vue:214
 #: src/views/config/ConfigEdit.vue:98 src/views/domain/DomainEdit.vue:268
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
-#: src/views/preference/Preference.vue:113
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:121
+#: src/views/preference/Preference.vue:113 src/views/stream/StreamEdit.vue:258
 msgid "Save"
 msgstr "保存"
 
@@ -1219,7 +1294,7 @@ msgid "Save Directive"
 msgstr "保存指令"
 
 #: src/views/config/ConfigEdit.vue:59 src/views/domain/DomainAdd.vue:53
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:41
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:42
 msgid "Save error %{msg}"
 msgstr "保存错误 %{msg}"
 
@@ -1235,7 +1310,8 @@ msgstr "保存成功"
 
 #: src/views/config/ConfigEdit.vue:57 src/views/domain/DomainAdd.vue:41
 #: src/views/domain/DomainEdit.vue:154
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:40
+#: src/views/stream/StreamEdit.vue:145
 msgid "Saved successfully"
 msgstr "保存成功"
 
@@ -1256,6 +1332,7 @@ msgstr "上传"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:157
 #: src/views/config/ConfigEdit.vue:42 src/views/domain/DomainList.vue:84
 #: src/views/other/Install.vue:72 src/views/preference/Preference.vue:60
+#: src/views/stream/StreamList.vue:116 src/views/stream/StreamList.vue:84
 #: src/views/system/Upgrade.vue:45
 msgid "Server error"
 msgstr "服务器错误"
@@ -1289,11 +1366,11 @@ msgstr "使用 HTTP01 challenge provider"
 msgid "Single Directive"
 msgstr "单行指令"
 
-#: src/routes/index.ts:160
+#: src/routes/index.ts:177
 msgid "Site Logs"
 msgstr "站点列表"
 
-#: src/routes/index.ts:67
+#: src/routes/index.ts:68
 msgid "Sites List"
 msgstr "站点列表"
 
@@ -1324,7 +1401,7 @@ msgid "Stable"
 msgstr "稳定"
 
 #: src/views/certificate/Certificate.vue:81 src/views/domain/DomainList.vue:25
-#: src/views/environment/Environment.vue:78
+#: src/views/environment/Environment.vue:78 src/views/stream/StreamList.vue:25
 msgid "Status"
 msgstr "状态"
 
@@ -1356,7 +1433,7 @@ msgstr "切换到深色主题"
 msgid "Switch to light theme"
 msgstr "切换到浅色"
 
-#: src/routes/index.ts:201
+#: src/routes/index.ts:218
 msgid "System"
 msgstr "系统"
 
@@ -1365,10 +1442,11 @@ msgid "Table"
 msgstr "列表"
 
 #: src/views/domain/components/SiteDuplicate.vue:142
+#: src/views/stream/components/StreamDuplicate.vue:142
 msgid "Target"
 msgstr "目标"
 
-#: src/routes/index.ts:138 src/views/pty/Terminal.vue:95
+#: src/routes/index.ts:155 src/views/pty/Terminal.vue:95
 msgid "Terminal"
 msgstr "终端"
 
@@ -1414,7 +1492,7 @@ msgstr "该字段不能为空"
 msgid "Title"
 msgstr "标题"
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:43
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:46
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
 "add a location which can proxy the request from authority to backend, and we "
@@ -1433,7 +1511,8 @@ msgstr "类型"
 #: src/views/config/ConfigEdit.vue:123
 #: src/views/domain/components/RightSettings.vue:87
 #: src/views/domain/DomainList.vue:44 src/views/environment/Environment.vue:98
-#: src/views/user/User.vue:40
+#: src/views/stream/components/RightSettings.vue:87
+#: src/views/stream/StreamList.vue:44 src/views/user/User.vue:40
 msgid "Updated at"
 msgstr "修改时间"
 
@@ -1441,7 +1520,7 @@ msgstr "修改时间"
 msgid "Updated successfully"
 msgstr "更新成功"
 
-#: src/routes/index.ts:212 src/views/system/Upgrade.vue:143
+#: src/routes/index.ts:229 src/views/system/Upgrade.vue:143
 #: src/views/system/Upgrade.vue:235
 msgid "Upgrade"
 msgstr "升级"
@@ -1453,6 +1532,10 @@ msgstr "升级成功"
 #: src/views/system/Upgrade.vue:82
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "正在升级Nginx UI，请等待..."
+
+#: src/views/domain/ngx_conf/NgxUpstream.vue:171
+msgid "Upstream Name"
+msgstr "Upstream 名称"
 
 #: src/views/dashboard/ServerAnalytic.vue:177
 msgid "Uptime:"
@@ -1518,7 +1601,7 @@ msgstr "正在将证书私钥写入磁盘"
 msgid "Writing certificate to disk"
 msgstr "正在将证书写入磁盘"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:80
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:73
 msgid "Yes"
 msgstr "是的"
@@ -1531,11 +1614,11 @@ msgstr "您使用的是最新版本"
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "你可以在这个页面检查Nginx UI的升级。"
 
+#~ msgid "Rename Upstream"
+#~ msgstr "重新命名 Upstream"
+
 #~ msgid "Server"
 #~ msgstr "Server"
-
-#~ msgid "Upstream"
-#~ msgstr "Upstream"
 
 #~ msgid "Leave blank will not change anything."
 #~ msgstr "留空不会有任何变化。"
