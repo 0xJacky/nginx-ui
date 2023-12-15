@@ -1,6 +1,6 @@
 import Curd from '@/api/curd'
 import http from '@/lib/http'
-import type { NgxServer } from '@/api/ngx'
+import type { NgxDirective, NgxLocation, NgxServer } from '@/api/ngx'
 
 export interface Variable {
   type?: string
@@ -18,6 +18,8 @@ export interface Template extends NgxServer {
     [key: string]: Variable
   }
   custom: string
+  locations?: NgxLocation[]
+  directives?: NgxDirective[]
 }
 
 class TemplateApi extends Curd<Template> {

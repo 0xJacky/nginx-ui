@@ -5,8 +5,8 @@ import Modal from 'ant-design-vue/lib/modal'
 import _ from 'lodash'
 import type { NgxConfig, NgxDirective } from '@/api/ngx'
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
-import type { UpstreamStatus } from '@/api/upstream.ts'
-import upstream from '@/api/upstream.ts'
+import type { UpstreamStatus } from '@/api/upstream'
+import upstream from '@/api/upstream'
 
 const { $gettext } = useGettext()
 
