@@ -99,6 +99,18 @@ func GetStream(c *gin.Context) {
 		enabled = false
 	}
 
+	g := query.ChatGPTLog
+	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
+
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+
+	if chatgpt.Content == nil {
+		chatgpt.Content = make([]openai.ChatCompletionMessage, 0)
+	}
+
 	s := query.Stream
 	stream, err := s.Where(s.Path.Eq(path)).FirstOrInit()
 
@@ -120,7 +132,7 @@ func GetStream(c *gin.Context) {
 			Enabled:         enabled,
 			Name:            name,
 			Config:          string(origContent),
-			ChatGPTMessages: stream.ChatGPTMessages,
+			ChatGPTMessages: chatgpt.Content,
 		})
 		return
 	}
@@ -133,8 +145,6 @@ func GetStream(c *gin.Context) {
 		return
 	}
 
-	c.Set("maybe_error", "nginx_config_syntax_error")
-
 	c.JSON(http.StatusOK, Stream{
 		ModifiedAt:      file.ModTime(),
 		Advanced:        stream.Advanced,
@@ -142,7 +152,7 @@ func GetStream(c *gin.Context) {
 		Name:            name,
 		Config:          nginxConfig.FmtCode(),
 		Tokenized:       nginxConfig,
-		ChatGPTMessages: stream.ChatGPTMessages,
+		ChatGPTMessages: chatgpt.Content,
 	})
 }
 
