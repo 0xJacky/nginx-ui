@@ -74,12 +74,14 @@ function availability_test() {
     }
   }
 
-  websocket.value = upstream.availability_test()
-  websocket.value.onopen = () => {
-    websocket.value.send(JSON.stringify(sockets))
-  }
-  websocket.value.onmessage = (e: MessageEvent) => {
-    availabilityResult.value = JSON.parse(e.data)
+  if (sockets.length > 0) {
+    websocket.value = upstream.availability_test()
+    websocket.value.onopen = () => {
+      websocket.value.send(JSON.stringify(sockets))
+    }
+    websocket.value.onmessage = (e: MessageEvent) => {
+      availabilityResult.value = JSON.parse(e.data)
+    }
   }
 }
 
