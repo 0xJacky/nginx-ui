@@ -100,6 +100,12 @@ const is_theme_dark = computed(() => settings.theme === 'dark')
     border-inline-end: none !important;
   }
 }
+
+@media (max-width: 512px) {
+  .ant-card {
+    border-radius: 0;
+  }
+}
 </style>
 
 <style lang="less" scoped>

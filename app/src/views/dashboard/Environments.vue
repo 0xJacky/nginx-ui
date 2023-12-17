@@ -79,45 +79,58 @@ const visible = computed(() => {
     >
       <template #renderItem="{ item }">
         <AListItem>
-          <template #actions>
-            <AButton
-              type="primary"
-              :disabled="env.id === item.id"
-              ghost
-              @click="link_start(item)"
-            >
-              <SendOutlined />
-              {{ env.id !== item.id ? $gettext('Link Start') : $gettext('Connected') }}
-            </AButton>
-          </template>
           <AListItemMeta>
             <template #title>
-              {{ item.name }}
-              <ATag
-                v-if="item.status"
-                color="blue"
-              >
-                {{ $gettext('Online') }}
-              </ATag>
-              <ATag
-                v-else
-                color="error"
-              >
-                {{ $gettext('Offline') }}
-              </ATag>
+              <div class="mb-1">
+                {{ item.name }}
+                <ATag
+                  v-if="item.status"
+                  color="blue"
+                  class="ml-2"
+                >
+                  {{ $gettext('Online') }}
+                </ATag>
+                <ATag
+                  v-else
+                  color="error"
+                  class="ml-2"
+                >
+                  {{ $gettext('Offline') }}
+                </ATag>
+              </div>
+
+              <template v-if="item.status">
+                <div class="runtime-meta mr-2 mb-1">
+                  <Icon :component="pulse" /> {{ formatDateTime(item.response_at) }}
+                </div>
+                <div class="runtime-meta mr-2 mb-1">
+                  <ThunderboltOutlined />{{ item.version }}
+                </div>
+              </template>
               <div class="runtime-meta">
-                <template v-if="item.status">
-                  <span><Icon :component="pulse" /> {{ formatDateTime(item.response_at) }}</span>
-                  <span><ThunderboltOutlined />{{ item.version }}</span>
-                </template>
-                <span><LinkOutlined />{{ item.url }}</span>
+                <LinkOutlined />{{ item.url }}
               </div>
             </template>
             <template #avatar>
               <AAvatar :src="logo" />
             </template>
             <template #description>
-              <NodeAnalyticItem :item="item" />
+              <div class="md:flex lg:flex justify-between md:items-center">
+                <NodeAnalyticItem
+                  :item="item"
+                  class="mt-1 mb-1"
+                />
+
+                <AButton
+                  type="primary"
+                  :disabled="env.id === item.id"
+                  ghost
+                  @click="link_start(item)"
+                >
+                  <SendOutlined />
+                  {{ env.id !== item.id ? $gettext('Link Start') : $gettext('Connected') }}
+                </AButton>
+              </div>
             </template>
           </AListItemMeta>
         </AListItem>
@@ -127,30 +140,34 @@ const visible = computed(() => {
 </template>
 
 <style scoped lang="less">
+:deep(.ant-list-item-meta-title) {
+  display: flex;
+  align-items: center;
+  @media (max-width: 700px) {
+    display: block;
+  }
+}
+
 .env-list-card {
   margin-top: 16px;
 
   .runtime-meta {
     display: inline-flex;
     @media (max-width: 700px) {
-      display: block;
-      margin-top: 5px;
-      span {
-        display: flex;
-        align-items: center;
-      }
+      align-items: center;
     }
+    font-weight: 400;
+    color: #9b9b9b;
 
-    span {
-      font-weight: 400;
-      font-size: 13px;
-      margin-right: 16px;
-      color: #9b9b9b;
-
-      &.anticon {
-        margin-right: 4px;
-      }
+    .anticon {
+      margin-right: 4px;
     }
+  }
+}
+
+:deep(.ant-list-item-action) {
+  @media(max-width: 500px) {
+    display: none;
   }
 }
 </style>

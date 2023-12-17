@@ -29,17 +29,21 @@ defineProps<{
 <template>
   <div class="hardware-monitor">
     <div class="hardware-monitor-item longer">
-      <div>
-        <LineChartOutlined />
+      <div class="mb-1">
+        <LineChartOutlined class="mr-1" />
         <span class="load-avg-describe">1min:</span>{{ ` ${item.avg_load?.load1?.toFixed(2)}` }} ·
         <span class="load-avg-describe">5min:</span>{{ item.avg_load?.load5?.toFixed(2) }} ·
         <span class="load-avg-describe">15min:</span>{{ item.avg_load?.load15?.toFixed(2) }}
       </div>
-      <div>
-        <ArrowUpOutlined />
-        {{ bytesToSize(item?.network?.bytesSent) }}
-        <ArrowDownOutlined />
-        {{ bytesToSize(item?.network?.bytesRecv) }}
+      <div class="flex">
+        <div class="sm:text-sm md:text-xs lg:text-sm">
+          <ArrowUpOutlined />
+          {{ bytesToSize(item?.network?.bytesSent) }}
+        </div>
+        <div class="ml-2 sm:text-sm md:text-xs lg:text-sm">
+          <ArrowDownOutlined />
+          {{ bytesToSize(item?.network?.bytesRecv) }}
+        </div>
       </div>
     </div>
     <div class="hardware-monitor-item">
@@ -73,26 +77,85 @@ defineProps<{
 .hardware-monitor {
   display: flex;
 
-  @media (max-width: 900px) {
+  @media (max-width: 1000px) {
     display: block;
   }
 
   .hardware-monitor-item {
-    width: 150px;
-    margin-right: 30px;
-    @media (max-width: 900px) {
-      margin-bottom: 5px;
+    width: 140px;
+    margin-right: 20px;
+
+    @media(min-width: 1800px) {
+      width: 300px;
+      margin-bottom: 10px;
+      margin-right: 50px;
+    }
+
+    @media(min-width: 1600px) and (max-width: 1800px) {
+      width: 270px;
+      margin-bottom: 10px;
+      margin-right: 20px;
+    }
+
+    @media(min-width: 1500px) and (max-width: 1600px) {
+      width: 230px;
+      margin-bottom: 10px;
+      margin-right: 30px;
+    }
+
+    @media(min-width: 1400px) and (max-width: 1500px) {
+      width: 180px;
+      margin-bottom: 10px;
+      margin-right: 25px;
+    }
+
+    @media(min-width: 400px) and (max-width: 1000px) {
+      width: 280px;
+      margin-bottom: 10px;
+    }
+
+    @media(max-width: 400px) {
+      width: 200px;
+      margin-bottom: 10px;
     }
   }
 
   .longer {
-    width: 300px;
+    width: 180px;
+  }
+  @media (max-width: 400px) {
+    .longer {
+      width: 180px;
+      .load-avg-describe {
+        display: none;
+      }
+    }
+  }
+  @media (min-width: 400px) and (max-width: 500px) {
+    .longer {
+      width: 300px;
+    }
+  }
+  @media (min-width: 1400px) {
+    .longer {
+      min-width: 300px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .longer {
+      min-width: 270px;
+    }
+  }
+  @media (min-width: 400px) and (max-width: 1000px) {
+    .longer {
+      min-width: 250px;
+    }
+  }
+  @media (min-width: 1100px) and (max-width: 1200px) {
+    .longer {
+      min-width: 200px;
+    }
   }
 }
 
-.load-avg-describe {
-  @media (max-width: 1200px) and  (min-width: 600px) {
-    display: none;
-  }
-}
 </style>
