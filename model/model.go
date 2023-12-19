@@ -10,8 +10,10 @@ import (
 	"gorm.io/gen"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
+	"gorm.io/gorm/schema"
 	"path"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -100,9 +102,19 @@ func SortOrder(c *gin.Context) func(db *gorm.DB) *gorm.DB {
 func OrderAndPaginate(c *gin.Context) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		sort := c.DefaultQuery("order", "desc")
+		if sort != "desc" && sort != "asc" {
+			sort = "desc"
+		}
 
-		order := fmt.Sprintf("`%s` %s", DefaultQuery(c, "sort_by", "id"), sort)
-		db = db.Order(order)
+		// check if the order field is valid
+		order := c.DefaultQuery("sort_by", "id")
+		s, _ := schema.Parse(db.Model, &sync.Map{}, schema.NamingStrategy{})
+		if _, ok := s.FieldsByName[order]; ok {
+			order = fmt.Sprintf("%s %s", order, sort)
+			db = db.Order(order)
+		} else {
+			logger.Error("invalid order field: ", order)
+		}
 
 		page := cast.ToInt(c.Query("page"))
 		if page == 0 {
