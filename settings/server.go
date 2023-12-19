@@ -1,18 +1,18 @@
 package settings
 
 type Server struct {
-	HttpHost          string `json:"http_host"`
-	HttpPort          string `json:"http_port"`
-	RunMode           string `json:"run_mode"`
-	JwtSecret         string `json:"jwt_secret"`
-	NodeSecret        string `json:"node_secret"`
+	HttpHost          string `json:"http_host" protected:"true"`
+	HttpPort          string `json:"http_port" protected:"true"`
+	RunMode           string `json:"run_mode" protected:"true"`
+	JwtSecret         string `json:"jwt_secret" protected:"true"`
+	NodeSecret        string `json:"node_secret" protected:"true"`
 	HTTPChallengePort string `json:"http_challenge_port"`
-	Email             string `json:"email"`
-	Database          string `json:"database"`
-	StartCmd          string `json:"start_cmd"`
+	Email             string `json:"email" protected:"true"`
+	Database          string `json:"database" protected:"true"`
+	StartCmd          string `json:"start_cmd" protected:"true"`
 	CADir             string `json:"ca_dir"`
-	Demo              bool   `json:"demo"`
-	PageSize          int    `json:"page_size"`
+	Demo              bool   `json:"demo" protected:"true"`
+	PageSize          int    `json:"page_size" protected:"true"`
 	GithubProxy       string `json:"github_proxy"`
 }
 
