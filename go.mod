@@ -31,7 +31,7 @@ require (
 	github.com/spf13/cast v1.6.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20231116154738-5dd06bb2938b
 	go.uber.org/zap v1.26.0
-	golang.org/x/crypto v0.16.0
+	golang.org/x/crypto v0.17.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/sqlite v1.5.4
 	gorm.io/gen v0.3.24
@@ -195,7 +195,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20221212215047-62379fc7944b // indirect
 	github.com/pquerna/otp v1.4.0 // indirect
-	github.com/prometheus-community/pro-bing v0.3.0 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sacloud/api-client-go v0.2.9 // indirect
@@ -240,7 +239,6 @@ require (
 	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/oauth2 v0.15.0 // indirect
-	golang.org/x/sync v0.5.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
