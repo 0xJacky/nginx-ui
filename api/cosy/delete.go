@@ -6,9 +6,9 @@ import (
 	"net/http"
 )
 
-func (c *Ctx[T]) PermanentlyDelete() *Ctx[T] {
+func (c *Ctx[T]) PermanentlyDelete() {
 	c.permanentlyDelete = true
-	return c
+	c.Destroy()
 }
 
 func (c *Ctx[T]) Destroy() {
