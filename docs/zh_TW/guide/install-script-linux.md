@@ -20,7 +20,7 @@ install.sh install [OPTIONS]
 |-----------------------|---------------------------------------------------------------------------------------|
 | `-l, --local <file>`  | 從本地檔案安裝 Nginx UI (`string`)                                                           |
 | `-p, --proxy <url>`   | 透過代理伺服器下載 (`string`)<br/>例如：`-p http://127.0.0.1:8118` 或 `-p socks5://127.0.0.1:1080` |
-| `-r, --reverse-proxy` | 透過反向代理伺服器下載 (`string`)<br/>例如：`-r https://ghproxy.com/`                               |
+| `-r, --reverse-proxy` | 透過反向代理伺服器下載 (`string`)<br/>例如：`-r https://mirror.ghproxy.com/`                               |
 
 
 ### 快速使用

@@ -370,7 +370,7 @@ show_help() {
     echo '  install:'
     echo '    -l, --local               Install Nginx UI from a local file'
     echo '    -p, --proxy               Download through a proxy server, e.g., -p http://127.0.0.1:8118 or -p socks5://127.0.0.1:1080'
-    echo '    -r, --reverse-proxy       Download through a reverse proxy server, e.g., -r https://ghproxy.com/'
+    echo '    -r, --reverse-proxy       Download through a reverse proxy server, e.g., -r https://mirror.ghproxy.com/'
     echo '  remove:'
     echo '    --purge                   Remove all the Nginx UI files, include logs, configs, etc'
     exit 0

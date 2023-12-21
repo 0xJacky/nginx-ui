@@ -66,6 +66,6 @@ Nginx UI 監聽埠。此選項用於配置 Nginx UI 伺服器監聽傳入 HTTP �
 ## GithubProxy
 
 - 型別：`string`
-- 建議：`https://ghproxy.com/`
+- 建議：`https://mirror.ghproxy.com/`
 
 對於可能在從 Github 下載資源時遇到困難的使用者（如在中國大陸），此選項允許他們為 github.com 設定代理，以提高可訪問性。

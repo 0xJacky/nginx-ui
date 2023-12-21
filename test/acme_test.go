@@ -38,7 +38,7 @@ func TestAcme(t *testing.T) {
 
 			fileString := string(file)
 			fileString = strings.Replace(fileString, "https://raw.githubusercontent.com",
-				"https://ghproxy.com/https://raw.githubusercontent.com", -1)
+				"https://mirror.ghproxy.com/https://raw.githubusercontent.com", -1)
 
 			_ = ioutil.WriteFile("../tmp/acme.sh", []byte(fileString), 0644)
 

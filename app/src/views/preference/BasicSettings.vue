@@ -33,7 +33,7 @@ const data: IData = inject('data') as IData
     <AFormItem :label="$gettext('Github Proxy')">
       <AInput
         v-model:value="data.server.github_proxy"
-        :placeholder="$gettext('Chinese user: https://ghproxy.com/')"
+        :placeholder="$gettext('Chinese user: https://mirror.ghproxy.com/')"
       />
     </AFormItem>
     <AFormItem :label="$gettext('CADir')">

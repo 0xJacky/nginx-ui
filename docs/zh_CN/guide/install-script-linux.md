@@ -20,13 +20,13 @@ install.sh install [OPTIONS]
 |-----------------------|---------------------------------------------------------------------------------------|
 | `-l, --local <file>`  | 从本地文件安装 Nginx UI (`string`)                                                           |
 | `-p, --proxy <url>`   | 通过代理服务器下载 (`string`)<br/>例如：`-p http://127.0.0.1:8118` 或 `-p socks5://127.0.0.1:1080` |
-| `-r, --reverse-proxy` | 通过反向代理服务器下载 (`string`)<br/>例如：`-r https://ghproxy.com/`                               |
+| `-r, --reverse-proxy` | 通过反向代理服务器下载 (`string`)<br/>例如：`-r https://mirror.ghproxy.com/`                               |
 
 
 ### 快速使用
 
 ```shell
-bash <(curl -L -s https://ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install -r https://ghproxy.com/
+bash <(curl -L -s https://mirror.ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install -r https://mirror.ghproxy.com/
 ```
 
 一键安装脚本默认设置的监听端口为 `9000`，HTTP Challenge 端口默认为 `9180`。如果有端口冲突，请手动修改 `/usr/local/etc/nginx-ui/app.ini`，
@@ -56,12 +56,12 @@ install.sh remove [OPTIONS]
 
 ```shell [移除]
 # 删除 Nginx UI，但不包括配置和数据库文件
-bash <(curl -L -s https://ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
+bash <(curl -L -s https://mirror.ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
 ```
 
 ```shell [清除]
 # 删除所有 Nginx UI 文件，包括配置和数据库文件
-bash <(curl -L -s https://ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove --purge
+bash <(curl -L -s https://mirror.ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove --purge
 ```
 
 :::
@@ -81,7 +81,7 @@ install.sh help
 ### 快速使用
 
 ```shell
-bash <(curl -L -s https://ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) help
+bash <(curl -L -s https://mirror.ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) help
 ```
 
 ## 控制服务
