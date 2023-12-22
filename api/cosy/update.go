@@ -5,7 +5,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"net/http"
+    "gorm.io/gorm/clause"
+    "net/http"
 )
 
 func (c *Ctx[T]) SetNextHandler(handler gin.HandlerFunc) *Ctx[T] {
@@ -68,6 +69,13 @@ func (c *Ctx[T]) Modify() {
 	}
 
 	err = db.Model(&dbModel).Select(selectedFields).Updates(&c.Model).Error
+
+	if err != nil {
+		c.AbortWithError(err)
+		return
+	}
+
+	err = db.Preload(clause.Associations).First(&c.Model, id).Error
 
 	if err != nil {
 		c.AbortWithError(err)
