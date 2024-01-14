@@ -4,6 +4,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"github.com/shopspring/decimal"
 	"github.com/spf13/cast"
+	"gopkg.in/guregu/null.v4"
 	"reflect"
 	"time"
 )
@@ -11,7 +12,7 @@ import (
 var timeLocation *time.Location
 
 func init() {
-	timeLocation = time.Local
+	timeLocation, _ = time.LoadLocation("Asia/Shanghai")
 }
 
 func ToTimeHookFunc() mapstructure.DecodeHookFunc {
@@ -49,6 +50,16 @@ func ToDecimalHookFunc() mapstructure.DecodeHookFunc {
 				return decimal.NewFromString(data.(string))
 			}
 			return decimal.Decimal{}, nil
+		}
+
+		return data, nil
+	}
+}
+
+func ToNullableStringHookFunc() mapstructure.DecodeHookFunc {
+	return func(f reflect.Type, t reflect.Type, data interface{}) (interface{}, error) {
+		if t == reflect.TypeOf(null.String{}) {
+			return null.StringFrom(data.(string)), nil
 		}
 
 		return data, nil

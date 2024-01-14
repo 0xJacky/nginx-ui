@@ -38,9 +38,15 @@ func GetTemplate(c *gin.Context) {
 		},
 	}
 
+	content, err := ngxConfig.BuildConfig()
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"message":   "ok",
-		"template":  ngxConfig.BuildConfig(),
+		"template":  content,
 		"tokenized": ngxConfig,
 	})
 }

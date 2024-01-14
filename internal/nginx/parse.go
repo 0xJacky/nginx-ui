@@ -127,8 +127,9 @@ func buildComment(c []string) string {
 	return strings.ReplaceAll(strings.Join(c, "\n"), "#", "")
 }
 
-func parse(block gonginx.IBlock, ngxConfig *NgxConfig) {
+func parse(block gonginx.IBlock, ngxConfig *NgxConfig) (err error) {
 	if block == nil {
+		err = errors.New("block is nil")
 		return
 	}
 	for _, v := range block.GetDirectives() {
@@ -152,15 +153,23 @@ func parse(block gonginx.IBlock, ngxConfig *NgxConfig) {
 			ngxConfig.parseCustom(v)
 		}
 	}
-	ngxConfig.Custom = FmtCode(ngxConfig.Custom)
+	custom, err := FmtCode(ngxConfig.Custom)
+	if err != nil {
+		return
+	}
+	ngxConfig.Custom = custom
+	return
 }
 
-func ParseNgxConfigByContent(content string) (ngxConfig *NgxConfig) {
+func ParseNgxConfigByContent(content string) (ngxConfig *NgxConfig, err error) {
 	p := parser.NewStringParser(content)
-	c := p.Parse()
+	c, err := p.Parse()
+	if err != nil {
+		return
+	}
 	ngxConfig = NewNgxConfig("")
 	ngxConfig.c = c
-	parse(c.Block, ngxConfig)
+	err = parse(c.Block, ngxConfig)
 	return
 }
 
@@ -169,9 +178,12 @@ func ParseNgxConfig(filename string) (ngxConfig *NgxConfig, err error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "error ParseNgxConfig")
 	}
-	c := p.Parse()
+	c, err := p.Parse()
+	if err != nil {
+		return
+	}
 	ngxConfig = NewNgxConfig(filename)
 	ngxConfig.c = c
-	parse(c.Block, ngxConfig)
+	err = parse(c.Block, ngxConfig)
 	return
 }

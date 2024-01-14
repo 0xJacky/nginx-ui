@@ -1,8 +1,8 @@
 package cosy
 
 import (
-	"github.com/0xJacky/Nginx-UI/api/cosy/map2struct"
 	"github.com/gin-gonic/gin"
+	"github.com/0xJacky/Nginx-UI/api/cosy/map2struct"
 	"net/http"
 )
 

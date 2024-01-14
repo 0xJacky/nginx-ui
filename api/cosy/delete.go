@@ -27,7 +27,13 @@ func (c *Ctx[T]) Destroy() {
 		result = result.Scopes(c.gormScopes...)
 	}
 
-	err := result.Session(&gorm.Session{}).First(&dbModel, id).Error
+	var err error
+	session := result.Session(&gorm.Session{})
+	if c.table != "" {
+		err = session.Table(c.table, c.tableArgs...).Take(&dbModel, id).Error
+	} else {
+		err = session.First(&dbModel, id).Error
+	}
 
 	if err != nil {
 		errHandler(c.ctx, err)
@@ -73,7 +79,13 @@ func (c *Ctx[T]) Recover() {
 		result = result.Scopes(c.gormScopes...)
 	}
 
-	err := result.Session(&gorm.Session{}).First(&dbModel, id).Error
+	var err error
+	session := result.Session(&gorm.Session{})
+	if c.table != "" {
+		err = session.Table(c.table).Take(&dbModel, id).Error
+	} else {
+		err = session.First(&dbModel, id).Error
+	}
 
 	if err != nil {
 		errHandler(c.ctx, err)

@@ -2,9 +2,10 @@ package cosy
 
 import (
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/gin-gonic/gin"
+	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"strings"
 )
 
@@ -63,16 +64,17 @@ func QueryToInSearch(c *gin.Context, db *gorm.DB, keys ...string) *gorm.DB {
 		if len(queryArray) == 0 {
 			queryArray = c.QueryArray(v)
 		}
-		if len(queryArray) > 0 {
-			var sb strings.Builder
+		if len(queryArray) == 1 && queryArray[0] == "" {
+			continue
+		}
+		if len(queryArray) >= 1 {
+			var builder strings.Builder
+			stmt := db.Statement
 
-			_, err := fmt.Fprintf(&sb, "`%s` IN ?", v)
-			if err != nil {
-				logger.Error(err)
-				continue
-			}
+			stmt.QuoteTo(&builder, clause.Column{Table: stmt.Table, Name: v})
+			builder.WriteString(" IN ?")
 
-			db = db.Where(sb.String(), queryArray)
+			db = db.Where(builder.String(), queryArray)
 		}
 	}
 	return db
@@ -148,7 +150,10 @@ func QueryToOrInSearch(c *gin.Context, db *gorm.DB, keys ...string) *gorm.DB {
 		if len(queryArray) == 0 {
 			queryArray = c.QueryArray(v)
 		}
-		if len(queryArray) > 0 {
+		if len(queryArray) == 1 && queryArray[0] == "" {
+			continue
+		}
+		if len(queryArray) >= 1 {
 			var sb strings.Builder
 
 			_, err := fmt.Fprintf(&sb, "`%s` IN ?", v)

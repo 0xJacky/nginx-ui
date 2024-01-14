@@ -10,9 +10,12 @@ func (c *NgxConfig) FmtCode() (fmtContent string) {
 	return
 }
 
-func FmtCode(content string) (fmtContent string) {
+func FmtCode(content string) (fmtContent string, err error) {
 	p := parser.NewStringParser(content)
-	c := p.Parse()
+	c, err := p.Parse()
+	if err != nil {
+		return
+	}
 	fmtContent = gonginx.DumpConfig(c, gonginx.IndentedStyle)
 	return
 }

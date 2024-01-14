@@ -10,7 +10,7 @@ func WeakDecode(input, output interface{}) error {
 		Result:           output,
 		WeaklyTypedInput: true,
 		DecodeHook: mapstructure.ComposeDecodeHookFunc(
-			ToDecimalHookFunc(), ToTimeHookFunc(),
+			ToDecimalHookFunc(), ToTimeHookFunc(), ToNullableStringHookFunc(),
 		),
 		TagName: "json",
 	}

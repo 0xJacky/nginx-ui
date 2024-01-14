@@ -13,9 +13,13 @@ func BuildNginxConfig(c *gin.Context) {
 	if !api.BindAndValid(c, &ngxConf) {
 		return
 	}
-	c.Set("maybe_error", "nginx_config_syntax_error")
+	content, err := ngxConf.BuildConfig()
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
-		"content": ngxConf.BuildConfig(),
+		"content": content,
 	})
 }
 
@@ -28,9 +32,11 @@ func TokenizeNginxConfig(c *gin.Context) {
 		return
 	}
 
-	c.Set("maybe_error", "nginx_config_syntax_error")
-	ngxConfig := nginx.ParseNgxConfigByContent(json.Content)
-
+	ngxConfig, err := nginx.ParseNgxConfigByContent(json.Content)
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
 	c.JSON(http.StatusOK, ngxConfig)
 
 }
@@ -43,10 +49,13 @@ func FormatNginxConfig(c *gin.Context) {
 	if !api.BindAndValid(c, &json) {
 		return
 	}
-
-	c.Set("maybe_error", "nginx_config_syntax_error")
+	content, err := nginx.FmtCode(json.Content)
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
-		"content": nginx.FmtCode(json.Content),
+		"content": content,
 	})
 }
 

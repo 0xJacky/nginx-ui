@@ -137,7 +137,6 @@ func GetStream(c *gin.Context) {
 		return
 	}
 
-	c.Set("maybe_error", "nginx_config_syntax_error")
 	nginxConfig, err := nginx.ParseNgxConfig(path)
 
 	if err != nil {
@@ -234,7 +233,6 @@ func SaveStream(c *gin.Context) {
 		if nginx.GetLogLevel(output) > nginx.Warn {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": output,
-				"error":   "nginx_config_syntax_error",
 			})
 			return
 		}

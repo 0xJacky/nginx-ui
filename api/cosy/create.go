@@ -1,9 +1,9 @@
 package cosy
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/0xJacky/Nginx-UI/api/cosy/map2struct"
 	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/gin-gonic/gin"
 	"gorm.io/gorm/clause"
 	"net/http"
 )
@@ -41,8 +41,11 @@ func (c *Ctx[T]) Create() {
 		return
 	}
 
-	// skip all associations
-	err = db.Omit(clause.Associations).Create(&c.Model).Error
+	if c.skipAssociationsOnCreate {
+		err = db.Omit(clause.Associations).Create(&c.Model).Error
+	} else {
+		err = db.Create(&c.Model).Error
+	}
 
 	if err != nil {
 		errHandler(c.ctx, err)
@@ -53,7 +56,7 @@ func (c *Ctx[T]) Create() {
 	for _, v := range c.preloads {
 		tx = tx.Preload(v)
 	}
-	tx.First(&c.Model)
+	tx.Table(c.table, c.tableArgs...).First(&c.Model)
 
 	if len(c.executedHookFunc) > 0 {
 		for _, v := range c.executedHookFunc {
@@ -69,4 +72,9 @@ func (c *Ctx[T]) Create() {
 	} else {
 		c.ctx.JSON(http.StatusOK, c.Model)
 	}
+}
+
+func (c *Ctx[T]) WithAssociations() *Ctx[T] {
+	c.skipAssociationsOnCreate = false
+	return c
 }

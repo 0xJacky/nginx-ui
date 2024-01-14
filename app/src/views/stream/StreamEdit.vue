@@ -83,16 +83,11 @@ function init() {
 
 function handle_parse_error(e: { error?: string; message: string }) {
   console.error(e)
-  if (e?.error === 'nginx_config_syntax_error') {
-    parse_error_status.value = true
-    parse_error_message.value = e.message
-    config.get(`streams-available/${name.value}`).then(r => {
-      configText.value = r.content
-    })
-  }
-  else {
-    message.error($gettext(e?.message ?? 'Server error'))
-  }
+  parse_error_status.value = true
+  parse_error_message.value = e.message
+  config.get(`streams-available/${name.value}`).then(r => {
+    configText.value = r.content
+  })
 }
 
 function on_mode_change(advanced: boolean) {

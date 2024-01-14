@@ -5,8 +5,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-    "gorm.io/gorm/clause"
-    "net/http"
+	"gorm.io/gorm/clause"
+	"net/http"
 )
 
 func (c *Ctx[T]) SetNextHandler(handler gin.HandlerFunc) *Ctx[T] {
@@ -29,8 +29,6 @@ func (c *Ctx[T]) Modify() {
 		return
 	}
 
-	var dbModel T
-
 	db := model.UseDB()
 
 	result := db
@@ -38,7 +36,7 @@ func (c *Ctx[T]) Modify() {
 		result = result.Scopes(c.gormScopes...)
 	}
 
-	err := result.Session(&gorm.Session{}).First(&dbModel, id).Error
+	err := result.Session(&gorm.Session{}).First(&c.OriginModel, id).Error
 
 	if err != nil {
 		c.AbortWithError(err)
@@ -68,7 +66,10 @@ func (c *Ctx[T]) Modify() {
 		return
 	}
 
-	err = db.Model(&dbModel).Select(selectedFields).Updates(&c.Model).Error
+	if c.table != "" {
+		db = db.Table(c.table, c.tableArgs...)
+	}
+	err = db.Model(&c.OriginModel).Select(selectedFields).Updates(&c.Model).Error
 
 	if err != nil {
 		c.AbortWithError(err)
@@ -95,6 +96,6 @@ func (c *Ctx[T]) Modify() {
 	if c.nextHandler != nil {
 		(*c.nextHandler)(c.ctx)
 	} else {
-		c.ctx.JSON(http.StatusOK, dbModel)
+		c.ctx.JSON(http.StatusOK, c.Model)
 	}
 }

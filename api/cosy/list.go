@@ -25,14 +25,11 @@ func GetPagingParams(c *gin.Context) (page, offset, pageSize int) {
 }
 
 func (c *Ctx[T]) combineStdSelectorRequest() {
-	var StdSelectorInitParams struct {
-		ID []int `json:"id"`
-	}
+	StdSelectorInitID := c.ctx.QueryArray("id[]")
 
-	_ = c.ctx.ShouldBindJSON(&StdSelectorInitParams)
-	if len(StdSelectorInitParams.ID) > 0 {
+	if len(StdSelectorInitID) > 0 {
 		c.GormScope(func(tx *gorm.DB) *gorm.DB {
-			return tx.Where(c.itemKey+" IN ?", StdSelectorInitParams.ID)
+			return tx.Where(c.itemKey+" IN ?", StdSelectorInitID)
 		})
 	}
 }
@@ -62,6 +59,9 @@ func (c *Ctx[T]) result() (*gorm.DB, bool) {
 	}
 
 	result = result.Model(&dbModel)
+	if c.table != "" {
+		result = result.Table(c.table, c.tableArgs...)
+	}
 
 	c.combineStdSelectorRequest()
 
@@ -72,16 +72,30 @@ func (c *Ctx[T]) result() (*gorm.DB, bool) {
 	return result, true
 }
 
-func (c *Ctx[T]) ListAllData() ([]*T, bool) {
+func (c *Ctx[T]) ListAllData() (data any, ok bool) {
 	result, ok := c.result()
 	if !ok {
 		return nil, false
 	}
 
 	result = result.Scopes(c.SortOrder())
-	models := make([]*T, 0)
-	result.Find(&models)
-	return models, true
+	if c.scan == nil {
+		models := make([]*T, 0)
+		result.Find(&models)
+
+		if c.transformer != nil {
+			transformed := make([]any, 0)
+			for k := range models {
+				transformed = append(transformed, c.transformer(models[k]))
+			}
+			data = transformed
+		} else {
+			data = models
+		}
+	} else {
+		data = c.scan(result)
+	}
+	return data, true
 }
 
 func (c *Ctx[T]) PagingListData() (*model.DataList, bool) {
@@ -90,11 +104,11 @@ func (c *Ctx[T]) PagingListData() (*model.DataList, bool) {
 		return nil, false
 	}
 
-	result = result.Scopes(c.OrderAndPaginate())
+	scopesResult := result.Session(&gorm.Session{}).Scopes(c.OrderAndPaginate())
 	data := &model.DataList{}
 	if c.scan == nil {
 		models := make([]*T, 0)
-		result.Find(&models)
+		scopesResult.Find(&models)
 
 		if c.transformer != nil {
 			transformed := make([]any, 0)
@@ -106,8 +120,11 @@ func (c *Ctx[T]) PagingListData() (*model.DataList, bool) {
 			data.Data = models
 		}
 	} else {
-		data.Data = c.scan(result)
+		data.Data = c.scan(scopesResult)
 	}
+
+	var totalRecords int64
+	result.Session(&gorm.Session{}).Count(&totalRecords)
 
 	page := cast.ToInt(c.ctx.Query("page"))
 	if page == 0 {
@@ -118,9 +135,6 @@ func (c *Ctx[T]) PagingListData() (*model.DataList, bool) {
 	if reqPageSize := c.ctx.Query("page_size"); reqPageSize != "" {
 		pageSize = cast.ToInt(reqPageSize)
 	}
-
-	var totalRecords int64
-	result.Session(&gorm.Session{}).Count(&totalRecords)
 
 	data.Pagination = model.Pagination{
 		Total:       totalRecords,
@@ -136,4 +150,16 @@ func (c *Ctx[T]) PagingList() {
 	if ok {
 		c.ctx.JSON(http.StatusOK, data)
 	}
+}
+
+// EmptyPagingList return empty list
+func (c *Ctx[T]) EmptyPagingList() {
+	pageSize := settings.ServerSettings.PageSize
+	if reqPageSize := c.ctx.Query("page_size"); reqPageSize != "" {
+		pageSize = cast.ToInt(reqPageSize)
+	}
+
+	data := &model.DataList{Data: make([]any, 0)}
+	data.Pagination.PerPage = pageSize
+	c.ctx.JSON(http.StatusOK, data)
 }

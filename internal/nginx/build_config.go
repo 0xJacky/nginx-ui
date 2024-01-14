@@ -17,8 +17,7 @@ func buildComments(orig string, indent int) (content string) {
 	return
 }
 
-func (c *NgxConfig) BuildConfig() (content string) {
-
+func (c *NgxConfig) BuildConfig() (content string, err error) {
 	// Custom
 	if c.Custom != "" {
 		content += c.Custom
@@ -84,7 +83,11 @@ func (c *NgxConfig) BuildConfig() (content string) {
 		content += fmt.Sprintf("%sserver {\n%s}\n\n", comments, server)
 	}
 	p := parser.NewStringParser(content)
-	config := p.Parse()
+	config, err := p.Parse()
+	if err != nil {
+		return
+	}
+
 	content = gonginx.DumpConfig(config, gonginx.IndentedStyle)
 	return
 }

@@ -136,15 +136,12 @@ func GetDomain(c *gin.Context) {
 		return
 	}
 
-	c.Set("maybe_error", "nginx_config_syntax_error")
 	nginxConfig, err := nginx.ParseNgxConfig(path)
 
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
-
-	c.Set("maybe_error", "")
 
 	certInfoMap := make(map[int]*cert.Info)
 
@@ -165,8 +162,6 @@ func GetDomain(c *gin.Context) {
 			}
 		}
 	}
-
-	c.Set("maybe_error", "nginx_config_syntax_error")
 
 	c.JSON(http.StatusOK, Site{
 		ModifiedAt:      file.ModTime(),
@@ -259,7 +254,6 @@ func SaveDomain(c *gin.Context) {
 		if nginx.GetLogLevel(output) > nginx.Warn {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": output,
-				"error":   "nginx_config_syntax_error",
 			})
 			return
 		}

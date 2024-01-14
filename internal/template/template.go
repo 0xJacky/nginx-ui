@@ -164,7 +164,10 @@ func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDet
 	content = buf.String()
 
 	p := parser.NewStringParser(content)
-	config := p.Parse()
+	config, err := p.Parse()
+	if err != nil {
+		return
+	}
 	c.Custom = custom
 	for _, d := range config.GetDirectives() {
 		switch d.GetName() {

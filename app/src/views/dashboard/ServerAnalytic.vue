@@ -12,7 +12,7 @@ const { $gettext } = useGettext()
 
 let websocket: ReconnectingWebSocket | WebSocket
 
-const host = reactive({
+const host: HostInfoStat = reactive({
   platform: '',
   platformVersion: '',
   os: '',

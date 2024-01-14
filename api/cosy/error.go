@@ -2,8 +2,8 @@ package cosy
 
 import (
 	"errors"
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/gin-gonic/gin"
+	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"net/http"

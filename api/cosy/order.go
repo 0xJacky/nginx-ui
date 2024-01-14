@@ -22,6 +22,10 @@ func (c *Ctx[T]) UpdateOrder() {
 
 	db := model.UseDB()
 
+	if c.table != "" {
+		db = db.Table(c.table, c.tableArgs...)
+	}
+
 	// update target
 	err := db.Model(&c.Model).Where("id = ?", json.TargetID).Update("order_id", gorm.Expr("order_id + ?", affectedLen*(-json.Direction))).Error
 
