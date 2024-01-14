@@ -72,7 +72,7 @@ func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
 
 	_, err = toml.Decode(content, &configListItem)
 	if err != nil {
-		logger.Error(err)
+		logger.Error(name, err)
 	}
 	return
 }

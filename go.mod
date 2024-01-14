@@ -274,4 +274,7 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
 )
 
-replace gopkg.in/ns1/ns1-go.v2 v2.7.8 => gopkg.in/ns1/ns1-go.v2 v2.7.6
+replace (
+	github.com/tufanbarisyildirim/gonginx v0.0.0-20240109151651-bb3e845a7a2a => github.com/0xJacky/gonginx v0.0.0-20240114153809-6a105e85b7c3
+	gopkg.in/ns1/ns1-go.v2 v2.7.8 => gopkg.in/ns1/ns1-go.v2 v2.7.6
+)
