@@ -1,5 +1,7 @@
 import Curd, {Pagination} from '@/api/curd'
 import { Ref } from 'vue'
+import type { JSX } from 'vue/jsx'
+export type JSXElements = JSX.Element[]
 
 export interface StdDesignEdit {
   type?: function // component type

@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import { Form } from 'ant-design-vue'
-import type { Column } from '@/components/StdDesign/types'
+import type { Column, JSXElements } from '@/components/StdDesign/types'
 import StdFormItem from '@/components/StdDesign/StdDataEntry/StdFormItem.vue'
 
 const props = defineProps<{
@@ -42,7 +42,7 @@ function extraRender(extra?: string | (() => string)) {
 }
 
 function Render() {
-  const template = []
+  const template: JSXElements = []
 
   props.dataList.forEach((v: Column) => {
     let show = true

@@ -1,5 +1,6 @@
 // text, record, index, column
 import dayjs from 'dayjs'
+import type { JSX } from 'vue/jsx-runtime'
 
 export interface customRender {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,7 +21,7 @@ export const date = (args: customRender) => {
   return dayjs(args.text).format('YYYY-MM-DD')
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const mask = (args: customRender, maskObj: any) => {
+export const mask = (args: customRender, maskObj: any): JSX.Element => {
   let v
 
   if (typeof maskObj?.[args.text] === 'function')
