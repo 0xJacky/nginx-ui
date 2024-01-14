@@ -99,50 +99,52 @@ func (c *Ctx[T]) ListAllData() (data any, ok bool) {
 }
 
 func (c *Ctx[T]) PagingListData() (*model.DataList, bool) {
-	result, ok := c.result()
-	if !ok {
-		return nil, false
-	}
+    result, ok := c.result()
+    if !ok {
+        return nil, false
+    }
 
-	scopesResult := result.Session(&gorm.Session{}).Scopes(c.OrderAndPaginate())
-	data := &model.DataList{}
-	if c.scan == nil {
-		models := make([]*T, 0)
-		scopesResult.Find(&models)
+    scopesResult := result.Scopes(c.OrderAndPaginate())
+    data := &model.DataList{}
+    if c.scan == nil {
+        models := make([]*T, 0)
+        scopesResult.Find(&models)
 
-		if c.transformer != nil {
-			transformed := make([]any, 0)
-			for k := range models {
-				transformed = append(transformed, c.transformer(models[k]))
-			}
-			data.Data = transformed
-		} else {
-			data.Data = models
-		}
-	} else {
-		data.Data = c.scan(scopesResult)
-	}
+        if c.transformer != nil {
+            transformed := make([]any, 0)
+            for k := range models {
+                transformed = append(transformed, c.transformer(models[k]))
+            }
+            data.Data = transformed
+        } else {
+            data.Data = models
+        }
+    } else {
+        data.Data = c.scan(scopesResult)
+    }
 
-	var totalRecords int64
-	result.Session(&gorm.Session{}).Count(&totalRecords)
+    var totalRecords int64
+    delete(result.Statement.Clauses, "ORDER BY")
+    delete(result.Statement.Clauses, "LIMIT")
+    result.Count(&totalRecords)
 
-	page := cast.ToInt(c.ctx.Query("page"))
-	if page == 0 {
-		page = 1
-	}
+    page := cast.ToInt(c.ctx.Query("page"))
+    if page == 0 {
+        page = 1
+    }
 
-	pageSize := settings.ServerSettings.PageSize
-	if reqPageSize := c.ctx.Query("page_size"); reqPageSize != "" {
-		pageSize = cast.ToInt(reqPageSize)
-	}
+    pageSize := settings.ServerSettings.PageSize
+    if reqPageSize := c.ctx.Query("page_size"); reqPageSize != "" {
+        pageSize = cast.ToInt(reqPageSize)
+    }
 
-	data.Pagination = model.Pagination{
-		Total:       totalRecords,
-		PerPage:     pageSize,
-		CurrentPage: page,
-		TotalPages:  model.TotalPage(totalRecords, pageSize),
-	}
-	return data, true
+    data.Pagination = model.Pagination{
+        Total:       totalRecords,
+        PerPage:     pageSize,
+        CurrentPage: page,
+        TotalPages:  model.TotalPage(totalRecords, pageSize),
+    }
+    return data, true
 }
 
 func (c *Ctx[T]) PagingList() {
