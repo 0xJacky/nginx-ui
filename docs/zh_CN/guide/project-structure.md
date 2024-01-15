@@ -60,7 +60,7 @@
 ├─ internal             # 内部包
 ├─ api                  # 向前端提供的 API
 ├─ model                # 数据库模型
-├─ query                # gen 自动生成的数据库请求文件
+├─ query                # gen 自动生成的数据库查询文件
 ├─ router               # 路由和中间件
 ├─ settings             # 配置接口
 ├─ test                 # 单元测试

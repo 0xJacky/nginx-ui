@@ -6,8 +6,7 @@
 .
 ├─ docs                    # 手冊資料夾
 ├─ cmd                     # 命令列工具
-├─ app                # 使用 Vue 3 構建的前端
-├─ server                  # 使用 Golang 構建的後端
+├─ app                     # 使用 Vue 3 構建的前端
 ├─ resources               # 其他資源，不參與構建
 ├─ template                # 用於 Nginx 的模板檔案
 ├─ app.example.ini         # 配置檔案的示例
@@ -48,8 +47,7 @@
 │  │  ├─ routes           # Vue 路由
 │  │  ├─ views            # Vue 檢視
 │  │  ├─ gettext.ts       # 定義翻譯
-│  │  ├─ style.less       # 全域性樣式，使用 less 語法
-│  │  ├─ dark.less        # 暗黑主題樣式，使用 less 語法
+│  │  ├─ style.css        # 集成 tailwind
 │  │  └─ ...
 │  └─ ...
 └─ ...
@@ -59,18 +57,14 @@
 
 ```
 .
-├─ server
-│  ├─ internal             # 內部包
-│  │  └─ ...
-│  ├─ api                  # 向前端提供的 API
-│  ├─ model                # 自動生成的模型
-│  ├─ query                # gen 自動生成的資料庫請求檔案
-│  ├─ router               # 路由和中介軟體
-│  ├─ service              # 服務檔案
-│  ├─ settings             # 配置介面
-│  ├─ test                 # 單元測試
-│  └─ ...
-├─ main.go                 # 後端入口
+├─ internal             # 內部包
+├─ api                  # 向前端提供的 API
+├─ model                # 數據庫模型
+├─ query                # gen 自動生成的數據庫查詢文件
+├─ router               # 路由和中間件
+├─ settings             # 後端配置
+├─ test                 # 單元測試
+├─ main.go              # 主程序入口
 └─ ...
 ```
 
