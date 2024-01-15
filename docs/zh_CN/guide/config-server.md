@@ -1,6 +1,12 @@
 # 服务端
 
-Nginx UI 配置的服务端部分涉及控制 Nginx UI 服务器的各种设置。在本节中，我们将讨论可用的选项、它们的默认值以及它们的目的。
+Nginx UI 配置的服务端部分涉及控制 Nginx UI 服务器的各种设置。在页面中，我们将讨论可用的选项、它们的默认值以及它们的目的。
+
+## HttpHost
+- 类型: `string`
+- 默认值：`0.0.0.0`
+
+Nginx UI 服务器监听的主机名。此选项用于配置 Nginx UI 服务器监听传入 HTTP 请求的主机名。 更改默认主机名可能有助于提升安全性。
 
 ## HttpPort
 
@@ -13,10 +19,24 @@ Nginx UI 服务器监听端口。此选项用于配置 Nginx UI 服务器监听�
 
 - 类型：`string`
 - 支持的值：`release`，`debug`
+- 默认值：`debug`
 
-::: tip 提示
-目前，我们尚未适应此选项，在使用方面，`release` 和 `debug` 之间不会有显著差异。
-:::
+此选项用于配置 Nginx UI 服务器的运行模式，主要影响日志打印的级别。
+
+Nginx UI 的日志分为 6 个级别，分别为 `Debug`、`Info`、`Warn`、`Error`、`Panic` 和 `Fatal`，这些日志级别按照严重程度递增，
+
+当使用 `debug` 模式时，Nginx UI 将在控制台打印 SQL 及其执行的时间和调用者，`Debug` 级别或更高等级的日志也会被打印。
+
+当使用 `release` 模式时，Nginx UI 将不会在控制台打印 SQL 的执行时间和调用者， 只有 `Info` 级别或更高等级的日志才会被打印。
+
+## JwtSecret
+- 类型：`string`
+
+此选项用于配置 Nginx UI 服务器用于生成 JWT 的密钥。
+
+JWT 是一种用于验证用户身份的标准，它可以在用户登录后生成一个 token，然后在后续的请求中使用该 token 来验证用户身份。
+
+如果您使用一键安装脚本来部署 Nginx UI，脚本将会生成一个 UUID 值并将它设置为此选项的值。
 
 ## HTTPChallengePort
 
@@ -25,6 +45,11 @@ Nginx UI 服务器监听端口。此选项用于配置 Nginx UI 服务器监听�
 
 在获取 Let's Encrypt 证书时，此选项用于在 HTTP01 挑战模式中设置后端监听端口。HTTP01 挑战是 Let's Encrypt
 用于验证您控制请求证书的域的域验证方法。
+
+## Email
+- 类型：`string`
+
+在获取 Let's Encrypt 证书时，此选项用于设置您的电子邮件地址。Let's Encrypt 会将您的电子邮件地址用于通知您证书的到期时间。
 
 ## Database
 
@@ -48,7 +73,7 @@ Nginx UI 服务器监听端口。此选项用于配置 Nginx UI 服务器监听�
 ## PageSize
 
 - 类型：`int`
-- 默认值：10
+- 默认值：`10`
 
 此选项用于设置 Nginx UI 中列表分页的页面大小。调整页面大小有助于更有效地管理大量数据,但是过大的数量可能会增加服务器的压力。
 
