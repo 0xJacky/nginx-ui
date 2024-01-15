@@ -211,5 +211,4 @@ if (route.query?.code !== undefined && route.query?.state !== undefined) {
     }
   }
 }
-
 </style>

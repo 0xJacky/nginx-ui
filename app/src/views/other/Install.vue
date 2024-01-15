@@ -79,94 +79,118 @@ const onSubmit = () => {
 
 <template>
   <ALayout>
-    <div class="login-form">
-      <div class="project-title">
-        <h1>Nginx UI</h1>
+    <ALayoutContent>
+      <div class="login-container">
+        <div class="login-form">
+          <div class="project-title">
+            <h1>Nginx UI</h1>
+          </div>
+          <AForm id="components-form-install">
+            <AFormItem v-bind="validateInfos.email">
+              <AInput
+                v-model:value="modelRef.email"
+                :placeholder="$gettext('Email (*)')"
+              >
+                <template #prefix>
+                  <MailOutlined />
+                </template>
+              </AInput>
+            </AFormItem>
+            <AFormItem v-bind="validateInfos.username">
+              <AInput
+                v-model:value="modelRef.username"
+                :placeholder="$gettext('Username (*)')"
+              >
+                <template #prefix>
+                  <UserOutlined />
+                </template>
+              </AInput>
+            </AFormItem>
+            <AFormItem v-bind="validateInfos.password">
+              <AInputPassword
+                v-model:value="modelRef.password"
+                :placeholder="$gettext('Password (*)')"
+              >
+                <template #prefix>
+                  <LockOutlined />
+                </template>
+              </AInputPassword>
+            </AFormItem>
+            <AFormItem>
+              <AInput
+                v-bind="validateInfos.database"
+                v-model:value="modelRef.database"
+                :placeholder="$gettext('Database (Optional, default: database)')"
+              >
+                <template #prefix>
+                  <DatabaseOutlined />
+                </template>
+              </AInput>
+            </AFormItem>
+            <AFormItem>
+              <AButton
+                type="primary"
+                block
+                html-type="submit"
+                :loading="loading"
+                @click="onSubmit"
+              >
+                {{ $gettext('Install') }}
+              </AButton>
+            </AFormItem>
+          </AForm>
+          <div class="footer">
+            <p>Copyright © 2020 - {{ thisYear }} Nginx UI</p>
+            Language
+            <SetLanguage class="inline" />
+            <div class="flex justify-center mt-4">
+              <SwitchAppearance />
+            </div>
+          </div>
+        </div>
       </div>
-      <AForm
-        id="components-form-install"
-        class="login-form"
-      >
-        <AFormItem v-bind="validateInfos.email">
-          <AInput
-            v-model:value="modelRef.email"
-            :placeholder="$gettext('Email (*)')"
-          >
-            <template #prefix>
-              <MailOutlined />
-            </template>
-          </AInput>
-        </AFormItem>
-        <AFormItem v-bind="validateInfos.username">
-          <AInput
-            v-model:value="modelRef.username"
-            :placeholder="$gettext('Username (*)')"
-          >
-            <template #prefix>
-              <UserOutlined />
-            </template>
-          </AInput>
-        </AFormItem>
-        <AFormItem v-bind="validateInfos.password">
-          <AInputPassword
-            v-model:value="modelRef.password"
-            :placeholder="$gettext('Password (*)')"
-          >
-            <template #prefix>
-              <LockOutlined />
-            </template>
-          </AInputPassword>
-        </AFormItem>
-        <AFormItem>
-          <AInput
-            v-bind="validateInfos.database"
-            v-model:value="modelRef.database"
-            :placeholder="$gettext('Database (Optional, default: database)')"
-          >
-            <template #prefix>
-              <DatabaseOutlined />
-            </template>
-          </AInput>
-        </AFormItem>
-        <AFormItem>
-          <AButton
-            type="primary"
-            block
-            html-type="submit"
-            :loading="loading"
-            @click="onSubmit"
-          >
-            {{ $gettext('Install') }}
-          </AButton>
-        </AFormItem>
-      </AForm>
-      <footer>
-        Copyright © 2020 - {{ thisYear }} Nginx UI | Language
-        <SetLanguage class="inline" />
-        <SwitchAppearance />
-      </footer>
-    </div>
+    </ALayoutContent>
   </ALayout>
 </template>
 
-<style lang="less">
-.project-title {
-  margin: 50px;
+<style lang="less" scoped>
+.ant-layout-content {
+  background: #fff;
+}
 
-  h1 {
-    font-size: 50px;
-    font-weight: 100;
-    text-align: center;
+.dark .ant-layout-content {
+  background: transparent;
+}
+
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  .login-form {
+    max-width: 400px;
+    width: 80%;
+
+    .project-title {
+      margin: 50px;
+
+      h1 {
+        font-size: 50px;
+        font-weight: 100;
+        text-align: center;
+      }
+    }
+
+    .anticon {
+      color: #a8a5a5 !important;
+    }
+
+    .footer {
+      padding: 30px;
+      text-align: center;
+      font-size: 14px;
+    }
   }
-}
-
-.login-form {
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-footer {
-  padding: 30px;
-  text-align: center;
 }
 </style>
