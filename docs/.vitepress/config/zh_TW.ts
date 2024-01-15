@@ -39,7 +39,7 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           collapsed: false,
           items: [
             {text: '服務端', link: '/zh_TW/guide/config-server'},
-            {text: 'Nginx 日誌', link: '/zh_TW/guide/config-nginx'},
+            {text: 'Nginx', link: '/zh_TW/guide/config-nginx'},
             {text: 'Open AI', link: '/zh_TW/guide/config-openai'},
             {text: 'Casdoor', link: '/zh_TW/guide/config-casdoor'}
           ]

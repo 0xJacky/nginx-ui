@@ -6,8 +6,8 @@ Regular users should follow the [quick start](./getting-started) guide.
 ## Prerequisites
 
 - Make.
-- Golang version 1.20 or higher.
-- node.js version 18 or higher.
+- Golang version 1.21 or higher.
+- node.js version 21 or higher.
 
 You should execute the following command to update browser list database before build project.
   ```shell
@@ -32,5 +32,5 @@ Before building the backend, the app should be built first because the backend w
 Please execute the following command in the project root directory.
 
 ```shell
-go build -o nginx-ui -v main.go
+go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/server/settings.buildTime=$(date +%s)'" -o nginx-ui -v main.go
 ```

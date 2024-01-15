@@ -3,6 +3,13 @@
 The server section of the Nginx UI configuration deals with various settings that control the behavior and operation of
 the Nginx UI server. In this section, we will discuss the available options, their default values, and their purpose.
 
+## HttpHost
+- Type: `string`
+- Default：`0.0.0.0`
+
+The hostname on which the Nginx UI server listens for incoming HTTP requests.
+Changing the default hostname can be useful for improving the security of Nginx UI.
+
 ## HttpPort
 
 - Type: `int`
@@ -14,12 +21,25 @@ HTTP requests. Changing the default port can be useful for avoiding port conflic
 ## RunMode
 
 - Type: `string`
-- Supported value: `release`, `debug`
+- Supported value: `release`，`debug`
+- Default: `debug`
 
-::: tip
-At present, we have not yet adapted to this option, and there will be no significant differences between release and
-debug in terms of usage.
-:::
+This option is used to configure the running mode of the Nginx UI server, which mainly affects the level of log printing.
+
+The log level of Nginx UI is divided into 6 levels: `Debug`, `Info`, `Warn`, `Error`, `Panic` and `Fatal`. These log levels increase in severity.
+
+When using the `debug` mode, Nginx UI will print SQL and its execution time and caller on the console, and the log of `Debug` level or higher will also be printed.
+
+When using the `release` mode, Nginx UI will not print the execution time and caller of SQL on the console, and only the log of `Info` level or higher will be printed.
+
+## JwtSecret
+- Type: `string`
+
+This option is used to configure the key used by the Nginx UI server to generate JWT.
+
+JWT is a standard for verifying user identity. It can generate a token after the user logs in, and then use the token to verify the user's identity in subsequent requests.
+
+If you use the one-click installation script to deploy Nginx UI, the script will generate a UUID value and set it as the value of this option.
 
 ## HTTPChallengePort
 
@@ -29,6 +49,12 @@ debug in terms of usage.
 This option is used to set the port for backend listening in the HTTP01 challenge mode when obtaining Let's Encrypt
 certificates. The HTTP01 challenge is a domain validation method used by Let's Encrypt to verify that you control the
 domain for which you're requesting a certificate.
+
+## Email
+- Type: `string`
+
+When obtaining a Let's Encrypt certificate, this option is used to set your email address.
+Let's Encrypt will use your email address to notify you of the expiration date of your certificate.
 
 ## Database
 
@@ -75,5 +101,5 @@ CADir needs to comply with the `RFC 8555` standard.
 - Type: `string`
 - Suggestion: `https://mirror.ghproxy.com/`
 
-For users who may experience difficulties downloading resources from Github (such as in mainland China), this option
+For users who may experience difficulties downloading resources from GitHub (such as in mainland China), this option
 allows them to set a proxy for github.com to improve accessibility.

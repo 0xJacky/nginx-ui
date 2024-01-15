@@ -35,7 +35,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           collapsed: false,
           items: [
             {text: 'Server', link: '/guide/config-server'},
-            {text: 'Nginx Log', link: '/guide/config-nginx'},
+            {text: 'Nginx', link: '/guide/config-nginx'},
             {text: 'Open AI', link: '/guide/config-openai'},
             {text: 'Casdoor', link: '/guide/config-casdoor'}
           ]
