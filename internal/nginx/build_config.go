@@ -82,7 +82,7 @@ func (c *NgxConfig) BuildConfig() (content string, err error) {
 
 		content += fmt.Sprintf("%sserver {\n%s}\n\n", comments, server)
 	}
-	p := parser.NewStringParser(content)
+	p := parser.NewStringParser(content, parser.WithSkipValidDirectivesErr())
 	config, err := p.Parse()
 	if err != nil {
 		return

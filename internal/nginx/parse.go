@@ -162,7 +162,7 @@ func parse(block gonginx.IBlock, ngxConfig *NgxConfig) (err error) {
 }
 
 func ParseNgxConfigByContent(content string) (ngxConfig *NgxConfig, err error) {
-	p := parser.NewStringParser(content)
+	p := parser.NewStringParser(content, parser.WithSkipValidDirectivesErr())
 	c, err := p.Parse()
 	if err != nil {
 		return
@@ -174,7 +174,7 @@ func ParseNgxConfigByContent(content string) (ngxConfig *NgxConfig, err error) {
 }
 
 func ParseNgxConfig(filename string) (ngxConfig *NgxConfig, err error) {
-	p, err := parser.NewParser(filename)
+	p, err := parser.NewParser(filename, parser.WithSkipValidDirectivesErr())
 	if err != nil {
 		return nil, errors.Wrap(err, "error ParseNgxConfig")
 	}

@@ -163,7 +163,7 @@ func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDet
 
 	content = buf.String()
 
-	p := parser.NewStringParser(content)
+	p := parser.NewStringParser(content, parser.WithSkipValidDirectivesErr())
 	config, err := p.Parse()
 	if err != nil {
 		return

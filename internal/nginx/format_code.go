@@ -11,7 +11,7 @@ func (c *NgxConfig) FmtCode() (fmtContent string) {
 }
 
 func FmtCode(content string) (fmtContent string, err error) {
-	p := parser.NewStringParser(content)
+	p := parser.NewStringParser(content, parser.WithSkipValidDirectivesErr())
 	c, err := p.Parse()
 	if err != nil {
 		return
