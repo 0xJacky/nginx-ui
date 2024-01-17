@@ -55,7 +55,7 @@ The file header includes the following fields:
 | `variables.VariableName.name`  | Variable display name, is a toml dictionary to support multi-language |                toml dictionary                |    No    |
 | `variables.VariableName.value` |                     Default value of the variable                     | boolean/string (according to type definition) |    No    |
 
-示例如下：
+Example:
 
 ```toml
 # Nginx UI Template Start
