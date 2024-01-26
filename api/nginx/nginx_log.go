@@ -3,7 +3,6 @@ package nginx
 import (
 	"encoding/json"
 	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
@@ -50,7 +49,7 @@ func GetNginxLogPage(c *gin.Context) {
 		return
 	}
 
-	f, err := os.Open(logPath)
+	logFileStat, err := os.Stat(logPath)
 
 	if err != nil {
 		c.JSON(http.StatusOK, nginxLogPageResp{})
@@ -58,7 +57,13 @@ func GetNginxLogPage(c *gin.Context) {
 		return
 	}
 
-	logFileStat, err := os.Stat(logPath)
+	if !logFileStat.Mode().IsRegular() {
+		c.JSON(http.StatusOK, nginxLogPageResp{})
+		logger.Error("log file is not regular file:", logPath)
+		return
+	}
+
+	f, err := os.Open(logPath)
 
 	if err != nil {
 		c.JSON(http.StatusOK, nginxLogPageResp{})
@@ -188,8 +193,16 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 			Whence: io.SeekEnd,
 		}
 
-		if !helper.FileExists(logPath) {
-			errChan <- errors.New("error log path not exists " + logPath)
+		stat, err := os.Stat(logPath)
+		if os.IsNotExist(err) {
+			errChan <- errors.New("[error] log path not exists " + logPath)
+			return
+		}
+
+		if !stat.Mode().IsRegular() {
+			errChan <- errors.New("[error] " + logPath + " is not a regular file. " +
+				"If you are using nginx-ui in docker container, please refer to " +
+				"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information.")
 			return
 		}
 
