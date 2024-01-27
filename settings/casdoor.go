@@ -1,13 +1,13 @@
 package settings
 
 type Casdoor struct {
-	Endpoint     string `json:"endpoint"`
-	ClientId     string `json:"client_id"`
-	ClientSecret string `json:"client_secret"`
-	Certificate  string `json:"certificate"`
-	Organization string `json:"organization"`
-	Application  string `json:"application"`
-	RedirectUri  string `json:"redirect_uri"`
+	Endpoint     string `json:"endpoint" protected:"true"`
+	ClientId     string `json:"client_id" protected:"true"`
+	ClientSecret string `json:"client_secret" protected:"true"`
+	Certificate  string `json:"certificate" protected:"true"`
+	Organization string `json:"organization" protected:"true"`
+	Application  string `json:"application" protected:"true"`
+	RedirectUri  string `json:"redirect_uri" protected:"true"`
 }
 
 var CasdoorSettings = Casdoor{

@@ -43,7 +43,7 @@ const issueCert = () => {
   step.value++
   modalVisible.value = true
 
-  refObtainCertLive.value.issue_cert(computedDomain.value, [computedDomain.value], () => {
+  refObtainCertLive.value.issue_cert(computedDomain.value, [computedDomain.value, domain.value], () => {
     message.success($gettext('Renew successfully'))
     emit('issued')
   })

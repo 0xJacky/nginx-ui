@@ -10,10 +10,10 @@ type Server struct {
 	Email             string `json:"email" protected:"true"`
 	Database          string `json:"database" protected:"true"`
 	StartCmd          string `json:"start_cmd" protected:"true"`
-	CADir             string `json:"ca_dir"`
+	CADir             string `json:"ca_dir" binding:"omitempty,url"`
 	Demo              bool   `json:"demo" protected:"true"`
 	PageSize          int    `json:"page_size" protected:"true"`
-	GithubProxy       string `json:"github_proxy"`
+	GithubProxy       string `json:"github_proxy" binding:"omitempty,url"`
 }
 
 var ServerSettings = Server{
