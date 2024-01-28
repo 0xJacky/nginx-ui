@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useGettext } from 'vue3-gettext'
 import { inject } from 'vue'
-import type { IData } from '@/views/preference/typedef'
+import type { Settings } from '@/views/preference/typedef'
 
 const { $gettext } = useGettext()
 
-const data: IData = inject('data')!
+const data: Settings = inject('data')!
+const errors: Record<string, Record<string, string>> = inject('errors') as Record<string, Record<string, string>>
 </script>
 
 <template>
@@ -26,19 +27,37 @@ const data: IData = inject('data')!
         </ASelectOption>
       </ASelect>
     </AFormItem>
-    <AFormItem :label="$gettext('API Base Url')">
+    <AFormItem
+      :label="$gettext('API Base Url')"
+      :validate-status="errors?.openai?.base_url ? 'error' : ''"
+      :help="errors?.openai?.base_url === 'url'
+        ? $gettext('The url is not valid')
+        : ''"
+    >
       <AInput
         v-model:value="data.openai.base_url"
         :placeholder="$gettext('Leave blank for the default: https://api.openai.com/')"
       />
     </AFormItem>
-    <AFormItem :label="$gettext('API Proxy')">
+    <AFormItem
+      :label="$gettext('API Proxy')"
+      :validate-status="errors?.openai?.proxy ? 'error' : ''"
+      :help="errors?.openai?.proxy === 'url'
+        ? $gettext('The url is not valid')
+        : ''"
+    >
       <AInput
         v-model:value="data.openai.proxy"
         placeholder="http://127.0.0.1:1087"
       />
     </AFormItem>
-    <AFormItem :label="$gettext('API Token')">
+    <AFormItem
+      :label="$gettext('API Token')"
+      :validate-status="errors?.openai?.token ? 'error' : ''"
+      :help="errors?.openai?.token === 'alphanumdash'
+        ? $gettext('Token is not valid')
+        : ''"
+    >
       <AInputPassword v-model:value="data.openai.token" />
     </AFormItem>
   </AForm>

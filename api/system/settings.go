@@ -27,7 +27,6 @@ func SaveSettings(c *gin.Context) {
 		return
 	}
 
-	// todo: omit protected fields when binding
 	fillSettings(&settings.ServerSettings, &json.Server)
 	fillSettings(&settings.NginxSettings, &json.Nginx)
 	fillSettings(&settings.OpenAISettings, &json.Openai)

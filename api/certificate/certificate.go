@@ -87,9 +87,11 @@ type certJson struct {
 
 func AddCert(c *gin.Context) {
 	var json certJson
+
 	if !api.BindAndValid(c, &json) {
 		return
 	}
+
 	certModel := &model.Cert{
 		Name:                  json.Name,
 		SSLCertificatePath:    json.SSLCertificatePath,

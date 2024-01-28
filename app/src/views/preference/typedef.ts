@@ -1,4 +1,4 @@
-export interface IData {
+export interface Settings {
   server: {
     http_host: string
     http_port: string

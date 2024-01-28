@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useGettext } from 'vue3-gettext'
 import { inject } from 'vue'
-import type { IData } from '@/views/preference/typedef'
+import type { Settings } from '@/views/preference/typedef'
 
 const { $gettext } = useGettext()
-const data: IData = inject('data') as IData
+const data: Settings = inject('data') as Settings
+const errors: Record<string, Record<string, string>> = inject('errors') as Record<string, Record<string, string>>
 </script>
 
 <template>
@@ -30,13 +31,25 @@ const data: IData = inject('data') as IData
     <AFormItem :label="$gettext('HTTP Challenge Port')">
       <AInputNumber v-model:value="data.server.http_challenge_port" />
     </AFormItem>
-    <AFormItem :label="$gettext('Github Proxy')">
+    <AFormItem
+      :label="$gettext('Github Proxy')"
+      :validate-status="errors?.server?.github_proxy ? 'error' : ''"
+      :help="errors?.server?.github_proxy === 'url'
+        ? $gettext('The url is not valid')
+        : ''"
+    >
       <AInput
         v-model:value="data.server.github_proxy"
-        :placeholder="$gettext('Chinese user: https://mirror.ghproxy.com/')"
+        :placeholder="$gettext('For Chinese user: https://mirror.ghproxy.com/')"
       />
     </AFormItem>
-    <AFormItem :label="$gettext('CADir')">
+    <AFormItem
+      :label="$gettext('CADir')"
+      :validate-status="errors?.server?.ca_dir ? 'error' : ''"
+      :help="errors?.server?.ca_dir === 'url'
+        ? $gettext('The url is not valid')
+        : ''"
+    >
       <AInput v-model:value="data.server.ca_dir" />
     </AFormItem>
   </AForm>

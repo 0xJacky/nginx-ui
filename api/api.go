@@ -38,18 +38,18 @@ func BindAndValid(c *gin.Context, target interface{}) bool {
 			return false
 		}
 
-		t := reflect.TypeOf(target)
+		t := reflect.TypeOf(target).Elem()
 		errorsMap := make(map[string]interface{})
 		for _, value := range verrs {
 			var path []string
 
 			namespace := strings.Split(value.StructNamespace(), ".")
-
-			if t.Name() == "" && len(namespace) > 1 {
+			logger.Debug(t.Name(), namespace)
+			if t.Name() != "" && len(namespace) > 1 {
 				namespace = namespace[1:]
 			}
 
-			getJsonPath(t.Elem(), namespace, &path)
+			getJsonPath(t, namespace, &path)
 			insertError(errorsMap, path, value.Tag())
 		}
 

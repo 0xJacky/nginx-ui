@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { useGettext } from 'vue3-gettext'
 import { message } from 'ant-design-vue'
+import type { Ref } from 'vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import settings from '@/api/settings'
 import BasicSettings from '@/views/preference/BasicSettings.vue'
 import OpenAISettings from '@/views/preference/OpenAISettings.vue'
 import NginxSettings from '@/views/preference/NginxSettings.vue'
-import type { IData } from '@/views/preference/typedef'
+import type { Settings } from '@/views/preference/typedef'
 
 const { $gettext } = useGettext()
 
-const data = ref<IData>({
+const data = ref<Settings>({
   server: {
     http_host: '0.0.0.0',
     http_port: '9000',
@@ -50,18 +51,23 @@ settings.get().then(r => {
   data.value = r
 })
 
+const errors = ref({}) as Ref<Record<string, Record<string, string>>>
+
 async function save() {
   // fix type
   data.value.server.http_challenge_port = data.value.server.http_challenge_port.toString()
   settings.save(data.value).then(r => {
     data.value = r
     message.success($gettext('Save successfully'))
+    errors.value = {}
   }).catch(e => {
+    errors.value = e.errors
     message.error(e?.message ?? $gettext('Server error'))
   })
 }
 
 provide('data', data)
+provide('errors', errors)
 
 const router = useRouter()
 const route = useRoute()
