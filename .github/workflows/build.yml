@@ -39,10 +39,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout
-                uses: actions/checkout@v3
+                uses: actions/checkout@v4
 
             -   name: Set up nodejs
-                uses: actions/setup-node@v3
+                uses: actions/setup-node@v4
                 with:
                     node-version: current
 
@@ -70,7 +70,7 @@ jobs:
                 working-directory: app
 
             -   name: Archive app artifacts
-                uses: actions/upload-artifact@v3
+                uses: actions/upload-artifact@v4
                 with:
                     name: app-dist
                     path: app/dist
@@ -117,7 +117,7 @@ jobs:
             GOARM: ${{ matrix.goarm }}
         steps:
             -   name: Checkout
-                uses: actions/checkout@v3
+                uses: actions/checkout@v4
 
             -   name: Set up Go
                 uses: actions/setup-go@v3
@@ -185,7 +185,7 @@ jobs:
                     go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/server/settings.buildTime=$(date +%s)'" -o dist/nginx-ui -v main.go
 
             -   name: Archive backend artifacts
-                uses: actions/upload-artifact@v3
+                uses: actions/upload-artifact@v4
                 with:
                     name: ${{ env.ARTIFACT }}
                     path: dist/nginx-ui
@@ -213,7 +213,7 @@ jobs:
             PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/arm/v5
         steps:
             -   name: Checkout
-                uses: actions/checkout@v3
+                uses: actions/checkout@v4
 
             -   name: Get the version
                 id: get_version
