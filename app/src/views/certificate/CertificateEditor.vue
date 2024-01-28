@@ -41,12 +41,15 @@ onMounted(() => {
 })
 
 const router = useRouter()
+const errors = ref({}) as Ref<Record<string, string>>
 function save() {
   cert.save(data.value.id, data.value).then(r => {
     data.value = r
     message.success($gettext('Save successfully'))
     router.push(`/certificates/${r.id}`)
+    errors.value = {}
   }).catch(e => {
+    errors.value = e.errors
     message.error($gettext(e?.message ?? 'Server error'))
   })
 }
@@ -142,7 +145,13 @@ const isManaged = computed(() => {
           layout="vertical"
           style="max-width: 600px"
         >
-          <AFormItem :label="$gettext('Name')">
+          <AFormItem
+            :label="$gettext('Name')"
+            :validate-status="errors.name ? 'error' : ''"
+            :help="errors.name === 'required'
+              ? $gettext('This field is required')
+              : ''"
+          >
             <p v-if="isManaged">
               {{ data.name }}
             </p>
@@ -151,7 +160,13 @@ const isManaged = computed(() => {
               v-model:value="data.name"
             />
           </AFormItem>
-          <AFormItem :label="$gettext('SSL Certificate Path')">
+          <AFormItem
+            :label="$gettext('SSL Certificate Path')"
+            :validate-status="errors.ssl_certificate_path ? 'error' : ''"
+            :help="errors.ssl_certificate_path === 'required' ? $gettext('This field is required')
+              : errors.ssl_certificate_path === 'publickey_path'
+                ? $gettext('The path exists, but the file is not a public key') : ''"
+          >
             <p v-if="isManaged">
               {{ data.ssl_certificate_path }}
             </p>
@@ -160,7 +175,13 @@ const isManaged = computed(() => {
               v-model:value="data.ssl_certificate_path"
             />
           </AFormItem>
-          <AFormItem :label="$gettext('SSL Certificate Key Path')">
+          <AFormItem
+            :label="$gettext('SSL Certificate Key Path')"
+            :validate-status="errors.ssl_certificate_key_path ? 'error' : ''"
+            :help="errors.ssl_certificate_key_path === 'required' ? $gettext('This field is required')
+              : errors.ssl_certificate_key_path === 'privatekey_path'
+                ? $gettext('The path exists, but the file is not a private key') : ''"
+          >
             <p v-if="isManaged">
               {{ data.ssl_certificate_key_path }}
             </p>
@@ -169,7 +190,12 @@ const isManaged = computed(() => {
               v-model:value="data.ssl_certificate_key_path"
             />
           </AFormItem>
-          <AFormItem :label="$gettext('SSL Certificate Content')">
+          <AFormItem
+            :label="$gettext('SSL Certificate Content')"
+            :validate-status="errors.ssl_certificate ? 'error' : ''"
+            :help="errors.ssl_certificate === 'publickey'
+              ? $gettext('The input is not a SSL Certificate') : ''"
+          >
             <CodeEditor
               v-model:content="data.ssl_certificate"
               default-height="300px"
@@ -177,7 +203,12 @@ const isManaged = computed(() => {
               :placeholder="$gettext('Leave blank will not change anything')"
             />
           </AFormItem>
-          <AFormItem :label="$gettext('SSL Certificate Key Content')">
+          <AFormItem
+            :label="$gettext('SSL Certificate Key Content')"
+            :validate-status="errors.ssl_certificate_key ? 'error' : ''"
+            :help="errors.ssl_certificate_key === 'privatekey'
+              ? $gettext('The input is not a SSL Certificate Key') : ''"
+          >
             <CodeEditor
               v-model:content="data.ssl_certificate_key"
               default-height="300px"

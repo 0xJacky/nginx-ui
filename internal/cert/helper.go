@@ -33,6 +33,9 @@ func IsPrivateKey(pemStr string) bool {
 
 // IsPublicKeyPath checks if the file at the given path is a public key or not exists.
 func IsPublicKeyPath(path string) bool {
+	if path == "" {
+		return false
+	}
 	_, err := os.Stat(path)
 
 	if err != nil {
@@ -52,6 +55,10 @@ func IsPublicKeyPath(path string) bool {
 
 // IsPrivateKeyPath checks if the file at the given path is a private key or not exists.
 func IsPrivateKeyPath(path string) bool {
+	if path == "" {
+		return false
+	}
+
 	_, err := os.Stat(path)
 
 	if err != nil {
