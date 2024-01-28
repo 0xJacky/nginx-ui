@@ -66,15 +66,15 @@ msgstr "Tùy chọn bổ sung"
 msgid "Advance Mode"
 msgstr "Nâng cao"
 
-#: src/views/preference/OpenAISettings.vue:29
+#: src/views/preference/OpenAISettings.vue:31
 msgid "API Base Url"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:43
 msgid "API Proxy"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:41
+#: src/views/preference/OpenAISettings.vue:55
 msgid "API Token"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgstr "Đã tắt tự động gia hạn SSL cho %{name}"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "Đã bật tự động gia hạn SSL cho %{name}"
 
-#: src/views/certificate/CertificateEditor.vue:207
+#: src/views/certificate/CertificateEditor.vue:238
 #: src/views/config/Config.vue:75 src/views/config/ConfigEdit.vue:89
 #: src/views/domain/DomainEdit.vue:256 src/views/nginx_log/NginxLog.vue:170
 #: src/views/stream/StreamEdit.vue:246
@@ -155,7 +155,7 @@ msgstr "Thông tin"
 
 #: src/views/config/ConfigEdit.vue:117
 #: src/views/domain/components/RightSettings.vue:76
-#: src/views/preference/Preference.vue:90
+#: src/views/preference/Preference.vue:96
 #: src/views/stream/components/RightSettings.vue:76
 #, fuzzy
 msgid "Basic"
@@ -175,7 +175,7 @@ msgstr "Sửa đổi cấu hình"
 msgid "Build with"
 msgstr "Xây dựng với"
 
-#: src/views/preference/BasicSettings.vue:39
+#: src/views/preference/BasicSettings.vue:47
 msgid "CADir"
 msgstr ""
 
@@ -202,7 +202,7 @@ msgstr "Chứng chỉ đã hết hạn"
 msgid "Certificate is valid"
 msgstr "Chứng chỉ SSL hợp lệ"
 
-#: src/views/certificate/CertificateEditor.vue:127
+#: src/views/certificate/CertificateEditor.vue:130
 #: src/views/domain/cert/Cert.vue:35
 msgid "Certificate Status"
 msgstr "Trạng thái chứng chỉ"
@@ -231,17 +231,13 @@ msgstr "Thay đổi chứng chỉ"
 msgid "Channel"
 msgstr "Kênh"
 
-#: src/views/preference/OpenAISettings.vue:13
+#: src/views/preference/OpenAISettings.vue:14
 msgid "ChatGPT Model"
 msgstr ""
 
 #: src/views/system/Upgrade.vue:185
 msgid "Check again"
 msgstr "Kiểm tra lại"
-
-#: src/views/preference/BasicSettings.vue:36
-msgid "Chinese user: https://mirror.ghproxy.com/"
-msgstr "Người dùng Trung Quốc: https://mirror.ghproxy.com/"
 
 #: src/language/constants.ts:17
 msgid "Cleaning environment variables"
@@ -347,7 +343,7 @@ msgstr "Tuỳ chỉnh"
 msgid "Dashboard"
 msgstr "Bảng điều khiển"
 
-#: src/views/other/Install.vue:124
+#: src/views/other/Install.vue:123
 msgid "Database (Optional, default: database)"
 msgstr "Tên cơ sở dữ liệu (Tuỳ chọn, Mặc định là: database)"
 
@@ -516,7 +512,7 @@ msgstr ""
 msgid "Domain Config Created Successfully"
 msgstr "Tên miền đã được tạo"
 
-#: src/views/certificate/CertificateEditor.vue:111
+#: src/views/certificate/CertificateEditor.vue:114
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
 "Danh sách tên miền rỗng, hãy thử mở lại chức năng Tạo chứng chỉ tự động cho "
@@ -582,7 +578,7 @@ msgstr "Sửa trang web"
 msgid "Edit Stream"
 msgstr "Sửa trang web"
 
-#: src/views/other/Install.vue:93
+#: src/views/other/Install.vue:92
 msgid "Email (*)"
 msgstr "Email (*)"
 
@@ -708,6 +704,12 @@ msgstr "Tệp tin"
 msgid "File exists"
 msgstr "Tệp tin đã tồn tại"
 
+#: src/views/preference/NginxSettings.vue:18
+#: src/views/preference/NginxSettings.vue:27
+#, fuzzy
+msgid "File not found"
+msgstr "Không tìm thấy tệp tin"
+
 #: src/views/other/Error.vue:14
 msgid "File Not Found"
 msgstr "Không tìm thấy tệp tin"
@@ -719,6 +721,11 @@ msgstr "Lọc"
 #: src/language/constants.ts:23 src/views/domain/DomainAdd.vue:104
 msgid "Finished"
 msgstr "Đã hoàn thành"
+
+#: src/views/preference/BasicSettings.vue:43
+#, fuzzy
+msgid "For Chinese user: https://mirror.ghproxy.com/"
+msgstr "Người dùng Trung Quốc: https://mirror.ghproxy.com/"
 
 #: src/views/config/ConfigEdit.vue:92
 msgid "Format Code"
@@ -756,23 +763,23 @@ msgstr "Nhận lỗi thông tin phát hành"
 msgid "Getting the certificate, please wait..."
 msgstr "Đang lấy chứng chỉ, vui lòng đợi..."
 
-#: src/views/preference/BasicSettings.vue:33
+#: src/views/preference/BasicSettings.vue:35
 msgid "Github Proxy"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:25
+#: src/views/preference/OpenAISettings.vue:26
 msgid "GPT-3.5-Turbo"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:19
+#: src/views/preference/OpenAISettings.vue:20
 msgid "GPT-4"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:22
+#: src/views/preference/OpenAISettings.vue:23
 msgid "GPT-4-32K"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:16
+#: src/views/preference/OpenAISettings.vue:17
 msgid "GPT-4-Turbo"
 msgstr ""
 
@@ -780,15 +787,15 @@ msgstr ""
 msgid "Home"
 msgstr "Trang chủ"
 
-#: src/views/preference/BasicSettings.vue:30
+#: src/views/preference/BasicSettings.vue:31
 msgid "HTTP Challenge Port"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:12
+#: src/views/preference/BasicSettings.vue:13
 msgid "HTTP Host"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:15
+#: src/views/preference/BasicSettings.vue:16
 msgid "HTTP Port"
 msgstr ""
 
@@ -801,7 +808,7 @@ msgstr ""
 msgid "Import"
 msgstr "Xuất"
 
-#: src/routes/index.ts:140 src/views/certificate/CertificateEditor.vue:84
+#: src/routes/index.ts:140 src/views/certificate/CertificateEditor.vue:87
 #, fuzzy
 msgid "Import Certificate"
 msgstr "Chứng chỉ"
@@ -818,7 +825,7 @@ msgstr "Không thể khởi tạo trình nâng cấp"
 msgid "Initialing core upgrader"
 msgstr "Đang khởi tạo trình nâng cấp"
 
-#: src/routes/index.ts:237 src/views/other/Install.vue:139
+#: src/routes/index.ts:237 src/views/other/Install.vue:138
 msgid "Install"
 msgstr "Cài đặt"
 
@@ -846,7 +853,7 @@ msgstr "Thêm chứng chỉ SSL"
 msgid "Issued certificate successfully"
 msgstr "Cấp chứng chỉ thành công"
 
-#: src/views/preference/BasicSettings.vue:21
+#: src/views/preference/BasicSettings.vue:22
 msgid "Jwt Secret"
 msgstr ""
 
@@ -858,12 +865,12 @@ msgstr "Kiểm tra lần cuối lúc"
 msgid "Leave blank for no change"
 msgstr "Bỏ trống nếu không thay đổi"
 
-#: src/views/preference/OpenAISettings.vue:32
+#: src/views/preference/OpenAISettings.vue:39
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Bỏ trống để sử dụng địa chỉ mặc định: https://api.openai.com/"
 
-#: src/views/certificate/CertificateEditor.vue:177
-#: src/views/certificate/CertificateEditor.vue:185
+#: src/views/certificate/CertificateEditor.vue:203
+#: src/views/certificate/CertificateEditor.vue:216
 #, fuzzy
 msgid "Leave blank will not change anything"
 msgstr "Bỏ trống nếu không thay đổi"
@@ -896,7 +903,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/views/certificate/CertificateEditor.vue:195
+#: src/views/certificate/CertificateEditor.vue:226
 #, fuzzy
 msgid "Log"
 msgstr "Log"
@@ -958,7 +965,7 @@ msgstr "Memory và Storage"
 msgid "Modify"
 msgstr "Sửa"
 
-#: src/routes/index.ts:132 src/views/certificate/CertificateEditor.vue:84
+#: src/routes/index.ts:132 src/views/certificate/CertificateEditor.vue:87
 #, fuzzy
 msgid "Modify Certificate"
 msgstr "Sửa chứng chỉ"
@@ -973,7 +980,7 @@ msgid "Multi-line Directive"
 msgstr "Single Directive"
 
 #: src/views/certificate/Certificate.vue:24
-#: src/views/certificate/CertificateEditor.vue:145
+#: src/views/certificate/CertificateEditor.vue:149
 #: src/views/certificate/DNSCredential.vue:13 src/views/config/config.ts:9
 #: src/views/domain/cert/ChangeCert.vue:21
 #: src/views/domain/components/RightSettings.vue:84
@@ -1013,11 +1020,11 @@ msgstr "Đã có phiên bản mới"
 msgid "Next"
 msgstr "Tiếp theo"
 
-#: src/views/preference/Preference.vue:96
+#: src/views/preference/Preference.vue:102
 msgid "Nginx"
 msgstr ""
 
-#: src/views/preference/NginxSettings.vue:13
+#: src/views/preference/NginxSettings.vue:15
 msgid "Nginx Access Log Path"
 msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
 
@@ -1030,7 +1037,7 @@ msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 msgid "Nginx Control"
 msgstr ""
 
-#: src/views/preference/NginxSettings.vue:16
+#: src/views/preference/NginxSettings.vue:24
 msgid "Nginx Error Log Path"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
 
@@ -1059,7 +1066,7 @@ msgstr "Restart Nginx thành công"
 msgid "No"
 msgstr "Không"
 
-#: src/views/preference/BasicSettings.vue:24
+#: src/views/preference/BasicSettings.vue:25
 msgid "Node Secret"
 msgstr ""
 
@@ -1136,7 +1143,7 @@ msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."
 msgid "Online"
 msgstr "Trực tuyến"
 
-#: src/views/preference/Preference.vue:102
+#: src/views/preference/Preference.vue:108
 msgid "OpenAI"
 msgstr ""
 
@@ -1167,7 +1174,7 @@ msgstr "Tham số"
 msgid "Password"
 msgstr "Mật khẩu"
 
-#: src/views/other/Install.vue:113
+#: src/views/other/Install.vue:112
 msgid "Password (*)"
 msgstr "Mật khẩu (*)"
 
@@ -1234,7 +1241,7 @@ msgstr ""
 msgid "Pre-release"
 msgstr ""
 
-#: src/routes/index.ts:210 src/views/preference/Preference.vue:85
+#: src/routes/index.ts:210 src/views/preference/Preference.vue:91
 msgid "Preference"
 msgstr "Cài đặt"
 
@@ -1347,7 +1354,7 @@ msgstr "Khởi động lại"
 msgid "Restarting"
 msgstr "Đang khởi động lại"
 
-#: src/views/preference/BasicSettings.vue:18
+#: src/views/preference/BasicSettings.vue:19
 #, fuzzy
 msgid "Run Mode"
 msgstr "Run Mode"
@@ -1357,10 +1364,10 @@ msgid "Running"
 msgstr "Running"
 
 #: src/components/ChatGPT/ChatGPT.vue:259
-#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/CertificateEditor.vue:245
 #: src/views/config/ConfigEdit.vue:98 src/views/domain/DomainEdit.vue:263
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:121
-#: src/views/preference/Preference.vue:113 src/views/stream/StreamEdit.vue:253
+#: src/views/preference/Preference.vue:119 src/views/stream/StreamEdit.vue:253
 msgid "Save"
 msgstr "Lưu"
 
@@ -1374,8 +1381,8 @@ msgid "Save error %{msg}"
 msgstr "Đã xảy ra lỗi khi lưu %{msg}"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:42
-#: src/views/certificate/CertificateEditor.vue:47
-#: src/views/preference/Preference.vue:58
+#: src/views/certificate/CertificateEditor.vue:48
+#: src/views/preference/Preference.vue:61
 #, fuzzy
 msgid "Save successfully"
 msgstr "Lưu thành công"
@@ -1408,7 +1415,7 @@ msgstr "Gửi"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:45
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:157
 #: src/views/config/ConfigEdit.vue:42 src/views/domain/DomainList.vue:84
-#: src/views/other/Install.vue:72 src/views/preference/Preference.vue:60
+#: src/views/other/Install.vue:72 src/views/preference/Preference.vue:65
 #: src/views/stream/StreamList.vue:116 src/views/stream/StreamList.vue:84
 #: src/views/system/Upgrade.vue:45
 msgid "Server error"
@@ -1453,21 +1460,21 @@ msgstr "Logs"
 msgid "Sites List"
 msgstr "Danh sách Website"
 
-#: src/views/certificate/CertificateEditor.vue:172
+#: src/views/certificate/CertificateEditor.vue:194
 msgid "SSL Certificate Content"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:180
+#: src/views/certificate/CertificateEditor.vue:207
 msgid "SSL Certificate Key Content"
 msgstr ""
 
 #: src/views/certificate/Certificate.vue:73
-#: src/views/certificate/CertificateEditor.vue:163
+#: src/views/certificate/CertificateEditor.vue:179
 msgid "SSL Certificate Key Path"
 msgstr ""
 
 #: src/views/certificate/Certificate.vue:65
-#: src/views/certificate/CertificateEditor.vue:154
+#: src/views/certificate/CertificateEditor.vue:164
 msgid "SSL Certificate Path"
 msgstr ""
 
@@ -1532,7 +1539,7 @@ msgstr "Mục tiêu"
 msgid "Terminal"
 msgstr "Terminal"
 
-#: src/views/preference/BasicSettings.vue:27
+#: src/views/preference/BasicSettings.vue:28
 msgid "Terminal Start Command"
 msgstr ""
 
@@ -1549,6 +1556,22 @@ msgstr ""
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "Tên tệp không thể chứa các ký tự sau: %{c}"
 
+#: src/views/certificate/CertificateEditor.vue:197
+msgid "The input is not a SSL Certificate"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:210
+msgid "The input is not a SSL Certificate Key"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:183
+msgid "The path exists, but the file is not a private key"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:168
+msgid "The path exists, but the file is not a public key"
+msgstr ""
+
 #: src/views/domain/cert/components/AutoCertStepOne.vue:45
 #, fuzzy
 msgid ""
@@ -1557,17 +1580,30 @@ msgid ""
 msgstr ""
 "Lưu ý: server_name trong cấu hình hiện tại phải là tên miền bạn muốn ký SSL."
 
+#: src/views/preference/BasicSettings.vue:38
+#: src/views/preference/BasicSettings.vue:50
+#: src/views/preference/OpenAISettings.vue:34
+#: src/views/preference/OpenAISettings.vue:46
+msgid "The url is not valid"
+msgstr ""
+
 #: src/language/constants.ts:6
 msgid "The username or password is incorrect"
 msgstr "Tên người dùng hoặc mật khẩu không chính xác"
 
-#: src/views/certificate/CertificateEditor.vue:101
+#: src/views/certificate/CertificateEditor.vue:104
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Mục Chứng chỉ tự động này không hợp lệ, vui lòng xóa nó"
 
-#: src/views/certificate/CertificateEditor.vue:91
+#: src/views/certificate/CertificateEditor.vue:94
 msgid "This certificate is managed by Nginx UI"
 msgstr "Chứng chỉ này được quản lý bởi Nginx UI"
+
+#: src/views/certificate/CertificateEditor.vue:152
+#: src/views/certificate/CertificateEditor.vue:166
+#: src/views/certificate/CertificateEditor.vue:181
+msgid "This field is required"
+msgstr ""
 
 #: src/components/StdDesign/StdDataEntry/StdFormItem.vue:31
 msgid "This field should not be empty"
@@ -1588,6 +1624,10 @@ msgstr ""
 "chúng tôi cần thêm một vị trí có thể ủy quyền yêu cầu từ cơ quan có thẩm "
 "quyền đến chương trình phụ trợ và chúng tôi cần lưu tệp này và tải lại "
 "Nginx. Bạn có chắc chắn muốn Tiếp tục?"
+
+#: src/views/preference/OpenAISettings.vue:58
+msgid "Token is not valid"
+msgstr ""
 
 #: src/views/certificate/Certificate.vue:41 src/views/config/config.ts:14
 #: src/views/notification/Notification.vue:15
@@ -1643,7 +1683,7 @@ msgstr "Người dùng"
 msgid "Username"
 msgstr "Username"
 
-#: src/views/other/Install.vue:103
+#: src/views/other/Install.vue:102
 msgid "Username (*)"
 msgstr "Username (*)"
 

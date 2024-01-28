@@ -68,15 +68,15 @@ msgstr "Adicional"
 msgid "Advance Mode"
 msgstr "Modo avanzado"
 
-#: src/views/preference/OpenAISettings.vue:29
+#: src/views/preference/OpenAISettings.vue:31
 msgid "API Base Url"
 msgstr "URL Base de la API"
 
-#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:43
 msgid "API Proxy"
 msgstr "Proxy de la API"
 
-#: src/views/preference/OpenAISettings.vue:41
+#: src/views/preference/OpenAISettings.vue:55
 msgid "API Token"
 msgstr "Token de la API"
 
@@ -135,7 +135,7 @@ msgstr "Renovación automática deshabilitada por %{name}"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "Renovación automática habilitada por %{name}"
 
-#: src/views/certificate/CertificateEditor.vue:207
+#: src/views/certificate/CertificateEditor.vue:238
 #: src/views/config/Config.vue:75 src/views/config/ConfigEdit.vue:89
 #: src/views/domain/DomainEdit.vue:256 src/views/nginx_log/NginxLog.vue:170
 #: src/views/stream/StreamEdit.vue:246
@@ -152,7 +152,7 @@ msgstr "Información general"
 
 #: src/views/config/ConfigEdit.vue:117
 #: src/views/domain/components/RightSettings.vue:76
-#: src/views/preference/Preference.vue:90
+#: src/views/preference/Preference.vue:96
 #: src/views/stream/components/RightSettings.vue:76
 msgid "Basic"
 msgstr "Básico"
@@ -170,7 +170,7 @@ msgstr "Modificar por lotes"
 msgid "Build with"
 msgstr "Desarrollado con"
 
-#: src/views/preference/BasicSettings.vue:39
+#: src/views/preference/BasicSettings.vue:47
 msgid "CADir"
 msgstr "Directorio CA"
 
@@ -197,7 +197,7 @@ msgstr "El certificado expiró"
 msgid "Certificate is valid"
 msgstr "El certificado es válido"
 
-#: src/views/certificate/CertificateEditor.vue:127
+#: src/views/certificate/CertificateEditor.vue:130
 #: src/views/domain/cert/Cert.vue:35
 msgid "Certificate Status"
 msgstr "Estado del Certificado"
@@ -223,17 +223,13 @@ msgstr "Cambiar Certificado"
 msgid "Channel"
 msgstr "Canal"
 
-#: src/views/preference/OpenAISettings.vue:13
+#: src/views/preference/OpenAISettings.vue:14
 msgid "ChatGPT Model"
 msgstr "Modelo de ChatGPT"
 
 #: src/views/system/Upgrade.vue:185
 msgid "Check again"
 msgstr "Intentar nuevamente"
-
-#: src/views/preference/BasicSettings.vue:36
-msgid "Chinese user: https://mirror.ghproxy.com/"
-msgstr "Usuario chino: https://mirror.ghproxy.com/"
 
 #: src/language/constants.ts:17
 msgid "Cleaning environment variables"
@@ -336,7 +332,7 @@ msgstr "Personalizado"
 msgid "Dashboard"
 msgstr "Panel"
 
-#: src/views/other/Install.vue:124
+#: src/views/other/Install.vue:123
 msgid "Database (Optional, default: database)"
 msgstr "Base de datos (Opcional, default: database)"
 
@@ -497,7 +493,7 @@ msgstr "Dominio"
 msgid "Domain Config Created Successfully"
 msgstr "Configuración de dominio creada con éxito"
 
-#: src/views/certificate/CertificateEditor.vue:111
+#: src/views/certificate/CertificateEditor.vue:114
 #, fuzzy
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
@@ -560,7 +556,7 @@ msgstr "Editar Sitio"
 msgid "Edit Stream"
 msgstr "Editar Sitio"
 
-#: src/views/other/Install.vue:93
+#: src/views/other/Install.vue:92
 msgid "Email (*)"
 msgstr "Correo (*)"
 
@@ -685,6 +681,12 @@ msgstr "Archivo"
 msgid "File exists"
 msgstr "El archivo existe"
 
+#: src/views/preference/NginxSettings.vue:18
+#: src/views/preference/NginxSettings.vue:27
+#, fuzzy
+msgid "File not found"
+msgstr "Archivo no encontrado"
+
 #: src/views/other/Error.vue:14
 msgid "File Not Found"
 msgstr "Archivo no encontrado"
@@ -696,6 +698,11 @@ msgstr "Filtro"
 #: src/language/constants.ts:23 src/views/domain/DomainAdd.vue:104
 msgid "Finished"
 msgstr "Terminado"
+
+#: src/views/preference/BasicSettings.vue:43
+#, fuzzy
+msgid "For Chinese user: https://mirror.ghproxy.com/"
+msgstr "Usuario chino: https://mirror.ghproxy.com/"
 
 #: src/views/config/ConfigEdit.vue:92
 msgid "Format Code"
@@ -730,23 +737,23 @@ msgstr "Obtener error de información de versión"
 msgid "Getting the certificate, please wait..."
 msgstr "Obteniendo el certificado, por favor espere..."
 
-#: src/views/preference/BasicSettings.vue:33
+#: src/views/preference/BasicSettings.vue:35
 msgid "Github Proxy"
 msgstr "Proxy Github"
 
-#: src/views/preference/OpenAISettings.vue:25
+#: src/views/preference/OpenAISettings.vue:26
 msgid "GPT-3.5-Turbo"
 msgstr "GPT-3.5-Turbo"
 
-#: src/views/preference/OpenAISettings.vue:19
+#: src/views/preference/OpenAISettings.vue:20
 msgid "GPT-4"
 msgstr "GPT-4"
 
-#: src/views/preference/OpenAISettings.vue:22
+#: src/views/preference/OpenAISettings.vue:23
 msgid "GPT-4-32K"
 msgstr "GPT-4-32K"
 
-#: src/views/preference/OpenAISettings.vue:16
+#: src/views/preference/OpenAISettings.vue:17
 #, fuzzy
 msgid "GPT-4-Turbo"
 msgstr "GPT-3.5-Turbo"
@@ -755,15 +762,15 @@ msgstr "GPT-3.5-Turbo"
 msgid "Home"
 msgstr "Inicio"
 
-#: src/views/preference/BasicSettings.vue:30
+#: src/views/preference/BasicSettings.vue:31
 msgid "HTTP Challenge Port"
 msgstr "Puerto de desafío HTTP"
 
-#: src/views/preference/BasicSettings.vue:12
+#: src/views/preference/BasicSettings.vue:13
 msgid "HTTP Host"
 msgstr "Host HTTP"
 
-#: src/views/preference/BasicSettings.vue:15
+#: src/views/preference/BasicSettings.vue:16
 msgid "HTTP Port"
 msgstr "Puerto HTTP"
 
@@ -776,7 +783,7 @@ msgstr "HTTP01"
 msgid "Import"
 msgstr "Exportar"
 
-#: src/routes/index.ts:140 src/views/certificate/CertificateEditor.vue:84
+#: src/routes/index.ts:140 src/views/certificate/CertificateEditor.vue:87
 #, fuzzy
 msgid "Import Certificate"
 msgstr "Estado del Certificado"
@@ -793,7 +800,7 @@ msgstr "Error de actualización de kernel inicial"
 msgid "Initialing core upgrader"
 msgstr "Inicializando la actualización del kernel"
 
-#: src/routes/index.ts:237 src/views/other/Install.vue:139
+#: src/routes/index.ts:237 src/views/other/Install.vue:138
 msgid "Install"
 msgstr "Instalar"
 
@@ -819,7 +826,7 @@ msgstr "Estado del Certificado"
 msgid "Issued certificate successfully"
 msgstr "Certificado emitido con éxito"
 
-#: src/views/preference/BasicSettings.vue:21
+#: src/views/preference/BasicSettings.vue:22
 msgid "Jwt Secret"
 msgstr "Secreto Jwt"
 
@@ -831,12 +838,12 @@ msgstr "Comprobado por última vez el"
 msgid "Leave blank for no change"
 msgstr "Para no modificar dejar en blanco"
 
-#: src/views/preference/OpenAISettings.vue:32
+#: src/views/preference/OpenAISettings.vue:39
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Dejar en blanco para el valor predeterminado: https://api.openai.com/"
 
-#: src/views/certificate/CertificateEditor.vue:177
-#: src/views/certificate/CertificateEditor.vue:185
+#: src/views/certificate/CertificateEditor.vue:203
+#: src/views/certificate/CertificateEditor.vue:216
 #, fuzzy
 msgid "Leave blank will not change anything"
 msgstr "Para no modificar dejar en blanco"
@@ -868,7 +875,7 @@ msgstr "Ubicación"
 msgid "Locations"
 msgstr "Ubicaciones"
 
-#: src/views/certificate/CertificateEditor.vue:195
+#: src/views/certificate/CertificateEditor.vue:226
 #, fuzzy
 msgid "Log"
 msgstr "Acceso"
@@ -929,7 +936,7 @@ msgstr "Memoria y almacenamiento"
 msgid "Modify"
 msgstr "Modificar"
 
-#: src/routes/index.ts:132 src/views/certificate/CertificateEditor.vue:84
+#: src/routes/index.ts:132 src/views/certificate/CertificateEditor.vue:87
 #, fuzzy
 msgid "Modify Certificate"
 msgstr "Estado del Certificado"
@@ -943,7 +950,7 @@ msgid "Multi-line Directive"
 msgstr "Directiva multilínea"
 
 #: src/views/certificate/Certificate.vue:24
-#: src/views/certificate/CertificateEditor.vue:145
+#: src/views/certificate/CertificateEditor.vue:149
 #: src/views/certificate/DNSCredential.vue:13 src/views/config/config.ts:9
 #: src/views/domain/cert/ChangeCert.vue:21
 #: src/views/domain/components/RightSettings.vue:84
@@ -983,11 +990,11 @@ msgstr "Se liberó una nueva versión"
 msgid "Next"
 msgstr "Siguiente"
 
-#: src/views/preference/Preference.vue:96
+#: src/views/preference/Preference.vue:102
 msgid "Nginx"
 msgstr "Nginx"
 
-#: src/views/preference/NginxSettings.vue:13
+#: src/views/preference/NginxSettings.vue:15
 msgid "Nginx Access Log Path"
 msgstr "Ruta de registro de acceso de Nginx"
 
@@ -999,7 +1006,7 @@ msgstr "Error de análisis de configuración de Nginx"
 msgid "Nginx Control"
 msgstr "Control de Nginx"
 
-#: src/views/preference/NginxSettings.vue:16
+#: src/views/preference/NginxSettings.vue:24
 msgid "Nginx Error Log Path"
 msgstr "Ruta de registro de errores de Nginx"
 
@@ -1026,7 +1033,7 @@ msgstr "Nginx reiniciado con éxito"
 msgid "No"
 msgstr "No"
 
-#: src/views/preference/BasicSettings.vue:24
+#: src/views/preference/BasicSettings.vue:25
 msgid "Node Secret"
 msgstr "Secreto del nodo"
 
@@ -1102,7 +1109,7 @@ msgstr "Una vez que se complete la verificación, los registros se eliminarán."
 msgid "Online"
 msgstr "En línea"
 
-#: src/views/preference/Preference.vue:102
+#: src/views/preference/Preference.vue:108
 msgid "OpenAI"
 msgstr "OpenAI"
 
@@ -1132,7 +1139,7 @@ msgstr "Parámetros"
 msgid "Password"
 msgstr "Contraseña"
 
-#: src/views/other/Install.vue:113
+#: src/views/other/Install.vue:112
 msgid "Password (*)"
 msgstr "Contraseña (*)"
 
@@ -1201,7 +1208,7 @@ msgstr "¡Seleccione al menos un nodo!"
 msgid "Pre-release"
 msgstr "Prelanzamiento"
 
-#: src/routes/index.ts:210 src/views/preference/Preference.vue:85
+#: src/routes/index.ts:210 src/views/preference/Preference.vue:91
 msgid "Preference"
 msgstr "Configuración"
 
@@ -1312,7 +1319,7 @@ msgstr "Reiniciar"
 msgid "Restarting"
 msgstr "Reiniciando"
 
-#: src/views/preference/BasicSettings.vue:18
+#: src/views/preference/BasicSettings.vue:19
 msgid "Run Mode"
 msgstr "Modo de ejecución"
 
@@ -1321,10 +1328,10 @@ msgid "Running"
 msgstr "Corriendo"
 
 #: src/components/ChatGPT/ChatGPT.vue:259
-#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/CertificateEditor.vue:245
 #: src/views/config/ConfigEdit.vue:98 src/views/domain/DomainEdit.vue:263
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:121
-#: src/views/preference/Preference.vue:113 src/views/stream/StreamEdit.vue:253
+#: src/views/preference/Preference.vue:119 src/views/stream/StreamEdit.vue:253
 msgid "Save"
 msgstr "Guardar"
 
@@ -1338,8 +1345,8 @@ msgid "Save error %{msg}"
 msgstr "Error al guardar %{msg}"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:42
-#: src/views/certificate/CertificateEditor.vue:47
-#: src/views/preference/Preference.vue:58
+#: src/views/certificate/CertificateEditor.vue:48
+#: src/views/preference/Preference.vue:61
 msgid "Save successfully"
 msgstr "Guardado con éxito"
 
@@ -1370,7 +1377,7 @@ msgstr "Enviado"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:45
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:157
 #: src/views/config/ConfigEdit.vue:42 src/views/domain/DomainList.vue:84
-#: src/views/other/Install.vue:72 src/views/preference/Preference.vue:60
+#: src/views/other/Install.vue:72 src/views/preference/Preference.vue:65
 #: src/views/stream/StreamList.vue:116 src/views/stream/StreamList.vue:84
 #: src/views/system/Upgrade.vue:45
 msgid "Server error"
@@ -1415,23 +1422,23 @@ msgstr "Registros del sitio"
 msgid "Sites List"
 msgstr "Lista de sitios"
 
-#: src/views/certificate/CertificateEditor.vue:172
+#: src/views/certificate/CertificateEditor.vue:194
 #, fuzzy
 msgid "SSL Certificate Content"
 msgstr "Contenido de certificado SSL"
 
-#: src/views/certificate/CertificateEditor.vue:180
+#: src/views/certificate/CertificateEditor.vue:207
 #, fuzzy
 msgid "SSL Certificate Key Content"
 msgstr "Contenido de la llave del certificado SSL"
 
 #: src/views/certificate/Certificate.vue:73
-#: src/views/certificate/CertificateEditor.vue:163
+#: src/views/certificate/CertificateEditor.vue:179
 msgid "SSL Certificate Key Path"
 msgstr "Ruta de la llave del certificado SSL"
 
 #: src/views/certificate/Certificate.vue:65
-#: src/views/certificate/CertificateEditor.vue:154
+#: src/views/certificate/CertificateEditor.vue:164
 msgid "SSL Certificate Path"
 msgstr "Ruta del certificado SSL"
 
@@ -1495,7 +1502,7 @@ msgstr "Objetivo"
 msgid "Terminal"
 msgstr "Terminal"
 
-#: src/views/preference/BasicSettings.vue:27
+#: src/views/preference/BasicSettings.vue:28
 msgid "Terminal Start Command"
 msgstr "Comando de inicio de terminal"
 
@@ -1513,6 +1520,23 @@ msgid "The filename cannot contain the following characters: %{c}"
 msgstr ""
 "El nombre del archivo no puede contener los siguientes caracteres: %{c}"
 
+#: src/views/certificate/CertificateEditor.vue:197
+msgid "The input is not a SSL Certificate"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:210
+#, fuzzy
+msgid "The input is not a SSL Certificate Key"
+msgstr "Ruta de la llave del certificado SSL"
+
+#: src/views/certificate/CertificateEditor.vue:183
+msgid "The path exists, but the file is not a private key"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:168
+msgid "The path exists, but the file is not a public key"
+msgstr ""
+
 #: src/views/domain/cert/components/AutoCertStepOne.vue:45
 #, fuzzy
 msgid ""
@@ -1522,18 +1546,31 @@ msgstr ""
 "El server_name en la configuración actual debe ser el nombre de dominio que "
 "necesita para obtener el certificado, soporta dominios múltiples."
 
+#: src/views/preference/BasicSettings.vue:38
+#: src/views/preference/BasicSettings.vue:50
+#: src/views/preference/OpenAISettings.vue:34
+#: src/views/preference/OpenAISettings.vue:46
+msgid "The url is not valid"
+msgstr ""
+
 #: src/language/constants.ts:6
 msgid "The username or password is incorrect"
 msgstr "El nombre de usuario o contraseña son incorrectos"
 
-#: src/views/certificate/CertificateEditor.vue:101
+#: src/views/certificate/CertificateEditor.vue:104
 #, fuzzy
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Este elemento de auto-cert es inválido, elimínelo por favor."
 
-#: src/views/certificate/CertificateEditor.vue:91
+#: src/views/certificate/CertificateEditor.vue:94
 msgid "This certificate is managed by Nginx UI"
 msgstr "Este certificado es administrado por Nginx UI"
+
+#: src/views/certificate/CertificateEditor.vue:152
+#: src/views/certificate/CertificateEditor.vue:166
+#: src/views/certificate/CertificateEditor.vue:181
+msgid "This field is required"
+msgstr ""
 
 #: src/components/StdDesign/StdDataEntry/StdFormItem.vue:31
 msgid "This field should not be empty"
@@ -1554,6 +1591,10 @@ msgstr ""
 "con normalidad, debemos agregar una ubicación para transmitir la solicitud "
 "de la autoridad al backend, y debemos guardar este archivo y volver a cargar "
 "Nginx. ¿Estás seguro de que quieres continuar?"
+
+#: src/views/preference/OpenAISettings.vue:58
+msgid "Token is not valid"
+msgstr ""
 
 #: src/views/certificate/Certificate.vue:41 src/views/config/config.ts:14
 #: src/views/notification/Notification.vue:15
@@ -1606,7 +1647,7 @@ msgstr "Usuario"
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: src/views/other/Install.vue:103
+#: src/views/other/Install.vue:102
 msgid "Username (*)"
 msgstr "Nombre de usuario (*)"
 
