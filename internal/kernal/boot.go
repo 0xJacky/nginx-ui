@@ -4,6 +4,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -21,6 +22,7 @@ func Boot() {
 		InitJsExtensionType,
 		InitDatabase,
 		InitNodeSecret,
+		validation.Init,
 	}
 
 	syncs := []func(){

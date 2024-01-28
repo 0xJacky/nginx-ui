@@ -4,27 +4,11 @@ import (
 	"errors"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	val "github.com/go-playground/validator/v10"
 	"net/http"
 	"reflect"
-	"regexp"
 	"strings"
 )
-
-func init() {
-	if v, ok := binding.Validator.Engine().(*val.Validate); ok {
-		err := v.RegisterValidation("alphanumdash", func(fl val.FieldLevel) bool {
-			return regexp.MustCompile(`^[a-zA-Z0-9-]+$`).MatchString(fl.Field().String())
-		})
-
-		if err != nil {
-			logger.Fatal(err)
-		}
-		return
-	}
-	logger.Fatal("binding validator engine is not initialized")
-}
 
 func ErrHandler(c *gin.Context, err error) {
 	logger.GetLogger().Errorln(err)
@@ -54,11 +38,18 @@ func BindAndValid(c *gin.Context, target interface{}) bool {
 			return false
 		}
 
-		t := reflect.TypeOf(target).Elem()
+		t := reflect.TypeOf(target)
 		errorsMap := make(map[string]interface{})
 		for _, value := range verrs {
 			var path []string
-			getJsonPath(t, value.StructNamespace(), &path)
+
+			namespace := strings.Split(value.StructNamespace(), ".")
+
+			if t.Name() == "" && len(namespace) > 1 {
+				namespace = namespace[1:]
+			}
+
+			getJsonPath(t.Elem(), namespace, &path)
 			insertError(errorsMap, path, value.Tag())
 		}
 
@@ -75,11 +66,7 @@ func BindAndValid(c *gin.Context, target interface{}) bool {
 }
 
 // findField recursively finds the field in a nested struct
-func getJsonPath(t reflect.Type, namespace string, path *[]string) {
-	fields := strings.Split(namespace, ".")
-	if len(fields) == 0 {
-		return
-	}
+func getJsonPath(t reflect.Type, fields []string, path *[]string) {
 	f, ok := t.FieldByName(fields[0])
 	if !ok {
 		return
@@ -88,7 +75,7 @@ func getJsonPath(t reflect.Type, namespace string, path *[]string) {
 	*path = append(*path, f.Tag.Get("json"))
 
 	if len(fields) > 1 {
-		subFields := strings.Join(fields[1:], ".")
+		subFields := fields[1:]
 		getJsonPath(f.Type, subFields, path)
 	}
 }
