@@ -174,7 +174,7 @@ jobs:
                     echo "LD_FLAGS=-w" >> $GITHUB_ENV
 
             -   name: Download app artifacts
-                uses: actions/download-artifact@v3
+                uses: actions/download-artifact@v4
                 with:
                     name: app-dist
                     path: app/dist
@@ -220,7 +220,7 @@ jobs:
                 run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
 
             -   name: Download artifacts
-                uses: actions/download-artifact@v3
+                uses: actions/download-artifact@v4
                 with:
                     path: ./dist
 
