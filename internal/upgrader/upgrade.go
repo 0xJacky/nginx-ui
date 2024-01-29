@@ -288,6 +288,14 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 		return
 	}
 
+	if settings.ServerSettings.GithubProxy != "" {
+		digest.BrowserDownloadUrl, err = url.JoinPath(settings.ServerSettings.GithubProxy, digest.BrowserDownloadUrl)
+		if err != nil {
+			err = errors.Wrap(err, "service.DownloadLatestRelease url.JoinPath error")
+			return
+		}
+	}
+
 	resp, err := http.Get(digest.BrowserDownloadUrl)
 
 	if err != nil {
