@@ -149,7 +149,7 @@ jobs:
 
             -   name: Install musl cross compiler
                 if: env.GOOS == 'linux'
-                uses: 0xJacky/musl-cross-compilers@v0.6.5
+                uses: 0xJacky/musl-cross-compilers@v0.6.6
                 id: musl
                 with:
                     target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
@@ -245,7 +245,7 @@ jobs:
 
             -   name: Build and push
                 if: github.event_name == 'release'
-                uses: docker/build-push-action@v4
+                uses: docker/build-push-action@v5
                 with:
                     context: ./dist
                     file: ./dist/Dockerfile
@@ -261,7 +261,7 @@ jobs:
                     cp -rp ./resources ./dist
 
             -   name: Build and push demo
-                uses: docker/build-push-action@v4
+                uses: docker/build-push-action@v5
                 with:
                     context: ./dist
                     file: ./dist/demo.Dockerfile
