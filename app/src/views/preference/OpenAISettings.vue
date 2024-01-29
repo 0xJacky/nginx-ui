@@ -54,7 +54,7 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
     <AFormItem
       :label="$gettext('API Token')"
       :validate-status="errors?.openai?.token ? 'error' : ''"
-      :help="errors?.openai?.token === 'alphanumdash'
+      :help="errors?.openai?.token === 'alpha_num_dash_dot'
         ? $gettext('Token is not valid')
         : ''"
     >

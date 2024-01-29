@@ -12,7 +12,7 @@ func Init() {
 		logger.Fatal("binding validator engine is not initialized")
 	}
 
-	err := v.RegisterValidation("alphanumdash", alphaNumDash)
+	err := v.RegisterValidation("alpha_num_dash_dot", alphaNumDashDot)
 
 	if err != nil {
 		logger.Fatal(err)
