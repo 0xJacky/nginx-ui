@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useGettext } from 'vue3-gettext'
-import Modal from 'ant-design-vue/lib/modal'
+import { Modal } from 'ant-design-vue'
 import type { ComputedRef } from 'vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import template from '@/api/template'

@@ -145,13 +145,20 @@ const currentIdx = inject('current_idx')
 
 .directive-editor-extra {
   background-color: #fafafa;
+  border-radius: 5px;
   padding: 10px 20px;
-  margin-bottom: 10px;
+  margin: 10px 0;
 
   .save-btn {
     display: flex;
     justify-content: flex-end;
     margin-top: 15px;
+  }
+}
+
+.dark {
+  .directive-editor-extra {
+    background-color: #1f1f1f;
   }
 }
 

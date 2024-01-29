@@ -3,7 +3,7 @@
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { useGettext } from 'vue3-gettext'
 import type { ComputedRef, Ref } from 'vue'
-import Modal from 'ant-design-vue/lib/modal'
+import { Modal } from 'ant-design-vue'
 import LogEntry from '@/views/domain/ngx_conf/LogEntry.vue'
 import ConfigTemplate from '@/views/domain/ngx_conf/config_template/ConfigTemplate.vue'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
