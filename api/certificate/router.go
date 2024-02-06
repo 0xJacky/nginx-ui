@@ -11,7 +11,6 @@ func InitDNSCredentialRouter(r *gin.RouterGroup) {
 }
 
 func InitCertificateRouter(r *gin.RouterGroup) {
-	r.GET("domain/:name/cert", IssueCert)
 	r.GET("certs", GetCertList)
 	r.GET("cert/:id", GetCert)
 	r.POST("cert", AddCert)
@@ -19,4 +18,8 @@ func InitCertificateRouter(r *gin.RouterGroup) {
 	r.DELETE("cert/:id", RemoveCert)
 	r.GET("certificate/dns_providers", GetDNSProvidersList)
 	r.GET("certificate/dns_provider/:code", GetDNSProvider)
+}
+
+func InitCertificateWebSocketRouter(r *gin.RouterGroup) {
+	r.GET("domain/:name/cert", IssueCert)
 }

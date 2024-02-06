@@ -164,8 +164,8 @@ const isManaged = computed(() => {
             :label="$gettext('SSL Certificate Path')"
             :validate-status="errors.ssl_certificate_path ? 'error' : ''"
             :help="errors.ssl_certificate_path === 'required' ? $gettext('This field is required')
-              : errors.ssl_certificate_path === 'publickey_path'
-                ? $gettext('The path exists, but the file is not a public key') : ''"
+              : errors.ssl_certificate_path === 'certificate_path'
+                ? $gettext('The path exists, but the file is not a certificate') : ''"
           >
             <p v-if="isManaged">
               {{ data.ssl_certificate_path }}
@@ -193,7 +193,7 @@ const isManaged = computed(() => {
           <AFormItem
             :label="$gettext('SSL Certificate Content')"
             :validate-status="errors.ssl_certificate ? 'error' : ''"
-            :help="errors.ssl_certificate === 'publickey'
+            :help="errors.ssl_certificate === 'certificate'
               ? $gettext('The input is not a SSL Certificate') : ''"
           >
             <CodeEditor

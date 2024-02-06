@@ -5,16 +5,16 @@ import (
 	val "github.com/go-playground/validator/v10"
 )
 
-func isPublicKey(fl val.FieldLevel) bool {
-	return cert.IsPublicKey(fl.Field().String())
+func isCertificate(fl val.FieldLevel) bool {
+	return cert.IsCertificate(fl.Field().String())
 }
 
 func isPrivateKey(fl val.FieldLevel) bool {
 	return cert.IsPrivateKey(fl.Field().String())
 }
 
-func isPublicKeyPath(fl val.FieldLevel) bool {
-	return cert.IsPublicKeyPath(fl.Field().String())
+func isCertificatePath(fl val.FieldLevel) bool {
+	return cert.IsCertificatePath(fl.Field().String())
 }
 
 func isPrivateKeyPath(fl val.FieldLevel) bool {

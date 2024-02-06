@@ -65,6 +65,7 @@ func InitRouter() *gin.Engine {
 		w := root.Group("/", authRequired(), proxyWs())
 		{
 			analytic.InitWebSocketRouter(w)
+			certificate.InitCertificateWebSocketRouter(w)
 			terminal.InitRouter(w)
 			nginx.InitNginxLogRouter(w)
 			upstream.InitRouter(w)

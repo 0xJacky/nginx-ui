@@ -30,7 +30,6 @@ func EditConfig(c *gin.Context) {
 	}
 
 	if content != "" && content != string(origContent) {
-		// model.CreateBackup(path)
 		err = os.WriteFile(path, []byte(content), 0644)
 		if err != nil {
 			api.ErrHandler(c, err)
