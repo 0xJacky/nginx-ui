@@ -165,7 +165,7 @@ const isManaged = computed(() => {
             :validate-status="errors.ssl_certificate_path ? 'error' : ''"
             :help="errors.ssl_certificate_path === 'required' ? $gettext('This field is required')
               : errors.ssl_certificate_path === 'certificate_path'
-                ? $gettext('The path exists, but the file is not a public key') : ''"
+                ? $gettext('The path exists, but the file is not a certificate') : ''"
           >
             <p v-if="isManaged">
               {{ data.ssl_certificate_path }}
