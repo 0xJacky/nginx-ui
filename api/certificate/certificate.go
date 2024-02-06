@@ -25,7 +25,7 @@ func Transformer(certModel *model.Cert) (certificate *APICertificate) {
 	if certModel.SSLCertificatePath != "" {
 		if _, err := os.Stat(certModel.SSLCertificatePath); err == nil {
 			sslCertificationBytes, _ = os.ReadFile(certModel.SSLCertificatePath)
-			if !cert.IsPublicKey(string(sslCertificationBytes)) {
+			if !cert.IsCertificate(string(sslCertificationBytes)) {
 				sslCertificationBytes = []byte{}
 			}
 		}
@@ -77,9 +77,9 @@ func GetCert(c *gin.Context) {
 
 type certJson struct {
 	Name                  string `json:"name" binding:"required"`
-	SSLCertificatePath    string `json:"ssl_certificate_path" binding:"required,publickey_path"`
+	SSLCertificatePath    string `json:"ssl_certificate_path" binding:"required,certificate_path"`
 	SSLCertificateKeyPath string `json:"ssl_certificate_key_path" binding:"required,privatekey_path"`
-	SSLCertificate        string `json:"ssl_certificate" binding:"omitempty,publickey"`
+	SSLCertificate        string `json:"ssl_certificate" binding:"omitempty,certificate"`
 	SSLCertificateKey     string `json:"ssl_certificate_key" binding:"omitempty,privatekey"`
 	ChallengeMethod       string `json:"challenge_method"`
 	DnsCredentialID       int    `json:"dns_credential_id"`

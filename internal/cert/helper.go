@@ -6,13 +6,12 @@ import (
 	"os"
 )
 
-func IsPublicKey(pemStr string) bool {
+func IsCertificate(pemStr string) bool {
 	block, _ := pem.Decode([]byte(pemStr))
 	if block == nil {
 		return false
 	}
-
-	_, err := x509.ParsePKIXPublicKey(block.Bytes)
+	_, err := x509.ParseCertificate(block.Bytes)
 	return err == nil
 }
 
@@ -31,8 +30,8 @@ func IsPrivateKey(pemStr string) bool {
 	return errECDSA == nil
 }
 
-// IsPublicKeyPath checks if the file at the given path is a public key or not exists.
-func IsPublicKeyPath(path string) bool {
+// IsCertificatePath checks if the file at the given path is a certificate or not exists.
+func IsCertificatePath(path string) bool {
 	if path == "" {
 		return false
 	}
@@ -50,7 +49,7 @@ func IsPublicKeyPath(path string) bool {
 		return false
 	}
 
-	return IsPublicKey(string(bytes))
+	return IsCertificate(string(bytes))
 }
 
 // IsPrivateKeyPath checks if the file at the given path is a private key or not exists.

@@ -18,7 +18,7 @@ func Init() {
 		logger.Fatal(err)
 	}
 
-	err = v.RegisterValidation("publickey", isPublicKey)
+	err = v.RegisterValidation("certificate", isCertificate)
 
 	if err != nil {
 		logger.Fatal(err)
@@ -30,7 +30,7 @@ func Init() {
 		logger.Fatal(err)
 	}
 
-	err = v.RegisterValidation("publickey_path", isPublicKeyPath)
+	err = v.RegisterValidation("certificate_path", isCertificatePath)
 
 	if err != nil {
 		logger.Fatal(err)
