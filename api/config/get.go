@@ -1,51 +1,52 @@
 package config
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/gin-gonic/gin"
-	"github.com/sashabaranov/go-openai"
-	"net/http"
-	"os"
+    "github.com/0xJacky/Nginx-UI/api"
+    "github.com/0xJacky/Nginx-UI/internal/config"
+    "github.com/0xJacky/Nginx-UI/internal/nginx"
+    "github.com/0xJacky/Nginx-UI/query"
+    "github.com/gin-gonic/gin"
+    "github.com/sashabaranov/go-openai"
+    "net/http"
+    "os"
 )
 
 func GetConfig(c *gin.Context) {
-	name := c.Param("name")
-	path := nginx.GetConfPath("/", name)
+    name := c.Param("name")
 
-	stat, err := os.Stat(path)
+    path := nginx.GetConfPath("/", name)
 
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
+    stat, err := os.Stat(path)
 
-	content, err := os.ReadFile(path)
+    if err != nil {
+        api.ErrHandler(c, err)
+        return
+    }
 
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
+    content, err := os.ReadFile(path)
 
-	g := query.ChatGPTLog
-	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
+    if err != nil {
+        api.ErrHandler(c, err)
+        return
+    }
 
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
+    g := query.ChatGPTLog
+    chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
 
-	if chatgpt.Content == nil {
-		chatgpt.Content = make([]openai.ChatCompletionMessage, 0)
-	}
+    if err != nil {
+        api.ErrHandler(c, err)
+        return
+    }
 
-	c.JSON(http.StatusOK, config.Config{
-		Name:            name,
-		Content:         string(content),
-		ChatGPTMessages: chatgpt.Content,
-		FilePath:        path,
-		ModifiedAt:      stat.ModTime(),
-	})
+    if chatgpt.Content == nil {
+        chatgpt.Content = make([]openai.ChatCompletionMessage, 0)
+    }
+
+    c.JSON(http.StatusOK, config.Config{
+        Name:            name,
+        Content:         string(content),
+        ChatGPTMessages: chatgpt.Content,
+        FilePath:        path,
+        ModifiedAt:      stat.ModTime(),
+    })
 }

@@ -35,7 +35,7 @@ func GetConfigs(c *gin.Context) {
 			}
 		case mode&os.ModeSymlink != 0: // is a symbol
 			var targetPath string
-			targetPath, err = os.Readlink(nginx.GetConfPath(file.Name()))
+			targetPath, err = os.Readlink(nginx.GetConfPath(dir, file.Name()))
 			if err != nil {
 				logger.Error("Read Symlink Error", targetPath, err)
 				continue
@@ -47,7 +47,7 @@ func GetConfigs(c *gin.Context) {
 				logger.Error("Stat Error", targetPath, err)
 				continue
 			}
-			// but target file is not a dir
+			// hide the file if it's target file is a directory
 			if targetInfo.IsDir() {
 				continue
 			}
