@@ -73,7 +73,7 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
       provider: 'local',
       options: {
         locales: {
-          zh_CN: {
+          zh_TW: {
             translations: {
               button: {
                 buttonText: '搜尋文件',

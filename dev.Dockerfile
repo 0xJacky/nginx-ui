@@ -5,7 +5,7 @@ EXPOSE 80 443
 
 # COPY resources/development/sources.list /etc/apt/sources.list
 
-ENV GO_VERSION="1.21.4"
+ENV GO_VERSION="1.22.0"
 ENV GO_ARCH="linux-arm64"
 ENV GO_TAR="go${GO_VERSION}.${GO_ARCH}.tar.gz"
 ENV PATH="${PATH}:/usr/local/go/bin"
