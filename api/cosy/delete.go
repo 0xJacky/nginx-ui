@@ -2,6 +2,7 @@ package cosy
 
 import (
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/spf13/cast"
 	"gorm.io/gorm"
 	"net/http"
 )
@@ -20,9 +21,13 @@ func (c *Ctx[T]) Destroy() {
 	c.beforeExecuteHook()
 
 	db := model.UseDB()
-	var dbModel T
 
 	result := db
+
+	if cast.ToBool(c.ctx.Query("permanent")) || c.permanentlyDelete {
+		result = result.Unscoped()
+	}
+
 	if len(c.gormScopes) > 0 {
 		result = result.Scopes(c.gormScopes...)
 	}
@@ -30,9 +35,9 @@ func (c *Ctx[T]) Destroy() {
 	var err error
 	session := result.Session(&gorm.Session{})
 	if c.table != "" {
-		err = session.Table(c.table, c.tableArgs...).Take(&dbModel, id).Error
+		err = session.Table(c.table, c.tableArgs...).Take(c.OriginModel, id).Error
 	} else {
-		err = session.First(&dbModel, id).Error
+		err = session.First(&c.OriginModel, id).Error
 	}
 
 	if err != nil {
@@ -40,11 +45,7 @@ func (c *Ctx[T]) Destroy() {
 		return
 	}
 
-	if c.permanentlyDelete {
-		result = result.Unscoped()
-	}
-
-	err = result.Delete(&dbModel).Error
+	err = result.Delete(&c.OriginModel).Error
 	if err != nil {
 		errHandler(c.ctx, err)
 		return

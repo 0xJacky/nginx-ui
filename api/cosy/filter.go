@@ -2,8 +2,8 @@ package cosy
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"strings"

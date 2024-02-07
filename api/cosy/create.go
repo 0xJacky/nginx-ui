@@ -1,9 +1,9 @@
 package cosy
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/0xJacky/Nginx-UI/api/cosy/map2struct"
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm/clause"
 	"net/http"
 )
@@ -52,12 +52,6 @@ func (c *Ctx[T]) Create() {
 		return
 	}
 
-	tx := db.Preload(clause.Associations)
-	for _, v := range c.preloads {
-		tx = tx.Preload(v)
-	}
-	tx.Table(c.table, c.tableArgs...).First(&c.Model)
-
 	if len(c.executedHookFunc) > 0 {
 		for _, v := range c.executedHookFunc {
 			v(c)
@@ -67,6 +61,13 @@ func (c *Ctx[T]) Create() {
 			}
 		}
 	}
+
+	tx := db.Preload(clause.Associations)
+	for _, v := range c.preloads {
+		tx = tx.Preload(v)
+	}
+	tx.Table(c.table, c.tableArgs...).First(&c.Model)
+
 	if c.nextHandler != nil {
 		(*c.nextHandler)(c.ctx)
 	} else {
