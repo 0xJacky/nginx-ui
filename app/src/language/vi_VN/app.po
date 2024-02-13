@@ -129,11 +129,11 @@ msgstr "Tự động ký chứng chỉ SSL"
 msgid "Auto Refresh"
 msgstr "Tự động làm mới"
 
-#: src/views/domain/cert/components/ObtainCert.vue:75
+#: src/views/domain/cert/components/ObtainCert.vue:76
 msgid "Auto-renewal disabled for %{name}"
 msgstr "Đã tắt tự động gia hạn SSL cho %{name}"
 
-#: src/views/domain/cert/components/ObtainCert.vue:68
+#: src/views/domain/cert/components/ObtainCert.vue:69
 msgid "Auto-renewal enabled for %{name}"
 msgstr "Đã bật tự động gia hạn SSL cho %{name}"
 
@@ -183,7 +183,7 @@ msgstr ""
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:58
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:143
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:103
-#: src/views/domain/cert/components/ObtainCert.vue:137
+#: src/views/domain/cert/components/ObtainCert.vue:138
 #: src/views/domain/components/Deploy.vue:24
 #: src/views/domain/components/RightSettings.vue:52
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:52
@@ -217,7 +217,7 @@ msgstr "Chứng chỉ"
 msgid "Certificates List"
 msgstr "Danh sách chứng chỉ"
 
-#: src/views/domain/cert/components/AutoCertStepOne.vue:65
+#: src/views/domain/cert/components/AutoCertStepOne.vue:98
 msgid "Challenge Method"
 msgstr "Phương pháp xác thực"
 
@@ -423,7 +423,7 @@ msgstr "Thư mục"
 msgid "Disable"
 msgstr "Tắt"
 
-#: src/views/domain/cert/components/ObtainCert.vue:77
+#: src/views/domain/cert/components/ObtainCert.vue:78
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Tắt tự động gia hạn SSL cho %{name} thất bại"
 
@@ -453,7 +453,7 @@ msgstr "Xác thực DNS"
 msgid "DNS Provider"
 msgstr "Nhà cung cấp DNS"
 
-#: src/views/domain/cert/components/AutoCertStepOne.vue:71
+#: src/views/domain/cert/components/AutoCertStepOne.vue:104
 msgid "DNS01"
 msgstr ""
 
@@ -465,7 +465,7 @@ msgid_plural "Do you want to deploy this file to remote servers?"
 msgstr[0] "Bạn có muốn triển khai tệp này đến máy chủ từ xa không?"
 msgstr[1] "Bạn có muốn triển khai tệp này đến máy chủ từ xa không?"
 
-#: src/views/domain/cert/components/ObtainCert.vue:133
+#: src/views/domain/cert/components/ObtainCert.vue:134
 msgid "Do you want to disable auto-cert renewal?"
 msgstr "Bạn muốn tắt tự động gia hạn chứng chỉ SSL ?"
 
@@ -504,7 +504,7 @@ msgstr "Bạn muốn xóa máy chủ này ?"
 msgid "Do you want to remove this upstream?"
 msgstr "Bạn muốn xóa máy chủ này ?"
 
-#: src/views/certificate/WildcardCertificate.vue:69
+#: src/views/certificate/WildcardCertificate.vue:72
 msgid "Domain"
 msgstr ""
 
@@ -600,7 +600,7 @@ msgstr "Không thể bật %{conf_name} trên %{node_name}"
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "Đã bật %{conf_name} trên %{node_name}"
 
-#: src/views/domain/cert/components/ObtainCert.vue:70
+#: src/views/domain/cert/components/ObtainCert.vue:71
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "Không thể bật tự động gia hạn SSL cho %{name}"
 
@@ -673,6 +673,11 @@ msgstr "Ngày hết hạn: %{date}"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:296
 msgid "Export"
 msgstr "Xuất"
+
+#: src/views/domain/cert/components/ObtainCertLive.vue:116
+#, fuzzy
+msgid "Fail to obtain certificate"
+msgstr "Nhận chứng chỉ"
 
 #: src/views/domain/components/RightSettings.vue:42
 #: src/views/domain/DomainList.vue:74
@@ -759,7 +764,7 @@ msgstr "Tạo khóa riêng để đăng ký tài khoản"
 msgid "Get release information error"
 msgstr "Nhận lỗi thông tin phát hành"
 
-#: src/views/domain/cert/components/ObtainCertLive.vue:68
+#: src/views/domain/cert/components/ObtainCertLive.vue:70
 msgid "Getting the certificate, please wait..."
 msgstr "Đang lấy chứng chỉ, vui lòng đợi..."
 
@@ -799,7 +804,7 @@ msgstr ""
 msgid "HTTP Port"
 msgstr ""
 
-#: src/views/domain/cert/components/AutoCertStepOne.vue:68
+#: src/views/domain/cert/components/AutoCertStepOne.vue:101
 msgid "HTTP01"
 msgstr ""
 
@@ -843,7 +848,7 @@ msgstr "Cơ quan cấp chứng chỉ: %{issuer}"
 msgid "Issue wildcard certificate"
 msgstr "Gia hạn SSL"
 
-#: src/views/certificate/WildcardCertificate.vue:58
+#: src/views/certificate/WildcardCertificate.vue:61
 #, fuzzy
 msgid "Issue Wildcard Certificate"
 msgstr "Thêm chứng chỉ SSL"
@@ -856,6 +861,11 @@ msgstr "Cấp chứng chỉ thành công"
 #: src/views/preference/BasicSettings.vue:22
 msgid "Jwt Secret"
 msgstr ""
+
+#: src/views/domain/cert/components/AutoCertStepOne.vue:108
+#, fuzzy
+msgid "Key Type"
+msgstr "Loại"
 
 #: src/views/system/Upgrade.vue:179
 msgid "Last checked at"
@@ -920,7 +930,7 @@ msgstr "Đăng nhập thành công"
 msgid "Logout successful"
 msgstr "Đã đăng xuất"
 
-#: src/views/domain/cert/components/AutoCertStepOne.vue:54
+#: src/views/domain/cert/components/AutoCertStepOne.vue:87
 #, fuzzy
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
@@ -1014,8 +1024,8 @@ msgstr "Tổng lưu lượng mạng đã gửi"
 msgid "New version released"
 msgstr "Đã có phiên bản mới"
 
-#: src/views/certificate/WildcardCertificate.vue:84
-#: src/views/domain/cert/components/ObtainCert.vue:203
+#: src/views/certificate/WildcardCertificate.vue:87
+#: src/views/domain/cert/components/ObtainCert.vue:204
 #: src/views/domain/DomainAdd.vue:145
 msgid "Next"
 msgstr "Tiếp theo"
@@ -1083,7 +1093,7 @@ msgid "Not Valid Before: %{date}"
 msgstr "Không hợp lệ trước: %{date}"
 
 #: src/views/certificate/DNSCredential.vue:48
-#: src/views/domain/cert/components/AutoCertStepOne.vue:40
+#: src/views/domain/cert/components/AutoCertStepOne.vue:73
 msgid "Note"
 msgstr "Ghi chú"
 
@@ -1097,7 +1107,7 @@ msgstr "Thông báo"
 msgid "Notifications"
 msgstr "Thông báo"
 
-#: src/views/domain/cert/components/ObtainCert.vue:178
+#: src/views/domain/cert/components/ObtainCert.vue:179
 #, fuzzy
 msgid "Obtain certificate"
 msgstr "Nhận chứng chỉ"
@@ -1118,7 +1128,7 @@ msgstr "Ngoại tuyến"
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:144
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:352
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:104
-#: src/views/domain/cert/components/ObtainCert.vue:136
+#: src/views/domain/cert/components/ObtainCert.vue:137
 #: src/views/domain/components/Deploy.vue:23
 #: src/views/domain/components/RightSettings.vue:51
 #: src/views/domain/DomainList.vue:146
@@ -1199,7 +1209,7 @@ msgid ""
 msgstr ""
 "Vui lòng điền thông tin xác thực API do nhà cung cấp DNS của bạn cung cấp"
 
-#: src/views/domain/cert/components/AutoCertStepOne.vue:58
+#: src/views/domain/cert/components/AutoCertStepOne.vue:91
 msgid ""
 "Please first add credentials in Certification > DNS Credentials, and then "
 "select one of the credentialsbelow to request the API of the DNS provider."
@@ -1333,7 +1343,7 @@ msgid "Renew Certificate Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
 
 #: src/views/certificate/RenewCert.vue:25
-#: src/views/certificate/WildcardCertificate.vue:47
+#: src/views/certificate/WildcardCertificate.vue:50
 #, fuzzy
 msgid "Renew successfully"
 msgstr "Gia hạn chứng chỉ SSL"
@@ -1425,11 +1435,11 @@ msgstr "Lỗi máy chủ"
 msgid "Server Info"
 msgstr "Thông tin máy chủ"
 
-#: src/views/domain/cert/components/ObtainCert.vue:102
+#: src/views/domain/cert/components/ObtainCert.vue:103
 msgid "server_name not found in directives"
 msgstr "không tìm thấy server_name trong directives"
 
-#: src/views/domain/cert/components/AutoCertStepOne.vue:29
+#: src/views/domain/cert/components/AutoCertStepOne.vue:62
 #: src/views/domain/DomainAdd.vue:124
 msgid "server_name parameter is required"
 msgstr "Tham số server_name là bắt buộc"
@@ -1543,7 +1553,7 @@ msgstr "Terminal"
 msgid "Terminal Start Command"
 msgstr ""
 
-#: src/views/domain/cert/components/AutoCertStepOne.vue:50
+#: src/views/domain/cert/components/AutoCertStepOne.vue:83
 #, fuzzy
 msgid ""
 "The certificate for the domain will be checked 5 minutes, and will be "
@@ -1572,7 +1582,7 @@ msgstr ""
 msgid "The path exists, but the file is not a private key"
 msgstr ""
 
-#: src/views/domain/cert/components/AutoCertStepOne.vue:45
+#: src/views/domain/cert/components/AutoCertStepOne.vue:78
 #, fuzzy
 msgid ""
 "The server_name in the current configuration must be the domain name you "
@@ -1701,7 +1711,7 @@ msgid "View all notifications"
 msgstr "Xem tất cả thông báo"
 
 #: src/constants/index.ts:18 src/views/config/InspectConfig.vue:36
-#: src/views/domain/cert/components/AutoCertStepOne.vue:23
+#: src/views/domain/cert/components/AutoCertStepOne.vue:56
 #: src/views/domain/DomainAdd.vue:119
 msgid "Warning"
 msgstr "Lưu ý"
@@ -1714,7 +1724,7 @@ msgstr ""
 "Chúng tôi sẽ thêm một hoặc nhiều bản ghi TXT để xác minh quyền sở hữu tên "
 "miền của bạn."
 
-#: src/views/domain/cert/components/ObtainCert.vue:134
+#: src/views/domain/cert/components/ObtainCert.vue:135
 msgid ""
 "We will remove the HTTPChallenge configuration from this file and reload the "
 "Nginx. Are you sure you want to continue?"
