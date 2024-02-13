@@ -3,6 +3,8 @@ import type { Ref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import websocket from '@/lib/websocket'
 import type { DnsChallenge } from '@/api/auto_cert'
+import Error from '@/views/other/Error.vue'
+import type { CertificateResult } from '@/api/cert'
 
 const props = defineProps<{
   modalClosable: boolean
@@ -57,64 +59,65 @@ function log(msg: string) {
   logContainer.value?.scroll({ top: 100000, left: 0, behavior: 'smooth' })
 }
 
-const issue_cert = async (config_name: string, server_name: string[],
-  callback?: (ssl_certificate: string, ssl_certificate_key: string) => void) => {
-  progressStatus.value = 'active'
-  modalClosable.value = false
-  modalVisible.value = true
-  progressPercent.value = 0
-  logContainer.value.innerHTML = ''
+const issue_cert = async (config_name: string, server_name: string[]) => {
+  return new Promise<CertificateResult>((resolve, reject) => {
+    progressStatus.value = 'active'
+    modalClosable.value = false
+    modalVisible.value = true
+    progressPercent.value = 0
+    logContainer.value.innerHTML = ''
 
-  log($gettext('Getting the certificate, please wait...'))
+    log($gettext('Getting the certificate, please wait...'))
 
-  const ws = websocket(`/api/domain/${config_name}/cert`, false)
+    const ws = websocket(`/api/domain/${config_name}/cert`, false)
 
-  ws.onopen = () => {
-    ws.send(JSON.stringify({
-      server_name,
-      ...data.value,
-    }))
-  }
-
-  ws.onmessage = async m => {
-    const r = JSON.parse(m.data)
-
-    const regex = /\[Nginx UI\] (.*)/
-
-    const matches = r.message.match(regex)
-
-    if (matches && matches.length > 1) {
-      const extractedText = matches[1]
-
-      r.message = r.message.replaceAll(extractedText, $gettext(extractedText))
+    ws.onopen = () => {
+      ws.send(JSON.stringify({
+        server_name,
+        ...data.value,
+      }))
     }
 
-    log(r.message)
+    ws.onmessage = async m => {
+      const r = JSON.parse(m.data)
 
-    // eslint-disable-next-line sonarjs/no-small-switch
-    switch (r.status) {
-      case 'info':
-        // If it is a nginx ui log, increase the percent.
-        if (r.message.includes('[Nginx UI]'))
-          progressPercent.value += 5
+      const regex = /\[Nginx UI\] (.*)/
 
-        break
-      default:
-        modalClosable.value = true
-        issuing_cert.value = false
+      const matches = r.message.match(regex)
 
-        if (r.status === 'success' && r.ssl_certificate !== undefined && r.ssl_certificate_key !== undefined) {
-          progressStatus.value = 'success'
-          progressPercent.value = 100
-          if (callback)
-            callback(r.ssl_certificate, r.ssl_certificate_key)
-        }
-        else {
-          progressStatus.value = 'exception'
-        }
-        break
+      if (matches && matches.length > 1) {
+        const extractedText = matches[1]
+
+        r.message = r.message.replaceAll(extractedText, $gettext(extractedText))
+      }
+
+      log(r.message)
+
+      // eslint-disable-next-line sonarjs/no-small-switch
+      switch (r.status) {
+        case 'info':
+          // If it is a nginx ui log, increase the percent.
+          if (r.message.includes('[Nginx UI]'))
+            progressPercent.value += 8
+
+          break
+        default:
+          modalClosable.value = true
+          issuing_cert.value = false
+
+          if (r.status === 'success' && r.ssl_certificate !== undefined && r.ssl_certificate_key !== undefined) {
+            progressStatus.value = 'success'
+            progressPercent.value = 100
+            resolve({ ssl_certificate: r.ssl_certificate, ssl_certificate_key: r.ssl_certificate_key })
+          }
+          else {
+            progressStatus.value = 'exception'
+            reject(new Error($gettext('Fail to obtain certificate')))
+          }
+          break
+      }
     }
-  }
+  })
 }
 
 defineExpose({
@@ -143,6 +146,7 @@ defineExpose({
     background-color: rgba(0, 0, 0, 0.84);
   }
 }
+
 .issue-cert-log-container {
   height: 320px;
   overflow: scroll;

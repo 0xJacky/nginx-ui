@@ -8,6 +8,7 @@ import type { NgxConfig, NgxDirective } from '@/api/ngx'
 import type { Props } from '@/views/domain/cert/IssueCert.vue'
 import type { DnsChallenge } from '@/api/auto_cert'
 import ObtainCertLive from '@/views/domain/cert/components/ObtainCertLive.vue'
+import type { CertificateResult } from '@/api/cert'
 
 const emit = defineEmits(['update:auto_cert'])
 
@@ -47,10 +48,10 @@ const name = computed(() => {
 const refObtainCertLive = ref()
 
 const issue_cert = (config_name: string, server_name: string) => {
-  refObtainCertLive.value.issue_cert(config_name, server_name.trim().split(' '), callback)
+  refObtainCertLive.value.issue_cert(config_name, server_name.trim().split(' ')).then(resolveCert)
 }
 
-async function callback(ssl_certificate: string, ssl_certificate_key: string) {
+async function resolveCert({ ssl_certificate, ssl_certificate_key }: CertificateResult) {
   directivesMap.value.ssl_certificate[0].params = ssl_certificate
   directivesMap.value.ssl_certificate_key[0].params = ssl_certificate_key
   await save_config()

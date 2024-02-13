@@ -20,6 +20,7 @@ provide('data', data)
 provide('issuing_cert', issuing_cert)
 function open() {
   visible.value = true
+  step.value = 0
   data.value = {
     challenge_method: 'dns01',
   } as Cert
@@ -43,7 +44,7 @@ const issueCert = () => {
   step.value++
   modalVisible.value = true
 
-  refObtainCertLive.value.issue_cert(computedDomain.value, [computedDomain.value, domain.value], () => {
+  refObtainCertLive.value.issue_cert(computedDomain.value, [computedDomain.value, domain.value]).then(() => {
     message.success($gettext('Renew successfully'))
     emit('issued')
   })

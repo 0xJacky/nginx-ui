@@ -25,6 +25,11 @@ export interface CertificateInfo {
   not_before: string
 }
 
+export interface CertificateResult {
+  ssl_certificate: string
+  ssl_certificate_key: string
+}
+
 const cert: Curd<Cert> = new Curd('/cert')
 
 export default cert
