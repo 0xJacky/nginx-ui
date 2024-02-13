@@ -122,6 +122,7 @@ func IssueCert(c *gin.Context) {
 		SSLCertificatePath:    sslCertificatePath,
 		SSLCertificateKeyPath: sslCertificateKeyPath,
 		AutoCert:              model.AutoCertEnabled,
+		KeyType:               payload.KeyType,
 	})
 
 	if err != nil {

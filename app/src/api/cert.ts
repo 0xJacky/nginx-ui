@@ -14,6 +14,7 @@ export interface Cert extends ModelBase {
   challenge_method: string
   dns_credential_id: number
   dns_credential?: DnsCredential
+  key_type: string
   log: string
   certificate_info: CertificateInfo
 }

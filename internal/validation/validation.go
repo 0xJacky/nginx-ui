@@ -42,5 +42,11 @@ func Init() {
 		logger.Fatal(err)
 	}
 
+	err = v.RegisterValidation("auto_cert_key_type", autoCertKeyType)
+
+	if err != nil {
+		logger.Fatal(err)
+	}
+
 	return
 }

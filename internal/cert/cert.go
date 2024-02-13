@@ -32,9 +32,10 @@ const (
 )
 
 type ConfigPayload struct {
-	ServerName      []string `json:"server_name"`
-	ChallengeMethod string   `json:"challenge_method"`
-	DNSCredentialID int      `json:"dns_credential_id"`
+	ServerName      []string           `json:"server_name"`
+	ChallengeMethod string             `json:"challenge_method"`
+	DNSCredentialID int                `json:"dns_credential_id"`
+	KeyType         certcrypto.KeyType `json:"key_type"`
 }
 
 func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) {
@@ -93,7 +94,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		}
 	}
 
-	config.Certificate.KeyType = certcrypto.RSA2048
+	config.Certificate.KeyType = payload.KeyType
 
 	l.Println("[INFO] [Nginx UI] Creating client facilitates communication with the CA server")
 	// A client facilitates communication with the CA server.

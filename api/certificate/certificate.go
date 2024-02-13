@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
+	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/spf13/cast"
 	"net/http"
 	"os"
@@ -76,13 +77,14 @@ func GetCert(c *gin.Context) {
 }
 
 type certJson struct {
-	Name                  string `json:"name" binding:"required"`
-	SSLCertificatePath    string `json:"ssl_certificate_path" binding:"required,certificate_path"`
-	SSLCertificateKeyPath string `json:"ssl_certificate_key_path" binding:"required,privatekey_path"`
-	SSLCertificate        string `json:"ssl_certificate" binding:"omitempty,certificate"`
-	SSLCertificateKey     string `json:"ssl_certificate_key" binding:"omitempty,privatekey"`
-	ChallengeMethod       string `json:"challenge_method"`
-	DnsCredentialID       int    `json:"dns_credential_id"`
+	Name                  string             `json:"name" binding:"required"`
+	SSLCertificatePath    string             `json:"ssl_certificate_path" binding:"required,certificate_path"`
+	SSLCertificateKeyPath string             `json:"ssl_certificate_key_path" binding:"required,privatekey_path"`
+	SSLCertificate        string             `json:"ssl_certificate" binding:"omitempty,certificate"`
+	SSLCertificateKey     string             `json:"ssl_certificate_key" binding:"omitempty,privatekey"`
+	KeyType               certcrypto.KeyType `json:"key_type" binding:"omitempty,auto_cert_key_type"`
+	ChallengeMethod       string             `json:"challenge_method"`
+	DnsCredentialID       int                `json:"dns_credential_id"`
 }
 
 func AddCert(c *gin.Context) {
@@ -96,6 +98,7 @@ func AddCert(c *gin.Context) {
 		Name:                  json.Name,
 		SSLCertificatePath:    json.SSLCertificatePath,
 		SSLCertificateKeyPath: json.SSLCertificateKeyPath,
+		KeyType:               json.KeyType,
 		ChallengeMethod:       json.ChallengeMethod,
 		DnsCredentialID:       json.DnsCredentialID,
 	}
@@ -146,6 +149,7 @@ func ModifyCert(c *gin.Context) {
 		SSLCertificatePath:    json.SSLCertificatePath,
 		SSLCertificateKeyPath: json.SSLCertificateKeyPath,
 		ChallengeMethod:       json.ChallengeMethod,
+		KeyType:               json.KeyType,
 		DnsCredentialID:       json.DnsCredentialID,
 	})
 

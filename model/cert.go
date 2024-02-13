@@ -2,6 +2,7 @@ package model
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/lib/pq"
 	"os"
 )
@@ -17,16 +18,17 @@ type CertDomains []string
 
 type Cert struct {
 	Model
-	Name                  string         `json:"name"`
-	Domains               pq.StringArray `json:"domains" gorm:"type:text[]"`
-	Filename              string         `json:"filename"`
-	SSLCertificatePath    string         `json:"ssl_certificate_path"`
-	SSLCertificateKeyPath string         `json:"ssl_certificate_key_path"`
-	AutoCert              int            `json:"auto_cert"`
-	ChallengeMethod       string         `json:"challenge_method"`
-	DnsCredentialID       int            `json:"dns_credential_id"`
-	DnsCredential         *DnsCredential `json:"dns_credential,omitempty"`
-	Log                   string         `json:"log"`
+	Name                  string             `json:"name"`
+	Domains               pq.StringArray     `json:"domains" gorm:"type:text[]"`
+	Filename              string             `json:"filename"`
+	SSLCertificatePath    string             `json:"ssl_certificate_path"`
+	SSLCertificateKeyPath string             `json:"ssl_certificate_key_path"`
+	AutoCert              int                `json:"auto_cert"`
+	ChallengeMethod       string             `json:"challenge_method"`
+	DnsCredentialID       int                `json:"dns_credential_id"`
+	DnsCredential         *DnsCredential     `json:"dns_credential,omitempty"`
+	KeyType               certcrypto.KeyType `json:"key_type"`
+	Log                   string             `json:"log"`
 }
 
 func FirstCert(confName string) (c Cert, err error) {
@@ -89,4 +91,13 @@ func (c *Cert) Remove() error {
 	}
 
 	return db.Where("filename", c.Filename).Delete(c).Error
+}
+
+func (c *Cert) GetKeyType() certcrypto.KeyType {
+	switch c.KeyType {
+	case certcrypto.RSA2048, certcrypto.RSA3072, certcrypto.RSA4096,
+		certcrypto.EC256, certcrypto.EC384:
+		return c.KeyType
+	}
+	return certcrypto.RSA2048
 }

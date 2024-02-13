@@ -59,7 +59,7 @@ function log(msg: string) {
   logContainer.value?.scroll({ top: 100000, left: 0, behavior: 'smooth' })
 }
 
-const issue_cert = async (config_name: string, server_name: string[]) => {
+const issue_cert = async (config_name: string, server_name: string[], key_type: string) => {
   return new Promise<CertificateResult>((resolve, reject) => {
     progressStatus.value = 'active'
     modalClosable.value = false
@@ -74,6 +74,7 @@ const issue_cert = async (config_name: string, server_name: string[]) => {
     ws.onopen = () => {
       ws.send(JSON.stringify({
         server_name,
+        key_type,
         ...data.value,
       }))
     }

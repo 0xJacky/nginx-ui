@@ -74,6 +74,7 @@ func renew(certModel *model.Cert) {
 		ServerName:      certModel.Domains,
 		ChallengeMethod: certModel.ChallengeMethod,
 		DNSCredentialID: certModel.DnsCredentialID,
+		KeyType:         certModel.GetKeyType(),
 	}
 
 	// errChan will be closed inside IssueCert

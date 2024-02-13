@@ -21,7 +21,7 @@ const data = inject('data') as Ref<Cert>
 const issueCert = () => {
   modalVisible.value = true
 
-  refObtainCertLive.value.issue_cert(data.value.name, data.value.domains).then(() => {
+  refObtainCertLive.value.issue_cert(data.value.name, data.value.domains, data.value.key_type).then(() => {
     message.success($gettext('Renew successfully'))
     emit('renewed')
   })
