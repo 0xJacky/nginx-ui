@@ -44,8 +44,8 @@ const keyType = shallowRef([
 ])
 
 onMounted(() => {
-  if (data.value.key_type === '')
-    data.value.key_type = 'RSA2048'
+  if (!data.value.key_type)
+    data.value.key_type = '2048'
 })
 </script>
 
