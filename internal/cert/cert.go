@@ -166,8 +166,9 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 	user.Registration = reg
 
 	request := certificate.ObtainRequest{
-		Domains: domain,
-		Bundle:  true,
+		Domains:    domain,
+		Bundle:     true,
+		MustStaple: true,
 	}
 
 	l.Println("[INFO] [Nginx UI] Obtaining certificate")
