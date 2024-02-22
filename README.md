@@ -273,9 +273,9 @@ On platforms that do not have an official build version, they can be built manua
 
 - Make
 
-- Golang 1.19+
+- Golang 1.22+
 
-- node.js 18+
+- node.js 21+
 
   ```shell
   npx browserslist@latest --update-db

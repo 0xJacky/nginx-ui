@@ -277,8 +277,8 @@ Trên các nền tảng không có phiên bản xây dựng chính thức, chún
 ### Điều kiện cần
 
 - Make
-- Golang 1.19+
-- node.js 18+
+- Golang 1.22+
+- node.js 21+
 
   ```shell
   npx browserslist@latest --update-db

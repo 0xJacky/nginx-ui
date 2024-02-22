@@ -207,9 +207,9 @@ docker run -dit \
 
 - Make
 
-- Golang 1.19+
+- Golang 1.22+
 
-- node.js 18+
+- node.js 21+
 
   ```shell
   npx browserslist@latest --update-db
