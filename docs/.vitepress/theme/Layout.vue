@@ -20,7 +20,7 @@ onMounted(async () => {
     && locales[language]
     && !route.path.includes(language)
   ) {
-    await router.go(language + '/' + route.path)
+    await router.go(language + (route.path !== '/' ? route.path : ''))
   }
 })
 </script>
