@@ -8,6 +8,7 @@ import BasicSettings from '@/views/preference/BasicSettings.vue'
 import OpenAISettings from '@/views/preference/OpenAISettings.vue'
 import NginxSettings from '@/views/preference/NginxSettings.vue'
 import type { Settings } from '@/views/preference/typedef'
+import LogrotateSettings from '@/views/preference/LogrotateSettings.vue'
 
 const { $gettext } = useGettext()
 
@@ -38,12 +39,10 @@ const data = ref<Settings>({
     proxy: '',
     token: '',
   },
-  git: {
-    url: '',
-    auth_method: '',
-    username: '',
-    password: '',
-    private_key_file_path: '',
+  logrotate: {
+    enabled: false,
+    cmd: '',
+    interval: 1440,
   },
 })
 
@@ -108,6 +107,12 @@ onMounted(() => {
           :tab="$gettext('OpenAI')"
         >
           <OpenAISettings />
+        </ATabPane>
+        <ATabPane
+          key="logrotate"
+          :tab="$gettext('Logrotate')"
+        >
+          <LogrotateSettings />
         </ATabPane>
       </ATabs>
     </div>

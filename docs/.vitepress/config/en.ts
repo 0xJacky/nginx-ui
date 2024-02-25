@@ -37,7 +37,8 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             {text: 'Server', link: '/guide/config-server'},
             {text: 'Nginx', link: '/guide/config-nginx'},
             {text: 'Open AI', link: '/guide/config-openai'},
-            {text: 'Casdoor', link: '/guide/config-casdoor'}
+            {text: 'Casdoor', link: '/guide/config-casdoor'},
+            {text: 'Logrotate', link: '/guide/config-logrotate'}
           ]
         },
         {

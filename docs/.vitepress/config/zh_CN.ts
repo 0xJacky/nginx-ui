@@ -42,7 +42,8 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             {text: '服务端', link: '/zh_CN/guide/config-server'},
             {text: 'Nginx', link: '/zh_CN/guide/config-nginx'},
             {text: 'Open AI', link: '/zh_CN/guide/config-openai'},
-            {text: 'Casdoor', link: '/zh_CN/guide/config-casdoor'}
+            {text: 'Casdoor', link: '/zh_CN/guide/config-casdoor'},
+            {text: 'Logrotate', link: '/zh_CN/guide/config-logrotate'}
           ]
         },
         {

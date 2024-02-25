@@ -4,6 +4,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/0xJacky/Nginx-UI/internal/logrotate"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -40,7 +41,7 @@ func Boot() {
 
 func InitAfterDatabase() {
 	syncs := []func(){
-		InitAutoObtainCert,
+		InitCronJobs,
 		analytic.RetrieveNodesStatus,
 	}
 
@@ -86,12 +87,18 @@ func InitJsExtensionType() {
 	_ = mime.AddExtensionType(".js", "text/javascript; charset=utf-8")
 }
 
-func InitAutoObtainCert() {
+func InitCronJobs() {
 	s := gocron.NewScheduler(time.UTC)
 	job, err := s.Every(30).Minute().SingletonMode().Do(cert.AutoObtain)
 
 	if err != nil {
 		logger.Fatalf("AutoCert Job: %v, Err: %v\n", job, err)
+	}
+
+	job, err = s.Every(settings.LogrotateSettings.Interval).Minute().SingletonMode().Do(logrotate.Exec)
+
+	if err != nil {
+		logger.Fatalf("LogRotate Job: %v, Err: %v\n", job, err)
 	}
 
 	s.StartAsync()

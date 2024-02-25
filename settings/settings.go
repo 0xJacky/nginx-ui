@@ -18,10 +18,11 @@ var (
 var ConfPath string
 
 var sections = map[string]interface{}{
-	"server":  &ServerSettings,
-	"nginx":   &NginxSettings,
-	"openai":  &OpenAISettings,
-	"casdoor": &CasdoorSettings,
+	"server":    &ServerSettings,
+	"nginx":     &NginxSettings,
+	"openai":    &OpenAISettings,
+	"casdoor":   &CasdoorSettings,
+	"logrotate": &LogrotateSettings,
 }
 
 func init() {

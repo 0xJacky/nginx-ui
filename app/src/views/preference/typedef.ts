@@ -25,11 +25,9 @@ export interface Settings {
     proxy: string
     token: string
   }
-  git: {
-    url: string
-    auth_method: string
-    username: string
-    password: string
-    private_key_file_path: string
+  logrotate: {
+    enabled: boolean
+    cmd: string
+    interval: number
   }
 }

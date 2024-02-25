@@ -152,7 +152,7 @@ msgstr "Información general"
 
 #: src/views/config/ConfigEdit.vue:117
 #: src/views/domain/components/RightSettings.vue:76
-#: src/views/preference/Preference.vue:96
+#: src/views/preference/Preference.vue:95
 #: src/views/stream/components/RightSettings.vue:76
 msgid "Basic"
 msgstr "Básico"
@@ -245,6 +245,11 @@ msgstr "Borrar"
 #: src/views/notification/Notification.vue:47
 msgid "Cleared successfully"
 msgstr "Limpiado exitoso"
+
+#: src/views/preference/LogrotateSettings.vue:27
+#, fuzzy
+msgid "Command"
+msgstr "Comentarios"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:107
 #: src/views/domain/ngx_conf/LocationEditor.vue:119
@@ -480,7 +485,7 @@ msgstr "¿Quieres eliminar este servidor?"
 msgid "Do you want to remove this upstream?"
 msgstr "¿Quieres eliminar esta transmisión?"
 
-#: src/views/certificate/WildcardCertificate.vue:72
+#: src/views/certificate/WildcardCertificate.vue:100
 msgid "Domain"
 msgstr "Dominio"
 
@@ -590,6 +595,7 @@ msgstr "Habilitar TLS"
 #: src/views/domain/cert/ChangeCert.vue:44
 #: src/views/domain/components/RightSettings.vue:78
 #: src/views/domain/DomainEdit.vue:179 src/views/domain/DomainList.vue:32
+#: src/views/preference/LogrotateSettings.vue:24
 #: src/views/stream/components/RightSettings.vue:78
 #: src/views/stream/StreamEdit.vue:170 src/views/stream/StreamList.vue:32
 msgid "Enabled"
@@ -802,11 +808,15 @@ msgstr "Instalación exitosa"
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "Autoridades de certificación intermedias: %{issuer}"
 
+#: src/views/preference/LogrotateSettings.vue:30
+msgid "Interval"
+msgstr ""
+
 #: src/views/certificate/Certificate.vue:137
 msgid "Issue wildcard certificate"
 msgstr "Obtener certificado comodín"
 
-#: src/views/certificate/WildcardCertificate.vue:61
+#: src/views/certificate/WildcardCertificate.vue:89
 msgid "Issue Wildcard Certificate"
 msgstr "Obtener certificado Comodín"
 
@@ -818,6 +828,7 @@ msgstr "Certificado emitido con éxito"
 msgid "Jwt Secret"
 msgstr "Secreto Jwt"
 
+#: src/views/certificate/WildcardCertificate.vue:107
 #: src/views/domain/cert/components/AutoCertStepOne.vue:108
 #, fuzzy
 msgid "Key Type"
@@ -881,6 +892,20 @@ msgstr "Acceso exitoso"
 msgid "Logout successful"
 msgstr "Cierre de sesión exitoso"
 
+#: src/views/preference/Preference.vue:113
+msgid "Logrotate"
+msgstr ""
+
+#: src/views/preference/LogrotateSettings.vue:17
+msgid ""
+"Logrotate, by default, is enabled in most mainstream Linux distributions for "
+"users who install Nginx UI on the host machine, so you don't need to modify "
+"the parameters on this page. For users who install Nginx UI using Docker "
+"containers, you can manually enable this option. The crontab task scheduler "
+"of Nginx UI will execute the logrotate command at the interval you set in "
+"minutes."
+msgstr ""
+
 #: src/views/domain/cert/components/AutoCertStepOne.vue:87
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
@@ -916,6 +941,10 @@ msgstr "Memoria"
 #: src/views/dashboard/ServerAnalytic.vue:210
 msgid "Memory and Storage"
 msgstr "Memoria y almacenamiento"
+
+#: src/views/preference/LogrotateSettings.vue:34
+msgid "Minutes"
+msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:256
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:141
@@ -970,13 +999,13 @@ msgstr "Total enviado por la red"
 msgid "New version released"
 msgstr "Se liberó una nueva versión"
 
-#: src/views/certificate/WildcardCertificate.vue:87
+#: src/views/certificate/WildcardCertificate.vue:127
 #: src/views/domain/cert/components/ObtainCert.vue:204
 #: src/views/domain/DomainAdd.vue:145
 msgid "Next"
 msgstr "Siguiente"
 
-#: src/views/preference/Preference.vue:102
+#: src/views/preference/Preference.vue:101
 msgid "Nginx"
 msgstr "Nginx"
 
@@ -1093,7 +1122,7 @@ msgstr "Una vez que se complete la verificación, los registros se eliminarán."
 msgid "Online"
 msgstr "En línea"
 
-#: src/views/preference/Preference.vue:108
+#: src/views/preference/Preference.vue:107
 msgid "OpenAI"
 msgstr "OpenAI"
 
@@ -1195,7 +1224,7 @@ msgstr "¡Seleccione al menos un nodo!"
 msgid "Pre-release"
 msgstr "Prelanzamiento"
 
-#: src/routes/index.ts:210 src/views/preference/Preference.vue:91
+#: src/routes/index.ts:210 src/views/preference/Preference.vue:90
 msgid "Preference"
 msgstr "Configuración"
 
@@ -1280,7 +1309,7 @@ msgid "Renew Certificate Success"
 msgstr "Renovado de Certificado exitoso"
 
 #: src/views/certificate/RenewCert.vue:25
-#: src/views/certificate/WildcardCertificate.vue:50
+#: src/views/certificate/WildcardCertificate.vue:51
 msgid "Renew successfully"
 msgstr "Renovado con éxito"
 
@@ -1312,7 +1341,7 @@ msgstr "Corriendo"
 #: src/views/certificate/CertificateEditor.vue:245
 #: src/views/config/ConfigEdit.vue:98 src/views/domain/DomainEdit.vue:263
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:121
-#: src/views/preference/Preference.vue:119 src/views/stream/StreamEdit.vue:253
+#: src/views/preference/Preference.vue:124 src/views/stream/StreamEdit.vue:253
 msgid "Save"
 msgstr "Guardar"
 
@@ -1327,7 +1356,7 @@ msgstr "Error al guardar %{msg}"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:42
 #: src/views/certificate/CertificateEditor.vue:48
-#: src/views/preference/Preference.vue:61
+#: src/views/preference/Preference.vue:60
 msgid "Save successfully"
 msgstr "Guardado con éxito"
 
@@ -1358,7 +1387,7 @@ msgstr "Enviado"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:45
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:157
 #: src/views/config/ConfigEdit.vue:42 src/views/domain/DomainList.vue:84
-#: src/views/other/Install.vue:72 src/views/preference/Preference.vue:65
+#: src/views/other/Install.vue:72 src/views/preference/Preference.vue:64
 #: src/views/stream/StreamList.vue:116 src/views/stream/StreamList.vue:84
 #: src/views/system/Upgrade.vue:45
 msgid "Server error"
@@ -1547,6 +1576,10 @@ msgstr "Este campo es obligatorio"
 #: src/components/StdDesign/StdDataEntry/StdFormItem.vue:31
 msgid "This field should not be empty"
 msgstr "Este campo no debe estar vacío"
+
+#: src/views/preference/LogrotateSettings.vue:16
+msgid "Tips"
+msgstr ""
 
 #: src/views/notification/Notification.vue:21
 msgid "Title"

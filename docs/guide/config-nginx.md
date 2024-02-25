@@ -63,8 +63,6 @@ In Nginx UI v2, we parse the output of the `nginx -V` command to get the default
 If you need to set a different path, you can use this option.
 :::
 
-
-
 ## Service Monitoring and Control
 
 In this section, we will introduce configuration options in Nginx UI for monitoring and controlling Nginx services.

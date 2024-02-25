@@ -155,7 +155,7 @@ msgstr "Thông tin"
 
 #: src/views/config/ConfigEdit.vue:117
 #: src/views/domain/components/RightSettings.vue:76
-#: src/views/preference/Preference.vue:96
+#: src/views/preference/Preference.vue:95
 #: src/views/stream/components/RightSettings.vue:76
 #, fuzzy
 msgid "Basic"
@@ -254,6 +254,11 @@ msgstr "Xoá"
 #, fuzzy
 msgid "Cleared successfully"
 msgstr "Đã xóa thành công"
+
+#: src/views/preference/LogrotateSettings.vue:27
+#, fuzzy
+msgid "Command"
+msgstr "Bình luận"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:107
 #: src/views/domain/ngx_conf/LocationEditor.vue:119
@@ -504,7 +509,7 @@ msgstr "Bạn muốn xóa máy chủ này ?"
 msgid "Do you want to remove this upstream?"
 msgstr "Bạn muốn xóa máy chủ này ?"
 
-#: src/views/certificate/WildcardCertificate.vue:72
+#: src/views/certificate/WildcardCertificate.vue:100
 msgid "Domain"
 msgstr ""
 
@@ -621,6 +626,7 @@ msgstr "Bật TLS"
 #: src/views/domain/cert/ChangeCert.vue:44
 #: src/views/domain/components/RightSettings.vue:78
 #: src/views/domain/DomainEdit.vue:179 src/views/domain/DomainList.vue:32
+#: src/views/preference/LogrotateSettings.vue:24
 #: src/views/stream/components/RightSettings.vue:78
 #: src/views/stream/StreamEdit.vue:170 src/views/stream/StreamList.vue:32
 msgid "Enabled"
@@ -843,12 +849,16 @@ msgstr "Cài đặt thành công"
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "Cơ quan cấp chứng chỉ: %{issuer}"
 
+#: src/views/preference/LogrotateSettings.vue:30
+msgid "Interval"
+msgstr ""
+
 #: src/views/certificate/Certificate.vue:137
 #, fuzzy
 msgid "Issue wildcard certificate"
 msgstr "Gia hạn SSL"
 
-#: src/views/certificate/WildcardCertificate.vue:61
+#: src/views/certificate/WildcardCertificate.vue:89
 #, fuzzy
 msgid "Issue Wildcard Certificate"
 msgstr "Thêm chứng chỉ SSL"
@@ -862,6 +872,7 @@ msgstr "Cấp chứng chỉ thành công"
 msgid "Jwt Secret"
 msgstr ""
 
+#: src/views/certificate/WildcardCertificate.vue:107
 #: src/views/domain/cert/components/AutoCertStepOne.vue:108
 #, fuzzy
 msgid "Key Type"
@@ -930,6 +941,20 @@ msgstr "Đăng nhập thành công"
 msgid "Logout successful"
 msgstr "Đã đăng xuất"
 
+#: src/views/preference/Preference.vue:113
+msgid "Logrotate"
+msgstr ""
+
+#: src/views/preference/LogrotateSettings.vue:17
+msgid ""
+"Logrotate, by default, is enabled in most mainstream Linux distributions for "
+"users who install Nginx UI on the host machine, so you don't need to modify "
+"the parameters on this page. For users who install Nginx UI using Docker "
+"containers, you can manually enable this option. The crontab task scheduler "
+"of Nginx UI will execute the logrotate command at the interval you set in "
+"minutes."
+msgstr ""
+
 #: src/views/domain/cert/components/AutoCertStepOne.vue:87
 #, fuzzy
 msgid ""
@@ -967,6 +992,10 @@ msgstr "Memory"
 #: src/views/dashboard/ServerAnalytic.vue:210
 msgid "Memory and Storage"
 msgstr "Memory và Storage"
+
+#: src/views/preference/LogrotateSettings.vue:34
+msgid "Minutes"
+msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:256
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:141
@@ -1024,13 +1053,13 @@ msgstr "Tổng lưu lượng mạng đã gửi"
 msgid "New version released"
 msgstr "Đã có phiên bản mới"
 
-#: src/views/certificate/WildcardCertificate.vue:87
+#: src/views/certificate/WildcardCertificate.vue:127
 #: src/views/domain/cert/components/ObtainCert.vue:204
 #: src/views/domain/DomainAdd.vue:145
 msgid "Next"
 msgstr "Tiếp theo"
 
-#: src/views/preference/Preference.vue:102
+#: src/views/preference/Preference.vue:101
 msgid "Nginx"
 msgstr ""
 
@@ -1153,7 +1182,7 @@ msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."
 msgid "Online"
 msgstr "Trực tuyến"
 
-#: src/views/preference/Preference.vue:108
+#: src/views/preference/Preference.vue:107
 msgid "OpenAI"
 msgstr ""
 
@@ -1251,7 +1280,7 @@ msgstr ""
 msgid "Pre-release"
 msgstr ""
 
-#: src/routes/index.ts:210 src/views/preference/Preference.vue:91
+#: src/routes/index.ts:210 src/views/preference/Preference.vue:90
 msgid "Preference"
 msgstr "Cài đặt"
 
@@ -1343,7 +1372,7 @@ msgid "Renew Certificate Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
 
 #: src/views/certificate/RenewCert.vue:25
-#: src/views/certificate/WildcardCertificate.vue:50
+#: src/views/certificate/WildcardCertificate.vue:51
 #, fuzzy
 msgid "Renew successfully"
 msgstr "Gia hạn chứng chỉ SSL"
@@ -1377,7 +1406,7 @@ msgstr "Running"
 #: src/views/certificate/CertificateEditor.vue:245
 #: src/views/config/ConfigEdit.vue:98 src/views/domain/DomainEdit.vue:263
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:121
-#: src/views/preference/Preference.vue:119 src/views/stream/StreamEdit.vue:253
+#: src/views/preference/Preference.vue:124 src/views/stream/StreamEdit.vue:253
 msgid "Save"
 msgstr "Lưu"
 
@@ -1392,7 +1421,7 @@ msgstr "Đã xảy ra lỗi khi lưu %{msg}"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:42
 #: src/views/certificate/CertificateEditor.vue:48
-#: src/views/preference/Preference.vue:61
+#: src/views/preference/Preference.vue:60
 #, fuzzy
 msgid "Save successfully"
 msgstr "Lưu thành công"
@@ -1425,7 +1454,7 @@ msgstr "Gửi"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:45
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:157
 #: src/views/config/ConfigEdit.vue:42 src/views/domain/DomainList.vue:84
-#: src/views/other/Install.vue:72 src/views/preference/Preference.vue:65
+#: src/views/other/Install.vue:72 src/views/preference/Preference.vue:64
 #: src/views/stream/StreamList.vue:116 src/views/stream/StreamList.vue:84
 #: src/views/system/Upgrade.vue:45
 msgid "Server error"
@@ -1618,6 +1647,10 @@ msgstr ""
 #: src/components/StdDesign/StdDataEntry/StdFormItem.vue:31
 msgid "This field should not be empty"
 msgstr "Trường này không được để trống"
+
+#: src/views/preference/LogrotateSettings.vue:16
+msgid "Tips"
+msgstr ""
 
 #: src/views/notification/Notification.vue:21
 msgid "Title"
