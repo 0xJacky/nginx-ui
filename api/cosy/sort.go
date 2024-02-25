@@ -1,36 +1,34 @@
 package cosy
 
 import (
-	"fmt"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
+	"strings"
 	"sync"
 )
 
 func (c *Ctx[T]) SortOrder() func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
-		sort := c.ctx.DefaultQuery("order", "desc")
-		if sort != "desc" && sort != "asc" {
-			sort = "desc"
+		order := c.ctx.DefaultQuery("order", "desc")
+		if order != "desc" && order != "asc" {
+			order = "desc"
 		}
 
-		order := c.itemKey
-		if value, ok := c.ctx.Get("order"); ok {
-			// check if the order field is valid
-			// todo: maybe we can use more generic way to check if the sort_by is valid
-			s, _ := schema.Parse(c.Model, &sync.Map{}, schema.NamingStrategy{})
-			if _, ok := s.FieldsByDBName[value.(string)]; ok {
-				order = value.(string)
-			} else {
-				logger.Error("invalid order field:", order)
-			}
-		} else if value, ok := c.ctx.Get("sort_by"); ok {
-			order = value.(string)
+		sortBy := c.ctx.DefaultQuery("sort_by", c.itemKey)
+
+		s, _ := schema.Parse(c.Model, &sync.Map{}, schema.NamingStrategy{})
+		if _, ok := s.FieldsByDBName[sortBy]; !ok && sortBy != c.itemKey {
+			logger.Error("invalid order field:", sortBy)
+			return db
 		}
 
-		order = fmt.Sprintf("%s %s", order, sort)
-		return db.Order(order)
+		var sb strings.Builder
+		sb.WriteString(sortBy)
+		sb.WriteString(" ")
+		sb.WriteString(order)
+
+		return db.Order(sb.String())
 	}
 }
 
