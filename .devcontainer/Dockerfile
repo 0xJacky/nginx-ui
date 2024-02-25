@@ -29,7 +29,7 @@ RUN wget https://go.dev/dl/${GO_TAR} && \
 
 RUN go install github.com/cosmtrek/air@latest
 
-COPY resources/development/entrypoint.sh /entrypoint.sh
+COPY ../resources/development/entrypoint.sh /entrypoint.sh
 
 RUN chmod a+x /entrypoint.sh  \
     && rm -f /etc/nginx/conf.d/default.conf  \
