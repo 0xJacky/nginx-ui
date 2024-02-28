@@ -32,6 +32,8 @@ function init() {
   }
 }
 
+init()
+
 watch(props, init)
 
 function save() {
