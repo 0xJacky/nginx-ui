@@ -1,9 +1,11 @@
 package translation
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/app"
 	"github.com/0xJacky/pofile/pofile"
+	"github.com/samber/lo"
 	"io"
 	"log"
 )
@@ -13,7 +15,19 @@ var Dict map[string]pofile.Dict
 func init() {
 	Dict = make(map[string]pofile.Dict)
 
-	langCode := []string{"zh_CN", "zh_TW", "ru_RU", "fr_FR", "es", "vi_VN"}
+	i18nJson, _ := app.DistFS.Open("i18n.json")
+
+	defer i18nJson.Close()
+
+	bytes, _ := io.ReadAll(i18nJson)
+
+	i18nMap := make(map[string]string)
+
+	_ = json.Unmarshal(bytes, &i18nMap)
+
+	langCode := lo.MapToSlice(i18nMap, func(key string, value string) string {
+		return key
+	})
 
 	for _, v := range langCode {
 		handlePo(v)

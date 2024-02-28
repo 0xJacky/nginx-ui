@@ -203,6 +203,7 @@ require (
 	github.com/sacloud/go-http v0.1.8 // indirect
 	github.com/sacloud/iaas-api-go v1.11.2 // indirect
 	github.com/sacloud/packages-go v0.0.10 // indirect
+	github.com/samber/lo v1.39.0 // indirect
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.23 // indirect
 	github.com/schollz/closestmatch v2.1.0+incompatible // indirect
 	github.com/shoenig/go-m1cpu v0.1.6 // indirect
