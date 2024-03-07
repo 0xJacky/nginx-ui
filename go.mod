@@ -23,13 +23,14 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/pkg/errors v0.9.1
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
+	github.com/samber/lo v1.39.0
 	github.com/sashabaranov/go-openai v1.19.2
 	github.com/shirou/gopsutil/v3 v3.24.1
 	github.com/shopspring/decimal v1.3.1
 	github.com/spf13/cast v1.6.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20240109151651-bb3e845a7a2a
 	go.uber.org/zap v1.26.0
-	golang.org/x/crypto v0.18.0
+	golang.org/x/crypto v0.19.0
 	gopkg.in/guregu/null.v4 v4.0.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/sqlite v1.5.5
@@ -106,7 +107,7 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-errors/errors v1.5.1 // indirect
-	github.com/go-jose/go-jose/v3 v3.0.1 // indirect
+	github.com/go-jose/go-jose/v3 v3.0.3 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
@@ -203,7 +204,6 @@ require (
 	github.com/sacloud/go-http v0.1.8 // indirect
 	github.com/sacloud/iaas-api-go v1.11.2 // indirect
 	github.com/sacloud/packages-go v0.0.10 // indirect
-	github.com/samber/lo v1.39.0 // indirect
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.23 // indirect
 	github.com/schollz/closestmatch v2.1.0+incompatible // indirect
 	github.com/shoenig/go-m1cpu v0.1.6 // indirect
