@@ -345,6 +345,11 @@ func DeleteStream(c *gin.Context) {
 		return
 	}
 
+	if err = os.Remove(availablePath); err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})
