@@ -33,11 +33,7 @@ export default defineConfig(({ mode }) => {
       ],
     },
     plugins: [
-      vue({
-        script: {
-          defineModel: true,
-        },
-      }),
+      vue(),
       vueJsx(),
 
       vitePluginBuildId(),
