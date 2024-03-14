@@ -27,7 +27,12 @@ func IsPrivateKey(pemStr string) bool {
 	}
 
 	_, errECDSA := x509.ParseECPrivateKey(block.Bytes)
-	return errECDSA == nil
+	if errECDSA == nil {
+		return true
+	}
+
+	_, errPKC := x509.ParsePKCS8PrivateKey(block.Bytes)
+	return errPKC == nil
 }
 
 // IsCertificatePath checks if the file at the given path is a certificate or not exists.
