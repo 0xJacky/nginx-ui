@@ -21,6 +21,7 @@ GCE_PROJECT="gc-project-id" GCE_SERVICE_ACCOUNT_FILE="/path/to/svc/account/file.
     GCE_SERVICE_ACCOUNT = "Account"
   [Configuration.Additional]
     GCE_ALLOW_PRIVATE_ZONE = "Allows requested domain to be in private DNS zone, works only with a private ACME server (by default: false)"
+    GCE_ZONE_ID = "Allows to skip the automatic detection of the zone"
     GCE_POLLING_INTERVAL = "Time between DNS propagation check"
     GCE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
     GCE_TTL = "The TTL of the TXT record used for the DNS challenge"

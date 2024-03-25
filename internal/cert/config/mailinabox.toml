@@ -1,0 +1,24 @@
+Name = "Mail-in-a-Box"
+Description = ''''''
+URL = "https://mailinabox.email"
+Code = "mailinabox"
+Since = "v4.16.0"
+
+Example = '''
+MAILINABOX_EMAIL=user@example.com \
+MAILINABOX_PASSWORD=yyyy \
+MAILINABOX_BASE_URL=https://box.example.com \
+lego --email you@example.com --dns mailinabox --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    MAILINABOX_EMAIL = "User email"
+    MAILINABOX_PASSWORD = "User password"
+    MAILINABOX_BASE_URL = "Base API URL (ex: https://box.example.com)"
+  [Configuration.Additional]
+    MAILINABOX_POLLING_INTERVAL = "Time between DNS propagation check"
+    MAILINABOX_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+
+[Links]
+  API = "https://mailinabox.email/api-docs.html"

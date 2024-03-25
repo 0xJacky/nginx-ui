@@ -5,18 +5,19 @@ Code = "scaleway"
 Since = "v3.4.0"
 
 Example = '''
-SCALEWAY_API_TOKEN=xxxxxxx-xxxxx-xxxx-xxx-xxxxxx \
+SCW_SECRET_KEY=xxxxxxx-xxxxx-xxxx-xxx-xxxxxx \
 lego --email you@example.com --dns scaleway --domains my.example.org run
 '''
 
 [Configuration]
   [Configuration.Credentials]
-    SCALEWAY_API_TOKEN = "API token"
-    SCALEWAY_PROJECT_ID = "Project to use (optional)"
+    SCW_SECRET_KEY = "Secret key"
+    SCW_PROJECT_ID = "Project to use (optional)"
   [Configuration.Additional]
-    SCALEWAY_POLLING_INTERVAL = "Time between DNS propagation check"
-    SCALEWAY_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    SCALEWAY_TTL = "The TTL of the TXT record used for the DNS challenge"
+    SCW_ACCESS_KEY = "Access key"
+    SCW_POLLING_INTERVAL = "Time between DNS propagation check"
+    SCW_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    SCW_TTL = "The TTL of the TXT record used for the DNS challenge"
 
 [Links]
   API = "https://developers.scaleway.com/en/products/domain/dns/api/"

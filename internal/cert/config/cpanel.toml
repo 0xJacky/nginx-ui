@@ -1,0 +1,39 @@
+Name = "CPanel/WHM"
+Description = ''''''
+URL = "https://cpanel.net/"
+Code = "cpanel"
+Since = "v4.16.0"
+
+Example = '''
+### CPANEL (default)
+
+CPANEL_USERNAME = "yyyy"
+CPANEL_TOKEN = "xxxx"
+CPANEL_BASE_URL = "https://example.com:2083" \
+lego --email you@example.com --dns cpanel --domains my.example.org run
+
+## WHM
+
+CPANEL_MODE = whm
+CPANEL_USERNAME = "yyyy"
+CPANEL_TOKEN = "xxxx"
+CPANEL_BASE_URL = "https://example.com:2087" \
+lego --email you@example.com --dns cpanel --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    CPANEL_USERNAME = "username"
+    CPANEL_TOKEN = "API token"
+    CPANEL_BASE_URL = "API server URL"
+  [Configuration.Additional]
+    CPANEL_MODE = "use cpanel API or WHM API (Default: cpanel)"
+    CPANEL_POLLING_INTERVAL = "Time between DNS propagation check"
+    CPANEL_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    CPANEL_TTL = "The TTL of the TXT record used for the DNS challenge"
+    CPANEL_HTTP_TIMEOUT = "API request timeout"
+    CPANEL_REGION = "The region"
+
+[Links]
+  API_CPANEL = "https://api.docs.cpanel.net/cpanel/introduction/"
+  API_WHM = "https://api.docs.cpanel.net/whm/introduction/"

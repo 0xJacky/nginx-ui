@@ -1,0 +1,24 @@
+Name = "Shellrent"
+Description = ''''''
+URL = "https://www.shellrent.com/"
+Code = "shellrent"
+Since = "v4.16.0"
+
+Example = '''
+SHELLRENT_USERNAME=xxxx \
+SHELLRENT_TOKEN=yyyy \
+lego --email you@example.com --dns shellrent --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    SHELLRENT_USERNAME = "Username"
+    SHELLRENT_TOKEN = "Token"
+  [Configuration.Additional]
+    SHELLRENT_POLLING_INTERVAL = "Time between DNS propagation check"
+    SHELLRENT_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    SHELLRENT_TTL = "The TTL of the TXT record used for the DNS challenge"
+    SHELLRENT_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://api.shellrent.com/section/api2"
