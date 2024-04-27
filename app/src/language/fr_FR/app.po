@@ -59,7 +59,7 @@ msgstr "Ajouter un site"
 msgid "Added successfully"
 msgstr "Mis à jour avec succés"
 
-#: src/views/certificate/DNSChallenge.vue:94
+#: src/views/certificate/DNSChallenge.vue:110
 #, fuzzy
 msgid "Additional"
 msgstr "Supplémentaire"
@@ -71,6 +71,11 @@ msgstr "Mode avancé"
 #: src/views/preference/OpenAISettings.vue:31
 msgid "API Base Url"
 msgstr "URL de base de l'API"
+
+#: src/views/certificate/DNSChallenge.vue:84
+#, fuzzy
+msgid "API Document"
+msgstr "Jeton d'API"
 
 #: src/views/preference/OpenAISettings.vue:43
 msgid "API Proxy"
@@ -100,7 +105,7 @@ msgstr "Voulez-vous vraiment effacer l'historique du chat ?"
 msgid "Are you sure you want to delete?"
 msgstr "Etes-vous sûr que vous voulez supprimer ?"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:91
 msgid "Are you sure you want to remove this directive?"
 msgstr "Voulez-vous vraiment supprimer cette directive ?"
 
@@ -253,12 +258,12 @@ msgstr "Effacer"
 msgid "Cleared successfully"
 msgstr "Désactivé avec succès"
 
-#: src/views/preference/LogrotateSettings.vue:27
+#: src/views/preference/LogrotateSettings.vue:26
 #, fuzzy
 msgid "Command"
 msgstr "Commentaires"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:107
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:109
 #: src/views/domain/ngx_conf/LocationEditor.vue:119
 #: src/views/domain/ngx_conf/LocationEditor.vue:88
 #: src/views/domain/ngx_conf/NgxServer.vue:142
@@ -289,7 +294,7 @@ msgstr "Configurer SSL"
 msgid "Connected"
 msgstr ""
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:112
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:114
 #: src/views/domain/ngx_conf/LocationEditor.vue:100
 #: src/views/domain/ngx_conf/LocationEditor.vue:128
 msgid "Content"
@@ -328,7 +333,7 @@ msgstr "La création du client facilite la communication avec le serveur CA"
 msgid "Credential"
 msgstr "Identifiant"
 
-#: src/views/certificate/DNSChallenge.vue:83
+#: src/views/certificate/DNSChallenge.vue:99
 msgid "Credentials"
 msgstr "Identifiants"
 
@@ -620,7 +625,7 @@ msgstr "Activer TLS"
 #: src/views/domain/cert/ChangeCert.vue:44
 #: src/views/domain/components/RightSettings.vue:78
 #: src/views/domain/DomainEdit.vue:179 src/views/domain/DomainList.vue:32
-#: src/views/preference/LogrotateSettings.vue:24
+#: src/views/preference/LogrotateSettings.vue:23
 #: src/views/stream/components/RightSettings.vue:78
 #: src/views/stream/StreamEdit.vue:170 src/views/stream/StreamList.vue:32
 msgid "Enabled"
@@ -842,7 +847,7 @@ msgstr "Installé avec succès"
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "Autorités de certification intermédiaires : %{issuer}"
 
-#: src/views/preference/LogrotateSettings.vue:30
+#: src/views/preference/LogrotateSettings.vue:29
 msgid "Interval"
 msgstr ""
 
@@ -939,7 +944,7 @@ msgstr "Déconnexion réussie"
 msgid "Logrotate"
 msgstr ""
 
-#: src/views/preference/LogrotateSettings.vue:17
+#: src/views/preference/LogrotateSettings.vue:16
 msgid ""
 "Logrotate, by default, is enabled in most mainstream Linux distributions for "
 "users who install Nginx UI on the host machine, so you don't need to modify "
@@ -988,7 +993,7 @@ msgstr "Mémoire"
 msgid "Memory and Storage"
 msgstr "Mémoire et stockage"
 
-#: src/views/preference/LogrotateSettings.vue:34
+#: src/views/preference/LogrotateSettings.vue:33
 msgid "Minutes"
 msgstr ""
 
@@ -1089,7 +1094,7 @@ msgstr "Nginx a redémarré avec succès"
 #: src/components/Notification/Notification.vue:84
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:351
 #: src/views/domain/DomainList.vue:145
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:91
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:93
 #: src/views/domain/ngx_conf/LocationEditor.vue:74
 #: src/views/notification/Notification.vue:71
 #: src/views/stream/StreamList.vue:166
@@ -1398,7 +1403,7 @@ msgstr "En cours d'éxécution"
 #: src/components/ChatGPT/ChatGPT.vue:259
 #: src/views/certificate/CertificateEditor.vue:245
 #: src/views/config/ConfigEdit.vue:98 src/views/domain/DomainEdit.vue:263
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:121
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:123
 #: src/views/preference/Preference.vue:124 src/views/stream/StreamEdit.vue:253
 msgid "Save"
 msgstr "Enregistrer"
@@ -1408,7 +1413,7 @@ msgid "Save Directive"
 msgstr "Enregistrer la directive"
 
 #: src/views/config/ConfigEdit.vue:59 src/views/domain/DomainAdd.vue:53
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:42
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:44
 msgid "Save error %{msg}"
 msgstr "Enregistrer l'erreur %{msg}"
 
@@ -1424,10 +1429,14 @@ msgstr "Sauvegarde Réussie"
 
 #: src/views/config/ConfigEdit.vue:57 src/views/domain/DomainAdd.vue:41
 #: src/views/domain/DomainEdit.vue:149
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:40
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:42
 #: src/views/stream/StreamEdit.vue:140
 msgid "Saved successfully"
 msgstr "Enregistré avec succès"
+
+#: src/views/certificate/DNSChallenge.vue:91
+msgid "SDK"
+msgstr ""
 
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:105
 msgid "Selector"
@@ -1649,7 +1658,7 @@ msgstr ""
 msgid "This field should not be empty"
 msgstr ""
 
-#: src/views/preference/LogrotateSettings.vue:16
+#: src/views/preference/LogrotateSettings.vue:15
 msgid "Tips"
 msgstr ""
 
@@ -1775,7 +1784,7 @@ msgstr "Écriture de la clé privée du certificat sur le disque"
 msgid "Writing certificate to disk"
 msgstr "Écriture du certificat sur le disque"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:92
 #: src/views/domain/ngx_conf/LocationEditor.vue:73
 msgid "Yes"
 msgstr "Oui"

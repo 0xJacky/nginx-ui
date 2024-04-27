@@ -59,7 +59,7 @@ msgstr "스트림 추가"
 msgid "Added successfully"
 msgstr "성공적으로 추가됨"
 
-#: src/views/certificate/DNSChallenge.vue:94
+#: src/views/certificate/DNSChallenge.vue:110
 msgid "Additional"
 msgstr "추가적인"
 
@@ -70,6 +70,11 @@ msgstr "고급 모드"
 #: src/views/preference/OpenAISettings.vue:31
 msgid "API Base Url"
 msgstr "API 기본 URL"
+
+#: src/views/certificate/DNSChallenge.vue:84
+#, fuzzy
+msgid "API Document"
+msgstr "API 토큰"
 
 #: src/views/preference/OpenAISettings.vue:43
 msgid "API Proxy"
@@ -97,7 +102,7 @@ msgstr "기록을 지우시겠습니까?"
 msgid "Are you sure you want to delete?"
 msgstr "정말 삭제하시겠습니까?"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:91
 msgid "Are you sure you want to remove this directive?"
 msgstr "이 지시문을 정말로 제거하시겠습니까?"
 
@@ -245,11 +250,11 @@ msgstr "클리어"
 msgid "Cleared successfully"
 msgstr "성공적으로 제거됨"
 
-#: src/views/preference/LogrotateSettings.vue:27
+#: src/views/preference/LogrotateSettings.vue:26
 msgid "Command"
 msgstr "명령어"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:107
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:109
 #: src/views/domain/ngx_conf/LocationEditor.vue:119
 #: src/views/domain/ngx_conf/LocationEditor.vue:88
 #: src/views/domain/ngx_conf/NgxServer.vue:142
@@ -280,7 +285,7 @@ msgstr "SSL 구성하기"
 msgid "Connected"
 msgstr "연결됨"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:112
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:114
 #: src/views/domain/ngx_conf/LocationEditor.vue:100
 #: src/views/domain/ngx_conf/LocationEditor.vue:128
 msgid "Content"
@@ -318,7 +323,7 @@ msgstr "클라이언트 생성은 CA 서버와의 통신을 용이하게 합니�
 msgid "Credential"
 msgstr "인증 정보"
 
-#: src/views/certificate/DNSChallenge.vue:83
+#: src/views/certificate/DNSChallenge.vue:99
 msgid "Credentials"
 msgstr "인증 정보들"
 
@@ -493,7 +498,8 @@ msgstr "도메인 구성이 성공적으로 생성되었습니다"
 
 #: src/views/certificate/CertificateEditor.vue:114
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
-msgstr "도메인 목록이 비어 있습니다. %{config}에 대한 자동 인증서를 다시 열어보세요"
+msgstr ""
+"도메인 목록이 비어 있습니다. %{config}에 대한 자동 인증서를 다시 열어보세요"
 
 #: src/language/constants.ts:29
 msgid "Download latest release error"
@@ -592,7 +598,7 @@ msgstr "TLS 활성화"
 #: src/views/domain/cert/ChangeCert.vue:44
 #: src/views/domain/components/RightSettings.vue:78
 #: src/views/domain/DomainEdit.vue:179 src/views/domain/DomainList.vue:32
-#: src/views/preference/LogrotateSettings.vue:24
+#: src/views/preference/LogrotateSettings.vue:23
 #: src/views/stream/components/RightSettings.vue:78
 #: src/views/stream/StreamEdit.vue:170 src/views/stream/StreamList.vue:32
 msgid "Enabled"
@@ -812,7 +818,7 @@ msgstr "성공적으로 활성화됨"
 msgid "Intermediate Certification Authorities: %{issuer}"
 msgstr "중간 인증 기관: %{issuer}"
 
-#: src/views/preference/LogrotateSettings.vue:30
+#: src/views/preference/LogrotateSettings.vue:29
 msgid "Interval"
 msgstr "간격"
 
@@ -907,7 +913,7 @@ msgstr "로그아웃 성공"
 msgid "Logrotate"
 msgstr "로그관리"
 
-#: src/views/preference/LogrotateSettings.vue:17
+#: src/views/preference/LogrotateSettings.vue:16
 msgid ""
 "Logrotate, by default, is enabled in most mainstream Linux distributions for "
 "users who install Nginx UI on the host machine, so you don't need to modify "
@@ -916,11 +922,11 @@ msgid ""
 "of Nginx UI will execute the logrotate command at the interval you set in "
 "minutes."
 msgstr ""
-"Logrotate는 대부분의 주류 리눅스 배포판에서"
-"Nginx UI를 호스트 머신에 설치하는 사용자에게 기본적으로 활성화되어 있으므로"
-"이 페이지의 매개 변수를 수정할 필요가 없습니다. 도커 컨테이너를 사용하여 Nginx UI를 설치하는"
-"사용자는이 옵션을 수동으로 활성화할 수 있습니다. Nginx UI의 크론탭 작업 스케줄러는"
-"설정한 간격 (분 단위)에서 logrotate 명령을 실행합니다."
+"Logrotate는 대부분의 주류 리눅스 배포판에서Nginx UI를 호스트 머신에 설치하는 "
+"사용자에게 기본적으로 활성화되어 있으므로이 페이지의 매개 변수를 수정할 필요"
+"가 없습니다. 도커 컨테이너를 사용하여 Nginx UI를 설치하는사용자는이 옵션을 수"
+"동으로 활성화할 수 있습니다. Nginx UI의 크론탭 작업 스케줄러는설정한 간격 "
+"(분 단위)에서 logrotate 명령을 실행합니다."
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:87
 #, fuzzy
@@ -928,8 +934,8 @@ msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort before obtaining the certificate."
 msgstr ""
-"인증서를 획득하기 전에 .well-known 디렉토리에 대한"
-"역방향 프록시를 HTTPChallengePort(기본값: 9180)로 구성했는지 확인하세요."
+"인증서를 획득하기 전에 .well-known 디렉토리에 대한역방향 프록시를 "
+"HTTPChallengePort(기본값: 9180)로 구성했는지 확인하세요."
 
 #: src/routes/index.ts:101
 msgid "Manage Configs"
@@ -961,7 +967,7 @@ msgstr "메모리"
 msgid "Memory and Storage"
 msgstr "메모리 및 저장소"
 
-#: src/views/preference/LogrotateSettings.vue:34
+#: src/views/preference/LogrotateSettings.vue:33
 msgid "Minutes"
 msgstr "분"
 
@@ -1066,7 +1072,7 @@ msgstr "Nginx가 성공적으로 재시작됨"
 #: src/components/Notification/Notification.vue:84
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:351
 #: src/views/domain/DomainList.vue:145
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:91
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:93
 #: src/views/domain/ngx_conf/LocationEditor.vue:74
 #: src/views/notification/Notification.vue:71
 #: src/views/stream/StreamList.vue:166
@@ -1210,8 +1216,8 @@ msgid ""
 "Please first add credentials in Certification > DNS Credentials, and then "
 "select one of the credentialsbelow to request the API of the DNS provider."
 msgstr ""
-"먼저 인증서 > DNS 자격 증명에 자격 증명을 추가한 다음,"
-"DNS 제공자의 API를 요청하려면 아래 자격 증명 중 하나를 선택해주세요."
+"먼저 인증서 > DNS 자격 증명에 자격 증명을 추가한 다음,DNS 제공자의 API를 요청"
+"하려면 아래 자격 증명 중 하나를 선택해주세요."
 
 #: src/views/domain/components/SiteDuplicate.vue:40
 #: src/views/stream/components/StreamDuplicate.vue:40
@@ -1371,7 +1377,7 @@ msgstr "실행 중"
 #: src/components/ChatGPT/ChatGPT.vue:259
 #: src/views/certificate/CertificateEditor.vue:245
 #: src/views/config/ConfigEdit.vue:98 src/views/domain/DomainEdit.vue:263
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:121
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:123
 #: src/views/preference/Preference.vue:124 src/views/stream/StreamEdit.vue:253
 msgid "Save"
 msgstr "저장"
@@ -1381,7 +1387,7 @@ msgid "Save Directive"
 msgstr "지시문 저장"
 
 #: src/views/config/ConfigEdit.vue:59 src/views/domain/DomainAdd.vue:53
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:42
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:44
 msgid "Save error %{msg}"
 msgstr "저장 오류 %{msg}"
 
@@ -1399,10 +1405,14 @@ msgstr "성공적으로 저장됨"
 
 #: src/views/config/ConfigEdit.vue:57 src/views/domain/DomainAdd.vue:41
 #: src/views/domain/DomainEdit.vue:149
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:40
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:42
 #: src/views/stream/StreamEdit.vue:140
 msgid "Saved successfully"
 msgstr "성공적으로 저장됨"
+
+#: src/views/certificate/DNSChallenge.vue:91
+msgid "SDK"
+msgstr ""
 
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:105
 msgid "Selector"
@@ -1557,8 +1567,8 @@ msgid ""
 "The certificate for the domain will be checked 5 minutes, and will be "
 "renewed if it has been more than 1 week since it was last issued."
 msgstr ""
-"도메인의 인증서는 매 시간 확인되며,"
-"마지막으로 발급된 지 1개월이 경과한 경우 갱신됩니다."
+"도메인의 인증서는 매 시간 확인되며,마지막으로 발급된 지 1개월이 경과한 경우 "
+"갱신됩니다."
 
 #: src/views/other/Install.vue:53
 msgid "The filename cannot contain the following characters: %{c}"
@@ -1620,7 +1630,7 @@ msgstr "이 필드는 필수입니다"
 msgid "This field should not be empty"
 msgstr "이 필드는 비워둘 수 없습니다"
 
-#: src/views/preference/LogrotateSettings.vue:16
+#: src/views/preference/LogrotateSettings.vue:15
 msgid "Tips"
 msgstr "팁"
 
@@ -1635,10 +1645,9 @@ msgid ""
 "need to save this file and reload the Nginx. Are you sure you want to "
 "continue?"
 msgstr ""
-"인증서 자동 갱신이 정상적으로 작동하도록 하려면,"
-"권한에서 백엔드로 요청을 프록시할 수 있는 위치를 추가해야 하며,"
-"이 파일을 저장하고 Nginx를 다시로드해야 합니다."
-"계속하시겠습니까?"
+"인증서 자동 갱신이 정상적으로 작동하도록 하려면,권한에서 백엔드로 요청을 프록"
+"시할 수 있는 위치를 추가해야 하며,이 파일을 저장하고 Nginx를 다시로드해야 합"
+"니다.계속하시겠습니까?"
 
 #: src/views/preference/OpenAISettings.vue:58
 msgid "Token is not valid"
@@ -1725,15 +1734,17 @@ msgstr "경고"
 msgid ""
 "We will add one or more TXT records to the DNS records of your domain for "
 "ownership verification."
-msgstr "도메인 소유권 검증을 위해 도메인의 DNS레코드에 하나 이상의 TXT 레코드를 "
-"추가할 것입니다."
+msgstr ""
+"도메인 소유권 검증을 위해 도메인의 DNS레코드에 하나 이상의 TXT 레코드를 추가"
+"할 것입니다."
 
 #: src/views/domain/cert/components/ObtainCert.vue:135
 msgid ""
 "We will remove the HTTPChallenge configuration from this file and reload the "
 "Nginx. Are you sure you want to continue?"
-msgstr "이 파일에서 HTTPChallenge 구성을 제거하고 Nginx를 다시 로드할 예정입니다. "
-"계속하시겠습니까?"
+msgstr ""
+"이 파일에서 HTTPChallenge 구성을 제거하고 Nginx를 다시 로드할 예정입니다. 계"
+"속하시겠습니까?"
 
 #: src/views/dashboard/ServerAnalytic.vue:30
 #: src/views/dashboard/ServerAnalytic.vue:368
@@ -1748,7 +1759,7 @@ msgstr "인증서 개인 키를 디스크에 쓰기"
 msgid "Writing certificate to disk"
 msgstr "인증서를 디스크에 쓰기"
 
-#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
+#: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:92
 #: src/views/domain/ngx_conf/LocationEditor.vue:73
 msgid "Yes"
 msgstr "예"

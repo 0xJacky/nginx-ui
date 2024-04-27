@@ -1,11 +1,10 @@
-package dns
+package cert
 
 import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/tls"
-	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/go-acme/lego/v4/certificate"
@@ -29,7 +28,7 @@ func TestTencentCloudDNS(t *testing.T) {
 		return
 	}
 
-	myUser := cert.MyUser{
+	myUser := User{
 		Email: settings.ServerSettings.Email,
 		Key:   privateKey,
 	}

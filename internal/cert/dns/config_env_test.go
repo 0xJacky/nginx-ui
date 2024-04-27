@@ -31,12 +31,19 @@ func TestConfigEnv(t *testing.T) {
 
 		log.Println(c.Name)
 
-		for k, v := range c.Configuration.Credentials {
-			log.Println(k, v)
+		if c.Configuration != nil {
+			for k, v := range c.Configuration.Credentials {
+				log.Println(k, v)
+			}
+
+			for k, v := range c.Configuration.Additional {
+				log.Println(k, v)
+			}
 		}
 
-		for k, v := range c.Configuration.Additional {
-			log.Println(k, v)
+		if c.Links != nil {
+			log.Println(c.Links.API)
+			log.Println(c.Links.GoClient)
 		}
 	}
 

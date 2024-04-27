@@ -79,6 +79,22 @@ const filterOption = (input: string, option: { label: string }) => {
         :filter-option="filterOption"
       />
     </AFormItem>
+    <AFormItem>
+      <p v-if="current?.links?.api">
+        {{ $gettext('API Document') }}: <a
+          :href="current.links.api"
+          target="_blank"
+          rel="noopener noreferrer"
+        >{{ current.links.api }}</a>
+      </p>
+      <p v-if="current?.links?.go_client">
+        {{ $gettext('SDK') }}: <a
+          :href="current.links.go_client"
+          target="_blank"
+          rel="noopener noreferrer"
+        >{{ current.links.go_client }}</a>
+      </p>
+    </AFormItem>
     <template v-if="current?.configuration?.credentials">
       <h4>{{ $gettext('Credentials') }}</h4>
       <AFormItem
