@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import 'xterm/css/xterm.css'
 import { Terminal } from 'xterm'
-import { FitAddon } from 'xterm-addon-fit'
+import { FitAddon } from '@xterm/addon-fit'
 import { onMounted, onUnmounted } from 'vue'
 import _ from 'lodash'
 import { useGettext } from 'vue3-gettext'
