@@ -34,7 +34,7 @@ const columns: Column[] = [
       type: input,
       config: {
         placeholder() {
-          return $gettext('If left black, the default CA Dir will be used.')
+          return $gettext('If left blank, the default CA Dir will be used.')
         },
       },
     },
