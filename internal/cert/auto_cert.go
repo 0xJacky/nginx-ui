@@ -4,6 +4,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/pkg/errors"
 	"runtime"
 	"strings"
@@ -59,8 +60,8 @@ func renew(certModel *model.Cert) {
 		notification.Error("Renew Certificate Error", strings.Join(certModel.Domains, ", "))
 		return
 	}
-	if time.Now().Sub(cert.NotBefore).Hours()/24 < 7 {
-		// not between 1 week, ignore this certificate
+	if int(time.Now().Sub(cert.NotBefore).Hours()/24) < settings.ServerSettings.CertRenewalInterval {
+		// not after settings.ServerSettings.CertRenewalInterval, ignore
 		return
 	}
 

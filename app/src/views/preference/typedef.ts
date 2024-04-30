@@ -10,6 +10,7 @@ export interface Settings {
     github_proxy: string
     email: string
     ca_dir: string
+    cert_renewal_interval: number
   }
   nginx: {
     access_log_path: string

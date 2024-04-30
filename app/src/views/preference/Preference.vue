@@ -21,6 +21,7 @@ const data = ref<Settings>({
     github_proxy: '',
     ca_dir: '',
     node_secret: '',
+    cert_renewal_interval: 7,
   },
   nginx: {
     access_log_path: '',
