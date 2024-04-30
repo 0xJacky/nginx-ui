@@ -60,7 +60,7 @@ func renew(certModel *model.Cert) {
 		notification.Error("Renew Certificate Error", strings.Join(certModel.Domains, ", "))
 		return
 	}
-	if int(time.Now().Sub(cert.NotBefore).Hours()/24) < settings.ServerSettings.CertRenewalInterval {
+	if int(time.Now().Sub(cert.NotBefore).Hours()/24) < settings.ServerSettings.GetCertRenewalInterval() {
 		// not after settings.ServerSettings.CertRenewalInterval, ignore
 		return
 	}

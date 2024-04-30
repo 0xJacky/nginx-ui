@@ -33,6 +33,16 @@ func (s *Server) GetCADir() string {
 	return lego.LEDirectoryProduction
 }
 
+func (s *Server) GetCertRenewalInterval() int {
+	if s.CertRenewalInterval < 7 {
+		return 7
+	}
+	if s.CertRenewalInterval > 21 {
+		return 21
+	}
+	return s.CertRenewalInterval
+}
+
 var ServerSettings = Server{
 	HttpHost:            "0.0.0.0",
 	HttpPort:            "9000",
