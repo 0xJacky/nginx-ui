@@ -149,13 +149,13 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
         if len(p) > 0 {
             logPath = p[0]
         }
-        
+
     case "error":
         path := nginx.GetErrorLogPath()
 
         if path == "" {
             err = errors.New("settings.NginxLogSettings.ErrorLogPath is empty," +
-                " refer to https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information")
+                " refer to https://nginxui.com/guide/config-nginx.html for more information")
             return
         }
 
@@ -165,7 +165,7 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 
         if path == "" {
             err = errors.New("settings.NginxLogSettings.AccessLogPath is empty," +
-                " refer to https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information")
+                " refer to https://nginxui.com/guide/config-nginx.html for more information")
             return
         }
 
