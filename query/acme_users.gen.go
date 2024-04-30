@@ -36,6 +36,7 @@ func newAcmeUser(db *gorm.DB, opts ...gen.DOOption) acmeUser {
 	_acmeUser.Email = field.NewString(tableName, "email")
 	_acmeUser.CADir = field.NewString(tableName, "ca_dir")
 	_acmeUser.Registration = field.NewField(tableName, "registration")
+	_acmeUser.Key = field.NewField(tableName, "key")
 
 	_acmeUser.fillFieldMap()
 
@@ -54,6 +55,7 @@ type acmeUser struct {
 	Email        field.String
 	CADir        field.String
 	Registration field.Field
+	Key          field.Field
 
 	fieldMap map[string]field.Expr
 }
@@ -78,6 +80,7 @@ func (a *acmeUser) updateTableName(table string) *acmeUser {
 	a.Email = field.NewString(table, "email")
 	a.CADir = field.NewString(table, "ca_dir")
 	a.Registration = field.NewField(table, "registration")
+	a.Key = field.NewField(table, "key")
 
 	a.fillFieldMap()
 
@@ -94,7 +97,7 @@ func (a *acmeUser) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (a *acmeUser) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 8)
+	a.fieldMap = make(map[string]field.Expr, 9)
 	a.fieldMap["id"] = a.ID
 	a.fieldMap["created_at"] = a.CreatedAt
 	a.fieldMap["updated_at"] = a.UpdatedAt
@@ -103,6 +106,7 @@ func (a *acmeUser) fillFieldMap() {
 	a.fieldMap["email"] = a.Email
 	a.fieldMap["ca_dir"] = a.CADir
 	a.fieldMap["registration"] = a.Registration
+	a.fieldMap["key"] = a.Key
 }
 
 func (a acmeUser) clone(db *gorm.DB) acmeUser {

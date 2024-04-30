@@ -85,6 +85,7 @@ type certJson struct {
 	KeyType               certcrypto.KeyType `json:"key_type" binding:"omitempty,auto_cert_key_type"`
 	ChallengeMethod       string             `json:"challenge_method"`
 	DnsCredentialID       int                `json:"dns_credential_id"`
+	ACMEUserID            int                `json:"acme_user_id"`
 }
 
 func AddCert(c *gin.Context) {
@@ -101,6 +102,7 @@ func AddCert(c *gin.Context) {
 		KeyType:               json.KeyType,
 		ChallengeMethod:       json.ChallengeMethod,
 		DnsCredentialID:       json.DnsCredentialID,
+		ACMEUserID:            json.ACMEUserID,
 	}
 
 	err := certModel.Insert()
@@ -151,6 +153,7 @@ func ModifyCert(c *gin.Context) {
 		ChallengeMethod:       json.ChallengeMethod,
 		KeyType:               json.KeyType,
 		DnsCredentialID:       json.DnsCredentialID,
+		ACMEUserID:            json.ACMEUserID,
 	})
 
 	if err != nil {

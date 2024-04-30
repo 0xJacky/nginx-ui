@@ -1,6 +1,7 @@
 import type { ModelBase } from '@/api/curd'
 import Curd from '@/api/curd'
 import type { DnsCredential } from '@/api/dns_credential'
+import type { AcmeUser } from '@/api/acme_user'
 
 export interface Cert extends ModelBase {
   name: string
@@ -14,6 +15,8 @@ export interface Cert extends ModelBase {
   challenge_method: string
   dns_credential_id: number
   dns_credential?: DnsCredential
+  acme_user_id: number
+  acme_user?: AcmeUser
   key_type: string
   log: string
   certificate_info: CertificateInfo

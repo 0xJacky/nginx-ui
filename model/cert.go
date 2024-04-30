@@ -27,6 +27,8 @@ type Cert struct {
 	ChallengeMethod       string             `json:"challenge_method"`
 	DnsCredentialID       int                `json:"dns_credential_id"`
 	DnsCredential         *DnsCredential     `json:"dns_credential,omitempty"`
+	ACMEUserID            int                `json:"acme_user_id"`
+	ACMEUser              *AcmeUser          `json:"acme_user,omitempty"`
 	KeyType               certcrypto.KeyType `json:"key_type"`
 	Log                   string             `json:"log"`
 }

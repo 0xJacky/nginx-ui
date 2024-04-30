@@ -3,6 +3,7 @@ import type { Ref } from 'vue'
 import type { DnsChallenge } from '@/api/auto_cert'
 import DNSChallenge from '@/views/domain/cert/components/DNSChallenge.vue'
 import type { Cert } from '@/api/cert'
+import ACMEUserSelector from '@/views/certificate/ACMEUserSelector.vue'
 
 defineProps<{
   hideNote?: boolean
@@ -114,6 +115,7 @@ onMounted(() => {
         </ASelect>
       </AFormItem>
     </AForm>
+    <ACMEUserSelector />
     <DNSChallenge v-if="data.challenge_method === 'dns01'" />
   </div>
 </template>
