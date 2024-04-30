@@ -1,14 +1,10 @@
 package cert
 
 import (
-	"crypto/ecdsa"
-	"crypto/elliptic"
-	"crypto/rand"
 	"crypto/tls"
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-acme/lego/v4/certificate"
@@ -16,7 +12,6 @@ import (
 	"github.com/go-acme/lego/v4/lego"
 	legolog "github.com/go-acme/lego/v4/log"
 	dnsproviders "github.com/go-acme/lego/v4/providers/dns"
-	"github.com/go-acme/lego/v4/registration"
 	"github.com/pkg/errors"
 	"log"
 	"net/http"
@@ -51,22 +46,13 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 
 	domain := payload.ServerName
 
-	// Create a user. New accounts need an email and private key to start.
-	l.Println("[INFO] [Nginx UI] Generating private key for registering account")
-	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	l.Println("[INFO] [Nginx UI] Preparing lego configurations")
+	user, err := payload.GetACMEUser()
 	if err != nil {
-		errChan <- errors.Wrap(err, "issue cert generate key error")
+		errChan <- errors.Wrap(err, "issue cert get acme user error")
 		return
 	}
-
-	l.Println("[INFO] [Nginx UI] Preparing lego configurations")
-	user := newUser(settings.ServerSettings.Email)
-
-	user.Key = model.PrivateKey{
-		X: privateKey.PublicKey.X,
-		Y: privateKey.PublicKey.Y,
-		D: privateKey.D,
-	}
+	l.Printf("[INFO] [Nginx UI] ACME User: %s, CA Dir: %s\n", user.Email, user.CADir)
 
 	// Start a goroutine to fetch and process logs from channel
 	go func() {
@@ -77,14 +63,16 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 
 	config := lego.NewConfig(user)
 
-	config.CADirURL = settings.ServerSettings.GetCADir()
+	config.CADirURL = user.CADir
+
+	// Skip TLS check
 	if config.HTTPClient != nil {
 		config.HTTPClient.Transport = &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		}
 	}
 
-	config.Certificate.KeyType = payload.KeyType
+	config.Certificate.KeyType = payload.GetKeyType()
 
 	l.Println("[INFO] [Nginx UI] Creating client facilitates communication with the CA server")
 	// A client facilitates communication with the CA server.
@@ -145,15 +133,6 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		errChan <- errors.Wrap(err, "challenge error")
 		return
 	}
-
-	// New users will need to register
-	l.Println("[INFO] [Nginx UI] Registering user")
-	reg, err := client.Registration.Register(registration.RegisterOptions{TermsOfServiceAgreed: true})
-	if err != nil {
-		errChan <- errors.Wrap(err, "register error")
-		return
-	}
-	user.Registration = *reg
 
 	request := certificate.ObtainRequest{
 		Domains: domain,

@@ -5,9 +5,11 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
+	"crypto/tls"
 	"github.com/go-acme/lego/v4/lego"
 	"github.com/go-acme/lego/v4/registration"
 	"math/big"
+	"net/http"
 )
 
 type PrivateKey struct {
@@ -55,6 +57,16 @@ func (u *AcmeUser) Register() error {
 	}
 
 	config := lego.NewConfig(u)
+	config.CADirURL = u.CADir
+	u.Registration = registration.Resource{}
+
+	// Skip TLS check
+	if config.HTTPClient != nil {
+		config.HTTPClient.Transport = &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+	}
+
 	client, err := lego.NewClient(config)
 	if err != nil {
 		return err

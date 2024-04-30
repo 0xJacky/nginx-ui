@@ -34,9 +34,8 @@ const mounted = ref(false)
 watch(id, init)
 
 watch(current, () => {
-  data.value.acme_user_id = current.value.id
-  if (!mounted.value)
-    data.value.acme_user_id = 0
+  if (mounted.value)
+    data.value.acme_user_id = current.value.id
 })
 
 onMounted(async () => {

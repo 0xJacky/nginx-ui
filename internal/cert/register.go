@@ -29,12 +29,10 @@ func InitRegister() {
 	}
 
 	// Create a new user
-	user := &User{
-		AcmeUser: model.AcmeUser{
-			Name:  "System Initial User",
-			Email: settings.ServerSettings.Email,
-			CADir: settings.ServerSettings.GetCADir(),
-		},
+	user := &model.AcmeUser{
+		Name:  "System Initial User",
+		Email: settings.ServerSettings.Email,
+		CADir: settings.ServerSettings.GetCADir(),
 	}
 
 	err = user.Register()
@@ -43,11 +41,24 @@ func InitRegister() {
 		return
 	}
 
-	err = u.Create(&user.AcmeUser)
+	err = u.Create(user)
 	if err != nil {
 		logger.Error(err)
 		return
 	}
 
 	logger.Info("ACME Default User registered")
+}
+
+func GetDefaultACMEUser() (user *model.AcmeUser, err error) {
+	u := query.AcmeUser
+	user, err = u.Where(u.Email.Eq(settings.ServerSettings.Email),
+		u.CADir.Eq(settings.ServerSettings.GetCADir())).First()
+
+	if err != nil {
+		err = errors.Wrap(err, "get default user error")
+		return
+	}
+
+	return
 }
