@@ -90,7 +90,7 @@ func InitJsExtensionType() {
 
 func InitCronJobs() {
 	s := gocron.NewScheduler(time.UTC)
-	job, err := s.Every(30).Minute().SingletonMode().Do(cert.AutoObtain)
+	job, err := s.Every(30).Minute().SingletonMode().Do(cert.AutoCert)
 
 	if err != nil {
 		logger.Fatalf("AutoCert Job: %v, Err: %v\n", job, err)

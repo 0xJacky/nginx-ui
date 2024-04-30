@@ -7,7 +7,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/go-acme/lego/v4/certificate"
 	"github.com/go-acme/lego/v4/challenge/http01"
 	"github.com/go-acme/lego/v4/lego"
 	legolog "github.com/go-acme/lego/v4/log"
@@ -16,8 +15,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
-	"strings"
 	"time"
 )
 
@@ -44,15 +41,13 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 	// Hijack the (logger) of lego
 	legolog.Logger = l
 
-	domain := payload.ServerName
-
 	l.Println("[INFO] [Nginx UI] Preparing lego configurations")
 	user, err := payload.GetACMEUser()
 	if err != nil {
 		errChan <- errors.Wrap(err, "issue cert get acme user error")
 		return
 	}
-	l.Printf("[INFO] [Nginx UI] ACME User: %s, CA Dir: %s\n", user.Email, user.CADir)
+	l.Printf("[INFO] [Nginx UI] ACME User: %s, Email: %s, CA Dir: %s\n", user.Name, user.Email, user.CADir)
 
 	// Start a goroutine to fetch and process logs from channel
 	go func() {
@@ -134,45 +129,11 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		return
 	}
 
-	request := certificate.ObtainRequest{
-		Domains: domain,
-		Bundle:  true,
-	}
-
-	l.Println("[INFO] [Nginx UI] Obtaining certificate")
-	certificates, err := client.Certificate.Obtain(request)
-	if err != nil {
-		errChan <- errors.Wrap(err, "obtain certificate error")
-		return
-	}
-	name := strings.Join(domain, "_")
-	saveDir := nginx.GetConfPath("ssl/" + name + "_" + string(payload.KeyType))
-	if _, err = os.Stat(saveDir); os.IsNotExist(err) {
-		err = os.MkdirAll(saveDir, 0755)
-		if err != nil {
-			errChan <- errors.Wrap(err, "mkdir error")
-			return
-		}
-	}
-
-	// Each certificate comes back with the cert bytes, the bytes of the client's
-	// private key, and a certificate URL. SAVE THESE TO DISK.
-	l.Println("[INFO] [Nginx UI] Writing certificate to disk")
-	err = os.WriteFile(filepath.Join(saveDir, "fullchain.cer"),
-		certificates.Certificate, 0644)
-
-	if err != nil {
-		errChan <- errors.Wrap(err, "write fullchain.cer error")
-		return
-	}
-
-	l.Println("[INFO] [Nginx UI] Writing certificate private key to disk")
-	err = os.WriteFile(filepath.Join(saveDir, "private.key"),
-		certificates.PrivateKey, 0644)
-
-	if err != nil {
-		errChan <- errors.Wrap(err, "write private.key error")
-		return
+	if time.Now().Sub(payload.NotBefore).Hours()/24 <= 21 &&
+		payload.Resource != nil && payload.Resource.Certificate != nil {
+		renew(payload, client, l, errChan)
+	} else {
+		obtain(payload, client, l, errChan)
 	}
 
 	l.Println("[INFO] [Nginx UI] Reloading nginx")

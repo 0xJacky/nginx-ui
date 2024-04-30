@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func AutoObtain() {
+func AutoCert() {
 	defer func() {
 		if err := recover(); err != nil {
 			buf := make([]byte, 1024)
@@ -22,12 +22,12 @@ func AutoObtain() {
 	logger.Info("AutoCert Worker Started")
 	autoCertList := model.GetAutoCertList()
 	for _, certModel := range autoCertList {
-		renew(certModel)
+		autoCert(certModel)
 	}
 	logger.Info("AutoCert Worker End")
 }
 
-func renew(certModel *model.Cert) {
+func autoCert(certModel *model.Cert) {
 	confName := certModel.Filename
 
 	log := &Logger{}
@@ -75,6 +75,14 @@ func renew(certModel *model.Cert) {
 		ChallengeMethod: certModel.ChallengeMethod,
 		DNSCredentialID: certModel.DnsCredentialID,
 		KeyType:         certModel.GetKeyType(),
+		Resource: &model.CertificateResource{
+			Resource:          certModel.Resource.Resource,
+			PrivateKey:        certModel.Resource.PrivateKey,
+			Certificate:       certModel.Resource.Certificate,
+			IssuerCertificate: certModel.Resource.IssuerCertificate,
+			CSR:               certModel.Resource.CSR,
+		},
+		NotBefore: cert.NotBefore,
 	}
 
 	// errChan will be closed inside IssueCert

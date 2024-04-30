@@ -83,6 +83,14 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
+	certInfo, err := cert.GetCertInfo(certModel.SSLCertificatePath)
+	if err != nil {
+		logger.Error("get certificate info error", err)
+		return
+	}
+	payload.Resource = certModel.Resource
+	payload.NotBefore = certInfo.NotBefore
+
 	logChan := make(chan string, 1)
 	errChan := make(chan error, 1)
 
@@ -126,6 +134,7 @@ func IssueCert(c *gin.Context) {
 		KeyType:               payload.KeyType,
 		ChallengeMethod:       payload.ChallengeMethod,
 		DnsCredentialID:       payload.DNSCredentialID,
+		Resource:              payload.Resource,
 	})
 
 	if err != nil {

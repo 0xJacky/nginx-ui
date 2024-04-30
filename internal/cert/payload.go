@@ -6,14 +6,17 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/go-acme/lego/v4/certcrypto"
+	"time"
 )
 
 type ConfigPayload struct {
-	ServerName      []string           `json:"server_name"`
-	ChallengeMethod string             `json:"challenge_method"`
-	DNSCredentialID int                `json:"dns_credential_id"`
-	ACMEUserID      int                `json:"acme_user_id"`
-	KeyType         certcrypto.KeyType `json:"key_type"`
+	ServerName      []string                   `json:"server_name"`
+	ChallengeMethod string                     `json:"challenge_method"`
+	DNSCredentialID int                        `json:"dns_credential_id"`
+	ACMEUserID      int                        `json:"acme_user_id"`
+	KeyType         certcrypto.KeyType         `json:"key_type"`
+	Resource        *model.CertificateResource `json:"resource,omitempty"`
+	NotBefore       time.Time
 }
 
 func (c *ConfigPayload) GetACMEUser() (user *model.AcmeUser, err error) {
