@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
-import { useGettext } from 'vue3-gettext'
 import type { CertificateInfo } from '@/api/cert'
 
 defineProps<{
   cert?: CertificateInfo
 }>()
-
-const { $gettext } = useGettext()
 
 </script>
 

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import type { Ref } from 'vue'
 import { message } from 'ant-design-vue'
 import ObtainCertLive from '@/views/domain/cert/components/ObtainCertLive.vue'
@@ -8,8 +7,6 @@ import type { Cert } from '@/api/cert'
 const emit = defineEmits<{
   renewed: [void]
 }>()
-
-const { $gettext } = useGettext()
 
 const modalVisible = ref(false)
 const modalClosable = ref(true)

@@ -9,7 +9,7 @@ const display = computed(() => {
 })
 
 const name = computed(() => {
-  return (route.name as never as () => string)()
+  return (route.meta.name as never as () => string)()
 })
 </script>
 

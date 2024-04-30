@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import { message } from 'ant-design-vue'
-import { useGettext } from 'vue3-gettext'
 import type { Cert } from '@/api/cert'
 import ObtainCertLive from '@/views/domain/cert/components/ObtainCertLive.vue'
 import DNSChallenge from '@/views/domain/cert/components/DNSChallenge.vue'
@@ -10,7 +9,6 @@ const emit = defineEmits<{
   issued: [void]
 }>()
 
-const { $gettext } = useGettext()
 const step = ref(0)
 const visible = ref(false)
 const data = ref({}) as Ref<Cert>

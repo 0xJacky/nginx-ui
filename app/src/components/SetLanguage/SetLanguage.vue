@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import gettext from '@/gettext'
 
 import { useSettingsStore } from '@/pinia'
 import http from '@/lib/http'
+import gettext from '@/gettext'
 
 const settings = useSettingsStore()
 
@@ -19,8 +19,7 @@ async function init() {
       gettext.translations[current.value] = r
     })
 
-    // @ts-expect-error name type
-    document.title = `${route.name?.()} | Nginx UI`
+    document.title = `${route.meta.name?.()} | Nginx UI`
   }
 }
 
@@ -31,7 +30,7 @@ watch(current, v => {
   settings.set_language(v)
   gettext.current = v
 
-  const name = route.name as never as () => string
+  const name = route.meta.name as never as () => string
 
   document.title = `${name()} | Nginx UI`
 })

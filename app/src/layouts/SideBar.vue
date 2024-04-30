@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import type { AntdIconType } from '@ant-design/icons-vue/lib/components/AntdIcon'
 import type { IconComponentProps } from '@ant-design/icons-vue/es/components/Icon'
+import type { Key } from 'ant-design-vue/es/_util/type'
 import Logo from '@/components/Logo/Logo.vue'
 import { routes } from '@/routes'
 import EnvIndicator from '@/components/EnvIndicator/EnvIndicator.vue'
@@ -10,7 +11,7 @@ const route = useRoute()
 
 const openKeys = ref([openSub()])
 
-const selectedKey = ref([route.name])
+const selectedKey = ref([route.name]) as Ref<Key[]>
 
 function openSub() {
   const path = route.path
@@ -20,7 +21,7 @@ function openSub() {
 }
 
 watch(route, () => {
-  selectedKey.value = [route.name]
+  selectedKey.value = [route.name as Key]
 
   const sub = openSub()
   const p = openKeys.value.indexOf(sub)
@@ -36,6 +37,7 @@ interface meta {
   icon: AntdIconType
   hiddenInSidebar: boolean
   hideChildren: boolean
+  name: () => string
 }
 
 interface sidebar {
@@ -54,7 +56,7 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
 
     const t: sidebar = {
       path: s.path,
-      name: s.name,
+      name: s?.meta?.name ?? (() => ''),
       meta: s.meta as unknown as meta,
       children: [],
     };
@@ -90,7 +92,7 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
           @click="$router.push(`/${s.path}`).catch(() => {})"
         >
           <Component :is="s.meta.icon as IconComponentProps" />
-          <span>{{ s.name() }}</span>
+          <span>{{ s.meta?.name() }}</span>
         </AMenuItem>
 
         <ASubMenu
@@ -99,14 +101,14 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
         >
           <template #title>
             <Component :is="s.meta.icon as IconComponentProps" />
-            <span>{{ s.name() }}</span>
+            <span>{{ s?.meta?.name() }}</span>
           </template>
           <AMenuItem
             v-for="child in s.children"
             :key="child.name"
           >
             <RouterLink :to="`/${s.path}/${child.path}`">
-              {{ child.name() }}
+              {{ child?.meta?.name() }}
             </RouterLink>
           </AMenuItem>
         </ASubMenu>

@@ -21,7 +21,6 @@ func AutoObtain() {
 	logger.Info("AutoCert Worker Started")
 	autoCertList := model.GetAutoCertList()
 	for _, certModel := range autoCertList {
-		certModel := certModel
 		renew(certModel)
 	}
 	logger.Info("AutoCert Worker End")

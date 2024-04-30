@@ -3,7 +3,6 @@ import { message } from 'ant-design-vue'
 import { HomeOutlined, LogoutOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
-import gettext from '@/gettext'
 import auth from '@/api/auth'
 import NginxControl from '@/components/NginxControl/NginxControl.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
@@ -12,8 +11,6 @@ import Notification from '@/components/Notification/Notification.vue'
 const emit = defineEmits<{
   clickUnFold: [void]
 }>()
-
-const { $gettext } = gettext
 
 const router = useRouter()
 

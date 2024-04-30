@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
-import gettext from '@/gettext'
 import StdDataEntry from '@/components/StdDesign/StdDataEntry'
 
 const props = defineProps<{
@@ -10,8 +9,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['onSave'])
-
-const { $gettext } = gettext
 
 const batchColumns = ref([])
 

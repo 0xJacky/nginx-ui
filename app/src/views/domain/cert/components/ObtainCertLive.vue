@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { useGettext } from 'vue3-gettext'
 import websocket from '@/lib/websocket'
 import type { DnsChallenge } from '@/api/auto_cert'
 import Error from '@/views/other/Error.vue'
@@ -34,8 +33,6 @@ const modalVisible = computed({
   },
 })
 
-const { $gettext } = useGettext()
-
 const issuing_cert = inject('issuing_cert') as Ref<boolean>
 const data = inject('data') as Ref<DnsChallenge>
 
@@ -45,7 +42,7 @@ const progressStrokeColor = {
 }
 
 const progressPercent = ref(0)
-const progressStatus = ref('active')
+const progressStatus = ref('active') as Ref<'success' | 'active' | 'normal' | 'exception'>
 
 const logContainer = ref()
 

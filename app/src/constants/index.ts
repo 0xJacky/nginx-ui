@@ -1,6 +1,5 @@
-import gettext from '@/gettext'
+export const DATE_FORMAT = 'YYYY-MM-DD'
 
-const { $gettext } = gettext
 export enum AutoCertState {
   Disable = 0,
   Enable = 1,

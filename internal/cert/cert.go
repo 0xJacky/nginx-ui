@@ -8,9 +8,9 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/go-acme/lego/v4/certificate"
 	"github.com/go-acme/lego/v4/challenge/http01"
 	"github.com/go-acme/lego/v4/lego"
@@ -30,13 +30,6 @@ const (
 	HTTP01 = "http01"
 	DNS01  = "dns01"
 )
-
-type ConfigPayload struct {
-	ServerName      []string           `json:"server_name"`
-	ChallengeMethod string             `json:"challenge_method"`
-	DNSCredentialID int                `json:"dns_credential_id"`
-	KeyType         certcrypto.KeyType `json:"key_type"`
-}
 
 func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) {
 	defer func() {
@@ -67,9 +60,12 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 	}
 
 	l.Println("[INFO] [Nginx UI] Preparing lego configurations")
-	user := User{
-		Email: settings.ServerSettings.Email,
-		Key:   privateKey,
+	user := newUser(settings.ServerSettings.Email)
+
+	user.Key = model.PrivateKey{
+		X: privateKey.PublicKey.X,
+		Y: privateKey.PublicKey.Y,
+		D: privateKey.D,
 	}
 
 	// Start a goroutine to fetch and process logs from channel
@@ -79,18 +75,12 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		}
 	}()
 
-	config := lego.NewConfig(&user)
+	config := lego.NewConfig(user)
 
-	if settings.ServerSettings.Demo {
-		config.CADirURL = "https://acme-staging-v02.api.letsencrypt.org/directory"
-	}
-
-	if settings.ServerSettings.CADir != "" {
-		config.CADirURL = settings.ServerSettings.CADir
-		if config.HTTPClient != nil {
-			config.HTTPClient.Transport = &http.Transport{
-				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-			}
+	config.CADirURL = settings.ServerSettings.GetCADir()
+	if config.HTTPClient != nil {
+		config.HTTPClient.Transport = &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		}
 	}
 
@@ -163,7 +153,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		errChan <- errors.Wrap(err, "register error")
 		return
 	}
-	user.Registration = reg
+	user.Registration = *reg
 
 	request := certificate.ObtainRequest{
 		Domains: domain,

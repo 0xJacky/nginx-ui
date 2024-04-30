@@ -17,6 +17,7 @@ import (
 
 var (
 	Q             = new(Query)
+	AcmeUser      *acmeUser
 	Auth          *auth
 	AuthToken     *authToken
 	Cert          *cert
@@ -31,6 +32,7 @@ var (
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
+	AcmeUser = &Q.AcmeUser
 	Auth = &Q.Auth
 	AuthToken = &Q.AuthToken
 	Cert = &Q.Cert
@@ -46,6 +48,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:            db,
+		AcmeUser:      newAcmeUser(db, opts...),
 		Auth:          newAuth(db, opts...),
 		AuthToken:     newAuthToken(db, opts...),
 		Cert:          newCert(db, opts...),
@@ -62,6 +65,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 type Query struct {
 	db *gorm.DB
 
+	AcmeUser      acmeUser
 	Auth          auth
 	AuthToken     authToken
 	Cert          cert
@@ -79,6 +83,7 @@ func (q *Query) Available() bool { return q.db != nil }
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
 		db:            db,
+		AcmeUser:      q.AcmeUser.clone(db),
 		Auth:          q.Auth.clone(db),
 		AuthToken:     q.AuthToken.clone(db),
 		Cert:          q.Cert.clone(db),
@@ -103,6 +108,7 @@ func (q *Query) WriteDB() *Query {
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
 		db:            db,
+		AcmeUser:      q.AcmeUser.replaceDB(db),
 		Auth:          q.Auth.replaceDB(db),
 		AuthToken:     q.AuthToken.replaceDB(db),
 		Cert:          q.Cert.replaceDB(db),
@@ -117,6 +123,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 }
 
 type queryCtx struct {
+	AcmeUser      *acmeUserDo
 	Auth          *authDo
 	AuthToken     *authTokenDo
 	Cert          *certDo
@@ -131,6 +138,7 @@ type queryCtx struct {
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
+		AcmeUser:      q.AcmeUser.WithContext(ctx),
 		Auth:          q.Auth.WithContext(ctx),
 		AuthToken:     q.AuthToken.WithContext(ctx),
 		Cert:          q.Cert.WithContext(ctx),

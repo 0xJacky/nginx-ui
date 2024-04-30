@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
 
-import { useGettext } from 'vue3-gettext'
 import { type ComputedRef, ref, watch } from 'vue'
 import { message } from 'ant-design-vue'
 import config from '@/api/config'
@@ -13,8 +12,6 @@ const props = defineProps<{
   readonly?: boolean
   context?: string
 }>()
-
-const { $gettext, interpolate } = useGettext()
 
 const ngx_directives = inject('ngx_directives') as ComputedRef<NgxDirective[]>
 
@@ -41,7 +38,7 @@ function save() {
     content.value = r.content
     message.success($gettext('Saved successfully'))
   }).catch(r => {
-    message.error(interpolate($gettext('Save error %{msg}'), { msg: r.message ?? '' }))
+    message.error($gettext('Save error %{msg}', { msg: r.message ?? '' }))
   })
 }
 

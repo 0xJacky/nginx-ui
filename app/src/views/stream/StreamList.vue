@@ -1,5 +1,4 @@
 <script setup lang="tsx">
-import { useGettext } from 'vue3-gettext'
 import { Badge, message } from 'ant-design-vue'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
@@ -7,10 +6,8 @@ import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransfor
 import stream from '@/api/stream'
 import { input } from '@/components/StdDesign/StdDataEntry'
 import InspectConfig from '@/views/config/InspectConfig.vue'
-import type { Column } from '@/components/StdDesign/types'
+import type { Column, JSXElements } from '@/components/StdDesign/types'
 import StreamDuplicate from '@/views/stream/components/StreamDuplicate.vue'
-
-const { $gettext } = useGettext()
 
 const columns: Column[] = [{
   title: () => $gettext('Name'),
@@ -25,7 +22,7 @@ const columns: Column[] = [{
   title: () => $gettext('Status'),
   dataIndex: 'enabled',
   customRender: (args: customRender) => {
-    const template = []
+    const template: JSXElements = []
     const { text } = args
     if (text === true || text > 0) {
       template.push(<Badge status="success"/>)

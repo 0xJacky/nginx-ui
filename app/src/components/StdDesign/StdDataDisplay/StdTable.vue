@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { HolderOutlined } from '@ant-design/icons-vue'
-import { useGettext } from 'vue3-gettext'
 import type { ComputedRef, Ref } from 'vue'
-import type { SorterResult } from 'ant-design-vue/lib/table/interface'
+import type { SorterResult, TablePaginationConfig } from 'ant-design-vue/lib/table/interface'
+import type { FilterValue } from 'ant-design-vue/es/table/interface'
+import type { Key } from 'ant-design-vue/es/_util/type'
+import type { RouteParams } from 'vue-router'
+import _ from 'lodash'
 import StdPagination from './StdPagination.vue'
 import StdDataEntry from '@/components/StdDesign/StdDataEntry'
 import type { Pagination } from '@/api/curd'
 import type { Column } from '@/components/StdDesign/types'
-import exportCsvHandler from '@/components/StdDesign/StdDataDisplay/methods/exportCsv'
 import useSortable from '@/components/StdDesign/StdDataDisplay/methods/sortable'
 import type Curd from '@/api/curd'
 
@@ -25,16 +27,16 @@ export interface StdTableProps {
   disableQueryParams?: boolean
   disableSearch?: boolean
   pithy?: boolean
-  exportCsv?: boolean
+  exportExcel?: boolean
+  exportMaterial?: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   overwriteParams?: Record<string, any>
+  disabledView?: boolean
   disabledModify?: boolean
   selectionType?: string
   sortable?: boolean
   disableDelete?: boolean
   disablePagination?: boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  selectedRowKeys?: any | any[]
   sortableMoveHook?: (oldRow: number[], newRow: number[]) => boolean
   scrollX?: string | number
 }
@@ -43,18 +45,21 @@ const props = withDefaults(defineProps<StdTableProps>(), {
   rowKey: 'id',
 })
 
-const emit = defineEmits(['onSelected', 'onSelectedRecord', 'clickEdit', 'update:selectedRowKeys', 'clickBatchModify'])
-const { $gettext } = useGettext()
+const emit = defineEmits(['clickEdit', 'clickView', 'clickBatchModify', 'update:selectedRowKeys'])
 const route = useRoute()
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const dataSource: Ref<any[]> = ref([])
-const expandKeysList: Ref<number[]> = ref([])
+const expandKeysList: Ref<Key[]> = ref([])
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const rowsKeyIndexMap: Ref<Record<number, any>> = ref({})
 const loading = ref(true)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const selectedRecords: Ref<Record<any, any>> = ref({})
 
 // This can be useful if there are more than one StdTable in the same page.
 const randomId = ref(Math.random().toString(36).substring(2, 8))
+const updateFilter = ref(0)
+const init = ref(false)
 
 const pagination: Pagination = reactive({
   total: 1,
@@ -67,40 +72,59 @@ const params = reactive({
   ...props.getParams,
 })
 
-const selectedKeysLocalBuffer = ref([])
+const get_list = _.debounce(_get_list, 200, {
+  leading: true,
+  trailing: false,
+})
 
-const selectedRowKeysBuffer = computed({
-  get() {
-    return props.selectedRowKeys || selectedKeysLocalBuffer.value
-  },
-  set(v) {
-    selectedKeysLocalBuffer.value = v
-    emit('update:selectedRowKeys', v)
-  },
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const selectedRowKeys = defineModel<any[]>('selectedRowKeys', {
+  default: () => [],
+})
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const selectedRows = defineModel<any[]>('selectedRows', {
+  type: Array,
+  default: () => [],
+})
+
+onMounted(() => {
+  selectedRows.value.forEach(v => {
+    selectedRecords.value[v[props.rowKey]] = v
+  })
 })
 
 const searchColumns = computed(() => {
   const _searchColumns: Column[] = []
 
-  props.columns?.forEach(column => {
-    if (column.search)
-      _searchColumns.push(column)
+  props.columns.forEach((column: Column) => {
+    if (column.search) {
+      if (typeof column.search === 'object') {
+        _searchColumns.push({
+          ...column,
+          edit: column.search,
+        })
+      }
+      else {
+        _searchColumns.push({ ...column })
+      }
+    }
   })
 
   return _searchColumns
 })
 
-const pithyColumns = computed(() => {
+const pithyColumns = computed<Column[]>(() => {
   if (props.pithy) {
     return props.columns?.filter(c => {
-      return c.pithy === true && !c.hidden
+      return c.pithy === true && !c.hiddenInTable
     })
   }
 
   return props.columns?.filter(c => {
-    return !c.hidden
+    return !c.hiddenInTable
   })
-}) as ComputedRef<Column[]>
+})
 
 const batchColumns = computed(() => {
   const batch: Column[] = []
@@ -113,18 +137,32 @@ const batchColumns = computed(() => {
   return batch
 })
 
+watch(route, () => {
+  params.trash = route.query.trash === 'true'
+})
+
 onMounted(() => {
-  if (!props.disableQueryParams)
-    Object.assign(params, route.query)
+  if (!props.disableQueryParams) {
+    Object.assign(params, {
+      ...route.query,
+      trash: route.query.trash === 'true',
+    })
+  }
 
   get_list()
 
   if (props.sortable)
     initSortable()
+
+  if (!selectedRowKeys.value?.length)
+    selectedRowKeys.value = []
+
+  init.value = true
 })
 
 defineExpose({
   get_list,
+  pagination,
 })
 
 function destroy(id: number | string) {
@@ -136,27 +174,15 @@ function destroy(id: number | string) {
   })
 }
 
-function get_list(page_num = null, page_size = 20) {
-  loading.value = true
-  if (page_num) {
-    params.page = page_num
-    params.page_size = page_size
-  }
-  props.api?.get_list(params).then(async r => {
-    dataSource.value = r.data
-    rowsKeyIndexMap.value = {}
-    if (props.sortable)
-
-      buildIndexMap(r.data)
-
-    if (r.pagination)
-      Object.assign(pagination, r.pagination)
-
-    loading.value = false
+function recover(id: number | string) {
+  props.api.recover(id).then(() => {
+    message.success($gettext('Recovered Successfully'))
+    get_list()
   }).catch(e => {
     message.error(e?.message ?? $gettext('Server error'))
   })
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function buildIndexMap(data: any, level: number = 0, index: number = 0, total: number[] = []) {
   if (data && data.length > 0) {
@@ -172,11 +198,37 @@ function buildIndexMap(data: any, level: number = 0, index: number = 0, total: n
     })
   }
 }
-function orderPaginationChange(_pagination: Pagination, _: never, sorter: SorterResult) {
+
+async function _get_list(page_num = null, page_size = 20) {
+  loading.value = true
+  if (page_num) {
+    params.page = page_num
+    params.page_size = page_size
+  }
+  props.api?.get_list({ ...route.query, ...params, ...props.overwriteParams }).then(async r => {
+    dataSource.value = r.data
+    rowsKeyIndexMap.value = {}
+    if (props.sortable)
+      buildIndexMap(r.data)
+
+    if (r.pagination)
+      Object.assign(pagination, r.pagination)
+
+    setTimeout(() => {
+      loading.value = false
+    }, 200)
+  }).catch(e => {
+    message.error(e?.message ?? $gettext('Server error'))
+  })
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function onTableChange(_pagination: TablePaginationConfig, filters: Record<string, FilterValue>, sorter: SorterResult | SorterResult<any>[]) {
   if (sorter) {
-    selectedRowKeysBuffer.value = []
-    params.order_by = sorter.field
-    params.sort = sorter.order === 'ascend' ? 'asc' : 'desc'
+    sorter = sorter as SorterResult
+    selectedRowKeys.value = []
+    params.sort_by = sorter.field
+    params.order = sorter.order === 'ascend' ? 'asc' : 'desc'
     switch (sorter.order) {
       case 'ascend':
         params.sort = 'asc'
@@ -189,44 +241,98 @@ function orderPaginationChange(_pagination: Pagination, _: never, sorter: Sorter
         break
     }
   }
+  if (filters) {
+    Object.keys(filters).forEach((v: string) => {
+      params[v] = filters[v]
+    })
+  }
   if (_pagination)
-    selectedRowKeysBuffer.value = []
+    selectedRowKeys.value = []
 }
 
-function expandedTable(keys: number[]) {
+function expandedTable(keys: Key[]) {
   expandKeysList.value = keys
 }
 
-const crossPageSelect: Record<string, number[]> = {}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any,sonarjs/cognitive-complexity
+async function onSelect(record: any, selected: boolean, _selectedRows: any[]) {
+  if (props.selectionType === 'checkbox' || props.exportExcel) {
+    if (selected) {
+      _selectedRows.forEach(v => {
+        if (v) {
+          if (selectedRecords.value[v[props.rowKey]] === undefined)
+            selectedRowKeys.value.push(v[props.rowKey])
 
-async function onSelectChange(_selectedRowKeys: number[]) {
-  const page = params.page || 1
+          selectedRecords.value[v[props.rowKey]] = v
+        }
+      })
+    }
+    else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      selectedRowKeys.value = selectedRowKeys.value.filter((v: any) => v !== record[props.rowKey])
+      delete selectedRecords.value[record[props.rowKey]]
+    }
 
-  crossPageSelect[page] = _selectedRowKeys
+    await nextTick(async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const filteredRows: any[] = []
 
-  let t: number[] = []
-  Object.keys(crossPageSelect).forEach((v: string) => {
-    t.push(...crossPageSelect[v])
+      selectedRowKeys.value.forEach(v => {
+        filteredRows.push(selectedRecords.value[v])
+      })
+      selectedRows.value = filteredRows
+    })
+  }
+  else {
+    if (selected) {
+      selectedRowKeys.value = record[props.rowKey]
+      selectedRows.value = [record]
+    }
+    else {
+      selectedRowKeys.value = []
+      selectedRows.value = []
+    }
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function onSelectAll(selected: boolean, _selectedRows: any[], changeRows: any[]) {
+  // console.log(selected, selectedRows, changeRows)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  changeRows.forEach((v: any) => {
+    if (v) {
+      if (selected) {
+        selectedRowKeys.value.push(v[props.rowKey])
+        selectedRecords.value[v[props.rowKey]] = v
+      }
+      else {
+        delete selectedRecords.value[v[props.rowKey]]
+      }
+    }
   })
 
-  const n = [..._selectedRowKeys]
+  if (!selected) {
+    selectedRowKeys.value = selectedRowKeys.value.filter(v => {
+      return selectedRecords.value[v]
+    })
+  }
 
-  t = t.concat(n)
+  // console.log(selectedRowKeysBuffer.value, selectedRecords.value)
 
-  // console.log(crossPageSelect)
-  const set = new Set(t)
+  await nextTick(async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const filteredRows: any[] = []
 
-  selectedRowKeysBuffer.value = Array.from(set)
-  emit('onSelected', selectedRowKeysBuffer.value)
-}
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function onSelect(record: any) {
-  emit('onSelectedRecord', record)
+    selectedRowKeys.value.forEach(v => {
+      filteredRows.push(selectedRecords.value[v])
+    })
+    selectedRows.value = filteredRows
+  })
 }
 
 const router = useRouter()
 
-const reset_search = async () => {
+const resetSearch = async () => {
   Object.keys(params).forEach(v => {
     delete params[v]
   })
@@ -237,65 +343,99 @@ const reset_search = async () => {
 
   router.push({ query: {} }).catch(() => {
   })
+
+  updateFilter.value++
 }
 
-watch(params, () => {
-  if (!props.disableQueryParams)
-    router.push({ query: params })
+watch(params, async v => {
+  if (init.value) {
+    await nextTick(() => {
+      get_list()
+    })
 
-  get_list()
+    if (!props.disableQueryParams)
+      await router.push({ query: v as RouteParams })
+  }
 })
 
+if (props.getParams) {
+  const getParams = computed(() => props.getParams)
+
+  watch(getParams, () => {
+    Object.assign(params, {
+      ...props.getParams,
+      page: 1,
+    })
+  }, { deep: true })
+}
+
+if (props.overwriteParams) {
+  const overwriteParams = computed(() => props.overwriteParams)
+
+  watch(overwriteParams, () => {
+    Object.assign(params, {
+      page: 1,
+    })
+    if (params.page === 1)
+      get_list()
+  }, { deep: true })
+}
+
 const rowSelection = computed(() => {
-  if (batchColumns.value.length > 0 || props.selectionType) {
+  if (batchColumns.value.length > 0 || props.selectionType || props.exportExcel) {
     return {
-      selectedRowKeys: selectedRowKeysBuffer.value,
-      onChange: onSelectChange,
+      selectedRowKeys: selectedRowKeys.value,
       onSelect,
-      type: batchColumns.value.length > 0 ? 'checkbox' : props.selectionType,
+      onSelectAll,
+      type: (batchColumns.value.length > 0 || props.exportExcel) ? 'checkbox' : props.selectionType,
     }
   }
   else {
     return null
   }
-})
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+}) as ComputedRef<any>
 
 const hasSelectedRow = computed(() => {
-  return batchColumns.value.length > 0 && selectedRowKeysBuffer.value.length > 0
+  return batchColumns.value.length > 0 && selectedRowKeys.value.length > 0
 })
 
 function clickBatchEdit() {
-  emit('clickBatchModify', batchColumns.value, selectedRowKeysBuffer.value)
+  emit('clickBatchModify', batchColumns.value, selectedRowKeys.value)
 }
 
 function initSortable() {
   useSortable(props, randomId, dataSource, rowsKeyIndexMap, expandKeysList)
 }
 
-function export_csv() {
-  exportCsvHandler(props, pithyColumns)
+function changePage(page: number, page_size: number) {
+  Object.assign(params, {
+    page,
+    page_size,
+  })
 }
+
+const paginationSize = computed(() => {
+  if (props.size === 'small')
+    return 'small'
+  else
+    return 'default'
+})
 </script>
 
 <template>
   <div class="std-table">
     <StdDataEntry
       v-if="!disableSearch && searchColumns.length"
+      :key="updateFilter"
       :data-list="searchColumns"
       :data-source="params"
+      type="search"
       layout="inline"
     >
       <template #action>
         <ASpace class="action-btn">
-          <AButton
-            v-if="props.exportCsv"
-            type="primary"
-            ghost
-            @click="export_csv"
-          >
-            {{ $gettext('Export') }}
-          </AButton>
-          <AButton @click="reset_search">
+          <AButton @click="resetSearch">
             {{ $gettext('Reset') }}
           </AButton>
           <AButton
@@ -304,11 +444,12 @@ function export_csv() {
           >
             {{ $gettext('Batch Modify') }}
           </AButton>
+          <slot name="append-search" />
         </ASpace>
       </template>
     </StdDataEntry>
     <ATable
-      id="std-table"
+      :id="`std-table-${randomId}`"
       :columns="pithyColumns"
       :data-source="dataSource"
       :loading="loading"
@@ -316,18 +457,32 @@ function export_csv() {
       :row-key="rowKey"
       :row-selection="rowSelection"
       :scroll="{ x: scrollX }"
-      :size="size"
+      :size="size as any"
       :expanded-row-keys="expandKeysList"
-      @change="orderPaginationChange"
+      @change="onTableChange"
       @expanded-rows-change="expandedTable"
     >
-      <template #bodyCell="{ text, record, column }">
+      <template #bodyCell="{ text, record, column }: {text: any, record: Record<string, any>, column: any}">
         <template v-if="column.handle === true">
           <span class="ant-table-drag-icon"><HolderOutlined /></span>
           {{ text }}
         </template>
         <template v-if="column.dataIndex === 'action'">
-          <template v-if="!props.disabledModify">
+          <template v-if="!props.disabledView && !params.trash">
+            <AButton
+              type="link"
+              size="small"
+              @click="$emit('clickView', record[props.rowKey], record)"
+            >
+              {{ $gettext('View') }}
+            </AButton>
+            <ADivider
+              v-if="!props.disabledModify"
+              type="vertical"
+            />
+          </template>
+
+          <template v-if="!props.disabledModify && !params.trash">
             <AButton
               type="link"
               size="small"
@@ -348,9 +503,10 @@ function export_csv() {
 
           <template v-if="!props.disableDelete">
             <APopconfirm
+              v-if="!params.trash"
               :cancel-text="$gettext('No')"
               :ok-text="$gettext('OK')"
-              :title="$gettext('Are you sure you want to delete?')"
+              :title="$gettext('Are you sure you want to delete this item?')"
               @confirm="destroy(record[rowKey])"
             >
               <AButton
@@ -360,15 +516,30 @@ function export_csv() {
                 {{ $gettext('Delete') }}
               </AButton>
             </APopconfirm>
+            <APopconfirm
+              v-else
+              :cancel-text="$gettext('No')"
+              :ok-text="$gettext('OK')"
+              :title="$gettext('Are you sure you want to recover this item?')"
+              @confirm="recover(record[rowKey])"
+            >
+              <AButton
+                type="link"
+                size="small"
+              >
+                {{ $gettext('Recover') }}
+              </AButton>
+            </APopconfirm>
           </template>
         </template>
       </template>
     </ATable>
     <StdPagination
-      :size="size"
+      :size="paginationSize"
+      :loading="loading"
       :pagination="pagination"
-      @change="get_list"
-      @change-page-size="orderPaginationChange"
+      @change="changePage"
+      @change-page-size="onTableChange"
     />
   </div>
 </template>
@@ -388,12 +559,6 @@ function export_csv() {
 
 .ant-slider {
   min-width: 90px;
-}
-
-.std-table {
-  .ant-table-wrapper {
-    // overflow-x: scroll;
-  }
 }
 
 .action-btn {

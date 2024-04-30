@@ -4,7 +4,7 @@ import { message } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import { formatDateTime } from '@/lib/helper'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
-import gettext from '@/gettext'
+
 import config from '@/api/config'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import ngx from '@/api/ngx'
@@ -12,7 +12,6 @@ import InspectConfig from '@/views/config/InspectConfig.vue'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
 import type { ChatComplicationMessage } from '@/api/openai'
 
-const { $gettext, interpolate } = gettext
 const route = useRoute()
 
 const inspect_config = ref()
@@ -56,7 +55,7 @@ function save() {
     configText.value = r.content
     message.success($gettext('Saved successfully'))
   }).catch(r => {
-    message.error(interpolate($gettext('Save error %{msg}'), { msg: r.message ?? '' }))
+    message.error($gettext('Save error %{msg}', { msg: r.message ?? '' }))
   }).finally(() => {
     inspect_config.value.test()
   })
@@ -67,7 +66,7 @@ function format_code() {
     configText.value = r.content
     message.success($gettext('Format successfully'))
   }).catch(r => {
-    message.error(interpolate($gettext('Format error %{msg}'), { msg: r.message ?? '' }))
+    message.error($gettext('Format error %{msg}', { msg: r.message ?? '' }))
   })
 }
 

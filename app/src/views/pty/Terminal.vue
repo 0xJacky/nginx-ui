@@ -1,16 +1,13 @@
 <script setup lang="ts">
-import 'xterm/css/xterm.css'
-import { Terminal } from 'xterm'
+import '@xterm/xterm/css/xterm.css'
+import { Terminal } from '@xterm/xterm'
 import { FitAddon } from '@xterm/addon-fit'
 import { onMounted, onUnmounted } from 'vue'
 import _ from 'lodash'
-import { useGettext } from 'vue3-gettext'
 import ws from '@/lib/websocket'
 
-const { $gettext } = useGettext()
-
 let term: Terminal | null
-let ping: number
+let ping: NodeJS.Timeout
 
 const websocket = ws('/api/pty')
 
@@ -85,7 +82,6 @@ onUnmounted(() => {
   window.removeEventListener('resize', fit)
   clearInterval(ping)
   term?.dispose()
-  ping = 0
   websocket.close()
 })
 

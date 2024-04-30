@@ -40,7 +40,7 @@ module.exports = {
       before: false,
       after: true,
     }],
-    'key-spacing': ['error', { afterColon: true }],
+    'key-spacing': ['error', {afterColon: true}],
 
     'vue/first-attribute-linebreak': ['error', {
       singleline: 'beside',
@@ -78,7 +78,7 @@ module.exports = {
     ],
 
     // Ignore _ as unused variable
-    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_+$' }],
+    '@typescript-eslint/no-unused-vars': ['error', {argsIgnorePattern: '^_+$'}],
 
     'array-element-newline': ['error', 'consistent'],
     'array-bracket-newline': ['error', 'consistent'],
@@ -111,7 +111,7 @@ module.exports = {
 
     // Plugin: eslint-plugin-import
     'import/prefer-default-export': 'off',
-    'import/newline-after-import': ['error', { count: 1 }],
+    'import/newline-after-import': ['error', {count: 1}],
     'no-restricted-imports': ['error', 'vuetify/components'],
 
     // For omitting extension for ts files
@@ -150,7 +150,7 @@ module.exports = {
 
     // ESLint plugin vue
     'vue/component-api-style': 'error',
-    'vue/component-name-in-template-casing': ['error', 'PascalCase', { registeredComponentsOnly: false }],
+    'vue/component-name-in-template-casing': ['error', 'PascalCase', {registeredComponentsOnly: false}],
     'vue/custom-event-name-casing': ['error', 'camelCase', {
       ignores: [
         '/^(click):[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?/',

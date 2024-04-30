@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { ReloadOutlined } from '@ant-design/icons-vue'
-import gettext from '@/gettext'
 import ngx from '@/api/ngx'
 import { logLevel } from '@/views/config/constants'
 import { NginxStatus } from '@/constants'
-
-const { $gettext } = gettext
 
 const status = ref(0)
 function get_status() {

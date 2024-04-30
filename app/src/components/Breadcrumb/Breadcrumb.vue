@@ -12,12 +12,12 @@ const route = useRoute()
 const breadList = computed(() => {
   const _breadList: bread[] = []
 
-  name.value = route.name
+  name.value = route.meta.name
 
   route.matched.forEach(item => {
     // item.name !== 'index' && this.breadList.push(item)
     _breadList.push({
-      name: item.name as never as () => string,
+      name: item.meta.name as never as () => string,
       path: item.path,
     })
   })

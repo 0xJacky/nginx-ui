@@ -41,6 +41,7 @@ func Boot() {
 
 func InitAfterDatabase() {
 	syncs := []func(){
+		cert.InitRegister,
 		InitCronJobs,
 		analytic.RetrieveNodesStatus,
 	}

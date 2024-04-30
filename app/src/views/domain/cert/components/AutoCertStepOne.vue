@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import type { Ref } from 'vue'
 import type { DnsChallenge } from '@/api/auto_cert'
 import DNSChallenge from '@/views/domain/cert/components/DNSChallenge.vue'
@@ -8,8 +7,6 @@ import type { Cert } from '@/api/cert'
 defineProps<{
   hideNote?: boolean
 }>()
-
-const { $gettext } = useGettext()
 
 const no_server_name = inject('no_server_name')
 

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import type { Ref } from 'vue'
 import type { Environment } from '@/api/environment'
 import environment from '@/api/environment'
@@ -11,8 +10,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['update:target', 'update:map'])
-
-const { $gettext } = useGettext()
 
 const data = ref([]) as Ref<Environment[]>
 const data_map = ref({}) as Ref<Record<number, Environment>>

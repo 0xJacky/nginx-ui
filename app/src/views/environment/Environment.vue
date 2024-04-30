@@ -1,5 +1,4 @@
 <script setup lang="tsx">
-import { useGettext } from 'vue3-gettext'
 import { h } from 'vue'
 import { Badge } from 'ant-design-vue'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
@@ -7,9 +6,7 @@ import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransfor
 import environment from '@/api/environment'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import { input } from '@/components/StdDesign/StdDataEntry'
-import type { Column } from '@/components/StdDesign/types'
-
-const { $gettext } = useGettext()
+import type { Column, JSXElements } from '@/components/StdDesign/types'
 
 const columns: Column[] = [{
   title: () => $gettext('Name'),
@@ -36,7 +33,7 @@ const columns: Column[] = [{
   title: () => 'NodeSecret',
   dataIndex: 'token',
   sortable: true,
-  hidden: true,
+  hiddenInTable: true,
   edit: {
     type: input,
   },
@@ -78,7 +75,7 @@ const columns: Column[] = [{
   title: () => $gettext('Status'),
   dataIndex: 'status',
   customRender: (args: customRender) => {
-    const template = []
+    const template: JSXElements = []
     const { text } = args
     if (text === true || text > 0) {
       template.push(<Badge status="success"/>)

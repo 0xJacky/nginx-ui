@@ -26,6 +26,7 @@ class Curd<T> {
   get = this._get.bind(this)
   save = this._save.bind(this)
   destroy = this._destroy.bind(this)
+  recover = this._recover.bind(this)
   update_order = this._update_order.bind(this)
 
   constructor(baseUrl: string, plural: string | null = null) {
@@ -39,8 +40,8 @@ class Curd<T> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  _get(id: any = null): Promise<T> {
-    return http.get(this.baseUrl + (id ? `/${id}` : ''))
+  _get(id: any = null, params: any = {}): Promise<T> {
+    return http.get(this.baseUrl + (id ? `/${id}` : ''), { params })
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,6 +52,11 @@ class Curd<T> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   _destroy(id: any = null) {
     return http.delete(`${this.baseUrl}/${id}`)
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  _recover(id: any = null) {
+    return http.patch(`${this.baseUrl}/${id}`)
   }
 
   _update_order(data: {

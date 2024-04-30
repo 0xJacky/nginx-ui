@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import { storeToRefs } from 'pinia'
 import type { Ref } from 'vue'
 import type { Template } from '@/api/template'
@@ -16,7 +15,6 @@ const props = defineProps<{
   currentServerIndex: number
 }>()
 
-const { $gettext } = useGettext()
 const { language } = storeToRefs(useSettingsStore())
 const ngx_config = inject('ngx_config') as NgxConfig
 const blocks = ref([])

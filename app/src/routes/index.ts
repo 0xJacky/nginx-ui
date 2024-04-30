@@ -1,5 +1,5 @@
+import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHashHistory } from 'vue-router'
-import type { AntDesignOutlinedIconType } from '@ant-design/icons-vue/lib/icons/AntDesignOutlined'
 
 import {
   BellOutlined,
@@ -17,253 +17,284 @@ import {
 } from '@ant-design/icons-vue'
 import NProgress from 'nprogress'
 
-import gettext from '@/gettext'
 import { useUserStore } from '@/pinia'
 
 import 'nprogress/nprogress.css'
 
-const { $gettext } = gettext
-
-export interface Route {
-  path: string
-  name: () => string
-  component?: () => Promise<typeof import('*.vue')>
-  redirect?: string
-  meta?: {
-    icon?: AntDesignOutlinedIconType
-    hiddenInSidebar?: boolean
-    hideChildren?: boolean
-    noAuth?: boolean
-    status_code?: number
-    error?: () => string
-  }
-  children?: Route[]
-}
-
-export const routes: Route[] = [
+export const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: () => $gettext('Home'),
+    name: 'Home',
     component: () => import('@/layouts/BaseLayout.vue'),
     redirect: '/dashboard',
+    meta: {
+      name: () => $gettext('Home'),
+    },
     children: [
       {
         path: 'dashboard',
         component: () => import('@/views/dashboard/DashBoard.vue'),
-        name: () => $gettext('Dashboard'),
+        name: 'Dashboard',
         meta: {
+          name: () => $gettext('Dashboard'),
           icon: HomeOutlined,
         },
       },
       {
         path: 'domain',
-        name: () => $gettext('Manage Sites'),
+        name: 'Manage Sites',
         component: () => import('@/layouts/BaseRouterView.vue'),
         meta: {
+          name: () => $gettext('Manage Sites'),
           icon: CloudOutlined,
         },
         redirect: '/domain/list',
         children: [{
           path: 'list',
-          name: () => $gettext('Sites List'),
+          name: 'Sites List',
           component: () => import('@/views/domain/DomainList.vue'),
+          meta: {
+            name: () => $gettext('Sites List'),
+          },
         }, {
           path: 'add',
-          name: () => $gettext('Add Site'),
+          name: 'Add Site',
           component: () => import('@/views/domain/DomainAdd.vue'),
+          meta: {
+            name: () => $gettext('Add Site'),
+          },
         }, {
           path: ':name',
-          name: () => $gettext('Edit Site'),
+          name: 'Edit Site',
           component: () => import('@/views/domain/DomainEdit.vue'),
           meta: {
+            name: () => $gettext('Edit Site'),
             hiddenInSidebar: true,
           },
         }],
       },
       {
         path: 'streams',
-        name: () => $gettext('Manage Streams'),
+        name: 'Manage Streams',
         component: () => import('@/views/stream/StreamList.vue'),
         meta: {
+          name: () => $gettext('Manage Streams'),
           icon: ShareAltOutlined,
         },
       },
       {
         path: 'stream/:name',
-        name: () => $gettext('Edit Stream'),
+        name: 'Edit Stream',
         component: () => import('@/views/stream/StreamEdit.vue'),
         meta: {
+          name: () => $gettext('Edit Stream'),
           hiddenInSidebar: true,
         },
       },
       {
         path: 'config',
-        name: () => $gettext('Manage Configs'),
+        name: 'Manage Configs',
         component: () => import('@/views/config/Config.vue'),
         meta: {
+          name: () => $gettext('Manage Configs'),
           icon: FileOutlined,
           hideChildren: true,
         },
       },
       {
         path: 'config/:name+/edit',
-        name: () => $gettext('Edit Configuration'),
+        name: 'Edit Configuration',
         component: () => import('@/views/config/ConfigEdit.vue'),
         meta: {
+          name: () => $gettext('Edit Configuration'),
           hiddenInSidebar: true,
         },
       },
       {
         path: 'certificates',
-        name: () => $gettext('Certificates'),
+        name: 'Certificates',
         component: () => import('@/layouts/BaseRouterView.vue'),
         redirect: '/certificates/list',
         meta: {
+          name: () => $gettext('Certificates'),
           icon: SafetyCertificateOutlined,
         },
         children: [
           {
+            path: 'acme_users',
+            name: 'ACME User',
+            component: () => import('@/views/certificate/ACMEUser.vue'),
+            meta: {
+              name: () => $gettext('ACME User'),
+            },
+          },
+          {
             path: 'list',
-            name: () => $gettext('Certificates List'),
+            name: 'Certificates List',
             component: () => import('@/views/certificate/Certificate.vue'),
+            meta: {
+              name: () => $gettext('Certificates List'),
+            },
           },
           {
             path: ':id',
-            name: () => $gettext('Modify Certificate'),
+            name: 'Modify Certificate',
             component: () => import('@/views/certificate/CertificateEditor.vue'),
             meta: {
+              name: () => $gettext('Modify Certificate'),
               hiddenInSidebar: true,
             },
           },
           {
             path: 'import',
-            name: () => $gettext('Import Certificate'),
+            name: 'Import Certificate',
             component: () => import('@/views/certificate/CertificateEditor.vue'),
             meta: {
+              name: () => $gettext('Import Certificate'),
               hiddenInSidebar: true,
             },
           },
           {
             path: 'dns_credential',
-            name: () => $gettext('DNS Credentials'),
+            name: 'DNS Credentials',
             component: () => import('@/views/certificate/DNSCredential.vue'),
+            meta: {
+              name: () => $gettext('DNS Credentials'),
+            },
           },
         ],
       },
       {
         path: 'terminal',
-        name: () => $gettext('Terminal'),
+        name: 'Terminal',
         component: () => import('@/views/pty/Terminal.vue'),
         meta: {
+          name: () => $gettext('Terminal'),
           icon: CodeOutlined,
         },
       },
       {
         path: 'nginx_log',
-        name: () => $gettext('Nginx Log'),
+        name: 'Nginx Log',
         meta: {
+          name: () => $gettext('Nginx Log'),
           icon: FileTextOutlined,
         },
         children: [{
           path: 'access',
-          name: () => $gettext('Access Logs'),
-          component: () => import('@/views/nginx_log/NginxLog.vue'),
-        }, {
-          path: 'error',
-          name: () => $gettext('Error Logs'),
-          component: () => import('@/views/nginx_log/NginxLog.vue'),
-        }, {
-          path: 'site',
-          name: () => $gettext('Site Logs'),
+          name: 'Access Logs',
           component: () => import('@/views/nginx_log/NginxLog.vue'),
           meta: {
+            name: () => $gettext('Access Logs'),
+          },
+        }, {
+          path: 'error',
+          name: 'Error Logs',
+          component: () => import('@/views/nginx_log/NginxLog.vue'),
+          meta: {
+            name: () => $gettext('Error Logs'),
+          },
+        }, {
+          path: 'site',
+          name: 'Site Logs',
+          component: () => import('@/views/nginx_log/NginxLog.vue'),
+          meta: {
+            name: () => $gettext('Site Logs'),
             hiddenInSidebar: true,
           },
         }],
       },
       {
         path: 'environment',
-        name: () => $gettext('Environment'),
+        name: 'Environment',
         component: () => import('@/views/environment/Environment.vue'),
         meta: {
+          name: () => $gettext('Environment'),
           icon: DatabaseOutlined,
         },
       },
       {
         path: 'notifications',
-        name: () => $gettext('Notifications'),
+        name: 'Notifications',
         component: () => import('@/views/notification/Notification.vue'),
         meta: {
+          name: () => $gettext('Notifications'),
           icon: BellOutlined,
         },
       },
       {
         path: 'user',
-        name: () => $gettext('Manage Users'),
+        name: 'Manage Users',
         component: () => import('@/views/user/User.vue'),
         meta: {
+          name: () => $gettext('Manage Users'),
           icon: UserOutlined,
         },
       },
       {
         path: 'preference',
-        name: () => $gettext('Preference'),
+        name: 'Preference',
         component: () => import('@/views/preference/Preference.vue'),
         meta: {
+          name: () => $gettext('Preference'),
           icon: SettingOutlined,
         },
       },
       {
         path: 'system',
-        name: () => $gettext('System'),
+        name: 'System',
         redirect: 'system/about',
         meta: {
+          name: () => $gettext('System'),
           icon: InfoCircleOutlined,
         },
         children: [{
           path: 'about',
-          name: () => $gettext('About'),
+          name: 'About',
           component: () => import('@/views/system/About.vue'),
+          meta: {
+            name: () => $gettext('About'),
+          },
         }, {
           path: 'upgrade',
-          name: () => $gettext('Upgrade'),
+          name: 'Upgrade',
           component: () => import('@/views/system/Upgrade.vue'),
+          meta: {
+            name: () => $gettext('Upgrade'),
+          },
         }],
       },
     ],
   },
   {
     path: '/install',
-    name: () => $gettext('Install'),
+    name: 'Install',
     component: () => import('@/views/other/Install.vue'),
-    meta: { noAuth: true },
+    meta: { name: () => $gettext('Install'), noAuth: true },
   },
   {
     path: '/login',
-    name: () => $gettext('Login'),
+    name: 'Login',
     component: () => import('@/views/other/Login.vue'),
-    meta: { noAuth: true },
+    meta: { name: () => $gettext('Login'), noAuth: true },
   },
   {
     path: '/:pathMatch(.*)*',
-    name: () => $gettext('Not Found'),
+    name: 'Not Found',
     component: () => import('@/views/other/Error.vue'),
-    meta: { noAuth: true, status_code: 404, error: () => $gettext('Not Found') },
+    meta: { name: () => $gettext('Not Found'), noAuth: true, status_code: 404, error: () => $gettext('Not Found') },
   },
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
-
-  // @ts-expect-error routes type error
   routes,
 })
 
 NProgress.configure({ showSpinner: false })
 
 router.beforeEach((to, _, next) => {
-  // @ts-expect-error name type
-  document.title = `${to.name?.()} | Nginx UI`
+  document.title = `${to?.meta.name?.() ?? ''} | Nginx UI`
 
   NProgress.start()
 

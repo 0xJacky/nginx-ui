@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import ObtainCert from '@/views/domain/cert/components/ObtainCert.vue'
 import type { NgxDirective } from '@/api/ngx'
 
@@ -12,7 +11,6 @@ const props = defineProps<Props>()
 
 const emit = defineEmits(['callback', 'update:enabled'])
 
-const { $gettext } = useGettext()
 const issuing_cert = ref(false)
 const obtain_cert = ref()
 const directivesMap = inject('directivesMap') as Ref<Record<string, NgxDirective[]>>

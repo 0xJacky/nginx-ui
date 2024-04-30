@@ -1,20 +1,16 @@
 <script setup lang="tsx">
-import { useGettext } from 'vue3-gettext'
 import { Badge, Tag } from 'ant-design-vue'
-import { h, provide } from 'vue'
 import dayjs from 'dayjs'
 import { CloudUploadOutlined, SafetyCertificateOutlined } from '@ant-design/icons-vue'
 import { input } from '@/components/StdDesign/StdDataEntry'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import cert from '@/api/cert'
-import type { Column } from '@/components/StdDesign/types'
+import type { Column, JSXElements } from '@/components/StdDesign/types'
 import type { Cert } from '@/api/cert'
 import { AutoCertState } from '@/constants'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import WildcardCertificate from '@/views/certificate/WildcardCertificate.vue'
-
-const { $gettext } = useGettext()
 
 function notShowInAutoCert(record: Cert) {
   return record.auto_cert !== AutoCertState.Enable
@@ -41,7 +37,7 @@ const columns: Column[] = [{
   title: () => $gettext('Type'),
   dataIndex: 'auto_cert',
   customRender: (args: customRender) => {
-    const template = []
+    const template: JSXElements = []
     const { text } = args
     const managed = $gettext('Managed Certificate')
     const general = $gettext('General Certificate')
@@ -68,7 +64,7 @@ const columns: Column[] = [{
     type: input,
     show: notShowInAutoCert,
   },
-  hidden: true,
+  hiddenInTable: true,
 }, {
   title: () => $gettext('SSL Certificate Key Path'),
   dataIndex: 'ssl_certificate_key_path',
@@ -76,12 +72,12 @@ const columns: Column[] = [{
     type: input,
     show: notShowInAutoCert,
   },
-  hidden: true,
+  hiddenInTable: true,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'certificate_info',
   customRender: (args: customRender) => {
-    const template = []
+    const template: JSXElements = []
 
     const text = args.text?.not_before && args.text?.not_after && !dayjs().isBefore(args.text?.not_before) && !dayjs().isAfter(args.text?.not_after)
 

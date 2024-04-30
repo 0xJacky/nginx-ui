@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import { message } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
@@ -9,8 +8,6 @@ import OpenAISettings from '@/views/preference/OpenAISettings.vue'
 import NginxSettings from '@/views/preference/NginxSettings.vue'
 import type { Settings } from '@/views/preference/typedef'
 import LogrotateSettings from '@/views/preference/LogrotateSettings.vue'
-
-const { $gettext } = useGettext()
 
 const data = ref<Settings>({
   server: {

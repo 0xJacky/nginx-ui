@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Icon, { SendOutlined } from '@ant-design/icons-vue'
-import { useGettext } from 'vue3-gettext'
 import { storeToRefs } from 'pinia'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
@@ -11,7 +10,7 @@ import 'highlight.js/styles/vs2015.css'
 
 import type { ChatComplicationMessage } from '@/api/openai'
 import openai from '@/api/openai'
-import ChatGPT_logo from '@/assets/svg/ChatGPT_logo.svg'
+import ChatGPT_logo from '@/assets/svg/ChatGPT_logo.svg?component'
 
 const props = defineProps<{
   content: string
@@ -20,8 +19,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['update:history_messages'])
-
-const { $gettext } = useGettext()
 
 const { language: current } = storeToRefs(useSettingsStore())
 

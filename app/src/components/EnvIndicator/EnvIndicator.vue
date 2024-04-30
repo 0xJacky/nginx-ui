@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import { CloseOutlined, DashboardOutlined, DatabaseOutlined } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { computed, watch } from 'vue'
 import { useSettingsStore } from '@/pinia'
 
-const { $gettext } = useGettext()
 const settingsStore = useSettingsStore()
 
 const { environment } = storeToRefs(settingsStore)

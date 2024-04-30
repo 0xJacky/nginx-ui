@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { BellOutlined, CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, InfoCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
-import { useGettext } from 'vue3-gettext'
 import type { Ref } from 'vue'
 import { message } from 'ant-design-vue'
 import notification from '@/api/notification'
@@ -8,7 +7,6 @@ import type { Notification } from '@/api/notification'
 import { NotificationTypeT } from '@/constants'
 import { useUserStore } from '@/pinia'
 
-const { $gettext } = useGettext()
 const loading = ref(false)
 
 const { unreadCount } = storeToRefs(useUserStore())

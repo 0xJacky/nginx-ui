@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import { reactive, ref } from 'vue'
 import { DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
 import Draggable from 'vuedraggable'
@@ -13,8 +12,6 @@ const props = defineProps<{
 }>()
 
 const ngx_config = inject('ngx_config') as NgxConfig
-
-const { $gettext } = useGettext()
 
 const location = reactive({
   comments: '',

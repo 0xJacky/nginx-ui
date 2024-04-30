@@ -1,13 +1,16 @@
 <script setup lang="tsx">
 import { Form } from 'ant-design-vue'
-import type { Column, JSXElements } from '@/components/StdDesign/types'
+import type { Ref } from 'vue'
+import type { Column, JSXElements, StdDesignEdit } from '@/components/StdDesign/types'
 import StdFormItem from '@/components/StdDesign/StdDataEntry/StdFormItem.vue'
+import { labelRender } from '@/components/StdDesign/StdDataEntry'
 
 const props = defineProps<{
   dataList: Column[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dataSource: Record<string, any>
   errors?: Record<string, string>
+  type?: 'search' | 'edit'
   layout?: 'horizontal' | 'vertical' | 'inline'
 }>()
 
@@ -27,13 +30,6 @@ const dataSource = computed({
 
 const slots = useSlots()
 
-function labelRender(title?: string | (() => string)) {
-  if (typeof title === 'function')
-    return title()
-
-  return title
-}
-
 function extraRender(extra?: string | (() => string)) {
   if (typeof extra === 'function')
     return extra()
@@ -41,21 +37,58 @@ function extraRender(extra?: string | (() => string)) {
   return extra
 }
 
+const formRef = ref<InstanceType<typeof Form>>()
+
+defineExpose({
+  formRef,
+})
+
 function Render() {
   const template: JSXElements = []
+  const isCreate = inject<Ref<string>>('editMode', ref(''))?.value === 'create'
 
   props.dataList.forEach((v: Column) => {
+    const dataIndex = (v.edit?.actualDataIndex ?? v.dataIndex) as string
+
+    dataSource.value[dataIndex] = props.dataSource[dataIndex]
+    if (props.type === 'search') {
+      if (v.search) {
+        const type = (v.search as StdDesignEdit)?.type || v.edit?.type
+
+        template.push(
+          <StdFormItem
+            label={labelRender(v.title)}
+            extra={extraRender(v.extra)}
+            error={props.errors}
+          >
+            {type?.(v.edit!, dataSource.value, v.dataIndex)}
+          </StdFormItem>,
+        )
+      }
+
+      return
+    }
+
+    // console.log(isCreate && v.hiddenInCreate, !isCreate && v.hiddenInModify)
+    if ((isCreate && v.hiddenInCreate) || (!isCreate && v.hiddenInModify))
+      return
+
     let show = true
     if (v.edit?.show && typeof v.edit.show === 'function')
       show = v.edit.show(props.dataSource)
 
     if (v.edit?.type && show) {
-      template.push(<StdFormItem
-        dataIndex={v.dataIndex}
-      label={labelRender(v.title)}
-      extra={extraRender(v.extra)}
-      error={props.errors}>
-        {v.edit.type(v.edit, dataSource.value, v.dataIndex)}
+      template.push(
+        <StdFormItem
+          key={dataIndex}
+          dataIndex={dataIndex}
+          label={labelRender(v.title)}
+          extra={extraRender(v.extra)}
+          error={props.errors}
+          required={v.edit?.config?.required}
+          hint={v.edit?.hint}
+        >
+          {v.edit.type(v.edit, dataSource.value, dataIndex)}
         </StdFormItem>,
       )
     }
@@ -64,7 +97,7 @@ function Render() {
   if (slots.action)
     template.push(<div class={'std-data-entry-action'}>{slots.action()}</div>)
 
-  return <Form layout={props.layout || 'vertical'}>{template}</Form>
+  return <Form ref={formRef} model={dataSource.value} layout={props.layout || 'vertical'}>{template}</Form>
 }
 </script>
 

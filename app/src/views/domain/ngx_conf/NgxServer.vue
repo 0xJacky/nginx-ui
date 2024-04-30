@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
-import { useGettext } from 'vue3-gettext'
 import type { ComputedRef, Ref } from 'vue'
 import { Modal } from 'ant-design-vue'
 import LogEntry from '@/views/domain/ngx_conf/LogEntry.vue'
@@ -23,8 +22,6 @@ withDefaults(defineProps<{
 })
 
 const emit = defineEmits(['callback'])
-
-const { $gettext } = useGettext()
 
 const [modal, ContextHolder] = Modal.useModal()
 

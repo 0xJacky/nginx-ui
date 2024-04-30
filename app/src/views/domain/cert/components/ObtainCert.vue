@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import { Modal, message } from 'ant-design-vue'
 import type { ComputedRef, Ref } from 'vue'
 import domain from '@/api/domain'
@@ -11,8 +10,6 @@ import ObtainCertLive from '@/views/domain/cert/components/ObtainCertLive.vue'
 import type { CertificateResult } from '@/api/cert'
 
 const emit = defineEmits(['update:auto_cert'])
-
-const { $gettext, interpolate } = useGettext()
 
 const modalVisible = ref(false)
 const step = ref(1)
@@ -66,16 +63,16 @@ function change_auto_cert(status: boolean) {
       challenge_method: data.value.challenge_method,
       dns_credential_id: data.value.dns_credential_id,
     }).then(() => {
-      message.success(interpolate($gettext('Auto-renewal enabled for %{name}'), { name: name.value }))
+      message.success($gettext('Auto-renewal enabled for %{name}', { name: name.value }))
     }).catch(e => {
-      message.error(e.message ?? interpolate($gettext('Enable auto-renewal failed for %{name}'), { name: name.value }))
+      message.error(e.message ?? $gettext('Enable auto-renewal failed for %{name}', { name: name.value }))
     })
   }
   else {
     domain.remove_auto_cert(props.configName).then(() => {
-      message.success(interpolate($gettext('Auto-renewal disabled for %{name}'), { name: name.value }))
+      message.success($gettext('Auto-renewal disabled for %{name}', { name: name.value }))
     }).catch(e => {
-      message.error(e.message ?? interpolate($gettext('Disable auto-renewal failed for %{name}'), { name: name.value }))
+      message.error(e.message ?? $gettext('Disable auto-renewal failed for %{name}', { name: name.value }))
     })
   }
 }

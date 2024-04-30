@@ -1,5 +1,9 @@
 package settings
 
+import (
+	"github.com/go-acme/lego/v4/lego"
+)
+
 type Server struct {
 	HttpHost          string `json:"http_host" protected:"true"`
 	HttpPort          string `json:"http_port" protected:"true"`
@@ -14,6 +18,18 @@ type Server struct {
 	Demo              bool   `json:"demo" protected:"true"`
 	PageSize          int    `json:"page_size" protected:"true"`
 	GithubProxy       string `json:"github_proxy" binding:"omitempty,url"`
+}
+
+func (s *Server) GetCADir() string {
+	if s.Demo {
+		return lego.LEDirectoryStaging
+	}
+
+	if s.CADir != "" {
+		return s.CADir
+	}
+
+	return lego.LEDirectoryProduction
 }
 
 var ServerSettings = Server{

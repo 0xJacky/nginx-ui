@@ -43,7 +43,19 @@ export default defineConfig(({ mode }) => {
         directoryAsNamespace: true,
       }),
       AutoImport({
-        imports: ['vue', 'vue-router', 'pinia'],
+        imports: [
+          'vue',
+          'vue-router',
+          'pinia',
+          {
+            '@/gettext': [
+              '$gettext',
+              '$pgettext',
+              '$ngettext',
+              '$npgettext',
+            ],
+          },
+        ],
         vueTemplate: true,
       }),
       DefineOptions(),

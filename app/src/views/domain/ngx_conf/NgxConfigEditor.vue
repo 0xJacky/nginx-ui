@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import { Modal } from 'ant-design-vue'
 import type { ComputedRef } from 'vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
@@ -8,6 +7,7 @@ import type { NgxConfig, NgxDirective } from '@/api/ngx'
 import type { CertificateInfo } from '@/api/cert'
 import NgxServer from '@/views/domain/ngx_conf/NgxServer.vue'
 import NgxUpstream from '@/views/domain/ngx_conf/NgxUpstream.vue'
+import type { CheckedType } from '@/types'
 
 const props = withDefaults(defineProps<{
   autoCert?: boolean
@@ -21,8 +21,6 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits(['callback', 'update:autoCert'])
-
-const { $gettext } = useGettext()
 
 const save_config = inject('save_config') as () => Promise<void>
 
@@ -40,7 +38,7 @@ onMounted(() => {
 
 const ngx_config = inject('ngx_config') as NgxConfig
 
-function confirm_change_tls(status: boolean) {
+function confirm_change_tls(status: CheckedType) {
   modal.confirm({
     title: $gettext('Do you want to enable TLS?'),
     content: $gettext('To make sure the certification auto-renewal can work normally, '
@@ -88,7 +86,7 @@ const directivesMap: ComputedRef<Record<string, NgxDirective[]>> = computed(() =
 })
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
-function change_tls(status: boolean) {
+function change_tls(status: CheckedType) {
   if (status) {
     // deep copy servers[0] to servers[1]
     const server = JSON.parse(JSON.stringify(ngx_config.servers[0]))
