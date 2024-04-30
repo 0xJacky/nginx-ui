@@ -36,3 +36,5 @@ export const PrivateKeyTypeMask = {
 } as const
 
 export const PrivateKeyTypeList = Object.entries(PrivateKeyTypeMask).map(([key, name]) => ({ key, name }))
+
+export type PrivateKeyType = keyof typeof PrivateKeyTypeMask

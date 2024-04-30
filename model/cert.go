@@ -1,6 +1,7 @@
 package model
 
 import (
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/lib/pq"
@@ -41,9 +42,9 @@ func FirstCert(confName string) (c Cert, err error) {
 	return
 }
 
-func FirstOrCreateCert(confName string) (c Cert, err error) {
+func FirstOrCreateCert(confName string, keyType certcrypto.KeyType) (c Cert, err error) {
 	// Filename is used to check whether this site is enabled
-	err = db.FirstOrCreate(&c, &Cert{Name: confName, Filename: confName}).Error
+	err = db.FirstOrCreate(&c, &Cert{Name: confName, Filename: confName, KeyType: keyType}).Error
 	return
 }
 
@@ -96,10 +97,5 @@ func (c *Cert) Remove() error {
 }
 
 func (c *Cert) GetKeyType() certcrypto.KeyType {
-	switch c.KeyType {
-	case certcrypto.RSA2048, certcrypto.RSA3072, certcrypto.RSA4096,
-		certcrypto.EC256, certcrypto.EC384:
-		return c.KeyType
-	}
-	return certcrypto.RSA2048
+	return helper.GetKeyType(c.KeyType)
 }

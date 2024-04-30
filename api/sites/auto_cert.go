@@ -2,8 +2,10 @@ package sites
 
 import (
 	"github.com/0xJacky/Nginx-UI/api"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
+	"github.com/go-acme/lego/v4/certcrypto"
 	"net/http"
 )
 
@@ -11,16 +13,17 @@ func AddDomainToAutoCert(c *gin.Context) {
 	name := c.Param("name")
 
 	var json struct {
-		DnsCredentialID int      `json:"dns_credential_id"`
-		ChallengeMethod string   `json:"challenge_method"`
-		Domains         []string `json:"domains"`
+		DnsCredentialID int                `json:"dns_credential_id"`
+		ChallengeMethod string             `json:"challenge_method"`
+		Domains         []string           `json:"domains"`
+		KeyType         certcrypto.KeyType `json:"key_type"`
 	}
 
 	if !api.BindAndValid(c, &json) {
 		return
 	}
 
-	certModel, err := model.FirstOrCreateCert(name)
+	certModel, err := model.FirstOrCreateCert(name, helper.GetKeyType(json.KeyType))
 
 	if err != nil {
 		api.ErrHandler(c, err)

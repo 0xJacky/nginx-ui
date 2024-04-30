@@ -167,7 +167,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		return
 	}
 	name := strings.Join(domain, "_")
-	saveDir := nginx.GetConfPath("ssl/" + name)
+	saveDir := nginx.GetConfPath("ssl/" + name + "_" + string(payload.KeyType))
 	if _, err = os.Stat(saveDir); os.IsNotExist(err) {
 		err = os.MkdirAll(saveDir, 0755)
 		if err != nil {

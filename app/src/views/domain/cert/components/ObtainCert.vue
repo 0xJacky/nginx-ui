@@ -8,6 +8,7 @@ import type { Props } from '@/views/domain/cert/IssueCert.vue'
 import type { DnsChallenge } from '@/api/auto_cert'
 import ObtainCertLive from '@/views/domain/cert/components/ObtainCertLive.vue'
 import type { CertificateResult } from '@/api/cert'
+import type { PrivateKeyType } from '@/constants'
 
 const emit = defineEmits(['update:auto_cert'])
 
@@ -48,20 +49,21 @@ const issue_cert = (config_name: string, server_name: string) => {
   refObtainCertLive.value.issue_cert(config_name, server_name.trim().split(' ')).then(resolveCert)
 }
 
-async function resolveCert({ ssl_certificate, ssl_certificate_key }: CertificateResult) {
+async function resolveCert({ ssl_certificate, ssl_certificate_key, key_type }: CertificateResult) {
   directivesMap.value.ssl_certificate[0].params = ssl_certificate
   directivesMap.value.ssl_certificate_key[0].params = ssl_certificate_key
   await save_config()
-  change_auto_cert(true)
+  change_auto_cert(true, key_type)
   emit('update:auto_cert', true)
 }
 
-function change_auto_cert(status: boolean) {
+function change_auto_cert(status: boolean, key_type?: PrivateKeyType) {
   if (status) {
     domain.add_auto_cert(props.configName, {
       domains: name.value.trim().split(' '),
       challenge_method: data.value.challenge_method,
       dns_credential_id: data.value.dns_credential_id,
+      key_type: key_type!,
     }).then(() => {
       message.success($gettext('Auto-renewal enabled for %{name}', { name: name.value }))
     }).catch(e => {

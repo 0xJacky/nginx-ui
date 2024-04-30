@@ -6,6 +6,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
+	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/gorilla/websocket"
 	"net/http"
 	"strings"
@@ -18,10 +19,11 @@ const (
 )
 
 type IssueCertResponse struct {
-	Status            string `json:"status"`
-	Message           string `json:"message"`
-	SSLCertificate    string `json:"ssl_certificate,omitempty"`
-	SSLCertificateKey string `json:"ssl_certificate_key,omitempty"`
+	Status            string             `json:"status"`
+	Message           string             `json:"message"`
+	SSLCertificate    string             `json:"ssl_certificate,omitempty"`
+	SSLCertificateKey string             `json:"ssl_certificate_key,omitempty"`
+	KeyType           certcrypto.KeyType `json:"key_type"`
 }
 
 func handleIssueCertLogChan(conn *websocket.Conn, log *cert.Logger, logChan chan string) {
@@ -75,8 +77,7 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
-	certModel, err := model.FirstOrCreateCert(c.Param("name"))
-
+	certModel, err := model.FirstOrCreateCert(c.Param("name"), payload.GetKeyType())
 	if err != nil {
 		logger.Error(err)
 		return
@@ -113,7 +114,7 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
-	certDirName := strings.Join(payload.ServerName, "_")
+	certDirName := strings.Join(payload.ServerName, "_") + "_" + string(payload.GetKeyType())
 	sslCertificatePath := nginx.GetConfPath("ssl", certDirName, "fullchain.cer")
 	sslCertificateKeyPath := nginx.GetConfPath("ssl", certDirName, "private.key")
 
@@ -144,6 +145,7 @@ func IssueCert(c *gin.Context) {
 		Message:           "Issued certificate successfully",
 		SSLCertificate:    sslCertificatePath,
 		SSLCertificateKey: sslCertificateKeyPath,
+		KeyType:           payload.GetKeyType(),
 	})
 
 	if err != nil {

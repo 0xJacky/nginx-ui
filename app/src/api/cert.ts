@@ -2,6 +2,7 @@ import type { ModelBase } from '@/api/curd'
 import Curd from '@/api/curd'
 import type { DnsCredential } from '@/api/dns_credential'
 import type { AcmeUser } from '@/api/acme_user'
+import type { PrivateKeyType } from '@/constants'
 
 export interface Cert extends ModelBase {
   name: string
@@ -32,6 +33,7 @@ export interface CertificateInfo {
 export interface CertificateResult {
   ssl_certificate: string
   ssl_certificate_key: string
+  key_type: PrivateKeyType
 }
 
 const cert: Curd<Cert> = new Curd('/cert')

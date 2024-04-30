@@ -106,7 +106,11 @@ const issue_cert = async (config_name: string, server_name: string[], key_type: 
           if (r.status === 'success' && r.ssl_certificate !== undefined && r.ssl_certificate_key !== undefined) {
             progressStatus.value = 'success'
             progressPercent.value = 100
-            resolve({ ssl_certificate: r.ssl_certificate, ssl_certificate_key: r.ssl_certificate_key })
+            resolve({
+              ssl_certificate: r.ssl_certificate,
+              ssl_certificate_key: r.ssl_certificate_key,
+              key_type: r.key_type,
+            })
           }
           else {
             progressStatus.value = 'exception'
