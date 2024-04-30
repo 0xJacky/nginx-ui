@@ -4,6 +4,7 @@ import { message } from 'ant-design-vue'
 import type { Cert } from '@/api/cert'
 import ObtainCertLive from '@/views/domain/cert/components/ObtainCertLive.vue'
 import DNSChallenge from '@/views/domain/cert/components/DNSChallenge.vue'
+import { PrivateKeyTypeList } from '@/constants'
 
 const emit = defineEmits<{
   issued: [void]
@@ -50,33 +51,6 @@ const issueCert = () => {
       emit('issued')
     })
 }
-
-const keyType = shallowRef([
-  {
-    key: '2048',
-    name: 'RSA2048',
-  },
-  {
-    key: '3072',
-    name: 'RSA3072',
-  },
-  {
-    key: '4096',
-    name: 'RSA4096',
-  },
-  {
-    key: '8192',
-    name: 'RAS8192',
-  },
-  {
-    key: 'P256',
-    name: 'EC256',
-  },
-  {
-    key: 'P384',
-    name: 'EC384',
-  },
-])
 </script>
 
 <template>
@@ -105,7 +79,7 @@ const keyType = shallowRef([
           <AFormItem :label="$gettext('Key Type')">
             <ASelect v-model:value="data.key_type">
               <ASelectOption
-                v-for="t in keyType"
+                v-for="t in PrivateKeyTypeList"
                 :key="t.key"
                 :value="t.key"
               >

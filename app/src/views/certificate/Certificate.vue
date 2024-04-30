@@ -4,11 +4,11 @@ import dayjs from 'dayjs'
 import { CloudUploadOutlined, SafetyCertificateOutlined } from '@ant-design/icons-vue'
 import { input } from '@/components/StdDesign/StdDataEntry'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import { datetime, mask } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import cert from '@/api/cert'
 import type { Column, JSXElements } from '@/components/StdDesign/types'
 import type { Cert } from '@/api/cert'
-import { AutoCertState } from '@/constants'
+import { AutoCertState, PrivateKeyTypeMask } from '@/constants'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import WildcardCertificate from '@/views/certificate/WildcardCertificate.vue'
 
@@ -55,6 +55,12 @@ const columns: Column[] = [{
 
     return h('div', template)
   },
+  sortable: true,
+  pithy: true,
+}, {
+  title: () => $gettext('Key Type'),
+  dataIndex: 'key_type',
+  customRender: mask(PrivateKeyTypeMask),
   sortable: true,
   pithy: true,
 }, {
