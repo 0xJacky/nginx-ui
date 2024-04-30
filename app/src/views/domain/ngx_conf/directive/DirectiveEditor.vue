@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import Draggable from 'vuedraggable'
 import type { ComputedRef } from 'vue'
 import DirectiveAdd from './DirectiveAdd.vue'
@@ -11,7 +10,6 @@ defineProps<{
   context?: string
 }>()
 
-const { $gettext } = useGettext()
 const current_idx = ref(-1)
 
 const ngx_directives = inject('ngx_directives') as ComputedRef<NgxDirective[]>

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import type { SelectProps } from 'ant-design-vue'
 import type { Ref } from 'vue'
+import type { SelectValue } from 'ant-design-vue/es/select'
 import type { DNSProvider } from '@/api/auto_cert'
 import auto_cert from '@/api/auto_cert'
 import dns_credential from '@/api/dns_credential'
 
-const { $gettext } = useGettext()
 const providers = ref([]) as Ref<DNSProvider[]>
 const credentials = ref<SelectProps['options']>([])
 
@@ -14,7 +13,7 @@ const credentials = ref<SelectProps['options']>([])
 // is the object that you are trying to modify it
 // we externalize the dns_credential_id to the parent component,
 // this is used to tell the backend which dns_credential to use
-const data = inject('data') as Ref<DNSProvider & { dns_credential_id: number | null }>
+const data = inject('data') as Ref<DNSProvider & { dns_credential_id: SelectValue }>
 
 const code = computed(() => {
   return data.value.code
@@ -41,7 +40,7 @@ watch(current, () => {
   data.value.code = current.value.code
   data.value.provider = current.value.name
   if (mounted.value)
-    data.value.dns_credential_id = null
+    data.value.dns_credential_id = undefined
 
   dns_credential.get_list({ provider: data.value.provider }).then(r => {
     r.data.forEach(v => {

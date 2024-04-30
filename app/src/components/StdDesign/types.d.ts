@@ -1,25 +1,35 @@
 import Curd, {Pagination} from '@/api/curd'
-import { Ref } from 'vue'
-import type { JSX } from 'vue/jsx'
+import {Ref} from 'vue'
+import type {JSX} from 'vue/jsx'
+import {TableColumnType} from "ant-design-vue"
+
 export type JSXElements = JSX.Element[]
 
 export interface StdDesignEdit {
-  type?: function // component type
+  type?: (edit: StdDesignEdit, dataSource: any, dataIndex: any) => JSX.Element // component type
 
   show?: (dataSource: any) => boolean // show component or not
 
   batch?: boolean // batch edit
 
-  mask?: Record<string, () => string> // use for select-option
+  mask?: Record<string | number, string | (() => string)> | (() => Promise<Record<string | number, string>>) // use for select-option
 
   rules?: [] // validator rules
+
+  hint?: string | (() => string) // hint form item
+
+  actualDataIndex?: string
+
+  select?: {
+    multiple?: boolean
+  }
 
   selector?: {
     getParams?: {}
     recordValueIndex: any // relative to api return
     selectionType: any
-    api: Curd,
-    valueApi?: Curd,
+    api: Curd
+    valueApi?: Curd
     columns: any
     disableSearch?: boolean
     description?: string
@@ -27,6 +37,11 @@ export interface StdDesignEdit {
     itemKey?: any // default is id
     dataSourceValueIndex?: any // relative to dataSource
   } // StdSelector Config
+
+  upload?: {
+    limit?: number // upload file limitation
+    action: string // upload url
+  }
 
   config?: {
     label?: string | (() => string) // label for form item
@@ -36,7 +51,13 @@ export interface StdDesignEdit {
     min?: number // min value for input number
     max?: number // max value for input number
     error_messages?: Ref
-    hint?: string | (() => string) // hint form item
+    required?: boolean
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    defaultValue?: any
+    addonBefore?: string // for inputNumber
+    addonAfter?: string // for inputNumber
+    prefix?: string // for inputNumber
+    suffix?: string // for inputNumber
   }
 
   flex?: Flex
@@ -50,39 +71,36 @@ export interface Flex {
   xxl?: string | number | boolean
 }
 
-export interface Column {
-  title?: string | (() => string);
-  dataIndex: string | string[];
-  edit?: StdDesignEdit;
-  customRender?: function;
-  extra?: string | (() => string);
-  pithy?: boolean;
-  search?: boolean | StdDesignEdit;
-  sortable?: boolean;
-  hidden?: boolean;
-  width?: string | number;
-  handle?: boolean;
-  hiddenInTrash?: boolean;
-  hiddenInCreate?: boolean;
-  hiddenInModify?: boolean;
-  batch?: boolean;
-}
-
-
-export interface StdTableProvideData {
-  displayColumns: Column[];
-  pithyColumns: Column[];
-  columnsMap: { [key: string]: Column };
-  displayKeys: string[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  editItem: (id: number, data: any, index: string | number) => void;
-  deleteItem: (id: number, index: string | number) => void;
-  recoverItem: (id: number) => {};
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  params: any;
-  dataSource: any;
-  get_list: () => void;
-  loading: Ref<boolean>;
+export interface Column extends TableColumnType {
+  title?: string | (() => string)
+  edit?: StdDesignEdit
+  extra?: string | (() => string)
+  pithy?: boolean
+  search?: boolean | StdDesignEdit
+  sortable?: boolean
+  handle?: boolean
+  hiddenInTable?: boolean
+  hiddenInTrash?: boolean
+  hiddenInCreate?: boolean
+  hiddenInModify?: boolean
+  hiddenInDetail?: boolean
+  hiddenInExport?: boolean
+  import?: boolean
+  batch?: boolean
+  customRender?: function
+  selector?: {
+    getParams?: {}
+    recordValueIndex: any // relative to api return
+    selectionType: any
+    api: Curd
+    valueApi?: Curd
+    columns: any
+    disableSearch?: boolean
+    description?: string
+    bind?: any
+    itemKey?: any // default is id
+    dataSourceValueIndex?: any // relative to dataSource
+  }
 }
 
 export interface StdTableResponse {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import type ReconnectingWebSocket from 'reconnecting-websocket'
 import AreaChart from '@/components/Chart/AreaChart.vue'
 import RadialBarChart from '@/components/Chart/RadialBarChart.vue'
@@ -7,8 +6,6 @@ import type { CPUInfoStat, DiskStat, HostInfoStat, LoadStat, MemStat } from '@/a
 import analytic from '@/api/analytic'
 import { bytesToSize } from '@/lib/helper'
 import type { Series } from '@/components/Chart/types'
-
-const { $gettext } = useGettext()
 
 let websocket: ReconnectingWebSocket | WebSocket
 

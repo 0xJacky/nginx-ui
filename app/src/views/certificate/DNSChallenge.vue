@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import type { SelectProps } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import type { DNSProvider } from '@/api/auto_cert'
 import auto_cert from '@/api/auto_cert'
 
-const { $gettext } = useGettext()
 const providers = ref([]) as Ref<DNSProvider[]>
 
 // This data is provided by the Top StdCurd component,

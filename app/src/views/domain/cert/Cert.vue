@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useGettext } from 'vue3-gettext'
 import CertInfo from '@/views/domain/cert/CertInfo.vue'
 import IssueCert from '@/views/domain/cert/IssueCert.vue'
 import ChangeCert from '@/views/domain/cert/ChangeCert.vue'
@@ -14,7 +13,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['callback', 'update:enabled'])
-const { $gettext } = useGettext()
 function callback() {
   emit('callback')
 }

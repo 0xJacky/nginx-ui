@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import { Modal, message } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import type { Stream } from '@/api/stream'
@@ -10,15 +9,16 @@ import Deploy from '@/views/stream/components/Deploy.vue'
 import { useSettingsStore } from '@/pinia'
 import type { ChatComplicationMessage } from '@/api/openai'
 import type { NgxConfig } from '@/api/ngx'
+import type { CheckedType } from '@/types'
 
 const settings = useSettingsStore()
-const { $gettext } = useGettext()
+
 const configText = inject('configText') as Ref<string>
 const ngx_config = inject('ngx_config') as Ref<NgxConfig>
 const enabled = inject('enabled') as Ref<boolean>
 const name = inject('name') as Ref<string>
 const history_chatgpt_record = inject('history_chatgpt_record') as Ref<ChatComplicationMessage[]>
-const filename = inject('filename')
+const filename = inject('filename') as Ref<string | number | undefined>
 const data = inject('data') as Ref<Stream>
 
 const [modal, ContextHolder] = Modal.useModal()
@@ -43,7 +43,7 @@ function disable() {
   })
 }
 
-function on_change_enabled(checked: boolean) {
+function on_change_enabled(checked: CheckedType) {
   modal.confirm({
     title: checked ? $gettext('Do you want to enable this stream?') : $gettext('Do you want to disable this stream?'),
     mask: false,

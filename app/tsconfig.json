@@ -8,21 +8,20 @@
       "DOM",
       "DOM.Iterable"
     ],
-
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    "allowImportingTsExtensions": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-
+    "allowJs": true,
+    "noImplicitAny": false,
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-
     "esModuleInterop": true,
     "skipLibCheck": true,
     "baseUrl": ".",
@@ -31,15 +30,18 @@
         "./src/*"
       ]
     },
-    "types": ["vite/client"]
+    "types": [
+      "vite/client"
+    ]
   },
   "include": [
-    "env.d.ts",
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "auto-imports.d.ts"
+    "auto-imports.d.ts",
+    "components.d.ts",
+    "env.d.ts",
   ],
   "references": [
     {

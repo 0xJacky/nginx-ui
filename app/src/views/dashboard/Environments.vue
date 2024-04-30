@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import Icon, { LinkOutlined, SendOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
 import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { Ref } from 'vue'
@@ -7,12 +6,10 @@ import { useSettingsStore } from '@/pinia'
 import type { Node } from '@/api/environment'
 import environment from '@/api/environment'
 import logo from '@/assets/img/logo.png'
-import pulse from '@/assets/svg/pulse.svg'
+import pulse from '@/assets/svg/pulse.svg?component'
 import { formatDateTime } from '@/lib/helper'
 import NodeAnalyticItem from '@/views/dashboard/components/NodeAnalyticItem.vue'
 import analytic from '@/api/analytic'
-
-const { $gettext } = useGettext()
 
 const data = ref([]) as Ref<Node[]>
 

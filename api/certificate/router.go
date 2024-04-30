@@ -23,3 +23,13 @@ func InitCertificateRouter(r *gin.RouterGroup) {
 func InitCertificateWebSocketRouter(r *gin.RouterGroup) {
 	r.GET("domain/:name/cert", IssueCert)
 }
+
+func InitAcmeUserRouter(r *gin.RouterGroup) {
+	r.GET("acme_users", GetAcmeUserList)
+	r.GET("acme_user/:id", GetAcmeUser)
+	r.POST("acme_user", CreateAcmeUser)
+	r.POST("acme_user/:id", ModifyAcmeUser)
+	r.POST("acme_user/:id/register", RegisterAcmeUser)
+	r.DELETE("acme_user/:id", DestroyAcmeUser)
+	r.PATCH("acme_user/:id", RecoverAcmeUser)
+}

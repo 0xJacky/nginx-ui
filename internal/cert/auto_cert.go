@@ -4,13 +4,14 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/pkg/errors"
 	"runtime"
 	"strings"
 	"time"
 )
 
-func AutoObtain() {
+func AutoCert() {
 	defer func() {
 		if err := recover(); err != nil {
 			buf := make([]byte, 1024)
@@ -21,13 +22,12 @@ func AutoObtain() {
 	logger.Info("AutoCert Worker Started")
 	autoCertList := model.GetAutoCertList()
 	for _, certModel := range autoCertList {
-		certModel := certModel
-		renew(certModel)
+		autoCert(certModel)
 	}
 	logger.Info("AutoCert Worker End")
 }
 
-func renew(certModel *model.Cert) {
+func autoCert(certModel *model.Cert) {
 	confName := certModel.Filename
 
 	log := &Logger{}
@@ -60,8 +60,8 @@ func renew(certModel *model.Cert) {
 		notification.Error("Renew Certificate Error", strings.Join(certModel.Domains, ", "))
 		return
 	}
-	if time.Now().Sub(cert.NotBefore).Hours()/24 < 7 {
-		// not between 1 week, ignore this certificate
+	if int(time.Now().Sub(cert.NotBefore).Hours()/24) < settings.ServerSettings.GetCertRenewalInterval() {
+		// not after settings.ServerSettings.CertRenewalInterval, ignore
 		return
 	}
 
@@ -75,6 +75,14 @@ func renew(certModel *model.Cert) {
 		ChallengeMethod: certModel.ChallengeMethod,
 		DNSCredentialID: certModel.DnsCredentialID,
 		KeyType:         certModel.GetKeyType(),
+		Resource: &model.CertificateResource{
+			Resource:          certModel.Resource.Resource,
+			PrivateKey:        certModel.Resource.PrivateKey,
+			Certificate:       certModel.Resource.Certificate,
+			IssuerCertificate: certModel.Resource.IssuerCertificate,
+			CSR:               certModel.Resource.CSR,
+		},
+		NotBefore: cert.NotBefore,
 	}
 
 	// errChan will be closed inside IssueCert

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import type { Ref } from 'vue'
 import { message } from 'ant-design-vue'
 import { AutoCertState } from '@/constants'
@@ -10,8 +9,6 @@ import type { Cert } from '@/api/cert'
 import cert from '@/api/cert'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import RenewCert from '@/views/certificate/RenewCert.vue'
-
-const { $gettext } = useGettext()
 
 const route = useRoute()
 

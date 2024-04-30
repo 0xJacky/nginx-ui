@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
-
-const { $gettext } = useGettext()
 
 const route = useRoute()
 

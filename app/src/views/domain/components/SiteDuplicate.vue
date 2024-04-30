@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import { Form, message, notification } from 'ant-design-vue'
-import gettext from '@/gettext'
+
 import domain from '@/api/domain'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 import { useSettingsStore } from '@/pinia'
+import gettext from '@/gettext'
 
 const props = defineProps<{
   visible: boolean
@@ -12,8 +12,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['update:visible', 'duplicated'])
-
-const { $gettext } = useGettext()
 
 const settings = useSettingsStore()
 
@@ -127,7 +125,7 @@ watch(() => gettext.current, () => {
     v-model:open="show"
     :title="$gettext('Duplicate')"
     :confirm-loading="loading"
-    :mask="null"
+    :mask="false"
     @ok="onSubmit"
   >
     <AForm layout="vertical">

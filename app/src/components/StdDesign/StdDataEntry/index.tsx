@@ -1,88 +1,128 @@
 import { h } from 'vue'
-import { Input, InputNumber, Switch, Textarea } from 'ant-design-vue'
-import _ from 'lodash'
+import {
+  DatePicker,
+  Input,
+  InputNumber,
+  RangePicker,
+  Switch,
+  Textarea,
+} from 'ant-design-vue'
+import type { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import StdDataEntry from './StdDataEntry.vue'
 import StdSelector from './components/StdSelector.vue'
 import StdSelect from './components/StdSelect.vue'
 import StdPassword from './components/StdPassword.vue'
 import type { StdDesignEdit } from '@/components/StdDesign/types'
+import { DATE_FORMAT } from '@/constants'
 
-const fn = _.get
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function readonly(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
-  return h('p', fn(dataSource, dataIndex))
+export function readonly(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
+  return h('p', dataSource?.[dataIndex] ?? edit?.config?.defaultValue)
 }
 
-function placeholder_helper(edit: StdDesignEdit) {
+export function labelRender(title?: string | (() => string)) {
+  if (typeof title === 'function')
+    return title()
+
+  return title
+}
+
+export function placeholderHelper(edit: StdDesignEdit) {
   return typeof edit.config?.placeholder === 'function' ? edit.config?.placeholder() : edit.config?.placeholder
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function input(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
+export function input(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
   return h(Input, {
-    'placeholder': placeholder_helper(edit),
-    'value': dataSource?.[dataIndex],
+    'autocomplete': 'off',
+    'placeholder': placeholderHelper(edit),
+    'value': dataSource?.[dataIndex] ?? edit?.config?.defaultValue,
     'onUpdate:value': value => {
       dataSource[dataIndex] = value
     },
   })
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function inputNumber(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
+export function inputNumber(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
+  if (edit.config?.defaultValue !== undefined)
+    dataSource[dataIndex] = edit.config.defaultValue
+
   return h(InputNumber, {
-    'placeholder': placeholder_helper(edit),
+    'placeholder': placeholderHelper(edit),
     'min': edit.config?.min,
     'max': edit.config?.max,
-    'value': dataSource?.[dataIndex],
+    'value': dataSource?.[dataIndex] ?? edit?.config?.defaultValue,
     'onUpdate:value': value => {
       dataSource[dataIndex] = value
     },
+    'addon-before': edit.config?.addonBefore,
+    'addon-after': edit.config?.addonAfter,
+    'prefix': edit.config?.prefix,
+    'suffix': edit.config?.suffix,
   })
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function textarea(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
+export function textarea(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
   return h(Textarea, {
-    'placeholder': placeholder_helper(edit),
-    'value': dataSource?.[dataIndex],
+    'placeholder': placeholderHelper(edit),
+    'value': dataSource?.[dataIndex] ?? edit?.config?.defaultValue,
     'onUpdate:value': value => {
       dataSource[dataIndex] = value
     },
   })
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function password(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
-  return <StdPassword
-    v-model:value={dataSource[dataIndex]}
-    value={dataSource[dataIndex]}
-    generate={edit.config?.generate}
-    placeholder={placeholder_helper(edit)}
-  />
+export function password(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
+  return (
+    <StdPassword
+      v-model:value={dataSource[dataIndex]}
+      value={dataSource[dataIndex] ?? edit?.config?.defaultValue}
+      generate={edit.config?.generate}
+      placeholder={placeholderHelper(edit)}
+    />
+  )
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function select(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
-  return <StdSelect
-    v-model:value={dataSource[dataIndex]}
-    value={dataSource[dataIndex]}
-    mask={edit.mask as Record<string, () => string>}
-  />
+export function select(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
+  const actualDataIndex = edit?.actualDataIndex ?? dataIndex
+
+  return (
+    <StdSelect
+      v-model:value={dataSource[actualDataIndex]}
+      mask={edit.mask}
+      placeholder={placeholderHelper(edit)}
+      multiple={edit.select?.multiple}
+      defaultValue={edit.config?.defaultValue}
+    />
+  )
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function selector(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
-  return <StdSelector
-    v-model:selectedKey={dataSource[dataIndex]}
-    selectedKey={dataSource[dataIndex]}
-    recordValueIndex={edit.selector?.recordValueIndex}
-    selectionType={edit.selector?.selectionType}
-    api={edit.selector?.api}
-    columns={edit.selector?.columns}
-    disableSearch={edit.selector?.disableSearch}
-    getParams={edit.selector?.getParams}
-    description={edit.selector?.description}
-  />
+export function selector(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
+  return (
+    <StdSelector
+      v-model:selectedKey={dataSource[dataIndex]}
+      selectedKey={dataSource[dataIndex] || edit?.config?.defaultValue}
+      recordValueIndex={edit.selector?.recordValueIndex}
+      selectionType={edit.selector?.selectionType}
+      api={edit.selector?.api}
+      columns={edit.selector?.columns}
+      disableSearch={edit.selector?.disableSearch}
+      getParams={edit.selector?.getParams}
+      description={edit.selector?.description}
+    />
+  )
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function switcher(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
+export function switcher(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
   return h(Switch, {
-    'checked': dataSource?.[dataIndex],
+    'checked': dataSource?.[dataIndex] ?? edit?.config?.defaultValue,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     'onUpdate:checked': (value: any) => {
       dataSource[dataIndex] = value
@@ -90,15 +130,33 @@ function switcher(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
   })
 }
 
-export {
-  readonly,
-  input,
-  textarea,
-  select,
-  selector,
-  password,
-  inputNumber,
-  switcher,
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function datePicker(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
+  const date: Dayjs | undefined = dataSource?.[dataIndex] ? dayjs(dataSource?.[dataIndex]) : undefined
+
+  return (
+    <DatePicker
+      format={DATE_FORMAT}
+      value={date}
+      onChange={(_, dataString) => dataSource[dataIndex] = dataString ?? undefined}
+    />
+  )
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function dateRangePicker(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
+  const dates: [Dayjs, Dayjs] = dataSource
+    ?.[dataIndex]
+    ?.filter((item: string) => !!item)
+    ?.map((item: string) => dayjs(item))
+
+  return (
+    <RangePicker
+      format={DATE_FORMAT}
+      value={dates}
+      onChange={(_, dateStrings: [string, string]) => dataSource[dataIndex] = dateStrings}
+    />
+  )
 }
 
 export default StdDataEntry

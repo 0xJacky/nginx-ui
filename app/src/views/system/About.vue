@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import GithubButton from 'vue-github-button'
-import gettext from '@/gettext'
 import logo from '@/assets/img/logo.png'
 import version from '@/version.json'
-
-const { $gettext } = gettext
 
 const this_year = new Date().getFullYear()
 </script>

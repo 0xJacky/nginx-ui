@@ -1,5 +1,4 @@
 <script setup lang="tsx">
-import { useGettext } from 'vue3-gettext'
 import { Badge } from 'ant-design-vue'
 import type { ComputedRef, Ref } from 'vue'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
@@ -8,9 +7,7 @@ import cert from '@/api/cert'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input } from '@/components/StdDesign/StdDataEntry'
 import type { NgxDirective } from '@/api/ngx'
-import type { Column } from '@/components/StdDesign/types'
-
-const { $gettext } = useGettext()
+import type { Column, JSXElements } from '@/components/StdDesign/types'
 
 const current_server_directives = inject('current_server_directives') as ComputedRef<NgxDirective[]>
 const directivesMap = inject('directivesMap') as Ref<Record<string, NgxDirective[]>>
@@ -37,7 +34,7 @@ const columns: Column[] = [{
   title: () => $gettext('Auto Cert'),
   dataIndex: 'auto_cert',
   customRender: (args: customRender) => {
-    const template = []
+    const template: JSXElements = []
     const { text } = args
     if (text === true || text > 0) {
       template.push(<Badge status="success"/>)

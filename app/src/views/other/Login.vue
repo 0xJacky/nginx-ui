@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { LockOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { Form, message } from 'ant-design-vue'
-import gettext from '@/gettext'
+
 import { useUserStore } from '@/pinia'
 import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
+import gettext from '@/gettext'
 
 const thisYear = new Date().getFullYear()
 
@@ -18,7 +19,6 @@ install.get_lock().then(async (r: { lock: boolean }) => {
     await router.push('/install')
 })
 
-const { $gettext } = gettext
 const loading = ref(false)
 
 const modelRef = reactive({

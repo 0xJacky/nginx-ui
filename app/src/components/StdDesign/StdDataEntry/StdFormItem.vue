@@ -1,51 +1,42 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useGettext } from 'vue3-gettext'
+import type { Column } from '@/components/StdDesign/types'
 
 const props = defineProps<Props>()
 
-const { $gettext } = useGettext()
-
 export interface Props {
-  dataIndex?: string | string[]
+  dataIndex?: Column['dataIndex']
   label?: string
   extra?: string
+  hint?: string | (() => string)
   error?: {
     [key: string]: string
   }
+  required?: boolean
 }
 
 const tag = computed(() => {
   return props.error?.[props.dataIndex!.toString()] ?? ''
 })
 
-const valid_status = computed(() => {
-  if (tag.value)
-    return 'error'
-  else
-    return 'success'
-})
-
 const help = computed(() => {
   if (tag.value.includes('required'))
-    return () => $gettext('This field should not be empty')
+    return $gettext('This field should not be empty')
 
-  return () => {
-  }
+  return props.hint
 })
 </script>
 
 <template>
   <AFormItem
+    :name="dataIndex as string"
     :label="label"
-    :extra="extra"
-    :validate-status="valid_status"
-    :help="help?.()"
+    :help="help"
+    :required="required"
   >
     <slot />
   </AFormItem>
 </template>
 
 <style scoped lang="less">
-
 </style>

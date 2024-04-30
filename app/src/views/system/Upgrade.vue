@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import type { Ref } from 'vue'
 import dayjs from 'dayjs'
 import { marked } from 'marked'
@@ -10,8 +9,6 @@ import websocket from '@/lib/websocket'
 import version from '@/version.json'
 import type { RuntimeInfo } from '@/api/upgrade'
 import upgrade from '@/api/upgrade'
-
-const { $gettext } = useGettext()
 
 const route = useRoute()
 const data = ref({}) as Ref<RuntimeInfo>
@@ -26,7 +23,7 @@ const progressStrokeColor = {
 
 const modalVisible = ref(false)
 const progressPercent = ref(0)
-const progressStatus = ref('active')
+const progressStatus = ref('active') as Ref<'normal' | 'active' | 'success' | 'exception'>
 const modalClosable = ref(false)
 const get_release_error = ref(false)
 

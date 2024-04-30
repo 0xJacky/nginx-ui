@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { Modal, notification } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import domain from '@/api/domain'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
-
-const { $gettext, $ngettext } = useGettext()
 
 const node_map = reactive({})
 const target = ref([])

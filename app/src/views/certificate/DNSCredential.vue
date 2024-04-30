@@ -1,13 +1,10 @@
 <script setup lang="tsx">
-import { useGettext } from 'vue3-gettext'
 import DNSChallenge from './DNSChallenge.vue'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import dns_credential from '@/api/dns_credential'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import { input } from '@/components/StdDesign/StdDataEntry'
 import type { Column } from '@/components/StdDesign/types'
-
-const { $gettext } = useGettext()
 
 const columns: Column[] = [{
   title: () => $gettext('Name'),

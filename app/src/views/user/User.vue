@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
-import gettext from '@/gettext'
 import user from '@/api/user'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input, password } from '@/components/StdDesign/StdDataEntry'
 import type { Column } from '@/components/StdDesign/types'
-
-const { $gettext } = gettext
 
 const columns: Column[] = [{
   title: () => $gettext('Username'),
@@ -29,7 +26,7 @@ const columns: Column[] = [{
       generate: true,
     },
   },
-  hidden: true,
+  hiddenInTable: true,
 }, {
   title: () => $gettext('Created at'),
   dataIndex: 'created_at',

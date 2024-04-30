@@ -3,6 +3,7 @@ import http from '@/lib/http'
 import type { ChatComplicationMessage } from '@/api/openai'
 import type { CertificateInfo } from '@/api/cert'
 import type { NgxConfig } from '@/api/ngx'
+import type { PrivateKeyType } from '@/constants'
 
 export interface Site {
   modified_at: string
@@ -22,6 +23,7 @@ export interface AutoCertRequest {
   dns_credential_id: number | null
   challenge_method: string
   domains: string[]
+  key_type: PrivateKeyType
 }
 
 class Domain extends Curd<Site> {

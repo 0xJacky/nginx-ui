@@ -34,6 +34,7 @@ func GenerateAllModel() []any {
 		DnsCredential{},
 		Environment{},
 		Notification{},
+		AcmeUser{},
 	}
 }
 

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import { message } from 'ant-design-vue'
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
@@ -7,8 +6,6 @@ import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor.vue'
 import domain from '@/api/domain'
 import type { NgxConfig } from '@/api/ngx'
 import ngx from '@/api/ngx'
-
-const { $gettext } = useGettext()
 
 const ngx_config: NgxConfig = reactive({
   name: '',

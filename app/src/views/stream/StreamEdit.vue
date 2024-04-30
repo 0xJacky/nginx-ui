@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import { message } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
@@ -13,8 +12,7 @@ import RightSettings from '@/views/stream/components/RightSettings.vue'
 import type { ChatComplicationMessage } from '@/api/openai'
 import type { Stream } from '@/api/stream'
 import stream from '@/api/stream'
-
-const { $gettext, interpolate } = useGettext()
+import type { CheckedType } from '@/types'
 
 const route = useRoute()
 const router = useRouter()
@@ -90,9 +88,9 @@ function handle_parse_error(e: { error?: string; message: string }) {
   })
 }
 
-function on_mode_change(advanced: boolean) {
-  stream.advance_mode(name.value, { advanced }).then(() => {
-    advance_mode.value = advanced
+function on_mode_change(advanced: CheckedType) {
+  stream.advance_mode(name.value, { advanced: advanced as boolean }).then(() => {
+    advance_mode.value = advanced as boolean
     if (advanced) {
       build_config()
     }
@@ -162,7 +160,7 @@ provide('data', data)
     >
       <ACard :bordered="false">
         <template #title>
-          <span style="margin-right: 10px">{{ interpolate($gettext('Edit %{n}'), { n: name }) }}</span>
+          <span style="margin-right: 10px">{{ $gettext('Edit %{n}', { n: name }) }}</span>
           <ATag
             v-if="enabled"
             color="blue"

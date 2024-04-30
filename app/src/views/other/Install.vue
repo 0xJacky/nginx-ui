@@ -4,11 +4,9 @@ import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { DatabaseOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons-vue'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
-import gettext from '@/gettext'
+
 import install from '@/api/install'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
-
-const { $gettext, interpolate } = gettext
 
 const thisYear = new Date().getFullYear()
 const loading = ref(false)
@@ -49,10 +47,10 @@ const rulesRef = reactive({
   ],
   database: [
     {
-      message: () => interpolate(
-        $gettext('The filename cannot contain the following characters: %{c}'),
-        { c: '& &quot; ? < > # {} % ~ / \\' },
-      ),
+      message: () =>
+        $gettext('The filename cannot contain the following characters: %{c}',
+          { c: '& &quot; ? < > # {} % ~ / \\' },
+        ),
     },
   ],
 })

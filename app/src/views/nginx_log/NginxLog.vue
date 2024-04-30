@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import type ReconnectingWebSocket from 'reconnecting-websocket'
 import { debounce } from 'lodash'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
@@ -7,7 +6,6 @@ import type { INginxLogData } from '@/api/nginx_log'
 import nginx_log from '@/api/nginx_log'
 import ws from '@/lib/websocket'
 
-const { $gettext } = useGettext()
 const logContainer = ref()
 let websocket: ReconnectingWebSocket | WebSocket
 const route = useRoute()

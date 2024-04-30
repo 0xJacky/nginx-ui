@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
-import { useGettext } from 'vue3-gettext'
 import { Modal } from 'ant-design-vue'
 import _ from 'lodash'
 import type { NgxConfig, NgxDirective } from '@/api/ngx'
 import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
 import type { UpstreamStatus } from '@/api/upstream'
 import upstream from '@/api/upstream'
-
-const { $gettext } = useGettext()
 
 const [modal, ContextHolder] = Modal.useModal()
 

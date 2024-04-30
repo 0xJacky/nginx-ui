@@ -2,14 +2,11 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
-import gettext from '@/gettext'
 import config from '@/api/config'
 import configColumns from '@/views/config/config'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import router from '@/routes'
 import InspectConfig from '@/views/config/InspectConfig.vue'
-
-const { $gettext } = gettext
 
 const api = config
 

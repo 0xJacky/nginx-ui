@@ -55,6 +55,7 @@ func InitRouter() *gin.Engine {
 			template.InitRouter(g)
 			certificate.InitCertificateRouter(g)
 			certificate.InitDNSCredentialRouter(g)
+			certificate.InitAcmeUserRouter(g)
 			system.InitPrivateRouter(g)
 			openai.InitRouter(g)
 			cluster.InitRouter(g)

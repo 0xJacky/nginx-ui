@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import { message } from 'ant-design-vue'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import notification from '@/api/notification'
@@ -9,12 +8,10 @@ import { datetime, mask } from '@/components/StdDesign/StdDataDisplay/StdTableTr
 import { NotificationType } from '@/constants'
 import { useUserStore } from '@/pinia'
 
-const { $gettext } = useGettext()
-
 const columns: Column[] = [{
   title: () => $gettext('Type'),
   dataIndex: 'type',
-  customRender: (args: customRender) => mask(args, NotificationType),
+  customRender: mask(NotificationType),
   sortable: true,
   pithy: true,
 }, {

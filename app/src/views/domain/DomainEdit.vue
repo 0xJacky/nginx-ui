@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import { message } from 'ant-design-vue'
-import type { Ref } from 'vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 
@@ -14,8 +12,7 @@ import config from '@/api/config'
 import RightSettings from '@/views/domain/components/RightSettings.vue'
 import type { CertificateInfo } from '@/api/cert'
 import type { ChatComplicationMessage } from '@/api/openai'
-
-const { $gettext, interpolate } = useGettext()
+import type { CheckedType } from '@/types'
 
 const route = useRoute()
 const router = useRouter()
@@ -99,9 +96,9 @@ function handle_parse_error(e: { error?: string; message: string }) {
   })
 }
 
-function on_mode_change(advanced: boolean) {
-  domain.advance_mode(name.value, { advanced }).then(() => {
-    advance_mode.value = advanced
+function on_mode_change(advanced: CheckedType) {
+  domain.advance_mode(name.value, { advanced: advanced as boolean }).then(() => {
+    advance_mode.value = advanced as boolean
     if (advanced) {
       build_config()
     }
@@ -171,7 +168,7 @@ provide('data', data)
     >
       <ACard :bordered="false">
         <template #title>
-          <span style="margin-right: 10px">{{ interpolate($gettext('Edit %{n}'), { n: name }) }}</span>
+          <span style="margin-right: 10px">{{ $gettext('Edit %{n}', { n: name }) }}</span>
           <ATag
             v-if="enabled"
             color="blue"

@@ -4,12 +4,10 @@ import type { ComputedRef } from 'vue'
 import _ from 'lodash'
 import { downloadCsv } from '@/lib/helper'
 import type { Column, StdTableResponse } from '@/components/StdDesign/types'
-import gettext from '@/gettext'
 import type { StdTableProps } from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 
-const { $gettext } = gettext
 async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[]>) {
-  const header: { title?: string; key: string | string[] }[] = []
+  const header: { title?: string; key: Column['dataIndex'] }[] = []
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const headerKeys: any[] = []
   const showColumnsMap: Record<string, Column> = {}
@@ -24,8 +22,8 @@ async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[
       title: t,
       key: column.dataIndex,
     })
-    headerKeys.push(column.dataIndex.toString())
-    showColumnsMap[column.dataIndex.toString()] = column
+    headerKeys.push(column?.dataIndex?.toString())
+    showColumnsMap[column?.dataIndex?.toString() as string] = column
   })
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,17 +32,20 @@ async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[
   let page = 1
   while (hasMore) {
     // 准备 DataSource
-    await props.api!.get_list({ page }).then((r: StdTableResponse) => {
-      if (r.data.length === 0) {
-        hasMore = false
+    await props
+      .api!.get_list({ page })
+      .then((r: StdTableResponse) => {
+        if (r.data.length === 0) {
+          hasMore = false
 
-        return
-      }
-      dataSource.push(...r.data)
-    }).catch((e: { message?: string }) => {
-      message.error(e.message ?? $gettext('Server error'))
-      hasMore = false
-    })
+          return
+        }
+        dataSource.push(...r.data)
+      })
+      .catch((e: { message?: string }) => {
+        message.error(e.message ?? $gettext('Server error'))
+        hasMore = false
+      })
     page += 1
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -59,13 +60,12 @@ async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[
       const c = showColumnsMap[key]
 
       _data = c?.customRender?.({ text: _data }) ?? _data
-      _.set(obj, c.dataIndex, _data)
+      _.set(obj, c.dataIndex as string, _data)
     })
     data.push(obj)
   })
 
-  downloadCsv(header, data,
-    `${$gettext('Export')}-${props.title}-${dayjs().format('YYYYMMDDHHmmss')}.csv`)
+  downloadCsv(header, data, `${$gettext('Export')}-${props.title}-${dayjs().format('YYYYMMDDHHmmss')}.csv`)
 }
 
 export default exportCsv

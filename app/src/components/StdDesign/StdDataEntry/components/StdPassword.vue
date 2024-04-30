@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useGettext } from 'vue3-gettext'
 
 const props = defineProps<{
   value: string
@@ -20,7 +19,6 @@ const M_value = computed({
 })
 
 const visibility = ref(false)
-const { $gettext } = useGettext()
 function handle_generate() {
   visibility.value = true
   M_value.value = 'xxxx'

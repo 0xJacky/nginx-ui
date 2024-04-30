@@ -2,7 +2,6 @@
 import { FileExclamationOutlined, FileTextOutlined } from '@ant-design/icons-vue'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useGettext } from 'vue3-gettext'
 import type { NgxConfig } from '@/api/ngx'
 
 const props = defineProps<{
@@ -11,7 +10,6 @@ const props = defineProps<{
   name?: string
 }>()
 
-const { $gettext } = useGettext()
 const accessIdx = ref()
 const errorIdx = ref()
 

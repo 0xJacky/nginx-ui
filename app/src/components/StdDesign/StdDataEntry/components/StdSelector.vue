@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
-import gettext from '@/gettext'
 import type Curd from '@/api/curd'
 import type { Column } from '@/components/StdDesign/types'
 
@@ -19,7 +18,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['update:selectedKey', 'changeSelect'])
-const { $gettext } = gettext
+
 const visible = ref(false)
 const M_value = ref('')
 

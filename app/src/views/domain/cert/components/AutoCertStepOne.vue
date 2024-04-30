@@ -1,47 +1,19 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import type { Ref } from 'vue'
 import type { DnsChallenge } from '@/api/auto_cert'
 import DNSChallenge from '@/views/domain/cert/components/DNSChallenge.vue'
 import type { Cert } from '@/api/cert'
+import ACMEUserSelector from '@/views/certificate/ACMEUserSelector.vue'
+import { PrivateKeyTypeList } from '@/constants'
 
 defineProps<{
   hideNote?: boolean
 }>()
 
-const { $gettext } = useGettext()
-
 const no_server_name = inject('no_server_name')
 
 // Provide by ObtainCert.vue
 const data = inject('data') as Ref<DnsChallenge & Cert>
-
-const keyType = shallowRef([
-  {
-    key: '2048',
-    name: 'RSA2048',
-  },
-  {
-    key: '3072',
-    name: 'RSA3072',
-  },
-  {
-    key: '4096',
-    name: 'RSA4096',
-  },
-  {
-    key: '8192',
-    name: 'RAS8192',
-  },
-  {
-    key: 'P256',
-    name: 'EC256',
-  },
-  {
-    key: 'P384',
-    name: 'EC384',
-  },
-])
 
 onMounted(() => {
   if (!data.value.key_type)
@@ -108,7 +80,7 @@ onMounted(() => {
       <AFormItem :label="$gettext('Key Type')">
         <ASelect v-model:value="data.key_type">
           <ASelectOption
-            v-for="t in keyType"
+            v-for="t in PrivateKeyTypeList"
             :key="t.key"
             :value="t.key"
           >
@@ -117,6 +89,7 @@ onMounted(() => {
         </ASelect>
       </AFormItem>
     </AForm>
+    <ACMEUserSelector />
     <DNSChallenge v-if="data.challenge_method === 'dns01'" />
   </div>
 </template>

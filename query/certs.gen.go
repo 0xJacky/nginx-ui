@@ -40,11 +40,19 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.AutoCert = field.NewInt(tableName, "auto_cert")
 	_cert.ChallengeMethod = field.NewString(tableName, "challenge_method")
 	_cert.DnsCredentialID = field.NewInt(tableName, "dns_credential_id")
+	_cert.ACMEUserID = field.NewInt(tableName, "acme_user_id")
+	_cert.KeyType = field.NewString(tableName, "key_type")
 	_cert.Log = field.NewString(tableName, "log")
 	_cert.DnsCredential = certBelongsToDnsCredential{
 		db: db.Session(&gorm.Session{}),
 
 		RelationField: field.NewRelation("DnsCredential", "model.DnsCredential"),
+	}
+
+	_cert.ACMEUser = certBelongsToACMEUser{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("ACMEUser", "model.AcmeUser"),
 	}
 
 	_cert.fillFieldMap()
@@ -68,8 +76,12 @@ type cert struct {
 	AutoCert              field.Int
 	ChallengeMethod       field.String
 	DnsCredentialID       field.Int
+	ACMEUserID            field.Int
+	KeyType               field.String
 	Log                   field.String
 	DnsCredential         certBelongsToDnsCredential
+
+	ACMEUser certBelongsToACMEUser
 
 	fieldMap map[string]field.Expr
 }
@@ -98,6 +110,8 @@ func (c *cert) updateTableName(table string) *cert {
 	c.AutoCert = field.NewInt(table, "auto_cert")
 	c.ChallengeMethod = field.NewString(table, "challenge_method")
 	c.DnsCredentialID = field.NewInt(table, "dns_credential_id")
+	c.ACMEUserID = field.NewInt(table, "acme_user_id")
+	c.KeyType = field.NewString(table, "key_type")
 	c.Log = field.NewString(table, "log")
 
 	c.fillFieldMap()
@@ -115,7 +129,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 14)
+	c.fieldMap = make(map[string]field.Expr, 17)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -128,6 +142,8 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["auto_cert"] = c.AutoCert
 	c.fieldMap["challenge_method"] = c.ChallengeMethod
 	c.fieldMap["dns_credential_id"] = c.DnsCredentialID
+	c.fieldMap["acme_user_id"] = c.ACMEUserID
+	c.fieldMap["key_type"] = c.KeyType
 	c.fieldMap["log"] = c.Log
 
 }
@@ -210,6 +226,77 @@ func (a certBelongsToDnsCredentialTx) Clear() error {
 }
 
 func (a certBelongsToDnsCredentialTx) Count() int64 {
+	return a.tx.Count()
+}
+
+type certBelongsToACMEUser struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a certBelongsToACMEUser) Where(conds ...field.Expr) *certBelongsToACMEUser {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a certBelongsToACMEUser) WithContext(ctx context.Context) *certBelongsToACMEUser {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a certBelongsToACMEUser) Session(session *gorm.Session) *certBelongsToACMEUser {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a certBelongsToACMEUser) Model(m *model.Cert) *certBelongsToACMEUserTx {
+	return &certBelongsToACMEUserTx{a.db.Model(m).Association(a.Name())}
+}
+
+type certBelongsToACMEUserTx struct{ tx *gorm.Association }
+
+func (a certBelongsToACMEUserTx) Find() (result *model.AcmeUser, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a certBelongsToACMEUserTx) Append(values ...*model.AcmeUser) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a certBelongsToACMEUserTx) Replace(values ...*model.AcmeUser) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a certBelongsToACMEUserTx) Delete(values ...*model.AcmeUser) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a certBelongsToACMEUserTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a certBelongsToACMEUserTx) Count() int64 {
 	return a.tx.Count()
 }
 

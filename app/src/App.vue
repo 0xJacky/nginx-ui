@@ -7,8 +7,9 @@ import { theme } from 'ant-design-vue'
 import zh_CN from 'ant-design-vue/es/locale/zh_CN'
 import zh_TW from 'ant-design-vue/es/locale/zh_TW'
 import en_US from 'ant-design-vue/es/locale/en_US'
-import gettext from '@/gettext'
+
 import { useSettingsStore } from '@/pinia'
+import gettext from '@/gettext'
 
 const media = window.matchMedia('(prefers-color-scheme: dark)')
 

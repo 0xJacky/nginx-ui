@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import { inject } from 'vue'
 import type { Settings } from '@/views/preference/typedef'
 
-const { $gettext } = useGettext()
 const data: Settings = inject('data') as Settings
 const errors: Record<string, Record<string, string>> = inject('errors') as Record<string, Record<string, string>>
 </script>
@@ -51,6 +49,14 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
         : ''"
     >
       <AInput v-model:value="data.server.ca_dir" />
+    </AFormItem>
+    <AFormItem :label="$gettext('Certificate Renewal Interval')">
+      <AInputNumber
+        v-model:value="data.server.cert_renewal_interval"
+        :min="7"
+        :max="21"
+        :addon-after="$gettext('Days')"
+      />
     </AFormItem>
   </AForm>
 </template>

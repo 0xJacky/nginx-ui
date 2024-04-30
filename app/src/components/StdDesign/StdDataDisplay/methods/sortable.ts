@@ -1,14 +1,12 @@
 import { message } from 'ant-design-vue'
-import SortableJs from 'sortablejs'
 import type { Ref } from 'vue'
-import gettext from '@/gettext'
+import sortable from 'sortablejs'
+import type { Key } from 'ant-design-vue/es/_util/type'
 import type { StdTableProps } from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
-
-const { $gettext } = gettext
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getRowKey(item: any) {
-  return item.children[0].children[0].dataset.rowKey
+  return item.dataset.rowKey
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,15 +20,16 @@ function getTargetData(data: any, indexList: number[]): any {
 
   return target
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function useSortable(props: StdTableProps, randomId: Ref<string>, dataSource: Ref<any[]>,
-  rowsKeyIndexMap: Ref<Record<number, number[]>>, expandKeysList: Ref<number[]>) {
+  rowsKeyIndexMap: Ref<Record<number, number[]>>, expandKeysList: Ref<Key[]>) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const table: any = document.querySelector(`#std-table-${randomId.value} tbody`)
 
-  // eslint-disable-next-line no-new
-  new SortableJs(table, {
-    handle: '.table-drag-icon',
+  // eslint-disable-next-line no-new,new-cap
+  new sortable(table, {
+    handle: '.ant-table-drag-icon',
     animation: 150,
     sort: true,
     forceFallback: true,
@@ -40,7 +39,7 @@ function useSortable(props: StdTableProps, randomId: Ref<string>, dataSource: Re
     onStart({ item }) {
       const targetRowKey = Number(getRowKey(item))
       if (targetRowKey)
-        expandKeysList.value = expandKeysList.value.filter((_item: number) => _item !== targetRowKey)
+        expandKeysList.value = expandKeysList.value.filter((_item: Key) => _item !== targetRowKey)
     },
     onMove({
       dragged,
@@ -112,8 +111,9 @@ function useSortable(props: StdTableProps, randomId: Ref<string>, dataSource: Re
         _rowIndex[level] += direction
         processChanges(getTargetData(dataSource.value, _rowIndex))
       }
-      console.log('Change row id', newRow.id, 'order', newRow.id, '=>', currentRow.id, ', direction: ', direction,
-        ', changes IDs:', changeIds)
+
+      // console.log('Change row id', newRow.id, 'order', newRow.id, '=>', currentRow.id, ', direction: ', direction,
+      //   ', changes IDs:', changeIds
 
       props.api.update_order({
         target_id: newRow.id,

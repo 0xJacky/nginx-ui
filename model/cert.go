@@ -1,8 +1,10 @@
 package model
 
 import (
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/go-acme/lego/v4/certcrypto"
+	"github.com/go-acme/lego/v4/certificate"
 	"github.com/lib/pq"
 	"os"
 )
@@ -16,19 +18,30 @@ const (
 
 type CertDomains []string
 
+type CertificateResource struct {
+	*certificate.Resource
+	PrivateKey        []byte `json:"private_key"`
+	Certificate       []byte `json:"certificate"`
+	IssuerCertificate []byte `json:"issuerCertificate"`
+	CSR               []byte `json:"csr"`
+}
+
 type Cert struct {
 	Model
-	Name                  string             `json:"name"`
-	Domains               pq.StringArray     `json:"domains" gorm:"type:text[]"`
-	Filename              string             `json:"filename"`
-	SSLCertificatePath    string             `json:"ssl_certificate_path"`
-	SSLCertificateKeyPath string             `json:"ssl_certificate_key_path"`
-	AutoCert              int                `json:"auto_cert"`
-	ChallengeMethod       string             `json:"challenge_method"`
-	DnsCredentialID       int                `json:"dns_credential_id"`
-	DnsCredential         *DnsCredential     `json:"dns_credential,omitempty"`
-	KeyType               certcrypto.KeyType `json:"key_type"`
-	Log                   string             `json:"log"`
+	Name                  string               `json:"name"`
+	Domains               pq.StringArray       `json:"domains" gorm:"type:text[]"`
+	Filename              string               `json:"filename"`
+	SSLCertificatePath    string               `json:"ssl_certificate_path"`
+	SSLCertificateKeyPath string               `json:"ssl_certificate_key_path"`
+	AutoCert              int                  `json:"auto_cert"`
+	ChallengeMethod       string               `json:"challenge_method"`
+	DnsCredentialID       int                  `json:"dns_credential_id"`
+	DnsCredential         *DnsCredential       `json:"dns_credential,omitempty"`
+	ACMEUserID            int                  `json:"acme_user_id"`
+	ACMEUser              *AcmeUser            `json:"acme_user,omitempty"`
+	KeyType               certcrypto.KeyType   `json:"key_type"`
+	Log                   string               `json:"log"`
+	Resource              *CertificateResource `json:"-" gorm:"serializer:json"`
 }
 
 func FirstCert(confName string) (c Cert, err error) {
@@ -39,9 +52,9 @@ func FirstCert(confName string) (c Cert, err error) {
 	return
 }
 
-func FirstOrCreateCert(confName string) (c Cert, err error) {
+func FirstOrCreateCert(confName string, keyType certcrypto.KeyType) (c Cert, err error) {
 	// Filename is used to check whether this site is enabled
-	err = db.FirstOrCreate(&c, &Cert{Name: confName, Filename: confName}).Error
+	err = db.FirstOrCreate(&c, &Cert{Name: confName, Filename: confName, KeyType: keyType}).Error
 	return
 }
 
@@ -94,10 +107,17 @@ func (c *Cert) Remove() error {
 }
 
 func (c *Cert) GetKeyType() certcrypto.KeyType {
-	switch c.KeyType {
-	case certcrypto.RSA2048, certcrypto.RSA3072, certcrypto.RSA4096,
-		certcrypto.EC256, certcrypto.EC384:
-		return c.KeyType
+	return helper.GetKeyType(c.KeyType)
+}
+
+func (c *CertificateResource) GetResource() certificate.Resource {
+	return certificate.Resource{
+		Domain:            c.Resource.Domain,
+		CertURL:           c.Resource.CertURL,
+		CertStableURL:     c.Resource.CertStableURL,
+		PrivateKey:        c.PrivateKey,
+		Certificate:       c.Certificate,
+		IssuerCertificate: c.IssuerCertificate,
+		CSR:               c.CSR,
 	}
-	return certcrypto.RSA2048
 }

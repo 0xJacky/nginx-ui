@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { useGettext } from 'vue3-gettext'
 import ngx from '@/api/ngx'
 import { logLevel } from '@/views/config/constants'
-
-const { $gettext } = useGettext()
 
 const data = ref({
   level: 0,

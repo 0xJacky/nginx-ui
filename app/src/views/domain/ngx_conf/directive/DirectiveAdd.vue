@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { type ComputedRef, reactive, ref } from 'vue'
-import { useGettext } from 'vue3-gettext'
 import { DeleteOutlined } from '@ant-design/icons-vue'
 import CodeEditor from '@/components/CodeEditor'
 import type { NgxDirective } from '@/api/ngx'
@@ -10,8 +9,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['save'])
-
-const { $gettext } = useGettext()
 
 const ngx_directives = inject('ngx_directives') as ComputedRef<NgxDirective[]>
 const directive = reactive({ directive: '', params: '' })
