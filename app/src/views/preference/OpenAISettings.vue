@@ -4,25 +4,30 @@ import type { Settings } from '@/views/preference/typedef'
 
 const data: Settings = inject('data')!
 const errors: Record<string, Record<string, string>> = inject('errors') as Record<string, Record<string, string>>
+
+const models = shallowRef([
+  {
+    value: 'gpt-4-1106-preview',
+  },
+  {
+    value: 'gpt-4',
+  },
+  {
+    value: 'gpt-4-32k',
+  },
+  {
+    value: 'gpt-3.5-turbo',
+  },
+])
 </script>
 
 <template>
   <AForm layout="vertical">
-    <AFormItem :label="$gettext('ChatGPT Model')">
-      <ASelect v-model:value="data.openai.model">
-        <ASelectOption value="gpt-4-1106-preview">
-          {{ $gettext('GPT-4-Turbo') }}
-        </ASelectOption>
-        <ASelectOption value="gpt-4">
-          {{ $gettext('GPT-4') }}
-        </ASelectOption>
-        <ASelectOption value="gpt-4-32k">
-          {{ $gettext('GPT-4-32K') }}
-        </ASelectOption>
-        <ASelectOption value="gpt-3.5-turbo">
-          {{ $gettext('GPT-3.5-Turbo') }}
-        </ASelectOption>
-      </ASelect>
+    <AFormItem :label="$gettext('Model')">
+      <AAutoComplete
+        v-model:value="data.openai.model"
+        :options="models"
+      />
     </AFormItem>
     <AFormItem
       :label="$gettext('API Base Url')"
