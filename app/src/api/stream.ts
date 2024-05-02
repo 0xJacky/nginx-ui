@@ -8,6 +8,7 @@ export interface Stream {
   advanced: boolean
   enabled: boolean
   name: string
+  filepath: string
   config: string
   chatgpt_messages: ChatComplicationMessage[]
   tokenized?: NgxConfig

@@ -23,7 +23,7 @@ func GetEnvironment(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, env)
+	c.JSON(http.StatusOK, analytic.GetNode(env))
 }
 
 func GetEnvironmentList(c *gin.Context) {

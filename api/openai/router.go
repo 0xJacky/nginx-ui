@@ -4,6 +4,6 @@ import "github.com/gin-gonic/gin"
 
 func InitRouter(r *gin.RouterGroup) {
 	// ChatGPT
-	r.POST("chat_gpt", MakeChatCompletionRequest)
-	r.POST("chat_gpt_record", StoreChatGPTRecord)
+	r.POST("chatgpt", MakeChatCompletionRequest)
+	r.POST("chatgpt_record", StoreChatGPTRecord)
 }

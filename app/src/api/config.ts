@@ -5,7 +5,7 @@ export interface Config {
   name: string
   content: string
   chatgpt_messages: ChatComplicationMessage[]
-  file_path: string
+  filepath: string
   modified_at: string
 }
 

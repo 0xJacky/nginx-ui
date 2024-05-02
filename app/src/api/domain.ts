@@ -10,6 +10,7 @@ export interface Site {
   advanced: boolean
   enabled: boolean
   name: string
+  filepath: string
   config: string
   auto_cert: boolean
   chatgpt_messages: ChatComplicationMessage[]

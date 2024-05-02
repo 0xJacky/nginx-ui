@@ -4,7 +4,6 @@ import { message } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import { formatDateTime } from '@/lib/helper'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
-
 import config from '@/api/config'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import ngx from '@/api/ngx'
@@ -26,7 +25,7 @@ const name = computed(() => {
 
 const configText = ref('')
 const history_chatgpt_record = ref([]) as Ref<ChatComplicationMessage[]>
-const file_path = ref('')
+const filepath = ref('')
 const active_key = ref(['1', '2'])
 const modified_at = ref('')
 
@@ -35,7 +34,7 @@ function init() {
     config.get(name.value).then(r => {
       configText.value = r.content
       history_chatgpt_record.value = r.chatgpt_messages
-      file_path.value = r.file_path
+      filepath.value = r.filepath
       modified_at.value = r.modified_at
     }).catch(r => {
       message.error(r.message ?? $gettext('Server error'))
@@ -44,7 +43,7 @@ function init() {
   else {
     configText.value = ''
     history_chatgpt_record.value = []
-    file_path.value = ''
+    filepath.value = ''
   }
 }
 
@@ -117,7 +116,7 @@ function format_code() {
           >
             <AForm layout="vertical">
               <AFormItem :label="$gettext('Path')">
-                {{ file_path }}
+                {{ filepath }}
               </AFormItem>
               <AFormItem :label="$gettext('Updated at')">
                 {{ formatDateTime(modified_at) }}
@@ -131,7 +130,7 @@ function format_code() {
             <ChatGPT
               v-model:history-messages="history_chatgpt_record"
               :content="configText"
-              :path="file_path"
+              :path="filepath"
             />
           </ACollapsePanel>
         </ACollapse>

@@ -132,6 +132,7 @@ func GetDomain(c *gin.Context) {
 			Config:          string(origContent),
 			AutoCert:        certModel.AutoCert == model.AutoCertEnabled,
 			ChatGPTMessages: chatgpt.Content,
+			Filepath:        path,
 		})
 		return
 	}
@@ -173,6 +174,7 @@ func GetDomain(c *gin.Context) {
 		AutoCert:        certModel.AutoCert == model.AutoCertEnabled,
 		CertInfo:        certInfoMap,
 		ChatGPTMessages: chatgpt.Content,
+		Filepath:        path,
 	})
 }
 

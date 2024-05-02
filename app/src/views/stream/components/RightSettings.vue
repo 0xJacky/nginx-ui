@@ -8,17 +8,16 @@ import { formatDateTime } from '@/lib/helper'
 import Deploy from '@/views/stream/components/Deploy.vue'
 import { useSettingsStore } from '@/pinia'
 import type { ChatComplicationMessage } from '@/api/openai'
-import type { NgxConfig } from '@/api/ngx'
 import type { CheckedType } from '@/types'
 
 const settings = useSettingsStore()
 
 const configText = inject('configText') as Ref<string>
-const ngx_config = inject('ngx_config') as Ref<NgxConfig>
 const enabled = inject('enabled') as Ref<boolean>
 const name = inject('name') as Ref<string>
 const history_chatgpt_record = inject('history_chatgpt_record') as Ref<ChatComplicationMessage[]>
-const filename = inject('filename') as Ref<string | number | undefined>
+const filename = inject('filename') as Ref<string>
+const filepath = inject('filepath') as Ref<string>
 const data = inject('data') as Ref<Stream>
 
 const [modal, ContextHolder] = Modal.useModal()
@@ -58,7 +57,6 @@ function on_change_enabled(checked: CheckedType) {
     },
   })
 }
-
 </script>
 
 <template>
@@ -102,7 +100,7 @@ function on_change_enabled(checked: CheckedType) {
         <ChatGPT
           v-model:history-messages="history_chatgpt_record"
           :content="configText"
-          :path="ngx_config.file_name"
+          :path="filepath"
         />
       </ACollapsePanel>
     </ACollapse>
