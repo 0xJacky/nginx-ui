@@ -22,6 +22,7 @@ type Stream struct {
 	Config          string                         `json:"config"`
 	ChatGPTMessages []openai.ChatCompletionMessage `json:"chatgpt_messages,omitempty"`
 	Tokenized       *nginx.NgxConfig               `json:"tokenized,omitempty"`
+	Filepath        string                         `json:"filepath"`
 }
 
 func GetStreams(c *gin.Context) {
@@ -133,6 +134,7 @@ func GetStream(c *gin.Context) {
 			Name:            name,
 			Config:          string(origContent),
 			ChatGPTMessages: chatgpt.Content,
+			Filepath:        path,
 		})
 		return
 	}
@@ -152,6 +154,7 @@ func GetStream(c *gin.Context) {
 		Config:          nginxConfig.FmtCode(),
 		Tokenized:       nginxConfig,
 		ChatGPTMessages: chatgpt.Content,
+		Filepath:        path,
 	})
 }
 

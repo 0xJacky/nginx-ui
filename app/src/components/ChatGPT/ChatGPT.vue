@@ -49,25 +49,17 @@ async function request() {
 
   const { token } = storeToRefs(user)
 
-  console.log('fetching...')
-
   messages.value?.push(t.value)
 
   emit('update:history_messages', messages.value)
 
-  const res = await fetch(urlJoin(window.location.pathname, '/api/chat_gpt'), {
+  const res = await fetch(urlJoin(window.location.pathname, '/api/chatgpt'), {
     method: 'POST',
     headers: { Accept: 'text/event-stream', Authorization: token.value },
-    body: JSON.stringify({ messages: messages.value?.slice(0, messages.value?.length - 1) }),
+    body: JSON.stringify({ filepath: props.path, messages: messages.value?.slice(0, messages.value?.length - 1) }),
   })
 
-  // read body as stream
-  console.info('reading...')
-
   const reader = res.body!.getReader()
-
-  // read stream
-  console.info('reading stream...')
 
   let buffer = ''
 
@@ -76,7 +68,6 @@ async function request() {
   while (true) {
     const { done, value } = await reader.read()
     if (done) {
-      console.info('done')
       setTimeout(() => {
         scrollToBottom()
       }, 500)

@@ -33,6 +33,7 @@ const cert_info_map: Record<string, CertificateInfo> = reactive({})
 
 const auto_cert = ref(false)
 const enabled = ref(false)
+const filepath = ref('')
 const configText = ref('')
 const advance_mode_ref = ref(false)
 const saving = ref(false)
@@ -67,6 +68,7 @@ function handle_response(r: Site) {
   parse_error_status.value = false
   parse_error_message.value = ''
   filename.value = r.name
+  filepath.value = r.filepath
   configText.value = r.config
   enabled.value = r.enabled
   auto_cert.value = r.auto_cert
@@ -156,6 +158,7 @@ provide('history_chatgpt_record', history_chatgpt_record)
 provide('enabled', enabled)
 provide('name', name)
 provide('filename', filename)
+provide('filepath', filepath)
 provide('data', data)
 </script>
 

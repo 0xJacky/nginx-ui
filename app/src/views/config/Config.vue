@@ -50,6 +50,7 @@ watch(route, () => {
       :columns="configColumns"
       disable-delete
       disable_search
+      disabled-view
       row-key="name"
       :get_params="get_params"
       @click-edit="(r, row) => {

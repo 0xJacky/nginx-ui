@@ -17,4 +17,5 @@ type Site struct {
 	ChatGPTMessages []openai.ChatCompletionMessage `json:"chatgpt_messages,omitempty"`
 	Tokenized       *nginx.NgxConfig               `json:"tokenized,omitempty"`
 	CertInfo        map[int]*cert.Info             `json:"cert_info,omitempty"`
+	Filepath        string                         `json:"filepath"`
 }

@@ -10,7 +10,7 @@ type ConfigBackup struct {
 	Model
 
 	Name     string `json:"name"`
-	FilePath string `json:"file_path"`
+	FilePath string `json:"filepath"`
 	Content  string `json:"content" gorm:"type:text"`
 }
 
@@ -18,7 +18,7 @@ type ConfigBackupListItem struct {
 	Model
 
 	Name     string `json:"name"`
-	FilePath string `json:"file_path"`
+	FilePath string `json:"filepath"`
 }
 
 func GetBackupList(path string) (configs []ConfigBackupListItem) {

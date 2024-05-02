@@ -34,6 +34,7 @@ const configText = ref('')
 const advance_mode_ref = ref(false)
 const saving = ref(false)
 const filename = ref('')
+const filepath = ref('')
 const parse_error_status = ref(false)
 const parse_error_message = ref('')
 const data = ref({})
@@ -61,6 +62,7 @@ function handle_response(r: Stream) {
   parse_error_status.value = false
   parse_error_message.value = ''
   filename.value = r.name
+  filepath.value = r.filepath
   configText.value = r.config
   enabled.value = r.enabled
   history_chatgpt_record.value = r.chatgpt_messages
@@ -148,6 +150,7 @@ provide('history_chatgpt_record', history_chatgpt_record)
 provide('enabled', enabled)
 provide('name', name)
 provide('filename', filename)
+provide('filepath', filepath)
 provide('data', data)
 </script>
 

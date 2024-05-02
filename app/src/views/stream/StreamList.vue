@@ -129,11 +129,13 @@ function handleAddStream() {
       :columns="columns"
       row-key="name"
       disable-delete
+      disabled-view
       @click-edit="r => $router.push({
         path: `/stream/${r}`,
       })"
     >
       <template #actions="{ record }">
+        <ADivider type="vertical" />
         <AButton
           v-if="record.enabled"
           type="link"
