@@ -79,6 +79,11 @@ func proxy() gin.HandlerFunc {
 
 		defer resp.Body.Close()
 
+		// rewrite status code to fix https://github.com/0xJacky/nginx-ui/issues/342
+		if resp.StatusCode == http.StatusForbidden {
+			resp.StatusCode = http.StatusServiceUnavailable
+		}
+
 		c.Writer.WriteHeader(resp.StatusCode)
 
 		c.Writer.Header().Add("Content-Type", resp.Header.Get("Content-Type"))

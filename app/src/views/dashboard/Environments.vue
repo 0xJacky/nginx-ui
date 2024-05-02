@@ -120,7 +120,7 @@ const visible = computed(() => {
 
                 <AButton
                   type="primary"
-                  :disabled="env.id === item.id"
+                  :disabled="!item.status || env.id === item.id"
                   ghost
                   @click="link_start(item)"
                 >
