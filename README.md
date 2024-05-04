@@ -228,7 +228,7 @@ docker run -dit \
 
 1. [Install Docker-Compose.](https://docs.docker.com/compose/install/)
 
-2. Creat a docker-compose.yml file like this:
+2. Create a docker-compose.yml file like this:
 
 ```yml
 version: '3.3'
