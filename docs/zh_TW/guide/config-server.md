@@ -95,3 +95,17 @@ JWT 是一種用於驗證用戶身份的標準，它可以在用戶登錄後生�
 - 建議：`https://mirror.ghproxy.com/`
 
 對於可能在從 Github 下載資源時遇到困難的用戶（如在中國大陸），此選項允許他們為 github.com 設置代理，以提高可訪問性。
+
+## CertRenewalInterval
+
+- 類型：`int`
+- 預設值: `7`
+
+此選項用於設定 Let's Encrypt 證書的自動續簽間隔。預設情況下，Nginx UI 每隔 7 天會自動續簽證書。
+
+## RecursiveNameservers
+
+- 類型: `[]string`
+- 範例: `8.8.8.8:53,1.1.1.1:53`
+
+此選項用於設定 Nginx UI 在申請證書的 DNS 挑戰步驟所使用的遞迴域名伺服器。在不配置此項目的情況下，Nginx UI 使用作業系統的域名伺服器設定。

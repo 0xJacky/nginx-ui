@@ -20,7 +20,8 @@ onMounted(async () => {
     && locales[language]
     && !route.path.includes(language)
   ) {
-    await router.go(language + (route.path !== '/' ? route.path : ''))
+    const endWith = import.meta.env.DEV ? '/' : ''
+    await router.go(language + (route.path !== '/' ? route.path : endWith))
   }
 })
 </script>

@@ -4,12 +4,10 @@ const thisYear = computed(() => new Date().getFullYear())
 
 <template>
   <div class="footer center">
-    Copyright © 2020 - {{ thisYear }} Nginx UI
+    Copyright © 2021 - {{ thisYear }} Nginx UI
   </div>
 </template>
 
 <style scoped>
-.footer {
 
-}
 </style>

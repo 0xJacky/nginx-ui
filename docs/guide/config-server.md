@@ -103,3 +103,20 @@ CADir needs to comply with the `RFC 8555` standard.
 
 For users who may experience difficulties downloading resources from GitHub (such as in mainland China), this option
 allows them to set a proxy for github.com to improve accessibility.
+
+## CertRenewalInterval
+
+- Type: `int`
+- Default value: `7`
+
+This option is used to set the automatic renewal interval of the Let's Encrypt certificate.
+By default, Nginx UI will automatically renew the certificate every 7 days.
+
+## RecursiveNameservers
+
+- Type: `[]string`
+- Example: `8.8.8.8:53,1.1.1.1:53`
+
+This option is used to set the recursive nameservers used by
+Nginx UI in the DNS challenge step of applying for a certificate.
+If this option is not configured, Nginx UI will use the nameservers settings of the operating system.
