@@ -11,6 +11,7 @@ export interface Settings {
     email: string
     ca_dir: string
     cert_renewal_interval: number
+    recursive_nameservers: string[]
   }
   nginx: {
     access_log_path: string

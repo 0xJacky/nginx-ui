@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/go-acme/lego/v4/challenge/dns01"
 	"github.com/go-acme/lego/v4/challenge/http01"
 	"github.com/go-acme/lego/v4/lego"
 	legolog "github.com/go-acme/lego/v4/log"
@@ -116,7 +117,15 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 			if err != nil {
 				break
 			}
-			err = client.Challenge.SetDNS01Provider(provider)
+			challengeOptions := make([]dns01.ChallengeOption, 0)
+
+			if len(settings.ServerSettings.RecursiveNameservers) > 0 {
+				challengeOptions = append(challengeOptions,
+					dns01.AddRecursiveNameservers(settings.ServerSettings.RecursiveNameservers),
+				)
+			}
+
+			err = client.Challenge.SetDNS01Provider(provider, challengeOptions...)
 		} else {
 			errChan <- errors.Wrap(err, "environment configuration is empty")
 			return

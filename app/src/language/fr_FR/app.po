@@ -20,7 +20,7 @@ msgid "Access Logs"
 msgstr "Journaux d'accès"
 
 #: src/routes/index.ts:128 src/views/certificate/ACMEUser.vue:76
-#: src/views/certificate/ACMEUserSelector.vue:72
+#: src/views/certificate/ACMEUserSelector.vue:79
 #, fuzzy
 msgid "ACME User"
 msgstr "Nom d'utilisateur"
@@ -39,6 +39,7 @@ msgstr "Action"
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/domain/ngx_conf/NgxServer.vue:167
 #: src/views/domain/ngx_conf/NgxUpstream.vue:152
+#: src/views/preference/BasicSettings.vue:73
 #: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr "Ajouter"
@@ -125,6 +126,11 @@ msgstr "Voulez-vous vraiment supprimer cette directive ?"
 msgid "Are you sure you want to remove this directive?"
 msgstr "Voulez-vous vraiment supprimer cette directive ?"
 
+#: src/views/preference/BasicSettings.vue:99
+#, fuzzy
+msgid "Are you sure you want to remove this item?"
+msgstr "Voulez-vous vraiment supprimer cette directive ?"
+
 #: src/views/domain/ngx_conf/LocationEditor.vue:69
 msgid "Are you sure you want to remove this location?"
 msgstr "Voulez-vous vraiment supprimer cette localisation ?"
@@ -176,7 +182,7 @@ msgstr "Information générale"
 
 #: src/views/config/ConfigEdit.vue:115
 #: src/views/domain/components/RightSettings.vue:75
-#: src/views/preference/Preference.vue:93
+#: src/views/preference/Preference.vue:94
 #: src/views/stream/components/RightSettings.vue:74
 msgid "Basic"
 msgstr "Basique"
@@ -199,7 +205,7 @@ msgstr "Build avec"
 msgid "CA Dir"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:45
+#: src/views/preference/BasicSettings.vue:47
 msgid "CADir"
 msgstr ""
 
@@ -226,7 +232,7 @@ msgstr "Le certificat a expiré"
 msgid "Certificate is valid"
 msgstr "Le certificat est valide"
 
-#: src/views/preference/BasicSettings.vue:53
+#: src/views/preference/BasicSettings.vue:55
 #, fuzzy
 msgid "Certificate Renewal Interval"
 msgstr "Le certificat est valide"
@@ -375,7 +381,7 @@ msgstr "Dashboard"
 msgid "Database (Optional, default: database)"
 msgstr "Base de données (Facultatif, par défaut : database)"
 
-#: src/views/preference/BasicSettings.vue:58
+#: src/views/preference/BasicSettings.vue:60
 msgid "Days"
 msgstr ""
 
@@ -763,7 +769,7 @@ msgstr "Filtrer"
 msgid "Finished"
 msgstr "Finie"
 
-#: src/views/preference/BasicSettings.vue:41
+#: src/views/preference/BasicSettings.vue:43
 #, fuzzy
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr "Utilisateur chinois : https://mirror.ghproxy.com/"
@@ -801,7 +807,7 @@ msgstr "Erreur d'obtention des informations sur la version"
 msgid "Getting the certificate, please wait..."
 msgstr "Obtention du certificat, veuillez patienter..."
 
-#: src/views/preference/BasicSettings.vue:33
+#: src/views/preference/BasicSettings.vue:35
 msgid "Github Proxy"
 msgstr "Proxy Github"
 
@@ -809,15 +815,15 @@ msgstr "Proxy Github"
 msgid "Home"
 msgstr "Menu principal"
 
-#: src/views/preference/BasicSettings.vue:29
+#: src/views/preference/BasicSettings.vue:31
 msgid "HTTP Challenge Port"
 msgstr "Port de challenge HTTP"
 
-#: src/views/preference/BasicSettings.vue:11
+#: src/views/preference/BasicSettings.vue:13
 msgid "HTTP Host"
 msgstr "Host HTTP"
 
-#: src/views/preference/BasicSettings.vue:14
+#: src/views/preference/BasicSettings.vue:16
 msgid "HTTP Port"
 msgstr "Port HTTP"
 
@@ -885,7 +891,7 @@ msgstr "État du certificat"
 msgid "Issued certificate successfully"
 msgstr "Certificat délivré avec succès"
 
-#: src/views/preference/BasicSettings.vue:20
+#: src/views/preference/BasicSettings.vue:22
 msgid "Jwt Secret"
 msgstr "Secret Jwt"
 
@@ -966,7 +972,7 @@ msgstr "Connexion réussie"
 msgid "Logout successful"
 msgstr "Déconnexion réussie"
 
-#: src/views/preference/Preference.vue:111
+#: src/views/preference/Preference.vue:112
 msgid "Logrotate"
 msgstr ""
 
@@ -1094,7 +1100,7 @@ msgstr "Nouvelle version publiée"
 msgid "Next"
 msgstr "Suivant"
 
-#: src/views/preference/Preference.vue:99
+#: src/views/preference/Preference.vue:100
 #, fuzzy
 msgid "Nginx"
 msgstr "Journal Nginx"
@@ -1135,11 +1141,12 @@ msgstr "Nginx a redémarré avec succès"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:71
 #: src/views/notification/Notification.vue:68
+#: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
 msgid "No"
 msgstr "Non"
 
-#: src/views/preference/BasicSettings.vue:23
+#: src/views/preference/BasicSettings.vue:25
 #, fuzzy
 msgid "Node Secret"
 msgstr "Secret Jwt"
@@ -1220,7 +1227,7 @@ msgstr ""
 msgid "Online"
 msgstr ""
 
-#: src/views/preference/Preference.vue:105
+#: src/views/preference/Preference.vue:106
 msgid "OpenAI"
 msgstr "OpenAI"
 
@@ -1320,7 +1327,7 @@ msgstr ""
 msgid "Pre-release"
 msgstr ""
 
-#: src/routes/index.ts:239 src/views/preference/Preference.vue:88
+#: src/routes/index.ts:239 src/views/preference/Preference.vue:89
 msgid "Preference"
 msgstr "Préférence"
 
@@ -1365,6 +1372,10 @@ msgstr ""
 #, fuzzy
 msgid "Recovered Successfully"
 msgstr "Enregistré avec succès"
+
+#: src/views/preference/BasicSettings.vue:68
+msgid "Recursive Nameservers"
+msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:278
 msgid "Regenerate response"
@@ -1463,7 +1474,7 @@ msgstr "Redémarrer"
 msgid "Restarting"
 msgstr "Redémarrage"
 
-#: src/views/preference/BasicSettings.vue:17
+#: src/views/preference/BasicSettings.vue:19
 msgid "Run Mode"
 msgstr "Mode d'exécution"
 
@@ -1475,7 +1486,7 @@ msgstr "En cours d'éxécution"
 #: src/views/certificate/CertificateEditor.vue:242
 #: src/views/config/ConfigEdit.vue:96 src/views/domain/DomainEdit.vue:263
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
-#: src/views/preference/Preference.vue:122 src/views/stream/StreamEdit.vue:254
+#: src/views/preference/Preference.vue:123 src/views/stream/StreamEdit.vue:254
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -1491,7 +1502,7 @@ msgstr "Enregistrer l'erreur %{msg}"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:104
 #: src/views/certificate/CertificateEditor.vue:45
-#: src/views/preference/Preference.vue:58
+#: src/views/preference/Preference.vue:59
 msgid "Save successfully"
 msgstr "Sauvegarde réussie"
 
@@ -1523,7 +1534,7 @@ msgstr "Envoyer"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:182
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:221
 #: src/views/config/ConfigEdit.vue:40 src/views/domain/DomainList.vue:81
-#: src/views/other/Install.vue:70 src/views/preference/Preference.vue:62
+#: src/views/other/Install.vue:70 src/views/preference/Preference.vue:63
 #: src/views/stream/StreamList.vue:113 src/views/stream/StreamList.vue:81
 #: src/views/system/Upgrade.vue:42
 msgid "Server error"
@@ -1541,6 +1552,12 @@ msgstr "server_name introuvable dans les directives"
 #: src/views/domain/DomainAdd.vue:121
 msgid "server_name parameter is required"
 msgstr "Le paramètre server_name est obligatoire"
+
+#: src/views/preference/BasicSettings.vue:64
+msgid ""
+"Set the recursive nameservers to override the systems nameservers for the "
+"step of DNS challenge."
+msgstr ""
 
 #: src/language/constants.ts:11
 #, fuzzy
@@ -1647,7 +1664,7 @@ msgstr ""
 msgid "Terminal"
 msgstr "Terminal"
 
-#: src/views/preference/BasicSettings.vue:26
+#: src/views/preference/BasicSettings.vue:28
 msgid "Terminal Start Command"
 msgstr "Commande de démarrage du terminal"
 
@@ -1692,8 +1709,8 @@ msgstr ""
 "dont vous avez besoin pour obtenir le certificat, prendre en charge "
 "plusieurs domaines."
 
-#: src/views/preference/BasicSettings.vue:36
-#: src/views/preference/BasicSettings.vue:48
+#: src/views/preference/BasicSettings.vue:38
+#: src/views/preference/BasicSettings.vue:50
 #: src/views/preference/OpenAISettings.vue:36
 #: src/views/preference/OpenAISettings.vue:48
 msgid "The url is not valid"
@@ -1868,6 +1885,7 @@ msgstr "Écriture du certificat sur le disque"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
+#: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
 msgstr "Oui"
 

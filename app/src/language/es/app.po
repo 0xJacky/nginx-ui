@@ -23,7 +23,7 @@ msgid "Access Logs"
 msgstr "Registros de acceso"
 
 #: src/routes/index.ts:128 src/views/certificate/ACMEUser.vue:76
-#: src/views/certificate/ACMEUserSelector.vue:72
+#: src/views/certificate/ACMEUserSelector.vue:79
 #, fuzzy
 msgid "ACME User"
 msgstr "Usuario"
@@ -42,6 +42,7 @@ msgstr "Acción"
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/domain/ngx_conf/NgxServer.vue:167
 #: src/views/domain/ngx_conf/NgxUpstream.vue:152
+#: src/views/preference/BasicSettings.vue:73
 #: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr "Agregar"
@@ -123,6 +124,11 @@ msgstr "¿Está seguro de que quiere borrar esta directiva?"
 msgid "Are you sure you want to remove this directive?"
 msgstr "¿Está seguro de que quiere borrar esta directiva?"
 
+#: src/views/preference/BasicSettings.vue:99
+#, fuzzy
+msgid "Are you sure you want to remove this item?"
+msgstr "¿Está seguro de que quiere borrar esta directiva?"
+
 #: src/views/domain/ngx_conf/LocationEditor.vue:69
 msgid "Are you sure you want to remove this location?"
 msgstr "¿Está seguro de que quiere borrar esta ubicación?"
@@ -173,7 +179,7 @@ msgstr "Información general"
 
 #: src/views/config/ConfigEdit.vue:115
 #: src/views/domain/components/RightSettings.vue:75
-#: src/views/preference/Preference.vue:93
+#: src/views/preference/Preference.vue:94
 #: src/views/stream/components/RightSettings.vue:74
 msgid "Basic"
 msgstr "Básico"
@@ -195,7 +201,7 @@ msgstr "Desarrollado con"
 msgid "CA Dir"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:45
+#: src/views/preference/BasicSettings.vue:47
 msgid "CADir"
 msgstr "Directorio CA"
 
@@ -222,7 +228,7 @@ msgstr "El certificado expiró"
 msgid "Certificate is valid"
 msgstr "El certificado es válido"
 
-#: src/views/preference/BasicSettings.vue:53
+#: src/views/preference/BasicSettings.vue:55
 #, fuzzy
 msgid "Certificate Renewal Interval"
 msgstr "El certificado es válido"
@@ -367,7 +373,7 @@ msgstr "Panel"
 msgid "Database (Optional, default: database)"
 msgstr "Base de datos (Opcional, default: database)"
 
-#: src/views/preference/BasicSettings.vue:58
+#: src/views/preference/BasicSettings.vue:60
 msgid "Days"
 msgstr ""
 
@@ -734,7 +740,7 @@ msgstr "Filtro"
 msgid "Finished"
 msgstr "Terminado"
 
-#: src/views/preference/BasicSettings.vue:41
+#: src/views/preference/BasicSettings.vue:43
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr "Para usuario chino: https://mirror.ghproxy.com/"
 
@@ -770,7 +776,7 @@ msgstr "Obtener error de información de versión"
 msgid "Getting the certificate, please wait..."
 msgstr "Obteniendo el certificado, por favor espere..."
 
-#: src/views/preference/BasicSettings.vue:33
+#: src/views/preference/BasicSettings.vue:35
 msgid "Github Proxy"
 msgstr "Proxy Github"
 
@@ -778,15 +784,15 @@ msgstr "Proxy Github"
 msgid "Home"
 msgstr "Inicio"
 
-#: src/views/preference/BasicSettings.vue:29
+#: src/views/preference/BasicSettings.vue:31
 msgid "HTTP Challenge Port"
 msgstr "Puerto de desafío HTTP"
 
-#: src/views/preference/BasicSettings.vue:11
+#: src/views/preference/BasicSettings.vue:13
 msgid "HTTP Host"
 msgstr "Host HTTP"
 
-#: src/views/preference/BasicSettings.vue:14
+#: src/views/preference/BasicSettings.vue:16
 msgid "HTTP Port"
 msgstr "Puerto HTTP"
 
@@ -851,7 +857,7 @@ msgstr "Obtener certificado Comodín"
 msgid "Issued certificate successfully"
 msgstr "Certificado emitido con éxito"
 
-#: src/views/preference/BasicSettings.vue:20
+#: src/views/preference/BasicSettings.vue:22
 msgid "Jwt Secret"
 msgstr "Secreto Jwt"
 
@@ -925,7 +931,7 @@ msgstr "Acceso exitoso"
 msgid "Logout successful"
 msgstr "Cierre de sesión exitoso"
 
-#: src/views/preference/Preference.vue:111
+#: src/views/preference/Preference.vue:112
 msgid "Logrotate"
 msgstr ""
 
@@ -1049,7 +1055,7 @@ msgstr "Se liberó una nueva versión"
 msgid "Next"
 msgstr "Siguiente"
 
-#: src/views/preference/Preference.vue:99
+#: src/views/preference/Preference.vue:100
 msgid "Nginx"
 msgstr "Nginx"
 
@@ -1089,11 +1095,12 @@ msgstr "Nginx reiniciado con éxito"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:71
 #: src/views/notification/Notification.vue:68
+#: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
 msgid "No"
 msgstr "No"
 
-#: src/views/preference/BasicSettings.vue:23
+#: src/views/preference/BasicSettings.vue:25
 msgid "Node Secret"
 msgstr "Secreto del nodo"
 
@@ -1171,7 +1178,7 @@ msgstr "Una vez que se complete la verificación, los registros se eliminarán."
 msgid "Online"
 msgstr "En línea"
 
-#: src/views/preference/Preference.vue:105
+#: src/views/preference/Preference.vue:106
 msgid "OpenAI"
 msgstr "OpenAI"
 
@@ -1273,7 +1280,7 @@ msgstr "¡Seleccione al menos un nodo!"
 msgid "Pre-release"
 msgstr "Prelanzamiento"
 
-#: src/routes/index.ts:239 src/views/preference/Preference.vue:88
+#: src/routes/index.ts:239 src/views/preference/Preference.vue:89
 msgid "Preference"
 msgstr "Configuración"
 
@@ -1315,6 +1322,10 @@ msgstr ""
 #, fuzzy
 msgid "Recovered Successfully"
 msgstr "Eliminado con éxito"
+
+#: src/views/preference/BasicSettings.vue:68
+msgid "Recursive Nameservers"
+msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:278
 msgid "Regenerate response"
@@ -1407,7 +1418,7 @@ msgstr "Reiniciar"
 msgid "Restarting"
 msgstr "Reiniciando"
 
-#: src/views/preference/BasicSettings.vue:17
+#: src/views/preference/BasicSettings.vue:19
 msgid "Run Mode"
 msgstr "Modo de ejecución"
 
@@ -1419,7 +1430,7 @@ msgstr "Corriendo"
 #: src/views/certificate/CertificateEditor.vue:242
 #: src/views/config/ConfigEdit.vue:96 src/views/domain/DomainEdit.vue:263
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
-#: src/views/preference/Preference.vue:122 src/views/stream/StreamEdit.vue:254
+#: src/views/preference/Preference.vue:123 src/views/stream/StreamEdit.vue:254
 msgid "Save"
 msgstr "Guardar"
 
@@ -1435,7 +1446,7 @@ msgstr "Error al guardar %{msg}"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:104
 #: src/views/certificate/CertificateEditor.vue:45
-#: src/views/preference/Preference.vue:58
+#: src/views/preference/Preference.vue:59
 msgid "Save successfully"
 msgstr "Guardado con éxito"
 
@@ -1467,7 +1478,7 @@ msgstr "Enviado"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:182
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:221
 #: src/views/config/ConfigEdit.vue:40 src/views/domain/DomainList.vue:81
-#: src/views/other/Install.vue:70 src/views/preference/Preference.vue:62
+#: src/views/other/Install.vue:70 src/views/preference/Preference.vue:63
 #: src/views/stream/StreamList.vue:113 src/views/stream/StreamList.vue:81
 #: src/views/system/Upgrade.vue:42
 msgid "Server error"
@@ -1485,6 +1496,12 @@ msgstr "No se encuentra server_name en las directivas"
 #: src/views/domain/DomainAdd.vue:121
 msgid "server_name parameter is required"
 msgstr "Se requiere el parámetro server_name"
+
+#: src/views/preference/BasicSettings.vue:64
+msgid ""
+"Set the recursive nameservers to override the systems nameservers for the "
+"step of DNS challenge."
+msgstr ""
 
 #: src/language/constants.ts:11
 msgid "Setting DNS01 challenge provider"
@@ -1583,7 +1600,7 @@ msgstr "Objetivo"
 msgid "Terminal"
 msgstr "Terminal"
 
-#: src/views/preference/BasicSettings.vue:26
+#: src/views/preference/BasicSettings.vue:28
 msgid "Terminal Start Command"
 msgstr "Comando de inicio de terminal"
 
@@ -1625,8 +1642,8 @@ msgstr ""
 "El server_name en la configuración actual debe ser el nombre de dominio que "
 "necesita para obtener el certificado, soporta dominios múltiples."
 
-#: src/views/preference/BasicSettings.vue:36
-#: src/views/preference/BasicSettings.vue:48
+#: src/views/preference/BasicSettings.vue:38
+#: src/views/preference/BasicSettings.vue:50
 #: src/views/preference/OpenAISettings.vue:36
 #: src/views/preference/OpenAISettings.vue:48
 msgid "The url is not valid"
@@ -1799,6 +1816,7 @@ msgstr "Escribir certificado a disco"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
+#: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
 msgstr "Si"
 

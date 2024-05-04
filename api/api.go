@@ -4,9 +4,10 @@ import (
 	"errors"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/gin-gonic/gin"
-	val "github.com/go-playground/validator/v10"
+	"github.com/go-playground/validator/v10"
 	"net/http"
 	"reflect"
+	"regexp"
 	"strings"
 )
 
@@ -27,7 +28,7 @@ func BindAndValid(c *gin.Context, target interface{}) bool {
 	if err != nil {
 		logger.Error("bind err", err)
 
-		var verrs val.ValidationErrors
+		var verrs validator.ValidationErrors
 		ok := errors.As(err, &verrs)
 
 		if !ok {
@@ -44,7 +45,7 @@ func BindAndValid(c *gin.Context, target interface{}) bool {
 			var path []string
 
 			namespace := strings.Split(value.StructNamespace(), ".")
-			logger.Debug(t.Name(), namespace)
+			// logger.Debug(t.Name(), namespace)
 			if t.Name() != "" && len(namespace) > 1 {
 				namespace = namespace[1:]
 			}
@@ -67,12 +68,29 @@ func BindAndValid(c *gin.Context, target interface{}) bool {
 
 // findField recursively finds the field in a nested struct
 func getJsonPath(t reflect.Type, fields []string, path *[]string) {
-	f, ok := t.FieldByName(fields[0])
+	field := fields[0]
+	// used in case of array
+	var index string
+	if field[len(field)-1] == ']' {
+		re := regexp.MustCompile(`(\w+)\[(\d+)\]`)
+		matches := re.FindStringSubmatch(field)
+
+		if len(matches) > 2 {
+			field = matches[1]
+			index = matches[2]
+		}
+	}
+
+	f, ok := t.FieldByName(field)
 	if !ok {
 		return
 	}
 
 	*path = append(*path, f.Tag.Get("json"))
+
+	if index != "" {
+		*path = append(*path, index)
+	}
 
 	if len(fields) > 1 {
 		subFields := fields[1:]

@@ -5,20 +5,21 @@ import (
 )
 
 type Server struct {
-	HttpHost            string `json:"http_host" protected:"true"`
-	HttpPort            string `json:"http_port" protected:"true"`
-	RunMode             string `json:"run_mode" protected:"true"`
-	JwtSecret           string `json:"jwt_secret" protected:"true"`
-	NodeSecret          string `json:"node_secret" protected:"true"`
-	HTTPChallengePort   string `json:"http_challenge_port"`
-	Email               string `json:"email" protected:"true"`
-	Database            string `json:"database" protected:"true"`
-	StartCmd            string `json:"start_cmd" protected:"true"`
-	CADir               string `json:"ca_dir" binding:"omitempty,url"`
-	Demo                bool   `json:"demo" protected:"true"`
-	PageSize            int    `json:"page_size" protected:"true"`
-	GithubProxy         string `json:"github_proxy" binding:"omitempty,url"`
-	CertRenewalInterval int    `json:"cert_renewal_interval" binging:"min=7,max=21"`
+	HttpHost             string   `json:"http_host" protected:"true"`
+	HttpPort             string   `json:"http_port" protected:"true"`
+	RunMode              string   `json:"run_mode" protected:"true"`
+	JwtSecret            string   `json:"jwt_secret" protected:"true"`
+	NodeSecret           string   `json:"node_secret" protected:"true"`
+	HTTPChallengePort    string   `json:"http_challenge_port"`
+	Email                string   `json:"email" protected:"true"`
+	Database             string   `json:"database" protected:"true"`
+	StartCmd             string   `json:"start_cmd" protected:"true"`
+	CADir                string   `json:"ca_dir" binding:"omitempty,url"`
+	Demo                 bool     `json:"demo" protected:"true"`
+	PageSize             int      `json:"page_size" protected:"true"`
+	GithubProxy          string   `json:"github_proxy" binding:"omitempty,url"`
+	CertRenewalInterval  int      `json:"cert_renewal_interval" binding:"min=7,max=21"`
+	RecursiveNameservers []string `json:"recursive_nameservers" binding:"omitempty,dive,hostname_port"`
 }
 
 func (s *Server) GetCADir() string {
@@ -44,15 +45,16 @@ func (s *Server) GetCertRenewalInterval() int {
 }
 
 var ServerSettings = Server{
-	HttpHost:            "0.0.0.0",
-	HttpPort:            "9000",
-	RunMode:             "debug",
-	HTTPChallengePort:   "9180",
-	Database:            "database",
-	StartCmd:            "login",
-	Demo:                false,
-	PageSize:            10,
-	CADir:               "",
-	GithubProxy:         "",
-	CertRenewalInterval: 7,
+	HttpHost:             "0.0.0.0",
+	HttpPort:             "9000",
+	RunMode:              "debug",
+	HTTPChallengePort:    "9180",
+	Database:             "database",
+	StartCmd:             "login",
+	Demo:                 false,
+	PageSize:             10,
+	CADir:                "",
+	GithubProxy:          "",
+	CertRenewalInterval:  7,
+	RecursiveNameservers: make([]string, 0),
 }

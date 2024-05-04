@@ -22,6 +22,7 @@ const data = ref<Settings>({
     ca_dir: '',
     node_secret: '',
     cert_renewal_interval: 7,
+    recursive_nameservers: [],
   },
   nginx: {
     access_log_path: '',
