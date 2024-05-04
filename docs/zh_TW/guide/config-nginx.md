@@ -37,7 +37,7 @@ http {
 範例：
 
 ```ini
-[nginx_log]
+[nginx]
 AccessLogPath = /var/log/nginx/access.local.log
 ErrorLogPath = /var/log/nginx/error.local.log
 ```

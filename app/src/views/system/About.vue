@@ -47,7 +47,7 @@ const this_year = new Date().getFullYear()
       {{ $gettext('License') }}
     </h3>
     <p>GNU General Public License v3.0</p>
-    <p>Copyright © 2020 - {{ this_year }} Nginx UI Team</p>
+    <p>Copyright © 2021 - {{ this_year }} Nginx UI Team</p>
   </ACard>
 </template>
 

@@ -34,7 +34,7 @@ Afterward, set the nginx access log and error log paths in `app.ini`, then resta
 Example:
 
 ```ini
-[nginx_log]
+[nginx]
 AccessLogPath = /var/log/nginx/access.local.log
 ErrorLogPath = /var/log/nginx/error.local.log
 ```
