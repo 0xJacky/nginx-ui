@@ -3,7 +3,10 @@ package nginx
 import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"os/exec"
+	"sync"
 )
+
+var mutex sync.Mutex
 
 func execShell(cmd string) (out string) {
 	bytes, err := exec.Command("/bin/sh", "-c", cmd).CombinedOutput()
@@ -24,6 +27,8 @@ func execCommand(name string, cmd ...string) (out string) {
 }
 
 func TestConf() (out string) {
+	mutex.Lock()
+	defer mutex.Unlock()
 	if settings.NginxSettings.TestConfigCmd != "" {
 		out = execShell(settings.NginxSettings.TestConfigCmd)
 
@@ -36,6 +41,8 @@ func TestConf() (out string) {
 }
 
 func Reload() (out string) {
+	mutex.Lock()
+	defer mutex.Unlock()
 	if settings.NginxSettings.ReloadCmd != "" {
 		out = execShell(settings.NginxSettings.ReloadCmd)
 		return
@@ -47,6 +54,8 @@ func Reload() (out string) {
 }
 
 func Restart() (out string) {
+	mutex.Lock()
+	defer mutex.Unlock()
 	if settings.NginxSettings.RestartCmd != "" {
 		out = execShell(settings.NginxSettings.RestartCmd)
 
