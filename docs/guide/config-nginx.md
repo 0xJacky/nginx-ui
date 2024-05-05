@@ -9,36 +9,6 @@ Starting from Nginx UI v2.0.0-beta.3, we have renamed the `nginx_log` configurat
 ## Logs
 Nginx logs are crucial for monitoring, troubleshooting, and maintaining your web server. They provide valuable insights into server performance, user behavior, and potential issues.
 
-In this section, we will discuss two main types of logs: access logs and error logs.
-
-For Nginx-UI Docker users upgrading from version v1.5.2 or earlier, you need to add separate `access_log` and `error_log` directives in `nginx.conf` before configuring `app.ini`.
-
-In the Nginx-UI container, `/var/log/nginx/access.log` is a symbolic link to `/dev/stdout`, and `/var/log/nginx/error.log` is a symbolic link to `/dev/stderr`. This setup allows you to view Nginx and Nginx-UI logs using the `docker logs nginx-ui` command. However, these devices do not support the `tail` command, so it is necessary to use additional log files to record Nginx logs.
-
-Example:
-
-```nginx
-error_log /var/log/nginx/error.log notice;
-error_log /var/log/nginx/error.local.log notice;
-
-http {
-...
-    access_log /var/log/nginx/access.log main;
-    access_log /var/log/nginx/access.local.log main;
-...
-}
-```
-
-Afterward, set the nginx access log and error log paths in `app.ini`, then restart nginx-ui.
-
-Example:
-
-```ini
-[nginx]
-AccessLogPath = /var/log/nginx/access.local.log
-ErrorLogPath = /var/log/nginx/error.local.log
-```
-
 ### AccessLogPath
 
 - Type: `string`
