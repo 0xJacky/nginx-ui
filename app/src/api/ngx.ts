@@ -46,7 +46,7 @@ const ngx = {
     return http.post('/ngx/format_code', { content })
   },
 
-  status(): Promise<{ running: boolean }> {
+  status(): Promise<{ running: boolean; message: string; level: number }> {
     return http.get('/nginx/status')
   },
 

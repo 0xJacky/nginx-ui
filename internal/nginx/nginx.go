@@ -4,27 +4,13 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"os/exec"
 	"sync"
+	"time"
 )
 
-var mutex sync.Mutex
-
-func execShell(cmd string) (out string) {
-	bytes, err := exec.Command("/bin/sh", "-c", cmd).CombinedOutput()
-	out = string(bytes)
-	if err != nil {
-		out += " " + err.Error()
-	}
-	return
-}
-
-func execCommand(name string, cmd ...string) (out string) {
-	bytes, err := exec.Command(name, cmd...).CombinedOutput()
-	out = string(bytes)
-	if err != nil {
-		out += " " + err.Error()
-	}
-	return
-}
+var (
+	mutex      sync.Mutex
+	lastOutput string
+)
 
 func TestConf() (out string) {
 	mutex.Lock()
@@ -53,11 +39,15 @@ func Reload() (out string) {
 	return
 }
 
-func Restart() (out string) {
+func Restart() {
 	mutex.Lock()
 	defer mutex.Unlock()
+
+	// fix(docker): nginx restart always output network error
+	time.Sleep(500 * time.Millisecond)
+
 	if settings.NginxSettings.RestartCmd != "" {
-		out = execShell(settings.NginxSettings.RestartCmd)
+		lastOutput = execShell(settings.NginxSettings.RestartCmd)
 
 		return
 	}
@@ -65,15 +55,39 @@ func Restart() (out string) {
 	pidPath := GetPIDPath()
 	daemon := GetSbinPath()
 
-	out = execCommand("start-stop-daemon", "--stop", "--quiet", "--oknodo", "--retry=TERM/30/KILL/5", "--pidfile", pidPath)
+	lastOutput = execCommand("start-stop-daemon", "--stop", "--quiet", "--oknodo", "--retry=TERM/30/KILL/5", "--pidfile", pidPath)
 
 	if daemon == "" {
-		out += execCommand("nginx")
+		lastOutput += execCommand("nginx")
 
 		return
 	}
 
-	out += execCommand("start-stop-daemon", "--start", "--quiet", "--pidfile", pidPath, "--exec", daemon)
+	lastOutput += execCommand("start-stop-daemon", "--start", "--quiet", "--pidfile", pidPath, "--exec", daemon)
 
+	return
+}
+
+func GetLastOutput() string {
+	mutex.Lock()
+	defer mutex.Unlock()
+	return lastOutput
+}
+
+func execShell(cmd string) (out string) {
+	bytes, err := exec.Command("/bin/sh", "-c", cmd).CombinedOutput()
+	out = string(bytes)
+	if err != nil {
+		out += " " + err.Error()
+	}
+	return
+}
+
+func execCommand(name string, cmd ...string) (out string) {
+	bytes, err := exec.Command(name, cmd...).CombinedOutput()
+	out = string(bytes)
+	if err != nil {
+		out += " " + err.Error()
+	}
 	return
 }
