@@ -31,5 +31,5 @@ pnpm build
 请在项目的根目录执行以下命令。
 
 ```shell
-go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/server/settings.buildTime=$(date +%s)'" -o dist/nginx-ui -v main.go
+go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/nginx-ui -v main.go
 ```
