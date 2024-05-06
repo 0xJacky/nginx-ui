@@ -13,7 +13,7 @@ import (
 )
 
 func installLockStatus() bool {
-	return "" != settings.ServerSettings.JwtSecret
+	return settings.ServerSettings.SkipInstallation || "" != settings.ServerSettings.JwtSecret
 }
 
 func InstallLockCheck(c *gin.Context) {

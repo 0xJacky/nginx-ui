@@ -60,6 +60,16 @@ func recovery() {
 }
 
 func InitDatabase() {
+
+	// Skip installation
+	if settings.ServerSettings.SkipInstallation && settings.ServerSettings.JwtSecret == "" {
+		settings.ServerSettings.JwtSecret = uuid.New().String()
+		err := settings.Save()
+		if err != nil {
+			logger.Error(err)
+		}
+	}
+
 	if "" != settings.ServerSettings.JwtSecret {
 		db := model.Init()
 		query.Init(db)
