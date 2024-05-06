@@ -4,6 +4,8 @@ ARG TARGETARCH
 ARG TARGETVARIANT
 EXPOSE 80 443
 
+ENV NGINX_UI_OFFICIAL_DOCKER=true
+
 # register nginx-ui service
 COPY resources/docker/nginx-ui.run /etc/s6-overlay/s6-rc.d/nginx-ui/run
 RUN echo 'longrun' > /etc/s6-overlay/s6-rc.d/nginx-ui/type && \

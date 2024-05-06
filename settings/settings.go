@@ -1,21 +1,23 @@
 package settings
 
 import (
+	"github.com/caarlos0/env/v11"
 	"github.com/spf13/cast"
 	"gopkg.in/ini.v1"
 	"log"
+	"os"
 	"strings"
 	"time"
 )
 
-var Conf *ini.File
-
 var (
 	buildTime    string
 	LastModified string
-)
 
-var ConfPath string
+	Conf      *ini.File
+	ConfPath  string
+	EnvPrefix = "NGINX_UI_"
+)
 
 var sections = map[string]interface{}{
 	"server":    &ServerSettings,
@@ -39,9 +41,26 @@ func Setup() {
 	var err error
 	Conf, err = ini.LooseLoad(ConfPath)
 	if err != nil {
-		log.Fatalf("setting.Setup: %v\n", err)
+		log.Fatalf("settings.Setup: %v\n", err)
 	}
 	MapTo()
+
+	parseEnv(&ServerSettings, "SERVER_")
+	parseEnv(&NginxSettings, "NGINX_")
+	parseEnv(&OpenAISettings, "OPENAI_")
+	parseEnv(&CasdoorSettings, "CASDOOR_")
+	parseEnv(&LogrotateSettings, "LOGROTATE_")
+
+	// if in official docker, set the restart cmd of nginx to "nginx -s stop",
+	// then the supervisor of s6-overlay will start the nginx again.
+	if cast.ToBool(os.Getenv("NGINX_UI_OFFICIAL_DOCKER")) {
+		NginxSettings.RestartCmd = "nginx -s stop"
+	}
+
+	err = Save()
+	if err != nil {
+		log.Fatalf("settings.Setup: %v\n", err)
+	}
 }
 
 func MapTo() {
@@ -75,6 +94,16 @@ func Save() (err error) {
 	if err != nil {
 		return
 	}
-	Setup()
 	return
+}
+
+func parseEnv(ptr interface{}, prefix string) {
+	err := env.ParseWithOptions(ptr, env.Options{
+		Prefix:                EnvPrefix + prefix,
+		UseFieldNameByDefault: true,
+	})
+
+	if err != nil {
+		log.Fatalf("settings.parseEnv: %v\n", err)
+	}
 }
