@@ -214,6 +214,7 @@ function wsOnMessage(m: MessageEvent) {
               :md="8"
             >
               <RadialBarChart
+                :key="$gettext('Memory')"
                 :name="$gettext('Memory')"
                 :series="[memory.pressure]"
                 :center-text="memory.used"
@@ -227,6 +228,7 @@ function wsOnMessage(m: MessageEvent) {
               :md="8"
             >
               <RadialBarChart
+                :key="$gettext('Swap')"
                 :name="$gettext('Swap')"
                 :series="[memory.swap_percent]"
                 :center-text="memory.swap_used"
@@ -240,6 +242,7 @@ function wsOnMessage(m: MessageEvent) {
               :md="8"
             >
               <RadialBarChart
+                :key="$gettext('Storage')"
                 :name="$gettext('Storage')"
                 :series="[disk.percentage]"
                 :center-text="disk.used"
