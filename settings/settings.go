@@ -69,12 +69,6 @@ func MapTo() {
 	}
 }
 
-func ReflectFrom() {
-	for k, v := range sections {
-		reflectFrom(k, v)
-	}
-}
-
 func mapTo(section string, v interface{}) {
 	err := Conf.Section(section).MapTo(v)
 	if err != nil {
@@ -90,6 +84,10 @@ func reflectFrom(section string, v interface{}) {
 }
 
 func Save() (err error) {
+	for k, v := range sections {
+		reflectFrom(k, v)
+	}
+
 	err = Conf.SaveTo(ConfPath)
 	if err != nil {
 		return

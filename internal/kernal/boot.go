@@ -41,6 +41,7 @@ func Boot() {
 
 func InitAfterDatabase() {
 	syncs := []func(){
+		registerPredefinedUser,
 		cert.InitRegister,
 		InitCronJobs,
 		analytic.RetrieveNodesStatus,
@@ -60,14 +61,9 @@ func recovery() {
 }
 
 func InitDatabase() {
-
-	// Skip installation
-	if settings.ServerSettings.SkipInstallation && settings.ServerSettings.JwtSecret == "" {
-		settings.ServerSettings.JwtSecret = uuid.New().String()
-		err := settings.Save()
-		if err != nil {
-			logger.Error(err)
-		}
+	// Skip install
+	if settings.ServerSettings.SkipInstallation {
+		skipInstall()
 	}
 
 	if "" != settings.ServerSettings.JwtSecret {
@@ -82,7 +78,6 @@ func InitNodeSecret() {
 	if "" == settings.ServerSettings.NodeSecret {
 		logger.Warn("NodeSecret is empty, generating...")
 		settings.ServerSettings.NodeSecret = uuid.New().String()
-		settings.ReflectFrom()
 
 		err := settings.Save()
 		if err != nil {

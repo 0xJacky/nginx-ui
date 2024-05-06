@@ -52,6 +52,7 @@ func TestSetup(t *testing.T) {
 	_ = os.Setenv("NGINX_UI_LOGROTATE_CMD", "logrotate /custom/logrotate.conf")
 	_ = os.Setenv("NGINX_UI_LOGROTATE_INTERVAL", "60")
 
+	ConfPath = "app.testing.ini"
 	Setup()
 
 	assert.Equal(t, "8080", ServerSettings.HttpPort)
@@ -96,4 +97,5 @@ func TestSetup(t *testing.T) {
 	assert.Equal(t, 60, LogrotateSettings.Interval)
 
 	os.Clearenv()
+	_ = os.Remove("app.testing.ini")
 }

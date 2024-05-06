@@ -40,8 +40,6 @@ func SaveSettings(c *gin.Context) {
 	fillSettings(&settings.OpenAISettings, &json.Openai)
 	fillSettings(&settings.LogrotateSettings, &json.Logrotate)
 
-	settings.ReflectFrom()
-
 	err := settings.Save()
 	if err != nil {
 		api.ErrHandler(c, err)

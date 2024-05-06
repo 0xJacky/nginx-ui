@@ -20,7 +20,7 @@ COPY nginx-ui-$TARGETOS-$TARGETARCH$TARGETVARIANT/nginx-ui /usr/local/bin/nginx-
 
 # remove default nginx config
 RUN rm -f /etc/nginx/conf.d/default.conf  \
-    && rm -f /usr/etc/nginx/conf.d/default.conf
+    && rm -f /usr/local/etc/nginx/conf.d/default.conf
 
 # recreate access.log and error.log
 RUN rm -f /var/log/nginx/access.log && \
