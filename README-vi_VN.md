@@ -298,7 +298,7 @@ pnpm build
 Vui lòng build Frontend trước, sau đó thực hiện lệnh sau trong thư mục gốc của dự án.
 
 ```shell
-go build -o nginx-ui -v main.go
+go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o nginx-ui -v main.go
 ```
 
 ## Tập lệnh cho Linux

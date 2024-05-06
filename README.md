@@ -295,7 +295,7 @@ pnpm build
 Please build the app first, and then execute the following command in the project root directory.
 
 ```shell
-go build -o nginx-ui -v main.go
+go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o nginx-ui -v main.go
 ```
 
 ## Script for Linux
