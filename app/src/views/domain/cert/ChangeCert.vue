@@ -12,7 +12,6 @@ import type { Column, JSXElements } from '@/components/StdDesign/types'
 const current_server_directives = inject('current_server_directives') as ComputedRef<NgxDirective[]>
 const directivesMap = inject('directivesMap') as Ref<Record<string, NgxDirective[]>>
 const visible = ref(false)
-const record = ref({}) as Ref<Cert>
 
 const columns: Column[] = [{
   title: () => $gettext('Name'),
@@ -55,31 +54,39 @@ function open() {
   visible.value = true
 }
 
-function onSelectedRecord(r: Cert) {
-  record.value = r
-}
+const records = ref([]) as Ref<Cert[]>
 
 function ok() {
   if (directivesMap.value.ssl_certificate?.[0]) {
-    directivesMap.value.ssl_certificate[0].params = record.value.ssl_certificate_path
+    directivesMap.value.ssl_certificate[0].params = records.value[0].ssl_certificate_path
   }
   else {
     current_server_directives?.value.push({
       directive: 'ssl_certificate',
-      params: record.value.ssl_certificate_path,
+      params: records.value[0].ssl_certificate_path,
     })
   }
   if (directivesMap.value.ssl_certificate_key?.[0]) {
-    directivesMap.value.ssl_certificate_key[0].params = record.value.ssl_certificate_key_path
+    directivesMap.value.ssl_certificate_key[0].params = records.value[0].ssl_certificate_key_path
   }
   else {
     current_server_directives?.value.push({
       directive: 'ssl_certificate_key',
-      params: record.value.ssl_certificate_key_path,
+      params: records.value[0].ssl_certificate_key_path,
     })
   }
   visible.value = false
 }
+const selectedKeyBuffer = ref({})
+
+const computedSelectedKeys = computed({
+  get() {
+    return [selectedKeyBuffer.value]
+  },
+  set(v) {
+    selectedKeyBuffer.value = v
+  },
+})
 </script>
 
 <template>
@@ -94,11 +101,12 @@ function ok() {
       @ok="ok"
     >
       <StdTable
+        v-model:selected-row-keys="computedSelectedKeys"
+        v-model:selected-rows="records"
         :api="cert"
         pithy
         :columns="columns"
         selection-type="radio"
-        @on-selected-record="onSelectedRecord"
       />
     </AModal>
   </div>

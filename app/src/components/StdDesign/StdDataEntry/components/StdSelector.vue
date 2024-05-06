@@ -1,85 +1,132 @@
 <script setup lang="ts">
+import _ from 'lodash'
+import type { Ref } from 'vue'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import type Curd from '@/api/curd'
 import type { Column } from '@/components/StdDesign/types'
 
 const props = defineProps<{
-  selectedKey: string | number
-  value?: string | number
-  recordValueIndex: string
+  label?: string
+  selectedKey: number | number[] | undefined | null
   selectionType: 'radio' | 'checkbox'
+  recordValueIndex: string // to index the value of the record
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   api: Curd<any>
   columns: Column[]
   disableSearch?: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getParams: any
+  getParams?: any
   description?: string
+  errorMessages?: string
+  itemKey?: string // default: id
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value?: any | any[]
+  disabled?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  valueApi?: Curd<any>
 }>()
 
-const emit = defineEmits(['update:selectedKey', 'changeSelect'])
+const emit = defineEmits(['update:selectedKey'])
+
+const getParams = computed(() => {
+  return props.getParams
+})
 
 const visible = ref(false)
-const M_value = ref('')
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const M_values = ref([]) as any
+
+const init = _.debounce(_init, 500, {
+  leading: true,
+  trailing: false,
+})
 
 onMounted(() => {
   init()
 })
 
-const selected = ref([])
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const record: any = reactive({})
+const records = ref([]) as Ref<any[]>
 
-function init() {
-  if (props.selectedKey && !props.value && props.selectionType === 'radio') {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    props.api.get(props.selectedKey).then((r: any) => {
-      Object.assign(record, r)
-      M_value.value = r[props.recordValueIndex]
-    })
+async function _init() {
+  // valueApi is used to fetch items that are using itemKey as index value
+  const api = props.valueApi || props.api
+
+  M_values.value = []
+
+  if (props.selectionType === 'radio') {
+    // M_values.value = [props.value] // not init value, we need to fetch them from api
+    if (!props.value && props.selectedKey) {
+      api.get(props.selectedKey, props.getParams).then(r => {
+        M_values.value = [r]
+        records.value = [r]
+      })
+    }
+  }
+  else if (typeof props.selectedKey === 'object') {
+    M_values.value = props.value || []
+
+    // not init value, we need to fetch them from api
+    if (!props.value && (props.selectedKey?.length || 0) > 0) {
+      api.get_list({
+        ...props.getParams,
+        id: props.selectedKey,
+      }).then(r => {
+        M_values.value = r.data
+        records.value = r.data
+      })
+    }
   }
 }
 
 function show() {
-  visible.value = true
-}
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function onSelect(_selected: any) {
-  selected.value = _selected
-}
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function onSelectedRecord(r: any) {
-  Object.assign(record, r)
+  if (!props.disabled)
+    visible.value = true
 }
 
-function ok() {
-  visible.value = false
-  if (props.selectionType === 'radio')
-    emit('update:selectedKey', selected.value[0])
-  else
-    emit('update:selectedKey', selected.value)
+const selectedKeyBuffer = ref()
 
-  M_value.value = record[props.recordValueIndex]
-  emit('changeSelect', record)
-}
+if (props.selectionType === 'radio')
+  selectedKeyBuffer.value = [props.selectedKey]
+else
+  selectedKeyBuffer.value = props.selectedKey
 
-watch(props, () => {
-  if (!props?.selectedKey)
-    M_value.value = ''
-  else if (props.value)
-    M_value.value = props.value as string
-  else
-    init()
-})
-
-const _selectedKey = computed({
+const computedSelectedKeys = computed({
   get() {
-    return props.selectedKey
+    if (props.selectionType === 'radio')
+      return [selectedKeyBuffer.value]
+    else
+      return selectedKeyBuffer.value
   },
   set(v) {
-    emit('update:selectedKey', v)
+    selectedKeyBuffer.value = v
   },
 })
+
+onMounted(() => {
+  if (props.selectedKey === undefined || props.selectedKey === null) {
+    if (props.selectionType === 'radio')
+      emit('update:selectedKey', '')
+    else
+      emit('update:selectedKey', [])
+  }
+})
+
+async function ok() {
+  visible.value = false
+  emit('update:selectedKey', selectedKeyBuffer.value)
+
+  M_values.value = _.clone(records.value)
+}
+
+watchEffect(() => {
+  init()
+})
+
+// function clear() {
+//   M_values.value = []
+//   emit('update:selectedKey', '')
+// }
 </script>
 
 <template>
@@ -88,19 +135,23 @@ const _selectedKey = computed({
       class="std-selector"
       @click="show"
     >
-      <AInput
-        v-model="_selectedKey"
-        disabled
-        hidden
-      />
-      <div class="value">
-        {{ M_value }}
+      <div class="chips-container">
+        <ATag
+          v-for="(chipText, index) in M_values"
+          :key="index"
+          class="mr-1"
+          color="orange"
+          :bordered="false"
+          @click="show"
+        >
+          {{ chipText?.[recordValueIndex] }}
+        </ATag>
       </div>
       <AModal
         :mask="false"
         :open="visible"
         :cancel-text="$gettext('Cancel')"
-        :ok-text="$gettext('OK')"
+        :ok-text="$gettext('Ok')"
         :title="$gettext('Selector')"
         :width="800"
         destroy-on-close
@@ -109,15 +160,16 @@ const _selectedKey = computed({
       >
         {{ description }}
         <StdTable
+          v-model:selected-row-keys="computedSelectedKeys"
+          v-model:selected-rows="records"
           :api="api"
           :columns="columns"
           :disable-search="disableSearch"
           pithy
+          :row-key="itemKey"
           :get-params="getParams"
           :selection-type="selectionType"
           disable-query-params
-          @on-selected="onSelect"
-          @on-selected-record="onSelectedRecord"
         />
       </AModal>
     </div>
@@ -126,16 +178,18 @@ const _selectedKey = computed({
 
 <style lang="less" scoped>
 .std-selector-container {
-  height: 39.9px;
+  min-height: 39.9px;
   display: flex;
   align-items: flex-start;
 
   .std-selector {
+    overflow-y: auto;
     box-sizing: border-box;
     font-variant: tabular-nums;
     list-style: none;
     font-feature-settings: 'tnum';
-    height: 32px;
+    min-height: 32px;
+    max-height: 100px;
     padding: 4px 11px;
     font-size: 14px;
     line-height: 1.5;
@@ -143,9 +197,15 @@ const _selectedKey = computed({
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     transition: all 0.3s;
-    margin: 0 10px 0 0;
+    //margin: 0 10px 0 0;
     cursor: pointer;
     min-width: 180px;
+  }
+}
+
+.chips-container {
+  span {
+    margin: 2px;
   }
 }
 </style>
