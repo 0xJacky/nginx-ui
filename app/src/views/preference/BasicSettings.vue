@@ -35,7 +35,7 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
       :label="$gettext('Github Proxy')"
       :validate-status="errors?.server?.github_proxy ? 'error' : ''"
       :help="errors?.server?.github_proxy === 'url'
-        ? $gettext('The url is not valid')
+        ? $gettext('The url is invalid')
         : ''"
     >
       <AInput
@@ -47,7 +47,7 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
       :label="$gettext('CADir')"
       :validate-status="errors?.server?.ca_dir ? 'error' : ''"
       :help="errors?.server?.ca_dir === 'url'
-        ? $gettext('The url is not valid')
+        ? $gettext('The url is invalid')
         : ''"
     >
       <AInput v-model:value="data.server.ca_dir" />
