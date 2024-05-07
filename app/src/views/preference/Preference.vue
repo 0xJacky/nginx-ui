@@ -52,14 +52,16 @@ settings.get().then(r => {
   data.value = r
 })
 
-const { server_name } = storeToRefs(useSettingsStore())
+const settingsStore = useSettingsStore()
+const { server_name } = storeToRefs(settingsStore)
 const errors = ref({}) as Ref<Record<string, Record<string, string>>>
 
 async function save() {
   // fix type
   data.value.server.http_challenge_port = data.value.server.http_challenge_port.toString()
   settings.save(data.value).then(r => {
-    server_name.value = r?.server?.name ?? ''
+    if (!settingsStore.is_remote)
+      server_name.value = r?.server?.name ?? ''
     data.value = r
     message.success($gettext('Save successfully'))
     errors.value = {}

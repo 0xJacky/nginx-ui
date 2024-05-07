@@ -4,7 +4,6 @@ import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { computed, watch } from 'vue'
 import { useSettingsStore } from '@/pinia'
-import settings from '@/api/settings'
 
 const settingsStore = useSettingsStore()
 
@@ -28,10 +27,6 @@ watch(node_id, async () => {
 })
 
 const { server_name } = storeToRefs(useSettingsStore())
-
-settings.get_server_name().then(r => {
-  server_name.value = r.name
-})
 </script>
 
 <template>

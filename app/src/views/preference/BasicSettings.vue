@@ -113,7 +113,13 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
         </template>
       </Draggable>
     </AFormItem>
-    <AFormItem :label="$gettext('Server Name')">
+    <AFormItem
+      :label="$gettext('Server Name')"
+      :validate-status="errors?.server?.name ? 'error' : ''"
+      :help="errors?.server?.name.includes('alpha_num_dash_dot')
+        ? $gettext('The server name should only contain letters, numbers, dashes, and dots.')
+        : $gettext('Customize the name of local server to be displayed in the environment indicator.')"
+    >
       <AInput v-model:value="data.server.name" />
     </AFormItem>
   </AForm>

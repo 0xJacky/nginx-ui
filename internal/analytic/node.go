@@ -16,26 +16,26 @@ import (
 )
 
 type NodeInfo struct {
-    NodeRuntimeInfo upgrader.RuntimeInfo `json:"node_runtime_info"`
-    Version         string               `json:"version"`
-    CPUNum          int                  `json:"cpu_num"`
-    MemoryTotal     string               `json:"memory_total"`
-    DiskTotal       string               `json:"disk_total"`
+	NodeRuntimeInfo upgrader.RuntimeInfo `json:"node_runtime_info"`
+	Version         string               `json:"version"`
+	CPUNum          int                  `json:"cpu_num"`
+	MemoryTotal     string               `json:"memory_total"`
+	DiskTotal       string               `json:"disk_total"`
 }
 
 type NodeStat struct {
-    AvgLoad       *load.AvgStat      `json:"avg_load"`
-    CPUPercent    float64            `json:"cpu_percent"`
-    MemoryPercent float64            `json:"memory_percent"`
-    DiskPercent   float64            `json:"disk_percent"`
-    Network       net.IOCountersStat `json:"network"`
-    Status        bool               `json:"status"`
-    ResponseAt    time.Time          `json:"response_at"`
+	AvgLoad       *load.AvgStat      `json:"avg_load"`
+	CPUPercent    float64            `json:"cpu_percent"`
+	MemoryPercent float64            `json:"memory_percent"`
+	DiskPercent   float64            `json:"disk_percent"`
+	Network       net.IOCountersStat `json:"network"`
+	Status        bool               `json:"status"`
+	ResponseAt    time.Time          `json:"response_at"`
 }
 
 type Node struct {
-    EnvironmentID int `json:"environment_id,omitempty"`
-    *model.Environment
+	EnvironmentID int `json:"environment_id,omitempty"`
+	*model.Environment
 	NodeStat
 	NodeInfo
 }
@@ -47,66 +47,74 @@ type TNodeMap map[int]*Node
 var NodeMap TNodeMap
 
 func init() {
-    NodeMap = make(TNodeMap)
+	NodeMap = make(TNodeMap)
 }
 
 func GetNode(env *model.Environment) (n *Node) {
-    if env == nil {
-        logger.Error("env is nil")
-        return
-    }
-    n, ok := NodeMap[env.ID]
-    if !ok {
-        n = &Node{}
-    }
-    n.Environment = env
-    return n
+	if env == nil {
+		// this should never happen
+		logger.Error("env is nil")
+		return
+	}
+	if !env.Enabled {
+		return &Node{
+			Environment: env,
+		}
+	}
+	n, ok := NodeMap[env.ID]
+	if !ok {
+		n = &Node{}
+	}
+	n.Environment = env
+	return n
 }
 
 func InitNode(env *model.Environment) (n *Node) {
-    n = &Node{
-        Environment: env,
-    }
+	n = &Node{
+		Environment: env,
+	}
 
-    u, err := url.JoinPath(env.URL, "/api/node")
+	u, err := url.JoinPath(env.URL, "/api/node")
 
-    if err != nil {
-        logger.Error(err)
-        return
-    }
+	if err != nil {
+		logger.Error(err)
+		return
+	}
 
-    if err != nil {
-        logger.Error(err)
-        return
-    }
-    client := http.Client{
-        Transport: &http.Transport{
-            TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-        },
-    }
-    req, err := http.NewRequest("GET", u, nil)
-    req.Header.Set("X-Node-Secret", env.Token)
+	client := http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
+	}
 
-    resp, err := client.Do(req)
+	req, err := http.NewRequest("GET", u, nil)
+	if err != nil {
+		logger.Error(err)
+		return
+	}
 
-    if err != nil {
-        logger.Error(err)
-        return
-    }
+	req.Header.Set("X-Node-Secret", env.Token)
 
-    defer resp.Body.Close()
-    bytes, _ := io.ReadAll(resp.Body)
+	resp, err := client.Do(req)
 
-    if resp.StatusCode != 200 {
-        logger.Error(string(bytes))
-        return
-    }
+	if err != nil {
+		logger.Error(err)
+		return
+	}
 
-    err = json.Unmarshal(bytes, &n.NodeInfo)
-    if err != nil {
-        logger.Error(err)
-        return
-    }
+	defer resp.Body.Close()
+	bytes, _ := io.ReadAll(resp.Body)
 
-    return
+	if resp.StatusCode != http.StatusOK {
+		logger.Error(string(bytes))
+		return
+	}
+
+	err = json.Unmarshal(bytes, &n.NodeInfo)
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+
+	return
 }

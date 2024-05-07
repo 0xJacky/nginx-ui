@@ -1,11 +1,11 @@
 <script setup lang="tsx">
 import { h } from 'vue'
-import { Badge } from 'ant-design-vue'
+import { Badge, Tag } from 'ant-design-vue'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import environment from '@/api/environment'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
-import { input } from '@/components/StdDesign/StdDataEntry'
+import { input, switcher } from '@/components/StdDesign/StdDataEntry'
 import type { Column, JSXElements } from '@/components/StdDesign/types'
 
 const columns: Column[] = [{
@@ -16,6 +16,7 @@ const columns: Column[] = [{
   edit: {
     type: input,
   },
+  search: true,
 },
 {
   title: () => $gettext('URL'),
@@ -77,16 +78,42 @@ const columns: Column[] = [{
   customRender: (args: customRender) => {
     const template: JSXElements = []
     const { text } = args
-    if (text === true || text > 0) {
-      template.push(<Badge status="success"/>)
-      template.push($gettext('Online'))
+    if (args.record.enabled) {
+      if (text === true || text > 0) {
+        template.push(<Badge status="success"/>)
+        template.push($gettext('Online'))
+      }
+      else {
+        template.push(<Badge status="error"/>)
+        template.push($gettext('Offline'))
+      }
     }
     else {
-      template.push(<Badge status="error"/>)
-      template.push($gettext('Offline'))
+      template.push(<Badge status="default"/>)
+      template.push($gettext('Disabled'))
     }
 
     return h('div', template)
+  },
+  sortable: true,
+  pithy: true,
+},
+{
+  title: () => $gettext('Enabled'),
+  dataIndex: 'enabled',
+  customRender: (args: customRender) => {
+    const template: JSXElements = []
+    const { text } = args
+    if (text === true || text > 0)
+      template.push(<Tag color="green">{$gettext('Enabled')}</Tag>)
+
+    else
+      template.push(<Tag color="orange">{$gettext('Disabled')}</Tag>)
+
+    return h('div', template)
+  },
+  edit: {
+    type: switcher,
   },
   sortable: true,
   pithy: true,

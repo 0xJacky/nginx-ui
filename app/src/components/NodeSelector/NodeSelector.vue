@@ -14,11 +14,21 @@ const emit = defineEmits(['update:target', 'update:map'])
 const data = ref([]) as Ref<Environment[]>
 const data_map = ref({}) as Ref<Record<number, Environment>>
 
-environment.get_list().then(r => {
-  data.value = r.data
-  r.data?.forEach(node => {
-    data_map.value[node.id] = node
-  })
+onMounted(async () => {
+  let hasMore = true
+  let page = 1
+  while (hasMore) {
+    await environment.get_list({ page, enabled: true }).then(r => {
+      data.value.push(...r.data)
+      r.data?.forEach(node => {
+        data_map.value[node.id] = node
+      })
+      hasMore = r.data.length === r.pagination.per_page
+      page++
+    }).catch(() => {
+      hasMore = false
+    })
+  }
 })
 
 const value = computed({
@@ -35,14 +45,24 @@ const value = computed({
     emit('update:target', v)
   },
 })
+
+const noData = computed(() => {
+  return props.hiddenLocal && !data?.value?.length
+})
 </script>
 
 <template>
   <ACheckboxGroup
     v-model:value="value"
     style="width: 100%"
+    :class="{
+      'justify-center': noData,
+    }"
   >
-    <ARow :gutter="[16, 16]">
+    <ARow
+      v-if="!noData"
+      :gutter="[16, 16]"
+    >
       <ACol
         v-if="!hiddenLocal"
         :span="8"
@@ -76,7 +96,7 @@ const value = computed({
         </ATag>
       </ACol>
     </ARow>
-    <AEmpty v-if="hiddenLocal && data?.length === 0" />
+    <AEmpty v-else />
   </ACheckboxGroup>
 </template>
 
