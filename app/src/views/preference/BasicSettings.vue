@@ -113,6 +113,9 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
         </template>
       </Draggable>
     </AFormItem>
+    <AFormItem :label="$gettext('Server Name')">
+      <AInput v-model:value="data.server.name" />
+    </AFormItem>
   </AForm>
 </template>
 

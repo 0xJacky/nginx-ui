@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import type { Ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import settings from '@/api/settings'
 import BasicSettings from '@/views/preference/BasicSettings.vue'
@@ -8,6 +9,7 @@ import OpenAISettings from '@/views/preference/OpenAISettings.vue'
 import NginxSettings from '@/views/preference/NginxSettings.vue'
 import type { Settings } from '@/views/preference/typedef'
 import LogrotateSettings from '@/views/preference/LogrotateSettings.vue'
+import { useSettingsStore } from '@/pinia'
 
 const data = ref<Settings>({
   server: {
@@ -23,6 +25,7 @@ const data = ref<Settings>({
     node_secret: '',
     cert_renewal_interval: 7,
     recursive_nameservers: [],
+    name: '',
   },
   nginx: {
     access_log_path: '',
@@ -49,12 +52,14 @@ settings.get().then(r => {
   data.value = r
 })
 
+const { server_name } = storeToRefs(useSettingsStore())
 const errors = ref({}) as Ref<Record<string, Record<string, string>>>
 
 async function save() {
   // fix type
   data.value.server.http_challenge_port = data.value.server.http_challenge_port.toString()
   settings.save(data.value).then(r => {
+    server_name.value = r?.server?.name ?? ''
     data.value = r
     message.success($gettext('Save successfully'))
     errors.value = {}

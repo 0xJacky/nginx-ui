@@ -11,6 +11,7 @@ func InitPublicRouter(r *gin.RouterGroup) {
 }
 
 func InitPrivateRouter(r *gin.RouterGroup) {
+    r.GET("settings/server/name", GetServerName)
     r.GET("settings", GetSettings)
     r.POST("settings", SaveSettings)
 

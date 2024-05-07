@@ -26,6 +26,7 @@ func TestSetup(t *testing.T) {
 	_ = os.Setenv("NGINX_UI_SERVER_CERT_RENEWAL_INTERVAL", "14")
 	_ = os.Setenv("NGINX_UI_SERVER_RECURSIVE_NAMESERVERS", "8.8.8.8")
 	_ = os.Setenv("NGINX_UI_SERVER_SKIP_INSTALLATION", "true")
+	_ = os.Setenv("NGINX_UI_SERVER_NAME", "test")
 
 	_ = os.Setenv("NGINX_UI_NGINX_ACCESS_LOG_PATH", "/tmp/nginx/access.log")
 	_ = os.Setenv("NGINX_UI_NGINX_ERROR_LOG_PATH", "/tmp/nginx/error.log")
@@ -70,6 +71,7 @@ func TestSetup(t *testing.T) {
 	assert.Equal(t, 14, ServerSettings.CertRenewalInterval)
 	assert.Equal(t, []string{"8.8.8.8"}, ServerSettings.RecursiveNameservers)
 	assert.Equal(t, true, ServerSettings.SkipInstallation)
+	assert.Equal(t, "test", ServerSettings.Name)
 
 	assert.Equal(t, "/tmp/nginx/access.log", NginxSettings.AccessLogPath)
 	assert.Equal(t, "/tmp/nginx/error.log", NginxSettings.ErrorLogPath)

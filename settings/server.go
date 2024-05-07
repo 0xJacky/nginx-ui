@@ -20,7 +20,8 @@ type Server struct {
 	GithubProxy          string   `json:"github_proxy" binding:"omitempty,url"`
 	CertRenewalInterval  int      `json:"cert_renewal_interval" binding:"min=7,max=21"`
 	RecursiveNameservers []string `json:"recursive_nameservers" binding:"omitempty,dive,hostname_port"`
-	SkipInstallation     bool     `json:"skip_installation"`
+	SkipInstallation     bool     `json:"skip_installation" protected:"true"`
+	Name                 string   `json:"name" binding:"omitempty,alpha_num_dash_dot"`
 }
 
 func (s *Server) GetCADir() string {

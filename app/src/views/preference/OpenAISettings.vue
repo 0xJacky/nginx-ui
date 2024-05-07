@@ -23,7 +23,13 @@ const models = shallowRef([
 
 <template>
   <AForm layout="vertical">
-    <AFormItem :label="$gettext('Model')">
+    <AFormItem
+      :label="$gettext('Model')"
+      :validate-status="errors?.openai?.model ? 'error' : ''"
+      :help="errors?.openai?.model === 'alpha_num_dash_dot'
+        ? $gettext('The model name should only contain letters, numbers, dashes, and dots.')
+        : ''"
+    >
       <AAutoComplete
         v-model:value="data.openai.model"
         :options="models"
@@ -33,7 +39,7 @@ const models = shallowRef([
       :label="$gettext('API Base Url')"
       :validate-status="errors?.openai?.base_url ? 'error' : ''"
       :help="errors?.openai?.base_url === 'url'
-        ? $gettext('The url is not valid')
+        ? $gettext('The url is invalid.')
         : ''"
     >
       <AInput
@@ -45,7 +51,7 @@ const models = shallowRef([
       :label="$gettext('API Proxy')"
       :validate-status="errors?.openai?.proxy ? 'error' : ''"
       :help="errors?.openai?.proxy === 'url'
-        ? $gettext('The url is not valid')
+        ? $gettext('The url is invalid.')
         : ''"
     >
       <AInput

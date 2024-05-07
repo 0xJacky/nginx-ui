@@ -9,6 +9,7 @@ export const useSettingsStore = defineStore('settings', {
       id: 0,
       name: 'Local',
     },
+    server_name: '',
   }),
   getters: {
     is_remote(): boolean {

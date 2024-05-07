@@ -6,7 +6,8 @@ import (
 	"gopkg.in/ini.v1"
 	"log"
 	"os"
-	"strings"
+    "reflect"
+    "strings"
 	"time"
 )
 
@@ -69,19 +70,7 @@ func MapTo() {
 	}
 }
 
-func mapTo(section string, v interface{}) {
-	err := Conf.Section(section).MapTo(v)
-	if err != nil {
-		log.Fatalf("Cfg.MapTo %s err: %v", section, err)
-	}
-}
 
-func reflectFrom(section string, v interface{}) {
-	err := Conf.Section(section).ReflectFrom(v)
-	if err != nil {
-		log.Fatalf("Cfg.ReflectFrom %s err: %v", section, err)
-	}
-}
 
 func Save() (err error) {
 	for k, v := range sections {
@@ -95,6 +84,33 @@ func Save() (err error) {
 	return
 }
 
+func ProtectedFill(targetSettings interface{}, newSettings interface{}) {
+    s := reflect.TypeOf(targetSettings).Elem()
+    vt := reflect.ValueOf(targetSettings).Elem()
+    vn := reflect.ValueOf(newSettings).Elem()
+
+    // copy the values from new to target settings if it is not protected
+    for i := 0; i < s.NumField(); i++ {
+        if s.Field(i).Tag.Get("protected") != "true" {
+            vt.Field(i).Set(vn.Field(i))
+        }
+    }
+}
+
+func mapTo(section string, v interface{}) {
+    err := Conf.Section(section).MapTo(v)
+    if err != nil {
+        log.Fatalf("Cfg.MapTo %s err: %v", section, err)
+    }
+}
+
+func reflectFrom(section string, v interface{}) {
+    err := Conf.Section(section).ReflectFrom(v)
+    if err != nil {
+        log.Fatalf("Cfg.ReflectFrom %s err: %v", section, err)
+    }
+}
+
 func parseEnv(ptr interface{}, prefix string) {
 	err := env.ParseWithOptions(ptr, env.Options{
 		Prefix:                EnvPrefix + prefix,
@@ -105,3 +121,5 @@ func parseEnv(ptr interface{}, prefix string) {
 		log.Fatalf("settings.parseEnv: %v\n", err)
 	}
 }
+
+

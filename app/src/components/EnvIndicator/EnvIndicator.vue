@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { computed, watch } from 'vue'
 import { useSettingsStore } from '@/pinia'
+import settings from '@/api/settings'
 
 const settingsStore = useSettingsStore()
 
@@ -25,6 +26,12 @@ watch(node_id, async () => {
   await router.push('/dashboard')
   location.reload()
 })
+
+const { server_name } = storeToRefs(useSettingsStore())
+
+settings.get_server_name().then(r => {
+  server_name.value = r.name
+})
 </script>
 
 <template>
@@ -35,7 +42,7 @@ watch(node_id, async () => {
         v-if="is_local"
         class="env-name"
       >
-        {{ $gettext('Local') }}
+        {{ server_name || $gettext('Local') }}
       </span>
       <span
         v-else
