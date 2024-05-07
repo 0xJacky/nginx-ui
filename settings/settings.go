@@ -6,8 +6,8 @@ import (
 	"gopkg.in/ini.v1"
 	"log"
 	"os"
-    "reflect"
-    "strings"
+	"reflect"
+	"strings"
 	"time"
 )
 
@@ -26,6 +26,7 @@ var sections = map[string]interface{}{
 	"openai":    &OpenAISettings,
 	"casdoor":   &CasdoorSettings,
 	"logrotate": &LogrotateSettings,
+	"cluster":   &ClusterSettings,
 }
 
 func init() {
@@ -40,10 +41,15 @@ func Init(confPath string) {
 
 func Setup() {
 	var err error
-	Conf, err = ini.LooseLoad(ConfPath)
+	Conf, err = ini.LoadSources(ini.LoadOptions{
+		Loose:        true,
+		AllowShadows: true,
+	}, ConfPath)
+
 	if err != nil {
 		log.Fatalf("settings.Setup: %v\n", err)
 	}
+
 	MapTo()
 
 	parseEnv(&ServerSettings, "SERVER_")
@@ -70,8 +76,6 @@ func MapTo() {
 	}
 }
 
-
-
 func Save() (err error) {
 	for k, v := range sections {
 		reflectFrom(k, v)
@@ -85,30 +89,30 @@ func Save() (err error) {
 }
 
 func ProtectedFill(targetSettings interface{}, newSettings interface{}) {
-    s := reflect.TypeOf(targetSettings).Elem()
-    vt := reflect.ValueOf(targetSettings).Elem()
-    vn := reflect.ValueOf(newSettings).Elem()
+	s := reflect.TypeOf(targetSettings).Elem()
+	vt := reflect.ValueOf(targetSettings).Elem()
+	vn := reflect.ValueOf(newSettings).Elem()
 
-    // copy the values from new to target settings if it is not protected
-    for i := 0; i < s.NumField(); i++ {
-        if s.Field(i).Tag.Get("protected") != "true" {
-            vt.Field(i).Set(vn.Field(i))
-        }
-    }
+	// copy the values from new to target settings if it is not protected
+	for i := 0; i < s.NumField(); i++ {
+		if s.Field(i).Tag.Get("protected") != "true" {
+			vt.Field(i).Set(vn.Field(i))
+		}
+	}
 }
 
 func mapTo(section string, v interface{}) {
-    err := Conf.Section(section).MapTo(v)
-    if err != nil {
-        log.Fatalf("Cfg.MapTo %s err: %v", section, err)
-    }
+	err := Conf.Section(section).MapTo(v)
+	if err != nil {
+		log.Fatalf("Cfg.MapTo %s err: %v", section, err)
+	}
 }
 
 func reflectFrom(section string, v interface{}) {
-    err := Conf.Section(section).ReflectFrom(v)
-    if err != nil {
-        log.Fatalf("Cfg.ReflectFrom %s err: %v", section, err)
-    }
+	err := Conf.Section(section).ReflectFrom(v)
+	if err != nil {
+		log.Fatalf("Cfg.ReflectFrom %s err: %v", section, err)
+	}
 }
 
 func parseEnv(ptr interface{}, prefix string) {
@@ -121,5 +125,3 @@ func parseEnv(ptr interface{}, prefix string) {
 		log.Fatalf("settings.parseEnv: %v\n", err)
 	}
 }
-
-

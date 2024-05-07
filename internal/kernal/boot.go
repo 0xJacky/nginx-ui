@@ -44,6 +44,7 @@ func InitAfterDatabase() {
 		registerPredefinedUser,
 		cert.InitRegister,
 		InitCronJobs,
+		registerPredefinedClusterNodes,
 		analytic.RetrieveNodesStatus,
 	}
 
