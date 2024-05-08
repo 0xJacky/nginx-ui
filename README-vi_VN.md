@@ -146,7 +146,7 @@ http {
 
 Giao diện người dùng Nginx có sẵn trên các nền tảng sau:
 
-- Mac OS X 10.10 Yosemite and later (amd64 / arm64)
+- macOS 11 Big Sur and later (amd64 / arm64)
 - Linux 2.6.23 and later (x86 / amd64 / arm64 / armv5 / armv6 / armv7)
   - Bao gồm nhưng không giới hạn Debian 7/8, Ubuntu 12.04/14.04 trở lên, CentOS 6/7, Arch Linux
 - FreeBSD

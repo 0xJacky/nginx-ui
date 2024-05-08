@@ -27,8 +27,8 @@ func proxy() gin.HandlerFunc {
 		defer c.Abort()
 
 		env := query.Environment
-		environment, err := env.Where(env.ID.Eq(id)).First()
 
+		environment, err := env.Where(env.ID.Eq(id)).First()
 		if err != nil {
 			logger.Error(err)
 			c.AbortWithStatusJSON(http.StatusServiceUnavailable, gin.H{
@@ -37,8 +37,7 @@ func proxy() gin.HandlerFunc {
 			return
 		}
 
-		u, err := url.JoinPath(environment.URL, c.Request.RequestURI)
-
+		baseUrl, err := url.Parse(environment.URL)
 		if err != nil {
 			logger.Error(err)
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
@@ -47,8 +46,7 @@ func proxy() gin.HandlerFunc {
 			return
 		}
 
-		decodedUri, err := url.QueryUnescape(u)
-
+		proxyUrl, err := baseUrl.Parse(c.Request.RequestURI)
 		if err != nil {
 			logger.Error(err)
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
@@ -57,18 +55,25 @@ func proxy() gin.HandlerFunc {
 			return
 		}
 
-		logger.Debug("Proxy request", decodedUri)
+		logger.Debug("Proxy request", proxyUrl.String())
 		client := http.Client{
 			Transport: &http.Transport{
 				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 			},
 		}
 
-		req, err := http.NewRequest(c.Request.Method, decodedUri, c.Request.Body)
+		req, err := http.NewRequest(c.Request.Method, proxyUrl.String(), c.Request.Body)
+		if err != nil {
+			logger.Error(err)
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+				"message": err.Error(),
+			})
+			return
+		}
+
 		req.Header.Set("X-Node-Secret", environment.Token)
 
 		resp, err := client.Do(req)
-
 		if err != nil {
 			logger.Error(err)
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{

@@ -132,7 +132,7 @@ Para más información: [debian/conf/nginx.conf](https://salsa.debian.org/nginx-
 
 La UI de Nginx está disponible en las siguientes plataformas:
 
-- Mac OS X 10.10 Yosemite y posterior (amd64 / arm64)
+- macOS 11 Big Sur y posterior (amd64 / arm64)
 - Linux 2.6.23 and later (x86 / amd64 / arm64 / armv5 / armv6 / armv7)
   - Incluyendo pero no limitado a Debian 7 / 8, Ubuntu 12.04 / 14.04 and later, CentOS 6 / 7, Arch Linux
 - FreeBSD
