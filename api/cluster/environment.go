@@ -10,6 +10,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
+	"gorm.io/gorm"
 	"net/http"
 )
 
@@ -28,12 +29,19 @@ func GetEnvironment(c *gin.Context) {
 }
 
 func GetEnvironmentList(c *gin.Context) {
-	cosy.Core[model.Environment](c).
-		SetFussy("name").
-		SetEqual("enabled").
-		SetTransformer(func(m *model.Environment) any {
-			return analytic.GetNode(m)
-		}).PagingList()
+	core := cosy.Core[model.Environment](c).
+		SetFussy("name")
+
+	// fix for sqlite
+	if c.Query("enabled") != "" {
+		core.GormScope(func(tx *gorm.DB) *gorm.DB {
+			return tx.Where("enabled = ?", cast.ToInt(cast.ToBool(c.Query("enabled"))))
+		})
+	}
+
+	core.SetTransformer(func(m *model.Environment) any {
+		return analytic.GetNode(m)
+	}).PagingList()
 }
 
 func AddEnvironment(c *gin.Context) {
