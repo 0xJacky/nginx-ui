@@ -106,6 +106,7 @@ allows them to set a proxy for github.com to improve accessibility.
 
 ## CertRenewalInterval
 
+- Version：`>= v2.0.0-beta.22`
 - Type: `int`
 - Default value: `7`
 
@@ -114,9 +115,33 @@ By default, Nginx UI will automatically renew the certificate every 7 days.
 
 ## RecursiveNameservers
 
+- Version：`>= v2.0.0-beta.22`
 - Type: `[]string`
 - Example: `8.8.8.8:53,1.1.1.1:53`
 
 This option is used to set the recursive nameservers used by
 Nginx UI in the DNS challenge step of applying for a certificate.
 If this option is not configured, Nginx UI will use the nameservers settings of the operating system.
+
+## SkipInstallation
+
+- Version：`>= v2.0.0-beta.23`
+- Type: `bool`
+- Default value: `false`
+
+You can skip the installation of the Nginx UI server by setting this option to `true`.
+This is useful when you want to deploy Nginx UI to multiple servers with
+a same configuration file or environment variables.
+
+By default, if you enabled the skip installation mode without setting the `JWTSecret` and `NodeSecret` options
+in the server section, Nginx UI will generate a random UUID value for these two options.
+
+Plus, if you don't set the `Email` option also in the server section,
+Nginx UI will not create a system initial acme user, this means you can't apply for an SSL certificate in this server.
+
+## Name
+
+- Version：`>= v2.0.0-beta.23`
+- Type: `string`
+
+Use this option to customize the name of local server to be displayed in the environment indicator.
