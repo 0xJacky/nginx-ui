@@ -3,6 +3,7 @@ package kernal
 import (
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/logrotate"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
@@ -44,7 +45,7 @@ func InitAfterDatabase() {
 		registerPredefinedUser,
 		cert.InitRegister,
 		InitCronJobs,
-		registerPredefinedClusterNodes,
+		cluster.RegisterPredefinedNodes,
 		analytic.RetrieveNodesStatus,
 	}
 

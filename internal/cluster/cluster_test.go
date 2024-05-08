@@ -1,4 +1,4 @@
-package kernal
+package cluster
 
 import (
 	"github.com/0xJacky/Nginx-UI/settings"

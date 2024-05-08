@@ -3,9 +3,11 @@ package cluster
 import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
+	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/internal/cosy"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"net/http"
@@ -74,4 +76,20 @@ func DeleteEnvironment(c *gin.Context) {
 	go analytic.RestartRetrieveNodesStatus()
 
 	c.JSON(http.StatusNoContent, nil)
+}
+
+func LoadEnvironmentFromSettings(c *gin.Context) {
+	err := settings.ReloadCluster()
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+
+	cluster.RegisterPredefinedNodes()
+
+	go analytic.RestartRetrieveNodesStatus()
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+	})
 }

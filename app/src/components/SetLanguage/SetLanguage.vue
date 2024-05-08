@@ -1,32 +1,27 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 
 import { useSettingsStore } from '@/pinia'
-import http from '@/lib/http'
 import gettext from '@/gettext'
+import loadTranslations from '@/api/translations'
 
 const settings = useSettingsStore()
 
 const route = useRoute()
 
-const current = ref(gettext.current)
+const current = computed({
+  get() {
+    return gettext.current
+  },
+  set(v) {
+    gettext.current = v
+  },
+})
 
 const languageAvailable = gettext.available
 
-async function init() {
-  if (current.value !== 'en') {
-    await http.get(`/translation/${current.value}`).then(r => {
-      gettext.translations[current.value] = r
-    })
-
-    document.title = `${route.meta.name?.()} | Nginx UI`
-  }
-}
-
-init()
-
 watch(current, v => {
-  init()
+  loadTranslations()
   settings.set_language(v)
   gettext.current = v
 
@@ -34,7 +29,6 @@ watch(current, v => {
 
   document.title = `${name()} | Nginx UI`
 })
-
 </script>
 
 <template>

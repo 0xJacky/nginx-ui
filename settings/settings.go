@@ -39,12 +39,17 @@ func Init(confPath string) {
 	Setup()
 }
 
-func Setup() {
-	var err error
+func load() (err error) {
 	Conf, err = ini.LoadSources(ini.LoadOptions{
 		Loose:        true,
 		AllowShadows: true,
 	}, ConfPath)
+
+	return
+}
+
+func Setup() {
+	err := load()
 
 	if err != nil {
 		log.Fatalf("settings.Setup: %v\n", err)
@@ -72,7 +77,11 @@ func Setup() {
 
 func MapTo() {
 	for k, v := range sections {
-		mapTo(k, v)
+		err := mapTo(k, v)
+
+		if err != nil {
+			log.Fatalf("Cfg.MapTo %s err: %v", k, err)
+		}
 	}
 }
 
@@ -101,11 +110,8 @@ func ProtectedFill(targetSettings interface{}, newSettings interface{}) {
 	}
 }
 
-func mapTo(section string, v interface{}) {
-	err := Conf.Section(section).MapTo(v)
-	if err != nil {
-		log.Fatalf("Cfg.MapTo %s err: %v", section, err)
-	}
+func mapTo(section string, v interface{}) error {
+	return Conf.Section(section).MapTo(v)
 }
 
 func reflectFrom(section string, v interface{}) {

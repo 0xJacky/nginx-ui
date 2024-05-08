@@ -1,4 +1,4 @@
-package kernal
+package cluster
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/logger"
@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func registerPredefinedClusterNodes() {
+func RegisterPredefinedNodes() {
 	if len(settings.ClusterSettings.Node) == 0 {
 		return
 	}

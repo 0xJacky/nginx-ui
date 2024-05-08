@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import { h } from 'vue'
-import { Badge, Tag } from 'ant-design-vue'
+import { Badge, Tag, message } from 'ant-design-vue'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import environment from '@/api/environment'
@@ -130,14 +130,28 @@ const columns: Column[] = [{
   dataIndex: 'action',
 }]
 
+const curd = ref()
+function load_from_settings() {
+  environment.load_from_settings().then(() => {
+    curd.value.get_list()
+    message.success($gettext('Load successfully'))
+  }).catch(e => {
+    message.error(`${$gettext('Server error')} ${e?.message}`)
+  })
+}
 </script>
 
 <template>
   <StdCurd
+    ref="curd"
     :title="$gettext('Environment')"
     :api="environment"
     :columns="columns"
-  />
+  >
+    <template #extra>
+      <a @click="load_from_settings">{{ $gettext('Load from settings') }}</a>
+    </template>
+  </StdCurd>
 </template>
 
 <style lang="less" scoped>
