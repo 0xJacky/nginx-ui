@@ -9,39 +9,6 @@
 ## 日誌
 Nginx 日誌對於監控、排查問題和維護您的 Web 伺服器至關重要。它們提供了有關伺服器性能、用戶行為和潛在問題的寶貴見解。
 
-在本節中，我們將討論兩種主要類型的日誌：訪問日誌和錯誤日誌。
-
-對於從 v1.5.2 或更早版本升級的 Nginx-UI Docker 用戶，在配置 `app.ini` 之前，您需要在 `nginx.conf`
-中添加單獨的 `access_log` 和 `error_log` 指令。
-
-在 Nginx-UI 容器中，`/var/log/nginx/access.log` 是一個指向 `/dev/stdout` 的符號鏈接，而 `/var/log/nginx/error.log`
-是一個指向 `/dev/stderr` 的符號鏈接。這種設置允許您使用 `docker logs nginx-ui` 命令查看 Nginx 和 Nginx-UI 日誌。然而，這兩個設備不支持
-`tail` 命令，因此有必要使用額外的日誌文件來記錄 Nginx 日誌。
-
-範例：
-
-```nginx
-error_log /var/log/nginx/error.log notice;
-error_log /var/log/nginx/error.local.log notice;
-
-http {
-...
-    access_log /var/log/nginx/access.log main;
-    access_log /var/log/nginx/access.local.log main;
-...
-}
-```
-
-之後，請在 `app.ini` 中設置 nginx 訪問日誌和錯誤日誌路徑，然後重新啟動 nginx-ui。
-
-範例：
-
-```ini
-[nginx]
-AccessLogPath = /var/log/nginx/access.local.log
-ErrorLogPath = /var/log/nginx/error.local.log
-```
-
 ### AccessLogPath
 
 - 類型：`string`

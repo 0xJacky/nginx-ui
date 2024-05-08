@@ -5,8 +5,6 @@ const route = useRoute()
 const info = computed(() => {
   if (typeof route.meta.error === 'function')
     return route.meta.error()
-  else if (typeof route.meta.error === 'string')
-    return route.meta.error
   else
     return $gettext('File Not Found')
 })

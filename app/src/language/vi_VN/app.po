@@ -18,7 +18,7 @@ msgid "Access Logs"
 msgstr "Log truy cập"
 
 #: src/routes/index.ts:128 src/views/certificate/ACMEUser.vue:76
-#: src/views/certificate/ACMEUserSelector.vue:79
+#: src/views/certificate/ACMEUserSelector.vue:84
 #, fuzzy
 msgid "ACME User"
 msgstr "Người dùng"
@@ -26,7 +26,7 @@ msgstr "Người dùng"
 #: src/views/certificate/ACMEUser.vue:59
 #: src/views/certificate/Certificate.vue:108
 #: src/views/certificate/DNSCredential.vue:29 src/views/config/config.ts:34
-#: src/views/domain/DomainList.vue:47 src/views/environment/Environment.vue:102
+#: src/views/domain/DomainList.vue:47 src/views/environment/Environment.vue:129
 #: src/views/notification/Notification.vue:35
 #: src/views/stream/StreamList.vue:47 src/views/user/User.vue:43
 msgid "Action"
@@ -74,7 +74,7 @@ msgstr "Tùy chọn bổ sung"
 msgid "Advance Mode"
 msgstr "Nâng cao"
 
-#: src/views/preference/OpenAISettings.vue:33
+#: src/views/preference/OpenAISettings.vue:39
 msgid "API Base Url"
 msgstr ""
 
@@ -82,11 +82,11 @@ msgstr ""
 msgid "API Document"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:45
+#: src/views/preference/OpenAISettings.vue:51
 msgid "API Proxy"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:63
 msgid "API Token"
 msgstr ""
 
@@ -100,7 +100,7 @@ msgstr ""
 msgid "Are you sure you want to clear all notifications?"
 msgstr "Bạn có chắc chắn muốn xóa tất cả thông báo không ?"
 
-#: src/components/ChatGPT/ChatGPT.vue:267
+#: src/components/ChatGPT/ChatGPT.vue:272
 #, fuzzy
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "Bạn có chắc chắn muốn xóa lịch sử trò chuyện không ?"
@@ -134,11 +134,11 @@ msgstr "Bạn chắc chắn muốn xoá directive này ?"
 msgid "Are you sure you want to remove this location?"
 msgstr "Bạn chắc chắn muốn xoá location này ?"
 
-#: src/components/ChatGPT/ChatGPT.vue:211
+#: src/components/ChatGPT/ChatGPT.vue:216
 msgid "Ask ChatGPT for Help"
 msgstr "Hỏi ChatGPT"
 
-#: src/components/ChatGPT/ChatGPT.vue:225
+#: src/components/ChatGPT/ChatGPT.vue:230
 msgid "Assistant"
 msgstr "Trợ lý"
 
@@ -147,7 +147,7 @@ msgstr "Trợ lý"
 msgid "Author"
 msgstr "Tác giả"
 
-#: src/views/domain/cert/ChangeCert.vue:34
+#: src/views/domain/cert/ChangeCert.vue:33
 msgid "Auto Cert"
 msgstr "Tự động ký chứng chỉ SSL"
 
@@ -181,7 +181,7 @@ msgstr "Thông tin"
 
 #: src/views/config/ConfigEdit.vue:115
 #: src/views/domain/components/RightSettings.vue:75
-#: src/views/preference/Preference.vue:94
+#: src/views/preference/Preference.vue:101
 #: src/views/stream/components/RightSettings.vue:74
 #, fuzzy
 msgid "Basic"
@@ -209,10 +209,10 @@ msgstr ""
 msgid "CADir"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:248
+#: src/components/ChatGPT/ChatGPT.vue:253
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:55
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:263
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:102
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:153
 #: src/views/domain/cert/components/ObtainCert.vue:137
 #: src/views/domain/components/Deploy.vue:21
 #: src/views/domain/components/RightSettings.vue:51
@@ -256,8 +256,8 @@ msgstr "Danh sách chứng chỉ"
 msgid "Challenge Method"
 msgstr "Phương pháp xác thực"
 
-#: src/views/domain/cert/ChangeCert.vue:88
-#: src/views/domain/cert/ChangeCert.vue:92
+#: src/views/domain/cert/ChangeCert.vue:95
+#: src/views/domain/cert/ChangeCert.vue:99
 #, fuzzy
 msgid "Change Certificate"
 msgstr "Thay đổi chứng chỉ"
@@ -274,7 +274,7 @@ msgstr "Kiểm tra lại"
 msgid "Cleaning environment variables"
 msgstr "Xoá các biến môi trường"
 
-#: src/components/ChatGPT/ChatGPT.vue:271
+#: src/components/ChatGPT/ChatGPT.vue:276
 #: src/components/Notification/Notification.vue:89
 #: src/views/notification/Notification.vue:75
 msgid "Clear"
@@ -319,7 +319,7 @@ msgstr "Cấu hình"
 msgid "Configure SSL"
 msgstr "Cấu hình SSL"
 
-#: src/views/dashboard/Environments.vue:128
+#: src/views/dashboard/Environments.vue:139
 msgid "Connected"
 msgstr "Đã kết nối"
 
@@ -333,7 +333,7 @@ msgstr "Nội dung"
 msgid "Core Upgrade"
 msgstr "Cập nhật core"
 
-#: src/views/dashboard/ServerAnalytic.vue:293
+#: src/views/dashboard/ServerAnalytic.vue:296
 msgid "CPU Status"
 msgstr "Trạng thái CPU"
 
@@ -374,6 +374,12 @@ msgstr "Phiên bản hiện tại"
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:186
 msgid "Custom"
 msgstr "Tuỳ chỉnh"
+
+#: src/views/preference/BasicSettings.vue:121
+msgid ""
+"Customize the name of local server to be displayed in the environment "
+"indicator."
+msgstr ""
 
 #: src/routes/index.ts:39
 msgid "Dashboard"
@@ -467,9 +473,9 @@ msgstr "Tắt"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Tắt tự động gia hạn SSL cho %{name} thất bại"
 
-#: src/views/domain/cert/ChangeCert.vue:45 src/views/domain/DomainEdit.vue:185
-#: src/views/domain/DomainList.vue:33 src/views/stream/StreamEdit.vue:177
-#: src/views/stream/StreamList.vue:33
+#: src/views/domain/cert/ChangeCert.vue:44 src/views/domain/DomainEdit.vue:185
+#: src/views/domain/DomainList.vue:33 src/views/environment/Environment.vue:93
+#: src/views/stream/StreamEdit.vue:177 src/views/stream/StreamList.vue:33
 msgid "Disabled"
 msgstr "Đã tắt"
 
@@ -480,7 +486,7 @@ msgstr "Đã tắt"
 msgid "Disabled successfully"
 msgstr "Đã tắt thành công"
 
-#: src/views/dashboard/ServerAnalytic.vue:358
+#: src/views/dashboard/ServerAnalytic.vue:361
 msgid "Disk IO"
 msgstr "Disk IO"
 
@@ -663,9 +669,10 @@ msgstr "Đã bật"
 msgid "Enable TLS"
 msgstr "Bật TLS"
 
-#: src/views/domain/cert/ChangeCert.vue:41
+#: src/views/domain/cert/ChangeCert.vue:40
 #: src/views/domain/components/RightSettings.vue:77
 #: src/views/domain/DomainEdit.vue:179 src/views/domain/DomainList.vue:29
+#: src/views/environment/Environment.vue:102
 #: src/views/preference/LogrotateSettings.vue:20
 #: src/views/stream/components/RightSettings.vue:76
 #: src/views/stream/StreamEdit.vue:171 src/views/stream/StreamList.vue:29
@@ -685,11 +692,11 @@ msgstr "Đã bật"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Bảo mật trang web với Let's Encrypt"
 
-#: src/routes/index.ts:212 src/views/environment/Environment.vue:110
+#: src/routes/index.ts:212 src/views/environment/Environment.vue:137
 msgid "Environment"
 msgstr "Environment"
 
-#: src/views/dashboard/Environments.vue:71
+#: src/views/dashboard/Environments.vue:82
 #, fuzzy
 msgid "Environments"
 msgstr "Environments"
@@ -919,7 +926,7 @@ msgstr "Kiểm tra lần cuối lúc"
 msgid "Leave blank for no change"
 msgstr "Bỏ trống nếu không thay đổi"
 
-#: src/views/preference/OpenAISettings.vue:41
+#: src/views/preference/OpenAISettings.vue:47
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Bỏ trống để sử dụng địa chỉ mặc định: https://api.openai.com/"
 
@@ -934,7 +941,7 @@ msgstr "Bỏ trống nếu không thay đổi"
 msgid "License"
 msgstr "Giấy phép"
 
-#: src/views/dashboard/Environments.vue:128
+#: src/views/dashboard/Environments.vue:139
 msgid "Link Start"
 msgstr "Liên kết bắt đầu"
 
@@ -948,8 +955,8 @@ msgstr ""
 msgid "Load Average:"
 msgstr "Tải trung bình:"
 
-#: src/components/EnvIndicator/EnvIndicator.vue:38
-#: src/components/NodeSelector/NodeSelector.vue:51
+#: src/components/EnvIndicator/EnvIndicator.vue:40
+#: src/components/NodeSelector/NodeSelector.vue:71
 #, fuzzy
 msgid "Local"
 msgstr "Location"
@@ -979,7 +986,7 @@ msgstr "Đăng nhập thành công"
 msgid "Logout successful"
 msgstr "Đã đăng xuất"
 
-#: src/views/preference/Preference.vue:112
+#: src/views/preference/Preference.vue:119
 msgid "Logrotate"
 msgstr ""
 
@@ -1024,6 +1031,7 @@ msgid "Managed Certificate"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:217
+#: src/views/dashboard/ServerAnalytic.vue:218
 msgid "Memory"
 msgstr "Memory"
 
@@ -1035,12 +1043,12 @@ msgstr "Memory và Storage"
 msgid "Minutes"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:26
+#: src/views/preference/OpenAISettings.vue:27
 #, fuzzy
 msgid "Model"
 msgstr "Run Mode"
 
-#: src/components/ChatGPT/ChatGPT.vue:244
+#: src/components/ChatGPT/ChatGPT.vue:249
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:194
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:491
 #, fuzzy
@@ -1070,7 +1078,7 @@ msgstr "Single Directive"
 #: src/views/certificate/Certificate.vue:20
 #: src/views/certificate/CertificateEditor.vue:146
 #: src/views/certificate/DNSCredential.vue:10 src/views/config/config.ts:7
-#: src/views/domain/cert/ChangeCert.vue:18
+#: src/views/domain/cert/ChangeCert.vue:17
 #: src/views/domain/components/RightSettings.vue:83
 #: src/views/domain/components/SiteDuplicate.vue:133
 #: src/views/domain/DomainList.vue:13
@@ -1082,19 +1090,19 @@ msgstr "Single Directive"
 msgid "Name"
 msgstr "Tên"
 
-#: src/views/dashboard/ServerAnalytic.vue:319
+#: src/views/dashboard/ServerAnalytic.vue:322
 msgid "Network"
 msgstr "Mạng"
 
-#: src/views/dashboard/ServerAnalytic.vue:261
+#: src/views/dashboard/ServerAnalytic.vue:264
 msgid "Network Statistics"
 msgstr "Thống kê mạng"
 
-#: src/views/dashboard/ServerAnalytic.vue:268
+#: src/views/dashboard/ServerAnalytic.vue:271
 msgid "Network Total Receive"
 msgstr "Tổng lưu lượng mạng đã nhận"
 
-#: src/views/dashboard/ServerAnalytic.vue:274
+#: src/views/dashboard/ServerAnalytic.vue:277
 msgid "Network Total Send"
 msgstr "Tổng lưu lượng mạng đã gửi"
 
@@ -1108,7 +1116,7 @@ msgstr "Đã có phiên bản mới"
 msgid "Next"
 msgstr "Tiếp theo"
 
-#: src/views/preference/Preference.vue:100
+#: src/views/preference/Preference.vue:107
 msgid "Nginx"
 msgstr ""
 
@@ -1121,7 +1129,7 @@ msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
 msgid "Nginx Configuration Parse Error"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/components/NginxControl/NginxControl.vue:62
+#: src/components/NginxControl/NginxControl.vue:65
 msgid "Nginx Control"
 msgstr ""
 
@@ -1133,17 +1141,17 @@ msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
 msgid "Nginx Log"
 msgstr ""
 
-#: src/components/NginxControl/NginxControl.vue:22
+#: src/components/NginxControl/NginxControl.vue:23
 #, fuzzy
 msgid "Nginx reloaded successfully"
 msgstr "Reload Nginx thành công"
 
-#: src/components/NginxControl/NginxControl.vue:36
+#: src/components/NginxControl/NginxControl.vue:39
 #, fuzzy
 msgid "Nginx restarted successfully"
 msgstr "Restart Nginx thành công"
 
-#: src/components/ChatGPT/ChatGPT.vue:265
+#: src/components/ChatGPT/ChatGPT.vue:270
 #: src/components/Notification/Notification.vue:82
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:507
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:521
@@ -1196,22 +1204,22 @@ msgstr "Nhận chứng chỉ"
 msgid "Obtaining certificate"
 msgstr "Đang nhận chứng chỉ"
 
-#: src/components/NodeSelector/NodeSelector.vue:75
-#: src/views/dashboard/Environments.vue:95
-#: src/views/environment/Environment.vue:86
+#: src/components/NodeSelector/NodeSelector.vue:95
+#: src/views/dashboard/Environments.vue:106
+#: src/views/environment/Environment.vue:88
 msgid "Offline"
 msgstr "Ngoại tuyến"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:264
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:154
 msgid "Ok"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:266
+#: src/components/ChatGPT/ChatGPT.vue:271
 #: src/components/Notification/Notification.vue:83
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:56
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:508
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:522
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:103
 #: src/views/domain/cert/components/ObtainCert.vue:136
 #: src/views/domain/components/Deploy.vue:20
 #: src/views/domain/components/RightSettings.vue:50
@@ -1230,14 +1238,14 @@ msgstr ""
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."
 
-#: src/components/NodeSelector/NodeSelector.vue:54
-#: src/components/NodeSelector/NodeSelector.vue:69
-#: src/views/dashboard/Environments.vue:88
-#: src/views/environment/Environment.vue:82
+#: src/components/NodeSelector/NodeSelector.vue:74
+#: src/components/NodeSelector/NodeSelector.vue:89
+#: src/views/dashboard/Environments.vue:99
+#: src/views/environment/Environment.vue:84
 msgid "Online"
 msgstr "Trực tuyến"
 
-#: src/views/preference/Preference.vue:106
+#: src/views/preference/Preference.vue:113
 msgid "OpenAI"
 msgstr ""
 
@@ -1335,7 +1343,7 @@ msgstr ""
 msgid "Pre-release"
 msgstr ""
 
-#: src/routes/index.ts:239 src/views/preference/Preference.vue:89
+#: src/routes/index.ts:239 src/views/preference/Preference.vue:96
 msgid "Preference"
 msgstr "Cài đặt"
 
@@ -1361,12 +1369,12 @@ msgid "Provider"
 msgstr "Nhà cung cấp"
 
 #: src/views/dashboard/ServerAnalytic.vue:28
-#: src/views/dashboard/ServerAnalytic.vue:375
+#: src/views/dashboard/ServerAnalytic.vue:378
 msgid "Reads"
 msgstr "Đọc"
 
 #: src/views/dashboard/ServerAnalytic.vue:24
-#: src/views/dashboard/ServerAnalytic.vue:326
+#: src/views/dashboard/ServerAnalytic.vue:329
 msgid "Receive"
 msgstr "Nhận"
 
@@ -1383,7 +1391,7 @@ msgstr "Xoá thành công"
 msgid "Recursive Nameservers"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:278
+#: src/components/ChatGPT/ChatGPT.vue:283
 msgid "Regenerate response"
 msgstr "Tạo lại câu trả lời"
 
@@ -1420,12 +1428,12 @@ msgstr "Cài lại"
 msgid "Release Note"
 msgstr "Ghi chú phát hành"
 
-#: src/components/ChatGPT/ChatGPT.vue:254
-#: src/components/NginxControl/NginxControl.vue:97
+#: src/components/ChatGPT/ChatGPT.vue:259
+#: src/components/NginxControl/NginxControl.vue:100
 msgid "Reload"
 msgstr "Tải lại"
 
-#: src/components/NginxControl/NginxControl.vue:71
+#: src/components/NginxControl/NginxControl.vue:74
 msgid "Reloading"
 msgstr "Đang tải lại"
 
@@ -1473,11 +1481,11 @@ msgstr "Yêu cầu có chứa tham số sai"
 msgid "Reset"
 msgstr "Đặt lại"
 
-#: src/components/NginxControl/NginxControl.vue:90
+#: src/components/NginxControl/NginxControl.vue:93
 msgid "Restart"
 msgstr "Khởi động lại"
 
-#: src/components/NginxControl/NginxControl.vue:76
+#: src/components/NginxControl/NginxControl.vue:79
 msgid "Restarting"
 msgstr "Đang khởi động lại"
 
@@ -1486,15 +1494,15 @@ msgstr "Đang khởi động lại"
 msgid "Run Mode"
 msgstr "Run Mode"
 
-#: src/components/NginxControl/NginxControl.vue:66
+#: src/components/NginxControl/NginxControl.vue:69
 msgid "Running"
 msgstr "Running"
 
-#: src/components/ChatGPT/ChatGPT.vue:247
+#: src/components/ChatGPT/ChatGPT.vue:252
 #: src/views/certificate/CertificateEditor.vue:242
 #: src/views/config/ConfigEdit.vue:96 src/views/domain/DomainEdit.vue:263
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
-#: src/views/preference/Preference.vue:123 src/views/stream/StreamEdit.vue:254
+#: src/views/preference/Preference.vue:130 src/views/stream/StreamEdit.vue:254
 msgid "Save"
 msgstr "Lưu"
 
@@ -1510,7 +1518,7 @@ msgstr "Đã xảy ra lỗi khi lưu %{msg}"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:104
 #: src/views/certificate/CertificateEditor.vue:45
-#: src/views/preference/Preference.vue:59
+#: src/views/preference/Preference.vue:66
 #, fuzzy
 msgid "Save successfully"
 msgstr "Lưu thành công"
@@ -1526,24 +1534,24 @@ msgstr "Lưu thành công"
 msgid "SDK"
 msgstr ""
 
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:104
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:155
 msgid "Selector"
 msgstr "Bộ chọn"
 
 #: src/views/dashboard/ServerAnalytic.vue:25
-#: src/views/dashboard/ServerAnalytic.vue:336
+#: src/views/dashboard/ServerAnalytic.vue:339
 msgid "Send"
 msgstr "Gửi"
 
-#: src/components/NginxControl/NginxControl.vue:28
-#: src/components/NginxControl/NginxControl.vue:42
+#: src/components/NginxControl/NginxControl.vue:29
+#: src/components/NginxControl/NginxControl.vue:45
 #: src/components/StdDesign/StdDataDisplay/methods/exportCsv.ts:46
 #: src/components/StdDesign/StdDataDisplay/methods/sortable.ts:126
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:42
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:182
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:221
 #: src/views/config/ConfigEdit.vue:40 src/views/domain/DomainList.vue:81
-#: src/views/other/Install.vue:70 src/views/preference/Preference.vue:63
+#: src/views/other/Install.vue:70 src/views/preference/Preference.vue:70
 #: src/views/stream/StreamList.vue:113 src/views/stream/StreamList.vue:81
 #: src/views/system/Upgrade.vue:42
 msgid "Server error"
@@ -1551,6 +1559,11 @@ msgstr "Lỗi máy chủ"
 
 #: src/views/dashboard/ServerAnalytic.vue:170
 msgid "Server Info"
+msgstr "Thông tin máy chủ"
+
+#: src/views/preference/BasicSettings.vue:117
+#, fuzzy
+msgid "Server Name"
 msgstr "Thông tin máy chủ"
 
 #: src/views/domain/cert/components/ObtainCert.vue:102
@@ -1623,15 +1636,16 @@ msgstr "Ổn định"
 
 #: src/views/certificate/ACMEUser.vue:42
 #: src/views/certificate/Certificate.vue:83 src/views/domain/DomainList.vue:22
-#: src/views/environment/Environment.vue:75 src/views/stream/StreamList.vue:22
+#: src/views/environment/Environment.vue:76 src/views/stream/StreamList.vue:22
 msgid "Status"
 msgstr "Trạng thái"
 
-#: src/components/NginxControl/NginxControl.vue:81
+#: src/components/NginxControl/NginxControl.vue:84
 msgid "Stopped"
 msgstr "Đã dừng"
 
-#: src/views/dashboard/ServerAnalytic.vue:243
+#: src/views/dashboard/ServerAnalytic.vue:245
+#: src/views/dashboard/ServerAnalytic.vue:246
 msgid "Storage"
 msgstr "Storage"
 
@@ -1644,7 +1658,8 @@ msgstr "Tên chủ đề: %{name}"
 msgid "Success"
 msgstr "Thành công"
 
-#: src/views/dashboard/ServerAnalytic.vue:230
+#: src/views/dashboard/ServerAnalytic.vue:231
+#: src/views/dashboard/ServerAnalytic.vue:232
 msgid "Swap"
 msgstr "Swap"
 
@@ -1694,12 +1709,20 @@ msgstr ""
 msgid "The input is not a SSL Certificate Key"
 msgstr ""
 
+#: src/views/preference/OpenAISettings.vue:30
+msgid "The model name should only contain letters, numbers, dashes, and dots."
+msgstr ""
+
 #: src/views/certificate/CertificateEditor.vue:165
 msgid "The path exists, but the file is not a certificate"
 msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:180
 msgid "The path exists, but the file is not a private key"
+msgstr ""
+
+#: src/views/preference/BasicSettings.vue:120
+msgid "The server name should only contain letters, numbers, dashes, and dots."
 msgstr ""
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:50
@@ -1712,9 +1735,12 @@ msgstr ""
 
 #: src/views/preference/BasicSettings.vue:38
 #: src/views/preference/BasicSettings.vue:50
-#: src/views/preference/OpenAISettings.vue:36
-#: src/views/preference/OpenAISettings.vue:48
-msgid "The url is not valid"
+msgid "The url is invalid"
+msgstr ""
+
+#: src/views/preference/OpenAISettings.vue:42
+#: src/views/preference/OpenAISettings.vue:54
+msgid "The url is invalid."
 msgstr ""
 
 #: src/language/constants.ts:2
@@ -1759,7 +1785,7 @@ msgstr ""
 "quyền đến chương trình phụ trợ và chúng tôi cần lưu tệp này và tải lại "
 "Nginx. Bạn có chắc chắn muốn Tiếp tục?"
 
-#: src/views/preference/OpenAISettings.vue:60
+#: src/views/preference/OpenAISettings.vue:66
 msgid "Token is not valid"
 msgstr ""
 
@@ -1776,7 +1802,7 @@ msgstr "Loại"
 #: src/views/certificate/DNSCredential.vue:23 src/views/config/config.ts:27
 #: src/views/config/ConfigEdit.vue:121
 #: src/views/domain/components/RightSettings.vue:86
-#: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:95
+#: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:122
 #: src/views/stream/components/RightSettings.vue:85
 #: src/views/stream/StreamList.vue:41 src/views/user/User.vue:37
 msgid "Updated at"
@@ -1809,11 +1835,11 @@ msgstr ""
 msgid "Uptime:"
 msgstr "Thời gian hoạt động:"
 
-#: src/views/environment/Environment.vue:21
+#: src/views/environment/Environment.vue:22
 msgid "URL"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:225
+#: src/components/ChatGPT/ChatGPT.vue:230
 #, fuzzy
 msgid "User"
 msgstr "Người dùng"
@@ -1874,7 +1900,7 @@ msgstr ""
 "có muốn tiếp tục không?"
 
 #: src/views/dashboard/ServerAnalytic.vue:27
-#: src/views/dashboard/ServerAnalytic.vue:365
+#: src/views/dashboard/ServerAnalytic.vue:368
 msgid "Writes"
 msgstr "Ghi"
 
@@ -1907,10 +1933,6 @@ msgstr "Bạn có thể kiểm tra nâng cấp Nginx UI tại trang này"
 #, fuzzy
 #~ msgid "Table"
 #~ msgstr "Mục lục"
-
-#, fuzzy
-#~ msgid "Server"
-#~ msgstr "Thông tin máy chủ"
 
 #, fuzzy
 #~ msgid "Leave blank will not change anything."

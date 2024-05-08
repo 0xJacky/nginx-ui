@@ -66,16 +66,21 @@ async function request() {
   let hasCodeBlockIndicator = false
 
   while (true) {
-    const { done, value } = await reader.read()
-    if (done) {
-      setTimeout(() => {
-        scrollToBottom()
-      }, 500)
-      loading.value = false
-      store_record()
+    try {
+      const { done, value } = await reader.read()
+      if (done) {
+        setTimeout(() => {
+          scrollToBottom()
+        }, 500)
+        loading.value = false
+        store_record()
+        break
+      }
+      apply(value!)
+    }
+    catch (e) {
       break
     }
-    apply(value!)
   }
 
   function apply(input: Uint8Array) {

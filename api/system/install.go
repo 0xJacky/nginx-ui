@@ -13,7 +13,7 @@ import (
 )
 
 func installLockStatus() bool {
-	return "" != settings.ServerSettings.JwtSecret
+	return settings.ServerSettings.SkipInstallation || "" != settings.ServerSettings.JwtSecret
 }
 
 func InstallLockCheck(c *gin.Context) {
@@ -49,7 +49,6 @@ func InstallNginxUI(c *gin.Context) {
 	if "" != json.Database {
 		settings.ServerSettings.Database = json.Database
 	}
-	settings.ReflectFrom()
 
 	err := settings.Save()
 	if err != nil {
@@ -72,6 +71,7 @@ func InstallNginxUI(c *gin.Context) {
 		api.ErrHandler(c, err)
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})

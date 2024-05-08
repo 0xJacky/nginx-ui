@@ -8,6 +8,10 @@ const settings = {
   save(data: any) {
     return http.post('/settings', data)
   },
+
+  get_server_name() {
+    return http.get('/settings/server/name')
+  },
 }
 
 export default settings

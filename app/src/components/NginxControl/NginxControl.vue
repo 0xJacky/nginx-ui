@@ -6,13 +6,14 @@ import { logLevel } from '@/views/config/constants'
 import { NginxStatus } from '@/constants'
 
 const status = ref(0)
-function get_status() {
-  ngx.status().then(r => {
-    if (r?.running === true)
-      status.value = NginxStatus.Running
-    else
-      status.value = NginxStatus.Stopped
-  })
+async function get_status() {
+  const r = await ngx.status()
+  if (r?.running === true)
+    status.value = NginxStatus.Running
+  else
+    status.value = NginxStatus.Stopped
+
+  return r
 }
 
 function reload_nginx() {
@@ -29,9 +30,11 @@ function reload_nginx() {
   }).finally(() => get_status())
 }
 
-function restart_nginx() {
+async function restart_nginx() {
   status.value = NginxStatus.Restarting
-  ngx.restart().then(r => {
+  await ngx.restart()
+
+  get_status().then(r => {
     if (r.level < logLevel.Warn)
       message.success($gettext('Nginx restarted successfully'))
     else if (r.level === logLevel.Warn)
@@ -40,7 +43,7 @@ function restart_nginx() {
       message.error(r.message)
   }).catch(e => {
     message.error(`${$gettext('Server error')} ${e?.message}`)
-  }).finally(() => get_status())
+  })
 }
 
 const visible = ref(false)

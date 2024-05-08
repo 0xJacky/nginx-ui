@@ -3,6 +3,7 @@ package kernal
 import (
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/logrotate"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
@@ -41,8 +42,10 @@ func Boot() {
 
 func InitAfterDatabase() {
 	syncs := []func(){
+		registerPredefinedUser,
 		cert.InitRegister,
 		InitCronJobs,
+		cluster.RegisterPredefinedNodes,
 		analytic.RetrieveNodesStatus,
 	}
 
@@ -60,6 +63,11 @@ func recovery() {
 }
 
 func InitDatabase() {
+	// Skip install
+	if settings.ServerSettings.SkipInstallation {
+		skipInstall()
+	}
+
 	if "" != settings.ServerSettings.JwtSecret {
 		db := model.Init()
 		query.Init(db)
@@ -72,7 +80,6 @@ func InitNodeSecret() {
 	if "" == settings.ServerSettings.NodeSecret {
 		logger.Warn("NodeSecret is empty, generating...")
 		settings.ServerSettings.NodeSecret = uuid.New().String()
-		settings.ReflectFrom()
 
 		err := settings.Save()
 		if err != nil {

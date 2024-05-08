@@ -42,7 +42,8 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             {text: 'Nginx', link: '/zh_TW/guide/config-nginx'},
             {text: 'Open AI', link: '/zh_TW/guide/config-openai'},
             {text: 'Casdoor', link: '/zh_TW/guide/config-casdoor'},
-            {text: 'Logrotate', link: '/zh_CN/guide/config-logrotate'}
+            {text: 'Logrotate', link: '/zh_TW/guide/config-logrotate'},
+            {text: '集群', link: '/zh_TW/guide/config-cluster'}
           ]
         },
         {

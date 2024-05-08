@@ -25,6 +25,8 @@ watch(node_id, async () => {
   await router.push('/dashboard')
   location.reload()
 })
+
+const { server_name } = storeToRefs(useSettingsStore())
 </script>
 
 <template>
@@ -35,7 +37,7 @@ watch(node_id, async () => {
         v-if="is_local"
         class="env-name"
       >
-        {{ $gettext('Local') }}
+        {{ server_name || $gettext('Local') }}
       </span>
       <span
         v-else

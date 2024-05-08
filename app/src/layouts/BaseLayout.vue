@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import _ from 'lodash'
+import { storeToRefs } from 'pinia'
 import FooterLayout from './FooterLayout.vue'
 import SideBar from './SideBar.vue'
 import HeaderLayout from './HeaderLayout.vue'
 import PageHeader from '@/components/PageHeader/PageHeader.vue'
+import { useSettingsStore } from '@/pinia'
+import settings from '@/api/settings'
 
 const drawer_visible = ref(false)
 const collapsed = ref(collapse())
@@ -19,6 +22,12 @@ function getClientWidth() {
 function collapse() {
   return getClientWidth() < 1280
 }
+
+const { server_name } = storeToRefs(useSettingsStore())
+
+settings.get_server_name().then(r => {
+  server_name.value = r.name
+})
 </script>
 
 <template>
@@ -148,10 +157,6 @@ body {
 
 .ant-table-small {
   font-size: 13px;
-}
-
-.ant-card-bordered {
-
 }
 
 .header-notice-wrapper .ant-tabs-content {

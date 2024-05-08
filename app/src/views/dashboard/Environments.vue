@@ -25,10 +25,21 @@ const node_map = computed(() => {
 
 let websocket: ReconnectingWebSocket | WebSocket
 
+onMounted(async () => {
+  let hasMore = true
+  let page = 1
+  while (hasMore) {
+    await environment.get_list({ page, enabled: true }).then(r => {
+      data.value.push(...r.data)
+      hasMore = r.data.length === r.pagination.per_page
+      page++
+    }).catch(() => {
+      hasMore = false
+    })
+  }
+})
+
 onMounted(() => {
-  environment.get_list().then(r => {
-    data.value = r.data
-  })
   websocket = analytic.nodes()
   websocket.onmessage = async m => {
     const nodes = JSON.parse(m.data)

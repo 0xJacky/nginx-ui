@@ -12,6 +12,7 @@ export interface Settings {
     ca_dir: string
     cert_renewal_interval: number
     recursive_nameservers: string[]
+    name: string
   }
   nginx: {
     access_log_path: string

@@ -3,13 +3,14 @@ package cluster
 import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
-	"github.com/0xJacky/Nginx-UI/internal/environment"
+	"github.com/0xJacky/Nginx-UI/internal/cluster"
+	"github.com/0xJacky/Nginx-UI/internal/cosy"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"net/http"
-	"regexp"
 )
 
 func GetEnvironment(c *gin.Context) {
@@ -27,99 +28,34 @@ func GetEnvironment(c *gin.Context) {
 }
 
 func GetEnvironmentList(c *gin.Context) {
-	data, err := environment.RetrieveEnvironmentList()
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": data,
-	})
-}
-
-type EnvironmentManageJson struct {
-	Name          string `json:"name" binding:"required"`
-	URL           string `json:"url" binding:"required"`
-	Token         string `json:"token"  binding:"required"`
-	OperationSync bool   `json:"operation_sync"`
-	SyncApiRegex  string `json:"sync_api_regex"`
-}
-
-func validateRegex(data EnvironmentManageJson) error {
-	if data.OperationSync {
-		_, err := regexp.Compile(data.SyncApiRegex)
-		return err
-	}
-	return nil
+	cosy.Core[model.Environment](c).
+		SetFussy("name").
+		SetEqual("enabled").
+		SetTransformer(func(m *model.Environment) any {
+			return analytic.GetNode(m)
+		}).PagingList()
 }
 
 func AddEnvironment(c *gin.Context) {
-	var json EnvironmentManageJson
-	if !api.BindAndValid(c, &json) {
-		return
-	}
-	if err := validateRegex(json); err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	env := model.Environment{
-		Name:          json.Name,
-		URL:           json.URL,
-		Token:         json.Token,
-		OperationSync: json.OperationSync,
-		SyncApiRegex:  json.SyncApiRegex,
-	}
-
-	envQuery := query.Environment
-
-	err := envQuery.Create(&env)
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	go analytic.RestartRetrieveNodesStatus()
-
-	c.JSON(http.StatusOK, env)
+	cosy.Core[model.Environment](c).SetValidRules(gin.H{
+		"name":    "required",
+		"url":     "required,url",
+		"token":   "required",
+		"enabled": "omitempty,boolean",
+	}).ExecutedHook(func(c *cosy.Ctx[model.Environment]) {
+		go analytic.RestartRetrieveNodesStatus()
+	}).Create()
 }
 
 func EditEnvironment(c *gin.Context) {
-	id := cast.ToInt(c.Param("id"))
-
-	var json EnvironmentManageJson
-	if !api.BindAndValid(c, &json) {
-		return
-	}
-	if err := validateRegex(json); err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	envQuery := query.Environment
-
-	env, err := envQuery.FirstByID(id)
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	_, err = envQuery.Where(envQuery.ID.Eq(env.ID)).Updates(&model.Environment{
-		Name:          json.Name,
-		URL:           json.URL,
-		Token:         json.Token,
-		OperationSync: json.OperationSync,
-		SyncApiRegex:  json.SyncApiRegex,
-	})
-
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	go analytic.RestartRetrieveNodesStatus()
-
-	GetEnvironment(c)
+	cosy.Core[model.Environment](c).SetValidRules(gin.H{
+		"name":    "required",
+		"url":     "required,url",
+		"token":   "required",
+		"enabled": "omitempty,boolean",
+	}).ExecutedHook(func(c *cosy.Ctx[model.Environment]) {
+		go analytic.RestartRetrieveNodesStatus()
+	}).Modify()
 }
 
 func DeleteEnvironment(c *gin.Context) {
@@ -140,4 +76,20 @@ func DeleteEnvironment(c *gin.Context) {
 	go analytic.RestartRetrieveNodesStatus()
 
 	c.JSON(http.StatusNoContent, nil)
+}
+
+func LoadEnvironmentFromSettings(c *gin.Context) {
+	err := settings.ReloadCluster()
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+
+	cluster.RegisterPredefinedNodes()
+
+	go analytic.RestartRetrieveNodesStatus()
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+	})
 }

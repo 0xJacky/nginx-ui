@@ -1,3 +1,4 @@
+import http from '@/lib/http'
 import type { ModelBase } from '@/api/curd'
 import Curd from '@/api/curd'
 
@@ -14,6 +15,17 @@ export interface Node {
   token: string
   response_at?: Date
 }
-const environment: Curd<Environment> = new Curd('/environment')
+
+class EnvironmentCurd extends Curd<Environment> {
+  constructor() {
+    super('/environment')
+  }
+
+  load_from_settings() {
+    return http.post(`${this.plural}/load_from_settings`)
+  }
+}
+
+const environment: EnvironmentCurd = new EnvironmentCurd()
 
 export default environment

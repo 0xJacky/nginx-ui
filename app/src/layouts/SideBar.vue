@@ -42,7 +42,7 @@ interface meta {
 
 interface sidebar {
   path: string
-  name: () => string
+  name: string
   meta: meta
   children: sidebar[]
 }
@@ -56,7 +56,7 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
 
     const t: sidebar = {
       path: s.path,
-      name: s?.meta?.name ?? (() => ''),
+      name: s.name as string,
       meta: s.meta as unknown as meta,
       children: [],
     };

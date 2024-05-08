@@ -9,11 +9,17 @@ EXPOSE 80
 COPY resources/demo/ojbk.me /etc/nginx/sites-available/ojbk.me
 COPY resources/demo/app.ini /etc/nginx-ui/app.ini
 COPY resources/demo/demo.db /etc/nginx-ui/database.db
-COPY resources/docker/nginx.conf /etc/nginx/nginx.conf
-COPY resources/docker/nginx-ui.conf /etc/nginx/conf.d/nginx-ui.conf
-COPY resources/docker/start.sh /app/start.sh
-COPY nginx-ui-$TARGETOS-$TARGETARCH$TARGETVARIANT/nginx-ui /app/nginx-ui
 
-RUN cd /app && chmod a+x start.sh && rm -f /etc/nginx/conf.d/default.conf
+# register nginx-ui service
+COPY resources/docker/nginx-ui.run /etc/s6-overlay/s6-rc.d/nginx-ui/run
+RUN echo 'longrun' > /etc/s6-overlay/s6-rc.d/nginx-ui/type && \
+    touch /etc/s6-overlay/s6-rc.d/user/contents.d/nginx-ui
 
-ENTRYPOINT ["./start.sh"]
+# copy nginx config
+COPY resources/docker/nginx.conf /usr/local/etc/nginx/nginx.conf
+COPY resources/docker/nginx-ui.conf /usr/local/etc/nginx/conf.d/nginx-ui.conf
+
+# copy nginx-ui executable binary
+COPY nginx-ui-$TARGETOS-$TARGETARCH$TARGETVARIANT/nginx-ui /usr/local/bin/nginx-ui
+
+RUN rm -f /etc/nginx/conf.d/default.conf

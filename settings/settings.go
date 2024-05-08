@@ -1,21 +1,24 @@
 package settings
 
 import (
+	"github.com/caarlos0/env/v11"
 	"github.com/spf13/cast"
 	"gopkg.in/ini.v1"
 	"log"
+	"os"
+	"reflect"
 	"strings"
 	"time"
 )
 
-var Conf *ini.File
-
 var (
 	buildTime    string
 	LastModified string
-)
 
-var ConfPath string
+	Conf      *ini.File
+	ConfPath  string
+	EnvPrefix = "NGINX_UI_"
+)
 
 var sections = map[string]interface{}{
 	"server":    &ServerSettings,
@@ -23,6 +26,7 @@ var sections = map[string]interface{}{
 	"openai":    &OpenAISettings,
 	"casdoor":   &CasdoorSettings,
 	"logrotate": &LogrotateSettings,
+	"cluster":   &ClusterSettings,
 }
 
 func init() {
@@ -35,32 +39,79 @@ func Init(confPath string) {
 	Setup()
 }
 
+func load() (err error) {
+	Conf, err = ini.LoadSources(ini.LoadOptions{
+		Loose:        true,
+		AllowShadows: true,
+	}, ConfPath)
+
+	return
+}
+
 func Setup() {
-	var err error
-	Conf, err = ini.LooseLoad(ConfPath)
+	err := load()
+
 	if err != nil {
-		log.Fatalf("setting.Setup: %v\n", err)
+		log.Fatalf("settings.Setup: %v\n", err)
 	}
+
 	MapTo()
+
+	parseEnv(&ServerSettings, "SERVER_")
+	parseEnv(&NginxSettings, "NGINX_")
+	parseEnv(&OpenAISettings, "OPENAI_")
+	parseEnv(&CasdoorSettings, "CASDOOR_")
+	parseEnv(&LogrotateSettings, "LOGROTATE_")
+
+	// if in official docker, set the restart cmd of nginx to "nginx -s stop",
+	// then the supervisor of s6-overlay will start the nginx again.
+	if cast.ToBool(os.Getenv("NGINX_UI_OFFICIAL_DOCKER")) {
+		NginxSettings.RestartCmd = "nginx -s stop"
+	}
+
+	err = Save()
+	if err != nil {
+		log.Fatalf("settings.Setup: %v\n", err)
+	}
 }
 
 func MapTo() {
 	for k, v := range sections {
-		mapTo(k, v)
+		err := mapTo(k, v)
+
+		if err != nil {
+			log.Fatalf("Cfg.MapTo %s err: %v", k, err)
+		}
 	}
 }
 
-func ReflectFrom() {
+func Save() (err error) {
 	for k, v := range sections {
 		reflectFrom(k, v)
 	}
+
+	err = Conf.SaveTo(ConfPath)
+	if err != nil {
+		return
+	}
+	return
 }
 
-func mapTo(section string, v interface{}) {
-	err := Conf.Section(section).MapTo(v)
-	if err != nil {
-		log.Fatalf("Cfg.MapTo %s err: %v", section, err)
+func ProtectedFill(targetSettings interface{}, newSettings interface{}) {
+	s := reflect.TypeOf(targetSettings).Elem()
+	vt := reflect.ValueOf(targetSettings).Elem()
+	vn := reflect.ValueOf(newSettings).Elem()
+
+	// copy the values from new to target settings if it is not protected
+	for i := 0; i < s.NumField(); i++ {
+		if s.Field(i).Tag.Get("protected") != "true" {
+			vt.Field(i).Set(vn.Field(i))
+		}
 	}
+}
+
+func mapTo(section string, v interface{}) error {
+	return Conf.Section(section).MapTo(v)
 }
 
 func reflectFrom(section string, v interface{}) {
@@ -70,11 +121,13 @@ func reflectFrom(section string, v interface{}) {
 	}
 }
 
-func Save() (err error) {
-	err = Conf.SaveTo(ConfPath)
+func parseEnv(ptr interface{}, prefix string) {
+	err := env.ParseWithOptions(ptr, env.Options{
+		Prefix:                EnvPrefix + prefix,
+		UseFieldNameByDefault: true,
+	})
+
 	if err != nil {
-		return
+		log.Fatalf("settings.parseEnv: %v\n", err)
 	}
-	Setup()
-	return
 }

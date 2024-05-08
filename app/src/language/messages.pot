@@ -13,7 +13,7 @@ msgstr ""
 
 #: src/routes/index.ts:128
 #: src/views/certificate/ACMEUser.vue:76
-#: src/views/certificate/ACMEUserSelector.vue:79
+#: src/views/certificate/ACMEUserSelector.vue:84
 msgid "ACME User"
 msgstr ""
 
@@ -22,7 +22,7 @@ msgstr ""
 #: src/views/certificate/DNSCredential.vue:29
 #: src/views/config/config.ts:34
 #: src/views/domain/DomainList.vue:47
-#: src/views/environment/Environment.vue:102
+#: src/views/environment/Environment.vue:129
 #: src/views/notification/Notification.vue:35
 #: src/views/stream/StreamList.vue:47
 #: src/views/user/User.vue:43
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Advance Mode"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:33
+#: src/views/preference/OpenAISettings.vue:39
 msgid "API Base Url"
 msgstr ""
 
@@ -78,11 +78,11 @@ msgstr ""
 msgid "API Document"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:45
+#: src/views/preference/OpenAISettings.vue:51
 msgid "API Proxy"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:63
 msgid "API Token"
 msgstr ""
 
@@ -95,7 +95,7 @@ msgstr ""
 msgid "Are you sure you want to clear all notifications?"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:267
+#: src/components/ChatGPT/ChatGPT.vue:272
 msgid "Are you sure you want to clear the record of chat?"
 msgstr ""
 
@@ -124,11 +124,11 @@ msgstr ""
 msgid "Are you sure you want to remove this location?"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:211
+#: src/components/ChatGPT/ChatGPT.vue:216
 msgid "Ask ChatGPT for Help"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:225
+#: src/components/ChatGPT/ChatGPT.vue:230
 msgid "Assistant"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: src/views/domain/cert/ChangeCert.vue:34
+#: src/views/domain/cert/ChangeCert.vue:33
 msgid "Auto Cert"
 msgstr ""
 
@@ -172,7 +172,7 @@ msgstr ""
 
 #: src/views/config/ConfigEdit.vue:115
 #: src/views/domain/components/RightSettings.vue:75
-#: src/views/preference/Preference.vue:94
+#: src/views/preference/Preference.vue:101
 #: src/views/stream/components/RightSettings.vue:74
 msgid "Basic"
 msgstr ""
@@ -199,10 +199,10 @@ msgstr ""
 msgid "CADir"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:248
+#: src/components/ChatGPT/ChatGPT.vue:253
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:55
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:263
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:102
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:153
 #: src/views/domain/cert/components/ObtainCert.vue:137
 #: src/views/domain/components/Deploy.vue:21
 #: src/views/domain/components/RightSettings.vue:51
@@ -244,8 +244,8 @@ msgstr ""
 msgid "Challenge Method"
 msgstr ""
 
-#: src/views/domain/cert/ChangeCert.vue:88
-#: src/views/domain/cert/ChangeCert.vue:92
+#: src/views/domain/cert/ChangeCert.vue:95
+#: src/views/domain/cert/ChangeCert.vue:99
 msgid "Change Certificate"
 msgstr ""
 
@@ -261,7 +261,7 @@ msgstr ""
 msgid "Cleaning environment variables"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:271
+#: src/components/ChatGPT/ChatGPT.vue:276
 #: src/components/Notification/Notification.vue:89
 #: src/views/notification/Notification.vue:75
 msgid "Clear"
@@ -303,7 +303,7 @@ msgstr ""
 msgid "Configure SSL"
 msgstr ""
 
-#: src/views/dashboard/Environments.vue:128
+#: src/views/dashboard/Environments.vue:139
 msgid "Connected"
 msgstr ""
 
@@ -317,7 +317,7 @@ msgstr ""
 msgid "Core Upgrade"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:293
+#: src/views/dashboard/ServerAnalytic.vue:296
 msgid "CPU Status"
 msgstr ""
 
@@ -357,6 +357,10 @@ msgstr ""
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:124
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:186
 msgid "Custom"
+msgstr ""
+
+#: src/views/preference/BasicSettings.vue:121
+msgid "Customize the name of local server to be displayed in the environment indicator."
 msgstr ""
 
 #: src/routes/index.ts:39
@@ -447,9 +451,10 @@ msgstr ""
 msgid "Disable auto-renewal failed for %{name}"
 msgstr ""
 
-#: src/views/domain/cert/ChangeCert.vue:45
+#: src/views/domain/cert/ChangeCert.vue:44
 #: src/views/domain/DomainEdit.vue:185
 #: src/views/domain/DomainList.vue:33
+#: src/views/environment/Environment.vue:93
 #: src/views/stream/StreamEdit.vue:177
 #: src/views/stream/StreamList.vue:33
 msgid "Disabled"
@@ -462,7 +467,7 @@ msgstr ""
 msgid "Disabled successfully"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:358
+#: src/views/dashboard/ServerAnalytic.vue:361
 msgid "Disk IO"
 msgstr ""
 
@@ -630,10 +635,11 @@ msgstr ""
 msgid "Enable TLS"
 msgstr ""
 
-#: src/views/domain/cert/ChangeCert.vue:41
+#: src/views/domain/cert/ChangeCert.vue:40
 #: src/views/domain/components/RightSettings.vue:77
 #: src/views/domain/DomainEdit.vue:179
 #: src/views/domain/DomainList.vue:29
+#: src/views/environment/Environment.vue:102
 #: src/views/preference/LogrotateSettings.vue:20
 #: src/views/stream/components/RightSettings.vue:76
 #: src/views/stream/StreamEdit.vue:171
@@ -656,11 +662,11 @@ msgid "Encrypt website with Let's Encrypt"
 msgstr ""
 
 #: src/routes/index.ts:212
-#: src/views/environment/Environment.vue:110
+#: src/views/environment/Environment.vue:137
 msgid "Environment"
 msgstr ""
 
-#: src/views/dashboard/Environments.vue:71
+#: src/views/dashboard/Environments.vue:82
 msgid "Environments"
 msgstr ""
 
@@ -879,7 +885,7 @@ msgstr ""
 msgid "Leave blank for no change"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:41
+#: src/views/preference/OpenAISettings.vue:47
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr ""
 
@@ -892,7 +898,7 @@ msgstr ""
 msgid "License"
 msgstr ""
 
-#: src/views/dashboard/Environments.vue:128
+#: src/views/dashboard/Environments.vue:139
 msgid "Link Start"
 msgstr ""
 
@@ -905,8 +911,8 @@ msgstr ""
 msgid "Load Average:"
 msgstr ""
 
-#: src/components/EnvIndicator/EnvIndicator.vue:38
-#: src/components/NodeSelector/NodeSelector.vue:51
+#: src/components/EnvIndicator/EnvIndicator.vue:40
+#: src/components/NodeSelector/NodeSelector.vue:71
 msgid "Local"
 msgstr ""
 
@@ -936,7 +942,7 @@ msgstr ""
 msgid "Logout successful"
 msgstr ""
 
-#: src/views/preference/Preference.vue:112
+#: src/views/preference/Preference.vue:119
 msgid "Logrotate"
 msgstr ""
 
@@ -972,6 +978,7 @@ msgid "Managed Certificate"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:217
+#: src/views/dashboard/ServerAnalytic.vue:218
 msgid "Memory"
 msgstr ""
 
@@ -983,11 +990,11 @@ msgstr ""
 msgid "Minutes"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:26
+#: src/views/preference/OpenAISettings.vue:27
 msgid "Model"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:244
+#: src/components/ChatGPT/ChatGPT.vue:249
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:194
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:491
 msgid "Modify"
@@ -1015,7 +1022,7 @@ msgstr ""
 #: src/views/certificate/CertificateEditor.vue:146
 #: src/views/certificate/DNSCredential.vue:10
 #: src/views/config/config.ts:7
-#: src/views/domain/cert/ChangeCert.vue:18
+#: src/views/domain/cert/ChangeCert.vue:17
 #: src/views/domain/components/RightSettings.vue:83
 #: src/views/domain/components/SiteDuplicate.vue:133
 #: src/views/domain/DomainList.vue:13
@@ -1028,19 +1035,19 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:319
+#: src/views/dashboard/ServerAnalytic.vue:322
 msgid "Network"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:261
+#: src/views/dashboard/ServerAnalytic.vue:264
 msgid "Network Statistics"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:268
+#: src/views/dashboard/ServerAnalytic.vue:271
 msgid "Network Total Receive"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:274
+#: src/views/dashboard/ServerAnalytic.vue:277
 msgid "Network Total Send"
 msgstr ""
 
@@ -1054,7 +1061,7 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: src/views/preference/Preference.vue:100
+#: src/views/preference/Preference.vue:107
 msgid "Nginx"
 msgstr ""
 
@@ -1067,7 +1074,7 @@ msgstr ""
 msgid "Nginx Configuration Parse Error"
 msgstr ""
 
-#: src/components/NginxControl/NginxControl.vue:62
+#: src/components/NginxControl/NginxControl.vue:65
 msgid "Nginx Control"
 msgstr ""
 
@@ -1080,15 +1087,15 @@ msgstr ""
 msgid "Nginx Log"
 msgstr ""
 
-#: src/components/NginxControl/NginxControl.vue:22
+#: src/components/NginxControl/NginxControl.vue:23
 msgid "Nginx reloaded successfully"
 msgstr ""
 
-#: src/components/NginxControl/NginxControl.vue:36
+#: src/components/NginxControl/NginxControl.vue:39
 msgid "Nginx restarted successfully"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:265
+#: src/components/ChatGPT/ChatGPT.vue:270
 #: src/components/Notification/Notification.vue:82
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:507
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:521
@@ -1139,22 +1146,22 @@ msgstr ""
 msgid "Obtaining certificate"
 msgstr ""
 
-#: src/components/NodeSelector/NodeSelector.vue:75
-#: src/views/dashboard/Environments.vue:95
-#: src/views/environment/Environment.vue:86
+#: src/components/NodeSelector/NodeSelector.vue:95
+#: src/views/dashboard/Environments.vue:106
+#: src/views/environment/Environment.vue:88
 msgid "Offline"
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:264
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:154
 msgid "Ok"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:266
+#: src/components/ChatGPT/ChatGPT.vue:271
 #: src/components/Notification/Notification.vue:83
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:56
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:508
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:522
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:103
 #: src/views/domain/cert/components/ObtainCert.vue:136
 #: src/views/domain/components/Deploy.vue:20
 #: src/views/domain/components/RightSettings.vue:50
@@ -1173,14 +1180,14 @@ msgstr ""
 msgid "Once the verification is complete, the records will be removed."
 msgstr ""
 
-#: src/components/NodeSelector/NodeSelector.vue:54
-#: src/components/NodeSelector/NodeSelector.vue:69
-#: src/views/dashboard/Environments.vue:88
-#: src/views/environment/Environment.vue:82
+#: src/components/NodeSelector/NodeSelector.vue:74
+#: src/components/NodeSelector/NodeSelector.vue:89
+#: src/views/dashboard/Environments.vue:99
+#: src/views/environment/Environment.vue:84
 msgid "Online"
 msgstr ""
 
-#: src/views/preference/Preference.vue:106
+#: src/views/preference/Preference.vue:113
 msgid "OpenAI"
 msgstr ""
 
@@ -1271,7 +1278,7 @@ msgid "Pre-release"
 msgstr ""
 
 #: src/routes/index.ts:239
-#: src/views/preference/Preference.vue:89
+#: src/views/preference/Preference.vue:96
 msgid "Preference"
 msgstr ""
 
@@ -1296,12 +1303,12 @@ msgid "Provider"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:28
-#: src/views/dashboard/ServerAnalytic.vue:375
+#: src/views/dashboard/ServerAnalytic.vue:378
 msgid "Reads"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:24
-#: src/views/dashboard/ServerAnalytic.vue:326
+#: src/views/dashboard/ServerAnalytic.vue:329
 msgid "Receive"
 msgstr ""
 
@@ -1317,7 +1324,7 @@ msgstr ""
 msgid "Recursive Nameservers"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:278
+#: src/components/ChatGPT/ChatGPT.vue:283
 msgid "Regenerate response"
 msgstr ""
 
@@ -1349,12 +1356,12 @@ msgstr ""
 msgid "Release Note"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:254
-#: src/components/NginxControl/NginxControl.vue:97
+#: src/components/ChatGPT/ChatGPT.vue:259
+#: src/components/NginxControl/NginxControl.vue:100
 msgid "Reload"
 msgstr ""
 
-#: src/components/NginxControl/NginxControl.vue:71
+#: src/components/NginxControl/NginxControl.vue:74
 msgid "Reloading"
 msgstr ""
 
@@ -1396,11 +1403,11 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
-#: src/components/NginxControl/NginxControl.vue:90
+#: src/components/NginxControl/NginxControl.vue:93
 msgid "Restart"
 msgstr ""
 
-#: src/components/NginxControl/NginxControl.vue:76
+#: src/components/NginxControl/NginxControl.vue:79
 msgid "Restarting"
 msgstr ""
 
@@ -1408,16 +1415,16 @@ msgstr ""
 msgid "Run Mode"
 msgstr ""
 
-#: src/components/NginxControl/NginxControl.vue:66
+#: src/components/NginxControl/NginxControl.vue:69
 msgid "Running"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:247
+#: src/components/ChatGPT/ChatGPT.vue:252
 #: src/views/certificate/CertificateEditor.vue:242
 #: src/views/config/ConfigEdit.vue:96
 #: src/views/domain/DomainEdit.vue:263
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
-#: src/views/preference/Preference.vue:123
+#: src/views/preference/Preference.vue:130
 #: src/views/stream/StreamEdit.vue:254
 msgid "Save"
 msgstr ""
@@ -1435,7 +1442,7 @@ msgstr ""
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:104
 #: src/views/certificate/CertificateEditor.vue:45
-#: src/views/preference/Preference.vue:59
+#: src/views/preference/Preference.vue:66
 msgid "Save successfully"
 msgstr ""
 
@@ -1451,17 +1458,17 @@ msgstr ""
 msgid "SDK"
 msgstr ""
 
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:104
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:155
 msgid "Selector"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:25
-#: src/views/dashboard/ServerAnalytic.vue:336
+#: src/views/dashboard/ServerAnalytic.vue:339
 msgid "Send"
 msgstr ""
 
-#: src/components/NginxControl/NginxControl.vue:28
-#: src/components/NginxControl/NginxControl.vue:42
+#: src/components/NginxControl/NginxControl.vue:29
+#: src/components/NginxControl/NginxControl.vue:45
 #: src/components/StdDesign/StdDataDisplay/methods/exportCsv.ts:46
 #: src/components/StdDesign/StdDataDisplay/methods/sortable.ts:126
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:42
@@ -1470,7 +1477,7 @@ msgstr ""
 #: src/views/config/ConfigEdit.vue:40
 #: src/views/domain/DomainList.vue:81
 #: src/views/other/Install.vue:70
-#: src/views/preference/Preference.vue:63
+#: src/views/preference/Preference.vue:70
 #: src/views/stream/StreamList.vue:113
 #: src/views/stream/StreamList.vue:81
 #: src/views/system/Upgrade.vue:42
@@ -1479,6 +1486,10 @@ msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:170
 msgid "Server Info"
+msgstr ""
+
+#: src/views/preference/BasicSettings.vue:117
+msgid "Server Name"
 msgstr ""
 
 #: src/views/domain/cert/components/ObtainCert.vue:102
@@ -1548,16 +1559,17 @@ msgstr ""
 #: src/views/certificate/ACMEUser.vue:42
 #: src/views/certificate/Certificate.vue:83
 #: src/views/domain/DomainList.vue:22
-#: src/views/environment/Environment.vue:75
+#: src/views/environment/Environment.vue:76
 #: src/views/stream/StreamList.vue:22
 msgid "Status"
 msgstr ""
 
-#: src/components/NginxControl/NginxControl.vue:81
+#: src/components/NginxControl/NginxControl.vue:84
 msgid "Stopped"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:243
+#: src/views/dashboard/ServerAnalytic.vue:245
+#: src/views/dashboard/ServerAnalytic.vue:246
 msgid "Storage"
 msgstr ""
 
@@ -1569,7 +1581,8 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:230
+#: src/views/dashboard/ServerAnalytic.vue:231
+#: src/views/dashboard/ServerAnalytic.vue:232
 msgid "Swap"
 msgstr ""
 
@@ -1615,6 +1628,10 @@ msgstr ""
 msgid "The input is not a SSL Certificate Key"
 msgstr ""
 
+#: src/views/preference/OpenAISettings.vue:30
+msgid "The model name should only contain letters, numbers, dashes, and dots."
+msgstr ""
+
 #: src/views/certificate/CertificateEditor.vue:165
 msgid "The path exists, but the file is not a certificate"
 msgstr ""
@@ -1623,15 +1640,22 @@ msgstr ""
 msgid "The path exists, but the file is not a private key"
 msgstr ""
 
+#: src/views/preference/BasicSettings.vue:120
+msgid "The server name should only contain letters, numbers, dashes, and dots."
+msgstr ""
+
 #: src/views/domain/cert/components/AutoCertStepOne.vue:50
 msgid "The server_name in the current configuration must be the domain name you need to get the certificate, supportmultiple domains."
 msgstr ""
 
 #: src/views/preference/BasicSettings.vue:38
 #: src/views/preference/BasicSettings.vue:50
-#: src/views/preference/OpenAISettings.vue:36
-#: src/views/preference/OpenAISettings.vue:48
-msgid "The url is not valid"
+msgid "The url is invalid"
+msgstr ""
+
+#: src/views/preference/OpenAISettings.vue:42
+#: src/views/preference/OpenAISettings.vue:54
+msgid "The url is invalid."
 msgstr ""
 
 #: src/language/constants.ts:2
@@ -1668,7 +1692,7 @@ msgstr ""
 msgid "To make sure the certification auto-renewal can work normally, we need to add a location which can proxy the request from authority to backend, and we need to save this file and reload the Nginx. Are you sure you want to continue?"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:60
+#: src/views/preference/OpenAISettings.vue:66
 msgid "Token is not valid"
 msgstr ""
 
@@ -1688,7 +1712,7 @@ msgstr ""
 #: src/views/config/ConfigEdit.vue:121
 #: src/views/domain/components/RightSettings.vue:86
 #: src/views/domain/DomainList.vue:41
-#: src/views/environment/Environment.vue:95
+#: src/views/environment/Environment.vue:122
 #: src/views/stream/components/RightSettings.vue:85
 #: src/views/stream/StreamList.vue:41
 #: src/views/user/User.vue:37
@@ -1721,11 +1745,11 @@ msgstr ""
 msgid "Uptime:"
 msgstr ""
 
-#: src/views/environment/Environment.vue:21
+#: src/views/environment/Environment.vue:22
 msgid "URL"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:225
+#: src/components/ChatGPT/ChatGPT.vue:230
 msgid "User"
 msgstr ""
 
@@ -1776,7 +1800,7 @@ msgid "We will remove the HTTPChallenge configuration from this file and reload 
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:27
-#: src/views/dashboard/ServerAnalytic.vue:365
+#: src/views/dashboard/ServerAnalytic.vue:368
 msgid "Writes"
 msgstr ""
 

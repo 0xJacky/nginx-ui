@@ -35,7 +35,7 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
       :label="$gettext('Github Proxy')"
       :validate-status="errors?.server?.github_proxy ? 'error' : ''"
       :help="errors?.server?.github_proxy === 'url'
-        ? $gettext('The url is not valid')
+        ? $gettext('The url is invalid')
         : ''"
     >
       <AInput
@@ -47,7 +47,7 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
       :label="$gettext('CADir')"
       :validate-status="errors?.server?.ca_dir ? 'error' : ''"
       :help="errors?.server?.ca_dir === 'url'
-        ? $gettext('The url is not valid')
+        ? $gettext('The url is invalid')
         : ''"
     >
       <AInput v-model:value="data.server.ca_dir" />
@@ -112,6 +112,15 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
           </ARow>
         </template>
       </Draggable>
+    </AFormItem>
+    <AFormItem
+      :label="$gettext('Server Name')"
+      :validate-status="errors?.server?.name ? 'error' : ''"
+      :help="errors?.server?.name.includes('alpha_num_dash_dot')
+        ? $gettext('The server name should only contain letters, numbers, dashes, and dots.')
+        : $gettext('Customize the name of local server to be displayed in the environment indicator.')"
+    >
+      <AInput v-model:value="data.server.name" />
     </AFormItem>
   </AForm>
 </template>

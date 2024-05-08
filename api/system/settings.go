@@ -6,8 +6,13 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"reflect"
 )
+
+func GetServerName(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"name": settings.ServerSettings.Name,
+	})
+}
 
 func GetSettings(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
@@ -35,12 +40,10 @@ func SaveSettings(c *gin.Context) {
 		go cron.RestartLogrotate()
 	}
 
-	fillSettings(&settings.ServerSettings, &json.Server)
-	fillSettings(&settings.NginxSettings, &json.Nginx)
-	fillSettings(&settings.OpenAISettings, &json.Openai)
-	fillSettings(&settings.LogrotateSettings, &json.Logrotate)
-
-	settings.ReflectFrom()
+	settings.ProtectedFill(&settings.ServerSettings, &json.Server)
+	settings.ProtectedFill(&settings.NginxSettings, &json.Nginx)
+	settings.ProtectedFill(&settings.OpenAISettings, &json.Openai)
+	settings.ProtectedFill(&settings.LogrotateSettings, &json.Logrotate)
 
 	err := settings.Save()
 	if err != nil {
@@ -49,17 +52,4 @@ func SaveSettings(c *gin.Context) {
 	}
 
 	GetSettings(c)
-}
-
-func fillSettings(targetSettings interface{}, newSettings interface{}) {
-	s := reflect.TypeOf(targetSettings).Elem()
-	vt := reflect.ValueOf(targetSettings).Elem()
-	vn := reflect.ValueOf(newSettings).Elem()
-
-	// copy the values from new to target settings if it is not protected
-	for i := 0; i < s.NumField(); i++ {
-		if s.Field(i).Tag.Get("protected") != "true" {
-			vt.Field(i).Set(vn.Field(i))
-		}
-	}
 }
