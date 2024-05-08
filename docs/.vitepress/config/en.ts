@@ -43,6 +43,13 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ]
         },
         {
+          text: 'Environment Variables',
+          collapsed: false,
+          items: [
+            {text: 'Reference', link: '/guide/env'},
+          ]
+        },
+        {
           text: 'Appendix',
           collapsed: false,
           items: [

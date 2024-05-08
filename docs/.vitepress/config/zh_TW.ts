@@ -47,6 +47,13 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ]
         },
         {
+          text: '環境變量',
+          collapsed: false,
+          items: [
+            {text: '參考手冊', link: '/zh_TW/guide/env'},
+          ]
+        },
+        {
           text: '附錄',
           collapsed: false,
           items: [

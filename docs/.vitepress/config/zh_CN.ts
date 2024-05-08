@@ -48,6 +48,13 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ]
         },
         {
+          text: '环境变量',
+          collapsed: false,
+          items: [
+            {text: '参考手册', link: '/zh_CN/guide/env'},
+          ]
+        },
+        {
           text: '附录',
           collapsed: false,
           items: [

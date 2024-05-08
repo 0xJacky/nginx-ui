@@ -1,4 +1,4 @@
-# 集群
+# Cluster
 From v2.0.0-beta.23, you can define multiple environments in the `cluster` section of the configuration file.
 
 ## Node

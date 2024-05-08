@@ -6,7 +6,7 @@ Regular users should follow the [quick start](./getting-started) guide.
 ## Prerequisites
 
 - Make.
-- Golang version 1.21 or higher.
+- Golang version 1.22 or higher.
 - node.js version 21 or higher.
 
 You should execute the following command to update browser list database before build project.
