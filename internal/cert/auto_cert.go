@@ -75,14 +75,17 @@ func autoCert(certModel *model.Cert) {
 		ChallengeMethod: certModel.ChallengeMethod,
 		DNSCredentialID: certModel.DnsCredentialID,
 		KeyType:         certModel.GetKeyType(),
-		Resource: &model.CertificateResource{
+		NotBefore:       cert.NotBefore,
+	}
+
+	if certModel.Resource != nil {
+		payload.Resource = &model.CertificateResource{
 			Resource:          certModel.Resource.Resource,
 			PrivateKey:        certModel.Resource.PrivateKey,
 			Certificate:       certModel.Resource.Certificate,
 			IssuerCertificate: certModel.Resource.IssuerCertificate,
 			CSR:               certModel.Resource.CSR,
-		},
-		NotBefore: cert.NotBefore,
+		}
 	}
 
 	// errChan will be closed inside IssueCert
