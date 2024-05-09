@@ -16,8 +16,8 @@ RUN echo 'longrun' > /etc/s6-overlay/s6-rc.d/nginx-ui/type && \
     touch /etc/s6-overlay/s6-rc.d/user/contents.d/nginx-ui
 
 # copy nginx config
-COPY resources/docker/nginx.conf /usr/local/etc/nginx/nginx.conf
-COPY resources/docker/nginx-ui.conf /usr/local/etc/nginx/conf.d/nginx-ui.conf
+COPY resources/docker/nginx.conf /etc/nginx/nginx.conf
+COPY resources/docker/nginx-ui.conf /etc/nginx/conf.d/nginx-ui.conf
 
 # copy nginx-ui executable binary
 COPY nginx-ui-$TARGETOS-$TARGETARCH$TARGETVARIANT/nginx-ui /usr/local/bin/nginx-ui
