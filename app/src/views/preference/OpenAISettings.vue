@@ -7,6 +7,9 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
 
 const models = shallowRef([
   {
+    value: 'gpt-4o',
+  },
+  {
     value: 'gpt-4-1106-preview',
   },
   {
