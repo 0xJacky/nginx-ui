@@ -95,6 +95,8 @@ func IssueCert(c *gin.Context) {
 	log := &cert.Logger{}
 	log.SetCertModel(&certModel)
 
+	payload.CertID = certModel.ID
+
 	go cert.IssueCert(payload, logChan, errChan)
 
 	go handleIssueCertLogChan(ws, log, logChan)

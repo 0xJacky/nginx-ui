@@ -71,6 +71,7 @@ func autoCert(certModel *model.Cert) {
 
 	// support SAN certification
 	payload := &ConfigPayload{
+		CertID:          certModel.ID,
 		ServerName:      certModel.Domains,
 		ChallengeMethod: certModel.ChallengeMethod,
 		DNSCredentialID: certModel.DnsCredentialID,
