@@ -116,8 +116,8 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
     <AFormItem
       :label="$gettext('Server Name')"
       :validate-status="errors?.server?.name ? 'error' : ''"
-      :help="errors?.server?.name.includes('alpha_num_dash_dot')
-        ? $gettext('The server name should only contain letters, numbers, dashes, and dots.')
+      :help="errors?.server?.name.includes('safety_text')
+        ? $gettext('The server name should only contain letters, unicode, numbers, hyphens, dashes, and dots.')
         : $gettext('Customize the name of local server to be displayed in the environment indicator.')"
     >
       <AInput v-model:value="data.server.name" />

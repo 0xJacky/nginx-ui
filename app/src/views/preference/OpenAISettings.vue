@@ -29,8 +29,8 @@ const models = shallowRef([
     <AFormItem
       :label="$gettext('Model')"
       :validate-status="errors?.openai?.model ? 'error' : ''"
-      :help="errors?.openai?.model === 'alpha_num_dash_dot'
-        ? $gettext('The model name should only contain letters, numbers, dashes, and dots.')
+      :help="errors?.openai?.model === 'safety_text'
+        ? $gettext('The model name should only contain letters, unicode, numbers, hyphens, dashes, and dots.')
         : ''"
     >
       <AAutoComplete
@@ -65,7 +65,7 @@ const models = shallowRef([
     <AFormItem
       :label="$gettext('API Token')"
       :validate-status="errors?.openai?.token ? 'error' : ''"
-      :help="errors?.openai?.token === 'alpha_num_dash_dot'
+      :help="errors?.openai?.token === 'safety_text'
         ? $gettext('Token is not valid')
         : ''"
     >
