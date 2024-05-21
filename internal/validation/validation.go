@@ -9,10 +9,10 @@ import (
 func Init() {
 	v, ok := binding.Validator.Engine().(*val.Validate)
 	if !ok {
-		logger.Fatal("binding validator engine is not initialized")
+		logger.Fatal("failed to initialize binding validator engine")
 	}
 
-	err := v.RegisterValidation("alpha_num_dash_dot", alphaNumDashDot)
+	err := v.RegisterValidation("safety_text", safetyText)
 
 	if err != nil {
 		logger.Fatal(err)
