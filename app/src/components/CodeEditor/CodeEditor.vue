@@ -29,6 +29,7 @@ ace.config.setModuleUrl('ace/ext/searchbox', extSearchboxUrl)
 
 <template>
   <VAceEditor
+    ref="aceRef"
     v-model:value="value"
     lang="nginx"
     theme="monokai"
