@@ -141,9 +141,23 @@ watch(route, () => {
   params.trash = route.query.trash === 'true'
 })
 
+const filterParams = reactive({})
+
+watch(filterParams, () => {
+  Object.assign(params, {
+    ...filterParams,
+    page: 1,
+  })
+})
+
 onMounted(() => {
   if (!props.disableQueryParams) {
     Object.assign(params, {
+      ...route.query,
+      trash: route.query.trash === 'true',
+    })
+
+    Object.assign(filterParams, {
       ...route.query,
       trash: route.query.trash === 'true',
     })
@@ -429,7 +443,7 @@ const paginationSize = computed(() => {
       v-if="!disableSearch && searchColumns.length"
       :key="updateFilter"
       :data-list="searchColumns"
-      :data-source="params"
+      :data-source="filterParams"
       type="search"
       layout="inline"
     >

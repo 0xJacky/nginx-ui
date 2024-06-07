@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { VAceEditor } from 'vue3-ace-editor'
 import 'ace-builds/src-noconflict/mode-nginx'
+import ace from 'ace-builds'
 import 'ace-builds/src-noconflict/theme-monokai'
+import extSearchboxUrl from 'ace-builds/src-noconflict/ext-searchbox?url'
 import { computed } from 'vue'
 
 const props = defineProps<{
@@ -21,6 +23,8 @@ const value = computed({
     emit('update:content', v)
   },
 })
+
+ace.config.setModuleUrl('ace/ext/searchbox', extSearchboxUrl)
 </script>
 
 <template>
