@@ -23,13 +23,15 @@ func GetDnsCredential(c *gin.Context) {
 	}
 	type apiDnsCredential struct {
 		model.Model
-		Name string `json:"name"`
+		Name     string `json:"name"`
+		Provider string `json:"provider"`
 		dns.Config
 	}
 	c.JSON(http.StatusOK, apiDnsCredential{
-		Model:  dnsCredential.Model,
-		Name:   dnsCredential.Name,
-		Config: *dnsCredential.Config,
+		Model:    dnsCredential.Model,
+		Name:     dnsCredential.Name,
+		Provider: dnsCredential.Provider,
+		Config:   *dnsCredential.Config,
 	})
 }
 

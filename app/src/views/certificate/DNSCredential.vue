@@ -1,5 +1,6 @@
 <script setup lang="tsx">
 import DNSChallenge from './DNSChallenge.vue'
+import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import dns_credential from '@/api/dns_credential'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
@@ -17,6 +18,9 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('Provider'),
   dataIndex: ['config', 'name'],
+  customRender: (args: customRender) => {
+    return args.record.provider
+  },
   sortable: true,
   pithy: true,
 }, {
