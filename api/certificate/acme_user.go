@@ -29,7 +29,7 @@ func CreateAcmeUser(c *gin.Context) {
 		"ca_dir": "omitempty",
 	}).BeforeExecuteHook(func(ctx *cosy.Ctx[model.AcmeUser]) {
 		if ctx.Model.CADir == "" {
-			ctx.Model.CADir = settings.ServerSettings.CADir
+			ctx.Model.CADir = settings.ServerSettings.GetCADir()
 		}
 		err := ctx.Model.Register()
 		if err != nil {
@@ -46,7 +46,7 @@ func ModifyAcmeUser(c *gin.Context) {
 		"ca_dir": "omitempty",
 	}).BeforeExecuteHook(func(ctx *cosy.Ctx[model.AcmeUser]) {
 		if ctx.Model.CADir == "" {
-			ctx.Model.CADir = settings.ServerSettings.CADir
+			ctx.Model.CADir = settings.ServerSettings.GetCADir()
 		}
 
 		if ctx.OriginModel.Email != ctx.Model.Email ||
