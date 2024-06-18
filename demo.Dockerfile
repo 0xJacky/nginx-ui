@@ -23,3 +23,9 @@ COPY resources/docker/nginx-ui.conf /etc/nginx/conf.d/nginx-ui.conf
 COPY nginx-ui-$TARGETOS-$TARGETARCH$TARGETVARIANT/nginx-ui /usr/local/bin/nginx-ui
 
 RUN rm -f /etc/nginx/conf.d/default.conf
+
+# recreate access.log and error.log
+RUN rm -f /var/log/nginx/access.log && \
+    touch /var/log/nginx/access.log && \
+    rm -f /var/log/nginx/error.log && \
+    touch /var/log/nginx/error.log
