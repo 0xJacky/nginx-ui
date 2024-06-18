@@ -18,6 +18,7 @@ export const msg = [
   $gettext('Reloading nginx'),
   $gettext('Finished'),
   $gettext('Issued certificate successfully'),
+  $gettext('Environment variables cleaned'),
 
   $gettext('Initialing core upgrader'),
   $gettext('Initial core upgrader error'),
@@ -32,4 +33,7 @@ export const msg = [
 
   $gettext('Renew Certificate Success'),
   $gettext('Renew Certificate Error'),
+
+  $gettext('Sync Certificate Success'),
+  $gettext('Sync Certificate Error'),
 ]

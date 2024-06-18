@@ -180,7 +180,7 @@ defineExpose({
 })
 
 function destroy(id: number | string) {
-  props.api!.destroy(id).then(() => {
+  props.api!.destroy(id, { permanent: params.trash }).then(() => {
     get_list()
     message.success($gettext('Deleted successfully'))
   }).catch(e => {
@@ -542,6 +542,20 @@ const paginationSize = computed(() => {
                 size="small"
               >
                 {{ $gettext('Recover') }}
+              </AButton>
+            </APopconfirm>
+            <APopconfirm
+              v-if="params.trash"
+              :cancel-text="$gettext('No')"
+              :ok-text="$gettext('OK')"
+              :title="$gettext('Are you sure you want to delete this item permanently?')"
+              @confirm="destroy(record[rowKey])"
+            >
+              <AButton
+                type="link"
+                size="small"
+              >
+                {{ $gettext('Delete Permanently') }}
               </AButton>
             </APopconfirm>
           </template>

@@ -3,13 +3,11 @@ package certificate
 import (
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/gorilla/websocket"
 	"net/http"
-	"strings"
 )
 
 const (
@@ -71,7 +69,6 @@ func IssueCert(c *gin.Context) {
 	payload := &cert.ConfigPayload{}
 
 	err = ws.ReadJSON(payload)
-
 	if err != nil {
 		logger.Error(err)
 		return
@@ -122,14 +119,10 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
-	certDirName := strings.Join(payload.ServerName, "_") + "_" + string(payload.GetKeyType())
-	sslCertificatePath := nginx.GetConfPath("ssl", certDirName, "fullchain.cer")
-	sslCertificateKeyPath := nginx.GetConfPath("ssl", certDirName, "private.key")
-
 	err = certModel.Updates(&model.Cert{
 		Domains:               payload.ServerName,
-		SSLCertificatePath:    sslCertificatePath,
-		SSLCertificateKeyPath: sslCertificateKeyPath,
+		SSLCertificatePath:    payload.GetCertificatePath(),
+		SSLCertificateKeyPath: payload.GetCertificateKeyPath(),
 		AutoCert:              model.AutoCertEnabled,
 		KeyType:               payload.KeyType,
 		ChallengeMethod:       payload.ChallengeMethod,
@@ -152,8 +145,8 @@ func IssueCert(c *gin.Context) {
 	err = ws.WriteJSON(IssueCertResponse{
 		Status:            Success,
 		Message:           "Issued certificate successfully",
-		SSLCertificate:    sslCertificatePath,
-		SSLCertificateKey: sslCertificateKeyPath,
+		SSLCertificate:    payload.GetCertificatePath(),
+		SSLCertificateKey: payload.GetCertificateKeyPath(),
 		KeyType:           payload.GetKeyType(),
 	})
 

@@ -10,6 +10,7 @@ import (
 )
 
 const (
+	AutoCertSync              = 2
 	AutoCertEnabled           = 1
 	AutoCertDisabled          = -1
 	CertChallengeMethodHTTP01 = "http01"
@@ -42,6 +43,7 @@ type Cert struct {
 	KeyType               certcrypto.KeyType   `json:"key_type"`
 	Log                   string               `json:"log"`
 	Resource              *CertificateResource `json:"-" gorm:"serializer:json"`
+	SyncNodeIds           []int                `json:"sync_node_ids" gorm:"serializer:json"`
 }
 
 func FirstCert(confName string) (c Cert, err error) {
@@ -92,10 +94,6 @@ func GetAutoCertList() (c []*Cert) {
 
 func (c *Cert) Updates(n *Cert) error {
 	return db.Model(&Cert{}).Where("id", c.ID).Updates(n).Error
-}
-
-func (c *Cert) ClearLog() {
-	db.Model(&Cert{}).Where("id", c.ID).Update("log", "")
 }
 
 func (c *Cert) Remove() error {

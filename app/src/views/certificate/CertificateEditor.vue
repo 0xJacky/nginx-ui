@@ -9,6 +9,7 @@ import type { Cert } from '@/api/cert'
 import cert from '@/api/cert'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import RenewCert from '@/views/certificate/RenewCert.vue'
+import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 
 const route = useRoute()
 
@@ -185,6 +186,12 @@ const isManaged = computed(() => {
             <AInput
               v-else
               v-model:value="data.ssl_certificate_key_path"
+            />
+          </AFormItem>
+          <AFormItem :label="$gettext('Sync to')">
+            <NodeSelector
+              v-model:target="data.sync_node_ids"
+              hidden-local
             />
           </AFormItem>
           <AFormItem

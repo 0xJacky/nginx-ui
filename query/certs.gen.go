@@ -43,6 +43,8 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.ACMEUserID = field.NewInt(tableName, "acme_user_id")
 	_cert.KeyType = field.NewString(tableName, "key_type")
 	_cert.Log = field.NewString(tableName, "log")
+	_cert.Resource = field.NewField(tableName, "resource")
+	_cert.SyncNodeIds = field.NewField(tableName, "sync_node_ids")
 	_cert.DnsCredential = certBelongsToDnsCredential{
 		db: db.Session(&gorm.Session{}),
 
@@ -79,6 +81,8 @@ type cert struct {
 	ACMEUserID            field.Int
 	KeyType               field.String
 	Log                   field.String
+	Resource              field.Field
+	SyncNodeIds           field.Field
 	DnsCredential         certBelongsToDnsCredential
 
 	ACMEUser certBelongsToACMEUser
@@ -113,6 +117,8 @@ func (c *cert) updateTableName(table string) *cert {
 	c.ACMEUserID = field.NewInt(table, "acme_user_id")
 	c.KeyType = field.NewString(table, "key_type")
 	c.Log = field.NewString(table, "log")
+	c.Resource = field.NewField(table, "resource")
+	c.SyncNodeIds = field.NewField(table, "sync_node_ids")
 
 	c.fillFieldMap()
 
@@ -129,7 +135,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 17)
+	c.fieldMap = make(map[string]field.Expr, 19)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -145,6 +151,8 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["acme_user_id"] = c.ACMEUserID
 	c.fieldMap["key_type"] = c.KeyType
 	c.fieldMap["log"] = c.Log
+	c.fieldMap["resource"] = c.Resource
+	c.fieldMap["sync_node_ids"] = c.SyncNodeIds
 
 }
 

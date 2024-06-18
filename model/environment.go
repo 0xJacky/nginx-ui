@@ -15,6 +15,25 @@ type Environment struct {
 	SyncApiRegex  string `json:"sync_api_regex"`
 }
 
+func (e *Environment) GetUrl(uri string) (decodedUri string, err error) {
+	baseUrl, err := url.Parse(e.URL)
+	if err != nil {
+		return
+	}
+
+	u, err := url.JoinPath(baseUrl.String(), uri)
+	if err != nil {
+		return
+	}
+
+	decodedUri, err = url.QueryUnescape(u)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
 func (e *Environment) GetWebSocketURL(uri string) (decodedUri string, err error) {
 	baseUrl, err := url.Parse(e.URL)
 	if err != nil {

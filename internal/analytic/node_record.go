@@ -29,8 +29,7 @@ func RetrieveNodesStatus() {
 
 	env := query.Environment
 
-	envs, err := env.Find()
-
+	envs, err := env.Where(env.Enabled.Is(true)).Find()
 	if err != nil {
 		logger.Error(err)
 		return

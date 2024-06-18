@@ -4,6 +4,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cosy"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -86,6 +88,7 @@ type certJson struct {
 	ChallengeMethod       string             `json:"challenge_method"`
 	DnsCredentialID       int                `json:"dns_credential_id"`
 	ACMEUserID            int                `json:"acme_user_id"`
+	SyncNodeIds           []int              `json:"sync_node_ids"`
 }
 
 func AddCert(c *gin.Context) {
@@ -103,6 +106,7 @@ func AddCert(c *gin.Context) {
 		ChallengeMethod:       json.ChallengeMethod,
 		DnsCredentialID:       json.DnsCredentialID,
 		ACMEUserID:            json.ACMEUserID,
+		SyncNodeIds:           json.SyncNodeIds,
 	}
 
 	err := certModel.Insert()
@@ -123,6 +127,12 @@ func AddCert(c *gin.Context) {
 
 	if err != nil {
 		api.ErrHandler(c, err)
+		return
+	}
+
+	err = cert.SyncToRemoteServer(certModel)
+	if err != nil {
+		notification.Error("Sync Certificate Error", err.Error())
 		return
 	}
 
@@ -154,6 +164,7 @@ func ModifyCert(c *gin.Context) {
 		KeyType:               json.KeyType,
 		DnsCredentialID:       json.DnsCredentialID,
 		ACMEUserID:            json.ACMEUserID,
+		SyncNodeIds:           json.SyncNodeIds,
 	})
 
 	if err != nil {
@@ -175,9 +186,58 @@ func ModifyCert(c *gin.Context) {
 		return
 	}
 
+	err = cert.SyncToRemoteServer(certModel)
+	if err != nil {
+		notification.Error("Sync Certificate Error", err.Error())
+		return
+	}
+
 	GetCert(c)
 }
 
 func RemoveCert(c *gin.Context) {
 	cosy.Core[model.Cert](c).Destroy()
+}
+
+func SyncCertificate(c *gin.Context) {
+	var json cert.SyncCertificatePayload
+
+	if !api.BindAndValid(c, &json) {
+		return
+	}
+
+	certModel := &model.Cert{
+		Name:                  json.Name,
+		SSLCertificatePath:    json.SSLCertificatePath,
+		SSLCertificateKeyPath: json.SSLCertificateKeyPath,
+		KeyType:               json.KeyType,
+		AutoCert:              model.AutoCertSync,
+	}
+
+	db := model.UseDB()
+
+	err := db.Where(certModel).FirstOrCreate(certModel).Error
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+
+	content := &cert.Content{
+		SSLCertificatePath:    json.SSLCertificatePath,
+		SSLCertificateKeyPath: json.SSLCertificateKeyPath,
+		SSLCertificate:        json.SSLCertificate,
+		SSLCertificateKey:     json.SSLCertificateKey,
+	}
+
+	err = content.WriteFile()
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+
+	nginx.Reload()
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+	})
 }
