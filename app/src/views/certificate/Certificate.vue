@@ -39,14 +39,19 @@ const columns: Column[] = [{
   customRender: (args: customRender) => {
     const template: JSXElements = []
     const { text } = args
+    const sync = $gettext('Sync Certificate')
     const managed = $gettext('Managed Certificate')
     const general = $gettext('General Certificate')
-    if (text === true || text > 0) {
+    if (text === true || text === 1) {
       template.push(<Tag bordered={false} color="processing">
         { managed }
       </Tag>)
     }
-
+    else if (text === 2) {
+      template.push(<Tag bordered={false} color="success">
+        { sync }
+      </Tag>)
+    }
     else {
       template.push(<Tag bordered={false} color="purple">{
       general }

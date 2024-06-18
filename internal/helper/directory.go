@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// IsUnderDirectory checks if the path is under the directory
 func IsUnderDirectory(path, directory string) bool {
 	absPath, err := filepath.Abs(path)
 	if err != nil {

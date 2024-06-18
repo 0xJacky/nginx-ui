@@ -30,8 +30,7 @@ func GetList(c *gin.Context) {
 }
 
 func Destroy(c *gin.Context) {
-	cosy.Core[model.Notification](c).
-		PermanentlyDelete()
+	cosy.Core[model.Notification](c).Destroy()
 }
 
 func DestroyAll(c *gin.Context) {

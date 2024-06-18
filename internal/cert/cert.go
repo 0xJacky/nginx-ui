@@ -111,7 +111,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 			}
 			defer func() {
 				pConfig.CleanEnv()
-				l.Println("[INFO] [Nginx UI] Cleaned environment variables")
+				l.Println("[INFO] [Nginx UI] Environment variables cleaned")
 			}()
 			provider, err := dnsproviders.NewDNSChallengeProviderByName(code)
 			if err != nil {

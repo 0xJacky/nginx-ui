@@ -24,10 +24,10 @@ msgid "ACME User"
 msgstr "Người dùng"
 
 #: src/views/certificate/ACMEUser.vue:59
-#: src/views/certificate/Certificate.vue:108
-#: src/views/certificate/DNSCredential.vue:29 src/views/config/config.ts:34
+#: src/views/certificate/Certificate.vue:113
+#: src/views/certificate/DNSCredential.vue:33 src/views/config/config.ts:34
 #: src/views/domain/DomainList.vue:47 src/views/environment/Environment.vue:129
-#: src/views/notification/Notification.vue:35
+#: src/views/notification/Notification.vue:37
 #: src/views/stream/StreamList.vue:47 src/views/user/User.vue:43
 msgid "Action"
 msgstr "Hành động"
@@ -95,7 +95,7 @@ msgid "Arch"
 msgstr ""
 
 #: src/components/Notification/Notification.vue:84
-#: src/views/notification/Notification.vue:70
+#: src/views/notification/Notification.vue:72
 #, fuzzy
 msgid "Are you sure you want to clear all notifications?"
 msgstr "Bạn có chắc chắn muốn xóa tất cả thông báo không ?"
@@ -105,7 +105,12 @@ msgstr "Bạn có chắc chắn muốn xóa tất cả thông báo không ?"
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "Bạn có chắc chắn muốn xóa lịch sử trò chuyện không ?"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:509
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:551
+#, fuzzy
+msgid "Are you sure you want to delete this item permanently?"
+msgstr "Bạn chắc chắn muốn xóa nó "
+
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:523
 #, fuzzy
 msgid "Are you sure you want to delete this item?"
 msgstr "Bạn chắc chắn muốn xóa nó "
@@ -115,7 +120,7 @@ msgstr "Bạn chắc chắn muốn xóa nó "
 msgid "Are you sure you want to delete?"
 msgstr "Bạn chắc chắn muốn xóa nó "
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:523
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:537
 #, fuzzy
 msgid "Are you sure you want to recover this item?"
 msgstr "Bạn chắc chắn muốn xoá directive này ?"
@@ -163,7 +168,7 @@ msgstr "Đã tắt tự động gia hạn SSL cho %{name}"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "Đã bật tự động gia hạn SSL cho %{name}"
 
-#: src/views/certificate/CertificateEditor.vue:235
+#: src/views/certificate/CertificateEditor.vue:242
 #: src/views/config/Config.vue:73 src/views/config/ConfigEdit.vue:87
 #: src/views/domain/DomainEdit.vue:256 src/views/nginx_log/NginxLog.vue:168
 #: src/views/stream/StreamEdit.vue:247
@@ -192,7 +197,7 @@ msgid "Basic Mode"
 msgstr "Cơ bản"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:54
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:445
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:459
 #, fuzzy
 msgid "Batch Modify"
 msgstr "Sửa đổi cấu hình"
@@ -237,12 +242,12 @@ msgstr "Chứng chỉ SSL hợp lệ"
 msgid "Certificate Renewal Interval"
 msgstr "Chứng chỉ SSL hợp lệ"
 
-#: src/views/certificate/CertificateEditor.vue:127
+#: src/views/certificate/CertificateEditor.vue:128
 #: src/views/domain/cert/Cert.vue:33
 msgid "Certificate Status"
 msgstr "Trạng thái chứng chỉ"
 
-#: src/routes/index.ts:119 src/views/certificate/Certificate.vue:124
+#: src/routes/index.ts:119 src/views/certificate/Certificate.vue:129
 #, fuzzy
 msgid "Certificates"
 msgstr "Chứng chỉ"
@@ -276,12 +281,12 @@ msgstr "Xoá các biến môi trường"
 
 #: src/components/ChatGPT/ChatGPT.vue:276
 #: src/components/Notification/Notification.vue:89
-#: src/views/notification/Notification.vue:75
+#: src/views/notification/Notification.vue:77
 msgid "Clear"
 msgstr "Xoá"
 
 #: src/components/Notification/Notification.vue:40
-#: src/views/notification/Notification.vue:44
+#: src/views/notification/Notification.vue:46
 #, fuzzy
 msgid "Cleared successfully"
 msgstr "Đã xóa thành công"
@@ -350,7 +355,7 @@ msgstr "Ngày tạo"
 msgid "Create Another"
 msgstr "Tạo thêm"
 
-#: src/views/notification/Notification.vue:29 src/views/user/User.vue:31
+#: src/views/notification/Notification.vue:31 src/views/user/User.vue:31
 msgid "Created at"
 msgstr "Ngày tạo"
 
@@ -393,13 +398,17 @@ msgstr "Tên cơ sở dữ liệu (Tuỳ chọn, Mặc định là: database)"
 msgid "Days"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:516
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:530
 #: src/views/domain/DomainList.vue:155
 #: src/views/domain/ngx_conf/NgxServer.vue:114
 #: src/views/domain/ngx_conf/NgxUpstream.vue:126
 #: src/views/stream/StreamList.vue:176
 msgid "Delete"
 msgstr "Xoá"
+
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:558
+msgid "Delete Permanently"
+msgstr ""
 
 #: src/views/domain/DomainList.vue:78
 msgid "Delete site: %{site_name}"
@@ -410,7 +419,7 @@ msgstr "Xoá trang web: %{site_name}"
 msgid "Delete stream: %{stream_name}"
 msgstr "Xoá trang web: %{site_name}"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:171
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:185
 #, fuzzy
 msgid "Deleted successfully"
 msgstr "Đã xoá thành công"
@@ -443,7 +452,7 @@ msgstr "Triển khai thành công"
 msgid "Description"
 msgstr "Mô tả"
 
-#: src/views/notification/Notification.vue:25
+#: src/views/notification/Notification.vue:26
 msgid "Details"
 msgstr "Chi tiết"
 
@@ -490,7 +499,7 @@ msgstr "Đã tắt thành công"
 msgid "Disk IO"
 msgstr "Disk IO"
 
-#: src/routes/index.ts:162 src/views/certificate/DNSCredential.vue:36
+#: src/routes/index.ts:162 src/views/certificate/DNSCredential.vue:40
 msgid "DNS Credentials"
 msgstr "Xác thực DNS"
 
@@ -558,17 +567,17 @@ msgstr ""
 msgid "Domain Config Created Successfully"
 msgstr "Tên miền đã được tạo"
 
-#: src/views/certificate/CertificateEditor.vue:111
+#: src/views/certificate/CertificateEditor.vue:112
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
 "Danh sách tên miền rỗng, hãy thử mở lại chức năng Tạo chứng chỉ tự động cho "
 "%{config}"
 
-#: src/language/constants.ts:25
+#: src/language/constants.ts:26
 msgid "Download latest release error"
 msgstr "Đã có lỗi xảy ra khi tải về phiên bản mới nhất"
 
-#: src/language/constants.ts:24
+#: src/language/constants.ts:25
 msgid "Downloading latest release"
 msgstr "Đang tải phiên bản mới nhất"
 
@@ -696,6 +705,11 @@ msgstr "Bảo mật trang web với Let's Encrypt"
 msgid "Environment"
 msgstr "Environment"
 
+#: src/language/constants.ts:21
+#, fuzzy
+msgid "Environment variables cleaned"
+msgstr "Đặt biến môi trường"
+
 #: src/views/dashboard/Environments.vue:82
 #, fuzzy
 msgid "Environments"
@@ -713,7 +727,7 @@ msgstr "Log lỗi"
 msgid "Executable Path"
 msgstr "Đường dẫn thực thi"
 
-#: src/views/certificate/Certificate.vue:96
+#: src/views/certificate/Certificate.vue:101
 msgid "Expired"
 msgstr "Đã hết hạn"
 
@@ -757,7 +771,7 @@ msgstr "Không lưu được, đã phát hiện thấy (các) lỗi cú pháp tr
 msgid "File"
 msgstr "Tệp tin"
 
-#: src/language/constants.ts:30
+#: src/language/constants.ts:31
 msgid "File exists"
 msgstr "Tệp tin đã tồn tại"
 
@@ -798,7 +812,7 @@ msgstr "Lưu lỗi %{msg}"
 msgid "Format successfully"
 msgstr "Định dạng thành công"
 
-#: src/views/certificate/Certificate.vue:43
+#: src/views/certificate/Certificate.vue:44
 #, fuzzy
 msgid "General Certificate"
 msgstr "Chứng chỉ chung"
@@ -848,12 +862,12 @@ msgstr ""
 msgid "If left blank, the default CA Dir will be used."
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:131
+#: src/views/certificate/Certificate.vue:136
 #, fuzzy
 msgid "Import"
 msgstr "Xuất"
 
-#: src/routes/index.ts:153 src/views/certificate/CertificateEditor.vue:84
+#: src/routes/index.ts:153 src/views/certificate/CertificateEditor.vue:85
 #, fuzzy
 msgid "Import Certificate"
 msgstr "Chứng chỉ"
@@ -862,11 +876,11 @@ msgstr "Chứng chỉ"
 msgid "Info"
 msgstr "Thông tin"
 
-#: src/language/constants.ts:23
+#: src/language/constants.ts:24
 msgid "Initial core upgrader error"
 msgstr "Không thể khởi tạo trình nâng cấp"
 
-#: src/language/constants.ts:22
+#: src/language/constants.ts:23
 msgid "Initialing core upgrader"
 msgstr "Đang khởi tạo trình nâng cấp"
 
@@ -892,7 +906,7 @@ msgstr ""
 msgid "Invalid"
 msgstr "Hợp lệ"
 
-#: src/views/certificate/Certificate.vue:139
+#: src/views/certificate/Certificate.vue:144
 #, fuzzy
 msgid "Issue wildcard certificate"
 msgstr "Gia hạn SSL"
@@ -911,7 +925,7 @@ msgstr "Cấp chứng chỉ thành công"
 msgid "Jwt Secret"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:61
+#: src/views/certificate/Certificate.vue:66
 #: src/views/certificate/WildcardCertificate.vue:79
 #: src/views/domain/cert/components/AutoCertStepOne.vue:80
 #, fuzzy
@@ -930,8 +944,8 @@ msgstr "Bỏ trống nếu không thay đổi"
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Bỏ trống để sử dụng địa chỉ mặc định: https://api.openai.com/"
 
-#: src/views/certificate/CertificateEditor.vue:200
-#: src/views/certificate/CertificateEditor.vue:213
+#: src/views/certificate/CertificateEditor.vue:207
+#: src/views/certificate/CertificateEditor.vue:220
 #, fuzzy
 msgid "Leave blank will not change anything"
 msgstr "Bỏ trống nếu không thay đổi"
@@ -978,7 +992,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/views/certificate/CertificateEditor.vue:223
+#: src/views/certificate/CertificateEditor.vue:230
 #, fuzzy
 msgid "Log"
 msgstr "Log"
@@ -1035,7 +1049,7 @@ msgstr "Quản lý Website"
 msgid "Manage Users"
 msgstr "Người dùng"
 
-#: src/views/certificate/Certificate.vue:42
+#: src/views/certificate/Certificate.vue:43
 msgid "Managed Certificate"
 msgstr ""
 
@@ -1059,12 +1073,12 @@ msgstr "Run Mode"
 
 #: src/components/ChatGPT/ChatGPT.vue:249
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:194
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:491
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:505
 #, fuzzy
 msgid "Modify"
 msgstr "Sửa"
 
-#: src/routes/index.ts:144 src/views/certificate/CertificateEditor.vue:84
+#: src/routes/index.ts:144 src/views/certificate/CertificateEditor.vue:85
 #, fuzzy
 msgid "Modify Certificate"
 msgstr "Sửa chứng chỉ"
@@ -1085,8 +1099,8 @@ msgstr "Single Directive"
 
 #: src/views/certificate/ACMEUser.vue:13
 #: src/views/certificate/Certificate.vue:20
-#: src/views/certificate/CertificateEditor.vue:146
-#: src/views/certificate/DNSCredential.vue:10 src/views/config/config.ts:7
+#: src/views/certificate/CertificateEditor.vue:147
+#: src/views/certificate/DNSCredential.vue:11 src/views/config/config.ts:7
 #: src/views/domain/cert/ChangeCert.vue:17
 #: src/views/domain/components/RightSettings.vue:83
 #: src/views/domain/components/SiteDuplicate.vue:133
@@ -1162,12 +1176,13 @@ msgstr "Restart Nginx thành công"
 
 #: src/components/ChatGPT/ChatGPT.vue:270
 #: src/components/Notification/Notification.vue:82
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:507
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:521
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:535
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:549
 #: src/views/domain/DomainList.vue:144
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:71
-#: src/views/notification/Notification.vue:68
+#: src/views/notification/Notification.vue:70
 #: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
 msgid "No"
@@ -1177,7 +1192,7 @@ msgstr "Không"
 msgid "Node Secret"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:102
+#: src/views/certificate/Certificate.vue:107
 msgid "Not After"
 msgstr "Không phải sau khi"
 
@@ -1189,12 +1204,12 @@ msgstr "Không tìm thấy"
 msgid "Not Valid Before: %{date}"
 msgstr "Không hợp lệ trước: %{date}"
 
-#: src/views/certificate/DNSCredential.vue:45
+#: src/views/certificate/DNSCredential.vue:49
 #: src/views/domain/cert/components/AutoCertStepOne.vue:45
 msgid "Note"
 msgstr "Ghi chú"
 
-#: src/views/notification/Notification.vue:60
+#: src/views/notification/Notification.vue:62
 #, fuzzy
 msgid "Notification"
 msgstr "Thông báo"
@@ -1227,8 +1242,9 @@ msgstr ""
 #: src/components/ChatGPT/ChatGPT.vue:271
 #: src/components/Notification/Notification.vue:83
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:56
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:508
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:522
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:536
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:550
 #: src/views/domain/cert/components/ObtainCert.vue:136
 #: src/views/domain/components/Deploy.vue:20
 #: src/views/domain/components/RightSettings.vue:50
@@ -1236,14 +1252,14 @@ msgstr ""
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:49
 #: src/views/domain/ngx_conf/NgxServer.vue:83
 #: src/views/domain/ngx_conf/NgxUpstream.vue:32
-#: src/views/notification/Notification.vue:69
+#: src/views/notification/Notification.vue:71
 #: src/views/stream/components/Deploy.vue:20
 #: src/views/stream/components/RightSettings.vue:50
 #: src/views/stream/StreamList.vue:166
 msgid "OK"
 msgstr ""
 
-#: src/views/certificate/DNSCredential.vue:55
+#: src/views/certificate/DNSCredential.vue:59
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."
 
@@ -1295,15 +1311,15 @@ msgstr "Mật khẩu (*)"
 msgid "Path"
 msgstr "Đường dẫn"
 
-#: src/language/constants.ts:27
+#: src/language/constants.ts:28
 msgid "Perform core upgrade error"
 msgstr "Nâng cấp core không thành công"
 
-#: src/language/constants.ts:26
+#: src/language/constants.ts:27
 msgid "Performing core upgrade"
 msgstr "Nâng cấp core"
 
-#: src/views/certificate/DNSCredential.vue:49
+#: src/views/certificate/DNSCredential.vue:53
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
@@ -1338,7 +1354,7 @@ msgstr "Vui lòng nhập mật khẩu!"
 msgid "Please input your username!"
 msgstr "Vui lòng nhập username!"
 
-#: src/views/certificate/DNSCredential.vue:58
+#: src/views/certificate/DNSCredential.vue:62
 msgid ""
 "Please note that the unit of time configurations below are all in seconds."
 msgstr "Lưu ý đơn vị cấu hình thời gian bên dưới được tính bằng giây."
@@ -1373,7 +1389,7 @@ msgstr "Cấm xóa người dùng mặc định"
 msgid "Project Team"
 msgstr "Đội ngũ phát triển"
 
-#: src/views/certificate/DNSCredential.vue:18
+#: src/views/certificate/DNSCredential.vue:19
 msgid "Provider"
 msgstr "Nhà cung cấp"
 
@@ -1387,11 +1403,11 @@ msgstr "Đọc"
 msgid "Receive"
 msgstr "Nhận"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:530
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:544
 msgid "Recover"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:179
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:193
 #, fuzzy
 msgid "Recovered Successfully"
 msgstr "Xoá thành công"
@@ -1466,12 +1482,12 @@ msgstr "Username"
 msgid "Renew Certificate"
 msgstr "Gia hạn chứng chỉ SSL"
 
-#: src/language/constants.ts:34
+#: src/language/constants.ts:35
 #, fuzzy
 msgid "Renew Certificate Error"
 msgstr "Gia hạn chứng chỉ SSL thất bại"
 
-#: src/language/constants.ts:33
+#: src/language/constants.ts:34
 #, fuzzy
 msgid "Renew Certificate Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
@@ -1482,11 +1498,11 @@ msgstr "Gia hạn chứng chỉ SSL thành công"
 msgid "Renew successfully"
 msgstr "Gia hạn chứng chỉ SSL"
 
-#: src/language/constants.ts:31
+#: src/language/constants.ts:32
 msgid "Requested with wrong parameters"
 msgstr "Yêu cầu có chứa tham số sai"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:439
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:453
 msgid "Reset"
 msgstr "Đặt lại"
 
@@ -1508,7 +1524,7 @@ msgid "Running"
 msgstr "Running"
 
 #: src/components/ChatGPT/ChatGPT.vue:252
-#: src/views/certificate/CertificateEditor.vue:242
+#: src/views/certificate/CertificateEditor.vue:249
 #: src/views/config/ConfigEdit.vue:96 src/views/domain/DomainEdit.vue:263
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
 #: src/views/preference/Preference.vue:130 src/views/stream/StreamEdit.vue:254
@@ -1526,7 +1542,7 @@ msgstr "Đã xảy ra lỗi khi lưu %{msg}"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:104
-#: src/views/certificate/CertificateEditor.vue:45
+#: src/views/certificate/CertificateEditor.vue:46
 #: src/views/preference/Preference.vue:66
 #, fuzzy
 msgid "Save successfully"
@@ -1557,8 +1573,8 @@ msgstr "Gửi"
 #: src/components/StdDesign/StdDataDisplay/methods/exportCsv.ts:46
 #: src/components/StdDesign/StdDataDisplay/methods/sortable.ts:126
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:42
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:182
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:221
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:196
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:235
 #: src/views/config/ConfigEdit.vue:40 src/views/domain/DomainList.vue:81
 #: src/views/environment/Environment.vue:139 src/views/other/Install.vue:70
 #: src/views/preference/Preference.vue:70 src/views/stream/StreamList.vue:113
@@ -1616,21 +1632,21 @@ msgstr "Logs"
 msgid "Sites List"
 msgstr "Danh sách Website"
 
-#: src/views/certificate/CertificateEditor.vue:191
+#: src/views/certificate/CertificateEditor.vue:198
 msgid "SSL Certificate Content"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:204
+#: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Key Content"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:75
-#: src/views/certificate/CertificateEditor.vue:176
+#: src/views/certificate/Certificate.vue:80
+#: src/views/certificate/CertificateEditor.vue:177
 msgid "SSL Certificate Key Path"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:67
-#: src/views/certificate/CertificateEditor.vue:161
+#: src/views/certificate/Certificate.vue:72
+#: src/views/certificate/CertificateEditor.vue:162
 msgid "SSL Certificate Path"
 msgstr ""
 
@@ -1644,7 +1660,7 @@ msgid "Stable"
 msgstr "Ổn định"
 
 #: src/views/certificate/ACMEUser.vue:42
-#: src/views/certificate/Certificate.vue:83 src/views/domain/DomainList.vue:22
+#: src/views/certificate/Certificate.vue:88 src/views/domain/DomainList.vue:22
 #: src/views/environment/Environment.vue:76 src/views/stream/StreamList.vue:22
 msgid "Status"
 msgstr "Trạng thái"
@@ -1680,6 +1696,42 @@ msgstr "Sử dụng Dark theme"
 msgid "Switch to light theme"
 msgstr "Sử dụng Light theme"
 
+#: src/views/certificate/Certificate.vue:42
+#, fuzzy
+msgid "Sync Certificate"
+msgstr "Gia hạn chứng chỉ SSL"
+
+#: src/components/Notification/detailRender.ts:25
+#, fuzzy
+msgid ""
+"Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
+"remote Nginx UI to the latest version"
+msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
+
+#: src/components/Notification/detailRender.ts:29
+#, fuzzy
+msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
+
+#: src/components/Notification/detailRender.ts:17
+#, fuzzy
+msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
+msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
+
+#: src/language/constants.ts:38
+#, fuzzy
+msgid "Sync Certificate Error"
+msgstr "Gia hạn chứng chỉ SSL thất bại"
+
+#: src/language/constants.ts:37
+#, fuzzy
+msgid "Sync Certificate Success"
+msgstr "Gia hạn chứng chỉ SSL thành công"
+
+#: src/views/certificate/CertificateEditor.vue:191
+msgid "Sync to"
+msgstr ""
+
 #: src/routes/index.ts:248
 msgid "System"
 msgstr "Thông tin"
@@ -1710,11 +1762,11 @@ msgstr ""
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "Tên tệp không thể chứa các ký tự sau: %{c}"
 
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/CertificateEditor.vue:201
 msgid "The input is not a SSL Certificate"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:207
+#: src/views/certificate/CertificateEditor.vue:214
 msgid "The input is not a SSL Certificate Key"
 msgstr ""
 
@@ -1724,11 +1776,11 @@ msgid ""
 "dashes, and dots."
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:165
+#: src/views/certificate/CertificateEditor.vue:166
 msgid "The path exists, but the file is not a certificate"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:180
+#: src/views/certificate/CertificateEditor.vue:181
 msgid "The path exists, but the file is not a private key"
 msgstr ""
 
@@ -1760,17 +1812,17 @@ msgstr ""
 msgid "The username or password is incorrect"
 msgstr "Tên người dùng hoặc mật khẩu không chính xác"
 
-#: src/views/certificate/CertificateEditor.vue:101
+#: src/views/certificate/CertificateEditor.vue:102
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Mục Chứng chỉ tự động này không hợp lệ, vui lòng xóa nó"
 
-#: src/views/certificate/CertificateEditor.vue:91
+#: src/views/certificate/CertificateEditor.vue:92
 msgid "This certificate is managed by Nginx UI"
 msgstr "Chứng chỉ này được quản lý bởi Nginx UI"
 
-#: src/views/certificate/CertificateEditor.vue:149
-#: src/views/certificate/CertificateEditor.vue:163
-#: src/views/certificate/CertificateEditor.vue:178
+#: src/views/certificate/CertificateEditor.vue:150
+#: src/views/certificate/CertificateEditor.vue:164
+#: src/views/certificate/CertificateEditor.vue:179
 msgid "This field is required"
 msgstr ""
 
@@ -1782,7 +1834,7 @@ msgstr "Trường này không được để trống"
 msgid "Tips"
 msgstr ""
 
-#: src/views/notification/Notification.vue:18
+#: src/views/notification/Notification.vue:19
 msgid "Title"
 msgstr "Tiêu đề"
 
@@ -1807,12 +1859,12 @@ msgid "Trash"
 msgstr ""
 
 #: src/views/certificate/Certificate.vue:37 src/views/config/config.ts:12
-#: src/views/notification/Notification.vue:12
+#: src/views/notification/Notification.vue:13
 msgid "Type"
 msgstr "Loại"
 
 #: src/views/certificate/ACMEUser.vue:53
-#: src/views/certificate/DNSCredential.vue:23 src/views/config/config.ts:27
+#: src/views/certificate/DNSCredential.vue:27 src/views/config/config.ts:27
 #: src/views/config/ConfigEdit.vue:121
 #: src/views/domain/components/RightSettings.vue:86
 #: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:122
@@ -1831,7 +1883,7 @@ msgstr "Cập nhật thành công"
 msgid "Upgrade"
 msgstr "Cập nhật"
 
-#: src/language/constants.ts:28
+#: src/language/constants.ts:29
 #, fuzzy
 msgid "Upgraded successfully"
 msgstr "Cập nhật thành công"
@@ -1866,11 +1918,11 @@ msgid "Username (*)"
 msgstr "Username (*)"
 
 #: src/views/certificate/ACMEUser.vue:87
-#: src/views/certificate/Certificate.vue:92
+#: src/views/certificate/Certificate.vue:97
 msgid "Valid"
 msgstr "Hợp lệ"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:477
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:491
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:103
 msgid "View"
 msgstr "Xem"
@@ -1896,7 +1948,7 @@ msgstr "Cơ bản"
 msgid "Warning"
 msgstr "Lưu ý"
 
-#: src/views/certificate/DNSCredential.vue:52
+#: src/views/certificate/DNSCredential.vue:56
 msgid ""
 "We will add one or more TXT records to the DNS records of your domain for "
 "ownership verification."

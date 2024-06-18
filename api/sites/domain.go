@@ -22,14 +22,12 @@ func GetDomains(c *gin.Context) {
 	sort := c.DefaultQuery("sort", "desc")
 
 	configFiles, err := os.ReadDir(nginx.GetConfPath("sites-available"))
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
 
 	enabledConfig, err := os.ReadDir(nginx.GetConfPath("sites-enabled"))
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return

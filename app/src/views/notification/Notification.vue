@@ -7,6 +7,7 @@ import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTabl
 import { datetime, mask } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { NotificationType } from '@/constants'
 import { useUserStore } from '@/pinia'
+import { detailRender } from '@/components/Notification/detailRender'
 
 const columns: Column[] = [{
   title: () => $gettext('Type'),
@@ -24,6 +25,7 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('Details'),
   dataIndex: 'details',
+  customRender: detailRender,
   pithy: true,
 }, {
   title: () => $gettext('Created at'),

@@ -50,8 +50,8 @@ class Curd<T> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  _destroy(id: any = null) {
-    return http.delete(`${this.baseUrl}/${id}`)
+  _destroy(id: any = null, params: any = {}) {
+    return http.delete(`${this.baseUrl}/${id}`, { params })
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

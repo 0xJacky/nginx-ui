@@ -21,6 +21,7 @@ export interface Cert extends ModelBase {
   key_type: string
   log: string
   certificate_info: CertificateInfo
+  sync_node_ids: number[]
 }
 
 export interface CertificateInfo {

@@ -6,6 +6,8 @@ import notification from '@/api/notification'
 import type { Notification } from '@/api/notification'
 import { NotificationTypeT } from '@/constants'
 import { useUserStore } from '@/pinia'
+import { detailRender } from '@/components/Notification/detailRender'
+import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 
 const loading = ref(false)
 
@@ -109,8 +111,8 @@ function viewAll() {
                 </span>
               </template>
               <AListItemMeta
-                :title="item.title"
-                :description="item.details"
+                :title="$gettext(item.title)"
+                :description="detailRender({ text: item.details, record: item } as customRender)"
               >
                 <template #avatar>
                   <div>

@@ -53,14 +53,14 @@ func autoCert(certModel *model.Cert) {
 		return
 	}
 
-	cert, err := GetCertInfo(certModel.SSLCertificatePath)
+	certInfo, err := GetCertInfo(certModel.SSLCertificatePath)
 	if err != nil {
 		// Get certificate info error, ignore this certificate
 		log.Error(errors.Wrap(err, "get certificate info error"))
 		notification.Error("Renew Certificate Error", strings.Join(certModel.Domains, ", "))
 		return
 	}
-	if int(time.Now().Sub(cert.NotBefore).Hours()/24) < settings.ServerSettings.GetCertRenewalInterval() {
+	if int(time.Now().Sub(certInfo.NotBefore).Hours()/24) < settings.ServerSettings.GetCertRenewalInterval() {
 		// not after settings.ServerSettings.CertRenewalInterval, ignore
 		return
 	}
@@ -76,7 +76,7 @@ func autoCert(certModel *model.Cert) {
 		ChallengeMethod: certModel.ChallengeMethod,
 		DNSCredentialID: certModel.DnsCredentialID,
 		KeyType:         certModel.GetKeyType(),
-		NotBefore:       cert.NotBefore,
+		NotBefore:       certInfo.NotBefore,
 	}
 
 	if certModel.Resource != nil {
@@ -106,4 +106,9 @@ func autoCert(certModel *model.Cert) {
 	}
 
 	notification.Success("Renew Certificate Success", strings.Join(payload.ServerName, ", "))
+	err = SyncToRemoteServer(certModel)
+	if err != nil {
+		notification.Error("Sync Certificate Error", err.Error())
+		return
+	}
 }
