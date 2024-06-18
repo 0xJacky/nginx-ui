@@ -6,6 +6,7 @@ import (
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/go-acme/lego/v4/certificate"
 	"github.com/lib/pq"
+	"gorm.io/gorm/clause"
 	"os"
 )
 
@@ -93,7 +94,8 @@ func GetAutoCertList() (c []*Cert) {
 }
 
 func (c *Cert) Updates(n *Cert) error {
-	return db.Model(&Cert{}).Where("id", c.ID).Updates(n).Error
+	return db.Model(c).Clauses(clause.Returning{}).
+		Where("id", c.ID).Updates(n).Error
 }
 
 func (c *Cert) Remove() error {

@@ -110,7 +110,6 @@ func AddCert(c *gin.Context) {
 	}
 
 	err := certModel.Insert()
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -124,7 +123,6 @@ func AddCert(c *gin.Context) {
 	}
 
 	err = content.WriteFile()
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -180,7 +178,6 @@ func ModifyCert(c *gin.Context) {
 	}
 
 	err = content.WriteFile()
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
