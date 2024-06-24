@@ -4,6 +4,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/model"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -29,6 +30,7 @@ func Login(c *gin.Context) {
 	u, _ := model.GetUser(user.Name)
 
 	if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(user.Password)); err != nil {
+		time.Sleep(5 * time.Second)
 		c.JSON(http.StatusForbidden, gin.H{
 			"message": "The username or password is incorrect",
 		})

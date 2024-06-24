@@ -1,25 +1,28 @@
 <script setup lang="ts">
 import VueApexCharts from 'vue3-apexcharts'
-import { reactive } from 'vue'
+
 import { storeToRefs } from 'pinia'
 import { useSettingsStore } from '@/pinia'
 import type { Series } from '@/components/Chart/types'
 
-const { series, centerText, colors, name, bottomText }
-  = defineProps<{
-    series: Series[] | number[]
-    centerText?: string
-    colors?: string
-    name?: string
-    bottomText?: string
-  }>()
+const props = defineProps<{
+  series: Series[] | number[]
+  centerText?: string
+  colors?: string
+  name?: string
+  bottomText?: string
+}>()
 
 const settings = useSettingsStore()
 
 const { theme } = storeToRefs(settings)
 
-const chartOptions = reactive({
-  series,
+const fontColor = () => {
+  return theme.value === 'dark' ? '#fcfcfc' : undefined
+}
+
+const chartOptions = computed(() => ({
+  series: props.series,
   chart: {
     type: 'radialBar',
     offsetY: 0,
@@ -31,24 +34,24 @@ const chartOptions = reactive({
       dataLabels: {
         name: {
           fontSize: '14px',
-          color: colors,
+          color: props.colors,
           offsetY: 36,
         },
         value: {
-          offsetY: 50,
+          offsetY: -12,
           fontSize: '14px',
-          color: undefined,
+          color: fontColor(),
           formatter: () => {
-            return ''
+            return props.centerText
           },
         },
       },
     },
   },
   fill: {
-    colors,
+    colors: props.colors,
   },
-  labels: [name],
+  labels: [props.name],
   states: {
     hover: {
       filter: {
@@ -61,7 +64,7 @@ const chartOptions = reactive({
       },
     },
   },
-})
+}))
 </script>
 
 <template>
@@ -70,9 +73,6 @@ const chartOptions = reactive({
     :key="theme"
     class="radial-bar-container"
   >
-    <p class="text">
-      {{ centerText }}
-    </p>
     <p class="bottom_text">
       {{ bottomText }}
     </p>
@@ -96,6 +96,9 @@ const chartOptions = reactive({
   .radialBar {
     position: absolute;
     top: -30px;
+    @media (max-width: 1700px) and (min-width: 1200px) {
+      top: -10px;
+    }
     @media (max-width: 768px) and (min-width: 290px) {
       left: 50%;
       transform: translateX(-50%);
@@ -104,7 +107,6 @@ const chartOptions = reactive({
 
   .text {
     position: absolute;
-    top: calc(50% - 5px);
     width: 100%;
     text-align: center;
   }
@@ -112,6 +114,9 @@ const chartOptions = reactive({
   .bottom_text {
     position: absolute;
     top: calc(106px);
+    @media (max-width: 1300px) and (min-width: 1200px) {
+      top: calc(96px);
+    }
     font-weight: 600;
     width: 100%;
     text-align: center;
