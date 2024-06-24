@@ -78,6 +78,7 @@ const chartOptions = computed(() => ({
     </p>
     <VueApexCharts
       v-if="centerText"
+      ref="refContainer"
       class="radialBar"
       type="radialBar"
       height="205"
