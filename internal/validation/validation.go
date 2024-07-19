@@ -13,37 +13,31 @@ func Init() {
 	}
 
 	err := v.RegisterValidation("safety_text", safetyText)
-
 	if err != nil {
 		logger.Fatal(err)
 	}
 
 	err = v.RegisterValidation("certificate", isCertificate)
-
 	if err != nil {
 		logger.Fatal(err)
 	}
 
 	err = v.RegisterValidation("privatekey", isPrivateKey)
-
 	if err != nil {
 		logger.Fatal(err)
 	}
 
 	err = v.RegisterValidation("certificate_path", isCertificatePath)
-
 	if err != nil {
 		logger.Fatal(err)
 	}
 
 	err = v.RegisterValidation("privatekey_path", isPrivateKeyPath)
-
 	if err != nil {
 		logger.Fatal(err)
 	}
 
 	err = v.RegisterValidation("auto_cert_key_type", autoCertKeyType)
-
 	if err != nil {
 		logger.Fatal(err)
 	}
