@@ -41,6 +41,18 @@ func GetCurrentVersion(c *gin.Context) {
 	c.JSON(http.StatusOK, curVer)
 }
 
+const (
+	UpgradeStatusInfo     = "info"
+	UpgradeStatusError    = "error"
+	UpgradeStatusProgress = "progress"
+)
+
+type CoreUpgradeResp struct {
+	Status   string  `json:"status"`
+	Progress float64 `json:"progress"`
+	Message  string  `json:"message"`
+}
+
 func PerformCoreUpgrade(c *gin.Context) {
 	var upGrader = websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {
@@ -67,49 +79,48 @@ func PerformCoreUpgrade(c *gin.Context) {
 		return
 	}
 
-	_ = ws.WriteJSON(gin.H{
-		"status":  "info",
-		"message": "Initialing core upgrader",
+	_ = ws.WriteJSON(CoreUpgradeResp{
+		Status:  UpgradeStatusInfo,
+		Message: "Initialing core upgrader",
 	})
 
 	u, err := upgrader.NewUpgrader(control.Channel)
 
 	if err != nil {
-		_ = ws.WriteJSON(gin.H{
-			"status":  "error",
-			"message": "Initial core upgrader error",
+		_ = ws.WriteJSON(CoreUpgradeResp{
+			Status:  UpgradeStatusError,
+			Message: "Initial core upgrader error",
 		})
-		_ = ws.WriteJSON(gin.H{
-			"status":  "error",
-			"message": err.Error(),
+		_ = ws.WriteJSON(CoreUpgradeResp{
+			Status:  UpgradeStatusError,
+			Message: err.Error(),
 		})
 		logger.Error(err)
 		return
 	}
-	_ = ws.WriteJSON(gin.H{
-		"status":  "info",
-		"message": "Downloading latest release",
+	_ = ws.WriteJSON(CoreUpgradeResp{
+		Status:  UpgradeStatusInfo,
+		Message: "Downloading latest release",
 	})
 	progressChan := make(chan float64)
 	go func() {
 		for progress := range progressChan {
-			_ = ws.WriteJSON(gin.H{
-				"status":   "progress",
-				"progress": progress,
+			_ = ws.WriteJSON(CoreUpgradeResp{
+				Status:   UpgradeStatusProgress,
+				Progress: progress,
 			})
 		}
 	}()
 
 	tarName, err := u.DownloadLatestRelease(progressChan)
-
 	if err != nil {
-		_ = ws.WriteJSON(gin.H{
-			"status":  "error",
-			"message": "Download latest release error",
+		_ = ws.WriteJSON(CoreUpgradeResp{
+			Status:  UpgradeStatusError,
+			Message: "Download latest release error",
 		})
-		_ = ws.WriteJSON(gin.H{
-			"status":  "error",
-			"message": err.Error(),
+		_ = ws.WriteJSON(CoreUpgradeResp{
+			Status:  UpgradeStatusError,
+			Message: err.Error(),
 		})
 		logger.Error(err)
 		return
@@ -119,9 +130,9 @@ func PerformCoreUpgrade(c *gin.Context) {
 		_ = os.Remove(tarName)
 		_ = os.Remove(tarName + ".digest")
 	}()
-	_ = ws.WriteJSON(gin.H{
-		"status":  "info",
-		"message": "Performing core upgrade",
+	_ = ws.WriteJSON(CoreUpgradeResp{
+		Status:  UpgradeStatusInfo,
+		Message: "Performing core upgrade",
 	})
 	// dry run
 	if control.DryRun || settings.ServerSettings.Demo {
@@ -132,13 +143,13 @@ func PerformCoreUpgrade(c *gin.Context) {
 	// bye, overseer will restart nginx-ui
 	err = u.PerformCoreUpgrade(u.ExPath, tarName)
 	if err != nil {
-		_ = ws.WriteJSON(gin.H{
-			"status":  "error",
-			"message": "Perform core upgrade error",
+		_ = ws.WriteJSON(CoreUpgradeResp{
+			Status:  UpgradeStatusError,
+			Message: "Perform core upgrade error",
 		})
-		_ = ws.WriteJSON(gin.H{
-			"status":  "error",
-			"message": err.Error(),
+		_ = ws.WriteJSON(CoreUpgradeResp{
+			Status:  UpgradeStatusError,
+			Message: err.Error(),
 		})
 		logger.Error(err)
 		return

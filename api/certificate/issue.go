@@ -32,14 +32,12 @@ func handleIssueCertLogChan(conn *websocket.Conn, log *cert.Logger, logChan chan
 	}()
 
 	for logString := range logChan {
-
 		log.Info(logString)
 
 		err := conn.WriteJSON(IssueCertResponse{
 			Status:  Info,
 			Message: logString,
 		})
-
 		if err != nil {
 			logger.Error(err)
 			return
@@ -110,7 +108,6 @@ func IssueCert(c *gin.Context) {
 			Status:  Error,
 			Message: err.Error(),
 		})
-
 		if err != nil {
 			logger.Error(err)
 			return
@@ -132,7 +129,7 @@ func IssueCert(c *gin.Context) {
 
 	if err != nil {
 		logger.Error(err)
-		err = ws.WriteJSON(IssueCertResponse{
+		_ = ws.WriteJSON(IssueCertResponse{
 			Status:  Error,
 			Message: err.Error(),
 		})
@@ -149,7 +146,6 @@ func IssueCert(c *gin.Context) {
 		SSLCertificateKey: payload.GetCertificateKeyPath(),
 		KeyType:           payload.GetKeyType(),
 	})
-
 	if err != nil {
 		logger.Error(err)
 		return
