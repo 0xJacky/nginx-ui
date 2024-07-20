@@ -3,6 +3,7 @@ package analytic
 import (
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/host"
@@ -75,10 +76,7 @@ func Analytic(c *gin.Context) {
 
 		// write
 		err = ws.WriteJSON(stat)
-		if err != nil || websocket.IsUnexpectedCloseError(err,
-			websocket.CloseGoingAway,
-			websocket.CloseNoStatusReceived,
-			websocket.CloseNormalClosure) {
+		if helper.IsUnexpectedWebsocketError(err) {
 			logger.Error(err)
 			break
 		}

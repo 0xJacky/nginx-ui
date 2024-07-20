@@ -2,6 +2,7 @@ package analytic
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -27,10 +28,7 @@ func GetNodeStat(c *gin.Context) {
 	for {
 		// write
 		err = ws.WriteJSON(analytic.GetNodeStat())
-		if err != nil || websocket.IsUnexpectedCloseError(err,
-			websocket.CloseGoingAway,
-			websocket.CloseNoStatusReceived,
-			websocket.CloseNormalClosure) {
+		if helper.IsUnexpectedWebsocketError(err) {
 			logger.Error(err)
 			break
 		}
@@ -57,10 +55,7 @@ func GetNodesAnalytic(c *gin.Context) {
 	for {
 		// write
 		err = ws.WriteJSON(analytic.NodeMap)
-		if err != nil || websocket.IsUnexpectedCloseError(err,
-			websocket.CloseGoingAway,
-			websocket.CloseNoStatusReceived,
-			websocket.CloseNormalClosure) {
+		if helper.IsUnexpectedWebsocketError(err) {
 			logger.Error(err)
 			break
 		}
