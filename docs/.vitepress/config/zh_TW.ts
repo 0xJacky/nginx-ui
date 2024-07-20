@@ -43,7 +43,8 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             {text: 'Open AI', link: '/zh_TW/guide/config-openai'},
             {text: 'Casdoor', link: '/zh_TW/guide/config-casdoor'},
             {text: 'Logrotate', link: '/zh_TW/guide/config-logrotate'},
-            {text: '集群', link: '/zh_TW/guide/config-cluster'}
+            {text: '集群', link: '/zh_TW/guide/config-cluster'},
+            {text: '認證', link: '/zh_TM/guide/config-auth'}
           ]
         },
         {

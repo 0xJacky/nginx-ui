@@ -1,7 +1,7 @@
 # 环境变量
 适用于 v2.0.0-beta.23 及以上版本
 
-## 服务器
+## Server
 
 | Configuration Setting         | Environment Variable                  |
 | ----------------------------- | ------------------------------------- |
@@ -62,6 +62,12 @@
 | Enabled                       | NGINX_UI_LOGROTATE_ENABLED            |
 | CMD                           | NGINX_UI_LOGROTATE_CMD                |
 | Interval                      | NGINX_UI_LOGROTATE_INTERVAL           |
+
+## Auth
+
+| Configuration Setting | Environment Variable        |
+|-----------------------|-----------------------------|
+| IPWhiteList           | NGINX_UI_AUTH_IPWhiteList   |
 
 ## 预定义用户
 

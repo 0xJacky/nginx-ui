@@ -39,7 +39,8 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             {text: 'Open AI', link: '/guide/config-openai'},
             {text: 'Casdoor', link: '/guide/config-casdoor'},
             {text: 'Logrotate', link: '/guide/config-logrotate'},
-            {text: 'Cluster', link: '/guide/config-cluster'}
+            {text: 'Cluster', link: '/guide/config-cluster'},
+            {text: 'Auth', link: '/guide/config-auth'}
           ]
         },
         {
