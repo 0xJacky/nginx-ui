@@ -10,6 +10,15 @@ GODADDY_API_SECRET=yyyyyyyy \
 lego --email you@example.com --dns godaddy --domains my.example.org run
 '''
 
+Additional = '''
+GoDaddy has recently (2024-04) updated the account requirements to access parts of their production Domains API:
+
+- Availability API: Limited to accounts with 50 or more domains.
+- Management and DNS APIs: Limited to accounts with 10 or more domains and/or an active Discount Domain Club plan.
+
+https://community.letsencrypt.org/t/getting-unauthorized-url-error-while-trying-to-get-cert-for-subdomains/217329/12
+'''
+
 [Configuration]
   [Configuration.Credentials]
     GODADDY_API_KEY = "API key"
