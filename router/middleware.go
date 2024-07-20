@@ -4,7 +4,7 @@ import (
 	"encoding/base64"
 	"github.com/0xJacky/Nginx-UI/app"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
-	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -58,7 +58,7 @@ func authRequired() gin.HandlerFunc {
 			}
 		}
 
-		if model.CheckToken(token) < 1 {
+		if user.CheckToken(token) < 1 {
 			abortWithAuthFailure()
 			return
 		}

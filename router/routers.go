@@ -23,10 +23,9 @@ import (
 func InitRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
-
 	r.Use(recovery())
-
 	r.Use(cacheJs())
+    r.Use(ipWhiteList())
 
 	//r.Use(OperationSync())
 
