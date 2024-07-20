@@ -1,6 +1,7 @@
 package upstream
 
 import (
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/gin-gonic/gin"
@@ -35,11 +36,7 @@ func AvailabilityTest(c *gin.Context) {
 
 	for {
 		err = ws.WriteJSON(upstream.AvailabilityTest(body))
-
-		if err != nil || websocket.IsUnexpectedCloseError(err,
-			websocket.CloseGoingAway,
-			websocket.CloseNoStatusReceived,
-			websocket.CloseNormalClosure) {
+		if helper.IsUnexpectedWebsocketError(err) {
 			logger.Error(err)
 			break
 		}

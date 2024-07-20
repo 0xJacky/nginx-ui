@@ -5,7 +5,7 @@ import (
 	"fmt"
 	_github "github.com/0xJacky/Nginx-UI/.github"
 	"github.com/0xJacky/Nginx-UI/app"
-	helper2 "github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/pkg/errors"
@@ -282,7 +282,6 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 
 	// digest
 	digest, ok := assetsMap[fmt.Sprintf("nginx-ui-%s.tar.gz.digest", arch.Name)]
-
 	if !ok || digest.BrowserDownloadUrl == "" {
 		err = errors.New("upgrader core digest is empty")
 		return
@@ -297,7 +296,6 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 	}
 
 	resp, err := http.Get(digest.BrowserDownloadUrl)
-
 	if err != nil {
 		err = errors.Wrap(err, "upgrader core download digest fail")
 		return
@@ -324,16 +322,27 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 	// check tar digest
 	digestFileBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
-		err = errors.Wrap(err, "digestFileContent read error")
+		err = errors.Wrap(err, "digest file content read error")
 		return
 	}
 
 	digestFileContent := strings.TrimSpace(string(digestFileBytes))
 
-	logger.Debug("DownloadLatestRelease tar digest", helper2.DigestSHA512(tarName))
+	logger.Debug("DownloadLatestRelease tar digest", helper.DigestSHA512(tarName))
 	logger.Debug("DownloadLatestRelease digestFileContent", digestFileContent)
 
-	if digestFileContent != helper2.DigestSHA512(tarName) {
+	if digestFileContent == "" {
+		err = errors.New("digest file content is empty")
+		return
+	}
+
+	exeSHA512 := helper.DigestSHA512(tarName)
+	if exeSHA512 == "" {
+		err = errors.New("executable binary file is empty")
+		return
+	}
+
+	if digestFileContent != exeSHA512 {
 		err = errors.Wrap(err, "digest not equal")
 		return
 	}
@@ -343,7 +352,7 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 
 func (u *Upgrader) PerformCoreUpgrade(exPath string, tarPath string) (err error) {
 	dir := filepath.Dir(exPath)
-	err = helper2.UnTar(dir, tarPath)
+	err = helper.UnTar(dir, tarPath)
 	if err != nil {
 		err = errors.Wrap(err, "PerformCoreUpgrade unTar error")
 		return
