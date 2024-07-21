@@ -16,3 +16,15 @@ By default, if you do not set the `IPWhiteList`, all IP addresses are allowed to
 
 Once you set the `IPWhiteList`, only the users from IP addresses in the list and `127.0.0.1` can access the Nginx UI,
 others will receive a `403 Forbidden` error.
+
+## BanThresholdMinutes
+- Type: `int`
+- Default: `10`
+
+By default, if a user fails to log in 10 times within 10 minutes, the user will be banned for 10 minutes.
+
+## MaxAttempts
+- Type: `int`
+- Default: `10`
+
+By default, a user can try to log in 10 times within 10 minutes.
