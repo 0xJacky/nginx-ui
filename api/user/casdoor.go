@@ -3,7 +3,7 @@ package user
 import (
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/casdoor/casdoor-go-sdk/casdoorsdk"
 	"github.com/gin-gonic/gin"
@@ -53,7 +53,7 @@ func CasdoorCallback(c *gin.Context) {
 		return
 	}
 
-	u, err := model.GetUser(claims.Name)
+	u, err := user.GetUser(claims.Name)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			c.JSON(http.StatusForbidden, gin.H{
@@ -65,7 +65,7 @@ func CasdoorCallback(c *gin.Context) {
 		return
 	}
 
-	userToken, err := model.GenerateJWT(u.Name)
+	userToken, err := user.GenerateJWT(u.Name)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return

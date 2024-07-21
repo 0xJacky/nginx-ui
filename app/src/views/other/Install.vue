@@ -61,11 +61,10 @@ const onSubmit = () => {
   validate().then(() => {
     // modelRef
     loading.value = true
-    // eslint-disable-next-line promise/no-nesting
+
     install.install_nginx_ui(modelRef).then(async () => {
       message.success($gettext('Install successfully'))
       await router.push('/login')
-      // eslint-disable-next-line promise/no-nesting
     }).catch(e => {
       message.error(e.message ?? $gettext('Server error'))
     }).finally(() => {

@@ -63,6 +63,12 @@ Applicable for version v2.0.0-beta.23 and above.
 | CMD                           | NGINX_UI_LOGROTATE_CMD                |
 | Interval                      | NGINX_UI_LOGROTATE_INTERVAL           |
 
+## Auth
+
+| Configuration Setting | Environment Variable        |
+|-----------------------|-----------------------------|
+| IPWhiteList           | NGINX_UI_AUTH_IPWhiteList   |
+
 ## Predefined User
 
 In skip installation mode, you can set the following environment variables to create a predefined user:

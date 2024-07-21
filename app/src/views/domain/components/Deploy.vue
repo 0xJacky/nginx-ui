@@ -29,7 +29,7 @@ function deploy() {
             name: name.value,
             content: r.config,
             overwrite: overwrite.value,
-            // eslint-disable-next-line promise/no-nesting
+
           }, { headers: { 'X-Node-ID': id } }).then(async () => {
             notification.success({
               message: $gettext('Deploy successfully'),
@@ -38,7 +38,6 @@ function deploy() {
                   { conf_name: name.value, node_name }),
             })
             if (enabled.value) {
-              // eslint-disable-next-line promise/no-nesting
               domain.enable(name.value).then(() => {
                 notification.success({
                   message: $gettext('Enable successfully'),
@@ -46,7 +45,6 @@ function deploy() {
                     $gettext('Enable %{conf_name} in %{node_name} successfully',
                       { conf_name: name.value, node_name }),
                 })
-                // eslint-disable-next-line promise/no-nesting
               }).catch(e => {
                 notification.error({
                   message: $gettext('Enable %{conf_name} in %{node_name} failed', {
@@ -57,7 +55,6 @@ function deploy() {
                 })
               })
             }
-            // eslint-disable-next-line promise/no-nesting
           }).catch(e => {
             notification.error({
               message: $gettext('Deploy %{conf_name} to %{node_name} failed', {

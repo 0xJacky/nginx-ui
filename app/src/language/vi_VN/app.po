@@ -28,7 +28,8 @@ msgstr "Người dùng"
 #: src/views/certificate/DNSCredential.vue:33 src/views/config/config.ts:34
 #: src/views/domain/DomainList.vue:47 src/views/environment/Environment.vue:129
 #: src/views/notification/Notification.vue:37
-#: src/views/stream/StreamList.vue:47 src/views/user/User.vue:43
+#: src/views/preference/AuthSettings.vue:26 src/views/stream/StreamList.vue:47
+#: src/views/user/User.vue:43
 msgid "Action"
 msgstr "Hành động"
 
@@ -51,7 +52,7 @@ msgstr "Thêm Directive"
 msgid "Add Location"
 msgstr "Thêm Location"
 
-#: src/routes/index.ts:64 src/views/domain/DomainAdd.vue:93
+#: src/routes/index.ts:64 src/views/domain/DomainAdd.vue:89
 msgid "Add Site"
 msgstr "Thêm Website"
 
@@ -70,11 +71,11 @@ msgstr "Cập nhật thành công"
 msgid "Additional"
 msgstr "Tùy chọn bổ sung"
 
-#: src/views/domain/DomainEdit.vue:199 src/views/stream/StreamEdit.vue:191
+#: src/views/domain/DomainEdit.vue:197 src/views/stream/StreamEdit.vue:189
 msgid "Advance Mode"
 msgstr "Nâng cao"
 
-#: src/views/preference/OpenAISettings.vue:42
+#: src/views/preference/OpenAISettings.vue:45
 msgid "API Base Url"
 msgstr ""
 
@@ -82,11 +83,11 @@ msgstr ""
 msgid "API Document"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:54
+#: src/views/preference/OpenAISettings.vue:57
 msgid "API Proxy"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:66
+#: src/views/preference/OpenAISettings.vue:69
 msgid "API Token"
 msgstr ""
 
@@ -94,7 +95,12 @@ msgstr ""
 msgid "Arch"
 msgstr ""
 
-#: src/components/Notification/Notification.vue:84
+#: src/views/preference/AuthSettings.vue:94
+#, fuzzy
+msgid "Are you sure to delete this banned IP immediately?"
+msgstr "Bạn chắc chắn muốn xóa nó "
+
+#: src/components/Notification/Notification.vue:86
 #: src/views/notification/Notification.vue:72
 #, fuzzy
 msgid "Are you sure you want to clear all notifications?"
@@ -147,6 +153,15 @@ msgstr "Hỏi ChatGPT"
 msgid "Assistant"
 msgstr "Trợ lý"
 
+#: src/views/preference/AuthSettings.vue:17
+msgid "Attempts"
+msgstr ""
+
+#: src/views/preference/Preference.vue:116
+#, fuzzy
+msgid "Auth"
+msgstr "Tác giả"
+
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:106
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:120
 msgid "Author"
@@ -170,8 +185,8 @@ msgstr "Đã bật tự động gia hạn SSL cho %{name}"
 
 #: src/views/certificate/CertificateEditor.vue:242
 #: src/views/config/Config.vue:73 src/views/config/ConfigEdit.vue:87
-#: src/views/domain/DomainEdit.vue:256 src/views/nginx_log/NginxLog.vue:168
-#: src/views/stream/StreamEdit.vue:247
+#: src/views/domain/DomainEdit.vue:254 src/views/nginx_log/NginxLog.vue:168
+#: src/views/stream/StreamEdit.vue:245
 msgid "Back"
 msgstr "Quay lại"
 
@@ -180,19 +195,31 @@ msgstr "Quay lại"
 msgid "Back Home"
 msgstr "Quay lại"
 
-#: src/views/domain/DomainAdd.vue:99
+#: src/views/preference/AuthSettings.vue:68
+msgid "Ban Threshold Minutes"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:82
+msgid "Banned IPs"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:20
+msgid "Banned Until"
+msgstr ""
+
+#: src/views/domain/DomainAdd.vue:95
 msgid "Base information"
 msgstr "Thông tin"
 
 #: src/views/config/ConfigEdit.vue:115
 #: src/views/domain/components/RightSettings.vue:75
-#: src/views/preference/Preference.vue:101
+#: src/views/preference/Preference.vue:110
 #: src/views/stream/components/RightSettings.vue:74
 #, fuzzy
 msgid "Basic"
 msgstr "Cơ bản"
 
-#: src/views/domain/DomainEdit.vue:202 src/views/stream/StreamEdit.vue:194
+#: src/views/domain/DomainEdit.vue:200 src/views/stream/StreamEdit.vue:192
 msgid "Basic Mode"
 msgstr "Cơ bản"
 
@@ -280,12 +307,12 @@ msgid "Cleaning environment variables"
 msgstr "Xoá các biến môi trường"
 
 #: src/components/ChatGPT/ChatGPT.vue:276
-#: src/components/Notification/Notification.vue:89
+#: src/components/Notification/Notification.vue:91
 #: src/views/notification/Notification.vue:77
 msgid "Clear"
 msgstr "Xoá"
 
-#: src/components/Notification/Notification.vue:40
+#: src/components/Notification/Notification.vue:42
 #: src/views/notification/Notification.vue:46
 #, fuzzy
 msgid "Cleared successfully"
@@ -312,7 +339,7 @@ msgstr "Mẫu Cấu hình"
 msgid "Configuration file is test successful"
 msgstr "Tệp cấu hình được kiểm tra thành công"
 
-#: src/views/domain/DomainAdd.vue:105
+#: src/views/domain/DomainAdd.vue:101
 msgid "Configuration Name"
 msgstr "Tên cấu hình"
 
@@ -320,7 +347,7 @@ msgstr "Tên cấu hình"
 msgid "Configurations"
 msgstr "Cấu hình"
 
-#: src/views/domain/DomainAdd.vue:100
+#: src/views/domain/DomainAdd.vue:96
 msgid "Configure SSL"
 msgstr "Cấu hình SSL"
 
@@ -351,7 +378,7 @@ msgstr "CPU:"
 msgid "Create"
 msgstr "Ngày tạo"
 
-#: src/views/domain/DomainAdd.vue:158
+#: src/views/domain/DomainAdd.vue:154
 msgid "Create Another"
 msgstr "Tạo thêm"
 
@@ -390,7 +417,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr "Bảng điều khiển"
 
-#: src/views/other/Install.vue:121
+#: src/views/other/Install.vue:120
 msgid "Database (Optional, default: database)"
 msgstr "Tên cơ sở dữ liệu (Tuỳ chọn, Mặc định là: database)"
 
@@ -424,15 +451,15 @@ msgstr "Xoá trang web: %{site_name}"
 msgid "Deleted successfully"
 msgstr "Đã xoá thành công"
 
-#: src/views/domain/components/Deploy.vue:106
+#: src/views/domain/components/Deploy.vue:103
 #: src/views/domain/components/RightSettings.vue:93
-#: src/views/stream/components/Deploy.vue:106
+#: src/views/stream/components/Deploy.vue:103
 #: src/views/stream/components/RightSettings.vue:92
 msgid "Deploy"
 msgstr "Triển khai"
 
-#: src/views/domain/components/Deploy.vue:63
-#: src/views/stream/components/Deploy.vue:63
+#: src/views/domain/components/Deploy.vue:60
+#: src/views/stream/components/Deploy.vue:60
 msgid "Deploy %{conf_name} to %{node_name} failed"
 msgstr "Triển khai %{conf_name} tới %{node_name} thất bại"
 
@@ -482,9 +509,9 @@ msgstr "Tắt"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Tắt tự động gia hạn SSL cho %{name} thất bại"
 
-#: src/views/domain/cert/ChangeCert.vue:44 src/views/domain/DomainEdit.vue:185
+#: src/views/domain/cert/ChangeCert.vue:44 src/views/domain/DomainEdit.vue:183
 #: src/views/domain/DomainList.vue:33 src/views/environment/Environment.vue:93
-#: src/views/stream/StreamEdit.vue:177 src/views/stream/StreamList.vue:33
+#: src/views/stream/StreamEdit.vue:175 src/views/stream/StreamList.vue:33
 msgid "Disabled"
 msgstr "Đã tắt"
 
@@ -563,7 +590,7 @@ msgstr "Bạn muốn xóa máy chủ này ?"
 msgid "Domain"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:148
+#: src/views/domain/DomainAdd.vue:144
 msgid "Domain Config Created Successfully"
 msgstr "Tên miền đã được tạo"
 
@@ -585,38 +612,38 @@ msgstr "Đang tải phiên bản mới nhất"
 msgid "Dry run mode enabled"
 msgstr "Đã bật chế độ Dry run"
 
-#: src/views/domain/components/SiteDuplicate.vue:126
+#: src/views/domain/components/SiteDuplicate.vue:122
 #: src/views/domain/DomainList.vue:140
-#: src/views/stream/components/StreamDuplicate.vue:126
+#: src/views/stream/components/StreamDuplicate.vue:122
 #: src/views/stream/StreamList.vue:161
 msgid "Duplicate"
 msgstr "Nhân bản"
 
-#: src/views/domain/components/SiteDuplicate.vue:84
-#: src/views/stream/components/StreamDuplicate.vue:84
+#: src/views/domain/components/SiteDuplicate.vue:82
+#: src/views/stream/components/StreamDuplicate.vue:82
 #, fuzzy
 msgid "Duplicate %{conf_name} to %{node_name} successfully"
 msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
-#: src/views/domain/components/SiteDuplicate.vue:90
-#: src/views/stream/components/StreamDuplicate.vue:90
+#: src/views/domain/components/SiteDuplicate.vue:87
+#: src/views/stream/components/StreamDuplicate.vue:87
 #, fuzzy
 msgid "Duplicate failed"
 msgstr "Nhân bản thất bại"
 
-#: src/views/domain/components/SiteDuplicate.vue:82
-#: src/views/stream/components/StreamDuplicate.vue:82
+#: src/views/domain/components/SiteDuplicate.vue:80
+#: src/views/stream/components/StreamDuplicate.vue:80
 #, fuzzy
 msgid "Duplicate successfully"
 msgstr "Nhân bản thành công"
 
-#: src/views/domain/components/SiteDuplicate.vue:64
-#: src/views/stream/components/StreamDuplicate.vue:64
+#: src/views/domain/components/SiteDuplicate.vue:63
+#: src/views/stream/components/StreamDuplicate.vue:63
 #, fuzzy
 msgid "Duplicate to local successfully"
 msgstr "Đã sao chép thành công vào máy cục bộ"
 
-#: src/views/domain/DomainEdit.vue:174 src/views/stream/StreamEdit.vue:166
+#: src/views/domain/DomainEdit.vue:172 src/views/stream/StreamEdit.vue:164
 msgid "Edit %{n}"
 msgstr "Sửa %{n}"
 
@@ -638,25 +665,25 @@ msgstr "Sửa trang web"
 msgid "Email"
 msgstr "Email (*)"
 
-#: src/views/other/Install.vue:90
+#: src/views/other/Install.vue:89
 msgid "Email (*)"
 msgstr "Email (*)"
 
-#: src/views/domain/components/Deploy.vue:86
+#: src/views/domain/components/Deploy.vue:83
 #: src/views/domain/DomainList.vue:132
-#: src/views/stream/components/Deploy.vue:86
+#: src/views/stream/components/Deploy.vue:83
 #: src/views/stream/StreamList.vue:153
 #, fuzzy
 msgid "Enable"
 msgstr "Đã bật"
 
-#: src/views/domain/components/Deploy.vue:52
-#: src/views/stream/components/Deploy.vue:52
+#: src/views/domain/components/Deploy.vue:50
+#: src/views/stream/components/Deploy.vue:50
 msgid "Enable %{conf_name} in %{node_name} failed"
 msgstr "Không thể bật %{conf_name} trên %{node_name}"
 
-#: src/views/domain/components/Deploy.vue:46
-#: src/views/stream/components/Deploy.vue:46
+#: src/views/domain/components/Deploy.vue:45
+#: src/views/stream/components/Deploy.vue:45
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "Đã bật %{conf_name} trên %{node_name}"
 
@@ -664,12 +691,12 @@ msgstr "Đã bật %{conf_name} trên %{node_name}"
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "Không thể bật tự động gia hạn SSL cho %{name}"
 
-#: src/views/domain/DomainAdd.vue:46
+#: src/views/domain/DomainAdd.vue:43
 msgid "Enable failed"
 msgstr "Bật không thành công"
 
-#: src/views/domain/components/Deploy.vue:44
-#: src/views/stream/components/Deploy.vue:44
+#: src/views/domain/components/Deploy.vue:43
+#: src/views/stream/components/Deploy.vue:43
 #, fuzzy
 msgid "Enable successfully"
 msgstr "Đã bật"
@@ -680,19 +707,19 @@ msgstr "Bật TLS"
 
 #: src/views/domain/cert/ChangeCert.vue:40
 #: src/views/domain/components/RightSettings.vue:77
-#: src/views/domain/DomainEdit.vue:179 src/views/domain/DomainList.vue:29
+#: src/views/domain/DomainEdit.vue:177 src/views/domain/DomainList.vue:29
 #: src/views/environment/Environment.vue:102
 #: src/views/preference/LogrotateSettings.vue:20
 #: src/views/stream/components/RightSettings.vue:76
-#: src/views/stream/StreamEdit.vue:171 src/views/stream/StreamList.vue:29
+#: src/views/stream/StreamEdit.vue:169 src/views/stream/StreamList.vue:29
 msgid "Enabled"
 msgstr "Đã bật"
 
 #: src/views/domain/components/RightSettings.vue:29
-#: src/views/domain/components/SiteDuplicate.vue:98
-#: src/views/domain/DomainAdd.vue:42 src/views/domain/DomainList.vue:57
+#: src/views/domain/components/SiteDuplicate.vue:94
+#: src/views/domain/DomainAdd.vue:40 src/views/domain/DomainList.vue:57
 #: src/views/stream/components/RightSettings.vue:29
-#: src/views/stream/components/StreamDuplicate.vue:98
+#: src/views/stream/components/StreamDuplicate.vue:94
 #: src/views/stream/StreamList.vue:57
 msgid "Enabled successfully"
 msgstr "Đã bật"
@@ -763,7 +790,7 @@ msgstr "Không thể bật %{msg}"
 msgid "Failed to get certificate information"
 msgstr "Không thể truy xuất thông tin chứng chỉ"
 
-#: src/views/domain/DomainEdit.vue:132 src/views/stream/StreamEdit.vue:124
+#: src/views/domain/DomainEdit.vue:130 src/views/stream/StreamEdit.vue:122
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "Không lưu được, đã phát hiện thấy (các) lỗi cú pháp trong cấu hình."
 
@@ -789,7 +816,7 @@ msgstr "Không tìm thấy tệp tin"
 msgid "Filter"
 msgstr "Lọc"
 
-#: src/language/constants.ts:19 src/views/domain/DomainAdd.vue:101
+#: src/language/constants.ts:19 src/views/domain/DomainAdd.vue:97
 msgid "Finished"
 msgstr "Đã hoàn thành"
 
@@ -862,6 +889,12 @@ msgstr ""
 msgid "If left blank, the default CA Dir will be used."
 msgstr ""
 
+#: src/views/preference/AuthSettings.vue:60
+msgid ""
+"If the number of login failed attempts from a ip reach the max attempts in "
+"ban threshold minutes, the ip will be banned for a period of time."
+msgstr ""
+
 #: src/views/certificate/Certificate.vue:136
 #, fuzzy
 msgid "Import"
@@ -871,6 +904,11 @@ msgstr "Xuất"
 #, fuzzy
 msgid "Import Certificate"
 msgstr "Chứng chỉ"
+
+#: src/views/other/Login.vue:59
+#, fuzzy
+msgid "Incorrect username or password"
+msgstr "Tên người dùng hoặc mật khẩu không chính xác"
 
 #: src/constants/index.ts:18
 msgid "Info"
@@ -884,7 +922,7 @@ msgstr "Không thể khởi tạo trình nâng cấp"
 msgid "Initialing core upgrader"
 msgstr "Đang khởi tạo trình nâng cấp"
 
-#: src/routes/index.ts:273 src/views/other/Install.vue:136
+#: src/routes/index.ts:273 src/views/other/Install.vue:135
 msgid "Install"
 msgstr "Cài đặt"
 
@@ -905,6 +943,10 @@ msgstr ""
 #, fuzzy
 msgid "Invalid"
 msgstr "Hợp lệ"
+
+#: src/views/preference/AuthSettings.vue:14
+msgid "IP"
+msgstr ""
 
 #: src/views/certificate/Certificate.vue:144
 #, fuzzy
@@ -940,7 +982,7 @@ msgstr "Kiểm tra lần cuối lúc"
 msgid "Leave blank for no change"
 msgstr "Bỏ trống nếu không thay đổi"
 
-#: src/views/preference/OpenAISettings.vue:50
+#: src/views/preference/OpenAISettings.vue:53
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Bỏ trống để sử dụng địa chỉ mặc định: https://api.openai.com/"
 
@@ -997,11 +1039,11 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Log"
 
-#: src/routes/index.ts:279 src/views/other/Login.vue:147
+#: src/routes/index.ts:279 src/views/other/Login.vue:159
 msgid "Login"
 msgstr "Đăng nhập"
 
-#: src/views/other/Login.vue:51 src/views/other/Login.vue:97
+#: src/views/other/Login.vue:109 src/views/other/Login.vue:51
 msgid "Login successful"
 msgstr "Đăng nhập thành công"
 
@@ -1009,7 +1051,7 @@ msgstr "Đăng nhập thành công"
 msgid "Logout successful"
 msgstr "Đã đăng xuất"
 
-#: src/views/preference/Preference.vue:119
+#: src/views/preference/Preference.vue:134
 msgid "Logrotate"
 msgstr ""
 
@@ -1053,6 +1095,10 @@ msgstr "Người dùng"
 msgid "Managed Certificate"
 msgstr ""
 
+#: src/views/preference/AuthSettings.vue:74
+msgid "Max Attempts"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:217
 #: src/views/dashboard/ServerAnalytic.vue:218
 msgid "Memory"
@@ -1066,7 +1112,7 @@ msgstr "Memory và Storage"
 msgid "Minutes"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:30
+#: src/views/preference/OpenAISettings.vue:33
 #, fuzzy
 msgid "Model"
 msgstr "Run Mode"
@@ -1083,7 +1129,7 @@ msgstr "Sửa"
 msgid "Modify Certificate"
 msgstr "Sửa chứng chỉ"
 
-#: src/views/domain/DomainAdd.vue:155
+#: src/views/domain/DomainAdd.vue:151
 msgid "Modify Config"
 msgstr "Sửa cấu hình"
 
@@ -1103,12 +1149,12 @@ msgstr "Single Directive"
 #: src/views/certificate/DNSCredential.vue:11 src/views/config/config.ts:7
 #: src/views/domain/cert/ChangeCert.vue:17
 #: src/views/domain/components/RightSettings.vue:83
-#: src/views/domain/components/SiteDuplicate.vue:133
+#: src/views/domain/components/SiteDuplicate.vue:129
 #: src/views/domain/DomainList.vue:13
 #: src/views/domain/ngx_conf/NgxUpstream.vue:175
 #: src/views/environment/Environment.vue:12
 #: src/views/stream/components/RightSettings.vue:82
-#: src/views/stream/components/StreamDuplicate.vue:133
+#: src/views/stream/components/StreamDuplicate.vue:129
 #: src/views/stream/StreamList.vue:13 src/views/stream/StreamList.vue:187
 msgid "Name"
 msgstr "Tên"
@@ -1135,11 +1181,11 @@ msgstr "Đã có phiên bản mới"
 
 #: src/views/certificate/WildcardCertificate.vue:99
 #: src/views/domain/cert/components/ObtainCert.vue:203
-#: src/views/domain/DomainAdd.vue:142
+#: src/views/domain/DomainAdd.vue:138
 msgid "Next"
 msgstr "Tiếp theo"
 
-#: src/views/preference/Preference.vue:107
+#: src/views/preference/Preference.vue:122
 msgid "Nginx"
 msgstr ""
 
@@ -1147,7 +1193,7 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
 
-#: src/views/domain/DomainEdit.vue:217 src/views/stream/StreamEdit.vue:209
+#: src/views/domain/DomainEdit.vue:215 src/views/stream/StreamEdit.vue:207
 #, fuzzy
 msgid "Nginx Configuration Parse Error"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
@@ -1175,7 +1221,7 @@ msgid "Nginx restarted successfully"
 msgstr "Restart Nginx thành công"
 
 #: src/components/ChatGPT/ChatGPT.vue:270
-#: src/components/Notification/Notification.vue:82
+#: src/components/Notification/Notification.vue:84
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:521
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:535
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:549
@@ -1183,6 +1229,7 @@ msgstr "Restart Nginx thành công"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:71
 #: src/views/notification/Notification.vue:70
+#: src/views/preference/AuthSettings.vue:96
 #: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
 msgid "No"
@@ -1214,7 +1261,7 @@ msgstr "Ghi chú"
 msgid "Notification"
 msgstr "Thông báo"
 
-#: src/components/Notification/Notification.vue:80 src/routes/index.ts:221
+#: src/components/Notification/Notification.vue:82 src/routes/index.ts:221
 #, fuzzy
 msgid "Notifications"
 msgstr "Thông báo"
@@ -1240,7 +1287,7 @@ msgid "Ok"
 msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:271
-#: src/components/Notification/Notification.vue:83
+#: src/components/Notification/Notification.vue:85
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:56
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:522
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:536
@@ -1270,7 +1317,7 @@ msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."
 msgid "Online"
 msgstr "Trực tuyến"
 
-#: src/views/preference/Preference.vue:113
+#: src/views/preference/Preference.vue:128
 msgid "OpenAI"
 msgstr ""
 
@@ -1283,13 +1330,13 @@ msgstr "Hệ điều hành"
 msgid "OS:"
 msgstr "Hệ điều hành:"
 
-#: src/views/domain/components/Deploy.vue:90
-#: src/views/stream/components/Deploy.vue:90
+#: src/views/domain/components/Deploy.vue:87
+#: src/views/stream/components/Deploy.vue:87
 msgid "Overwrite"
 msgstr "Ghi đè"
 
-#: src/views/domain/components/Deploy.vue:94
-#: src/views/stream/components/Deploy.vue:94
+#: src/views/domain/components/Deploy.vue:91
+#: src/views/stream/components/Deploy.vue:91
 msgid "Overwrite exist file"
 msgstr "Ghi đè tập tin đã tồn tại"
 
@@ -1297,11 +1344,11 @@ msgstr "Ghi đè tập tin đã tồn tại"
 msgid "Params"
 msgstr "Tham số"
 
-#: src/views/other/Login.vue:132 src/views/user/User.vue:18
+#: src/views/other/Login.vue:144 src/views/user/User.vue:18
 msgid "Password"
 msgstr "Mật khẩu"
 
-#: src/views/other/Install.vue:110
+#: src/views/other/Install.vue:109
 msgid "Password (*)"
 msgstr "Mật khẩu (*)"
 
@@ -1368,7 +1415,7 @@ msgstr ""
 msgid "Pre-release"
 msgstr ""
 
-#: src/routes/index.ts:239 src/views/preference/Preference.vue:96
+#: src/routes/index.ts:239 src/views/preference/Preference.vue:105
 msgid "Preference"
 msgstr "Cài đặt"
 
@@ -1466,7 +1513,16 @@ msgstr "Đang tải lại"
 msgid "Reloading nginx"
 msgstr "Tải lại nginx"
 
-#: src/components/Notification/Notification.vue:50
+#: src/views/preference/AuthSettings.vue:101
+msgid "Remove"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:47
+#, fuzzy
+msgid "Remove successfully"
+msgstr "Xoá thành công"
+
+#: src/components/Notification/Notification.vue:52
 #, fuzzy
 msgid "Removed successfully"
 msgstr "Xoá thành công"
@@ -1525,9 +1581,9 @@ msgstr "Running"
 
 #: src/components/ChatGPT/ChatGPT.vue:252
 #: src/views/certificate/CertificateEditor.vue:249
-#: src/views/config/ConfigEdit.vue:96 src/views/domain/DomainEdit.vue:263
+#: src/views/config/ConfigEdit.vue:96 src/views/domain/DomainEdit.vue:261
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
-#: src/views/preference/Preference.vue:130 src/views/stream/StreamEdit.vue:254
+#: src/views/preference/Preference.vue:145 src/views/stream/StreamEdit.vue:252
 msgid "Save"
 msgstr "Lưu"
 
@@ -1535,7 +1591,7 @@ msgstr "Lưu"
 msgid "Save Directive"
 msgstr "Lưu Directive"
 
-#: src/views/config/ConfigEdit.vue:57 src/views/domain/DomainAdd.vue:50
+#: src/views/config/ConfigEdit.vue:57 src/views/domain/DomainAdd.vue:46
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:41
 msgid "Save error %{msg}"
 msgstr "Đã xảy ra lỗi khi lưu %{msg}"
@@ -1543,15 +1599,15 @@ msgstr "Đã xảy ra lỗi khi lưu %{msg}"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:104
 #: src/views/certificate/CertificateEditor.vue:46
-#: src/views/preference/Preference.vue:66
+#: src/views/preference/Preference.vue:74
 #, fuzzy
 msgid "Save successfully"
 msgstr "Lưu thành công"
 
-#: src/views/config/ConfigEdit.vue:55 src/views/domain/DomainAdd.vue:38
-#: src/views/domain/DomainEdit.vue:148
+#: src/views/config/ConfigEdit.vue:55 src/views/domain/DomainAdd.vue:37
+#: src/views/domain/DomainEdit.vue:146
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
-#: src/views/stream/StreamEdit.vue:140
+#: src/views/stream/StreamEdit.vue:138
 msgid "Saved successfully"
 msgstr "Lưu thành công"
 
@@ -1576,8 +1632,9 @@ msgstr "Gửi"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:196
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:235
 #: src/views/config/ConfigEdit.vue:40 src/views/domain/DomainList.vue:81
-#: src/views/environment/Environment.vue:139 src/views/other/Install.vue:70
-#: src/views/preference/Preference.vue:70 src/views/stream/StreamList.vue:113
+#: src/views/environment/Environment.vue:139 src/views/other/Install.vue:69
+#: src/views/preference/AuthSettings.vue:49
+#: src/views/preference/Preference.vue:78 src/views/stream/StreamList.vue:113
 #: src/views/stream/StreamList.vue:81 src/views/system/Upgrade.vue:42
 msgid "Server error"
 msgstr "Lỗi máy chủ"
@@ -1596,7 +1653,7 @@ msgid "server_name not found in directives"
 msgstr "không tìm thấy server_name trong directives"
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:34
-#: src/views/domain/DomainAdd.vue:121
+#: src/views/domain/DomainAdd.vue:117
 msgid "server_name parameter is required"
 msgstr "Tham số server_name là bắt buộc"
 
@@ -1650,7 +1707,7 @@ msgstr ""
 msgid "SSL Certificate Path"
 msgstr ""
 
-#: src/views/other/Login.vue:158
+#: src/views/other/Login.vue:170
 msgid "SSO Login"
 msgstr ""
 
@@ -1736,8 +1793,8 @@ msgstr ""
 msgid "System"
 msgstr "Thông tin"
 
-#: src/views/domain/components/SiteDuplicate.vue:140
-#: src/views/stream/components/StreamDuplicate.vue:140
+#: src/views/domain/components/SiteDuplicate.vue:136
+#: src/views/stream/components/StreamDuplicate.vue:136
 msgid "Target"
 msgstr "Mục tiêu"
 
@@ -1770,7 +1827,7 @@ msgstr ""
 msgid "The input is not a SSL Certificate Key"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:33
+#: src/views/preference/OpenAISettings.vue:36
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
 "dashes, and dots."
@@ -1803,8 +1860,8 @@ msgstr ""
 msgid "The url is invalid"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:45
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:48
+#: src/views/preference/OpenAISettings.vue:60
 msgid "The url is invalid."
 msgstr ""
 
@@ -1830,6 +1887,7 @@ msgstr ""
 msgid "This field should not be empty"
 msgstr "Trường này không được để trống"
 
+#: src/views/preference/AuthSettings.vue:59
 #: src/views/preference/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr ""
@@ -1850,8 +1908,12 @@ msgstr ""
 "quyền đến chương trình phụ trợ và chúng tôi cần lưu tệp này và tải lại "
 "Nginx. Bạn có chắc chắn muốn Tiếp tục?"
 
-#: src/views/preference/OpenAISettings.vue:69
+#: src/views/preference/OpenAISettings.vue:72
 msgid "Token is not valid"
+msgstr ""
+
+#: src/views/other/Login.vue:62
+msgid "Too many login failed attempts, please try again later"
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:221
@@ -1909,11 +1971,15 @@ msgstr ""
 msgid "User"
 msgstr "Người dùng"
 
-#: src/views/other/Login.vue:122 src/views/user/User.vue:9
+#: src/views/other/Login.vue:65
+msgid "User is banned"
+msgstr ""
+
+#: src/views/other/Login.vue:134 src/views/user/User.vue:9
 msgid "Username"
 msgstr "Username"
 
-#: src/views/other/Install.vue:100
+#: src/views/other/Install.vue:99
 msgid "Username (*)"
 msgstr "Username (*)"
 
@@ -1927,7 +1993,7 @@ msgstr "Hợp lệ"
 msgid "View"
 msgstr "Xem"
 
-#: src/components/Notification/Notification.vue:141
+#: src/components/Notification/Notification.vue:143
 #, fuzzy
 msgid "View all notifications"
 msgstr "Xem tất cả thông báo"
@@ -1944,7 +2010,7 @@ msgstr "Cơ bản"
 
 #: src/constants/index.ts:17 src/views/config/InspectConfig.vue:33
 #: src/views/domain/cert/components/AutoCertStepOne.vue:28
-#: src/views/domain/DomainAdd.vue:116
+#: src/views/domain/DomainAdd.vue:112
 msgid "Warning"
 msgstr "Lưu ý"
 
@@ -1979,6 +2045,7 @@ msgstr "Ghi chứng chỉ vào disk"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
+#: src/views/preference/AuthSettings.vue:95
 #: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
 msgstr "Có"

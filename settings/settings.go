@@ -27,6 +27,7 @@ var sections = map[string]interface{}{
 	"casdoor":   &CasdoorSettings,
 	"logrotate": &LogrotateSettings,
 	"cluster":   &ClusterSettings,
+	"auth":      &AuthSettings,
 }
 
 func init() {
@@ -62,11 +63,20 @@ func Setup() {
 	parseEnv(&OpenAISettings, "OPENAI_")
 	parseEnv(&CasdoorSettings, "CASDOOR_")
 	parseEnv(&LogrotateSettings, "LOGROTATE_")
+	parseEnv(&AuthSettings, "AUTH_")
 
 	// if in official docker, set the restart cmd of nginx to "nginx -s stop",
 	// then the supervisor of s6-overlay will start the nginx again.
 	if cast.ToBool(os.Getenv("NGINX_UI_OFFICIAL_DOCKER")) {
 		NginxSettings.RestartCmd = "nginx -s stop"
+	}
+
+	if AuthSettings.BanThresholdMinutes <= 0 {
+		AuthSettings.BanThresholdMinutes = 10
+	}
+
+	if AuthSettings.MaxAttempts <= 0 {
+		AuthSettings.MaxAttempts = 10
 	}
 
 	err = Save()

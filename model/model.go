@@ -35,6 +35,7 @@ func GenerateAllModel() []any {
 		Environment{},
 		Notification{},
 		AcmeUser{},
+		BanIP{},
 	}
 }
 

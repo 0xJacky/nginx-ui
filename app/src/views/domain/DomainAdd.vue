@@ -33,19 +33,15 @@ function init() {
 
 async function save() {
   return ngx.build_config(ngx_config).then(r => {
-    // eslint-disable-next-line promise/no-nesting
     domain.save(ngx_config.name, { name: ngx_config.name, content: r.content, overwrite: true }).then(() => {
       message.success($gettext('Saved successfully'))
 
-      // eslint-disable-next-line promise/no-nesting
       domain.enable(ngx_config.name).then(() => {
         message.success($gettext('Enabled successfully'))
         window.scroll({ top: 0, left: 0, behavior: 'smooth' })
-        // eslint-disable-next-line promise/no-nesting
       }).catch(e => {
         message.error(e.message ?? $gettext('Enable failed'), 5)
       })
-      // eslint-disable-next-line promise/no-nesting
     }).catch(e => {
       message.error($gettext('Save error %{msg}', { msg: $gettext(e.message) ?? '' }), 5)
     })

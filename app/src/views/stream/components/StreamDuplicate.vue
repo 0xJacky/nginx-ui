@@ -59,24 +59,22 @@ function onSubmit() {
 
     modelRef.target.forEach(id => {
       if (id === 0) {
-        // eslint-disable-next-line promise/no-nesting
         stream.duplicate(props.name, { name: modelRef.name }).then(() => {
           message.success($gettext('Duplicate to local successfully'))
           show.value = false
           emit('duplicated')
-          // eslint-disable-next-line promise/no-nesting
         }).catch(e => {
           message.error($gettext(e?.message ?? 'Server error'))
         })
       }
       else {
         // get source content
-        // eslint-disable-next-line promise/no-nesting
+
         stream.get(props.name).then(r => {
           stream.save(modelRef.name, {
             name: modelRef.name,
             content: r.config,
-            // eslint-disable-next-line promise/no-nesting
+
           }, { headers: { 'X-Node-ID': id } }).then(() => {
             notification.success({
               message: $gettext('Duplicate successfully'),
@@ -84,7 +82,6 @@ function onSubmit() {
                 $gettext('Duplicate %{conf_name} to %{node_name} successfully',
                   { conf_name: props.name, node_name: node_map[id] }),
             })
-            // eslint-disable-next-line promise/no-nesting
           }).catch(e => {
             notification.error({
               message: $gettext('Duplicate failed'),
@@ -92,7 +89,6 @@ function onSubmit() {
             })
           })
           if (r.enabled) {
-            // eslint-disable-next-line promise/no-nesting
             stream.enable(modelRef.name, { headers: { 'X-Node-ID': id } }).then(() => {
               notification.success({
                 message: $gettext('Enabled successfully'),
