@@ -71,6 +71,14 @@ func Setup() {
 		NginxSettings.RestartCmd = "nginx -s stop"
 	}
 
+	if AuthSettings.BanThresholdMinutes <= 0 {
+		AuthSettings.BanThresholdMinutes = 10
+	}
+
+	if AuthSettings.MaxAttempts <= 0 {
+		AuthSettings.MaxAttempts = 10
+	}
+
 	err = Save()
 	if err != nil {
 		log.Fatalf("settings.Setup: %v\n", err)

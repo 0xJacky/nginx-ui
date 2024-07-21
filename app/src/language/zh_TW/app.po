@@ -33,7 +33,8 @@ msgstr "使用者名稱"
 #: src/views/certificate/DNSCredential.vue:33 src/views/config/config.ts:34
 #: src/views/domain/DomainList.vue:47 src/views/environment/Environment.vue:129
 #: src/views/notification/Notification.vue:37
-#: src/views/stream/StreamList.vue:47 src/views/user/User.vue:43
+#: src/views/preference/AuthSettings.vue:26 src/views/stream/StreamList.vue:47
+#: src/views/user/User.vue:43
 msgid "Action"
 msgstr "操作"
 
@@ -56,7 +57,7 @@ msgstr "在下方新增指令"
 msgid "Add Location"
 msgstr "新增 Location"
 
-#: src/routes/index.ts:64 src/views/domain/DomainAdd.vue:93
+#: src/routes/index.ts:64 src/views/domain/DomainAdd.vue:89
 msgid "Add Site"
 msgstr "新增網站"
 
@@ -74,11 +75,11 @@ msgstr "更新成功"
 msgid "Additional"
 msgstr "其他設定"
 
-#: src/views/domain/DomainEdit.vue:199 src/views/stream/StreamEdit.vue:191
+#: src/views/domain/DomainEdit.vue:197 src/views/stream/StreamEdit.vue:189
 msgid "Advance Mode"
 msgstr "進階模式"
 
-#: src/views/preference/OpenAISettings.vue:42
+#: src/views/preference/OpenAISettings.vue:45
 msgid "API Base Url"
 msgstr "API 基礎網址"
 
@@ -87,11 +88,11 @@ msgstr "API 基礎網址"
 msgid "API Document"
 msgstr "API Token"
 
-#: src/views/preference/OpenAISettings.vue:54
+#: src/views/preference/OpenAISettings.vue:57
 msgid "API Proxy"
 msgstr "API 代理"
 
-#: src/views/preference/OpenAISettings.vue:66
+#: src/views/preference/OpenAISettings.vue:69
 msgid "API Token"
 msgstr "API Token"
 
@@ -99,7 +100,12 @@ msgstr "API Token"
 msgid "Arch"
 msgstr "架構"
 
-#: src/components/Notification/Notification.vue:84
+#: src/views/preference/AuthSettings.vue:94
+#, fuzzy
+msgid "Are you sure to delete this banned IP immediately?"
+msgstr "您確定要刪除嗎？"
+
+#: src/components/Notification/Notification.vue:86
 #: src/views/notification/Notification.vue:72
 #, fuzzy
 msgid "Are you sure you want to clear all notifications?"
@@ -149,6 +155,15 @@ msgstr "向 ChatGPT 尋求幫助"
 msgid "Assistant"
 msgstr "助理"
 
+#: src/views/preference/AuthSettings.vue:17
+msgid "Attempts"
+msgstr ""
+
+#: src/views/preference/Preference.vue:116
+#, fuzzy
+msgid "Auth"
+msgstr "作者"
+
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:106
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:120
 msgid "Author"
@@ -172,8 +187,8 @@ msgstr "已啟用 %{name} 的自動續簽"
 
 #: src/views/certificate/CertificateEditor.vue:242
 #: src/views/config/Config.vue:73 src/views/config/ConfigEdit.vue:87
-#: src/views/domain/DomainEdit.vue:256 src/views/nginx_log/NginxLog.vue:168
-#: src/views/stream/StreamEdit.vue:247
+#: src/views/domain/DomainEdit.vue:254 src/views/nginx_log/NginxLog.vue:168
+#: src/views/stream/StreamEdit.vue:245
 msgid "Back"
 msgstr "返回"
 
@@ -181,18 +196,30 @@ msgstr "返回"
 msgid "Back Home"
 msgstr "返回首頁"
 
-#: src/views/domain/DomainAdd.vue:99
+#: src/views/preference/AuthSettings.vue:68
+msgid "Ban Threshold Minutes"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:82
+msgid "Banned IPs"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:20
+msgid "Banned Until"
+msgstr ""
+
+#: src/views/domain/DomainAdd.vue:95
 msgid "Base information"
 msgstr "基本資訊"
 
 #: src/views/config/ConfigEdit.vue:115
 #: src/views/domain/components/RightSettings.vue:75
-#: src/views/preference/Preference.vue:101
+#: src/views/preference/Preference.vue:110
 #: src/views/stream/components/RightSettings.vue:74
 msgid "Basic"
 msgstr "基本"
 
-#: src/views/domain/DomainEdit.vue:202 src/views/stream/StreamEdit.vue:194
+#: src/views/domain/DomainEdit.vue:200 src/views/stream/StreamEdit.vue:192
 msgid "Basic Mode"
 msgstr "基本模式"
 
@@ -278,12 +305,12 @@ msgid "Cleaning environment variables"
 msgstr "清理環境變數"
 
 #: src/components/ChatGPT/ChatGPT.vue:276
-#: src/components/Notification/Notification.vue:89
+#: src/components/Notification/Notification.vue:91
 #: src/views/notification/Notification.vue:77
 msgid "Clear"
 msgstr "清除"
 
-#: src/components/Notification/Notification.vue:40
+#: src/components/Notification/Notification.vue:42
 #: src/views/notification/Notification.vue:46
 #, fuzzy
 msgid "Cleared successfully"
@@ -309,7 +336,7 @@ msgstr "設定模板"
 msgid "Configuration file is test successful"
 msgstr "設定檔案測試成功"
 
-#: src/views/domain/DomainAdd.vue:105
+#: src/views/domain/DomainAdd.vue:101
 msgid "Configuration Name"
 msgstr "設定名稱"
 
@@ -317,7 +344,7 @@ msgstr "設定名稱"
 msgid "Configurations"
 msgstr "設定"
 
-#: src/views/domain/DomainAdd.vue:100
+#: src/views/domain/DomainAdd.vue:96
 msgid "Configure SSL"
 msgstr "設定 SSL"
 
@@ -348,7 +375,7 @@ msgstr "中央處理器:"
 msgid "Create"
 msgstr "建立時間"
 
-#: src/views/domain/DomainAdd.vue:158
+#: src/views/domain/DomainAdd.vue:154
 msgid "Create Another"
 msgstr "再建立一個"
 
@@ -387,7 +414,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr "儀表板"
 
-#: src/views/other/Install.vue:121
+#: src/views/other/Install.vue:120
 msgid "Database (Optional, default: database)"
 msgstr "資料庫 (可選，預設: database)"
 
@@ -421,15 +448,15 @@ msgstr "刪除網站：%{site_name}"
 msgid "Deleted successfully"
 msgstr "成功停用"
 
-#: src/views/domain/components/Deploy.vue:106
+#: src/views/domain/components/Deploy.vue:103
 #: src/views/domain/components/RightSettings.vue:93
-#: src/views/stream/components/Deploy.vue:106
+#: src/views/stream/components/Deploy.vue:103
 #: src/views/stream/components/RightSettings.vue:92
 msgid "Deploy"
 msgstr "部署"
 
-#: src/views/domain/components/Deploy.vue:63
-#: src/views/stream/components/Deploy.vue:63
+#: src/views/domain/components/Deploy.vue:60
+#: src/views/stream/components/Deploy.vue:60
 msgid "Deploy %{conf_name} to %{node_name} failed"
 msgstr "部署 %{conf_name} 至 %{node_name} 失敗"
 
@@ -477,9 +504,9 @@ msgstr "停用"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "關閉 %{name} 自動續簽失敗"
 
-#: src/views/domain/cert/ChangeCert.vue:44 src/views/domain/DomainEdit.vue:185
+#: src/views/domain/cert/ChangeCert.vue:44 src/views/domain/DomainEdit.vue:183
 #: src/views/domain/DomainList.vue:33 src/views/environment/Environment.vue:93
-#: src/views/stream/StreamEdit.vue:177 src/views/stream/StreamList.vue:33
+#: src/views/stream/StreamEdit.vue:175 src/views/stream/StreamList.vue:33
 msgid "Disabled"
 msgstr "停用"
 
@@ -552,7 +579,7 @@ msgstr "您要移除此伺服器嗎？"
 msgid "Domain"
 msgstr "網域"
 
-#: src/views/domain/DomainAdd.vue:148
+#: src/views/domain/DomainAdd.vue:144
 msgid "Domain Config Created Successfully"
 msgstr "網域設定檔成功建立"
 
@@ -573,34 +600,34 @@ msgstr "正在下載最新版本"
 msgid "Dry run mode enabled"
 msgstr "試運轉模式已啟用"
 
-#: src/views/domain/components/SiteDuplicate.vue:126
+#: src/views/domain/components/SiteDuplicate.vue:122
 #: src/views/domain/DomainList.vue:140
-#: src/views/stream/components/StreamDuplicate.vue:126
+#: src/views/stream/components/StreamDuplicate.vue:122
 #: src/views/stream/StreamList.vue:161
 msgid "Duplicate"
 msgstr "複製"
 
-#: src/views/domain/components/SiteDuplicate.vue:84
-#: src/views/stream/components/StreamDuplicate.vue:84
+#: src/views/domain/components/SiteDuplicate.vue:82
+#: src/views/stream/components/StreamDuplicate.vue:82
 msgid "Duplicate %{conf_name} to %{node_name} successfully"
 msgstr "成功複製 %{conf_name} 到 %{node_name}"
 
-#: src/views/domain/components/SiteDuplicate.vue:90
-#: src/views/stream/components/StreamDuplicate.vue:90
+#: src/views/domain/components/SiteDuplicate.vue:87
+#: src/views/stream/components/StreamDuplicate.vue:87
 msgid "Duplicate failed"
 msgstr "複製失敗"
 
-#: src/views/domain/components/SiteDuplicate.vue:82
-#: src/views/stream/components/StreamDuplicate.vue:82
+#: src/views/domain/components/SiteDuplicate.vue:80
+#: src/views/stream/components/StreamDuplicate.vue:80
 msgid "Duplicate successfully"
 msgstr "複製成功"
 
-#: src/views/domain/components/SiteDuplicate.vue:64
-#: src/views/stream/components/StreamDuplicate.vue:64
+#: src/views/domain/components/SiteDuplicate.vue:63
+#: src/views/stream/components/StreamDuplicate.vue:63
 msgid "Duplicate to local successfully"
 msgstr "成功複製至本機"
 
-#: src/views/domain/DomainEdit.vue:174 src/views/stream/StreamEdit.vue:166
+#: src/views/domain/DomainEdit.vue:172 src/views/stream/StreamEdit.vue:164
 msgid "Edit %{n}"
 msgstr "編輯 %{n}"
 
@@ -622,24 +649,24 @@ msgstr "編輯網站"
 msgid "Email"
 msgstr "電子郵件 (*)"
 
-#: src/views/other/Install.vue:90
+#: src/views/other/Install.vue:89
 msgid "Email (*)"
 msgstr "電子郵件 (*)"
 
-#: src/views/domain/components/Deploy.vue:86
+#: src/views/domain/components/Deploy.vue:83
 #: src/views/domain/DomainList.vue:132
-#: src/views/stream/components/Deploy.vue:86
+#: src/views/stream/components/Deploy.vue:83
 #: src/views/stream/StreamList.vue:153
 msgid "Enable"
 msgstr "啟用"
 
-#: src/views/domain/components/Deploy.vue:52
-#: src/views/stream/components/Deploy.vue:52
+#: src/views/domain/components/Deploy.vue:50
+#: src/views/stream/components/Deploy.vue:50
 msgid "Enable %{conf_name} in %{node_name} failed"
 msgstr "在 %{node_name} 啟用 %{conf_name} 失敗"
 
-#: src/views/domain/components/Deploy.vue:46
-#: src/views/stream/components/Deploy.vue:46
+#: src/views/domain/components/Deploy.vue:45
+#: src/views/stream/components/Deploy.vue:45
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "成功在 %{node_name} 啟用 %{conf_name}"
 
@@ -647,12 +674,12 @@ msgstr "成功在 %{node_name} 啟用 %{conf_name}"
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "啟用 %{name} 自動續簽失敗"
 
-#: src/views/domain/DomainAdd.vue:46
+#: src/views/domain/DomainAdd.vue:43
 msgid "Enable failed"
 msgstr "啟用失敗"
 
-#: src/views/domain/components/Deploy.vue:44
-#: src/views/stream/components/Deploy.vue:44
+#: src/views/domain/components/Deploy.vue:43
+#: src/views/stream/components/Deploy.vue:43
 msgid "Enable successfully"
 msgstr "啟用成功"
 
@@ -662,19 +689,19 @@ msgstr "啟用 TLS"
 
 #: src/views/domain/cert/ChangeCert.vue:40
 #: src/views/domain/components/RightSettings.vue:77
-#: src/views/domain/DomainEdit.vue:179 src/views/domain/DomainList.vue:29
+#: src/views/domain/DomainEdit.vue:177 src/views/domain/DomainList.vue:29
 #: src/views/environment/Environment.vue:102
 #: src/views/preference/LogrotateSettings.vue:20
 #: src/views/stream/components/RightSettings.vue:76
-#: src/views/stream/StreamEdit.vue:171 src/views/stream/StreamList.vue:29
+#: src/views/stream/StreamEdit.vue:169 src/views/stream/StreamList.vue:29
 msgid "Enabled"
 msgstr "已啟用"
 
 #: src/views/domain/components/RightSettings.vue:29
-#: src/views/domain/components/SiteDuplicate.vue:98
-#: src/views/domain/DomainAdd.vue:42 src/views/domain/DomainList.vue:57
+#: src/views/domain/components/SiteDuplicate.vue:94
+#: src/views/domain/DomainAdd.vue:40 src/views/domain/DomainList.vue:57
 #: src/views/stream/components/RightSettings.vue:29
-#: src/views/stream/components/StreamDuplicate.vue:98
+#: src/views/stream/components/StreamDuplicate.vue:94
 #: src/views/stream/StreamList.vue:57
 msgid "Enabled successfully"
 msgstr "成功啟用"
@@ -744,7 +771,7 @@ msgstr "啟用 %{msg} 失敗"
 msgid "Failed to get certificate information"
 msgstr "取得憑證資訊失敗"
 
-#: src/views/domain/DomainEdit.vue:132 src/views/stream/StreamEdit.vue:124
+#: src/views/domain/DomainEdit.vue:130 src/views/stream/StreamEdit.vue:122
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "儲存失敗，在設定中檢測到語法錯誤。"
 
@@ -770,7 +797,7 @@ msgstr "找不到檔案"
 msgid "Filter"
 msgstr "篩選"
 
-#: src/language/constants.ts:19 src/views/domain/DomainAdd.vue:101
+#: src/language/constants.ts:19 src/views/domain/DomainAdd.vue:97
 msgid "Finished"
 msgstr "完成"
 
@@ -840,6 +867,12 @@ msgstr "HTTP01"
 msgid "If left blank, the default CA Dir will be used."
 msgstr ""
 
+#: src/views/preference/AuthSettings.vue:60
+msgid ""
+"If the number of login failed attempts from a ip reach the max attempts in "
+"ban threshold minutes, the ip will be banned for a period of time."
+msgstr ""
+
 #: src/views/certificate/Certificate.vue:136
 #, fuzzy
 msgid "Import"
@@ -849,6 +882,11 @@ msgstr "匯出"
 #, fuzzy
 msgid "Import Certificate"
 msgstr "憑證狀態"
+
+#: src/views/other/Login.vue:59
+#, fuzzy
+msgid "Incorrect username or password"
+msgstr "使用者名稱或密碼不正確"
 
 #: src/constants/index.ts:18
 msgid "Info"
@@ -862,7 +900,7 @@ msgstr "初始化核心升級程式錯誤"
 msgid "Initialing core upgrader"
 msgstr "正在初始化核心升級程式"
 
-#: src/routes/index.ts:273 src/views/other/Install.vue:136
+#: src/routes/index.ts:273 src/views/other/Install.vue:135
 msgid "Install"
 msgstr "安裝"
 
@@ -882,6 +920,10 @@ msgstr ""
 #, fuzzy
 msgid "Invalid"
 msgstr "無效的郵箱！"
+
+#: src/views/preference/AuthSettings.vue:14
+msgid "IP"
+msgstr ""
 
 #: src/views/certificate/Certificate.vue:144
 #, fuzzy
@@ -916,7 +958,7 @@ msgstr "上次檢查時間"
 msgid "Leave blank for no change"
 msgstr "留空表示不修改"
 
-#: src/views/preference/OpenAISettings.vue:50
+#: src/views/preference/OpenAISettings.vue:53
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "預設留空：https://api.openai.com/"
 
@@ -972,11 +1014,11 @@ msgstr "Locations"
 msgid "Log"
 msgstr "登入"
 
-#: src/routes/index.ts:279 src/views/other/Login.vue:147
+#: src/routes/index.ts:279 src/views/other/Login.vue:159
 msgid "Login"
 msgstr "登入"
 
-#: src/views/other/Login.vue:51 src/views/other/Login.vue:97
+#: src/views/other/Login.vue:109 src/views/other/Login.vue:51
 msgid "Login successful"
 msgstr "登入成功"
 
@@ -984,7 +1026,7 @@ msgstr "登入成功"
 msgid "Logout successful"
 msgstr "登出成功"
 
-#: src/views/preference/Preference.vue:119
+#: src/views/preference/Preference.vue:134
 msgid "Logrotate"
 msgstr ""
 
@@ -1027,6 +1069,10 @@ msgstr "管理使用者"
 msgid "Managed Certificate"
 msgstr "更換憑證"
 
+#: src/views/preference/AuthSettings.vue:74
+msgid "Max Attempts"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:217
 #: src/views/dashboard/ServerAnalytic.vue:218
 msgid "Memory"
@@ -1040,7 +1086,7 @@ msgstr "記憶體與儲存"
 msgid "Minutes"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:30
+#: src/views/preference/OpenAISettings.vue:33
 #, fuzzy
 msgid "Model"
 msgstr "執行模式"
@@ -1056,7 +1102,7 @@ msgstr "修改"
 msgid "Modify Certificate"
 msgstr "憑證狀態"
 
-#: src/views/domain/DomainAdd.vue:155
+#: src/views/domain/DomainAdd.vue:151
 msgid "Modify Config"
 msgstr "修改設定"
 
@@ -1075,12 +1121,12 @@ msgstr "多行指令"
 #: src/views/certificate/DNSCredential.vue:11 src/views/config/config.ts:7
 #: src/views/domain/cert/ChangeCert.vue:17
 #: src/views/domain/components/RightSettings.vue:83
-#: src/views/domain/components/SiteDuplicate.vue:133
+#: src/views/domain/components/SiteDuplicate.vue:129
 #: src/views/domain/DomainList.vue:13
 #: src/views/domain/ngx_conf/NgxUpstream.vue:175
 #: src/views/environment/Environment.vue:12
 #: src/views/stream/components/RightSettings.vue:82
-#: src/views/stream/components/StreamDuplicate.vue:133
+#: src/views/stream/components/StreamDuplicate.vue:129
 #: src/views/stream/StreamList.vue:13 src/views/stream/StreamList.vue:187
 msgid "Name"
 msgstr "名稱"
@@ -1107,11 +1153,11 @@ msgstr "新版本發布"
 
 #: src/views/certificate/WildcardCertificate.vue:99
 #: src/views/domain/cert/components/ObtainCert.vue:203
-#: src/views/domain/DomainAdd.vue:142
+#: src/views/domain/DomainAdd.vue:138
 msgid "Next"
 msgstr "下一步"
 
-#: src/views/preference/Preference.vue:107
+#: src/views/preference/Preference.vue:122
 msgid "Nginx"
 msgstr "Nginx"
 
@@ -1119,7 +1165,7 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Nginx 存取日誌路徑"
 
-#: src/views/domain/DomainEdit.vue:217 src/views/stream/StreamEdit.vue:209
+#: src/views/domain/DomainEdit.vue:215 src/views/stream/StreamEdit.vue:207
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 設定解析錯誤"
 
@@ -1144,7 +1190,7 @@ msgid "Nginx restarted successfully"
 msgstr "Nginx 重啟成功"
 
 #: src/components/ChatGPT/ChatGPT.vue:270
-#: src/components/Notification/Notification.vue:82
+#: src/components/Notification/Notification.vue:84
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:521
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:535
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:549
@@ -1152,6 +1198,7 @@ msgstr "Nginx 重啟成功"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:71
 #: src/views/notification/Notification.vue:70
+#: src/views/preference/AuthSettings.vue:96
 #: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
 msgid "No"
@@ -1183,7 +1230,7 @@ msgstr "備註"
 msgid "Notification"
 msgstr "憑證"
 
-#: src/components/Notification/Notification.vue:80 src/routes/index.ts:221
+#: src/components/Notification/Notification.vue:82 src/routes/index.ts:221
 #, fuzzy
 msgid "Notifications"
 msgstr "憑證"
@@ -1208,7 +1255,7 @@ msgid "Ok"
 msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:271
-#: src/components/Notification/Notification.vue:83
+#: src/components/Notification/Notification.vue:85
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:56
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:522
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:536
@@ -1238,7 +1285,7 @@ msgstr ""
 msgid "Online"
 msgstr "線上"
 
-#: src/views/preference/Preference.vue:113
+#: src/views/preference/Preference.vue:128
 msgid "OpenAI"
 msgstr "OpenAI"
 
@@ -1250,13 +1297,13 @@ msgstr "作業系統"
 msgid "OS:"
 msgstr "作業系統:"
 
-#: src/views/domain/components/Deploy.vue:90
-#: src/views/stream/components/Deploy.vue:90
+#: src/views/domain/components/Deploy.vue:87
+#: src/views/stream/components/Deploy.vue:87
 msgid "Overwrite"
 msgstr "覆蓋"
 
-#: src/views/domain/components/Deploy.vue:94
-#: src/views/stream/components/Deploy.vue:94
+#: src/views/domain/components/Deploy.vue:91
+#: src/views/stream/components/Deploy.vue:91
 msgid "Overwrite exist file"
 msgstr "覆蓋現有檔案"
 
@@ -1264,11 +1311,11 @@ msgstr "覆蓋現有檔案"
 msgid "Params"
 msgstr "參數"
 
-#: src/views/other/Login.vue:132 src/views/user/User.vue:18
+#: src/views/other/Login.vue:144 src/views/user/User.vue:18
 msgid "Password"
 msgstr "密碼"
 
-#: src/views/other/Install.vue:110
+#: src/views/other/Install.vue:109
 msgid "Password (*)"
 msgstr "密碼 (*)"
 
@@ -1334,7 +1381,7 @@ msgstr "請至少選擇一個節點！"
 msgid "Pre-release"
 msgstr "預先發布"
 
-#: src/routes/index.ts:239 src/views/preference/Preference.vue:96
+#: src/routes/index.ts:239 src/views/preference/Preference.vue:105
 msgid "Preference"
 msgstr "偏好設定"
 
@@ -1431,7 +1478,16 @@ msgstr "重新載入中"
 msgid "Reloading nginx"
 msgstr "正在重新載入 Nginx"
 
-#: src/components/Notification/Notification.vue:50
+#: src/views/preference/AuthSettings.vue:101
+msgid "Remove"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:47
+#, fuzzy
+msgid "Remove successfully"
+msgstr "儲存成功"
+
+#: src/components/Notification/Notification.vue:52
 #, fuzzy
 msgid "Removed successfully"
 msgstr "儲存成功"
@@ -1489,9 +1545,9 @@ msgstr "執行中"
 
 #: src/components/ChatGPT/ChatGPT.vue:252
 #: src/views/certificate/CertificateEditor.vue:249
-#: src/views/config/ConfigEdit.vue:96 src/views/domain/DomainEdit.vue:263
+#: src/views/config/ConfigEdit.vue:96 src/views/domain/DomainEdit.vue:261
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
-#: src/views/preference/Preference.vue:130 src/views/stream/StreamEdit.vue:254
+#: src/views/preference/Preference.vue:145 src/views/stream/StreamEdit.vue:252
 msgid "Save"
 msgstr "儲存"
 
@@ -1499,7 +1555,7 @@ msgstr "儲存"
 msgid "Save Directive"
 msgstr "儲存指令"
 
-#: src/views/config/ConfigEdit.vue:57 src/views/domain/DomainAdd.vue:50
+#: src/views/config/ConfigEdit.vue:57 src/views/domain/DomainAdd.vue:46
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:41
 msgid "Save error %{msg}"
 msgstr "儲存錯誤 %{msg}"
@@ -1507,14 +1563,14 @@ msgstr "儲存錯誤 %{msg}"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:104
 #: src/views/certificate/CertificateEditor.vue:46
-#: src/views/preference/Preference.vue:66
+#: src/views/preference/Preference.vue:74
 msgid "Save successfully"
 msgstr "儲存成功"
 
-#: src/views/config/ConfigEdit.vue:55 src/views/domain/DomainAdd.vue:38
-#: src/views/domain/DomainEdit.vue:148
+#: src/views/config/ConfigEdit.vue:55 src/views/domain/DomainAdd.vue:37
+#: src/views/domain/DomainEdit.vue:146
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
-#: src/views/stream/StreamEdit.vue:140
+#: src/views/stream/StreamEdit.vue:138
 msgid "Saved successfully"
 msgstr "儲存成功"
 
@@ -1539,8 +1595,9 @@ msgstr "傳送"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:196
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:235
 #: src/views/config/ConfigEdit.vue:40 src/views/domain/DomainList.vue:81
-#: src/views/environment/Environment.vue:139 src/views/other/Install.vue:70
-#: src/views/preference/Preference.vue:70 src/views/stream/StreamList.vue:113
+#: src/views/environment/Environment.vue:139 src/views/other/Install.vue:69
+#: src/views/preference/AuthSettings.vue:49
+#: src/views/preference/Preference.vue:78 src/views/stream/StreamList.vue:113
 #: src/views/stream/StreamList.vue:81 src/views/system/Upgrade.vue:42
 msgid "Server error"
 msgstr "伺服器錯誤"
@@ -1559,7 +1616,7 @@ msgid "server_name not found in directives"
 msgstr "在指令中未找到 server_name"
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:34
-#: src/views/domain/DomainAdd.vue:121
+#: src/views/domain/DomainAdd.vue:117
 msgid "server_name parameter is required"
 msgstr "必須提供 server_name 參數"
 
@@ -1615,7 +1672,7 @@ msgstr "SSL 憑證金鑰路徑"
 msgid "SSL Certificate Path"
 msgstr "SSL 憑證路徑"
 
-#: src/views/other/Login.vue:158
+#: src/views/other/Login.vue:170
 #, fuzzy
 msgid "SSO Login"
 msgstr "登入"
@@ -1701,8 +1758,8 @@ msgstr ""
 msgid "System"
 msgstr "系統"
 
-#: src/views/domain/components/SiteDuplicate.vue:140
-#: src/views/stream/components/StreamDuplicate.vue:140
+#: src/views/domain/components/SiteDuplicate.vue:136
+#: src/views/stream/components/StreamDuplicate.vue:136
 msgid "Target"
 msgstr "目標"
 
@@ -1736,7 +1793,7 @@ msgstr ""
 msgid "The input is not a SSL Certificate Key"
 msgstr "SSL 憑證金鑰路徑"
 
-#: src/views/preference/OpenAISettings.vue:33
+#: src/views/preference/OpenAISettings.vue:36
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
 "dashes, and dots."
@@ -1770,8 +1827,8 @@ msgstr "注意：目前設定中的 server_name 必須為需要申請憑證的�
 msgid "The url is invalid"
 msgstr "此功能在演示中不可用。"
 
-#: src/views/preference/OpenAISettings.vue:45
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:48
+#: src/views/preference/OpenAISettings.vue:60
 #, fuzzy
 msgid "The url is invalid."
 msgstr "此功能在演示中不可用。"
@@ -1799,6 +1856,7 @@ msgstr ""
 msgid "This field should not be empty"
 msgstr "此欄位不應為空"
 
+#: src/views/preference/AuthSettings.vue:59
 #: src/views/preference/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr ""
@@ -1817,8 +1875,12 @@ msgstr ""
 "為了確保憑證自動續期能夠正常運作，我們需要新增一個 Location 來代理從授權後端"
 "的請求，我們需要儲存這個檔案並重新載入 Nginx。你確定你要繼續嗎？"
 
-#: src/views/preference/OpenAISettings.vue:69
+#: src/views/preference/OpenAISettings.vue:72
 msgid "Token is not valid"
+msgstr ""
+
+#: src/views/other/Login.vue:62
+msgid "Too many login failed attempts, please try again later"
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:221
@@ -1873,11 +1935,15 @@ msgstr "URL"
 msgid "User"
 msgstr "使用者名稱"
 
-#: src/views/other/Login.vue:122 src/views/user/User.vue:9
+#: src/views/other/Login.vue:65
+msgid "User is banned"
+msgstr ""
+
+#: src/views/other/Login.vue:134 src/views/user/User.vue:9
 msgid "Username"
 msgstr "使用者名稱"
 
-#: src/views/other/Install.vue:100
+#: src/views/other/Install.vue:99
 msgid "Username (*)"
 msgstr "使用者名稱 (*)"
 
@@ -1891,7 +1957,7 @@ msgstr ""
 msgid "View"
 msgstr "檢視"
 
-#: src/components/Notification/Notification.vue:141
+#: src/components/Notification/Notification.vue:143
 #, fuzzy
 msgid "View all notifications"
 msgstr "憑證"
@@ -1907,7 +1973,7 @@ msgstr "基本模式"
 
 #: src/constants/index.ts:17 src/views/config/InspectConfig.vue:33
 #: src/views/domain/cert/components/AutoCertStepOne.vue:28
-#: src/views/domain/DomainAdd.vue:116
+#: src/views/domain/DomainAdd.vue:112
 msgid "Warning"
 msgstr "警告"
 
@@ -1940,6 +2006,7 @@ msgstr "將憑證寫入磁碟"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
+#: src/views/preference/AuthSettings.vue:95
 #: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
 msgstr "是的"

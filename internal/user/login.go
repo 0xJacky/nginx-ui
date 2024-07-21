@@ -1,10 +1,12 @@
 package user
 
 import (
-    "errors"
-    "github.com/0xJacky/Nginx-UI/model"
-    "github.com/0xJacky/Nginx-UI/query"
-    "golang.org/x/crypto/bcrypt"
+	"errors"
+	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
+	"golang.org/x/crypto/bcrypt"
+	"time"
 )
 
 var (
@@ -29,4 +31,17 @@ func Login(name string, password string) (user *model.Auth, err error) {
 	}
 
 	return
+}
+
+func BanIP(ip string) {
+	b := query.BanIP
+	banIP, err := b.Where(b.IP.Eq(ip)).First()
+	if err != nil || banIP.ExpiredAt <= time.Now().Unix() {
+		_ = b.Create(&model.BanIP{
+			IP:        ip,
+			Attempts:  1,
+			ExpiredAt: time.Now().Unix() + int64(settings.AuthSettings.BanThresholdMinutes*60),
+		})
+	}
+	_, _ = b.Where(b.IP.Eq(ip)).UpdateSimple(b.Attempts.Add(1))
 }

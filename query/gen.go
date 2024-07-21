@@ -20,6 +20,7 @@ var (
 	AcmeUser      *acmeUser
 	Auth          *auth
 	AuthToken     *authToken
+	BanIP         *banIP
 	Cert          *cert
 	ChatGPTLog    *chatGPTLog
 	ConfigBackup  *configBackup
@@ -35,6 +36,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	AcmeUser = &Q.AcmeUser
 	Auth = &Q.Auth
 	AuthToken = &Q.AuthToken
+	BanIP = &Q.BanIP
 	Cert = &Q.Cert
 	ChatGPTLog = &Q.ChatGPTLog
 	ConfigBackup = &Q.ConfigBackup
@@ -51,6 +53,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		AcmeUser:      newAcmeUser(db, opts...),
 		Auth:          newAuth(db, opts...),
 		AuthToken:     newAuthToken(db, opts...),
+		BanIP:         newBanIP(db, opts...),
 		Cert:          newCert(db, opts...),
 		ChatGPTLog:    newChatGPTLog(db, opts...),
 		ConfigBackup:  newConfigBackup(db, opts...),
@@ -68,6 +71,7 @@ type Query struct {
 	AcmeUser      acmeUser
 	Auth          auth
 	AuthToken     authToken
+	BanIP         banIP
 	Cert          cert
 	ChatGPTLog    chatGPTLog
 	ConfigBackup  configBackup
@@ -86,6 +90,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		AcmeUser:      q.AcmeUser.clone(db),
 		Auth:          q.Auth.clone(db),
 		AuthToken:     q.AuthToken.clone(db),
+		BanIP:         q.BanIP.clone(db),
 		Cert:          q.Cert.clone(db),
 		ChatGPTLog:    q.ChatGPTLog.clone(db),
 		ConfigBackup:  q.ConfigBackup.clone(db),
@@ -111,6 +116,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		AcmeUser:      q.AcmeUser.replaceDB(db),
 		Auth:          q.Auth.replaceDB(db),
 		AuthToken:     q.AuthToken.replaceDB(db),
+		BanIP:         q.BanIP.replaceDB(db),
 		Cert:          q.Cert.replaceDB(db),
 		ChatGPTLog:    q.ChatGPTLog.replaceDB(db),
 		ConfigBackup:  q.ConfigBackup.replaceDB(db),
@@ -126,6 +132,7 @@ type queryCtx struct {
 	AcmeUser      *acmeUserDo
 	Auth          *authDo
 	AuthToken     *authTokenDo
+	BanIP         *banIPDo
 	Cert          *certDo
 	ChatGPTLog    *chatGPTLogDo
 	ConfigBackup  *configBackupDo
@@ -141,6 +148,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		AcmeUser:      q.AcmeUser.WithContext(ctx),
 		Auth:          q.Auth.WithContext(ctx),
 		AuthToken:     q.AuthToken.WithContext(ctx),
+		BanIP:         q.BanIP.WithContext(ctx),
 		Cert:          q.Cert.WithContext(ctx),
 		ChatGPTLog:    q.ChatGPTLog.WithContext(ctx),
 		ConfigBackup:  q.ConfigBackup.WithContext(ctx),

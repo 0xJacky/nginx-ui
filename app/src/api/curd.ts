@@ -13,7 +13,7 @@ export interface Pagination {
   total_pages: number
 }
 
-export interface IGetListResponse<T> {
+export interface GetListResponse<T> {
   data: T[]
   pagination: Pagination
 }
@@ -35,7 +35,7 @@ class Curd<T> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  _get_list(params: any = null): Promise<IGetListResponse<T>> {
+  _get_list(params: any = null): Promise<GetListResponse<T>> {
     return http.get(this.plural, { params })
   }
 

@@ -33,4 +33,9 @@ export interface Settings {
     cmd: string
     interval: number
   }
+  auth: {
+    ip_white_list: string[]
+    ban_threshold_minutes: number
+    max_attempts: number
+  }
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/nginx"
 	"github.com/0xJacky/Nginx-UI/api/notification"
 	"github.com/0xJacky/Nginx-UI/api/openai"
+	"github.com/0xJacky/Nginx-UI/api/settings"
 	"github.com/0xJacky/Nginx-UI/api/sites"
 	"github.com/0xJacky/Nginx-UI/api/streams"
 	"github.com/0xJacky/Nginx-UI/api/system"
@@ -25,7 +26,7 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Logger())
 	r.Use(recovery())
 	r.Use(cacheJs())
-    r.Use(ipWhiteList())
+	r.Use(ipWhiteList())
 
 	//r.Use(OperationSync())
 
@@ -56,6 +57,7 @@ func InitRouter() *gin.Engine {
 			certificate.InitDNSCredentialRouter(g)
 			certificate.InitAcmeUserRouter(g)
 			system.InitPrivateRouter(g)
+			settings.InitRouter(g)
 			openai.InitRouter(g)
 			cluster.InitRouter(g)
 			notification.InitRouter(g)

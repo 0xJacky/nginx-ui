@@ -1,4 +1,4 @@
-package system
+package settings
 
 import (
 	"github.com/0xJacky/Nginx-UI/api"
@@ -20,6 +20,7 @@ func GetSettings(c *gin.Context) {
 		"nginx":     settings.NginxSettings,
 		"openai":    settings.OpenAISettings,
 		"logrotate": settings.LogrotateSettings,
+		"auth":      settings.AuthSettings,
 	})
 }
 
@@ -29,6 +30,7 @@ func SaveSettings(c *gin.Context) {
 		Nginx     settings.Nginx     `json:"nginx"`
 		Openai    settings.OpenAI    `json:"openai"`
 		Logrotate settings.Logrotate `json:"logrotate"`
+		Auth      settings.Auth      `json:"auth"`
 	}
 
 	if !api.BindAndValid(c, &json) {
@@ -44,6 +46,7 @@ func SaveSettings(c *gin.Context) {
 	settings.ProtectedFill(&settings.NginxSettings, &json.Nginx)
 	settings.ProtectedFill(&settings.OpenAISettings, &json.Openai)
 	settings.ProtectedFill(&settings.LogrotateSettings, &json.Logrotate)
+	settings.ProtectedFill(&settings.AuthSettings, &json.Auth)
 
 	err := settings.Save()
 	if err != nil {

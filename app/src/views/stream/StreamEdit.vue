@@ -97,10 +97,8 @@ function on_mode_change(advanced: CheckedType) {
       build_config()
     }
     else {
-      // eslint-disable-next-line promise/no-nesting
       return ngx.tokenize_config(configText.value).then(r => {
         Object.assign(ngx_config, r)
-        // eslint-disable-next-line promise/no-nesting
       }).catch(handle_parse_error)
     }
   })

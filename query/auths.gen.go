@@ -34,6 +34,7 @@ func newAuth(db *gorm.DB, opts ...gen.DOOption) auth {
 	_auth.DeletedAt = field.NewField(tableName, "deleted_at")
 	_auth.Name = field.NewString(tableName, "name")
 	_auth.Password = field.NewString(tableName, "password")
+	_auth.Status = field.NewBool(tableName, "status")
 
 	_auth.fillFieldMap()
 
@@ -50,6 +51,7 @@ type auth struct {
 	DeletedAt field.Field
 	Name      field.String
 	Password  field.String
+	Status    field.Bool
 
 	fieldMap map[string]field.Expr
 }
@@ -72,6 +74,7 @@ func (a *auth) updateTableName(table string) *auth {
 	a.DeletedAt = field.NewField(table, "deleted_at")
 	a.Name = field.NewString(table, "name")
 	a.Password = field.NewString(table, "password")
+	a.Status = field.NewBool(table, "status")
 
 	a.fillFieldMap()
 
@@ -88,13 +91,14 @@ func (a *auth) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (a *auth) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 6)
+	a.fieldMap = make(map[string]field.Expr, 7)
 	a.fieldMap["id"] = a.ID
 	a.fieldMap["created_at"] = a.CreatedAt
 	a.fieldMap["updated_at"] = a.UpdatedAt
 	a.fieldMap["deleted_at"] = a.DeletedAt
 	a.fieldMap["name"] = a.Name
 	a.fieldMap["password"] = a.Password
+	a.fieldMap["status"] = a.Status
 }
 
 func (a auth) clone(db *gorm.DB) auth {

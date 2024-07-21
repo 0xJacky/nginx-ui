@@ -24,6 +24,7 @@ msgstr ""
 #: src/views/domain/DomainList.vue:47
 #: src/views/environment/Environment.vue:129
 #: src/views/notification/Notification.vue:37
+#: src/views/preference/AuthSettings.vue:26
 #: src/views/stream/StreamList.vue:47
 #: src/views/user/User.vue:43
 msgid "Action"
@@ -49,7 +50,7 @@ msgid "Add Location"
 msgstr ""
 
 #: src/routes/index.ts:64
-#: src/views/domain/DomainAdd.vue:93
+#: src/views/domain/DomainAdd.vue:89
 msgid "Add Site"
 msgstr ""
 
@@ -65,12 +66,12 @@ msgstr ""
 msgid "Additional"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:199
-#: src/views/stream/StreamEdit.vue:191
+#: src/views/domain/DomainEdit.vue:197
+#: src/views/stream/StreamEdit.vue:189
 msgid "Advance Mode"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:42
+#: src/views/preference/OpenAISettings.vue:45
 msgid "API Base Url"
 msgstr ""
 
@@ -78,11 +79,11 @@ msgstr ""
 msgid "API Document"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:54
+#: src/views/preference/OpenAISettings.vue:57
 msgid "API Proxy"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:66
+#: src/views/preference/OpenAISettings.vue:69
 msgid "API Token"
 msgstr ""
 
@@ -90,7 +91,11 @@ msgstr ""
 msgid "Arch"
 msgstr ""
 
-#: src/components/Notification/Notification.vue:84
+#: src/views/preference/AuthSettings.vue:94
+msgid "Are you sure to delete this banned IP immediately?"
+msgstr ""
+
+#: src/components/Notification/Notification.vue:86
 #: src/views/notification/Notification.vue:72
 msgid "Are you sure you want to clear all notifications?"
 msgstr ""
@@ -136,6 +141,14 @@ msgstr ""
 msgid "Assistant"
 msgstr ""
 
+#: src/views/preference/AuthSettings.vue:17
+msgid "Attempts"
+msgstr ""
+
+#: src/views/preference/Preference.vue:116
+msgid "Auth"
+msgstr ""
+
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:106
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:120
 msgid "Author"
@@ -160,9 +173,9 @@ msgstr ""
 #: src/views/certificate/CertificateEditor.vue:242
 #: src/views/config/Config.vue:73
 #: src/views/config/ConfigEdit.vue:87
-#: src/views/domain/DomainEdit.vue:256
+#: src/views/domain/DomainEdit.vue:254
 #: src/views/nginx_log/NginxLog.vue:168
-#: src/views/stream/StreamEdit.vue:247
+#: src/views/stream/StreamEdit.vue:245
 msgid "Back"
 msgstr ""
 
@@ -170,19 +183,31 @@ msgstr ""
 msgid "Back Home"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:99
+#: src/views/preference/AuthSettings.vue:68
+msgid "Ban Threshold Minutes"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:82
+msgid "Banned IPs"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:20
+msgid "Banned Until"
+msgstr ""
+
+#: src/views/domain/DomainAdd.vue:95
 msgid "Base information"
 msgstr ""
 
 #: src/views/config/ConfigEdit.vue:115
 #: src/views/domain/components/RightSettings.vue:75
-#: src/views/preference/Preference.vue:101
+#: src/views/preference/Preference.vue:110
 #: src/views/stream/components/RightSettings.vue:74
 msgid "Basic"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:202
-#: src/views/stream/StreamEdit.vue:194
+#: src/views/domain/DomainEdit.vue:200
+#: src/views/stream/StreamEdit.vue:192
 msgid "Basic Mode"
 msgstr ""
 
@@ -266,12 +291,12 @@ msgid "Cleaning environment variables"
 msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:276
-#: src/components/Notification/Notification.vue:89
+#: src/components/Notification/Notification.vue:91
 #: src/views/notification/Notification.vue:77
 msgid "Clear"
 msgstr ""
 
-#: src/components/Notification/Notification.vue:40
+#: src/components/Notification/Notification.vue:42
 #: src/views/notification/Notification.vue:46
 msgid "Cleared successfully"
 msgstr ""
@@ -295,7 +320,7 @@ msgstr ""
 msgid "Configuration file is test successful"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:105
+#: src/views/domain/DomainAdd.vue:101
 msgid "Configuration Name"
 msgstr ""
 
@@ -303,7 +328,7 @@ msgstr ""
 msgid "Configurations"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:100
+#: src/views/domain/DomainAdd.vue:96
 msgid "Configure SSL"
 msgstr ""
 
@@ -333,7 +358,7 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:158
+#: src/views/domain/DomainAdd.vue:154
 msgid "Create Another"
 msgstr ""
 
@@ -371,7 +396,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: src/views/other/Install.vue:121
+#: src/views/other/Install.vue:120
 msgid "Database (Optional, default: database)"
 msgstr ""
 
@@ -403,15 +428,15 @@ msgstr ""
 msgid "Deleted successfully"
 msgstr ""
 
-#: src/views/domain/components/Deploy.vue:106
+#: src/views/domain/components/Deploy.vue:103
 #: src/views/domain/components/RightSettings.vue:93
-#: src/views/stream/components/Deploy.vue:106
+#: src/views/stream/components/Deploy.vue:103
 #: src/views/stream/components/RightSettings.vue:92
 msgid "Deploy"
 msgstr ""
 
-#: src/views/domain/components/Deploy.vue:63
-#: src/views/stream/components/Deploy.vue:63
+#: src/views/domain/components/Deploy.vue:60
+#: src/views/stream/components/Deploy.vue:60
 msgid "Deploy %{conf_name} to %{node_name} failed"
 msgstr ""
 
@@ -460,10 +485,10 @@ msgid "Disable auto-renewal failed for %{name}"
 msgstr ""
 
 #: src/views/domain/cert/ChangeCert.vue:44
-#: src/views/domain/DomainEdit.vue:185
+#: src/views/domain/DomainEdit.vue:183
 #: src/views/domain/DomainList.vue:33
 #: src/views/environment/Environment.vue:93
-#: src/views/stream/StreamEdit.vue:177
+#: src/views/stream/StreamEdit.vue:175
 #: src/views/stream/StreamList.vue:33
 msgid "Disabled"
 msgstr ""
@@ -536,7 +561,7 @@ msgstr ""
 msgid "Domain"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:148
+#: src/views/domain/DomainAdd.vue:144
 msgid "Domain Config Created Successfully"
 msgstr ""
 
@@ -556,35 +581,35 @@ msgstr ""
 msgid "Dry run mode enabled"
 msgstr ""
 
-#: src/views/domain/components/SiteDuplicate.vue:126
+#: src/views/domain/components/SiteDuplicate.vue:122
 #: src/views/domain/DomainList.vue:140
-#: src/views/stream/components/StreamDuplicate.vue:126
+#: src/views/stream/components/StreamDuplicate.vue:122
 #: src/views/stream/StreamList.vue:161
 msgid "Duplicate"
 msgstr ""
 
-#: src/views/domain/components/SiteDuplicate.vue:84
-#: src/views/stream/components/StreamDuplicate.vue:84
+#: src/views/domain/components/SiteDuplicate.vue:82
+#: src/views/stream/components/StreamDuplicate.vue:82
 msgid "Duplicate %{conf_name} to %{node_name} successfully"
 msgstr ""
 
-#: src/views/domain/components/SiteDuplicate.vue:90
-#: src/views/stream/components/StreamDuplicate.vue:90
+#: src/views/domain/components/SiteDuplicate.vue:87
+#: src/views/stream/components/StreamDuplicate.vue:87
 msgid "Duplicate failed"
 msgstr ""
 
-#: src/views/domain/components/SiteDuplicate.vue:82
-#: src/views/stream/components/StreamDuplicate.vue:82
+#: src/views/domain/components/SiteDuplicate.vue:80
+#: src/views/stream/components/StreamDuplicate.vue:80
 msgid "Duplicate successfully"
 msgstr ""
 
-#: src/views/domain/components/SiteDuplicate.vue:64
-#: src/views/stream/components/StreamDuplicate.vue:64
+#: src/views/domain/components/SiteDuplicate.vue:63
+#: src/views/stream/components/StreamDuplicate.vue:63
 msgid "Duplicate to local successfully"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:174
-#: src/views/stream/StreamEdit.vue:166
+#: src/views/domain/DomainEdit.vue:172
+#: src/views/stream/StreamEdit.vue:164
 msgid "Edit %{n}"
 msgstr ""
 
@@ -605,24 +630,24 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: src/views/other/Install.vue:90
+#: src/views/other/Install.vue:89
 msgid "Email (*)"
 msgstr ""
 
-#: src/views/domain/components/Deploy.vue:86
+#: src/views/domain/components/Deploy.vue:83
 #: src/views/domain/DomainList.vue:132
-#: src/views/stream/components/Deploy.vue:86
+#: src/views/stream/components/Deploy.vue:83
 #: src/views/stream/StreamList.vue:153
 msgid "Enable"
 msgstr ""
 
-#: src/views/domain/components/Deploy.vue:52
-#: src/views/stream/components/Deploy.vue:52
+#: src/views/domain/components/Deploy.vue:50
+#: src/views/stream/components/Deploy.vue:50
 msgid "Enable %{conf_name} in %{node_name} failed"
 msgstr ""
 
-#: src/views/domain/components/Deploy.vue:46
-#: src/views/stream/components/Deploy.vue:46
+#: src/views/domain/components/Deploy.vue:45
+#: src/views/stream/components/Deploy.vue:45
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr ""
 
@@ -630,12 +655,12 @@ msgstr ""
 msgid "Enable auto-renewal failed for %{name}"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:46
+#: src/views/domain/DomainAdd.vue:43
 msgid "Enable failed"
 msgstr ""
 
-#: src/views/domain/components/Deploy.vue:44
-#: src/views/stream/components/Deploy.vue:44
+#: src/views/domain/components/Deploy.vue:43
+#: src/views/stream/components/Deploy.vue:43
 msgid "Enable successfully"
 msgstr ""
 
@@ -645,22 +670,22 @@ msgstr ""
 
 #: src/views/domain/cert/ChangeCert.vue:40
 #: src/views/domain/components/RightSettings.vue:77
-#: src/views/domain/DomainEdit.vue:179
+#: src/views/domain/DomainEdit.vue:177
 #: src/views/domain/DomainList.vue:29
 #: src/views/environment/Environment.vue:102
 #: src/views/preference/LogrotateSettings.vue:20
 #: src/views/stream/components/RightSettings.vue:76
-#: src/views/stream/StreamEdit.vue:171
+#: src/views/stream/StreamEdit.vue:169
 #: src/views/stream/StreamList.vue:29
 msgid "Enabled"
 msgstr ""
 
 #: src/views/domain/components/RightSettings.vue:29
-#: src/views/domain/components/SiteDuplicate.vue:98
-#: src/views/domain/DomainAdd.vue:42
+#: src/views/domain/components/SiteDuplicate.vue:94
+#: src/views/domain/DomainAdd.vue:40
 #: src/views/domain/DomainList.vue:57
 #: src/views/stream/components/RightSettings.vue:29
-#: src/views/stream/components/StreamDuplicate.vue:98
+#: src/views/stream/components/StreamDuplicate.vue:94
 #: src/views/stream/StreamList.vue:57
 msgid "Enabled successfully"
 msgstr ""
@@ -730,8 +755,8 @@ msgstr ""
 msgid "Failed to get certificate information"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:132
-#: src/views/stream/StreamEdit.vue:124
+#: src/views/domain/DomainEdit.vue:130
+#: src/views/stream/StreamEdit.vue:122
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr ""
 
@@ -757,7 +782,7 @@ msgid "Filter"
 msgstr ""
 
 #: src/language/constants.ts:19
-#: src/views/domain/DomainAdd.vue:101
+#: src/views/domain/DomainAdd.vue:97
 msgid "Finished"
 msgstr ""
 
@@ -825,6 +850,10 @@ msgstr ""
 msgid "If left blank, the default CA Dir will be used."
 msgstr ""
 
+#: src/views/preference/AuthSettings.vue:60
+msgid "If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes, the ip will be banned for a period of time."
+msgstr ""
+
 #: src/views/certificate/Certificate.vue:136
 msgid "Import"
 msgstr ""
@@ -832,6 +861,10 @@ msgstr ""
 #: src/routes/index.ts:153
 #: src/views/certificate/CertificateEditor.vue:85
 msgid "Import Certificate"
+msgstr ""
+
+#: src/views/other/Login.vue:59
+msgid "Incorrect username or password"
 msgstr ""
 
 #: src/constants/index.ts:18
@@ -847,7 +880,7 @@ msgid "Initialing core upgrader"
 msgstr ""
 
 #: src/routes/index.ts:273
-#: src/views/other/Install.vue:136
+#: src/views/other/Install.vue:135
 msgid "Install"
 msgstr ""
 
@@ -865,6 +898,10 @@ msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:92
 msgid "Invalid"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:14
+msgid "IP"
 msgstr ""
 
 #: src/views/certificate/Certificate.vue:144
@@ -897,7 +934,7 @@ msgstr ""
 msgid "Leave blank for no change"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:50
+#: src/views/preference/OpenAISettings.vue:53
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr ""
 
@@ -949,12 +986,12 @@ msgid "Log"
 msgstr ""
 
 #: src/routes/index.ts:279
-#: src/views/other/Login.vue:147
+#: src/views/other/Login.vue:159
 msgid "Login"
 msgstr ""
 
+#: src/views/other/Login.vue:109
 #: src/views/other/Login.vue:51
-#: src/views/other/Login.vue:97
 msgid "Login successful"
 msgstr ""
 
@@ -962,7 +999,7 @@ msgstr ""
 msgid "Logout successful"
 msgstr ""
 
-#: src/views/preference/Preference.vue:119
+#: src/views/preference/Preference.vue:134
 msgid "Logrotate"
 msgstr ""
 
@@ -997,6 +1034,10 @@ msgstr ""
 msgid "Managed Certificate"
 msgstr ""
 
+#: src/views/preference/AuthSettings.vue:74
+msgid "Max Attempts"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:217
 #: src/views/dashboard/ServerAnalytic.vue:218
 msgid "Memory"
@@ -1010,7 +1051,7 @@ msgstr ""
 msgid "Minutes"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:30
+#: src/views/preference/OpenAISettings.vue:33
 msgid "Model"
 msgstr ""
 
@@ -1025,7 +1066,7 @@ msgstr ""
 msgid "Modify Certificate"
 msgstr ""
 
-#: src/views/domain/DomainAdd.vue:155
+#: src/views/domain/DomainAdd.vue:151
 msgid "Modify Config"
 msgstr ""
 
@@ -1044,12 +1085,12 @@ msgstr ""
 #: src/views/config/config.ts:7
 #: src/views/domain/cert/ChangeCert.vue:17
 #: src/views/domain/components/RightSettings.vue:83
-#: src/views/domain/components/SiteDuplicate.vue:133
+#: src/views/domain/components/SiteDuplicate.vue:129
 #: src/views/domain/DomainList.vue:13
 #: src/views/domain/ngx_conf/NgxUpstream.vue:175
 #: src/views/environment/Environment.vue:12
 #: src/views/stream/components/RightSettings.vue:82
-#: src/views/stream/components/StreamDuplicate.vue:133
+#: src/views/stream/components/StreamDuplicate.vue:129
 #: src/views/stream/StreamList.vue:13
 #: src/views/stream/StreamList.vue:187
 msgid "Name"
@@ -1077,11 +1118,11 @@ msgstr ""
 
 #: src/views/certificate/WildcardCertificate.vue:99
 #: src/views/domain/cert/components/ObtainCert.vue:203
-#: src/views/domain/DomainAdd.vue:142
+#: src/views/domain/DomainAdd.vue:138
 msgid "Next"
 msgstr ""
 
-#: src/views/preference/Preference.vue:107
+#: src/views/preference/Preference.vue:122
 msgid "Nginx"
 msgstr ""
 
@@ -1089,8 +1130,8 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:217
-#: src/views/stream/StreamEdit.vue:209
+#: src/views/domain/DomainEdit.vue:215
+#: src/views/stream/StreamEdit.vue:207
 msgid "Nginx Configuration Parse Error"
 msgstr ""
 
@@ -1116,7 +1157,7 @@ msgid "Nginx restarted successfully"
 msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:270
-#: src/components/Notification/Notification.vue:82
+#: src/components/Notification/Notification.vue:84
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:521
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:535
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:549
@@ -1124,6 +1165,7 @@ msgstr ""
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:71
 #: src/views/notification/Notification.vue:70
+#: src/views/preference/AuthSettings.vue:96
 #: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
 msgid "No"
@@ -1154,7 +1196,7 @@ msgstr ""
 msgid "Notification"
 msgstr ""
 
-#: src/components/Notification/Notification.vue:80
+#: src/components/Notification/Notification.vue:82
 #: src/routes/index.ts:221
 msgid "Notifications"
 msgstr ""
@@ -1179,7 +1221,7 @@ msgid "Ok"
 msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:271
-#: src/components/Notification/Notification.vue:83
+#: src/components/Notification/Notification.vue:85
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:56
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:522
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:536
@@ -1209,7 +1251,7 @@ msgstr ""
 msgid "Online"
 msgstr ""
 
-#: src/views/preference/Preference.vue:113
+#: src/views/preference/Preference.vue:128
 msgid "OpenAI"
 msgstr ""
 
@@ -1221,13 +1263,13 @@ msgstr ""
 msgid "OS:"
 msgstr ""
 
-#: src/views/domain/components/Deploy.vue:90
-#: src/views/stream/components/Deploy.vue:90
+#: src/views/domain/components/Deploy.vue:87
+#: src/views/stream/components/Deploy.vue:87
 msgid "Overwrite"
 msgstr ""
 
-#: src/views/domain/components/Deploy.vue:94
-#: src/views/stream/components/Deploy.vue:94
+#: src/views/domain/components/Deploy.vue:91
+#: src/views/stream/components/Deploy.vue:91
 msgid "Overwrite exist file"
 msgstr ""
 
@@ -1235,12 +1277,12 @@ msgstr ""
 msgid "Params"
 msgstr ""
 
-#: src/views/other/Login.vue:132
+#: src/views/other/Login.vue:144
 #: src/views/user/User.vue:18
 msgid "Password"
 msgstr ""
 
-#: src/views/other/Install.vue:110
+#: src/views/other/Install.vue:109
 msgid "Password (*)"
 msgstr ""
 
@@ -1300,7 +1342,7 @@ msgid "Pre-release"
 msgstr ""
 
 #: src/routes/index.ts:239
-#: src/views/preference/Preference.vue:96
+#: src/views/preference/Preference.vue:105
 msgid "Preference"
 msgstr ""
 
@@ -1391,7 +1433,15 @@ msgstr ""
 msgid "Reloading nginx"
 msgstr ""
 
-#: src/components/Notification/Notification.vue:50
+#: src/views/preference/AuthSettings.vue:101
+msgid "Remove"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:47
+msgid "Remove successfully"
+msgstr ""
+
+#: src/components/Notification/Notification.vue:52
 msgid "Removed successfully"
 msgstr ""
 
@@ -1444,10 +1494,10 @@ msgstr ""
 #: src/components/ChatGPT/ChatGPT.vue:252
 #: src/views/certificate/CertificateEditor.vue:249
 #: src/views/config/ConfigEdit.vue:96
-#: src/views/domain/DomainEdit.vue:263
+#: src/views/domain/DomainEdit.vue:261
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
-#: src/views/preference/Preference.vue:130
-#: src/views/stream/StreamEdit.vue:254
+#: src/views/preference/Preference.vue:145
+#: src/views/stream/StreamEdit.vue:252
 msgid "Save"
 msgstr ""
 
@@ -1456,7 +1506,7 @@ msgid "Save Directive"
 msgstr ""
 
 #: src/views/config/ConfigEdit.vue:57
-#: src/views/domain/DomainAdd.vue:50
+#: src/views/domain/DomainAdd.vue:46
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:41
 msgid "Save error %{msg}"
 msgstr ""
@@ -1464,15 +1514,15 @@ msgstr ""
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:104
 #: src/views/certificate/CertificateEditor.vue:46
-#: src/views/preference/Preference.vue:66
+#: src/views/preference/Preference.vue:74
 msgid "Save successfully"
 msgstr ""
 
 #: src/views/config/ConfigEdit.vue:55
-#: src/views/domain/DomainAdd.vue:38
-#: src/views/domain/DomainEdit.vue:148
+#: src/views/domain/DomainAdd.vue:37
+#: src/views/domain/DomainEdit.vue:146
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
-#: src/views/stream/StreamEdit.vue:140
+#: src/views/stream/StreamEdit.vue:138
 msgid "Saved successfully"
 msgstr ""
 
@@ -1499,8 +1549,9 @@ msgstr ""
 #: src/views/config/ConfigEdit.vue:40
 #: src/views/domain/DomainList.vue:81
 #: src/views/environment/Environment.vue:139
-#: src/views/other/Install.vue:70
-#: src/views/preference/Preference.vue:70
+#: src/views/other/Install.vue:69
+#: src/views/preference/AuthSettings.vue:49
+#: src/views/preference/Preference.vue:78
 #: src/views/stream/StreamList.vue:113
 #: src/views/stream/StreamList.vue:81
 #: src/views/system/Upgrade.vue:42
@@ -1520,7 +1571,7 @@ msgid "server_name not found in directives"
 msgstr ""
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:34
-#: src/views/domain/DomainAdd.vue:121
+#: src/views/domain/DomainAdd.vue:117
 msgid "server_name parameter is required"
 msgstr ""
 
@@ -1570,7 +1621,7 @@ msgstr ""
 msgid "SSL Certificate Path"
 msgstr ""
 
-#: src/views/other/Login.vue:158
+#: src/views/other/Login.vue:170
 msgid "SSO Login"
 msgstr ""
 
@@ -1649,8 +1700,8 @@ msgstr ""
 msgid "System"
 msgstr ""
 
-#: src/views/domain/components/SiteDuplicate.vue:140
-#: src/views/stream/components/StreamDuplicate.vue:140
+#: src/views/domain/components/SiteDuplicate.vue:136
+#: src/views/stream/components/StreamDuplicate.vue:136
 msgid "Target"
 msgstr ""
 
@@ -1679,7 +1730,7 @@ msgstr ""
 msgid "The input is not a SSL Certificate Key"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:33
+#: src/views/preference/OpenAISettings.vue:36
 msgid "The model name should only contain letters, unicode, numbers, hyphens, dashes, and dots."
 msgstr ""
 
@@ -1704,8 +1755,8 @@ msgstr ""
 msgid "The url is invalid"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:45
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:48
+#: src/views/preference/OpenAISettings.vue:60
 msgid "The url is invalid."
 msgstr ""
 
@@ -1731,6 +1782,7 @@ msgstr ""
 msgid "This field should not be empty"
 msgstr ""
 
+#: src/views/preference/AuthSettings.vue:59
 #: src/views/preference/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr ""
@@ -1743,8 +1795,12 @@ msgstr ""
 msgid "To make sure the certification auto-renewal can work normally, we need to add a location which can proxy the request from authority to backend, and we need to save this file and reload the Nginx. Are you sure you want to continue?"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:69
+#: src/views/preference/OpenAISettings.vue:72
 msgid "Token is not valid"
+msgstr ""
+
+#: src/views/other/Login.vue:62
+msgid "Too many login failed attempts, please try again later"
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:221
@@ -1804,12 +1860,16 @@ msgstr ""
 msgid "User"
 msgstr ""
 
-#: src/views/other/Login.vue:122
+#: src/views/other/Login.vue:65
+msgid "User is banned"
+msgstr ""
+
+#: src/views/other/Login.vue:134
 #: src/views/user/User.vue:9
 msgid "Username"
 msgstr ""
 
-#: src/views/other/Install.vue:100
+#: src/views/other/Install.vue:99
 msgid "Username (*)"
 msgstr ""
 
@@ -1823,7 +1883,7 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: src/components/Notification/Notification.vue:141
+#: src/components/Notification/Notification.vue:143
 msgid "View all notifications"
 msgstr ""
 
@@ -1838,7 +1898,7 @@ msgstr ""
 #: src/constants/index.ts:17
 #: src/views/config/InspectConfig.vue:33
 #: src/views/domain/cert/components/AutoCertStepOne.vue:28
-#: src/views/domain/DomainAdd.vue:116
+#: src/views/domain/DomainAdd.vue:112
 msgid "Warning"
 msgstr ""
 
@@ -1865,6 +1925,7 @@ msgstr ""
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
+#: src/views/preference/AuthSettings.vue:95
 #: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
 msgstr ""

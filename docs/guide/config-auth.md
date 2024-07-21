@@ -9,7 +9,7 @@ From v2.0.0-beta.26, you can authorization settings in the `auth` section of the
 [auth]
 IPWhiteList = 10.0.0.1
 IPWhiteList = 10.0.0.2
-IPWhiteList = 10.0.0.3
+IPWhiteList = 2001:0000:130F:0000:0000:09C0:876A:130B
 ```
 
 By default, if you do not set the `IPWhiteList`, all IP addresses are allowed to access the Nginx UI.

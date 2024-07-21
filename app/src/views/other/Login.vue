@@ -46,16 +46,28 @@ const { validate, validateInfos, clearValidate } = Form.useForm(modelRef, rulesR
 const onSubmit = () => {
   validate().then(async () => {
     loading.value = true
-    // eslint-disable-next-line promise/no-nesting
+
     await auth.login(modelRef.username, modelRef.password).then(async () => {
       message.success($gettext('Login successful'), 1)
 
       const next = (route.query?.next || '').toString() || '/'
 
       await router.push(next)
-      // eslint-disable-next-line promise/no-nesting
     }).catch(e => {
-      message.error($gettext(e.message ?? 'Server error'))
+      switch (e.code) {
+        case 4031:
+          message.error($gettext('Incorrect username or password'))
+          break
+        case 4291:
+          message.error($gettext('Too many login failed attempts, please try again later'))
+          break
+        case 4033:
+          message.error($gettext('User is banned'))
+          break
+        default:
+          message.error($gettext(e.message ?? 'Server error'))
+          break
+      }
     })
     loading.value = false
   })

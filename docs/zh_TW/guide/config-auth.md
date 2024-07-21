@@ -9,7 +9,7 @@
 [auth]
 IPWhiteList = 10.0.0.1
 IPWhiteList = 10.0.0.2
-IPWhiteList = 10.0.0.3
+IPWhiteList = 2001:0000:130F:0000:0000:09C0:876A:130B
 ```
 
 默認情況下，如果您沒有設置 IPWhiteList，所有 IP 地址都允許訪問 Nginx UI。

@@ -10,6 +10,7 @@ import NginxSettings from '@/views/preference/NginxSettings.vue'
 import type { Settings } from '@/views/preference/typedef'
 import LogrotateSettings from '@/views/preference/LogrotateSettings.vue'
 import { useSettingsStore } from '@/pinia'
+import AuthSettings from '@/views/preference/AuthSettings.vue'
 
 const data = ref<Settings>({
   server: {
@@ -46,15 +47,21 @@ const data = ref<Settings>({
     cmd: '',
     interval: 1440,
   },
+  auth: {
+    ip_white_list: [],
+    ban_threshold_minutes: 10,
+    max_attempts: 10,
+  },
 })
 
-settings.get().then(r => {
+settings.get<Settings>().then(r => {
   data.value = r
 })
 
 const settingsStore = useSettingsStore()
 const { server_name } = storeToRefs(settingsStore)
 const errors = ref({}) as Ref<Record<string, Record<string, string>>>
+const refAuthSettings = ref()
 
 async function save() {
   // fix type
@@ -63,6 +70,7 @@ async function save() {
     if (!settingsStore.is_remote)
       server_name.value = r?.server?.name ?? ''
     data.value = r
+    refAuthSettings.value.getBannedIPs()
     message.success($gettext('Save successfully'))
     errors.value = {}
   }).catch(e => {
@@ -90,6 +98,7 @@ onMounted(() => {
   if (route.query?.tab)
     activeKey.value = route.query.tab.toString()
 })
+
 </script>
 
 <template>
@@ -101,6 +110,12 @@ onMounted(() => {
           :tab="$gettext('Basic')"
         >
           <BasicSettings />
+        </ATabPane>
+        <ATabPane
+          key="auth"
+          :tab="$gettext('Auth')"
+        >
+          <AuthSettings ref="refAuthSettings" />
         </ATabPane>
         <ATabPane
           key="nginx"
