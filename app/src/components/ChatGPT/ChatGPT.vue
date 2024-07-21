@@ -143,7 +143,6 @@ async function send() {
     messages.value = []
 
   if (messages.value.length === 0) {
-    console.log(current.value)
     messages.value.push({
       role: 'user',
       content: `${props.content}\n\nCurrent Language Code: ${current.value}`,

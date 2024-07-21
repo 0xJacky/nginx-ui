@@ -31,6 +31,11 @@ const columns: Column[] = [{
   },
 },
 {
+  title: () => $gettext('Version'),
+  dataIndex: 'version',
+  pithy: true,
+},
+{
   title: () => 'NodeSecret',
   dataIndex: 'token',
   sortable: true,

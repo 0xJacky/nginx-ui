@@ -54,7 +54,7 @@ func UnTar(dst, src string) (err error) {
 					return errors.Wrap(err, "unTar os.OpenFile error")
 				}
 				defer file.Close()
-				_, err = file.Seek(0, os.SEEK_END)
+				_, err = file.Seek(0, io.SeekEnd)
 				if err != nil {
 					return errors.Wrap(err, "unTar file.Truncate(0) error")
 				}

@@ -4,170 +4,20 @@ import (
 	"encoding/json"
 	"fmt"
 	_github "github.com/0xJacky/Nginx-UI/.github"
-	"github.com/0xJacky/Nginx-UI/app"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/minio/selfupdate"
 	"github.com/pkg/errors"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strconv"
 	"strings"
-	"time"
+	"sync/atomic"
 )
-
-const (
-	GithubLatestReleaseAPI = "https://api.github.com/repos/0xJacky/nginx-ui/releases/latest"
-	GithubReleasesListAPI  = "https://api.github.com/repos/0xJacky/nginx-ui/releases"
-)
-
-type RuntimeInfo struct {
-	OS     string `json:"os"`
-	Arch   string `json:"arch"`
-	ExPath string `json:"ex_path"`
-}
-
-func GetRuntimeInfo() (r RuntimeInfo, err error) {
-	ex, err := os.Executable()
-	if err != nil {
-		err = errors.Wrap(err, "service.GetRuntimeInfo os.Executable() err")
-		return
-	}
-	realPath, err := filepath.EvalSymlinks(ex)
-	if err != nil {
-		err = errors.Wrap(err, "service.GetRuntimeInfo filepath.EvalSymlinks() err")
-		return
-	}
-
-	r = RuntimeInfo{
-		OS:     runtime.GOOS,
-		Arch:   runtime.GOARCH,
-		ExPath: realPath,
-	}
-
-	return
-}
-
-type TReleaseAsset struct {
-	Name               string `json:"name"`
-	BrowserDownloadUrl string `json:"browser_download_url"`
-	Size               uint   `json:"size"`
-}
-
-type TRelease struct {
-	TagName     string          `json:"tag_name"`
-	Name        string          `json:"name"`
-	PublishedAt time.Time       `json:"published_at"`
-	Body        string          `json:"body"`
-	Prerelease  bool            `json:"prerelease"`
-	Assets      []TReleaseAsset `json:"assets"`
-}
-
-func (t *TRelease) GetAssetsMap() (m map[string]TReleaseAsset) {
-	m = make(map[string]TReleaseAsset)
-	for _, v := range t.Assets {
-		m[v.Name] = v
-	}
-	return
-}
-
-func getLatestRelease() (data TRelease, err error) {
-	resp, err := http.Get(GithubLatestReleaseAPI)
-	if err != nil {
-		err = errors.Wrap(err, "service.getLatestRelease http.Get err")
-		return
-	}
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		err = errors.Wrap(err, "service.getLatestRelease io.ReadAll err")
-		return
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
-		err = errors.New(string(body))
-		return
-	}
-	err = json.Unmarshal(body, &data)
-	if err != nil {
-		err = errors.Wrap(err, "service.getLatestRelease json.Unmarshal err")
-		return
-	}
-	return
-}
-
-func getLatestPrerelease() (data TRelease, err error) {
-	resp, err := http.Get(GithubReleasesListAPI)
-	if err != nil {
-		err = errors.Wrap(err, "service.getLatestPrerelease http.Get err")
-		return
-	}
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		err = errors.Wrap(err, "service.getLatestPrerelease io.ReadAll err")
-		return
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
-		err = errors.New(string(body))
-		return
-	}
-
-	var releaseList []TRelease
-
-	err = json.Unmarshal(body, &releaseList)
-	if err != nil {
-		err = errors.Wrap(err, "service.getLatestPrerelease json.Unmarshal err")
-		return
-	}
-
-	latestDate := time.Time{}
-
-	for _, release := range releaseList {
-		if release.Prerelease && release.PublishedAt.After(latestDate) {
-			data = release
-			latestDate = release.PublishedAt
-		}
-	}
-
-	return
-}
-
-func GetRelease(channel string) (data TRelease, err error) {
-	switch channel {
-	default:
-		fallthrough
-	case "stable":
-		return getLatestRelease()
-	case "prerelease":
-		return getLatestPrerelease()
-	}
-}
-
-type CurVersion struct {
-	Version    string `json:"version"`
-	BuildID    int    `json:"build_id"`
-	TotalBuild int    `json:"total_build"`
-}
-
-func GetCurrentVersion() (c CurVersion, err error) {
-	verJson, err := app.DistFS.ReadFile("dist/version.json")
-	if err != nil {
-		err = errors.Wrap(err, "service.GetCurrentVersion ReadFile err")
-		return
-	}
-
-	err = json.Unmarshal(verJson, &c)
-	if err != nil {
-		err = errors.Wrap(err, "service.GetCurrentVersion json.Unmarshal err")
-		return
-	}
-
-	return
-}
 
 type Upgrader struct {
 	Release TRelease
@@ -350,23 +200,57 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 	return
 }
 
-func (u *Upgrader) PerformCoreUpgrade(exPath string, tarPath string) (err error) {
-	dir := filepath.Dir(exPath)
-	err = helper.UnTar(dir, tarPath)
+var updateInProgress atomic.Bool
+
+func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
+	if !updateInProgress.CompareAndSwap(false, true) {
+		return errors.New("update already in progress")
+	}
+	defer updateInProgress.Store(false)
+
+	opts := selfupdate.Options{}
+
+	if err = opts.CheckPermissions(); err != nil {
+		return err
+	}
+
+	tempDir, err := os.MkdirTemp("", "nginx-ui-upgrade-*")
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(tempDir)
+
+	err = helper.UnTar(tempDir, tarPath)
 	if err != nil {
 		err = errors.Wrap(err, "PerformCoreUpgrade unTar error")
 		return
 	}
-	err = os.Rename(filepath.Join(dir, "nginx-ui"), exPath)
+
+	f, err := os.Open(filepath.Join(tempDir, "nginx-ui"))
 	if err != nil {
-		err = errors.Wrap(err, "PerformCoreUpgrade rename error")
+		err = errors.Wrap(err, "PerformCoreUpgrade open error")
 		return
+	}
+	defer f.Close()
+
+	if err = selfupdate.PrepareAndCheckBinary(f, opts); err != nil {
+		var pathErr *os.PathError
+		if errors.As(err, &pathErr) {
+			return pathErr.Err
+		}
+		return err
 	}
 
-	err = os.Remove(tarPath)
-	if err != nil {
-		err = errors.Wrap(err, "PerformCoreUpgrade remove tar error")
-		return
+	if err = selfupdate.CommitBinary(opts); err != nil {
+		if rerr := selfupdate.RollbackError(err); rerr != nil {
+			return rerr
+		}
+		var pathErr *os.PathError
+		if errors.As(err, &pathErr) {
+			return pathErr.Err
+		}
+		return err
 	}
+
 	return
 }

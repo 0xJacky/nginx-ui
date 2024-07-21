@@ -95,7 +95,6 @@ async function perform_upgrade() {
     const r = JSON.parse(m.data)
     if (r.message)
       log(r.message)
-    console.log(r.status)
     switch (r.status) {
       case 'info':
         progressPercent.value += 10
@@ -113,6 +112,12 @@ async function perform_upgrade() {
         modalClosable.value = true
         break
     }
+  }
+
+  ws.onerror = () => {
+    is_fail = true
+    progressStatus.value = 'exception'
+    modalClosable.value = true
   }
 
   ws.onclose = async () => {
