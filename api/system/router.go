@@ -13,5 +13,8 @@ func InitPublicRouter(r *gin.RouterGroup) {
 func InitPrivateRouter(r *gin.RouterGroup) {
 	r.GET("upgrade/release", GetRelease)
 	r.GET("upgrade/current", GetCurrentVersion)
+}
+
+func InitWebSocketRouter(r *gin.RouterGroup) {
 	r.GET("upgrade/perform", PerformCoreUpgrade)
 }
