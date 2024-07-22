@@ -70,7 +70,7 @@ async function save() {
     if (!settingsStore.is_remote)
       server_name.value = r?.server?.name ?? ''
     data.value = r
-    refAuthSettings.value.getBannedIPs()
+    refAuthSettings.value?.getBannedIPs?.()
     message.success($gettext('Save successfully'))
     errors.value = {}
   }).catch(e => {
