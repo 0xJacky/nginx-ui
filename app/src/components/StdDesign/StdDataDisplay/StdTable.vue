@@ -1,4 +1,5 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T=any">
+import type { TableProps } from 'ant-design-vue'
 import { message } from 'ant-design-vue'
 import { HolderOutlined } from '@ant-design/icons-vue'
 import type { ComputedRef, Ref } from 'vue'
@@ -14,12 +15,13 @@ import type { Column } from '@/components/StdDesign/types'
 import useSortable from '@/components/StdDesign/StdDataDisplay/methods/sortable'
 import type Curd from '@/api/curd'
 
-export interface StdTableProps {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface StdTableProps<T = any> {
   title?: string
   mode?: string
   rowKey?: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  api: Curd<any>
+
+  api: Curd<T>
   columns: Column[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getParams?: Record<string, any>
@@ -31,25 +33,45 @@ export interface StdTableProps {
   exportMaterial?: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   overwriteParams?: Record<string, any>
-  disabledView?: boolean
-  disabledModify?: boolean
+  disableView?: boolean
+  disableModify?: boolean
   selectionType?: string
   sortable?: boolean
   disableDelete?: boolean
   disablePagination?: boolean
   sortableMoveHook?: (oldRow: number[], newRow: number[]) => boolean
   scrollX?: string | number
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getCheckboxProps?: (record: any) => any
 }
 
-const props = withDefaults(defineProps<StdTableProps>(), {
+const props = withDefaults(defineProps<StdTableProps<T>>(), {
   rowKey: 'id',
 })
 
 const emit = defineEmits(['clickEdit', 'clickView', 'clickBatchModify', 'update:selectedRowKeys'])
 const route = useRoute()
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const dataSource: Ref<any[]> = ref([])
+
+const dataSource: Ref<T[]> = ref([])
 const expandKeysList: Ref<Key[]> = ref([])
+
+watch(dataSource, () => {
+  const res: Key[] = []
+
+  function buildKeysList(record) {
+    record.children?.forEach(v => {
+      buildKeysList(v)
+    })
+    res.push(record[props.rowKey])
+  }
+
+  dataSource.value.forEach(v => {
+    buildKeysList(v)
+  })
+
+  expandKeysList.value = res
+})
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const rowsKeyIndexMap: Ref<Record<number, any>> = ref({})
 const loading = ref(true)
@@ -70,11 +92,6 @@ const pagination: Pagination = reactive({
 
 const params = reactive({
   ...props.getParams,
-})
-
-const get_list = _.debounce(_get_list, 200, {
-  leading: true,
-  trailing: false,
 })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -105,9 +122,8 @@ const searchColumns = computed(() => {
           edit: column.search,
         })
       }
-      else {
-        _searchColumns.push({ ...column })
-      }
+
+      else { _searchColumns.push({ ...column }) }
     }
   })
 
@@ -137,8 +153,9 @@ const batchColumns = computed(() => {
   return batch
 })
 
-watch(route, () => {
-  params.trash = route.query.trash === 'true'
+const get_list = _.debounce(_get_list, 100, {
+  leading: true,
+  trailing: false,
 })
 
 const filterParams = reactive({})
@@ -214,12 +231,13 @@ function buildIndexMap(data: any, level: number = 0, index: number = 0, total: n
 }
 
 async function _get_list(page_num = null, page_size = 20) {
+  dataSource.value = []
   loading.value = true
   if (page_num) {
     params.page = page_num
     params.page_size = page_size
   }
-  props.api?.get_list({ ...route.query, ...params, ...props.overwriteParams }).then(async r => {
+  props.api?.get_list({ ...params, ...props.overwriteParams }).then(async r => {
     dataSource.value = r.data
     rowsKeyIndexMap.value = {}
     if (props.sortable)
@@ -260,6 +278,7 @@ function onTableChange(_pagination: TablePaginationConfig, filters: Record<strin
       params[v] = filters[v]
     })
   }
+
   if (_pagination)
     selectedRowKeys.value = []
 }
@@ -297,15 +316,13 @@ async function onSelect(record: any, selected: boolean, _selectedRows: any[]) {
       selectedRows.value = filteredRows
     })
   }
+  else if (selected) {
+    selectedRowKeys.value = record[props.rowKey]
+    selectedRows.value = [record]
+  }
   else {
-    if (selected) {
-      selectedRowKeys.value = record[props.rowKey]
-      selectedRows.value = [record]
-    }
-    else {
-      selectedRowKeys.value = []
-      selectedRows.value = []
-    }
+    selectedRowKeys.value = []
+    selectedRows.value = []
   }
 }
 
@@ -358,18 +375,29 @@ const resetSearch = async () => {
   router.push({ query: {} }).catch(() => {
   })
 
+  Object.keys(filterParams).forEach(v => {
+    delete filterParams[v]
+  })
+
   updateFilter.value++
 }
 
-watch(params, async v => {
-  if (init.value) {
-    await nextTick(() => {
-      get_list()
-    })
+watch(params, v => {
+  if (!init.value)
+    return
 
-    if (!props.disableQueryParams)
-      await router.push({ query: v as RouteParams })
-  }
+  if (!props.disableQueryParams)
+    router.push({ query: { ...v as RouteParams } })
+  else
+    get_list()
+})
+
+watch(() => route.query, async () => {
+  params.trash = route.query.trash === 'true'
+  params.team_id = route.query.team_id
+
+  if (init.value)
+    await get_list()
 })
 
 if (props.getParams) {
@@ -401,14 +429,12 @@ const rowSelection = computed(() => {
       selectedRowKeys: selectedRowKeys.value,
       onSelect,
       onSelectAll,
+      getCheckboxProps: props?.getCheckboxProps,
       type: (batchColumns.value.length > 0 || props.exportExcel) ? 'checkbox' : props.selectionType,
     }
   }
-  else {
-    return null
-  }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-}) as ComputedRef<any>
+  else { return null }
+}) as ComputedRef<TableProps['rowSelection']>
 
 const hasSelectedRow = computed(() => {
   return batchColumns.value.length > 0 && selectedRowKeys.value.length > 0
@@ -435,6 +461,7 @@ const paginationSize = computed(() => {
   else
     return 'default'
 })
+
 </script>
 
 <template>
@@ -482,7 +509,7 @@ const paginationSize = computed(() => {
           {{ text }}
         </template>
         <template v-if="column.dataIndex === 'action'">
-          <template v-if="!props.disabledView && !params.trash">
+          <template v-if="!props.disableView && !params.trash">
             <AButton
               type="link"
               size="small"
@@ -491,12 +518,12 @@ const paginationSize = computed(() => {
               {{ $gettext('View') }}
             </AButton>
             <ADivider
-              v-if="!props.disabledModify"
+              v-if="!props.disableModify"
               type="vertical"
             />
           </template>
 
-          <template v-if="!props.disabledModify && !params.trash">
+          <template v-if="!props.disableModify && !params.trash">
             <AButton
               type="link"
               size="small"

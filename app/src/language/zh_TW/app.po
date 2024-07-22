@@ -31,15 +31,15 @@ msgstr "使用者名稱"
 #: src/views/certificate/ACMEUser.vue:59
 #: src/views/certificate/Certificate.vue:113
 #: src/views/certificate/DNSCredential.vue:33 src/views/config/config.ts:34
-#: src/views/domain/DomainList.vue:47 src/views/environment/Environment.vue:129
+#: src/views/domain/DomainList.vue:47 src/views/environment/envColumns.tsx:131
 #: src/views/notification/Notification.vue:37
 #: src/views/preference/AuthSettings.vue:26 src/views/stream/StreamList.vue:47
 #: src/views/user/User.vue:43
 msgid "Action"
 msgstr "操作"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:194
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:214
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:181
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:202
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/domain/ngx_conf/NgxServer.vue:167
 #: src/views/domain/ngx_conf/NgxUpstream.vue:152
@@ -96,7 +96,7 @@ msgstr "API 代理"
 msgid "API Token"
 msgstr "API Token"
 
-#: src/views/system/Upgrade.vue:173
+#: src/views/system/Upgrade.vue:178
 msgid "Arch"
 msgstr "架構"
 
@@ -111,16 +111,16 @@ msgstr "您確定要刪除嗎？"
 msgid "Are you sure you want to clear all notifications?"
 msgstr "您確定要清除聊天記錄嗎？"
 
-#: src/components/ChatGPT/ChatGPT.vue:272
+#: src/components/ChatGPT/ChatGPT.vue:271
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "您確定要清除聊天記錄嗎？"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:551
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:578
 #, fuzzy
 msgid "Are you sure you want to delete this item permanently?"
 msgstr "您確定要刪除嗎？"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:523
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:550
 #, fuzzy
 msgid "Are you sure you want to delete this item?"
 msgstr "您確定要刪除嗎？"
@@ -129,7 +129,7 @@ msgstr "您確定要刪除嗎？"
 msgid "Are you sure you want to delete?"
 msgstr "您確定要刪除嗎？"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:537
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:564
 #, fuzzy
 msgid "Are you sure you want to recover this item?"
 msgstr "您確定要刪除這條指令嗎？"
@@ -147,11 +147,11 @@ msgstr "您確定要刪除這條指令嗎？"
 msgid "Are you sure you want to remove this location?"
 msgstr "您確定要刪除此 Location 嗎？"
 
-#: src/components/ChatGPT/ChatGPT.vue:216
+#: src/components/ChatGPT/ChatGPT.vue:215
 msgid "Ask ChatGPT for Help"
 msgstr "向 ChatGPT 尋求幫助"
 
-#: src/components/ChatGPT/ChatGPT.vue:230
+#: src/components/ChatGPT/ChatGPT.vue:229
 msgid "Assistant"
 msgstr "助理"
 
@@ -196,6 +196,10 @@ msgstr "返回"
 msgid "Back Home"
 msgstr "返回首頁"
 
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:215
+msgid "Back to list"
+msgstr ""
+
 #: src/views/preference/AuthSettings.vue:68
 msgid "Ban Threshold Minutes"
 msgstr ""
@@ -224,9 +228,14 @@ msgid "Basic Mode"
 msgstr "基本模式"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:54
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:459
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:486
 msgid "Batch Modify"
 msgstr "批次修改"
+
+#: src/views/environment/BatchUpgrader.vue:154
+#, fuzzy
+msgid "Batch Upgrade"
+msgstr "升級"
 
 #: src/views/system/About.vue:39
 msgid "Build with"
@@ -240,9 +249,9 @@ msgstr ""
 msgid "CADir"
 msgstr "CADir"
 
-#: src/components/ChatGPT/ChatGPT.vue:253
+#: src/components/ChatGPT/ChatGPT.vue:252
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:55
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:263
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:252
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:153
 #: src/views/domain/cert/components/ObtainCert.vue:137
 #: src/views/domain/components/Deploy.vue:21
@@ -292,11 +301,11 @@ msgstr "驗證方式"
 msgid "Change Certificate"
 msgstr "更換憑證"
 
-#: src/views/system/Upgrade.vue:185
+#: src/views/environment/BatchUpgrader.vue:161 src/views/system/Upgrade.vue:190
 msgid "Channel"
 msgstr "通道"
 
-#: src/views/system/Upgrade.vue:182
+#: src/views/system/Upgrade.vue:187
 msgid "Check again"
 msgstr "再次檢查"
 
@@ -304,7 +313,7 @@ msgstr "再次檢查"
 msgid "Cleaning environment variables"
 msgstr "清理環境變數"
 
-#: src/components/ChatGPT/ChatGPT.vue:276
+#: src/components/ChatGPT/ChatGPT.vue:275
 #: src/components/Notification/Notification.vue:91
 #: src/views/notification/Notification.vue:77
 msgid "Clear"
@@ -348,7 +357,7 @@ msgstr "設定"
 msgid "Configure SSL"
 msgstr "設定 SSL"
 
-#: src/views/dashboard/Environments.vue:139
+#: src/views/dashboard/Environments.vue:141
 msgid "Connected"
 msgstr "已連結"
 
@@ -358,7 +367,7 @@ msgstr "已連結"
 msgid "Content"
 msgstr "內容"
 
-#: src/views/system/Upgrade.vue:143
+#: src/views/system/Upgrade.vue:148
 msgid "Core Upgrade"
 msgstr "核心升級"
 
@@ -395,7 +404,7 @@ msgstr "認證"
 msgid "Credentials"
 msgstr "認證資訊"
 
-#: src/views/system/Upgrade.vue:162
+#: src/views/system/Upgrade.vue:167
 msgid "Current Version"
 msgstr "目前版本"
 
@@ -422,7 +431,7 @@ msgstr "資料庫 (可選，預設: database)"
 msgid "Days"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:530
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:557
 #: src/views/domain/DomainList.vue:155
 #: src/views/domain/ngx_conf/NgxServer.vue:114
 #: src/views/domain/ngx_conf/NgxUpstream.vue:126
@@ -430,7 +439,7 @@ msgstr ""
 msgid "Delete"
 msgstr "刪除"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:558
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:585
 msgid "Delete Permanently"
 msgstr ""
 
@@ -443,7 +452,7 @@ msgstr "刪除網站：%{site_name}"
 msgid "Delete stream: %{stream_name}"
 msgstr "刪除網站：%{site_name}"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:185
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:202
 #, fuzzy
 msgid "Deleted successfully"
 msgstr "成功停用"
@@ -505,8 +514,9 @@ msgid "Disable auto-renewal failed for %{name}"
 msgstr "關閉 %{name} 自動續簽失敗"
 
 #: src/views/domain/cert/ChangeCert.vue:44 src/views/domain/DomainEdit.vue:183
-#: src/views/domain/DomainList.vue:33 src/views/environment/Environment.vue:93
-#: src/views/stream/StreamEdit.vue:175 src/views/stream/StreamList.vue:33
+#: src/views/domain/DomainList.vue:33 src/views/environment/envColumns.tsx:113
+#: src/views/environment/envColumns.tsx:95 src/views/stream/StreamEdit.vue:175
+#: src/views/stream/StreamList.vue:33
 msgid "Disabled"
 msgstr "停用"
 
@@ -596,7 +606,7 @@ msgstr "下載最新版本錯誤"
 msgid "Downloading latest release"
 msgstr "正在下載最新版本"
 
-#: src/views/system/Upgrade.vue:212
+#: src/views/environment/BatchUpgrader.vue:190 src/views/system/Upgrade.vue:217
 msgid "Dry run mode enabled"
 msgstr "試運轉模式已啟用"
 
@@ -690,7 +700,8 @@ msgstr "啟用 TLS"
 #: src/views/domain/cert/ChangeCert.vue:40
 #: src/views/domain/components/RightSettings.vue:77
 #: src/views/domain/DomainEdit.vue:177 src/views/domain/DomainList.vue:29
-#: src/views/environment/Environment.vue:102
+#: src/views/environment/envColumns.tsx:104
+#: src/views/environment/envColumns.tsx:110
 #: src/views/preference/LogrotateSettings.vue:20
 #: src/views/stream/components/RightSettings.vue:76
 #: src/views/stream/StreamEdit.vue:169 src/views/stream/StreamList.vue:29
@@ -710,7 +721,7 @@ msgstr "成功啟用"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 對網站進行加密"
 
-#: src/routes/index.ts:212 src/views/environment/Environment.vue:147
+#: src/routes/index.ts:212 src/views/environment/Environment.vue:34
 msgid "Environment"
 msgstr "環境"
 
@@ -719,7 +730,7 @@ msgstr "環境"
 msgid "Environment variables cleaned"
 msgstr "設定環境變數中"
 
-#: src/views/dashboard/Environments.vue:82
+#: src/views/dashboard/Environments.vue:83
 msgid "Environments"
 msgstr "環境"
 
@@ -731,7 +742,7 @@ msgstr "錯誤"
 msgid "Error Logs"
 msgstr "錯誤日誌"
 
-#: src/views/system/Upgrade.vue:174
+#: src/views/system/Upgrade.vue:179
 msgid "Executable Path"
 msgstr "可執行檔路徑"
 
@@ -831,7 +842,7 @@ msgstr "產生"
 msgid "Generating private key for registering account"
 msgstr "產生註冊帳號的私鑰"
 
-#: src/views/system/Upgrade.vue:166
+#: src/views/environment/BatchUpgrader.vue:179 src/views/system/Upgrade.vue:171
 msgid "Get release information error"
 msgstr "取得發布資訊錯誤"
 
@@ -950,7 +961,7 @@ msgstr "Jwt Secret"
 msgid "Key Type"
 msgstr "類型"
 
-#: src/views/system/Upgrade.vue:176
+#: src/views/system/Upgrade.vue:181
 msgid "Last checked at"
 msgstr "上次檢查時間"
 
@@ -973,12 +984,12 @@ msgstr "留空表示不修改"
 msgid "License"
 msgstr "授權條款"
 
-#: src/views/dashboard/Environments.vue:139
+#: src/views/dashboard/Environments.vue:141
+#: src/views/dashboard/Environments.vue:156
 msgid "Link Start"
 msgstr "連結開始"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:204
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:227
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:192
 msgid "List"
 msgstr ""
 
@@ -987,11 +998,11 @@ msgstr ""
 msgid "Load Average:"
 msgstr "系統負載:"
 
-#: src/views/environment/Environment.vue:152
+#: src/views/environment/Environment.vue:39
 msgid "Load from settings"
 msgstr ""
 
-#: src/views/environment/Environment.vue:137
+#: src/views/environment/Environment.vue:13
 #, fuzzy
 msgid "Load successfully"
 msgstr "儲存成功"
@@ -1091,9 +1102,9 @@ msgstr ""
 msgid "Model"
 msgstr "執行模式"
 
-#: src/components/ChatGPT/ChatGPT.vue:249
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:194
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:505
+#: src/components/ChatGPT/ChatGPT.vue:248
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:181
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:532
 msgid "Modify"
 msgstr "修改"
 
@@ -1106,7 +1117,7 @@ msgstr "憑證狀態"
 msgid "Modify Config"
 msgstr "修改設定"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:279
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:268
 #, fuzzy
 msgid "Modify Mode"
 msgstr "修改"
@@ -1124,7 +1135,7 @@ msgstr "多行指令"
 #: src/views/domain/components/SiteDuplicate.vue:129
 #: src/views/domain/DomainList.vue:13
 #: src/views/domain/ngx_conf/NgxUpstream.vue:175
-#: src/views/environment/Environment.vue:12
+#: src/views/environment/envColumns.tsx:9
 #: src/views/stream/components/RightSettings.vue:82
 #: src/views/stream/components/StreamDuplicate.vue:129
 #: src/views/stream/StreamList.vue:13 src/views/stream/StreamList.vue:187
@@ -1147,7 +1158,7 @@ msgstr "下載流量"
 msgid "Network Total Send"
 msgstr "上傳流量"
 
-#: src/views/system/Upgrade.vue:205
+#: src/views/system/Upgrade.vue:210
 msgid "New version released"
 msgstr "新版本發布"
 
@@ -1189,11 +1200,11 @@ msgstr "Nginx 重新載入成功"
 msgid "Nginx restarted successfully"
 msgstr "Nginx 重啟成功"
 
-#: src/components/ChatGPT/ChatGPT.vue:270
+#: src/components/ChatGPT/ChatGPT.vue:269
 #: src/components/Notification/Notification.vue:84
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:521
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:535
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:549
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:548
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:562
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:576
 #: src/views/domain/DomainList.vue:144
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:71
@@ -1244,22 +1255,22 @@ msgid "Obtaining certificate"
 msgstr "正在取得憑證"
 
 #: src/components/NodeSelector/NodeSelector.vue:95
-#: src/views/dashboard/Environments.vue:106
-#: src/views/environment/Environment.vue:88
+#: src/views/dashboard/Environments.vue:107
+#: src/views/environment/envColumns.tsx:90
 msgid "Offline"
 msgstr "離線"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:264
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:253
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:154
 msgid "Ok"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:271
+#: src/components/ChatGPT/ChatGPT.vue:270
 #: src/components/Notification/Notification.vue:85
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:56
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:522
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:536
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:550
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:549
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:563
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:577
 #: src/views/domain/cert/components/ObtainCert.vue:136
 #: src/views/domain/components/Deploy.vue:20
 #: src/views/domain/components/RightSettings.vue:50
@@ -1280,8 +1291,8 @@ msgstr ""
 
 #: src/components/NodeSelector/NodeSelector.vue:74
 #: src/components/NodeSelector/NodeSelector.vue:89
-#: src/views/dashboard/Environments.vue:99
-#: src/views/environment/Environment.vue:84
+#: src/views/dashboard/Environments.vue:100
+#: src/views/environment/envColumns.tsx:86
 msgid "Online"
 msgstr "線上"
 
@@ -1289,7 +1300,7 @@ msgstr "線上"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/views/system/Upgrade.vue:172
+#: src/views/system/Upgrade.vue:177
 msgid "OS"
 msgstr "作業系統"
 
@@ -1325,6 +1336,10 @@ msgstr "密碼 (*)"
 msgid "Path"
 msgstr "路徑"
 
+#: src/views/environment/BatchUpgrader.vue:234
+msgid "Perform"
+msgstr ""
+
 #: src/language/constants.ts:28
 msgid "Perform core upgrade error"
 msgstr "執行核心升級錯誤"
@@ -1337,6 +1352,10 @@ msgstr "正在執行核心升級"
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
+msgstr ""
+
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:132
+msgid "Please fill in the required fields"
 msgstr ""
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:63
@@ -1377,7 +1396,9 @@ msgstr ""
 msgid "Please select at least one node!"
 msgstr "請至少選擇一個節點！"
 
-#: src/views/system/Upgrade.vue:191 src/views/system/Upgrade.vue:251
+#: src/views/environment/BatchUpgrader.vue:169
+#: src/views/environment/BatchUpgrader.vue:222 src/views/system/Upgrade.vue:196
+#: src/views/system/Upgrade.vue:247
 msgid "Pre-release"
 msgstr "預先發布"
 
@@ -1415,11 +1436,11 @@ msgstr "讀取"
 msgid "Receive"
 msgstr "接收"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:544
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:571
 msgid "Recover"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:193
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:210
 #, fuzzy
 msgid "Recovered Successfully"
 msgstr "儲存成功"
@@ -1429,7 +1450,7 @@ msgstr "儲存成功"
 msgid "Recursive Nameservers"
 msgstr "網站域名 (server_name)"
 
-#: src/components/ChatGPT/ChatGPT.vue:283
+#: src/components/ChatGPT/ChatGPT.vue:282
 msgid "Regenerate response"
 msgstr "重新產生回應"
 
@@ -1457,15 +1478,15 @@ msgstr "註冊使用者中"
 msgid "Registration Status"
 msgstr "註冊使用者中"
 
-#: src/views/system/Upgrade.vue:224
+#: src/views/system/Upgrade.vue:228
 msgid "Reinstall"
 msgstr "重新安裝"
 
-#: src/views/system/Upgrade.vue:255
+#: src/views/system/Upgrade.vue:251
 msgid "Release Note"
 msgstr "發行公告"
 
-#: src/components/ChatGPT/ChatGPT.vue:259
+#: src/components/ChatGPT/ChatGPT.vue:258
 #: src/components/NginxControl/NginxControl.vue:100
 msgid "Reload"
 msgstr "重新載入"
@@ -1523,7 +1544,7 @@ msgstr "啟用成功"
 msgid "Requested with wrong parameters"
 msgstr "請求參數錯誤"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:453
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:480
 msgid "Reset"
 msgstr "重設"
 
@@ -1543,7 +1564,7 @@ msgstr "執行模式"
 msgid "Running"
 msgstr "執行中"
 
-#: src/components/ChatGPT/ChatGPT.vue:252
+#: src/components/ChatGPT/ChatGPT.vue:251
 #: src/views/certificate/CertificateEditor.vue:249
 #: src/views/config/ConfigEdit.vue:96 src/views/domain/DomainEdit.vue:261
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
@@ -1561,7 +1582,7 @@ msgid "Save error %{msg}"
 msgstr "儲存錯誤 %{msg}"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:104
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:121
 #: src/views/certificate/CertificateEditor.vue:46
 #: src/views/preference/Preference.vue:74
 msgid "Save successfully"
@@ -1592,10 +1613,11 @@ msgstr "傳送"
 #: src/components/StdDesign/StdDataDisplay/methods/exportCsv.ts:46
 #: src/components/StdDesign/StdDataDisplay/methods/sortable.ts:126
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:42
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:196
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:235
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:213
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:253
 #: src/views/config/ConfigEdit.vue:40 src/views/domain/DomainList.vue:81
-#: src/views/environment/Environment.vue:139 src/views/other/Install.vue:69
+#: src/views/environment/BatchUpgrader.vue:57
+#: src/views/environment/Environment.vue:15 src/views/other/Install.vue:69
 #: src/views/preference/AuthSettings.vue:49
 #: src/views/preference/Preference.vue:78 src/views/stream/StreamList.vue:113
 #: src/views/stream/StreamList.vue:81 src/views/system/Upgrade.vue:42
@@ -1677,13 +1699,15 @@ msgstr "SSL 憑證路徑"
 msgid "SSO Login"
 msgstr "登入"
 
-#: src/views/system/Upgrade.vue:188 src/views/system/Upgrade.vue:245
+#: src/views/environment/BatchUpgrader.vue:166
+#: src/views/environment/BatchUpgrader.vue:216 src/views/system/Upgrade.vue:193
+#: src/views/system/Upgrade.vue:241
 msgid "Stable"
 msgstr "穩定"
 
 #: src/views/certificate/ACMEUser.vue:42
 #: src/views/certificate/Certificate.vue:88 src/views/domain/DomainList.vue:22
-#: src/views/environment/Environment.vue:76 src/views/stream/StreamList.vue:22
+#: src/views/environment/envColumns.tsx:78 src/views/stream/StreamList.vue:22
 msgid "Status"
 msgstr "狀態"
 
@@ -1808,6 +1832,13 @@ msgstr "SSL 憑證金鑰路徑"
 msgid "The path exists, but the file is not a private key"
 msgstr ""
 
+#: src/views/dashboard/Environments.vue:148
+msgid ""
+"The remote Nginx UI version is not compatible with the local Nginx UI "
+"version. To avoid potential errors, please upgrade the remote Nginx UI to "
+"match the local version."
+msgstr ""
+
 #: src/views/preference/BasicSettings.vue:120
 msgid ""
 "The server name should only contain letters, unicode, numbers, hyphens, "
@@ -1856,6 +1887,11 @@ msgstr ""
 msgid "This field should not be empty"
 msgstr "此欄位不應為空"
 
+#: src/views/environment/BatchUpgrader.vue:184
+msgid ""
+"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgstr ""
+
 #: src/views/preference/AuthSettings.vue:59
 #: src/views/preference/LogrotateSettings.vue:12
 msgid "Tips"
@@ -1883,7 +1919,7 @@ msgstr ""
 msgid "Too many login failed attempts, please try again later"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:221
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:209
 msgid "Trash"
 msgstr ""
 
@@ -1896,7 +1932,7 @@ msgstr "類型"
 #: src/views/certificate/DNSCredential.vue:27 src/views/config/config.ts:27
 #: src/views/config/ConfigEdit.vue:121
 #: src/views/domain/components/RightSettings.vue:86
-#: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:122
+#: src/views/domain/DomainList.vue:41 src/views/environment/envColumns.tsx:124
 #: src/views/stream/components/RightSettings.vue:85
 #: src/views/stream/StreamList.vue:41 src/views/user/User.vue:37
 msgid "Updated at"
@@ -1906,16 +1942,21 @@ msgstr "更新時間"
 msgid "Updated successfully"
 msgstr "更新成功"
 
-#: src/routes/index.ts:263 src/views/system/Upgrade.vue:140
-#: src/views/system/Upgrade.vue:232
+#: src/routes/index.ts:263 src/views/environment/Environment.vue:50
+#: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
 msgid "Upgrade"
 msgstr "升級"
+
+#: src/views/environment/BatchUpgrader.vue:139
+#, fuzzy
+msgid "Upgraded Nginx UI on %{node} successfully 🎉"
+msgstr "升級成功"
 
 #: src/language/constants.ts:29
 msgid "Upgraded successfully"
 msgstr "升級成功"
 
-#: src/views/system/Upgrade.vue:79
+#: src/views/environment/BatchUpgrader.vue:90 src/views/system/Upgrade.vue:79
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "正在升級 Nginx UI，請稍候..."
 
@@ -1927,11 +1968,11 @@ msgstr ""
 msgid "Uptime:"
 msgstr "運作時間:"
 
-#: src/views/environment/Environment.vue:22
+#: src/views/environment/envColumns.tsx:19
 msgid "URL"
 msgstr "URL"
 
-#: src/components/ChatGPT/ChatGPT.vue:230
+#: src/components/ChatGPT/ChatGPT.vue:229
 msgid "User"
 msgstr "使用者名稱"
 
@@ -1952,7 +1993,12 @@ msgstr "使用者名稱 (*)"
 msgid "Valid"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:491
+#: src/views/environment/envColumns.tsx:31
+#, fuzzy
+msgid "Version"
+msgstr "目前版本"
+
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:518
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:103
 msgid "View"
 msgstr "檢視"
@@ -1962,11 +2008,11 @@ msgstr "檢視"
 msgid "View all notifications"
 msgstr "憑證"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:194
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:181
 msgid "View Details"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:279
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:268
 #, fuzzy
 msgid "View Mode"
 msgstr "基本模式"
@@ -2011,11 +2057,11 @@ msgstr "將憑證寫入磁碟"
 msgid "Yes"
 msgstr "是的"
 
-#: src/views/system/Upgrade.vue:199
+#: src/views/system/Upgrade.vue:204
 msgid "You are using the latest version"
 msgstr "您正在使用最新版本"
 
-#: src/views/system/Upgrade.vue:161
+#: src/views/system/Upgrade.vue:166
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "您可以在此頁面檢查 Nginx UI 的升級。"
 

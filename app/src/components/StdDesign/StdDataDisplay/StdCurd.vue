@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T=any">
 import { message } from 'ant-design-vue'
 import type { ComputedRef } from 'vue'
 import type { StdTableProps } from './StdTable.vue'
@@ -7,7 +7,7 @@ import StdDataEntry from '@/components/StdDesign/StdDataEntry'
 import type { Column } from '@/components/StdDesign/types'
 import StdCurdDetail from '@/components/StdDesign/StdDataDisplay/StdCurdDetail.vue'
 
-export interface StdCurdProps {
+export interface StdCurdProps<T> extends StdTableProps<T> {
   cardTitleKey?: string
   modalMaxWidth?: string | number
   modalMask?: boolean
@@ -16,28 +16,28 @@ export interface StdCurdProps {
 
   disableAdd?: boolean
   onClickAdd?: () => void
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onClickEdit?: (id: number | string, record: any, index: number) => void
+
+  onClickEdit?: (id: number | string, record: T, index: number) => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   beforeSave?: (data: any) => Promise<void>
 }
 
-const props = defineProps<StdTableProps & StdCurdProps>()
-const route = useRoute()
-const router = useRouter()
+const props = defineProps<StdTableProps<T> & StdCurdProps<T>>()
 const visible = ref(false)
-const update = ref(0)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const data: any = reactive({ id: null })
 const modifyMode = ref(true)
 const editMode = ref<string>()
+const shouldRefetchList = ref(false)
 
 provide('data', data)
 provide('editMode', editMode)
+provide('shouldRefetchList', shouldRefetchList)
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const error: any = reactive({})
 const selected = ref([])
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function onSelect(keys: any) {
   selected.value = keys
@@ -49,19 +49,35 @@ const editableColumns = computed(() => {
   })
 }) as ComputedRef<Column[]>
 
-function add() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function add(preset: any = undefined) {
+  if (props.onClickAdd)
+    return
   Object.keys(data).forEach(v => {
     delete data[v]
   })
+
+  if (preset)
+    Object.assign(data, preset)
 
   clear_error()
   visible.value = true
   editMode.value = 'create'
   modifyMode.value = true
 }
+
 const table = ref()
 
-const selectedRowKeys = ref([])
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const selectedRowKeys = defineModel<any[]>('selectedRowKeys', {
+  default: () => [],
+})
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const selectedRows = defineModel<any[]>('selectedRows', {
+  type: Array,
+  default: () => [],
+})
 
 const getParams = reactive({
   trash: false,
@@ -91,13 +107,14 @@ function clear_error() {
 }
 
 const stdEntryRef = ref()
+
 async function ok() {
   const { formRef } = stdEntryRef.value
 
   clear_error()
   try {
     await formRef.validateFields()
-    await props?.beforeSave?.(data)
+    props?.beforeSave?.(data)
     props
       .api!.save(data.id, { ...data, ...props.overwriteParams }, { params: { ...props.overwriteParams } })
       .then(r => {
@@ -111,37 +128,26 @@ async function ok() {
         Object.assign(error, e.errors)
       })
   }
-  catch { }
+  catch {
+    message.error($gettext('Please fill in the required fields'))
+  }
 }
 
 function cancel() {
   visible.value = false
 
   clear_error()
+
+  if (shouldRefetchList.value) {
+    get_list()
+    shouldRefetchList.value = false
+  }
 }
 
-watch(visible, v => {
-  if (!v) {
-    router.push({
-      query: {
-        ...route.query,
-        [`open.${props.rowKey || 'id'}`]: undefined,
-      },
-    })
-  }
-})
-
-watch(modifyMode, v => {
-  router.push({
-    query: {
-      ...route.query,
-      modify_mode: v.toString(),
-    },
-  })
-})
-
 function edit(id: number | string) {
-  get(id, true).then(() => {
+  if (props.onClickEdit)
+    return
+  get(id).then(() => {
     visible.value = true
     modifyMode.value = true
     editMode.value = 'modify'
@@ -151,7 +157,7 @@ function edit(id: number | string) {
 }
 
 function view(id: number | string) {
-  get(id, false).then(() => {
+  get(id).then(() => {
     visible.value = true
     modifyMode.value = false
   }).catch(e => {
@@ -159,7 +165,7 @@ function view(id: number | string) {
   })
 }
 
-async function get(id: number | string, _modifyMode: boolean) {
+async function get(id: number | string) {
   return props
     .api!.get(id, { ...props.overwriteParams })
     .then(async r => {
@@ -168,32 +174,14 @@ async function get(id: number | string, _modifyMode: boolean) {
       })
       data.id = null
       Object.assign(data, r)
-      if (!props.disabledModify) {
-        await router.push({
-          query: {
-            ...route.query,
-            [`open.${props.rowKey || 'id'}`]: id,
-            modify_mode: _modifyMode.toString(),
-          },
-        })
-      }
     })
 }
-
-onMounted(async () => {
-  const id = route.query[`open.${props.rowKey || 'id'}`] as string
-  const _modifyMode = (route.query.modify_mode as string) === 'true'
-  if (id && !props.disabledModify && _modifyMode)
-    edit(id)
-
-  if (id && !props.disabledView && !_modifyMode)
-    view(id)
-})
 
 const modalTitle = computed(() => {
   return data.id ? modifyMode.value ? $gettext('Modify') : $gettext('View Details') : $gettext('Add')
 })
 
+const localOverwriteParams = reactive(props.overwriteParams ?? {})
 </script>
 
 <template>
@@ -209,7 +197,7 @@ const modalTitle = computed(() => {
         <ASpace>
           <slot name="beforeAdd" />
           <a
-            v-if="!disableAdd"
+            v-if="!disableAdd && !getParams.trash"
             @click="add"
           >{{ $gettext('Add') }}</a>
           <slot name="extra" />
@@ -224,7 +212,7 @@ const modalTitle = computed(() => {
               v-else
               @click="getParams.trash = false"
             >
-              {{ $gettext('List') }}
+              {{ $gettext('Back to list') }}
             </a>
           </template>
         </ASpace>
@@ -232,11 +220,12 @@ const modalTitle = computed(() => {
 
       <StdTable
         ref="table"
-        :key="update"
         v-model:selected-row-keys="selectedRowKeys"
+        v-model:selected-rows="selectedRows"
         v-bind="{
           ...props,
           getParams,
+          overwriteParams: localOverwriteParams,
         }"
         @click-edit="edit"
         @click-view="view"
@@ -269,7 +258,7 @@ const modalTitle = computed(() => {
       @ok="ok"
     >
       <div
-        v-if="!disabledModify && !disabledView"
+        v-if="!disableModify && !disableView && editMode === 'modify'"
         class="m-2 flex justify-end"
       >
         <ASwitch
@@ -294,7 +283,7 @@ const modalTitle = computed(() => {
           ref="stdEntryRef"
           :data-list="editableColumns"
           :data-source="data"
-          :error="error"
+          :errors="error"
         />
 
         <slot

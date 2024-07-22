@@ -30,15 +30,15 @@ msgstr "사용자 이름"
 #: src/views/certificate/ACMEUser.vue:59
 #: src/views/certificate/Certificate.vue:113
 #: src/views/certificate/DNSCredential.vue:33 src/views/config/config.ts:34
-#: src/views/domain/DomainList.vue:47 src/views/environment/Environment.vue:129
+#: src/views/domain/DomainList.vue:47 src/views/environment/envColumns.tsx:131
 #: src/views/notification/Notification.vue:37
 #: src/views/preference/AuthSettings.vue:26 src/views/stream/StreamList.vue:47
 #: src/views/user/User.vue:43
 msgid "Action"
 msgstr "작업"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:194
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:214
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:181
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:202
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/domain/ngx_conf/NgxServer.vue:167
 #: src/views/domain/ngx_conf/NgxUpstream.vue:152
@@ -93,7 +93,7 @@ msgstr "API 프록시"
 msgid "API Token"
 msgstr "API 토큰"
 
-#: src/views/system/Upgrade.vue:173
+#: src/views/system/Upgrade.vue:178
 msgid "Arch"
 msgstr "아키텍처"
 
@@ -107,16 +107,16 @@ msgstr "정말 삭제하시겠습니까?"
 msgid "Are you sure you want to clear all notifications?"
 msgstr "모든 알림을 지우시겠습니까?"
 
-#: src/components/ChatGPT/ChatGPT.vue:272
+#: src/components/ChatGPT/ChatGPT.vue:271
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "기록을 지우시겠습니까?"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:551
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:578
 #, fuzzy
 msgid "Are you sure you want to delete this item permanently?"
 msgstr "정말 삭제하시겠습니까?"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:523
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:550
 #, fuzzy
 msgid "Are you sure you want to delete this item?"
 msgstr "정말 삭제하시겠습니까?"
@@ -125,7 +125,7 @@ msgstr "정말 삭제하시겠습니까?"
 msgid "Are you sure you want to delete?"
 msgstr "정말 삭제하시겠습니까?"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:537
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:564
 #, fuzzy
 msgid "Are you sure you want to recover this item?"
 msgstr "이 지시문을 정말로 제거하시겠습니까?"
@@ -143,11 +143,11 @@ msgstr "이 지시문을 정말로 제거하시겠습니까?"
 msgid "Are you sure you want to remove this location?"
 msgstr "이 위치를 제거하시겠습니까?"
 
-#: src/components/ChatGPT/ChatGPT.vue:216
+#: src/components/ChatGPT/ChatGPT.vue:215
 msgid "Ask ChatGPT for Help"
 msgstr "ChatGPT에게 도움 요청"
 
-#: src/components/ChatGPT/ChatGPT.vue:230
+#: src/components/ChatGPT/ChatGPT.vue:229
 msgid "Assistant"
 msgstr "조수"
 
@@ -192,6 +192,10 @@ msgstr "뒤로"
 msgid "Back Home"
 msgstr "홈으로"
 
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:215
+msgid "Back to list"
+msgstr ""
+
 #: src/views/preference/AuthSettings.vue:68
 msgid "Ban Threshold Minutes"
 msgstr ""
@@ -220,9 +224,14 @@ msgid "Basic Mode"
 msgstr "기본 모드"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:54
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:459
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:486
 msgid "Batch Modify"
 msgstr "일괄 수정"
+
+#: src/views/environment/BatchUpgrader.vue:154
+#, fuzzy
+msgid "Batch Upgrade"
+msgstr "업그레이드"
 
 #: src/views/system/About.vue:39
 msgid "Build with"
@@ -236,9 +245,9 @@ msgstr ""
 msgid "CADir"
 msgstr "CA 디렉토리"
 
-#: src/components/ChatGPT/ChatGPT.vue:253
+#: src/components/ChatGPT/ChatGPT.vue:252
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:55
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:263
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:252
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:153
 #: src/views/domain/cert/components/ObtainCert.vue:137
 #: src/views/domain/components/Deploy.vue:21
@@ -286,11 +295,11 @@ msgstr "인증 방법"
 msgid "Change Certificate"
 msgstr "인증서 변경"
 
-#: src/views/system/Upgrade.vue:185
+#: src/views/environment/BatchUpgrader.vue:161 src/views/system/Upgrade.vue:190
 msgid "Channel"
 msgstr "채널"
 
-#: src/views/system/Upgrade.vue:182
+#: src/views/system/Upgrade.vue:187
 msgid "Check again"
 msgstr "다시 확인"
 
@@ -298,7 +307,7 @@ msgstr "다시 확인"
 msgid "Cleaning environment variables"
 msgstr "환경 변수 정리"
 
-#: src/components/ChatGPT/ChatGPT.vue:276
+#: src/components/ChatGPT/ChatGPT.vue:275
 #: src/components/Notification/Notification.vue:91
 #: src/views/notification/Notification.vue:77
 msgid "Clear"
@@ -340,7 +349,7 @@ msgstr "구성들"
 msgid "Configure SSL"
 msgstr "SSL 구성하기"
 
-#: src/views/dashboard/Environments.vue:139
+#: src/views/dashboard/Environments.vue:141
 msgid "Connected"
 msgstr "연결됨"
 
@@ -350,7 +359,7 @@ msgstr "연결됨"
 msgid "Content"
 msgstr "내용"
 
-#: src/views/system/Upgrade.vue:143
+#: src/views/system/Upgrade.vue:148
 msgid "Core Upgrade"
 msgstr "코어 업그레이드"
 
@@ -386,7 +395,7 @@ msgstr "인증 정보"
 msgid "Credentials"
 msgstr "인증 정보들"
 
-#: src/views/system/Upgrade.vue:162
+#: src/views/system/Upgrade.vue:167
 msgid "Current Version"
 msgstr "현재 버전"
 
@@ -413,7 +422,7 @@ msgstr "데이터베이스 (선택사항, 기본값: database)"
 msgid "Days"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:530
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:557
 #: src/views/domain/DomainList.vue:155
 #: src/views/domain/ngx_conf/NgxServer.vue:114
 #: src/views/domain/ngx_conf/NgxUpstream.vue:126
@@ -421,7 +430,7 @@ msgstr ""
 msgid "Delete"
 msgstr "삭제"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:558
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:585
 msgid "Delete Permanently"
 msgstr ""
 
@@ -433,7 +442,7 @@ msgstr "사이트 삭제: %{site_name}"
 msgid "Delete stream: %{stream_name}"
 msgstr "스트림 삭제: %{stream_name}"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:185
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:202
 msgid "Deleted successfully"
 msgstr "성공적으로 삭제됨"
 
@@ -493,8 +502,9 @@ msgid "Disable auto-renewal failed for %{name}"
 msgstr "%{name}의 자동 갱신 비활성화 실패"
 
 #: src/views/domain/cert/ChangeCert.vue:44 src/views/domain/DomainEdit.vue:183
-#: src/views/domain/DomainList.vue:33 src/views/environment/Environment.vue:93
-#: src/views/stream/StreamEdit.vue:175 src/views/stream/StreamList.vue:33
+#: src/views/domain/DomainList.vue:33 src/views/environment/envColumns.tsx:113
+#: src/views/environment/envColumns.tsx:95 src/views/stream/StreamEdit.vue:175
+#: src/views/stream/StreamList.vue:33
 msgid "Disabled"
 msgstr "비활성화됨"
 
@@ -582,7 +592,7 @@ msgstr "최신 릴리스 다운로드 오류"
 msgid "Downloading latest release"
 msgstr "최신 릴리스 다운로드 중"
 
-#: src/views/system/Upgrade.vue:212
+#: src/views/environment/BatchUpgrader.vue:190 src/views/system/Upgrade.vue:217
 msgid "Dry run mode enabled"
 msgstr "드라이런 모드 활성화됨"
 
@@ -676,7 +686,8 @@ msgstr "TLS 활성화"
 #: src/views/domain/cert/ChangeCert.vue:40
 #: src/views/domain/components/RightSettings.vue:77
 #: src/views/domain/DomainEdit.vue:177 src/views/domain/DomainList.vue:29
-#: src/views/environment/Environment.vue:102
+#: src/views/environment/envColumns.tsx:104
+#: src/views/environment/envColumns.tsx:110
 #: src/views/preference/LogrotateSettings.vue:20
 #: src/views/stream/components/RightSettings.vue:76
 #: src/views/stream/StreamEdit.vue:169 src/views/stream/StreamList.vue:29
@@ -696,7 +707,7 @@ msgstr "성공적으로 활성화됨"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Let's Encrypt로 웹사이트 암호화"
 
-#: src/routes/index.ts:212 src/views/environment/Environment.vue:147
+#: src/routes/index.ts:212 src/views/environment/Environment.vue:34
 msgid "Environment"
 msgstr "환경"
 
@@ -705,7 +716,7 @@ msgstr "환경"
 msgid "Environment variables cleaned"
 msgstr "환경 변수 설정"
 
-#: src/views/dashboard/Environments.vue:82
+#: src/views/dashboard/Environments.vue:83
 msgid "Environments"
 msgstr "환경"
 
@@ -717,7 +728,7 @@ msgstr "오류"
 msgid "Error Logs"
 msgstr "오류 로그"
 
-#: src/views/system/Upgrade.vue:174
+#: src/views/system/Upgrade.vue:179
 msgid "Executable Path"
 msgstr "실행 가능 경로"
 
@@ -818,7 +829,7 @@ msgstr "생성"
 msgid "Generating private key for registering account"
 msgstr "계정 등록을 위한 개인 키 생성 중"
 
-#: src/views/system/Upgrade.vue:166
+#: src/views/environment/BatchUpgrader.vue:179 src/views/system/Upgrade.vue:171
 #, fuzzy
 msgid "Get release information error"
 msgstr "릴리스 정보 가져오기 오류"
@@ -938,7 +949,7 @@ msgstr "Jwt 토큰"
 msgid "Key Type"
 msgstr "키 유형"
 
-#: src/views/system/Upgrade.vue:176
+#: src/views/system/Upgrade.vue:181
 msgid "Last checked at"
 msgstr "마지막 확인 시간"
 
@@ -961,12 +972,12 @@ msgstr "변경사항이 없으면 비워두세요"
 msgid "License"
 msgstr "라이센스"
 
-#: src/views/dashboard/Environments.vue:139
+#: src/views/dashboard/Environments.vue:141
+#: src/views/dashboard/Environments.vue:156
 msgid "Link Start"
 msgstr "링크 시작"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:204
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:227
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:192
 msgid "List"
 msgstr ""
 
@@ -975,11 +986,11 @@ msgstr ""
 msgid "Load Average:"
 msgstr "부하 평균:"
 
-#: src/views/environment/Environment.vue:152
+#: src/views/environment/Environment.vue:39
 msgid "Load from settings"
 msgstr ""
 
-#: src/views/environment/Environment.vue:137
+#: src/views/environment/Environment.vue:13
 #, fuzzy
 msgid "Load successfully"
 msgstr "성공적으로 저장됨"
@@ -1087,9 +1098,9 @@ msgstr "분"
 msgid "Model"
 msgstr "실행 모드"
 
-#: src/components/ChatGPT/ChatGPT.vue:249
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:194
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:505
+#: src/components/ChatGPT/ChatGPT.vue:248
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:181
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:532
 #, fuzzy
 msgid "Modify"
 msgstr "설정 수정"
@@ -1103,7 +1114,7 @@ msgstr "인증서 상태"
 msgid "Modify Config"
 msgstr "설정 수정"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:279
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:268
 #, fuzzy
 msgid "Modify Mode"
 msgstr "설정 수정"
@@ -1122,7 +1133,7 @@ msgstr "단일 지시문"
 #: src/views/domain/components/SiteDuplicate.vue:129
 #: src/views/domain/DomainList.vue:13
 #: src/views/domain/ngx_conf/NgxUpstream.vue:175
-#: src/views/environment/Environment.vue:12
+#: src/views/environment/envColumns.tsx:9
 #: src/views/stream/components/RightSettings.vue:82
 #: src/views/stream/components/StreamDuplicate.vue:129
 #: src/views/stream/StreamList.vue:13 src/views/stream/StreamList.vue:187
@@ -1145,7 +1156,7 @@ msgstr "네트워크 총 수신"
 msgid "Network Total Send"
 msgstr "네트워크 총 송신"
 
-#: src/views/system/Upgrade.vue:205
+#: src/views/system/Upgrade.vue:210
 msgid "New version released"
 msgstr "새 버전 출시"
 
@@ -1190,11 +1201,11 @@ msgstr "Nginx가 성공적으로 리로드됨"
 msgid "Nginx restarted successfully"
 msgstr "Nginx가 성공적으로 재시작됨"
 
-#: src/components/ChatGPT/ChatGPT.vue:270
+#: src/components/ChatGPT/ChatGPT.vue:269
 #: src/components/Notification/Notification.vue:84
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:521
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:535
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:549
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:548
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:562
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:576
 #: src/views/domain/DomainList.vue:144
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:71
@@ -1246,22 +1257,22 @@ msgid "Obtaining certificate"
 msgstr "인증서 획득 중"
 
 #: src/components/NodeSelector/NodeSelector.vue:95
-#: src/views/dashboard/Environments.vue:106
-#: src/views/environment/Environment.vue:88
+#: src/views/dashboard/Environments.vue:107
+#: src/views/environment/envColumns.tsx:90
 msgid "Offline"
 msgstr "오프라인"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:264
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:253
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:154
 msgid "Ok"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:271
+#: src/components/ChatGPT/ChatGPT.vue:270
 #: src/components/Notification/Notification.vue:85
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:56
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:522
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:536
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:550
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:549
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:563
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:577
 #: src/views/domain/cert/components/ObtainCert.vue:136
 #: src/views/domain/components/Deploy.vue:20
 #: src/views/domain/components/RightSettings.vue:50
@@ -1282,8 +1293,8 @@ msgstr "검증이 완료되면, 레코드는 제거됩니다."
 
 #: src/components/NodeSelector/NodeSelector.vue:74
 #: src/components/NodeSelector/NodeSelector.vue:89
-#: src/views/dashboard/Environments.vue:99
-#: src/views/environment/Environment.vue:84
+#: src/views/dashboard/Environments.vue:100
+#: src/views/environment/envColumns.tsx:86
 msgid "Online"
 msgstr "온라인"
 
@@ -1291,7 +1302,7 @@ msgstr "온라인"
 msgid "OpenAI"
 msgstr "오픈AI"
 
-#: src/views/system/Upgrade.vue:172
+#: src/views/system/Upgrade.vue:177
 #, fuzzy
 msgid "OS"
 msgstr "OS"
@@ -1328,6 +1339,10 @@ msgstr "비밀번호 (*)"
 msgid "Path"
 msgstr "경로"
 
+#: src/views/environment/BatchUpgrader.vue:234
+msgid "Perform"
+msgstr ""
+
 #: src/language/constants.ts:28
 msgid "Perform core upgrade error"
 msgstr "핵심 업그레이드 오류 수행"
@@ -1341,6 +1356,10 @@ msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
 msgstr "DNS 제공자가 제공한 API 인증 자격 증명을 입력해주세요."
+
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:132
+msgid "Please fill in the required fields"
+msgstr ""
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:63
 msgid ""
@@ -1379,7 +1398,9 @@ msgstr "아래의 시간 설정 단위는 모두 초 단위임을 유의해주�
 msgid "Please select at least one node!"
 msgstr "적어도 하나의 노드를 선택해주세요!"
 
-#: src/views/system/Upgrade.vue:191 src/views/system/Upgrade.vue:251
+#: src/views/environment/BatchUpgrader.vue:169
+#: src/views/environment/BatchUpgrader.vue:222 src/views/system/Upgrade.vue:196
+#: src/views/system/Upgrade.vue:247
 msgid "Pre-release"
 msgstr "사전 출시"
 
@@ -1418,11 +1439,11 @@ msgstr "읽기"
 msgid "Receive"
 msgstr "수신"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:544
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:571
 msgid "Recover"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:193
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:210
 #, fuzzy
 msgid "Recovered Successfully"
 msgstr "성공적으로 제거됨"
@@ -1431,7 +1452,7 @@ msgstr "성공적으로 제거됨"
 msgid "Recursive Nameservers"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:283
+#: src/components/ChatGPT/ChatGPT.vue:282
 msgid "Regenerate response"
 msgstr "응답 재생성"
 
@@ -1459,16 +1480,16 @@ msgstr "사용자 등록 중"
 msgid "Registration Status"
 msgstr "사용자 등록 중"
 
-#: src/views/system/Upgrade.vue:224
+#: src/views/system/Upgrade.vue:228
 #, fuzzy
 msgid "Reinstall"
 msgstr "재설치"
 
-#: src/views/system/Upgrade.vue:255
+#: src/views/system/Upgrade.vue:251
 msgid "Release Note"
 msgstr "릴리스 노트"
 
-#: src/components/ChatGPT/ChatGPT.vue:259
+#: src/components/ChatGPT/ChatGPT.vue:258
 #: src/components/NginxControl/NginxControl.vue:100
 msgid "Reload"
 msgstr "리로드"
@@ -1526,7 +1547,7 @@ msgstr "성공적으로 갱신됨"
 msgid "Requested with wrong parameters"
 msgstr "잘못된 매개변수로 요청됨"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:453
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:480
 msgid "Reset"
 msgstr "재설정"
 
@@ -1547,7 +1568,7 @@ msgstr "실행 모드"
 msgid "Running"
 msgstr "실행 중"
 
-#: src/components/ChatGPT/ChatGPT.vue:252
+#: src/components/ChatGPT/ChatGPT.vue:251
 #: src/views/certificate/CertificateEditor.vue:249
 #: src/views/config/ConfigEdit.vue:96 src/views/domain/DomainEdit.vue:261
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
@@ -1565,7 +1586,7 @@ msgid "Save error %{msg}"
 msgstr "저장 오류 %{msg}"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:104
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:121
 #: src/views/certificate/CertificateEditor.vue:46
 #: src/views/preference/Preference.vue:74
 #, fuzzy
@@ -1597,10 +1618,11 @@ msgstr "보내기"
 #: src/components/StdDesign/StdDataDisplay/methods/exportCsv.ts:46
 #: src/components/StdDesign/StdDataDisplay/methods/sortable.ts:126
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:42
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:196
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:235
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:213
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:253
 #: src/views/config/ConfigEdit.vue:40 src/views/domain/DomainList.vue:81
-#: src/views/environment/Environment.vue:139 src/views/other/Install.vue:69
+#: src/views/environment/BatchUpgrader.vue:57
+#: src/views/environment/Environment.vue:15 src/views/other/Install.vue:69
 #: src/views/preference/AuthSettings.vue:49
 #: src/views/preference/Preference.vue:78 src/views/stream/StreamList.vue:113
 #: src/views/stream/StreamList.vue:81 src/views/system/Upgrade.vue:42
@@ -1682,14 +1704,16 @@ msgstr "SSL 인증서 경로"
 msgid "SSO Login"
 msgstr "SSO 로그인"
 
-#: src/views/system/Upgrade.vue:188 src/views/system/Upgrade.vue:245
+#: src/views/environment/BatchUpgrader.vue:166
+#: src/views/environment/BatchUpgrader.vue:216 src/views/system/Upgrade.vue:193
+#: src/views/system/Upgrade.vue:241
 #, fuzzy
 msgid "Stable"
 msgstr "활성화됨"
 
 #: src/views/certificate/ACMEUser.vue:42
 #: src/views/certificate/Certificate.vue:88 src/views/domain/DomainList.vue:22
-#: src/views/environment/Environment.vue:76 src/views/stream/StreamList.vue:22
+#: src/views/environment/envColumns.tsx:78 src/views/stream/StreamList.vue:22
 msgid "Status"
 msgstr "상태"
 
@@ -1814,6 +1838,13 @@ msgstr "Certificate Status"
 msgid "The path exists, but the file is not a private key"
 msgstr "경로는 존재하지만 파일은 개인 키가 아닙니다"
 
+#: src/views/dashboard/Environments.vue:148
+msgid ""
+"The remote Nginx UI version is not compatible with the local Nginx UI "
+"version. To avoid potential errors, please upgrade the remote Nginx UI to "
+"match the local version."
+msgstr ""
+
 #: src/views/preference/BasicSettings.vue:120
 msgid ""
 "The server name should only contain letters, unicode, numbers, hyphens, "
@@ -1863,6 +1894,11 @@ msgstr "이 필드는 필수입니다"
 msgid "This field should not be empty"
 msgstr "이 필드는 비워둘 수 없습니다"
 
+#: src/views/environment/BatchUpgrader.vue:184
+msgid ""
+"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgstr ""
+
 #: src/views/preference/AuthSettings.vue:59
 #: src/views/preference/LogrotateSettings.vue:12
 msgid "Tips"
@@ -1891,7 +1927,7 @@ msgstr "토큰이 유효하지 않습니다"
 msgid "Too many login failed attempts, please try again later"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:221
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:209
 msgid "Trash"
 msgstr ""
 
@@ -1904,7 +1940,7 @@ msgstr "유형"
 #: src/views/certificate/DNSCredential.vue:27 src/views/config/config.ts:27
 #: src/views/config/ConfigEdit.vue:121
 #: src/views/domain/components/RightSettings.vue:86
-#: src/views/domain/DomainList.vue:41 src/views/environment/Environment.vue:122
+#: src/views/domain/DomainList.vue:41 src/views/environment/envColumns.tsx:124
 #: src/views/stream/components/RightSettings.vue:85
 #: src/views/stream/StreamList.vue:41 src/views/user/User.vue:37
 msgid "Updated at"
@@ -1915,17 +1951,22 @@ msgstr "업데이트됨"
 msgid "Updated successfully"
 msgstr "성공적으로 저장되었습니다"
 
-#: src/routes/index.ts:263 src/views/system/Upgrade.vue:140
-#: src/views/system/Upgrade.vue:232
+#: src/routes/index.ts:263 src/views/environment/Environment.vue:50
+#: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
 msgid "Upgrade"
 msgstr "업그레이드"
+
+#: src/views/environment/BatchUpgrader.vue:139
+#, fuzzy
+msgid "Upgraded Nginx UI on %{node} successfully 🎉"
+msgstr "성공적으로 저장되었습니다"
 
 #: src/language/constants.ts:29
 #, fuzzy
 msgid "Upgraded successfully"
 msgstr "성공적으로 저장되었습니다"
 
-#: src/views/system/Upgrade.vue:79
+#: src/views/environment/BatchUpgrader.vue:90 src/views/system/Upgrade.vue:79
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Nginx UI를 업그레이드하는 중입니다. 잠시 기다려주세요..."
 
@@ -1937,11 +1978,11 @@ msgstr "업스트림 이름"
 msgid "Uptime:"
 msgstr "가동 시간:"
 
-#: src/views/environment/Environment.vue:22
+#: src/views/environment/envColumns.tsx:19
 msgid "URL"
 msgstr "URL"
 
-#: src/components/ChatGPT/ChatGPT.vue:230
+#: src/components/ChatGPT/ChatGPT.vue:229
 #, fuzzy
 msgid "User"
 msgstr "사용자 이름"
@@ -1963,7 +2004,12 @@ msgstr "사용자 이름 (*)"
 msgid "Valid"
 msgstr "유효함"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:491
+#: src/views/environment/envColumns.tsx:31
+#, fuzzy
+msgid "Version"
+msgstr "현재 버전"
+
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:518
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:103
 msgid "View"
 msgstr "보기"
@@ -1973,12 +2019,12 @@ msgstr "보기"
 msgid "View all notifications"
 msgstr "Certificate is valid"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:194
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:181
 #, fuzzy
 msgid "View Details"
 msgstr "세부 사항"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:279
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:268
 #, fuzzy
 msgid "View Mode"
 msgstr "기본 모드"
@@ -2025,11 +2071,11 @@ msgstr "인증서를 디스크에 쓰기"
 msgid "Yes"
 msgstr "예"
 
-#: src/views/system/Upgrade.vue:199
+#: src/views/system/Upgrade.vue:204
 msgid "You are using the latest version"
 msgstr "최신 버전을 사용하고 있습니다"
 
-#: src/views/system/Upgrade.vue:161
+#: src/views/system/Upgrade.vue:166
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "이 페이지에서 Nginx UI 업그레이드를 확인할 수 있습니다."
 
