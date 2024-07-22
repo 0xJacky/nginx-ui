@@ -71,8 +71,8 @@ func InitRouter() *gin.Engine {
 			terminal.InitRouter(w)
 			nginx.InitNginxLogRouter(w)
 			upstream.InitRouter(w)
+			system.InitWebSocketRouter(w)
 		}
-
 	}
 
 	return r

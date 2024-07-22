@@ -21,7 +21,7 @@ const current = computed({
 const languageAvailable = gettext.available
 
 watch(current, v => {
-  loadTranslations()
+  loadTranslations(route)
   settings.set_language(v)
   gettext.current = v
 

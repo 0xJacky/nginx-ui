@@ -12,7 +12,7 @@ import upgrade from '@/api/upgrade'
 
 const route = useRoute()
 const data = ref({}) as Ref<RuntimeInfo>
-const last_check = ref('')
+const lastCheck = ref('')
 const loading = ref(false)
 const channel = ref('stable')
 
@@ -25,31 +25,31 @@ const modalVisible = ref(false)
 const progressPercent = ref(0)
 const progressStatus = ref('active') as Ref<'normal' | 'active' | 'success' | 'exception'>
 const modalClosable = ref(false)
-const get_release_error = ref(false)
+const getReleaseError = ref(false)
 
 const progressPercentComputed = computed(() => {
   return Number.parseFloat(progressPercent.value.toFixed(1))
 })
 
-function get_latest_release() {
+function getLatestRelease() {
   loading.value = true
   data.value.body = ''
   upgrade.get_latest_release(channel.value).then(r => {
     data.value = r
-    last_check.value = dayjs().format('YYYY-MM-DD HH:mm:ss')
+    lastCheck.value = dayjs().format('YYYY-MM-DD HH:mm:ss')
   }).catch(e => {
-    get_release_error.value = e?.message
+    getReleaseError.value = e?.message
     message.error(e?.message ?? $gettext('Server error'))
   }).finally(() => {
     loading.value = false
   })
 }
 
-get_latest_release()
+getLatestRelease()
 
-watch(channel, get_latest_release)
+watch(channel, getLatestRelease)
 
-const is_latest_ver = computed(() => {
+const isLatestVer = computed(() => {
   return data.value.name === `v${version.version}`
 })
 
@@ -65,11 +65,11 @@ function log(msg: string) {
   logContainer.value.scroll({ top: 320, left: 0, behavior: 'smooth' })
 }
 
-const dry_run = computed(() => {
+const dryRun = computed(() => {
   return !!route.query.dry_run
 })
 
-async function perform_upgrade() {
+async function performUpgrade() {
   progressStatus.value = 'active'
   modalClosable.value = false
   modalVisible.value = true
@@ -84,18 +84,17 @@ async function perform_upgrade() {
 
   ws.onopen = () => {
     ws.send(JSON.stringify({
-      dry_run: dry_run.value,
+      dry_run: dryRun.value,
       channel: channel.value,
     }))
   }
 
-  let is_fail = false
+  let isFailed = false
 
   ws.onmessage = async m => {
     const r = JSON.parse(m.data)
     if (r.message)
       log(r.message)
-    console.log(r.status)
     switch (r.status) {
       case 'info':
         progressPercent.value += 10
@@ -107,7 +106,7 @@ async function perform_upgrade() {
       case 'error':
         progressStatus.value = 'exception'
         modalClosable.value = true
-        is_fail = true
+        isFailed = true
         break
       default:
         modalClosable.value = true
@@ -115,8 +114,14 @@ async function perform_upgrade() {
     }
   }
 
+  ws.onerror = () => {
+    isFailed = true
+    progressStatus.value = 'exception'
+    modalClosable.value = true
+  }
+
   ws.onclose = async () => {
-    if (is_fail)
+    if (isFailed)
       return
 
     const t = setInterval(() => {
@@ -160,11 +165,11 @@ async function perform_upgrade() {
     <div class="upgrade-container">
       <p>{{ $gettext('You can check Nginx UI upgrade at this page.') }}</p>
       <h3>{{ $gettext('Current Version') }}: v{{ version.version }}</h3>
-      <template v-if="get_release_error">
+      <template v-if="getReleaseError">
         <AAlert
           type="error"
           :title="$gettext('Get release information error')"
-          :message="get_release_error"
+          :message="getReleaseError"
           banner
         />
       </template>
@@ -173,11 +178,11 @@ async function perform_upgrade() {
         <p>{{ $gettext('Arch') }}: {{ data.arch }}</p>
         <p>{{ $gettext('Executable Path') }}: {{ data.ex_path }}</p>
         <p>
-          {{ $gettext('Last checked at') }}: {{ last_check }}
+          {{ $gettext('Last checked at') }}: {{ lastCheck }}
           <AButton
             type="link"
             :loading="loading"
-            @click="get_latest_release"
+            @click="getLatestRelease"
           >
             {{ $gettext('Check again') }}
           </AButton>
@@ -194,7 +199,7 @@ async function perform_upgrade() {
         </AFormItem>
         <template v-if="!loading">
           <AAlert
-            v-if="is_latest_ver"
+            v-if="isLatestVer"
             type="success"
             :message="$gettext('You are using the latest version')"
             banner
@@ -205,7 +210,7 @@ async function perform_upgrade() {
             :message="$gettext('New version released')"
             banner
           />
-          <template v-if="dry_run">
+          <template v-if="dryRun">
             <br>
             <AAlert
               type="info"
@@ -216,20 +221,11 @@ async function perform_upgrade() {
           <div class="control-btn">
             <ASpace>
               <AButton
-                v-if="is_latest_ver"
                 type="primary"
                 ghost
-                @click="perform_upgrade"
+                @click="performUpgrade"
               >
-                {{ $gettext('Reinstall') }}
-              </AButton>
-              <AButton
-                v-else
-                type="primary"
-                ghost
-                @click="perform_upgrade"
-              >
-                {{ $gettext('Upgrade') }}
+                {{ isLatestVer ? $gettext('Reinstall') : $gettext('Upgrade') }}
               </AButton>
             </ASpace>
           </div>

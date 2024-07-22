@@ -21,3 +21,47 @@ manual `h(...)` calls), you can enable Volar's Take Over mode by following these
 2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
 
 You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+
+## Project Setup
+
+```sh
+pnpm install
+```
+
+**Note:** The default target of the api proxy is `http://localhost:9000`,
+if you need to change this, create the `.env` file in root directory and set your target in it.
+
+```env
+VITE_PROXY_TARGET=http://localhost:9001
+```
+
+### Compile and Hot-Reload for Development
+
+```sh
+pnpm dev
+```
+
+**Note:** The default port of the dev server is `3002`,
+if you need to change this, create the `.env` file in root directory and set your port in it.
+
+```env
+VITE_PORT=3456
+```
+
+### Code Style Check
+
+```sh
+pnpm lint
+```
+
+### Type Check
+
+```sh
+pnpm typecheck
+```
+
+### Compile and Minify for Production
+
+```sh
+pnpm build
+```

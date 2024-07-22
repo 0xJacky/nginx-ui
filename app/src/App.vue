@@ -12,6 +12,8 @@ import { useSettingsStore } from '@/pinia'
 import gettext from '@/gettext'
 import loadTranslations from '@/api/translations'
 
+const route = useRoute()
+
 const media = window.matchMedia('(prefers-color-scheme: dark)')
 
 const callback = () => {
@@ -51,7 +53,7 @@ const lang = computed(() => {
 const settings = useSettingsStore()
 const is_theme_dark = computed(() => settings.theme === 'dark')
 
-loadTranslations()
+loadTranslations(route)
 </script>
 
 <template>

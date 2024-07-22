@@ -10,10 +10,11 @@ import pulse from '@/assets/svg/pulse.svg?component'
 import { formatDateTime } from '@/lib/helper'
 import NodeAnalyticItem from '@/views/dashboard/components/NodeAnalyticItem.vue'
 import analytic from '@/api/analytic'
+import { version } from '@/version.json'
 
 const data = ref([]) as Ref<Node[]>
 
-const node_map = computed(() => {
+const nodeMap = computed(() => {
   const o = {} as Record<number, Node>
 
   data.value.forEach(v => {
@@ -48,9 +49,9 @@ onMounted(() => {
       const key = Number.parseInt(v)
 
       // update node online status
-      if (node_map.value[key]) {
-        Object.assign(node_map.value[key], nodes[key])
-        node_map.value[key].response_at = new Date()
+      if (nodeMap.value[key]) {
+        Object.assign(nodeMap.value[key], nodes[key])
+        nodeMap.value[key].response_at = new Date()
       }
     })
   }
@@ -62,7 +63,7 @@ onUnmounted(() => {
 
 const { environment: env } = useSettingsStore()
 
-function link_start(node: Node) {
+function linkStart(node: Node) {
   env.id = node.id
   env.name = node.name
 }
@@ -130,14 +131,31 @@ const visible = computed(() => {
                 />
 
                 <AButton
+                  v-if="item.version === version"
                   type="primary"
                   :disabled="!item.status || env.id === item.id"
                   ghost
-                  @click="link_start(item)"
+                  @click="linkStart(item)"
                 >
                   <SendOutlined />
                   {{ env.id !== item.id ? $gettext('Link Start') : $gettext('Connected') }}
                 </AButton>
+                <ATooltip
+                  v-else
+                  placement="topLeft"
+                >
+                  <template #title>
+                    {{ $gettext('The remote Nginx UI version is not compatible with the local Nginx UI version. '
+                      + 'To avoid potential errors, please upgrade the remote Nginx UI to match the local version.') }}
+                  </template>
+                  <AButton
+                    ghost
+                    disabled
+                  >
+                    <SendOutlined />
+                    {{ $gettext('Link Start') }}
+                  </AButton>
+                </ATooltip>
               </div>
             </template>
           </AListItemMeta>

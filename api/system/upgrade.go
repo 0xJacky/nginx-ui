@@ -139,9 +139,8 @@ func PerformCoreUpgrade(c *gin.Context) {
 		return
 	}
 
-	_ = os.Remove(u.ExPath)
 	// bye, overseer will restart nginx-ui
-	err = u.PerformCoreUpgrade(u.ExPath, tarName)
+	err = u.PerformCoreUpgrade(tarName)
 	if err != nil {
 		_ = ws.WriteJSON(CoreUpgradeResp{
 			Status:  UpgradeStatusError,

@@ -65,9 +65,7 @@ func (e *Environment) GetWebSocketURL(uri string) (decodedUri string, err error)
 	if err != nil {
 		return
 	}
-
 	// http will be replaced with ws, https will be replaced with wss
 	decodedUri = strings.ReplaceAll(decodedUri, "http", "ws")
-
 	return
 }
