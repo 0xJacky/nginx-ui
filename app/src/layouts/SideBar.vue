@@ -51,7 +51,8 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
   const res: sidebar[] = [];
 
   (sidebars.value || []).forEach(s => {
-    if (s.meta && s.meta.hiddenInSidebar)
+    if (s.meta && ((typeof s.meta.hiddenInSidebar === 'boolean' && s.meta.hiddenInSidebar)
+      || (typeof s.meta.hiddenInSidebar === 'function' && s.meta.hiddenInSidebar())))
       return
 
     const t: sidebar = {
@@ -62,7 +63,8 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
     };
 
     (s.children || []).forEach(c => {
-      if (c.meta && c.meta.hiddenInSidebar)
+      if (c.meta && ((typeof c.meta.hiddenInSidebar === 'boolean' && c.meta.hiddenInSidebar)
+        || (typeof c.meta.hiddenInSidebar === 'function' && c.meta.hiddenInSidebar())))
         return
 
       t.children.push((c as unknown as sidebar))

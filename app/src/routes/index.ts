@@ -17,7 +17,7 @@ import {
 } from '@ant-design/icons-vue'
 import NProgress from 'nprogress'
 
-import { useUserStore } from '@/pinia'
+import { useSettingsStore, useUserStore } from '@/pinia'
 
 import 'nprogress/nprogress.css'
 
@@ -211,6 +211,11 @@ export const routes: RouteRecordRaw[] = [
         meta: {
           name: () => $gettext('Environment'),
           icon: DatabaseOutlined,
+          hiddenInSidebar: (): boolean => {
+            const settings = useSettingsStore()
+
+            return settings.is_remote
+          },
         },
       },
       {
@@ -261,6 +266,11 @@ export const routes: RouteRecordRaw[] = [
           component: () => import('@/views/system/Upgrade.vue'),
           meta: {
             name: () => $gettext('Upgrade'),
+            hiddenInSidebar: (): boolean => {
+              const settings = useSettingsStore()
+
+              return settings.is_remote
+            },
           },
         }],
       },

@@ -11,7 +11,7 @@ declare module 'vue-router' {
   interface RouteMeta {
     name: (() => string)
     icon?: AntDesignOutlinedIconType
-    hiddenInSidebar?: boolean
+    hiddenInSidebar?: boolean | (() => boolean)
     hideChildren?: boolean
     noAuth?: boolean
     status_code?: number
