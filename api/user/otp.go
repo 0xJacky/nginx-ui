@@ -20,14 +20,14 @@ import (
 )
 
 func GenerateTOTP(c *gin.Context) {
-	user := api.CurrentUser(c)
+	u := api.CurrentUser(c)
 
 	issuer := fmt.Sprintf("Nginx UI %s", settings.ServerSettings.Name)
 	issuer = strings.TrimSpace(issuer)
 
 	otpOpts := totp.GenerateOpts{
 		Issuer:      issuer,
-		AccountName: user.Name,
+		AccountName: u.Name,
 		Period:      30, // seconds
 		Digits:      otp.DigitsSix,
 		Algorithm:   otp.AlgorithmSHA1,
@@ -72,6 +72,13 @@ func EnrollTOTP(c *gin.Context) {
 	if cUser.EnabledOTP() {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "User already enrolled",
+		})
+		return
+	}
+
+	if settings.ServerSettings.Demo {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "This feature is disabled in demo mode",
 		})
 		return
 	}
