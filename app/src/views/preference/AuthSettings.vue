@@ -55,6 +55,8 @@ function removeBannedIP(ip: string) {
 <template>
   <div class="flex justify-center">
     <div>
+      <TOTP class="mb-4" />
+
       <AAlert
         class="mb-4"
         :message="$gettext('Tips')"
@@ -106,8 +108,6 @@ function removeBannedIP(ip: string) {
           </template>
         </ATable>
       </div>
-
-      <TOTP />
     </div>
   </div>
 </template>

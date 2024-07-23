@@ -24,7 +24,14 @@ const useOTPModal = () => {
     document.head.appendChild(style)
   }
 
-  const open = ({ onOk, onCancel }: OTPModalProps) => {
+  const open = async ({ onOk, onCancel }: OTPModalProps) => {
+    const { status } = await otp.status()
+    if (!status) {
+      onOk?.('')
+
+      return
+    }
+
     const cookies = useCookies(['nginx-ui-2fa'])
     const ssid = cookies.get('secure_session_id')
     if (ssid) {
