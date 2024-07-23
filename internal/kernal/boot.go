@@ -1,20 +1,21 @@
 package kernal
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
+	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cluster"
+	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
-	"github.com/0xJacky/Nginx-UI/internal/logrotate"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/go-co-op/gocron"
 	"github.com/google/uuid"
 	"mime"
 	"runtime"
-	"time"
 )
 
 func Boot() {
@@ -24,7 +25,9 @@ func Boot() {
 		InitJsExtensionType,
 		InitDatabase,
 		InitNodeSecret,
+		InitCryptoSecret,
 		validation.Init,
+		cache.Init,
 	}
 
 	syncs := []func(){
@@ -44,7 +47,7 @@ func InitAfterDatabase() {
 	syncs := []func(){
 		registerPredefinedUser,
 		cert.InitRegister,
-		InitCronJobs,
+		cron.InitCronJobs,
 		cluster.RegisterPredefinedNodes,
 		analytic.RetrieveNodesStatus,
 	}
@@ -83,9 +86,29 @@ func InitNodeSecret() {
 
 		err := settings.Save()
 		if err != nil {
-			logger.Error("Error save settings")
+			logger.Error("Error save settings", err)
 		}
 		logger.Warn("Generated NodeSecret: ", settings.ServerSettings.NodeSecret)
+	}
+}
+
+func InitCryptoSecret() {
+	if "" == settings.CryptoSettings.Secret {
+		logger.Warn("Secret is empty, generating...")
+
+		key := make([]byte, 32)
+		if _, err := rand.Read(key); err != nil {
+			logger.Error("Generate Secret failed: ", err)
+			return
+		}
+
+		settings.CryptoSettings.Secret = hex.EncodeToString(key)
+
+		err := settings.Save()
+		if err != nil {
+			logger.Error("Error save settings", err)
+		}
+		logger.Warn("Secret Generated")
 	}
 }
 
@@ -93,21 +116,4 @@ func InitJsExtensionType() {
 	// Hack: fix wrong Content Type of .js file on some OS platforms
 	// See https://github.com/golang/go/issues/32350
 	_ = mime.AddExtensionType(".js", "text/javascript; charset=utf-8")
-}
-
-func InitCronJobs() {
-	s := gocron.NewScheduler(time.UTC)
-	job, err := s.Every(6).Hours().SingletonMode().Do(cert.AutoCert)
-
-	if err != nil {
-		logger.Fatalf("AutoCert Job: %v, Err: %v\n", job, err)
-	}
-
-	job, err = s.Every(settings.LogrotateSettings.Interval).Minute().SingletonMode().Do(logrotate.Exec)
-
-	if err != nil {
-		logger.Fatalf("LogRotate Job: %v, Err: %v\n", job, err)
-	}
-
-	s.StartAsync()
 }

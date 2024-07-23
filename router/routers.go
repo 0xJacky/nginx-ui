@@ -46,6 +46,7 @@ func InitRouter() *gin.Engine {
 		// Authorization required not websocket request
 		g := root.Group("/", authRequired(), proxy())
 		{
+			user.InitUserRouter(g)
 			analytic.InitRouter(g)
 			user.InitManageUserRouter(g)
 			nginx.InitRouter(g)
@@ -68,7 +69,10 @@ func InitRouter() *gin.Engine {
 		{
 			analytic.InitWebSocketRouter(w)
 			certificate.InitCertificateWebSocketRouter(w)
-			terminal.InitRouter(w)
+			o := w.Group("", required2FA())
+			{
+				terminal.InitRouter(o)
+			}
 			nginx.InitNginxLogRouter(w)
 			upstream.InitRouter(w)
 			system.InitWebSocketRouter(w)

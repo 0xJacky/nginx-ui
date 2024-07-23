@@ -5,6 +5,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/app"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/user"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -58,16 +59,54 @@ func authRequired() gin.HandlerFunc {
 			}
 		}
 
-		if user.CheckToken(token) < 1 {
+		u, ok := user.GetTokenUser(token)
+		if !ok {
 			abortWithAuthFailure()
 			return
 		}
+
+		c.Set("user", u)
 
 		if nodeID := c.GetHeader("X-Node-ID"); nodeID != "" {
 			c.Set("ProxyNodeID", nodeID)
 		}
 
 		c.Next()
+	}
+}
+
+func required2FA() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		u, ok := c.Get("user")
+		if !ok {
+			c.Next()
+			return
+		}
+		cUser := u.(*model.Auth)
+		if !cUser.EnabledOTP() {
+			c.Next()
+			return
+		}
+		ssid := c.GetHeader("X-Secure-Session-ID")
+		if ssid == "" {
+			ssid = c.Query("X-Secure-Session-ID")
+		}
+		if ssid == "" {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+				"message": "Secure Session ID is empty",
+			})
+			return
+		}
+
+		if user.VerifySecureSessionID(ssid, cUser.ID) {
+			c.Next()
+			return
+		}
+
+		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+			"message": "Secure Session ID is invalid",
+		})
+		return
 	}
 }
 

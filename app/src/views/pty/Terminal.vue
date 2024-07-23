@@ -2,20 +2,43 @@
 import '@xterm/xterm/css/xterm.css'
 import { Terminal } from '@xterm/xterm'
 import { FitAddon } from '@xterm/addon-fit'
-import { onMounted, onUnmounted } from 'vue'
 import _ from 'lodash'
 import ws from '@/lib/websocket'
+import useOTPModal from '@/components/OTP/useOTPModal'
 
 let term: Terminal | null
 let ping: NodeJS.Timeout
 
-const websocket = ws('/api/pty')
+const router = useRouter()
+const websocket = shallowRef()
+const lostConnection = ref(false)
 
 onMounted(() => {
-  initTerm()
+  const otpModal = useOTPModal()
 
-  websocket.onmessage = wsOnMessage
-  websocket.onopen = wsOnOpen
+  otpModal.open({
+    onOk(secureSessionId: string) {
+      websocket.value = ws(`/api/pty?X-Secure-Session-ID=${secureSessionId}`, false)
+
+      nextTick(() => {
+        initTerm()
+        websocket.value.onmessage = wsOnMessage
+        websocket.value.onopen = wsOnOpen
+        websocket.value.onerror = () => {
+          lostConnection.value = true
+        }
+        websocket.value.onclose = () => {
+          lostConnection.value = true
+        }
+      })
+    },
+    onCancel() {
+      if (window.history.length > 1)
+        router.go(-1)
+      else
+        router.push('/')
+    },
+  })
 })
 
 interface Message {
@@ -65,7 +88,7 @@ function initTerm() {
 }
 
 function sendMessage(data: Message) {
-  websocket.send(JSON.stringify(data))
+  websocket.value.send(JSON.stringify(data))
 }
 
 function wsOnMessage(msg: { data: string | Uint8Array }) {
@@ -82,13 +105,20 @@ onUnmounted(() => {
   window.removeEventListener('resize', fit)
   clearInterval(ping)
   term?.dispose()
-  websocket.close()
+  websocket.value?.close()
 })
 
 </script>
 
 <template>
   <ACard :title="$gettext('Terminal')">
+    <AAlert
+      v-if="lostConnection"
+      class="mb-6"
+      type="error"
+      show-icon
+      :message="$gettext('Connection lost, please refresh the page.')"
+    />
     <div
       id="terminal"
       class="console"

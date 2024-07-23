@@ -13,7 +13,11 @@ msgstr ""
 "Generated-By: easygettext\n"
 "X-Generator: Poedit 3.4.4\n"
 
-#: src/routes/index.ts:256
+#: src/views/preference/components/TOTP.vue:88
+msgid "2FA Settings"
+msgstr "2FA 设置"
+
+#: src/routes/index.ts:261
 msgid "About"
 msgstr "关于"
 
@@ -31,7 +35,7 @@ msgstr "ACME 用户"
 #: src/views/certificate/DNSCredential.vue:33 src/views/config/config.ts:34
 #: src/views/domain/DomainList.vue:47 src/views/environment/envColumns.tsx:131
 #: src/views/notification/Notification.vue:37
-#: src/views/preference/AuthSettings.vue:26 src/views/stream/StreamList.vue:47
+#: src/views/preference/AuthSettings.vue:27 src/views/stream/StreamList.vue:47
 #: src/views/user/User.vue:43
 msgid "Action"
 msgstr "操作"
@@ -95,7 +99,7 @@ msgstr "API Token"
 msgid "Arch"
 msgstr "架构"
 
-#: src/views/preference/AuthSettings.vue:94
+#: src/views/preference/AuthSettings.vue:95
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "您确定要立即删除这个被禁用的 IP 吗？"
 
@@ -144,7 +148,7 @@ msgstr "与ChatGPT聊天"
 msgid "Assistant"
 msgstr "助手"
 
-#: src/views/preference/AuthSettings.vue:17
+#: src/views/preference/AuthSettings.vue:18
 msgid "Attempts"
 msgstr "尝试次数"
 
@@ -188,15 +192,15 @@ msgstr "返回首页"
 msgid "Back to list"
 msgstr "返回列表"
 
-#: src/views/preference/AuthSettings.vue:68
+#: src/views/preference/AuthSettings.vue:69
 msgid "Ban Threshold Minutes"
 msgstr "禁止阈值（分钟）"
 
-#: src/views/preference/AuthSettings.vue:82
+#: src/views/preference/AuthSettings.vue:83
 msgid "Banned IPs"
 msgstr "禁止 IP 列表"
 
-#: src/views/preference/AuthSettings.vue:20
+#: src/views/preference/AuthSettings.vue:21
 msgid "Banned Until"
 msgstr "禁用至"
 
@@ -343,6 +347,10 @@ msgstr "配置 SSL"
 msgid "Connected"
 msgstr "已连接"
 
+#: src/views/pty/Terminal.vue:120
+msgid "Connection lost, please refresh the page."
+msgstr "连接中断，请刷新页面。"
+
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
 #: src/views/domain/ngx_conf/LocationEditor.vue:125
 #: src/views/domain/ngx_conf/LocationEditor.vue:97
@@ -384,6 +392,14 @@ msgstr "DNS 凭证"
 #: src/views/certificate/DNSChallenge.vue:97
 msgid "Credentials"
 msgstr "凭证"
+
+#: src/views/preference/components/TOTP.vue:96
+msgid "Current account is enabled 2FA."
+msgstr "当前账户已启用二步验证。"
+
+#: src/views/preference/components/TOTP.vue:93
+msgid "Current account is not enabled 2FA."
+msgstr "当前用户未启用二步验证。"
 
 #: src/views/system/Upgrade.vue:167
 msgid "Current Version"
@@ -652,6 +668,14 @@ msgstr "在%{node_name}中启用%{conf_name}失败"
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "成功启用%{node_name}中的%{conf_name}"
 
+#: src/views/preference/components/TOTP.vue:122
+msgid "Enable 2FA"
+msgstr "启用二步验证"
+
+#: src/views/preference/components/TOTP.vue:52
+msgid "Enable 2FA successfully"
+msgstr "二步验证启用成功"
+
 #: src/views/domain/cert/components/ObtainCert.vue:70
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "启用 %{name} 自动续签失败"
@@ -844,13 +868,19 @@ msgstr "HTTP01"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "如果留空，则使用默认 CA Dir。"
 
-#: src/views/preference/AuthSettings.vue:60
+#: src/views/preference/AuthSettings.vue:61
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
 "如果某个 IP 的登录失败次数达到禁用阈值分钟内的最大尝试次数，该 IP 将被禁止登"
 "录一段时间。"
+
+#: src/views/preference/components/TOTP.vue:108
+msgid ""
+"If you lose your mobile phone, you can use the recovery code to reset your "
+"2FA."
+msgstr "如果丢失了手机，可以使用恢复代码重置二步验证。"
 
 #: src/views/certificate/Certificate.vue:136
 msgid "Import"
@@ -860,7 +890,7 @@ msgstr "导入"
 msgid "Import Certificate"
 msgstr "导入证书"
 
-#: src/views/other/Login.vue:59
+#: src/views/other/Login.vue:71
 msgid "Incorrect username or password"
 msgstr "用户名或密码错误"
 
@@ -876,7 +906,16 @@ msgstr "初始化核心升级程序错误"
 msgid "Initialing core upgrader"
 msgstr "初始化核心升级器"
 
-#: src/routes/index.ts:273 src/views/other/Install.vue:135
+#: src/views/preference/components/TOTP.vue:144
+msgid "Input the code from the app:"
+msgstr "输入应用程序中的代码："
+
+#: src/components/OTP/OTPAuthorization.vue:49
+#: src/views/preference/components/TOTP.vue:157
+msgid "Input the recovery code:"
+msgstr "输入恢复代码："
+
+#: src/routes/index.ts:283 src/views/other/Install.vue:135
 msgid "Install"
 msgstr "安装"
 
@@ -896,7 +935,15 @@ msgstr "间隔"
 msgid "Invalid"
 msgstr "无效的"
 
-#: src/views/preference/AuthSettings.vue:14
+#: src/views/other/Login.vue:81
+msgid "Invalid 2FA or recovery code"
+msgstr "无效的二步验证码或恢复密码"
+
+#: src/components/OTP/useOTPModal.ts:43
+msgid "Invalid passcode or recovery code"
+msgstr "二次验证码或恢复代码无效"
+
+#: src/views/preference/AuthSettings.vue:15
 msgid "IP"
 msgstr "IP"
 
@@ -981,11 +1028,11 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日志"
 
-#: src/routes/index.ts:279 src/views/other/Login.vue:159
+#: src/routes/index.ts:289 src/views/other/Login.vue:192
 msgid "Login"
 msgstr "登录"
 
-#: src/views/other/Login.vue:109 src/views/other/Login.vue:51
+#: src/views/other/Login.vue:125 src/views/other/Login.vue:60
 msgid "Login successful"
 msgstr "登录成功"
 
@@ -1031,7 +1078,7 @@ msgstr "网站管理"
 msgid "Manage Streams"
 msgstr "管理 Stream"
 
-#: src/routes/index.ts:230 src/views/user/User.vue:50
+#: src/routes/index.ts:235 src/views/user/User.vue:50
 msgid "Manage Users"
 msgstr "用户管理"
 
@@ -1039,7 +1086,7 @@ msgstr "用户管理"
 msgid "Managed Certificate"
 msgstr "托管证书"
 
-#: src/views/preference/AuthSettings.vue:74
+#: src/views/preference/AuthSettings.vue:75
 msgid "Max Attempts"
 msgstr "最大尝试次数"
 
@@ -1165,7 +1212,7 @@ msgstr "Nginx 重启成功"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:71
 #: src/views/notification/Notification.vue:70
-#: src/views/preference/AuthSettings.vue:96
+#: src/views/preference/AuthSettings.vue:97
 #: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
 msgid "No"
@@ -1179,7 +1226,7 @@ msgstr "节点密钥"
 msgid "Not After"
 msgstr "有效期"
 
-#: src/routes/index.ts:285
+#: src/routes/index.ts:295
 msgid "Not Found"
 msgstr "找不到页面"
 
@@ -1196,7 +1243,7 @@ msgstr "注意"
 msgid "Notification"
 msgstr "通知"
 
-#: src/components/Notification/Notification.vue:82 src/routes/index.ts:221
+#: src/components/Notification/Notification.vue:82 src/routes/index.ts:226
 msgid "Notifications"
 msgstr "通知"
 
@@ -1276,7 +1323,7 @@ msgstr "覆盖现有文件"
 msgid "Params"
 msgstr "参数"
 
-#: src/views/other/Login.vue:144 src/views/user/User.vue:18
+#: src/views/other/Login.vue:169 src/views/user/User.vue:18
 msgid "Password"
 msgstr "密码"
 
@@ -1301,6 +1348,10 @@ msgstr "执行核心升级错误"
 #: src/language/constants.ts:27
 msgid "Performing core upgrade"
 msgstr "正在进行核心升级"
+
+#: src/components/OTP/OTPAuthorization.vue:37
+msgid "Please enter the 2FA code:"
+msgstr "请输入二步验证码："
 
 #: src/views/certificate/DNSCredential.vue:53
 msgid ""
@@ -1331,11 +1382,11 @@ msgstr "请输入名称，这将被用作新配置的文件名！"
 msgid "Please input your E-mail!"
 msgstr "请输入您的邮箱！"
 
-#: src/views/other/Install.vue:45 src/views/other/Login.vue:39
+#: src/views/other/Install.vue:45 src/views/other/Login.vue:43
 msgid "Please input your password!"
 msgstr "请输入您的密码！"
 
-#: src/views/other/Install.vue:39 src/views/other/Login.vue:33
+#: src/views/other/Install.vue:39 src/views/other/Login.vue:37
 msgid "Please input your username!"
 msgstr "请输入您的用户名！"
 
@@ -1355,7 +1406,7 @@ msgstr "请至少选择一个节点!"
 msgid "Pre-release"
 msgstr "预发布"
 
-#: src/routes/index.ts:239 src/views/preference/Preference.vue:105
+#: src/routes/index.ts:244 src/views/preference/Preference.vue:105
 msgid "Preference"
 msgstr "偏好设置"
 
@@ -1396,6 +1447,19 @@ msgstr "恢复"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:210
 msgid "Recovered Successfully"
 msgstr "恢复成功"
+
+#: src/components/OTP/OTPAuthorization.vue:56
+#: src/views/preference/components/TOTP.vue:167
+msgid "Recovery"
+msgstr "恢复"
+
+#: src/views/preference/components/TOTP.vue:101
+msgid "Recovery Code"
+msgstr "恢复代码"
+
+#: src/views/preference/components/TOTP.vue:110
+msgid "Recovery Code:"
+msgstr "恢复代码："
 
 #: src/views/preference/BasicSettings.vue:68
 msgid "Recursive Nameservers"
@@ -1446,11 +1510,11 @@ msgstr "重载中"
 msgid "Reloading nginx"
 msgstr "正在重载 Nginx"
 
-#: src/views/preference/AuthSettings.vue:101
+#: src/views/preference/AuthSettings.vue:102
 msgid "Remove"
 msgstr "删除"
 
-#: src/views/preference/AuthSettings.vue:47
+#: src/views/preference/AuthSettings.vue:48
 msgid "Remove successfully"
 msgstr "移除成功"
 
@@ -1487,6 +1551,10 @@ msgstr "请求参数错误"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:480
 msgid "Reset"
 msgstr "重置"
+
+#: src/views/preference/components/TOTP.vue:130
+msgid "Reset 2FA"
+msgstr "重置二步验证"
 
 #: src/components/NginxControl/NginxControl.vue:93
 msgid "Restart"
@@ -1535,6 +1603,10 @@ msgstr "保存成功"
 msgid "Saved successfully"
 msgstr "保存成功"
 
+#: src/views/preference/components/TOTP.vue:91
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr "用手机扫描二维码，将账户添加到应用程序中。"
+
 #: src/views/certificate/DNSChallenge.vue:89
 msgid "SDK"
 msgstr "SDK"
@@ -1558,7 +1630,9 @@ msgstr "上传"
 #: src/views/config/ConfigEdit.vue:40 src/views/domain/DomainList.vue:81
 #: src/views/environment/BatchUpgrader.vue:57
 #: src/views/environment/Environment.vue:15 src/views/other/Install.vue:69
-#: src/views/preference/AuthSettings.vue:49
+#: src/views/preference/AuthSettings.vue:50
+#: src/views/preference/components/TOTP.vue:42
+#: src/views/preference/components/TOTP.vue:55
 #: src/views/preference/Preference.vue:78 src/views/stream/StreamList.vue:113
 #: src/views/stream/StreamList.vue:81 src/views/system/Upgrade.vue:42
 msgid "Server error"
@@ -1629,7 +1703,7 @@ msgstr "SSL证书密钥路径"
 msgid "SSL Certificate Path"
 msgstr "SSL证书路径"
 
-#: src/views/other/Login.vue:170
+#: src/views/other/Login.vue:203
 msgid "SSO Login"
 msgstr "SSO 登录"
 
@@ -1707,7 +1781,7 @@ msgstr "同步证书成功"
 msgid "Sync to"
 msgstr "同步到"
 
-#: src/routes/index.ts:248
+#: src/routes/index.ts:253
 msgid "System"
 msgstr "系统"
 
@@ -1716,7 +1790,7 @@ msgstr "系统"
 msgid "Target"
 msgstr "目标"
 
-#: src/routes/index.ts:172 src/views/pty/Terminal.vue:91
+#: src/routes/index.ts:172 src/views/pty/Terminal.vue:114
 msgid "Terminal"
 msgstr "终端"
 
@@ -1757,6 +1831,11 @@ msgstr "路径存在，但文件不是证书"
 #: src/views/certificate/CertificateEditor.vue:181
 msgid "The path exists, but the file is not a private key"
 msgstr "路径存在，但文件不是私钥"
+
+#: src/views/preference/components/TOTP.vue:109
+msgid ""
+"The recovery code is only displayed once, please save it in a safe place."
+msgstr "恢复密码只会显示一次，请妥善保存。"
 
 #: src/views/dashboard/Environments.vue:148
 msgid ""
@@ -1816,7 +1895,7 @@ msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "将 %{nodeNames} 上的 Nginx UI 升级或重新安装到 %{version} 版本。"
 
-#: src/views/preference/AuthSettings.vue:59
+#: src/views/preference/AuthSettings.vue:60
 #: src/views/preference/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr "提示"
@@ -1824,6 +1903,13 @@ msgstr "提示"
 #: src/views/notification/Notification.vue:19
 msgid "Title"
 msgstr "标题"
+
+#: src/views/preference/components/TOTP.vue:90
+msgid ""
+"To enable it, you need to install the Google or Microsoft Authenticator app "
+"on your mobile phone."
+msgstr ""
+"要启用该功能，您需要在手机上安装 Google 或 Microsoft Authenticator 应用程序。"
 
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:44
 msgid ""
@@ -1839,13 +1925,23 @@ msgstr ""
 msgid "Token is not valid"
 msgstr "Token 无效"
 
-#: src/views/other/Login.vue:62
+#: src/views/other/Login.vue:74
 msgid "Too many login failed attempts, please try again later"
 msgstr "登录失败次数过多，请稍后再试"
+
+#: src/views/preference/components/TOTP.vue:89
+msgid ""
+"TOTP is a two-factor authentication method that uses a time-based one-time "
+"password algorithm."
+msgstr "TOTP 是一种使用基于时间的一次性密码算法的双因素身份验证方法。"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:209
 msgid "Trash"
 msgstr "回收站"
+
+#: src/components/OTP/useOTPModal.ts:49
+msgid "Two-factor authentication required"
+msgstr "需要两步验证"
 
 #: src/views/certificate/Certificate.vue:37 src/views/config/config.ts:12
 #: src/views/notification/Notification.vue:13
@@ -1866,7 +1962,7 @@ msgstr "修改时间"
 msgid "Updated successfully"
 msgstr "更新成功"
 
-#: src/routes/index.ts:263 src/views/environment/Environment.vue:50
+#: src/routes/index.ts:268 src/views/environment/Environment.vue:50
 #: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
 msgid "Upgrade"
 msgstr "升级"
@@ -1895,15 +1991,23 @@ msgstr "运行时间:"
 msgid "URL"
 msgstr "URL"
 
+#: src/components/OTP/OTPAuthorization.vue:69
+msgid "Use OTP"
+msgstr "使用二步验证码"
+
+#: src/components/OTP/OTPAuthorization.vue:65
+msgid "Use recovery code"
+msgstr "使用恢复代码"
+
 #: src/components/ChatGPT/ChatGPT.vue:229
 msgid "User"
 msgstr "用户"
 
-#: src/views/other/Login.vue:65
+#: src/views/other/Login.vue:77
 msgid "User is banned"
 msgstr "用户被禁止"
 
-#: src/views/other/Login.vue:134 src/views/user/User.vue:9
+#: src/views/other/Login.vue:159 src/views/user/User.vue:9
 msgid "Username"
 msgstr "用户名"
 
@@ -1971,7 +2075,7 @@ msgstr "正在将证书写入磁盘"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
-#: src/views/preference/AuthSettings.vue:95
+#: src/views/preference/AuthSettings.vue:96
 #: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
 msgstr "是的"

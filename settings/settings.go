@@ -28,6 +28,7 @@ var sections = map[string]interface{}{
 	"logrotate": &LogrotateSettings,
 	"cluster":   &ClusterSettings,
 	"auth":      &AuthSettings,
+	"crypto":    &CryptoSettings,
 }
 
 func init() {
@@ -64,6 +65,7 @@ func Setup() {
 	parseEnv(&CasdoorSettings, "CASDOOR_")
 	parseEnv(&LogrotateSettings, "LOGROTATE_")
 	parseEnv(&AuthSettings, "AUTH_")
+	parseEnv(&CryptoSettings, "CRYPTO_")
 
 	// if in official docker, set the restart cmd of nginx to "nginx -s stop",
 	// then the supervisor of s6-overlay will start the nginx again.

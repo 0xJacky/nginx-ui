@@ -13,7 +13,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Weblate 5.3.1\n"
 
-#: src/routes/index.ts:256
+#: src/views/preference/components/TOTP.vue:88
+msgid "2FA Settings"
+msgstr ""
+
+#: src/routes/index.ts:261
 msgid "About"
 msgstr "소개"
 
@@ -32,7 +36,7 @@ msgstr "사용자 이름"
 #: src/views/certificate/DNSCredential.vue:33 src/views/config/config.ts:34
 #: src/views/domain/DomainList.vue:47 src/views/environment/envColumns.tsx:131
 #: src/views/notification/Notification.vue:37
-#: src/views/preference/AuthSettings.vue:26 src/views/stream/StreamList.vue:47
+#: src/views/preference/AuthSettings.vue:27 src/views/stream/StreamList.vue:47
 #: src/views/user/User.vue:43
 msgid "Action"
 msgstr "작업"
@@ -97,7 +101,7 @@ msgstr "API 토큰"
 msgid "Arch"
 msgstr "아키텍처"
 
-#: src/views/preference/AuthSettings.vue:94
+#: src/views/preference/AuthSettings.vue:95
 #, fuzzy
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "정말 삭제하시겠습니까?"
@@ -151,7 +155,7 @@ msgstr "ChatGPT에게 도움 요청"
 msgid "Assistant"
 msgstr "조수"
 
-#: src/views/preference/AuthSettings.vue:17
+#: src/views/preference/AuthSettings.vue:18
 msgid "Attempts"
 msgstr ""
 
@@ -196,15 +200,15 @@ msgstr "홈으로"
 msgid "Back to list"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:68
+#: src/views/preference/AuthSettings.vue:69
 msgid "Ban Threshold Minutes"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:82
+#: src/views/preference/AuthSettings.vue:83
 msgid "Banned IPs"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:20
+#: src/views/preference/AuthSettings.vue:21
 msgid "Banned Until"
 msgstr ""
 
@@ -353,6 +357,10 @@ msgstr "SSL 구성하기"
 msgid "Connected"
 msgstr "연결됨"
 
+#: src/views/pty/Terminal.vue:120
+msgid "Connection lost, please refresh the page."
+msgstr ""
+
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
 #: src/views/domain/ngx_conf/LocationEditor.vue:125
 #: src/views/domain/ngx_conf/LocationEditor.vue:97
@@ -394,6 +402,14 @@ msgstr "인증 정보"
 #: src/views/certificate/DNSChallenge.vue:97
 msgid "Credentials"
 msgstr "인증 정보들"
+
+#: src/views/preference/components/TOTP.vue:96
+msgid "Current account is enabled 2FA."
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:93
+msgid "Current account is not enabled 2FA."
+msgstr ""
 
 #: src/views/system/Upgrade.vue:167
 msgid "Current Version"
@@ -666,6 +682,16 @@ msgstr "%{node_name}에서 %{conf_name} 활성화 실패"
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
+#: src/views/preference/components/TOTP.vue:122
+#, fuzzy
+msgid "Enable 2FA"
+msgstr "활성화"
+
+#: src/views/preference/components/TOTP.vue:52
+#, fuzzy
+msgid "Enable 2FA successfully"
+msgstr "성공적으로 활성화"
+
 #: src/views/domain/cert/components/ObtainCert.vue:70
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "%{name}에 대한 자동 갱신 활성화 실패"
@@ -866,10 +892,16 @@ msgstr "HTTP01"
 msgid "If left blank, the default CA Dir will be used."
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:60
+#: src/views/preference/AuthSettings.vue:61
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:108
+msgid ""
+"If you lose your mobile phone, you can use the recovery code to reset your "
+"2FA."
 msgstr ""
 
 #: src/views/certificate/Certificate.vue:136
@@ -881,7 +913,7 @@ msgstr "가져오기"
 msgid "Import Certificate"
 msgstr "인증서 상태"
 
-#: src/views/other/Login.vue:59
+#: src/views/other/Login.vue:71
 #, fuzzy
 msgid "Incorrect username or password"
 msgstr "사용자 이름 또는 비밀번호가 올바르지 않습니다"
@@ -898,7 +930,16 @@ msgstr "초기 코어 업그레이더 오류"
 msgid "Initialing core upgrader"
 msgstr "코어 업그레이더 초기화"
 
-#: src/routes/index.ts:273 src/views/other/Install.vue:135
+#: src/views/preference/components/TOTP.vue:144
+msgid "Input the code from the app:"
+msgstr ""
+
+#: src/components/OTP/OTPAuthorization.vue:49
+#: src/views/preference/components/TOTP.vue:157
+msgid "Input the recovery code:"
+msgstr ""
+
+#: src/routes/index.ts:283 src/views/other/Install.vue:135
 msgid "Install"
 msgstr "설치"
 
@@ -920,7 +961,15 @@ msgstr "간격"
 msgid "Invalid"
 msgstr "유효함"
 
-#: src/views/preference/AuthSettings.vue:14
+#: src/views/other/Login.vue:81
+msgid "Invalid 2FA or recovery code"
+msgstr ""
+
+#: src/components/OTP/useOTPModal.ts:43
+msgid "Invalid passcode or recovery code"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:15
 msgid "IP"
 msgstr ""
 
@@ -1014,11 +1063,11 @@ msgstr "위치들"
 msgid "Log"
 msgstr "로그인"
 
-#: src/routes/index.ts:279 src/views/other/Login.vue:159
+#: src/routes/index.ts:289 src/views/other/Login.vue:192
 msgid "Login"
 msgstr "로그인"
 
-#: src/views/other/Login.vue:109 src/views/other/Login.vue:51
+#: src/views/other/Login.vue:125 src/views/other/Login.vue:60
 msgid "Login successful"
 msgstr "로그인 성공"
 
@@ -1067,7 +1116,7 @@ msgstr "사이트 관리"
 msgid "Manage Streams"
 msgstr "스트림 관리"
 
-#: src/routes/index.ts:230 src/views/user/User.vue:50
+#: src/routes/index.ts:235 src/views/user/User.vue:50
 msgid "Manage Users"
 msgstr "사용자 관리"
 
@@ -1076,7 +1125,7 @@ msgstr "사용자 관리"
 msgid "Managed Certificate"
 msgstr "인증서 유효"
 
-#: src/views/preference/AuthSettings.vue:74
+#: src/views/preference/AuthSettings.vue:75
 msgid "Max Attempts"
 msgstr ""
 
@@ -1210,7 +1259,7 @@ msgstr "Nginx가 성공적으로 재시작됨"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:71
 #: src/views/notification/Notification.vue:70
-#: src/views/preference/AuthSettings.vue:96
+#: src/views/preference/AuthSettings.vue:97
 #: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
 msgid "No"
@@ -1224,7 +1273,7 @@ msgstr "노드 시크릿"
 msgid "Not After"
 msgstr "만료일"
 
-#: src/routes/index.ts:285
+#: src/routes/index.ts:295
 msgid "Not Found"
 msgstr "찾을 수 없음"
 
@@ -1242,7 +1291,7 @@ msgstr "참고"
 msgid "Notification"
 msgstr "알림"
 
-#: src/components/Notification/Notification.vue:82 src/routes/index.ts:221
+#: src/components/Notification/Notification.vue:82 src/routes/index.ts:226
 #, fuzzy
 msgid "Notifications"
 msgstr "알림"
@@ -1325,7 +1374,7 @@ msgstr "기존 파일 덮어쓰기"
 msgid "Params"
 msgstr "파라미터"
 
-#: src/views/other/Login.vue:144 src/views/user/User.vue:18
+#: src/views/other/Login.vue:169 src/views/user/User.vue:18
 msgid "Password"
 msgstr "비밀번호"
 
@@ -1350,6 +1399,10 @@ msgstr "핵심 업그레이드 오류 수행"
 #: src/language/constants.ts:27
 msgid "Performing core upgrade"
 msgstr "핵심 업그레이드 수행 중"
+
+#: src/components/OTP/OTPAuthorization.vue:37
+msgid "Please enter the 2FA code:"
+msgstr ""
 
 #: src/views/certificate/DNSCredential.vue:53
 msgid ""
@@ -1380,11 +1433,11 @@ msgstr "이름을 입력해주세요, 이것은 새 구성의 파일 이름으�
 msgid "Please input your E-mail!"
 msgstr "이메일을 입력해주세요!"
 
-#: src/views/other/Install.vue:45 src/views/other/Login.vue:39
+#: src/views/other/Install.vue:45 src/views/other/Login.vue:43
 msgid "Please input your password!"
 msgstr "비밀번호를 입력해주세요!"
 
-#: src/views/other/Install.vue:39 src/views/other/Login.vue:33
+#: src/views/other/Install.vue:39 src/views/other/Login.vue:37
 msgid "Please input your username!"
 msgstr "사용자 이름을 입력해주세요!"
 
@@ -1404,7 +1457,7 @@ msgstr "적어도 하나의 노드를 선택해주세요!"
 msgid "Pre-release"
 msgstr "사전 출시"
 
-#: src/routes/index.ts:239 src/views/preference/Preference.vue:105
+#: src/routes/index.ts:244 src/views/preference/Preference.vue:105
 msgid "Preference"
 msgstr "환경설정"
 
@@ -1447,6 +1500,19 @@ msgstr ""
 #, fuzzy
 msgid "Recovered Successfully"
 msgstr "성공적으로 제거됨"
+
+#: src/components/OTP/OTPAuthorization.vue:56
+#: src/views/preference/components/TOTP.vue:167
+msgid "Recovery"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:101
+msgid "Recovery Code"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:110
+msgid "Recovery Code:"
+msgstr ""
 
 #: src/views/preference/BasicSettings.vue:68
 msgid "Recursive Nameservers"
@@ -1502,11 +1568,11 @@ msgstr "리로딩 중"
 msgid "Reloading nginx"
 msgstr "Nginx 리로딩 중"
 
-#: src/views/preference/AuthSettings.vue:101
+#: src/views/preference/AuthSettings.vue:102
 msgid "Remove"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:47
+#: src/views/preference/AuthSettings.vue:48
 #, fuzzy
 msgid "Remove successfully"
 msgstr "성공적으로 제거됨"
@@ -1549,6 +1615,11 @@ msgstr "잘못된 매개변수로 요청됨"
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:480
 msgid "Reset"
+msgstr "재설정"
+
+#: src/views/preference/components/TOTP.vue:130
+#, fuzzy
+msgid "Reset 2FA"
 msgstr "재설정"
 
 #: src/components/NginxControl/NginxControl.vue:93
@@ -1600,6 +1671,10 @@ msgstr "성공적으로 저장됨"
 msgid "Saved successfully"
 msgstr "성공적으로 저장됨"
 
+#: src/views/preference/components/TOTP.vue:91
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr ""
+
 #: src/views/certificate/DNSChallenge.vue:89
 msgid "SDK"
 msgstr ""
@@ -1623,7 +1698,9 @@ msgstr "보내기"
 #: src/views/config/ConfigEdit.vue:40 src/views/domain/DomainList.vue:81
 #: src/views/environment/BatchUpgrader.vue:57
 #: src/views/environment/Environment.vue:15 src/views/other/Install.vue:69
-#: src/views/preference/AuthSettings.vue:49
+#: src/views/preference/AuthSettings.vue:50
+#: src/views/preference/components/TOTP.vue:42
+#: src/views/preference/components/TOTP.vue:55
 #: src/views/preference/Preference.vue:78 src/views/stream/StreamList.vue:113
 #: src/views/stream/StreamList.vue:81 src/views/system/Upgrade.vue:42
 msgid "Server error"
@@ -1699,7 +1776,7 @@ msgstr "SSL 인증서 키 경로"
 msgid "SSL Certificate Path"
 msgstr "SSL 인증서 경로"
 
-#: src/views/other/Login.vue:170
+#: src/views/other/Login.vue:203
 #, fuzzy
 msgid "SSO Login"
 msgstr "SSO 로그인"
@@ -1784,7 +1861,7 @@ msgstr "인증서 갱신 성공"
 msgid "Sync to"
 msgstr ""
 
-#: src/routes/index.ts:248
+#: src/routes/index.ts:253
 msgid "System"
 msgstr "시스템"
 
@@ -1793,7 +1870,7 @@ msgstr "시스템"
 msgid "Target"
 msgstr "대상"
 
-#: src/routes/index.ts:172 src/views/pty/Terminal.vue:91
+#: src/routes/index.ts:172 src/views/pty/Terminal.vue:114
 msgid "Terminal"
 msgstr "터미널"
 
@@ -1837,6 +1914,11 @@ msgstr "Certificate Status"
 #: src/views/certificate/CertificateEditor.vue:181
 msgid "The path exists, but the file is not a private key"
 msgstr "경로는 존재하지만 파일은 개인 키가 아닙니다"
+
+#: src/views/preference/components/TOTP.vue:109
+msgid ""
+"The recovery code is only displayed once, please save it in a safe place."
+msgstr ""
 
 #: src/views/dashboard/Environments.vue:148
 msgid ""
@@ -1899,7 +1981,7 @@ msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:59
+#: src/views/preference/AuthSettings.vue:60
 #: src/views/preference/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr "팁"
@@ -1907,6 +1989,12 @@ msgstr "팁"
 #: src/views/notification/Notification.vue:19
 msgid "Title"
 msgstr "제목"
+
+#: src/views/preference/components/TOTP.vue:90
+msgid ""
+"To enable it, you need to install the Google or Microsoft Authenticator app "
+"on your mobile phone."
+msgstr ""
 
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:44
 msgid ""
@@ -1923,12 +2011,22 @@ msgstr ""
 msgid "Token is not valid"
 msgstr "토큰이 유효하지 않습니다"
 
-#: src/views/other/Login.vue:62
+#: src/views/other/Login.vue:74
 msgid "Too many login failed attempts, please try again later"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:89
+msgid ""
+"TOTP is a two-factor authentication method that uses a time-based one-time "
+"password algorithm."
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:209
 msgid "Trash"
+msgstr ""
+
+#: src/components/OTP/useOTPModal.ts:49
+msgid "Two-factor authentication required"
 msgstr ""
 
 #: src/views/certificate/Certificate.vue:37 src/views/config/config.ts:12
@@ -1951,7 +2049,7 @@ msgstr "업데이트됨"
 msgid "Updated successfully"
 msgstr "성공적으로 저장되었습니다"
 
-#: src/routes/index.ts:263 src/views/environment/Environment.vue:50
+#: src/routes/index.ts:268 src/views/environment/Environment.vue:50
 #: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
 msgid "Upgrade"
 msgstr "업그레이드"
@@ -1982,16 +2080,24 @@ msgstr "가동 시간:"
 msgid "URL"
 msgstr "URL"
 
+#: src/components/OTP/OTPAuthorization.vue:69
+msgid "Use OTP"
+msgstr ""
+
+#: src/components/OTP/OTPAuthorization.vue:65
+msgid "Use recovery code"
+msgstr ""
+
 #: src/components/ChatGPT/ChatGPT.vue:229
 #, fuzzy
 msgid "User"
 msgstr "사용자 이름"
 
-#: src/views/other/Login.vue:65
+#: src/views/other/Login.vue:77
 msgid "User is banned"
 msgstr ""
 
-#: src/views/other/Login.vue:134 src/views/user/User.vue:9
+#: src/views/other/Login.vue:159 src/views/user/User.vue:9
 msgid "Username"
 msgstr "사용자 이름"
 
@@ -2066,7 +2172,7 @@ msgstr "인증서를 디스크에 쓰기"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
-#: src/views/preference/AuthSettings.vue:95
+#: src/views/preference/AuthSettings.vue:96
 #: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
 msgstr "예"

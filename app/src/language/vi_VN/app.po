@@ -9,7 +9,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/routes/index.ts:256
+#: src/views/preference/components/TOTP.vue:88
+msgid "2FA Settings"
+msgstr ""
+
+#: src/routes/index.ts:261
 msgid "About"
 msgstr "Tác giả"
 
@@ -28,7 +32,7 @@ msgstr "Người dùng"
 #: src/views/certificate/DNSCredential.vue:33 src/views/config/config.ts:34
 #: src/views/domain/DomainList.vue:47 src/views/environment/envColumns.tsx:131
 #: src/views/notification/Notification.vue:37
-#: src/views/preference/AuthSettings.vue:26 src/views/stream/StreamList.vue:47
+#: src/views/preference/AuthSettings.vue:27 src/views/stream/StreamList.vue:47
 #: src/views/user/User.vue:43
 msgid "Action"
 msgstr "Hành động"
@@ -95,7 +99,7 @@ msgstr ""
 msgid "Arch"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:94
+#: src/views/preference/AuthSettings.vue:95
 #, fuzzy
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Bạn chắc chắn muốn xóa nó "
@@ -153,7 +157,7 @@ msgstr "Hỏi ChatGPT"
 msgid "Assistant"
 msgstr "Trợ lý"
 
-#: src/views/preference/AuthSettings.vue:17
+#: src/views/preference/AuthSettings.vue:18
 msgid "Attempts"
 msgstr ""
 
@@ -199,15 +203,15 @@ msgstr "Quay lại"
 msgid "Back to list"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:68
+#: src/views/preference/AuthSettings.vue:69
 msgid "Ban Threshold Minutes"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:82
+#: src/views/preference/AuthSettings.vue:83
 msgid "Banned IPs"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:20
+#: src/views/preference/AuthSettings.vue:21
 msgid "Banned Until"
 msgstr ""
 
@@ -364,6 +368,10 @@ msgstr "Cấu hình SSL"
 msgid "Connected"
 msgstr "Đã kết nối"
 
+#: src/views/pty/Terminal.vue:120
+msgid "Connection lost, please refresh the page."
+msgstr ""
+
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
 #: src/views/domain/ngx_conf/LocationEditor.vue:125
 #: src/views/domain/ngx_conf/LocationEditor.vue:97
@@ -406,6 +414,14 @@ msgstr "Chứng chỉ"
 #: src/views/certificate/DNSChallenge.vue:97
 msgid "Credentials"
 msgstr "Chứng chỉ"
+
+#: src/views/preference/components/TOTP.vue:96
+msgid "Current account is enabled 2FA."
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:93
+msgid "Current account is not enabled 2FA."
+msgstr ""
 
 #: src/views/system/Upgrade.vue:167
 msgid "Current Version"
@@ -697,6 +713,16 @@ msgstr "Không thể bật %{conf_name} trên %{node_name}"
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "Đã bật %{conf_name} trên %{node_name}"
 
+#: src/views/preference/components/TOTP.vue:122
+#, fuzzy
+msgid "Enable 2FA"
+msgstr "Đã bật"
+
+#: src/views/preference/components/TOTP.vue:52
+#, fuzzy
+msgid "Enable 2FA successfully"
+msgstr "Đã bật"
+
 #: src/views/domain/cert/components/ObtainCert.vue:70
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "Không thể bật tự động gia hạn SSL cho %{name}"
@@ -900,10 +926,16 @@ msgstr ""
 msgid "If left blank, the default CA Dir will be used."
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:60
+#: src/views/preference/AuthSettings.vue:61
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:108
+msgid ""
+"If you lose your mobile phone, you can use the recovery code to reset your "
+"2FA."
 msgstr ""
 
 #: src/views/certificate/Certificate.vue:136
@@ -916,7 +948,7 @@ msgstr "Xuất"
 msgid "Import Certificate"
 msgstr "Chứng chỉ"
 
-#: src/views/other/Login.vue:59
+#: src/views/other/Login.vue:71
 #, fuzzy
 msgid "Incorrect username or password"
 msgstr "Tên người dùng hoặc mật khẩu không chính xác"
@@ -933,7 +965,16 @@ msgstr "Không thể khởi tạo trình nâng cấp"
 msgid "Initialing core upgrader"
 msgstr "Đang khởi tạo trình nâng cấp"
 
-#: src/routes/index.ts:273 src/views/other/Install.vue:135
+#: src/views/preference/components/TOTP.vue:144
+msgid "Input the code from the app:"
+msgstr ""
+
+#: src/components/OTP/OTPAuthorization.vue:49
+#: src/views/preference/components/TOTP.vue:157
+msgid "Input the recovery code:"
+msgstr ""
+
+#: src/routes/index.ts:283 src/views/other/Install.vue:135
 msgid "Install"
 msgstr "Cài đặt"
 
@@ -955,7 +996,15 @@ msgstr ""
 msgid "Invalid"
 msgstr "Hợp lệ"
 
-#: src/views/preference/AuthSettings.vue:14
+#: src/views/other/Login.vue:81
+msgid "Invalid 2FA or recovery code"
+msgstr ""
+
+#: src/components/OTP/useOTPModal.ts:43
+msgid "Invalid passcode or recovery code"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:15
 msgid "IP"
 msgstr ""
 
@@ -1050,11 +1099,11 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Log"
 
-#: src/routes/index.ts:279 src/views/other/Login.vue:159
+#: src/routes/index.ts:289 src/views/other/Login.vue:192
 msgid "Login"
 msgstr "Đăng nhập"
 
-#: src/views/other/Login.vue:109 src/views/other/Login.vue:51
+#: src/views/other/Login.vue:125 src/views/other/Login.vue:60
 msgid "Login successful"
 msgstr "Đăng nhập thành công"
 
@@ -1098,7 +1147,7 @@ msgstr "Quản lý Website"
 msgid "Manage Streams"
 msgstr "Quản lý Website"
 
-#: src/routes/index.ts:230 src/views/user/User.vue:50
+#: src/routes/index.ts:235 src/views/user/User.vue:50
 msgid "Manage Users"
 msgstr "Người dùng"
 
@@ -1106,7 +1155,7 @@ msgstr "Người dùng"
 msgid "Managed Certificate"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:74
+#: src/views/preference/AuthSettings.vue:75
 msgid "Max Attempts"
 msgstr ""
 
@@ -1240,7 +1289,7 @@ msgstr "Restart Nginx thành công"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:71
 #: src/views/notification/Notification.vue:70
-#: src/views/preference/AuthSettings.vue:96
+#: src/views/preference/AuthSettings.vue:97
 #: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
 msgid "No"
@@ -1254,7 +1303,7 @@ msgstr ""
 msgid "Not After"
 msgstr "Không phải sau khi"
 
-#: src/routes/index.ts:285
+#: src/routes/index.ts:295
 msgid "Not Found"
 msgstr "Không tìm thấy"
 
@@ -1272,7 +1321,7 @@ msgstr "Ghi chú"
 msgid "Notification"
 msgstr "Thông báo"
 
-#: src/components/Notification/Notification.vue:82 src/routes/index.ts:221
+#: src/components/Notification/Notification.vue:82 src/routes/index.ts:226
 #, fuzzy
 msgid "Notifications"
 msgstr "Thông báo"
@@ -1355,7 +1404,7 @@ msgstr "Ghi đè tập tin đã tồn tại"
 msgid "Params"
 msgstr "Tham số"
 
-#: src/views/other/Login.vue:144 src/views/user/User.vue:18
+#: src/views/other/Login.vue:169 src/views/user/User.vue:18
 msgid "Password"
 msgstr "Mật khẩu"
 
@@ -1380,6 +1429,10 @@ msgstr "Nâng cấp core không thành công"
 #: src/language/constants.ts:27
 msgid "Performing core upgrade"
 msgstr "Nâng cấp core"
+
+#: src/components/OTP/OTPAuthorization.vue:37
+msgid "Please enter the 2FA code:"
+msgstr ""
 
 #: src/views/certificate/DNSCredential.vue:53
 msgid ""
@@ -1412,11 +1465,11 @@ msgstr ""
 msgid "Please input your E-mail!"
 msgstr "Vui lòng nhập E-mail của bạn!"
 
-#: src/views/other/Install.vue:45 src/views/other/Login.vue:39
+#: src/views/other/Install.vue:45 src/views/other/Login.vue:43
 msgid "Please input your password!"
 msgstr "Vui lòng nhập mật khẩu!"
 
-#: src/views/other/Install.vue:39 src/views/other/Login.vue:33
+#: src/views/other/Install.vue:39 src/views/other/Login.vue:37
 msgid "Please input your username!"
 msgstr "Vui lòng nhập username!"
 
@@ -1436,7 +1489,7 @@ msgstr ""
 msgid "Pre-release"
 msgstr ""
 
-#: src/routes/index.ts:239 src/views/preference/Preference.vue:105
+#: src/routes/index.ts:244 src/views/preference/Preference.vue:105
 msgid "Preference"
 msgstr "Cài đặt"
 
@@ -1479,6 +1532,19 @@ msgstr ""
 #, fuzzy
 msgid "Recovered Successfully"
 msgstr "Xoá thành công"
+
+#: src/components/OTP/OTPAuthorization.vue:56
+#: src/views/preference/components/TOTP.vue:167
+msgid "Recovery"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:101
+msgid "Recovery Code"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:110
+msgid "Recovery Code:"
+msgstr ""
 
 #: src/views/preference/BasicSettings.vue:68
 msgid "Recursive Nameservers"
@@ -1534,11 +1600,11 @@ msgstr "Đang tải lại"
 msgid "Reloading nginx"
 msgstr "Tải lại nginx"
 
-#: src/views/preference/AuthSettings.vue:101
+#: src/views/preference/AuthSettings.vue:102
 msgid "Remove"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:47
+#: src/views/preference/AuthSettings.vue:48
 #, fuzzy
 msgid "Remove successfully"
 msgstr "Xoá thành công"
@@ -1581,6 +1647,11 @@ msgstr "Yêu cầu có chứa tham số sai"
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:480
 msgid "Reset"
+msgstr "Đặt lại"
+
+#: src/views/preference/components/TOTP.vue:130
+#, fuzzy
+msgid "Reset 2FA"
 msgstr "Đặt lại"
 
 #: src/components/NginxControl/NginxControl.vue:93
@@ -1632,6 +1703,10 @@ msgstr "Lưu thành công"
 msgid "Saved successfully"
 msgstr "Lưu thành công"
 
+#: src/views/preference/components/TOTP.vue:91
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr ""
+
 #: src/views/certificate/DNSChallenge.vue:89
 msgid "SDK"
 msgstr ""
@@ -1655,7 +1730,9 @@ msgstr "Gửi"
 #: src/views/config/ConfigEdit.vue:40 src/views/domain/DomainList.vue:81
 #: src/views/environment/BatchUpgrader.vue:57
 #: src/views/environment/Environment.vue:15 src/views/other/Install.vue:69
-#: src/views/preference/AuthSettings.vue:49
+#: src/views/preference/AuthSettings.vue:50
+#: src/views/preference/components/TOTP.vue:42
+#: src/views/preference/components/TOTP.vue:55
 #: src/views/preference/Preference.vue:78 src/views/stream/StreamList.vue:113
 #: src/views/stream/StreamList.vue:81 src/views/system/Upgrade.vue:42
 msgid "Server error"
@@ -1729,7 +1806,7 @@ msgstr ""
 msgid "SSL Certificate Path"
 msgstr ""
 
-#: src/views/other/Login.vue:170
+#: src/views/other/Login.vue:203
 msgid "SSO Login"
 msgstr ""
 
@@ -1813,7 +1890,7 @@ msgstr "Gia hạn chứng chỉ SSL thành công"
 msgid "Sync to"
 msgstr ""
 
-#: src/routes/index.ts:248
+#: src/routes/index.ts:253
 msgid "System"
 msgstr "Thông tin"
 
@@ -1822,7 +1899,7 @@ msgstr "Thông tin"
 msgid "Target"
 msgstr "Mục tiêu"
 
-#: src/routes/index.ts:172 src/views/pty/Terminal.vue:91
+#: src/routes/index.ts:172 src/views/pty/Terminal.vue:114
 msgid "Terminal"
 msgstr "Terminal"
 
@@ -1863,6 +1940,11 @@ msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:181
 msgid "The path exists, but the file is not a private key"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:109
+msgid ""
+"The recovery code is only displayed once, please save it in a safe place."
 msgstr ""
 
 #: src/views/dashboard/Environments.vue:148
@@ -1923,7 +2005,7 @@ msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:59
+#: src/views/preference/AuthSettings.vue:60
 #: src/views/preference/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr ""
@@ -1931,6 +2013,12 @@ msgstr ""
 #: src/views/notification/Notification.vue:19
 msgid "Title"
 msgstr "Tiêu đề"
+
+#: src/views/preference/components/TOTP.vue:90
+msgid ""
+"To enable it, you need to install the Google or Microsoft Authenticator app "
+"on your mobile phone."
+msgstr ""
 
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:44
 msgid ""
@@ -1948,12 +2036,22 @@ msgstr ""
 msgid "Token is not valid"
 msgstr ""
 
-#: src/views/other/Login.vue:62
+#: src/views/other/Login.vue:74
 msgid "Too many login failed attempts, please try again later"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:89
+msgid ""
+"TOTP is a two-factor authentication method that uses a time-based one-time "
+"password algorithm."
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:209
 msgid "Trash"
+msgstr ""
+
+#: src/components/OTP/useOTPModal.ts:49
+msgid "Two-factor authentication required"
 msgstr ""
 
 #: src/views/certificate/Certificate.vue:37 src/views/config/config.ts:12
@@ -1976,7 +2074,7 @@ msgstr "Ngày cập nhật"
 msgid "Updated successfully"
 msgstr "Cập nhật thành công"
 
-#: src/routes/index.ts:263 src/views/environment/Environment.vue:50
+#: src/routes/index.ts:268 src/views/environment/Environment.vue:50
 #: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
 msgid "Upgrade"
 msgstr "Cập nhật"
@@ -2007,16 +2105,24 @@ msgstr "Thời gian hoạt động:"
 msgid "URL"
 msgstr ""
 
+#: src/components/OTP/OTPAuthorization.vue:69
+msgid "Use OTP"
+msgstr ""
+
+#: src/components/OTP/OTPAuthorization.vue:65
+msgid "Use recovery code"
+msgstr ""
+
 #: src/components/ChatGPT/ChatGPT.vue:229
 #, fuzzy
 msgid "User"
 msgstr "Người dùng"
 
-#: src/views/other/Login.vue:65
+#: src/views/other/Login.vue:77
 msgid "User is banned"
 msgstr ""
 
-#: src/views/other/Login.vue:134 src/views/user/User.vue:9
+#: src/views/other/Login.vue:159 src/views/user/User.vue:9
 msgid "Username"
 msgstr "Username"
 
@@ -2091,7 +2197,7 @@ msgstr "Ghi chứng chỉ vào disk"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
-#: src/views/preference/AuthSettings.vue:95
+#: src/views/preference/AuthSettings.vue:96
 #: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
 msgstr "Có"

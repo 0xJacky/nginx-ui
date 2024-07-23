@@ -16,14 +16,19 @@ import (
 var mutex = &sync.Mutex{}
 
 type LoginUser struct {
-	Name     string `json:"name" binding:"required,max=255"`
-	Password string `json:"password" binding:"required,max=255"`
+	Name         string `json:"name" binding:"required,max=255"`
+	Password     string `json:"password" binding:"required,max=255"`
+	OTP          string `json:"otp"`
+	RecoveryCode string `json:"recovery_code"`
 }
 
 const (
 	ErrPasswordIncorrect = 4031
 	ErrMaxAttempts       = 4291
 	ErrUserBanned        = 4033
+	Enabled2FA           = 199
+	Error2FACode         = 4034
+	LoginSuccess         = 200
 )
 
 type LoginResponse struct {
@@ -80,11 +85,32 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	// Check if the user enables 2FA
+	if u.EnabledOTP() {
+		if json.OTP == "" && json.RecoveryCode == "" {
+			c.JSON(http.StatusOK, LoginResponse{
+				Message: "The user has enabled 2FA",
+				Code:    Enabled2FA,
+			})
+			user.BanIP(clientIP)
+			return
+		}
+
+		if err = user.VerifyOTP(u, json.OTP, json.RecoveryCode); err != nil {
+			c.JSON(http.StatusForbidden, LoginResponse{
+				Message: "Invalid 2FA or recovery code",
+				Code:    Error2FACode,
+			})
+			user.BanIP(clientIP)
+			return
+		}
+	}
+
 	// login success, clear banned record
 	_, _ = b.Where(b.IP.Eq(clientIP)).Delete()
 
 	logger.Info("[User Login]", u.Name)
-	token, err := user.GenerateJWT(u.Name)
+	token, err := user.GenerateJWT(u)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, LoginResponse{
 			Message: err.Error(),
@@ -93,6 +119,7 @@ func Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, LoginResponse{
+		Code:    LoginSuccess,
 		Message: "ok",
 		Token:   token,
 	})
@@ -101,13 +128,7 @@ func Login(c *gin.Context) {
 func Logout(c *gin.Context) {
 	token := c.GetHeader("Authorization")
 	if token != "" {
-		err := user.DeleteToken(token)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": err.Error(),
-			})
-			return
-		}
+		user.DeleteToken(token)
 	}
 	c.JSON(http.StatusNoContent, nil)
 }
