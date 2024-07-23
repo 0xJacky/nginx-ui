@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
+	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
@@ -26,6 +27,7 @@ func Boot() {
 		InitNodeSecret,
 		InitCryptoSecret,
 		validation.Init,
+		cache.Init,
 	}
 
 	syncs := []func(){

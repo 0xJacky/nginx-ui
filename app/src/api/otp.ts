@@ -18,6 +18,12 @@ const otp = {
   reset(recovery_code: string) {
     return http.post('/otp_reset', { recovery_code })
   },
+  start_secure_session(passcode: string, recovery_code: string): Promise<{ session_id: string }> {
+    return http.post('/otp_secure_session', {
+      otp: passcode,
+      recovery_code,
+    })
+  },
 }
 
 export default otp

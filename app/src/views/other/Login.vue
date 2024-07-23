@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { LockOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { Form, message } from 'ant-design-vue'
-import OTPInput from '@/components/OTPInput/OTPInput.vue'
-
 import { useUserStore } from '@/pinia'
 import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
 import gettext, { $gettext } from '@/gettext'
+import OTPAuthorization from '@/components/OTP/OTPAuthorization.vue'
 
 const thisYear = new Date().getFullYear()
 
@@ -24,7 +23,6 @@ const loading = ref(false)
 const enabled2FA = ref(false)
 const refOTP = ref()
 const passcode = ref('')
-const useRecoveryCode = ref(false)
 const recoveryCode = ref('')
 
 const modelRef = reactive({
@@ -135,9 +133,13 @@ if (route.query?.code !== undefined && route.query?.state !== undefined) {
   loading.value = false
 }
 
-function clickUseRecoveryCode() {
-  passcode.value = ''
-  useRecoveryCode.value = true
+function handleOTPSubmit(code: string, recovery: string) {
+  passcode.value = code
+  recoveryCode.value = recovery
+
+  nextTick(() => {
+    onSubmit()
+  })
 }
 </script>
 
@@ -173,38 +175,10 @@ function clickUseRecoveryCode() {
               </AFormItem>
             </template>
             <div v-else>
-              <div v-if="!useRecoveryCode">
-                <p>{{ $gettext('Please enter the 2FA code:') }}</p>
-                <OTPInput
-                  ref="refOTP"
-                  v-model="passcode"
-                  class="justify-center mb-6"
-                  @on-complete="onSubmit"
-                />
-
-                <div class="flex justify-center">
-                  <a @click="clickUseRecoveryCode">{{ $gettext('Use recovery code') }}</a>
-                </div>
-              </div>
-
-              <div
-                v-else
-                class="mt-2"
-              >
-                <p>{{ $gettext('Input the recovery code:') }}</p>
-                <AInputGroup compact>
-                  <AInput
-                    v-model:value="recoveryCode"
-                    style="width: calc(100% - 92px)"
-                  />
-                  <AButton
-                    type="primary"
-                    @click="onSubmit"
-                  >
-                    {{ $gettext('Recovery') }}
-                  </AButton>
-                </AInputGroup>
-              </div>
+              <OTPAuthorization
+                ref="refOTP"
+                @on-submit="handleOTPSubmit"
+              />
             </div>
 
             <AFormItem v-if="!enabled2FA">

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
+	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
@@ -67,8 +68,8 @@ func GenerateTOTP(c *gin.Context) {
 }
 
 func EnrollTOTP(c *gin.Context) {
-	user := api.CurrentUser(c)
-	if len(user.OTPSecret) > 0 {
+	cUser := api.CurrentUser(c)
+	if cUser.EnabledOTP() {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "User already enrolled",
 		})
@@ -109,7 +110,7 @@ func EnrollTOTP(c *gin.Context) {
 	}
 
 	u := query.Auth
-	_, err = u.Where(u.ID.Eq(user.ID)).Update(u.OTPSecret, ciphertext)
+	_, err = u.Where(u.ID.Eq(cUser.ID)).Update(u.OTPSecret, ciphertext)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -135,8 +136,8 @@ func ResetOTP(c *gin.Context) {
 		api.ErrHandler(c, err)
 		return
 	}
-	user := api.CurrentUser(c)
-	k := sha1.Sum(user.OTPSecret)
+	cUser := api.CurrentUser(c)
+	k := sha1.Sum(cUser.OTPSecret)
 	if !bytes.Equal(k[:], recoverCode) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Invalid recovery code",
@@ -145,7 +146,7 @@ func ResetOTP(c *gin.Context) {
 	}
 
 	u := query.Auth
-	_, err = u.Where(u.ID.Eq(user.ID)).UpdateSimple(u.OTPSecret.Null())
+	_, err = u.Where(u.ID.Eq(cUser.ID)).UpdateSimple(u.OTPSecret.Null())
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -159,5 +160,42 @@ func ResetOTP(c *gin.Context) {
 func OTPStatus(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status": len(api.CurrentUser(c).OTPSecret) > 0,
+	})
+}
+
+func StartSecure2FASession(c *gin.Context) {
+	var json struct {
+		OTP          string `json:"otp"`
+		RecoveryCode string `json:"recovery_code"`
+	}
+	if !api.BindAndValid(c, &json) {
+		return
+	}
+	u := api.CurrentUser(c)
+	if !u.EnabledOTP() {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "User not configured with 2FA",
+		})
+		return
+	}
+
+	if json.OTP == "" && json.RecoveryCode == "" {
+		c.JSON(http.StatusBadRequest, LoginResponse{
+			Message: "The user has enabled 2FA",
+		})
+		return
+	}
+
+	if err := user.VerifyOTP(u, json.OTP, json.RecoveryCode); err != nil {
+		c.JSON(http.StatusBadRequest, LoginResponse{
+			Message: "Invalid 2FA or recovery code",
+		})
+		return
+	}
+
+	sessionId := user.SetSecureSessionID(u.ID)
+
+	c.JSON(http.StatusOK, gin.H{
+		"session_id": sessionId,
 	})
 }

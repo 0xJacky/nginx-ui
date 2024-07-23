@@ -14,3 +14,7 @@ type AuthToken struct {
 	Token     string `json:"token"`
 	ExpiredAt int64  `json:"expired_at" gorm:"default:0"`
 }
+
+func (u *Auth) EnabledOTP() bool {
+	return len(u.OTPSecret) != 0
+}

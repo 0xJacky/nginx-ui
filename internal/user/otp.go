@@ -4,10 +4,14 @@ import (
 	"bytes"
 	"crypto/sha1"
 	"encoding/hex"
+	"fmt"
+	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	"github.com/pquerna/otp/totp"
+	"time"
 )
 
 var (
@@ -36,4 +40,24 @@ func VerifyOTP(user *model.Auth, otp, recoveryCode string) (err error) {
 		}
 	}
 	return
+}
+
+func secureSessionIDCacheKey(sessionId string) string {
+	return fmt.Sprintf("otp_secure_session:_%s", sessionId)
+}
+
+func SetSecureSessionID(userId int) (sessionId string) {
+	sessionId = uuid.NewString()
+	cache.Set(secureSessionIDCacheKey(sessionId), userId, 5*time.Minute)
+
+	return
+}
+
+func VerifySecureSessionID(sessionId string, userId int) bool {
+	if v, ok := cache.Get(secureSessionIDCacheKey(sessionId)); ok {
+		if v.(int) == userId {
+			return true
+		}
+	}
+	return false
 }

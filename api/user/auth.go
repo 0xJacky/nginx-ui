@@ -86,7 +86,7 @@ func Login(c *gin.Context) {
 	}
 
 	// Check if the user enables 2FA
-	if len(u.OTPSecret) > 0 {
+	if u.EnabledOTP() {
 		if json.OTP == "" && json.RecoveryCode == "" {
 			c.JSON(http.StatusOK, LoginResponse{
 				Message: "The user has enabled 2FA",

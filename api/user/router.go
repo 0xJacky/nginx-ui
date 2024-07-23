@@ -22,5 +22,6 @@ func InitUserRouter(r *gin.RouterGroup) {
 	r.GET("/otp_status", OTPStatus)
 	r.GET("/otp_secret", GenerateTOTP)
 	r.POST("/otp_enroll", EnrollTOTP)
-    r.POST("/otp_reset", ResetOTP)
+	r.POST("/otp_reset", ResetOTP)
+	r.POST("/otp_secure_session", StartSecure2FASession)
 }
