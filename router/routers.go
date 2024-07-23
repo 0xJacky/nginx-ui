@@ -46,6 +46,7 @@ func InitRouter() *gin.Engine {
 		// Authorization required not websocket request
 		g := root.Group("/", authRequired(), proxy())
 		{
+			user.InitUserRouter(g)
 			analytic.InitRouter(g)
 			user.InitManageUserRouter(g)
 			nginx.InitRouter(g)

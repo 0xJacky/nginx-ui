@@ -6,15 +6,16 @@ const { login, logout } = useUserStore()
 export interface AuthResponse {
   message: string
   token: string
+  code: number
 }
 
 const auth = {
-  async login(name: string, password: string) {
+  async login(name: string, password: string, otp: string, recoveryCode: string): Promise<AuthResponse> {
     return http.post('/login', {
       name,
       password,
-    }).then((r: AuthResponse) => {
-      login(r.token)
+      otp,
+      recovery_code: recoveryCode,
     })
   },
   async casdoor_login(code?: string, state?: string) {

@@ -58,10 +58,13 @@ func authRequired() gin.HandlerFunc {
 			}
 		}
 
-		if user.CheckToken(token) < 1 {
+		u, ok := user.GetTokenUser(token)
+		if !ok {
 			abortWithAuthFailure()
 			return
 		}
+
+		c.Set("user", u)
 
 		if nodeID := c.GetHeader("X-Node-ID"); nodeID != "" {
 			c.Set("ProxyNodeID", nodeID)

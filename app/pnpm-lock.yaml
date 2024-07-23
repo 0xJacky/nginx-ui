@@ -89,6 +89,9 @@ importers:
       vue3-gettext:
         specifier: 3.0.0-beta.4
         version: 3.0.0-beta.4(@vue/compiler-sfc@3.4.33)(typescript@5.3.3)(vue@3.4.33(typescript@5.3.3))
+      vue3-otp-input:
+        specifier: ^0.5.21
+        version: 0.5.21(vue@3.4.33(typescript@5.3.3))
       vuedraggable:
         specifier: ^4.1.0
         version: 4.1.0(vue@3.4.33(typescript@5.3.3))
@@ -2968,6 +2971,11 @@ packages:
     peerDependencies:
       '@vue/compiler-sfc': '>=3.0.0'
       vue: '>=3.0.0'
+
+  vue3-otp-input@0.5.21:
+    resolution: {integrity: sha512-dRxmGJqXlU+U5dCijNCyY7ird49+pyfeQspSTqvIp2Xs+VByIluNlTOjgHrftzSdeVZggtx+Ojb8uKiRLaob4Q==}
+    peerDependencies:
+      vue: ^3.0.*
 
   vue@3.4.33:
     resolution: {integrity: sha512-VdMCWQOummbhctl4QFMcW6eNtXHsFyDlX60O/tsSQuCcuDOnJ1qPOhhVla65Niece7xq/P2zyZReIO5mP+LGTQ==}
@@ -6174,6 +6182,10 @@ snapshots:
       vue: 3.4.33(typescript@5.3.3)
     transitivePeerDependencies:
       - typescript
+
+  vue3-otp-input@0.5.21(vue@3.4.33(typescript@5.3.3)):
+    dependencies:
+      vue: 3.4.33(typescript@5.3.3)
 
   vue@3.4.33(typescript@5.3.3):
     dependencies:

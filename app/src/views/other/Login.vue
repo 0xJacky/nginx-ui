@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { LockOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { Form, message } from 'ant-design-vue'
+import OTPInput from '@/components/OTPInput/OTPInput.vue'
 
 import { useUserStore } from '@/pinia'
 import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
-import gettext from '@/gettext'
+import gettext, { $gettext } from '@/gettext'
 
 const thisYear = new Date().getFullYear()
 
@@ -20,6 +21,11 @@ install.get_lock().then(async (r: { lock: boolean }) => {
 })
 
 const loading = ref(false)
+const enabled2FA = ref(false)
+const refOTP = ref()
+const passcode = ref('')
+const useRecoveryCode = ref(false)
+const recoveryCode = ref('')
 
 const modelRef = reactive({
   username: '',
@@ -42,17 +48,25 @@ const rulesRef = reactive({
 })
 
 const { validate, validateInfos, clearValidate } = Form.useForm(modelRef, rulesRef)
+const { login } = useUserStore()
 
 const onSubmit = () => {
   validate().then(async () => {
     loading.value = true
 
-    await auth.login(modelRef.username, modelRef.password).then(async () => {
-      message.success($gettext('Login successful'), 1)
-
+    await auth.login(modelRef.username, modelRef.password, passcode.value, recoveryCode.value).then(async r => {
       const next = (route.query?.next || '').toString() || '/'
 
-      await router.push(next)
+      switch (r.code) {
+        case 200:
+          message.success($gettext('Login successful'), 1)
+          login(r.token)
+          await router.push(next)
+          break
+        case 199:
+          enabled2FA.value = true
+          break
+      }
     }).catch(e => {
       switch (e.code) {
         case 4031:
@@ -63,6 +77,10 @@ const onSubmit = () => {
           break
         case 4033:
           message.error($gettext('User is banned'))
+          break
+        case 4034:
+          refOTP.value?.clearInput()
+          message.error($gettext('Invalid 2FA or recovery code'))
           break
         default:
           message.error($gettext(e.message ?? 'Server error'))
@@ -117,6 +135,10 @@ if (route.query?.code !== undefined && route.query?.state !== undefined) {
   loading.value = false
 }
 
+function clickUseRecoveryCode() {
+  passcode.value = ''
+  useRecoveryCode.value = true
+}
 </script>
 
 <template>
@@ -128,27 +150,64 @@ if (route.query?.code !== undefined && route.query?.state !== undefined) {
             <h1>Nginx UI</h1>
           </div>
           <AForm id="components-form-demo-normal-login">
-            <AFormItem v-bind="validateInfos.username">
-              <AInput
-                v-model:value="modelRef.username"
-                :placeholder="$gettext('Username')"
+            <template v-if="!enabled2FA">
+              <AFormItem v-bind="validateInfos.username">
+                <AInput
+                  v-model:value="modelRef.username"
+                  :placeholder="$gettext('Username')"
+                >
+                  <template #prefix>
+                    <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
+                  </template>
+                </AInput>
+              </AFormItem>
+              <AFormItem v-bind="validateInfos.password">
+                <AInputPassword
+                  v-model:value="modelRef.password"
+                  :placeholder="$gettext('Password')"
+                >
+                  <template #prefix>
+                    <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
+                  </template>
+                </AInputPassword>
+              </AFormItem>
+            </template>
+            <div v-else>
+              <div v-if="!useRecoveryCode">
+                <p>{{ $gettext('Please enter the 2FA code:') }}</p>
+                <OTPInput
+                  ref="refOTP"
+                  v-model="passcode"
+                  class="justify-center mb-6"
+                  @on-complete="onSubmit"
+                />
+
+                <div class="flex justify-center">
+                  <a @click="clickUseRecoveryCode">{{ $gettext('Use recovery code') }}</a>
+                </div>
+              </div>
+
+              <div
+                v-else
+                class="mt-2"
               >
-                <template #prefix>
-                  <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
-                </template>
-              </AInput>
-            </AFormItem>
-            <AFormItem v-bind="validateInfos.password">
-              <AInputPassword
-                v-model:value="modelRef.password"
-                :placeholder="$gettext('Password')"
-              >
-                <template #prefix>
-                  <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
-                </template>
-              </AInputPassword>
-            </AFormItem>
-            <AFormItem>
+                <p>{{ $gettext('Input the recovery code:') }}</p>
+                <AInputGroup compact>
+                  <AInput
+                    v-model:value="recoveryCode"
+                    style="width: calc(100% - 92px)"
+                  />
+                  <AButton
+                    type="primary"
+                    @click="onSubmit"
+                  >
+                    {{ $gettext('Recovery') }}
+                  </AButton>
+                </AInputGroup>
+              </div>
+            </div>
+
+            <AFormItem v-if="!enabled2FA">
               <AButton
                 type="primary"
                 block

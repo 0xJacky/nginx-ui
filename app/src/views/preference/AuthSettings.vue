@@ -7,6 +7,7 @@ import type { BannedIP } from '@/api/settings'
 import setting from '@/api/settings'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Settings } from '@/views/preference/typedef'
+import TOTP from '@/views/preference/components/TOTP.vue'
 
 const data: Settings = inject('data') as Settings
 
@@ -105,6 +106,8 @@ function removeBannedIP(ip: string) {
           </template>
         </ATable>
       </div>
+
+      <TOTP />
     </div>
   </div>
 </template>

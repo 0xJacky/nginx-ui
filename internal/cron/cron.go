@@ -4,6 +4,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/logrotate"
+	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-co-op/gocron"
 	"time"
@@ -25,6 +26,7 @@ func InitCronJobs() {
 	}
 
 	startLogrotate()
+	cleanExpiredAuthToken()
 
 	s.StartAsync()
 }
@@ -43,10 +45,20 @@ func startLogrotate() {
 		return
 	}
 	var err error
-
 	logrotateJob, err = s.Every(settings.LogrotateSettings.Interval).Minute().SingletonMode().Do(logrotate.Exec)
-
 	if err != nil {
 		logger.Fatalf("LogRotate Job: %v, Err: %v\n", logrotateJob, err)
+	}
+}
+
+func cleanExpiredAuthToken() {
+	job, err := s.Every(5).Minute().SingletonMode().Do(func() {
+		logger.Info("clean expired auth tokens")
+		q := query.AuthToken
+		_, _ = q.Where(q.ExpiredAt.Lt(time.Now().Unix())).Delete()
+	})
+
+	if err != nil {
+		logger.Fatalf("CleanExpiredAuthToken Job: %v, Err: %v\n", job, err)
 	}
 }

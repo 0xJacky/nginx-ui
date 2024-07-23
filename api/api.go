@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"net/http"
@@ -10,6 +11,10 @@ import (
 	"regexp"
 	"strings"
 )
+
+func CurrentUser(c *gin.Context) *model.Auth {
+	return c.MustGet("user").(*model.Auth)
+}
 
 func ErrHandler(c *gin.Context, err error) {
 	logger.GetLogger().Errorln(err)

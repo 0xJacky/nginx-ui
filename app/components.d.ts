@@ -78,6 +78,8 @@ declare module 'vue' {
     NginxControlNginxControl: typeof import('./src/components/NginxControl/NginxControl.vue')['default']
     NodeSelectorNodeSelector: typeof import('./src/components/NodeSelector/NodeSelector.vue')['default']
     NotificationNotification: typeof import('./src/components/Notification/Notification.vue')['default']
+    OTPInput: typeof import('./src/components/OTPInput.vue')['default']
+    OTPInputOTPInput: typeof import('./src/components/OTPInput/OTPInput.vue')['default']
     PageHeaderPageHeader: typeof import('./src/components/PageHeader/PageHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

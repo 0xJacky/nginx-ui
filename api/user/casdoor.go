@@ -65,7 +65,7 @@ func CasdoorCallback(c *gin.Context) {
 		return
 	}
 
-	userToken, err := user.GenerateJWT(u.Name)
+	userToken, err := user.GenerateJWT(u)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
