@@ -156,10 +156,7 @@ function reset2FA() {
     >
       <p>{{ $gettext('Input the recovery code:') }}</p>
       <AInputGroup compact>
-        <AInput
-          v-model:value="inputRecoveryCode"
-          style="width: calc(100% - 92px)"
-        />
+        <AInput v-model:value="inputRecoveryCode" />
         <AButton
           type="primary"
           @click="reset2FA"
@@ -172,5 +169,7 @@ function reset2FA() {
 </template>
 
 <style scoped lang="less">
-
+:deep(.ant-input-group.ant-input-group-compact) {
+  display: flex;
+}
 </style>
