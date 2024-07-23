@@ -2,7 +2,11 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: src/routes/index.ts:256
+#: src/views/preference/components/TOTP.vue:88
+msgid "2FA Settings"
+msgstr ""
+
+#: src/routes/index.ts:261
 msgid "About"
 msgstr ""
 
@@ -24,7 +28,7 @@ msgstr ""
 #: src/views/domain/DomainList.vue:47
 #: src/views/environment/envColumns.tsx:131
 #: src/views/notification/Notification.vue:37
-#: src/views/preference/AuthSettings.vue:26
+#: src/views/preference/AuthSettings.vue:27
 #: src/views/stream/StreamList.vue:47
 #: src/views/user/User.vue:43
 msgid "Action"
@@ -91,7 +95,7 @@ msgstr ""
 msgid "Arch"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:94
+#: src/views/preference/AuthSettings.vue:95
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr ""
 
@@ -141,7 +145,7 @@ msgstr ""
 msgid "Assistant"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:17
+#: src/views/preference/AuthSettings.vue:18
 msgid "Attempts"
 msgstr ""
 
@@ -187,15 +191,15 @@ msgstr ""
 msgid "Back to list"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:68
+#: src/views/preference/AuthSettings.vue:69
 msgid "Ban Threshold Minutes"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:82
+#: src/views/preference/AuthSettings.vue:83
 msgid "Banned IPs"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:20
+#: src/views/preference/AuthSettings.vue:21
 msgid "Banned Until"
 msgstr ""
 
@@ -386,6 +390,14 @@ msgstr ""
 
 #: src/views/certificate/DNSChallenge.vue:97
 msgid "Credentials"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:96
+msgid "Current account is enabled 2FA."
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:93
+msgid "Current account is not enabled 2FA."
 msgstr ""
 
 #: src/views/system/Upgrade.vue:167
@@ -662,6 +674,14 @@ msgstr ""
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr ""
 
+#: src/views/preference/components/TOTP.vue:122
+msgid "Enable 2FA"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:52
+msgid "Enable 2FA successfully"
+msgstr ""
+
 #: src/views/domain/cert/components/ObtainCert.vue:70
 msgid "Enable auto-renewal failed for %{name}"
 msgstr ""
@@ -863,8 +883,12 @@ msgstr ""
 msgid "If left blank, the default CA Dir will be used."
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:60
+#: src/views/preference/AuthSettings.vue:61
 msgid "If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes, the ip will be banned for a period of time."
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:108
+msgid "If you lose your mobile phone, you can use the recovery code to reset your 2FA."
 msgstr ""
 
 #: src/views/certificate/Certificate.vue:136
@@ -876,7 +900,7 @@ msgstr ""
 msgid "Import Certificate"
 msgstr ""
 
-#: src/views/other/Login.vue:59
+#: src/views/other/Login.vue:73
 msgid "Incorrect username or password"
 msgstr ""
 
@@ -892,7 +916,16 @@ msgstr ""
 msgid "Initialing core upgrader"
 msgstr ""
 
-#: src/routes/index.ts:273
+#: src/views/preference/components/TOTP.vue:144
+msgid "Input the code from the app:"
+msgstr ""
+
+#: src/views/other/Login.vue:194
+#: src/views/preference/components/TOTP.vue:157
+msgid "Input the recovery code:"
+msgstr ""
+
+#: src/routes/index.ts:283
 #: src/views/other/Install.vue:135
 msgid "Install"
 msgstr ""
@@ -913,7 +946,11 @@ msgstr ""
 msgid "Invalid"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:14
+#: src/views/other/Login.vue:83
+msgid "Invalid 2FA or recovery code"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:15
 msgid "IP"
 msgstr ""
 
@@ -998,13 +1035,13 @@ msgstr ""
 msgid "Log"
 msgstr ""
 
-#: src/routes/index.ts:279
-#: src/views/other/Login.vue:159
+#: src/routes/index.ts:289
+#: src/views/other/Login.vue:218
 msgid "Login"
 msgstr ""
 
-#: src/views/other/Login.vue:109
-#: src/views/other/Login.vue:51
+#: src/views/other/Login.vue:127
+#: src/views/other/Login.vue:62
 msgid "Login successful"
 msgstr ""
 
@@ -1038,7 +1075,7 @@ msgstr ""
 msgid "Manage Streams"
 msgstr ""
 
-#: src/routes/index.ts:230
+#: src/routes/index.ts:235
 #: src/views/user/User.vue:50
 msgid "Manage Users"
 msgstr ""
@@ -1047,7 +1084,7 @@ msgstr ""
 msgid "Managed Certificate"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:74
+#: src/views/preference/AuthSettings.vue:75
 msgid "Max Attempts"
 msgstr ""
 
@@ -1178,7 +1215,7 @@ msgstr ""
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:71
 #: src/views/notification/Notification.vue:70
-#: src/views/preference/AuthSettings.vue:96
+#: src/views/preference/AuthSettings.vue:97
 #: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
 msgid "No"
@@ -1192,7 +1229,7 @@ msgstr ""
 msgid "Not After"
 msgstr ""
 
-#: src/routes/index.ts:285
+#: src/routes/index.ts:295
 msgid "Not Found"
 msgstr ""
 
@@ -1210,7 +1247,7 @@ msgid "Notification"
 msgstr ""
 
 #: src/components/Notification/Notification.vue:82
-#: src/routes/index.ts:221
+#: src/routes/index.ts:226
 msgid "Notifications"
 msgstr ""
 
@@ -1290,7 +1327,7 @@ msgstr ""
 msgid "Params"
 msgstr ""
 
-#: src/views/other/Login.vue:144
+#: src/views/other/Login.vue:167
 #: src/views/user/User.vue:18
 msgid "Password"
 msgstr ""
@@ -1317,6 +1354,10 @@ msgstr ""
 msgid "Performing core upgrade"
 msgstr ""
 
+#: src/views/other/Login.vue:177
+msgid "Please enter the 2FA code:"
+msgstr ""
+
 #: src/views/certificate/DNSCredential.vue:53
 msgid "Please fill in the API authentication credentials provided by your DNS provider."
 msgstr ""
@@ -1339,12 +1380,12 @@ msgid "Please input your E-mail!"
 msgstr ""
 
 #: src/views/other/Install.vue:45
-#: src/views/other/Login.vue:39
+#: src/views/other/Login.vue:45
 msgid "Please input your password!"
 msgstr ""
 
 #: src/views/other/Install.vue:39
-#: src/views/other/Login.vue:33
+#: src/views/other/Login.vue:39
 msgid "Please input your username!"
 msgstr ""
 
@@ -1364,7 +1405,7 @@ msgstr ""
 msgid "Pre-release"
 msgstr ""
 
-#: src/routes/index.ts:239
+#: src/routes/index.ts:244
 #: src/views/preference/Preference.vue:105
 msgid "Preference"
 msgstr ""
@@ -1405,6 +1446,19 @@ msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:210
 msgid "Recovered Successfully"
+msgstr ""
+
+#: src/views/other/Login.vue:204
+#: src/views/preference/components/TOTP.vue:167
+msgid "Recovery"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:101
+msgid "Recovery Code"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:110
+msgid "Recovery Code:"
 msgstr ""
 
 #: src/views/preference/BasicSettings.vue:68
@@ -1456,11 +1510,11 @@ msgstr ""
 msgid "Reloading nginx"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:101
+#: src/views/preference/AuthSettings.vue:102
 msgid "Remove"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:47
+#: src/views/preference/AuthSettings.vue:48
 msgid "Remove successfully"
 msgstr ""
 
@@ -1496,6 +1550,10 @@ msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:480
 msgid "Reset"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:130
+msgid "Reset 2FA"
 msgstr ""
 
 #: src/components/NginxControl/NginxControl.vue:93
@@ -1549,6 +1607,10 @@ msgstr ""
 msgid "Saved successfully"
 msgstr ""
 
+#: src/views/preference/components/TOTP.vue:91
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr ""
+
 #: src/views/certificate/DNSChallenge.vue:89
 msgid "SDK"
 msgstr ""
@@ -1574,7 +1636,9 @@ msgstr ""
 #: src/views/environment/BatchUpgrader.vue:57
 #: src/views/environment/Environment.vue:15
 #: src/views/other/Install.vue:69
-#: src/views/preference/AuthSettings.vue:49
+#: src/views/preference/AuthSettings.vue:50
+#: src/views/preference/components/TOTP.vue:42
+#: src/views/preference/components/TOTP.vue:55
 #: src/views/preference/Preference.vue:78
 #: src/views/stream/StreamList.vue:113
 #: src/views/stream/StreamList.vue:81
@@ -1645,7 +1709,7 @@ msgstr ""
 msgid "SSL Certificate Path"
 msgstr ""
 
-#: src/views/other/Login.vue:170
+#: src/views/other/Login.vue:229
 msgid "SSO Login"
 msgstr ""
 
@@ -1722,7 +1786,7 @@ msgstr ""
 msgid "Sync to"
 msgstr ""
 
-#: src/routes/index.ts:248
+#: src/routes/index.ts:253
 msgid "System"
 msgstr ""
 
@@ -1766,6 +1830,10 @@ msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:181
 msgid "The path exists, but the file is not a private key"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:109
+msgid "The recovery code is only displayed once, please save it in a safe place."
 msgstr ""
 
 #: src/views/dashboard/Environments.vue:148
@@ -1816,13 +1884,17 @@ msgstr ""
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:59
+#: src/views/preference/AuthSettings.vue:60
 #: src/views/preference/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr ""
 
 #: src/views/notification/Notification.vue:19
 msgid "Title"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:90
+msgid "To enable it, you need to install the Google or Microsoft Authenticator app on your mobile phone."
 msgstr ""
 
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:44
@@ -1833,8 +1905,12 @@ msgstr ""
 msgid "Token is not valid"
 msgstr ""
 
-#: src/views/other/Login.vue:62
+#: src/views/other/Login.vue:76
 msgid "Too many login failed attempts, please try again later"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:89
+msgid "TOTP is a two-factor authentication method that uses a time-based one-time password algorithm."
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:209
@@ -1864,7 +1940,7 @@ msgstr ""
 msgid "Updated successfully"
 msgstr ""
 
-#: src/routes/index.ts:263
+#: src/routes/index.ts:268
 #: src/views/environment/Environment.vue:50
 #: src/views/system/Upgrade.vue:145
 #: src/views/system/Upgrade.vue:228
@@ -1896,15 +1972,19 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
+#: src/views/other/Login.vue:186
+msgid "Use recovery code"
+msgstr ""
+
 #: src/components/ChatGPT/ChatGPT.vue:229
 msgid "User"
 msgstr ""
 
-#: src/views/other/Login.vue:65
+#: src/views/other/Login.vue:79
 msgid "User is banned"
 msgstr ""
 
-#: src/views/other/Login.vue:134
+#: src/views/other/Login.vue:157
 #: src/views/user/User.vue:9
 msgid "Username"
 msgstr ""
@@ -1969,7 +2049,7 @@ msgstr ""
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
-#: src/views/preference/AuthSettings.vue:95
+#: src/views/preference/AuthSettings.vue:96
 #: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
 msgstr ""
