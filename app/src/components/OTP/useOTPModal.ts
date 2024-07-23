@@ -1,5 +1,6 @@
 import { createVNode, render } from 'vue'
 import { Modal, message } from 'ant-design-vue'
+import { useCookies } from '@vueuse/integrations/useCookies'
 import OTPAuthorization from '@/components/OTP/OTPAuthorization.vue'
 import otp from '@/api/otp'
 
@@ -24,6 +25,14 @@ const useOTPModal = () => {
   }
 
   const open = ({ onOk, onCancel }: OTPModalProps) => {
+    const cookies = useCookies(['nginx-ui-2fa'])
+    const ssid = cookies.get('secure_session_id')
+    if (ssid) {
+      onOk?.(ssid)
+
+      return
+    }
+
     injectStyles()
     let container: HTMLDivElement | null = document.createElement('div')
     document.body.appendChild(container)
@@ -36,6 +45,7 @@ const useOTPModal = () => {
 
     const verify = (passcode: string, recovery: string) => {
       otp.start_secure_session(passcode, recovery).then(r => {
+        cookies.set('secure_session_id', r.session_id, { maxAge: 60 * 3 })
         onOk?.(r.session_id)
         close()
       }).catch(async () => {
