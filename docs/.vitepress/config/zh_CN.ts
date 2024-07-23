@@ -45,7 +45,8 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             {text: 'Casdoor', link: '/zh_CN/guide/config-casdoor'},
             {text: 'Logrotate', link: '/zh_CN/guide/config-logrotate'},
             {text: '集群', link: '/zh_CN/guide/config-cluster'},
-            {text: '认证', link: '/zh_CN/guide/config-auth'}
+            {text: '认证', link: '/zh_CN/guide/config-auth'},
+            {text: '加密', link: '/zh_CN/guide/config-crypto'}
           ]
         },
         {

@@ -51,6 +51,8 @@ features:
     -   icon: 📱
         title: 自适应网页设计
         details: 通过自适应网页设计在任何设备上享受无缝体验。
-
+    -   icon: 🔐
+        title: 双因素认证
+        details: 使用双因素认证保护敏感操作。
 ---
 

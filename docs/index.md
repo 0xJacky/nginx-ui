@@ -51,6 +51,9 @@ features:
     -   icon: 📱
         title: Responsive Web Design
         details: Enjoy a seamless experience on any device with responsive web design.
+    -   icon: 🔐
+        title: 2FA Authentication
+        details: Secure sensitive actions with two-factor authentication.
 
 ---
 
