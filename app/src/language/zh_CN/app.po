@@ -347,6 +347,10 @@ msgstr "配置 SSL"
 msgid "Connected"
 msgstr "已连接"
 
+#: src/views/pty/Terminal.vue:120
+msgid "Connection lost, please refresh the page."
+msgstr "连接中断，请刷新页面。"
+
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
 #: src/views/domain/ngx_conf/LocationEditor.vue:125
 #: src/views/domain/ngx_conf/LocationEditor.vue:97
@@ -886,7 +890,7 @@ msgstr "导入"
 msgid "Import Certificate"
 msgstr "导入证书"
 
-#: src/views/other/Login.vue:73
+#: src/views/other/Login.vue:71
 msgid "Incorrect username or password"
 msgstr "用户名或密码错误"
 
@@ -906,7 +910,8 @@ msgstr "初始化核心升级器"
 msgid "Input the code from the app:"
 msgstr "输入应用程序中的代码："
 
-#: src/views/other/Login.vue:194 src/views/preference/components/TOTP.vue:157
+#: src/components/OTP/OTPAuthorization.vue:49
+#: src/views/preference/components/TOTP.vue:157
 msgid "Input the recovery code:"
 msgstr "输入恢复代码："
 
@@ -930,9 +935,13 @@ msgstr "间隔"
 msgid "Invalid"
 msgstr "无效的"
 
-#: src/views/other/Login.vue:83
+#: src/views/other/Login.vue:81
 msgid "Invalid 2FA or recovery code"
 msgstr "无效的二步验证码或恢复密码"
+
+#: src/components/OTP/useOTPModal.ts:43
+msgid "Invalid passcode or recovery code"
+msgstr "二次验证码或恢复代码无效"
 
 #: src/views/preference/AuthSettings.vue:15
 msgid "IP"
@@ -1019,11 +1028,11 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日志"
 
-#: src/routes/index.ts:289 src/views/other/Login.vue:218
+#: src/routes/index.ts:289 src/views/other/Login.vue:192
 msgid "Login"
 msgstr "登录"
 
-#: src/views/other/Login.vue:127 src/views/other/Login.vue:62
+#: src/views/other/Login.vue:125 src/views/other/Login.vue:60
 msgid "Login successful"
 msgstr "登录成功"
 
@@ -1314,7 +1323,7 @@ msgstr "覆盖现有文件"
 msgid "Params"
 msgstr "参数"
 
-#: src/views/other/Login.vue:167 src/views/user/User.vue:18
+#: src/views/other/Login.vue:169 src/views/user/User.vue:18
 msgid "Password"
 msgstr "密码"
 
@@ -1340,7 +1349,7 @@ msgstr "执行核心升级错误"
 msgid "Performing core upgrade"
 msgstr "正在进行核心升级"
 
-#: src/views/other/Login.vue:177
+#: src/components/OTP/OTPAuthorization.vue:37
 msgid "Please enter the 2FA code:"
 msgstr "请输入二步验证码："
 
@@ -1373,11 +1382,11 @@ msgstr "请输入名称，这将被用作新配置的文件名！"
 msgid "Please input your E-mail!"
 msgstr "请输入您的邮箱！"
 
-#: src/views/other/Install.vue:45 src/views/other/Login.vue:45
+#: src/views/other/Install.vue:45 src/views/other/Login.vue:43
 msgid "Please input your password!"
 msgstr "请输入您的密码！"
 
-#: src/views/other/Install.vue:39 src/views/other/Login.vue:39
+#: src/views/other/Install.vue:39 src/views/other/Login.vue:37
 msgid "Please input your username!"
 msgstr "请输入您的用户名！"
 
@@ -1439,7 +1448,8 @@ msgstr "恢复"
 msgid "Recovered Successfully"
 msgstr "恢复成功"
 
-#: src/views/other/Login.vue:204 src/views/preference/components/TOTP.vue:167
+#: src/components/OTP/OTPAuthorization.vue:56
+#: src/views/preference/components/TOTP.vue:167
 msgid "Recovery"
 msgstr "恢复"
 
@@ -1693,7 +1703,7 @@ msgstr "SSL证书密钥路径"
 msgid "SSL Certificate Path"
 msgstr "SSL证书路径"
 
-#: src/views/other/Login.vue:229
+#: src/views/other/Login.vue:203
 msgid "SSO Login"
 msgstr "SSO 登录"
 
@@ -1780,7 +1790,7 @@ msgstr "系统"
 msgid "Target"
 msgstr "目标"
 
-#: src/routes/index.ts:172 src/views/pty/Terminal.vue:91
+#: src/routes/index.ts:172 src/views/pty/Terminal.vue:114
 msgid "Terminal"
 msgstr "终端"
 
@@ -1915,7 +1925,7 @@ msgstr ""
 msgid "Token is not valid"
 msgstr "Token 无效"
 
-#: src/views/other/Login.vue:76
+#: src/views/other/Login.vue:74
 msgid "Too many login failed attempts, please try again later"
 msgstr "登录失败次数过多，请稍后再试"
 
@@ -1928,6 +1938,10 @@ msgstr "TOTP 是一种使用基于时间的一次性密码算法的双因素身�
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:209
 msgid "Trash"
 msgstr "回收站"
+
+#: src/components/OTP/useOTPModal.ts:49
+msgid "Two-factor authentication required"
+msgstr "需要两步验证"
 
 #: src/views/certificate/Certificate.vue:37 src/views/config/config.ts:12
 #: src/views/notification/Notification.vue:13
@@ -1977,7 +1991,11 @@ msgstr "运行时间:"
 msgid "URL"
 msgstr "URL"
 
-#: src/views/other/Login.vue:186
+#: src/components/OTP/OTPAuthorization.vue:69
+msgid "Use OTP"
+msgstr "使用二步验证码"
+
+#: src/components/OTP/OTPAuthorization.vue:65
 msgid "Use recovery code"
 msgstr "使用恢复代码"
 
@@ -1985,11 +2003,11 @@ msgstr "使用恢复代码"
 msgid "User"
 msgstr "用户"
 
-#: src/views/other/Login.vue:79
+#: src/views/other/Login.vue:77
 msgid "User is banned"
 msgstr "用户被禁止"
 
-#: src/views/other/Login.vue:157 src/views/user/User.vue:9
+#: src/views/other/Login.vue:159 src/views/user/User.vue:9
 msgid "Username"
 msgstr "用户名"
 

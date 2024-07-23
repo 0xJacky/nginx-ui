@@ -365,6 +365,10 @@ msgstr "設定 SSL"
 msgid "Connected"
 msgstr "已連結"
 
+#: src/views/pty/Terminal.vue:120
+msgid "Connection lost, please refresh the page."
+msgstr ""
+
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
 #: src/views/domain/ngx_conf/LocationEditor.vue:125
 #: src/views/domain/ngx_conf/LocationEditor.vue:97
@@ -922,7 +926,7 @@ msgstr "匯出"
 msgid "Import Certificate"
 msgstr "憑證狀態"
 
-#: src/views/other/Login.vue:73
+#: src/views/other/Login.vue:71
 #, fuzzy
 msgid "Incorrect username or password"
 msgstr "使用者名稱或密碼不正確"
@@ -943,7 +947,8 @@ msgstr "正在初始化核心升級程式"
 msgid "Input the code from the app:"
 msgstr ""
 
-#: src/views/other/Login.vue:194 src/views/preference/components/TOTP.vue:157
+#: src/components/OTP/OTPAuthorization.vue:49
+#: src/views/preference/components/TOTP.vue:157
 msgid "Input the recovery code:"
 msgstr ""
 
@@ -968,8 +973,12 @@ msgstr ""
 msgid "Invalid"
 msgstr "無效的郵箱！"
 
-#: src/views/other/Login.vue:83
+#: src/views/other/Login.vue:81
 msgid "Invalid 2FA or recovery code"
+msgstr ""
+
+#: src/components/OTP/useOTPModal.ts:43
+msgid "Invalid passcode or recovery code"
 msgstr ""
 
 #: src/views/preference/AuthSettings.vue:15
@@ -1065,11 +1074,11 @@ msgstr "Locations"
 msgid "Log"
 msgstr "登入"
 
-#: src/routes/index.ts:289 src/views/other/Login.vue:218
+#: src/routes/index.ts:289 src/views/other/Login.vue:192
 msgid "Login"
 msgstr "登入"
 
-#: src/views/other/Login.vue:127 src/views/other/Login.vue:62
+#: src/views/other/Login.vue:125 src/views/other/Login.vue:60
 msgid "Login successful"
 msgstr "登入成功"
 
@@ -1362,7 +1371,7 @@ msgstr "覆蓋現有檔案"
 msgid "Params"
 msgstr "參數"
 
-#: src/views/other/Login.vue:167 src/views/user/User.vue:18
+#: src/views/other/Login.vue:169 src/views/user/User.vue:18
 msgid "Password"
 msgstr "密碼"
 
@@ -1388,7 +1397,7 @@ msgstr "執行核心升級錯誤"
 msgid "Performing core upgrade"
 msgstr "正在執行核心升級"
 
-#: src/views/other/Login.vue:177
+#: src/components/OTP/OTPAuthorization.vue:37
 msgid "Please enter the 2FA code:"
 msgstr ""
 
@@ -1422,11 +1431,11 @@ msgstr "請輸入名稱，這將作為新設定的檔名！"
 msgid "Please input your E-mail!"
 msgstr "請輸入您的電子郵件！"
 
-#: src/views/other/Install.vue:45 src/views/other/Login.vue:45
+#: src/views/other/Install.vue:45 src/views/other/Login.vue:43
 msgid "Please input your password!"
 msgstr "請輸入您的密碼！"
 
-#: src/views/other/Install.vue:39 src/views/other/Login.vue:39
+#: src/views/other/Install.vue:39 src/views/other/Login.vue:37
 msgid "Please input your username!"
 msgstr "請輸入您的使用者名稱！"
 
@@ -1489,7 +1498,8 @@ msgstr ""
 msgid "Recovered Successfully"
 msgstr "儲存成功"
 
-#: src/views/other/Login.vue:204 src/views/preference/components/TOTP.vue:167
+#: src/components/OTP/OTPAuthorization.vue:56
+#: src/views/preference/components/TOTP.vue:167
 msgid "Recovery"
 msgstr ""
 
@@ -1761,7 +1771,7 @@ msgstr "SSL 憑證金鑰路徑"
 msgid "SSL Certificate Path"
 msgstr "SSL 憑證路徑"
 
-#: src/views/other/Login.vue:229
+#: src/views/other/Login.vue:203
 #, fuzzy
 msgid "SSO Login"
 msgstr "登入"
@@ -1854,7 +1864,7 @@ msgstr "系統"
 msgid "Target"
 msgstr "目標"
 
-#: src/routes/index.ts:172 src/views/pty/Terminal.vue:91
+#: src/routes/index.ts:172 src/views/pty/Terminal.vue:114
 msgid "Terminal"
 msgstr "終端機"
 
@@ -1993,7 +2003,7 @@ msgstr ""
 msgid "Token is not valid"
 msgstr ""
 
-#: src/views/other/Login.vue:76
+#: src/views/other/Login.vue:74
 msgid "Too many login failed attempts, please try again later"
 msgstr ""
 
@@ -2005,6 +2015,10 @@ msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:209
 msgid "Trash"
+msgstr ""
+
+#: src/components/OTP/useOTPModal.ts:49
+msgid "Two-factor authentication required"
 msgstr ""
 
 #: src/views/certificate/Certificate.vue:37 src/views/config/config.ts:12
@@ -2056,7 +2070,11 @@ msgstr "運作時間:"
 msgid "URL"
 msgstr "URL"
 
-#: src/views/other/Login.vue:186
+#: src/components/OTP/OTPAuthorization.vue:69
+msgid "Use OTP"
+msgstr ""
+
+#: src/components/OTP/OTPAuthorization.vue:65
 msgid "Use recovery code"
 msgstr ""
 
@@ -2064,11 +2082,11 @@ msgstr ""
 msgid "User"
 msgstr "使用者名稱"
 
-#: src/views/other/Login.vue:79
+#: src/views/other/Login.vue:77
 msgid "User is banned"
 msgstr ""
 
-#: src/views/other/Login.vue:157 src/views/user/User.vue:9
+#: src/views/other/Login.vue:159 src/views/user/User.vue:9
 msgid "Username"
 msgstr "使用者名稱"
 

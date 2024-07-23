@@ -368,6 +368,10 @@ msgstr "Настроить SSL"
 msgid "Connected"
 msgstr "Подключено"
 
+#: src/views/pty/Terminal.vue:120
+msgid "Connection lost, please refresh the page."
+msgstr ""
+
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
 #: src/views/domain/ngx_conf/LocationEditor.vue:125
 #: src/views/domain/ngx_conf/LocationEditor.vue:97
@@ -942,7 +946,7 @@ msgstr "Экспорт"
 msgid "Import Certificate"
 msgstr "Статус сертификата"
 
-#: src/views/other/Login.vue:73
+#: src/views/other/Login.vue:71
 #, fuzzy
 msgid "Incorrect username or password"
 msgstr "Имя пользователя или пароль неверны"
@@ -963,7 +967,8 @@ msgstr "Инициализация программы обновления яд�
 msgid "Input the code from the app:"
 msgstr ""
 
-#: src/views/other/Login.vue:194 src/views/preference/components/TOTP.vue:157
+#: src/components/OTP/OTPAuthorization.vue:49
+#: src/views/preference/components/TOTP.vue:157
 msgid "Input the recovery code:"
 msgstr ""
 
@@ -989,8 +994,12 @@ msgstr ""
 msgid "Invalid"
 msgstr "Действительный"
 
-#: src/views/other/Login.vue:83
+#: src/views/other/Login.vue:81
 msgid "Invalid 2FA or recovery code"
+msgstr ""
+
+#: src/components/OTP/useOTPModal.ts:43
+msgid "Invalid passcode or recovery code"
 msgstr ""
 
 #: src/views/preference/AuthSettings.vue:15
@@ -1088,11 +1097,11 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Логин"
 
-#: src/routes/index.ts:289 src/views/other/Login.vue:218
+#: src/routes/index.ts:289 src/views/other/Login.vue:192
 msgid "Login"
 msgstr "Логин"
 
-#: src/views/other/Login.vue:127 src/views/other/Login.vue:62
+#: src/views/other/Login.vue:125 src/views/other/Login.vue:60
 msgid "Login successful"
 msgstr "Авторизация успешна"
 
@@ -1395,7 +1404,7 @@ msgstr ""
 msgid "Params"
 msgstr "Параметры"
 
-#: src/views/other/Login.vue:167 src/views/user/User.vue:18
+#: src/views/other/Login.vue:169 src/views/user/User.vue:18
 msgid "Password"
 msgstr "Пароль"
 
@@ -1421,7 +1430,7 @@ msgstr ""
 msgid "Performing core upgrade"
 msgstr ""
 
-#: src/views/other/Login.vue:177
+#: src/components/OTP/OTPAuthorization.vue:37
 msgid "Please enter the 2FA code:"
 msgstr ""
 
@@ -1454,11 +1463,11 @@ msgstr ""
 msgid "Please input your E-mail!"
 msgstr "Введите ваш E-mail!"
 
-#: src/views/other/Install.vue:45 src/views/other/Login.vue:45
+#: src/views/other/Install.vue:45 src/views/other/Login.vue:43
 msgid "Please input your password!"
 msgstr "Введите ваш пароль!"
 
-#: src/views/other/Install.vue:39 src/views/other/Login.vue:39
+#: src/views/other/Install.vue:39 src/views/other/Login.vue:37
 msgid "Please input your username!"
 msgstr "Введите ваше имя пользователя!"
 
@@ -1522,7 +1531,8 @@ msgstr ""
 msgid "Recovered Successfully"
 msgstr "Успешно сохранено"
 
-#: src/views/other/Login.vue:204 src/views/preference/components/TOTP.vue:167
+#: src/components/OTP/OTPAuthorization.vue:56
+#: src/views/preference/components/TOTP.vue:167
 msgid "Recovery"
 msgstr ""
 
@@ -1797,7 +1807,7 @@ msgstr "Путь к ключу сертификата SSL"
 msgid "SSL Certificate Path"
 msgstr "Путь к сертификату SSL"
 
-#: src/views/other/Login.vue:229
+#: src/views/other/Login.vue:203
 #, fuzzy
 msgid "SSO Login"
 msgstr "Логин"
@@ -1891,7 +1901,7 @@ msgstr "Система"
 msgid "Target"
 msgstr ""
 
-#: src/routes/index.ts:172 src/views/pty/Terminal.vue:91
+#: src/routes/index.ts:172 src/views/pty/Terminal.vue:114
 msgid "Terminal"
 msgstr "Терминал"
 
@@ -2030,7 +2040,7 @@ msgstr ""
 msgid "Token is not valid"
 msgstr ""
 
-#: src/views/other/Login.vue:76
+#: src/views/other/Login.vue:74
 msgid "Too many login failed attempts, please try again later"
 msgstr ""
 
@@ -2042,6 +2052,10 @@ msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:209
 msgid "Trash"
+msgstr ""
+
+#: src/components/OTP/useOTPModal.ts:49
+msgid "Two-factor authentication required"
 msgstr ""
 
 #: src/views/certificate/Certificate.vue:37 src/views/config/config.ts:12
@@ -2095,7 +2109,11 @@ msgstr "Аптайм:"
 msgid "URL"
 msgstr ""
 
-#: src/views/other/Login.vue:186
+#: src/components/OTP/OTPAuthorization.vue:69
+msgid "Use OTP"
+msgstr ""
+
+#: src/components/OTP/OTPAuthorization.vue:65
 msgid "Use recovery code"
 msgstr ""
 
@@ -2104,11 +2122,11 @@ msgstr ""
 msgid "User"
 msgstr "Пользователь"
 
-#: src/views/other/Login.vue:79
+#: src/views/other/Login.vue:77
 msgid "User is banned"
 msgstr ""
 
-#: src/views/other/Login.vue:157 src/views/user/User.vue:9
+#: src/views/other/Login.vue:159 src/views/user/User.vue:9
 msgid "Username"
 msgstr "Имя пользователя"
 

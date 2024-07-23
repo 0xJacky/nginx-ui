@@ -368,6 +368,10 @@ msgstr "Cấu hình SSL"
 msgid "Connected"
 msgstr "Đã kết nối"
 
+#: src/views/pty/Terminal.vue:120
+msgid "Connection lost, please refresh the page."
+msgstr ""
+
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
 #: src/views/domain/ngx_conf/LocationEditor.vue:125
 #: src/views/domain/ngx_conf/LocationEditor.vue:97
@@ -944,7 +948,7 @@ msgstr "Xuất"
 msgid "Import Certificate"
 msgstr "Chứng chỉ"
 
-#: src/views/other/Login.vue:73
+#: src/views/other/Login.vue:71
 #, fuzzy
 msgid "Incorrect username or password"
 msgstr "Tên người dùng hoặc mật khẩu không chính xác"
@@ -965,7 +969,8 @@ msgstr "Đang khởi tạo trình nâng cấp"
 msgid "Input the code from the app:"
 msgstr ""
 
-#: src/views/other/Login.vue:194 src/views/preference/components/TOTP.vue:157
+#: src/components/OTP/OTPAuthorization.vue:49
+#: src/views/preference/components/TOTP.vue:157
 msgid "Input the recovery code:"
 msgstr ""
 
@@ -991,8 +996,12 @@ msgstr ""
 msgid "Invalid"
 msgstr "Hợp lệ"
 
-#: src/views/other/Login.vue:83
+#: src/views/other/Login.vue:81
 msgid "Invalid 2FA or recovery code"
+msgstr ""
+
+#: src/components/OTP/useOTPModal.ts:43
+msgid "Invalid passcode or recovery code"
 msgstr ""
 
 #: src/views/preference/AuthSettings.vue:15
@@ -1090,11 +1099,11 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Log"
 
-#: src/routes/index.ts:289 src/views/other/Login.vue:218
+#: src/routes/index.ts:289 src/views/other/Login.vue:192
 msgid "Login"
 msgstr "Đăng nhập"
 
-#: src/views/other/Login.vue:127 src/views/other/Login.vue:62
+#: src/views/other/Login.vue:125 src/views/other/Login.vue:60
 msgid "Login successful"
 msgstr "Đăng nhập thành công"
 
@@ -1395,7 +1404,7 @@ msgstr "Ghi đè tập tin đã tồn tại"
 msgid "Params"
 msgstr "Tham số"
 
-#: src/views/other/Login.vue:167 src/views/user/User.vue:18
+#: src/views/other/Login.vue:169 src/views/user/User.vue:18
 msgid "Password"
 msgstr "Mật khẩu"
 
@@ -1421,7 +1430,7 @@ msgstr "Nâng cấp core không thành công"
 msgid "Performing core upgrade"
 msgstr "Nâng cấp core"
 
-#: src/views/other/Login.vue:177
+#: src/components/OTP/OTPAuthorization.vue:37
 msgid "Please enter the 2FA code:"
 msgstr ""
 
@@ -1456,11 +1465,11 @@ msgstr ""
 msgid "Please input your E-mail!"
 msgstr "Vui lòng nhập E-mail của bạn!"
 
-#: src/views/other/Install.vue:45 src/views/other/Login.vue:45
+#: src/views/other/Install.vue:45 src/views/other/Login.vue:43
 msgid "Please input your password!"
 msgstr "Vui lòng nhập mật khẩu!"
 
-#: src/views/other/Install.vue:39 src/views/other/Login.vue:39
+#: src/views/other/Install.vue:39 src/views/other/Login.vue:37
 msgid "Please input your username!"
 msgstr "Vui lòng nhập username!"
 
@@ -1524,7 +1533,8 @@ msgstr ""
 msgid "Recovered Successfully"
 msgstr "Xoá thành công"
 
-#: src/views/other/Login.vue:204 src/views/preference/components/TOTP.vue:167
+#: src/components/OTP/OTPAuthorization.vue:56
+#: src/views/preference/components/TOTP.vue:167
 msgid "Recovery"
 msgstr ""
 
@@ -1796,7 +1806,7 @@ msgstr ""
 msgid "SSL Certificate Path"
 msgstr ""
 
-#: src/views/other/Login.vue:229
+#: src/views/other/Login.vue:203
 msgid "SSO Login"
 msgstr ""
 
@@ -1889,7 +1899,7 @@ msgstr "Thông tin"
 msgid "Target"
 msgstr "Mục tiêu"
 
-#: src/routes/index.ts:172 src/views/pty/Terminal.vue:91
+#: src/routes/index.ts:172 src/views/pty/Terminal.vue:114
 msgid "Terminal"
 msgstr "Terminal"
 
@@ -2026,7 +2036,7 @@ msgstr ""
 msgid "Token is not valid"
 msgstr ""
 
-#: src/views/other/Login.vue:76
+#: src/views/other/Login.vue:74
 msgid "Too many login failed attempts, please try again later"
 msgstr ""
 
@@ -2038,6 +2048,10 @@ msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:209
 msgid "Trash"
+msgstr ""
+
+#: src/components/OTP/useOTPModal.ts:49
+msgid "Two-factor authentication required"
 msgstr ""
 
 #: src/views/certificate/Certificate.vue:37 src/views/config/config.ts:12
@@ -2091,7 +2105,11 @@ msgstr "Thời gian hoạt động:"
 msgid "URL"
 msgstr ""
 
-#: src/views/other/Login.vue:186
+#: src/components/OTP/OTPAuthorization.vue:69
+msgid "Use OTP"
+msgstr ""
+
+#: src/components/OTP/OTPAuthorization.vue:65
 msgid "Use recovery code"
 msgstr ""
 
@@ -2100,11 +2118,11 @@ msgstr ""
 msgid "User"
 msgstr "Người dùng"
 
-#: src/views/other/Login.vue:79
+#: src/views/other/Login.vue:77
 msgid "User is banned"
 msgstr ""
 
-#: src/views/other/Login.vue:157 src/views/user/User.vue:9
+#: src/views/other/Login.vue:159 src/views/user/User.vue:9
 msgid "Username"
 msgstr "Username"
 

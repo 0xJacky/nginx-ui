@@ -357,6 +357,10 @@ msgstr "SSL 구성하기"
 msgid "Connected"
 msgstr "연결됨"
 
+#: src/views/pty/Terminal.vue:120
+msgid "Connection lost, please refresh the page."
+msgstr ""
+
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
 #: src/views/domain/ngx_conf/LocationEditor.vue:125
 #: src/views/domain/ngx_conf/LocationEditor.vue:97
@@ -909,7 +913,7 @@ msgstr "가져오기"
 msgid "Import Certificate"
 msgstr "인증서 상태"
 
-#: src/views/other/Login.vue:73
+#: src/views/other/Login.vue:71
 #, fuzzy
 msgid "Incorrect username or password"
 msgstr "사용자 이름 또는 비밀번호가 올바르지 않습니다"
@@ -930,7 +934,8 @@ msgstr "코어 업그레이더 초기화"
 msgid "Input the code from the app:"
 msgstr ""
 
-#: src/views/other/Login.vue:194 src/views/preference/components/TOTP.vue:157
+#: src/components/OTP/OTPAuthorization.vue:49
+#: src/views/preference/components/TOTP.vue:157
 msgid "Input the recovery code:"
 msgstr ""
 
@@ -956,8 +961,12 @@ msgstr "간격"
 msgid "Invalid"
 msgstr "유효함"
 
-#: src/views/other/Login.vue:83
+#: src/views/other/Login.vue:81
 msgid "Invalid 2FA or recovery code"
+msgstr ""
+
+#: src/components/OTP/useOTPModal.ts:43
+msgid "Invalid passcode or recovery code"
 msgstr ""
 
 #: src/views/preference/AuthSettings.vue:15
@@ -1054,11 +1063,11 @@ msgstr "위치들"
 msgid "Log"
 msgstr "로그인"
 
-#: src/routes/index.ts:289 src/views/other/Login.vue:218
+#: src/routes/index.ts:289 src/views/other/Login.vue:192
 msgid "Login"
 msgstr "로그인"
 
-#: src/views/other/Login.vue:127 src/views/other/Login.vue:62
+#: src/views/other/Login.vue:125 src/views/other/Login.vue:60
 msgid "Login successful"
 msgstr "로그인 성공"
 
@@ -1365,7 +1374,7 @@ msgstr "기존 파일 덮어쓰기"
 msgid "Params"
 msgstr "파라미터"
 
-#: src/views/other/Login.vue:167 src/views/user/User.vue:18
+#: src/views/other/Login.vue:169 src/views/user/User.vue:18
 msgid "Password"
 msgstr "비밀번호"
 
@@ -1391,7 +1400,7 @@ msgstr "핵심 업그레이드 오류 수행"
 msgid "Performing core upgrade"
 msgstr "핵심 업그레이드 수행 중"
 
-#: src/views/other/Login.vue:177
+#: src/components/OTP/OTPAuthorization.vue:37
 msgid "Please enter the 2FA code:"
 msgstr ""
 
@@ -1424,11 +1433,11 @@ msgstr "이름을 입력해주세요, 이것은 새 구성의 파일 이름으�
 msgid "Please input your E-mail!"
 msgstr "이메일을 입력해주세요!"
 
-#: src/views/other/Install.vue:45 src/views/other/Login.vue:45
+#: src/views/other/Install.vue:45 src/views/other/Login.vue:43
 msgid "Please input your password!"
 msgstr "비밀번호를 입력해주세요!"
 
-#: src/views/other/Install.vue:39 src/views/other/Login.vue:39
+#: src/views/other/Install.vue:39 src/views/other/Login.vue:37
 msgid "Please input your username!"
 msgstr "사용자 이름을 입력해주세요!"
 
@@ -1492,7 +1501,8 @@ msgstr ""
 msgid "Recovered Successfully"
 msgstr "성공적으로 제거됨"
 
-#: src/views/other/Login.vue:204 src/views/preference/components/TOTP.vue:167
+#: src/components/OTP/OTPAuthorization.vue:56
+#: src/views/preference/components/TOTP.vue:167
 msgid "Recovery"
 msgstr ""
 
@@ -1766,7 +1776,7 @@ msgstr "SSL 인증서 키 경로"
 msgid "SSL Certificate Path"
 msgstr "SSL 인증서 경로"
 
-#: src/views/other/Login.vue:229
+#: src/views/other/Login.vue:203
 #, fuzzy
 msgid "SSO Login"
 msgstr "SSO 로그인"
@@ -1860,7 +1870,7 @@ msgstr "시스템"
 msgid "Target"
 msgstr "대상"
 
-#: src/routes/index.ts:172 src/views/pty/Terminal.vue:91
+#: src/routes/index.ts:172 src/views/pty/Terminal.vue:114
 msgid "Terminal"
 msgstr "터미널"
 
@@ -2001,7 +2011,7 @@ msgstr ""
 msgid "Token is not valid"
 msgstr "토큰이 유효하지 않습니다"
 
-#: src/views/other/Login.vue:76
+#: src/views/other/Login.vue:74
 msgid "Too many login failed attempts, please try again later"
 msgstr ""
 
@@ -2013,6 +2023,10 @@ msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:209
 msgid "Trash"
+msgstr ""
+
+#: src/components/OTP/useOTPModal.ts:49
+msgid "Two-factor authentication required"
 msgstr ""
 
 #: src/views/certificate/Certificate.vue:37 src/views/config/config.ts:12
@@ -2066,7 +2080,11 @@ msgstr "가동 시간:"
 msgid "URL"
 msgstr "URL"
 
-#: src/views/other/Login.vue:186
+#: src/components/OTP/OTPAuthorization.vue:69
+msgid "Use OTP"
+msgstr ""
+
+#: src/components/OTP/OTPAuthorization.vue:65
 msgid "Use recovery code"
 msgstr ""
 
@@ -2075,11 +2093,11 @@ msgstr ""
 msgid "User"
 msgstr "사용자 이름"
 
-#: src/views/other/Login.vue:79
+#: src/views/other/Login.vue:77
 msgid "User is banned"
 msgstr ""
 
-#: src/views/other/Login.vue:157 src/views/user/User.vue:9
+#: src/views/other/Login.vue:159 src/views/user/User.vue:9
 msgid "Username"
 msgstr "사용자 이름"
 
