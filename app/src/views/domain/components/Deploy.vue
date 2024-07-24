@@ -72,36 +72,38 @@ function deploy() {
 </script>
 
 <template>
-  <ContextHolder />
-  <NodeSelector
-    v-model:target="target"
-    hidden-local
-    :map="node_map"
-  />
-  <div class="node-deploy-control">
-    <ACheckbox v-model:checked="enabled">
-      {{ $gettext('Enable') }}
-    </ACheckbox>
-    <div class="overwrite">
-      <ACheckbox v-model:checked="overwrite">
-        {{ $gettext('Overwrite') }}
+  <div>
+    <ContextHolder />
+    <NodeSelector
+      v-model:target="target"
+      hidden-local
+      :map="node_map"
+    />
+    <div class="node-deploy-control">
+      <ACheckbox v-model:checked="enabled">
+        {{ $gettext('Enable') }}
       </ACheckbox>
-      <ATooltip placement="bottom">
-        <template #title>
-          {{ $gettext('Overwrite exist file') }}
-        </template>
-        <InfoCircleOutlined />
-      </ATooltip>
-    </div>
+      <div class="overwrite">
+        <ACheckbox v-model:checked="overwrite">
+          {{ $gettext('Overwrite') }}
+        </ACheckbox>
+        <ATooltip placement="bottom">
+          <template #title>
+            {{ $gettext('Overwrite exist file') }}
+          </template>
+          <InfoCircleOutlined />
+        </ATooltip>
+      </div>
 
-    <AButton
-      :disabled="target.length === 0"
-      type="primary"
-      ghost
-      @click="deploy"
-    >
-      {{ $gettext('Deploy') }}
-    </AButton>
+      <AButton
+        :disabled="target.length === 0"
+        type="primary"
+        ghost
+        @click="deploy"
+      >
+        {{ $gettext('Deploy') }}
+      </AButton>
+    </div>
   </div>
 </template>
 

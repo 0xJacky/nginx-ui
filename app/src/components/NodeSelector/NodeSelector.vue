@@ -54,7 +54,7 @@ const noData = computed(() => {
 <template>
   <ACheckboxGroup
     v-model:value="value"
-    style="width: 100%"
+    class="w-full"
     :class="{
       'justify-center': noData,
     }"
@@ -63,10 +63,7 @@ const noData = computed(() => {
       v-if="!noData"
       :gutter="[16, 16]"
     >
-      <ACol
-        v-if="!hiddenLocal"
-        :span="8"
-      >
+      <ACol v-if="!hiddenLocal">
         <ACheckbox :value="0">
           {{ $gettext('Local') }}
         </ACheckbox>
@@ -77,7 +74,6 @@ const noData = computed(() => {
       <ACol
         v-for="(node, index) in data"
         :key="index"
-        :span="8"
       >
         <ACheckbox :value="node.id">
           {{ node.name }}
