@@ -44,7 +44,7 @@ msgstr "Action"
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/domain/ngx_conf/NgxServer.vue:167
 #: src/views/domain/ngx_conf/NgxUpstream.vue:152
-#: src/views/preference/BasicSettings.vue:73
+#: src/views/preference/BasicSettings.vue:74
 #: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr "Ajouter"
@@ -103,7 +103,7 @@ msgstr "Jeton d'API"
 msgid "Arch"
 msgstr "Arch"
 
-#: src/views/preference/AuthSettings.vue:95
+#: src/views/preference/AuthSettings.vue:97
 #, fuzzy
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Etes-vous sûr que vous voulez supprimer ?"
@@ -141,7 +141,7 @@ msgstr "Voulez-vous vraiment supprimer cette directive ?"
 msgid "Are you sure you want to remove this directive?"
 msgstr "Voulez-vous vraiment supprimer cette directive ?"
 
-#: src/views/preference/BasicSettings.vue:99
+#: src/views/preference/BasicSettings.vue:100
 #, fuzzy
 msgid "Are you sure you want to remove this item?"
 msgstr "Voulez-vous vraiment supprimer cette directive ?"
@@ -204,11 +204,11 @@ msgstr "Retour au menu principal"
 msgid "Back to list"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:69
+#: src/views/preference/AuthSettings.vue:71
 msgid "Ban Threshold Minutes"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:83
+#: src/views/preference/AuthSettings.vue:85
 msgid "Banned IPs"
 msgstr ""
 
@@ -250,7 +250,7 @@ msgstr "Build avec"
 msgid "CA Dir"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:47
+#: src/views/preference/BasicSettings.vue:48
 msgid "CADir"
 msgstr ""
 
@@ -277,7 +277,7 @@ msgstr "Le certificat a expiré"
 msgid "Certificate is valid"
 msgstr "Le certificat est valide"
 
-#: src/views/preference/BasicSettings.vue:55
+#: src/views/preference/BasicSettings.vue:56
 #, fuzzy
 msgid "Certificate Renewal Interval"
 msgstr "Le certificat est valide"
@@ -376,6 +376,14 @@ msgstr ""
 msgid "Content"
 msgstr "Contenu"
 
+#: src/components/SensitiveString/SensitiveString.vue:38
+msgid "Copied"
+msgstr ""
+
+#: src/components/SensitiveString/SensitiveString.vue:38
+msgid "Copy"
+msgstr ""
+
 #: src/views/system/Upgrade.vue:148
 msgid "Core Upgrade"
 msgstr "Mise à jour du core"
@@ -430,7 +438,7 @@ msgstr "Version actuelle"
 msgid "Custom"
 msgstr "Custom"
 
-#: src/views/preference/BasicSettings.vue:121
+#: src/views/preference/BasicSettings.vue:122
 msgid ""
 "Customize the name of local server to be displayed in the environment "
 "indicator."
@@ -444,7 +452,7 @@ msgstr "Dashboard"
 msgid "Database (Optional, default: database)"
 msgstr "Base de données (Facultatif, par défaut : database)"
 
-#: src/views/preference/BasicSettings.vue:60
+#: src/views/preference/BasicSettings.vue:61
 msgid "Days"
 msgstr ""
 
@@ -854,7 +862,7 @@ msgstr "Filtrer"
 msgid "Finished"
 msgstr "Finie"
 
-#: src/views/preference/BasicSettings.vue:43
+#: src/views/preference/BasicSettings.vue:44
 #, fuzzy
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr "Utilisateur chinois : https://mirror.ghproxy.com/"
@@ -892,23 +900,27 @@ msgstr "Erreur d'obtention des informations sur la version"
 msgid "Getting the certificate, please wait..."
 msgstr "Obtention du certificat, veuillez patienter..."
 
-#: src/views/preference/BasicSettings.vue:35
+#: src/views/preference/BasicSettings.vue:36
 msgid "Github Proxy"
 msgstr "Proxy Github"
+
+#: src/components/SensitiveString/SensitiveString.vue:41
+msgid "Hide"
+msgstr ""
 
 #: src/routes/index.ts:31
 msgid "Home"
 msgstr "Menu principal"
 
-#: src/views/preference/BasicSettings.vue:31
+#: src/views/preference/BasicSettings.vue:32
 msgid "HTTP Challenge Port"
 msgstr "Port de challenge HTTP"
 
-#: src/views/preference/BasicSettings.vue:13
+#: src/views/preference/BasicSettings.vue:14
 msgid "HTTP Host"
 msgstr "Host HTTP"
 
-#: src/views/preference/BasicSettings.vue:16
+#: src/views/preference/BasicSettings.vue:17
 msgid "HTTP Port"
 msgstr "Port HTTP"
 
@@ -920,7 +932,7 @@ msgstr "HTTP01"
 msgid "If left blank, the default CA Dir will be used."
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:61
+#: src/views/preference/AuthSettings.vue:63
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -992,7 +1004,7 @@ msgstr ""
 msgid "Invalid 2FA or recovery code"
 msgstr ""
 
-#: src/components/OTP/useOTPModal.ts:43
+#: src/components/OTP/useOTPModal.ts:60
 msgid "Invalid passcode or recovery code"
 msgstr ""
 
@@ -1014,7 +1026,7 @@ msgstr "État du certificat"
 msgid "Issued certificate successfully"
 msgstr "Certificat délivré avec succès"
 
-#: src/views/preference/BasicSettings.vue:22
+#: src/views/preference/BasicSettings.vue:23
 msgid "Jwt Secret"
 msgstr "Secret Jwt"
 
@@ -1149,7 +1161,7 @@ msgstr "Gérer les utilisateurs"
 msgid "Managed Certificate"
 msgstr "Changer de certificat"
 
-#: src/views/preference/AuthSettings.vue:75
+#: src/views/preference/AuthSettings.vue:77
 msgid "Max Attempts"
 msgstr ""
 
@@ -1279,13 +1291,13 @@ msgstr "Nginx a redémarré avec succès"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:71
 #: src/views/notification/Notification.vue:70
-#: src/views/preference/AuthSettings.vue:97
-#: src/views/preference/BasicSettings.vue:101
+#: src/views/preference/AuthSettings.vue:99
+#: src/views/preference/BasicSettings.vue:102
 #: src/views/stream/StreamList.vue:165
 msgid "No"
 msgstr "Non"
 
-#: src/views/preference/BasicSettings.vue:25
+#: src/views/preference/BasicSettings.vue:26
 #, fuzzy
 msgid "Node Secret"
 msgstr "Secret Jwt"
@@ -1528,7 +1540,7 @@ msgid "Recovered Successfully"
 msgstr "Enregistré avec succès"
 
 #: src/components/OTP/OTPAuthorization.vue:56
-#: src/views/preference/components/TOTP.vue:167
+#: src/views/preference/components/TOTP.vue:164
 msgid "Recovery"
 msgstr ""
 
@@ -1540,7 +1552,7 @@ msgstr ""
 msgid "Recovery Code:"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:68
+#: src/views/preference/BasicSettings.vue:69
 msgid "Recursive Nameservers"
 msgstr ""
 
@@ -1593,7 +1605,7 @@ msgstr "Rechargement"
 msgid "Reloading nginx"
 msgstr "Rechargement de nginx"
 
-#: src/views/preference/AuthSettings.vue:102
+#: src/views/preference/AuthSettings.vue:104
 msgid "Remove"
 msgstr ""
 
@@ -1655,7 +1667,7 @@ msgstr "Redémarrer"
 msgid "Restarting"
 msgstr "Redémarrage"
 
-#: src/views/preference/BasicSettings.vue:19
+#: src/views/preference/BasicSettings.vue:20
 msgid "Run Mode"
 msgstr "Mode d'exécution"
 
@@ -1733,7 +1745,7 @@ msgstr "Erreur du serveur"
 msgid "Server Info"
 msgstr "Informations sur le serveur"
 
-#: src/views/preference/BasicSettings.vue:117
+#: src/views/preference/BasicSettings.vue:118
 #, fuzzy
 msgid "Server Name"
 msgstr "Informations sur le serveur"
@@ -1747,7 +1759,7 @@ msgstr "server_name introuvable dans les directives"
 msgid "server_name parameter is required"
 msgstr "Le paramètre server_name est obligatoire"
 
-#: src/views/preference/BasicSettings.vue:64
+#: src/views/preference/BasicSettings.vue:65
 msgid ""
 "Set the recursive nameservers to override the systems nameservers for the "
 "step of DNS challenge."
@@ -1766,6 +1778,10 @@ msgstr "Définition des variables d'environnement"
 #, fuzzy
 msgid "Setting HTTP01 challenge provider"
 msgstr "Utilisation du fournisseur de challenge HTTP01"
+
+#: src/components/SensitiveString/SensitiveString.vue:41
+msgid "Show"
+msgstr ""
 
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:51
 msgid "Single Directive"
@@ -1898,7 +1914,7 @@ msgstr ""
 msgid "Terminal"
 msgstr "Terminal"
 
-#: src/views/preference/BasicSettings.vue:28
+#: src/views/preference/BasicSettings.vue:29
 msgid "Terminal Start Command"
 msgstr "Commande de démarrage du terminal"
 
@@ -1951,7 +1967,7 @@ msgid ""
 "match the local version."
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:120
+#: src/views/preference/BasicSettings.vue:121
 msgid ""
 "The server name should only contain letters, unicode, numbers, hyphens, "
 "dashes, and dots."
@@ -1967,8 +1983,8 @@ msgstr ""
 "dont vous avez besoin pour obtenir le certificat, prendre en charge "
 "plusieurs domaines."
 
-#: src/views/preference/BasicSettings.vue:38
-#: src/views/preference/BasicSettings.vue:50
+#: src/views/preference/BasicSettings.vue:39
+#: src/views/preference/BasicSettings.vue:51
 msgid "The url is invalid"
 msgstr ""
 
@@ -2007,7 +2023,7 @@ msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:60
+#: src/views/preference/AuthSettings.vue:62
 #: src/views/preference/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr ""
@@ -2052,7 +2068,7 @@ msgstr ""
 msgid "Trash"
 msgstr ""
 
-#: src/components/OTP/useOTPModal.ts:49
+#: src/components/OTP/useOTPModal.ts:66
 msgid "Two-factor authentication required"
 msgstr ""
 
@@ -2194,8 +2210,8 @@ msgstr "Écriture du certificat sur le disque"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
-#: src/views/preference/AuthSettings.vue:96
-#: src/views/preference/BasicSettings.vue:100
+#: src/views/preference/AuthSettings.vue:98
+#: src/views/preference/BasicSettings.vue:101
 msgid "Yes"
 msgstr "Oui"
 

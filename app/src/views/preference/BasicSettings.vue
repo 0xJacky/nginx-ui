@@ -3,6 +3,7 @@ import { inject } from 'vue'
 import Draggable from 'vuedraggable'
 import { DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
 import type { Settings } from '@/views/preference/typedef'
+import SensitiveString from '@/components/SensitiveString/SensitiveString.vue'
 
 const data: Settings = inject('data') as Settings
 const errors: Record<string, Record<string, string>> = inject('errors') as Record<string, Record<string, string>>
@@ -20,10 +21,10 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
       <p>{{ data.server.run_mode }}</p>
     </AFormItem>
     <AFormItem :label="$gettext('Jwt Secret')">
-      <p>{{ data.server.jwt_secret }}</p>
+      <SensitiveString :value="data.server.jwt_secret" />
     </AFormItem>
     <AFormItem :label="$gettext('Node Secret')">
-      <p>{{ data.server.node_secret }}</p>
+      <SensitiveString :value="data.server.node_secret" />
     </AFormItem>
     <AFormItem :label="$gettext('Terminal Start Command')">
       <p>{{ data.server.start_cmd }}</p>

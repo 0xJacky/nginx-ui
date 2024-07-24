@@ -86,6 +86,7 @@ declare module 'vue' {
     PageHeaderPageHeader: typeof import('./src/components/PageHeader/PageHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SensitiveStringSensitiveString: typeof import('./src/components/SensitiveString/SensitiveString.vue')['default']
     SetLanguageSetLanguage: typeof import('./src/components/SetLanguage/SetLanguage.vue')['default']
     StdDesignStdDataDisplayStdBatchEdit: typeof import('./src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue')['default']
     StdDesignStdDataDisplayStdCurd: typeof import('./src/components/StdDesign/StdDataDisplay/StdCurd.vue')['default']

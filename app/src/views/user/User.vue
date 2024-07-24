@@ -1,54 +1,13 @@
 <script setup lang="ts">
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import user from '@/api/user'
-import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { input, password } from '@/components/StdDesign/StdDataEntry'
-import type { Column } from '@/components/StdDesign/types'
-
-const columns: Column[] = [{
-  title: () => $gettext('Username'),
-  dataIndex: 'name',
-  sortable: true,
-  pithy: true,
-  edit: {
-    type: input,
-  },
-  search: true,
-}, {
-  title: () => $gettext('Password'),
-  dataIndex: 'password',
-  sortable: true,
-  pithy: true,
-  edit: {
-    type: password,
-    config: {
-      placeholder: () => $gettext('Leave blank for no change'),
-      generate: true,
-    },
-  },
-  hiddenInTable: true,
-}, {
-  title: () => $gettext('Created at'),
-  dataIndex: 'created_at',
-  customRender: datetime,
-  sortable: true,
-  pithy: true,
-}, {
-  title: () => $gettext('Updated at'),
-  dataIndex: 'updated_at',
-  customRender: datetime,
-  sortable: true,
-  pithy: true,
-}, {
-  title: () => $gettext('Action'),
-  dataIndex: 'action',
-}]
+import userColumns from '@/views/user/userColumns'
 </script>
 
 <template>
   <StdCurd
     :title="$gettext('Manage Users')"
-    :columns="columns"
+    :columns="userColumns"
     :api="user"
   />
 </template>

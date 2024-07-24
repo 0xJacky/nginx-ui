@@ -45,7 +45,7 @@ msgstr "操作"
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/domain/ngx_conf/NgxServer.vue:167
 #: src/views/domain/ngx_conf/NgxUpstream.vue:152
-#: src/views/preference/BasicSettings.vue:73
+#: src/views/preference/BasicSettings.vue:74
 #: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr "添加"
@@ -99,7 +99,7 @@ msgstr "API Token"
 msgid "Arch"
 msgstr "架构"
 
-#: src/views/preference/AuthSettings.vue:95
+#: src/views/preference/AuthSettings.vue:97
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "您确定要立即删除这个被禁用的 IP 吗？"
 
@@ -132,7 +132,7 @@ msgstr "您确定要恢复这个项目吗？"
 msgid "Are you sure you want to remove this directive?"
 msgstr "您确定要删除这条指令？"
 
-#: src/views/preference/BasicSettings.vue:99
+#: src/views/preference/BasicSettings.vue:100
 msgid "Are you sure you want to remove this item?"
 msgstr "您确定要删除这个项目吗?"
 
@@ -192,11 +192,11 @@ msgstr "返回首页"
 msgid "Back to list"
 msgstr "返回列表"
 
-#: src/views/preference/AuthSettings.vue:69
+#: src/views/preference/AuthSettings.vue:71
 msgid "Ban Threshold Minutes"
 msgstr "禁止阈值（分钟）"
 
-#: src/views/preference/AuthSettings.vue:83
+#: src/views/preference/AuthSettings.vue:85
 msgid "Banned IPs"
 msgstr "禁止 IP 列表"
 
@@ -236,7 +236,7 @@ msgstr "构建基于"
 msgid "CA Dir"
 msgstr "CA Dir"
 
-#: src/views/preference/BasicSettings.vue:47
+#: src/views/preference/BasicSettings.vue:48
 msgid "CADir"
 msgstr "CADir"
 
@@ -263,7 +263,7 @@ msgstr "此证书已过期"
 msgid "Certificate is valid"
 msgstr "此证书有效"
 
-#: src/views/preference/BasicSettings.vue:55
+#: src/views/preference/BasicSettings.vue:56
 msgid "Certificate Renewal Interval"
 msgstr "证书续期间隔"
 
@@ -357,6 +357,14 @@ msgstr "连接中断，请刷新页面。"
 msgid "Content"
 msgstr "内容"
 
+#: src/components/SensitiveString/SensitiveString.vue:38
+msgid "Copied"
+msgstr "已拷贝"
+
+#: src/components/SensitiveString/SensitiveString.vue:38
+msgid "Copy"
+msgstr "拷贝"
+
 #: src/views/system/Upgrade.vue:148
 msgid "Core Upgrade"
 msgstr "核心升级"
@@ -410,7 +418,7 @@ msgstr "当前版本"
 msgid "Custom"
 msgstr "自定义"
 
-#: src/views/preference/BasicSettings.vue:121
+#: src/views/preference/BasicSettings.vue:122
 msgid ""
 "Customize the name of local server to be displayed in the environment "
 "indicator."
@@ -424,7 +432,7 @@ msgstr "仪表盘"
 msgid "Database (Optional, default: database)"
 msgstr "数据库 (可选，默认: database)"
 
-#: src/views/preference/BasicSettings.vue:60
+#: src/views/preference/BasicSettings.vue:61
 msgid "Days"
 msgstr "天"
 
@@ -804,7 +812,7 @@ msgstr "过滤"
 msgid "Finished"
 msgstr "完成"
 
-#: src/views/preference/BasicSettings.vue:43
+#: src/views/preference/BasicSettings.vue:44
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr "中国用户：https://mirror.ghproxy.com/"
 
@@ -840,23 +848,27 @@ msgstr "获取发布信息错误"
 msgid "Getting the certificate, please wait..."
 msgstr "正在获取证书，请稍等..."
 
-#: src/views/preference/BasicSettings.vue:35
+#: src/views/preference/BasicSettings.vue:36
 msgid "Github Proxy"
 msgstr "Github代理"
+
+#: src/components/SensitiveString/SensitiveString.vue:41
+msgid "Hide"
+msgstr "隐藏"
 
 #: src/routes/index.ts:31
 msgid "Home"
 msgstr "首页"
 
-#: src/views/preference/BasicSettings.vue:31
+#: src/views/preference/BasicSettings.vue:32
 msgid "HTTP Challenge Port"
 msgstr "HTTP Challenge 监听端口"
 
-#: src/views/preference/BasicSettings.vue:13
+#: src/views/preference/BasicSettings.vue:14
 msgid "HTTP Host"
 msgstr "HTTP 监听主机"
 
-#: src/views/preference/BasicSettings.vue:16
+#: src/views/preference/BasicSettings.vue:17
 msgid "HTTP Port"
 msgstr "HTTP 监听端口"
 
@@ -868,7 +880,7 @@ msgstr "HTTP01"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "如果留空，则使用默认 CA Dir。"
 
-#: src/views/preference/AuthSettings.vue:61
+#: src/views/preference/AuthSettings.vue:63
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -939,7 +951,7 @@ msgstr "无效的"
 msgid "Invalid 2FA or recovery code"
 msgstr "无效的二步验证码或恢复密码"
 
-#: src/components/OTP/useOTPModal.ts:43
+#: src/components/OTP/useOTPModal.ts:60
 msgid "Invalid passcode or recovery code"
 msgstr "二次验证码或恢复代码无效"
 
@@ -959,7 +971,7 @@ msgstr "颁发通配符证书"
 msgid "Issued certificate successfully"
 msgstr "证书申请成功"
 
-#: src/views/preference/BasicSettings.vue:22
+#: src/views/preference/BasicSettings.vue:23
 msgid "Jwt Secret"
 msgstr "Jwt 密钥"
 
@@ -1086,7 +1098,7 @@ msgstr "用户管理"
 msgid "Managed Certificate"
 msgstr "托管证书"
 
-#: src/views/preference/AuthSettings.vue:75
+#: src/views/preference/AuthSettings.vue:77
 msgid "Max Attempts"
 msgstr "最大尝试次数"
 
@@ -1212,13 +1224,13 @@ msgstr "Nginx 重启成功"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:71
 #: src/views/notification/Notification.vue:70
-#: src/views/preference/AuthSettings.vue:97
-#: src/views/preference/BasicSettings.vue:101
+#: src/views/preference/AuthSettings.vue:99
+#: src/views/preference/BasicSettings.vue:102
 #: src/views/stream/StreamList.vue:165
 msgid "No"
 msgstr "取消"
 
-#: src/views/preference/BasicSettings.vue:25
+#: src/views/preference/BasicSettings.vue:26
 msgid "Node Secret"
 msgstr "节点密钥"
 
@@ -1449,7 +1461,7 @@ msgid "Recovered Successfully"
 msgstr "恢复成功"
 
 #: src/components/OTP/OTPAuthorization.vue:56
-#: src/views/preference/components/TOTP.vue:167
+#: src/views/preference/components/TOTP.vue:164
 msgid "Recovery"
 msgstr "恢复"
 
@@ -1461,7 +1473,7 @@ msgstr "恢复代码"
 msgid "Recovery Code:"
 msgstr "恢复代码："
 
-#: src/views/preference/BasicSettings.vue:68
+#: src/views/preference/BasicSettings.vue:69
 msgid "Recursive Nameservers"
 msgstr "递归域名服务器"
 
@@ -1510,7 +1522,7 @@ msgstr "重载中"
 msgid "Reloading nginx"
 msgstr "正在重载 Nginx"
 
-#: src/views/preference/AuthSettings.vue:102
+#: src/views/preference/AuthSettings.vue:104
 msgid "Remove"
 msgstr "删除"
 
@@ -1564,7 +1576,7 @@ msgstr "重启"
 msgid "Restarting"
 msgstr "重启中"
 
-#: src/views/preference/BasicSettings.vue:19
+#: src/views/preference/BasicSettings.vue:20
 msgid "Run Mode"
 msgstr "运行模式"
 
@@ -1642,7 +1654,7 @@ msgstr "服务器错误"
 msgid "Server Info"
 msgstr "服务器信息"
 
-#: src/views/preference/BasicSettings.vue:117
+#: src/views/preference/BasicSettings.vue:118
 msgid "Server Name"
 msgstr "服务器名称"
 
@@ -1655,7 +1667,7 @@ msgstr "未在指令集合中找到 server_name"
 msgid "server_name parameter is required"
 msgstr "必须为 server_name 指令指明参数"
 
-#: src/views/preference/BasicSettings.vue:64
+#: src/views/preference/BasicSettings.vue:65
 msgid ""
 "Set the recursive nameservers to override the systems nameservers for the "
 "step of DNS challenge."
@@ -1672,6 +1684,10 @@ msgstr "正在设置环境变量"
 #: src/language/constants.ts:10
 msgid "Setting HTTP01 challenge provider"
 msgstr "使用 HTTP01 challenge provider"
+
+#: src/components/SensitiveString/SensitiveString.vue:41
+msgid "Show"
+msgstr "显示"
 
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:51
 msgid "Single Directive"
@@ -1794,7 +1810,7 @@ msgstr "目标"
 msgid "Terminal"
 msgstr "终端"
 
-#: src/views/preference/BasicSettings.vue:28
+#: src/views/preference/BasicSettings.vue:29
 msgid "Terminal Start Command"
 msgstr "终端启动命令"
 
@@ -1846,7 +1862,7 @@ msgstr ""
 "远程 Nginx UI 版本与本地 Nginx UI版本不兼容。为避免意料之外的错误，请升级远"
 "程 Nginx UI，使其与本地版本一致。"
 
-#: src/views/preference/BasicSettings.vue:120
+#: src/views/preference/BasicSettings.vue:121
 msgid ""
 "The server name should only contain letters, unicode, numbers, hyphens, "
 "dashes, and dots."
@@ -1858,8 +1874,8 @@ msgid ""
 "need to get the certificate, supportmultiple domains."
 msgstr "当前配置中的 server_name 必须是获取证书所需的域名，支持多个域名。"
 
-#: src/views/preference/BasicSettings.vue:38
-#: src/views/preference/BasicSettings.vue:50
+#: src/views/preference/BasicSettings.vue:39
+#: src/views/preference/BasicSettings.vue:51
 msgid "The url is invalid"
 msgstr "URL无效"
 
@@ -1895,7 +1911,7 @@ msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "将 %{nodeNames} 上的 Nginx UI 升级或重新安装到 %{version} 版本。"
 
-#: src/views/preference/AuthSettings.vue:60
+#: src/views/preference/AuthSettings.vue:62
 #: src/views/preference/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr "提示"
@@ -1939,7 +1955,7 @@ msgstr "TOTP 是一种使用基于时间的一次性密码算法的双因素身�
 msgid "Trash"
 msgstr "回收站"
 
-#: src/components/OTP/useOTPModal.ts:49
+#: src/components/OTP/useOTPModal.ts:66
 msgid "Two-factor authentication required"
 msgstr "需要两步验证"
 
@@ -2075,8 +2091,8 @@ msgstr "正在将证书写入磁盘"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
-#: src/views/preference/AuthSettings.vue:96
-#: src/views/preference/BasicSettings.vue:100
+#: src/views/preference/AuthSettings.vue:98
+#: src/views/preference/BasicSettings.vue:101
 msgid "Yes"
 msgstr "是的"
 
