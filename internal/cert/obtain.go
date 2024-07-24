@@ -10,8 +10,9 @@ import (
 
 func obtain(payload *ConfigPayload, client *lego.Client, l *log.Logger, errChan chan error) {
 	request := certificate.ObtainRequest{
-		Domains: payload.ServerName,
-		Bundle:  true,
+		Domains:    payload.ServerName,
+		Bundle:     true,
+		MustStaple: payload.MustStaple,
 	}
 
 	l.Println("[INFO] [Nginx UI] Obtaining certificate")

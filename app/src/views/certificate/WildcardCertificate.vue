@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import { message } from 'ant-design-vue'
-import type { Cert } from '@/api/cert'
 import ObtainCertLive from '@/views/domain/cert/components/ObtainCertLive.vue'
-import DNSChallenge from '@/views/domain/cert/components/DNSChallenge.vue'
-import { PrivateKeyTypeList } from '@/constants'
+import type { AutoCertOptions } from '@/api/auto_cert'
+import AutoCertStepOne from '@/views/domain/cert/components/AutoCertStepOne.vue'
 
 const emit = defineEmits<{
   issued: [void]
@@ -12,10 +11,9 @@ const emit = defineEmits<{
 
 const step = ref(0)
 const visible = ref(false)
-const data = ref({}) as Ref<Cert>
+const data = ref({}) as Ref<AutoCertOptions>
 const issuing_cert = ref(false)
 
-provide('data', data)
 provide('issuing_cert', issuing_cert)
 function open() {
   visible.value = true
@@ -23,7 +21,7 @@ function open() {
   data.value = {
     challenge_method: 'dns01',
     key_type: '2048',
-  } as Cert
+  } as AutoCertOptions
 }
 
 defineExpose({
@@ -66,8 +64,6 @@ const issueCert = () => {
       force-render
     >
       <template v-if="step === 0">
-        <DNSChallenge />
-
         <AForm layout="vertical">
           <AFormItem :label="$gettext('Domain')">
             <AInput
@@ -75,19 +71,15 @@ const issueCert = () => {
               addon-before="*."
             />
           </AFormItem>
-
-          <AFormItem :label="$gettext('Key Type')">
-            <ASelect v-model:value="data.key_type">
-              <ASelectOption
-                v-for="t in PrivateKeyTypeList"
-                :key="t.key"
-                :value="t.key"
-              >
-                {{ t.name }}
-              </ASelectOption>
-            </ASelect>
-          </AFormItem>
         </AForm>
+
+        <AutoCertStepOne
+          v-model:options="data"
+          style="max-width: 600px"
+          hide-note
+          force-dns-challenge
+        />
+
         <div
           v-if="step === 0"
           class="flex justify-end"
@@ -106,6 +98,7 @@ const issueCert = () => {
         ref="refObtainCertLive"
         v-model:modal-closable="modalClosable"
         v-model:modal-visible="modalVisible"
+        :options="data"
       />
     </AModal>
   </div>

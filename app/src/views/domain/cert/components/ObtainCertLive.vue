@@ -1,40 +1,17 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import websocket from '@/lib/websocket'
-import type { DnsChallenge } from '@/api/auto_cert'
-import Error from '@/views/other/Error.vue'
 import type { CertificateResult } from '@/api/cert'
+import type { AutoCertOptions } from '@/api/auto_cert'
 
 const props = defineProps<{
-  modalClosable: boolean
-  modalVisible: boolean
+  options: AutoCertOptions
 }>()
 
-const emit = defineEmits<{
-  'update:modalClosable': [value: boolean]
-  'update:modalVisible': [value: boolean]
-}>()
-
-const modalClosable = computed({
-  get() {
-    return props.modalClosable
-  },
-  set(value) {
-    emit('update:modalClosable', value)
-  },
-})
-
-const modalVisible = computed({
-  get() {
-    return props.modalVisible
-  },
-  set(value) {
-    emit('update:modalVisible', value)
-  },
-})
+const modalVisible = defineModel<boolean>('modalVisible')
+const modalClosable = defineModel<boolean>('modalClosable')
 
 const issuing_cert = inject('issuing_cert') as Ref<boolean>
-const data = inject('data') as Ref<DnsChallenge>
 
 const progressStrokeColor = {
   from: '#108ee9',
@@ -71,8 +48,8 @@ const issue_cert = async (config_name: string, server_name: string[], key_type: 
     ws.onopen = () => {
       ws.send(JSON.stringify({
         server_name,
+        ...props.options,
         key_type,
-        ...data.value,
       }))
     }
 
@@ -114,7 +91,7 @@ const issue_cert = async (config_name: string, server_name: string[], key_type: 
           }
           else {
             progressStatus.value = 'exception'
-            reject(new Error($gettext('Fail to obtain certificate')))
+            reject($gettext('Fail to obtain certificate'))
           }
           break
       }

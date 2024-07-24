@@ -117,14 +117,16 @@ func IssueCert(c *gin.Context) {
 	}
 
 	err = certModel.Updates(&model.Cert{
-		Domains:               payload.ServerName,
-		SSLCertificatePath:    payload.GetCertificatePath(),
-		SSLCertificateKeyPath: payload.GetCertificateKeyPath(),
-		AutoCert:              model.AutoCertEnabled,
-		KeyType:               payload.KeyType,
-		ChallengeMethod:       payload.ChallengeMethod,
-		DnsCredentialID:       payload.DNSCredentialID,
-		Resource:              payload.Resource,
+		Domains:                 payload.ServerName,
+		SSLCertificatePath:      payload.GetCertificatePath(),
+		SSLCertificateKeyPath:   payload.GetCertificateKeyPath(),
+		AutoCert:                model.AutoCertEnabled,
+		KeyType:                 payload.KeyType,
+		ChallengeMethod:         payload.ChallengeMethod,
+		DnsCredentialID:         payload.DNSCredentialID,
+		Resource:                payload.Resource,
+		MustStaple:              payload.MustStaple,
+		LegoDisableCNAMESupport: payload.LegoDisableCNAMESupport,
 	})
 
 	if err != nil {

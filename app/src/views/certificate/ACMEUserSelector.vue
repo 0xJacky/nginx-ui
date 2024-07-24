@@ -3,18 +3,19 @@ import type { SelectProps } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import type { AcmeUser } from '@/api/acme_user'
 import acme_user from '@/api/acme_user'
-import type { Cert } from '@/api/cert'
+import type { AutoCertOptions } from '@/api/auto_cert'
 
 const users = ref([]) as Ref<AcmeUser[]>
 
-// This data is provided by the Top StdCurd component,
-// is the object that you are trying to modify it
-// we externalize the dns_credential_id to the parent component,
-// this is used to tell the backend which dns_credential to use
-const data = inject('data') as Ref<Cert>
+const data = defineModel<AutoCertOptions>('options', {
+  default: () => {
+    return {}
+  },
+  required: true,
+})
 
 const id = computed(() => {
-  return data.value.acme_user_id
+  return data.value?.acme_user_id
 })
 
 const user_idx = ref()
@@ -35,7 +36,7 @@ watch(id, init)
 
 watch(current, () => {
   if (mounted.value)
-    data.value.acme_user_id = current.value.id
+    data.value!.acme_user_id = current.value.id
 })
 
 onMounted(async () => {
@@ -84,8 +85,9 @@ const filterOption = (input: string, option: { label: string }) => {
     <AFormItem :label="$gettext('ACME User')">
       <ASelect
         v-model:value="user_idx"
+        :placeholder="$gettext('System Initial User')"
         show-search
-        :options="options"
+        :options
         :filter-option="filterOption"
       />
     </AFormItem>

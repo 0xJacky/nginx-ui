@@ -16,17 +16,19 @@ import (
 )
 
 type ConfigPayload struct {
-	CertID                int                        `json:"cert_id"`
-	ServerName            []string                   `json:"server_name"`
-	ChallengeMethod       string                     `json:"challenge_method"`
-	DNSCredentialID       int                        `json:"dns_credential_id"`
-	ACMEUserID            int                        `json:"acme_user_id"`
-	KeyType               certcrypto.KeyType         `json:"key_type"`
-	Resource              *model.CertificateResource `json:"resource,omitempty"`
-	NotBefore             time.Time                  `json:"-"`
-	CertificateDir        string                     `json:"-"`
-	SSLCertificatePath    string                     `json:"-"`
-	SSLCertificateKeyPath string                     `json:"-"`
+	CertID                  int                        `json:"cert_id"`
+	ServerName              []string                   `json:"server_name"`
+	ChallengeMethod         string                     `json:"challenge_method"`
+	DNSCredentialID         int                        `json:"dns_credential_id"`
+	ACMEUserID              int                        `json:"acme_user_id"`
+	KeyType                 certcrypto.KeyType         `json:"key_type"`
+	Resource                *model.CertificateResource `json:"resource,omitempty"`
+	MustStaple              bool                       `json:"must_staple"`
+	LegoDisableCNAMESupport bool                       `json:"lego_disable_cname_support"`
+	NotBefore               time.Time                  `json:"-"`
+	CertificateDir          string                     `json:"-"`
+	SSLCertificatePath      string                     `json:"-"`
+	SSLCertificateKeyPath   string                     `json:"-"`
 }
 
 func (c *ConfigPayload) GetACMEUser() (user *model.AcmeUser, err error) {

@@ -130,12 +130,23 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 			errChan <- errors.Wrap(err, "environment configuration is empty")
 			return
 		}
-
 	}
 
 	if err != nil {
 		errChan <- errors.Wrap(err, "challenge error")
 		return
+	}
+
+	// fix #407
+	if payload.LegoDisableCNAMESupport {
+		err = os.Setenv("LEGO_DISABLE_CNAME_SUPPORT", "true")
+		if err != nil {
+			errChan <- errors.Wrap(err, "set env flag to disable lego CNAME support error")
+			return
+		}
+		defer func() {
+			_ = os.Unsetenv("LEGO_DISABLE_CNAME_SUPPORT")
+		}()
 	}
 
 	if time.Now().Sub(payload.NotBefore).Hours()/24 <= 21 &&

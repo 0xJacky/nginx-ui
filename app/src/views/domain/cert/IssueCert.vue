@@ -2,11 +2,9 @@
 import ObtainCert from '@/views/domain/cert/components/ObtainCert.vue'
 import type { NgxDirective } from '@/api/ngx'
 
-export interface Props {
+defineProps<{
   configName: string
-}
-
-const props = defineProps<Props>()
+}>()
 
 const issuing_cert = ref(false)
 const obtain_cert = ref()
@@ -16,18 +14,16 @@ const enabled = defineModel<boolean>('enabled', {
   default: () => false,
 })
 
-const no_server_name = computed(() => {
+const noServerName = computed(() => {
   if (!directivesMap.value.server_name)
     return true
 
   return directivesMap.value.server_name.length === 0
 })
 
-provide('no_server_name', no_server_name)
-provide('props', props)
 provide('issuing_cert', issuing_cert)
 
-watch(no_server_name, () => {
+watch(noServerName, () => {
   enabled.value = false
 })
 
@@ -45,6 +41,8 @@ async function onchange() {
   <ObtainCert
     ref="obtain_cert"
     :key="update"
+    :no-server-name="noServerName"
+    :config-name="configName"
     @update:auto_cert="r => enabled = r"
   />
   <div class="issue-cert">
@@ -52,7 +50,7 @@ async function onchange() {
       <ASwitch
         :loading="issuing_cert"
         :checked="enabled"
-        :disabled="no_server_name"
+        :disabled="noServerName"
         @change="onchange"
       />
     </AFormItem>

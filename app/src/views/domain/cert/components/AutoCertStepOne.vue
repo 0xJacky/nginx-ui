@@ -1,43 +1,38 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
-import type { DnsChallenge } from '@/api/auto_cert'
+import { $gettext } from '../../../../gettext'
+import type { AutoCertOptions } from '@/api/auto_cert'
 import DNSChallenge from '@/views/domain/cert/components/DNSChallenge.vue'
-import type { Cert } from '@/api/cert'
 import ACMEUserSelector from '@/views/certificate/ACMEUserSelector.vue'
 import { PrivateKeyTypeList } from '@/constants'
 
-defineProps<{
+const props = defineProps<{
   hideNote?: boolean
+  forceDnsChallenge?: boolean
 }>()
 
-const no_server_name = inject('no_server_name')
-
-// Provide by ObtainCert.vue
-const data = inject('data') as Ref<DnsChallenge & Cert>
+const data = defineModel<AutoCertOptions>('options', {
+  default: () => {
+    return {}
+  },
+  required: true,
+})
 
 onMounted(() => {
   if (!data.value.key_type)
     data.value.key_type = '2048'
+
+  if (props.forceDnsChallenge)
+    data.value.challenge_method = 'dns01'
+})
+
+watch(() => props.forceDnsChallenge, v => {
+  if (v)
+    data.value.challenge_method = 'dns01'
 })
 </script>
 
 <template>
   <div>
-    <template v-if="no_server_name">
-      <AAlert
-        :message="$gettext('Warning')"
-        type="warning"
-        show-icon
-      >
-        <template #description>
-          <span v-if="no_server_name">
-            {{ $gettext('server_name parameter is required') }}
-          </span>
-        </template>
-      </AAlert>
-      <br>
-    </template>
-
     <AAlert
       v-if="!hideNote"
       type="info"
@@ -52,8 +47,8 @@ onMounted(() => {
             + 'multiple domains.') }}
         </p>
         <p>
-          {{ $gettext('The certificate for the domain will be checked 5 minutes, '
-            + 'and will be renewed if it has been more than 1 week since it was last issued.') }}
+          {{ $gettext('The certificate for the domain will be checked 30 minutes, '
+            + 'and will be renewed if it has been more than 1 week or the period you set in settings since it was last issued.') }}
         </p>
         <p v-if="data.challenge_method === 'http01'">
           {{ $gettext('Make sure you have configured a reverse proxy for .well-known '
@@ -67,7 +62,10 @@ onMounted(() => {
       </template>
     </AAlert>
     <AForm layout="vertical">
-      <AFormItem :label="$gettext('Challenge Method')">
+      <AFormItem
+        v-if="!forceDnsChallenge"
+        :label="$gettext('Challenge Method')"
+      >
         <ASelect v-model:value="data.challenge_method">
           <ASelectOption value="http01">
             {{ $gettext('HTTP01') }}
@@ -89,8 +87,32 @@ onMounted(() => {
         </ASelect>
       </AFormItem>
     </AForm>
-    <ACMEUserSelector />
-    <DNSChallenge v-if="data.challenge_method === 'dns01'" />
+    <ACMEUserSelector v-model:options="data" />
+    <DNSChallenge
+      v-if="data.challenge_method === 'dns01'"
+      v-model:options="data"
+    />
+    <AForm layout="vertical">
+      <AFormItem :label="$gettext('OCSP Must Staple')">
+        <template #help>
+          <p>
+            {{ $gettext('Do not enable this option unless you are sure that you need it.') }}
+            {{ $gettext('OCSP Must Staple may cause errors for some users on first access using Firefox.') }}
+            <a href="https://github.com/0xJacky/nginx-ui/issues/322">#322</a>
+          </p>
+        </template>
+        <ASwitch v-model:checked="data.must_staple" />
+      </AFormItem>
+      <AFormItem :label="$gettext('Lego disable CNAME Support')">
+        <template #help>
+          <p>
+            {{ $gettext('If your domain has CNAME records and you cannot obtain certificates, '
+              + 'you need to enable this option.') }}
+          </p>
+        </template>
+        <ASwitch v-model:checked="data.lego_disable_cname_support" />
+      </AFormItem>
+    </AForm>
   </div>
 </template>
 

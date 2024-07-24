@@ -4,11 +4,15 @@ import type { ComputedRef, Ref } from 'vue'
 import domain from '@/api/domain'
 import AutoCertStepOne from '@/views/domain/cert/components/AutoCertStepOne.vue'
 import type { NgxConfig, NgxDirective } from '@/api/ngx'
-import type { Props } from '@/views/domain/cert/IssueCert.vue'
-import type { DnsChallenge } from '@/api/auto_cert'
+import type { AutoCertOptions } from '@/api/auto_cert'
 import ObtainCertLive from '@/views/domain/cert/components/ObtainCertLive.vue'
 import type { CertificateResult } from '@/api/cert'
 import type { PrivateKeyType } from '@/constants'
+
+const props = defineProps<{
+  configName: string
+  noServerName?: boolean
+}>()
 
 const emit = defineEmits(['update:auto_cert'])
 
@@ -26,15 +30,11 @@ const data = ref({
     credentials: {},
     additional: {},
   },
-}) as Ref<DnsChallenge>
+}) as Ref<AutoCertOptions>
 
 const modalClosable = ref(true)
 
-provide('data', data)
-
 const save_config = inject('save_config') as () => Promise<void>
-const no_server_name = inject('no_server_name') as Ref<boolean>
-const props = inject('props') as Props
 const issuing_cert = inject('issuing_cert') as Ref<boolean>
 const ngx_config = inject('ngx_config') as NgxConfig
 const current_server_directives = inject('current_server_directives') as ComputedRef<NgxDirective[]>
@@ -61,8 +61,8 @@ function change_auto_cert(status: boolean, key_type?: PrivateKeyType) {
   if (status) {
     domain.add_auto_cert(props.configName, {
       domains: name.value.trim().split(' '),
-      challenge_method: data.value.challenge_method,
-      dns_credential_id: data.value.dns_credential_id,
+      challenge_method: data.value.challenge_method!,
+      dns_credential_id: data.value.dns_credential_id!,
       key_type: key_type!,
     }).then(() => {
       message.success($gettext('Auto-renewal enabled for %{name}', { name: name.value }))
@@ -98,7 +98,7 @@ function job() {
   modalClosable.value = false
   issuing_cert.value = true
 
-  if (no_server_name.value) {
+  if (props.noServerName) {
     message.error($gettext('server_name not found in directives'))
     issuing_cert.value = false
 
@@ -183,13 +183,17 @@ function next() {
       force-render
     >
       <template v-if="step === 1">
-        <AutoCertStepOne />
+        <AutoCertStepOne
+          v-model:options="data"
+          :no-server-name="noServerName"
+        />
       </template>
       <template v-else-if="step === 2">
         <ObtainCertLive
           ref="refObtainCertLive"
           v-model:modal-closable="modalClosable"
           v-model:modal-visible="modalVisible"
+          :options="data"
         />
       </template>
       <div

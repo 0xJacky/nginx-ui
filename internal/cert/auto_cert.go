@@ -71,12 +71,14 @@ func autoCert(certModel *model.Cert) {
 
 	// support SAN certification
 	payload := &ConfigPayload{
-		CertID:          certModel.ID,
-		ServerName:      certModel.Domains,
-		ChallengeMethod: certModel.ChallengeMethod,
-		DNSCredentialID: certModel.DnsCredentialID,
-		KeyType:         certModel.GetKeyType(),
-		NotBefore:       certInfo.NotBefore,
+		CertID:                  certModel.ID,
+		ServerName:              certModel.Domains,
+		ChallengeMethod:         certModel.ChallengeMethod,
+		DNSCredentialID:         certModel.DnsCredentialID,
+		KeyType:                 certModel.GetKeyType(),
+		NotBefore:               certInfo.NotBefore,
+		MustStaple:              certModel.MustStaple,
+		LegoDisableCNAMESupport: certModel.LegoDisableCNAMESupport,
 	}
 
 	if certModel.Resource != nil {

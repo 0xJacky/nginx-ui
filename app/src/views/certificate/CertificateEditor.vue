@@ -52,12 +52,6 @@ function save() {
   })
 }
 
-provide('data', data)
-
-provide('no_server_name', computed(() => {
-  return false
-}))
-
 const log = computed(() => {
   const logs = data.value.log?.split('\n')
 
@@ -134,9 +128,17 @@ const isManaged = computed(() => {
         </AForm>
 
         <template v-if="isManaged">
-          <RenewCert @renewed="init" />
+          <RenewCert
+            :options="{
+              name: data.name,
+              domains: data.domains,
+              key_type: data.key_type,
+            }"
+            @renewed="init"
+          />
 
           <AutoCertStepOne
+            v-model:options="data"
             style="max-width: 600px"
             hide-note
           />

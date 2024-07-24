@@ -5,13 +5,6 @@ import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import cert from '@/api/cert'
 import WildcardCertificate from '@/views/certificate/WildcardCertificate.vue'
 
-// DO NOT REMOVE THESE LINES
-const no_server_name = computed(() => {
-  return false
-})
-
-provide('no_server_name', no_server_name)
-
 const refWildcard = ref()
 const refTable = ref()
 </script>

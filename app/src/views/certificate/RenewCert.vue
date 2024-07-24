@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import { message } from 'ant-design-vue'
 import ObtainCertLive from '@/views/domain/cert/components/ObtainCertLive.vue'
-import type { Cert } from '@/api/cert'
+import type { AutoCertOptions } from '@/api/auto_cert'
+
+const props = defineProps<{
+  options: AutoCertOptions
+}>()
 
 const emit = defineEmits<{
   renewed: [void]
@@ -13,12 +16,12 @@ const modalClosable = ref(true)
 
 const refObtainCertLive = ref()
 
-const data = inject('data') as Ref<Cert>
-
 const issueCert = () => {
   modalVisible.value = true
 
-  refObtainCertLive.value.issue_cert(data.value.name, data.value.domains, data.value.key_type).then(() => {
+  const { name, domains, key_type } = props.options
+
+  refObtainCertLive.value.issue_cert(name, domains, key_type).then(() => {
     message.success($gettext('Renew successfully'))
     emit('renewed')
   })
@@ -52,6 +55,7 @@ provide('issuing_cert', issuing_cert)
         ref="refObtainCertLive"
         v-model:modal-closable="modalClosable"
         v-model:modal-visible="modalVisible"
+        :options
       />
     </AModal>
   </div>

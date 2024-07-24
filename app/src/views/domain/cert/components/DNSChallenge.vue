@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import type { SelectProps } from 'ant-design-vue'
 import type { Ref } from 'vue'
-import type { SelectValue } from 'ant-design-vue/es/select'
-import type { DNSProvider } from '@/api/auto_cert'
+import type { AutoCertOptions, DNSProvider } from '@/api/auto_cert'
 import auto_cert from '@/api/auto_cert'
 import dns_credential from '@/api/dns_credential'
 
 const providers = ref([]) as Ref<DNSProvider[]>
 const credentials = ref<SelectProps['options']>([])
 
-// This data is provided by the Top StdCurd component,
-// is the object that you are trying to modify it
-// we externalize the dns_credential_id to the parent component,
-// this is used to tell the backend which dns_credential to use
-const data = inject('data') as Ref<DNSProvider & { dns_credential_id: SelectValue }>
+const data = defineModel<AutoCertOptions>('options', {
+  default: () => {
+    return {}
+  },
+  required: true,
+})
 
 const code = computed(() => {
   return data.value.code
@@ -95,7 +95,7 @@ const filterOption = (input: string, option: { label: string }) => {
       <ASelect
         v-model:value="provider_idx"
         show-search
-        :options="options"
+        :options
         :filter-option="filterOption"
       />
     </AFormItem>
@@ -105,7 +105,7 @@ const filterOption = (input: string, option: { label: string }) => {
       :rules="[{ required: true }]"
     >
       <ASelect
-        v-model:value="data.dns_credential_id"
+        v-model:value="data.dns_credential_id as any"
         :options="credentials"
       />
     </AFormItem>
