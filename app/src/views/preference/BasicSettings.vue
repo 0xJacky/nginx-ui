@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { inject } from 'vue'
 import Draggable from 'vuedraggable'
 import { DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
 import type { Settings } from '@/views/preference/typedef'

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { inject } from 'vue'
 import type { Settings } from '@/views/preference/typedef'
 
 const data: Settings = inject('data')!

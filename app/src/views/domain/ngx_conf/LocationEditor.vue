@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
 import { DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
 import Draggable from 'vuedraggable'
 import CodeEditor from '@/components/CodeEditor'

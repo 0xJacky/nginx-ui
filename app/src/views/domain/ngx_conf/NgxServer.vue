@@ -1,7 +1,5 @@
 <script setup lang="ts">
-
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
-import type { ComputedRef, Ref } from 'vue'
 import { Modal } from 'ant-design-vue'
 import LogEntry from '@/views/domain/ngx_conf/LogEntry.vue'
 import ConfigTemplate from '@/views/domain/ngx_conf/config_template/ConfigTemplate.vue'
@@ -20,8 +18,6 @@ withDefaults(defineProps<{
 }>(), {
   context: 'http',
 })
-
-const emit = defineEmits(['callback'])
 
 const [modal, ContextHolder] = Modal.useModal()
 
@@ -131,7 +127,6 @@ provide('ngx_directives', ngx_directives)
               :config-name="ngx_config.name"
               :cert-info="certInfo?.[k]"
               :current-server-index="current_server_index"
-              @callback="emit('callback')"
             />
           </template>
 

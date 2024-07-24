@@ -1,7 +1,6 @@
 <script setup lang="tsx">
 import { message } from 'ant-design-vue'
 import type { Ref } from 'vue'
-import { inject } from 'vue'
 import dayjs from 'dayjs'
 import type { BannedIP } from '@/api/settings'
 import setting from '@/api/settings'

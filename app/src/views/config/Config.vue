@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import config from '@/api/config'
 import configColumns from '@/views/config/config'
@@ -50,7 +48,7 @@ watch(route, () => {
       :columns="configColumns"
       disable-delete
       disable_search
-      disabled-view
+      disable-view
       row-key="name"
       :get_params="get_params"
       @click-edit="(r, row) => {

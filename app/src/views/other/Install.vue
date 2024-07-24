@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Form, message } from 'ant-design-vue'
-import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { DatabaseOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons-vue'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'

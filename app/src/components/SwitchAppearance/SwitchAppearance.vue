@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { Ref } from 'vue'
-import { computed, inject } from 'vue'
 import VPIconMoon from './icons/VPIconMoon.vue'
 import VPIconSun from './icons/VPIconSun.vue'
 import VPSwitch from '@/components/VPSwitch/VPSwitch.vue'

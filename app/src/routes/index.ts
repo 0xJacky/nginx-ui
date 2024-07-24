@@ -131,7 +131,7 @@ export const routes: RouteRecordRaw[] = [
           {
             path: 'list',
             name: 'Certificates List',
-            component: () => import('@/views/certificate/Certificate.vue'),
+            component: () => import('@/views/certificate/CertificateList/Certificate.vue'),
             meta: {
               name: () => $gettext('Certificates List'),
             },

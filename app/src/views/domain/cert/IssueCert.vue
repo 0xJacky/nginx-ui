@@ -9,7 +9,7 @@ export interface Props {
 
 const props = defineProps<Props>()
 
-const emit = defineEmits(['callback', 'update:enabled'])
+const emit = defineEmits(['update:enabled'])
 
 const issuing_cert = ref(false)
 const obtain_cert = ref()

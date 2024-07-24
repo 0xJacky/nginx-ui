@@ -108,7 +108,7 @@ watch(route, () => {
       :columns="columns"
       row-key="name"
       disable-delete
-      disabled-view
+      disable-view
       @click-edit="r => $router.push({
         path: `/domain/${r}`,
       })"

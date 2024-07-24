@@ -65,24 +65,29 @@ function confirm_change_tls(status: CheckedType) {
   })
 }
 
-const current_server_directives = computed(() => {
-  return ngx_config.servers?.[current_server_index.value]?.directives
+const current_server_directives = computed({
+  get() {
+    return ngx_config.servers?.[current_server_index.value]?.directives
+  },
+  set(v) {
+    ngx_config.servers[current_server_index.value].directives = v
+  },
 })
 
 provide('current_server_directives', current_server_directives)
 
 const directivesMap: ComputedRef<Record<string, NgxDirective[]>> = computed(() => {
-  const map: Record<string, NgxDirective[]> = {}
+  const record: Record<string, NgxDirective[]> = {}
 
   current_server_directives.value?.forEach((v, k) => {
     v.idx = k
-    if (map[v.directive])
-      map[v.directive].push(v)
+    if (record[v.directive])
+      record[v.directive].push(v)
     else
-      map[v.directive] = [v]
+      record[v.directive] = [v]
   })
 
-  return map
+  return record
 })
 
 // eslint-disable-next-line sonarjs/cognitive-complexity

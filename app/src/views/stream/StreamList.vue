@@ -129,7 +129,7 @@ function handleAddStream() {
       :columns="columns"
       row-key="name"
       disable-delete
-      disabled-view
+      disable-view
       @click-edit="r => $router.push({
         path: `/stream/${r}`,
       })"

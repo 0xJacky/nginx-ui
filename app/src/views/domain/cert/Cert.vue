@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import CertInfo from '@/views/domain/cert/CertInfo.vue'
 import IssueCert from '@/views/domain/cert/IssueCert.vue'
-import ChangeCert from '@/views/domain/cert/ChangeCert.vue'
+import ChangeCert from '@/views/domain/cert/components/ChangeCert/ChangeCert.vue'
 import type { CertificateInfo } from '@/api/cert'
 
 const props = defineProps<{
@@ -12,10 +11,7 @@ const props = defineProps<{
   certInfo?: CertificateInfo
 }>()
 
-const emit = defineEmits(['callback', 'update:enabled'])
-function callback() {
-  emit('callback')
-}
+const emit = defineEmits(['update:enabled'])
 
 const enabled = computed({
   get() {
@@ -42,7 +38,6 @@ const enabled = computed({
     <IssueCert
       v-model:enabled="enabled"
       :config-name="configName"
-      @callback="callback"
     />
   </div>
 </template>
