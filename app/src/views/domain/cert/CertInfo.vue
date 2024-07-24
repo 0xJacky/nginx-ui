@@ -1,42 +1,46 @@
 <script setup lang="ts">
-import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import type { CertificateInfo } from '@/api/cert'
 
-defineProps<{
+const props = defineProps<{
   cert?: CertificateInfo
 }>()
 
+const isValid = computed(() => dayjs().isAfter(props.cert?.not_before) && dayjs().isBefore(props.cert?.not_after))
 </script>
 
 <template>
-  <div
+  <ACard
     v-if="cert"
-    class="cert-info"
+    size="small"
   >
+    <template #title>
+      {{ cert.subject_name }}
+      <ATag
+        v-if="isValid"
+        color="success"
+        class="ml-2"
+      >
+        {{ $gettext('Valid') }}
+      </ATag>
+      <ATag
+        v-else
+        color="error"
+        class="ml-2"
+      >
+        {{ $gettext('Expired') }}
+      </ATag>
+    </template>
     <p>
       {{ $gettext('Intermediate Certification Authorities: %{issuer}', { issuer: cert.issuer_name }) }}
     </p>
     <p>
-      {{ $gettext('Subject Name: %{subject}', { subject: cert.subject_name }) }}
-    </p>
-    <p>
       {{ $gettext('Expired At: %{date}', { date: dayjs(cert.not_after).format('YYYY-MM-DD HH:mm:ss').toString() }) }}
     </p>
-    <p>
+    <p class="mb-0">
       {{ $gettext('Not Valid Before: %{date}', { date: dayjs(cert.not_before).format('YYYY-MM-DD HH:mm:ss').toString() }) }}
     </p>
-    <div class="status">
-      <template v-if="dayjs().isBefore(cert.not_before) || dayjs().isAfter(cert.not_after)">
-        <CloseCircleOutlined class="text-red-600" />
-        <span class="ml-2">{{ $gettext('Certificate has expired') }}</span>
-      </template>
-      <template v-else>
-        <CheckCircleOutlined class="text-green-500" />
-        <span class="ml-2">{{ $gettext('Certificate is valid') }}</span>
-      </template>
-    </div>
-  </div>
+  </ACard>
 </template>
 
 <style lang="less" scoped>

@@ -15,9 +15,7 @@ export interface Site {
   auto_cert: boolean
   chatgpt_messages: ChatComplicationMessage[]
   tokenized?: NgxConfig
-  cert_info?: {
-    [key: number]: CertificateInfo
-  }
+  cert_info?: Record<number, CertificateInfo[]>
 }
 
 export interface AutoCertRequest {

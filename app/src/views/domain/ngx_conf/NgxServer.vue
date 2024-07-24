@@ -12,7 +12,7 @@ import type { CertificateInfo } from '@/api/cert'
 withDefaults(defineProps<{
   enabled: boolean
   certInfo?: {
-    [key: number]: CertificateInfo
+    [key: number]: CertificateInfo[]
   }
   context: 'http' | 'stream'
 }>(), {

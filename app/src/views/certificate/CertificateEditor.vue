@@ -126,7 +126,10 @@ const isManaged = computed(() => {
           layout="vertical"
         >
           <AFormItem :label="$gettext('Certificate Status')">
-            <CertInfo :cert="data.certificate_info" />
+            <CertInfo
+              :cert="data.certificate_info"
+              class="max-w-96"
+            />
           </AFormItem>
         </AForm>
 

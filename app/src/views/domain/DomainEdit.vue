@@ -29,7 +29,7 @@ const ngx_config: NgxConfig = reactive({
   servers: [],
 })
 
-const cert_info_map: Record<string, CertificateInfo> = reactive({})
+const certInfoMap: Ref<Record<number, CertificateInfo[]>> = ref({})
 
 const auto_cert = ref(false)
 const enabled = ref(false)
@@ -62,9 +62,6 @@ function handle_response(r: Site) {
   if (r.advanced)
     advance_mode.value = true
 
-  Object.keys(cert_info_map).forEach((v: string) => {
-    delete cert_info_map[v]
-  })
   parse_error_status.value = false
   parse_error_message.value = ''
   filename.value = r.name
@@ -74,8 +71,8 @@ function handle_response(r: Site) {
   auto_cert.value = r.auto_cert
   history_chatgpt_record.value = r.chatgpt_messages
   data.value = r
+  certInfoMap.value = r.cert_info || {}
   Object.assign(ngx_config, r.tokenized)
-  Object.assign(cert_info_map, r.cert_info)
 }
 
 function init() {
@@ -230,7 +227,7 @@ provide('data', data)
           >
             <NgxConfigEditor
               v-model:auto-cert="auto_cert"
-              :cert-info="cert_info_map"
+              :cert-info="certInfoMap"
               :enabled="enabled"
               @callback="save"
             />

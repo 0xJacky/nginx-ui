@@ -12,7 +12,7 @@ import type { CheckedType } from '@/types'
 const props = withDefaults(defineProps<{
   autoCert?: boolean
   enabled: boolean
-  certInfo?: Record<number, CertificateInfo>
+  certInfo?: Record<number, CertificateInfo[]>
   context?: 'http' | 'stream'
 }>(), {
   autoCert: false,

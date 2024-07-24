@@ -66,7 +66,6 @@ func GetDomains(c *gin.Context) {
 
 func GetDomain(c *gin.Context) {
 	rewriteName, ok := c.Get("rewriteConfigFileName")
-
 	name := c.Param("name")
 
 	// for modify filename
@@ -84,14 +83,12 @@ func GetDomain(c *gin.Context) {
 	}
 
 	enabled := true
-
 	if _, err := os.Stat(nginx.GetConfPath("sites-enabled", name)); os.IsNotExist(err) {
 		enabled = false
 	}
 
 	g := query.ChatGPTLog
 	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -103,14 +100,12 @@ func GetDomain(c *gin.Context) {
 
 	s := query.Site
 	site, err := s.Where(s.Path.Eq(path)).FirstOrInit()
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
 
 	certModel, err := model.FirstCert(name)
-
 	if err != nil {
 		logger.Warn(err)
 	}
@@ -136,28 +131,21 @@ func GetDomain(c *gin.Context) {
 	}
 
 	nginxConfig, err := nginx.ParseNgxConfig(path)
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
 
-	certInfoMap := make(map[int]*cert.Info)
-
+	certInfoMap := make(map[int][]*cert.Info)
 	for serverIdx, server := range nginxConfig.Servers {
 		for _, directive := range server.Directives {
 			if directive.Directive == "ssl_certificate" {
-
 				pubKey, err := cert.GetCertInfo(directive.Params)
-
 				if err != nil {
 					logger.Error("Failed to get certificate information", err)
-					break
+					continue
 				}
-
-				certInfoMap[serverIdx] = pubKey
-
-				break
+				certInfoMap[serverIdx] = append(certInfoMap[serverIdx], pubKey)
 			}
 		}
 	}
@@ -291,9 +279,8 @@ func EnableDomain(c *gin.Context) {
 		}
 	}
 
-	// Test nginx config, if not pass then disable the site.
+	// Test nginx config, if not pass, then disable the site.
 	output := nginx.TestConf()
-
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		_ = os.Remove(enabledConfigFilePath)
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -318,16 +305,13 @@ func EnableDomain(c *gin.Context) {
 
 func DisableDomain(c *gin.Context) {
 	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", c.Param("name"))
-
 	_, err := os.Stat(enabledConfigFilePath)
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
 
 	err = os.Remove(enabledConfigFilePath)
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -342,7 +326,6 @@ func DisableDomain(c *gin.Context) {
 	}
 
 	output := nginx.Reload()
-
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": output,
@@ -360,7 +343,6 @@ func DeleteDomain(c *gin.Context) {
 	name := c.Param("name")
 	availablePath := nginx.GetConfPath("sites-available", name)
 	enabledPath := nginx.GetConfPath("sites-enabled", name)
-
 	if _, err = os.Stat(availablePath); os.IsNotExist(err) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": "site not found",
@@ -379,7 +361,6 @@ func DeleteDomain(c *gin.Context) {
 	_ = certModel.Remove()
 
 	err = os.Remove(availablePath)
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
