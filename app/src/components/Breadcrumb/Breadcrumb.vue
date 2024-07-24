@@ -1,30 +1,41 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-
 interface bread {
-  name: () => string
+  name: string
+  translatedName: () => string
   path: string
+  hasChildren?: boolean
 }
 
 const name = ref()
 const route = useRoute()
+const router = useRouter()
 
 const breadList = computed(() => {
-  const _breadList: bread[] = []
+  const result: bread[] = []
 
   name.value = route.meta.name
 
   route.matched.forEach(item => {
-    // item.name !== 'index' && this.breadList.push(item)
-    _breadList.push({
-      name: item.meta.name as never as () => string,
+    if (item.meta?.lastRouteName) {
+      const lastRoute = router.resolve({ name: item.meta.lastRouteName })
+
+      result.push({
+        name: lastRoute.name as string,
+        translatedName: lastRoute.meta.name as never as () => string,
+        path: lastRoute.path,
+      })
+    }
+
+    result.push({
+      name: item.name as string,
+      translatedName: item.meta.name as never as () => string,
       path: item.path,
+      hasChildren: item.children?.length > 0,
     })
   })
 
-  return _breadList
+  return result
 })
-
 </script>
 
 <template>
@@ -34,12 +45,13 @@ const breadList = computed(() => {
       :key="item.name"
     >
       <RouterLink
-        v-if="item.name !== name && index !== 1"
+        v-if="index === 0 || !item.hasChildren && index !== breadList.length - 1"
         :to="{ path: item.path === '' ? '/' : item.path }"
       >
-        {{ item.name() }}
+        {{ item.translatedName() }}
       </RouterLink>
-      <span v-else>{{ item.name() }}</span>
+      <span v-else-if="item.hasChildren">{{ item.translatedName() }}</span>
+      <span v-else>{{ item.translatedName() }}</span>
     </ABreadcrumbItem>
   </ABreadcrumb>
 </template>

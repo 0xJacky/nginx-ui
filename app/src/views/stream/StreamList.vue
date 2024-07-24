@@ -181,6 +181,7 @@ function handleAddStream() {
     <AModal
       v-model:open="showAddStream"
       :title="$gettext('Add Stream')"
+      :mask="false"
       @ok="handleAddStream"
     >
       <AForm layout="vertical">

@@ -27,6 +27,7 @@ const columns: Column[] = [{
     },
   },
   hiddenInTable: true,
+  hiddenInDetail: true,
 }, {
   title: () => $gettext('2FA'),
   dataIndex: 'enabled_2fa',

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb.vue'
 
 const route = useRoute()
@@ -9,7 +8,7 @@ const display = computed(() => {
 })
 
 const name = computed(() => {
-  return (route.meta.name as never as () => string)()
+  return (route.meta.name as () => string)()
 })
 </script>
 

@@ -16,5 +16,6 @@ declare module 'vue-router' {
     noAuth?: boolean
     status_code?: number
     error?: () => string
+    lastRouteName?: string
   }
 }

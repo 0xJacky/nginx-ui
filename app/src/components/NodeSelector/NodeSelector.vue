@@ -4,7 +4,7 @@ import type { Environment } from '@/api/environment'
 import environment from '@/api/environment'
 
 const props = defineProps<{
-  target: number[]
+  target?: number[]
   map?: Record<number, string>
   hiddenLocal?: boolean
 }>()
@@ -37,7 +37,7 @@ const value = computed({
   },
   set(v) {
     if (typeof props.map === 'object') {
-      v.forEach(id => {
+      v?.forEach(id => {
         if (id !== 0)
           emit('update:map', { ...props.map, [id]: data_map.value[id].name })
       })

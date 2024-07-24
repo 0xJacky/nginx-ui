@@ -62,6 +62,7 @@ export const routes: RouteRecordRaw[] = [
           component: () => import('@/views/domain/DomainAdd.vue'),
           meta: {
             name: () => $gettext('Add Site'),
+            lastRouteName: 'Sites List',
           },
         }, {
           path: ':name',
@@ -70,6 +71,7 @@ export const routes: RouteRecordRaw[] = [
           meta: {
             name: () => $gettext('Edit Site'),
             hiddenInSidebar: true,
+            lastRouteName: 'Sites List',
           },
         }],
       },
@@ -89,6 +91,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
           name: () => $gettext('Edit Stream'),
           hiddenInSidebar: true,
+          lastRouteName: 'Manage Streams',
         },
       },
       {
@@ -143,6 +146,7 @@ export const routes: RouteRecordRaw[] = [
             meta: {
               name: () => $gettext('Modify Certificate'),
               hiddenInSidebar: true,
+              lastRouteName: 'Certificates List',
             },
           },
           {
@@ -152,6 +156,7 @@ export const routes: RouteRecordRaw[] = [
             meta: {
               name: () => $gettext('Import Certificate'),
               hiddenInSidebar: true,
+              lastRouteName: 'Certificates List',
             },
           },
           {
