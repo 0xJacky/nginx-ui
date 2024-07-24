@@ -22,7 +22,7 @@ func GetConfigs(c *gin.Context) {
 		return
 	}
 
-	var configs []config.Config
+	configs := make([]config.Config, 0)
 
 	for i := range configFiles {
 		file := configFiles[i]
