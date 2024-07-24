@@ -32,7 +32,7 @@ const isValid = computed(() => dayjs().isAfter(props.cert?.not_before) && dayjs(
       </ATag>
     </template>
     <p>
-      {{ $gettext('Intermediate Certification Authorities: %{issuer}', { issuer: cert.issuer_name }) }}
+      {{ $gettext('Issuer: %{issuer}', { issuer: cert.issuer_name }) }}
     </p>
     <p>
       {{ $gettext('Expired At: %{date}', { date: dayjs(cert.not_after).format('YYYY-MM-DD HH:mm:ss').toString() }) }}

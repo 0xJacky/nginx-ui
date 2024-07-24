@@ -2,6 +2,10 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
+#: src/views/user/userColumns.tsx:31
+msgid "2FA"
+msgstr ""
+
 #: src/views/preference/components/TOTP.vue:88
 msgid "2FA Settings"
 msgstr ""
@@ -22,24 +26,24 @@ msgid "ACME User"
 msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:59
-#: src/views/certificate/Certificate.vue:113
+#: src/views/certificate/CertificateList/certColumns.tsx:89
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/config.ts:34
 #: src/views/domain/DomainList.vue:47
 #: src/views/environment/envColumns.tsx:131
 #: src/views/notification/Notification.vue:37
-#: src/views/preference/AuthSettings.vue:27
+#: src/views/preference/AuthSettings.vue:26
 #: src/views/stream/StreamList.vue:47
-#: src/views/user/User.vue:43
+#: src/views/user/userColumns.tsx:59
 msgid "Action"
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:181
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:202
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:117
-#: src/views/domain/ngx_conf/NgxServer.vue:167
+#: src/views/domain/ngx_conf/NgxServer.vue:162
 #: src/views/domain/ngx_conf/NgxUpstream.vue:152
-#: src/views/preference/BasicSettings.vue:74
+#: src/views/preference/BasicSettings.vue:73
 #: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr ""
@@ -48,8 +52,8 @@ msgstr ""
 msgid "Add Directive Below"
 msgstr ""
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:112
-#: src/views/domain/ngx_conf/LocationEditor.vue:139
+#: src/views/domain/ngx_conf/LocationEditor.vue:111
+#: src/views/domain/ngx_conf/LocationEditor.vue:138
 msgid "Add Location"
 msgstr ""
 
@@ -70,12 +74,12 @@ msgstr ""
 msgid "Additional"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:197
+#: src/views/domain/DomainEdit.vue:194
 #: src/views/stream/StreamEdit.vue:189
 msgid "Advance Mode"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:45
+#: src/views/preference/OpenAISettings.vue:44
 msgid "API Base Url"
 msgstr ""
 
@@ -83,11 +87,11 @@ msgstr ""
 msgid "API Document"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:56
 msgid "API Proxy"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:69
+#: src/views/preference/OpenAISettings.vue:68
 msgid "API Token"
 msgstr ""
 
@@ -95,7 +99,7 @@ msgstr ""
 msgid "Arch"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:97
+#: src/views/preference/AuthSettings.vue:96
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr ""
 
@@ -129,11 +133,11 @@ msgstr ""
 msgid "Are you sure you want to remove this directive?"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:100
+#: src/views/preference/BasicSettings.vue:99
 msgid "Are you sure you want to remove this item?"
 msgstr ""
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:69
+#: src/views/domain/ngx_conf/LocationEditor.vue:68
 msgid "Are you sure you want to remove this location?"
 msgstr ""
 
@@ -145,7 +149,7 @@ msgstr ""
 msgid "Assistant"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:18
+#: src/views/preference/AuthSettings.vue:17
 msgid "Attempts"
 msgstr ""
 
@@ -156,10 +160,6 @@ msgstr ""
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:106
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:120
 msgid "Author"
-msgstr ""
-
-#: src/views/domain/cert/ChangeCert.vue:33
-msgid "Auto Cert"
 msgstr ""
 
 #: src/views/nginx_log/NginxLog.vue:147
@@ -174,10 +174,10 @@ msgstr ""
 msgid "Auto-renewal enabled for %{name}"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:242
-#: src/views/config/Config.vue:73
+#: src/views/certificate/CertificateEditor.vue:245
+#: src/views/config/Config.vue:71
 #: src/views/config/ConfigEdit.vue:87
-#: src/views/domain/DomainEdit.vue:254
+#: src/views/domain/DomainEdit.vue:251
 #: src/views/nginx_log/NginxLog.vue:168
 #: src/views/stream/StreamEdit.vue:245
 msgid "Back"
@@ -191,15 +191,15 @@ msgstr ""
 msgid "Back to list"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:71
+#: src/views/preference/AuthSettings.vue:70
 msgid "Ban Threshold Minutes"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:85
+#: src/views/preference/AuthSettings.vue:84
 msgid "Banned IPs"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:21
+#: src/views/preference/AuthSettings.vue:20
 msgid "Banned Until"
 msgstr ""
 
@@ -214,7 +214,7 @@ msgstr ""
 msgid "Basic"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:200
+#: src/views/domain/DomainEdit.vue:197
 #: src/views/stream/StreamEdit.vue:192
 msgid "Basic Mode"
 msgstr ""
@@ -236,7 +236,7 @@ msgstr ""
 msgid "CA Dir"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:48
+#: src/views/preference/BasicSettings.vue:47
 msgid "CADir"
 msgstr ""
 
@@ -248,32 +248,26 @@ msgstr ""
 #: src/views/domain/components/Deploy.vue:21
 #: src/views/domain/components/RightSettings.vue:51
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:50
-#: src/views/domain/ngx_conf/NgxServer.vue:84
+#: src/views/domain/ngx_conf/NgxServer.vue:80
 #: src/views/domain/ngx_conf/NgxUpstream.vue:33
 #: src/views/stream/components/Deploy.vue:21
 #: src/views/stream/components/RightSettings.vue:51
 msgid "Cancel"
 msgstr ""
 
-#: src/views/domain/cert/CertInfo.vue:32
-msgid "Certificate has expired"
-msgstr ""
-
-#: src/views/domain/cert/CertInfo.vue:36
-msgid "Certificate is valid"
-msgstr ""
-
-#: src/views/preference/BasicSettings.vue:56
+#: src/views/preference/BasicSettings.vue:55
 msgid "Certificate Renewal Interval"
 msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:128
-#: src/views/domain/cert/Cert.vue:33
+#: src/views/domain/cert/Cert.vue:32
 msgid "Certificate Status"
-msgstr ""
+msgid_plural "Certificates Status"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/routes/index.ts:119
-#: src/views/certificate/Certificate.vue:129
+#: src/views/certificate/CertificateList/Certificate.vue:20
 msgid "Certificates"
 msgstr ""
 
@@ -285,10 +279,16 @@ msgstr ""
 msgid "Challenge Method"
 msgstr ""
 
-#: src/views/domain/cert/ChangeCert.vue:95
-#: src/views/domain/cert/ChangeCert.vue:99
+#: src/views/domain/cert/components/ChangeCert/ChangeCert.vue:49
+#: src/views/domain/cert/components/ChangeCert/ChangeCert.vue:53
 msgid "Change Certificate"
 msgstr ""
+
+#: src/views/domain/cert/Cert.vue:51
+msgid "Changed Certificate"
+msgid_plural "Changed Certificates"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/views/environment/BatchUpgrader.vue:161
 #: src/views/system/Upgrade.vue:190
@@ -314,14 +314,14 @@ msgstr ""
 msgid "Cleared successfully"
 msgstr ""
 
-#: src/views/preference/LogrotateSettings.vue:23
+#: src/views/preference/LogrotateSettings.vue:22
 msgid "Command"
 msgstr ""
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:106
-#: src/views/domain/ngx_conf/LocationEditor.vue:116
-#: src/views/domain/ngx_conf/LocationEditor.vue:85
-#: src/views/domain/ngx_conf/NgxServer.vue:139
+#: src/views/domain/ngx_conf/LocationEditor.vue:115
+#: src/views/domain/ngx_conf/LocationEditor.vue:84
+#: src/views/domain/ngx_conf/NgxServer.vue:134
 msgid "Comments"
 msgstr ""
 
@@ -337,7 +337,7 @@ msgstr ""
 msgid "Configuration Name"
 msgstr ""
 
-#: src/views/config/Config.vue:44
+#: src/views/config/Config.vue:42
 msgid "Configurations"
 msgstr ""
 
@@ -354,8 +354,8 @@ msgid "Connection lost, please refresh the page."
 msgstr ""
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
-#: src/views/domain/ngx_conf/LocationEditor.vue:125
-#: src/views/domain/ngx_conf/LocationEditor.vue:97
+#: src/views/domain/ngx_conf/LocationEditor.vue:124
+#: src/views/domain/ngx_conf/LocationEditor.vue:96
 msgid "Content"
 msgstr ""
 
@@ -388,7 +388,7 @@ msgid "Create Another"
 msgstr ""
 
 #: src/views/notification/Notification.vue:31
-#: src/views/user/User.vue:31
+#: src/views/user/userColumns.tsx:47
 msgid "Created at"
 msgstr ""
 
@@ -417,11 +417,11 @@ msgid "Current Version"
 msgstr ""
 
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:124
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:186
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:191
 msgid "Custom"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:122
+#: src/views/preference/BasicSettings.vue:121
 msgid "Customize the name of local server to be displayed in the environment indicator."
 msgstr ""
 
@@ -429,17 +429,17 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: src/views/other/Install.vue:120
+#: src/views/other/Install.vue:119
 msgid "Database (Optional, default: database)"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:61
+#: src/views/preference/BasicSettings.vue:60
 msgid "Days"
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:557
 #: src/views/domain/DomainList.vue:155
-#: src/views/domain/ngx_conf/NgxServer.vue:114
+#: src/views/domain/ngx_conf/NgxServer.vue:110
 #: src/views/domain/ngx_conf/NgxUpstream.vue:126
 #: src/views/stream/StreamList.vue:176
 msgid "Delete"
@@ -517,13 +517,13 @@ msgstr ""
 msgid "Disable auto-renewal failed for %{name}"
 msgstr ""
 
-#: src/views/domain/cert/ChangeCert.vue:44
-#: src/views/domain/DomainEdit.vue:183
+#: src/views/domain/DomainEdit.vue:180
 #: src/views/domain/DomainList.vue:33
 #: src/views/environment/envColumns.tsx:113
 #: src/views/environment/envColumns.tsx:95
 #: src/views/stream/StreamEdit.vue:175
 #: src/views/stream/StreamList.vue:33
+#: src/views/user/userColumns.tsx:40
 msgid "Disabled"
 msgstr ""
 
@@ -583,7 +583,7 @@ msgstr ""
 msgid "Do you want to enable TLS?"
 msgstr ""
 
-#: src/views/domain/ngx_conf/NgxServer.vue:80
+#: src/views/domain/ngx_conf/NgxServer.vue:76
 msgid "Do you want to remove this server?"
 msgstr ""
 
@@ -643,7 +643,7 @@ msgstr ""
 msgid "Duplicate to local successfully"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:172
+#: src/views/domain/DomainEdit.vue:169
 #: src/views/stream/StreamEdit.vue:164
 msgid "Edit %{n}"
 msgstr ""
@@ -665,7 +665,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: src/views/other/Install.vue:89
+#: src/views/other/Install.vue:88
 msgid "Email (*)"
 msgstr ""
 
@@ -707,20 +707,20 @@ msgstr ""
 msgid "Enable successfully"
 msgstr ""
 
-#: src/views/domain/ngx_conf/NgxConfigEditor.vue:175
+#: src/views/domain/ngx_conf/NgxConfigEditor.vue:180
 msgid "Enable TLS"
 msgstr ""
 
-#: src/views/domain/cert/ChangeCert.vue:40
 #: src/views/domain/components/RightSettings.vue:77
-#: src/views/domain/DomainEdit.vue:177
+#: src/views/domain/DomainEdit.vue:174
 #: src/views/domain/DomainList.vue:29
 #: src/views/environment/envColumns.tsx:104
 #: src/views/environment/envColumns.tsx:110
-#: src/views/preference/LogrotateSettings.vue:20
+#: src/views/preference/LogrotateSettings.vue:19
 #: src/views/stream/components/RightSettings.vue:76
 #: src/views/stream/StreamEdit.vue:169
 #: src/views/stream/StreamList.vue:29
+#: src/views/user/userColumns.tsx:37
 msgid "Enabled"
 msgstr ""
 
@@ -734,7 +734,7 @@ msgstr ""
 msgid "Enabled successfully"
 msgstr ""
 
-#: src/views/domain/cert/IssueCert.vue:57
+#: src/views/domain/cert/IssueCert.vue:51
 msgid "Encrypt website with Let's Encrypt"
 msgstr ""
 
@@ -765,11 +765,12 @@ msgstr ""
 msgid "Executable Path"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:101
+#: src/views/certificate/CertificateList/certColumns.tsx:77
+#: src/views/domain/cert/CertInfo.vue:31
 msgid "Expired"
 msgstr ""
 
-#: src/views/domain/cert/CertInfo.vue:24
+#: src/views/domain/cert/CertInfo.vue:38
 msgid "Expired At: %{date}"
 msgstr ""
 
@@ -799,7 +800,7 @@ msgstr ""
 msgid "Failed to get certificate information"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:130
+#: src/views/domain/DomainEdit.vue:127
 #: src/views/stream/StreamEdit.vue:122
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr ""
@@ -812,8 +813,8 @@ msgstr ""
 msgid "File exists"
 msgstr ""
 
-#: src/views/preference/NginxSettings.vue:15
-#: src/views/preference/NginxSettings.vue:24
+#: src/views/preference/NginxSettings.vue:14
+#: src/views/preference/NginxSettings.vue:23
 msgid "File not found"
 msgstr ""
 
@@ -830,7 +831,7 @@ msgstr ""
 msgid "Finished"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:44
+#: src/views/preference/BasicSettings.vue:43
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr ""
 
@@ -846,11 +847,11 @@ msgstr ""
 msgid "Format successfully"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:44
+#: src/views/certificate/CertificateList/certColumns.tsx:32
 msgid "General Certificate"
 msgstr ""
 
-#: src/components/StdDesign/StdDataEntry/components/StdPassword.vue:58
+#: src/components/StdDesign/StdDataEntry/components/StdPassword.vue:52
 msgid "Generate"
 msgstr ""
 
@@ -867,7 +868,7 @@ msgstr ""
 msgid "Getting the certificate, please wait..."
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:36
+#: src/views/preference/BasicSettings.vue:35
 msgid "Github Proxy"
 msgstr ""
 
@@ -879,15 +880,15 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:32
+#: src/views/preference/BasicSettings.vue:31
 msgid "HTTP Challenge Port"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:14
+#: src/views/preference/BasicSettings.vue:13
 msgid "HTTP Host"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:17
+#: src/views/preference/BasicSettings.vue:16
 msgid "HTTP Port"
 msgstr ""
 
@@ -899,7 +900,7 @@ msgstr ""
 msgid "If left blank, the default CA Dir will be used."
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:63
+#: src/views/preference/AuthSettings.vue:62
 msgid "If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
 
@@ -907,7 +908,7 @@ msgstr ""
 msgid "If you lose your mobile phone, you can use the recovery code to reset your 2FA."
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:136
+#: src/views/certificate/CertificateList/Certificate.vue:27
 msgid "Import"
 msgstr ""
 
@@ -942,19 +943,15 @@ msgid "Input the recovery code:"
 msgstr ""
 
 #: src/routes/index.ts:283
-#: src/views/other/Install.vue:135
+#: src/views/other/Install.vue:134
 msgid "Install"
 msgstr ""
 
-#: src/views/other/Install.vue:66
+#: src/views/other/Install.vue:65
 msgid "Install successfully"
 msgstr ""
 
-#: src/views/domain/cert/CertInfo.vue:18
-msgid "Intermediate Certification Authorities: %{issuer}"
-msgstr ""
-
-#: src/views/preference/LogrotateSettings.vue:26
+#: src/views/preference/LogrotateSettings.vue:25
 msgid "Interval"
 msgstr ""
 
@@ -970,11 +967,11 @@ msgstr ""
 msgid "Invalid passcode or recovery code"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:15
+#: src/views/preference/AuthSettings.vue:14
 msgid "IP"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:144
+#: src/views/certificate/CertificateList/Certificate.vue:35
 msgid "Issue wildcard certificate"
 msgstr ""
 
@@ -986,11 +983,15 @@ msgstr ""
 msgid "Issued certificate successfully"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:23
+#: src/views/domain/cert/CertInfo.vue:35
+msgid "Issuer: %{issuer}"
+msgstr ""
+
+#: src/views/preference/BasicSettings.vue:22
 msgid "Jwt Secret"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:66
+#: src/views/certificate/CertificateList/certColumns.tsx:54
 #: src/views/certificate/WildcardCertificate.vue:79
 #: src/views/domain/cert/components/AutoCertStepOne.vue:80
 msgid "Key Type"
@@ -1000,16 +1001,16 @@ msgstr ""
 msgid "Last checked at"
 msgstr ""
 
-#: src/views/user/User.vue:25
+#: src/views/user/userColumns.tsx:25
 msgid "Leave blank for no change"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:53
+#: src/views/preference/OpenAISettings.vue:52
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:207
-#: src/views/certificate/CertificateEditor.vue:220
+#: src/views/certificate/CertificateEditor.vue:210
+#: src/views/certificate/CertificateEditor.vue:223
 msgid "Leave blank will not change anything"
 msgstr ""
 
@@ -1038,20 +1039,20 @@ msgstr ""
 msgid "Load successfully"
 msgstr ""
 
-#: src/components/EnvIndicator/EnvIndicator.vue:40
+#: src/components/EnvIndicator/EnvIndicator.vue:39
 #: src/components/NodeSelector/NodeSelector.vue:71
 msgid "Local"
 msgstr ""
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:60
+#: src/views/domain/ngx_conf/LocationEditor.vue:59
 msgid "Location"
 msgstr ""
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:44
+#: src/views/domain/ngx_conf/LocationEditor.vue:43
 msgid "Locations"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:230
+#: src/views/certificate/CertificateEditor.vue:233
 msgid "Log"
 msgstr ""
 
@@ -1073,7 +1074,7 @@ msgstr ""
 msgid "Logrotate"
 msgstr ""
 
-#: src/views/preference/LogrotateSettings.vue:13
+#: src/views/preference/LogrotateSettings.vue:12
 msgid "Logrotate, by default, is enabled in most mainstream Linux distributions for users who install Nginx UI on the host machine, so you don't need to modify the parameters on this page. For users who install Nginx UI using Docker containers, you can manually enable this option. The crontab task scheduler of Nginx UI will execute the logrotate command at the interval you set in minutes."
 msgstr ""
 
@@ -1096,15 +1097,15 @@ msgid "Manage Streams"
 msgstr ""
 
 #: src/routes/index.ts:235
-#: src/views/user/User.vue:50
+#: src/views/user/User.vue:9
 msgid "Manage Users"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:43
+#: src/views/certificate/CertificateList/certColumns.tsx:31
 msgid "Managed Certificate"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:77
+#: src/views/preference/AuthSettings.vue:76
 msgid "Max Attempts"
 msgstr ""
 
@@ -1117,11 +1118,11 @@ msgstr ""
 msgid "Memory and Storage"
 msgstr ""
 
-#: src/views/preference/LogrotateSettings.vue:30
+#: src/views/preference/LogrotateSettings.vue:29
 msgid "Minutes"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:33
+#: src/views/preference/OpenAISettings.vue:32
 msgid "Model"
 msgstr ""
 
@@ -1149,11 +1150,10 @@ msgid "Multi-line Directive"
 msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:13
-#: src/views/certificate/Certificate.vue:20
-#: src/views/certificate/CertificateEditor.vue:147
+#: src/views/certificate/CertificateEditor.vue:150
+#: src/views/certificate/CertificateList/certColumns.tsx:10
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/config.ts:7
-#: src/views/domain/cert/ChangeCert.vue:17
 #: src/views/domain/components/RightSettings.vue:83
 #: src/views/domain/components/SiteDuplicate.vue:129
 #: src/views/domain/DomainList.vue:13
@@ -1196,11 +1196,11 @@ msgstr ""
 msgid "Nginx"
 msgstr ""
 
-#: src/views/preference/NginxSettings.vue:12
+#: src/views/preference/NginxSettings.vue:11
 msgid "Nginx Access Log Path"
 msgstr ""
 
-#: src/views/domain/DomainEdit.vue:215
+#: src/views/domain/DomainEdit.vue:212
 #: src/views/stream/StreamEdit.vue:207
 msgid "Nginx Configuration Parse Error"
 msgstr ""
@@ -1209,7 +1209,7 @@ msgstr ""
 msgid "Nginx Control"
 msgstr ""
 
-#: src/views/preference/NginxSettings.vue:21
+#: src/views/preference/NginxSettings.vue:20
 msgid "Nginx Error Log Path"
 msgstr ""
 
@@ -1233,19 +1233,19 @@ msgstr ""
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:576
 #: src/views/domain/DomainList.vue:144
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
-#: src/views/domain/ngx_conf/LocationEditor.vue:71
+#: src/views/domain/ngx_conf/LocationEditor.vue:70
 #: src/views/notification/Notification.vue:70
-#: src/views/preference/AuthSettings.vue:99
-#: src/views/preference/BasicSettings.vue:102
+#: src/views/preference/AuthSettings.vue:98
+#: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
 msgid "No"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:26
+#: src/views/preference/BasicSettings.vue:25
 msgid "Node Secret"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:107
+#: src/views/certificate/CertificateList/certColumns.tsx:83
 msgid "Not After"
 msgstr ""
 
@@ -1253,7 +1253,7 @@ msgstr ""
 msgid "Not Found"
 msgstr ""
 
-#: src/views/domain/cert/CertInfo.vue:27
+#: src/views/domain/cert/CertInfo.vue:41
 msgid "Not Valid Before: %{date}"
 msgstr ""
 
@@ -1301,7 +1301,7 @@ msgstr ""
 #: src/views/domain/components/RightSettings.vue:50
 #: src/views/domain/DomainList.vue:145
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:49
-#: src/views/domain/ngx_conf/NgxServer.vue:83
+#: src/views/domain/ngx_conf/NgxServer.vue:79
 #: src/views/domain/ngx_conf/NgxUpstream.vue:32
 #: src/views/notification/Notification.vue:71
 #: src/views/stream/components/Deploy.vue:20
@@ -1348,17 +1348,17 @@ msgid "Params"
 msgstr ""
 
 #: src/views/other/Login.vue:169
-#: src/views/user/User.vue:18
+#: src/views/user/userColumns.tsx:18
 msgid "Password"
 msgstr ""
 
-#: src/views/other/Install.vue:109
+#: src/views/other/Install.vue:108
 msgid "Password (*)"
 msgstr ""
 
 #: src/views/config/ConfigEdit.vue:118
-#: src/views/domain/ngx_conf/LocationEditor.vue:119
-#: src/views/domain/ngx_conf/LocationEditor.vue:91
+#: src/views/domain/ngx_conf/LocationEditor.vue:118
+#: src/views/domain/ngx_conf/LocationEditor.vue:90
 msgid "Path"
 msgstr ""
 
@@ -1395,16 +1395,16 @@ msgstr ""
 msgid "Please input name, this will be used as the filename of the new configuration!"
 msgstr ""
 
-#: src/views/other/Install.vue:33
+#: src/views/other/Install.vue:32
 msgid "Please input your E-mail!"
 msgstr ""
 
-#: src/views/other/Install.vue:45
+#: src/views/other/Install.vue:44
 #: src/views/other/Login.vue:43
 msgid "Please input your password!"
 msgstr ""
 
-#: src/views/other/Install.vue:39
+#: src/views/other/Install.vue:38
 #: src/views/other/Login.vue:37
 msgid "Please input your username!"
 msgstr ""
@@ -1481,7 +1481,7 @@ msgstr ""
 msgid "Recovery Code:"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:69
+#: src/views/preference/BasicSettings.vue:68
 msgid "Recursive Nameservers"
 msgstr ""
 
@@ -1530,11 +1530,11 @@ msgstr ""
 msgid "Reloading nginx"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:104
+#: src/views/preference/AuthSettings.vue:103
 msgid "Remove"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:48
+#: src/views/preference/AuthSettings.vue:47
 msgid "Remove successfully"
 msgstr ""
 
@@ -1584,7 +1584,7 @@ msgstr ""
 msgid "Restarting"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:20
+#: src/views/preference/BasicSettings.vue:19
 msgid "Run Mode"
 msgstr ""
 
@@ -1593,9 +1593,9 @@ msgid "Running"
 msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:251
-#: src/views/certificate/CertificateEditor.vue:249
+#: src/views/certificate/CertificateEditor.vue:252
 #: src/views/config/ConfigEdit.vue:96
-#: src/views/domain/DomainEdit.vue:261
+#: src/views/domain/DomainEdit.vue:258
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
 #: src/views/preference/Preference.vue:145
 #: src/views/stream/StreamEdit.vue:252
@@ -1621,7 +1621,7 @@ msgstr ""
 
 #: src/views/config/ConfigEdit.vue:55
 #: src/views/domain/DomainAdd.vue:37
-#: src/views/domain/DomainEdit.vue:146
+#: src/views/domain/DomainEdit.vue:143
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/stream/StreamEdit.vue:138
 msgid "Saved successfully"
@@ -1655,8 +1655,8 @@ msgstr ""
 #: src/views/domain/DomainList.vue:81
 #: src/views/environment/BatchUpgrader.vue:57
 #: src/views/environment/Environment.vue:15
-#: src/views/other/Install.vue:69
-#: src/views/preference/AuthSettings.vue:50
+#: src/views/other/Install.vue:68
+#: src/views/preference/AuthSettings.vue:49
 #: src/views/preference/components/TOTP.vue:42
 #: src/views/preference/components/TOTP.vue:55
 #: src/views/preference/Preference.vue:78
@@ -1670,7 +1670,7 @@ msgstr ""
 msgid "Server Info"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:118
+#: src/views/preference/BasicSettings.vue:117
 msgid "Server Name"
 msgstr ""
 
@@ -1683,7 +1683,7 @@ msgstr ""
 msgid "server_name parameter is required"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:65
+#: src/views/preference/BasicSettings.vue:64
 msgid "Set the recursive nameservers to override the systems nameservers for the step of DNS challenge."
 msgstr ""
 
@@ -1715,21 +1715,19 @@ msgstr ""
 msgid "Sites List"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:198
+#: src/views/certificate/CertificateEditor.vue:201
 msgid "SSL Certificate Content"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:211
+#: src/views/certificate/CertificateEditor.vue:214
 msgid "SSL Certificate Key Content"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:80
-#: src/views/certificate/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:180
 msgid "SSL Certificate Key Path"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:72
-#: src/views/certificate/CertificateEditor.vue:162
+#: src/views/certificate/CertificateEditor.vue:165
 msgid "SSL Certificate Path"
 msgstr ""
 
@@ -1745,7 +1743,7 @@ msgid "Stable"
 msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:42
-#: src/views/certificate/Certificate.vue:88
+#: src/views/certificate/CertificateList/certColumns.tsx:60
 #: src/views/domain/DomainList.vue:22
 #: src/views/environment/envColumns.tsx:78
 #: src/views/stream/StreamList.vue:22
@@ -1761,10 +1759,6 @@ msgstr ""
 msgid "Storage"
 msgstr ""
 
-#: src/views/domain/cert/CertInfo.vue:21
-msgid "Subject Name: %{subject}"
-msgstr ""
-
 #: src/constants/index.ts:19
 msgid "Success"
 msgstr ""
@@ -1774,15 +1768,15 @@ msgstr ""
 msgid "Swap"
 msgstr ""
 
-#: src/components/SwitchAppearance/SwitchAppearance.vue:14
+#: src/components/SwitchAppearance/SwitchAppearance.vue:13
 msgid "Switch to dark theme"
 msgstr ""
 
-#: src/components/SwitchAppearance/SwitchAppearance.vue:14
+#: src/components/SwitchAppearance/SwitchAppearance.vue:13
 msgid "Switch to light theme"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:42
+#: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "Sync Certificate"
 msgstr ""
 
@@ -1806,7 +1800,7 @@ msgstr ""
 msgid "Sync Certificate Success"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:191
+#: src/views/certificate/CertificateEditor.vue:194
 msgid "Sync to"
 msgstr ""
 
@@ -1824,7 +1818,7 @@ msgstr ""
 msgid "Terminal"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:29
+#: src/views/preference/BasicSettings.vue:28
 msgid "Terminal Start Command"
 msgstr ""
 
@@ -1832,27 +1826,27 @@ msgstr ""
 msgid "The certificate for the domain will be checked 5 minutes, and will be renewed if it has been more than 1 week since it was last issued."
 msgstr ""
 
-#: src/views/other/Install.vue:51
+#: src/views/other/Install.vue:50
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:201
+#: src/views/certificate/CertificateEditor.vue:204
 msgid "The input is not a SSL Certificate"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/CertificateEditor.vue:217
 msgid "The input is not a SSL Certificate Key"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:36
+#: src/views/preference/OpenAISettings.vue:35
 msgid "The model name should only contain letters, unicode, numbers, hyphens, dashes, and dots."
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:166
+#: src/views/certificate/CertificateEditor.vue:169
 msgid "The path exists, but the file is not a certificate"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:181
+#: src/views/certificate/CertificateEditor.vue:184
 msgid "The path exists, but the file is not a private key"
 msgstr ""
 
@@ -1864,7 +1858,7 @@ msgstr ""
 msgid "The remote Nginx UI version is not compatible with the local Nginx UI version. To avoid potential errors, please upgrade the remote Nginx UI to match the local version."
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:121
+#: src/views/preference/BasicSettings.vue:120
 msgid "The server name should only contain letters, unicode, numbers, hyphens, dashes, and dots."
 msgstr ""
 
@@ -1872,13 +1866,13 @@ msgstr ""
 msgid "The server_name in the current configuration must be the domain name you need to get the certificate, supportmultiple domains."
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:39
-#: src/views/preference/BasicSettings.vue:51
+#: src/views/preference/BasicSettings.vue:38
+#: src/views/preference/BasicSettings.vue:50
 msgid "The url is invalid"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:48
-#: src/views/preference/OpenAISettings.vue:60
+#: src/views/preference/OpenAISettings.vue:47
+#: src/views/preference/OpenAISettings.vue:59
 msgid "The url is invalid."
 msgstr ""
 
@@ -1894,9 +1888,9 @@ msgstr ""
 msgid "This certificate is managed by Nginx UI"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:150
-#: src/views/certificate/CertificateEditor.vue:164
-#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/CertificateEditor.vue:153
+#: src/views/certificate/CertificateEditor.vue:167
+#: src/views/certificate/CertificateEditor.vue:182
 msgid "This field is required"
 msgstr ""
 
@@ -1908,8 +1902,8 @@ msgstr ""
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:62
-#: src/views/preference/LogrotateSettings.vue:12
+#: src/views/preference/AuthSettings.vue:61
+#: src/views/preference/LogrotateSettings.vue:11
 msgid "Tips"
 msgstr ""
 
@@ -1925,7 +1919,7 @@ msgstr ""
 msgid "To make sure the certification auto-renewal can work normally, we need to add a location which can proxy the request from authority to backend, and we need to save this file and reload the Nginx. Are you sure you want to continue?"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:72
+#: src/views/preference/OpenAISettings.vue:71
 msgid "Token is not valid"
 msgstr ""
 
@@ -1945,7 +1939,7 @@ msgstr ""
 msgid "Two-factor authentication required"
 msgstr ""
 
-#: src/views/certificate/Certificate.vue:37
+#: src/views/certificate/CertificateList/certColumns.tsx:25
 #: src/views/config/config.ts:12
 #: src/views/notification/Notification.vue:13
 msgid "Type"
@@ -1960,7 +1954,7 @@ msgstr ""
 #: src/views/environment/envColumns.tsx:124
 #: src/views/stream/components/RightSettings.vue:85
 #: src/views/stream/StreamList.vue:41
-#: src/views/user/User.vue:37
+#: src/views/user/userColumns.tsx:53
 msgid "Updated at"
 msgstr ""
 
@@ -2017,16 +2011,17 @@ msgid "User is banned"
 msgstr ""
 
 #: src/views/other/Login.vue:159
-#: src/views/user/User.vue:9
+#: src/views/user/userColumns.tsx:9
 msgid "Username"
 msgstr ""
 
-#: src/views/other/Install.vue:99
+#: src/views/other/Install.vue:98
 msgid "Username (*)"
 msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:87
-#: src/views/certificate/Certificate.vue:97
+#: src/views/certificate/CertificateList/certColumns.tsx:73
+#: src/views/domain/cert/CertInfo.vue:24
 msgid "Valid"
 msgstr ""
 
@@ -2080,9 +2075,9 @@ msgid "Writing certificate to disk"
 msgstr ""
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
-#: src/views/domain/ngx_conf/LocationEditor.vue:70
-#: src/views/preference/AuthSettings.vue:98
-#: src/views/preference/BasicSettings.vue:101
+#: src/views/domain/ngx_conf/LocationEditor.vue:69
+#: src/views/preference/AuthSettings.vue:97
+#: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
 msgstr ""
 

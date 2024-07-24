@@ -6,6 +6,8 @@ import cert from '@/api/cert'
 import type { NgxDirective } from '@/api/ngx'
 import certColumns from '@/views/certificate/CertificateList/certColumns'
 
+const emit = defineEmits(['change'])
+
 const current_server_directives = inject('current_server_directives') as WritableComputedRef<NgxDirective[]>
 const visible = ref(false)
 
@@ -34,6 +36,10 @@ async function ok() {
   })
 
   visible.value = false
+  emit('change', records.value)
+
+  records.value = []
+  selectedKeys.value = []
 }
 </script>
 
