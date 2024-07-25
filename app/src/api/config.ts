@@ -18,6 +18,14 @@ class ConfigCurd extends Curd<Config> {
   get_base_path() {
     return http.get('/config_base_path')
   }
+
+  mkdir(basePath: string, name: string) {
+    return http.post('/config_mkdir', { base_path: basePath, folder_name: name })
+  }
+
+  rename(basePath: string, origName: string, newName: string) {
+    return http.post('/config_rename', { base_path: basePath, orig_name: origName, new_name: newName })
+  }
 }
 
 const config: ConfigCurd = new ConfigCurd()

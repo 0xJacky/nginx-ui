@@ -4,6 +4,7 @@ export const useUserStore = defineStore('user', {
   state: () => ({
     token: '',
     unreadCount: 0,
+    secureSessionId: '',
   }),
   getters: {
     is_login(state): boolean {

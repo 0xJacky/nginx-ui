@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { $gettext } from '../../gettext'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import config from '@/api/config'
 import configColumns from '@/views/config/configColumns'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
+import Mkdir from '@/views/config/components/Mkdir.vue'
+import Rename from '@/views/config/components/Rename.vue'
 
 const table = ref()
 const route = useRoute()
@@ -79,17 +82,22 @@ function goBack() {
     },
   })
 }
+
+const refMkdir = ref()
+const refRename = ref()
 </script>
 
 <template>
   <ACard :title="$gettext('Configurations')">
     <template #extra>
       <a
+        class="mr-4"
         @click="router.push({
           path: '/config/add',
           query: { basePath: basePath || undefined },
         })"
-      >{{ $gettext('Add') }}</a>
+      >{{ $gettext('Create File') }}</a>
+      <a @click="() => refMkdir.open(basePath)">{{ $gettext('Create Folder') }}</a>
     </template>
     <InspectConfig ref="refInspectConfig" />
     <StdTable
@@ -116,6 +124,19 @@ function goBack() {
           })
         }
       }"
+    >
+      <template #actions="{ record }">
+        <ADivider type="vertical" />
+        <a @click="() => refRename.open(basePath, record.name)">{{ $gettext('Rename ') }}</a>
+      </template>
+    </StdTable>
+    <Mkdir
+      ref="refMkdir"
+      @created="() => table.get_list()"
+    />
+    <Rename
+      ref="refRename"
+      @renamed="() => table.get_list()"
     />
     <FooterToolBar v-if="basePath">
       <AButton @click="goBack">

@@ -3,6 +3,7 @@ import { Modal, message } from 'ant-design-vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import OTPAuthorization from '@/components/OTP/OTPAuthorization.vue'
 import otp from '@/api/otp'
+import { useUserStore } from '@/pinia'
 
 export interface OTPModalProps {
   onOk?: (secureSessionId: string) => void
@@ -12,6 +13,7 @@ export interface OTPModalProps {
 const useOTPModal = () => {
   const refOTPAuthorization = ref<typeof OTPAuthorization>()
   const randomId = Math.random().toString(36).substring(2, 8)
+  const { secureSessionId } = storeToRefs(useUserStore())
 
   const injectStyles = () => {
     const style = document.createElement('style')
@@ -36,6 +38,7 @@ const useOTPModal = () => {
     const ssid = cookies.get('secure_session_id')
     if (ssid) {
       onOk?.(ssid)
+      secureSessionId.value = ssid
 
       return
     }
@@ -55,6 +58,7 @@ const useOTPModal = () => {
         cookies.set('secure_session_id', r.session_id, { maxAge: 60 * 3 })
         onOk?.(r.session_id)
         close()
+        secureSessionId.value = r.session_id
       }).catch(async () => {
         refOTPAuthorization.value?.clearInput()
         await message.error($gettext('Invalid passcode or recovery code'))
