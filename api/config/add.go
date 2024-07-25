@@ -3,42 +3,48 @@ package config
 import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/config"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
+	"github.com/sashabaranov/go-openai"
 	"net/http"
 	"os"
+	"time"
 )
 
 func AddConfig(c *gin.Context) {
-	var request struct {
-		Name    string `json:"name" binding:"required"`
-		Content string `json:"content" binding:"required"`
+	var json struct {
+		Name        string `json:"name" binding:"required"`
+		NewFilepath string `json:"new_filepath" binding:"required"`
+		Content     string `json:"content"`
+		Overwrite   bool   `json:"overwrite"`
 	}
 
-	err := c.BindJSON(&request)
-	if err != nil {
-		api.ErrHandler(c, err)
+	if !api.BindAndValid(c, &json) {
 		return
 	}
 
-	name := request.Name
-	content := request.Content
-
-	path := nginx.GetConfPath("/", name)
-
-	if _, err = os.Stat(path); err == nil {
-		c.JSON(http.StatusNotAcceptable, gin.H{
-			"message": "config exist",
+	name := json.Name
+	content := json.Content
+	path := json.NewFilepath
+	if !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
+		c.JSON(http.StatusForbidden, gin.H{
+			"message": "new filepath is not under the nginx conf path",
 		})
 		return
 	}
 
-	if content != "" {
-		err = os.WriteFile(path, []byte(content), 0644)
-		if err != nil {
-			api.ErrHandler(c, err)
-			return
-		}
+	if !json.Overwrite && helper.FileExists(path) {
+		c.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "File exists",
+		})
+		return
+	}
+
+	err := os.WriteFile(path, []byte(content), 0644)
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
 	}
 
 	output := nginx.Reload()
@@ -50,7 +56,10 @@ func AddConfig(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, config.Config{
-		Name:    name,
-		Content: content,
+		Name:            name,
+		Content:         content,
+		ChatGPTMessages: make([]openai.ChatCompletionMessage, 0),
+		FilePath:        path,
+		ModifiedAt:      time.Now(),
 	})
 }

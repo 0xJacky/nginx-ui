@@ -105,12 +105,23 @@ export const routes: RouteRecordRaw[] = [
         },
       },
       {
+        path: 'config/add',
+        name: 'Add Configuration',
+        component: () => import('@/views/config/ConfigEditor.vue'),
+        meta: {
+          name: () => $gettext('Add Configuration'),
+          hiddenInSidebar: true,
+          lastRouteName: 'Manage Configs',
+        },
+      },
+      {
         path: 'config/:name+/edit',
         name: 'Edit Configuration',
-        component: () => import('@/views/config/ConfigEdit.vue'),
+        component: () => import('@/views/config/ConfigEditor.vue'),
         meta: {
           name: () => $gettext('Edit Configuration'),
           hiddenInSidebar: true,
+          lastRouteName: 'Manage Configs',
         },
       },
       {

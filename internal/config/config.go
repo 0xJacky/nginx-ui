@@ -7,7 +7,7 @@ import (
 
 type Config struct {
 	Name            string                         `json:"name"`
-	Content         string                         `json:"content,omitempty"`
+	Content         string                         `json:"content"`
 	ChatGPTMessages []openai.ChatCompletionMessage `json:"chatgpt_messages,omitempty"`
 	FilePath        string                         `json:"filepath,omitempty"`
 	ModifiedAt      time.Time                      `json:"modified_at"`

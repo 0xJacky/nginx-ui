@@ -1,5 +1,6 @@
 import Curd from '@/api/curd'
 import type { ChatComplicationMessage } from '@/api/openai'
+import http from '@/lib/http'
 
 export interface Config {
   name: string
@@ -9,6 +10,16 @@ export interface Config {
   modified_at: string
 }
 
-const config: Curd<Config> = new Curd('/config')
+class ConfigCurd extends Curd<Config> {
+  constructor() {
+    super('/config')
+  }
+
+  get_base_path() {
+    return http.get('/config_base_path')
+  }
+}
+
+const config: ConfigCurd = new ConfigCurd()
 
 export default config

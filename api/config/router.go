@@ -7,4 +7,5 @@ func InitRouter(r *gin.RouterGroup) {
 	r.GET("config/*name", GetConfig)
 	r.POST("config", AddConfig)
 	r.POST("config/*name", EditConfig)
+	r.GET("config_base_path", GetBasePath)
 }

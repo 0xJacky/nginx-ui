@@ -3,20 +3,18 @@ import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import config from '@/api/config'
 import configColumns from '@/views/config/config'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
-import router from '@/routes'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 
-const api = config
-
-const table = ref(null)
+const table = ref()
 const route = useRoute()
+const router = useRouter()
 
 const basePath = computed(() => {
   let dir = route?.query?.dir ?? ''
   if (dir)
     dir += '/'
 
-  return dir
+  return dir as string
 })
 
 const getParams = computed(() => {
@@ -36,15 +34,32 @@ const refInspectConfig = ref()
 watch(route, () => {
   refInspectConfig.value?.test()
 })
+
+function goBack() {
+  router.push({
+    path: '/config',
+    query: {
+      dir: `${basePath.value.split('/').slice(0, -2).join('/')}` || undefined,
+    },
+  })
+}
 </script>
 
 <template>
   <ACard :title="$gettext('Configurations')">
+    <template #extra>
+      <a
+        @click="router.push({
+          path: '/config/add',
+          query: { basePath: basePath || undefined },
+        })"
+      >{{ $gettext('Add') }}</a>
+    </template>
     <InspectConfig ref="refInspectConfig" />
     <StdTable
       :key="update"
       ref="table"
-      :api="api"
+      :api="config"
       :columns="configColumns"
       disable-delete
       disable-search
@@ -68,7 +83,7 @@ watch(route, () => {
       }"
     />
     <FooterToolBar v-if="basePath">
-      <AButton @click="router.go(-1)">
+      <AButton @click="goBack">
         {{ $gettext('Back') }}
       </AButton>
     </FooterToolBar>
