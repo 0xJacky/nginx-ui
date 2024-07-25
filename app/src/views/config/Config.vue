@@ -127,7 +127,7 @@ const refRename = ref()
     >
       <template #actions="{ record }">
         <ADivider type="vertical" />
-        <a @click="() => refRename.open(basePath, record.name)">{{ $gettext('Rename ') }}</a>
+        <a @click="() => refRename.open(basePath, record.name)">{{ $gettext('Rename') }}</a>
       </template>
     </StdTable>
     <Mkdir
