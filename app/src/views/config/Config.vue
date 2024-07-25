@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import config from '@/api/config'
-import configColumns from '@/views/config/config'
+import configColumns from '@/views/config/configColumns'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import InspectConfig from '@/views/config/InspectConfig.vue'
+import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
 
 const table = ref()
 const route = useRoute()
@@ -30,9 +31,44 @@ watch(getParams, () => {
 })
 
 const refInspectConfig = ref()
+const breadcrumbs = useBreadcrumbs()
+
+function updateBreadcrumbs() {
+  const path = basePath.value
+    .split('/')
+    .filter(v => v)
+    .map(v => {
+      return {
+        name: 'Manage Configs',
+        translatedName: () => v,
+        path: '/config',
+        query: {
+          dir: v,
+        },
+        hasChildren: false,
+      }
+    })
+
+  breadcrumbs.value = [{
+    name: 'Dashboard',
+    translatedName: () => $gettext('Dashboard'),
+    path: '/dashboard',
+    hasChildren: false,
+  }, {
+    name: 'Manage Configs',
+    translatedName: () => $gettext('Manage Configs'),
+    path: '/config',
+    hasChildren: false,
+  }, ...path]
+}
+
+onMounted(() => {
+  updateBreadcrumbs()
+})
 
 watch(route, () => {
   refInspectConfig.value?.test()
+  updateBreadcrumbs()
 })
 
 function goBack() {
@@ -62,7 +98,6 @@ function goBack() {
       :api="config"
       :columns="configColumns"
       disable-delete
-      disable-search
       disable-view
       row-key="name"
       :get-params="getParams"

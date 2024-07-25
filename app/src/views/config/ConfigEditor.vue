@@ -9,6 +9,7 @@ import ngx from '@/api/ngx'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
 import type { ChatComplicationMessage } from '@/api/openai'
+import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
 
 const route = useRoute()
 const router = useRouter()
@@ -43,17 +44,51 @@ const newPath = computed(() => [nginxConfigBase.value, basePath.value, data.valu
   .join('/'))
 
 const relativePath = computed(() => (route.params.name as string[]).join('/'))
+const breadcrumbs = useBreadcrumbs()
 
 async function init() {
   const { name } = route.params
 
   data.value.name = name?.[name?.length - 1] ?? ''
   origName.value = data.value.name
-  if (data.value.name) {
+  if (!addMode.value) {
     config.get(relativePath.value).then(r => {
       data.value = r
       historyChatgptRecord.value = r.chatgpt_messages
       modifiedAt.value = r.modified_at
+
+      const path = data.value.filepath
+        .replaceAll(`${nginxConfigBase.value}/`, '')
+        .replaceAll(data.value.name, '')
+        .split('/')
+        .filter(v => v)
+        .map(v => {
+          return {
+            name: 'Manage Configs',
+            translatedName: () => v,
+            path: '/config',
+            query: {
+              dir: v,
+            },
+            hasChildren: false,
+          }
+        })
+
+      breadcrumbs.value = [{
+        name: 'Dashboard',
+        translatedName: () => $gettext('Dashboard'),
+        path: '/dashboard',
+        hasChildren: false,
+      }, {
+        name: 'Manage Configs',
+        translatedName: () => $gettext('Manage Configs'),
+        path: '/config',
+        hasChildren: false,
+      }, ...path, {
+        name: 'Edit Config',
+        translatedName: () => origName.value,
+        hasChildren: false,
+      }]
     }).catch(r => {
       message.error(r.message ?? $gettext('Server error'))
     })
@@ -62,6 +97,37 @@ async function init() {
     data.value.content = ''
     historyChatgptRecord.value = []
     data.value.filepath = ''
+
+    const path = basePath.value
+      .split('/')
+      .filter(v => v)
+      .map(v => {
+        return {
+          name: 'Manage Configs',
+          translatedName: () => v,
+          path: '/config',
+          query: {
+            dir: v,
+          },
+          hasChildren: false,
+        }
+      })
+
+    breadcrumbs.value = [{
+      name: 'Dashboard',
+      translatedName: () => $gettext('Dashboard'),
+      path: '/dashboard',
+      hasChildren: false,
+    }, {
+      name: 'Manage Configs',
+      translatedName: () => $gettext('Manage Configs'),
+      path: '/config',
+      hasChildren: false,
+    }, ...path, {
+      name: 'Add Config',
+      translatedName: () => $gettext('Add Configuration'),
+      hasChildren: false,
+    }]
   }
 }
 

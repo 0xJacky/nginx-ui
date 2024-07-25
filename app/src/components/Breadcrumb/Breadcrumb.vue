@@ -1,17 +1,13 @@
 <script setup lang="ts">
-interface bread {
-  name: string
-  translatedName: () => string
-  path: string
-  hasChildren?: boolean
-}
+import type { Bread } from '@/components/Breadcrumb/types'
+import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
 
 const name = ref()
 const route = useRoute()
 const router = useRouter()
 
-const breadList = computed(() => {
-  const result: bread[] = []
+const computedBreadList = computed(() => {
+  const result: Bread[] = []
 
   name.value = route.meta.name
 
@@ -36,6 +32,16 @@ const breadList = computed(() => {
 
   return result
 })
+
+const breadList = useBreadcrumbs()
+
+onMounted(() => {
+  breadList.value = computedBreadList.value
+})
+
+watch(route, () => {
+  breadList.value = computedBreadList.value
+})
 </script>
 
 <template>
@@ -46,7 +52,7 @@ const breadList = computed(() => {
     >
       <RouterLink
         v-if="index === 0 || !item.hasChildren && index !== breadList.length - 1"
-        :to="{ path: item.path === '' ? '/' : item.path }"
+        :to="{ path: item.path === '' ? '/' : item.path, query: item.query }"
       >
         {{ item.translatedName() }}
       </RouterLink>
