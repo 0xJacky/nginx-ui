@@ -19,7 +19,7 @@ const basePath = computed(() => {
   return dir
 })
 
-const get_params = computed(() => {
+const getParams = computed(() => {
   return {
     dir: basePath.value,
   }
@@ -27,30 +27,31 @@ const get_params = computed(() => {
 
 const update = ref(1)
 
-watch(get_params, () => {
+watch(getParams, () => {
   update.value++
 })
 
-const inspect_config = ref()
+const refInspectConfig = ref()
 
 watch(route, () => {
-  inspect_config.value?.test()
+  refInspectConfig.value?.test()
 })
 </script>
 
 <template>
   <ACard :title="$gettext('Configurations')">
-    <InspectConfig ref="inspect_config" />
+    <InspectConfig ref="refInspectConfig" />
     <StdTable
       :key="update"
       ref="table"
       :api="api"
       :columns="configColumns"
       disable-delete
-      disable_search
+      disable-search
       disable-view
       row-key="name"
-      :get_params="get_params"
+      :get-params="getParams"
+      disable-query-params
       @click-edit="(r, row) => {
         if (!row.is_dir) {
           $router.push({
