@@ -193,9 +193,9 @@ msgid "Auto-renewal enabled for %{name}"
 msgstr "%{name}에 대한 자동 갱신 활성화됨"
 
 #: src/views/certificate/CertificateEditor.vue:247
-#: src/views/config/Config.vue:143 src/views/config/ConfigEditor.vue:196
-#: src/views/domain/DomainEdit.vue:253 src/views/nginx_log/NginxLog.vue:168
-#: src/views/stream/StreamEdit.vue:245
+#: src/views/config/ConfigEditor.vue:196 src/views/config/ConfigList.vue:173
+#: src/views/config/ConfigList.vue:99 src/views/domain/DomainEdit.vue:253
+#: src/views/nginx_log/NginxLog.vue:168 src/views/stream/StreamEdit.vue:245
 msgid "Back"
 msgstr "뒤로"
 
@@ -360,7 +360,7 @@ msgstr "구성 파일 테스트 성공"
 msgid "Configuration Name"
 msgstr "구성 이름"
 
-#: src/views/config/Config.vue:91
+#: src/views/config/ConfigList.vue:91
 msgid "Configurations"
 msgstr "구성들"
 
@@ -410,12 +410,12 @@ msgstr "생성"
 msgid "Create Another"
 msgstr "다른 것 생성하기"
 
-#: src/views/config/Config.vue:99
+#: src/views/config/ConfigList.vue:109
 #, fuzzy
 msgid "Create File"
 msgstr "생성"
 
-#: src/views/config/components/Mkdir.vue:50 src/views/config/Config.vue:100
+#: src/views/config/components/Mkdir.vue:50 src/views/config/ConfigList.vue:116
 #, fuzzy
 msgid "Create Folder"
 msgstr "다른 것 생성하기"
@@ -464,8 +464,8 @@ msgid ""
 "indicator."
 msgstr ""
 
-#: src/routes/index.ts:39 src/views/config/Config.vue:57
-#: src/views/config/ConfigEditor.vue:118 src/views/config/ConfigEditor.vue:79
+#: src/routes/index.ts:39 src/views/config/ConfigEditor.vue:118
+#: src/views/config/ConfigEditor.vue:79 src/views/config/ConfigList.vue:57
 msgid "Dashboard"
 msgstr "대시보드"
 
@@ -775,6 +775,11 @@ msgstr "성공적으로 활성화됨"
 #: src/views/domain/cert/IssueCert.vue:49
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Let's Encrypt로 웹사이트 암호화"
+
+#: src/views/config/ConfigList.vue:151
+#, fuzzy
+msgid "Enter"
+msgstr "간격"
 
 #: src/routes/index.ts:228 src/views/environment/Environment.vue:34
 msgid "Environment"
@@ -1170,8 +1175,8 @@ msgstr ""
 "인증서를 획득하기 전에 .well-known 디렉토리에 대한역방향 프록시를 "
 "HTTPChallengePort(기본값: 9180)로 구성했는지 확인하세요."
 
-#: src/routes/index.ts:102 src/views/config/Config.vue:62
-#: src/views/config/ConfigEditor.vue:123 src/views/config/ConfigEditor.vue:84
+#: src/routes/index.ts:102 src/views/config/ConfigEditor.vue:123
+#: src/views/config/ConfigEditor.vue:84 src/views/config/ConfigList.vue:62
 msgid "Manage Configs"
 msgstr "구성 관리"
 
@@ -1218,6 +1223,7 @@ msgstr "실행 모드"
 #: src/components/ChatGPT/ChatGPT.vue:248
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:181
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:532
+#: src/views/config/ConfigList.vue:151
 #, fuzzy
 msgid "Modify"
 msgstr "설정 수정"
@@ -1686,7 +1692,8 @@ msgstr "성공적으로 제거됨"
 msgid "Removed successfully"
 msgstr "성공적으로 제거됨"
 
-#: src/views/config/components/Rename.vue:52 src/views/config/Config.vue:130
+#: src/views/config/components/Rename.vue:52
+#: src/views/config/ConfigList.vue:159
 #: src/views/domain/ngx_conf/NgxUpstream.vue:123
 #, fuzzy
 msgid "Rename"

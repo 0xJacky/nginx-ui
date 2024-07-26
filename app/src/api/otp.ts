@@ -24,6 +24,9 @@ const otp = {
       recovery_code,
     })
   },
+  secure_session_status() {
+    return http.get('/otp_secure_session_status')
+  },
 }
 
 export default otp

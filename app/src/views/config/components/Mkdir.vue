@@ -27,17 +27,15 @@ function ok() {
   refForm.value.validate().then(() => {
     const otpModal = useOTPModal()
 
-    otpModal.open({
-      onOk() {
-        config.mkdir(data.value.basePath, data.value.name).then(() => {
-          visible.value = false
+    otpModal.open().then(() => {
+      config.mkdir(data.value.basePath, data.value.name).then(() => {
+        visible.value = false
 
-          message.success($gettext('Created successfully'))
-          emit('created')
-        }).catch(e => {
-          message.error(`${$gettext('Server error')} ${e?.message}`)
-        })
-      },
+        message.success($gettext('Created successfully'))
+        emit('created')
+      }).catch(e => {
+        message.error(`${$gettext('Server error')} ${e?.message}`)
+      })
     })
   })
 }

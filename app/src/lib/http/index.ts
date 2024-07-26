@@ -1,11 +1,13 @@
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
+import { useCookies } from '@vueuse/integrations/useCookies'
 import { storeToRefs } from 'pinia'
 import NProgress from 'nprogress'
 import { useSettingsStore, useUserStore } from '@/pinia'
 import 'nprogress/nprogress.css'
 
 import router from '@/routes'
+import useOTPModal from '@/components/OTP/useOTPModal'
 
 const user = useUserStore()
 const settings = useSettingsStore()
@@ -58,8 +60,14 @@ instance.interceptors.response.use(
   },
   async error => {
     NProgress.done()
+
+    const otpModal = useOTPModal()
+    const cookies = useCookies(['nginx-ui-2fa'])
     switch (error.response.status) {
       case 401:
+        cookies.remove('secure_session_id')
+        await otpModal.open()
+        break
       case 403:
         user.logout()
         await router.push('/login')

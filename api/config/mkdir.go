@@ -30,6 +30,7 @@ func Mkdir(c *gin.Context) {
 		api.ErrHandler(c, err)
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})

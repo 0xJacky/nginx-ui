@@ -12,6 +12,12 @@ import (
 	"os"
 )
 
+type APIConfigResp struct {
+	config.Config
+	SyncNodeIds   []int `json:"sync_node_ids" gorm:"serializer:json"`
+	SyncOverwrite bool  `json:"sync_overwrite"`
+}
+
 func GetConfig(c *gin.Context) {
 	name := c.Param("name")
 
@@ -34,7 +40,7 @@ func GetConfig(c *gin.Context) {
 		api.ErrHandler(c, err)
 		return
 	}
-
+	q := query.Config
 	g := query.ChatGPTLog
 	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
 	if err != nil {
@@ -46,11 +52,21 @@ func GetConfig(c *gin.Context) {
 		chatgpt.Content = make([]openai.ChatCompletionMessage, 0)
 	}
 
-	c.JSON(http.StatusOK, config.Config{
-		Name:            stat.Name(),
-		Content:         string(content),
-		ChatGPTMessages: chatgpt.Content,
-		FilePath:        path,
-		ModifiedAt:      stat.ModTime(),
+	cfg, err := q.Where(q.Filepath.Eq(path)).FirstOrInit()
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, APIConfigResp{
+		Config: config.Config{
+			Name:            stat.Name(),
+			Content:         string(content),
+			ChatGPTMessages: chatgpt.Content,
+			FilePath:        path,
+			ModifiedAt:      stat.ModTime(),
+		},
+		SyncNodeIds:   cfg.SyncNodeIds,
+		SyncOverwrite: cfg.SyncOverwrite,
 	})
 }

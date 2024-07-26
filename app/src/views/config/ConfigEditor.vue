@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import type { Ref } from 'vue'
+import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { formatDateTime } from '@/lib/helper'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
+import type { Config } from '@/api/config'
 import config from '@/api/config'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import ngx from '@/api/ngx'
@@ -10,7 +12,10 @@ import InspectConfig from '@/views/config/InspectConfig.vue'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
 import type { ChatComplicationMessage } from '@/api/openai'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
+import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
+import { useSettingsStore } from '@/pinia'
 
+const settings = useSettingsStore()
 const route = useRoute()
 const router = useRouter()
 const refForm = ref()
@@ -32,10 +37,12 @@ const data = ref({
   name: '',
   content: '',
   filepath: '',
-})
+  sync_node_ids: [] as number[],
+  sync_overwrite: false,
+} as Config)
 
 const historyChatgptRecord = ref([]) as Ref<ChatComplicationMessage[]>
-const activeKey = ref(['basic', 'chatgpt'])
+const activeKey = ref(['basic', 'deploy', 'chatgpt'])
 const modifiedAt = ref('')
 const nginxConfigBase = ref('')
 
@@ -145,6 +152,8 @@ function save() {
       filepath: data.value.filepath,
       new_filepath: newPath.value,
       content: data.value.content,
+      sync_node_ids: data.value.sync_node_ids,
+      sync_overwrite: data.value.sync_overwrite,
     }).then(r => {
       data.value.content = r.content
       message.success($gettext('Saved successfully'))
@@ -262,6 +271,29 @@ function goBack() {
             </AForm>
           </ACollapsePanel>
           <ACollapsePanel
+            v-if="!settings.is_remote"
+            key="deploy"
+            :header="$gettext('Deploy')"
+          >
+            <NodeSelector
+              v-model:target="data.sync_node_ids"
+              hidden-local
+            />
+            <div class="node-deploy-control">
+              <div class="overwrite">
+                <ACheckbox v-model:checked="data.sync_overwrite">
+                  {{ $gettext('Overwrite') }}
+                </ACheckbox>
+                <ATooltip placement="bottom">
+                  <template #title>
+                    {{ $gettext('Overwrite exist file') }}
+                  </template>
+                  <InfoCircleOutlined />
+                </ATooltip>
+              </div>
+            </div>
+          </ACollapsePanel>
+          <ACollapsePanel
             key="chatgpt"
             header="ChatGPT"
           >
@@ -294,5 +326,20 @@ function goBack() {
 
 :deep(.ant-collapse > .ant-collapse-item > .ant-collapse-header) {
   padding: 0 0 10px 0;
+}
+
+.overwrite {
+  margin-right: 15px;
+
+  span {
+    color: #9b9b9b;
+  }
+}
+
+.node-deploy-control {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  align-items: center;
 }
 </style>

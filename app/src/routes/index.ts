@@ -97,7 +97,7 @@ export const routes: RouteRecordRaw[] = [
       {
         path: 'config',
         name: 'Manage Configs',
-        component: () => import('@/views/config/Config.vue'),
+        component: () => import('@/views/config/ConfigList.vue'),
         meta: {
           name: () => $gettext('Manage Configs'),
           icon: FileOutlined,

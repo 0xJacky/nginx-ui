@@ -170,6 +170,13 @@ func OTPStatus(c *gin.Context) {
 	})
 }
 
+func SecureSessionStatus(c *gin.Context) {
+	// if you can visit this endpoint, you are already in a secure session
+	c.JSON(http.StatusOK, gin.H{
+		"status": true,
+	})
+}
+
 func StartSecure2FASession(c *gin.Context) {
 	var json struct {
 		OTP          string `json:"otp"`

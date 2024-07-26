@@ -90,14 +90,31 @@ const refRename = ref()
 <template>
   <ACard :title="$gettext('Configurations')">
     <template #extra>
-      <a
-        class="mr-4"
+      <AButton
+        v-if="basePath"
+        type="link"
+        size="small"
+        @click="goBack"
+      >
+        {{ $gettext('Back') }}
+      </AButton>
+      <AButton
+        type="link"
+        size="small"
         @click="router.push({
           path: '/config/add',
           query: { basePath: basePath || undefined },
         })"
-      >{{ $gettext('Create File') }}</a>
-      <a @click="() => refMkdir.open(basePath)">{{ $gettext('Create Folder') }}</a>
+      >
+        {{ $gettext('Create File') }}
+      </AButton>
+      <AButton
+        type="link"
+        size="small"
+        @click="() => refMkdir.open(basePath)"
+      >
+        {{ $gettext('Create Folder') }}
+      </AButton>
     </template>
     <InspectConfig ref="refInspectConfig" />
     <StdTable
@@ -110,24 +127,37 @@ const refRename = ref()
       row-key="name"
       :get-params="getParams"
       disable-query-params
-      @click-edit="(r, row) => {
-        if (!row.is_dir) {
-          $router.push({
-            path: `/config/${basePath}${r}/edit`,
-          })
-        }
-        else {
-          $router.push({
-            query: {
-              dir: basePath + r,
-            },
-          })
-        }
-      }"
+      disable-modify
     >
       <template #actions="{ record }">
+        <AButton
+          type="link"
+          size="small"
+          @click="() => {
+            if (!record.is_dir) {
+              $router.push({
+                path: `/config/${basePath}${record.name}/edit`,
+              })
+            }
+            else {
+              $router.push({
+                query: {
+                  dir: basePath + record.name,
+                },
+              })
+            }
+          }"
+        >
+          {{ $gettext('Modify') }}
+        </AButton>
         <ADivider type="vertical" />
-        <a @click="() => refRename.open(basePath, record.name)">{{ $gettext('Rename') }}</a>
+        <AButton
+          type="link"
+          size="small"
+          @click="() => refRename.open(basePath, record.name, record.is_dir)"
+        >
+          {{ $gettext('Rename') }}
+        </AButton>
       </template>
     </StdTable>
     <Mkdir

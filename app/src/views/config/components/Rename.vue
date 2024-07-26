@@ -2,22 +2,27 @@
 import { message } from 'ant-design-vue'
 import config from '@/api/config'
 import useOTPModal from '@/components/OTP/useOTPModal'
+import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 
 const emit = defineEmits(['renamed'])
 const visible = ref(false)
+const isDirFlag = ref(false)
 
 const data = ref({
   basePath: '',
   orig_name: '',
   new_name: '',
+  sync_node_ids: [] as number[],
 })
 
 const refForm = ref()
-function open(basePath: string, origName: string) {
+
+function open(basePath: string, origName: string, isDir: boolean) {
   visible.value = true
   data.value.orig_name = origName
   data.value.new_name = origName
   data.value.basePath = basePath
+  isDirFlag.value = isDir
 }
 
 defineExpose({
@@ -26,20 +31,18 @@ defineExpose({
 
 function ok() {
   refForm.value.validate().then(() => {
-    const { basePath, orig_name, new_name } = data.value
+    const { basePath, orig_name, new_name, sync_node_ids } = data.value
 
     const otpModal = useOTPModal()
 
-    otpModal.open({
-      onOk() {
-        config.rename(basePath, orig_name, new_name).then(() => {
-          visible.value = false
-          message.success($gettext('Rename successfully'))
-          emit('renamed')
-        }).catch(e => {
-          message.error(`${$gettext('Server error')} ${e?.message}`)
-        })
-      },
+    otpModal.open().then(() => {
+      config.rename(basePath, orig_name, new_name, sync_node_ids).then(() => {
+        visible.value = false
+        message.success($gettext('Rename successfully'))
+        emit('renamed')
+      }).catch(e => {
+        message.error(`${$gettext('Server error')} ${e?.message}`)
+      })
     })
   })
 }
@@ -71,6 +74,15 @@ function ok() {
         name="new_name"
       >
         <AInput v-model:value="data.new_name" />
+      </AFormItem>
+      <AFormItem
+        v-if="isDirFlag"
+        :label="$gettext('Sync')"
+      >
+        <NodeSelector
+          v-model:target="data.sync_node_ids"
+          hidden-local
+        />
       </AFormItem>
     </AForm>
   </AModal>

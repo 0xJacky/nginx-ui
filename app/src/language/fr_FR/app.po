@@ -197,9 +197,9 @@ msgid "Auto-renewal enabled for %{name}"
 msgstr "Renouvellement automatique activé pour %{name}"
 
 #: src/views/certificate/CertificateEditor.vue:247
-#: src/views/config/Config.vue:143 src/views/config/ConfigEditor.vue:196
-#: src/views/domain/DomainEdit.vue:253 src/views/nginx_log/NginxLog.vue:168
-#: src/views/stream/StreamEdit.vue:245
+#: src/views/config/ConfigEditor.vue:196 src/views/config/ConfigList.vue:173
+#: src/views/config/ConfigList.vue:99 src/views/domain/DomainEdit.vue:253
+#: src/views/nginx_log/NginxLog.vue:168 src/views/stream/StreamEdit.vue:245
 msgid "Back"
 msgstr "Retour"
 
@@ -369,7 +369,7 @@ msgstr "Le fichier de configuration est testé avec succès"
 msgid "Configuration Name"
 msgstr "Nom de la configuration"
 
-#: src/views/config/Config.vue:91
+#: src/views/config/ConfigList.vue:91
 msgid "Configurations"
 msgstr "Configurations"
 
@@ -420,12 +420,12 @@ msgstr "Créé le"
 msgid "Create Another"
 msgstr "Créer un autre"
 
-#: src/views/config/Config.vue:99
+#: src/views/config/ConfigList.vue:109
 #, fuzzy
 msgid "Create File"
 msgstr "Créé le"
 
-#: src/views/config/components/Mkdir.vue:50 src/views/config/Config.vue:100
+#: src/views/config/components/Mkdir.vue:50 src/views/config/ConfigList.vue:116
 #, fuzzy
 msgid "Create Folder"
 msgstr "Créer un autre"
@@ -474,8 +474,8 @@ msgid ""
 "indicator."
 msgstr ""
 
-#: src/routes/index.ts:39 src/views/config/Config.vue:57
-#: src/views/config/ConfigEditor.vue:118 src/views/config/ConfigEditor.vue:79
+#: src/routes/index.ts:39 src/views/config/ConfigEditor.vue:118
+#: src/views/config/ConfigEditor.vue:79 src/views/config/ConfigList.vue:57
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -802,6 +802,10 @@ msgstr "Activé avec succès"
 #: src/views/domain/cert/IssueCert.vue:49
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Crypter le site Web avec Let's Encrypt"
+
+#: src/views/config/ConfigList.vue:151
+msgid "Enter"
+msgstr ""
 
 #: src/routes/index.ts:228 src/views/environment/Environment.vue:34
 msgid "Environment"
@@ -1193,8 +1197,8 @@ msgstr ""
 "Assurez vous d'avoir configuré un reverse proxy pour le répertoire .well-"
 "known vers HTTPChallengePort avant d'obtenir le certificat."
 
-#: src/routes/index.ts:102 src/views/config/Config.vue:62
-#: src/views/config/ConfigEditor.vue:123 src/views/config/ConfigEditor.vue:84
+#: src/routes/index.ts:102 src/views/config/ConfigEditor.vue:123
+#: src/views/config/ConfigEditor.vue:84 src/views/config/ConfigList.vue:62
 msgid "Manage Configs"
 msgstr "Gérer les configurations"
 
@@ -1241,6 +1245,7 @@ msgstr "Mode d'exécution"
 #: src/components/ChatGPT/ChatGPT.vue:248
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:181
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:532
+#: src/views/config/ConfigList.vue:151
 msgid "Modify"
 msgstr "Modifier"
 
@@ -1710,7 +1715,8 @@ msgstr "Enregistré avec succès"
 msgid "Removed successfully"
 msgstr "Enregistré avec succès"
 
-#: src/views/config/components/Rename.vue:52 src/views/config/Config.vue:130
+#: src/views/config/components/Rename.vue:52
+#: src/views/config/ConfigList.vue:159
 #: src/views/domain/ngx_conf/NgxUpstream.vue:123
 #, fuzzy
 msgid "Rename"

@@ -5,6 +5,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/sashabaranov/go-openai"
@@ -24,6 +25,8 @@ func EditConfig(c *gin.Context) {
 		Filepath    string `json:"filepath" binding:"required"`
 		NewFilepath string `json:"new_filepath" binding:"required"`
 		Content     string `json:"content"`
+		Overwrite   bool   `json:"overwrite"`
+		SyncNodeIds []int  `json:"sync_node_ids"`
 	}
 	if !api.BindAndValid(c, &json) {
 		return
@@ -66,8 +69,25 @@ func EditConfig(c *gin.Context) {
 		}
 	}
 
-	g := query.ChatGPTLog
+	q := query.Config
+	cfg, err := q.Where(q.Filepath.Eq(json.Filepath)).FirstOrCreate()
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
 
+	_, err = q.Where(q.Filepath.Eq(json.Filepath)).Updates(&model.Config{
+		Name:          json.Name,
+		Filepath:      json.NewFilepath,
+		SyncNodeIds:   json.SyncNodeIds,
+		SyncOverwrite: json.Overwrite,
+	})
+
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+	g := query.ChatGPTLog
 	// handle rename
 	if path != json.NewFilepath {
 		if helper.FileExists(json.NewFilepath) {
@@ -85,6 +105,12 @@ func EditConfig(c *gin.Context) {
 		// update ChatGPT record
 		_, _ = g.Where(g.Name.Eq(json.NewFilepath)).Delete()
 		_, _ = g.Where(g.Name.Eq(path)).Update(g.Name, json.NewFilepath)
+	}
+
+	err = config.SyncToRemoteServer(cfg, json.NewFilepath)
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
 	}
 
 	output := nginx.Reload()

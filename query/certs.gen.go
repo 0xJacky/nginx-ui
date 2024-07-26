@@ -45,6 +45,8 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.Log = field.NewString(tableName, "log")
 	_cert.Resource = field.NewField(tableName, "resource")
 	_cert.SyncNodeIds = field.NewField(tableName, "sync_node_ids")
+	_cert.MustStaple = field.NewBool(tableName, "must_staple")
+	_cert.LegoDisableCNAMESupport = field.NewBool(tableName, "lego_disable_cname_support")
 	_cert.DnsCredential = certBelongsToDnsCredential{
 		db: db.Session(&gorm.Session{}),
 
@@ -65,25 +67,27 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 type cert struct {
 	certDo
 
-	ALL                   field.Asterisk
-	ID                    field.Int
-	CreatedAt             field.Time
-	UpdatedAt             field.Time
-	DeletedAt             field.Field
-	Name                  field.String
-	Domains               field.Field
-	Filename              field.String
-	SSLCertificatePath    field.String
-	SSLCertificateKeyPath field.String
-	AutoCert              field.Int
-	ChallengeMethod       field.String
-	DnsCredentialID       field.Int
-	ACMEUserID            field.Int
-	KeyType               field.String
-	Log                   field.String
-	Resource              field.Field
-	SyncNodeIds           field.Field
-	DnsCredential         certBelongsToDnsCredential
+	ALL                     field.Asterisk
+	ID                      field.Int
+	CreatedAt               field.Time
+	UpdatedAt               field.Time
+	DeletedAt               field.Field
+	Name                    field.String
+	Domains                 field.Field
+	Filename                field.String
+	SSLCertificatePath      field.String
+	SSLCertificateKeyPath   field.String
+	AutoCert                field.Int
+	ChallengeMethod         field.String
+	DnsCredentialID         field.Int
+	ACMEUserID              field.Int
+	KeyType                 field.String
+	Log                     field.String
+	Resource                field.Field
+	SyncNodeIds             field.Field
+	MustStaple              field.Bool
+	LegoDisableCNAMESupport field.Bool
+	DnsCredential           certBelongsToDnsCredential
 
 	ACMEUser certBelongsToACMEUser
 
@@ -119,6 +123,8 @@ func (c *cert) updateTableName(table string) *cert {
 	c.Log = field.NewString(table, "log")
 	c.Resource = field.NewField(table, "resource")
 	c.SyncNodeIds = field.NewField(table, "sync_node_ids")
+	c.MustStaple = field.NewBool(table, "must_staple")
+	c.LegoDisableCNAMESupport = field.NewBool(table, "lego_disable_cname_support")
 
 	c.fillFieldMap()
 
@@ -135,7 +141,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 19)
+	c.fieldMap = make(map[string]field.Expr, 21)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -153,6 +159,8 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["log"] = c.Log
 	c.fieldMap["resource"] = c.Resource
 	c.fieldMap["sync_node_ids"] = c.SyncNodeIds
+	c.fieldMap["must_staple"] = c.MustStaple
+	c.fieldMap["lego_disable_cname_support"] = c.LegoDisableCNAMESupport
 
 }
 

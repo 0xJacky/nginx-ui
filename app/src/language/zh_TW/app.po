@@ -197,9 +197,9 @@ msgid "Auto-renewal enabled for %{name}"
 msgstr "已啟用 %{name} 的自動續簽"
 
 #: src/views/certificate/CertificateEditor.vue:247
-#: src/views/config/Config.vue:143 src/views/config/ConfigEditor.vue:196
-#: src/views/domain/DomainEdit.vue:253 src/views/nginx_log/NginxLog.vue:168
-#: src/views/stream/StreamEdit.vue:245
+#: src/views/config/ConfigEditor.vue:196 src/views/config/ConfigList.vue:173
+#: src/views/config/ConfigList.vue:99 src/views/domain/DomainEdit.vue:253
+#: src/views/nginx_log/NginxLog.vue:168 src/views/stream/StreamEdit.vue:245
 msgid "Back"
 msgstr "返回"
 
@@ -366,7 +366,7 @@ msgstr "設定檔案測試成功"
 msgid "Configuration Name"
 msgstr "設定名稱"
 
-#: src/views/config/Config.vue:91
+#: src/views/config/ConfigList.vue:91
 msgid "Configurations"
 msgstr "設定"
 
@@ -417,12 +417,12 @@ msgstr "建立時間"
 msgid "Create Another"
 msgstr "再建立一個"
 
-#: src/views/config/Config.vue:99
+#: src/views/config/ConfigList.vue:109
 #, fuzzy
 msgid "Create File"
 msgstr "建立時間"
 
-#: src/views/config/components/Mkdir.vue:50 src/views/config/Config.vue:100
+#: src/views/config/components/Mkdir.vue:50 src/views/config/ConfigList.vue:116
 #, fuzzy
 msgid "Create Folder"
 msgstr "再建立一個"
@@ -471,8 +471,8 @@ msgid ""
 "indicator."
 msgstr ""
 
-#: src/routes/index.ts:39 src/views/config/Config.vue:57
-#: src/views/config/ConfigEditor.vue:118 src/views/config/ConfigEditor.vue:79
+#: src/routes/index.ts:39 src/views/config/ConfigEditor.vue:118
+#: src/views/config/ConfigEditor.vue:79 src/views/config/ConfigList.vue:57
 msgid "Dashboard"
 msgstr "儀表板"
 
@@ -787,6 +787,10 @@ msgstr "成功啟用"
 #: src/views/domain/cert/IssueCert.vue:49
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 對網站進行加密"
+
+#: src/views/config/ConfigList.vue:151
+msgid "Enter"
+msgstr ""
 
 #: src/routes/index.ts:228 src/views/environment/Environment.vue:34
 msgid "Environment"
@@ -1172,8 +1176,8 @@ msgid ""
 msgstr ""
 "在取得憑證前，請確保您已將 .well-known 目錄反向代理到 HTTPChallengePort。"
 
-#: src/routes/index.ts:102 src/views/config/Config.vue:62
-#: src/views/config/ConfigEditor.vue:123 src/views/config/ConfigEditor.vue:84
+#: src/routes/index.ts:102 src/views/config/ConfigEditor.vue:123
+#: src/views/config/ConfigEditor.vue:84 src/views/config/ConfigList.vue:62
 msgid "Manage Configs"
 msgstr "管理設定"
 
@@ -1220,6 +1224,7 @@ msgstr "執行模式"
 #: src/components/ChatGPT/ChatGPT.vue:248
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:181
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:532
+#: src/views/config/ConfigList.vue:151
 msgid "Modify"
 msgstr "修改"
 
@@ -1681,7 +1686,8 @@ msgstr "儲存成功"
 msgid "Removed successfully"
 msgstr "儲存成功"
 
-#: src/views/config/components/Rename.vue:52 src/views/config/Config.vue:130
+#: src/views/config/components/Rename.vue:52
+#: src/views/config/ConfigList.vue:159
 #: src/views/domain/ngx_conf/NgxUpstream.vue:123
 #, fuzzy
 msgid "Rename"

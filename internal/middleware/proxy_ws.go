@@ -1,4 +1,4 @@
-package router
+package middleware
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/logger"
@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func proxyWs() gin.HandlerFunc {
+func ProxyWs() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		nodeID, ok := c.Get("ProxyNodeID")
 		if !ok {
