@@ -20,7 +20,6 @@ export interface StdTableProps<T = any> {
   title?: string
   mode?: string
   rowKey?: string
-
   api: Curd<T>
   columns: Column[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

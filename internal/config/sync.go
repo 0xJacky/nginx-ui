@@ -94,7 +94,7 @@ func SyncRenameOnRemoteServer(origPath, newPath string, syncNodeIds []int) (err 
 			newPath, nginxConfPath)
 	}
 
-	payload := &SyncConfigPayload{
+	payload := &RenameConfigPayload{
 		Filepath:    origPath,
 		NewFilepath: newPath,
 	}
@@ -159,65 +159,30 @@ func (p *SyncConfigPayload) deploy(env *model.Environment, c *model.Config, payl
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		notification.Error("Sync Configuration Error", string(notificationPayloadBytes))
+		notification.Error("Sync Config Error", string(notificationPayloadBytes))
 		return
 	}
 
-	notification.Success("Sync Configuration Success", string(notificationPayloadBytes))
+	notification.Success("Sync Config Success", string(notificationPayloadBytes))
 
 	// handle rename
 	if p.NewFilepath == "" || p.Filepath == p.NewFilepath {
 		return
 	}
 
-	payloadBytes, err = json.Marshal(gin.H{
-		"base_path":    filepath.Dir(p.Filepath),
-		"old_filepath": filepath.Base(p.Filepath),
-		"new_filepath": filepath.Base(p.NewFilepath),
-	})
-	if err != nil {
-		return
-	}
-	url, err = env.GetUrl("/api/config_rename")
-	if err != nil {
-		return
-	}
-	req, err = http.NewRequest(http.MethodPost, url, bytes.NewBuffer(payloadBytes))
-	if err != nil {
-		return
-	}
-	req.Header.Set("X-Node-Secret", env.Token)
-	resp, err = client.Do(req)
-	if err != nil {
-		return
-	}
-	defer resp.Body.Close()
-
-	respBody, err = io.ReadAll(resp.Body)
-	if err != nil {
-		return
+	payload := &RenameConfigPayload{
+		Filepath:    p.Filepath,
+		NewFilepath: p.NewFilepath,
 	}
 
-	notificationPayload = &SyncNotificationPayload{
-		StatusCode: resp.StatusCode,
-		ConfigName: c.Name,
-		EnvName:    env.Name,
-		RespBody:   string(respBody),
-	}
-
-	notificationPayloadBytes, err = json.Marshal(notificationPayload)
-	if err != nil {
-		return
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		notification.Error("Sync Rename Configuration Error", string(notificationPayloadBytes))
-		return
-	}
-
-	notification.Success("Sync Rename Configuration Success", string(notificationPayloadBytes))
+	err = payload.rename(env)
 
 	return
+}
+
+type RenameConfigPayload struct {
+	Filepath    string `json:"filepath"`
+	NewFilepath string `json:"new_filepath"`
 }
 
 type SyncRenameNotificationPayload struct {
@@ -228,7 +193,7 @@ type SyncRenameNotificationPayload struct {
 	RespBody   string `json:"resp_body"`
 }
 
-func (p *SyncConfigPayload) rename(env *model.Environment) (err error) {
+func (p *RenameConfigPayload) rename(env *model.Environment) (err error) {
 	// handle rename
 	if p.NewFilepath == "" || p.Filepath == p.NewFilepath {
 		return
@@ -282,11 +247,11 @@ func (p *SyncConfigPayload) rename(env *model.Environment) (err error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		notification.Error("Sync Rename Configuration Error", string(notificationPayloadBytes))
+		notification.Error("Rename Remote Config Error", string(notificationPayloadBytes))
 		return
 	}
 
-	notification.Success("Sync Rename Configuration Success", string(notificationPayloadBytes))
+	notification.Success("Rename Remote Config Success", string(notificationPayloadBytes))
 
 	return
 }

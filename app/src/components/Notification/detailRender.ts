@@ -13,13 +13,13 @@ export const detailRender = (args: customRender) => {
       return syncCertificateSuccess(args.text)
     case 'Sync Certificate Error':
       return syncCertificateError(args.text)
-    case 'Sync Rename Configuration Success':
+    case 'Rename Remote Config Success':
       return syncRenameConfigSuccess(args.text)
-    case 'Sync Rename Configuration Error':
+    case 'Rename Remote Config Error':
       return syncRenameConfigError(args.text)
-    case 'Sync Configuration Success':
+    case 'Sync Config Success':
       return syncConfigSuccess(args.text)
-    case 'Sync Configuration Error':
+    case 'Sync Config Error':
       return syncConfigError(args.text)
     default:
       return args.text
