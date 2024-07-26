@@ -1,265 +1,265 @@
 name: Build
 
 on:
-    push:
-        branches:
-            - '*'
-        paths:
-            - "app/**/*.js"
-            - "app/**/*.vue"
-            - "app/src/language/**/*.po"
-            - "app/i18n.json"
-            - "app/package.json"
-            - "app/.env*"
-            - "**/*.go"
-            - "go.mod"
-            - "go.sum"
-            - ".github/workflows/build*.yml"
-            - "resources/docker/docker/*"
-            - "resources/development/*"
-            - "resources/demo/*"
-            - "Dockerfile"
-            - "demo.Dockerfile"
-    pull_request:
-        types: [ opened, synchronize, reopened ]
-        paths:
-            - "**/*.js"
-            - "**/*.vue"
-            - "app/package.json"
-            - "app/.env*"
-            - "**/*.go"
-            - "go.mod"
-            - "go.sum"
-            - ".github/workflows/*.yml"
-            - "resources/docker/docker/*"
-            - "resources/development/*"
-            - "resources/demo/*"
-    release:
-        types:
-            - published
+  push:
+    branches:
+      - '*'
+    paths:
+      - "app/**/*.js"
+      - "app/**/*.vue"
+      - "app/src/language/**/*.po"
+      - "app/i18n.json"
+      - "app/package.json"
+      - "app/.env*"
+      - "**/*.go"
+      - "go.mod"
+      - "go.sum"
+      - ".github/workflows/build*.yml"
+      - "resources/docker/docker/*"
+      - "resources/development/*"
+      - "resources/demo/*"
+      - "Dockerfile"
+      - "demo.Dockerfile"
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    paths:
+      - "**/*.js"
+      - "**/*.vue"
+      - "app/package.json"
+      - "app/.env*"
+      - "**/*.go"
+      - "go.mod"
+      - "go.sum"
+      - ".github/workflows/*.yml"
+      - "resources/docker/docker/*"
+      - "resources/development/*"
+      - "resources/demo/*"
+  release:
+    types:
+      - published
 
 jobs:
-    build_app:
-        runs-on: macos-14
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v4
+  build_app:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            -   name: Set up nodejs
-                uses: actions/setup-node@v4
-                with:
-                    node-version: current
+      - name: Set up nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: current
 
-            -   name: Install dependencies
-                run: |
-                    corepack enable
-                    corepack prepare pnpm@latest --activate
-                    pnpm install
-                working-directory: app
+      - name: Install dependencies
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+          pnpm install
+        working-directory: app
 
-            - name: Check frontend code style
-              run: |
-                pnpm run lint
-              working-directory: app
+      - name: Check frontend code style
+        run: |
+          pnpm run lint
+        working-directory: app
 
-            -   name: Check frontend types
-                run: |
-                    pnpm run typecheck
-                working-directory: app
+      - name: Check frontend types
+        run: |
+          pnpm run typecheck
+        working-directory: app
 
-            -   name: Build
-                run: |
-                    npx browserslist@latest --update-db
-                    pnpm build
-                working-directory: app
+      - name: Build
+        run: |
+          npx browserslist@latest --update-db
+          pnpm build
+        working-directory: app
 
-            -   name: Archive app artifacts
-                uses: actions/upload-artifact@v4
-                with:
-                    name: app-dist
-                    path: app/dist
+      - name: Archive app artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-dist
+          path: app/dist
 
-            -   name: Prepare publish
-                if: github.event_name == 'release'
-                run: |
-                    cp README*.md app/dist
-                    find app/dist -printf '%P\n' | tar -C app/dist --no-recursion -zcvf app-dist.tar.gz -T -
+      - name: Prepare publish
+        if: github.event_name == 'release'
+        run: |
+          cp README*.md app/dist
+          find app/dist -printf '%P\n' | tar -C app/dist --no-recursion -zcvf app-dist.tar.gz -T -
 
-            -   name: Publish
-                uses: softprops/action-gh-release@v2
-                if: github.event_name == 'release'
-                with:
-                    files: app-dist.tar.gz
+      - name: Publish
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'release'
+        with:
+          files: app-dist.tar.gz
 
-    build:
-        runs-on: ubuntu-latest
-        needs: build_app
-        strategy:
-            matrix:
-                goos: [ linux, darwin ]
-                goarch: [ amd64, 386, arm64 ]
-                exclude:
-                    # Exclude i386 on darwin.
-                    -   goarch: 386
-                        goos: darwin
-                include:
-                    # BEGIN Linux ARM 5 6 7
-                    -   goos: linux
-                        goarch: arm
-                        goarm: 7
-                    -   goos: linux
-                        goarch: arm
-                        goarm: 6
-                    -   goos: linux
-                        goarch: arm
-                        goarm: 5
-                    # END Linux ARM 5 6 7
-        env:
-            CGO_ENABLED: 1
-            GOOS: ${{ matrix.goos }}
-            GOARCH: ${{ matrix.goarch }}
-            GOARM: ${{ matrix.goarm }}
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v4
+  build:
+    runs-on: ubuntu-latest
+    needs: build_app
+    strategy:
+      matrix:
+        goos: [ linux, darwin ]
+        goarch: [ amd64, 386, arm64 ]
+        exclude:
+          # Exclude i386 on darwin.
+          - goarch: 386
+            goos: darwin
+        include:
+          # BEGIN Linux ARM 5 6 7
+          - goos: linux
+            goarch: arm
+            goarm: 7
+          - goos: linux
+            goarch: arm
+            goarm: 6
+          - goos: linux
+            goarch: arm
+            goarm: 5
+          # END Linux ARM 5 6 7
+    env:
+      CGO_ENABLED: 1
+      GOOS: ${{ matrix.goos }}
+      GOARCH: ${{ matrix.goarch }}
+      GOARM: ${{ matrix.goarm }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            -   name: Set up Go
-                uses: actions/setup-go@v5
-                with:
-                    go-version: ^1.22.0
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ^1.22.0
 
-            -   name: Setup compiler environment
-                id: info
-                run: |
-                    export _NAME=nginx-ui-$(jq ".$GOOS[\"$GOARCH$GOARM\"].name" -r < .github/build/build_info.json)
-                    export _ARCH=$(jq ".$GOOS[\"$GOARCH$GOARM\"].arch" -r < .github/build/build_info.json)
-                    export _ABI=$(jq ".$GOOS[\"$GOARCH$GOARM\"].abi // \"\"" -r < .github/build/build_info.json)
-                    export _ARTIFACT=nginx-ui-$GOOS-$GOARCH$(if [[ "$GOARM" ]]; then echo "v$GOARM"; fi)
-                    echo "GOOS: $GOOS, GOARCH: $GOARCH, GOARM: $GOARM, ABI: $_ABI, RELEASE_NAME: $_NAME, ARTIFACT_NAME: $_ARTIFACT"
-                    echo "ARCH_NAME=$_ARCH" >> $GITHUB_ENV
-                    echo "ABI=$_ABI" >> $GITHUB_ENV
-                    echo "DIST=$_NAME" >> $GITHUB_ENV
-                    echo "ARTIFACT=$_ARTIFACT" >> $GITHUB_ENV
+      - name: Setup compiler environment
+        id: info
+        run: |
+          export _NAME=nginx-ui-$(jq ".$GOOS[\"$GOARCH$GOARM\"].name" -r < .github/build/build_info.json)
+          export _ARCH=$(jq ".$GOOS[\"$GOARCH$GOARM\"].arch" -r < .github/build/build_info.json)
+          export _ABI=$(jq ".$GOOS[\"$GOARCH$GOARM\"].abi // \"\"" -r < .github/build/build_info.json)
+          export _ARTIFACT=nginx-ui-$GOOS-$GOARCH$(if [[ "$GOARM" ]]; then echo "v$GOARM"; fi)
+          echo "GOOS: $GOOS, GOARCH: $GOARCH, GOARM: $GOARM, ABI: $_ABI, RELEASE_NAME: $_NAME, ARTIFACT_NAME: $_ARTIFACT"
+          echo "ARCH_NAME=$_ARCH" >> $GITHUB_ENV
+          echo "ABI=$_ABI" >> $GITHUB_ENV
+          echo "DIST=$_NAME" >> $GITHUB_ENV
+          echo "ARTIFACT=$_ARTIFACT" >> $GITHUB_ENV
 
-            -   name: Install musl cross compiler
-                if: env.GOOS == 'linux'
-                uses: 0xJacky/musl-cross-compilers@v0.6.6
-                id: musl
-                with:
-                    target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
+      - name: Install musl cross compiler
+        if: env.GOOS == 'linux'
+        uses: 0xJacky/musl-cross-compilers@v0.6.6
+        id: musl
+        with:
+          target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
 
-            -   name: Post install musl cross compiler
-                if: env.GOOS == 'linux'
-                run: |
-                    echo "PATH=${{ steps.musl.outputs.path }}:$PATH" >> $GITHUB_ENV
-                    echo "CC=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-gcc" >> $GITHUB_ENV
-                    echo "CXX=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-g++" >> $GITHUB_ENV
-                    echo "LD_FLAGS=-w --extldflags '-static'" >> $GITHUB_ENV
+      - name: Post install musl cross compiler
+        if: env.GOOS == 'linux'
+        run: |
+          echo "PATH=${{ steps.musl.outputs.path }}:$PATH" >> $GITHUB_ENV
+          echo "CC=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-gcc" >> $GITHUB_ENV
+          echo "CXX=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-g++" >> $GITHUB_ENV
+          echo "LD_FLAGS=-w --extldflags '-static'" >> $GITHUB_ENV
 
-            -   name: Install darwin cross compiler
-                if: env.GOOS == 'darwin'
-                run: |
-                    curl -L https://github.com/Hintay/crossosx/releases/latest/download/crossosx.tar.zst -o crossosx.tar.zst
-                    tar xvaf crossosx.tar.zst
-                    echo "LD_LIBRARY_PATH=$(pwd)/crossosx/lib/" >> $GITHUB_ENV
-                    echo "PATH=$(pwd)/crossosx/bin/:$PATH" >> $GITHUB_ENV
-                    echo "CC=${{ env.ARCH_NAME }}-clang" >> $GITHUB_ENV
-                    echo "CXX=${{ env.ARCH_NAME }}-clang++" >> $GITHUB_ENV
-                    echo "LD_FLAGS=-w" >> $GITHUB_ENV
+      - name: Install darwin cross compiler
+        if: env.GOOS == 'darwin'
+        run: |
+          curl -L https://github.com/Hintay/crossosx/releases/latest/download/crossosx.tar.zst -o crossosx.tar.zst
+          tar xvaf crossosx.tar.zst
+          echo "LD_LIBRARY_PATH=$(pwd)/crossosx/lib/" >> $GITHUB_ENV
+          echo "PATH=$(pwd)/crossosx/bin/:$PATH" >> $GITHUB_ENV
+          echo "CC=${{ env.ARCH_NAME }}-clang" >> $GITHUB_ENV
+          echo "CXX=${{ env.ARCH_NAME }}-clang++" >> $GITHUB_ENV
+          echo "LD_FLAGS=-w" >> $GITHUB_ENV
 
-            -   name: Download app artifacts
-                uses: actions/download-artifact@v4
-                with:
-                    name: app-dist
-                    path: app/dist
+      - name: Download app artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: app-dist
+          path: app/dist
 
-            -   name: Build
-                run: |
-                    mkdir -p dist
-                    go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/nginx-ui -v main.go
+      - name: Build
+        run: |
+          mkdir -p dist
+          go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/nginx-ui -v main.go
 
-            -   name: Archive backend artifacts
-                uses: actions/upload-artifact@v4
-                with:
-                    name: ${{ env.ARTIFACT }}
-                    path: dist/nginx-ui
+      - name: Archive backend artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: dist/nginx-ui
 
-            -   name: Prepare publish
-                if: github.event_name == 'release'
-                run: |
-                    cp README*.md ./dist
-                    find dist -printf '%P\n' | tar -C dist --no-recursion -zcvf ${{ env.DIST }}.tar.gz -T -
-                    openssl dgst -sha512 ${{ env.DIST }}.tar.gz | sed 's/([^)]*)//g' | awk '{print $NF}' >> ${{ env.DIST }}.tar.gz.digest
+      - name: Prepare publish
+        if: github.event_name == 'release'
+        run: |
+          cp README*.md ./dist
+          find dist -printf '%P\n' | tar -C dist --no-recursion -zcvf ${{ env.DIST }}.tar.gz -T -
+          openssl dgst -sha512 ${{ env.DIST }}.tar.gz | sed 's/([^)]*)//g' | awk '{print $NF}' >> ${{ env.DIST }}.tar.gz.digest
 
-            -   name: Publish
-                uses: softprops/action-gh-release@v2
-                if: github.event_name == 'release'
-                with:
-                    files: |
-                        ${{ env.DIST }}.tar.gz
-                        ${{ env.DIST }}.tar.gz.digest
+      - name: Publish
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'release'
+        with:
+          files: |
+            ${{ env.DIST }}.tar.gz
+            ${{ env.DIST }}.tar.gz.digest
 
-    docker-build:
-        if: github.event_name != 'pull_request'
-        runs-on: ubuntu-latest
-        needs: build
-        env:
-            PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/arm/v5
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v4
+  docker-build:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/arm/v5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            -   name: Get the version
-                id: get_version
-                run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
+      - name: Get the version
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
 
-            -   name: Download artifacts
-                uses: actions/download-artifact@v4
-                with:
-                    path: ./dist
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./dist
 
-            -   name: Prepare Artifacts
-                run: chmod +x ./dist/nginx-ui-*/nginx-ui
+      - name: Prepare Artifacts
+        run: chmod +x ./dist/nginx-ui-*/nginx-ui
 
-            -   name: Set up Docker Buildx
-                id: buildx
-                uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
 
-            -   name: Login to DockerHub
-                uses: docker/login-action@v3
-                with:
-                    username: ${{ secrets.DOCKERHUB_USER }}
-                    password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-            -   name: Prepare Dockerfile
-                if: github.event_name == 'release'
-                run: |
-                    cp ./Dockerfile ./dist
-                    cp -rp ./resources ./dist
+      - name: Prepare Dockerfile
+        if: github.event_name == 'release'
+        run: |
+          cp ./Dockerfile ./dist
+          cp -rp ./resources ./dist
 
-            -   name: Build and push
-                if: github.event_name == 'release'
-                uses: docker/build-push-action@v5
-                with:
-                    context: ./dist
-                    file: ./dist/Dockerfile
-                    platforms: ${{ env.PLATFORMS }}
-                    push: ${{ github.event_name != 'pull_request' }}
-                    tags: |
-                        uozi/nginx-ui:latest
-                        uozi/nginx-ui:${{ steps.get_version.outputs.VERSION }}
+      - name: Build and push
+        if: github.event_name == 'release'
+        uses: docker/build-push-action@v5
+        with:
+          context: ./dist
+          file: ./dist/Dockerfile
+          platforms: ${{ env.PLATFORMS }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            uozi/nginx-ui:latest
+            uozi/nginx-ui:${{ steps.get_version.outputs.VERSION }}
 
-            -   name: Prepare Demo Dockerfile
-                run: |
-                    cp ./demo.Dockerfile ./dist
-                    cp -rp ./resources ./dist
+      - name: Prepare Demo Dockerfile
+        run: |
+          cp ./demo.Dockerfile ./dist
+          cp -rp ./resources ./dist
 
-            -   name: Build and push demo
-                uses: docker/build-push-action@v5
-                with:
-                    context: ./dist
-                    file: ./dist/demo.Dockerfile
-                    platforms: ${{ env.PLATFORMS }}
-                    push: ${{ github.event_name != 'pull_request' }}
-                    tags: |
-                        uozi/nginx-ui-demo:latest
+      - name: Build and push demo
+        uses: docker/build-push-action@v5
+        with:
+          context: ./dist
+          file: ./dist/demo.Dockerfile
+          platforms: ${{ env.PLATFORMS }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            uozi/nginx-ui-demo:latest

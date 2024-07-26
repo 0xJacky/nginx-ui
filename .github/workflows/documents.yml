@@ -1,64 +1,64 @@
 name: Build Documents
 
 on:
-    push:
-        branches:
-            - '*'
-        paths:
-            - "docs/**/*.js"
-            - "docs/**/*.ts"
-            - "docs/**/*.vue"
-            - "docs/package.json"
-            - "docs/.env*"
-            - "docs/**/*.md"
-            - ".github/workflows/doc*.yml"
-    pull_request:
-        types: [ opened, synchronize, reopened ]
-        paths:
-            - "docs/**/*.js"
-            - "docs/**/*.ts"
-            - "docs/**/*.vue"
-            - "docs/package.json"
-            - "docs/.env*"
-            - "docs/**/*.md"
-            - ".github/workflows/doc*.yml"
+  push:
+    branches:
+      - '*'
+    paths:
+      - "docs/**/*.js"
+      - "docs/**/*.ts"
+      - "docs/**/*.vue"
+      - "docs/package.json"
+      - "docs/.env*"
+      - "docs/**/*.md"
+      - ".github/workflows/doc*.yml"
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    paths:
+      - "docs/**/*.js"
+      - "docs/**/*.ts"
+      - "docs/**/*.vue"
+      - "docs/package.json"
+      - "docs/.env*"
+      - "docs/**/*.md"
+      - ".github/workflows/doc*.yml"
 
 jobs:
-    build:
-        runs-on: macos-14
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v4
+  build:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            -   name: Set up nodejs
-                uses: actions/setup-node@v4
-                with:
-                    node-version: 21.x
+      - name: Set up nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
 
-            -   name: Install dependencies
-                run: |
-                    corepack enable
-                    corepack prepare pnpm@latest --activate
-                    pnpm install
-                working-directory: docs
+      - name: Install dependencies
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+          pnpm install
+        working-directory: docs
 
-            -   name: Build
-                run: COMMIT_REF=$(git rev-parse HEAD) pnpm docs:build
-                working-directory: docs
+      - name: Build
+        run: COMMIT_REF=$(git rev-parse HEAD) pnpm docs:build
+        working-directory: docs
 
-            -   name: Archive artifacts
-                uses: actions/upload-artifact@v4
-                with:
-                    name: dist
-                    path: docs/.vitepress/dist
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: docs/.vitepress/dist
 
-            -   name: Deploy to server
-                if: github.event_name != 'pull_request'
-                uses: easingthemes/ssh-deploy@main
-                env:
-                    REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-                    REMOTE_USER: ${{ secrets.REMOTE_USER }}
-                    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-                    TARGET: ${{ secrets.REMOTE_TARGET }}
-                    SOURCE: "docs/.vitepress/dist/"
-                    ARGS: "-rlgoDzvc -i --delete"
+      - name: Deploy to server
+        if: github.event_name != 'pull_request'
+        uses: easingthemes/ssh-deploy@main
+        env:
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          TARGET: ${{ secrets.REMOTE_TARGET }}
+          SOURCE: "docs/.vitepress/dist/"
+          ARGS: "-rlgoDzvc -i --delete"
