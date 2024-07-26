@@ -23,6 +23,7 @@ var (
 	BanIP         *banIP
 	Cert          *cert
 	ChatGPTLog    *chatGPTLog
+	Config        *config
 	ConfigBackup  *configBackup
 	DnsCredential *dnsCredential
 	Environment   *environment
@@ -39,6 +40,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	BanIP = &Q.BanIP
 	Cert = &Q.Cert
 	ChatGPTLog = &Q.ChatGPTLog
+	Config = &Q.Config
 	ConfigBackup = &Q.ConfigBackup
 	DnsCredential = &Q.DnsCredential
 	Environment = &Q.Environment
@@ -56,6 +58,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		BanIP:         newBanIP(db, opts...),
 		Cert:          newCert(db, opts...),
 		ChatGPTLog:    newChatGPTLog(db, opts...),
+		Config:        newConfig(db, opts...),
 		ConfigBackup:  newConfigBackup(db, opts...),
 		DnsCredential: newDnsCredential(db, opts...),
 		Environment:   newEnvironment(db, opts...),
@@ -74,6 +77,7 @@ type Query struct {
 	BanIP         banIP
 	Cert          cert
 	ChatGPTLog    chatGPTLog
+	Config        config
 	ConfigBackup  configBackup
 	DnsCredential dnsCredential
 	Environment   environment
@@ -93,6 +97,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		BanIP:         q.BanIP.clone(db),
 		Cert:          q.Cert.clone(db),
 		ChatGPTLog:    q.ChatGPTLog.clone(db),
+		Config:        q.Config.clone(db),
 		ConfigBackup:  q.ConfigBackup.clone(db),
 		DnsCredential: q.DnsCredential.clone(db),
 		Environment:   q.Environment.clone(db),
@@ -119,6 +124,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		BanIP:         q.BanIP.replaceDB(db),
 		Cert:          q.Cert.replaceDB(db),
 		ChatGPTLog:    q.ChatGPTLog.replaceDB(db),
+		Config:        q.Config.replaceDB(db),
 		ConfigBackup:  q.ConfigBackup.replaceDB(db),
 		DnsCredential: q.DnsCredential.replaceDB(db),
 		Environment:   q.Environment.replaceDB(db),
@@ -135,6 +141,7 @@ type queryCtx struct {
 	BanIP         *banIPDo
 	Cert          *certDo
 	ChatGPTLog    *chatGPTLogDo
+	Config        *configDo
 	ConfigBackup  *configBackupDo
 	DnsCredential *dnsCredentialDo
 	Environment   *environmentDo
@@ -151,6 +158,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		BanIP:         q.BanIP.WithContext(ctx),
 		Cert:          q.Cert.WithContext(ctx),
 		ChatGPTLog:    q.ChatGPTLog.WithContext(ctx),
+		Config:        q.Config.WithContext(ctx),
 		ConfigBackup:  q.ConfigBackup.WithContext(ctx),
 		DnsCredential: q.DnsCredential.WithContext(ctx),
 		Environment:   q.Environment.WithContext(ctx),

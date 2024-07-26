@@ -36,6 +36,7 @@ func GenerateAllModel() []any {
 		Notification{},
 		AcmeUser{},
 		BanIP{},
+		Config{},
 	}
 }
 

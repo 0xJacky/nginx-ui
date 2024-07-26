@@ -8,9 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func GetConfigs(c *gin.Context) {
+	name := c.Query("name")
 	orderBy := c.Query("order_by")
 	sort := c.DefaultQuery("sort", "desc")
 	dir := c.DefaultQuery("dir", "/")
@@ -27,6 +29,10 @@ func GetConfigs(c *gin.Context) {
 	for i := range configFiles {
 		file := configFiles[i]
 		fileInfo, _ := file.Info()
+
+		if name != "" && !strings.Contains(file.Name(), name) {
+			continue
+		}
 
 		switch mode := fileInfo.Mode(); {
 		case mode.IsRegular(): // regular file, not a hidden file

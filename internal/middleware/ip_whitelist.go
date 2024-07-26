@@ -1,4 +1,4 @@
-package router
+package middleware
 
 import (
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func ipWhiteList() gin.HandlerFunc {
+func IPWhiteList() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		clientIP := c.ClientIP()
 		if len(settings.AuthSettings.IPWhiteList) == 0 || clientIP == "127.0.0.1" {

@@ -1,5 +1,6 @@
 import Curd from '@/api/curd'
 import type { ChatComplicationMessage } from '@/api/openai'
+import http from '@/lib/http'
 
 export interface Config {
   name: string
@@ -7,8 +8,33 @@ export interface Config {
   chatgpt_messages: ChatComplicationMessage[]
   filepath: string
   modified_at: string
+  sync_node_ids?: number[]
+  sync_overwrite?: false
 }
 
-const config: Curd<Config> = new Curd('/config')
+class ConfigCurd extends Curd<Config> {
+  constructor() {
+    super('/config')
+  }
+
+  get_base_path() {
+    return http.get('/config_base_path')
+  }
+
+  mkdir(basePath: string, name: string) {
+    return http.post('/config_mkdir', { base_path: basePath, folder_name: name })
+  }
+
+  rename(basePath: string, origName: string, newName: string, syncNodeIds: number[]) {
+    return http.post('/config_rename', {
+      base_path: basePath,
+      orig_name: origName,
+      new_name: newName,
+      sync_node_ids: syncNodeIds,
+    })
+  }
+}
+
+const config: ConfigCurd = new ConfigCurd()
 
 export default config

@@ -2,41 +2,8 @@
 import { message } from 'ant-design-vue'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import notification from '@/api/notification'
-import type { Column } from '@/components/StdDesign/types'
-import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { datetime, mask } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { NotificationType } from '@/constants'
 import { useUserStore } from '@/pinia'
-import { detailRender } from '@/components/Notification/detailRender'
-
-const columns: Column[] = [{
-  title: () => $gettext('Type'),
-  dataIndex: 'type',
-  customRender: mask(NotificationType),
-  sortable: true,
-  pithy: true,
-}, {
-  title: () => $gettext('Title'),
-  dataIndex: 'title',
-  customRender: (args: customRender) => {
-    return h('span', $gettext(args.text))
-  },
-  pithy: true,
-}, {
-  title: () => $gettext('Details'),
-  dataIndex: 'details',
-  customRender: detailRender,
-  pithy: true,
-}, {
-  title: () => $gettext('Created at'),
-  dataIndex: 'created_at',
-  sortable: true,
-  customRender: datetime,
-  pithy: true,
-}, {
-  title: () => $gettext('Action'),
-  dataIndex: 'action',
-}]
+import notificationColumns from '@/views/notification/notificationColumns'
 
 const { unreadCount } = storeToRefs(useUserStore())
 
@@ -60,10 +27,11 @@ watch(unreadCount, () => {
   <StdCurd
     ref="curd"
     :title="$gettext('Notification')"
-    :columns="columns"
+    :columns="notificationColumns"
     :api="notification"
-    disabled-modify
+    disable-modify
     disable-add
+    disable-trash
   >
     <template #extra>
       <APopconfirm

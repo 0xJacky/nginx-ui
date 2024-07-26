@@ -28,6 +28,10 @@ const { server_name } = storeToRefs(useSettingsStore())
 settings.get_server_name().then(r => {
   server_name.value = r.name
 })
+
+const breadList = ref([])
+
+provide('breadList', breadList)
 </script>
 
 <template>

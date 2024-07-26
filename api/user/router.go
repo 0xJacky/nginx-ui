@@ -1,6 +1,9 @@
 package user
 
-import "github.com/gin-gonic/gin"
+import (
+    "github.com/0xJacky/Nginx-UI/internal/middleware"
+    "github.com/gin-gonic/gin"
+)
 
 func InitAuthRouter(r *gin.RouterGroup) {
 	r.POST("/login", Login)
@@ -23,5 +26,8 @@ func InitUserRouter(r *gin.RouterGroup) {
 	r.GET("/otp_secret", GenerateTOTP)
 	r.POST("/otp_enroll", EnrollTOTP)
 	r.POST("/otp_reset", ResetOTP)
+
+    r.GET("/otp_secure_session_status",
+        middleware.RequireSecureSession(), SecureSessionStatus)
 	r.POST("/otp_secure_session", StartSecure2FASession)
 }

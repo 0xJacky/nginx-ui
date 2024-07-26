@@ -1,15 +1,17 @@
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
+import { useCookies } from '@vueuse/integrations/useCookies'
 import { storeToRefs } from 'pinia'
 import NProgress from 'nprogress'
 import { useSettingsStore, useUserStore } from '@/pinia'
 import 'nprogress/nprogress.css'
 
 import router from '@/routes'
+import useOTPModal from '@/components/OTP/useOTPModal'
 
 const user = useUserStore()
 const settings = useSettingsStore()
-const { token } = storeToRefs(user)
+const { token, secureSessionId } = storeToRefs(user)
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_ROOT,
@@ -28,7 +30,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   config => {
     NProgress.start()
-    if (token) {
+    if (token.value) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (config.headers as any).Authorization = token.value
     }
@@ -36,6 +38,11 @@ instance.interceptors.request.use(
     if (settings.environment.id) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (config.headers as any)['X-Node-ID'] = settings.environment.id
+    }
+
+    if (secureSessionId.value) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (config.headers as any)['X-Secure-Session-ID'] = secureSessionId.value
     }
 
     return config
@@ -53,8 +60,14 @@ instance.interceptors.response.use(
   },
   async error => {
     NProgress.done()
+
+    const otpModal = useOTPModal()
+    const cookies = useCookies(['nginx-ui-2fa'])
     switch (error.response.status) {
       case 401:
+        cookies.remove('secure_session_id')
+        await otpModal.open()
+        break
       case 403:
         user.logout()
         await router.push('/login')

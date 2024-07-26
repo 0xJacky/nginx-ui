@@ -1,4 +1,4 @@
-package router
+package middleware
 
 import (
 	"crypto/tls"
@@ -11,7 +11,7 @@ import (
 	"net/url"
 )
 
-func proxy() gin.HandlerFunc {
+func Proxy() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		nodeID, ok := c.Get("ProxyNodeID")
 		if !ok {

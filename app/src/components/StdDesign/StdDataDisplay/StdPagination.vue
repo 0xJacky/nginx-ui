@@ -33,6 +33,7 @@ const pageSize = computed({
       v-model:pageSize="pageSize"
       :disabled="loading"
       :current="pagination.current_page"
+      show-size-changer
       :size="size"
       :total="pagination.total"
       @change="change"

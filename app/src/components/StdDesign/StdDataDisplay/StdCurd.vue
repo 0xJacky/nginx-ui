@@ -13,7 +13,7 @@ export interface StdCurdProps<T> extends StdTableProps<T> {
   modalMask?: boolean
   exportExcel?: boolean
   importExcel?: boolean
-
+  disableTrash?: boolean
   disableAdd?: boolean
   onClickAdd?: () => void
 
@@ -201,7 +201,7 @@ const localOverwriteParams = reactive(props.overwriteParams ?? {})
             @click="add"
           >{{ $gettext('Add') }}</a>
           <slot name="extra" />
-          <template v-if="!disableDelete">
+          <template v-if="!disableDelete && !disableTrash">
             <a
               v-if="!getParams.trash"
               @click="getParams.trash = true"

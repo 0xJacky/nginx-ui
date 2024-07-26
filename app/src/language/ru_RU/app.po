@@ -17,15 +17,15 @@ msgstr ""
 msgid "2FA Settings"
 msgstr ""
 
-#: src/routes/index.ts:266
+#: src/routes/index.ts:277
 msgid "About"
 msgstr "О проекте"
 
-#: src/routes/index.ts:193 src/views/domain/ngx_conf/LogEntry.vue:76
+#: src/routes/index.ts:204 src/views/domain/ngx_conf/LogEntry.vue:76
 msgid "Access Logs"
 msgstr "Журнал доступа"
 
-#: src/routes/index.ts:131 src/views/certificate/ACMEUser.vue:76
+#: src/routes/index.ts:142 src/views/certificate/ACMEUser.vue:76
 #: src/views/certificate/ACMEUserSelector.vue:85
 #, fuzzy
 msgid "ACME User"
@@ -33,8 +33,9 @@ msgstr "Пользователь"
 
 #: src/views/certificate/ACMEUser.vue:59
 #: src/views/certificate/CertificateList/certColumns.tsx:89
-#: src/views/certificate/DNSCredential.vue:33 src/views/config/config.ts:34
-#: src/views/domain/DomainList.vue:47 src/views/environment/envColumns.tsx:131
+#: src/views/certificate/DNSCredential.vue:33
+#: src/views/config/configColumns.ts:38 src/views/domain/DomainList.vue:47
+#: src/views/environment/envColumns.tsx:131
 #: src/views/notification/Notification.vue:37
 #: src/views/preference/AuthSettings.vue:26 src/views/stream/StreamList.vue:47
 #: src/views/user/userColumns.tsx:60
@@ -50,6 +51,12 @@ msgstr "Действие"
 #: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr "Добавить"
+
+#: src/routes/index.ts:112 src/views/config/ConfigEditor.vue:128
+#: src/views/config/ConfigEditor.vue:187
+#, fuzzy
+msgid "Add Configuration"
+msgstr "Редактировать Конфигурацию"
 
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:95
 msgid "Add Directive Below"
@@ -188,9 +195,9 @@ msgid "Auto-renewal enabled for %{name}"
 msgstr "Автообновление включено для %{name}"
 
 #: src/views/certificate/CertificateEditor.vue:247
-#: src/views/config/Config.vue:71 src/views/config/ConfigEdit.vue:87
-#: src/views/domain/DomainEdit.vue:253 src/views/nginx_log/NginxLog.vue:168
-#: src/views/stream/StreamEdit.vue:245
+#: src/views/config/ConfigEditor.vue:196 src/views/config/ConfigList.vue:173
+#: src/views/config/ConfigList.vue:99 src/views/domain/DomainEdit.vue:253
+#: src/views/nginx_log/NginxLog.vue:168 src/views/stream/StreamEdit.vue:245
 msgid "Back"
 msgstr "Назад"
 
@@ -219,7 +226,7 @@ msgstr ""
 msgid "Base information"
 msgstr "Основная информация"
 
-#: src/views/config/ConfigEdit.vue:115
+#: src/views/config/ConfigEditor.vue:224
 #: src/views/domain/components/RightSettings.vue:75
 #: src/views/preference/Preference.vue:110
 #: src/views/stream/components/RightSettings.vue:74
@@ -282,13 +289,13 @@ msgid_plural "Certificates Status"
 msgstr[0] "Статус сертификата"
 msgstr[1] "Статус сертификата"
 
-#: src/routes/index.ts:122
+#: src/routes/index.ts:133
 #: src/views/certificate/CertificateList/Certificate.vue:13
 #, fuzzy
 msgid "Certificates"
 msgstr "Статус сертификата"
 
-#: src/routes/index.ts:139
+#: src/routes/index.ts:150
 #, fuzzy
 msgid "Certificates List"
 msgstr "Список"
@@ -309,6 +316,11 @@ msgid "Changed Certificate"
 msgid_plural "Changed Certificates"
 msgstr[0] "Сертификат действителен"
 msgstr[1] "Сертификат действителен"
+
+#: src/views/config/ConfigEditor.vue:251
+#, fuzzy
+msgid "Changed Path"
+msgstr "Сертификат действителен"
 
 #: src/views/environment/BatchUpgrader.vue:161 src/views/system/Upgrade.vue:190
 msgid "Channel"
@@ -359,7 +371,7 @@ msgstr "Проверка конфигурации успешна"
 msgid "Configuration Name"
 msgstr "Название конфигурации"
 
-#: src/views/config/Config.vue:42
+#: src/views/config/ConfigList.vue:91
 msgid "Configurations"
 msgstr "Конфигурации"
 
@@ -410,9 +422,24 @@ msgstr "Создан в"
 msgid "Create Another"
 msgstr "Создать еще"
 
+#: src/views/config/ConfigList.vue:109
+#, fuzzy
+msgid "Create File"
+msgstr "Создан в"
+
+#: src/views/config/components/Mkdir.vue:50 src/views/config/ConfigList.vue:116
+#, fuzzy
+msgid "Create Folder"
+msgstr "Создать еще"
+
 #: src/views/notification/Notification.vue:31 src/views/user/userColumns.tsx:48
 msgid "Created at"
 msgstr "Создан в"
+
+#: src/views/config/components/Mkdir.vue:35
+#, fuzzy
+msgid "Created successfully"
+msgstr "Отключено успешно"
 
 #: src/language/constants.ts:9
 msgid "Creating client facilitates communication with the CA server"
@@ -449,7 +476,8 @@ msgid ""
 "indicator."
 msgstr ""
 
-#: src/routes/index.ts:39
+#: src/routes/index.ts:39 src/views/config/ConfigEditor.vue:118
+#: src/views/config/ConfigEditor.vue:79 src/views/config/ConfigList.vue:57
 msgid "Dashboard"
 msgstr "Доска"
 
@@ -530,7 +558,7 @@ msgstr "Деректива"
 msgid "Directives"
 msgstr "Дерективы"
 
-#: src/views/config/config.ts:18
+#: src/views/config/configColumns.ts:22
 #, fuzzy
 msgid "Directory"
 msgstr "Деректива"
@@ -562,7 +590,7 @@ msgstr "Отключено успешно"
 msgid "Disk IO"
 msgstr "Нагрузка на Диск IO"
 
-#: src/routes/index.ts:167 src/views/certificate/DNSCredential.vue:40
+#: src/routes/index.ts:178 src/views/certificate/DNSCredential.vue:40
 msgid "DNS Credentials"
 msgstr ""
 
@@ -687,7 +715,7 @@ msgstr "Saved successfully"
 msgid "Edit %{n}"
 msgstr "Редактировать %{n}"
 
-#: src/routes/index.ts:112 src/views/config/ConfigEdit.vue:81
+#: src/routes/index.ts:122 src/views/config/ConfigEditor.vue:187
 msgid "Edit Configuration"
 msgstr "Редактировать Конфигурацию"
 
@@ -779,7 +807,11 @@ msgstr "Активировано успешно"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Использовать для сайта Let's Encrypt"
 
-#: src/routes/index.ts:217 src/views/environment/Environment.vue:34
+#: src/views/config/ConfigList.vue:151
+msgid "Enter"
+msgstr ""
+
+#: src/routes/index.ts:228 src/views/environment/Environment.vue:34
 msgid "Environment"
 msgstr "Окружение"
 
@@ -797,7 +829,7 @@ msgstr "Комментарии"
 msgid "Error"
 msgstr "Ошибка"
 
-#: src/routes/index.ts:200 src/views/domain/ngx_conf/LogEntry.vue:84
+#: src/routes/index.ts:211 src/views/domain/ngx_conf/LogEntry.vue:84
 msgid "Error Logs"
 msgstr "Ошибка логирования"
 
@@ -846,7 +878,7 @@ msgstr "Не удалось получить информацию о серти�
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "Не удалось сохранить, обнаружены синтаксические ошибки в конфигурации."
 
-#: src/views/config/config.ts:20
+#: src/views/config/configColumns.ts:24
 msgid "File"
 msgstr "Файл"
 
@@ -876,16 +908,16 @@ msgstr "Готово"
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr ""
 
-#: src/views/config/ConfigEdit.vue:90
+#: src/views/config/ConfigEditor.vue:199
 msgid "Format Code"
 msgstr "Форматировать код"
 
-#: src/views/config/ConfigEdit.vue:68
+#: src/views/config/ConfigEditor.vue:166
 #, fuzzy
 msgid "Format error %{msg}"
 msgstr "Ошибка форматирования %{msg}"
 
-#: src/views/config/ConfigEdit.vue:66
+#: src/views/config/ConfigEditor.vue:164
 #, fuzzy
 msgid "Format successfully"
 msgstr "Форматирование успешно"
@@ -967,7 +999,7 @@ msgstr ""
 msgid "Import"
 msgstr "Экспорт"
 
-#: src/routes/index.ts:157 src/views/certificate/CertificateEditor.vue:79
+#: src/routes/index.ts:168 src/views/certificate/CertificateEditor.vue:79
 #, fuzzy
 msgid "Import Certificate"
 msgstr "Статус сертификата"
@@ -998,7 +1030,7 @@ msgstr ""
 msgid "Input the recovery code:"
 msgstr ""
 
-#: src/routes/index.ts:288 src/views/other/Install.vue:134
+#: src/routes/index.ts:299 src/views/other/Install.vue:134
 msgid "Install"
 msgstr "Установить"
 
@@ -1020,7 +1052,17 @@ msgstr "Действительный"
 msgid "Invalid 2FA or recovery code"
 msgstr ""
 
-#: src/components/OTP/useOTPModal.ts:60
+#: src/views/config/components/Rename.vue:62
+#: src/views/config/ConfigEditor.vue:233
+#, fuzzy
+msgid "Invalid filename"
+msgstr "Invalid E-mail!"
+
+#: src/views/config/components/Mkdir.vue:60
+msgid "Invalid folder name"
+msgstr ""
+
+#: src/components/OTP/useOTPModal.ts:64
 msgid "Invalid passcode or recovery code"
 msgstr ""
 
@@ -1126,7 +1168,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Логин"
 
-#: src/routes/index.ts:294 src/views/other/Login.vue:192
+#: src/routes/index.ts:305 src/views/other/Login.vue:192
 msgid "Login"
 msgstr "Логин"
 
@@ -1161,7 +1203,8 @@ msgstr ""
 "Убедитесь, что вы настроили обратный прокси-сервер для каталога .well-known "
 "на HTTPChallengePort перед получением сертификата»."
 
-#: src/routes/index.ts:102
+#: src/routes/index.ts:102 src/views/config/ConfigEditor.vue:123
+#: src/views/config/ConfigEditor.vue:84 src/views/config/ConfigList.vue:62
 msgid "Manage Configs"
 msgstr "Конфигурации"
 
@@ -1174,7 +1217,7 @@ msgstr "Сайты"
 msgid "Manage Streams"
 msgstr "Управление потоками"
 
-#: src/routes/index.ts:240 src/views/user/User.vue:9
+#: src/routes/index.ts:251 src/views/user/User.vue:9
 msgid "Manage Users"
 msgstr "Пользователи"
 
@@ -1208,11 +1251,12 @@ msgstr "Расширенный режим"
 #: src/components/ChatGPT/ChatGPT.vue:248
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:181
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:532
+#: src/views/config/ConfigList.vue:151
 #, fuzzy
 msgid "Modify"
 msgstr "Изменить"
 
-#: src/routes/index.ts:147 src/views/certificate/CertificateEditor.vue:79
+#: src/routes/index.ts:158 src/views/certificate/CertificateEditor.vue:79
 #, fuzzy
 msgid "Modify Certificate"
 msgstr "Статус сертификата"
@@ -1234,7 +1278,9 @@ msgstr "Одиночная директива"
 #: src/views/certificate/ACMEUser.vue:13
 #: src/views/certificate/CertificateEditor.vue:152
 #: src/views/certificate/CertificateList/certColumns.tsx:10
-#: src/views/certificate/DNSCredential.vue:11 src/views/config/config.ts:7
+#: src/views/certificate/DNSCredential.vue:11
+#: src/views/config/components/Mkdir.vue:67 src/views/config/configColumns.ts:8
+#: src/views/config/ConfigEditor.vue:239
 #: src/views/domain/components/RightSettings.vue:83
 #: src/views/domain/components/SiteDuplicate.vue:129
 #: src/views/domain/DomainList.vue:13
@@ -1261,6 +1307,16 @@ msgstr "Всего получено"
 #: src/views/dashboard/ServerAnalytic.vue:277
 msgid "Network Total Send"
 msgstr "Всего отправлено"
+
+#: src/views/config/components/Rename.vue:70
+#, fuzzy
+msgid "New name"
+msgstr "Имя пользователя"
+
+#: src/views/config/ConfigEditor.vue:251
+#, fuzzy
+msgid "New Path"
+msgstr "Путь"
 
 #: src/views/system/Upgrade.vue:210
 msgid "New version released"
@@ -1294,7 +1350,7 @@ msgstr "Управление Nginx"
 msgid "Nginx Error Log Path"
 msgstr "Путь для Nginx Error Log"
 
-#: src/routes/index.ts:185 src/views/nginx_log/NginxLog.vue:143
+#: src/routes/index.ts:196 src/views/nginx_log/NginxLog.vue:143
 msgid "Nginx Log"
 msgstr "Журнал"
 
@@ -1331,7 +1387,7 @@ msgstr ""
 msgid "Not After"
 msgstr ""
 
-#: src/routes/index.ts:300
+#: src/routes/index.ts:311
 msgid "Not Found"
 msgstr "Не найден"
 
@@ -1349,7 +1405,7 @@ msgstr "Заметка"
 msgid "Notification"
 msgstr "Сертификат"
 
-#: src/components/Notification/Notification.vue:82 src/routes/index.ts:231
+#: src/components/Notification/Notification.vue:82 src/routes/index.ts:242
 #, fuzzy
 msgid "Notifications"
 msgstr "Уведомления"
@@ -1419,6 +1475,10 @@ msgstr ""
 msgid "OpenAI"
 msgstr ""
 
+#: src/views/config/components/Rename.vue:66
+msgid "Original name"
+msgstr ""
+
 #: src/views/system/Upgrade.vue:177
 #, fuzzy
 msgid "OS"
@@ -1450,7 +1510,7 @@ msgstr "Пароль"
 msgid "Password (*)"
 msgstr "Пароль (*)"
 
-#: src/views/config/ConfigEdit.vue:118
+#: src/views/config/ConfigEditor.vue:245
 #: src/views/domain/ngx_conf/LocationEditor.vue:118
 #: src/views/domain/ngx_conf/LocationEditor.vue:90
 msgid "Path"
@@ -1487,6 +1547,17 @@ msgid ""
 "Please first add credentials in Certification > DNS Credentials, and then "
 "select one of the credentialsbelow to request the API of the DNS provider."
 msgstr ""
+
+#: src/views/config/components/Rename.vue:61
+#: src/views/config/ConfigEditor.vue:232
+#, fuzzy
+msgid "Please input a filename"
+msgstr "Введите ваше имя пользователя!"
+
+#: src/views/config/components/Mkdir.vue:59
+#, fuzzy
+msgid "Please input a folder name"
+msgstr "Введите ваше имя пользователя!"
 
 #: src/views/domain/components/SiteDuplicate.vue:38
 #: src/views/stream/components/StreamDuplicate.vue:38
@@ -1525,7 +1596,7 @@ msgstr ""
 msgid "Pre-release"
 msgstr ""
 
-#: src/routes/index.ts:249 src/views/preference/Preference.vue:105
+#: src/routes/index.ts:260 src/views/preference/Preference.vue:105
 msgid "Preference"
 msgstr "Настройки"
 
@@ -1650,10 +1721,17 @@ msgstr "Успешно сохранено"
 msgid "Removed successfully"
 msgstr "Успешно сохранено"
 
+#: src/views/config/components/Rename.vue:52
+#: src/views/config/ConfigList.vue:159
 #: src/views/domain/ngx_conf/NgxUpstream.vue:123
 #, fuzzy
 msgid "Rename"
 msgstr "Имя пользователя"
+
+#: src/views/config/components/Rename.vue:37
+#, fuzzy
+msgid "Rename successfully"
+msgstr "Активировано успешно"
 
 #: src/views/certificate/RenewCert.vue:43
 #: src/views/certificate/RenewCert.vue:47
@@ -1709,7 +1787,7 @@ msgstr "Выполняется"
 
 #: src/components/ChatGPT/ChatGPT.vue:251
 #: src/views/certificate/CertificateEditor.vue:254
-#: src/views/config/ConfigEdit.vue:96 src/views/domain/DomainEdit.vue:260
+#: src/views/config/ConfigEditor.vue:205 src/views/domain/DomainEdit.vue:260
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
 #: src/views/preference/Preference.vue:145 src/views/stream/StreamEdit.vue:252
 msgid "Save"
@@ -1719,7 +1797,7 @@ msgstr "Сохранить"
 msgid "Save Directive"
 msgstr "Сохранить директиву"
 
-#: src/views/config/ConfigEdit.vue:57 src/views/domain/DomainAdd.vue:46
+#: src/views/config/ConfigEditor.vue:154 src/views/domain/DomainAdd.vue:46
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:41
 msgid "Save error %{msg}"
 msgstr "Ошибка сохранения %{msg}"
@@ -1732,7 +1810,7 @@ msgstr "Ошибка сохранения %{msg}"
 msgid "Save successfully"
 msgstr "Успешно сохранено"
 
-#: src/views/config/ConfigEdit.vue:55 src/views/domain/DomainAdd.vue:37
+#: src/views/config/ConfigEditor.vue:150 src/views/domain/DomainAdd.vue:37
 #: src/views/domain/DomainEdit.vue:143
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/stream/StreamEdit.vue:138
@@ -1763,7 +1841,9 @@ msgstr "Отправлено"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:42
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:213
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:253
-#: src/views/config/ConfigEdit.vue:40 src/views/domain/DomainList.vue:81
+#: src/views/config/components/Mkdir.vue:38
+#: src/views/config/components/Rename.vue:40
+#: src/views/config/ConfigEditor.vue:93 src/views/domain/DomainList.vue:81
 #: src/views/environment/BatchUpgrader.vue:57
 #: src/views/environment/Environment.vue:15 src/views/other/Install.vue:68
 #: src/views/preference/AuthSettings.vue:49
@@ -1817,7 +1897,7 @@ msgstr ""
 msgid "Single Directive"
 msgstr "Одиночная Директива"
 
-#: src/routes/index.ts:207
+#: src/routes/index.ts:218
 #, fuzzy
 msgid "Site Logs"
 msgstr "Логи сайтов"
@@ -1927,7 +2007,7 @@ msgstr "Сертификат действителен"
 msgid "Sync to"
 msgstr ""
 
-#: src/routes/index.ts:258
+#: src/routes/index.ts:269
 msgid "System"
 msgstr "Система"
 
@@ -1940,7 +2020,7 @@ msgstr ""
 msgid "Target"
 msgstr ""
 
-#: src/routes/index.ts:177 src/views/pty/Terminal.vue:114
+#: src/routes/index.ts:188 src/views/pty/Terminal.vue:114
 msgid "Terminal"
 msgstr "Терминал"
 
@@ -2094,18 +2174,19 @@ msgstr ""
 msgid "Trash"
 msgstr ""
 
-#: src/components/OTP/useOTPModal.ts:66
+#: src/components/OTP/useOTPModal.ts:70
 msgid "Two-factor authentication required"
 msgstr ""
 
 #: src/views/certificate/CertificateList/certColumns.tsx:25
-#: src/views/config/config.ts:12 src/views/notification/Notification.vue:13
+#: src/views/config/configColumns.ts:16
+#: src/views/notification/Notification.vue:13
 msgid "Type"
 msgstr "Тип"
 
 #: src/views/certificate/ACMEUser.vue:53
-#: src/views/certificate/DNSCredential.vue:27 src/views/config/config.ts:27
-#: src/views/config/ConfigEdit.vue:121
+#: src/views/certificate/DNSCredential.vue:27
+#: src/views/config/configColumns.ts:31 src/views/config/ConfigEditor.vue:258
 #: src/views/domain/components/RightSettings.vue:86
 #: src/views/domain/DomainList.vue:41 src/views/environment/envColumns.tsx:124
 #: src/views/stream/components/RightSettings.vue:85
@@ -2118,7 +2199,7 @@ msgstr "Обновлено в"
 msgid "Updated successfully"
 msgstr "Обновлено успешно"
 
-#: src/routes/index.ts:273 src/views/environment/Environment.vue:50
+#: src/routes/index.ts:284 src/views/environment/Environment.vue:50
 #: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
 msgid "Upgrade"
 msgstr "Обновление"
@@ -2251,6 +2332,10 @@ msgstr "Вы используете последнюю версию"
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "Вы можете проверить обновление Nginx UI на этой странице."
 
+#, fuzzy
+#~ msgid "Rename "
+#~ msgstr "Имя пользователя"
+
 #~ msgid "Auto Cert"
 #~ msgstr "Авто Сертификат"
 
@@ -2321,6 +2406,3 @@ msgstr "Вы можете проверить обновление Nginx UI на 
 
 #~ msgid "404 Not Found"
 #~ msgstr "404 Not Found"
-
-#~ msgid "Invalid E-mail!"
-#~ msgstr "Invalid E-mail!"

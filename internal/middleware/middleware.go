@@ -1,11 +1,10 @@
-package router
+package middleware
 
 import (
 	"encoding/base64"
 	"github.com/0xJacky/Nginx-UI/app"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/user"
-	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -16,7 +15,7 @@ import (
 	"strings"
 )
 
-func recovery() gin.HandlerFunc {
+func Recovery() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
@@ -34,7 +33,7 @@ func recovery() gin.HandlerFunc {
 	}
 }
 
-func authRequired() gin.HandlerFunc {
+func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		abortWithAuthFailure := func() {
 			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
@@ -75,46 +74,11 @@ func authRequired() gin.HandlerFunc {
 	}
 }
 
-func required2FA() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		u, ok := c.Get("user")
-		if !ok {
-			c.Next()
-			return
-		}
-		cUser := u.(*model.Auth)
-		if !cUser.EnabledOTP() {
-			c.Next()
-			return
-		}
-		ssid := c.GetHeader("X-Secure-Session-ID")
-		if ssid == "" {
-			ssid = c.Query("X-Secure-Session-ID")
-		}
-		if ssid == "" {
-			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
-				"message": "Secure Session ID is empty",
-			})
-			return
-		}
-
-		if user.VerifySecureSessionID(ssid, cUser.ID) {
-			c.Next()
-			return
-		}
-
-		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
-			"message": "Secure Session ID is invalid",
-		})
-		return
-	}
-}
-
-type serverFileSystemType struct {
+type ServerFileSystemType struct {
 	http.FileSystem
 }
 
-func (f serverFileSystemType) Exists(prefix string, _path string) bool {
+func (f ServerFileSystemType) Exists(prefix string, _path string) bool {
 	file, err := f.Open(path.Join(prefix, _path))
 	if file != nil {
 		defer func(file http.File) {
@@ -127,7 +91,7 @@ func (f serverFileSystemType) Exists(prefix string, _path string) bool {
 	return err == nil
 }
 
-func mustFS(dir string) (serverFileSystem static.ServeFileSystem) {
+func MustFs(dir string) (serverFileSystem static.ServeFileSystem) {
 
 	sub, err := fs.Sub(app.DistFS, path.Join("dist", dir))
 
@@ -136,14 +100,14 @@ func mustFS(dir string) (serverFileSystem static.ServeFileSystem) {
 		return
 	}
 
-	serverFileSystem = serverFileSystemType{
+	serverFileSystem = ServerFileSystemType{
 		http.FS(sub),
 	}
 
 	return
 }
 
-func cacheJs() gin.HandlerFunc {
+func CacheJs() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if strings.Contains(c.Request.URL.String(), "js") {
 			c.Header("Cache-Control", "max-age: 1296000")
