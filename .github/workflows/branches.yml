@@ -1,0 +1,22 @@
+name: Build Documents
+
+on:
+  pull_request:
+    branches:
+      - 'dev'
+    types: [ closed ]
+  release:
+    types:
+      - published
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true || github.event.release.action == 'released'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Merge dev to main
+        run: |
+          git checkout main
+          git pull --no-rebase origin dev
+          git push origin main
