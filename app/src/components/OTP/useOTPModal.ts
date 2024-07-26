@@ -23,6 +23,7 @@ const useOTPModal = () => {
 
   const open = async (): Promise<string> => {
     const { status } = await otp.status()
+    const { status: secureSessionStatus } = await otp.secure_session_status()
 
     return new Promise((resolve, reject) => {
       if (!status) {
@@ -33,13 +34,12 @@ const useOTPModal = () => {
 
       const cookies = useCookies(['nginx-ui-2fa'])
       const ssid = cookies.get('secure_session_id')
-      if (ssid) {
+      if (ssid && secureSessionStatus) {
         resolve(ssid)
         secureSessionId.value = ssid
 
         return
       }
-
       injectStyles()
       let container: HTMLDivElement | null = document.createElement('div')
       document.body.appendChild(container)
@@ -51,11 +51,11 @@ const useOTPModal = () => {
       }
 
       const verify = (passcode: string, recovery: string) => {
-        otp.start_secure_session(passcode, recovery).then(r => {
+        otp.start_secure_session(passcode, recovery).then(async r => {
           cookies.set('secure_session_id', r.session_id, { maxAge: 60 * 3 })
-          resolve(r.session_id)
           close()
           secureSessionId.value = r.session_id
+          resolve(r.session_id)
         }).catch(async () => {
           refOTPAuthorization.value?.clearInput()
           await message.error($gettext('Invalid passcode or recovery code'))

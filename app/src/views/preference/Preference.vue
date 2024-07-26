@@ -11,6 +11,7 @@ import type { Settings } from '@/views/preference/typedef'
 import LogrotateSettings from '@/views/preference/LogrotateSettings.vue'
 import { useSettingsStore } from '@/pinia'
 import AuthSettings from '@/views/preference/AuthSettings.vue'
+import useOTPModal from '@/components/OTP/useOTPModal'
 
 const data = ref<Settings>({
   server: {
@@ -66,16 +67,21 @@ const refAuthSettings = ref()
 async function save() {
   // fix type
   data.value.server.http_challenge_port = data.value.server.http_challenge_port.toString()
-  settings.save(data.value).then(r => {
-    if (!settingsStore.is_remote)
-      server_name.value = r?.server?.name ?? ''
-    data.value = r
-    refAuthSettings.value?.getBannedIPs?.()
-    message.success($gettext('Save successfully'))
-    errors.value = {}
-  }).catch(e => {
-    errors.value = e.errors
-    message.error(e?.message ?? $gettext('Server error'))
+
+  const otpModal = useOTPModal()
+
+  otpModal.open().then(() => {
+    settings.save(data.value).then(r => {
+      if (!settingsStore.is_remote)
+        server_name.value = r?.server?.name ?? ''
+      data.value = r
+      refAuthSettings.value?.getBannedIPs?.()
+      message.success($gettext('Save successfully'))
+      errors.value = {}
+    }).catch(e => {
+      errors.value = e.errors
+      message.error(e?.message ?? $gettext('Server error'))
+    })
   })
 }
 
