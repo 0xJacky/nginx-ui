@@ -36,4 +36,10 @@ export const msg = [
 
   $gettext('Sync Certificate Success'),
   $gettext('Sync Certificate Error'),
+
+  $gettext('Rename Remote Config Success'),
+  $gettext('Rename Remote Config Error'),
+
+  $gettext('Sync Config Success'),
+  $gettext('Sync Config Error'),
 ]

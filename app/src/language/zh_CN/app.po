@@ -39,7 +39,7 @@ msgstr "ACME 用户"
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.ts:38 src/views/domain/DomainList.vue:47
 #: src/views/environment/envColumns.tsx:131
-#: src/views/notification/Notification.vue:37
+#: src/views/notification/notificationColumns.tsx:54
 #: src/views/preference/AuthSettings.vue:26 src/views/stream/StreamList.vue:47
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
@@ -55,8 +55,8 @@ msgstr "操作"
 msgid "Add"
 msgstr "添加"
 
-#: src/routes/index.ts:112 src/views/config/ConfigEditor.vue:128
-#: src/views/config/ConfigEditor.vue:187
+#: src/routes/index.ts:112 src/views/config/ConfigEditor.vue:135
+#: src/views/config/ConfigEditor.vue:196
 msgid "Add Configuration"
 msgstr "添加配置"
 
@@ -114,7 +114,7 @@ msgid "Are you sure to delete this banned IP immediately?"
 msgstr "您确定要立即删除这个被禁用的 IP 吗？"
 
 #: src/components/Notification/Notification.vue:86
-#: src/views/notification/Notification.vue:72
+#: src/views/notification/Notification.vue:40
 msgid "Are you sure you want to clear all notifications?"
 msgstr "您确定要清除所有通知吗？"
 
@@ -122,11 +122,11 @@ msgstr "您确定要清除所有通知吗？"
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "你确定你要清除聊天记录吗？"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:578
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:577
 msgid "Are you sure you want to delete this item permanently?"
 msgstr "您确定要永久删除此项目吗？"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:550
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:549
 msgid "Are you sure you want to delete this item?"
 msgstr "你确定要删除这个项目吗?"
 
@@ -134,7 +134,7 @@ msgstr "你确定要删除这个项目吗?"
 msgid "Are you sure you want to delete?"
 msgstr "您确定要删除吗？"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:564
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:563
 msgid "Are you sure you want to recover this item?"
 msgstr "您确定要恢复这个项目吗？"
 
@@ -184,7 +184,7 @@ msgid "Auto-renewal enabled for %{name}"
 msgstr "成功启用 %{name} 自动续签"
 
 #: src/views/certificate/CertificateEditor.vue:247
-#: src/views/config/ConfigEditor.vue:196 src/views/config/ConfigList.vue:173
+#: src/views/config/ConfigEditor.vue:205 src/views/config/ConfigList.vue:173
 #: src/views/config/ConfigList.vue:99 src/views/domain/DomainEdit.vue:253
 #: src/views/nginx_log/NginxLog.vue:168 src/views/stream/StreamEdit.vue:245
 msgid "Back"
@@ -214,7 +214,7 @@ msgstr "禁用至"
 msgid "Base information"
 msgstr "基本信息"
 
-#: src/views/config/ConfigEditor.vue:224
+#: src/views/config/ConfigEditor.vue:233
 #: src/views/domain/components/RightSettings.vue:75
 #: src/views/preference/Preference.vue:110
 #: src/views/stream/components/RightSettings.vue:74
@@ -226,7 +226,7 @@ msgid "Basic Mode"
 msgstr "基本模式"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:54
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:486
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:485
 msgid "Batch Modify"
 msgstr "批量修改"
 
@@ -294,7 +294,7 @@ msgid "Changed Certificate"
 msgid_plural "Changed Certificates"
 msgstr[0] "变更证书"
 
-#: src/views/config/ConfigEditor.vue:251
+#: src/views/config/ConfigEditor.vue:260
 msgid "Changed Path"
 msgstr "变更后的路径"
 
@@ -312,12 +312,12 @@ msgstr "正在清理环境变量"
 
 #: src/components/ChatGPT/ChatGPT.vue:275
 #: src/components/Notification/Notification.vue:91
-#: src/views/notification/Notification.vue:77
+#: src/views/notification/Notification.vue:45
 msgid "Clear"
 msgstr "清空"
 
 #: src/components/Notification/Notification.vue:42
-#: src/views/notification/Notification.vue:46
+#: src/views/notification/Notification.vue:13
 msgid "Cleared successfully"
 msgstr "清除成功"
 
@@ -398,15 +398,16 @@ msgstr "再创建一个"
 msgid "Create File"
 msgstr "创建文件"
 
-#: src/views/config/components/Mkdir.vue:50 src/views/config/ConfigList.vue:116
+#: src/views/config/components/Mkdir.vue:48 src/views/config/ConfigList.vue:116
 msgid "Create Folder"
 msgstr "创建文件夹"
 
-#: src/views/notification/Notification.vue:31 src/views/user/userColumns.tsx:48
+#: src/views/notification/notificationColumns.tsx:48
+#: src/views/user/userColumns.tsx:48
 msgid "Created at"
 msgstr "创建时间"
 
-#: src/views/config/components/Mkdir.vue:35
+#: src/views/config/components/Mkdir.vue:34
 msgid "Created successfully"
 msgstr "创建成功"
 
@@ -445,8 +446,8 @@ msgid ""
 "indicator."
 msgstr "自定义显示在环境指示器中的本地服务器名称。"
 
-#: src/routes/index.ts:39 src/views/config/ConfigEditor.vue:118
-#: src/views/config/ConfigEditor.vue:79 src/views/config/ConfigList.vue:57
+#: src/routes/index.ts:39 src/views/config/ConfigEditor.vue:125
+#: src/views/config/ConfigEditor.vue:86 src/views/config/ConfigList.vue:57
 msgid "Dashboard"
 msgstr "仪表盘"
 
@@ -458,7 +459,7 @@ msgstr "数据库 (可选，默认: database)"
 msgid "Days"
 msgstr "天"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:557
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:556
 #: src/views/domain/DomainList.vue:155
 #: src/views/domain/ngx_conf/NgxServer.vue:110
 #: src/views/domain/ngx_conf/NgxUpstream.vue:126
@@ -466,7 +467,7 @@ msgstr "天"
 msgid "Delete"
 msgstr "删除"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:585
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:584
 msgid "Delete Permanently"
 msgstr "彻底删除"
 
@@ -478,10 +479,11 @@ msgstr "删除站点: %{site_name}"
 msgid "Delete stream: %{stream_name}"
 msgstr "删除 Stream: %{stream_name}"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:202
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:201
 msgid "Deleted successfully"
 msgstr "删除成功"
 
+#: src/views/config/ConfigEditor.vue:276
 #: src/views/domain/components/Deploy.vue:104
 #: src/views/domain/components/RightSettings.vue:93
 #: src/views/stream/components/Deploy.vue:103
@@ -509,7 +511,7 @@ msgstr "部署成功"
 msgid "Description"
 msgstr "描述"
 
-#: src/views/notification/Notification.vue:26
+#: src/views/notification/notificationColumns.tsx:43
 msgid "Details"
 msgstr "详情"
 
@@ -665,7 +667,7 @@ msgstr "成功复制到本地"
 msgid "Edit %{n}"
 msgstr "编辑 %{n}"
 
-#: src/routes/index.ts:122 src/views/config/ConfigEditor.vue:187
+#: src/routes/index.ts:122 src/views/config/ConfigEditor.vue:196
 msgid "Edit Configuration"
 msgstr "编辑配置"
 
@@ -751,10 +753,6 @@ msgstr "启用成功"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 对网站进行加密"
 
-#: src/views/config/ConfigList.vue:151
-msgid "Enter"
-msgstr "进入"
-
 #: src/routes/index.ts:228 src/views/environment/Environment.vue:34
 msgid "Environment"
 msgstr "环境"
@@ -768,6 +766,7 @@ msgid "Environments"
 msgstr "环境"
 
 #: src/constants/index.ts:16 src/views/config/InspectConfig.vue:44
+#: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr "错误"
 
@@ -847,15 +846,15 @@ msgstr "完成"
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr "中国用户：https://mirror.ghproxy.com/"
 
-#: src/views/config/ConfigEditor.vue:199
+#: src/views/config/ConfigEditor.vue:208
 msgid "Format Code"
 msgstr "代码格式化"
 
-#: src/views/config/ConfigEditor.vue:166
+#: src/views/config/ConfigEditor.vue:175
 msgid "Format error %{msg}"
 msgstr "保存错误 %{msg}"
 
-#: src/views/config/ConfigEditor.vue:164
+#: src/views/config/ConfigEditor.vue:173
 msgid "Format successfully"
 msgstr "格式化成功"
 
@@ -943,7 +942,7 @@ msgstr "导入证书"
 msgid "Incorrect username or password"
 msgstr "用户名或密码错误"
 
-#: src/constants/index.ts:18
+#: src/constants/index.ts:18 src/views/notification/notificationColumns.tsx:24
 msgid "Info"
 msgstr "信息"
 
@@ -984,16 +983,16 @@ msgstr "无效的"
 msgid "Invalid 2FA or recovery code"
 msgstr "无效的二步验证码或恢复密码"
 
-#: src/views/config/components/Rename.vue:62
-#: src/views/config/ConfigEditor.vue:233
+#: src/views/config/components/Rename.vue:65
+#: src/views/config/ConfigEditor.vue:242
 msgid "Invalid filename"
 msgstr "文件名无效"
 
-#: src/views/config/components/Mkdir.vue:60
+#: src/views/config/components/Mkdir.vue:58
 msgid "Invalid folder name"
 msgstr "无效文件夹名"
 
-#: src/components/OTP/useOTPModal.ts:64
+#: src/components/OTP/useOTPModal.ts:61
 msgid "Invalid passcode or recovery code"
 msgstr "二次验证码或恢复代码无效"
 
@@ -1127,8 +1126,8 @@ msgstr ""
 "在获取签发证书前，请确保配置文件中已将 .well-known 目录反向代理到 "
 "HTTPChallengePort。"
 
-#: src/routes/index.ts:102 src/views/config/ConfigEditor.vue:123
-#: src/views/config/ConfigEditor.vue:84 src/views/config/ConfigList.vue:62
+#: src/routes/index.ts:102 src/views/config/ConfigEditor.vue:130
+#: src/views/config/ConfigEditor.vue:91 src/views/config/ConfigList.vue:62
 msgid "Manage Configs"
 msgstr "配置管理"
 
@@ -1171,7 +1170,7 @@ msgstr "模型"
 
 #: src/components/ChatGPT/ChatGPT.vue:248
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:181
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:532
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:531
 #: src/views/config/ConfigList.vue:151
 msgid "Modify"
 msgstr "修改"
@@ -1196,8 +1195,8 @@ msgstr "多行指令"
 #: src/views/certificate/CertificateEditor.vue:152
 #: src/views/certificate/CertificateList/certColumns.tsx:10
 #: src/views/certificate/DNSCredential.vue:11
-#: src/views/config/components/Mkdir.vue:67 src/views/config/configColumns.ts:8
-#: src/views/config/ConfigEditor.vue:239
+#: src/views/config/components/Mkdir.vue:65 src/views/config/configColumns.ts:8
+#: src/views/config/ConfigEditor.vue:248
 #: src/views/domain/components/RightSettings.vue:83
 #: src/views/domain/components/SiteDuplicate.vue:129
 #: src/views/domain/DomainList.vue:13
@@ -1225,11 +1224,11 @@ msgstr "下载流量"
 msgid "Network Total Send"
 msgstr "上传流量"
 
-#: src/views/config/components/Rename.vue:70
+#: src/views/config/components/Rename.vue:73
 msgid "New name"
 msgstr "新名称"
 
-#: src/views/config/ConfigEditor.vue:251
+#: src/views/config/ConfigEditor.vue:260
 msgid "New Path"
 msgstr "新路径"
 
@@ -1277,13 +1276,13 @@ msgstr "Nginx 重启成功"
 
 #: src/components/ChatGPT/ChatGPT.vue:269
 #: src/components/Notification/Notification.vue:84
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:548
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:562
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:576
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:547
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:561
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:575
 #: src/views/domain/DomainList.vue:144
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
-#: src/views/notification/Notification.vue:70
+#: src/views/notification/Notification.vue:38
 #: src/views/preference/AuthSettings.vue:98
 #: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
@@ -1311,7 +1310,7 @@ msgstr "此前无效: %{date}"
 msgid "Note"
 msgstr "注意"
 
-#: src/views/notification/Notification.vue:62
+#: src/views/notification/Notification.vue:29
 msgid "Notification"
 msgstr "通知"
 
@@ -1351,9 +1350,9 @@ msgstr "确定"
 #: src/components/ChatGPT/ChatGPT.vue:270
 #: src/components/Notification/Notification.vue:85
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:56
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:549
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:563
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:577
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:548
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:562
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:576
 #: src/views/domain/cert/components/ObtainCert.vue:136
 #: src/views/domain/components/Deploy.vue:20
 #: src/views/domain/components/RightSettings.vue:50
@@ -1361,7 +1360,7 @@ msgstr "确定"
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:49
 #: src/views/domain/ngx_conf/NgxServer.vue:79
 #: src/views/domain/ngx_conf/NgxUpstream.vue:32
-#: src/views/notification/Notification.vue:71
+#: src/views/notification/Notification.vue:39
 #: src/views/stream/components/Deploy.vue:20
 #: src/views/stream/components/RightSettings.vue:50
 #: src/views/stream/StreamList.vue:166
@@ -1383,7 +1382,7 @@ msgstr "在线"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/views/config/components/Rename.vue:66
+#: src/views/config/components/Rename.vue:69
 msgid "Original name"
 msgstr "原名"
 
@@ -1395,11 +1394,13 @@ msgstr "OS"
 msgid "OS:"
 msgstr "OS:"
 
+#: src/views/config/ConfigEditor.vue:285
 #: src/views/domain/components/Deploy.vue:88
 #: src/views/stream/components/Deploy.vue:87
 msgid "Overwrite"
 msgstr "覆盖"
 
+#: src/views/config/ConfigEditor.vue:289
 #: src/views/domain/components/Deploy.vue:92
 #: src/views/stream/components/Deploy.vue:91
 msgid "Overwrite exist file"
@@ -1417,7 +1418,7 @@ msgstr "密码"
 msgid "Password (*)"
 msgstr "密码 (*)"
 
-#: src/views/config/ConfigEditor.vue:245
+#: src/views/config/ConfigEditor.vue:254
 #: src/views/domain/ngx_conf/LocationEditor.vue:118
 #: src/views/domain/ngx_conf/LocationEditor.vue:90
 msgid "Path"
@@ -1457,12 +1458,12 @@ msgstr ""
 "请首先在 “证书”> “DNS 凭证” 中添加凭证，然后在下方选择一个凭证，请求 DNS 提供"
 "商的 API。"
 
-#: src/views/config/components/Rename.vue:61
-#: src/views/config/ConfigEditor.vue:232
+#: src/views/config/components/Rename.vue:64
+#: src/views/config/ConfigEditor.vue:241
 msgid "Please input a filename"
 msgstr "请输入文件名"
 
-#: src/views/config/components/Mkdir.vue:59
+#: src/views/config/components/Mkdir.vue:57
 msgid "Please input a folder name"
 msgstr "请输入文件夹名称"
 
@@ -1535,11 +1536,11 @@ msgstr "读"
 msgid "Receive"
 msgstr "下载"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:571
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:570
 msgid "Recover"
 msgstr "恢复"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:210
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:209
 msgid "Recovered Successfully"
 msgstr "恢复成功"
 
@@ -1617,13 +1618,39 @@ msgstr "移除成功"
 msgid "Removed successfully"
 msgstr "删除成功"
 
-#: src/views/config/components/Rename.vue:52
+#: src/views/config/components/Rename.vue:55
 #: src/views/config/ConfigList.vue:159
 #: src/views/domain/ngx_conf/NgxUpstream.vue:123
 msgid "Rename"
 msgstr "重命名"
 
-#: src/views/config/components/Rename.vue:37
+#: src/components/Notification/config.ts:31
+msgid ""
+"Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade the "
+"remote Nginx UI to the latest version"
+msgstr ""
+"将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，请将远程 Nginx "
+"UI 升级到最新版本"
+
+#: src/components/Notification/config.ts:35
+msgid ""
+"Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
+msgstr ""
+"将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，响应：%{resp}"
+
+#: src/components/Notification/config.ts:23
+msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
+msgstr "成功将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path}"
+
+#: src/language/constants.ts:41
+msgid "Rename Remote Config Error"
+msgstr "远程配置重命名错误"
+
+#: src/language/constants.ts:40
+msgid "Rename Remote Config Success"
+msgstr "重命名远程配置成功"
+
+#: src/views/config/components/Rename.vue:41
 msgid "Rename successfully"
 msgstr "重命名成功"
 
@@ -1649,7 +1676,7 @@ msgstr "更新成功"
 msgid "Requested with wrong parameters"
 msgstr "请求参数错误"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:480
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:479
 msgid "Reset"
 msgstr "重置"
 
@@ -1675,7 +1702,7 @@ msgstr "运行中"
 
 #: src/components/ChatGPT/ChatGPT.vue:251
 #: src/views/certificate/CertificateEditor.vue:254
-#: src/views/config/ConfigEditor.vue:205 src/views/domain/DomainEdit.vue:260
+#: src/views/config/ConfigEditor.vue:214 src/views/domain/DomainEdit.vue:260
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
 #: src/views/preference/Preference.vue:145 src/views/stream/StreamEdit.vue:252
 msgid "Save"
@@ -1685,7 +1712,7 @@ msgstr "保存"
 msgid "Save Directive"
 msgstr "保存指令"
 
-#: src/views/config/ConfigEditor.vue:154 src/views/domain/DomainAdd.vue:46
+#: src/views/config/ConfigEditor.vue:163 src/views/domain/DomainAdd.vue:46
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:41
 msgid "Save error %{msg}"
 msgstr "保存错误 %{msg}"
@@ -1697,7 +1724,7 @@ msgstr "保存错误 %{msg}"
 msgid "Save successfully"
 msgstr "保存成功"
 
-#: src/views/config/ConfigEditor.vue:150 src/views/domain/DomainAdd.vue:37
+#: src/views/config/ConfigEditor.vue:159 src/views/domain/DomainAdd.vue:37
 #: src/views/domain/DomainEdit.vue:143
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/stream/StreamEdit.vue:138
@@ -1726,11 +1753,11 @@ msgstr "上传"
 #: src/components/StdDesign/StdDataDisplay/methods/exportCsv.ts:46
 #: src/components/StdDesign/StdDataDisplay/methods/sortable.ts:126
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:42
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:213
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:253
-#: src/views/config/components/Mkdir.vue:38
-#: src/views/config/components/Rename.vue:40
-#: src/views/config/ConfigEditor.vue:93 src/views/domain/DomainList.vue:81
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:212
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:252
+#: src/views/config/components/Mkdir.vue:37
+#: src/views/config/components/Rename.vue:44
+#: src/views/config/ConfigEditor.vue:100 src/views/domain/DomainList.vue:81
 #: src/views/environment/BatchUpgrader.vue:57
 #: src/views/environment/Environment.vue:15 src/views/other/Install.vue:68
 #: src/views/preference/AuthSettings.vue:49
@@ -1833,7 +1860,7 @@ msgstr "已停止"
 msgid "Storage"
 msgstr "存储"
 
-#: src/constants/index.ts:19
+#: src/constants/index.ts:19 src/views/notification/notificationColumns.tsx:29
 msgid "Success"
 msgstr "成功"
 
@@ -1850,11 +1877,15 @@ msgstr "切换到深色主题"
 msgid "Switch to light theme"
 msgstr "切换到浅色"
 
+#: src/views/config/components/Rename.vue:80
+msgid "Sync"
+msgstr "同步"
+
 #: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "Sync Certificate"
 msgstr "同步证书"
 
-#: src/components/Notification/detailRender.ts:25
+#: src/components/Notification/cert.ts:12
 msgid ""
 "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
 "remote Nginx UI to the latest version"
@@ -1862,11 +1893,11 @@ msgstr ""
 "同步证书 %{cert_name} 到 %{env_name} 失败，请先将远程的 Nginx UI 升级到最新版"
 "本"
 
-#: src/components/Notification/detailRender.ts:29
+#: src/components/Notification/cert.ts:16
 msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 msgstr "同步证书 %{cert_name} 到 %{env_name} 失败，响应：%{resp}"
 
-#: src/components/Notification/detailRender.ts:17
+#: src/components/Notification/cert.ts:4
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "证书 %{cert_name} 已成功同步到 %{env_name}"
 
@@ -1877,6 +1908,29 @@ msgstr "同步证书错误"
 #: src/language/constants.ts:37
 msgid "Sync Certificate Success"
 msgstr "同步证书成功"
+
+#: src/components/Notification/config.ts:12
+msgid ""
+"Sync config %{cert_name} to %{env_name} failed, please upgrade the remote "
+"Nginx UI to the latest version"
+msgstr ""
+"同步配置 %{cert_name} 到 %{env_name} 失败，请将远程 Nginx UI 升级到最新版本"
+
+#: src/components/Notification/config.ts:16
+msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
+msgstr "同步配置 %{config_name} 到 %{env_name} 失败，响应：%{resp}"
+
+#: src/components/Notification/config.ts:4
+msgid "Sync Config %{config_name} to %{env_name} successfully"
+msgstr "配置 %{config_name} 成功同步到 %{env_name}"
+
+#: src/language/constants.ts:44
+msgid "Sync Config Error"
+msgstr "同步配置错误"
+
+#: src/language/constants.ts:43
+msgid "Sync Config Success"
+msgstr "同步配置成功"
 
 #: src/views/certificate/CertificateEditor.vue:196
 msgid "Sync to"
@@ -2006,7 +2060,7 @@ msgstr "将 %{nodeNames} 上的 Nginx UI 升级或重新安装到 %{version} 版
 msgid "Tips"
 msgstr "提示"
 
-#: src/views/notification/Notification.vue:19
+#: src/views/notification/notificationColumns.tsx:36
 msgid "Title"
 msgstr "标题"
 
@@ -2045,19 +2099,19 @@ msgstr "TOTP 是一种使用基于时间的一次性密码算法的双因素身�
 msgid "Trash"
 msgstr "回收站"
 
-#: src/components/OTP/useOTPModal.ts:70
+#: src/components/OTP/useOTPModal.ts:67
 msgid "Two-factor authentication required"
 msgstr "需要两步验证"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:25
 #: src/views/config/configColumns.ts:16
-#: src/views/notification/Notification.vue:13
+#: src/views/notification/notificationColumns.tsx:9
 msgid "Type"
 msgstr "类型"
 
 #: src/views/certificate/ACMEUser.vue:53
 #: src/views/certificate/DNSCredential.vue:27
-#: src/views/config/configColumns.ts:31 src/views/config/ConfigEditor.vue:258
+#: src/views/config/configColumns.ts:31 src/views/config/ConfigEditor.vue:267
 #: src/views/domain/components/RightSettings.vue:86
 #: src/views/domain/DomainList.vue:41 src/views/environment/envColumns.tsx:124
 #: src/views/stream/components/RightSettings.vue:85
@@ -2132,7 +2186,7 @@ msgstr "有效的"
 msgid "Version"
 msgstr "版本"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:518
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:517
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:103
 msgid "View"
 msgstr "查看"
@@ -2151,6 +2205,7 @@ msgstr "预览模式"
 
 #: src/constants/index.ts:17 src/views/config/InspectConfig.vue:33
 #: src/views/domain/DomainAdd.vue:112
+#: src/views/notification/notificationColumns.tsx:19
 msgid "Warning"
 msgstr "警告"
 
@@ -2194,6 +2249,9 @@ msgstr "您使用的是最新版本"
 #: src/views/system/Upgrade.vue:166
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "你可以在这个页面检查Nginx UI的升级。"
+
+#~ msgid "Enter"
+#~ msgstr "进入"
 
 #, fuzzy
 #~ msgid "Rename "

@@ -31,7 +31,7 @@ msgstr ""
 #: src/views/config/configColumns.ts:38
 #: src/views/domain/DomainList.vue:47
 #: src/views/environment/envColumns.tsx:131
-#: src/views/notification/Notification.vue:37
+#: src/views/notification/notificationColumns.tsx:54
 #: src/views/preference/AuthSettings.vue:26
 #: src/views/stream/StreamList.vue:47
 #: src/views/user/userColumns.tsx:60
@@ -49,8 +49,8 @@ msgid "Add"
 msgstr ""
 
 #: src/routes/index.ts:112
-#: src/views/config/ConfigEditor.vue:128
-#: src/views/config/ConfigEditor.vue:187
+#: src/views/config/ConfigEditor.vue:135
+#: src/views/config/ConfigEditor.vue:196
 msgid "Add Configuration"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgid "Are you sure to delete this banned IP immediately?"
 msgstr ""
 
 #: src/components/Notification/Notification.vue:86
-#: src/views/notification/Notification.vue:72
+#: src/views/notification/Notification.vue:40
 msgid "Are you sure you want to clear all notifications?"
 msgstr ""
 
@@ -118,11 +118,11 @@ msgstr ""
 msgid "Are you sure you want to clear the record of chat?"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:578
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:577
 msgid "Are you sure you want to delete this item permanently?"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:550
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:549
 msgid "Are you sure you want to delete this item?"
 msgstr ""
 
@@ -131,7 +131,7 @@ msgstr ""
 msgid "Are you sure you want to delete?"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:564
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:563
 msgid "Are you sure you want to recover this item?"
 msgstr ""
 
@@ -181,7 +181,7 @@ msgid "Auto-renewal enabled for %{name}"
 msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:247
-#: src/views/config/ConfigEditor.vue:196
+#: src/views/config/ConfigEditor.vue:205
 #: src/views/config/ConfigList.vue:173
 #: src/views/config/ConfigList.vue:99
 #: src/views/domain/DomainEdit.vue:253
@@ -214,7 +214,7 @@ msgstr ""
 msgid "Base information"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:224
+#: src/views/config/ConfigEditor.vue:233
 #: src/views/domain/components/RightSettings.vue:75
 #: src/views/preference/Preference.vue:110
 #: src/views/stream/components/RightSettings.vue:74
@@ -227,7 +227,7 @@ msgid "Basic Mode"
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:54
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:486
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:485
 msgid "Batch Modify"
 msgstr ""
 
@@ -297,7 +297,7 @@ msgid_plural "Changed Certificates"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/views/config/ConfigEditor.vue:251
+#: src/views/config/ConfigEditor.vue:260
 msgid "Changed Path"
 msgstr ""
 
@@ -316,12 +316,12 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:275
 #: src/components/Notification/Notification.vue:91
-#: src/views/notification/Notification.vue:77
+#: src/views/notification/Notification.vue:45
 msgid "Clear"
 msgstr ""
 
 #: src/components/Notification/Notification.vue:42
-#: src/views/notification/Notification.vue:46
+#: src/views/notification/Notification.vue:13
 msgid "Cleared successfully"
 msgstr ""
 
@@ -402,17 +402,17 @@ msgstr ""
 msgid "Create File"
 msgstr ""
 
-#: src/views/config/components/Mkdir.vue:50
+#: src/views/config/components/Mkdir.vue:48
 #: src/views/config/ConfigList.vue:116
 msgid "Create Folder"
 msgstr ""
 
-#: src/views/notification/Notification.vue:31
+#: src/views/notification/notificationColumns.tsx:48
 #: src/views/user/userColumns.tsx:48
 msgid "Created at"
 msgstr ""
 
-#: src/views/config/components/Mkdir.vue:35
+#: src/views/config/components/Mkdir.vue:34
 msgid "Created successfully"
 msgstr ""
 
@@ -450,8 +450,8 @@ msgid "Customize the name of local server to be displayed in the environment ind
 msgstr ""
 
 #: src/routes/index.ts:39
-#: src/views/config/ConfigEditor.vue:118
-#: src/views/config/ConfigEditor.vue:79
+#: src/views/config/ConfigEditor.vue:125
+#: src/views/config/ConfigEditor.vue:86
 #: src/views/config/ConfigList.vue:57
 msgid "Dashboard"
 msgstr ""
@@ -464,7 +464,7 @@ msgstr ""
 msgid "Days"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:557
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:556
 #: src/views/domain/DomainList.vue:155
 #: src/views/domain/ngx_conf/NgxServer.vue:110
 #: src/views/domain/ngx_conf/NgxUpstream.vue:126
@@ -472,7 +472,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:585
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:584
 msgid "Delete Permanently"
 msgstr ""
 
@@ -484,10 +484,11 @@ msgstr ""
 msgid "Delete stream: %{stream_name}"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:202
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:201
 msgid "Deleted successfully"
 msgstr ""
 
+#: src/views/config/ConfigEditor.vue:276
 #: src/views/domain/components/Deploy.vue:104
 #: src/views/domain/components/RightSettings.vue:93
 #: src/views/stream/components/Deploy.vue:103
@@ -515,7 +516,7 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/views/notification/Notification.vue:26
+#: src/views/notification/notificationColumns.tsx:43
 msgid "Details"
 msgstr ""
 
@@ -680,7 +681,7 @@ msgid "Edit %{n}"
 msgstr ""
 
 #: src/routes/index.ts:122
-#: src/views/config/ConfigEditor.vue:187
+#: src/views/config/ConfigEditor.vue:196
 msgid "Edit Configuration"
 msgstr ""
 
@@ -769,10 +770,6 @@ msgstr ""
 msgid "Encrypt website with Let's Encrypt"
 msgstr ""
 
-#: src/views/config/ConfigList.vue:151
-msgid "Enter"
-msgstr ""
-
 #: src/routes/index.ts:228
 #: src/views/environment/Environment.vue:34
 msgid "Environment"
@@ -788,6 +785,7 @@ msgstr ""
 
 #: src/constants/index.ts:16
 #: src/views/config/InspectConfig.vue:44
+#: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr ""
 
@@ -870,15 +868,15 @@ msgstr ""
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:199
+#: src/views/config/ConfigEditor.vue:208
 msgid "Format Code"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:166
+#: src/views/config/ConfigEditor.vue:175
 msgid "Format error %{msg}"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:164
+#: src/views/config/ConfigEditor.vue:173
 msgid "Format successfully"
 msgstr ""
 
@@ -961,6 +959,7 @@ msgid "Incorrect username or password"
 msgstr ""
 
 #: src/constants/index.ts:18
+#: src/views/notification/notificationColumns.tsx:24
 msgid "Info"
 msgstr ""
 
@@ -1002,16 +1001,16 @@ msgstr ""
 msgid "Invalid 2FA or recovery code"
 msgstr ""
 
-#: src/views/config/components/Rename.vue:62
-#: src/views/config/ConfigEditor.vue:233
+#: src/views/config/components/Rename.vue:65
+#: src/views/config/ConfigEditor.vue:242
 msgid "Invalid filename"
 msgstr ""
 
-#: src/views/config/components/Mkdir.vue:60
+#: src/views/config/components/Mkdir.vue:58
 msgid "Invalid folder name"
 msgstr ""
 
-#: src/components/OTP/useOTPModal.ts:64
+#: src/components/OTP/useOTPModal.ts:61
 msgid "Invalid passcode or recovery code"
 msgstr ""
 
@@ -1134,8 +1133,8 @@ msgid "Make sure you have configured a reverse proxy for .well-known directory t
 msgstr ""
 
 #: src/routes/index.ts:102
-#: src/views/config/ConfigEditor.vue:123
-#: src/views/config/ConfigEditor.vue:84
+#: src/views/config/ConfigEditor.vue:130
+#: src/views/config/ConfigEditor.vue:91
 #: src/views/config/ConfigList.vue:62
 msgid "Manage Configs"
 msgstr ""
@@ -1182,7 +1181,7 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:248
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:181
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:532
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:531
 #: src/views/config/ConfigList.vue:151
 msgid "Modify"
 msgstr ""
@@ -1208,9 +1207,9 @@ msgstr ""
 #: src/views/certificate/CertificateEditor.vue:152
 #: src/views/certificate/CertificateList/certColumns.tsx:10
 #: src/views/certificate/DNSCredential.vue:11
-#: src/views/config/components/Mkdir.vue:67
+#: src/views/config/components/Mkdir.vue:65
 #: src/views/config/configColumns.ts:8
-#: src/views/config/ConfigEditor.vue:239
+#: src/views/config/ConfigEditor.vue:248
 #: src/views/domain/components/RightSettings.vue:83
 #: src/views/domain/components/SiteDuplicate.vue:129
 #: src/views/domain/DomainList.vue:13
@@ -1239,11 +1238,11 @@ msgstr ""
 msgid "Network Total Send"
 msgstr ""
 
-#: src/views/config/components/Rename.vue:70
+#: src/views/config/components/Rename.vue:73
 msgid "New name"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:251
+#: src/views/config/ConfigEditor.vue:260
 msgid "New Path"
 msgstr ""
 
@@ -1293,13 +1292,13 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:269
 #: src/components/Notification/Notification.vue:84
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:548
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:562
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:576
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:547
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:561
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:575
 #: src/views/domain/DomainList.vue:144
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
-#: src/views/notification/Notification.vue:70
+#: src/views/notification/Notification.vue:38
 #: src/views/preference/AuthSettings.vue:98
 #: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
@@ -1327,7 +1326,7 @@ msgstr ""
 msgid "Note"
 msgstr ""
 
-#: src/views/notification/Notification.vue:62
+#: src/views/notification/Notification.vue:29
 msgid "Notification"
 msgstr ""
 
@@ -1366,9 +1365,9 @@ msgstr ""
 #: src/components/ChatGPT/ChatGPT.vue:270
 #: src/components/Notification/Notification.vue:85
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:56
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:549
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:563
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:577
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:548
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:562
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:576
 #: src/views/domain/cert/components/ObtainCert.vue:136
 #: src/views/domain/components/Deploy.vue:20
 #: src/views/domain/components/RightSettings.vue:50
@@ -1376,7 +1375,7 @@ msgstr ""
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:49
 #: src/views/domain/ngx_conf/NgxServer.vue:79
 #: src/views/domain/ngx_conf/NgxUpstream.vue:32
-#: src/views/notification/Notification.vue:71
+#: src/views/notification/Notification.vue:39
 #: src/views/stream/components/Deploy.vue:20
 #: src/views/stream/components/RightSettings.vue:50
 #: src/views/stream/StreamList.vue:166
@@ -1398,7 +1397,7 @@ msgstr ""
 msgid "OpenAI"
 msgstr ""
 
-#: src/views/config/components/Rename.vue:66
+#: src/views/config/components/Rename.vue:69
 msgid "Original name"
 msgstr ""
 
@@ -1410,11 +1409,13 @@ msgstr ""
 msgid "OS:"
 msgstr ""
 
+#: src/views/config/ConfigEditor.vue:285
 #: src/views/domain/components/Deploy.vue:88
 #: src/views/stream/components/Deploy.vue:87
 msgid "Overwrite"
 msgstr ""
 
+#: src/views/config/ConfigEditor.vue:289
 #: src/views/domain/components/Deploy.vue:92
 #: src/views/stream/components/Deploy.vue:91
 msgid "Overwrite exist file"
@@ -1433,7 +1434,7 @@ msgstr ""
 msgid "Password (*)"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:245
+#: src/views/config/ConfigEditor.vue:254
 #: src/views/domain/ngx_conf/LocationEditor.vue:118
 #: src/views/domain/ngx_conf/LocationEditor.vue:90
 msgid "Path"
@@ -1467,12 +1468,12 @@ msgstr ""
 msgid "Please first add credentials in Certification > DNS Credentials, and then select one of the credentialsbelow to request the API of the DNS provider."
 msgstr ""
 
-#: src/views/config/components/Rename.vue:61
-#: src/views/config/ConfigEditor.vue:232
+#: src/views/config/components/Rename.vue:64
+#: src/views/config/ConfigEditor.vue:241
 msgid "Please input a filename"
 msgstr ""
 
-#: src/views/config/components/Mkdir.vue:59
+#: src/views/config/components/Mkdir.vue:57
 msgid "Please input a folder name"
 msgstr ""
 
@@ -1546,11 +1547,11 @@ msgstr ""
 msgid "Receive"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:571
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:570
 msgid "Recover"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:210
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:209
 msgid "Recovered Successfully"
 msgstr ""
 
@@ -1628,13 +1629,33 @@ msgstr ""
 msgid "Removed successfully"
 msgstr ""
 
-#: src/views/config/components/Rename.vue:52
+#: src/views/config/components/Rename.vue:55
 #: src/views/config/ConfigList.vue:159
 #: src/views/domain/ngx_conf/NgxUpstream.vue:123
 msgid "Rename"
 msgstr ""
 
-#: src/views/config/components/Rename.vue:37
+#: src/components/Notification/config.ts:31
+msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade the remote Nginx UI to the latest version"
+msgstr ""
+
+#: src/components/Notification/config.ts:35
+msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
+msgstr ""
+
+#: src/components/Notification/config.ts:23
+msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
+msgstr ""
+
+#: src/language/constants.ts:41
+msgid "Rename Remote Config Error"
+msgstr ""
+
+#: src/language/constants.ts:40
+msgid "Rename Remote Config Success"
+msgstr ""
+
+#: src/views/config/components/Rename.vue:41
 msgid "Rename successfully"
 msgstr ""
 
@@ -1660,7 +1681,7 @@ msgstr ""
 msgid "Requested with wrong parameters"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:480
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:479
 msgid "Reset"
 msgstr ""
 
@@ -1686,7 +1707,7 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:251
 #: src/views/certificate/CertificateEditor.vue:254
-#: src/views/config/ConfigEditor.vue:205
+#: src/views/config/ConfigEditor.vue:214
 #: src/views/domain/DomainEdit.vue:260
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
 #: src/views/preference/Preference.vue:145
@@ -1698,7 +1719,7 @@ msgstr ""
 msgid "Save Directive"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:154
+#: src/views/config/ConfigEditor.vue:163
 #: src/views/domain/DomainAdd.vue:46
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:41
 msgid "Save error %{msg}"
@@ -1711,7 +1732,7 @@ msgstr ""
 msgid "Save successfully"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:150
+#: src/views/config/ConfigEditor.vue:159
 #: src/views/domain/DomainAdd.vue:37
 #: src/views/domain/DomainEdit.vue:143
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:39
@@ -1741,11 +1762,11 @@ msgstr ""
 #: src/components/StdDesign/StdDataDisplay/methods/exportCsv.ts:46
 #: src/components/StdDesign/StdDataDisplay/methods/sortable.ts:126
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:42
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:213
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:253
-#: src/views/config/components/Mkdir.vue:38
-#: src/views/config/components/Rename.vue:40
-#: src/views/config/ConfigEditor.vue:93
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:212
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:252
+#: src/views/config/components/Mkdir.vue:37
+#: src/views/config/components/Rename.vue:44
+#: src/views/config/ConfigEditor.vue:100
 #: src/views/domain/DomainList.vue:81
 #: src/views/environment/BatchUpgrader.vue:57
 #: src/views/environment/Environment.vue:15
@@ -1853,6 +1874,7 @@ msgid "Storage"
 msgstr ""
 
 #: src/constants/index.ts:19
+#: src/views/notification/notificationColumns.tsx:29
 msgid "Success"
 msgstr ""
 
@@ -1869,19 +1891,23 @@ msgstr ""
 msgid "Switch to light theme"
 msgstr ""
 
+#: src/views/config/components/Rename.vue:80
+msgid "Sync"
+msgstr ""
+
 #: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "Sync Certificate"
 msgstr ""
 
-#: src/components/Notification/detailRender.ts:25
+#: src/components/Notification/cert.ts:12
 msgid "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the remote Nginx UI to the latest version"
 msgstr ""
 
-#: src/components/Notification/detailRender.ts:29
+#: src/components/Notification/cert.ts:16
 msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 msgstr ""
 
-#: src/components/Notification/detailRender.ts:17
+#: src/components/Notification/cert.ts:4
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr ""
 
@@ -1891,6 +1917,26 @@ msgstr ""
 
 #: src/language/constants.ts:37
 msgid "Sync Certificate Success"
+msgstr ""
+
+#: src/components/Notification/config.ts:12
+msgid "Sync config %{cert_name} to %{env_name} failed, please upgrade the remote Nginx UI to the latest version"
+msgstr ""
+
+#: src/components/Notification/config.ts:16
+msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
+msgstr ""
+
+#: src/components/Notification/config.ts:4
+msgid "Sync Config %{config_name} to %{env_name} successfully"
+msgstr ""
+
+#: src/language/constants.ts:44
+msgid "Sync Config Error"
+msgstr ""
+
+#: src/language/constants.ts:43
+msgid "Sync Config Success"
 msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:196
@@ -2004,7 +2050,7 @@ msgstr ""
 msgid "Tips"
 msgstr ""
 
-#: src/views/notification/Notification.vue:19
+#: src/views/notification/notificationColumns.tsx:36
 msgid "Title"
 msgstr ""
 
@@ -2032,20 +2078,20 @@ msgstr ""
 msgid "Trash"
 msgstr ""
 
-#: src/components/OTP/useOTPModal.ts:70
+#: src/components/OTP/useOTPModal.ts:67
 msgid "Two-factor authentication required"
 msgstr ""
 
 #: src/views/certificate/CertificateList/certColumns.tsx:25
 #: src/views/config/configColumns.ts:16
-#: src/views/notification/Notification.vue:13
+#: src/views/notification/notificationColumns.tsx:9
 msgid "Type"
 msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:53
 #: src/views/certificate/DNSCredential.vue:27
 #: src/views/config/configColumns.ts:31
-#: src/views/config/ConfigEditor.vue:258
+#: src/views/config/ConfigEditor.vue:267
 #: src/views/domain/components/RightSettings.vue:86
 #: src/views/domain/DomainList.vue:41
 #: src/views/environment/envColumns.tsx:124
@@ -2126,7 +2172,7 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:518
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:517
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:103
 msgid "View"
 msgstr ""
@@ -2146,6 +2192,7 @@ msgstr ""
 #: src/constants/index.ts:17
 #: src/views/config/InspectConfig.vue:33
 #: src/views/domain/DomainAdd.vue:112
+#: src/views/notification/notificationColumns.tsx:19
 msgid "Warning"
 msgstr ""
 
