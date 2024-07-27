@@ -139,7 +139,7 @@ func PerformCoreUpgrade(c *gin.Context) {
 		return
 	}
 
-	// bye, overseer will restart nginx-ui
+	// bye, will restart nginx-ui in performCoreUpgrade
 	err = u.PerformCoreUpgrade(tarName)
 	if err != nil {
 		_ = ws.WriteJSON(CoreUpgradeResp{

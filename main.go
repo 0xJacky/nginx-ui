@@ -6,14 +6,12 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/kernal"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/internal/upgrader"
 	"github.com/0xJacky/Nginx-UI/router"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/jpillora/overseer"
-	"github.com/jpillora/overseer/fetcher"
-	"log"
 	"net/http"
+	"time"
 )
 
 func Program(state overseer.State) {
@@ -42,16 +40,9 @@ func main() {
 
 	gin.SetMode(settings.ServerSettings.RunMode)
 
-	r, err := upgrader.GetRuntimeInfo()
-
-	if err != nil {
-		log.Fatalln(err)
-	}
-
 	overseer.Run(overseer.Config{
 		Program:          Program,
 		Address:          fmt.Sprintf("%s:%s", settings.ServerSettings.HttpHost, settings.ServerSettings.HttpPort),
-		Fetcher:          &fetcher.File{Path: r.ExPath},
-		TerminateTimeout: 0,
+		TerminateTimeout: 5 * time.Second,
 	})
 }
