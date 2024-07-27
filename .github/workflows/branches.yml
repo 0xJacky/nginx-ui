@@ -1,4 +1,4 @@
-name: Build Documents
+name: Merge Branches
 
 on:
   pull_request:
@@ -12,11 +12,15 @@ on:
 jobs:
   merge:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true || github.event.release.action == 'released'
+    if: github.event.pull_request.merged == true || github.event.action == 'published'
     steps:
-      - uses: actions/checkout@v4
-      - name: Merge dev to main
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+            ref: 'main'
+            fetch-depth: 0
+
+      - name: Merge dev to main branch
         run: |
-          git checkout main
-          git pull --no-rebase origin dev
-          git push origin main
+          git merge --ff-only -- origin/dev
+          git push
