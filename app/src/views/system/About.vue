@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import GithubButton from 'vue-github-button'
 import logo from '@/assets/img/logo.png'
-import version from '@/version.json'
+import ver from '@/version.json'
 
-const this_year = new Date().getFullYear()
+const thisYear = new Date().getFullYear()
 </script>
 
 <template>
@@ -19,7 +19,7 @@ const this_year = new Date().getFullYear()
     </div>
     <h2>Nginx UI</h2>
     <p>Yet another WebUI for Nginx</p>
-    <p>Version: {{ version.version }} ({{ version.build_id || $gettext('Development Mode') }})</p>
+    <p>Version: {{ ver.version }} ({{ ver.build_id || $gettext('Development Mode') }})</p>
     <div class="star-on-github">
       <GithubButton
         href="https://github.com/0xJacky/nginx-ui"
@@ -47,7 +47,7 @@ const this_year = new Date().getFullYear()
       {{ $gettext('License') }}
     </h3>
     <p>GNU General Public License v3.0</p>
-    <p>Copyright © 2021 - {{ this_year }} Nginx UI Team</p>
+    <p>Copyright © 2021 - {{ thisYear }} Nginx UI Team</p>
   </ACard>
 </template>
 

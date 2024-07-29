@@ -32,10 +32,11 @@ const (
 )
 
 type LoginResponse struct {
-	Message string `json:"message"`
-	Error   string `json:"error,omitempty"`
-	Code    int    `json:"code"`
-	Token   string `json:"token,omitempty"`
+	Message         string `json:"message"`
+	Error           string `json:"error,omitempty"`
+	Code            int    `json:"code"`
+	Token           string `json:"token,omitempty"`
+	SecureSessionID string `json:"secure_session_id,omitempty"`
 }
 
 func Login(c *gin.Context) {
@@ -86,6 +87,8 @@ func Login(c *gin.Context) {
 	}
 
 	// Check if the user enables 2FA
+	var secureSessionID string
+
 	if u.EnabledOTP() {
 		if json.OTP == "" && json.RecoveryCode == "" {
 			c.JSON(http.StatusOK, LoginResponse{
@@ -104,6 +107,8 @@ func Login(c *gin.Context) {
 			user.BanIP(clientIP)
 			return
 		}
+
+		secureSessionID = user.SetSecureSessionID(u.ID)
 	}
 
 	// login success, clear banned record
@@ -119,9 +124,10 @@ func Login(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, LoginResponse{
-		Code:    LoginSuccess,
-		Message: "ok",
-		Token:   token,
+		Code:            LoginSuccess,
+		Message:         "ok",
+		Token:           token,
+		SecureSessionID: secureSessionID,
 	})
 }
 

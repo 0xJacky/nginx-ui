@@ -7,6 +7,8 @@ export interface AuthResponse {
   message: string
   token: string
   code: number
+  error: string
+  secure_session_id: string
 }
 
 const auth = {

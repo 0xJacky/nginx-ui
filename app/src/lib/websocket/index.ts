@@ -16,7 +16,7 @@ function ws(url: string, reconnect: boolean = true): ReconnectingWebSocket | Web
     url, `?token=${btoa(token.value)}`, node_id)
 
   if (reconnect)
-    return new ReconnectingWebSocket(_url)
+    return new ReconnectingWebSocket(_url, undefined, { maxRetries: 10 })
 
   return new WebSocket(_url)
 }

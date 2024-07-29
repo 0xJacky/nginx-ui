@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { LockOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { Form, message } from 'ant-design-vue'
+import { useCookies } from '@vueuse/integrations/useCookies'
 import { useUserStore } from '@/pinia'
 import auth from '@/api/auth'
 import install from '@/api/install'
@@ -46,7 +47,9 @@ const rulesRef = reactive({
 })
 
 const { validate, validateInfos, clearValidate } = Form.useForm(modelRef, rulesRef)
-const { login } = useUserStore()
+const userStore = useUserStore()
+const { login } = userStore
+const { secureSessionId } = storeToRefs(userStore)
 
 const onSubmit = () => {
   validate().then(async () => {
@@ -54,11 +57,13 @@ const onSubmit = () => {
 
     await auth.login(modelRef.username, modelRef.password, passcode.value, recoveryCode.value).then(async r => {
       const next = (route.query?.next || '').toString() || '/'
-
+      const cookies = useCookies(['nginx-ui-2fa'])
       switch (r.code) {
         case 200:
           message.success($gettext('Login successful'), 1)
           login(r.token)
+          secureSessionId.value = r.secure_session_id
+          cookies.set('secure_session_id', r.secure_session_id, { maxAge: 60 * 3 })
           await router.push(next)
           break
         case 199:
