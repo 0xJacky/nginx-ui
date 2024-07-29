@@ -57,8 +57,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       marked:
-        specifier: ^10.0.0
-        version: 10.0.0
+        specifier: ^13.0.3
+        version: 13.0.3
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
@@ -85,7 +85,7 @@ importers:
         version: 3.4.33(typescript@5.3.3)
       vue-github-button:
         specifier: git+https://github.com/0xJacky/vue-github-button.git
-        version: https://codeload.github.com/0xJacky/vue-github-button/tar.gz/fc3c93355a790d3249de6610de3ebe35949ee314
+        version: git+https://git@github.com:0xJacky/vue-github-button.git#fc3c93355a790d3249de6610de3ebe35949ee314
       vue-router:
         specifier: ^4.4.0
         version: 4.4.0(vue@3.4.33(typescript@5.3.3))
@@ -2183,8 +2183,8 @@ packages:
     resolution: {integrity: sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA==}
     engines: {node: '>=6'}
 
-  marked@10.0.0:
-    resolution: {integrity: sha512-YiGcYcWj50YrwBgNzFoYhQ1hT6GmQbFG8SksnYJX1z4BXTHSOrz1GB5/Jm2yQvMg4nN1FHP4M6r03R10KrVUiA==}
+  marked@13.0.3:
+    resolution: {integrity: sha512-rqRix3/TWzE9rIoFGIn8JmsVfhiuC8VIQ8IdX5TfzmeBucdY05/0UlzKaw0eVtpcN/OdVFpBk7CjKGo9iHJ/zA==}
     engines: {node: '>= 18'}
     hasBin: true
 
@@ -3015,8 +3015,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  vue-github-button@https://codeload.github.com/0xJacky/vue-github-button/tar.gz/fc3c93355a790d3249de6610de3ebe35949ee314:
-    resolution: {tarball: https://codeload.github.com/0xJacky/vue-github-button/tar.gz/fc3c93355a790d3249de6610de3ebe35949ee314}
+  vue-github-button@git+https://git@github.com:0xJacky/vue-github-button.git#fc3c93355a790d3249de6610de3ebe35949ee314:
+    resolution: {commit: fc3c93355a790d3249de6610de3ebe35949ee314, repo: git@github.com:0xJacky/vue-github-button.git, type: git}
     version: 3.1.0
 
   vue-router@4.4.0:
@@ -5395,7 +5395,7 @@ snapshots:
       semver: 5.7.2
     optional: true
 
-  marked@10.0.0: {}
+  marked@13.0.3: {}
 
   mdast-util-from-markdown@0.8.5:
     dependencies:
@@ -6281,7 +6281,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vue-github-button@https://codeload.github.com/0xJacky/vue-github-button/tar.gz/fc3c93355a790d3249de6610de3ebe35949ee314:
+  vue-github-button@git+https://git@github.com:0xJacky/vue-github-button.git#fc3c93355a790d3249de6610de3ebe35949ee314:
     dependencies:
       github-buttons: 2.28.0
 
