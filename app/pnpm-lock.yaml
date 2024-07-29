@@ -85,13 +85,13 @@ importers:
         version: 3.4.33(typescript@5.3.3)
       vue-github-button:
         specifier: github:0xJacky/vue-github-button
-        version: https://codeload.github.com/0xJacky/vue-github-button/tar.gz/fc3c93355a790d3249de6610de3ebe35949ee314
+        version: git+https://git@github.com:0xJacky/vue-github-button.git#fc3c93355a790d3249de6610de3ebe35949ee314
       vue-router:
         specifier: ^4.4.0
         version: 4.4.0(vue@3.4.33(typescript@5.3.3))
       vue3-ace-editor:
         specifier: 2.2.4
-        version: 2.2.4(ace-builds@1.35.3)(vue@3.4.33(typescript@5.3.3))
+        version: 2.2.4(ace-builds@1.35.4)(vue@3.4.33(typescript@5.3.3))
       vue3-apexcharts:
         specifier: 1.4.4
         version: 1.4.4(apexcharts@3.50.0)(vue@3.4.33(typescript@5.3.3))
@@ -136,8 +136,8 @@ importers:
         specifier: ^0.5.1
         version: 0.5.1
       ace-builds:
-        specifier: ^1.35.3
-        version: 1.35.3
+        specifier: ^1.35.4
+        version: 1.35.4
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.39)
@@ -1006,8 +1006,8 @@ packages:
   '@yr/monotone-cubic-spline@1.0.3':
     resolution: {integrity: sha512-FQXkOta0XBSUPHndIKON2Y9JeQz5ZeMqLYZVVK93FliNBFm7LNMIZmY6FrMEB9XPcDbE2bekMbZD6kzDkxwYjA==}
 
-  ace-builds@1.35.3:
-    resolution: {integrity: sha512-4cHLy+4L3FHOTis4IrDYsHZYhyYrIqtmA4HRiRXcxLTpmjQMbJ6Vutoc3c2uC9xS11g/rDwqcw+3zXHPSHD/qw==}
+  ace-builds@1.35.4:
+    resolution: {integrity: sha512-r0KQclhZ/uk5a4zOqRYQkJuQuu4vFMiA6VTj54Tk4nI1TUR3iEMMppZkWbNoWEgWwv4ciDloObb9Rf4V55Qgjw==}
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -3015,8 +3015,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  vue-github-button@https://codeload.github.com/0xJacky/vue-github-button/tar.gz/fc3c93355a790d3249de6610de3ebe35949ee314:
-    resolution: {tarball: https://codeload.github.com/0xJacky/vue-github-button/tar.gz/fc3c93355a790d3249de6610de3ebe35949ee314}
+  vue-github-button@git+https://git@github.com:0xJacky/vue-github-button.git#fc3c93355a790d3249de6610de3ebe35949ee314:
+    resolution: {commit: fc3c93355a790d3249de6610de3ebe35949ee314, repo: git@github.com:0xJacky/vue-github-button.git, type: git}
     version: 3.1.0
 
   vue-router@4.4.0:
@@ -4036,7 +4036,7 @@ snapshots:
 
   '@yr/monotone-cubic-spline@1.0.3': {}
 
-  ace-builds@1.35.3: {}
+  ace-builds@1.35.4: {}
 
   acorn-jsx@5.3.2(acorn@8.12.1):
     dependencies:
@@ -6281,7 +6281,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vue-github-button@https://codeload.github.com/0xJacky/vue-github-button/tar.gz/fc3c93355a790d3249de6610de3ebe35949ee314:
+  vue-github-button@git+https://git@github.com:0xJacky/vue-github-button.git#fc3c93355a790d3249de6610de3ebe35949ee314:
     dependencies:
       github-buttons: 2.28.0
 
@@ -6307,9 +6307,9 @@ snapshots:
       is-plain-object: 3.0.1
       vue: 3.4.33(typescript@5.3.3)
 
-  vue3-ace-editor@2.2.4(ace-builds@1.35.3)(vue@3.4.33(typescript@5.3.3)):
+  vue3-ace-editor@2.2.4(ace-builds@1.35.4)(vue@3.4.33(typescript@5.3.3)):
     dependencies:
-      ace-builds: 1.35.3
+      ace-builds: 1.35.4
       resize-observer-polyfill: 1.5.1
       vue: 3.4.33(typescript@5.3.3)
 
