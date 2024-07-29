@@ -15,8 +15,8 @@ importers:
         specifier: ^0.8.2
         version: 0.8.2
       '@vue/reactivity':
-        specifier: ^3.4.33
-        version: 3.4.33
+        specifier: ^3.4.34
+        version: 3.4.34
       '@vue/shared':
         specifier: ^3.4.33
         version: 3.4.33
@@ -85,7 +85,7 @@ importers:
         version: 3.4.33(typescript@5.3.3)
       vue-github-button:
         specifier: git+https://github.com/0xJacky/vue-github-button.git
-        version: https://codeload.github.com/0xJacky/vue-github-button/tar.gz/fc3c93355a790d3249de6610de3ebe35949ee314
+        version: git+https://git@github.com:0xJacky/vue-github-button.git#fc3c93355a790d3249de6610de3ebe35949ee314
       vue-router:
         specifier: ^4.4.0
         version: 4.4.0(vue@3.4.33(typescript@5.3.3))
@@ -920,6 +920,9 @@ packages:
   '@vue/reactivity@3.4.33':
     resolution: {integrity: sha512-B24QIelahDbyHipBgbUItQblbd4w5HpG3KccL+YkGyo3maXyS253FzcTR3pSz739OTphmzlxP7JxEMWBpewilA==}
 
+  '@vue/reactivity@3.4.34':
+    resolution: {integrity: sha512-ua+Lo+wBRlBEX9TtgPOShE2JwIO7p6BTZ7t1KZVPoaBRfqbC7N3c8Mpzicx173fXxx5VXeU6ykiHo7WgLzJQDA==}
+
   '@vue/runtime-core@3.4.33':
     resolution: {integrity: sha512-6wavthExzT4iAxpe8q37/rDmf44nyOJGISJPxCi9YsQO+8w9v0gLCFLfH5TzD1V1AYrTAdiF4Y1cgUmP68jP6w==}
 
@@ -933,6 +936,9 @@ packages:
 
   '@vue/shared@3.4.33':
     resolution: {integrity: sha512-aoRY0jQk3A/cuvdkodTrM4NMfxco8n55eG4H7ML/CRy7OryHfiqvug4xrCBBMbbN+dvXAetDDwZW9DXWWjBntA==}
+
+  '@vue/shared@3.4.34':
+    resolution: {integrity: sha512-x5LmiRLpRsd9KTjAB8MPKf0CDPMcuItjP0gbNqFCIgL1I8iYp4zglhj9w9FPCdIbHG2M91RVeIbArFfFTz9I3A==}
 
   '@vue/tsconfig@0.5.1':
     resolution: {integrity: sha512-VcZK7MvpjuTPx2w6blwnwZAu5/LgBUtejFOi3pPGQFXQN5Ela03FUtd2Qtg4yWGGissVL0dr6Ro1LfOFh+PCuQ==}
@@ -3015,8 +3021,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  vue-github-button@https://codeload.github.com/0xJacky/vue-github-button/tar.gz/fc3c93355a790d3249de6610de3ebe35949ee314:
-    resolution: {tarball: https://codeload.github.com/0xJacky/vue-github-button/tar.gz/fc3c93355a790d3249de6610de3ebe35949ee314}
+  vue-github-button@git+https://git@github.com:0xJacky/vue-github-button.git#fc3c93355a790d3249de6610de3ebe35949ee314:
+    resolution: {commit: fc3c93355a790d3249de6610de3ebe35949ee314, repo: git@github.com:0xJacky/vue-github-button.git, type: git}
     version: 3.1.0
 
   vue-router@4.4.0:
@@ -3959,6 +3965,10 @@ snapshots:
     dependencies:
       '@vue/shared': 3.4.33
 
+  '@vue/reactivity@3.4.34':
+    dependencies:
+      '@vue/shared': 3.4.34
+
   '@vue/runtime-core@3.4.33':
     dependencies:
       '@vue/reactivity': 3.4.33
@@ -3978,6 +3988,8 @@ snapshots:
       vue: 3.4.33(typescript@5.3.3)
 
   '@vue/shared@3.4.33': {}
+
+  '@vue/shared@3.4.34': {}
 
   '@vue/tsconfig@0.5.1': {}
 
@@ -6281,7 +6293,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vue-github-button@https://codeload.github.com/0xJacky/vue-github-button/tar.gz/fc3c93355a790d3249de6610de3ebe35949ee314:
+  vue-github-button@git+https://git@github.com:0xJacky/vue-github-button.git#fc3c93355a790d3249de6610de3ebe35949ee314:
     dependencies:
       github-buttons: 2.28.0
 
