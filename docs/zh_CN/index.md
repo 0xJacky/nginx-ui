@@ -22,37 +22,38 @@ hero:
 
 features:
     -   icon: 📊
-        title: 在线查看服务器指标
-        details: 实时监控服务器 CPU、内存、系统负载、磁盘使用率等指标。
+        title: Online Statistics for Server Indicators
+        details: Monitor CPU usage, memory usage, load average, and disk usage in real-time.
     -   icon: 💬
-        title: 在线 ChatGPT 助理
-        details: 在平台内直接使用 AI 强化的 ChatGPT 助手。
+        title: Online ChatGPT Assistant
+        details: Get assistance from an AI-powered ChatGPT directly within the platform.
     -   icon: 🖱️
-        title: 一键部署和自动续签
-        details: 一键轻松部署并自动续签 Let's Encrypt 证书。
+        title: One-Click Deployment and Automatic Renewal
+        details: Easily deploy and auto-renew Let's Encrypt certificates with just one click.
     -   icon: 🛠️
-        title: 在线编辑网站配置
-        details: 使用 NgxConfigEditor 区块编辑器或支持 Nginx 配置语法高亮的 Ace Code 编辑器编辑配置。
+        title: Online Editing Websites Configurations
+        details: Edit configurations using our NgxConfigEditor block editor or Ace Code Editor with nginx syntax highlighting.
     -   icon: 📜
-        title: 在线查看 Nginx 日志
-        details: 在线直接访问和查看 Nginx 日志。
+        title: Online View Nginx Logs
+        details: Access and view your Nginx logs directly online.
     -   icon: 💻
-        title: 使用 Go 和 Vue 编写
-        details: 平台使用 Go 和 Vue 构建，发行版本为单个可执行的二进制文件。
+        title: Written in Go and Vue
+        details: The platform is built with Go and Vue, and distributed as a single executable binary.
     -   icon: 🔄
-        title: 自动测试和重载配置
-        details: 保存更改后自动测试配置文件并重载 Nginx。
+        title: Automatically Test and Reload Configurations
+        details: Test configuration files and reload nginx automatically after saving changes.
     -   icon: 🖥️
-        title: 网络终端
-        details: 轻松管理的基于网络浏览器的高级命令行终端。
+        title: Web Terminal
+        details: Access a web-based terminal for easy management.
     -   icon: 🌙
-        title: 深色模式
-        details: 开启深色模式，享受舒适的用户体验。
+        title: Dark Mode
+        details: Enable dark mode for a comfortable user experience.
     -   icon: 📱
-        title: 自适应网页设计
-        details: 通过自适应网页设计在任何设备上享受无缝体验。
+        title: Responsive Web Design
+        details: Enjoy a seamless experience on any device with responsive web design.
     -   icon: 🔐
-        title: 双因素认证
-        details: 使用双因素认证保护敏感操作。
+        title: 2FA Authentication
+        details: Secure sensitive actions with two-factor authentication.
+
 ---
 

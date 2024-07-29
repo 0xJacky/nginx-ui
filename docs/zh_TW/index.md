@@ -22,37 +22,38 @@ hero:
 
 features:
     -   icon: 📊
-        title: 線上檢視伺服器指標
-        details: 實時監控伺服器 CPU、記憶體、系統負載、磁碟使用率等指標。
+        title: Online Statistics for Server Indicators
+        details: Monitor CPU usage, memory usage, load average, and disk usage in real-time.
     -   icon: 💬
-        title: 線上 ChatGPT 助理
-        details: 在介面內直接使用 AI 強化的 ChatGPT 助手。
+        title: Online ChatGPT Assistant
+        details: Get assistance from an AI-powered ChatGPT directly within the platform.
     -   icon: 🖱️
-        title: 一鍵部署和自動續簽
-        details: 一鍵輕鬆部署並自動續簽 Let's Encrypt 證書。
+        title: One-Click Deployment and Automatic Renewal
+        details: Easily deploy and auto-renew Let's Encrypt certificates with just one click.
     -   icon: 🛠️
-        title: 線上編輯網站配置
-        details: 使用 NgxConfigEditor 區塊編輯器或支援 Nginx 配置語法高亮的 Ace Code 編輯器編輯配置。
+        title: Online Editing Websites Configurations
+        details: Edit configurations using our NgxConfigEditor block editor or Ace Code Editor with nginx syntax highlighting.
     -   icon: 📜
-        title: 線上檢視 Nginx 日誌
-        details: 線上直接訪問和檢視 Nginx 日誌。
+        title: Online View Nginx Logs
+        details: Access and view your Nginx logs directly online.
     -   icon: 💻
-        title: 使用 Go 和 Vue 編寫
-        details: 使用 Go 和 Vue 構建，發行版本為單個可執行的二進位制檔案。
+        title: Written in Go and Vue
+        details: The platform is built with Go and Vue, and distributed as a single executable binary.
     -   icon: 🔄
-        title: 自動測試和過載配置
-        details: 儲存更改後自動測試配置檔案並重載 Nginx。
+        title: Automatically Test and Reload Configurations
+        details: Test configuration files and reload nginx automatically after saving changes.
     -   icon: 🖥️
-        title: 網路終端
-        details: 輕鬆管理的基於網路瀏覽器的高階命令列終端。
+        title: Web Terminal
+        details: Access a web-based terminal for easy management.
     -   icon: 🌙
-        title: 深色模式
-        details: 開啟深色模式，享受舒適的使用者體驗。
+        title: Dark Mode
+        details: Enable dark mode for a comfortable user experience.
     -   icon: 📱
-        title: 自適應網頁設計
-        details: 透過自適應網頁設計在任何裝置上享受無縫體驗。
+        title: Responsive Web Design
+        details: Enjoy a seamless experience on any device with responsive web design.
     -   icon: 🔐
-        title: 雙因素認證
-        details: 使用雙因素認證保護敏感操作。
+        title: 2FA Authentication
+        details: Secure sensitive actions with two-factor authentication.
+
 ---
 
