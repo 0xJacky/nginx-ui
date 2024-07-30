@@ -53,15 +53,15 @@ func (c *ConfigPayload) GetKeyType() certcrypto.KeyType {
 
 func (c *ConfigPayload) mkCertificateDir() (err error) {
 	dir := c.getCertificateDirPath()
-	if _, err = os.Stat(dir); os.IsNotExist(err) {
+	if !helper.FileExists(dir) {
 		err = os.MkdirAll(dir, 0755)
 		if err == nil {
 			return nil
 		}
 	}
 
-	// For windows, replace # with * (issue #403)
-	c.CertificateDir = strings.ReplaceAll(c.CertificateDir, "#", "*")
+	// For windows, replace * with # (issue #403)
+	c.CertificateDir = strings.ReplaceAll(c.CertificateDir, "*", "#")
 	if _, err = os.Stat(c.CertificateDir); os.IsNotExist(err) {
 		err = os.MkdirAll(c.CertificateDir, 0755)
 		if err == nil {

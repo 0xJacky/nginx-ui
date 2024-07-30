@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func UnTar(dst, src string) (err error) {
@@ -36,6 +37,8 @@ func UnTar(dst, src string) (err error) {
 			case err != nil:
 				return errors.Wrap(err, "unTar tr.Next() error")
 			case hdr == nil:
+				return
+			case strings.Contains(hdr.Name, ".."):
 				return
 			}
 

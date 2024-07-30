@@ -33,6 +33,11 @@ func (c *includeContext) extractIncludes(filename string) {
 		return
 	}
 
+	if !helper.IsUnderDirectory(filename, nginx.GetConfPath()) {
+		logger.Error("File is not under the nginx conf path: ", filename)
+		return
+	}
+
 	// Read the file content
 	content, err := os.ReadFile(filename)
 	if err != nil {

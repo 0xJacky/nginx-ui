@@ -47,7 +47,7 @@ func EditConfig(c *gin.Context) {
 		return
 	}
 
-	if _, err := os.Stat(path); os.IsNotExist(err) {
+	if !helper.FileExists(path) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": "file not found",
 		})

@@ -4,6 +4,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cosy"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -25,7 +26,8 @@ type APICertificate struct {
 func Transformer(certModel *model.Cert) (certificate *APICertificate) {
 	var sslCertificationBytes, sslCertificationKeyBytes []byte
 	var certificateInfo *cert.Info
-	if certModel.SSLCertificatePath != "" {
+	if certModel.SSLCertificatePath != "" &&
+		helper.IsUnderDirectory(certModel.SSLCertificatePath, nginx.GetConfPath()) {
 		if _, err := os.Stat(certModel.SSLCertificatePath); err == nil {
 			sslCertificationBytes, _ = os.ReadFile(certModel.SSLCertificatePath)
 			if !cert.IsCertificate(string(sslCertificationBytes)) {
@@ -36,7 +38,8 @@ func Transformer(certModel *model.Cert) (certificate *APICertificate) {
 		certificateInfo, _ = cert.GetCertInfo(certModel.SSLCertificatePath)
 	}
 
-	if certModel.SSLCertificateKeyPath != "" {
+	if certModel.SSLCertificateKeyPath != "" &&
+		helper.IsUnderDirectory(certModel.SSLCertificateKeyPath, nginx.GetConfPath()) {
 		if _, err := os.Stat(certModel.SSLCertificateKeyPath); err == nil {
 			sslCertificationKeyBytes, _ = os.ReadFile(certModel.SSLCertificateKeyPath)
 			if !cert.IsPrivateKey(string(sslCertificationKeyBytes)) {
