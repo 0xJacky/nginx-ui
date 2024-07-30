@@ -1,4 +1,4 @@
-name: Merge Branches
+name: Synchronize Branches
 
 on:
   pull_request:
@@ -10,17 +10,23 @@ on:
       - published
 
 jobs:
-  merge:
+  weblate:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true || github.event.action == 'published'
     steps:
-      - name: Checkout main branch
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-            ref: 'main'
-            fetch-depth: 0
 
-      - name: Merge dev to main branch
-        run: |
-          git merge --ff-only -- origin/dev
-          git push
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: pip
+
+      - name: Install wlc
+        run: pip install wlc
+
+      - name: Update Repository
+        env:
+          WEBLATE_TOKEN: ${{ secrets.WEBLATE_TOKEN }}
+        run: wlc --key $WEBLATE_TOKEN pull
