@@ -4,7 +4,8 @@ import (
 	"crypto/tls"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/gin-gonic/gin"
+    "github.com/0xJacky/Nginx-UI/settings"
+    "github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"io"
 	"net/http"
@@ -58,7 +59,7 @@ func Proxy() gin.HandlerFunc {
 		logger.Debug("Proxy request", proxyUrl.String())
 		client := http.Client{
 			Transport: &http.Transport{
-				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+				TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.ServerSettings.InsecureSkipVerify},
 			},
 		}
 

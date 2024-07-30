@@ -21,6 +21,7 @@ type Server struct {
 	CertRenewalInterval  int      `json:"cert_renewal_interval" binding:"min=7,max=21"`
 	RecursiveNameservers []string `json:"recursive_nameservers" binding:"omitempty,dive,hostname_port"`
 	SkipInstallation     bool     `json:"skip_installation" protected:"true"`
+	InsecureSkipVerify   bool     `json:"insecure_skip_verify" protected:"true"`
 	Name                 string   `json:"name" binding:"omitempty,safety_text"`
 }
 
