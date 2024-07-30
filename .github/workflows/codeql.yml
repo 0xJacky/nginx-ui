@@ -17,6 +17,9 @@ on:
     branches: [ "dev" ]
   pull_request:
     branches: [ "dev" ]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.ini'
   schedule:
     - cron: '34 6 * * *'
 
