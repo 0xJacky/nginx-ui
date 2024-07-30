@@ -6,6 +6,7 @@ import StdTable from './StdTable.vue'
 import StdDataEntry from '@/components/StdDesign/StdDataEntry'
 import type { Column } from '@/components/StdDesign/types'
 import StdCurdDetail from '@/components/StdDesign/StdDataDisplay/StdCurdDetail.vue'
+import type { StdTableSlots } from '@/components/StdDesign/StdDataDisplay/types'
 
 export interface StdCurdProps<T> extends StdTableProps<T> {
   cardTitleKey?: string
@@ -232,7 +233,7 @@ const localOverwriteParams = reactive(props.overwriteParams ?? {})
         @selected="onSelect"
       >
         <template
-          v-for="(_, key) in $slots"
+          v-for="(_, key) in ($slots as unknown as StdTableSlots)"
           :key="key"
           #[key]="slotProps"
         >
