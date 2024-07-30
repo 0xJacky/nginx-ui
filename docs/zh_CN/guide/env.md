@@ -3,24 +3,25 @@
 
 ## Server
 
-| Configuration Setting         | Environment Variable                  |
-| ----------------------------- | ------------------------------------- |
-| HttpPort                      | NGINX_UI_SERVER_HTTP_PORT             |
-| RunMode                       | NGINX_UI_SERVER_RUN_MODE              |
-| JwtSecret                     | NGINX_UI_SERVER_JWT_SECRET            |
-| HTTPChallengePort             | NGINX_UI_SERVER_HTTP_CHALLENGE_PORT   |
-| StartCmd                      | NGINX_UI_SERVER_START_CMD             |
-| Database                      | NGINX_UI_SERVER_DATABASE              |
-| CADir                         | NGINX_UI_SERVER_CA_DIR                |
-| GithubProxy                   | NGINX_UI_SERVER_GITHUB_PROXY          |
-| NodeSecret                    | NGINX_UI_SERVER_NODE_SECRET           |
-| Demo                          | NGINX_UI_SERVER_DEMO                  |
-| PageSize                      | NGINX_UI_SERVER_PAGE_SIZE             |
-| HttpHost                      | NGINX_UI_SERVER_HTTP_HOST             |
-| CertRenewalInterval           | NGINX_UI_SERVER_CERT_RENEWAL_INTERVAL |
-| RecursiveNameservers          | NGINX_UI_SERVER_RECURSIVE_NAMESERVERS |
-| SkipInstallation              | NGINX_UI_SERVER_SKIP_INSTALLATION     |
-| Name                          | NGINX_UI_SERVER_NAME                  |
+| Configuration Setting   | Environment Variable                  |
+|-------------------------| ------------------------------------- |
+| HttpPort                | NGINX_UI_SERVER_HTTP_PORT             |
+| RunMode                 | NGINX_UI_SERVER_RUN_MODE              |
+| JwtSecret               | NGINX_UI_SERVER_JWT_SECRET            |
+| HTTPChallengePort       | NGINX_UI_SERVER_HTTP_CHALLENGE_PORT   |
+| StartCmd                | NGINX_UI_SERVER_START_CMD             |
+| Database                | NGINX_UI_SERVER_DATABASE              |
+| CADir                   | NGINX_UI_SERVER_CA_DIR                |
+| GithubProxy             | NGINX_UI_SERVER_GITHUB_PROXY          |
+| NodeSecret              | NGINX_UI_SERVER_NODE_SECRET           |
+| Demo                    | NGINX_UI_SERVER_DEMO                  |
+| PageSize                | NGINX_UI_SERVER_PAGE_SIZE             |
+| HttpHost                | NGINX_UI_SERVER_HTTP_HOST             |
+| CertRenewalInterval     | NGINX_UI_SERVER_CERT_RENEWAL_INTERVAL |
+| RecursiveNameservers    | NGINX_UI_SERVER_RECURSIVE_NAMESERVERS |
+| SkipInstallation        | NGINX_UI_SERVER_SKIP_INSTALLATION     |
+| Name                    | NGINX_UI_SERVER_NAME                  |
+| InsecureSkipVerify      | NGINX_UI_SERVER_INSECURE_SKIP_VERIFY  |
 
 ## Nginx
 

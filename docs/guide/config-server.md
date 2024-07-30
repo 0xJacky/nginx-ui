@@ -145,3 +145,10 @@ Nginx UI will not create a system initial acme user, this means you can't apply 
 - Type: `string`
 
 Use this option to customize the name of local server to be displayed in the environment indicator.
+
+## InsecureSkipVerify
+
+- Version：`>= v2.0.0-beta.30`
+- Type: `bool`
+
+This option is used to skip the verification of the certificate of servers when Nginx UI sends requests to them.
