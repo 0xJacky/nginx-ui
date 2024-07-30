@@ -22,37 +22,38 @@ hero:
 
 features:
     -   icon: 📊
-        title: 線上檢視伺服器指標
-        details: 實時監控伺服器 CPU、記憶體、系統負載、磁碟使用率等指標。
+        title: 伺服器指標的在線統計
+        details: 實時監控 CPU 使用率、內存使用率、平均負載和磁盤使用情況。
     -   icon: 💬
-        title: 線上 ChatGPT 助理
-        details: 在介面內直接使用 AI 強化的 ChatGPT 助手。
+        title: 在線 ChatGPT 助手
+        details: 在平台內直接獲取 AI 驅動的 ChatGPT 助手的幫助。
     -   icon: 🖱️
-        title: 一鍵部署和自動續簽
-        details: 一鍵輕鬆部署並自動續簽 Let's Encrypt 證書。
+        title: 一鍵部署和自動續期
+        details: 只需一鍵即可輕鬆部署和自動續期 Let's Encrypt 證書。
     -   icon: 🛠️
-        title: 線上編輯網站配置
-        details: 使用 NgxConfigEditor 區塊編輯器或支援 Nginx 配置語法高亮的 Ace Code 編輯器編輯配置。
+        title: 在線編輯網站配置
+        details: 使用我們的 NgxConfigEditor 區塊編輯器或帶有 nginx 語法高亮的 Ace 代碼編輯器編輯配置。
     -   icon: 📜
-        title: 線上檢視 Nginx 日誌
-        details: 線上直接訪問和檢視 Nginx 日誌。
+        title: 在線查看 Nginx 日誌
+        details: 直接在線訪問和查看您的 Nginx 日誌。
     -   icon: 💻
         title: 使用 Go 和 Vue 編寫
-        details: 使用 Go 和 Vue 構建，發行版本為單個可執行的二進位制檔案。
+        details: 該平台使用 Go 和 Vue 構建，並作為單個可執行二進制文件分發。
     -   icon: 🔄
-        title: 自動測試和過載配置
-        details: 儲存更改後自動測試配置檔案並重載 Nginx。
+        title: 自動測試和重新加載配置
+        details: 測試配置文件並在保存更改後自動重新加載 nginx。
     -   icon: 🖥️
-        title: 網路終端
-        details: 輕鬆管理的基於網路瀏覽器的高階命令列終端。
+        title: 網頁終端
+        details: 訪問基於網頁的終端以便於管理。
     -   icon: 🌙
-        title: 深色模式
-        details: 開啟深色模式，享受舒適的使用者體驗。
+        title: 暗模式
+        details: 啟用暗模式以獲得舒適的用戶體驗。
     -   icon: 📱
-        title: 自適應網頁設計
-        details: 透過自適應網頁設計在任何裝置上享受無縫體驗。
+        title: 響應式網頁設計
+        details: 通過響應式網頁設計在任何設備上享受無縫體驗。
     -   icon: 🔐
-        title: 雙因素認證
-        details: 使用雙因素認證保護敏感操作。
+        title: 兩步驗證
+        details: 使用兩步驗證保護敏感操作。
+
 ---
 
