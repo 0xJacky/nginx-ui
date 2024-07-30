@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import GithubButton from 'vue-github-button'
+import GithubButton from '@0xjacky/vue-github-button'
 import logo from '@/assets/img/logo.png'
 import ver from '@/version.json'
 

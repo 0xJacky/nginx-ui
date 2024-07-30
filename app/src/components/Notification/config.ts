@@ -9,12 +9,12 @@ export function syncConfigError(text: string) {
   const data = JSON.parse(text)
 
   if (data.status_code === 404) {
-    return $gettext('Sync config %{cert_name} to %{env_name} failed, please upgrade the remote Nginx UI to the latest version',
+    return $gettext('Sync config %{config_name} to %{env_name} failed, please upgrade the remote Nginx UI to the latest version',
       { config_name: data.config_name, env_name: data.env_name }, true)
   }
 
   return $gettext('Sync config %{config_name} to %{env_name} failed, response: %{resp}',
-    { cert_name: data.cert_name, env_name: data.env_name, resp: data.resp_body }, true)
+    { config_name: data.cert_name, env_name: data.env_name, resp: data.resp_body }, true)
 }
 
 export function syncRenameConfigSuccess(text: string) {

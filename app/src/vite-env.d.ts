@@ -1,5 +1,6 @@
 /// <reference types="vite/client" />
 /// <reference types="vite-svg-loader" />
+import { ComponentCustomProperties } from '@vue/runtime-core'
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
 
@@ -8,7 +9,7 @@ declare module '*.vue' {
 }
 
 export { }
-declare module 'vue' {
+declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $gettext: (msgid: string, parameters?: {
       [key: string]: string;
@@ -24,4 +25,3 @@ declare module 'vue' {
     }, disableHtmlEscaping?: boolean) => string;
   }
 }
-

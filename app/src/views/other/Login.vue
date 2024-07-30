@@ -7,8 +7,8 @@ import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
-import gettext, { $gettext } from '@/gettext'
 import OTPAuthorization from '@/components/OTP/OTPAuthorization.vue'
+import gettext from '@/gettext'
 
 const thisYear = new Date().getFullYear()
 
@@ -178,6 +178,16 @@ function handleOTPSubmit(code: string, recovery: string) {
                   </template>
                 </AInputPassword>
               </AFormItem>
+              <AButton
+                v-if="has_casdoor"
+                block
+                html-type="submit"
+                :loading="loading"
+                class="mb-5"
+                @click="loginWithCasdoor"
+              >
+                {{ $gettext('SSO Login') }}
+              </AButton>
             </template>
             <div v-else>
               <OTPAuthorization
@@ -198,15 +208,6 @@ function handleOTPSubmit(code: string, recovery: string) {
               </AButton>
             </AFormItem>
           </AForm>
-          <AButton
-            v-if="has_casdoor"
-            block
-            html-type="submit"
-            :loading="loading"
-            @click="loginWithCasdoor"
-          >
-            {{ $gettext('SSO Login') }}
-          </AButton>
           <div class="footer">
             <p>Copyright © 2021 - {{ thisYear }} Nginx UI</p>
             Language
