@@ -69,7 +69,7 @@ Para consultar la documentación, visite [nginxui.com](https://nginxui.com).
 
 ## Sobre el proyecto
 
-![Dashboard](resources/screenshots/dashboard_en.png)
+![Dashboard](resources/screenshots/dashboard_es.png)
 
 ### Demostración
 URL：[https://demo.nginxui.com](https://demo.nginxui.com)
