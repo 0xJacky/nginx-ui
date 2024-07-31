@@ -32,7 +32,7 @@ features:
         details: 只需一鍵即可輕鬆部署和自動續期 Let's Encrypt 證書。
     -   icon: 🛠️
         title: 在線編輯網站配置
-        details: 使用我們的 NgxConfigEditor 區塊編輯器或帶有 nginx 語法高亮的 Ace 代碼編輯器編輯配置。
+        details: 使用我們的 NgxConfigEditor 區塊編輯器或帶有 Nginx 語法高亮的 Ace 代碼編輯器編輯配置。
     -   icon: 📜
         title: 在線查看 Nginx 日誌
         details: 直接在線訪問和查看您的 Nginx 日誌。
@@ -41,7 +41,7 @@ features:
         details: 該平台使用 Go 和 Vue 構建，並作為單個可執行二進制文件分發。
     -   icon: 🔄
         title: 自動測試和重新加載配置
-        details: 測試配置文件並在保存更改後自動重新加載 nginx。
+        details: 測試配置文件並在保存更改後自動重新加載 Nginx。
     -   icon: 🖥️
         title: 網頁終端
         details: 訪問基於網頁的終端以便於管理。
