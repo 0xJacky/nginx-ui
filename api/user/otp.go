@@ -9,6 +9,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
 	"github.com/0xJacky/Nginx-UI/internal/user"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
@@ -165,14 +166,19 @@ func ResetOTP(c *gin.Context) {
 }
 
 func OTPStatus(c *gin.Context) {
+	status := false
+	u, ok := c.Get("user")
+	if ok {
+		status = u.(*model.Auth).EnabledOTP()
+	}
 	c.JSON(http.StatusOK, gin.H{
-		"status": len(api.CurrentUser(c).OTPSecret) > 0,
+		"status": status,
 	})
 }
 
 func SecureSessionStatus(c *gin.Context) {
-	cUser := api.CurrentUser(c)
-	if !cUser.EnabledOTP() {
+	u, ok := c.Get("user")
+	if !ok || !u.(*model.Auth).EnabledOTP() {
 		c.JSON(http.StatusOK, gin.H{
 			"status": false,
 		})
@@ -189,12 +195,13 @@ func SecureSessionStatus(c *gin.Context) {
 		return
 	}
 
-	if user.VerifySecureSessionID(ssid, cUser.ID) {
+	if user.VerifySecureSessionID(ssid, u.(*model.Auth).ID) {
 		c.JSON(http.StatusOK, gin.H{
 			"status": true,
 		})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"status": false,
 	})
