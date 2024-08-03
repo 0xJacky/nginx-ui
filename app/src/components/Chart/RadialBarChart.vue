@@ -97,7 +97,7 @@ const chartOptions = computed(() => ({
     position: absolute;
     top: -30px;
     @media (max-width: 1700px) and (min-width: 1200px) {
-      top: -10px;
+      top: -30px;
     }
     @media (max-width: 768px) and (min-width: 290px) {
       left: 50%;
@@ -114,9 +114,6 @@ const chartOptions = computed(() => ({
   .bottom_text {
     position: absolute;
     top: calc(106px);
-    @media (max-width: 1300px) and (min-width: 1200px) {
-      top: calc(96px);
-    }
     font-weight: 600;
     width: 100%;
     text-align: center;
