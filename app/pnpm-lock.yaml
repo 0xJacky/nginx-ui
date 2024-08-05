@@ -181,8 +181,8 @@ importers:
         specifier: ^0.27.3
         version: 0.27.3(@babel/parser@7.25.3)(rollup@4.19.1)(vue@3.4.35(typescript@5.5.4))
       unplugin-vue-define-options:
-        specifier: ^1.4.6
-        version: 1.4.6(rollup@4.19.1)(vue@3.4.35(typescript@5.5.4))
+        specifier: ^1.4.9
+        version: 1.4.9(rollup@4.19.1)(vue@3.4.35(typescript@5.5.4))
       vite:
         specifier: ^5.3.5
         version: 5.3.5(@types/node@22.0.2)(less@4.2.0)
@@ -856,8 +856,8 @@ packages:
   '@volar/typescript@2.4.0-alpha.18':
     resolution: {integrity: sha512-sXh5Y8sqGUkgxpMWUGvRXggxYHAVxg0Pa1C42lQZuPDrW6vHJPR0VCK8Sr7WJsAW530HuNQT/ZIskmXtxjybMQ==}
 
-  '@vue-macros/common@1.11.0':
-    resolution: {integrity: sha512-PpAh4UZ5hJWWUUnV9290xnvZBBlzmfAX0Qyndplts3RoPzrLSbqTfXucdz9NYdYuGJ7dy+H6OJS+QtknVBlZiA==}
+  '@vue-macros/common@1.12.2':
+    resolution: {integrity: sha512-+NGfhrPvPNOb3Wg9PNPEXPe0HTXmVe6XJawL1gi3cIjOSGIhpOdvmMT2cRuWb265IpA/PeL5Sqo0+DQnEDxLvw==}
     engines: {node: '>=16.14.0'}
     peerDependencies:
       vue: ^2.7.0 || ^3.2.25
@@ -1097,8 +1097,8 @@ packages:
     resolution: {integrity: sha512-es1zHFsnZ4Y4efz412nnrU3KvVAhgqy90a7Yt9Wpi5vQ3l4aYMOX0Qx4FD0elKr5ITEhiUGCSFcgGYf4YTuACg==}
     engines: {node: '>=16.14.0'}
 
-  ast-kit@1.0.0:
-    resolution: {integrity: sha512-Jv5Zs4DhU4QEYPvfVrEmdMuxCRMxsIVNfj4uqsBWyNM5wOaNMIfOwu55jH2DWnmr05iyCxPjbYGND1PNU40CuQ==}
+  ast-kit@1.0.1:
+    resolution: {integrity: sha512-XdXKlmX3YIrGKJS7d324CAbswH+C1klMCIRQ4VRy0+iPxGeP2scVOoYd09/V6uGjGAi/ZuEwBLzT7xBerSKNQg==}
     engines: {node: '>=16.14.0'}
 
   ast-walker-scope@0.6.1:
@@ -2962,8 +2962,8 @@ packages:
       '@nuxt/kit':
         optional: true
 
-  unplugin-vue-define-options@1.4.6:
-    resolution: {integrity: sha512-cRxQ1siCZXyKa4rGcKOU+VWfD9ftNIWrfFbTLykir6OLz7zISfQcxyWImmnGI0WjdBJkylnNBUjuxaMvWSBQww==}
+  unplugin-vue-define-options@1.4.9:
+    resolution: {integrity: sha512-tA6u7RLCFTMUxCiER4yTaTJhp7kU7q7yNmjiLRG3ZMrOUq7WaMeimKYqhrplC2lELNQUnsmcMSmFVi7LfBnWqA==}
     engines: {node: '>=16.14.0'}
 
   unplugin@1.12.0:
@@ -3867,12 +3867,12 @@ snapshots:
       path-browserify: 1.0.1
       vscode-uri: 3.0.8
 
-  '@vue-macros/common@1.11.0(rollup@4.19.1)(vue@3.4.35(typescript@5.5.4))':
+  '@vue-macros/common@1.12.2(rollup@4.19.1)(vue@3.4.35(typescript@5.5.4))':
     dependencies:
       '@babel/types': 7.25.2
       '@rollup/pluginutils': 5.1.0(rollup@4.19.1)
       '@vue/compiler-sfc': 3.4.35
-      ast-kit: 1.0.0
+      ast-kit: 1.0.1
       local-pkg: 0.5.0
       magic-string-ast: 0.6.2
     optionalDependencies:
@@ -4177,7 +4177,7 @@ snapshots:
       '@babel/parser': 7.25.3
       pathe: 1.1.2
 
-  ast-kit@1.0.0:
+  ast-kit@1.0.1:
     dependencies:
       '@babel/parser': 7.25.3
       pathe: 1.1.2
@@ -6240,9 +6240,9 @@ snapshots:
       - rollup
       - supports-color
 
-  unplugin-vue-define-options@1.4.6(rollup@4.19.1)(vue@3.4.35(typescript@5.5.4)):
+  unplugin-vue-define-options@1.4.9(rollup@4.19.1)(vue@3.4.35(typescript@5.5.4)):
     dependencies:
-      '@vue-macros/common': 1.11.0(rollup@4.19.1)(vue@3.4.35(typescript@5.5.4))
+      '@vue-macros/common': 1.12.2(rollup@4.19.1)(vue@3.4.35(typescript@5.5.4))
       ast-walker-scope: 0.6.1
       unplugin: 1.12.0
     transitivePeerDependencies:
