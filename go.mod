@@ -6,7 +6,7 @@ require (
 	github.com/0xJacky/pofile v0.2.1
 	github.com/BurntSushi/toml v1.4.0
 	github.com/caarlos0/env/v11 v11.1.0
-	github.com/casdoor/casdoor-go-sdk v0.47.0
+	github.com/casdoor/casdoor-go-sdk v0.49.0
 	github.com/creack/pty v1.1.21
 	github.com/dgraph-io/ristretto v0.1.1
 	github.com/dustin/go-humanize v1.0.1
