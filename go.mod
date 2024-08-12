@@ -31,7 +31,7 @@ require (
 	github.com/sashabaranov/go-openai v1.27.1
 	github.com/shirou/gopsutil/v3 v3.24.5
 	github.com/shopspring/decimal v1.4.0
-	github.com/spf13/cast v1.6.0
+	github.com/spf13/cast v1.7.0
 	github.com/stretchr/testify v1.9.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20240109151651-bb3e845a7a2a
 	go.uber.org/zap v1.27.0
