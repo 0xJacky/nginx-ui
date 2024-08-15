@@ -275,7 +275,7 @@ On platforms that do not have an official build version, they can be built manua
 
 - Make
 
-- Golang 1.22+
+- Golang 1.23+
 
 - node.js 21+
 

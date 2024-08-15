@@ -277,7 +277,7 @@ Trên các nền tảng không có phiên bản xây dựng chính thức, chún
 ### Điều kiện cần
 
 - Make
-- Golang 1.22+
+- Golang 1.23+
 - node.js 21+
 
   ```shell

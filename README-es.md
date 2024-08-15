@@ -213,7 +213,7 @@ En plataformas que no tienen una versión de compilación oficial, pueden compil
 
 - Make
 
-- Golang 1.22+
+- Golang 1.23+
 
 - node.js 21+
 
