@@ -1,0 +1,86 @@
+name: Synchronize Weblate Branch
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 18 * * *'
+
+env:
+  DEVELOP_BRANCH: dev
+  WEBLATE_BRANCH: weblate
+
+jobs:
+  check:
+    name: Check Branches
+    runs-on: ubuntu-latest
+    outputs:
+        behind: ${{ steps.check.outputs.behind }}
+        ahead: ${{ steps.check.outputs.ahead }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.DEVELOP_BRANCH }}
+          clean: false
+          fetch-depth: 0
+
+      - name: Check branches
+        id: check
+        run: |
+          git fetch --all
+          git branch $WEBLATE_BRANCH origin/$WEBLATE_BRANCH
+          echo "behind=$(git rev-list --count $WEBLATE_BRANCH..$DEVELOP_BRANCH)" >> $GITHUB_OUTPUT
+          echo "ahead=$(git rev-list --count $DEVELOP_BRANCH..$WEBLATE_BRANCH)" >> $GITHUB_OUTPUT
+
+      - name: Echo outputs
+        run: |
+          echo "behind: ${{ steps.check.outputs.behind }}"
+          echo "ahead: ${{ steps.check.outputs.ahead }}"
+
+  force-update:
+    name: Force Update Weblate Status
+    runs-on: ubuntu-latest
+    needs: check
+    if: ${{ needs.check.outputs.behind > 0 }}
+    env:
+      WEBLATE_TOKEN: ${{ secrets.WEBLATE_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install wlc
+        run: pip install wlc
+
+      - name: Update weblate repository
+        run: wlc --key $WEBLATE_TOKEN pull
+
+      - name: Push weblate branch
+        run: wlc --key $WEBLATE_TOKEN push
+
+  sync-branch:
+    name: Sync Weblate Branch
+    runs-on: ubuntu-latest
+    needs: [check, force-update]
+    if: ${{ needs.check.outputs.ahead > 0 && always() }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.DEVELOP_BRANCH }}
+          fetch-depth: 0
+
+      - name: Set up git
+        run: |
+          git config --global user.name 'Weblate'
+          git config --global user.email 'weblate@nginxui.com'
+
+      - name: Push changes of weblate branch to develop branch
+        run: |
+          git fetch origin
+          git merge --ff-only -- origin/${{ env.WEBLATE_BRANCH }}
+          git push origin ${{ env.DEVELOP_BRANCH }}
