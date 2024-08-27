@@ -32,8 +32,10 @@ func newConfig(db *gorm.DB, opts ...gen.DOOption) config {
 	_config.CreatedAt = field.NewTime(tableName, "created_at")
 	_config.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_config.DeletedAt = field.NewField(tableName, "deleted_at")
+	_config.Name = field.NewString(tableName, "name")
 	_config.Filepath = field.NewString(tableName, "filepath")
 	_config.SyncNodeIds = field.NewField(tableName, "sync_node_ids")
+	_config.SyncOverwrite = field.NewBool(tableName, "sync_overwrite")
 
 	_config.fillFieldMap()
 
@@ -43,13 +45,15 @@ func newConfig(db *gorm.DB, opts ...gen.DOOption) config {
 type config struct {
 	configDo
 
-	ALL         field.Asterisk
-	ID          field.Int
-	CreatedAt   field.Time
-	UpdatedAt   field.Time
-	DeletedAt   field.Field
-	Filepath    field.String
-	SyncNodeIds field.Field
+	ALL           field.Asterisk
+	ID            field.Int
+	CreatedAt     field.Time
+	UpdatedAt     field.Time
+	DeletedAt     field.Field
+	Name          field.String
+	Filepath      field.String
+	SyncNodeIds   field.Field
+	SyncOverwrite field.Bool
 
 	fieldMap map[string]field.Expr
 }
@@ -70,8 +74,10 @@ func (c *config) updateTableName(table string) *config {
 	c.CreatedAt = field.NewTime(table, "created_at")
 	c.UpdatedAt = field.NewTime(table, "updated_at")
 	c.DeletedAt = field.NewField(table, "deleted_at")
+	c.Name = field.NewString(table, "name")
 	c.Filepath = field.NewString(table, "filepath")
 	c.SyncNodeIds = field.NewField(table, "sync_node_ids")
+	c.SyncOverwrite = field.NewBool(table, "sync_overwrite")
 
 	c.fillFieldMap()
 
@@ -88,13 +94,15 @@ func (c *config) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *config) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 6)
+	c.fieldMap = make(map[string]field.Expr, 8)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
 	c.fieldMap["deleted_at"] = c.DeletedAt
+	c.fieldMap["name"] = c.Name
 	c.fieldMap["filepath"] = c.Filepath
 	c.fieldMap["sync_node_ids"] = c.SyncNodeIds
+	c.fieldMap["sync_overwrite"] = c.SyncOverwrite
 }
 
 func (c config) clone(db *gorm.DB) config {
