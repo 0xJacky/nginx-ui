@@ -37,20 +37,28 @@ const refInspectConfig = ref()
 const breadcrumbs = useBreadcrumbs()
 
 function updateBreadcrumbs() {
-  const path = basePath.value
+  const filteredPath = basePath.value
     .split('/')
     .filter(v => v)
-    .map(v => {
-      return {
-        name: 'Manage Configs',
-        translatedName: () => v,
-        path: '/config',
-        query: {
-          dir: v,
-        },
-        hasChildren: false,
-      }
-    })
+
+  const path = filteredPath.map((v, k) => {
+    let dir = v
+
+    if (k > 0) {
+      dir = filteredPath.slice(0, k).join('/')
+      dir += `/${v}`
+    }
+
+    return {
+      name: 'Manage Configs',
+      translatedName: () => v,
+      path: '/config',
+      query: {
+        dir,
+      },
+      hasChildren: false,
+    }
+  })
 
   breadcrumbs.value = [{
     name: 'Dashboard',

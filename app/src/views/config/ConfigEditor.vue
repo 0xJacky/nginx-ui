@@ -2,6 +2,7 @@
 import { message } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import _ from 'lodash'
 import { formatDateTime } from '@/lib/helper'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import type { Config } from '@/api/config'
@@ -26,7 +27,7 @@ const errors = ref({})
 
 const basePath = computed(() => {
   if (route.query.basePath)
-    return route?.query?.basePath?.toString().replaceAll('/', '')
+    return _.trim(route?.query?.basePath?.toString(), '/')
   else if (typeof route.params.name === 'object')
     return (route.params.name as string[]).slice(0, -1).join('/')
   else
@@ -64,22 +65,29 @@ async function init() {
       historyChatgptRecord.value = r.chatgpt_messages
       modifiedAt.value = r.modified_at
 
-      const path = data.value.filepath
-        .replaceAll(`${nginxConfigBase.value}/`, '')
-        .replaceAll(data.value.name, '')
+      const filteredPath = _.trimEnd(data.value.filepath
+        .replaceAll(`${nginxConfigBase.value}/`, ''), data.value.name)
         .split('/')
         .filter(v => v)
-        .map(v => {
-          return {
-            name: 'Manage Configs',
-            translatedName: () => v,
-            path: '/config',
-            query: {
-              dir: v,
-            },
-            hasChildren: false,
-          }
-        })
+
+      const path = filteredPath.map((v, k) => {
+        let dir = v
+
+        if (k > 0) {
+          dir = filteredPath.slice(0, k).join('/')
+          dir += `/${v}`
+        }
+
+        return {
+          name: 'Manage Configs',
+          translatedName: () => v,
+          path: '/config',
+          query: {
+            dir,
+          },
+          hasChildren: false,
+        }
+      })
 
       breadcrumbs.value = [{
         name: 'Dashboard',
