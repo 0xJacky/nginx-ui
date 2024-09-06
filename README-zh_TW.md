@@ -140,7 +140,7 @@ Nginx UI 可在以下作業系統中使用：
 
 ### 使用方法
 
-第一次執行 Nginx UI 時，請在網頁瀏覽器中訪問 `http://<your_server_ip>:<listen_port>/install` 完成後續設定。
+第一次執行 Nginx UI 時，請在網頁瀏覽器中訪問 `http://<your_server_ip>:<listen_port>` 完成後續設定。
 
 #### 透過執行檔案執行
 

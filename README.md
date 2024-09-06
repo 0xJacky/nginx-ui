@@ -154,7 +154,7 @@ You can visit [latest release](https://github.com/0xJacky/nginx-ui/releases/late
 
 ### Usage
 
-In the first runtime of Nginx UI, please visit `http://<your_server_ip>:<listen_port>/install`
+In the first runtime of Nginx UI, please visit `http://<your_server_ip>:<listen_port>`
 in your browser to complete the follow-up configurations.
 
 #### From Executable

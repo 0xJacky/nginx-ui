@@ -158,7 +158,7 @@ Bạn có thể truy cập [latest release](https://github.com/0xJacky/nginx-ui/
 
 ### Sử dụng
 
-Trong lần chạy đầu tiên, vui lòng truy cập `http://<your_server_ip>:<listen_port>/install` bằng trình duyệt của bạn để hoàn tất các cấu hình.
+Trong lần chạy đầu tiên, vui lòng truy cập `http://<your_server_ip>:<listen_port>` bằng trình duyệt của bạn để hoàn tất các cấu hình.
 
 #### Chạy với Executable
 **Chạy giao diện người dùng Nginx trong Terminal**

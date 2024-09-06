@@ -35,7 +35,7 @@ control the host machine's Nginx. You can also [install via Docker](#install-wit
 includes Nginx and can be used bundled. For advanced users, you may also visit the [latest release](https://github.com/0xJacky/nginx-ui/releases/latest)
 to download the latest distribution and [run executable directly](#run-executable-directly), or [manually build it](./build).
 
-In the first runtime of Nginx UI, please visit `http://<your_server_ip>:<listen_port>/install`
+In the first runtime of Nginx UI, please visit `http://<your_server_ip>:<listen_port>`
 in your browser to complete the follow-up configurations.
 
 In addition, we provide [an example](./nginx-proxy-example) of using Nginx to reverse proxy Nginx UI,

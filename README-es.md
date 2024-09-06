@@ -144,7 +144,7 @@ Puede visitar [latest release](https://github.com/0xJacky/nginx-ui/releases/late
 
 ### Uso
 
-Al ejecutar por primera vez la UI de Nginx, visite en su navegador `http://<your_server_ip>:<listen_port>/install` para completar las configuraciones posteriores.
+Al ejecutar por primera vez la UI de Nginx, visite en su navegador `http://<your_server_ip>:<listen_port>` para completar las configuraciones posteriores.
 
 #### Desde el ejecutable
 **Ejecutar UI Nginx en la terminal**

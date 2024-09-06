@@ -31,7 +31,7 @@ http {
 我們提供的映象包含 Nginx 並可以直接使用。對於高階使用者，您也可以在 [最新發行 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest)
 中下載最新版本並 [透過執行檔案執行](#透過執行檔案執行)，或者 [手動構建](./build)。
 
-第一次執行 Nginx UI 時，請在瀏覽器中訪問 `http://<your_server_ip>:<listen_port>/install` 完成後續配置。
+第一次執行 Nginx UI 時，請在瀏覽器中訪問 `http://<your_server_ip>:<listen_port>` 完成後續配置。
 
 此外，我們提供了一個使用 Nginx 反向代理 Nginx UI 的 [示例](./nginx-proxy-example)，您可在安裝完成後使用。
 

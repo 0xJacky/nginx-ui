@@ -137,7 +137,7 @@ Nginx UI 可在以下平台中使用：
 
 ### 使用方法
 
-第一次运行 Nginx UI 时，请在浏览器中访问 `http://<your_server_ip>:<listen_port>/install` 完成后续配置。
+第一次运行 Nginx UI 时，请在浏览器中访问 `http://<your_server_ip>:<listen_port>` 完成后续配置。
 
 #### 通过执行文件运行
 **在终端中运行 Nginx UI**
