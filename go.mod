@@ -40,7 +40,7 @@ require (
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/sqlite v1.5.6
 	gorm.io/gen v0.3.26
-	gorm.io/gorm v1.25.11
+	gorm.io/gorm v1.25.12
 	gorm.io/plugin/dbresolver v1.5.2
 )
 
@@ -243,7 +243,6 @@ require (
 	github.com/vinyldns/go-vinyldns v0.9.16 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
-	github.com/vultr/govultr/v2 v2.17.2 // indirect
 	github.com/vultr/govultr/v3 v3.9.1 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	github.com/yandex-cloud/go-genproto v0.0.0-20240829130658-0568052c5a6a // indirect
