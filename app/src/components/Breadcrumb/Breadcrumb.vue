@@ -2,14 +2,11 @@
 import type { Bread } from '@/components/Breadcrumb/types'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
 
-const name = ref()
 const route = useRoute()
 const router = useRouter()
 
 const computedBreadList = computed(() => {
   const result: Bread[] = []
-
-  name.value = route.meta.name
 
   route.matched.forEach(item => {
     if (item.meta?.lastRouteName) {

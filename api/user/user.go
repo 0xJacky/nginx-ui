@@ -118,19 +118,15 @@ func EditUser(c *gin.Context) {
 
 func DeleteUser(c *gin.Context) {
 	id := cast.ToInt(c.Param("id"))
-
 	if cast.ToInt(id) == 1 {
 		c.JSON(http.StatusNotAcceptable, gin.H{
 			"message": "Prohibit deleting the default user",
 		})
 		return
 	}
+	cosy.Core[model.Auth](c).Destroy()
+}
 
-	u := query.Auth
-	err := u.DeleteByID(id)
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-	c.JSON(http.StatusNoContent, nil)
+func RecoverUser(c *gin.Context) {
+	cosy.Core[model.Auth](c).Recover()
 }

@@ -1,7 +1,7 @@
 package user
 
 import (
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 func InitAuthRouter(r *gin.RouterGroup) {
@@ -18,6 +18,7 @@ func InitManageUserRouter(r *gin.RouterGroup) {
 	r.POST("user", AddUser)
 	r.POST("user/:id", EditUser)
 	r.DELETE("user/:id", DeleteUser)
+	r.PATCH("user/:id", RecoverUser)
 }
 
 func InitUserRouter(r *gin.RouterGroup) {
@@ -26,6 +27,6 @@ func InitUserRouter(r *gin.RouterGroup) {
 	r.POST("/otp_enroll", EnrollTOTP)
 	r.POST("/otp_reset", ResetOTP)
 
-    r.GET("/otp_secure_session_status", SecureSessionStatus)
+	r.GET("/otp_secure_session_status", SecureSessionStatus)
 	r.POST("/otp_secure_session", StartSecure2FASession)
 }
