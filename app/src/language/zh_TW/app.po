@@ -21,7 +21,7 @@ msgstr ""
 msgid "2FA"
 msgstr "多重要素驗證"
 
-#: src/views/preference/components/TOTP.vue:88
+#: src/views/preference/components/TOTP.vue:90
 msgid "2FA Settings"
 msgstr "多重要素驗證設定"
 
@@ -250,6 +250,10 @@ msgstr "CA Dir"
 msgid "CADir"
 msgstr "CADir"
 
+#: src/views/preference/components/TOTP.vue:150
+msgid "Can't scan? Use text key binding"
+msgstr ""
+
 #: src/components/ChatGPT/ChatGPT.vue:252
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:55
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:253
@@ -427,11 +431,11 @@ msgstr "認證"
 msgid "Credentials"
 msgstr "認證資訊"
 
-#: src/views/preference/components/TOTP.vue:96
+#: src/views/preference/components/TOTP.vue:98
 msgid "Current account is enabled 2FA."
 msgstr "當前帳戶已啟用多因素身份驗證。"
 
-#: src/views/preference/components/TOTP.vue:93
+#: src/views/preference/components/TOTP.vue:95
 msgid "Current account is not enabled 2FA."
 msgstr "當前帳戶未啟用多因素身份驗證。"
 
@@ -708,11 +712,11 @@ msgstr "在 %{node_name} 啟用 %{conf_name} 失敗"
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "成功在 %{node_name} 啟用 %{conf_name}"
 
-#: src/views/preference/components/TOTP.vue:122
+#: src/views/preference/components/TOTP.vue:124
 msgid "Enable 2FA"
 msgstr "啟用多因素身份驗證"
 
-#: src/views/preference/components/TOTP.vue:52
+#: src/views/preference/components/TOTP.vue:54
 msgid "Enable 2FA successfully"
 msgstr "啟用多因素身份驗證成功"
 
@@ -922,7 +926,7 @@ msgstr ""
 "如果來自某個 IP 的登錄失敗次數在禁止閾值分鐘內達到最大嘗試次數，該 IP 將被禁"
 "止一段時間。"
 
-#: src/views/preference/components/TOTP.vue:108
+#: src/views/preference/components/TOTP.vue:110
 msgid ""
 "If you lose your mobile phone, you can use the recovery code to reset your "
 "2FA."
@@ -958,12 +962,12 @@ msgstr "初始化核心升級程式錯誤"
 msgid "Initialing core upgrader"
 msgstr "正在初始化核心升級程式"
 
-#: src/views/preference/components/TOTP.vue:144
+#: src/views/preference/components/TOTP.vue:157
 msgid "Input the code from the app:"
 msgstr "請輸入應用程式中的代碼："
 
 #: src/components/OTP/OTPAuthorization.vue:49
-#: src/views/preference/components/TOTP.vue:157
+#: src/views/preference/components/TOTP.vue:170
 msgid "Input the recovery code:"
 msgstr "輸入恢復碼："
 
@@ -1548,15 +1552,15 @@ msgid "Recovered Successfully"
 msgstr "恢復成功"
 
 #: src/components/OTP/OTPAuthorization.vue:56
-#: src/views/preference/components/TOTP.vue:164
+#: src/views/preference/components/TOTP.vue:177
 msgid "Recovery"
 msgstr "恢復"
 
-#: src/views/preference/components/TOTP.vue:101
+#: src/views/preference/components/TOTP.vue:103
 msgid "Recovery Code"
 msgstr "恢復碼"
 
-#: src/views/preference/components/TOTP.vue:110
+#: src/views/preference/components/TOTP.vue:112
 msgid "Recovery Code:"
 msgstr "恢復碼："
 
@@ -1683,7 +1687,7 @@ msgstr "請求參數錯誤"
 msgid "Reset"
 msgstr "重設"
 
-#: src/views/preference/components/TOTP.vue:130
+#: src/views/preference/components/TOTP.vue:132
 msgid "Reset 2FA"
 msgstr "重置多重因素驗證"
 
@@ -1734,13 +1738,17 @@ msgstr "儲存成功"
 msgid "Saved successfully"
 msgstr "儲存成功"
 
-#: src/views/preference/components/TOTP.vue:91
+#: src/views/preference/components/TOTP.vue:93
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "用手機掃描二維碼將賬戶添加到應用程序中。"
 
 #: src/views/certificate/DNSChallenge.vue:89
 msgid "SDK"
 msgstr "SDK"
+
+#: src/views/preference/components/TOTP.vue:149
+msgid "Secret has been copied"
+msgstr ""
 
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:155
 msgid "Selector"
@@ -1764,8 +1772,8 @@ msgstr "傳送"
 #: src/views/environment/BatchUpgrader.vue:57
 #: src/views/environment/Environment.vue:15 src/views/other/Install.vue:68
 #: src/views/preference/AuthSettings.vue:49
-#: src/views/preference/components/TOTP.vue:42
-#: src/views/preference/components/TOTP.vue:55
+#: src/views/preference/components/TOTP.vue:44
+#: src/views/preference/components/TOTP.vue:57
 #: src/views/preference/Preference.vue:83 src/views/stream/StreamList.vue:113
 #: src/views/stream/StreamList.vue:81 src/views/system/Upgrade.vue:42
 msgid "Server error"
@@ -1995,7 +2003,7 @@ msgstr "路徑存在，但檔案不是憑證"
 msgid "The path exists, but the file is not a private key"
 msgstr "路徑存在，但檔案不是金鑰"
 
-#: src/views/preference/components/TOTP.vue:109
+#: src/views/preference/components/TOTP.vue:111
 msgid ""
 "The recovery code is only displayed once, please save it in a safe place."
 msgstr "恢復碼僅顯示一次，請將其保存在安全的地方。"
@@ -2067,7 +2075,7 @@ msgstr "提示"
 msgid "Title"
 msgstr "標題"
 
-#: src/views/preference/components/TOTP.vue:90
+#: src/views/preference/components/TOTP.vue:92
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
@@ -2092,7 +2100,7 @@ msgstr "令牌無效"
 msgid "Too many login failed attempts, please try again later"
 msgstr "登錄失敗次數過多，請稍後再試"
 
-#: src/views/preference/components/TOTP.vue:89
+#: src/views/preference/components/TOTP.vue:91
 msgid ""
 "TOTP is a two-factor authentication method that uses a time-based one-time "
 "password algorithm."

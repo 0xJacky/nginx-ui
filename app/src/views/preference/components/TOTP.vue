@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import { CheckCircleOutlined } from '@ant-design/icons-vue'
+import { UseClipboard } from '@vueuse/components'
 import otp from '@/api/otp'
 import OTPInput from '@/components/OTPInput/OTPInput.vue'
+import { $gettext } from '@/gettext'
 
 const status = ref(false)
 const enrolling = ref(false)
@@ -131,13 +133,24 @@ function reset2FA() {
     </AButton>
 
     <template v-if="enrolling">
-      <div class="w-64 h-64 mt-4 mb-2">
+      <div class="mt-4 mb-2">
         <img
           v-if="qrCode"
-          class="w-full"
+          class="w-64 h-64"
           :src="qrCode"
           alt="qr code"
         >
+        <div class="w-64 flex justify-center">
+          <UseClipboard v-slot="{ copy, copied }">
+            <a
+              class="mr-2"
+              @click="() => copy(secret)"
+            >
+              {{ copied ? $gettext('Secret has been copied')
+                : $gettext('Can\'t scan? Use text key binding') }}
+            </a>
+          </UseClipboard>
+        </div>
       </div>
 
       <div>
