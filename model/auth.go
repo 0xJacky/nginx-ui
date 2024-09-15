@@ -1,8 +1,12 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"github.com/go-webauthn/webauthn/webauthn"
+	"github.com/spf13/cast"
+	"gorm.io/gorm"
+)
 
-type Auth struct {
+type User struct {
 	Model
 
 	Name       string `json:"name"`
@@ -18,11 +22,36 @@ type AuthToken struct {
 	ExpiredAt int64  `json:"expired_at" gorm:"default:0"`
 }
 
-func (u *Auth) AfterFind(tx *gorm.DB) error {
-    u.Enabled2FA = u.EnabledOTP()
-    return nil
+func (u *User) TableName() string {
+	return "auths"
 }
 
-func (u *Auth) EnabledOTP() bool {
+func (u *User) AfterFind(_ *gorm.DB) error {
+	u.Enabled2FA = u.EnabledOTP()
+	return nil
+}
+
+func (u *User) EnabledOTP() bool {
 	return len(u.OTPSecret) != 0
+}
+
+func (u *User) WebAuthnID() []byte {
+	return []byte(cast.ToString(u.ID))
+}
+
+func (u *User) WebAuthnName() string {
+	return u.Name
+}
+
+func (u *User) WebAuthnDisplayName() string {
+	return u.Name
+}
+
+func (u *User) WebAuthnCredentials() (credentials []webauthn.Credential) {
+	var passkeys []Passkey
+	db.Where("user_id", u.ID).Find(&passkeys)
+	for _, passkey := range passkeys {
+		credentials = append(credentials, *passkey.Credential)
+	}
+	return
 }

@@ -61,8 +61,8 @@ func InstallNginxUI(c *gin.Context) {
 
 	pwd, _ := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
 
-	u := query.Auth
-	err = u.Create(&model.Auth{
+	u := query.User
+	err = u.Create(&model.User{
 		Name:     json.Username,
 		Password: string(pwd),
 	})

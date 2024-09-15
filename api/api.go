@@ -12,8 +12,8 @@ import (
 	"strings"
 )
 
-func CurrentUser(c *gin.Context) *model.Auth {
-	return c.MustGet("user").(*model.Auth)
+func CurrentUser(c *gin.Context) *model.User {
+	return c.MustGet("user").(*model.User)
 }
 
 func ErrHandler(c *gin.Context, err error) {

@@ -29,3 +29,7 @@ func Set(key interface{}, value interface{}, ttl time.Duration) {
 func Get(key interface{}) (value interface{}, ok bool) {
 	return cache.Get(key)
 }
+
+func Del(key interface{}) {
+	cache.Del(key)
+}

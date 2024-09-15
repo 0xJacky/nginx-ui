@@ -29,6 +29,7 @@ var sections = map[string]interface{}{
 	"cluster":   &ClusterSettings,
 	"auth":      &AuthSettings,
 	"crypto":    &CryptoSettings,
+	"webauthn":  &WebAuthnSettings,
 }
 
 func init() {
@@ -66,6 +67,7 @@ func Setup() {
 	parseEnv(&LogrotateSettings, "LOGROTATE_")
 	parseEnv(&AuthSettings, "AUTH_")
 	parseEnv(&CryptoSettings, "CRYPTO_")
+	parseEnv(&WebAuthnSettings, "WEBAUTHN_")
 
 	// if in official docker, set the restart cmd of nginx to "nginx -s stop",
 	// then the supervisor of s6-overlay will start the nginx again.

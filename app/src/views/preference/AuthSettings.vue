@@ -7,6 +7,8 @@ import setting from '@/api/settings'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Settings } from '@/views/preference/typedef'
 import TOTP from '@/views/preference/components/TOTP.vue'
+import PasskeyRegistration from '@/components/Passkey/PasskeyRegistration.vue'
+import { $gettext } from '@/gettext'
 
 const data: Settings = inject('data') as Settings
 
@@ -54,8 +56,13 @@ function removeBannedIP(ip: string) {
 <template>
   <div class="flex justify-center">
     <div>
+      <h2>{{ $gettext('2FA Settings') }}</h2>
+      <PasskeyRegistration class="mb-4" />
       <TOTP class="mb-4" />
 
+      <h2>
+        {{ $gettext('Authentication Settings') }}
+      </h2>
       <AAlert
         class="mb-4"
         :message="$gettext('Tips')"

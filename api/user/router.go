@@ -8,6 +8,9 @@ func InitAuthRouter(r *gin.RouterGroup) {
 	r.POST("/login", Login)
 	r.DELETE("/logout", Logout)
 
+	r.GET("/begin_passkey_login", BeginPasskeyLogin)
+	r.POST("/finish_passkey_login", FinishPasskeyLogin)
+
 	r.GET("/casdoor_uri", GetCasdoorUri)
 	r.POST("/casdoor_callback", CasdoorCallback)
 }
@@ -29,4 +32,11 @@ func InitUserRouter(r *gin.RouterGroup) {
 
 	r.GET("/otp_secure_session_status", SecureSessionStatus)
 	r.POST("/otp_secure_session", StartSecure2FASession)
+
+	r.GET("/begin_passkey_register", BeginPasskeyRegistration)
+	r.POST("/finish_passkey_register", FinishPasskeyRegistration)
+
+	r.GET("/passkeys", GetPasskeyList)
+	r.POST("/passkeys/:id", UpdatePasskey)
+	r.DELETE("/passkeys/:id", DeletePasskey)
 }

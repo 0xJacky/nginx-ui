@@ -20,30 +20,30 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 )
 
-func newAuth(db *gorm.DB, opts ...gen.DOOption) auth {
-	_auth := auth{}
+func newUser(db *gorm.DB, opts ...gen.DOOption) user {
+	_user := user{}
 
-	_auth.authDo.UseDB(db, opts...)
-	_auth.authDo.UseModel(&model.Auth{})
+	_user.userDo.UseDB(db, opts...)
+	_user.userDo.UseModel(&model.User{})
 
-	tableName := _auth.authDo.TableName()
-	_auth.ALL = field.NewAsterisk(tableName)
-	_auth.ID = field.NewInt(tableName, "id")
-	_auth.CreatedAt = field.NewTime(tableName, "created_at")
-	_auth.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_auth.DeletedAt = field.NewField(tableName, "deleted_at")
-	_auth.Name = field.NewString(tableName, "name")
-	_auth.Password = field.NewString(tableName, "password")
-	_auth.Status = field.NewBool(tableName, "status")
-	_auth.OTPSecret = field.NewBytes(tableName, "otp_secret")
+	tableName := _user.userDo.TableName()
+	_user.ALL = field.NewAsterisk(tableName)
+	_user.ID = field.NewInt(tableName, "id")
+	_user.CreatedAt = field.NewTime(tableName, "created_at")
+	_user.UpdatedAt = field.NewTime(tableName, "updated_at")
+	_user.DeletedAt = field.NewField(tableName, "deleted_at")
+	_user.Name = field.NewString(tableName, "name")
+	_user.Password = field.NewString(tableName, "password")
+	_user.Status = field.NewBool(tableName, "status")
+	_user.OTPSecret = field.NewBytes(tableName, "otp_secret")
 
-	_auth.fillFieldMap()
+	_user.fillFieldMap()
 
-	return _auth
+	return _user
 }
 
-type auth struct {
-	authDo
+type user struct {
+	userDo
 
 	ALL       field.Asterisk
 	ID        field.Int
@@ -58,34 +58,34 @@ type auth struct {
 	fieldMap map[string]field.Expr
 }
 
-func (a auth) Table(newTableName string) *auth {
-	a.authDo.UseTable(newTableName)
-	return a.updateTableName(newTableName)
+func (u user) Table(newTableName string) *user {
+	u.userDo.UseTable(newTableName)
+	return u.updateTableName(newTableName)
 }
 
-func (a auth) As(alias string) *auth {
-	a.authDo.DO = *(a.authDo.As(alias).(*gen.DO))
-	return a.updateTableName(alias)
+func (u user) As(alias string) *user {
+	u.userDo.DO = *(u.userDo.As(alias).(*gen.DO))
+	return u.updateTableName(alias)
 }
 
-func (a *auth) updateTableName(table string) *auth {
-	a.ALL = field.NewAsterisk(table)
-	a.ID = field.NewInt(table, "id")
-	a.CreatedAt = field.NewTime(table, "created_at")
-	a.UpdatedAt = field.NewTime(table, "updated_at")
-	a.DeletedAt = field.NewField(table, "deleted_at")
-	a.Name = field.NewString(table, "name")
-	a.Password = field.NewString(table, "password")
-	a.Status = field.NewBool(table, "status")
-	a.OTPSecret = field.NewBytes(table, "otp_secret")
+func (u *user) updateTableName(table string) *user {
+	u.ALL = field.NewAsterisk(table)
+	u.ID = field.NewInt(table, "id")
+	u.CreatedAt = field.NewTime(table, "created_at")
+	u.UpdatedAt = field.NewTime(table, "updated_at")
+	u.DeletedAt = field.NewField(table, "deleted_at")
+	u.Name = field.NewString(table, "name")
+	u.Password = field.NewString(table, "password")
+	u.Status = field.NewBool(table, "status")
+	u.OTPSecret = field.NewBytes(table, "otp_secret")
 
-	a.fillFieldMap()
+	u.fillFieldMap()
 
-	return a
+	return u
 }
 
-func (a *auth) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
-	_f, ok := a.fieldMap[fieldName]
+func (u *user) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
+	_f, ok := u.fieldMap[fieldName]
 	if !ok || _f == nil {
 		return nil, false
 	}
@@ -93,32 +93,32 @@ func (a *auth) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	return _oe, ok
 }
 
-func (a *auth) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 8)
-	a.fieldMap["id"] = a.ID
-	a.fieldMap["created_at"] = a.CreatedAt
-	a.fieldMap["updated_at"] = a.UpdatedAt
-	a.fieldMap["deleted_at"] = a.DeletedAt
-	a.fieldMap["name"] = a.Name
-	a.fieldMap["password"] = a.Password
-	a.fieldMap["status"] = a.Status
-	a.fieldMap["otp_secret"] = a.OTPSecret
+func (u *user) fillFieldMap() {
+	u.fieldMap = make(map[string]field.Expr, 8)
+	u.fieldMap["id"] = u.ID
+	u.fieldMap["created_at"] = u.CreatedAt
+	u.fieldMap["updated_at"] = u.UpdatedAt
+	u.fieldMap["deleted_at"] = u.DeletedAt
+	u.fieldMap["name"] = u.Name
+	u.fieldMap["password"] = u.Password
+	u.fieldMap["status"] = u.Status
+	u.fieldMap["otp_secret"] = u.OTPSecret
 }
 
-func (a auth) clone(db *gorm.DB) auth {
-	a.authDo.ReplaceConnPool(db.Statement.ConnPool)
-	return a
+func (u user) clone(db *gorm.DB) user {
+	u.userDo.ReplaceConnPool(db.Statement.ConnPool)
+	return u
 }
 
-func (a auth) replaceDB(db *gorm.DB) auth {
-	a.authDo.ReplaceDB(db)
-	return a
+func (u user) replaceDB(db *gorm.DB) user {
+	u.userDo.ReplaceDB(db)
+	return u
 }
 
-type authDo struct{ gen.DO }
+type userDo struct{ gen.DO }
 
 // FirstByID Where("id=@id")
-func (a authDo) FirstByID(id int) (result *model.Auth, err error) {
+func (u userDo) FirstByID(id int) (result *model.User, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -126,14 +126,14 @@ func (a authDo) FirstByID(id int) (result *model.Auth, err error) {
 	generateSQL.WriteString("id=? ")
 
 	var executeSQL *gorm.DB
-	executeSQL = a.UnderlyingDB().Where(generateSQL.String(), params...).Take(&result) // ignore_security_alert
+	executeSQL = u.UnderlyingDB().Where(generateSQL.String(), params...).Take(&result) // ignore_security_alert
 	err = executeSQL.Error
 
 	return
 }
 
 // DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
-func (a authDo) DeleteByID(id int) (err error) {
+func (u userDo) DeleteByID(id int) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -141,206 +141,206 @@ func (a authDo) DeleteByID(id int) (err error) {
 	generateSQL.WriteString("update auths set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=? ")
 
 	var executeSQL *gorm.DB
-	executeSQL = a.UnderlyingDB().Exec(generateSQL.String(), params...) // ignore_security_alert
+	executeSQL = u.UnderlyingDB().Exec(generateSQL.String(), params...) // ignore_security_alert
 	err = executeSQL.Error
 
 	return
 }
 
-func (a authDo) Debug() *authDo {
-	return a.withDO(a.DO.Debug())
+func (u userDo) Debug() *userDo {
+	return u.withDO(u.DO.Debug())
 }
 
-func (a authDo) WithContext(ctx context.Context) *authDo {
-	return a.withDO(a.DO.WithContext(ctx))
+func (u userDo) WithContext(ctx context.Context) *userDo {
+	return u.withDO(u.DO.WithContext(ctx))
 }
 
-func (a authDo) ReadDB() *authDo {
-	return a.Clauses(dbresolver.Read)
+func (u userDo) ReadDB() *userDo {
+	return u.Clauses(dbresolver.Read)
 }
 
-func (a authDo) WriteDB() *authDo {
-	return a.Clauses(dbresolver.Write)
+func (u userDo) WriteDB() *userDo {
+	return u.Clauses(dbresolver.Write)
 }
 
-func (a authDo) Session(config *gorm.Session) *authDo {
-	return a.withDO(a.DO.Session(config))
+func (u userDo) Session(config *gorm.Session) *userDo {
+	return u.withDO(u.DO.Session(config))
 }
 
-func (a authDo) Clauses(conds ...clause.Expression) *authDo {
-	return a.withDO(a.DO.Clauses(conds...))
+func (u userDo) Clauses(conds ...clause.Expression) *userDo {
+	return u.withDO(u.DO.Clauses(conds...))
 }
 
-func (a authDo) Returning(value interface{}, columns ...string) *authDo {
-	return a.withDO(a.DO.Returning(value, columns...))
+func (u userDo) Returning(value interface{}, columns ...string) *userDo {
+	return u.withDO(u.DO.Returning(value, columns...))
 }
 
-func (a authDo) Not(conds ...gen.Condition) *authDo {
-	return a.withDO(a.DO.Not(conds...))
+func (u userDo) Not(conds ...gen.Condition) *userDo {
+	return u.withDO(u.DO.Not(conds...))
 }
 
-func (a authDo) Or(conds ...gen.Condition) *authDo {
-	return a.withDO(a.DO.Or(conds...))
+func (u userDo) Or(conds ...gen.Condition) *userDo {
+	return u.withDO(u.DO.Or(conds...))
 }
 
-func (a authDo) Select(conds ...field.Expr) *authDo {
-	return a.withDO(a.DO.Select(conds...))
+func (u userDo) Select(conds ...field.Expr) *userDo {
+	return u.withDO(u.DO.Select(conds...))
 }
 
-func (a authDo) Where(conds ...gen.Condition) *authDo {
-	return a.withDO(a.DO.Where(conds...))
+func (u userDo) Where(conds ...gen.Condition) *userDo {
+	return u.withDO(u.DO.Where(conds...))
 }
 
-func (a authDo) Order(conds ...field.Expr) *authDo {
-	return a.withDO(a.DO.Order(conds...))
+func (u userDo) Order(conds ...field.Expr) *userDo {
+	return u.withDO(u.DO.Order(conds...))
 }
 
-func (a authDo) Distinct(cols ...field.Expr) *authDo {
-	return a.withDO(a.DO.Distinct(cols...))
+func (u userDo) Distinct(cols ...field.Expr) *userDo {
+	return u.withDO(u.DO.Distinct(cols...))
 }
 
-func (a authDo) Omit(cols ...field.Expr) *authDo {
-	return a.withDO(a.DO.Omit(cols...))
+func (u userDo) Omit(cols ...field.Expr) *userDo {
+	return u.withDO(u.DO.Omit(cols...))
 }
 
-func (a authDo) Join(table schema.Tabler, on ...field.Expr) *authDo {
-	return a.withDO(a.DO.Join(table, on...))
+func (u userDo) Join(table schema.Tabler, on ...field.Expr) *userDo {
+	return u.withDO(u.DO.Join(table, on...))
 }
 
-func (a authDo) LeftJoin(table schema.Tabler, on ...field.Expr) *authDo {
-	return a.withDO(a.DO.LeftJoin(table, on...))
+func (u userDo) LeftJoin(table schema.Tabler, on ...field.Expr) *userDo {
+	return u.withDO(u.DO.LeftJoin(table, on...))
 }
 
-func (a authDo) RightJoin(table schema.Tabler, on ...field.Expr) *authDo {
-	return a.withDO(a.DO.RightJoin(table, on...))
+func (u userDo) RightJoin(table schema.Tabler, on ...field.Expr) *userDo {
+	return u.withDO(u.DO.RightJoin(table, on...))
 }
 
-func (a authDo) Group(cols ...field.Expr) *authDo {
-	return a.withDO(a.DO.Group(cols...))
+func (u userDo) Group(cols ...field.Expr) *userDo {
+	return u.withDO(u.DO.Group(cols...))
 }
 
-func (a authDo) Having(conds ...gen.Condition) *authDo {
-	return a.withDO(a.DO.Having(conds...))
+func (u userDo) Having(conds ...gen.Condition) *userDo {
+	return u.withDO(u.DO.Having(conds...))
 }
 
-func (a authDo) Limit(limit int) *authDo {
-	return a.withDO(a.DO.Limit(limit))
+func (u userDo) Limit(limit int) *userDo {
+	return u.withDO(u.DO.Limit(limit))
 }
 
-func (a authDo) Offset(offset int) *authDo {
-	return a.withDO(a.DO.Offset(offset))
+func (u userDo) Offset(offset int) *userDo {
+	return u.withDO(u.DO.Offset(offset))
 }
 
-func (a authDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *authDo {
-	return a.withDO(a.DO.Scopes(funcs...))
+func (u userDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *userDo {
+	return u.withDO(u.DO.Scopes(funcs...))
 }
 
-func (a authDo) Unscoped() *authDo {
-	return a.withDO(a.DO.Unscoped())
+func (u userDo) Unscoped() *userDo {
+	return u.withDO(u.DO.Unscoped())
 }
 
-func (a authDo) Create(values ...*model.Auth) error {
+func (u userDo) Create(values ...*model.User) error {
 	if len(values) == 0 {
 		return nil
 	}
-	return a.DO.Create(values)
+	return u.DO.Create(values)
 }
 
-func (a authDo) CreateInBatches(values []*model.Auth, batchSize int) error {
-	return a.DO.CreateInBatches(values, batchSize)
+func (u userDo) CreateInBatches(values []*model.User, batchSize int) error {
+	return u.DO.CreateInBatches(values, batchSize)
 }
 
 // Save : !!! underlying implementation is different with GORM
 // The method is equivalent to executing the statement: db.Clauses(clause.OnConflict{UpdateAll: true}).Create(values)
-func (a authDo) Save(values ...*model.Auth) error {
+func (u userDo) Save(values ...*model.User) error {
 	if len(values) == 0 {
 		return nil
 	}
-	return a.DO.Save(values)
+	return u.DO.Save(values)
 }
 
-func (a authDo) First() (*model.Auth, error) {
-	if result, err := a.DO.First(); err != nil {
+func (u userDo) First() (*model.User, error) {
+	if result, err := u.DO.First(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Auth), nil
+		return result.(*model.User), nil
 	}
 }
 
-func (a authDo) Take() (*model.Auth, error) {
-	if result, err := a.DO.Take(); err != nil {
+func (u userDo) Take() (*model.User, error) {
+	if result, err := u.DO.Take(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Auth), nil
+		return result.(*model.User), nil
 	}
 }
 
-func (a authDo) Last() (*model.Auth, error) {
-	if result, err := a.DO.Last(); err != nil {
+func (u userDo) Last() (*model.User, error) {
+	if result, err := u.DO.Last(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Auth), nil
+		return result.(*model.User), nil
 	}
 }
 
-func (a authDo) Find() ([]*model.Auth, error) {
-	result, err := a.DO.Find()
-	return result.([]*model.Auth), err
+func (u userDo) Find() ([]*model.User, error) {
+	result, err := u.DO.Find()
+	return result.([]*model.User), err
 }
 
-func (a authDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.Auth, err error) {
-	buf := make([]*model.Auth, 0, batchSize)
-	err = a.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
+func (u userDo) FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.User, err error) {
+	buf := make([]*model.User, 0, batchSize)
+	err = u.DO.FindInBatches(&buf, batchSize, func(tx gen.Dao, batch int) error {
 		defer func() { results = append(results, buf...) }()
 		return fc(tx, batch)
 	})
 	return results, err
 }
 
-func (a authDo) FindInBatches(result *[]*model.Auth, batchSize int, fc func(tx gen.Dao, batch int) error) error {
-	return a.DO.FindInBatches(result, batchSize, fc)
+func (u userDo) FindInBatches(result *[]*model.User, batchSize int, fc func(tx gen.Dao, batch int) error) error {
+	return u.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (a authDo) Attrs(attrs ...field.AssignExpr) *authDo {
-	return a.withDO(a.DO.Attrs(attrs...))
+func (u userDo) Attrs(attrs ...field.AssignExpr) *userDo {
+	return u.withDO(u.DO.Attrs(attrs...))
 }
 
-func (a authDo) Assign(attrs ...field.AssignExpr) *authDo {
-	return a.withDO(a.DO.Assign(attrs...))
+func (u userDo) Assign(attrs ...field.AssignExpr) *userDo {
+	return u.withDO(u.DO.Assign(attrs...))
 }
 
-func (a authDo) Joins(fields ...field.RelationField) *authDo {
+func (u userDo) Joins(fields ...field.RelationField) *userDo {
 	for _, _f := range fields {
-		a = *a.withDO(a.DO.Joins(_f))
+		u = *u.withDO(u.DO.Joins(_f))
 	}
-	return &a
+	return &u
 }
 
-func (a authDo) Preload(fields ...field.RelationField) *authDo {
+func (u userDo) Preload(fields ...field.RelationField) *userDo {
 	for _, _f := range fields {
-		a = *a.withDO(a.DO.Preload(_f))
+		u = *u.withDO(u.DO.Preload(_f))
 	}
-	return &a
+	return &u
 }
 
-func (a authDo) FirstOrInit() (*model.Auth, error) {
-	if result, err := a.DO.FirstOrInit(); err != nil {
+func (u userDo) FirstOrInit() (*model.User, error) {
+	if result, err := u.DO.FirstOrInit(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Auth), nil
+		return result.(*model.User), nil
 	}
 }
 
-func (a authDo) FirstOrCreate() (*model.Auth, error) {
-	if result, err := a.DO.FirstOrCreate(); err != nil {
+func (u userDo) FirstOrCreate() (*model.User, error) {
+	if result, err := u.DO.FirstOrCreate(); err != nil {
 		return nil, err
 	} else {
-		return result.(*model.Auth), nil
+		return result.(*model.User), nil
 	}
 }
 
-func (a authDo) FindByPage(offset int, limit int) (result []*model.Auth, count int64, err error) {
-	result, err = a.Offset(offset).Limit(limit).Find()
+func (u userDo) FindByPage(offset int, limit int) (result []*model.User, count int64, err error) {
+	result, err = u.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
 	}
@@ -350,29 +350,29 @@ func (a authDo) FindByPage(offset int, limit int) (result []*model.Auth, count i
 		return
 	}
 
-	count, err = a.Offset(-1).Limit(-1).Count()
+	count, err = u.Offset(-1).Limit(-1).Count()
 	return
 }
 
-func (a authDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
-	count, err = a.Count()
+func (u userDo) ScanByPage(result interface{}, offset int, limit int) (count int64, err error) {
+	count, err = u.Count()
 	if err != nil {
 		return
 	}
 
-	err = a.Offset(offset).Limit(limit).Scan(result)
+	err = u.Offset(offset).Limit(limit).Scan(result)
 	return
 }
 
-func (a authDo) Scan(result interface{}) (err error) {
-	return a.DO.Scan(result)
+func (u userDo) Scan(result interface{}) (err error) {
+	return u.DO.Scan(result)
 }
 
-func (a authDo) Delete(models ...*model.Auth) (result gen.ResultInfo, err error) {
-	return a.DO.Delete(models)
+func (u userDo) Delete(models ...*model.User) (result gen.ResultInfo, err error) {
+	return u.DO.Delete(models)
 }
 
-func (a *authDo) withDO(do gen.Dao) *authDo {
-	a.DO = *do.(*gen.DO)
-	return a
+func (u *userDo) withDO(do gen.Dao) *userDo {
+	u.DO = *do.(*gen.DO)
+	return u
 }

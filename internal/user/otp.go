@@ -19,7 +19,7 @@ var (
 	ErrRecoveryCode = errors.New("invalid recovery code")
 )
 
-func VerifyOTP(user *model.Auth, otp, recoveryCode string) (err error) {
+func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
 	if otp != "" {
 		decrypted, err := crypto.AesDecrypt(user.OTPSecret)
 		if err != nil {

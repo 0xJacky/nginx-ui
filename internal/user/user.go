@@ -26,9 +26,9 @@ func BuildCacheTokenKey(token string) string {
 	return sb.String()
 }
 
-func GetUser(name string) (user *model.Auth, err error) {
+func GetUser(name string) (user *model.User, err error) {
 	db := model.UseDB()
-	user = &model.Auth{}
+	user = &model.User{}
 	err = db.Where("name", name).First(user).Error
 	if err != nil {
 		return
@@ -41,7 +41,7 @@ func DeleteToken(token string) {
 	_, _ = q.Where(q.Token.Eq(token)).Delete()
 }
 
-func GetTokenUser(token string) (*model.Auth, bool) {
+func GetTokenUser(token string) (*model.User, bool) {
 	q := query.AuthToken
 	authToken, err := q.Where(q.Token.Eq(token)).First()
 	if err != nil {
@@ -53,12 +53,12 @@ func GetTokenUser(token string) (*model.Auth, bool) {
 		return nil, false
 	}
 
-	u := query.Auth
+	u := query.User
 	user, err := u.FirstByID(authToken.UserID)
 	return user, err == nil
 }
 
-func GenerateJWT(user *model.Auth) (string, error) {
+func GenerateJWT(user *model.User) (string, error) {
 	claims := JWTClaims{
 		Name:   user.Name,
 		UserID: user.ID,
@@ -114,7 +114,7 @@ func ValidateJWT(token string) (claims *JWTClaims, err error) {
 	return
 }
 
-func CurrentUser(token string) (u *model.Auth, err error) {
+func CurrentUser(token string) (u *model.User, err error) {
 	// validate token
 	var claims *JWTClaims
 	claims, err = ValidateJWT(token)
@@ -123,7 +123,7 @@ func CurrentUser(token string) (u *model.Auth, err error) {
 	}
 
 	// get user by id
-	user := query.Auth
+	user := query.User
 	u, err = user.FirstByID(claims.UserID)
 	if err != nil {
 		return

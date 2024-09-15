@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { LockOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { KeyOutlined, LockOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { Form, message } from 'ant-design-vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
+import { startAuthentication } from '@simplewebauthn/browser'
 import { useUserStore } from '@/pinia'
 import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
 import OTPAuthorization from '@/components/OTP/OTPAuthorization.vue'
-import gettext from '@/gettext'
+import gettext, { $gettext } from '@/gettext'
 
 const thisYear = new Date().getFullYear()
 
@@ -146,6 +147,34 @@ function handleOTPSubmit(code: string, recovery: string) {
     onSubmit()
   })
 }
+const passkeyLoginLoading = ref(false)
+async function passkeyLogin() {
+  passkeyLoginLoading.value = true
+  try {
+    const begin = await auth.begin_passkey_login()
+    const asseResp = await startAuthentication(begin.options.publicKey)
+
+    console.log(asseResp)
+
+    const r = await auth.finish_passkey_login({
+      session_id: begin.session_id,
+      options: asseResp,
+    })
+
+    if (r.token) {
+      const next = (route.query?.next || '').toString() || '/'
+
+      login(r.token)
+
+      await router.push(next)
+    }
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  catch (e: any) {
+    message.error($gettext(e.message ?? 'Server error'))
+  }
+  passkeyLoginLoading.value = false
+}
 </script>
 
 <template>
@@ -202,10 +231,27 @@ function handleOTPSubmit(code: string, recovery: string) {
                 block
                 html-type="submit"
                 :loading="loading"
+                class="mb-2"
                 @click="onSubmit"
               >
                 {{ $gettext('Login') }}
               </AButton>
+
+              <div class="flex flex-col justify-center">
+                <ADivider>
+                  <div class="text-sm font-normal opacity-75">
+                    {{ $gettext('Or') }}
+                  </div>
+                </ADivider>
+
+                <AButton
+                  :loading="passkeyLoginLoading"
+                  @click="passkeyLogin"
+                >
+                  <KeyOutlined />
+                  {{ $gettext('Sign in with a passkey') }}
+                </AButton>
+              </div>
             </AFormItem>
           </AForm>
           <div class="footer">

@@ -9,6 +9,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/0xJacky/Nginx-UI/internal/passkey"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -50,6 +51,7 @@ func InitAfterDatabase() {
 		cron.InitCronJobs,
 		cluster.RegisterPredefinedNodes,
 		analytic.RetrieveNodesStatus,
+		passkey.Init,
 	}
 
 	for _, v := range syncs {

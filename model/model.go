@@ -25,7 +25,7 @@ type Model struct {
 func GenerateAllModel() []any {
 	return []any{
 		ConfigBackup{},
-		Auth{},
+		User{},
 		AuthToken{},
 		Cert{},
 		ChatGPTLog{},
@@ -37,6 +37,7 @@ func GenerateAllModel() []any {
 		AcmeUser{},
 		BanIP{},
 		Config{},
+		Passkey{},
 	}
 }
 

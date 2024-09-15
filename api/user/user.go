@@ -13,13 +13,13 @@ import (
 )
 
 func GetUsers(c *gin.Context) {
-	cosy.Core[model.Auth](c).SetFussy("name").PagingList()
+	cosy.Core[model.User](c).SetFussy("name").PagingList()
 }
 
 func GetUser(c *gin.Context) {
 	id := cast.ToInt(c.Param("id"))
 
-	u := query.Auth
+	u := query.User
 
 	user, err := u.FirstByID(id)
 
@@ -43,7 +43,7 @@ func AddUser(c *gin.Context) {
 		return
 	}
 
-	u := query.Auth
+	u := query.User
 
 	pwd, err := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -52,7 +52,7 @@ func AddUser(c *gin.Context) {
 	}
 	json.Password = string(pwd)
 
-	user := model.Auth{
+	user := model.User{
 		Name:     json.Name,
 		Password: json.Password,
 	}
@@ -84,14 +84,14 @@ func EditUser(c *gin.Context) {
 		return
 	}
 
-	u := query.Auth
+	u := query.User
 	user, err := u.FirstByID(userId)
 
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
-	edit := &model.Auth{
+	edit := &model.User{
 		Name: json.Name,
 	}
 
@@ -124,9 +124,9 @@ func DeleteUser(c *gin.Context) {
 		})
 		return
 	}
-	cosy.Core[model.Auth](c).Destroy()
+	cosy.Core[model.User](c).Destroy()
 }
 
 func RecoverUser(c *gin.Context) {
-	cosy.Core[model.Auth](c).Recover()
+	cosy.Core[model.User](c).Recover()
 }

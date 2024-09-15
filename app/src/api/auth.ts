@@ -1,3 +1,4 @@
+import type { AuthenticationResponseJSON } from '@simplewebauthn/types'
 import http from '@/lib/http'
 import { useUserStore } from '@/pinia'
 
@@ -36,6 +37,16 @@ const auth = {
   },
   async get_casdoor_uri(): Promise<{ uri: string }> {
     return http.get('/casdoor_uri')
+  },
+  begin_passkey_login() {
+    return http.get('/begin_passkey_login')
+  },
+  finish_passkey_login(data: { session_id: string; options: AuthenticationResponseJSON }) {
+    return http.post('/finish_passkey_login', data.options, {
+      headers: {
+        'X-Passkey-Session-Id': data.session_id,
+      },
+    })
   },
 }
 

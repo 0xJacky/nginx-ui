@@ -14,7 +14,7 @@ func RequireSecureSession() gin.HandlerFunc {
 			c.Next()
 			return
 		}
-		cUser := u.(*model.Auth)
+		cUser := u.(*model.User)
 		if !cUser.EnabledOTP() {
 			c.Next()
 			return
