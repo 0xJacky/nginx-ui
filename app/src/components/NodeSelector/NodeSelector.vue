@@ -4,12 +4,11 @@ import type { Environment } from '@/api/environment'
 import environment from '@/api/environment'
 
 const props = defineProps<{
-  target?: number[]
-  map?: Record<number, string>
   hiddenLocal?: boolean
 }>()
 
-const emit = defineEmits(['update:target', 'update:map'])
+const target = defineModel<number[]>('target')
+const map = defineModel<Record<number, string>>('map')
 
 const data = ref([]) as Ref<Environment[]>
 const data_map = ref({}) as Ref<Record<number, Environment>>
@@ -33,16 +32,20 @@ onMounted(async () => {
 
 const value = computed({
   get() {
-    return props.target
+    return target.value
   },
-  set(v) {
-    if (typeof props.map === 'object') {
-      v?.forEach(id => {
-        if (id !== 0)
-          emit('update:map', { ...props.map, [id]: data_map.value[id].name })
+  set(v: number[]) {
+    console.log(v)
+    if (typeof map.value === 'object') {
+      const _map = {}
+
+      v?.filter(id => id !== 0).forEach(id => {
+        _map[id] = data_map.value[id].name
       })
+
+      map.value = _map
     }
-    emit('update:target', v)
+    target.value = v.filter(id => id !== 0)
   },
 })
 

@@ -138,7 +138,7 @@ watch(() => gettext.current, () => {
       >
         <NodeSelector
           v-model:target="modelRef.target"
-          :map="node_map"
+          v-model:map="node_map"
         />
       </AFormItem>
     </AForm>

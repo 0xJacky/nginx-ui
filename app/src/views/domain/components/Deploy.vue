@@ -5,7 +5,7 @@ import type { Ref } from 'vue'
 import domain from '@/api/domain'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 
-const node_map = reactive({})
+const node_map = ref({})
 const target = ref([])
 const overwrite = ref(false)
 const enabled = ref(false)
@@ -21,7 +21,7 @@ function deploy() {
     cancelText: $gettext('Cancel'),
     onOk() {
       target.value.forEach(id => {
-        const node_name = node_map[id]
+        const node_name = node_map.value[id]
 
         // get source content
         domain.get(name.value).then(r => {
@@ -38,7 +38,7 @@ function deploy() {
                   { conf_name: name.value, node_name }),
             })
             if (enabled.value) {
-              domain.enable(name.value).then(() => {
+              domain.enable(name.value, { headers: { 'X-Node-ID': id } }).then(() => {
                 notification.success({
                   message: $gettext('Enable successfully'),
                   description:
@@ -76,8 +76,8 @@ function deploy() {
     <ContextHolder />
     <NodeSelector
       v-model:target="target"
+      v-model:map="node_map"
       hidden-local
-      :map="node_map"
     />
     <div class="node-deploy-control">
       <ACheckbox v-model:checked="enabled">
