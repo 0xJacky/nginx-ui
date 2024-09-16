@@ -95,7 +95,7 @@ provide('ngx_directives', ngx_directives)
 <template>
   <div>
     <ContextHolder />
-    <ATabs v-model:activeKey="current_server_index">
+    <ATabs v-model:active-key="current_server_index">
       <ATabPane
         v-for="(v, k) in ngx_config.servers"
         :key="k"

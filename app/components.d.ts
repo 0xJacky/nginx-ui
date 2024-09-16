@@ -7,9 +7,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    2FA2FAAuthorization: typeof import('./src/components/2FA/2FAAuthorization.vue')['default']
-    2FAAuthorization: typeof import('./src/components/2FA/Authorization.vue')['default']
-    2FAOTPAuthorization: typeof import('./src/components/2FA/OTPAuthorization.vue')['default']
     AAlert: typeof import('ant-design-vue/es')['Alert']
     AAutoComplete: typeof import('ant-design-vue/es')['AutoComplete']
     AAvatar: typeof import('ant-design-vue/es')['Avatar']

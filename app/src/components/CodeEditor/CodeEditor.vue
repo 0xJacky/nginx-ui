@@ -40,7 +40,7 @@ ace.config.setModuleUrl('ace/ext/searchbox', extSearchboxUrl)
   />
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 :deep(.ace_placeholder) {
   z-index: 1;
   position: relative;

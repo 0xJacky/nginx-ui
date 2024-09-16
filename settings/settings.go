@@ -104,6 +104,11 @@ func Save() (err error) {
 		reflectFrom(k, v)
 	}
 
+	// fix unable to save empty slice
+	if len(ServerSettings.RecursiveNameservers) == 0 {
+		Conf.Section("server").Key("RecursiveNameservers").SetValue("")
+	}
+
 	err = Conf.SaveTo(ConfPath)
 	if err != nil {
 		return

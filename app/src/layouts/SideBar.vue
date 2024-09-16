@@ -81,8 +81,8 @@ const visible: ComputedRef<sidebar[]> = computed(() => {
     <Logo />
 
     <AMenu
-      v-model:openKeys="openKeys"
-      v-model:selectedKeys="selectedKey"
+      v-model:open-keys="openKeys"
+      v-model:selected-keys="selectedKey"
       mode="inline"
     >
       <EnvIndicator />

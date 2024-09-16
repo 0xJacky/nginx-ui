@@ -15,7 +15,7 @@ msgstr ""
 msgid "2FA"
 msgstr ""
 
-#: src/views/preference/components/TOTP.vue:90
+#: src/views/preference/AuthSettings.vue:58
 msgid "2FA Settings"
 msgstr ""
 
@@ -39,7 +39,7 @@ msgstr "Nom d'utilisateur"
 #: src/views/config/configColumns.ts:38 src/views/domain/DomainList.vue:47
 #: src/views/environment/envColumns.tsx:131
 #: src/views/notification/notificationColumns.tsx:54
-#: src/views/preference/AuthSettings.vue:26 src/views/stream/StreamList.vue:47
+#: src/views/preference/AuthSettings.vue:27 src/views/stream/StreamList.vue:47
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "Action"
@@ -53,6 +53,11 @@ msgstr "Action"
 #: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr "Ajouter"
+
+#: src/views/preference/components/AddPasskey.vue:51
+#: src/views/preference/components/AddPasskey.vue:55
+msgid "Add a passkey"
+msgstr ""
 
 #: src/routes/index.ts:112 src/views/config/ConfigEditor.vue:143
 #: src/views/config/ConfigEditor.vue:204
@@ -92,6 +97,10 @@ msgstr "Supplémentaire"
 msgid "Advance Mode"
 msgstr "Mode avancé"
 
+#: src/views/preference/components/AddPasskey.vue:105
+msgid "Afterwards, refresh this page and click add passkey again."
+msgstr ""
+
 #: src/views/preference/OpenAISettings.vue:44
 msgid "API Base Url"
 msgstr "URL de base de l'API"
@@ -114,9 +123,14 @@ msgstr "Jeton d'API"
 msgid "Arch"
 msgstr "Arch"
 
-#: src/views/preference/AuthSettings.vue:96
+#: src/views/preference/AuthSettings.vue:102
 #, fuzzy
 msgid "Are you sure to delete this banned IP immediately?"
+msgstr "Etes-vous sûr que vous voulez supprimer ?"
+
+#: src/views/preference/components/Passkey.vue:119
+#, fuzzy
+msgid "Are you sure to delete this passkey immediately?"
 msgstr "Etes-vous sûr que vous voulez supprimer ?"
 
 #: src/components/Notification/Notification.vue:86
@@ -170,7 +184,7 @@ msgstr "Modèle ChatGPT"
 msgid "Assistant"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:17
+#: src/views/preference/AuthSettings.vue:18
 msgid "Attempts"
 msgstr ""
 
@@ -178,6 +192,14 @@ msgstr ""
 #, fuzzy
 msgid "Auth"
 msgstr "Autheur"
+
+#: src/components/2FA/Authorization.vue:126
+msgid "Authenticate with a passkey"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:63
+msgid "Authentication Settings"
+msgstr ""
 
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:106
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:120
@@ -211,15 +233,15 @@ msgstr "Retour au menu principal"
 msgid "Back to list"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:70
+#: src/views/preference/AuthSettings.vue:76
 msgid "Ban Threshold Minutes"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:84
+#: src/views/preference/AuthSettings.vue:90
 msgid "Banned IPs"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:20
+#: src/views/preference/AuthSettings.vue:21
 msgid "Banned Until"
 msgstr ""
 
@@ -261,7 +283,7 @@ msgstr ""
 msgid "CADir"
 msgstr ""
 
-#: src/views/preference/components/TOTP.vue:150
+#: src/views/preference/components/TOTP.vue:151
 msgid "Can't scan? Use text key binding"
 msgstr ""
 
@@ -275,6 +297,7 @@ msgstr ""
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:50
 #: src/views/domain/ngx_conf/NgxServer.vue:80
 #: src/views/domain/ngx_conf/NgxUpstream.vue:33
+#: src/views/preference/components/Passkey.vue:147
 #: src/views/stream/components/Deploy.vue:21
 #: src/views/stream/components/RightSettings.vue:51
 msgid "Cancel"
@@ -435,6 +458,7 @@ msgid "Create Folder"
 msgstr "Créer un autre"
 
 #: src/views/notification/notificationColumns.tsx:48
+#: src/views/preference/components/Passkey.vue:101
 #: src/views/user/userColumns.tsx:48
 msgid "Created at"
 msgstr "Créé le"
@@ -456,12 +480,12 @@ msgstr "Identifiant"
 msgid "Credentials"
 msgstr "Identifiants"
 
-#: src/views/preference/components/TOTP.vue:98
-msgid "Current account is enabled 2FA."
+#: src/views/preference/components/TOTP.vue:99
+msgid "Current account is enabled TOTP."
 msgstr ""
 
-#: src/views/preference/components/TOTP.vue:95
-msgid "Current account is not enabled 2FA."
+#: src/views/preference/components/TOTP.vue:96
+msgid "Current account is not enabled TOTP."
 msgstr ""
 
 #: src/views/system/Upgrade.vue:167
@@ -682,6 +706,12 @@ msgstr "Téléchargement de la dernière version"
 msgid "Dry run mode enabled"
 msgstr ""
 
+#: src/views/preference/components/AddPasskey.vue:107
+msgid ""
+"Due to the security policies of some browsers, you cannot use passkeys on "
+"non-HTTPS websites, except when running on localhost."
+msgstr ""
+
 #: src/views/domain/components/SiteDuplicate.vue:122
 #: src/views/domain/DomainList.vue:140
 #: src/views/stream/components/StreamDuplicate.vue:122
@@ -757,12 +787,7 @@ msgstr ""
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr ""
 
-#: src/views/preference/components/TOTP.vue:124
-#, fuzzy
-msgid "Enable 2FA"
-msgstr "Activé"
-
-#: src/views/preference/components/TOTP.vue:54
+#: src/views/preference/components/TOTP.vue:55
 #, fuzzy
 msgid "Enable 2FA successfully"
 msgstr "Activé avec succès"
@@ -783,6 +808,11 @@ msgstr "Activé avec succès"
 
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:180
 msgid "Enable TLS"
+msgstr "Activer TLS"
+
+#: src/views/preference/components/TOTP.vue:125
+#, fuzzy
+msgid "Enable TOTP"
 msgstr "Activer TLS"
 
 #: src/views/domain/components/RightSettings.vue:77
@@ -905,6 +935,12 @@ msgstr "Filtrer"
 msgid "Finished"
 msgstr "Finie"
 
+#: src/views/preference/components/AddPasskey.vue:77
+msgid ""
+"Follow the instructions in the dialog to complete the passkey registration "
+"process."
+msgstr ""
+
 #: src/views/preference/BasicSettings.vue:43
 #, fuzzy
 msgid "For Chinese user: https://mirror.ghproxy.com/"
@@ -975,16 +1011,20 @@ msgstr "HTTP01"
 msgid "If left blank, the default CA Dir will be used."
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:62
+#: src/views/preference/AuthSettings.vue:68
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
 
-#: src/views/preference/components/TOTP.vue:110
+#: src/views/preference/components/TOTP.vue:111
 msgid ""
 "If you lose your mobile phone, you can use the recovery code to reset your "
 "2FA."
+msgstr ""
+
+#: src/views/preference/components/AddPasskey.vue:76
+msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
 msgstr ""
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:109
@@ -1003,7 +1043,7 @@ msgstr "Exporter"
 msgid "Import Certificate"
 msgstr "État du certificat"
 
-#: src/views/other/Login.vue:76
+#: src/views/other/Login.vue:79
 #, fuzzy
 msgid "Incorrect username or password"
 msgstr "Le pseudo ou mot de passe est incorect"
@@ -1020,12 +1060,12 @@ msgstr "Erreur du programme de mise à niveau initial du core"
 msgid "Initialing core upgrader"
 msgstr "Initialisation du programme de mise à niveau du core"
 
-#: src/views/preference/components/TOTP.vue:157
+#: src/views/preference/components/TOTP.vue:158
 msgid "Input the code from the app:"
 msgstr ""
 
-#: src/components/OTP/OTPAuthorization.vue:49
-#: src/views/preference/components/TOTP.vue:170
+#: src/components/2FA/Authorization.vue:87
+#: src/views/preference/components/TOTP.vue:171
 msgid "Input the recovery code:"
 msgstr ""
 
@@ -1045,7 +1085,7 @@ msgstr ""
 msgid "Invalid"
 msgstr ""
 
-#: src/views/other/Login.vue:86
+#: src/views/other/Login.vue:89
 msgid "Invalid 2FA or recovery code"
 msgstr ""
 
@@ -1058,11 +1098,11 @@ msgstr ""
 msgid "Invalid folder name"
 msgstr ""
 
-#: src/components/OTP/useOTPModal.ts:61
+#: src/components/2FA/use2FAModal.ts:65
 msgid "Invalid passcode or recovery code"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:14
+#: src/views/preference/AuthSettings.vue:15
 msgid "IP"
 msgstr ""
 
@@ -1096,6 +1136,11 @@ msgstr "Type"
 
 #: src/views/system/Upgrade.vue:181
 msgid "Last checked at"
+msgstr "Dernière vérification le"
+
+#: src/views/preference/components/Passkey.vue:102
+#, fuzzy
+msgid "Last used at"
 msgstr "Dernière vérification le"
 
 #: src/views/user/userColumns.tsx:25
@@ -1165,11 +1210,11 @@ msgstr "Localisations"
 msgid "Log"
 msgstr "Connexion"
 
-#: src/routes/index.ts:305 src/views/other/Login.vue:207
+#: src/routes/index.ts:305 src/views/other/Login.vue:247
 msgid "Login"
 msgstr "Connexion"
 
-#: src/views/other/Login.vue:130 src/views/other/Login.vue:63
+#: src/views/other/Login.vue:133 src/views/other/Login.vue:66
 msgid "Login successful"
 msgstr "Connexion réussie"
 
@@ -1223,7 +1268,7 @@ msgstr "Gérer les utilisateurs"
 msgid "Managed Certificate"
 msgstr "Changer de certificat"
 
-#: src/views/preference/AuthSettings.vue:76
+#: src/views/preference/AuthSettings.vue:82
 msgid "Max Attempts"
 msgstr ""
 
@@ -1281,6 +1326,7 @@ msgstr "Directive multiligne"
 #: src/views/domain/DomainList.vue:13
 #: src/views/domain/ngx_conf/NgxUpstream.vue:175
 #: src/views/environment/envColumns.tsx:9
+#: src/views/preference/components/AddPasskey.vue:81
 #: src/views/stream/components/RightSettings.vue:82
 #: src/views/stream/components/StreamDuplicate.vue:129
 #: src/views/stream/StreamList.vue:13 src/views/stream/StreamList.vue:188
@@ -1365,7 +1411,7 @@ msgstr "Nginx a redémarré avec succès"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/AuthSettings.vue:98
+#: src/views/preference/AuthSettings.vue:104
 #: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
 msgid "No"
@@ -1467,6 +1513,10 @@ msgstr ""
 msgid "OpenAI"
 msgstr "OpenAI"
 
+#: src/components/2FA/Authorization.vue:117 src/views/other/Login.vue:256
+msgid "Or"
+msgstr ""
+
 #: src/views/config/components/Rename.vue:69
 msgid "Original name"
 msgstr ""
@@ -1495,7 +1545,18 @@ msgstr ""
 msgid "Params"
 msgstr "Paramètres"
 
-#: src/views/other/Login.vue:174 src/views/user/userColumns.tsx:18
+#: src/views/preference/components/Passkey.vue:65
+msgid "Passkey"
+msgstr ""
+
+#: src/views/preference/components/Passkey.vue:68
+msgid ""
+"Passkeys are webauthn credentials that validate your identity using touch, "
+"facial recognition, a device password, or a PIN. They can be used as a "
+"password replacement or as a 2FA method."
+msgstr ""
+
+#: src/views/other/Login.vue:208 src/views/user/userColumns.tsx:18
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -1521,8 +1582,14 @@ msgstr "Erreur lors de la mise a niveau du core"
 msgid "Performing core upgrade"
 msgstr "Exécution de la mise à niveau du core"
 
-#: src/components/OTP/OTPAuthorization.vue:37
-msgid "Please enter the 2FA code:"
+#: src/views/preference/components/AddPasskey.vue:75
+msgid ""
+"Please enter a name for the passkey you wish to create and click the OK "
+"button below."
+msgstr ""
+
+#: src/components/2FA/Authorization.vue:75
+msgid "Please enter the OTP code:"
 msgstr ""
 
 #: src/views/certificate/DNSCredential.vue:53
@@ -1570,11 +1637,11 @@ msgstr ""
 msgid "Please input your E-mail!"
 msgstr "Veuillez saisir votre e-mail !"
 
-#: src/views/other/Install.vue:44 src/views/other/Login.vue:44
+#: src/views/other/Install.vue:44 src/views/other/Login.vue:47
 msgid "Please input your password!"
 msgstr "Veuillez saisir votre mot de passe !"
 
-#: src/views/other/Install.vue:38 src/views/other/Login.vue:38
+#: src/views/other/Install.vue:38 src/views/other/Login.vue:41
 msgid "Please input your username!"
 msgstr "Veuillez saisir votre nom d'utilisateur !"
 
@@ -1640,16 +1707,16 @@ msgstr ""
 msgid "Recovered Successfully"
 msgstr "Enregistré avec succès"
 
-#: src/components/OTP/OTPAuthorization.vue:56
-#: src/views/preference/components/TOTP.vue:177
+#: src/components/2FA/Authorization.vue:94
+#: src/views/preference/components/TOTP.vue:178
 msgid "Recovery"
 msgstr ""
 
-#: src/views/preference/components/TOTP.vue:103
+#: src/views/preference/components/TOTP.vue:104
 msgid "Recovery Code"
 msgstr ""
 
-#: src/views/preference/components/TOTP.vue:112
+#: src/views/preference/components/TOTP.vue:113
 msgid "Recovery Code:"
 msgstr ""
 
@@ -1670,6 +1737,11 @@ msgstr "Enregistrement de l'utilisateur"
 #, fuzzy
 msgid "Register failed"
 msgstr "Enregistrement de l'utilisateur"
+
+#: src/views/preference/components/AddPasskey.vue:26
+#, fuzzy
+msgid "Register passkey successfully"
+msgstr "Activé avec succès"
 
 #: src/views/certificate/ACMEUser.vue:67
 #, fuzzy
@@ -1706,11 +1778,12 @@ msgstr "Rechargement"
 msgid "Reloading nginx"
 msgstr "Rechargement de nginx"
 
-#: src/views/preference/AuthSettings.vue:103
+#: src/views/preference/AuthSettings.vue:109
 msgid "Remove"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:47
+#: src/views/preference/AuthSettings.vue:48
+#: src/views/preference/components/Passkey.vue:50
 #, fuzzy
 msgid "Remove successfully"
 msgstr "Enregistré avec succès"
@@ -1790,7 +1863,7 @@ msgstr ""
 msgid "Reset"
 msgstr "Réinitialiser"
 
-#: src/views/preference/components/TOTP.vue:132
+#: src/views/preference/components/TOTP.vue:133
 #, fuzzy
 msgid "Reset 2FA"
 msgstr "Réinitialiser"
@@ -1815,6 +1888,7 @@ msgstr "En cours d'éxécution"
 #: src/views/certificate/CertificateEditor.vue:254
 #: src/views/config/ConfigEditor.vue:222 src/views/domain/DomainEdit.vue:260
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
+#: src/views/preference/components/Passkey.vue:136
 #: src/views/preference/Preference.vue:151 src/views/stream/StreamEdit.vue:252
 msgid "Save"
 msgstr "Enregistrer"
@@ -1842,7 +1916,7 @@ msgstr "Sauvegarde réussie"
 msgid "Saved successfully"
 msgstr "Enregistré avec succès"
 
-#: src/views/preference/components/TOTP.vue:93
+#: src/views/preference/components/TOTP.vue:94
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr ""
 
@@ -1850,7 +1924,7 @@ msgstr ""
 msgid "SDK"
 msgstr ""
 
-#: src/views/preference/components/TOTP.vue:149
+#: src/views/preference/components/TOTP.vue:150
 msgid "Secret has been copied"
 msgstr ""
 
@@ -1875,9 +1949,12 @@ msgstr "Envoyer"
 #: src/views/config/ConfigEditor.vue:108 src/views/domain/DomainList.vue:81
 #: src/views/environment/BatchUpgrader.vue:57
 #: src/views/environment/Environment.vue:15 src/views/other/Install.vue:68
-#: src/views/preference/AuthSettings.vue:49
-#: src/views/preference/components/TOTP.vue:44
-#: src/views/preference/components/TOTP.vue:57
+#: src/views/preference/AuthSettings.vue:50
+#: src/views/preference/components/Passkey.vue:26
+#: src/views/preference/components/Passkey.vue:43
+#: src/views/preference/components/Passkey.vue:56
+#: src/views/preference/components/TOTP.vue:45
+#: src/views/preference/components/TOTP.vue:58
 #: src/views/preference/Preference.vue:83 src/views/stream/StreamList.vue:113
 #: src/views/stream/StreamList.vue:81 src/views/system/Upgrade.vue:42
 msgid "Server error"
@@ -1924,6 +2001,10 @@ msgstr "Utilisation du fournisseur de challenge HTTP01"
 msgid "Show"
 msgstr ""
 
+#: src/views/other/Login.vue:265
+msgid "Sign in with a passkey"
+msgstr ""
+
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:51
 msgid "Single Directive"
 msgstr "Directive unique"
@@ -1954,7 +2035,7 @@ msgstr "Chemin de la clé du certificat SSL"
 msgid "SSL Certificate Path"
 msgstr "Chemin du certificat SSL"
 
-#: src/views/other/Login.vue:189
+#: src/views/other/Login.vue:223
 #, fuzzy
 msgid "SSO Login"
 msgstr "Connexion"
@@ -2126,7 +2207,7 @@ msgstr "Chemin de la clé du certificat SSL"
 msgid "The path exists, but the file is not a private key"
 msgstr ""
 
-#: src/views/preference/components/TOTP.vue:111
+#: src/views/preference/components/TOTP.vue:112
 msgid ""
 "The recovery code is only displayed once, please save it in a safe place."
 msgstr ""
@@ -2194,7 +2275,8 @@ msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:61
+#: src/views/preference/AuthSettings.vue:67
+#: src/views/preference/components/AddPasskey.vue:71
 #: src/views/preference/LogrotateSettings.vue:11
 msgid "Tips"
 msgstr ""
@@ -2203,10 +2285,17 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: src/views/preference/components/TOTP.vue:92
+#: src/views/preference/components/TOTP.vue:93
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
+msgstr ""
+
+#: src/views/preference/components/AddPasskey.vue:95
+msgid ""
+"To ensure security, Webauthn configuration cannot be added through the UI. "
+"Please manually configure the following in the app.ini configuration file "
+"and restart Nginx UI."
 msgstr ""
 
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:44
@@ -2225,11 +2314,15 @@ msgstr ""
 msgid "Token is not valid"
 msgstr ""
 
-#: src/views/other/Login.vue:79
+#: src/views/other/Login.vue:82
 msgid "Too many login failed attempts, please try again later"
 msgstr ""
 
 #: src/views/preference/components/TOTP.vue:91
+msgid "TOTP"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:92
 msgid ""
 "TOTP is a two-factor authentication method that uses a time-based one-time "
 "password algorithm."
@@ -2239,7 +2332,7 @@ msgstr ""
 msgid "Trash"
 msgstr ""
 
-#: src/components/OTP/useOTPModal.ts:67
+#: src/components/2FA/use2FAModal.ts:71
 msgid "Two-factor authentication required"
 msgstr ""
 
@@ -2248,6 +2341,11 @@ msgstr ""
 #: src/views/notification/notificationColumns.tsx:9
 msgid "Type"
 msgstr "Type"
+
+#: src/views/preference/components/Passkey.vue:41
+#, fuzzy
+msgid "Update successfully"
+msgstr "Mis à jour avec succés"
 
 #: src/views/certificate/ACMEUser.vue:53
 #: src/views/certificate/DNSCredential.vue:27
@@ -2293,11 +2391,11 @@ msgstr "Disponibilité :"
 msgid "URL"
 msgstr ""
 
-#: src/components/OTP/OTPAuthorization.vue:69
+#: src/components/2FA/Authorization.vue:107
 msgid "Use OTP"
 msgstr ""
 
-#: src/components/OTP/OTPAuthorization.vue:65
+#: src/components/2FA/Authorization.vue:103
 msgid "Use recovery code"
 msgstr ""
 
@@ -2306,11 +2404,11 @@ msgstr ""
 msgid "User"
 msgstr "Nom d'utilisateur"
 
-#: src/views/other/Login.vue:82
+#: src/views/other/Login.vue:85
 msgid "User is banned"
 msgstr ""
 
-#: src/views/other/Login.vue:164 src/views/user/userColumns.tsx:9
+#: src/views/other/Login.vue:198 src/views/user/userColumns.tsx:9
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
@@ -2351,6 +2449,7 @@ msgstr "Mode simple"
 #: src/constants/index.ts:17 src/views/config/InspectConfig.vue:33
 #: src/views/domain/DomainAdd.vue:112
 #: src/views/notification/notificationColumns.tsx:19
+#: src/views/preference/components/AddPasskey.vue:88
 msgid "Warning"
 msgstr "Avertissement"
 
@@ -2383,7 +2482,7 @@ msgstr "Écriture du certificat sur le disque"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/domain/ngx_conf/LocationEditor.vue:69
-#: src/views/preference/AuthSettings.vue:97
+#: src/views/preference/AuthSettings.vue:103
 #: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
 msgstr "Oui"
@@ -2395,6 +2494,20 @@ msgstr "Vous utilisez la dernière version"
 #: src/views/system/Upgrade.vue:166
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "Vous pouvez vérifier la mise à niveau de Nginx UI sur cette page."
+
+#: src/views/preference/components/AddPasskey.vue:93
+msgid ""
+"You have not configured the settings of Webauthn, so you cannot add a "
+"passkey."
+msgstr ""
+
+#: src/views/preference/components/Passkey.vue:81
+msgid "Your passkeys"
+msgstr ""
+
+#, fuzzy
+#~ msgid "Enable 2FA"
+#~ msgstr "Activé"
 
 #, fuzzy
 #~ msgid "Rename "

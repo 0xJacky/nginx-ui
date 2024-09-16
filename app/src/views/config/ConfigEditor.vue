@@ -233,7 +233,7 @@ function goBack() {
     >
       <ACard class="col-right">
         <ACollapse
-          v-model:activeKey="activeKey"
+          v-model:active-key="activeKey"
           ghost
         >
           <ACollapsePanel

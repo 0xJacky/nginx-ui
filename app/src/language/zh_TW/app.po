@@ -21,7 +21,7 @@ msgstr ""
 msgid "2FA"
 msgstr "多重要素驗證"
 
-#: src/views/preference/components/TOTP.vue:90
+#: src/views/preference/AuthSettings.vue:58
 msgid "2FA Settings"
 msgstr "多重要素驗證設定"
 
@@ -44,7 +44,7 @@ msgstr "ACME 用戶"
 #: src/views/config/configColumns.ts:38 src/views/domain/DomainList.vue:47
 #: src/views/environment/envColumns.tsx:131
 #: src/views/notification/notificationColumns.tsx:54
-#: src/views/preference/AuthSettings.vue:26 src/views/stream/StreamList.vue:47
+#: src/views/preference/AuthSettings.vue:27 src/views/stream/StreamList.vue:47
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "操作"
@@ -58,6 +58,11 @@ msgstr "操作"
 #: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr "新增"
+
+#: src/views/preference/components/AddPasskey.vue:51
+#: src/views/preference/components/AddPasskey.vue:55
+msgid "Add a passkey"
+msgstr ""
 
 #: src/routes/index.ts:112 src/views/config/ConfigEditor.vue:143
 #: src/views/config/ConfigEditor.vue:204
@@ -93,6 +98,10 @@ msgstr "其他設定"
 msgid "Advance Mode"
 msgstr "進階模式"
 
+#: src/views/preference/components/AddPasskey.vue:105
+msgid "Afterwards, refresh this page and click add passkey again."
+msgstr ""
+
 #: src/views/preference/OpenAISettings.vue:44
 msgid "API Base Url"
 msgstr "API 基礎網址"
@@ -113,8 +122,13 @@ msgstr "API Token"
 msgid "Arch"
 msgstr "架構"
 
-#: src/views/preference/AuthSettings.vue:96
+#: src/views/preference/AuthSettings.vue:102
 msgid "Are you sure to delete this banned IP immediately?"
+msgstr "您確定要刪除這個被禁用的 IP 嗎？"
+
+#: src/views/preference/components/Passkey.vue:119
+#, fuzzy
+msgid "Are you sure to delete this passkey immediately?"
 msgstr "您確定要刪除這個被禁用的 IP 嗎？"
 
 #: src/components/Notification/Notification.vue:86
@@ -162,13 +176,21 @@ msgstr "向 ChatGPT 尋求幫助"
 msgid "Assistant"
 msgstr "助理"
 
-#: src/views/preference/AuthSettings.vue:17
+#: src/views/preference/AuthSettings.vue:18
 msgid "Attempts"
 msgstr "嘗試次數"
 
 #: src/views/preference/Preference.vue:122
 msgid "Auth"
 msgstr "身份驗證"
+
+#: src/components/2FA/Authorization.vue:126
+msgid "Authenticate with a passkey"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:63
+msgid "Authentication Settings"
+msgstr ""
 
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:106
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:120
@@ -202,15 +224,15 @@ msgstr "返回首頁"
 msgid "Back to list"
 msgstr "返回列表"
 
-#: src/views/preference/AuthSettings.vue:70
+#: src/views/preference/AuthSettings.vue:76
 msgid "Ban Threshold Minutes"
 msgstr "封禁閾值分鐘數"
 
-#: src/views/preference/AuthSettings.vue:84
+#: src/views/preference/AuthSettings.vue:90
 msgid "Banned IPs"
 msgstr "被禁止的 IP"
 
-#: src/views/preference/AuthSettings.vue:20
+#: src/views/preference/AuthSettings.vue:21
 msgid "Banned Until"
 msgstr "禁止至"
 
@@ -250,7 +272,7 @@ msgstr "CA Dir"
 msgid "CADir"
 msgstr "CADir"
 
-#: src/views/preference/components/TOTP.vue:150
+#: src/views/preference/components/TOTP.vue:151
 msgid "Can't scan? Use text key binding"
 msgstr ""
 
@@ -264,6 +286,7 @@ msgstr ""
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:50
 #: src/views/domain/ngx_conf/NgxServer.vue:80
 #: src/views/domain/ngx_conf/NgxUpstream.vue:33
+#: src/views/preference/components/Passkey.vue:147
 #: src/views/stream/components/Deploy.vue:21
 #: src/views/stream/components/RightSettings.vue:51
 msgid "Cancel"
@@ -411,6 +434,7 @@ msgid "Create Folder"
 msgstr "創建資料夾"
 
 #: src/views/notification/notificationColumns.tsx:48
+#: src/views/preference/components/Passkey.vue:101
 #: src/views/user/userColumns.tsx:48
 msgid "Created at"
 msgstr "建立時間"
@@ -431,12 +455,14 @@ msgstr "認證"
 msgid "Credentials"
 msgstr "認證資訊"
 
-#: src/views/preference/components/TOTP.vue:98
-msgid "Current account is enabled 2FA."
+#: src/views/preference/components/TOTP.vue:99
+#, fuzzy
+msgid "Current account is enabled TOTP."
 msgstr "當前帳戶已啟用多因素身份驗證。"
 
-#: src/views/preference/components/TOTP.vue:95
-msgid "Current account is not enabled 2FA."
+#: src/views/preference/components/TOTP.vue:96
+#, fuzzy
+msgid "Current account is not enabled TOTP."
 msgstr "當前帳戶未啟用多因素身份驗證。"
 
 #: src/views/system/Upgrade.vue:167
@@ -644,6 +670,12 @@ msgstr "正在下載最新版本"
 msgid "Dry run mode enabled"
 msgstr "試運轉模式已啟用"
 
+#: src/views/preference/components/AddPasskey.vue:107
+msgid ""
+"Due to the security policies of some browsers, you cannot use passkeys on "
+"non-HTTPS websites, except when running on localhost."
+msgstr ""
+
 #: src/views/domain/components/SiteDuplicate.vue:122
 #: src/views/domain/DomainList.vue:140
 #: src/views/stream/components/StreamDuplicate.vue:122
@@ -712,11 +744,7 @@ msgstr "在 %{node_name} 啟用 %{conf_name} 失敗"
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "成功在 %{node_name} 啟用 %{conf_name}"
 
-#: src/views/preference/components/TOTP.vue:124
-msgid "Enable 2FA"
-msgstr "啟用多因素身份驗證"
-
-#: src/views/preference/components/TOTP.vue:54
+#: src/views/preference/components/TOTP.vue:55
 msgid "Enable 2FA successfully"
 msgstr "啟用多因素身份驗證成功"
 
@@ -735,6 +763,11 @@ msgstr "啟用成功"
 
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:180
 msgid "Enable TLS"
+msgstr "啟用 TLS"
+
+#: src/views/preference/components/TOTP.vue:125
+#, fuzzy
+msgid "Enable TOTP"
 msgstr "啟用 TLS"
 
 #: src/views/domain/components/RightSettings.vue:77
@@ -850,6 +883,12 @@ msgstr "篩選"
 msgid "Finished"
 msgstr "完成"
 
+#: src/views/preference/components/AddPasskey.vue:77
+msgid ""
+"Follow the instructions in the dialog to complete the passkey registration "
+"process."
+msgstr ""
+
 #: src/views/preference/BasicSettings.vue:43
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr "中國使用者：https://mirror.ghproxy.com/"
@@ -918,7 +957,7 @@ msgstr "HTTP01"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "如果留空，將使用默認的 CA Dir。"
 
-#: src/views/preference/AuthSettings.vue:62
+#: src/views/preference/AuthSettings.vue:68
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -926,11 +965,15 @@ msgstr ""
 "如果來自某個 IP 的登錄失敗次數在禁止閾值分鐘內達到最大嘗試次數，該 IP 將被禁"
 "止一段時間。"
 
-#: src/views/preference/components/TOTP.vue:110
+#: src/views/preference/components/TOTP.vue:111
 msgid ""
 "If you lose your mobile phone, you can use the recovery code to reset your "
 "2FA."
 msgstr "如果您丟失了手機，可以使用恢復碼重置您的多重因素驗證驗證。"
+
+#: src/views/preference/components/AddPasskey.vue:76
+msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
+msgstr ""
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:109
 msgid ""
@@ -946,7 +989,7 @@ msgstr "導入"
 msgid "Import Certificate"
 msgstr "導入憑證"
 
-#: src/views/other/Login.vue:76
+#: src/views/other/Login.vue:79
 msgid "Incorrect username or password"
 msgstr "使用者名稱或密碼不正確"
 
@@ -962,12 +1005,12 @@ msgstr "初始化核心升級程式錯誤"
 msgid "Initialing core upgrader"
 msgstr "正在初始化核心升級程式"
 
-#: src/views/preference/components/TOTP.vue:157
+#: src/views/preference/components/TOTP.vue:158
 msgid "Input the code from the app:"
 msgstr "請輸入應用程式中的代碼："
 
-#: src/components/OTP/OTPAuthorization.vue:49
-#: src/views/preference/components/TOTP.vue:170
+#: src/components/2FA/Authorization.vue:87
+#: src/views/preference/components/TOTP.vue:171
 msgid "Input the recovery code:"
 msgstr "輸入恢復碼："
 
@@ -987,7 +1030,7 @@ msgstr "間隔"
 msgid "Invalid"
 msgstr "無效"
 
-#: src/views/other/Login.vue:86
+#: src/views/other/Login.vue:89
 msgid "Invalid 2FA or recovery code"
 msgstr "無效的多重因素驗證或恢復碼"
 
@@ -1000,11 +1043,11 @@ msgstr "無效的檔案名"
 msgid "Invalid folder name"
 msgstr "無效的資料夾名稱"
 
-#: src/components/OTP/useOTPModal.ts:61
+#: src/components/2FA/use2FAModal.ts:65
 msgid "Invalid passcode or recovery code"
 msgstr "無效的密碼或恢復碼"
 
-#: src/views/preference/AuthSettings.vue:14
+#: src/views/preference/AuthSettings.vue:15
 msgid "IP"
 msgstr "IP"
 
@@ -1035,6 +1078,11 @@ msgstr "密鑰類型"
 
 #: src/views/system/Upgrade.vue:181
 msgid "Last checked at"
+msgstr "上次檢查時間"
+
+#: src/views/preference/components/Passkey.vue:102
+#, fuzzy
+msgid "Last used at"
 msgstr "上次檢查時間"
 
 #: src/views/user/userColumns.tsx:25
@@ -1096,11 +1144,11 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日誌"
 
-#: src/routes/index.ts:305 src/views/other/Login.vue:207
+#: src/routes/index.ts:305 src/views/other/Login.vue:247
 msgid "Login"
 msgstr "登入"
 
-#: src/views/other/Login.vue:130 src/views/other/Login.vue:63
+#: src/views/other/Login.vue:133 src/views/other/Login.vue:66
 msgid "Login successful"
 msgstr "登入成功"
 
@@ -1154,7 +1202,7 @@ msgstr "管理使用者"
 msgid "Managed Certificate"
 msgstr "受管理的憑證"
 
-#: src/views/preference/AuthSettings.vue:76
+#: src/views/preference/AuthSettings.vue:82
 msgid "Max Attempts"
 msgstr "最大嘗試次數"
 
@@ -1209,6 +1257,7 @@ msgstr "多行指令"
 #: src/views/domain/DomainList.vue:13
 #: src/views/domain/ngx_conf/NgxUpstream.vue:175
 #: src/views/environment/envColumns.tsx:9
+#: src/views/preference/components/AddPasskey.vue:81
 #: src/views/stream/components/RightSettings.vue:82
 #: src/views/stream/components/StreamDuplicate.vue:129
 #: src/views/stream/StreamList.vue:13 src/views/stream/StreamList.vue:188
@@ -1290,7 +1339,7 @@ msgstr "Nginx 重啟成功"
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/domain/ngx_conf/LocationEditor.vue:70
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/AuthSettings.vue:98
+#: src/views/preference/AuthSettings.vue:104
 #: src/views/preference/BasicSettings.vue:101
 #: src/views/stream/StreamList.vue:165
 msgid "No"
@@ -1389,6 +1438,10 @@ msgstr "線上"
 msgid "OpenAI"
 msgstr "OpenAI"
 
+#: src/components/2FA/Authorization.vue:117 src/views/other/Login.vue:256
+msgid "Or"
+msgstr ""
+
 #: src/views/config/components/Rename.vue:69
 msgid "Original name"
 msgstr "原始名稱"
@@ -1417,7 +1470,18 @@ msgstr "覆蓋現有檔案"
 msgid "Params"
 msgstr "參數"
 
-#: src/views/other/Login.vue:174 src/views/user/userColumns.tsx:18
+#: src/views/preference/components/Passkey.vue:65
+msgid "Passkey"
+msgstr ""
+
+#: src/views/preference/components/Passkey.vue:68
+msgid ""
+"Passkeys are webauthn credentials that validate your identity using touch, "
+"facial recognition, a device password, or a PIN. They can be used as a "
+"password replacement or as a 2FA method."
+msgstr ""
+
+#: src/views/other/Login.vue:208 src/views/user/userColumns.tsx:18
 msgid "Password"
 msgstr "密碼"
 
@@ -1443,8 +1507,15 @@ msgstr "執行核心升級錯誤"
 msgid "Performing core upgrade"
 msgstr "正在執行核心升級"
 
-#: src/components/OTP/OTPAuthorization.vue:37
-msgid "Please enter the 2FA code:"
+#: src/views/preference/components/AddPasskey.vue:75
+msgid ""
+"Please enter a name for the passkey you wish to create and click the OK "
+"button below."
+msgstr ""
+
+#: src/components/2FA/Authorization.vue:75
+#, fuzzy
+msgid "Please enter the OTP code:"
 msgstr "請輸入多重因素驗證碼："
 
 #: src/views/certificate/DNSCredential.vue:53
@@ -1485,11 +1556,11 @@ msgstr "請輸入名稱，這將作為新設定的檔名！"
 msgid "Please input your E-mail!"
 msgstr "請輸入您的電子郵件！"
 
-#: src/views/other/Install.vue:44 src/views/other/Login.vue:44
+#: src/views/other/Install.vue:44 src/views/other/Login.vue:47
 msgid "Please input your password!"
 msgstr "請輸入您的密碼！"
 
-#: src/views/other/Install.vue:38 src/views/other/Login.vue:38
+#: src/views/other/Install.vue:38 src/views/other/Login.vue:41
 msgid "Please input your username!"
 msgstr "請輸入您的使用者名稱！"
 
@@ -1551,16 +1622,16 @@ msgstr "恢復"
 msgid "Recovered Successfully"
 msgstr "恢復成功"
 
-#: src/components/OTP/OTPAuthorization.vue:56
-#: src/views/preference/components/TOTP.vue:177
+#: src/components/2FA/Authorization.vue:94
+#: src/views/preference/components/TOTP.vue:178
 msgid "Recovery"
 msgstr "恢復"
 
-#: src/views/preference/components/TOTP.vue:103
+#: src/views/preference/components/TOTP.vue:104
 msgid "Recovery Code"
 msgstr "恢復碼"
 
-#: src/views/preference/components/TOTP.vue:112
+#: src/views/preference/components/TOTP.vue:113
 msgid "Recovery Code:"
 msgstr "恢復碼："
 
@@ -1579,6 +1650,11 @@ msgstr "註冊"
 #: src/views/certificate/ACMEUser.vue:69
 msgid "Register failed"
 msgstr "註冊失敗"
+
+#: src/views/preference/components/AddPasskey.vue:26
+#, fuzzy
+msgid "Register passkey successfully"
+msgstr "註冊成功"
 
 #: src/views/certificate/ACMEUser.vue:67
 msgid "Register successfully"
@@ -1613,11 +1689,12 @@ msgstr "重新載入中"
 msgid "Reloading nginx"
 msgstr "正在重新載入 Nginx"
 
-#: src/views/preference/AuthSettings.vue:103
+#: src/views/preference/AuthSettings.vue:109
 msgid "Remove"
 msgstr "移除"
 
-#: src/views/preference/AuthSettings.vue:47
+#: src/views/preference/AuthSettings.vue:48
+#: src/views/preference/components/Passkey.vue:50
 msgid "Remove successfully"
 msgstr "移除成功"
 
@@ -1687,7 +1764,7 @@ msgstr "請求參數錯誤"
 msgid "Reset"
 msgstr "重設"
 
-#: src/views/preference/components/TOTP.vue:132
+#: src/views/preference/components/TOTP.vue:133
 msgid "Reset 2FA"
 msgstr "重置多重因素驗證"
 
@@ -1711,6 +1788,7 @@ msgstr "執行中"
 #: src/views/certificate/CertificateEditor.vue:254
 #: src/views/config/ConfigEditor.vue:222 src/views/domain/DomainEdit.vue:260
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
+#: src/views/preference/components/Passkey.vue:136
 #: src/views/preference/Preference.vue:151 src/views/stream/StreamEdit.vue:252
 msgid "Save"
 msgstr "儲存"
@@ -1738,7 +1816,7 @@ msgstr "儲存成功"
 msgid "Saved successfully"
 msgstr "儲存成功"
 
-#: src/views/preference/components/TOTP.vue:93
+#: src/views/preference/components/TOTP.vue:94
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "用手機掃描二維碼將賬戶添加到應用程序中。"
 
@@ -1746,7 +1824,7 @@ msgstr "用手機掃描二維碼將賬戶添加到應用程序中。"
 msgid "SDK"
 msgstr "SDK"
 
-#: src/views/preference/components/TOTP.vue:149
+#: src/views/preference/components/TOTP.vue:150
 msgid "Secret has been copied"
 msgstr ""
 
@@ -1771,9 +1849,12 @@ msgstr "傳送"
 #: src/views/config/ConfigEditor.vue:108 src/views/domain/DomainList.vue:81
 #: src/views/environment/BatchUpgrader.vue:57
 #: src/views/environment/Environment.vue:15 src/views/other/Install.vue:68
-#: src/views/preference/AuthSettings.vue:49
-#: src/views/preference/components/TOTP.vue:44
-#: src/views/preference/components/TOTP.vue:57
+#: src/views/preference/AuthSettings.vue:50
+#: src/views/preference/components/Passkey.vue:26
+#: src/views/preference/components/Passkey.vue:43
+#: src/views/preference/components/Passkey.vue:56
+#: src/views/preference/components/TOTP.vue:45
+#: src/views/preference/components/TOTP.vue:58
 #: src/views/preference/Preference.vue:83 src/views/stream/StreamList.vue:113
 #: src/views/stream/StreamList.vue:81 src/views/system/Upgrade.vue:42
 msgid "Server error"
@@ -1817,6 +1898,10 @@ msgstr "使用 HTTP01 挑戰提供者"
 msgid "Show"
 msgstr "顯示"
 
+#: src/views/other/Login.vue:265
+msgid "Sign in with a passkey"
+msgstr ""
+
 #: src/views/domain/ngx_conf/directive/DirectiveAdd.vue:51
 msgid "Single Directive"
 msgstr "單一指令"
@@ -1845,7 +1930,7 @@ msgstr "SSL 憑證金鑰路徑"
 msgid "SSL Certificate Path"
 msgstr "SSL 憑證路徑"
 
-#: src/views/other/Login.vue:189
+#: src/views/other/Login.vue:223
 msgid "SSO Login"
 msgstr "SSO 登錄"
 
@@ -2003,7 +2088,7 @@ msgstr "路徑存在，但檔案不是憑證"
 msgid "The path exists, but the file is not a private key"
 msgstr "路徑存在，但檔案不是金鑰"
 
-#: src/views/preference/components/TOTP.vue:111
+#: src/views/preference/components/TOTP.vue:112
 msgid ""
 "The recovery code is only displayed once, please save it in a safe place."
 msgstr "恢復碼僅顯示一次，請將其保存在安全的地方。"
@@ -2066,7 +2151,8 @@ msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "這將在 %{nodeNames} 上升級或重新安裝 Nginx UI 到 %{version}。"
 
-#: src/views/preference/AuthSettings.vue:61
+#: src/views/preference/AuthSettings.vue:67
+#: src/views/preference/components/AddPasskey.vue:71
 #: src/views/preference/LogrotateSettings.vue:11
 msgid "Tips"
 msgstr "提示"
@@ -2075,12 +2161,19 @@ msgstr "提示"
 msgid "Title"
 msgstr "標題"
 
-#: src/views/preference/components/TOTP.vue:92
+#: src/views/preference/components/TOTP.vue:93
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
 msgstr ""
 "要啟用它，您需要在手機上安裝 Google 或 Microsoft Authenticator 應用程序。"
+
+#: src/views/preference/components/AddPasskey.vue:95
+msgid ""
+"To ensure security, Webauthn configuration cannot be added through the UI. "
+"Please manually configure the following in the app.ini configuration file "
+"and restart Nginx UI."
+msgstr ""
 
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:44
 msgid ""
@@ -2096,11 +2189,15 @@ msgstr ""
 msgid "Token is not valid"
 msgstr "令牌無效"
 
-#: src/views/other/Login.vue:79
+#: src/views/other/Login.vue:82
 msgid "Too many login failed attempts, please try again later"
 msgstr "登錄失敗次數過多，請稍後再試"
 
 #: src/views/preference/components/TOTP.vue:91
+msgid "TOTP"
+msgstr ""
+
+#: src/views/preference/components/TOTP.vue:92
 msgid ""
 "TOTP is a two-factor authentication method that uses a time-based one-time "
 "password algorithm."
@@ -2110,7 +2207,7 @@ msgstr "TOTP 是一種使用基於時間的一次性密碼算法的多重因素�
 msgid "Trash"
 msgstr "垃圾桶"
 
-#: src/components/OTP/useOTPModal.ts:67
+#: src/components/2FA/use2FAModal.ts:71
 msgid "Two-factor authentication required"
 msgstr "需要多重因素驗證"
 
@@ -2119,6 +2216,11 @@ msgstr "需要多重因素驗證"
 #: src/views/notification/notificationColumns.tsx:9
 msgid "Type"
 msgstr "類型"
+
+#: src/views/preference/components/Passkey.vue:41
+#, fuzzy
+msgid "Update successfully"
+msgstr "更新成功"
 
 #: src/views/certificate/ACMEUser.vue:53
 #: src/views/certificate/DNSCredential.vue:27
@@ -2163,11 +2265,11 @@ msgstr "運作時間:"
 msgid "URL"
 msgstr "URL"
 
-#: src/components/OTP/OTPAuthorization.vue:69
+#: src/components/2FA/Authorization.vue:107
 msgid "Use OTP"
 msgstr "使用一次性密碼"
 
-#: src/components/OTP/OTPAuthorization.vue:65
+#: src/components/2FA/Authorization.vue:103
 msgid "Use recovery code"
 msgstr "使用恢復碼"
 
@@ -2175,11 +2277,11 @@ msgstr "使用恢復碼"
 msgid "User"
 msgstr "使用者名稱"
 
-#: src/views/other/Login.vue:82
+#: src/views/other/Login.vue:85
 msgid "User is banned"
 msgstr "用戶被禁止"
 
-#: src/views/other/Login.vue:164 src/views/user/userColumns.tsx:9
+#: src/views/other/Login.vue:198 src/views/user/userColumns.tsx:9
 msgid "Username"
 msgstr "使用者名稱"
 
@@ -2217,6 +2319,7 @@ msgstr "查看模式"
 #: src/constants/index.ts:17 src/views/config/InspectConfig.vue:33
 #: src/views/domain/DomainAdd.vue:112
 #: src/views/notification/notificationColumns.tsx:19
+#: src/views/preference/components/AddPasskey.vue:88
 msgid "Warning"
 msgstr "警告"
 
@@ -2249,7 +2352,7 @@ msgstr "將憑證寫入磁碟"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/domain/ngx_conf/LocationEditor.vue:69
-#: src/views/preference/AuthSettings.vue:97
+#: src/views/preference/AuthSettings.vue:103
 #: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
 msgstr "是的"
@@ -2261,6 +2364,19 @@ msgstr "您正在使用最新版本"
 #: src/views/system/Upgrade.vue:166
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "您可以在此頁面檢查 Nginx UI 的升級。"
+
+#: src/views/preference/components/AddPasskey.vue:93
+msgid ""
+"You have not configured the settings of Webauthn, so you cannot add a "
+"passkey."
+msgstr ""
+
+#: src/views/preference/components/Passkey.vue:81
+msgid "Your passkeys"
+msgstr ""
+
+#~ msgid "Enable 2FA"
+#~ msgstr "啟用多因素身份驗證"
 
 #, fuzzy
 #~ msgid "Rename "

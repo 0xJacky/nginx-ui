@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
-import { startRegistration } from '@simplewebauthn/browser'
 import { DeleteOutlined, EditOutlined, KeyOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -9,39 +8,15 @@ import type { Passkey } from '@/api/passkey'
 import passkey from '@/api/passkey'
 import ReactiveFromNow from '@/components/ReactiveFromNow/ReactiveFromNow.vue'
 import { useUserStore } from '@/pinia'
+import AddPasskey from '@/views/preference/components/AddPasskey.vue'
 
 dayjs.extend(relativeTime)
 
 const user = useUserStore()
-const passkeyName = ref('')
-const addPasskeyModelOpen = ref(false)
-
-const regLoading = ref(false)
-async function registerPasskey() {
-  regLoading.value = true
-  try {
-    const options = await passkey.begin_registration()
-
-    const attestationResponse = await startRegistration(options.publicKey)
-
-    await passkey.finish_registration(attestationResponse, passkeyName.value)
-
-    getList()
-
-    message.success($gettext('Register passkey successfully'))
-    addPasskeyModelOpen.value = false
-
-    user.passkeyRawId = attestationResponse.rawId
-  }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  catch (e: any) {
-    message.error($gettext(e.message ?? 'Server error'))
-  }
-  regLoading.value = false
-}
 
 const getListLoading = ref(true)
 const data = ref([]) as Ref<Passkey[]>
+const passkeyName = ref('')
 
 function getList() {
   getListLoading.value = true
@@ -81,11 +56,6 @@ function remove(item: Passkey) {
     message.error(e?.message ?? $gettext('Server error'))
   })
 }
-
-function addPasskey() {
-  addPasskeyModelOpen.value = true
-  passkeyName.value = ''
-}
 </script>
 
 <template>
@@ -110,9 +80,7 @@ function addPasskey() {
           <div class="font-bold">
             {{ $gettext('Your passkeys') }}
           </div>
-          <AButton @click="addPasskey">
-            {{ $gettext('Add a passkey') }}
-          </AButton>
+          <AddPasskey @created="() => getList()" />
         </div>
       </template>
       <template #renderItem="{ item, index }">
@@ -139,7 +107,10 @@ function addPasskey() {
               <AButton
                 type="link"
                 size="small"
-                @click="() => modifyIdx = index"
+                @click="() => {
+                  modifyIdx = index
+                  passkeyName = item.name
+                }"
               >
                 <EditOutlined />
               </AButton>
@@ -180,23 +151,6 @@ function addPasskey() {
         </AListItem>
       </template>
     </AList>
-
-    <AModal
-      v-model:open="addPasskeyModelOpen"
-      :title="$gettext('Add a passkey')"
-      centered
-      :mask="false"
-      :mask-closable="false"
-      :closable="false"
-      :confirm-loading="regLoading"
-      @ok="registerPasskey"
-    >
-      <AForm layout="vertical">
-        <AFormItem :label="$gettext('Name')">
-          <AInput v-model:value="passkeyName" />
-        </AFormItem>
-      </AForm>
-    </AModal>
   </div>
 </template>
 
