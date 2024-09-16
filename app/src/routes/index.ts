@@ -325,9 +325,8 @@ router.beforeEach((to, _, next) => {
   NProgress.start()
 
   const user = useUserStore()
-  const { is_login } = user
 
-  if (to.meta.noAuth || is_login)
+  if (to.meta.noAuth || user.isLogin)
     next()
   else
     next({ path: '/login', query: { next: to.fullPath } })

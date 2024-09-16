@@ -8,8 +8,9 @@ import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
-import OTPAuthorization from '@/components/2FA/2FAAuthorization.vue'
+import Authorization from '@/components/2FA/Authorization.vue'
 import gettext, { $gettext } from '@/gettext'
+import passkey from '@/api/passkey'
 
 const thisYear = new Date().getFullYear()
 
@@ -26,6 +27,7 @@ const enabled2FA = ref(false)
 const refOTP = ref()
 const passcode = ref('')
 const recoveryCode = ref('')
+const passkeyConfigStatus = ref(false)
 
 const modelRef = reactive({
   username: '',
@@ -49,7 +51,7 @@ const rulesRef = reactive({
 
 const { validate, validateInfos, clearValidate } = Form.useForm(modelRef, rulesRef)
 const userStore = useUserStore()
-const { login } = userStore
+const { login, passkeyLogin } = userStore
 const { secureSessionId } = storeToRefs(userStore)
 
 const onSubmit = () => {
@@ -97,7 +99,7 @@ const onSubmit = () => {
 
 const user = useUserStore()
 
-if (user.is_login) {
+if (user.isLogin) {
   const next = (route.query?.next || '').toString() || '/dashboard'
 
   router.push(next)
@@ -147,8 +149,13 @@ function handleOTPSubmit(code: string, recovery: string) {
     onSubmit()
   })
 }
+
+passkey.get_config_status().then(r => {
+  passkeyConfigStatus.value = r.status
+})
+
 const passkeyLoginLoading = ref(false)
-async function passkeyLogin() {
+async function handlePasskeyLogin() {
   passkeyLoginLoading.value = true
   try {
     const begin = await auth.begin_passkey_login()
@@ -162,7 +169,7 @@ async function passkeyLogin() {
     if (r.token) {
       const next = (route.query?.next || '').toString() || '/'
 
-      login(r.token)
+      passkeyLogin(asseResp.rawId, r.token)
 
       await router.push(next)
     }
@@ -217,9 +224,14 @@ async function passkeyLogin() {
               </AButton>
             </template>
             <div v-else>
-              <OTPAuthorization
+              <Authorization
                 ref="refOTP"
-                @on-submit="handleOTPSubmit"
+                :two-f-a-status="{
+                  enabled: true,
+                  otp_status: true,
+                  passkey_status: true,
+                }"
+                @submit-o-t-p="handleOTPSubmit"
               />
             </div>
 
@@ -235,7 +247,10 @@ async function passkeyLogin() {
                 {{ $gettext('Login') }}
               </AButton>
 
-              <div class="flex flex-col justify-center">
+              <div
+                v-if="passkeyConfigStatus"
+                class="flex flex-col justify-center"
+              >
                 <ADivider>
                   <div class="text-sm font-normal opacity-75">
                     {{ $gettext('Or') }}
@@ -244,7 +259,7 @@ async function passkeyLogin() {
 
                 <AButton
                   :loading="passkeyLoginLoading"
-                  @click="passkeyLogin"
+                  @click="handlePasskeyLogin"
                 >
                   <KeyOutlined />
                   {{ $gettext('Sign in with a passkey') }}

@@ -8,10 +8,11 @@ import { formatDateTime } from '@/lib/helper'
 import type { Passkey } from '@/api/passkey'
 import passkey from '@/api/passkey'
 import ReactiveFromNow from '@/components/ReactiveFromNow/ReactiveFromNow.vue'
-import { $gettext } from '@/gettext'
+import { useUserStore } from '@/pinia'
 
 dayjs.extend(relativeTime)
 
+const user = useUserStore()
 const passkeyName = ref('')
 const addPasskeyModelOpen = ref(false)
 
@@ -29,6 +30,8 @@ async function registerPasskey() {
 
     message.success($gettext('Register passkey successfully'))
     addPasskeyModelOpen.value = false
+
+    user.passkeyRawId = attestationResponse.rawId
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   catch (e: any) {
@@ -66,10 +69,14 @@ function update(id: number, record: Passkey) {
   })
 }
 
-function remove(id: number) {
-  passkey.remove(id).then(() => {
+function remove(item: Passkey) {
+  passkey.remove(item.id).then(() => {
     getList()
     message.success($gettext('Remove successfully'))
+
+    // if current passkey is removed, clear it from user store
+    if (user.passkeyLoginAvailable && user.passkeyRawId === item.raw_id)
+      user.passkeyRawId = ''
   }).catch((e: { message?: string }) => {
     message.error(e?.message ?? $gettext('Server error'))
   })
@@ -83,19 +90,31 @@ function addPasskey() {
 
 <template>
   <div>
-    <div class="flex justify-between items-center">
-      <h3 class="mb-0">
+    <div>
+      <h3>
         {{ $gettext('Passkey') }}
       </h3>
-      <AButton @click="addPasskey">
-        {{ $gettext('Add a passkey') }}
-      </AButton>
+      <p>
+        {{ $gettext('Passkeys are webauthn credentials that validate your identity using touch, '
+          + 'facial recognition, a device password, or a PIN. '
+          + 'They can be used as a password replacement or as a 2FA method.') }}
+      </p>
     </div>
     <AList
       class="mt-4"
       bordered
       :data-source="data"
     >
+      <template #header>
+        <div class="flex items-center justify-between">
+          <div class="font-bold">
+            {{ $gettext('Your passkeys') }}
+          </div>
+          <AButton @click="addPasskey">
+            {{ $gettext('Add a passkey') }}
+          </AButton>
+        </div>
+      </template>
       <template #renderItem="{ item, index }">
         <AListItem>
           <AListItemMeta>
@@ -127,7 +146,7 @@ function addPasskey() {
 
               <APopconfirm
                 :title="$gettext('Are you sure to delete this passkey immediately?')"
-                @confirm="() => remove(item.id)"
+                @confirm="() => remove(item)"
               >
                 <AButton
                   type="link"

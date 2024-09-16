@@ -2,13 +2,12 @@
 import { message } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import dayjs from 'dayjs'
+import PasskeyRegistration from './components/Passkey.vue'
 import type { BannedIP } from '@/api/settings'
 import setting from '@/api/settings'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Settings } from '@/views/preference/typedef'
 import TOTP from '@/views/preference/components/TOTP.vue'
-import PasskeyRegistration from '@/components/Passkey/PasskeyRegistration.vue'
-import { $gettext } from '@/gettext'
 
 const data: Settings = inject('data') as Settings
 

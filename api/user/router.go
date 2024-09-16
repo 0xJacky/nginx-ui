@@ -13,6 +13,8 @@ func InitAuthRouter(r *gin.RouterGroup) {
 
 	r.GET("/casdoor_uri", GetCasdoorUri)
 	r.POST("/casdoor_callback", CasdoorCallback)
+
+	r.GET("/passkeys/config", GetPasskeyConfigStatus)
 }
 
 func InitManageUserRouter(r *gin.RouterGroup) {
@@ -38,7 +40,6 @@ func InitUserRouter(r *gin.RouterGroup) {
 	r.GET("/begin_passkey_register", BeginPasskeyRegistration)
 	r.POST("/finish_passkey_register", FinishPasskeyRegistration)
 
-	r.GET("/passkeys/config", GetPasskeyConfigStatus)
 	r.GET("/passkeys", GetPasskeyList)
 	r.POST("/passkeys/:id", UpdatePasskey)
 	r.DELETE("/passkeys/:id", DeletePasskey)

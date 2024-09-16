@@ -4,7 +4,7 @@ import { CheckCircleOutlined } from '@ant-design/icons-vue'
 import { UseClipboard } from '@vueuse/components'
 import otp from '@/api/otp'
 import OTPInput from '@/components/OTPInput/OTPInput.vue'
-import { $gettext } from '@/gettext'
+
 import twoFA from '@/api/2fa'
 
 const status = ref(false)

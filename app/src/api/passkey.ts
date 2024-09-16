@@ -5,6 +5,7 @@ import type { ModelBase } from '@/api/curd'
 export interface Passkey extends ModelBase {
   name: string
   user_id: string
+  raw_id: string
 }
 
 const passkey = {
@@ -27,8 +28,8 @@ const passkey = {
   remove(passkeyId: number) {
     return http.delete(`/passkeys/${passkeyId}`)
   },
-  get_passkey_config_status(): Promise<{ status: boolean }> {
-    return http.get('/passkey/config')
+  get_config_status(): Promise<{ status: boolean }> {
+    return http.get('/passkeys/config')
   },
 }
 

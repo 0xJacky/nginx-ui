@@ -1,12 +1,12 @@
 import { createVNode, render } from 'vue'
 import { Modal, message } from 'ant-design-vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
-import OTPAuthorization from '@/components/2FA/2FAAuthorization.vue'
+import Authorization from '@/components/2FA/Authorization.vue'
 import twoFA from '@/api/2fa'
 import { useUserStore } from '@/pinia'
 
 const use2FAModal = () => {
-  const refOTPAuthorization = ref<typeof OTPAuthorization>()
+  const refOTPAuthorization = ref<typeof Authorization>()
   const randomId = Math.random().toString(36).substring(2, 8)
   const { secureSessionId } = storeToRefs(useUserStore())
 
@@ -22,11 +22,11 @@ const use2FAModal = () => {
   }
 
   const open = async (): Promise<string> => {
-    const { enabled } = await twoFA.status()
+    const twoFAStatus = await twoFA.status()
     const { status: secureSessionStatus } = await twoFA.secure_session_status()
 
     return new Promise((resolve, reject) => {
-      if (!enabled) {
+      if (!twoFAStatus.enabled) {
         resolve('')
 
         return
@@ -80,9 +80,10 @@ const use2FAModal = () => {
         },
       }, {
         default: () => h(
-          OTPAuthorization,
+          Authorization,
           {
             ref: refOTPAuthorization,
+            twoFAStatus,
             class: 'mt-3',
             onSubmitOTP: verifyOTP,
             onSubmitSecureSessionID: setSessionId,

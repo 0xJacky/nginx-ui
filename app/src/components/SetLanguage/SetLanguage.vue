@@ -29,14 +29,22 @@ const current = computed({
 
 const languageAvailable = gettext.available
 
+const updateTitle = () => {
+  const name = route.meta.name as never as () => string
+
+  document.title = `${name()} | Nginx UI`
+}
+
 watch(current, v => {
   loadTranslations(route)
   settings.set_language(v)
   gettext.current = v
 
-  const name = route.meta.name as never as () => string
+  updateTitle()
+})
 
-  document.title = `${name()} | Nginx UI`
+onMounted(() => {
+  updateTitle()
 })
 
 function init() {
