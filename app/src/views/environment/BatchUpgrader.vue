@@ -239,16 +239,18 @@ async function performUpgrade() {
   </AModal>
 </template>
 
-<style scoped lang="less">
+<style lang="less">
 .dark {
-  :deep(.core-upgrade-log-container) {
+  .core-upgrade-log-container {
     background-color: rgba(0, 0, 0, 0.84);
   }
 }
+</style>
 
+<style scoped lang="less">
 :deep(.core-upgrade-log-container) {
   height: 320px;
-  overflow: scroll;
+  overflow-y: auto;
   background-color: #f3f3f3;
   border-radius: 4px;
   margin-top: 15px;
