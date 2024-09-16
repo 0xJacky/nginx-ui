@@ -161,6 +161,7 @@ function view(id: number | string) {
   get(id).then(() => {
     visible.value = true
     modifyMode.value = false
+    editMode.value = 'modify'
   }).catch(e => {
     message.error($gettext(e?.message ?? 'Server error'), 5)
   })

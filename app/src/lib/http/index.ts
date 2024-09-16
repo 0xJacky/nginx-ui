@@ -7,7 +7,7 @@ import { useSettingsStore, useUserStore } from '@/pinia'
 import 'nprogress/nprogress.css'
 
 import router from '@/routes'
-import useOTPModal from '@/components/OTP/useOTPModal'
+import use2FAModal from '@/components/2FA/use2FAModal'
 
 const user = useUserStore()
 const settings = useSettingsStore()
@@ -61,7 +61,7 @@ instance.interceptors.response.use(
   async error => {
     NProgress.done()
 
-    const otpModal = useOTPModal()
+    const otpModal = use2FAModal()
     const cookies = useCookies(['nginx-ui-2fa'])
     switch (error.response.status) {
       case 401:

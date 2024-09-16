@@ -30,7 +30,7 @@ const pageSize = computed({
     class="pagination-container"
   >
     <APagination
-      v-model:pageSize="pageSize"
+      v-model:page-size="pageSize"
       :disabled="loading"
       :current="pagination.current_page"
       show-size-changer

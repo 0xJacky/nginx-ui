@@ -183,7 +183,7 @@ const activeKey = ref(['3'])
     </AFormItem>
 
     <ACollapse
-      v-model:activeKey="activeKey"
+      v-model:active-key="activeKey"
       ghost
     >
       <ACollapsePanel

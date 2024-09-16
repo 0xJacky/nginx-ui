@@ -107,7 +107,7 @@ watch(ngx_directives, () => {
     <ContextHolder />
     <ATabs
       v-if="ngx_config.upstreams && ngx_config.upstreams.length > 0"
-      v-model:activeKey="current_upstream_index"
+      v-model:active-key="current_upstream_index"
     >
       <ATabPane
         v-for="(v, k) in ngx_config.upstreams"

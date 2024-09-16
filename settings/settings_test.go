@@ -53,6 +53,10 @@ func TestSetup(t *testing.T) {
 	_ = os.Setenv("NGINX_UI_LOGROTATE_CMD", "logrotate /custom/logrotate.conf")
 	_ = os.Setenv("NGINX_UI_LOGROTATE_INTERVAL", "60")
 
+	_ = os.Setenv("NGINX_UI_WEBAUTHN_RP_DISPLAY_NAME", "WebAuthn")
+	_ = os.Setenv("NGINX_UI_WEBAUTHN_RPID", "localhost")
+	_ = os.Setenv("NGINX_UI_WEBAUTHN_RP_ORIGINS", "http://localhost:3002")
+
 	ConfPath = "app.testing.ini"
 	Setup()
 
@@ -97,6 +101,10 @@ func TestSetup(t *testing.T) {
 	assert.Equal(t, true, LogrotateSettings.Enabled)
 	assert.Equal(t, "logrotate /custom/logrotate.conf", LogrotateSettings.CMD)
 	assert.Equal(t, 60, LogrotateSettings.Interval)
+
+	assert.Equal(t, "WebAuthn", WebAuthnSettings.RPDisplayName)
+	assert.Equal(t, "localhost", WebAuthnSettings.RPID)
+	assert.Equal(t, []string{"http://localhost:3002"}, WebAuthnSettings.RPOrigins)
 
 	os.Clearenv()
 	_ = os.Remove("app.testing.ini")

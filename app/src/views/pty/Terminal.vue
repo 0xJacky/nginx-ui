@@ -4,8 +4,8 @@ import { Terminal } from '@xterm/xterm'
 import { FitAddon } from '@xterm/addon-fit'
 import _ from 'lodash'
 import ws from '@/lib/websocket'
-import useOTPModal from '@/components/OTP/useOTPModal'
-import otp from '@/api/otp'
+import use2FAModal from '@/components/2FA/use2FAModal'
+import twoFA from '@/api/2fa'
 
 let term: Terminal | null
 let ping: NodeJS.Timeout
@@ -15,9 +15,9 @@ const websocket = shallowRef()
 const lostConnection = ref(false)
 
 onMounted(() => {
-  otp.secure_session_status()
+  twoFA.secure_session_status()
 
-  const otpModal = useOTPModal()
+  const otpModal = use2FAModal()
 
   otpModal.open().then(secureSessionId => {
     websocket.value = ws(`/api/pty?X-Secure-Session-ID=${secureSessionId}`, false)

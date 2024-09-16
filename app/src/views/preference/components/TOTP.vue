@@ -4,7 +4,8 @@ import { CheckCircleOutlined } from '@ant-design/icons-vue'
 import { UseClipboard } from '@vueuse/components'
 import otp from '@/api/otp'
 import OTPInput from '@/components/OTPInput/OTPInput.vue'
-import { $gettext } from '@/gettext'
+
+import twoFA from '@/api/2fa'
 
 const status = ref(false)
 const enrolling = ref(false)
@@ -59,8 +60,8 @@ function enroll(code: string) {
 }
 
 function get2FAStatus() {
-  otp.status().then(r => {
-    status.value = r.status
+  twoFA.status().then(r => {
+    status.value = r.otp_status
   })
 }
 
@@ -87,15 +88,15 @@ function reset2FA() {
 
 <template>
   <div>
-    <h3>{{ $gettext('2FA Settings') }}</h3>
+    <h3>{{ $gettext('TOTP') }}</h3>
     <p>{{ $gettext('TOTP is a two-factor authentication method that uses a time-based one-time password algorithm.') }}</p>
     <p>{{ $gettext('To enable it, you need to install the Google or Microsoft Authenticator app on your mobile phone.') }}</p>
     <p>{{ $gettext('Scan the QR code with your mobile phone to add the account to the app.') }}</p>
     <p v-if="!status">
-      {{ $gettext('Current account is not enabled 2FA.') }}
+      {{ $gettext('Current account is not enabled TOTP.') }}
     </p>
     <div v-else>
-      <p><CheckCircleOutlined class="mr-2 text-green-600" />{{ $gettext('Current account is enabled 2FA.') }}</p>
+      <p><CheckCircleOutlined class="mr-2 text-green-600" />{{ $gettext('Current account is enabled TOTP.') }}</p>
     </div>
 
     <AAlert
@@ -121,7 +122,7 @@ function reset2FA() {
       ghost
       @click="clickEnable2FA"
     >
-      {{ $gettext('Enable 2FA') }}
+      {{ $gettext('Enable TOTP') }}
     </AButton>
     <AButton
       v-if="status && !resetting"

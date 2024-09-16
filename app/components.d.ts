@@ -81,6 +81,8 @@ declare module 'vue' {
     OTPInputOTPInput: typeof import('./src/components/OTPInput/OTPInput.vue')['default']
     OTPOTPAuthorization: typeof import('./src/components/OTP/OTPAuthorization.vue')['default']
     PageHeaderPageHeader: typeof import('./src/components/PageHeader/PageHeader.vue')['default']
+    PasskeyPasskeyRegistration: typeof import('./src/components/Passkey/PasskeyRegistration.vue')['default']
+    ReactiveFromNowReactiveFromNow: typeof import('./src/components/ReactiveFromNow/ReactiveFromNow.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SensitiveStringSensitiveString: typeof import('./src/components/SensitiveString/SensitiveString.vue')['default']

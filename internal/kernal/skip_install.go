@@ -51,7 +51,7 @@ func registerPredefinedUser() {
 		logger.Fatal(err)
 	}
 
-	u := query.Auth
+	u := query.User
 
 	_, err = u.First()
 
@@ -63,7 +63,7 @@ func registerPredefinedUser() {
 	// Create a new user with the predefined name and password
 	pwd, _ := bcrypt.GenerateFromPassword([]byte(pUser.Password), bcrypt.DefaultCost)
 
-	err = u.Create(&model.Auth{
+	err = u.Create(&model.User{
 		Name:     pUser.Name,
 		Password: string(pwd),
 	})

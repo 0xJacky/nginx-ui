@@ -66,7 +66,7 @@ function on_change_enabled(checked: CheckedType) {
   >
     <ContextHolder />
     <ACollapse
-      v-model:activeKey="active_key"
+      v-model:active-key="active_key"
       ghost
     >
       <ACollapsePanel

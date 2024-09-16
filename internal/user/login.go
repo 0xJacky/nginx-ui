@@ -14,8 +14,8 @@ var (
 	ErrUserBanned        = errors.New("user banned")
 )
 
-func Login(name string, password string) (user *model.Auth, err error) {
-	u := query.Auth
+func Login(name string, password string) (user *model.User, err error) {
+	u := query.User
 
 	user, err = u.Where(u.Name.Eq(name)).First()
 	if err != nil {

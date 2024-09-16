@@ -1,9 +1,18 @@
 <script setup lang="ts">
-import { watch } from 'vue'
-
+import dayjs from 'dayjs'
 import { useSettingsStore } from '@/pinia'
 import gettext from '@/gettext'
 import loadTranslations from '@/api/translations'
+
+import 'dayjs/locale/fr'
+import 'dayjs/locale/ja'
+import 'dayjs/locale/ko'
+import 'dayjs/locale/de'
+import 'dayjs/locale/zh-cn'
+import 'dayjs/locale/zh-tw'
+import 'dayjs/locale/pt'
+import 'dayjs/locale/es'
+import 'dayjs/locale/it'
 
 const settings = useSettingsStore()
 
@@ -20,15 +29,61 @@ const current = computed({
 
 const languageAvailable = gettext.available
 
+const updateTitle = () => {
+  const name = route.meta.name as never as () => string
+
+  document.title = `${name()} | Nginx UI`
+}
+
 watch(current, v => {
   loadTranslations(route)
   settings.set_language(v)
   gettext.current = v
 
-  const name = route.meta.name as never as () => string
-
-  document.title = `${name()} | Nginx UI`
+  updateTitle()
 })
+
+onMounted(() => {
+  updateTitle()
+})
+
+function init() {
+  switch (current.value) {
+    case 'fr':
+      dayjs.locale('fr')
+      break
+    case 'ja':
+      dayjs.locale('ja')
+      break
+    case 'ko':
+      dayjs.locale('ko')
+      break
+    case 'de':
+      dayjs.locale('de')
+      break
+    case 'en':
+      dayjs.locale('en')
+      break
+    case 'zh_TW':
+      dayjs.locale('zh-tw')
+      break
+    case 'pt':
+      dayjs.locale('pt')
+      break
+    case 'es':
+      dayjs.locale('es')
+      break
+    case 'it':
+      dayjs.locale('it')
+      break
+    default:
+      dayjs.locale('zh-cn')
+  }
+}
+
+init()
+
+watch(current, init)
 </script>
 
 <template>

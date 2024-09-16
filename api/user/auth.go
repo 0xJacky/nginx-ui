@@ -8,6 +8,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"math/rand/v2"
 	"net/http"
 	"sync"
 	"time"
@@ -67,7 +68,8 @@ func Login(c *gin.Context) {
 
 	u, err := user.Login(json.Name, json.Password)
 	if err != nil {
-		// time.Sleep(5 * time.Second)
+		random := time.Duration(rand.Int() % 10)
+		time.Sleep(random * time.Second)
 		switch {
 		case errors.Is(err, user.ErrPasswordIncorrect):
 			c.JSON(http.StatusForbidden, LoginResponse{

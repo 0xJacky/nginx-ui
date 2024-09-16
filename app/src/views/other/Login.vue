@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { LockOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { KeyOutlined, LockOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { Form, message } from 'ant-design-vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
+import { startAuthentication } from '@simplewebauthn/browser'
 import { useUserStore } from '@/pinia'
 import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
-import OTPAuthorization from '@/components/OTP/OTPAuthorization.vue'
+import Authorization from '@/components/2FA/Authorization.vue'
 import gettext from '@/gettext'
+import passkey from '@/api/passkey'
 
 const thisYear = new Date().getFullYear()
 
@@ -25,6 +27,7 @@ const enabled2FA = ref(false)
 const refOTP = ref()
 const passcode = ref('')
 const recoveryCode = ref('')
+const passkeyConfigStatus = ref(false)
 
 const modelRef = reactive({
   username: '',
@@ -48,7 +51,7 @@ const rulesRef = reactive({
 
 const { validate, validateInfos, clearValidate } = Form.useForm(modelRef, rulesRef)
 const userStore = useUserStore()
-const { login } = userStore
+const { login, passkeyLogin } = userStore
 const { secureSessionId } = storeToRefs(userStore)
 
 const onSubmit = () => {
@@ -96,7 +99,7 @@ const onSubmit = () => {
 
 const user = useUserStore()
 
-if (user.is_login) {
+if (user.isLogin) {
   const next = (route.query?.next || '').toString() || '/dashboard'
 
   router.push(next)
@@ -146,6 +149,37 @@ function handleOTPSubmit(code: string, recovery: string) {
     onSubmit()
   })
 }
+
+passkey.get_config_status().then(r => {
+  passkeyConfigStatus.value = r.status
+})
+
+const passkeyLoginLoading = ref(false)
+async function handlePasskeyLogin() {
+  passkeyLoginLoading.value = true
+  try {
+    const begin = await auth.begin_passkey_login()
+    const asseResp = await startAuthentication(begin.options.publicKey)
+
+    const r = await auth.finish_passkey_login({
+      session_id: begin.session_id,
+      options: asseResp,
+    })
+
+    if (r.token) {
+      const next = (route.query?.next || '').toString() || '/'
+
+      passkeyLogin(asseResp.rawId, r.token)
+
+      await router.push(next)
+    }
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  catch (e: any) {
+    message.error($gettext(e.message ?? 'Server error'))
+  }
+  passkeyLoginLoading.value = false
+}
 </script>
 
 <template>
@@ -190,9 +224,14 @@ function handleOTPSubmit(code: string, recovery: string) {
               </AButton>
             </template>
             <div v-else>
-              <OTPAuthorization
+              <Authorization
                 ref="refOTP"
-                @on-submit="handleOTPSubmit"
+                :two-f-a-status="{
+                  enabled: true,
+                  otp_status: true,
+                  passkey_status: true,
+                }"
+                @submit-o-t-p="handleOTPSubmit"
               />
             </div>
 
@@ -202,10 +241,30 @@ function handleOTPSubmit(code: string, recovery: string) {
                 block
                 html-type="submit"
                 :loading="loading"
+                class="mb-2"
                 @click="onSubmit"
               >
                 {{ $gettext('Login') }}
               </AButton>
+
+              <div
+                v-if="passkeyConfigStatus"
+                class="flex flex-col justify-center"
+              >
+                <ADivider>
+                  <div class="text-sm font-normal opacity-75">
+                    {{ $gettext('Or') }}
+                  </div>
+                </ADivider>
+
+                <AButton
+                  :loading="passkeyLoginLoading"
+                  @click="handlePasskeyLogin"
+                >
+                  <KeyOutlined />
+                  {{ $gettext('Sign in with a passkey') }}
+                </AButton>
+              </div>
             </AFormItem>
           </AForm>
           <div class="footer">
