@@ -2,7 +2,7 @@
 
 import { message } from 'ant-design-vue'
 import config from '@/api/config'
-import useOTPModal from '@/components/OTP/useOTPModal'
+import use2FAModal from '@/components/2FA/use2FAModal'
 
 const emit = defineEmits(['created'])
 const visible = ref(false)
@@ -25,7 +25,7 @@ defineExpose({
 
 function ok() {
   refForm.value.validate().then(() => {
-    const otpModal = useOTPModal()
+    const otpModal = use2FAModal()
 
     otpModal.open().then(() => {
       config.mkdir(data.value.basePath, data.value.name).then(() => {

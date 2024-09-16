@@ -11,7 +11,7 @@ import type { Settings } from '@/views/preference/typedef'
 import LogrotateSettings from '@/views/preference/LogrotateSettings.vue'
 import { useSettingsStore } from '@/pinia'
 import AuthSettings from '@/views/preference/AuthSettings.vue'
-import useOTPModal from '@/components/OTP/useOTPModal'
+import use2FAModal from '@/components/2FA/use2FAModal'
 
 const data = ref<Settings>({
   server: {
@@ -68,7 +68,7 @@ async function save() {
   // fix type
   data.value.server.http_challenge_port = data.value.server.http_challenge_port.toString()
 
-  const otpModal = useOTPModal()
+  const otpModal = use2FAModal()
 
   otpModal.open().then(() => {
     settings.save(data.value).then(r => {
@@ -110,7 +110,7 @@ onMounted(() => {
 <template>
   <ACard :title="$gettext('Preference')">
     <div class="preference-container">
-      <ATabs v-model:activeKey="activeKey">
+      <ATabs v-model:active-key="activeKey">
         <ATabPane
           key="basic"
           :tab="$gettext('Basic')"

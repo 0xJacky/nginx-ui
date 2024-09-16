@@ -27,6 +27,12 @@ func buildCachePasskeyRegKey(id int) string {
 	return fmt.Sprintf("passkey-reg-%d", id)
 }
 
+func GetPasskeyConfigStatus(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"status": passkey.Enabled(),
+	})
+}
+
 func BeginPasskeyRegistration(c *gin.Context) {
 	u := api.CurrentUser(c)
 
@@ -100,6 +106,10 @@ func BeginPasskeyLogin(c *gin.Context) {
 }
 
 func FinishPasskeyLogin(c *gin.Context) {
+	if !passkey.Enabled() {
+		api.ErrHandler(c, fmt.Errorf("WebAuthn settings are not configured"))
+		return
+	}
 	sessionId := c.GetHeader("X-Passkey-Session-ID")
 	sessionDataBytes, ok := cache.Get(sessionId)
 	if !ok {

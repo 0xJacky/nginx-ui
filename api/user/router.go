@@ -25,17 +25,20 @@ func InitManageUserRouter(r *gin.RouterGroup) {
 }
 
 func InitUserRouter(r *gin.RouterGroup) {
-	r.GET("/otp_status", OTPStatus)
+	r.GET("/2fa_status", Get2FAStatus)
+	r.GET("/2fa_secure_session/status", SecureSessionStatus)
+	r.POST("/2fa_secure_session/otp", Start2FASecureSessionByOTP)
+	r.GET("/2fa_secure_session/passkey", BeginStart2FASecureSessionByPasskey)
+	r.POST("/2fa_secure_session/passkey", FinishStart2FASecureSessionByPasskey)
+
 	r.GET("/otp_secret", GenerateTOTP)
 	r.POST("/otp_enroll", EnrollTOTP)
 	r.POST("/otp_reset", ResetOTP)
 
-	r.GET("/otp_secure_session_status", SecureSessionStatus)
-	r.POST("/otp_secure_session", StartSecure2FASession)
-
 	r.GET("/begin_passkey_register", BeginPasskeyRegistration)
 	r.POST("/finish_passkey_register", FinishPasskeyRegistration)
 
+	r.GET("/passkeys/config", GetPasskeyConfigStatus)
 	r.GET("/passkeys", GetPasskeyList)
 	r.POST("/passkeys/:id", UpdatePasskey)
 	r.DELETE("/passkeys/:id", DeletePasskey)

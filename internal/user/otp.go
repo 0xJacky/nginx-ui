@@ -43,7 +43,7 @@ func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
 }
 
 func secureSessionIDCacheKey(sessionId string) string {
-	return fmt.Sprintf("otp_secure_session:_%s", sessionId)
+	return fmt.Sprintf("2fa_secure_session:_%s", sessionId)
 }
 
 func SetSecureSessionID(userId int) (sessionId string) {

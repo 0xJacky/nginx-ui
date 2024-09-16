@@ -8,8 +8,6 @@ import (
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
-	"github.com/0xJacky/Nginx-UI/internal/user"
-	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
@@ -145,84 +143,5 @@ func ResetOTP(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
-	})
-}
-
-func OTPStatus(c *gin.Context) {
-	status := false
-	u, ok := c.Get("user")
-	if ok {
-		status = u.(*model.User).EnabledOTP()
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": status,
-	})
-}
-
-func SecureSessionStatus(c *gin.Context) {
-	u, ok := c.Get("user")
-	if !ok || !u.(*model.User).EnabledOTP() {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-		})
-		return
-	}
-	ssid := c.GetHeader("X-Secure-Session-ID")
-	if ssid == "" {
-		ssid = c.Query("X-Secure-Session-ID")
-	}
-	if ssid == "" {
-		c.JSON(http.StatusOK, gin.H{
-			"status": false,
-		})
-		return
-	}
-
-	if user.VerifySecureSessionID(ssid, u.(*model.User).ID) {
-		c.JSON(http.StatusOK, gin.H{
-			"status": true,
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{
-		"status": false,
-	})
-}
-
-func StartSecure2FASession(c *gin.Context) {
-	var json struct {
-		OTP          string `json:"otp"`
-		RecoveryCode string `json:"recovery_code"`
-	}
-	if !api.BindAndValid(c, &json) {
-		return
-	}
-	u := api.CurrentUser(c)
-	if !u.EnabledOTP() {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "User not configured with 2FA",
-		})
-		return
-	}
-
-	if json.OTP == "" && json.RecoveryCode == "" {
-		c.JSON(http.StatusBadRequest, LoginResponse{
-			Message: "The user has enabled 2FA",
-		})
-		return
-	}
-
-	if err := user.VerifyOTP(u, json.OTP, json.RecoveryCode); err != nil {
-		c.JSON(http.StatusBadRequest, LoginResponse{
-			Message: "Invalid 2FA or recovery code",
-		})
-		return
-	}
-
-	sessionId := user.SetSecureSessionID(u.ID)
-
-	c.JSON(http.StatusOK, gin.H{
-		"session_id": sessionId,
 	})
 }

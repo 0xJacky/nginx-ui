@@ -5,6 +5,7 @@ import { UseClipboard } from '@vueuse/components'
 import otp from '@/api/otp'
 import OTPInput from '@/components/OTPInput/OTPInput.vue'
 import { $gettext } from '@/gettext'
+import twoFA from '@/api/2fa'
 
 const status = ref(false)
 const enrolling = ref(false)
@@ -59,8 +60,8 @@ function enroll(code: string) {
 }
 
 function get2FAStatus() {
-  otp.status().then(r => {
-    status.value = r.status
+  twoFA.status().then(r => {
+    status.value = r.otp_status
   })
 }
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
 import config from '@/api/config'
-import useOTPModal from '@/components/OTP/useOTPModal'
+import use2FAModal from '@/components/2FA/use2FAModal'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 
 const emit = defineEmits(['renamed'])
@@ -33,7 +33,7 @@ function ok() {
   refForm.value.validate().then(() => {
     const { basePath, orig_name, new_name, sync_node_ids } = data.value
 
-    const otpModal = useOTPModal()
+    const otpModal = use2FAModal()
 
     otpModal.open().then(() => {
       config.rename(basePath, orig_name, new_name, sync_node_ids).then(() => {

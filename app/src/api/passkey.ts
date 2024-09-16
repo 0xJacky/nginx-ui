@@ -27,8 +27,8 @@ const passkey = {
   remove(passkeyId: number) {
     return http.delete(`/passkeys/${passkeyId}`)
   },
-  get_passkey_enabled() {
-    return http.get('/passkey_enabled')
+  get_passkey_config_status(): Promise<{ status: boolean }> {
+    return http.get('/passkey/config')
   },
 }
 

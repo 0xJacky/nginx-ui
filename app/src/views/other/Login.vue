@@ -8,7 +8,7 @@ import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
-import OTPAuthorization from '@/components/OTP/OTPAuthorization.vue'
+import OTPAuthorization from '@/components/2FA/2FAAuthorization.vue'
 import gettext, { $gettext } from '@/gettext'
 
 const thisYear = new Date().getFullYear()
@@ -153,8 +153,6 @@ async function passkeyLogin() {
   try {
     const begin = await auth.begin_passkey_login()
     const asseResp = await startAuthentication(begin.options.publicKey)
-
-    console.log(asseResp)
 
     const r = await auth.finish_passkey_login({
       session_id: begin.session_id,

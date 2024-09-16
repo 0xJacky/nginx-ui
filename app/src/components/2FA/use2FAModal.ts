@@ -1,11 +1,11 @@
 import { createVNode, render } from 'vue'
 import { Modal, message } from 'ant-design-vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
-import OTPAuthorization from '@/components/OTP/OTPAuthorization.vue'
-import otp from '@/api/otp'
+import OTPAuthorization from '@/components/2FA/2FAAuthorization.vue'
+import twoFA from '@/api/2fa'
 import { useUserStore } from '@/pinia'
 
-const useOTPModal = () => {
+const use2FAModal = () => {
   const refOTPAuthorization = ref<typeof OTPAuthorization>()
   const randomId = Math.random().toString(36).substring(2, 8)
   const { secureSessionId } = storeToRefs(useUserStore())
@@ -22,11 +22,11 @@ const useOTPModal = () => {
   }
 
   const open = async (): Promise<string> => {
-    const { status } = await otp.status()
-    const { status: secureSessionStatus } = await otp.secure_session_status()
+    const { enabled } = await twoFA.status()
+    const { status: secureSessionStatus } = await twoFA.secure_session_status()
 
     return new Promise((resolve, reject) => {
-      if (!status) {
+      if (!enabled) {
         resolve('')
 
         return
@@ -50,12 +50,16 @@ const useOTPModal = () => {
         container = null
       }
 
-      const verify = (passcode: string, recovery: string) => {
-        otp.start_secure_session(passcode, recovery).then(async r => {
-          cookies.set('secure_session_id', r.session_id, { maxAge: 60 * 3 })
-          close()
-          secureSessionId.value = r.session_id
-          resolve(r.session_id)
+      const setSessionId = (sessionId: string) => {
+        cookies.set('secure_session_id', sessionId, { maxAge: 60 * 3 })
+        close()
+        secureSessionId.value = sessionId
+        resolve(sessionId)
+      }
+
+      const verifyOTP = (passcode: string, recovery: string) => {
+        twoFA.start_secure_session_by_otp(passcode, recovery).then(async r => {
+          setSessionId(r.session_id)
         }).catch(async () => {
           refOTPAuthorization.value?.clearInput()
           await message.error($gettext('Invalid passcode or recovery code'))
@@ -80,7 +84,8 @@ const useOTPModal = () => {
           {
             ref: refOTPAuthorization,
             class: 'mt-3',
-            onOnSubmit: verify,
+            onSubmitOTP: verifyOTP,
+            onSubmitSecureSessionID: setSessionId,
           },
         ),
       })
@@ -92,4 +97,4 @@ const useOTPModal = () => {
   return { open }
 }
 
-export default useOTPModal
+export default use2FAModal

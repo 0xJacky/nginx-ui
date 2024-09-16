@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { KeyOutlined } from '@ant-design/icons-vue'
+import { startAuthentication } from '@simplewebauthn/browser'
+import { message } from 'ant-design-vue'
 import OTPInput from '@/components/OTPInput/OTPInput.vue'
+import { $gettext } from '@/gettext'
+import twoFA from '@/api/2fa'
 
-const emit = defineEmits(['onSubmit'])
+const emit = defineEmits(['submitOTP', 'submitSecureSessionID'])
 
 const refOTP = ref()
 const useRecoveryCode = ref(false)
 const passcode = ref('')
 const recoveryCode = ref('')
+const passkeyLoading = ref(false)
 
 function clickUseRecoveryCode() {
   passcode.value = ''
@@ -19,7 +25,7 @@ function clickUseOTP() {
 }
 
 function onSubmit() {
-  emit('onSubmit', passcode.value, recoveryCode.value)
+  emit('submitOTP', passcode.value, recoveryCode.value)
 }
 
 function clearInput() {
@@ -29,12 +35,32 @@ function clearInput() {
 defineExpose({
   clearInput,
 })
+
+async function passkeyAuthenticate() {
+  passkeyLoading.value = true
+  try {
+    const begin = await twoFA.begin_start_secure_session_by_passkey()
+    const asseResp = await startAuthentication(begin.options.publicKey)
+
+    const r = await twoFA.finish_start_secure_session_by_passkey({
+      session_id: begin.session_id,
+      options: asseResp,
+    })
+
+    emit('submitSecureSessionID', r.session_id)
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  catch (e: any) {
+    message.error($gettext(e.message ?? 'Server error'))
+  }
+  passkeyLoading.value = false
+}
 </script>
 
 <template>
   <div>
     <div v-if="!useRecoveryCode">
-      <p>{{ $gettext('Please enter the 2FA code:') }}</p>
+      <p>{{ $gettext('Please enter the OTP code:') }}</p>
       <OTPInput
         ref="refOTP"
         v-model="passcode"
@@ -67,6 +93,22 @@ defineExpose({
         v-else
         @click="clickUseOTP"
       >{{ $gettext('Use OTP') }}</a>
+    </div>
+
+    <div class="flex flex-col justify-center">
+      <ADivider>
+        <div class="text-sm font-normal opacity-75">
+          {{ $gettext('Or') }}
+        </div>
+      </ADivider>
+
+      <AButton
+        :loading="passkeyLoading"
+        @click="passkeyAuthenticate"
+      >
+        <KeyOutlined />
+        {{ $gettext('Authenticate with a passkey') }}
+      </AButton>
     </div>
   </div>
 </template>
