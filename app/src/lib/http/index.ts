@@ -7,7 +7,7 @@ import { useSettingsStore, useUserStore } from '@/pinia'
 import 'nprogress/nprogress.css'
 
 import router from '@/routes'
-import use2FAModal from '@/components/2FA/use2FAModal'
+import use2FAModal from '@/components/TwoFA/use2FAModal'
 
 const user = useUserStore()
 const settings = useSettingsStore()

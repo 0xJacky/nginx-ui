@@ -133,6 +133,8 @@ const isManaged = computed(() => {
               name: data.name,
               domains: data.domains,
               key_type: data.key_type,
+              challenge_method: data.challenge_method,
+              dns_credential_id: data.dns_credential_id,
             }"
             @renewed="init"
           />

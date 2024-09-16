@@ -4,7 +4,7 @@ import { Terminal } from '@xterm/xterm'
 import { FitAddon } from '@xterm/addon-fit'
 import _ from 'lodash'
 import ws from '@/lib/websocket'
-import use2FAModal from '@/components/2FA/use2FAModal'
+import use2FAModal from '@/components/TwoFA/use2FAModal'
 import twoFA from '@/api/2fa'
 
 let term: Terminal | null

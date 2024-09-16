@@ -1,7 +1,7 @@
 import { createVNode, render } from 'vue'
 import { Modal, message } from 'ant-design-vue'
 import { useCookies } from '@vueuse/integrations/useCookies'
-import Authorization from '@/components/2FA/Authorization.vue'
+import Authorization from '@/components/TwoFA/Authorization.vue'
 import twoFA from '@/api/2fa'
 import { useUserStore } from '@/pinia'
 

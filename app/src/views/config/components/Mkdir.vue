@@ -2,7 +2,7 @@
 
 import { message } from 'ant-design-vue'
 import config from '@/api/config'
-import use2FAModal from '@/components/2FA/use2FAModal'
+import use2FAModal from '@/components/TwoFA/use2FAModal'
 
 const emit = defineEmits(['created'])
 const visible = ref(false)

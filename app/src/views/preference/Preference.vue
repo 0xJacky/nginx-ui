@@ -11,7 +11,7 @@ import type { Settings } from '@/views/preference/typedef'
 import LogrotateSettings from '@/views/preference/LogrotateSettings.vue'
 import { useSettingsStore } from '@/pinia'
 import AuthSettings from '@/views/preference/AuthSettings.vue'
-import use2FAModal from '@/components/2FA/use2FAModal'
+import use2FAModal from '@/components/TwoFA/use2FAModal'
 
 const data = ref<Settings>({
   server: {

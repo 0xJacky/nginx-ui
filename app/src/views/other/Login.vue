@@ -8,7 +8,7 @@ import auth from '@/api/auth'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
-import Authorization from '@/components/2FA/Authorization.vue'
+import Authorization from '@/components/TwoFA/Authorization.vue'
 import gettext from '@/gettext'
 import passkey from '@/api/passkey'
 
