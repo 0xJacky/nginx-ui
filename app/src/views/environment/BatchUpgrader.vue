@@ -242,7 +242,7 @@ async function performUpgrade() {
 <style lang="less">
 .dark {
   .core-upgrade-log-container {
-    background-color: rgba(0, 0, 0, 0.84);
+    background-color: rgba(0, 0, 0, 0.84) !important;
   }
 }
 </style>
