@@ -70,6 +70,15 @@
 |-----------------------|-----------------------------|
 | IPWhiteList           | NGINX_UI_AUTH_IPWhiteList   |
 
+## Webauthn
+
+| Configuration Setting | Environment Variable              |
+|-----------------------|-----------------------------------|
+| RPDisplayName         | NGINX_UI_WEBAUTHN_RP_DISPLAY_NAME |
+| RPID                  | NGINX_UI_WEBAUTHN_RPID            |
+| RPOrigins             | NGINX_UI_WEBAUTHN_RP_ORIGINS      |
+
+
 ## 预定义用户
 
 在跳过安装模式下，您可以设置以下环境变量以创建预定义用户：

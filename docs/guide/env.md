@@ -1,4 +1,5 @@
 # Environment Variables
+
 Applicable for version v2.0.0-beta.23 and above.
 
 ## Server
@@ -25,50 +26,58 @@ Applicable for version v2.0.0-beta.23 and above.
 
 ## Nginx
 
-| Configuration Setting         | Environment Variable                  |
-| ----------------------------- | ------------------------------------- |
-| AccessLogPath                 | NGINX_UI_NGINX_ACCESS_LOG_PATH        |
-| ErrorLogPath                  | NGINX_UI_NGINX_ERROR_LOG_PATH         |
-| ConfigDir                     | NGINX_UI_NGINX_CONFIG_DIR             |
-| PIDPath                       | NGINX_UI_NGINX_PID_PATH               |
-| TestConfigCmd                 | NGINX_UI_NGINX_TEST_CONFIG_CMD        |
-| ReloadCmd                     | NGINX_UI_NGINX_RELOAD_CMD             |
-| RestartCmd                    | NGINX_UI_NGINX_RESTART_CMD            |
+| Configuration Setting | Environment Variable           |
+|-----------------------|--------------------------------|
+| AccessLogPath         | NGINX_UI_NGINX_ACCESS_LOG_PATH |
+| ErrorLogPath          | NGINX_UI_NGINX_ERROR_LOG_PATH  |
+| ConfigDir             | NGINX_UI_NGINX_CONFIG_DIR      |
+| PIDPath               | NGINX_UI_NGINX_PID_PATH        |
+| TestConfigCmd         | NGINX_UI_NGINX_TEST_CONFIG_CMD |
+| ReloadCmd             | NGINX_UI_NGINX_RELOAD_CMD      |
+| RestartCmd            | NGINX_UI_NGINX_RESTART_CMD     |
 
 ## OpenAI
 
-| Configuration Setting         | Environment Variable                  |
-| ----------------------------- | ------------------------------------- |
-| Model                         | NGINX_UI_OPENAI_MODEL                 |
-| BaseUrl                       | NGINX_UI_OPENAI_BASE_URL              |
-| Proxy                         | NGINX_UI_OPENAI_PROXY                 |
-| Token                         | NGINX_UI_OPENAI_TOKEN                 |
+| Configuration Setting | Environment Variable     |
+|-----------------------|--------------------------|
+| Model                 | NGINX_UI_OPENAI_MODEL    |
+| BaseUrl               | NGINX_UI_OPENAI_BASE_URL |
+| Proxy                 | NGINX_UI_OPENAI_PROXY    |
+| Token                 | NGINX_UI_OPENAI_TOKEN    |
 
 ## Casdoor
 
-| Configuration Setting         | Environment Variable                  |
-| ----------------------------- | ------------------------------------- |
-| Endpoint                      | NGINX_UI_CASDOOR_ENDPOINT             |
-| ClientId                      | NGINX_UI_CASDOOR_CLIENT_ID            |
-| ClientSecret                  | NGINX_UI_CASDOOR_CLIENT_SECRET        |
-| Certificate                   | NGINX_UI_CASDOOR_CERTIFICATE          |
-| Organization                  | NGINX_UI_CASDOOR_ORGANIZATION         |
-| Application                   | NGINX_UI_CASDOOR_APPLICATION          |
-| RedirectUri                   | NGINX_UI_CASDOOR_REDIRECT_URI         |
+| Configuration Setting | Environment Variable           |
+|-----------------------|--------------------------------|
+| Endpoint              | NGINX_UI_CASDOOR_ENDPOINT      |
+| ClientId              | NGINX_UI_CASDOOR_CLIENT_ID     |
+| ClientSecret          | NGINX_UI_CASDOOR_CLIENT_SECRET |
+| Certificate           | NGINX_UI_CASDOOR_CERTIFICATE   |
+| Organization          | NGINX_UI_CASDOOR_ORGANIZATION  |
+| Application           | NGINX_UI_CASDOOR_APPLICATION   |
+| RedirectUri           | NGINX_UI_CASDOOR_REDIRECT_URI  |
 
 ## Logrotate
 
-| Configuration Setting         | Environment Variable                  |
-| ----------------------------- | ------------------------------------- |
-| Enabled                       | NGINX_UI_LOGROTATE_ENABLED            |
-| CMD                           | NGINX_UI_LOGROTATE_CMD                |
-| Interval                      | NGINX_UI_LOGROTATE_INTERVAL           |
+| Configuration Setting | Environment Variable        |
+|-----------------------|-----------------------------|
+| Enabled               | NGINX_UI_LOGROTATE_ENABLED  |
+| CMD                   | NGINX_UI_LOGROTATE_CMD      |
+| Interval              | NGINX_UI_LOGROTATE_INTERVAL |
 
 ## Auth
 
-| Configuration Setting | Environment Variable        |
-|-----------------------|-----------------------------|
-| IPWhiteList           | NGINX_UI_AUTH_IPWhiteList   |
+| Configuration Setting | Environment Variable      |
+|-----------------------|---------------------------|
+| IPWhiteList           | NGINX_UI_AUTH_IPWhiteList |
+
+## Webauthn
+
+| Configuration Setting | Environment Variable              |
+|-----------------------|-----------------------------------|
+| RPDisplayName         | NGINX_UI_WEBAUTHN_RP_DISPLAY_NAME |
+| RPID                  | NGINX_UI_WEBAUTHN_RPID            |
+| RPOrigins             | NGINX_UI_WEBAUTHN_RP_ORIGINS      |
 
 ## Predefined User
 

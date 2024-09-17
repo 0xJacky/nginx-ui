@@ -45,7 +45,8 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             {text: 'Logrotate', link: '/zh_TW/guide/config-logrotate'},
             {text: '集群', link: '/zh_TW/guide/config-cluster'},
             {text: '認證', link: '/zh_TW/guide/config-auth'},
-            {text: '加密', link: '/zh_TW/guide/config-crypto'}
+            {text: '加密', link: '/zh_TW/guide/config-crypto'},
+            {text: 'Webauthn', link: '/zh_TW/guide/config-webauthn'},
           ]
         },
         {

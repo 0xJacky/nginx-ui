@@ -41,7 +41,8 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             {text: 'Logrotate', link: '/guide/config-logrotate'},
             {text: 'Cluster', link: '/guide/config-cluster'},
             {text: 'Auth', link: '/guide/config-auth'},
-            {text: 'Crypto', link: '/guide/config-crypto'}
+            {text: 'Crypto', link: '/guide/config-crypto'},
+            {text: 'Webauthn', link: '/guide/config-webauthn'}
           ]
         },
         {
