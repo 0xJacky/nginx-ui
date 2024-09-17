@@ -16,13 +16,13 @@ Passkey 是使用觸控、面部識別、裝置密碼或 PIN 驗證您身份的 
 
 請在 app.ini 配置檔中手動添加以下內容，並重新啟動 Nginx UI。
 
-### RPDDisplayName
+### RPDisplayName
 
 - 類型：`string`
 
   用於在註冊新憑證時設定依賴方（RP）的顯示名稱。
 
-### RPDID
+### RPID
 
 - 類型：`string`
 
