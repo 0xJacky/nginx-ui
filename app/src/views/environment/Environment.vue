@@ -42,13 +42,19 @@ function batchUpgrade() {
 
     <BatchUpgrader ref="refUpgrader" />
 
-    <FooterToolBar v-if="selectedNodes?.length > 0">
-      <AButton
-        type="primary"
-        @click="batchUpgrade"
+    <FooterToolBar>
+      <ATooltip
+        :title="$gettext('Please select at least one node to upgrade')"
+        placement="topLeft"
       >
-        {{ $gettext('Upgrade') }}
-      </AButton>
+        <AButton
+          :disabled="selectedNodeIds.length === 0"
+          type="primary"
+          @click="batchUpgrade"
+        >
+          {{ $gettext('Upgrade') }}
+        </AButton>
+      </ATooltip>
     </FooterToolBar>
   </div>
 </template>

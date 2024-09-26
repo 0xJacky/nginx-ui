@@ -229,7 +229,7 @@ async function handlePasskeyLogin() {
                 :two-f-a-status="{
                   enabled: true,
                   otp_status: true,
-                  passkey_status: true,
+                  passkey_status: false,
                 }"
                 @submit-o-t-p="handleOTPSubmit"
               />

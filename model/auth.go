@@ -3,15 +3,17 @@ package model
 import (
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/spf13/cast"
+	"gorm.io/gorm"
 )
 
 type User struct {
 	Model
 
-	Name      string `json:"name"`
-	Password  string `json:"-"`
-	Status    bool   `json:"status" gorm:"default:1"`
-	OTPSecret []byte `json:"-" gorm:"type:blob"`
+	Name         string `json:"name"`
+	Password     string `json:"-"`
+	Status       bool   `json:"status" gorm:"default:1"`
+	OTPSecret    []byte `json:"-" gorm:"type:blob"`
+	EnabledTwoFA bool   `json:"enabled_2fa" gorm:"-"`
 }
 
 type AuthToken struct {
@@ -22,6 +24,11 @@ type AuthToken struct {
 
 func (u *User) TableName() string {
 	return "auths"
+}
+
+func (u *User) AfterFind(_ *gorm.DB) error {
+	u.EnabledTwoFA = u.Enabled2FA()
+	return nil
 }
 
 func (u *User) EnabledOTP() bool {
