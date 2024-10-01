@@ -54,11 +54,8 @@ jobs:
 
       - name: Deploy to server
         if: github.event_name != 'pull_request'
-        uses: easingthemes/ssh-deploy@main
-        env:
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          TARGET: ${{ secrets.REMOTE_TARGET }}
-          SOURCE: "docs/.vitepress/dist/"
-          ARGS: "-rlgoDzvc -i --delete"
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: pages deploy "docs/.vitepress/dist/" --branch=main --commit-dirty=true --project-name=nginxui
