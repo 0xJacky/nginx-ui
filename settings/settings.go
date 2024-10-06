@@ -82,11 +82,6 @@ func Setup() {
 	if AuthSettings.MaxAttempts <= 0 {
 		AuthSettings.MaxAttempts = 10
 	}
-
-	err = Save()
-	if err != nil {
-		log.Fatalf("settings.Setup: %v\n", err)
-	}
 }
 
 func MapTo() {
