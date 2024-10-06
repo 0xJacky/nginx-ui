@@ -6,8 +6,8 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/tls"
-    "github.com/0xJacky/Nginx-UI/settings"
-    "github.com/go-acme/lego/v4/lego"
+	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/go-acme/lego/v4/lego"
 	"github.com/go-acme/lego/v4/registration"
 	"math/big"
 	"net/http"
@@ -64,6 +64,7 @@ func (u *AcmeUser) Register() error {
 	// Skip TLS check
 	if config.HTTPClient != nil {
 		config.HTTPClient.Transport = &http.Transport{
+			Proxy:           http.ProxyFromEnvironment,
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.ServerSettings.InsecureSkipVerify},
 		}
 	}

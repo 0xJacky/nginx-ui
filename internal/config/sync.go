@@ -124,6 +124,7 @@ type SyncNotificationPayload struct {
 func (p *SyncConfigPayload) deploy(env *model.Environment, c *model.Config, payloadBytes []byte) (err error) {
 	client := http.Client{
 		Transport: &http.Transport{
+			Proxy:           http.ProxyFromEnvironment,
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.ServerSettings.InsecureSkipVerify},
 		},
 	}

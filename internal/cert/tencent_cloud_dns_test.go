@@ -5,6 +5,7 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/tls"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/go-acme/lego/v4/certificate"
@@ -28,9 +29,12 @@ func TestTencentCloudDNS(t *testing.T) {
 		return
 	}
 
-	myUser := User{
+	myUser := model.AcmeUser{
 		Email: settings.ServerSettings.Email,
-		Key:   privateKey,
+		Key: model.PrivateKey{
+			X: privateKey.PublicKey.X,
+			Y: privateKey.PublicKey.Y,
+		},
 	}
 
 	config := lego.NewConfig(&myUser)
@@ -43,6 +47,7 @@ func TestTencentCloudDNS(t *testing.T) {
 		config.CADirURL = settings.ServerSettings.CADir
 		if config.HTTPClient != nil {
 			config.HTTPClient.Transport = &http.Transport{
+				Proxy:           http.ProxyFromEnvironment,
 				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 			}
 		}
@@ -79,7 +84,7 @@ func TestTencentCloudDNS(t *testing.T) {
 		log.Println(err)
 		return
 	}
-	myUser.Registration = reg
+	myUser.Registration = *reg
 
 	request := certificate.ObtainRequest{
 		Domains: domain,

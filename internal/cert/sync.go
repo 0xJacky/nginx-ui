@@ -11,8 +11,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
-    "github.com/0xJacky/Nginx-UI/settings"
-    "github.com/go-acme/lego/v4/certcrypto"
+	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/go-acme/lego/v4/certcrypto"
 	"io"
 	"net/http"
 	"os"
@@ -90,6 +90,7 @@ type SyncNotificationPayload struct {
 func deploy(env *model.Environment, c *model.Cert, payloadBytes []byte) (err error) {
 	client := http.Client{
 		Transport: &http.Transport{
+			Proxy:           http.ProxyFromEnvironment,
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.ServerSettings.InsecureSkipVerify},
 		},
 	}

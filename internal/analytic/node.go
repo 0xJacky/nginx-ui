@@ -84,6 +84,7 @@ func InitNode(env *model.Environment) (n *Node) {
 
 	client := http.Client{
 		Transport: &http.Transport{
+			Proxy:           http.ProxyFromEnvironment,
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.ServerSettings.InsecureSkipVerify},
 		},
 	}
