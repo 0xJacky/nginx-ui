@@ -18,10 +18,10 @@ Casdoor 是一个强大的、全面的身份认证解决方案，支持 OAuth 2.
 
 这是 Casdoor 为您的应用生成的客户端密钥。它是保持您的应用安全所必需的。
 
-## Certificate
+## CertificatePath
 - 类型：`string`
 
-这是用于身份验证过程中的证书。确保它是有效和可信的。
+这是用于身份验证过程中的证书的路径。确保它是有效和可信的。
 
 ## Organization
 - 类型：`string`

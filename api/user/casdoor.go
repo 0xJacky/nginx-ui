@@ -11,6 +11,7 @@ import (
 	"gorm.io/gorm"
 	"net/http"
 	"net/url"
+	"os"
 )
 
 type CasdoorLoginUser struct {
@@ -29,17 +30,24 @@ func CasdoorCallback(c *gin.Context) {
 	endpoint := settings.CasdoorSettings.Endpoint
 	clientId := settings.CasdoorSettings.ClientId
 	clientSecret := settings.CasdoorSettings.ClientSecret
-	certificate := settings.CasdoorSettings.Certificate
+	certificatePath := settings.CasdoorSettings.CertificatePath
 	organization := settings.CasdoorSettings.Organization
 	application := settings.CasdoorSettings.Application
-	if endpoint == "" || clientId == "" || clientSecret == "" || certificate == "" || organization == "" || application == "" {
+	if endpoint == "" || clientId == "" || clientSecret == "" || certificatePath == "" ||
+		organization == "" || application == "" {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Casdoor is not configured",
 		})
 		return
 	}
 
-	casdoorsdk.InitConfig(endpoint, clientId, clientSecret, certificate, organization, application)
+	certBytes, err := os.ReadFile(certificatePath)
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+
+	casdoorsdk.InitConfig(endpoint, clientId, clientSecret, string(certBytes), organization, application)
 
 	token, err := casdoorsdk.GetOAuthToken(loginUser.Code, loginUser.State)
 	if err != nil {
@@ -93,6 +101,8 @@ func GetCasdoorUri(c *gin.Context) {
 	encodedRedirectUri := url.QueryEscape(redirectUri)
 
 	c.JSON(http.StatusOK, gin.H{
-		"uri": fmt.Sprintf("%s/login/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s&state=%s&scope=read", endpoint, clientId, encodedRedirectUri, state),
+		"uri": fmt.Sprintf(
+			"%s/login/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s&state=%s&scope=read",
+			endpoint, clientId, encodedRedirectUri, state),
 	})
 }

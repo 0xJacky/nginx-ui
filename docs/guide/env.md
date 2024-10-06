@@ -47,15 +47,15 @@ Applicable for version v2.0.0-beta.23 and above.
 
 ## Casdoor
 
-| Configuration Setting | Environment Variable           |
-|-----------------------|--------------------------------|
-| Endpoint              | NGINX_UI_CASDOOR_ENDPOINT      |
-| ClientId              | NGINX_UI_CASDOOR_CLIENT_ID     |
-| ClientSecret          | NGINX_UI_CASDOOR_CLIENT_SECRET |
-| Certificate           | NGINX_UI_CASDOOR_CERTIFICATE   |
-| Organization          | NGINX_UI_CASDOOR_ORGANIZATION  |
-| Application           | NGINX_UI_CASDOOR_APPLICATION   |
-| RedirectUri           | NGINX_UI_CASDOOR_REDIRECT_URI  |
+| Configuration Setting | Environment Variable              |
+|-----------------------|-----------------------------------|
+| Endpoint              | NGINX_UI_CASDOOR_ENDPOINT         |
+| ClientId              | NGINX_UI_CASDOOR_CLIENT_ID        |
+| ClientSecret          | NGINX_UI_CASDOOR_CLIENT_SECRET    |
+| CertificatePath       | NGINX_UI_CASDOOR_CERTIFICATE_PATH |
+| Organization          | NGINX_UI_CASDOOR_ORGANIZATION     |
+| Application           | NGINX_UI_CASDOOR_APPLICATION      |
+| RedirectUri           | NGINX_UI_CASDOOR_REDIRECT_URI     |
 
 ## Logrotate
 
