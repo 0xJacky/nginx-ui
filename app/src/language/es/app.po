@@ -32,12 +32,12 @@ msgstr "Acerca de"
 msgid "Access Logs"
 msgstr "Logs de acceso"
 
-#: src/routes/index.ts:142 src/views/certificate/ACMEUser.vue:76
+#: src/routes/index.ts:142 src/views/certificate/ACMEUser.vue:105
 #: src/views/certificate/ACMEUserSelector.vue:85
 msgid "ACME User"
 msgstr "Usuario ACME"
 
-#: src/views/certificate/ACMEUser.vue:59
+#: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/CertificateList/certColumns.tsx:89
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.ts:38 src/views/domain/DomainList.vue:47
@@ -48,8 +48,8 @@ msgstr "Usuario ACME"
 msgid "Action"
 msgstr "Acción"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:182
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:203
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:204
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/domain/ngx_conf/NgxServer.vue:162
 #: src/views/domain/ngx_conf/NgxUpstream.vue:152
@@ -72,8 +72,8 @@ msgstr "Agregar configuración"
 msgid "Add Directive Below"
 msgstr "Añadir directiva a continuación"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:111
-#: src/views/domain/ngx_conf/LocationEditor.vue:138
+#: src/views/domain/ngx_conf/LocationEditor.vue:132
+#: src/views/domain/ngx_conf/LocationEditor.vue:159
 msgid "Add Location"
 msgstr "Agregar Ubicación"
 
@@ -163,7 +163,7 @@ msgstr "¿Está seguro de que quiere borrar esta directiva?"
 msgid "Are you sure you want to remove this item?"
 msgstr "¿Está seguro de que desea eliminar este elemento?"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:68
+#: src/views/domain/ngx_conf/LocationEditor.vue:88
 msgid "Are you sure you want to remove this location?"
 msgstr "¿Está seguro de que quiere borrar esta ubicación?"
 
@@ -183,7 +183,7 @@ msgstr "Intentos"
 msgid "Auth"
 msgstr "Autenticación"
 
-#: src/components/2FA/Authorization.vue:126
+#: src/components/TwoFA/Authorization.vue:126
 msgid "Authenticate with a passkey"
 msgstr ""
 
@@ -208,7 +208,7 @@ msgstr "Renovación automática deshabilitada por %{name}"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "Renovación automática habilitada por %{name}"
 
-#: src/views/certificate/CertificateEditor.vue:247
+#: src/views/certificate/CertificateEditor.vue:249
 #: src/views/config/ConfigEditor.vue:213 src/views/config/ConfigList.vue:107
 #: src/views/config/ConfigList.vue:181 src/views/domain/DomainEdit.vue:253
 #: src/views/nginx_log/NginxLog.vue:168 src/views/stream/StreamEdit.vue:245
@@ -219,7 +219,7 @@ msgstr "Volver"
 msgid "Back Home"
 msgstr "Volver al Inicio"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:216
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:217
 msgid "Back to list"
 msgstr "Volver a la lista"
 
@@ -263,7 +263,7 @@ msgstr "Actualización por lotes"
 msgid "Build with"
 msgstr "Desarrollado con"
 
-#: src/views/certificate/ACMEUser.vue:29
+#: src/views/certificate/ACMEUser.vue:35
 msgid "CA Dir"
 msgstr "Dir CA"
 
@@ -277,7 +277,7 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:252
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:55
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:253
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:254
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:153
 #: src/views/domain/cert/components/ObtainCert.vue:137
 #: src/views/domain/components/Deploy.vue:21
@@ -358,8 +358,8 @@ msgid "Command"
 msgstr "Comando"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:106
-#: src/views/domain/ngx_conf/LocationEditor.vue:115
-#: src/views/domain/ngx_conf/LocationEditor.vue:84
+#: src/views/domain/ngx_conf/LocationEditor.vue:105
+#: src/views/domain/ngx_conf/LocationEditor.vue:136
 #: src/views/domain/ngx_conf/NgxServer.vue:134
 msgid "Comments"
 msgstr "Comentarios"
@@ -393,8 +393,8 @@ msgid "Connection lost, please refresh the page."
 msgstr "Conexión perdida, por favor actualice la página."
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
-#: src/views/domain/ngx_conf/LocationEditor.vue:124
-#: src/views/domain/ngx_conf/LocationEditor.vue:96
+#: src/views/domain/ngx_conf/LocationEditor.vue:117
+#: src/views/domain/ngx_conf/LocationEditor.vue:145
 msgid "Content"
 msgstr "Contenido"
 
@@ -727,7 +727,7 @@ msgstr "Editar Sitio"
 msgid "Edit Stream"
 msgstr "Editar Transmisión"
 
-#: src/views/certificate/ACMEUser.vue:21
+#: src/views/certificate/ACMEUser.vue:24
 msgid "Email"
 msgstr "Correo"
 
@@ -962,7 +962,7 @@ msgstr "Puerto HTTP"
 msgid "HTTP01"
 msgstr "HTTP01"
 
-#: src/views/certificate/ACMEUser.vue:37
+#: src/views/certificate/ACMEUser.vue:43
 msgid "If left blank, the default CA Dir will be used."
 msgstr "Si se deja en blanco, se utilizará el directorio CA predeterminado."
 
@@ -1023,7 +1023,7 @@ msgstr "Inicializando la actualización del kernel"
 msgid "Input the code from the app:"
 msgstr "Ingrese el código de la aplicación:"
 
-#: src/components/2FA/Authorization.vue:87
+#: src/components/TwoFA/Authorization.vue:87
 #: src/views/preference/components/TOTP.vue:171
 msgid "Input the recovery code:"
 msgstr "Ingrese el código de recuperación:"
@@ -1040,7 +1040,7 @@ msgstr "Instalación exitosa"
 msgid "Interval"
 msgstr "Intervalo"
 
-#: src/views/certificate/ACMEUser.vue:92
+#: src/views/certificate/ACMEUser.vue:121
 msgid "Invalid"
 msgstr "Inválido"
 
@@ -1057,7 +1057,7 @@ msgstr "Nombre de archivo inválido"
 msgid "Invalid folder name"
 msgstr "Nombre de carpeta inválido"
 
-#: src/components/2FA/use2FAModal.ts:65
+#: src/components/TwoFA/use2FAModal.ts:65
 msgid "Invalid passcode or recovery code"
 msgstr "Código de acceso o código de recuperación inválido"
 
@@ -1107,8 +1107,13 @@ msgstr "Para no modificar dejar en blanco"
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Dejar en blanco para el valor predeterminado: https://api.openai.com/"
 
-#: src/views/certificate/CertificateEditor.vue:212
-#: src/views/certificate/CertificateEditor.vue:225
+#: src/views/certificate/ACMEUser.vue:56
+#, fuzzy
+msgid "Leave blank if you don't need this."
+msgstr "Para no modificar dejar en blanco"
+
+#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/CertificateEditor.vue:227
 msgid "Leave blank will not change anything"
 msgstr "Dejarlo en blanco no cambiará nada"
 
@@ -1125,7 +1130,7 @@ msgstr "Licencia"
 msgid "Link Start"
 msgstr "Iniciar conexión"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:193
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:194
 msgid "List"
 msgstr "Lista"
 
@@ -1146,15 +1151,15 @@ msgstr "Cargado con éxito"
 msgid "Local"
 msgstr "Local"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:59
+#: src/views/domain/ngx_conf/LocationEditor.vue:69
 msgid "Location"
 msgstr "Ubicación"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:43
+#: src/views/domain/ngx_conf/LocationEditor.vue:50
 msgid "Locations"
 msgstr "Ubicaciones"
 
-#: src/views/certificate/CertificateEditor.vue:235
+#: src/views/certificate/CertificateEditor.vue:237
 msgid "Log"
 msgstr "Registro"
 
@@ -1242,7 +1247,7 @@ msgid "Model"
 msgstr "Modelo"
 
 #: src/components/ChatGPT/ChatGPT.vue:248
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:182
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:531
 #: src/views/config/ConfigList.vue:159
 msgid "Modify"
@@ -1256,7 +1261,7 @@ msgstr "Modificar Certificado"
 msgid "Modify Config"
 msgstr "Modificar configuración"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:269
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:270
 msgid "Modify Mode"
 msgstr "Modo Modificar"
 
@@ -1265,7 +1270,7 @@ msgid "Multi-line Directive"
 msgstr "Directiva multilínea"
 
 #: src/views/certificate/ACMEUser.vue:13
-#: src/views/certificate/CertificateEditor.vue:152
+#: src/views/certificate/CertificateEditor.vue:154
 #: src/views/certificate/CertificateList/certColumns.tsx:10
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:65 src/views/config/configColumns.ts:8
@@ -1355,7 +1360,7 @@ msgstr "Nginx reiniciado con éxito"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:575
 #: src/views/domain/DomainList.vue:144
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
-#: src/views/domain/ngx_conf/LocationEditor.vue:70
+#: src/views/domain/ngx_conf/LocationEditor.vue:90
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/AuthSettings.vue:104
 #: src/views/preference/BasicSettings.vue:101
@@ -1418,7 +1423,7 @@ msgstr ""
 msgid "Offline"
 msgstr "Desconectado"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:254
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:255
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:154
 msgid "Ok"
 msgstr "Ok"
@@ -1458,7 +1463,7 @@ msgstr "En línea"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/2FA/Authorization.vue:117 src/views/other/Login.vue:256
+#: src/components/TwoFA/Authorization.vue:117 src/views/other/Login.vue:256
 msgid "Or"
 msgstr ""
 
@@ -1510,8 +1515,8 @@ msgid "Password (*)"
 msgstr "Contraseña (*)"
 
 #: src/views/config/ConfigEditor.vue:262
-#: src/views/domain/ngx_conf/LocationEditor.vue:118
-#: src/views/domain/ngx_conf/LocationEditor.vue:90
+#: src/views/domain/ngx_conf/LocationEditor.vue:111
+#: src/views/domain/ngx_conf/LocationEditor.vue:139
 msgid "Path"
 msgstr "Ruta"
 
@@ -1533,7 +1538,7 @@ msgid ""
 "button below."
 msgstr ""
 
-#: src/components/2FA/Authorization.vue:75
+#: src/components/TwoFA/Authorization.vue:75
 #, fuzzy
 msgid "Please enter the OTP code:"
 msgstr "Por favor, ingrese el código 2FA:"
@@ -1596,6 +1601,11 @@ msgstr ""
 "Tenga en cuenta que las siguientes configuraciones de unidades de tiempo "
 "están todas en segundos."
 
+#: src/views/environment/Environment.vue:47
+#, fuzzy
+msgid "Please select at least one node to upgrade"
+msgstr "¡Seleccione al menos un nodo!"
+
 #: src/views/domain/components/SiteDuplicate.vue:45
 #: src/views/stream/components/StreamDuplicate.vue:45
 msgid "Please select at least one node!"
@@ -1631,6 +1641,11 @@ msgstr "Grupo del proyecto"
 msgid "Provider"
 msgstr "Proveedor"
 
+#: src/views/certificate/ACMEUser.vue:48
+#, fuzzy
+msgid "Proxy"
+msgstr "Proxy de la API"
+
 #: src/views/dashboard/ServerAnalytic.vue:28
 #: src/views/dashboard/ServerAnalytic.vue:378
 msgid "Reads"
@@ -1649,7 +1664,7 @@ msgstr "Recuperar"
 msgid "Recovered Successfully"
 msgstr "Recuperado con éxito"
 
-#: src/components/2FA/Authorization.vue:94
+#: src/components/TwoFA/Authorization.vue:94
 #: src/views/preference/components/TOTP.vue:178
 msgid "Recovery"
 msgstr "Recuperación"
@@ -1670,20 +1685,31 @@ msgstr "Servidores de nombres recursivos"
 msgid "Regenerate response"
 msgstr "Regenerar respuesta"
 
-#: src/views/certificate/ACMEUser.vue:100
+#: src/views/certificate/ACMEUser.vue:129
 msgid "Register"
 msgstr "Registrar"
 
-#: src/views/certificate/ACMEUser.vue:69
+#: src/views/certificate/ACMEUser.vue:53
+msgid ""
+"Register a user or use this account to issue a certificate through an HTTP "
+"proxy."
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:98
 msgid "Register failed"
 msgstr "Fallo en el registro"
+
+#: src/views/certificate/ACMEUser.vue:72
+#, fuzzy
+msgid "Register On Startup"
+msgstr "Esto de registración"
 
 #: src/views/preference/components/AddPasskey.vue:26
 #, fuzzy
 msgid "Register passkey successfully"
 msgstr "Registrado con éxito"
 
-#: src/views/certificate/ACMEUser.vue:67
+#: src/views/certificate/ACMEUser.vue:96
 msgid "Register successfully"
 msgstr "Registrado con éxito"
 
@@ -1691,7 +1717,7 @@ msgstr "Registrado con éxito"
 msgid "Registering user"
 msgstr "Registrando Usuario"
 
-#: src/views/certificate/ACMEUser.vue:83
+#: src/views/certificate/ACMEUser.vue:112
 msgid "Registration Status"
 msgstr "Esto de registración"
 
@@ -1812,7 +1838,7 @@ msgid "Running"
 msgstr "Corriendo"
 
 #: src/components/ChatGPT/ChatGPT.vue:251
-#: src/views/certificate/CertificateEditor.vue:254
+#: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/ConfigEditor.vue:222 src/views/domain/DomainEdit.vue:260
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
 #: src/views/preference/components/Passkey.vue:136
@@ -1945,19 +1971,19 @@ msgstr "Registros del sitio"
 msgid "Sites List"
 msgstr "Lista de sitios"
 
-#: src/views/certificate/CertificateEditor.vue:203
+#: src/views/certificate/CertificateEditor.vue:205
 msgid "SSL Certificate Content"
 msgstr "Contenido de certificado SSL"
 
-#: src/views/certificate/CertificateEditor.vue:216
+#: src/views/certificate/CertificateEditor.vue:218
 msgid "SSL Certificate Key Content"
 msgstr "Contenido de la llave del certificado SSL"
 
-#: src/views/certificate/CertificateEditor.vue:182
+#: src/views/certificate/CertificateEditor.vue:184
 msgid "SSL Certificate Key Path"
 msgstr "Ruta de la llave del certificado SSL"
 
-#: src/views/certificate/CertificateEditor.vue:167
+#: src/views/certificate/CertificateEditor.vue:169
 msgid "SSL Certificate Path"
 msgstr "Ruta del certificado SSL"
 
@@ -1971,7 +1997,7 @@ msgstr "Acceso SSO"
 msgid "Stable"
 msgstr "Estable"
 
-#: src/views/certificate/ACMEUser.vue:42
+#: src/views/certificate/ACMEUser.vue:61
 #: src/views/certificate/CertificateList/certColumns.tsx:60
 #: src/views/domain/DomainList.vue:22 src/views/environment/envColumns.tsx:78
 #: src/views/stream/StreamList.vue:22
@@ -2066,7 +2092,7 @@ msgstr "Error de Configuración de Sincronización"
 msgid "Sync Config Success"
 msgstr "Configuración de sincronización exitosa"
 
-#: src/views/certificate/CertificateEditor.vue:196
+#: src/views/certificate/CertificateEditor.vue:198
 msgid "Sync to"
 msgstr "Sincronizar con"
 
@@ -2106,11 +2132,11 @@ msgid "The filename cannot contain the following characters: %{c}"
 msgstr ""
 "El nombre del archivo no puede contener los siguientes caracteres: %{c}"
 
-#: src/views/certificate/CertificateEditor.vue:206
+#: src/views/certificate/CertificateEditor.vue:208
 msgid "The input is not a SSL Certificate"
 msgstr "La entrada no es un Certificado SSL"
 
-#: src/views/certificate/CertificateEditor.vue:219
+#: src/views/certificate/CertificateEditor.vue:221
 msgid "The input is not a SSL Certificate Key"
 msgstr "La entrada no es una clave de certificado SSL"
 
@@ -2122,11 +2148,11 @@ msgstr ""
 "El nombre del modelo solo debe contener letras, unicode, números, guiones, "
 "rayas y puntos."
 
-#: src/views/certificate/CertificateEditor.vue:171
+#: src/views/certificate/CertificateEditor.vue:173
 msgid "The path exists, but the file is not a certificate"
 msgstr "La ruta existe, pero el archivo no es un certificado"
 
-#: src/views/certificate/CertificateEditor.vue:186
+#: src/views/certificate/CertificateEditor.vue:188
 msgid "The path exists, but the file is not a private key"
 msgstr "La ruta existe, pero el archivo no es una clave privada"
 
@@ -2185,9 +2211,9 @@ msgstr "Este elemento de Auto Cert es inválido, elimínelo por favor."
 msgid "This certificate is managed by Nginx UI"
 msgstr "Este certificado es administrado por Nginx UI"
 
-#: src/views/certificate/CertificateEditor.vue:155
-#: src/views/certificate/CertificateEditor.vue:169
-#: src/views/certificate/CertificateEditor.vue:184
+#: src/views/certificate/CertificateEditor.vue:157
+#: src/views/certificate/CertificateEditor.vue:171
+#: src/views/certificate/CertificateEditor.vue:186
 msgid "This field is required"
 msgstr "Este campo es obligatorio"
 
@@ -2261,11 +2287,11 @@ msgstr ""
 "TOTP es un método de autenticación de dos factores que utiliza un algoritmo "
 "de contraseña de un solo uso basado en el tiempo."
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:210
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:211
 msgid "Trash"
 msgstr "Basura"
 
-#: src/components/2FA/use2FAModal.ts:71
+#: src/components/TwoFA/use2FAModal.ts:71
 msgid "Two-factor authentication required"
 msgstr "Se requiere autenticación de dos factores"
 
@@ -2280,7 +2306,7 @@ msgstr "Tipo"
 msgid "Update successfully"
 msgstr "Actualización exitosa"
 
-#: src/views/certificate/ACMEUser.vue:53
+#: src/views/certificate/ACMEUser.vue:82
 #: src/views/certificate/DNSCredential.vue:27
 #: src/views/config/configColumns.ts:31 src/views/config/ConfigEditor.vue:275
 #: src/views/domain/components/RightSettings.vue:86
@@ -2294,7 +2320,7 @@ msgstr "Actualizado a"
 msgid "Updated successfully"
 msgstr "Actualización exitosa"
 
-#: src/routes/index.ts:284 src/views/environment/Environment.vue:50
+#: src/routes/index.ts:284 src/views/environment/Environment.vue:55
 #: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
 msgid "Upgrade"
 msgstr "Actualizar"
@@ -2323,11 +2349,11 @@ msgstr "Tiempo encendido:"
 msgid "URL"
 msgstr "URL"
 
-#: src/components/2FA/Authorization.vue:107
+#: src/components/TwoFA/Authorization.vue:107
 msgid "Use OTP"
 msgstr "Usar OTP"
 
-#: src/components/2FA/Authorization.vue:103
+#: src/components/TwoFA/Authorization.vue:103
 msgid "Use recovery code"
 msgstr "Usar código de recuperación"
 
@@ -2347,7 +2373,7 @@ msgstr "Nombre de usuario"
 msgid "Username (*)"
 msgstr "Nombre de usuario (*)"
 
-#: src/views/certificate/ACMEUser.vue:87
+#: src/views/certificate/ACMEUser.vue:116
 #: src/views/certificate/CertificateList/certColumns.tsx:73
 #: src/views/domain/cert/CertInfo.vue:24
 msgid "Valid"
@@ -2366,11 +2392,11 @@ msgstr "Ver"
 msgid "View all notifications"
 msgstr "Ver todas las notificaciones"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:182
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
 msgid "View Details"
 msgstr "Ver detalles"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:269
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:270
 msgid "View Mode"
 msgstr "Modo de vista"
 
@@ -2397,6 +2423,13 @@ msgstr ""
 "Eliminaremos la configuración de HTTPChallenge de este archivo y "
 "recargaremos Nginx. ¿Estás seguro de que quieres continuar?"
 
+#: src/views/certificate/ACMEUser.vue:78
+msgid ""
+"When Enabled, Nginx UI will automatically re-register users upon startup. "
+"Generally, do not enable this unless you are in a dev environment and using "
+"Pebble as CA."
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:27
 #: src/views/dashboard/ServerAnalytic.vue:368
 msgid "Writes"
@@ -2411,7 +2444,7 @@ msgid "Writing certificate to disk"
 msgstr "Escribir certificado a disco"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
-#: src/views/domain/ngx_conf/LocationEditor.vue:69
+#: src/views/domain/ngx_conf/LocationEditor.vue:89
 #: src/views/preference/AuthSettings.vue:103
 #: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
@@ -2483,10 +2516,6 @@ msgstr ""
 
 #~ msgid "The path exists, but the file is not a public key"
 #~ msgstr "La ruta existe, pero el archivo no es una clave pública"
-
-#, fuzzy
-#~ msgid "Leave blank will not change anything."
-#~ msgstr "Para no modificar dejar en blanco"
 
 #, fuzzy
 #~ msgid "Auto Cert is enabled"

@@ -24,9 +24,11 @@ func GetAcmeUser(c *gin.Context) {
 
 func CreateAcmeUser(c *gin.Context) {
 	cosy.Core[model.AcmeUser](c).SetValidRules(gin.H{
-		"name":   "required",
-		"email":  "required,email",
-		"ca_dir": "omitempty",
+		"name":                "required",
+		"email":               "required,email",
+		"ca_dir":              "omitempty",
+		"proxy":               "omitempty",
+		"register_on_startup": "omitempty",
 	}).BeforeExecuteHook(func(ctx *cosy.Ctx[model.AcmeUser]) {
 		if ctx.Model.CADir == "" {
 			ctx.Model.CADir = settings.ServerSettings.GetCADir()
@@ -41,9 +43,11 @@ func CreateAcmeUser(c *gin.Context) {
 
 func ModifyAcmeUser(c *gin.Context) {
 	cosy.Core[model.AcmeUser](c).SetValidRules(gin.H{
-		"name":   "omitempty",
-		"email":  "omitempty,email",
-		"ca_dir": "omitempty",
+		"name":                "omitempty",
+		"email":               "omitempty,email",
+		"ca_dir":              "omitempty",
+		"proxy":               "omitempty",
+		"register_on_startup": "omitempty",
 	}).BeforeExecuteHook(func(ctx *cosy.Ctx[model.AcmeUser]) {
 		if ctx.Model.CADir == "" {
 			ctx.Model.CADir = settings.ServerSettings.GetCADir()

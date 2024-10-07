@@ -33,12 +33,12 @@ msgstr "關於"
 msgid "Access Logs"
 msgstr "存取日誌"
 
-#: src/routes/index.ts:142 src/views/certificate/ACMEUser.vue:76
+#: src/routes/index.ts:142 src/views/certificate/ACMEUser.vue:105
 #: src/views/certificate/ACMEUserSelector.vue:85
 msgid "ACME User"
 msgstr "ACME 用戶"
 
-#: src/views/certificate/ACMEUser.vue:59
+#: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/CertificateList/certColumns.tsx:89
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.ts:38 src/views/domain/DomainList.vue:47
@@ -49,8 +49,8 @@ msgstr "ACME 用戶"
 msgid "Action"
 msgstr "操作"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:182
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:203
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:204
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/domain/ngx_conf/NgxServer.vue:162
 #: src/views/domain/ngx_conf/NgxUpstream.vue:152
@@ -73,8 +73,8 @@ msgstr "添加配置"
 msgid "Add Directive Below"
 msgstr "在下方新增指令"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:111
-#: src/views/domain/ngx_conf/LocationEditor.vue:138
+#: src/views/domain/ngx_conf/LocationEditor.vue:132
+#: src/views/domain/ngx_conf/LocationEditor.vue:159
 msgid "Add Location"
 msgstr "新增 Location"
 
@@ -164,7 +164,7 @@ msgstr "您確定要刪除這條指令嗎？"
 msgid "Are you sure you want to remove this item?"
 msgstr "您確定要刪除此項目嗎？"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:68
+#: src/views/domain/ngx_conf/LocationEditor.vue:88
 msgid "Are you sure you want to remove this location?"
 msgstr "您確定要刪除此 Location 嗎？"
 
@@ -184,7 +184,7 @@ msgstr "嘗試次數"
 msgid "Auth"
 msgstr "身份驗證"
 
-#: src/components/2FA/Authorization.vue:126
+#: src/components/TwoFA/Authorization.vue:126
 msgid "Authenticate with a passkey"
 msgstr ""
 
@@ -209,7 +209,7 @@ msgstr "已關閉 %{name} 的自動續簽"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "已啟用 %{name} 的自動續簽"
 
-#: src/views/certificate/CertificateEditor.vue:247
+#: src/views/certificate/CertificateEditor.vue:249
 #: src/views/config/ConfigEditor.vue:213 src/views/config/ConfigList.vue:107
 #: src/views/config/ConfigList.vue:181 src/views/domain/DomainEdit.vue:253
 #: src/views/nginx_log/NginxLog.vue:168 src/views/stream/StreamEdit.vue:245
@@ -220,7 +220,7 @@ msgstr "返回"
 msgid "Back Home"
 msgstr "返回首頁"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:216
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:217
 msgid "Back to list"
 msgstr "返回列表"
 
@@ -264,7 +264,7 @@ msgstr "批次升級"
 msgid "Build with"
 msgstr "構建基於"
 
-#: src/views/certificate/ACMEUser.vue:29
+#: src/views/certificate/ACMEUser.vue:35
 msgid "CA Dir"
 msgstr "CA Dir"
 
@@ -278,7 +278,7 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:252
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:55
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:253
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:254
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:153
 #: src/views/domain/cert/components/ObtainCert.vue:137
 #: src/views/domain/components/Deploy.vue:21
@@ -357,8 +357,8 @@ msgid "Command"
 msgstr "命令"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:106
-#: src/views/domain/ngx_conf/LocationEditor.vue:115
-#: src/views/domain/ngx_conf/LocationEditor.vue:84
+#: src/views/domain/ngx_conf/LocationEditor.vue:105
+#: src/views/domain/ngx_conf/LocationEditor.vue:136
 #: src/views/domain/ngx_conf/NgxServer.vue:134
 msgid "Comments"
 msgstr "備註"
@@ -392,8 +392,8 @@ msgid "Connection lost, please refresh the page."
 msgstr "連接丟失，請重新整理。"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
-#: src/views/domain/ngx_conf/LocationEditor.vue:124
-#: src/views/domain/ngx_conf/LocationEditor.vue:96
+#: src/views/domain/ngx_conf/LocationEditor.vue:117
+#: src/views/domain/ngx_conf/LocationEditor.vue:145
 msgid "Content"
 msgstr "內容"
 
@@ -719,7 +719,7 @@ msgstr "編輯網站"
 msgid "Edit Stream"
 msgstr "編輯 Stream"
 
-#: src/views/certificate/ACMEUser.vue:21
+#: src/views/certificate/ACMEUser.vue:24
 msgid "Email"
 msgstr "電子郵件"
 
@@ -953,7 +953,7 @@ msgstr "HTTP 監聽埠"
 msgid "HTTP01"
 msgstr "HTTP01"
 
-#: src/views/certificate/ACMEUser.vue:37
+#: src/views/certificate/ACMEUser.vue:43
 msgid "If left blank, the default CA Dir will be used."
 msgstr "如果留空，將使用默認的 CA Dir。"
 
@@ -1009,7 +1009,7 @@ msgstr "正在初始化核心升級程式"
 msgid "Input the code from the app:"
 msgstr "請輸入應用程式中的代碼："
 
-#: src/components/2FA/Authorization.vue:87
+#: src/components/TwoFA/Authorization.vue:87
 #: src/views/preference/components/TOTP.vue:171
 msgid "Input the recovery code:"
 msgstr "輸入恢復碼："
@@ -1026,7 +1026,7 @@ msgstr "安裝成功"
 msgid "Interval"
 msgstr "間隔"
 
-#: src/views/certificate/ACMEUser.vue:92
+#: src/views/certificate/ACMEUser.vue:121
 msgid "Invalid"
 msgstr "無效"
 
@@ -1043,7 +1043,7 @@ msgstr "無效的檔案名"
 msgid "Invalid folder name"
 msgstr "無效的資料夾名稱"
 
-#: src/components/2FA/use2FAModal.ts:65
+#: src/components/TwoFA/use2FAModal.ts:65
 msgid "Invalid passcode or recovery code"
 msgstr "無效的密碼或恢復碼"
 
@@ -1093,8 +1093,13 @@ msgstr "留空表示不修改"
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "預設留空：https://api.openai.com/"
 
-#: src/views/certificate/CertificateEditor.vue:212
-#: src/views/certificate/CertificateEditor.vue:225
+#: src/views/certificate/ACMEUser.vue:56
+#, fuzzy
+msgid "Leave blank if you don't need this."
+msgstr "留空表示不修改"
+
+#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/CertificateEditor.vue:227
 msgid "Leave blank will not change anything"
 msgstr "留空將不會改變任何內容"
 
@@ -1111,7 +1116,7 @@ msgstr "開源授權"
 msgid "Link Start"
 msgstr "連結開始"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:193
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:194
 msgid "List"
 msgstr "列表"
 
@@ -1132,15 +1137,15 @@ msgstr "加載成功"
 msgid "Local"
 msgstr "本機"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:59
+#: src/views/domain/ngx_conf/LocationEditor.vue:69
 msgid "Location"
 msgstr "Location"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:43
+#: src/views/domain/ngx_conf/LocationEditor.vue:50
 msgid "Locations"
 msgstr "Locations"
 
-#: src/views/certificate/CertificateEditor.vue:235
+#: src/views/certificate/CertificateEditor.vue:237
 msgid "Log"
 msgstr "日誌"
 
@@ -1224,7 +1229,7 @@ msgid "Model"
 msgstr "模型"
 
 #: src/components/ChatGPT/ChatGPT.vue:248
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:182
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:531
 #: src/views/config/ConfigList.vue:159
 msgid "Modify"
@@ -1238,7 +1243,7 @@ msgstr "修改憑證"
 msgid "Modify Config"
 msgstr "修改設定"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:269
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:270
 msgid "Modify Mode"
 msgstr "修改模式"
 
@@ -1247,7 +1252,7 @@ msgid "Multi-line Directive"
 msgstr "多行指令"
 
 #: src/views/certificate/ACMEUser.vue:13
-#: src/views/certificate/CertificateEditor.vue:152
+#: src/views/certificate/CertificateEditor.vue:154
 #: src/views/certificate/CertificateList/certColumns.tsx:10
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:65 src/views/config/configColumns.ts:8
@@ -1337,7 +1342,7 @@ msgstr "Nginx 重啟成功"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:575
 #: src/views/domain/DomainList.vue:144
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
-#: src/views/domain/ngx_conf/LocationEditor.vue:70
+#: src/views/domain/ngx_conf/LocationEditor.vue:90
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/AuthSettings.vue:104
 #: src/views/preference/BasicSettings.vue:101
@@ -1398,7 +1403,7 @@ msgstr "OCSP 必須裝訂可能會導致某些用戶在首次使用 Firefox 訪�
 msgid "Offline"
 msgstr "離線"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:254
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:255
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:154
 msgid "Ok"
 msgstr "確定"
@@ -1438,7 +1443,7 @@ msgstr "線上"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/2FA/Authorization.vue:117 src/views/other/Login.vue:256
+#: src/components/TwoFA/Authorization.vue:117 src/views/other/Login.vue:256
 msgid "Or"
 msgstr ""
 
@@ -1490,8 +1495,8 @@ msgid "Password (*)"
 msgstr "密碼 (*)"
 
 #: src/views/config/ConfigEditor.vue:262
-#: src/views/domain/ngx_conf/LocationEditor.vue:118
-#: src/views/domain/ngx_conf/LocationEditor.vue:90
+#: src/views/domain/ngx_conf/LocationEditor.vue:111
+#: src/views/domain/ngx_conf/LocationEditor.vue:139
 msgid "Path"
 msgstr "路徑"
 
@@ -1513,7 +1518,7 @@ msgid ""
 "button below."
 msgstr ""
 
-#: src/components/2FA/Authorization.vue:75
+#: src/components/TwoFA/Authorization.vue:75
 #, fuzzy
 msgid "Please enter the OTP code:"
 msgstr "請輸入多重因素驗證碼："
@@ -1569,6 +1574,11 @@ msgid ""
 "Please note that the unit of time configurations below are all in seconds."
 msgstr "請注意，以下時間配置單位均為秒。"
 
+#: src/views/environment/Environment.vue:47
+#, fuzzy
+msgid "Please select at least one node to upgrade"
+msgstr "請至少選擇一個節點！"
+
 #: src/views/domain/components/SiteDuplicate.vue:45
 #: src/views/stream/components/StreamDuplicate.vue:45
 msgid "Please select at least one node!"
@@ -1604,6 +1614,11 @@ msgstr "專案團隊"
 msgid "Provider"
 msgstr "供應商"
 
+#: src/views/certificate/ACMEUser.vue:48
+#, fuzzy
+msgid "Proxy"
+msgstr "API 代理"
+
 #: src/views/dashboard/ServerAnalytic.vue:28
 #: src/views/dashboard/ServerAnalytic.vue:378
 msgid "Reads"
@@ -1622,7 +1637,7 @@ msgstr "恢復"
 msgid "Recovered Successfully"
 msgstr "恢復成功"
 
-#: src/components/2FA/Authorization.vue:94
+#: src/components/TwoFA/Authorization.vue:94
 #: src/views/preference/components/TOTP.vue:178
 msgid "Recovery"
 msgstr "恢復"
@@ -1643,20 +1658,31 @@ msgstr "遞迴名稱伺服器"
 msgid "Regenerate response"
 msgstr "重新產生回應"
 
-#: src/views/certificate/ACMEUser.vue:100
+#: src/views/certificate/ACMEUser.vue:129
 msgid "Register"
 msgstr "註冊"
 
-#: src/views/certificate/ACMEUser.vue:69
+#: src/views/certificate/ACMEUser.vue:53
+msgid ""
+"Register a user or use this account to issue a certificate through an HTTP "
+"proxy."
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:98
 msgid "Register failed"
 msgstr "註冊失敗"
+
+#: src/views/certificate/ACMEUser.vue:72
+#, fuzzy
+msgid "Register On Startup"
+msgstr "註冊狀態"
 
 #: src/views/preference/components/AddPasskey.vue:26
 #, fuzzy
 msgid "Register passkey successfully"
 msgstr "註冊成功"
 
-#: src/views/certificate/ACMEUser.vue:67
+#: src/views/certificate/ACMEUser.vue:96
 msgid "Register successfully"
 msgstr "註冊成功"
 
@@ -1664,7 +1690,7 @@ msgstr "註冊成功"
 msgid "Registering user"
 msgstr "註冊使用者中"
 
-#: src/views/certificate/ACMEUser.vue:83
+#: src/views/certificate/ACMEUser.vue:112
 msgid "Registration Status"
 msgstr "註冊狀態"
 
@@ -1785,7 +1811,7 @@ msgid "Running"
 msgstr "執行中"
 
 #: src/components/ChatGPT/ChatGPT.vue:251
-#: src/views/certificate/CertificateEditor.vue:254
+#: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/ConfigEditor.vue:222 src/views/domain/DomainEdit.vue:260
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
 #: src/views/preference/components/Passkey.vue:136
@@ -1914,19 +1940,19 @@ msgstr "網站日誌"
 msgid "Sites List"
 msgstr "網站列表"
 
-#: src/views/certificate/CertificateEditor.vue:203
+#: src/views/certificate/CertificateEditor.vue:205
 msgid "SSL Certificate Content"
 msgstr "SSL 憑證內容"
 
-#: src/views/certificate/CertificateEditor.vue:216
+#: src/views/certificate/CertificateEditor.vue:218
 msgid "SSL Certificate Key Content"
 msgstr "SSL 憑證金鑰內容"
 
-#: src/views/certificate/CertificateEditor.vue:182
+#: src/views/certificate/CertificateEditor.vue:184
 msgid "SSL Certificate Key Path"
 msgstr "SSL 憑證金鑰路徑"
 
-#: src/views/certificate/CertificateEditor.vue:167
+#: src/views/certificate/CertificateEditor.vue:169
 msgid "SSL Certificate Path"
 msgstr "SSL 憑證路徑"
 
@@ -1940,7 +1966,7 @@ msgstr "SSO 登錄"
 msgid "Stable"
 msgstr "穩定"
 
-#: src/views/certificate/ACMEUser.vue:42
+#: src/views/certificate/ACMEUser.vue:61
 #: src/views/certificate/CertificateList/certColumns.tsx:60
 #: src/views/domain/DomainList.vue:22 src/views/environment/envColumns.tsx:78
 #: src/views/stream/StreamList.vue:22
@@ -2028,7 +2054,7 @@ msgstr "同步配置錯誤"
 msgid "Sync Config Success"
 msgstr "同步配置成功"
 
-#: src/views/certificate/CertificateEditor.vue:196
+#: src/views/certificate/CertificateEditor.vue:198
 msgid "Sync to"
 msgstr "同步到"
 
@@ -2066,11 +2092,11 @@ msgstr ""
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "檔名不能包含以下字元: %{c}"
 
-#: src/views/certificate/CertificateEditor.vue:206
+#: src/views/certificate/CertificateEditor.vue:208
 msgid "The input is not a SSL Certificate"
 msgstr "輸入的不是 SSL 憑證"
 
-#: src/views/certificate/CertificateEditor.vue:219
+#: src/views/certificate/CertificateEditor.vue:221
 msgid "The input is not a SSL Certificate Key"
 msgstr "輸入的不是 SSL 憑證金鑰"
 
@@ -2080,11 +2106,11 @@ msgid ""
 "dashes, and dots."
 msgstr "模型名稱應僅包含字母、Unicode、數字、連字號、破折號和點。"
 
-#: src/views/certificate/CertificateEditor.vue:171
+#: src/views/certificate/CertificateEditor.vue:173
 msgid "The path exists, but the file is not a certificate"
 msgstr "路徑存在，但檔案不是憑證"
 
-#: src/views/certificate/CertificateEditor.vue:186
+#: src/views/certificate/CertificateEditor.vue:188
 msgid "The path exists, but the file is not a private key"
 msgstr "路徑存在，但檔案不是金鑰"
 
@@ -2136,9 +2162,9 @@ msgstr "此自動憑證項目無效，請將其移除。"
 msgid "This certificate is managed by Nginx UI"
 msgstr "此憑證由 Nginx UI 管理"
 
-#: src/views/certificate/CertificateEditor.vue:155
-#: src/views/certificate/CertificateEditor.vue:169
-#: src/views/certificate/CertificateEditor.vue:184
+#: src/views/certificate/CertificateEditor.vue:157
+#: src/views/certificate/CertificateEditor.vue:171
+#: src/views/certificate/CertificateEditor.vue:186
 msgid "This field is required"
 msgstr "此字段為必填項"
 
@@ -2203,11 +2229,11 @@ msgid ""
 "password algorithm."
 msgstr "TOTP 是一種使用基於時間的一次性密碼算法的多重因素驗證方法。"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:210
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:211
 msgid "Trash"
 msgstr "垃圾桶"
 
-#: src/components/2FA/use2FAModal.ts:71
+#: src/components/TwoFA/use2FAModal.ts:71
 msgid "Two-factor authentication required"
 msgstr "需要多重因素驗證"
 
@@ -2222,7 +2248,7 @@ msgstr "類型"
 msgid "Update successfully"
 msgstr "更新成功"
 
-#: src/views/certificate/ACMEUser.vue:53
+#: src/views/certificate/ACMEUser.vue:82
 #: src/views/certificate/DNSCredential.vue:27
 #: src/views/config/configColumns.ts:31 src/views/config/ConfigEditor.vue:275
 #: src/views/domain/components/RightSettings.vue:86
@@ -2236,7 +2262,7 @@ msgstr "更新時間"
 msgid "Updated successfully"
 msgstr "更新成功"
 
-#: src/routes/index.ts:284 src/views/environment/Environment.vue:50
+#: src/routes/index.ts:284 src/views/environment/Environment.vue:55
 #: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
 msgid "Upgrade"
 msgstr "升級"
@@ -2265,11 +2291,11 @@ msgstr "運作時間:"
 msgid "URL"
 msgstr "URL"
 
-#: src/components/2FA/Authorization.vue:107
+#: src/components/TwoFA/Authorization.vue:107
 msgid "Use OTP"
 msgstr "使用一次性密碼"
 
-#: src/components/2FA/Authorization.vue:103
+#: src/components/TwoFA/Authorization.vue:103
 msgid "Use recovery code"
 msgstr "使用恢復碼"
 
@@ -2289,7 +2315,7 @@ msgstr "使用者名稱"
 msgid "Username (*)"
 msgstr "使用者名稱 (*)"
 
-#: src/views/certificate/ACMEUser.vue:87
+#: src/views/certificate/ACMEUser.vue:116
 #: src/views/certificate/CertificateList/certColumns.tsx:73
 #: src/views/domain/cert/CertInfo.vue:24
 msgid "Valid"
@@ -2308,11 +2334,11 @@ msgstr "檢視"
 msgid "View all notifications"
 msgstr "查看所有通知"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:182
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
 msgid "View Details"
 msgstr "查看詳情"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:269
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:270
 msgid "View Mode"
 msgstr "查看模式"
 
@@ -2337,6 +2363,13 @@ msgstr ""
 "我們將從該檔案中刪除 HTTPChallenge 設定並重新載入 Nginx 設定檔案。你確定你要"
 "繼續嗎？"
 
+#: src/views/certificate/ACMEUser.vue:78
+msgid ""
+"When Enabled, Nginx UI will automatically re-register users upon startup. "
+"Generally, do not enable this unless you are in a dev environment and using "
+"Pebble as CA."
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:27
 #: src/views/dashboard/ServerAnalytic.vue:368
 msgid "Writes"
@@ -2351,7 +2384,7 @@ msgid "Writing certificate to disk"
 msgstr "將憑證寫入磁碟"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
-#: src/views/domain/ngx_conf/LocationEditor.vue:69
+#: src/views/domain/ngx_conf/LocationEditor.vue:89
 #: src/views/preference/AuthSettings.vue:103
 #: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
@@ -2422,10 +2455,6 @@ msgstr ""
 
 #~ msgid "Table"
 #~ msgstr "表格"
-
-#, fuzzy
-#~ msgid "Leave blank will not change anything."
-#~ msgstr "留空表示不修改"
 
 #, fuzzy
 #~ msgid "Auto Cert is enabled"

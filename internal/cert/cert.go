@@ -62,7 +62,8 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 
 	// Skip TLS check
 	if config.HTTPClient != nil {
-		t, err := transport.NewTransport()
+		t, err := transport.NewTransport(
+			transport.WithProxy(user.Proxy))
 		if err != nil {
 			return
 		}

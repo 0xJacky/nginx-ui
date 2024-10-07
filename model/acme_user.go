@@ -18,11 +18,13 @@ type PrivateKey struct {
 
 type AcmeUser struct {
 	Model
-	Name         string                `json:"name"`
-	Email        string                `json:"email"`
-	CADir        string                `json:"ca_dir"`
-	Registration registration.Resource `json:"registration" gorm:"serializer:json"`
-	Key          PrivateKey            `json:"-" gorm:"serializer:json"`
+	Name              string                `json:"name"`
+	Email             string                `json:"email"`
+	CADir             string                `json:"ca_dir"`
+	Registration      registration.Resource `json:"registration" gorm:"serializer:json"`
+	Key               PrivateKey            `json:"-" gorm:"serializer:json"`
+	Proxy             string                `json:"proxy"`
+	RegisterOnStartup bool                  `json:"register_on_startup"`
 }
 
 func (u *AcmeUser) GetEmail() string {
@@ -61,7 +63,8 @@ func (u *AcmeUser) Register() error {
 
 	// Skip TLS check
 	if config.HTTPClient != nil {
-		t, err := transport.NewTransport()
+		t, err := transport.NewTransport(
+			transport.WithProxy(u.Proxy))
 		if err != nil {
 			return err
 		}

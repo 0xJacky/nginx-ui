@@ -30,12 +30,12 @@ msgstr "대하여"
 msgid "Access Logs"
 msgstr "접근 로그"
 
-#: src/routes/index.ts:142 src/views/certificate/ACMEUser.vue:76
+#: src/routes/index.ts:142 src/views/certificate/ACMEUser.vue:105
 #: src/views/certificate/ACMEUserSelector.vue:85
 msgid "ACME User"
 msgstr "ACME 사용자"
 
-#: src/views/certificate/ACMEUser.vue:59
+#: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/CertificateList/certColumns.tsx:89
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.ts:38 src/views/domain/DomainList.vue:47
@@ -46,8 +46,8 @@ msgstr "ACME 사용자"
 msgid "Action"
 msgstr "작업"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:182
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:203
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:204
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/domain/ngx_conf/NgxServer.vue:162
 #: src/views/domain/ngx_conf/NgxUpstream.vue:152
@@ -70,8 +70,8 @@ msgstr "구성 추가"
 msgid "Add Directive Below"
 msgstr "아래에 지시문 추가"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:111
-#: src/views/domain/ngx_conf/LocationEditor.vue:138
+#: src/views/domain/ngx_conf/LocationEditor.vue:132
+#: src/views/domain/ngx_conf/LocationEditor.vue:159
 msgid "Add Location"
 msgstr "위치 추가"
 
@@ -161,7 +161,7 @@ msgstr "이 지시문을 정말로 제거하시겠습니까?"
 msgid "Are you sure you want to remove this item?"
 msgstr "이 항목을 제거하시겠습니까?"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:68
+#: src/views/domain/ngx_conf/LocationEditor.vue:88
 msgid "Are you sure you want to remove this location?"
 msgstr "이 위치를 제거하시겠습니까?"
 
@@ -181,7 +181,7 @@ msgstr "시도 횟수"
 msgid "Auth"
 msgstr "인증"
 
-#: src/components/2FA/Authorization.vue:126
+#: src/components/TwoFA/Authorization.vue:126
 msgid "Authenticate with a passkey"
 msgstr ""
 
@@ -206,7 +206,7 @@ msgstr "%{name}에 대한 자동 갱신 비활성화됨"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "%{name}에 대한 자동 갱신 활성화됨"
 
-#: src/views/certificate/CertificateEditor.vue:247
+#: src/views/certificate/CertificateEditor.vue:249
 #: src/views/config/ConfigEditor.vue:213 src/views/config/ConfigList.vue:107
 #: src/views/config/ConfigList.vue:181 src/views/domain/DomainEdit.vue:253
 #: src/views/nginx_log/NginxLog.vue:168 src/views/stream/StreamEdit.vue:245
@@ -217,7 +217,7 @@ msgstr "뒤로"
 msgid "Back Home"
 msgstr "홈으로"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:216
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:217
 msgid "Back to list"
 msgstr "목록으로 돌아가기"
 
@@ -261,7 +261,7 @@ msgstr "배치 업그레이드"
 msgid "Build with"
 msgstr "빌드 환경"
 
-#: src/views/certificate/ACMEUser.vue:29
+#: src/views/certificate/ACMEUser.vue:35
 msgid "CA Dir"
 msgstr "CA 디렉토리"
 
@@ -275,7 +275,7 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:252
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:55
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:253
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:254
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:153
 #: src/views/domain/cert/components/ObtainCert.vue:137
 #: src/views/domain/components/Deploy.vue:21
@@ -358,8 +358,8 @@ msgid "Command"
 msgstr "명령어"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:106
-#: src/views/domain/ngx_conf/LocationEditor.vue:115
-#: src/views/domain/ngx_conf/LocationEditor.vue:84
+#: src/views/domain/ngx_conf/LocationEditor.vue:105
+#: src/views/domain/ngx_conf/LocationEditor.vue:136
 #: src/views/domain/ngx_conf/NgxServer.vue:134
 msgid "Comments"
 msgstr "댓글"
@@ -393,8 +393,8 @@ msgid "Connection lost, please refresh the page."
 msgstr "연결이 끊어졌습니다. 페이지를 새로 고침하세요."
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
-#: src/views/domain/ngx_conf/LocationEditor.vue:124
-#: src/views/domain/ngx_conf/LocationEditor.vue:96
+#: src/views/domain/ngx_conf/LocationEditor.vue:117
+#: src/views/domain/ngx_conf/LocationEditor.vue:145
 msgid "Content"
 msgstr "내용"
 
@@ -724,7 +724,7 @@ msgstr "사이트 편집"
 msgid "Edit Stream"
 msgstr "스트림 편집"
 
-#: src/views/certificate/ACMEUser.vue:21
+#: src/views/certificate/ACMEUser.vue:24
 #, fuzzy
 msgid "Email"
 msgstr "이메일 (*)"
@@ -968,7 +968,7 @@ msgstr "HTTP 포트"
 msgid "HTTP01"
 msgstr "HTTP01"
 
-#: src/views/certificate/ACMEUser.vue:37
+#: src/views/certificate/ACMEUser.vue:43
 msgid "If left blank, the default CA Dir will be used."
 msgstr ""
 
@@ -1024,7 +1024,7 @@ msgstr "코어 업그레이더 초기화"
 msgid "Input the code from the app:"
 msgstr ""
 
-#: src/components/2FA/Authorization.vue:87
+#: src/components/TwoFA/Authorization.vue:87
 #: src/views/preference/components/TOTP.vue:171
 msgid "Input the recovery code:"
 msgstr ""
@@ -1042,7 +1042,7 @@ msgstr "성공적으로 활성화됨"
 msgid "Interval"
 msgstr "간격"
 
-#: src/views/certificate/ACMEUser.vue:92
+#: src/views/certificate/ACMEUser.vue:121
 #, fuzzy
 msgid "Invalid"
 msgstr "유효함"
@@ -1061,7 +1061,7 @@ msgstr "Invalid E-mail!"
 msgid "Invalid folder name"
 msgstr ""
 
-#: src/components/2FA/use2FAModal.ts:65
+#: src/components/TwoFA/use2FAModal.ts:65
 msgid "Invalid passcode or recovery code"
 msgstr ""
 
@@ -1114,8 +1114,13 @@ msgstr "변경사항이 없으면 비워두세요"
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "기본값을 사용하려면 비워 두세요: https://api.openai.com/"
 
-#: src/views/certificate/CertificateEditor.vue:212
-#: src/views/certificate/CertificateEditor.vue:225
+#: src/views/certificate/ACMEUser.vue:56
+#, fuzzy
+msgid "Leave blank if you don't need this."
+msgstr "Leave blank for no change"
+
+#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/CertificateEditor.vue:227
 #, fuzzy
 msgid "Leave blank will not change anything"
 msgstr "변경사항이 없으면 비워두세요"
@@ -1134,7 +1139,7 @@ msgstr "라이센스"
 msgid "Link Start"
 msgstr "링크 시작"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:193
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:194
 msgid "List"
 msgstr ""
 
@@ -1158,15 +1163,15 @@ msgstr "성공적으로 저장됨"
 msgid "Local"
 msgstr "지역"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:59
+#: src/views/domain/ngx_conf/LocationEditor.vue:69
 msgid "Location"
 msgstr "위치"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:43
+#: src/views/domain/ngx_conf/LocationEditor.vue:50
 msgid "Locations"
 msgstr "위치들"
 
-#: src/views/certificate/CertificateEditor.vue:235
+#: src/views/certificate/CertificateEditor.vue:237
 #, fuzzy
 msgid "Log"
 msgstr "로그인"
@@ -1257,7 +1262,7 @@ msgid "Model"
 msgstr "실행 모드"
 
 #: src/components/ChatGPT/ChatGPT.vue:248
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:182
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:531
 #: src/views/config/ConfigList.vue:159
 #, fuzzy
@@ -1273,7 +1278,7 @@ msgstr "인증서 상태"
 msgid "Modify Config"
 msgstr "설정 수정"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:269
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:270
 #, fuzzy
 msgid "Modify Mode"
 msgstr "설정 수정"
@@ -1284,7 +1289,7 @@ msgid "Multi-line Directive"
 msgstr "단일 지시문"
 
 #: src/views/certificate/ACMEUser.vue:13
-#: src/views/certificate/CertificateEditor.vue:152
+#: src/views/certificate/CertificateEditor.vue:154
 #: src/views/certificate/CertificateList/certColumns.tsx:10
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:65 src/views/config/configColumns.ts:8
@@ -1379,7 +1384,7 @@ msgstr "Nginx가 성공적으로 재시작됨"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:575
 #: src/views/domain/DomainList.vue:144
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
-#: src/views/domain/ngx_conf/LocationEditor.vue:70
+#: src/views/domain/ngx_conf/LocationEditor.vue:90
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/AuthSettings.vue:104
 #: src/views/preference/BasicSettings.vue:101
@@ -1443,7 +1448,7 @@ msgstr ""
 msgid "Offline"
 msgstr "오프라인"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:254
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:255
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:154
 msgid "Ok"
 msgstr ""
@@ -1483,7 +1488,7 @@ msgstr "온라인"
 msgid "OpenAI"
 msgstr "오픈AI"
 
-#: src/components/2FA/Authorization.vue:117 src/views/other/Login.vue:256
+#: src/components/TwoFA/Authorization.vue:117 src/views/other/Login.vue:256
 msgid "Or"
 msgstr ""
 
@@ -1536,8 +1541,8 @@ msgid "Password (*)"
 msgstr "비밀번호 (*)"
 
 #: src/views/config/ConfigEditor.vue:262
-#: src/views/domain/ngx_conf/LocationEditor.vue:118
-#: src/views/domain/ngx_conf/LocationEditor.vue:90
+#: src/views/domain/ngx_conf/LocationEditor.vue:111
+#: src/views/domain/ngx_conf/LocationEditor.vue:139
 msgid "Path"
 msgstr "경로"
 
@@ -1559,7 +1564,7 @@ msgid ""
 "button below."
 msgstr ""
 
-#: src/components/2FA/Authorization.vue:75
+#: src/components/TwoFA/Authorization.vue:75
 msgid "Please enter the OTP code:"
 msgstr ""
 
@@ -1616,6 +1621,11 @@ msgid ""
 "Please note that the unit of time configurations below are all in seconds."
 msgstr "아래의 시간 설정 단위는 모두 초 단위임을 유의해주세요."
 
+#: src/views/environment/Environment.vue:47
+#, fuzzy
+msgid "Please select at least one node to upgrade"
+msgstr "적어도 하나의 노드를 선택해주세요!"
+
 #: src/views/domain/components/SiteDuplicate.vue:45
 #: src/views/stream/components/StreamDuplicate.vue:45
 msgid "Please select at least one node!"
@@ -1652,6 +1662,11 @@ msgstr "프로젝트 팀"
 msgid "Provider"
 msgstr "제공자"
 
+#: src/views/certificate/ACMEUser.vue:48
+#, fuzzy
+msgid "Proxy"
+msgstr "API 프록시"
+
 #: src/views/dashboard/ServerAnalytic.vue:28
 #: src/views/dashboard/ServerAnalytic.vue:378
 msgid "Reads"
@@ -1671,7 +1686,7 @@ msgstr ""
 msgid "Recovered Successfully"
 msgstr "성공적으로 제거됨"
 
-#: src/components/2FA/Authorization.vue:94
+#: src/components/TwoFA/Authorization.vue:94
 #: src/views/preference/components/TOTP.vue:178
 msgid "Recovery"
 msgstr ""
@@ -1692,14 +1707,25 @@ msgstr ""
 msgid "Regenerate response"
 msgstr "응답 재생성"
 
-#: src/views/certificate/ACMEUser.vue:100
+#: src/views/certificate/ACMEUser.vue:129
 #, fuzzy
 msgid "Register"
 msgstr "사용자 등록 중"
 
-#: src/views/certificate/ACMEUser.vue:69
+#: src/views/certificate/ACMEUser.vue:53
+msgid ""
+"Register a user or use this account to issue a certificate through an HTTP "
+"proxy."
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:98
 #, fuzzy
 msgid "Register failed"
+msgstr "사용자 등록 중"
+
+#: src/views/certificate/ACMEUser.vue:72
+#, fuzzy
+msgid "Register On Startup"
 msgstr "사용자 등록 중"
 
 #: src/views/preference/components/AddPasskey.vue:26
@@ -1707,7 +1733,7 @@ msgstr "사용자 등록 중"
 msgid "Register passkey successfully"
 msgstr "성공적으로 갱신됨"
 
-#: src/views/certificate/ACMEUser.vue:67
+#: src/views/certificate/ACMEUser.vue:96
 #, fuzzy
 msgid "Register successfully"
 msgstr "성공적으로 갱신됨"
@@ -1716,7 +1742,7 @@ msgstr "성공적으로 갱신됨"
 msgid "Registering user"
 msgstr "사용자 등록 중"
 
-#: src/views/certificate/ACMEUser.vue:83
+#: src/views/certificate/ACMEUser.vue:112
 #, fuzzy
 msgid "Registration Status"
 msgstr "사용자 등록 중"
@@ -1851,7 +1877,7 @@ msgid "Running"
 msgstr "실행 중"
 
 #: src/components/ChatGPT/ChatGPT.vue:251
-#: src/views/certificate/CertificateEditor.vue:254
+#: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/ConfigEditor.vue:222 src/views/domain/DomainEdit.vue:260
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
 #: src/views/preference/components/Passkey.vue:136
@@ -1983,21 +2009,21 @@ msgstr "사이트 로그"
 msgid "Sites List"
 msgstr "사이트 목록"
 
-#: src/views/certificate/CertificateEditor.vue:203
+#: src/views/certificate/CertificateEditor.vue:205
 #, fuzzy
 msgid "SSL Certificate Content"
 msgstr "인증서 상태"
 
-#: src/views/certificate/CertificateEditor.vue:216
+#: src/views/certificate/CertificateEditor.vue:218
 msgid "SSL Certificate Key Content"
 msgstr "SSL 인증서키 콘텐츠"
 
-#: src/views/certificate/CertificateEditor.vue:182
+#: src/views/certificate/CertificateEditor.vue:184
 #, fuzzy
 msgid "SSL Certificate Key Path"
 msgstr "SSL 인증서 키 경로"
 
-#: src/views/certificate/CertificateEditor.vue:167
+#: src/views/certificate/CertificateEditor.vue:169
 #, fuzzy
 msgid "SSL Certificate Path"
 msgstr "SSL 인증서 경로"
@@ -2014,7 +2040,7 @@ msgstr "SSO 로그인"
 msgid "Stable"
 msgstr "활성화됨"
 
-#: src/views/certificate/ACMEUser.vue:42
+#: src/views/certificate/ACMEUser.vue:61
 #: src/views/certificate/CertificateList/certColumns.tsx:60
 #: src/views/domain/DomainList.vue:22 src/views/environment/envColumns.tsx:78
 #: src/views/stream/StreamList.vue:22
@@ -2110,7 +2136,7 @@ msgstr "인증서 갱신 오류"
 msgid "Sync Config Success"
 msgstr "인증서 갱신 성공"
 
-#: src/views/certificate/CertificateEditor.vue:196
+#: src/views/certificate/CertificateEditor.vue:198
 msgid "Sync to"
 msgstr ""
 
@@ -2149,11 +2175,11 @@ msgstr ""
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "파일 이름은 다음 문자를 포함할 수 없습니다: %{c}"
 
-#: src/views/certificate/CertificateEditor.vue:206
+#: src/views/certificate/CertificateEditor.vue:208
 msgid "The input is not a SSL Certificate"
 msgstr "입력이 SSL 인증서가 아닙니다"
 
-#: src/views/certificate/CertificateEditor.vue:219
+#: src/views/certificate/CertificateEditor.vue:221
 #, fuzzy
 msgid "The input is not a SSL Certificate Key"
 msgstr "Certificate Status"
@@ -2164,12 +2190,12 @@ msgid ""
 "dashes, and dots."
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:171
+#: src/views/certificate/CertificateEditor.vue:173
 #, fuzzy
 msgid "The path exists, but the file is not a certificate"
 msgstr "Certificate Status"
 
-#: src/views/certificate/CertificateEditor.vue:186
+#: src/views/certificate/CertificateEditor.vue:188
 msgid "The path exists, but the file is not a private key"
 msgstr "경로는 존재하지만 파일은 개인 키가 아닙니다"
 
@@ -2224,9 +2250,9 @@ msgstr "이 자동 인증 항목이 유효하지 않습니다. 제거해주세�
 msgid "This certificate is managed by Nginx UI"
 msgstr "이 인증서는 Nginx UI에서 관리됩니다"
 
-#: src/views/certificate/CertificateEditor.vue:155
-#: src/views/certificate/CertificateEditor.vue:169
-#: src/views/certificate/CertificateEditor.vue:184
+#: src/views/certificate/CertificateEditor.vue:157
+#: src/views/certificate/CertificateEditor.vue:171
+#: src/views/certificate/CertificateEditor.vue:186
 msgid "This field is required"
 msgstr "이 필드는 필수입니다"
 
@@ -2291,11 +2317,11 @@ msgid ""
 "password algorithm."
 msgstr ""
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:210
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:211
 msgid "Trash"
 msgstr ""
 
-#: src/components/2FA/use2FAModal.ts:71
+#: src/components/TwoFA/use2FAModal.ts:71
 msgid "Two-factor authentication required"
 msgstr ""
 
@@ -2310,7 +2336,7 @@ msgstr "유형"
 msgid "Update successfully"
 msgstr "성공적으로 저장되었습니다"
 
-#: src/views/certificate/ACMEUser.vue:53
+#: src/views/certificate/ACMEUser.vue:82
 #: src/views/certificate/DNSCredential.vue:27
 #: src/views/config/configColumns.ts:31 src/views/config/ConfigEditor.vue:275
 #: src/views/domain/components/RightSettings.vue:86
@@ -2325,7 +2351,7 @@ msgstr "업데이트됨"
 msgid "Updated successfully"
 msgstr "성공적으로 저장되었습니다"
 
-#: src/routes/index.ts:284 src/views/environment/Environment.vue:50
+#: src/routes/index.ts:284 src/views/environment/Environment.vue:55
 #: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
 msgid "Upgrade"
 msgstr "업그레이드"
@@ -2356,11 +2382,11 @@ msgstr "가동 시간:"
 msgid "URL"
 msgstr "URL"
 
-#: src/components/2FA/Authorization.vue:107
+#: src/components/TwoFA/Authorization.vue:107
 msgid "Use OTP"
 msgstr ""
 
-#: src/components/2FA/Authorization.vue:103
+#: src/components/TwoFA/Authorization.vue:103
 msgid "Use recovery code"
 msgstr ""
 
@@ -2381,7 +2407,7 @@ msgstr "사용자 이름"
 msgid "Username (*)"
 msgstr "사용자 이름 (*)"
 
-#: src/views/certificate/ACMEUser.vue:87
+#: src/views/certificate/ACMEUser.vue:116
 #: src/views/certificate/CertificateList/certColumns.tsx:73
 #: src/views/domain/cert/CertInfo.vue:24
 msgid "Valid"
@@ -2402,12 +2428,12 @@ msgstr "보기"
 msgid "View all notifications"
 msgstr "Certificate is valid"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:182
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
 #, fuzzy
 msgid "View Details"
 msgstr "세부 사항"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:269
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:270
 #, fuzzy
 msgid "View Mode"
 msgstr "기본 모드"
@@ -2435,6 +2461,13 @@ msgstr ""
 "이 파일에서 HTTPChallenge 구성을 제거하고 Nginx를 다시 로드할 예정입니다. 계"
 "속하시겠습니까?"
 
+#: src/views/certificate/ACMEUser.vue:78
+msgid ""
+"When Enabled, Nginx UI will automatically re-register users upon startup. "
+"Generally, do not enable this unless you are in a dev environment and using "
+"Pebble as CA."
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:27
 #: src/views/dashboard/ServerAnalytic.vue:368
 msgid "Writes"
@@ -2449,7 +2482,7 @@ msgid "Writing certificate to disk"
 msgstr "인증서를 디스크에 쓰기"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
-#: src/views/domain/ngx_conf/LocationEditor.vue:69
+#: src/views/domain/ngx_conf/LocationEditor.vue:89
 #: src/views/preference/AuthSettings.vue:103
 #: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
@@ -2526,10 +2559,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Table"
 #~ msgstr "활성화됨"
-
-#, fuzzy
-#~ msgid "Leave blank will not change anything."
-#~ msgstr "Leave blank for no change"
 
 #, fuzzy
 #~ msgid "Config Name"

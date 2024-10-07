@@ -30,12 +30,12 @@ msgstr "О проекте"
 msgid "Access Logs"
 msgstr "Журнал доступа"
 
-#: src/routes/index.ts:142 src/views/certificate/ACMEUser.vue:76
+#: src/routes/index.ts:142 src/views/certificate/ACMEUser.vue:105
 #: src/views/certificate/ACMEUserSelector.vue:85
 msgid "ACME User"
 msgstr "Пользователь ACME"
 
-#: src/views/certificate/ACMEUser.vue:59
+#: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/CertificateList/certColumns.tsx:89
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.ts:38 src/views/domain/DomainList.vue:47
@@ -46,8 +46,8 @@ msgstr "Пользователь ACME"
 msgid "Action"
 msgstr "Действие"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:182
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:203
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:204
 #: src/views/domain/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/domain/ngx_conf/NgxServer.vue:162
 #: src/views/domain/ngx_conf/NgxUpstream.vue:152
@@ -70,8 +70,8 @@ msgstr "Добавить конфигурацию"
 msgid "Add Directive Below"
 msgstr "Добавить директиву ниже"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:111
-#: src/views/domain/ngx_conf/LocationEditor.vue:138
+#: src/views/domain/ngx_conf/LocationEditor.vue:132
+#: src/views/domain/ngx_conf/LocationEditor.vue:159
 msgid "Add Location"
 msgstr "Добавить Location"
 
@@ -162,7 +162,7 @@ msgstr "Вы уверены, что хотите удалить эту дире�
 msgid "Are you sure you want to remove this item?"
 msgstr "Вы уверены, что хотите удалить этот элемент?"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:68
+#: src/views/domain/ngx_conf/LocationEditor.vue:88
 #, fuzzy
 msgid "Are you sure you want to remove this location?"
 msgstr "Вы уверены, что хотите удалить эту директиву?"
@@ -183,7 +183,7 @@ msgstr "Попытки"
 msgid "Auth"
 msgstr "Авторизация"
 
-#: src/components/2FA/Authorization.vue:126
+#: src/components/TwoFA/Authorization.vue:126
 msgid "Authenticate with a passkey"
 msgstr ""
 
@@ -208,7 +208,7 @@ msgstr "Автообновление отключено для %{name}"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "Автообновление включено для %{name}"
 
-#: src/views/certificate/CertificateEditor.vue:247
+#: src/views/certificate/CertificateEditor.vue:249
 #: src/views/config/ConfigEditor.vue:213 src/views/config/ConfigList.vue:107
 #: src/views/config/ConfigList.vue:181 src/views/domain/DomainEdit.vue:253
 #: src/views/nginx_log/NginxLog.vue:168 src/views/stream/StreamEdit.vue:245
@@ -219,7 +219,7 @@ msgstr "Назад"
 msgid "Back Home"
 msgstr "Вернуться на главную"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:216
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:217
 msgid "Back to list"
 msgstr "Возврат к списку"
 
@@ -264,7 +264,7 @@ msgstr "Пакетное обновление"
 msgid "Build with"
 msgstr "Собрать с"
 
-#: src/views/certificate/ACMEUser.vue:29
+#: src/views/certificate/ACMEUser.vue:35
 msgid "CA Dir"
 msgstr "Директория корневого сертификата"
 
@@ -278,7 +278,7 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:252
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:55
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:253
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:254
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:153
 #: src/views/domain/cert/components/ObtainCert.vue:137
 #: src/views/domain/components/Deploy.vue:21
@@ -359,8 +359,8 @@ msgid "Command"
 msgstr "Команда"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:106
-#: src/views/domain/ngx_conf/LocationEditor.vue:115
-#: src/views/domain/ngx_conf/LocationEditor.vue:84
+#: src/views/domain/ngx_conf/LocationEditor.vue:105
+#: src/views/domain/ngx_conf/LocationEditor.vue:136
 #: src/views/domain/ngx_conf/NgxServer.vue:134
 msgid "Comments"
 msgstr "Комментарии"
@@ -394,8 +394,8 @@ msgid "Connection lost, please refresh the page."
 msgstr "Соединение потеряно, пожалуйста, обновите страницу."
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:111
-#: src/views/domain/ngx_conf/LocationEditor.vue:124
-#: src/views/domain/ngx_conf/LocationEditor.vue:96
+#: src/views/domain/ngx_conf/LocationEditor.vue:117
+#: src/views/domain/ngx_conf/LocationEditor.vue:145
 msgid "Content"
 msgstr "Содержание"
 
@@ -727,7 +727,7 @@ msgstr "Редактировать Сайт"
 msgid "Edit Stream"
 msgstr "Редактировать поток"
 
-#: src/views/certificate/ACMEUser.vue:21
+#: src/views/certificate/ACMEUser.vue:24
 msgid "Email"
 msgstr "Электронная почта"
 
@@ -961,7 +961,7 @@ msgstr "Порт HTTP"
 msgid "HTTP01"
 msgstr "HTTP01"
 
-#: src/views/certificate/ACMEUser.vue:37
+#: src/views/certificate/ACMEUser.vue:43
 msgid "If left blank, the default CA Dir will be used."
 msgstr "Если оставить пустым, будет использоваться каталог CA по умолчанию."
 
@@ -1022,7 +1022,7 @@ msgstr "Инициализация программы обновления яд�
 msgid "Input the code from the app:"
 msgstr "Введите код из приложения:"
 
-#: src/components/2FA/Authorization.vue:87
+#: src/components/TwoFA/Authorization.vue:87
 #: src/views/preference/components/TOTP.vue:171
 msgid "Input the recovery code:"
 msgstr "Введите код восстановления:"
@@ -1039,7 +1039,7 @@ msgstr "Установка прошла успешно"
 msgid "Interval"
 msgstr "Интервал"
 
-#: src/views/certificate/ACMEUser.vue:92
+#: src/views/certificate/ACMEUser.vue:121
 msgid "Invalid"
 msgstr "Недействительно"
 
@@ -1056,7 +1056,7 @@ msgstr "Неверное имя файла"
 msgid "Invalid folder name"
 msgstr "Недопустимое имя папки"
 
-#: src/components/2FA/use2FAModal.ts:65
+#: src/components/TwoFA/use2FAModal.ts:65
 msgid "Invalid passcode or recovery code"
 msgstr "Неверный пароль или код восстановления"
 
@@ -1106,8 +1106,13 @@ msgstr "Оставьте пустым без изменений"
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Оставьте пустым для значения по умолчанию: https://api.openai.com/"
 
-#: src/views/certificate/CertificateEditor.vue:212
-#: src/views/certificate/CertificateEditor.vue:225
+#: src/views/certificate/ACMEUser.vue:56
+#, fuzzy
+msgid "Leave blank if you don't need this."
+msgstr "Оставьте пустым без изменений"
+
+#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/CertificateEditor.vue:227
 msgid "Leave blank will not change anything"
 msgstr "Если оставить пустым, ничего не изменится"
 
@@ -1124,7 +1129,7 @@ msgstr "Лицензия"
 msgid "Link Start"
 msgstr "Начало ссылки"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:193
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:194
 msgid "List"
 msgstr "Список"
 
@@ -1145,15 +1150,15 @@ msgstr "Загружено успешно"
 msgid "Local"
 msgstr "Локальный"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:59
+#: src/views/domain/ngx_conf/LocationEditor.vue:69
 msgid "Location"
 msgstr "Location"
 
-#: src/views/domain/ngx_conf/LocationEditor.vue:43
+#: src/views/domain/ngx_conf/LocationEditor.vue:50
 msgid "Locations"
 msgstr "Locations"
 
-#: src/views/certificate/CertificateEditor.vue:235
+#: src/views/certificate/CertificateEditor.vue:237
 msgid "Log"
 msgstr "Журнал"
 
@@ -1240,7 +1245,7 @@ msgid "Model"
 msgstr "Модель"
 
 #: src/components/ChatGPT/ChatGPT.vue:248
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:182
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:531
 #: src/views/config/ConfigList.vue:159
 msgid "Modify"
@@ -1254,7 +1259,7 @@ msgstr "Изменить сертификат"
 msgid "Modify Config"
 msgstr "Изменить конфигурацию"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:269
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:270
 msgid "Modify Mode"
 msgstr "Изменить режим"
 
@@ -1263,7 +1268,7 @@ msgid "Multi-line Directive"
 msgstr "Многострочная директива"
 
 #: src/views/certificate/ACMEUser.vue:13
-#: src/views/certificate/CertificateEditor.vue:152
+#: src/views/certificate/CertificateEditor.vue:154
 #: src/views/certificate/CertificateList/certColumns.tsx:10
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:65 src/views/config/configColumns.ts:8
@@ -1353,7 +1358,7 @@ msgstr "Nginx успешно перезапущен"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:575
 #: src/views/domain/DomainList.vue:144
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:90
-#: src/views/domain/ngx_conf/LocationEditor.vue:70
+#: src/views/domain/ngx_conf/LocationEditor.vue:90
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/AuthSettings.vue:104
 #: src/views/preference/BasicSettings.vue:101
@@ -1416,7 +1421,7 @@ msgstr ""
 msgid "Offline"
 msgstr "Оффлайн"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:254
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:255
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:154
 msgid "Ok"
 msgstr "Ок"
@@ -1456,7 +1461,7 @@ msgstr "Онлайн"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/2FA/Authorization.vue:117 src/views/other/Login.vue:256
+#: src/components/TwoFA/Authorization.vue:117 src/views/other/Login.vue:256
 msgid "Or"
 msgstr ""
 
@@ -1508,8 +1513,8 @@ msgid "Password (*)"
 msgstr "Пароль (*)"
 
 #: src/views/config/ConfigEditor.vue:262
-#: src/views/domain/ngx_conf/LocationEditor.vue:118
-#: src/views/domain/ngx_conf/LocationEditor.vue:90
+#: src/views/domain/ngx_conf/LocationEditor.vue:111
+#: src/views/domain/ngx_conf/LocationEditor.vue:139
 msgid "Path"
 msgstr "Путь"
 
@@ -1531,7 +1536,7 @@ msgid ""
 "button below."
 msgstr ""
 
-#: src/components/2FA/Authorization.vue:75
+#: src/components/TwoFA/Authorization.vue:75
 #, fuzzy
 msgid "Please enter the OTP code:"
 msgstr "Пожалуйста, введите код 2FA:"
@@ -1594,6 +1599,11 @@ msgstr ""
 "Обратите внимание, что единица измерения времени в конфигурациях ниже "
 "указана в секундах."
 
+#: src/views/environment/Environment.vue:47
+#, fuzzy
+msgid "Please select at least one node to upgrade"
+msgstr "Пожалуйста, выберите хотя бы один узел!"
+
 #: src/views/domain/components/SiteDuplicate.vue:45
 #: src/views/stream/components/StreamDuplicate.vue:45
 msgid "Please select at least one node!"
@@ -1629,6 +1639,10 @@ msgstr "Команда проекта"
 msgid "Provider"
 msgstr "Провайдер"
 
+#: src/views/certificate/ACMEUser.vue:48
+msgid "Proxy"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:28
 #: src/views/dashboard/ServerAnalytic.vue:378
 msgid "Reads"
@@ -1647,7 +1661,7 @@ msgstr "Восстановить"
 msgid "Recovered Successfully"
 msgstr "Восстановлено успешно"
 
-#: src/components/2FA/Authorization.vue:94
+#: src/components/TwoFA/Authorization.vue:94
 #: src/views/preference/components/TOTP.vue:178
 msgid "Recovery"
 msgstr "Восстановление"
@@ -1668,20 +1682,31 @@ msgstr "Рекурсивные DNS"
 msgid "Regenerate response"
 msgstr "Восстановить ответ"
 
-#: src/views/certificate/ACMEUser.vue:100
+#: src/views/certificate/ACMEUser.vue:129
 msgid "Register"
 msgstr "Регистрация"
 
-#: src/views/certificate/ACMEUser.vue:69
+#: src/views/certificate/ACMEUser.vue:53
+msgid ""
+"Register a user or use this account to issue a certificate through an HTTP "
+"proxy."
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:98
 msgid "Register failed"
 msgstr "Регистрация не удалась"
+
+#: src/views/certificate/ACMEUser.vue:72
+#, fuzzy
+msgid "Register On Startup"
+msgstr "Статус регистрации"
 
 #: src/views/preference/components/AddPasskey.vue:26
 #, fuzzy
 msgid "Register passkey successfully"
 msgstr "Зарегистрировано успешно"
 
-#: src/views/certificate/ACMEUser.vue:67
+#: src/views/certificate/ACMEUser.vue:96
 msgid "Register successfully"
 msgstr "Зарегистрировано успешно"
 
@@ -1689,7 +1714,7 @@ msgstr "Зарегистрировано успешно"
 msgid "Registering user"
 msgstr "Регистрация пользователя"
 
-#: src/views/certificate/ACMEUser.vue:83
+#: src/views/certificate/ACMEUser.vue:112
 msgid "Registration Status"
 msgstr "Статус регистрации"
 
@@ -1811,7 +1836,7 @@ msgid "Running"
 msgstr "Выполняется"
 
 #: src/components/ChatGPT/ChatGPT.vue:251
-#: src/views/certificate/CertificateEditor.vue:254
+#: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/ConfigEditor.vue:222 src/views/domain/DomainEdit.vue:260
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:120
 #: src/views/preference/components/Passkey.vue:136
@@ -1944,19 +1969,19 @@ msgstr "Журналы сайта"
 msgid "Sites List"
 msgstr "Список сайтов"
 
-#: src/views/certificate/CertificateEditor.vue:203
+#: src/views/certificate/CertificateEditor.vue:205
 msgid "SSL Certificate Content"
 msgstr "Содержимое SSL-сертификата"
 
-#: src/views/certificate/CertificateEditor.vue:216
+#: src/views/certificate/CertificateEditor.vue:218
 msgid "SSL Certificate Key Content"
 msgstr "Содержимое ключа SSL-сертификата"
 
-#: src/views/certificate/CertificateEditor.vue:182
+#: src/views/certificate/CertificateEditor.vue:184
 msgid "SSL Certificate Key Path"
 msgstr "Путь к ключу SSL-сертификата"
 
-#: src/views/certificate/CertificateEditor.vue:167
+#: src/views/certificate/CertificateEditor.vue:169
 msgid "SSL Certificate Path"
 msgstr "Путь к SSL сертификату"
 
@@ -1970,7 +1995,7 @@ msgstr "SSO Вход"
 msgid "Stable"
 msgstr "Стабильный"
 
-#: src/views/certificate/ACMEUser.vue:42
+#: src/views/certificate/ACMEUser.vue:61
 #: src/views/certificate/CertificateList/certColumns.tsx:60
 #: src/views/domain/DomainList.vue:22 src/views/environment/envColumns.tsx:78
 #: src/views/stream/StreamList.vue:22
@@ -2064,7 +2089,7 @@ msgstr "Ошибка синхронизации конфигурации"
 msgid "Sync Config Success"
 msgstr "Синхронизация конфигурации успешна"
 
-#: src/views/certificate/CertificateEditor.vue:196
+#: src/views/certificate/CertificateEditor.vue:198
 msgid "Sync to"
 msgstr "Синхронизировать с"
 
@@ -2103,11 +2128,11 @@ msgstr ""
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "The filename cannot contain the following characters: %{c}"
 
-#: src/views/certificate/CertificateEditor.vue:206
+#: src/views/certificate/CertificateEditor.vue:208
 msgid "The input is not a SSL Certificate"
 msgstr "Входные данные не являются SSL-сертификатом"
 
-#: src/views/certificate/CertificateEditor.vue:219
+#: src/views/certificate/CertificateEditor.vue:221
 msgid "The input is not a SSL Certificate Key"
 msgstr "Введенные данные не являются ключом SSL сертификата"
 
@@ -2119,11 +2144,11 @@ msgstr ""
 "Имя модели должно содержать только буквы, юникод, цифры, дефисы, тире и "
 "точки."
 
-#: src/views/certificate/CertificateEditor.vue:171
+#: src/views/certificate/CertificateEditor.vue:173
 msgid "The path exists, but the file is not a certificate"
 msgstr "Путь существует, но файл не является сертификатом"
 
-#: src/views/certificate/CertificateEditor.vue:186
+#: src/views/certificate/CertificateEditor.vue:188
 msgid "The path exists, but the file is not a private key"
 msgstr "Путь существует, но файл не является приватным ключом"
 
@@ -2182,9 +2207,9 @@ msgstr "Этот элемент автосертификата недейств�
 msgid "This certificate is managed by Nginx UI"
 msgstr "Этот сертификат находится под управлением  Nginx UI"
 
-#: src/views/certificate/CertificateEditor.vue:155
-#: src/views/certificate/CertificateEditor.vue:169
-#: src/views/certificate/CertificateEditor.vue:184
+#: src/views/certificate/CertificateEditor.vue:157
+#: src/views/certificate/CertificateEditor.vue:171
+#: src/views/certificate/CertificateEditor.vue:186
 msgid "This field is required"
 msgstr "Это поле обязательно для заполнения"
 
@@ -2256,11 +2281,11 @@ msgstr ""
 "TOTP — это метод двухфакторной аутентификации, который использует алгоритм "
 "одноразового пароля на основе времени."
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:210
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:211
 msgid "Trash"
 msgstr "Корзина"
 
-#: src/components/2FA/use2FAModal.ts:71
+#: src/components/TwoFA/use2FAModal.ts:71
 msgid "Two-factor authentication required"
 msgstr "Требуется двухфакторная аутентификация"
 
@@ -2275,7 +2300,7 @@ msgstr "Тип"
 msgid "Update successfully"
 msgstr "Успешно обновлено"
 
-#: src/views/certificate/ACMEUser.vue:53
+#: src/views/certificate/ACMEUser.vue:82
 #: src/views/certificate/DNSCredential.vue:27
 #: src/views/config/configColumns.ts:31 src/views/config/ConfigEditor.vue:275
 #: src/views/domain/components/RightSettings.vue:86
@@ -2289,7 +2314,7 @@ msgstr "Обновлено в"
 msgid "Updated successfully"
 msgstr "Успешно обновлено"
 
-#: src/routes/index.ts:284 src/views/environment/Environment.vue:50
+#: src/routes/index.ts:284 src/views/environment/Environment.vue:55
 #: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
 msgid "Upgrade"
 msgstr "Обновление"
@@ -2318,11 +2343,11 @@ msgstr "Аптайм:"
 msgid "URL"
 msgstr "URL"
 
-#: src/components/2FA/Authorization.vue:107
+#: src/components/TwoFA/Authorization.vue:107
 msgid "Use OTP"
 msgstr "Использовать OTP"
 
-#: src/components/2FA/Authorization.vue:103
+#: src/components/TwoFA/Authorization.vue:103
 msgid "Use recovery code"
 msgstr "Использовать код восстановления"
 
@@ -2342,7 +2367,7 @@ msgstr "Имя пользователя"
 msgid "Username (*)"
 msgstr "Имя пользователя (*)"
 
-#: src/views/certificate/ACMEUser.vue:87
+#: src/views/certificate/ACMEUser.vue:116
 #: src/views/certificate/CertificateList/certColumns.tsx:73
 #: src/views/domain/cert/CertInfo.vue:24
 msgid "Valid"
@@ -2361,11 +2386,11 @@ msgstr "Просмотр"
 msgid "View all notifications"
 msgstr "Просмотреть все уведомления"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:182
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
 msgid "View Details"
 msgstr "Подробно"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:269
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:270
 #, fuzzy
 msgid "View Mode"
 msgstr "Простой режим"
@@ -2393,6 +2418,13 @@ msgstr ""
 "Мы удалим конфигурацию HTTPChallenge из этого файла и перезагрузим Nginx. Вы "
 "уверены, что хотите продолжить?"
 
+#: src/views/certificate/ACMEUser.vue:78
+msgid ""
+"When Enabled, Nginx UI will automatically re-register users upon startup. "
+"Generally, do not enable this unless you are in a dev environment and using "
+"Pebble as CA."
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:27
 #: src/views/dashboard/ServerAnalytic.vue:368
 msgid "Writes"
@@ -2407,7 +2439,7 @@ msgid "Writing certificate to disk"
 msgstr "Запись сертификата на диск"
 
 #: src/views/domain/ngx_conf/directive/DirectiveEditorItem.vue:89
-#: src/views/domain/ngx_conf/LocationEditor.vue:69
+#: src/views/domain/ngx_conf/LocationEditor.vue:89
 #: src/views/preference/AuthSettings.vue:103
 #: src/views/preference/BasicSettings.vue:100
 msgid "Yes"
@@ -2464,10 +2496,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Table"
 #~ msgstr "Таблица"
-
-#, fuzzy
-#~ msgid "Leave blank will not change anything."
-#~ msgstr "Оставьте пустым без изменений"
 
 #, fuzzy
 #~ msgid "Auto Cert is enabled"

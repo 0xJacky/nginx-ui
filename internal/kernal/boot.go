@@ -29,6 +29,7 @@ func Boot() {
 		InitCryptoSecret,
 		validation.Init,
 		cache.Init,
+		RegisterAcmeUser,
 	}
 
 	syncs := []func(){

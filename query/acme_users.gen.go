@@ -37,6 +37,8 @@ func newAcmeUser(db *gorm.DB, opts ...gen.DOOption) acmeUser {
 	_acmeUser.CADir = field.NewString(tableName, "ca_dir")
 	_acmeUser.Registration = field.NewField(tableName, "registration")
 	_acmeUser.Key = field.NewField(tableName, "key")
+	_acmeUser.Proxy = field.NewString(tableName, "proxy")
+	_acmeUser.RegisterOnStartup = field.NewBool(tableName, "register_on_startup")
 
 	_acmeUser.fillFieldMap()
 
@@ -46,16 +48,18 @@ func newAcmeUser(db *gorm.DB, opts ...gen.DOOption) acmeUser {
 type acmeUser struct {
 	acmeUserDo
 
-	ALL          field.Asterisk
-	ID           field.Int
-	CreatedAt    field.Time
-	UpdatedAt    field.Time
-	DeletedAt    field.Field
-	Name         field.String
-	Email        field.String
-	CADir        field.String
-	Registration field.Field
-	Key          field.Field
+	ALL               field.Asterisk
+	ID                field.Int
+	CreatedAt         field.Time
+	UpdatedAt         field.Time
+	DeletedAt         field.Field
+	Name              field.String
+	Email             field.String
+	CADir             field.String
+	Registration      field.Field
+	Key               field.Field
+	Proxy             field.String
+	RegisterOnStartup field.Bool
 
 	fieldMap map[string]field.Expr
 }
@@ -81,6 +85,8 @@ func (a *acmeUser) updateTableName(table string) *acmeUser {
 	a.CADir = field.NewString(table, "ca_dir")
 	a.Registration = field.NewField(table, "registration")
 	a.Key = field.NewField(table, "key")
+	a.Proxy = field.NewString(table, "proxy")
+	a.RegisterOnStartup = field.NewBool(table, "register_on_startup")
 
 	a.fillFieldMap()
 
@@ -97,7 +103,7 @@ func (a *acmeUser) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (a *acmeUser) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 9)
+	a.fieldMap = make(map[string]field.Expr, 11)
 	a.fieldMap["id"] = a.ID
 	a.fieldMap["created_at"] = a.CreatedAt
 	a.fieldMap["updated_at"] = a.UpdatedAt
@@ -107,6 +113,8 @@ func (a *acmeUser) fillFieldMap() {
 	a.fieldMap["ca_dir"] = a.CADir
 	a.fieldMap["registration"] = a.Registration
 	a.fieldMap["key"] = a.Key
+	a.fieldMap["proxy"] = a.Proxy
+	a.fieldMap["register_on_startup"] = a.RegisterOnStartup
 }
 
 func (a acmeUser) clone(db *gorm.DB) acmeUser {
