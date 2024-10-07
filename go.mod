@@ -1,6 +1,6 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.23.0
+go 1.23.2
 
 require (
 	github.com/0xJacky/pofile v0.2.1
@@ -8,12 +8,12 @@ require (
 	github.com/caarlos0/env/v11 v11.2.2
 	github.com/casdoor/casdoor-go-sdk v0.52.0
 	github.com/creack/pty v1.1.23
-	github.com/dgraph-io/ristretto v0.2.0
+	github.com/dgraph-io/ristretto v1.0.0
 	github.com/dustin/go-humanize v1.0.1
 	github.com/fatih/color v1.17.0
 	github.com/gin-contrib/static v1.1.2
 	github.com/gin-gonic/gin v1.10.0
-	github.com/go-acme/lego/v4 v4.19.1
+	github.com/go-acme/lego/v4 v4.19.2
 	github.com/go-co-op/gocron v1.37.0
 	github.com/go-playground/validator/v10 v10.22.1
 	github.com/go-webauthn/webauthn v0.11.2
@@ -269,7 +269,4 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
 )
 
-replace (
-	github.com/tufanbarisyildirim/gonginx v0.0.0-20240109151651-bb3e845a7a2a => github.com/0xJacky/gonginx v0.0.0-20240119024214-c0d76957d0c7
-	gopkg.in/ns1/ns1-go.v2 v2.7.8 => gopkg.in/ns1/ns1-go.v2 v2.7.6
-)
+replace github.com/tufanbarisyildirim/gonginx v0.0.0-20240109151651-bb3e845a7a2a => github.com/0xJacky/gonginx v0.0.0-20240119024214-c0d76957d0c7

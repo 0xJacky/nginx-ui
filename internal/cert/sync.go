@@ -2,16 +2,15 @@ package cert
 
 import (
 	"bytes"
-	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
+	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"io"
 	"net/http"
@@ -88,11 +87,12 @@ type SyncNotificationPayload struct {
 }
 
 func deploy(env *model.Environment, c *model.Cert, payloadBytes []byte) (err error) {
+	t, err := transport.NewTransport()
+	if err != nil {
+		return
+	}
 	client := http.Client{
-		Transport: &http.Transport{
-			Proxy:           http.ProxyFromEnvironment,
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.ServerSettings.InsecureSkipVerify},
-		},
+		Transport: t,
 	}
 	url, err := env.GetUrl("/api/cert_sync")
 	if err != nil {

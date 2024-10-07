@@ -5,12 +5,10 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
-	"crypto/tls"
-	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/go-acme/lego/v4/lego"
 	"github.com/go-acme/lego/v4/registration"
 	"math/big"
-	"net/http"
 )
 
 type PrivateKey struct {
@@ -63,10 +61,11 @@ func (u *AcmeUser) Register() error {
 
 	// Skip TLS check
 	if config.HTTPClient != nil {
-		config.HTTPClient.Transport = &http.Transport{
-			Proxy:           http.ProxyFromEnvironment,
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.ServerSettings.InsecureSkipVerify},
+		t, err := transport.NewTransport()
+		if err != nil {
+			return err
 		}
+		config.HTTPClient.Transport = t
 	}
 
 	client, err := lego.NewClient(config)

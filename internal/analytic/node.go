@@ -1,12 +1,11 @@
 package analytic
 
 import (
-	"crypto/tls"
 	"encoding/json"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/internal/upgrader"
 	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/shirou/gopsutil/v3/load"
 	"github.com/shirou/gopsutil/v3/net"
 	"io"
@@ -82,11 +81,12 @@ func InitNode(env *model.Environment) (n *Node) {
 		return
 	}
 
+	t, err := transport.NewTransport()
+	if err != nil {
+		return
+	}
 	client := http.Client{
-		Transport: &http.Transport{
-			Proxy:           http.ProxyFromEnvironment,
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.ServerSettings.InsecureSkipVerify},
-		},
+		Transport: t,
 	}
 
 	req, err := http.NewRequest("GET", u, nil)

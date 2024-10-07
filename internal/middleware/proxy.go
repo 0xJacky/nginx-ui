@@ -1,10 +1,9 @@
 package middleware
 
 import (
-	"crypto/tls"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"io"
@@ -57,11 +56,18 @@ func Proxy() gin.HandlerFunc {
 		}
 
 		logger.Debug("Proxy request", proxyUrl.String())
+
+		t, err := transport.NewTransport()
+		if err != nil {
+			logger.Error(err)
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+				"message": err.Error(),
+			})
+			return
+		}
+
 		client := http.Client{
-			Transport: &http.Transport{
-				Proxy:           http.ProxyFromEnvironment,
-				TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.ServerSettings.InsecureSkipVerify},
-			},
+			Transport: t,
 		}
 
 		req, err := http.NewRequest(c.Request.Method, proxyUrl.String(), c.Request.Body)

@@ -1,10 +1,10 @@
 package cert
 
 import (
-	"crypto/tls"
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-acme/lego/v4/challenge/dns01"
@@ -14,7 +14,6 @@ import (
 	dnsproviders "github.com/go-acme/lego/v4/providers/dns"
 	"github.com/pkg/errors"
 	"log"
-	"net/http"
 	"os"
 	"time"
 )
@@ -63,10 +62,11 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 
 	// Skip TLS check
 	if config.HTTPClient != nil {
-		config.HTTPClient.Transport = &http.Transport{
-			Proxy:           http.ProxyFromEnvironment,
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.ServerSettings.InsecureSkipVerify},
+		t, err := transport.NewTransport()
+		if err != nil {
+			return
 		}
+		config.HTTPClient.Transport = t
 	}
 
 	config.Certificate.KeyType = payload.GetKeyType()

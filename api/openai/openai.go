@@ -2,17 +2,16 @@ package openai
 
 import (
 	"context"
-	"crypto/tls"
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/chatbot"
+	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/sashabaranov/go-openai"
 	"io"
 	"net/http"
-	"net/url"
 )
 
 const ChatGPTInitPrompt = `You are a assistant who can help users write and optimise the configurations of Nginx,
@@ -53,7 +52,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	config := openai.DefaultConfig(settings.OpenAISettings.Token)
 
 	if settings.OpenAISettings.Proxy != "" {
-		proxyUrl, err := url.Parse(settings.OpenAISettings.Proxy)
+		t, err := transport.NewTransport(transport.WithProxy(settings.OpenAISettings.Proxy))
 		if err != nil {
 			c.Stream(func(w io.Writer) bool {
 				c.SSEvent("message", gin.H{
@@ -64,12 +63,8 @@ func MakeChatCompletionRequest(c *gin.Context) {
 			})
 			return
 		}
-		transport := &http.Transport{
-			Proxy:           http.ProxyURL(proxyUrl),
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.ServerSettings.InsecureSkipVerify},
-		}
 		config.HTTPClient = &http.Client{
-			Transport: transport,
+			Transport: t,
 		}
 	}
 
