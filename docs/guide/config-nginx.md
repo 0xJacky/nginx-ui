@@ -33,6 +33,20 @@ In Nginx UI v2, we parse the output of the `nginx -V` command to get the default
 If you need to set a different path, you can use this option.
 :::
 
+### LogDirWhiteList
+
+- Type: `[]string`
+- Version：`>= v2.0.0-beta.36`
+- Example: `/var/log/nginx,/var/log/sites`
+
+This option is used to set the whitelist of directories for the Nginx logs viewer in Nginx UI.
+
+::: warning Warning
+For security reasons, you must specify the directories where the logs are stored. 
+
+Only logs within these directories can be viewed online.
+:::
+
 ## Service Monitoring and Control
 
 In this section, we will introduce configuration options in Nginx UI for monitoring and controlling Nginx services.

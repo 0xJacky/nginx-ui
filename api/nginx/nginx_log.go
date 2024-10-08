@@ -2,9 +2,13 @@ package nginx
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/0xJacky/Nginx-UI/api"
+	"github.com/0xJacky/Nginx-UI/internal/cache"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/hpcloud/tail"
@@ -30,6 +34,7 @@ type controlStruct struct {
 type nginxLogPageResp struct {
 	Content string `json:"content"`
 	Page    int64  `json:"page"`
+	Error   string `json:"error,omitempty"`
 }
 
 func GetNginxLogPage(c *gin.Context) {
@@ -46,6 +51,9 @@ func GetNginxLogPage(c *gin.Context) {
 	logPath, err := getLogPath(&control)
 
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
+			Error: err.Error(),
+		})
 		logger.Error(err)
 		return
 	}
@@ -53,13 +61,17 @@ func GetNginxLogPage(c *gin.Context) {
 	logFileStat, err := os.Stat(logPath)
 
 	if err != nil {
-		c.JSON(http.StatusOK, nginxLogPageResp{})
+		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
+			Error: err.Error(),
+		})
 		logger.Error(err)
 		return
 	}
 
 	if !logFileStat.Mode().IsRegular() {
-		c.JSON(http.StatusOK, nginxLogPageResp{})
+		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
+			Error: "log file is not regular file",
+		})
 		logger.Error("log file is not regular file:", logPath)
 		return
 	}
@@ -67,7 +79,9 @@ func GetNginxLogPage(c *gin.Context) {
 	f, err := os.Open(logPath)
 
 	if err != nil {
-		c.JSON(http.StatusOK, nginxLogPageResp{})
+		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
+			Error: err.Error(),
+		})
 		logger.Error(err)
 		return
 	}
@@ -90,7 +104,9 @@ func GetNginxLogPage(c *gin.Context) {
 	// seek
 	_, err = f.Seek(offset, io.SeekStart)
 	if err != nil && err != io.EOF {
-		c.JSON(http.StatusOK, nginxLogPageResp{})
+		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
+			Error: err.Error(),
+		})
 		logger.Error(err)
 		return
 	}
@@ -98,7 +114,9 @@ func GetNginxLogPage(c *gin.Context) {
 	n, err := f.Read(buf)
 
 	if err != nil && err != io.EOF {
-		c.JSON(http.StatusOK, nginxLogPageResp{})
+		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
+			Error: err.Error(),
+		})
 		logger.Error(err)
 		return
 	}
@@ -109,7 +127,30 @@ func GetNginxLogPage(c *gin.Context) {
 	})
 }
 
+// isLogPathUnderWhiteList checks if the log path is under one of the paths in LogDirWhiteList
+func isLogPathUnderWhiteList(path string) bool {
+	cacheKey := fmt.Sprintf("isLogPathUnderWhiteList:%s", path)
+	res, ok := cache.Get(cacheKey)
+	// no cache, check it
+	if !ok {
+		for _, whitePath := range settings.NginxSettings.LogDirWhiteList {
+			if helper.IsUnderDirectory(path, whitePath) {
+				cache.Set(cacheKey, true, 0)
+				return true
+			}
+		}
+		return false
+	}
+	return res.(bool)
+}
+
 func getLogPath(control *controlStruct) (logPath string, err error) {
+	if len(settings.NginxSettings.LogDirWhiteList) == 0 {
+		err = errors.New("The settings.NginxSettings.LogDirWhiteList has not been configured. " +
+			"For security reasons, please configure a whitelist of log directories. " +
+			"Please visit https://nginxui.com/guide/config-nginx.html for more information.")
+		return
+	}
 	switch control.Type {
 	case "site":
 		var config *nginx.NgxConfig
@@ -172,6 +213,11 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 		logPath = path
 	}
 
+	// check if logPath is under one of the paths in LogDirWhiteList
+	if !isLogPathUnderWhiteList(logPath) {
+		err = errors.New("The log path is not under the paths in LogDirWhiteList.")
+		return "", err
+	}
 	return
 }
 

@@ -59,6 +59,9 @@ function init() {
   nginx_log.page(0, control).then(r => {
     page.value = r.page - 1
     addLog(r.content)
+    openWs()
+  }).catch(e => {
+    addLog(e.error)
   })
 }
 
@@ -68,11 +71,10 @@ function clearLog() {
 
 onMounted(() => {
   init()
-  openWs()
 })
 
 onUnmounted(() => {
-  websocket.close()
+  websocket?.close()
 })
 
 watch(auto_refresh, value => {
