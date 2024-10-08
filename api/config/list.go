@@ -18,7 +18,6 @@ func GetConfigs(c *gin.Context) {
 	dir := c.DefaultQuery("dir", "/")
 
 	configFiles, err := os.ReadDir(nginx.GetConfPath(dir))
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return

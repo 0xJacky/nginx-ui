@@ -1,6 +1,7 @@
 package nginx
 
 import (
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"os/exec"
@@ -31,7 +32,13 @@ func GetConfPath(dir ...string) (confPath string) {
 		confPath = settings.NginxSettings.ConfigDir
 	}
 
-	return filepath.Join(confPath, filepath.Join(dir...))
+	joined := filepath.Clean(filepath.Join(confPath, filepath.Join(dir...)))
+
+	if !helper.IsUnderDirectory(confPath, joined) {
+		return confPath
+	}
+
+	return
 }
 
 func GetPIDPath() (path string) {
