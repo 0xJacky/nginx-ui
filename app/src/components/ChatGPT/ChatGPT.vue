@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import Icon, { SendOutlined } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
-import { marked } from 'marked'
+import { Marked } from 'marked'
 import hljs from 'highlight.js'
+import { markedHighlight } from 'marked-highlight'
 import type { Ref } from 'vue'
 import { urlJoin } from '@/lib/helper'
 import { useSettingsStore, useUserStore } from '@/pinia'
@@ -158,17 +159,17 @@ async function send() {
   await request()
 }
 
-const renderer = new marked.Renderer()
+const marked = new Marked(
+  markedHighlight({
+    langPrefix: 'hljs language-',
+    highlight(code, lang) {
+      const language = hljs.getLanguage(lang) ? lang : 'nginx'
 
-renderer.code = (code, lang: string) => {
-  const language = hljs.getLanguage(lang) ? lang : 'nginx'
-  const highlightedCode = hljs.highlight(code, { language }).value
-
-  return `<pre><code class="hljs ${language}">${highlightedCode}</code></pre>`
-}
+      return hljs.highlight(code, { language }).value
+    },
+  }))
 
 marked.setOptions({
-  renderer,
   pedantic: false,
   gfm: true,
   breaks: false,

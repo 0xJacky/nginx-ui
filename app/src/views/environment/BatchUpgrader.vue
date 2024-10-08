@@ -40,7 +40,9 @@ function log(msg: string) {
 
   logContainer.value.appendChild(para)
 
-  logContainer.value.scroll({ top: 320, left: 0, behavior: 'smooth' })
+  nextTick(() => {
+    logContainer.value.scroll({ top: logContainer.value.scrollHeight, left: 0, behavior: 'smooth' })
+  })
 }
 
 const progressPercentComputed = computed(() => {
