@@ -14,7 +14,7 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
         ? $gettext('File not found')
         : ''"
     >
-      <AInput v-model:value="data.nginx.access_log_path" />
+      {{ data.nginx.access_log_path }}
     </AFormItem>
     <AFormItem
       :label="$gettext('Nginx Error Log Path')"
@@ -23,7 +23,7 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
         ? $gettext('File not found')
         : ''"
     >
-      <AInput v-model:value="data.nginx.error_log_path" />
+      {{ data.nginx.error_log_path }}
     </AFormItem>
   </AForm>
 </template>

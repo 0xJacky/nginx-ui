@@ -33,12 +33,10 @@ func GetConfPath(dir ...string) (confPath string) {
 	}
 
 	joined := filepath.Clean(filepath.Join(confPath, filepath.Join(dir...)))
-
-	if !helper.IsUnderDirectory(confPath, joined) {
+	if !helper.IsUnderDirectory(joined, confPath) {
 		return confPath
 	}
-
-	return
+	return joined
 }
 
 func GetPIDPath() (path string) {

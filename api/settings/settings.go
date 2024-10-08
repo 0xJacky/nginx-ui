@@ -3,6 +3,7 @@ package settings
 import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -15,6 +16,8 @@ func GetServerName(c *gin.Context) {
 }
 
 func GetSettings(c *gin.Context) {
+	settings.NginxSettings.AccessLogPath = nginx.GetAccessLogPath()
+	settings.NginxSettings.ErrorLogPath = nginx.GetErrorLogPath()
 	c.JSON(http.StatusOK, gin.H{
 		"server":    settings.ServerSettings,
 		"nginx":     settings.NginxSettings,
