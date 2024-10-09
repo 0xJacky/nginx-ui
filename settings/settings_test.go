@@ -35,6 +35,7 @@ func TestSetup(t *testing.T) {
 	_ = os.Setenv("NGINX_UI_NGINX_TEST_CONFIG_CMD", "nginx -t")
 	_ = os.Setenv("NGINX_UI_NGINX_RELOAD_CMD", "nginx -s reload")
 	_ = os.Setenv("NGINX_UI_NGINX_RESTART_CMD", "nginx -s restart")
+	_ = os.Setenv("NGINX_UI_NGINX_LOG_DIR_WHITE_LIST", "/var/log/nginx")
 
 	_ = os.Setenv("NGINX_UI_OPENAI_MODEL", "davinci")
 	_ = os.Setenv("NGINX_UI_OPENAI_BASE_URL", "https://api.openai.com")
@@ -84,6 +85,7 @@ func TestSetup(t *testing.T) {
 	assert.Equal(t, "nginx -t", NginxSettings.TestConfigCmd)
 	assert.Equal(t, "nginx -s reload", NginxSettings.ReloadCmd)
 	assert.Equal(t, "nginx -s stop", NginxSettings.RestartCmd)
+	assert.Equal(t, []string{"/var/log/nginx"}, NginxSettings.LogDirWhiteList)
 
 	assert.Equal(t, "davinci", OpenAISettings.Model)
 	assert.Equal(t, "https://api.openai.com", OpenAISettings.BaseUrl)
