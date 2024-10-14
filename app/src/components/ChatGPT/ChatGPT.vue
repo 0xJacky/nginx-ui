@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import nginx from 'highlight.js/lib/languages/nginx'
 import Icon, { SendOutlined } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
 import { Marked } from 'marked'
@@ -21,10 +22,12 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:history_messages'])
 
+hljs.registerLanguage('nginx', nginx)
+
 const { language: current } = storeToRefs(useSettingsStore())
 
 const history_messages = computed(() => props.historyMessages)
-const messages = ref([]) as Ref<ChatComplicationMessage[] | undefined >
+const messages = ref([]) as Ref<ChatComplicationMessage[] | undefined>
 
 onMounted(() => {
   messages.value = props.historyMessages
@@ -165,7 +168,9 @@ const marked = new Marked(
     highlight(code, lang) {
       const language = hljs.getLanguage(lang) ? lang : 'nginx'
 
-      return hljs.highlight(code, { language }).value
+      const highlightedCode = hljs.highlight(code, { language }).value
+
+      return `<pre><code class="hljs ${language}">${highlightedCode}</code></pre>`
     },
   }))
 
@@ -190,7 +195,9 @@ function clear_record() {
   messages.value = []
   emit('update:history_messages', [])
 }
+
 const editing_idx = ref(-1)
+
 async function regenerate(index: number) {
   editing_idx.value = -1
   messages.value = messages.value?.slice(0, index)
