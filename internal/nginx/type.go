@@ -1,7 +1,7 @@
 package nginx
 
 import (
-	"github.com/tufanbarisyildirim/gonginx"
+	"github.com/tufanbarisyildirim/gonginx/config"
 	"path"
 	"strings"
 )
@@ -12,7 +12,7 @@ type NgxConfig struct {
 	Upstreams []*NgxUpstream `json:"upstreams"`
 	Servers   []*NgxServer   `json:"servers"`
 	Custom    string         `json:"custom"`
-	c         *gonginx.Config
+	c         *config.Config
 }
 
 type NgxServer struct {

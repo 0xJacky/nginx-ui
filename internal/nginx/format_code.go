@@ -1,12 +1,12 @@
 package nginx
 
 import (
-	"github.com/tufanbarisyildirim/gonginx"
+	"github.com/tufanbarisyildirim/gonginx/dumper"
 	"github.com/tufanbarisyildirim/gonginx/parser"
 )
 
 func (c *NgxConfig) FmtCode() (fmtContent string) {
-	fmtContent = gonginx.DumpConfig(c.c, gonginx.IndentedStyle)
+	fmtContent = dumper.DumpConfig(c.c, dumper.IndentedStyle)
 	return
 }
 
@@ -16,6 +16,6 @@ func FmtCode(content string) (fmtContent string, err error) {
 	if err != nil {
 		return
 	}
-	fmtContent = gonginx.DumpConfig(c, gonginx.IndentedStyle)
+	fmtContent = dumper.DumpConfig(c, dumper.IndentedStyle)
 	return
 }

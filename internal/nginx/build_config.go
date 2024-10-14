@@ -3,7 +3,7 @@ package nginx
 import (
 	"bufio"
 	"fmt"
-	"github.com/tufanbarisyildirim/gonginx"
+	"github.com/tufanbarisyildirim/gonginx/dumper"
 	"github.com/tufanbarisyildirim/gonginx/parser"
 	"strings"
 )
@@ -83,11 +83,11 @@ func (c *NgxConfig) BuildConfig() (content string, err error) {
 		content += fmt.Sprintf("%sserver {\n%s}\n\n", comments, server)
 	}
 	p := parser.NewStringParser(content, parser.WithSkipValidDirectivesErr())
-	config, err := p.Parse()
+	cfg, err := p.Parse()
 	if err != nil {
 		return
 	}
 
-	content = gonginx.DumpConfig(config, gonginx.IndentedStyle)
+	content = dumper.DumpConfig(cfg, dumper.IndentedStyle)
 	return
 }

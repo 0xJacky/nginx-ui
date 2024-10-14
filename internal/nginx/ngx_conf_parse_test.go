@@ -2,7 +2,7 @@ package nginx
 
 import (
 	"fmt"
-	"github.com/tufanbarisyildirim/gonginx"
+	"github.com/tufanbarisyildirim/gonginx/config"
 	"github.com/tufanbarisyildirim/gonginx/parser"
 	"strings"
 	"testing"
@@ -32,7 +32,7 @@ func TestNgxConfParse(t *testing.T) {
 	fmt.Println(c)
 }
 
-func fn(block gonginx.IBlock, deep int) {
+func fn(block config.IBlock, deep int) {
 	if block == nil {
 		return
 	}

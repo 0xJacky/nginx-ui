@@ -2,7 +2,7 @@ package nginx
 
 import (
 	"github.com/pkg/errors"
-	"github.com/tufanbarisyildirim/gonginx"
+	"github.com/tufanbarisyildirim/gonginx/config"
 	"github.com/tufanbarisyildirim/gonginx/parser"
 	"strings"
 )
@@ -13,11 +13,11 @@ const (
 	Upstream = "upstream"
 )
 
-func (s *NgxServer) ParseServer(directive gonginx.IDirective) {
+func (s *NgxServer) ParseServer(directive config.IDirective) {
 	s.parseServer(directive)
 }
 
-func (s *NgxServer) parseServer(directive gonginx.IDirective) {
+func (s *NgxServer) parseServer(directive config.IDirective) {
 	if directive.GetBlock() == nil {
 		return
 	}
@@ -40,10 +40,10 @@ func (s *NgxServer) parseServer(directive gonginx.IDirective) {
 		}
 	}
 }
-func (l *NgxLocation) ParseLocation(directive gonginx.IDirective, deep int) {
+func (l *NgxLocation) ParseLocation(directive config.IDirective, deep int) {
 	l.parseLocation(directive, deep)
 }
-func (l *NgxLocation) parseLocation(directive gonginx.IDirective, deep int) {
+func (l *NgxLocation) parseLocation(directive config.IDirective, deep int) {
 	if directive.GetBlock() == nil {
 		return
 	}
@@ -64,11 +64,11 @@ func (l *NgxLocation) parseLocation(directive gonginx.IDirective, deep int) {
 	}
 }
 
-func (d *NgxDirective) ParseDirective(directive gonginx.IDirective, deep int) {
+func (d *NgxDirective) ParseDirective(directive config.IDirective, deep int) {
 	d.parseDirective(directive, deep)
 }
 
-func (d *NgxDirective) parseDirective(directive gonginx.IDirective, deep int) {
+func (d *NgxDirective) parseDirective(directive config.IDirective, deep int) {
 	if directive.GetBlock() != nil {
 		d.Params += directive.GetName() + " "
 		d.Directive = ""
@@ -97,7 +97,7 @@ func (d *NgxDirective) parseDirective(directive gonginx.IDirective, deep int) {
 	}
 }
 
-func (u *NgxUpstream) parseUpstream(directive gonginx.IDirective) {
+func (u *NgxUpstream) parseUpstream(directive config.IDirective) {
 	if directive.GetBlock() == nil {
 		return
 	}
@@ -111,7 +111,7 @@ func (u *NgxUpstream) parseUpstream(directive gonginx.IDirective) {
 	}
 }
 
-func (c *NgxConfig) parseCustom(directive gonginx.IDirective) {
+func (c *NgxConfig) parseCustom(directive config.IDirective) {
 	if directive.GetBlock() == nil {
 		return
 	}
@@ -127,7 +127,7 @@ func buildComment(c []string) string {
 	return strings.ReplaceAll(strings.Join(c, "\n"), "#", "")
 }
 
-func parse(block gonginx.IBlock, ngxConfig *NgxConfig) (err error) {
+func parse(block config.IBlock, ngxConfig *NgxConfig) (err error) {
 	if block == nil {
 		err = errors.New("block is nil")
 		return

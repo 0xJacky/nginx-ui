@@ -34,7 +34,7 @@ require (
 	github.com/shopspring/decimal v1.4.0
 	github.com/spf13/cast v1.7.0
 	github.com/stretchr/testify v1.9.0
-	github.com/tufanbarisyildirim/gonginx v0.0.0-20240109151651-bb3e845a7a2a
+	github.com/tufanbarisyildirim/gonginx v0.0.0-20241013191809-e73b7dd454e8
 	go.uber.org/zap v1.27.0
 	golang.org/x/crypto v0.28.0
 	gopkg.in/guregu/null.v4 v4.0.0
@@ -268,5 +268,3 @@ require (
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
 )
-
-replace github.com/tufanbarisyildirim/gonginx v0.0.0-20240109151651-bb3e845a7a2a => github.com/0xJacky/gonginx v0.0.0-20240119024214-c0d76957d0c7

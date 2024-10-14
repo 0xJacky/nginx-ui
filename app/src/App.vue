@@ -90,6 +90,7 @@ loadTranslations(route)
     .ant-menu {
       border-right: 0 !important;
     }
+
     &.ant-layout-sider-has-trigger {
       padding-bottom: 0;
     }
