@@ -234,7 +234,6 @@ docker run -dit \
 2. Tạo tệp docker-compose.yml:
 
 ```yml
-version: '3.3'
 services:
     nginx-ui:
         stdin_open: true
@@ -254,15 +253,7 @@ services:
 ```
 
 3. Sau đó tạo container bằng lệnh:
-
 ```bash
-docker-compose up -d
-```
-
-Nếu bạn sử dụng docker-compose-plugin, lệnh sẽ như sau
-
-```bash
-
 docker compose up -d
 ```
 

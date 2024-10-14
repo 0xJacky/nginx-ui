@@ -235,7 +235,6 @@ docker run -dit \
 2. Create a docker-compose.yml file like this:
 
 ```yml
-version: '3.3'
 services:
     nginx-ui:
         stdin_open: true
@@ -255,13 +254,7 @@ services:
 ```
 
 3. Then creat your container by:
-
 ```bash
-docker-compose up -d
-```
-
-```bash
-# If using docker-compose-plugin
 docker compose up -d
 ```
 
