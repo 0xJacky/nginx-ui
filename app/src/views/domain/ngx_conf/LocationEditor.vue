@@ -173,4 +173,9 @@ function duplicate(index: number) {
 .ant-collapse-header {
   align-items: center;
 }
+
+:deep(.ant-collapse-header-text) {
+  width: 100%;
+  overflow: hidden;
+}
 </style>

@@ -4,35 +4,32 @@ import _ from 'lodash'
 import { useSettingsStore } from '@/pinia'
 import type { Variable } from '@/api/template'
 
-const props = defineProps<{
-  data: Variable
-  name: string
-}>()
-
-const emit = defineEmits<{
-  'update:data': [data: Variable]
-}>()
-
-const data = computed({
-  get() {
-    return props.data
-  },
-  set(v) {
-    emit('update:data', v)
-  },
+const data = defineModel<Variable>({
+  default: () => {},
 })
 
 const { language } = storeToRefs(useSettingsStore())
 
 const trans_name = computed(() => {
-  return props.data?.name?.[language.value] ?? props.data?.name?.en ?? ''
+  return data.value?.name?.[language.value] ?? data.value?.name?.en ?? ''
 })
 
 const build_template = inject('build_template') as () => void
 
-const value = computed(() => props.data.value)
+const value = computed(() => data.value.value)
 
 watch(value, _.throttle(build_template, 500))
+
+const selectOptions = computed(() => {
+  return Object.keys(data.value?.mask || {}).map(k => {
+    const label = data.value.mask?.[k]?.[language.value] ?? data.value.mask?.[k]?.en ?? ''
+
+    return {
+      label,
+      value: k,
+    }
+  })
+})
 </script>
 
 <template>
@@ -40,6 +37,11 @@ watch(value, _.throttle(build_template, 500))
     <AInput
       v-if="data.type === 'string'"
       v-model:value="data.value"
+    />
+    <ASelect
+      v-else-if="data.type === 'select'"
+      v-model:value="data.value"
+      :options="selectOptions"
     />
     <ASwitch
       v-else-if="data.type === 'boolean'"

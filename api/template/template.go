@@ -66,7 +66,6 @@ func GetTemplateConfList(c *gin.Context) {
 
 func GetTemplateBlockList(c *gin.Context) {
 	configList, err := template.GetTemplateList("block")
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return

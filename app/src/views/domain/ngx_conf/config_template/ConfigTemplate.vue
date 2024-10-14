@@ -119,19 +119,21 @@ provide('ngx_directives', ngx_directives)
     >
       <p>{{ $gettext('Author') }}: {{ data.author }}</p>
       <p>{{ $gettext('Description') }}: {{ trans_description(data) }}</p>
-      <TemplateForm v-model:data="data.variables" />
-      <template v-if="data.custom">
-        <h2>{{ $gettext('Custom') }}</h2>
+      <TemplateForm v-model="data.variables" />
+      <div
+        v-if="data.custom"
+        class="mb-4"
+      >
+        <h3>{{ $gettext('Custom') }}</h3>
         <CodeEditor
           v-model:content="data.custom"
           default-height="150px"
         />
-      </template>
+      </div>
       <DirectiveEditor
         v-if="data.directives"
         readonly
       />
-      <br>
       <LocationEditor
         v-if="data.locations"
         :locations="data.locations"

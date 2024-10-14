@@ -2,25 +2,8 @@
 import TemplateFormItem from '@/views/domain/ngx_conf/config_template/TemplateFormItem.vue'
 import type { Variable } from '@/api/template'
 
-const props = defineProps<{
-  data: {
-    [key: string]: Variable
-  }
-}>()
-
-const emit = defineEmits<{
-  'update:data': [data: {
-    [key: string]: Variable
-  }]
-}>()
-
-const data = computed({
-  get() {
-    return props.data
-  },
-  set(v) {
-    emit('update:data', v)
-  },
+const data = defineModel<Record<string, Variable>>({
+  default: () => {},
 })
 </script>
 
@@ -29,7 +12,7 @@ const data = computed({
     <TemplateFormItem
       v-for="(_, k) in data"
       :key="k"
-      v-model:data="data[k]"
+      v-model="data[k]"
       :name="k.toString()"
     />
   </AForm>

@@ -13,31 +13,71 @@ Please note, you need to recompile the backend after modifying or adding new con
 
 Nginx UI Template file consists of two parts: the file header and the actual Nginx configuration.
 
-Below is a configuration template for hotlink protection, which we will use as a basis to introduce the file format and related syntax of Nginx UI Template.
+Below is a configuration template for reverse proxy, which we will use as a basis to introduce the file format and related syntax of Nginx UI Template.
 
 ```nginx configuration
 # Nginx UI Template Start
-name = "Hotlink Protection"
+name = "Reverse Proxy"
 author = "@0xJacky"
-description = { en = "Hotlink Protection Config Template", zh_CN = "防盗链配置模板"}
+description = { en = "Reverse Proxy Config", zh_CN = "反向代理配置"}
 
-[variables.NoneReferer]
+[variables.enableWebSocket]
 type = "boolean"
-name = { en = "Allow Referer is None", zh_CN = "允许空 Referer"}
-value = false
+name = { en = "Enable WebSocket", zh_CN = "启用 WebSocket"}
+value = true
 
-[variables.AllowReferers]
+[variables.clientMaxBodySize]
 type = "string"
-name = { en = "Allow Referers", zh_CN = "允许的 Referers"}
-value = ""
+name = { en = "Client Max Body Size", zh_CN = "客户端最大请求内容大小"}
+value = "1000m"
+
+[variables.scheme]
+type = "select"
+name = { en = "Scheme", zh_CN = "协议"}
+value = "http"
+mask = { http = { en = "HTTP" }, https = { en = "HTTPS" } }
+
+[variables.host]
+type = "string"
+name = { en = "Host", zh_CN = "主机"}
+value = "127.0.0.1"
+
+[variables.port]
+type = "string"
+name = { en = "Port", zh_CN = "端口"}
+value = 9000
 # Nginx UI Template End
 
-location ~ .*\.(jpg|png|js|css)$ {
-    valid_referers {{- if .NoneReferer}} none {{- end}} blocked server_names {{if .AllowReferers}}{{.AllowReferers}}{{- end}};
-    if ($invalid_referer) {
-        return 403;
-    }
+# Nginx UI Custom Start
+{{- if .enableWebSocket }}
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
 }
+{{- end }}
+# Nginx UI Custom End
+
+if ($host != $server_name) {
+    return 404;
+}
+
+location / {
+        {{ if .enableWebSocket }}
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        {{ end }}
+
+        client_max_body_size {{ .clientMaxBodySize }};
+
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_pass {{ .scheme }}://{{ .host }}:{{ .port }}/;
+ }
 ```
 
 ## File Header
@@ -51,27 +91,44 @@ The file header includes the following fields:
 |             `name`             |                       Name of the configuration                       |                    string                     |   Yes    |
 |            `author`            |                                Author                                 |                    string                     |   Yes    |
 |         `description`          |     Desciption, uses a toml dictionary for multi-language support     |                toml dictionary                |   Yes    |
-| `variables.VariableName.type`  |       Variable type, currently supports `boolean` and `string`        |                    string                     |    No    |
-| `variables.VariableName.name`  | Variable display name, is a toml dictionary to support multi-language |                toml dictionary                |    No    |
+| `variables.VariableName.type`  |  Variable type, currently supports `boolean`, `string` and `select`   |                    string                     |   Yes    |
+| `variables.VariableName.name`  | Variable display name, is a toml dictionary to support multi-language |                toml dictionary                |   Yes    |
 | `variables.VariableName.value` |                     Default value of the variable                     | boolean/string (according to type definition) |    No    |
+| `variables.VariableName.mask`  |                         The options of select                         |                toml dictionary                |    No    |
 
 Example:
 
 ```toml
 # Nginx UI Template Start
-name = "Hotlink Protection"
+name = "Reverse Proxy"
 author = "@0xJacky"
-description = { en = "Hotlink Protection Config Template", zh_CN = "防盗链配置模板"}
+description = { en = "Reverse Proxy Config", zh_CN = "反向代理配置"}
 
-[variables.NoneReferer]
+[variables.enableWebSocket]
 type = "boolean"
-name = { en = "Allow Referer is None", zh_CN = "允许空 Referer"}
-value = false
+name = { en = "Enable WebSocket", zh_CN = "启用 WebSocket"}
+value = true
 
-[variables.AllowReferers]
+[variables.clientMaxBodySize]
 type = "string"
-name = { en = "Allow Referers", zh_CN = "允许的 Referers"}
-value = ""
+name = { en = "Client Max Body Size", zh_CN = "客户端最大请求内容大小"}
+value = "1000m"
+
+[variables.scheme]
+type = "select"
+name = { en = "Scheme", zh_CN = "协议"}
+value = "http"
+mask = { http = { en = "HTTP" }, https = { en = "HTTPS" } }
+
+[variables.host]
+type = "string"
+name = { en = "Host", zh_CN = "主机"}
+value = "127.0.0.1"
+
+[variables.port]
+type = "string"
+name = { en = "Port", zh_CN = "端口"}
+value = 9000
 # Nginx UI Template End
 ```
 
@@ -83,29 +140,45 @@ When you click the "View" button, a dialog will appear, as shown below.
 
 <img src="/assets/nginx-ui-template/en/config-ui.png" width="350px" title="Config Modal" />
 
-The input boxes and switches in the interface correspond to the variable types `boolean` and `string`.
+The following table shows the relationship between the variable type and the UI element:
+
+| Variable Type | UI Element |
+|:-------------:|:----------:|
+| `boolean`     | switcher   |
+| `string`      | input      |
+| `select`      | select     |
 
 ## Nginx Configuration
 The Nginx configuration should be provided after the file header. This part will be parsed using the Go `text/template` library. This library provides powerful template generation capabilities, including conditional judgment, looping, and complex text processing, etc.
 For more information, please check [Go Documentation](https://pkg.go.dev/text/template).
 
-The variables defined in the header can be used in this part, such as `.NoneReferer` and `.AllowReferers`.
+The variables defined in the header can be used in this part, such as `.scheme`, `.host` and `.port`.
 Please note that you need to define the variables in the header in advance before using them in this part.
 
 Here is an example:
 
 ```nginx configuration
-location ~ .*\.(jpg|png|js|css)$ {
-    valid_referers {{- if .NoneReferer}} none {{- end}} blocked server_names {{if .AllowReferers}}{{.AllowReferers}}{{- end}};
-    if ($invalid_referer) {
-        return 403;
-    }
-}
+location / {
+        {{ if .enableWebSocket }}
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        {{ end }}
+
+        client_max_body_size {{ .clientMaxBodySize }};
+
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Forwarded $proxy_add_forwarded;
+
+        proxy_pass {{ .scheme }}://{{ .host }}:{{ .port }}/;
+ }
 ```
 
-When users input variable values in the app input boxes, the system will automatically generate new configuration content, as shown below:
-
-<img src="/assets/nginx-ui-template/en/config-ui-after-input.png" width="350px" title="Config Modal" />
+When users change the form, the system will automatically generate new configuration content based on the template and the input of user.
 
 In addition to the variables defined in the template header, we also provide macro-defined variables, as shown in the table below:
 

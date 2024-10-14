@@ -19,9 +19,10 @@ import (
 )
 
 type Variable struct {
-	Type  string            `json:"type"`
-	Name  map[string]string `json:"name"`
-	Value interface{}       `json:"value"`
+	Type  string                       `json:"type"` // string, bool, select
+	Name  map[string]string            `json:"name"`
+	Value interface{}                  `json:"value"`
+	Mask  map[string]map[string]string `json:"mask,omitempty"`
 }
 
 type ConfigInfoItem struct {
@@ -48,22 +49,22 @@ func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
 	}(file)
 
 	r := bufio.NewReader(file)
-	bytes, _, err := r.ReadLine()
+	lineBytes, _, err := r.ReadLine()
 	if err == io.EOF {
 		return
 	}
-	line := strings.TrimSpace(string(bytes))
+	line := strings.TrimSpace(string(lineBytes))
 
 	if line != "# Nginx UI Template Start" {
 		return
 	}
 	var content string
 	for {
-		bytes, _, err = r.ReadLine()
+		lineBytes, _, err = r.ReadLine()
 		if err == io.EOF {
 			break
 		}
-		line = strings.TrimSpace(string(bytes))
+		line = strings.TrimSpace(string(lineBytes))
 		if line == "# Nginx UI Template End" {
 			break
 		}
@@ -123,7 +124,6 @@ func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDet
 	}
 
 	t, err := template.New(name).Parse(custom)
-
 	if err != nil {
 		err = errors.Wrap(err, "error parse template.custom")
 		return
@@ -147,7 +147,6 @@ func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDet
 	content = templatePart[1]
 
 	t, err = template.New(name).Parse(content)
-
 	if err != nil {
 		err = errors.Wrap(err, "error parse template")
 		return

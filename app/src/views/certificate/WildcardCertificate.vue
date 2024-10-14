@@ -13,6 +13,7 @@ const step = ref(0)
 const visible = ref(false)
 const data = ref({}) as Ref<AutoCertOptions>
 const issuing_cert = ref(false)
+const domain = ref('')
 
 provide('issuing_cert', issuing_cert)
 function open() {
@@ -22,6 +23,7 @@ function open() {
     challenge_method: 'dns01',
     key_type: '2048',
   } as AutoCertOptions
+  domain.value = ''
 }
 
 defineExpose({
@@ -32,7 +34,6 @@ const modalVisible = ref(false)
 const modalClosable = ref(true)
 
 const refObtainCertLive = ref()
-const domain = ref('')
 
 const computedDomain = computed(() => {
   return `*.${domain.value}`

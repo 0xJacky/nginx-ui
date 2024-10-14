@@ -4,19 +4,18 @@ import type { NgxDirective, NgxLocation, NgxServer } from '@/api/ngx'
 
 export interface Variable {
   type?: string
-  name?: { [key: string]: string }
+  name?: Record<string, string>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value?: any
+  mask?: Record<string, Record<string, string>>
 }
 
 export interface Template extends NgxServer {
   name: string
-  description: { [key: string]: string }
+  description: Record<string, string>
   author: string
   filename: string
-  variables: {
-    [key: string]: Variable
-  }
+  variables: Record<string, Variable>
   custom: string
   locations?: NgxLocation[]
   directives?: NgxDirective[]
