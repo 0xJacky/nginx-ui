@@ -109,6 +109,8 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		if dnsCredential.Config.Configuration != nil {
 			err = pConfig.SetEnv(*dnsCredential.Config.Configuration)
 			if err != nil {
+				errChan <- errors.Wrap(err, "set env error")
+				logger.Error(err)
 				break
 			}
 			defer func() {
@@ -117,6 +119,8 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 			}()
 			provider, err := dnsproviders.NewDNSChallengeProviderByName(code)
 			if err != nil {
+				errChan <- errors.Wrap(err, "new dns challenge provider error")
+				logger.Error(err)
 				break
 			}
 			challengeOptions := make([]dns01.ChallengeOption, 0)
