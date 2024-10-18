@@ -101,9 +101,9 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		l.Println("[INFO] [Nginx UI] Setting DNS01 challenge provider")
 		code := dnsCredential.Config.Code
 		pConfig, ok := dns.GetProvider(code)
-
 		if !ok {
 			errChan <- errors.Wrap(err, "provider not found")
+			return
 		}
 		l.Println("[INFO] [Nginx UI] Setting environment variables")
 		if dnsCredential.Config.Configuration != nil {

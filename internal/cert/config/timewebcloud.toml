@@ -1,0 +1,21 @@
+Name = "Timeweb Cloud"
+Description = ''''''
+URL = "https://timeweb.cloud/"
+Code = "timewebcloud"
+Since = "v4.20.0"
+
+Example = '''
+TIMEWEBCLOUD_AUTH_TOKEN=xxxxxx \
+lego --email you@example.com --dns timewebcloud --domains my.example.org run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    TIMEWEBCLOUD_AUTH_TOKEN = "Authentication token"
+  [Configuration.Additional]
+    TIMEWEBCLOUD_POLLING_INTERVAL = "Time between DNS propagation check"
+    TIMEWEBCLOUD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    TIMEWEBCLOUD_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://timeweb.cloud/api-docs"
