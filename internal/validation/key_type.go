@@ -7,7 +7,7 @@ import (
 
 func autoCertKeyType(fl val.FieldLevel) bool {
 	switch certcrypto.KeyType(fl.Field().String()) {
-	case "", certcrypto.RSA2048, certcrypto.RSA3072, certcrypto.RSA4096,
+	case "", certcrypto.RSA2048, certcrypto.RSA3072, certcrypto.RSA4096, certcrypto.RSA8192,
 		certcrypto.EC256, certcrypto.EC384:
 		return true
 	}
