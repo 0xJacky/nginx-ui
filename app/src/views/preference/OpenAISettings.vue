@@ -45,7 +45,8 @@ const models = shallowRef([
       :validate-status="errors?.openai?.base_url ? 'error' : ''"
       :help="errors?.openai?.base_url === 'url'
         ? $gettext('The url is invalid.')
-        : ''"
+        : $gettext('To use a local large model, deploy it with vllm or imdeploy. '
+          + 'They provide an OpenAI-compatible API endpoint, so just set the baseUrl to your local API.')"
     >
       <AInput
         v-model:value="data.openai.base_url"
