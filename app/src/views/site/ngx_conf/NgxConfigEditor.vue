@@ -5,9 +5,10 @@ import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import template from '@/api/template'
 import type { NgxConfig, NgxDirective } from '@/api/ngx'
 import type { CertificateInfo } from '@/api/cert'
-import NgxServer from '@/views/domain/ngx_conf/NgxServer.vue'
-import NgxUpstream from '@/views/domain/ngx_conf/NgxUpstream.vue'
+import NgxServer from '@/views/site/ngx_conf/NgxServer.vue'
+import NgxUpstream from '@/views/site/ngx_conf/NgxUpstream.vue'
 import type { CheckedType } from '@/types'
+import NginxStatusAlert from '@/views/site/ngx_conf/NginxStatusAlert.vue'
 
 const props = withDefaults(defineProps<{
   autoCert?: boolean
@@ -175,6 +176,9 @@ const activeKey = ref(['3'])
 <template>
   <div>
     <ContextHolder />
+
+    <NginxStatusAlert />
+
     <AFormItem
       v-if="!support_ssl && context === 'http'"
       :label="$gettext('Enable TLS')"

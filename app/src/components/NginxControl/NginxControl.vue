@@ -4,9 +4,12 @@ import { ReloadOutlined } from '@ant-design/icons-vue'
 import ngx from '@/api/ngx'
 import { logLevel } from '@/views/config/constants'
 import { NginxStatus } from '@/constants'
+import { useGlobalStore } from '@/pinia/moudule/global'
 
-const status = ref(0)
-async function get_status() {
+const global = useGlobalStore()
+const { nginxStatus: status } = storeToRefs(global)
+
+async function getStatus() {
   const r = await ngx.status()
   if (r?.running === true)
     status.value = NginxStatus.Running
@@ -16,7 +19,7 @@ async function get_status() {
   return r
 }
 
-function reload_nginx() {
+function reloadNginx() {
   status.value = NginxStatus.Reloading
   ngx.reload().then(r => {
     if (r.level < logLevel.Warn)
@@ -27,14 +30,14 @@ function reload_nginx() {
       message.error(r.message)
   }).catch(e => {
     message.error(`${$gettext('Server error')} ${e?.message}`)
-  }).finally(() => get_status())
+  }).finally(() => getStatus())
 }
 
-async function restart_nginx() {
+async function restartNginx() {
   status.value = NginxStatus.Restarting
   await ngx.restart()
 
-  get_status().then(r => {
+  getStatus().then(r => {
     if (r.level < logLevel.Warn)
       message.success($gettext('Nginx restarted successfully'))
     else if (r.level === logLevel.Warn)
@@ -50,7 +53,7 @@ const visible = ref(false)
 
 watch(visible, v => {
   if (v)
-    get_status()
+    getStatus()
 })
 </script>
 
@@ -58,7 +61,7 @@ watch(visible, v => {
   <APopover
     v-model:open="visible"
     placement="bottomRight"
-    @confirm="reload_nginx"
+    @confirm="reloadNginx"
   >
     <template #content>
       <div class="content-wrapper">
@@ -88,14 +91,14 @@ watch(visible, v => {
         <AButton
           size="small"
           type="link"
-          @click="restart_nginx"
+          @click="restartNginx"
         >
           {{ $gettext('Restart') }}
         </AButton>
         <AButton
           size="small"
           type="link"
-          @click="reload_nginx"
+          @click="reloadNginx"
         >
           {{ $gettext('Reload') }}
         </AButton>

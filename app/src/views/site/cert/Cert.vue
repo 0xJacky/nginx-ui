@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import CertInfo from '@/views/domain/cert/CertInfo.vue'
-import IssueCert from '@/views/domain/cert/IssueCert.vue'
-import ChangeCert from '@/views/domain/cert/components/ChangeCert/ChangeCert.vue'
+import CertInfo from '@/views/site/cert/CertInfo.vue'
+import IssueCert from '@/views/site/cert/IssueCert.vue'
+import ChangeCert from '@/views/site/cert/components/ChangeCert/ChangeCert.vue'
 import type { Cert, CertificateInfo } from '@/api/cert'
 
 const props = defineProps<{

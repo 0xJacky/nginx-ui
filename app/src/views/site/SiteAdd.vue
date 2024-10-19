@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
-import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
-import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
-import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor.vue'
+import DirectiveEditor from '@/views/site/ngx_conf/directive/DirectiveEditor.vue'
+import LocationEditor from '@/views/site/ngx_conf/LocationEditor.vue'
+import NgxConfigEditor from '@/views/site/ngx_conf/NgxConfigEditor.vue'
 import domain from '@/api/domain'
 import type { NgxConfig } from '@/api/ngx'
 import ngx from '@/api/ngx'
@@ -51,7 +51,7 @@ async function save() {
 const router = useRouter()
 
 function goto_modify() {
-  router.push(`/domain/${ngx_config.name}`)
+  router.push(`/sites/${ngx_config.name}`)
 }
 
 function create_another() {

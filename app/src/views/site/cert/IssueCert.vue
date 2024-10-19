@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ObtainCert from '@/views/domain/cert/components/ObtainCert.vue'
+import ObtainCert from '@/views/site/cert/components/ObtainCert.vue'
 import type { NgxDirective } from '@/api/ngx'
 
 defineProps<{

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { message } from 'ant-design-vue'
-import ObtainCertLive from '@/views/domain/cert/components/ObtainCertLive.vue'
+import ObtainCertLive from '@/views/site/cert/components/ObtainCertLive.vue'
 import type { AutoCertOptions } from '@/api/auto_cert'
 
 const props = defineProps<{

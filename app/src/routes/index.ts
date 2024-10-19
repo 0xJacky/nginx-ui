@@ -41,25 +41,25 @@ export const routes: RouteRecordRaw[] = [
         },
       },
       {
-        path: 'domain',
+        path: 'sites',
         name: 'Manage Sites',
         component: () => import('@/layouts/BaseRouterView.vue'),
         meta: {
           name: () => $gettext('Manage Sites'),
           icon: CloudOutlined,
         },
-        redirect: '/domain/list',
+        redirect: '/sites/list',
         children: [{
           path: 'list',
           name: 'Sites List',
-          component: () => import('@/views/domain/DomainList.vue'),
+          component: () => import('@/views/site/SiteList.vue'),
           meta: {
             name: () => $gettext('Sites List'),
           },
         }, {
           path: 'add',
           name: 'Add Site',
-          component: () => import('@/views/domain/DomainAdd.vue'),
+          component: () => import('@/views/site/SiteAdd.vue'),
           meta: {
             name: () => $gettext('Add Site'),
             lastRouteName: 'Sites List',
@@ -67,7 +67,7 @@ export const routes: RouteRecordRaw[] = [
         }, {
           path: ':name',
           name: 'Edit Site',
-          component: () => import('@/views/domain/DomainEdit.vue'),
+          component: () => import('@/views/site/SiteEdit.vue'),
           meta: {
             name: () => $gettext('Edit Site'),
             hiddenInSidebar: true,
@@ -183,7 +183,7 @@ export const routes: RouteRecordRaw[] = [
       {
         path: 'terminal',
         name: 'Terminal',
-        component: () => import('@/views/pty/Terminal.vue'),
+        component: () => import('@/views/terminal/Terminal.vue'),
         meta: {
           name: () => $gettext('Terminal'),
           icon: CodeOutlined,

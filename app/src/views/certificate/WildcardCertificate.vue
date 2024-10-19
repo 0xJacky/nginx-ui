@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import { message } from 'ant-design-vue'
-import ObtainCertLive from '@/views/domain/cert/components/ObtainCertLive.vue'
+import ObtainCertLive from '@/views/site/cert/components/ObtainCertLive.vue'
 import type { AutoCertOptions } from '@/api/auto_cert'
-import AutoCertStepOne from '@/views/domain/cert/components/AutoCertStepOne.vue'
+import AutoCertStepOne from '@/views/site/cert/components/AutoCertStepOne.vue'
 
 const emit = defineEmits<{
   issued: [void]

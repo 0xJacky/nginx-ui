@@ -3,13 +3,13 @@ import { message } from 'ant-design-vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 
-import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor.vue'
+import NgxConfigEditor from '@/views/site/ngx_conf/NgxConfigEditor.vue'
 import type { Site } from '@/api/domain'
 import domain from '@/api/domain'
 import type { NgxConfig } from '@/api/ngx'
 import ngx from '@/api/ngx'
 import config from '@/api/config'
-import RightSettings from '@/views/domain/components/RightSettings.vue'
+import RightSettings from '@/views/site/components/RightSettings.vue'
 import type { CertificateInfo } from '@/api/cert'
 import type { ChatComplicationMessage } from '@/api/openai'
 import type { CheckedType } from '@/types'
@@ -137,7 +137,7 @@ const save = async () => {
   }).then(r => {
     handle_response(r)
     router.push({
-      path: `/domain/${filename.value}`,
+      path: `/sites/${filename.value}`,
       query: route.query,
     })
     message.success($gettext('Saved successfully'))
@@ -249,7 +249,7 @@ provide('data', data)
 
     <FooterToolBar>
       <ASpace>
-        <AButton @click="$router.push('/domain/list')">
+        <AButton @click="$router.push('/sites/list')">
           {{ $gettext('Back') }}
         </AButton>
         <AButton

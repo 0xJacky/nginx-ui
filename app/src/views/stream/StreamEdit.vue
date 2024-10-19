@@ -4,7 +4,7 @@ import type { Ref } from 'vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 
-import NgxConfigEditor from '@/views/domain/ngx_conf/NgxConfigEditor.vue'
+import NgxConfigEditor from '@/views/site/ngx_conf/NgxConfigEditor.vue'
 import type { NgxConfig } from '@/api/ngx'
 import ngx from '@/api/ngx'
 import config from '@/api/config'

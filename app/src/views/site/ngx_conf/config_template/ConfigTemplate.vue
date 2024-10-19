@@ -5,10 +5,10 @@ import type { Template } from '@/api/template'
 import template from '@/api/template'
 import { useSettingsStore } from '@/pinia'
 
-import DirectiveEditor from '@/views/domain/ngx_conf/directive/DirectiveEditor.vue'
-import LocationEditor from '@/views/domain/ngx_conf/LocationEditor.vue'
+import DirectiveEditor from '@/views/site/ngx_conf/directive/DirectiveEditor.vue'
+import LocationEditor from '@/views/site/ngx_conf/LocationEditor.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
-import TemplateForm from '@/views/domain/ngx_conf/config_template/TemplateForm.vue'
+import TemplateForm from '@/views/site/ngx_conf/config_template/TemplateForm.vue'
 import type { NgxConfig } from '@/api/ngx'
 
 const props = defineProps<{

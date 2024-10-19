@@ -2,7 +2,7 @@
 import Draggable from 'vuedraggable'
 import type { ComputedRef } from 'vue'
 import DirectiveAdd from './DirectiveAdd.vue'
-import DirectiveEditorItem from '@/views/domain/ngx_conf/directive/DirectiveEditorItem.vue'
+import DirectiveEditorItem from '@/views/site/ngx_conf/directive/DirectiveEditorItem.vue'
 import type { NgxDirective } from '@/api/ngx'
 
 defineProps<{

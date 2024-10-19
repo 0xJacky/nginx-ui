@@ -2,10 +2,10 @@
 import { Modal, message } from 'ant-design-vue'
 import type { ComputedRef, Ref } from 'vue'
 import domain from '@/api/domain'
-import AutoCertStepOne from '@/views/domain/cert/components/AutoCertStepOne.vue'
+import AutoCertStepOne from '@/views/site/cert/components/AutoCertStepOne.vue'
 import type { NgxConfig, NgxDirective } from '@/api/ngx'
 import type { AutoCertOptions } from '@/api/auto_cert'
-import ObtainCertLive from '@/views/domain/cert/components/ObtainCertLive.vue'
+import ObtainCertLive from '@/views/site/cert/components/ObtainCertLive.vue'
 import type { CertificateResult } from '@/api/cert'
 import type { PrivateKeyType } from '@/constants'
 

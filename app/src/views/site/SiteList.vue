@@ -5,7 +5,7 @@ import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTabl
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import domain from '@/api/domain'
 import { input } from '@/components/StdDesign/StdDataEntry'
-import SiteDuplicate from '@/views/domain/components/SiteDuplicate.vue'
+import SiteDuplicate from '@/views/site/components/SiteDuplicate.vue'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import type { Column, JSXElements } from '@/components/StdDesign/types'
 
@@ -110,7 +110,7 @@ watch(route, () => {
       disable-delete
       disable-view
       @click-edit="r => $router.push({
-        path: `/domain/${r}`,
+        path: `/sites/${r}`,
       })"
     >
       <template #actions="{ record }">
