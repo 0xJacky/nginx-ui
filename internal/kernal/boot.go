@@ -29,7 +29,6 @@ func Boot() {
 		InitCryptoSecret,
 		validation.Init,
 		cache.Init,
-		RegisterAcmeUser,
 	}
 
 	syncs := []func(){
@@ -53,6 +52,7 @@ func InitAfterDatabase() {
 		cluster.RegisterPredefinedNodes,
 		analytic.RetrieveNodesStatus,
 		passkey.Init,
+		RegisterAcmeUser,
 	}
 
 	for _, v := range syncs {
