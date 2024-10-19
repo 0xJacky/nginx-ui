@@ -37,7 +37,7 @@ msgstr "Người dùng"
 #: src/views/config/configColumns.ts:38
 #: src/views/environment/envColumns.tsx:131
 #: src/views/notification/notificationColumns.tsx:54
-#: src/views/preference/AuthSettings.vue:27 src/views/site/SiteList.vue:47
+#: src/views/preference/AuthSettings.vue:27 src/views/site/SiteList.vue:54
 #: src/views/stream/StreamList.vue:47 src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "Hành động"
@@ -150,7 +150,7 @@ msgstr "Bạn chắc chắn muốn xóa nó "
 msgid "Are you sure you want to delete this item?"
 msgstr "Bạn chắc chắn muốn xóa nó "
 
-#: src/views/site/SiteList.vue:146 src/views/stream/StreamList.vue:167
+#: src/views/site/SiteList.vue:153 src/views/stream/StreamList.vue:167
 #, fuzzy
 msgid "Are you sure you want to delete?"
 msgstr "Bạn chắc chắn muốn xóa nó "
@@ -520,7 +520,7 @@ msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:556
 #: src/views/site/ngx_conf/NgxServer.vue:110
-#: src/views/site/ngx_conf/NgxUpstream.vue:126 src/views/site/SiteList.vue:155
+#: src/views/site/ngx_conf/NgxUpstream.vue:126 src/views/site/SiteList.vue:162
 #: src/views/stream/StreamList.vue:176
 msgid "Delete"
 msgstr "Xoá"
@@ -529,7 +529,7 @@ msgstr "Xoá"
 msgid "Delete Permanently"
 msgstr ""
 
-#: src/views/site/SiteList.vue:78
+#: src/views/site/SiteList.vue:85
 msgid "Delete site: %{site_name}"
 msgstr "Xoá trang web: %{site_name}"
 
@@ -593,7 +593,7 @@ msgstr "Directives"
 msgid "Directory"
 msgstr "Thư mục"
 
-#: src/views/site/SiteList.vue:124 src/views/stream/StreamList.vue:145
+#: src/views/site/SiteList.vue:131 src/views/stream/StreamList.vue:145
 #, fuzzy
 msgid "Disable"
 msgstr "Tắt"
@@ -604,13 +604,14 @@ msgstr "Tắt tự động gia hạn SSL cho %{name} thất bại"
 
 #: src/views/environment/envColumns.tsx:113
 #: src/views/environment/envColumns.tsx:95 src/views/site/SiteEdit.vue:181
-#: src/views/site/SiteList.vue:33 src/views/stream/StreamEdit.vue:175
-#: src/views/stream/StreamList.vue:33 src/views/user/userColumns.tsx:41
+#: src/views/site/SiteList.vue:33 src/views/site/SiteList.vue:42
+#: src/views/stream/StreamEdit.vue:175 src/views/stream/StreamList.vue:33
+#: src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr "Đã tắt"
 
 #: src/views/site/components/RightSettings.vue:38
-#: src/views/site/SiteList.vue:67
+#: src/views/site/SiteList.vue:74
 #: src/views/stream/components/RightSettings.vue:38
 #: src/views/stream/StreamList.vue:67
 msgid "Disabled successfully"
@@ -717,7 +718,7 @@ msgid ""
 msgstr ""
 
 #: src/views/site/components/SiteDuplicate.vue:122
-#: src/views/site/SiteList.vue:140
+#: src/views/site/SiteList.vue:147
 #: src/views/stream/components/StreamDuplicate.vue:122
 #: src/views/stream/StreamList.vue:161
 msgid "Duplicate"
@@ -773,7 +774,7 @@ msgstr "Email (*)"
 msgid "Email (*)"
 msgstr "Email (*)"
 
-#: src/views/site/components/Deploy.vue:84 src/views/site/SiteList.vue:132
+#: src/views/site/components/Deploy.vue:84 src/views/site/SiteList.vue:139
 #: src/views/stream/components/Deploy.vue:83
 #: src/views/stream/StreamList.vue:153
 #, fuzzy
@@ -823,6 +824,7 @@ msgstr "Bật TLS"
 #: src/views/preference/LogrotateSettings.vue:19
 #: src/views/site/components/RightSettings.vue:77
 #: src/views/site/SiteEdit.vue:175 src/views/site/SiteList.vue:29
+#: src/views/site/SiteList.vue:41
 #: src/views/stream/components/RightSettings.vue:76
 #: src/views/stream/StreamEdit.vue:169 src/views/stream/StreamList.vue:29
 #: src/views/user/userColumns.tsx:38
@@ -831,7 +833,7 @@ msgstr "Đã bật"
 
 #: src/views/site/components/RightSettings.vue:29
 #: src/views/site/components/SiteDuplicate.vue:94 src/views/site/SiteAdd.vue:40
-#: src/views/site/SiteList.vue:57
+#: src/views/site/SiteList.vue:64
 #: src/views/stream/components/RightSettings.vue:29
 #: src/views/stream/components/StreamDuplicate.vue:94
 #: src/views/stream/StreamList.vue:57
@@ -889,14 +891,14 @@ msgid "Fail to obtain certificate"
 msgstr "Nhận chứng chỉ"
 
 #: src/views/site/components/RightSettings.vue:41
-#: src/views/site/SiteList.vue:71
+#: src/views/site/SiteList.vue:78
 #: src/views/stream/components/RightSettings.vue:41
 #: src/views/stream/StreamList.vue:71
 msgid "Failed to disable %{msg}"
 msgstr "Không thể tắt %{msg}"
 
 #: src/views/site/components/RightSettings.vue:32
-#: src/views/site/SiteList.vue:61
+#: src/views/site/SiteList.vue:68
 #: src/views/stream/components/RightSettings.vue:32
 #: src/views/stream/StreamList.vue:61
 msgid "Failed to enable %{msg}"
@@ -1261,7 +1263,7 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "Quản lý cấu hình"
 
-#: src/routes/index.ts:48 src/views/site/SiteList.vue:102
+#: src/routes/index.ts:48 src/views/site/SiteList.vue:109
 msgid "Manage Sites"
 msgstr "Quản lý Website"
 
@@ -1428,7 +1430,7 @@ msgstr "Restart Nginx thành công"
 #: src/views/preference/BasicSettings.vue:101
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/site/ngx_conf/LocationEditor.vue:90
-#: src/views/site/SiteList.vue:144 src/views/stream/StreamList.vue:165
+#: src/views/site/SiteList.vue:151 src/views/stream/StreamList.vue:165
 msgid "No"
 msgstr "Không"
 
@@ -1505,7 +1507,7 @@ msgstr ""
 #: src/views/site/components/RightSettings.vue:50
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:50
 #: src/views/site/ngx_conf/NgxServer.vue:79
-#: src/views/site/ngx_conf/NgxUpstream.vue:32 src/views/site/SiteList.vue:145
+#: src/views/site/ngx_conf/NgxUpstream.vue:32 src/views/site/SiteList.vue:152
 #: src/views/stream/components/Deploy.vue:20
 #: src/views/stream/components/RightSettings.vue:50
 #: src/views/stream/StreamList.vue:166
@@ -1989,7 +1991,7 @@ msgstr "Gửi"
 #: src/views/preference/components/Passkey.vue:56
 #: src/views/preference/components/TOTP.vue:45
 #: src/views/preference/components/TOTP.vue:58
-#: src/views/preference/Preference.vue:83 src/views/site/SiteList.vue:81
+#: src/views/preference/Preference.vue:83 src/views/site/SiteList.vue:88
 #: src/views/stream/StreamList.vue:113 src/views/stream/StreamList.vue:81
 #: src/views/system/Upgrade.vue:42
 msgid "Server error"
@@ -2382,7 +2384,7 @@ msgstr "Cập nhật thành công"
 #: src/views/config/configColumns.ts:31 src/views/config/ConfigEditor.vue:275
 #: src/views/environment/envColumns.tsx:124
 #: src/views/site/components/RightSettings.vue:86
-#: src/views/site/SiteList.vue:41
+#: src/views/site/SiteList.vue:48
 #: src/views/stream/components/RightSettings.vue:85
 #: src/views/stream/StreamList.vue:41 src/views/user/userColumns.tsx:54
 msgid "Updated at"
