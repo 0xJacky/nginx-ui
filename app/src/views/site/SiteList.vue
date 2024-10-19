@@ -4,7 +4,7 @@ import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import domain from '@/api/domain'
-import { input } from '@/components/StdDesign/StdDataEntry'
+import { input, select } from '@/components/StdDesign/StdDataEntry'
 import SiteDuplicate from '@/views/site/components/SiteDuplicate.vue'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import type { Column, JSXElements } from '@/components/StdDesign/types'
@@ -34,6 +34,13 @@ const columns: Column[] = [{
     }
 
     return h('div', template)
+  },
+  search: {
+    type: select,
+    mask: {
+      true: $gettext('Enabled'),
+      false: $gettext('Disabled'),
+    },
   },
   sortable: true,
   pithy: true,

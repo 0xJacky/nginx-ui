@@ -67,6 +67,7 @@ onMounted(() => {
     :default-active-first-option="false"
     :mode="props.multiple ? 'multiple' : undefined"
     style="min-width: 180px"
+    allow-clear
     :get-popup-container="triggerNode => triggerNode.parentNode"
   />
 </template>

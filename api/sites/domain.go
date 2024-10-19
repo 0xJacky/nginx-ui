@@ -16,8 +16,9 @@ import (
 	"strings"
 )
 
-func GetDomains(c *gin.Context) {
+func GetSiteList(c *gin.Context) {
 	name := c.Query("name")
+	enabled := c.Query("enabled")
 	orderBy := c.Query("order_by")
 	sort := c.DefaultQuery("sort", "desc")
 
@@ -44,8 +45,18 @@ func GetDomains(c *gin.Context) {
 		file := configFiles[i]
 		fileInfo, _ := file.Info()
 		if !file.IsDir() {
+			// name filter
 			if name != "" && !strings.Contains(file.Name(), name) {
 				continue
+			}
+			// status filter
+			if enabled != "" {
+				if enabled == "true" && !enabledConfigMap[file.Name()] {
+					continue
+				}
+				if enabled == "false" && enabledConfigMap[file.Name()] {
+					continue
+				}
 			}
 			configs = append(configs, config.Config{
 				Name:       file.Name(),
@@ -64,7 +75,7 @@ func GetDomains(c *gin.Context) {
 	})
 }
 
-func GetDomain(c *gin.Context) {
+func GetSite(c *gin.Context) {
 	rewriteName, ok := c.Get("rewriteConfigFileName")
 	name := c.Param("name")
 
@@ -164,7 +175,7 @@ func GetDomain(c *gin.Context) {
 	})
 }
 
-func SaveDomain(c *gin.Context) {
+func SaveSite(c *gin.Context) {
 	name := c.Param("name")
 
 	if name == "" {
@@ -256,10 +267,10 @@ func SaveDomain(c *gin.Context) {
 		}
 	}
 
-	GetDomain(c)
+	GetSite(c)
 }
 
-func EnableDomain(c *gin.Context) {
+func EnableSite(c *gin.Context) {
 	configFilePath := nginx.GetConfPath("sites-available", c.Param("name"))
 	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", c.Param("name"))
 
@@ -303,7 +314,7 @@ func EnableDomain(c *gin.Context) {
 	})
 }
 
-func DisableDomain(c *gin.Context) {
+func DisableSite(c *gin.Context) {
 	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", c.Param("name"))
 	_, err := os.Stat(enabledConfigFilePath)
 	if err != nil {
@@ -338,7 +349,7 @@ func DisableDomain(c *gin.Context) {
 	})
 }
 
-func DeleteDomain(c *gin.Context) {
+func DeleteSite(c *gin.Context) {
 	var err error
 	name := c.Param("name")
 	availablePath := nginx.GetConfPath("sites-available", name)

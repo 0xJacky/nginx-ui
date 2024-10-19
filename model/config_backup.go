@@ -8,7 +8,6 @@ import (
 
 type ConfigBackup struct {
 	Model
-
 	Name     string `json:"name"`
 	FilePath string `json:"filepath"`
 	Content  string `json:"content" gorm:"type:text"`
@@ -16,7 +15,6 @@ type ConfigBackup struct {
 
 type ConfigBackupListItem struct {
 	Model
-
 	Name     string `json:"name"`
 	FilePath string `json:"filepath"`
 }
@@ -25,13 +23,11 @@ func GetBackupList(path string) (configs []ConfigBackupListItem) {
 	db.Model(&ConfigBackup{}).
 		Where(&ConfigBackup{FilePath: path}).
 		Find(&configs)
-
 	return
 }
 
 func GetBackup(id int) (config ConfigBackup) {
 	db.First(&config, id)
-
 	return
 }
 
