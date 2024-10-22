@@ -39,7 +39,7 @@ func TestSetup(t *testing.T) {
 	// Cert
 	_ = os.Setenv("NGINX_UI_CERT_EMAIL", "test")
 	_ = os.Setenv("NGINX_UI_CERT_CA_DIR", "/test/ca")
-	_ = os.Setenv("NGINX_UI_CERT_CERT_RENEWAL_INTERVAL", "14")
+	_ = os.Setenv("NGINX_UI_CERT_RENEWAL_INTERVAL", "14")
 	_ = os.Setenv("NGINX_UI_CERT_RECURSIVE_NAMESERVERS", "8.8.8.8,1.1.1.1")
 	_ = os.Setenv("NGINX_UI_CERT_HTTP_CHALLENGE_PORT", "1080")
 
@@ -72,7 +72,7 @@ func TestSetup(t *testing.T) {
 
 	// Node
 	_ = os.Setenv("NGINX_UI_NODE_NAME", "test")
-	_ = os.Setenv("NGINX_UI_NODE_NODE_SECRET", "nodeSecret")
+	_ = os.Setenv("NGINX_UI_NODE_SECRET", "nodeSecret")
 	_ = os.Setenv("NGINX_UI_NODE_SKIP_INSTALLATION", "true")
 	_ = os.Setenv("NGINX_UI_NODE_DEMO", "true")
 

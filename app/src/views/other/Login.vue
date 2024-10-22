@@ -167,9 +167,12 @@ async function handlePasskeyLogin() {
     })
 
     if (r.token) {
+      const cookies = useCookies(['nginx-ui-2fa'])
       const next = (route.query?.next || '').toString() || '/'
 
       passkeyLogin(asseResp.rawId, r.token)
+      secureSessionId.value = r.secure_session_id
+      cookies.set('secure_session_id', r.secure_session_id, { maxAge: 60 * 3 })
 
       await router.push(next)
     }
