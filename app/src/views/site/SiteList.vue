@@ -12,7 +12,7 @@ import type { Column, JSXElements } from '@/components/StdDesign/types'
 const columns: Column[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
-  sortable: true,
+  sorter: true,
   pithy: true,
   edit: {
     type: input,
@@ -42,13 +42,13 @@ const columns: Column[] = [{
       false: $gettext('Disabled'),
     },
   },
-  sortable: true,
+  sorter: true,
   pithy: true,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'modified_at',
   customRender: datetime,
-  sortable: true,
+  sorter: true,
   pithy: true,
 }, {
   title: () => $gettext('Action'),

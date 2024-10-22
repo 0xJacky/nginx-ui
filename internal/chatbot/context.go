@@ -2,7 +2,7 @@ package chatbot
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/uozi-tech/cosy/logger"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/sashabaranov/go-openai"
 	"os"

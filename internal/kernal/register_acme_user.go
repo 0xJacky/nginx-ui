@@ -1,7 +1,7 @@
 package kernal
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/uozi-tech/cosy/logger"
 	"github.com/0xJacky/Nginx-UI/query"
 )
 

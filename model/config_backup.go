@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/uozi-tech/cosy/logger"
 	"os"
 	"path/filepath"
 )

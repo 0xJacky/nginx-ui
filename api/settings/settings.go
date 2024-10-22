@@ -6,12 +6,13 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
+	cSettings "github.com/uozi-tech/cosy/settings"
 	"net/http"
 )
 
 func GetServerName(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"name": settings.ServerSettings.Name,
+		"name": settings.NodeSettings.Name,
 	})
 }
 
@@ -19,7 +20,7 @@ func GetSettings(c *gin.Context) {
 	settings.NginxSettings.AccessLogPath = nginx.GetAccessLogPath()
 	settings.NginxSettings.ErrorLogPath = nginx.GetErrorLogPath()
 	c.JSON(http.StatusOK, gin.H{
-		"server":    settings.ServerSettings,
+		"server":    cSettings.ServerSettings,
 		"nginx":     settings.NginxSettings,
 		"openai":    settings.OpenAISettings,
 		"logrotate": settings.LogrotateSettings,
@@ -29,7 +30,7 @@ func GetSettings(c *gin.Context) {
 
 func SaveSettings(c *gin.Context) {
 	var json struct {
-		Server    settings.Server    `json:"server"`
+		Server    cSettings.Server   `json:"server"`
 		Nginx     settings.Nginx     `json:"nginx"`
 		Openai    settings.OpenAI    `json:"openai"`
 		Logrotate settings.Logrotate `json:"logrotate"`
@@ -45,11 +46,11 @@ func SaveSettings(c *gin.Context) {
 		go cron.RestartLogrotate()
 	}
 
-	settings.ProtectedFill(&settings.ServerSettings, &json.Server)
-	settings.ProtectedFill(&settings.NginxSettings, &json.Nginx)
-	settings.ProtectedFill(&settings.OpenAISettings, &json.Openai)
-	settings.ProtectedFill(&settings.LogrotateSettings, &json.Logrotate)
-	settings.ProtectedFill(&settings.AuthSettings, &json.Auth)
+	cSettings.ProtectedFill(cSettings.ServerSettings, &json.Server)
+	cSettings.ProtectedFill(settings.NginxSettings, &json.Nginx)
+	cSettings.ProtectedFill(settings.OpenAISettings, &json.Openai)
+	cSettings.ProtectedFill(settings.LogrotateSettings, &json.Logrotate)
+	cSettings.ProtectedFill(settings.AuthSettings, &json.Auth)
 
 	err := settings.Save()
 	if err != nil {

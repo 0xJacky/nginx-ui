@@ -7,4 +7,4 @@ type OpenAI struct {
 	Model   string `json:"model" binding:"omitempty,safety_text"`
 }
 
-var OpenAISettings = OpenAI{}
+var OpenAISettings = &OpenAI{}

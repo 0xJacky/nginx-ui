@@ -2,7 +2,6 @@ package cert
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -13,6 +12,7 @@ import (
 	legolog "github.com/go-acme/lego/v4/log"
 	dnsproviders "github.com/go-acme/lego/v4/providers/dns"
 	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy/logger"
 	"log"
 	"os"
 	"time"
@@ -87,7 +87,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		l.Println("[INFO] [Nginx UI] Setting HTTP01 challenge provider")
 		err = client.Challenge.SetHTTP01Provider(
 			http01.NewProviderServer("",
-				settings.ServerSettings.HTTPChallengePort,
+				settings.CertSettings.HTTPChallengePort,
 			),
 		)
 	case DNS01:
@@ -125,9 +125,9 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 			}
 			challengeOptions := make([]dns01.ChallengeOption, 0)
 
-			if len(settings.ServerSettings.RecursiveNameservers) > 0 {
+			if len(settings.CertSettings.RecursiveNameservers) > 0 {
 				challengeOptions = append(challengeOptions,
-					dns01.AddRecursiveNameservers(settings.ServerSettings.RecursiveNameservers),
+					dns01.AddRecursiveNameservers(settings.CertSettings.RecursiveNameservers),
 				)
 			}
 

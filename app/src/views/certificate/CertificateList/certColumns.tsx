@@ -9,7 +9,7 @@ import { PrivateKeyTypeMask } from '@/constants'
 const columns: Column[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
-  sortable: true,
+  sorter: true,
   pithy: true,
   customRender: (args: customRender) => {
     const { text, record } = args
@@ -48,13 +48,13 @@ const columns: Column[] = [{
 
     return h('div', template)
   },
-  sortable: true,
+  sorter: true,
   pithy: true,
 }, {
   title: () => $gettext('Key Type'),
   dataIndex: 'key_type',
   customRender: mask(PrivateKeyTypeMask),
-  sortable: true,
+  sorter: true,
   pithy: true,
 }, {
   title: () => $gettext('Status'),
@@ -83,7 +83,7 @@ const columns: Column[] = [{
   title: () => $gettext('Not After'),
   dataIndex: ['certificate_info', 'not_after'],
   customRender: datetime,
-  sortable: true,
+  sorter: true,
   pithy: true,
 }, {
   title: () => $gettext('Action'),

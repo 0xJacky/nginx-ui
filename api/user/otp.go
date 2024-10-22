@@ -21,7 +21,7 @@ import (
 func GenerateTOTP(c *gin.Context) {
 	u := api.CurrentUser(c)
 
-	issuer := fmt.Sprintf("Nginx UI %s", settings.ServerSettings.Name)
+	issuer := fmt.Sprintf("Nginx UI %s", settings.NodeSettings.Name)
 	issuer = strings.TrimSpace(issuer)
 
 	otpOpts := totp.GenerateOpts{
@@ -70,7 +70,7 @@ func EnrollTOTP(c *gin.Context) {
 		return
 	}
 
-	if settings.ServerSettings.Demo {
+	if settings.NodeSettings.Demo {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "This feature is disabled in demo mode",
 		})

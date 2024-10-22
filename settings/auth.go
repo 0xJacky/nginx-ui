@@ -6,7 +6,7 @@ type Auth struct {
 	MaxAttempts         int      `json:"max_attempts" binding:"min=1"`
 }
 
-var AuthSettings = Auth{
+var AuthSettings = &Auth{
 	BanThresholdMinutes: 10,
 	MaxAttempts:         10,
 }

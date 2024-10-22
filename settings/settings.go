@@ -2,11 +2,11 @@ package settings
 
 import (
 	"github.com/caarlos0/env/v11"
+	"github.com/elliotchance/orderedmap/v2"
 	"github.com/spf13/cast"
-	"gopkg.in/ini.v1"
+	"github.com/uozi-tech/cosy/settings"
 	"log"
 	"os"
-	"reflect"
 	"strings"
 	"time"
 )
@@ -14,60 +14,59 @@ import (
 var (
 	buildTime    string
 	LastModified string
-
-	Conf      *ini.File
-	ConfPath  string
-	EnvPrefix = "NGINX_UI_"
+	EnvPrefix    = "NGINX_UI_"
 )
 
-var sections = map[string]interface{}{
-	"server":    &ServerSettings,
-	"nginx":     &NginxSettings,
-	"openai":    &OpenAISettings,
-	"casdoor":   &CasdoorSettings,
-	"logrotate": &LogrotateSettings,
-	"cluster":   &ClusterSettings,
-	"auth":      &AuthSettings,
-	"crypto":    &CryptoSettings,
-	"webauthn":  &WebAuthnSettings,
+var sections = orderedmap.NewOrderedMap[string, any]()
+
+var envPrefixMap = map[string]interface{}{
+	// Cosy
+	"APP":    settings.AppSettings,
+	"SERVER": settings.ServerSettings,
+	"DB":     settings.DataBaseSettings,
+	// Nginx UI
+	"AUTH":      AuthSettings,
+	"CASDOOR":   CasdoorSettings,
+	"CERT":      CertSettings,
+	"CLUSTER":   ClusterSettings,
+	"CRYPTO":    CryptoSettings,
+	"HTTP":      HTTPSettings,
+	"LOGROTATE": LogrotateSettings,
+	"NGINX":     NginxSettings,
+	"NODE":      NodeSettings,
+	"OPENAI":    OpenAISettings,
+	"TERMINAL":  TerminalSettings,
+	"WEBAUTHN":  WebAuthnSettings,
 }
 
 func init() {
 	t := time.Unix(cast.ToInt64(buildTime), 0)
 	LastModified = strings.ReplaceAll(t.Format(time.RFC1123), "UTC", "GMT")
-}
 
-func Init(confPath string) {
-	ConfPath = confPath
-	Setup()
-}
+	sections.Set("auth", AuthSettings)
+	sections.Set("casdoor", CasdoorSettings)
+	sections.Set("cert", CertSettings)
+	sections.Set("cluster", ClusterSettings)
+	sections.Set("crypto", CryptoSettings)
+	sections.Set("http", HTTPSettings)
+	sections.Set("logrotate", LogrotateSettings)
+	sections.Set("nginx", NginxSettings)
+	sections.Set("node", NodeSettings)
+	sections.Set("openai", OpenAISettings)
+	sections.Set("terminal", TerminalSettings)
+	sections.Set("webauthn", WebAuthnSettings)
 
-func load() (err error) {
-	Conf, err = ini.LoadSources(ini.LoadOptions{
-		Loose:        true,
-		AllowShadows: true,
-	}, ConfPath)
-
-	return
-}
-
-func Setup() {
-	err := load()
-
-	if err != nil {
-		log.Fatalf("settings.Setup: %v\n", err)
+	for k, v := range sections.Iterator() {
+		settings.Register(k, v)
 	}
+	settings.WithoutRedis()
+	settings.WithoutSonyflake()
+}
 
-	MapTo()
-
-	parseEnv(&ServerSettings, "SERVER_")
-	parseEnv(&NginxSettings, "NGINX_")
-	parseEnv(&OpenAISettings, "OPENAI_")
-	parseEnv(&CasdoorSettings, "CASDOOR_")
-	parseEnv(&LogrotateSettings, "LOGROTATE_")
-	parseEnv(&AuthSettings, "AUTH_")
-	parseEnv(&CryptoSettings, "CRYPTO_")
-	parseEnv(&WebAuthnSettings, "WEBAUTHN_")
+func Init() {
+	for prefix, ptr := range envPrefixMap {
+		parseEnv(ptr, prefix+"_")
+	}
 
 	// if in official docker, set the restart cmd of nginx to "nginx -s stop",
 	// then the supervisor of s6-overlay will start the nginx again.
@@ -84,55 +83,17 @@ func Setup() {
 	}
 }
 
-func MapTo() {
-	for k, v := range sections {
-		err := mapTo(k, v)
-
-		if err != nil {
-			log.Fatalf("Cfg.MapTo %s err: %v", k, err)
-		}
-	}
-}
-
 func Save() (err error) {
-	for k, v := range sections {
-		reflectFrom(k, v)
-	}
-
 	// fix unable to save empty slice
-	if len(ServerSettings.RecursiveNameservers) == 0 {
-		Conf.Section("server").Key("RecursiveNameservers").SetValue("")
+	if len(CertSettings.RecursiveNameservers) == 0 {
+		settings.Conf.Section("server").Key("RecursiveNameservers").SetValue("")
 	}
 
-	err = Conf.SaveTo(ConfPath)
+	err = settings.Save()
 	if err != nil {
 		return
 	}
 	return
-}
-
-func ProtectedFill(targetSettings interface{}, newSettings interface{}) {
-	s := reflect.TypeOf(targetSettings).Elem()
-	vt := reflect.ValueOf(targetSettings).Elem()
-	vn := reflect.ValueOf(newSettings).Elem()
-
-	// copy the values from new to target settings if it is not protected
-	for i := 0; i < s.NumField(); i++ {
-		if s.Field(i).Tag.Get("protected") != "true" {
-			vt.Field(i).Set(vn.Field(i))
-		}
-	}
-}
-
-func mapTo(section string, v interface{}) error {
-	return Conf.Section(section).MapTo(v)
-}
-
-func reflectFrom(section string, v interface{}) {
-	err := Conf.Section(section).ReflectFrom(v)
-	if err != nil {
-		log.Fatalf("Cfg.ReflectFrom %s err: %v", section, err)
-	}
 }
 
 func parseEnv(ptr interface{}, prefix string) {

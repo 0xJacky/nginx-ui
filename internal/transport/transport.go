@@ -11,7 +11,7 @@ import (
 func NewTransport(options ...func(transport *http.Transport) error) (t *http.Transport, err error) {
 	t = &http.Transport{
 		Proxy:           http.ProxyFromEnvironment,
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.ServerSettings.InsecureSkipVerify},
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.HTTPSettings.InsecureSkipVerify},
 	}
 
 	for _, option := range options {

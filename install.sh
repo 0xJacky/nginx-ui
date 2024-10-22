@@ -290,9 +290,12 @@ install_config() {
     if [[ ! -f "$DataPath/app.ini" ]]; then
 cat > "$DataPath/app.ini" << EOF
 [server]
+HOST = 127.0.0.1
+PORT = 9000
 RunMode = release
-HttpPort = 9000
-HTTPChallengePort = 9180
+
+[cert]
+HTTPChallengePort    = 9180
 EOF
         echo "info: The default configuration file was installed to '$DataPath/app.ini' successfully!"
     fi

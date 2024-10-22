@@ -1,7 +1,7 @@
 package helper
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/uozi-tech/cosy/logger"
 	"path/filepath"
 	"strings"
 )

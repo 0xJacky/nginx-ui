@@ -5,11 +5,11 @@ import (
 	"fmt"
 	_github "github.com/0xJacky/Nginx-UI/.github"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/jpillora/overseer"
 	"github.com/minio/selfupdate"
 	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy/logger"
 	"io"
 	"net/http"
 	"net/url"
@@ -138,8 +138,9 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 		return
 	}
 
-	if settings.ServerSettings.GithubProxy != "" {
-		digest.BrowserDownloadUrl, err = url.JoinPath(settings.ServerSettings.GithubProxy, digest.BrowserDownloadUrl)
+	githubProxy := settings.HTTPSettings.GithubProxy
+	if githubProxy != "" {
+		digest.BrowserDownloadUrl, err = url.JoinPath(githubProxy, digest.BrowserDownloadUrl)
 		if err != nil {
 			err = errors.Wrap(err, "service.DownloadLatestRelease url.JoinPath error")
 			return
@@ -156,8 +157,8 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 
 	dir := filepath.Dir(u.ExPath)
 
-	if settings.ServerSettings.GithubProxy != "" {
-		downloadUrl, err = url.JoinPath(settings.ServerSettings.GithubProxy, downloadUrl)
+	if githubProxy != "" {
+		downloadUrl, err = url.JoinPath(githubProxy, downloadUrl)
 		if err != nil {
 			err = errors.Wrap(err, "service.DownloadLatestRelease url.JoinPath error")
 			return

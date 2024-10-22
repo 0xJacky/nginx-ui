@@ -1,23 +1,25 @@
 package cert
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy/logger"
 	"gorm.io/gorm"
 )
 
 // InitRegister init the default user for acme
 func InitRegister() {
-	if settings.ServerSettings.Email == "" {
+	email := settings.CertSettings.Email
+	if settings.CertSettings.Email == "" {
 		return
 	}
+	caDir := settings.CertSettings.GetCADir()
 	u := query.AcmeUser
 
-	_, err := u.Where(u.Email.Eq(settings.ServerSettings.Email),
-		u.CADir.Eq(settings.ServerSettings.GetCADir())).First()
+	_, err := u.Where(u.Email.Eq(email),
+		u.CADir.Eq(caDir)).First()
 
 	if err == nil {
 		return
@@ -31,8 +33,8 @@ func InitRegister() {
 	// Create a new user
 	user := &model.AcmeUser{
 		Name:  "System Initial User",
-		Email: settings.ServerSettings.Email,
-		CADir: settings.ServerSettings.GetCADir(),
+		Email: email,
+		CADir: caDir,
 	}
 
 	err = user.Register()
@@ -52,8 +54,8 @@ func InitRegister() {
 
 func GetDefaultACMEUser() (user *model.AcmeUser, err error) {
 	u := query.AcmeUser
-	user, err = u.Where(u.Email.Eq(settings.ServerSettings.Email),
-		u.CADir.Eq(settings.ServerSettings.GetCADir())).First()
+	user, err = u.Where(u.Email.Eq(settings.CertSettings.Email),
+		u.CADir.Eq(settings.CertSettings.GetCADir())).First()
 
 	if err != nil {
 		err = errors.Wrap(err, "get default user error")

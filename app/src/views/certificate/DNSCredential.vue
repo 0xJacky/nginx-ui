@@ -10,7 +10,7 @@ import type { Column } from '@/components/StdDesign/types'
 const columns: Column[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
-  sortable: true,
+  sorter: true,
   pithy: true,
   edit: {
     type: input,
@@ -21,13 +21,13 @@ const columns: Column[] = [{
   customRender: (args: customRender) => {
     return args.record.provider
   },
-  sortable: true,
+  sorter: true,
   pithy: true,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
   customRender: datetime,
-  sortable: true,
+  sorter: true,
   pithy: true,
 }, {
   title: () => $gettext('Action'),

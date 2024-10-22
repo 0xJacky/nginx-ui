@@ -6,4 +6,4 @@ type WebAuthn struct {
 	RPOrigins     []string
 }
 
-var WebAuthnSettings = WebAuthn{}
+var WebAuthnSettings = &WebAuthn{}
