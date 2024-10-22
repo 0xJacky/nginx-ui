@@ -9,7 +9,7 @@ server {
     listen          [::]:80;
 
     server_name     <your_server_name>;
-    rewrite ^(.*)$  https://$host$1 permanent;
+    return 301 https://$host$request_uri;
 }
 
 map $http_upgrade $connection_upgrade {
