@@ -23,8 +23,8 @@ var envPrefixMap = map[string]interface{}{
 	// Cosy
 	"APP":    settings.AppSettings,
 	"SERVER": settings.ServerSettings,
-	"DB":     settings.DataBaseSettings,
 	// Nginx UI
+	"DB":        DatabaseSettings,
 	"AUTH":      AuthSettings,
 	"CASDOOR":   CasdoorSettings,
 	"CERT":      CertSettings,

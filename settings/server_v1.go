@@ -37,7 +37,7 @@ type settingsV2 struct {
 	// Cosy
 	App      settings.App
 	Server   settings.Server
-	DataBase settings.DataBase
+	DataBase Database
 	// Nginx UI
 	Auth      Auth
 	Casdoor   Casdoor
@@ -121,7 +121,7 @@ func Migrate(confPath string) {
 	// Cosy
 	app := &settings.App{}
 	server := &settings.Server{}
-	database := &settings.DataBase{}
+	database := &Database{}
 	// Nginx UI
 	auth := &Auth{}
 	casdoor := &Casdoor{}

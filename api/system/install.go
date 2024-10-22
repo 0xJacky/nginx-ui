@@ -48,7 +48,7 @@ func InstallNginxUI(c *gin.Context) {
 	settings.NodeSettings.Secret = uuid.New().String()
 	settings.CertSettings.Email = json.Email
 	if "" != json.Database {
-		cSettings.DataBaseSettings.Name = json.Database
+		settings.DatabaseSettings.Name = json.Database
 	}
 
 	err := settings.Save()

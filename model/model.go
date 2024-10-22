@@ -55,14 +55,6 @@ type DataList struct {
 	Pagination Pagination  `json:"pagination,omitempty"`
 }
 
-func TotalPage(total int64, pageSize int) int64 {
-	n := total / int64(pageSize)
-	if total%int64(pageSize) > 0 {
-		n++
-	}
-	return n
-}
-
 type Method interface {
 	// FirstByID Where("id=@id")
 	FirstByID(id int) (*gen.T, error)

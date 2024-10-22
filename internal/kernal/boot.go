@@ -80,7 +80,7 @@ func InitDatabase() {
 	}
 
 	if "" != cSettings.AppSettings.JwtSecret {
-		db := cosy.InitDB(sqlite.Open(path.Dir(cSettings.ConfPath), cSettings.DataBaseSettings))
+		db := cosy.InitDB(sqlite.Open(path.Dir(cSettings.ConfPath), settings.DatabaseSettings))
 		model.Use(db)
 		query.Init(db)
 

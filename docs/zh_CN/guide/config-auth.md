@@ -19,12 +19,12 @@ IPWhiteList = 2001:0000:130F:0000:0000:09C0:876A:130B
 
 ## BanThresholdMinutes
 - Type: `int`
-- Default: `10`
+- 默认值：`10`
 
 默认情况下，如果用户在 10 分钟内登录失败 10 次，用户将被禁止登录 10 分钟。
 
 ## MaxAttempts
 - Type: `int`
-- Default: `10`
+- 默认值：`10`
 
 默认情况下，用户可以在 10 分钟内尝试登录 10 次。

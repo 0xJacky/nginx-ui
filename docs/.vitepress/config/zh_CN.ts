@@ -39,15 +39,21 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           text: '配置',
           collapsed: false,
           items: [
-            {text: '服务端', link: '/zh_CN/guide/config-server'},
-            {text: 'Nginx', link: '/zh_CN/guide/config-nginx'},
-            {text: 'Open AI', link: '/zh_CN/guide/config-openai'},
+            {text: 'App', link: '/zh_CN/guide/config-app'},
+            {text: 'Server', link: '/zh_CN/guide/config-server'},
+            {text: 'Database', link: '/zh_CN/guide/config-database'},
+            {text: 'Auth', link: '/zh_CN/guide/config-auth'},
             {text: 'Casdoor', link: '/zh_CN/guide/config-casdoor'},
+            {text: 'Cert', link: '/zh_CN/guide/config-cert'},
+            {text: 'Cluster', link: '/zh_CN/guide/config-cluster'},
+            {text: 'Crypto', link: '/zh_CN/guide/config-crypto'},
+            {text: 'Http', link: '/zh_CN/guide/config-http'},
             {text: 'Logrotate', link: '/zh_CN/guide/config-logrotate'},
-            {text: '集群', link: '/zh_CN/guide/config-cluster'},
-            {text: '认证', link: '/zh_CN/guide/config-auth'},
-            {text: '加密', link: '/zh_CN/guide/config-crypto'},
-            {text: 'Webauthn', link: '/zh_CN/guide/config-webauthn'},
+            {text: 'Nginx', link: '/zh_CN/guide/config-nginx'},
+            {text: 'Node', link: '/zh_CN/guide/config-node'},
+            {text: 'Open AI', link: '/zh_CN/guide/config-openai'},
+            {text: 'Terminal', link: '/zh_CN/guide/config-terminal'},
+            {text: 'Webauthn', link: '/zh_CN/guide/config-webauthn'}
           ]
         },
         {
