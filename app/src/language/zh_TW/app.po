@@ -21,7 +21,7 @@ msgstr ""
 msgid "2FA"
 msgstr "多重要素驗證"
 
-#: src/views/preference/AuthSettings.vue:58
+#: src/views/preference/AuthSettings.vue:57
 msgid "2FA Settings"
 msgstr "多重要素驗證設定"
 
@@ -44,14 +44,14 @@ msgstr "ACME 用戶"
 #: src/views/config/configColumns.ts:38
 #: src/views/environment/envColumns.tsx:131
 #: src/views/notification/notificationColumns.tsx:54
-#: src/views/preference/AuthSettings.vue:27 src/views/site/SiteList.vue:54
+#: src/views/preference/AuthSettings.vue:26 src/views/site/SiteList.vue:54
 #: src/views/stream/StreamList.vue:47 src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "操作"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:204
-#: src/views/preference/BasicSettings.vue:73
+#: src/views/preference/CertSettings.vue:42
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/site/ngx_conf/NgxServer.vue:162
 #: src/views/site/ngx_conf/NgxUpstream.vue:152
@@ -122,7 +122,7 @@ msgstr "API Token"
 msgid "Arch"
 msgstr "架構"
 
-#: src/views/preference/AuthSettings.vue:102
+#: src/views/preference/AuthSettings.vue:136
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "您確定要刪除這個被禁用的 IP 嗎？"
 
@@ -160,7 +160,7 @@ msgstr "您確定要恢復此項目嗎？"
 msgid "Are you sure you want to remove this directive?"
 msgstr "您確定要刪除這條指令嗎？"
 
-#: src/views/preference/BasicSettings.vue:99
+#: src/views/preference/CertSettings.vue:68
 msgid "Are you sure you want to remove this item?"
 msgstr "您確定要刪除此項目嗎？"
 
@@ -176,11 +176,11 @@ msgstr "向 ChatGPT 尋求幫助"
 msgid "Assistant"
 msgstr "助理"
 
-#: src/views/preference/AuthSettings.vue:18
+#: src/views/preference/AuthSettings.vue:17
 msgid "Attempts"
 msgstr "嘗試次數"
 
-#: src/views/preference/Preference.vue:122
+#: src/views/preference/Preference.vue:153
 msgid "Auth"
 msgstr "身份驗證"
 
@@ -188,7 +188,7 @@ msgstr "身份驗證"
 msgid "Authenticate with a passkey"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:63
+#: src/views/preference/AuthSettings.vue:62
 msgid "Authentication Settings"
 msgstr ""
 
@@ -224,15 +224,15 @@ msgstr "返回首頁"
 msgid "Back to list"
 msgstr "返回列表"
 
-#: src/views/preference/AuthSettings.vue:76
+#: src/views/preference/AuthSettings.vue:103
 msgid "Ban Threshold Minutes"
 msgstr "封禁閾值分鐘數"
 
-#: src/views/preference/AuthSettings.vue:90
+#: src/views/preference/AuthSettings.vue:124
 msgid "Banned IPs"
 msgstr "被禁止的 IP"
 
-#: src/views/preference/AuthSettings.vue:21
+#: src/views/preference/AuthSettings.vue:20
 msgid "Banned Until"
 msgstr "禁止至"
 
@@ -241,7 +241,7 @@ msgid "Base information"
 msgstr "基本資訊"
 
 #: src/views/config/ConfigEditor.vue:241
-#: src/views/preference/Preference.vue:116
+#: src/views/preference/Preference.vue:147
 #: src/views/site/components/RightSettings.vue:75
 #: src/views/stream/components/RightSettings.vue:74
 msgid "Basic"
@@ -268,7 +268,7 @@ msgstr "構建基於"
 msgid "CA Dir"
 msgstr "CA Dir"
 
-#: src/views/preference/BasicSettings.vue:47
+#: src/views/preference/CertSettings.vue:16
 msgid "CADir"
 msgstr "CADir"
 
@@ -292,7 +292,12 @@ msgstr ""
 msgid "Cancel"
 msgstr "取消"
 
-#: src/views/preference/BasicSettings.vue:55
+#: src/views/preference/Preference.vue:159
+#, fuzzy
+msgid "Cert"
+msgstr "自動憑證"
+
+#: src/views/preference/CertSettings.vue:24
 msgid "Certificate Renewal Interval"
 msgstr "憑證更新間隔"
 
@@ -474,9 +479,10 @@ msgstr "目前版本"
 msgid "Custom"
 msgstr "自訂"
 
-#: src/views/preference/BasicSettings.vue:121
+#: src/views/preference/BasicSettings.vue:46
+#, fuzzy
 msgid ""
-"Customize the name of local server to be displayed in the environment "
+"Customize the name of local node to be displayed in the environment "
 "indicator."
 msgstr "自訂本地伺服器名稱以顯示在環境指示器中。"
 
@@ -489,7 +495,7 @@ msgstr "儀表板"
 msgid "Database (Optional, default: database)"
 msgstr "資料庫 (可選，預設: database)"
 
-#: src/views/preference/BasicSettings.vue:60
+#: src/views/preference/CertSettings.vue:29
 msgid "Days"
 msgstr "天"
 
@@ -866,11 +872,6 @@ msgstr "檔案"
 msgid "File exists"
 msgstr "檔案已存在"
 
-#: src/views/preference/NginxSettings.vue:14
-#: src/views/preference/NginxSettings.vue:23
-msgid "File not found"
-msgstr "找不到檔案"
-
 #: src/views/other/Error.vue:9
 msgid "File Not Found"
 msgstr "找不到檔案"
@@ -889,7 +890,7 @@ msgid ""
 "process."
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:43
+#: src/views/preference/BasicSettings.vue:38
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr "中國使用者：https://mirror.ghproxy.com/"
 
@@ -925,7 +926,7 @@ msgstr "取得發布資訊錯誤"
 msgid "Getting the certificate, please wait..."
 msgstr "正在取得憑證，請稍候..."
 
-#: src/views/preference/BasicSettings.vue:35
+#: src/views/preference/BasicSettings.vue:30
 msgid "Github Proxy"
 msgstr "Github 代理"
 
@@ -937,15 +938,15 @@ msgstr "隱藏"
 msgid "Home"
 msgstr "首頁"
 
-#: src/views/preference/BasicSettings.vue:31
+#: src/views/preference/CertSettings.vue:12
 msgid "HTTP Challenge Port"
 msgstr "HTTP 挑戰埠"
 
-#: src/views/preference/BasicSettings.vue:13
+#: src/views/preference/BasicSettings.vue:11
 msgid "HTTP Host"
 msgstr "HTTP 監聽主機"
 
-#: src/views/preference/BasicSettings.vue:16
+#: src/views/preference/BasicSettings.vue:14
 msgid "HTTP Port"
 msgstr "HTTP 監聽埠"
 
@@ -957,7 +958,7 @@ msgstr "HTTP01"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "如果留空，將使用默認的 CA Dir。"
 
-#: src/views/preference/AuthSettings.vue:68
+#: src/views/preference/AuthSettings.vue:119
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -989,7 +990,7 @@ msgstr "導入"
 msgid "Import Certificate"
 msgstr "導入憑證"
 
-#: src/views/other/Login.vue:79
+#: src/views/other/Login.vue:77
 msgid "Incorrect username or password"
 msgstr "使用者名稱或密碼不正確"
 
@@ -1030,7 +1031,7 @@ msgstr "間隔"
 msgid "Invalid"
 msgstr "無效"
 
-#: src/views/other/Login.vue:89
+#: src/views/other/Login.vue:87
 msgid "Invalid 2FA or recovery code"
 msgstr "無效的多重因素驗證或恢復碼"
 
@@ -1043,11 +1044,11 @@ msgstr "無效的檔案名"
 msgid "Invalid folder name"
 msgstr "無效的資料夾名稱"
 
-#: src/components/TwoFA/use2FAModal.ts:65
+#: src/components/TwoFA/use2FAModal.ts:60
 msgid "Invalid passcode or recovery code"
 msgstr "無效的密碼或恢復碼"
 
-#: src/views/preference/AuthSettings.vue:15
+#: src/views/preference/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
 
@@ -1067,7 +1068,7 @@ msgstr "成功頒發憑證"
 msgid "Issuer: %{issuer}"
 msgstr "發行者：%{issuer}"
 
-#: src/views/preference/BasicSettings.vue:22
+#: src/views/preference/BasicSettings.vue:20
 msgid "Jwt Secret"
 msgstr "Jwt Secret"
 
@@ -1149,11 +1150,11 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日誌"
 
-#: src/routes/index.ts:305 src/views/other/Login.vue:247
+#: src/routes/index.ts:305 src/views/other/Login.vue:245
 msgid "Login"
 msgstr "登入"
 
-#: src/views/other/Login.vue:133 src/views/other/Login.vue:66
+#: src/views/other/Login.vue:131 src/views/other/Login.vue:64
 msgid "Login successful"
 msgstr "登入成功"
 
@@ -1161,7 +1162,7 @@ msgstr "登入成功"
 msgid "Logout successful"
 msgstr "登出成功"
 
-#: src/views/preference/Preference.vue:140
+#: src/views/preference/Preference.vue:177
 msgid "Logrotate"
 msgstr "Logrotate"
 
@@ -1207,7 +1208,7 @@ msgstr "管理使用者"
 msgid "Managed Certificate"
 msgstr "受管理的憑證"
 
-#: src/views/preference/AuthSettings.vue:82
+#: src/views/preference/AuthSettings.vue:109
 msgid "Max Attempts"
 msgstr "最大嘗試次數"
 
@@ -1301,11 +1302,11 @@ msgstr "新版本發布"
 msgid "Next"
 msgstr "下一步"
 
-#: src/views/preference/Preference.vue:128
+#: src/views/preference/Preference.vue:165
 msgid "Nginx"
 msgstr "Nginx"
 
-#: src/views/preference/NginxSettings.vue:11
+#: src/views/preference/NginxSettings.vue:9
 msgid "Nginx Access Log Path"
 msgstr "Nginx 存取日誌路徑"
 
@@ -1313,11 +1314,16 @@ msgstr "Nginx 存取日誌路徑"
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 設定解析錯誤"
 
+#: src/views/preference/NginxSettings.vue:15
+#, fuzzy
+msgid "Nginx Configurations Directory"
+msgstr "Nginx 設定解析錯誤"
+
 #: src/components/NginxControl/NginxControl.vue:68
 msgid "Nginx Control"
 msgstr "Nginx 控制元件"
 
-#: src/views/preference/NginxSettings.vue:20
+#: src/views/preference/NginxSettings.vue:12
 msgid "Nginx Error Log Path"
 msgstr "Nginx 錯誤日誌路徑"
 
@@ -1329,9 +1335,27 @@ msgstr ""
 msgid "Nginx Log"
 msgstr "Nginx 日誌"
 
+#: src/views/preference/NginxSettings.vue:18
+msgid "Nginx Log Directory Whitelist"
+msgstr ""
+
+#: src/views/preference/NginxSettings.vue:27
+#, fuzzy
+msgid "Nginx PID Path"
+msgstr "Nginx 錯誤日誌路徑"
+
+#: src/views/preference/NginxSettings.vue:30
+msgid "Nginx Reload Command"
+msgstr ""
+
 #: src/components/NginxControl/NginxControl.vue:26
 msgid "Nginx reloaded successfully"
 msgstr "Nginx 重新載入成功"
+
+#: src/views/preference/NginxSettings.vue:33
+#, fuzzy
+msgid "Nginx Restart Command"
+msgstr "終端機啟動指令"
 
 #: src/components/NginxControl/NginxControl.vue:42
 msgid "Nginx restarted successfully"
@@ -1343,15 +1367,20 @@ msgstr "Nginx 重啟成功"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:561
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:575
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/AuthSettings.vue:104
-#: src/views/preference/BasicSettings.vue:101
+#: src/views/preference/AuthSettings.vue:138
+#: src/views/preference/CertSettings.vue:70
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/site/ngx_conf/LocationEditor.vue:90
 #: src/views/site/SiteList.vue:151 src/views/stream/StreamList.vue:165
 msgid "No"
 msgstr "取消"
 
-#: src/views/preference/BasicSettings.vue:25
+#: src/views/preference/BasicSettings.vue:42
+#, fuzzy
+msgid "Node name"
+msgstr "新名稱"
+
+#: src/views/preference/BasicSettings.vue:23
 msgid "Node Secret"
 msgstr "Node Secret"
 
@@ -1439,11 +1468,11 @@ msgstr "驗證完成後，記錄將被刪除。"
 msgid "Online"
 msgstr "線上"
 
-#: src/views/preference/Preference.vue:134
+#: src/views/preference/Preference.vue:171
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:117 src/views/other/Login.vue:256
+#: src/components/TwoFA/Authorization.vue:117 src/views/other/Login.vue:254
 msgid "Or"
 msgstr ""
 
@@ -1486,7 +1515,7 @@ msgid ""
 "password replacement or as a 2FA method."
 msgstr ""
 
-#: src/views/other/Login.vue:208 src/views/user/userColumns.tsx:18
+#: src/views/other/Login.vue:206 src/views/user/userColumns.tsx:18
 msgid "Password"
 msgstr "密碼"
 
@@ -1561,11 +1590,11 @@ msgstr "請輸入名稱，這將作為新設定的檔名！"
 msgid "Please input your E-mail!"
 msgstr "請輸入您的電子郵件！"
 
-#: src/views/other/Install.vue:44 src/views/other/Login.vue:47
+#: src/views/other/Install.vue:44 src/views/other/Login.vue:46
 msgid "Please input your password!"
 msgstr "請輸入您的密碼！"
 
-#: src/views/other/Install.vue:38 src/views/other/Login.vue:41
+#: src/views/other/Install.vue:38 src/views/other/Login.vue:40
 msgid "Please input your username!"
 msgstr "請輸入您的使用者名稱！"
 
@@ -1590,7 +1619,7 @@ msgstr "請至少選擇一個節點！"
 msgid "Pre-release"
 msgstr "預先發布"
 
-#: src/routes/index.ts:260 src/views/preference/Preference.vue:111
+#: src/routes/index.ts:260 src/views/preference/Preference.vue:142
 msgid "Preference"
 msgstr "偏好設定"
 
@@ -1650,7 +1679,7 @@ msgstr "恢復碼"
 msgid "Recovery Code:"
 msgstr "恢復碼："
 
-#: src/views/preference/BasicSettings.vue:68
+#: src/views/preference/CertSettings.vue:37
 msgid "Recursive Nameservers"
 msgstr "遞迴名稱伺服器"
 
@@ -1715,11 +1744,11 @@ msgstr "重新載入中"
 msgid "Reloading nginx"
 msgstr "正在重新載入 Nginx"
 
-#: src/views/preference/AuthSettings.vue:109
+#: src/views/preference/AuthSettings.vue:143
 msgid "Remove"
 msgstr "移除"
 
-#: src/views/preference/AuthSettings.vue:48
+#: src/views/preference/AuthSettings.vue:47
 #: src/views/preference/components/Passkey.vue:50
 msgid "Remove successfully"
 msgstr "移除成功"
@@ -1802,7 +1831,19 @@ msgstr "重新啟動"
 msgid "Restarting"
 msgstr "正在重新啟動"
 
-#: src/views/preference/BasicSettings.vue:19
+#: src/views/preference/AuthSettings.vue:81
+msgid "RP Display Name"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:87
+msgid "RP Origins"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:75
+msgid "RPID"
+msgstr ""
+
+#: src/views/preference/BasicSettings.vue:17
 msgid "Run Mode"
 msgstr "執行模式"
 
@@ -1814,7 +1855,7 @@ msgstr "執行中"
 #: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/ConfigEditor.vue:222
 #: src/views/preference/components/Passkey.vue:136
-#: src/views/preference/Preference.vue:151
+#: src/views/preference/Preference.vue:188
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:120
 #: src/views/site/SiteEdit.vue:260 src/views/stream/StreamEdit.vue:252
 msgid "Save"
@@ -1833,7 +1874,7 @@ msgstr "儲存錯誤 %{msg}"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:122
 #: src/views/certificate/CertificateEditor.vue:46
-#: src/views/preference/Preference.vue:79
+#: src/views/preference/Preference.vue:110
 msgid "Save successfully"
 msgstr "儲存成功"
 
@@ -1877,13 +1918,13 @@ msgstr "傳送"
 #: src/views/config/ConfigEditor.vue:108
 #: src/views/environment/BatchUpgrader.vue:59
 #: src/views/environment/Environment.vue:15 src/views/other/Install.vue:68
-#: src/views/preference/AuthSettings.vue:50
+#: src/views/preference/AuthSettings.vue:49
 #: src/views/preference/components/Passkey.vue:26
 #: src/views/preference/components/Passkey.vue:43
 #: src/views/preference/components/Passkey.vue:56
 #: src/views/preference/components/TOTP.vue:45
 #: src/views/preference/components/TOTP.vue:58
-#: src/views/preference/Preference.vue:83 src/views/site/SiteList.vue:88
+#: src/views/preference/Preference.vue:114 src/views/site/SiteList.vue:88
 #: src/views/stream/StreamList.vue:113 src/views/stream/StreamList.vue:81
 #: src/views/system/Upgrade.vue:42
 msgid "Server error"
@@ -1893,10 +1934,6 @@ msgstr "伺服器錯誤"
 msgid "Server Info"
 msgstr "伺服器資訊"
 
-#: src/views/preference/BasicSettings.vue:117
-msgid "Server Name"
-msgstr "伺服器名稱"
-
 #: src/views/site/cert/components/ObtainCert.vue:102
 msgid "server_name not found in directives"
 msgstr "在指令中未找到 server_name"
@@ -1905,7 +1942,7 @@ msgstr "在指令中未找到 server_name"
 msgid "server_name parameter is required"
 msgstr "必須提供 server_name 參數"
 
-#: src/views/preference/BasicSettings.vue:64
+#: src/views/preference/CertSettings.vue:33
 msgid ""
 "Set the recursive nameservers to override the systems nameservers for the "
 "step of DNS challenge."
@@ -1927,7 +1964,7 @@ msgstr "使用 HTTP01 挑戰提供者"
 msgid "Show"
 msgstr "顯示"
 
-#: src/views/other/Login.vue:265
+#: src/views/other/Login.vue:263
 msgid "Sign in with a passkey"
 msgstr ""
 
@@ -1959,7 +1996,7 @@ msgstr "SSL 憑證金鑰路徑"
 msgid "SSL Certificate Path"
 msgstr "SSL 憑證路徑"
 
-#: src/views/other/Login.vue:223
+#: src/views/other/Login.vue:221
 msgid "SSO Login"
 msgstr "SSO 登錄"
 
@@ -2078,7 +2115,7 @@ msgstr "目標"
 msgid "Terminal"
 msgstr "終端機"
 
-#: src/views/preference/BasicSettings.vue:28
+#: src/views/preference/BasicSettings.vue:26
 msgid "Terminal Start Command"
 msgstr "終端機啟動指令"
 
@@ -2109,6 +2146,13 @@ msgid ""
 "dashes, and dots."
 msgstr "模型名稱應僅包含字母、Unicode、數字、連字號、破折號和點。"
 
+#: src/views/preference/BasicSettings.vue:45
+#, fuzzy
+msgid ""
+"The node name should only contain letters, unicode, numbers, hyphens, "
+"dashes, and dots."
+msgstr "模型名稱應僅包含字母、Unicode、數字、連字號、破折號和點。"
+
 #: src/views/certificate/CertificateEditor.vue:173
 msgid "The path exists, but the file is not a certificate"
 msgstr "路徑存在，但檔案不是憑證"
@@ -2131,20 +2175,14 @@ msgstr ""
 "遠端 Nginx UI 版本與本地 Nginx UI 版本不兼容。為避免潛在錯誤，請升級遠端 "
 "Nginx UI 以匹配本地版本。"
 
-#: src/views/preference/BasicSettings.vue:120
-msgid ""
-"The server name should only contain letters, unicode, numbers, hyphens, "
-"dashes, and dots."
-msgstr "伺服器名稱應僅包含字母、Unicode、數字、連字符、破折號和點。"
-
 #: src/views/site/cert/components/AutoCertStepOne.vue:45
 msgid ""
 "The server_name in the current configuration must be the domain name you "
 "need to get the certificate, supportmultiple domains."
 msgstr "當前配置中的 server_name 必須是您需要獲取憑證的網域，支持多個網域。"
 
-#: src/views/preference/BasicSettings.vue:38
-#: src/views/preference/BasicSettings.vue:50
+#: src/views/preference/BasicSettings.vue:33
+#: src/views/preference/CertSettings.vue:19
 msgid "The url is invalid"
 msgstr "網址無效"
 
@@ -2180,7 +2218,11 @@ msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "這將在 %{nodeNames} 上升級或重新安裝 Nginx UI 到 %{version}。"
 
-#: src/views/preference/AuthSettings.vue:67
+#: src/views/preference/AuthSettings.vue:98
+msgid "Throttle"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:118
 #: src/views/preference/components/AddPasskey.vue:71
 #: src/views/preference/LogrotateSettings.vue:11
 msgid "Tips"
@@ -2224,7 +2266,7 @@ msgstr ""
 msgid "Token is not valid"
 msgstr "令牌無效"
 
-#: src/views/other/Login.vue:82
+#: src/views/other/Login.vue:80
 msgid "Too many login failed attempts, please try again later"
 msgstr "登錄失敗次數過多，請稍後再試"
 
@@ -2242,7 +2284,7 @@ msgstr "TOTP 是一種使用基於時間的一次性密碼算法的多重因素�
 msgid "Trash"
 msgstr "垃圾桶"
 
-#: src/components/TwoFA/use2FAModal.ts:71
+#: src/components/TwoFA/use2FAModal.ts:66
 msgid "Two-factor authentication required"
 msgstr "需要多重因素驗證"
 
@@ -2313,11 +2355,11 @@ msgstr "使用恢復碼"
 msgid "User"
 msgstr "使用者名稱"
 
-#: src/views/other/Login.vue:85
+#: src/views/other/Login.vue:83
 msgid "User is banned"
 msgstr "用戶被禁止"
 
-#: src/views/other/Login.vue:198 src/views/user/userColumns.tsx:9
+#: src/views/other/Login.vue:196 src/views/user/userColumns.tsx:9
 msgid "Username"
 msgstr "使用者名稱"
 
@@ -2373,6 +2415,10 @@ msgstr ""
 "我們將從該檔案中刪除 HTTPChallenge 設定並重新載入 Nginx 設定檔案。你確定你要"
 "繼續嗎？"
 
+#: src/views/preference/AuthSettings.vue:71
+msgid "Webauthn"
+msgstr ""
+
 #: src/views/certificate/ACMEUser.vue:78
 msgid ""
 "When Enabled, Nginx UI will automatically re-register users upon startup. "
@@ -2393,8 +2439,8 @@ msgstr "將憑證私鑰寫入磁碟"
 msgid "Writing certificate to disk"
 msgstr "將憑證寫入磁碟"
 
-#: src/views/preference/AuthSettings.vue:103
-#: src/views/preference/BasicSettings.vue:100
+#: src/views/preference/AuthSettings.vue:137
+#: src/views/preference/CertSettings.vue:69
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/site/ngx_conf/LocationEditor.vue:89
 msgid "Yes"
@@ -2418,15 +2464,23 @@ msgstr ""
 msgid "Your passkeys"
 msgstr ""
 
+#~ msgid "File not found"
+#~ msgstr "找不到檔案"
+
+#~ msgid "Server Name"
+#~ msgstr "伺服器名稱"
+
+#~ msgid ""
+#~ "The server name should only contain letters, unicode, numbers, hyphens, "
+#~ "dashes, and dots."
+#~ msgstr "伺服器名稱應僅包含字母、Unicode、數字、連字符、破折號和點。"
+
 #~ msgid "Enable 2FA"
 #~ msgstr "啟用多因素身份驗證"
 
 #, fuzzy
 #~ msgid "Rename "
 #~ msgstr "使用者名稱"
-
-#~ msgid "Auto Cert"
-#~ msgstr "自動憑證"
 
 #~ msgid "Certificate has expired"
 #~ msgstr "此憑證已過期"

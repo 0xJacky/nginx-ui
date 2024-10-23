@@ -18,7 +18,7 @@ msgstr ""
 msgid "2FA"
 msgstr "2ФА"
 
-#: src/views/preference/AuthSettings.vue:58
+#: src/views/preference/AuthSettings.vue:57
 msgid "2FA Settings"
 msgstr "Настройки 2ФА"
 
@@ -41,14 +41,14 @@ msgstr "Пользователь ACME"
 #: src/views/config/configColumns.ts:38
 #: src/views/environment/envColumns.tsx:131
 #: src/views/notification/notificationColumns.tsx:54
-#: src/views/preference/AuthSettings.vue:27 src/views/site/SiteList.vue:54
+#: src/views/preference/AuthSettings.vue:26 src/views/site/SiteList.vue:54
 #: src/views/stream/StreamList.vue:47 src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "Действие"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:204
-#: src/views/preference/BasicSettings.vue:73
+#: src/views/preference/CertSettings.vue:42
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/site/ngx_conf/NgxServer.vue:162
 #: src/views/site/ngx_conf/NgxUpstream.vue:152
@@ -119,7 +119,7 @@ msgstr "API токен"
 msgid "Arch"
 msgstr "Архитектура"
 
-#: src/views/preference/AuthSettings.vue:102
+#: src/views/preference/AuthSettings.vue:136
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Вы уверены, что хотите немедленно удалить этот заблокированный IP?"
 
@@ -158,7 +158,7 @@ msgstr "Вы уверены, что хотите восстановить это
 msgid "Are you sure you want to remove this directive?"
 msgstr "Вы уверены, что хотите удалить эту директиву?"
 
-#: src/views/preference/BasicSettings.vue:99
+#: src/views/preference/CertSettings.vue:68
 msgid "Are you sure you want to remove this item?"
 msgstr "Вы уверены, что хотите удалить этот элемент?"
 
@@ -175,11 +175,11 @@ msgstr "Обратитесь за помощью к ChatGPT"
 msgid "Assistant"
 msgstr "Ассистент"
 
-#: src/views/preference/AuthSettings.vue:18
+#: src/views/preference/AuthSettings.vue:17
 msgid "Attempts"
 msgstr "Попытки"
 
-#: src/views/preference/Preference.vue:122
+#: src/views/preference/Preference.vue:153
 msgid "Auth"
 msgstr "Авторизация"
 
@@ -187,7 +187,7 @@ msgstr "Авторизация"
 msgid "Authenticate with a passkey"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:63
+#: src/views/preference/AuthSettings.vue:62
 msgid "Authentication Settings"
 msgstr ""
 
@@ -223,15 +223,15 @@ msgstr "Вернуться на главную"
 msgid "Back to list"
 msgstr "Возврат к списку"
 
-#: src/views/preference/AuthSettings.vue:76
+#: src/views/preference/AuthSettings.vue:103
 msgid "Ban Threshold Minutes"
 msgstr "Порог блокировки в минутах"
 
-#: src/views/preference/AuthSettings.vue:90
+#: src/views/preference/AuthSettings.vue:124
 msgid "Banned IPs"
 msgstr "Заблокированные IP-адреса"
 
-#: src/views/preference/AuthSettings.vue:21
+#: src/views/preference/AuthSettings.vue:20
 msgid "Banned Until"
 msgstr "Заблокирован до"
 
@@ -240,7 +240,7 @@ msgid "Base information"
 msgstr "Основная информация"
 
 #: src/views/config/ConfigEditor.vue:241
-#: src/views/preference/Preference.vue:116
+#: src/views/preference/Preference.vue:147
 #: src/views/site/components/RightSettings.vue:75
 #: src/views/stream/components/RightSettings.vue:74
 #, fuzzy
@@ -268,7 +268,7 @@ msgstr "Собрать с"
 msgid "CA Dir"
 msgstr "Директория корневого сертификата"
 
-#: src/views/preference/BasicSettings.vue:47
+#: src/views/preference/CertSettings.vue:16
 msgid "CADir"
 msgstr ""
 
@@ -292,7 +292,12 @@ msgstr ""
 msgid "Cancel"
 msgstr "Отмена"
 
-#: src/views/preference/BasicSettings.vue:55
+#: src/views/preference/Preference.vue:159
+#, fuzzy
+msgid "Cert"
+msgstr "Авто Сертификат"
+
+#: src/views/preference/CertSettings.vue:24
 msgid "Certificate Renewal Interval"
 msgstr "Интервал обновления сертификата"
 
@@ -477,9 +482,10 @@ msgstr "Текущяя версия"
 msgid "Custom"
 msgstr "Пользовательский"
 
-#: src/views/preference/BasicSettings.vue:121
+#: src/views/preference/BasicSettings.vue:46
+#, fuzzy
 msgid ""
-"Customize the name of local server to be displayed in the environment "
+"Customize the name of local node to be displayed in the environment "
 "indicator."
 msgstr "Настройте имя локального сервера для отображения в индикаторе среды."
 
@@ -492,7 +498,7 @@ msgstr "Доска"
 msgid "Database (Optional, default: database)"
 msgstr "База данных (Опционально, по умолчанию: database)"
 
-#: src/views/preference/BasicSettings.vue:60
+#: src/views/preference/CertSettings.vue:29
 msgid "Days"
 msgstr "Дни"
 
@@ -874,11 +880,6 @@ msgstr "Файл"
 msgid "File exists"
 msgstr "Файл существует"
 
-#: src/views/preference/NginxSettings.vue:14
-#: src/views/preference/NginxSettings.vue:23
-msgid "File not found"
-msgstr "Файл не найден"
-
 #: src/views/other/Error.vue:9
 msgid "File Not Found"
 msgstr "Файл не найден"
@@ -897,7 +898,7 @@ msgid ""
 "process."
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:43
+#: src/views/preference/BasicSettings.vue:38
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr "Для китайских пользователей: https://mirror.ghproxy.com/"
 
@@ -933,7 +934,7 @@ msgstr "Ошибка получения информации о выпуске"
 msgid "Getting the certificate, please wait..."
 msgstr "Получение сертификата, пожалуйста, подождите..."
 
-#: src/views/preference/BasicSettings.vue:35
+#: src/views/preference/BasicSettings.vue:30
 msgid "Github Proxy"
 msgstr "Прокси Github"
 
@@ -945,15 +946,15 @@ msgstr "Скрыть"
 msgid "Home"
 msgstr "Главная"
 
-#: src/views/preference/BasicSettings.vue:31
+#: src/views/preference/CertSettings.vue:12
 msgid "HTTP Challenge Port"
 msgstr "Порт HTTP Challenge"
 
-#: src/views/preference/BasicSettings.vue:13
+#: src/views/preference/BasicSettings.vue:11
 msgid "HTTP Host"
 msgstr "Хостинг HTTP"
 
-#: src/views/preference/BasicSettings.vue:16
+#: src/views/preference/BasicSettings.vue:14
 msgid "HTTP Port"
 msgstr "Порт HTTP"
 
@@ -965,7 +966,7 @@ msgstr "HTTP01"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "Если оставить пустым, будет использоваться каталог CA по умолчанию."
 
-#: src/views/preference/AuthSettings.vue:68
+#: src/views/preference/AuthSettings.vue:119
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -1002,7 +1003,7 @@ msgstr "Импорт"
 msgid "Import Certificate"
 msgstr "Импортировать сертификат"
 
-#: src/views/other/Login.vue:79
+#: src/views/other/Login.vue:77
 msgid "Incorrect username or password"
 msgstr "Неверное имя пользователя или пароль"
 
@@ -1043,7 +1044,7 @@ msgstr "Интервал"
 msgid "Invalid"
 msgstr "Недействительно"
 
-#: src/views/other/Login.vue:89
+#: src/views/other/Login.vue:87
 msgid "Invalid 2FA or recovery code"
 msgstr "Неверный 2FA или код восстановления"
 
@@ -1056,11 +1057,11 @@ msgstr "Неверное имя файла"
 msgid "Invalid folder name"
 msgstr "Недопустимое имя папки"
 
-#: src/components/TwoFA/use2FAModal.ts:65
+#: src/components/TwoFA/use2FAModal.ts:60
 msgid "Invalid passcode or recovery code"
 msgstr "Неверный пароль или код восстановления"
 
-#: src/views/preference/AuthSettings.vue:15
+#: src/views/preference/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
 
@@ -1080,7 +1081,7 @@ msgstr "Сертификат успешно выдан"
 msgid "Issuer: %{issuer}"
 msgstr "Издатель: %{issuer}"
 
-#: src/views/preference/BasicSettings.vue:22
+#: src/views/preference/BasicSettings.vue:20
 msgid "Jwt Secret"
 msgstr "Jwt секрет"
 
@@ -1162,11 +1163,11 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Журнал"
 
-#: src/routes/index.ts:305 src/views/other/Login.vue:247
+#: src/routes/index.ts:305 src/views/other/Login.vue:245
 msgid "Login"
 msgstr "Логин"
 
-#: src/views/other/Login.vue:133 src/views/other/Login.vue:66
+#: src/views/other/Login.vue:131 src/views/other/Login.vue:64
 msgid "Login successful"
 msgstr "Авторизация успешна"
 
@@ -1174,7 +1175,7 @@ msgstr "Авторизация успешна"
 msgid "Logout successful"
 msgstr "Выход выполнен успешно"
 
-#: src/views/preference/Preference.vue:140
+#: src/views/preference/Preference.vue:177
 msgid "Logrotate"
 msgstr "Прокрутка"
 
@@ -1223,7 +1224,7 @@ msgstr "Пользователи"
 msgid "Managed Certificate"
 msgstr "Управление сертификатом"
 
-#: src/views/preference/AuthSettings.vue:82
+#: src/views/preference/AuthSettings.vue:109
 msgid "Max Attempts"
 msgstr "Максимальное количество попыток"
 
@@ -1317,11 +1318,11 @@ msgstr "Вышла новая версия"
 msgid "Next"
 msgstr "Дальше"
 
-#: src/views/preference/Preference.vue:128
+#: src/views/preference/Preference.vue:165
 msgid "Nginx"
 msgstr "Nginx"
 
-#: src/views/preference/NginxSettings.vue:11
+#: src/views/preference/NginxSettings.vue:9
 msgid "Nginx Access Log Path"
 msgstr "Путь для Nginx Access Log"
 
@@ -1329,11 +1330,16 @@ msgstr "Путь для Nginx Access Log"
 msgid "Nginx Configuration Parse Error"
 msgstr "Ошибка разбора конфигурации Nginx"
 
+#: src/views/preference/NginxSettings.vue:15
+#, fuzzy
+msgid "Nginx Configurations Directory"
+msgstr "Ошибка разбора конфигурации Nginx"
+
 #: src/components/NginxControl/NginxControl.vue:68
 msgid "Nginx Control"
 msgstr "Управление Nginx"
 
-#: src/views/preference/NginxSettings.vue:20
+#: src/views/preference/NginxSettings.vue:12
 msgid "Nginx Error Log Path"
 msgstr "Путь для Nginx Error Log"
 
@@ -1345,9 +1351,27 @@ msgstr ""
 msgid "Nginx Log"
 msgstr "Журнал"
 
+#: src/views/preference/NginxSettings.vue:18
+msgid "Nginx Log Directory Whitelist"
+msgstr ""
+
+#: src/views/preference/NginxSettings.vue:27
+#, fuzzy
+msgid "Nginx PID Path"
+msgstr "Путь для Nginx Error Log"
+
+#: src/views/preference/NginxSettings.vue:30
+msgid "Nginx Reload Command"
+msgstr ""
+
 #: src/components/NginxControl/NginxControl.vue:26
 msgid "Nginx reloaded successfully"
 msgstr "Nginx успешно перезагружен"
+
+#: src/views/preference/NginxSettings.vue:33
+#, fuzzy
+msgid "Nginx Restart Command"
+msgstr "Терминальная команда запуска"
 
 #: src/components/NginxControl/NginxControl.vue:42
 msgid "Nginx restarted successfully"
@@ -1359,15 +1383,20 @@ msgstr "Nginx успешно перезапущен"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:561
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:575
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/AuthSettings.vue:104
-#: src/views/preference/BasicSettings.vue:101
+#: src/views/preference/AuthSettings.vue:138
+#: src/views/preference/CertSettings.vue:70
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/site/ngx_conf/LocationEditor.vue:90
 #: src/views/site/SiteList.vue:151 src/views/stream/StreamList.vue:165
 msgid "No"
 msgstr "Нет"
 
-#: src/views/preference/BasicSettings.vue:25
+#: src/views/preference/BasicSettings.vue:42
+#, fuzzy
+msgid "Node name"
+msgstr "Новое имя"
+
+#: src/views/preference/BasicSettings.vue:23
 msgid "Node Secret"
 msgstr ""
 
@@ -1457,11 +1486,11 @@ msgstr "После завершения проверки записи будут
 msgid "Online"
 msgstr "Онлайн"
 
-#: src/views/preference/Preference.vue:134
+#: src/views/preference/Preference.vue:171
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:117 src/views/other/Login.vue:256
+#: src/components/TwoFA/Authorization.vue:117 src/views/other/Login.vue:254
 msgid "Or"
 msgstr ""
 
@@ -1504,7 +1533,7 @@ msgid ""
 "password replacement or as a 2FA method."
 msgstr ""
 
-#: src/views/other/Login.vue:208 src/views/user/userColumns.tsx:18
+#: src/views/other/Login.vue:206 src/views/user/userColumns.tsx:18
 msgid "Password"
 msgstr "Пароль"
 
@@ -1584,11 +1613,11 @@ msgstr ""
 msgid "Please input your E-mail!"
 msgstr "Введите ваш E-mail!"
 
-#: src/views/other/Install.vue:44 src/views/other/Login.vue:47
+#: src/views/other/Install.vue:44 src/views/other/Login.vue:46
 msgid "Please input your password!"
 msgstr "Введите ваш пароль!"
 
-#: src/views/other/Install.vue:38 src/views/other/Login.vue:41
+#: src/views/other/Install.vue:38 src/views/other/Login.vue:40
 msgid "Please input your username!"
 msgstr "Введите ваше имя пользователя!"
 
@@ -1615,7 +1644,7 @@ msgstr "Пожалуйста, выберите хотя бы один узел!"
 msgid "Pre-release"
 msgstr "Предварительный выпуск"
 
-#: src/routes/index.ts:260 src/views/preference/Preference.vue:111
+#: src/routes/index.ts:260 src/views/preference/Preference.vue:142
 msgid "Preference"
 msgstr "Настройки"
 
@@ -1674,7 +1703,7 @@ msgstr "Код восстановления"
 msgid "Recovery Code:"
 msgstr "Код восстановления:"
 
-#: src/views/preference/BasicSettings.vue:68
+#: src/views/preference/CertSettings.vue:37
 msgid "Recursive Nameservers"
 msgstr "Рекурсивные DNS"
 
@@ -1739,11 +1768,11 @@ msgstr "Перезагружается"
 msgid "Reloading nginx"
 msgstr "Перезагружается nginx"
 
-#: src/views/preference/AuthSettings.vue:109
+#: src/views/preference/AuthSettings.vue:143
 msgid "Remove"
 msgstr "Удалить"
 
-#: src/views/preference/AuthSettings.vue:48
+#: src/views/preference/AuthSettings.vue:47
 #: src/views/preference/components/Passkey.vue:50
 msgid "Remove successfully"
 msgstr "Удалено успешно"
@@ -1827,7 +1856,19 @@ msgstr "Перезапуск"
 msgid "Restarting"
 msgstr "Перезапускается"
 
-#: src/views/preference/BasicSettings.vue:19
+#: src/views/preference/AuthSettings.vue:81
+msgid "RP Display Name"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:87
+msgid "RP Origins"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:75
+msgid "RPID"
+msgstr ""
+
+#: src/views/preference/BasicSettings.vue:17
 msgid "Run Mode"
 msgstr "Режим работы"
 
@@ -1839,7 +1880,7 @@ msgstr "Выполняется"
 #: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/ConfigEditor.vue:222
 #: src/views/preference/components/Passkey.vue:136
-#: src/views/preference/Preference.vue:151
+#: src/views/preference/Preference.vue:188
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:120
 #: src/views/site/SiteEdit.vue:260 src/views/stream/StreamEdit.vue:252
 msgid "Save"
@@ -1858,7 +1899,7 @@ msgstr "Ошибка сохранения %{msg}"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:122
 #: src/views/certificate/CertificateEditor.vue:46
-#: src/views/preference/Preference.vue:79
+#: src/views/preference/Preference.vue:110
 msgid "Save successfully"
 msgstr "Сохранено успешно"
 
@@ -1904,13 +1945,13 @@ msgstr "Отправлено"
 #: src/views/config/ConfigEditor.vue:108
 #: src/views/environment/BatchUpgrader.vue:59
 #: src/views/environment/Environment.vue:15 src/views/other/Install.vue:68
-#: src/views/preference/AuthSettings.vue:50
+#: src/views/preference/AuthSettings.vue:49
 #: src/views/preference/components/Passkey.vue:26
 #: src/views/preference/components/Passkey.vue:43
 #: src/views/preference/components/Passkey.vue:56
 #: src/views/preference/components/TOTP.vue:45
 #: src/views/preference/components/TOTP.vue:58
-#: src/views/preference/Preference.vue:83 src/views/site/SiteList.vue:88
+#: src/views/preference/Preference.vue:114 src/views/site/SiteList.vue:88
 #: src/views/stream/StreamList.vue:113 src/views/stream/StreamList.vue:81
 #: src/views/system/Upgrade.vue:42
 msgid "Server error"
@@ -1920,10 +1961,6 @@ msgstr "Ошибка сервера"
 msgid "Server Info"
 msgstr "Информация о сервере"
 
-#: src/views/preference/BasicSettings.vue:117
-msgid "Server Name"
-msgstr "Имя сервера"
-
 #: src/views/site/cert/components/ObtainCert.vue:102
 msgid "server_name not found in directives"
 msgstr "server_name не нашел в директивах"
@@ -1932,7 +1969,7 @@ msgstr "server_name не нашел в директивах"
 msgid "server_name parameter is required"
 msgstr "server_name параметр обязателен"
 
-#: src/views/preference/BasicSettings.vue:64
+#: src/views/preference/CertSettings.vue:33
 msgid ""
 "Set the recursive nameservers to override the systems nameservers for the "
 "step of DNS challenge."
@@ -1956,7 +1993,7 @@ msgstr ""
 msgid "Show"
 msgstr "Показать"
 
-#: src/views/other/Login.vue:265
+#: src/views/other/Login.vue:263
 msgid "Sign in with a passkey"
 msgstr ""
 
@@ -1988,7 +2025,7 @@ msgstr "Путь к ключу SSL-сертификата"
 msgid "SSL Certificate Path"
 msgstr "Путь к SSL сертификату"
 
-#: src/views/other/Login.vue:223
+#: src/views/other/Login.vue:221
 msgid "SSO Login"
 msgstr "SSO Вход"
 
@@ -2113,7 +2150,7 @@ msgstr "Цель"
 msgid "Terminal"
 msgstr "Терминал"
 
-#: src/views/preference/BasicSettings.vue:28
+#: src/views/preference/BasicSettings.vue:26
 msgid "Terminal Start Command"
 msgstr "Терминальная команда запуска"
 
@@ -2147,6 +2184,15 @@ msgstr ""
 "Имя модели должно содержать только буквы, юникод, цифры, дефисы, тире и "
 "точки."
 
+#: src/views/preference/BasicSettings.vue:45
+#, fuzzy
+msgid ""
+"The node name should only contain letters, unicode, numbers, hyphens, "
+"dashes, and dots."
+msgstr ""
+"Имя модели должно содержать только буквы, юникод, цифры, дефисы, тире и "
+"точки."
+
 #: src/views/certificate/CertificateEditor.vue:173
 msgid "The path exists, but the file is not a certificate"
 msgstr "Путь существует, но файл не является сертификатом"
@@ -2172,14 +2218,6 @@ msgstr ""
 "избежать потенциальных ошибок, пожалуйста, обновите удаленную версию Nginx "
 "UI до соответствия с локальной версией."
 
-#: src/views/preference/BasicSettings.vue:120
-msgid ""
-"The server name should only contain letters, unicode, numbers, hyphens, "
-"dashes, and dots."
-msgstr ""
-"Имя сервера должно содержать только буквы, юникод, цифры, дефисы, тире и "
-"точки."
-
 #: src/views/site/cert/components/AutoCertStepOne.vue:45
 msgid ""
 "The server_name in the current configuration must be the domain name you "
@@ -2188,8 +2226,8 @@ msgstr ""
 "server_name в текущей конфигурации должен быть доменным именем, для которого "
 "вам нужно получить сертификат, поддержка нескольких доменов."
 
-#: src/views/preference/BasicSettings.vue:38
-#: src/views/preference/BasicSettings.vue:50
+#: src/views/preference/BasicSettings.vue:33
+#: src/views/preference/CertSettings.vue:19
 msgid "The url is invalid"
 msgstr "URL недействителен"
 
@@ -2227,7 +2265,11 @@ msgstr ""
 "Это обновит или переустановит интерфейс Nginx на %{nodeNames} до версии "
 "%{version}."
 
-#: src/views/preference/AuthSettings.vue:67
+#: src/views/preference/AuthSettings.vue:98
+msgid "Throttle"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:118
 #: src/views/preference/components/AddPasskey.vue:71
 #: src/views/preference/LogrotateSettings.vue:11
 msgid "Tips"
@@ -2274,7 +2316,7 @@ msgstr ""
 msgid "Token is not valid"
 msgstr "Токен недействителен"
 
-#: src/views/other/Login.vue:82
+#: src/views/other/Login.vue:80
 msgid "Too many login failed attempts, please try again later"
 msgstr "Слишком много неудачных попыток входа, попробуйте позже"
 
@@ -2294,7 +2336,7 @@ msgstr ""
 msgid "Trash"
 msgstr "Корзина"
 
-#: src/components/TwoFA/use2FAModal.ts:71
+#: src/components/TwoFA/use2FAModal.ts:66
 msgid "Two-factor authentication required"
 msgstr "Требуется двухфакторная аутентификация"
 
@@ -2365,11 +2407,11 @@ msgstr "Использовать код восстановления"
 msgid "User"
 msgstr "Пользователь"
 
-#: src/views/other/Login.vue:85
+#: src/views/other/Login.vue:83
 msgid "User is banned"
 msgstr "Пользователь заблокирован"
 
-#: src/views/other/Login.vue:198 src/views/user/userColumns.tsx:9
+#: src/views/other/Login.vue:196 src/views/user/userColumns.tsx:9
 msgid "Username"
 msgstr "Имя пользователя"
 
@@ -2428,6 +2470,10 @@ msgstr ""
 "Мы удалим конфигурацию HTTPChallenge из этого файла и перезагрузим Nginx. Вы "
 "уверены, что хотите продолжить?"
 
+#: src/views/preference/AuthSettings.vue:71
+msgid "Webauthn"
+msgstr ""
+
 #: src/views/certificate/ACMEUser.vue:78
 msgid ""
 "When Enabled, Nginx UI will automatically re-register users upon startup. "
@@ -2448,8 +2494,8 @@ msgstr "Запись закрытого ключа сертификата на �
 msgid "Writing certificate to disk"
 msgstr "Запись сертификата на диск"
 
-#: src/views/preference/AuthSettings.vue:103
-#: src/views/preference/BasicSettings.vue:100
+#: src/views/preference/AuthSettings.vue:137
+#: src/views/preference/CertSettings.vue:69
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/site/ngx_conf/LocationEditor.vue:89
 msgid "Yes"
@@ -2473,15 +2519,25 @@ msgstr ""
 msgid "Your passkeys"
 msgstr ""
 
+#~ msgid "File not found"
+#~ msgstr "Файл не найден"
+
+#~ msgid "Server Name"
+#~ msgstr "Имя сервера"
+
+#~ msgid ""
+#~ "The server name should only contain letters, unicode, numbers, hyphens, "
+#~ "dashes, and dots."
+#~ msgstr ""
+#~ "Имя сервера должно содержать только буквы, юникод, цифры, дефисы, тире и "
+#~ "точки."
+
 #~ msgid "Enable 2FA"
 #~ msgstr "Включить 2ФА"
 
 #, fuzzy
 #~ msgid "Rename "
 #~ msgstr "Имя пользователя"
-
-#~ msgid "Auto Cert"
-#~ msgstr "Авто Сертификат"
 
 #~ msgid "Certificate has expired"
 #~ msgstr "Срок действия сертификата истек"
