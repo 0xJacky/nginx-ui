@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { KeyOutlined, LockOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { Form, message } from 'ant-design-vue'
-import { useCookies } from '@vueuse/integrations/useCookies'
 import { startAuthentication } from '@simplewebauthn/browser'
 import { useUserStore } from '@/pinia'
 import auth from '@/api/auth'
@@ -60,13 +59,12 @@ const onSubmit = () => {
 
     await auth.login(modelRef.username, modelRef.password, passcode.value, recoveryCode.value).then(async r => {
       const next = (route.query?.next || '').toString() || '/'
-      const cookies = useCookies(['nginx-ui-2fa'])
       switch (r.code) {
         case 200:
           message.success($gettext('Login successful'), 1)
           login(r.token)
+          await nextTick()
           secureSessionId.value = r.secure_session_id
-          cookies.set('secure_session_id', r.secure_session_id, { maxAge: 60 * 3 })
           await router.push(next)
           break
         case 199:
@@ -159,7 +157,7 @@ async function handlePasskeyLogin() {
   passkeyLoginLoading.value = true
   try {
     const begin = await auth.begin_passkey_login()
-    const asseResp = await startAuthentication(begin.options.publicKey)
+    const asseResp = await startAuthentication({ optionsJSON: begin.options.publicKey })
 
     const r = await auth.finish_passkey_login({
       session_id: begin.session_id,
@@ -167,13 +165,10 @@ async function handlePasskeyLogin() {
     })
 
     if (r.token) {
-      const cookies = useCookies(['nginx-ui-2fa'])
       const next = (route.query?.next || '').toString() || '/'
 
       passkeyLogin(asseResp.rawId, r.token)
       secureSessionId.value = r.secure_session_id
-      cookies.set('secure_session_id', r.secure_session_id, { maxAge: 60 * 3 })
-
       await router.push(next)
     }
   }
