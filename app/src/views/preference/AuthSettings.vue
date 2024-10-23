@@ -1,12 +1,12 @@
 <script setup lang="tsx">
-import { message } from 'ant-design-vue'
+import type { BannedIP, Settings } from '@/api/settings'
+import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Ref } from 'vue'
+import setting from '@/api/settings'
+import TOTP from '@/views/preference/components/TOTP.vue'
+import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import PasskeyRegistration from './components/Passkey.vue'
-import type { BannedIP, Settings } from '@/api/settings'
-import setting from '@/api/settings'
-import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import TOTP from '@/views/preference/components/TOTP.vue'
 
 const data: Settings = inject('data') as Settings
 
@@ -19,7 +19,7 @@ const bannedIPColumns = [{
 }, {
   title: $gettext('Banned Until'),
   dataIndex: 'expired_at',
-  customRender: (args: customRender) => {
+  customRender: (args: CustomRenderProps) => {
     return dayjs.unix(args.text).format('YYYY-MM-DD HH:mm:ss')
   },
 }, {

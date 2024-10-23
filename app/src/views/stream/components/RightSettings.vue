@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { Modal, message } from 'ant-design-vue'
-import type { Ref } from 'vue'
+import type { ChatComplicationMessage } from '@/api/openai'
 import type { Stream } from '@/api/stream'
+import type { CheckedType } from '@/types'
+import type { Ref } from 'vue'
 import stream from '@/api/stream'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
 import { formatDateTime } from '@/lib/helper'
-import Deploy from '@/views/stream/components/Deploy.vue'
 import { useSettingsStore } from '@/pinia'
-import type { ChatComplicationMessage } from '@/api/openai'
-import type { CheckedType } from '@/types'
+import Deploy from '@/views/stream/components/Deploy.vue'
+import { message, Modal } from 'ant-design-vue'
 
 const settings = useSettingsStore()
 

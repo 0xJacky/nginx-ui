@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import _ from 'lodash'
-import type { Ref } from 'vue'
-import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import type Curd from '@/api/curd'
 import type { Column } from '@/components/StdDesign/types'
+import type { Ref } from 'vue'
+import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
+import _ from 'lodash'
 
 const props = defineProps<{
   label?: string
   selectedKey: number | number[] | undefined | null
   selectionType: 'radio' | 'checkbox'
   recordValueIndex: string // to index the value of the record
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   api: Curd<any>
   columns: Column[]
   disableSearch?: boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   getParams?: any
   description?: string
   errorMessages?: string
   itemKey?: string // default: id
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   value?: any | any[]
   disabled?: boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   valueApi?: Curd<any>
 }>()
 
@@ -33,7 +33,7 @@ const getParams = computed(() => {
 })
 
 const visible = ref(false)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 const M_values = ref([]) as any
 
 const init = _.debounce(_init, 500, {
@@ -45,7 +45,7 @@ onMounted(() => {
   init()
 })
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 const records = ref([]) as Ref<any[]>
 
 async function _init() {

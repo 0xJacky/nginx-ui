@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import type { CertificateInfo } from '@/api/cert'
+import type { NgxConfig, NgxDirective } from '@/api/ngx'
+import Cert from '@/views/site/cert/Cert.vue'
+import ConfigTemplate from '@/views/site/ngx_conf/config_template/ConfigTemplate.vue'
+import DirectiveEditor from '@/views/site/ngx_conf/directive/DirectiveEditor.vue'
+import LocationEditor from '@/views/site/ngx_conf/LocationEditor.vue'
+import LogEntry from '@/views/site/ngx_conf/LogEntry.vue'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { Modal } from 'ant-design-vue'
-import LogEntry from '@/views/site/ngx_conf/LogEntry.vue'
-import ConfigTemplate from '@/views/site/ngx_conf/config_template/ConfigTemplate.vue'
-import LocationEditor from '@/views/site/ngx_conf/LocationEditor.vue'
-import Cert from '@/views/site/cert/Cert.vue'
-import DirectiveEditor from '@/views/site/ngx_conf/directive/DirectiveEditor.vue'
-import type { NgxConfig, NgxDirective } from '@/api/ngx'
-import type { CertificateInfo } from '@/api/cert'
 
 withDefaults(defineProps<{
   enabled: boolean

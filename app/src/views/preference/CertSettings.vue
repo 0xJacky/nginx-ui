@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Draggable from 'vuedraggable'
-import { DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
 import type { Settings } from '@/api/settings'
+import { DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
+import Draggable from 'vuedraggable'
 
 const data: Settings = inject('data') as Settings
 const errors: Record<string, Record<string, string>> = inject('errors') as Record<string, Record<string, string>>

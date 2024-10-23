@@ -1,7 +1,7 @@
-import { useUserStore } from './moudule/user'
 import { useSettingsStore } from './moudule/settings'
+import { useUserStore } from './moudule/user'
 
 export {
-  useUserStore,
   useSettingsStore,
+  useUserStore,
 }

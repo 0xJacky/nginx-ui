@@ -1,11 +1,11 @@
+import type { NgxDirective, NgxLocation, NgxServer } from '@/api/ngx'
 import Curd from '@/api/curd'
 import http from '@/lib/http'
-import type { NgxDirective, NgxLocation, NgxServer } from '@/api/ngx'
 
 export interface Variable {
   type?: string
   name?: Record<string, string>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   value?: any
   mask?: Record<string, Record<string, string>>
 }

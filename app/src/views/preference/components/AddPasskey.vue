@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { startRegistration } from '@simplewebauthn/browser'
-import { message } from 'ant-design-vue'
 import passkey from '@/api/passkey'
 import { useUserStore } from '@/pinia'
+import { startRegistration } from '@simplewebauthn/browser'
+import { message } from 'ant-design-vue'
 
 const emit = defineEmits(['created'])
 
@@ -28,7 +28,7 @@ async function registerPasskey() {
 
     user.passkeyRawId = attestationResponse.rawId
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   catch (e: any) {
     message.error($gettext(e.message ?? 'Server error'))
   }

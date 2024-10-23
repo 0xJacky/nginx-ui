@@ -1,10 +1,10 @@
 <script setup lang="tsx">
-import { message } from 'ant-design-vue'
 import environment from '@/api/environment'
-import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
-import envColumns from '@/views/environment/envColumns'
 import FooterToolBar from '@/components/FooterToolbar'
+import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import BatchUpgrader from '@/views/environment/BatchUpgrader.vue'
+import envColumns from '@/views/environment/envColumns'
+import { message } from 'ant-design-vue'
 
 const curd = ref()
 function loadFromSettings() {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import user from '@/api/user'
+import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import userColumns from '@/views/user/userColumns'
 </script>
 

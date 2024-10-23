@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { AutoCertOptions, DNSProvider } from '@/api/auto_cert'
 import type { SelectProps } from 'ant-design-vue'
 import type { Ref } from 'vue'
-import type { AutoCertOptions, DNSProvider } from '@/api/auto_cert'
 import auto_cert from '@/api/auto_cert'
 import dns_credential from '@/api/dns_credential'
 
@@ -84,7 +84,7 @@ const options = computed<SelectProps['options']>(() => {
   return list
 })
 
-const filterOption = (input: string, option: { label: string }) => {
+function filterOption(input: string, option: { label: string }) {
   return option.label.toLowerCase().includes(input.toLowerCase())
 }
 </script>

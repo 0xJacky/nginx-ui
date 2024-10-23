@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { $gettext } from '../../../../gettext'
 import type { AutoCertOptions } from '@/api/auto_cert'
-import DNSChallenge from '@/views/site/cert/components/DNSChallenge.vue'
-import ACMEUserSelector from '@/views/certificate/ACMEUserSelector.vue'
 import { PrivateKeyTypeList } from '@/constants'
+import ACMEUserSelector from '@/views/certificate/ACMEUserSelector.vue'
+import DNSChallenge from '@/views/site/cert/components/DNSChallenge.vue'
+import { $gettext } from '../../../../gettext'
 
 const props = defineProps<{
   hideNote?: boolean

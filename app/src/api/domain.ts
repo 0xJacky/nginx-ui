@@ -1,9 +1,9 @@
-import Curd from '@/api/curd'
-import http from '@/lib/http'
-import type { ChatComplicationMessage } from '@/api/openai'
 import type { CertificateInfo } from '@/api/cert'
 import type { NgxConfig } from '@/api/ngx'
+import type { ChatComplicationMessage } from '@/api/openai'
 import type { PrivateKeyType } from '@/constants'
+import Curd from '@/api/curd'
+import http from '@/lib/http'
 
 export interface Site {
   modified_at: string
@@ -26,7 +26,7 @@ export interface AutoCertRequest {
 }
 
 class Domain extends Curd<Site> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   enable(name: string, config?: any) {
     return http.post(`${this.baseUrl}/${name}/enable`, undefined, config)
   }

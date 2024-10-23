@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Form, message, notification } from 'ant-design-vue'
-
 import stream from '@/api/stream'
+
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
-import { useSettingsStore } from '@/pinia'
 import gettext from '@/gettext'
+import { useSettingsStore } from '@/pinia'
+import { Form, message, notification } from 'ant-design-vue'
 
 const props = defineProps<{
   visible: boolean
@@ -79,8 +79,7 @@ function onSubmit() {
             notification.success({
               message: $gettext('Duplicate successfully'),
               description:
-                $gettext('Duplicate %{conf_name} to %{node_name} successfully',
-                  { conf_name: props.name, node_name: node_map[id] }),
+                $gettext('Duplicate %{conf_name} to %{node_name} successfully', { conf_name: props.name, node_name: node_map[id] }),
             })
           }).catch(e => {
             notification.error({

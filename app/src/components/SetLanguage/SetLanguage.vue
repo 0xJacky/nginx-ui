@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import dayjs from 'dayjs'
-import { useSettingsStore } from '@/pinia'
-import gettext from '@/gettext'
 import loadTranslations from '@/api/translations'
+import gettext from '@/gettext'
+import { useSettingsStore } from '@/pinia'
+import dayjs from 'dayjs'
 
 import 'dayjs/locale/fr'
 import 'dayjs/locale/ja'
@@ -29,7 +29,7 @@ const current = computed({
 
 const languageAvailable = gettext.available
 
-const updateTitle = () => {
+function updateTitle() {
   const name = route.meta.name as never as () => string
 
   document.title = `${name()} | Nginx UI`

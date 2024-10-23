@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import settings from '@/api/settings'
+import PageHeader from '@/components/PageHeader/PageHeader.vue'
+import { useSettingsStore } from '@/pinia'
 import _ from 'lodash'
 import { storeToRefs } from 'pinia'
 import FooterLayout from './FooterLayout.vue'
-import SideBar from './SideBar.vue'
 import HeaderLayout from './HeaderLayout.vue'
-import PageHeader from '@/components/PageHeader/PageHeader.vue'
-import { useSettingsStore } from '@/pinia'
-import settings from '@/api/settings'
+import SideBar from './SideBar.vue'
 
 const drawer_visible = ref(false)
 const collapsed = ref(collapse())

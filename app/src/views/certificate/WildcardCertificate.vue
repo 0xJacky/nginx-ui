@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
-import { message } from 'ant-design-vue'
-import ObtainCertLive from '@/views/site/cert/components/ObtainCertLive.vue'
 import type { AutoCertOptions } from '@/api/auto_cert'
+import type { Ref } from 'vue'
 import AutoCertStepOne from '@/views/site/cert/components/AutoCertStepOne.vue'
+import ObtainCertLive from '@/views/site/cert/components/ObtainCertLive.vue'
+import { message } from 'ant-design-vue'
 
 const emit = defineEmits<{
   issued: [void]
@@ -39,12 +39,11 @@ const computedDomain = computed(() => {
   return `*.${domain.value}`
 })
 
-const issueCert = () => {
+function issueCert() {
   step.value++
   modalVisible.value = true
 
-  refObtainCertLive.value.issue_cert(computedDomain.value,
-    [computedDomain.value, domain.value], data.value.key_type)
+  refObtainCertLive.value.issue_cert(computedDomain.value, [computedDomain.value, domain.value], data.value.key_type)
     .then(() => {
       message.success($gettext('Renew successfully'))
       emit('issued')

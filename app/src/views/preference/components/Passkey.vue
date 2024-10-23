@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
-import { DeleteOutlined, EditOutlined, KeyOutlined } from '@ant-design/icons-vue'
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import { formatDateTime } from '@/lib/helper'
 import type { Passkey } from '@/api/passkey'
 import passkey from '@/api/passkey'
 import ReactiveFromNow from '@/components/ReactiveFromNow/ReactiveFromNow.vue'
+import { formatDateTime } from '@/lib/helper'
 import { useUserStore } from '@/pinia'
 import AddPasskey from '@/views/preference/components/AddPasskey.vue'
+import { DeleteOutlined, EditOutlined, KeyOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
 dayjs.extend(relativeTime)
 

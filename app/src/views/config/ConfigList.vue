@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { $gettext } from '../../gettext'
-import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import config from '@/api/config'
-import configColumns from '@/views/config/configColumns'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
-import InspectConfig from '@/views/config/InspectConfig.vue'
+import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
 import Mkdir from '@/views/config/components/Mkdir.vue'
 import Rename from '@/views/config/components/Rename.vue'
+import configColumns from '@/views/config/configColumns'
+import InspectConfig from '@/views/config/InspectConfig.vue'
+import { $gettext } from '../../gettext'
 
 const table = ref()
 const route = useRoute()

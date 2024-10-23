@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { DNSProvider } from '@/api/auto_cert'
 import type { SelectProps } from 'ant-design-vue'
 import type { Ref } from 'vue'
-import type { DNSProvider } from '@/api/auto_cert'
 import auto_cert from '@/api/auto_cert'
 
 const providers = ref([]) as Ref<DNSProvider[]>
@@ -62,7 +62,7 @@ const options = computed<SelectProps['options']>(() => {
   return list
 })
 
-const filterOption = (input: string, option: { label: string }) => {
+function filterOption(input: string, option: { label: string }) {
   return option.label.toLowerCase().includes(input.toLowerCase())
 }
 </script>
@@ -78,6 +78,7 @@ const filterOption = (input: string, option: { label: string }) => {
       />
     </AFormItem>
     <AFormItem>
+      <!-- eslint-disable sonarjs/no-vue-bypass-sanitization -->
       <p v-if="current?.links?.api">
         {{ $gettext('API Document') }}: <a
           :href="current.links.api"
@@ -92,6 +93,7 @@ const filterOption = (input: string, option: { label: string }) => {
           rel="noopener noreferrer"
         >{{ current.links.go_client }}</a>
       </p>
+      <!-- eslint-enable -->
     </AFormItem>
     <template v-if="current?.configuration?.credentials">
       <h4>{{ $gettext('Credentials') }}</h4>

@@ -1,13 +1,13 @@
 <script setup lang="tsx">
-import { Badge, message } from 'ant-design-vue'
-import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
-import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { Column, JSXElements } from '@/components/StdDesign/types'
 import stream from '@/api/stream'
+import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
+import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input } from '@/components/StdDesign/StdDataEntry'
 import InspectConfig from '@/views/config/InspectConfig.vue'
-import type { Column, JSXElements } from '@/components/StdDesign/types'
 import StreamDuplicate from '@/views/stream/components/StreamDuplicate.vue'
+import { Badge, message } from 'ant-design-vue'
 
 const columns: Column[] = [{
   title: () => $gettext('Name'),
@@ -21,15 +21,15 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'enabled',
-  customRender: (args: customRender) => {
+  customRender: (args: CustomRenderProps) => {
     const template: JSXElements = []
     const { text } = args
     if (text === true || text > 0) {
-      template.push(<Badge status="success"/>)
+      template.push(<Badge status="success" />)
       template.push($gettext('Enabled'))
     }
     else {
-      template.push(<Badge status="warning"/>)
+      template.push(<Badge status="warning" />)
       template.push($gettext('Disabled'))
     }
 

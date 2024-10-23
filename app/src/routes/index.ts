@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { useSettingsStore, useUserStore } from '@/pinia'
 
 import {
   BellOutlined,
@@ -17,7 +17,7 @@ import {
 } from '@ant-design/icons-vue'
 import NProgress from 'nprogress'
 
-import { useSettingsStore, useUserStore } from '@/pinia'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 import 'nprogress/nprogress.css'
 

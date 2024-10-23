@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import VueApexCharts from 'vue3-apexcharts'
-
-import { storeToRefs } from 'pinia'
-import { useSettingsStore } from '@/pinia'
 import type { Series } from '@/components/Chart/types'
+
+import { useSettingsStore } from '@/pinia'
+import { storeToRefs } from 'pinia'
+import VueApexCharts from 'vue3-apexcharts'
 
 const props = defineProps<{
   series: Series[] | number[]
@@ -17,7 +17,7 @@ const settings = useSettingsStore()
 
 const { theme } = storeToRefs(settings)
 
-const fontColor = () => {
+function fontColor() {
   return theme.value === 'dark' ? '#fcfcfc' : undefined
 }
 

@@ -1,15 +1,15 @@
 <script setup lang="ts">
+import type { Cert } from '@/api/cert'
 import type { Ref } from 'vue'
-import { message } from 'ant-design-vue'
+import cert from '@/api/cert'
+import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
+import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
+import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 import { AutoCertState } from '@/constants'
+import RenewCert from '@/views/certificate/RenewCert.vue'
 import CertInfo from '@/views/site/cert/CertInfo.vue'
 import AutoCertStepOne from '@/views/site/cert/components/AutoCertStepOne.vue'
-import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
-import type { Cert } from '@/api/cert'
-import cert from '@/api/cert'
-import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
-import RenewCert from '@/views/certificate/RenewCert.vue'
-import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
+import { message } from 'ant-design-vue'
 
 const route = useRoute()
 
@@ -235,10 +235,9 @@ const isManaged = computed(() => {
         :md="12"
       >
         <ACard :title="$gettext('Log')">
-          <pre
-            class="log-container"
-            v-html="log"
-          />
+          <pre class="log-container">
+            {{ log }}
+          </pre>
         </ACard>
       </ACol>
     </ARow>

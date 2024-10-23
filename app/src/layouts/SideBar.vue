@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { ComputedRef, Ref } from 'vue'
-import type { AntdIconType } from '@ant-design/icons-vue/lib/components/AntdIcon'
 import type { IconComponentProps } from '@ant-design/icons-vue/es/components/Icon'
+import type { AntdIconType } from '@ant-design/icons-vue/lib/components/AntdIcon'
 import type { Key } from 'ant-design-vue/es/_util/type'
+import type { ComputedRef, Ref } from 'vue'
+import EnvIndicator from '@/components/EnvIndicator/EnvIndicator.vue'
 import Logo from '@/components/Logo/Logo.vue'
 import { routes } from '@/routes'
-import EnvIndicator from '@/components/EnvIndicator/EnvIndicator.vue'
 
 const route = useRoute()
 
@@ -33,41 +33,43 @@ const sidebars = computed(() => {
   return routes[0].children
 })
 
-interface meta {
+interface Meta {
   icon: AntdIconType
   hiddenInSidebar: boolean
   hideChildren: boolean
   name: () => string
 }
 
-interface sidebar {
+interface Sidebar {
   path: string
   name: string
-  meta: meta
-  children: sidebar[]
+  meta: Meta
+  children: Sidebar[]
 }
 
-const visible: ComputedRef<sidebar[]> = computed(() => {
-  const res: sidebar[] = [];
+const visible: ComputedRef<Sidebar[]> = computed(() => {
+  const res: Sidebar[] = [];
 
   (sidebars.value || []).forEach(s => {
     if (s.meta && ((typeof s.meta.hiddenInSidebar === 'boolean' && s.meta.hiddenInSidebar)
-      || (typeof s.meta.hiddenInSidebar === 'function' && s.meta.hiddenInSidebar())))
+      || (typeof s.meta.hiddenInSidebar === 'function' && s.meta.hiddenInSidebar()))) {
       return
+    }
 
-    const t: sidebar = {
+    const t: Sidebar = {
       path: s.path,
       name: s.name as string,
-      meta: s.meta as unknown as meta,
+      meta: s.meta as unknown as Meta,
       children: [],
     };
 
     (s.children || []).forEach(c => {
       if (c.meta && ((typeof c.meta.hiddenInSidebar === 'boolean' && c.meta.hiddenInSidebar)
-        || (typeof c.meta.hiddenInSidebar === 'function' && c.meta.hiddenInSidebar())))
+        || (typeof c.meta.hiddenInSidebar === 'function' && c.meta.hiddenInSidebar()))) {
         return
+      }
 
-      t.children.push((c as unknown as sidebar))
+      t.children.push((c as unknown as Sidebar))
     })
     res.push(t)
   })

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { Modal, message } from 'ant-design-vue'
+import type { AutoCertOptions } from '@/api/auto_cert'
+import type { CertificateResult } from '@/api/cert'
+import type { NgxConfig, NgxDirective } from '@/api/ngx'
+import type { PrivateKeyType } from '@/constants'
 import type { ComputedRef, Ref } from 'vue'
 import domain from '@/api/domain'
 import AutoCertStepOne from '@/views/site/cert/components/AutoCertStepOne.vue'
-import type { NgxConfig, NgxDirective } from '@/api/ngx'
-import type { AutoCertOptions } from '@/api/auto_cert'
 import ObtainCertLive from '@/views/site/cert/components/ObtainCertLive.vue'
-import type { CertificateResult } from '@/api/cert'
-import type { PrivateKeyType } from '@/constants'
+import { message, Modal } from 'ant-design-vue'
 
 const props = defineProps<{
   configName: string
@@ -45,7 +45,7 @@ const name = computed(() => {
 
 const refObtainCertLive = ref()
 
-const issue_cert = (config_name: string, server_name: string) => {
+function issue_cert(config_name: string, server_name: string) {
   refObtainCertLive.value.issue_cert(config_name, server_name.trim().split(' ')).then(resolveCert)
 }
 
@@ -156,12 +156,13 @@ const can_next = computed(() => {
   if (step.value === 2) {
     return false
   }
-  else {
-    if (data.value.challenge_method === 'http01')
-      return true
-    else if (data.value.challenge_method === 'dns01')
-      return data.value?.code ?? false
+  else if (data.value.challenge_method === 'http01') {
+    return true
   }
+  else if (data.value.challenge_method === 'dns01') {
+    return data.value?.code ?? false
+  }
+  return false
 })
 
 function next() {

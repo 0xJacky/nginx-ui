@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { InfoCircleOutlined } from '@ant-design/icons-vue'
-import { Modal, notification } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import stream from '@/api/stream'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
+import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { Modal, notification } from 'ant-design-vue'
 
 const node_map = reactive({})
 const target = ref([])
@@ -13,8 +13,7 @@ const name = inject('name') as Ref<string>
 const [modal, ContextHolder] = Modal.useModal()
 function deploy() {
   modal.confirm({
-    title: () => $ngettext('Do you want to deploy this file to remote server?',
-      'Do you want to deploy this file to remote servers?', target.value.length),
+    title: () => $ngettext('Do you want to deploy this file to remote server?', 'Do you want to deploy this file to remote servers?', target.value.length),
     mask: false,
     centered: true,
     okText: $gettext('OK'),
@@ -34,16 +33,14 @@ function deploy() {
             notification.success({
               message: $gettext('Deploy successfully'),
               description:
-                $gettext('Deploy %{conf_name} to %{node_name} successfully',
-                  { conf_name: name.value, node_name }),
+                $gettext('Deploy %{conf_name} to %{node_name} successfully', { conf_name: name.value, node_name }),
             })
             if (enabled.value) {
               stream.enable(name.value).then(() => {
                 notification.success({
                   message: $gettext('Enable successfully'),
                   description:
-                    $gettext('Enable %{conf_name} in %{node_name} successfully',
-                      { conf_name: name.value, node_name }),
+                    $gettext('Enable %{conf_name} in %{node_name} successfully', { conf_name: name.value, node_name }),
                 })
               }).catch(e => {
                 notification.error({

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import '@xterm/xterm/css/xterm.css'
-import { Terminal } from '@xterm/xterm'
-import { FitAddon } from '@xterm/addon-fit'
-import _ from 'lodash'
-import ws from '@/lib/websocket'
-import use2FAModal from '@/components/TwoFA/use2FAModal'
 import twoFA from '@/api/2fa'
+import use2FAModal from '@/components/TwoFA/use2FAModal'
+import ws from '@/lib/websocket'
+import { FitAddon } from '@xterm/addon-fit'
+import { Terminal } from '@xterm/xterm'
+import _ from 'lodash'
+import '@xterm/xterm/css/xterm.css'
 
 let term: Terminal | null
 let ping: NodeJS.Timeout
@@ -43,7 +43,7 @@ onMounted(() => {
 
 interface Message {
   Type: number
-  Data: string | null | { Cols: number; Rows: number }
+  Data: string | null | { Cols: number, Rows: number }
 }
 
 const fitAddon = new FitAddon()
@@ -107,7 +107,6 @@ onUnmounted(() => {
   term?.dispose()
   websocket.value?.close()
 })
-
 </script>
 
 <template>

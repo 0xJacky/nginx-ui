@@ -1,28 +1,28 @@
 <script setup lang="ts" generic="T=any">
+import type { Pagination } from '@/api/curd'
+import type Curd from '@/api/curd'
+import type { Column } from '@/components/StdDesign/types'
 import type { TableProps } from 'ant-design-vue'
-import { message } from 'ant-design-vue'
-import { HolderOutlined } from '@ant-design/icons-vue'
-import type { ComputedRef, Ref } from 'vue'
-import type { SorterResult, TablePaginationConfig } from 'ant-design-vue/lib/table/interface'
-import type { FilterValue } from 'ant-design-vue/es/table/interface'
 import type { Key } from 'ant-design-vue/es/_util/type'
+import type { FilterValue } from 'ant-design-vue/es/table/interface'
+import type { SorterResult, TablePaginationConfig } from 'ant-design-vue/lib/table/interface'
+import type { ComputedRef, Ref } from 'vue'
 import type { RouteParams } from 'vue-router'
+import useSortable from '@/components/StdDesign/StdDataDisplay/methods/sortable'
+import StdDataEntry from '@/components/StdDesign/StdDataEntry'
+import { HolderOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
 import _ from 'lodash'
 import StdPagination from './StdPagination.vue'
-import StdDataEntry from '@/components/StdDesign/StdDataEntry'
-import type { Pagination } from '@/api/curd'
-import type { Column } from '@/components/StdDesign/types'
-import useSortable from '@/components/StdDesign/StdDataDisplay/methods/sortable'
-import type Curd from '@/api/curd'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 export interface StdTableProps<T = any> {
   title?: string
   mode?: string
   rowKey?: string
   api: Curd<T>
   columns: Column[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   getParams?: Record<string, any>
   size?: string
   disableQueryParams?: boolean
@@ -30,7 +30,7 @@ export interface StdTableProps<T = any> {
   pithy?: boolean
   exportExcel?: boolean
   exportMaterial?: boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   overwriteParams?: Record<string, any>
   disableView?: boolean
   disableModify?: boolean
@@ -40,7 +40,7 @@ export interface StdTableProps<T = any> {
   disablePagination?: boolean
   sortableMoveHook?: (oldRow: number[], newRow: number[]) => boolean
   scrollX?: string | number
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   getCheckboxProps?: (record: any) => any
 }
 
@@ -71,10 +71,10 @@ watch(dataSource, () => {
   expandKeysList.value = res
 })
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 const rowsKeyIndexMap: Ref<Record<number, any>> = ref({})
 const loading = ref(true)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 const selectedRecords: Ref<Record<any, any>> = ref({})
 
 // This can be useful if there are more than one StdTable in the same page.
@@ -93,12 +93,12 @@ const params = reactive({
   ...props.getParams,
 })
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 const selectedRowKeys = defineModel<any[]>('selectedRowKeys', {
   default: () => [],
 })
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 const selectedRows = defineModel<any[]>('selectedRows', {
   type: Array,
   default: () => [],
@@ -213,10 +213,10 @@ function recover(id: number | string) {
   })
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 function buildIndexMap(data: any, level: number = 0, index: number = 0, total: number[] = []) {
   if (data && data.length > 0) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line ts/no-explicit-any
     data.forEach((v: any) => {
       v.level = level
 
@@ -253,7 +253,7 @@ async function _get_list(page_num = null, page_size = 20) {
   })
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 function onTableChange(_pagination: TablePaginationConfig, filters: Record<string, FilterValue>, sorter: SorterResult | SorterResult<any>[]) {
   if (sorter) {
     sorter = sorter as SorterResult
@@ -286,7 +286,7 @@ function expandedTable(keys: Key[]) {
   expandKeysList.value = keys
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any,sonarjs/cognitive-complexity
+// eslint-disable-next-line ts/no-explicit-any
 async function onSelect(record: any, selected: boolean, _selectedRows: any[]) {
   if (props.selectionType === 'checkbox' || props.exportExcel) {
     if (selected) {
@@ -300,13 +300,13 @@ async function onSelect(record: any, selected: boolean, _selectedRows: any[]) {
       })
     }
     else {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line ts/no-explicit-any
       selectedRowKeys.value = selectedRowKeys.value.filter((v: any) => v !== record[props.rowKey])
       delete selectedRecords.value[record[props.rowKey]]
     }
 
     await nextTick(async () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line ts/no-explicit-any
       const filteredRows: any[] = []
 
       selectedRowKeys.value.forEach(v => {
@@ -325,10 +325,10 @@ async function onSelect(record: any, selected: boolean, _selectedRows: any[]) {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 async function onSelectAll(selected: boolean, _selectedRows: any[], changeRows: any[]) {
   // console.log(selected, selectedRows, changeRows)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   changeRows.forEach((v: any) => {
     if (v) {
       if (selected) {
@@ -350,7 +350,7 @@ async function onSelectAll(selected: boolean, _selectedRows: any[], changeRows: 
   // console.log(selectedRowKeysBuffer.value, selectedRecords.value)
 
   await nextTick(async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line ts/no-explicit-any
     const filteredRows: any[] = []
 
     selectedRowKeys.value.forEach(v => {
@@ -362,7 +362,7 @@ async function onSelectAll(selected: boolean, _selectedRows: any[], changeRows: 
 
 const router = useRouter()
 
-const resetSearch = async () => {
+async function resetSearch() {
   Object.keys(params).forEach(v => {
     delete params[v]
   })
@@ -460,7 +460,6 @@ const paginationSize = computed(() => {
   else
     return 'default'
 })
-
 </script>
 
 <template>

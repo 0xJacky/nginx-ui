@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import install from '@/api/install'
+import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
+import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
+import { DatabaseOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons-vue'
+
 import { Form, message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
-import { DatabaseOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons-vue'
-import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
-
-import install from '@/api/install'
-import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
 
 const thisYear = new Date().getFullYear()
 const loading = ref(false)
@@ -47,16 +47,14 @@ const rulesRef = reactive({
   database: [
     {
       message: () =>
-        $gettext('The filename cannot contain the following characters: %{c}',
-          { c: '& &quot; ? < > # {} % ~ / \\' },
-        ),
+        $gettext('The filename cannot contain the following characters: %{c}', { c: '& &quot; ? < > # {} % ~ / \\' }),
     },
   ],
 })
 
 const { validate, validateInfos } = Form.useForm(modelRef, rulesRef)
 
-const onSubmit = () => {
+function onSubmit() {
   validate().then(() => {
     // modelRef
     loading.value = true

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import type { Environment } from '@/api/environment'
+import type { Ref } from 'vue'
 import environment from '@/api/environment'
 
 const props = defineProps<{

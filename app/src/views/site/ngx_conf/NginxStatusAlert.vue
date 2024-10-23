@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useGlobalStore } from '@/pinia/moudule/global'
 import { NginxStatus } from '@/constants'
+import { useGlobalStore } from '@/pinia/moudule/global'
 
 const global = useGlobalStore()
 const { nginxStatus: status } = storeToRefs(global)

@@ -1,4 +1,4 @@
-import type {Usage} from '@/api/analytic'
+import type { Usage } from '@/api/analytic'
 
 export interface Series {
   name: string

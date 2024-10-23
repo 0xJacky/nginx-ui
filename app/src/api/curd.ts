@@ -34,27 +34,27 @@ class Curd<T> {
     this.plural = plural ?? `${this.baseUrl}s`
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   _get_list(params: any = null): Promise<GetListResponse<T>> {
     return http.get(this.plural, { params })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   _get(id: any = null, params: any = {}): Promise<T> {
     return http.get(this.baseUrl + (id ? `/${id}` : ''), { params })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  _save(id: any = null, data: any, config: any = undefined): Promise<T> {
+  // eslint-disable-next-line ts/no-explicit-any
+  _save(id: any = null, data: any = undefined, config: any = undefined): Promise<T> {
     return http.post(this.baseUrl + (id ? `/${id}` : ''), data, config)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   _destroy(id: any = null, params: any = {}) {
     return http.delete(`${this.baseUrl}/${id}`, { params })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   _recover(id: any = null) {
     return http.patch(`${this.baseUrl}/${id}`)
   }

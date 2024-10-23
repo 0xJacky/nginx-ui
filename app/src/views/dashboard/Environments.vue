@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import Icon, { LinkOutlined, SendOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
+import type { Node } from '@/api/environment'
 import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { Ref } from 'vue'
-import { useSettingsStore } from '@/pinia'
-import type { Node } from '@/api/environment'
+import analytic from '@/api/analytic'
 import environment from '@/api/environment'
 import logo from '@/assets/img/logo.png'
 import pulse from '@/assets/svg/pulse.svg?component'
 import { formatDateTime } from '@/lib/helper'
-import NodeAnalyticItem from '@/views/dashboard/components/NodeAnalyticItem.vue'
-import analytic from '@/api/analytic'
+import { useSettingsStore } from '@/pinia'
 import { version } from '@/version.json'
+import NodeAnalyticItem from '@/views/dashboard/components/NodeAnalyticItem.vue'
+import Icon, { LinkOutlined, SendOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
 
 const data = ref([]) as Ref<Node[]>
 

@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
-import type { Ref } from 'vue'
-import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
-import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
-
-import NgxConfigEditor from '@/views/site/ngx_conf/NgxConfigEditor.vue'
 import type { NgxConfig } from '@/api/ngx'
-import ngx from '@/api/ngx'
-import config from '@/api/config'
-import RightSettings from '@/views/stream/components/RightSettings.vue'
 import type { ChatComplicationMessage } from '@/api/openai'
 import type { Stream } from '@/api/stream'
-import stream from '@/api/stream'
 import type { CheckedType } from '@/types'
+
+import type { Ref } from 'vue'
+import config from '@/api/config'
+import ngx from '@/api/ngx'
+import stream from '@/api/stream'
+import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
+import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
+import NgxConfigEditor from '@/views/site/ngx_conf/NgxConfigEditor.vue'
+import RightSettings from '@/views/stream/components/RightSettings.vue'
+import { message } from 'ant-design-vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -81,7 +81,7 @@ function init() {
   }
 }
 
-function handle_parse_error(e: { error?: string; message: string }) {
+function handle_parse_error(e: { error?: string, message: string }) {
   console.error(e)
   parse_error_status.value = true
   parse_error_message.value = e.message
@@ -110,14 +110,14 @@ async function build_config() {
   })
 }
 
-const save = async () => {
+async function save() {
   saving.value = true
 
   if (!advance_mode.value) {
     try {
       await build_config()
     }
-    catch (e) {
+    catch {
       saving.value = false
       message.error($gettext('Failed to save, syntax error(s) was detected in the configuration.'))
 

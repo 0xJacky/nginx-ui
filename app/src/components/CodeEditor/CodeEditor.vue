@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import ace from 'ace-builds'
+import extSearchboxUrl from 'ace-builds/src-noconflict/ext-searchbox?url'
 import { VAceEditor } from 'vue3-ace-editor'
 import 'ace-builds/src-noconflict/mode-nginx'
-import ace from 'ace-builds'
 import 'ace-builds/src-noconflict/theme-monokai'
-import extSearchboxUrl from 'ace-builds/src-noconflict/ext-searchbox?url'
 
 const props = defineProps<{
   content?: string

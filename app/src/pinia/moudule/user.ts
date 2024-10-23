@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
-import { useCookies } from '@vueuse/integrations/useCookies'
 import type { CookieChangeOptions } from 'universal-cookie'
+import { useCookies } from '@vueuse/integrations/useCookies'
+import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', () => {
   const cookies = useCookies(['nginx-ui'])

@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import type { Ref } from 'vue'
+import type { NgxConfig } from '@/api/ngx'
 import type { Template } from '@/api/template'
+import type { Ref } from 'vue'
 import template from '@/api/template'
-import { useSettingsStore } from '@/pinia'
+import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 
+import { useSettingsStore } from '@/pinia'
+import TemplateForm from '@/views/site/ngx_conf/config_template/TemplateForm.vue'
 import DirectiveEditor from '@/views/site/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/site/ngx_conf/LocationEditor.vue'
-import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
-import TemplateForm from '@/views/site/ngx_conf/config_template/TemplateForm.vue'
-import type { NgxConfig } from '@/api/ngx'
+import { storeToRefs } from 'pinia'
 
 const props = defineProps<{
   currentServerIndex: number

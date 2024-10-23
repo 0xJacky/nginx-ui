@@ -1,9 +1,9 @@
-import { h } from 'vue'
-import { Badge, Tag } from 'ant-design-vue'
+import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column, JSXElements } from '@/components/StdDesign/types'
-import { input, switcher } from '@/components/StdDesign/StdDataEntry'
-import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import { input, switcher } from '@/components/StdDesign/StdDataEntry'
+import { Badge, Tag } from 'ant-design-vue'
+import { h } from 'vue'
 
 const columns: Column[] = [{
   title: () => $gettext('Name'),
@@ -14,8 +14,7 @@ const columns: Column[] = [{
     type: input,
   },
   search: true,
-},
-{
+}, {
   title: () => $gettext('URL'),
   dataIndex: 'url',
   sorter: true,
@@ -26,13 +25,11 @@ const columns: Column[] = [{
       placeholder: () => 'https://10.0.0.1:9000',
     },
   },
-},
-{
+}, {
   title: () => $gettext('Version'),
   dataIndex: 'version',
   pithy: true,
-},
-{
+}, {
   title: () => 'NodeSecret',
   dataIndex: 'token',
   sorter: true,
@@ -77,21 +74,21 @@ const columns: Column[] = [{
 {
   title: () => $gettext('Status'),
   dataIndex: 'status',
-  customRender: (args: customRender) => {
+  customRender: (args: CustomRenderProps) => {
     const template: JSXElements = []
     const { text } = args
     if (args.record.enabled) {
       if (text === true || text > 0) {
-        template.push(<Badge status="success"/>)
+        template.push(<Badge status="success" />)
         template.push($gettext('Online'))
       }
       else {
-        template.push(<Badge status="error"/>)
+        template.push(<Badge status="error" />)
         template.push($gettext('Offline'))
       }
     }
     else {
-      template.push(<Badge status="default"/>)
+      template.push(<Badge status="default" />)
       template.push($gettext('Disabled'))
     }
 
@@ -99,11 +96,10 @@ const columns: Column[] = [{
   },
   sorter: true,
   pithy: true,
-},
-{
+}, {
   title: () => $gettext('Enabled'),
   dataIndex: 'enabled',
-  customRender: (args: customRender) => {
+  customRender: (args: CustomRenderProps) => {
     const template: JSXElements = []
     const { text } = args
     if (text === true || text > 0)
@@ -119,15 +115,13 @@ const columns: Column[] = [{
   },
   sorter: true,
   pithy: true,
-},
-{
+}, {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
   customRender: datetime,
   sorter: true,
   pithy: true,
-},
-{
+}, {
   title: () => $gettext('Action'),
   dataIndex: 'action',
 }]

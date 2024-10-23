@@ -13,7 +13,7 @@ function bytesToSize(bytes: number) {
 
   return `${(bytes / k ** i).toFixed(2)} ${sizes[i]}`
 }
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 function downloadCsv(header: any, data: any[], fileName: string) {
   if (!header || !Array.isArray(header) || !Array.isArray(data) || !header.length)
     return
@@ -25,8 +25,8 @@ function downloadCsv(header: any, data: any[], fileName: string) {
   csvContent += `${_header}\n`
   data.forEach((item, index) => {
     let dataString = ''
-    for (let i = 0; i < keys.length; i++)
-      dataString += `${item[keys[i]]},`
+    for (const element of keys)
+      dataString += `${item[element]},`
 
     csvContent += index < data.length ? dataString.replace(/,$/, '\n') : dataString.replace(/,$/, '')
   })
@@ -39,15 +39,16 @@ function downloadCsv(header: any, data: any[], fileName: string) {
   window.URL.revokeObjectURL(csvContent)
 }
 
-const urlJoin = (...args: string[]) =>
-  args
+function urlJoin(...args: string[]) {
+  return args
     .join('/')
-    .replace(/[\/]+/g, '/')
+    .replace(/\/+/g, '/')
     .replace(/^(.+):\//, '$1://')
     .replace(/^file:/, 'file:/')
     .replace(/\/(\?|&|#[^!])/g, '$1')
     .replace(/\?/g, '&')
     .replace('&', '?')
+}
 
 function fromNow(t: string) {
   dayjs.extend(relativeTime)
@@ -66,8 +67,8 @@ function formatDateTime(t: string) {
 export {
   bytesToSize,
   downloadCsv,
-  urlJoin,
-  fromNow,
   formatDate,
   formatDateTime,
+  fromNow,
+  urlJoin,
 }

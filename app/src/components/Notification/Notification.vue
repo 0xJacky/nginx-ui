@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { BellOutlined, CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, InfoCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
-import type { Ref } from 'vue'
-import { message } from 'ant-design-vue'
-import notification from '@/api/notification'
 import type { Notification } from '@/api/notification'
+import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { Ref } from 'vue'
+import notification from '@/api/notification'
+import { detailRender } from '@/components/Notification/detailRender'
 import { NotificationTypeT } from '@/constants'
 import { useUserStore } from '@/pinia'
-import { detailRender } from '@/components/Notification/detailRender'
-import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import { BellOutlined, CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, InfoCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
 
 const loading = ref(false)
 
@@ -112,7 +112,7 @@ function viewAll() {
               </template>
               <AListItemMeta
                 :title="$gettext(item.title)"
-                :description="detailRender({ text: item.details, record: item } as customRender)"
+                :description="detailRender({ text: item.details, record: item } as CustomRenderProps)"
               >
                 <template #avatar>
                   <div>

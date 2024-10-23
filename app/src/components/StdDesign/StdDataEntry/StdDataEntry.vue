@@ -1,13 +1,13 @@
 <script setup lang="tsx">
-import { Form } from 'ant-design-vue'
-import type { Ref } from 'vue'
 import type { Column, JSXElements, StdDesignEdit } from '@/components/StdDesign/types'
-import StdFormItem from '@/components/StdDesign/StdDataEntry/StdFormItem.vue'
+import type { Ref } from 'vue'
 import { labelRender } from '@/components/StdDesign/StdDataEntry'
+import StdFormItem from '@/components/StdDesign/StdDataEntry/StdFormItem.vue'
+import { Form } from 'ant-design-vue'
 
 const props = defineProps<{
   dataList: Column[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   dataSource: Record<string, any>
   errors?: Record<string, string>
   type?: 'search' | 'edit'
@@ -15,7 +15,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   'update:dataSource': [data: Record<string, any>]
 }>()
 
@@ -95,7 +95,7 @@ function Render() {
   })
 
   if (slots.action)
-    template.push(<div class={'std-data-entry-action'}>{slots.action()}</div>)
+    template.push(<div class="std-data-entry-action">{slots.action()}</div>)
 
   return <Form ref={formRef} model={dataSource.value} layout={props.layout || 'vertical'}>{template}</Form>
 }

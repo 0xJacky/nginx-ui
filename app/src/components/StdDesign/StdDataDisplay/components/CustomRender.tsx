@@ -1,7 +1,7 @@
+import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import _ from 'lodash'
-import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 
-export function CustomRender(props: customRender) {
+export function CustomRender(props: CustomRenderProps) {
   return props.column.customRender
     ? props.column.customRender(props)
     : _.get(props.record, props.column.dataIndex!)

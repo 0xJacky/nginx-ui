@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
+import type { NgxConfig } from '@/api/ngx'
+import domain from '@/api/domain'
+import ngx from '@/api/ngx'
 import DirectiveEditor from '@/views/site/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/site/ngx_conf/LocationEditor.vue'
 import NgxConfigEditor from '@/views/site/ngx_conf/NgxConfigEditor.vue'
-import domain from '@/api/domain'
-import type { NgxConfig } from '@/api/ngx'
-import ngx from '@/api/ngx'
+import { message } from 'ant-design-vue'
 
 const ngx_config: NgxConfig = reactive({
   name: '',

@@ -1,4 +1,4 @@
-import {LocationQueryRaw} from "vue-router";
+import type { LocationQueryRaw } from 'vue-router'
 
 export interface Bread {
   name: string
