@@ -1,4 +1,3 @@
-version: '3'
 services:
   nginx-demo-1:
     image: uozi/nginx-ui-demo:latest
@@ -17,5 +16,9 @@ services:
       - NGINX_UI_NODE_DEMO=true
     networks:
       - nginx-ui-network
+
 networks:
   nginx-ui-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_ip_masquerade: 'false'
