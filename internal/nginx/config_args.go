@@ -2,8 +2,8 @@ package nginx
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/uozi-tech/cosy/logger"
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/uozi-tech/cosy/logger"
 	"os/exec"
 	"path/filepath"
 	"regexp"

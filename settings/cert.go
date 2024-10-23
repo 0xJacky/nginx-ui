@@ -5,7 +5,7 @@ import "github.com/go-acme/lego/v4/lego"
 type Cert struct {
 	Email                string   `json:"email" protected:"true"`
 	CADir                string   `json:"ca_dir" binding:"omitempty,url"`
-	RenewalInterval      int      `json:"cert_renewal_interval" binding:"min=7,max=21"`
+	RenewalInterval      int      `json:"renewal_interval" binding:"min=7,max=21"`
 	RecursiveNameservers []string `json:"recursive_nameservers" binding:"omitempty,dive,hostname_port"`
 	HTTPChallengePort    string   `json:"http_challenge_port"`
 }

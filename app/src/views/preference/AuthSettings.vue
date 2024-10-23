@@ -3,10 +3,9 @@ import { message } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import dayjs from 'dayjs'
 import PasskeyRegistration from './components/Passkey.vue'
-import type { BannedIP } from '@/api/settings'
+import type { BannedIP, Settings } from '@/api/settings'
 import setting from '@/api/settings'
 import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { Settings } from '@/views/preference/typedef'
 import TOTP from '@/views/preference/components/TOTP.vue'
 
 const data: Settings = inject('data') as Settings
@@ -62,13 +61,41 @@ function removeBannedIP(ip: string) {
       <h2>
         {{ $gettext('Authentication Settings') }}
       </h2>
-      <AAlert
+      <div
+        v-if="data.webauthn.rpid
+          && data.webauthn.rp_display_name
+          && data.webauthn.rp_origins?.length > 0"
         class="mb-4"
-        :message="$gettext('Tips')"
-        :description="$gettext('If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes,'
-          + ' the ip will be banned for a period of time.')"
-        type="info"
-      />
+      >
+        <h3>
+          {{ $gettext('Webauthn') }}
+        </h3>
+        <div class="mb-4">
+          <h4>
+            {{ $gettext('RPID') }}
+          </h4>
+          <p>{{ data.webauthn.rpid }}</p>
+        </div>
+        <div class="mb-4">
+          <h4>
+            {{ $gettext('RP Display Name') }}
+          </h4>
+          <p>{{ data.webauthn.rp_display_name }}</p>
+        </div>
+        <div>
+          <h4>
+            {{ $gettext('RP Origins') }}
+          </h4>
+          <div
+            v-for="origin in data.webauthn.rp_origins"
+            :key="origin"
+            class="mb-4"
+          >
+            {{ origin }}
+          </div>
+        </div>
+      </div>
+      <h3>{{ $gettext('Throttle') }}</h3>
       <AForm
         layout="horizontal"
         style="width:90%;max-width: 500px"
@@ -86,7 +113,14 @@ function removeBannedIP(ip: string) {
           />
         </AFormItem>
       </AForm>
-      <h3>
+      <AAlert
+        class="mb-6"
+        :message="$gettext('Tips')"
+        :description="$gettext('If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes,'
+          + ' the ip will be banned for a period of time.')"
+        type="info"
+      />
+      <h3 class="mb-4">
         {{ $gettext('Banned IPs') }}
       </h3>
       <div class="mb-6">

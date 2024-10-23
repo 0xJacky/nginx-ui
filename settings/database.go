@@ -1,7 +1,7 @@
 package settings
 
 type Database struct {
-	Name string
+	Name string `json:"name"`
 }
 
 var DatabaseSettings = &Database{

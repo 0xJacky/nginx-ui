@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import Draggable from 'vuedraggable'
-import { DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
-import type { Settings } from '@/views/preference/typedef'
+import type { Settings } from '@/api/settings'
 import SensitiveString from '@/components/SensitiveString/SensitiveString.vue'
 
 const data: Settings = inject('data') as Settings
@@ -11,116 +9,43 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
 <template>
   <AForm layout="vertical">
     <AFormItem :label="$gettext('HTTP Host')">
-      <p>{{ data.server.http_host }}</p>
+      <p>{{ data.server.host }}</p>
     </AFormItem>
     <AFormItem :label="$gettext('HTTP Port')">
-      <p>{{ data.server.http_port }}</p>
+      <p>{{ data.server.port }}</p>
     </AFormItem>
     <AFormItem :label="$gettext('Run Mode')">
       <p>{{ data.server.run_mode }}</p>
     </AFormItem>
     <AFormItem :label="$gettext('Jwt Secret')">
-      <SensitiveString :value="data.server.jwt_secret" />
+      <SensitiveString :value="data.app.jwt_secret" />
     </AFormItem>
     <AFormItem :label="$gettext('Node Secret')">
-      <SensitiveString :value="data.server.node_secret" />
+      <SensitiveString :value="data.node.secret" />
     </AFormItem>
     <AFormItem :label="$gettext('Terminal Start Command')">
-      <p>{{ data.server.start_cmd }}</p>
-    </AFormItem>
-    <AFormItem :label="$gettext('HTTP Challenge Port')">
-      <AInputNumber v-model:value="data.server.http_challenge_port" />
+      <p>{{ data.terminal.start_cmd }}</p>
     </AFormItem>
     <AFormItem
       :label="$gettext('Github Proxy')"
-      :validate-status="errors?.server?.github_proxy ? 'error' : ''"
-      :help="errors?.server?.github_proxy === 'url'
+      :validate-status="errors?.http?.github_proxy ? 'error' : ''"
+      :help="errors?.http?.github_proxy === 'url'
         ? $gettext('The url is invalid')
         : ''"
     >
       <AInput
-        v-model:value="data.server.github_proxy"
+        v-model:value="data.http.github_proxy"
         :placeholder="$gettext('For Chinese user: https://mirror.ghproxy.com/')"
       />
     </AFormItem>
     <AFormItem
-      :label="$gettext('CADir')"
-      :validate-status="errors?.server?.ca_dir ? 'error' : ''"
-      :help="errors?.server?.ca_dir === 'url'
-        ? $gettext('The url is invalid')
-        : ''"
+      :label="$gettext('Node name')"
+      :validate-status="errors?.node?.name ? 'error' : ''"
+      :help="errors?.node?.name.includes('safety_text')
+        ? $gettext('The node name should only contain letters, unicode, numbers, hyphens, dashes, and dots.')
+        : $gettext('Customize the name of local node to be displayed in the environment indicator.')"
     >
-      <AInput v-model:value="data.server.ca_dir" />
-    </AFormItem>
-    <AFormItem :label="$gettext('Certificate Renewal Interval')">
-      <AInputNumber
-        v-model:value="data.server.cert_renewal_interval"
-        :min="7"
-        :max="21"
-        :addon-after="$gettext('Days')"
-      />
-    </AFormItem>
-    <AFormItem
-      :help="$gettext('Set the recursive nameservers to override the systems nameservers '
-        + 'for the step of DNS challenge.')"
-    >
-      <template #label>
-        {{ $gettext('Recursive Nameservers') }}
-        <AButton
-          type="link"
-          @click="data.server.recursive_nameservers.push('')"
-        >
-          {{ $gettext('Add') }}
-        </AButton>
-      </template>
-
-      <Draggable
-        :list="data.server.recursive_nameservers"
-        item-key="name"
-        class="list-group"
-        ghost-class="ghost"
-        handle=".anticon-holder"
-      >
-        <template #item="{ index }">
-          <ARow>
-            <ACol :span="2">
-              <HolderOutlined class="p-2" />
-            </ACol>
-            <ACol :span="20">
-              <AInput
-                v-model:value="data.server.recursive_nameservers[index]"
-                :status="errors?.server?.recursive_nameservers?.[index] ? 'error' : undefined"
-                placeholder="8.8.8.8:53"
-                class="mb-4"
-              />
-            </ACol>
-            <ACol :span="2">
-              <APopconfirm
-                :title="$gettext('Are you sure you want to remove this item?')"
-                :ok-text="$gettext('Yes')"
-                :cancel-text="$gettext('No')"
-                @confirm="data.server.recursive_nameservers.splice(index, 1)"
-              >
-                <AButton
-                  type="link"
-                  danger
-                >
-                  <DeleteOutlined />
-                </AButton>
-              </APopconfirm>
-            </ACol>
-          </ARow>
-        </template>
-      </Draggable>
-    </AFormItem>
-    <AFormItem
-      :label="$gettext('Server Name')"
-      :validate-status="errors?.server?.name ? 'error' : ''"
-      :help="errors?.server?.name.includes('safety_text')
-        ? $gettext('The server name should only contain letters, unicode, numbers, hyphens, dashes, and dots.')
-        : $gettext('Customize the name of local server to be displayed in the environment indicator.')"
-    >
-      <AInput v-model:value="data.server.name" />
+      <AInput v-model:value="data.node.name" />
     </AFormItem>
   </AForm>
 </template>

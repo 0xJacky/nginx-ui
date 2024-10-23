@@ -7,35 +7,68 @@ import settings from '@/api/settings'
 import BasicSettings from '@/views/preference/BasicSettings.vue'
 import OpenAISettings from '@/views/preference/OpenAISettings.vue'
 import NginxSettings from '@/views/preference/NginxSettings.vue'
-import type { Settings } from '@/views/preference/typedef'
+import type { Settings } from '@/api/settings'
 import LogrotateSettings from '@/views/preference/LogrotateSettings.vue'
 import { useSettingsStore } from '@/pinia'
 import AuthSettings from '@/views/preference/AuthSettings.vue'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
+import CertSettings from '@/views/preference/CertSettings.vue'
 
 const data = ref<Settings>({
-  server: {
-    http_host: '0.0.0.0',
-    http_port: '9000',
-    run_mode: 'debug',
+  app: {
+    page_size: 10,
     jwt_secret: '',
-    start_cmd: '',
-    email: '',
-    http_challenge_port: '9180',
-    github_proxy: '',
-    ca_dir: '',
-    node_secret: '',
-    cert_renewal_interval: 7,
-    recursive_nameservers: [],
+  },
+  server: {
+    host: '0.0.0.0',
+    port: 9000,
+    run_mode: 'debug',
+  },
+  database: {
     name: '',
+  },
+  auth: {
+    ip_white_list: [],
+    ban_threshold_minutes: 10,
+    max_attempts: 10,
+  },
+  casdoor: {
+    endpoint: '',
+    client_id: '',
+    client_secret: '',
+    certificate_path: '',
+    organization: '',
+    application: '',
+    redirect_uri: '',
+  },
+  cert: {
+    email: '',
+    ca_dir: '',
+    renewal_interval: 7,
+    recursive_nameservers: [],
+    http_challenge_port: '9180',
+  },
+  http: {
+    github_proxy: '',
+    insecure_skip_verify: false,
+  },
+  logrotate: {
+    enabled: false,
+    cmd: '',
+    interval: 1440,
   },
   nginx: {
     access_log_path: '',
     error_log_path: '',
     config_dir: '',
+    log_dir_white_list: [],
     pid_path: '',
     reload_cmd: '',
     restart_cmd: '',
+  },
+  node: {
+    name: '',
+    secret: '',
   },
   openai: {
     model: '',
@@ -43,19 +76,17 @@ const data = ref<Settings>({
     proxy: '',
     token: '',
   },
-  logrotate: {
-    enabled: false,
-    cmd: '',
-    interval: 1440,
+  terminal: {
+    start_cmd: '',
   },
-  auth: {
-    ip_white_list: [],
-    ban_threshold_minutes: 10,
-    max_attempts: 10,
+  webauthn: {
+    rp_display_name: '',
+    rpid: '',
+    rp_origins: [],
   },
 })
 
-settings.get<Settings>().then(r => {
+settings.get().then(r => {
   data.value = r
 })
 
@@ -66,7 +97,7 @@ const refAuthSettings = ref()
 
 async function save() {
   // fix type
-  data.value.server.http_challenge_port = data.value.server.http_challenge_port.toString()
+  data.value.cert.http_challenge_port = data.value.cert.http_challenge_port.toString()
 
   const otpModal = use2FAModal()
 
@@ -122,6 +153,12 @@ onMounted(() => {
           :tab="$gettext('Auth')"
         >
           <AuthSettings ref="refAuthSettings" />
+        </ATabPane>
+        <ATabPane
+          key="cert"
+          :tab="$gettext('Cert')"
+        >
+          <CertSettings />
         </ATabPane>
         <ATabPane
           key="nginx"
