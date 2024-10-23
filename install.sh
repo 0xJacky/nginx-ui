@@ -154,7 +154,7 @@ identify_the_operating_system_and_architecture() {
             MACHINE='arm64-v8a'
             ;;
         *)
-            echo -e "${FontRed}error: The architecture is not supported.${FontSuffix}"
+            echo -e "${FontRed}error: The architecture is not supported by this script.${FontSuffix}"
             exit 1
             ;;
         esac
@@ -169,7 +169,8 @@ identify_the_operating_system_and_architecture() {
         elif [[ -d /run/systemd/system ]] || grep -q systemd <(ls -l /sbin/init); then
             true
         else
-            echo -e "${FontRed}error: Only Linux distributions using systemd are supported.${FontSuffix}"
+            echo -e "${FontRed}error: Only Linux distributions using systemd are supported by this script."
+            echo -e "${FontRed}error: Please download the pre-built binary from the release page or build it manually.${FontSuffix}"
             exit 1
         fi
         if [[ "$(type -P apt)" ]]; then
@@ -188,11 +189,11 @@ identify_the_operating_system_and_architecture() {
             PACKAGE_MANAGEMENT_INSTALL='pacman -Syu --noconfirm'
             PACKAGE_MANAGEMENT_REMOVE='pacman -Rsn'
         else
-            echo -e "${FontRed}error: The script does not support the package manager in this operating system.${FontSuffix}"
+            echo -e "${FontRed}error: This script does not support the package manager in this operating system.${FontSuffix}"
             exit 1
         fi
     else
-        echo -e "${FontRed}error: This operating system is not supported.${FontSuffix}"
+        echo -e "${FontRed}error: This operating system is not supported by this script.${FontSuffix}"
         exit 1
     fi
 }
