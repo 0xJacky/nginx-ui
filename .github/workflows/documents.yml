@@ -3,8 +3,7 @@ name: Build Documents
 on:
   push:
     branches:
-      - 'dev'
-      - 'main'
+      - '*'
     paths:
       - "docs/**/*.js"
       - "docs/**/*.ts"
@@ -59,4 +58,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: pages deploy "docs/.vitepress/dist/" --branch=main --commit-dirty=true --project-name=nginxui
+          command: pages deploy "docs/.vitepress/dist/" --commit-dirty=true --project-name=nginxui
