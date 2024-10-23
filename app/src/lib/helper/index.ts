@@ -47,7 +47,7 @@ function urlJoin(...args: string[]) {
     .replace(/^file:/, 'file:/')
     .replace(/\/(\?|&|#[^!])/g, '$1')
     .replace(/\?/g, '&')
-    .replace('&', '?')
+    .replaceAll('&', '?')
 }
 
 function fromNow(t: string) {
