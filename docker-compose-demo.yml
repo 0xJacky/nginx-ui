@@ -5,7 +5,7 @@ services:
     restart: always
     networks:
       - nginx-ui-network
-    entrypoint:
+    environment:
       - NGINX_UI_NODE_DEMO=true
     ports:
       - "9003:80"
@@ -13,7 +13,7 @@ services:
   nginx-demo-2:
     image: uozi/nginx-ui-demo:latest
     restart: always
-    entrypoint:
+    environment:
       - NGINX_UI_NODE_DEMO=true
     networks:
       - nginx-ui-network
