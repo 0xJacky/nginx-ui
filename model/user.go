@@ -37,7 +37,7 @@ func (u *User) EnabledOTP() bool {
 
 func (u *User) EnabledPasskey() bool {
 	var passkeys Passkey
-	db.Where("user_id", u.ID).First(&passkeys)
+	db.Where("user_id", u.ID).Limit(1).Find(&passkeys)
 	return passkeys.ID != 0
 }
 

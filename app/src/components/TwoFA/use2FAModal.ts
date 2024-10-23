@@ -1,6 +1,5 @@
 import { createVNode, render } from 'vue'
 import { Modal, message } from 'ant-design-vue'
-import { useCookies } from '@vueuse/integrations/useCookies'
 import Authorization from '@/components/TwoFA/Authorization.vue'
 import twoFA from '@/api/2fa'
 import { useUserStore } from '@/pinia'
@@ -32,11 +31,8 @@ const use2FAModal = () => {
         return
       }
 
-      const cookies = useCookies(['nginx-ui-2fa'])
-      const ssid = cookies.get('secure_session_id')
-      if (ssid && secureSessionStatus) {
-        resolve(ssid)
-        secureSessionId.value = ssid
+      if (secureSessionId.value && secureSessionStatus) {
+        resolve(secureSessionId.value)
 
         return
       }
@@ -51,7 +47,6 @@ const use2FAModal = () => {
       }
 
       const setSessionId = (sessionId: string) => {
-        cookies.set('secure_session_id', sessionId, { maxAge: 60 * 3 })
         close()
         secureSessionId.value = sessionId
         resolve(sessionId)

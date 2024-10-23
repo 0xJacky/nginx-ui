@@ -8,7 +8,7 @@ import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransfor
 const columns: Column[] = [{
   title: () => $gettext('Username'),
   dataIndex: 'name',
-  sortable: true,
+  sorter: true,
   pithy: true,
   edit: {
     type: input,
@@ -17,7 +17,7 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('Password'),
   dataIndex: 'password',
-  sortable: true,
+  sorter: true,
   pithy: true,
   edit: {
     type: password,
@@ -42,19 +42,19 @@ const columns: Column[] = [{
 
     return h('div', template)
   },
-  sortable: true,
+  sorter: true,
   pithy: true,
 }, {
   title: () => $gettext('Created at'),
   dataIndex: 'created_at',
   customRender: datetime,
-  sortable: true,
+  sorter: true,
   pithy: true,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
   customRender: datetime,
-  sortable: true,
+  sorter: true,
   pithy: true,
 }, {
   title: () => $gettext('Action'),

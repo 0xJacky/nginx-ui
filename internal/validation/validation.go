@@ -1,7 +1,7 @@
 package validation
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/uozi-tech/cosy/logger"
 	"github.com/gin-gonic/gin/binding"
 	val "github.com/go-playground/validator/v10"
 )

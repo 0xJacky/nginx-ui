@@ -1,11 +1,11 @@
 package cert
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy/logger"
 	"runtime"
 	"strings"
 	"time"
@@ -60,8 +60,8 @@ func autoCert(certModel *model.Cert) {
 		notification.Error("Renew Certificate Error", strings.Join(certModel.Domains, ", "))
 		return
 	}
-	if int(time.Now().Sub(certInfo.NotBefore).Hours()/24) < settings.ServerSettings.GetCertRenewalInterval() {
-		// not after settings.ServerSettings.CertRenewalInterval, ignore
+	if int(time.Now().Sub(certInfo.NotBefore).Hours()/24) < settings.CertSettings.GetCertRenewalInterval() {
+		// not after settings.ServerSettings.RenewalInterval, ignore
 		return
 	}
 

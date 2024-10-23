@@ -1,7 +1,7 @@
 package cache
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/uozi-tech/cosy/logger"
 	"github.com/dgraph-io/ristretto"
 	"time"
 )

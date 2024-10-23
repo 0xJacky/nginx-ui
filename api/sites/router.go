@@ -14,3 +14,12 @@ func InitRouter(r *gin.RouterGroup) {
 	r.POST("auto_cert/:name", AddDomainToAutoCert)
 	r.DELETE("auto_cert/:name", RemoveDomainFromAutoCert)
 }
+
+func InitCategoryRouter(r *gin.RouterGroup) {
+	r.GET("site_categories", GetCategoryList)
+	r.GET("site_category/:id", GetCategory)
+	r.POST("site_category", AddCategory)
+	r.PUT("site_category/:id", ModifyCategory)
+	r.DELETE("site_category/:id", DeleteCategory)
+	r.POST("site_category/:id/recover", RecoverCategory)
+}

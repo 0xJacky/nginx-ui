@@ -19,14 +19,13 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy"
 	"net/http"
 )
 
-func InitRouter() *gin.Engine {
-	r := gin.New()
+func InitRouter() {
+	r := cosy.GetEngine()
 	r.Use(
-		gin.Logger(),
-		middleware.Recovery(),
 		middleware.CacheJs(),
 		middleware.IPWhiteList(),
 		static.Serve("/", middleware.MustFs("")),
@@ -78,6 +77,4 @@ func InitRouter() *gin.Engine {
 			system.InitWebSocketRouter(w)
 		}
 	}
-
-	return r
 }

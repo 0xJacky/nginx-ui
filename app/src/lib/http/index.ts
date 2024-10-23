@@ -1,6 +1,5 @@
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
-import { useCookies } from '@vueuse/integrations/useCookies'
 import { storeToRefs } from 'pinia'
 import NProgress from 'nprogress'
 import { useSettingsStore, useUserStore } from '@/pinia'
@@ -62,10 +61,9 @@ instance.interceptors.response.use(
     NProgress.done()
 
     const otpModal = use2FAModal()
-    const cookies = useCookies(['nginx-ui-2fa'])
     switch (error.response.status) {
       case 401:
-        cookies.remove('secure_session_id')
+        secureSessionId.value = ''
         await otpModal.open()
         break
       case 403:

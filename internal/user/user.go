@@ -1,12 +1,12 @@
 package user
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy/logger"
+	cSettings "github.com/uozi-tech/cosy/settings"
 	"strings"
 	"time"
 )
@@ -68,7 +68,7 @@ func GenerateJWT(user *model.User) (string, error) {
 	}
 
 	unsignedToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signedToken, err := unsignedToken.SignedString([]byte(settings.ServerSettings.JwtSecret))
+	signedToken, err := unsignedToken.SignedString([]byte(cSettings.AppSettings.JwtSecret))
 	if err != nil {
 		return "", err
 	}
@@ -96,7 +96,7 @@ func ValidateJWT(token string) (claims *JWTClaims, err error) {
 		token,
 		&JWTClaims{},
 		func(token *jwt.Token) (interface{}, error) {
-			return []byte(settings.ServerSettings.JwtSecret), nil
+			return []byte(cSettings.AppSettings.JwtSecret), nil
 		},
 	)
 	if err != nil {

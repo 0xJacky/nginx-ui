@@ -289,10 +289,19 @@ install_config() {
     mkdir -p "$DataPath"
     if [[ ! -f "$DataPath/app.ini" ]]; then
 cat > "$DataPath/app.ini" << EOF
+[app]
+PageSize = 10
+
 [server]
+HOST = 0.0.0.0
+PORT = 9000
 RunMode = release
-HttpPort = 9000
+
+[cert]
 HTTPChallengePort = 9180
+
+[terminal]
+StartCmd = login
 EOF
         echo "info: The default configuration file was installed to '$DataPath/app.ini' successfully!"
     fi

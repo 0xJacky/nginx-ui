@@ -77,7 +77,6 @@ export interface Column extends TableColumnType {
   extra?: string | (() => string)
   pithy?: boolean
   search?: boolean | StdDesignEdit
-  sortable?: boolean
   handle?: boolean
   hiddenInTable?: boolean
   hiddenInTrash?: boolean

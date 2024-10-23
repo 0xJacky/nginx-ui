@@ -2,11 +2,11 @@ package system
 
 import (
 	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/upgrader"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/uozi-tech/cosy/logger"
 	"net/http"
 	"os"
 )
@@ -135,7 +135,7 @@ func PerformCoreUpgrade(c *gin.Context) {
 		Message: "Performing core upgrade",
 	})
 	// dry run
-	if control.DryRun || settings.ServerSettings.Demo {
+	if control.DryRun || settings.NodeSettings.Demo {
 		return
 	}
 

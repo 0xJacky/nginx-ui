@@ -6,7 +6,7 @@ type Logrotate struct {
 	Interval int    `json:"interval"`
 }
 
-var LogrotateSettings = Logrotate{
+var LogrotateSettings = &Logrotate{
 	Enabled:  false,
 	CMD:      "logrotate /etc/logrotate.d/nginx",
 	Interval: 1440, // 24 hours

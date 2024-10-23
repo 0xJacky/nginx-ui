@@ -11,7 +11,7 @@ type Nginx struct {
 	RestartCmd      string   `json:"restart_cmd" protected:"true"`
 }
 
-var NginxSettings = Nginx{
+var NginxSettings = &Nginx{
 	AccessLogPath: "",
 	ErrorLogPath:  "",
 }

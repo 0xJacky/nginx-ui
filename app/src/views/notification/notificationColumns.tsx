@@ -30,7 +30,7 @@ const columns: Column[] = [{
     </Tag>
     }
   },
-  sortable: true,
+  sorter: true,
   pithy: true,
 }, {
   title: () => $gettext('Title'),
@@ -47,7 +47,7 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('Created at'),
   dataIndex: 'created_at',
-  sortable: true,
+  sorter: true,
   customRender: datetime,
   pithy: true,
 }, {

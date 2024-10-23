@@ -4,7 +4,7 @@ Nginx UI Template 提供了一种开箱即用的配置模板机制。在 NgxConf
 在本篇指南中，我们将绍这种配置模板的文件格式和语法规则。
 配置模板文件存储在 `template/block` 目录中，我们欢迎并期待您通过提交 [PR](https://github.com/0xJacky/nginx-ui/pulls) 的形式分享您编写的配置模板。
 
-::: tip
+::: tip 提示
 请注意，每次修改或添加新的配置文件后，需要重新编译后端以生效。
 :::
 

@@ -13,7 +13,7 @@ msgstr ""
 msgid "2FA"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:58
+#: src/views/preference/AuthSettings.vue:57
 msgid "2FA Settings"
 msgstr ""
 
@@ -37,14 +37,14 @@ msgstr "Người dùng"
 #: src/views/config/configColumns.ts:38
 #: src/views/environment/envColumns.tsx:131
 #: src/views/notification/notificationColumns.tsx:54
-#: src/views/preference/AuthSettings.vue:27 src/views/site/SiteList.vue:54
+#: src/views/preference/AuthSettings.vue:26 src/views/site/SiteList.vue:54
 #: src/views/stream/StreamList.vue:47 src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "Hành động"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:204
-#: src/views/preference/BasicSettings.vue:73
+#: src/views/preference/CertSettings.vue:42
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/site/ngx_conf/NgxServer.vue:162
 #: src/views/site/ngx_conf/NgxUpstream.vue:152
@@ -119,7 +119,7 @@ msgstr ""
 msgid "Arch"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:102
+#: src/views/preference/AuthSettings.vue:136
 #, fuzzy
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Bạn chắc chắn muốn xóa nó "
@@ -164,7 +164,7 @@ msgstr "Bạn chắc chắn muốn xoá directive này ?"
 msgid "Are you sure you want to remove this directive?"
 msgstr "Bạn chắc chắn muốn xoá directive này ?"
 
-#: src/views/preference/BasicSettings.vue:99
+#: src/views/preference/CertSettings.vue:68
 #, fuzzy
 msgid "Are you sure you want to remove this item?"
 msgstr "Bạn chắc chắn muốn xoá directive này ?"
@@ -182,11 +182,11 @@ msgstr "Hỏi ChatGPT"
 msgid "Assistant"
 msgstr "Trợ lý"
 
-#: src/views/preference/AuthSettings.vue:18
+#: src/views/preference/AuthSettings.vue:17
 msgid "Attempts"
 msgstr ""
 
-#: src/views/preference/Preference.vue:122
+#: src/views/preference/Preference.vue:153
 #, fuzzy
 msgid "Auth"
 msgstr "Tác giả"
@@ -195,7 +195,7 @@ msgstr "Tác giả"
 msgid "Authenticate with a passkey"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:63
+#: src/views/preference/AuthSettings.vue:62
 msgid "Authentication Settings"
 msgstr ""
 
@@ -232,15 +232,15 @@ msgstr "Quay lại"
 msgid "Back to list"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:76
+#: src/views/preference/AuthSettings.vue:103
 msgid "Ban Threshold Minutes"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:90
+#: src/views/preference/AuthSettings.vue:124
 msgid "Banned IPs"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:21
+#: src/views/preference/AuthSettings.vue:20
 msgid "Banned Until"
 msgstr ""
 
@@ -249,7 +249,7 @@ msgid "Base information"
 msgstr "Thông tin"
 
 #: src/views/config/ConfigEditor.vue:241
-#: src/views/preference/Preference.vue:116
+#: src/views/preference/Preference.vue:147
 #: src/views/site/components/RightSettings.vue:75
 #: src/views/stream/components/RightSettings.vue:74
 #, fuzzy
@@ -279,7 +279,7 @@ msgstr "Xây dựng với"
 msgid "CA Dir"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:47
+#: src/views/preference/CertSettings.vue:16
 msgid "CADir"
 msgstr ""
 
@@ -303,7 +303,12 @@ msgstr ""
 msgid "Cancel"
 msgstr "Huỷ"
 
-#: src/views/preference/BasicSettings.vue:55
+#: src/views/preference/Preference.vue:159
+#, fuzzy
+msgid "Cert"
+msgstr "Tự động ký chứng chỉ SSL"
+
+#: src/views/preference/CertSettings.vue:24
 #, fuzzy
 msgid "Certificate Renewal Interval"
 msgstr "Chứng chỉ SSL hợp lệ"
@@ -499,9 +504,9 @@ msgstr "Phiên bản hiện tại"
 msgid "Custom"
 msgstr "Tuỳ chỉnh"
 
-#: src/views/preference/BasicSettings.vue:121
+#: src/views/preference/BasicSettings.vue:46
 msgid ""
-"Customize the name of local server to be displayed in the environment "
+"Customize the name of local node to be displayed in the environment "
 "indicator."
 msgstr ""
 
@@ -514,7 +519,7 @@ msgstr "Bảng điều khiển"
 msgid "Database (Optional, default: database)"
 msgstr "Tên cơ sở dữ liệu (Tuỳ chọn, Mặc định là: database)"
 
-#: src/views/preference/BasicSettings.vue:60
+#: src/views/preference/CertSettings.vue:29
 msgid "Days"
 msgstr ""
 
@@ -920,12 +925,6 @@ msgstr "Tệp tin"
 msgid "File exists"
 msgstr "Tệp tin đã tồn tại"
 
-#: src/views/preference/NginxSettings.vue:14
-#: src/views/preference/NginxSettings.vue:23
-#, fuzzy
-msgid "File not found"
-msgstr "Không tìm thấy tệp tin"
-
 #: src/views/other/Error.vue:9
 msgid "File Not Found"
 msgstr "Không tìm thấy tệp tin"
@@ -944,7 +943,7 @@ msgid ""
 "process."
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:43
+#: src/views/preference/BasicSettings.vue:38
 #, fuzzy
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr "Người dùng Trung Quốc: https://mirror.ghproxy.com/"
@@ -985,7 +984,7 @@ msgstr "Nhận lỗi thông tin phát hành"
 msgid "Getting the certificate, please wait..."
 msgstr "Đang lấy chứng chỉ, vui lòng đợi..."
 
-#: src/views/preference/BasicSettings.vue:35
+#: src/views/preference/BasicSettings.vue:30
 msgid "Github Proxy"
 msgstr ""
 
@@ -997,15 +996,15 @@ msgstr ""
 msgid "Home"
 msgstr "Trang chủ"
 
-#: src/views/preference/BasicSettings.vue:31
+#: src/views/preference/CertSettings.vue:12
 msgid "HTTP Challenge Port"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:13
+#: src/views/preference/BasicSettings.vue:11
 msgid "HTTP Host"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:16
+#: src/views/preference/BasicSettings.vue:14
 msgid "HTTP Port"
 msgstr ""
 
@@ -1017,7 +1016,7 @@ msgstr ""
 msgid "If left blank, the default CA Dir will be used."
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:68
+#: src/views/preference/AuthSettings.vue:119
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -1049,7 +1048,7 @@ msgstr "Xuất"
 msgid "Import Certificate"
 msgstr "Chứng chỉ"
 
-#: src/views/other/Login.vue:79
+#: src/views/other/Login.vue:77
 #, fuzzy
 msgid "Incorrect username or password"
 msgstr "Tên người dùng hoặc mật khẩu không chính xác"
@@ -1093,7 +1092,7 @@ msgstr ""
 msgid "Invalid"
 msgstr "Hợp lệ"
 
-#: src/views/other/Login.vue:89
+#: src/views/other/Login.vue:87
 msgid "Invalid 2FA or recovery code"
 msgstr ""
 
@@ -1107,11 +1106,11 @@ msgstr "E-mail không chính xác!"
 msgid "Invalid folder name"
 msgstr ""
 
-#: src/components/TwoFA/use2FAModal.ts:65
+#: src/components/TwoFA/use2FAModal.ts:60
 msgid "Invalid passcode or recovery code"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:15
+#: src/views/preference/AuthSettings.vue:14
 msgid "IP"
 msgstr ""
 
@@ -1134,7 +1133,7 @@ msgstr "Cấp chứng chỉ thành công"
 msgid "Issuer: %{issuer}"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:22
+#: src/views/preference/BasicSettings.vue:20
 msgid "Jwt Secret"
 msgstr ""
 
@@ -1223,11 +1222,11 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Log"
 
-#: src/routes/index.ts:305 src/views/other/Login.vue:247
+#: src/routes/index.ts:305 src/views/other/Login.vue:245
 msgid "Login"
 msgstr "Đăng nhập"
 
-#: src/views/other/Login.vue:133 src/views/other/Login.vue:66
+#: src/views/other/Login.vue:131 src/views/other/Login.vue:64
 msgid "Login successful"
 msgstr "Đăng nhập thành công"
 
@@ -1235,7 +1234,7 @@ msgstr "Đăng nhập thành công"
 msgid "Logout successful"
 msgstr "Đã đăng xuất"
 
-#: src/views/preference/Preference.vue:140
+#: src/views/preference/Preference.vue:177
 msgid "Logrotate"
 msgstr ""
 
@@ -1280,7 +1279,7 @@ msgstr "Người dùng"
 msgid "Managed Certificate"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:82
+#: src/views/preference/AuthSettings.vue:109
 msgid "Max Attempts"
 msgstr ""
 
@@ -1381,11 +1380,11 @@ msgstr "Đã có phiên bản mới"
 msgid "Next"
 msgstr "Tiếp theo"
 
-#: src/views/preference/Preference.vue:128
+#: src/views/preference/Preference.vue:165
 msgid "Nginx"
 msgstr ""
 
-#: src/views/preference/NginxSettings.vue:11
+#: src/views/preference/NginxSettings.vue:9
 msgid "Nginx Access Log Path"
 msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
 
@@ -1394,11 +1393,16 @@ msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
 msgid "Nginx Configuration Parse Error"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
+#: src/views/preference/NginxSettings.vue:15
+#, fuzzy
+msgid "Nginx Configurations Directory"
+msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
+
 #: src/components/NginxControl/NginxControl.vue:68
 msgid "Nginx Control"
 msgstr ""
 
-#: src/views/preference/NginxSettings.vue:20
+#: src/views/preference/NginxSettings.vue:12
 msgid "Nginx Error Log Path"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
 
@@ -1410,10 +1414,27 @@ msgstr ""
 msgid "Nginx Log"
 msgstr ""
 
+#: src/views/preference/NginxSettings.vue:18
+msgid "Nginx Log Directory Whitelist"
+msgstr ""
+
+#: src/views/preference/NginxSettings.vue:27
+#, fuzzy
+msgid "Nginx PID Path"
+msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
+
+#: src/views/preference/NginxSettings.vue:30
+msgid "Nginx Reload Command"
+msgstr ""
+
 #: src/components/NginxControl/NginxControl.vue:26
 #, fuzzy
 msgid "Nginx reloaded successfully"
 msgstr "Reload Nginx thành công"
+
+#: src/views/preference/NginxSettings.vue:33
+msgid "Nginx Restart Command"
+msgstr ""
 
 #: src/components/NginxControl/NginxControl.vue:42
 #, fuzzy
@@ -1426,15 +1447,20 @@ msgstr "Restart Nginx thành công"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:561
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:575
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/AuthSettings.vue:104
-#: src/views/preference/BasicSettings.vue:101
+#: src/views/preference/AuthSettings.vue:138
+#: src/views/preference/CertSettings.vue:70
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/site/ngx_conf/LocationEditor.vue:90
 #: src/views/site/SiteList.vue:151 src/views/stream/StreamList.vue:165
 msgid "No"
 msgstr "Không"
 
-#: src/views/preference/BasicSettings.vue:25
+#: src/views/preference/BasicSettings.vue:42
+#, fuzzy
+msgid "Node name"
+msgstr "Username"
+
+#: src/views/preference/BasicSettings.vue:23
 msgid "Node Secret"
 msgstr ""
 
@@ -1525,11 +1551,11 @@ msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."
 msgid "Online"
 msgstr "Trực tuyến"
 
-#: src/views/preference/Preference.vue:134
+#: src/views/preference/Preference.vue:171
 msgid "OpenAI"
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:117 src/views/other/Login.vue:256
+#: src/components/TwoFA/Authorization.vue:117 src/views/other/Login.vue:254
 msgid "Or"
 msgstr ""
 
@@ -1573,7 +1599,7 @@ msgid ""
 "password replacement or as a 2FA method."
 msgstr ""
 
-#: src/views/other/Login.vue:208 src/views/user/userColumns.tsx:18
+#: src/views/other/Login.vue:206 src/views/user/userColumns.tsx:18
 msgid "Password"
 msgstr "Mật khẩu"
 
@@ -1651,11 +1677,11 @@ msgstr ""
 msgid "Please input your E-mail!"
 msgstr "Vui lòng nhập E-mail của bạn!"
 
-#: src/views/other/Install.vue:44 src/views/other/Login.vue:47
+#: src/views/other/Install.vue:44 src/views/other/Login.vue:46
 msgid "Please input your password!"
 msgstr "Vui lòng nhập mật khẩu!"
 
-#: src/views/other/Install.vue:38 src/views/other/Login.vue:41
+#: src/views/other/Install.vue:38 src/views/other/Login.vue:40
 msgid "Please input your username!"
 msgstr "Vui lòng nhập username!"
 
@@ -1679,7 +1705,7 @@ msgstr ""
 msgid "Pre-release"
 msgstr ""
 
-#: src/routes/index.ts:260 src/views/preference/Preference.vue:111
+#: src/routes/index.ts:260 src/views/preference/Preference.vue:142
 msgid "Preference"
 msgstr "Cài đặt"
 
@@ -1740,7 +1766,7 @@ msgstr ""
 msgid "Recovery Code:"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:68
+#: src/views/preference/CertSettings.vue:37
 msgid "Recursive Nameservers"
 msgstr ""
 
@@ -1810,11 +1836,11 @@ msgstr "Đang tải lại"
 msgid "Reloading nginx"
 msgstr "Tải lại nginx"
 
-#: src/views/preference/AuthSettings.vue:109
+#: src/views/preference/AuthSettings.vue:143
 msgid "Remove"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:48
+#: src/views/preference/AuthSettings.vue:47
 #: src/views/preference/components/Passkey.vue:50
 #, fuzzy
 msgid "Remove successfully"
@@ -1908,7 +1934,19 @@ msgstr "Khởi động lại"
 msgid "Restarting"
 msgstr "Đang khởi động lại"
 
-#: src/views/preference/BasicSettings.vue:19
+#: src/views/preference/AuthSettings.vue:81
+msgid "RP Display Name"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:87
+msgid "RP Origins"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:75
+msgid "RPID"
+msgstr ""
+
+#: src/views/preference/BasicSettings.vue:17
 #, fuzzy
 msgid "Run Mode"
 msgstr "Run Mode"
@@ -1921,7 +1959,7 @@ msgstr "Running"
 #: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/ConfigEditor.vue:222
 #: src/views/preference/components/Passkey.vue:136
-#: src/views/preference/Preference.vue:151
+#: src/views/preference/Preference.vue:188
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:120
 #: src/views/site/SiteEdit.vue:260 src/views/stream/StreamEdit.vue:252
 msgid "Save"
@@ -1940,7 +1978,7 @@ msgstr "Đã xảy ra lỗi khi lưu %{msg}"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:122
 #: src/views/certificate/CertificateEditor.vue:46
-#: src/views/preference/Preference.vue:79
+#: src/views/preference/Preference.vue:110
 #, fuzzy
 msgid "Save successfully"
 msgstr "Lưu thành công"
@@ -1985,13 +2023,13 @@ msgstr "Gửi"
 #: src/views/config/ConfigEditor.vue:108
 #: src/views/environment/BatchUpgrader.vue:59
 #: src/views/environment/Environment.vue:15 src/views/other/Install.vue:68
-#: src/views/preference/AuthSettings.vue:50
+#: src/views/preference/AuthSettings.vue:49
 #: src/views/preference/components/Passkey.vue:26
 #: src/views/preference/components/Passkey.vue:43
 #: src/views/preference/components/Passkey.vue:56
 #: src/views/preference/components/TOTP.vue:45
 #: src/views/preference/components/TOTP.vue:58
-#: src/views/preference/Preference.vue:83 src/views/site/SiteList.vue:88
+#: src/views/preference/Preference.vue:114 src/views/site/SiteList.vue:88
 #: src/views/stream/StreamList.vue:113 src/views/stream/StreamList.vue:81
 #: src/views/system/Upgrade.vue:42
 msgid "Server error"
@@ -1999,11 +2037,6 @@ msgstr "Lỗi máy chủ"
 
 #: src/views/dashboard/ServerAnalytic.vue:170
 msgid "Server Info"
-msgstr "Thông tin máy chủ"
-
-#: src/views/preference/BasicSettings.vue:117
-#, fuzzy
-msgid "Server Name"
 msgstr "Thông tin máy chủ"
 
 #: src/views/site/cert/components/ObtainCert.vue:102
@@ -2014,7 +2047,7 @@ msgstr "không tìm thấy server_name trong directives"
 msgid "server_name parameter is required"
 msgstr "Tham số server_name là bắt buộc"
 
-#: src/views/preference/BasicSettings.vue:64
+#: src/views/preference/CertSettings.vue:33
 msgid ""
 "Set the recursive nameservers to override the systems nameservers for the "
 "step of DNS challenge."
@@ -2037,7 +2070,7 @@ msgstr "Sử dụng HTTP01 để xác thực SSL"
 msgid "Show"
 msgstr ""
 
-#: src/views/other/Login.vue:265
+#: src/views/other/Login.vue:263
 msgid "Sign in with a passkey"
 msgstr ""
 
@@ -2070,7 +2103,7 @@ msgstr ""
 msgid "SSL Certificate Path"
 msgstr ""
 
-#: src/views/other/Login.vue:223
+#: src/views/other/Login.vue:221
 msgid "SSO Login"
 msgstr ""
 
@@ -2198,7 +2231,7 @@ msgstr "Mục tiêu"
 msgid "Terminal"
 msgstr "Terminal"
 
-#: src/views/preference/BasicSettings.vue:28
+#: src/views/preference/BasicSettings.vue:26
 msgid "Terminal Start Command"
 msgstr ""
 
@@ -2230,6 +2263,12 @@ msgid ""
 "dashes, and dots."
 msgstr ""
 
+#: src/views/preference/BasicSettings.vue:45
+msgid ""
+"The node name should only contain letters, unicode, numbers, hyphens, "
+"dashes, and dots."
+msgstr ""
+
 #: src/views/certificate/CertificateEditor.vue:173
 msgid "The path exists, but the file is not a certificate"
 msgstr ""
@@ -2250,12 +2289,6 @@ msgid ""
 "match the local version."
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:120
-msgid ""
-"The server name should only contain letters, unicode, numbers, hyphens, "
-"dashes, and dots."
-msgstr ""
-
 #: src/views/site/cert/components/AutoCertStepOne.vue:45
 #, fuzzy
 msgid ""
@@ -2264,8 +2297,8 @@ msgid ""
 msgstr ""
 "Lưu ý: server_name trong cấu hình hiện tại phải là tên miền bạn muốn ký SSL."
 
-#: src/views/preference/BasicSettings.vue:38
-#: src/views/preference/BasicSettings.vue:50
+#: src/views/preference/BasicSettings.vue:33
+#: src/views/preference/CertSettings.vue:19
 msgid "The url is invalid"
 msgstr ""
 
@@ -2301,7 +2334,11 @@ msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:67
+#: src/views/preference/AuthSettings.vue:98
+msgid "Throttle"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:118
 #: src/views/preference/components/AddPasskey.vue:71
 #: src/views/preference/LogrotateSettings.vue:11
 msgid "Tips"
@@ -2346,7 +2383,7 @@ msgstr ""
 msgid "Token is not valid"
 msgstr ""
 
-#: src/views/other/Login.vue:82
+#: src/views/other/Login.vue:80
 msgid "Too many login failed attempts, please try again later"
 msgstr ""
 
@@ -2364,7 +2401,7 @@ msgstr ""
 msgid "Trash"
 msgstr ""
 
-#: src/components/TwoFA/use2FAModal.ts:71
+#: src/components/TwoFA/use2FAModal.ts:66
 msgid "Two-factor authentication required"
 msgstr ""
 
@@ -2439,11 +2476,11 @@ msgstr ""
 msgid "User"
 msgstr "Người dùng"
 
-#: src/views/other/Login.vue:85
+#: src/views/other/Login.vue:83
 msgid "User is banned"
 msgstr ""
 
-#: src/views/other/Login.vue:198 src/views/user/userColumns.tsx:9
+#: src/views/other/Login.vue:196 src/views/user/userColumns.tsx:9
 msgid "Username"
 msgstr "Username"
 
@@ -2505,6 +2542,10 @@ msgstr ""
 "Chúng tôi sẽ xóa cấu hình HTTPChallenge khỏi tệp này và tải lại Nginx. Bạn "
 "có muốn tiếp tục không?"
 
+#: src/views/preference/AuthSettings.vue:71
+msgid "Webauthn"
+msgstr ""
+
 #: src/views/certificate/ACMEUser.vue:78
 msgid ""
 "When Enabled, Nginx UI will automatically re-register users upon startup. "
@@ -2525,8 +2566,8 @@ msgstr "Ghi Private Key vào disk"
 msgid "Writing certificate to disk"
 msgstr "Ghi chứng chỉ vào disk"
 
-#: src/views/preference/AuthSettings.vue:103
-#: src/views/preference/BasicSettings.vue:100
+#: src/views/preference/AuthSettings.vue:137
+#: src/views/preference/CertSettings.vue:69
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/site/ngx_conf/LocationEditor.vue:89
 msgid "Yes"
@@ -2551,15 +2592,20 @@ msgid "Your passkeys"
 msgstr ""
 
 #, fuzzy
+#~ msgid "File not found"
+#~ msgstr "Không tìm thấy tệp tin"
+
+#, fuzzy
+#~ msgid "Server Name"
+#~ msgstr "Thông tin máy chủ"
+
+#, fuzzy
 #~ msgid "Enable 2FA"
 #~ msgstr "Đã bật"
 
 #, fuzzy
 #~ msgid "Rename "
 #~ msgstr "Username"
-
-#~ msgid "Auto Cert"
-#~ msgstr "Tự động ký chứng chỉ SSL"
 
 #~ msgid "Certificate has expired"
 #~ msgstr "Chứng chỉ đã hết hạn"

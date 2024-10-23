@@ -10,7 +10,7 @@ type Casdoor struct {
 	RedirectUri     string `json:"redirect_uri" protected:"true"`
 }
 
-var CasdoorSettings = Casdoor{
+var CasdoorSettings = &Casdoor{
 	Endpoint:        "",
 	ClientId:        "",
 	ClientSecret:    "",

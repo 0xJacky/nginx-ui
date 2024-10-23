@@ -9,7 +9,7 @@ import (
 )
 
 func TestGetSecretMd5_WithNonEmptySecret_ReturnsExpectedMd5Hash(t *testing.T) {
-	// Setup
+	// Init
 	CryptoSettings.Secret = "testSecret"
 	expectedMd5 := md5.Sum([]byte("testSecret"))
 	expectedMd5String := hex.EncodeToString(expectedMd5[:])
@@ -23,7 +23,7 @@ func TestGetSecretMd5_WithNonEmptySecret_ReturnsExpectedMd5Hash(t *testing.T) {
 }
 
 func TestGetSecretMd5_WithEmptySecret_ReturnsMd5OfEmptyString(t *testing.T) {
-	// Setup
+	// Init
 	CryptoSettings.Secret = ""
 	expectedMd5 := md5.Sum([]byte(""))
 	expectedMd5String := hex.EncodeToString(expectedMd5[:])
@@ -37,7 +37,7 @@ func TestGetSecretMd5_WithEmptySecret_ReturnsMd5OfEmptyString(t *testing.T) {
 }
 
 func TestGetSecretMd5_WithDifferentSecrets_ReturnsDifferentMd5Hashes(t *testing.T) {
-	// Setup
+	// Init
 	CryptoSettings.Secret = "secret1"
 	firstMd5 := CryptoSettings.GetSecretMd5()
 	CryptoSettings.Secret = "secret2"

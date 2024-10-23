@@ -12,7 +12,7 @@ const columns: Column[] = [
   {
     title: () => $gettext('Name'),
     dataIndex: 'name',
-    sortable: true,
+    sorter: true,
     pithy: true,
     edit: {
       type: input,
@@ -23,7 +23,7 @@ const columns: Column[] = [
   }, {
     title: () => $gettext('Email'),
     dataIndex: 'email',
-    sortable: true,
+    sorter: true,
     pithy: true,
     edit: {
       type: input,
@@ -34,7 +34,7 @@ const columns: Column[] = [
   }, {
     title: () => $gettext('CA Dir'),
     dataIndex: 'ca_dir',
-    sortable: true,
+    sorter: true,
     pithy: true,
     edit: {
       type: input,
@@ -66,7 +66,7 @@ const columns: Column[] = [
 
       return <Tag color="red">{$gettext('Invalid')}</Tag>
     },
-    sortable: true,
+    sorter: true,
     pithy: true,
   }, {
     title: () => $gettext('Register On Startup'),
@@ -82,7 +82,7 @@ const columns: Column[] = [
     title: () => $gettext('Updated at'),
     dataIndex: 'updated_at',
     customRender: datetime,
-    sortable: true,
+    sorter: true,
     pithy: true,
   }, {
     title: () => $gettext('Action'),

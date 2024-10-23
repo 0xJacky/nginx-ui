@@ -3,35 +3,16 @@ package middleware
 import (
 	"encoding/base64"
 	"github.com/0xJacky/Nginx-UI/app"
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy/logger"
 	"io/fs"
 	"net/http"
 	"path"
-	"runtime"
 	"strings"
 )
-
-func Recovery() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		defer func() {
-			if err := recover(); err != nil {
-				buf := make([]byte, 1024)
-				runtime.Stack(buf, false)
-				logger.Errorf("%s\n%s", err, buf)
-
-				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-					"message": err.(error).Error(),
-				})
-			}
-		}()
-
-		c.Next()
-	}
-}
 
 func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -43,8 +24,8 @@ func AuthRequired() gin.HandlerFunc {
 
 		token := c.GetHeader("Authorization")
 		if token == "" {
-			if token = c.GetHeader("X-Node-Secret"); token != "" && token == settings.ServerSettings.NodeSecret {
-				c.Set("NodeSecret", token)
+			if token = c.GetHeader("X-Node-Secret"); token != "" && token == settings.NodeSettings.Secret {
+				c.Set("Secret", token)
 				c.Next()
 				return
 			} else {

@@ -1,13 +1,14 @@
 package kernal
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/caarlos0/env/v11"
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy/logger"
+	cSettings "github.com/uozi-tech/cosy/settings"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
@@ -20,13 +21,13 @@ type predefinedUser struct {
 func skipInstall() {
 	logger.Info("Skip installation mode enabled")
 
-	if settings.ServerSettings.JwtSecret == "" {
-		settings.ServerSettings.JwtSecret = uuid.New().String()
+	if cSettings.AppSettings.JwtSecret == "" {
+		cSettings.AppSettings.JwtSecret = uuid.New().String()
 	}
 
-	if settings.ServerSettings.NodeSecret == "" {
-		settings.ServerSettings.NodeSecret = uuid.New().String()
-		logger.Infof("NodeSecret: %s", settings.ServerSettings.NodeSecret)
+	if settings.NodeSettings.Secret == "" {
+		settings.NodeSettings.Secret = uuid.New().String()
+		logger.Infof("Secret: %s", settings.NodeSettings.Secret)
 	}
 
 	err := settings.Save()
@@ -37,7 +38,7 @@ func skipInstall() {
 
 func registerPredefinedUser() {
 	// when skip installation mode is enabled, the predefined user will be created
-	if !settings.ServerSettings.SkipInstallation {
+	if !settings.NodeSettings.SkipInstallation {
 		return
 	}
 	pUser := &predefinedUser{}

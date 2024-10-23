@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Settings } from '@/views/preference/typedef'
+import type { Settings } from '@/api/settings'
 
 const data: Settings = inject('data')!
 const errors: Record<string, Record<string, string>> = inject('errors') as Record<string, Record<string, string>>

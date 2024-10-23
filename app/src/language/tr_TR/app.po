@@ -5,7 +5,7 @@ msgstr ""
 "PO-Revision-Date: \n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: tr\n"
+"Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17,7 +17,7 @@ msgstr ""
 msgid "2FA"
 msgstr "İki aşamalı kimlik doğrulaması"
 
-#: src/views/preference/AuthSettings.vue:58
+#: src/views/preference/AuthSettings.vue:57
 #, fuzzy
 msgid "2FA Settings"
 msgstr "2FA Ayarları"
@@ -44,7 +44,7 @@ msgstr "ACME Kullanıcısı"
 #: src/views/config/configColumns.ts:38
 #: src/views/environment/envColumns.tsx:131
 #: src/views/notification/notificationColumns.tsx:54
-#: src/views/preference/AuthSettings.vue:27 src/views/site/SiteList.vue:54
+#: src/views/preference/AuthSettings.vue:26 src/views/site/SiteList.vue:54
 #: src/views/stream/StreamList.vue:47 src/views/user/userColumns.tsx:60
 #, fuzzy
 msgid "Action"
@@ -52,7 +52,7 @@ msgstr "Eylem"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:204
-#: src/views/preference/BasicSettings.vue:73
+#: src/views/preference/CertSettings.vue:42
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/site/ngx_conf/NgxServer.vue:162
 #: src/views/site/ngx_conf/NgxUpstream.vue:152
@@ -112,7 +112,8 @@ msgstr "Gelişmiş Mod"
 #: src/views/preference/components/AddPasskey.vue:105
 #, fuzzy
 msgid "Afterwards, refresh this page and click add passkey again."
-msgstr "Daha sonra, bu sayfayı yenileyin ve tekrar geçiş anahtarı ekle'ye tıklayın."
+msgstr ""
+"Daha sonra, bu sayfayı yenileyin ve tekrar geçiş anahtarı ekle'ye tıklayın."
 
 #: src/views/preference/OpenAISettings.vue:44
 #, fuzzy
@@ -139,7 +140,7 @@ msgstr "API Token"
 msgid "Arch"
 msgstr "Mimari"
 
-#: src/views/preference/AuthSettings.vue:102
+#: src/views/preference/AuthSettings.vue:136
 #, fuzzy
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Bu yasaklı IP'yi hemen sileceğinizden emin misiniz?"
@@ -185,7 +186,7 @@ msgstr "Bu öğeyi kurtarmak istediğinizden emin misiniz?"
 msgid "Are you sure you want to remove this directive?"
 msgstr "Bu yönergeyi kaldırmak istediğinizden emin misiniz?"
 
-#: src/views/preference/BasicSettings.vue:99
+#: src/views/preference/CertSettings.vue:68
 #, fuzzy
 msgid "Are you sure you want to remove this item?"
 msgstr "Bu nesneyi kaldırmak istediğinizden emin misiniz?"
@@ -205,12 +206,12 @@ msgstr "ChatGPT'den Yardım İsteyin"
 msgid "Assistant"
 msgstr "Asistan"
 
-#: src/views/preference/AuthSettings.vue:18
+#: src/views/preference/AuthSettings.vue:17
 #, fuzzy
 msgid "Attempts"
 msgstr "Girişim Sayısı"
 
-#: src/views/preference/Preference.vue:122
+#: src/views/preference/Preference.vue:153
 #, fuzzy
 msgid "Auth"
 msgstr "yetki"
@@ -220,7 +221,7 @@ msgstr "yetki"
 msgid "Authenticate with a passkey"
 msgstr "Bir geçiş anahtarıyla kimlik doğrulama"
 
-#: src/views/preference/AuthSettings.vue:63
+#: src/views/preference/AuthSettings.vue:62
 #, fuzzy
 msgid "Authentication Settings"
 msgstr "Kimlik Doğrulama Ayarları"
@@ -264,17 +265,17 @@ msgstr "Geri Dön"
 msgid "Back to list"
 msgstr "Listeye geri dön"
 
-#: src/views/preference/AuthSettings.vue:76
+#: src/views/preference/AuthSettings.vue:103
 #, fuzzy
 msgid "Ban Threshold Minutes"
 msgstr "Yasaklama Eşik Dakikası"
 
-#: src/views/preference/AuthSettings.vue:90
+#: src/views/preference/AuthSettings.vue:124
 #, fuzzy
 msgid "Banned IPs"
 msgstr "Yasaklı IP'ler"
 
-#: src/views/preference/AuthSettings.vue:21
+#: src/views/preference/AuthSettings.vue:20
 #, fuzzy
 msgid "Banned Until"
 msgstr "Yasaklanana Kadar"
@@ -285,7 +286,7 @@ msgid "Base information"
 msgstr "Temel bilgiler"
 
 #: src/views/config/ConfigEditor.vue:241
-#: src/views/preference/Preference.vue:116
+#: src/views/preference/Preference.vue:147
 #: src/views/site/components/RightSettings.vue:75
 #: src/views/stream/components/RightSettings.vue:74
 #, fuzzy
@@ -318,7 +319,7 @@ msgstr "İle inşa edin"
 msgid "CA Dir"
 msgstr "CA Direktör"
 
-#: src/views/preference/BasicSettings.vue:47
+#: src/views/preference/CertSettings.vue:16
 #, fuzzy
 msgid "CADir"
 msgstr "CADir"
@@ -345,7 +346,11 @@ msgstr "Tarayamıyor musunuz? Metin tuşu ciltleme kullanın"
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/views/preference/BasicSettings.vue:55
+#: src/views/preference/Preference.vue:159
+msgid "Cert"
+msgstr ""
+
+#: src/views/preference/CertSettings.vue:24
 #, fuzzy
 msgid "Certificate Renewal Interval"
 msgstr "Sertifika Yenileme Aralığı"
@@ -568,9 +573,11 @@ msgstr "Mevcut sürüm"
 msgid "Custom"
 msgstr "Özel"
 
-#: src/views/preference/BasicSettings.vue:121
+#: src/views/preference/BasicSettings.vue:46
 #, fuzzy
-msgid "Customize the name of local server to be displayed in the environment indicator."
+msgid ""
+"Customize the name of local node to be displayed in the environment "
+"indicator."
 msgstr "Ortam göstergesinde görüntülenecek yerel sunucu adını özelleştirin."
 
 #: src/routes/index.ts:39 src/views/config/ConfigEditor.vue:133
@@ -584,7 +591,7 @@ msgstr "Kontrol Paneli"
 msgid "Database (Optional, default: database)"
 msgstr "Veritabanı (İsteğe bağlı, varsayılan: veritabanı)"
 
-#: src/views/preference/BasicSettings.vue:60
+#: src/views/preference/CertSettings.vue:29
 #, fuzzy
 msgid "Days"
 msgstr "Gün"
@@ -789,7 +796,9 @@ msgstr "Etki Alanı Yapılandırması Başarıyla Oluşturuldu"
 #: src/views/certificate/CertificateEditor.vue:106
 #, fuzzy
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
-msgstr "Etki alanları listesi boş, %{config} için Otomatik Sertifikayı yeniden açmayı deneyin"
+msgstr ""
+"Etki alanları listesi boş, %{config} için Otomatik Sertifikayı yeniden "
+"açmayı deneyin"
 
 #: src/language/constants.ts:26
 #, fuzzy
@@ -808,8 +817,12 @@ msgstr "Kuru çalışma modu etkin"
 
 #: src/views/preference/components/AddPasskey.vue:107
 #, fuzzy
-msgid "Due to the security policies of some browsers, you cannot use passkeys on non-HTTPS websites, except when running on localhost."
-msgstr "Bazı tarayıcıların güvenlik politikaları nedeniyle, localhost'ta çalışmadığı sürece HTTPS olmayan web sitelerinde geçiş anahtarlarını kullanamazsınız."
+msgid ""
+"Due to the security policies of some browsers, you cannot use passkeys on "
+"non-HTTPS websites, except when running on localhost."
+msgstr ""
+"Bazı tarayıcıların güvenlik politikaları nedeniyle, localhost'ta çalışmadığı "
+"sürece HTTPS olmayan web sitelerinde geçiş anahtarlarını kullanamazsınız."
 
 #: src/views/site/components/SiteDuplicate.vue:122
 #: src/views/site/SiteList.vue:147
@@ -1039,12 +1052,6 @@ msgstr "Dosya"
 msgid "File exists"
 msgstr "Dosya var"
 
-#: src/views/preference/NginxSettings.vue:14
-#: src/views/preference/NginxSettings.vue:23
-#, fuzzy
-msgid "File not found"
-msgstr "Dosya bulunamadı"
-
 #: src/views/other/Error.vue:9
 #, fuzzy
 msgid "File Not Found"
@@ -1062,10 +1069,14 @@ msgstr "Bitmiş"
 
 #: src/views/preference/components/AddPasskey.vue:77
 #, fuzzy
-msgid "Follow the instructions in the dialog to complete the passkey registration process."
-msgstr "Geçiş anahtarı kayıt işlemini tamamlamak için iletişim kutusundaki talimatları izleyin."
+msgid ""
+"Follow the instructions in the dialog to complete the passkey registration "
+"process."
+msgstr ""
+"Geçiş anahtarı kayıt işlemini tamamlamak için iletişim kutusundaki "
+"talimatları izleyin."
 
-#: src/views/preference/BasicSettings.vue:43
+#: src/views/preference/BasicSettings.vue:38
 #, fuzzy
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr "Çinli kullanıcı için: https://mirror.ghproxy.com/"
@@ -1110,7 +1121,7 @@ msgstr "Sürüm bilgilerini al hatası"
 msgid "Getting the certificate, please wait..."
 msgstr "Sertifika alınıyor, lütfen bekleyin..."
 
-#: src/views/preference/BasicSettings.vue:35
+#: src/views/preference/BasicSettings.vue:30
 #, fuzzy
 msgid "Github Proxy"
 msgstr "Github Proxy"
@@ -1125,17 +1136,17 @@ msgstr "Gizle"
 msgid "Home"
 msgstr "Anasayfa"
 
-#: src/views/preference/BasicSettings.vue:31
+#: src/views/preference/CertSettings.vue:12
 #, fuzzy
 msgid "HTTP Challenge Port"
 msgstr "HTTP Meydan Okuma Bağlantı Noktası"
 
-#: src/views/preference/BasicSettings.vue:13
+#: src/views/preference/BasicSettings.vue:11
 #, fuzzy
 msgid "HTTP Host"
 msgstr "HTTP ana bilgisayar"
 
-#: src/views/preference/BasicSettings.vue:16
+#: src/views/preference/BasicSettings.vue:14
 #, fuzzy
 msgid "HTTP Port"
 msgstr "HTTP bağlantı noktası"
@@ -1150,25 +1161,39 @@ msgstr "HTTP01"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "Boş bırakılırsa, varsayılan CA Dir kullanılır."
 
-#: src/views/preference/AuthSettings.vue:68
+#: src/views/preference/AuthSettings.vue:119
 #, fuzzy
-msgid "If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes, the ip will be banned for a period of time."
-msgstr "Bir ip'den gelen oturum açma başarısız denemelerinin sayısı yasaklama eşiği dakikalarında maksimum denemeye ulaşırsa, ip bir süre için yasaklanacaktır."
+msgid ""
+"If the number of login failed attempts from a ip reach the max attempts in "
+"ban threshold minutes, the ip will be banned for a period of time."
+msgstr ""
+"Bir ip'den gelen oturum açma başarısız denemelerinin sayısı yasaklama eşiği "
+"dakikalarında maksimum denemeye ulaşırsa, ip bir süre için yasaklanacaktır."
 
 #: src/views/preference/components/TOTP.vue:111
 #, fuzzy
-msgid "If you lose your mobile phone, you can use the recovery code to reset your 2FA."
-msgstr "Cep telefonunuzu kaybederseniz, 2FA'nızı sıfırlamak için kurtarma kodunu kullanabilirsiniz."
+msgid ""
+"If you lose your mobile phone, you can use the recovery code to reset your "
+"2FA."
+msgstr ""
+"Cep telefonunuzu kaybederseniz, 2FA'nızı sıfırlamak için kurtarma kodunu "
+"kullanabilirsiniz."
 
 #: src/views/preference/components/AddPasskey.vue:76
 #, fuzzy
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
-msgstr "Tarayıcınız WebAuthn Passkey'i destekliyorsa, bir iletişim kutusu görüntülenecektir."
+msgstr ""
+"Tarayıcınız WebAuthn Passkey'i destekliyorsa, bir iletişim kutusu "
+"görüntülenecektir."
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:109
 #, fuzzy
-msgid "If your domain has CNAME records and you cannot obtain certificates, you need to enable this option."
-msgstr "Alan adınızda CNAME kayıtları varsa ve sertifika alamıyorsanız, bu seçeneği etkinleştirmeniz gerekir."
+msgid ""
+"If your domain has CNAME records and you cannot obtain certificates, you "
+"need to enable this option."
+msgstr ""
+"Alan adınızda CNAME kayıtları varsa ve sertifika alamıyorsanız, bu seçeneği "
+"etkinleştirmeniz gerekir."
 
 #: src/views/certificate/CertificateList/Certificate.vue:20
 #, fuzzy
@@ -1180,7 +1205,7 @@ msgstr "İçe Aktar"
 msgid "Import Certificate"
 msgstr "İthalat Sertifikası"
 
-#: src/views/other/Login.vue:79
+#: src/views/other/Login.vue:77
 #, fuzzy
 msgid "Incorrect username or password"
 msgstr "Yanlış kullanıcı adı ya da parola"
@@ -1231,7 +1256,7 @@ msgstr "Aralık"
 msgid "Invalid"
 msgstr "Geçersiz"
 
-#: src/views/other/Login.vue:89
+#: src/views/other/Login.vue:87
 #, fuzzy
 msgid "Invalid 2FA or recovery code"
 msgstr "Geçersiz 2FA veya kurtarma kodu"
@@ -1247,12 +1272,12 @@ msgstr "Geçersiz dosya ismi"
 msgid "Invalid folder name"
 msgstr "Geçersiz klasör adı"
 
-#: src/components/TwoFA/use2FAModal.ts:65
+#: src/components/TwoFA/use2FAModal.ts:60
 #, fuzzy
 msgid "Invalid passcode or recovery code"
 msgstr "Geçersiz parola veya kurtarma kodu"
 
-#: src/views/preference/AuthSettings.vue:15
+#: src/views/preference/AuthSettings.vue:14
 #, fuzzy
 msgid "IP"
 msgstr "IP"
@@ -1277,7 +1302,7 @@ msgstr "Sertifika başarıyla verildi"
 msgid "Issuer: %{issuer}"
 msgstr "İhraççı: %{issuer}"
 
-#: src/views/preference/BasicSettings.vue:22
+#: src/views/preference/BasicSettings.vue:20
 #, fuzzy
 msgid "Jwt Secret"
 msgstr "Jwt Secret"
@@ -1376,12 +1401,12 @@ msgstr "Konumlar"
 msgid "Log"
 msgstr "Günlük"
 
-#: src/routes/index.ts:305 src/views/other/Login.vue:247
+#: src/routes/index.ts:305 src/views/other/Login.vue:245
 #, fuzzy
 msgid "Login"
 msgstr "Giriş"
 
-#: src/views/other/Login.vue:133 src/views/other/Login.vue:66
+#: src/views/other/Login.vue:131 src/views/other/Login.vue:64
 #, fuzzy
 msgid "Login successful"
 msgstr "Giriş Başarılı"
@@ -1391,20 +1416,36 @@ msgstr "Giriş Başarılı"
 msgid "Logout successful"
 msgstr "Çıkış başarılı"
 
-#: src/views/preference/Preference.vue:140
+#: src/views/preference/Preference.vue:177
 #, fuzzy
 msgid "Logrotate"
 msgstr "Logrotate"
 
 #: src/views/preference/LogrotateSettings.vue:12
 #, fuzzy
-msgid "Logrotate, by default, is enabled in most mainstream Linux distributions for users who install Nginx UI on the host machine, so you don't need to modify the parameters on this page. For users who install Nginx UI using Docker containers, you can manually enable this option. The crontab task scheduler of Nginx UI will execute the logrotate command at the interval you set in minutes."
-msgstr "Logrotate, ana makineye Nginx UI yükleyen kullanıcılar için çoğu ana Linux dağıtımında varsayılan olarak etkindir, bu nedenle bu sayfadaki parametreleri değiştirmeniz gerekmez. Nginx UI'yi Docker konteynerleri kullanarak kuran kullanıcılar için bu seçeneği manuel olarak etkinleştirebilirsiniz. Nginx UI'nin crontab görev zamanlayıcısı, logrotate komutunu dakika olarak belirlediğiniz aralıkta çalıştıracaktır."
+msgid ""
+"Logrotate, by default, is enabled in most mainstream Linux distributions for "
+"users who install Nginx UI on the host machine, so you don't need to modify "
+"the parameters on this page. For users who install Nginx UI using Docker "
+"containers, you can manually enable this option. The crontab task scheduler "
+"of Nginx UI will execute the logrotate command at the interval you set in "
+"minutes."
+msgstr ""
+"Logrotate, ana makineye Nginx UI yükleyen kullanıcılar için çoğu ana Linux "
+"dağıtımında varsayılan olarak etkindir, bu nedenle bu sayfadaki "
+"parametreleri değiştirmeniz gerekmez. Nginx UI'yi Docker konteynerleri "
+"kullanarak kuran kullanıcılar için bu seçeneği manuel olarak "
+"etkinleştirebilirsiniz. Nginx UI'nin crontab görev zamanlayıcısı, logrotate "
+"komutunu dakika olarak belirlediğiniz aralıkta çalıştıracaktır."
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:54
 #, fuzzy
-msgid "Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort before obtaining the certificate."
-msgstr "Sertifikayı almadan önce .well-known dizini için HTTPChallengePort'a bir ters proxy yapılandırdığınızdan emin olun."
+msgid ""
+"Make sure you have configured a reverse proxy for .well-known directory to "
+"HTTPChallengePort before obtaining the certificate."
+msgstr ""
+"Sertifikayı almadan önce .well-known dizini için HTTPChallengePort'a bir "
+"ters proxy yapılandırdığınızdan emin olun."
 
 #: src/routes/index.ts:102 src/views/config/ConfigEditor.vue:138
 #: src/views/config/ConfigEditor.vue:99 src/views/config/ConfigList.vue:70
@@ -1432,7 +1473,7 @@ msgstr "Kullanıcıları Yönet"
 msgid "Managed Certificate"
 msgstr "Yönetilen Sertifika"
 
-#: src/views/preference/AuthSettings.vue:82
+#: src/views/preference/AuthSettings.vue:109
 #, fuzzy
 msgid "Max Attempts"
 msgstr "Maksimum Deneme"
@@ -1545,12 +1586,12 @@ msgstr "Yeni sürüm yayınlandı"
 msgid "Next"
 msgstr "Sonraki"
 
-#: src/views/preference/Preference.vue:128
+#: src/views/preference/Preference.vue:165
 #, fuzzy
 msgid "Nginx"
 msgstr "Nginx"
 
-#: src/views/preference/NginxSettings.vue:11
+#: src/views/preference/NginxSettings.vue:9
 #, fuzzy
 msgid "Nginx Access Log Path"
 msgstr "Nginx Erişim Günlüğü Yolu"
@@ -1560,12 +1601,17 @@ msgstr "Nginx Erişim Günlüğü Yolu"
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx Yapılandırma Ayrıştırma Hatası"
 
+#: src/views/preference/NginxSettings.vue:15
+#, fuzzy
+msgid "Nginx Configurations Directory"
+msgstr "Nginx Yapılandırma Ayrıştırma Hatası"
+
 #: src/components/NginxControl/NginxControl.vue:68
 #, fuzzy
 msgid "Nginx Control"
 msgstr "Nginx Kontrolü"
 
-#: src/views/preference/NginxSettings.vue:20
+#: src/views/preference/NginxSettings.vue:12
 #, fuzzy
 msgid "Nginx Error Log Path"
 msgstr "Nginx Hata Günlüğü Yolu"
@@ -1580,10 +1626,28 @@ msgstr "Nginx çalışmıyor"
 msgid "Nginx Log"
 msgstr "Nginx Günlüğü"
 
+#: src/views/preference/NginxSettings.vue:18
+msgid "Nginx Log Directory Whitelist"
+msgstr ""
+
+#: src/views/preference/NginxSettings.vue:27
+#, fuzzy
+msgid "Nginx PID Path"
+msgstr "Nginx Hata Günlüğü Yolu"
+
+#: src/views/preference/NginxSettings.vue:30
+msgid "Nginx Reload Command"
+msgstr ""
+
 #: src/components/NginxControl/NginxControl.vue:26
 #, fuzzy
 msgid "Nginx reloaded successfully"
 msgstr "Nginx başarıyla yeniden yüklendi"
+
+#: src/views/preference/NginxSettings.vue:33
+#, fuzzy
+msgid "Nginx Restart Command"
+msgstr "Terminal Başlatma Komutu"
 
 #: src/components/NginxControl/NginxControl.vue:42
 #, fuzzy
@@ -1596,8 +1660,8 @@ msgstr "Nginx başarıyla yeniden başlatıldı"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:561
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:575
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/AuthSettings.vue:104
-#: src/views/preference/BasicSettings.vue:101
+#: src/views/preference/AuthSettings.vue:138
+#: src/views/preference/CertSettings.vue:70
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/site/ngx_conf/LocationEditor.vue:90
 #: src/views/site/SiteList.vue:151 src/views/stream/StreamList.vue:165
@@ -1605,7 +1669,12 @@ msgstr "Nginx başarıyla yeniden başlatıldı"
 msgid "No"
 msgstr "Hayır"
 
-#: src/views/preference/BasicSettings.vue:25
+#: src/views/preference/BasicSettings.vue:42
+#, fuzzy
+msgid "Node name"
+msgstr "Yeni Ad"
+
+#: src/views/preference/BasicSettings.vue:23
 #, fuzzy
 msgid "Node Secret"
 msgstr "Düğüm Sırrı"
@@ -1658,8 +1727,12 @@ msgstr "OCSP Zımbalanmalıdır"
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:100
 #, fuzzy
-msgid "OCSP Must Staple may cause errors for some users on first access using Firefox."
-msgstr "OCSP Must Staple, Firefox kullanarak ilk erişimde bazı kullanıcılar için hatalara neden olabilir."
+msgid ""
+"OCSP Must Staple may cause errors for some users on first access using "
+"Firefox."
+msgstr ""
+"OCSP Must Staple, Firefox kullanarak ilk erişimde bazı kullanıcılar için "
+"hatalara neden olabilir."
 
 #: src/components/NodeSelector/NodeSelector.vue:94
 #: src/views/dashboard/Environments.vue:107
@@ -1707,12 +1780,12 @@ msgstr "Doğrulama tamamlandıktan sonra kayıtlar kaldırılacaktır."
 msgid "Online"
 msgstr "Çevrimiçi"
 
-#: src/views/preference/Preference.vue:134
+#: src/views/preference/Preference.vue:171
 #, fuzzy
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:117 src/views/other/Login.vue:256
+#: src/components/TwoFA/Authorization.vue:117 src/views/other/Login.vue:254
 #, fuzzy
 msgid "Or"
 msgstr "Veya"
@@ -1758,10 +1831,16 @@ msgstr "Passkey"
 
 #: src/views/preference/components/Passkey.vue:68
 #, fuzzy
-msgid "Passkeys are webauthn credentials that validate your identity using touch, facial recognition, a device password, or a PIN. They can be used as a password replacement or as a 2FA method."
-msgstr "Passkeys, dokunma, yüz tanıma, cihaz parolası veya PIN kullanarak kimliğinizi doğrulayan webauthn kimlik bilgileridir. Parola yerine veya 2FA yöntemi olarak kullanılabilirler."
+msgid ""
+"Passkeys are webauthn credentials that validate your identity using touch, "
+"facial recognition, a device password, or a PIN. They can be used as a "
+"password replacement or as a 2FA method."
+msgstr ""
+"Passkeys, dokunma, yüz tanıma, cihaz parolası veya PIN kullanarak "
+"kimliğinizi doğrulayan webauthn kimlik bilgileridir. Parola yerine veya 2FA "
+"yöntemi olarak kullanılabilirler."
 
-#: src/views/other/Login.vue:208 src/views/user/userColumns.tsx:18
+#: src/views/other/Login.vue:206 src/views/user/userColumns.tsx:18
 #, fuzzy
 msgid "Password"
 msgstr "Şifre"
@@ -1795,8 +1874,12 @@ msgstr "Çekirdek yükseltme gerçekleştirme"
 
 #: src/views/preference/components/AddPasskey.vue:75
 #, fuzzy
-msgid "Please enter a name for the passkey you wish to create and click the OK button below."
-msgstr "Lütfen oluşturmak istediğiniz geçiş anahtarı için bir ad girin ve aşağıdaki Tamam düğmesine tıklayın."
+msgid ""
+"Please enter a name for the passkey you wish to create and click the OK "
+"button below."
+msgstr ""
+"Lütfen oluşturmak istediğiniz geçiş anahtarı için bir ad girin ve aşağıdaki "
+"Tamam düğmesine tıklayın."
 
 #: src/components/TwoFA/Authorization.vue:75
 #, fuzzy
@@ -1805,8 +1888,12 @@ msgstr "Lütfen OTP kodunu girin:"
 
 #: src/views/certificate/DNSCredential.vue:53
 #, fuzzy
-msgid "Please fill in the API authentication credentials provided by your DNS provider."
-msgstr "Lütfen DNS sağlayıcınız tarafından sağlanan API kimlik doğrulama bilgilerini doldurun."
+msgid ""
+"Please fill in the API authentication credentials provided by your DNS "
+"provider."
+msgstr ""
+"Lütfen DNS sağlayıcınız tarafından sağlanan API kimlik doğrulama bilgilerini "
+"doldurun."
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:133
 #, fuzzy
@@ -1815,8 +1902,13 @@ msgstr "Lütfen zorunlu alanları doldurup tekrar deneyiniz"
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:58
 #, fuzzy
-msgid "Please first add credentials in Certification > DNS Credentials, and then select one of the credentialsbelow to request the API of the DNS provider."
-msgstr "Lütfen önce Sertifikasyon > DNS Kimlik Bilgileri bölümüne kimlik bilgilerini ekleyin ve ardından DNS sağlayıcısının API'sini istemek için aşağıdaki kimlik bilgilerinden birini seçin."
+msgid ""
+"Please first add credentials in Certification > DNS Credentials, and then "
+"select one of the credentialsbelow to request the API of the DNS provider."
+msgstr ""
+"Lütfen önce Sertifikasyon > DNS Kimlik Bilgileri bölümüne kimlik bilgilerini "
+"ekleyin ve ardından DNS sağlayıcısının API'sini istemek için aşağıdaki "
+"kimlik bilgilerinden birini seçin."
 
 #: src/views/config/components/Rename.vue:64
 #: src/views/config/ConfigEditor.vue:249
@@ -1832,28 +1924,34 @@ msgstr "Lütfen bir klasör adı girin"
 #: src/views/site/components/SiteDuplicate.vue:38
 #: src/views/stream/components/StreamDuplicate.vue:38
 #, fuzzy
-msgid "Please input name, this will be used as the filename of the new configuration!"
-msgstr "Lütfen isim girin, bu yeni yapılandırmanın dosya adı olarak kullanılacaktır!"
+msgid ""
+"Please input name, this will be used as the filename of the new "
+"configuration!"
+msgstr ""
+"Lütfen isim girin, bu yeni yapılandırmanın dosya adı olarak kullanılacaktır!"
 
 #: src/views/other/Install.vue:32
 #, fuzzy
 msgid "Please input your E-mail!"
 msgstr "Lütfen e-postanızı girin!"
 
-#: src/views/other/Install.vue:44 src/views/other/Login.vue:47
+#: src/views/other/Install.vue:44 src/views/other/Login.vue:46
 #, fuzzy
 msgid "Please input your password!"
 msgstr "Lütfen şifrenizi girin!"
 
-#: src/views/other/Install.vue:38 src/views/other/Login.vue:41
+#: src/views/other/Install.vue:38 src/views/other/Login.vue:40
 #, fuzzy
 msgid "Please input your username!"
 msgstr "Lütfen kullanıcı adınızı girin!"
 
 #: src/views/certificate/DNSCredential.vue:62
 #, fuzzy
-msgid "Please note that the unit of time configurations below are all in seconds."
-msgstr "Lütfen aşağıdaki zaman birimi konfigürasyonlarının tümünün saniye cinsinden olduğunu unutmayın."
+msgid ""
+"Please note that the unit of time configurations below are all in seconds."
+msgstr ""
+"Lütfen aşağıdaki zaman birimi konfigürasyonlarının tümünün saniye cinsinden "
+"olduğunu unutmayın."
 
 #: src/views/environment/Environment.vue:47
 #, fuzzy
@@ -1873,7 +1971,7 @@ msgstr "Lütfen en az bir düğüm seçin!"
 msgid "Pre-release"
 msgstr "Ön sürüm"
 
-#: src/routes/index.ts:260 src/views/preference/Preference.vue:111
+#: src/routes/index.ts:260 src/views/preference/Preference.vue:142
 #, fuzzy
 msgid "Preference"
 msgstr "Tercih"
@@ -1946,7 +2044,7 @@ msgstr "Kurtarma Kodu"
 msgid "Recovery Code:"
 msgstr "Kurtarma Kodu:"
 
-#: src/views/preference/BasicSettings.vue:68
+#: src/views/preference/CertSettings.vue:37
 #, fuzzy
 msgid "Recursive Nameservers"
 msgstr "Yinelemeli Ad Sunucuları"
@@ -1963,8 +2061,12 @@ msgstr "Kayıt Ol"
 
 #: src/views/certificate/ACMEUser.vue:53
 #, fuzzy
-msgid "Register a user or use this account to issue a certificate through an HTTP proxy."
-msgstr "Bir HTTP proxy'si aracılığıyla sertifika vermek için bir kullanıcı kaydedin veya bu hesabı kullanın."
+msgid ""
+"Register a user or use this account to issue a certificate through an HTTP "
+"proxy."
+msgstr ""
+"Bir HTTP proxy'si aracılığıyla sertifika vermek için bir kullanıcı kaydedin "
+"veya bu hesabı kullanın."
 
 #: src/views/certificate/ACMEUser.vue:98
 #, fuzzy
@@ -2022,12 +2124,12 @@ msgstr "Yeniden Yükleme"
 msgid "Reloading nginx"
 msgstr "Nginx'i yeniden yükleme"
 
-#: src/views/preference/AuthSettings.vue:109
+#: src/views/preference/AuthSettings.vue:143
 #, fuzzy
 msgid "Remove"
 msgstr "Kaldır"
 
-#: src/views/preference/AuthSettings.vue:48
+#: src/views/preference/AuthSettings.vue:47
 #: src/views/preference/components/Passkey.vue:50
 #, fuzzy
 msgid "Remove successfully"
@@ -2047,18 +2149,26 @@ msgstr "Yeniden Adlandır"
 
 #: src/components/Notification/config.ts:31
 #, fuzzy
-msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade the remote Nginx UI to the latest version"
-msgstr "2] üzerinde %{orig_path}'ı %{new_path} olarak yeniden adlandırmak başarısız oldu, lütfen uzak Nginx kullanıcı arayüzünü en son sürüme yükseltin"
+msgid ""
+"Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade the "
+"remote Nginx UI to the latest version"
+msgstr ""
+"2] üzerinde %{orig_path}'ı %{new_path} olarak yeniden adlandırmak başarısız "
+"oldu, lütfen uzak Nginx kullanıcı arayüzünü en son sürüme yükseltin"
 
 #: src/components/Notification/config.ts:35
 #, fuzzy
-msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
-msgstr "2] üzerinde %{orig_path}'ı %{new_path} olarak yeniden adlandırma başarısız oldu, yanıt: %{resp}"
+msgid ""
+"Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
+msgstr ""
+"2] üzerinde %{orig_path}'ı %{new_path} olarak yeniden adlandırma başarısız "
+"oldu, yanıt: %{resp}"
 
 #: src/components/Notification/config.ts:23
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
-msgstr "2] üzerinde %{orig_path}'ı %{new_path} olarak başarıyla yeniden adlandırın"
+msgstr ""
+"2] üzerinde %{orig_path}'ı %{new_path} olarak başarıyla yeniden adlandırın"
 
 #: src/language/constants.ts:41
 #, fuzzy
@@ -2122,7 +2232,19 @@ msgstr "Yeniden başlat"
 msgid "Restarting"
 msgstr "Yeniden Başlatma"
 
-#: src/views/preference/BasicSettings.vue:19
+#: src/views/preference/AuthSettings.vue:81
+msgid "RP Display Name"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:87
+msgid "RP Origins"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:75
+msgid "RPID"
+msgstr ""
+
+#: src/views/preference/BasicSettings.vue:17
 #, fuzzy
 msgid "Run Mode"
 msgstr "Çalışma Modu"
@@ -2136,7 +2258,7 @@ msgstr "Çalışıyor"
 #: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/ConfigEditor.vue:222
 #: src/views/preference/components/Passkey.vue:136
-#: src/views/preference/Preference.vue:151
+#: src/views/preference/Preference.vue:188
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:120
 #: src/views/site/SiteEdit.vue:260 src/views/stream/StreamEdit.vue:252
 #, fuzzy
@@ -2158,7 +2280,7 @@ msgstr "Hatayı kaydet %{msg}"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:122
 #: src/views/certificate/CertificateEditor.vue:46
-#: src/views/preference/Preference.vue:79
+#: src/views/preference/Preference.vue:110
 #, fuzzy
 msgid "Save successfully"
 msgstr "Başarıyla kaydedin"
@@ -2209,13 +2331,13 @@ msgstr "Gönder"
 #: src/views/config/ConfigEditor.vue:108
 #: src/views/environment/BatchUpgrader.vue:59
 #: src/views/environment/Environment.vue:15 src/views/other/Install.vue:68
-#: src/views/preference/AuthSettings.vue:50
+#: src/views/preference/AuthSettings.vue:49
 #: src/views/preference/components/Passkey.vue:26
 #: src/views/preference/components/Passkey.vue:43
 #: src/views/preference/components/Passkey.vue:56
 #: src/views/preference/components/TOTP.vue:45
 #: src/views/preference/components/TOTP.vue:58
-#: src/views/preference/Preference.vue:83 src/views/site/SiteList.vue:88
+#: src/views/preference/Preference.vue:114 src/views/site/SiteList.vue:88
 #: src/views/stream/StreamList.vue:113 src/views/stream/StreamList.vue:81
 #: src/views/system/Upgrade.vue:42
 #, fuzzy
@@ -2227,11 +2349,6 @@ msgstr "Server hatası"
 msgid "Server Info"
 msgstr "Sunucu Bilgisi"
 
-#: src/views/preference/BasicSettings.vue:117
-#, fuzzy
-msgid "Server Name"
-msgstr "Sunucu Adı"
-
 #: src/views/site/cert/components/ObtainCert.vue:102
 #, fuzzy
 msgid "server_name not found in directives"
@@ -2242,10 +2359,14 @@ msgstr "server_name yönergelerde bulunamadı"
 msgid "server_name parameter is required"
 msgstr "server_name parametresi gereklidir"
 
-#: src/views/preference/BasicSettings.vue:64
+#: src/views/preference/CertSettings.vue:33
 #, fuzzy
-msgid "Set the recursive nameservers to override the systems nameservers for the step of DNS challenge."
-msgstr "Özyinelemeli ad sunucularını, DNS zorluğu adımı için sistem ad sunucularını geçersiz kılacak şekilde ayarlayın."
+msgid ""
+"Set the recursive nameservers to override the systems nameservers for the "
+"step of DNS challenge."
+msgstr ""
+"Özyinelemeli ad sunucularını, DNS zorluğu adımı için sistem ad sunucularını "
+"geçersiz kılacak şekilde ayarlayın."
 
 #: src/language/constants.ts:11
 #, fuzzy
@@ -2267,7 +2388,7 @@ msgstr "HTTP01 meydan okuma sağlayıcısını ayarlama"
 msgid "Show"
 msgstr "Göster"
 
-#: src/views/other/Login.vue:265
+#: src/views/other/Login.vue:263
 #, fuzzy
 msgid "Sign in with a passkey"
 msgstr "Bir geçiş anahtarı ile oturum açın"
@@ -2307,7 +2428,7 @@ msgstr "SSL Sertifikası Anahtar Yolu"
 msgid "SSL Certificate Path"
 msgstr "SSL Sertifika Yolu"
 
-#: src/views/other/Login.vue:223
+#: src/views/other/Login.vue:221
 #, fuzzy
 msgid "SSO Login"
 msgstr "SSO Girişi"
@@ -2371,13 +2492,19 @@ msgstr "Senkronizasyon Sertifikası"
 
 #: src/components/Notification/cert.ts:12
 #, fuzzy
-msgid "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the remote Nginx UI to the latest version"
-msgstr "Sertifika %{cert_name}'dan %{env_name}'e senkronizasyon başarısız oldu, lütfen uzak Nginx kullanıcı arayüzünü en son sürüme yükseltin"
+msgid ""
+"Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
+"remote Nginx UI to the latest version"
+msgstr ""
+"Sertifika %{cert_name}'dan %{env_name}'e senkronizasyon başarısız oldu, "
+"lütfen uzak Nginx kullanıcı arayüzünü en son sürüme yükseltin"
 
 #: src/components/Notification/cert.ts:16
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
-msgstr "Sertifika %{cert_name} ile %{env_name} arasında senkronizasyon başarısız oldu, yanıt: %{resp}"
+msgstr ""
+"Sertifika %{cert_name} ile %{env_name} arasında senkronizasyon başarısız "
+"oldu, yanıt: %{resp}"
 
 #: src/components/Notification/cert.ts:4
 #, fuzzy
@@ -2396,13 +2523,19 @@ msgstr "Senkronizasyon Sertifikası Başarısı"
 
 #: src/components/Notification/config.ts:12
 #, fuzzy
-msgid "Sync config %{config_name} to %{env_name} failed, please upgrade the remote Nginx UI to the latest version"
-msgstr "0] yapılandırmasını %{env_name} ile eşitleme başarısız oldu, lütfen uzak Nginx kullanıcı arayüzünü en son sürüme yükseltin"
+msgid ""
+"Sync config %{config_name} to %{env_name} failed, please upgrade the remote "
+"Nginx UI to the latest version"
+msgstr ""
+"0] yapılandırmasını %{env_name} ile eşitleme başarısız oldu, lütfen uzak "
+"Nginx kullanıcı arayüzünü en son sürüme yükseltin"
 
 #: src/components/Notification/config.ts:16
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
-msgstr "Yapılandırma %{config_name} ile %{env_name} arasında eşitleme başarısız oldu, yanıt: %{resp}"
+msgstr ""
+"Yapılandırma %{config_name} ile %{env_name} arasında eşitleme başarısız "
+"oldu, yanıt: %{resp}"
 
 #: src/components/Notification/config.ts:4
 #, fuzzy
@@ -2445,15 +2578,21 @@ msgstr "Hedef"
 msgid "Terminal"
 msgstr "terminal"
 
-#: src/views/preference/BasicSettings.vue:28
+#: src/views/preference/BasicSettings.vue:26
 #, fuzzy
 msgid "Terminal Start Command"
 msgstr "Terminal Başlatma Komutu"
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:50
 #, fuzzy
-msgid "The certificate for the domain will be checked 30 minutes, and will be renewed if it has been more than 1 week or the period you set in settings since it was last issued."
-msgstr "Etki alanı için sertifika 30 dakikada bir kontrol edilecek ve en son verilmesinden bu yana 1 haftadan veya ayarlarda belirlediğiniz süreden fazla zaman geçtiyse yenilenecektir."
+msgid ""
+"The certificate for the domain will be checked 30 minutes, and will be "
+"renewed if it has been more than 1 week or the period you set in settings "
+"since it was last issued."
+msgstr ""
+"Etki alanı için sertifika 30 dakikada bir kontrol edilecek ve en son "
+"verilmesinden bu yana 1 haftadan veya ayarlarda belirlediğiniz süreden fazla "
+"zaman geçtiyse yenilenecektir."
 
 #: src/views/other/Install.vue:50
 #, fuzzy
@@ -2472,8 +2611,19 @@ msgstr "Girdi bir SSL Sertifika Anahtarı değil"
 
 #: src/views/preference/OpenAISettings.vue:35
 #, fuzzy
-msgid "The model name should only contain letters, unicode, numbers, hyphens, dashes, and dots."
-msgstr "Model adı yalnızca harf, unicode, sayı, tire, çizgi ve nokta içermelidir."
+msgid ""
+"The model name should only contain letters, unicode, numbers, hyphens, "
+"dashes, and dots."
+msgstr ""
+"Model adı yalnızca harf, unicode, sayı, tire, çizgi ve nokta içermelidir."
+
+#: src/views/preference/BasicSettings.vue:45
+#, fuzzy
+msgid ""
+"The node name should only contain letters, unicode, numbers, hyphens, "
+"dashes, and dots."
+msgstr ""
+"Model adı yalnızca harf, unicode, sayı, tire, çizgi ve nokta içermelidir."
 
 #: src/views/certificate/CertificateEditor.vue:173
 #, fuzzy
@@ -2487,26 +2637,34 @@ msgstr "Yol var, ancak dosya bir özel anahtar değil"
 
 #: src/views/preference/components/TOTP.vue:112
 #, fuzzy
-msgid "The recovery code is only displayed once, please save it in a safe place."
-msgstr "Kurtarma kodu yalnızca bir kez görüntülenir, lütfen güvenli bir yere kaydedin."
+msgid ""
+"The recovery code is only displayed once, please save it in a safe place."
+msgstr ""
+"Kurtarma kodu yalnızca bir kez görüntülenir, lütfen güvenli bir yere "
+"kaydedin."
 
 #: src/views/dashboard/Environments.vue:148
 #, fuzzy
-msgid "The remote Nginx UI version is not compatible with the local Nginx UI version. To avoid potential errors, please upgrade the remote Nginx UI to match the local version."
-msgstr "Uzak Nginx UI sürümü yerel Nginx UI sürümü ile uyumlu değil. Olası hataları önlemek için lütfen uzak Nginx kullanıcı arayüzünü yerel sürümle eşleşecek şekilde yükseltin."
-
-#: src/views/preference/BasicSettings.vue:120
-#, fuzzy
-msgid "The server name should only contain letters, unicode, numbers, hyphens, dashes, and dots."
-msgstr "Sunucu adı yalnızca harf, unicode, sayı, kısa çizgi, tire ve nokta içermelidir."
+msgid ""
+"The remote Nginx UI version is not compatible with the local Nginx UI "
+"version. To avoid potential errors, please upgrade the remote Nginx UI to "
+"match the local version."
+msgstr ""
+"Uzak Nginx UI sürümü yerel Nginx UI sürümü ile uyumlu değil. Olası hataları "
+"önlemek için lütfen uzak Nginx kullanıcı arayüzünü yerel sürümle eşleşecek "
+"şekilde yükseltin."
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:45
 #, fuzzy
-msgid "The server_name in the current configuration must be the domain name you need to get the certificate, supportmultiple domains."
-msgstr "Geçerli yapılandırmadaki sunucu_adı, sertifika almak için ihtiyacınız olan alan adı olmalıdır, birden çok alan adını destekler."
+msgid ""
+"The server_name in the current configuration must be the domain name you "
+"need to get the certificate, supportmultiple domains."
+msgstr ""
+"Geçerli yapılandırmadaki sunucu_adı, sertifika almak için ihtiyacınız olan "
+"alan adı olmalıdır, birden çok alan adını destekler."
 
-#: src/views/preference/BasicSettings.vue:38
-#: src/views/preference/BasicSettings.vue:50
+#: src/views/preference/BasicSettings.vue:33
+#: src/views/preference/CertSettings.vue:19
 #, fuzzy
 msgid "The url is invalid"
 msgstr "URL geçersiz"
@@ -2546,10 +2704,17 @@ msgstr "Bu alan boş bırakılmamalıdır"
 
 #: src/views/environment/BatchUpgrader.vue:186
 #, fuzzy
-msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
-msgstr "Bu, %{nodeNames} üzerindeki Nginx kullanıcı arayüzünü %{version}'e yükseltecek veya yeniden yükleyecektir."
+msgid ""
+"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgstr ""
+"Bu, %{nodeNames} üzerindeki Nginx kullanıcı arayüzünü %{version}'e "
+"yükseltecek veya yeniden yükleyecektir."
 
-#: src/views/preference/AuthSettings.vue:67
+#: src/views/preference/AuthSettings.vue:98
+msgid "Throttle"
+msgstr ""
+
+#: src/views/preference/AuthSettings.vue:118
 #: src/views/preference/components/AddPasskey.vue:71
 #: src/views/preference/LogrotateSettings.vue:11
 #, fuzzy
@@ -2563,33 +2728,58 @@ msgstr "Başlık"
 
 #: src/views/preference/components/TOTP.vue:93
 #, fuzzy
-msgid "To enable it, you need to install the Google or Microsoft Authenticator app on your mobile phone."
-msgstr "Bunu etkinleştirmek için cep telefonunuza Google veya Microsoft Authenticator uygulamasını yüklemeniz gerekir."
+msgid ""
+"To enable it, you need to install the Google or Microsoft Authenticator app "
+"on your mobile phone."
+msgstr ""
+"Bunu etkinleştirmek için cep telefonunuza Google veya Microsoft "
+"Authenticator uygulamasını yüklemeniz gerekir."
 
 #: src/views/preference/components/AddPasskey.vue:95
 #, fuzzy
-msgid "To ensure security, Webauthn configuration cannot be added through the UI. Please manually configure the following in the app.ini configuration file and restart Nginx UI."
-msgstr "Güvenliği sağlamak için, Webauthn yapılandırması kullanıcı arayüzü üzerinden eklenemez. Lütfen app.ini yapılandırma dosyasında aşağıdakileri manuel olarak yapılandırın ve Nginx UI'yi yeniden başlatın."
+msgid ""
+"To ensure security, Webauthn configuration cannot be added through the UI. "
+"Please manually configure the following in the app.ini configuration file "
+"and restart Nginx UI."
+msgstr ""
+"Güvenliği sağlamak için, Webauthn yapılandırması kullanıcı arayüzü üzerinden "
+"eklenemez. Lütfen app.ini yapılandırma dosyasında aşağıdakileri manuel "
+"olarak yapılandırın ve Nginx UI'yi yeniden başlatın."
 
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:45
 #, fuzzy
-msgid "To make sure the certification auto-renewal can work normally, we need to add a location which can proxy the request from authority to backend, and we need to save this file and reload the Nginx. Are you sure you want to continue?"
-msgstr "Otomatik sertifika yenilemenin normal şekilde çalıştığından emin olmak için, otoriteden arka uca isteği proxyleyebilecek bir konum eklememiz ve bu dosyayı kaydedip Nginx'i yeniden yüklememiz gerekir. Devam etmek istediğinizden emin misiniz?"
+msgid ""
+"To make sure the certification auto-renewal can work normally, we need to "
+"add a location which can proxy the request from authority to backend, and we "
+"need to save this file and reload the Nginx. Are you sure you want to "
+"continue?"
+msgstr ""
+"Otomatik sertifika yenilemenin normal şekilde çalıştığından emin olmak için, "
+"otoriteden arka uca isteği proxyleyebilecek bir konum eklememiz ve bu "
+"dosyayı kaydedip Nginx'i yeniden yüklememiz gerekir. Devam etmek "
+"istediğinizden emin misiniz?"
 
 #: src/views/preference/OpenAISettings.vue:48
 #, fuzzy
-msgid "To use a local large model, deploy it with vllm or imdeploy. They provide an OpenAI-compatible API endpoint, so just set the baseUrl to your local API."
-msgstr "Yerel bir büyük model kullanmak için, vllm veya imdeploy ile dağıtın. OpenAI uyumlu bir API uç noktası sağlarlar, bu nedenle baseUrl'yi yerel API'nize ayarlamanız yeterlidir."
+msgid ""
+"To use a local large model, deploy it with vllm or imdeploy. They provide an "
+"OpenAI-compatible API endpoint, so just set the baseUrl to your local API."
+msgstr ""
+"Yerel bir büyük model kullanmak için, vllm veya imdeploy ile dağıtın. OpenAI "
+"uyumlu bir API uç noktası sağlarlar, bu nedenle baseUrl'yi yerel API'nize "
+"ayarlamanız yeterlidir."
 
 #: src/views/preference/OpenAISettings.vue:72
 #, fuzzy
 msgid "Token is not valid"
 msgstr "Belirteç geçerli değil"
 
-#: src/views/other/Login.vue:82
+#: src/views/other/Login.vue:80
 #, fuzzy
 msgid "Too many login failed attempts, please try again later"
-msgstr "Çok fazla oturum açma denemesi başarısız oldu, lütfen daha sonra tekrar deneyin"
+msgstr ""
+"Çok fazla oturum açma denemesi başarısız oldu, lütfen daha sonra tekrar "
+"deneyin"
 
 #: src/views/preference/components/TOTP.vue:91
 #, fuzzy
@@ -2598,15 +2788,19 @@ msgstr "TOTP"
 
 #: src/views/preference/components/TOTP.vue:92
 #, fuzzy
-msgid "TOTP is a two-factor authentication method that uses a time-based one-time password algorithm."
-msgstr "TOTP, zamana dayalı tek seferlik parola algoritması kullanan iki faktörlü bir kimlik doğrulama yöntemidir."
+msgid ""
+"TOTP is a two-factor authentication method that uses a time-based one-time "
+"password algorithm."
+msgstr ""
+"TOTP, zamana dayalı tek seferlik parola algoritması kullanan iki faktörlü "
+"bir kimlik doğrulama yöntemidir."
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:211
 #, fuzzy
 msgid "Trash"
 msgstr "Çöp"
 
-#: src/components/TwoFA/use2FAModal.ts:71
+#: src/components/TwoFA/use2FAModal.ts:66
 #, fuzzy
 msgid "Two-factor authentication required"
 msgstr "İki faktörlü kimlik doğrulama gerekiyor"
@@ -2691,12 +2885,12 @@ msgstr "Kurtarma kodunu kullanın"
 msgid "User"
 msgstr "Kullanıcı"
 
-#: src/views/other/Login.vue:85
+#: src/views/other/Login.vue:83
 #, fuzzy
 msgid "User is banned"
 msgstr "Kullanıcı yasaklandı"
 
-#: src/views/other/Login.vue:198 src/views/user/userColumns.tsx:9
+#: src/views/other/Login.vue:196 src/views/user/userColumns.tsx:9
 #, fuzzy
 msgid "Username"
 msgstr "Kullanıcı Adı"
@@ -2749,18 +2943,36 @@ msgstr "Uyarı"
 
 #: src/views/certificate/DNSCredential.vue:56
 #, fuzzy
-msgid "We will add one or more TXT records to the DNS records of your domain for ownership verification."
-msgstr "Sahiplik doğrulaması için alan adınızın DNS kayıtlarına bir veya daha fazla TXT kaydı ekleyeceğiz."
+msgid ""
+"We will add one or more TXT records to the DNS records of your domain for "
+"ownership verification."
+msgstr ""
+"Sahiplik doğrulaması için alan adınızın DNS kayıtlarına bir veya daha fazla "
+"TXT kaydı ekleyeceğiz."
 
 #: src/views/site/cert/components/ObtainCert.vue:134
 #, fuzzy
-msgid "We will remove the HTTPChallenge configuration from this file and reload the Nginx. Are you sure you want to continue?"
-msgstr "HTTPChallenge yapılandırmasını bu dosyadan kaldıracağız ve Nginx'i yeniden yükleyeceğiz. Devam etmek istediğinizden emin misiniz?"
+msgid ""
+"We will remove the HTTPChallenge configuration from this file and reload the "
+"Nginx. Are you sure you want to continue?"
+msgstr ""
+"HTTPChallenge yapılandırmasını bu dosyadan kaldıracağız ve Nginx'i yeniden "
+"yükleyeceğiz. Devam etmek istediğinizden emin misiniz?"
+
+#: src/views/preference/AuthSettings.vue:71
+msgid "Webauthn"
+msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:78
 #, fuzzy
-msgid "When Enabled, Nginx UI will automatically re-register users upon startup. Generally, do not enable this unless you are in a dev environment and using Pebble as CA."
-msgstr "Etkinleştirildiğinde, Nginx UI başlangıçta kullanıcıları otomatik olarak yeniden kaydeder. Genel olarak, bir geliştirme ortamında değilseniz ve CA olarak Pebble kullanmıyorsanız bunu etkinleştirmeyin."
+msgid ""
+"When Enabled, Nginx UI will automatically re-register users upon startup. "
+"Generally, do not enable this unless you are in a dev environment and using "
+"Pebble as CA."
+msgstr ""
+"Etkinleştirildiğinde, Nginx UI başlangıçta kullanıcıları otomatik olarak "
+"yeniden kaydeder. Genel olarak, bir geliştirme ortamında değilseniz ve CA "
+"olarak Pebble kullanmıyorsanız bunu etkinleştirmeyin."
 
 #: src/views/dashboard/ServerAnalytic.vue:27
 #: src/views/dashboard/ServerAnalytic.vue:368
@@ -2778,8 +2990,8 @@ msgstr "Sertifika özel anahtarını diske yazma"
 msgid "Writing certificate to disk"
 msgstr "Sertifikayı diske yazma"
 
-#: src/views/preference/AuthSettings.vue:103
-#: src/views/preference/BasicSettings.vue:100
+#: src/views/preference/AuthSettings.vue:137
+#: src/views/preference/CertSettings.vue:69
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:89
 #: src/views/site/ngx_conf/LocationEditor.vue:89
 #, fuzzy
@@ -2798,10 +3010,30 @@ msgstr "Nginx UI yükseltmesini bu sayfadan kontrol edebilirsiniz."
 
 #: src/views/preference/components/AddPasskey.vue:93
 #, fuzzy
-msgid "You have not configured the settings of Webauthn, so you cannot add a passkey."
-msgstr "Webauthn ayarlarını yapılandırmadınız, bu nedenle bir geçiş anahtarı ekleyemezsiniz."
+msgid ""
+"You have not configured the settings of Webauthn, so you cannot add a "
+"passkey."
+msgstr ""
+"Webauthn ayarlarını yapılandırmadınız, bu nedenle bir geçiş anahtarı "
+"ekleyemezsiniz."
 
 #: src/views/preference/components/Passkey.vue:81
 #, fuzzy
 msgid "Your passkeys"
 msgstr "Geçiş anahtarlarınız"
+
+#, fuzzy
+#~ msgid "File not found"
+#~ msgstr "Dosya bulunamadı"
+
+#, fuzzy
+#~ msgid "Server Name"
+#~ msgstr "Sunucu Adı"
+
+#, fuzzy
+#~ msgid ""
+#~ "The server name should only contain letters, unicode, numbers, hyphens, "
+#~ "dashes, and dots."
+#~ msgstr ""
+#~ "Sunucu adı yalnızca harf, unicode, sayı, kısa çizgi, tire ve nokta "
+#~ "içermelidir."

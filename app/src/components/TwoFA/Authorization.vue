@@ -46,7 +46,7 @@ async function passkeyAuthenticate() {
   passkeyLoading.value = true
   try {
     const begin = await twoFA.begin_start_secure_session_by_passkey()
-    const asseResp = await startAuthentication(begin.options.publicKey)
+    const asseResp = await startAuthentication({ optionsJSON: begin.options.publicKey })
 
     const r = await twoFA.finish_start_secure_session_by_passkey({
       session_id: begin.session_id,

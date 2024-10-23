@@ -1,7 +1,7 @@
 package analytic
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/uozi-tech/cosy/logger"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/load"
 	"github.com/shirou/gopsutil/v3/net"

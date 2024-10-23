@@ -3,7 +3,6 @@ package template
 import (
 	"bufio"
 	"bytes"
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 	templ "github.com/0xJacky/Nginx-UI/template"
@@ -11,6 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/tufanbarisyildirim/gonginx/parser"
+	"github.com/uozi-tech/cosy/logger"
+	cSettings "github.com/uozi-tech/cosy/settings"
 	"io"
 	"io/fs"
 	"path/filepath"
@@ -115,8 +116,8 @@ func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDet
 	}
 
 	data := gin.H{
-		"HTTPPORT":   settings.ServerSettings.HttpPort,
-		"HTTP01PORT": settings.ServerSettings.HTTPChallengePort,
+		"HTTPPORT":   cSettings.ServerSettings.Port,
+		"HTTP01PORT": settings.CertSettings.HTTPChallengePort,
 	}
 
 	for k, v := range bindData {

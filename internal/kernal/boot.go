@@ -8,14 +8,18 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/google/uuid"
+	"github.com/uozi-tech/cosy"
+	sqlite "github.com/uozi-tech/cosy-driver-sqlite"
+	"github.com/uozi-tech/cosy/logger"
+	cSettings "github.com/uozi-tech/cosy/settings"
 	"mime"
+	"path"
 	"runtime"
 )
 
@@ -23,6 +27,7 @@ func Boot() {
 	defer recovery()
 
 	async := []func(){
+		settings.Init,
 		InitJsExtensionType,
 		InitDatabase,
 		InitNodeSecret,
@@ -70,12 +75,13 @@ func recovery() {
 
 func InitDatabase() {
 	// Skip install
-	if settings.ServerSettings.SkipInstallation {
+	if settings.NodeSettings.SkipInstallation {
 		skipInstall()
 	}
 
-	if "" != settings.ServerSettings.JwtSecret {
-		db := model.Init()
+	if "" != cSettings.AppSettings.JwtSecret {
+		db := cosy.InitDB(sqlite.Open(path.Dir(cSettings.ConfPath), settings.DatabaseSettings))
+		model.Use(db)
 		query.Init(db)
 
 		InitAfterDatabase()
@@ -83,21 +89,22 @@ func InitDatabase() {
 }
 
 func InitNodeSecret() {
-	if "" == settings.ServerSettings.NodeSecret {
-		logger.Warn("NodeSecret is empty, generating...")
-		settings.ServerSettings.NodeSecret = uuid.New().String()
+	if "" == settings.NodeSettings.Secret {
+		logger.Info("Secret is empty, generating...")
+		uuidStr := uuid.New().String()
+		settings.NodeSettings.Secret = uuidStr
 
 		err := settings.Save()
 		if err != nil {
 			logger.Error("Error save settings", err)
 		}
-		logger.Warn("Generated NodeSecret: ", settings.ServerSettings.NodeSecret)
+		logger.Info("Generated Secret: ", uuidStr)
 	}
 }
 
 func InitCryptoSecret() {
 	if "" == settings.CryptoSettings.Secret {
-		logger.Warn("Secret is empty, generating...")
+		logger.Info("Secret is empty, generating...")
 
 		key := make([]byte, 32)
 		if _, err := rand.Read(key); err != nil {
@@ -111,7 +118,7 @@ func InitCryptoSecret() {
 		if err != nil {
 			logger.Error("Error save settings", err)
 		}
-		logger.Warn("Secret Generated")
+		logger.Info("Secret Generated")
 	}
 }
 

@@ -1,17 +1,24 @@
-version: '3'
 services:
-    nginx-demo-1:
-        image: uozi/nginx-ui-demo:latest
-        restart: always
-        networks:
-            - nginx-ui-network
-        ports:
-            - "9003:80"
+  nginx-demo-1:
+    image: uozi/nginx-ui-demo:latest
+    restart: always
+    networks:
+      - nginx-ui-network
+    environment:
+      - NGINX_UI_NODE_DEMO=true
+    ports:
+      - "9003:80"
 
-    nginx-demo-2:
-        image: uozi/nginx-ui-demo:latest
-        restart: always
-        networks:
-            - nginx-ui-network
+  nginx-demo-2:
+    image: uozi/nginx-ui-demo:latest
+    restart: always
+    environment:
+      - NGINX_UI_NODE_DEMO=true
+    networks:
+      - nginx-ui-network
+
 networks:
-    nginx-ui-network:
+  nginx-ui-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_ip_masquerade: 'false'

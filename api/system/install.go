@@ -8,12 +8,13 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	cSettings "github.com/uozi-tech/cosy/settings"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
 
 func installLockStatus() bool {
-	return settings.ServerSettings.SkipInstallation || "" != settings.ServerSettings.JwtSecret
+	return settings.NodeSettings.SkipInstallation || "" != cSettings.AppSettings.JwtSecret
 }
 
 func InstallLockCheck(c *gin.Context) {
@@ -43,11 +44,11 @@ func InstallNginxUI(c *gin.Context) {
 		return
 	}
 
-	settings.ServerSettings.JwtSecret = uuid.New().String()
-	settings.ServerSettings.NodeSecret = uuid.New().String()
-	settings.ServerSettings.Email = json.Email
+	cSettings.AppSettings.JwtSecret = uuid.New().String()
+	settings.NodeSettings.Secret = uuid.New().String()
+	settings.CertSettings.Email = json.Email
 	if "" != json.Database {
-		settings.ServerSettings.Database = json.Database
+		settings.DatabaseSettings.Name = json.Database
 	}
 
 	err := settings.Save()

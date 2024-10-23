@@ -1,29 +1,37 @@
 <script setup lang="ts">
-import type { Settings } from '@/views/preference/typedef'
+import type { Settings } from '@/api/settings'
 
 const data: Settings = inject('data')!
-const errors: Record<string, Record<string, string>> = inject('errors') as Record<string, Record<string, string>>
 </script>
 
 <template>
   <AForm layout="vertical">
-    <AFormItem
-      :label="$gettext('Nginx Access Log Path')"
-      :validate-status="errors?.nginx?.access_log_path ? 'error' : ''"
-      :help="errors?.nginx?.access_log_path === 'file'
-        ? $gettext('File not found')
-        : ''"
-    >
+    <AFormItem :label="$gettext('Nginx Access Log Path')">
       {{ data.nginx.access_log_path }}
     </AFormItem>
-    <AFormItem
-      :label="$gettext('Nginx Error Log Path')"
-      :validate-status="errors?.nginx?.error_log_path ? 'error' : ''"
-      :help="errors?.nginx?.error_log_path === 'file'
-        ? $gettext('File not found')
-        : ''"
-    >
+    <AFormItem :label="$gettext('Nginx Error Log Path')">
       {{ data.nginx.error_log_path }}
+    </AFormItem>
+    <AFormItem :label="$gettext('Nginx Configurations Directory')">
+      {{ data.nginx.config_dir }}
+    </AFormItem>
+    <AFormItem :label="$gettext('Nginx Log Directory Whitelist')">
+      <div
+        v-for="dir in data.nginx.log_dir_white_list"
+        :key="dir"
+        class="mb-2"
+      >
+        {{ dir }}
+      </div>
+    </AFormItem>
+    <AFormItem :label="$gettext('Nginx PID Path')">
+      {{ data.nginx.pid_path }}
+    </AFormItem>
+    <AFormItem :label="$gettext('Nginx Reload Command')">
+      {{ data.nginx.reload_cmd }}
+    </AFormItem>
+    <AFormItem :label="$gettext('Nginx Restart Command')">
+      {{ data.nginx.restart_cmd }}
     </AFormItem>
   </AForm>
 </template>

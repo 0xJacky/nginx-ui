@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/cache"
-	"github.com/0xJacky/Nginx-UI/internal/cosy"
-	"github.com/0xJacky/Nginx-UI/internal/logger"
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -15,6 +13,8 @@ import (
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/google/uuid"
 	"github.com/spf13/cast"
+	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 	"gorm.io/gorm"
 	"net/http"
 	"strings"
@@ -152,11 +152,13 @@ func FinishPasskeyLogin(c *gin.Context) {
 		return
 	}
 
+	secureSessionID := user.SetSecureSessionID(outUser.ID)
+
 	c.JSON(http.StatusOK, LoginResponse{
-		Code:    LoginSuccess,
-		Message: "ok",
-		Token:   token,
-		// SecureSessionID: secureSessionID,
+		Code:            LoginSuccess,
+		Message:         "ok",
+		Token:           token,
+		SecureSessionID: secureSessionID,
 	})
 }
 

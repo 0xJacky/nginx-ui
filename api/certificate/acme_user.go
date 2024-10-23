@@ -2,12 +2,12 @@ package certificate
 
 import (
 	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/internal/cosy"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
+	"github.com/uozi-tech/cosy"
 	"net/http"
 )
 
@@ -31,7 +31,7 @@ func CreateAcmeUser(c *gin.Context) {
 		"register_on_startup": "omitempty",
 	}).BeforeExecuteHook(func(ctx *cosy.Ctx[model.AcmeUser]) {
 		if ctx.Model.CADir == "" {
-			ctx.Model.CADir = settings.ServerSettings.GetCADir()
+			ctx.Model.CADir = settings.CertSettings.GetCADir()
 		}
 		err := ctx.Model.Register()
 		if err != nil {
@@ -50,7 +50,7 @@ func ModifyAcmeUser(c *gin.Context) {
 		"register_on_startup": "omitempty",
 	}).BeforeExecuteHook(func(ctx *cosy.Ctx[model.AcmeUser]) {
 		if ctx.Model.CADir == "" {
-			ctx.Model.CADir = settings.ServerSettings.GetCADir()
+			ctx.Model.CADir = settings.CertSettings.GetCADir()
 		}
 
 		if ctx.OriginModel.Email != ctx.Model.Email ||

@@ -2,12 +2,12 @@ package user
 
 import (
 	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/internal/cosy"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
+	"github.com/uozi-tech/cosy"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
@@ -71,7 +71,7 @@ func AddUser(c *gin.Context) {
 func EditUser(c *gin.Context) {
 	userId := cast.ToInt(c.Param("id"))
 
-	if settings.ServerSettings.Demo && userId == 1 {
+	if settings.NodeSettings.Demo && userId == 1 {
 		c.JSON(http.StatusNotAcceptable, gin.H{
 			"message": "Changing user password is forbidden in demo mode",
 		})

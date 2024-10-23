@@ -12,7 +12,7 @@ import (
 )
 
 func GetCurrentNode(c *gin.Context) {
-	if _, ok := c.Get("NodeSecret"); !ok {
+	if _, ok := c.Get("Secret"); !ok {
 		c.JSON(http.StatusNotAcceptable, gin.H{
 			"message": "node secret not exist",
 		})

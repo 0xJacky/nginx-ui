@@ -2,7 +2,7 @@ package certificate
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/cert"
-	"github.com/0xJacky/Nginx-UI/internal/logger"
+	"github.com/uozi-tech/cosy/logger"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/go-acme/lego/v4/certcrypto"
