@@ -48,7 +48,7 @@ function duplicate(index: number) {
 
 <template>
   <h3>{{ $gettext('Locations') }}</h3>
-  <AEmpty v-if="!locations" />
+  <AEmpty v-if="locations && locations?.length === 0" />
   <Draggable
     v-else
     :list="locations"

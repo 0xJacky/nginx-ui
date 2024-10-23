@@ -105,7 +105,10 @@ provide('ngx_config', ngx_config)
 
         <DirectiveEditor />
         <br>
-        <LocationEditor :locations="ngx_config.servers[0].locations" />
+        <LocationEditor
+          :locations="ngx_config.servers[0].locations"
+          :current-server-index="0"
+        />
         <br>
         <AAlert
           v-if="!has_server_name"

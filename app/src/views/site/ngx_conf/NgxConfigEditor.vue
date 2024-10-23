@@ -213,9 +213,9 @@ const activeKey = ref(['3'])
       >
         <NgxServer
           v-model:auto-cert="autoCertRef"
-          :enabled="enabled"
+          :enabled
           :cert-info="certInfo"
-          :context="context"
+          :context
         />
       </ACollapsePanel>
     </ACollapse>

@@ -44,7 +44,7 @@ const data = ref({})
 
 init()
 
-const advance_mode = computed({
+const advanceMode = computed({
   get() {
     return advance_mode_ref.value || parse_error_status.value
   },
@@ -57,10 +57,10 @@ const history_chatgpt_record = ref([]) as Ref<ChatComplicationMessage[]>
 
 function handle_response(r: Site) {
   if (r.advanced)
-    advance_mode.value = true
+    advanceMode.value = true
 
   if (r.advanced)
-    advance_mode.value = true
+    advanceMode.value = true
 
   parse_error_status.value = false
   parse_error_message.value = ''
@@ -97,7 +97,7 @@ function handle_parse_error(e: { error?: string; message: string }) {
 
 function on_mode_change(advanced: CheckedType) {
   domain.advance_mode(name.value, { advanced: advanced as boolean }).then(() => {
-    advance_mode.value = advanced as boolean
+    advanceMode.value = advanced as boolean
     if (advanced) {
       build_config()
     }
@@ -118,7 +118,7 @@ async function build_config() {
 const save = async () => {
   saving.value = true
 
-  if (!advance_mode.value) {
+  if (!advanceMode.value) {
     try {
       await build_config()
     }
@@ -187,11 +187,11 @@ provide('data', data)
               <ASwitch
                 size="small"
                 :disabled="parse_error_status"
-                :checked="advance_mode"
+                :checked="advanceMode"
                 @change="on_mode_change"
               />
             </div>
-            <template v-if="advance_mode">
+            <template v-if="advanceMode">
               <div>{{ $gettext('Advance Mode') }}</div>
             </template>
             <template v-else>
@@ -202,7 +202,7 @@ provide('data', data)
 
         <Transition name="slide-fade">
           <div
-            v-if="advance_mode"
+            v-if="advanceMode"
             key="advance"
           >
             <div
