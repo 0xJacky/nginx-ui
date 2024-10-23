@@ -289,6 +289,9 @@ install_config() {
     mkdir -p "$DataPath"
     if [[ ! -f "$DataPath/app.ini" ]]; then
 cat > "$DataPath/app.ini" << EOF
+[app]
+PageSize = 10
+
 [server]
 HOST = 0.0.0.0
 PORT = 9000

@@ -43,6 +43,7 @@ func init() {
 	t := time.Unix(cast.ToInt64(buildTime), 0)
 	LastModified = strings.ReplaceAll(t.Format(time.RFC1123), "UTC", "GMT")
 
+	sections.Set("database", DatabaseSettings)
 	sections.Set("auth", AuthSettings)
 	sections.Set("casdoor", CasdoorSettings)
 	sections.Set("cert", CertSettings)
@@ -86,7 +87,7 @@ func Init() {
 func Save() (err error) {
 	// fix unable to save empty slice
 	if len(CertSettings.RecursiveNameservers) == 0 {
-		settings.Conf.Section("server").Key("RecursiveNameservers").SetValue("")
+		settings.Conf.Section("cert").Key("RecursiveNameservers").SetValue("")
 	}
 
 	err = settings.Save()

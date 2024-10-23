@@ -74,6 +74,10 @@ func (v1 *serverV1) migrateToV2() (v2 *settingsV2) {
 	v2.Http.InsecureSkipVerify = v1.InsecureSkipVerify
 	v2.Node.Name = v1.Name
 
+	if v1.Database == "" {
+		v2.DataBase.Name = "database"
+	}
+
 	return
 }
 
