@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { Modal } from 'ant-design-vue'
-import type { ComputedRef } from 'vue'
-import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
-import template from '@/api/template'
-import type { NgxConfig, NgxDirective } from '@/api/ngx'
 import type { CertificateInfo } from '@/api/cert'
+import type { NgxConfig, NgxDirective } from '@/api/ngx'
+import type { CheckedType } from '@/types'
+import type { ComputedRef } from 'vue'
+import template from '@/api/template'
+import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
+import NginxStatusAlert from '@/views/site/ngx_conf/NginxStatusAlert.vue'
 import NgxServer from '@/views/site/ngx_conf/NgxServer.vue'
 import NgxUpstream from '@/views/site/ngx_conf/NgxUpstream.vue'
-import type { CheckedType } from '@/types'
-import NginxStatusAlert from '@/views/site/ngx_conf/NginxStatusAlert.vue'
+import { Modal } from 'ant-design-vue'
 
 const props = withDefaults(defineProps<{
   autoCert?: boolean
@@ -91,7 +91,6 @@ const directivesMap: ComputedRef<Record<string, NgxDirective[]>> = computed(() =
   return record
 })
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 function change_tls(status: CheckedType) {
   if (status) {
     // deep copy servers[0] to servers[1]

@@ -1,11 +1,13 @@
 {
   "name": "nginx-ui-app-next",
-  "version": "2.0.0-beta.36",
   "type": "module",
+  "version": "2.0.0-beta.36",
+  "packageManager": "pnpm@9.10.0",
   "scripts": {
     "dev": "vite --host",
     "typecheck": "vue-tsc --noEmit",
-    "lint": "eslint . -c .eslintrc.cjs --fix --ext .ts,.vue,.tsx,.d.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "build": "vite build",
     "preview": "vite preview",
     "gettext:extract": "vue-gettext-extract"
@@ -39,6 +41,7 @@
     "universal-cookie": "^7.2.1",
     "vite-plugin-build-id": "0.4.2",
     "vue": "^3.5.12",
+    "vue-dompurify-html": "^5.1.0",
     "vue-router": "^4.4.5",
     "vue3-ace-editor": "2.2.4",
     "vue3-apexcharts": "1.5.3",
@@ -47,26 +50,19 @@
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config-vue": "^0.43.1",
+    "@antfu/eslint-config": "^3.8.0",
     "@simplewebauthn/types": "^11.0.0",
     "@types/lodash": "^4.17.12",
     "@types/nprogress": "^0.2.3",
     "@types/sortablejs": "^1.15.8",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
     "@vue/compiler-sfc": "^3.5.12",
     "@vue/tsconfig": "^0.5.1",
     "ace-builds": "^1.36.3",
     "autoprefixer": "^10.4.20",
-    "eslint": "^8.57.1",
-    "eslint-import-resolver-alias": "^1.1.2",
-    "eslint-import-resolver-typescript": "^3.6.3",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-regex": "^1.10.0",
-    "eslint-plugin-sonarjs": "^0.23.0",
-    "eslint-plugin-vue": "^9.29.1",
+    "eslint": "^9.13.0",
+    "eslint-plugin-sonarjs": "^2.0.4",
     "less": "^4.2.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
@@ -74,9 +70,8 @@
     "unplugin-auto-import": "^0.18.3",
     "unplugin-vue-components": "^0.27.4",
     "unplugin-vue-define-options": "^1.5.2",
-    "vite": "^5.4.9",
+    "vite": "^5.4.10",
     "vite-svg-loader": "^5.1.0",
     "vue-tsc": "^2.1.6"
-  },
-  "packageManager": "pnpm@9.10.0"
+  }
 }

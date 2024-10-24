@@ -1,6 +1,6 @@
+import type { DNSProvider } from '@/api/auto_cert'
 import type { ModelBase } from '@/api/curd'
 import Curd from '@/api/curd'
-import type { DNSProvider } from '@/api/auto_cert'
 
 export interface DnsCredential extends ModelBase {
   name: string

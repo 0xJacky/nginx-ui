@@ -1,7 +1,8 @@
-import Curd, {Pagination} from '@/api/curd'
-import {Ref} from 'vue'
-import type {JSX} from 'vue/jsx'
-import {TableColumnType} from "ant-design-vue"
+import type { Pagination } from '@/api/curd'
+import type Curd from '@/api/curd'
+import type { TableColumnType } from 'ant-design-vue'
+import type { Ref } from 'vue'
+import type { JSX } from 'vue/jsx'
 
 export type JSXElements = JSX.Element[]
 
@@ -25,7 +26,7 @@ export interface StdDesignEdit {
   }
 
   selector?: {
-    getParams?: {}
+    getParams?: object
     recordValueIndex: any // relative to api return
     selectionType: any
     api: Curd
@@ -52,7 +53,7 @@ export interface StdDesignEdit {
     max?: number // max value for input number
     error_messages?: Ref
     required?: boolean
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line ts/no-explicit-any
     defaultValue?: any
     addonBefore?: string // for inputNumber
     addonAfter?: string // for inputNumber
@@ -63,12 +64,14 @@ export interface StdDesignEdit {
   flex?: Flex
 }
 
+type FlexType = string | number | boolean
+
 export interface Flex {
-  sm?: string | number | boolean
-  md?: string | number | boolean
-  lg?: string | number | boolean
-  xl?: string | number | boolean
-  xxl?: string | number | boolean
+  sm?: FlexType
+  md?: FlexType
+  lg?: FlexType
+  xl?: FlexType
+  xxl?: FlexType
 }
 
 export interface Column extends TableColumnType {
@@ -88,7 +91,7 @@ export interface Column extends TableColumnType {
   batch?: boolean
   customRender?: function
   selector?: {
-    getParams?: {}
+    getParams?: object
     recordValueIndex: any // relative to api return
     selectionType: any
     api: Curd

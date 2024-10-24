@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
-import type { Ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
-import settings from '@/api/settings'
-import BasicSettings from '@/views/preference/BasicSettings.vue'
-import OpenAISettings from '@/views/preference/OpenAISettings.vue'
-import NginxSettings from '@/views/preference/NginxSettings.vue'
 import type { Settings } from '@/api/settings'
-import LogrotateSettings from '@/views/preference/LogrotateSettings.vue'
+import type { Ref } from 'vue'
+import settings from '@/api/settings'
+import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
+import use2FAModal from '@/components/TwoFA/use2FAModal'
 import { useSettingsStore } from '@/pinia'
 import AuthSettings from '@/views/preference/AuthSettings.vue'
-import use2FAModal from '@/components/TwoFA/use2FAModal'
+import BasicSettings from '@/views/preference/BasicSettings.vue'
 import CertSettings from '@/views/preference/CertSettings.vue'
+import LogrotateSettings from '@/views/preference/LogrotateSettings.vue'
+import NginxSettings from '@/views/preference/NginxSettings.vue'
+import OpenAISettings from '@/views/preference/OpenAISettings.vue'
+import { message } from 'ant-design-vue'
+import { storeToRefs } from 'pinia'
 
 const data = ref<Settings>({
   app: {
@@ -135,7 +135,6 @@ onMounted(() => {
   if (route.query?.tab)
     activeKey.value = route.query.tab.toString()
 })
-
 </script>
 
 <template>

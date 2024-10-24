@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import _ from 'lodash'
-import { useSettingsStore } from '@/pinia'
 import type { Variable } from '@/api/template'
+import { useSettingsStore } from '@/pinia'
+import _ from 'lodash'
+import { storeToRefs } from 'pinia'
 
 const data = defineModel<Variable>({
   default: () => {},

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type ReconnectingWebSocket from 'reconnecting-websocket'
-import { debounce } from 'lodash'
-import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import type { INginxLogData } from '@/api/nginx_log'
+import type ReconnectingWebSocket from 'reconnecting-websocket'
 import nginx_log from '@/api/nginx_log'
+import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import ws from '@/lib/websocket'
+import { debounce } from 'lodash'
 
 const logContainer = ref()
 let websocket: ReconnectingWebSocket | WebSocket
@@ -24,7 +24,9 @@ const control: INginxLogData = reactive({
 })
 
 function logType() {
-  return route.path.indexOf('access') > 0 ? 'access' : route.path.indexOf('error') > 0 ? 'error' : 'site'
+  if (route.path.indexOf('access') > 0)
+    return 'access'
+  return route.path.indexOf('error') > 0 ? 'error' : 'site'
 }
 
 function openWs() {
@@ -162,8 +164,9 @@ const computedBuffer = computed(() => {
         ref="logContainer"
         class="nginx-log-container"
         @scroll="debounce_scroll_log"
-        v-html="computedBuffer"
-      />
+      >
+        {{ computedBuffer }}
+      </pre>
     </ACard>
     <FooterToolBar v-if="control.type === 'site'">
       <AButton @click="router.go(-1)">

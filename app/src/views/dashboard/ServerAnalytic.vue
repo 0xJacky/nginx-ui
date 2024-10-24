@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import type { CPUInfoStat, DiskStat, HostInfoStat, LoadStat, MemStat } from '@/api/analytic'
+import type { Series } from '@/components/Chart/types'
 import type ReconnectingWebSocket from 'reconnecting-websocket'
+import analytic from '@/api/analytic'
 import AreaChart from '@/components/Chart/AreaChart.vue'
 import RadialBarChart from '@/components/Chart/RadialBarChart.vue'
-import type { CPUInfoStat, DiskStat, HostInfoStat, LoadStat, MemStat } from '@/api/analytic'
-import analytic from '@/api/analytic'
 import { bytesToSize } from '@/lib/helper'
-import type { Series } from '@/components/Chart/types'
 
 let websocket: ReconnectingWebSocket | WebSocket
 
@@ -21,11 +21,9 @@ const cpu = ref('0.0')
 const cpu_info = reactive([]) as CPUInfoStat[]
 const cpu_analytic_series = reactive([{ name: 'User', data: [] }, { name: 'Total', data: [] }]) as Series[]
 
-const net_analytic = reactive([{ name: $gettext('Receive'), data: [] },
-  { name: $gettext('Send'), data: [] }]) as Series[]
+const net_analytic = reactive([{ name: $gettext('Receive'), data: [] }, { name: $gettext('Send'), data: [] }]) as Series[]
 
-const disk_io_analytic = reactive([{ name: $gettext('Writes'), data: [] },
-  { name: $gettext('Reads'), data: [] }]) as Series[]
+const disk_io_analytic = reactive([{ name: $gettext('Writes'), data: [] }, { name: $gettext('Reads'), data: [] }]) as Series[]
 
 const memory = reactive({
   total: '',
@@ -45,11 +43,11 @@ const uptime = ref('')
 const loadavg = reactive({ load1: 0, load5: 0, load15: 0 }) as LoadStat
 const net = reactive({ recv: 0, sent: 0, last_recv: 0, last_sent: 0 })
 
-const net_formatter = (bytes: number) => {
+function net_formatter(bytes: number) {
   return `${bytesToSize(bytes)}/s`
 }
 
-const cpu_formatter = (usage: number) => {
+function cpu_formatter(usage: number) {
   return usage.toFixed(2)
 }
 

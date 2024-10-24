@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import type { AutoCertOptions } from '@/api/auto_cert'
+import type { CertificateResult } from '@/api/cert'
 import type { Ref } from 'vue'
 import websocket from '@/lib/websocket'
-import type { CertificateResult } from '@/api/cert'
-import type { AutoCertOptions } from '@/api/auto_cert'
 
 const props = defineProps<{
   options: AutoCertOptions
@@ -33,7 +33,7 @@ function log(msg: string) {
   logContainer.value?.scroll({ top: 100000, left: 0, behavior: 'smooth' })
 }
 
-const issue_cert = async (config_name: string, server_name: string[], key_type: string) => {
+async function issue_cert(config_name: string, server_name: string[], key_type: string) {
   return new Promise<CertificateResult>((resolve, reject) => {
     progressStatus.value = 'active'
     modalClosable.value = false

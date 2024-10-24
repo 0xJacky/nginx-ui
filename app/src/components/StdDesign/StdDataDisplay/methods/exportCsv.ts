@@ -1,14 +1,14 @@
+import type { StdTableProps } from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
+import type { Column, StdTableResponse } from '@/components/StdDesign/types'
+import type { ComputedRef } from 'vue'
+import { downloadCsv } from '@/lib/helper'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import type { ComputedRef } from 'vue'
 import _ from 'lodash'
-import { downloadCsv } from '@/lib/helper'
-import type { Column, StdTableResponse } from '@/components/StdDesign/types'
-import type { StdTableProps } from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 
 async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[]>) {
-  const header: { title?: string; key: Column['dataIndex'] }[] = []
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const header: { title?: string, key: Column['dataIndex'] }[] = []
+  // eslint-disable-next-line ts/no-explicit-any
   const headerKeys: any[] = []
   const showColumnsMap: Record<string, Column> = {}
 
@@ -26,33 +26,31 @@ async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[
     showColumnsMap[column?.dataIndex?.toString() as string] = column
   })
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   const dataSource: any[] = []
   let hasMore = true
   let page = 1
   while (hasMore) {
     // 准备 DataSource
     await props
-      .api!.get_list({ page })
-      .then((r: StdTableResponse) => {
-        if (r.data.length === 0) {
-          hasMore = false
-
-          return
-        }
-        dataSource.push(...r.data)
-      })
-      .catch((e: { message?: string }) => {
-        message.error(e.message ?? $gettext('Server error'))
+      .api!.get_list({ page }).then((r: StdTableResponse) => {
+      if (r.data.length === 0) {
         hasMore = false
-      })
+
+        return
+      }
+      dataSource.push(...r.data)
+    }).catch((e: { message?: string }) => {
+      message.error(e.message ?? $gettext('Server error'))
+      hasMore = false
+    })
     page += 1
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   const data: any[] = []
 
   dataSource.forEach(row => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line ts/no-explicit-any
     const obj: Record<string, any> = {}
 
     headerKeys.forEach(key => {

@@ -1,5 +1,5 @@
-import Curd from '@/api/curd'
 import type { ChatComplicationMessage } from '@/api/openai'
+import Curd from '@/api/curd'
 import http from '@/lib/http'
 
 export interface Config {

@@ -23,7 +23,7 @@ const twoFA = {
   begin_start_secure_session_by_passkey() {
     return http.get('/2fa_secure_session/passkey')
   },
-  finish_start_secure_session_by_passkey(data: { session_id: string; options: AuthenticationResponseJSON }): Promise<{
+  finish_start_secure_session_by_passkey(data: { session_id: string, options: AuthenticationResponseJSON }): Promise<{
     session_id: string
   }> {
     return http.post('/2fa_secure_session/passkey', data.options, {

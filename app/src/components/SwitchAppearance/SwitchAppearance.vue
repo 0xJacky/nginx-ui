@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { Ref } from 'vue'
-import VPIconMoon from './icons/VPIconMoon.vue'
-import VPIconSun from './icons/VPIconSun.vue'
 import VPSwitch from '@/components/VPSwitch/VPSwitch.vue'
 import { useSettingsStore } from '@/pinia'
+import VPIconMoon from './icons/VPIconMoon.vue'
+import VPIconSun from './icons/VPIconSun.vue'
 
 const settings = useSettingsStore()
 const devicePrefersTheme = inject('devicePrefersTheme') as Ref<string>

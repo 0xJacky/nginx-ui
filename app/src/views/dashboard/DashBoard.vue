@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ServerAnalytic from '@/views/dashboard/ServerAnalytic.vue'
 import Environments from '@/views/dashboard/Environments.vue'
+import ServerAnalytic from '@/views/dashboard/ServerAnalytic.vue'
 
 const key = ref(0)
 

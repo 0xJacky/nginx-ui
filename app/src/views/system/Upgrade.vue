@@ -1,14 +1,13 @@
 <script setup lang="ts">
+import type { RuntimeInfo } from '@/api/upgrade'
 import type { Ref } from 'vue'
-import dayjs from 'dayjs'
-import { marked } from 'marked'
+import upgrade from '@/api/upgrade'
 
-import { message } from 'ant-design-vue'
-import { useRoute } from 'vue-router'
 import websocket from '@/lib/websocket'
 import version from '@/version.json'
-import type { RuntimeInfo } from '@/api/upgrade'
-import upgrade from '@/api/upgrade'
+import { message } from 'ant-design-vue'
+import dayjs from 'dayjs'
+import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const data = ref({}) as Ref<RuntimeInfo>
@@ -249,7 +248,7 @@ async function performUpgrade() {
         </h2>
 
         <h3>{{ $gettext('Release Note') }}</h3>
-        <div v-html="marked.parse(data.body)" />
+        <div vue-dompurify-html="marked.parse(data.body)" />
       </template>
     </div>
   </ACard>

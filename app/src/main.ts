@@ -1,11 +1,12 @@
-import { createApp } from 'vue'
+import { useSettingsStore } from '@/pinia'
+import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
-import gettext from './gettext'
+import { createApp } from 'vue'
+import VueDOMPurifyHTML from 'vue-dompurify-html'
 import App from './App.vue'
+import gettext from './gettext'
 import router from './routes'
-import { useSettingsStore } from '@/pinia'
 import './style.css'
 
 const pinia = createPinia()
@@ -15,6 +16,7 @@ const app = createApp(App)
 pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(gettext)
+app.use(VueDOMPurifyHTML)
 
 // after pinia created
 const settings = useSettingsStore()

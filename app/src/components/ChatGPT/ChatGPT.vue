@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import nginx from 'highlight.js/lib/languages/nginx'
-import Icon, { SendOutlined } from '@ant-design/icons-vue'
-import { storeToRefs } from 'pinia'
-import { Marked } from 'marked'
-import hljs from 'highlight.js'
-import { markedHighlight } from 'marked-highlight'
-import type { Ref } from 'vue'
-import { urlJoin } from '@/lib/helper'
-import { useSettingsStore, useUserStore } from '@/pinia'
-import 'highlight.js/styles/vs2015.css'
-
 import type { ChatComplicationMessage } from '@/api/openai'
+import type { Ref } from 'vue'
 import openai from '@/api/openai'
 import ChatGPT_logo from '@/assets/svg/ChatGPT_logo.svg?component'
+import { urlJoin } from '@/lib/helper'
+import { useSettingsStore, useUserStore } from '@/pinia'
+import Icon, { SendOutlined } from '@ant-design/icons-vue'
+import hljs from 'highlight.js'
+import nginx from 'highlight.js/lib/languages/nginx'
+import { Marked } from 'marked'
+
+import { markedHighlight } from 'marked-highlight'
+import { storeToRefs } from 'pinia'
+import 'highlight.js/styles/vs2015.css'
 
 const props = defineProps<{
   content: string
@@ -40,7 +40,6 @@ watch(history_messages, () => {
 const loading = ref(false)
 const ask_buffer = ref('')
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 async function request() {
   loading.value = true
 
@@ -82,7 +81,7 @@ async function request() {
       }
       apply(value!)
     }
-    catch (e) {
+    catch {
       break
     }
   }
@@ -172,7 +171,8 @@ const marked = new Marked(
 
       return `<pre><code class="hljs ${language}">${highlightedCode}</code></pre>`
     },
-  }))
+  }),
+)
 
 marked.setOptions({
   pedantic: false,
@@ -238,8 +238,8 @@ const show = computed(() => !messages.value || messages.value?.length === 0)
             <template #content>
               <div
                 v-if="item.role === 'assistant' || editing_idx !== index"
+                v-dompurify-html="marked.parse(item.content)"
                 class="content"
-                v-html="marked.parse(item.content)"
               />
               <AInput
                 v-else

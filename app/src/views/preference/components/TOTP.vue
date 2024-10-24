@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
-import { CheckCircleOutlined } from '@ant-design/icons-vue'
-import { UseClipboard } from '@vueuse/components'
+import twoFA from '@/api/2fa'
 import otp from '@/api/otp'
 import OTPInput from '@/components/OTPInput/OTPInput.vue'
+import { CheckCircleOutlined } from '@ant-design/icons-vue'
+import { UseClipboard } from '@vueuse/components'
 
-import twoFA from '@/api/2fa'
+import { message } from 'ant-design-vue'
 
 const status = ref(false)
 const enrolling = ref(false)

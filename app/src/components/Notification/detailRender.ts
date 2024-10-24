@@ -1,4 +1,4 @@
-import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { syncCertificateError, syncCertificateSuccess } from '@/components/Notification/cert'
 import {
   syncConfigError,
@@ -7,7 +7,7 @@ import {
   syncRenameConfigSuccess,
 } from '@/components/Notification/config'
 
-export const detailRender = (args: customRender) => {
+export function detailRender(args: CustomRenderProps) {
   switch (args.record.title) {
     case 'Sync Certificate Success':
       return syncCertificateSuccess(args.text)

@@ -1,27 +1,27 @@
-// text, record, index, column
-import dayjs from 'dayjs'
 import type { JSX } from 'vue/jsx-runtime'
 import { Tag } from 'ant-design-vue'
+// text, record, index, column
+import dayjs from 'dayjs'
 import { get } from 'lodash'
 
-export interface customRender {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface CustomRenderProps {
+  // eslint-disable-next-line ts/no-explicit-any
   text: any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   record: any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   index: any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   column: any
   isExport?: boolean
   isDetail?: boolean
 }
 
-export const datetime = (args: customRender) => {
+export function datetime(args: CustomRenderProps) {
   return dayjs(args.text).format('YYYY-MM-DD HH:mm:ss')
 }
 
-export const date = (args: customRender) => {
+export function date(args: CustomRenderProps) {
   return args.text ? dayjs(args.text).format('YYYY-MM-DD') : '-'
 }
 
@@ -29,10 +29,10 @@ export const date = (args: customRender) => {
 date.isDate = true
 datetime.isDatetime = true
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const mask = (maskObj: any): (args: customRender) => JSX.Element => {
-  return (args: customRender) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
+export function mask(maskObj: any): (args: CustomRenderProps) => JSX.Element {
+  return (args: CustomRenderProps) => {
+    // eslint-disable-next-line ts/no-explicit-any
     let v: any
 
     if (typeof maskObj?.[args.text] === 'function')
@@ -45,15 +45,15 @@ export const mask = (maskObj: any): (args: customRender) => JSX.Element => {
   }
 }
 
-export const arrayToTextRender = (args: customRender) => {
+export function arrayToTextRender(args: CustomRenderProps) {
   return args.text?.join(', ')
 }
-export const actualValueRender = (args: customRender, actualDataIndex: string | string[]) => {
+export function actualValueRender(args: CustomRenderProps, actualDataIndex: string | string[]) {
   return get(args.record, actualDataIndex)
 }
 
-export const longTextWithEllipsis = (len: number): (args: customRender) => JSX.Element => {
-  return (args: customRender) => {
+export function longTextWithEllipsis(len: number): (args: CustomRenderProps) => JSX.Element {
+  return (args: CustomRenderProps) => {
     if (args.isExport || args.isDetail)
       return args.text
 
@@ -61,29 +61,31 @@ export const longTextWithEllipsis = (len: number): (args: customRender) => JSX.E
   }
 }
 
-export const year = (args: customRender) => {
+export function year(args: CustomRenderProps) {
   return dayjs(args.text).format('YYYY')
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const maskRenderWithColor = (maskObj: any) => (args: customRender) => {
-  let label: string
-  if (typeof maskObj[args.text] === 'function')
-    label = maskObj[args.text]()
-  else if (typeof maskObj[args.text] === 'string')
-    label = maskObj[args.text]
-  else label = args.text
+// eslint-disable-next-line ts/no-explicit-any
+export function maskRenderWithColor(maskObj: any) {
+  return (args: CustomRenderProps) => {
+    let label: string
+    if (typeof maskObj[args.text] === 'function')
+      label = maskObj[args.text]()
+    else if (typeof maskObj[args.text] === 'string')
+      label = maskObj[args.text]
+    else label = args.text
 
-  if (args.isExport)
-    return label
+    if (args.isExport)
+      return label
 
-  const colorMap = {
-    0: '',
-    1: 'blue',
-    2: 'green',
-    3: 'red',
-    4: 'cyan',
+    const colorMap = {
+      0: '',
+      1: 'blue',
+      2: 'green',
+      3: 'red',
+      4: 'cyan',
+    }
+
+    return args.text ? h(Tag, { color: colorMap[args.text] }, maskObj[args.text]) : '-'
   }
-
-  return args.text ? h(Tag, { color: colorMap[args.text] }, maskObj[args.text]) : '-'
 }

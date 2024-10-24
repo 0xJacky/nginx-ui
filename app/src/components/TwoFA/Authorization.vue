@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import type { TwoFAStatusResponse } from '@/api/2fa'
+import twoFA from '@/api/2fa'
+import OTPInput from '@/components/OTPInput/OTPInput.vue'
+import { useUserStore } from '@/pinia'
 import { KeyOutlined } from '@ant-design/icons-vue'
 import { startAuthentication } from '@simplewebauthn/browser'
 import { message } from 'ant-design-vue'
-import OTPInput from '@/components/OTPInput/OTPInput.vue'
-import type { TwoFAStatusResponse } from '@/api/2fa'
-import twoFA from '@/api/2fa'
-import { useUserStore } from '@/pinia'
 
 defineProps<{
   twoFAStatus: TwoFAStatusResponse
@@ -55,7 +55,7 @@ async function passkeyAuthenticate() {
 
     emit('submitSecureSessionID', r.session_id)
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   catch (e: any) {
     message.error($gettext(e.message ?? 'Server error'))
   }

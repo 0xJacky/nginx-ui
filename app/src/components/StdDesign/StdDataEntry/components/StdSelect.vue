@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import type { SelectProps } from 'ant-design-vue'
+import { ref } from 'vue'
 
 const props = defineProps<{
   mask?: Record<string | number, string | (() => string)> | (() => Promise<Record<string | number, string>>)
   placeholder?: string
   multiple?: boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   defaultValue?: any
 }>()
 
 const selectedValue = defineModel<string | number | string[] | number[]>('value')
 const options = ref<SelectProps['options']>([])
 
-const loadOptions = async () => {
+async function loadOptions() {
   options.value = []
   let actualValue: number | string
   if (typeof props.mask === 'function') {
@@ -45,7 +45,7 @@ const loadOptions = async () => {
   }
 }
 
-const init = () => {
+function init() {
   loadOptions()
 }
 

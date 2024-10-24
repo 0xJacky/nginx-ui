@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import type { NgxConfig, NgxDirective } from '@/api/ngx'
+import type { UpstreamStatus } from '@/api/upstream'
+import upstream from '@/api/upstream'
+import DirectiveEditor from '@/views/site/ngx_conf/directive/DirectiveEditor.vue'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { Modal } from 'ant-design-vue'
 import _ from 'lodash'
-import type { NgxConfig, NgxDirective } from '@/api/ngx'
-import DirectiveEditor from '@/views/site/ngx_conf/directive/DirectiveEditor.vue'
-import type { UpstreamStatus } from '@/api/upstream'
-import upstream from '@/api/upstream'
 
 const [modal, ContextHolder] = Modal.useModal()
 

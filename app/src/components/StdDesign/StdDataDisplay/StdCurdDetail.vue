@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { ComputedRef } from 'vue'
-import _ from 'lodash'
 import type { Column } from '@/components/StdDesign/types'
-import { labelRender } from '@/components/StdDesign/StdDataEntry'
+import type { ComputedRef } from 'vue'
 import { CustomRender } from '@/components/StdDesign/StdDataDisplay/components/CustomRender'
+import { labelRender } from '@/components/StdDesign/StdDataEntry'
+import _ from 'lodash'
 
 const props = defineProps<{
   columns: Column[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   data: any
 }>()
 

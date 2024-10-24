@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { type ComputedRef, reactive, ref } from 'vue'
-import { DeleteOutlined } from '@ant-design/icons-vue'
-import CodeEditor from '@/components/CodeEditor'
 import type { NgxDirective } from '@/api/ngx'
+import CodeEditor from '@/components/CodeEditor'
+import { DeleteOutlined } from '@ant-design/icons-vue'
+import { type ComputedRef, reactive, ref } from 'vue'
 
 const props = defineProps<{
   idx?: number

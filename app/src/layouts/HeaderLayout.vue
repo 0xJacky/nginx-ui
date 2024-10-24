@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
-import { HomeOutlined, LogoutOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
-import { useRouter } from 'vue-router'
-import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import auth from '@/api/auth'
 import NginxControl from '@/components/NginxControl/NginxControl.vue'
-import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
 import Notification from '@/components/Notification/Notification.vue'
+import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
+import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
+import { HomeOutlined, LogoutOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
+import { useRouter } from 'vue-router'
 
 const emit = defineEmits<{
   clickUnFold: [void]

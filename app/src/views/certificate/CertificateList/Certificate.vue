@@ -1,9 +1,9 @@
 <script setup lang="tsx">
+import cert from '@/api/cert'
+import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
+import WildcardCertificate from '@/views/certificate/WildcardCertificate.vue'
 import { CloudUploadOutlined, SafetyCertificateOutlined } from '@ant-design/icons-vue'
 import certColumns from './certColumns'
-import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
-import cert from '@/api/cert'
-import WildcardCertificate from '@/views/certificate/WildcardCertificate.vue'
 
 const refWildcard = ref()
 const refTable = ref()

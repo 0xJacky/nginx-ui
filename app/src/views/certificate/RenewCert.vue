@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
-import ObtainCertLive from '@/views/site/cert/components/ObtainCertLive.vue'
 import type { AutoCertOptions } from '@/api/auto_cert'
+import ObtainCertLive from '@/views/site/cert/components/ObtainCertLive.vue'
+import { message } from 'ant-design-vue'
 
 const props = defineProps<{
   options: AutoCertOptions
@@ -16,7 +16,7 @@ const modalClosable = ref(true)
 
 const refObtainCertLive = ref()
 
-const issueCert = () => {
+function issueCert() {
   modalVisible.value = true
 
   const { name, domains, key_type } = props.options

@@ -1,6 +1,6 @@
-import http from '@/lib/http'
 import type { ModelBase } from '@/api/curd'
 import Curd from '@/api/curd'
+import http from '@/lib/http'
 
 export interface Environment extends ModelBase {
   name: string

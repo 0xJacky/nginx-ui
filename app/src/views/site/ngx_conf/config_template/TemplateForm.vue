@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import TemplateFormItem from '@/views/site/ngx_conf/config_template/TemplateFormItem.vue'
 import type { Variable } from '@/api/template'
+import TemplateFormItem from '@/views/site/ngx_conf/config_template/TemplateFormItem.vue'
 
 const data = defineModel<Record<string, Variable>>({
   default: () => {},

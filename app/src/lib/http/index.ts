@@ -1,12 +1,12 @@
 import type { AxiosRequestConfig } from 'axios'
-import axios from 'axios'
-import { storeToRefs } from 'pinia'
-import NProgress from 'nprogress'
-import { useSettingsStore, useUserStore } from '@/pinia'
-import 'nprogress/nprogress.css'
-
-import router from '@/routes'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
+import { useSettingsStore, useUserStore } from '@/pinia'
+import router from '@/routes'
+import axios from 'axios'
+import NProgress from 'nprogress'
+
+import { storeToRefs } from 'pinia'
+import 'nprogress/nprogress.css'
 
 const user = useUserStore()
 const settings = useSettingsStore()
@@ -30,17 +30,17 @@ instance.interceptors.request.use(
   config => {
     NProgress.start()
     if (token.value) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line ts/no-explicit-any
       (config.headers as any).Authorization = token.value
     }
 
     if (settings.environment.id) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line ts/no-explicit-any
       (config.headers as any)['X-Node-ID'] = settings.environment.id
     }
 
     if (secureSessionId.value) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line ts/no-explicit-any
       (config.headers as any)['X-Secure-Session-ID'] = secureSessionId.value
     }
 
@@ -78,25 +78,25 @@ instance.interceptors.response.use(
 
 const http = {
   get(url: string, config: AxiosRequestConfig = {}) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line ts/no-explicit-any
     return instance.get<any, any>(url, config)
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   post(url: string, data: any = undefined, config: AxiosRequestConfig = {}) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line ts/no-explicit-any
     return instance.post<any, any>(url, data, config)
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   put(url: string, data: any = undefined, config: AxiosRequestConfig = {}) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line ts/no-explicit-any
     return instance.put<any, any>(url, data, config)
   },
   delete(url: string, config: AxiosRequestConfig = {}) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line ts/no-explicit-any
     return instance.delete<any, any>(url, config)
   },
   patch(url: string, config: AxiosRequestConfig = {}) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line ts/no-explicit-any
     return instance.patch<any, any>(url, config)
   },
 }

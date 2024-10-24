@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { KeyOutlined, LockOutlined, UserOutlined } from '@ant-design/icons-vue'
-import { Form, message } from 'ant-design-vue'
-import { startAuthentication } from '@simplewebauthn/browser'
-import { useUserStore } from '@/pinia'
 import auth from '@/api/auth'
 import install from '@/api/install'
+import passkey from '@/api/passkey'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
 import Authorization from '@/components/TwoFA/Authorization.vue'
 import gettext from '@/gettext'
-import passkey from '@/api/passkey'
+import { useUserStore } from '@/pinia'
+import { KeyOutlined, LockOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { startAuthentication } from '@simplewebauthn/browser'
+import { Form, message } from 'ant-design-vue'
 
 const thisYear = new Date().getFullYear()
 
@@ -53,7 +53,7 @@ const userStore = useUserStore()
 const { login, passkeyLogin } = userStore
 const { secureSessionId } = storeToRefs(userStore)
 
-const onSubmit = () => {
+function onSubmit() {
   validate().then(async () => {
     loading.value = true
 
@@ -121,7 +121,7 @@ auth.get_casdoor_uri()
     message.error($gettext(e.message ?? 'Server error'))
   })
 
-const loginWithCasdoor = () => {
+function loginWithCasdoor() {
   window.location.href = casdoor_uri.value
 }
 
@@ -172,7 +172,7 @@ async function handlePasskeyLogin() {
       await router.push(next)
     }
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   catch (e: any) {
     message.error($gettext(e.message ?? 'Server error'))
   }

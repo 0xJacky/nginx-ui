@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
 import type { NginxStatus } from '@/constants'
+import { defineStore } from 'pinia'
 
 export const useGlobalStore = defineStore('global', () => {
   const nginxStatus:

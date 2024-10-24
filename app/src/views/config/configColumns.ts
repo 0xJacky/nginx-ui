@@ -1,8 +1,8 @@
-import { h } from 'vue'
-import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { JSXElements } from '@/components/StdDesign/types'
+import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input } from '@/components/StdDesign/StdDataEntry'
+import { h } from 'vue'
 
 const configColumns = [{
   title: () => $gettext('Name'),
@@ -15,7 +15,7 @@ const configColumns = [{
 }, {
   title: () => $gettext('Type'),
   dataIndex: 'is_dir',
-  customRender: (args: customRender) => {
+  customRender: (args: CustomRenderProps) => {
     const template: JSXElements = []
     const { text } = args
     if (text === true || text > 0)

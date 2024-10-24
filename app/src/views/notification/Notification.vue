@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
-import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import notification from '@/api/notification'
+import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import { useUserStore } from '@/pinia'
 import notificationColumns from '@/views/notification/notificationColumns'
+import { message } from 'ant-design-vue'
 
 const { unreadCount } = storeToRefs(useUserStore())
 

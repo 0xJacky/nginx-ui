@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import dayjs from 'dayjs'
 import type { CertificateInfo } from '@/api/cert'
+import dayjs from 'dayjs'
 
 const props = defineProps<{
   cert?: CertificateInfo

@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import type { NgxConfig } from '@/api/ngx'
 import { FileExclamationOutlined, FileTextOutlined } from '@ant-design/icons-vue'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import type { NgxConfig } from '@/api/ngx'
 
 const props = defineProps<{
   ngxConfig: NgxConfig

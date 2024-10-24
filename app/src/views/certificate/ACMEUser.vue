@@ -1,12 +1,12 @@
 <script setup lang="tsx">
-import { Tag, message } from 'ant-design-vue'
-import type { Column } from '@/components/StdDesign/types'
-import { StdCurd } from '@/components/StdDesign/StdDataDisplay'
 import type { AcmeUser } from '@/api/acme_user'
+import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { Column } from '@/components/StdDesign/types'
 import acme_user from '@/api/acme_user'
-import { input, switcher } from '@/components/StdDesign/StdDataEntry'
-import type { customRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import { StdCurd } from '@/components/StdDesign/StdDataDisplay'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import { input, switcher } from '@/components/StdDesign/StdDataEntry'
+import { message, Tag } from 'ant-design-vue'
 
 const columns: Column[] = [
   {
@@ -20,7 +20,8 @@ const columns: Column[] = [
         required: true,
       },
     },
-  }, {
+  },
+  {
     title: () => $gettext('Email'),
     dataIndex: 'email',
     sorter: true,
@@ -31,7 +32,8 @@ const columns: Column[] = [
         required: true,
       },
     },
-  }, {
+  },
+  {
     title: () => $gettext('CA Dir'),
     dataIndex: 'ca_dir',
     sorter: true,
@@ -44,7 +46,8 @@ const columns: Column[] = [
         },
       },
     },
-  }, {
+  },
+  {
     title: () => $gettext('Proxy'),
     dataIndex: 'proxy',
     hiddenInTable: true,
@@ -57,10 +60,11 @@ const columns: Column[] = [
         },
       },
     },
-  }, {
+  },
+  {
     title: () => $gettext('Status'),
     dataIndex: ['registration', 'body', 'status'],
-    customRender: (args: customRender) => {
+    customRender: (args: CustomRenderProps) => {
       if (args.text === 'valid')
         return <Tag color="green">{$gettext('Valid')}</Tag>
 
@@ -68,7 +72,8 @@ const columns: Column[] = [
     },
     sorter: true,
     pithy: true,
-  }, {
+  },
+  {
     title: () => $gettext('Register On Startup'),
     dataIndex: 'register_on_startup',
     hiddenInTable: true,
@@ -76,15 +81,17 @@ const columns: Column[] = [
     edit: {
       type: switcher,
       hint: $gettext('When Enabled, Nginx UI will automatically re-register users upon startup. '
-          + 'Generally, do not enable this unless you are in a dev environment and using Pebble as CA.'),
+        + 'Generally, do not enable this unless you are in a dev environment and using Pebble as CA.'),
     },
-  }, {
+  },
+  {
     title: () => $gettext('Updated at'),
     dataIndex: 'updated_at',
     customRender: datetime,
     sorter: true,
     pithy: true,
-  }, {
+  },
+  {
     title: () => $gettext('Action'),
     dataIndex: 'action',
   },

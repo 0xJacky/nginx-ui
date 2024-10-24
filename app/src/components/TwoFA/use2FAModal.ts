@@ -1,10 +1,10 @@
-import { createVNode, render } from 'vue'
-import { Modal, message } from 'ant-design-vue'
-import Authorization from '@/components/TwoFA/Authorization.vue'
 import twoFA from '@/api/2fa'
+import Authorization from '@/components/TwoFA/Authorization.vue'
 import { useUserStore } from '@/pinia'
+import { message, Modal } from 'ant-design-vue'
+import { createVNode, render } from 'vue'
 
-const use2FAModal = () => {
+function use2FAModal() {
   const refOTPAuthorization = ref<typeof Authorization>()
   const randomId = Math.random().toString(36).substring(2, 8)
   const { secureSessionId } = storeToRefs(useUserStore())

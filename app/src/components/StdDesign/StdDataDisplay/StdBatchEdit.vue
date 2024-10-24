@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { message } from 'ant-design-vue'
 import StdDataEntry from '@/components/StdDesign/StdDataEntry'
+import { message } from 'ant-design-vue'
 
 const props = defineProps<{
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   api: (ids: number[], data: any) => Promise<void>
   beforeSave?: () => Promise<void>
 }>()
@@ -15,7 +15,7 @@ const batchColumns = ref([])
 const visible = ref(false)
 
 const selectedRowKeys = ref([])
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 function showModal(c: any, rowKeys: any) {
   visible.value = true
   selectedRowKeys.value = rowKeys

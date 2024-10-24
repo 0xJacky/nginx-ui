@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { Column } from '@/components/StdDesign/types'
+import { computed } from 'vue'
 
 const props = defineProps<Props>()
 

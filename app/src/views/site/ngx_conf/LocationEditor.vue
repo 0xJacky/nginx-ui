@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { CopyOutlined, DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
-import Draggable from 'vuedraggable'
-import _ from 'lodash'
-import CodeEditor from '@/components/CodeEditor'
 import type { NgxConfig, NgxLocation } from '@/api/ngx'
+import CodeEditor from '@/components/CodeEditor'
+import { CopyOutlined, DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
+import _ from 'lodash'
+import Draggable from 'vuedraggable'
 
 const props = defineProps<{
   locations?: NgxLocation[]

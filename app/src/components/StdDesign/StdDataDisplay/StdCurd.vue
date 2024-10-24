@@ -1,12 +1,12 @@
 <script setup lang="ts" generic="T=any">
-import { message } from 'ant-design-vue'
+import type { StdTableSlots } from '@/components/StdDesign/StdDataDisplay/types'
+import type { Column } from '@/components/StdDesign/types'
 import type { ComputedRef } from 'vue'
 import type { StdTableProps } from './StdTable.vue'
-import StdTable from './StdTable.vue'
-import StdDataEntry from '@/components/StdDesign/StdDataEntry'
-import type { Column } from '@/components/StdDesign/types'
 import StdCurdDetail from '@/components/StdDesign/StdDataDisplay/StdCurdDetail.vue'
-import type { StdTableSlots } from '@/components/StdDesign/StdDataDisplay/types'
+import StdDataEntry from '@/components/StdDesign/StdDataEntry'
+import { message } from 'ant-design-vue'
+import StdTable from './StdTable.vue'
 
 export interface StdCurdProps<T> extends StdTableProps<T> {
   cardTitleKey?: string
@@ -19,13 +19,13 @@ export interface StdCurdProps<T> extends StdTableProps<T> {
   onClickAdd?: () => void
 
   onClickEdit?: (id: number | string, record: T, index: number) => void
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   beforeSave?: (data: any) => Promise<void>
 }
 
 const props = defineProps<StdTableProps<T> & StdCurdProps<T>>()
 const visible = ref(false)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 const data: any = reactive({ id: null })
 const modifyMode = ref(true)
 const editMode = ref<string>()
@@ -35,11 +35,11 @@ provide('data', data)
 provide('editMode', editMode)
 provide('shouldRefetchList', shouldRefetchList)
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 const error: any = reactive({})
 const selected = ref([])
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 function onSelect(keys: any) {
   selected.value = keys
 }
@@ -50,7 +50,7 @@ const editableColumns = computed(() => {
   })
 }) as ComputedRef<Column[]>
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 function add(preset: any = undefined) {
   if (props.onClickAdd)
     return
@@ -69,12 +69,12 @@ function add(preset: any = undefined) {
 
 const table = ref()
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 const selectedRowKeys = defineModel<any[]>('selectedRowKeys', {
   default: () => [],
 })
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line ts/no-explicit-any
 const selectedRows = defineModel<any[]>('selectedRows', {
   type: Array,
   default: () => [],
@@ -84,8 +84,8 @@ const getParams = reactive({
   trash: false,
 })
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const setParams = (k: string, v: any) => {
+// eslint-disable-next-line ts/no-explicit-any
+function setParams(k: string, v: any) {
   getParams[k] = v
 }
 
@@ -117,17 +117,15 @@ async function ok() {
     await formRef.validateFields()
     props?.beforeSave?.(data)
     props
-      .api!.save(data.id, { ...data, ...props.overwriteParams }, { params: { ...props.overwriteParams } })
-      .then(r => {
-        message.success($gettext('Save successfully'))
-        Object.assign(data, r)
-        get_list()
-        visible.value = false
-      })
-      .catch(e => {
-        message.error($gettext(e?.message ?? 'Server error'), 5)
-        Object.assign(error, e.errors)
-      })
+      .api!.save(data.id, { ...data, ...props.overwriteParams }, { params: { ...props.overwriteParams } }).then(r => {
+      message.success($gettext('Save successfully'))
+      Object.assign(data, r)
+      get_list()
+      visible.value = false
+    }).catch(e => {
+      message.error($gettext(e?.message ?? 'Server error'), 5)
+      Object.assign(error, e.errors)
+    })
   }
   catch {
     message.error($gettext('Please fill in the required fields'))
@@ -169,18 +167,19 @@ function view(id: number | string) {
 
 async function get(id: number | string) {
   return props
-    .api!.get(id, { ...props.overwriteParams })
-    .then(async r => {
-      Object.keys(data).forEach(k => {
-        delete data[k]
-      })
-      data.id = null
-      Object.assign(data, r)
+    .api!.get(id, { ...props.overwriteParams }).then(async r => {
+    Object.keys(data).forEach(k => {
+      delete data[k]
     })
+    data.id = null
+    Object.assign(data, r)
+  })
 }
 
 const modalTitle = computed(() => {
-  return data.id ? modifyMode.value ? $gettext('Modify') : $gettext('View Details') : $gettext('Add')
+  if (data.id)
+    return modifyMode.value ? $gettext('Modify') : $gettext('View Details')
+  return $gettext('Add')
 })
 
 const localOverwriteParams = reactive(props.overwriteParams ?? {})

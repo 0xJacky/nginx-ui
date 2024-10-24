@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import type { AcmeUser } from '@/api/acme_user'
+import type { AutoCertOptions } from '@/api/auto_cert'
 import type { SelectProps } from 'ant-design-vue'
 import type { Ref } from 'vue'
-import type { AcmeUser } from '@/api/acme_user'
 import acme_user from '@/api/acme_user'
-import type { AutoCertOptions } from '@/api/auto_cert'
 
 const users = ref([]) as Ref<AcmeUser[]>
 
@@ -51,7 +51,7 @@ onMounted(async () => {
         break
       page++
     }
-    catch (e) {
+    catch {
       break
     }
   }
@@ -75,7 +75,7 @@ const options = computed<SelectProps['options']>(() => {
   return list
 })
 
-const filterOption = (input: string, option: { label: string }) => {
+function filterOption(input: string, option: { label: string }) {
   return option.label.toLowerCase().includes(input.toLowerCase())
 }
 </script>

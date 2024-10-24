@@ -1,7 +1,7 @@
+import type { NgxConfig } from '@/api/ngx'
+import type { ChatComplicationMessage } from '@/api/openai'
 import Curd from '@/api/curd'
 import http from '@/lib/http'
-import type { ChatComplicationMessage } from '@/api/openai'
-import type { NgxConfig } from '@/api/ngx'
 
 export interface Stream {
   modified_at: string
@@ -15,7 +15,7 @@ export interface Stream {
 }
 
 class StreamCurd extends Curd<Stream> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line ts/no-explicit-any
   enable(name: string, config?: any) {
     return http.post(`${this.baseUrl}/${name}/enable`, undefined, config)
   }

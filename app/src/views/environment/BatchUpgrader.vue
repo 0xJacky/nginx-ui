@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import _ from 'lodash'
-import { message } from 'ant-design-vue'
-import type { Ref } from 'vue'
-import { marked } from 'marked'
-import { useRoute } from 'vue-router'
 import type { Environment } from '@/api/environment'
+import type { Ref } from 'vue'
 import upgrade, { type RuntimeInfo } from '@/api/upgrade'
 import websocket from '@/lib/websocket'
+import { message } from 'ant-design-vue'
+import _ from 'lodash'
+import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const visible = ref(false)
@@ -80,7 +79,6 @@ const dryRun = computed(() => {
   return !!route.query.dry_run
 })
 
-// eslint-disable-next-line sonarjs/cognitive-complexity
 async function performUpgrade() {
   showLogContainer.value = true
   progressStatus.value = 'active'
@@ -224,7 +222,7 @@ async function performUpgrade() {
               {{ $gettext('Pre-release') }}
             </ATag>
           </h1>
-          <div v-html="marked.parse(data.body)" />
+          <div vue-dompurify-html="marked.parse(data.body)" />
         </div>
 
         <div class="flex justify-end">
