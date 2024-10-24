@@ -240,7 +240,7 @@ jobs:
 
       - name: Build and push
         if: github.event_name == 'release'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./dist
           file: ./dist/Dockerfile
@@ -256,7 +256,7 @@ jobs:
           cp -rp ./resources ./dist
 
       - name: Build and push demo
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./dist
           file: ./dist/demo.Dockerfile
