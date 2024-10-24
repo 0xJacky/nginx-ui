@@ -13,7 +13,7 @@ func AddDomainToAutoCert(c *gin.Context) {
 	name := c.Param("name")
 
 	var json struct {
-		DnsCredentialID int                `json:"dns_credential_id"`
+		DnsCredentialID uint64             `json:"dns_credential_id"`
 		ChallengeMethod string             `json:"challenge_method"`
 		Domains         []string           `json:"domains"`
 		KeyType         certcrypto.KeyType `json:"key_type"`

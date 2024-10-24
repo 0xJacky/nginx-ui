@@ -28,7 +28,7 @@ func newAuthToken(db *gorm.DB, opts ...gen.DOOption) authToken {
 
 	tableName := _authToken.authTokenDo.TableName()
 	_authToken.ALL = field.NewAsterisk(tableName)
-	_authToken.UserID = field.NewInt(tableName, "user_id")
+	_authToken.UserID = field.NewUint64(tableName, "user_id")
 	_authToken.Token = field.NewString(tableName, "token")
 	_authToken.ExpiredAt = field.NewInt64(tableName, "expired_at")
 
@@ -41,7 +41,7 @@ type authToken struct {
 	authTokenDo
 
 	ALL       field.Asterisk
-	UserID    field.Int
+	UserID    field.Uint64
 	Token     field.String
 	ExpiredAt field.Int64
 
@@ -60,7 +60,7 @@ func (a authToken) As(alias string) *authToken {
 
 func (a *authToken) updateTableName(table string) *authToken {
 	a.ALL = field.NewAsterisk(table)
-	a.UserID = field.NewInt(table, "user_id")
+	a.UserID = field.NewUint64(table, "user_id")
 	a.Token = field.NewString(table, "token")
 	a.ExpiredAt = field.NewInt64(table, "expired_at")
 
@@ -98,7 +98,7 @@ func (a authToken) replaceDB(db *gorm.DB) authToken {
 type authTokenDo struct{ gen.DO }
 
 // FirstByID Where("id=@id")
-func (a authTokenDo) FirstByID(id int) (result *model.AuthToken, err error) {
+func (a authTokenDo) FirstByID(id uint64) (result *model.AuthToken, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -113,7 +113,7 @@ func (a authTokenDo) FirstByID(id int) (result *model.AuthToken, err error) {
 }
 
 // DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
-func (a authTokenDo) DeleteByID(id int) (err error) {
+func (a authTokenDo) DeleteByID(id uint64) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder

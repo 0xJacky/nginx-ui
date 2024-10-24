@@ -42,7 +42,7 @@ type Node struct {
 
 var mutex sync.Mutex
 
-type TNodeMap map[int]*Node
+type TNodeMap map[uint64]*Node
 
 var NodeMap TNodeMap
 

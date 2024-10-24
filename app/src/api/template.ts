@@ -23,26 +23,26 @@ export interface Template extends NgxServer {
 
 class TemplateApi extends Curd<Template> {
   get_config_list() {
-    return http.get('template/configs')
+    return http.get('templates/configs')
   }
 
   get_block_list() {
-    return http.get('template/blocks')
+    return http.get('templates/blocks')
   }
 
   get_config(name: string) {
-    return http.get(`template/config/${name}`)
+    return http.get(`templates/config/${name}`)
   }
 
   get_block(name: string) {
-    return http.get(`template/block/${name}`)
+    return http.get(`templates/block/${name}`)
   }
 
   build_block(name: string, data: Variable) {
-    return http.post(`template/block/${name}`, data)
+    return http.post(`templates/block/${name}`, data)
   }
 }
 
-const template = new TemplateApi('/template')
+const template = new TemplateApi('/templates')
 
 export default template

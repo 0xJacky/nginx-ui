@@ -1,4 +1,3 @@
-import type { Pagination } from '@/api/curd'
 import type Curd from '@/api/curd'
 import type { TableColumnType } from 'ant-design-vue'
 import type { Ref } from 'vue'
@@ -103,9 +102,4 @@ export interface Column extends TableColumnType {
     itemKey?: any // default is id
     dataSourceValueIndex?: any // relative to dataSource
   }
-}
-
-export interface StdTableResponse {
-  data: any[]
-  pagination: Pagination
 }

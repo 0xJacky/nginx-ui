@@ -98,7 +98,7 @@ func (b banIP) replaceDB(db *gorm.DB) banIP {
 type banIPDo struct{ gen.DO }
 
 // FirstByID Where("id=@id")
-func (b banIPDo) FirstByID(id int) (result *model.BanIP, err error) {
+func (b banIPDo) FirstByID(id uint64) (result *model.BanIP, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -113,7 +113,7 @@ func (b banIPDo) FirstByID(id int) (result *model.BanIP, err error) {
 }
 
 // DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
-func (b banIPDo) DeleteByID(id int) (err error) {
+func (b banIPDo) DeleteByID(id uint64) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder

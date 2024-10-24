@@ -56,6 +56,6 @@ class Domain extends Curd<Site> {
   }
 }
 
-const domain = new Domain('/domain')
+const domain = new Domain('/domains')
 
 export default domain

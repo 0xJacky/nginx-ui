@@ -49,6 +49,7 @@ func InitRouter() {
 			analytic.InitRouter(g)
 			user.InitManageUserRouter(g)
 			nginx.InitRouter(g)
+			sites.InitCategoryRouter(g)
 			sites.InitRouter(g)
 			streams.InitRouter(g)
 			config.InitRouter(g)

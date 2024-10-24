@@ -47,7 +47,7 @@ onMounted(async () => {
       const r = await acme_user.get_list({ page })
 
       users.value.push(...r.data)
-      if (r?.data?.length < r?.pagination?.per_page)
+      if (r?.data?.length < (r?.pagination?.per_page ?? 0))
         break
       page++
     }

@@ -18,7 +18,7 @@ func Proxy() gin.HandlerFunc {
 			c.Next()
 			return
 		}
-		id := cast.ToInt(nodeID)
+		id := cast.ToUint64(nodeID)
 		if id == 0 {
 			c.Next()
 			return

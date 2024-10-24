@@ -17,6 +17,6 @@ export interface DnsCredential extends ModelBase {
   }
 }
 
-const dns_credential: Curd<DnsCredential> = new Curd('/dns_credential')
+const dns_credential: Curd<DnsCredential> = new Curd('/dns_credentials')
 
 export default dns_credential

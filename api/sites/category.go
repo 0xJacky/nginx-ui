@@ -7,7 +7,7 @@ import (
 )
 
 func GetCategory(c *gin.Context) {
-
+	cosy.Core[model.SiteCategory](c).Get()
 }
 
 func GetCategoryList(c *gin.Context) {
