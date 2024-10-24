@@ -2,10 +2,10 @@ package upstream
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/uozi-tech/cosy/logger"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/uozi-tech/cosy/logger"
 	"net/http"
 	"time"
 )

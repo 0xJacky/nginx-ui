@@ -3,9 +3,9 @@ package config
 import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/uozi-tech/cosy/logger"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy/logger"
 	"net/http"
 	"os"
 	"strings"

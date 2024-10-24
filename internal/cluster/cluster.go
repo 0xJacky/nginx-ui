@@ -1,10 +1,10 @@
 package cluster
 
 import (
-	"github.com/uozi-tech/cosy/logger"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/uozi-tech/cosy/logger"
 	"gorm.io/gen/field"
 	"net/url"
 	"strings"

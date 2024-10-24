@@ -1,10 +1,10 @@
 package analytic
 
 import (
-	"github.com/uozi-tech/cosy/logger"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/shirou/gopsutil/v3/load"
 	"github.com/shirou/gopsutil/v3/net"
+	"github.com/uozi-tech/cosy/logger"
 	"math"
 	"runtime"
 	"time"

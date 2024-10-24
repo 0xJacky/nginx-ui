@@ -3,10 +3,10 @@ package analytic
 import (
 	"context"
 	"encoding/json"
-	"github.com/uozi-tech/cosy/logger"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gorilla/websocket"
+	"github.com/uozi-tech/cosy/logger"
 	"net/http"
 	"time"
 )

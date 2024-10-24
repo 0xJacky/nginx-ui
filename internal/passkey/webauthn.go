@@ -1,10 +1,10 @@
 package passkey
 
 import (
-	"github.com/uozi-tech/cosy/logger"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 var instance *webauthn.WebAuthn

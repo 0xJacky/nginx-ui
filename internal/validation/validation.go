@@ -1,9 +1,9 @@
 package validation
 
 import (
-	"github.com/uozi-tech/cosy/logger"
 	"github.com/gin-gonic/gin/binding"
 	val "github.com/go-playground/validator/v10"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 func Init() {

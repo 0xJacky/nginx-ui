@@ -2,12 +2,12 @@ package analytic
 
 import (
 	"encoding/json"
-	"github.com/uozi-tech/cosy/logger"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/internal/upgrader"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/shirou/gopsutil/v3/load"
 	"github.com/shirou/gopsutil/v3/net"
+	"github.com/uozi-tech/cosy/logger"
 	"io"
 	"net/http"
 	"net/url"

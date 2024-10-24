@@ -1,10 +1,10 @@
 package terminal
 
 import (
-	"github.com/uozi-tech/cosy/logger"
 	"github.com/0xJacky/Nginx-UI/internal/pty"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"github.com/uozi-tech/cosy/logger"
 	"net/http"
 )
 

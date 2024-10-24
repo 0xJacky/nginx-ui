@@ -1,11 +1,11 @@
 package middleware
 
 import (
-	"github.com/uozi-tech/cosy/logger"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
+	"github.com/uozi-tech/cosy/logger"
 	"io"
 	"net/http"
 	"net/url"

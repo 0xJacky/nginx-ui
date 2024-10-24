@@ -1,8 +1,8 @@
 package logrotate
 
 import (
-	"github.com/uozi-tech/cosy/logger"
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/uozi-tech/cosy/logger"
 	"os/exec"
 	"strings"
 )

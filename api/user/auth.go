@@ -2,12 +2,12 @@ package user
 
 import (
 	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/uozi-tech/cosy/logger"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy/logger"
 	"math/rand/v2"
 	"net/http"
 	"sync"

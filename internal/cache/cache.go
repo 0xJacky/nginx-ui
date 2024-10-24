@@ -1,8 +1,8 @@
 package cache
 
 import (
-	"github.com/uozi-tech/cosy/logger"
 	"github.com/dgraph-io/ristretto"
+	"github.com/uozi-tech/cosy/logger"
 	"time"
 )
 
