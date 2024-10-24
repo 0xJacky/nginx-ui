@@ -235,9 +235,10 @@ const isManaged = computed(() => {
         :md="12"
       >
         <ACard :title="$gettext('Log')">
-          <pre class="log-container">
-            {{ log }}
-          </pre>
+          <pre
+            v-dompurify-html="log"
+            class="log-container"
+          />
         </ACard>
       </ACol>
     </ARow>
