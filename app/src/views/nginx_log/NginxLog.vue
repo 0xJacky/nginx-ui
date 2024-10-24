@@ -162,11 +162,10 @@ const computedBuffer = computed(() => {
     <ACard>
       <pre
         ref="logContainer"
+        v-dompurify-html="computedBuffer"
         class="nginx-log-container"
         @scroll="debounce_scroll_log"
-      >
-        {{ computedBuffer }}
-      </pre>
+      />
     </ACard>
     <FooterToolBar v-if="control.type === 'site'">
       <AButton @click="router.go(-1)">
