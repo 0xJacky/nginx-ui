@@ -5,36 +5,45 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/logrotate"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/go-co-op/gocron"
+	"github.com/go-co-op/gocron/v2"
 	"github.com/uozi-tech/cosy/logger"
 	"time"
 )
 
-var s *gocron.Scheduler
+var s gocron.Scheduler
 
 func init() {
-	s = gocron.NewScheduler(time.UTC)
+	var err error
+	s, err = gocron.NewScheduler()
+	if err != nil {
+		logger.Fatalf("Init Scheduler: %v\n", err)
+	}
 }
 
-var logrotateJob *gocron.Job
+var logrotateJob gocron.Job
 
 func InitCronJobs() {
-	job, err := s.Every(30).Minute().SingletonMode().Do(cert.AutoCert)
-
+	_, err := s.NewJob(gocron.DurationJob(30*time.Minute),
+		gocron.NewTask(cert.AutoCert),
+		gocron.WithSingletonMode(gocron.LimitModeWait))
 	if err != nil {
-		logger.Fatalf("AutoCert Job: %v, Err: %v\n", job, err)
+		logger.Fatalf("AutoCert Err: %v\n", err)
 	}
 
 	startLogrotate()
 	cleanExpiredAuthToken()
 
-	s.StartAsync()
+	s.Start()
 }
 
 func RestartLogrotate() {
 	logger.Debug("Restart Logrotate")
 	if logrotateJob != nil {
-		s.RemoveByReference(logrotateJob)
+		err := s.RemoveJob(logrotateJob.ID())
+		if err != nil {
+			logger.Error(err)
+			return
+		}
 	}
 
 	startLogrotate()
@@ -45,20 +54,23 @@ func startLogrotate() {
 		return
 	}
 	var err error
-	logrotateJob, err = s.Every(settings.LogrotateSettings.Interval).Minute().SingletonMode().Do(logrotate.Exec)
+	logrotateJob, err = s.NewJob(
+		gocron.DurationJob(time.Duration(settings.LogrotateSettings.Interval)*time.Minute),
+		gocron.NewTask(logrotate.Exec),
+		gocron.WithSingletonMode(gocron.LimitModeWait))
 	if err != nil {
-		logger.Fatalf("LogRotate Job: %v, Err: %v\n", logrotateJob, err)
+		logger.Fatalf("LogRotate Job: Err: %v\n", err)
 	}
 }
 
 func cleanExpiredAuthToken() {
-	job, err := s.Every(5).Minute().SingletonMode().Do(func() {
-		logger.Info("clean expired auth tokens")
+	_, err := s.NewJob(gocron.DurationJob(5*time.Minute), gocron.NewTask(func() {
+		logger.Debug("clean expired auth tokens")
 		q := query.AuthToken
 		_, _ = q.Where(q.ExpiredAt.Lt(time.Now().Unix())).Delete()
-	})
+	}), gocron.WithSingletonMode(gocron.LimitModeWait))
 
 	if err != nil {
-		logger.Fatalf("CleanExpiredAuthToken Job: %v, Err: %v\n", job, err)
+		logger.Fatalf("CleanExpiredAuthToken Err: %v\n", err)
 	}
 }

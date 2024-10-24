@@ -6,8 +6,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/upgrader"
 	"github.com/dustin/go-humanize"
 	"github.com/gin-gonic/gin"
-	"github.com/shirou/gopsutil/v3/cpu"
-	"github.com/shirou/gopsutil/v3/disk"
+	"github.com/shirou/gopsutil/v4/cpu"
+	"github.com/shirou/gopsutil/v4/disk"
 	"net/http"
 )
 

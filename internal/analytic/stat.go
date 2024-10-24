@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/dustin/go-humanize"
 	"github.com/pkg/errors"
-	"github.com/shirou/gopsutil/v3/disk"
-	"github.com/shirou/gopsutil/v3/mem"
+	"github.com/shirou/gopsutil/v4/disk"
+	"github.com/shirou/gopsutil/v4/mem"
 	"github.com/spf13/cast"
 	"math"
 )
