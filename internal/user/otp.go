@@ -46,16 +46,16 @@ func secureSessionIDCacheKey(sessionId string) string {
 	return fmt.Sprintf("2fa_secure_session:_%s", sessionId)
 }
 
-func SetSecureSessionID(userId int) (sessionId string) {
+func SetSecureSessionID(userId uint64) (sessionId string) {
 	sessionId = uuid.NewString()
 	cache.Set(secureSessionIDCacheKey(sessionId), userId, 5*time.Minute)
 
 	return
 }
 
-func VerifySecureSessionID(sessionId string, userId int) bool {
+func VerifySecureSessionID(sessionId string, userId uint64) bool {
 	if v, ok := cache.Get(secureSessionIDCacheKey(sessionId)); ok {
-		if v.(int) == userId {
+		if v.(uint64) == userId {
 			return true
 		}
 	}

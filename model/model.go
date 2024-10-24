@@ -9,7 +9,7 @@ import (
 var db *gorm.DB
 
 type Model struct {
-	ID        int             `gorm:"primary_key" json:"id"`
+	ID        uint64          `gorm:"primary_key" json:"id"`
 	CreatedAt time.Time       `json:"created_at"`
 	UpdatedAt time.Time       `json:"updated_at"`
 	DeletedAt *gorm.DeletedAt `gorm:"index" json:"deleted_at"`
@@ -57,7 +57,7 @@ type DataList struct {
 
 type Method interface {
 	// FirstByID Where("id=@id")
-	FirstByID(id int) (*gen.T, error)
+	FirstByID(id uint64) (*gen.T, error)
 	// DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
-	DeleteByID(id int) error
+	DeleteByID(id uint64) error
 }

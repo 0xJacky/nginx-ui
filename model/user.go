@@ -17,7 +17,7 @@ type User struct {
 }
 
 type AuthToken struct {
-	UserID    int    `json:"user_id"`
+	UserID    uint64 `json:"user_id"`
 	Token     string `json:"token"`
 	ExpiredAt int64  `json:"expired_at" gorm:"default:0"`
 }

@@ -32,7 +32,7 @@ onMounted(async () => {
   while (hasMore) {
     await environment.get_list({ page, enabled: true }).then(r => {
       data.value.push(...r.data)
-      hasMore = r.data.length === r.pagination.per_page
+      hasMore = r.data.length === r.pagination?.per_page
       page++
     }).catch(() => {
       hasMore = false

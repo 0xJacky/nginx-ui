@@ -19,11 +19,11 @@ func InitAuthRouter(r *gin.RouterGroup) {
 
 func InitManageUserRouter(r *gin.RouterGroup) {
 	r.GET("users", GetUsers)
-	r.GET("user/:id", GetUser)
-	r.POST("user", AddUser)
-	r.POST("user/:id", EditUser)
-	r.DELETE("user/:id", DeleteUser)
-	r.PATCH("user/:id", RecoverUser)
+	r.GET("users/:id", GetUser)
+	r.POST("users", AddUser)
+	r.POST("users/:id", EditUser)
+	r.DELETE("users/:id", DeleteUser)
+	r.PATCH("users/:id", RecoverUser)
 }
 
 func InitUserRouter(r *gin.RouterGroup) {

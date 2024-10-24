@@ -23,7 +23,7 @@ import (
 
 const passkeyTimeout = 30 * time.Second
 
-func buildCachePasskeyRegKey(id int) string {
+func buildCachePasskeyRegKey(id uint64) string {
 	return fmt.Sprintf("passkey-reg-%d", id)
 }
 
@@ -130,7 +130,7 @@ func FinishPasskeyLogin(c *gin.Context) {
 				LastUsedAt: time.Now().Unix(),
 			})
 
-			outUser, err = u.FirstByID(cast.ToInt(string(userHandle)))
+			outUser, err = u.FirstByID(cast.ToUint64(string(userHandle)))
 			return outUser, err
 		}, *sessionData, c.Request)
 	if err != nil {

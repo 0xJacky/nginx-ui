@@ -28,7 +28,7 @@ func newNotification(db *gorm.DB, opts ...gen.DOOption) notification {
 
 	tableName := _notification.notificationDo.TableName()
 	_notification.ALL = field.NewAsterisk(tableName)
-	_notification.ID = field.NewInt(tableName, "id")
+	_notification.ID = field.NewUint64(tableName, "id")
 	_notification.CreatedAt = field.NewTime(tableName, "created_at")
 	_notification.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_notification.DeletedAt = field.NewField(tableName, "deleted_at")
@@ -45,7 +45,7 @@ type notification struct {
 	notificationDo
 
 	ALL       field.Asterisk
-	ID        field.Int
+	ID        field.Uint64
 	CreatedAt field.Time
 	UpdatedAt field.Time
 	DeletedAt field.Field
@@ -68,7 +68,7 @@ func (n notification) As(alias string) *notification {
 
 func (n *notification) updateTableName(table string) *notification {
 	n.ALL = field.NewAsterisk(table)
-	n.ID = field.NewInt(table, "id")
+	n.ID = field.NewUint64(table, "id")
 	n.CreatedAt = field.NewTime(table, "created_at")
 	n.UpdatedAt = field.NewTime(table, "updated_at")
 	n.DeletedAt = field.NewField(table, "deleted_at")
@@ -114,7 +114,7 @@ func (n notification) replaceDB(db *gorm.DB) notification {
 type notificationDo struct{ gen.DO }
 
 // FirstByID Where("id=@id")
-func (n notificationDo) FirstByID(id int) (result *model.Notification, err error) {
+func (n notificationDo) FirstByID(id uint64) (result *model.Notification, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -129,7 +129,7 @@ func (n notificationDo) FirstByID(id int) (result *model.Notification, err error
 }
 
 // DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
-func (n notificationDo) DeleteByID(id int) (err error) {
+func (n notificationDo) DeleteByID(id uint64) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
