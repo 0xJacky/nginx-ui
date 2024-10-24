@@ -163,6 +163,7 @@ watch(filterParams, () => {
   Object.assign(params, {
     ...filterParams,
     page: 1,
+    trash: route.query.trash === 'true',
   })
 })
 
@@ -175,7 +176,6 @@ onMounted(() => {
 
     Object.assign(filterParams, {
       ...route.query,
-      trash: route.query.trash === 'true',
     })
   }
 
