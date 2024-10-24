@@ -153,8 +153,8 @@ const batchColumns = computed(() => {
 })
 
 const get_list = _.debounce(_get_list, 100, {
-  leading: true,
-  trailing: false,
+  leading: false,
+  trailing: true,
 })
 
 const filterParams = reactive({})
