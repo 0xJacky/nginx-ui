@@ -35,6 +35,7 @@ func newSite(db *gorm.DB, opts ...gen.DOOption) site {
 	_site.Path = field.NewString(tableName, "path")
 	_site.Advanced = field.NewBool(tableName, "advanced")
 	_site.SiteCategoryID = field.NewUint64(tableName, "site_category_id")
+	_site.SyncNodeIDs = field.NewField(tableName, "sync_node_ids")
 	_site.SiteCategory = siteBelongsToSiteCategory{
 		db: db.Session(&gorm.Session{}),
 
@@ -57,6 +58,7 @@ type site struct {
 	Path           field.String
 	Advanced       field.Bool
 	SiteCategoryID field.Uint64
+	SyncNodeIDs    field.Field
 	SiteCategory   siteBelongsToSiteCategory
 
 	fieldMap map[string]field.Expr
@@ -81,6 +83,7 @@ func (s *site) updateTableName(table string) *site {
 	s.Path = field.NewString(table, "path")
 	s.Advanced = field.NewBool(table, "advanced")
 	s.SiteCategoryID = field.NewUint64(table, "site_category_id")
+	s.SyncNodeIDs = field.NewField(table, "sync_node_ids")
 
 	s.fillFieldMap()
 
@@ -97,7 +100,7 @@ func (s *site) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *site) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 8)
+	s.fieldMap = make(map[string]field.Expr, 9)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["created_at"] = s.CreatedAt
 	s.fieldMap["updated_at"] = s.UpdatedAt
@@ -105,6 +108,7 @@ func (s *site) fillFieldMap() {
 	s.fieldMap["path"] = s.Path
 	s.fieldMap["advanced"] = s.Advanced
 	s.fieldMap["site_category_id"] = s.SiteCategoryID
+	s.fieldMap["sync_node_ids"] = s.SyncNodeIDs
 
 }
 

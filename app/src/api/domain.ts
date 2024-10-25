@@ -19,6 +19,7 @@ export interface Site {
   cert_info?: Record<number, CertificateInfo[]>
   site_category_id: number
   site_category?: SiteCategory
+  sync_node_ids: number[]
 }
 
 export interface AutoCertRequest {

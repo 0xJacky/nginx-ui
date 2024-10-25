@@ -6,6 +6,7 @@ func InitRouter(r *gin.RouterGroup) {
 	r.GET("domains", GetSiteList)
 	r.GET("domains/:name", GetSite)
 	r.POST("domains/:name", SaveSite)
+	r.PUT("domains", BatchUpdateSites)
 	r.POST("domains/:name/enable", EnableSite)
 	r.POST("domains/:name/disable", DisableSite)
 	r.POST("domains/:name/advance", DomainEditByAdvancedMode)

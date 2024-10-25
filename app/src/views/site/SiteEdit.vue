@@ -135,6 +135,7 @@ async function save() {
     content: configText.value,
     overwrite: true,
     site_category_id: data.value.site_category_id,
+    sync_node_ids: data.value.sync_node_ids,
   }).then(r => {
     handle_response(r)
     router.push({

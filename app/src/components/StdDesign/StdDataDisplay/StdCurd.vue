@@ -1,8 +1,8 @@
 <script setup lang="ts" generic="T=any">
-import type { StdTableSlots } from '@/components/StdDesign/StdDataDisplay/types'
 import type { Column } from '@/components/StdDesign/types'
-import type { ComputedRef } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
 import type { StdTableProps } from './StdTable.vue'
+import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 import StdCurdDetail from '@/components/StdDesign/StdDataDisplay/StdCurdDetail.vue'
 import StdDataEntry from '@/components/StdDesign/StdDataEntry'
 import { message } from 'ant-design-vue'
@@ -14,7 +14,7 @@ export interface StdCurdProps<T> extends StdTableProps<T> {
   modalMask?: boolean
   exportExcel?: boolean
   importExcel?: boolean
-  disableTrash?: boolean
+
   disableAdd?: boolean
   onClickAdd?: () => void
 
@@ -24,6 +24,10 @@ export interface StdCurdProps<T> extends StdTableProps<T> {
 }
 
 const props = defineProps<StdTableProps<T> & StdCurdProps<T>>()
+
+const selectedRowKeys = ref<(string | number)[]>([])
+const selectedRows: Ref<T[]> = ref([])
+
 const visible = ref(false)
 // eslint-disable-next-line ts/no-explicit-any
 const data: any = reactive({ id: null })
@@ -61,24 +65,13 @@ function add(preset: any = undefined) {
   if (preset)
     Object.assign(data, preset)
 
-  clear_error()
+  clearError()
   visible.value = true
   editMode.value = 'create'
   modifyMode.value = true
 }
 
-const table = ref()
-
-// eslint-disable-next-line ts/no-explicit-any
-const selectedRowKeys = defineModel<any[]>('selectedRowKeys', {
-  default: () => [],
-})
-
-// eslint-disable-next-line ts/no-explicit-any
-const selectedRows = defineModel<any[]>('selectedRows', {
-  type: Array,
-  default: () => [],
-})
+const table = useTemplateRef('table')
 
 const getParams = reactive({
   trash: false,
@@ -101,20 +94,23 @@ defineExpose({
   setParams,
 })
 
-function clear_error() {
+function clearError() {
   Object.keys(error).forEach(v => {
     delete error[v]
   })
 }
 
-const stdEntryRef = ref()
+const stdEntryRef = useTemplateRef('stdEntryRef')
 
 async function ok() {
+  if (!stdEntryRef.value)
+    return
+
   const { formRef } = stdEntryRef.value
 
-  clear_error()
+  clearError()
   try {
-    await formRef.validateFields()
+    await formRef?.validateFields()
     props?.beforeSave?.(data)
     props
       .api!.save(data.id, { ...data, ...props.overwriteParams }, { params: { ...props.overwriteParams } }).then(r => {
@@ -135,7 +131,7 @@ async function ok() {
 function cancel() {
   visible.value = false
 
-  clear_error()
+  clearError()
 
   if (shouldRefetchList.value) {
     get_list()
@@ -159,7 +155,6 @@ function view(id: number | string) {
   get(id).then(() => {
     visible.value = true
     modifyMode.value = false
-    editMode.value = 'modify'
   }).catch(e => {
     message.error($gettext(e?.message ?? 'Server error'), 5)
   })
@@ -183,6 +178,17 @@ const modalTitle = computed(() => {
 })
 
 const localOverwriteParams = reactive(props.overwriteParams ?? {})
+
+const stdBatchEditRef = useTemplateRef('stdBatchEditRef')
+
+async function handleClickBatchEdit(batchColumns: Column[]) {
+  stdBatchEditRef.value?.showModal(batchColumns, selectedRowKeys.value, selectedRows.value)
+}
+
+function handleBatchUpdated() {
+  table.value?.get_list()
+  table.value?.resetSelection()
+}
 </script>
 
 <template>
@@ -202,7 +208,7 @@ const localOverwriteParams = reactive(props.overwriteParams ?? {})
             @click="add"
           >{{ $gettext('Add') }}</a>
           <slot name="extra" />
-          <template v-if="!disableDelete && !disableTrash">
+          <template v-if="!disableDelete">
             <a
               v-if="!getParams.trash"
               @click="getParams.trash = true"
@@ -219,21 +225,23 @@ const localOverwriteParams = reactive(props.overwriteParams ?? {})
         </ASpace>
       </template>
 
+      <slot name="beforeTable" />
       <StdTable
         ref="table"
-        v-model:selected-row-keys="selectedRowKeys"
-        v-model:selected-rows="selectedRows"
         v-bind="{
           ...props,
           getParams,
           overwriteParams: localOverwriteParams,
         }"
+        v-model:selected-row-keys="selectedRowKeys"
+        v-model:selected-rows="selectedRows"
         @click-edit="edit"
         @click-view="view"
         @selected="onSelect"
+        @click-batch-modify="handleClickBatchEdit"
       >
         <template
-          v-for="(_, key) in ($slots as unknown as StdTableSlots)"
+          v-for="(_, key) in $slots"
           :key="key"
           #[key]="slotProps"
         >
@@ -295,10 +303,17 @@ const localOverwriteParams = reactive(props.overwriteParams ?? {})
 
       <StdCurdDetail
         v-else
-        :columns="columns"
-        :data="data"
+        :columns
+        :data
       />
     </AModal>
+
+    <StdBatchEdit
+      ref="stdBatchEditRef"
+      :api
+      :columns
+      @save="handleBatchUpdated"
+    />
   </div>
 </template>
 

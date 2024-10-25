@@ -9,7 +9,9 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/sashabaranov/go-openai"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
+	"gorm.io/gorm/clause"
 	"net/http"
 	"os"
 )
@@ -125,10 +127,11 @@ func SaveSite(c *gin.Context) {
 	}
 
 	var json struct {
-		Name           string `json:"name" binding:"required"`
-		Content        string `json:"content" binding:"required"`
-		SiteCategoryID uint64 `json:"site_category_id"`
-		Overwrite      bool   `json:"overwrite"`
+		Name           string   `json:"name" binding:"required"`
+		Content        string   `json:"content" binding:"required"`
+		SiteCategoryID uint64   `json:"site_category_id"`
+		SyncNodeIDs    []uint64 `json:"sync_node_ids"`
+		Overwrite      bool     `json:"overwrite"`
 	}
 
 	if !api.BindAndValid(c, &json) {
@@ -152,7 +155,12 @@ func SaveSite(c *gin.Context) {
 	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", name)
 	s := query.Site
 
-	_, err = s.Where(s.Path.Eq(path)).Update(s.SiteCategoryID, json.SiteCategoryID)
+	_, err = s.Where(s.Path.Eq(path)).
+		Select(s.SiteCategoryID, s.SyncNodeIDs).
+		Updates(&model.Site{
+			SiteCategoryID: json.SiteCategoryID,
+			SyncNodeIDs:    json.SyncNodeIDs,
+		})
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -335,4 +343,30 @@ func DeleteSite(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})
+}
+
+func BatchUpdateSites(c *gin.Context) {
+	cosy.Core[model.Site](c).SetValidRules(gin.H{
+		"site_category_id": "required",
+	}).SetItemKey("path").
+		BeforeExecuteHook(func(ctx *cosy.Ctx[model.Site]) {
+			effectedPath := make([]string, len(ctx.BatchEffectedIDs))
+			var sites []*model.Site
+			for i, name := range ctx.BatchEffectedIDs {
+				path := nginx.GetConfPath("sites-available", name)
+				effectedPath[i] = path
+				sites = append(sites, &model.Site{
+					Path: path,
+				})
+			}
+			s := query.Site
+			err := s.Clauses(clause.OnConflict{
+				DoNothing: true,
+			}).Create(sites...)
+			if err != nil {
+				ctx.AbortWithError(err)
+				return
+			}
+			ctx.BatchEffectedIDs = effectedPath
+		}).BatchModify()
 }

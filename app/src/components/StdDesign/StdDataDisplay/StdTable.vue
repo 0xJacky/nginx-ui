@@ -8,9 +8,11 @@ import type { FilterValue } from 'ant-design-vue/es/table/interface'
 import type { SorterResult, TablePaginationConfig } from 'ant-design-vue/lib/table/interface'
 import type { ComputedRef, Ref } from 'vue'
 import type { RouteParams } from 'vue-router'
+import { getPithyColumns } from '@/components/StdDesign/StdDataDisplay/methods/columns'
 import useSortable from '@/components/StdDesign/StdDataDisplay/methods/sortable'
 import StdDataEntry from '@/components/StdDesign/StdDataEntry'
 import { HolderOutlined } from '@ant-design/icons-vue'
+import { watchPausable } from '@vueuse/core'
 import { message } from 'ant-design-vue'
 import _ from 'lodash'
 import StdPagination from './StdPagination.vue'
@@ -20,6 +22,7 @@ export interface StdTableProps<T = any> {
   title?: string
   mode?: string
   rowKey?: string
+
   api: Curd<T>
   columns: Column[]
   // eslint-disable-next-line ts/no-explicit-any
@@ -48,7 +51,20 @@ const props = withDefaults(defineProps<StdTableProps<T>>(), {
   rowKey: 'id',
 })
 
-const emit = defineEmits(['clickEdit', 'clickView', 'clickBatchModify', 'update:selectedRowKeys'])
+const emit = defineEmits([
+  'clickEdit',
+  'clickView',
+  'clickBatchModify',
+])
+
+const selectedRowKeys = defineModel<(number | string)[]>('selectedRowKeys', {
+  default: () => reactive([]),
+})
+
+const selectedRows = defineModel<T[]>('selectedRows', {
+  default: () => reactive([]),
+})
+
 const route = useRoute()
 
 const dataSource: Ref<T[]> = ref([])
@@ -93,17 +109,6 @@ const params = reactive({
   ...props.getParams,
 })
 
-// eslint-disable-next-line ts/no-explicit-any
-const selectedRowKeys = defineModel<any[]>('selectedRowKeys', {
-  default: () => [],
-})
-
-// eslint-disable-next-line ts/no-explicit-any
-const selectedRows = defineModel<any[]>('selectedRows', {
-  type: Array,
-  default: () => [],
-})
-
 onMounted(() => {
   selectedRows.value.forEach(v => {
     selectedRecords.value[v[props.rowKey]] = v
@@ -122,7 +127,9 @@ const searchColumns = computed(() => {
         })
       }
 
-      else { _searchColumns.push({ ...column }) }
+      else {
+        _searchColumns.push({ ...column })
+      }
     }
   })
 
@@ -130,11 +137,8 @@ const searchColumns = computed(() => {
 })
 
 const pithyColumns = computed<Column[]>(() => {
-  if (props.pithy) {
-    return props.columns?.filter(c => {
-      return c.pithy === true && !c.hiddenInTable
-    })
-  }
+  if (props.pithy)
+    return getPithyColumns(props.columns)
 
   return props.columns?.filter(c => {
     return !c.hiddenInTable
@@ -142,19 +146,12 @@ const pithyColumns = computed<Column[]>(() => {
 })
 
 const batchColumns = computed(() => {
-  const batch: Column[] = []
-
-  props.columns?.forEach(column => {
-    if (column.batch)
-      batch.push(column)
-  })
-
-  return batch
+  return props.columns?.filter(column => column.batch) || []
 })
 
 const get_list = _.debounce(_get_list, 100, {
-  leading: false,
-  trailing: true,
+  leading: true,
+  trailing: false,
 })
 
 const filterParams = reactive({})
@@ -184,15 +181,13 @@ onMounted(() => {
   if (props.sortable)
     initSortable()
 
-  if (!selectedRowKeys.value?.length)
-    selectedRowKeys.value = []
-
   init.value = true
 })
 
 defineExpose({
   get_list,
   pagination,
+  resetSelection,
 })
 
 function destroy(id: number | string) {
@@ -229,11 +224,15 @@ function buildIndexMap(data: any, level: number = 0, index: number = 0, total: n
   }
 }
 
-async function _get_list(page_num = null, page_size = 20) {
+async function _get_list(page_num: number | null = null, page_size = 20) {
   dataSource.value = []
   loading.value = true
   if (page_num) {
     params.page = page_num
+    params.page_size = page_size
+  }
+  else {
+    params.page = 1
     params.page_size = page_size
   }
   props.api?.get_list({ ...params, ...props.overwriteParams }).then(async r => {
@@ -245,9 +244,7 @@ async function _get_list(page_num = null, page_size = 20) {
     if (r.pagination)
       Object.assign(pagination, r.pagination)
 
-    setTimeout(() => {
-      loading.value = false
-    }, 200)
+    loading.value = false
   }).catch(e => {
     message.error(e?.message ?? $gettext('Server error'))
   })
@@ -288,7 +285,8 @@ function expandedTable(keys: Key[]) {
 
 // eslint-disable-next-line ts/no-explicit-any
 async function onSelect(record: any, selected: boolean, _selectedRows: any[]) {
-  if (props.selectionType === 'checkbox' || props.exportExcel) {
+  // console.log('onSelect', record, selected, _selectedRows)
+  if (props.selectionType === 'checkbox' || batchColumns.value.length > 0 || props.exportExcel) {
     if (selected) {
       _selectedRows.forEach(v => {
         if (v) {
@@ -300,20 +298,11 @@ async function onSelect(record: any, selected: boolean, _selectedRows: any[]) {
       })
     }
     else {
-      // eslint-disable-next-line ts/no-explicit-any
-      selectedRowKeys.value = selectedRowKeys.value.filter((v: any) => v !== record[props.rowKey])
+      selectedRowKeys.value.splice(selectedRowKeys.value.indexOf(record[props.rowKey]), 1)
       delete selectedRecords.value[record[props.rowKey]]
     }
-
-    await nextTick(async () => {
-      // eslint-disable-next-line ts/no-explicit-any
-      const filteredRows: any[] = []
-
-      selectedRowKeys.value.forEach(v => {
-        filteredRows.push(selectedRecords.value[v])
-      })
-      selectedRows.value = filteredRows
-    })
+    await nextTick()
+    selectedRows.value = [...selectedRowKeys.value.map(v => selectedRecords.value[v])]
   }
   else if (selected) {
     selectedRowKeys.value = record[props.rowKey]
@@ -327,7 +316,7 @@ async function onSelect(record: any, selected: boolean, _selectedRows: any[]) {
 
 // eslint-disable-next-line ts/no-explicit-any
 async function onSelectAll(selected: boolean, _selectedRows: any[], changeRows: any[]) {
-  // console.log(selected, selectedRows, changeRows)
+  // console.log('onSelectAll', selected, selectedRows, changeRows)
   // eslint-disable-next-line ts/no-explicit-any
   changeRows.forEach((v: any) => {
     if (v) {
@@ -342,22 +331,19 @@ async function onSelectAll(selected: boolean, _selectedRows: any[], changeRows: 
   })
 
   if (!selected) {
-    selectedRowKeys.value = selectedRowKeys.value.filter(v => {
-      return selectedRecords.value[v]
-    })
+    selectedRowKeys.value.splice(0, selectedRowKeys.value.length, ...selectedRowKeys.value.filter(v => selectedRecords.value[v]))
   }
 
   // console.log(selectedRowKeysBuffer.value, selectedRecords.value)
 
-  await nextTick(async () => {
-    // eslint-disable-next-line ts/no-explicit-any
-    const filteredRows: any[] = []
+  await nextTick()
+  selectedRows.value.splice(0, selectedRows.value.length, ...selectedRowKeys.value.map(v => selectedRecords.value[v]))
+}
 
-    selectedRowKeys.value.forEach(v => {
-      filteredRows.push(selectedRecords.value[v])
-    })
-    selectedRows.value = filteredRows
-  })
+function resetSelection() {
+  selectedRowKeys.value = reactive([])
+  selectedRows.value = reactive([])
+  selectedRecords.value = reactive({})
 }
 
 const router = useRouter()
@@ -381,7 +367,7 @@ async function resetSearch() {
   updateFilter.value++
 }
 
-watch(params, v => {
+const { stop: stopWatchParams, resume: resumeWatchParams } = watchPausable(params, v => {
   if (!init.value)
     return
 
@@ -393,7 +379,6 @@ watch(params, v => {
 
 watch(() => route.query, async () => {
   params.trash = route.query.trash === 'true'
-  params.team_id = route.query.team_id
 
   if (init.value)
     await get_list()
@@ -425,14 +410,16 @@ if (props.overwriteParams) {
 const rowSelection = computed(() => {
   if (batchColumns.value.length > 0 || props.selectionType || props.exportExcel) {
     return {
-      selectedRowKeys: selectedRowKeys.value,
+      selectedRowKeys: unref(selectedRowKeys),
       onSelect,
       onSelectAll,
       getCheckboxProps: props?.getCheckboxProps,
       type: (batchColumns.value.length > 0 || props.exportExcel) ? 'checkbox' : props.selectionType,
     }
   }
-  else { return null }
+  else {
+    return null
+  }
 }) as ComputedRef<TableProps['rowSelection']>
 
 const hasSelectedRow = computed(() => {
@@ -440,18 +427,21 @@ const hasSelectedRow = computed(() => {
 })
 
 function clickBatchEdit() {
-  emit('clickBatchModify', batchColumns.value, selectedRowKeys.value)
+  emit('clickBatchModify', batchColumns.value, selectedRowKeys.value, selectedRows.value)
 }
 
 function initSortable() {
   useSortable(props, randomId, dataSource, rowsKeyIndexMap, expandKeysList)
 }
 
-function changePage(page: number, page_size: number) {
+async function changePage(page: number, page_size: number) {
+  stopWatchParams()
   Object.assign(params, {
     page,
     page_size,
   })
+  resumeWatchParams()
+  await get_list(page, page_size)
 }
 
 const paginationSize = computed(() => {
@@ -529,10 +519,7 @@ const paginationSize = computed(() => {
             >
               {{ $gettext('Modify') }}
             </AButton>
-            <ADivider
-              v-if="!props.disableDelete"
-              type="vertical"
-            />
+            <ADivider type="vertical" />
           </template>
 
           <slot
@@ -569,6 +556,7 @@ const paginationSize = computed(() => {
                 {{ $gettext('Recover') }}
               </AButton>
             </APopconfirm>
+            <ADivider type="vertical" />
             <APopconfirm
               v-if="params.trash"
               :cancel-text="$gettext('No')"
@@ -601,7 +589,13 @@ const paginationSize = computed(() => {
 .ant-table-scroll {
   .ant-table-body {
     overflow-x: auto !important;
+    overflow-y: hidden !important;
   }
+}
+
+.std-table {
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
 }
 </style>
 
@@ -623,6 +617,12 @@ const paginationSize = computed(() => {
 
 :deep(.ant-form-inline .ant-form-item) {
   margin-bottom: 10px;
+}
+
+.ant-divider {
+  &:last-child {
+    display: none;
+  }
 }
 </style>
 

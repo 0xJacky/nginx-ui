@@ -1,5 +1,7 @@
 <script setup lang="tsx">
+import type { Site } from '@/api/domain'
 import type { SiteCategory } from '@/api/site_category'
+import type { Column } from '@/components/StdDesign/types'
 import domain from '@/api/domain'
 import site_category from '@/api/site_category'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
@@ -7,6 +9,7 @@ import InspectConfig from '@/views/config/InspectConfig.vue'
 import SiteDuplicate from '@/views/site/components/SiteDuplicate.vue'
 import columns from '@/views/site/site_list/columns'
 import { message } from 'ant-design-vue'
+import StdBatchEdit from '../../../components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -77,6 +80,17 @@ function handle_click_duplicate(name: string) {
   show_duplicator.value = true
   target.value = name
 }
+
+const stdBatchEditRef = useTemplateRef('stdBatchEditRef')
+
+async function handleClickBatchEdit(batchColumns: Column[], selectedRowKeys: string[], selectedRows: Site[]) {
+  stdBatchEditRef.value?.showModal(batchColumns, selectedRowKeys, selectedRows)
+}
+
+function handleBatchUpdated() {
+  table.value?.get_list()
+  table.value?.resetSelection()
+}
 </script>
 
 <template>
@@ -101,9 +115,9 @@ function handle_click_duplicate(name: string) {
       @click-edit="(r: string) => router.push({
         path: `/sites/${r}`,
       })"
+      @click-batch-modify="handleClickBatchEdit"
     >
       <template #actions="{ record }">
-        <ADivider type="vertical" />
         <AButton
           v-if="record.enabled"
           type="link"
@@ -146,6 +160,12 @@ function handle_click_duplicate(name: string) {
         </APopconfirm>
       </template>
     </StdTable>
+    <StdBatchEdit
+      ref="stdBatchEditRef"
+      :api="domain"
+      :columns
+      @save="handleBatchUpdated"
+    />
     <SiteDuplicate
       v-model:visible="show_duplicator"
       :name="target"

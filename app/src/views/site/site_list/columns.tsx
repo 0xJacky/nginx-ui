@@ -1,10 +1,12 @@
 import type { Column, JSXElements } from '@/components/StdDesign/types'
+import site_category from '@/api/site_category'
 import {
   actualValueRender,
   type CustomRenderProps,
   datetime,
 } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { input, select } from '@/components/StdDesign/StdDataEntry'
+import { input, select, selector } from '@/components/StdDesign/StdDataEntry'
+import siteCategoryColumns from '@/views/site/site_category/columns'
 import { Badge } from 'ant-design-vue'
 
 const columns: Column[] = [{
@@ -20,8 +22,18 @@ const columns: Column[] = [{
   title: () => $gettext('Category'),
   dataIndex: 'site_category_id',
   customRender: actualValueRender('site_category.name'),
+  edit: {
+    type: selector,
+    selector: {
+      api: site_category,
+      columns: siteCategoryColumns,
+      recordValueIndex: 'name',
+      selectionType: 'radio',
+    },
+  },
   sorter: true,
   pithy: true,
+  batch: true,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'enabled',
