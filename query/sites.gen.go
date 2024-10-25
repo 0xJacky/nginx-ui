@@ -28,7 +28,7 @@ func newSite(db *gorm.DB, opts ...gen.DOOption) site {
 
 	tableName := _site.siteDo.TableName()
 	_site.ALL = field.NewAsterisk(tableName)
-	_site.ID = field.NewInt(tableName, "id")
+	_site.ID = field.NewUint64(tableName, "id")
 	_site.CreatedAt = field.NewTime(tableName, "created_at")
 	_site.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_site.DeletedAt = field.NewField(tableName, "deleted_at")
@@ -44,7 +44,7 @@ type site struct {
 	siteDo
 
 	ALL       field.Asterisk
-	ID        field.Int
+	ID        field.Uint64
 	CreatedAt field.Time
 	UpdatedAt field.Time
 	DeletedAt field.Field
@@ -66,7 +66,7 @@ func (s site) As(alias string) *site {
 
 func (s *site) updateTableName(table string) *site {
 	s.ALL = field.NewAsterisk(table)
-	s.ID = field.NewInt(table, "id")
+	s.ID = field.NewUint64(table, "id")
 	s.CreatedAt = field.NewTime(table, "created_at")
 	s.UpdatedAt = field.NewTime(table, "updated_at")
 	s.DeletedAt = field.NewField(table, "deleted_at")
@@ -110,7 +110,7 @@ func (s site) replaceDB(db *gorm.DB) site {
 type siteDo struct{ gen.DO }
 
 // FirstByID Where("id=@id")
-func (s siteDo) FirstByID(id int) (result *model.Site, err error) {
+func (s siteDo) FirstByID(id uint64) (result *model.Site, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -125,7 +125,7 @@ func (s siteDo) FirstByID(id int) (result *model.Site, err error) {
 }
 
 // DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
-func (s siteDo) DeleteByID(id int) (err error) {
+func (s siteDo) DeleteByID(id uint64) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder

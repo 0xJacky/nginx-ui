@@ -28,7 +28,7 @@ func newStream(db *gorm.DB, opts ...gen.DOOption) stream {
 
 	tableName := _stream.streamDo.TableName()
 	_stream.ALL = field.NewAsterisk(tableName)
-	_stream.ID = field.NewInt(tableName, "id")
+	_stream.ID = field.NewUint64(tableName, "id")
 	_stream.CreatedAt = field.NewTime(tableName, "created_at")
 	_stream.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_stream.DeletedAt = field.NewField(tableName, "deleted_at")
@@ -44,7 +44,7 @@ type stream struct {
 	streamDo
 
 	ALL       field.Asterisk
-	ID        field.Int
+	ID        field.Uint64
 	CreatedAt field.Time
 	UpdatedAt field.Time
 	DeletedAt field.Field
@@ -66,7 +66,7 @@ func (s stream) As(alias string) *stream {
 
 func (s *stream) updateTableName(table string) *stream {
 	s.ALL = field.NewAsterisk(table)
-	s.ID = field.NewInt(table, "id")
+	s.ID = field.NewUint64(table, "id")
 	s.CreatedAt = field.NewTime(table, "created_at")
 	s.UpdatedAt = field.NewTime(table, "updated_at")
 	s.DeletedAt = field.NewField(table, "deleted_at")
@@ -110,7 +110,7 @@ func (s stream) replaceDB(db *gorm.DB) stream {
 type streamDo struct{ gen.DO }
 
 // FirstByID Where("id=@id")
-func (s streamDo) FirstByID(id int) (result *model.Stream, err error) {
+func (s streamDo) FirstByID(id uint64) (result *model.Stream, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -125,7 +125,7 @@ func (s streamDo) FirstByID(id int) (result *model.Stream, err error) {
 }
 
 // DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
-func (s streamDo) DeleteByID(id int) (err error) {
+func (s streamDo) DeleteByID(id uint64) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder

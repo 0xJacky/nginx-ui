@@ -6,6 +6,6 @@ export interface User extends ModelBase {
   password: string
 }
 
-const user: Curd<User> = new Curd('user')
+const user: Curd<User> = new Curd('users')
 
 export default user

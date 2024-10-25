@@ -7,12 +7,10 @@ import (
 
 type Environment struct {
 	Model
-	Name          string `json:"name"`
-	URL           string `json:"url"`
-	Token         string `json:"token"`
-	Enabled       bool   `json:"enabled" gorm:"default:true"`
-	OperationSync bool   `json:"operation_sync"`
-	SyncApiRegex  string `json:"sync_api_regex"`
+	Name    string `json:"name"`
+	URL     string `json:"url"`
+	Token   string `json:"token"`
+	Enabled bool   `json:"enabled" gorm:"default:true"`
 }
 
 func (e *Environment) GetUrl(uri string) (decodedUri string, err error) {

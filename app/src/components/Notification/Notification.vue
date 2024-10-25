@@ -18,7 +18,7 @@ function init() {
   loading.value = true
   notification.get_list().then(r => {
     data.value = r.data
-    unreadCount.value = r.pagination.total
+    unreadCount.value = r.pagination?.total || 0
   }).catch(e => {
     message.error($gettext(e?.message ?? 'Server error'))
   }).finally(() => {

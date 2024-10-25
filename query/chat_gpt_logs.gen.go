@@ -94,7 +94,7 @@ func (c chatGPTLog) replaceDB(db *gorm.DB) chatGPTLog {
 type chatGPTLogDo struct{ gen.DO }
 
 // FirstByID Where("id=@id")
-func (c chatGPTLogDo) FirstByID(id int) (result *model.ChatGPTLog, err error) {
+func (c chatGPTLogDo) FirstByID(id uint64) (result *model.ChatGPTLog, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -109,7 +109,7 @@ func (c chatGPTLogDo) FirstByID(id int) (result *model.ChatGPTLog, err error) {
 }
 
 // DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
-func (c chatGPTLogDo) DeleteByID(id int) (err error) {
+func (c chatGPTLogDo) DeleteByID(id uint64) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder

@@ -17,7 +17,7 @@ func GetUsers(c *gin.Context) {
 }
 
 func GetUser(c *gin.Context) {
-	id := cast.ToInt(c.Param("id"))
+	id := cast.ToUint64(c.Param("id"))
 
 	u := query.User
 
@@ -69,7 +69,7 @@ func AddUser(c *gin.Context) {
 }
 
 func EditUser(c *gin.Context) {
-	userId := cast.ToInt(c.Param("id"))
+	userId := cast.ToUint64(c.Param("id"))
 
 	if settings.NodeSettings.Demo && userId == 1 {
 		c.JSON(http.StatusNotAcceptable, gin.H{

@@ -71,7 +71,7 @@ func GetCertList(c *gin.Context) {
 func GetCert(c *gin.Context) {
 	q := query.Cert
 
-	certModel, err := q.FirstByID(cast.ToInt(c.Param("id")))
+	certModel, err := q.FirstByID(cast.ToUint64(c.Param("id")))
 
 	if err != nil {
 		api.ErrHandler(c, err)
@@ -89,9 +89,9 @@ type certJson struct {
 	SSLCertificateKey     string             `json:"ssl_certificate_key" binding:"omitempty,privatekey"`
 	KeyType               certcrypto.KeyType `json:"key_type" binding:"omitempty,auto_cert_key_type"`
 	ChallengeMethod       string             `json:"challenge_method"`
-	DnsCredentialID       int                `json:"dns_credential_id"`
-	ACMEUserID            int                `json:"acme_user_id"`
-	SyncNodeIds           []int              `json:"sync_node_ids"`
+	DnsCredentialID       uint64             `json:"dns_credential_id"`
+	ACMEUserID            uint64             `json:"acme_user_id"`
+	SyncNodeIds           []uint64           `json:"sync_node_ids"`
 }
 
 func AddCert(c *gin.Context) {
@@ -141,7 +141,7 @@ func AddCert(c *gin.Context) {
 }
 
 func ModifyCert(c *gin.Context) {
-	id := cast.ToInt(c.Param("id"))
+	id := cast.ToUint64(c.Param("id"))
 
 	var json certJson
 

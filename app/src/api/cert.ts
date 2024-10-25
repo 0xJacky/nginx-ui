@@ -37,6 +37,6 @@ export interface CertificateResult {
   key_type: PrivateKeyType
 }
 
-const cert: Curd<Cert> = new Curd('/cert')
+const cert: Curd<Cert> = new Curd('/certs')
 
 export default cert

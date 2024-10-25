@@ -11,7 +11,7 @@ export interface AcmeUser extends ModelBase {
 
 class ACMEUserCurd extends Curd<AcmeUser> {
   constructor() {
-    super('acme_user', 'acme_users')
+    super('acme_users')
   }
 
   public async register(id: number) {

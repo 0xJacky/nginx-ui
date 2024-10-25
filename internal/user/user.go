@@ -15,7 +15,7 @@ const ExpiredTime = 24 * time.Hour
 
 type JWTClaims struct {
 	Name   string `json:"name"`
-	UserID int    `json:"user_id"`
+	UserID uint64 `json:"user_id"`
 	jwt.RegisteredClaims
 }
 

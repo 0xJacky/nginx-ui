@@ -18,11 +18,11 @@ export interface Node {
 
 class EnvironmentCurd extends Curd<Environment> {
   constructor() {
-    super('/environment')
+    super('/environments')
   }
 
   load_from_settings() {
-    return http.post(`${this.plural}/load_from_settings`)
+    return http.post(`${this.baseUrl}/load_from_settings`)
   }
 }
 

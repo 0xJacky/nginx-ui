@@ -12,7 +12,7 @@ import (
 )
 
 func GetDnsCredential(c *gin.Context) {
-	id := cast.ToInt(c.Param("id"))
+	id := cast.ToUint64(c.Param("id"))
 
 	d := query.DnsCredential
 
@@ -70,7 +70,7 @@ func AddDnsCredential(c *gin.Context) {
 }
 
 func EditDnsCredential(c *gin.Context) {
-	id := cast.ToInt(c.Param("id"))
+	id := cast.ToUint64(c.Param("id"))
 
 	var json DnsCredentialManageJson
 	if !api.BindAndValid(c, &json) {

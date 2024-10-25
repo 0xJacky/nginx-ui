@@ -28,7 +28,7 @@ func newAcmeUser(db *gorm.DB, opts ...gen.DOOption) acmeUser {
 
 	tableName := _acmeUser.acmeUserDo.TableName()
 	_acmeUser.ALL = field.NewAsterisk(tableName)
-	_acmeUser.ID = field.NewInt(tableName, "id")
+	_acmeUser.ID = field.NewUint64(tableName, "id")
 	_acmeUser.CreatedAt = field.NewTime(tableName, "created_at")
 	_acmeUser.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_acmeUser.DeletedAt = field.NewField(tableName, "deleted_at")
@@ -49,7 +49,7 @@ type acmeUser struct {
 	acmeUserDo
 
 	ALL               field.Asterisk
-	ID                field.Int
+	ID                field.Uint64
 	CreatedAt         field.Time
 	UpdatedAt         field.Time
 	DeletedAt         field.Field
@@ -76,7 +76,7 @@ func (a acmeUser) As(alias string) *acmeUser {
 
 func (a *acmeUser) updateTableName(table string) *acmeUser {
 	a.ALL = field.NewAsterisk(table)
-	a.ID = field.NewInt(table, "id")
+	a.ID = field.NewUint64(table, "id")
 	a.CreatedAt = field.NewTime(table, "created_at")
 	a.UpdatedAt = field.NewTime(table, "updated_at")
 	a.DeletedAt = field.NewField(table, "deleted_at")
@@ -130,7 +130,7 @@ func (a acmeUser) replaceDB(db *gorm.DB) acmeUser {
 type acmeUserDo struct{ gen.DO }
 
 // FirstByID Where("id=@id")
-func (a acmeUserDo) FirstByID(id int) (result *model.AcmeUser, err error) {
+func (a acmeUserDo) FirstByID(id uint64) (result *model.AcmeUser, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -145,7 +145,7 @@ func (a acmeUserDo) FirstByID(id int) (result *model.AcmeUser, err error) {
 }
 
 // DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
-func (a acmeUserDo) DeleteByID(id int) (err error) {
+func (a acmeUserDo) DeleteByID(id uint64) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder

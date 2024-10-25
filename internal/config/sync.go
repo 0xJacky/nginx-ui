@@ -80,7 +80,7 @@ func SyncToRemoteServer(c *model.Config, newFilepath string) (err error) {
 	return
 }
 
-func SyncRenameOnRemoteServer(origPath, newPath string, syncNodeIds []int) (err error) {
+func SyncRenameOnRemoteServer(origPath, newPath string, syncNodeIds []uint64) (err error) {
 	if origPath == "" || newPath == "" || len(syncNodeIds) == 0 {
 		return
 	}

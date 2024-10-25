@@ -28,7 +28,7 @@ func newEnvironment(db *gorm.DB, opts ...gen.DOOption) environment {
 
 	tableName := _environment.environmentDo.TableName()
 	_environment.ALL = field.NewAsterisk(tableName)
-	_environment.ID = field.NewInt(tableName, "id")
+	_environment.ID = field.NewUint64(tableName, "id")
 	_environment.CreatedAt = field.NewTime(tableName, "created_at")
 	_environment.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_environment.DeletedAt = field.NewField(tableName, "deleted_at")
@@ -36,8 +36,6 @@ func newEnvironment(db *gorm.DB, opts ...gen.DOOption) environment {
 	_environment.URL = field.NewString(tableName, "url")
 	_environment.Token = field.NewString(tableName, "token")
 	_environment.Enabled = field.NewBool(tableName, "enabled")
-	_environment.OperationSync = field.NewBool(tableName, "operation_sync")
-	_environment.SyncApiRegex = field.NewString(tableName, "sync_api_regex")
 
 	_environment.fillFieldMap()
 
@@ -47,17 +45,15 @@ func newEnvironment(db *gorm.DB, opts ...gen.DOOption) environment {
 type environment struct {
 	environmentDo
 
-	ALL           field.Asterisk
-	ID            field.Int
-	CreatedAt     field.Time
-	UpdatedAt     field.Time
-	DeletedAt     field.Field
-	Name          field.String
-	URL           field.String
-	Token         field.String
-	Enabled       field.Bool
-	OperationSync field.Bool
-	SyncApiRegex  field.String
+	ALL       field.Asterisk
+	ID        field.Uint64
+	CreatedAt field.Time
+	UpdatedAt field.Time
+	DeletedAt field.Field
+	Name      field.String
+	URL       field.String
+	Token     field.String
+	Enabled   field.Bool
 
 	fieldMap map[string]field.Expr
 }
@@ -74,7 +70,7 @@ func (e environment) As(alias string) *environment {
 
 func (e *environment) updateTableName(table string) *environment {
 	e.ALL = field.NewAsterisk(table)
-	e.ID = field.NewInt(table, "id")
+	e.ID = field.NewUint64(table, "id")
 	e.CreatedAt = field.NewTime(table, "created_at")
 	e.UpdatedAt = field.NewTime(table, "updated_at")
 	e.DeletedAt = field.NewField(table, "deleted_at")
@@ -82,8 +78,6 @@ func (e *environment) updateTableName(table string) *environment {
 	e.URL = field.NewString(table, "url")
 	e.Token = field.NewString(table, "token")
 	e.Enabled = field.NewBool(table, "enabled")
-	e.OperationSync = field.NewBool(table, "operation_sync")
-	e.SyncApiRegex = field.NewString(table, "sync_api_regex")
 
 	e.fillFieldMap()
 
@@ -100,7 +94,7 @@ func (e *environment) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (e *environment) fillFieldMap() {
-	e.fieldMap = make(map[string]field.Expr, 10)
+	e.fieldMap = make(map[string]field.Expr, 8)
 	e.fieldMap["id"] = e.ID
 	e.fieldMap["created_at"] = e.CreatedAt
 	e.fieldMap["updated_at"] = e.UpdatedAt
@@ -109,8 +103,6 @@ func (e *environment) fillFieldMap() {
 	e.fieldMap["url"] = e.URL
 	e.fieldMap["token"] = e.Token
 	e.fieldMap["enabled"] = e.Enabled
-	e.fieldMap["operation_sync"] = e.OperationSync
-	e.fieldMap["sync_api_regex"] = e.SyncApiRegex
 }
 
 func (e environment) clone(db *gorm.DB) environment {
@@ -126,7 +118,7 @@ func (e environment) replaceDB(db *gorm.DB) environment {
 type environmentDo struct{ gen.DO }
 
 // FirstByID Where("id=@id")
-func (e environmentDo) FirstByID(id int) (result *model.Environment, err error) {
+func (e environmentDo) FirstByID(id uint64) (result *model.Environment, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -141,7 +133,7 @@ func (e environmentDo) FirstByID(id int) (result *model.Environment, err error) 
 }
 
 // DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
-func (e environmentDo) DeleteByID(id int) (err error) {
+func (e environmentDo) DeleteByID(id uint64) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder

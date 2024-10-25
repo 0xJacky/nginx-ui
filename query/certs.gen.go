@@ -28,7 +28,7 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 
 	tableName := _cert.certDo.TableName()
 	_cert.ALL = field.NewAsterisk(tableName)
-	_cert.ID = field.NewInt(tableName, "id")
+	_cert.ID = field.NewUint64(tableName, "id")
 	_cert.CreatedAt = field.NewTime(tableName, "created_at")
 	_cert.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_cert.DeletedAt = field.NewField(tableName, "deleted_at")
@@ -39,8 +39,8 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.SSLCertificateKeyPath = field.NewString(tableName, "ssl_certificate_key_path")
 	_cert.AutoCert = field.NewInt(tableName, "auto_cert")
 	_cert.ChallengeMethod = field.NewString(tableName, "challenge_method")
-	_cert.DnsCredentialID = field.NewInt(tableName, "dns_credential_id")
-	_cert.ACMEUserID = field.NewInt(tableName, "acme_user_id")
+	_cert.DnsCredentialID = field.NewUint64(tableName, "dns_credential_id")
+	_cert.ACMEUserID = field.NewUint64(tableName, "acme_user_id")
 	_cert.KeyType = field.NewString(tableName, "key_type")
 	_cert.Log = field.NewString(tableName, "log")
 	_cert.Resource = field.NewField(tableName, "resource")
@@ -68,7 +68,7 @@ type cert struct {
 	certDo
 
 	ALL                     field.Asterisk
-	ID                      field.Int
+	ID                      field.Uint64
 	CreatedAt               field.Time
 	UpdatedAt               field.Time
 	DeletedAt               field.Field
@@ -79,8 +79,8 @@ type cert struct {
 	SSLCertificateKeyPath   field.String
 	AutoCert                field.Int
 	ChallengeMethod         field.String
-	DnsCredentialID         field.Int
-	ACMEUserID              field.Int
+	DnsCredentialID         field.Uint64
+	ACMEUserID              field.Uint64
 	KeyType                 field.String
 	Log                     field.String
 	Resource                field.Field
@@ -106,7 +106,7 @@ func (c cert) As(alias string) *cert {
 
 func (c *cert) updateTableName(table string) *cert {
 	c.ALL = field.NewAsterisk(table)
-	c.ID = field.NewInt(table, "id")
+	c.ID = field.NewUint64(table, "id")
 	c.CreatedAt = field.NewTime(table, "created_at")
 	c.UpdatedAt = field.NewTime(table, "updated_at")
 	c.DeletedAt = field.NewField(table, "deleted_at")
@@ -117,8 +117,8 @@ func (c *cert) updateTableName(table string) *cert {
 	c.SSLCertificateKeyPath = field.NewString(table, "ssl_certificate_key_path")
 	c.AutoCert = field.NewInt(table, "auto_cert")
 	c.ChallengeMethod = field.NewString(table, "challenge_method")
-	c.DnsCredentialID = field.NewInt(table, "dns_credential_id")
-	c.ACMEUserID = field.NewInt(table, "acme_user_id")
+	c.DnsCredentialID = field.NewUint64(table, "dns_credential_id")
+	c.ACMEUserID = field.NewUint64(table, "acme_user_id")
 	c.KeyType = field.NewString(table, "key_type")
 	c.Log = field.NewString(table, "log")
 	c.Resource = field.NewField(table, "resource")
@@ -319,7 +319,7 @@ func (a certBelongsToACMEUserTx) Count() int64 {
 type certDo struct{ gen.DO }
 
 // FirstByID Where("id=@id")
-func (c certDo) FirstByID(id int) (result *model.Cert, err error) {
+func (c certDo) FirstByID(id uint64) (result *model.Cert, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -334,7 +334,7 @@ func (c certDo) FirstByID(id int) (result *model.Cert, err error) {
 }
 
 // DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
-func (c certDo) DeleteByID(id int) (err error) {
+func (c certDo) DeleteByID(id uint64) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder

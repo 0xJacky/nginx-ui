@@ -15,7 +15,7 @@ import (
 )
 
 func GetEnvironment(c *gin.Context) {
-	id := cast.ToInt(c.Param("id"))
+	id := cast.ToUint64(c.Param("id"))
 
 	envQuery := query.Environment
 
@@ -67,7 +67,7 @@ func EditEnvironment(c *gin.Context) {
 }
 
 func DeleteEnvironment(c *gin.Context) {
-	id := cast.ToInt(c.Param("id"))
+	id := cast.ToUint64(c.Param("id"))
 	envQuery := query.Environment
 
 	env, err := envQuery.FirstByID(id)

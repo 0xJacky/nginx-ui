@@ -28,12 +28,12 @@ func newPasskey(db *gorm.DB, opts ...gen.DOOption) passkey {
 
 	tableName := _passkey.passkeyDo.TableName()
 	_passkey.ALL = field.NewAsterisk(tableName)
-	_passkey.ID = field.NewInt(tableName, "id")
+	_passkey.ID = field.NewUint64(tableName, "id")
 	_passkey.CreatedAt = field.NewTime(tableName, "created_at")
 	_passkey.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_passkey.DeletedAt = field.NewField(tableName, "deleted_at")
 	_passkey.Name = field.NewString(tableName, "name")
-	_passkey.UserID = field.NewInt(tableName, "user_id")
+	_passkey.UserID = field.NewUint64(tableName, "user_id")
 	_passkey.RawID = field.NewString(tableName, "raw_id")
 	_passkey.Credential = field.NewField(tableName, "credential")
 	_passkey.LastUsedAt = field.NewInt64(tableName, "last_used_at")
@@ -47,12 +47,12 @@ type passkey struct {
 	passkeyDo
 
 	ALL        field.Asterisk
-	ID         field.Int
+	ID         field.Uint64
 	CreatedAt  field.Time
 	UpdatedAt  field.Time
 	DeletedAt  field.Field
 	Name       field.String
-	UserID     field.Int
+	UserID     field.Uint64
 	RawID      field.String
 	Credential field.Field
 	LastUsedAt field.Int64
@@ -72,12 +72,12 @@ func (p passkey) As(alias string) *passkey {
 
 func (p *passkey) updateTableName(table string) *passkey {
 	p.ALL = field.NewAsterisk(table)
-	p.ID = field.NewInt(table, "id")
+	p.ID = field.NewUint64(table, "id")
 	p.CreatedAt = field.NewTime(table, "created_at")
 	p.UpdatedAt = field.NewTime(table, "updated_at")
 	p.DeletedAt = field.NewField(table, "deleted_at")
 	p.Name = field.NewString(table, "name")
-	p.UserID = field.NewInt(table, "user_id")
+	p.UserID = field.NewUint64(table, "user_id")
 	p.RawID = field.NewString(table, "raw_id")
 	p.Credential = field.NewField(table, "credential")
 	p.LastUsedAt = field.NewInt64(table, "last_used_at")
@@ -122,7 +122,7 @@ func (p passkey) replaceDB(db *gorm.DB) passkey {
 type passkeyDo struct{ gen.DO }
 
 // FirstByID Where("id=@id")
-func (p passkeyDo) FirstByID(id int) (result *model.Passkey, err error) {
+func (p passkeyDo) FirstByID(id uint64) (result *model.Passkey, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -137,7 +137,7 @@ func (p passkeyDo) FirstByID(id int) (result *model.Passkey, err error) {
 }
 
 // DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
-func (p passkeyDo) DeleteByID(id int) (err error) {
+func (p passkeyDo) DeleteByID(id uint64) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
