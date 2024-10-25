@@ -48,8 +48,10 @@ export function mask(maskObj: any): (args: CustomRenderProps) => JSX.Element {
 export function arrayToTextRender(args: CustomRenderProps) {
   return args.text?.join(', ')
 }
-export function actualValueRender(args: CustomRenderProps, actualDataIndex: string | string[]) {
-  return get(args.record, actualDataIndex)
+export function actualValueRender(actualDataIndex: string | string[]) {
+  return (args: CustomRenderProps) => {
+    return get(args.record, actualDataIndex) || '/'
+  }
 }
 
 export function longTextWithEllipsis(len: number): (args: CustomRenderProps) => JSX.Element {

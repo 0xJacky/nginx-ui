@@ -52,7 +52,7 @@ export const routes: RouteRecordRaw[] = [
         children: [{
           path: 'list',
           name: 'Sites List',
-          component: () => import('@/views/site/SiteList.vue'),
+          component: () => import('@/views/site/site_list/SiteList.vue'),
           meta: {
             name: () => $gettext('Sites List'),
           },

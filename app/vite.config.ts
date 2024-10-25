@@ -56,6 +56,10 @@ export default defineConfig(({ mode }) => {
           },
         ],
         vueTemplate: true,
+        eslintrc: {
+          enabled: true,
+          filepath: '.eslint-auto-import.mjs',
+        },
       }),
       DefineOptions(),
     ],

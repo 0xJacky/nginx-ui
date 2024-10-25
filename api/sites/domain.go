@@ -49,7 +49,7 @@ func GetSite(c *gin.Context) {
 	}
 
 	s := query.Site
-	site, err := s.Where(s.Path.Eq(path)).FirstOrInit()
+	site, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -300,6 +300,14 @@ func DeleteSite(c *gin.Context) {
 	var err error
 	name := c.Param("name")
 	availablePath := nginx.GetConfPath("sites-available", name)
+
+	s := query.Site
+	_, err = s.Where(s.Path.Eq(availablePath)).Unscoped().Delete(&model.Site{})
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+
 	enabledPath := nginx.GetConfPath("sites-enabled", name)
 	if _, err = os.Stat(availablePath); os.IsNotExist(err) {
 		c.JSON(http.StatusNotFound, gin.H{

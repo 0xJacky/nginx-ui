@@ -1,63 +1,43 @@
 <script setup lang="tsx">
-import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { Column, JSXElements } from '@/components/StdDesign/types'
+import type { SiteCategory } from '@/api/site_category'
 import domain from '@/api/domain'
+import site_category from '@/api/site_category'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
-import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { input, select } from '@/components/StdDesign/StdDataEntry'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import SiteDuplicate from '@/views/site/components/SiteDuplicate.vue'
-import { Badge, message } from 'ant-design-vue'
+import columns from '@/views/site/site_list/columns'
+import { message } from 'ant-design-vue'
 
-const columns: Column[] = [{
-  title: () => $gettext('Name'),
-  dataIndex: 'name',
-  sorter: true,
-  pithy: true,
-  edit: {
-    type: input,
-  },
-  search: true,
-}, {
-  title: () => $gettext('Status'),
-  dataIndex: 'enabled',
-  customRender: (args: CustomRenderProps) => {
-    const template: JSXElements = []
-    const { text } = args
-    if (text === true || text > 0) {
-      template.push(<Badge status="success" />)
-      template.push($gettext('Enabled'))
-    }
-    else {
-      template.push(<Badge status="warning" />)
-      template.push($gettext('Disabled'))
-    }
-
-    return h('div', template)
-  },
-  search: {
-    type: select,
-    mask: {
-      true: $gettext('Enabled'),
-      false: $gettext('Disabled'),
-    },
-  },
-  sorter: true,
-  pithy: true,
-}, {
-  title: () => $gettext('Updated at'),
-  dataIndex: 'modified_at',
-  customRender: datetime,
-  sorter: true,
-  pithy: true,
-}, {
-  title: () => $gettext('Action'),
-  dataIndex: 'action',
-}]
+const route = useRoute()
+const router = useRouter()
 
 const table = ref()
-
 const inspect_config = ref()
+
+const siteCategoryId = ref(Number.parseInt(route.query.site_category_id as string) || 0)
+const siteCategories = ref([]) as Ref<SiteCategory[]>
+
+watch(route, () => {
+  inspect_config.value?.test()
+})
+
+onMounted(async () => {
+  while (true) {
+    try {
+      const { data, pagination } = await site_category.get_list()
+      if (!data || !pagination)
+        return
+      siteCategories.value.push(...data)
+      if (data.length < pagination?.per_page) {
+        return
+      }
+    }
+    catch (e: any) {
+      message.error(e?.message ?? $gettext('Server error'))
+      return
+    }
+  }
+})
 
 function enable(name: string) {
   domain.enable(name).then(() => {
@@ -97,17 +77,16 @@ function handle_click_duplicate(name: string) {
   show_duplicator.value = true
   target.value = name
 }
-
-const route = useRoute()
-
-watch(route, () => {
-  inspect_config.value?.test()
-})
 </script>
 
 <template>
   <ACard :title="$gettext('Manage Sites')">
     <InspectConfig ref="inspect_config" />
+
+    <ATabs v-model:active-key="siteCategoryId">
+      <ATabPane :key="0" :tab="$gettext('All')" />
+      <ATabPane v-for="c in siteCategories" :key="c.id" :tab="c.name" />
+    </ATabs>
 
     <StdTable
       ref="table"
@@ -116,7 +95,10 @@ watch(route, () => {
       row-key="name"
       disable-delete
       disable-view
-      @click-edit="r => $router.push({
+      :get-params="{
+        site_category_id: siteCategoryId,
+      }"
+      @click-edit="(r: string) => router.push({
         path: `/sites/${r}`,
       })"
     >
