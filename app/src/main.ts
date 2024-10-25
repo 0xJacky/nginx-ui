@@ -7,7 +7,7 @@ import VueDOMPurifyHTML from 'vue-dompurify-html'
 import App from './App.vue'
 import gettext from './gettext'
 import router from './routes'
-import './style.css'
+import 'virtual:uno.css'
 
 const pinia = createPinia()
 

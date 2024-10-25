@@ -34,6 +34,12 @@ func newSite(db *gorm.DB, opts ...gen.DOOption) site {
 	_site.DeletedAt = field.NewField(tableName, "deleted_at")
 	_site.Path = field.NewString(tableName, "path")
 	_site.Advanced = field.NewBool(tableName, "advanced")
+	_site.SiteCategoryID = field.NewUint64(tableName, "site_category_id")
+	_site.SiteCategory = siteBelongsToSiteCategory{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("SiteCategory", "model.SiteCategory"),
+	}
 
 	_site.fillFieldMap()
 
@@ -43,13 +49,15 @@ func newSite(db *gorm.DB, opts ...gen.DOOption) site {
 type site struct {
 	siteDo
 
-	ALL       field.Asterisk
-	ID        field.Uint64
-	CreatedAt field.Time
-	UpdatedAt field.Time
-	DeletedAt field.Field
-	Path      field.String
-	Advanced  field.Bool
+	ALL            field.Asterisk
+	ID             field.Uint64
+	CreatedAt      field.Time
+	UpdatedAt      field.Time
+	DeletedAt      field.Field
+	Path           field.String
+	Advanced       field.Bool
+	SiteCategoryID field.Uint64
+	SiteCategory   siteBelongsToSiteCategory
 
 	fieldMap map[string]field.Expr
 }
@@ -72,6 +80,7 @@ func (s *site) updateTableName(table string) *site {
 	s.DeletedAt = field.NewField(table, "deleted_at")
 	s.Path = field.NewString(table, "path")
 	s.Advanced = field.NewBool(table, "advanced")
+	s.SiteCategoryID = field.NewUint64(table, "site_category_id")
 
 	s.fillFieldMap()
 
@@ -88,13 +97,15 @@ func (s *site) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *site) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 6)
+	s.fieldMap = make(map[string]field.Expr, 8)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["created_at"] = s.CreatedAt
 	s.fieldMap["updated_at"] = s.UpdatedAt
 	s.fieldMap["deleted_at"] = s.DeletedAt
 	s.fieldMap["path"] = s.Path
 	s.fieldMap["advanced"] = s.Advanced
+	s.fieldMap["site_category_id"] = s.SiteCategoryID
+
 }
 
 func (s site) clone(db *gorm.DB) site {
@@ -105,6 +116,77 @@ func (s site) clone(db *gorm.DB) site {
 func (s site) replaceDB(db *gorm.DB) site {
 	s.siteDo.ReplaceDB(db)
 	return s
+}
+
+type siteBelongsToSiteCategory struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a siteBelongsToSiteCategory) Where(conds ...field.Expr) *siteBelongsToSiteCategory {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a siteBelongsToSiteCategory) WithContext(ctx context.Context) *siteBelongsToSiteCategory {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a siteBelongsToSiteCategory) Session(session *gorm.Session) *siteBelongsToSiteCategory {
+	a.db = a.db.Session(session)
+	return &a
+}
+
+func (a siteBelongsToSiteCategory) Model(m *model.Site) *siteBelongsToSiteCategoryTx {
+	return &siteBelongsToSiteCategoryTx{a.db.Model(m).Association(a.Name())}
+}
+
+type siteBelongsToSiteCategoryTx struct{ tx *gorm.Association }
+
+func (a siteBelongsToSiteCategoryTx) Find() (result *model.SiteCategory, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a siteBelongsToSiteCategoryTx) Append(values ...*model.SiteCategory) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a siteBelongsToSiteCategoryTx) Replace(values ...*model.SiteCategory) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a siteBelongsToSiteCategoryTx) Delete(values ...*model.SiteCategory) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a siteBelongsToSiteCategoryTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a siteBelongsToSiteCategoryTx) Count() int64 {
+	return a.tx.Count()
 }
 
 type siteDo struct{ gen.DO }

@@ -4,10 +4,13 @@ import type { ChatComplicationMessage } from '@/api/openai'
 import type { CheckedType } from '@/types'
 import type { Ref } from 'vue'
 import domain from '@/api/domain'
+import site_category from '@/api/site_category'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
+import StdSelector from '@/components/StdDesign/StdDataEntry/components/StdSelector.vue'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import Deploy from '@/views/site/components/Deploy.vue'
+import siteCategoryColumns from '@/views/site/site_category/columns'
 import { message, Modal } from 'ant-design-vue'
 
 const settings = useSettingsStore()
@@ -73,18 +76,29 @@ function on_change_enabled(checked: CheckedType) {
         key="1"
         :header="$gettext('Basic')"
       >
-        <AFormItem :label="$gettext('Enabled')">
-          <ASwitch
-            :checked="enabled"
-            @change="on_change_enabled"
-          />
-        </AFormItem>
-        <AFormItem :label="$gettext('Name')">
-          <AInput v-model:value="filename" />
-        </AFormItem>
-        <AFormItem :label="$gettext('Updated at')">
-          {{ formatDateTime(data.modified_at) }}
-        </AFormItem>
+        <AForm layout="vertical">
+          <AFormItem :label="$gettext('Enabled')">
+            <ASwitch
+              :checked="enabled"
+              @change="on_change_enabled"
+            />
+          </AFormItem>
+          <AFormItem :label="$gettext('Name')">
+            <AInput v-model:value="filename" />
+          </AFormItem>
+          <AFormItem :label="$gettext('Category')">
+            <StdSelector
+              v-model:selected-key="data.site_category_id"
+              :api="site_category"
+              :columns="siteCategoryColumns"
+              record-value-index="name"
+              selection-type="radio"
+            />
+          </AFormItem>
+          <AFormItem :label="$gettext('Updated at')">
+            {{ formatDateTime(data.modified_at) }}
+          </AFormItem>
+        </AForm>
       </ACollapsePanel>
       <ACollapsePanel
         v-if="!settings.is_remote"

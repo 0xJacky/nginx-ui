@@ -40,7 +40,7 @@ const saving = ref(false)
 const filename = ref('')
 const parse_error_status = ref(false)
 const parse_error_message = ref('')
-const data = ref({})
+const data = ref({}) as Ref<Site>
 
 init()
 
@@ -134,6 +134,7 @@ async function save() {
     name: filename.value || name.value,
     content: configText.value,
     overwrite: true,
+    site_category_id: data.value.site_category_id,
   }).then(r => {
     handle_response(r)
     router.push({

@@ -1,6 +1,7 @@
 import type { CertificateInfo } from '@/api/cert'
 import type { NgxConfig } from '@/api/ngx'
 import type { ChatComplicationMessage } from '@/api/openai'
+import type { SiteCategory } from '@/api/site_category'
 import type { PrivateKeyType } from '@/constants'
 import Curd from '@/api/curd'
 import http from '@/lib/http'
@@ -16,6 +17,8 @@ export interface Site {
   chatgpt_messages: ChatComplicationMessage[]
   tokenized?: NgxConfig
   cert_info?: Record<number, CertificateInfo[]>
+  site_category_id: number
+  site_category?: SiteCategory
 }
 
 export interface AutoCertRequest {

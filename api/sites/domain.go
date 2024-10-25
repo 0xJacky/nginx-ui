@@ -69,7 +69,7 @@ func GetSite(c *gin.Context) {
 
 		c.JSON(http.StatusOK, Site{
 			ModifiedAt:      file.ModTime(),
-			Advanced:        site.Advanced,
+			Site:            site,
 			Enabled:         enabled,
 			Name:            name,
 			Config:          string(origContent),
@@ -102,7 +102,7 @@ func GetSite(c *gin.Context) {
 
 	c.JSON(http.StatusOK, Site{
 		ModifiedAt:      file.ModTime(),
-		Advanced:        site.Advanced,
+		Site:            site,
 		Enabled:         enabled,
 		Name:            name,
 		Config:          nginxConfig.FmtCode(),
@@ -125,9 +125,10 @@ func SaveSite(c *gin.Context) {
 	}
 
 	var json struct {
-		Name      string `json:"name" binding:"required"`
-		Content   string `json:"content" binding:"required"`
-		Overwrite bool   `json:"overwrite"`
+		Name           string `json:"name" binding:"required"`
+		Content        string `json:"content" binding:"required"`
+		SiteCategoryID uint64 `json:"site_category_id"`
+		Overwrite      bool   `json:"overwrite"`
 	}
 
 	if !api.BindAndValid(c, &json) {
@@ -149,11 +150,18 @@ func SaveSite(c *gin.Context) {
 		return
 	}
 	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", name)
+	s := query.Site
+
+	_, err = s.Where(s.Path.Eq(path)).Update(s.SiteCategoryID, json.SiteCategoryID)
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+
 	// rename the config file if needed
 	if name != json.Name {
 		newPath := nginx.GetConfPath("sites-available", json.Name)
-		s := query.Site
-		_, err = s.Where(s.Path.Eq(path)).Update(s.Path, newPath)
+		_, _ = s.Where(s.Path.Eq(path)).Update(s.Path, newPath)
 
 		// check if dst file exists, do not rename
 		if helper.FileExists(newPath) {
