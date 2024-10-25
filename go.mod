@@ -34,7 +34,7 @@ require (
 	github.com/spf13/cast v1.7.0
 	github.com/stretchr/testify v1.9.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20241013191809-e73b7dd454e8
-	github.com/uozi-tech/cosy v1.9.4
+	github.com/uozi-tech/cosy v1.9.8
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/crypto v0.28.0
