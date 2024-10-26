@@ -3,34 +3,57 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/internal/kernal"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/router"
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/gin-gonic/gin"
 	"github.com/jpillora/overseer"
+	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy"
+	cKernel "github.com/uozi-tech/cosy/kernel"
 	"github.com/uozi-tech/cosy/logger"
+	cRouter "github.com/uozi-tech/cosy/router"
 	cSettings "github.com/uozi-tech/cosy/settings"
+	"net/http"
 	"time"
 )
 
 func Program(confPath string) func(state overseer.State) {
 	return func(state overseer.State) {
 		defer logger.Sync()
-
+		defer logger.Info("Server exited")
 		cosy.RegisterModels(model.GenerateAllModel()...)
 
-		cosy.RegisterAsyncFunc(kernal.Boot, router.InitRouter)
+		cosy.RegisterAsyncFunc(kernel.Boot, router.InitRouter)
 
-		if state.Listener != nil {
-			cosy.SetListener(state.Listener)
+		// Initialize settings package
+		settings.Init(confPath)
 
-			cosy.Boot(confPath)
+		// Set gin mode
+		gin.SetMode(cSettings.ServerSettings.RunMode)
 
-			logger.Infof("Nginx configuration directory: %s", nginx.GetConfPath())
+		// Initialize logger package
+		logger.Init(cSettings.ServerSettings.RunMode)
+		defer logger.Sync()
+
+		if state.Listener == nil {
+			return
 		}
-		logger.Info("Server exited")
+		// Gin router initialization
+		cRouter.Init()
+
+		// Kernel boot
+		cKernel.Boot()
+
+		addr := fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port)
+		srv := &http.Server{
+			Addr:    addr,
+			Handler: cRouter.GetEngine(),
+		}
+		if err := srv.Serve(state.Listener); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			logger.Fatalf("listen: %s\n", err)
+		}
 	}
 }
 
@@ -39,8 +62,7 @@ func main() {
 	flag.StringVar(&confPath, "config", "app.ini", "Specify the configuration file")
 	flag.Parse()
 
-	settings.Migrate(confPath)
-	cSettings.Init(confPath)
+	settings.Init(confPath)
 
 	overseer.Run(overseer.Config{
 		Program:          Program(confPath),

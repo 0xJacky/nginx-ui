@@ -121,5 +121,5 @@ RPOrigins     = http://localhost:3002,http://127.0.0.1:3002`
 		t.Fatalf("Failed to write config to file: %v", err)
 	}
 
-	Migrate(confName)
+	migrate(confName)
 }

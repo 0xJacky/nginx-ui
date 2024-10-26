@@ -64,7 +64,16 @@ func init() {
 	settings.WithoutSonyflake()
 }
 
-func Init() {
+func Init(confPath string) {
+	migrate(confPath)
+
+	settings.Init(confPath)
+
+	// Set Default Port
+	if settings.ServerSettings.Port == 0 {
+		settings.ServerSettings.Port = 9000
+	}
+
 	for prefix, ptr := range envPrefixMap {
 		parseEnv(ptr, prefix+"_")
 	}

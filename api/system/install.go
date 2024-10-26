@@ -2,7 +2,7 @@ package system
 
 import (
 	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/internal/kernal"
+	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -58,7 +58,7 @@ func InstallNginxUI(c *gin.Context) {
 	}
 
 	// Init model
-	kernal.InitDatabase()
+	kernel.InitDatabase()
 
 	pwd, _ := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
 

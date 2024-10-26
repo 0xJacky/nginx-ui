@@ -1,4 +1,4 @@
-package kernal
+package kernel
 
 import (
 	"crypto/rand"
@@ -27,7 +27,6 @@ func Boot() {
 	defer recovery()
 
 	async := []func(){
-		settings.Init,
 		InitJsExtensionType,
 		InitDatabase,
 		InitNodeSecret,

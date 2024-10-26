@@ -100,7 +100,7 @@ func mergeStructs(src, dst interface{}) {
 	return
 }
 
-func Migrate(confPath string) {
+func migrate(confPath string) {
 	logger.Init("debug")
 	Conf, err := ini.LoadSources(ini.LoadOptions{
 		Loose:        true,
@@ -160,7 +160,7 @@ func Migrate(confPath string) {
 	for name, ptr := range migrated.Iterator() {
 		err = Conf.Section(name).MapTo(ptr)
 		if err != nil {
-			logger.Error("Migrate.MapTo %s err: %v", name, err)
+			logger.Error("migrate.MapTo %s err: %v", name, err)
 		}
 	}
 
@@ -187,7 +187,7 @@ func Migrate(confPath string) {
 	for section, ptr := range migrated.Iterator() {
 		err = Conf.Section(section).ReflectFrom(ptr)
 		if err != nil {
-			logger.Fatalf("Migrate.ReflectFrom %s err: %v", section, err)
+			logger.Fatalf("migrate.ReflectFrom %s err: %v", section, err)
 		}
 	}
 

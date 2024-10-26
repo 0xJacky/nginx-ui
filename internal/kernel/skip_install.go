@@ -1,4 +1,4 @@
-package kernal
+package kernel
 
 import (
 	"github.com/0xJacky/Nginx-UI/model"
