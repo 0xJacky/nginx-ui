@@ -12,12 +12,13 @@ import (
 	"net/http"
 	"os"
 	"runtime"
-	"sync"
 )
 
 // Delete deletes a site by removing the file in sites-available
 func Delete(name string) (err error) {
 	availablePath := nginx.GetConfPath("sites-available", name)
+
+	syncDelete(name)
 
 	s := query.Site
 	_, err = s.Where(s.Path.Eq(availablePath)).Unscoped().Delete(&model.Site{})
@@ -43,16 +44,11 @@ func Delete(name string) (err error) {
 		return
 	}
 
-	go syncDelete(name)
-
 	return
 }
 
 func syncDelete(name string) {
 	nodes := getSyncNodes(name)
-
-	wg := &sync.WaitGroup{}
-	wg.Add(len(nodes))
 
 	for _, node := range nodes {
 		go func() {
@@ -63,23 +59,20 @@ func syncDelete(name string) {
 					logger.Error(err)
 				}
 			}()
-			defer wg.Done()
-
 			client := resty.New()
 			client.SetBaseURL(node.URL)
 			resp, err := client.R().
+				SetHeader("X-Node-Secret", node.Token).
 				Delete(fmt.Sprintf("/api/sites/%s", name))
 			if err != nil {
 				notification.Error("Delete Remote Site Error", err.Error())
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {
-				notification.Error("Delete Remote Site Error", string(resp.Body()))
+				notification.Error("Delete Remote Site Error", NewSyncResult(node.Name, name, resp).String())
 				return
 			}
-			notification.Success("Delete Remote Site Success", string(resp.Body()))
+			notification.Success("Delete Remote Site Success", NewSyncResult(node.Name, name, resp).String())
 		}()
 	}
-
-	wg.Wait()
 }

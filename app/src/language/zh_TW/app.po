@@ -528,6 +528,16 @@ msgstr "刪除"
 msgid "Delete Permanently"
 msgstr "永久刪除"
 
+#: src/language/constants.ts:49
+#, fuzzy
+msgid "Delete Remote Site Error"
+msgstr "重命名遠端配置錯誤"
+
+#: src/language/constants.ts:48
+#, fuzzy
+msgid "Delete Remote Site Success"
+msgstr "重新命名遠端配置成功"
+
 #: src/views/site/site_list/SiteList.vue:68
 msgid "Delete site: %{site_name}"
 msgstr "刪除網站：%{site_name}"
@@ -591,6 +601,26 @@ msgstr "停用"
 #: src/views/site/cert/components/ObtainCert.vue:77
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "關閉 %{name} 自動續簽失敗"
+
+#: src/language/constants.ts:51
+#, fuzzy
+msgid "Disable Remote Site Error"
+msgstr "重命名遠端配置錯誤"
+
+#: src/language/constants.ts:50
+#, fuzzy
+msgid "Disable Remote Site Success"
+msgstr "重新命名遠端配置成功"
+
+#: src/components/Notification/config.ts:82
+#, fuzzy
+msgid "Disable site %{site} on %{node} error, response: %{resp}"
+msgstr "成功在 %{node_name} 啟用 %{conf_name}"
+
+#: src/components/Notification/config.ts:74
+#, fuzzy
+msgid "Disable Site %{site} on %{node} successfully"
+msgstr "成功在 %{node_name} 啟用 %{conf_name}"
 
 #: src/views/environment/envColumns.tsx:109
 #: src/views/environment/envColumns.tsx:92
@@ -770,6 +800,26 @@ msgstr "啟用 %{name} 自動續簽失敗"
 #: src/views/site/SiteAdd.vue:43
 msgid "Enable failed"
 msgstr "啟用失敗"
+
+#: src/language/constants.ts:53
+#, fuzzy
+msgid "Enable Remote Site Error"
+msgstr "重命名遠端配置錯誤"
+
+#: src/language/constants.ts:52
+#, fuzzy
+msgid "Enable Remote Site Success"
+msgstr "重新命名遠端配置成功"
+
+#: src/components/Notification/config.ts:69
+#, fuzzy
+msgid "Enable site %{site} on %{node} error, response: %{resp}"
+msgstr "成功在 %{node_name} 啟用 %{conf_name}"
+
+#: src/components/Notification/config.ts:61
+#, fuzzy
+msgid "Enable Site %{site} on %{node} successfully"
+msgstr "成功在 %{node_name} 啟用 %{conf_name}"
 
 #: src/views/stream/components/Deploy.vue:41
 msgid "Enable successfully"
@@ -1641,6 +1691,18 @@ msgstr "請至少選擇一個節點！"
 msgid "Please select at least one node!"
 msgstr "請至少選擇一個節點！"
 
+#: src/components/Notification/config.ts:11
+#: src/components/Notification/config.ts:27
+#: src/components/Notification/config.ts:41
+#: src/components/Notification/config.ts:54
+#: src/components/Notification/config.ts:67
+#: src/components/Notification/config.ts:80
+#: src/components/Notification/config.ts:93
+#, fuzzy
+msgid "Please upgrade the remote Nginx UI to the latest version"
+msgstr ""
+"同步配置 %{cert_name} 到 %{env_name} 失敗，請將遠程 Nginx UI 升級到最新版本"
+
 #: src/views/environment/BatchUpgrader.vue:169
 #: src/views/environment/BatchUpgrader.vue:222 src/views/system/Upgrade.vue:195
 #: src/views/system/Upgrade.vue:246
@@ -1776,6 +1838,16 @@ msgstr "正在重新載入 Nginx"
 msgid "Remove"
 msgstr "移除"
 
+#: src/components/Notification/config.ts:56
+#, fuzzy
+msgid "Remove site %{site} from %{node} error, response: %{resp}"
+msgstr "刪除網站：%{site_name}"
+
+#: src/components/Notification/config.ts:48
+#, fuzzy
+msgid "Remove Site %{site} from %{node} successfully"
+msgstr "成功複製 %{conf_name} 到 %{node_name}"
+
 #: src/views/preference/AuthSettings.vue:47
 #: src/views/preference/components/Passkey.vue:50
 msgid "Remove successfully"
@@ -1791,14 +1863,6 @@ msgstr "移除成功"
 #: src/views/site/site_edit/components/ConfigName.vue:46
 msgid "Rename"
 msgstr "重命名"
-
-#: src/components/Notification/config.ts:27
-msgid ""
-"Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade the "
-"remote Nginx UI to the latest version"
-msgstr ""
-"將 %{orig_path} 重命名為 %{new_path} 在 %{env_name} 失敗，請將遠程 Nginx UI "
-"升級到最新版本"
 
 #: src/components/Notification/config.ts:30
 msgid ""
@@ -1817,6 +1881,26 @@ msgstr "重命名遠端配置錯誤"
 #: src/language/constants.ts:40
 msgid "Rename Remote Config Success"
 msgstr "重新命名遠端配置成功"
+
+#: src/language/constants.ts:55
+#, fuzzy
+msgid "Rename Remote Site Error"
+msgstr "重命名遠端配置錯誤"
+
+#: src/language/constants.ts:54
+#, fuzzy
+msgid "Rename Remote Site Success"
+msgstr "重新命名遠端配置成功"
+
+#: src/components/Notification/config.ts:95
+#, fuzzy
+msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+msgstr "成功將 %{env_name} 上的 %{orig_path} 重命名為 %{new_path}"
+
+#: src/components/Notification/config.ts:87
+#, fuzzy
+msgid "Rename Site %{site} to %{new_site} on %{node} successfully"
+msgstr "成功將 %{env_name} 上的 %{orig_path} 重命名為 %{new_path}"
 
 #: src/views/config/components/Rename.vue:41
 msgid "Rename successfully"
@@ -1907,6 +1991,26 @@ msgstr "儲存指令"
 #: src/views/site/SiteAdd.vue:46
 msgid "Save error %{msg}"
 msgstr "儲存錯誤 %{msg}"
+
+#: src/language/constants.ts:47
+#, fuzzy
+msgid "Save Remote Site Error"
+msgstr "重命名遠端配置錯誤"
+
+#: src/language/constants.ts:46
+#, fuzzy
+msgid "Save Remote Site Success"
+msgstr "重新命名遠端配置成功"
+
+#: src/components/Notification/config.ts:43
+#, fuzzy
+msgid "Save site %{site} to %{node} error, response: %{resp}"
+msgstr "同步憑證 %{cert_name} 到 %{env_name} 失敗，回應：%{resp}"
+
+#: src/components/Notification/config.ts:35
+#, fuzzy
+msgid "Save Site %{site} to %{node} successfully"
+msgstr "成功複製 %{conf_name} 到 %{node_name}"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:117
@@ -2111,14 +2215,6 @@ msgstr "同步憑證錯誤"
 #: src/language/constants.ts:37
 msgid "Sync Certificate Success"
 msgstr "同步憑證成功"
-
-#: src/components/Notification/config.ts:11
-#, fuzzy
-msgid ""
-"Sync config %{config_name} to %{env_name} failed, please upgrade the remote "
-"Nginx UI to the latest version"
-msgstr ""
-"同步配置 %{cert_name} 到 %{env_name} 失敗，請將遠程 Nginx UI 升級到最新版本"
 
 #: src/components/Notification/config.ts:14
 msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
@@ -2547,6 +2643,13 @@ msgstr ""
 #: src/views/preference/components/Passkey.vue:81
 msgid "Your passkeys"
 msgstr ""
+
+#~ msgid ""
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
+#~ "the remote Nginx UI to the latest version"
+#~ msgstr ""
+#~ "將 %{orig_path} 重命名為 %{new_path} 在 %{env_name} 失敗，請將遠程 Nginx "
+#~ "UI 升級到最新版本"
 
 #~ msgid "File not found"
 #~ msgstr "找不到檔案"

@@ -69,16 +69,17 @@ func syncEnable(name string) {
 			client := resty.New()
 			client.SetBaseURL(node.URL)
 			resp, err := client.R().
+				SetHeader("X-Node-Secret", node.Token).
 				Post(fmt.Sprintf("/api/sites/%s/enable", name))
 			if err != nil {
 				notification.Error("Enable Remote Site Error", err.Error())
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {
-				notification.Error("Enable Remote Site Error", string(resp.Body()))
+				notification.Error("Enable Remote Site Error", NewSyncResult(node.Name, name, resp).String())
 				return
 			}
-			notification.Success("Enable Remote Site Success", string(resp.Body()))
+			notification.Success("Enable Remote Site Success", NewSyncResult(node.Name, name, resp).String())
 		}()
 	}
 

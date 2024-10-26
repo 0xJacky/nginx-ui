@@ -529,6 +529,16 @@ msgstr "삭제"
 msgid "Delete Permanently"
 msgstr ""
 
+#: src/language/constants.ts:49
+#, fuzzy
+msgid "Delete Remote Site Error"
+msgstr "인증서 갱신 오류"
+
+#: src/language/constants.ts:48
+#, fuzzy
+msgid "Delete Remote Site Success"
+msgstr "인증서 갱신 성공"
+
 #: src/views/site/site_list/SiteList.vue:68
 msgid "Delete site: %{site_name}"
 msgstr "사이트 삭제: %{site_name}"
@@ -592,6 +602,26 @@ msgstr "비활성화"
 #: src/views/site/cert/components/ObtainCert.vue:77
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "%{name}의 자동 갱신 비활성화 실패"
+
+#: src/language/constants.ts:51
+#, fuzzy
+msgid "Disable Remote Site Error"
+msgstr "인증서 갱신 오류"
+
+#: src/language/constants.ts:50
+#, fuzzy
+msgid "Disable Remote Site Success"
+msgstr "인증서 갱신 성공"
+
+#: src/components/Notification/config.ts:82
+#, fuzzy
+msgid "Disable site %{site} on %{node} error, response: %{resp}"
+msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
+
+#: src/components/Notification/config.ts:74
+#, fuzzy
+msgid "Disable Site %{site} on %{node} successfully"
+msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
 #: src/views/environment/envColumns.tsx:109
 #: src/views/environment/envColumns.tsx:92
@@ -776,6 +806,26 @@ msgstr "%{name}에 대한 자동 갱신 활성화 실패"
 #: src/views/site/SiteAdd.vue:43
 msgid "Enable failed"
 msgstr "활성화 실패"
+
+#: src/language/constants.ts:53
+#, fuzzy
+msgid "Enable Remote Site Error"
+msgstr "인증서 갱신 오류"
+
+#: src/language/constants.ts:52
+#, fuzzy
+msgid "Enable Remote Site Success"
+msgstr "인증서 갱신 성공"
+
+#: src/components/Notification/config.ts:69
+#, fuzzy
+msgid "Enable site %{site} on %{node} error, response: %{resp}"
+msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
+
+#: src/components/Notification/config.ts:61
+#, fuzzy
+msgid "Enable Site %{site} on %{node} successfully"
+msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
 #: src/views/stream/components/Deploy.vue:41
 msgid "Enable successfully"
@@ -1686,6 +1736,17 @@ msgstr "적어도 하나의 노드를 선택해주세요!"
 msgid "Please select at least one node!"
 msgstr "적어도 하나의 노드를 선택해주세요!"
 
+#: src/components/Notification/config.ts:11
+#: src/components/Notification/config.ts:27
+#: src/components/Notification/config.ts:41
+#: src/components/Notification/config.ts:54
+#: src/components/Notification/config.ts:67
+#: src/components/Notification/config.ts:80
+#: src/components/Notification/config.ts:93
+#, fuzzy
+msgid "Please upgrade the remote Nginx UI to the latest version"
+msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
+
 #: src/views/environment/BatchUpgrader.vue:169
 #: src/views/environment/BatchUpgrader.vue:222 src/views/system/Upgrade.vue:195
 #: src/views/system/Upgrade.vue:246
@@ -1828,6 +1889,16 @@ msgstr "Nginx 리로딩 중"
 msgid "Remove"
 msgstr ""
 
+#: src/components/Notification/config.ts:56
+#, fuzzy
+msgid "Remove site %{site} from %{node} error, response: %{resp}"
+msgstr "사이트 삭제: %{site_name}"
+
+#: src/components/Notification/config.ts:48
+#, fuzzy
+msgid "Remove Site %{site} from %{node} successfully"
+msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
+
 #: src/views/preference/AuthSettings.vue:47
 #: src/views/preference/components/Passkey.vue:50
 #, fuzzy
@@ -1846,13 +1917,6 @@ msgstr "성공적으로 제거됨"
 #, fuzzy
 msgid "Rename"
 msgstr "이름 변경"
-
-#: src/components/Notification/config.ts:27
-#, fuzzy
-msgid ""
-"Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade the "
-"remote Nginx UI to the latest version"
-msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
 #: src/components/Notification/config.ts:30
 #, fuzzy
@@ -1874,6 +1938,26 @@ msgstr "인증서 갱신 오류"
 #, fuzzy
 msgid "Rename Remote Config Success"
 msgstr "인증서 갱신 성공"
+
+#: src/language/constants.ts:55
+#, fuzzy
+msgid "Rename Remote Site Error"
+msgstr "인증서 갱신 오류"
+
+#: src/language/constants.ts:54
+#, fuzzy
+msgid "Rename Remote Site Success"
+msgstr "인증서 갱신 성공"
+
+#: src/components/Notification/config.ts:95
+#, fuzzy
+msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
+
+#: src/components/Notification/config.ts:87
+#, fuzzy
+msgid "Rename Site %{site} to %{new_site} on %{node} successfully"
+msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
 #: src/views/config/components/Rename.vue:41
 #, fuzzy
@@ -1971,6 +2055,26 @@ msgstr "지시문 저장"
 #: src/views/site/SiteAdd.vue:46
 msgid "Save error %{msg}"
 msgstr "저장 오류 %{msg}"
+
+#: src/language/constants.ts:47
+#, fuzzy
+msgid "Save Remote Site Error"
+msgstr "인증서 갱신 오류"
+
+#: src/language/constants.ts:46
+#, fuzzy
+msgid "Save Remote Site Success"
+msgstr "인증서 갱신 성공"
+
+#: src/components/Notification/config.ts:43
+#, fuzzy
+msgid "Save site %{site} to %{node} error, response: %{resp}"
+msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
+
+#: src/components/Notification/config.ts:35
+#, fuzzy
+msgid "Save Site %{site} to %{node} successfully"
+msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:117
@@ -2187,13 +2291,6 @@ msgstr "인증서 갱신 오류"
 #, fuzzy
 msgid "Sync Certificate Success"
 msgstr "인증서 갱신 성공"
-
-#: src/components/Notification/config.ts:11
-#, fuzzy
-msgid ""
-"Sync config %{config_name} to %{env_name} failed, please upgrade the remote "
-"Nginx UI to the latest version"
-msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
 #: src/components/Notification/config.ts:14
 #, fuzzy
@@ -2639,6 +2736,12 @@ msgstr ""
 #: src/views/preference/components/Passkey.vue:81
 msgid "Your passkeys"
 msgstr ""
+
+#, fuzzy
+#~ msgid ""
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
+#~ "the remote Nginx UI to the latest version"
+#~ msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
 #, fuzzy
 #~ msgid "File not found"

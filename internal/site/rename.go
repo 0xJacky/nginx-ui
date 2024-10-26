@@ -83,19 +83,24 @@ func syncRename(oldName, newName string) {
 			client := resty.New()
 			client.SetBaseURL(node.URL)
 			resp, err := client.R().
-				SetBody(map[string]string{
-					"new_name": newName,
-				}).
+				SetHeader("X-Node-Secret", node.Token).
+					SetBody(map[string]string{
+						"new_name": newName,
+					}).
 				Post(fmt.Sprintf("/api/sites/%s/rename", oldName))
 			if err != nil {
 				notification.Error("Rename Remote Site Error", err.Error())
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {
-				notification.Error("Rename Remote Site Error", string(resp.Body()))
+				notification.Error("Rename Remote Site Error",
+					NewSyncResult(node.Name, oldName, resp).
+						SetNewName(newName).String())
 				return
 			}
-			notification.Success("Rename Remote Site Success", string(resp.Body()))
+			notification.Success("Rename Remote Site Success",
+				NewSyncResult(node.Name, oldName, resp).
+					SetNewName(newName).String())
 		}()
 	}
 

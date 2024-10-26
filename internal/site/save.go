@@ -46,10 +46,10 @@ func Save(name string, content string, overwrite bool, siteCategoryId uint64, sy
 	s := query.Site
 	_, err = s.Where(s.Path.Eq(path)).
 		Select(s.SiteCategoryID, s.SyncNodeIDs).
-		Updates(&model.Site{
-			SiteCategoryID: siteCategoryId,
-			SyncNodeIDs:    syncNodeIds,
-		})
+			Updates(&model.Site{
+				SiteCategoryID: siteCategoryId,
+				SyncNodeIDs:    syncNodeIds,
+			})
 	if err != nil {
 		return
 	}
@@ -79,20 +79,21 @@ func syncSave(name string, content string) {
 			client := resty.New()
 			client.SetBaseURL(node.URL)
 			resp, err := client.R().
-				SetBody(map[string]interface{}{
-					"content":   content,
-					"overwrite": true,
-				}).
+				SetHeader("X-Node-Secret", node.Token).
+					SetBody(map[string]interface{}{
+						"content":   content,
+						"overwrite": true,
+					}).
 				Post(fmt.Sprintf("/api/sites/%s", name))
 			if err != nil {
 				notification.Error("Save Remote Site Error", err.Error())
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {
-				notification.Error("Save Remote Site Error", string(resp.Body()))
+				notification.Error("Save Remote Site Error", NewSyncResult(node.Name, name, resp).String())
 				return
 			}
-			notification.Success("Save Remote Site Success", string(resp.Body()))
+			notification.Success("Save Remote Site Success", NewSyncResult(node.Name, name, resp).String())
 		}()
 	}
 

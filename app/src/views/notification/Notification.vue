@@ -7,11 +7,11 @@ import { message } from 'ant-design-vue'
 
 const { unreadCount } = storeToRefs(useUserStore())
 
-const curd = ref()
+const curd = useTemplateRef('curd')
 function clear() {
   notification.clear().then(() => {
     message.success($gettext('Cleared successfully'))
-    curd.value.get_list()
+    curd.value?.get_list()
     unreadCount.value = 0
   }).catch(e => {
     message.error($gettext(e?.message ?? 'Server error'))
@@ -19,7 +19,7 @@ function clear() {
 }
 
 watch(unreadCount, () => {
-  curd.value.get_list()
+  curd.value?.get_list()
 })
 </script>
 
