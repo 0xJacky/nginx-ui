@@ -21,12 +21,12 @@ type EditConfigJson struct {
 func EditConfig(c *gin.Context) {
 	name := c.Param("name")
 	var json struct {
-		Name          string `json:"name" binding:"required"`
-		Filepath      string `json:"filepath" binding:"required"`
-		NewFilepath   string `json:"new_filepath" binding:"required"`
-		Content       string `json:"content"`
-		SyncOverwrite bool   `json:"sync_overwrite"`
-		SyncNodeIds   []int  `json:"sync_node_ids"`
+		Name          string   `json:"name" binding:"required"`
+		Filepath      string   `json:"filepath" binding:"required"`
+		NewFilepath   string   `json:"new_filepath" binding:"required"`
+		Content       string   `json:"content"`
+		SyncOverwrite bool     `json:"sync_overwrite"`
+		SyncNodeIds   []uint64 `json:"sync_node_ids"`
 	}
 	if !api.BindAndValid(c, &json) {
 		return

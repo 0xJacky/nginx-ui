@@ -22,7 +22,7 @@ onMounted(async () => {
       r.data?.forEach(node => {
         data_map.value[node.id] = node
       })
-      hasMore = r.data.length === r.pagination.per_page
+      hasMore = r.data.length === r.pagination?.per_page
       page++
     }).catch(() => {
       hasMore = false
@@ -35,7 +35,6 @@ const value = computed({
     return target.value
   },
   set(v: number[]) {
-    console.log(v)
     if (typeof map.value === 'object') {
       const _map = {}
 
@@ -70,7 +69,7 @@ const noData = computed(() => {
         <ACheckbox :value="0">
           {{ $gettext('Local') }}
         </ACheckbox>
-        <ATag color="blue">
+        <ATag color="green">
           {{ $gettext('Online') }}
         </ATag>
       </ACol>
@@ -83,7 +82,7 @@ const noData = computed(() => {
         </ACheckbox>
         <ATag
           v-if="node.status"
-          color="blue"
+          color="green"
         >
           {{ $gettext('Online') }}
         </ATag>

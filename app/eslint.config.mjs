@@ -1,10 +1,14 @@
 import createConfig from '@antfu/eslint-config'
 import sonarjs from 'eslint-plugin-sonarjs'
+import autoImport from './.eslint-auto-import.mjs'
 
 export default createConfig(
   {
     stylistic: true,
-    ignores: ['**/version.json', 'tsconfig.json', 'tsconfig.node.json'],
+    ignores: ['**/version.json', 'tsconfig.json', 'tsconfig.node.json', '.eslint-auto-import.mjs'],
+    languageOptions: {
+      globals: autoImport.globals,
+    },
   },
   sonarjs.configs.recommended,
   {

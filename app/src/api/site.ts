@@ -1,6 +1,7 @@
 import type { CertificateInfo } from '@/api/cert'
 import type { NgxConfig } from '@/api/ngx'
 import type { ChatComplicationMessage } from '@/api/openai'
+import type { SiteCategory } from '@/api/site_category'
 import type { PrivateKeyType } from '@/constants'
 import Curd from '@/api/curd'
 import http from '@/lib/http'
@@ -16,6 +17,9 @@ export interface Site {
   chatgpt_messages: ChatComplicationMessage[]
   tokenized?: NgxConfig
   cert_info?: Record<number, CertificateInfo[]>
+  site_category_id: number
+  site_category?: SiteCategory
+  sync_node_ids: number[]
 }
 
 export interface AutoCertRequest {
@@ -25,7 +29,7 @@ export interface AutoCertRequest {
   key_type: PrivateKeyType
 }
 
-class Domain extends Curd<Site> {
+class SiteCurd extends Curd<Site> {
   // eslint-disable-next-line ts/no-explicit-any
   enable(name: string, config?: any) {
     return http.post(`${this.baseUrl}/${name}/enable`, undefined, config)
@@ -33,6 +37,10 @@ class Domain extends Curd<Site> {
 
   disable(name: string) {
     return http.post(`${this.baseUrl}/${name}/disable`)
+  }
+
+  rename(oldName: string, newName: string) {
+    return http.post(`${this.baseUrl}/${oldName}/rename`, { new_name: newName })
   }
 
   get_template() {
@@ -56,6 +64,6 @@ class Domain extends Curd<Site> {
   }
 }
 
-const domain = new Domain('/domain')
+const site = new SiteCurd('/sites')
 
-export default domain
+export default site

@@ -4,7 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/uozi-tech/cosy/settings"
+	"github.com/0xJacky/Nginx-UI/settings"
+	cSettings "github.com/uozi-tech/cosy/settings"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gen"
 	"gorm.io/gorm"
@@ -39,8 +40,8 @@ func main() {
 	flag.StringVar(&confPath, "config", "app.ini", "Specify the configuration file")
 	flag.Parse()
 
-	settings.Init(confPath)
-	dbPath := path.Join(path.Dir(confPath), fmt.Sprintf("%s.db", settings.DataBaseSettings.Name))
+	cSettings.Init(confPath)
+	dbPath := path.Join(path.Dir(confPath), fmt.Sprintf("%s.db", settings.DatabaseSettings.Name))
 
 	var err error
 	db, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{

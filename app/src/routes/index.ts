@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { useSettingsStore, useUserStore } from '@/pinia'
+import { useNProgress } from '@/lib/nprogress/nprogress'
 
+import { useSettingsStore, useUserStore } from '@/pinia'
 import {
   BellOutlined,
   CloudOutlined,
@@ -15,10 +16,8 @@ import {
   ShareAltOutlined,
   UserOutlined,
 } from '@ant-design/icons-vue'
-import NProgress from 'nprogress'
 
 import { createRouter, createWebHashHistory } from 'vue-router'
-
 import 'nprogress/nprogress.css'
 
 export const routes: RouteRecordRaw[] = [
@@ -52,7 +51,7 @@ export const routes: RouteRecordRaw[] = [
         children: [{
           path: 'list',
           name: 'Sites List',
-          component: () => import('@/views/site/SiteList.vue'),
+          component: () => import('@/views/site/site_list/SiteList.vue'),
           meta: {
             name: () => $gettext('Sites List'),
           },
@@ -65,9 +64,16 @@ export const routes: RouteRecordRaw[] = [
             lastRouteName: 'Sites List',
           },
         }, {
+          path: 'categories',
+          name: 'Site Categories',
+          component: () => import('@/views/site/site_category/SiteCategory.vue'),
+          meta: {
+            name: () => $gettext('Site Categories'),
+          },
+        }, {
           path: ':name',
           name: 'Edit Site',
-          component: () => import('@/views/site/SiteEdit.vue'),
+          component: () => import('@/views/site/site_edit/SiteEdit.vue'),
           meta: {
             name: () => $gettext('Edit Site'),
             hiddenInSidebar: true,
@@ -317,12 +323,12 @@ const router = createRouter({
   routes,
 })
 
-NProgress.configure({ showSpinner: false })
+const nprogress = useNProgress()
 
 router.beforeEach((to, _, next) => {
   document.title = `${to?.meta.name?.() ?? ''} | Nginx UI`
 
-  NProgress.start()
+  nprogress.start()
 
   const user = useUserStore()
 
@@ -333,7 +339,7 @@ router.beforeEach((to, _, next) => {
 })
 
 router.afterEach(() => {
-  NProgress.done()
+  nprogress.done()
 })
 
 export default router

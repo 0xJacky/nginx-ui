@@ -14,7 +14,7 @@ export interface Config {
 
 class ConfigCurd extends Curd<Config> {
   constructor() {
-    super('/config')
+    super('/configs')
   }
 
   get_base_path() {

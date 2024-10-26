@@ -13,7 +13,7 @@ import (
 func Get(c *gin.Context) {
 	n := query.Notification
 
-	id := cast.ToInt(c.Param("id"))
+	id := cast.ToUint64(c.Param("id"))
 
 	data, err := n.FirstByID(id)
 

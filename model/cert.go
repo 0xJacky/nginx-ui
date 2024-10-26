@@ -37,22 +37,22 @@ type Cert struct {
 	SSLCertificateKeyPath   string               `json:"ssl_certificate_key_path"`
 	AutoCert                int                  `json:"auto_cert"`
 	ChallengeMethod         string               `json:"challenge_method"`
-	DnsCredentialID         int                  `json:"dns_credential_id"`
+	DnsCredentialID         uint64               `json:"dns_credential_id"`
 	DnsCredential           *DnsCredential       `json:"dns_credential,omitempty"`
-	ACMEUserID              int                  `json:"acme_user_id"`
+	ACMEUserID              uint64               `json:"acme_user_id"`
 	ACMEUser                *AcmeUser            `json:"acme_user,omitempty"`
 	KeyType                 certcrypto.KeyType   `json:"key_type"`
 	Log                     string               `json:"log"`
 	Resource                *CertificateResource `json:"-" gorm:"serializer:json"`
-	SyncNodeIds             []int                `json:"sync_node_ids" gorm:"serializer:json"`
+	SyncNodeIds             []uint64             `json:"sync_node_ids" gorm:"serializer:json"`
 	MustStaple              bool                 `json:"must_staple"`
 	LegoDisableCNAMESupport bool                 `json:"lego_disable_cname_support"`
 }
 
 func FirstCert(confName string) (c Cert, err error) {
-	err = db.First(&c, &Cert{
+	err = db.Limit(1).Where(&Cert{
 		Filename: confName,
-	}).Error
+	}).Find(&c).Error
 
 	return
 }

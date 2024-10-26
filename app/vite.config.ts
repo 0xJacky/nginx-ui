@@ -1,10 +1,10 @@
 import { fileURLToPath, URL } from 'node:url'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
-
 import DefineOptions from 'unplugin-vue-define-options/vite'
 import { defineConfig, loadEnv } from 'vite'
 import vitePluginBuildId from 'vite-plugin-build-id'
@@ -34,9 +34,9 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       vueJsx(),
-
       vitePluginBuildId(),
       svgLoader(),
+      UnoCSS(),
       Components({
         resolvers: [AntDesignVueResolver({ importStyle: false })],
         directoryAsNamespace: true,
@@ -56,6 +56,10 @@ export default defineConfig(({ mode }) => {
           },
         ],
         vueTemplate: true,
+        eslintrc: {
+          enabled: true,
+          filepath: '.eslint-auto-import.mjs',
+        },
       }),
       DefineOptions(),
     ],

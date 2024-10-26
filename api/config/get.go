@@ -14,8 +14,8 @@ import (
 
 type APIConfigResp struct {
 	config.Config
-	SyncNodeIds   []int `json:"sync_node_ids" gorm:"serializer:json"`
-	SyncOverwrite bool  `json:"sync_overwrite"`
+	SyncNodeIds   []uint64 `json:"sync_node_ids" gorm:"serializer:json"`
+	SyncOverwrite bool     `json:"sync_overwrite"`
 }
 
 func GetConfig(c *gin.Context) {

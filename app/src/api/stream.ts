@@ -33,6 +33,6 @@ class StreamCurd extends Curd<Stream> {
   }
 }
 
-const stream = new StreamCurd('/stream')
+const stream = new StreamCurd('/streams')
 
 export default stream

@@ -14,10 +14,10 @@ import (
 
 func Rename(c *gin.Context) {
 	var json struct {
-		BasePath    string `json:"base_path"`
-		OrigName    string `json:"orig_name"`
-		NewName     string `json:"new_name"`
-		SyncNodeIds []int  `json:"sync_node_ids" gorm:"serializer:json"`
+		BasePath    string   `json:"base_path"`
+		OrigName    string   `json:"orig_name"`
+		NewName     string   `json:"new_name"`
+		SyncNodeIds []uint64 `json:"sync_node_ids" gorm:"serializer:json"`
 	}
 	if !api.BindAndValid(c, &json) {
 		return

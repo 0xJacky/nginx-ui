@@ -42,4 +42,15 @@ export const msg = [
 
   $gettext('Sync Config Success'),
   $gettext('Sync Config Error'),
+
+  $gettext('Save Remote Site Success'),
+  $gettext('Save Remote Site Error'),
+  $gettext('Delete Remote Site Success'),
+  $gettext('Delete Remote Site Error'),
+  $gettext('Disable Remote Site Success'),
+  $gettext('Disable Remote Site Error'),
+  $gettext('Enable Remote Site Success'),
+  $gettext('Enable Remote Site Error'),
+  $gettext('Rename Remote Site Success'),
+  $gettext('Rename Remote Site Error'),
 ]

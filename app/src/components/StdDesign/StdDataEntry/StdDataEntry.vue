@@ -1,5 +1,6 @@
 <script setup lang="tsx">
 import type { Column, JSXElements, StdDesignEdit } from '@/components/StdDesign/types'
+import type { FormInstance } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import { labelRender } from '@/components/StdDesign/StdDataEntry'
 import StdFormItem from '@/components/StdDesign/StdDataEntry/StdFormItem.vue'
@@ -7,26 +8,13 @@ import { Form } from 'ant-design-vue'
 
 const props = defineProps<{
   dataList: Column[]
-  // eslint-disable-next-line ts/no-explicit-any
-  dataSource: Record<string, any>
   errors?: Record<string, string>
   type?: 'search' | 'edit'
   layout?: 'horizontal' | 'vertical' | 'inline'
 }>()
 
-const emit = defineEmits<{
-  // eslint-disable-next-line ts/no-explicit-any
-  'update:dataSource': [data: Record<string, any>]
-}>()
-
-const dataSource = computed({
-  get() {
-    return props.dataSource
-  },
-  set(v) {
-    emit('update:dataSource', v)
-  },
-})
+// eslint-disable-next-line ts/no-explicit-any
+const dataSource = defineModel<Record<string, any>>('dataSource')
 
 const slots = useSlots()
 
@@ -37,7 +25,7 @@ function extraRender(extra?: string | (() => string)) {
   return extra
 }
 
-const formRef = ref<InstanceType<typeof Form>>()
+const formRef = ref<FormInstance>()
 
 defineExpose({
   formRef,
@@ -50,7 +38,7 @@ function Render() {
   props.dataList.forEach((v: Column) => {
     const dataIndex = (v.edit?.actualDataIndex ?? v.dataIndex) as string
 
-    dataSource.value[dataIndex] = props.dataSource[dataIndex]
+    dataSource.value![dataIndex] = dataSource.value![dataIndex]
     if (props.type === 'search') {
       if (v.search) {
         const type = (v.search as StdDesignEdit)?.type || v.edit?.type
@@ -75,7 +63,7 @@ function Render() {
 
     let show = true
     if (v.edit?.show && typeof v.edit.show === 'function')
-      show = v.edit.show(props.dataSource)
+      show = v.edit.show(dataSource.value)
 
     if (v.edit?.type && show) {
       template.push(
@@ -87,6 +75,7 @@ function Render() {
           error={props.errors}
           required={v.edit?.config?.required}
           hint={v.edit?.hint}
+          noValidate={v.edit?.config?.noValidate}
         >
           {v.edit.type(v.edit, dataSource.value, dataIndex)}
         </StdFormItem>,
@@ -97,7 +86,16 @@ function Render() {
   if (slots.action)
     template.push(<div class="std-data-entry-action">{slots.action()}</div>)
 
-  return <Form ref={formRef} model={dataSource.value} layout={props.layout || 'vertical'}>{template}</Form>
+  return (
+    <Form
+      class="my-10px!"
+      ref={formRef}
+      model={dataSource.value}
+      layout={props.layout || 'vertical'}
+    >
+      {template}
+    </Form>
+  )
 }
 </script>
 

@@ -17,11 +17,11 @@ import (
 
 func AddConfig(c *gin.Context) {
 	var json struct {
-		Name        string `json:"name" binding:"required"`
-		NewFilepath string `json:"new_filepath" binding:"required"`
-		Content     string `json:"content"`
-		Overwrite   bool   `json:"overwrite"`
-		SyncNodeIds []int  `json:"sync_node_ids"`
+		Name        string   `json:"name" binding:"required"`
+		NewFilepath string   `json:"new_filepath" binding:"required"`
+		Content     string   `json:"content"`
+		Overwrite   bool     `json:"overwrite"`
+		SyncNodeIds []uint64 `json:"sync_node_ids"`
 	}
 
 	if !api.BindAndValid(c, &json) {

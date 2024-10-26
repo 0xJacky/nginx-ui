@@ -10,10 +10,10 @@ export interface Notification extends ModelBase {
 
 class NotificationCurd extends Curd<Notification> {
   public clear() {
-    return http.delete(this.plural)
+    return http.delete(this.baseUrl)
   }
 }
 
-const notification = new NotificationCurd('/notification')
+const notification = new NotificationCurd('/notifications')
 
 export default notification

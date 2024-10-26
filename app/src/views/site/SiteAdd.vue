@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { NgxConfig } from '@/api/ngx'
-import domain from '@/api/domain'
 import ngx from '@/api/ngx'
+import site from '@/api/site'
 import DirectiveEditor from '@/views/site/ngx_conf/directive/DirectiveEditor.vue'
 import LocationEditor from '@/views/site/ngx_conf/LocationEditor.vue'
 import NgxConfigEditor from '@/views/site/ngx_conf/NgxConfigEditor.vue'
@@ -26,17 +26,17 @@ onMounted(() => {
 })
 
 function init() {
-  domain.get_template().then(r => {
+  site.get_template().then(r => {
     Object.assign(ngx_config, r.tokenized)
   })
 }
 
 async function save() {
   return ngx.build_config(ngx_config).then(r => {
-    domain.save(ngx_config.name, { name: ngx_config.name, content: r.content, overwrite: true }).then(() => {
+    site.save(ngx_config.name, { name: ngx_config.name, content: r.content, overwrite: true }).then(() => {
       message.success($gettext('Saved successfully'))
 
-      domain.enable(ngx_config.name).then(() => {
+      site.enable(ngx_config.name).then(() => {
         message.success($gettext('Enabled successfully'))
         window.scroll({ top: 0, left: 0, behavior: 'smooth' })
       }).catch(e => {

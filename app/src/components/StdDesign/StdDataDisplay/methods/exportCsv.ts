@@ -1,5 +1,6 @@
+import type { GetListResponse } from '@/api/curd'
 import type { StdTableProps } from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
-import type { Column, StdTableResponse } from '@/components/StdDesign/types'
+import type { Column } from '@/components/StdDesign/types'
 import type { ComputedRef } from 'vue'
 import { downloadCsv } from '@/lib/helper'
 import { message } from 'ant-design-vue'
@@ -33,7 +34,8 @@ async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[
   while (hasMore) {
     // 准备 DataSource
     await props
-      .api!.get_list({ page }).then((r: StdTableResponse) => {
+    // eslint-disable-next-line ts/no-explicit-any
+      .api!.get_list({ page }).then((r: GetListResponse<any>) => {
       if (r.data.length === 0) {
         hasMore = false
 

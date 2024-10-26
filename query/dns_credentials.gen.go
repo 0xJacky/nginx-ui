@@ -28,7 +28,7 @@ func newDnsCredential(db *gorm.DB, opts ...gen.DOOption) dnsCredential {
 
 	tableName := _dnsCredential.dnsCredentialDo.TableName()
 	_dnsCredential.ALL = field.NewAsterisk(tableName)
-	_dnsCredential.ID = field.NewInt(tableName, "id")
+	_dnsCredential.ID = field.NewUint64(tableName, "id")
 	_dnsCredential.CreatedAt = field.NewTime(tableName, "created_at")
 	_dnsCredential.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_dnsCredential.DeletedAt = field.NewField(tableName, "deleted_at")
@@ -45,7 +45,7 @@ type dnsCredential struct {
 	dnsCredentialDo
 
 	ALL       field.Asterisk
-	ID        field.Int
+	ID        field.Uint64
 	CreatedAt field.Time
 	UpdatedAt field.Time
 	DeletedAt field.Field
@@ -68,7 +68,7 @@ func (d dnsCredential) As(alias string) *dnsCredential {
 
 func (d *dnsCredential) updateTableName(table string) *dnsCredential {
 	d.ALL = field.NewAsterisk(table)
-	d.ID = field.NewInt(table, "id")
+	d.ID = field.NewUint64(table, "id")
 	d.CreatedAt = field.NewTime(table, "created_at")
 	d.UpdatedAt = field.NewTime(table, "updated_at")
 	d.DeletedAt = field.NewField(table, "deleted_at")
@@ -114,7 +114,7 @@ func (d dnsCredential) replaceDB(db *gorm.DB) dnsCredential {
 type dnsCredentialDo struct{ gen.DO }
 
 // FirstByID Where("id=@id")
-func (d dnsCredentialDo) FirstByID(id int) (result *model.DnsCredential, err error) {
+func (d dnsCredentialDo) FirstByID(id uint64) (result *model.DnsCredential, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -129,7 +129,7 @@ func (d dnsCredentialDo) FirstByID(id int) (result *model.DnsCredential, err err
 }
 
 // DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
-func (d dnsCredentialDo) DeleteByID(id int) (err error) {
+func (d dnsCredentialDo) DeleteByID(id uint64) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder

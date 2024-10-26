@@ -13,7 +13,7 @@ import (
 
 func GetAcmeUser(c *gin.Context) {
 	u := query.AcmeUser
-	id := cast.ToInt(c.Param("id"))
+	id := cast.ToUint64(c.Param("id"))
 	user, err := u.FirstByID(id)
 	if err != nil {
 		api.ErrHandler(c, err)
@@ -79,7 +79,7 @@ func RecoverAcmeUser(c *gin.Context) {
 }
 
 func RegisterAcmeUser(c *gin.Context) {
-	id := cast.ToInt(c.Param("id"))
+	id := cast.ToUint64(c.Param("id"))
 	u := query.AcmeUser
 	user, err := u.FirstByID(id)
 	if err != nil {

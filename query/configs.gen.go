@@ -28,7 +28,7 @@ func newConfig(db *gorm.DB, opts ...gen.DOOption) config {
 
 	tableName := _config.configDo.TableName()
 	_config.ALL = field.NewAsterisk(tableName)
-	_config.ID = field.NewInt(tableName, "id")
+	_config.ID = field.NewUint64(tableName, "id")
 	_config.CreatedAt = field.NewTime(tableName, "created_at")
 	_config.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_config.DeletedAt = field.NewField(tableName, "deleted_at")
@@ -46,7 +46,7 @@ type config struct {
 	configDo
 
 	ALL           field.Asterisk
-	ID            field.Int
+	ID            field.Uint64
 	CreatedAt     field.Time
 	UpdatedAt     field.Time
 	DeletedAt     field.Field
@@ -70,7 +70,7 @@ func (c config) As(alias string) *config {
 
 func (c *config) updateTableName(table string) *config {
 	c.ALL = field.NewAsterisk(table)
-	c.ID = field.NewInt(table, "id")
+	c.ID = field.NewUint64(table, "id")
 	c.CreatedAt = field.NewTime(table, "created_at")
 	c.UpdatedAt = field.NewTime(table, "updated_at")
 	c.DeletedAt = field.NewField(table, "deleted_at")
@@ -118,7 +118,7 @@ func (c config) replaceDB(db *gorm.DB) config {
 type configDo struct{ gen.DO }
 
 // FirstByID Where("id=@id")
-func (c configDo) FirstByID(id int) (result *model.Config, err error) {
+func (c configDo) FirstByID(id uint64) (result *model.Config, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -133,7 +133,7 @@ func (c configDo) FirstByID(id int) (result *model.Config, err error) {
 }
 
 // DeleteByID update @@table set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=@id
-func (c configDo) DeleteByID(id int) (err error) {
+func (c configDo) DeleteByID(id uint64) (err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
