@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T=any">
 import type { Column } from '@/components/StdDesign/types'
-import type { ComputedRef, Ref } from 'vue'
+import type { ComputedRef } from 'vue'
 import type { StdTableProps } from './StdTable.vue'
 import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 import StdCurdDetail from '@/components/StdDesign/StdDataDisplay/StdCurdDetail.vue'
@@ -25,8 +25,13 @@ export interface StdCurdProps<T> extends StdTableProps<T> {
 
 const props = defineProps<StdTableProps<T> & StdCurdProps<T>>()
 
-const selectedRowKeys = ref<(string | number)[]>([])
-const selectedRows: Ref<T[]> = ref([])
+const selectedRowKeys = defineModel<(number | string)[]>('selectedRowKeys', {
+  default: () => reactive([]),
+})
+
+const selectedRows = defineModel<T[]>('selectedRows', {
+  default: () => reactive([]),
+})
 
 const visible = ref(false)
 // eslint-disable-next-line ts/no-explicit-any
