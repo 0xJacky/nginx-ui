@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Site } from '@/api/domain'
 import type { ChatComplicationMessage } from '@/api/openai'
+import type { Site } from '@/api/site'
 import type { CheckedType } from '@/types'
 import type { Ref } from 'vue'
-import domain from '@/api/domain'
+import site from '@/api/site'
 import site_category from '@/api/site_category'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
@@ -11,6 +11,7 @@ import StdSelector from '@/components/StdDesign/StdDataEntry/components/StdSelec
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import siteCategoryColumns from '@/views/site/site_category/columns'
+import ConfigName from '@/views/site/site_edit/components/ConfigName.vue'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { message, Modal } from 'ant-design-vue'
 
@@ -18,18 +19,17 @@ const settings = useSettingsStore()
 
 const configText = inject('configText') as Ref<string>
 const enabled = inject('enabled') as Ref<boolean>
-const name = inject('name') as Ref<string>
+const name = inject('name') as ComputedRef<string>
 const filepath = inject('filepath') as Ref<string>
-const history_chatgpt_record = inject('history_chatgpt_record') as Ref<ChatComplicationMessage[]>
-const filename = inject('filename') as Ref<string | number | undefined>
+const historyChatgptRecord = inject('history_chatgpt_record') as Ref<ChatComplicationMessage[]>
 const data = inject('data') as Ref<Site>
 
 const [modal, ContextHolder] = Modal.useModal()
 
-const active_key = ref(['1', '2', '3'])
+const activeKey = ref(['1', '2', '3'])
 
 function enable() {
-  domain.enable(name.value).then(() => {
+  site.enable(name.value).then(() => {
     message.success($gettext('Enabled successfully'))
     enabled.value = true
   }).catch(r => {
@@ -38,7 +38,7 @@ function enable() {
 }
 
 function disable() {
-  domain.disable(name.value).then(() => {
+  site.disable(name.value).then(() => {
     message.success($gettext('Disabled successfully'))
     enabled.value = false
   }).catch(r => {
@@ -46,7 +46,7 @@ function disable() {
   })
 }
 
-function on_change_enabled(checked: CheckedType) {
+function onChangeEnabled(checked: CheckedType) {
   modal.confirm({
     title: checked ? $gettext('Do you want to enable this site?') : $gettext('Do you want to disable this site?'),
     mask: false,
@@ -70,7 +70,7 @@ function on_change_enabled(checked: CheckedType) {
   >
     <ContextHolder />
     <ACollapse
-      v-model:active-key="active_key"
+      v-model:active-key="activeKey"
       ghost
       collapsible="header"
     >
@@ -82,11 +82,11 @@ function on_change_enabled(checked: CheckedType) {
           <AFormItem :label="$gettext('Enabled')">
             <ASwitch
               :checked="enabled"
-              @change="on_change_enabled"
+              @change="onChangeEnabled"
             />
           </AFormItem>
           <AFormItem :label="$gettext('Name')">
-            <AInput v-model:value="filename" />
+            <ConfigName v-if="name" :name />
           </AFormItem>
           <AFormItem :label="$gettext('Category')">
             <StdSelector
@@ -138,7 +138,7 @@ function on_change_enabled(checked: CheckedType) {
         header="ChatGPT"
       >
         <ChatGPT
-          v-model:history-messages="history_chatgpt_record"
+          v-model:history-messages="historyChatgptRecord"
           :content="configText"
           :path="filepath"
         />

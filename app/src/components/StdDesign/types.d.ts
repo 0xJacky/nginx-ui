@@ -45,19 +45,29 @@ export interface StdDesignEdit {
 
   config?: {
     label?: string | (() => string) // label for form item
-    size?: string // class size of Std image upload
+    recordValueIndex?: any // relative to api return
     placeholder?: string | (() => string) // placeholder for input
     generate?: boolean // generate btn for StdPassword
+    selectionType?: any
+    api?: Curd
+    valueApi?: Curd
+    columns?: any
+    disableSearch?: boolean
+    description?: string
+    bind?: any
+    itemKey?: any // default is id
+    dataSourceValueIndex?: any // relative to dataSource
+    defaultValue?: any
+    required?: boolean
+    noValidate?: boolean
     min?: number // min value for input number
     max?: number // max value for input number
-    error_messages?: Ref
-    required?: boolean
-    // eslint-disable-next-line ts/no-explicit-any
-    defaultValue?: any
     addonBefore?: string // for inputNumber
     addonAfter?: string // for inputNumber
     prefix?: string // for inputNumber
     suffix?: string // for inputNumber
+    size?: string // class size of Std image upload
+    error_messages?: Ref
   }
 
   flex?: Flex

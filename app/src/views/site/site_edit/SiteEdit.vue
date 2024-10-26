@@ -1,27 +1,23 @@
 <script setup lang="ts">
 import type { CertificateInfo } from '@/api/cert'
-import type { Site } from '@/api/domain'
 import type { NgxConfig } from '@/api/ngx'
-
 import type { ChatComplicationMessage } from '@/api/openai'
+
+import type { Site } from '@/api/site'
 import type { CheckedType } from '@/types'
 import config from '@/api/config'
-import domain from '@/api/domain'
 import ngx from '@/api/ngx'
+import site from '@/api/site'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
-import RightSettings from '@/views/site/components/RightSettings.vue'
 import NgxConfigEditor from '@/views/site/ngx_conf/NgxConfigEditor.vue'
+import RightSettings from '@/views/site/site_edit/RightSettings.vue'
 import { message } from 'ant-design-vue'
 
 const route = useRoute()
 const router = useRouter()
 
-const name = ref(route.params.name.toString())
-
-watch(route, () => {
-  name.value = route.params?.name?.toString() ?? ''
-})
+const name = computed(() => route.params?.name?.toString() ?? '')
 
 const ngx_config: NgxConfig = reactive({
   name: '',
@@ -77,7 +73,7 @@ function handle_response(r: Site) {
 
 function init() {
   if (name.value) {
-    domain.get(name.value).then(r => {
+    site.get(name.value).then(r => {
       handle_response(r)
     }).catch(handle_parse_error)
   }
@@ -96,7 +92,7 @@ function handle_parse_error(e: { error?: string, message: string }) {
 }
 
 function on_mode_change(advanced: CheckedType) {
-  domain.advance_mode(name.value, { advanced: advanced as boolean }).then(() => {
+  site.advance_mode(name.value, { advanced: advanced as boolean }).then(() => {
     advanceMode.value = advanced as boolean
     if (advanced) {
       build_config()
@@ -130,8 +126,7 @@ async function save() {
     }
   }
 
-  return domain.save(name.value, {
-    name: filename.value || name.value,
+  return site.save(name.value, {
     content: configText.value,
     overwrite: true,
     site_category_id: data.value.site_category_id,
@@ -154,7 +149,6 @@ provide('ngx_config', ngx_config)
 provide('history_chatgpt_record', history_chatgpt_record)
 provide('enabled', enabled)
 provide('name', name)
-provide('filename', filename)
 provide('filepath', filepath)
 provide('data', data)
 </script>

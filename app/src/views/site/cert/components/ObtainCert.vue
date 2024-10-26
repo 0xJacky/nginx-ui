@@ -4,7 +4,7 @@ import type { CertificateResult } from '@/api/cert'
 import type { NgxConfig, NgxDirective } from '@/api/ngx'
 import type { PrivateKeyType } from '@/constants'
 import type { ComputedRef, Ref } from 'vue'
-import domain from '@/api/domain'
+import site from '@/api/site'
 import AutoCertStepOne from '@/views/site/cert/components/AutoCertStepOne.vue'
 import ObtainCertLive from '@/views/site/cert/components/ObtainCertLive.vue'
 import { message, Modal } from 'ant-design-vue'
@@ -59,7 +59,7 @@ async function resolveCert({ ssl_certificate, ssl_certificate_key, key_type }: C
 
 function change_auto_cert(status: boolean, key_type?: PrivateKeyType) {
   if (status) {
-    domain.add_auto_cert(props.configName, {
+    site.add_auto_cert(props.configName, {
       domains: name.value.trim().split(' '),
       challenge_method: data.value.challenge_method!,
       dns_credential_id: data.value.dns_credential_id!,
@@ -71,7 +71,7 @@ function change_auto_cert(status: boolean, key_type?: PrivateKeyType) {
     })
   }
   else {
-    domain.remove_auto_cert(props.configName).then(() => {
+    site.remove_auto_cert(props.configName).then(() => {
       message.success($gettext('Auto-renewal disabled for %{name}', { name: name.value }))
     }).catch(e => {
       message.error(e.message ?? $gettext('Disable auto-renewal failed for %{name}', { name: name.value }))

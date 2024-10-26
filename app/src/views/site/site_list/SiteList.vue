@@ -1,15 +1,15 @@
 <script setup lang="tsx">
-import type { Site } from '@/api/domain'
+import type { Site } from '@/api/site'
 import type { SiteCategory } from '@/api/site_category'
 import type { Column } from '@/components/StdDesign/types'
-import domain from '@/api/domain'
+import site from '@/api/site'
 import site_category from '@/api/site_category'
+import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import InspectConfig from '@/views/config/InspectConfig.vue'
-import SiteDuplicate from '@/views/site/components/SiteDuplicate.vue'
 import columns from '@/views/site/site_list/columns'
+import SiteDuplicate from '@/views/site/site_list/SiteDuplicate.vue'
 import { message } from 'ant-design-vue'
-import StdBatchEdit from '../../../components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -43,7 +43,7 @@ onMounted(async () => {
 })
 
 function enable(name: string) {
-  domain.enable(name).then(() => {
+  site.enable(name).then(() => {
     message.success($gettext('Enabled successfully'))
     table.value?.get_list()
     inspect_config.value?.test()
@@ -53,7 +53,7 @@ function enable(name: string) {
 }
 
 function disable(name: string) {
-  domain.disable(name).then(() => {
+  site.disable(name).then(() => {
     message.success($gettext('Disabled successfully'))
     table.value?.get_list()
     inspect_config.value?.test()
@@ -63,7 +63,7 @@ function disable(name: string) {
 }
 
 function destroy(site_name: string) {
-  domain.destroy(site_name).then(() => {
+  site.destroy(site_name).then(() => {
     table.value.get_list()
     message.success($gettext('Delete site: %{site_name}', { site_name }))
     inspect_config.value?.test()
@@ -104,7 +104,7 @@ function handleBatchUpdated() {
 
     <StdTable
       ref="table"
-      :api="domain"
+      :api="site"
       :columns="columns"
       row-key="name"
       disable-delete
@@ -162,7 +162,7 @@ function handleBatchUpdated() {
     </StdTable>
     <StdBatchEdit
       ref="stdBatchEditRef"
-      :api="domain"
+      :api="site"
       :columns
       @save="handleBatchUpdated"
     />

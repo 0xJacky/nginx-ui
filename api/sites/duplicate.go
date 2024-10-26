@@ -2,15 +2,14 @@ package sites
 
 import (
 	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func DuplicateSite(c *gin.Context) {
 	// Source name
-	name := c.Param("name")
+	src := c.Param("name")
 
 	// Destination name
 	var json struct {
@@ -21,24 +20,13 @@ func DuplicateSite(c *gin.Context) {
 		return
 	}
 
-	src := nginx.GetConfPath("sites-available", name)
-	dst := nginx.GetConfPath("sites-available", json.Name)
-
-	if helper.FileExists(dst) {
-		c.JSON(http.StatusNotAcceptable, gin.H{
-			"message": "File exists",
-		})
-		return
-	}
-
-	_, err := helper.CopyFile(src, dst)
-
+	err := site.Duplicate(src, json.Name)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"dst": dst,
+		"message": "ok",
 	})
 }

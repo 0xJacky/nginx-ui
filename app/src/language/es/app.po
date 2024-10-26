@@ -24,32 +24,34 @@ msgstr "2FA"
 msgid "2FA Settings"
 msgstr "Configuración de 2FA"
 
-#: src/routes/index.ts:277
+#: src/routes/index.ts:283
 msgid "About"
 msgstr "Acerca de"
 
-#: src/routes/index.ts:204 src/views/site/ngx_conf/LogEntry.vue:76
+#: src/routes/index.ts:210 src/views/site/ngx_conf/LogEntry.vue:76
 msgid "Access Logs"
 msgstr "Logs de acceso"
 
-#: src/routes/index.ts:142 src/views/certificate/ACMEUser.vue:105
+#: src/routes/index.ts:148 src/views/certificate/ACMEUser.vue:112
 #: src/views/certificate/ACMEUserSelector.vue:85
 msgid "ACME User"
 msgstr "Usuario ACME"
 
-#: src/views/certificate/ACMEUser.vue:88
-#: src/views/certificate/CertificateList/certColumns.tsx:89
+#: src/views/certificate/ACMEUser.vue:95
+#: src/views/certificate/CertificateList/certColumns.tsx:97
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.ts:38
-#: src/views/environment/envColumns.tsx:131
-#: src/views/notification/notificationColumns.tsx:54
-#: src/views/preference/AuthSettings.vue:26 src/views/site/SiteList.vue:54
-#: src/views/stream/StreamList.vue:47 src/views/user/userColumns.tsx:60
+#: src/views/environment/envColumns.tsx:125
+#: src/views/notification/notificationColumns.tsx:62
+#: src/views/preference/AuthSettings.vue:26
+#: src/views/site/site_category/columns.ts:26
+#: src/views/site/site_list/columns.tsx:70 src/views/stream/StreamList.vue:47
+#: src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "Acción"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:204
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:177
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:209
 #: src/views/preference/CertSettings.vue:42
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/site/ngx_conf/NgxServer.vue:162
@@ -63,7 +65,7 @@ msgstr "Agregar"
 msgid "Add a passkey"
 msgstr ""
 
-#: src/routes/index.ts:112 src/views/config/ConfigEditor.vue:143
+#: src/routes/index.ts:118 src/views/config/ConfigEditor.vue:143
 #: src/views/config/ConfigEditor.vue:204
 msgid "Add Configuration"
 msgstr "Agregar configuración"
@@ -77,11 +79,11 @@ msgstr "Añadir directiva a continuación"
 msgid "Add Location"
 msgstr "Agregar Ubicación"
 
-#: src/routes/index.ts:64 src/views/site/SiteAdd.vue:89
+#: src/routes/index.ts:63 src/views/site/SiteAdd.vue:89
 msgid "Add Site"
 msgstr "Agregar Sitio"
 
-#: src/views/stream/StreamList.vue:183
+#: src/views/stream/StreamList.vue:182
 msgid "Add Stream"
 msgstr "Agregar Stream"
 
@@ -89,11 +91,12 @@ msgstr "Agregar Stream"
 msgid "Added successfully"
 msgstr "Agregado exitoso"
 
-#: src/views/certificate/DNSChallenge.vue:108
+#: src/views/certificate/DNSChallenge.vue:110
 msgid "Additional"
 msgstr "Adicional"
 
-#: src/views/site/SiteEdit.vue:195 src/views/stream/StreamEdit.vue:189
+#: src/views/site/site_edit/SiteEdit.vue:191
+#: src/views/stream/StreamEdit.vue:189
 msgid "Advance Mode"
 msgstr "Modo avanzado"
 
@@ -101,11 +104,15 @@ msgstr "Modo avanzado"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr ""
 
+#: src/views/site/site_list/SiteList.vue:101
+msgid "All"
+msgstr ""
+
 #: src/views/preference/OpenAISettings.vue:44
 msgid "API Base Url"
 msgstr "URL Base de la API"
 
-#: src/views/certificate/DNSChallenge.vue:82
+#: src/views/certificate/DNSChallenge.vue:83
 msgid "API Document"
 msgstr "Documento de la API"
 
@@ -117,7 +124,7 @@ msgstr "Proxy de la API"
 msgid "API Token"
 msgstr "Token de la API"
 
-#: src/views/system/Upgrade.vue:178
+#: src/views/system/Upgrade.vue:177
 msgid "Arch"
 msgstr "Arquitectura"
 
@@ -139,19 +146,20 @@ msgstr "¿Está seguro de que desea borrar todas las notificaciones?"
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "¿Está seguro de que desea borrar el registro del chat?"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:577
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:564
 msgid "Are you sure you want to delete this item permanently?"
 msgstr "¿Está seguro de que desea eliminar este elemento de forma permanente?"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:549
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:535
 msgid "Are you sure you want to delete this item?"
 msgstr "¿Está seguro de que quiere borrar este elemento?"
 
-#: src/views/site/SiteList.vue:153 src/views/stream/StreamList.vue:167
+#: src/views/site/site_list/SiteList.vue:149
+#: src/views/stream/StreamList.vue:166
 msgid "Are you sure you want to delete?"
 msgstr "¿Está seguro de que quiere borrar?"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:563
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:549
 msgid "Are you sure you want to recover this item?"
 msgstr "¿Está seguro de que quiere recuperar este elemento?"
 
@@ -179,7 +187,7 @@ msgstr "Asistente"
 msgid "Attempts"
 msgstr "Intentos"
 
-#: src/views/preference/Preference.vue:153
+#: src/views/preference/Preference.vue:152
 msgid "Auth"
 msgstr "Autenticación"
 
@@ -196,7 +204,7 @@ msgstr ""
 msgid "Author"
 msgstr "Autor"
 
-#: src/views/nginx_log/NginxLog.vue:149
+#: src/views/nginx_log/NginxLog.vue:151
 msgid "Auto Refresh"
 msgstr "Actualización automática"
 
@@ -210,16 +218,17 @@ msgstr "Renovación automática habilitada por %{name}"
 
 #: src/views/certificate/CertificateEditor.vue:249
 #: src/views/config/ConfigEditor.vue:213 src/views/config/ConfigList.vue:107
-#: src/views/config/ConfigList.vue:181 src/views/nginx_log/NginxLog.vue:170
-#: src/views/site/SiteEdit.vue:253 src/views/stream/StreamEdit.vue:245
+#: src/views/config/ConfigList.vue:181 src/views/nginx_log/NginxLog.vue:172
+#: src/views/site/site_edit/SiteEdit.vue:249
+#: src/views/stream/StreamEdit.vue:245
 msgid "Back"
 msgstr "Volver"
 
-#: src/views/other/Error.vue:23
+#: src/views/other/Error.vue:22
 msgid "Back Home"
 msgstr "Volver al Inicio"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:217
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:222
 msgid "Back to list"
 msgstr "Volver a la lista"
 
@@ -240,30 +249,35 @@ msgid "Base information"
 msgstr "Información general"
 
 #: src/views/config/ConfigEditor.vue:241
-#: src/views/preference/Preference.vue:147
-#: src/views/site/components/RightSettings.vue:75
+#: src/views/preference/Preference.vue:146
+#: src/views/site/site_edit/RightSettings.vue:79
 #: src/views/stream/components/RightSettings.vue:74
 msgid "Basic"
 msgstr "Básico"
 
-#: src/views/site/SiteEdit.vue:198 src/views/stream/StreamEdit.vue:192
+#: src/views/site/site_edit/SiteEdit.vue:194
+#: src/views/stream/StreamEdit.vue:192
 msgid "Basic Mode"
 msgstr "Modo Básico"
 
-#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:54
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:485
+#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:66
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:474
 msgid "Batch Modify"
 msgstr "Modificar por lotes"
 
-#: src/views/environment/BatchUpgrader.vue:156
+#: src/views/environment/BatchUpgrader.vue:154
 msgid "Batch Upgrade"
 msgstr "Actualización por lotes"
+
+#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:74
+msgid "Belows are selected items that you want to batch modify"
+msgstr ""
 
 #: src/views/system/About.vue:39
 msgid "Build with"
 msgstr "Desarrollado con"
 
-#: src/views/certificate/ACMEUser.vue:35
+#: src/views/certificate/ACMEUser.vue:37
 msgid "CA Dir"
 msgstr "Dir CA"
 
@@ -276,22 +290,25 @@ msgid "Can't scan? Use text key binding"
 msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:260
-#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:55
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:254
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:153
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:261
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:182
 #: src/views/preference/components/Passkey.vue:147
 #: src/views/site/cert/components/ObtainCert.vue:137
-#: src/views/site/components/Deploy.vue:21
-#: src/views/site/components/RightSettings.vue:51
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:51
 #: src/views/site/ngx_conf/NgxServer.vue:80
 #: src/views/site/ngx_conf/NgxUpstream.vue:33
-#: src/views/stream/components/Deploy.vue:21
+#: src/views/site/site_edit/RightSettings.vue:55
+#: src/views/stream/components/Deploy.vue:20
 #: src/views/stream/components/RightSettings.vue:51
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/views/preference/Preference.vue:159
+#: src/views/site/site_edit/RightSettings.vue:91
+#: src/views/site/site_list/columns.tsx:22
+msgid "Category"
+msgstr ""
+
+#: src/views/preference/Preference.vue:158
 #, fuzzy
 msgid "Cert"
 msgstr "Certificado automático"
@@ -307,12 +324,12 @@ msgid_plural "Certificates Status"
 msgstr[0] "Estado del Certificado"
 msgstr[1] "Estado de los Certificados"
 
-#: src/routes/index.ts:133
+#: src/routes/index.ts:139
 #: src/views/certificate/CertificateList/Certificate.vue:13
 msgid "Certificates"
 msgstr "Certificados"
 
-#: src/routes/index.ts:150
+#: src/routes/index.ts:156
 msgid "Certificates List"
 msgstr "Lista de Certificados"
 
@@ -335,11 +352,11 @@ msgstr[1] "Cambiar Certificados"
 msgid "Changed Path"
 msgstr "Ruta cambiada"
 
-#: src/views/environment/BatchUpgrader.vue:163 src/views/system/Upgrade.vue:190
+#: src/views/environment/BatchUpgrader.vue:161 src/views/system/Upgrade.vue:189
 msgid "Channel"
 msgstr "Canal"
 
-#: src/views/system/Upgrade.vue:187
+#: src/views/system/Upgrade.vue:186
 msgid "Check again"
 msgstr "Intentar nuevamente"
 
@@ -393,7 +410,7 @@ msgstr "Configurar SSL"
 msgid "Connected"
 msgstr "Conectado"
 
-#: src/views/terminal/Terminal.vue:120
+#: src/views/terminal/Terminal.vue:119
 msgid "Connection lost, please refresh the page."
 msgstr "Conexión perdida, por favor actualice la página."
 
@@ -411,15 +428,15 @@ msgstr "Copiado"
 msgid "Copy"
 msgstr "Copiar"
 
-#: src/views/system/Upgrade.vue:148
+#: src/views/system/Upgrade.vue:147
 msgid "Core Upgrade"
 msgstr "Actualización del kernel"
 
-#: src/views/dashboard/ServerAnalytic.vue:296
+#: src/views/dashboard/ServerAnalytic.vue:294
 msgid "CPU Status"
 msgstr "Estado del CPU"
 
-#: src/views/dashboard/ServerAnalytic.vue:190
+#: src/views/dashboard/ServerAnalytic.vue:188
 msgid "CPU:"
 msgstr "CPU:"
 
@@ -427,7 +444,7 @@ msgstr "CPU:"
 msgid "Create"
 msgstr "Crear"
 
-#: src/views/site/SiteAdd.vue:154
+#: src/views/site/SiteAdd.vue:157
 msgid "Create Another"
 msgstr "Crear otro"
 
@@ -435,17 +452,17 @@ msgstr "Crear otro"
 msgid "Create File"
 msgstr "Crear Archivo"
 
-#: src/views/config/components/Mkdir.vue:48 src/views/config/ConfigList.vue:124
+#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:124
 msgid "Create Folder"
 msgstr "Crear carpeta"
 
-#: src/views/notification/notificationColumns.tsx:48
+#: src/views/notification/notificationColumns.tsx:56
 #: src/views/preference/components/Passkey.vue:101
-#: src/views/user/userColumns.tsx:48
+#: src/views/site/site_category/columns.ts:14 src/views/user/userColumns.tsx:48
 msgid "Created at"
 msgstr "Creado el"
 
-#: src/views/config/components/Mkdir.vue:34
+#: src/views/config/components/Mkdir.vue:33
 msgid "Created successfully"
 msgstr "Creado con éxito"
 
@@ -457,7 +474,7 @@ msgstr "La creación de un cliente facilita la comunicación con el servidor CA"
 msgid "Credential"
 msgstr "Credencial"
 
-#: src/views/certificate/DNSChallenge.vue:97
+#: src/views/certificate/DNSChallenge.vue:99
 msgid "Credentials"
 msgstr "Credenciales"
 
@@ -473,12 +490,12 @@ msgid "Current account is not enabled TOTP."
 msgstr ""
 "La cuenta actual no tiene habilitada la autenticación de dos factores (2FA)."
 
-#: src/views/system/Upgrade.vue:167
+#: src/views/system/Upgrade.vue:166
 msgid "Current Version"
 msgstr "Versión actual"
 
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:127
-#: src/views/site/ngx_conf/NgxConfigEditor.vue:195
+#: src/views/site/ngx_conf/NgxConfigEditor.vue:194
 msgid "Custom"
 msgstr "Personalizado"
 
@@ -491,12 +508,12 @@ msgstr ""
 "Personalice el nombre del servidor local para que se muestre en el indicador "
 "de entorno."
 
-#: src/routes/index.ts:39 src/views/config/ConfigEditor.vue:133
+#: src/routes/index.ts:38 src/views/config/ConfigEditor.vue:133
 #: src/views/config/ConfigEditor.vue:94 src/views/config/ConfigList.vue:65
 msgid "Dashboard"
 msgstr "Panel"
 
-#: src/views/other/Install.vue:119
+#: src/views/other/Install.vue:117
 msgid "Database (Optional, default: database)"
 msgstr "Base de datos (Opcional, default: database)"
 
@@ -504,18 +521,19 @@ msgstr "Base de datos (Opcional, default: database)"
 msgid "Days"
 msgstr "Días"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:556
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:542
 #: src/views/site/ngx_conf/NgxServer.vue:110
-#: src/views/site/ngx_conf/NgxUpstream.vue:126 src/views/site/SiteList.vue:162
-#: src/views/stream/StreamList.vue:176
+#: src/views/site/ngx_conf/NgxUpstream.vue:126
+#: src/views/site/site_list/SiteList.vue:158
+#: src/views/stream/StreamList.vue:175
 msgid "Delete"
 msgstr "Eliminar"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:584
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:571
 msgid "Delete Permanently"
 msgstr "Eliminar Permanentemente"
 
-#: src/views/site/SiteList.vue:85
+#: src/views/site/site_list/SiteList.vue:68
 msgid "Delete site: %{site_name}"
 msgstr "Eliminar sitio: %{site_name}"
 
@@ -523,30 +541,25 @@ msgstr "Eliminar sitio: %{site_name}"
 msgid "Delete stream: %{stream_name}"
 msgstr "Eliminar stream: %{site_name}"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:201
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:196
 msgid "Deleted successfully"
 msgstr "Borrado exitoso"
 
 #: src/views/config/ConfigEditor.vue:284
-#: src/views/site/components/Deploy.vue:104
-#: src/views/site/components/RightSettings.vue:93
-#: src/views/stream/components/Deploy.vue:103
+#: src/views/stream/components/Deploy.vue:100
 #: src/views/stream/components/RightSettings.vue:92
 msgid "Deploy"
 msgstr "Desplegar"
 
-#: src/views/site/components/Deploy.vue:60
-#: src/views/stream/components/Deploy.vue:60
+#: src/views/stream/components/Deploy.vue:57
 msgid "Deploy %{conf_name} to %{node_name} failed"
 msgstr "Falló el desplegado de %{conf_name} a %{node_name}"
 
-#: src/views/site/components/Deploy.vue:37
-#: src/views/stream/components/Deploy.vue:37
+#: src/views/stream/components/Deploy.vue:36
 msgid "Deploy %{conf_name} to %{node_name} successfully"
 msgstr "Desplegado de %{conf_name} a %{node_name} exitoso"
 
-#: src/views/site/components/Deploy.vue:35
-#: src/views/stream/components/Deploy.vue:35
+#: src/views/stream/components/Deploy.vue:34
 msgid "Deploy successfully"
 msgstr "Desplegado con éxito"
 
@@ -555,7 +568,7 @@ msgstr "Desplegado con éxito"
 msgid "Description"
 msgstr "Descripción"
 
-#: src/views/notification/notificationColumns.tsx:43
+#: src/views/notification/notificationColumns.tsx:51
 msgid "Details"
 msgstr "Detalles"
 
@@ -575,7 +588,8 @@ msgstr "Directivas"
 msgid "Directory"
 msgstr "Directorio"
 
-#: src/views/site/SiteList.vue:131 src/views/stream/StreamList.vue:145
+#: src/views/site/site_list/SiteList.vue:127
+#: src/views/stream/StreamList.vue:144
 msgid "Disable"
 msgstr "Desactivar"
 
@@ -583,26 +597,27 @@ msgstr "Desactivar"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "No se pudo desactivar la renovación automática por %{name}"
 
-#: src/views/environment/envColumns.tsx:113
-#: src/views/environment/envColumns.tsx:95 src/views/site/SiteEdit.vue:181
-#: src/views/site/SiteList.vue:33 src/views/site/SiteList.vue:42
-#: src/views/stream/StreamEdit.vue:175 src/views/stream/StreamList.vue:33
-#: src/views/user/userColumns.tsx:41
+#: src/views/environment/envColumns.tsx:109
+#: src/views/environment/envColumns.tsx:92
+#: src/views/site/site_edit/SiteEdit.vue:177
+#: src/views/site/site_list/columns.tsx:49
+#: src/views/site/site_list/columns.tsx:58 src/views/stream/StreamEdit.vue:175
+#: src/views/stream/StreamList.vue:33 src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: src/views/site/components/RightSettings.vue:38
-#: src/views/site/SiteList.vue:74
+#: src/views/site/site_edit/RightSettings.vue:42
+#: src/views/site/site_list/SiteList.vue:57
 #: src/views/stream/components/RightSettings.vue:38
 #: src/views/stream/StreamList.vue:67
 msgid "Disabled successfully"
 msgstr "Desactivado con éxito"
 
-#: src/views/dashboard/ServerAnalytic.vue:361
+#: src/views/dashboard/ServerAnalytic.vue:359
 msgid "Disk IO"
 msgstr "I/O del disco"
 
-#: src/routes/index.ts:178 src/views/certificate/DNSCredential.vue:40
+#: src/routes/index.ts:184 src/views/certificate/DNSCredential.vue:40
 msgid "DNS Credentials"
 msgstr "Credenciales de DNS"
 
@@ -619,7 +634,6 @@ msgstr "DNS01"
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr "No habilite esta opción a menos que esté seguro de que la necesita."
 
-#: src/views/site/components/Deploy.vue:16
 #: src/views/stream/components/Deploy.vue:16
 msgid "Do you want to deploy this file to remote server?"
 msgid_plural "Do you want to deploy this file to remote servers?"
@@ -630,7 +644,7 @@ msgstr[1] "¿Desea desplegar este archivo en los servidores remotos?"
 msgid "Do you want to disable auto-cert renewal?"
 msgstr "¿Desea deshabilitar la renovación automática de certificado?"
 
-#: src/views/site/components/RightSettings.vue:47
+#: src/views/site/site_edit/RightSettings.vue:51
 msgid "Do you want to disable this site?"
 msgstr "¿Quieres deshabilitar este sitio?"
 
@@ -638,7 +652,7 @@ msgstr "¿Quieres deshabilitar este sitio?"
 msgid "Do you want to disable this stream?"
 msgstr "¿Quieres deshabilitar esta transmisión?"
 
-#: src/views/site/components/RightSettings.vue:47
+#: src/views/site/site_edit/RightSettings.vue:51
 msgid "Do you want to enable this site?"
 msgstr "¿Quieres habilitar este sitio?"
 
@@ -658,11 +672,11 @@ msgstr "¿Quieres eliminar este servidor?"
 msgid "Do you want to remove this upstream?"
 msgstr "¿Quieres eliminar esta transmisión?"
 
-#: src/views/certificate/WildcardCertificate.vue:69
+#: src/views/certificate/WildcardCertificate.vue:68
 msgid "Domain"
 msgstr "Dominio"
 
-#: src/views/site/SiteAdd.vue:144
+#: src/views/site/SiteAdd.vue:147
 msgid "Domain Config Created Successfully"
 msgstr "Configuración de dominio creada con éxito"
 
@@ -680,7 +694,7 @@ msgstr "Error al descargar la última versión"
 msgid "Downloading latest release"
 msgstr "Descargando la última versión"
 
-#: src/views/environment/BatchUpgrader.vue:192 src/views/system/Upgrade.vue:217
+#: src/views/environment/BatchUpgrader.vue:190 src/views/system/Upgrade.vue:216
 msgid "Dry run mode enabled"
 msgstr "Modo de ejecución de prueba habilitado"
 
@@ -690,70 +704,66 @@ msgid ""
 "non-HTTPS websites, except when running on localhost."
 msgstr ""
 
-#: src/views/site/components/SiteDuplicate.vue:122
-#: src/views/site/SiteList.vue:147
-#: src/views/stream/components/StreamDuplicate.vue:122
-#: src/views/stream/StreamList.vue:161
+#: src/views/site/site_list/SiteDuplicate.vue:74
+#: src/views/site/site_list/SiteList.vue:143
+#: src/views/stream/components/StreamDuplicate.vue:121
+#: src/views/stream/StreamList.vue:160
 msgid "Duplicate"
 msgstr "Duplicar"
 
-#: src/views/site/components/SiteDuplicate.vue:82
 #: src/views/stream/components/StreamDuplicate.vue:82
 msgid "Duplicate %{conf_name} to %{node_name} successfully"
 msgstr "Duplicado con éxito de %{conf_name} a %{node_name}"
 
-#: src/views/site/components/SiteDuplicate.vue:87
-#: src/views/stream/components/StreamDuplicate.vue:87
+#: src/views/stream/components/StreamDuplicate.vue:86
 msgid "Duplicate failed"
 msgstr "Duplicado fallido"
 
-#: src/views/site/components/SiteDuplicate.vue:80
 #: src/views/stream/components/StreamDuplicate.vue:80
 msgid "Duplicate successfully"
 msgstr "Duplicado con éxito"
 
-#: src/views/site/components/SiteDuplicate.vue:63
+#: src/views/site/site_list/SiteDuplicate.vue:48
 #: src/views/stream/components/StreamDuplicate.vue:63
 msgid "Duplicate to local successfully"
 msgstr "Duplicado con éxito a local"
 
-#: src/views/site/SiteEdit.vue:170 src/views/stream/StreamEdit.vue:164
+#: src/views/site/site_edit/SiteEdit.vue:166
+#: src/views/stream/StreamEdit.vue:164
 msgid "Edit %{n}"
 msgstr "Editar %{n}"
 
-#: src/routes/index.ts:122 src/views/config/ConfigEditor.vue:204
+#: src/routes/index.ts:128 src/views/config/ConfigEditor.vue:204
 msgid "Edit Configuration"
 msgstr "Editar Configuración"
 
-#: src/routes/index.ts:72
+#: src/routes/index.ts:78
 msgid "Edit Site"
 msgstr "Editar Sitio"
 
-#: src/routes/index.ts:92
+#: src/routes/index.ts:98
 msgid "Edit Stream"
 msgstr "Editar Transmisión"
 
-#: src/views/certificate/ACMEUser.vue:24
+#: src/views/certificate/ACMEUser.vue:25
 msgid "Email"
 msgstr "Correo"
 
-#: src/views/other/Install.vue:88
+#: src/views/other/Install.vue:86
 msgid "Email (*)"
 msgstr "Correo (*)"
 
-#: src/views/site/components/Deploy.vue:84 src/views/site/SiteList.vue:139
-#: src/views/stream/components/Deploy.vue:83
-#: src/views/stream/StreamList.vue:153
+#: src/views/site/site_list/SiteList.vue:135
+#: src/views/stream/components/Deploy.vue:80
+#: src/views/stream/StreamList.vue:152
 msgid "Enable"
 msgstr "Habilitar"
 
-#: src/views/site/components/Deploy.vue:50
-#: src/views/stream/components/Deploy.vue:50
+#: src/views/stream/components/Deploy.vue:47
 msgid "Enable %{conf_name} in %{node_name} failed"
 msgstr "Falló el habilitado de %{conf_name} en %{node_name}"
 
-#: src/views/site/components/Deploy.vue:45
-#: src/views/stream/components/Deploy.vue:45
+#: src/views/stream/components/Deploy.vue:43
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "Habilitado exitoso de %{conf_name} en %{node_name}"
 
@@ -769,12 +779,11 @@ msgstr "No se pudo activar la renovación automática por %{name}"
 msgid "Enable failed"
 msgstr "Falló la habilitación"
 
-#: src/views/site/components/Deploy.vue:43
-#: src/views/stream/components/Deploy.vue:43
+#: src/views/stream/components/Deploy.vue:41
 msgid "Enable successfully"
 msgstr "Habilitado con Éxito"
 
-#: src/views/site/ngx_conf/NgxConfigEditor.vue:184
+#: src/views/site/ngx_conf/NgxConfigEditor.vue:183
 msgid "Enable TLS"
 msgstr "Habilitar TLS"
 
@@ -783,23 +792,23 @@ msgstr "Habilitar TLS"
 msgid "Enable TOTP"
 msgstr "Habilitar TLS"
 
-#: src/views/environment/envColumns.tsx:104
-#: src/views/environment/envColumns.tsx:110
+#: src/views/environment/envColumns.tsx:100
+#: src/views/environment/envColumns.tsx:106
 #: src/views/preference/LogrotateSettings.vue:19
-#: src/views/site/components/RightSettings.vue:77
-#: src/views/site/SiteEdit.vue:175 src/views/site/SiteList.vue:29
-#: src/views/site/SiteList.vue:41
+#: src/views/site/site_edit/RightSettings.vue:82
+#: src/views/site/site_edit/SiteEdit.vue:171
+#: src/views/site/site_list/columns.tsx:45
+#: src/views/site/site_list/columns.tsx:57
 #: src/views/stream/components/RightSettings.vue:76
 #: src/views/stream/StreamEdit.vue:169 src/views/stream/StreamList.vue:29
 #: src/views/user/userColumns.tsx:38
 msgid "Enabled"
 msgstr "Habilitado"
 
-#: src/views/site/components/RightSettings.vue:29
-#: src/views/site/components/SiteDuplicate.vue:94 src/views/site/SiteAdd.vue:40
-#: src/views/site/SiteList.vue:64
+#: src/views/site/site_edit/RightSettings.vue:33
+#: src/views/site/site_list/SiteList.vue:47 src/views/site/SiteAdd.vue:40
 #: src/views/stream/components/RightSettings.vue:29
-#: src/views/stream/components/StreamDuplicate.vue:94
+#: src/views/stream/components/StreamDuplicate.vue:93
 #: src/views/stream/StreamList.vue:57
 msgid "Enabled successfully"
 msgstr "Habilitado con éxito"
@@ -808,7 +817,7 @@ msgstr "Habilitado con éxito"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Encriptar sitio web con Let's Encrypt"
 
-#: src/routes/index.ts:228 src/views/environment/Environment.vue:34
+#: src/routes/index.ts:234 src/views/environment/Environment.vue:34
 msgid "Environment"
 msgstr "Entorno"
 
@@ -821,19 +830,19 @@ msgid "Environments"
 msgstr "Entornos"
 
 #: src/constants/index.ts:16 src/views/config/InspectConfig.vue:44
-#: src/views/notification/notificationColumns.tsx:14
+#: src/views/notification/notificationColumns.tsx:15
 msgid "Error"
 msgstr "Error"
 
-#: src/routes/index.ts:211 src/views/site/ngx_conf/LogEntry.vue:84
+#: src/routes/index.ts:217 src/views/site/ngx_conf/LogEntry.vue:84
 msgid "Error Logs"
 msgstr "Logs de error"
 
-#: src/views/system/Upgrade.vue:179
+#: src/views/system/Upgrade.vue:178
 msgid "Executable Path"
 msgstr "Ruta ejecutable"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:77
+#: src/views/certificate/CertificateList/certColumns.tsx:85
 #: src/views/site/cert/CertInfo.vue:31
 msgid "Expired"
 msgstr "Vencido"
@@ -850,15 +859,15 @@ msgstr "Exportar"
 msgid "Fail to obtain certificate"
 msgstr "Falla al obtener el certificado"
 
-#: src/views/site/components/RightSettings.vue:41
-#: src/views/site/SiteList.vue:78
+#: src/views/site/site_edit/RightSettings.vue:45
+#: src/views/site/site_list/SiteList.vue:61
 #: src/views/stream/components/RightSettings.vue:41
 #: src/views/stream/StreamList.vue:71
 msgid "Failed to disable %{msg}"
 msgstr "Error al deshabilitar %{msg}"
 
-#: src/views/site/components/RightSettings.vue:32
-#: src/views/site/SiteList.vue:68
+#: src/views/site/site_edit/RightSettings.vue:36
+#: src/views/site/site_list/SiteList.vue:51
 #: src/views/stream/components/RightSettings.vue:32
 #: src/views/stream/StreamList.vue:61
 msgid "Failed to enable %{msg}"
@@ -868,7 +877,8 @@ msgstr "Error al habilitar %{msg}"
 msgid "Failed to get certificate information"
 msgstr "No se pudo obtener la información del certificado"
 
-#: src/views/site/SiteEdit.vue:127 src/views/stream/StreamEdit.vue:122
+#: src/views/site/site_edit/SiteEdit.vue:123
+#: src/views/stream/StreamEdit.vue:122
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr ""
 "No se pudo guardar, se detectó un error(es) de sintaxis en la configuración."
@@ -881,11 +891,11 @@ msgstr "Archivo"
 msgid "File exists"
 msgstr "El archivo existe"
 
-#: src/views/other/Error.vue:9
+#: src/views/other/Error.vue:8
 msgid "File Not Found"
 msgstr "Archivo no encontrado"
 
-#: src/views/nginx_log/NginxLog.vue:152
+#: src/views/nginx_log/NginxLog.vue:154
 msgid "Filter"
 msgstr "Filtro"
 
@@ -927,7 +937,7 @@ msgstr "Generar"
 msgid "Generating private key for registering account"
 msgstr "Generando clave privada para registrar cuenta"
 
-#: src/views/environment/BatchUpgrader.vue:181 src/views/system/Upgrade.vue:171
+#: src/views/environment/BatchUpgrader.vue:179 src/views/system/Upgrade.vue:170
 msgid "Get release information error"
 msgstr "Obtener error de información de versión"
 
@@ -943,7 +953,7 @@ msgstr "Proxy Github"
 msgid "Hide"
 msgstr "Ocultar"
 
-#: src/routes/index.ts:31
+#: src/routes/index.ts:30
 msgid "Home"
 msgstr "Inicio"
 
@@ -963,7 +973,7 @@ msgstr "Puerto HTTP"
 msgid "HTTP01"
 msgstr "HTTP01"
 
-#: src/views/certificate/ACMEUser.vue:43
+#: src/views/certificate/ACMEUser.vue:45
 msgid "If left blank, the default CA Dir will be used."
 msgstr "Si se deja en blanco, se utilizará el directorio CA predeterminado."
 
@@ -1000,7 +1010,7 @@ msgstr ""
 msgid "Import"
 msgstr "Importar"
 
-#: src/routes/index.ts:168 src/views/certificate/CertificateEditor.vue:79
+#: src/routes/index.ts:174 src/views/certificate/CertificateEditor.vue:79
 msgid "Import Certificate"
 msgstr "Importar Certificado"
 
@@ -1008,7 +1018,7 @@ msgstr "Importar Certificado"
 msgid "Incorrect username or password"
 msgstr "Nombre de usuario o contraseña incorrectos"
 
-#: src/constants/index.ts:18 src/views/notification/notificationColumns.tsx:24
+#: src/constants/index.ts:18 src/views/notification/notificationColumns.tsx:29
 msgid "Info"
 msgstr "Información"
 
@@ -1029,11 +1039,11 @@ msgstr "Ingrese el código de la aplicación:"
 msgid "Input the recovery code:"
 msgstr "Ingrese el código de recuperación:"
 
-#: src/routes/index.ts:299 src/views/other/Install.vue:134
+#: src/routes/index.ts:305 src/views/other/Install.vue:132
 msgid "Install"
 msgstr "Instalar"
 
-#: src/views/other/Install.vue:65
+#: src/views/other/Install.vue:63
 msgid "Install successfully"
 msgstr "Instalación exitosa"
 
@@ -1041,7 +1051,7 @@ msgstr "Instalación exitosa"
 msgid "Interval"
 msgstr "Intervalo"
 
-#: src/views/certificate/ACMEUser.vue:121
+#: src/views/certificate/ACMEUser.vue:128
 msgid "Invalid"
 msgstr "Inválido"
 
@@ -1054,7 +1064,7 @@ msgstr "Código 2FA o de recuperación inválido"
 msgid "Invalid filename"
 msgstr "Nombre de archivo inválido"
 
-#: src/views/config/components/Mkdir.vue:58
+#: src/views/config/components/Mkdir.vue:57
 msgid "Invalid folder name"
 msgstr "Nombre de carpeta inválido"
 
@@ -1070,7 +1080,7 @@ msgstr "IP"
 msgid "Issue wildcard certificate"
 msgstr "Obtener certificado comodín"
 
-#: src/views/certificate/WildcardCertificate.vue:60
+#: src/views/certificate/WildcardCertificate.vue:59
 msgid "Issue Wildcard Certificate"
 msgstr "Obtener certificado Comodín"
 
@@ -1086,12 +1096,12 @@ msgstr "Emisor: %{issuer}"
 msgid "Jwt Secret"
 msgstr "Secreto Jwt"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:54
+#: src/views/certificate/CertificateList/certColumns.tsx:62
 #: src/views/site/cert/components/AutoCertStepOne.vue:78
 msgid "Key Type"
 msgstr "Tipo llave"
 
-#: src/views/system/Upgrade.vue:181
+#: src/views/system/Upgrade.vue:180
 msgid "Last checked at"
 msgstr "Comprobado por última vez el"
 
@@ -1108,7 +1118,12 @@ msgstr "Para no modificar dejar en blanco"
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Dejar en blanco para el valor predeterminado: https://api.openai.com/"
 
-#: src/views/certificate/ACMEUser.vue:56
+#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:83
+#, fuzzy
+msgid "Leave blank if do not want to modify"
+msgstr "Para no modificar dejar en blanco"
+
+#: src/views/certificate/ACMEUser.vue:59
 #, fuzzy
 msgid "Leave blank if you don't need this."
 msgstr "Para no modificar dejar en blanco"
@@ -1131,11 +1146,11 @@ msgstr "Licencia"
 msgid "Link Start"
 msgstr "Iniciar conexión"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:194
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:199
 msgid "List"
 msgstr "Lista"
 
-#: src/views/dashboard/ServerAnalytic.vue:178
+#: src/views/dashboard/ServerAnalytic.vue:176
 msgid "Load Average:"
 msgstr "Promedios de carga:"
 
@@ -1148,7 +1163,7 @@ msgid "Load successfully"
 msgstr "Cargado con éxito"
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:71
+#: src/components/NodeSelector/NodeSelector.vue:70
 msgid "Local"
 msgstr "Local"
 
@@ -1164,7 +1179,7 @@ msgstr "Ubicaciones"
 msgid "Log"
 msgstr "Registro"
 
-#: src/routes/index.ts:305 src/views/other/Login.vue:245
+#: src/routes/index.ts:311 src/views/other/Login.vue:245
 msgid "Login"
 msgstr "Acceso"
 
@@ -1176,7 +1191,7 @@ msgstr "Acceso exitoso"
 msgid "Logout successful"
 msgstr "Cierre de sesión exitoso"
 
-#: src/views/preference/Preference.vue:177
+#: src/views/preference/Preference.vue:176
 msgid "Logrotate"
 msgstr "Rotación de logs"
 
@@ -1205,20 +1220,20 @@ msgstr ""
 "Asegúrese de haber configurado un proxy reverso para el directorio .well-"
 "known en HTTPChallengePort antes de obtener el certificado."
 
-#: src/routes/index.ts:102 src/views/config/ConfigEditor.vue:138
+#: src/routes/index.ts:108 src/views/config/ConfigEditor.vue:138
 #: src/views/config/ConfigEditor.vue:99 src/views/config/ConfigList.vue:70
 msgid "Manage Configs"
 msgstr "Administrar configuraciones"
 
-#: src/routes/index.ts:48 src/views/site/SiteList.vue:109
+#: src/routes/index.ts:47 src/views/site/site_list/SiteList.vue:97
 msgid "Manage Sites"
 msgstr "Administrar sitios"
 
-#: src/routes/index.ts:83 src/views/stream/StreamList.vue:119
+#: src/routes/index.ts:89 src/views/stream/StreamList.vue:119
 msgid "Manage Streams"
 msgstr "Administrar Transmisiones"
 
-#: src/routes/index.ts:251 src/views/user/User.vue:9
+#: src/routes/index.ts:257 src/views/user/User.vue:9
 msgid "Manage Users"
 msgstr "Administrar usuarios"
 
@@ -1230,12 +1245,12 @@ msgstr "Certificado Administrado"
 msgid "Max Attempts"
 msgstr "Intentos máximos"
 
-#: src/views/dashboard/ServerAnalytic.vue:217
-#: src/views/dashboard/ServerAnalytic.vue:218
+#: src/views/dashboard/ServerAnalytic.vue:215
+#: src/views/dashboard/ServerAnalytic.vue:216
 msgid "Memory"
 msgstr "Memoria"
 
-#: src/views/dashboard/ServerAnalytic.vue:207
+#: src/views/dashboard/ServerAnalytic.vue:205
 msgid "Memory and Storage"
 msgstr "Memoria y almacenamiento"
 
@@ -1248,21 +1263,21 @@ msgid "Model"
 msgstr "Modelo"
 
 #: src/components/ChatGPT/ChatGPT.vue:256
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:531
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:176
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:520
 #: src/views/config/ConfigList.vue:159
 msgid "Modify"
 msgstr "Modificar"
 
-#: src/routes/index.ts:158 src/views/certificate/CertificateEditor.vue:79
+#: src/routes/index.ts:164 src/views/certificate/CertificateEditor.vue:79
 msgid "Modify Certificate"
 msgstr "Modificar Certificado"
 
-#: src/views/site/SiteAdd.vue:151
+#: src/views/site/SiteAdd.vue:154
 msgid "Modify Config"
 msgstr "Modificar configuración"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:270
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:277
 msgid "Modify Mode"
 msgstr "Modo Modificar"
 
@@ -1274,31 +1289,33 @@ msgstr "Directiva multilínea"
 #: src/views/certificate/CertificateEditor.vue:154
 #: src/views/certificate/CertificateList/certColumns.tsx:10
 #: src/views/certificate/DNSCredential.vue:11
-#: src/views/config/components/Mkdir.vue:65 src/views/config/configColumns.ts:8
+#: src/views/config/components/Mkdir.vue:64 src/views/config/configColumns.ts:8
 #: src/views/config/ConfigEditor.vue:256 src/views/environment/envColumns.tsx:9
 #: src/views/preference/components/AddPasskey.vue:81
-#: src/views/site/components/RightSettings.vue:83
-#: src/views/site/components/SiteDuplicate.vue:129
-#: src/views/site/ngx_conf/NgxUpstream.vue:175 src/views/site/SiteList.vue:13
+#: src/views/site/ngx_conf/NgxUpstream.vue:175
+#: src/views/site/site_category/columns.ts:7
+#: src/views/site/site_edit/RightSettings.vue:88
+#: src/views/site/site_list/columns.tsx:13
+#: src/views/site/site_list/SiteDuplicate.vue:81
 #: src/views/stream/components/RightSettings.vue:82
-#: src/views/stream/components/StreamDuplicate.vue:129
-#: src/views/stream/StreamList.vue:13 src/views/stream/StreamList.vue:188
+#: src/views/stream/components/StreamDuplicate.vue:128
+#: src/views/stream/StreamList.vue:13 src/views/stream/StreamList.vue:187
 msgid "Name"
 msgstr "Nombre"
 
-#: src/views/dashboard/ServerAnalytic.vue:322
+#: src/views/dashboard/ServerAnalytic.vue:320
 msgid "Network"
 msgstr "Red"
 
-#: src/views/dashboard/ServerAnalytic.vue:264
+#: src/views/dashboard/ServerAnalytic.vue:262
 msgid "Network Statistics"
 msgstr "Estadísticas de red"
 
-#: src/views/dashboard/ServerAnalytic.vue:271
+#: src/views/dashboard/ServerAnalytic.vue:269
 msgid "Network Total Receive"
 msgstr "Total recibido por la red"
 
-#: src/views/dashboard/ServerAnalytic.vue:277
+#: src/views/dashboard/ServerAnalytic.vue:275
 msgid "Network Total Send"
 msgstr "Total enviado por la red"
 
@@ -1310,17 +1327,17 @@ msgstr "Nuevo nombre"
 msgid "New Path"
 msgstr "Nueva ruta"
 
-#: src/views/system/Upgrade.vue:210
+#: src/views/system/Upgrade.vue:209
 msgid "New version released"
 msgstr "Se liberó una nueva versión"
 
-#: src/views/certificate/WildcardCertificate.vue:92
-#: src/views/site/cert/components/ObtainCert.vue:207
-#: src/views/site/SiteAdd.vue:138
+#: src/views/certificate/WildcardCertificate.vue:91
+#: src/views/site/cert/components/ObtainCert.vue:208
+#: src/views/site/SiteAdd.vue:141
 msgid "Next"
 msgstr "Siguiente"
 
-#: src/views/preference/Preference.vue:165
+#: src/views/preference/Preference.vue:164
 msgid "Nginx"
 msgstr "Nginx"
 
@@ -1328,7 +1345,8 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Ruta de registro de acceso de Nginx"
 
-#: src/views/site/SiteEdit.vue:213 src/views/stream/StreamEdit.vue:207
+#: src/views/site/site_edit/SiteEdit.vue:209
+#: src/views/stream/StreamEdit.vue:207
 msgid "Nginx Configuration Parse Error"
 msgstr "Error de análisis de configuración de Nginx"
 
@@ -1349,7 +1367,7 @@ msgstr "Ruta de registro de errores de Nginx"
 msgid "Nginx is not running"
 msgstr ""
 
-#: src/routes/index.ts:196 src/views/nginx_log/NginxLog.vue:145
+#: src/routes/index.ts:202 src/views/nginx_log/NginxLog.vue:147
 msgid "Nginx Log"
 msgstr "Registro Nginx"
 
@@ -1381,15 +1399,17 @@ msgstr "Nginx reiniciado con éxito"
 
 #: src/components/ChatGPT/ChatGPT.vue:277
 #: src/components/Notification/Notification.vue:84
+#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:67
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:533
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:547
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:561
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:575
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:562
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/AuthSettings.vue:138
 #: src/views/preference/CertSettings.vue:70
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:90
 #: src/views/site/ngx_conf/LocationEditor.vue:90
-#: src/views/site/SiteList.vue:151 src/views/stream/StreamList.vue:165
+#: src/views/site/site_list/SiteList.vue:147
+#: src/views/stream/StreamList.vue:164
 msgid "No"
 msgstr "No"
 
@@ -1402,11 +1422,11 @@ msgstr "Nuevo nombre"
 msgid "Node Secret"
 msgstr "Secreto del nodo"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:83
+#: src/views/certificate/CertificateList/certColumns.tsx:91
 msgid "Not After"
 msgstr "No después de"
 
-#: src/routes/index.ts:311
+#: src/routes/index.ts:317
 msgid "Not Found"
 msgstr "No encontrado"
 
@@ -1419,15 +1439,21 @@ msgstr "No válido antes: %{date}"
 msgid "Note"
 msgstr "Nota"
 
+#: src/views/site/site_edit/RightSettings.vue:120
+msgid ""
+"Note, if the configuration file include other configurations or "
+"certificates, please synchronize them to the remote nodes in advance."
+msgstr ""
+
 #: src/views/notification/Notification.vue:29
 msgid "Notification"
 msgstr "Notificación"
 
-#: src/components/Notification/Notification.vue:82 src/routes/index.ts:242
+#: src/components/Notification/Notification.vue:82 src/routes/index.ts:248
 msgid "Notifications"
 msgstr "Notificaciones"
 
-#: src/views/site/cert/components/ObtainCert.vue:178
+#: src/views/site/cert/components/ObtainCert.vue:179
 msgid "Obtain certificate"
 msgstr "Obtener certificado"
 
@@ -1447,33 +1473,32 @@ msgstr ""
 "OCSP Must Staple puede causar errores para algunos usuarios en el primer "
 "acceso usando Firefox."
 
-#: src/components/NodeSelector/NodeSelector.vue:94
+#: src/components/NodeSelector/NodeSelector.vue:93
 #: src/views/dashboard/Environments.vue:107
-#: src/views/environment/envColumns.tsx:90
+#: src/views/environment/envColumns.tsx:87
 msgid "Offline"
 msgstr "Desconectado"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:255
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:154
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:262
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:183
 msgid "Ok"
 msgstr "Ok"
 
 #: src/components/ChatGPT/ChatGPT.vue:278
 #: src/components/Notification/Notification.vue:85
-#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:56
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:534
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:548
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:562
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:576
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:563
 #: src/views/notification/Notification.vue:39
 #: src/views/site/cert/components/ObtainCert.vue:136
-#: src/views/site/components/Deploy.vue:20
-#: src/views/site/components/RightSettings.vue:50
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:50
 #: src/views/site/ngx_conf/NgxServer.vue:79
-#: src/views/site/ngx_conf/NgxUpstream.vue:32 src/views/site/SiteList.vue:152
-#: src/views/stream/components/Deploy.vue:20
+#: src/views/site/ngx_conf/NgxUpstream.vue:32
+#: src/views/site/site_edit/RightSettings.vue:54
+#: src/views/site/site_list/SiteList.vue:148
+#: src/views/stream/components/Deploy.vue:19
 #: src/views/stream/components/RightSettings.vue:50
-#: src/views/stream/StreamList.vue:166
+#: src/views/stream/StreamList.vue:165
 msgid "OK"
 msgstr "OK"
 
@@ -1481,14 +1506,14 @@ msgstr "OK"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Una vez que se complete la verificación, los registros se eliminarán."
 
-#: src/components/NodeSelector/NodeSelector.vue:74
-#: src/components/NodeSelector/NodeSelector.vue:88
+#: src/components/NodeSelector/NodeSelector.vue:73
+#: src/components/NodeSelector/NodeSelector.vue:87
 #: src/views/dashboard/Environments.vue:100
-#: src/views/environment/envColumns.tsx:86
+#: src/views/environment/envColumns.tsx:83
 msgid "Online"
 msgstr "En línea"
 
-#: src/views/preference/Preference.vue:171
+#: src/views/preference/Preference.vue:170
 msgid "OpenAI"
 msgstr "OpenAI"
 
@@ -1500,23 +1525,21 @@ msgstr ""
 msgid "Original name"
 msgstr "Nombre original"
 
-#: src/views/system/Upgrade.vue:177
+#: src/views/system/Upgrade.vue:176
 msgid "OS"
 msgstr "SO"
 
-#: src/views/dashboard/ServerAnalytic.vue:184
+#: src/views/dashboard/ServerAnalytic.vue:182
 msgid "OS:"
 msgstr "SO:"
 
 #: src/views/config/ConfigEditor.vue:293
-#: src/views/site/components/Deploy.vue:88
-#: src/views/stream/components/Deploy.vue:87
+#: src/views/stream/components/Deploy.vue:84
 msgid "Overwrite"
 msgstr "Sobrescribir"
 
 #: src/views/config/ConfigEditor.vue:297
-#: src/views/site/components/Deploy.vue:92
-#: src/views/stream/components/Deploy.vue:91
+#: src/views/stream/components/Deploy.vue:88
 msgid "Overwrite exist file"
 msgstr "Sobrescribir archivo existente"
 
@@ -1539,7 +1562,7 @@ msgstr ""
 msgid "Password"
 msgstr "Contraseña"
 
-#: src/views/other/Install.vue:108
+#: src/views/other/Install.vue:106
 msgid "Password (*)"
 msgstr "Contraseña (*)"
 
@@ -1549,7 +1572,7 @@ msgstr "Contraseña (*)"
 msgid "Path"
 msgstr "Ruta"
 
-#: src/views/environment/BatchUpgrader.vue:236
+#: src/views/environment/BatchUpgrader.vue:234
 msgid "Perform"
 msgstr "Realizar"
 
@@ -1580,7 +1603,7 @@ msgstr ""
 "Por favor, complete las credenciales de autenticación API proporcionadas por "
 "su proveedor de DNS."
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:133
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:127
 msgid "Please fill in the required fields"
 msgstr "Por favor, complete los campos requeridos"
 
@@ -1598,15 +1621,23 @@ msgstr ""
 msgid "Please input a filename"
 msgstr "Por favor, ingrese un nombre de archivo"
 
-#: src/views/config/components/Mkdir.vue:57
+#: src/views/config/components/Mkdir.vue:56
 msgid "Please input a folder name"
 msgstr "Por favor, introduzca un nombre de carpeta"
 
-#: src/views/site/components/SiteDuplicate.vue:38
 #: src/views/stream/components/StreamDuplicate.vue:38
 msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration!"
+msgstr ""
+"Ingrese el nombre, ¡este se usará como el nombre de archivo de la nueva "
+"configuración!"
+
+#: src/views/site/site_list/SiteDuplicate.vue:33
+#, fuzzy
+msgid ""
+"Please input name, this will be used as the filename of the new "
+"configuration."
 msgstr ""
 "Ingrese el nombre, ¡este se usará como el nombre de archivo de la nueva "
 "configuración!"
@@ -1635,18 +1666,17 @@ msgstr ""
 msgid "Please select at least one node to upgrade"
 msgstr "¡Seleccione al menos un nodo!"
 
-#: src/views/site/components/SiteDuplicate.vue:45
 #: src/views/stream/components/StreamDuplicate.vue:45
 msgid "Please select at least one node!"
 msgstr "¡Seleccione al menos un nodo!"
 
-#: src/views/environment/BatchUpgrader.vue:171
-#: src/views/environment/BatchUpgrader.vue:224 src/views/system/Upgrade.vue:196
-#: src/views/system/Upgrade.vue:247
+#: src/views/environment/BatchUpgrader.vue:169
+#: src/views/environment/BatchUpgrader.vue:222 src/views/system/Upgrade.vue:195
+#: src/views/system/Upgrade.vue:246
 msgid "Pre-release"
 msgstr "Prelanzamiento"
 
-#: src/routes/index.ts:260 src/views/preference/Preference.vue:142
+#: src/routes/index.ts:266 src/views/preference/Preference.vue:141
 msgid "Preference"
 msgstr "Configuración"
 
@@ -1670,26 +1700,26 @@ msgstr "Grupo del proyecto"
 msgid "Provider"
 msgstr "Proveedor"
 
-#: src/views/certificate/ACMEUser.vue:48
+#: src/views/certificate/ACMEUser.vue:51
 #, fuzzy
 msgid "Proxy"
 msgstr "Proxy de la API"
 
-#: src/views/dashboard/ServerAnalytic.vue:28
-#: src/views/dashboard/ServerAnalytic.vue:378
+#: src/views/dashboard/ServerAnalytic.vue:26
+#: src/views/dashboard/ServerAnalytic.vue:376
 msgid "Reads"
 msgstr "Lecturas"
 
 #: src/views/dashboard/ServerAnalytic.vue:24
-#: src/views/dashboard/ServerAnalytic.vue:329
+#: src/views/dashboard/ServerAnalytic.vue:327
 msgid "Receive"
 msgstr "Recibido"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:570
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:556
 msgid "Recover"
 msgstr "Recuperar"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:209
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:204
 msgid "Recovered Successfully"
 msgstr "Recuperado con éxito"
 
@@ -1714,21 +1744,21 @@ msgstr "Servidores de nombres recursivos"
 msgid "Regenerate response"
 msgstr "Regenerar respuesta"
 
-#: src/views/certificate/ACMEUser.vue:129
+#: src/views/certificate/ACMEUser.vue:136
 msgid "Register"
 msgstr "Registrar"
 
-#: src/views/certificate/ACMEUser.vue:53
+#: src/views/certificate/ACMEUser.vue:56
 msgid ""
 "Register a user or use this account to issue a certificate through an HTTP "
 "proxy."
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:98
+#: src/views/certificate/ACMEUser.vue:105
 msgid "Register failed"
 msgstr "Fallo en el registro"
 
-#: src/views/certificate/ACMEUser.vue:72
+#: src/views/certificate/ACMEUser.vue:77
 #, fuzzy
 msgid "Register On Startup"
 msgstr "Esto de registración"
@@ -1738,7 +1768,7 @@ msgstr "Esto de registración"
 msgid "Register passkey successfully"
 msgstr "Registrado con éxito"
 
-#: src/views/certificate/ACMEUser.vue:96
+#: src/views/certificate/ACMEUser.vue:103
 msgid "Register successfully"
 msgstr "Registrado con éxito"
 
@@ -1746,15 +1776,15 @@ msgstr "Registrado con éxito"
 msgid "Registering user"
 msgstr "Registrando Usuario"
 
-#: src/views/certificate/ACMEUser.vue:112
+#: src/views/certificate/ACMEUser.vue:119
 msgid "Registration Status"
 msgstr "Esto de registración"
 
-#: src/views/system/Upgrade.vue:228
+#: src/views/system/Upgrade.vue:227
 msgid "Reinstall"
 msgstr "Reinstalar"
 
-#: src/views/system/Upgrade.vue:251
+#: src/views/system/Upgrade.vue:250
 msgid "Release Note"
 msgstr "Nota de versión"
 
@@ -1787,10 +1817,11 @@ msgstr "Eliminado con éxito"
 #: src/views/config/components/Rename.vue:55
 #: src/views/config/ConfigList.vue:167
 #: src/views/site/ngx_conf/NgxUpstream.vue:123
+#: src/views/site/site_edit/components/ConfigName.vue:46
 msgid "Rename"
 msgstr "Renombrar"
 
-#: src/components/Notification/config.ts:31
+#: src/components/Notification/config.ts:27
 msgid ""
 "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade the "
 "remote Nginx UI to the latest version"
@@ -1798,13 +1829,13 @@ msgstr ""
 "Renombrar %{orig_path} a %{new_path} en %{env_name} fallido, por favor "
 "actualice la interfaz de Nginx remota a la última versión"
 
-#: src/components/Notification/config.ts:35
+#: src/components/Notification/config.ts:30
 msgid ""
 "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
 msgstr ""
 "Renombrar %{orig_path} a %{new_path} en %{env_name} falló, respuesta: %{resp}"
 
-#: src/components/Notification/config.ts:23
+#: src/components/Notification/config.ts:20
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "Renombrar %{orig_path} a %{new_path} en %{env_name} con éxito"
 
@@ -1818,6 +1849,11 @@ msgstr "Renombrar Configuración Remota Exitosa"
 
 #: src/views/config/components/Rename.vue:41
 msgid "Rename successfully"
+msgstr "Renombrado con éxito"
+
+#: src/views/site/site_edit/components/ConfigName.vue:27
+#, fuzzy
+msgid "Renamed successfully"
 msgstr "Renombrado con éxito"
 
 #: src/views/certificate/RenewCert.vue:43
@@ -1834,7 +1870,7 @@ msgid "Renew Certificate Success"
 msgstr "Renovado de Certificado exitoso"
 
 #: src/views/certificate/RenewCert.vue:25
-#: src/views/certificate/WildcardCertificate.vue:49
+#: src/views/certificate/WildcardCertificate.vue:48
 msgid "Renew successfully"
 msgstr "Renovado con éxito"
 
@@ -1842,7 +1878,7 @@ msgstr "Renovado con éxito"
 msgid "Requested with wrong parameters"
 msgstr "Pedido con parámetros incorrectos"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:479
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:468
 msgid "Reset"
 msgstr "Limpiar"
 
@@ -1879,12 +1915,15 @@ msgid "Running"
 msgstr "Corriendo"
 
 #: src/components/ChatGPT/ChatGPT.vue:259
+#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:68
 #: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/ConfigEditor.vue:222
 #: src/views/preference/components/Passkey.vue:136
-#: src/views/preference/Preference.vue:188
+#: src/views/preference/Preference.vue:187
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:120
-#: src/views/site/SiteEdit.vue:260 src/views/stream/StreamEdit.vue:252
+#: src/views/site/site_edit/components/ConfigName.vue:54
+#: src/views/site/site_edit/SiteEdit.vue:256
+#: src/views/stream/StreamEdit.vue:252
 msgid "Save"
 msgstr "Guardar"
 
@@ -1898,8 +1937,8 @@ msgstr "Guardar Directiva"
 msgid "Save error %{msg}"
 msgstr "Error al guardar %{msg}"
 
-#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:39
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:122
+#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:117
 #: src/views/certificate/CertificateEditor.vue:46
 #: src/views/preference/Preference.vue:110
 msgid "Save successfully"
@@ -1907,7 +1946,7 @@ msgstr "Guardado con éxito"
 
 #: src/views/config/ConfigEditor.vue:167
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:39
-#: src/views/site/SiteAdd.vue:37 src/views/site/SiteEdit.vue:143
+#: src/views/site/site_edit/SiteEdit.vue:140 src/views/site/SiteAdd.vue:37
 #: src/views/stream/StreamEdit.vue:138
 msgid "Saved successfully"
 msgstr "Guardado con éxito"
@@ -1918,7 +1957,7 @@ msgstr ""
 "Escanee el código QR con su teléfono móvil para agregar la cuenta a la "
 "aplicación."
 
-#: src/views/certificate/DNSChallenge.vue:89
+#: src/views/certificate/DNSChallenge.vue:90
 msgid "SDK"
 msgstr "SDK"
 
@@ -1926,12 +1965,12 @@ msgstr "SDK"
 msgid "Secret has been copied"
 msgstr ""
 
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:155
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:184
 msgid "Selector"
 msgstr "Seleccionador"
 
-#: src/views/dashboard/ServerAnalytic.vue:25
-#: src/views/dashboard/ServerAnalytic.vue:339
+#: src/views/dashboard/ServerAnalytic.vue:24
+#: src/views/dashboard/ServerAnalytic.vue:337
 msgid "Send"
 msgstr "Enviado"
 
@@ -1939,27 +1978,28 @@ msgstr "Enviado"
 #: src/components/NginxControl/NginxControl.vue:48
 #: src/components/StdDesign/StdDataDisplay/methods/exportCsv.ts:46
 #: src/components/StdDesign/StdDataDisplay/methods/sortable.ts:126
-#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:42
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:212
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:252
-#: src/views/config/components/Mkdir.vue:37
+#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:53
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:207
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:249
+#: src/views/config/components/Mkdir.vue:36
 #: src/views/config/components/Rename.vue:44
 #: src/views/config/ConfigEditor.vue:108
-#: src/views/environment/BatchUpgrader.vue:59
-#: src/views/environment/Environment.vue:15 src/views/other/Install.vue:68
+#: src/views/environment/BatchUpgrader.vue:58
+#: src/views/environment/Environment.vue:15 src/views/other/Install.vue:66
 #: src/views/preference/AuthSettings.vue:49
 #: src/views/preference/components/Passkey.vue:26
 #: src/views/preference/components/Passkey.vue:43
 #: src/views/preference/components/Passkey.vue:56
 #: src/views/preference/components/TOTP.vue:45
 #: src/views/preference/components/TOTP.vue:58
-#: src/views/preference/Preference.vue:114 src/views/site/SiteList.vue:88
-#: src/views/stream/StreamList.vue:113 src/views/stream/StreamList.vue:81
-#: src/views/system/Upgrade.vue:42
+#: src/views/preference/Preference.vue:114
+#: src/views/site/site_list/SiteList.vue:39
+#: src/views/site/site_list/SiteList.vue:71 src/views/stream/StreamList.vue:113
+#: src/views/stream/StreamList.vue:81 src/views/system/Upgrade.vue:41
 msgid "Server error"
 msgstr "Error del servidor"
 
-#: src/views/dashboard/ServerAnalytic.vue:170
+#: src/views/dashboard/ServerAnalytic.vue:168
 msgid "Server Info"
 msgstr "Información del servidor"
 
@@ -1967,7 +2007,7 @@ msgstr "Información del servidor"
 msgid "server_name not found in directives"
 msgstr "No se encuentra server_name en las directivas"
 
-#: src/views/site/SiteAdd.vue:117
+#: src/views/site/SiteAdd.vue:120
 msgid "server_name parameter is required"
 msgstr "Se requiere el parámetro server_name"
 
@@ -2003,11 +2043,15 @@ msgstr ""
 msgid "Single Directive"
 msgstr "Directiva de una sola línea"
 
-#: src/routes/index.ts:218
+#: src/routes/index.ts:71 src/views/site/site_category/SiteCategory.vue:10
+msgid "Site Categories"
+msgstr ""
+
+#: src/routes/index.ts:224
 msgid "Site Logs"
 msgstr "Registros del sitio"
 
-#: src/routes/index.ts:57
+#: src/routes/index.ts:56
 msgid "Sites List"
 msgstr "Lista de sitios"
 
@@ -2031,16 +2075,16 @@ msgstr "Ruta del certificado SSL"
 msgid "SSO Login"
 msgstr "Acceso SSO"
 
-#: src/views/environment/BatchUpgrader.vue:168
-#: src/views/environment/BatchUpgrader.vue:218 src/views/system/Upgrade.vue:193
-#: src/views/system/Upgrade.vue:241
+#: src/views/environment/BatchUpgrader.vue:166
+#: src/views/environment/BatchUpgrader.vue:216 src/views/system/Upgrade.vue:192
+#: src/views/system/Upgrade.vue:240
 msgid "Stable"
 msgstr "Estable"
 
-#: src/views/certificate/ACMEUser.vue:61
-#: src/views/certificate/CertificateList/certColumns.tsx:60
-#: src/views/environment/envColumns.tsx:78 src/views/site/SiteList.vue:22
-#: src/views/stream/StreamList.vue:22
+#: src/views/certificate/ACMEUser.vue:65
+#: src/views/certificate/CertificateList/certColumns.tsx:68
+#: src/views/environment/envColumns.tsx:75
+#: src/views/site/site_list/columns.tsx:38 src/views/stream/StreamList.vue:22
 msgid "Status"
 msgstr "Estado"
 
@@ -2048,17 +2092,17 @@ msgstr "Estado"
 msgid "Stopped"
 msgstr "Detenido"
 
-#: src/views/dashboard/ServerAnalytic.vue:245
-#: src/views/dashboard/ServerAnalytic.vue:246
+#: src/views/dashboard/ServerAnalytic.vue:243
+#: src/views/dashboard/ServerAnalytic.vue:244
 msgid "Storage"
 msgstr "Almacenamiento"
 
-#: src/constants/index.ts:19 src/views/notification/notificationColumns.tsx:29
+#: src/constants/index.ts:19 src/views/notification/notificationColumns.tsx:36
 msgid "Success"
 msgstr "Éxito"
 
-#: src/views/dashboard/ServerAnalytic.vue:231
-#: src/views/dashboard/ServerAnalytic.vue:232
+#: src/views/dashboard/ServerAnalytic.vue:229
+#: src/views/dashboard/ServerAnalytic.vue:230
 msgid "Swap"
 msgstr "Swap"
 
@@ -2078,7 +2122,7 @@ msgstr "Sincronizar"
 msgid "Sync Certificate"
 msgstr "Sincronizar Certificado"
 
-#: src/components/Notification/cert.ts:12
+#: src/components/Notification/cert.ts:11
 msgid ""
 "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
 "remote Nginx UI to the latest version"
@@ -2086,7 +2130,7 @@ msgstr ""
 "Sincronización del Certificado %{cert_name} a %{env_name} fallida, por favor "
 "actualice la interfaz de Nginx remota a la última versión"
 
-#: src/components/Notification/cert.ts:16
+#: src/components/Notification/cert.ts:14
 msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 msgstr ""
 "Sincronización del Certificado %{cert_name} a %{env_name} falló, respuesta: "
@@ -2104,7 +2148,7 @@ msgstr "Error de Certificado de Sincronización"
 msgid "Sync Certificate Success"
 msgstr "Sincronización del Certificado exitosa"
 
-#: src/components/Notification/config.ts:12
+#: src/components/Notification/config.ts:11
 #, fuzzy
 msgid ""
 "Sync config %{config_name} to %{env_name} failed, please upgrade the remote "
@@ -2114,7 +2158,7 @@ msgstr ""
 "favor actualiza la interfaz de usuario de Nginx en el servidor remoto a la "
 "última versión"
 
-#: src/components/Notification/config.ts:16
+#: src/components/Notification/config.ts:14
 msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
 msgstr ""
 "Sincronización de la configuración %{config_name} a %{env_name} fallida, "
@@ -2132,11 +2176,26 @@ msgstr "Error de Configuración de Sincronización"
 msgid "Sync Config Success"
 msgstr "Configuración de sincronización exitosa"
 
+#: src/views/site/site_category/SiteCategory.vue:16
+#, fuzzy
+msgid "Sync Nodes"
+msgstr "Sincronizar con"
+
+#: src/views/site/site_edit/RightSettings.vue:113
+#: src/views/site/site_edit/RightSettings.vue:126
+#, fuzzy
+msgid "Sync strategy"
+msgstr "Sincronizar Certificado"
+
 #: src/views/certificate/CertificateEditor.vue:198
 msgid "Sync to"
 msgstr "Sincronizar con"
 
-#: src/routes/index.ts:269
+#: src/views/site/site_edit/RightSettings.vue:110
+msgid "Synchronization"
+msgstr ""
+
+#: src/routes/index.ts:275
 msgid "System"
 msgstr "Sistema"
 
@@ -2144,12 +2203,11 @@ msgstr "Sistema"
 msgid "System Initial User"
 msgstr "Usuario inicial del sistema"
 
-#: src/views/site/components/SiteDuplicate.vue:136
-#: src/views/stream/components/StreamDuplicate.vue:136
+#: src/views/stream/components/StreamDuplicate.vue:135
 msgid "Target"
 msgstr "Objetivo"
 
-#: src/routes/index.ts:188 src/views/terminal/Terminal.vue:114
+#: src/routes/index.ts:194 src/views/terminal/Terminal.vue:113
 msgid "Terminal"
 msgstr "Terminal"
 
@@ -2258,11 +2316,34 @@ msgstr "Este certificado es administrado por Nginx UI"
 msgid "This field is required"
 msgstr "Este campo es obligatorio"
 
-#: src/components/StdDesign/StdDataEntry/StdFormItem.vue:24
+#: src/constants/form_errors.ts:3
+#, fuzzy
+msgid "This field should be a valid email address"
+msgstr "Este campo no debe estar vacío"
+
+#: src/constants/form_errors.ts:5
+#, fuzzy
+msgid "This field should be a valid hostname"
+msgstr "Este campo no debe estar vacío"
+
+#: src/components/StdDesign/StdDataEntry/StdFormItem.vue:45
+#: src/constants/form_errors.ts:2
 msgid "This field should not be empty"
 msgstr "Este campo no debe estar vacío"
 
-#: src/views/environment/BatchUpgrader.vue:186
+#: src/constants/form_errors.ts:6
+#, fuzzy
+msgid ""
+"This field should only contain letters, unicode characters, numbers, and -_."
+msgstr ""
+"El nombre del modelo solo debe contener letras, unicode, números, guiones, "
+"rayas y puntos."
+
+#: src/constants/form_errors.ts:4
+msgid "This value is already taken"
+msgstr ""
+
+#: src/views/environment/BatchUpgrader.vue:184
 msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
@@ -2279,7 +2360,7 @@ msgstr ""
 msgid "Tips"
 msgstr "Consejos"
 
-#: src/views/notification/notificationColumns.tsx:36
+#: src/views/notification/notificationColumns.tsx:44
 msgid "Title"
 msgstr "Título"
 
@@ -2338,7 +2419,7 @@ msgstr ""
 "TOTP es un método de autenticación de dos factores que utiliza un algoritmo "
 "de contraseña de un solo uso basado en el tiempo."
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:211
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:216
 msgid "Trash"
 msgstr "Basura"
 
@@ -2357,12 +2438,13 @@ msgstr "Tipo"
 msgid "Update successfully"
 msgstr "Actualización exitosa"
 
-#: src/views/certificate/ACMEUser.vue:82
+#: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
 #: src/views/config/configColumns.ts:31 src/views/config/ConfigEditor.vue:275
-#: src/views/environment/envColumns.tsx:124
-#: src/views/site/components/RightSettings.vue:86
-#: src/views/site/SiteList.vue:48
+#: src/views/environment/envColumns.tsx:119
+#: src/views/site/site_category/columns.ts:20
+#: src/views/site/site_edit/RightSettings.vue:100
+#: src/views/site/site_list/columns.tsx:64
 #: src/views/stream/components/RightSettings.vue:85
 #: src/views/stream/StreamList.vue:41 src/views/user/userColumns.tsx:54
 msgid "Updated at"
@@ -2372,12 +2454,12 @@ msgstr "Actualizado a"
 msgid "Updated successfully"
 msgstr "Actualización exitosa"
 
-#: src/routes/index.ts:284 src/views/environment/Environment.vue:55
-#: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
+#: src/routes/index.ts:290 src/views/environment/Environment.vue:55
+#: src/views/system/Upgrade.vue:144 src/views/system/Upgrade.vue:227
 msgid "Upgrade"
 msgstr "Actualizar"
 
-#: src/views/environment/BatchUpgrader.vue:141
+#: src/views/environment/BatchUpgrader.vue:139
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr "Interfaz de usuario de Nginx actualizada en %{node} con éxito 🎉"
 
@@ -2385,7 +2467,7 @@ msgstr "Interfaz de usuario de Nginx actualizada en %{node} con éxito 🎉"
 msgid "Upgraded successfully"
 msgstr "Actualización exitosa"
 
-#: src/views/environment/BatchUpgrader.vue:92 src/views/system/Upgrade.vue:79
+#: src/views/environment/BatchUpgrader.vue:90 src/views/system/Upgrade.vue:78
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Actualizando Nginx UI, por favor espere..."
 
@@ -2393,11 +2475,11 @@ msgstr "Actualizando Nginx UI, por favor espere..."
 msgid "Upstream Name"
 msgstr "Nombre de la Transmisión"
 
-#: src/views/dashboard/ServerAnalytic.vue:174
+#: src/views/dashboard/ServerAnalytic.vue:172
 msgid "Uptime:"
 msgstr "Tiempo encendido:"
 
-#: src/views/environment/envColumns.tsx:19
+#: src/views/environment/envColumns.tsx:18
 msgid "URL"
 msgstr "URL"
 
@@ -2421,21 +2503,21 @@ msgstr "El usuario está bloqueado"
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: src/views/other/Install.vue:98
+#: src/views/other/Install.vue:96
 msgid "Username (*)"
 msgstr "Nombre de usuario (*)"
 
-#: src/views/certificate/ACMEUser.vue:116
-#: src/views/certificate/CertificateList/certColumns.tsx:73
+#: src/views/certificate/ACMEUser.vue:123
+#: src/views/certificate/CertificateList/certColumns.tsx:81
 #: src/views/site/cert/CertInfo.vue:24
 msgid "Valid"
 msgstr "Válido"
 
-#: src/views/environment/envColumns.tsx:31
+#: src/views/environment/envColumns.tsx:29
 msgid "Version"
 msgstr "Versión"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:517
+#: src/components/StdDesign/StdDataDisplay/StdTable.vue:506
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:103
 msgid "View"
 msgstr "Ver"
@@ -2444,18 +2526,18 @@ msgstr "Ver"
 msgid "View all notifications"
 msgstr "Ver todas las notificaciones"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:183
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:176
 msgid "View Details"
 msgstr "Ver detalles"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:270
+#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:277
 msgid "View Mode"
 msgstr "Modo de vista"
 
 #: src/constants/index.ts:17 src/views/config/InspectConfig.vue:33
-#: src/views/notification/notificationColumns.tsx:19
+#: src/views/notification/notificationColumns.tsx:22
 #: src/views/preference/components/AddPasskey.vue:88
-#: src/views/site/SiteAdd.vue:112
+#: src/views/site/SiteAdd.vue:115
 msgid "Warning"
 msgstr "Advertencia"
 
@@ -2479,15 +2561,21 @@ msgstr ""
 msgid "Webauthn"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:78
+#: src/views/certificate/ACMEUser.vue:83
 msgid ""
 "When Enabled, Nginx UI will automatically re-register users upon startup. "
 "Generally, do not enable this unless you are in a dev environment and using "
 "Pebble as CA."
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:27
-#: src/views/dashboard/ServerAnalytic.vue:368
+#: src/views/site/site_edit/RightSettings.vue:116
+msgid ""
+"When you enable/disable, delete, or save this site, the nodes set in the "
+"site category and the nodes selected below will be synchronized."
+msgstr ""
+
+#: src/views/dashboard/ServerAnalytic.vue:26
+#: src/views/dashboard/ServerAnalytic.vue:366
 msgid "Writes"
 msgstr "Escrituras"
 
@@ -2506,11 +2594,11 @@ msgstr "Escribir certificado a disco"
 msgid "Yes"
 msgstr "Si"
 
-#: src/views/system/Upgrade.vue:204
+#: src/views/system/Upgrade.vue:203
 msgid "You are using the latest version"
 msgstr "Estás usando la última versión"
 
-#: src/views/system/Upgrade.vue:166
+#: src/views/system/Upgrade.vue:165
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "Puede consultar la actualización de Nginx UI en esta página."
 

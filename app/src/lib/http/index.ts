@@ -1,9 +1,9 @@
 import type { AxiosRequestConfig } from 'axios'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
+import { useNProgress } from '@/lib/nprogress/nprogress'
 import { useSettingsStore, useUserStore } from '@/pinia'
 import router from '@/routes'
 import axios from 'axios'
-import NProgress from 'nprogress'
 
 import { storeToRefs } from 'pinia'
 import 'nprogress/nprogress.css'
@@ -26,9 +26,11 @@ const instance = axios.create({
   }],
 })
 
+const nprogress = useNProgress()
+
 instance.interceptors.request.use(
   config => {
-    NProgress.start()
+    nprogress.start()
     if (token.value) {
       // eslint-disable-next-line ts/no-explicit-any
       (config.headers as any).Authorization = token.value
@@ -53,12 +55,12 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   response => {
-    NProgress.done()
+    nprogress.done()
 
     return Promise.resolve(response.data)
   },
   async error => {
-    NProgress.done()
+    nprogress.done()
 
     const otpModal = use2FAModal()
     switch (error.response.status) {

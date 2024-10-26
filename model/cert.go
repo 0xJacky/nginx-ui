@@ -50,9 +50,9 @@ type Cert struct {
 }
 
 func FirstCert(confName string) (c Cert, err error) {
-	err = db.First(&c, &Cert{
+	err = db.Limit(1).Where(&Cert{
 		Filename: confName,
-	}).Error
+	}).Find(&c).Error
 
 	return
 }
