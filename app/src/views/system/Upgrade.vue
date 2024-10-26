@@ -7,6 +7,7 @@ import websocket from '@/lib/websocket'
 import version from '@/version.json'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
+import { marked } from 'marked'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -248,7 +249,7 @@ async function performUpgrade() {
         </h2>
 
         <h3>{{ $gettext('Release Note') }}</h3>
-        <div vue-dompurify-html="marked.parse(data.body)" />
+        <div v-dompurify-html="marked.parse(data.body)" />
       </template>
     </div>
   </ACard>

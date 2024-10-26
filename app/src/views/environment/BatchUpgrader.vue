@@ -5,6 +5,7 @@ import upgrade, { type RuntimeInfo } from '@/api/upgrade'
 import websocket from '@/lib/websocket'
 import { message } from 'ant-design-vue'
 import _ from 'lodash'
+import { marked } from 'marked'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -222,7 +223,7 @@ async function performUpgrade() {
               {{ $gettext('Pre-release') }}
             </ATag>
           </h1>
-          <div vue-dompurify-html="marked.parse(data.body)" />
+          <div v-dompurify-html="marked.parse(data.body)" />
         </div>
 
         <div class="flex justify-end">
