@@ -26,7 +26,7 @@ func InitCertificateWebSocketRouter(r *gin.RouterGroup) {
 }
 
 func InitAcmeUserRouter(r *gin.RouterGroup) {
-	r.GET("acme_users", GetAcmeUserList)
+	r.GET("acme_user", GetAcmeUserList)
 	r.GET("acme_user/:id", GetAcmeUser)
 	r.POST("acme_user", CreateAcmeUser)
 	r.POST("acme_user/:id", ModifyAcmeUser)
