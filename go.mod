@@ -30,7 +30,7 @@ require (
 	github.com/pquerna/otp v1.4.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.47.0
-	github.com/sashabaranov/go-openai v1.32.3
+	github.com/sashabaranov/go-openai v1.32.4
 	github.com/shirou/gopsutil/v4 v4.24.9
 	github.com/spf13/cast v1.7.0
 	github.com/stretchr/testify v1.9.0
