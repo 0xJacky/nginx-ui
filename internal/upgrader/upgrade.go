@@ -3,21 +3,22 @@ package upgrader
 import (
 	"encoding/json"
 	"fmt"
-	_github "github.com/0xJacky/Nginx-UI/.github"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/jpillora/overseer"
-	"github.com/minio/selfupdate"
-	"github.com/pkg/errors"
-	"github.com/uozi-tech/cosy/logger"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"sync/atomic"
+
+	_github "github.com/0xJacky/Nginx-UI/.github"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/minio/selfupdate"
+	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 type Upgrader struct {
@@ -255,7 +256,6 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 	}
 
 	// gracefully restart
-	overseer.Restart()
-
-	return
+	cmd := exec.Command(os.Args[0])
+	return cmd.Start()
 }
