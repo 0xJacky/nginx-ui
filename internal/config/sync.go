@@ -130,7 +130,7 @@ func (p *SyncConfigPayload) deploy(env *model.Environment, c *model.Config, payl
 	client := http.Client{
 		Transport: t,
 	}
-	url, err := env.GetUrl("/api/config")
+	url, err := env.GetUrl("/api/configs")
 	if err != nil {
 		return
 	}
