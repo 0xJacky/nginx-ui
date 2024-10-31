@@ -77,6 +77,9 @@ func main() {
 		Addresses: []string{fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port)},
 	})
 	if !errors.Is(err, context.DeadlineExceeded) {
-		panic(err)
+		if !errors.Is(err, net.ErrClosed) {
+			panic(err)
+		}
+		logger.Error(err)
 	}
 }

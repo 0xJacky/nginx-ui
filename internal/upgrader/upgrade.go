@@ -257,5 +257,7 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 
 	// gracefully restart
 	cmd := exec.Command(os.Args[0])
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 	return cmd.Start()
 }
