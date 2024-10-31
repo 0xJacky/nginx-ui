@@ -76,12 +76,20 @@ func AddConfig(c *gin.Context) {
 		return
 	}
 
-	err = q.Create(&model.Config{
+	cfg := &model.Config{
 		Name:          name,
 		Filepath:      path,
 		SyncNodeIds:   json.SyncNodeIds,
 		SyncOverwrite: json.Overwrite,
-	})
+	}
+
+	err = q.Create(cfg)
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+
+	err = config.SyncToRemoteServer(cfg, json.NewFilepath)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
