@@ -2,9 +2,8 @@ name: Build
 
 on:
   push:
-    branches:
-      - '*'
-      - '!weblate'
+    branches-ignore:
+      - 'weblate'
     paths:
       - "app/**/*.js"
       - "app/**/*.vue"
