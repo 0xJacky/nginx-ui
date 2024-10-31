@@ -75,11 +75,16 @@ func main() {
 	err := risefront.New(ctx, risefront.Config{
 		Run:       Program(confPath),
 		Addresses: []string{fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port)},
+		ErrorHandler: func(kind string, err error) {
+			if errors.Is(err, net.ErrClosed) {
+				return
+			}
+			logger.Error(kind, err)
+		},
 	})
-	if !errors.Is(err, context.DeadlineExceeded) {
-		if !errors.Is(err, net.ErrClosed) {
-			panic(err)
-		}
+	if !errors.Is(err, context.DeadlineExceeded) &&
+		!errors.Is(err, context.Canceled) &&
+		!errors.Is(err, net.ErrClosed) {
 		logger.Error(err)
 	}
 }
