@@ -84,11 +84,11 @@ func EditConfig(c *gin.Context) {
 			SyncNodeIds:   json.SyncNodeIds,
 			SyncOverwrite: json.SyncOverwrite,
 		})
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
+
 	g := query.ChatGPTLog
 	// handle rename
 	if path != json.NewFilepath {
