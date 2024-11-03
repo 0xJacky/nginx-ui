@@ -1,22 +1,71 @@
 <script setup lang="ts">
 import type { Notification } from '@/api/notification'
 import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { SSEvent } from 'sse.js'
 import type { Ref } from 'vue'
-import notification from '@/api/notification'
+import notificationApi from '@/api/notification'
 import { detailRender } from '@/components/Notification/detailRender'
 import { NotificationTypeT } from '@/constants'
 import { useUserStore } from '@/pinia'
 import { BellOutlined, CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, InfoCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
+import { message, notification } from 'ant-design-vue'
+import { SSE } from 'sse.js'
+
+defineProps<{
+  headerRef: HTMLElement
+}>()
 
 const loading = ref(false)
 
-const { unreadCount } = storeToRefs(useUserStore())
+const { token, unreadCount } = storeToRefs(useUserStore())
 
 const data = ref([]) as Ref<Notification[]>
+
+const sse = shallowRef(newSSE())
+
+function reconnect() {
+  setTimeout(() => {
+    sse.value = newSSE()
+  }, 5000)
+}
+
+function newSSE() {
+  const s = new SSE('/api/notifications/live', {
+    headers: {
+      Authorization: token.value,
+    },
+  })
+
+  s.onmessage = (e: SSEvent) => {
+    const data = JSON.parse(e.data)
+    // data.type may be 0
+    if (data.type === undefined || data.type === null || data.type === '') {
+      return
+    }
+
+    const typeTrans = {
+      0: 'error',
+      1: 'warning',
+      2: 'info',
+      3: 'success',
+    }
+
+    notification[typeTrans[data.type]]({
+      message: $gettext(data.title),
+      description: detailRender({ text: data.details, record: data } as CustomRenderProps),
+    })
+  }
+
+  // reconnect
+  s.onerror = reconnect
+  s.onabort = reconnect
+
+  return s
+}
+
 function init() {
   loading.value = true
-  notification.get_list().then(r => {
+  notificationApi.get_list().then(r => {
     data.value = r.data
     unreadCount.value = r.pagination?.total || 0
   }).catch(e => {
@@ -38,7 +87,7 @@ watch(open, v => {
 })
 
 function clear() {
-  notification.clear().then(() => {
+  notificationApi.clear().then(() => {
     message.success($gettext('Cleared successfully'))
     data.value = []
     unreadCount.value = 0
@@ -48,7 +97,7 @@ function clear() {
 }
 
 function remove(id: number) {
-  notification.destroy(id).then(() => {
+  notificationApi.destroy(id).then(() => {
     message.success($gettext('Removed successfully'))
     init()
   }).catch(e => {
@@ -70,6 +119,7 @@ function viewAll() {
       placement="bottomRight"
       overlay-class-name="notification-popover"
       trigger="click"
+      :get-popup-container="() => headerRef"
     >
       <ABadge
         :count="unreadCount"

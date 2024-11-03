@@ -32,7 +32,7 @@ export function syncRenameConfigError(text: string) {
 
 export function saveSiteSuccess(text: string) {
   const data = JSON.parse(text)
-  return $gettext('Save Site %{site} to %{node} successfully', { site: data.site, node: data.node })
+  return $gettext('Save Site %{site} to %{node} successfully', { site: data.name, node: data.node })
 }
 
 export function saveSiteError(text: string) {
