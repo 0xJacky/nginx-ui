@@ -10,6 +10,7 @@ export interface Config {
   modified_at: string
   sync_node_ids?: number[]
   sync_overwrite?: false
+  dir: string
 }
 
 class ConfigCurd extends Curd<Config> {
@@ -25,7 +26,7 @@ class ConfigCurd extends Curd<Config> {
     return http.post('/config_mkdir', { base_path: basePath, folder_name: name })
   }
 
-  rename(basePath: string, origName: string, newName: string, syncNodeIds: number[]) {
+  rename(basePath: string, origName: string, newName: string, syncNodeIds?: number[]) {
     return http.post('/config_rename', {
       base_path: basePath,
       orig_name: origName,

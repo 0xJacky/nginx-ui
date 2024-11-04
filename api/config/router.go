@@ -9,9 +9,9 @@ func InitRouter(r *gin.RouterGroup) {
 	r.GET("config_base_path", GetBasePath)
 
 	r.GET("configs", GetConfigs)
-	r.GET("configs/*name", GetConfig)
+	r.GET("configs/*path", GetConfig)
 	r.POST("configs", AddConfig)
-	r.POST("configs/*name", EditConfig)
+	r.POST("configs/*path", EditConfig)
 
 	o := r.Group("", middleware.RequireSecureSession())
 	{
