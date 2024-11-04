@@ -6,8 +6,19 @@ import analytic from '@/api/analytic'
 import AreaChart from '@/components/Chart/AreaChart.vue'
 import RadialBarChart from '@/components/Chart/RadialBarChart.vue'
 import { bytesToSize } from '@/lib/helper'
+import { useSettingsStore } from '@/pinia'
 
 let websocket: ReconnectingWebSocket | WebSocket
+
+const settings = useSettingsStore()
+
+const { language } = storeToRefs(settings)
+
+const rerender = ref(0)
+
+watch(language, () => {
+  rerender.value += 1
+})
 
 const host: HostInfoStat = reactive({
   platform: '',
@@ -153,7 +164,7 @@ function wsOnMessage(m: MessageEvent) {
 </script>
 
 <template>
-  <div>
+  <div :key="rerender">
     <ARow
       :gutter="[{ xs: 0, sm: 16 }, 16]"
       class="first-row"

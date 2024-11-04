@@ -25,8 +25,10 @@ var (
 )
 
 func init() {
-	network, _ := net.IOCounters(false)
-
+	network, err := net.IOCounters(false)
+	if err != nil {
+		logger.Error(err)
+	}
 	if len(network) > 0 {
 		LastNetRecv = network[0].BytesRecv
 		LastNetSent = network[0].BytesSent

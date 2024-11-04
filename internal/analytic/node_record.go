@@ -75,7 +75,6 @@ func nodeAnalyticRecord(env *model.Environment, ctx context.Context) (err error)
 	mutex.Unlock()
 
 	u, err := env.GetWebSocketURL("/api/analytic/intro")
-
 	if err != nil {
 		return
 	}
@@ -84,7 +83,12 @@ func nodeAnalyticRecord(env *model.Environment, ctx context.Context) (err error)
 
 	header.Set("X-Node-Secret", env.Token)
 
-	c, _, err := websocket.DefaultDialer.Dial(u, header)
+	dial := &websocket.Dialer{
+		Proxy:            http.ProxyFromEnvironment,
+		HandshakeTimeout: 5 * time.Second,
+	}
+
+	c, _, err := dial.Dial(u, header)
 	if err != nil {
 		return
 	}

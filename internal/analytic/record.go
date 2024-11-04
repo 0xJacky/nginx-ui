@@ -12,7 +12,7 @@ import (
 func getTotalDiskIO() (read, write uint64) {
 	diskIOCounters, err := disk.IOCounters()
 	if err != nil {
-		logger.Error(err.Error())
+		logger.Error(err)
 		return
 	}
 	for _, v := range diskIOCounters {
@@ -25,15 +25,18 @@ func getTotalDiskIO() (read, write uint64) {
 func recordCpu(now time.Time) {
 	cpuTimesBefore, err := cpu.Times(false)
 	if err != nil {
-		logger.Error(err.Error())
+		logger.Error(err)
 		return
 	}
+
 	time.Sleep(1000 * time.Millisecond)
+
 	cpuTimesAfter, err := cpu.Times(false)
 	if err != nil {
-		logger.Error(err.Error())
+		logger.Error(err)
 		return
 	}
+
 	threadNum := runtime.GOMAXPROCS(0)
 
 	cpuUserUsage := (cpuTimesAfter[0].User - cpuTimesBefore[0].User) / (float64(1000*threadNum) / 1000)
@@ -66,9 +69,8 @@ func recordCpu(now time.Time) {
 
 func recordNetwork(now time.Time) {
 	network, err := net.IOCounters(false)
-
 	if err != nil {
-		logger.Error(err.Error())
+		logger.Error(err)
 		return
 	}
 
