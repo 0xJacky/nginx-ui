@@ -11,6 +11,7 @@ import (
 	"github.com/sashabaranov/go-openai"
 	"net/http"
 	"os"
+	"path/filepath"
 	"time"
 )
 
@@ -19,11 +20,9 @@ type EditConfigJson struct {
 }
 
 func EditConfig(c *gin.Context) {
-	name := c.Param("name")
+	relativePath := c.Param("path")
 	var json struct {
 		Name          string   `json:"name" binding:"required"`
-		Filepath      string   `json:"filepath" binding:"required"`
-		NewFilepath   string   `json:"new_filepath" binding:"required"`
 		Content       string   `json:"content"`
 		SyncOverwrite bool     `json:"sync_overwrite"`
 		SyncNodeIds   []uint64 `json:"sync_node_ids"`
@@ -32,22 +31,8 @@ func EditConfig(c *gin.Context) {
 		return
 	}
 
-	path := json.Filepath
-	if !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
-		c.JSON(http.StatusForbidden, gin.H{
-			"message": "filepath is not under the nginx conf path",
-		})
-		return
-	}
-
-	if !helper.IsUnderDirectory(json.NewFilepath, nginx.GetConfPath()) {
-		c.JSON(http.StatusForbidden, gin.H{
-			"message": "new filepath is not under the nginx conf path",
-		})
-		return
-	}
-
-	if !helper.FileExists(path) {
+	absPath := nginx.GetConfPath(relativePath)
+	if !helper.FileExists(absPath) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": "file not found",
 		})
@@ -55,14 +40,14 @@ func EditConfig(c *gin.Context) {
 	}
 
 	content := json.Content
-	origContent, err := os.ReadFile(path)
+	origContent, err := os.ReadFile(absPath)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
 
 	if content != "" && content != string(origContent) {
-		err = os.WriteFile(path, []byte(content), 0644)
+		err = os.WriteFile(absPath, []byte(content), 0644)
 		if err != nil {
 			api.ErrHandler(c, err)
 			return
@@ -70,17 +55,15 @@ func EditConfig(c *gin.Context) {
 	}
 
 	q := query.Config
-	cfg, err := q.Where(q.Filepath.Eq(json.Filepath)).FirstOrCreate()
+	cfg, err := q.Where(q.Filepath.Eq(absPath)).FirstOrCreate()
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
 
-	_, err = q.Where(q.Filepath.Eq(json.Filepath)).
-		Select(q.Name, q.Filepath, q.SyncNodeIds, q.SyncOverwrite).
+	_, err = q.Where(q.Filepath.Eq(absPath)).
+		Select(q.SyncNodeIds, q.SyncOverwrite).
 		Updates(&model.Config{
-			Name:          json.Name,
-			Filepath:      json.NewFilepath,
 			SyncNodeIds:   json.SyncNodeIds,
 			SyncOverwrite: json.SyncOverwrite,
 		})
@@ -89,27 +72,12 @@ func EditConfig(c *gin.Context) {
 		return
 	}
 
+	// use the new values
+	cfg.SyncNodeIds = json.SyncNodeIds
+	cfg.SyncOverwrite = json.SyncOverwrite
+
 	g := query.ChatGPTLog
-	// handle rename
-	if path != json.NewFilepath {
-		if helper.FileExists(json.NewFilepath) {
-			c.JSON(http.StatusNotAcceptable, gin.H{
-				"message": "File exists",
-			})
-			return
-		}
-		err := os.Rename(json.Filepath, json.NewFilepath)
-		if err != nil {
-			api.ErrHandler(c, err)
-			return
-		}
-
-		// update ChatGPT record
-		_, _ = g.Where(g.Name.Eq(json.NewFilepath)).Delete()
-		_, _ = g.Where(g.Name.Eq(path)).Update(g.Name, json.NewFilepath)
-	}
-
-	err = config.SyncToRemoteServer(cfg, json.NewFilepath)
+	err = config.SyncToRemoteServer(cfg, absPath)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -123,7 +91,7 @@ func EditConfig(c *gin.Context) {
 		return
 	}
 
-	chatgpt, err := g.Where(g.Name.Eq(json.NewFilepath)).FirstOrCreate()
+	chatgpt, err := g.Where(g.Name.Eq(absPath)).FirstOrCreate()
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -134,10 +102,11 @@ func EditConfig(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, config.Config{
-		Name:            name,
+		Name:            filepath.Base(absPath),
 		Content:         content,
 		ChatGPTMessages: chatgpt.Content,
-		FilePath:        json.NewFilepath,
+		FilePath:        absPath,
 		ModifiedAt:      time.Now(),
+		Dir:             filepath.Dir(relativePath),
 	})
 }

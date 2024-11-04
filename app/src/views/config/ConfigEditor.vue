@@ -11,6 +11,7 @@ import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
+import ConfigName from '@/views/config/components/ConfigName.vue'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
@@ -255,7 +256,7 @@ function goBack() {
                 name="name"
                 :label="$gettext('Name')"
               >
-                <AInput v-model:value="data.name" />
+                <ConfigName :name="data.name" :dir="data.dir" />
               </AFormItem>
               <AFormItem
                 v-if="!addMode"

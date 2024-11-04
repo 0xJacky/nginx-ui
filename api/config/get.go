@@ -10,6 +10,7 @@ import (
 	"github.com/sashabaranov/go-openai"
 	"net/http"
 	"os"
+	"path/filepath"
 )
 
 type APIConfigResp struct {
@@ -19,30 +20,30 @@ type APIConfigResp struct {
 }
 
 func GetConfig(c *gin.Context) {
-	name := c.Param("name")
+	relativePath := c.Param("path")
 
-	path := nginx.GetConfPath("/", name)
-	if !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
+	absPath := nginx.GetConfPath(relativePath)
+	if !helper.IsUnderDirectory(absPath, nginx.GetConfPath()) {
 		c.JSON(http.StatusForbidden, gin.H{
 			"message": "path is not under the nginx conf path",
 		})
 		return
 	}
 
-	stat, err := os.Stat(path)
+	stat, err := os.Stat(absPath)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
 
-	content, err := os.ReadFile(path)
+	content, err := os.ReadFile(absPath)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
 	q := query.Config
 	g := query.ChatGPTLog
-	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
+	chatgpt, err := g.Where(g.Name.Eq(absPath)).FirstOrCreate()
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -52,7 +53,7 @@ func GetConfig(c *gin.Context) {
 		chatgpt.Content = make([]openai.ChatCompletionMessage, 0)
 	}
 
-	cfg, err := q.Where(q.Filepath.Eq(path)).FirstOrInit()
+	cfg, err := q.Where(q.Filepath.Eq(absPath)).FirstOrInit()
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -63,8 +64,9 @@ func GetConfig(c *gin.Context) {
 			Name:            stat.Name(),
 			Content:         string(content),
 			ChatGPTMessages: chatgpt.Content,
-			FilePath:        path,
+			FilePath:        absPath,
 			ModifiedAt:      stat.ModTime(),
+			Dir:             filepath.Dir(relativePath),
 		},
 		SyncNodeIds:   cfg.SyncNodeIds,
 		SyncOverwrite: cfg.SyncOverwrite,

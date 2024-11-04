@@ -7,7 +7,6 @@ import Mkdir from '@/views/config/components/Mkdir.vue'
 import Rename from '@/views/config/components/Rename.vue'
 import configColumns from '@/views/config/configColumns'
 import InspectConfig from '@/views/config/InspectConfig.vue'
-import { $gettext } from '../../gettext'
 
 const table = ref()
 const route = useRoute()
@@ -143,12 +142,12 @@ const refRename = ref()
           size="small"
           @click="() => {
             if (!record.is_dir) {
-              $router.push({
+              router.push({
                 path: `/config/${basePath}${record.name}/edit`,
               })
             }
             else {
-              $router.push({
+              router.push({
                 query: {
                   dir: basePath + record.name,
                 },
