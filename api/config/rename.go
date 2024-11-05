@@ -5,11 +5,13 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy/logger"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func Rename(c *gin.Context) {
@@ -77,7 +79,10 @@ func Rename(c *gin.Context) {
 		_, _ = g.Where(g.Name.Like(origFullPath+"%")).Update(g.Name, g.Name.Replace(origFullPath, newFullPath))
 	}
 
-	_, err = q.Where(q.Filepath.Eq(origFullPath)).Update(q.Filepath, newFullPath)
+	_, err = q.Where(q.Filepath.Eq(origFullPath)).Updates(&model.Config{
+		Filepath: newFullPath,
+		Name:     json.NewName,
+	})
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -92,6 +97,6 @@ func Rename(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message": "ok",
+		"path": strings.TrimLeft(newFullPath, nginx.GetConfPath()),
 	})
 }

@@ -49,7 +49,6 @@ func GetNginxLogPage(c *gin.Context) {
 	}
 
 	logPath, err := getLogPath(&control)
-
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
 			Error: err.Error(),
@@ -59,7 +58,6 @@ func GetNginxLogPage(c *gin.Context) {
 	}
 
 	logFileStat, err := os.Stat(logPath)
-
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
 			Error: err.Error(),
@@ -76,8 +74,16 @@ func GetNginxLogPage(c *gin.Context) {
 		return
 	}
 
-	f, err := os.Open(logPath)
+	// to fix: seek invalid argument #674
+	if logFileStat.Size() == 0 {
+		c.JSON(http.StatusOK, nginxLogPageResp{
+			Page:    1,
+			Content: "",
+		})
+		return
+	}
 
+	f, err := os.Open(logPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
 			Error: err.Error(),
@@ -112,8 +118,7 @@ func GetNginxLogPage(c *gin.Context) {
 	}
 
 	n, err := f.Read(buf)
-
-	if err != nil && err != io.EOF {
+	if err != nil && !errors.Is(err, io.EOF) {
 		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
 			Error: err.Error(),
 		})

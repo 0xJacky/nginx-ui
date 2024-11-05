@@ -37,10 +37,9 @@ func Analytic(c *gin.Context) {
 
 	for {
 		stat.Memory, err = analytic.GetMemoryStat()
-
 		if err != nil {
 			logger.Error(err)
-			return
+			continue
 		}
 
 		cpuTimesBefore, _ := cpu.Times(false)
@@ -57,18 +56,29 @@ func Analytic(c *gin.Context) {
 			Total:  cast.ToFloat64(fmt.Sprintf("%.2f", (cpuUserUsage+cpuSystemUsage)*100)),
 		}
 
-		stat.Uptime, _ = host.Uptime()
-
-		stat.LoadAvg, _ = load.Avg()
-
-		stat.Disk, err = analytic.GetDiskStat()
-
+		stat.Uptime, err = host.Uptime()
 		if err != nil {
 			logger.Error(err)
-			return
+			continue
 		}
 
-		network, _ := net.IOCounters(false)
+		stat.LoadAvg, err = load.Avg()
+		if err != nil {
+			logger.Error(err)
+			continue
+		}
+
+		stat.Disk, err = analytic.GetDiskStat()
+		if err != nil {
+			logger.Error(err)
+			continue
+		}
+
+		network, err := net.IOCounters(false)
+		if err != nil {
+			logger.Error(err)
+			continue
+		}
 
 		if len(network) > 0 {
 			stat.Network = network[0]
@@ -80,7 +90,8 @@ func Analytic(c *gin.Context) {
 			logger.Error(err)
 			break
 		}
-		time.Sleep(800 * time.Microsecond)
+
+		time.Sleep(1000 * time.Microsecond)
 	}
 }
 
@@ -109,7 +120,12 @@ func GetAnalyticInit(c *gin.Context) {
 	if len(network) > 0 {
 		_net = network[0]
 	}
-	hostInfo, _ := host.Info()
+
+	hostInfo, err := host.Info()
+	if err != nil {
+		logger.Error(err)
+		hostInfo = &host.InfoStat{}
+	}
 
 	switch hostInfo.Platform {
 	case "ubuntu":
@@ -119,9 +135,9 @@ func GetAnalyticInit(c *gin.Context) {
 	}
 
 	loadAvg, err := load.Avg()
-
 	if err != nil {
 		logger.Error(err)
+		loadAvg = &load.AvgStat{}
 	}
 
 	c.JSON(http.StatusOK, InitResp{

@@ -75,7 +75,6 @@ func InitNode(env *model.Environment) (n *Node) {
 	}
 
 	u, err := url.JoinPath(env.URL, "/api/node")
-
 	if err != nil {
 		logger.Error(err)
 		return
@@ -98,7 +97,6 @@ func InitNode(env *model.Environment) (n *Node) {
 	req.Header.Set("X-Node-Secret", env.Token)
 
 	resp, err := client.Do(req)
-
 	if err != nil {
 		logger.Error(err)
 		return

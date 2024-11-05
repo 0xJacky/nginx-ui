@@ -17,4 +17,5 @@ type Config struct {
 	SiteCategoryID  uint64                         `json:"site_category_id"`
 	SiteCategory    *model.SiteCategory            `json:"site_category,omitempty"`
 	Enabled         bool                           `json:"enabled"`
+	Dir             string                         `json:"dir"`
 }
