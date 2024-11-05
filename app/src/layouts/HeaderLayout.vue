@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ShallowRef } from 'vue'
 import auth from '@/api/auth'
 import NginxControl from '@/components/NginxControl/NginxControl.vue'
 import Notification from '@/components/Notification/Notification.vue'
@@ -21,10 +22,12 @@ function logout() {
     router.push('/login')
   })
 }
+
+const headerRef = useTemplateRef('headerRef') as Readonly<ShallowRef<HTMLDivElement>>
 </script>
 
 <template>
-  <div class="header">
+  <div ref="headerRef" class="header">
     <div class="tool">
       <MenuUnfoldOutlined @click="emit('clickUnFold')" />
     </div>
@@ -37,7 +40,7 @@ function logout() {
 
       <SwitchAppearance />
 
-      <Notification />
+      <Notification :header-ref="headerRef" />
 
       <NginxControl />
 

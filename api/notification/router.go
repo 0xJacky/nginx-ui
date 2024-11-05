@@ -7,4 +7,6 @@ func InitRouter(r *gin.RouterGroup) {
 	r.GET("notifications/:id", Get)
 	r.DELETE("notifications/:id", Destroy)
 	r.DELETE("notifications", DestroyAll)
+
+	r.GET("notifications/live", Live)
 }

@@ -35,6 +35,8 @@ export const PrivateKeyTypeMask = {
   P384: 'EC384',
 } as const
 
-export const PrivateKeyTypeList = Object.entries(PrivateKeyTypeMask).map(([key, name]) => ({ key, name }))
+export const PrivateKeyTypeList
+    = Object.entries(PrivateKeyTypeMask).map(([key, name]) =>
+      ({ key, name }))
 
 export type PrivateKeyType = keyof typeof PrivateKeyTypeMask
