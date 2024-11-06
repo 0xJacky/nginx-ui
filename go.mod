@@ -286,4 +286,4 @@ require (
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
 
-replace code.pfad.fr/risefront v1.0.0 => github.com/nginxui/risefront v1.0.2
+replace code.pfad.fr/risefront v1.0.0 => github.com/nginxui/risefront v1.0.3
