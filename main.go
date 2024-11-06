@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"os"
 	"os/signal"
+	"syscall"
 
 	"code.pfad.fr/risefront"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
@@ -69,7 +69,7 @@ func main() {
 
 	settings.Init(confPath)
 
-	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
+	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
 
 	err := risefront.New(ctx, risefront.Config{
