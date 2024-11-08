@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2024-08-01 16:54+0000\n"
+"PO-Revision-Date: 2024-11-06 18:26+0000\n"
 "Last-Translator: Kcho <kcholoren@gmail.com>\n"
 "Language-Team: Spanish <https://weblate.nginxui.com/projects/nginx-ui/"
 "frontend/es/>\n"
@@ -63,7 +63,7 @@ msgstr "Agregar"
 #: src/views/preference/components/AddPasskey.vue:51
 #: src/views/preference/components/AddPasskey.vue:55
 msgid "Add a passkey"
-msgstr ""
+msgstr "Agregar una llave de acceso"
 
 #: src/routes/index.ts:118 src/views/config/ConfigEditor.vue:143
 #: src/views/config/ConfigEditor.vue:204
@@ -103,10 +103,12 @@ msgstr "Modo avanzado"
 #: src/views/preference/components/AddPasskey.vue:105
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr ""
+"Luego, actualice esta página y haga clic nuevamente en Agregar llave de "
+"acceso."
 
 #: src/views/site/site_list/SiteList.vue:101
 msgid "All"
-msgstr ""
+msgstr "Todo"
 
 #: src/views/preference/OpenAISettings.vue:44
 msgid "API Base Url"
@@ -133,9 +135,8 @@ msgid "Are you sure to delete this banned IP immediately?"
 msgstr "¿Está seguro de eliminar esta IP bloqueada inmediatamente?"
 
 #: src/views/preference/components/Passkey.vue:119
-#, fuzzy
 msgid "Are you sure to delete this passkey immediately?"
-msgstr "¿Está seguro de eliminar esta IP bloqueada inmediatamente?"
+msgstr "¿Está seguro de eliminar esta llave de acceso inmediatamente?"
 
 #: src/components/Notification/Notification.vue:86
 #: src/views/notification/Notification.vue:40
@@ -193,11 +194,11 @@ msgstr "Autenticación"
 
 #: src/components/TwoFA/Authorization.vue:126
 msgid "Authenticate with a passkey"
-msgstr ""
+msgstr "Autenticarse con una llave de acceso"
 
 #: src/views/preference/AuthSettings.vue:62
 msgid "Authentication Settings"
-msgstr ""
+msgstr "Configuración de autenticación"
 
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:106
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:120
@@ -272,6 +273,8 @@ msgstr "Actualización por lotes"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:74
 msgid "Belows are selected items that you want to batch modify"
 msgstr ""
+"A continuación se muestran los elementos seleccionados que desea modificar "
+"por lotes"
 
 #: src/views/system/About.vue:39
 msgid "Build with"
@@ -287,7 +290,7 @@ msgstr "Directorio CA"
 
 #: src/views/preference/components/TOTP.vue:151
 msgid "Can't scan? Use text key binding"
-msgstr ""
+msgstr "¿No puede escanear? Utilice la vinculación con una llave de texto"
 
 #: src/components/ChatGPT/ChatGPT.vue:260
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:261
@@ -306,12 +309,11 @@ msgstr "Cancelar"
 #: src/views/site/site_edit/RightSettings.vue:91
 #: src/views/site/site_list/columns.tsx:22
 msgid "Category"
-msgstr ""
+msgstr "Categoría"
 
 #: src/views/preference/Preference.vue:158
-#, fuzzy
 msgid "Cert"
-msgstr "Certificado automático"
+msgstr "Certificado"
 
 #: src/views/preference/CertSettings.vue:24
 msgid "Certificate Renewal Interval"
@@ -479,16 +481,12 @@ msgid "Credentials"
 msgstr "Credenciales"
 
 #: src/views/preference/components/TOTP.vue:99
-#, fuzzy
 msgid "Current account is enabled TOTP."
-msgstr ""
-"La cuenta actual tiene habilitada la autenticación de dos factores (2FA)."
+msgstr "La cuenta actual tiene habilitada TOTP."
 
 #: src/views/preference/components/TOTP.vue:96
-#, fuzzy
 msgid "Current account is not enabled TOTP."
-msgstr ""
-"La cuenta actual no tiene habilitada la autenticación de dos factores (2FA)."
+msgstr "La cuenta actual no tiene habilitada TOTP."
 
 #: src/views/system/Upgrade.vue:166
 msgid "Current Version"
@@ -500,13 +498,12 @@ msgid "Custom"
 msgstr "Personalizado"
 
 #: src/views/preference/BasicSettings.vue:46
-#, fuzzy
 msgid ""
 "Customize the name of local node to be displayed in the environment "
 "indicator."
 msgstr ""
-"Personalice el nombre del servidor local para que se muestre en el indicador "
-"de entorno."
+"Personalice el nombre del servidor local para mostrarlo en el indicador de "
+"entorno."
 
 #: src/routes/index.ts:38 src/views/config/ConfigEditor.vue:133
 #: src/views/config/ConfigEditor.vue:94 src/views/config/ConfigList.vue:65
@@ -534,14 +531,12 @@ msgid "Delete Permanently"
 msgstr "Eliminar Permanentemente"
 
 #: src/language/constants.ts:49
-#, fuzzy
 msgid "Delete Remote Site Error"
-msgstr "Error al renombrar la configuración remota"
+msgstr "Error al eliminar sitio remoto"
 
 #: src/language/constants.ts:48
-#, fuzzy
 msgid "Delete Remote Site Success"
-msgstr "Renombrar Configuración Remota Exitosa"
+msgstr "Borrado del sitio remoto correcto"
 
 #: src/views/site/site_list/SiteList.vue:68
 msgid "Delete site: %{site_name}"
@@ -608,19 +603,16 @@ msgid "Disable auto-renewal failed for %{name}"
 msgstr "No se pudo desactivar la renovación automática por %{name}"
 
 #: src/language/constants.ts:51
-#, fuzzy
 msgid "Disable Remote Site Error"
-msgstr "Error al renombrar la configuración remota"
+msgstr "Error al deshabilitar el sitio remoto"
 
 #: src/language/constants.ts:50
-#, fuzzy
 msgid "Disable Remote Site Success"
-msgstr "Renombrar Configuración Remota Exitosa"
+msgstr "Deshabilitado de sitio remoto exitoso"
 
 #: src/components/Notification/config.ts:82
-#, fuzzy
 msgid "Disable site %{site} on %{node} error, response: %{resp}"
-msgstr "Habilitado exitoso de %{conf_name} en %{node_name}"
+msgstr "Error al deshabilitar el sitio %{site} en %{node}, respuesta: %{resp}"
 
 #: src/components/Notification/config.ts:74
 #, fuzzy
@@ -733,6 +725,9 @@ msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
 msgstr ""
+"Debido a las políticas de seguridad de algunos navegadores, no es posible "
+"utilizar claves de acceso en sitios web que no sean HTTPS, excepto cuando se "
+"ejecutan en el host local."
 
 #: src/views/site/site_list/SiteDuplicate.vue:74
 #: src/views/site/site_list/SiteList.vue:143
@@ -958,6 +953,8 @@ msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
 msgstr ""
+"Siga las instrucciones del cuadro de diálogo para completar el proceso de "
+"registro de la llave de acceso."
 
 #: src/views/preference/BasicSettings.vue:38
 msgid "For Chinese user: https://mirror.ghproxy.com/"
@@ -1047,6 +1044,7 @@ msgstr ""
 #: src/views/preference/components/AddPasskey.vue:76
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
 msgstr ""
+"Si su navegador admite WebAuthn Passkey, aparecerá un cuadro de diálogo."
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:109
 msgid ""
@@ -1174,9 +1172,8 @@ msgid "Leave blank if do not want to modify"
 msgstr "Para no modificar dejar en blanco"
 
 #: src/views/certificate/ACMEUser.vue:59
-#, fuzzy
 msgid "Leave blank if you don't need this."
-msgstr "Para no modificar dejar en blanco"
+msgstr "Déjelo en blanco si no lo necesita."
 
 #: src/views/certificate/CertificateEditor.vue:214
 #: src/views/certificate/CertificateEditor.vue:227
@@ -1415,7 +1412,7 @@ msgstr "Ruta de registro de errores de Nginx"
 
 #: src/views/site/ngx_conf/NginxStatusAlert.vue:15
 msgid "Nginx is not running"
-msgstr ""
+msgstr "Nginx no se está ejecutando"
 
 #: src/routes/index.ts:202 src/views/nginx_log/NginxLog.vue:147
 msgid "Nginx Log"
@@ -1423,7 +1420,7 @@ msgstr "Registro Nginx"
 
 #: src/views/preference/NginxSettings.vue:18
 msgid "Nginx Log Directory Whitelist"
-msgstr ""
+msgstr "Lista blanca de directorios de registro de Nginx"
 
 #: src/views/preference/NginxSettings.vue:27
 #, fuzzy
@@ -1432,7 +1429,7 @@ msgstr "Ruta de registro de errores de Nginx"
 
 #: src/views/preference/NginxSettings.vue:30
 msgid "Nginx Reload Command"
-msgstr ""
+msgstr "Comando de recarga de Nginx"
 
 #: src/components/NginxControl/NginxControl.vue:26
 msgid "Nginx reloaded successfully"
@@ -1494,6 +1491,9 @@ msgid ""
 "Note, if the configuration file include other configurations or "
 "certificates, please synchronize them to the remote nodes in advance."
 msgstr ""
+"Tenga en cuenta que si el archivo de configuración incluye otras "
+"configuraciones o certificados, sincronícelos con anticipación a los nodos "
+"remotos."
 
 #: src/views/notification/Notification.vue:29
 msgid "Notification"
@@ -1569,7 +1569,7 @@ msgstr "OpenAI"
 
 #: src/components/TwoFA/Authorization.vue:117 src/views/other/Login.vue:254
 msgid "Or"
-msgstr ""
+msgstr "O"
 
 #: src/views/config/components/Rename.vue:69
 msgid "Original name"
@@ -1599,7 +1599,7 @@ msgstr "Parámetros"
 
 #: src/views/preference/components/Passkey.vue:65
 msgid "Passkey"
-msgstr ""
+msgstr "Llave de acceso"
 
 #: src/views/preference/components/Passkey.vue:68
 msgid ""
@@ -1607,6 +1607,10 @@ msgid ""
 "facial recognition, a device password, or a PIN. They can be used as a "
 "password replacement or as a 2FA method."
 msgstr ""
+"Las llaves de acceso son credenciales de autenticación web que validan su "
+"identidad mediante el tacto, el reconocimiento facial, una contraseña de "
+"dispositivo o un PIN. Se pueden utilizar como reemplazo de contraseña o como "
+"método de autenticación de dos factores."
 
 #: src/views/other/Login.vue:206 src/views/user/userColumns.tsx:18
 msgid "Password"
@@ -1639,6 +1643,8 @@ msgid ""
 "Please enter a name for the passkey you wish to create and click the OK "
 "button below."
 msgstr ""
+"Ingrese un nombre para la llave de acceso que desea crear y a continuación "
+"haga clic en el botón Aceptar."
 
 #: src/components/TwoFA/Authorization.vue:75
 #, fuzzy
@@ -1684,13 +1690,12 @@ msgstr ""
 "configuración!"
 
 #: src/views/site/site_list/SiteDuplicate.vue:33
-#, fuzzy
 msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration."
 msgstr ""
-"Ingrese el nombre, ¡este se usará como el nombre de archivo de la nueva "
-"configuración!"
+"Ingrese el nombre por favor, este se usará como el nombre de archivo de la "
+"nueva configuración."
 
 #: src/views/other/Install.vue:32
 msgid "Please input your E-mail!"
@@ -1712,9 +1717,8 @@ msgstr ""
 "están todas en segundos."
 
 #: src/views/environment/Environment.vue:47
-#, fuzzy
 msgid "Please select at least one node to upgrade"
-msgstr "¡Seleccione al menos un nodo!"
+msgstr "Seleccione al menos un nodo para actualizar"
 
 #: src/views/stream/components/StreamDuplicate.vue:45
 msgid "Please select at least one node!"
@@ -1817,6 +1821,8 @@ msgid ""
 "Register a user or use this account to issue a certificate through an HTTP "
 "proxy."
 msgstr ""
+"Registre un usuario o utilice esta cuenta para emitir un certificado a "
+"través de un proxy HTTP."
 
 #: src/views/certificate/ACMEUser.vue:105
 msgid "Register failed"
@@ -1982,15 +1988,15 @@ msgstr "Reiniciando"
 
 #: src/views/preference/AuthSettings.vue:81
 msgid "RP Display Name"
-msgstr ""
+msgstr "Nombre RP"
 
 #: src/views/preference/AuthSettings.vue:87
 msgid "RP Origins"
-msgstr ""
+msgstr "Orígenes RP"
 
 #: src/views/preference/AuthSettings.vue:75
 msgid "RPID"
-msgstr ""
+msgstr "RPID"
 
 #: src/views/preference/BasicSettings.vue:17
 msgid "Run Mode"
@@ -2071,7 +2077,7 @@ msgstr "SDK"
 
 #: src/views/preference/components/TOTP.vue:150
 msgid "Secret has been copied"
-msgstr ""
+msgstr "El secreto ha sido copiado"
 
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:184
 msgid "Selector"
@@ -2145,7 +2151,7 @@ msgstr "Mostrar"
 
 #: src/views/other/Login.vue:263
 msgid "Sign in with a passkey"
-msgstr ""
+msgstr "Iniciar sesión con una llave de acceso"
 
 #: src/views/site/ngx_conf/directive/DirectiveAdd.vue:51
 msgid "Single Directive"
@@ -2153,7 +2159,7 @@ msgstr "Directiva de una sola línea"
 
 #: src/routes/index.ts:71 src/views/site/site_category/SiteCategory.vue:10
 msgid "Site Categories"
-msgstr ""
+msgstr "Categorías del sitio"
 
 #: src/routes/index.ts:224
 msgid "Site Logs"
@@ -2291,7 +2297,7 @@ msgstr "Sincronizar con"
 
 #: src/views/site/site_edit/RightSettings.vue:110
 msgid "Synchronization"
-msgstr ""
+msgstr "Sincronización"
 
 #: src/routes/index.ts:275
 msgid "System"
@@ -2439,7 +2445,7 @@ msgstr ""
 
 #: src/constants/form_errors.ts:4
 msgid "This value is already taken"
-msgstr ""
+msgstr "Este valor ya está elegido"
 
 #: src/views/environment/BatchUpgrader.vue:184
 msgid ""
@@ -2450,7 +2456,7 @@ msgstr ""
 
 #: src/views/preference/AuthSettings.vue:98
 msgid "Throttle"
-msgstr ""
+msgstr "Acelerador"
 
 #: src/views/preference/AuthSettings.vue:118
 #: src/views/preference/components/AddPasskey.vue:71
@@ -2476,6 +2482,9 @@ msgid ""
 "Please manually configure the following in the app.ini configuration file "
 "and restart Nginx UI."
 msgstr ""
+"Para garantizar la seguridad, no se puede agregar la configuración de "
+"Webauthn a través de la UI. Configure manualmente lo siguiente en el archivo "
+"de configuración app.ini y reinicie Nginx UI."
 
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:45
 msgid ""
@@ -2494,6 +2503,9 @@ msgid ""
 "To use a local large model, deploy it with vllm or imdeploy. They provide an "
 "OpenAI-compatible API endpoint, so just set the baseUrl to your local API."
 msgstr ""
+"Para utilizar un modelo local grande, impleméntelo con vllm o imdeploy. "
+"Estos proporcionan un API endpoint compatible con OpenAI, por lo que solo "
+"debe configurar la baseUrl en su API local."
 
 #: src/views/preference/OpenAISettings.vue:72
 msgid "Token is not valid"
@@ -2507,7 +2519,7 @@ msgstr ""
 
 #: src/views/preference/components/TOTP.vue:91
 msgid "TOTP"
-msgstr ""
+msgstr "TOTP"
 
 #: src/views/preference/components/TOTP.vue:92
 msgid ""
@@ -2657,7 +2669,7 @@ msgstr ""
 
 #: src/views/preference/AuthSettings.vue:71
 msgid "Webauthn"
-msgstr ""
+msgstr "Webauthn"
 
 #: src/views/certificate/ACMEUser.vue:83
 msgid ""
@@ -2665,12 +2677,18 @@ msgid ""
 "Generally, do not enable this unless you are in a dev environment and using "
 "Pebble as CA."
 msgstr ""
+"Cuando está habilitada, la Nginx UI volverá a registrar automáticamente a "
+"los usuarios al iniciarse. Por lo general, no habilite esta opción a menos "
+"que se encuentre en un entorno de desarrollo y utilice Pebble como CA."
 
 #: src/views/site/site_edit/RightSettings.vue:116
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "site category and the nodes selected below will be synchronized."
 msgstr ""
+"Cuando habilite/deshabilite, elimine o guarde este sitio, los nodos "
+"configurados en la categoría del sitio y los nodos seleccionados a "
+"continuación se sincronizarán."
 
 #: src/views/dashboard/ServerAnalytic.vue:26
 #: src/views/dashboard/ServerAnalytic.vue:366
@@ -2705,10 +2723,12 @@ msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
 "passkey."
 msgstr ""
+"No ha configurado los ajustes de Webauthn, por lo que no puede agregar una "
+"llave de acceso."
 
 #: src/views/preference/components/Passkey.vue:81
 msgid "Your passkeys"
-msgstr ""
+msgstr "Sus llaves de acceso"
 
 #~ msgid ""
 #~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
