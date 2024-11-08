@@ -5,6 +5,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"io"
+	"time"
 )
 
 func Live(c *gin.Context) {
@@ -24,10 +25,25 @@ func Live(c *gin.Context) {
 		notification.RemoveClient(c)
 	}()
 
-	for n := range evtChan {
-		c.Stream(func(w io.Writer) bool {
-			c.SSEvent("message", n)
-			return false
-		})
+	c.Stream(func(w io.Writer) bool {
+		c.SSEvent("heartbeat", "")
+		return false
+	})
+
+	timeout := time.NewTicker(30 * time.Second)
+
+	for {
+		select {
+		case n := <-evtChan:
+			c.Stream(func(w io.Writer) bool {
+				c.SSEvent("message", n)
+				return false
+			})
+		case <-timeout.C:
+			c.Stream(func(w io.Writer) bool {
+				c.SSEvent("heartbeat", "")
+				return false
+			})
+		}
 	}
 }
