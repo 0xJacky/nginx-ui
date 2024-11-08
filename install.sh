@@ -294,8 +294,8 @@ cat > "$DataPath/app.ini" << EOF
 PageSize = 10
 
 [server]
-HOST = 0.0.0.0
-PORT = 9000
+Host = 0.0.0.0
+Port = 9000
 RunMode = release
 
 [cert]
