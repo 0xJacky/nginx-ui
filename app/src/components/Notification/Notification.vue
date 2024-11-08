@@ -58,7 +58,6 @@ function newSSE() {
 
   // reconnect
   s.onerror = reconnect
-  s.onabort = reconnect
 
   return s
 }
