@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { Environment } from '@/api/environment'
 import type { Ref } from 'vue'
-import environment from '@/api/environment'
+import { useUserStore } from '@/pinia'
+import { SSE, type SSEvent } from 'sse.js'
 
 const props = defineProps<{
   hiddenLocal?: boolean
@@ -9,26 +10,35 @@ const props = defineProps<{
 
 const target = defineModel<number[]>('target')
 const map = defineModel<Record<number, string>>('map')
+const { token } = storeToRefs(useUserStore())
 
 const data = ref([]) as Ref<Environment[]>
 const data_map = ref({}) as Ref<Record<number, Environment>>
 
-onMounted(async () => {
-  let hasMore = true
-  let page = 1
-  while (hasMore) {
-    await environment.get_list({ page, enabled: true }).then(r => {
-      data.value.push(...r.data)
-      r.data?.forEach(node => {
-        data_map.value[node.id] = node
-      })
-      hasMore = r.data.length === r.pagination?.per_page
-      page++
-    }).catch(() => {
-      hasMore = false
-    })
+const sse = shallowRef(newSSE())
+
+function reconnect() {
+  setTimeout(() => {
+    sse.value = newSSE()
+  }, 5000)
+}
+
+function newSSE() {
+  const s = new SSE('/api/environments/enabled', {
+    headers: {
+      Authorization: token.value,
+    },
+  })
+
+  s.onmessage = (e: SSEvent) => {
+    data.value = JSON.parse(e.data)
   }
-})
+
+  // reconnect
+  s.onerror = reconnect
+
+  return s
+}
 
 const value = computed({
   get() {

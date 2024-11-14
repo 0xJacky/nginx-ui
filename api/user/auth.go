@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	"math/rand/v2"
 	"net/http"
@@ -61,7 +62,7 @@ func Login(c *gin.Context) {
 	}
 
 	var json LoginUser
-	ok := api.BindAndValid(c, &json)
+	ok := cosy.BindAndValid(c, &json)
 	if !ok {
 		return
 	}

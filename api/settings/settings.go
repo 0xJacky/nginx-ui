@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy"
 	cSettings "github.com/uozi-tech/cosy/settings"
 	"net/http"
 )
@@ -68,7 +69,7 @@ func SaveSettings(c *gin.Context) {
 		Logrotate settings.Logrotate `json:"logrotate"`
 	}
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 

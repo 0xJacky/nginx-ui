@@ -8,6 +8,7 @@ import (
 	"github.com/casdoor/casdoor-go-sdk/casdoorsdk"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy"
 	"gorm.io/gorm"
 	"net/http"
 	"net/url"
@@ -22,7 +23,7 @@ type CasdoorLoginUser struct {
 func CasdoorCallback(c *gin.Context) {
 	var loginUser CasdoorLoginUser
 
-	ok := api.BindAndValid(c, &loginUser)
+	ok := cosy.BindAndValid(c, &loginUser)
 	if !ok {
 		return
 	}

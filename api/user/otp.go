@@ -13,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
+	"github.com/uozi-tech/cosy"
 	"image/jpeg"
 	"net/http"
 	"strings"
@@ -81,7 +82,7 @@ func EnrollTOTP(c *gin.Context) {
 		Secret   string `json:"secret" binding:"required"`
 		Passcode string `json:"passcode" binding:"required"`
 	}
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
@@ -117,7 +118,7 @@ func ResetOTP(c *gin.Context) {
 	var json struct {
 		RecoveryCode string `json:"recovery_code"`
 	}
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 	recoverCode, err := hex.DecodeString(json.RecoveryCode)

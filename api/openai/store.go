@@ -6,6 +6,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/sashabaranov/go-openai"
+	"github.com/uozi-tech/cosy"
 	"net/http"
 )
 
@@ -15,7 +16,7 @@ func StoreChatGPTRecord(c *gin.Context) {
 		Messages []openai.ChatCompletionMessage `json:"messages"`
 	}
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 

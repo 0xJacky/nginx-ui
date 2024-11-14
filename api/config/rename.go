@@ -8,6 +8,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -21,8 +23,7 @@ func Rename(c *gin.Context) {
 		NewName     string   `json:"new_name"`
 		SyncNodeIds []uint64 `json:"sync_node_ids" gorm:"serializer:json"`
 	}
-
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 

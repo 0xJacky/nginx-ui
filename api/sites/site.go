@@ -120,7 +120,7 @@ func SaveSite(c *gin.Context) {
 		Overwrite      bool     `json:"overwrite"`
 	}
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 

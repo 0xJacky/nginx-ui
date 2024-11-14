@@ -9,6 +9,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/sashabaranov/go-openai"
+	"github.com/uozi-tech/cosy"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -26,7 +27,7 @@ func EditConfig(c *gin.Context) {
 		SyncOverwrite bool     `json:"sync_overwrite"`
 		SyncNodeIds   []uint64 `json:"sync_node_ids"`
 	}
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 

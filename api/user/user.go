@@ -38,7 +38,7 @@ type UserJson struct {
 
 func AddUser(c *gin.Context) {
 	var json UserJson
-	ok := api.BindAndValid(c, &json)
+	ok := cosy.BindAndValid(c, &json)
 	if !ok {
 		return
 	}
@@ -79,7 +79,7 @@ func EditUser(c *gin.Context) {
 	}
 
 	var json UserJson
-	ok := api.BindAndValid(c, &json)
+	ok := cosy.BindAndValid(c, &json)
 	if !ok {
 		return
 	}

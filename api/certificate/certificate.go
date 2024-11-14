@@ -97,7 +97,7 @@ type certJson struct {
 func AddCert(c *gin.Context) {
 	var json certJson
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
@@ -145,7 +145,7 @@ func ModifyCert(c *gin.Context) {
 
 	var json certJson
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
@@ -202,7 +202,7 @@ func RemoveCert(c *gin.Context) {
 func SyncCertificate(c *gin.Context) {
 	var json cert.SyncCertificatePayload
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
