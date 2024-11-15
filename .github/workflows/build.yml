@@ -116,6 +116,16 @@ jobs:
           # END Linux ARM 5 6 7
           - goos: linux
             goarch: riscv64
+          # BEGIN MIPS
+          - goos: linux
+            goarch: mips64
+          - goos: linux
+            goarch: mips64le
+          - goos: linux
+            goarch: mipsle
+          - goos: linux
+            goarch: mips
+          # END MIPS
     env:
       CGO_ENABLED: 1
       GOOS: ${{ matrix.goos }}
