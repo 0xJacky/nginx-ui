@@ -37,12 +37,14 @@ function handleGenerate() {
         v-model:value="modelValue"
         :class="{ compact: generate }"
         :placeholoder="placeholder"
+        :maxlength="20"
       />
       <AInput
         v-else
         v-model:value="modelValue"
         :class="{ compact: generate }"
         :placeholoder="placeholder"
+        :maxlength="20"
       />
       <AButton
         v-if="generate"
