@@ -209,9 +209,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get the version
-        id: get_version
-        run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            uozi/nginx-ui
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=sha
 
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -232,22 +240,19 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Prepare Dockerfile
-        if: github.event_name == 'release'
         run: |
           cp ./Dockerfile ./dist
           cp -rp ./resources ./dist
 
       - name: Build and push
-        if: github.event_name == 'release'
         uses: docker/build-push-action@v6
         with:
           context: ./dist
           file: ./dist/Dockerfile
           platforms: ${{ env.PLATFORMS }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            uozi/nginx-ui:latest
-            uozi/nginx-ui:${{ steps.get_version.outputs.VERSION }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
       - name: Prepare Demo Dockerfile
         run: |
@@ -256,10 +261,11 @@ jobs:
 
       - name: Build and push demo
         uses: docker/build-push-action@v6
+        if: github.ref == 'refs/heads/dev'
         with:
           context: ./dist
           file: ./dist/demo.Dockerfile
           platforms: ${{ env.PLATFORMS }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: 'true'
           tags: |
             uozi/nginx-ui-demo:latest
