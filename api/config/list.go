@@ -13,8 +13,8 @@ import (
 
 func GetConfigs(c *gin.Context) {
 	name := c.Query("name")
-	orderBy := c.Query("order_by")
-	sort := c.DefaultQuery("sort", "desc")
+	sortBy := c.Query("sort_by")
+	order := c.DefaultQuery("order", "desc")
 	dir := c.DefaultQuery("dir", "/")
 
 	configFiles, err := os.ReadDir(nginx.GetConfPath(dir))
@@ -66,7 +66,7 @@ func GetConfigs(c *gin.Context) {
 		})
 	}
 
-	configs = config.Sort(orderBy, sort, configs)
+	configs = config.Sort(sortBy, order, configs)
 
 	c.JSON(http.StatusOK, gin.H{
 		"data": configs,
