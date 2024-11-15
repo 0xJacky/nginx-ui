@@ -114,6 +114,8 @@ jobs:
             goarch: arm
             goarm: 5
           # END Linux ARM 5 6 7
+          - goos: linux
+            goarch: riscv64
     env:
       CGO_ENABLED: 1
       GOOS: ${{ matrix.goos }}
