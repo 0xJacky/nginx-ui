@@ -22,7 +22,6 @@ type EditConfigJson struct {
 func EditConfig(c *gin.Context) {
 	relativePath := c.Param("path")
 	var json struct {
-		Name          string   `json:"name" binding:"required"`
 		Content       string   `json:"content"`
 		SyncOverwrite bool     `json:"sync_overwrite"`
 		SyncNodeIds   []uint64 `json:"sync_node_ids"`

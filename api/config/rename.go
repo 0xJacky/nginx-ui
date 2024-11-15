@@ -8,9 +8,9 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
-	"github.com/uozi-tech/cosy/logger"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -21,10 +21,11 @@ func Rename(c *gin.Context) {
 		NewName     string   `json:"new_name"`
 		SyncNodeIds []uint64 `json:"sync_node_ids" gorm:"serializer:json"`
 	}
+
 	if !api.BindAndValid(c, &json) {
 		return
 	}
-	logger.Debug(json)
+
 	if json.OrigName == json.NewName {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "ok",
@@ -97,6 +98,6 @@ func Rename(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"path": strings.TrimLeft(newFullPath, nginx.GetConfPath()),
+		"path": strings.TrimLeft(filepath.Join(json.BasePath, json.NewName), "/"),
 	})
 }

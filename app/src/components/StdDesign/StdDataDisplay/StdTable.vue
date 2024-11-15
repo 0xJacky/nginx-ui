@@ -452,14 +452,6 @@ const paginationSize = computed(() => {
           >
             {{ $gettext('Batch Modify') }}
           </AButton>
-          <Export
-            v-if="props.exportExcel"
-            :columns="props.columns"
-            :api="props.api"
-            :total="pagination.total"
-            :query="params"
-            :ids="selectedRowKeys"
-          />
           <slot name="append-search" />
         </ASpace>
       </template>

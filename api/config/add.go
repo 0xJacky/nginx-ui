@@ -18,7 +18,7 @@ import (
 func AddConfig(c *gin.Context) {
 	var json struct {
 		Name        string   `json:"name" binding:"required"`
-		NewFilepath string   `json:"new_filepath" binding:"required"`
+		BaseDir     string   `json:"base_dir"`
 		Content     string   `json:"content"`
 		Overwrite   bool     `json:"overwrite"`
 		SyncNodeIds []uint64 `json:"sync_node_ids"`
@@ -30,10 +30,11 @@ func AddConfig(c *gin.Context) {
 
 	name := json.Name
 	content := json.Content
-	path := json.NewFilepath
+	dir := nginx.GetConfPath(json.BaseDir)
+	path := filepath.Join(dir, json.Name)
 	if !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
 		c.JSON(http.StatusForbidden, gin.H{
-			"message": "new filepath is not under the nginx conf path",
+			"message": "filepath is not under the nginx conf path",
 		})
 		return
 	}
@@ -46,7 +47,6 @@ func AddConfig(c *gin.Context) {
 	}
 
 	// check if the dir exists, if not, use mkdirAll to create the dir
-	dir := filepath.Dir(path)
 	if !helper.FileExists(dir) {
 		err := os.MkdirAll(dir, 0755)
 		if err != nil {
@@ -89,7 +89,7 @@ func AddConfig(c *gin.Context) {
 		return
 	}
 
-	err = config.SyncToRemoteServer(cfg, json.NewFilepath)
+	err = config.SyncToRemoteServer(cfg, path)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return

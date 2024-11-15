@@ -20,8 +20,10 @@ import _ from 'lodash'
 const settings = useSettingsStore()
 const route = useRoute()
 const router = useRouter()
+
+// eslint-disable-next-line vue/require-typed-ref
 const refForm = ref()
-const refInspectConfig = ref()
+const refInspectConfig = useTemplateRef('refInspectConfig')
 const origName = ref('')
 const addMode = computed(() => !route.params.name)
 const errors = ref({})
@@ -155,11 +157,10 @@ onMounted(async () => {
 })
 
 function save() {
-  refForm.value.validate().then(() => {
-    config.save(addMode.value ? null : relativePath.value, {
-      name: data.value.name,
-      filepath: data.value.filepath,
-      new_filepath: newPath.value,
+  refForm.value?.validate().then(() => {
+    config.save(addMode.value ? undefined : relativePath.value, {
+      name: addMode.value ? data.value.name : undefined,
+      base_dir: addMode.value ? basePath.value : undefined,
       content: data.value.content,
       sync_node_ids: data.value.sync_node_ids,
       sync_overwrite: data.value.sync_overwrite,
@@ -171,7 +172,7 @@ function save() {
       errors.value = e.errors
       message.error($gettext('Save error %{msg}', { msg: e.message ?? '' }))
     }).finally(() => {
-      refInspectConfig.value.test()
+      refInspectConfig.value?.test()
     })
   })
 }
@@ -256,7 +257,8 @@ function goBack() {
                 name="name"
                 :label="$gettext('Name')"
               >
-                <ConfigName :name="data.name" :dir="data.dir" />
+                <AInput v-if="addMode" v-model:value="data.name" />
+                <ConfigName v-else :name="data.name" :dir="data.dir" />
               </AFormItem>
               <AFormItem
                 v-if="!addMode"
