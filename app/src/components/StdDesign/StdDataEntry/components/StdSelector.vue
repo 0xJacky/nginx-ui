@@ -27,6 +27,7 @@ const props = defineProps<{
   // eslint-disable-next-line ts/no-explicit-any
   getCheckboxProps?: (record: any) => any
   hideInputContainer?: boolean
+  expandAll?: boolean
 }>()
 
 const selectedKey = defineModel<number | number[] | undefined | null | string | string[]>('selectedKey')
@@ -195,6 +196,7 @@ defineExpose({ show })
         :columns
         :disable-search
         :row-key="itemKey"
+        :expand-all
         :get-params
         :selection-type
         :get-checkbox-props

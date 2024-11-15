@@ -18,8 +18,8 @@ import (
 func GetSiteList(c *gin.Context) {
 	name := c.Query("name")
 	enabled := c.Query("enabled")
-	orderBy := c.Query("order_by")
-	sort := c.DefaultQuery("sort", "desc")
+	orderBy := c.Query("sort_by")
+	sort := c.DefaultQuery("order", "desc")
 	querySiteCategoryId := cast.ToUint64(c.Query("site_category_id"))
 
 	configFiles, err := os.ReadDir(nginx.GetConfPath("sites-available"))

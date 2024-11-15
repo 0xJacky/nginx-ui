@@ -1,4 +1,4 @@
-import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column, JSXElements } from '@/components/StdDesign/types'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input, password } from '@/components/StdDesign/StdDataEntry'
@@ -31,7 +31,7 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('2FA'),
   dataIndex: 'enabled_2fa',
-  customRender: (args: CustomRenderProps) => {
+  customRender: (args: CustomRender) => {
     const template: JSXElements = []
     const { text } = args
     if (text === true || text > 0)

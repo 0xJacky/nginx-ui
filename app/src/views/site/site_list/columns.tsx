@@ -2,7 +2,7 @@ import type { Column, JSXElements } from '@/components/StdDesign/types'
 import site_category from '@/api/site_category'
 import {
   actualValueRender,
-  type CustomRenderProps,
+  type CustomRender,
   datetime,
 } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input, select, selector } from '@/components/StdDesign/StdDataEntry'
@@ -37,7 +37,7 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'enabled',
-  customRender: (args: CustomRenderProps) => {
+  customRender: (args: CustomRender) => {
     const template: JSXElements = []
     const { text } = args
     if (text === true || text > 0) {

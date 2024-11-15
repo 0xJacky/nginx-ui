@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { Pagination } from '@/api/curd'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   pagination: Pagination
   size?: 'default' | 'small'
-  loading: boolean
-}>()
+  loading?: boolean
+  showSizeChanger?: boolean
+}>(), {
+  showSizeChanger: true,
+})
 
 const emit = defineEmits(['change', 'changePageSize', 'update:pagination'])
 
@@ -33,7 +36,8 @@ const pageSize = computed({
       v-model:page-size="pageSize"
       :disabled="loading"
       :current="pagination.current_page"
-      show-size-changer
+      :show-size-changer="showSizeChanger"
+      :show-total="(total:number) => $ngettext('Total %{total} item', 'Total %{total} items', total, { total: total.toString() })"
       :size="size"
       :total="pagination.total"
       @change="change"

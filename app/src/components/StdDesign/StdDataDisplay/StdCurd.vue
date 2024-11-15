@@ -1,27 +1,12 @@
 <script setup lang="ts" generic="T=any">
+import type { StdCurdProps, StdTableProps } from '@/components/StdDesign/StdDataDisplay/types'
 import type { Column } from '@/components/StdDesign/types'
 import type { ComputedRef } from 'vue'
-import type { StdTableProps } from './StdTable.vue'
 import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 import StdCurdDetail from '@/components/StdDesign/StdDataDisplay/StdCurdDetail.vue'
 import StdDataEntry from '@/components/StdDesign/StdDataEntry'
 import { message } from 'ant-design-vue'
 import StdTable from './StdTable.vue'
-
-export interface StdCurdProps<T> extends StdTableProps<T> {
-  cardTitleKey?: string
-  modalMaxWidth?: string | number
-  modalMask?: boolean
-  exportExcel?: boolean
-  importExcel?: boolean
-
-  disableAdd?: boolean
-  onClickAdd?: () => void
-
-  onClickEdit?: (id: number | string, record: T, index: number) => void
-  // eslint-disable-next-line ts/no-explicit-any
-  beforeSave?: (data: any) => Promise<void>
-}
 
 const props = defineProps<StdTableProps<T> & StdCurdProps<T>>()
 
@@ -76,16 +61,9 @@ function add(preset: any = undefined) {
   modifyMode.value = true
 }
 
-const table = useTemplateRef('table')
-
-const getParams = reactive({
-  trash: false,
-})
-
-// eslint-disable-next-line ts/no-explicit-any
-function setParams(k: string, v: any) {
-  getParams[k] = v
-}
+const table = ref()
+const inTrash = ref(false)
+const getParams = reactive(props.getParams ?? {})
 
 function get_list() {
   table.value?.get_list()
@@ -95,8 +73,7 @@ defineExpose({
   add,
   get_list,
   data,
-  getParams,
-  setParams,
+  inTrash,
 })
 
 function clearError() {
@@ -105,17 +82,14 @@ function clearError() {
   })
 }
 
-const stdEntryRef = useTemplateRef('stdEntryRef')
+const stdEntryRef = ref()
 
 async function ok() {
-  if (!stdEntryRef.value)
-    return
-
   const { formRef } = stdEntryRef.value
 
   clearError()
   try {
-    await formRef?.validateFields()
+    await formRef.validateFields()
     props?.beforeSave?.(data)
     props
       .api!.save(data.id, { ...data, ...props.overwriteParams }, { params: { ...props.overwriteParams } }).then(r => {
@@ -177,22 +151,21 @@ async function get(id: number | string) {
 }
 
 const modalTitle = computed(() => {
-  if (data.id)
-    return modifyMode.value ? $gettext('Modify') : $gettext('View Details')
-  return $gettext('Add')
+  // eslint-disable-next-line sonarjs/no-nested-conditional
+  return data.id ? modifyMode.value ? $gettext('Modify') : $gettext('View Details') : $gettext('Add')
 })
 
 const localOverwriteParams = reactive(props.overwriteParams ?? {})
 
-const stdBatchEditRef = useTemplateRef('stdBatchEditRef')
+const stdBatchEditRef = ref()
 
 async function handleClickBatchEdit(batchColumns: Column[]) {
-  stdBatchEditRef.value?.showModal(batchColumns, selectedRowKeys.value, selectedRows.value)
+  stdBatchEditRef.value.showModal(batchColumns, selectedRowKeys.value, selectedRows.value)
 }
 
 function handleBatchUpdated() {
-  table.value?.get_list()
-  table.value?.resetSelection()
+  table.value.get_list()
+  table.value.resetSelection()
 }
 </script>
 
@@ -208,24 +181,34 @@ function handleBatchUpdated() {
       <template #extra>
         <ASpace>
           <slot name="beforeAdd" />
-          <a
-            v-if="!disableAdd && !getParams.trash"
+          <AButton
+            v-if="!disableAdd && !inTrash"
+            type="link"
+            size="small"
             @click="add"
-          >{{ $gettext('Add') }}</a>
+          >
+            {{ $gettext('Add') }}
+          </AButton>
           <slot name="extra" />
           <template v-if="!disableDelete">
-            <a
-              v-if="!getParams.trash"
-              @click="getParams.trash = true"
+            <AButton
+              v-if="!inTrash"
+              type="link"
+              size="small"
+              :loading="table?.loading"
+              @click="inTrash = true"
             >
               {{ $gettext('Trash') }}
-            </a>
-            <a
+            </AButton>
+            <AButton
               v-else
-              @click="getParams.trash = false"
+              type="link"
+              size="small"
+              :loading="table?.loading"
+              @click="inTrash = false"
             >
               {{ $gettext('Back to list') }}
-            </a>
+            </AButton>
           </template>
         </ASpace>
       </template>
@@ -240,6 +223,7 @@ function handleBatchUpdated() {
         }"
         v-model:selected-row-keys="selectedRowKeys"
         v-model:selected-rows="selectedRows"
+        :in-trash="inTrash"
         @click-edit="edit"
         @click-view="view"
         @selected="onSelect"

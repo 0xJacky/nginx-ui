@@ -1,4 +1,4 @@
-import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { syncCertificateError, syncCertificateSuccess } from '@/components/Notification/cert'
 import {
   deleteSiteError,
@@ -17,7 +17,7 @@ import {
   syncRenameConfigSuccess,
 } from '@/components/Notification/config'
 
-export function detailRender(args: CustomRenderProps) {
+export function detailRender(args: CustomRender) {
   try {
     switch (args.record.title) {
       case 'Sync Certificate Success':

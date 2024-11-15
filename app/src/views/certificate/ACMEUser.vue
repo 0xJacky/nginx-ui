@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import type { AcmeUser } from '@/api/acme_user'
-import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column } from '@/components/StdDesign/types'
 import acme_user from '@/api/acme_user'
 import { StdCurd } from '@/components/StdDesign/StdDataDisplay'
@@ -64,7 +64,7 @@ const columns: Column[] = [
   {
     title: () => $gettext('Status'),
     dataIndex: ['registration', 'body', 'status'],
-    customRender: (args: CustomRenderProps) => {
+    customRender: (args: CustomRender) => {
       if (args.text === 'valid')
         return <Tag color="green">{$gettext('Valid')}</Tag>
 

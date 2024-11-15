@@ -1,4 +1,4 @@
-import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column } from '@/components/StdDesign/types'
 import { detailRender } from '@/components/Notification/detailRender'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
@@ -8,7 +8,7 @@ import { Tag } from 'ant-design-vue'
 const columns: Column[] = [{
   title: () => $gettext('Type'),
   dataIndex: 'type',
-  customRender: (args: CustomRenderProps) => {
+  customRender: (args: CustomRender) => {
     if (args.text === NotificationTypeT.Error) {
       return (
         <Tag color="error">
@@ -43,7 +43,7 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('Title'),
   dataIndex: 'title',
-  customRender: (args: CustomRenderProps) => {
+  customRender: (args: CustomRender) => {
     return h('span', $gettext(args.text))
   },
   pithy: true,

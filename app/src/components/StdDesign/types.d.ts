@@ -1,33 +1,52 @@
+/* eslint-disable ts/no-explicit-any */
+
+import type { Pagination } from '@/api/curd'
 import type Curd from '@/api/curd'
+
 import type { TableColumnType } from 'ant-design-vue'
-import type { Ref } from 'vue'
+import type { RuleObject } from 'ant-design-vue/es/form'
 import type { JSX } from 'vue/jsx'
 
 export type JSXElements = JSX.Element[]
 
+// use for select-option
+export type StdDesignMask =
+  Record<string | number, string | (() => string)>
+  | (() => Promise<Record<string | number, string>>)
+
 export interface StdDesignEdit {
+
   type?: (edit: StdDesignEdit, dataSource: any, dataIndex: any) => JSX.Element // component type
 
   show?: (dataSource: any) => boolean // show component or not
 
   batch?: boolean // batch edit
 
-  mask?: Record<string | number, string | (() => string)> | (() => Promise<Record<string | number, string>>) // use for select-option
+  mask?: StdDesignMask
 
-  rules?: [] // validator rules
+  rules?: RuleObject[] // validator rules
 
   hint?: string | (() => string) // hint form item
 
   actualDataIndex?: string
+
+  datePicker?: {
+    picker?: 'date' | 'week' | 'month' | 'year' | 'quarter'
+    format?: string
+  }
+
+  cascader?: {
+    api: () => Promise<any>
+    fieldNames: Record<string, string>
+  }
 
   select?: {
     multiple?: boolean
   }
 
   selector?: {
-    getParams?: object
-    recordValueIndex: any // relative to api return
-    selectionType: any
+    getParams?: Record<string | number, any>
+    selectionType?: 'radio' | 'checkbox'
     api: Curd
     valueApi?: Curd
     columns: any
@@ -36,6 +55,9 @@ export interface StdDesignEdit {
     bind?: any
     itemKey?: any // default is id
     dataSourceValueIndex?: any // relative to dataSource
+    recordValueIndex?: any // relative to dataSource
+    getCheckboxProps?: (record: any) => any
+    expandAll?: boolean
   } // StdSelector Config
 
   upload?: {
@@ -73,14 +95,13 @@ export interface StdDesignEdit {
   flex?: Flex
 }
 
-type FlexType = string | number | boolean
-
 export interface Flex {
-  sm?: FlexType
-  md?: FlexType
-  lg?: FlexType
-  xl?: FlexType
-  xxl?: FlexType
+  // eslint-disable-next-line sonarjs/use-type-alias
+  sm?: string | number | boolean
+  md?: string | number | boolean
+  lg?: string | number | boolean
+  xl?: string | number | boolean
+  xxl?: string | number | boolean
 }
 
 export interface Column extends TableColumnType {
@@ -98,9 +119,11 @@ export interface Column extends TableColumnType {
   hiddenInExport?: boolean
   import?: boolean
   batch?: boolean
+  radio?: boolean
+  mask?: StdDesignMask
   customRender?: function
   selector?: {
-    getParams?: object
+    getParams?: Record<string | number, any>
     recordValueIndex: any // relative to api return
     selectionType: any
     api: Curd
@@ -111,5 +134,21 @@ export interface Column extends TableColumnType {
     bind?: any
     itemKey?: any // default is id
     dataSourceValueIndex?: any // relative to dataSource
+    getCheckboxProps?: (record: any) => any
   }
+}
+
+export interface StdTableResponse {
+  data: any[]
+  pagination: Pagination
+}
+
+export interface BulkActionOptions {
+  text: () => string
+  action: (rows: (number | string)[] | undefined) => Promise<boolean>
+}
+
+export type BulkActions = Record<string, BulkActionOptions | boolean> & {
+  delete?: boolean | BulkActionOptions
+  recover?: boolean | BulkActionOptions
 }

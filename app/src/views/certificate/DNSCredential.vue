@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column } from '@/components/StdDesign/types'
 import dns_credential from '@/api/dns_credential'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
@@ -18,7 +18,7 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('Provider'),
   dataIndex: ['config', 'name'],
-  customRender: (args: CustomRenderProps) => {
+  customRender: (args: CustomRender) => {
     return args.record.provider
   },
   sorter: true,

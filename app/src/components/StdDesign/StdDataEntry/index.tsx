@@ -7,7 +7,6 @@ import {
   InputNumber,
   RangePicker,
   Switch,
-  Textarea,
 } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { h } from 'vue'
@@ -66,13 +65,15 @@ export function inputNumber(edit: StdDesignEdit, dataSource: any, dataIndex: any
 
 // eslint-disable-next-line ts/no-explicit-any
 export function textarea(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
-  return h(Textarea, {
-    'placeholder': placeholderHelper(edit),
-    'value': dataSource?.[dataIndex] ?? edit?.config?.defaultValue,
-    'onUpdate:value': value => {
-      dataSource[dataIndex] = value
-    },
-  })
+  if (!dataSource[dataIndex])
+    dataSource[dataIndex] = edit.config?.defaultValue
+
+  return (
+    <Input
+      v-model:value={dataSource[dataIndex]}
+      placeholder={placeholderHelper(edit)}
+    />
+  )
 }
 
 // eslint-disable-next-line ts/no-explicit-any
@@ -109,12 +110,14 @@ export function selector(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
       v-model:selectedKey={dataSource[dataIndex]}
       selectedKey={dataSource[dataIndex] || edit?.config?.defaultValue}
       recordValueIndex={edit.selector?.recordValueIndex}
-      selectionType={edit.selector?.selectionType}
+      selectionType={edit.selector?.selectionType ?? 'radio'}
       api={edit.selector?.api}
       columns={edit.selector?.columns}
       disableSearch={edit.selector?.disableSearch}
       getParams={edit.selector?.getParams}
       description={edit.selector?.description}
+      getCheckboxProps={edit.selector?.getCheckboxProps}
+      expandAll={edit.selector?.expandAll}
     />
   )
 }
@@ -132,13 +135,15 @@ export function switcher(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
 
 // eslint-disable-next-line ts/no-explicit-any
 export function datePicker(edit: StdDesignEdit, dataSource: any, dataIndex: any) {
-  const date: Dayjs | undefined = dataSource?.[dataIndex] ? dayjs(dataSource?.[dataIndex]) : undefined
+  const date: Dayjs | undefined = dataSource?.[dataIndex] ? dayjs.unix(dataSource?.[dataIndex]) : undefined
 
   return (
     <DatePicker
-      format={DATE_FORMAT}
+      allowClear
+      format={edit?.datePicker?.format ?? DATE_FORMAT}
+      picker={edit?.datePicker?.picker}
       value={date}
-      onChange={(_, dataString) => dataSource[dataIndex] = dataString ?? undefined}
+      onChange={(_, dataString) => dataSource[dataIndex] = dayjs(dataString).unix() ?? undefined}
     />
   )
 }
@@ -152,7 +157,9 @@ export function dateRangePicker(edit: StdDesignEdit, dataSource: any, dataIndex:
 
   return (
     <RangePicker
-      format={DATE_FORMAT}
+      allowClear
+      format={edit?.datePicker?.format ?? DATE_FORMAT}
+      picker={edit?.datePicker?.picker}
       value={dates}
       onChange={(_, dateStrings: [string, string]) => dataSource[dataIndex] = dateStrings}
     />

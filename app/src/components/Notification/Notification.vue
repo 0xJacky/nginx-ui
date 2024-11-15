@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Notification } from '@/api/notification'
-import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { SSEvent } from 'sse.js'
 import type { Ref } from 'vue'
 import notificationApi from '@/api/notification'
@@ -52,7 +52,7 @@ function newSSE() {
 
     notification[typeTrans[data.type]]({
       message: $gettext(data.title),
-      description: detailRender({ text: data.details, record: data } as CustomRenderProps),
+      description: detailRender({ text: data.details, record: data } as CustomRender),
     })
   }
 
@@ -161,7 +161,7 @@ function viewAll() {
               </template>
               <AListItemMeta
                 :title="$gettext(item.title)"
-                :description="detailRender({ text: item.details, record: item } as CustomRenderProps)"
+                :description="detailRender({ text: item.details, record: item } as CustomRender)"
               >
                 <template #avatar>
                   <div>

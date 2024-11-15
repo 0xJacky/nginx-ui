@@ -1,4 +1,4 @@
-import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { JSXElements } from '@/components/StdDesign/types'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input } from '@/components/StdDesign/StdDataEntry'
@@ -15,7 +15,7 @@ const configColumns = [{
 }, {
   title: () => $gettext('Type'),
   dataIndex: 'is_dir',
-  customRender: (args: CustomRenderProps) => {
+  customRender: (args: CustomRender) => {
     const template: JSXElements = []
     const { text } = args
     if (text === true || text > 0)

@@ -1,4 +1,4 @@
-import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column, JSXElements } from '@/components/StdDesign/types'
 import { datetime, mask } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input } from '@/components/StdDesign/StdDataEntry'
@@ -11,7 +11,7 @@ const columns: Column[] = [{
   dataIndex: 'name',
   sorter: true,
   pithy: true,
-  customRender: (args: CustomRenderProps) => {
+  customRender: (args: CustomRender) => {
     const { text, record } = args
     if (!text)
       return h('div', record.domain)
@@ -24,7 +24,7 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('Type'),
   dataIndex: 'auto_cert',
-  customRender: (args: CustomRenderProps) => {
+  customRender: (args: CustomRender) => {
     const template: JSXElements = []
     const { text } = args
     const sync = $gettext('Sync Certificate')
@@ -68,7 +68,7 @@ const columns: Column[] = [{
   title: () => $gettext('Status'),
   dataIndex: 'certificate_info',
   pithy: true,
-  customRender: (args: CustomRenderProps) => {
+  customRender: (args: CustomRender) => {
     const template: JSXElements = []
 
     const text = args.text?.not_before

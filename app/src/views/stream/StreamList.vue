@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column, JSXElements } from '@/components/StdDesign/types'
 import stream from '@/api/stream'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
@@ -21,7 +21,7 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'enabled',
-  customRender: (args: CustomRenderProps) => {
+  customRender: (args: CustomRender) => {
     const template: JSXElements = []
     const { text } = args
     if (text === true || text > 0) {

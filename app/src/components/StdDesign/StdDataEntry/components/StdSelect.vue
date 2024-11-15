@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { SelectProps } from 'ant-design-vue'
-import { ref } from 'vue'
 
 const props = defineProps<{
   mask?: Record<string | number, string | (() => string)> | (() => Promise<Record<string | number, string>>)
@@ -62,16 +61,14 @@ onMounted(() => {
 <template>
   <ASelect
     v-model:value="selectedValue"
+    allow-clear
     :options="options"
     :placeholder="props.placeholder"
     :default-active-first-option="false"
     :mode="props.multiple ? 'multiple' : undefined"
-    style="min-width: 180px"
-    allow-clear
+    class="min-w-180px w-auto!"
     :get-popup-container="triggerNode => triggerNode.parentNode"
   />
 </template>
 
-<style lang="less" scoped>
-
-</style>
+<style lang="less" scoped></style>

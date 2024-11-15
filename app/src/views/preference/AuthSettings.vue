@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import type { BannedIP, Settings } from '@/api/settings'
-import type { CustomRenderProps } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Ref } from 'vue'
 import setting from '@/api/settings'
 import TOTP from '@/views/preference/components/TOTP.vue'
@@ -19,7 +19,7 @@ const bannedIPColumns = [{
 }, {
   title: $gettext('Banned Until'),
   dataIndex: 'expired_at',
-  customRender: (args: CustomRenderProps) => {
+  customRender: (args: CustomRender) => {
     return dayjs.unix(args.text).format('YYYY-MM-DD HH:mm:ss')
   },
 }, {
