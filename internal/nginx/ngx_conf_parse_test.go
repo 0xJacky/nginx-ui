@@ -14,7 +14,8 @@ func TestNgxConfParse(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
-	n := p.Parse()
+
+	n, _ := p.Parse()
 
 	fn(n.Block, 0)
 

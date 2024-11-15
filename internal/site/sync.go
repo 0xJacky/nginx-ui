@@ -44,6 +44,7 @@ type SyncResult struct {
 	Name       string `json:"name"`
 	NewName    string `json:"new_name,omitempty"`
 	Response   gin.H  `json:"response"`
+	Error      string `json:"error"`
 }
 
 func NewSyncResult(node string, siteName string, resp *resty.Response) (s *SyncResult) {
