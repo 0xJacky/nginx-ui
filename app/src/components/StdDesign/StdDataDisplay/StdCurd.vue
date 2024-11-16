@@ -164,8 +164,8 @@ async function handleClickBatchEdit(batchColumns: Column[]) {
 }
 
 function handleBatchUpdated() {
-  table.value.get_list()
-  table.value.resetSelection()
+  table.value?.get_list()
+  table.value?.resetSelection()
 }
 </script>
 
