@@ -13,15 +13,17 @@ const emit = defineEmits<{
 
 const modalVisible = ref(false)
 const modalClosable = ref(true)
+const refObtainCertLive = useTemplateRef('refObtainCertLive')
+const saveCert = inject<() => Promise<void>>('saveCert')!
 
-const refObtainCertLive = ref()
+async function issueCert() {
+  await saveCert()
 
-function issueCert() {
   modalVisible.value = true
 
   const { name, domains, key_type } = props.options
 
-  refObtainCertLive.value.issue_cert(name, domains, key_type).then(() => {
+  refObtainCertLive.value?.issue_cert(name!, domains, key_type).then(() => {
     message.success($gettext('Renew successfully'))
     emit('renewed')
   })

@@ -98,12 +98,9 @@ func IssueCert(c *gin.Context) {
 
 	// block, until errChan closes
 	for err = range errChan {
-
 		log.Error(err)
-
 		// Save logs to db
 		log.Exit()
-
 		err = ws.WriteJSON(IssueCertResponse{
 			Status:  Error,
 			Message: err.Error(),
@@ -112,7 +109,6 @@ func IssueCert(c *gin.Context) {
 			logger.Error(err)
 			return
 		}
-
 		return
 	}
 

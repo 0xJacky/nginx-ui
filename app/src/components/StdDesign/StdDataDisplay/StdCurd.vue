@@ -61,7 +61,7 @@ function add(preset: any = undefined) {
   modifyMode.value = true
 }
 
-const table = ref()
+const table = useTemplateRef('table')
 const inTrash = ref(false)
 const getParams = reactive(props.getParams ?? {})
 

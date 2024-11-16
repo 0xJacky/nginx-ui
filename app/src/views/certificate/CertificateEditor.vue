@@ -40,17 +40,24 @@ onMounted(() => {
 
 const router = useRouter()
 const errors = ref({}) as Ref<Record<string, string>>
-function save() {
-  cert.save(data.value.id, data.value).then(r => {
+
+async function save() {
+  try {
+    const r = await cert.save(data.value.id, data.value)
     data.value = r
-    message.success($gettext('Save successfully'))
-    router.push(`/certificates/${r.id}`)
     errors.value = {}
-  }).catch(e => {
+    message.success($gettext('Save successfully'))
+    await router.push(`/certificates/${r.id}`)
+  }
+  // eslint-disable-next-line ts/no-explicit-any
+  catch (e: any) {
     errors.value = e.errors
     message.error($gettext(e?.message ?? 'Server error'))
-  })
+    throw e
+  }
 }
+
+provide('saveCert', save)
 
 const log = computed(() => {
   const logs = data.value.log?.split('\n')

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { UseClipboard } from '@vueuse/components'
-import { $gettext } from '../../gettext'
 
 const props = defineProps<{
   value: string

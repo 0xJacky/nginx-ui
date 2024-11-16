@@ -58,7 +58,7 @@ export function detailRender(args: CustomRender) {
         return args.text
     }
   }
-  // eslint-disable-next-line sonarjs/no-ignored-exceptions
+  // eslint-disable-next-line sonarjs/no-ignored-exceptions,unused-imports/no-unused-vars
   catch (e) {
     return args.text
   }
