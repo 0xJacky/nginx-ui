@@ -170,8 +170,9 @@ provide('data', data)
     <ACol
       :xs="24"
       :sm="24"
-      :md="16"
-      :lg="18"
+      :md="24"
+      :lg="16"
+      :xl="17"
     >
       <ACard :bordered="false">
         <template #title>
@@ -250,8 +251,9 @@ provide('data', data)
       class="col-right"
       :xs="24"
       :sm="24"
-      :md="8"
-      :lg="6"
+      :md="24"
+      :lg="8"
+      :xl="7"
     >
       <RightSettings />
     </ACol>
