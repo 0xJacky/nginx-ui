@@ -9,7 +9,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
-	"github.com/uozi-tech/cosy/logger"
 	"net/http"
 	"os"
 	"path/filepath"
