@@ -1,6 +1,7 @@
 package notification
 
 import (
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
@@ -9,11 +10,7 @@ import (
 )
 
 func Live(c *gin.Context) {
-	c.Header("Content-Type", "text/event-stream")
-	c.Header("Cache-Control", "no-cache")
-	c.Header("Connection", "keep-alive")
-	// https://stackoverflow.com/questions/27898622/server-sent-events-stopped-work-after-enabling-ssl-on-proxy/27960243#27960243
-	c.Header("X-Accel-Buffering", "no")
+	api.SetSSEHeaders(c)
 
 	evtChan := make(chan *model.Notification)
 

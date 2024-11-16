@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/google/uuid"
+	"github.com/uozi-tech/cosy"
 	"net/http"
 	"strings"
 	"time"
@@ -71,7 +72,7 @@ func Start2FASecureSessionByOTP(c *gin.Context) {
 		OTP          string `json:"otp"`
 		RecoveryCode string `json:"recovery_code"`
 	}
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 	u := api.CurrentUser(c)

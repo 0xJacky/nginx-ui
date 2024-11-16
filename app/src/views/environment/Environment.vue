@@ -35,7 +35,7 @@ function batchUpgrade() {
       :api="environment"
       :columns="envColumns"
     >
-      <template #extra>
+      <template #beforeAdd>
         <a @click="loadFromSettings">{{ $gettext('Load from settings') }}</a>
       </template>
     </StdCurd>

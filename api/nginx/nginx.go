@@ -4,12 +4,13 @@ import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy"
 	"net/http"
 )
 
 func BuildNginxConfig(c *gin.Context) {
 	var ngxConf nginx.NgxConfig
-	if !api.BindAndValid(c, &ngxConf) {
+	if !cosy.BindAndValid(c, &ngxConf) {
 		return
 	}
 	content, err := ngxConf.BuildConfig()
@@ -27,7 +28,7 @@ func TokenizeNginxConfig(c *gin.Context) {
 		Content string `json:"content" binding:"required"`
 	}
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
@@ -45,7 +46,7 @@ func FormatNginxConfig(c *gin.Context) {
 		Content string `json:"content" binding:"required"`
 	}
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 	content, err := nginx.FmtCode(json.Content)

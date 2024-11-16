@@ -3,13 +3,13 @@ package openai
 import (
 	"context"
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/chatbot"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/sashabaranov/go-openai"
+	"github.com/uozi-tech/cosy"
 	"io"
 	"net/http"
 )
@@ -26,7 +26,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
 		Messages []openai.ChatCompletionMessage `json:"messages"`
 	}
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 

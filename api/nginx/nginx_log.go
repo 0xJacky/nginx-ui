@@ -3,7 +3,6 @@ package nginx
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -13,6 +12,7 @@ import (
 	"github.com/hpcloud/tail"
 	"github.com/pkg/errors"
 	"github.com/spf13/cast"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	"io"
 	"net/http"
@@ -44,7 +44,7 @@ func GetNginxLogPage(c *gin.Context) {
 	}
 
 	var control controlStruct
-	if !api.BindAndValid(c, &control) {
+	if !cosy.BindAndValid(c, &control) {
 		return
 	}
 

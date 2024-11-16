@@ -8,6 +8,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/uozi-tech/cosy"
 	cSettings "github.com/uozi-tech/cosy/settings"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
@@ -39,7 +40,7 @@ func InstallNginxUI(c *gin.Context) {
 		return
 	}
 	var json InstallJson
-	ok := api.BindAndValid(c, &json)
+	ok := cosy.BindAndValid(c, &json)
 	if !ok {
 		return
 	}

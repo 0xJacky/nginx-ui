@@ -4,6 +4,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy"
 	"net/http"
 )
 
@@ -16,7 +17,7 @@ func DuplicateSite(c *gin.Context) {
 		Name string `json:"name" binding:"required"`
 	}
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 

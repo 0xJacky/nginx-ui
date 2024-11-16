@@ -6,6 +6,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/go-acme/lego/v4/certcrypto"
+	"github.com/uozi-tech/cosy"
 	"net/http"
 )
 
@@ -19,7 +20,7 @@ func AddDomainToAutoCert(c *gin.Context) {
 		KeyType         certcrypto.KeyType `json:"key_type"`
 	}
 
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 

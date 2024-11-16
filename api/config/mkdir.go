@@ -5,6 +5,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy"
 	"net/http"
 	"os"
 )
@@ -14,7 +15,7 @@ func Mkdir(c *gin.Context) {
 		BasePath   string `json:"base_path"`
 		FolderName string `json:"folder_name"`
 	}
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 	fullPath := nginx.GetConfPath(json.BasePath, json.FolderName)

@@ -47,7 +47,7 @@ type DnsCredentialManageJson struct {
 
 func AddDnsCredential(c *gin.Context) {
 	var json DnsCredentialManageJson
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
@@ -73,7 +73,7 @@ func EditDnsCredential(c *gin.Context) {
 	id := cast.ToUint64(c.Param("id"))
 
 	var json DnsCredentialManageJson
-	if !api.BindAndValid(c, &json) {
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
