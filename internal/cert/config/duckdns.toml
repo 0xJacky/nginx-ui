@@ -6,7 +6,7 @@ Since = "v0.5.0"
 
 Example = '''
 DUCKDNS_TOKEN=xxxxxx \
-lego --email you@example.com --dns duckdns --domains my.example.org run
+lego --email you@example.com --dns duckdns -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

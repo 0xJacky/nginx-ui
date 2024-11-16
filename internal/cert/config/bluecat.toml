@@ -11,7 +11,7 @@ BLUECAT_USER_NAME=myusername \
 BLUECAT_CONFIG_NAME=myconfig \
 BLUECAT_SERVER_URL=https://bam.example.com \
 BLUECAT_TTL=30 \
-lego --email you@example.com --dns bluecat --domains my.example.org run
+lego --email you@example.com --dns bluecat -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

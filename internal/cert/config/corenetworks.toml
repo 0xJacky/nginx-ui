@@ -1,0 +1,25 @@
+Name = "Core-Networks"
+Description = ''''''
+URL = "https://www.core-networks.de/"
+Code = "corenetworks"
+Since = "v4.20.0"
+
+Example = '''
+CORENETWORKS_LOGIN="xxxx" \
+CORENETWORKS_PASSWORD="yyyy" \
+lego --email you@example.com --dns corenetworks -d '*.example.com' -d example.com run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    CORENETWORKS_LOGIN = "The username of the API account"
+    CORENETWORKS_PASSWORD = "The password"
+  [Configuration.Additional]
+    CORENETWORKS_POLLING_INTERVAL = "Time between DNS propagation check"
+    CORENETWORKS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    CORENETWORKS_TTL = "The TTL of the TXT record used for the DNS challenge"
+    CORENETWORKS_HTTP_TIMEOUT = "API request timeout"
+    CORENETWORKS_SEQUENCE_INTERVAL = "Time between sequential requests"
+
+[Links]
+  API = "https://beta.api.core-networks.de/doc/"

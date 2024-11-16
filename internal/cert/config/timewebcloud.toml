@@ -6,7 +6,7 @@ Since = "v4.20.0"
 
 Example = '''
 TIMEWEBCLOUD_AUTH_TOKEN=xxxxxx \
-lego --email you@example.com --dns timewebcloud --domains my.example.org run
+lego --email you@example.com --dns timewebcloud -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

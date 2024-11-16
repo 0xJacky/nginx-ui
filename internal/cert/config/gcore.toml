@@ -6,7 +6,7 @@ Since = "v4.5.0"
 
 Example = '''
 GCORE_PERMANENT_API_TOKEN=xxxxx \
-lego --email you@example.com --dns gcore --domains my.example.org run
+lego --email you@example.com --dns gcore -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

@@ -7,7 +7,7 @@ Since = "v1.1.0"
 Example = '''
 NIFCLOUD_ACCESS_KEY_ID=xxxx \
 NIFCLOUD_SECRET_ACCESS_KEY=yyyy \
-lego --email you@example.com --dns nifcloud --domains my.example.org run
+lego --email you@example.com --dns nifcloud -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

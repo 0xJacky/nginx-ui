@@ -7,7 +7,7 @@ Since = "v4.19.0"
 Example = '''
 VOLC_ACCESSKEY=xxx \
 VOLC_SECRETKEY=yyy \
-lego --email you@example.com --dns volcengine --domains "example.org" --domains "*.example.org" run
+lego --email you@example.com --dns volcengine -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

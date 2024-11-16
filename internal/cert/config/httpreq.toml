@@ -6,7 +6,7 @@ Since = "v2.0.0"
 
 Example = '''
 HTTPREQ_ENDPOINT=http://my.server.com:9090 \
-lego --email you@example.com --dns httpreq --domains my.example.org run
+lego --email you@example.com --dns httpreq -d '*.example.com' -d example.com run
 '''
 
 Additional = '''

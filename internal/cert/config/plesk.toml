@@ -8,7 +8,7 @@ Example = '''
 PLESK_SERVER_BASE_URL="https://plesk.myserver.com:8443" \
 PLESK_USERNAME=xxxxxx \
 PLESK_PASSWORD=yyyyyy \
-lego --email you@example.com --dns plesk --domains my.example.org run
+lego --email you@example.com --dns plesk -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

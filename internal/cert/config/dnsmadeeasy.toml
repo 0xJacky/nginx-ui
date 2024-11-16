@@ -7,7 +7,7 @@ Since = "v0.4.0"
 Example = '''
 DNSMADEEASY_API_KEY=xxxxxx \
 DNSMADEEASY_API_SECRET=yyyyy \
-lego --email you@example.com --dns dnsmadeeasy --domains my.example.org run
+lego --email you@example.com --dns dnsmadeeasy -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

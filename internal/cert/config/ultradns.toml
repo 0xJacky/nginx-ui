@@ -7,7 +7,7 @@ Since = "v4.10.0"
 Example = '''
 ULTRADNS_USERNAME=username \
 ULTRADNS_PASSWORD=password \
-lego --email you@example.com --dns ultradns --domains my.example.org run
+lego --email you@example.com --dns ultradns -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

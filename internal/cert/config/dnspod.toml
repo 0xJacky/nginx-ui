@@ -8,7 +8,7 @@ Since = "v0.4.0"
 
 Example = '''
 DNSPOD_API_KEY=xxxxxx \
-lego --email you@example.com --dns dnspod --domains my.example.org run
+lego --email you@example.com --dns dnspod -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

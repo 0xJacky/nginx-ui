@@ -6,7 +6,7 @@ Since = "v4.11.0"
 
 Example = '''
 BUNNY_API_KEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxxxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx \
-lego --email you@example.com --dns bunny --domains my.example.org run
+lego --email you@example.com --dns bunny -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

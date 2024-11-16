@@ -6,7 +6,7 @@ Since = "v4.13.0"
 
 Example = '''
 IPV64_API_KEY=xxxxxx \
-lego --email you@example.com --dns ipv64 --domains my.example.org run
+lego --email you@example.com --dns ipv64 -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

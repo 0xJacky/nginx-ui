@@ -7,7 +7,7 @@ Since = "v3.2.0"
 Example = '''
 AUTODNS_API_USER=username \
 AUTODNS_API_PASSWORD=supersecretpassword \
-lego --email you@example.com --dns autodns --domains my.example.org run
+lego --email you@example.com --dns autodns -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

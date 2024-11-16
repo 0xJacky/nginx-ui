@@ -6,7 +6,7 @@ Since = "v3.3.0"
 
 Example = '''
 CHECKDOMAIN_TOKEN=yoursecrettoken \
-lego --email you@example.com --dns checkdomain --domains my.example.org run
+lego --email you@example.com --dns checkdomain -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

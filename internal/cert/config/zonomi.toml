@@ -6,7 +6,7 @@ Since = "v3.5.0"
 
 Example = '''
 ZONOMI_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
-lego --email you@example.com --dns zonomi --domains my.example.org run
+lego --email you@example.com --dns zonomi -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

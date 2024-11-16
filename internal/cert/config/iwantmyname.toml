@@ -7,7 +7,7 @@ Since = "v4.7.0"
 Example = '''
 IWANTMYNAME_USERNAME=xxxxxxxx \
 IWANTMYNAME_PASSWORD=xxxxxxxx \
-lego --email you@example.com --dns iwantmyname --domains my.example.org run
+lego --email you@example.com --dns iwantmyname -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

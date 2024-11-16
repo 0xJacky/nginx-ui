@@ -6,7 +6,7 @@ Since = "v0.3.0"
 
 Example = '''
 DO_AUTH_TOKEN=xxxxxx \
-lego --email you@example.com --dns digitalocean --domains my.example.org run
+lego --email you@example.com --dns digitalocean -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

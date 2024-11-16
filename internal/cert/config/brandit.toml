@@ -1,5 +1,10 @@
-Name = "Brandit"
-Description = ''''''
+Name = "Brandit (deprecated)"
+Description = '''
+Brandit has been acquired by Abion.
+Abion has a different API.
+
+If you are a Brandit/Albion user, you can try the PR https://github.com/go-acme/lego/pull/2112.
+'''
 URL = "https://www.brandit.com/"
 Code = "brandit"
 Since = "v4.11.0"
@@ -7,7 +12,7 @@ Since = "v4.11.0"
 Example = '''
 BRANDIT_API_KEY=xxxxxxxxxxxxxxxxxxxxx \
 BRANDIT_API_USERNAME=yyyyyyyyyyyyyyyyyyyy \
-lego --email myemail@example.com --dns brandit --domains my.example.org run
+lego --email you@example.com --dns brandit -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

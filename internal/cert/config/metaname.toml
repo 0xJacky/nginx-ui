@@ -7,7 +7,7 @@ Since = "v4.13.0"
 Example = '''
 METANAME_ACCOUNT_REFERENCE=xxxx \
 METANAME_API_KEY=yyyyyyy \
-lego --email you@example.com --dns metaname --domains my.example.org run
+lego --email you@example.com --dns metaname -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

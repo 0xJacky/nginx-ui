@@ -7,7 +7,7 @@ Since = "v4.7.0"
 Example = '''
 IIJ_DPF_API_TOKEN=xxxxxxxx \
 IIJ_DPF_DPM_SERVICE_CODE=yyyyyy \
-lego --email you@example.com --dns iijdpf --domains my.example.org run
+lego --email you@example.com --dns iijdpf -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

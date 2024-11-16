@@ -7,7 +7,7 @@ Since = "v4.16.0"
 Example = '''
 SHELLRENT_USERNAME=xxxx \
 SHELLRENT_TOKEN=yyyy \
-lego --email you@example.com --dns shellrent --domains my.example.org run
+lego --email you@example.com --dns shellrent -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

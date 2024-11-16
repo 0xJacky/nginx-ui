@@ -8,7 +8,7 @@ Example = '''
 CLOUDRU_SERVICE_INSTANCE_ID=ppp \
 CLOUDRU_KEY_ID=xxx \
 CLOUDRU_SECRET=yyy \
-lego --email you@example.com --dns cloudru --domains my.example.org run
+lego --email you@example.com --dns cloudru -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

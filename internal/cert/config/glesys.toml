@@ -7,7 +7,7 @@ Since = "v0.5.0"
 Example = '''
 GLESYS_API_USER=xxxxx \
 GLESYS_API_KEY=yyyyy \
-lego --email you@example.com --dns glesys --domains my.example.org run
+lego --email you@example.com --dns glesys -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

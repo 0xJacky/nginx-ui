@@ -7,7 +7,7 @@ Since = "v0.4.0"
 Example = '''
 PDNS_API_URL=http://pdns-server:80/ \
 PDNS_API_KEY=xxxx \
-lego --email you@example.com --dns pdns --domains my.example.org run
+lego --email you@example.com --dns pdns -d '*.example.com' -d example.com run
 '''
 
 Additional = '''

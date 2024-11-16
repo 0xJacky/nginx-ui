@@ -10,7 +10,7 @@ Example = '''
 CPANEL_USERNAME = "yyyy"
 CPANEL_TOKEN = "xxxx"
 CPANEL_BASE_URL = "https://example.com:2083" \
-lego --email you@example.com --dns cpanel --domains my.example.org run
+lego --email you@example.com --dns cpanel -d '*.example.com' -d example.com run
 
 ## WHM
 
@@ -18,7 +18,7 @@ CPANEL_MODE = whm
 CPANEL_USERNAME = "yyyy"
 CPANEL_TOKEN = "xxxx"
 CPANEL_BASE_URL = "https://example.com:2087" \
-lego --email you@example.com --dns cpanel --domains my.example.org run
+lego --email you@example.com --dns cpanel -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

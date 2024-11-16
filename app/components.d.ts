@@ -98,7 +98,6 @@ declare module 'vue' {
     StdDesignStdDataEntryComponentsStdSelector: typeof import('./src/components/StdDesign/StdDataEntry/components/StdSelector.vue')['default']
     StdDesignStdDataEntryStdDataEntry: typeof import('./src/components/StdDesign/StdDataEntry/StdDataEntry.vue')['default']
     StdDesignStdDataEntryStdFormItem: typeof import('./src/components/StdDesign/StdDataEntry/StdFormItem.vue')['default']
-    StdDesignStdDataImportStdDataImport: typeof import('./src/components/StdDesign/StdDataImport/StdDataImport.vue')['default']
     StdDesignStdDetailStdDetail: typeof import('./src/components/StdDesign/StdDetail/StdDetail.vue')['default']
     SwitchAppearanceIconsVPIconMoon: typeof import('./src/components/SwitchAppearance/icons/VPIconMoon.vue')['default']
     SwitchAppearanceIconsVPIconSun: typeof import('./src/components/SwitchAppearance/icons/VPIconSun.vue')['default']

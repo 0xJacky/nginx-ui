@@ -7,7 +7,7 @@ Since = "v4.6.0"
 Example = '''
 TENCENTCLOUD_SECRET_ID=abcdefghijklmnopqrstuvwx \
 TENCENTCLOUD_SECRET_KEY=your-secret-key \
-lego --email you@example.com --dns tencentcloud --domains my.example.org run
+lego --email you@example.com --dns tencentcloud -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

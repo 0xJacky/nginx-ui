@@ -6,7 +6,7 @@ Since = "v3.7.0"
 
 Example = '''
 HETZNER_API_KEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx \
-lego --email you@example.com --dns hetzner --domains my.example.org run
+lego --email you@example.com --dns hetzner -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

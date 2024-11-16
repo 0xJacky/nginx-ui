@@ -7,7 +7,7 @@ Since = "v3.7.0"
 
 Example = '''
 YANDEX_PDD_TOKEN=<your PDD Token> \
-lego --email you@example.com --dns yandex --domains my.example.org run
+lego --email you@example.com --dns yandex -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

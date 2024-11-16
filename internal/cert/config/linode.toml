@@ -7,7 +7,7 @@ Since = "v1.1.0"
 
 Example = '''
 LINODE_TOKEN=xxxxx \
-lego --email you@example.com --dns linode --domains my.example.org run
+lego --email you@example.com --dns linode -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

@@ -7,12 +7,12 @@ Since = "v0.3.0"
 Example = '''
 CLOUDFLARE_EMAIL=you@example.com \
 CLOUDFLARE_API_KEY=b9841238feb177a84330febba8a83208921177bffe733 \
-lego --email you@example.com --dns cloudflare --domains my.example.org run
+lego --email you@example.com --dns cloudflare -d '*.example.com' -d example.com run
 
 # or
 
 CLOUDFLARE_DNS_API_TOKEN=1234567890abcdefghijklmnopqrstuvwxyz \
-lego --email you@example.com --dns cloudflare --domains my.example.org run
+lego --email you@example.com --dns cloudflare -d '*.example.com' -d example.com run
 '''
 
 Additional = '''
@@ -46,12 +46,13 @@ Then pass the API token as `CF_DNS_API_TOKEN` to Lego.
 **Alternatively,** if you prefer a more strict set of privileges,
 you can split the access tokens:
 
-* Create one with *Zone / Zone / Read* permissions and scope it to all your zones.
+* Create one with *Zone / Zone / Read* permissions and scope it to all your zones or just the individual zone you need to edit.
   This is needed to resolve domain names to Zone IDs and can be shared among multiple Lego installations.
   Pass this API token as `CF_ZONE_API_TOKEN` to Lego.
 * Create another API token with *Zone / DNS / Edit* permissions and set the scope to the domains you want to manage with a single Lego installation.
   Pass this token as `CF_DNS_API_TOKEN` to Lego.
 * Repeat the previous step for each host you want to run Lego on.
+* It is possible to use the same api token for both variables if it is given `Zone:Read` and `DNS:Edit` permission for the zone.
 
 This "paranoid" setup is mainly interesting for users who manage many zones/domains with a single Cloudflare account.
 It follows the principle of least privilege and limits the possible damage, should one of the hosts become compromised.

@@ -7,7 +7,7 @@ Since = "v0.5.0"
 Example = '''
 GODADDY_API_KEY=xxxxxxxx \
 GODADDY_API_SECRET=yyyyyyyy \
-lego --email you@example.com --dns godaddy --domains my.example.org run
+lego --email you@example.com --dns godaddy -d '*.example.com' -d example.com run
 '''
 
 Additional = '''

@@ -1,13 +1,15 @@
-Name = "CloudXNS"
-Description = """"""
-URL = "https://www.cloudxns.net/"
+Name = "CloudXNS (Deprecated)"
+Description = '''
+The CloudXNS DNS provider has shut down.
+'''
+URL = "https://github.com/go-acme/lego/issues/2323"
 Code = "cloudxns"
 Since = "v0.5.0"
 
 Example = '''
 CLOUDXNS_API_KEY=xxxx \
 CLOUDXNS_SECRET_KEY=yyyy \
-lego --email you@example.com --dns cloudxns --domains my.example.org run
+lego --email you@example.com --dns cloudxns -d '*.example.com' -d example.com run
 '''
 
 [Configuration]
@@ -19,6 +21,3 @@ lego --email you@example.com --dns cloudxns --domains my.example.org run
     CLOUDXNS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
     CLOUDXNS_TTL = "The TTL of the TXT record used for the DNS challenge"
     CLOUDXNS_HTTP_TIMEOUT = "API request timeout"
-
-[Links]
-  API = "https://www.cloudxns.net/Public/Doc/CloudXNS_api2.0_doc_zh-cn.zip"

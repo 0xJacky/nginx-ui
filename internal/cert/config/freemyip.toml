@@ -6,7 +6,7 @@ Since = "v4.5.0"
 
 Example = '''
 FREEMYIP_TOKEN=xxxxxx \
-lego --email you@example.com --dns freemyip --domains my.example.org run
+lego --email you@example.com --dns freemyip -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

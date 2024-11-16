@@ -8,7 +8,7 @@ Example = '''
 VK_CLOUD_PROJECT_ID="<your_project_id>" \
 VK_CLOUD_USERNAME="<your_email>" \
 VK_CLOUD_PASSWORD="<your_password>" \
-lego --email you@example.com --dns vkcloud --domains "example.org" --domains "*.example.org" run
+lego --email you@example.com --dns vkcloud -d '*.example.com' -d example.com run
 '''
 
 Additional = '''

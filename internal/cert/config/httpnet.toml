@@ -6,7 +6,7 @@ Since = "v4.15.0"
 
 Example = '''
 HTTPNET_API_KEY=xxxxxxxx \
-lego --email you@example.com --dns httpnet --domains my.example.org run
+lego --email you@example.com --dns httpnet -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

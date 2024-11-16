@@ -7,7 +7,7 @@ Since = "v3.5.0"
 Example = '''
 REGRU_USERNAME=xxxxxx \
 REGRU_PASSWORD=yyyyyy \
-lego --email you@example.com --dns regru --domains my.example.org run
+lego --email you@example.com --dns regru -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

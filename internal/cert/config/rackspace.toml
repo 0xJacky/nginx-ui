@@ -7,7 +7,7 @@ Since = "v0.4.0"
 Example = '''
 RACKSPACE_USER=xxxx \
 RACKSPACE_API_KEY=yyyy \
-lego --email you@example.com --dns rackspace --domains my.example.org run
+lego --email you@example.com --dns rackspace -d '*.example.com' -d example.com run
 '''
 
 [Configuration]

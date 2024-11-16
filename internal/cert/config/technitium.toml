@@ -1,0 +1,33 @@
+Name = "Technitium"
+Description = ''''''
+URL = "https://technitium.com/"
+Code = "technitium"
+Since = "v4.20.0"
+
+Example = '''
+TECHNITIUM_SERVER_BASE_URL="https://localhost:5380" \
+TECHNITIUM_API_TOKEN="xxxxxxxxxxxxxxxxxxxxx" \
+lego --email you@example.com --dns technitium -d '*.example.com' -d example.com run
+'''
+
+Additional = '''
+Technitium DNS Server supports Dynamic Updates (RFC2136) for primary zones,
+so you can also use the [RFC2136 provider](https://go-acme.github.io/lego/dns/rfc2136/index.html).
+
+[RFC2136 provider](https://go-acme.github.io/lego/dns/rfc2136/index.html) is much better compared to the HTTP API option from security perspective.
+Technitium recommends to use it in production over the HTTP API.
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    TECHNITIUM_SERVER_BASE_URL = "Server base URL"
+    TECHNITIUM_API_TOKEN = "API token"
+  [Configuration.Additional]
+    TECHNITIUM_POLLING_INTERVAL = "Time between DNS propagation check"
+    TECHNITIUM_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    TECHNITIUM_TTL = "The TTL of the TXT record used for the DNS challenge"
+    TECHNITIUM_HTTP_TIMEOUT = "API request timeout"
+
+[Links]
+  API = "https://github.com/TechnitiumSoftware/DnsServer/blob/0f83d23e605956b66ac76921199e241d9cc061bd/APIDOCS.md"
+  Article = "https://blog.technitium.com/2023/03/"

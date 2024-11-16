@@ -6,7 +6,7 @@ Since = "v0.3.1"
 
 Example = '''
 VULTR_API_KEY=xxxxx \
-lego --email you@example.com --dns vultr --domains my.example.org run
+lego --email you@example.com --dns vultr -d '*.example.com' -d example.com run
 '''
 
 [Configuration]
