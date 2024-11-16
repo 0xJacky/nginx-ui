@@ -38,7 +38,6 @@ func TokenizeNginxConfig(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, ngxConfig)
-
 }
 
 func FormatNginxConfig(c *gin.Context) {

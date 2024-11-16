@@ -27,85 +27,97 @@ const ngx_config: NgxConfig = reactive({
 
 const certInfoMap: Ref<Record<number, CertificateInfo[]>> = ref({})
 
-const auto_cert = ref(false)
+const autoCert = ref(false)
 const enabled = ref(false)
 const filepath = ref('')
 const configText = ref('')
-const advance_mode_ref = ref(false)
+const advanceModeRef = ref(false)
 const saving = ref(false)
 const filename = ref('')
-const parse_error_status = ref(false)
-const parse_error_message = ref('')
+const parseErrorStatus = ref(false)
+const parseErrorMessage = ref('')
 const data = ref({}) as Ref<Site>
+const historyChatgptRecord = ref([]) as Ref<ChatComplicationMessage[]>
+const loading = ref(true)
 
-init()
+onMounted(init)
 
 const advanceMode = computed({
   get() {
-    return advance_mode_ref.value || parse_error_status.value
+    return advanceModeRef.value || parseErrorStatus.value
   },
   set(v: boolean) {
-    advance_mode_ref.value = v
+    advanceModeRef.value = v
   },
 })
 
-const history_chatgpt_record = ref([]) as Ref<ChatComplicationMessage[]>
-
-function handle_response(r: Site) {
+async function handleResponse(r: Site) {
   if (r.advanced)
     advanceMode.value = true
 
-  if (r.advanced)
-    advanceMode.value = true
-
-  parse_error_status.value = false
-  parse_error_message.value = ''
+  parseErrorStatus.value = false
+  parseErrorMessage.value = ''
   filename.value = r.name
   filepath.value = r.filepath
   configText.value = r.config
   enabled.value = r.enabled
-  auto_cert.value = r.auto_cert
-  history_chatgpt_record.value = r.chatgpt_messages
+  autoCert.value = r.auto_cert
+  historyChatgptRecord.value = r.chatgpt_messages
   data.value = r
   certInfoMap.value = r.cert_info || {}
   Object.assign(ngx_config, r.tokenized)
 }
 
-function init() {
+async function init() {
+  loading.value = true
   if (name.value) {
-    site.get(name.value).then(r => {
-      handle_response(r)
-    }).catch(handle_parse_error)
+    await site.get(name.value).then(r => {
+      handleResponse(r)
+    }).catch(handleParseError)
   }
   else {
-    history_chatgpt_record.value = []
+    historyChatgptRecord.value = []
   }
+  loading.value = false
 }
 
-function handle_parse_error(e: { error?: string, message: string }) {
+function handleParseError(e: { error?: string, message: string }) {
   console.error(e)
-  parse_error_status.value = true
-  parse_error_message.value = e.message
+  parseErrorStatus.value = true
+  parseErrorMessage.value = e.message
   config.get(`sites-available/${name.value}`).then(r => {
     configText.value = r.content
   })
 }
 
-function on_mode_change(advanced: CheckedType) {
-  site.advance_mode(name.value, { advanced: advanced as boolean }).then(() => {
+async function onModeChange(advanced: CheckedType) {
+  loading.value = true
+
+  try {
+    await site.advance_mode(name.value, { advanced: advanced as boolean })
     advanceMode.value = advanced as boolean
     if (advanced) {
-      build_config()
+      await buildConfig()
     }
     else {
-      return ngx.tokenize_config(configText.value).then(r => {
-        Object.assign(ngx_config, r)
-      }).catch(handle_parse_error)
+      let r = await site.get(name.value)
+      await handleResponse(r)
+      r = await ngx.tokenize_config(configText.value)
+      Object.assign(ngx_config, {
+        ...r,
+        name: name.value,
+      })
     }
-  })
+  }
+  // eslint-disable-next-line ts/no-explicit-any
+  catch (e: any) {
+    handleParseError(e)
+  }
+
+  loading.value = false
 }
 
-async function build_config() {
+async function buildConfig() {
   return ngx.build_config(ngx_config).then(r => {
     configText.value = r.content
   })
@@ -116,7 +128,7 @@ async function save() {
 
   if (!advanceMode.value) {
     try {
-      await build_config()
+      await buildConfig()
     }
     catch {
       saving.value = false
@@ -132,13 +144,13 @@ async function save() {
     site_category_id: data.value.site_category_id,
     sync_node_ids: data.value.sync_node_ids,
   }).then(r => {
-    handle_response(r)
+    handleResponse(r)
     router.push({
       path: `/sites/${filename.value}`,
       query: route.query,
     })
     message.success($gettext('Saved successfully'))
-  }).catch(handle_parse_error).finally(() => {
+  }).catch(handleParseError).finally(() => {
     saving.value = false
   })
 }
@@ -146,7 +158,7 @@ async function save() {
 provide('save_config', save)
 provide('configText', configText)
 provide('ngx_config', ngx_config)
-provide('history_chatgpt_record', history_chatgpt_record)
+provide('history_chatgpt_record', historyChatgptRecord)
 provide('enabled', enabled)
 provide('name', name)
 provide('filepath', filepath)
@@ -182,9 +194,10 @@ provide('data', data)
             <div class="switch">
               <ASwitch
                 size="small"
-                :disabled="parse_error_status"
+                :disabled="parseErrorStatus"
                 :checked="advanceMode"
-                @change="on_mode_change"
+                :loading
+                @change="onModeChange"
               />
             </div>
             <template v-if="advanceMode">
@@ -202,12 +215,12 @@ provide('data', data)
             key="advance"
           >
             <div
-              v-if="parse_error_status"
+              v-if="parseErrorStatus"
               class="parse-error-alert-wrapper"
             >
               <AAlert
                 :message="$gettext('Nginx Configuration Parse Error')"
-                :description="parse_error_message"
+                :description="parseErrorMessage"
                 type="error"
                 show-icon
               />
@@ -223,7 +236,7 @@ provide('data', data)
             class="domain-edit-container"
           >
             <NgxConfigEditor
-              v-model:auto-cert="auto_cert"
+              v-model:auto-cert="autoCert"
               :cert-info="certInfoMap"
               :enabled="enabled"
               @callback="save"
