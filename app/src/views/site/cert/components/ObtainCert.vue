@@ -30,6 +30,7 @@ const data = ref({
     credentials: {},
     additional: {},
   },
+  key_type: '2048',
 }) as Ref<AutoCertOptions>
 
 const modalClosable = ref(true)
@@ -43,10 +44,14 @@ const name = computed(() => {
   return directivesMap.value.server_name[0].params.trim()
 })
 
-const refObtainCertLive = ref()
+const refObtainCertLive = useTemplateRef('refObtainCertLive')
 
-function issue_cert(config_name: string, server_name: string) {
-  refObtainCertLive.value.issue_cert(config_name, server_name.trim().split(' ')).then(resolveCert)
+function issue_cert() {
+  refObtainCertLive.value?.issue_cert(
+    props.configName,
+    name.value.trim().split(' '),
+    data.value.key_type,
+  ).then(resolveCert)
 }
 
 async function resolveCert({ ssl_certificate, ssl_certificate_key, key_type }: CertificateResult) {
@@ -123,9 +128,7 @@ function job() {
         params: '',
       })
     }
-  }).then(() => {
-    issue_cert(props.configName, name.value)
-  })
+  }).then(issue_cert)
 }
 function toggle(status: boolean) {
   if (status) {
