@@ -18,6 +18,7 @@ const columns: Column[] = [{
     type: input,
   },
   search: true,
+  minWidth: 400,
 }, {
   title: () => $gettext('Category'),
   dataIndex: 'site_category_id',
@@ -34,6 +35,7 @@ const columns: Column[] = [{
   sorter: true,
   pithy: true,
   batch: true,
+  minWidth: 200,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'enabled',
@@ -60,15 +62,18 @@ const columns: Column[] = [{
   },
   sorter: true,
   pithy: true,
+  minWidth: 100,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'modified_at',
   customRender: datetime,
   sorter: true,
   pithy: true,
+  minWidth: 200,
 }, {
   title: () => $gettext('Action'),
   dataIndex: 'action',
+  minWidth: 300,
 }]
 
 export default columns

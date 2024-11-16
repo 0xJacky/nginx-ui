@@ -472,7 +472,7 @@ const paginationSize = computed(() => {
       :pagination="false"
       :row-key="rowKey"
       :row-selection="rowSelection"
-      :scroll="{ x: scrollX }"
+      :scroll="{ x: scrollX ?? true }"
       :size="size as any"
       :expanded-row-keys="expandKeysList"
       @change="onTableChange"
@@ -483,7 +483,7 @@ const paginationSize = computed(() => {
           <span class="ant-table-drag-icon"><HolderOutlined /></span>
           {{ text }}
         </template>
-        <template v-if="column.dataIndex === 'action'">
+        <div v-if="column.dataIndex === 'action'" class="action">
           <template v-if="!props.disableView && !inTrash">
             <AButton
               type="link"
@@ -559,7 +559,7 @@ const paginationSize = computed(() => {
               </AButton>
             </APopconfirm>
           </template>
-        </template>
+        </div>
       </template>
     </ATable>
     <StdPagination
@@ -609,6 +609,14 @@ const paginationSize = computed(() => {
 .ant-divider {
   &:last-child {
     display: none;
+  }
+}
+
+.action {
+  @media (max-width: 768px) {
+    .ant-divider-vertical {
+      display: none;
+    }
   }
 }
 </style>
