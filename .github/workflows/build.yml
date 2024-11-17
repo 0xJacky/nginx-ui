@@ -116,6 +116,8 @@ jobs:
           # END Linux ARM 5 6 7
           - goos: linux
             goarch: riscv64
+          - goos: linux
+            goarch: loong64
           # BEGIN MIPS
           - goos: linux
             goarch: mips64
@@ -155,10 +157,11 @@ jobs:
 
       - name: Install musl cross compiler
         if: env.GOOS == 'linux'
-        uses: 0xJacky/musl-cross-compilers@v0.6.6
+        uses: nginxui/musl-cross-compilers@v1
         id: musl
         with:
           target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
+          variant: ${{ env.GOARCH == 'loong64' && 'userdocs/qbt-musl-cross-make' || 'richfelker/musl-cross-make' }}
 
       - name: Post install musl cross compiler
         if: env.GOOS == 'linux'
