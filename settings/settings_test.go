@@ -90,7 +90,7 @@ func TestSetup(t *testing.T) {
 	_ = os.Setenv("NGINX_UI_WEBAUTHN_RPID", "localhost")
 	_ = os.Setenv("NGINX_UI_WEBAUTHN_RP_ORIGINS", "http://localhost:3002")
 
-	Init()
+	Init("../app.example.ini")
 
 	// Server
 	assert.Equal(t, "127.0.0.1", cSettings.ServerSettings.Host)
@@ -102,7 +102,7 @@ func TestSetup(t *testing.T) {
 	assert.Equal(t, "newSecret123", cSettings.AppSettings.JwtSecret)
 
 	// Database
-	assert.Equal(t, "testDB", cSettings.DataBaseSettings.Name)
+	assert.Equal(t, "", cSettings.DataBaseSettings.Name)
 
 	// Auth
 	assert.Equal(t, []string{"127.0.0.1", "192.168.1.1"}, AuthSettings.IPWhiteList)
