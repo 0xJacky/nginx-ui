@@ -102,7 +102,7 @@ func TestSetup(t *testing.T) {
 	assert.Equal(t, "newSecret123", cSettings.AppSettings.JwtSecret)
 
 	// Database
-	assert.Equal(t, "", cSettings.DataBaseSettings.Name)
+	assert.Equal(t, "testDB", DatabaseSettings.Name)
 
 	// Auth
 	assert.Equal(t, []string{"127.0.0.1", "192.168.1.1"}, AuthSettings.IPWhiteList)
