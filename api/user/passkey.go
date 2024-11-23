@@ -45,7 +45,7 @@ func BeginPasskeyRegistration(c *gin.Context) {
 	}
 	cache.Set(buildCachePasskeyRegKey(u.ID), sessionData, passkeyTimeout)
 
-	c.JSON(http.StatusOK, options)
+	c.JSON(http.StatusOK, options.Response)
 }
 
 func FinishPasskeyRegistration(c *gin.Context) {

@@ -15,9 +15,9 @@ const regLoading = ref(false)
 async function registerPasskey() {
   regLoading.value = true
   try {
-    const options = await passkey.begin_registration()
+    const optionsJSON = await passkey.begin_registration()
 
-    const attestationResponse = await startRegistration(options.publicKey)
+    const attestationResponse = await startRegistration({ optionsJSON })
 
     await passkey.finish_registration(attestationResponse, passkeyName.value)
 
