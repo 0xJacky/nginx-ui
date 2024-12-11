@@ -1,5 +1,5 @@
 import type { ModelBase } from '@/api/curd'
-import type { RegistrationResponseJSON } from '@simplewebauthn/types'
+import type { RegistrationResponseJSON } from '@simplewebauthn/browser'
 import http from '@/lib/http'
 
 export interface Passkey extends ModelBase {

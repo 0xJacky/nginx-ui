@@ -1,4 +1,4 @@
-import type { AuthenticationResponseJSON } from '@simplewebauthn/types'
+import type { AuthenticationResponseJSON } from '@simplewebauthn/browser'
 import http from '@/lib/http'
 
 export interface TwoFAStatusResponse {
