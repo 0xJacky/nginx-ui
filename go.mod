@@ -10,7 +10,6 @@ require (
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.0.1
 	github.com/dustin/go-humanize v1.0.1
-	github.com/elliotchance/orderedmap/v2 v2.6.0
 	github.com/elliotchance/orderedmap/v3 v3.0.0
 	github.com/fatih/color v1.18.0
 	github.com/gin-contrib/static v1.1.2
@@ -107,6 +106,7 @@ require (
 	github.com/dimchansky/utfbom v1.1.1 // indirect
 	github.com/dnsimple/dnsimple-go v1.7.0 // indirect
 	github.com/ebitengine/purego v0.8.1 // indirect
+	github.com/elliotchance/orderedmap/v2 v2.5.0 // indirect
 	github.com/exoscale/egoscale/v3 v3.1.7 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect

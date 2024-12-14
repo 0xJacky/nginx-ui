@@ -1,7 +1,7 @@
 package settings
 
 import (
-	"github.com/elliotchance/orderedmap/v2"
+	"github.com/elliotchance/orderedmap/v3"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy/logger"
 	"github.com/uozi-tech/cosy/settings"
@@ -157,7 +157,7 @@ func migrate(confPath string) {
 	migrated.Set("terminal", terminal)
 	migrated.Set("webauthn", webauthn)
 
-	for name, ptr := range migrated.Iterator() {
+	for name, ptr := range migrated.AllFromFront() {
 		err = Conf.Section(name).MapTo(ptr)
 		if err != nil {
 			logger.Error("migrate.MapTo %s err: %v", name, err)
@@ -184,7 +184,7 @@ func migrate(confPath string) {
 
 	Conf = ini.Empty()
 
-	for section, ptr := range migrated.Iterator() {
+	for section, ptr := range migrated.AllFromFront() {
 		err = Conf.Section(section).ReflectFrom(ptr)
 		if err != nil {
 			logger.Fatalf("migrate.ReflectFrom %s err: %v", section, err)
@@ -219,7 +219,7 @@ func migrateEnv() {
 	deprecated.Set("SERVER_SKIP_INSTALLATION", "NODE_SKIP_INSTALLATION")
 	deprecated.Set("SERVER_NAME", "NODE_NAME")
 
-	for d, n := range deprecated.Iterator() {
+	for d, n := range deprecated.AllFromFront() {
 		oldValue := os.Getenv(EnvPrefix + d)
 		if oldValue != "" {
 			_ = os.Setenv(EnvPrefix+n, oldValue)
