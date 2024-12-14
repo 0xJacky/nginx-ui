@@ -18,10 +18,7 @@ import (
 
 func AddConfig(c *gin.Context) {
 	var json struct {
-		Name        string   `json:"name" binding:"required"`
-		BaseDir     string   `json:"base_dir"`
-		Content     string   `json:"content"`
-		Overwrite   bool     `json:"overwrite"`
+		config.SyncConfigPayload
 		SyncNodeIds []uint64 `json:"sync_node_ids"`
 	}
 
@@ -90,7 +87,7 @@ func AddConfig(c *gin.Context) {
 		return
 	}
 
-	err = config.SyncToRemoteServer(cfg, path)
+	err = config.SyncToRemoteServer(cfg)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return

@@ -77,7 +77,7 @@ func EditConfig(c *gin.Context) {
 	cfg.SyncOverwrite = json.SyncOverwrite
 
 	g := query.ChatGPTLog
-	err = config.SyncToRemoteServer(cfg, absPath)
+	err = config.SyncToRemoteServer(cfg)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return

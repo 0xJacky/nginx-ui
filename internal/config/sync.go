@@ -22,14 +22,13 @@ import (
 )
 
 type SyncConfigPayload struct {
-	Name        string `json:"name"`
-	Filepath    string `json:"filepath"`
-	NewFilepath string `json:"new_filepath"`
-	Content     string `json:"content"`
-	Overwrite   bool   `json:"overwrite"`
+	Name      string `json:"name" binding:"required"`
+	BaseDir   string `json:"base_dir"`
+	Content   string `json:"content"`
+	Overwrite bool   `json:"overwrite"`
 }
 
-func SyncToRemoteServer(c *model.Config, newFilepath string) (err error) {
+func SyncToRemoteServer(c *model.Config) (err error) {
 	if c.Filepath == "" || len(c.SyncNodeIds) == 0 {
 		return
 	}
@@ -40,26 +39,16 @@ func SyncToRemoteServer(c *model.Config, newFilepath string) (err error) {
 			c.Filepath, nginxConfPath)
 	}
 
-	if newFilepath != "" && !helper.IsUnderDirectory(newFilepath, nginxConfPath) {
-		return fmt.Errorf("config: %s is not under the nginx conf path: %s",
-			c.Filepath, nginxConfPath)
-	}
-
-	currentPath := c.Filepath
-	if newFilepath != "" {
-		currentPath = newFilepath
-	}
-	configBytes, err := os.ReadFile(currentPath)
+	configBytes, err := os.ReadFile(c.Filepath)
 	if err != nil {
 		return
 	}
 
 	payload := &SyncConfigPayload{
-		Name:        c.Name,
-		Filepath:    c.Filepath,
-		NewFilepath: newFilepath,
-		Content:     string(configBytes),
-		Overwrite:   c.SyncOverwrite,
+		Name:      c.Name,
+		BaseDir:   strings.ReplaceAll(filepath.Dir(c.Filepath), nginx.GetConfPath(), ""),
+		Content:   string(configBytes),
+		Overwrite: c.SyncOverwrite,
 	}
 	payloadBytes, err := json.Marshal(payload)
 	if err != nil {
@@ -168,18 +157,6 @@ func (p *SyncConfigPayload) deploy(env *model.Environment, c *model.Config, payl
 	}
 
 	notification.Success("Sync Config Success", string(notificationPayloadBytes))
-
-	// handle rename
-	if p.NewFilepath == "" || p.Filepath == p.NewFilepath {
-		return
-	}
-
-	payload := &RenameConfigPayload{
-		Filepath:    p.Filepath,
-		NewFilepath: p.NewFilepath,
-	}
-
-	err = payload.rename(env)
 
 	return
 }
