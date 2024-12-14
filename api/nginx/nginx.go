@@ -42,7 +42,7 @@ func TokenizeNginxConfig(c *gin.Context) {
 
 func FormatNginxConfig(c *gin.Context) {
 	var json struct {
-		Content string `json:"content" binding:"required"`
+		Content string `json:"content"`
 	}
 
 	if !cosy.BindAndValid(c, &json) {
