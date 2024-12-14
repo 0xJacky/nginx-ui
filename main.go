@@ -25,7 +25,7 @@ func Program(confPath string) func(state overseer.State) {
 		defer logger.Info("Server exited")
 		cosy.RegisterModels(model.GenerateAllModel()...)
 
-		cosy.RegisterAsyncFunc(kernel.Boot, router.InitRouter)
+		cosy.RegisterInitFunc(kernel.Boot, router.InitRouter)
 
 		// Initialize settings package
 		settings.Init(confPath)
