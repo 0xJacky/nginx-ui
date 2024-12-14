@@ -11,6 +11,7 @@ require (
 	github.com/dgraph-io/ristretto/v2 v2.0.1
 	github.com/dustin/go-humanize v1.0.1
 	github.com/elliotchance/orderedmap/v2 v2.5.0
+	github.com/elliotchance/orderedmap/v3 v3.0.0
 	github.com/fatih/color v1.18.0
 	github.com/gin-contrib/static v1.1.2
 	github.com/gin-gonic/gin v1.10.0
