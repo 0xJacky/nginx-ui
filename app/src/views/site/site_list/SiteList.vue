@@ -35,6 +35,7 @@ onMounted(async () => {
         return
       }
     }
+    // eslint-disable-next-line ts/no-explicit-any
     catch (e: any) {
       message.error(e?.message ?? $gettext('Server error'))
       return

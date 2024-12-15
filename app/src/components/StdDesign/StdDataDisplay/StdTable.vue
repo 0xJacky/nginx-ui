@@ -67,6 +67,7 @@ const loading = ref(true)
 const selectedRecords: Ref<Record<any, any>> = ref({})
 
 // This can be useful if there are more than one StdTable in the same page.
+// eslint-disable-next-line sonarjs/pseudo-random
 const randomId = ref(Math.random().toString(36).substring(2, 8))
 const updateFilter = ref(0)
 const init = ref(false)

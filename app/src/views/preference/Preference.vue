@@ -69,6 +69,8 @@ const data = ref<Settings>({
   node: {
     name: '',
     secret: '',
+    icp_number: '',
+    public_security_number: '',
   },
   openai: {
     model: '',
@@ -93,7 +95,7 @@ settings.get().then(r => {
 const settingsStore = useSettingsStore()
 const { server_name } = storeToRefs(settingsStore)
 const errors = ref({}) as Ref<Record<string, Record<string, string>>>
-const refAuthSettings = ref()
+const refAuthSettings = useTemplateRef('refAuthSettings')
 
 async function save() {
   // fix type

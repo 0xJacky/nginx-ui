@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { NgxConfig, NgxDirective } from '@/api/ngx'
 import type { UpstreamStatus } from '@/api/upstream'
+import type ReconnectingWebSocket from 'reconnecting-websocket'
 import upstream from '@/api/upstream'
 import DirectiveEditor from '@/views/site/ngx_conf/directive/DirectiveEditor.vue'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
@@ -61,7 +62,8 @@ function ok() {
 }
 
 const availabilityResult = ref({}) as Ref<Record<string, UpstreamStatus>>
-const websocket = ref()
+const websocket = shallowRef<ReconnectingWebSocket | WebSocket>()
+
 function availability_test() {
   const sockets: string[] = []
   for (const u of ngx_config.upstreams ?? []) {
@@ -74,7 +76,7 @@ function availability_test() {
   if (sockets.length > 0) {
     websocket.value = upstream.availability_test()
     websocket.value.onopen = () => {
-      websocket.value.send(JSON.stringify(sockets))
+      websocket.value!.send(JSON.stringify(sockets))
     }
     websocket.value.onmessage = (e: MessageEvent) => {
       availabilityResult.value = JSON.parse(e.data)

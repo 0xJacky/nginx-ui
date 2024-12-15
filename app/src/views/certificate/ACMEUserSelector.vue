@@ -18,16 +18,16 @@ const id = computed(() => {
   return data.value?.acme_user_id
 })
 
-const user_idx = ref()
+const userIdx = ref<number>()
 function init() {
   users.value?.forEach((v: AcmeUser, k: number) => {
     if (v.id === id.value)
-      user_idx.value = k
+      userIdx.value = k
   })
 }
 
 const current = computed(() => {
-  return users.value?.[user_idx.value]
+  return users.value?.[userIdx.value || -1]
 })
 
 const mounted = ref(false)
@@ -84,7 +84,7 @@ function filterOption(input: string, option: { label: string }) {
   <AForm layout="vertical">
     <AFormItem :label="$gettext('ACME User')">
       <ASelect
-        v-model:value="user_idx"
+        v-model:value="userIdx"
         :placeholder="$gettext('System Initial User')"
         show-search
         :options

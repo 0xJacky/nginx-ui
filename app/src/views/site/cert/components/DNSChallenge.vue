@@ -19,16 +19,16 @@ const code = computed(() => {
   return data.value.code
 })
 
-const provider_idx = ref()
+const providerIdx = ref<number>()
 function init() {
   providers.value?.forEach((v: DNSProvider, k: number) => {
     if (v.code === code.value)
-      provider_idx.value = k
+      providerIdx.value = k
   })
 }
 
 const current = computed(() => {
-  return providers.value?.[provider_idx.value]
+  return providers.value?.[providerIdx.value || -1]
 })
 
 const mounted = ref(false)
@@ -63,7 +63,7 @@ onMounted(async () => {
     await dns_credential.get(data.value.dns_credential_id).then(r => {
       data.value.code = r.code
       data.value.provider = r.provider
-      provider_idx.value = providers.value.findIndex(v => v.code === r.code)
+      providerIdx.value = providers.value.findIndex(v => v.code === r.code)
     })
   }
 
@@ -93,14 +93,14 @@ function filterOption(input: string, option: { label: string }) {
   <AForm layout="vertical">
     <AFormItem :label="$gettext('DNS Provider')">
       <ASelect
-        v-model:value="provider_idx"
+        v-model:value="providerIdx"
         show-search
         :options
         :filter-option="filterOption"
       />
     </AFormItem>
     <AFormItem
-      v-if="provider_idx > -1"
+      v-if="(providerIdx ?? -1) > -1"
       :label="$gettext('Credential')"
       :rules="[{ required: true }]"
     >

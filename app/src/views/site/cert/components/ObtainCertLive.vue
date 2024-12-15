@@ -21,14 +21,14 @@ const progressStrokeColor = {
 const progressPercent = ref(0)
 const progressStatus = ref('active') as Ref<'success' | 'active' | 'normal' | 'exception'>
 
-const logContainer = ref()
+const logContainer = useTemplateRef('logContainer')
 
 function log(msg: string) {
   const para = document.createElement('p')
 
   para.appendChild(document.createTextNode($gettext(msg)))
 
-  logContainer.value.appendChild(para)
+  logContainer.value!.appendChild(para)
 
   logContainer.value?.scroll({ top: 100000, left: 0, behavior: 'smooth' })
 }
@@ -39,7 +39,7 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
     modalClosable.value = false
     modalVisible.value = true
     progressPercent.value = 0
-    logContainer.value.innerHTML = ''
+    logContainer.value!.innerHTML = ''
 
     log($gettext('Getting the certificate, please wait...'))
 

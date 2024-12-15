@@ -82,6 +82,7 @@ function clearError() {
   })
 }
 
+// eslint-disable-next-line vue/require-typed-ref
 const stdEntryRef = ref()
 
 async function ok() {
@@ -157,10 +158,10 @@ const modalTitle = computed(() => {
 
 const localOverwriteParams = reactive(props.overwriteParams ?? {})
 
-const stdBatchEditRef = ref()
+const stdBatchEditRef = useTemplateRef('stdBatchEditRef')
 
 async function handleClickBatchEdit(batchColumns: Column[]) {
-  stdBatchEditRef.value.showModal(batchColumns, selectedRowKeys.value, selectedRows.value)
+  stdBatchEditRef.value?.showModal(batchColumns, selectedRowKeys.value, selectedRows.value)
 }
 
 function handleBatchUpdated() {

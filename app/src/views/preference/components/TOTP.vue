@@ -13,8 +13,8 @@ const resetting = ref(false)
 const qrCode = ref('')
 const secret = ref('')
 const passcode = ref('')
-const interval = ref()
-const refOtp = ref()
+const interval = shallowRef<undefined | ReturnType<typeof setTimeout>>()
+const refOtp = useTemplateRef('refOtp')
 const recoveryCode = ref('')
 const inputRecoveryCode = ref('')
 
@@ -32,7 +32,6 @@ function clickEnable2FA() {
 function clearGenerateSecretInterval() {
   if (interval.value) {
     clearInterval(interval.value)
-    interval.value = undefined
   }
 }
 

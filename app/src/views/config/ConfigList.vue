@@ -8,7 +8,7 @@ import Rename from '@/views/config/components/Rename.vue'
 import configColumns from '@/views/config/configColumns'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 
-const table = ref()
+const table = useTemplateRef('table')
 const route = useRoute()
 const router = useRouter()
 
@@ -32,7 +32,7 @@ watch(getParams, () => {
   update.value++
 })
 
-const refInspectConfig = ref()
+const refInspectConfig = useTemplateRef('refInspectConfig')
 const breadcrumbs = useBreadcrumbs()
 
 function updateBreadcrumbs() {
@@ -90,8 +90,8 @@ function goBack() {
   })
 }
 
-const refMkdir = ref()
-const refRename = ref()
+const refMkdir = useTemplateRef('refMkdir')
+const refRename = useTemplateRef('refRename')
 </script>
 
 <template>
@@ -118,7 +118,7 @@ const refRename = ref()
       <AButton
         type="link"
         size="small"
-        @click="() => refMkdir.open(basePath)"
+        @click="() => refMkdir?.open(basePath)"
       >
         {{ $gettext('Create Folder') }}
       </AButton>
@@ -161,7 +161,7 @@ const refRename = ref()
         <AButton
           type="link"
           size="small"
-          @click="() => refRename.open(basePath, record.name, record.is_dir)"
+          @click="() => refRename?.open(basePath, record.name, record.is_dir)"
         >
           {{ $gettext('Rename') }}
         </AButton>
@@ -169,11 +169,11 @@ const refRename = ref()
     </StdTable>
     <Mkdir
       ref="refMkdir"
-      @created="() => table.get_list()"
+      @created="() => table?.get_list()"
     />
     <Rename
       ref="refRename"
-      @renamed="() => table.get_list()"
+      @renamed="() => table?.get_list()"
     />
     <FooterToolBar v-if="basePath">
       <AButton @click="goBack">

@@ -6,7 +6,7 @@ import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import ws from '@/lib/websocket'
 import { debounce } from 'lodash'
 
-const logContainer = ref()
+const logContainer = useTemplateRef('logContainer')
 let websocket: ReconnectingWebSocket | WebSocket
 const route = useRoute()
 const buffer = ref('')
@@ -16,7 +16,7 @@ const router = useRouter()
 const loading = ref(false)
 const filter = ref('')
 
-const control: INginxLogData = reactive({
+const control = reactive<INginxLogData>({
   type: logType(),
   conf_name: route.query.conf_name as string,
   server_idx: Number.parseInt(route.query.server_idx as string),
@@ -68,7 +68,7 @@ function init() {
 }
 
 function clearLog() {
-  logContainer.value.innerHTML = ''
+  logContainer.value!.innerHTML = ''
 }
 
 onMounted(() => {
@@ -115,7 +115,8 @@ function on_scroll_log() {
   if (!loading.value && page.value > 0) {
     loading.value = true
 
-    const elem = logContainer.value
+    const elem = logContainer.value!
+
     if (elem?.scrollTop / elem?.scrollHeight < 0.333) {
       nginx_log.page(page.value, control).then(r => {
         page.value = r.page - 1

@@ -39,10 +39,6 @@ onMounted(() => {
     _init()
 })
 
-const getParams = computed(() => {
-  return props.getParams
-})
-
 const visible = ref(false)
 // eslint-disable-next-line ts/no-explicit-any
 const M_values = ref([]) as Ref<any[]>
@@ -99,6 +95,7 @@ function show() {
     visible.value = true
 }
 
+// eslint-disable-next-line vue/require-typed-ref
 const selectedKeyBuffer = ref()
 // eslint-disable-next-line ts/no-explicit-any
 const selectedBuffer: Ref<any[]> = ref([])

@@ -7,7 +7,7 @@ defineProps<{
 }>()
 
 const issuing_cert = ref(false)
-const obtain_cert = ref()
+const obtain_cert = useTemplateRef('obtain_cert')
 const directivesMap = inject('directivesMap') as Ref<Record<string, NgxDirective[]>>
 
 const enabled = defineModel<boolean>('enabled', {
@@ -31,9 +31,8 @@ const update = ref(0)
 
 async function onchange() {
   update.value++
-  await nextTick(() => {
-    obtain_cert.value.toggle(enabled.value)
-  })
+  await nextTick()
+  obtain_cert.value!.toggle(enabled.value)
 }
 </script>
 

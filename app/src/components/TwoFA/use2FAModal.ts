@@ -6,6 +6,7 @@ import { createVNode, render } from 'vue'
 
 function use2FAModal() {
   const refOTPAuthorization = ref<typeof Authorization>()
+  // eslint-disable-next-line sonarjs/pseudo-random
   const randomId = Math.random().toString(36).substring(2, 8)
   const { secureSessionId } = storeToRefs(useUserStore())
 

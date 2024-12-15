@@ -14,7 +14,7 @@ const code = computed(() => {
   return data.code
 })
 
-const provider_idx = ref()
+const providerIdx = ref<number>()
 function init() {
   if (!data.configuration) {
     data.configuration = {
@@ -24,7 +24,7 @@ function init() {
   }
   providers.value?.forEach((v: { code?: string }, k: number) => {
     if (v?.code === code.value)
-      provider_idx.value = k
+      providerIdx.value = k
   })
 }
 
@@ -35,7 +35,7 @@ auto_cert.get_dns_providers().then(r => {
 })
 
 const current = computed(() => {
-  return providers.value?.[provider_idx.value]
+  return providers.value?.[providerIdx.value || -1]
 })
 
 watch(code, init)
@@ -71,7 +71,7 @@ function filterOption(input: string, option: { label: string }) {
   <AForm layout="vertical">
     <AFormItem :label="$gettext('DNS Provider')">
       <ASelect
-        v-model:value="provider_idx"
+        v-model:value="providerIdx"
         show-search
         :options="options"
         :filter-option="filterOption"

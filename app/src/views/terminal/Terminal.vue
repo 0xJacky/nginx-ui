@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type ReconnectingWebSocket from 'reconnecting-websocket'
 import twoFA from '@/api/2fa'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
 import ws from '@/lib/websocket'
@@ -8,10 +9,10 @@ import _ from 'lodash'
 import '@xterm/xterm/css/xterm.css'
 
 let term: Terminal | null
-let ping: NodeJS.Timeout
+let ping: undefined | ReturnType<typeof setTimeout>
 
 const router = useRouter()
-const websocket = shallowRef()
+const websocket = shallowRef<ReconnectingWebSocket | WebSocket>()
 const lostConnection = ref(false)
 
 onMounted(() => {
@@ -24,12 +25,12 @@ onMounted(() => {
 
     nextTick(() => {
       initTerm()
-      websocket.value.onmessage = wsOnMessage
-      websocket.value.onopen = wsOnOpen
-      websocket.value.onerror = () => {
+      websocket.value!.onmessage = wsOnMessage
+      websocket.value!.onopen = wsOnOpen
+      websocket.value!.onerror = () => {
         lostConnection.value = true
       }
-      websocket.value.onclose = () => {
+      websocket.value!.onclose = () => {
         lostConnection.value = true
       }
     })
@@ -88,7 +89,7 @@ function initTerm() {
 }
 
 function sendMessage(data: Message) {
-  websocket.value.send(JSON.stringify(data))
+  websocket.value?.send(JSON.stringify(data))
 }
 
 function wsOnMessage(msg: { data: string | Uint8Array }) {

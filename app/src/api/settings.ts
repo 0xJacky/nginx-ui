@@ -64,7 +64,7 @@ export interface NodeSettings {
   name: string
   secret: string
   icp_number: string
-  public_security_number: number
+  public_security_number: string
 }
 
 export interface OpenaiSettings {

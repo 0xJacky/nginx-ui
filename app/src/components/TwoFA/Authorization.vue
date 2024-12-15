@@ -14,7 +14,7 @@ defineProps<{
 const emit = defineEmits(['submitOTP', 'submitSecureSessionID'])
 
 const user = useUserStore()
-const refOTP = ref()
+const refOTP = useTemplateRef('refOTP')
 const useRecoveryCode = ref(false)
 const passcode = ref('')
 const recoveryCode = ref('')

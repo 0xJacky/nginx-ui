@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { NgxConfig } from '@/api/ngx'
 import { FileExclamationOutlined, FileTextOutlined } from '@ant-design/icons-vue'
-import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const props = defineProps<{
@@ -10,8 +9,8 @@ const props = defineProps<{
   name?: string
 }>()
 
-const accessIdx = ref()
-const errorIdx = ref()
+const accessIdx = ref<number>()
+const errorIdx = ref<number>()
 
 const hasAccessLog = computed(() => {
   let flag = false

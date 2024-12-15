@@ -53,16 +53,16 @@ const isLatestVer = computed(() => {
   return data.value.name === `v${version.version}`
 })
 
-const logContainer = ref()
+const logContainer = useTemplateRef('logContainer')
 
 function log(msg: string) {
   const para = document.createElement('p')
 
   para.appendChild(document.createTextNode($gettext(msg)))
 
-  logContainer.value.appendChild(para)
+  logContainer.value!.appendChild(para)
 
-  logContainer.value.scroll({ top: 320, left: 0, behavior: 'smooth' })
+  logContainer.value!.scroll({ top: 320, left: 0, behavior: 'smooth' })
 }
 
 const dryRun = computed(() => {
@@ -74,7 +74,7 @@ async function performUpgrade() {
   modalClosable.value = false
   modalVisible.value = true
   progressPercent.value = 0
-  logContainer.value.innerHTML = ''
+  logContainer.value!.innerHTML = ''
 
   log($gettext('Upgrading Nginx UI, please wait...'))
 

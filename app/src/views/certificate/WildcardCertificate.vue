@@ -33,7 +33,7 @@ defineExpose({
 const modalVisible = ref(false)
 const modalClosable = ref(true)
 
-const refObtainCertLive = ref()
+const refObtainCertLive = useTemplateRef('refObtainCertLive')
 
 const computedDomain = computed(() => {
   return `*.${domain.value}`
@@ -43,7 +43,7 @@ function issueCert() {
   step.value++
   modalVisible.value = true
 
-  refObtainCertLive.value.issue_cert(computedDomain.value, [computedDomain.value, domain.value], data.value.key_type)
+  refObtainCertLive.value?.issue_cert(computedDomain.value, [computedDomain.value, domain.value], data.value.key_type)
     .then(() => {
       message.success($gettext('Renew successfully'))
       emit('issued')

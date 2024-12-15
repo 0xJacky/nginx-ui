@@ -6,7 +6,7 @@ export interface ICP {
 }
 
 const publicApi = {
-  getICP<ICP>() {
+  getICP(): Promise<ICP> {
     return http.get('/icp_settings')
   },
 }

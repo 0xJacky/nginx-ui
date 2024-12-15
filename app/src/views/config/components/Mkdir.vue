@@ -11,7 +11,9 @@ const data = ref({
   name: '',
 })
 
+// eslint-disable-next-line vue/require-typed-ref
 const refForm = ref()
+
 function open(basePath: string) {
   visible.value = true
   data.value.name = ''
