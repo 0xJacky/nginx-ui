@@ -30,7 +30,7 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
       :label="$gettext('Node name')"
       :validate-status="errors?.node?.name ? 'error' : ''"
       :help="errors?.node?.name.includes('safety_text')
-        ? $gettext('The node name should only contain letters, unicode, numbers, hyphens, dashes, and dots.')
+        ? $gettext('The node name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots.')
         : $gettext('Customize the name of local node to be displayed in the environment indicator.')"
     >
       <AInput v-model:value="data.node.name" />
@@ -51,7 +51,7 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
       :label="$gettext('ICP Number')"
       :validate-status="errors?.node?.icp_number ? 'error' : ''"
       :help="errors?.node?.icp_number.includes('safety_text')
-        ? $gettext('The ICP Number should only contain letters, unicode, numbers, hyphens, dashes, and dots.')
+        ? $gettext('The ICP Number should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots.')
         : ''"
     >
       <AInput
@@ -63,7 +63,7 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
       :label="$gettext('Public Security Number')"
       :validate-status="errors?.node?.public_security_number ? 'error' : ''"
       :help="errors?.node?.public_security_number.includes('safety_text')
-        ? $gettext('The Public Security Number should only contain letters, unicode, numbers, hyphens, dashes, and dots.')
+        ? $gettext('The Public Security Number should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots.')
         : ''"
     >
       <AInput

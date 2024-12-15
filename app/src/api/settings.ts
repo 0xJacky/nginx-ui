@@ -72,6 +72,7 @@ export interface OpenaiSettings {
   base_url: string
   proxy: string
   token: string
+  api_type: string
 }
 
 export interface TerminalSettings {

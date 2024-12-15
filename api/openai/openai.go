@@ -4,14 +4,13 @@ import (
 	"context"
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/internal/chatbot"
-	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/sashabaranov/go-openai"
 	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 	"io"
-	"net/http"
 )
 
 const ChatGPTInitPrompt = `You are a assistant who can help users write and optimise the configurations of Nginx,
@@ -49,30 +48,18 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	c.Writer.Header().Set("Connection", "keep-alive")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 
-	config := openai.DefaultConfig(settings.OpenAISettings.Token)
-
-	if settings.OpenAISettings.Proxy != "" {
-		t, err := transport.NewTransport(transport.WithProxy(settings.OpenAISettings.Proxy))
-		if err != nil {
-			c.Stream(func(w io.Writer) bool {
-				c.SSEvent("message", gin.H{
-					"type":    "error",
-					"content": err.Error(),
-				})
-				return false
+	openaiClient, err := chatbot.GetClient()
+	if err != nil {
+		c.Stream(func(w io.Writer) bool {
+			c.SSEvent("message", gin.H{
+				"type":    "error",
+				"content": err.Error(),
 			})
-			return
-		}
-		config.HTTPClient = &http.Client{
-			Transport: t,
-		}
+			return false
+		})
+		return
 	}
 
-	if settings.OpenAISettings.BaseUrl != "" {
-		config.BaseURL = settings.OpenAISettings.BaseUrl
-	}
-
-	openaiClient := openai.NewClientWithConfig(config)
 	ctx := context.Background()
 
 	req := openai.ChatCompletionRequest{
@@ -82,7 +69,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	}
 	stream, err := openaiClient.CreateChatCompletionStream(ctx, req)
 	if err != nil {
-		fmt.Printf("CompletionStream error: %v\n", err)
+		logger.Errorf("CompletionStream error: %v\n", err)
 		c.Stream(func(w io.Writer) bool {
 			c.SSEvent("message", gin.H{
 				"type":    "error",
@@ -99,12 +86,11 @@ func MakeChatCompletionRequest(c *gin.Context) {
 		for {
 			response, err := stream.Recv()
 			if errors.Is(err, io.EOF) {
-				fmt.Println()
 				return
 			}
 
 			if err != nil {
-				fmt.Printf("Stream error: %v\n", err)
+				logger.Errorf("Stream error: %v\n", err)
 				return
 			}
 

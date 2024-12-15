@@ -77,6 +77,7 @@ const data = ref<Settings>({
     base_url: '',
     proxy: '',
     token: '',
+    api_type: 'OPEN_AI',
   },
   terminal: {
     start_cmd: '',

@@ -32,7 +32,7 @@ const models = shallowRef([
       :label="$gettext('Model')"
       :validate-status="errors?.openai?.model ? 'error' : ''"
       :help="errors?.openai?.model === 'safety_text'
-        ? $gettext('The model name should only contain letters, unicode, numbers, hyphens, dashes, and dots.')
+        ? $gettext('The model name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots.')
         : ''"
     >
       <AAutoComplete
@@ -45,7 +45,7 @@ const models = shallowRef([
       :validate-status="errors?.openai?.base_url ? 'error' : ''"
       :help="errors?.openai?.base_url === 'url'
         ? $gettext('The url is invalid.')
-        : $gettext('To use a local large model, deploy it with vllm or imdeploy. '
+        : $gettext('To use a local large model, deploy it with ollama, vllm or imdeploy. '
           + 'They provide an OpenAI-compatible API endpoint, so just set the baseUrl to your local API.')"
     >
       <AInput
@@ -73,6 +73,19 @@ const models = shallowRef([
         : ''"
     >
       <AInputPassword v-model:value="data.openai.token" />
+    </AFormItem>
+    <AFormItem
+      :label="$gettext('API Type')"
+      :validate-status="errors?.openai?.apt_type ? 'error' : ''"
+    >
+      <ASelect v-model:value="data.openai.api_type">
+        <ASelectOption value="OPEN_AI">
+          OpenAI
+        </ASelectOption>
+        <ASelectOption value="AZURE">
+          Azure
+        </ASelectOption>
+      </ASelect>
     </AFormItem>
   </AForm>
 </template>

@@ -35,7 +35,7 @@ require (
 	github.com/spf13/cast v1.7.0
 	github.com/stretchr/testify v1.10.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20241205102811-323481085fb4
-	github.com/uozi-tech/cosy v1.12.3
+	github.com/uozi-tech/cosy v1.12.5
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/crypto v0.31.0
@@ -106,7 +106,6 @@ require (
 	github.com/dimchansky/utfbom v1.1.1 // indirect
 	github.com/dnsimple/dnsimple-go v1.7.0 // indirect
 	github.com/ebitengine/purego v0.8.1 // indirect
-	github.com/elliotchance/orderedmap/v2 v2.5.0 // indirect
 	github.com/exoscale/egoscale/v3 v3.1.7 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
