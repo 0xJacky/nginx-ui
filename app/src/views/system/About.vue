@@ -19,7 +19,7 @@ const thisYear = new Date().getFullYear()
     </div>
     <h2>Nginx UI</h2>
     <p>Yet another WebUI for Nginx</p>
-    <p>Version: {{ ver.version }} ({{ ver.build_id || $gettext('Development Mode') }})</p>
+    <p>Version: {{ ver.version }} ({{ ver.total_build || $gettext('Development Mode') }})</p>
     <div class="star-on-github">
       <GithubButton
         href="https://github.com/0xJacky/nginx-ui"
