@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import GithubButton from '@0xjacky/vue-github-button'
-import logo from '@/assets/img/logo.png'
+import logo from '@/assets/svg/icon.svg?url'
 import ver from '@/version.json'
 
 const thisYear = new Date().getFullYear()
@@ -11,16 +11,22 @@ const thisYear = new Date().getFullYear()
     class="text-center"
     :bordered="false"
   >
-    <div class="logo">
-      <img
-        :src="logo"
-        alt="logo"
-      >
+    <div class="flex justify-center">
+      <div class="logo">
+        <div class="logo-container">
+          <div class="image-bg" />
+          <img
+            class="image-src"
+            :src="logo"
+            alt="logo"
+          >
+        </div>
+      </div>
     </div>
     <h2>Nginx UI</h2>
     <p>Yet another WebUI for Nginx</p>
     <p>Version: {{ ver.version }} ({{ ver.total_build || $gettext('Development Mode') }})</p>
-    <div class="star-on-github">
+    <div class="mb-2">
       <GithubButton
         href="https://github.com/0xJacky/nginx-ui"
         data-color-scheme="no-preference: light; light: light; dark: dark;"
@@ -29,6 +35,16 @@ const thisYear = new Date().getFullYear()
         aria-label="Star 0xJacky/nginx-ui on GitHub"
       >
         Star
+      </GithubButton>
+    </div>
+    <div class="mb-2">
+      <GithubButton
+        href="https://github.com/sponsors/nginxui"
+        data-color-scheme="no-preference: light; light: light; dark: dark;"
+        data-icon="octicon-heart" data-size="large"
+        aria-label="Sponsor @nginxui on GitHub"
+      >
+        Sponsor
       </GithubButton>
     </div>
     <h3>
@@ -53,12 +69,31 @@ const thisYear = new Date().getFullYear()
 
 <style lang="less" scoped>
 .logo {
+  position: relative;
+  height: 256px;
+  width: 256px;
+
+  .image-bg {
+    height: 120px;
+    width: 120px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    filter: blur(72px);
+    transform: translate(-50%, -50%);
+    background-image: linear-gradient(-45deg, #3682D8 50%, #00D2FF 50%);
+  }
+
+  .image-src {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
   img {
     max-width: 120px
   }
-}
-
-.star-on-github {
-  margin-bottom: 10px;
 }
 </style>
