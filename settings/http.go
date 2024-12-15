@@ -5,7 +5,4 @@ type HTTP struct {
 	InsecureSkipVerify bool   `json:"insecure_skip_verify" protected:"true"`
 }
 
-var HTTPSettings = &HTTP{
-	GithubProxy:        "",
-	InsecureSkipVerify: false,
-}
+var HTTPSettings = &HTTP{}

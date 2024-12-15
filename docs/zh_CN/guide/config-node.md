@@ -23,3 +23,16 @@
 
 默认情况下，如果您启用了跳过安装模式，而没有在服务器部分设置 `App.JwtSecret` 和 `Node.Secret` 选项，
 Nginx UI 将为这两个选项生成一个随机的 UUID 值。
+
+## ICPNumber
+- 类型: `string`
+- 版本: `>= v2.0.0-beta.42`
+
+此选项用于设置 ICP 备案号。
+
+## PublicSecurityNumber
+- 类型: `string`
+- 版本: `>= v2.0.0-beta.42`
+
+此选项用于设置 ICP 备案号。
+

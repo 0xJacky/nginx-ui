@@ -27,6 +27,15 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
       <p>{{ data.terminal.start_cmd }}</p>
     </AFormItem>
     <AFormItem
+      :label="$gettext('Node name')"
+      :validate-status="errors?.node?.name ? 'error' : ''"
+      :help="errors?.node?.name.includes('safety_text')
+        ? $gettext('The node name should only contain letters, unicode, numbers, hyphens, dashes, and dots.')
+        : $gettext('Customize the name of local node to be displayed in the environment indicator.')"
+    >
+      <AInput v-model:value="data.node.name" />
+    </AFormItem>
+    <AFormItem
       :label="$gettext('Github Proxy')"
       :validate-status="errors?.http?.github_proxy ? 'error' : ''"
       :help="errors?.http?.github_proxy === 'url'
@@ -39,13 +48,28 @@ const errors: Record<string, Record<string, string>> = inject('errors') as Recor
       />
     </AFormItem>
     <AFormItem
-      :label="$gettext('Node name')"
-      :validate-status="errors?.node?.name ? 'error' : ''"
-      :help="errors?.node?.name.includes('safety_text')
-        ? $gettext('The node name should only contain letters, unicode, numbers, hyphens, dashes, and dots.')
-        : $gettext('Customize the name of local node to be displayed in the environment indicator.')"
+      :label="$gettext('ICP Number')"
+      :validate-status="errors?.node?.icp_number ? 'error' : ''"
+      :help="errors?.node?.icp_number.includes('safety_text')
+        ? $gettext('The ICP Number should only contain letters, unicode, numbers, hyphens, dashes, and dots.')
+        : ''"
     >
-      <AInput v-model:value="data.node.name" />
+      <AInput
+        v-model:value="data.node.icp_number"
+        :placeholder="$gettext('For Chinese user')"
+      />
+    </AFormItem>
+    <AFormItem
+      :label="$gettext('Public Security Number')"
+      :validate-status="errors?.node?.public_security_number ? 'error' : ''"
+      :help="errors?.node?.public_security_number.includes('safety_text')
+        ? $gettext('The Public Security Number should only contain letters, unicode, numbers, hyphens, dashes, and dots.')
+        : ''"
+    >
+      <AInput
+        v-model:value="data.node.public_security_number"
+        :placeholder="$gettext('For Chinese user')"
+      />
     </AFormItem>
   </AForm>
 </template>

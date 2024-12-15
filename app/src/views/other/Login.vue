@@ -2,6 +2,7 @@
 import auth from '@/api/auth'
 import install from '@/api/install'
 import passkey from '@/api/passkey'
+import ICP from '@/components/ICP/ICP.vue'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
 import Authorization from '@/components/TwoFA/Authorization.vue'
@@ -23,7 +24,7 @@ install.get_lock().then(async (r: { lock: boolean }) => {
 
 const loading = ref(false)
 const enabled2FA = ref(false)
-const refOTP = ref()
+const refOTP = useTemplateRef('refOTP')
 const passcode = ref('')
 const recoveryCode = ref('')
 const passkeyConfigStatus = ref(false)
@@ -266,7 +267,10 @@ async function handlePasskeyLogin() {
             </AFormItem>
           </AForm>
           <div class="footer">
-            <p>Copyright © 2021 - {{ thisYear }} Nginx UI</p>
+            <p class="mb-4">
+              Copyright © 2021 - {{ thisYear }} Nginx UI
+            </p>
+            <ICP class="mb-4" />
             Language
             <SetLanguage class="inline" />
             <div class="flex justify-center mt-4">
@@ -295,7 +299,7 @@ async function handlePasskeyLogin() {
   height: 100vh;
 
   .login-form {
-    max-width: 400px;
+    max-width: 420px;
     width: 80%;
 
     .project-title {
@@ -313,7 +317,7 @@ async function handlePasskeyLogin() {
     }
 
     .footer {
-      padding: 30px;
+      padding: 30px 20px;
       text-align: center;
       font-size: 14px;
     }
