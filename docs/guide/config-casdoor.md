@@ -9,6 +9,13 @@ By integrating Casdoor, Nginx UI can leverage these features to improve security
 
 This is the Endpoint of the Casdoor server. You need to make sure that Nginx UI can access this URL.
 
+## ExternalUrl
+- Type: `string`
+- Version: `>= v2.0.0-beta.42`
+
+This is the external URL of the Casdoor server. It is used to generate the redirect URI.
+If this option is not configured, the Endpoint will be used as the base URL for the redirect URI.
+
 ## ClientId
 - Type: `string`
 

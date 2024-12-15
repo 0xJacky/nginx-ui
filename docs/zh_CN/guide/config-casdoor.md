@@ -8,6 +8,12 @@ Casdoor 是一个强大的、全面的身份认证解决方案，支持 OAuth 2.
 
 这是 Casdoor 服务器的 URL。您需要确保 Nginx UI 可以访问此 URL。
 
+## ExternalUrl
+- 类型：`string`
+- 版本: `>= v2.0.0-beta.42`
+
+这是 Casdoor 服务器的外部 URL。它用于生成重定向 URI，在不配置次选项的情况下，将使用 Endpoint 作为重定向 URI 的基本 URL。
+
 ## ClientId
 - 类型：`string`
 
