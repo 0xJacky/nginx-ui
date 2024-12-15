@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sashabaranov/go-openai"
 	"github.com/uozi-tech/cosy"
+	"gorm.io/gen/field"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -55,7 +56,9 @@ func EditConfig(c *gin.Context) {
 	}
 
 	q := query.Config
-	cfg, err := q.Where(q.Filepath.Eq(absPath)).FirstOrCreate()
+	cfg, err := q.Assign(field.Attrs(&model.Config{
+		Name: filepath.Base(absPath),
+	})).Where(q.Filepath.Eq(absPath)).FirstOrCreate()
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
