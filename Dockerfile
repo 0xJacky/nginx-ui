@@ -1,4 +1,4 @@
-FROM --platform=$TARGETPLATFORM uozi/nginx-ui-base:latest
+FROM uozi/nginx-ui-base:latest
 ARG TARGETOS
 ARG TARGETARCH
 ARG TARGETVARIANT
