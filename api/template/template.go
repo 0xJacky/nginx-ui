@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func GetTemplate(c *gin.Context) {
+func GetDefaultSiteTemplate(c *gin.Context) {
 	var ngxConfig *nginx.NgxConfig
 
 	ngxConfig = &nginx.NgxConfig{

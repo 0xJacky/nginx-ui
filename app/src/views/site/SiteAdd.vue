@@ -7,7 +7,7 @@ import LocationEditor from '@/views/site/ngx_conf/LocationEditor.vue'
 import NgxConfigEditor from '@/views/site/ngx_conf/NgxConfigEditor.vue'
 import { message } from 'ant-design-vue'
 
-const ngx_config: NgxConfig = reactive({
+const ngxConfig: NgxConfig = reactive({
   name: '',
   servers: [{
     directives: [],
@@ -15,28 +15,28 @@ const ngx_config: NgxConfig = reactive({
   }],
 })
 
-const current_step = ref(0)
+const currentStep = ref(0)
 
 const enabled = ref(true)
 
-const auto_cert = ref(false)
+const autoCert = ref(false)
 
 onMounted(() => {
   init()
 })
 
 function init() {
-  site.get_template().then(r => {
-    Object.assign(ngx_config, r.tokenized)
+  site.get_default_template().then(r => {
+    Object.assign(ngxConfig, r.tokenized)
   })
 }
 
 async function save() {
-  return ngx.build_config(ngx_config).then(r => {
-    site.save(ngx_config.name, { name: ngx_config.name, content: r.content, overwrite: true }).then(() => {
+  return ngx.build_config(ngxConfig).then(r => {
+    site.save(ngxConfig.name, { name: ngxConfig.name, content: r.content, overwrite: true }).then(() => {
       message.success($gettext('Saved successfully'))
 
-      site.enable(ngx_config.name).then(() => {
+      site.enable(ngxConfig.name).then(() => {
         message.success($gettext('Enabled successfully'))
         window.scroll({ top: 0, left: 0, behavior: 'smooth' })
       }).catch(e => {
@@ -51,7 +51,7 @@ async function save() {
 const router = useRouter()
 
 function goto_modify() {
-  router.push(`/sites/${ngx_config.name}`)
+  router.push(`/sites/${ngxConfig.name}`)
 }
 
 function create_another() {
@@ -59,7 +59,7 @@ function create_another() {
 }
 
 const has_server_name = computed(() => {
-  const servers = ngx_config.servers
+  const servers = ngxConfig.servers
 
   for (const server of Object.values(servers)) {
     for (const directive of Object.values(server.directives!)) {
@@ -73,40 +73,40 @@ const has_server_name = computed(() => {
 
 async function next() {
   await save()
-  current_step.value++
+  currentStep.value++
 }
 
 const ngx_directives = computed(() => {
-  return ngx_config.servers[0].directives
+  return ngxConfig.servers[0].directives
 })
 
 provide('save_config', save)
 provide('ngx_directives', ngx_directives)
-provide('ngx_config', ngx_config)
+provide('ngx_config', ngxConfig)
 </script>
 
 <template>
   <ACard :title="$gettext('Add Site')">
     <div class="domain-add-container">
       <ASteps
-        :current="current_step"
+        :current="currentStep"
         size="small"
       >
         <AStep :title="$gettext('Base information')" />
         <AStep :title="$gettext('Configure SSL')" />
         <AStep :title="$gettext('Finished')" />
       </ASteps>
-      <template v-if="current_step === 0">
+      <template v-if="currentStep === 0">
         <AForm layout="vertical">
           <AFormItem :label="$gettext('Configuration Name')">
-            <AInput v-model:value="ngx_config.name" />
+            <AInput v-model:value="ngxConfig.name" />
           </AFormItem>
         </AForm>
 
         <DirectiveEditor />
         <br>
         <LocationEditor
-          :locations="ngx_config.servers[0].locations"
+          :locations="ngxConfig.servers[0].locations"
           :current-server-index="0"
         />
         <br>
@@ -123,26 +123,26 @@ provide('ngx_config', ngx_config)
         <br>
       </template>
 
-      <template v-else-if="current_step === 1">
+      <template v-else-if="currentStep === 1">
         <NgxConfigEditor
-          v-model:auto-cert="auto_cert"
+          v-model:auto-cert="autoCert"
           :enabled="enabled"
         />
 
         <br>
       </template>
 
-      <ASpace v-if="current_step < 2">
+      <ASpace v-if="currentStep < 2">
         <AButton
           type="primary"
-          :disabled="!ngx_config.name || !has_server_name"
+          :disabled="!ngxConfig.name || !has_server_name"
           @click="next"
         >
           {{ $gettext('Next') }}
         </AButton>
       </ASpace>
       <AResult
-        v-else-if="current_step === 2"
+        v-else-if="currentStep === 2"
         status="success"
         :title="$gettext('Domain Config Created Successfully')"
       >

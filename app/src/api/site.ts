@@ -43,8 +43,8 @@ class SiteCurd extends Curd<Site> {
     return http.post(`${this.baseUrl}/${oldName}/rename`, { new_name: newName })
   }
 
-  get_template() {
-    return http.get('template')
+  get_default_template() {
+    return http.get('default_site_template')
   }
 
   add_auto_cert(domain: string, data: AutoCertRequest) {
