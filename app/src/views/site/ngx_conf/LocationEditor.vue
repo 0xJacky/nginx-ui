@@ -175,6 +175,6 @@ function duplicate(index: number) {
 }
 
 :deep(.ant-collapse-header-text) {
-  overflow: hidden;
+  width: 95%;
 }
 </style>
