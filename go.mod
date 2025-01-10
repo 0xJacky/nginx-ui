@@ -8,16 +8,16 @@ require (
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/casdoor/casdoor-go-sdk v1.3.0
 	github.com/creack/pty v1.1.24
-	github.com/dgraph-io/ristretto/v2 v2.0.1
+	github.com/dgraph-io/ristretto/v2 v2.1.0
 	github.com/dustin/go-humanize v1.0.1
 	github.com/elliotchance/orderedmap/v3 v3.1.0
 	github.com/fatih/color v1.18.0
 	github.com/gin-contrib/static v1.1.3
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-acme/lego/v4 v4.21.0
-	github.com/go-co-op/gocron/v2 v2.14.1
+	github.com/go-co-op/gocron/v2 v2.14.2
 	github.com/go-playground/validator/v10 v10.23.0
-	github.com/go-resty/resty/v2 v2.16.2
+	github.com/go-resty/resty/v2 v2.16.3
 	github.com/go-webauthn/webauthn v0.11.2
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/google/uuid v1.6.0
