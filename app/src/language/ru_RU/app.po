@@ -1,10 +1,11 @@
 # AHTOH <k.ahtoh@gmail.com>, 2024.
 # OpenAI <noreply-mt-openai@weblate.org>, 2024.
+# Roninon <Roninon@users.noreply.weblate.nginxui.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2024-07-31 11:22+0000\n"
-"Last-Translator: AHTOH <k.ahtoh@gmail.com>\n"
+"PO-Revision-Date: 2025-01-15 18:26+0000\n"
+"Last-Translator: Roninon <Roninon@users.noreply.weblate.nginxui.com>\n"
 "Language-Team: Russian <https://weblate.nginxui.com/projects/nginx-ui/"
 "frontend/ru/>\n"
 "Language: ru_RU\n"
@@ -16,11 +17,11 @@ msgstr ""
 
 #: src/views/user/userColumns.tsx:32
 msgid "2FA"
-msgstr "2ФА"
+msgstr "2FA"
 
 #: src/views/preference/AuthSettings.vue:57
 msgid "2FA Settings"
-msgstr "Настройки 2ФА"
+msgstr "Настройки 2FA"
 
 #: src/routes/index.ts:283
 msgid "About"
@@ -61,7 +62,7 @@ msgstr "Добавить"
 #: src/views/preference/components/AddPasskey.vue:51
 #: src/views/preference/components/AddPasskey.vue:55
 msgid "Add a passkey"
-msgstr ""
+msgstr "Добавить ключ доступа"
 
 #: src/routes/index.ts:118 src/views/config/ConfigEditor.vue:146
 #: src/views/config/ConfigEditor.vue:206
@@ -100,12 +101,12 @@ msgstr "Расширенный режим"
 
 #: src/views/preference/components/AddPasskey.vue:105
 msgid "Afterwards, refresh this page and click add passkey again."
-msgstr ""
+msgstr "Затем, обновите эту страницу и снова нажмите «Добавить ключ доступа»."
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:425
 #: src/views/site/site_list/SiteList.vue:102
 msgid "All"
-msgstr ""
+msgstr "Все"
 
 #: src/views/preference/OpenAISettings.vue:44
 msgid "API Base Url"
@@ -113,11 +114,11 @@ msgstr "Базовый URL API"
 
 #: src/views/certificate/DNSChallenge.vue:83
 msgid "API Document"
-msgstr ""
+msgstr "API Документ"
 
 #: src/views/preference/OpenAISettings.vue:57
 msgid "API Proxy"
-msgstr ""
+msgstr "API Прокси"
 
 #: src/views/preference/OpenAISettings.vue:69
 msgid "API Token"
@@ -130,7 +131,7 @@ msgstr "API токен"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:105
 msgid "Apply"
-msgstr ""
+msgstr "Применить"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:67
 #, fuzzy
@@ -191,9 +192,8 @@ msgid "Are you sure you want to remove this item?"
 msgstr "Вы уверены, что хотите удалить этот элемент?"
 
 #: src/views/site/ngx_conf/LocationEditor.vue:88
-#, fuzzy
 msgid "Are you sure you want to remove this location?"
-msgstr "Вы уверены, что хотите удалить эту директиву?"
+msgstr "Вы уверены, что хотите удалить location?"
 
 #: src/components/ChatGPT/ChatGPT.vue:223
 msgid "Ask ChatGPT for Help"
@@ -213,11 +213,11 @@ msgstr "Авторизация"
 
 #: src/components/TwoFA/Authorization.vue:126
 msgid "Authenticate with a passkey"
-msgstr ""
+msgstr "Аутентификация с помощью ключа доступа"
 
 #: src/views/preference/AuthSettings.vue:62
 msgid "Authentication Settings"
-msgstr ""
+msgstr "Настройки аутентификации"
 
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:106
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:120
@@ -297,7 +297,7 @@ msgstr "Пакетное обновление"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:74
 msgid "Belows are selected items that you want to batch modify"
-msgstr ""
+msgstr "Ниже приведены выбранные элементы, которые вы хотите изменить"
 
 #: src/views/system/About.vue:39
 msgid "Build with"
@@ -333,7 +333,7 @@ msgstr "Отмена"
 #: src/views/site/site_edit/RightSettings.vue:91
 #: src/views/site/site_list/columns.tsx:23
 msgid "Category"
-msgstr ""
+msgstr "Категория"
 
 #: src/views/preference/Preference.vue:160
 #, fuzzy
@@ -760,6 +760,9 @@ msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
 msgstr ""
+"Из-за политик безопасности некоторых браузеров, вы не можете использовать "
+"ключи доступа на сайтах без HTTPS, за исключением случаев, когда они "
+"запускаются на localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:74
 #: src/views/site/site_list/SiteList.vue:144
@@ -991,11 +994,13 @@ msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
 msgstr ""
+"Следуйте инструкциям в всплывающем окне, чтобы завершить процесс регистрации "
+"ключа доступа."
 
 #: src/views/preference/BasicSettings.vue:59
 #: src/views/preference/BasicSettings.vue:71
 msgid "For Chinese user"
-msgstr ""
+msgstr "Для китайскоязычных пользователей"
 
 #: src/views/preference/BasicSettings.vue:47
 msgid "For Chinese user: https://mirror.ghproxy.com/"
@@ -1063,7 +1068,7 @@ msgstr "HTTP01"
 
 #: src/views/preference/BasicSettings.vue:51
 msgid "ICP Number"
-msgstr ""
+msgstr "ICP номер"
 
 #: src/views/certificate/ACMEUser.vue:45
 msgid "If left blank, the default CA Dir will be used."
@@ -1089,6 +1094,7 @@ msgstr ""
 #: src/views/preference/components/AddPasskey.vue:76
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
 msgstr ""
+"Если ваш браузер поддерживает WebAuthn Passkey, появится диалоговое окно."
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:108
 msgid ""
@@ -1217,9 +1223,8 @@ msgid "Leave blank if do not want to modify"
 msgstr "Оставьте пустым без изменений"
 
 #: src/views/certificate/ACMEUser.vue:59
-#, fuzzy
 msgid "Leave blank if you don't need this."
-msgstr "Оставьте пустым без изменений"
+msgstr "Оставьте пустым без изменений."
 
 #: src/views/certificate/CertificateEditor.vue:221
 #: src/views/certificate/CertificateEditor.vue:234
@@ -1262,11 +1267,11 @@ msgstr "Локальный"
 
 #: src/views/site/ngx_conf/LocationEditor.vue:69
 msgid "Location"
-msgstr "Location"
+msgstr "Локация"
 
 #: src/views/site/ngx_conf/LocationEditor.vue:50
 msgid "Locations"
-msgstr "Locations"
+msgstr "Локации"
 
 #: src/views/certificate/CertificateEditor.vue:244
 msgid "Log"
@@ -1457,7 +1462,7 @@ msgstr "Путь для Nginx Error Log"
 
 #: src/views/site/ngx_conf/NginxStatusAlert.vue:15
 msgid "Nginx is not running"
-msgstr ""
+msgstr "Nginx не работает"
 
 #: src/routes/index.ts:202 src/views/nginx_log/NginxLog.vue:148
 msgid "Nginx Log"
@@ -1465,7 +1470,7 @@ msgstr "Журнал"
 
 #: src/views/preference/NginxSettings.vue:18
 msgid "Nginx Log Directory Whitelist"
-msgstr ""
+msgstr "Белый список директорий для логов Nginx"
 
 #: src/views/preference/NginxSettings.vue:27
 #, fuzzy
@@ -1474,7 +1479,7 @@ msgstr "Путь для Nginx Error Log"
 
 #: src/views/preference/NginxSettings.vue:30
 msgid "Nginx Reload Command"
-msgstr ""
+msgstr "Команда перезагрузки Nginx"
 
 #: src/components/NginxControl/NginxControl.vue:26
 msgid "Nginx reloaded successfully"
@@ -1732,13 +1737,12 @@ msgstr ""
 "поздравляем!"
 
 #: src/views/site/site_list/SiteDuplicate.vue:33
-#, fuzzy
 msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration."
 msgstr ""
-"Введите имя, оно будет использоваться в качестве имени файла нового "
-"поздравляем!"
+"Введите имя, оно будет использоваться в качестве имени файла новой "
+"конфигурации."
 
 #: src/views/other/Install.vue:32
 msgid "Please input your E-mail!"
@@ -1760,9 +1764,8 @@ msgstr ""
 "указана в секундах."
 
 #: src/views/environment/Environment.vue:47
-#, fuzzy
 msgid "Please select at least one node to upgrade"
-msgstr "Пожалуйста, выберите хотя бы один узел!"
+msgstr "Пожалуйста, выберите хотя бы один узел"
 
 #: src/views/stream/components/StreamDuplicate.vue:45
 msgid "Please select at least one node!"
@@ -2185,7 +2188,7 @@ msgstr ""
 
 #: src/language/constants.ts:11
 msgid "Setting DNS01 challenge provider"
-msgstr ""
+msgstr "Настройка провайдера проверки DNS01"
 
 #: src/language/constants.ts:12
 msgid "Setting environment variables"
@@ -2193,7 +2196,7 @@ msgstr "Настройка переменных сред"
 
 #: src/language/constants.ts:10
 msgid "Setting HTTP01 challenge provider"
-msgstr ""
+msgstr "Настройка провайдера проверки HTTP01"
 
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Show"
@@ -2381,7 +2384,7 @@ msgstr ""
 
 #: src/views/other/Install.vue:54
 msgid "The filename cannot contain the following characters: %{c}"
-msgstr "The filename cannot contain the following characters: %{c}"
+msgstr "Имя файла не может содержать такой символ: %{c}"
 
 #: src/views/preference/BasicSettings.vue:54
 #, fuzzy
@@ -2480,7 +2483,7 @@ msgstr "Этот элемент автосертификата недейств�
 
 #: src/views/certificate/CertificateEditor.vue:93
 msgid "This certificate is managed by Nginx UI"
-msgstr "Этот сертификат находится под управлением  Nginx UI"
+msgstr "Этот сертификат под управлением Nginx UI"
 
 #: src/views/certificate/CertificateEditor.vue:164
 #: src/views/certificate/CertificateEditor.vue:178
@@ -2724,8 +2727,8 @@ msgid ""
 "We will add one or more TXT records to the DNS records of your domain for "
 "ownership verification."
 msgstr ""
-"Мы добавим одну или несколько записей TXT в DNS записи  вашего домена "
-"дляподтверждение права собственности"
+"Мы добавим одну или несколько записей TXT в DNS записи вашего домена для "
+"подтверждения права собственности."
 
 #: src/views/site/cert/components/ObtainCert.vue:137
 msgid ""
