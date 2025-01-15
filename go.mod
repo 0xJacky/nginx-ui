@@ -16,7 +16,7 @@ require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-acme/lego/v4 v4.21.0
 	github.com/go-co-op/gocron/v2 v2.14.2
-	github.com/go-playground/validator/v10 v10.23.0
+	github.com/go-playground/validator/v10 v10.24.0
 	github.com/go-resty/resty/v2 v2.16.3
 	github.com/go-webauthn/webauthn v0.11.2
 	github.com/golang-jwt/jwt/v5 v5.2.1
@@ -111,7 +111,7 @@ require (
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
-	github.com/gabriel-vasile/mimetype v1.4.7 // indirect
+	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-errors/errors v1.5.1 // indirect
@@ -256,7 +256,7 @@ require (
 	golang.org/x/arch v0.12.0 // indirect
 	golang.org/x/exp v0.0.0-20241217172543-b2144cdd0a67 // indirect
 	golang.org/x/mod v0.22.0 // indirect
-	golang.org/x/net v0.33.0 // indirect
+	golang.org/x/net v0.34.0 // indirect
 	golang.org/x/oauth2 v0.24.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
