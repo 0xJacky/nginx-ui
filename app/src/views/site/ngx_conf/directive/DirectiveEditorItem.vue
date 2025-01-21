@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { NgxDirective } from '@/api/ngx'
+import type { DirectiveMap, NgxDirective } from '@/api/ngx'
 import config from '@/api/config'
 import CodeEditor from '@/components/CodeEditor'
+import DirectiveDocuments from '@/views/site/ngx_conf/directive/DirectiveDocuments.vue'
 import { DeleteOutlined, HolderOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 
@@ -9,6 +10,7 @@ const props = defineProps<{
   index: number
   readonly?: boolean
   context?: string
+  nginxDirectivesMap?: DirectiveMap
 }>()
 
 const ngxDirectives = inject('ngx_directives') as ComputedRef<NgxDirective[]>
@@ -126,6 +128,10 @@ const showComment = ref(false)
               </AButton>
             </div>
           </AFormItem>
+          <DirectiveDocuments
+            :directive="ngxDirectives[props.index].directive"
+            :nginx-directives-map
+          />
         </AForm>
       </div>
     </div>
@@ -173,7 +179,7 @@ const showComment = ref(false)
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: all .2s ease-in-out;
+  transition: all .16s ease-in-out;
 }
 
 .fade-enter-from, .fade-enter-to, .fade-leave-to

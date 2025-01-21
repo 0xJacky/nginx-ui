@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { NgxDirective } from '@/api/ngx'
+import type { DirectiveMap, NgxDirective } from '@/api/ngx'
 import type { ComputedRef } from 'vue'
+import ngx from '@/api/ngx'
 import DirectiveEditorItem from '@/views/site/ngx_conf/directive/DirectiveEditorItem.vue'
 import Draggable from 'vuedraggable'
 import DirectiveAdd from './DirectiveAdd.vue'
@@ -15,6 +16,12 @@ const current_idx = ref(-1)
 const ngx_directives = inject('ngx_directives') as ComputedRef<NgxDirective[]>
 
 provide('current_idx', current_idx)
+
+const nginxDirectivesMap = shallowRef<DirectiveMap>()
+
+onMounted(async () => {
+  nginxDirectivesMap.value = await ngx.get_directives()
+})
 </script>
 
 <template>
@@ -33,6 +40,7 @@ provide('current_idx', current_idx)
         :index="index"
         :readonly="readonly"
         :context="context"
+        :nginx-directives-map
         @click="current_idx = index"
       >
         <template
@@ -51,6 +59,7 @@ provide('current_idx', current_idx)
   <DirectiveAdd
     v-if="!readonly"
     v-auto-animate
+    :nginx-directives-map
   />
 </template>
 

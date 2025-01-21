@@ -33,6 +33,8 @@ export interface NgxLocation {
   comments: string
 }
 
+export type DirectiveMap = Record<string, { links: string[] }>
+
 const ngx = {
   build_config(ngxConfig: NgxConfig) {
     return http.post('/ngx/build_config', ngxConfig)
@@ -60,6 +62,10 @@ const ngx = {
 
   test() {
     return http.post('/nginx/test')
+  },
+
+  get_directives(): Promise<DirectiveMap> {
+    return http.get('/nginx/directives')
   },
 }
 

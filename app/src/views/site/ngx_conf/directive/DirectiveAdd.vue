@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { NgxDirective } from '@/api/ngx'
+import type { DirectiveMap, NgxDirective } from '@/api/ngx'
 import CodeEditor from '@/components/CodeEditor'
 import { DeleteOutlined } from '@ant-design/icons-vue'
-import { type ComputedRef, reactive, ref } from 'vue'
 
 const props = defineProps<{
   idx?: number
+  nginxDirectivesMap?: DirectiveMap
 }>()
 
 const emit = defineEmits(['save'])
@@ -14,6 +14,16 @@ const ngx_directives = inject('ngx_directives') as ComputedRef<NgxDirective[]>
 const directive = reactive({ directive: '', params: '' })
 const adding = ref(false)
 const mode = ref('default')
+
+const nginxDirectives = computed(() => {
+  const res: { label: string, value: string }[] = []
+  if (props.nginxDirectivesMap) {
+    Object.keys(props.nginxDirectivesMap).forEach(k => {
+      res.push({ label: k, value: k })
+    })
+  }
+  return res
+})
 
 function add() {
   adding.value = true
@@ -32,6 +42,10 @@ function save() {
     ngx_directives.value.push({ directive: directive.directive, params: directive.params })
 
   emit('save', props.idx)
+}
+
+function filterOption(inputValue: string, option: { label: string }) {
+  return option.label.toLowerCase().includes(inputValue.toLowerCase())
 }
 </script>
 
@@ -67,9 +81,11 @@ function save() {
             v-else
             compact
           >
-            <AInput
+            <AAutoComplete
               v-model:value="directive.directive"
+              :options="nginxDirectives"
               style="width: 30%"
+              :filter-option="filterOption"
               :placeholder="$gettext('Directive')"
             />
             <AInput
@@ -84,6 +100,12 @@ function save() {
               <DeleteOutlined style="font-size: 14px;" />
             </template>
           </AButton>
+        </div>
+        <div v-if="nginxDirectivesMap?.[directive.directive]" class="mt-2">
+          <div>{{ $ngettext('Document', 'Documents', nginxDirectivesMap[directive.directive].links.length) }}</div>
+          <a v-for="(link, index) in nginxDirectivesMap?.[directive.directive].links" :key="index" :href="link">
+            {{ link }}
+          </a>
         </div>
       </AFormItem>
     </div>

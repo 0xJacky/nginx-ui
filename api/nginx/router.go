@@ -11,6 +11,7 @@ func InitRouter(r *gin.RouterGroup) {
 	r.POST("nginx/test", Test)
 	r.GET("nginx/status", Status)
 	r.POST("nginx_log", GetNginxLogPage)
+	r.GET("nginx/directives", GetDirectives)
 }
 
 func InitNginxLogRouter(r *gin.RouterGroup) {
