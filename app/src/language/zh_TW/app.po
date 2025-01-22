@@ -25,7 +25,7 @@ msgstr "多重要素驗證"
 msgid "2FA Settings"
 msgstr "多重要素驗證設定"
 
-#: src/routes/index.ts:283
+#: src/routes/index.ts:290
 msgid "About"
 msgstr "關於"
 
@@ -203,6 +203,11 @@ msgstr "向 ChatGPT 尋求幫助"
 #: src/components/ChatGPT/ChatGPT.vue:237
 msgid "Assistant"
 msgstr "助理"
+
+#: src/views/system/SelfCheck/SelfCheck.vue:50
+#, fuzzy
+msgid "Attempt to fix"
+msgstr "嘗試次數"
 
 #: src/views/preference/AuthSettings.vue:17
 msgid "Attempts"
@@ -384,6 +389,26 @@ msgstr "通道"
 #: src/views/system/Upgrade.vue:187
 msgid "Check again"
 msgstr "再次檢查"
+
+#: src/views/system/SelfCheck/tasks.ts:12
+msgid "Check if the nginx.conf includes the sites-enabled directory."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:16
+msgid "Check if the nginx.conf includes the streams-enabled directory."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:4
+msgid ""
+"Check if the sites-available and sites-enabled directory is under the nginx "
+"configuration directory."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:8
+msgid ""
+"Check if the streams-available and streams-enabled directory is under the "
+"nginx configuration directory."
+msgstr ""
 
 #: src/language/constants.ts:13
 msgid "Cleaning environment variables"
@@ -1125,7 +1150,7 @@ msgstr "請輸入應用程式中的代碼："
 msgid "Input the recovery code:"
 msgstr "輸入恢復碼："
 
-#: src/routes/index.ts:305 src/views/other/Install.vue:136
+#: src/routes/index.ts:312 src/views/other/Install.vue:136
 msgid "Install"
 msgstr "安裝"
 
@@ -1265,7 +1290,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日誌"
 
-#: src/routes/index.ts:311 src/views/other/Login.vue:246
+#: src/routes/index.ts:318 src/views/other/Login.vue:246
 msgid "Login"
 msgstr "登入"
 
@@ -1427,6 +1452,14 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Nginx 存取日誌路徑"
 
+#: src/views/system/SelfCheck/tasks.ts:11
+msgid "Nginx Conf Include Sites Enabled"
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:15
+msgid "Nginx Conf Include Streams Enabled"
+msgstr ""
+
 #: src/views/site/site_edit/SiteEdit.vue:223
 #: src/views/stream/StreamEdit.vue:207
 msgid "Nginx Configuration Parse Error"
@@ -1509,7 +1542,7 @@ msgstr "Node Secret"
 msgid "Not After"
 msgstr "不晚於"
 
-#: src/routes/index.ts:317
+#: src/routes/index.ts:324
 msgid "Not Found"
 msgstr "找不到頁面"
 
@@ -1807,6 +1840,10 @@ msgstr "讀取"
 #: src/views/dashboard/ServerAnalytic.vue:35
 msgid "Receive"
 msgstr "接收"
+
+#: src/views/system/SelfCheck/SelfCheck.vue:42
+msgid "Recheck"
+msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:43
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:544
@@ -2107,6 +2144,10 @@ msgstr ""
 msgid "Selector"
 msgstr "選擇器"
 
+#: src/routes/index.ts:283 src/views/system/SelfCheck/SelfCheck.vue:37
+msgid "Self Check"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:348
 #: src/views/dashboard/ServerAnalytic.vue:35
 msgid "Send"
@@ -2119,7 +2160,7 @@ msgstr "傳送"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:53
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:70
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:194
-#: src/views/config/components/Mkdir.vue:38
+#: src/lib/http/index.ts:129 src/views/config/components/Mkdir.vue:38
 #: src/views/config/components/Rename.vue:45
 #: src/views/config/ConfigEditor.vue:111
 #: src/views/environment/BatchUpgrader.vue:59
@@ -2187,6 +2228,11 @@ msgstr ""
 msgid "Site Logs"
 msgstr "網站日誌"
 
+#: src/views/system/SelfCheck/tasks.ts:3
+#, fuzzy
+msgid "Sites Directory"
+msgstr "目錄"
+
 #: src/routes/index.ts:56
 msgid "Sites List"
 msgstr "網站列表"
@@ -2232,6 +2278,11 @@ msgstr "已停止"
 #: src/views/dashboard/ServerAnalytic.vue:255
 msgid "Storage"
 msgstr "儲存空間"
+
+#: src/views/system/SelfCheck/tasks.ts:7
+#, fuzzy
+msgid "Streams Directory"
+msgstr "目錄"
 
 #: src/constants/index.ts:19 src/views/notification/notificationColumns.tsx:36
 msgid "Success"
@@ -2574,7 +2625,7 @@ msgstr "更新時間"
 msgid "Updated successfully"
 msgstr "更新成功"
 
-#: src/routes/index.ts:290 src/views/environment/Environment.vue:55
+#: src/routes/index.ts:297 src/views/environment/Environment.vue:55
 #: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
 msgid "Upgrade"
 msgstr "升級"

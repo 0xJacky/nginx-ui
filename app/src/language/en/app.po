@@ -17,7 +17,7 @@ msgstr ""
 msgid "2FA Settings"
 msgstr ""
 
-#: src/routes/index.ts:283
+#: src/routes/index.ts:290
 msgid "About"
 msgstr "About"
 
@@ -207,6 +207,10 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:237
 msgid "Assistant"
+msgstr ""
+
+#: src/views/system/SelfCheck/SelfCheck.vue:50
+msgid "Attempt to fix"
 msgstr ""
 
 #: src/views/preference/AuthSettings.vue:17
@@ -399,6 +403,26 @@ msgstr ""
 
 #: src/views/system/Upgrade.vue:187
 msgid "Check again"
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:12
+msgid "Check if the nginx.conf includes the sites-enabled directory."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:16
+msgid "Check if the nginx.conf includes the streams-enabled directory."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:4
+msgid ""
+"Check if the sites-available and sites-enabled directory is under the nginx "
+"configuration directory."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:8
+msgid ""
+"Check if the streams-available and streams-enabled directory is under the "
+"nginx configuration directory."
 msgstr ""
 
 #: src/language/constants.ts:13
@@ -1175,7 +1199,7 @@ msgstr ""
 msgid "Input the recovery code:"
 msgstr ""
 
-#: src/routes/index.ts:305 src/views/other/Install.vue:136
+#: src/routes/index.ts:312 src/views/other/Install.vue:136
 msgid "Install"
 msgstr "Install"
 
@@ -1327,7 +1351,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Login"
 
-#: src/routes/index.ts:311 src/views/other/Login.vue:246
+#: src/routes/index.ts:318 src/views/other/Login.vue:246
 msgid "Login"
 msgstr "Login"
 
@@ -1496,6 +1520,14 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr ""
 
+#: src/views/system/SelfCheck/tasks.ts:11
+msgid "Nginx Conf Include Sites Enabled"
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:15
+msgid "Nginx Conf Include Streams Enabled"
+msgstr ""
+
 #: src/views/site/site_edit/SiteEdit.vue:223
 #: src/views/stream/StreamEdit.vue:207
 #, fuzzy
@@ -1579,7 +1611,7 @@ msgstr ""
 msgid "Not After"
 msgstr ""
 
-#: src/routes/index.ts:317
+#: src/routes/index.ts:324
 msgid "Not Found"
 msgstr "Not Found"
 
@@ -1877,6 +1909,10 @@ msgstr "Reads"
 #: src/views/dashboard/ServerAnalytic.vue:35
 msgid "Receive"
 msgstr "Receive"
+
+#: src/views/system/SelfCheck/SelfCheck.vue:42
+msgid "Recheck"
+msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:43
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:544
@@ -2193,6 +2229,10 @@ msgstr ""
 msgid "Selector"
 msgstr ""
 
+#: src/routes/index.ts:283 src/views/system/SelfCheck/SelfCheck.vue:37
+msgid "Self Check"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:348
 #: src/views/dashboard/ServerAnalytic.vue:35
 msgid "Send"
@@ -2205,7 +2245,7 @@ msgstr "Send"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:53
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:70
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:194
-#: src/views/config/components/Mkdir.vue:38
+#: src/lib/http/index.ts:129 src/views/config/components/Mkdir.vue:38
 #: src/views/config/components/Rename.vue:45
 #: src/views/config/ConfigEditor.vue:111
 #: src/views/environment/BatchUpgrader.vue:59
@@ -2274,6 +2314,11 @@ msgstr ""
 msgid "Site Logs"
 msgstr "Sites List"
 
+#: src/views/system/SelfCheck/tasks.ts:3
+#, fuzzy
+msgid "Sites Directory"
+msgstr "Directive"
+
 #: src/routes/index.ts:56
 msgid "Sites List"
 msgstr "Sites List"
@@ -2325,6 +2370,11 @@ msgstr ""
 #: src/views/dashboard/ServerAnalytic.vue:255
 msgid "Storage"
 msgstr "Storage"
+
+#: src/views/system/SelfCheck/tasks.ts:7
+#, fuzzy
+msgid "Streams Directory"
+msgstr "Directive"
 
 #: src/constants/index.ts:19 src/views/notification/notificationColumns.tsx:36
 msgid "Success"
@@ -2671,7 +2721,7 @@ msgstr "Updated at"
 msgid "Updated successfully"
 msgstr "Saved successfully"
 
-#: src/routes/index.ts:290 src/views/environment/Environment.vue:55
+#: src/routes/index.ts:297 src/views/environment/Environment.vue:55
 #: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
 msgid "Upgrade"
 msgstr ""

@@ -5,6 +5,7 @@ type Nginx struct {
 	ErrorLogPath    string   `json:"error_log_path" protected:"true"`
 	LogDirWhiteList []string `json:"log_dir_white_list" protected:"true"`
 	ConfigDir       string   `json:"config_dir" protected:"true"`
+	ConfigPath      string   `json:"config_path" protected:"true"`
 	PIDPath         string   `json:"pid_path" protected:"true"`
 	TestConfigCmd   string   `json:"test_config_cmd" protected:"true"`
 	ReloadCmd       string   `json:"reload_cmd" protected:"true"`

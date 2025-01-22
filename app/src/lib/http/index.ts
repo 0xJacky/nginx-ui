@@ -3,14 +3,32 @@ import use2FAModal from '@/components/TwoFA/use2FAModal'
 import { useNProgress } from '@/lib/nprogress/nprogress'
 import { useSettingsStore, useUserStore } from '@/pinia'
 import router from '@/routes'
-import axios from 'axios'
+import { message } from 'ant-design-vue'
 
+import axios from 'axios'
 import { storeToRefs } from 'pinia'
 import 'nprogress/nprogress.css'
 
 const user = useUserStore()
 const settings = useSettingsStore()
 const { token, secureSessionId } = storeToRefs(user)
+
+// server response
+export interface CosyError {
+  scope?: string
+  code: string
+  message: string
+  params?: string[]
+}
+
+// code, message translation
+export type CosyErrorRecord = Record<number, () => string>
+
+const errors: Record<string, CosyErrorRecord> = {}
+
+function registerError(scope: string, record: CosyErrorRecord) {
+  errors[scope] = record
+}
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_ROOT,
@@ -59,6 +77,7 @@ instance.interceptors.response.use(
 
     return Promise.resolve(response.data)
   },
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   async error => {
     nprogress.done()
 
@@ -72,6 +91,46 @@ instance.interceptors.response.use(
         user.logout()
         await router.push('/login')
         break
+    }
+
+    const err = error.response.data as CosyError
+
+    if (err?.scope) {
+      // check if already register
+      if (!errors[err.scope]) {
+        try {
+          const error = await import(`@/constants/errors/${err.scope}.ts`)
+
+          registerError(err.scope, error.default)
+        }
+        catch {
+          /* empty */
+        }
+      }
+
+      const msg = errors?.[err.scope]?.[err.code]
+
+      if (msg) {
+        // if err has parmas
+        if (err?.params && err.params.length > 0) {
+          let res = msg()
+
+          err.params.forEach((param, index) => {
+            res = res.replaceAll(`{${index}}`, param)
+          })
+
+          message.error(res, 5)
+        }
+        else {
+          message.error(msg(), 5)
+        }
+      }
+      else {
+        message.error($gettext('Server error'))
+      }
+    }
+    else {
+      message.error($gettext(err?.message ?? 'Server error'))
     }
 
     return Promise.reject(error.response.data)
