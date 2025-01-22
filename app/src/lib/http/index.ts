@@ -4,7 +4,6 @@ import { useNProgress } from '@/lib/nprogress/nprogress'
 import { useSettingsStore, useUserStore } from '@/pinia'
 import router from '@/routes'
 import { message } from 'ant-design-vue'
-
 import axios from 'axios'
 import { storeToRefs } from 'pinia'
 import 'nprogress/nprogress.css'
