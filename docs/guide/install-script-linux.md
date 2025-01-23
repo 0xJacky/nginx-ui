@@ -27,7 +27,7 @@ install.sh install [OPTIONS]
 ### Quick Usage
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) install
+bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh) install
 ```
 
 The default listening port is `9000`, and the default HTTP Challenge port is `9180`.
@@ -60,12 +60,12 @@ install.sh remove [OPTIONS]
 
 ```shell [Remove]
 # Remove Nginx UI, except configuration and database files
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove
+bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh) remove
 ```
 
 ```shell [Purge]
 # Remove all the Nginx UI file, include configuration and database files
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) remove --purge
+bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh) remove --purge
 ```
 
 :::
@@ -85,7 +85,7 @@ install.sh help
 ### Quick Usage
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/master/install.sh) help
+bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh) help
 ```
 
 ## Control Service
