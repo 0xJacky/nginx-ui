@@ -15,6 +15,7 @@ func InitPrivateRouter(r *gin.RouterGroup) {
 	r.GET("upgrade/current", GetCurrentVersion)
 	r.GET("self_check", SelfCheck)
 	r.POST("self_check/:name/fix", SelfCheckFix)
+	r.GET("self_check/websocket", CheckWebSocket)
 }
 
 func InitWebSocketRouter(r *gin.RouterGroup) {

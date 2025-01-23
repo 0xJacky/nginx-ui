@@ -7,6 +7,7 @@ import tasks from './tasks'
 const data = ref<Report[]>()
 
 const loading = ref(false)
+const supportWebsocket = ref(false)
 
 function check() {
   loading.value = true
@@ -15,6 +16,10 @@ function check() {
   }).finally(() => {
     loading.value = false
   })
+  const ws = selfCheck.websocket()
+  ws.onopen = () => {
+    supportWebsocket.value = true
+  }
 }
 
 onMounted(() => {
@@ -42,30 +47,47 @@ function fix(taskName: string) {
         {{ $gettext('Recheck') }}
       </AButton>
     </template>
-    <AList :data-source="data">
-      <template #renderItem="{ item }">
-        <AListItem>
-          <template v-if="item.err" #actions>
-            <AButton type="link" size="small" :loading="fixing[item.name]" @click="fix(item.name)">
-              {{ $gettext('Attempt to fix') }}
-            </AButton>
+    <AList>
+      <AListItem v-for="(item, index) in data" :key="index">
+        <template v-if="item.err" #actions>
+          <AButton type="link" size="small" :loading="fixing[item.name]" @click="fix(item.name)">
+            {{ $gettext('Attempt to fix') }}
+          </AButton>
+        </template>
+        <AListItemMeta>
+          <template #title>
+            {{ tasks?.[item.name]?.name?.() }}
           </template>
-          <AListItemMeta>
-            <template #title>
-              {{ tasks?.[item.name]?.name?.() }}
-            </template>
-            <template #description>
-              {{ tasks?.[item.name]?.description?.() }}
-            </template>
-            <template #avatar>
-              <div class="text-23px">
-                <CheckCircleOutlined v-if="!item.err" class="text-green" />
-                <CloseCircleOutlined v-else class="text-red" />
-              </div>
-            </template>
-          </AListItemMeta>
-        </AListItem>
-      </template>
+          <template #description>
+            {{ tasks?.[item.name]?.description?.() }}
+          </template>
+          <template #avatar>
+            <div class="text-23px">
+              <CheckCircleOutlined v-if="!item.err" class="text-green" />
+              <CloseCircleOutlined v-else class="text-red" />
+            </div>
+          </template>
+        </AListItemMeta>
+      </AListItem>
+      <AListItem>
+        <AListItemMeta>
+          <template #title>
+            WebSocket
+          </template>
+          <template #description>
+            {{ $gettext('Support communication with the backend through the WebSocket protocol. '
+              + 'If your Nginx UI is being used via an Nginx reverse proxy, '
+              + 'please refer to this link to write the corresponding configuration file: '
+              + 'https://nginxui.com/guide/nginx-proxy-example.html') }}
+          </template>
+          <template #avatar>
+            <div class="text-23px">
+              <CheckCircleOutlined v-if="supportWebsocket" class="text-green" />
+              <CloseCircleOutlined v-else class="text-red" />
+            </div>
+          </template>
+        </AListItemMeta>
+      </AListItem>
     </AList>
   </ACard>
 </template>
