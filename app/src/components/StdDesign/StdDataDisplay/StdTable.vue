@@ -493,10 +493,6 @@ const paginationSize = computed(() => {
             >
               {{ $gettext('View') }}
             </AButton>
-            <ADivider
-              v-if="!props.disableModify"
-              type="vertical"
-            />
           </template>
 
           <template v-if="!props.disableModify && !inTrash">
@@ -507,7 +503,6 @@ const paginationSize = computed(() => {
             >
               {{ $gettext('Modify') }}
             </AButton>
-            <ADivider type="vertical" />
           </template>
 
           <slot
@@ -544,7 +539,6 @@ const paginationSize = computed(() => {
                 {{ $gettext('Recover') }}
               </AButton>
             </APopconfirm>
-            <ADivider type="vertical" />
             <APopconfirm
               v-if="inTrash"
               :cancel-text="$gettext('No')"

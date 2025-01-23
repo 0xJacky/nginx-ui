@@ -157,7 +157,6 @@ const refRename = useTemplateRef('refRename')
         >
           {{ $gettext('Modify') }}
         </AButton>
-        <ADivider type="vertical" />
         <AButton
           type="link"
           size="small"

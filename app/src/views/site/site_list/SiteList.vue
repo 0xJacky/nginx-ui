@@ -135,7 +135,6 @@ function handleBatchUpdated() {
         >
           {{ $gettext('Enable') }}
         </AButton>
-        <ADivider type="vertical" />
         <AButton
           type="link"
           size="small"
@@ -143,7 +142,6 @@ function handleBatchUpdated() {
         >
           {{ $gettext('Duplicate') }}
         </AButton>
-        <ADivider type="vertical" />
         <APopconfirm
           :cancel-text="$gettext('No')"
           :ok-text="$gettext('OK')"

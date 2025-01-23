@@ -46,10 +46,10 @@ func Save(name string, content string, overwrite bool, siteCategoryId uint64, sy
 	s := query.Site
 	_, err = s.Where(s.Path.Eq(path)).
 		Select(s.SiteCategoryID, s.SyncNodeIDs).
-			Updates(&model.Site{
-				SiteCategoryID: siteCategoryId,
-				SyncNodeIDs:    syncNodeIds,
-			})
+		Updates(&model.Site{
+			SiteCategoryID: siteCategoryId,
+			SyncNodeIDs:    syncNodeIds,
+		})
 	if err != nil {
 		return
 	}
@@ -80,10 +80,10 @@ func syncSave(name string, content string) {
 			client.SetBaseURL(node.URL)
 			resp, err := client.R().
 				SetHeader("X-Node-Secret", node.Token).
-					SetBody(map[string]interface{}{
-						"content":   content,
-						"overwrite": true,
-					}).
+				SetBody(map[string]interface{}{
+					"content":   content,
+					"overwrite": true,
+				}).
 				Post(fmt.Sprintf("/api/sites/%s", name))
 			if err != nil {
 				notification.Error("Save Remote Site Error", err.Error())
@@ -94,6 +94,12 @@ func syncSave(name string, content string) {
 				return
 			}
 			notification.Success("Save Remote Site Success", NewSyncResult(node.Name, name, resp).String())
+
+			// Check if the site is enabled, if so then enable it on the remote node
+			enabledConfigFilePath := nginx.GetConfPath("sites-enabled", name)
+			if helper.FileExists(enabledConfigFilePath) {
+				syncEnable(name)
+			}
 		}()
 	}
 
