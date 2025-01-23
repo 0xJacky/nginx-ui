@@ -21,7 +21,7 @@ msgstr "المصادقة الثنائية"
 msgid "2FA Settings"
 msgstr "إعدادات المصادقة الثنائية"
 
-#: src/routes/index.ts:283
+#: src/routes/index.ts:290
 msgid "About"
 msgstr "عن"
 
@@ -198,6 +198,11 @@ msgstr "اطلب المساعدة من ChatGPT"
 #: src/components/ChatGPT/ChatGPT.vue:237
 msgid "Assistant"
 msgstr "المساعد"
+
+#: src/views/system/SelfCheck/SelfCheck.vue:54
+#, fuzzy
+msgid "Attempt to fix"
+msgstr "محاولات"
 
 #: src/views/preference/AuthSettings.vue:17
 msgid "Attempts"
@@ -388,6 +393,26 @@ msgstr "قناة"
 #: src/views/system/Upgrade.vue:187
 msgid "Check again"
 msgstr "تحقق مرة أخرى"
+
+#: src/views/system/SelfCheck/tasks.ts:12
+msgid "Check if the nginx.conf includes the sites-enabled directory."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:16
+msgid "Check if the nginx.conf includes the streams-enabled directory."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:4
+msgid ""
+"Check if the sites-available and sites-enabled directories are under the "
+"nginx configuration directory."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:8
+msgid ""
+"Check if the streams-available and streams-enabled directories are under the "
+"nginx configuration directory."
+msgstr ""
 
 #: src/language/constants.ts:13
 msgid "Cleaning environment variables"
@@ -1132,7 +1157,7 @@ msgstr "أدخل الرمز من التطبيق:"
 msgid "Input the recovery code:"
 msgstr "أدخل رمز الاسترداد:"
 
-#: src/routes/index.ts:305 src/views/other/Install.vue:136
+#: src/routes/index.ts:312 src/views/other/Install.vue:136
 msgid "Install"
 msgstr "تثبيت"
 
@@ -1269,7 +1294,7 @@ msgstr "أماكن"
 msgid "Log"
 msgstr "سجل"
 
-#: src/routes/index.ts:311 src/views/other/Login.vue:246
+#: src/routes/index.ts:318 src/views/other/Login.vue:246
 msgid "Login"
 msgstr "تسجيل الدخول"
 
@@ -1434,6 +1459,14 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "مسار سجل الوصول لـ Nginx"
 
+#: src/views/system/SelfCheck/tasks.ts:11
+msgid "Nginx Conf Include Sites Enabled"
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:15
+msgid "Nginx Conf Include Streams Enabled"
+msgstr ""
+
 #: src/views/site/site_edit/SiteEdit.vue:223
 #: src/views/stream/StreamEdit.vue:207
 msgid "Nginx Configuration Parse Error"
@@ -1512,7 +1545,7 @@ msgstr "سر العقدة"
 msgid "Not After"
 msgstr "ليس بعد"
 
-#: src/routes/index.ts:317
+#: src/routes/index.ts:324
 msgid "Not Found"
 msgstr "غير موجود"
 
@@ -1813,6 +1846,10 @@ msgstr "يقرأ"
 msgid "Receive"
 msgstr "يستقبل"
 
+#: src/views/system/SelfCheck/SelfCheck.vue:47
+msgid "Recheck"
+msgstr ""
+
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:43
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:544
 msgid "Recover"
@@ -2102,6 +2139,10 @@ msgstr "تم نسخ السر"
 msgid "Selector"
 msgstr "المحدد"
 
+#: src/routes/index.ts:283 src/views/system/SelfCheck/SelfCheck.vue:42
+msgid "Self Check"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:348
 #: src/views/dashboard/ServerAnalytic.vue:35
 msgid "Send"
@@ -2114,7 +2155,7 @@ msgstr "إرسال"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:53
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:70
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:194
-#: src/views/config/components/Mkdir.vue:38
+#: src/lib/http/index.ts:128 src/views/config/components/Mkdir.vue:38
 #: src/views/config/components/Rename.vue:45
 #: src/views/config/ConfigEditor.vue:111
 #: src/views/environment/BatchUpgrader.vue:59
@@ -2184,6 +2225,11 @@ msgstr "فئات الموقع"
 msgid "Site Logs"
 msgstr "سجلات الموقع"
 
+#: src/views/system/SelfCheck/tasks.ts:3
+#, fuzzy
+msgid "Sites Directory"
+msgstr "مجلد"
+
 #: src/routes/index.ts:56
 msgid "Sites List"
 msgstr "قائمة المواقع"
@@ -2230,9 +2276,22 @@ msgstr "متوقف"
 msgid "Storage"
 msgstr "تخزين"
 
+#: src/views/system/SelfCheck/tasks.ts:7
+#, fuzzy
+msgid "Streams Directory"
+msgstr "مجلد"
+
 #: src/constants/index.ts:19 src/views/notification/notificationColumns.tsx:36
 msgid "Success"
 msgstr "نجاح"
+
+#: src/views/system/SelfCheck/SelfCheck.vue:78
+msgid ""
+"Support communication with the backend through the WebSocket protocol. If "
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
+"link to write the corresponding configuration file: https://nginxui.com/"
+"guide/nginx-proxy-example.html"
+msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:240
 #: src/views/dashboard/ServerAnalytic.vue:241
@@ -2590,7 +2649,7 @@ msgstr "محدث في"
 msgid "Updated successfully"
 msgstr "تم التحديث بنجاح"
 
-#: src/routes/index.ts:290 src/views/environment/Environment.vue:55
+#: src/routes/index.ts:297 src/views/environment/Environment.vue:55
 #: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
 msgid "Upgrade"
 msgstr "ترقية"

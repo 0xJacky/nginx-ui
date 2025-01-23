@@ -276,6 +276,13 @@ export const routes: RouteRecordRaw[] = [
           icon: InfoCircleOutlined,
         },
         children: [{
+          path: 'self_check',
+          name: 'Self Check',
+          component: () => import('@/views/system/SelfCheck/SelfCheck.vue'),
+          meta: {
+            name: () => $gettext('Self Check'),
+          },
+        }, {
           path: 'about',
           name: 'About',
           component: () => import('@/views/system/About.vue'),

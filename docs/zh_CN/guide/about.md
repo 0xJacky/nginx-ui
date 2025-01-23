@@ -89,3 +89,4 @@ Nginx UI 可在以下平台中使用：
 - [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
 - [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
 - [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
+- [lego](https://github.com/go-acme/lego)

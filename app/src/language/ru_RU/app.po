@@ -23,7 +23,7 @@ msgstr "2FA"
 msgid "2FA Settings"
 msgstr "Настройки 2FA"
 
-#: src/routes/index.ts:283
+#: src/routes/index.ts:290
 msgid "About"
 msgstr "О проекте"
 
@@ -202,6 +202,11 @@ msgstr "Обратитесь за помощью к ChatGPT"
 #: src/components/ChatGPT/ChatGPT.vue:237
 msgid "Assistant"
 msgstr "Ассистент"
+
+#: src/views/system/SelfCheck/SelfCheck.vue:54
+#, fuzzy
+msgid "Attempt to fix"
+msgstr "Попытки"
 
 #: src/views/preference/AuthSettings.vue:17
 msgid "Attempts"
@@ -386,6 +391,26 @@ msgstr "Канал"
 #: src/views/system/Upgrade.vue:187
 msgid "Check again"
 msgstr "Проверить повторно"
+
+#: src/views/system/SelfCheck/tasks.ts:12
+msgid "Check if the nginx.conf includes the sites-enabled directory."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:16
+msgid "Check if the nginx.conf includes the streams-enabled directory."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:4
+msgid ""
+"Check if the sites-available and sites-enabled directories are under the "
+"nginx configuration directory."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:8
+msgid ""
+"Check if the streams-available and streams-enabled directories are under the "
+"nginx configuration directory."
+msgstr ""
 
 #: src/language/constants.ts:13
 msgid "Cleaning environment variables"
@@ -1146,7 +1171,7 @@ msgstr "Введите код из приложения:"
 msgid "Input the recovery code:"
 msgstr "Введите код восстановления:"
 
-#: src/routes/index.ts:305 src/views/other/Install.vue:136
+#: src/routes/index.ts:312 src/views/other/Install.vue:136
 msgid "Install"
 msgstr "Установить"
 
@@ -1285,7 +1310,7 @@ msgstr "Локации"
 msgid "Log"
 msgstr "Журнал"
 
-#: src/routes/index.ts:311 src/views/other/Login.vue:246
+#: src/routes/index.ts:318 src/views/other/Login.vue:246
 msgid "Login"
 msgstr "Логин"
 
@@ -1450,6 +1475,14 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Путь для Nginx Access Log"
 
+#: src/views/system/SelfCheck/tasks.ts:11
+msgid "Nginx Conf Include Sites Enabled"
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks.ts:15
+msgid "Nginx Conf Include Streams Enabled"
+msgstr ""
+
 #: src/views/site/site_edit/SiteEdit.vue:223
 #: src/views/stream/StreamEdit.vue:207
 msgid "Nginx Configuration Parse Error"
@@ -1532,7 +1565,7 @@ msgstr ""
 msgid "Not After"
 msgstr "Не позднее"
 
-#: src/routes/index.ts:317
+#: src/routes/index.ts:324
 msgid "Not Found"
 msgstr "Не найден"
 
@@ -1840,6 +1873,10 @@ msgstr "Чтение"
 msgid "Receive"
 msgstr "Принято"
 
+#: src/views/system/SelfCheck/SelfCheck.vue:47
+msgid "Recheck"
+msgstr ""
+
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:43
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:544
 msgid "Recover"
@@ -2144,6 +2181,10 @@ msgstr ""
 msgid "Selector"
 msgstr "Выбор"
 
+#: src/routes/index.ts:283 src/views/system/SelfCheck/SelfCheck.vue:42
+msgid "Self Check"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:348
 #: src/views/dashboard/ServerAnalytic.vue:35
 msgid "Send"
@@ -2156,7 +2197,7 @@ msgstr "Отправлено"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:53
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:70
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:194
-#: src/views/config/components/Mkdir.vue:38
+#: src/lib/http/index.ts:128 src/views/config/components/Mkdir.vue:38
 #: src/views/config/components/Rename.vue:45
 #: src/views/config/ConfigEditor.vue:111
 #: src/views/environment/BatchUpgrader.vue:59
@@ -2226,6 +2267,11 @@ msgstr ""
 msgid "Site Logs"
 msgstr "Журналы сайта"
 
+#: src/views/system/SelfCheck/tasks.ts:3
+#, fuzzy
+msgid "Sites Directory"
+msgstr "Каталог"
+
 #: src/routes/index.ts:56
 msgid "Sites List"
 msgstr "Список сайтов"
@@ -2272,9 +2318,22 @@ msgstr "Остановлен"
 msgid "Storage"
 msgstr "Хранилище"
 
+#: src/views/system/SelfCheck/tasks.ts:7
+#, fuzzy
+msgid "Streams Directory"
+msgstr "Каталог"
+
 #: src/constants/index.ts:19 src/views/notification/notificationColumns.tsx:36
 msgid "Success"
 msgstr "Успех"
+
+#: src/views/system/SelfCheck/SelfCheck.vue:78
+msgid ""
+"Support communication with the backend through the WebSocket protocol. If "
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
+"link to write the corresponding configuration file: https://nginxui.com/"
+"guide/nginx-proxy-example.html"
+msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:240
 #: src/views/dashboard/ServerAnalytic.vue:241
@@ -2642,7 +2701,7 @@ msgstr "Обновлено в"
 msgid "Updated successfully"
 msgstr "Успешно обновлено"
 
-#: src/routes/index.ts:290 src/views/environment/Environment.vue:55
+#: src/routes/index.ts:297 src/views/environment/Environment.vue:55
 #: src/views/system/Upgrade.vue:145 src/views/system/Upgrade.vue:228
 msgid "Upgrade"
 msgstr "Обновление"

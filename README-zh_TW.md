@@ -105,6 +105,7 @@ Nginx 網路管理介面，由 [0xJacky](https://jackyu.cn/) 與 [Hintay](https:
 - [vue3-gettext](https://github.com/jshmrtn/vue3-gettext)
 - [vue3-ace-editor](https://github.com/CarterLi/vue3-ace-editor)
 - [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
+- [lego](https://github.com/go-acme/lego)
 
 ## 入門指南
 

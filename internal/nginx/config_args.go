@@ -39,6 +39,23 @@ func GetConfPath(dir ...string) (confPath string) {
 	return joined
 }
 
+func GetConfEntryPath() (path string) {
+	if settings.NginxSettings.ConfigPath == "" {
+		out := getNginxV()
+		r, _ := regexp.Compile("--conf-path=(.*.conf)")
+		match := r.FindStringSubmatch(out)
+		if len(match) < 1 {
+			logger.Error("nginx.GetConfEntryPath len(match) < 1")
+			return ""
+		}
+		path = match[1]
+	} else {
+		path = settings.NginxSettings.ConfigPath
+	}
+
+	return
+}
+
 func GetPIDPath() (path string) {
 	if settings.NginxSettings.PIDPath == "" {
 		out := getNginxV()
@@ -53,7 +70,7 @@ func GetPIDPath() (path string) {
 		path = settings.NginxSettings.PIDPath
 	}
 
-	return path
+	return
 }
 
 func GetSbinPath() (path string) {
@@ -66,7 +83,7 @@ func GetSbinPath() (path string) {
 	}
 	path = match[1]
 
-	return path
+	return
 }
 
 func GetAccessLogPath() (path string) {
@@ -83,7 +100,7 @@ func GetAccessLogPath() (path string) {
 		path = settings.NginxSettings.AccessLogPath
 	}
 
-	return path
+	return
 }
 
 func GetErrorLogPath() string {
