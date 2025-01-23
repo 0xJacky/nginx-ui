@@ -1,6 +1,6 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.23.4
+go 1.23.5
 
 require (
 	github.com/0xJacky/pofile v0.2.1
@@ -39,6 +39,7 @@ require (
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/crypto v0.32.0
+	golang.org/x/net v0.34.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gen v0.3.26
@@ -256,7 +257,6 @@ require (
 	golang.org/x/arch v0.13.0 // indirect
 	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8 // indirect
 	golang.org/x/mod v0.22.0 // indirect
-	golang.org/x/net v0.34.0 // indirect
 	golang.org/x/oauth2 v0.25.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
