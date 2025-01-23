@@ -13,10 +13,10 @@ lego --email you@example.com --dns liara -d '*.example.com' -d example.com run
   [Configuration.Credentials]
     LIARA_API_KEY = "The API key"
   [Configuration.Additional]
-    LIARA_POLLING_INTERVAL = "Time between DNS propagation check"
-    LIARA_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    LIARA_TTL = "The TTL of the TXT record used for the DNS challenge"
-    LIARA_HTTP_TIMEOUT = "API request timeout"
+    LIARA_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    LIARA_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    LIARA_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 3600)"
+    LIARA_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://dns-service.iran.liara.ir/swagger"

@@ -14,10 +14,10 @@ lego --email you@example.com --dns linode -d '*.example.com' -d example.com run
   [Configuration.Credentials]
     LINODE_TOKEN = "API token"
   [Configuration.Additional]
-    LINODE_POLLING_INTERVAL = "Time between DNS propagation check"
-    LINODE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    LINODE_TTL = "The TTL of the TXT record used for the DNS challenge"
-    LINODE_HTTP_TIMEOUT = "API request timeout"
+    LINODE_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 15)"
+    LINODE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
+    LINODE_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 300)"
+    LINODE_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://developers.linode.com/api/v4"

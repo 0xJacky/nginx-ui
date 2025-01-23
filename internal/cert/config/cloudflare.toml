@@ -69,10 +69,10 @@ It follows the principle of least privilege and limits the possible damage, shou
     CLOUDFLARE_DNS_API_TOKEN = "Alias to CF_DNS_API_TOKEN"
     CLOUDFLARE_ZONE_API_TOKEN = "Alias to CF_ZONE_API_TOKEN"
   [Configuration.Additional]
-    CLOUDFLARE_POLLING_INTERVAL = "Time between DNS propagation check (in seconds)"
-    CLOUDFLARE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation (in seconds)"
-    CLOUDFLARE_TTL = "The TTL of the TXT record used for the DNS challenge (in seconds)"
-    CLOUDFLARE_HTTP_TIMEOUT = "API request timeout (in seconds)"
+    CLOUDFLARE_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    CLOUDFLARE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
+    CLOUDFLARE_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    CLOUDFLARE_HTTP_TIMEOUT = "API request timeout in seconds (Default: )"
 
 [Links]
   API = "https://api.cloudflare.com/"

@@ -13,10 +13,10 @@ lego --email you@example.com --dns zonomi -d '*.example.com' -d example.com run
   [Configuration.Credentials]
     ZONOMI_API_KEY = "User API key"
   [Configuration.Additional]
-    ZONOMI_POLLING_INTERVAL = "Time between DNS propagation check"
-    ZONOMI_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    ZONOMI_TTL = "The TTL of the TXT record used for the DNS challenge"
-    ZONOMI_HTTP_TIMEOUT = "API request timeout"
+    ZONOMI_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    ZONOMI_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    ZONOMI_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 3600)"
+    ZONOMI_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://zonomi.com/app/dns/dyndns.jsp"

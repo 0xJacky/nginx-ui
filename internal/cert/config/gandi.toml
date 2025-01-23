@@ -13,10 +13,10 @@ lego --email you@example.com --dns gandi -d '*.example.com' -d example.com run
   [Configuration.Credentials]
     GANDI_API_KEY = "API key"
   [Configuration.Additional]
-    GANDI_POLLING_INTERVAL = "Time between DNS propagation check"
-    GANDI_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    GANDI_TTL = "The TTL of the TXT record used for the DNS challenge"
-    GANDI_HTTP_TIMEOUT = "API request timeout"
+    GANDI_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 60)"
+    GANDI_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 2400)"
+    GANDI_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 300)"
+    GANDI_HTTP_TIMEOUT = "API request timeout in seconds (Default: 60)"
 
 [Links]
   API = "https://doc.rpc.gandi.net/index.html"

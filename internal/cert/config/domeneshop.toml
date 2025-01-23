@@ -24,9 +24,9 @@ Visit the following page for information on how to create API credentials with D
     DOMENESHOP_API_TOKEN = "API token"
     DOMENESHOP_API_SECRET = "API secret"
   [Configuration.Additional]
-    DOMENESHOP_POLLING_INTERVAL = "Time between DNS propagation check"
-    DOMENESHOP_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    DOMENESHOP_HTTP_TIMEOUT = "API request timeout"
+    DOMENESHOP_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 20)"
+    DOMENESHOP_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 300)"
+    DOMENESHOP_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://api.domeneshop.no/docs"

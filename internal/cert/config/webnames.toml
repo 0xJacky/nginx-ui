@@ -21,10 +21,9 @@ The API key can be found: Personal account / My domains and services / Select th
   [Configuration.Credentials]
     WEBNAMES_API_KEY = "Domain API key"
   [Configuration.Additional]
-    WEBNAMES_POLLING_INTERVAL = "Time between DNS propagation check"
-    WEBNAMES_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    WEBNAMES_TTL = "The TTL of the TXT record used for the DNS challenge"
-    WEBNAMES_HTTP_TIMEOUT = "API request timeout"
+    WEBNAMES_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    WEBNAMES_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    WEBNAMES_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://github.com/regtime-ltd/certbot-dns-webnames"

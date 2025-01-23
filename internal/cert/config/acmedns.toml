@@ -9,13 +9,20 @@ Example = '''
 ACME_DNS_API_BASE=http://10.0.0.8:4443 \
 ACME_DNS_STORAGE_PATH=/root/.lego-acme-dns-accounts.json \
 lego --email you@example.com --dns "acme-dns" -d '*.example.com' -d example.com run
+
+# or
+
+ACME_DNS_API_BASE=http://10.0.0.8:4443 \
+ACME_DNS_STORAGE_BASE_URL=http://10.10.10.10:80 \
+lego --email you@example.com --dns "acme-dns" -d '*.example.com' -d example.com run
 '''
 
 [Configuration]
   [Configuration.Credentials]
     ACME_DNS_API_BASE  = "The ACME-DNS API address"
     ACME_DNS_STORAGE_PATH = "The ACME-DNS JSON account data file. A per-domain account will be registered/persisted to this file and used for TXT updates."
+    ACME_DNS_STORAGE_BASE_URL = "The ACME-DNS JSON account data server."
 
 [Links]
   API = "https://github.com/joohoi/acme-dns#api"
-  GoClient = "https://github.com/cpu/goacmedns"
+  GoClient = "https://github.com/nrdcg/goacmedns"

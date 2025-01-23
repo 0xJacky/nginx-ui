@@ -135,9 +135,9 @@ Replace `Z11111112222222333333` with your hosted zone ID and `example.com` with 
   [Configuration.Additional]
     AWS_SHARED_CREDENTIALS_FILE = "Managed by the AWS client. Shared credentials file."
     AWS_MAX_RETRIES = "The number of maximum returns the service will use to make an individual API request"
-    AWS_POLLING_INTERVAL = "Time between DNS propagation check"
-    AWS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    AWS_TTL = "The TTL of the TXT record used for the DNS challenge"
+    AWS_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 4)"
+    AWS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
+    AWS_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 10)"
 
 [Links]
   API = "https://docs.aws.amazon.com/Route53/latest/APIReference/API_Operations_Amazon_Route_53.html"

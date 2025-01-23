@@ -76,10 +76,10 @@ Both authentication methods cannot be used at the same time.
     OVH_CLIENT_SECRET = "Client secret (OAuth2)"
     OVH_ACCESS_TOKEN = "Access token"
   [Configuration.Additional]
-    OVH_POLLING_INTERVAL = "Time between DNS propagation check"
-    OVH_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    OVH_TTL = "The TTL of the TXT record used for the DNS challenge"
-    OVH_HTTP_TIMEOUT = "API request timeout"
+    OVH_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    OVH_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    OVH_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    OVH_HTTP_TIMEOUT = "API request timeout in seconds (Default: 180)"
 
 [Links]
   API = "https://eu.api.ovh.com/"

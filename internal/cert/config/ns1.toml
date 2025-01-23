@@ -13,10 +13,10 @@ lego --email you@example.com --dns ns1 -d '*.example.com' -d example.com run
   [Configuration.Credentials]
     NS1_API_KEY = "API key"
   [Configuration.Additional]
-    NS1_POLLING_INTERVAL = "Time between DNS propagation check"
-    NS1_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    NS1_TTL = "The TTL of the TXT record used for the DNS challenge"
-    NS1_HTTP_TIMEOUT = "API request timeout"
+    NS1_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    NS1_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    NS1_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    NS1_HTTP_TIMEOUT = "API request timeout in seconds (Default: 10)"
 
 [Links]
   API = "https://ns1.com/api"

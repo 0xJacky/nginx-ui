@@ -19,9 +19,9 @@ Example = ''''''
     AZURE_METADATA_ENDPOINT = "Metadata Service endpoint URL"
     AZURE_PRIVATE_ZONE = "Set to true to use Azure Private DNS Zones and not public"
     AZURE_ZONE_NAME = "Zone name to use inside Azure DNS service to add the TXT record in"
-    AZURE_POLLING_INTERVAL = "Time between DNS propagation check"
-    AZURE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    AZURE_TTL = "The TTL of the TXT record used for the DNS challenge"
+    AZURE_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    AZURE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
+    AZURE_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 60)"
 
 [Links]
   API = "https://docs.microsoft.com/en-us/go/azure/"

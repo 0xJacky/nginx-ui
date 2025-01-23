@@ -15,10 +15,10 @@ lego --email you@example.com --dns ibmcloud -d '*.example.com' -d example.com ru
     SOFTLAYER_USERNAME = "Username (IBM Cloud is <accountID>_<emailAddress>)"
     SOFTLAYER_API_KEY = "Classic Infrastructure API key"
   [Configuration.Additional]
-    SOFTLAYER_POLLING_INTERVAL = "Time between DNS propagation check"
-    SOFTLAYER_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    SOFTLAYER_TTL = "The TTL of the TXT record used for the DNS challenge"
-    SOFTLAYER_TIMEOUT = "API request timeout"
+    SOFTLAYER_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    SOFTLAYER_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    SOFTLAYER_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    SOFTLAYER_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://cloud.ibm.com/docs/dns?topic=dns-getting-started-with-the-dns-api"

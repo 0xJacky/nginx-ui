@@ -14,10 +14,10 @@ lego --email you@example.com --dns hostingde -d '*.example.com' -d example.com r
     HOSTINGDE_API_KEY = "API key"
   [Configuration.Additional]
     HOSTINGDE_ZONE_NAME = "Zone name in ACE format"
-    HOSTINGDE_POLLING_INTERVAL = "Time between DNS propagation check"
-    HOSTINGDE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    HOSTINGDE_TTL = "The TTL of the TXT record used for the DNS challenge"
-    HOSTINGDE_HTTP_TIMEOUT = "API request timeout"
+    HOSTINGDE_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    HOSTINGDE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
+    HOSTINGDE_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    HOSTINGDE_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://www.hosting.de/api/#dns"

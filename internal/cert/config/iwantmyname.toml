@@ -15,10 +15,10 @@ lego --email you@example.com --dns iwantmyname -d '*.example.com' -d example.com
     IWANTMYNAME_USERNAME = "API username"
     IWANTMYNAME_PASSWORD = "API password"
   [Configuration.Additional]
-    IWANTMYNAME_POLLING_INTERVAL = "Time between DNS propagation check"
-    IWANTMYNAME_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    IWANTMYNAME_TTL = "The TTL of the TXT record used for the DNS challenge"
-    IWANTMYNAME_HTTP_TIMEOUT = "API request timeout"
+    IWANTMYNAME_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    IWANTMYNAME_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    IWANTMYNAME_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    IWANTMYNAME_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://iwantmyname.com/developer/domain-dns-api"

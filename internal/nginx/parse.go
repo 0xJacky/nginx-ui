@@ -24,8 +24,12 @@ func (s *NgxServer) parseServer(directive config.IDirective) {
 	for _, d := range directive.GetBlock().GetDirectives() {
 		switch d.GetName() {
 		case Location:
+			var params []string
+			for _, param := range d.GetParameters() {
+				params = append(params, param.Value)
+			}
 			location := &NgxLocation{
-				Path:     strings.Join(d.GetParameters(), " "),
+				Path:     strings.Join(params, " "),
 				Comments: buildComment(d.GetComment()),
 			}
 			location.parseLocation(d, 0)
@@ -53,7 +57,11 @@ func (l *NgxLocation) parseLocation(directive config.IDirective, deep int) {
 				l.Content += strings.Repeat("\t", deep) + c + "\n"
 			}
 		}
-		l.Content += strings.Repeat("\t", deep) + location.GetName() + " " + strings.Join(location.GetParameters(), " ")
+		var params []string
+		for _, param := range location.GetParameters() {
+			params = append(params, param.Value)
+		}
+		l.Content += strings.Repeat("\t", deep) + location.GetName() + " " + strings.Join(params, " ")
 		if location.GetBlock() != nil && location.GetBlock().GetDirectives() != nil {
 			l.Content += " { \n"
 			l.parseLocation(location, deep+1)
@@ -73,7 +81,13 @@ func (d *NgxDirective) parseDirective(directive config.IDirective, deep int) {
 		d.Params += directive.GetName() + " "
 		d.Directive = ""
 	}
-	d.Params += strings.Join(directive.GetParameters(), " ")
+
+	var params []string
+	for _, param := range directive.GetParameters() {
+		params = append(params, param.Value)
+	}
+
+	d.Params += strings.Join(params, " ")
 	if directive.GetBlock() != nil {
 		d.Params += " {\n"
 		for _, location := range directive.GetBlock().GetDirectives() {
@@ -82,8 +96,12 @@ func (d *NgxDirective) parseDirective(directive config.IDirective, deep int) {
 					d.Params += strings.Repeat("\t", deep) + c + "\n"
 				}
 			}
+			var params []string
+			for _, param := range location.GetParameters() {
+				params = append(params, param.Value)
+			}
 			d.Params += strings.Repeat("\t", deep+1) + location.GetName() + " " +
-				strings.Join(location.GetParameters(), " ") + ";\n"
+				strings.Join(params, " ") + ";\n"
 			// d.parseDirective(location, deep+1)
 			if location.GetBlock() == nil {
 				continue
@@ -102,9 +120,13 @@ func (u *NgxUpstream) parseUpstream(directive config.IDirective) {
 		return
 	}
 	for _, us := range directive.GetBlock().GetDirectives() {
+		var params []string
+		for _, param := range us.GetParameters() {
+			params = append(params, param.Value)
+		}
 		d := &NgxDirective{
 			Directive: us.GetName(),
-			Params:    strings.Join(us.GetParameters(), " "),
+			Params:    strings.Join(params, " "),
 			Comments:  buildComment(us.GetComment()),
 		}
 		u.Directives = append(u.Directives, d)
@@ -117,8 +139,12 @@ func (c *NgxConfig) parseCustom(directive config.IDirective) {
 	}
 	c.Custom += "{\n"
 	for _, v := range directive.GetBlock().GetDirectives() {
+		var params []string
+		for _, param := range v.GetParameters() {
+			params = append(params, param.Value)
+		}
 		c.Custom += strings.Join(v.GetComment(), "\n") + "\n" +
-			v.GetName() + " " + strings.Join(v.GetParameters(), " ") + ";\n"
+			v.GetName() + " " + strings.Join(params, " ") + ";\n"
 	}
 	c.Custom += "}\n"
 }
@@ -141,15 +167,23 @@ func parse(block config.IBlock, ngxConfig *NgxConfig) (err error) {
 			server.parseServer(v)
 			ngxConfig.Servers = append(ngxConfig.Servers, server)
 		case Upstream:
+			var params []string
+			for _, param := range v.GetParameters() {
+				params = append(params, param.Value)
+			}
 			upstream := &NgxUpstream{
-				Name: strings.Join(v.GetParameters(), " "),
+				Name: strings.Join(params, " "),
 			}
 			upstream.Comments = comments
 			upstream.parseUpstream(v)
 			ngxConfig.Upstreams = append(ngxConfig.Upstreams, upstream)
 		default:
+			var params []string
+			for _, param := range v.GetParameters() {
+				params = append(params, param.Value)
+			}
 			ngxConfig.Custom += strings.Join(v.GetComment(), "\n") + "\n" +
-				v.GetName() + " " + strings.Join(v.GetParameters(), " ") + "\n"
+				v.GetName() + " " + strings.Join(params, " ") + "\n"
 			ngxConfig.parseCustom(v)
 		}
 	}

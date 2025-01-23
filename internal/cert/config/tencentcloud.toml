@@ -17,10 +17,10 @@ lego --email you@example.com --dns tencentcloud -d '*.example.com' -d example.co
   [Configuration.Additional]
     TENCENTCLOUD_SESSION_TOKEN = "Access Key token"
     TENCENTCLOUD_REGION = "Region"
-    TENCENTCLOUD_POLLING_INTERVAL = "Time between DNS propagation check"
-    TENCENTCLOUD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    TENCENTCLOUD_TTL = "The TTL of the TXT record used for the DNS challenge"
-    TENCENTCLOUD_HTTP_TIMEOUT = "API request timeout"
+    TENCENTCLOUD_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    TENCENTCLOUD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    TENCENTCLOUD_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 600)"
+    TENCENTCLOUD_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://cloud.tencent.com/document/product/1427/56153"

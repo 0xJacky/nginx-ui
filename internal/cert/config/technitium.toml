@@ -23,10 +23,10 @@ Technitium recommends to use it in production over the HTTP API.
     TECHNITIUM_SERVER_BASE_URL = "Server base URL"
     TECHNITIUM_API_TOKEN = "API token"
   [Configuration.Additional]
-    TECHNITIUM_POLLING_INTERVAL = "Time between DNS propagation check"
-    TECHNITIUM_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    TECHNITIUM_TTL = "The TTL of the TXT record used for the DNS challenge"
-    TECHNITIUM_HTTP_TIMEOUT = "API request timeout"
+    TECHNITIUM_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    TECHNITIUM_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    TECHNITIUM_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    TECHNITIUM_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://github.com/TechnitiumSoftware/DnsServer/blob/0f83d23e605956b66ac76921199e241d9cc061bd/APIDOCS.md"

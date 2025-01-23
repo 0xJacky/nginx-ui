@@ -13,10 +13,10 @@ lego --email you@example.com --dns desec -d '*.example.com' -d example.com run
   [Configuration.Credentials]
     DESEC_TOKEN = "Domain token"
   [Configuration.Additional]
-    DESEC_POLLING_INTERVAL = "Time between DNS propagation check"
-    DESEC_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    DESEC_TTL = "The TTL of the TXT record used for the DNS challenge"
-    DESEC_HTTP_TIMEOUT = "API request timeout"
+    DESEC_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 4)"
+    DESEC_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
+    DESEC_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 3600)"
+    DESEC_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://desec.readthedocs.io/en/latest/"

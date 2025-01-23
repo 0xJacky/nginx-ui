@@ -13,9 +13,9 @@ lego --email you@example.com --dns timewebcloud -d '*.example.com' -d example.co
   [Configuration.Credentials]
     TIMEWEBCLOUD_AUTH_TOKEN = "Authentication token"
   [Configuration.Additional]
-    TIMEWEBCLOUD_POLLING_INTERVAL = "Time between DNS propagation check"
-    TIMEWEBCLOUD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    TIMEWEBCLOUD_HTTP_TIMEOUT = "API request timeout"
+    TIMEWEBCLOUD_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    TIMEWEBCLOUD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    TIMEWEBCLOUD_HTTP_TIMEOUT = "API request timeout in seconds (Default: 10)"
 
 [Links]
   API = "https://timeweb.cloud/api-docs"

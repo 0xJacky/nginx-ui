@@ -16,10 +16,10 @@ lego --email you@example.com --dns dnsmadeeasy -d '*.example.com' -d example.com
     DNSMADEEASY_API_SECRET = "The API Secret key"
   [Configuration.Additional]
     DNSMADEEASY_SANDBOX = "Activate the sandbox (boolean)"
-    DNSMADEEASY_POLLING_INTERVAL = "Time between DNS propagation check"
-    DNSMADEEASY_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    DNSMADEEASY_TTL = "The TTL of the TXT record used for the DNS challenge"
-    DNSMADEEASY_HTTP_TIMEOUT = "API request timeout"
+    DNSMADEEASY_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    DNSMADEEASY_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    DNSMADEEASY_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    DNSMADEEASY_HTTP_TIMEOUT = "API request timeout in seconds (Default: 10)"
 
 [Links]
   API = "https://api-docs.dnsmadeeasy.com/"

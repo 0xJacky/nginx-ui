@@ -15,10 +15,10 @@ lego --email you@example.com --dns sakuracloud -d '*.example.com' -d example.com
     SAKURACLOUD_ACCESS_TOKEN = "Access token"
     SAKURACLOUD_ACCESS_TOKEN_SECRET = "Access token secret"
   [Configuration.Additional]
-    SAKURACLOUD_POLLING_INTERVAL = "Time between DNS propagation check"
-    SAKURACLOUD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    SAKURACLOUD_TTL = "The TTL of the TXT record used for the DNS challenge"
-    SAKURACLOUD_HTTP_TIMEOUT = "API request timeout"
+    SAKURACLOUD_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    SAKURACLOUD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    SAKURACLOUD_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    SAKURACLOUD_HTTP_TIMEOUT = "API request timeout in seconds (Default: 10)"
 
 [Links]
   API = "https://developer.sakura.ad.jp/cloud/api/1.1/"

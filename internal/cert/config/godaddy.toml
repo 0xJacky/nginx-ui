@@ -24,10 +24,10 @@ https://community.letsencrypt.org/t/getting-unauthorized-url-error-while-trying-
     GODADDY_API_KEY = "API key"
     GODADDY_API_SECRET = "API secret"
   [Configuration.Additional]
-    GODADDY_POLLING_INTERVAL = "Time between DNS propagation check"
-    GODADDY_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    GODADDY_TTL = "The TTL of the TXT record used for the DNS challenge"
-    GODADDY_HTTP_TIMEOUT = "API request timeout"
+    GODADDY_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    GODADDY_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
+    GODADDY_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 600)"
+    GODADDY_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://developer.godaddy.com/doc/endpoint/domains"

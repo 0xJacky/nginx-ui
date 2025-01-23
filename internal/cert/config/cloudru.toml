@@ -17,11 +17,11 @@ lego --email you@example.com --dns cloudru -d '*.example.com' -d example.com run
     CLOUDRU_KEY_ID = "Key ID (login)"
     CLOUDRU_SECRET = "Key Secret"
   [Configuration.Additional]
-    CLOUDRU_POLLING_INTERVAL = "Time between DNS propagation check"
-    CLOUDRU_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    CLOUDRU_TTL = "The TTL of the TXT record used for the DNS challenge"
-    CLOUDRU_HTTP_TIMEOUT = "API request timeout"
-    CLOUDRU_SEQUENCE_INTERVAL = "Time between sequential requests"
+    CLOUDRU_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 5)"
+    CLOUDRU_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 300)"
+    CLOUDRU_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    CLOUDRU_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
+    CLOUDRU_SEQUENCE_INTERVAL = "Time between sequential requests in seconds (Default: 120)"
 
 [Links]
   API = "https://cloud.ru/ru/docs/clouddns/ug/topics/api-ref.html"

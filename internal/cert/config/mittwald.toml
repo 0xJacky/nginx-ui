@@ -13,11 +13,11 @@ lego --email you@example.com --dns mittwald -d '*.example.com' -d example.com ru
   [Configuration.Credentials]
     MITTWALD_TOKEN = "API token"
   [Configuration.Additional]
-    MITTWALD_POLLING_INTERVAL = "Time between DNS propagation check"
-    MITTWALD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    MITTWALD_TTL = "The TTL of the TXT record used for the DNS challenge"
-    MITTWALD_HTTP_TIMEOUT = "API request timeout"
-    MITTWALD_SEQUENCE_INTERVAL = "Time between sequential requests"
+    MITTWALD_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 10)"
+    MITTWALD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
+    MITTWALD_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 300)"
+    MITTWALD_SEQUENCE_INTERVAL = "Time between sequential requests in seconds (Default: 120)"
+    MITTWALD_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://api.mittwald.de/v2/docs/"

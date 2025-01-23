@@ -39,10 +39,10 @@ HURRICANE_TOKENS=example.org:token
   [Configuration.Credentials]
     HURRICANE_TOKENS = "TXT record names and tokens"
   [Configuration.Additional]
-    HURRICANE_POLLING_INTERVAL = "Time between DNS propagation checks"
-    HURRICANE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation; defaults to 300s (5 minutes)"
-    HURRICANE_SEQUENCE_INTERVAL = "Time between sequential requests"
-    HURRICANE_HTTP_TIMEOUT = "API request timeout"
+    HURRICANE_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    HURRICANE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation (Default: 300)"
+    HURRICANE_SEQUENCE_INTERVAL = "Time between sequential requests in seconds (Default: 60)"
+    HURRICANE_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://dns.he.net/"

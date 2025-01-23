@@ -33,9 +33,9 @@ You can find all required and additional information on ["Project/Keys" page](ht
     VK_CLOUD_DNS_ENDPOINT="URL of DNS API. Defaults to https://mcs.mail.ru/public-dns but can be changed for usage with private clouds"
     VK_CLOUD_IDENTITY_ENDPOINT="URL of OpenStack Auth API, Defaults to https://infra.mail.ru:35357/v3/ but can be changed for usage with private clouds"
     VK_CLOUD_DOMAIN_NAME="Openstack users domain name. Defaults to `users` but can be changed for usage with private clouds"
-    VK_CLOUD_POLLING_INTERVAL = "Time between DNS propagation check"
-    VK_CLOUD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    VK_CLOUD_TTL = "The TTL of the TXT record used for the DNS challenge"
+    VK_CLOUD_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    VK_CLOUD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    VK_CLOUD_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 60)"
 
 [Links]
   API = "https://mcs.mail.ru/docs/networks/vnet/networks/publicdns/api"

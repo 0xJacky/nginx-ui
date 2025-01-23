@@ -14,10 +14,10 @@ lego --email you@example.com --dns digitalocean -d '*.example.com' -d example.co
     DO_AUTH_TOKEN = "Authentication token"
   [Configuration.Additional]
     DO_API_URL = "The URL of the API"
-    DO_POLLING_INTERVAL = "Time between DNS propagation check"
-    DO_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    DO_TTL = "The TTL of the TXT record used for the DNS challenge"
-    DO_HTTP_TIMEOUT = "API request timeout"
+    DO_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 5)"
+    DO_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    DO_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 30)"
+    DO_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://developers.digitalocean.com/documentation/v2/#domain-records"

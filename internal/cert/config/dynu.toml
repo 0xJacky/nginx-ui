@@ -13,10 +13,10 @@ lego --email you@example.com --dns dynu -d '*.example.com' -d example.com run
   [Configuration.Credentials]
     DYNU_API_KEY = "API key"
   [Configuration.Additional]
-    DYNU_POLLING_INTERVAL = "Time between DNS propagation check"
-    DYNU_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    DYNU_TTL = "The TTL of the TXT record used for the DNS challenge"
-    DYNU_HTTP_TIMEOUT = "API request timeout"
+    DYNU_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 10)"
+    DYNU_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 180)"
+    DYNU_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 300)"
+    DYNU_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://www.dynu.com/en-US/Support/API"

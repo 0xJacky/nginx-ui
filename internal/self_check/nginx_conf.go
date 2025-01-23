@@ -34,7 +34,7 @@ func CheckNginxConfIncludeSites() error {
 			// find include sites-enabled
 			for _, directive := range v.GetBlock().GetDirectives() {
 				if directive.GetName() == "include" && len(directive.GetParameters()) > 0 &&
-					directive.GetParameters()[0] == nginx.GetConfPath("sites-enabled/*") {
+					directive.GetParameters()[0].Value == nginx.GetConfPath("sites-enabled/*") {
 					return nil
 				}
 			}
@@ -67,7 +67,7 @@ func CheckNginxConfIncludeStreams() error {
 			// find include sites-enabled
 			for _, directive := range v.GetBlock().GetDirectives() {
 				if directive.GetName() == "include" && len(directive.GetParameters()) > 0 &&
-					directive.GetParameters()[0] == nginx.GetConfPath("streams-enabled/*") {
+					directive.GetParameters()[0].Value == nginx.GetConfPath("streams-enabled/*") {
 					return nil
 				}
 			}
@@ -107,7 +107,7 @@ func FixNginxConfIncludeSites() error {
 			// add include sites-enabled/* to http block
 			includeDirective := &config.Directive{
 				Name:       "include",
-				Parameters: []string{nginx.GetConfPath("sites-enabled/*")},
+				Parameters: []config.Parameter{{Value: nginx.GetConfPath("sites-enabled/*")}},
 			}
 
 			realBlock := v.GetBlock().(*config.HTTP)
@@ -152,7 +152,7 @@ func FixNginxConfIncludeStreams() error {
 			// add include streams-enabled/* to stream block
 			includeDirective := &config.Directive{
 				Name:       "include",
-				Parameters: []string{nginx.GetConfPath("streams-enabled/*")},
+				Parameters: []config.Parameter{{Value: nginx.GetConfPath("streams-enabled/*")}},
 			}
 			realBlock := v.GetBlock().(*config.Block)
 			realBlock.Directives = append(realBlock.Directives, includeDirective)

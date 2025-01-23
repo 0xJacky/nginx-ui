@@ -15,10 +15,9 @@ lego --email you@example.com --dns mydnsjp -d '*.example.com' -d example.com run
     MYDNSJP_MASTER_ID = "Master ID"
     MYDNSJP_PASSWORD = "Password"
   [Configuration.Additional]
-    MYDNSJP_POLLING_INTERVAL = "Time between DNS propagation check"
-    MYDNSJP_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    MYDNSJP_TTL = "The TTL of the TXT record used for the DNS challenge"
-    MYDNSJP_HTTP_TIMEOUT = "API request timeout"
+    MYDNSJP_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    MYDNSJP_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
+    MYDNSJP_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://www.mydns.jp/?MENU=030"

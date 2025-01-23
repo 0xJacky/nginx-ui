@@ -48,11 +48,11 @@ As per [Joker.com documentation](https://joker.com/faq/content/6/496/en/let_s-en
     JOKER_PASSWORD = "Joker.com password"
     JOKER_API_KEY = "API key (only with DMAPI mode)"
   [Configuration.Additional]
-    JOKER_POLLING_INTERVAL = "Time between DNS propagation check"
-    JOKER_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    JOKER_TTL = "The TTL of the TXT record used for the DNS challenge"
-    JOKER_HTTP_TIMEOUT = "API request timeout"
-    JOKER_SEQUENCE_INTERVAL = "Time between sequential requests (only with 'SVC' mode)"
+    JOKER_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    JOKER_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
+    JOKER_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    JOKER_HTTP_TIMEOUT = "API request timeout in seconds (Default: 60)"
+    JOKER_SEQUENCE_INTERVAL = "Time between sequential requests in seconds (Default: 60), only with 'SVC' mode"
 
 [Links]
   API = "https://joker.com/faq/category/39/22-dmapi.html"

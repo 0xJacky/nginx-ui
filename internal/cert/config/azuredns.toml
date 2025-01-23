@@ -191,9 +191,9 @@ It can be enabled by setting the `AZURE_AUTH_METHOD` environment variable to `oi
     AZURE_ZONE_NAME = "Zone name to use inside Azure DNS service to add the TXT record in"
     AZURE_AUTH_METHOD = "Specify which authentication method to use"
     AZURE_AUTH_MSI_TIMEOUT = "Managed Identity timeout duration"
-    AZURE_TTL = "The TTL of the TXT record used for the DNS challenge"
-    AZURE_POLLING_INTERVAL = "Time between DNS propagation check"
-    AZURE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
+    AZURE_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 60)"
+    AZURE_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    AZURE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
 
 [Links]
   API = "https://docs.microsoft.com/en-us/go/azure/"

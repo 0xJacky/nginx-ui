@@ -28,11 +28,10 @@ lego --email you@example.com --dns cpanel -d '*.example.com' -d example.com run
     CPANEL_BASE_URL = "API server URL"
   [Configuration.Additional]
     CPANEL_MODE = "use cpanel API or WHM API (Default: cpanel)"
-    CPANEL_POLLING_INTERVAL = "Time between DNS propagation check"
-    CPANEL_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    CPANEL_TTL = "The TTL of the TXT record used for the DNS challenge"
-    CPANEL_HTTP_TIMEOUT = "API request timeout"
-    CPANEL_REGION = "The region"
+    CPANEL_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    CPANEL_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
+    CPANEL_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 300)"
+    CPANEL_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API_CPANEL = "https://api.docs.cpanel.net/cpanel/introduction/"

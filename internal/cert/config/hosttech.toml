@@ -14,10 +14,10 @@ lego --email you@example.com --dns hosttech -d '*.example.com' -d example.com ru
     HOSTTECH_API_KEY = "API login"
     HOSTTECH_PASSWORD = "API password"
   [Configuration.Additional]
-    HOSTTECH_POLLING_INTERVAL = "Time between DNS propagation check"
-    HOSTTECH_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    HOSTTECH_TTL = "The TTL of the TXT record used for the DNS challenge"
-    HOSTTECH_HTTP_TIMEOUT = "API request timeout"
+    HOSTTECH_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    HOSTTECH_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    HOSTTECH_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 3600)"
+    HOSTTECH_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://api.ns1.hosttech.eu/api/documentation"

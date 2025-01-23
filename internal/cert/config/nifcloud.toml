@@ -15,10 +15,10 @@ lego --email you@example.com --dns nifcloud -d '*.example.com' -d example.com ru
     NIFCLOUD_ACCESS_KEY_ID = "Access key"
     NIFCLOUD_SECRET_ACCESS_KEY = "Secret access key"
   [Configuration.Additional]
-    NIFCLOUD_POLLING_INTERVAL = "Time between DNS propagation check"
-    NIFCLOUD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    NIFCLOUD_TTL = "The TTL of the TXT record used for the DNS challenge"
-    NIFCLOUD_HTTP_TIMEOUT = "API request timeout"
+    NIFCLOUD_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    NIFCLOUD_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    NIFCLOUD_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    NIFCLOUD_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://mbaas.nifcloud.com/doc/current/rest/common/format.html"

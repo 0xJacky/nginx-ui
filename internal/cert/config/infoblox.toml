@@ -21,14 +21,14 @@ When creating an API's user ensure it has the proper permissions for the view yo
     INFOBLOX_PASSWORD = "Account Password"
     INFOBLOX_HOST = "Host URI"
   [Configuration.Additional]
-    INFOBLOX_DNS_VIEW = "The view for the TXT records, default: External"
-    INFOBLOX_WAPI_VERSION = "The version of WAPI being used, default: 2.11"
-    INFOBLOX_PORT = "The port for the infoblox grid manager, default: 443"
-    INFOBLOX_SSL_VERIFY = "Whether or not to verify the TLS certificate, default: true"
-    INFOBLOX_POLLING_INTERVAL = "Time between DNS propagation check"
-    INFOBLOX_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    INFOBLOX_TTL = "The TTL of the TXT record used for the DNS challenge"
-    INFOBLOX_HTTP_TIMEOUT = "HTTP request timeout"
+    INFOBLOX_DNS_VIEW = "The view for the TXT records (Default: External)"
+    INFOBLOX_WAPI_VERSION = "The version of WAPI being used  (Default: 2.11)"
+    INFOBLOX_PORT = "The port for the infoblox grid manager  (Default: 443)"
+    INFOBLOX_SSL_VERIFY = "Whether or not to verify the TLS certificate  (Default: true)"
+    INFOBLOX_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    INFOBLOX_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    INFOBLOX_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    INFOBLOX_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 
 [Links]

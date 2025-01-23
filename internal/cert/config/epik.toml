@@ -13,10 +13,10 @@ lego --email you@example.com --dns epik -d '*.example.com' -d example.com run
   [Configuration.Credentials]
     EPIK_SIGNATURE = "Epik API signature (https://registrar.epik.com/account/api-settings/)"
   [Configuration.Additional]
-    EPIK_POLLING_INTERVAL = "Time between DNS propagation check"
-    EPIK_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    EPIK_TTL = "The TTL of the TXT record used for the DNS challenge"
-    EPIK_HTTP_TIMEOUT = "API request timeout"
+    EPIK_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    EPIK_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    EPIK_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 3600)"
+    EPIK_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://docs-userapi.epik.com/v2/"

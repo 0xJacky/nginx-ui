@@ -17,10 +17,9 @@ lego --email you@example.com --dns netcup -d '*.example.com' -d example.com run
     NETCUP_API_KEY = "API key"
     NETCUP_API_PASSWORD = "API password"
   [Configuration.Additional]
-    NETCUP_POLLING_INTERVAL = "Time between DNS propagation check"
-    NETCUP_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    NETCUP_TTL = "The TTL of the TXT record used for the DNS challenge"
-    NETCUP_HTTP_TIMEOUT = "API request timeout"
+    NETCUP_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 30)"
+    NETCUP_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 900)"
+    NETCUP_HTTP_TIMEOUT = "API request timeout in seconds (Default: 10)"
 
 [Links]
   API = "https://www.netcup-wiki.de/wiki/DNS_API"

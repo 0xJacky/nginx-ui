@@ -172,8 +172,12 @@ func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDet
 	for _, d := range config.GetDirectives() {
 		switch d.GetName() {
 		case nginx.Location:
+			var params []string
+			for _, param := range d.GetParameters() {
+				params = append(params, param.Value)
+			}
 			l := &nginx.NgxLocation{
-				Path: strings.Join(d.GetParameters(), " "),
+				Path: strings.Join(params, " "),
 			}
 			l.ParseLocation(d, 0)
 			c.NgxServer.Locations = append(c.NgxServer.Locations, l)

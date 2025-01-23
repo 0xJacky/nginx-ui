@@ -25,9 +25,10 @@ lego --email you@example.com --dns oraclecloud -d '*.example.com' -d example.com
     OCI_REGION = "Region"
     OCI_COMPARTMENT_OCID = "Compartment OCID"
   [Configuration.Additional]
-    OCI_POLLING_INTERVAL = "Time between DNS propagation check"
-    OCI_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    OCI_TTL = "The TTL of the TXT record used for the DNS challenge"
+    OCI_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    OCI_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    OCI_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    OCI_HTTP_TIMEOUT = "API request timeout in seconds (Default: 60)"
 
 [Links]
   API = "https://docs.cloud.oracle.com/iaas/Content/DNS/Concepts/dnszonemanagement.htm"

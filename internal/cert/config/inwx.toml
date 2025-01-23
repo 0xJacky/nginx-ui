@@ -22,9 +22,9 @@ lego --email you@example.com --dns inwx -d '*.example.com' -d example.com run
     INWX_PASSWORD = "Password"
   [Configuration.Additional]
     INWX_SHARED_SECRET = "shared secret related to 2FA"
-    INWX_POLLING_INTERVAL = "Time between DNS propagation check"
-    INWX_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation (default 360s)"
-    INWX_TTL = "The TTL of the TXT record used for the DNS challenge"
+    INWX_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    INWX_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 360)"
+    INWX_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 300)"
     INWX_SANDBOX = "Activate the sandbox (boolean)"
 
 [Links]

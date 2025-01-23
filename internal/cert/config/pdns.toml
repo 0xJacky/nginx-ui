@@ -28,10 +28,10 @@ PowerDNS Notes:
   [Configuration.Additional]
     PDNS_SERVER_NAME = "Name of the server in the URL, 'localhost' by default"
     PDNS_API_VERSION = "Skip API version autodetection and use the provided version number."
-    PDNS_POLLING_INTERVAL = "Time between DNS propagation check"
-    PDNS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    PDNS_TTL = "The TTL of the TXT record used for the DNS challenge"
-    PDNS_HTTP_TIMEOUT = "API request timeout"
+    PDNS_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    PDNS_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 120)"
+    PDNS_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    PDNS_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://doc.powerdns.com/md/httpapi/README/"

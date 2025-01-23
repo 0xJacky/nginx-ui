@@ -13,11 +13,11 @@ lego --email you@example.com --dns variomedia -d '*.example.com' -d example.com 
   [Configuration.Credentials]
     VARIOMEDIA_API_TOKEN = "API token"
   [Configuration.Additional]
-    VARIOMEDIA_POLLING_INTERVAL = "Time between DNS propagation check"
-    VARIOMEDIA_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    VARIOMEDIA_TTL = "The TTL of the TXT record used for the DNS challenge"
-    VARIOMEDIA_SEQUENCE_INTERVAL = "Time between sequential requests"
-    VARIOMEDIA_HTTP_TIMEOUT = "API request timeout"
+    VARIOMEDIA_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    VARIOMEDIA_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    VARIOMEDIA_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 300)"
+    VARIOMEDIA_SEQUENCE_INTERVAL = "Time between sequential requests in seconds (Default: 60)"
+    VARIOMEDIA_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://api.variomedia.de/docs/dns-records.html"

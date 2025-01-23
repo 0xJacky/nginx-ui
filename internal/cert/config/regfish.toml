@@ -13,10 +13,10 @@ lego --email you@example.com --dns regfish -d '*.example.com' -d example.com run
   [Configuration.Credentials]
     REGFISH_API_KEY = "API key"
   [Configuration.Additional]
-    REGFISH_POLLING_INTERVAL = "Time between DNS propagation check"
-    REGFISH_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    REGFISH_TTL = "The TTL of the TXT record used for the DNS challenge"
-    REGFISH_HTTP_TIMEOUT = "API request timeout"
+    REGFISH_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    REGFISH_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    REGFISH_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    REGFISH_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://regfish.readme.io/"

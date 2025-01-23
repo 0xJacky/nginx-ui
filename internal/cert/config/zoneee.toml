@@ -16,10 +16,9 @@ lego --email you@example.com --dns zoneee -d '*.example.com' -d example.com run
     ZONEEE_API_KEY = "API key"
   [Configuration.Additional]
     ZONEEE_ENDPOINT = "API endpoint URL"
-    ZONEEE_POLLING_INTERVAL = "Time between DNS propagation check"
-    ZONEEE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation"
-    ZONEEE_TTL = "The TTL of the TXT record used for the DNS challenge"
-    ZONEEE_HTTP_TIMEOUT = "API request timeout"
+    ZONEEE_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 5)"
+    ZONEEE_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 300)"
+    ZONEEE_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
 
 [Links]
   API = "https://api.zone.eu/v2"
