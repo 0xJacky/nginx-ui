@@ -1,11 +1,11 @@
 const tasks = {
   'Directory-Sites': {
     name: () => $gettext('Sites Directory'),
-    description: () => $gettext('Check if the sites-available and sites-enabled directory is under the nginx configuration directory.'),
+    description: () => $gettext('Check if the sites-available and sites-enabled directories are under the nginx configuration directory.'),
   },
   'Directory-Streams': {
     name: () => $gettext('Streams Directory'),
-    description: () => $gettext('Check if the streams-available and streams-enabled directory is under the nginx configuration directory.'),
+    description: () => $gettext('Check if the streams-available and streams-enabled directories are under the nginx configuration directory.'),
   },
   'NginxConf-Sites-Enabled': {
     name: () => $gettext('Nginx Conf Include Sites Enabled'),
