@@ -181,8 +181,6 @@ function destroy(id: number | string) {
   props.api!.destroy(id, { permanent: props.inTrash }).then(() => {
     get_list()
     message.success($gettext('Deleted successfully'))
-  }).catch(e => {
-    message.error($gettext(e?.message ?? 'Server error'))
   })
 }
 
@@ -190,8 +188,6 @@ function recover(id: number | string) {
   props.api.recover(id).then(() => {
     message.success($gettext('Recovered Successfully'))
     get_list()
-  }).catch(e => {
-    message.error(e?.message ?? $gettext('Server error'))
   })
 }
 
@@ -224,8 +220,6 @@ async function _get_list() {
 
     if (r.pagination)
       Object.assign(pagination, r.pagination)
-  }).catch(e => {
-    message.error($gettext(e?.message ?? 'Server error'))
   })
 
   loading.value = false

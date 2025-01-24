@@ -28,8 +28,6 @@ function save() {
     router.push({
       path: `/sites/${buffer.value}`,
     })
-  }).catch(e => {
-    message.error($gettext(e?.message ?? 'Server error'))
   }).finally(() => {
     loading.value = false
   })

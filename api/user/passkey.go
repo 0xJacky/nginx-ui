@@ -53,7 +53,7 @@ func FinishPasskeyRegistration(c *gin.Context) {
 	webauthnInstance := passkey.GetInstance()
 	sessionDataBytes, ok := cache.Get(buildCachePasskeyRegKey(cUser.ID))
 	if !ok {
-		api.ErrHandler(c, fmt.Errorf("session not found"))
+		api.ErrHandler(c, user.ErrSessionNotFound)
 		return
 	}
 
@@ -87,7 +87,7 @@ func FinishPasskeyRegistration(c *gin.Context) {
 
 func BeginPasskeyLogin(c *gin.Context) {
 	if !passkey.Enabled() {
-		api.ErrHandler(c, fmt.Errorf("WebAuthn settings are not configured"))
+		api.ErrHandler(c, user.ErrWebAuthnNotConfigured)
 		return
 	}
 	webauthnInstance := passkey.GetInstance()
@@ -107,13 +107,13 @@ func BeginPasskeyLogin(c *gin.Context) {
 
 func FinishPasskeyLogin(c *gin.Context) {
 	if !passkey.Enabled() {
-		api.ErrHandler(c, fmt.Errorf("WebAuthn settings are not configured"))
+		api.ErrHandler(c, user.ErrWebAuthnNotConfigured)
 		return
 	}
 	sessionId := c.GetHeader("X-Passkey-Session-ID")
 	sessionDataBytes, ok := cache.Get(sessionId)
 	if !ok {
-		api.ErrHandler(c, fmt.Errorf("session not found"))
+		api.ErrHandler(c, user.ErrSessionNotFound)
 		return
 	}
 	webauthnInstance := passkey.GetInstance()

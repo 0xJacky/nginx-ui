@@ -10,7 +10,7 @@ import (
 
 func renew(payload *ConfigPayload, client *lego.Client, l *log.Logger, errChan chan error) {
 	if payload.Resource == nil {
-		errChan <- errors.New("resource is nil")
+		errChan <- ErrPayloadResourceIsNil
 		return
 	}
 

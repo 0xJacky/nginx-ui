@@ -1,12 +1,9 @@
-package nginx
+package nginx_log
 
 import (
 	"encoding/json"
-	"fmt"
-	"github.com/0xJacky/Nginx-UI/internal/cache"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/hpcloud/tail"
@@ -70,7 +67,7 @@ func GetNginxLogPage(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
 			Error: "log file is not regular file",
 		})
-		logger.Error("log file is not regular file:", logPath)
+		logger.Errorf("log file is not regular file: %s", logPath)
 		return
 	}
 
@@ -132,30 +129,7 @@ func GetNginxLogPage(c *gin.Context) {
 	})
 }
 
-// isLogPathUnderWhiteList checks if the log path is under one of the paths in LogDirWhiteList
-func isLogPathUnderWhiteList(path string) bool {
-	cacheKey := fmt.Sprintf("isLogPathUnderWhiteList:%s", path)
-	res, ok := cache.Get(cacheKey)
-	// no cache, check it
-	if !ok {
-		for _, whitePath := range settings.NginxSettings.LogDirWhiteList {
-			if helper.IsUnderDirectory(path, whitePath) {
-				cache.Set(cacheKey, true, 0)
-				return true
-			}
-		}
-		return false
-	}
-	return res.(bool)
-}
-
 func getLogPath(control *controlStruct) (logPath string, err error) {
-	if len(settings.NginxSettings.LogDirWhiteList) == 0 {
-		err = errors.New("The settings.NginxSettings.LogDirWhiteList has not been configured. " +
-			"For security reasons, please configure a whitelist of log directories. " +
-			"Please visit https://nginxui.com/guide/config-nginx.html for more information.")
-		return
-	}
 	switch control.Type {
 	case "site":
 		var config *nginx.NgxConfig
@@ -167,12 +141,12 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 		}
 
 		if control.ServerIdx >= len(config.Servers) {
-			err = errors.New("serverIdx out of range")
+			err = nginx_log.ErrServerIdxOutOfRange
 			return
 		}
 
 		if control.DirectiveIdx >= len(config.Servers[control.ServerIdx].Directives) {
-			err = errors.New("DirectiveIdx out of range")
+			err = nginx_log.ErrDirectiveIdxOutOfRange
 			return
 		}
 
@@ -181,12 +155,12 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 		case "access_log", "error_log":
 			// ok
 		default:
-			err = errors.New("directive.Params neither access_log nor error_log")
+			err = nginx_log.ErrLogDirective
 			return
 		}
 
 		if directive.Params == "" {
-			err = errors.New("directive.Params is empty")
+			err = nginx_log.ErrDirectiveParamsIsEmpty
 			return
 		}
 
@@ -200,8 +174,7 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 		path := nginx.GetErrorLogPath()
 
 		if path == "" {
-			err = errors.New("settings.NginxLogSettings.ErrorLogPath is empty," +
-				" refer to https://nginxui.com/guide/config-nginx.html for more information")
+			err = nginx_log.ErrErrorLogPathIsEmpty
 			return
 		}
 
@@ -210,8 +183,7 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 		path := nginx.GetAccessLogPath()
 
 		if path == "" {
-			err = errors.New("settings.NginxLogSettings.AccessLogPath is empty," +
-				" refer to https://nginxui.com/guide/config-nginx.html for more information")
+			err = nginx_log.ErrAccessLogPathIsEmpty
 			return
 		}
 
@@ -219,9 +191,8 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 	}
 
 	// check if logPath is under one of the paths in LogDirWhiteList
-	if !isLogPathUnderWhiteList(logPath) {
-		err = errors.New("The log path is not under the paths in LogDirWhiteList.")
-		return "", err
+	if !nginx_log.IsLogPathUnderWhiteList(logPath) {
+		return "", nginx_log.ErrLogPathIsNotUnderTheLogDirWhiteList
 	}
 	return
 }

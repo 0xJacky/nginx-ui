@@ -19,7 +19,7 @@ import (
 func Save(name string, content string, overwrite bool, siteCategoryId uint64, syncNodeIds []uint64) (err error) {
 	path := nginx.GetConfPath("sites-available", name)
 	if !overwrite && helper.FileExists(path) {
-		return fmt.Errorf("file exists")
+		return ErrDstFileExists
 	}
 
 	err = os.WriteFile(path, []byte(content), 0644)

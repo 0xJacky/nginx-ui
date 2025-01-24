@@ -24,7 +24,7 @@ func Rename(oldName string, newName string) (err error) {
 
 	// check if dst file exists, do not rename
 	if helper.FileExists(newPath) {
-		return fmt.Errorf("file exists")
+		return ErrDstFileExists
 	}
 
 	s := query.Site
@@ -84,9 +84,9 @@ func syncRename(oldName, newName string) {
 			client.SetBaseURL(node.URL)
 			resp, err := client.R().
 				SetHeader("X-Node-Secret", node.Token).
-					SetBody(map[string]string{
-						"new_name": newName,
-					}).
+				SetBody(map[string]string{
+					"new_name": newName,
+				}).
 				Post(fmt.Sprintf("/api/sites/%s/rename", oldName))
 			if err != nil {
 				notification.Error("Rename Remote Site Error", err.Error())

@@ -2,7 +2,6 @@ import type { StdTableProps } from '@/components/StdDesign/StdDataDisplay/types'
 import type { Column, StdTableResponse } from '@/components/StdDesign/types'
 import type { ComputedRef } from 'vue'
 import { downloadCsv } from '@/lib/helper'
-import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import _ from 'lodash'
 
@@ -40,8 +39,7 @@ async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[
         return
       }
       dataSource.push(...r.data)
-    }).catch((e: { message?: string }) => {
-      message.error(e.message ?? $gettext('Server error'))
+    }).catch(() => {
       hasMore = false
     })
     page += 1

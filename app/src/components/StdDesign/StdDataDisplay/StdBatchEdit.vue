@@ -48,10 +48,6 @@ async function ok() {
       emit('save')
       visible.value = false
     })
-    .catch(e => {
-      error.value = e.errors
-      message.error($gettext(e?.message) ?? $gettext('Server error'))
-    })
     .finally(() => {
       loading.value = false
     })

@@ -73,23 +73,8 @@ function onSubmit() {
           break
       }
     }).catch(e => {
-      switch (e.code) {
-        case 4031:
-          message.error($gettext('Incorrect username or password'))
-          break
-        case 4291:
-          message.error($gettext('Too many login failed attempts, please try again later'))
-          break
-        case 4033:
-          message.error($gettext('User is banned'))
-          break
-        case 4034:
-          refOTP.value?.clearInput()
-          message.error($gettext('Invalid 2FA or recovery code'))
-          break
-        default:
-          message.error($gettext(e.message ?? 'Server error'))
-          break
+      if (e.code === 4043) {
+        refOTP.value?.clearInput()
       }
     })
     loading.value = false
@@ -118,9 +103,6 @@ auth.get_casdoor_uri()
       casdoor_uri.value = r.uri
     }
   })
-  .catch(e => {
-    message.error($gettext(e.message ?? 'Server error'))
-  })
 
 function loginWithCasdoor() {
   window.location.href = casdoor_uri.value
@@ -134,8 +116,6 @@ if (route.query?.code !== undefined && route.query?.state !== undefined) {
     const next = (route.query?.next || '').toString() || '/'
 
     await router.push(next)
-  }).catch(e => {
-    message.error($gettext(e.message ?? 'Server error'))
   })
   loading.value = false
 }
@@ -156,27 +136,23 @@ passkey.get_config_status().then(r => {
 const passkeyLoginLoading = ref(false)
 async function handlePasskeyLogin() {
   passkeyLoginLoading.value = true
-  try {
-    const begin = await auth.begin_passkey_login()
-    const asseResp = await startAuthentication({ optionsJSON: begin.options.publicKey })
 
-    const r = await auth.finish_passkey_login({
-      session_id: begin.session_id,
-      options: asseResp,
-    })
+  const begin = await auth.begin_passkey_login()
+  const asseResp = await startAuthentication({ optionsJSON: begin.options.publicKey })
 
-    if (r.token) {
-      const next = (route.query?.next || '').toString() || '/'
+  const r = await auth.finish_passkey_login({
+    session_id: begin.session_id,
+    options: asseResp,
+  })
 
-      passkeyLogin(asseResp.rawId, r.token)
-      secureSessionId.value = r.secure_session_id
-      await router.push(next)
-    }
+  if (r.token) {
+    const next = (route.query?.next || '').toString() || '/'
+
+    passkeyLogin(asseResp.rawId, r.token)
+    secureSessionId.value = r.secure_session_id
+    await router.push(next)
   }
-  // eslint-disable-next-line ts/no-explicit-any
-  catch (e: any) {
-    message.error($gettext(e.message ?? 'Server error'))
-  }
+
   passkeyLoginLoading.value = false
 }
 </script>

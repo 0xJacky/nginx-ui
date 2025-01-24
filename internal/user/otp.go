@@ -9,14 +9,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/google/uuid"
-	"github.com/pkg/errors"
 	"github.com/pquerna/otp/totp"
 	"time"
-)
-
-var (
-	ErrOTPCode      = errors.New("invalid otp code")
-	ErrRecoveryCode = errors.New("invalid recovery code")
 )
 
 func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {

@@ -1,17 +1,11 @@
 package user
 
 import (
-	"errors"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"golang.org/x/crypto/bcrypt"
 	"time"
-)
-
-var (
-	ErrPasswordIncorrect = errors.New("password incorrect")
-	ErrUserBanned        = errors.New("user banned")
 )
 
 func Login(name string, password string) (user *model.User, err error) {

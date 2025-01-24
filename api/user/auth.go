@@ -6,7 +6,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	"math/rand/v2"
@@ -25,12 +25,10 @@ type LoginUser struct {
 }
 
 const (
-	ErrPasswordIncorrect = 4031
-	ErrMaxAttempts       = 4291
-	ErrUserBanned        = 4033
-	Enabled2FA           = 199
-	Error2FACode         = 4034
-	LoginSuccess         = 200
+	ErrMaxAttempts = 4291
+	Enabled2FA     = 199
+	Error2FACode   = 4034
+	LoginSuccess   = 200
 )
 
 type LoginResponse struct {
@@ -73,15 +71,9 @@ func Login(c *gin.Context) {
 		time.Sleep(random * time.Second)
 		switch {
 		case errors.Is(err, user.ErrPasswordIncorrect):
-			c.JSON(http.StatusForbidden, LoginResponse{
-				Message: "Password incorrect",
-				Code:    ErrPasswordIncorrect,
-			})
+			c.JSON(http.StatusForbidden, user.ErrPasswordIncorrect)
 		case errors.Is(err, user.ErrUserBanned):
-			c.JSON(http.StatusForbidden, LoginResponse{
-				Message: "The user is banned",
-				Code:    ErrUserBanned,
-			})
+			c.JSON(http.StatusForbidden, user.ErrUserBanned)
 		default:
 			api.ErrHandler(c, err)
 		}

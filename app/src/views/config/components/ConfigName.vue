@@ -31,8 +31,6 @@ function save() {
       router.push({
         path: `/config/${r.path}/edit`,
       })
-    }).catch(e => {
-      message.error($gettext(e?.message ?? 'Server error'))
     }).finally(() => {
       loading.value = false
     })

@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/spf13/cast"
 	"github.com/tufanbarisyildirim/gonginx/config"
 	"github.com/tufanbarisyildirim/gonginx/dumper"
 	"github.com/tufanbarisyildirim/gonginx/parser"
@@ -88,7 +87,7 @@ func FixNginxConfIncludeSites() error {
 	}
 
 	// create a backup file (+.bak.timestamp)
-	backupPath := path + ".bak." + cast.ToString(time.Now().Unix())
+	backupPath := fmt.Sprintf("%s.bak.%d", path, time.Now().Unix())
 	err = os.WriteFile(backupPath, content, 0644)
 	if err != nil {
 		return ErrFailedToCreateBackup
@@ -133,7 +132,7 @@ func FixNginxConfIncludeStreams() error {
 	}
 
 	// create a backup file (+.bak.timestamp)
-	backupPath := path + ".bak." + cast.ToString(time.Now().Unix())
+	backupPath := fmt.Sprintf("%s.bak.%d", path, time.Now().Unix())
 	err = os.WriteFile(backupPath, content, 0644)
 	if err != nil {
 		return ErrFailedToCreateBackup

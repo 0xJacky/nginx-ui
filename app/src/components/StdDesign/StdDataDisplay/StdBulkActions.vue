@@ -66,8 +66,6 @@ function onClickApply() {
       computedActions.value[actionValue.value]?.action(props.selectedRowKeys).then(async () => {
         message.success($gettext('Apply bulk action successfully'))
         emit('onSuccess')
-      }).catch(e => {
-        message.error($gettext(e?.message) ?? $gettext('Server error'))
       }),
     )
   })

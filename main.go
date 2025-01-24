@@ -9,7 +9,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/jpillora/overseer"
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/uozi-tech/cosy"
 	cKernel "github.com/uozi-tech/cosy/kernel"
 	"github.com/uozi-tech/cosy/logger"

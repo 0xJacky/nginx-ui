@@ -15,7 +15,7 @@ require (
 	github.com/gin-contrib/static v1.1.3
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-acme/lego/v4 v4.21.0
-	github.com/go-co-op/gocron/v2 v2.14.2
+	github.com/go-co-op/gocron/v2 v2.15.0
 	github.com/go-playground/validator/v10 v10.24.0
 	github.com/go-resty/resty/v2 v2.16.4
 	github.com/go-webauthn/webauthn v0.11.2
@@ -35,7 +35,7 @@ require (
 	github.com/spf13/cast v1.7.1
 	github.com/stretchr/testify v1.10.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250120210832-12a9c7ae0c8a
-	github.com/uozi-tech/cosy v1.14.1
+	github.com/uozi-tech/cosy v1.14.2
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/crypto v0.32.0

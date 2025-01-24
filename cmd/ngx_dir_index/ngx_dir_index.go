@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -15,10 +15,14 @@ type Directive struct {
 }
 
 func main() {
+	if len(os.Args) < 2 {
+		log.Println("Usage: go run . <output_file>")
+	}
+	outputPath := os.Args[1]
 	// Fetch page content
 	resp, err := http.Get("https://nginx.org/en/docs/dirindex.html")
 	if err != nil {
-		fmt.Println("Error fetching page:", err)
+		log.Println("[Error] fetching page:", err)
 		return
 	}
 	defer resp.Body.Close()
@@ -26,7 +30,7 @@ func main() {
 	// Parse HTML
 	doc, err := html.Parse(resp.Body)
 	if err != nil {
-		fmt.Println("Error parsing HTML:", err)
+		log.Println("[Error] parsing HTML:", err)
 		return
 	}
 
@@ -99,15 +103,15 @@ func main() {
 	// Write results to JSON file
 	jsonData, err := json.MarshalIndent(directives, "", "  ")
 	if err != nil {
-		fmt.Println("Error marshaling JSON:", err)
+		log.Println("[Error] marshaling JSON:", err)
 		return
 	}
 
-	err = os.WriteFile("../../internal/nginx/nginx_directives.json", jsonData, 0644)
+	err = os.WriteFile(outputPath, jsonData, 0644)
 	if err != nil {
-		fmt.Println("Error writing file:", err)
+		log.Println("[Error] writing file:", err)
 		return
 	}
 
-	fmt.Printf("Successfully parsed %d directives and saved to nginx_directives.json\n", len(directives))
+	log.Printf("[OK] Successfully parsed %d directives and saved to %s\n", len(directives), outputPath)
 }

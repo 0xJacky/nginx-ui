@@ -1,6 +1,9 @@
 package nginx
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/0xJacky/Nginx-UI/api/nginx_log"
+	"github.com/gin-gonic/gin"
+)
 
 func InitRouter(r *gin.RouterGroup) {
 	r.POST("ngx/build_config", BuildNginxConfig)
@@ -10,10 +13,6 @@ func InitRouter(r *gin.RouterGroup) {
 	r.POST("nginx/restart", Restart)
 	r.POST("nginx/test", Test)
 	r.GET("nginx/status", Status)
-	r.POST("nginx_log", GetNginxLogPage)
+	r.POST("nginx_log", nginx_log.GetNginxLogPage)
 	r.GET("nginx/directives", GetDirectives)
-}
-
-func InitNginxLogRouter(r *gin.RouterGroup) {
-	r.GET("nginx_log", Log)
 }

@@ -22,8 +22,6 @@ function getList() {
   getListLoading.value = true
   passkey.get_list().then(r => {
     data.value = r
-  }).catch((e: { message?: string }) => {
-    message.error(e?.message ?? $gettext('Server error'))
   }).finally(() => {
     getListLoading.value = false
   })
@@ -39,8 +37,6 @@ function update(id: number, record: Passkey) {
     getList()
     modifyIdx.value = -1
     message.success($gettext('Update successfully'))
-  }).catch((e: { message?: string }) => {
-    message.error(e?.message ?? $gettext('Server error'))
   })
 }
 
@@ -52,8 +48,6 @@ function remove(item: Passkey) {
     // if current passkey is removed, clear it from user store
     if (user.passkeyLoginAvailable && user.passkeyRawId === item.raw_id)
       user.passkeyRawId = ''
-  }).catch((e: { message?: string }) => {
-    message.error(e?.message ?? $gettext('Server error'))
   })
 }
 </script>

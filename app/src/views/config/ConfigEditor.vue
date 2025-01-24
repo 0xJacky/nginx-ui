@@ -107,8 +107,6 @@ async function init() {
         translatedName: () => origName.value,
         hasChildren: false,
       }]
-    }).catch(r => {
-      message.error(r.message ?? $gettext('Server error'))
     })
   }
   else {

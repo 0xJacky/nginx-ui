@@ -35,9 +35,7 @@ onMounted(async () => {
         return
       }
     }
-    // eslint-disable-next-line ts/no-explicit-any
-    catch (e: any) {
-      message.error(e?.message ?? $gettext('Server error'))
+    catch {
       return
     }
   }
@@ -68,8 +66,6 @@ function destroy(site_name: string) {
     table.value.get_list()
     message.success($gettext('Delete site: %{site_name}', { site_name }))
     inspect_config.value?.test()
-  }).catch(e => {
-    message.error(e?.message ?? $gettext('Server error'))
   })
 }
 

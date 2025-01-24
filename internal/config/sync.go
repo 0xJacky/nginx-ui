@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
-	"fmt"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -35,8 +34,7 @@ func SyncToRemoteServer(c *model.Config) (err error) {
 
 	nginxConfPath := nginx.GetConfPath()
 	if !helper.IsUnderDirectory(c.Filepath, nginxConfPath) {
-		return fmt.Errorf("config: %s is not under the nginx conf path: %s",
-			c.Filepath, nginxConfPath)
+		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), c.Filepath, nginxConfPath)
 	}
 
 	configBytes, err := os.ReadFile(c.Filepath)
@@ -76,13 +74,11 @@ func SyncRenameOnRemoteServer(origPath, newPath string, syncNodeIds []uint64) (e
 
 	nginxConfPath := nginx.GetConfPath()
 	if !helper.IsUnderDirectory(origPath, nginxConfPath) {
-		return fmt.Errorf("config: %s is not under the nginx conf path: %s",
-			origPath, nginxConfPath)
+		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), origPath, nginxConfPath)
 	}
 
 	if !helper.IsUnderDirectory(newPath, nginxConfPath) {
-		return fmt.Errorf("config: %s is not under the nginx conf path: %s",
-			newPath, nginxConfPath)
+		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), newPath, nginxConfPath)
 	}
 
 	payload := &RenameConfigPayload{

@@ -7,7 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/casdoor/casdoor-go-sdk/casdoorsdk"
 	"github.com/gin-gonic/gin"
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/uozi-tech/cosy"
 	"gorm.io/gorm"
 	"net/http"

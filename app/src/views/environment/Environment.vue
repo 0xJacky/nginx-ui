@@ -11,8 +11,6 @@ function loadFromSettings() {
   environment.load_from_settings().then(() => {
     curd.value.get_list()
     message.success($gettext('Load successfully'))
-  }).catch(e => {
-    message.error(`${$gettext('Server error')} ${e?.message}`)
   })
 }
 const selectedNodeIds = ref([])

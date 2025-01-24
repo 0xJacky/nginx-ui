@@ -52,7 +52,6 @@ async function save() {
   // eslint-disable-next-line ts/no-explicit-any
   catch (e: any) {
     errors.value = e.errors
-    message.error($gettext(e?.message ?? 'Server error'))
     throw e
   }
 }

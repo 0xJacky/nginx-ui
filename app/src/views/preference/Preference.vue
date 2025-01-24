@@ -112,9 +112,6 @@ async function save() {
       refAuthSettings.value?.getBannedIPs?.()
       message.success($gettext('Save successfully'))
       errors.value = {}
-    }).catch(e => {
-      errors.value = e.errors
-      message.error(e?.message ?? $gettext('Server error'))
     })
   })
 }

@@ -48,8 +48,6 @@ function onSubmit() {
       message.success($gettext('Duplicate to local successfully'))
       show.value = false
       emit('duplicated')
-    }).catch(e => {
-      message.error($gettext(e?.message ?? 'Server error'))
     })
 
     loading.value = false

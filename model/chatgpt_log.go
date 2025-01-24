@@ -4,7 +4,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"fmt"
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/sashabaranov/go-openai"
 )
 

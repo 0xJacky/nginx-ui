@@ -28,8 +28,6 @@ function reloadNginx() {
       message.warn(r.message)
     else
       message.error(r.message)
-  }).catch(e => {
-    message.error(`${$gettext('Server error')} ${e?.message}`)
   }).finally(() => getStatus())
 }
 
@@ -44,8 +42,6 @@ async function restartNginx() {
       message.warn(r.message)
     else
       message.error(r.message)
-  }).catch(e => {
-    message.error(`${$gettext('Server error')} ${e?.message}`)
   })
 }
 

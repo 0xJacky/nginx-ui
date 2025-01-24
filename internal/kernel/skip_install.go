@@ -6,7 +6,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/caarlos0/env/v11"
 	"github.com/google/uuid"
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 	"golang.org/x/crypto/bcrypt"
