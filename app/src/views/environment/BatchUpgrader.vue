@@ -3,7 +3,6 @@ import type { Environment } from '@/api/environment'
 import type { Ref } from 'vue'
 import upgrade, { type RuntimeInfo } from '@/api/upgrade'
 import websocket from '@/lib/websocket'
-import { message } from 'ant-design-vue'
 import _ from 'lodash'
 import { marked } from 'marked'
 import { useRoute } from 'vue-router'
@@ -56,7 +55,6 @@ function getLatestRelease() {
     data.value = r
   }).catch(e => {
     getReleaseError.value = e?.message
-    message.error(e?.message ?? $gettext('Server error'))
   }).finally(() => {
     loading.value = false
   })

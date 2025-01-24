@@ -34,8 +34,6 @@ function ok() {
 
         message.success($gettext('Created successfully'))
         emit('created')
-      }).catch(e => {
-        message.error(`${$gettext('Server error')} ${e?.message}`)
       })
     })
   })

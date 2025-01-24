@@ -155,7 +155,7 @@ func buildComment(c []string) string {
 
 func parse(block config.IBlock, ngxConfig *NgxConfig) (err error) {
 	if block == nil {
-		err = errors.New("block is nil")
+		err = ErrBlockIsNil
 		return
 	}
 	for _, v := range block.GetDirectives() {

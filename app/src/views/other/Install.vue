@@ -66,8 +66,6 @@ function onSubmit() {
     install.install_nginx_ui(modelRef).then(async () => {
       message.success($gettext('Install successfully'))
       await router.push('/login')
-    }).catch(e => {
-      message.error(e.message ?? $gettext('Server error'))
     }).finally(() => {
       loading.value = false
     })

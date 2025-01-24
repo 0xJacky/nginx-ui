@@ -35,7 +35,7 @@ func autoCert(certModel *model.Cert) {
 	defer log.Exit()
 
 	if len(certModel.Filename) == 0 {
-		log.Error(errors.New("filename is empty"))
+		log.Error(ErrCertModelFilenameEmpty)
 		return
 	}
 

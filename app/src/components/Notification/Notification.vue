@@ -30,7 +30,7 @@ function reconnect() {
 }
 
 function newSSE() {
-  const s = new SSE('/api/notifications/live', {
+  const s = new SSE('api/notifications/live', {
     headers: {
       Authorization: token.value,
     },
@@ -67,8 +67,6 @@ function init() {
   notificationApi.get_list().then(r => {
     data.value = r.data
     unreadCount.value = r.pagination?.total || 0
-  }).catch(e => {
-    message.error($gettext(e?.message ?? 'Server error'))
   }).finally(() => {
     loading.value = false
   })
@@ -90,8 +88,7 @@ function clear() {
     message.success($gettext('Cleared successfully'))
     data.value = []
     unreadCount.value = 0
-  }).catch(e => {
-    message.error($gettext(e?.message ?? 'Server error'))
+    open.value = false
   })
 }
 
@@ -99,8 +96,6 @@ function remove(id: number) {
   notificationApi.destroy(id).then(() => {
     message.success($gettext('Removed successfully'))
     init()
-  }).catch(e => {
-    message.error($gettext(e?.message ?? 'Server error'))
   })
 }
 

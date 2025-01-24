@@ -45,8 +45,6 @@ function removeBannedIP(ip: string) {
   setting.remove_banned_ip(ip).then(() => {
     bannedIPs.value = bannedIPs.value.filter(v => v.ip !== ip)
     message.success($gettext('Remove successfully'))
-  }).catch((e: { message?: string }) => {
-    message.error(e?.message ?? $gettext('Server error'))
   })
 }
 </script>

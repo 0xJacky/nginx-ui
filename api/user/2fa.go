@@ -2,7 +2,6 @@ package user
 
 import (
 	"encoding/base64"
-	"fmt"
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
@@ -77,23 +76,17 @@ func Start2FASecureSessionByOTP(c *gin.Context) {
 	}
 	u := api.CurrentUser(c)
 	if !u.EnabledOTP() {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "User has not configured OTP as 2FA",
-		})
+		api.ErrHandler(c, user.ErrUserNotEnabledOTPAs2FA)
 		return
 	}
 
 	if json.OTP == "" && json.RecoveryCode == "" {
-		c.JSON(http.StatusBadRequest, LoginResponse{
-			Message: "The user has enabled OTP as 2FA",
-		})
+		api.ErrHandler(c, user.ErrOTPOrRecoveryCodeEmpty)
 		return
 	}
 
 	if err := user.VerifyOTP(u, json.OTP, json.RecoveryCode); err != nil {
-		c.JSON(http.StatusBadRequest, LoginResponse{
-			Message: "Invalid OTP or recovery code",
-		})
+		api.ErrHandler(c, err)
 		return
 	}
 
@@ -106,7 +99,7 @@ func Start2FASecureSessionByOTP(c *gin.Context) {
 
 func BeginStart2FASecureSessionByPasskey(c *gin.Context) {
 	if !passkey.Enabled() {
-		api.ErrHandler(c, fmt.Errorf("WebAuthn settings are not configured"))
+		api.ErrHandler(c, user.ErrWebAuthnNotConfigured)
 		return
 	}
 	webauthnInstance := passkey.GetInstance()
@@ -126,13 +119,13 @@ func BeginStart2FASecureSessionByPasskey(c *gin.Context) {
 
 func FinishStart2FASecureSessionByPasskey(c *gin.Context) {
 	if !passkey.Enabled() {
-		api.ErrHandler(c, fmt.Errorf("WebAuthn settings are not configured"))
+		api.ErrHandler(c, user.ErrWebAuthnNotConfigured)
 		return
 	}
 	passkeySessionID := c.GetHeader("X-Passkey-Session-ID")
 	sessionDataBytes, ok := cache.Get(passkeySessionID)
 	if !ok {
-		api.ErrHandler(c, fmt.Errorf("session not found"))
+		api.ErrHandler(c, user.ErrSessionNotFound)
 		return
 	}
 	sessionData := sessionDataBytes.(*webauthn.SessionData)

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/sashabaranov/go-openai"
 	"github.com/uozi-tech/cosy/sandbox"
 	"io"

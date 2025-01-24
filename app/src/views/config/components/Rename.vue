@@ -41,8 +41,6 @@ function ok() {
         visible.value = false
         message.success($gettext('Rename successfully'))
         emit('renamed')
-      }).catch(e => {
-        message.error(`${$gettext('Server error')} ${e?.message}`)
       })
     })
   })

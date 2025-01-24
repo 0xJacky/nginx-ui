@@ -5,7 +5,6 @@ import upgrade from '@/api/upgrade'
 
 import websocket from '@/lib/websocket'
 import version from '@/version.json'
-import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { marked } from 'marked'
 import { useRoute } from 'vue-router'
@@ -39,7 +38,6 @@ function getLatestRelease() {
     lastCheck.value = dayjs().format('YYYY-MM-DD HH:mm:ss')
   }).catch(e => {
     getReleaseError.value = e?.message
-    message.error(e?.message ?? $gettext('Server error'))
   }).finally(() => {
     loading.value = false
   })

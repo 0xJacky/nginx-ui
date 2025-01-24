@@ -29,11 +29,11 @@ func Delete(name string) (err error) {
 	enabledPath := nginx.GetConfPath("sites-enabled", name)
 
 	if !helper.FileExists(availablePath) {
-		return fmt.Errorf("site not found")
+		return ErrSiteNotFound
 	}
 
 	if helper.FileExists(enabledPath) {
-		return fmt.Errorf("site is enabled")
+		return ErrSiteIsEnabled
 	}
 
 	certModel := model.Cert{Filename: name}

@@ -5,7 +5,6 @@ import OTPInput from '@/components/OTPInput/OTPInput.vue'
 import { useUserStore } from '@/pinia'
 import { KeyOutlined } from '@ant-design/icons-vue'
 import { startAuthentication } from '@simplewebauthn/browser'
-import { message } from 'ant-design-vue'
 
 defineProps<{
   twoFAStatus: TwoFAStatusResponse
@@ -44,21 +43,17 @@ defineExpose({
 
 async function passkeyAuthenticate() {
   passkeyLoading.value = true
-  try {
-    const begin = await twoFA.begin_start_secure_session_by_passkey()
-    const asseResp = await startAuthentication({ optionsJSON: begin.options.publicKey })
 
-    const r = await twoFA.finish_start_secure_session_by_passkey({
-      session_id: begin.session_id,
-      options: asseResp,
-    })
+  const begin = await twoFA.begin_start_secure_session_by_passkey()
+  const asseResp = await startAuthentication({ optionsJSON: begin.options.publicKey })
 
-    emit('submitSecureSessionID', r.session_id)
-  }
-  // eslint-disable-next-line ts/no-explicit-any
-  catch (e: any) {
-    message.error($gettext(e.message ?? 'Server error'))
-  }
+  const r = await twoFA.finish_start_secure_session_by_passkey({
+    session_id: begin.session_id,
+    options: asseResp,
+  })
+
+  emit('submitSecureSessionID', r.session_id)
+
   passkeyLoading.value = false
 }
 

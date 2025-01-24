@@ -3,7 +3,6 @@ package cert
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -33,13 +32,11 @@ func SyncToRemoteServer(c *model.Cert) (err error) {
 
 	nginxConfPath := nginx.GetConfPath()
 	if !helper.IsUnderDirectory(c.SSLCertificatePath, nginxConfPath) {
-		return fmt.Errorf("ssl_certificate_path: %s is not under the nginx conf path: %s",
-			c.SSLCertificatePath, nginxConfPath)
+		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), c.SSLCertificatePath, nginxConfPath)
 	}
 
 	if !helper.IsUnderDirectory(c.SSLCertificateKeyPath, nginxConfPath) {
-		return fmt.Errorf("ssl_certificate_key_path: %s is not under the nginx conf path: %s",
-			c.SSLCertificateKeyPath, nginxConfPath)
+		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), c.SSLCertificateKeyPath, nginxConfPath)
 	}
 
 	certBytes, err := os.ReadFile(c.SSLCertificatePath)

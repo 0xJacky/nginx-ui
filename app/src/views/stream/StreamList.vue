@@ -77,8 +77,6 @@ function destroy(stream_name: string) {
     table.value.get_list()
     message.success($gettext('Delete stream: %{stream_name}', { stream_name }))
     inspect_config.value?.test()
-  }).catch(e => {
-    message.error(e?.message ?? $gettext('Server error'))
   })
 }
 
@@ -109,8 +107,6 @@ function handleAddStream() {
     showAddStream.value = false
     table.value?.get_list()
     message.success($gettext('Added successfully'))
-  }).catch(e => {
-    message.error(e?.message ?? $gettext('Server error'))
   })
 }
 </script>

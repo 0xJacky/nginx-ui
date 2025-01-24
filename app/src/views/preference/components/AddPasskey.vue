@@ -14,24 +14,18 @@ const passkeyEnabled = ref(false)
 const regLoading = ref(false)
 async function registerPasskey() {
   regLoading.value = true
-  try {
-    const optionsJSON = await passkey.begin_registration()
+  const optionsJSON = await passkey.begin_registration()
 
-    const attestationResponse = await startRegistration({ optionsJSON })
+  const attestationResponse = await startRegistration({ optionsJSON })
 
-    await passkey.finish_registration(attestationResponse, passkeyName.value)
+  await passkey.finish_registration(attestationResponse, passkeyName.value)
 
-    emit('created')
+  emit('created')
 
-    message.success($gettext('Register passkey successfully'))
-    addPasskeyModelOpen.value = false
+  message.success($gettext('Register passkey successfully'))
+  addPasskeyModelOpen.value = false
 
-    user.passkeyRawId = attestationResponse.rawId
-  }
-  // eslint-disable-next-line ts/no-explicit-any
-  catch (e: any) {
-    message.error($gettext(e.message ?? 'Server error'))
-  }
+  user.passkeyRawId = attestationResponse.rawId
   regLoading.value = false
 }
 

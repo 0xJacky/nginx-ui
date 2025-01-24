@@ -3,7 +3,7 @@ package helper
 import (
 	"strings"
 	"github.com/gorilla/websocket"
-	"github.com/pkg/errors"
+	"errors"
 	"syscall"
 )
 

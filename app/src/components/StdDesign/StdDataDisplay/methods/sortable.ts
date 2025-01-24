@@ -119,9 +119,6 @@ function useSortable(props: StdTableProps, randomId: Ref<string>, dataSource: Re
         affected_ids: changeIds,
       }).then(() => {
         message.success($gettext('Updated successfully'))
-        // eslint-disable-next-line ts/no-explicit-any
-      }).catch((e: any) => {
-        message.error(e?.message ?? $gettext('Server error'))
       })
     },
   })

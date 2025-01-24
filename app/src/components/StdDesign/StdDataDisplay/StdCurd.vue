@@ -99,7 +99,6 @@ async function ok() {
       get_list()
       visible.value = false
     }).catch(e => {
-      message.error($gettext(e?.message ?? 'Server error'), 5)
       Object.assign(error, e.errors)
     })
   }
@@ -126,8 +125,6 @@ function edit(id: number | string) {
     visible.value = true
     modifyMode.value = true
     editMode.value = 'modify'
-  }).catch(e => {
-    message.error($gettext(e?.message ?? 'Server error'), 5)
   })
 }
 
@@ -135,8 +132,6 @@ function view(id: number | string) {
   get(id).then(() => {
     visible.value = true
     modifyMode.value = false
-  }).catch(e => {
-    message.error($gettext(e?.message ?? 'Server error'), 5)
   })
 }
 

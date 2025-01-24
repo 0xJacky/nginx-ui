@@ -6,7 +6,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/chatbot"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/sashabaranov/go-openai"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"

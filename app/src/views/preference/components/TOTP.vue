@@ -40,8 +40,6 @@ function generateSecret() {
     secret.value = r.secret
     qrCode.value = r.qr_code
     refOtp.value?.clearInput()
-  }).catch((e: { message?: string }) => {
-    message.error(e.message ?? $gettext('Server error'))
   })
 }
 
@@ -52,9 +50,8 @@ function enroll(code: string) {
     clearGenerateSecretInterval()
     get2FAStatus()
     message.success($gettext('Enable 2FA successfully'))
-  }).catch((e: { message?: string }) => {
+  }).catch(() => {
     refOtp.value?.clearInput()
-    message.error(e.message ?? $gettext('Server error'))
   })
 }
 
@@ -79,8 +76,6 @@ function reset2FA() {
     recoveryCode.value = ''
     get2FAStatus()
     clickEnable2FA()
-  }).catch((e: { message?: string }) => {
-    message.error($gettext(e.message ?? 'Server error'))
   })
 }
 </script>

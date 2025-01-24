@@ -13,8 +13,6 @@ function clear() {
     message.success($gettext('Cleared successfully'))
     curd.value?.get_list()
     unreadCount.value = 0
-  }).catch(e => {
-    message.error($gettext(e?.message ?? 'Server error'))
   })
 }
 
