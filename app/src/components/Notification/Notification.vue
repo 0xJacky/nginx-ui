@@ -30,7 +30,7 @@ function reconnect() {
 }
 
 function newSSE() {
-  const s = new SSE('/api/notifications/live', {
+  const s = new SSE('api/notifications/live', {
     headers: {
       Authorization: token.value,
     },

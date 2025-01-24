@@ -24,7 +24,7 @@ function reconnect() {
 }
 
 function newSSE() {
-  const s = new SSE('/api/environments/enabled', {
+  const s = new SSE('api/environments/enabled', {
     headers: {
       Authorization: token.value,
     },
