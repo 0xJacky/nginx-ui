@@ -57,6 +57,14 @@ func AddUser(c *gin.Context) {
 		Password: json.Password,
 	}
 
+	// duplicate name
+	_, err = u.Where(u.Name.Eq(json.Name)).First()
+	if !(err != nil && err.Error() == "record not found") {
+		c.JSON(http.StatusConflict, gin.H{
+			"message": "name already exists",
+		})
+	}
+
 	err = u.Create(&user)
 
 	if err != nil {
