@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { Environment } from '@/api/environment'
-import type { Ref } from 'vue'
-import upgrade, { type RuntimeInfo } from '@/api/upgrade'
+import type { RuntimeInfo } from '@/api/upgrade'
+import upgrade from '@/api/upgrade'
 import websocket from '@/lib/websocket'
 import _ from 'lodash'
 import { marked } from 'marked'
-import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const visible = ref(false)
@@ -15,9 +14,9 @@ const channel = ref('stable')
 const nodeNames = computed(() => nodes.value.map(v => v.name).join(', '))
 const loading = ref(false)
 
-const data = ref({
+const data = ref<RuntimeInfo>({
   name: '',
-}) as Ref<RuntimeInfo>
+} as RuntimeInfo)
 
 const modalVisible = ref(false)
 const modalClosable = ref(false)

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Environment } from '@/api/environment'
-import type { Ref } from 'vue'
+import type { SSEvent } from 'sse.js'
 import { useUserStore } from '@/pinia'
-import { SSE, type SSEvent } from 'sse.js'
+import { SSE } from 'sse.js'
 
 const props = defineProps<{
   hiddenLocal?: boolean
@@ -12,8 +12,8 @@ const target = defineModel<number[]>('target')
 const map = defineModel<Record<number, string>>('map')
 const { token } = storeToRefs(useUserStore())
 
-const data = ref([]) as Ref<Environment[]>
-const data_map = ref({}) as Ref<Record<number, Environment>>
+const data = ref<Environment[]>([])
+const data_map = ref<Record<number, Environment>>({})
 
 const sse = shallowRef(newSSE())
 

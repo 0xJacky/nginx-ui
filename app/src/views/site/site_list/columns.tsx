@@ -1,8 +1,10 @@
+import type {
+  CustomRender,
+} from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column, JSXElements } from '@/components/StdDesign/types'
 import site_category from '@/api/site_category'
 import {
   actualValueRender,
-  type CustomRender,
   datetime,
 } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input, select, selector } from '@/components/StdDesign/StdDataEntry'
