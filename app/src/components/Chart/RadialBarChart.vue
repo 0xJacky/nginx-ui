@@ -73,7 +73,7 @@ const chartOptions = computed(() => ({
     :key="theme"
     class="radial-bar-container"
   >
-    <p class="bottom_text">
+    <p class="bottom-text">
       {{ bottomText }}
     </p>
     <VueApexCharts
@@ -103,6 +103,10 @@ const chartOptions = computed(() => ({
       left: 50%;
       transform: translateX(-50%);
     }
+    @media (min-width: 2000px) {
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
 
   .text {
@@ -111,9 +115,11 @@ const chartOptions = computed(() => ({
     text-align: center;
   }
 
-  .bottom_text {
+  .bottom-text {
     position: absolute;
     top: calc(106px);
+    left: 50%;
+    transform: translateX(-50%);
     font-weight: 600;
     width: 100%;
     text-align: center;
