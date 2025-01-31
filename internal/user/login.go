@@ -36,6 +36,7 @@ func BanIP(ip string) {
 			Attempts:  1,
 			ExpiredAt: time.Now().Unix() + int64(settings.AuthSettings.BanThresholdMinutes*60),
 		})
+		return
 	}
 	_, _ = b.Where(b.IP.Eq(ip)).UpdateSimple(b.Attempts.Add(1))
 }

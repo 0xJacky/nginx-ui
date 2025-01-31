@@ -17,15 +17,6 @@ func InitAuthRouter(r *gin.RouterGroup) {
 	r.GET("/passkeys/config", GetPasskeyConfigStatus)
 }
 
-func InitManageUserRouter(r *gin.RouterGroup) {
-	r.GET("users", GetUsers)
-	r.GET("users/:id", GetUser)
-	r.POST("users", AddUser)
-	r.POST("users/:id", EditUser)
-	r.DELETE("users/:id", DeleteUser)
-	r.PATCH("users/:id", RecoverUser)
-}
-
 func InitUserRouter(r *gin.RouterGroup) {
 	r.GET("/2fa_status", Get2FAStatus)
 	r.GET("/2fa_secure_session/status", SecureSessionStatus)

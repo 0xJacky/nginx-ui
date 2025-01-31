@@ -31,7 +31,7 @@ msgstr "О проекте"
 msgid "Access Logs"
 msgstr "Журнал доступа"
 
-#: src/routes/index.ts:148 src/views/certificate/ACMEUser.vue:112
+#: src/routes/index.ts:148 src/views/certificate/ACMEUser.vue:113
 #: src/views/certificate/ACMEUserSelector.vue:85
 msgid "ACME User"
 msgstr "Пользователь ACME"
@@ -39,12 +39,12 @@ msgstr "Пользователь ACME"
 #: src/views/certificate/ACMEUser.vue:95
 #: src/views/certificate/CertificateList/certColumns.tsx:97
 #: src/views/certificate/DNSCredential.vue:33
-#: src/views/config/configColumns.ts:38
-#: src/views/environment/envColumns.tsx:125
-#: src/views/notification/notificationColumns.tsx:62
+#: src/views/config/configColumns.tsx:42
+#: src/views/environment/envColumns.tsx:97
+#: src/views/notification/notificationColumns.tsx:65
 #: src/views/preference/AuthSettings.vue:26
-#: src/views/site/site_category/columns.ts:26
-#: src/views/site/site_list/columns.tsx:74 src/views/stream/StreamList.vue:47
+#: src/views/site/site_category/columns.ts:29
+#: src/views/site/site_list/columns.tsx:76 src/views/stream/StreamList.vue:49
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "Действие"
@@ -55,7 +55,7 @@ msgstr "Действие"
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/site/ngx_conf/NgxServer.vue:162
 #: src/views/site/ngx_conf/NgxUpstream.vue:154
-#: src/views/stream/StreamList.vue:117
+#: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr "Добавить"
 
@@ -82,11 +82,11 @@ msgstr "Добавить Location"
 msgid "Add Site"
 msgstr "Добавть Сайт"
 
-#: src/views/stream/StreamList.vue:176
+#: src/views/stream/StreamList.vue:181
 msgid "Add Stream"
 msgstr "Добавить поток"
 
-#: src/views/stream/StreamList.vue:109
+#: src/views/stream/StreamList.vue:113
 msgid "Added successfully"
 msgstr "Добавлено успешно"
 
@@ -157,11 +157,11 @@ msgid "Are you sure you want to apply to all selected?"
 msgstr "Вы уверены, что хотите удалить?"
 
 #: src/components/Notification/Notification.vue:130
-#: src/views/notification/Notification.vue:38
+#: src/views/notification/Notification.vue:39
 msgid "Are you sure you want to clear all notifications?"
 msgstr "Вы уверены, что хотите очистить все уведомления?"
 
-#: src/components/ChatGPT/ChatGPT.vue:279
+#: src/components/ChatGPT/ChatGPT.vue:376
 #, fuzzy
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "Вы уверены, что хотите очистить сообщения чата?"
@@ -174,8 +174,8 @@ msgstr "Вы уверены, что хотите удалить этот эле�
 msgid "Are you sure you want to delete this item?"
 msgstr "Вы уверены, что хотите удалить этот элемент?"
 
-#: src/views/site/site_list/SiteList.vue:144
-#: src/views/stream/StreamList.vue:160
+#: src/views/site/site_list/SiteList.vue:145
+#: src/views/stream/StreamList.vue:165
 msgid "Are you sure you want to delete?"
 msgstr "Вы уверены, что хотите удалить?"
 
@@ -195,11 +195,11 @@ msgstr "Вы уверены, что хотите удалить этот эле�
 msgid "Are you sure you want to remove this location?"
 msgstr "Вы уверены, что хотите удалить location?"
 
-#: src/components/ChatGPT/ChatGPT.vue:223
+#: src/components/ChatGPT/ChatGPT.vue:318
 msgid "Ask ChatGPT for Help"
 msgstr "Обратитесь за помощью к ChatGPT"
 
-#: src/components/ChatGPT/ChatGPT.vue:237
+#: src/components/ChatGPT/ChatGPT.vue:333
 msgid "Assistant"
 msgstr "Ассистент"
 
@@ -243,7 +243,7 @@ msgstr "Автообновление включено для %{name}"
 
 #: src/views/certificate/CertificateEditor.vue:255
 #: src/views/config/ConfigEditor.vue:213 src/views/config/ConfigList.vue:106
-#: src/views/config/ConfigList.vue:179 src/views/nginx_log/NginxLog.vue:173
+#: src/views/config/ConfigList.vue:180 src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/SiteEdit.vue:264
 #: src/views/stream/StreamEdit.vue:245
 msgid "Back"
@@ -296,7 +296,7 @@ msgstr "Действие"
 msgid "Batch Modify"
 msgstr "Массовое изменение"
 
-#: src/views/environment/BatchUpgrader.vue:153
+#: src/views/environment/BatchUpgrader.vue:152
 msgid "Batch Upgrade"
 msgstr "Пакетное обновление"
 
@@ -324,9 +324,9 @@ msgstr ""
 msgid "Can't scan? Use text key binding"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:260
+#: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:246
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:180
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:187
 #: src/components/StdDesign/StdDetail/StdDetail.vue:101
 #: src/views/preference/components/Passkey.vue:141
 #: src/views/site/cert/components/ObtainCert.vue:140
@@ -339,8 +339,18 @@ msgstr ""
 msgid "Cancel"
 msgstr "Отмена"
 
+#: src/constants/errors/user.ts:10
+#, fuzzy
+msgid "Cannot change initial user password in demo mode"
+msgstr "Запретить изменение пароля root в демо"
+
+#: src/constants/errors/user.ts:9
+#, fuzzy
+msgid "Cannot remove initial user"
+msgstr "Первоначальный пользователь системы"
+
 #: src/views/site/site_edit/RightSettings.vue:91
-#: src/views/site/site_list/columns.tsx:23
+#: src/views/site/site_list/columns.tsx:25
 msgid "Category"
 msgstr "Категория"
 
@@ -402,7 +412,7 @@ msgstr[1] "Сертификаты изменены"
 msgid "Changed Path"
 msgstr "Путь изменён"
 
-#: src/views/environment/BatchUpgrader.vue:160 src/views/system/Upgrade.vue:188
+#: src/views/environment/BatchUpgrader.vue:159 src/views/system/Upgrade.vue:188
 msgid "Channel"
 msgstr "Канал"
 
@@ -438,9 +448,9 @@ msgstr ""
 msgid "Cleaning environment variables"
 msgstr "Очистка переменных среды"
 
-#: src/components/ChatGPT/ChatGPT.vue:283
+#: src/components/ChatGPT/ChatGPT.vue:380
 #: src/components/Notification/Notification.vue:135
-#: src/views/notification/Notification.vue:43
+#: src/views/notification/Notification.vue:44
 msgid "Clear"
 msgstr "Очистить"
 
@@ -531,9 +541,9 @@ msgstr "Создать файл"
 msgid "Create Folder"
 msgstr "Создать папку"
 
-#: src/views/notification/notificationColumns.tsx:56
+#: src/views/notification/notificationColumns.tsx:58
 #: src/views/preference/components/Passkey.vue:95
-#: src/views/site/site_category/columns.ts:14 src/views/user/userColumns.tsx:48
+#: src/views/site/site_category/columns.ts:15 src/views/user/userColumns.tsx:48
 msgid "Created at"
 msgstr "Создан в"
 
@@ -597,8 +607,8 @@ msgstr "Дни"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
 #: src/views/site/ngx_conf/NgxServer.vue:110
 #: src/views/site/ngx_conf/NgxUpstream.vue:128
-#: src/views/site/site_list/SiteList.vue:153
-#: src/views/stream/StreamList.vue:169
+#: src/views/site/site_list/SiteList.vue:154
+#: src/views/stream/StreamList.vue:174
 msgid "Delete"
 msgstr "Удалить"
 
@@ -621,7 +631,7 @@ msgstr "Переименование удаленной конфигурации
 msgid "Delete site: %{site_name}"
 msgstr "Удалить сайт: %{site_name}"
 
-#: src/views/stream/StreamList.vue:78
+#: src/views/stream/StreamList.vue:82
 msgid "Delete stream: %{stream_name}"
 msgstr "Удалить поток: %{stream_name}"
 
@@ -656,7 +666,7 @@ msgstr "Описание"
 msgid "Destination file already exists"
 msgstr ""
 
-#: src/views/notification/notificationColumns.tsx:51
+#: src/views/notification/notificationColumns.tsx:52
 msgid "Details"
 msgstr "Детали"
 
@@ -684,12 +694,8 @@ msgstr ""
 msgid "Directives"
 msgstr "Дерективы"
 
-#: src/views/config/configColumns.ts:22
-msgid "Directory"
-msgstr "Каталог"
-
-#: src/views/site/site_list/SiteList.vue:124
-#: src/views/stream/StreamList.vue:140
+#: src/views/site/site_list/SiteList.vue:125
+#: src/views/stream/StreamList.vue:145
 msgid "Disable"
 msgstr "Отключить"
 
@@ -717,19 +723,19 @@ msgstr "Включение %{conf_name} in %{node_name} успешно"
 msgid "Disable Site %{site} on %{node} successfully"
 msgstr "Включение %{conf_name} in %{node_name} успешно"
 
-#: src/views/environment/envColumns.tsx:109
-#: src/views/environment/envColumns.tsx:92
+#: src/views/environment/envColumns.tsx:61
+#: src/views/environment/envColumns.tsx:79
 #: src/views/site/site_edit/SiteEdit.vue:190
-#: src/views/site/site_list/columns.tsx:51
-#: src/views/site/site_list/columns.tsx:60 src/views/stream/StreamEdit.vue:175
-#: src/views/stream/StreamList.vue:33 src/views/user/userColumns.tsx:41
+#: src/views/site/site_list/columns.tsx:53
+#: src/views/site/site_list/columns.tsx:62 src/views/stream/StreamEdit.vue:175
+#: src/views/stream/StreamList.vue:34 src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr "Отключено"
 
 #: src/views/site/site_edit/RightSettings.vue:42
 #: src/views/site/site_list/SiteList.vue:56
 #: src/views/stream/components/RightSettings.vue:38
-#: src/views/stream/StreamList.vue:67
+#: src/views/stream/StreamList.vue:71
 msgid "Disabled successfully"
 msgstr "Отключено успешно"
 
@@ -822,7 +828,7 @@ msgstr "Ошибка загрузки последней версии"
 msgid "Downloading latest release"
 msgstr "Загрузка последней версии"
 
-#: src/views/environment/BatchUpgrader.vue:189 src/views/system/Upgrade.vue:215
+#: src/views/environment/BatchUpgrader.vue:188 src/views/system/Upgrade.vue:215
 msgid "Dry run mode enabled"
 msgstr "Включен пробный режим"
 
@@ -836,9 +842,9 @@ msgstr ""
 "запускаются на localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:139
+#: src/views/site/site_list/SiteList.vue:140
 #: src/views/stream/components/StreamDuplicate.vue:121
-#: src/views/stream/StreamList.vue:155
+#: src/views/stream/StreamList.vue:160
 msgid "Duplicate"
 msgstr "Дублировать"
 
@@ -891,9 +897,9 @@ msgstr "Электронная почта"
 msgid "Email (*)"
 msgstr "Email (*)"
 
-#: src/views/site/site_list/SiteList.vue:132
+#: src/views/site/site_list/SiteList.vue:133
 #: src/views/stream/components/Deploy.vue:80
-#: src/views/stream/StreamList.vue:148
+#: src/views/stream/StreamList.vue:153
 msgid "Enable"
 msgstr "Включить"
 
@@ -950,15 +956,15 @@ msgstr "Включить TLS"
 msgid "Enable TOTP"
 msgstr "Включить TLS"
 
-#: src/views/environment/envColumns.tsx:100
-#: src/views/environment/envColumns.tsx:106
+#: src/views/environment/envColumns.tsx:70
+#: src/views/environment/envColumns.tsx:76
 #: src/views/preference/LogrotateSettings.vue:19
 #: src/views/site/site_edit/RightSettings.vue:82
 #: src/views/site/site_edit/SiteEdit.vue:184
-#: src/views/site/site_list/columns.tsx:47
-#: src/views/site/site_list/columns.tsx:59
+#: src/views/site/site_list/columns.tsx:49
+#: src/views/site/site_list/columns.tsx:61
 #: src/views/stream/components/RightSettings.vue:76
-#: src/views/stream/StreamEdit.vue:169 src/views/stream/StreamList.vue:29
+#: src/views/stream/StreamEdit.vue:169 src/views/stream/StreamList.vue:30
 #: src/views/user/userColumns.tsx:38
 msgid "Enabled"
 msgstr "Включено"
@@ -967,7 +973,7 @@ msgstr "Включено"
 #: src/views/site/site_list/SiteList.vue:46 src/views/site/SiteAdd.vue:40
 #: src/views/stream/components/RightSettings.vue:29
 #: src/views/stream/components/StreamDuplicate.vue:93
-#: src/views/stream/StreamList.vue:57
+#: src/views/stream/StreamList.vue:61
 msgid "Enabled successfully"
 msgstr "Активировано успешно"
 
@@ -975,15 +981,12 @@ msgstr "Активировано успешно"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Использовать для сайта Let's Encrypt"
 
-#: src/routes/index.ts:234 src/views/environment/Environment.vue:32
-msgid "Environment"
-msgstr "Окружение"
-
 #: src/language/constants.ts:21
 msgid "Environment variables cleaned"
 msgstr "Переменные окружения очищены"
 
-#: src/views/dashboard/Environments.vue:83
+#: src/routes/index.ts:234 src/views/dashboard/Environments.vue:83
+#: src/views/environment/Environment.vue:33
 msgid "Environments"
 msgstr "Окружения"
 
@@ -1025,14 +1028,14 @@ msgstr "Не удалось включить %{msg}"
 #: src/views/site/site_edit/RightSettings.vue:45
 #: src/views/site/site_list/SiteList.vue:60
 #: src/views/stream/components/RightSettings.vue:41
-#: src/views/stream/StreamList.vue:71
+#: src/views/stream/StreamList.vue:75
 msgid "Failed to disable %{msg}"
 msgstr "Не удалось отключить %{msg}"
 
 #: src/views/site/site_edit/RightSettings.vue:36
 #: src/views/site/site_list/SiteList.vue:50
 #: src/views/stream/components/RightSettings.vue:32
-#: src/views/stream/StreamList.vue:61
+#: src/views/stream/StreamList.vue:65
 msgid "Failed to enable %{msg}"
 msgstr "Не удалось включить %{msg}"
 
@@ -1052,10 +1055,6 @@ msgstr ""
 #: src/views/stream/StreamEdit.vue:122
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "Не удалось сохранить, обнаружены синтаксические ошибки в конфигурации."
-
-#: src/views/config/configColumns.ts:24
-msgid "File"
-msgstr "Файл"
 
 #: src/language/constants.ts:31
 msgid "File exists"
@@ -1118,7 +1117,7 @@ msgstr "Сгенерировать"
 msgid "Generating private key for registering account"
 msgstr "Генерация приватного ключа для регистрации учетной записи"
 
-#: src/views/environment/BatchUpgrader.vue:178 src/views/system/Upgrade.vue:169
+#: src/views/environment/BatchUpgrader.vue:177 src/views/system/Upgrade.vue:169
 msgid "Get release information error"
 msgstr "Ошибка получения информации о выпуске"
 
@@ -1234,7 +1233,7 @@ msgstr "Установка прошла успешно"
 msgid "Interval"
 msgstr "Интервал"
 
-#: src/views/certificate/ACMEUser.vue:128
+#: src/views/certificate/ACMEUser.vue:129
 msgid "Invalid"
 msgstr "Недействительно"
 
@@ -1342,7 +1341,7 @@ msgstr "Список"
 msgid "Load Average:"
 msgstr "Средняя нагрузка:"
 
-#: src/views/environment/Environment.vue:37
+#: src/views/environment/Environment.vue:39
 msgid "Load from settings"
 msgstr "Загрузить из настроек"
 
@@ -1416,11 +1415,11 @@ msgstr "Конфигурации"
 msgid "Manage Sites"
 msgstr "Сайты"
 
-#: src/routes/index.ts:89 src/views/stream/StreamList.vue:115
+#: src/routes/index.ts:89 src/views/stream/StreamList.vue:119
 msgid "Manage Streams"
 msgstr "Управление потоками"
 
-#: src/routes/index.ts:257 src/views/user/User.vue:9
+#: src/routes/index.ts:257 src/views/user/User.vue:10
 msgid "Manage Users"
 msgstr "Пользователи"
 
@@ -1449,10 +1448,10 @@ msgstr "Минуты"
 msgid "Model"
 msgstr "Модель"
 
-#: src/components/ChatGPT/ChatGPT.vue:256
+#: src/components/ChatGPT/ChatGPT.vue:352
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:151
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:498
-#: src/views/config/ConfigList.vue:158
+#: src/views/config/ConfigList.vue:159
 msgid "Modify"
 msgstr "Изменить"
 
@@ -1476,17 +1475,18 @@ msgstr "Многострочная директива"
 #: src/views/certificate/CertificateEditor.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:10
 #: src/views/certificate/DNSCredential.vue:11
-#: src/views/config/components/Mkdir.vue:64 src/views/config/configColumns.ts:8
-#: src/views/config/ConfigEditor.vue:256 src/views/environment/envColumns.tsx:9
+#: src/views/config/components/Mkdir.vue:64
+#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:256
+#: src/views/environment/envColumns.tsx:9
 #: src/views/preference/components/AddPasskey.vue:75
 #: src/views/site/ngx_conf/NgxUpstream.vue:177
 #: src/views/site/site_category/columns.ts:7
 #: src/views/site/site_edit/RightSettings.vue:88
-#: src/views/site/site_list/columns.tsx:13
+#: src/views/site/site_list/columns.tsx:15
 #: src/views/site/site_list/SiteDuplicate.vue:79
 #: src/views/stream/components/RightSettings.vue:82
 #: src/views/stream/components/StreamDuplicate.vue:128
-#: src/views/stream/StreamList.vue:13 src/views/stream/StreamList.vue:181
+#: src/views/stream/StreamList.vue:13 src/views/stream/StreamList.vue:186
 msgid "Name"
 msgstr "Имя"
 
@@ -1608,20 +1608,20 @@ msgstr "Терминальная команда запуска"
 msgid "Nginx restarted successfully"
 msgstr "Nginx успешно перезапущен"
 
-#: src/components/ChatGPT/ChatGPT.vue:277
+#: src/components/ChatGPT/ChatGPT.vue:374
 #: src/components/Notification/Notification.vue:128
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:63
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:94
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:510
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:524
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:538
-#: src/views/notification/Notification.vue:36
+#: src/views/notification/Notification.vue:37
 #: src/views/preference/AuthSettings.vue:136
 #: src/views/preference/CertSettings.vue:70
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:90
-#: src/views/site/site_list/SiteList.vue:142
-#: src/views/stream/StreamList.vue:158
+#: src/views/site/site_list/SiteList.vue:143
+#: src/views/stream/StreamList.vue:163
 msgid "No"
 msgstr "Нет"
 
@@ -1657,7 +1657,7 @@ msgid ""
 "certificates, please synchronize them to the remote nodes in advance."
 msgstr ""
 
-#: src/views/notification/Notification.vue:27
+#: src/views/notification/Notification.vue:28
 msgid "Notification"
 msgstr "Уведомление"
 
@@ -1687,7 +1687,7 @@ msgstr ""
 
 #: src/components/NodeSelector/NodeSelector.vue:103
 #: src/views/dashboard/Environments.vue:107
-#: src/views/environment/envColumns.tsx:87
+#: src/views/environment/envColumns.tsx:56
 msgid "Offline"
 msgstr "Оффлайн"
 
@@ -1695,23 +1695,23 @@ msgstr "Оффлайн"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:511
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:525
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:539
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:181
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:188
 msgid "Ok"
 msgstr "Ок"
 
-#: src/components/ChatGPT/ChatGPT.vue:278
+#: src/components/ChatGPT/ChatGPT.vue:375
 #: src/components/Notification/Notification.vue:129
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:95
-#: src/views/notification/Notification.vue:37
+#: src/views/notification/Notification.vue:38
 #: src/views/site/cert/components/ObtainCert.vue:139
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:50
 #: src/views/site/ngx_conf/NgxServer.vue:79
 #: src/views/site/ngx_conf/NgxUpstream.vue:33
 #: src/views/site/site_edit/RightSettings.vue:54
-#: src/views/site/site_list/SiteList.vue:143
+#: src/views/site/site_list/SiteList.vue:144
 #: src/views/stream/components/Deploy.vue:19
 #: src/views/stream/components/RightSettings.vue:50
-#: src/views/stream/StreamList.vue:159
+#: src/views/stream/StreamList.vue:164
 msgid "OK"
 msgstr "ОК"
 
@@ -1722,7 +1722,7 @@ msgstr "После завершения проверки записи будут
 #: src/components/NodeSelector/NodeSelector.vue:83
 #: src/components/NodeSelector/NodeSelector.vue:97
 #: src/views/dashboard/Environments.vue:100
-#: src/views/environment/envColumns.tsx:83
+#: src/views/environment/envColumns.tsx:52
 msgid "Online"
 msgstr "Онлайн"
 
@@ -1807,7 +1807,7 @@ msgstr ""
 msgid "Payload resource is nil"
 msgstr ""
 
-#: src/views/environment/BatchUpgrader.vue:233
+#: src/views/environment/BatchUpgrader.vue:232
 msgid "Perform"
 msgstr "Выполнить"
 
@@ -1899,7 +1899,7 @@ msgstr ""
 "Обратите внимание, что единица измерения времени в конфигурациях ниже "
 "указана в секундах."
 
-#: src/views/environment/Environment.vue:45
+#: src/views/environment/Environment.vue:48
 msgid "Please select at least one node to upgrade"
 msgstr "Пожалуйста, выберите хотя бы один узел"
 
@@ -1920,8 +1920,8 @@ msgstr ""
 "Синхронизация конфигурации %{cert_name} с %{env_name} не удалась, "
 "пожалуйста, обновите удаленный Nginx UI до последней версии"
 
-#: src/views/environment/BatchUpgrader.vue:168
-#: src/views/environment/BatchUpgrader.vue:221 src/views/system/Upgrade.vue:194
+#: src/views/environment/BatchUpgrader.vue:167
+#: src/views/environment/BatchUpgrader.vue:220 src/views/system/Upgrade.vue:194
 #: src/views/system/Upgrade.vue:245
 msgid "Pre-release"
 msgstr "Предварительный выпуск"
@@ -1998,11 +1998,11 @@ msgstr "Код восстановления:"
 msgid "Recursive Nameservers"
 msgstr "Рекурсивные DNS"
 
-#: src/components/ChatGPT/ChatGPT.vue:290
+#: src/components/ChatGPT/ChatGPT.vue:387
 msgid "Regenerate response"
 msgstr "Восстановить ответ"
 
-#: src/views/certificate/ACMEUser.vue:136
+#: src/views/certificate/ACMEUser.vue:137
 msgid "Register"
 msgstr "Регистрация"
 
@@ -2012,7 +2012,7 @@ msgid ""
 "proxy."
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:105
+#: src/views/certificate/ACMEUser.vue:106
 msgid "Register failed"
 msgstr "Регистрация не удалась"
 
@@ -2026,7 +2026,7 @@ msgstr "Статус регистрации"
 msgid "Register passkey successfully"
 msgstr "Зарегистрировано успешно"
 
-#: src/views/certificate/ACMEUser.vue:103
+#: src/views/certificate/ACMEUser.vue:104
 msgid "Register successfully"
 msgstr "Зарегистрировано успешно"
 
@@ -2034,7 +2034,7 @@ msgstr "Зарегистрировано успешно"
 msgid "Registering user"
 msgstr "Регистрация пользователя"
 
-#: src/views/certificate/ACMEUser.vue:119
+#: src/views/certificate/ACMEUser.vue:120
 msgid "Registration Status"
 msgstr "Статус регистрации"
 
@@ -2046,7 +2046,7 @@ msgstr "Переустановить"
 msgid "Release Note"
 msgstr "Что нового"
 
-#: src/components/ChatGPT/ChatGPT.vue:266
+#: src/components/ChatGPT/ChatGPT.vue:362
 #: src/components/NginxControl/NginxControl.vue:99
 msgid "Reload"
 msgstr "Перегрузить"
@@ -2084,7 +2084,7 @@ msgstr "Успешно удалено"
 
 #: src/views/config/components/ConfigName.vue:48
 #: src/views/config/components/Rename.vue:54
-#: src/views/config/ConfigList.vue:165
+#: src/views/config/ConfigList.vue:166
 #: src/views/site/ngx_conf/NgxUpstream.vue:125
 #: src/views/site/site_edit/components/ConfigName.vue:44
 msgid "Rename"
@@ -2197,7 +2197,7 @@ msgstr "Режим работы"
 msgid "Running"
 msgstr "Выполняется"
 
-#: src/components/ChatGPT/ChatGPT.vue:259
+#: src/components/ChatGPT/ChatGPT.vue:355
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:64
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
 #: src/views/certificate/CertificateEditor.vue:262
@@ -2272,7 +2272,7 @@ msgstr "SDK"
 msgid "Secret has been copied"
 msgstr ""
 
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:182
+#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:189
 msgid "Selector"
 msgstr "Выбор"
 
@@ -2284,10 +2284,6 @@ msgstr ""
 #: src/views/dashboard/ServerAnalytic.vue:35
 msgid "Send"
 msgstr "Отправлено"
-
-#: src/lib/http/index.ts:128
-msgid "Server error"
-msgstr "Ошибка сервера"
 
 #: src/views/dashboard/ServerAnalytic.vue:179
 msgid "Server Info"
@@ -2305,7 +2301,7 @@ msgstr "server_name параметр обязателен"
 msgid "ServerIdx out of range"
 msgstr ""
 
-#: src/constants/errors/user.ts:9
+#: src/constants/errors/user.ts:11
 #, fuzzy
 msgid "Session not found"
 msgstr "Файл не найден"
@@ -2409,16 +2405,16 @@ msgstr "Путь к SSL сертификату"
 msgid "SSO Login"
 msgstr "SSO Вход"
 
-#: src/views/environment/BatchUpgrader.vue:165
-#: src/views/environment/BatchUpgrader.vue:215 src/views/system/Upgrade.vue:191
+#: src/views/environment/BatchUpgrader.vue:164
+#: src/views/environment/BatchUpgrader.vue:214 src/views/system/Upgrade.vue:191
 #: src/views/system/Upgrade.vue:239
 msgid "Stable"
 msgstr "Стабильный"
 
 #: src/views/certificate/ACMEUser.vue:65
 #: src/views/certificate/CertificateList/certColumns.tsx:68
-#: src/views/environment/envColumns.tsx:75
-#: src/views/site/site_list/columns.tsx:40 src/views/stream/StreamList.vue:22
+#: src/views/environment/envColumns.tsx:44
+#: src/views/site/site_list/columns.tsx:42 src/views/stream/StreamList.vue:23
 msgid "Status"
 msgstr "Статус"
 
@@ -2522,7 +2518,7 @@ msgstr "Ошибка синхронизации конфигурации"
 msgid "Sync Config Success"
 msgstr "Синхронизация конфигурации успешна"
 
-#: src/views/site/site_category/SiteCategory.vue:16
+#: src/views/site/site_category/SiteCategory.vue:17
 #, fuzzy
 msgid "Sync Nodes"
 msgstr "Синхронизировать с"
@@ -2717,7 +2713,7 @@ msgstr ""
 msgid "This value is already taken"
 msgstr ""
 
-#: src/views/environment/BatchUpgrader.vue:183
+#: src/views/environment/BatchUpgrader.vue:182
 msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
@@ -2803,7 +2799,6 @@ msgid "Two-factor authentication required"
 msgstr "Требуется двухфакторная аутентификация"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:25
-#: src/views/config/configColumns.ts:16
 #: src/views/notification/notificationColumns.tsx:9
 msgid "Type"
 msgstr "Тип"
@@ -2815,13 +2810,13 @@ msgstr "Успешно обновлено"
 
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
-#: src/views/config/configColumns.ts:31 src/views/config/ConfigEditor.vue:276
-#: src/views/environment/envColumns.tsx:119
-#: src/views/site/site_category/columns.ts:20
+#: src/views/config/configColumns.tsx:34 src/views/config/ConfigEditor.vue:276
+#: src/views/environment/envColumns.tsx:90
+#: src/views/site/site_category/columns.ts:22
 #: src/views/site/site_edit/RightSettings.vue:100
-#: src/views/site/site_list/columns.tsx:67
+#: src/views/site/site_list/columns.tsx:69
 #: src/views/stream/components/RightSettings.vue:85
-#: src/views/stream/StreamList.vue:41 src/views/user/userColumns.tsx:54
+#: src/views/stream/StreamList.vue:43 src/views/user/userColumns.tsx:54
 msgid "Updated at"
 msgstr "Обновлено в"
 
@@ -2829,12 +2824,12 @@ msgstr "Обновлено в"
 msgid "Updated successfully"
 msgstr "Успешно обновлено"
 
-#: src/routes/index.ts:297 src/views/environment/Environment.vue:53
+#: src/routes/index.ts:297 src/views/environment/Environment.vue:56
 #: src/views/system/Upgrade.vue:143 src/views/system/Upgrade.vue:226
 msgid "Upgrade"
 msgstr "Обновление"
 
-#: src/views/environment/BatchUpgrader.vue:138
+#: src/views/environment/BatchUpgrader.vue:137
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr "Интерфейс Nginx на %{node} успешно обновлен 🎉"
 
@@ -2842,7 +2837,7 @@ msgstr "Интерфейс Nginx на %{node} успешно обновлен �
 msgid "Upgraded successfully"
 msgstr "Обновлено успешно"
 
-#: src/views/environment/BatchUpgrader.vue:89 src/views/system/Upgrade.vue:77
+#: src/views/environment/BatchUpgrader.vue:88 src/views/system/Upgrade.vue:77
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Обновление Nginx UI, подождите..."
 
@@ -2854,7 +2849,7 @@ msgstr "Имя Upstream"
 msgid "Uptime:"
 msgstr "Аптайм:"
 
-#: src/views/environment/envColumns.tsx:18
+#: src/views/environment/envColumns.tsx:19
 msgid "URL"
 msgstr "URL"
 
@@ -2866,7 +2861,7 @@ msgstr "Использовать OTP"
 msgid "Use recovery code"
 msgstr "Использовать код восстановления"
 
-#: src/components/ChatGPT/ChatGPT.vue:237
+#: src/components/ChatGPT/ChatGPT.vue:333
 msgid "User"
 msgstr "Пользователь"
 
@@ -2887,13 +2882,13 @@ msgstr "Имя пользователя"
 msgid "Username (*)"
 msgstr "Имя пользователя (*)"
 
-#: src/views/certificate/ACMEUser.vue:123
+#: src/views/certificate/ACMEUser.vue:124
 #: src/views/certificate/CertificateList/certColumns.tsx:81
 #: src/views/site/cert/CertInfo.vue:24
 msgid "Valid"
 msgstr "Действительный"
 
-#: src/views/environment/envColumns.tsx:29
+#: src/views/environment/envColumns.tsx:31
 msgid "Version"
 msgstr "Версия"
 
@@ -2996,6 +2991,18 @@ msgstr ""
 #: src/views/preference/components/Passkey.vue:75
 msgid "Your passkeys"
 msgstr ""
+
+#~ msgid "Directory"
+#~ msgstr "Каталог"
+
+#~ msgid "Environment"
+#~ msgstr "Окружение"
+
+#~ msgid "File"
+#~ msgstr "Файл"
+
+#~ msgid "Server error"
+#~ msgstr "Ошибка сервера"
 
 #~ msgid "Incorrect username or password"
 #~ msgstr "Неверное имя пользователя или пароль"
