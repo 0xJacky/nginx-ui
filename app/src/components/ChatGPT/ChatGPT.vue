@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ChatComplicationMessage } from '@/api/openai'
-import type { Ref } from 'vue'
 import openai from '@/api/openai'
 import ChatGPT_logo from '@/assets/svg/ChatGPT_logo.svg?component'
 import { urlJoin } from '@/lib/helper'
@@ -8,8 +7,8 @@ import { useSettingsStore, useUserStore } from '@/pinia'
 import Icon, { SendOutlined } from '@ant-design/icons-vue'
 import hljs from 'highlight.js'
 import nginx from 'highlight.js/lib/languages/nginx'
-import { Marked } from 'marked'
 
+import { Marked } from 'marked'
 import { markedHighlight } from 'marked-highlight'
 import { storeToRefs } from 'pinia'
 import 'highlight.js/styles/vs2015.css'
@@ -17,28 +16,19 @@ import 'highlight.js/styles/vs2015.css'
 const props = defineProps<{
   content: string
   path?: string
-  historyMessages?: ChatComplicationMessage[]
 }>()
-
-const emit = defineEmits(['update:history_messages'])
 
 hljs.registerLanguage('nginx', nginx)
 
 const { language: current } = storeToRefs(useSettingsStore())
 
-const history_messages = computed(() => props.historyMessages)
-const messages = ref([]) as Ref<ChatComplicationMessage[] | undefined>
-
-onMounted(() => {
-  messages.value = props.historyMessages
-})
-
-watch(history_messages, () => {
-  messages.value = props.historyMessages
+const messages = defineModel<ChatComplicationMessage[]>('historyMessages', {
+  type: Array,
+  default: reactive([]),
 })
 
 const loading = ref(false)
-const ask_buffer = ref('')
+const askBuffer = ref('')
 
 async function request() {
   loading.value = true
@@ -52,9 +42,11 @@ async function request() {
 
   const { token } = storeToRefs(user)
 
-  messages.value?.push(t.value)
+  messages.value = [...messages.value!, t.value]
 
-  emit('update:history_messages', messages.value)
+  await nextTick()
+
+  scrollToBottom()
 
   const res = await fetch(urlJoin(window.location.pathname, '/api/chatgpt'), {
     method: 'POST',
@@ -76,7 +68,7 @@ async function request() {
           scrollToBottom()
         }, 500)
         loading.value = false
-        store_record()
+        storeRecord()
         break
       }
       apply(value!)
@@ -146,18 +138,21 @@ async function send() {
     messages.value = []
 
   if (messages.value.length === 0) {
-    messages.value.push({
+    messages.value = [{
       role: 'user',
       content: `${props.content}\n\nCurrent Language Code: ${current.value}`,
-    })
+    }]
   }
   else {
-    messages.value.push({
+    messages.value = [...messages.value, {
       role: 'user',
-      content: ask_buffer.value,
-    })
-    ask_buffer.value = ''
+      content: askBuffer.value,
+    }]
+    askBuffer.value = ''
   }
+
+  await nextTick()
+
   await request()
 }
 
@@ -167,9 +162,7 @@ const marked = new Marked(
     highlight(code, lang) {
       const language = hljs.getLanguage(lang) ? lang : 'nginx'
 
-      const highlightedCode = hljs.highlight(code, { language }).value
-
-      return `<pre><code class="hljs ${language}">${highlightedCode}</code></pre>`
+      return hljs.highlight(code, { language }).value
     },
   }),
 )
@@ -180,27 +173,27 @@ marked.setOptions({
   breaks: false,
 })
 
-function store_record() {
+function storeRecord() {
   openai.store_record({
     file_name: props.path,
     messages: messages.value,
   })
 }
 
-function clear_record() {
+function clearRecord() {
   openai.store_record({
     file_name: props.path,
     messages: [],
   })
   messages.value = []
-  emit('update:history_messages', [])
 }
 
-const editing_idx = ref(-1)
+const editingIdx = ref(-1)
 
 async function regenerate(index: number) {
-  editing_idx.value = -1
+  editingIdx.value = -1
   messages.value = messages.value?.slice(0, index)
+  await nextTick()
   await request()
 }
 
@@ -237,27 +230,27 @@ const show = computed(() => !messages.value || messages.value?.length === 0)
           <AComment :author="item.role === 'assistant' ? $gettext('Assistant') : $gettext('User')">
             <template #content>
               <div
-                v-if="item.role === 'assistant' || editing_idx !== index"
+                v-if="item.role === 'assistant' || editingIdx !== index"
                 v-dompurify-html="marked.parse(item.content)"
                 class="content"
               />
               <AInput
                 v-else
                 v-model:value="item.content"
-                style="padding: 0"
+                class="pa-0"
                 :bordered="false"
               />
             </template>
             <template #actions>
               <span
-                v-if="item.role === 'user' && editing_idx !== index"
-                @click="editing_idx = index"
+                v-if="item.role === 'user' && editingIdx !== index"
+                @click="editingIdx = index"
               >
                 {{ $gettext('Modify') }}
               </span>
-              <template v-else-if="editing_idx === index">
+              <template v-else-if="editingIdx === index">
                 <span @click="regenerate(index + 1)">{{ $gettext('Save') }}</span>
-                <span @click="editing_idx = -1">{{ $gettext('Cancel') }}</span>
+                <span @click="editingIdx = -1">{{ $gettext('Cancel') }}</span>
               </template>
               <span
                 v-else-if="!loading"
@@ -277,7 +270,7 @@ const show = computed(() => !messages.value || messages.value?.length === 0)
             :cancel-text="$gettext('No')"
             :ok-text="$gettext('OK')"
             :title="$gettext('Are you sure you want to clear the record of chat?')"
-            @confirm="clear_record"
+            @confirm="clearRecord"
           >
             <AButton type="text">
               {{ $gettext('Clear') }}
@@ -292,7 +285,7 @@ const show = computed(() => !messages.value || messages.value?.length === 0)
         </ASpace>
       </div>
       <ATextarea
-        v-model:value="ask_buffer"
+        v-model:value="askBuffer"
         auto-size
       />
       <div class="send-btn">
