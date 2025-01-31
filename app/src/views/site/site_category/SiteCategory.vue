@@ -10,6 +10,7 @@ import columns from '@/views/site/site_category/columns'
     :title="$gettext('Site Categories')"
     :api="site_category"
     :columns="columns"
+    :scroll-x="600"
   >
     <template #edit="{ data }">
       <div class="mb-2">

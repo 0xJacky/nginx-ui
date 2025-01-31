@@ -33,6 +33,7 @@ const refTable = ref()
       :api="cert"
       :columns="certColumns"
       disable-view
+      :scroll-x="1000"
       @click-edit="id => $router.push(`/certificates/${id}`)"
     />
     <WildcardCertificate

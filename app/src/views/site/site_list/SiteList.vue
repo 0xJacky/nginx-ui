@@ -109,6 +109,7 @@ function handleBatchUpdated() {
       :get-params="{
         site_category_id: siteCategoryId,
       }"
+      :scroll-x="1200"
       @click-edit="(r: string) => router.push({
         path: `/sites/${r}`,
       })"

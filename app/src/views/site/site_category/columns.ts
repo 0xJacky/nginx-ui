@@ -10,21 +10,26 @@ const columns: Column[] = [{
     type: input,
   },
   pithy: true,
+  width: 120,
 }, {
   title: () => $gettext('Created at'),
   dataIndex: 'created_at',
   customRender: datetime,
   sorter: true,
   pithy: true,
+  width: 150,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
   customRender: datetime,
   sorter: true,
   pithy: true,
+  width: 150,
 }, {
   title: () => $gettext('Action'),
   dataIndex: 'action',
+  fixed: 'right',
+  width: 150,
 }]
 
 export default columns

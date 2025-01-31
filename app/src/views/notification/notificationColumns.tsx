@@ -47,20 +47,24 @@ const columns: Column[] = [{
     return h('span', $gettext(args.text))
   },
   pithy: true,
+  width: 250,
 }, {
   title: () => $gettext('Details'),
   dataIndex: 'details',
   customRender: detailRender,
   pithy: true,
+  width: 300,
 }, {
   title: () => $gettext('Created at'),
   dataIndex: 'created_at',
   sorter: true,
   customRender: datetime,
   pithy: true,
+  width: 180,
 }, {
   title: () => $gettext('Action'),
   dataIndex: 'action',
+  fixed: 'right',
 }]
 
 export default columns

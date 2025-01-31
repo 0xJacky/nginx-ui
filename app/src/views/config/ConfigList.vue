@@ -135,6 +135,7 @@ const refRename = useTemplateRef('refRename')
       :get-params="getParams"
       disable-query-params
       disable-modify
+      :scroll-x="880"
     >
       <template #actions="{ record }">
         <AButton

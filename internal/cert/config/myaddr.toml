@@ -1,0 +1,23 @@
+Name = "myaddr.{tools,dev,io}"
+Description = ''''''
+URL = "https://myaddr.tools/"
+Code = "myaddr"
+Since = "v4.22.0"
+
+Example = '''
+MYADDR_PRIVATE_KEYS_MAPPING="example:123,test:456" \
+lego --email you@example.com --dns myaddr -d '*.example.com' -d example.com run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    MYADDR_PRIVATE_KEYS_MAPPING = "Mapping between subdomains and private keys. The format is: `<subdomain1>:<private_key1>,<subdomain2>:<private_key2>,<subdomain3>:<private_key3>`"
+  [Configuration.Additional]
+    MYADDR_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    MYADDR_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    MYADDR_SEQUENCE_INTERVAL = "Time between sequential requests in seconds (Default: 2)"
+    MYADDR_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    MYADDR_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
+
+[Links]
+  API = "https://myaddr.tools/"

@@ -6,6 +6,7 @@ import userColumns from '@/views/user/userColumns'
 
 <template>
   <StdCurd
+    :scroll-x="1000"
     :title="$gettext('Manage Users')"
     :columns="userColumns"
     :api="user"

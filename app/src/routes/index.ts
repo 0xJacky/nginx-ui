@@ -227,11 +227,11 @@ export const routes: RouteRecordRaw[] = [
         }],
       },
       {
-        path: 'environment',
-        name: 'Environment',
+        path: 'environments',
+        name: 'Environments',
         component: () => import('@/views/environment/Environment.vue'),
         meta: {
-          name: () => $gettext('Environment'),
+          name: () => $gettext('Environments'),
           icon: DatabaseOutlined,
           hiddenInSidebar: (): boolean => {
             const settings = useSettingsStore()

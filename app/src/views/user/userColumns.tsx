@@ -59,6 +59,7 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('Action'),
   dataIndex: 'action',
+  fixed: 'right',
 }]
 
 export default columns

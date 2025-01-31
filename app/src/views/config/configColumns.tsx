@@ -1,8 +1,7 @@
 import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { JSXElements } from '@/components/StdDesign/types'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input } from '@/components/StdDesign/StdDataEntry'
-import { h } from 'vue'
+import { FileFilled, FolderFilled } from '@ant-design/icons-vue'
 
 const configColumns = [{
   title: () => $gettext('Name'),
@@ -12,21 +11,25 @@ const configColumns = [{
   search: {
     type: input,
   },
-}, {
-  title: () => $gettext('Type'),
-  dataIndex: 'is_dir',
   customRender: (args: CustomRender) => {
-    const template: JSXElements = []
-    const { text } = args
-    if (text === true || text > 0)
-      template.push($gettext('Directory'))
-    else
-      template.push($gettext('File'))
+    function renderIcon(isDir: boolean) {
+      return (
+        <div class="mr-2 text-truegray-5">
+          {isDir
+            ? <FolderFilled />
+            : <FileFilled />}
+        </div>
+      )
+    }
 
-    return h('div', template)
+    return (
+      <div class="flex">
+        {renderIcon(args.record.is_dir)}
+        {args.text}
+      </div>
+    )
   },
-  sorter: true,
-  pithy: true,
+  width: 500,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'modified_at',
@@ -34,9 +37,12 @@ const configColumns = [{
   datetime: true,
   sorter: true,
   pithy: true,
+  width: 200,
 }, {
   title: () => $gettext('Action'),
   dataIndex: 'action',
+  fixed: 'right',
+  width: 180,
 }]
 
 export default configColumns

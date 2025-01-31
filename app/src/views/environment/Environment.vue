@@ -28,13 +28,16 @@ function batchUpgrade() {
       ref="curd"
       v-model:selected-row-keys="selectedNodeIds"
       v-model:selected-rows="selectedNodes"
+      :scroll-x="1000"
       selection-type="checkbox"
-      :title="$gettext('Environment')"
+      :title="$gettext('Environments')"
       :api="environment"
       :columns="envColumns"
     >
       <template #beforeAdd>
-        <a @click="loadFromSettings">{{ $gettext('Load from settings') }}</a>
+        <AButton size="small" type="link" @click="loadFromSettings">
+          {{ $gettext('Load from settings') }}
+        </AButton>
       </template>
     </StdCurd>
 

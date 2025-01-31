@@ -8,12 +8,24 @@ import FooterLayout from './FooterLayout.vue'
 import HeaderLayout from './HeaderLayout.vue'
 import SideBar from './SideBar.vue'
 
-const drawer_visible = ref(false)
+const drawerVisible = ref(false)
 const collapsed = ref(collapse())
+const hideLayoutSidebar = ref(false)
 
-addEventListener('resize', _.throttle(() => {
+function _init() {
   collapsed.value = collapse()
-}, 50))
+  hideLayoutSidebar.value = getClientWidth() < 600
+}
+
+const init = _.throttle(_init, 50)
+
+onMounted(init)
+
+addEventListener('resize', init)
+
+onUnmounted(() => {
+  removeEventListener('resize', init)
+})
 
 function getClientWidth() {
   return document.body.clientWidth
@@ -38,17 +50,18 @@ provide('breadList', breadList)
   <ALayout class="full-screen-wrapper min-h-screen">
     <div class="drawer-sidebar">
       <ADrawer
-        v-model:open="drawer_visible"
+        v-model:open="drawerVisible"
         :closable="false"
         placement="left"
         width="256"
-        @close="drawer_visible = false"
+        @close="drawerVisible = false"
       >
         <SideBar />
       </ADrawer>
     </div>
 
     <ALayoutSider
+      v-if="!hideLayoutSidebar"
       v-model:collapsed="collapsed"
       collapsible
       :style="{ zIndex: 11 }"
@@ -60,7 +73,7 @@ provide('breadList', breadList)
 
     <ALayout class="main-container">
       <ALayoutHeader :style="{ position: 'sticky', top: '0', zIndex: 10, width: '100%' }">
-        <HeaderLayout @click-un-fold="drawer_visible = true" />
+        <HeaderLayout @click-un-fold="drawerVisible = true" />
       </ALayoutHeader>
 
       <ALayoutContent>
