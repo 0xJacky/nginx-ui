@@ -125,7 +125,7 @@ instance.interceptors.response.use(
         }
       }
       else {
-        message.error($gettext('Server error'))
+        message.error($gettext(err?.message ?? 'Server error'))
       }
     }
     else {

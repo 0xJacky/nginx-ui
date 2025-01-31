@@ -9,8 +9,8 @@ import (
 type User struct {
 	Model
 
-	Name         string `json:"name"`
-	Password     string `json:"-"`
+	Name         string `json:"name" cosy:"add:max=20;update:omitempty,max=20;list:fussy;db_unique"`
+	Password     string `json:"-" cosy:"add:required,max=20;update:omitempty,max=20"`
 	Status       bool   `json:"status" gorm:"default:1"`
 	OTPSecret    []byte `json:"-" gorm:"type:blob"`
 	EnabledTwoFA bool   `json:"enabled_2fa" gorm:"-"`
