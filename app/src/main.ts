@@ -16,7 +16,15 @@ const app = createApp(App)
 pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(gettext)
-app.use(VueDOMPurifyHTML)
+app.use(VueDOMPurifyHTML, {
+  hooks: {
+    uponSanitizeElement: (node, data) => {
+      if (node.tagName && node.tagName.toLowerCase() === 'think') {
+        data.allowedTags.think = true
+      }
+    },
+  },
+})
 
 // after pinia created
 const settings = useSettingsStore()
