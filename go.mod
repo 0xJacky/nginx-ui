@@ -37,6 +37,7 @@ require (
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250120210832-12a9c7ae0c8a
 	github.com/uozi-tech/cosy v1.14.3
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.0
+	github.com/urfave/cli/v3 v3.0.0-beta1
 	go.uber.org/zap v1.27.0
 	golang.org/x/crypto v0.32.0
 	golang.org/x/net v0.34.0

@@ -1,22 +1,23 @@
 package main
 
 import (
-	"flag"
+	"errors"
 	"fmt"
+	"net/http"
+	"time"
+
+	"github.com/0xJacky/Nginx-UI/internal/cmd"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/router"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/jpillora/overseer"
-	"errors"
 	"github.com/uozi-tech/cosy"
 	cKernel "github.com/uozi-tech/cosy/kernel"
 	"github.com/uozi-tech/cosy/logger"
 	cRouter "github.com/uozi-tech/cosy/router"
 	cSettings "github.com/uozi-tech/cosy/settings"
-	"net/http"
-	"time"
 )
 
 func Program(confPath string) func(state overseer.State) {
@@ -58,12 +59,10 @@ func Program(confPath string) func(state overseer.State) {
 }
 
 func main() {
-	var confPath string
-	flag.StringVar(&confPath, "config", "app.ini", "Specify the configuration file")
-	flag.Parse()
+	appCmd := cmd.NewAppCmd()
 
+	confPath := appCmd.String("config")
 	settings.Init(confPath)
-
 	overseer.Run(overseer.Config{
 		Program:          Program(confPath),
 		Address:          fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port),
