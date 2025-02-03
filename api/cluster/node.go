@@ -1,14 +1,16 @@
 package cluster
 
 import (
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/api"
 	analytic2 "github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/upgrader"
+	"github.com/0xJacky/Nginx-UI/internal/version"
 	"github.com/dustin/go-humanize"
 	"github.com/gin-gonic/gin"
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/disk"
-	"net/http"
 )
 
 func GetCurrentNode(c *gin.Context) {
@@ -26,7 +28,7 @@ func GetCurrentNode(c *gin.Context) {
 	}
 	cpuInfo, _ := cpu.Info()
 	memory, _ := analytic2.GetMemoryStat()
-	ver, _ := upgrader.GetCurrentVersion()
+	ver := version.GetVersionInfo()
 	diskUsage, _ := disk.Usage(".")
 
 	nodeInfo := analytic2.NodeInfo{
