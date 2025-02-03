@@ -1,12 +1,12 @@
-import {LocaleSpecificConfig, DefaultTheme} from 'vitepress'
-import {demoUrl, editLinkPattern} from './common'
+import { LocaleSpecificConfig, DefaultTheme } from 'vitepress'
+import { demoUrl, editLinkPattern } from './common'
 
 export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
   themeConfig: {
     nav: [
-      {text: '首页', link: '/zh_CN/'},
-      {text: '手册', link: '/zh_CN/guide/about'},
-      {text: '演示', link: demoUrl}
+      { text: '首页', link: '/zh_CN/' },
+      { text: '手册', link: '/zh_CN/guide/about' },
+      { text: '演示', link: demoUrl }
     ],
 
     editLink: {
@@ -20,55 +20,55 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           text: '介绍',
           collapsed: false,
           items: [
-            {text: '何为 Nginx UI?', link: '/zh_CN/guide/about'},
-            {text: '即刻开始', link: '/zh_CN/guide/getting-started'},
-            {text: '安装脚本', link: '/zh_CN/guide/install-script-linux'}
+            { text: '何为 Nginx UI?', link: '/zh_CN/guide/about' },
+            { text: '即刻开始', link: '/zh_CN/guide/getting-started' },
+            { text: '安装脚本', link: '/zh_CN/guide/install-script-linux' }
           ]
         },
         {
           text: '开发',
           collapsed: false,
           items: [
-            {text: '构建', link: '/zh_CN/guide/build'},
-            {text: '项目结构', link: '/zh_CN/guide/project-structure'},
-            {text: '配置模板', link: '/zh_CN/guide/nginx-ui-template'},
-            {text: '贡献代码', link: '/zh_CN/guide/contributing'}
+            { text: '构建', link: '/zh_CN/guide/build' },
+            { text: '项目结构', link: '/zh_CN/guide/project-structure' },
+            { text: '配置模板', link: '/zh_CN/guide/nginx-ui-template' },
+            { text: '贡献代码', link: '/zh_CN/guide/contributing' }
           ]
         },
         {
           text: '配置',
           collapsed: false,
           items: [
-            {text: 'App', link: '/zh_CN/guide/config-app'},
-            {text: 'Server', link: '/zh_CN/guide/config-server'},
-            {text: 'Database', link: '/zh_CN/guide/config-database'},
-            {text: 'Auth', link: '/zh_CN/guide/config-auth'},
-            {text: 'Casdoor', link: '/zh_CN/guide/config-casdoor'},
-            {text: 'Cert', link: '/zh_CN/guide/config-cert'},
-            {text: 'Cluster', link: '/zh_CN/guide/config-cluster'},
-            {text: 'Crypto', link: '/zh_CN/guide/config-crypto'},
-            {text: 'Http', link: '/zh_CN/guide/config-http'},
-            {text: 'Logrotate', link: '/zh_CN/guide/config-logrotate'},
-            {text: 'Nginx', link: '/zh_CN/guide/config-nginx'},
-            {text: 'Node', link: '/zh_CN/guide/config-node'},
-            {text: 'Open AI', link: '/zh_CN/guide/config-openai'},
-            {text: 'Terminal', link: '/zh_CN/guide/config-terminal'},
-            {text: 'Webauthn', link: '/zh_CN/guide/config-webauthn'}
+            { text: 'App', link: '/zh_CN/guide/config-app' },
+            { text: 'Server', link: '/zh_CN/guide/config-server' },
+            { text: 'Database', link: '/zh_CN/guide/config-database' },
+            { text: 'Auth', link: '/zh_CN/guide/config-auth' },
+            { text: 'Casdoor', link: '/zh_CN/guide/config-casdoor' },
+            { text: 'Cert', link: '/zh_CN/guide/config-cert' },
+            { text: 'Cluster', link: '/zh_CN/guide/config-cluster' },
+            { text: 'Crypto', link: '/zh_CN/guide/config-crypto' },
+            { text: 'Http', link: '/zh_CN/guide/config-http' },
+            { text: 'Logrotate', link: '/zh_CN/guide/config-logrotate' },
+            { text: 'Nginx', link: '/zh_CN/guide/config-nginx' },
+            { text: 'Node', link: '/zh_CN/guide/config-node' },
+            { text: 'Open AI', link: '/zh_CN/guide/config-openai' },
+            { text: 'Terminal', link: '/zh_CN/guide/config-terminal' },
+            { text: 'Webauthn', link: '/zh_CN/guide/config-webauthn' }
           ]
         },
         {
           text: '环境变量',
           collapsed: false,
           items: [
-            {text: '参考手册', link: '/zh_CN/guide/env'},
+            { text: '参考手册', link: '/zh_CN/guide/env' },
           ]
         },
         {
           text: '附录',
           collapsed: false,
           items: [
-            {text: 'Nginx 代理示例', link: '/zh_CN/guide/nginx-proxy-example'},
-            {text: '开源协议', link: '/zh_CN/guide/license'}
+            { text: 'Nginx 代理示例', link: '/zh_CN/guide/nginx-proxy-example' },
+            { text: '开源协议', link: '/zh_CN/guide/license' }
           ]
         }
       ]

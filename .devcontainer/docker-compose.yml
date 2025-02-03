@@ -1,0 +1,41 @@
+services:
+  nginx-ui:
+    build: .
+    volumes:
+      - ../..:/workspaces:cached
+      - ./go-path:/root/go
+      - ./nginx:/etc/nginx
+    command: sleep infinity
+    environment:
+      - NGINX_UI_CERT_CA_DIR=https://pebble:14000/dir
+    networks:
+      nginxui:
+  pebble:
+    image: ghcr.io/letsencrypt/pebble:latest
+    volumes:
+      - ./pebble-test:/test
+    command: -config /test/config/pebble-config.json -strict -dnsserver challtestsrv:8053
+    ports:
+        - 14000:14000 # HTTPS ACME API
+        - 15000:15000 # HTTPS Management API
+    environment:
+      - PEBBLE_VA_NOSLEEP=1
+      - PEBBLE_VA_ALWAYS_VALID=1
+    networks:
+      nginxui:
+  challtestsrv:
+    image: ghcr.io/letsencrypt/pebble-challtestsrv:latest
+    command: -defaultIPv6 "" -defaultIPv4 challtestsrv
+    ports:
+      - 8055:8055 # HTTP Management API
+    networks:
+      nginxui:
+  casdoor:
+    image: casbin/casdoor-all-in-one
+    ports:
+      - 8001:8000
+    networks:
+      - nginxui
+
+networks:
+  nginxui:

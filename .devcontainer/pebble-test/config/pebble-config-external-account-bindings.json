@@ -1,0 +1,22 @@
+{
+  "pebble": {
+    "listenAddress": "0.0.0.0:14000",
+    "managementListenAddress": "0.0.0.0:15000",
+    "certificate": "/test/certs/localhost/cert.pem",
+    "privateKey": "/test/certs/localhost/key.pem",
+    "httpPort": 5002,
+    "tlsPort": 5001,
+    "ocspResponderURL": "",
+    "retryAfter": {
+        "authz": 3,
+        "order": 5
+    },
+    "externalAccountBindingRequired": true,
+    "externalAccountMACKeys": {
+      "kid-1": "zWNDZM6eQGHWpSRTPal5eIUYFTu7EajVIoguysqZ9wG44nMEtx3MUAsUDkMTQ12W",
+      "kid-2": "b10lLJs8l1GPIzsLP0s6pMt8O0XVGnfTaCeROxQM0BIt2XrJMDHJZBM5NuQmQJQH",
+      "kid-3": "HjudV5qnbreN-n9WyFSH-t4HXuEx_XFen45zuxY-G1h6fr74V3cUM_dVlwQZBWmc"
+    },
+    "certificateValidityPeriod": 157766400
+  }
+}
