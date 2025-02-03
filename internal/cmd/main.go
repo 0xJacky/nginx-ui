@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 
+	"github.com/0xJacky/Nginx-UI/internal/version"
 	"github.com/urfave/cli/v3"
 )
 
@@ -32,6 +34,11 @@ func NewAppCmd() *cli.Command {
 			},
 		},
 		DefaultCommand: "serve",
+		Version:        version.Version,
+	}
+
+	cli.VersionPrinter = func(cmd *cli.Command) {
+		fmt.Printf("%s (%d)\n", cmd.Root().Version, version.BuildId)
 	}
 
 	if err := cmd.Run(context.Background(), os.Args); err != nil {
