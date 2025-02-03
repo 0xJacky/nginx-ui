@@ -2,16 +2,14 @@ package middleware
 
 import (
 	"encoding/base64"
-	"github.com/0xJacky/Nginx-UI/app"
-	"github.com/0xJacky/Nginx-UI/internal/user"
-	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/gin-contrib/static"
-	"github.com/gin-gonic/gin"
-	"github.com/uozi-tech/cosy/logger"
-	"io/fs"
 	"net/http"
 	"path"
 	"strings"
+
+	"github.com/0xJacky/Nginx-UI/internal/user"
+	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 func AuthRequired() gin.HandlerFunc {
@@ -70,22 +68,6 @@ func (f ServerFileSystemType) Exists(prefix string, _path string) bool {
 		}(file)
 	}
 	return err == nil
-}
-
-func MustFs(dir string) (serverFileSystem static.ServeFileSystem) {
-
-	sub, err := fs.Sub(app.DistFS, path.Join("dist", dir))
-
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-
-	serverFileSystem = ServerFileSystemType{
-		http.FS(sub),
-	}
-
-	return
 }
 
 func CacheJs() gin.HandlerFunc {

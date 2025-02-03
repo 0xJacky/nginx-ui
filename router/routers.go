@@ -1,6 +1,8 @@
 package router
 
 import (
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/api/analytic"
 	"github.com/0xJacky/Nginx-UI/api/certificate"
 	"github.com/0xJacky/Nginx-UI/api/cluster"
@@ -19,19 +21,14 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/upstream"
 	"github.com/0xJacky/Nginx-UI/api/user"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
-	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
-	"net/http"
 )
 
 func InitRouter() {
 	r := cosy.GetEngine()
-	r.Use(
-		middleware.CacheJs(),
-		middleware.IPWhiteList(),
-		static.Serve("/", middleware.MustFs("")),
-	)
+
+	initEmbedRoute(r)
 
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
