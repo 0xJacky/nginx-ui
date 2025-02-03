@@ -8,6 +8,7 @@ const props = defineProps<{
   configName: string
   currentServerIndex: number
   certInfo?: CertificateInfo[]
+  siteEnabled: boolean
 }>()
 
 const enabled = defineModel<boolean>('enabled', {
@@ -68,6 +69,7 @@ function handleCertChange(certs: Cert[]) {
     <ChangeCert @change="handleCertChange" />
 
     <IssueCert
+      v-if="siteEnabled"
       v-model:enabled="enabled"
       :config-name="configName"
     />

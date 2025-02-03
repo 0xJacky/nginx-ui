@@ -74,11 +74,15 @@ Nginx UI is available on the following platforms:
 
 ## Internationalization
 
+We proudly offer official support for:
+
 - English
 - Simplified Chinese
 - Traditional Chinese
 
-We welcome translations into any language.
+As non-native English speakers, we strive for accuracy, but we know there’s always room for improvement. If you spot any issues, we’d love your feedback!
+
+Thanks to our amazing community, additional languages are also available! Explore and contribute to translations on [Weblate](https://weblate.nginxui.com).
 
 ## Built With
 

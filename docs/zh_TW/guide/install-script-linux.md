@@ -26,7 +26,7 @@ install.sh install [OPTIONS]
 ### 快速使用
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh) install
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
 ```
 
 安裝指令碼預設的監聽埠為 `9000`，HTTP Challenge 埠預設為 `9180`。如果出現埠衝突請修改 `/usr/local/etc/nginx-ui/app.ini`，
@@ -56,12 +56,12 @@ install.sh remove [OPTIONS]
 
 ```shell [移除]
 # 解除安裝 Nginx UI 但保留配置和資料庫檔案
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh) remove
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
 ```
 
 ```shell [清除]
 # 解除安裝並刪除所有 Nginx UI 檔案，包括配置和資料庫檔案
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh) remove --purge
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove --purge
 ```
 
 :::
@@ -81,7 +81,7 @@ install.sh help
 ### 快速使用
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh) help
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
 ```
 
 ## 控制服務

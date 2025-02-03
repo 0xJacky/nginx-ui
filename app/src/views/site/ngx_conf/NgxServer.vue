@@ -120,15 +120,15 @@ provide('ngx_directives', ngx_directives)
         />
 
         <div class="tab-content">
-          <template v-if="current_support_ssl && enabled">
-            <Cert
-              v-if="current_support_ssl"
-              v-model:enabled="autoCert"
-              :config-name="ngx_config.name"
-              :cert-info="certInfo?.[k]"
-              :current-server-index="current_server_index"
-            />
-          </template>
+          <Cert
+            v-if="current_support_ssl"
+            v-model:enabled="autoCert"
+            class="mb-4"
+            :site-enabled="enabled"
+            :config-name="ngx_config.name"
+            :cert-info="certInfo?.[k]"
+            :current-server-index="current_server_index"
+          />
 
           <template v-if="v.comments">
             <h3>{{ $gettext('Comments') }}</h3>

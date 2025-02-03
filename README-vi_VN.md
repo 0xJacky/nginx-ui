@@ -300,7 +300,7 @@ go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/sett
 **Cài đặt và nâng cấp**
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh) install
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
 ```
 Port mặc định để truy cập UI là `9000`, port HTTP Challenge mặc định để xác thực SSL là `9180`.
 Nếu có xung đột port, vui lòng sửa đổi trong file `/usr/local/etc/nginx-ui/app.ini`,
@@ -309,19 +309,19 @@ hãy nhớ restart nginx-ui bằng lệnh `systemctl restart nginx-ui` mỗi khi
 **Gỡ bỏ Nginx UI nhưng giữ lại các tệp cấu hình và cơ sở dữ liệu**
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh) remove
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
 ```
 
 **Gỡ bỏ Nginx UI đồng thời xoá các tệp cấu hình, cơ sở dữ liệu**
 
 ```shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh) remove --purge
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove --purge
 ```
 
 ### Trợ giúp
 
 ````shell
-bash <(curl -L -s https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh) help
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
 ````
 
 ## Ví dụ về cấu hình Nginx Reverse Proxy
