@@ -13,15 +13,7 @@ RUN apt-get update && \
     \
     # Update package information and install Nginx
     apt-get update && \
-    apt-get install -y --no-install-recommends nginx && \
-    \
-    # Install the latest Node.js via NodeSource setup script
-    curl -fsSL https://deb.nodesource.com/setup_current.x | bash - && \
-    apt-get update && \
-    apt-get install -y nodejs && \
-    \
-    # Install pnpm globally using npm
-    npm install -g pnpm && \
+    apt-get install -y --no-install-recommends nginx inotify-tools file && \
     \
     # Automatically retrieve the latest stable Go version and install it,
     # download the appropriate binary based on system architecture (amd64 or arm64)

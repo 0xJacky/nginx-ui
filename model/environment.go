@@ -10,7 +10,7 @@ type Environment struct {
 	Name    string `json:"name"`
 	URL     string `json:"url"`
 	Token   string `json:"token"`
-	Enabled bool   `json:"enabled" gorm:"default:true"`
+	Enabled bool   `json:"enabled" gorm:"default:false"`
 }
 
 func (e *Environment) GetUrl(uri string) (decodedUri string, err error) {

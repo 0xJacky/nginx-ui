@@ -181,7 +181,7 @@ function handleBatchUpdated() {
             v-if="!disableAdd && !inTrash"
             type="link"
             size="small"
-            @click="add"
+            @click="add()"
           >
             {{ $gettext('Add') }}
           </AButton>

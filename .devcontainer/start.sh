@@ -9,11 +9,7 @@ if ! grep -q "zsh-autosuggestions" ~/.zshrc; then
 fi
 
 # init nginx config dir
-if [ "$(ls -A /etc/nginx)" = "" ]; then
-    echo "Initialing Nginx config dir"
-    cp -rp /etc/nginx.orig/* /etc/nginx/
-    echo "Initialed Nginx config dir"
-fi
+./.devcontainer/init-nginx.sh
 
 # install app dependencies
 echo "Installing app dependencies"

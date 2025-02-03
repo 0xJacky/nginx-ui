@@ -26,12 +26,12 @@ const columns: Column[] = [{
       placeholder: () => 'https://10.0.0.1:9000',
     },
   },
-  width: 300,
+  width: 260,
 }, {
   title: () => $gettext('Version'),
   dataIndex: 'version',
   pithy: true,
-  width: 150,
+  width: 120,
 }, {
   title: () => 'NodeSecret',
   dataIndex: 'token',
@@ -65,7 +65,7 @@ const columns: Column[] = [{
   },
   sorter: true,
   pithy: true,
-  width: 200,
+  width: 120,
 }, {
   title: () => $gettext('Enabled'),
   dataIndex: 'enabled',
@@ -85,7 +85,7 @@ const columns: Column[] = [{
   },
   sorter: true,
   pithy: true,
-  width: 150,
+  width: 120,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
