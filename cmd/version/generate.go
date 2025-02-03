@@ -10,8 +10,6 @@ import (
 	"os"
 	"path"
 	"runtime"
-
-	"github.com/0xJacky/Nginx-UI/app"
 )
 
 type VersionInfo struct {
@@ -28,7 +26,7 @@ func main() {
 	}
 	basePath := path.Join(path.Dir(file), "../../")
 
-	versionFile, err := app.DistFS.Open("dist/version.json")
+	versionFile, err := os.Open(path.Join(basePath, "app/dist/version.json"))
 	if err != nil {
 		if errors.Is(err, fs.ErrNotExist) {
 			log.Print("\"dist/version.json\" not found, load from src instead")
