@@ -142,6 +142,18 @@ jobs:
         with:
           go-version: ^1.23.0
 
+      - name: Download app artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: app-dist
+          path: app/dist
+
+      - name: Generate files
+        env:
+          GOOS: linux
+          GOARCH: amd64
+        run: go generate
+
       - name: Setup compiler environment
         id: info
         run: |
@@ -181,12 +193,6 @@ jobs:
           echo "CC=${{ env.ARCH_NAME }}-clang" >> $GITHUB_ENV
           echo "CXX=${{ env.ARCH_NAME }}-clang++" >> $GITHUB_ENV
           echo "LD_FLAGS=-w" >> $GITHUB_ENV
-
-      - name: Download app artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: app-dist
-          path: app/dist
 
       - name: Build
         run: |
