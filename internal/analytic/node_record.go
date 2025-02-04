@@ -21,6 +21,7 @@ func RestartRetrieveNodesStatus() {
 }
 
 func RetrieveNodesStatus() {
+	logger.Info("RetrieveNodesStatus start")
 	NodeMap = make(TNodeMap)
 
 	ctx, cancel := context.WithCancel(context.Background())
