@@ -29,6 +29,7 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           text: '開發',
           collapsed: false,
           items: [
+            { text: '開發容器', link: '/zh_TW/guide/devcontainer' },
             { text: '構建', link: '/zh_TW/guide/build' },
             { text: '專案結構', link: '/zh_TW/guide/project-structure' },
             { text: '配置模板', link: '/zh_TW/guide/nginx-ui-template' },

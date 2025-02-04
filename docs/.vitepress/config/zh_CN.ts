@@ -29,6 +29,7 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           text: '开发',
           collapsed: false,
           items: [
+            { text: '开发容器', link: '/zh_CN/guide/devcontainer' },
             { text: '构建', link: '/zh_CN/guide/build' },
             { text: '项目结构', link: '/zh_CN/guide/project-structure' },
             { text: '配置模板', link: '/zh_CN/guide/nginx-ui-template' },
