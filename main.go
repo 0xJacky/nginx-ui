@@ -2,11 +2,11 @@ package main
 
 import (
 	"errors"
-	"flag"
 	"fmt"
 	"net/http"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/cmd"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/router"
@@ -19,6 +19,8 @@ import (
 	cRouter "github.com/uozi-tech/cosy/router"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
+
+//go:generate go run cmd/version/generate.go
 
 func Program(confPath string) func(state overseer.State) {
 	return func(state overseer.State) {
@@ -59,12 +61,10 @@ func Program(confPath string) func(state overseer.State) {
 }
 
 func main() {
-	var confPath string
-	flag.StringVar(&confPath, "config", "app.ini", "Specify the configuration file")
-	flag.Parse()
+	appCmd := cmd.NewAppCmd()
 
+	confPath := appCmd.String("config")
 	settings.Init(confPath)
-
 	overseer.Run(overseer.Config{
 		Program:          Program(confPath),
 		Address:          fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port),
