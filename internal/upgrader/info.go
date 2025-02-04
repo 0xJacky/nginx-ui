@@ -1,12 +1,10 @@
 package upgrader
 
 import (
-	"encoding/json"
 	"os"
 	"path/filepath"
 	"runtime"
 
-	"github.com/0xJacky/Nginx-UI/app"
 	"github.com/pkg/errors"
 )
 
@@ -38,22 +36,6 @@ func GetRuntimeInfo() (r RuntimeInfo, err error) {
 		OS:     runtime.GOOS,
 		Arch:   runtime.GOARCH,
 		ExPath: realPath,
-	}
-
-	return
-}
-
-func GetCurrentVersion() (c CurVersion, err error) {
-	verJson, err := app.DistFS.ReadFile(app.VersionPath)
-	if err != nil {
-		err = errors.Wrap(err, "service.GetCurrentVersion ReadFile err")
-		return
-	}
-
-	err = json.Unmarshal(verJson, &c)
-	if err != nil {
-		err = errors.Wrap(err, "service.GetCurrentVersion json.Unmarshal err")
-		return
 	}
 
 	return
