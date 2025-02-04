@@ -2,6 +2,7 @@ package nginx_log
 
 import (
 	"encoding/json"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/gin-gonic/gin"
@@ -252,8 +253,7 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 				}
 
 				err = ws.WriteMessage(websocket.TextMessage, []byte(line.Text))
-
-				if err != nil && websocket.IsUnexpectedCloseError(err, websocket.CloseNormalClosure) {
+				if helper.IsUnexpectedWebsocketError(err) {
 					errChan <- errors.Wrap(err, "error tailNginxLog write message")
 					return
 				}
