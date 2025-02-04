@@ -1,3 +1,5 @@
+//go:build !unembed
+
 package app
 
 import (
@@ -6,3 +8,5 @@ import (
 
 //go:embed i18n.json dist/* dist/*/* src/language/* src/language/*/*
 var DistFS embed.FS
+
+var VersionPath = "dist/version.json"
