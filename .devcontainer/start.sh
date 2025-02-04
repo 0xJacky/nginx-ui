@@ -14,8 +14,6 @@ fi
 # install app dependencies
 echo "Installing app dependencies"
 cd app && pnpm install -f
-# Build app
-pnpm build
 cd ..
 
 # install docs dependencies
