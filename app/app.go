@@ -1,3 +1,5 @@
+//go:build !unembed
+
 package app
 
 import (

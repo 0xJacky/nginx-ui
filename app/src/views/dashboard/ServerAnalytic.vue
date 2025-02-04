@@ -185,7 +185,7 @@ function wsOnMessage(m: MessageEvent) {
           </p>
           <p>
             {{ $gettext('Load Average:') }}
-            <span class="load-avg-describe"> 1min:</span>{{ ` ${loadavg?.load1?.toFixed(2)}` }}
+            <span class="load-avg-describe"> 1min:</span>{{ loadavg?.load1?.toFixed(2) }}
             <span class="load-avg-describe"> | 5min:</span>{{ loadavg?.load5?.toFixed(2) }}
             <span class="load-avg-describe"> | 15min:</span>{{ loadavg?.load15?.toFixed(2) }}
           </p>
@@ -440,6 +440,7 @@ function wsOnMessage(m: MessageEvent) {
 }
 
 .load-avg-describe {
+  margin-right: 2px;
   @media (max-width: 1600px) and (min-width: 1200px) {
     display: none;
   }

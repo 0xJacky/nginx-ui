@@ -4,6 +4,10 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"io"
+	"net/http"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cluster"
@@ -14,9 +18,6 @@ import (
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
 	"gorm.io/gorm"
-	"io"
-	"net/http"
-	"time"
 )
 
 func GetEnvironment(c *gin.Context) {
@@ -151,23 +152,10 @@ func EditEnvironment(c *gin.Context) {
 }
 
 func DeleteEnvironment(c *gin.Context) {
-	id := cast.ToUint64(c.Param("id"))
-	envQuery := query.Environment
-
-	env, err := envQuery.FirstByID(id)
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-	err = envQuery.DeleteByID(env.ID)
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	go analytic.RestartRetrieveNodesStatus()
-
-	c.JSON(http.StatusNoContent, nil)
+	cosy.Core[model.Environment](c).
+		ExecutedHook(func(c *cosy.Ctx[model.Environment]) {
+			go analytic.RestartRetrieveNodesStatus()
+		}).Destroy()
 }
 
 func LoadEnvironmentFromSettings(c *gin.Context) {

@@ -1,10 +1,11 @@
 package cert
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"os"
 	"path/filepath"
+
+	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 )
 
 type Content struct {
@@ -33,25 +34,25 @@ func (c *Content) WriteFile() (err error) {
 	// The permission bits perm (before umask) are used for all directories that MkdirAll creates.
 	// If path is already a directory, MkdirAll does nothing and returns nil.
 
-	err = os.MkdirAll(filepath.Dir(c.SSLCertificatePath), 0644)
+	err = os.MkdirAll(filepath.Dir(c.SSLCertificatePath), 0755)
 	if err != nil {
 		return
 	}
 
-	err = os.MkdirAll(filepath.Dir(c.SSLCertificateKeyPath), 0644)
+	err = os.MkdirAll(filepath.Dir(c.SSLCertificateKeyPath), 0755)
 	if err != nil {
 		return
 	}
 
 	if c.SSLCertificate != "" {
-		err = os.WriteFile(c.SSLCertificatePath, []byte(c.SSLCertificate), 0644)
+		err = os.WriteFile(c.SSLCertificatePath, []byte(c.SSLCertificate), 0755)
 		if err != nil {
 			return
 		}
 	}
 
 	if c.SSLCertificateKey != "" {
-		err = os.WriteFile(c.SSLCertificateKeyPath, []byte(c.SSLCertificateKey), 0644)
+		err = os.WriteFile(c.SSLCertificateKeyPath, []byte(c.SSLCertificateKey), 0755)
 		if err != nil {
 			return
 		}

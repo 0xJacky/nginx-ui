@@ -1,0 +1,26 @@
+{
+    "plan": {
+        "actions": [
+            "newAccount",
+            "newOrder",
+            "fulfillOrder",
+            "finalizeOrder"
+        ],
+        "rate": 10,
+        "runtime": "10s",
+        "rateDelta": "1/10s"
+    },
+    "directoryURL": "https://localhost:14000/dir",
+    "domainBase": "com",
+    "challengeStrategy": "random",
+    "httpOneAddrs": [":5002"],
+    "tlsAlpnOneAddrs": [":5001"],
+    "dnsAddrs": [":8053"],
+    "fakeDNS": "127.0.0.1",
+    "regKeySize": 2048,
+    "certKeySize": 2048,
+    "regEmail": "loadtesting@letsencrypt.org",
+    "maxRegs": 20,
+    "maxNamesPerCert": 20,
+    "dontSaveState": true
+}

@@ -3,10 +3,11 @@ package cert
 import (
 	"crypto/x509"
 	"encoding/pem"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"os"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 )
 
 type Info struct {
@@ -39,8 +40,19 @@ func GetCertInfo(sslCertificatePath string) (info *Info, err error) {
 		return
 	}
 
+	// for wildcard certificate, the subject name is the first DNS name
+	subjectName := cert.Subject.CommonName
+	if subjectName == "" {
+		for _, name := range cert.DNSNames {
+			if name != "" {
+				subjectName = name
+				break
+			}
+		}
+	}
+
 	info = &Info{
-		SubjectName: cert.Subject.CommonName,
+		SubjectName: subjectName,
 		IssuerName:  cert.Issuer.CommonName,
 		NotAfter:    cert.NotAfter,
 		NotBefore:   cert.NotBefore,

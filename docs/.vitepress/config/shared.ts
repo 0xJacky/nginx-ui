@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitepress'
-import {projectUrl, editLinkPattern} from './common'
+import { projectUrl, editLinkPattern } from './common'
 
 export const commitRef = process.env.COMMIT_REF ?
-    `<a href="${projectUrl}/commit/${process.env.COMMIT_REF}">` + process.env.COMMIT_REF.slice(0, 8) + '</a>':
+    `<a href="${projectUrl}/commit/${process.env.COMMIT_REF}">` + process.env.COMMIT_REF.slice(0, 8) + '</a>' :
     'dev'
 
 function thisYear() {
@@ -37,7 +37,13 @@ export const sharedConfig = defineConfig({
         },
 
         socialLinks: [
-            {icon: 'github', link: projectUrl}
+            { icon: 'github', link: projectUrl }
         ]
+    },
+
+    vite: {
+        server: {
+            port: Number.parseInt(process.env.VITE_PORT ?? '3003')
+        }
     }
 })
