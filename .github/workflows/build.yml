@@ -141,6 +141,29 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: ^1.23.0
+          cache: false
+
+      - name: Setup environment
+        id: info
+        run: |
+          export _NAME=$(jq ".$GOOS[\"$GOARCH$GOARM\"].name" -r < .github/build/build_info.json)
+          export _ARCH=$(jq ".$GOOS[\"$GOARCH$GOARM\"].arch" -r < .github/build/build_info.json)
+          export _ABI=$(jq ".$GOOS[\"$GOARCH$GOARM\"].abi // \"\"" -r < .github/build/build_info.json)
+          export _ARTIFACT=nginx-ui-$GOOS-$GOARCH$(if [[ "$GOARM" ]]; then echo "v$GOARM"; fi)
+          echo "GOOS: $GOOS, GOARCH: $GOARCH, GOARM: $GOARM, ABI: $_ABI, RELEASE_NAME: $_NAME, ARTIFACT_NAME: $_ARTIFACT"
+          echo "CACHE_NAME=$_NAME" >> $GITHUB_ENV
+          echo "ARCH_NAME=$_ARCH" >> $GITHUB_ENV
+          echo "ABI=$_ABI" >> $GITHUB_ENV
+          echo "DIST=nginx-ui-$_NAME" >> $GITHUB_ENV
+          echo "ARTIFACT=$_ARTIFACT" >> $GITHUB_ENV
+
+      - name: Setup go caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-${{ hashFiles('go.mod') }}
 
       - name: Download app artifacts
         uses: actions/download-artifact@v4
@@ -153,19 +176,6 @@ jobs:
           GOOS: linux
           GOARCH: amd64
         run: go generate
-
-      - name: Setup compiler environment
-        id: info
-        run: |
-          export _NAME=nginx-ui-$(jq ".$GOOS[\"$GOARCH$GOARM\"].name" -r < .github/build/build_info.json)
-          export _ARCH=$(jq ".$GOOS[\"$GOARCH$GOARM\"].arch" -r < .github/build/build_info.json)
-          export _ABI=$(jq ".$GOOS[\"$GOARCH$GOARM\"].abi // \"\"" -r < .github/build/build_info.json)
-          export _ARTIFACT=nginx-ui-$GOOS-$GOARCH$(if [[ "$GOARM" ]]; then echo "v$GOARM"; fi)
-          echo "GOOS: $GOOS, GOARCH: $GOARCH, GOARM: $GOARM, ABI: $_ABI, RELEASE_NAME: $_NAME, ARTIFACT_NAME: $_ARTIFACT"
-          echo "ARCH_NAME=$_ARCH" >> $GITHUB_ENV
-          echo "ABI=$_ABI" >> $GITHUB_ENV
-          echo "DIST=$_NAME" >> $GITHUB_ENV
-          echo "ARTIFACT=$_ARTIFACT" >> $GITHUB_ENV
 
       - name: Install musl cross compiler
         if: env.GOOS == 'linux'
