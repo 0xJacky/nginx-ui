@@ -1,0 +1,48 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Backend",
+      "type": "shell",
+      "command": "air",
+      "isBackground": true,
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Frontend",
+      "type": "shell",
+      "command": "cd app && pnpm dev",
+      "isBackground": true,
+      "presentation": {
+        "panel": "new"
+      }
+    },
+    {
+      "label": "Start Documentation",
+      "type": "shell",
+      "command": "cd docs && pnpm docs:dev",
+      "isBackground": true,
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start All Services",
+      "dependsOrder": "parallel",
+      "dependsOn": [
+        "Start Backend",
+        "Start Frontend",
+        "Start Documentation"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

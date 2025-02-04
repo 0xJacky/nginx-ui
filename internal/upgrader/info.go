@@ -2,11 +2,12 @@ package upgrader
 
 import (
 	"encoding/json"
-	"github.com/0xJacky/Nginx-UI/app"
-	"github.com/pkg/errors"
 	"os"
 	"path/filepath"
 	"runtime"
+
+	"github.com/0xJacky/Nginx-UI/app"
+	"github.com/pkg/errors"
 )
 
 type RuntimeInfo struct {
@@ -43,7 +44,7 @@ func GetRuntimeInfo() (r RuntimeInfo, err error) {
 }
 
 func GetCurrentVersion() (c CurVersion, err error) {
-	verJson, err := app.DistFS.ReadFile("dist/version.json")
+	verJson, err := app.DistFS.ReadFile(app.VersionPath)
 	if err != nil {
 		err = errors.Wrap(err, "service.GetCurrentVersion ReadFile err")
 		return
