@@ -2,6 +2,7 @@ package analytic
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/internal/upgrader"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -69,15 +70,14 @@ func GetNode(env *model.Environment) (n *Node) {
 	return n
 }
 
-func InitNode(env *model.Environment) (n *Node) {
+func InitNode(env *model.Environment) (n *Node, err error) {
 	n = &Node{
 		Environment: env,
 	}
 
 	u, err := url.JoinPath(env.URL, "/api/node")
 	if err != nil {
-		logger.Error(err)
-		return
+		return 
 	}
 
 	t, err := transport.NewTransport()
@@ -90,7 +90,6 @@ func InitNode(env *model.Environment) (n *Node) {
 
 	req, err := http.NewRequest("GET", u, nil)
 	if err != nil {
-		logger.Error(err)
 		return
 	}
 
@@ -98,7 +97,6 @@ func InitNode(env *model.Environment) (n *Node) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		logger.Error(err)
 		return
 	}
 
@@ -106,13 +104,11 @@ func InitNode(env *model.Environment) (n *Node) {
 	bytes, _ := io.ReadAll(resp.Body)
 
 	if resp.StatusCode != http.StatusOK {
-		logger.Error(string(bytes))
-		return
+		return n, errors.New(string(bytes))
 	}
 
 	err = json.Unmarshal(bytes, &n.NodeInfo)
 	if err != nil {
-		logger.Error(err)
 		return
 	}
 

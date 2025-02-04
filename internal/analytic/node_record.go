@@ -3,13 +3,13 @@ package analytic
 import (
 	"context"
 	"encoding/json"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"net/http"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gorilla/websocket"
 	"github.com/uozi-tech/cosy/logger"
-	"net/http"
-	"time"
 )
 
 var stopNodeRecordChan = make(chan struct{})
@@ -40,13 +40,13 @@ func RetrieveNodesStatus() {
 
 	<-stopNodeRecordChan
 	logger.Info("RetrieveNodesStatus exited normally")
-	return // will execute defer cancel()
+	// will execute defer cancel()
 }
 
 func nodeAnalyticLive(env *model.Environment, ctx context.Context) {
 	errChan := make(chan error)
 	for {
-		nodeAnalyticRecord(env, errChan, ctx)
+		go nodeAnalyticRecord(env, errChan, ctx)
 
 		select {
 		case err := <-errChan:
@@ -65,9 +65,16 @@ func nodeAnalyticLive(env *model.Environment, ctx context.Context) {
 }
 
 func nodeAnalyticRecord(env *model.Environment, errChan chan error, ctx context.Context) {
+	node, err := InitNode(env)
+
 	mutex.Lock()
-	NodeMap[env.ID] = InitNode(env)
+	NodeMap[env.ID] = node
 	mutex.Unlock()
+
+	if err != nil {
+		errChan <- err
+		return
+	}
 
 	u, err := env.GetWebSocketURL("/api/analytic/intro")
 	if err != nil {
@@ -95,30 +102,30 @@ func nodeAnalyticRecord(env *model.Environment, errChan chan error, ctx context.
 	var nodeStat NodeStat
 
 	go func() {
-		for {
-			_, message, err := c.ReadMessage()
-			if helper.IsUnexpectedWebsocketError(err) {
-				errChan <- err
-				return
-			}
-
-			err = json.Unmarshal(message, &nodeStat)
-			if err != nil {
-				errChan <- err
-				return
-			}
-
-			// set online
-			nodeStat.Status = true
-			nodeStat.ResponseAt = time.Now()
-
-			mutex.Lock()
-			NodeMap[env.ID].NodeStat = nodeStat
-			mutex.Unlock()
-		}
+		// shutdown
+		<-ctx.Done()
+		_ = c.Close()
 	}()
 
-	// shutdown
-	<-ctx.Done()
-	_ = c.Close()
+	for {
+		_, message, err := c.ReadMessage()
+		if err != nil {
+			errChan <- err
+			return
+		}
+
+		err = json.Unmarshal(message, &nodeStat)
+		if err != nil {
+			errChan <- err
+			return
+		}
+
+		// set online
+		nodeStat.Status = true
+		nodeStat.ResponseAt = time.Now()
+
+		mutex.Lock()
+		NodeMap[env.ID].NodeStat = nodeStat
+		mutex.Unlock()
+	}
 }
