@@ -82,7 +82,7 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           secure: false,
           ws: true,
-          timeout: 5000,
+          timeout: 60000,
           agent: new Agent({
             keepAlive: false,
           }),

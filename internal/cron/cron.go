@@ -1,13 +1,14 @@
 package cron
 
 import (
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/logrotate"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-co-op/gocron/v2"
 	"github.com/uozi-tech/cosy/logger"
-	"time"
 )
 
 var s gocron.Scheduler
@@ -25,7 +26,8 @@ var logrotateJob gocron.Job
 func InitCronJobs() {
 	_, err := s.NewJob(gocron.DurationJob(30*time.Minute),
 		gocron.NewTask(cert.AutoCert),
-		gocron.WithSingletonMode(gocron.LimitModeWait))
+		gocron.WithSingletonMode(gocron.LimitModeWait),
+		gocron.JobOption(gocron.WithStartImmediately()))
 	if err != nil {
 		logger.Fatalf("AutoCert Err: %v\n", err)
 	}

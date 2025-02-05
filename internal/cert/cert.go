@@ -33,6 +33,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 	// initial a channelWriter to receive logs
 	cw := NewChannelWriter()
 	defer close(errChan)
+	defer close(cw.Ch)
 
 	// initial a logger
 	l := log.New(os.Stderr, "", log.LstdFlags)

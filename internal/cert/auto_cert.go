@@ -113,4 +113,6 @@ func autoCert(certModel *model.Cert) {
 		notification.Error("Sync Certificate Error", err.Error())
 		return
 	}
+
+	close(logChan)
 }
