@@ -66,5 +66,6 @@ func GetNodesAnalytic(c *gin.Context) {
 		}
 
 		time.Sleep(10 * time.Second)
+		logger.Debug("[analytic nodes] sleep 10 seconds")
 	}
 }
