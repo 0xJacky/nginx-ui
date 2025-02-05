@@ -8,10 +8,15 @@ import { message } from 'ant-design-vue'
 
 const route = useRoute()
 const curd = ref()
+const loadingFromSettings = ref(false)
+
 function loadFromSettings() {
+  loadingFromSettings.value = true
   environment.load_from_settings().then(() => {
     curd.value.get_list()
     message.success($gettext('Load successfully'))
+  }).finally(() => {
+    loadingFromSettings.value = false
   })
 }
 const selectedNodeIds = ref([])
@@ -25,14 +30,6 @@ function batchUpgrade() {
 const inTrash = computed(() => {
   return route.query.trash === 'true'
 })
-
-// const timer = setInterval(() => {
-//   curd.value.get_list()
-// }, 10000)
-
-// onUnmounted(() => {
-//   clearInterval(timer)
-// })
 </script>
 
 <template>
@@ -48,7 +45,7 @@ const inTrash = computed(() => {
       :columns="envColumns"
     >
       <template #beforeAdd>
-        <AButton size="small" type="link" @click="loadFromSettings">
+        <AButton size="small" type="link" :loading="loadingFromSettings" @click="loadFromSettings">
           {{ $gettext('Load from settings') }}
         </AButton>
       </template>

@@ -2,6 +2,10 @@ package analytic
 
 import (
 	"fmt"
+	"net/http"
+	"runtime"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/shirou/gopsutil/v4/cpu"
@@ -10,9 +14,6 @@ import (
 	"github.com/shirou/gopsutil/v4/net"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy/logger"
-	"net/http"
-	"runtime"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -86,12 +87,14 @@ func Analytic(c *gin.Context) {
 
 		// write
 		err = ws.WriteJSON(stat)
-		if helper.IsUnexpectedWebsocketError(err) {
-			logger.Error(err)
+		if err != nil {
+			if helper.IsUnexpectedWebsocketError(err) {
+				logger.Error(err)
+			}
 			break
 		}
 
-		time.Sleep(1000 * time.Microsecond)
+		time.Sleep(1 * time.Second)
 	}
 }
 

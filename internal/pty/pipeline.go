@@ -2,6 +2,7 @@ package pty
 
 import (
 	"encoding/json"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/creack/pty"
 	"github.com/gorilla/websocket"
@@ -46,9 +47,10 @@ func NewPipeLine(conn *websocket.Conn) (p *Pipeline, err error) {
 func (p *Pipeline) ReadWsAndWritePty(errorChan chan error) {
 	for {
 		msgType, payload, err := p.ws.ReadMessage()
-		if err != nil && websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseNoStatusReceived,
-			websocket.CloseNormalClosure) {
-			errorChan <- errors.Wrap(err, "Error ReadWsAndWritePty unexpected close")
+		if err != nil {
+			if helper.IsUnexpectedWebsocketError(err) {
+				errorChan <- errors.Wrap(err, "Error ReadWsAndWritePty unexpected close")
+			}
 			return
 		}
 		if msgType != websocket.TextMessage {
@@ -117,8 +119,10 @@ func (p *Pipeline) ReadPtyAndWriteWs(errorChan chan error) {
 		}
 		processedOutput := validString(string(buf[:n]))
 		err = p.ws.WriteMessage(websocket.TextMessage, []byte(processedOutput))
-		if err != nil && websocket.IsUnexpectedCloseError(err, websocket.CloseNormalClosure) {
-			errorChan <- errors.Wrap(err, "Error ReadPtyAndWriteWs websocket write")
+		if err != nil {
+			if helper.IsUnexpectedWebsocketError(err) {
+				errorChan <- errors.Wrap(err, "Error ReadPtyAndWriteWs websocket write")
+			}
 			return
 		}
 	}

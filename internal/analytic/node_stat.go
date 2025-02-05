@@ -26,21 +26,18 @@ func GetNodeStat() (data NodeStat) {
 	cpuSystemUsage := (cpuTimesAfter[0].System - cpuTimesBefore[0].System) / (float64(1000*threadNum) / 1000)
 
 	loadAvg, err := load.Avg()
-
 	if err != nil {
 		logger.Error(err)
 		return
 	}
 
 	diskStat, err := GetDiskStat()
-
 	if err != nil {
 		logger.Error(err)
 		return
 	}
 
 	netIO, err := net.IOCounters(false)
-
 	if err != nil {
 		logger.Error(err)
 		return

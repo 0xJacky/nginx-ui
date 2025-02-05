@@ -90,10 +90,6 @@ onMounted(() => {
   })
 })
 
-onUnmounted(() => {
-  websocket.close()
-})
-
 function handle_uptime(t: number) {
   // uptime
   let _uptime = Math.floor(t)

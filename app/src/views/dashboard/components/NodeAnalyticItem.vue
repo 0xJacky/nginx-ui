@@ -31,7 +31,7 @@ defineProps<{
     <div class="hardware-monitor-item longer">
       <div class="mb-1">
         <LineChartOutlined class="mr-1" />
-        <span class="load-avg-describe">1min:</span>{{ ` ${item.avg_load?.load1?.toFixed(2)}` }} ·
+        <span class="load-avg-describe">1min:</span>{{ item.avg_load?.load1?.toFixed(2) }} ·
         <span class="load-avg-describe">5min:</span>{{ item.avg_load?.load5?.toFixed(2) }} ·
         <span class="load-avg-describe">15min:</span>{{ item.avg_load?.load15?.toFixed(2) }}
       </div>
@@ -123,6 +123,11 @@ defineProps<{
   .longer {
     width: 180px;
   }
+
+  .load-avg-describe {
+    margin-right: 2px;
+  }
+
   @media (max-width: 400px) {
     .longer {
       width: 180px;
