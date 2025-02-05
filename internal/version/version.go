@@ -4,6 +4,7 @@ var (
 	Version    = ""
 	BuildId    = 0
 	TotalBuild = 0
+	Hash       = ""
 )
 
 type Info struct {
@@ -23,4 +24,11 @@ func GetVersionInfo() *Info {
 		}
 	}
 	return versionInfo
+}
+
+func GetShortHash() string {
+	if Hash != "" {
+		return Hash[:8]
+	}
+	return ""
 }

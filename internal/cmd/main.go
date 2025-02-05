@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 
@@ -37,9 +36,8 @@ func NewAppCmd() *cli.Command {
 		Version:        version.Version,
 	}
 
-	cli.VersionPrinter = func(cmd *cli.Command) {
-		fmt.Printf("%s (%d)\n", cmd.Root().Version, version.BuildId)
-	}
+	// Set the version printer
+	cli.VersionPrinter = VersionPrinter
 
 	if err := cmd.Run(context.Background(), os.Args); err != nil {
 		log.Fatal(err)
