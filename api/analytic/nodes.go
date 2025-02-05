@@ -1,13 +1,14 @@
 package analytic
 
 import (
+	"net/http"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/uozi-tech/cosy/logger"
-	"net/http"
-	"time"
 )
 
 func GetNodeStat(c *gin.Context) {
@@ -28,8 +29,10 @@ func GetNodeStat(c *gin.Context) {
 	for {
 		// write
 		err = ws.WriteJSON(analytic.GetNodeStat())
-		if helper.IsUnexpectedWebsocketError(err) {
-			logger.Error(err)
+		if err != nil {
+			if helper.IsUnexpectedWebsocketError(err) {
+				logger.Error(err)
+			}
 			break
 		}
 
@@ -55,11 +58,14 @@ func GetNodesAnalytic(c *gin.Context) {
 	for {
 		// write
 		err = ws.WriteJSON(analytic.NodeMap)
-		if helper.IsUnexpectedWebsocketError(err) {
-			logger.Error(err)
+		if err != nil {
+			if helper.IsUnexpectedWebsocketError(err) {
+				logger.Error(err)
+			}
 			break
 		}
 
 		time.Sleep(10 * time.Second)
+		logger.Debug("[analytic nodes] sleep 10 seconds")
 	}
 }

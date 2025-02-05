@@ -43,7 +43,9 @@ func RetrieveNodesStatus() {
 	defer logger.Info("RetrieveNodesStatus exited")
 
 	mutex.Lock()
-	NodeMap = make(TNodeMap)
+	if NodeMap == nil {
+		NodeMap = make(TNodeMap)
+	}
 	mutex.Unlock()
 
 	env := query.Environment
@@ -70,6 +72,11 @@ func RetrieveNodesStatus() {
 				default:
 					if err := nodeAnalyticRecord(e, ctx); err != nil {
 						logger.Error(err)
+						if NodeMap[env.ID] != nil {
+							mutex.Lock()
+							NodeMap[env.ID].Status = false
+							mutex.Unlock()
+						}
 						select {
 						case <-retryTicker.C:
 						case <-ctx.Done():
@@ -88,14 +95,11 @@ func nodeAnalyticRecord(env *model.Environment, ctx context.Context) error {
 	scopeCtx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	logger.Debug("nodeAnalyticRecord")
 	node, err := InitNode(env)
 
 	mutex.Lock()
-	logger.Debug("lock")
 	NodeMap[env.ID] = node
 	mutex.Unlock()
-	logger.Debug("unlock")
 
 	if err != nil {
 		return err
@@ -125,26 +129,15 @@ func nodeAnalyticRecord(env *model.Environment, ctx context.Context) error {
 	go func() {
 		<-scopeCtx.Done()
 		_ = c.Close()
-		logger.Debug("close")
 	}()
 
 	var nodeStat NodeStat
-
-	defer func() {
-		if NodeMap[env.ID] != nil {
-			mutex.Lock()
-			NodeMap[env.ID].Status = false
-			mutex.Unlock()
-		}
-	}()
 
 	for {
 		err = c.ReadJSON(&nodeStat)
 		if err != nil {
 			return err
 		}
-
-		logger.Debug("nodeStat", nodeStat)
 
 		// set online
 		nodeStat.Status = true

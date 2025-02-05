@@ -47,8 +47,10 @@ func NewPipeLine(conn *websocket.Conn) (p *Pipeline, err error) {
 func (p *Pipeline) ReadWsAndWritePty(errorChan chan error) {
 	for {
 		msgType, payload, err := p.ws.ReadMessage()
-		if helper.IsUnexpectedWebsocketError(err) {
-			errorChan <- errors.Wrap(err, "Error ReadWsAndWritePty unexpected close")
+		if err != nil {
+			if helper.IsUnexpectedWebsocketError(err) {
+				errorChan <- errors.Wrap(err, "Error ReadWsAndWritePty unexpected close")
+			}
 			return
 		}
 		if msgType != websocket.TextMessage {
@@ -117,8 +119,10 @@ func (p *Pipeline) ReadPtyAndWriteWs(errorChan chan error) {
 		}
 		processedOutput := validString(string(buf[:n]))
 		err = p.ws.WriteMessage(websocket.TextMessage, []byte(processedOutput))
-		if helper.IsUnexpectedWebsocketError(err) {
-			errorChan <- errors.Wrap(err, "Error ReadPtyAndWriteWs websocket write")
+		if err != nil {
+			if helper.IsUnexpectedWebsocketError(err) {
+				errorChan <- errors.Wrap(err, "Error ReadPtyAndWriteWs websocket write")
+			}
 			return
 		}
 	}

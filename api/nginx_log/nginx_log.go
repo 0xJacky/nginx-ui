@@ -253,8 +253,10 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 				}
 
 				err = ws.WriteMessage(websocket.TextMessage, []byte(line.Text))
-				if helper.IsUnexpectedWebsocketError(err) {
-					errChan <- errors.Wrap(err, "error tailNginxLog write message")
+				if err != nil {
+					if helper.IsUnexpectedWebsocketError(err) {
+						errChan <- errors.Wrap(err, "error tailNginxLog write message")
+					}
 					return
 				}
 			case control = <-controlChan:

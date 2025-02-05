@@ -36,8 +36,10 @@ func AvailabilityTest(c *gin.Context) {
 
 	for {
 		err = ws.WriteJSON(upstream.AvailabilityTest(body))
-		if helper.IsUnexpectedWebsocketError(err) {
-			logger.Error(err)
+		if err != nil {
+			if helper.IsUnexpectedWebsocketError(err) {
+				logger.Error(err)
+			}
 			break
 		}
 
