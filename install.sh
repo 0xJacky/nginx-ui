@@ -26,7 +26,9 @@ LOCAL_FILE=''
 PROXY=''
 
 # --reverse-proxy ?
-RPROXY=""
+# You can set this variable whatever you want in shell session right before running this script by issuing:
+# export GH_PROXY='https://mirror.ghproxy.com/'
+RPROXY=$GH_PROXY
 
 # --purge
 PURGE='0'
