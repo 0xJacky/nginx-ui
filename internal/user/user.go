@@ -11,6 +11,10 @@ import (
 	"time"
 )
 
+var (
+	ErrDuplicateName = errors.New("name already exists")
+)
+
 const ExpiredTime = 24 * time.Hour
 
 type JWTClaims struct {
@@ -108,4 +112,11 @@ func ValidateJWT(tokenStr string) (claims *JWTClaims, err error) {
 		return claims, nil
 	}
 	return nil, errors.New("invalid claims type")
+}
+
+func CheckDuplicateName(users []*model.User) error {
+	if len(users) > 0 {
+		return ErrDuplicateName
+	}
+	return nil
 }

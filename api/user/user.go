@@ -2,6 +2,7 @@ package user
 
 import (
 	"github.com/0xJacky/Nginx-UI/api"
+	internalUser "github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -10,6 +11,10 @@ import (
 	"github.com/uozi-tech/cosy"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+)
+
+const (
+	ErrDuplicateName = 4409
 )
 
 func GetUsers(c *gin.Context) {
@@ -58,10 +63,16 @@ func AddUser(c *gin.Context) {
 	}
 
 	// duplicate name
-	_, err = u.Where(u.Name.Eq(json.Name)).First()
-	if !(err != nil && err.Error() == "record not found") {
+	existUser, err := u.Where(u.Name.Eq(json.Name)).Find()
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+	err = internalUser.CheckDuplicateName(existUser)
+	if err != nil {
 		c.JSON(http.StatusConflict, gin.H{
-			"message": "name already exists",
+			"message": err.Error(),
+			"code": ErrDuplicateName,
 		})
 	}
 
@@ -112,6 +123,20 @@ func EditUser(c *gin.Context) {
 			return
 		}
 		edit.Password = string(pwd)
+	}
+
+	// duplicate name
+	existUser, err := u.Where(u.Name.Eq(json.Name)).Find()
+	if err != nil {
+		api.ErrHandler(c, err)
+		return
+	}
+	err = internalUser.CheckDuplicateName(existUser)
+	if err != nil {
+		c.JSON(http.StatusConflict, gin.H{
+			"message": err.Error(),
+			"code": ErrDuplicateName,
+		})
 	}
 
 	_, err = u.Where(u.ID.Eq(userId)).Updates(&edit)
