@@ -70,7 +70,7 @@ func cleanExpiredAuthToken() {
 		logger.Debug("clean expired auth tokens")
 		q := query.AuthToken
 		_, _ = q.Where(q.ExpiredAt.Lt(time.Now().Unix())).Delete()
-	}), gocron.WithSingletonMode(gocron.LimitModeWait))
+	}), gocron.WithSingletonMode(gocron.LimitModeWait), gocron.JobOption(gocron.WithStartImmediately()))
 
 	if err != nil {
 		logger.Fatalf("CleanExpiredAuthToken Err: %v\n", err)

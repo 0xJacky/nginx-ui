@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/devcontainers/base:jammy
 
 # Combine installation steps for Nginx and Go to avoid repetitive update/cleanup commands
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl gnupg2 ca-certificates lsb-release ubuntu-keyring jq && \
+    apt-get install -y --no-install-recommends curl gnupg2 ca-certificates lsb-release ubuntu-keyring jq cloc && \
     \
     # Configure the Nginx repository
     curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor > /usr/share/keyrings/nginx-archive-keyring.gpg && \
