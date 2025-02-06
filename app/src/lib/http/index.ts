@@ -45,6 +45,25 @@ const instance = axios.create({
 
 const nprogress = useNProgress()
 
+// Add new dedupe utility at the top
+interface MessageDedupe {
+  error: (content: string, duration?: number) => void
+}
+
+function useMessageDedupe(interval = 5000): MessageDedupe {
+  const lastMessages = new Map<string, number>()
+
+  return {
+    async error(content, duration = 5) {
+      const now = Date.now()
+      if (!lastMessages.has(content) || (now - (lastMessages.get(content) || 0)) > interval) {
+        lastMessages.set(content, now)
+        message.error(content, duration)
+      }
+    },
+  }
+}
+
 instance.interceptors.request.use(
   config => {
     nprogress.start()
@@ -70,16 +89,16 @@ instance.interceptors.request.use(
   },
 )
 
+const dedupe = useMessageDedupe()
+
 instance.interceptors.response.use(
   response => {
     nprogress.done()
-
     return Promise.resolve(response.data)
   },
   // eslint-disable-next-line sonarjs/cognitive-complexity
   async error => {
     nprogress.done()
-
     const otpModal = use2FAModal()
     switch (error.response.status) {
       case 401:
@@ -110,7 +129,7 @@ instance.interceptors.response.use(
       const msg = errors?.[err.scope]?.[err.code]
 
       if (msg) {
-        // if err has parmas
+        // if err has params
         if (err?.params && err.params.length > 0) {
           let res = msg()
 
@@ -118,18 +137,18 @@ instance.interceptors.response.use(
             res = res.replaceAll(`{${index}}`, param)
           })
 
-          message.error(res, 5)
+          dedupe.error(res)
         }
         else {
-          message.error(msg(), 5)
+          dedupe.error(msg())
         }
       }
       else {
-        message.error($gettext(err?.message ?? 'Server error'))
+        dedupe.error($gettext(err?.message ?? 'Server error'))
       }
     }
     else {
-      message.error($gettext(err?.message ?? 'Server error'))
+      dedupe.error($gettext(err?.message ?? 'Server error'))
     }
 
     return Promise.reject(error.response.data)
