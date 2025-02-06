@@ -166,7 +166,7 @@ provide('data', data)
 </script>
 
 <template>
-  <ARow :gutter="16">
+  <ARow :gutter="[{ xs: 0, sm: 16 }, 16]">
     <ACol
       :xs="24"
       :sm="24"

@@ -64,11 +64,9 @@ function duplicate(index: number) {
       >
         <ACollapsePanel>
           <template #header>
-            <div>
-              <HolderOutlined />
-              {{ $gettext('Location') }}
-              {{ v.path }}
-            </div>
+            <HolderOutlined />
+            {{ $gettext('Location') }}
+            {{ v.path }}
           </template>
           <template
             v-if="!readonly"
@@ -175,6 +173,6 @@ function duplicate(index: number) {
 }
 
 :deep(.ant-collapse-header-text) {
-  width: 95%;
+  max-width: calc(90% - 56px);
 }
 </style>
