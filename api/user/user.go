@@ -3,6 +3,7 @@ package user
 import (
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 	"golang.org/x/crypto/bcrypt"
@@ -34,7 +35,7 @@ func InitManageUserRouter(g *gin.RouterGroup) {
 
 	c.ModifyHook(func(c *cosy.Ctx[model.User]) {
 		c.BeforeDecodeHook(func(ctx *cosy.Ctx[model.User]) {
-			if ctx.ID == 1 {
+			if settings.NodeSettings.Demo && ctx.ID == 1 {
 				ctx.AbortWithError(user.ErrChangeInitUserPwdInDemo)
 			}
 		})
