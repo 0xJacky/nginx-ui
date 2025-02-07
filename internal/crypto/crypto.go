@@ -1,4 +1,4 @@
-package sign
+package crypto
 
 import (
 	"crypto/rand"
@@ -44,7 +44,7 @@ func GenerateRSAKeyPair() (privateKeyPEM, publicKeyPEM []byte, err error) {
 // GetCryptoParams registers a new key pair in the cache if it doesn't exist
 // otherwise, it returns the existing nonce and public key
 func GetCryptoParams() (sign *Sign, err error) {
-	// Check if key pair exists in cache
+	// Check if the key pair exists in then cache
 	if sign, ok := cache.Get(CacheKey); ok {
 		return sign.(*Sign), nil
 	}

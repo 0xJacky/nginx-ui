@@ -6,7 +6,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/0xJacky/Nginx-UI/internal/sign"
+	"github.com/0xJacky/Nginx-UI/internal/crypto"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 )
@@ -30,7 +30,7 @@ func EncryptedParams() gin.HandlerFunc {
 		}
 
 		// 2. Decrypt the parameters (implement your decryption logic)
-		decryptedData, err := sign.Decrypt(encryptedReq.EncryptedParams)
+		decryptedData, err := crypto.Decrypt(encryptedReq.EncryptedParams)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, ErrDecryptionFailed)
 			return
