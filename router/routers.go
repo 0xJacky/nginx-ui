@@ -15,6 +15,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/openai"
 	"github.com/0xJacky/Nginx-UI/api/public"
 	"github.com/0xJacky/Nginx-UI/api/settings"
+	"github.com/0xJacky/Nginx-UI/api/crypto"
 	"github.com/0xJacky/Nginx-UI/api/sites"
 	"github.com/0xJacky/Nginx-UI/api/streams"
 	"github.com/0xJacky/Nginx-UI/api/system"
@@ -42,6 +43,7 @@ func InitRouter() {
 	root := r.Group("/api")
 	{
 		public.InitRouter(root)
+		crypto.InitPublicRouter(root)
 		system.InitPublicRouter(root)
 		user.InitAuthRouter(root)
 
