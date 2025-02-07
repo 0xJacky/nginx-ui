@@ -1,11 +1,12 @@
 package user
 
 import (
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func InitAuthRouter(r *gin.RouterGroup) {
-	r.POST("/login", Login)
+	r.POST("/login", middleware.EncryptedParams(), Login)
 	r.DELETE("/logout", Logout)
 
 	r.GET("/begin_passkey_login", BeginPasskeyLogin)

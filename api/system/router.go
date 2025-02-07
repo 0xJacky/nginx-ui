@@ -1,12 +1,13 @@
 package system
 
 import (
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func InitPublicRouter(r *gin.RouterGroup) {
 	r.GET("install", InstallLockCheck)
-	r.POST("install", InstallNginxUI)
+	r.POST("install", middleware.EncryptedParams(), InstallNginxUI)
 	r.GET("translation/:code", GetTranslation)
 }
 

@@ -3,6 +3,10 @@ package kernel
 import (
 	"crypto/rand"
 	"encoding/hex"
+	"mime"
+	"path"
+	"runtime"
+
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
@@ -17,10 +21,8 @@ import (
 	"github.com/uozi-tech/cosy"
 	sqlite "github.com/uozi-tech/cosy-driver-sqlite"
 	"github.com/uozi-tech/cosy/logger"
+	cModel "github.com/uozi-tech/cosy/model"
 	cSettings "github.com/uozi-tech/cosy/settings"
-	"mime"
-	"path"
-	"runtime"
 )
 
 func Boot() {
@@ -73,12 +75,13 @@ func recovery() {
 }
 
 func InitDatabase() {
+	cModel.ResolvedModels()
 	// Skip install
 	if settings.NodeSettings.SkipInstallation {
 		skipInstall()
 	}
 
-	if "" != cSettings.AppSettings.JwtSecret {
+	if cSettings.AppSettings.JwtSecret != "" {
 		db := cosy.InitDB(sqlite.Open(path.Dir(cSettings.ConfPath), settings.DatabaseSettings))
 		model.Use(db)
 		query.Init(db)
@@ -88,7 +91,7 @@ func InitDatabase() {
 }
 
 func InitNodeSecret() {
-	if "" == settings.NodeSettings.Secret {
+	if settings.NodeSettings.Secret == "" {
 		logger.Info("Secret is empty, generating...")
 		uuidStr := uuid.New().String()
 		settings.NodeSettings.Secret = uuidStr
@@ -102,7 +105,7 @@ func InitNodeSecret() {
 }
 
 func InitCryptoSecret() {
-	if "" == settings.CryptoSettings.Secret {
+	if settings.CryptoSettings.Secret == "" {
 		logger.Info("Secret is empty, generating...")
 
 		key := make([]byte, 32)
