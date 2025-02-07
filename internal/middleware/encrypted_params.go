@@ -19,7 +19,7 @@ var (
 
 func EncryptedParams() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// 1. Read the encrypted payload
+		// read the encrypted payload
 		var encryptedReq struct {
 			EncryptedParams string `json:"encrypted_params"`
 		}
@@ -29,14 +29,14 @@ func EncryptedParams() gin.HandlerFunc {
 			return
 		}
 
-		// 2. Decrypt the parameters (implement your decryption logic)
+		// decrypt the parameters
 		decryptedData, err := crypto.Decrypt(encryptedReq.EncryptedParams)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusBadRequest, ErrDecryptionFailed)
 			return
 		}
 
-		// 3. Replace request body with decrypted data
+		// replace request body with decrypted data
 		newBody, _ := json.Marshal(decryptedData)
 		c.Request.Body = io.NopCloser(bytes.NewReader(newBody))
 		c.Request.ContentLength = int64(len(newBody))
