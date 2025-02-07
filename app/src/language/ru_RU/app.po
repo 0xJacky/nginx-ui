@@ -73,8 +73,8 @@ msgstr "Добавить конфигурацию"
 msgid "Add Directive Below"
 msgstr "Добавить директиву ниже"
 
-#: src/views/site/ngx_conf/LocationEditor.vue:132
-#: src/views/site/ngx_conf/LocationEditor.vue:159
+#: src/views/site/ngx_conf/LocationEditor.vue:130
+#: src/views/site/ngx_conf/LocationEditor.vue:157
 msgid "Add Location"
 msgstr "Добавить Location"
 
@@ -191,7 +191,7 @@ msgstr "Вы уверены, что хотите удалить эту дире�
 msgid "Are you sure you want to remove this item?"
 msgstr "Вы уверены, что хотите удалить этот элемент?"
 
-#: src/views/site/ngx_conf/LocationEditor.vue:88
+#: src/views/site/ngx_conf/LocationEditor.vue:86
 msgid "Are you sure you want to remove this location?"
 msgstr "Вы уверены, что хотите удалить location?"
 
@@ -320,10 +320,6 @@ msgstr "Директория корневого сертификата"
 msgid "CADir"
 msgstr ""
 
-#: src/views/preference/components/TOTP.vue:145
-msgid "Can't scan? Use text key binding"
-msgstr ""
-
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:246
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:187
@@ -378,7 +374,7 @@ msgid "Certificate Renewal Interval"
 msgstr "Интервал обновления сертификата"
 
 #: src/views/certificate/CertificateEditor.vue:128
-#: src/views/site/cert/Cert.vue:32
+#: src/views/site/cert/Cert.vue:33
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
 msgstr[0] "Статус сертификата"
@@ -402,7 +398,7 @@ msgstr "Метод Challenge"
 msgid "Change Certificate"
 msgstr "Изменить сертификат"
 
-#: src/views/site/cert/Cert.vue:51
+#: src/views/site/cert/Cert.vue:52
 msgid "Changed Certificate"
 msgid_plural "Changed Certificates"
 msgstr[0] "Сертификат изменен"
@@ -459,13 +455,17 @@ msgstr "Очистить"
 msgid "Cleared successfully"
 msgstr "Очищено успешно"
 
+#: src/views/preference/components/TOTP.vue:125
+msgid "Click to copy"
+msgstr ""
+
 #: src/views/preference/LogrotateSettings.vue:22
 msgid "Command"
 msgstr "Команда"
 
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:113
-#: src/views/site/ngx_conf/LocationEditor.vue:105
-#: src/views/site/ngx_conf/LocationEditor.vue:136
+#: src/views/site/ngx_conf/LocationEditor.vue:103
+#: src/views/site/ngx_conf/LocationEditor.vue:134
 #: src/views/site/ngx_conf/NgxServer.vue:134
 msgid "Comments"
 msgstr "Комментарии"
@@ -499,8 +499,8 @@ msgid "Connection lost, please refresh the page."
 msgstr "Соединение потеряно, пожалуйста, обновите страницу."
 
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:118
-#: src/views/site/ngx_conf/LocationEditor.vue:117
-#: src/views/site/ngx_conf/LocationEditor.vue:145
+#: src/views/site/ngx_conf/LocationEditor.vue:115
+#: src/views/site/ngx_conf/LocationEditor.vue:143
 msgid "Content"
 msgstr "Содержание"
 
@@ -517,11 +517,11 @@ msgstr "Копировать"
 msgid "Core Upgrade"
 msgstr "Обновление ядра"
 
-#: src/views/dashboard/ServerAnalytic.vue:305
+#: src/views/dashboard/ServerAnalytic.vue:301
 msgid "CPU Status"
 msgstr "Нагрузка CPU"
 
-#: src/views/dashboard/ServerAnalytic.vue:199
+#: src/views/dashboard/ServerAnalytic.vue:195
 msgid "CPU:"
 msgstr "CPU:"
 
@@ -563,12 +563,12 @@ msgstr "Учетные данные"
 msgid "Credentials"
 msgstr "Учетные данные"
 
-#: src/views/preference/components/TOTP.vue:93
+#: src/views/preference/components/TOTP.vue:75
 #, fuzzy
 msgid "Current account is enabled TOTP."
 msgstr "Текущая учетная запись имеет включенную 2ФА."
 
-#: src/views/preference/components/TOTP.vue:90
+#: src/views/preference/components/TOTP.vue:73
 #, fuzzy
 msgid "Current account is not enabled TOTP."
 msgstr ""
@@ -739,7 +739,7 @@ msgstr "Отключено"
 msgid "Disabled successfully"
 msgstr "Отключено успешно"
 
-#: src/views/dashboard/ServerAnalytic.vue:370
+#: src/views/dashboard/ServerAnalytic.vue:366
 msgid "Disk IO"
 msgstr "Нагрузка на Диск IO"
 
@@ -911,7 +911,7 @@ msgstr "Включение %{conf_name} in %{node_name} нипалучилася
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "Включение %{conf_name} in %{node_name} успешно"
 
-#: src/views/preference/components/TOTP.vue:52
+#: src/views/preference/components/TOTP.vue:38
 msgid "Enable 2FA successfully"
 msgstr "Двухфакторная аутентификация успешно включена"
 
@@ -951,7 +951,7 @@ msgstr "Включено успешно"
 msgid "Enable TLS"
 msgstr "Включить TLS"
 
-#: src/views/preference/components/TOTP.vue:119
+#: src/views/preference/components/TOTP.vue:101
 #, fuzzy
 msgid "Enable TOTP"
 msgstr "Включить TLS"
@@ -986,7 +986,7 @@ msgid "Environment variables cleaned"
 msgstr "Переменные окружения очищены"
 
 #: src/routes/index.ts:234 src/views/dashboard/Environments.vue:83
-#: src/views/environment/Environment.vue:33
+#: src/views/environment/Environment.vue:43
 msgid "Environments"
 msgstr "Окружения"
 
@@ -1048,8 +1048,9 @@ msgid "Failed to parse nginx.conf"
 msgstr ""
 
 #: src/constants/errors/self_check.ts:3
+#, fuzzy
 msgid "Failed to read nginx.conf"
-msgstr ""
+msgstr "Не удалось включить %{msg}"
 
 #: src/views/site/site_edit/SiteEdit.vue:135
 #: src/views/stream/StreamEdit.vue:122
@@ -1170,7 +1171,7 @@ msgstr ""
 "количества попыток в течение пороговых минут блокировки, IP будет "
 "заблокирован на определенный период времени."
 
-#: src/views/preference/components/TOTP.vue:105
+#: src/views/preference/components/TOTP.vue:87
 msgid ""
 "If you lose your mobile phone, you can use the recovery code to reset your "
 "2FA."
@@ -1212,12 +1213,12 @@ msgstr "Ошибка первоначального обновления ядр�
 msgid "Initialing core upgrader"
 msgstr "Инициализация программы обновления ядра"
 
-#: src/views/preference/components/TOTP.vue:152
+#: src/views/preference/components/TOTP.vue:134
 msgid "Input the code from the app:"
 msgstr "Введите код из приложения:"
 
 #: src/components/TwoFA/Authorization.vue:82
-#: src/views/preference/components/TOTP.vue:165
+#: src/views/preference/components/TOTP.vue:148
 msgid "Input the recovery code:"
 msgstr "Введите код восстановления:"
 
@@ -1337,15 +1338,15 @@ msgstr "Начало ссылки"
 msgid "List"
 msgstr "Список"
 
-#: src/views/dashboard/ServerAnalytic.vue:187
+#: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Load Average:"
 msgstr "Средняя нагрузка:"
 
-#: src/views/environment/Environment.vue:39
+#: src/views/environment/Environment.vue:49
 msgid "Load from settings"
 msgstr "Загрузить из настроек"
 
-#: src/views/environment/Environment.vue:13
+#: src/views/environment/Environment.vue:17
 msgid "Load successfully"
 msgstr "Загружено успешно"
 
@@ -1354,7 +1355,7 @@ msgstr "Загружено успешно"
 msgid "Local"
 msgstr "Локальный"
 
-#: src/views/site/ngx_conf/LocationEditor.vue:69
+#: src/views/site/ngx_conf/LocationEditor.vue:68
 msgid "Location"
 msgstr "Локация"
 
@@ -1431,12 +1432,12 @@ msgstr "Управление сертификатом"
 msgid "Max Attempts"
 msgstr "Максимальное количество попыток"
 
-#: src/views/dashboard/ServerAnalytic.vue:226
-#: src/views/dashboard/ServerAnalytic.vue:227
+#: src/views/dashboard/ServerAnalytic.vue:222
+#: src/views/dashboard/ServerAnalytic.vue:223
 msgid "Memory"
 msgstr "Память"
 
-#: src/views/dashboard/ServerAnalytic.vue:216
+#: src/views/dashboard/ServerAnalytic.vue:212
 msgid "Memory and Storage"
 msgstr "Память и хранилище"
 
@@ -1490,19 +1491,19 @@ msgstr "Многострочная директива"
 msgid "Name"
 msgstr "Имя"
 
-#: src/views/dashboard/ServerAnalytic.vue:331
+#: src/views/dashboard/ServerAnalytic.vue:327
 msgid "Network"
 msgstr "Сеть"
 
-#: src/views/dashboard/ServerAnalytic.vue:273
+#: src/views/dashboard/ServerAnalytic.vue:269
 msgid "Network Statistics"
 msgstr "Статистика сети"
 
-#: src/views/dashboard/ServerAnalytic.vue:280
+#: src/views/dashboard/ServerAnalytic.vue:276
 msgid "Network Total Receive"
 msgstr "Всего получено"
 
-#: src/views/dashboard/ServerAnalytic.vue:286
+#: src/views/dashboard/ServerAnalytic.vue:282
 msgid "Network Total Send"
 msgstr "Всего отправлено"
 
@@ -1619,7 +1620,7 @@ msgstr "Nginx успешно перезапущен"
 #: src/views/preference/AuthSettings.vue:136
 #: src/views/preference/CertSettings.vue:70
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
-#: src/views/site/ngx_conf/LocationEditor.vue:90
+#: src/views/site/ngx_conf/LocationEditor.vue:88
 #: src/views/site/site_list/SiteList.vue:143
 #: src/views/stream/StreamList.vue:163
 msgid "No"
@@ -1631,8 +1632,9 @@ msgid "Node name"
 msgstr "Новое имя"
 
 #: src/views/preference/BasicSettings.vue:23
+#, fuzzy
 msgid "Node Secret"
-msgstr ""
+msgstr "Jwt секрет"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:91
 msgid "Not After"
@@ -1734,6 +1736,10 @@ msgstr "OpenAI"
 msgid "Or"
 msgstr ""
 
+#: src/views/preference/components/TOTP.vue:127
+msgid "Or enter the secret: %{secret}"
+msgstr ""
+
 #: src/views/config/components/Rename.vue:68
 msgid "Original name"
 msgstr "Оригинальное имя"
@@ -1742,7 +1748,7 @@ msgstr "Оригинальное имя"
 msgid "OS"
 msgstr "ОС"
 
-#: src/views/dashboard/ServerAnalytic.vue:193
+#: src/views/dashboard/ServerAnalytic.vue:189
 msgid "OS:"
 msgstr "OS:"
 
@@ -1766,8 +1772,9 @@ msgid "Params"
 msgstr "Параметры"
 
 #: src/views/preference/components/Passkey.vue:59
+#, fuzzy
 msgid "Passkey"
-msgstr ""
+msgstr "Добавить ключ доступа"
 
 #: src/views/preference/components/Passkey.vue:62
 msgid ""
@@ -1794,8 +1801,8 @@ msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
 #: src/views/config/ConfigEditor.vue:263
-#: src/views/site/ngx_conf/LocationEditor.vue:111
-#: src/views/site/ngx_conf/LocationEditor.vue:139
+#: src/views/site/ngx_conf/LocationEditor.vue:109
+#: src/views/site/ngx_conf/LocationEditor.vue:137
 msgid "Path"
 msgstr "Путь"
 
@@ -1899,7 +1906,7 @@ msgstr ""
 "Обратите внимание, что единица измерения времени в конфигурациях ниже "
 "указана в секундах."
 
-#: src/views/environment/Environment.vue:48
+#: src/views/environment/Environment.vue:58
 msgid "Please select at least one node to upgrade"
 msgstr "Пожалуйста, выберите хотя бы один узел"
 
@@ -1951,19 +1958,20 @@ msgid "Provider"
 msgstr "Провайдер"
 
 #: src/views/certificate/ACMEUser.vue:51
+#, fuzzy
 msgid "Proxy"
-msgstr ""
+msgstr "API Прокси"
 
 #: src/views/preference/BasicSettings.vue:63
 msgid "Public Security Number"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:37
-#: src/views/dashboard/ServerAnalytic.vue:387
+#: src/views/dashboard/ServerAnalytic.vue:383
 msgid "Reads"
 msgstr "Чтение"
 
-#: src/views/dashboard/ServerAnalytic.vue:338
+#: src/views/dashboard/ServerAnalytic.vue:334
 #: src/views/dashboard/ServerAnalytic.vue:35
 msgid "Receive"
 msgstr "Принято"
@@ -1982,15 +1990,15 @@ msgid "Recovered Successfully"
 msgstr "Восстановлено успешно"
 
 #: src/components/TwoFA/Authorization.vue:89
-#: src/views/preference/components/TOTP.vue:172
+#: src/views/preference/components/TOTP.vue:155
 msgid "Recovery"
 msgstr "Восстановление"
 
-#: src/views/preference/components/TOTP.vue:98
+#: src/views/preference/components/TOTP.vue:80
 msgid "Recovery Code"
 msgstr "Код восстановления"
 
-#: src/views/preference/components/TOTP.vue:107
+#: src/views/preference/components/TOTP.vue:89
 msgid "Recovery Code:"
 msgstr "Код восстановления:"
 
@@ -2094,8 +2102,8 @@ msgstr "Переименовать"
 msgid ""
 "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
 msgstr ""
-"Переименование %{orig_path} в %{new_path} на %{env_name} не удалось, ответ: %"
-"{resp}"
+"Переименование %{orig_path} в %{new_path} на %{env_name} не удалось, ответ: "
+"%{resp}"
 
 #: src/components/Notification/config.ts:20
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
@@ -2165,7 +2173,7 @@ msgstr "Запрос с неправильными параметрами"
 msgid "Reset"
 msgstr "Сброс"
 
-#: src/views/preference/components/TOTP.vue:127
+#: src/views/preference/components/TOTP.vue:109
 msgid "Reset 2FA"
 msgstr "Сброс 2FA"
 
@@ -2236,8 +2244,8 @@ msgstr "Переименование удаленной конфигурации
 #, fuzzy
 msgid "Save site %{site} to %{node} error, response: %{resp}"
 msgstr ""
-"Синхронизация сертификата %{cert_name} с %{env_name} не удалась, ответ: %"
-"{resp}"
+"Синхронизация сертификата %{cert_name} с %{env_name} не удалась, ответ: "
+"%{resp}"
 
 #: src/components/Notification/config.ts:35
 #, fuzzy
@@ -2258,7 +2266,7 @@ msgstr "Сохранено успешно"
 msgid "Saved successfully"
 msgstr "Успешно сохранено"
 
-#: src/views/preference/components/TOTP.vue:88
+#: src/views/preference/components/TOTP.vue:72
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr ""
 "Отсканируйте QR-код с помощью мобильного телефона, чтобы добавить учетную "
@@ -2268,7 +2276,7 @@ msgstr ""
 msgid "SDK"
 msgstr "SDK"
 
-#: src/views/preference/components/TOTP.vue:144
+#: src/views/preference/components/TOTP.vue:124
 msgid "Secret has been copied"
 msgstr ""
 
@@ -2280,12 +2288,12 @@ msgstr "Выбор"
 msgid "Self Check"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:348
+#: src/views/dashboard/ServerAnalytic.vue:344
 #: src/views/dashboard/ServerAnalytic.vue:35
 msgid "Send"
 msgstr "Отправлено"
 
-#: src/views/dashboard/ServerAnalytic.vue:179
+#: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
 msgstr "Информация о сервере"
 
@@ -2328,14 +2336,14 @@ msgstr "Настройка провайдера проверки HTTP01"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/components/SensitiveString/SensitiveString.vue:40
@@ -2343,16 +2351,18 @@ msgid "Show"
 msgstr "Показать"
 
 #: src/views/other/Login.vue:240
+#, fuzzy
 msgid "Sign in with a passkey"
-msgstr ""
+msgstr "Аутентификация с помощью ключа доступа"
 
 #: src/views/site/ngx_conf/directive/DirectiveAdd.vue:65
 msgid "Single Directive"
 msgstr "Одиночная Директива"
 
 #: src/routes/index.ts:71 src/views/site/site_category/SiteCategory.vue:10
+#, fuzzy
 msgid "Site Categories"
-msgstr ""
+msgstr "Категория"
 
 #: src/constants/errors/site.ts:4
 #, fuzzy
@@ -2378,12 +2388,14 @@ msgid "Sites List"
 msgstr "Список сайтов"
 
 #: src/constants/errors/self_check.ts:10
+#, fuzzy
 msgid "Sites-available directory not exist"
-msgstr ""
+msgstr "Каталог"
 
 #: src/constants/errors/self_check.ts:11
+#, fuzzy
 msgid "Sites-enabled directory not exist"
-msgstr ""
+msgstr "Каталог"
 
 #: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
@@ -2422,8 +2434,8 @@ msgstr "Статус"
 msgid "Stopped"
 msgstr "Остановлен"
 
-#: src/views/dashboard/ServerAnalytic.vue:254
-#: src/views/dashboard/ServerAnalytic.vue:255
+#: src/views/dashboard/ServerAnalytic.vue:250
+#: src/views/dashboard/ServerAnalytic.vue:251
 msgid "Storage"
 msgstr "Хранилище"
 
@@ -2433,8 +2445,9 @@ msgid "Streams Directory"
 msgstr "Каталог"
 
 #: src/constants/errors/self_check.ts:12
+#, fuzzy
 msgid "Streams-available directory not exist"
-msgstr ""
+msgstr "Каталог"
 
 #: src/constants/errors/self_check.ts:13
 #, fuzzy
@@ -2453,8 +2466,8 @@ msgid ""
 "guide/nginx-proxy-example.html"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:240
-#: src/views/dashboard/ServerAnalytic.vue:241
+#: src/views/dashboard/ServerAnalytic.vue:236
+#: src/views/dashboard/ServerAnalytic.vue:237
 msgid "Swap"
 msgstr "Своп"
 
@@ -2485,8 +2498,8 @@ msgstr ""
 #: src/components/Notification/cert.ts:14
 msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 msgstr ""
-"Синхронизация сертификата %{cert_name} с %{env_name} не удалась, ответ: %"
-"{resp}"
+"Синхронизация сертификата %{cert_name} с %{env_name} не удалась, ответ: "
+"%{resp}"
 
 #: src/components/Notification/cert.ts:4
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
@@ -2503,8 +2516,8 @@ msgstr "Сертификат успешно синхронизирован"
 #: src/components/Notification/config.ts:14
 msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
 msgstr ""
-"Синхронизация конфигурации %{config_name} с %{env_name} не удалась, ответ: %"
-"{resp}"
+"Синхронизация конфигурации %{config_name} с %{env_name} не удалась, ответ: "
+"%{resp}"
 
 #: src/components/Notification/config.ts:4
 msgid "Sync Config %{config_name} to %{env_name} successfully"
@@ -2633,7 +2646,7 @@ msgstr ""
 "Имя сервера должно содержать только буквы, юникод, цифры, дефисы, тире и "
 "точки."
 
-#: src/views/preference/components/TOTP.vue:106
+#: src/views/preference/components/TOTP.vue:88
 msgid ""
 "The recovery code is only displayed once, please save it in a safe place."
 msgstr ""
@@ -2717,8 +2730,8 @@ msgstr ""
 msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
-"Это обновит или переустановит интерфейс Nginx на %{nodeNames} до версии %"
-"{version}."
+"Это обновит или переустановит интерфейс Nginx на %{nodeNames} до версии "
+"%{version}."
 
 #: src/views/preference/AuthSettings.vue:96
 msgid "Throttle"
@@ -2734,7 +2747,7 @@ msgstr "Советы"
 msgid "Title"
 msgstr "Заголовок"
 
-#: src/views/preference/components/TOTP.vue:87
+#: src/views/preference/components/TOTP.vue:71
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
@@ -2778,11 +2791,11 @@ msgid_plural "Total %{total} items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/views/preference/components/TOTP.vue:85
+#: src/views/preference/components/TOTP.vue:69
 msgid "TOTP"
 msgstr ""
 
-#: src/views/preference/components/TOTP.vue:86
+#: src/views/preference/components/TOTP.vue:70
 msgid ""
 "TOTP is a two-factor authentication method that uses a time-based one-time "
 "password algorithm."
@@ -2824,7 +2837,7 @@ msgstr "Обновлено в"
 msgid "Updated successfully"
 msgstr "Успешно обновлено"
 
-#: src/routes/index.ts:297 src/views/environment/Environment.vue:56
+#: src/routes/index.ts:297 src/views/environment/Environment.vue:66
 #: src/views/system/Upgrade.vue:143 src/views/system/Upgrade.vue:226
 msgid "Upgrade"
 msgstr "Обновление"
@@ -2845,7 +2858,7 @@ msgstr "Обновление Nginx UI, подождите..."
 msgid "Upstream Name"
 msgstr "Имя Upstream"
 
-#: src/views/dashboard/ServerAnalytic.vue:183
+#: src/views/dashboard/ServerAnalytic.vue:179
 msgid "Uptime:"
 msgstr "Аптайм:"
 
@@ -2955,7 +2968,7 @@ msgid ""
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:37
-#: src/views/dashboard/ServerAnalytic.vue:377
+#: src/views/dashboard/ServerAnalytic.vue:373
 msgid "Writes"
 msgstr "Запись"
 
@@ -2970,7 +2983,7 @@ msgstr "Запись сертификата на диск"
 #: src/views/preference/AuthSettings.vue:135
 #: src/views/preference/CertSettings.vue:69
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:96
-#: src/views/site/ngx_conf/LocationEditor.vue:89
+#: src/views/site/ngx_conf/LocationEditor.vue:87
 msgid "Yes"
 msgstr "Да"
 
@@ -2989,8 +3002,9 @@ msgid ""
 msgstr ""
 
 #: src/views/preference/components/Passkey.vue:75
+#, fuzzy
 msgid "Your passkeys"
-msgstr ""
+msgstr "Добавить ключ доступа"
 
 #~ msgid "Directory"
 #~ msgstr "Каталог"

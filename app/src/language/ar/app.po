@@ -71,8 +71,8 @@ msgstr "إضافة تكوين"
 msgid "Add Directive Below"
 msgstr "أضف التوجيه أدناه"
 
-#: src/views/site/ngx_conf/LocationEditor.vue:132
-#: src/views/site/ngx_conf/LocationEditor.vue:159
+#: src/views/site/ngx_conf/LocationEditor.vue:130
+#: src/views/site/ngx_conf/LocationEditor.vue:157
 msgid "Add Location"
 msgstr "أضف مكان"
 
@@ -187,7 +187,7 @@ msgstr "هل أنت متأكد أنك تريد إزالة هذا التوجيه�
 msgid "Are you sure you want to remove this item?"
 msgstr "هل أنت متأكد أنك تريد إزالة هذا العنصر؟"
 
-#: src/views/site/ngx_conf/LocationEditor.vue:88
+#: src/views/site/ngx_conf/LocationEditor.vue:86
 msgid "Are you sure you want to remove this location?"
 msgstr "هل أنت متأكد أنك تريد إزالة هذا المكان؟"
 
@@ -315,10 +315,6 @@ msgstr "مجلد سلطة التصديق"
 msgid "CADir"
 msgstr "مجلد سلطة التصديق"
 
-#: src/views/preference/components/TOTP.vue:145
-msgid "Can't scan? Use text key binding"
-msgstr "لا يمكن المسح؟ استخدم ربط مفتاح النص"
-
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:246
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:187
@@ -372,7 +368,7 @@ msgid "Certificate Renewal Interval"
 msgstr "الفاصل الزمني لتجديد الشهادة"
 
 #: src/views/certificate/CertificateEditor.vue:128
-#: src/views/site/cert/Cert.vue:32
+#: src/views/site/cert/Cert.vue:33
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
 msgstr[0] "صفر"
@@ -400,7 +396,7 @@ msgstr "طريقة التحدي"
 msgid "Change Certificate"
 msgstr "تغيير الشهادة"
 
-#: src/views/site/cert/Cert.vue:51
+#: src/views/site/cert/Cert.vue:52
 msgid "Changed Certificate"
 msgid_plural "Changed Certificates"
 msgstr[0] "صفر"
@@ -461,13 +457,17 @@ msgstr "مسح"
 msgid "Cleared successfully"
 msgstr "تم المسح بنجاح"
 
+#: src/views/preference/components/TOTP.vue:125
+msgid "Click to copy"
+msgstr ""
+
 #: src/views/preference/LogrotateSettings.vue:22
 msgid "Command"
 msgstr "أمر"
 
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:113
-#: src/views/site/ngx_conf/LocationEditor.vue:105
-#: src/views/site/ngx_conf/LocationEditor.vue:136
+#: src/views/site/ngx_conf/LocationEditor.vue:103
+#: src/views/site/ngx_conf/LocationEditor.vue:134
 #: src/views/site/ngx_conf/NgxServer.vue:134
 msgid "Comments"
 msgstr "تعليقات"
@@ -501,8 +501,8 @@ msgid "Connection lost, please refresh the page."
 msgstr "تم فقدان الاتصال، يرجى تحديث الصفحة."
 
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:118
-#: src/views/site/ngx_conf/LocationEditor.vue:117
-#: src/views/site/ngx_conf/LocationEditor.vue:145
+#: src/views/site/ngx_conf/LocationEditor.vue:115
+#: src/views/site/ngx_conf/LocationEditor.vue:143
 msgid "Content"
 msgstr "محتوى"
 
@@ -519,11 +519,11 @@ msgstr "نسخ"
 msgid "Core Upgrade"
 msgstr "ترقية نواة"
 
-#: src/views/dashboard/ServerAnalytic.vue:305
+#: src/views/dashboard/ServerAnalytic.vue:301
 msgid "CPU Status"
 msgstr "حالة CPU"
 
-#: src/views/dashboard/ServerAnalytic.vue:199
+#: src/views/dashboard/ServerAnalytic.vue:195
 msgid "CPU:"
 msgstr "CPU:"
 
@@ -565,11 +565,11 @@ msgstr "بيان الاعتماد"
 msgid "Credentials"
 msgstr "بيانات الاعتماد"
 
-#: src/views/preference/components/TOTP.vue:93
+#: src/views/preference/components/TOTP.vue:75
 msgid "Current account is enabled TOTP."
 msgstr "TOTP مفعل للحساب الحالي."
 
-#: src/views/preference/components/TOTP.vue:90
+#: src/views/preference/components/TOTP.vue:73
 msgid "Current account is not enabled TOTP."
 msgstr "TOTP معطل للحساب الحالي."
 
@@ -731,7 +731,7 @@ msgstr "معطل"
 msgid "Disabled successfully"
 msgstr "تم التعطيل بنجاح"
 
-#: src/views/dashboard/ServerAnalytic.vue:370
+#: src/views/dashboard/ServerAnalytic.vue:366
 msgid "Disk IO"
 msgstr "إدخال/إخراج القرص"
 
@@ -906,7 +906,7 @@ msgstr "فشل تفعيل %{conf_name} في %{node_name}"
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "تم تفعيل %{conf_name} في %{node_name} بنجاح"
 
-#: src/views/preference/components/TOTP.vue:52
+#: src/views/preference/components/TOTP.vue:38
 msgid "Enable 2FA successfully"
 msgstr "تم تفعيل المصادقة الثنائية بنجاح"
 
@@ -942,7 +942,7 @@ msgstr "تم التفعيل بنجاح"
 msgid "Enable TLS"
 msgstr "تفعيل TLS"
 
-#: src/views/preference/components/TOTP.vue:119
+#: src/views/preference/components/TOTP.vue:101
 msgid "Enable TOTP"
 msgstr "تفعيل TOTP"
 
@@ -976,7 +976,7 @@ msgid "Environment variables cleaned"
 msgstr "تم تنظيف متغيرات البيئة"
 
 #: src/routes/index.ts:234 src/views/dashboard/Environments.vue:83
-#: src/views/environment/Environment.vue:33
+#: src/views/environment/Environment.vue:43
 msgid "Environments"
 msgstr "البيئات"
 
@@ -1038,8 +1038,9 @@ msgid "Failed to parse nginx.conf"
 msgstr ""
 
 #: src/constants/errors/self_check.ts:3
+#, fuzzy
 msgid "Failed to read nginx.conf"
-msgstr ""
+msgstr "فشل في التفعيل %{msg}"
 
 #: src/views/site/site_edit/SiteEdit.vue:135
 #: src/views/stream/StreamEdit.vue:122
@@ -1157,7 +1158,7 @@ msgstr ""
 "إذا وصل عدد محاولات تسجيل الدخول الفاشلة من عنوان IP إلى الحد الأقصى "
 "للمحاولات في حد دقائق الحظر، سيتم حظر عنوان IP لفترة من الوقت."
 
-#: src/views/preference/components/TOTP.vue:105
+#: src/views/preference/components/TOTP.vue:87
 msgid ""
 "If you lose your mobile phone, you can use the recovery code to reset your "
 "2FA."
@@ -1198,12 +1199,12 @@ msgstr "خطأ في ترقية النواة الأولية"
 msgid "Initialing core upgrader"
 msgstr "بدء ترقية النواة"
 
-#: src/views/preference/components/TOTP.vue:152
+#: src/views/preference/components/TOTP.vue:134
 msgid "Input the code from the app:"
 msgstr "أدخل الرمز من التطبيق:"
 
 #: src/components/TwoFA/Authorization.vue:82
-#: src/views/preference/components/TOTP.vue:165
+#: src/views/preference/components/TOTP.vue:148
 msgid "Input the recovery code:"
 msgstr "أدخل رمز الاسترداد:"
 
@@ -1321,15 +1322,15 @@ msgstr "ابدأ الرابط"
 msgid "List"
 msgstr "قائمة"
 
-#: src/views/dashboard/ServerAnalytic.vue:187
+#: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Load Average:"
 msgstr "متوسط التحميل:"
 
-#: src/views/environment/Environment.vue:39
+#: src/views/environment/Environment.vue:49
 msgid "Load from settings"
 msgstr "تحميل من الإعدادات"
 
-#: src/views/environment/Environment.vue:13
+#: src/views/environment/Environment.vue:17
 msgid "Load successfully"
 msgstr "تم التحميل بنجاح"
 
@@ -1338,7 +1339,7 @@ msgstr "تم التحميل بنجاح"
 msgid "Local"
 msgstr "محلي"
 
-#: src/views/site/ngx_conf/LocationEditor.vue:69
+#: src/views/site/ngx_conf/LocationEditor.vue:68
 msgid "Location"
 msgstr "مكان"
 
@@ -1415,12 +1416,12 @@ msgstr "شهادة مُدارة"
 msgid "Max Attempts"
 msgstr "الحد الأقصى للمحاولات"
 
-#: src/views/dashboard/ServerAnalytic.vue:226
-#: src/views/dashboard/ServerAnalytic.vue:227
+#: src/views/dashboard/ServerAnalytic.vue:222
+#: src/views/dashboard/ServerAnalytic.vue:223
 msgid "Memory"
 msgstr "ذاكرة"
 
-#: src/views/dashboard/ServerAnalytic.vue:216
+#: src/views/dashboard/ServerAnalytic.vue:212
 msgid "Memory and Storage"
 msgstr "الذاكرة والتخزين"
 
@@ -1474,19 +1475,19 @@ msgstr "توجيه متعدد الأسطر"
 msgid "Name"
 msgstr "اسم"
 
-#: src/views/dashboard/ServerAnalytic.vue:331
+#: src/views/dashboard/ServerAnalytic.vue:327
 msgid "Network"
 msgstr "شبكة"
 
-#: src/views/dashboard/ServerAnalytic.vue:273
+#: src/views/dashboard/ServerAnalytic.vue:269
 msgid "Network Statistics"
 msgstr "إحصائيات الشبكة"
 
-#: src/views/dashboard/ServerAnalytic.vue:280
+#: src/views/dashboard/ServerAnalytic.vue:276
 msgid "Network Total Receive"
 msgstr "إجمالي استقبال الشبكة"
 
-#: src/views/dashboard/ServerAnalytic.vue:286
+#: src/views/dashboard/ServerAnalytic.vue:282
 msgid "Network Total Send"
 msgstr "إجمالي إرسال الشبكة"
 
@@ -1600,7 +1601,7 @@ msgstr "تم إعادة تشغيل Nginx بنجاح"
 #: src/views/preference/AuthSettings.vue:136
 #: src/views/preference/CertSettings.vue:70
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
-#: src/views/site/ngx_conf/LocationEditor.vue:90
+#: src/views/site/ngx_conf/LocationEditor.vue:88
 #: src/views/site/site_list/SiteList.vue:143
 #: src/views/stream/StreamList.vue:163
 msgid "No"
@@ -1716,6 +1717,10 @@ msgstr "أوبن أي آي"
 msgid "Or"
 msgstr "أو"
 
+#: src/views/preference/components/TOTP.vue:127
+msgid "Or enter the secret: %{secret}"
+msgstr ""
+
 #: src/views/config/components/Rename.vue:68
 msgid "Original name"
 msgstr "الاسم الأصلي"
@@ -1724,7 +1729,7 @@ msgstr "الاسم الأصلي"
 msgid "OS"
 msgstr "نظام التشغيل"
 
-#: src/views/dashboard/ServerAnalytic.vue:193
+#: src/views/dashboard/ServerAnalytic.vue:189
 msgid "OS:"
 msgstr "نظام التشغيل:"
 
@@ -1779,8 +1784,8 @@ msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
 #: src/views/config/ConfigEditor.vue:263
-#: src/views/site/ngx_conf/LocationEditor.vue:111
-#: src/views/site/ngx_conf/LocationEditor.vue:139
+#: src/views/site/ngx_conf/LocationEditor.vue:109
+#: src/views/site/ngx_conf/LocationEditor.vue:137
 msgid "Path"
 msgstr "مسار"
 
@@ -1875,7 +1880,7 @@ msgid ""
 "Please note that the unit of time configurations below are all in seconds."
 msgstr "يرجى ملاحظة أن تكوين وحدات الوقت أدناه كلها بالثواني."
 
-#: src/views/environment/Environment.vue:48
+#: src/views/environment/Environment.vue:58
 msgid "Please select at least one node to upgrade"
 msgstr "يرجى اختيار عقدة واحدة على الأقل للترقية"
 
@@ -1932,11 +1937,11 @@ msgid "Public Security Number"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:37
-#: src/views/dashboard/ServerAnalytic.vue:387
+#: src/views/dashboard/ServerAnalytic.vue:383
 msgid "Reads"
 msgstr "يقرأ"
 
-#: src/views/dashboard/ServerAnalytic.vue:338
+#: src/views/dashboard/ServerAnalytic.vue:334
 #: src/views/dashboard/ServerAnalytic.vue:35
 msgid "Receive"
 msgstr "يستقبل"
@@ -1955,15 +1960,15 @@ msgid "Recovered Successfully"
 msgstr "تم الاسترداد بنجاح"
 
 #: src/components/TwoFA/Authorization.vue:89
-#: src/views/preference/components/TOTP.vue:172
+#: src/views/preference/components/TOTP.vue:155
 msgid "Recovery"
 msgstr "استرداد"
 
-#: src/views/preference/components/TOTP.vue:98
+#: src/views/preference/components/TOTP.vue:80
 msgid "Recovery Code"
 msgstr "رمز الاسترداد"
 
-#: src/views/preference/components/TOTP.vue:107
+#: src/views/preference/components/TOTP.vue:89
 msgid "Recovery Code:"
 msgstr "رمز الاسترداد:"
 
@@ -2063,8 +2068,8 @@ msgstr "إعادة تسمية"
 msgid ""
 "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
 msgstr ""
-"فشل إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name}، الاستجابة: %"
-"{resp}"
+"فشل إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name}، الاستجابة: "
+"%{resp}"
 
 #: src/components/Notification/config.ts:20
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
@@ -2089,8 +2094,8 @@ msgstr "تم إعادة تسمية الموقع البعيد بنجاح"
 #: src/components/Notification/config.ts:95
 msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
 msgstr ""
-"خطأ في إعادة تسمية الموقع %{site} إلى %{new_site} على %{node}، الاستجابة: %"
-"{resp}"
+"خطأ في إعادة تسمية الموقع %{site} إلى %{new_site} على %{node}، الاستجابة: "
+"%{resp}"
 
 #: src/components/Notification/config.ts:87
 msgid "Rename Site %{site} to %{new_site} on %{node} successfully"
@@ -2131,7 +2136,7 @@ msgstr "تم الطلب باستخدام عوامل خاطئة"
 msgid "Reset"
 msgstr "إعادة تعيين"
 
-#: src/views/preference/components/TOTP.vue:127
+#: src/views/preference/components/TOTP.vue:109
 msgid "Reset 2FA"
 msgstr "إعادة تعيين التحقق بخطوتين"
 
@@ -2218,7 +2223,7 @@ msgstr "تم الحفظ بنجاح"
 msgid "Saved successfully"
 msgstr "تم الحفظ بنجاح"
 
-#: src/views/preference/components/TOTP.vue:88
+#: src/views/preference/components/TOTP.vue:72
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "امسح رمز الاستجابة السريعة بهاتفك المحمول لإضافة الحساب إلى التطبيق."
 
@@ -2226,7 +2231,7 @@ msgstr "امسح رمز الاستجابة السريعة بهاتفك المح�
 msgid "SDK"
 msgstr "حزمة تطوير البرمجيات SDK"
 
-#: src/views/preference/components/TOTP.vue:144
+#: src/views/preference/components/TOTP.vue:124
 msgid "Secret has been copied"
 msgstr "تم نسخ السر"
 
@@ -2238,12 +2243,12 @@ msgstr "المحدد"
 msgid "Self Check"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:348
+#: src/views/dashboard/ServerAnalytic.vue:344
 #: src/views/dashboard/ServerAnalytic.vue:35
 msgid "Send"
 msgstr "إرسال"
 
-#: src/views/dashboard/ServerAnalytic.vue:179
+#: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
 msgstr "معلومات الخادم"
 
@@ -2260,8 +2265,9 @@ msgid "ServerIdx out of range"
 msgstr ""
 
 #: src/constants/errors/user.ts:11
+#, fuzzy
 msgid "Session not found"
-msgstr ""
+msgstr "لم يتم العثور على الملف"
 
 #: src/views/preference/CertSettings.vue:33
 msgid ""
@@ -2285,14 +2291,14 @@ msgstr "تعيين موفر تحدي HTTP01"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/components/SensitiveString/SensitiveString.vue:40
@@ -2335,12 +2341,14 @@ msgid "Sites List"
 msgstr "قائمة المواقع"
 
 #: src/constants/errors/self_check.ts:10
+#, fuzzy
 msgid "Sites-available directory not exist"
-msgstr ""
+msgstr "مجلد"
 
 #: src/constants/errors/self_check.ts:11
+#, fuzzy
 msgid "Sites-enabled directory not exist"
-msgstr ""
+msgstr "مجلد"
 
 #: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
@@ -2379,8 +2387,8 @@ msgstr "الحالة"
 msgid "Stopped"
 msgstr "متوقف"
 
-#: src/views/dashboard/ServerAnalytic.vue:254
-#: src/views/dashboard/ServerAnalytic.vue:255
+#: src/views/dashboard/ServerAnalytic.vue:250
+#: src/views/dashboard/ServerAnalytic.vue:251
 msgid "Storage"
 msgstr "تخزين"
 
@@ -2390,8 +2398,9 @@ msgid "Streams Directory"
 msgstr "مجلد"
 
 #: src/constants/errors/self_check.ts:12
+#, fuzzy
 msgid "Streams-available directory not exist"
-msgstr ""
+msgstr "مجلد"
 
 #: src/constants/errors/self_check.ts:13
 #, fuzzy
@@ -2410,8 +2419,8 @@ msgid ""
 "guide/nginx-proxy-example.html"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:240
-#: src/views/dashboard/ServerAnalytic.vue:241
+#: src/views/dashboard/ServerAnalytic.vue:236
+#: src/views/dashboard/ServerAnalytic.vue:237
 msgid "Swap"
 msgstr "تبديل"
 
@@ -2581,7 +2590,7 @@ msgstr ""
 "يجب أن يحتوي اسم العقدة على حروف وأحرف يونيكود وأرقام وشرطات وعلامات وصل "
 "ونقاط فقط."
 
-#: src/views/preference/components/TOTP.vue:106
+#: src/views/preference/components/TOTP.vue:88
 msgid ""
 "The recovery code is only displayed once, please save it in a safe place."
 msgstr "رمز الاسترداد يُعرض مرة واحدة فقط، يرجى حفظه في مكان آمن."
@@ -2672,7 +2681,7 @@ msgstr "نصائح"
 msgid "Title"
 msgstr "عنوان"
 
-#: src/views/preference/components/TOTP.vue:87
+#: src/views/preference/components/TOTP.vue:71
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
@@ -2725,11 +2734,11 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
-#: src/views/preference/components/TOTP.vue:85
+#: src/views/preference/components/TOTP.vue:69
 msgid "TOTP"
 msgstr "كلمة مرور لمرة واحدة تعتمد على الوقت"
 
-#: src/views/preference/components/TOTP.vue:86
+#: src/views/preference/components/TOTP.vue:70
 msgid ""
 "TOTP is a two-factor authentication method that uses a time-based one-time "
 "password algorithm."
@@ -2770,7 +2779,7 @@ msgstr "محدث في"
 msgid "Updated successfully"
 msgstr "تم التحديث بنجاح"
 
-#: src/routes/index.ts:297 src/views/environment/Environment.vue:56
+#: src/routes/index.ts:297 src/views/environment/Environment.vue:66
 #: src/views/system/Upgrade.vue:143 src/views/system/Upgrade.vue:226
 msgid "Upgrade"
 msgstr "ترقية"
@@ -2791,7 +2800,7 @@ msgstr "جارٍ ترقية Nginx UI، يرجى الانتظار..."
 msgid "Upstream Name"
 msgstr "اسم المنبع"
 
-#: src/views/dashboard/ServerAnalytic.vue:183
+#: src/views/dashboard/ServerAnalytic.vue:179
 msgid "Uptime:"
 msgstr "مدة التشغيل:"
 
@@ -2903,7 +2912,7 @@ msgstr ""
 "الموقع والعقد المحددة أدناه."
 
 #: src/views/dashboard/ServerAnalytic.vue:37
-#: src/views/dashboard/ServerAnalytic.vue:377
+#: src/views/dashboard/ServerAnalytic.vue:373
 msgid "Writes"
 msgstr "يكتب"
 
@@ -2918,7 +2927,7 @@ msgstr "كتابة الشهادة إلى القرص"
 #: src/views/preference/AuthSettings.vue:135
 #: src/views/preference/CertSettings.vue:69
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:96
-#: src/views/site/ngx_conf/LocationEditor.vue:89
+#: src/views/site/ngx_conf/LocationEditor.vue:87
 msgid "Yes"
 msgstr "نعم"
 
@@ -2939,6 +2948,9 @@ msgstr "لم تقم بتكوين إعدادات Webauthn، لذا لا يمكن�
 #: src/views/preference/components/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "مفاتيح المرور الخاصة بك"
+
+#~ msgid "Can't scan? Use text key binding"
+#~ msgstr "لا يمكن المسح؟ استخدم ربط مفتاح النص"
 
 #~ msgid "Directory"
 #~ msgstr "مجلد"

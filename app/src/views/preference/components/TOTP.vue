@@ -70,7 +70,7 @@ function reset2FA() {
     <p>{{ $gettext('TOTP is a two-factor authentication method that uses a time-based one-time password algorithm.') }}</p>
     <p>{{ $gettext('To enable it, you need to install the Google or Microsoft Authenticator app on your mobile phone.') }}</p>
     <p>{{ $gettext('Scan the QR code with your mobile phone to add the account to the app.') }}</p>
-    <AAlert v-if="!status" type="warning" :message="$gettext('Current account is not enabled TOTP.')" show-icon />
+    <AAlert v-if="!status" type="warning" :message="$gettext('Current account is not enabled TOTP.')" class="mb-2" show-icon />
     <div v-else>
       <p><CheckCircleOutlined class="mr-2 text-green-600" />{{ $gettext('Current account is enabled TOTP.') }}</p>
     </div>
@@ -117,15 +117,15 @@ function reset2FA() {
             :value="generatedUrl"
             :size="256"
           />
-          <div class="w-64 flex justify-center">
+          <div class="w-64 flex justify-center mt-2">
             <UseClipboard v-slot="{ copy, copied }">
-              <a
-                class="mr-2"
-                @click="() => copy(secret)"
-              >
-                {{ copied ? $gettext('Secret has been copied')
-                  : $gettext('Can\'t scan? Use text key binding') }}
-              </a>
+              <ATooltip @click="() => copy(secret)">
+                <template #title>
+                  {{ copied ? $gettext('Secret has been copied')
+                    : $gettext('Click to copy') }}
+                </template>
+                {{ $gettext('Or enter the secret: %{secret}', { secret }) }}
+              </ATooltip>
             </UseClipboard>
           </div>
         </div>

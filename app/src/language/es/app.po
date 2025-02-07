@@ -74,8 +74,8 @@ msgstr "Agregar configuración"
 msgid "Add Directive Below"
 msgstr "Añadir directiva a continuación"
 
-#: src/views/site/ngx_conf/LocationEditor.vue:132
-#: src/views/site/ngx_conf/LocationEditor.vue:159
+#: src/views/site/ngx_conf/LocationEditor.vue:130
+#: src/views/site/ngx_conf/LocationEditor.vue:157
 msgid "Add Location"
 msgstr "Agregar Ubicación"
 
@@ -192,7 +192,7 @@ msgstr "¿Está seguro de que quiere borrar esta directiva?"
 msgid "Are you sure you want to remove this item?"
 msgstr "¿Está seguro de que desea eliminar este elemento?"
 
-#: src/views/site/ngx_conf/LocationEditor.vue:88
+#: src/views/site/ngx_conf/LocationEditor.vue:86
 msgid "Are you sure you want to remove this location?"
 msgstr "¿Está seguro de que quiere borrar esta ubicación?"
 
@@ -322,10 +322,6 @@ msgstr "Dir CA"
 msgid "CADir"
 msgstr "Directorio CA"
 
-#: src/views/preference/components/TOTP.vue:145
-msgid "Can't scan? Use text key binding"
-msgstr "¿No puede escanear? Utilice la vinculación con una llave de texto"
-
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:246
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:187
@@ -379,7 +375,7 @@ msgid "Certificate Renewal Interval"
 msgstr "Intervalo de renovación del Certificado"
 
 #: src/views/certificate/CertificateEditor.vue:128
-#: src/views/site/cert/Cert.vue:32
+#: src/views/site/cert/Cert.vue:33
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
 msgstr[0] "Estado del Certificado"
@@ -403,7 +399,7 @@ msgstr "Método de desafío"
 msgid "Change Certificate"
 msgstr "Cambiar Certificado"
 
-#: src/views/site/cert/Cert.vue:51
+#: src/views/site/cert/Cert.vue:52
 msgid "Changed Certificate"
 msgid_plural "Changed Certificates"
 msgstr[0] "Cambiar Certificado"
@@ -460,13 +456,17 @@ msgstr "Borrar"
 msgid "Cleared successfully"
 msgstr "Limpiado exitoso"
 
+#: src/views/preference/components/TOTP.vue:125
+msgid "Click to copy"
+msgstr ""
+
 #: src/views/preference/LogrotateSettings.vue:22
 msgid "Command"
 msgstr "Comando"
 
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:113
-#: src/views/site/ngx_conf/LocationEditor.vue:105
-#: src/views/site/ngx_conf/LocationEditor.vue:136
+#: src/views/site/ngx_conf/LocationEditor.vue:103
+#: src/views/site/ngx_conf/LocationEditor.vue:134
 #: src/views/site/ngx_conf/NgxServer.vue:134
 msgid "Comments"
 msgstr "Comentarios"
@@ -500,8 +500,8 @@ msgid "Connection lost, please refresh the page."
 msgstr "Conexión perdida, por favor actualice la página."
 
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:118
-#: src/views/site/ngx_conf/LocationEditor.vue:117
-#: src/views/site/ngx_conf/LocationEditor.vue:145
+#: src/views/site/ngx_conf/LocationEditor.vue:115
+#: src/views/site/ngx_conf/LocationEditor.vue:143
 msgid "Content"
 msgstr "Contenido"
 
@@ -518,11 +518,11 @@ msgstr "Copiar"
 msgid "Core Upgrade"
 msgstr "Actualización del kernel"
 
-#: src/views/dashboard/ServerAnalytic.vue:305
+#: src/views/dashboard/ServerAnalytic.vue:301
 msgid "CPU Status"
 msgstr "Estado del CPU"
 
-#: src/views/dashboard/ServerAnalytic.vue:199
+#: src/views/dashboard/ServerAnalytic.vue:195
 msgid "CPU:"
 msgstr "CPU:"
 
@@ -564,11 +564,11 @@ msgstr "Credencial"
 msgid "Credentials"
 msgstr "Credenciales"
 
-#: src/views/preference/components/TOTP.vue:93
+#: src/views/preference/components/TOTP.vue:75
 msgid "Current account is enabled TOTP."
 msgstr "La cuenta actual tiene habilitada TOTP."
 
-#: src/views/preference/components/TOTP.vue:90
+#: src/views/preference/components/TOTP.vue:73
 msgid "Current account is not enabled TOTP."
 msgstr "La cuenta actual no tiene habilitada TOTP."
 
@@ -733,7 +733,7 @@ msgstr "Desactivado"
 msgid "Disabled successfully"
 msgstr "Desactivado con éxito"
 
-#: src/views/dashboard/ServerAnalytic.vue:370
+#: src/views/dashboard/ServerAnalytic.vue:366
 msgid "Disk IO"
 msgstr "I/O del disco"
 
@@ -903,7 +903,7 @@ msgstr "Falló el habilitado de %{conf_name} en %{node_name}"
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "Habilitado exitoso de %{conf_name} en %{node_name}"
 
-#: src/views/preference/components/TOTP.vue:52
+#: src/views/preference/components/TOTP.vue:38
 msgid "Enable 2FA successfully"
 msgstr "Habilitar 2FA exitoso"
 
@@ -943,7 +943,7 @@ msgstr "Habilitado con Éxito"
 msgid "Enable TLS"
 msgstr "Habilitar TLS"
 
-#: src/views/preference/components/TOTP.vue:119
+#: src/views/preference/components/TOTP.vue:101
 #, fuzzy
 msgid "Enable TOTP"
 msgstr "Habilitar TLS"
@@ -978,7 +978,7 @@ msgid "Environment variables cleaned"
 msgstr "Variables de entorno limpiadas"
 
 #: src/routes/index.ts:234 src/views/dashboard/Environments.vue:83
-#: src/views/environment/Environment.vue:33
+#: src/views/environment/Environment.vue:43
 msgid "Environments"
 msgstr "Entornos"
 
@@ -1040,8 +1040,9 @@ msgid "Failed to parse nginx.conf"
 msgstr ""
 
 #: src/constants/errors/self_check.ts:3
+#, fuzzy
 msgid "Failed to read nginx.conf"
-msgstr ""
+msgstr "Error al habilitar %{msg}"
 
 #: src/views/site/site_edit/SiteEdit.vue:135
 #: src/views/stream/StreamEdit.vue:122
@@ -1163,7 +1164,7 @@ msgstr ""
 "el máximo de intentos en los minutos del umbral de prohibición, la IP será "
 "bloqueada por un período de tiempo."
 
-#: src/views/preference/components/TOTP.vue:105
+#: src/views/preference/components/TOTP.vue:87
 msgid ""
 "If you lose your mobile phone, you can use the recovery code to reset your "
 "2FA."
@@ -1205,12 +1206,12 @@ msgstr "Error de actualización de kernel inicial"
 msgid "Initialing core upgrader"
 msgstr "Inicializando la actualización del kernel"
 
-#: src/views/preference/components/TOTP.vue:152
+#: src/views/preference/components/TOTP.vue:134
 msgid "Input the code from the app:"
 msgstr "Ingrese el código de la aplicación:"
 
 #: src/components/TwoFA/Authorization.vue:82
-#: src/views/preference/components/TOTP.vue:165
+#: src/views/preference/components/TOTP.vue:148
 msgid "Input the recovery code:"
 msgstr "Ingrese el código de recuperación:"
 
@@ -1330,15 +1331,15 @@ msgstr "Iniciar conexión"
 msgid "List"
 msgstr "Lista"
 
-#: src/views/dashboard/ServerAnalytic.vue:187
+#: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Load Average:"
 msgstr "Promedios de carga:"
 
-#: src/views/environment/Environment.vue:39
+#: src/views/environment/Environment.vue:49
 msgid "Load from settings"
 msgstr "Cargar desde configuraciones"
 
-#: src/views/environment/Environment.vue:13
+#: src/views/environment/Environment.vue:17
 msgid "Load successfully"
 msgstr "Cargado con éxito"
 
@@ -1347,7 +1348,7 @@ msgstr "Cargado con éxito"
 msgid "Local"
 msgstr "Local"
 
-#: src/views/site/ngx_conf/LocationEditor.vue:69
+#: src/views/site/ngx_conf/LocationEditor.vue:68
 msgid "Location"
 msgstr "Ubicación"
 
@@ -1425,12 +1426,12 @@ msgstr "Certificado Administrado"
 msgid "Max Attempts"
 msgstr "Intentos máximos"
 
-#: src/views/dashboard/ServerAnalytic.vue:226
-#: src/views/dashboard/ServerAnalytic.vue:227
+#: src/views/dashboard/ServerAnalytic.vue:222
+#: src/views/dashboard/ServerAnalytic.vue:223
 msgid "Memory"
 msgstr "Memoria"
 
-#: src/views/dashboard/ServerAnalytic.vue:216
+#: src/views/dashboard/ServerAnalytic.vue:212
 msgid "Memory and Storage"
 msgstr "Memoria y almacenamiento"
 
@@ -1484,19 +1485,19 @@ msgstr "Directiva multilínea"
 msgid "Name"
 msgstr "Nombre"
 
-#: src/views/dashboard/ServerAnalytic.vue:331
+#: src/views/dashboard/ServerAnalytic.vue:327
 msgid "Network"
 msgstr "Red"
 
-#: src/views/dashboard/ServerAnalytic.vue:273
+#: src/views/dashboard/ServerAnalytic.vue:269
 msgid "Network Statistics"
 msgstr "Estadísticas de red"
 
-#: src/views/dashboard/ServerAnalytic.vue:280
+#: src/views/dashboard/ServerAnalytic.vue:276
 msgid "Network Total Receive"
 msgstr "Total recibido por la red"
 
-#: src/views/dashboard/ServerAnalytic.vue:286
+#: src/views/dashboard/ServerAnalytic.vue:282
 msgid "Network Total Send"
 msgstr "Total enviado por la red"
 
@@ -1613,7 +1614,7 @@ msgstr "Nginx reiniciado con éxito"
 #: src/views/preference/AuthSettings.vue:136
 #: src/views/preference/CertSettings.vue:70
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
-#: src/views/site/ngx_conf/LocationEditor.vue:90
+#: src/views/site/ngx_conf/LocationEditor.vue:88
 #: src/views/site/site_list/SiteList.vue:143
 #: src/views/stream/StreamList.vue:163
 msgid "No"
@@ -1731,6 +1732,10 @@ msgstr "OpenAI"
 msgid "Or"
 msgstr "O"
 
+#: src/views/preference/components/TOTP.vue:127
+msgid "Or enter the secret: %{secret}"
+msgstr ""
+
 #: src/views/config/components/Rename.vue:68
 msgid "Original name"
 msgstr "Nombre original"
@@ -1739,7 +1744,7 @@ msgstr "Nombre original"
 msgid "OS"
 msgstr "SO"
 
-#: src/views/dashboard/ServerAnalytic.vue:193
+#: src/views/dashboard/ServerAnalytic.vue:189
 msgid "OS:"
 msgstr "SO:"
 
@@ -1795,8 +1800,8 @@ msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
 #: src/views/config/ConfigEditor.vue:263
-#: src/views/site/ngx_conf/LocationEditor.vue:111
-#: src/views/site/ngx_conf/LocationEditor.vue:139
+#: src/views/site/ngx_conf/LocationEditor.vue:109
+#: src/views/site/ngx_conf/LocationEditor.vue:137
 msgid "Path"
 msgstr "Ruta"
 
@@ -1902,7 +1907,7 @@ msgstr ""
 "Tenga en cuenta que las siguientes configuraciones de unidades de tiempo "
 "están todas en segundos."
 
-#: src/views/environment/Environment.vue:48
+#: src/views/environment/Environment.vue:58
 msgid "Please select at least one node to upgrade"
 msgstr "Seleccione al menos un nodo para actualizar"
 
@@ -1964,11 +1969,11 @@ msgid "Public Security Number"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:37
-#: src/views/dashboard/ServerAnalytic.vue:387
+#: src/views/dashboard/ServerAnalytic.vue:383
 msgid "Reads"
 msgstr "Lecturas"
 
-#: src/views/dashboard/ServerAnalytic.vue:338
+#: src/views/dashboard/ServerAnalytic.vue:334
 #: src/views/dashboard/ServerAnalytic.vue:35
 msgid "Receive"
 msgstr "Recibido"
@@ -1987,15 +1992,15 @@ msgid "Recovered Successfully"
 msgstr "Recuperado con éxito"
 
 #: src/components/TwoFA/Authorization.vue:89
-#: src/views/preference/components/TOTP.vue:172
+#: src/views/preference/components/TOTP.vue:155
 msgid "Recovery"
 msgstr "Recuperación"
 
-#: src/views/preference/components/TOTP.vue:98
+#: src/views/preference/components/TOTP.vue:80
 msgid "Recovery Code"
 msgstr "Código de Recuperación"
 
-#: src/views/preference/components/TOTP.vue:107
+#: src/views/preference/components/TOTP.vue:89
 msgid "Recovery Code:"
 msgstr "Código de Recuperación:"
 
@@ -2171,7 +2176,7 @@ msgstr "Pedido con parámetros incorrectos"
 msgid "Reset"
 msgstr "Limpiar"
 
-#: src/views/preference/components/TOTP.vue:127
+#: src/views/preference/components/TOTP.vue:109
 msgid "Reset 2FA"
 msgstr "Restablecer 2FA"
 
@@ -2242,8 +2247,8 @@ msgstr "Renombrar Configuración Remota Exitosa"
 #, fuzzy
 msgid "Save site %{site} to %{node} error, response: %{resp}"
 msgstr ""
-"Sincronización del Certificado %{cert_name} a %{env_name} falló, respuesta: %"
-"{resp}"
+"Sincronización del Certificado %{cert_name} a %{env_name} falló, respuesta: "
+"%{resp}"
 
 #: src/components/Notification/config.ts:35
 #, fuzzy
@@ -2264,7 +2269,7 @@ msgstr "Guardado con éxito"
 msgid "Saved successfully"
 msgstr "Guardado con éxito"
 
-#: src/views/preference/components/TOTP.vue:88
+#: src/views/preference/components/TOTP.vue:72
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr ""
 "Escanee el código QR con su teléfono móvil para agregar la cuenta a la "
@@ -2274,7 +2279,7 @@ msgstr ""
 msgid "SDK"
 msgstr "SDK"
 
-#: src/views/preference/components/TOTP.vue:144
+#: src/views/preference/components/TOTP.vue:124
 msgid "Secret has been copied"
 msgstr "El secreto ha sido copiado"
 
@@ -2286,12 +2291,12 @@ msgstr "Seleccionador"
 msgid "Self Check"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:348
+#: src/views/dashboard/ServerAnalytic.vue:344
 #: src/views/dashboard/ServerAnalytic.vue:35
 msgid "Send"
 msgstr "Enviado"
 
-#: src/views/dashboard/ServerAnalytic.vue:179
+#: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
 msgstr "Información del servidor"
 
@@ -2334,14 +2339,14 @@ msgstr "Usando el proveedor de desafíos HTTP01"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/components/SensitiveString/SensitiveString.vue:40
@@ -2384,12 +2389,14 @@ msgid "Sites List"
 msgstr "Lista de sitios"
 
 #: src/constants/errors/self_check.ts:10
+#, fuzzy
 msgid "Sites-available directory not exist"
-msgstr ""
+msgstr "Directorio"
 
 #: src/constants/errors/self_check.ts:11
+#, fuzzy
 msgid "Sites-enabled directory not exist"
-msgstr ""
+msgstr "Directorio"
 
 #: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
@@ -2428,8 +2435,8 @@ msgstr "Estado"
 msgid "Stopped"
 msgstr "Detenido"
 
-#: src/views/dashboard/ServerAnalytic.vue:254
-#: src/views/dashboard/ServerAnalytic.vue:255
+#: src/views/dashboard/ServerAnalytic.vue:250
+#: src/views/dashboard/ServerAnalytic.vue:251
 msgid "Storage"
 msgstr "Almacenamiento"
 
@@ -2439,8 +2446,9 @@ msgid "Streams Directory"
 msgstr "Directorio"
 
 #: src/constants/errors/self_check.ts:12
+#, fuzzy
 msgid "Streams-available directory not exist"
-msgstr ""
+msgstr "Directorio"
 
 #: src/constants/errors/self_check.ts:13
 #, fuzzy
@@ -2459,8 +2467,8 @@ msgid ""
 "guide/nginx-proxy-example.html"
 msgstr ""
 
-#: src/views/dashboard/ServerAnalytic.vue:240
-#: src/views/dashboard/ServerAnalytic.vue:241
+#: src/views/dashboard/ServerAnalytic.vue:236
+#: src/views/dashboard/ServerAnalytic.vue:237
 msgid "Swap"
 msgstr "Swap"
 
@@ -2491,8 +2499,8 @@ msgstr ""
 #: src/components/Notification/cert.ts:14
 msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 msgstr ""
-"Sincronización del Certificado %{cert_name} a %{env_name} falló, respuesta: %"
-"{resp}"
+"Sincronización del Certificado %{cert_name} a %{env_name} falló, respuesta: "
+"%{resp}"
 
 #: src/components/Notification/cert.ts:4
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
@@ -2640,7 +2648,7 @@ msgstr ""
 "El nombre del servidor solo debe contener letras, Unicode, números, guiones, "
 "rayas y puntos."
 
-#: src/views/preference/components/TOTP.vue:106
+#: src/views/preference/components/TOTP.vue:88
 msgid ""
 "The recovery code is only displayed once, please save it in a safe place."
 msgstr ""
@@ -2724,8 +2732,8 @@ msgstr "Este valor ya está elegido"
 msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
-"Esto actualizará o reinstalará la interfaz de usuario de Nginx en %"
-"{nodeNames} a %{version}."
+"Esto actualizará o reinstalará la interfaz de usuario de Nginx en "
+"%{nodeNames} a %{version}."
 
 #: src/views/preference/AuthSettings.vue:96
 msgid "Throttle"
@@ -2741,7 +2749,7 @@ msgstr "Consejos"
 msgid "Title"
 msgstr "Título"
 
-#: src/views/preference/components/TOTP.vue:87
+#: src/views/preference/components/TOTP.vue:71
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
@@ -2792,11 +2800,11 @@ msgid_plural "Total %{total} items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/views/preference/components/TOTP.vue:85
+#: src/views/preference/components/TOTP.vue:69
 msgid "TOTP"
 msgstr "TOTP"
 
-#: src/views/preference/components/TOTP.vue:86
+#: src/views/preference/components/TOTP.vue:70
 msgid ""
 "TOTP is a two-factor authentication method that uses a time-based one-time "
 "password algorithm."
@@ -2838,7 +2846,7 @@ msgstr "Actualizado a"
 msgid "Updated successfully"
 msgstr "Actualización exitosa"
 
-#: src/routes/index.ts:297 src/views/environment/Environment.vue:56
+#: src/routes/index.ts:297 src/views/environment/Environment.vue:66
 #: src/views/system/Upgrade.vue:143 src/views/system/Upgrade.vue:226
 msgid "Upgrade"
 msgstr "Actualizar"
@@ -2859,7 +2867,7 @@ msgstr "Actualizando Nginx UI, por favor espere..."
 msgid "Upstream Name"
 msgstr "Nombre de la Transmisión"
 
-#: src/views/dashboard/ServerAnalytic.vue:183
+#: src/views/dashboard/ServerAnalytic.vue:179
 msgid "Uptime:"
 msgstr "Tiempo encendido:"
 
@@ -2974,7 +2982,7 @@ msgstr ""
 "continuación se sincronizarán."
 
 #: src/views/dashboard/ServerAnalytic.vue:37
-#: src/views/dashboard/ServerAnalytic.vue:377
+#: src/views/dashboard/ServerAnalytic.vue:373
 msgid "Writes"
 msgstr "Escrituras"
 
@@ -2989,7 +2997,7 @@ msgstr "Escribir certificado a disco"
 #: src/views/preference/AuthSettings.vue:135
 #: src/views/preference/CertSettings.vue:69
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:96
-#: src/views/site/ngx_conf/LocationEditor.vue:89
+#: src/views/site/ngx_conf/LocationEditor.vue:87
 msgid "Yes"
 msgstr "Si"
 
@@ -3012,6 +3020,9 @@ msgstr ""
 #: src/views/preference/components/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Sus llaves de acceso"
+
+#~ msgid "Can't scan? Use text key binding"
+#~ msgstr "¿No puede escanear? Utilice la vinculación con una llave de texto"
 
 #~ msgid "Directory"
 #~ msgstr "Directorio"
