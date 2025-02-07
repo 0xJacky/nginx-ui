@@ -13,7 +13,6 @@ const resetting = ref(false)
 const qrCode = ref('')
 const secret = ref('')
 const passcode = ref('')
-const interval = shallowRef<undefined | ReturnType<typeof setTimeout>>()
 const refOtp = useTemplateRef('refOtp')
 const recoveryCode = ref('')
 const inputRecoveryCode = ref('')
@@ -21,18 +20,6 @@ const inputRecoveryCode = ref('')
 function clickEnable2FA() {
   enrolling.value = true
   generateSecret()
-  interval.value = setInterval(() => {
-    if (enrolling.value)
-      generateSecret()
-    else
-      clearGenerateSecretInterval()
-  }, 30 * 1000)
-}
-
-function clearGenerateSecretInterval() {
-  if (interval.value) {
-    clearInterval(interval.value)
-  }
 }
 
 function generateSecret() {
@@ -47,7 +34,6 @@ function enroll(code: string) {
   otp.enroll_otp(secret.value, code).then(r => {
     enrolling.value = false
     recoveryCode.value = r.recovery_code
-    clearGenerateSecretInterval()
     get2FAStatus()
     message.success($gettext('Enable 2FA successfully'))
   }).catch(() => {
@@ -62,8 +48,6 @@ function get2FAStatus() {
 }
 
 get2FAStatus()
-
-onUnmounted(clearGenerateSecretInterval)
 
 function clickReset2FA() {
   resetting.value = true
