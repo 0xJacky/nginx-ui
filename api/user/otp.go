@@ -3,9 +3,11 @@ package user
 import (
 	"bytes"
 	"crypto/sha1"
-	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"net/http"
+	"strings"
+
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -14,9 +16,6 @@ import (
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
 	"github.com/uozi-tech/cosy"
-	"image/jpeg"
-	"net/http"
-	"strings"
 )
 
 func GenerateTOTP(c *gin.Context) {
@@ -38,27 +37,9 @@ func GenerateTOTP(c *gin.Context) {
 		return
 	}
 
-	qrCode, err := otpKey.Image(512, 512)
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	// Encode the image to a buffer
-	var buf []byte
-	buffer := bytes.NewBuffer(buf)
-	err = jpeg.Encode(buffer, qrCode, nil)
-	if err != nil {
-		fmt.Println("Error encoding image:", err)
-		return
-	}
-
-	// Convert the buffer to a base64 string
-	base64Str := "data:image/jpeg;base64," + base64.StdEncoding.EncodeToString(buffer.Bytes())
-
 	c.JSON(http.StatusOK, gin.H{
-		"secret":  otpKey.Secret(),
-		"qr_code": base64Str,
+		"secret": otpKey.Secret(),
+		"url":    otpKey.URL(),
 	})
 }
 

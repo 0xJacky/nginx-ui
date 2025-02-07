@@ -2,7 +2,7 @@ import http from '@/lib/http'
 
 export interface OTPGenerateSecretResponse {
   secret: string
-  qr_code: string
+  url: string
 }
 
 const otp = {

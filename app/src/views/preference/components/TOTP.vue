@@ -10,7 +10,7 @@ import { message } from 'ant-design-vue'
 const status = ref(false)
 const enrolling = ref(false)
 const resetting = ref(false)
-const qrCode = ref('')
+const generatedUrl = ref('')
 const secret = ref('')
 const passcode = ref('')
 const refOtp = useTemplateRef('refOtp')
@@ -25,7 +25,7 @@ function clickEnable2FA() {
 function generateSecret() {
   otp.generate_secret().then(r => {
     secret.value = r.secret
-    qrCode.value = r.qr_code
+    generatedUrl.value = r.url
     refOtp.value?.clearInput()
   })
 }
@@ -70,9 +70,7 @@ function reset2FA() {
     <p>{{ $gettext('TOTP is a two-factor authentication method that uses a time-based one-time password algorithm.') }}</p>
     <p>{{ $gettext('To enable it, you need to install the Google or Microsoft Authenticator app on your mobile phone.') }}</p>
     <p>{{ $gettext('Scan the QR code with your mobile phone to add the account to the app.') }}</p>
-    <p v-if="!status">
-      {{ $gettext('Current account is not enabled TOTP.') }}
-    </p>
+    <AAlert v-if="!status" type="warning" :message="$gettext('Current account is not enabled TOTP.')" show-icon />
     <div v-else>
       <p><CheckCircleOutlined class="mr-2 text-green-600" />{{ $gettext('Current account is enabled TOTP.') }}</p>
     </div>
@@ -112,33 +110,34 @@ function reset2FA() {
     </AButton>
 
     <template v-if="enrolling">
-      <div class="mt-4 mb-2">
-        <img
-          v-if="qrCode"
-          class="w-64 h-64"
-          :src="qrCode"
-          alt="qr code"
-        >
-        <div class="w-64 flex justify-center">
-          <UseClipboard v-slot="{ copy, copied }">
-            <a
-              class="mr-2"
-              @click="() => copy(secret)"
-            >
-              {{ copied ? $gettext('Secret has been copied')
-                : $gettext('Can\'t scan? Use text key binding') }}
-            </a>
-          </UseClipboard>
+      <div class="flex flex-col items-center">
+        <div class="mt-4 mb-2">
+          <AQrcode
+            v-if="generatedUrl"
+            :value="generatedUrl"
+            :size="256"
+          />
+          <div class="w-64 flex justify-center">
+            <UseClipboard v-slot="{ copy, copied }">
+              <a
+                class="mr-2"
+                @click="() => copy(secret)"
+              >
+                {{ copied ? $gettext('Secret has been copied')
+                  : $gettext('Can\'t scan? Use text key binding') }}
+              </a>
+            </UseClipboard>
+          </div>
         </div>
-      </div>
 
-      <div>
-        <p>{{ $gettext('Input the code from the app:') }}</p>
-        <OTPInput
-          ref="refOtp"
-          v-model="passcode"
-          @on-complete="enroll"
-        />
+        <div>
+          <p>{{ $gettext('Input the code from the app:') }}</p>
+          <OTPInput
+            ref="refOtp"
+            v-model="passcode"
+            @on-complete="enroll"
+          />
+        </div>
       </div>
     </template>
 
