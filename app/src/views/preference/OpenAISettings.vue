@@ -1,29 +1,17 @@
 <script setup lang="ts">
 import type { Settings } from '@/api/settings'
+import { LLM_MODELS, LLM_PROVIDERS } from '@/constants/llm'
 
 const data: Settings = inject('data')!
 const errors: Record<string, Record<string, string>> = inject('errors') as Record<string, Record<string, string>>
 
-const models = shallowRef([
-  {
-    value: 'gpt-4o-mini',
-  },
-  {
-    value: 'gpt-4o',
-  },
-  {
-    value: 'gpt-4-1106-preview',
-  },
-  {
-    value: 'gpt-4',
-  },
-  {
-    value: 'gpt-4-32k',
-  },
-  {
-    value: 'gpt-3.5-turbo',
-  },
-])
+const models = LLM_MODELS.map(model => ({
+  value: model,
+}))
+
+const providers = LLM_PROVIDERS.map(provider => ({
+  value: provider,
+}))
 </script>
 
 <template>
@@ -48,9 +36,10 @@ const models = shallowRef([
         : $gettext('To use a local large model, deploy it with ollama, vllm or lmdeploy. '
           + 'They provide an OpenAI-compatible API endpoint, so just set the baseUrl to your local API.')"
     >
-      <AInput
+      <AAutoComplete
         v-model:value="data.openai.base_url"
         :placeholder="$gettext('Leave blank for the default: https://api.openai.com/')"
+        :options="providers"
       />
     </AFormItem>
     <AFormItem
