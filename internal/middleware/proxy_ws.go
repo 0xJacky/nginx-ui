@@ -1,12 +1,13 @@
 package middleware
 
 import (
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/pretty66/websocketproxy"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy/logger"
-	"net/http"
 )
 
 func ProxyWs() gin.HandlerFunc {
@@ -26,7 +27,6 @@ func ProxyWs() gin.HandlerFunc {
 
 		env := query.Environment
 		environment, err := env.Where(env.ID.Eq(id)).First()
-
 		if err != nil {
 			logger.Error(err)
 			return
@@ -43,6 +43,10 @@ func ProxyWs() gin.HandlerFunc {
 
 		wp, err := websocketproxy.NewProxy(decodedUri, func(r *http.Request) error {
 			r.Header.Set("X-Node-Secret", environment.Token)
+			r.Header.Del("X-Node-ID")
+			queryValues := r.URL.Query()
+			queryValues.Del("x_node_id")
+			r.URL.RawQuery = queryValues.Encode()
 			return nil
 		})
 

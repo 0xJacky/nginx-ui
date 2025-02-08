@@ -53,16 +53,16 @@ func AuthRequired() gin.HandlerFunc {
 			c.Set("ProxyNodeID", xNodeID)
 		}
 
+		if token := c.GetHeader("X-Node-Secret"); token != "" && token == settings.NodeSettings.Secret {
+			c.Set("Secret", token)
+			c.Next()
+			return
+		}
+
 		token := getToken(c)
 		if token == "" {
-			if token = c.GetHeader("X-Node-Secret"); token != "" && token == settings.NodeSettings.Secret {
-				c.Set("Secret", token)
-				c.Next()
-				return
-			} else {
-				abortWithAuthFailure()
-				return
-			}
+			abortWithAuthFailure()
+			return
 		}
 
 		u, ok := user.GetTokenUser(token)
