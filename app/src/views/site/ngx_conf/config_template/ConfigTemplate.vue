@@ -149,4 +149,15 @@ provide('ngx_directives', ngx_directives)
   overflow-y: scroll;
   overflow-x: hidden;
 }
+
+:deep(.ant-col) {
+  height: calc(100% - 16px);
+  .ant-list-item {
+    height: 100%;
+
+    .ant-card {
+      height: 100%;
+    }
+  }
+}
 </style>
