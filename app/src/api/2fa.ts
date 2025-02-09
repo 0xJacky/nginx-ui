@@ -1,14 +1,16 @@
 import type { AuthenticationResponseJSON } from '@simplewebauthn/browser'
 import http from '@/lib/http'
 
-export interface TwoFAStatusResponse {
+export interface TwoFAStatus {
   enabled: boolean
   otp_status: boolean
   passkey_status: boolean
+  recovery_codes_generated: boolean
+  recovery_codes_viewed: boolean
 }
 
 const twoFA = {
-  status(): Promise<TwoFAStatusResponse> {
+  status(): Promise<TwoFAStatus> {
     return http.get('/2fa_status')
   },
   start_secure_session_by_otp(passcode: string, recovery_code: string): Promise<{ session_id: string }> {

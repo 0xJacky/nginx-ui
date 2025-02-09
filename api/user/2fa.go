@@ -2,6 +2,10 @@ package user
 
 import (
 	"encoding/base64"
+	"net/http"
+	"strings"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
@@ -12,15 +16,14 @@ import (
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/google/uuid"
 	"github.com/uozi-tech/cosy"
-	"net/http"
-	"strings"
-	"time"
 )
 
 type Status2FA struct {
-	Enabled       bool `json:"enabled"`
-	OTPStatus     bool `json:"otp_status"`
-	PasskeyStatus bool `json:"passkey_status"`
+	Enabled                bool `json:"enabled"`
+	OTPStatus              bool `json:"otp_status"`
+	PasskeyStatus          bool `json:"passkey_status"`
+	RecoveryCodesGenerated bool `json:"recovery_codes_generated"`
+	RecoveryCodesViewed    bool `json:"recovery_codes_viewed"`
 }
 
 func get2FAStatus(c *gin.Context) (status Status2FA) {
@@ -31,6 +34,8 @@ func get2FAStatus(c *gin.Context) (status Status2FA) {
 		status.OTPStatus = userPtr.EnabledOTP()
 		status.PasskeyStatus = userPtr.EnabledPasskey() && passkey.Enabled()
 		status.Enabled = status.OTPStatus || status.PasskeyStatus
+		status.RecoveryCodesGenerated = userPtr.RecoveryCodeGenerated()
+		status.RecoveryCodesViewed = userPtr.RecoveryCodeViewed()
 	}
 	return
 }

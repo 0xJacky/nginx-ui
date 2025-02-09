@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TwoFAStatusResponse } from '@/api/2fa'
+import type { TwoFAStatus } from '@/api/2fa'
 import twoFA from '@/api/2fa'
 import OTPInput from '@/components/OTPInput/OTPInput.vue'
 import { useUserStore } from '@/pinia'
@@ -7,7 +7,7 @@ import { KeyOutlined } from '@ant-design/icons-vue'
 import { startAuthentication } from '@simplewebauthn/browser'
 
 defineProps<{
-  twoFAStatus: TwoFAStatusResponse
+  twoFAStatus: TwoFAStatus
 }>()
 
 const emit = defineEmits(['submitOTP', 'submitSecureSessionID'])

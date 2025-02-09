@@ -1,6 +1,7 @@
 package user
 
 import (
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,7 +27,6 @@ func InitUserRouter(r *gin.RouterGroup) {
 
 	r.GET("/otp_secret", GenerateTOTP)
 	r.POST("/otp_enroll", EnrollTOTP)
-	r.POST("/otp_reset", ResetOTP)
 
 	r.GET("/begin_passkey_register", BeginPasskeyRegistration)
 	r.POST("/finish_passkey_register", FinishPasskeyRegistration)
@@ -34,4 +34,12 @@ func InitUserRouter(r *gin.RouterGroup) {
 	r.GET("/passkeys", GetPasskeyList)
 	r.POST("/passkeys/:id", UpdatePasskey)
 	r.DELETE("/passkeys/:id", DeletePasskey)
+
+	o := r.Group("", middleware.RequireSecureSession())
+	{
+		o.GET("/otp_reset", ResetOTP)
+
+		o.GET("/recovery_codes", ViewRecoveryCodes)
+		o.GET("/recovery_codes_generate", GenerateRecoveryCodes)
+	}
 }
