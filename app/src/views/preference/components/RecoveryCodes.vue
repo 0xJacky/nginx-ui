@@ -96,7 +96,7 @@ function handlePopOpenChange(visible: boolean) {
       </template>
     </AAlert>
 
-    <ACard v-if="codes" class="codes-card mb-4">
+    <ACard v-if="twoFAStatus?.recovery_codes_generated && codes" class="codes-card mb-4">
       <template #title>
         <AAlert class="whitespace-normal px-6 py-4 rounded-t-[8px]" type="warning" banner :show-icon="false">
           <template #message>
