@@ -19,8 +19,8 @@ type RecoveryCodesResponse struct {
 }
 
 func generateRecoveryCode() string {
-	// generate recovery code, 10 hex numbers
-	return fmt.Sprintf("%010x", rand.Intn(0x10000000000))
+	// generate recovery code, 10 hex numbers with a dash in the middle
+	return fmt.Sprintf("%05x-%05x", rand.Intn(0x100000), rand.Intn(0x100000))
 }
 
 func generateRecoveryCodes(count int) []model.RecoveryCode {

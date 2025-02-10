@@ -108,7 +108,7 @@ function handlePopOpenChange(visible: boolean) {
       <ul class="grid grid-cols-2 gap-2 text-lg">
         <li v-for="(code, index) in codes" :key="index">
           <span :class="{ 'line-through': code.used_time }">
-            {{ `${code.code.slice(0, 5)}-${code.code.slice(5)}` }}
+            {{ code.code }}
           </span>
         </li>
       </ul>
