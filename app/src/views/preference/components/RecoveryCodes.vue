@@ -17,7 +17,7 @@ const emit = defineEmits<{
 }>()
 
 const _codes = ref<RecoveryCode[]>()
-const codes = computed(() => props.recoveryCodes ?? _codes.value)
+const codes = computed(() => _codes.value ?? props.recoveryCodes)
 const newGenerated = ref(false)
 
 const codeSource = computed(() => codes.value?.map(code => code.code).join('\n'))
@@ -64,8 +64,8 @@ function handlePopOpenChange(visible: boolean) {
 
 <template>
   <div>
-    <h3>
-      {{ $gettext('Recovery Codes') }}
+    <h3 class="flex items-center gap-2">
+      <span>{{ $gettext('Recovery Codes') }}</span>
       <ATag v-if="recoveryCodes || twoFAStatus?.recovery_codes_viewed" :color="newGenerated || recoveryCodes ? 'success' : 'processing'">
         {{ newGenerated || recoveryCodes ? $gettext('First View') : $gettext('Viewed') }}
       </ATag>
