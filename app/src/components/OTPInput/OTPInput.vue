@@ -41,7 +41,7 @@ defineExpose({
 
     &:focus {
       outline: none;
-      border: 2px solid #1677ff !important;
+      border: 2px solid #D26513 !important;
     }
   }
 }
@@ -62,7 +62,7 @@ defineExpose({
 
   &:focus {
     outline: none;
-    border: 2px solid #1677ff;
+    border: 2px solid #D26513;
   }
 
   &::-webkit-inner-spin-button,

@@ -1,8 +1,8 @@
 <div align="center">
-      <img src="resources/logo.png" alt="Nginx UI Logo">
+      <img src="resources/logo.png" alt="PrimeWaf Logo">
 </div>
 
-# Nginx UI
+# PrimeWaf
 
 Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/) and [Hintay](https://blog.kugeek.com/).
 
@@ -130,7 +130,7 @@ Thanks to our amazing community, additional languages are also available! Explor
 
 ### Before Use
 
-The Nginx UI follows the Debian web server configuration file standard. Created site configuration files will be placed in the `sites-available` folder that under the Nginx configuration folder (auto-detected). The configuration files for an enabled site will create a soft link to the `sites-enabled` folder. You may need to adjust the way the configuration files are organised.
+The PrimeWaf follows the Debian web server configuration file standard. Created site configuration files will be placed in the `sites-available` folder that under the Nginx configuration folder (auto-detected). The configuration files for an enabled site will create a soft link to the `sites-enabled` folder. You may need to adjust the way the configuration files are organised.
 
 For non-Debian (and Ubuntu) systems, you may need to change the contents of the `nginx.conf` configuration file to the Debian style as shown below.
 
@@ -146,7 +146,7 @@ For more information: [debian/conf/nginx.conf](https://salsa.debian.org/nginx-te
 
 ### Installation
 
-Nginx UI is available on the following platforms:
+PrimeWaf is available on the following platforms:
 
 - macOS 11 Big Sur and later (amd64 / arm64)
 - Linux 2.6.23 and later (x86 / amd64 / arm64 / armv5 / armv6 / armv7 / mips32 / mips64 / riscv64 / loongarch64)
@@ -160,42 +160,42 @@ You can visit [latest release](https://github.com/0xJacky/nginx-ui/releases/late
 
 ### Usage
 
-In the first runtime of Nginx UI, please visit `http://<your_server_ip>:<listen_port>`
+In the first runtime of PrimeWaf, please visit `http://<your_server_ip>:<listen_port>`
 in your browser to complete the follow-up configurations.
 
 #### From Executable
-**Run Nginx UI in Terminal**
+**Run PrimeWaf in Terminal**
 
 ```shell
 nginx-ui -config app.ini
 ```
-Press `Control+C` in the terminal to exit Nginx UI.
+Press `Control+C` in the terminal to exit PrimeWaf.
 
-**Run Nginx UI in Background**
+**Run PrimeWaf in Background**
 
 ```shell
 nohup ./nginx-ui -config app.ini &
 ```
-Stop Nginx UI with the follow command.
+Stop PrimeWaf with the follow command.
 
 ```shell
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
 ```
 
 #### With Systemd
-If you are using the [installation script for Linux](#script-for-linux), the Nginx UI will be installed as `nginx-ui` service in systemd. Please use the `systemctl` command to control it.
+If you are using the [installation script for Linux](#script-for-linux), the PrimeWaf will be installed as `nginx-ui` service in systemd. Please use the `systemctl` command to control it.
 
-**Start Nginx UI**
+**Start PrimeWaf**
 
 ```shell
 systemctl start nginx-ui
 ```
-**Stop Nginx UI**
+**Stop PrimeWaf**
 
 ```shell
 systemctl stop nginx-ui
 ```
-**Restart Nginx UI**
+**Restart PrimeWaf**
 
 ```shell
 systemctl restart nginx-ui
@@ -310,9 +310,9 @@ bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/insta
 ```
 The default listening port is `9000`, and the default HTTP Challenge port is `9180`.
 If there is a port conflict, please modify `/usr/local/etc/nginx-ui/app.ini` manually,
-then use `systemctl restart nginx-ui` to reload the Nginx UI service.
+then use `systemctl restart nginx-ui` to reload the PrimeWaf service.
 
-**Remove Nginx UI, except configuration and database files**
+**Remove PrimeWaf, except configuration and database files**
 
 ```shell
 bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove

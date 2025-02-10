@@ -1,6 +1,12 @@
 package cert
 
 import (
+	"log"
+	"os"
+	"path/filepath"
+	"strings"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -8,11 +14,6 @@ import (
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy/logger"
-	"log"
-	"os"
-	"path/filepath"
-	"strings"
-	"time"
 )
 
 type ConfigPayload struct {
@@ -92,7 +93,7 @@ func (c *ConfigPayload) WriteFile(l *log.Logger, errChan chan error) {
 
 	// Each certificate comes back with the cert bytes, the bytes of the client's
 	// private key, and a certificate URL. SAVE THESE TO DISK.
-	l.Println("[INFO] [Nginx UI] Writing certificate to disk")
+	l.Println("[INFO] [PrimeWaf] Writing certificate to disk")
 	err = os.WriteFile(c.GetCertificatePath(),
 		c.Resource.Certificate, 0644)
 
@@ -101,7 +102,7 @@ func (c *ConfigPayload) WriteFile(l *log.Logger, errChan chan error) {
 		return
 	}
 
-	l.Println("[INFO] [Nginx UI] Writing certificate private key to disk")
+	l.Println("[INFO] [PrimeWaf] Writing certificate private key to disk")
 	err = os.WriteFile(c.GetCertificateKeyPath(),
 		c.Resource.PrivateKey, 0644)
 

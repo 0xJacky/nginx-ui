@@ -2,7 +2,7 @@
 Webauthn is a web standard for secure authentication. It allows users to log in to websites using biometrics, mobile devices, and FIDO security keys. 
 Webauthn is a passwordless authentication method that provides a secure and easy-to-use alternative to passwords.
 
-Since `v2.0.0-beta.34`, Nginx UI has supported Webauthn passkey as a login and 2FA method.
+Since `v2.0.0-beta.34`, PrimeWaf has supported Webauthn passkey as a login and 2FA method.
 
 ## Passkey
 Passkeys are webauthn credentials that validate your identity using touch, facial recognition, a device password, or a PIN. They can be used as a password replacement or as a 2FA method.
@@ -10,7 +10,7 @@ Passkeys are webauthn credentials that validate your identity using touch, facia
 ## Configurations
 To ensure security, Webauthn configuration cannot be added through the UI.
 
-Please manually configure the following in the app.ini configuration file and restart Nginx UI.
+Please manually configure the following in the app.ini configuration file and restart PrimeWaf.
 
 ### RPDisplayName
 - Type: `string`

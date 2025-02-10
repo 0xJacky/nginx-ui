@@ -25,7 +25,7 @@ const members = [
 ]
 </script>
 
-# What is Nginx UI?
+# What is PrimeWaf?
 
 ![Dashboard](/assets/dashboard_en.png)
 
@@ -35,11 +35,11 @@ Just want to try it out? Skip to the [Quickstart](./getting-started).
 
 </div>
 
-Nginx UI is a comprehensive web-based interface designed to simplify the management and configuration of Nginx servers.
+PrimeWaf is a comprehensive web-based interface designed to simplify the management and configuration of Nginx servers.
 It offers real-time server statistics, AI-powered ChatGPT assistance, one-click deployment, automatic renewal of Let's
-Encrypt certificates, and user-friendly editing tools for website configurations. Additionally, Nginx UI provides
+Encrypt certificates, and user-friendly editing tools for website configurations. Additionally, PrimeWaf provides
 features such as online access to Nginx logs, automatic testing and reloading of configuration files, a web terminal,
-dark mode, and responsive web design. Built with Go and Vue, Nginx UI ensures a seamless and efficient experience for
+dark mode, and responsive web design. Built with Go and Vue, PrimeWaf ensures a seamless and efficient experience for
 managing your Nginx server.
 
 ## Our Team
@@ -62,7 +62,7 @@ managing your Nginx server.
 
 ## Available Platforms
 
-Nginx UI is available on the following platforms:
+PrimeWaf is available on the following platforms:
 
 - macOS 11 Big Sur and later (amd64 / arm64)
 - Linux 2.6.23 and later (x86 / amd64 / arm64 / armv5 / armv6 / armv7)

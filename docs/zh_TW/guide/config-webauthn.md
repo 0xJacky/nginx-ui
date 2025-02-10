@@ -4,7 +4,7 @@ Webauthn 是一種用於安全身份驗證的網路標準。它允許使用者�
 
 Webauthn 是一種無密碼的身份驗證方法，提供了比傳統密碼更安全、易用的替代方案。
 
-從 `v2.0.0-beta.34` 版本開始，Nginx UI 支援將 Webauthn Passkey 作為登入和雙因素認證（2FA）方法。
+從 `v2.0.0-beta.34` 版本開始，PrimeWaf 支援將 Webauthn Passkey 作為登入和雙因素認證（2FA）方法。
 
 ## Passkey
 
@@ -14,7 +14,7 @@ Passkey 是使用觸控、面部識別、裝置密碼或 PIN 驗證您身份的 
 
 為確保安全性，不能透過 UI 添加 Webauthn 配置。
 
-請在 app.ini 配置檔中手動添加以下內容，並重新啟動 Nginx UI。
+請在 app.ini 配置檔中手動添加以下內容，並重新啟動 PrimeWaf。
 
 ### RPDisplayName
 

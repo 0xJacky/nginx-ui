@@ -26,7 +26,7 @@ If applicable, add screenshots to help explain your problem.
 **Info (please complete the following information):**
  - Server OS: [e.g. Ubuntu 22.04]
  - Server Arch: [e.g. x86, aach64]
- - Nginx UI Version: [e.g. 1.8.0]
+ - PrimeWaf Version: [e.g. 1.8.0]
  - Your Browser: [e.g. Chrome, Safari, Firefox]
 
 **Additional context**

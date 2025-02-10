@@ -25,7 +25,7 @@ const members = [
 ]
 </script>
 
-# 何为 Nginx UI?
+# 何为 PrimeWaf?
 
 ![Dashboard](/assets/dashboard_zh_CN.png)
 
@@ -35,9 +35,9 @@ const members = [
 
 </div>
 
-Nginx UI 是一个全新的 Nginx 网络管理界面，旨在简化 Nginx 服务器的管理和配置。它提供实时服务器统计数据、ChatGPT
-助手、一键部署、Let's Encrypt 证书的自动续签以及用户友好的网站配置编辑工具。此外，Nginx UI 还提供了在线访问 Nginx
-日志、配置文件的自动测试和重载、网络终端、深色模式和自适应网页设计等功能。Nginx UI 采用 Go 和 Vue 构建，确保在管理 Nginx
+PrimeWaf 是一个全新的 Nginx 网络管理界面，旨在简化 Nginx 服务器的管理和配置。它提供实时服务器统计数据、ChatGPT
+助手、一键部署、Let's Encrypt 证书的自动续签以及用户友好的网站配置编辑工具。此外，PrimeWaf 还提供了在线访问 Nginx
+日志、配置文件的自动测试和重载、网络终端、深色模式和自适应网页设计等功能。PrimeWaf 采用 Go 和 Vue 构建，确保在管理 Nginx
 服务器时提供无缝高效的体验。
 
 ## 我们的团队
@@ -59,7 +59,7 @@ Nginx UI 是一个全新的 Nginx 网络管理界面，旨在简化 Nginx 服务
 
 ## 可用平台
 
-Nginx UI 可在以下平台中使用：
+PrimeWaf 可在以下平台中使用：
 
 - macOS 11 Big Sur 及之后版本（amd64 / arm64）
 - Linux 2.6.23 及之后版本（x86 / amd64 / arm64 / armv5 / armv6 / armv7）

@@ -1,6 +1,6 @@
 # Config Template
 
-Nginx UI Template provides out-of-the-box configuration templates for users. In `NgxConfigEditor`, we offer a UI where users can quickly insert configurations from the template into the current configuration file.
+PrimeWaf Template provides out-of-the-box configuration templates for users. In `NgxConfigEditor`, we offer a UI where users can quickly insert configurations from the template into the current configuration file.
 In this document, we will describe the file format and syntax of it.
 
 The configuration templates are stored in `template/block`, and we welcome you to share your own configuration templates by open a [PR](https://github.com/0xJacky/nginx-ui/pulls).
@@ -11,12 +11,12 @@ Please note, you need to recompile the backend after modifying or adding new con
 
 ## File Format
 
-Nginx UI Template file consists of two parts: the file header and the actual Nginx configuration.
+PrimeWaf Template file consists of two parts: the file header and the actual Nginx configuration.
 
-Below is a configuration template for reverse proxy, which we will use as a basis to introduce the file format and related syntax of Nginx UI Template.
+Below is a configuration template for reverse proxy, which we will use as a basis to introduce the file format and related syntax of PrimeWaf Template.
 
 ```nginx configuration
-# Nginx UI Template Start
+# PrimeWaf Template Start
 name = "Reverse Proxy"
 author = "@0xJacky"
 description = { en = "Reverse Proxy Config", zh_CN = "反向代理配置"}
@@ -46,16 +46,16 @@ value = "127.0.0.1"
 type = "string"
 name = { en = "Port", zh_CN = "端口"}
 value = 9000
-# Nginx UI Template End
+# PrimeWaf Template End
 
-# Nginx UI Custom Start
+# PrimeWaf Custom Start
 {{- if .enableWebSocket }}
 map $http_upgrade $connection_upgrade {
     default upgrade;
     '' close;
 }
 {{- end }}
-# Nginx UI Custom End
+# PrimeWaf Custom End
 
 if ($host != $server_name) {
     return 404;
@@ -82,7 +82,7 @@ location / {
 
 ## File Header
 
-The file header should be placed between `# Nginx UI Template Start` and `# Nginx UI Template End`, and should follow the toml syntax.
+The file header should be placed between `# PrimeWaf Template Start` and `# PrimeWaf Template End`, and should follow the toml syntax.
 
 The file header includes the following fields:
 
@@ -99,7 +99,7 @@ The file header includes the following fields:
 Example:
 
 ```toml
-# Nginx UI Template Start
+# PrimeWaf Template Start
 name = "Reverse Proxy"
 author = "@0xJacky"
 description = { en = "Reverse Proxy Config", zh_CN = "反向代理配置"}
@@ -129,7 +129,7 @@ value = "127.0.0.1"
 type = "string"
 name = { en = "Port", zh_CN = "端口"}
 value = 9000
-# Nginx UI Template End
+# PrimeWaf Template End
 ```
 
 The name, author, and description will be displayed in the configuration list as a summary.
@@ -184,7 +184,7 @@ In addition to the variables defined in the template header, we also provide mac
 
 | Variable Name |        Description        |
 |:-------------:|:-------------------------:|
-|   HTTPPORT    |  Nginx UI listening port  |
+|   HTTPPORT    |  PrimeWaf listening port  |
 |  HTTP01PORT   | Port for HTTP01 Challenge |
 
 The variables above can be used directly in the configuration part without definition in the header.

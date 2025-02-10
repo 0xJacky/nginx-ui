@@ -8,11 +8,11 @@ export default async function loadTranslations(route: RouteLocationNormalizedLoa
     })
 
     if (route?.meta?.name)
-      document.title = `${route.meta.name?.()} | Nginx UI`
+      document.title = `${route.meta.name?.()} | PrimeWaf`
   }
 
   watch(() => route, () => {
     if (route?.meta?.name)
-      document.title = `${route.meta.name?.()} | Nginx UI`
+      document.title = `${route.meta.name?.()} | PrimeWaf`
   })
 }

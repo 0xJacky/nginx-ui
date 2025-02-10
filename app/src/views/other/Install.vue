@@ -72,120 +72,152 @@ function onSubmit() {
   })
 }
 </script>
-
 <template>
   <ALayout>
     <ALayoutContent>
-      <div class="login-container">
-        <div class="login-form">
-          <div class="project-title">
-            <h1>Nginx UI</h1>
-          </div>
-          <AForm id="components-form-install">
-            <AFormItem v-bind="validateInfos.email">
-              <AInput
-                v-model:value="modelRef.email"
-                :placeholder="$gettext('Email (*)')"
-              >
-                <template #prefix>
-                  <MailOutlined />
-                </template>
-              </AInput>
-            </AFormItem>
-            <AFormItem v-bind="validateInfos.username">
-              <AInput
-                v-model:value="modelRef.username"
-                :placeholder="$gettext('Username (*)')"
-              >
-                <template #prefix>
-                  <UserOutlined />
-                </template>
-              </AInput>
-            </AFormItem>
-            <AFormItem v-bind="validateInfos.password">
-              <AInputPassword
-                v-model:value="modelRef.password"
-                :placeholder="$gettext('Password (*)')"
-              >
-                <template #prefix>
-                  <LockOutlined />
-                </template>
-              </AInputPassword>
-            </AFormItem>
-            <AFormItem>
-              <AInput
-                v-bind="validateInfos.database"
-                v-model:value="modelRef.database"
-                :placeholder="$gettext('Database (Optional, default: database)')"
-              >
-                <template #prefix>
-                  <DatabaseOutlined />
-                </template>
-              </AInput>
-            </AFormItem>
-            <AFormItem>
-              <AButton
-                type="primary"
-                block
-                html-type="submit"
-                :loading="loading"
-                @click="onSubmit"
-              >
-                {{ $gettext('Install') }}
-              </AButton>
-            </AFormItem>
-          </AForm>
-          <div class="footer">
-            <p>Copyright © 2021 - {{ thisYear }} Nginx UI</p>
-            Language
-            <SetLanguage class="inline" />
-            <div class="flex justify-center mt-4">
-              <SwitchAppearance />
+      <div class="install-container">
+        <ACard class="install-card" :bordered="false">
+          <div class="install-form">
+            <div class="project-title">
+              <h1>PrimeWaf</h1>
+            </div>
+            <AForm id="components-form-install">
+              <AFormItem v-bind="validateInfos.email">
+                <AInput
+                  v-model:value="modelRef.email"
+                  :placeholder="$gettext('Email (*)')"
+                >
+                  <template #prefix>
+                    <MailOutlined />
+                  </template>
+                </AInput>
+              </AFormItem>
+              <AFormItem v-bind="validateInfos.username">
+                <AInput
+                  v-model:value="modelRef.username"
+                  :placeholder="$gettext('Username (*)')"
+                >
+                  <template #prefix>
+                    <UserOutlined />
+                  </template>
+                </AInput>
+              </AFormItem>
+              <AFormItem v-bind="validateInfos.password">
+                <AInputPassword
+                  v-model:value="modelRef.password"
+                  :placeholder="$gettext('Password (*)')"
+                >
+                  <template #prefix>
+                    <LockOutlined />
+                  </template>
+                </AInputPassword>
+              </AFormItem>
+              <AFormItem>
+                <AInput
+                  v-bind="validateInfos.database"
+                  v-model:value="modelRef.database"
+                  :placeholder="$gettext('Database (Optional, default: database)')"
+                >
+                  <template #prefix>
+                    <DatabaseOutlined />
+                  </template>
+                </AInput>
+              </AFormItem>
+              <AFormItem>
+                <AButton
+                  type="primary"
+                  block
+                  html-type="submit"
+                  :loading="loading"
+                  @click="onSubmit"
+                >
+                  {{ $gettext('Install') }}
+                </AButton>
+              </AFormItem>
+            </AForm>
+            <div class="footer">
+              <p>Copyright © 2021 - {{ thisYear }} PrimeWaf</p>
+              Language
+              <SetLanguage class="inline" />
+              <div class="flex justify-center mt-4">
+                <SwitchAppearance />
+              </div>
             </div>
           </div>
-        </div>
+        </ACard>
       </div>
     </ALayoutContent>
   </ALayout>
 </template>
 
 <style lang="less" scoped>
-.ant-layout-content {
-  background: #fff;
-}
-
-.dark .ant-layout-content {
-  background: transparent;
-}
-
-.login-container {
+.install-container {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 
-  .login-form {
-    max-width: 400px;
-    width: 80%;
+  .install-card {
+    max-width: 420px;
+    width: 90%;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+    
+    .install-form {
+      .project-title {
+        margin: 30px 0;
+        
+        h1 {
+          font-size: 42px;
+          font-weight: 300;
+          text-align: center;
+          background: linear-gradient(45deg, #2196F3, #00BCD4);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          letter-spacing: 1px;
+        }
+      }
 
-    .project-title {
-      margin: 50px;
+      :deep(.ant-input-affix-wrapper) {
+        border-radius: 8px;
+        height: 45px;
+      }
 
-      h1 {
-        font-size: 50px;
-        font-weight: 100;
+      :deep(.ant-btn) {
+        height: 45px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      .anticon {
+        color: #2196F3 !important;
+      }
+
+      .footer {
+        padding: 20px;
         text-align: center;
+        font-size: 14px;
+        color: #666;
       }
     }
+  }
+}
 
-    .anticon {
-      color: #a8a5a5 !important;
-    }
-
-    .footer {
-      padding: 30px;
-      text-align: center;
-      font-size: 14px;
+.dark {
+  .install-container {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%);
+    
+    .install-card {
+      background: rgba(30, 30, 30, 0.95);
     }
   }
 }

@@ -1,12 +1,12 @@
 # Casdoor
-本節介紹如何配置 Casdoor 作為 Nginx UI 的身份驗證提供程序，該功能由 @Jraaay 貢獻。
+本節介紹如何配置 Casdoor 作為 PrimeWaf 的身份驗證提供程序，該功能由 @Jraaay 貢獻。
 
-Casdoor 是一個強大的、全面的身份認證解決方案，支持 OAuth 2.0、SAML 2.0、LDAP、AD 和多種社交登錄方式。通過集成 Casdoor，Nginx UI 可以利用這些功能來提升安全性和用戶體驗。
+Casdoor 是一個強大的、全面的身份認證解決方案，支持 OAuth 2.0、SAML 2.0、LDAP、AD 和多種社交登錄方式。通過集成 Casdoor，PrimeWaf 可以利用這些功能來提升安全性和用戶體驗。
 
 ## Endpoint
 - 類型：`string`
 
-這是 Casdoor 服務器的 URL。您需要確保 Nginx UI 可以訪問此 URL。
+這是 Casdoor 服務器的 URL。您需要確保 PrimeWaf 可以訪問此 URL。
 
 ## ExternalUrl
 - 種類：`string`

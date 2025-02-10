@@ -87,12 +87,12 @@ passkey.get_config_status().then(r => {
             <p>{{ $gettext('You have not configured the settings of Webauthn, so you cannot add a passkey.') }}</p>
             <p>
               {{ $gettext('To ensure security, Webauthn configuration cannot be added through the UI. '
-                + 'Please manually configure the following in the app.ini configuration file and restart Nginx UI.') }}
+                + 'Please manually configure the following in the app.ini configuration file and restart PrimeWaf.') }}
             </p>
             <pre>[webauthn]
 # This is the display name
-RPDisplayName = Nginx UI
-# The domain name of Nginx UI
+RPDisplayName = PrimeWaf
+# The domain name of PrimeWaf
 RPID          = localhost
 # The list of origin addresses
 RPOrigins     = http://localhost:3002</pre>

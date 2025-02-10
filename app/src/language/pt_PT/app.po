@@ -1146,13 +1146,13 @@ msgid "Logrotate"
 msgstr "Logrotate"
 
 #: src/views/preference/LogrotateSettings.vue:12
-msgid "Logrotate, by default, is enabled in most mainstream Linux distributions for users who install Nginx UI on the host machine, so you don't need to modify the parameters on this page. For users who install Nginx UI using Docker containers, you can manually enable this option. The crontab task scheduler of Nginx UI will execute the logrotate command at the interval you set in minutes."
+msgid "Logrotate, by default, is enabled in most mainstream Linux distributions for users who install PrimeWaf on the host machine, so you don't need to modify the parameters on this page. For users who install PrimeWaf using Docker containers, you can manually enable this option. The crontab task scheduler of PrimeWaf will execute the logrotate command at the interval you set in minutes."
 msgstr ""
 "O Logrotate, por defeito, está activado na maioria das distribuições Linux "
-"convencionais para utilizadores que instalam o Nginx UI na máquina host, "
+"convencionais para utilizadores que instalam o PrimeWaf na máquina host, "
 "pelo que não necessita de modificar os parâmetros nesta página. Para os "
-"utilizadores que instalam o Nginx UI utilizando Docker containers, pode "
-"activar manualmente esta opção. O agendador de tarefas crontab do Nginx UI "
+"utilizadores que instalam o PrimeWaf utilizando Docker containers, pode "
+"activar manualmente esta opção. O agendador de tarefas crontab do PrimeWaf "
 "executará o comando logrotate no intervalo que definir em minutos."
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:54
@@ -1674,10 +1674,10 @@ msgid "Rename"
 msgstr "Renomear"
 
 #: src/components/Notification/config.ts:31
-msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade the remote Nginx UI to the latest version"
+msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade the remote PrimeWaf to the latest version"
 msgstr ""
 "Erro ao mudar o nome de %{orig_path} para %{new_path} no %{env_name}, por "
-"favor actualize a versão do Nginx UI para a mais recente"
+"favor actualize a versão do PrimeWaf para a mais recente"
 
 #: src/components/Notification/config.ts:35
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
@@ -1948,10 +1948,10 @@ msgid "Sync Certificate"
 msgstr "Sincronizar Certificado"
 
 #: src/components/Notification/cert.ts:12
-msgid "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the remote Nginx UI to the latest version"
+msgid "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the remote PrimeWaf to the latest version"
 msgstr ""
 "Sincronização do Certificado %{cert_name} para %{env_name} falhou, por favor "
-"actualize a versão remota do Nginx UI para a última versão"
+"actualize a versão remota do PrimeWaf para a última versão"
 
 #: src/components/Notification/cert.ts:16
 msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
@@ -1973,10 +1973,10 @@ msgid "Sync Certificate Success"
 msgstr "Certificado Sincronizado com Sucesso"
 
 #: src/components/Notification/config.ts:12
-msgid "Sync config %{cert_name} to %{env_name} failed, please upgrade the remote Nginx UI to the latest version"
+msgid "Sync config %{cert_name} to %{env_name} failed, please upgrade the remote PrimeWaf to the latest version"
 msgstr ""
 "Sincronização de configurações %{cert_name} para %{env_name} falhou, por "
-"favor actualize a versão remota do Nginx UI para a mais recente"
+"favor actualize a versão remota do PrimeWaf para a mais recente"
 
 #: src/components/Notification/config.ts:16
 msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
@@ -2064,10 +2064,10 @@ msgstr ""
 "seguro."
 
 #: src/views/dashboard/Environments.vue:148
-msgid "The remote Nginx UI version is not compatible with the local Nginx UI version. To avoid potential errors, please upgrade the remote Nginx UI to match the local version."
+msgid "The remote PrimeWaf version is not compatible with the local PrimeWaf version. To avoid potential errors, please upgrade the remote PrimeWaf to match the local version."
 msgstr ""
-"A versão remota do Nginx UI não é compatível com a versão local do Nginx UI. "
-"Para evitar possíveis erros, atualize a versão remota do Nginx UI para "
+"A versão remota do PrimeWaf não é compatível com a versão local do PrimeWaf. "
+"Para evitar possíveis erros, atualize a versão remota do PrimeWaf para "
 "corresponder à versão local."
 
 #: src/views/preference/BasicSettings.vue:120
@@ -2101,8 +2101,8 @@ msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Este item Auto Cert é inválido, por favor remova-o."
 
 #: src/views/certificate/CertificateEditor.vue:86
-msgid "This certificate is managed by Nginx UI"
-msgstr "Este certificado é gerido pelo Nginx UI"
+msgid "This certificate is managed by PrimeWaf"
+msgstr "Este certificado é gerido pelo PrimeWaf"
 
 #: src/views/certificate/CertificateEditor.vue:155
 #: src/views/certificate/CertificateEditor.vue:169
@@ -2115,9 +2115,9 @@ msgid "This field should not be empty"
 msgstr "Este campo não pode estar vazio"
 
 #: src/views/environment/BatchUpgrader.vue:184
-msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid "This will upgrade or reinstall the PrimeWaf on %{nodeNames} to %{version}."
 msgstr ""
-"Isto vai actualizar ou reinstalar o Nginx UI em %{nodeNames} para %{version}."
+"Isto vai actualizar ou reinstalar o PrimeWaf em %{nodeNames} para %{version}."
 
 #: src/views/preference/AuthSettings.vue:61
 #: src/views/preference/LogrotateSettings.vue:11
@@ -2195,8 +2195,8 @@ msgid "Upgrade"
 msgstr "Actualizar"
 
 #: src/views/environment/BatchUpgrader.vue:139
-msgid "Upgraded Nginx UI on %{node} successfully 🎉"
-msgstr "Nginx UI no %{node} actualizado com sucesso 🎉"
+msgid "Upgraded PrimeWaf on %{node} successfully 🎉"
+msgstr "PrimeWaf no %{node} actualizado com sucesso 🎉"
 
 #: src/language/constants.ts:29
 msgid "Upgraded successfully"
@@ -2204,8 +2204,8 @@ msgstr "Actualizado com sucesso"
 
 #: src/views/environment/BatchUpgrader.vue:90
 #: src/views/system/Upgrade.vue:79
-msgid "Upgrading Nginx UI, please wait..."
-msgstr "Actualizando Nginx UI, aguarde por favor..."
+msgid "Upgrading PrimeWaf, please wait..."
+msgstr "Actualizando PrimeWaf, aguarde por favor..."
 
 #: src/views/domain/ngx_conf/NgxUpstream.vue:170
 msgid "Upstream Name"
@@ -2315,5 +2315,5 @@ msgid "You are using the latest version"
 msgstr "Está a usar a última versão"
 
 #: src/views/system/Upgrade.vue:166
-msgid "You can check Nginx UI upgrade at this page."
-msgstr "Pode verificar a atualização do Nginx UI nesta página."
+msgid "You can check PrimeWaf upgrade at this page."
+msgstr "Pode verificar a atualização do PrimeWaf nesta página."

@@ -252,7 +252,7 @@ El puerto de escucha predeterminado es `9000` y el puerto de Desafío HTTP prede
 Si hay un conflicto de puertos, modifique manualmente `/usr/local/etc/nginx-ui/app.ini`,
 luego use `systemctl restart nginx-ui` para recargar el servicio de UI de Nginx.
 
-**Eliminar UI Nginx UI, excepto los archivos de configuración y la base de datos**
+**Eliminar UI PrimeWaf, excepto los archivos de configuración y la base de datos**
 
 ```shell
 bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove

@@ -85,7 +85,7 @@ async function performUpgrade() {
   progressPercent.value = 0
   logContainer.value!.innerHTML = ''
 
-  log($gettext('Upgrading Nginx UI, please wait...'))
+  log($gettext('Upgrading PrimeWaf, please wait...'))
 
   const nodesNum = nodes.value.length
 
@@ -134,7 +134,7 @@ async function performUpgrade() {
 
         progressPercent.value = 100 * ((i + 1) / nodesNum)
         if (!isFailed)
-          log($gettext('Upgraded Nginx UI on %{node} successfully 🎉', { node: nodes.value[i].name }))
+          log($gettext('Upgraded PrimeWaf on %{node} successfully 🎉', { node: nodes.value[i].name }))
 
         if (i + 1 === nodesNum) {
           progressStatus.value = 'success'
@@ -179,7 +179,7 @@ async function performUpgrade() {
         banner
       />
       <template v-else>
-        <p>{{ $gettext('This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}.', { nodeNames, version: data.name }) }}</p>
+        <p>{{ $gettext('This will upgrade or reinstall the PrimeWaf on %{nodeNames} to %{version}.', { nodeNames, version: data.name }) }}</p>
 
         <AAlert
           v-if="dryRun"

@@ -1,6 +1,10 @@
 package cert
 
 import (
+	"log"
+	"os"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
@@ -13,9 +17,6 @@ import (
 	dnsproviders "github.com/go-acme/lego/v4/providers/dns"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy/logger"
-	"log"
-	"os"
-	"time"
 )
 
 const (
@@ -41,13 +42,13 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 	// Hijack the (logger) of lego
 	legolog.Logger = l
 
-	l.Println("[INFO] [Nginx UI] Preparing lego configurations")
+	l.Println("[INFO] [PrimeWaf] Preparing lego configurations")
 	user, err := payload.GetACMEUser()
 	if err != nil {
 		errChan <- errors.Wrap(err, "issue cert get acme user error")
 		return
 	}
-	l.Printf("[INFO] [Nginx UI] ACME User: %s, Email: %s, CA Dir: %s\n", user.Name, user.Email, user.CADir)
+	l.Printf("[INFO] [PrimeWaf] ACME User: %s, Email: %s, CA Dir: %s\n", user.Name, user.Email, user.CADir)
 
 	// Start a goroutine to fetch and process logs from channel
 	go func() {
@@ -72,7 +73,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 
 	config.Certificate.KeyType = payload.GetKeyType()
 
-	l.Println("[INFO] [Nginx UI] Creating client facilitates communication with the CA server")
+	l.Println("[INFO] [PrimeWaf] Creating client facilitates communication with the CA server")
 	// A client facilitates communication with the CA server.
 	client, err := lego.NewClient(config)
 	if err != nil {
@@ -84,7 +85,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 	default:
 		fallthrough
 	case HTTP01:
-		l.Println("[INFO] [Nginx UI] Setting HTTP01 challenge provider")
+		l.Println("[INFO] [PrimeWaf] Setting HTTP01 challenge provider")
 		err = client.Challenge.SetHTTP01Provider(
 			http01.NewProviderServer("",
 				settings.CertSettings.HTTPChallengePort,
@@ -98,14 +99,14 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 			return
 		}
 
-		l.Println("[INFO] [Nginx UI] Setting DNS01 challenge provider")
+		l.Println("[INFO] [PrimeWaf] Setting DNS01 challenge provider")
 		code := dnsCredential.Config.Code
 		pConfig, ok := dns.GetProvider(code)
 		if !ok {
 			errChan <- errors.Wrap(err, "provider not found")
 			return
 		}
-		l.Println("[INFO] [Nginx UI] Setting environment variables")
+		l.Println("[INFO] [PrimeWaf] Setting environment variables")
 		if dnsCredential.Config.Configuration != nil {
 			err = pConfig.SetEnv(*dnsCredential.Config.Configuration)
 			if err != nil {
@@ -115,7 +116,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 			}
 			defer func() {
 				pConfig.CleanEnv()
-				l.Println("[INFO] [Nginx UI] Environment variables cleaned")
+				l.Println("[INFO] [PrimeWaf] Environment variables cleaned")
 			}()
 			provider, err := dnsproviders.NewDNSChallengeProviderByName(code)
 			if err != nil {
@@ -162,11 +163,11 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		obtain(payload, client, l, errChan)
 	}
 
-	l.Println("[INFO] [Nginx UI] Reloading nginx")
+	l.Println("[INFO] [PrimeWaf] Reloading nginx")
 
 	nginx.Reload()
 
-	l.Println("[INFO] [Nginx UI] Finished")
+	l.Println("[INFO] [PrimeWaf] Finished")
 
 	// Wait log to be written
 	time.Sleep(2 * time.Second)

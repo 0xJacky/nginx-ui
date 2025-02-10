@@ -12,9 +12,9 @@ IPWhiteList = 10.0.0.2
 IPWhiteList = 2001:0000:130F:0000:0000:09C0:876A:130B
 ```
 
-By default, if you do not set the `IPWhiteList`, all IP addresses are allowed to access the Nginx UI.
+By default, if you do not set the `IPWhiteList`, all IP addresses are allowed to access the PrimeWaf.
 
-Once you set the `IPWhiteList`, only the users from IP addresses in the list and `127.0.0.1` can access the Nginx UI,
+Once you set the `IPWhiteList`, only the users from IP addresses in the list and `127.0.0.1` can access the PrimeWaf,
 others will receive a `403 Forbidden` error.
 
 ## BanThresholdMinutes

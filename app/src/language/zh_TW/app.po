@@ -1365,15 +1365,15 @@ msgstr "Logrotate"
 #: src/views/preference/LogrotateSettings.vue:12
 msgid ""
 "Logrotate, by default, is enabled in most mainstream Linux distributions for "
-"users who install Nginx UI on the host machine, so you don't need to modify "
-"the parameters on this page. For users who install Nginx UI using Docker "
+"users who install PrimeWaf on the host machine, so you don't need to modify "
+"the parameters on this page. For users who install PrimeWaf using Docker "
 "containers, you can manually enable this option. The crontab task scheduler "
-"of Nginx UI will execute the logrotate command at the interval you set in "
+"of PrimeWaf will execute the logrotate command at the interval you set in "
 "minutes."
 msgstr ""
-"預設情況下，對於在主機上安裝 Nginx UI 的用戶，大多數主流 Linux 發行版都啟用"
-"了 logrotate，因此您無需修改此頁面的參數。對於使用 Docker 容器安裝 Nginx UI "
-"的用戶，您可以手動啟用此選項。Nginx UI 的 crontab 任務調度器將按照您設定的分"
+"預設情況下，對於在主機上安裝 PrimeWaf 的用戶，大多數主流 Linux 發行版都啟用"
+"了 logrotate，因此您無需修改此頁面的參數。對於使用 Docker 容器安裝 PrimeWaf "
+"的用戶，您可以手動啟用此選項。PrimeWaf 的 crontab 任務調度器將按照您設定的分"
 "鐘間隔執行 logrotate 命令。"
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:53
@@ -1883,9 +1883,9 @@ msgstr "請至少選擇一個節點！"
 #: src/components/Notification/config.ts:80
 #: src/components/Notification/config.ts:93
 #, fuzzy
-msgid "Please upgrade the remote Nginx UI to the latest version"
+msgid "Please upgrade the remote PrimeWaf to the latest version"
 msgstr ""
-"同步配置 %{cert_name} 到 %{env_name} 失敗，請將遠程 Nginx UI 升級到最新版本"
+"同步配置 %{cert_name} 到 %{env_name} 失敗，請將遠程 PrimeWaf 升級到最新版本"
 
 #: src/views/environment/BatchUpgrader.vue:167
 #: src/views/environment/BatchUpgrader.vue:220 src/views/system/Upgrade.vue:194
@@ -2409,7 +2409,7 @@ msgstr "成功"
 #: src/views/system/SelfCheck/SelfCheck.vue:78
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
+"your PrimeWaf is being used via an Nginx reverse proxy, please refer to this "
 "link to write the corresponding configuration file: https://nginxui.com/"
 "guide/nginx-proxy-example.html"
 msgstr ""
@@ -2438,9 +2438,9 @@ msgstr "同步憑證"
 #: src/components/Notification/cert.ts:11
 msgid ""
 "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
-"remote Nginx UI to the latest version"
+"remote PrimeWaf to the latest version"
 msgstr ""
-"同步憑證 %{cert_name} 到 %{env_name} 失敗，請將遠端 Nginx UI 升級到最新版本"
+"同步憑證 %{cert_name} 到 %{env_name} 失敗，請將遠端 PrimeWaf 升級到最新版本"
 
 #: src/components/Notification/cert.ts:14
 msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
@@ -2587,12 +2587,12 @@ msgstr "恢復碼僅顯示一次，請將其保存在安全的地方。"
 
 #: src/views/dashboard/Environments.vue:148
 msgid ""
-"The remote Nginx UI version is not compatible with the local Nginx UI "
-"version. To avoid potential errors, please upgrade the remote Nginx UI to "
+"The remote PrimeWaf version is not compatible with the local PrimeWaf "
+"version. To avoid potential errors, please upgrade the remote PrimeWaf to "
 "match the local version."
 msgstr ""
-"遠端 Nginx UI 版本與本地 Nginx UI 版本不兼容。為避免潛在錯誤，請升級遠端 "
-"Nginx UI 以匹配本地版本。"
+"遠端 PrimeWaf 版本與本地 PrimeWaf 版本不兼容。為避免潛在錯誤，請升級遠端 "
+"PrimeWaf 以匹配本地版本。"
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:44
 msgid ""
@@ -2619,8 +2619,8 @@ msgid "This Auto Cert item is invalid, please remove it."
 msgstr "此自動憑證項目無效，請將其移除。"
 
 #: src/views/certificate/CertificateEditor.vue:92
-msgid "This certificate is managed by Nginx UI"
-msgstr "此憑證由 Nginx UI 管理"
+msgid "This certificate is managed by PrimeWaf"
+msgstr "此憑證由 PrimeWaf 管理"
 
 #: src/views/certificate/CertificateEditor.vue:163
 #: src/views/certificate/CertificateEditor.vue:177
@@ -2655,8 +2655,8 @@ msgstr ""
 
 #: src/views/environment/BatchUpgrader.vue:182
 msgid ""
-"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
-msgstr "這將在 %{nodeNames} 上升級或重新安裝 Nginx UI 到 %{version}。"
+"This will upgrade or reinstall the PrimeWaf on %{nodeNames} to %{version}."
+msgstr "這將在 %{nodeNames} 上升級或重新安裝 PrimeWaf 到 %{version}。"
 
 #: src/views/preference/AuthSettings.vue:96
 msgid "Throttle"
@@ -2683,7 +2683,7 @@ msgstr ""
 msgid ""
 "To ensure security, Webauthn configuration cannot be added through the UI. "
 "Please manually configure the following in the app.ini configuration file "
-"and restart Nginx UI."
+"and restart PrimeWaf."
 msgstr ""
 
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:45
@@ -2762,16 +2762,16 @@ msgid "Upgrade"
 msgstr "升級"
 
 #: src/views/environment/BatchUpgrader.vue:137
-msgid "Upgraded Nginx UI on %{node} successfully 🎉"
-msgstr "成功升級 %{node} 上的 Nginx UI 🎉"
+msgid "Upgraded PrimeWaf on %{node} successfully 🎉"
+msgstr "成功升級 %{node} 上的 PrimeWaf 🎉"
 
 #: src/language/constants.ts:29
 msgid "Upgraded successfully"
 msgstr "升級成功"
 
 #: src/views/environment/BatchUpgrader.vue:88 src/views/system/Upgrade.vue:77
-msgid "Upgrading Nginx UI, please wait..."
-msgstr "正在升級 Nginx UI，請稍候..."
+msgid "Upgrading PrimeWaf, please wait..."
+msgstr "正在升級 PrimeWaf，請稍候..."
 
 #: src/views/site/ngx_conf/NgxUpstream.vue:172
 msgid "Upstream Name"
@@ -2872,7 +2872,7 @@ msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:83
 msgid ""
-"When Enabled, Nginx UI will automatically re-register users upon startup. "
+"When Enabled, PrimeWaf will automatically re-register users upon startup. "
 "Generally, do not enable this unless you are in a dev environment and using "
 "Pebble as CA."
 msgstr ""
@@ -2908,8 +2908,8 @@ msgid "You are using the latest version"
 msgstr "您正在使用最新版本"
 
 #: src/views/system/Upgrade.vue:164
-msgid "You can check Nginx UI upgrade at this page."
-msgstr "您可以在此頁面檢查 Nginx UI 的升級。"
+msgid "You can check PrimeWaf upgrade at this page."
+msgstr "您可以在此頁面檢查 PrimeWaf 的升級。"
 
 #: src/views/preference/components/AddPasskey.vue:87
 msgid ""
@@ -2941,7 +2941,7 @@ msgstr ""
 
 #~ msgid ""
 #~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
-#~ "the remote Nginx UI to the latest version"
+#~ "the remote PrimeWaf to the latest version"
 #~ msgstr ""
 #~ "將 %{orig_path} 重命名為 %{new_path} 在 %{env_name} 失敗，請將遠程 Nginx "
 #~ "UI 升級到最新版本"

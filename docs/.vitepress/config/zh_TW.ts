@@ -20,7 +20,7 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           text: '介紹',
           collapsed: false,
           items: [
-            { text: '何為 Nginx UI?', link: '/zh_TW/guide/about' },
+            { text: '何為 PrimeWaf?', link: '/zh_TW/guide/about' },
             { text: '即刻開始', link: '/zh_TW/guide/getting-started' },
             { text: '安裝指令碼', link: '/zh_TW/guide/install-script-linux' }
           ]

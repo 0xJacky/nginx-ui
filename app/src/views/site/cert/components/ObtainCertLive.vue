@@ -56,7 +56,7 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
     ws.onmessage = async m => {
       const r = JSON.parse(m.data)
 
-      const regex = /\[Nginx UI\] (.*)/
+      const regex = /\[PrimeWaf\] (.*)/
 
       const matches = r.message.match(regex)
 
@@ -71,8 +71,8 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
       // eslint-disable-next-line sonarjs/no-small-switch
       switch (r.status) {
         case 'info':
-          // If it is a nginx ui log, increase the percent.
-          if (r.message.includes('[Nginx UI]'))
+          // If it is a PrimeWaf log, increase the percent.
+          if (r.message.includes('[PrimeWaf]'))
             progressPercent.value += 8
 
           break

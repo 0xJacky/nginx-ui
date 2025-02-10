@@ -1,22 +1,22 @@
 # Server
 
-The server section of the Nginx UI configuration deals with various settings that control the behavior and operation of
-the Nginx UI server. In this section, we will discuss the available options, their default values, and their purpose.
+The server section of the PrimeWaf configuration deals with various settings that control the behavior and operation of
+the PrimeWaf server. In this section, we will discuss the available options, their default values, and their purpose.
 
 ## Host
 - Type: `string`
 - Version: `>= v2.0.0-beta.37`
 - Default：`0.0.0.0`
 
-The hostname on which the Nginx UI server listens for incoming HTTP requests.
-Changing the default hostname can be useful for improving the security of Nginx UI.
+The hostname on which the PrimeWaf server listens for incoming HTTP requests.
+Changing the default hostname can be useful for improving the security of PrimeWaf.
 
 ## Port
 - Type: `uint`
 - Version: `>= v2.0.0-beta.37`
 - Default: `9000`
 
-This option is used to configure the port on which the Nginx UI server listens for incoming
+This option is used to configure the port on which the PrimeWaf server listens for incoming
 HTTP requests. Changing the default port can be useful for avoiding port conflicts or enhancing security.
 
 ## RunMode
@@ -25,13 +25,13 @@ HTTP requests. Changing the default port can be useful for avoiding port conflic
 - Supported value: `release`，`debug`
 - Default: `debug`
 
-This option is used to configure the running mode of the Nginx UI server, which mainly affects the level of log printing.
+This option is used to configure the running mode of the PrimeWaf server, which mainly affects the level of log printing.
 
-The log level of Nginx UI is divided into 6 levels: `Debug`, `Info`, `Warn`, `Error`, `Panic` and `Fatal`. These log levels increase in severity.
+The log level of PrimeWaf is divided into 6 levels: `Debug`, `Info`, `Warn`, `Error`, `Panic` and `Fatal`. These log levels increase in severity.
 
-When using the `debug` mode, Nginx UI will print SQL and its execution time and caller on the console, and the log of `Debug` level or higher will also be printed.
+When using the `debug` mode, PrimeWaf will print SQL and its execution time and caller on the console, and the log of `Debug` level or higher will also be printed.
 
-When using the `release` mode, Nginx UI will not print the execution time and caller of SQL on the console, and only the log of `Info` level or higher will be printed.
+When using the `release` mode, PrimeWaf will not print the execution time and caller of SQL on the console, and only the log of `Info` level or higher will be printed.
 
 ## HttpHost
 - Type: `string`
@@ -41,8 +41,8 @@ When using the `release` mode, Nginx UI will not print the execution time and ca
 Deprecated in `v2.0.0-beta.37`, please use `Host` instead.
 :::
 
-The hostname on which the Nginx UI server listens for incoming HTTP requests.
-Changing the default hostname can be useful for improving the security of Nginx UI.
+The hostname on which the PrimeWaf server listens for incoming HTTP requests.
+Changing the default hostname can be useful for improving the security of PrimeWaf.
 
 ## HttpPort
 - Type: `int`
@@ -52,7 +52,7 @@ Changing the default hostname can be useful for improving the security of Nginx 
 Deprecated in `v2.0.0-beta.37`, please use `Port` instead.
 :::
 
-This option is used to configure the port on which the Nginx UI server listens for incoming
+This option is used to configure the port on which the PrimeWaf server listens for incoming
 HTTP requests. Changing the default port can be useful for avoiding port conflicts or enhancing security.
 
 
@@ -63,11 +63,11 @@ HTTP requests. Changing the default port can be useful for avoiding port conflic
 Deprecated in `v2.0.0-beta.37`, please use `App.JwtSecret` instead.
 :::
 
-This option is used to configure the key used by the Nginx UI server to generate JWT.
+This option is used to configure the key used by the PrimeWaf server to generate JWT.
 
 JWT is a standard for verifying user identity. It can generate a token after the user logs in, and then use the token to verify the user's identity in subsequent requests.
 
-If you use the one-click installation script to deploy Nginx UI, the script will generate a UUID value and set it as the value of this option.
+If you use the one-click installation script to deploy PrimeWaf, the script will generate a UUID value and set it as the value of this option.
 
 ## NodeSecret
 - Type: `string`
@@ -77,8 +77,8 @@ If you use the one-click installation script to deploy Nginx UI, the script will
 Deprecated in `v2.0.0-beta.37`, please use `Node.Secret` instead.
 :::
 
-This secret is used to authenticate the communication between the Nginx UI servers.
-Also, you can use this secret to access the Nginx UI API without a password.
+This secret is used to authenticate the communication between the PrimeWaf servers.
+Also, you can use this secret to access the PrimeWaf API without a password.
 
 ## HTTPChallengePort
 
@@ -112,7 +112,7 @@ Let's Encrypt will use your email address to notify you of the expiration date o
 Deprecated in `v2.0.0-beta.37`, please use `Database.Name` instead.
 :::
 
-This option is used to set the name of the sqlite database used by Nginx UI to store its data.
+This option is used to set the name of the sqlite database used by PrimeWaf to store its data.
 
 ## StartCmd
 
@@ -140,7 +140,7 @@ terminal, please set it to `bash` or `zsh` (if installed).
 Deprecated in `v2.0.0-beta.37`, please use `App.PageSize` instead.
 :::
 
-This option is used to set the page size of list pagination in the Nginx UI. Adjusting the page size can help in
+This option is used to set the page size of list pagination in the PrimeWaf. Adjusting the page size can help in
 managing large amounts of data more effectively, but a too large number can increase the load on the server.
 
 ## CADir
@@ -182,7 +182,7 @@ Deprecated in `v2.0.0-beta.37`, please use `Cert.CertRenewalInterval` instead.
 :::
 
 This option is used to set the automatic renewal interval of the Let's Encrypt certificate.
-By default, Nginx UI will automatically renew the certificate every 7 days.
+By default, PrimeWaf will automatically renew the certificate every 7 days.
 
 ## RecursiveNameservers
 
@@ -195,8 +195,8 @@ Deprecated in `v2.0.0-beta.37`, please use `Cert.RecursiveNameservers` instead.
 :::
 
 This option is used to set the recursive nameservers used by
-Nginx UI in the DNS challenge step of applying for a certificate.
-If this option is not configured, Nginx UI will use the nameservers settings of the operating system.
+PrimeWaf in the DNS challenge step of applying for a certificate.
+If this option is not configured, PrimeWaf will use the nameservers settings of the operating system.
 
 ## SkipInstallation
 
@@ -208,15 +208,15 @@ If this option is not configured, Nginx UI will use the nameservers settings of 
 Deprecated in `v2.0.0-beta.37`, please use `Node.SkipInstallation` instead.
 :::
 
-You can skip the installation of the Nginx UI server by setting this option to `true`.
-This is useful when you want to deploy Nginx UI to multiple servers with
+You can skip the installation of the PrimeWaf server by setting this option to `true`.
+This is useful when you want to deploy PrimeWaf to multiple servers with
 the same configuration file or environment variables.
 
 By default, if you enabled the skip installation mode without setting the `JWTSecret` and `NodeSecret` options
-in the server section, Nginx UI will generate a random UUID value for these two options.
+in the server section, PrimeWaf will generate a random UUID value for these two options.
 
 Plus, if you don't set the `Email` option also in the server section,
-Nginx UI will not create a system initial acme user, this means you can't apply for an SSL certificate in this server.
+PrimeWaf will not create a system initial acme user, this means you can't apply for an SSL certificate in this server.
 
 ## Name
 
@@ -238,4 +238,4 @@ Use this option to customize the name of local server to be displayed in the env
 Deprecated in `v2.0.0-beta.37`, please use `Http.InsecureSkipVerify` instead.
 :::
 
-This option is used to skip the verification of the certificate of servers when Nginx UI sends requests to them.
+This option is used to skip the verification of the certificate of servers when PrimeWaf sends requests to them.

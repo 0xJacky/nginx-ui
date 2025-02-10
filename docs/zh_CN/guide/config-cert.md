@@ -17,7 +17,7 @@
 - 类型: `[]string`
 - 示例: `8.8.8.8:53,1.1.1.1:53`
 
-此选项用于设置 Nginx UI 在申请证书的 DNS 挑战步骤所使用的递归域名服务器。在不配置此项目的情况下，Nginx UI 使用操作系统的域名服务器设置。
+此选项用于设置 PrimeWaf 在申请证书的 DNS 挑战步骤所使用的递归域名服务器。在不配置此项目的情况下，PrimeWaf 使用操作系统的域名服务器设置。
 
 ## CertRenewalInterval
 
@@ -25,7 +25,7 @@
 - 类型: `int`
 - 默认值: `7`
 
-此选项用于设置 Let's Encrypt 证书的自动续签间隔。默认情况下，Nginx UI 每隔 7 天会自动续签证书。
+此选项用于设置 Let's Encrypt 证书的自动续签间隔。默认情况下，PrimeWaf 每隔 7 天会自动续签证书。
 
 ## HTTPChallengePort
 

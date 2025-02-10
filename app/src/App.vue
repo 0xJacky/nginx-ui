@@ -98,6 +98,7 @@ loadTranslations(route)
 .ant-layout-header {
   padding: 0 !important;
   background-color: #fff !important;
+  // background: linear-gradient(90deg, #D26513 0%, #FAA018 50%, #B9731E 100%) !important;
 }
 
 .ant-layout-sider {

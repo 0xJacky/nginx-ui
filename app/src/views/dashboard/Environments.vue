@@ -4,7 +4,7 @@ import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { Ref } from 'vue'
 import analytic from '@/api/analytic'
 import environment from '@/api/environment'
-import logo from '@/assets/img/logo.png'
+import logo from '@/assets/img/logo-primadigi.png'
 import pulse from '@/assets/svg/pulse.svg?component'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
@@ -145,8 +145,8 @@ const visible = computed(() => {
                   placement="topLeft"
                 >
                   <template #title>
-                    {{ $gettext('The remote Nginx UI version is not compatible with the local Nginx UI version. '
-                      + 'To avoid potential errors, please upgrade the remote Nginx UI to match the local version.') }}
+                    {{ $gettext('The remote PrimeWaf version is not compatible with the local PrimeWaf version. '
+                      + 'To avoid potential errors, please upgrade the remote PrimeWaf to match the local version.') }}
                   </template>
                   <AButton
                     ghost

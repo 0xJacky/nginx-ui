@@ -1,6 +1,6 @@
 # 配置模板
 
-Nginx UI Template 提供了一種開箱即用的配置模板機制。在 NgxConfigEditor 中，我們設計了一個可視化界面，使使用者能夠方便地將模板中的配置插入到當前的配置文件中。
+PrimeWaf Template 提供了一種開箱即用的配置模板機制。在 NgxConfigEditor 中，我們設計了一個可視化界面，使使用者能夠方便地將模板中的配置插入到當前的配置文件中。
 在本指南中，我們將介紹這種配置模板的文件格式和語法規則。
 配置模板文件存儲在 `template/block` 目錄中，我們歡迎並期待您通過提交 [PR](https://github.com/0xJacky/nginx-ui/pulls) 的形式分享您編寫的配置模板。
 
@@ -10,12 +10,12 @@ Nginx UI Template 提供了一種開箱即用的配置模板機制。在 NgxConf
 
 ## 文件格式
 
-Nginx UI Template 文件由兩部分組成：文件頭部以及具體的 Nginx 配置。
+PrimeWaf Template 文件由兩部分組成：文件頭部以及具體的 Nginx 配置。
 
-以下是一個關於反向代理的配置模板，我們將以此模板為基礎向您介紹 Nginx UI Template 的文件格式及相關語法。
+以下是一個關於反向代理的配置模板，我們將以此模板為基礎向您介紹 PrimeWaf Template 的文件格式及相關語法。
 
 ```nginx configuration
-# Nginx UI Template Start
+# PrimeWaf Template Start
 name = "Reverse Proxy"
 author = "@0xJacky"
 description = { en = "Reverse Proxy Config", zh_CN = "反向代理配置"}
@@ -45,16 +45,16 @@ value = "127.0.0.1"
 type = "string"
 name = { en = "Port", zh_CN = "端口"}
 value = 9000
-# Nginx UI Template End
+# PrimeWaf Template End
 
-# Nginx UI Custom Start
+# PrimeWaf Custom Start
 {{- if .enableWebSocket }}
 map $http_upgrade $connection_upgrade {
     default upgrade;
     '' close;
 }
 {{- end }}
-# Nginx UI Custom End
+# PrimeWaf Custom End
 
 if ($host != $server_name) {
     return 404;
@@ -81,7 +81,7 @@ location / {
 
 ## 文件頭部
 
-文件頭部應包含在 `# Nginx UI Template Start` 和 `# Nginx UI Template End` 之間，並遵循 toml 語法。
+文件頭部應包含在 `# PrimeWaf Template Start` 和 `# PrimeWaf Template End` 之間，並遵循 toml 語法。
 
 文件頭部包含以下欄位：
 
@@ -98,7 +98,7 @@ location / {
 示例如下：
 
 ```toml
-# Nginx UI Template Start
+# PrimeWaf Template Start
 name = "Reverse Proxy"
 author = "@0xJacky"
 description = { en = "Reverse Proxy Config", zh_CN = "反向代理配置"}
@@ -128,7 +128,7 @@ value = "127.0.0.1"
 type = "string"
 name = { en = "Port", zh_CN = "端口"}
 value = 9000
-# Nginx UI Template End
+# PrimeWaf Template End
 ```
 
 其中，名稱、作者及描述將會以摘要的形式在配置列表中顯示。
@@ -183,7 +183,7 @@ location / {
 
 |    變量名     |           描述            |
 |:----------:|:-----------------------:|
-|  HTTPPORT  |     Nginx UI 監聽的端口      |
+|  HTTPPORT  |     PrimeWaf 監聽的端口      |
 | HTTP01PORT | 用於 HTTP01 Challenge 的端口 |
 
 上述變量可以直接在配置部分使用，無需在頭部定義。

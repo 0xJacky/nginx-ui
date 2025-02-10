@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import logo from '@/assets/img/logo.png'
+import logo from '@/assets/img/logo-primadigi.png'
 </script>
 
 <template>
@@ -9,7 +9,7 @@ import logo from '@/assets/img/logo.png'
       alt="logo"
     >
     <p class="text">
-      Nginx UI
+      PrimeWaf
     </p>
   </div>
 </template>
@@ -33,7 +33,9 @@ import logo from '@/assets/img/logo.png'
   background-color: #ffffff;
 
   img {
-    height: 46px;
+    height: 22px;
+      width: auto;
+      margin-right: 8px;
   }
 
   p.text {

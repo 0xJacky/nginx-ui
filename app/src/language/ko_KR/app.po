@@ -1389,16 +1389,16 @@ msgstr "로그관리"
 #: src/views/preference/LogrotateSettings.vue:12
 msgid ""
 "Logrotate, by default, is enabled in most mainstream Linux distributions for "
-"users who install Nginx UI on the host machine, so you don't need to modify "
-"the parameters on this page. For users who install Nginx UI using Docker "
+"users who install PrimeWaf on the host machine, so you don't need to modify "
+"the parameters on this page. For users who install PrimeWaf using Docker "
 "containers, you can manually enable this option. The crontab task scheduler "
-"of Nginx UI will execute the logrotate command at the interval you set in "
+"of PrimeWaf will execute the logrotate command at the interval you set in "
 "minutes."
 msgstr ""
-"Logrotate는 대부분의 주류 리눅스 배포판에서Nginx UI를 호스트 머신에 설치하는 "
+"Logrotate는 대부분의 주류 리눅스 배포판에서PrimeWaf를 호스트 머신에 설치하는 "
 "사용자에게 기본적으로 활성화되어 있으므로이 페이지의 매개 변수를 수정할 필요"
-"가 없습니다. 도커 컨테이너를 사용하여 Nginx UI를 설치하는사용자는이 옵션을 수"
-"동으로 활성화할 수 있습니다. Nginx UI의 크론탭 작업 스케줄러는설정한 간격 "
+"가 없습니다. 도커 컨테이너를 사용하여 PrimeWaf를 설치하는사용자는이 옵션을 수"
+"동으로 활성화할 수 있습니다. PrimeWaf의 크론탭 작업 스케줄러는설정한 간격 "
 "(분 단위)에서 logrotate 명령을 실행합니다."
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:53
@@ -1926,7 +1926,7 @@ msgstr "적어도 하나의 노드를 선택해주세요!"
 #: src/components/Notification/config.ts:80
 #: src/components/Notification/config.ts:93
 #, fuzzy
-msgid "Please upgrade the remote Nginx UI to the latest version"
+msgid "Please upgrade the remote PrimeWaf to the latest version"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
 #: src/views/environment/BatchUpgrader.vue:167
@@ -2478,7 +2478,7 @@ msgstr "성공"
 #: src/views/system/SelfCheck/SelfCheck.vue:78
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
+"your PrimeWaf is being used via an Nginx reverse proxy, please refer to this "
 "link to write the corresponding configuration file: https://nginxui.com/"
 "guide/nginx-proxy-example.html"
 msgstr ""
@@ -2509,7 +2509,7 @@ msgstr "인증서 갱신"
 #, fuzzy
 msgid ""
 "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
-"remote Nginx UI to the latest version"
+"remote PrimeWaf to the latest version"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
 #: src/components/Notification/cert.ts:14
@@ -2663,8 +2663,8 @@ msgstr ""
 
 #: src/views/dashboard/Environments.vue:148
 msgid ""
-"The remote Nginx UI version is not compatible with the local Nginx UI "
-"version. To avoid potential errors, please upgrade the remote Nginx UI to "
+"The remote PrimeWaf version is not compatible with the local PrimeWaf "
+"version. To avoid potential errors, please upgrade the remote PrimeWaf to "
 "match the local version."
 msgstr ""
 
@@ -2698,8 +2698,8 @@ msgid "This Auto Cert item is invalid, please remove it."
 msgstr "이 자동 인증 항목이 유효하지 않습니다. 제거해주세요."
 
 #: src/views/certificate/CertificateEditor.vue:92
-msgid "This certificate is managed by Nginx UI"
-msgstr "이 인증서는 Nginx UI에서 관리됩니다"
+msgid "This certificate is managed by PrimeWaf"
+msgstr "이 인증서는 PrimeWaf에서 관리됩니다"
 
 #: src/views/certificate/CertificateEditor.vue:163
 #: src/views/certificate/CertificateEditor.vue:177
@@ -2733,7 +2733,7 @@ msgstr ""
 
 #: src/views/environment/BatchUpgrader.vue:182
 msgid ""
-"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+"This will upgrade or reinstall the PrimeWaf on %{nodeNames} to %{version}."
 msgstr ""
 
 #: src/views/preference/AuthSettings.vue:96
@@ -2760,7 +2760,7 @@ msgstr ""
 msgid ""
 "To ensure security, Webauthn configuration cannot be added through the UI. "
 "Please manually configure the following in the app.ini configuration file "
-"and restart Nginx UI."
+"and restart PrimeWaf."
 msgstr ""
 
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:45
@@ -2843,7 +2843,7 @@ msgstr "업그레이드"
 
 #: src/views/environment/BatchUpgrader.vue:137
 #, fuzzy
-msgid "Upgraded Nginx UI on %{node} successfully 🎉"
+msgid "Upgraded PrimeWaf on %{node} successfully 🎉"
 msgstr "성공적으로 저장되었습니다"
 
 #: src/language/constants.ts:29
@@ -2852,8 +2852,8 @@ msgid "Upgraded successfully"
 msgstr "성공적으로 저장되었습니다"
 
 #: src/views/environment/BatchUpgrader.vue:88 src/views/system/Upgrade.vue:77
-msgid "Upgrading Nginx UI, please wait..."
-msgstr "Nginx UI를 업그레이드하는 중입니다. 잠시 기다려주세요..."
+msgid "Upgrading PrimeWaf, please wait..."
+msgstr "PrimeWaf를 업그레이드하는 중입니다. 잠시 기다려주세요..."
 
 #: src/views/site/ngx_conf/NgxUpstream.vue:172
 msgid "Upstream Name"
@@ -2961,7 +2961,7 @@ msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:83
 msgid ""
-"When Enabled, Nginx UI will automatically re-register users upon startup. "
+"When Enabled, PrimeWaf will automatically re-register users upon startup. "
 "Generally, do not enable this unless you are in a dev environment and using "
 "Pebble as CA."
 msgstr ""
@@ -2997,8 +2997,8 @@ msgid "You are using the latest version"
 msgstr "최신 버전을 사용하고 있습니다"
 
 #: src/views/system/Upgrade.vue:164
-msgid "You can check Nginx UI upgrade at this page."
-msgstr "이 페이지에서 Nginx UI 업그레이드를 확인할 수 있습니다."
+msgid "You can check PrimeWaf upgrade at this page."
+msgstr "이 페이지에서 PrimeWaf 업그레이드를 확인할 수 있습니다."
 
 #: src/views/preference/components/AddPasskey.vue:87
 msgid ""
@@ -3029,7 +3029,7 @@ msgstr ""
 #, fuzzy
 #~ msgid ""
 #~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
-#~ "the remote Nginx UI to the latest version"
+#~ "the remote PrimeWaf to the latest version"
 #~ msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
 #, fuzzy

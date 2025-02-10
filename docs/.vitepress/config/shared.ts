@@ -10,7 +10,7 @@ function thisYear() {
 }
 
 export const sharedConfig = defineConfig({
-    title: 'Nginx UI',
+    title: 'PrimeWaf',
     description: 'Yet another Nginx Web UI',
 
     head: [
@@ -33,7 +33,7 @@ export const sharedConfig = defineConfig({
 
         footer: {
             message: `Released under the AGPL-3.0 License. (${commitRef})`,
-            copyright: 'Copyright © 2021-' + thisYear() + ' Nginx UI Team'
+            copyright: 'Copyright © 2021-' + thisYear() + ' PrimeWaf Team'
         },
 
         socialLinks: [

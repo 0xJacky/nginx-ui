@@ -1,8 +1,8 @@
 <div align="center">
-      <img src="resources/logo.png" alt="Nginx UI Logo">
+      <img src="resources/logo.png" alt="PrimeWaf Logo">
 </div>
 
-# Nginx UI
+# PrimeWaf
 
 Yet another Nginx Web UI, được phát triển bởi [0xJacky](https://jackyu.cn/) và [Hintay](https://blog.kugeek.com/).
 
@@ -127,9 +127,9 @@ Chúng tôi hoan nghênh bản dịch sang bất kỳ ngôn ngữ nào.
 
 ### Lưu ý trước khi sử dụng
 
-Máy chủ của bạn sẽ cần phải cài Nginx trước khi cài đặt Nginx UI
+Máy chủ của bạn sẽ cần phải cài Nginx trước khi cài đặt PrimeWaf
 
-Nginx UI tuân theo tiêu chuẩn tệp cấu hình máy chủ web Debian. Các tệp cấu hình trang web đã tạo sẽ được đặt trong thư mục /etc/nginx/sites-available (được phát hiện tự động). Các tệp cấu hình cho một trang web được kích hoạt sẽ tạo một symlink đến thư mục /etc/nginx/sites-enabled. Bạn có thể cần điều chỉnh cách sắp xếp các tệp cấu hình của mình.
+PrimeWaf tuân theo tiêu chuẩn tệp cấu hình máy chủ web Debian. Các tệp cấu hình trang web đã tạo sẽ được đặt trong thư mục /etc/nginx/sites-available (được phát hiện tự động). Các tệp cấu hình cho một trang web được kích hoạt sẽ tạo một symlink đến thư mục /etc/nginx/sites-enabled. Bạn có thể cần điều chỉnh cách sắp xếp các tệp cấu hình của mình.
 
 Đối với các hệ thống không phải Debian (và Ubuntu), bạn có thể cần thay đổi nội dung của tệp cấu hình nginx.conf thành kiểu Debian như hiển thị bên dưới.
 
@@ -167,33 +167,33 @@ Trong lần chạy đầu tiên, vui lòng truy cập `http://<your_server_ip>:<
 ```shell
 nginx-ui -config app.ini
 ```
-Bấm `Ctrl + C` vào terminal để thoát Nginx UI.
+Bấm `Ctrl + C` vào terminal để thoát PrimeWaf.
 
 **Chạy nền (Background)**
 
 ```shell
 nohup ./nginx-ui -config app.ini &
 ```
-Dừng Nginx UI bằng lệnh sau.
+Dừng PrimeWaf bằng lệnh sau.
 
 ```shell
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
 ```
 
 #### Chạy với Systemd
-Nếu bạn sử dụng [tập lệnh cài đặt cho Linux](#script-for-linux), Nginx UI sẽ được cài đặt dưới dạng `nginx-ui` service trong systemd. Hãy sử dụng `systemctl` để điều khiển nó.
+Nếu bạn sử dụng [tập lệnh cài đặt cho Linux](#script-for-linux), PrimeWaf sẽ được cài đặt dưới dạng `nginx-ui` service trong systemd. Hãy sử dụng `systemctl` để điều khiển nó.
 
-**Start Nginx UI**
+**Start PrimeWaf**
 
 ```shell
 systemctl start nginx-ui
 ```
-**Stop Nginx UI**
+**Stop PrimeWaf**
 
 ```shell
 systemctl stop nginx-ui
 ```
-**Restart Nginx UI**
+**Restart PrimeWaf**
 
 ```shell
 systemctl restart nginx-ui
@@ -306,13 +306,13 @@ Port mặc định để truy cập UI là `9000`, port HTTP Challenge mặc đ�
 Nếu có xung đột port, vui lòng sửa đổi trong file `/usr/local/etc/nginx-ui/app.ini`,
 hãy nhớ restart nginx-ui bằng lệnh `systemctl restart nginx-ui` mỗi khi bạn sửa đổi file app.ini.
 
-**Gỡ bỏ Nginx UI nhưng giữ lại các tệp cấu hình và cơ sở dữ liệu**
+**Gỡ bỏ PrimeWaf nhưng giữ lại các tệp cấu hình và cơ sở dữ liệu**
 
 ```shell
 bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
 ```
 
-**Gỡ bỏ Nginx UI đồng thời xoá các tệp cấu hình, cơ sở dữ liệu**
+**Gỡ bỏ PrimeWaf đồng thời xoá các tệp cấu hình, cơ sở dữ liệu**
 
 ```shell
 bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove --purge

@@ -1,6 +1,8 @@
 package user
 
 import (
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/golang-jwt/jwt/v5"
@@ -8,7 +10,6 @@ import (
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
-	"time"
 )
 
 const ExpiredTime = 24 * time.Hour
@@ -66,7 +67,7 @@ func GenerateJWT(user *model.User) (string, error) {
 			ExpiresAt: jwt.NewNumericDate(now.Add(ExpiredTime)),
 			IssuedAt:  jwt.NewNumericDate(now),
 			NotBefore: jwt.NewNumericDate(now),
-			Issuer:    "Nginx UI",
+			Issuer:    "PrimeWaf",
 			Subject:   user.Name,
 			ID:        cast.ToString(user.ID),
 		},

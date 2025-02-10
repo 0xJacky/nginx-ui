@@ -80,7 +80,7 @@ const columns: Column[] = [
     hiddenInDetail: true,
     edit: {
       type: switcher,
-      hint: $gettext('When Enabled, Nginx UI will automatically re-register users upon startup. '
+      hint: $gettext('When Enabled, PrimeWaf will automatically re-register users upon startup. '
         + 'Generally, do not enable this unless you are in a dev environment and using Pebble as CA.'),
     },
   },

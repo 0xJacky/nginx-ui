@@ -1,13 +1,13 @@
 # Casdoor
-This section describes how to configure Casdoor as an authentication provider for Nginx UI, contributed by @Jraaay.
+This section describes how to configure Casdoor as an authentication provider for PrimeWaf, contributed by @Jraaay.
 
 Casdoor is a powerful and comprehensive identity authentication solution that supports OAuth 2.0, SAML 2.0, LDAP, AD, and multiple social login methods.
-By integrating Casdoor, Nginx UI can leverage these features to improve security and user experience.
+By integrating Casdoor, PrimeWaf can leverage these features to improve security and user experience.
 
 ## Endpoint
 - Type: `string`
 
-This is the Endpoint of the Casdoor server. You need to make sure that Nginx UI can access this URL.
+This is the Endpoint of the Casdoor server. You need to make sure that PrimeWaf can access this URL.
 
 ## ExternalUrl
 - Type: `string`

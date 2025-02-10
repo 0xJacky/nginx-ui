@@ -15,7 +15,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           text: 'Introduction',
           collapsed: false,
           items: [
-            { text: 'What is Nginx UI?', link: '/guide/about' },
+            { text: 'What is PrimeWaf?', link: '/guide/about' },
             { text: 'Getting Started', link: '/guide/getting-started' },
             { text: 'Install Script', link: '/guide/install-script-linux' }
           ]

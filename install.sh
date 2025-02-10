@@ -235,7 +235,7 @@ download_nginx_ui() {
     local download_link
     download_link="${RPROXY}https://github.com/0xJacky/nginx-ui/releases/download/$RELEASE_LATEST/nginx-ui-linux-$MACHINE.tar.gz"
 
-    echo "Downloading Nginx UI archive: $download_link"
+    echo "Downloading PrimeWaf archive: $download_link"
     if ! curl -x "${PROXY}" -R -H 'Cache-Control: no-cache' -L -o "$TAR_FILE" "$download_link"; then
         echo 'error: Download failed! Please check your network or try again.'
         return 1
@@ -246,12 +246,12 @@ download_nginx_ui() {
 decompression() {
     echo "$1"
     if ! tar -zxf "$1" -C "$TMP_DIRECTORY"; then
-        echo -e "${FontRed}error: Nginx UI decompression failed.${FontSuffix}"
+        echo -e "${FontRed}error: PrimeWaf decompression failed.${FontSuffix}"
         "rm" -r "$TMP_DIRECTORY"
         echo "removed: $TMP_DIRECTORY"
         exit 1
     fi
-    echo "info: Extract the Nginx UI package to $TMP_DIRECTORY and prepare it for installation."
+    echo "info: Extract the PrimeWaf package to $TMP_DIRECTORY and prepare it for installation."
 }
 
 install_bin() {
@@ -317,9 +317,9 @@ start_nginx_ui() {
         systemctl start nginx-ui
         sleep 1s
         if systemctl -q is-active nginx-ui; then
-            echo 'info: Start the Nginx UI service.'
+            echo 'info: Start the PrimeWaf service.'
         else
-            echo -e "${FontRed}error: Failed to start the Nginx UI service.${FontSuffix}"
+            echo -e "${FontRed}error: Failed to start the PrimeWaf service.${FontSuffix}"
             exit 1
         fi
     fi
@@ -327,10 +327,10 @@ start_nginx_ui() {
 
 stop_nginx_ui() {
     if ! systemctl stop nginx-ui; then
-        echo -e "${FontRed}error: Failed to stop the Nginx UI service.${FontSuffix}"
+        echo -e "${FontRed}error: Failed to stop the PrimeWaf service.${FontSuffix}"
         exit 1
     fi
-    echo "info: Nginx UI service Stopped."
+    echo "info: PrimeWaf service Stopped."
 }
 
 remove_nginx_ui() {
@@ -344,7 +344,7 @@ remove_nginx_ui() {
     fi
     systemctl disable nginx-ui
     if ! ("rm" -r "${delete_files[@]}"); then
-      echo -e "${FontRed}error: Failed to remove Nginx UI.${FontSuffix}"
+      echo -e "${FontRed}error: Failed to remove PrimeWaf.${FontSuffix}"
       exit 1
     else
       for i in "${!delete_files[@]}"
@@ -353,7 +353,7 @@ remove_nginx_ui() {
       done
       systemctl daemon-reload
       echo "You may need to execute a command to remove dependent software: $PACKAGE_MANAGEMENT_REMOVE curl"
-      echo 'info: Nginx UI has been removed.'
+      echo 'info: PrimeWaf has been removed.'
       if [[ "$PURGE" -eq '0' ]]; then
         echo 'info: If necessary, manually delete the configuration and log files.'
         echo "info: e.g., $DataPath ..."
@@ -361,7 +361,7 @@ remove_nginx_ui() {
       exit 0
     fi
   else
-    echo 'error: Nginx UI is not installed.'
+    echo 'error: PrimeWaf is not installed.'
     exit 1
   fi
 }
@@ -371,18 +371,18 @@ show_help() {
     echo "usage: $0 ACTION [OPTION]..."
     echo
     echo 'ACTION:'
-    echo '  install                   Install/Update Nginx UI'
-    echo '  remove                    Remove Nginx UI'
+    echo '  install                   Install/Update PrimeWaf'
+    echo '  remove                    Remove PrimeWaf'
     echo '  help                      Show help'
     echo 'If no action is specified, then install will be selected'
     echo
     echo 'OPTION:'
     echo '  install:'
-    echo '    -l, --local               Install Nginx UI from a local file'
+    echo '    -l, --local               Install PrimeWaf from a local file'
     echo '    -p, --proxy               Download through a proxy server, e.g., -p http://127.0.0.1:8118 or -p socks5://127.0.0.1:1080'
     echo '    -r, --reverse-proxy       Download through a reverse proxy server, e.g., -r https://mirror.ghproxy.com/'
     echo '  remove:'
-    echo '    --purge                   Remove all the Nginx UI files, include logs, configs, etc'
+    echo '    --purge                   Remove all the PrimeWaf files, include logs, configs, etc'
     exit 0
 }
 
@@ -403,11 +403,11 @@ main() {
 
     # Install from a local file
     if [[ -n "$LOCAL_FILE" ]]; then
-        echo "info: Install Nginx UI from a local file '$LOCAL_FILE'."
+        echo "info: Install PrimeWaf from a local file '$LOCAL_FILE'."
         decompression "$LOCAL_FILE"
     else
         get_latest_version
-        echo "info: Installing Nginx UI $RELEASE_LATEST for $(uname -m)"
+        echo "info: Installing PrimeWaf $RELEASE_LATEST for $(uname -m)"
         if ! download_nginx_ui; then
             "rm" -r "$TMP_DIRECTORY"
             echo "removed: $TMP_DIRECTORY"
@@ -433,7 +433,7 @@ main() {
 
     "rm" -r "$TMP_DIRECTORY"
     echo "removed: $TMP_DIRECTORY"
-    echo "info: Nginx UI $RELEASE_LATEST is installed."
+    echo "info: PrimeWaf $RELEASE_LATEST is installed."
 
     install_config
 
@@ -445,9 +445,9 @@ main() {
         sleep 1s
 
         if systemctl -q is-active nginx-ui; then
-            echo "info: Start and enable the Nginx UI service."
+            echo "info: Start and enable the PrimeWaf service."
         else
-            echo -e "${FontYellow}warning: Failed to enable and start the Nginx UI service.${FontSuffix}"
+            echo -e "${FontYellow}warning: Failed to enable and start the PrimeWaf service.${FontSuffix}"
         fi
     fi
 }

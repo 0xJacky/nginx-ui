@@ -6,6 +6,10 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"image/jpeg"
+	"net/http"
+	"strings"
+
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -14,15 +18,12 @@ import (
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
 	"github.com/uozi-tech/cosy"
-	"image/jpeg"
-	"net/http"
-	"strings"
 )
 
 func GenerateTOTP(c *gin.Context) {
 	u := api.CurrentUser(c)
 
-	issuer := fmt.Sprintf("Nginx UI %s", settings.NodeSettings.Name)
+	issuer := fmt.Sprintf("PrimeWaf %s", settings.NodeSettings.Name)
 	issuer = strings.TrimSpace(issuer)
 
 	otpOpts := totp.GenerateOpts{

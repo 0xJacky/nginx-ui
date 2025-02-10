@@ -32,7 +32,7 @@ const languageAvailable = gettext.available
 function updateTitle() {
   const name = route.meta.name as never as () => string
 
-  document.title = `${name()} | Nginx UI`
+  document.title = `${name()} | PrimeWaf`
 }
 
 watch(current, v => {

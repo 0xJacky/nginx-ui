@@ -2,16 +2,16 @@
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
-title: Nginx UI
+title: PrimeWaf
 titleTemplate: Yet another Nginx Web UI
 
 hero:
-    name: "Nginx UI"
+    name: "PrimeWaf"
     text: "Yet another Nginx Web UI"
     tagline: Simple, powerful, and fast.
     image:
         src: /assets/icon.svg
-        alt: Nginx UI
+        alt: PrimeWaf
     actions:
         -   theme: brand
             text: Get Started

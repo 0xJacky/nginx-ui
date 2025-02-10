@@ -10,10 +10,10 @@ const data: Settings = inject('data')!
       class="mb-4"
       :message="$gettext('Tips')"
       :description="$gettext('Logrotate, by default, is enabled in most mainstream '
-        + 'Linux distributions for users who install Nginx UI on the host machine, '
+        + 'Linux distributions for users who install PrimeWaf on the host machine, '
         + 'so you don\'t need to modify the parameters on this page. '
-        + 'For users who install Nginx UI using Docker containers, you can manually enable this option. '
-        + 'The crontab task scheduler of Nginx UI will execute the logrotate command at the interval you set in minutes.')"
+        + 'For users who install PrimeWaf using Docker containers, you can manually enable this option. '
+        + 'The crontab task scheduler of PrimeWaf will execute the logrotate command at the interval you set in minutes.')"
       type="info"
     />
     <AFormItem :label="$gettext('Enabled')">

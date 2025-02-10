@@ -19,8 +19,8 @@ CADir needs to comply with the `RFC 8555` standard.
 - Example: `8.8.8.8:53,1.1.1.1:53`
 
 This option is used to set the recursive nameservers used by
-Nginx UI in the DNS challenge step of applying for a certificate.
-If this option is not configured, Nginx UI will use the nameservers settings of the operating system.
+PrimeWaf in the DNS challenge step of applying for a certificate.
+If this option is not configured, PrimeWaf will use the nameservers settings of the operating system.
 
 
 ## CertRenewalInterval
@@ -30,7 +30,7 @@ If this option is not configured, Nginx UI will use the nameservers settings of 
 - Default value: `7`
 
 This option is used to set the automatic renewal interval of the Let's Encrypt certificate.
-By default, Nginx UI will automatically renew the certificate every 7 days.
+By default, PrimeWaf will automatically renew the certificate every 7 days.
 
 ## HTTPChallengePort
 

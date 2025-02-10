@@ -2,14 +2,14 @@
 
 ## 尝试一下
 
-您可以通过 [演示](https://demo.nginxui.com) 直接试用 Nginx UI。
+您可以通过 [演示](https://demo.nginxui.com) 直接试用 PrimeWaf。
 
 - 用户名：admin
 - 密码：admin
 
 ## 使用前注意
 
-Nginx UI 遵循 Debian 的网页服务器配置文件标准。创建的网站配置文件将会放置于 Nginx
+PrimeWaf 遵循 Debian 的网页服务器配置文件标准。创建的网站配置文件将会放置于 Nginx
 配置文件夹（自动检测）下的 `sites-available` 中，启用后的网站将会创建一份配置文件软连接到 `sites-enabled`
 文件夹。您可能需要提前调整配置文件的组织方式。
 
@@ -31,9 +31,9 @@ http {
 我们提供的镜像包含 Nginx 并可以直接使用。对于高级用户，您也可以在 [最新发行 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest)
 中下载最新版本并 [通过执行文件运行](#通过执行文件运行)，或者 [手动构建](./build)。
 
-第一次运行 Nginx UI 时，请在浏览器中访问 `http://<your_server_ip>:<listen_port>` 完成后续配置。
+第一次运行 PrimeWaf 时，请在浏览器中访问 `http://<your_server_ip>:<listen_port>` 完成后续配置。
 
-此外，我们提供了一个使用 Nginx 反向代理 Nginx UI 的 [示例](./nginx-proxy-example)，您可在安装完成后使用。
+此外，我们提供了一个使用 Nginx 反向代理 PrimeWaf 的 [示例](./nginx-proxy-example)，您可在安装完成后使用。
 
 
 ## 使用 Docker
@@ -43,7 +43,7 @@ http {
 
 ::: tip 提示
 
-默认情况下，Nginx UI 会被反向代理到容器的 `8080` 端口。
+默认情况下，PrimeWaf 会被反向代理到容器的 `8080` 端口。
 首次使用时，映射到 `/etc/nginx` 的目录必须为空文件夹。
 如果你想要托管静态文件，可以直接将文件夹映射入容器中。
 
@@ -71,11 +71,11 @@ docker run -dit \
 ```
 
 在这个示例中，容器的`80`端口和`443`端口分别映射到主机的`8080`端口和`8443`端口。
-您需要访问`http://<your_server_ip>:8080`来访问 Nginx UI。
+您需要访问`http://<your_server_ip>:8080`来访问 PrimeWaf。
 
 ## 通过执行文件运行
 
-不建议直接运行 Nginx UI 可执行文件用于非测试目的。
+不建议直接运行 PrimeWaf 可执行文件用于非测试目的。
 我们建议在 Linux 上将其配置为守护进程或使用 [安装脚本](./install-script-linux)。
 
 ### 配置

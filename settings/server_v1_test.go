@@ -1,10 +1,11 @@
 package settings
 
 import (
-	"github.com/stretchr/testify/assert"
-	"github.com/uozi-tech/cosy/logger"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 func TestDeprecatedEnvMigration(t *testing.T) {
@@ -113,7 +114,7 @@ MaxAttempts         = 10
 Secret = 12345678901234567890
 
 [webauthn]
-RPDisplayName = Nginx UI
+RPDisplayName = PrimeWaf
 RPID          = localhost
 RPOrigins     = http://localhost:3002,http://127.0.0.1:3002`
 	err := os.WriteFile(confName, []byte(confText), 0644)

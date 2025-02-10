@@ -14,5 +14,5 @@ allows them to set a proxy for github.com to improve accessibility.
 - Version：`>= v2.0.0-beta.37`
 - Type: `bool`
 
-This option is used to skip the verification of the certificate of servers when Nginx UI sends requests to them.
+This option is used to skip the verification of the certificate of servers when PrimeWaf sends requests to them.
 

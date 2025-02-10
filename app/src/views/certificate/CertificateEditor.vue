@@ -62,7 +62,7 @@ const log = computed(() => {
   const logs = data.value.log?.split('\n')
 
   logs.forEach((line, idx, lines) => {
-    const regex = /\[Nginx UI\] (.*)/
+    const regex = /\[PrimeWaf\] (.*)/
 
     const matches = line.match(regex)
 
@@ -89,7 +89,7 @@ const isManaged = computed(() => {
     >
       <div class="mb-2">
         <AAlert
-          :message="$gettext('This certificate is managed by Nginx UI')"
+          :message="$gettext('This certificate is managed by PrimeWaf')"
           type="success"
           show-icon
         />

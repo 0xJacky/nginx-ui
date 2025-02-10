@@ -1378,18 +1378,18 @@ msgstr "Rotación de logs"
 #: src/views/preference/LogrotateSettings.vue:12
 msgid ""
 "Logrotate, by default, is enabled in most mainstream Linux distributions for "
-"users who install Nginx UI on the host machine, so you don't need to modify "
-"the parameters on this page. For users who install Nginx UI using Docker "
+"users who install PrimeWaf on the host machine, so you don't need to modify "
+"the parameters on this page. For users who install PrimeWaf using Docker "
 "containers, you can manually enable this option. The crontab task scheduler "
-"of Nginx UI will execute the logrotate command at the interval you set in "
+"of PrimeWaf will execute the logrotate command at the interval you set in "
 "minutes."
 msgstr ""
 "Logrotate, de forma predeterminada, está habilitado en la mayoría de las "
-"distribuciones de Linux para los usuarios que instalan Nginx UI en la "
+"distribuciones de Linux para los usuarios que instalan PrimeWaf en la "
 "máquina host, por lo que no es necesario modificar los parámetros en esta "
-"página. Para los usuarios que instalan Nginx UI usando contenedores Docker, "
+"página. Para los usuarios que instalan PrimeWaf usando contenedores Docker, "
 "pueden habilitar esta opción manualmente. El programador de tareas crontab "
-"de Nginx UI ejecutará el comando logrotate en el intervalo que establezca en "
+"de PrimeWaf ejecutará el comando logrotate en el intervalo que establezca en "
 "minutos."
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:53
@@ -1918,7 +1918,7 @@ msgstr "¡Seleccione al menos un nodo!"
 #: src/components/Notification/config.ts:80
 #: src/components/Notification/config.ts:93
 #, fuzzy
-msgid "Please upgrade the remote Nginx UI to the latest version"
+msgid "Please upgrade the remote PrimeWaf to the latest version"
 msgstr ""
 "Sincronización de la configuración %{cert_name} a %{env_name} falló, por "
 "favor actualiza la interfaz de usuario de Nginx en el servidor remoto a la "
@@ -2454,7 +2454,7 @@ msgstr "Éxito"
 #: src/views/system/SelfCheck/SelfCheck.vue:78
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
+"your PrimeWaf is being used via an Nginx reverse proxy, please refer to this "
 "link to write the corresponding configuration file: https://nginxui.com/"
 "guide/nginx-proxy-example.html"
 msgstr ""
@@ -2483,7 +2483,7 @@ msgstr "Sincronizar Certificado"
 #: src/components/Notification/cert.ts:11
 msgid ""
 "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
-"remote Nginx UI to the latest version"
+"remote PrimeWaf to the latest version"
 msgstr ""
 "Sincronización del Certificado %{cert_name} a %{env_name} fallida, por favor "
 "actualice la interfaz de Nginx remota a la última versión"
@@ -2649,12 +2649,12 @@ msgstr ""
 
 #: src/views/dashboard/Environments.vue:148
 msgid ""
-"The remote Nginx UI version is not compatible with the local Nginx UI "
-"version. To avoid potential errors, please upgrade the remote Nginx UI to "
+"The remote PrimeWaf version is not compatible with the local PrimeWaf "
+"version. To avoid potential errors, please upgrade the remote PrimeWaf to "
 "match the local version."
 msgstr ""
-"La versión de Nginx UI remota no es compatible con la versión de Nginx UI "
-"local. Para evitar errores potenciales, por favor actualice la Nginx UI "
+"La versión de PrimeWaf remota no es compatible con la versión de PrimeWaf "
+"local. Para evitar errores potenciales, por favor actualice la PrimeWaf "
 "remota para que coincida con la versión local."
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:44
@@ -2684,8 +2684,8 @@ msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Este elemento de Auto Cert es inválido, elimínelo por favor."
 
 #: src/views/certificate/CertificateEditor.vue:92
-msgid "This certificate is managed by Nginx UI"
-msgstr "Este certificado es administrado por Nginx UI"
+msgid "This certificate is managed by PrimeWaf"
+msgstr "Este certificado es administrado por PrimeWaf"
 
 #: src/views/certificate/CertificateEditor.vue:163
 #: src/views/certificate/CertificateEditor.vue:177
@@ -2722,7 +2722,7 @@ msgstr "Este valor ya está elegido"
 
 #: src/views/environment/BatchUpgrader.vue:182
 msgid ""
-"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+"This will upgrade or reinstall the PrimeWaf on %{nodeNames} to %{version}."
 msgstr ""
 "Esto actualizará o reinstalará la interfaz de usuario de Nginx en %"
 "{nodeNames} a %{version}."
@@ -2753,11 +2753,11 @@ msgstr ""
 msgid ""
 "To ensure security, Webauthn configuration cannot be added through the UI. "
 "Please manually configure the following in the app.ini configuration file "
-"and restart Nginx UI."
+"and restart PrimeWaf."
 msgstr ""
 "Para garantizar la seguridad, no se puede agregar la configuración de "
 "Webauthn a través de la UI. Configure manualmente lo siguiente en el archivo "
-"de configuración app.ini y reinicie Nginx UI."
+"de configuración app.ini y reinicie PrimeWaf."
 
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:45
 msgid ""
@@ -2844,7 +2844,7 @@ msgid "Upgrade"
 msgstr "Actualizar"
 
 #: src/views/environment/BatchUpgrader.vue:137
-msgid "Upgraded Nginx UI on %{node} successfully 🎉"
+msgid "Upgraded PrimeWaf on %{node} successfully 🎉"
 msgstr "Interfaz de usuario de Nginx actualizada en %{node} con éxito 🎉"
 
 #: src/language/constants.ts:29
@@ -2852,8 +2852,8 @@ msgid "Upgraded successfully"
 msgstr "Actualización exitosa"
 
 #: src/views/environment/BatchUpgrader.vue:88 src/views/system/Upgrade.vue:77
-msgid "Upgrading Nginx UI, please wait..."
-msgstr "Actualizando Nginx UI, por favor espere..."
+msgid "Upgrading PrimeWaf, please wait..."
+msgstr "Actualizando PrimeWaf, por favor espere..."
 
 #: src/views/site/ngx_conf/NgxUpstream.vue:172
 msgid "Upstream Name"
@@ -2956,11 +2956,11 @@ msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:83
 msgid ""
-"When Enabled, Nginx UI will automatically re-register users upon startup. "
+"When Enabled, PrimeWaf will automatically re-register users upon startup. "
 "Generally, do not enable this unless you are in a dev environment and using "
 "Pebble as CA."
 msgstr ""
-"Cuando está habilitada, la Nginx UI volverá a registrar automáticamente a "
+"Cuando está habilitada, la PrimeWaf volverá a registrar automáticamente a "
 "los usuarios al iniciarse. Por lo general, no habilite esta opción a menos "
 "que se encuentre en un entorno de desarrollo y utilice Pebble como CA."
 
@@ -2998,8 +2998,8 @@ msgid "You are using the latest version"
 msgstr "Estás usando la última versión"
 
 #: src/views/system/Upgrade.vue:164
-msgid "You can check Nginx UI upgrade at this page."
-msgstr "Puede consultar la actualización de Nginx UI en esta página."
+msgid "You can check PrimeWaf upgrade at this page."
+msgstr "Puede consultar la actualización de PrimeWaf en esta página."
 
 #: src/views/preference/components/AddPasskey.vue:87
 msgid ""
@@ -3035,7 +3035,7 @@ msgstr "Sus llaves de acceso"
 
 #~ msgid ""
 #~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
-#~ "the remote Nginx UI to the latest version"
+#~ "the remote PrimeWaf to the latest version"
 #~ msgstr ""
 #~ "Renombrar %{orig_path} a %{new_path} en %{env_name} fallido, por favor "
 #~ "actualice la interfaz de Nginx remota a la última versión"

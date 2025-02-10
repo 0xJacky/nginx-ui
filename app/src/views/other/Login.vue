@@ -1,30 +1,28 @@
 <script setup lang="ts">
+import { ref, reactive } from 'vue'
+import { Form } from 'ant-design-vue'
+import { UserOutlined, LockOutlined, SafetyCertificateOutlined } from '@ant-design/icons-vue'
 import auth from '@/api/auth'
 import install from '@/api/install'
 import passkey from '@/api/passkey'
+import { useUserStore } from '@/pinia'
+import { useRoute, useRouter } from 'vue-router'
+import { startAuthentication } from '@simplewebauthn/browser'
 import ICP from '@/components/ICP/ICP.vue'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
 import Authorization from '@/components/TwoFA/Authorization.vue'
-import gettext from '@/gettext'
-import { useUserStore } from '@/pinia'
-import { KeyOutlined, LockOutlined, UserOutlined } from '@ant-design/icons-vue'
-import { startAuthentication } from '@simplewebauthn/browser'
-import { Form, message } from 'ant-design-vue'
+import logo from '@/assets/img/logo-primadigi.png'
+import background from '@/assets/img/login.mp4'
 
 const thisYear = new Date().getFullYear()
-
 const route = useRoute()
 const router = useRouter()
 
-install.get_lock().then(async (r: { lock: boolean }) => {
-  if (!r.lock)
-    await router.push('/install')
-})
-
+// Existing reactive state
 const loading = ref(false)
 const enabled2FA = ref(false)
-const refOTP = useTemplateRef('refOTP')
+const refOTP = ref(null)
 const passcode = ref('')
 const recoveryCode = ref('')
 const passkeyConfigStatus = ref(false)
@@ -32,271 +30,194 @@ const passkeyConfigStatus = ref(false)
 const modelRef = reactive({
   username: '',
   password: '',
+  captcha: ''
 })
 
 const rulesRef = reactive({
   username: [
     {
       required: true,
-      message: () => $gettext('Please input your username!'),
-    },
+      message: () => $gettext('Please input your username!')
+    }
   ],
   password: [
     {
       required: true,
-      message: () => $gettext('Please input your password!'),
-    },
-  ],
+      message: () => $gettext('Please input your password!')
+    }
+  ]
 })
 
-const { validate, validateInfos, clearValidate } = Form.useForm(modelRef, rulesRef)
+const { validate, validateInfos } = Form.useForm(modelRef, rulesRef)
 const userStore = useUserStore()
 const { login, passkeyLogin } = userStore
-const { secureSessionId } = storeToRefs(userStore)
 
-function onSubmit() {
+// Existing submit handler
+const onSubmit = () => {
   validate().then(async () => {
     loading.value = true
-
-    await auth.login(modelRef.username, modelRef.password, passcode.value, recoveryCode.value).then(async r => {
+    try {
+      const r = await auth.login(modelRef.username, modelRef.password, passcode.value, recoveryCode.value)
       const next = (route.query?.next || '').toString() || '/'
-      switch (r.code) {
-        case 200:
-          message.success($gettext('Login successful'), 1)
-          login(r.token)
-          await nextTick()
-          secureSessionId.value = r.secure_session_id
-          await router.push(next)
-          break
-        case 199:
-          enabled2FA.value = true
-          break
+      
+      if (r.code === 200) {
+        login(r.token)
+        await router.push(next)
+      } else if (r.code === 199) {
+        enabled2FA.value = true
       }
-    }).catch(e => {
+    } catch (e) {
       if (e.code === 4043) {
         refOTP.value?.clearInput()
       }
-    })
-    loading.value = false
-  })
-}
-
-const user = useUserStore()
-
-if (user.isLogin) {
-  const next = (route.query?.next || '').toString() || '/dashboard'
-
-  router.push(next)
-}
-
-watch(() => gettext.current, () => {
-  clearValidate()
-})
-
-const has_casdoor = ref(false)
-const casdoor_uri = ref('')
-
-auth.get_casdoor_uri()
-  .then(r => {
-    if (r?.uri) {
-      has_casdoor.value = true
-      casdoor_uri.value = r.uri
+    } finally {
+      loading.value = false
     }
   })
-
-function loginWithCasdoor() {
-  window.location.href = casdoor_uri.value
-}
-
-if (route.query?.code !== undefined && route.query?.state !== undefined) {
-  loading.value = true
-  auth.casdoor_login(route.query?.code?.toString(), route.query?.state?.toString()).then(async () => {
-    message.success($gettext('Login successful'), 1)
-
-    const next = (route.query?.next || '').toString() || '/'
-
-    await router.push(next)
-  })
-  loading.value = false
-}
-
-function handleOTPSubmit(code: string, recovery: string) {
-  passcode.value = code
-  recoveryCode.value = recovery
-
-  nextTick(() => {
-    onSubmit()
-  })
-}
-
-passkey.get_config_status().then(r => {
-  passkeyConfigStatus.value = r.status
-})
-
-const passkeyLoginLoading = ref(false)
-async function handlePasskeyLogin() {
-  passkeyLoginLoading.value = true
-
-  const begin = await auth.begin_passkey_login()
-  const asseResp = await startAuthentication({ optionsJSON: begin.options.publicKey })
-
-  const r = await auth.finish_passkey_login({
-    session_id: begin.session_id,
-    options: asseResp,
-  })
-
-  if (r.token) {
-    const next = (route.query?.next || '').toString() || '/'
-
-    passkeyLogin(asseResp.rawId, r.token)
-    secureSessionId.value = r.secure_session_id
-    await router.push(next)
-  }
-
-  passkeyLoginLoading.value = false
 }
 </script>
 
 <template>
-  <ALayout>
-    <ALayoutContent>
-      <div class="login-container">
-        <div class="login-form">
-          <div class="project-title">
-            <h1>Nginx UI</h1>
-          </div>
-          <AForm id="components-form-demo-normal-login">
-            <template v-if="!enabled2FA">
-              <AFormItem v-bind="validateInfos.username">
-                <AInput
-                  v-model:value="modelRef.username"
-                  :placeholder="$gettext('Username')"
-                >
-                  <template #prefix>
-                    <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
-                  </template>
-                </AInput>
-              </AFormItem>
-              <AFormItem v-bind="validateInfos.password">
-                <AInputPassword
-                  v-model:value="modelRef.password"
-                  :placeholder="$gettext('Password')"
-                >
-                  <template #prefix>
-                    <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
-                  </template>
-                </AInputPassword>
-              </AFormItem>
-              <AButton
-                v-if="has_casdoor"
-                block
-                html-type="submit"
-                :loading="loading"
-                class="mb-5"
-                @click="loginWithCasdoor"
-              >
-                {{ $gettext('SSO Login') }}
-              </AButton>
-            </template>
-            <div v-else>
-              <Authorization
-                ref="refOTP"
-                :two-f-a-status="{
-                  enabled: true,
-                  otp_status: true,
-                  passkey_status: false,
-                }"
-                @submit-o-t-p="handleOTPSubmit"
-              />
-            </div>
-
-            <AFormItem v-if="!enabled2FA">
-              <AButton
-                type="primary"
-                block
-                html-type="submit"
-                :loading="loading"
-                class="mb-2"
-                @click="onSubmit"
-              >
-                {{ $gettext('Login') }}
-              </AButton>
-
-              <div
-                v-if="passkeyConfigStatus"
-                class="flex flex-col justify-center"
-              >
-                <ADivider>
-                  <div class="text-sm font-normal opacity-75">
-                    {{ $gettext('Or') }}
-                  </div>
-                </ADivider>
-
-                <AButton
-                  :loading="passkeyLoginLoading"
-                  @click="handlePasskeyLogin"
-                >
-                  <KeyOutlined />
-                  {{ $gettext('Sign in with a passkey') }}
-                </AButton>
-              </div>
-            </AFormItem>
-          </AForm>
-          <div class="footer">
-            <p class="mb-4">
-              Copyright © 2021 - {{ thisYear }} Nginx UI
-            </p>
-            <ICP class="mb-4" />
-            Language
-            <SetLanguage class="inline" />
-            <div class="flex justify-center mt-4">
-              <SwitchAppearance />
-            </div>
-          </div>
+  <div class="min-h-screen flex">
+    <!-- Left Section -->
+    <div class="hidden lg:flex lg:w-2/3 login-bg relative p-12 flex-col justify-center">
+      <!-- <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute top-0 right-0 w-full h-full opacity-10 bg-dot-pattern"></div>
+      </div> -->
+      <video 
+        class="absolute inset-0 w-full h-full object-cover z-0" 
+        autoplay 
+        loop 
+        muted 
+        playsinline
+      >
+        <source :src="background" type="video/mp4">
+      </video>
+      <div class="absolute inset-0 bg-black bg-opacity-40 z-1"></div>
+      <div class="relative z-10">
+        <h1 class="text-4xl font-bold text-white mb-4">PrimeWaf</h1>
+        <h2 class="text-2xl text-white mb-8">Simple, Effective, Visible Security</h2>
+        <div class="space-y-4 text-gray-300">
+          <p>Detect new threats using integrated proactive protection and AI technology.</p>
+          <p>Visualize protection with automatic asset discovery throughout every stage of an attack.</p>
+          <p>Respond to threats quickly with easy-to-use built-in tools and open APIs.</p>
         </div>
       </div>
-    </ALayoutContent>
-  </ALayout>
+    </div>
+
+    <!-- Right Section -->
+    <div class="w-full lg:w-1/3 bg-white p-8 flex flex-col">
+      <div class="flex justify-between items-center mb-12">
+        <div class="flex items-center">
+          <img :src="logo" alt="Primadigi Systems" class="h-8 w-8 mr-2" />
+          <span class="text-gray-700 font-semibold">PRIMADIGI SYSTEMS</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <SetLanguage class="inline" />
+          <SwitchAppearance />
+        </div>
+      </div>
+
+      <div class="flex-grow flex flex-col items-center justify-center max-w-md mx-auto w-full">
+        <div class="mb-8 text-center">
+          <img :src="logo" alt="PrimeWaf" class="h-16 w-16 mx-auto mb-2" />
+          <h3 class="text-xl font-semibold">PrimeWaf</h3>
+          <div class="flex items-center justify-center gap-2 text-sm text-gray-500 mt-1">
+            <span>Version: PrimeWaf 8.0.36</span>
+            <span class="px-2 py-0.5 bg-blue-100 text-blue-600 rounded">IPv6</span>
+          </div>
+        </div>
+
+        <a-form v-if="!enabled2FA" class="w-full" @submit.prevent="onSubmit">
+          <a-form-item v-bind="validateInfos.username">
+            <a-input
+              v-model:value="modelRef.username"
+              :placeholder="$gettext('Username')"
+              size="large"
+            >
+              <template #prefix>
+                <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
+              </template>
+            </a-input>
+          </a-form-item>
+
+          <a-form-item v-bind="validateInfos.password">
+            <a-input-password
+              v-model:value="modelRef.password"
+              :placeholder="$gettext('Password')"
+              size="large"
+            >
+              <template #prefix>
+                <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
+              </template>
+            </a-input-password>
+          </a-form-item>
+
+          <a-button
+            type="primary"
+            block
+            size="large"
+            :loading="loading"
+            html-type="submit"
+          >
+            {{ $gettext('Log In') }}
+          </a-button>
+        </a-form>
+
+        <Authorization
+          v-else
+          ref="refOTP"
+          :two-f-a-status="{
+            enabled: true,
+            otp_status: true,
+            passkey_status: false
+          }"
+          @submit-o-t-p="handleOTPSubmit"
+        />
+      </div>
+
+      <div class="text-center text-sm text-gray-500 mt-8">
+        <p class="mb-4">Copyright © 2011-{{ thisYear }} Primadigi Systems International. All rights reserved</p>
+        <ICP />
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="less" scoped>
-.ant-layout-content {
-  background: #fff;
+.bg-dot-pattern {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-.dark .ant-layout-content {
-  background: transparent;
+.login-bg {
+  position: relative;
+  overflow: hidden;
 }
 
-.login-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+:deep(.ant-input-affix-wrapper) {
+  border-radius: 4px;
+}
 
-  .login-form {
-    max-width: 420px;
-    width: 80%;
+:deep(.ant-btn-primary) {
+  background-color: #1677ff;
+  
+  &:hover {
+    background-color: #4096ff;
+  }
+}
 
-    .project-title {
-      margin: 50px;
-
-      h1 {
-        font-size: 50px;
-        font-weight: 100;
-        text-align: center;
-      }
-    }
-
-    .anticon {
-      color: #a8a5a5 !important;
-    }
-
-    .footer {
-      padding: 30px 20px;
-      text-align: center;
-      font-size: 14px;
-    }
+.dark {
+  .ant-layout-content {
+    background: transparent;
+  }
+  
+  .bg-white {
+    background-color: #1f1f1f;
+  }
+  
+  .text-gray-700 {
+    color: #e5e5e5;
   }
 }
 </style>

@@ -1,13 +1,14 @@
 package settings
 
 import (
+	"os"
+	"reflect"
+
 	"github.com/elliotchance/orderedmap/v3"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy/logger"
 	"github.com/uozi-tech/cosy/settings"
 	"gopkg.in/ini.v1"
-	"os"
-	"reflect"
 )
 
 // Note: This section will be deprecated in the future version.
@@ -38,7 +39,7 @@ type settingsV2 struct {
 	App      settings.App
 	Server   settings.Server
 	DataBase Database
-	// Nginx UI
+	// PrimeWaf
 	Auth      Auth
 	Casdoor   Casdoor
 	Cert      Cert
@@ -126,7 +127,7 @@ func migrate(confPath string) {
 	app := &settings.App{}
 	server := &settings.Server{}
 	database := &Database{}
-	// Nginx UI
+	// PrimeWaf
 	auth := &Auth{}
 	casdoor := &Casdoor{}
 	cert := &Cert{}

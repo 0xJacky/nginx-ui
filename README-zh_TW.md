@@ -1,8 +1,8 @@
 <div align="center">
-      <img src="resources/logo.png" alt="Nginx UI Logo">
+      <img src="resources/logo.png" alt="PrimeWaf Logo">
 </div>
 
-# Nginx UI
+# PrimeWaf
 
 Yet another Nginx Web UI
 
@@ -111,7 +111,7 @@ Nginx 網路管理介面，由 [0xJacky](https://jackyu.cn/) 與 [Hintay](https:
 
 ### 使用前注意
 
-Nginx UI 遵循 Debian 的網頁伺服器設定檔標準。建立的網站設定檔將會放置於 Nginx 設定資料夾（自動檢測）下的 `sites-available` 中，啟用後的網站將會建立一份設定檔軟連結檔到 `sites-enabled` 資料夾。您可能需要提前調整設定檔的組織方式。
+PrimeWaf 遵循 Debian 的網頁伺服器設定檔標準。建立的網站設定檔將會放置於 Nginx 設定資料夾（自動檢測）下的 `sites-available` 中，啟用後的網站將會建立一份設定檔軟連結檔到 `sites-enabled` 資料夾。您可能需要提前調整設定檔的組織方式。
 
 對於非 Debian (及 Ubuntu) 作業系統，您可能需要將 `nginx.conf` 設定檔中的內容修改為如下所示的 Debian 風格。
 
@@ -127,7 +127,7 @@ http {
 
 ### 安裝
 
-Nginx UI 可在以下作業系統中使用：
+PrimeWaf 可在以下作業系統中使用：
 
 - macOS 11 Big Sur 及之後版本（amd64 / arm64）
 - Linux 2.6.23 及之後版本（x86 / amd64 / arm64 / armv5 / armv6 / armv7 / mips32 / mips64 / riscv64 / loongarch64）
@@ -141,24 +141,24 @@ Nginx UI 可在以下作業系統中使用：
 
 ### 使用方法
 
-第一次執行 Nginx UI 時，請在網頁瀏覽器中訪問 `http://<your_server_ip>:<listen_port>` 完成後續設定。
+第一次執行 PrimeWaf 時，請在網頁瀏覽器中訪問 `http://<your_server_ip>:<listen_port>` 完成後續設定。
 
 #### 透過執行檔案執行
 
-**在終端中執行 Nginx UI**
+**在終端中執行 PrimeWaf**
 
 ```shell
 nginx-ui -config app.ini
 ```
-在終端使用 `Control+C` 退出 Nginx UI。
+在終端使用 `Control+C` 退出 PrimeWaf。
 
-**在背景執行 Nginx UI**
+**在背景執行 PrimeWaf**
 
 ```shell
 nohup ./nginx-ui -config app.ini &
 ```
 
-使用以下命令停止 Nginx UI。
+使用以下命令停止 PrimeWaf。
 
 ```shell
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
@@ -166,21 +166,21 @@ kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
 
 #### 使用 Systemd
 
-如果你使用的是 [Linux 安裝指令](#linux-安裝指令)，Nginx UI 將作為 `nginx-ui` 守護行程安裝在 systemd 中。請使用 `systemctl` 指令控制。
+如果你使用的是 [Linux 安裝指令](#linux-安裝指令)，PrimeWaf 將作為 `nginx-ui` 守護行程安裝在 systemd 中。請使用 `systemctl` 指令控制。
 
-**啟動 Nginx UI**
+**啟動 PrimeWaf**
 
 ```shell
 systemctl start nginx-ui
 ```
 
-**停止 Nginx UI**
+**停止 PrimeWaf**
 
 ```shell
 systemctl stop nginx-ui
 ```
 
-**重啟 Nginx UI**
+**重啟 PrimeWaf**
 
 ```shell
 systemctl restart nginx-ui
@@ -248,9 +248,9 @@ go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/sett
 bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
 ```
 
-一鍵安裝指令預設的監聽連接埠為 `9000`，HTTP Challenge 埠預設為 `9180`，如果出現連接埠衝突請修改 `/usr/local/etc/nginx-ui/app.ini`，並使用 `systemctl restart nginx-ui` 重啟 Nginx UI 守護行程。
+一鍵安裝指令預設的監聽連接埠為 `9000`，HTTP Challenge 埠預設為 `9180`，如果出現連接埠衝突請修改 `/usr/local/etc/nginx-ui/app.ini`，並使用 `systemctl restart nginx-ui` 重啟 PrimeWaf 守護行程。
 
-**解除安裝 Nginx UI 但保留設定和資料庫檔案**
+**解除安裝 PrimeWaf 但保留設定和資料庫檔案**
 
 ```shell
 bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove

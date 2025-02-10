@@ -1,8 +1,8 @@
 <div align="center">
-      <img src="resources/logo.png" alt="Nginx UI Logo">
+      <img src="resources/logo.png" alt="PrimeWaf Logo">
 </div>
 
-# Nginx UI
+# PrimeWaf
 
 Yet another Nginx Web UI
 
@@ -108,7 +108,7 @@ Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https
 
 ### 使用前注意
 
-Nginx UI 遵循 Debian 的网页服务器配置文件标准。创建的网站配置文件将会放置于 Nginx 配置文件夹（自动检测）下的 `sites-available` 中，启用后的网站将会创建一份配置文件软连接到 `sites-enabled` 文件夹。您可能需要提前调整配置文件的组织方式。
+PrimeWaf 遵循 Debian 的网页服务器配置文件标准。创建的网站配置文件将会放置于 Nginx 配置文件夹（自动检测）下的 `sites-available` 中，启用后的网站将会创建一份配置文件软连接到 `sites-enabled` 文件夹。您可能需要提前调整配置文件的组织方式。
 
 对于非 Debian (及 Ubuntu) 系统，您可能需要将 `nginx.conf` 配置文件中的内容修改为如下所示的 Debian 风格。
 
@@ -124,7 +124,7 @@ http {
 
 ### 安装
 
-Nginx UI 可在以下平台中使用：
+PrimeWaf 可在以下平台中使用：
 
 - macOS 11 Big Sur 及之后版本（amd64 / arm64）
 - Linux 2.6.23 及之后版本（x86 / amd64 / arm64 / armv5 / armv6 / armv7 / mips32 / mips64 / riscv64 / loongarch64）
@@ -138,40 +138,40 @@ Nginx UI 可在以下平台中使用：
 
 ### 使用方法
 
-第一次运行 Nginx UI 时，请在浏览器中访问 `http://<your_server_ip>:<listen_port>` 完成后续配置。
+第一次运行 PrimeWaf 时，请在浏览器中访问 `http://<your_server_ip>:<listen_port>` 完成后续配置。
 
 #### 通过执行文件运行
-**在终端中运行 Nginx UI**
+**在终端中运行 PrimeWaf**
 
 ```shell
 nginx-ui -config app.ini
 ```
-在终端使用 `Control+C` 退出 Nginx UI。
+在终端使用 `Control+C` 退出 PrimeWaf。
 
-**在后台运行 Nginx UI**
+**在后台运行 PrimeWaf**
 
 ```shell
 nohup ./nginx-ui -config app.ini &
 ```
-使用以下命令停止 Nginx UI。
+使用以下命令停止 PrimeWaf。
 
 ```shell
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
 ```
 #### 使用 Systemd
-如果你使用的是[Linux 安装脚本](#linux-安装脚本)，Nginx UI 将作为 `nginx-ui` 服务安装在 systemd 中。请使用 `systemctl` 命令控制。
+如果你使用的是[Linux 安装脚本](#linux-安装脚本)，PrimeWaf 将作为 `nginx-ui` 服务安装在 systemd 中。请使用 `systemctl` 命令控制。
 
-**启动 Nginx UI**
+**启动 PrimeWaf**
 
 ```shell
 systemctl start nginx-ui
 ```
-**停止 Nginx UI**
+**停止 PrimeWaf**
 
 ```shell
 systemctl stop nginx-ui
 ```
-**重启 Nginx UI**
+**重启 PrimeWaf**
 
 ```shell
 systemctl restart nginx-ui
@@ -242,9 +242,9 @@ go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/sett
 ```shell
 bash -c "$(curl -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install -r https://mirror.ghproxy.com/
 ```
-一键安装脚本默认设置的监听端口为 `9000`，HTTP Challenge 端口默认为 `9180`，如果出现端口冲突请进入 `/usr/local/etc/nginx-ui/app.ini` 修改，并使用 `systemctl restart nginx-ui` 重启 Nginx UI 服务。
+一键安装脚本默认设置的监听端口为 `9000`，HTTP Challenge 端口默认为 `9180`，如果出现端口冲突请进入 `/usr/local/etc/nginx-ui/app.ini` 修改，并使用 `systemctl restart nginx-ui` 重启 PrimeWaf 服务。
 
-**卸载 Nginx UI 但保留配置和数据库文件**
+**卸载 PrimeWaf 但保留配置和数据库文件**
 
 ```shell
 bash -c "$(curl -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove

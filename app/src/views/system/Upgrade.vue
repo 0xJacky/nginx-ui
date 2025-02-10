@@ -74,7 +74,7 @@ async function performUpgrade() {
   progressPercent.value = 0
   logContainer.value!.innerHTML = ''
 
-  log($gettext('Upgrading Nginx UI, please wait...'))
+  log($gettext('Upgrading PrimeWaf, please wait...'))
 
   const ws = websocket('/api/upgrade/perform', false)
 
@@ -161,7 +161,7 @@ async function performUpgrade() {
       />
     </AModal>
     <div class="upgrade-container">
-      <p>{{ $gettext('You can check Nginx UI upgrade at this page.') }}</p>
+      <p>{{ $gettext('You can check PrimeWaf upgrade at this page.') }}</p>
       <h3>{{ $gettext('Current Version') }}: v{{ version.version }}</h3>
       <template v-if="getReleaseError">
         <AAlert

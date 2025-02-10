@@ -3,6 +3,12 @@ package template
 import (
 	"bufio"
 	"bytes"
+	"io"
+	"io/fs"
+	"path/filepath"
+	"strings"
+	"text/template"
+
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 	templ "github.com/0xJacky/Nginx-UI/template"
@@ -12,11 +18,6 @@ import (
 	"github.com/tufanbarisyildirim/gonginx/parser"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
-	"io"
-	"io/fs"
-	"path/filepath"
-	"strings"
-	"text/template"
 )
 
 type Variable struct {
@@ -56,7 +57,7 @@ func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
 	}
 	line := strings.TrimSpace(string(lineBytes))
 
-	if line != "# Nginx UI Template Start" {
+	if line != "# PrimeWaf Template Start" {
 		return
 	}
 	var content string
@@ -66,7 +67,7 @@ func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
 			break
 		}
 		line = strings.TrimSpace(string(lineBytes))
-		if line == "# Nginx UI Template End" {
+		if line == "# PrimeWaf Template End" {
 			break
 		}
 		content += line + "\n"
@@ -104,9 +105,9 @@ func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDet
 		orig := string(lineBytes)
 		line := strings.TrimSpace(orig)
 		switch {
-		case line == "# Nginx UI Custom Start":
+		case line == "# PrimeWaf Custom Start":
 			flag = true
-		case line == "# Nginx UI Custom End":
+		case line == "# PrimeWaf Custom End":
 			flag = false
 		case flag == true:
 			custom += orig + "\n"
@@ -140,7 +141,7 @@ func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDet
 
 	custom = strings.TrimSpace(buf.String())
 
-	templatePart := strings.Split(content, "# Nginx UI Template End")
+	templatePart := strings.Split(content, "# PrimeWaf Template End")
 	if len(templatePart) < 2 {
 		return
 	}

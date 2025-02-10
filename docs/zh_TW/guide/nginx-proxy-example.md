@@ -1,6 +1,6 @@
 # Nginx 反向代理示例
 
-在本指南中，我們將引導您配置 Nginx 伺服器以將 HTTP 流量重定向到 HTTPS，併為監聽在 `http://127.0.0.1:9000/` 上的 Nginx UI
+在本指南中，我們將引導您配置 Nginx 伺服器以將 HTTP 流量重定向到 HTTPS，併為監聽在 `http://127.0.0.1:9000/` 上的 PrimeWaf
 設定反向代理。
 
 ```nginx

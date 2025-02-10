@@ -2,14 +2,14 @@
 
 ## Try It Now
 
-You can try Nginx UI directly by the [demo](https://demo.nginxui.com).
+You can try PrimeWaf directly by the [demo](https://demo.nginxui.com).
 
 - Username：admin
 - Password：admin
 
 ## Before Use
 
-The Nginx UI follows the Debian web server configuration file standard. Created site configuration files will be placed
+The PrimeWaf follows the Debian web server configuration file standard. Created site configuration files will be placed
 in the `sites-available` folder that under the Nginx configuration folder (auto-detected). The configuration files for
 an enabled site will create a soft link to the `sites-enabled` folder. You may need to adjust the way the configuration
 files are organised.
@@ -35,10 +35,10 @@ control the host machine's Nginx. You can also [install via Docker](#install-wit
 includes Nginx and can be used bundled. For advanced users, you may also visit the [latest release](https://github.com/0xJacky/nginx-ui/releases/latest)
 to download the latest distribution and [run executable directly](#run-executable-directly), or [manually build it](./build).
 
-In the first runtime of Nginx UI, please visit `http://<your_server_ip>:<listen_port>`
+In the first runtime of PrimeWaf, please visit `http://<your_server_ip>:<listen_port>`
 in your browser to complete the follow-up configurations.
 
-In addition, we provide [an example](./nginx-proxy-example) of using Nginx to reverse proxy Nginx UI,
+In addition, we provide [an example](./nginx-proxy-example) of using Nginx to reverse proxy PrimeWaf,
 which can be used after installation is complete.
 
 
@@ -50,7 +50,7 @@ you can easily make the switch.
 
 ::: tip
 
-Nginx UI is by default proxied to port `8080` of the container.
+PrimeWaf is by default proxied to port `8080` of the container.
 When using this container for the first time, ensure that the volume mapped to `/etc/nginx` is empty.
 If you want to host static files, you can map directories to container.
 
@@ -79,11 +79,11 @@ docker run -dit \
 ```
 
 In this example, port `80` and `443` of the container are mapped to port `8080` and `8443` of the host respectively.
-You need to visit `http://<your_server_ip>:8080` to access Nginx UI.
+You need to visit `http://<your_server_ip>:8080` to access PrimeWaf.
 
 ## Run Executable Directly
 
-It is not recommended to run the Nginx UI executable directly for non-testing purposes.
+It is not recommended to run the PrimeWaf executable directly for non-testing purposes.
 We recommend configuring it as a daemon or using the [installation script](./install-script-linux) on Linux.
 
 ### Config

@@ -14,11 +14,11 @@ Node = http://10.0.0.2:9000?name=node2&node_secret=my-node-secret&enabled=false
 Node = http://10.0.0.3?name=node3&node_secret=my-node-secret&enabled=true
 ```
 
-By default, Nginx UI will create the predefined environments during the bootstrapping stage.
+By default, PrimeWaf will create the predefined environments during the bootstrapping stage.
 You can also find the "Load from Config" button in the environment list in the WebUI to manually update the environments.
 
 In order to avoid conflicts with the environemnts that already exist in the database,
-Nginx UI will check if the `Scheme://Host(:Port)` part is unique.
+PrimeWaf will check if the `Scheme://Host(:Port)` part is unique.
 If it does not exist, it will be created according to the configuration, otherwise no action will be taken.
 
-Please note that if you delete a node from the configuration file, Nginx UI will not delete the record from the database.
+Please note that if you delete a node from the configuration file, PrimeWaf will not delete the record from the database.
