@@ -5,6 +5,7 @@ import { useSettingsStore, useUserStore } from '@/pinia'
 import router from '@/routes'
 import { message } from 'ant-design-vue'
 import axios from 'axios'
+import JSEncrypt from 'jsencrypt'
 import { storeToRefs } from 'pinia'
 import 'nprogress/nprogress.css'
 
@@ -33,15 +34,34 @@ const instance = axios.create({
   baseURL: import.meta.env.VITE_API_ROOT,
   timeout: 50000,
   headers: { 'Content-Type': 'application/json' },
-  transformRequest: [function (data, headers) {
-    if (!(headers) || headers['Content-Type'] === 'multipart/form-data;charset=UTF-8')
-      return data
-    else
-      headers['Content-Type'] = 'application/json'
-
-    return JSON.stringify(data)
-  }],
 })
+
+const http = {
+  get(url: string, config: AxiosRequestConfig = {}) {
+    // eslint-disable-next-line ts/no-explicit-any
+    return instance.get<any, any>(url, config)
+  },
+  // eslint-disable-next-line ts/no-explicit-any
+  post(url: string, data: any = undefined, config: AxiosRequestConfig = {}) {
+    // eslint-disable-next-line ts/no-explicit-any
+    return instance.post<any, any>(url, data, config)
+  },
+  // eslint-disable-next-line ts/no-explicit-any
+  put(url: string, data: any = undefined, config: AxiosRequestConfig = {}) {
+    // eslint-disable-next-line ts/no-explicit-any
+    return instance.put<any, any>(url, data, config)
+  },
+  delete(url: string, config: AxiosRequestConfig = {}) {
+    // eslint-disable-next-line ts/no-explicit-any
+    return instance.delete<any, any>(url, config)
+  },
+  patch(url: string, config: AxiosRequestConfig = {}) {
+    // eslint-disable-next-line ts/no-explicit-any
+    return instance.patch<any, any>(url, config)
+  },
+}
+
+export default http
 
 const nprogress = useNProgress()
 
@@ -65,23 +85,36 @@ function useMessageDedupe(interval = 5000): MessageDedupe {
 }
 
 instance.interceptors.request.use(
-  config => {
+  async config => {
     nprogress.start()
     if (token.value) {
-      // eslint-disable-next-line ts/no-explicit-any
-      (config.headers as any).Authorization = token.value
+      config.headers.Authorization = token.value
     }
 
     if (settings.environment.id) {
-      // eslint-disable-next-line ts/no-explicit-any
-      (config.headers as any)['X-Node-ID'] = settings.environment.id
+      config.headers['X-Node-ID'] = settings.environment.id
     }
 
     if (secureSessionId.value) {
-      // eslint-disable-next-line ts/no-explicit-any
-      (config.headers as any)['X-Secure-Session-ID'] = secureSessionId.value
+      config.headers['X-Secure-Session-ID'] = secureSessionId.value
     }
 
+    if (config.headers?.['Content-Type'] !== 'multipart/form-data;charset=UTF-8') {
+      config.headers['Content-Type'] = 'application/json'
+
+      if (config.crypto) {
+        const cryptoParams = await http.get('/crypto/public_key')
+        const { public_key } = await cryptoParams
+
+        // Encrypt data with RSA public key
+        const encrypt = new JSEncrypt()
+        encrypt.setPublicKey(public_key)
+
+        config.data = JSON.stringify({
+          encrypted_params: encrypt.encrypt(JSON.stringify(config.data)),
+        })
+      }
+    }
     return config
   },
   err => {
@@ -154,30 +187,3 @@ instance.interceptors.response.use(
     return Promise.reject(error.response.data)
   },
 )
-
-const http = {
-  get(url: string, config: AxiosRequestConfig = {}) {
-    // eslint-disable-next-line ts/no-explicit-any
-    return instance.get<any, any>(url, config)
-  },
-  // eslint-disable-next-line ts/no-explicit-any
-  post(url: string, data: any = undefined, config: AxiosRequestConfig = {}) {
-    // eslint-disable-next-line ts/no-explicit-any
-    return instance.post<any, any>(url, data, config)
-  },
-  // eslint-disable-next-line ts/no-explicit-any
-  put(url: string, data: any = undefined, config: AxiosRequestConfig = {}) {
-    // eslint-disable-next-line ts/no-explicit-any
-    return instance.put<any, any>(url, data, config)
-  },
-  delete(url: string, config: AxiosRequestConfig = {}) {
-    // eslint-disable-next-line ts/no-explicit-any
-    return instance.delete<any, any>(url, config)
-  },
-  patch(url: string, config: AxiosRequestConfig = {}) {
-    // eslint-disable-next-line ts/no-explicit-any
-    return instance.patch<any, any>(url, config)
-  },
-}
-
-export default http

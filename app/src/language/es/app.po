@@ -111,7 +111,7 @@ msgstr ""
 msgid "All"
 msgstr "Todo"
 
-#: src/views/preference/OpenAISettings.vue:44
+#: src/views/preference/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr "URL Base de la API"
 
@@ -119,15 +119,15 @@ msgstr "URL Base de la API"
 msgid "API Document"
 msgstr "Documento de la API"
 
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:46
 msgid "API Proxy"
 msgstr "Proxy de la API"
 
-#: src/views/preference/OpenAISettings.vue:69
+#: src/views/preference/OpenAISettings.vue:58
 msgid "API Token"
 msgstr "Token de la API"
 
-#: src/views/preference/OpenAISettings.vue:78
+#: src/views/preference/OpenAISettings.vue:67
 #, fuzzy
 msgid "API Type"
 msgstr "Token de la API"
@@ -227,7 +227,7 @@ msgstr "Intentos"
 msgid "Auth"
 msgstr "Autenticación"
 
-#: src/components/TwoFA/Authorization.vue:121
+#: src/components/TwoFA/Authorization.vue:109
 msgid "Authenticate with a passkey"
 msgstr "Autenticarse con una llave de acceso"
 
@@ -617,6 +617,11 @@ msgstr "Base de datos (Opcional, default: database)"
 #: src/views/preference/CertSettings.vue:29
 msgid "Days"
 msgstr "Días"
+
+#: src/constants/errors/middleware.ts:3
+#, fuzzy
+msgid "Decryption failed"
+msgstr "Descripción"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
@@ -1238,7 +1243,7 @@ msgstr "Inicializando la actualización del kernel"
 msgid "Input the code from the app:"
 msgstr "Ingrese el código de la aplicación:"
 
-#: src/components/TwoFA/Authorization.vue:82
+#: src/components/TwoFA/Authorization.vue:72
 msgid "Input the recovery code:"
 msgstr "Ingrese el código de recuperación:"
 
@@ -1279,6 +1284,11 @@ msgstr "Código de acceso o código de recuperación inválido"
 #: src/constants/errors/user.ts:5
 #, fuzzy
 msgid "Invalid recovery code"
+msgstr "Código 2FA o de recuperación inválido"
+
+#: src/constants/errors/middleware.ts:2
+#, fuzzy
+msgid "Invalid request format"
 msgstr "Código 2FA o de recuperación inválido"
 
 #: src/views/preference/AuthSettings.vue:18
@@ -1329,7 +1339,7 @@ msgstr "Comprobado por última vez el"
 msgid "Leave blank for no change"
 msgstr "Para no modificar dejar en blanco"
 
-#: src/views/preference/OpenAISettings.vue:53
+#: src/views/preference/OpenAISettings.vue:41
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Dejar en blanco para el valor predeterminado: https://api.openai.com/"
 
@@ -1393,7 +1403,7 @@ msgstr "Ubicaciones"
 msgid "Log"
 msgstr "Registro"
 
-#: src/routes/index.ts:318 src/views/other/Login.vue:222
+#: src/routes/index.ts:318 src/views/other/Login.vue:223
 msgid "Login"
 msgstr "Acceso"
 
@@ -1472,7 +1482,7 @@ msgstr "Memoria y almacenamiento"
 msgid "Minutes"
 msgstr "Minutos"
 
-#: src/views/preference/OpenAISettings.vue:32
+#: src/views/preference/OpenAISettings.vue:20
 msgid "Model"
 msgstr "Modelo"
 
@@ -1761,7 +1771,7 @@ msgstr "En línea"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:112 src/views/other/Login.vue:231
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:232
 msgid "Or"
 msgstr "O"
 
@@ -1870,7 +1880,7 @@ msgstr ""
 "Ingrese un nombre para la llave de acceso que desea crear y a continuación "
 "haga clic en el botón Aceptar."
 
-#: src/components/TwoFA/Authorization.vue:70
+#: src/components/TwoFA/Authorization.vue:85
 #, fuzzy
 msgid "Please enter the OTP code:"
 msgstr "Por favor, ingrese el código 2FA:"
@@ -2024,7 +2034,7 @@ msgstr "Recuperar"
 msgid "Recovered Successfully"
 msgstr "Recuperado con éxito"
 
-#: src/components/TwoFA/Authorization.vue:89
+#: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
 msgstr "Recuperación"
 
@@ -2202,6 +2212,10 @@ msgstr "Renovado de Certificado exitoso"
 #: src/views/certificate/WildcardCertificate.vue:48
 msgid "Renew successfully"
 msgstr "Renovado con éxito"
+
+#: src/constants/errors/crypto.ts:4
+msgid "Request timeout"
+msgstr ""
 
 #: src/language/constants.ts:32
 msgid "Requested with wrong parameters"
@@ -2388,7 +2402,7 @@ msgstr ""
 msgid "Show"
 msgstr "Mostrar"
 
-#: src/views/other/Login.vue:240
+#: src/views/other/Login.vue:241
 msgid "Sign in with a passkey"
 msgstr "Iniciar sesión con una llave de acceso"
 
@@ -2648,7 +2662,7 @@ msgid ""
 "The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:23
 #, fuzzy
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
@@ -2706,8 +2720,8 @@ msgstr ""
 msgid "The url is invalid"
 msgstr "La URL es inválida"
 
-#: src/views/preference/OpenAISettings.vue:47
-#: src/views/preference/OpenAISettings.vue:60
+#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:49
 msgid "The url is invalid."
 msgstr "La URL no es válida."
 
@@ -2814,7 +2828,7 @@ msgstr ""
 "de la autoridad al backend, y debemos guardar este archivo y volver a cargar "
 "Nginx. ¿Estás seguro de que quieres continuar?"
 
-#: src/views/preference/OpenAISettings.vue:48
+#: src/views/preference/OpenAISettings.vue:36
 #, fuzzy
 msgid ""
 "To use a local large model, deploy it with ollama, vllm or lmdeploy. They "
@@ -2825,7 +2839,7 @@ msgstr ""
 "Estos proporcionan un API endpoint compatible con OpenAI, por lo que solo "
 "debe configurar la baseUrl en su API local."
 
-#: src/views/preference/OpenAISettings.vue:72
+#: src/views/preference/OpenAISettings.vue:61
 msgid "Token is not valid"
 msgstr "El token no es válido"
 
@@ -2910,11 +2924,11 @@ msgstr "Tiempo encendido:"
 msgid "URL"
 msgstr "URL"
 
-#: src/components/TwoFA/Authorization.vue:102
+#: src/components/TwoFA/Authorization.vue:121
 msgid "Use OTP"
 msgstr "Usar OTP"
 
-#: src/components/TwoFA/Authorization.vue:98
+#: src/components/TwoFA/Authorization.vue:117
 msgid "Use recovery code"
 msgstr "Usar código de recuperación"
 

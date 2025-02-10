@@ -100,7 +100,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:44
+#: src/views/preference/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr ""
 
@@ -108,15 +108,15 @@ msgstr ""
 msgid "API Document"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:46
 msgid "API Proxy"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:69
+#: src/views/preference/OpenAISettings.vue:58
 msgid "API Token"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:78
+#: src/views/preference/OpenAISettings.vue:67
 msgid "API Type"
 msgstr ""
 
@@ -210,7 +210,7 @@ msgstr ""
 msgid "Auth"
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:121
+#: src/components/TwoFA/Authorization.vue:109
 msgid "Authenticate with a passkey"
 msgstr ""
 
@@ -590,6 +590,10 @@ msgstr ""
 
 #: src/views/preference/CertSettings.vue:29
 msgid "Days"
+msgstr ""
+
+#: src/constants/errors/middleware.ts:3
+msgid "Decryption failed"
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
@@ -1191,7 +1195,7 @@ msgstr ""
 msgid "Input the code from the app:"
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:82
+#: src/components/TwoFA/Authorization.vue:72
 msgid "Input the recovery code:"
 msgstr ""
 
@@ -1231,6 +1235,10 @@ msgstr ""
 
 #: src/constants/errors/user.ts:5
 msgid "Invalid recovery code"
+msgstr ""
+
+#: src/constants/errors/middleware.ts:2
+msgid "Invalid request format"
 msgstr ""
 
 #: src/views/preference/AuthSettings.vue:18
@@ -1278,7 +1286,7 @@ msgstr ""
 msgid "Leave blank for no change"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:53
+#: src/views/preference/OpenAISettings.vue:41
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr ""
 
@@ -1342,7 +1350,7 @@ msgid "Log"
 msgstr ""
 
 #: src/routes/index.ts:318
-#: src/views/other/Login.vue:222
+#: src/views/other/Login.vue:223
 msgid "Login"
 msgstr ""
 
@@ -1410,7 +1418,7 @@ msgstr ""
 msgid "Minutes"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:32
+#: src/views/preference/OpenAISettings.vue:20
 msgid "Model"
 msgstr ""
 
@@ -1691,8 +1699,8 @@ msgstr ""
 msgid "OpenAI"
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:112
-#: src/views/other/Login.vue:231
+#: src/components/TwoFA/Authorization.vue:100
+#: src/views/other/Login.vue:232
 msgid "Or"
 msgstr ""
 
@@ -1790,7 +1798,7 @@ msgstr ""
 msgid "Please enter a name for the passkey you wish to create and click the OK button below."
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:70
+#: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr ""
 
@@ -1922,7 +1930,7 @@ msgstr ""
 msgid "Recovered Successfully"
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:89
+#: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
 msgstr ""
 
@@ -2081,6 +2089,10 @@ msgstr ""
 #: src/views/certificate/RenewCert.vue:27
 #: src/views/certificate/WildcardCertificate.vue:48
 msgid "Renew successfully"
+msgstr ""
+
+#: src/constants/errors/crypto.ts:4
+msgid "Request timeout"
 msgstr ""
 
 #: src/language/constants.ts:32
@@ -2253,7 +2265,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: src/views/other/Login.vue:240
+#: src/views/other/Login.vue:241
 msgid "Sign in with a passkey"
 msgstr ""
 
@@ -2482,7 +2494,7 @@ msgstr ""
 msgid "The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:23
 msgid "The model name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots."
 msgstr ""
 
@@ -2515,8 +2527,8 @@ msgstr ""
 msgid "The url is invalid"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:47
-#: src/views/preference/OpenAISettings.vue:60
+#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:49
 msgid "The url is invalid."
 msgstr ""
 
@@ -2593,11 +2605,11 @@ msgstr ""
 msgid "To make sure the certification auto-renewal can work normally, we need to add a location which can proxy the request from authority to backend, and we need to save this file and reload the Nginx. Are you sure you want to continue?"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:48
+#: src/views/preference/OpenAISettings.vue:36
 msgid "To use a local large model, deploy it with ollama, vllm or lmdeploy. They provide an OpenAI-compatible API endpoint, so just set the baseUrl to your local API."
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:72
+#: src/views/preference/OpenAISettings.vue:61
 msgid "Token is not valid"
 msgstr ""
 
@@ -2682,11 +2694,11 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:102
+#: src/components/TwoFA/Authorization.vue:121
 msgid "Use OTP"
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:98
+#: src/components/TwoFA/Authorization.vue:117
 msgid "Use recovery code"
 msgstr ""
 

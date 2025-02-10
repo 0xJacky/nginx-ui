@@ -106,7 +106,7 @@ msgstr "然后，刷新此页面并再次点击添加 Passkey。"
 msgid "All"
 msgstr "全部"
 
-#: src/views/preference/OpenAISettings.vue:44
+#: src/views/preference/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr "API 地址"
 
@@ -114,15 +114,15 @@ msgstr "API 地址"
 msgid "API Document"
 msgstr "API 文档"
 
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:46
 msgid "API Proxy"
 msgstr "API 代理"
 
-#: src/views/preference/OpenAISettings.vue:69
+#: src/views/preference/OpenAISettings.vue:58
 msgid "API Token"
 msgstr "API Token"
 
-#: src/views/preference/OpenAISettings.vue:78
+#: src/views/preference/OpenAISettings.vue:67
 msgid "API Type"
 msgstr "API 类型"
 
@@ -216,7 +216,7 @@ msgstr "尝试次数"
 msgid "Auth"
 msgstr "认证"
 
-#: src/components/TwoFA/Authorization.vue:121
+#: src/components/TwoFA/Authorization.vue:109
 msgid "Authenticate with a passkey"
 msgstr "通过 Passkey 认证"
 
@@ -595,6 +595,11 @@ msgstr "数据库 (可选，默认: database)"
 #: src/views/preference/CertSettings.vue:29
 msgid "Days"
 msgstr "天"
+
+#: src/constants/errors/middleware.ts:3
+#, fuzzy
+msgid "Decryption failed"
+msgstr "描述"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
@@ -1191,7 +1196,7 @@ msgstr "初始化核心升级器"
 msgid "Input the code from the app:"
 msgstr "输入应用程序中的代码："
 
-#: src/components/TwoFA/Authorization.vue:82
+#: src/components/TwoFA/Authorization.vue:72
 msgid "Input the recovery code:"
 msgstr "输入恢复代码："
 
@@ -1230,6 +1235,11 @@ msgstr "二次验证码或恢复代码无效"
 
 #: src/constants/errors/user.ts:5
 msgid "Invalid recovery code"
+msgstr "无效的恢复代码"
+
+#: src/constants/errors/middleware.ts:2
+#, fuzzy
+msgid "Invalid request format"
 msgstr "无效的恢复代码"
 
 #: src/views/preference/AuthSettings.vue:18
@@ -1280,7 +1290,7 @@ msgstr "上次使用"
 msgid "Leave blank for no change"
 msgstr "留空表示不修改"
 
-#: src/views/preference/OpenAISettings.vue:53
+#: src/views/preference/OpenAISettings.vue:41
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "留空为默认：https://api.openai.com/"
 
@@ -1343,7 +1353,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日志"
 
-#: src/routes/index.ts:318 src/views/other/Login.vue:222
+#: src/routes/index.ts:318 src/views/other/Login.vue:223
 msgid "Login"
 msgstr "登录"
 
@@ -1419,7 +1429,7 @@ msgstr "内存与存储"
 msgid "Minutes"
 msgstr "分钟"
 
-#: src/views/preference/OpenAISettings.vue:32
+#: src/views/preference/OpenAISettings.vue:20
 msgid "Model"
 msgstr "模型"
 
@@ -1699,7 +1709,7 @@ msgstr "在线"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:112 src/views/other/Login.vue:231
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:232
 msgid "Or"
 msgstr "或"
 
@@ -1802,7 +1812,7 @@ msgid ""
 "button below."
 msgstr "请为您要创建的 Passkey 输入一个名称，然后单击下面的 \"确定 \"按钮。"
 
-#: src/components/TwoFA/Authorization.vue:70
+#: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "请输入 OTP："
 
@@ -1941,7 +1951,7 @@ msgstr "恢复"
 msgid "Recovered Successfully"
 msgstr "恢复成功"
 
-#: src/components/TwoFA/Authorization.vue:89
+#: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
 msgstr "恢复"
 
@@ -2109,6 +2119,10 @@ msgstr "证书续期成功"
 #: src/views/certificate/WildcardCertificate.vue:48
 msgid "Renew successfully"
 msgstr "更新成功"
+
+#: src/constants/errors/crypto.ts:4
+msgid "Request timeout"
+msgstr "请求超时"
 
 #: src/language/constants.ts:32
 msgid "Requested with wrong parameters"
@@ -2288,7 +2302,7 @@ msgstr ""
 msgid "Show"
 msgstr "显示"
 
-#: src/views/other/Login.vue:240
+#: src/views/other/Login.vue:241
 msgid "Sign in with a passkey"
 msgstr "使用 Passkey 登录"
 
@@ -2530,7 +2544,7 @@ msgid ""
 "The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr "日志路径不在 settings.NginxSettings.LogDirWhiteList 中的路径之下"
 
-#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:23
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
@@ -2576,8 +2590,8 @@ msgstr "当前配置中的 server_name 必须是获取证书所需的域名，�
 msgid "The url is invalid"
 msgstr "URL无效"
 
-#: src/views/preference/OpenAISettings.vue:47
-#: src/views/preference/OpenAISettings.vue:60
+#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:49
 msgid "The url is invalid."
 msgstr "URL 无效."
 
@@ -2675,7 +2689,7 @@ msgstr ""
 "为了确保认证自动更新能够正常工作，我们需要添加一个能够代理从权威机构到后端的"
 "请求的 Location，并且我们需要保存这个文件并重新加载Nginx。你确定要继续吗？"
 
-#: src/views/preference/OpenAISettings.vue:48
+#: src/views/preference/OpenAISettings.vue:36
 msgid ""
 "To use a local large model, deploy it with ollama, vllm or lmdeploy. They "
 "provide an OpenAI-compatible API endpoint, so just set the baseUrl to your "
@@ -2684,7 +2698,7 @@ msgstr ""
 "要使用本地大型模型，可使用 ollama、vllm 或 lmdeploy 进行部署。它们提供了与 "
 "OpenAI 兼容的 API 端点，因此只需将 baseUrl 设置为本地 API 即可。"
 
-#: src/views/preference/OpenAISettings.vue:72
+#: src/views/preference/OpenAISettings.vue:61
 msgid "Token is not valid"
 msgstr "Token 无效"
 
@@ -2765,11 +2779,11 @@ msgstr "运行时间:"
 msgid "URL"
 msgstr "URL"
 
-#: src/components/TwoFA/Authorization.vue:102
+#: src/components/TwoFA/Authorization.vue:121
 msgid "Use OTP"
 msgstr "使用二步验证码"
 
-#: src/components/TwoFA/Authorization.vue:98
+#: src/components/TwoFA/Authorization.vue:117
 msgid "Use recovery code"
 msgstr "使用恢复代码"
 

@@ -12,7 +12,7 @@ const install = {
     return http.get('/install')
   },
   install_nginx_ui(data: InstallRequest) {
-    return http.post('/install', data)
+    return http.post('/install', data, { crypto: true })
   },
 }
 

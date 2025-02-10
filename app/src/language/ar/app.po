@@ -106,7 +106,7 @@ msgstr "بعد ذلك، قم بتحديث هذه الصفحة وانقر فوق 
 msgid "All"
 msgstr "الكل"
 
-#: src/views/preference/OpenAISettings.vue:44
+#: src/views/preference/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr "عنوان URL الأساسي لAPI"
 
@@ -114,15 +114,15 @@ msgstr "عنوان URL الأساسي لAPI"
 msgid "API Document"
 msgstr "ملف API"
 
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:46
 msgid "API Proxy"
 msgstr "وسيط API"
 
-#: src/views/preference/OpenAISettings.vue:69
+#: src/views/preference/OpenAISettings.vue:58
 msgid "API Token"
 msgstr "رمز API"
 
-#: src/views/preference/OpenAISettings.vue:78
+#: src/views/preference/OpenAISettings.vue:67
 #, fuzzy
 msgid "API Type"
 msgstr "رمز API"
@@ -222,7 +222,7 @@ msgstr "محاولات"
 msgid "Auth"
 msgstr "مصادقة"
 
-#: src/components/TwoFA/Authorization.vue:121
+#: src/components/TwoFA/Authorization.vue:109
 msgid "Authenticate with a passkey"
 msgstr "المصادقة باستخدام مفتاح المرور"
 
@@ -616,6 +616,11 @@ msgstr "قاعدة البيانات (اختياري، الافتراضي: قاع
 #: src/views/preference/CertSettings.vue:29
 msgid "Days"
 msgstr "أيام"
+
+#: src/constants/errors/middleware.ts:3
+#, fuzzy
+msgid "Decryption failed"
+msgstr "وصف"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
@@ -1231,7 +1236,7 @@ msgstr "بدء ترقية النواة"
 msgid "Input the code from the app:"
 msgstr "أدخل الرمز من التطبيق:"
 
-#: src/components/TwoFA/Authorization.vue:82
+#: src/components/TwoFA/Authorization.vue:72
 msgid "Input the recovery code:"
 msgstr "أدخل رمز الاسترداد:"
 
@@ -1272,6 +1277,11 @@ msgstr "رمز المرور أو رمز الاسترداد غير صالح"
 #: src/constants/errors/user.ts:5
 #, fuzzy
 msgid "Invalid recovery code"
+msgstr "رمز 2FA أو الاسترداد غير صالح"
+
+#: src/constants/errors/middleware.ts:2
+#, fuzzy
+msgid "Invalid request format"
 msgstr "رمز 2FA أو الاسترداد غير صالح"
 
 #: src/views/preference/AuthSettings.vue:18
@@ -1321,7 +1331,7 @@ msgstr "آخر استخدام في"
 msgid "Leave blank for no change"
 msgstr "اتركه فارغًا لعدم التغيير"
 
-#: src/views/preference/OpenAISettings.vue:53
+#: src/views/preference/OpenAISettings.vue:41
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "اتركه فارغًا للإعداد الافتراضي: /https://api.openai.com"
 
@@ -1384,7 +1394,7 @@ msgstr "أماكن"
 msgid "Log"
 msgstr "سجل"
 
-#: src/routes/index.ts:318 src/views/other/Login.vue:222
+#: src/routes/index.ts:318 src/views/other/Login.vue:223
 msgid "Login"
 msgstr "تسجيل الدخول"
 
@@ -1462,7 +1472,7 @@ msgstr "الذاكرة والتخزين"
 msgid "Minutes"
 msgstr "دقائق"
 
-#: src/views/preference/OpenAISettings.vue:32
+#: src/views/preference/OpenAISettings.vue:20
 msgid "Model"
 msgstr "نموذج"
 
@@ -1746,7 +1756,7 @@ msgstr "متصل"
 msgid "OpenAI"
 msgstr "أوبن أي آي"
 
-#: src/components/TwoFA/Authorization.vue:112 src/views/other/Login.vue:231
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:232
 msgid "Or"
 msgstr "أو"
 
@@ -1853,7 +1863,7 @@ msgid ""
 msgstr ""
 "يرجى إدخال اسم لمفتاح المرور الذي ترغب في إنشائه ثم انقر على زر موافق أدناه."
 
-#: src/components/TwoFA/Authorization.vue:70
+#: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "يرجى إدخال رمز OTP:"
 
@@ -1992,7 +2002,7 @@ msgstr "استعادة"
 msgid "Recovered Successfully"
 msgstr "تم الاسترداد بنجاح"
 
-#: src/components/TwoFA/Authorization.vue:89
+#: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
 msgstr "استرداد"
 
@@ -2162,6 +2172,10 @@ msgstr "تجديد الشهادة بنجاح"
 #: src/views/certificate/WildcardCertificate.vue:48
 msgid "Renew successfully"
 msgstr "تم التجديد بنجاح"
+
+#: src/constants/errors/crypto.ts:4
+msgid "Request timeout"
+msgstr ""
 
 #: src/language/constants.ts:32
 msgid "Requested with wrong parameters"
@@ -2340,7 +2354,7 @@ msgstr ""
 msgid "Show"
 msgstr "عرض"
 
-#: src/views/other/Login.vue:240
+#: src/views/other/Login.vue:241
 msgid "Sign in with a passkey"
 msgstr "تسجيل الدخول باستخدام مفتاح المرور"
 
@@ -2592,7 +2606,7 @@ msgid ""
 "The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:23
 #, fuzzy
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
@@ -2647,8 +2661,8 @@ msgstr ""
 msgid "The url is invalid"
 msgstr "عنوان URL غير صالح"
 
-#: src/views/preference/OpenAISettings.vue:47
-#: src/views/preference/OpenAISettings.vue:60
+#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:49
 msgid "The url is invalid."
 msgstr "عنوان URL غير صالح."
 
@@ -2746,7 +2760,7 @@ msgstr ""
 "توجيه الطلب من السلطة إلى الخلفية، ونحتاج إلى حفظ هذا الملف وإعادة تحميل "
 "Nginx. هل أنت متأكد أنك تريد المتابعة؟"
 
-#: src/views/preference/OpenAISettings.vue:48
+#: src/views/preference/OpenAISettings.vue:36
 #, fuzzy
 msgid ""
 "To use a local large model, deploy it with ollama, vllm or lmdeploy. They "
@@ -2757,7 +2771,7 @@ msgstr ""
 "نهاية API متوافقة مع OpenAI، لذا قم فقط بتعيين baseUrl إلىAPI المحلية الخاصة "
 "بك."
 
-#: src/views/preference/OpenAISettings.vue:72
+#: src/views/preference/OpenAISettings.vue:61
 msgid "Token is not valid"
 msgstr "الرمز غير صالح"
 
@@ -2845,11 +2859,11 @@ msgstr "مدة التشغيل:"
 msgid "URL"
 msgstr "عنوان URL"
 
-#: src/components/TwoFA/Authorization.vue:102
+#: src/components/TwoFA/Authorization.vue:121
 msgid "Use OTP"
 msgstr "استخدم كلمة المرور لمرة واحدة"
 
-#: src/components/TwoFA/Authorization.vue:98
+#: src/components/TwoFA/Authorization.vue:117
 msgid "Use recovery code"
 msgstr "استخدم رمز الاسترداد"
 

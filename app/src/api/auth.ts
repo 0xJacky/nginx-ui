@@ -19,7 +19,7 @@ const auth = {
       password,
       otp,
       recovery_code: recoveryCode,
-    })
+    }, { crypto: true })
   },
   async casdoor_login(code?: string, state?: string) {
     await http.post('/casdoor_callback', {

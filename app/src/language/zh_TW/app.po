@@ -2,25 +2,26 @@
 # Hintay Lin <hintay@me.com>, 2024.
 # Weblate <noreply-mt-weblate@weblate.org>, 2024.
 # "Xaver Y.R. Chen" <yrchen@atcity.org>, 2025.
+# 0xJacky <me@jackyu.cn>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-02-01 18:25+0000\n"
-"Last-Translator: \"Xaver Y.R. Chen\" <yrchen@atcity.org>\n"
-"Language-Team: Chinese (Traditional) <https://weblate.nginxui.com/projects/"
-"nginx-ui/frontend/zh_Hant/>\n"
+"PO-Revision-Date: 2025-02-08 18:25+0000\n"
+"Last-Translator: 0xJacky <me@jackyu.cn>\n"
+"Language-Team: Chinese (Traditional Han script) <https://weblate.nginxui.com/"
+"projects/nginx-ui/frontend/zh_Hant/>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.9.2\n"
 "Generated-By: easygettext\n"
 
 #: src/views/user/userColumns.tsx:32
 msgid "2FA"
-msgstr "多重要素驗證"
+msgstr "雙因素驗證"
 
 #: src/views/preference/AuthSettings.vue:70
 msgid "2FA Settings"
@@ -32,7 +33,7 @@ msgstr "關於"
 
 #: src/routes/index.ts:210 src/views/site/ngx_conf/LogEntry.vue:75
 msgid "Access Logs"
-msgstr "存取日誌"
+msgstr "訪問日誌"
 
 #: src/routes/index.ts:148 src/views/certificate/ACMEUser.vue:113
 #: src/views/certificate/ACMEUserSelector.vue:85
@@ -111,7 +112,7 @@ msgstr "然後，重新整理此頁面並再次點選新增通行密鑰。"
 msgid "All"
 msgstr "全部"
 
-#: src/views/preference/OpenAISettings.vue:44
+#: src/views/preference/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr "API 基礎網址"
 
@@ -119,27 +120,25 @@ msgstr "API 基礎網址"
 msgid "API Document"
 msgstr "API 文件"
 
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:46
 msgid "API Proxy"
 msgstr "API 代理"
 
-#: src/views/preference/OpenAISettings.vue:69
+#: src/views/preference/OpenAISettings.vue:58
 msgid "API Token"
 msgstr "API Token"
 
-#: src/views/preference/OpenAISettings.vue:78
-#, fuzzy
+#: src/views/preference/OpenAISettings.vue:67
 msgid "API Type"
-msgstr "API Token"
+msgstr "API 類型"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:103
 msgid "Apply"
 msgstr "套用"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:67
-#, fuzzy
 msgid "Apply bulk action successfully"
-msgstr "複製成功"
+msgstr "批量操作成功應用"
 
 #: src/views/system/Upgrade.vue:176
 msgid "Arch"
@@ -227,7 +226,7 @@ msgstr "嘗試次數"
 msgid "Auth"
 msgstr "身份驗證"
 
-#: src/components/TwoFA/Authorization.vue:121
+#: src/components/TwoFA/Authorization.vue:109
 msgid "Authenticate with a passkey"
 msgstr "使用通行密鑰認證"
 
@@ -522,7 +521,6 @@ msgid "Copy"
 msgstr "複製"
 
 #: src/views/preference/components/RecoveryCodes.vue:121
-#, fuzzy
 msgid "Copy Codes"
 msgstr "恢復碼"
 
@@ -615,6 +613,11 @@ msgstr "資料庫 (可選，預設: database)"
 msgid "Days"
 msgstr "天"
 
+#: src/constants/errors/middleware.ts:3
+#, fuzzy
+msgid "Decryption failed"
+msgstr "描述"
+
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
 #: src/views/site/ngx_conf/NgxServer.vue:110
@@ -691,9 +694,8 @@ msgid "Directive"
 msgstr "指令"
 
 #: src/constants/errors/nginx_log.ts:6
-#, fuzzy
 msgid "Directive params is empty"
-msgstr "檔名空白"
+msgstr ""
 
 #: src/constants/errors/nginx_log.ts:5
 msgid "Directive.Params neither access_log nor error_log"
@@ -1049,9 +1051,8 @@ msgid "Failed to get certificate information"
 msgstr "取得憑證資訊失敗"
 
 #: src/constants/errors/self_check.ts:4
-#, fuzzy
 msgid "Failed to parse nginx.conf"
-msgstr "讀取 nginx.conf 失敗"
+msgstr ""
 
 #: src/constants/errors/self_check.ts:3
 msgid "Failed to read nginx.conf"
@@ -1228,7 +1229,7 @@ msgstr "正在初始化核心升級程式"
 msgid "Input the code from the app:"
 msgstr "請輸入應用程式中的代碼："
 
-#: src/components/TwoFA/Authorization.vue:82
+#: src/components/TwoFA/Authorization.vue:72
 msgid "Input the recovery code:"
 msgstr "輸入恢復碼："
 
@@ -1269,6 +1270,11 @@ msgstr "無效的密碼或恢復碼"
 #: src/constants/errors/user.ts:5
 #, fuzzy
 msgid "Invalid recovery code"
+msgstr "無效的多重因素驗證或恢復碼"
+
+#: src/constants/errors/middleware.ts:2
+#, fuzzy
+msgid "Invalid request format"
 msgstr "無效的多重因素驗證或恢復碼"
 
 #: src/views/preference/AuthSettings.vue:18
@@ -1319,7 +1325,7 @@ msgstr "上次檢查時間"
 msgid "Leave blank for no change"
 msgstr "留空表示不修改"
 
-#: src/views/preference/OpenAISettings.vue:53
+#: src/views/preference/OpenAISettings.vue:41
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "預設留空：https://api.openai.com/"
 
@@ -1384,7 +1390,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日誌"
 
-#: src/routes/index.ts:318 src/views/other/Login.vue:222
+#: src/routes/index.ts:318 src/views/other/Login.vue:223
 msgid "Login"
 msgstr "登入"
 
@@ -1459,7 +1465,7 @@ msgstr "記憶體與儲存"
 msgid "Minutes"
 msgstr "分鐘"
 
-#: src/views/preference/OpenAISettings.vue:32
+#: src/views/preference/OpenAISettings.vue:20
 msgid "Model"
 msgstr "模型"
 
@@ -1598,9 +1604,8 @@ msgid "Nginx Log"
 msgstr "Nginx 日誌"
 
 #: src/views/preference/NginxSettings.vue:18
-#, fuzzy
 msgid "Nginx Log Directory Whitelist"
-msgstr "Nginx 設定解析錯誤"
+msgstr ""
 
 #: src/views/preference/NginxSettings.vue:27
 #, fuzzy
@@ -1608,9 +1613,8 @@ msgid "Nginx PID Path"
 msgstr "Nginx 錯誤日誌路徑"
 
 #: src/views/preference/NginxSettings.vue:30
-#, fuzzy
 msgid "Nginx Reload Command"
-msgstr "終端機啟動指令"
+msgstr ""
 
 #: src/components/NginxControl/NginxControl.vue:26
 msgid "Nginx reloaded successfully"
@@ -1745,7 +1749,7 @@ msgstr "線上"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:112 src/views/other/Login.vue:231
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:232
 msgid "Or"
 msgstr "或"
 
@@ -1819,9 +1823,8 @@ msgid "Path"
 msgstr "路徑"
 
 #: src/constants/errors/cert.ts:7 src/constants/errors/config.ts:2
-#, fuzzy
 msgid "Path: {0} is not under the nginx conf dir: {1}"
-msgstr "簽章路徑不在 Nginx 設定檔資料夾下"
+msgstr ""
 
 #: src/constants/errors/cert.ts:6
 msgid "Payload resource is nil"
@@ -1840,9 +1843,8 @@ msgid "Performing core upgrade"
 msgstr "正在執行核心升級"
 
 #: src/constants/errors/crypto.ts:2
-#, fuzzy
 msgid "Plain text is empty"
-msgstr "檔名空白"
+msgstr ""
 
 #: src/views/preference/components/AddPasskey.vue:69
 msgid ""
@@ -1850,7 +1852,7 @@ msgid ""
 "button below."
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:70
+#: src/components/TwoFA/Authorization.vue:85
 #, fuzzy
 msgid "Please enter the OTP code:"
 msgstr "請輸入多重因素驗證碼："
@@ -1995,7 +1997,7 @@ msgstr "恢復"
 msgid "Recovered Successfully"
 msgstr "恢復成功"
 
-#: src/components/TwoFA/Authorization.vue:89
+#: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
 msgstr "恢復"
 
@@ -2171,6 +2173,10 @@ msgstr "更新憑證成功"
 #: src/views/certificate/WildcardCertificate.vue:48
 msgid "Renew successfully"
 msgstr "更新成功"
+
+#: src/constants/errors/crypto.ts:4
+msgid "Request timeout"
+msgstr ""
 
 #: src/language/constants.ts:32
 msgid "Requested with wrong parameters"
@@ -2351,19 +2357,17 @@ msgstr ""
 msgid "Show"
 msgstr "顯示"
 
-#: src/views/other/Login.vue:240
-#, fuzzy
+#: src/views/other/Login.vue:241
 msgid "Sign in with a passkey"
-msgstr "使用通行密鑰認證"
+msgstr ""
 
 #: src/views/site/ngx_conf/directive/DirectiveAdd.vue:65
 msgid "Single Directive"
 msgstr "單一指令"
 
 #: src/routes/index.ts:71 src/views/site/site_category/SiteCategory.vue:10
-#, fuzzy
 msgid "Site Categories"
-msgstr "類別"
+msgstr ""
 
 #: src/constants/errors/site.ts:4
 #, fuzzy
@@ -2389,14 +2393,12 @@ msgid "Sites List"
 msgstr "網站列表"
 
 #: src/constants/errors/self_check.ts:10
-#, fuzzy
 msgid "Sites-available directory not exist"
-msgstr "目錄"
+msgstr ""
 
 #: src/constants/errors/self_check.ts:11
-#, fuzzy
 msgid "Sites-enabled directory not exist"
-msgstr "目錄"
+msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
@@ -2446,9 +2448,8 @@ msgid "Streams Directory"
 msgstr "目錄"
 
 #: src/constants/errors/self_check.ts:12
-#, fuzzy
 msgid "Streams-available directory not exist"
-msgstr "目錄"
+msgstr ""
 
 #: src/constants/errors/self_check.ts:13
 #, fuzzy
@@ -2604,7 +2605,7 @@ msgid ""
 "The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:23
 #, fuzzy
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
@@ -2653,8 +2654,8 @@ msgstr "當前配置中的 server_name 必須是您需要獲取憑證的網域�
 msgid "The url is invalid"
 msgstr "網址無效"
 
-#: src/views/preference/OpenAISettings.vue:47
-#: src/views/preference/OpenAISettings.vue:60
+#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:49
 msgid "The url is invalid."
 msgstr "網址無效。"
 
@@ -2751,14 +2752,14 @@ msgstr ""
 "為了確保憑證自動續期能夠正常運作，我們需要新增一個 Location 來代理從授權後端"
 "的請求，我們需要儲存這個檔案並重新載入 Nginx。你確定你要繼續嗎？"
 
-#: src/views/preference/OpenAISettings.vue:48
+#: src/views/preference/OpenAISettings.vue:36
 msgid ""
 "To use a local large model, deploy it with ollama, vllm or lmdeploy. They "
 "provide an OpenAI-compatible API endpoint, so just set the baseUrl to your "
 "local API."
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:72
+#: src/views/preference/OpenAISettings.vue:61
 msgid "Token is not valid"
 msgstr "令牌無效"
 
@@ -2840,11 +2841,11 @@ msgstr "運作時間:"
 msgid "URL"
 msgstr "URL"
 
-#: src/components/TwoFA/Authorization.vue:102
+#: src/components/TwoFA/Authorization.vue:121
 msgid "Use OTP"
 msgstr "使用一次性密碼"
 
-#: src/components/TwoFA/Authorization.vue:98
+#: src/components/TwoFA/Authorization.vue:117
 msgid "Use recovery code"
 msgstr "使用恢復碼"
 
@@ -2994,8 +2995,9 @@ msgid ""
 msgstr ""
 
 #: src/views/preference/components/RecoveryCodes.vue:94
+#, fuzzy
 msgid "You have not generated recovery codes yet."
-msgstr ""
+msgstr "您確定要恢復此項目嗎？"
 
 #: src/views/preference/components/RecoveryCodes.vue:91
 msgid ""
@@ -3009,9 +3011,8 @@ msgid "Your old codes won't work anymore."
 msgstr ""
 
 #: src/views/preference/components/Passkey.vue:75
-#, fuzzy
 msgid "Your passkeys"
-msgstr "新增通行密鑰"
+msgstr ""
 
 #~ msgid ""
 #~ "If you lose your mobile phone, you can use the recovery code to reset "
@@ -3163,6 +3164,9 @@ msgstr "新增通行密鑰"
 
 #~ msgid "404 Not Found"
 #~ msgstr "404 未找到頁面"
+
+#~ msgid "Are you sure you want to restore?"
+#~ msgstr "您確定要恢復？"
 
 #~ msgid "Destroy"
 #~ msgstr "刪除"

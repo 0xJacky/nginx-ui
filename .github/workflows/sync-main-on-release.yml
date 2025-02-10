@@ -1,0 +1,28 @@
+name: Sync branch
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+    branches: [dev]
+
+jobs:
+  force-push-main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: dev
+          clean: false
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Force push dev to main
+        run: |
+          git fetch origin
+          git push origin dev:main --force
