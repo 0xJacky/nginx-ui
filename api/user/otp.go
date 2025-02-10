@@ -1,7 +1,6 @@
 package user
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -89,13 +88,8 @@ func EnrollTOTP(c *gin.Context) {
 
 	t := time.Now().Unix()
 	recoveryCodes := model.RecoveryCodes{Codes: generateRecoveryCodes(16), LastViewed: &t}
-	codesJson, err := json.Marshal(&recoveryCodes)
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
-	_, err = u.Where(u.ID.Eq(cUser.ID)).Update(u.RecoveryCodes, codesJson)
+	cUser.RecoveryCodes = recoveryCodes
+	_, err = u.Where(u.ID.Eq(cUser.ID)).Updates(cUser)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
