@@ -9,6 +9,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
+	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/google/uuid"
@@ -50,13 +51,24 @@ func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
 		}
 
 		// check recovery code
+		usedCount := 0
+		verified := false
 		for _, code := range user.RecoveryCodes.Codes {
 			if code.Code == recoveryCode && code.UsedTime == nil {
 				t := time.Now().Unix()
 				code.UsedTime = &t
 				_, err = u.Where(u.ID.Eq(user.ID)).Updates(user)
-				return
+				if err != nil {
+					return err
+				}
+				verified = true
 			}
+			if code.UsedTime != nil {
+				usedCount++
+			}
+		}
+		if verified && usedCount == len(user.RecoveryCodes.Codes) {
+			notification.Warning("All Recovery Codes Have Been Used", "Please generate new recovery codes in the preferences immediately to prevent lockout.")
 		}
 		return ErrRecoveryCode
 	}
