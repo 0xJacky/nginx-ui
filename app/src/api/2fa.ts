@@ -6,7 +6,7 @@ export interface TwoFAStatus {
   otp_status: boolean
   passkey_status: boolean
   recovery_codes_generated: boolean
-  recovery_codes_viewed: boolean
+  recovery_codes_viewed?: boolean
 }
 
 const twoFA = {

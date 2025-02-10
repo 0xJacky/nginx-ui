@@ -205,6 +205,7 @@ async function handlePasskeyLogin() {
                   enabled: true,
                   otp_status: true,
                   passkey_status: false,
+                  recovery_codes_generated: true,
                 }"
                 @submit-o-t-p="handleOTPSubmit"
               />
