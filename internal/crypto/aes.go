@@ -1,12 +1,17 @@
 package crypto
 
 import (
+	"context"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/base64"
-	"github.com/0xJacky/Nginx-UI/settings"
+	"encoding/json"
 	"io"
+	"reflect"
+
+	"github.com/0xJacky/Nginx-UI/settings"
+	"gorm.io/gorm/schema"
 )
 
 // AesEncrypt encrypts text and given key with AES.
@@ -54,4 +59,50 @@ func AesDecrypt(text []byte) ([]byte, error) {
 	}
 
 	return data, nil
+}
+
+type JSONAesSerializer struct{}
+
+func (JSONAesSerializer) Scan(ctx context.Context, field *schema.Field, dst reflect.Value, dbValue interface{}) (err error) {
+	fieldValue := reflect.New(field.FieldType)
+
+	if dbValue != nil {
+		var bytes []byte
+		switch v := dbValue.(type) {
+		case []byte:
+			bytes = v
+		case string:
+			bytes = []byte(v)
+		default:
+			bytes, err = json.Marshal(v)
+			if err != nil {
+				return err
+			}
+		}
+
+		if len(bytes) > 0 {
+			bytes, err = AesDecrypt(bytes)
+			if err != nil {
+				return err
+			}
+			err = json.Unmarshal(bytes, fieldValue.Interface())
+		}
+	}
+
+	field.ReflectValueOf(ctx, dst).Set(fieldValue.Elem())
+	return
+}
+
+// Value implements serializer interface
+func (JSONAesSerializer) Value(ctx context.Context, field *schema.Field, dst reflect.Value, fieldValue interface{}) (interface{}, error) {
+	result, err := json.Marshal(fieldValue)
+	if string(result) == "null" {
+		if field.TagSettings["NOT NULL"] != "" {
+			return "", nil
+		}
+		return nil, err
+	}
+
+	encrypt, err := AesEncrypt(result)
+	return string(encrypt), err
 }

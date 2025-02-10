@@ -1,22 +1,26 @@
 package model
 
 import (
-	"time"
-
+	"github.com/0xJacky/Nginx-UI/internal/crypto"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/spf13/cast"
 	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 )
 
+func init() {
+	schema.RegisterSerializer("json[aes]", crypto.JSONAesSerializer{})
+}
+
 type RecoveryCode struct {
-	Code     string     `json:"code"`
-	UsedTime *time.Time `json:"used_time,omitempty"  gorm:"type:datetime;default:null"`
+	Code     string `json:"code"`
+	UsedTime *int64 `json:"used_time,omitempty"  gorm:"type:datetime;default:null"`
 }
 
 type RecoveryCodes struct {
-	Codes          []RecoveryCode `json:"codes"`
-	LastViewed     *time.Time     `json:"last_viewed,omitempty" gorm:"type:datetime;default:null"`
-	LastDownloaded *time.Time     `json:"last_downloaded,omitempty" gorm:"type:datetime;default:null"`
+	Codes          []*RecoveryCode `json:"codes"`
+	LastViewed     *int64          `json:"last_viewed,omitempty" gorm:"serializer:unixtime;type:datetime;default:null"`
+	LastDownloaded *int64          `json:"last_downloaded,omitempty" gorm:"serializer:unixtime;type:datetime;default:null"`
 }
 
 type User struct {
@@ -26,7 +30,7 @@ type User struct {
 	Password      string        `json:"-" cosy:"json:password;add:required,max=20;update:omitempty,max=20"`
 	Status        bool          `json:"status" gorm:"default:1"`
 	OTPSecret     []byte        `json:"-" gorm:"type:blob"`
-	RecoveryCodes RecoveryCodes `json:"-" gorm:"serializer:json"`
+	RecoveryCodes RecoveryCodes `json:"-" gorm:"serializer:json[aes]"`
 	EnabledTwoFA  bool          `json:"enabled_2fa" gorm:"-"`
 }
 

@@ -87,7 +87,7 @@ func EnrollTOTP(c *gin.Context) {
 		return
 	}
 
-	t := time.Now()
+	t := time.Now().Unix()
 	recoveryCodes := model.RecoveryCodes{Codes: generateRecoveryCodes(16), LastViewed: &t}
 	codesJson, err := json.Marshal(&recoveryCodes)
 	if err != nil {

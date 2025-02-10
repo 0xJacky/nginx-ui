@@ -52,7 +52,7 @@ func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
 		// check recovery code
 		for _, code := range user.RecoveryCodes.Codes {
 			if code.Code == recoveryCode && code.UsedTime == nil {
-				t := time.Now()
+				t := time.Now().Unix()
 				code.UsedTime = &t
 				_, err = u.Where(u.ID.Eq(user.ID)).Updates(user)
 				return

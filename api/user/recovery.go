@@ -1,7 +1,6 @@
 package user
 
 import (
-	"encoding/json"
 	"fmt"
 	"math/rand"
 	"net/http"
@@ -23,10 +22,12 @@ func generateRecoveryCode() string {
 	return fmt.Sprintf("%05x-%05x", rand.Intn(0x100000), rand.Intn(0x100000))
 }
 
-func generateRecoveryCodes(count int) []model.RecoveryCode {
-	recoveryCodes := make([]model.RecoveryCode, count)
+func generateRecoveryCodes(count int) []*model.RecoveryCode {
+	recoveryCodes := make([]*model.RecoveryCode, count)
 	for i := 0; i < count; i++ {
-		recoveryCodes[i].Code = generateRecoveryCode()
+		recoveryCodes[i] = &model.RecoveryCode{
+			Code: generateRecoveryCode(),
+		}
 	}
 	return recoveryCodes
 }
@@ -34,17 +35,11 @@ func generateRecoveryCodes(count int) []model.RecoveryCode {
 func ViewRecoveryCodes(c *gin.Context) {
 	user := api.CurrentUser(c)
 
-	u := query.User
-	user, err := u.Where(u.ID.Eq(user.ID)).First()
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-
 	// update last viewed time
-	t := time.Now()
+	u := query.User
+	t := time.Now().Unix()
 	user.RecoveryCodes.LastViewed = &t
-	_, err = u.Where(u.ID.Eq(user.ID)).Updates(user)
+	_, err := u.Where(u.ID.Eq(user.ID)).Updates(user)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -59,16 +54,12 @@ func ViewRecoveryCodes(c *gin.Context) {
 func GenerateRecoveryCodes(c *gin.Context) {
 	user := api.CurrentUser(c)
 
-	t := time.Now()
+	t := time.Now().Unix()
 	recoveryCodes := model.RecoveryCodes{Codes: generateRecoveryCodes(16), LastViewed: &t}
-	codesJson, err := json.Marshal(&recoveryCodes)
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
+	user.RecoveryCodes = recoveryCodes
 
 	u := query.User
-	_, err = u.Where(u.ID.Eq(user.ID)).Update(u.RecoveryCodes, codesJson)
+	_, err := u.Where(u.ID.Eq(user.ID)).Updates(user)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
