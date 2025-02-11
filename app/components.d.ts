@@ -76,6 +76,7 @@ declare module 'vue' {
     CodeEditorCodeEditor: typeof import('./src/components/CodeEditor/CodeEditor.vue')['default']
     EnvIndicatorEnvIndicator: typeof import('./src/components/EnvIndicator/EnvIndicator.vue')['default']
     FooterToolbarFooterToolBar: typeof import('./src/components/FooterToolbar/FooterToolBar.vue')['default']
+    GlobeGlobe: typeof import('./src/components/Globe/Globe.vue')['default']
     ICPICP: typeof import('./src/components/ICP/ICP.vue')['default']
     LogoLogo: typeof import('./src/components/Logo/Logo.vue')['default']
     NginxControlNginxControl: typeof import('./src/components/NginxControl/NginxControl.vue')['default']

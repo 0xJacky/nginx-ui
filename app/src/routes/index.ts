@@ -268,6 +268,15 @@ export const routes: RouteRecordRaw[] = [
         },
       },
       // {
+      //   path: 'waf',
+      //   name: 'Waf',
+      //   component: () => import('@/views/waf/Waf.vue'),
+      //   meta: {
+      //     name: () => $gettext('Web Application Firewall'),
+      //     icon: SecurityScanOutlined,
+      //   },
+      // },
+      // {
       //   path: 'system',
       //   name: 'System',
       //   redirect: 'system/about',
