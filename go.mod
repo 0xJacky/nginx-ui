@@ -1,6 +1,6 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.23.5
+go 1.23.6
 
 require (
 	github.com/0xJacky/pofile v0.2.1
@@ -30,7 +30,7 @@ require (
 	github.com/pquerna/otp v1.4.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.49.1
-	github.com/sashabaranov/go-openai v1.36.1
+	github.com/sashabaranov/go-openai v1.37.0
 	github.com/shirou/gopsutil/v4 v4.25.1
 	github.com/spf13/cast v1.7.1
 	github.com/stretchr/testify v1.10.0
@@ -38,8 +38,8 @@ require (
 	github.com/uozi-tech/cosy v1.14.4
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.0.0-beta1
-	golang.org/x/crypto v0.32.0
-	golang.org/x/net v0.34.0
+	golang.org/x/crypto v0.33.0
+	golang.org/x/net v0.35.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gen v0.3.26
