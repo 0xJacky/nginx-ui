@@ -110,7 +110,7 @@ onMounted(() => {
       </AButton>
     </div>
 
-    <div v-if="twoFAStatus.otp_status || twoFAStatus.recovery_codes_generated" class="flex justify-center">
+    <div v-if="twoFAStatus.otp_status || twoFAStatus.recovery_codes_generated" class="flex justify-center mt-3">
       <a
         v-if="!useRecoveryCode"
         @click="clickUseRecoveryCode"
