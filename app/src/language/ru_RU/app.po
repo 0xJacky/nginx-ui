@@ -108,7 +108,11 @@ msgstr "Затем, обновите эту страницу и снова на�
 msgid "All"
 msgstr "Все"
 
-#: src/views/preference/OpenAISettings.vue:44
+#: src/language/constants.ts:57
+msgid "All Recovery Codes Have Been Used"
+msgstr ""
+
+#: src/views/preference/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr "Базовый URL API"
 
@@ -116,15 +120,15 @@ msgstr "Базовый URL API"
 msgid "API Document"
 msgstr "API Документ"
 
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:46
 msgid "API Proxy"
 msgstr "API Прокси"
 
-#: src/views/preference/OpenAISettings.vue:69
+#: src/views/preference/OpenAISettings.vue:58
 msgid "API Token"
 msgstr "API токен"
 
-#: src/views/preference/OpenAISettings.vue:78
+#: src/views/preference/OpenAISettings.vue:67
 #, fuzzy
 msgid "API Type"
 msgstr "API токен"
@@ -226,7 +230,7 @@ msgstr "Попытки"
 msgid "Auth"
 msgstr "Авторизация"
 
-#: src/components/TwoFA/Authorization.vue:121
+#: src/components/TwoFA/Authorization.vue:109
 msgid "Authenticate with a passkey"
 msgstr "Аутентификация с помощью ключа доступа"
 
@@ -330,13 +334,6 @@ msgstr "Директория корневого сертификата"
 msgid "CADir"
 msgstr ""
 
-<<<<<<< HEAD
-=======
-#: src/views/preference/components/TOTP.vue:129
-msgid "Can't scan? Use text key binding"
-msgstr ""
-
->>>>>>> remotes/origin/dev
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:246
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:187
@@ -586,20 +583,12 @@ msgstr "Учетные данные"
 msgid "Credentials"
 msgstr "Учетные данные"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:72
-=======
-#: src/views/preference/components/TOTP.vue:77
->>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "Current account is enabled TOTP."
 msgstr "Текущая учетная запись имеет включенную 2ФА."
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:70
-=======
-#: src/views/preference/components/TOTP.vue:74
->>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "Current account is not enabled TOTP."
 msgstr ""
@@ -947,11 +936,7 @@ msgstr "Включение %{conf_name} in %{node_name} нипалучилася
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "Включение %{conf_name} in %{node_name} успешно"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:45
-=======
-#: src/views/preference/components/TOTP.vue:38
->>>>>>> remotes/origin/dev
 msgid "Enable 2FA successfully"
 msgstr "Двухфакторная аутентификация успешно включена"
 
@@ -991,11 +976,7 @@ msgstr "Включено успешно"
 msgid "Enable TLS"
 msgstr "Включить TLS"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:81
-=======
-#: src/views/preference/components/TOTP.vue:103
->>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "Enable TOTP"
 msgstr "Включить TLS"
@@ -1092,9 +1073,8 @@ msgid "Failed to parse nginx.conf"
 msgstr ""
 
 #: src/constants/errors/self_check.ts:3
-#, fuzzy
 msgid "Failed to read nginx.conf"
-msgstr "Не удалось включить %{msg}"
+msgstr ""
 
 #: src/views/site/site_edit/SiteEdit.vue:135
 #: src/views/stream/StreamEdit.vue:122
@@ -1235,17 +1215,6 @@ msgstr ""
 "количества попыток в течение пороговых минут блокировки, IP будет "
 "заблокирован на определенный период времени."
 
-<<<<<<< HEAD
-=======
-#: src/views/preference/components/TOTP.vue:89
-msgid ""
-"If you lose your mobile phone, you can use the recovery code to reset your "
-"2FA."
-msgstr ""
-"Если вы потеряете свой мобильный телефон, вы можете использовать код "
-"восстановления для сброса 2FA."
-
->>>>>>> remotes/origin/dev
 #: src/views/preference/components/AddPasskey.vue:70
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
 msgstr ""
@@ -1280,19 +1249,11 @@ msgstr "Ошибка первоначального обновления ядр�
 msgid "Initialing core upgrader"
 msgstr "Инициализация программы обновления ядра"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:119
-=======
-#: src/views/preference/components/TOTP.vue:136
->>>>>>> remotes/origin/dev
 msgid "Input the code from the app:"
 msgstr "Введите код из приложения:"
 
-#: src/components/TwoFA/Authorization.vue:82
-<<<<<<< HEAD
-=======
-#: src/views/preference/components/TOTP.vue:149
->>>>>>> remotes/origin/dev
+#: src/components/TwoFA/Authorization.vue:72
 msgid "Input the recovery code:"
 msgstr "Введите код восстановления:"
 
@@ -1335,16 +1296,11 @@ msgstr "Неверный пароль или код восстановления
 msgid "Invalid recovery code"
 msgstr "Неверный 2FA или код восстановления"
 
-<<<<<<< HEAD
-#: src/views/preference/AuthSettings.vue:18
-=======
 #: src/constants/errors/middleware.ts:2
-#, fuzzy
 msgid "Invalid request format"
-msgstr "Неверный 2FA или код восстановления"
+msgstr ""
 
-#: src/views/preference/AuthSettings.vue:14
->>>>>>> remotes/origin/dev
+#: src/views/preference/AuthSettings.vue:18
 msgid "IP"
 msgstr "IP"
 
@@ -1392,7 +1348,7 @@ msgstr "Последняя проверка в"
 msgid "Leave blank for no change"
 msgstr "Оставьте пустым без изменений"
 
-#: src/views/preference/OpenAISettings.vue:53
+#: src/views/preference/OpenAISettings.vue:41
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Оставьте пустым для значения по умолчанию: https://api.openai.com/"
 
@@ -1456,7 +1412,7 @@ msgstr "Локации"
 msgid "Log"
 msgstr "Журнал"
 
-#: src/routes/index.ts:318 src/views/other/Login.vue:222
+#: src/routes/index.ts:318 src/views/other/Login.vue:223
 msgid "Login"
 msgstr "Логин"
 
@@ -1534,7 +1490,7 @@ msgstr "Память и хранилище"
 msgid "Minutes"
 msgstr "Минуты"
 
-#: src/views/preference/OpenAISettings.vue:32
+#: src/views/preference/OpenAISettings.vue:20
 msgid "Model"
 msgstr "Модель"
 
@@ -1721,9 +1677,8 @@ msgid "Node name"
 msgstr "Новое имя"
 
 #: src/views/preference/BasicSettings.vue:23
-#, fuzzy
 msgid "Node Secret"
-msgstr "Jwt секрет"
+msgstr ""
 
 #: src/views/certificate/CertificateList/certColumns.tsx:91
 msgid "Not After"
@@ -1821,7 +1776,7 @@ msgstr "Онлайн"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:112 src/views/other/Login.vue:231
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:232
 msgid "Or"
 msgstr ""
 
@@ -1861,9 +1816,8 @@ msgid "Params"
 msgstr "Параметры"
 
 #: src/views/preference/components/Passkey.vue:59
-#, fuzzy
 msgid "Passkey"
-msgstr "Добавить ключ доступа"
+msgstr ""
 
 #: src/views/preference/components/Passkey.vue:62
 msgid ""
@@ -1925,7 +1879,7 @@ msgid ""
 "button below."
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:70
+#: src/components/TwoFA/Authorization.vue:85
 #, fuzzy
 msgid "Please enter the OTP code:"
 msgstr "Пожалуйста, введите код 2FA:"
@@ -1950,6 +1904,12 @@ msgstr ""
 "Пожалуйста, сначала добавьте учетные данные в Certification > DNS "
 "Credentials, а затем выберите одну из учетных данных ниже, чтобы запросить "
 "API провайдера DNS."
+
+#: src/language/constants.ts:58
+msgid ""
+"Please generate new recovery codes in the preferences immediately to prevent "
+"lockout."
+msgstr ""
 
 #: src/views/config/components/Rename.vue:63
 #: src/views/config/ConfigEditor.vue:249
@@ -2047,9 +2007,8 @@ msgid "Provider"
 msgstr "Провайдер"
 
 #: src/views/certificate/ACMEUser.vue:51
-#, fuzzy
 msgid "Proxy"
-msgstr "API Прокси"
+msgstr ""
 
 #: src/views/preference/BasicSettings.vue:63
 msgid "Public Security Number"
@@ -2078,8 +2037,7 @@ msgstr "Восстановить"
 msgid "Recovered Successfully"
 msgstr "Восстановлено успешно"
 
-#: src/components/TwoFA/Authorization.vue:89
-<<<<<<< HEAD
+#: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
 msgstr "Восстановление"
 
@@ -2093,19 +2051,6 @@ msgid ""
 "Recovery codes are used to access your account when you lose access to your "
 "2FA device. Each code can only be used once."
 msgstr ""
-=======
-#: src/views/preference/components/TOTP.vue:156
-msgid "Recovery"
-msgstr "Восстановление"
-
-#: src/views/preference/components/TOTP.vue:82
-msgid "Recovery Code"
-msgstr "Код восстановления"
-
-#: src/views/preference/components/TOTP.vue:91
-msgid "Recovery Code:"
-msgstr "Код восстановления:"
->>>>>>> remotes/origin/dev
 
 #: src/views/preference/CertSettings.vue:37
 msgid "Recursive Nameservers"
@@ -2282,11 +2227,7 @@ msgstr "Запрос с неправильными параметрами"
 msgid "Reset"
 msgstr "Сброс"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:93
-=======
-#: src/views/preference/components/TOTP.vue:111
->>>>>>> remotes/origin/dev
 msgid "Reset 2FA"
 msgstr "Сброс 2FA"
 
@@ -2379,11 +2320,7 @@ msgstr "Сохранено успешно"
 msgid "Saved successfully"
 msgstr "Успешно сохранено"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:69
-=======
-#: src/views/preference/components/TOTP.vue:72
->>>>>>> remotes/origin/dev
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr ""
 "Отсканируйте QR-код с помощью мобильного телефона, чтобы добавить учетную "
@@ -2393,11 +2330,7 @@ msgstr ""
 msgid "SDK"
 msgstr "SDK"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:109
-=======
-#: src/views/preference/components/TOTP.vue:128
->>>>>>> remotes/origin/dev
 msgid "Secret has been copied"
 msgstr ""
 
@@ -2471,19 +2404,17 @@ msgstr ""
 msgid "Show"
 msgstr "Показать"
 
-#: src/views/other/Login.vue:240
-#, fuzzy
+#: src/views/other/Login.vue:241
 msgid "Sign in with a passkey"
-msgstr "Аутентификация с помощью ключа доступа"
+msgstr ""
 
 #: src/views/site/ngx_conf/directive/DirectiveAdd.vue:65
 msgid "Single Directive"
 msgstr "Одиночная Директива"
 
 #: src/routes/index.ts:71 src/views/site/site_category/SiteCategory.vue:10
-#, fuzzy
 msgid "Site Categories"
-msgstr "Категория"
+msgstr ""
 
 #: src/constants/errors/site.ts:4
 #, fuzzy
@@ -2509,14 +2440,12 @@ msgid "Sites List"
 msgstr "Список сайтов"
 
 #: src/constants/errors/self_check.ts:10
-#, fuzzy
 msgid "Sites-available directory not exist"
-msgstr "Каталог"
+msgstr ""
 
 #: src/constants/errors/self_check.ts:11
-#, fuzzy
 msgid "Sites-enabled directory not exist"
-msgstr "Каталог"
+msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
@@ -2566,9 +2495,8 @@ msgid "Streams Directory"
 msgstr "Каталог"
 
 #: src/constants/errors/self_check.ts:12
-#, fuzzy
 msgid "Streams-available directory not exist"
-msgstr "Каталог"
+msgstr ""
 
 #: src/constants/errors/self_check.ts:13
 #, fuzzy
@@ -2732,7 +2660,7 @@ msgid ""
 "The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:23
 #, fuzzy
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
@@ -2767,16 +2695,6 @@ msgstr ""
 "Имя сервера должно содержать только буквы, юникод, цифры, дефисы, тире и "
 "точки."
 
-<<<<<<< HEAD
-=======
-#: src/views/preference/components/TOTP.vue:90
-msgid ""
-"The recovery code is only displayed once, please save it in a safe place."
-msgstr ""
-"Код восстановления отображается только один раз, пожалуйста, сохраните его в "
-"безопасном месте."
-
->>>>>>> remotes/origin/dev
 #: src/views/dashboard/Environments.vue:148
 msgid ""
 "The remote Nginx UI version is not compatible with the local Nginx UI "
@@ -2800,8 +2718,8 @@ msgstr ""
 msgid "The url is invalid"
 msgstr "URL недействителен"
 
-#: src/views/preference/OpenAISettings.vue:47
-#: src/views/preference/OpenAISettings.vue:60
+#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:49
 msgid "The url is invalid."
 msgstr "URL недействителен."
 
@@ -2878,11 +2796,7 @@ msgstr "Советы"
 msgid "Title"
 msgstr "Заголовок"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:68
-=======
-#: src/views/preference/components/TOTP.vue:71
->>>>>>> remotes/origin/dev
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
@@ -2909,14 +2823,14 @@ msgstr ""
 "запрос от авторитета к бэкенду, и нам нужно сохранить этот файл и "
 "перезагрузить Nginx. Вы уверены, что хотите продолжить?"
 
-#: src/views/preference/OpenAISettings.vue:48
+#: src/views/preference/OpenAISettings.vue:36
 msgid ""
 "To use a local large model, deploy it with ollama, vllm or lmdeploy. They "
 "provide an OpenAI-compatible API endpoint, so just set the baseUrl to your "
 "local API."
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:72
+#: src/views/preference/OpenAISettings.vue:61
 msgid "Token is not valid"
 msgstr "Токен недействителен"
 
@@ -2926,19 +2840,11 @@ msgid_plural "Total %{total} items"
 msgstr[0] ""
 msgstr[1] ""
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:66
 msgid "TOTP"
 msgstr ""
 
 #: src/views/preference/components/TOTP.vue:67
-=======
-#: src/views/preference/components/TOTP.vue:69
-msgid "TOTP"
-msgstr ""
-
-#: src/views/preference/components/TOTP.vue:70
->>>>>>> remotes/origin/dev
 msgid ""
 "TOTP is a two-factor authentication method that uses a time-based one-time "
 "password algorithm."
@@ -3009,11 +2915,11 @@ msgstr "Аптайм:"
 msgid "URL"
 msgstr "URL"
 
-#: src/components/TwoFA/Authorization.vue:102
+#: src/components/TwoFA/Authorization.vue:121
 msgid "Use OTP"
 msgstr "Использовать OTP"
 
-#: src/components/TwoFA/Authorization.vue:98
+#: src/components/TwoFA/Authorization.vue:117
 msgid "Use recovery code"
 msgstr "Использовать код восстановления"
 
@@ -3181,25 +3087,8 @@ msgid "Your old codes won't work anymore."
 msgstr ""
 
 #: src/views/preference/components/Passkey.vue:75
-#, fuzzy
 msgid "Your passkeys"
-msgstr "Добавить ключ доступа"
-
-#~ msgid ""
-#~ "If you lose your mobile phone, you can use the recovery code to reset "
-#~ "your 2FA."
-#~ msgstr ""
-#~ "Если вы потеряете свой мобильный телефон, вы можете использовать код "
-#~ "восстановления для сброса 2FA."
-
-#~ msgid "Recovery Code:"
-#~ msgstr "Код восстановления:"
-
-#~ msgid ""
-#~ "The recovery code is only displayed once, please save it in a safe place."
-#~ msgstr ""
-#~ "Код восстановления отображается только один раз, пожалуйста, сохраните "
-#~ "его в безопасном месте."
+msgstr ""
 
 #~ msgid "Directory"
 #~ msgstr "Каталог"
@@ -3210,11 +3099,27 @@ msgstr "Добавить ключ доступа"
 #~ msgid "File"
 #~ msgstr "Файл"
 
-#~ msgid "Server error"
-#~ msgstr "Ошибка сервера"
+#~ msgid ""
+#~ "If you lose your mobile phone, you can use the recovery code to reset "
+#~ "your 2FA."
+#~ msgstr ""
+#~ "Если вы потеряете свой мобильный телефон, вы можете использовать код "
+#~ "восстановления для сброса 2FA."
 
 #~ msgid "Incorrect username or password"
 #~ msgstr "Неверное имя пользователя или пароль"
+
+#~ msgid "Recovery Code:"
+#~ msgstr "Код восстановления:"
+
+#~ msgid "Server error"
+#~ msgstr "Ошибка сервера"
+
+#~ msgid ""
+#~ "The recovery code is only displayed once, please save it in a safe place."
+#~ msgstr ""
+#~ "Код восстановления отображается только один раз, пожалуйста, сохраните "
+#~ "его в безопасном месте."
 
 #~ msgid "Too many login failed attempts, please try again later"
 #~ msgstr "Слишком много неудачных попыток входа, попробуйте позже"

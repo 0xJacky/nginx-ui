@@ -107,7 +107,11 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:44
+#: src/language/constants.ts:57
+msgid "All Recovery Codes Have Been Used"
+msgstr ""
+
+#: src/views/preference/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr "API 기본 URL"
 
@@ -115,15 +119,15 @@ msgstr "API 기본 URL"
 msgid "API Document"
 msgstr "API 문서"
 
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:46
 msgid "API Proxy"
 msgstr "API 프록시"
 
-#: src/views/preference/OpenAISettings.vue:69
+#: src/views/preference/OpenAISettings.vue:58
 msgid "API Token"
 msgstr "API 토큰"
 
-#: src/views/preference/OpenAISettings.vue:78
+#: src/views/preference/OpenAISettings.vue:67
 #, fuzzy
 msgid "API Type"
 msgstr "API 토큰"
@@ -224,7 +228,7 @@ msgstr "시도 횟수"
 msgid "Auth"
 msgstr "인증"
 
-#: src/components/TwoFA/Authorization.vue:121
+#: src/components/TwoFA/Authorization.vue:109
 msgid "Authenticate with a passkey"
 msgstr ""
 
@@ -327,13 +331,6 @@ msgstr "CA 디렉토리"
 msgid "CADir"
 msgstr "CA 디렉토리"
 
-<<<<<<< HEAD
-=======
-#: src/views/preference/components/TOTP.vue:129
-msgid "Can't scan? Use text key binding"
-msgstr ""
-
->>>>>>> remotes/origin/dev
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:246
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:187
@@ -586,19 +583,11 @@ msgstr "인증 정보"
 msgid "Credentials"
 msgstr "인증 정보들"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:72
 msgid "Current account is enabled TOTP."
 msgstr ""
 
 #: src/views/preference/components/TOTP.vue:70
-=======
-#: src/views/preference/components/TOTP.vue:77
-msgid "Current account is enabled TOTP."
-msgstr ""
-
-#: src/views/preference/components/TOTP.vue:74
->>>>>>> remotes/origin/dev
 msgid "Current account is not enabled TOTP."
 msgstr ""
 
@@ -939,11 +928,7 @@ msgstr "%{node_name}에서 %{conf_name} 활성화 실패"
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:45
-=======
-#: src/views/preference/components/TOTP.vue:38
->>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "Enable 2FA successfully"
 msgstr "성공적으로 활성화"
@@ -984,11 +969,7 @@ msgstr "성공적으로 활성화"
 msgid "Enable TLS"
 msgstr "TLS 활성화"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:81
-=======
-#: src/views/preference/components/TOTP.vue:103
->>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "Enable TOTP"
 msgstr "TLS 활성화"
@@ -1088,9 +1069,8 @@ msgid "Failed to parse nginx.conf"
 msgstr ""
 
 #: src/constants/errors/self_check.ts:3
-#, fuzzy
 msgid "Failed to read nginx.conf"
-msgstr "%{msg} 활성화 실패"
+msgstr ""
 
 #: src/views/site/site_edit/SiteEdit.vue:135
 #: src/views/stream/StreamEdit.vue:122
@@ -1165,9 +1145,8 @@ msgid "Generate New Recovery Codes"
 msgstr ""
 
 #: src/views/preference/components/RecoveryCodes.vue:161
-#, fuzzy
 msgid "Generate Recovery Codes"
-msgstr "유효함"
+msgstr ""
 
 #: src/views/preference/components/RecoveryCodes.vue:32
 #, fuzzy
@@ -1229,15 +1208,6 @@ msgid ""
 "ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
 
-<<<<<<< HEAD
-=======
-#: src/views/preference/components/TOTP.vue:89
-msgid ""
-"If you lose your mobile phone, you can use the recovery code to reset your "
-"2FA."
-msgstr ""
-
->>>>>>> remotes/origin/dev
 #: src/views/preference/components/AddPasskey.vue:70
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
 msgstr ""
@@ -1270,19 +1240,11 @@ msgstr "초기 코어 업그레이더 오류"
 msgid "Initialing core upgrader"
 msgstr "코어 업그레이더 초기화"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:119
-=======
-#: src/views/preference/components/TOTP.vue:136
->>>>>>> remotes/origin/dev
 msgid "Input the code from the app:"
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:82
-<<<<<<< HEAD
-=======
-#: src/views/preference/components/TOTP.vue:149
->>>>>>> remotes/origin/dev
+#: src/components/TwoFA/Authorization.vue:72
 msgid "Input the recovery code:"
 msgstr ""
 
@@ -1311,9 +1273,8 @@ msgid "Invalid filename"
 msgstr "Invalid E-mail!"
 
 #: src/views/config/components/Mkdir.vue:57
-#, fuzzy
 msgid "Invalid folder name"
-msgstr "Invalid E-mail!"
+msgstr ""
 
 #: src/constants/errors/user.ts:4
 #, fuzzy
@@ -1325,19 +1286,14 @@ msgid "Invalid passcode or recovery code"
 msgstr ""
 
 #: src/constants/errors/user.ts:5
-#, fuzzy
 msgid "Invalid recovery code"
-msgstr "유효함"
+msgstr ""
 
-<<<<<<< HEAD
-#: src/views/preference/AuthSettings.vue:18
-=======
 #: src/constants/errors/middleware.ts:2
 msgid "Invalid request format"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:14
->>>>>>> remotes/origin/dev
+#: src/views/preference/AuthSettings.vue:18
 msgid "IP"
 msgstr ""
 
@@ -1388,7 +1344,7 @@ msgstr "마지막 확인 시간"
 msgid "Leave blank for no change"
 msgstr "변경사항이 없으면 비워두세요"
 
-#: src/views/preference/OpenAISettings.vue:53
+#: src/views/preference/OpenAISettings.vue:41
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "기본값을 사용하려면 비워 두세요: https://api.openai.com/"
 
@@ -1459,7 +1415,7 @@ msgstr "위치들"
 msgid "Log"
 msgstr "로그인"
 
-#: src/routes/index.ts:318 src/views/other/Login.vue:222
+#: src/routes/index.ts:318 src/views/other/Login.vue:223
 msgid "Login"
 msgstr "로그인"
 
@@ -1523,9 +1479,8 @@ msgid "Managed Certificate"
 msgstr "인증서 유효"
 
 #: src/views/preference/AuthSettings.vue:135
-#, fuzzy
 msgid "Max Attempts"
-msgstr "시도 횟수"
+msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:222
 #: src/views/dashboard/ServerAnalytic.vue:223
@@ -1540,7 +1495,7 @@ msgstr "메모리 및 저장소"
 msgid "Minutes"
 msgstr "분"
 
-#: src/views/preference/OpenAISettings.vue:32
+#: src/views/preference/OpenAISettings.vue:20
 #, fuzzy
 msgid "Model"
 msgstr "실행 모드"
@@ -1687,9 +1642,8 @@ msgid "Nginx Log"
 msgstr "Nginx 로그"
 
 #: src/views/preference/NginxSettings.vue:18
-#, fuzzy
 msgid "Nginx Log Directory Whitelist"
-msgstr "Nginx 구성 오류름"
+msgstr ""
 
 #: src/views/preference/NginxSettings.vue:27
 #, fuzzy
@@ -1697,9 +1651,8 @@ msgid "Nginx PID Path"
 msgstr "Nginx 오류 로그 경로"
 
 #: src/views/preference/NginxSettings.vue:30
-#, fuzzy
 msgid "Nginx Reload Command"
-msgstr "터미널 시작 명령"
+msgstr ""
 
 #: src/components/NginxControl/NginxControl.vue:26
 #, fuzzy
@@ -1839,7 +1792,7 @@ msgstr "온라인"
 msgid "OpenAI"
 msgstr "오픈AI"
 
-#: src/components/TwoFA/Authorization.vue:112 src/views/other/Login.vue:231
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:232
 msgid "Or"
 msgstr ""
 
@@ -1942,7 +1895,7 @@ msgid ""
 "button below."
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:70
+#: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr ""
 
@@ -1963,6 +1916,12 @@ msgid ""
 msgstr ""
 "먼저 인증서 > DNS 자격 증명에 자격 증명을 추가한 다음,DNS 제공자의 API를 요청"
 "하려면 아래 자격 증명 중 하나를 선택해주세요."
+
+#: src/language/constants.ts:58
+msgid ""
+"Please generate new recovery codes in the preferences immediately to prevent "
+"lockout."
+msgstr ""
 
 #: src/views/config/components/Rename.vue:63
 #: src/views/config/ConfigEditor.vue:249
@@ -2089,32 +2048,18 @@ msgstr ""
 msgid "Recovered Successfully"
 msgstr "성공적으로 제거됨"
 
-#: src/components/TwoFA/Authorization.vue:89
-<<<<<<< HEAD
+#: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
 msgstr ""
 
 #: src/views/preference/components/RecoveryCodes.vue:68
-#, fuzzy
 msgid "Recovery Codes"
-msgstr "유효함"
+msgstr ""
 
 #: src/views/preference/components/RecoveryCodes.vue:73
 msgid ""
 "Recovery codes are used to access your account when you lose access to your "
 "2FA device. Each code can only be used once."
-=======
-#: src/views/preference/components/TOTP.vue:156
-msgid "Recovery"
-msgstr ""
-
-#: src/views/preference/components/TOTP.vue:82
-msgid "Recovery Code"
-msgstr ""
-
-#: src/views/preference/components/TOTP.vue:91
-msgid "Recovery Code:"
->>>>>>> remotes/origin/dev
 msgstr ""
 
 #: src/views/preference/CertSettings.vue:37
@@ -2307,11 +2252,7 @@ msgstr "잘못된 매개변수로 요청됨"
 msgid "Reset"
 msgstr "재설정"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:93
-=======
-#: src/views/preference/components/TOTP.vue:111
->>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "Reset 2FA"
 msgstr "재설정"
@@ -2405,11 +2346,7 @@ msgstr "성공적으로 저장됨"
 msgid "Saved successfully"
 msgstr "성공적으로 저장됨"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:69
-=======
-#: src/views/preference/components/TOTP.vue:72
->>>>>>> remotes/origin/dev
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr ""
 
@@ -2417,11 +2354,7 @@ msgstr ""
 msgid "SDK"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:109
-=======
-#: src/views/preference/components/TOTP.vue:128
->>>>>>> remotes/origin/dev
 msgid "Secret has been copied"
 msgstr ""
 
@@ -2493,7 +2426,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: src/views/other/Login.vue:240
+#: src/views/other/Login.vue:241
 msgid "Sign in with a passkey"
 msgstr ""
 
@@ -2530,14 +2463,12 @@ msgid "Sites List"
 msgstr "사이트 목록"
 
 #: src/constants/errors/self_check.ts:10
-#, fuzzy
 msgid "Sites-available directory not exist"
-msgstr "디렉토리"
+msgstr ""
 
 #: src/constants/errors/self_check.ts:11
-#, fuzzy
 msgid "Sites-enabled directory not exist"
-msgstr "디렉토리"
+msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:211
 #, fuzzy
@@ -2592,9 +2523,8 @@ msgid "Streams Directory"
 msgstr "디렉토리"
 
 #: src/constants/errors/self_check.ts:12
-#, fuzzy
 msgid "Streams-available directory not exist"
-msgstr "디렉토리"
+msgstr ""
 
 #: src/constants/errors/self_check.ts:13
 #, fuzzy
@@ -2693,9 +2623,8 @@ msgid "Sync strategy"
 msgstr "인증서 갱신"
 
 #: src/views/certificate/CertificateEditor.vue:204
-#, fuzzy
 msgid "Sync to"
-msgstr "인증서 갱신"
+msgstr ""
 
 #: src/views/site/site_edit/RightSettings.vue:110
 msgid "Synchronization"
@@ -2760,7 +2689,7 @@ msgid ""
 "The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:23
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
@@ -2787,14 +2716,6 @@ msgid ""
 "hyphens, dashes, colons, and dots."
 msgstr ""
 
-<<<<<<< HEAD
-=======
-#: src/views/preference/components/TOTP.vue:90
-msgid ""
-"The recovery code is only displayed once, please save it in a safe place."
-msgstr ""
-
->>>>>>> remotes/origin/dev
 #: src/views/dashboard/Environments.vue:148
 msgid ""
 "The remote Nginx UI version is not compatible with the local Nginx UI "
@@ -2817,8 +2738,8 @@ msgstr ""
 msgid "The url is invalid"
 msgstr "유효한 URL이 아닙니다"
 
-#: src/views/preference/OpenAISettings.vue:47
-#: src/views/preference/OpenAISettings.vue:60
+#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:49
 #, fuzzy
 msgid "The url is invalid."
 msgstr "유효한 URL이 아닙니다"
@@ -2873,10 +2794,9 @@ msgid "This value is already taken"
 msgstr ""
 
 #: src/views/environment/BatchUpgrader.vue:182
-#, fuzzy
 msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
-msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
+msgstr ""
 
 #: src/views/preference/AuthSettings.vue:124
 msgid "Throttle"
@@ -2892,11 +2812,7 @@ msgstr "팁"
 msgid "Title"
 msgstr "제목"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:68
-=======
-#: src/views/preference/components/TOTP.vue:71
->>>>>>> remotes/origin/dev
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
@@ -2920,14 +2836,14 @@ msgstr ""
 "시할 수 있는 위치를 추가해야 하며,이 파일을 저장하고 Nginx를 다시로드해야 합"
 "니다.계속하시겠습니까?"
 
-#: src/views/preference/OpenAISettings.vue:48
+#: src/views/preference/OpenAISettings.vue:36
 msgid ""
 "To use a local large model, deploy it with ollama, vllm or lmdeploy. They "
 "provide an OpenAI-compatible API endpoint, so just set the baseUrl to your "
 "local API."
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:72
+#: src/views/preference/OpenAISettings.vue:61
 msgid "Token is not valid"
 msgstr "토큰이 유효하지 않습니다"
 
@@ -2937,19 +2853,11 @@ msgid_plural "Total %{total} items"
 msgstr[0] ""
 msgstr[1] ""
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:66
 msgid "TOTP"
 msgstr ""
 
 #: src/views/preference/components/TOTP.vue:67
-=======
-#: src/views/preference/components/TOTP.vue:69
-msgid "TOTP"
-msgstr ""
-
-#: src/views/preference/components/TOTP.vue:70
->>>>>>> remotes/origin/dev
 msgid ""
 "TOTP is a two-factor authentication method that uses a time-based one-time "
 "password algorithm."
@@ -3021,11 +2929,11 @@ msgstr "가동 시간:"
 msgid "URL"
 msgstr "URL"
 
-#: src/components/TwoFA/Authorization.vue:102
+#: src/components/TwoFA/Authorization.vue:121
 msgid "Use OTP"
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:98
+#: src/components/TwoFA/Authorization.vue:117
 msgid "Use recovery code"
 msgstr ""
 
@@ -3083,9 +2991,8 @@ msgid "View Mode"
 msgstr "기본 모드"
 
 #: src/views/preference/components/RecoveryCodes.vue:134
-#, fuzzy
 msgid "View Recovery Codes"
-msgstr "유효함"
+msgstr ""
 
 #: src/views/preference/components/RecoveryCodes.vue:70
 #, fuzzy
@@ -3209,12 +3116,12 @@ msgstr ""
 #~ msgid "File"
 #~ msgstr "파일"
 
-#~ msgid "Server error"
-#~ msgstr "서버 오류"
-
 #, fuzzy
 #~ msgid "Incorrect username or password"
 #~ msgstr "사용자 이름 또는 비밀번호가 올바르지 않습니다"
+
+#~ msgid "Server error"
+#~ msgstr "서버 오류"
 
 #, fuzzy
 #~ msgid ""

@@ -106,7 +106,11 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:44
+#: src/language/constants.ts:57
+msgid "All Recovery Codes Have Been Used"
+msgstr ""
+
+#: src/views/preference/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr "API Temel Bağlantı Adresi"
 
@@ -114,15 +118,15 @@ msgstr "API Temel Bağlantı Adresi"
 msgid "API Document"
 msgstr "API Dökümanı"
 
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:46
 msgid "API Proxy"
 msgstr "API Proxy"
 
-#: src/views/preference/OpenAISettings.vue:69
+#: src/views/preference/OpenAISettings.vue:58
 msgid "API Token"
 msgstr "API Token"
 
-#: src/views/preference/OpenAISettings.vue:78
+#: src/views/preference/OpenAISettings.vue:67
 #, fuzzy
 msgid "API Type"
 msgstr "API Token"
@@ -222,7 +226,7 @@ msgstr "Girişimler"
 msgid "Auth"
 msgstr "Kimlik Doğrulama"
 
-#: src/components/TwoFA/Authorization.vue:121
+#: src/components/TwoFA/Authorization.vue:109
 msgid "Authenticate with a passkey"
 msgstr "Geçiş anahtarıyla kimlik doğrulama"
 
@@ -325,13 +329,6 @@ msgstr "CA Dizini"
 msgid "CADir"
 msgstr "CADizini"
 
-<<<<<<< HEAD
-=======
-#: src/views/preference/components/TOTP.vue:129
-msgid "Can't scan? Use text key binding"
-msgstr "Tarayamıyor musunuz? Metin anahtar bağlamasını kullanın"
-
->>>>>>> remotes/origin/dev
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:246
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:187
@@ -580,19 +577,11 @@ msgstr "Kimlik bilgisi"
 msgid "Credentials"
 msgstr "Kimlik bilgileri"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:72
 msgid "Current account is enabled TOTP."
 msgstr "Mevcut hesap için TOTP etkinleştirildi."
 
 #: src/views/preference/components/TOTP.vue:70
-=======
-#: src/views/preference/components/TOTP.vue:77
-msgid "Current account is enabled TOTP."
-msgstr "Mevcut hesap için TOTP etkinleştirildi."
-
-#: src/views/preference/components/TOTP.vue:74
->>>>>>> remotes/origin/dev
 msgid "Current account is not enabled TOTP."
 msgstr "Mevcut hesap için TOTP etkin değil."
 
@@ -945,11 +934,7 @@ msgstr ""
 "%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme başarılı "
 "oldu"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:45
-=======
-#: src/views/preference/components/TOTP.vue:38
->>>>>>> remotes/origin/dev
 msgid "Enable 2FA successfully"
 msgstr "2FA'yı başarıyla etkinleştirildi"
 
@@ -993,11 +978,7 @@ msgstr "Başarıyla etkinleştirildi"
 msgid "Enable TLS"
 msgstr "TLS'yi Etkinleştir"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:81
-=======
-#: src/views/preference/components/TOTP.vue:103
->>>>>>> remotes/origin/dev
 msgid "Enable TOTP"
 msgstr "TOTP'yi Etkinleştir"
 
@@ -1093,9 +1074,8 @@ msgid "Failed to parse nginx.conf"
 msgstr ""
 
 #: src/constants/errors/self_check.ts:3
-#, fuzzy
 msgid "Failed to read nginx.conf"
-msgstr "Etkinleştirilemedi %{msg}"
+msgstr ""
 
 #: src/views/site/site_edit/SiteEdit.vue:135
 #: src/views/stream/StreamEdit.vue:122
@@ -1236,17 +1216,6 @@ msgstr ""
 "yasaklama eşiği dakikaları içinde maksimum deneme sayısına ulaşırsa, IP "
 "adresi belirli bir süre için yasaklanacaktır."
 
-<<<<<<< HEAD
-=======
-#: src/views/preference/components/TOTP.vue:89
-msgid ""
-"If you lose your mobile phone, you can use the recovery code to reset your "
-"2FA."
-msgstr ""
-"Cep telefonunuzu kaybederseniz, 2FA'nızı sıfırlamak için kurtarma kodunu "
-"kullanabilirsiniz."
-
->>>>>>> remotes/origin/dev
 #: src/views/preference/components/AddPasskey.vue:70
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
 msgstr ""
@@ -1282,19 +1251,11 @@ msgstr "İlk çekirdek yükseltici hatası"
 msgid "Initialing core upgrader"
 msgstr "Çekirdek yükseltici başlatılıyor"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:119
-=======
-#: src/views/preference/components/TOTP.vue:136
->>>>>>> remotes/origin/dev
 msgid "Input the code from the app:"
 msgstr "Uygulamadan kodu girin:"
 
-#: src/components/TwoFA/Authorization.vue:82
-<<<<<<< HEAD
-=======
-#: src/views/preference/components/TOTP.vue:149
->>>>>>> remotes/origin/dev
+#: src/components/TwoFA/Authorization.vue:72
 msgid "Input the recovery code:"
 msgstr "Kurtarma kodunu girin:"
 
@@ -1337,16 +1298,11 @@ msgstr "Geçersiz parola veya kurtarma kodu"
 msgid "Invalid recovery code"
 msgstr "Geçersiz 2FA veya kurtarma kodu"
 
-<<<<<<< HEAD
-#: src/views/preference/AuthSettings.vue:18
-=======
 #: src/constants/errors/middleware.ts:2
-#, fuzzy
 msgid "Invalid request format"
-msgstr "Geçersiz 2FA veya kurtarma kodu"
+msgstr ""
 
-#: src/views/preference/AuthSettings.vue:14
->>>>>>> remotes/origin/dev
+#: src/views/preference/AuthSettings.vue:18
 msgid "IP"
 msgstr "IP"
 
@@ -1393,7 +1349,7 @@ msgstr "En son kullanıldığı zaman"
 msgid "Leave blank for no change"
 msgstr "Değişiklik olmaması için boş bırakın"
 
-#: src/views/preference/OpenAISettings.vue:53
+#: src/views/preference/OpenAISettings.vue:41
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Varsayılan için boş bırakın: https://api.openai.com/"
 
@@ -1457,7 +1413,7 @@ msgstr "Konumlar"
 msgid "Log"
 msgstr "Günlük"
 
-#: src/routes/index.ts:318 src/views/other/Login.vue:222
+#: src/routes/index.ts:318 src/views/other/Login.vue:223
 msgid "Login"
 msgstr "Giriş"
 
@@ -1545,7 +1501,7 @@ msgstr "Bellek ve Depolama"
 msgid "Minutes"
 msgstr "Dakika"
 
-#: src/views/preference/OpenAISettings.vue:32
+#: src/views/preference/OpenAISettings.vue:20
 #, fuzzy
 msgid "Model"
 msgstr "Model"
@@ -1706,9 +1662,8 @@ msgid "Nginx Log"
 msgstr "Nginx Günlüğü"
 
 #: src/views/preference/NginxSettings.vue:18
-#, fuzzy
 msgid "Nginx Log Directory Whitelist"
-msgstr "Nginx Yapılandırma Ayrıştırma Hatası"
+msgstr ""
 
 #: src/views/preference/NginxSettings.vue:27
 #, fuzzy
@@ -1716,9 +1671,8 @@ msgid "Nginx PID Path"
 msgstr "Nginx Hata Günlüğü Yolu"
 
 #: src/views/preference/NginxSettings.vue:30
-#, fuzzy
 msgid "Nginx Reload Command"
-msgstr "Terminal Başlatma Komutu"
+msgstr ""
 
 #: src/components/NginxControl/NginxControl.vue:26
 #, fuzzy
@@ -1875,7 +1829,7 @@ msgstr "Çevrimiçi"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:112 src/views/other/Login.vue:231
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:232
 #, fuzzy
 msgid "Or"
 msgstr "Veya"
@@ -1999,7 +1953,7 @@ msgstr ""
 "Lütfen oluşturmak istediğiniz geçiş anahtarı için bir ad girin ve aşağıdaki "
 "Tamam düğmesine tıklayın."
 
-#: src/components/TwoFA/Authorization.vue:70
+#: src/components/TwoFA/Authorization.vue:85
 #, fuzzy
 msgid "Please enter the OTP code:"
 msgstr "Lütfen OTP kodunu girin:"
@@ -2027,6 +1981,12 @@ msgstr ""
 "Lütfen önce Sertifikasyon > DNS Kimlik Bilgileri bölümüne kimlik bilgilerini "
 "ekleyin ve ardından DNS sağlayıcısının API'sini istemek için aşağıdaki "
 "kimlik bilgilerinden birini seçin."
+
+#: src/language/constants.ts:58
+msgid ""
+"Please generate new recovery codes in the preferences immediately to prevent "
+"lockout."
+msgstr ""
 
 #: src/views/config/components/Rename.vue:63
 #: src/views/config/ConfigEditor.vue:249
@@ -2174,36 +2134,21 @@ msgstr "Kurtar"
 msgid "Recovered Successfully"
 msgstr "Başarıyla Kurtarıldı"
 
-#: src/components/TwoFA/Authorization.vue:89
-<<<<<<< HEAD
-=======
-#: src/views/preference/components/TOTP.vue:156
->>>>>>> remotes/origin/dev
+#: src/components/TwoFA/Authorization.vue:79
 #, fuzzy
 msgid "Recovery"
 msgstr "Kurtarma"
 
-<<<<<<< HEAD
 #: src/views/preference/components/RecoveryCodes.vue:68
-=======
-#: src/views/preference/components/TOTP.vue:82
->>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "Recovery Codes"
 msgstr "Kurtarma Kodu"
 
-<<<<<<< HEAD
 #: src/views/preference/components/RecoveryCodes.vue:73
 msgid ""
 "Recovery codes are used to access your account when you lose access to your "
 "2FA device. Each code can only be used once."
 msgstr ""
-=======
-#: src/views/preference/components/TOTP.vue:91
-#, fuzzy
-msgid "Recovery Code:"
-msgstr "Kurtarma Kodu:"
->>>>>>> remotes/origin/dev
 
 #: src/views/preference/CertSettings.vue:37
 #, fuzzy
@@ -2413,11 +2358,7 @@ msgstr "Yanlış parametrelerle talep edildi"
 msgid "Reset"
 msgstr "Sıfırla"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:93
-=======
-#: src/views/preference/components/TOTP.vue:111
->>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "Reset 2FA"
 msgstr "2FA'yı Sıfırla"
@@ -2520,11 +2461,7 @@ msgstr "Başarıyla kaydedin"
 msgid "Saved successfully"
 msgstr "Başarıyla Kaydedildi"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:69
-=======
-#: src/views/preference/components/TOTP.vue:72
->>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "Hesabı uygulamaya eklemek için QR kodunu cep telefonunuzla tarayın."
@@ -2534,11 +2471,7 @@ msgstr "Hesabı uygulamaya eklemek için QR kodunu cep telefonunuzla tarayın."
 msgid "SDK"
 msgstr "SDK"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:109
-=======
-#: src/views/preference/components/TOTP.vue:128
->>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "Secret has been copied"
 msgstr "Sır kopyalandı"
@@ -2623,7 +2556,7 @@ msgstr ""
 msgid "Show"
 msgstr "Göster"
 
-#: src/views/other/Login.vue:240
+#: src/views/other/Login.vue:241
 #, fuzzy
 msgid "Sign in with a passkey"
 msgstr "Bir geçiş anahtarı ile oturum açın"
@@ -2663,14 +2596,12 @@ msgid "Sites List"
 msgstr "Site Listesi"
 
 #: src/constants/errors/self_check.ts:10
-#, fuzzy
 msgid "Sites-available directory not exist"
-msgstr "Dizin"
+msgstr ""
 
 #: src/constants/errors/self_check.ts:11
-#, fuzzy
 msgid "Sites-enabled directory not exist"
-msgstr "Dizin"
+msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:211
 #, fuzzy
@@ -2729,9 +2660,8 @@ msgid "Streams Directory"
 msgstr "Dizin"
 
 #: src/constants/errors/self_check.ts:12
-#, fuzzy
 msgid "Streams-available directory not exist"
-msgstr "Dizin"
+msgstr ""
 
 #: src/constants/errors/self_check.ts:13
 #, fuzzy
@@ -2919,7 +2849,7 @@ msgid ""
 "The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 
-#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:23
 #, fuzzy
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
@@ -2954,17 +2884,6 @@ msgstr ""
 "Sunucu adı yalnızca harf, unicode, sayı, kısa çizgi, tire ve nokta "
 "içermelidir."
 
-<<<<<<< HEAD
-=======
-#: src/views/preference/components/TOTP.vue:90
-#, fuzzy
-msgid ""
-"The recovery code is only displayed once, please save it in a safe place."
-msgstr ""
-"Kurtarma kodu yalnızca bir kez görüntülenir, lütfen güvenli bir yere "
-"kaydedin."
-
->>>>>>> remotes/origin/dev
 #: src/views/dashboard/Environments.vue:148
 #, fuzzy
 msgid ""
@@ -2991,8 +2910,8 @@ msgstr ""
 msgid "The url is invalid"
 msgstr "URL geçersiz"
 
-#: src/views/preference/OpenAISettings.vue:47
-#: src/views/preference/OpenAISettings.vue:60
+#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:49
 #, fuzzy
 msgid "The url is invalid."
 msgstr "URL geçersiz."
@@ -3077,11 +2996,7 @@ msgstr "İpuçları"
 msgid "Title"
 msgstr "Başlık"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:68
-=======
-#: src/views/preference/components/TOTP.vue:71
->>>>>>> remotes/origin/dev
 #, fuzzy
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
@@ -3114,7 +3029,7 @@ msgstr ""
 "dosyayı kaydedip Nginx'i yeniden yüklememiz gerekir. Devam etmek "
 "istediğinizden emin misiniz?"
 
-#: src/views/preference/OpenAISettings.vue:48
+#: src/views/preference/OpenAISettings.vue:36
 #, fuzzy
 msgid ""
 "To use a local large model, deploy it with ollama, vllm or lmdeploy. They "
@@ -3125,7 +3040,7 @@ msgstr ""
 "uyumlu bir API uç noktası sağlarlar, bu nedenle baseUrl'yi yerel API'nize "
 "ayarlamanız yeterlidir."
 
-#: src/views/preference/OpenAISettings.vue:72
+#: src/views/preference/OpenAISettings.vue:61
 #, fuzzy
 msgid "Token is not valid"
 msgstr "Belirteç geçerli değil"
@@ -3136,20 +3051,12 @@ msgid_plural "Total %{total} items"
 msgstr[0] ""
 msgstr[1] ""
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:66
-=======
-#: src/views/preference/components/TOTP.vue:69
->>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "TOTP"
 msgstr "TOTP"
 
-<<<<<<< HEAD
 #: src/views/preference/components/TOTP.vue:67
-=======
-#: src/views/preference/components/TOTP.vue:70
->>>>>>> remotes/origin/dev
 #, fuzzy
 msgid ""
 "TOTP is a two-factor authentication method that uses a time-based one-time "
@@ -3233,12 +3140,12 @@ msgstr "Çalışma süresi:"
 msgid "URL"
 msgstr "URL"
 
-#: src/components/TwoFA/Authorization.vue:102
+#: src/components/TwoFA/Authorization.vue:121
 #, fuzzy
 msgid "Use OTP"
 msgstr "OTP kullanın"
 
-#: src/components/TwoFA/Authorization.vue:98
+#: src/components/TwoFA/Authorization.vue:117
 #, fuzzy
 msgid "Use recovery code"
 msgstr "Kurtarma kodunu kullanın"
@@ -3435,24 +3342,6 @@ msgstr ""
 msgid "Your passkeys"
 msgstr "Geçiş anahtarlarınız"
 
-#~ msgid ""
-#~ "If you lose your mobile phone, you can use the recovery code to reset "
-#~ "your 2FA."
-#~ msgstr ""
-#~ "Cep telefonunuzu kaybederseniz, 2FA'nızı sıfırlamak için kurtarma kodunu "
-#~ "kullanabilirsiniz."
-
-#, fuzzy
-#~ msgid "Recovery Code:"
-#~ msgstr "Kurtarma Kodu:"
-
-#, fuzzy
-#~ msgid ""
-#~ "The recovery code is only displayed once, please save it in a safe place."
-#~ msgstr ""
-#~ "Kurtarma kodu yalnızca bir kez görüntülenir, lütfen güvenli bir yere "
-#~ "kaydedin."
-
 #~ msgid "Can't scan? Use text key binding"
 #~ msgstr "Tarayamıyor musunuz? Metin anahtar bağlamasını kullanın"
 
@@ -3465,12 +3354,30 @@ msgstr "Geçiş anahtarlarınız"
 #~ msgid "File"
 #~ msgstr "Dosya"
 
+#~ msgid ""
+#~ "If you lose your mobile phone, you can use the recovery code to reset "
+#~ "your 2FA."
+#~ msgstr ""
+#~ "Cep telefonunuzu kaybederseniz, 2FA'nızı sıfırlamak için kurtarma kodunu "
+#~ "kullanabilirsiniz."
+
+#~ msgid "Incorrect username or password"
+#~ msgstr "Kullanıcı adı veya şifre yanlış"
+
+#, fuzzy
+#~ msgid "Recovery Code:"
+#~ msgstr "Kurtarma Kodu:"
+
 #, fuzzy
 #~ msgid "Server error"
 #~ msgstr "Server hatası"
 
-#~ msgid "Incorrect username or password"
-#~ msgstr "Kullanıcı adı veya şifre yanlış"
+#, fuzzy
+#~ msgid ""
+#~ "The recovery code is only displayed once, please save it in a safe place."
+#~ msgstr ""
+#~ "Kurtarma kodu yalnızca bir kez görüntülenir, lütfen güvenli bir yere "
+#~ "kaydedin."
 
 #, fuzzy
 #~ msgid "Too many login failed attempts, please try again later"
