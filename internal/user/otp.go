@@ -5,12 +5,15 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"fmt"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
+	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/google/uuid"
 	"github.com/pquerna/otp/totp"
-	"time"
 )
 
 func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
@@ -24,14 +27,50 @@ func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
 			return ErrOTPCode
 		}
 	} else {
-		recoverCode, err := hex.DecodeString(recoveryCode)
+		// get user from db
+		u := query.User
+		user, err = u.Where(u.ID.Eq(user.ID)).First()
 		if err != nil {
 			return err
 		}
-		k := sha1.Sum(user.OTPSecret)
-		if !bytes.Equal(k[:], recoverCode) {
-			return ErrRecoveryCode
+
+		// legacy recovery code
+		if !user.RecoveryCodeGenerated() {
+			if user.OTPSecret == nil {
+				return ErrTOTPNotEnabled
+			}
+
+			recoverCode, err := hex.DecodeString(recoveryCode)
+			if err != nil {
+				return err
+			}
+			k := sha1.Sum(user.OTPSecret)
+			if !bytes.Equal(k[:], recoverCode) {
+				return ErrRecoveryCode
+			}
 		}
+
+		// check recovery code
+		usedCount := 0
+		verified := false
+		for _, code := range user.RecoveryCodes.Codes {
+			if code.Code == recoveryCode && code.UsedTime == nil {
+				t := time.Now().Unix()
+				code.UsedTime = &t
+				_, err = u.Where(u.ID.Eq(user.ID)).Updates(user)
+				if err != nil {
+					return err
+				}
+				verified = true
+			}
+			if code.UsedTime != nil {
+				usedCount++
+			}
+		}
+		if verified && usedCount == len(user.RecoveryCodes.Codes) {
+			notification.Warning("All Recovery Codes Have Been Used", "Please generate new recovery codes in the preferences immediately to prevent lockout.")
+		}
+		return ErrRecoveryCode
 	}
 	return
 }

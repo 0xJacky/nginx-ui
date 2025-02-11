@@ -16,7 +16,7 @@ msgstr ""
 msgid "2FA"
 msgstr "İki aşamalı kimlik doğrulaması(2FA)"
 
-#: src/views/preference/AuthSettings.vue:55
+#: src/views/preference/AuthSettings.vue:70
 msgid "2FA Settings"
 msgstr "2FA Ayarları"
 
@@ -39,7 +39,7 @@ msgstr "ACME Kullanıcısı"
 #: src/views/config/configColumns.tsx:42
 #: src/views/environment/envColumns.tsx:97
 #: src/views/notification/notificationColumns.tsx:65
-#: src/views/preference/AuthSettings.vue:26
+#: src/views/preference/AuthSettings.vue:30
 #: src/views/site/site_category/columns.ts:29
 #: src/views/site/site_list/columns.tsx:76 src/views/stream/StreamList.vue:49
 #: src/views/user/userColumns.tsx:60
@@ -140,13 +140,23 @@ msgstr "Başarıyla kopyalandı"
 msgid "Arch"
 msgstr "Mimari"
 
-#: src/views/preference/AuthSettings.vue:134
+#: src/views/preference/AuthSettings.vue:162
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Bu yasaklı IP'yi hemen sileceğinizden emin misiniz?"
 
 #: src/views/preference/components/Passkey.vue:113
 msgid "Are you sure to delete this passkey immediately?"
 msgstr "Bu geçiş anahtarını hemen silmek istediğinizden emin misiniz?"
+
+#: src/views/preference/components/RecoveryCodes.vue:154
+#, fuzzy
+msgid "Are you sure to generate new recovery codes?"
+msgstr "Bu öğeyi kurtarmak istediğinizden emin misiniz?"
+
+#: src/views/preference/components/TOTP.vue:85
+#, fuzzy
+msgid "Are you sure to reset 2FA?"
+msgstr "Silmek istediğine emin misin?"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:96
 #, fuzzy
@@ -204,7 +214,7 @@ msgstr "Asistan"
 msgid "Attempt to fix"
 msgstr "Girişimler"
 
-#: src/views/preference/AuthSettings.vue:17
+#: src/views/preference/AuthSettings.vue:21
 msgid "Attempts"
 msgstr "Girişimler"
 
@@ -216,7 +226,7 @@ msgstr "Kimlik Doğrulama"
 msgid "Authenticate with a passkey"
 msgstr "Geçiş anahtarıyla kimlik doğrulama"
 
-#: src/views/preference/AuthSettings.vue:60
+#: src/views/preference/AuthSettings.vue:88
 msgid "Authentication Settings"
 msgstr "Kimlik Doğrulama Ayarları"
 
@@ -253,15 +263,15 @@ msgstr "Ana Sayfaya Dön"
 msgid "Back to list"
 msgstr "Listeye geri dön"
 
-#: src/views/preference/AuthSettings.vue:101
+#: src/views/preference/AuthSettings.vue:129
 msgid "Ban Threshold Minutes"
 msgstr "Yasaklama Eşiği Süresi (Dakika)"
 
-#: src/views/preference/AuthSettings.vue:122
+#: src/views/preference/AuthSettings.vue:150
 msgid "Banned IPs"
 msgstr "Yasaklı IP'ler"
 
-#: src/views/preference/AuthSettings.vue:20
+#: src/views/preference/AuthSettings.vue:24
 msgid "Banned Until"
 msgstr "Şu Zamana Kadar Yasaklı"
 
@@ -315,10 +325,13 @@ msgstr "CA Dizini"
 msgid "CADir"
 msgstr "CADizini"
 
+<<<<<<< HEAD
+=======
 #: src/views/preference/components/TOTP.vue:129
 msgid "Can't scan? Use text key binding"
 msgstr "Tarayamıyor musunuz? Metin anahtar bağlamasını kullanın"
 
+>>>>>>> remotes/origin/dev
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:246
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:187
@@ -453,6 +466,10 @@ msgstr "Temizle"
 msgid "Cleared successfully"
 msgstr "Başarıyla temizlendi"
 
+#: src/views/preference/components/TOTP.vue:110
+msgid "Click to copy"
+msgstr ""
+
 #: src/views/preference/LogrotateSettings.vue:22
 msgid "Command"
 msgstr "Komut"
@@ -500,12 +517,18 @@ msgstr "İçerik"
 
 #: src/components/SensitiveString/SensitiveString.vue:37
 #: src/components/StdDesign/StdDataDisplay/StdTableTransformer.tsx:150
+#: src/views/preference/components/RecoveryCodes.vue:121
 msgid "Copied"
 msgstr "Kopyalandı"
 
 #: src/components/SensitiveString/SensitiveString.vue:37
 msgid "Copy"
 msgstr "Kopya"
+
+#: src/views/preference/components/RecoveryCodes.vue:121
+#, fuzzy
+msgid "Copy Codes"
+msgstr "Kurtarma Kodu"
 
 #: src/views/system/Upgrade.vue:146
 msgid "Core Upgrade"
@@ -557,11 +580,19 @@ msgstr "Kimlik bilgisi"
 msgid "Credentials"
 msgstr "Kimlik bilgileri"
 
+<<<<<<< HEAD
+#: src/views/preference/components/TOTP.vue:72
+msgid "Current account is enabled TOTP."
+msgstr "Mevcut hesap için TOTP etkinleştirildi."
+
+#: src/views/preference/components/TOTP.vue:70
+=======
 #: src/views/preference/components/TOTP.vue:77
 msgid "Current account is enabled TOTP."
 msgstr "Mevcut hesap için TOTP etkinleştirildi."
 
 #: src/views/preference/components/TOTP.vue:74
+>>>>>>> remotes/origin/dev
 msgid "Current account is not enabled TOTP."
 msgstr "Mevcut hesap için TOTP etkin değil."
 
@@ -914,7 +945,11 @@ msgstr ""
 "%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme başarılı "
 "oldu"
 
+<<<<<<< HEAD
+#: src/views/preference/components/TOTP.vue:45
+=======
 #: src/views/preference/components/TOTP.vue:38
+>>>>>>> remotes/origin/dev
 msgid "Enable 2FA successfully"
 msgstr "2FA'yı başarıyla etkinleştirildi"
 
@@ -958,7 +993,11 @@ msgstr "Başarıyla etkinleştirildi"
 msgid "Enable TLS"
 msgstr "TLS'yi Etkinleştir"
 
+<<<<<<< HEAD
+#: src/views/preference/components/TOTP.vue:81
+=======
 #: src/views/preference/components/TOTP.vue:103
+>>>>>>> remotes/origin/dev
 msgid "Enable TOTP"
 msgstr "TOTP'yi Etkinleştir"
 
@@ -1054,8 +1093,9 @@ msgid "Failed to parse nginx.conf"
 msgstr ""
 
 #: src/constants/errors/self_check.ts:3
+#, fuzzy
 msgid "Failed to read nginx.conf"
-msgstr ""
+msgstr "Etkinleştirilemedi %{msg}"
 
 #: src/views/site/site_edit/SiteEdit.vue:135
 #: src/views/stream/StreamEdit.vue:122
@@ -1081,6 +1121,10 @@ msgstr "Filtre"
 #: src/language/constants.ts:19 src/views/site/SiteAdd.vue:97
 msgid "Finished"
 msgstr "Bitmiş"
+
+#: src/views/preference/components/RecoveryCodes.vue:70
+msgid "First View"
+msgstr ""
 
 #: src/views/preference/components/AddPasskey.vue:71
 msgid ""
@@ -1118,6 +1162,22 @@ msgstr "Genel Sertifika"
 #: src/components/StdDesign/StdDataEntry/components/StdPassword.vue:55
 msgid "Generate"
 msgstr "Oluştur"
+
+#: src/views/preference/components/RecoveryCodes.vue:138
+#: src/views/preference/components/RecoveryCodes.vue:161
+#, fuzzy
+msgid "Generate New Recovery Codes"
+msgstr "Kurtarma Kodu"
+
+#: src/views/preference/components/RecoveryCodes.vue:161
+#, fuzzy
+msgid "Generate Recovery Codes"
+msgstr "Kurtarma Kodu"
+
+#: src/views/preference/components/RecoveryCodes.vue:32
+#, fuzzy
+msgid "Generate recovery codes successfully"
+msgstr "Başarıyla Kurtarıldı"
 
 #: src/language/constants.ts:7
 msgid "Generating private key for registering account"
@@ -1167,7 +1227,7 @@ msgstr ""
 msgid "If left blank, the default CA Dir will be used."
 msgstr "Boş bırakılırsa, varsayılan CA Dir kullanılır."
 
-#: src/views/preference/AuthSettings.vue:117
+#: src/views/preference/AuthSettings.vue:145
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -1176,6 +1236,8 @@ msgstr ""
 "yasaklama eşiği dakikaları içinde maksimum deneme sayısına ulaşırsa, IP "
 "adresi belirli bir süre için yasaklanacaktır."
 
+<<<<<<< HEAD
+=======
 #: src/views/preference/components/TOTP.vue:89
 msgid ""
 "If you lose your mobile phone, you can use the recovery code to reset your "
@@ -1184,6 +1246,7 @@ msgstr ""
 "Cep telefonunuzu kaybederseniz, 2FA'nızı sıfırlamak için kurtarma kodunu "
 "kullanabilirsiniz."
 
+>>>>>>> remotes/origin/dev
 #: src/views/preference/components/AddPasskey.vue:70
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
 msgstr ""
@@ -1219,12 +1282,19 @@ msgstr "İlk çekirdek yükseltici hatası"
 msgid "Initialing core upgrader"
 msgstr "Çekirdek yükseltici başlatılıyor"
 
+<<<<<<< HEAD
+#: src/views/preference/components/TOTP.vue:119
+=======
 #: src/views/preference/components/TOTP.vue:136
+>>>>>>> remotes/origin/dev
 msgid "Input the code from the app:"
 msgstr "Uygulamadan kodu girin:"
 
 #: src/components/TwoFA/Authorization.vue:82
+<<<<<<< HEAD
+=======
 #: src/views/preference/components/TOTP.vue:149
+>>>>>>> remotes/origin/dev
 msgid "Input the recovery code:"
 msgstr "Kurtarma kodunu girin:"
 
@@ -1267,12 +1337,16 @@ msgstr "Geçersiz parola veya kurtarma kodu"
 msgid "Invalid recovery code"
 msgstr "Geçersiz 2FA veya kurtarma kodu"
 
+<<<<<<< HEAD
+#: src/views/preference/AuthSettings.vue:18
+=======
 #: src/constants/errors/middleware.ts:2
 #, fuzzy
 msgid "Invalid request format"
 msgstr "Geçersiz 2FA veya kurtarma kodu"
 
 #: src/views/preference/AuthSettings.vue:14
+>>>>>>> remotes/origin/dev
 msgid "IP"
 msgstr "IP"
 
@@ -1295,6 +1369,12 @@ msgstr "Düzenleyen: %{issuer}"
 #: src/views/preference/BasicSettings.vue:20
 msgid "Jwt Secret"
 msgstr "Jwt Secret"
+
+#: src/views/preference/components/RecoveryCodes.vue:74
+msgid ""
+"Keep your recovery codes as safe as your password. We recommend saving them "
+"with a password manager."
+msgstr ""
 
 #: src/views/certificate/CertificateList/certColumns.tsx:62
 #: src/views/site/cert/components/AutoCertStepOne.vue:77
@@ -1444,7 +1524,7 @@ msgstr "Kullanıcıları Yönet"
 msgid "Managed Certificate"
 msgstr "Yönetilen Sertifika"
 
-#: src/views/preference/AuthSettings.vue:107
+#: src/views/preference/AuthSettings.vue:135
 #, fuzzy
 msgid "Max Attempts"
 msgstr "Maksimum Deneme"
@@ -1626,8 +1706,9 @@ msgid "Nginx Log"
 msgstr "Nginx Günlüğü"
 
 #: src/views/preference/NginxSettings.vue:18
+#, fuzzy
 msgid "Nginx Log Directory Whitelist"
-msgstr ""
+msgstr "Nginx Yapılandırma Ayrıştırma Hatası"
 
 #: src/views/preference/NginxSettings.vue:27
 #, fuzzy
@@ -1635,8 +1716,9 @@ msgid "Nginx PID Path"
 msgstr "Nginx Hata Günlüğü Yolu"
 
 #: src/views/preference/NginxSettings.vue:30
+#, fuzzy
 msgid "Nginx Reload Command"
-msgstr ""
+msgstr "Terminal Başlatma Komutu"
 
 #: src/components/NginxControl/NginxControl.vue:26
 #, fuzzy
@@ -1661,7 +1743,7 @@ msgstr "Nginx başarıyla yeniden başlatıldı"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:524
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:538
 #: src/views/notification/Notification.vue:37
-#: src/views/preference/AuthSettings.vue:136
+#: src/views/preference/AuthSettings.vue:164
 #: src/views/preference/CertSettings.vue:70
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:88
@@ -1797,6 +1879,10 @@ msgstr "OpenAI"
 #, fuzzy
 msgid "Or"
 msgstr "Veya"
+
+#: src/views/preference/components/TOTP.vue:112
+msgid "Or enter the secret: %{secret}"
+msgstr ""
 
 #: src/views/config/components/Rename.vue:68
 #, fuzzy
@@ -2089,20 +2175,35 @@ msgid "Recovered Successfully"
 msgstr "Başarıyla Kurtarıldı"
 
 #: src/components/TwoFA/Authorization.vue:89
+<<<<<<< HEAD
+=======
 #: src/views/preference/components/TOTP.vue:156
+>>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "Recovery"
 msgstr "Kurtarma"
 
+<<<<<<< HEAD
+#: src/views/preference/components/RecoveryCodes.vue:68
+=======
 #: src/views/preference/components/TOTP.vue:82
+>>>>>>> remotes/origin/dev
 #, fuzzy
-msgid "Recovery Code"
+msgid "Recovery Codes"
 msgstr "Kurtarma Kodu"
 
+<<<<<<< HEAD
+#: src/views/preference/components/RecoveryCodes.vue:73
+msgid ""
+"Recovery codes are used to access your account when you lose access to your "
+"2FA device. Each code can only be used once."
+msgstr ""
+=======
 #: src/views/preference/components/TOTP.vue:91
 #, fuzzy
 msgid "Recovery Code:"
 msgstr "Kurtarma Kodu:"
+>>>>>>> remotes/origin/dev
 
 #: src/views/preference/CertSettings.vue:37
 #, fuzzy
@@ -2184,7 +2285,7 @@ msgstr "Yeniden Yükleme"
 msgid "Reloading nginx"
 msgstr "Nginx'i yeniden yükleme"
 
-#: src/views/preference/AuthSettings.vue:141
+#: src/views/preference/AuthSettings.vue:169
 #, fuzzy
 msgid "Remove"
 msgstr "Kaldır"
@@ -2199,7 +2300,7 @@ msgstr "Siteyi sil: %{site_name}"
 msgid "Remove Site %{site} from %{node} successfully"
 msgstr "%{conf_name} başarıyla %{node_name} düğümüne kopyalandı"
 
-#: src/views/preference/AuthSettings.vue:47
+#: src/views/preference/AuthSettings.vue:51
 #: src/views/preference/components/Passkey.vue:46
 #, fuzzy
 msgid "Remove successfully"
@@ -2312,7 +2413,11 @@ msgstr "Yanlış parametrelerle talep edildi"
 msgid "Reset"
 msgstr "Sıfırla"
 
+<<<<<<< HEAD
+#: src/views/preference/components/TOTP.vue:93
+=======
 #: src/views/preference/components/TOTP.vue:111
+>>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "Reset 2FA"
 msgstr "2FA'yı Sıfırla"
@@ -2327,15 +2432,15 @@ msgstr "Yeniden başlat"
 msgid "Restarting"
 msgstr "Yeniden Başlatma"
 
-#: src/views/preference/AuthSettings.vue:79
+#: src/views/preference/AuthSettings.vue:107
 msgid "RP Display Name"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:85
+#: src/views/preference/AuthSettings.vue:113
 msgid "RP Origins"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:73
+#: src/views/preference/AuthSettings.vue:101
 msgid "RPID"
 msgstr ""
 
@@ -2415,7 +2520,11 @@ msgstr "Başarıyla kaydedin"
 msgid "Saved successfully"
 msgstr "Başarıyla Kaydedildi"
 
+<<<<<<< HEAD
+#: src/views/preference/components/TOTP.vue:69
+=======
 #: src/views/preference/components/TOTP.vue:72
+>>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "Hesabı uygulamaya eklemek için QR kodunu cep telefonunuzla tarayın."
@@ -2425,7 +2534,11 @@ msgstr "Hesabı uygulamaya eklemek için QR kodunu cep telefonunuzla tarayın."
 msgid "SDK"
 msgstr "SDK"
 
+<<<<<<< HEAD
+#: src/views/preference/components/TOTP.vue:109
+=======
 #: src/views/preference/components/TOTP.vue:128
+>>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "Secret has been copied"
 msgstr "Sır kopyalandı"
@@ -2495,14 +2608,14 @@ msgstr "HTTP01 meydan okuma sağlayıcısını ayarlama"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/components/SensitiveString/SensitiveString.vue:40
@@ -2550,12 +2663,14 @@ msgid "Sites List"
 msgstr "Site Listesi"
 
 #: src/constants/errors/self_check.ts:10
+#, fuzzy
 msgid "Sites-available directory not exist"
-msgstr ""
+msgstr "Dizin"
 
 #: src/constants/errors/self_check.ts:11
+#, fuzzy
 msgid "Sites-enabled directory not exist"
-msgstr ""
+msgstr "Dizin"
 
 #: src/views/certificate/CertificateEditor.vue:211
 #, fuzzy
@@ -2614,8 +2729,9 @@ msgid "Streams Directory"
 msgstr "Dizin"
 
 #: src/constants/errors/self_check.ts:12
+#, fuzzy
 msgid "Streams-available directory not exist"
-msgstr ""
+msgstr "Dizin"
 
 #: src/constants/errors/self_check.ts:13
 #, fuzzy
@@ -2838,6 +2954,8 @@ msgstr ""
 "Sunucu adı yalnızca harf, unicode, sayı, kısa çizgi, tire ve nokta "
 "içermelidir."
 
+<<<<<<< HEAD
+=======
 #: src/views/preference/components/TOTP.vue:90
 #, fuzzy
 msgid ""
@@ -2846,6 +2964,7 @@ msgstr ""
 "Kurtarma kodu yalnızca bir kez görüntülenir, lütfen güvenli bir yere "
 "kaydedin."
 
+>>>>>>> remotes/origin/dev
 #: src/views/dashboard/Environments.vue:148
 #, fuzzy
 msgid ""
@@ -2882,6 +3001,13 @@ msgstr "URL geçersiz."
 #, fuzzy
 msgid "The username or password is incorrect"
 msgstr "Kullanıcı adı veya şifre yanlış"
+
+#: src/views/preference/components/RecoveryCodes.vue:104
+msgid ""
+"These codes are the last resort for accessing your account in case you lose "
+"your password and second factors. If you cannot find these codes, you will "
+"lose access to your account."
+msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:102
 #, fuzzy
@@ -2935,11 +3061,11 @@ msgstr ""
 "Bu, %{nodeNames} üzerindeki Nginx kullanıcı arayüzünü %{version}'e "
 "yükseltecek veya yeniden yükleyecektir."
 
-#: src/views/preference/AuthSettings.vue:96
+#: src/views/preference/AuthSettings.vue:124
 msgid "Throttle"
 msgstr ""
 
-#: src/views/preference/AuthSettings.vue:116
+#: src/views/preference/AuthSettings.vue:144
 #: src/views/preference/components/AddPasskey.vue:65
 #: src/views/preference/LogrotateSettings.vue:11
 #, fuzzy
@@ -2951,7 +3077,11 @@ msgstr "İpuçları"
 msgid "Title"
 msgstr "Başlık"
 
+<<<<<<< HEAD
+#: src/views/preference/components/TOTP.vue:68
+=======
 #: src/views/preference/components/TOTP.vue:71
+>>>>>>> remotes/origin/dev
 #, fuzzy
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
@@ -3006,12 +3136,20 @@ msgid_plural "Total %{total} items"
 msgstr[0] ""
 msgstr[1] ""
 
+<<<<<<< HEAD
+#: src/views/preference/components/TOTP.vue:66
+=======
 #: src/views/preference/components/TOTP.vue:69
+>>>>>>> remotes/origin/dev
 #, fuzzy
 msgid "TOTP"
 msgstr "TOTP"
 
+<<<<<<< HEAD
+#: src/views/preference/components/TOTP.vue:67
+=======
 #: src/views/preference/components/TOTP.vue:70
+>>>>>>> remotes/origin/dev
 #, fuzzy
 msgid ""
 "TOTP is a two-factor authentication method that uses a time-based one-time "
@@ -3162,6 +3300,16 @@ msgstr "Detayları göster"
 msgid "View Mode"
 msgstr "Görünüm Modu"
 
+#: src/views/preference/components/RecoveryCodes.vue:134
+#, fuzzy
+msgid "View Recovery Codes"
+msgstr "Kurtarma Kodu"
+
+#: src/views/preference/components/RecoveryCodes.vue:70
+#, fuzzy
+msgid "Viewed"
+msgstr "Görünüm"
+
 #: src/constants/index.ts:17 src/views/config/InspectConfig.vue:33
 #: src/views/notification/notificationColumns.tsx:22
 #: src/views/preference/components/AddPasskey.vue:82
@@ -3188,7 +3336,7 @@ msgstr ""
 "HTTPChallenge yapılandırmasını bu dosyadan kaldıracağız ve Nginx'i yeniden "
 "yükleyeceğiz. Devam etmek istediğinizden emin misiniz?"
 
-#: src/views/preference/AuthSettings.vue:69
+#: src/views/preference/AuthSettings.vue:97
 msgid "Webauthn"
 msgstr ""
 
@@ -3213,6 +3361,12 @@ msgid ""
 "site category and the nodes selected below will be synchronized."
 msgstr ""
 
+#: src/views/preference/components/RecoveryCodes.vue:140
+msgid ""
+"When you generate new recovery codes, you must download or print the new "
+"codes."
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:37
 #: src/views/dashboard/ServerAnalytic.vue:373
 #, fuzzy
@@ -3229,7 +3383,7 @@ msgstr "Sertifika özel anahtarını diske yazma"
 msgid "Writing certificate to disk"
 msgstr "Sertifikayı diske yazma"
 
-#: src/views/preference/AuthSettings.vue:135
+#: src/views/preference/AuthSettings.vue:163
 #: src/views/preference/CertSettings.vue:69
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:96
 #: src/views/site/ngx_conf/LocationEditor.vue:87
@@ -3256,10 +3410,51 @@ msgstr ""
 "Webauthn ayarlarını yapılandırmadınız, bu nedenle bir geçiş anahtarı "
 "ekleyemezsiniz."
 
+#: src/views/preference/components/RecoveryCodes.vue:81
+msgid ""
+"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgstr ""
+
+#: src/views/preference/components/RecoveryCodes.vue:94
+msgid "You have not generated recovery codes yet."
+msgstr ""
+
+#: src/views/preference/components/RecoveryCodes.vue:91
+msgid ""
+"Your current recovery code might be outdated and insecure. Please generate "
+"new recovery codes at your earliest convenience to ensure security."
+msgstr ""
+
+#: src/views/preference/components/RecoveryCodes.vue:142
+#: src/views/preference/components/RecoveryCodes.vue:155
+msgid "Your old codes won't work anymore."
+msgstr ""
+
 #: src/views/preference/components/Passkey.vue:75
 #, fuzzy
 msgid "Your passkeys"
 msgstr "Geçiş anahtarlarınız"
+
+#~ msgid ""
+#~ "If you lose your mobile phone, you can use the recovery code to reset "
+#~ "your 2FA."
+#~ msgstr ""
+#~ "Cep telefonunuzu kaybederseniz, 2FA'nızı sıfırlamak için kurtarma kodunu "
+#~ "kullanabilirsiniz."
+
+#, fuzzy
+#~ msgid "Recovery Code:"
+#~ msgstr "Kurtarma Kodu:"
+
+#, fuzzy
+#~ msgid ""
+#~ "The recovery code is only displayed once, please save it in a safe place."
+#~ msgstr ""
+#~ "Kurtarma kodu yalnızca bir kez görüntülenir, lütfen güvenli bir yere "
+#~ "kaydedin."
+
+#~ msgid "Can't scan? Use text key binding"
+#~ msgstr "Tarayamıyor musunuz? Metin anahtar bağlamasını kullanın"
 
 #~ msgid "Directory"
 #~ msgstr "Dizin"

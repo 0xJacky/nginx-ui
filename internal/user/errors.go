@@ -8,6 +8,7 @@ var (
 	ErrUserBanned              = e.New(40303, "user banned")
 	ErrOTPCode                 = e.New(40304, "invalid otp code")
 	ErrRecoveryCode            = e.New(40305, "invalid recovery code")
+	ErrTOTPNotEnabled          = e.New(40306, "legacy recovery code not allowed since totp is not enabled")
 	ErrWebAuthnNotConfigured   = e.New(50000, "WebAuthn settings are not configured")
 	ErrUserNotEnabledOTPAs2FA  = e.New(50001, "user not enabled otp as 2fa")
 	ErrOTPOrRecoveryCodeEmpty  = e.New(50002, "otp or recovery code empty")

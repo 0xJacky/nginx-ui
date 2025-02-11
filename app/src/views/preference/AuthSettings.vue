@@ -1,8 +1,12 @@
 <script setup lang="tsx">
+import type { TwoFAStatus } from '@/api/2fa'
+import type { RecoveryCode } from '@/api/recovery'
 import type { BannedIP, Settings } from '@/api/settings'
 import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Ref } from 'vue'
+import twoFA from '@/api/2fa'
 import setting from '@/api/settings'
+import RecoveryCodes from '@/views/preference/components/RecoveryCodes.vue'
 import TOTP from '@/views/preference/components/TOTP.vue'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
@@ -47,6 +51,17 @@ function removeBannedIP(ip: string) {
     message.success($gettext('Remove successfully'))
   })
 }
+
+const twoFAStatus = ref<TwoFAStatus>({} as TwoFAStatus)
+const recoveryCodes = ref<RecoveryCode[]>()
+
+function get2FAStatus() {
+  twoFA.status().then(r => {
+    twoFAStatus.value = r
+  })
+}
+
+get2FAStatus()
 </script>
 
 <template>
@@ -54,7 +69,20 @@ function removeBannedIP(ip: string) {
     <div>
       <h2>{{ $gettext('2FA Settings') }}</h2>
       <PasskeyRegistration class="mb-4" />
-      <TOTP class="mb-4" />
+
+      <TOTP
+        v-model:recovery-codes="recoveryCodes"
+        class="mb-4"
+        :status="twoFAStatus?.otp_status"
+        @refresh="get2FAStatus"
+      />
+
+      <RecoveryCodes
+        class="mb-4"
+        :two-f-a-status="twoFAStatus"
+        :recovery-codes="recoveryCodes"
+        @refresh="get2FAStatus"
+      />
 
       <h2>
         {{ $gettext('Authentication Settings') }}

@@ -11,13 +11,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "Generated-By: easygettext\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.4.1\n"
 
 #: src/views/user/userColumns.tsx:32
 msgid "2FA"
 msgstr "2FA"
 
-#: src/views/preference/AuthSettings.vue:55
+#: src/views/preference/AuthSettings.vue:70
 msgid "2FA Settings"
 msgstr "2FA 设置"
 
@@ -40,7 +40,7 @@ msgstr "ACME 用户"
 #: src/views/config/configColumns.tsx:42
 #: src/views/environment/envColumns.tsx:97
 #: src/views/notification/notificationColumns.tsx:65
-#: src/views/preference/AuthSettings.vue:26
+#: src/views/preference/AuthSettings.vue:30
 #: src/views/site/site_category/columns.ts:29
 #: src/views/site/site_list/columns.tsx:76 src/views/stream/StreamList.vue:49
 #: src/views/user/userColumns.tsx:60
@@ -106,7 +106,11 @@ msgstr "然后，刷新此页面并再次点击添加 Passkey。"
 msgid "All"
 msgstr "全部"
 
-#: src/views/preference/OpenAISettings.vue:44
+#: src/language/constants.ts:57
+msgid "All Recovery Codes Have Been Used"
+msgstr "所有恢复码都已被使用"
+
+#: src/views/preference/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr "API 地址"
 
@@ -114,15 +118,15 @@ msgstr "API 地址"
 msgid "API Document"
 msgstr "API 文档"
 
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:46
 msgid "API Proxy"
 msgstr "API 代理"
 
-#: src/views/preference/OpenAISettings.vue:69
+#: src/views/preference/OpenAISettings.vue:58
 msgid "API Token"
 msgstr "API Token"
 
-#: src/views/preference/OpenAISettings.vue:78
+#: src/views/preference/OpenAISettings.vue:67
 msgid "API Type"
 msgstr "API 类型"
 
@@ -138,13 +142,21 @@ msgstr "批量操作应用成功"
 msgid "Arch"
 msgstr "架构"
 
-#: src/views/preference/AuthSettings.vue:134
+#: src/views/preference/AuthSettings.vue:162
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "您确定要立即删除这个被禁用的 IP 吗？"
 
 #: src/views/preference/components/Passkey.vue:113
 msgid "Are you sure to delete this passkey immediately?"
 msgstr "您确定要立即删除这个 Passkey 吗？"
+
+#: src/views/preference/components/RecoveryCodes.vue:154
+msgid "Are you sure to generate new recovery codes?"
+msgstr "您确定要生成新的恢复代码吗？"
+
+#: src/views/preference/components/TOTP.vue:85
+msgid "Are you sure to reset 2FA?"
+msgstr "您确定要重设双重身份验证？"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:96
 msgid "Are you sure you want to apply to all selected?"
@@ -200,7 +212,7 @@ msgstr "助手"
 msgid "Attempt to fix"
 msgstr "尝试修复"
 
-#: src/views/preference/AuthSettings.vue:17
+#: src/views/preference/AuthSettings.vue:21
 msgid "Attempts"
 msgstr "尝试次数"
 
@@ -208,11 +220,11 @@ msgstr "尝试次数"
 msgid "Auth"
 msgstr "认证"
 
-#: src/components/TwoFA/Authorization.vue:121
+#: src/components/TwoFA/Authorization.vue:109
 msgid "Authenticate with a passkey"
 msgstr "通过 Passkey 认证"
 
-#: src/views/preference/AuthSettings.vue:60
+#: src/views/preference/AuthSettings.vue:88
 msgid "Authentication Settings"
 msgstr "认证设置"
 
@@ -249,15 +261,15 @@ msgstr "返回首页"
 msgid "Back to list"
 msgstr "返回列表"
 
-#: src/views/preference/AuthSettings.vue:101
+#: src/views/preference/AuthSettings.vue:129
 msgid "Ban Threshold Minutes"
 msgstr "禁止阈值（分钟）"
 
-#: src/views/preference/AuthSettings.vue:122
+#: src/views/preference/AuthSettings.vue:150
 msgid "Banned IPs"
 msgstr "禁止 IP 列表"
 
-#: src/views/preference/AuthSettings.vue:20
+#: src/views/preference/AuthSettings.vue:24
 msgid "Banned Until"
 msgstr "禁用至"
 
@@ -309,10 +321,6 @@ msgstr "CA Dir"
 #: src/views/preference/CertSettings.vue:16
 msgid "CADir"
 msgstr "CADir"
-
-#: src/views/preference/components/TOTP.vue:129
-msgid "Can't scan? Use text key binding"
-msgstr "无法扫描？使用文本密钥绑定"
 
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:246
@@ -443,6 +451,10 @@ msgstr "清空"
 msgid "Cleared successfully"
 msgstr "清除成功"
 
+#: src/views/preference/components/TOTP.vue:110
+msgid "Click to copy"
+msgstr "点击复制"
+
 #: src/views/preference/LogrotateSettings.vue:22
 msgid "Command"
 msgstr "命令"
@@ -490,12 +502,17 @@ msgstr "内容"
 
 #: src/components/SensitiveString/SensitiveString.vue:37
 #: src/components/StdDesign/StdDataDisplay/StdTableTransformer.tsx:150
+#: src/views/preference/components/RecoveryCodes.vue:121
 msgid "Copied"
 msgstr "已拷贝"
 
 #: src/components/SensitiveString/SensitiveString.vue:37
 msgid "Copy"
 msgstr "拷贝"
+
+#: src/views/preference/components/RecoveryCodes.vue:121
+msgid "Copy Codes"
+msgstr "复制代码"
 
 #: src/views/system/Upgrade.vue:146
 msgid "Core Upgrade"
@@ -547,11 +564,11 @@ msgstr "DNS 凭证"
 msgid "Credentials"
 msgstr "凭证"
 
-#: src/views/preference/components/TOTP.vue:77
+#: src/views/preference/components/TOTP.vue:72
 msgid "Current account is enabled TOTP."
 msgstr "当前账户已启用 TOTP 验证。"
 
-#: src/views/preference/components/TOTP.vue:74
+#: src/views/preference/components/TOTP.vue:70
 msgid "Current account is not enabled TOTP."
 msgstr "当前用户未启用 TOTP 验证。"
 
@@ -880,7 +897,7 @@ msgstr "在%{node_name}中启用%{conf_name}失败"
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "成功启用%{node_name}中的%{conf_name}"
 
-#: src/views/preference/components/TOTP.vue:38
+#: src/views/preference/components/TOTP.vue:45
 msgid "Enable 2FA successfully"
 msgstr "二步验证启用成功"
 
@@ -916,7 +933,7 @@ msgstr "启用成功"
 msgid "Enable TLS"
 msgstr "启用 TLS"
 
-#: src/views/preference/components/TOTP.vue:103
+#: src/views/preference/components/TOTP.vue:81
 msgid "Enable TOTP"
 msgstr "启用 TOTP"
 
@@ -1039,6 +1056,10 @@ msgstr "过滤"
 msgid "Finished"
 msgstr "完成"
 
+#: src/views/preference/components/RecoveryCodes.vue:70
+msgid "First View"
+msgstr "首次查看"
+
 #: src/views/preference/components/AddPasskey.vue:71
 msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
@@ -1073,6 +1094,19 @@ msgstr "普通证书"
 #: src/components/StdDesign/StdDataEntry/components/StdPassword.vue:55
 msgid "Generate"
 msgstr "生成"
+
+#: src/views/preference/components/RecoveryCodes.vue:138
+#: src/views/preference/components/RecoveryCodes.vue:161
+msgid "Generate New Recovery Codes"
+msgstr "生成新的恢复代码"
+
+#: src/views/preference/components/RecoveryCodes.vue:161
+msgid "Generate Recovery Codes"
+msgstr "生成恢复代码"
+
+#: src/views/preference/components/RecoveryCodes.vue:32
+msgid "Generate recovery codes successfully"
+msgstr "成功生成恢复代码"
 
 #: src/language/constants.ts:7
 msgid "Generating private key for registering account"
@@ -1122,19 +1156,13 @@ msgstr "ICP备案号"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "如果留空，则使用默认 CA Dir。"
 
-#: src/views/preference/AuthSettings.vue:117
+#: src/views/preference/AuthSettings.vue:145
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
 "如果某个 IP 的登录失败次数达到禁用阈值分钟内的最大尝试次数，该 IP 将被禁止登"
 "录一段时间。"
-
-#: src/views/preference/components/TOTP.vue:89
-msgid ""
-"If you lose your mobile phone, you can use the recovery code to reset your "
-"2FA."
-msgstr "如果丢失了手机，可以使用恢复代码重置二步验证。"
 
 #: src/views/preference/components/AddPasskey.vue:70
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
@@ -1167,12 +1195,11 @@ msgstr "初始化核心升级程序错误"
 msgid "Initialing core upgrader"
 msgstr "初始化核心升级器"
 
-#: src/views/preference/components/TOTP.vue:136
+#: src/views/preference/components/TOTP.vue:119
 msgid "Input the code from the app:"
 msgstr "输入应用程序中的代码："
 
-#: src/components/TwoFA/Authorization.vue:82
-#: src/views/preference/components/TOTP.vue:149
+#: src/components/TwoFA/Authorization.vue:72
 msgid "Input the recovery code:"
 msgstr "输入恢复代码："
 
@@ -1217,7 +1244,7 @@ msgstr "无效的恢复代码"
 msgid "Invalid request format"
 msgstr "无效的请求格式"
 
-#: src/views/preference/AuthSettings.vue:14
+#: src/views/preference/AuthSettings.vue:18
 msgid "IP"
 msgstr "IP"
 
@@ -1241,6 +1268,13 @@ msgstr "颁发者：%{issuer}"
 msgid "Jwt Secret"
 msgstr "Jwt 密钥"
 
+#: src/views/preference/components/RecoveryCodes.vue:74
+msgid ""
+"Keep your recovery codes as safe as your password. We recommend saving them "
+"with a password manager."
+msgstr ""
+"请像保护密码一样安全地保管您的恢复代码。我们建议使用密码管理器保存它们。"
+
 #: src/views/certificate/CertificateList/certColumns.tsx:62
 #: src/views/site/cert/components/AutoCertStepOne.vue:77
 msgid "Key Type"
@@ -1258,7 +1292,7 @@ msgstr "上次使用"
 msgid "Leave blank for no change"
 msgstr "留空表示不修改"
 
-#: src/views/preference/OpenAISettings.vue:53
+#: src/views/preference/OpenAISettings.vue:41
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "留空为默认：https://api.openai.com/"
 
@@ -1321,7 +1355,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日志"
 
-#: src/routes/index.ts:318 src/views/other/Login.vue:222
+#: src/routes/index.ts:318 src/views/other/Login.vue:223
 msgid "Login"
 msgstr "登录"
 
@@ -1380,7 +1414,7 @@ msgstr "用户管理"
 msgid "Managed Certificate"
 msgstr "托管证书"
 
-#: src/views/preference/AuthSettings.vue:107
+#: src/views/preference/AuthSettings.vue:135
 msgid "Max Attempts"
 msgstr "最大尝试次数"
 
@@ -1397,7 +1431,7 @@ msgstr "内存与存储"
 msgid "Minutes"
 msgstr "分钟"
 
-#: src/views/preference/OpenAISettings.vue:32
+#: src/views/preference/OpenAISettings.vue:20
 msgid "Model"
 msgstr "模型"
 
@@ -1566,7 +1600,7 @@ msgstr "Nginx 重启成功"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:524
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:538
 #: src/views/notification/Notification.vue:37
-#: src/views/preference/AuthSettings.vue:136
+#: src/views/preference/AuthSettings.vue:164
 #: src/views/preference/CertSettings.vue:70
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:88
@@ -1677,9 +1711,13 @@ msgstr "在线"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:112 src/views/other/Login.vue:231
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:232
 msgid "Or"
 msgstr "或"
+
+#: src/views/preference/components/TOTP.vue:112
+msgid "Or enter the secret: %{secret}"
+msgstr "或输入密钥：%{secret}"
 
 #: src/views/config/components/Rename.vue:68
 msgid "Original name"
@@ -1776,7 +1814,7 @@ msgid ""
 "button below."
 msgstr "请为您要创建的 Passkey 输入一个名称，然后单击下面的 \"确定 \"按钮。"
 
-#: src/components/TwoFA/Authorization.vue:70
+#: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "请输入 OTP："
 
@@ -1797,6 +1835,12 @@ msgid ""
 msgstr ""
 "请首先在 “证书”> “DNS 凭证” 中添加凭证，然后在下方选择一个凭证，请求 DNS 提供"
 "商的 API。"
+
+#: src/language/constants.ts:58
+msgid ""
+"Please generate new recovery codes in the preferences immediately to prevent "
+"lockout."
+msgstr "请立即在偏好设置中生成新的恢复码，以防止无法访问您的账户。"
 
 #: src/views/config/components/Rename.vue:63
 #: src/views/config/ConfigEditor.vue:249
@@ -1915,18 +1959,21 @@ msgstr "恢复"
 msgid "Recovered Successfully"
 msgstr "恢复成功"
 
-#: src/components/TwoFA/Authorization.vue:89
-#: src/views/preference/components/TOTP.vue:156
+#: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
 msgstr "恢复"
 
-#: src/views/preference/components/TOTP.vue:82
-msgid "Recovery Code"
+#: src/views/preference/components/RecoveryCodes.vue:68
+msgid "Recovery Codes"
 msgstr "恢复代码"
 
-#: src/views/preference/components/TOTP.vue:91
-msgid "Recovery Code:"
-msgstr "恢复代码："
+#: src/views/preference/components/RecoveryCodes.vue:73
+msgid ""
+"Recovery codes are used to access your account when you lose access to your "
+"2FA device. Each code can only be used once."
+msgstr ""
+"恢复代码用于在您无法访问双重身份验证设备时登录您的账户。每个代码只能使用一"
+"次。"
 
 #: src/views/preference/CertSettings.vue:37
 msgid "Recursive Nameservers"
@@ -1991,7 +2038,7 @@ msgstr "重载中"
 msgid "Reloading nginx"
 msgstr "正在重载 Nginx"
 
-#: src/views/preference/AuthSettings.vue:141
+#: src/views/preference/AuthSettings.vue:169
 msgid "Remove"
 msgstr "删除"
 
@@ -2003,7 +2050,7 @@ msgstr "从 %{node} 中删除站点 %{site} 错误，响应：%{resp}"
 msgid "Remove Site %{site} from %{node} successfully"
 msgstr "成功从 %{node} 中删除站点 %{site}"
 
-#: src/views/preference/AuthSettings.vue:47
+#: src/views/preference/AuthSettings.vue:51
 #: src/views/preference/components/Passkey.vue:46
 msgid "Remove successfully"
 msgstr "移除成功"
@@ -2093,7 +2140,7 @@ msgstr "请求参数错误"
 msgid "Reset"
 msgstr "重置"
 
-#: src/views/preference/components/TOTP.vue:111
+#: src/views/preference/components/TOTP.vue:93
 msgid "Reset 2FA"
 msgstr "重置二步验证"
 
@@ -2105,15 +2152,15 @@ msgstr "重启"
 msgid "Restarting"
 msgstr "重启中"
 
-#: src/views/preference/AuthSettings.vue:79
+#: src/views/preference/AuthSettings.vue:107
 msgid "RP Display Name"
 msgstr "依赖方显示名称"
 
-#: src/views/preference/AuthSettings.vue:85
+#: src/views/preference/AuthSettings.vue:113
 msgid "RP Origins"
 msgstr "依赖方的源"
 
-#: src/views/preference/AuthSettings.vue:73
+#: src/views/preference/AuthSettings.vue:101
 msgid "RPID"
 msgstr "依赖方 ID"
 
@@ -2180,7 +2227,7 @@ msgstr "保存成功"
 msgid "Saved successfully"
 msgstr "保存成功"
 
-#: src/views/preference/components/TOTP.vue:72
+#: src/views/preference/components/TOTP.vue:69
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "用手机扫描二维码，将账户添加到应用程序中。"
 
@@ -2188,7 +2235,7 @@ msgstr "用手机扫描二维码，将账户添加到应用程序中。"
 msgid "SDK"
 msgstr "SDK"
 
-#: src/views/preference/components/TOTP.vue:128
+#: src/views/preference/components/TOTP.vue:109
 msgid "Secret has been copied"
 msgstr "密钥已复制"
 
@@ -2263,7 +2310,7 @@ msgstr ""
 msgid "Show"
 msgstr "显示"
 
-#: src/views/other/Login.vue:240
+#: src/views/other/Login.vue:241
 msgid "Sign in with a passkey"
 msgstr "使用 Passkey 登录"
 
@@ -2505,7 +2552,7 @@ msgid ""
 "The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr "日志路径不在 settings.NginxSettings.LogDirWhiteList 中的路径之下"
 
-#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:23
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
@@ -2531,11 +2578,6 @@ msgid ""
 "hyphens, dashes, colons, and dots."
 msgstr "公安备案号只能包含字母、单码、数字、连字符、破折号、冒号和点。"
 
-#: src/views/preference/components/TOTP.vue:90
-msgid ""
-"The recovery code is only displayed once, please save it in a safe place."
-msgstr "恢复密码只会显示一次，请妥善保存。"
-
 #: src/views/dashboard/Environments.vue:148
 msgid ""
 "The remote Nginx UI version is not compatible with the local Nginx UI "
@@ -2556,14 +2598,23 @@ msgstr "当前配置中的 server_name 必须是获取证书所需的域名，�
 msgid "The url is invalid"
 msgstr "URL无效"
 
-#: src/views/preference/OpenAISettings.vue:47
-#: src/views/preference/OpenAISettings.vue:60
+#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:49
 msgid "The url is invalid."
 msgstr "URL 无效."
 
 #: src/language/constants.ts:2
 msgid "The username or password is incorrect"
 msgstr "用户名或密码错误"
+
+#: src/views/preference/components/RecoveryCodes.vue:104
+msgid ""
+"These codes are the last resort for accessing your account in case you lose "
+"your password and second factors. If you cannot find these codes, you will "
+"lose access to your account."
+msgstr ""
+"这些代码是在您丢失密码和双重身份验证方式时，访问账户的最后手段。如果找不到这"
+"些代码，您将无法再访问您的账户。"
 
 #: src/views/certificate/CertificateEditor.vue:102
 msgid "This Auto Cert item is invalid, please remove it."
@@ -2606,11 +2657,11 @@ msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "将 %{nodeNames} 上的 Nginx UI 升级或重新安装到 %{version} 版本。"
 
-#: src/views/preference/AuthSettings.vue:96
+#: src/views/preference/AuthSettings.vue:124
 msgid "Throttle"
 msgstr "限流"
 
-#: src/views/preference/AuthSettings.vue:116
+#: src/views/preference/AuthSettings.vue:144
 #: src/views/preference/components/AddPasskey.vue:65
 #: src/views/preference/LogrotateSettings.vue:11
 msgid "Tips"
@@ -2620,7 +2671,7 @@ msgstr "提示"
 msgid "Title"
 msgstr "标题"
 
-#: src/views/preference/components/TOTP.vue:71
+#: src/views/preference/components/TOTP.vue:68
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
@@ -2646,7 +2697,7 @@ msgstr ""
 "为了确保认证自动更新能够正常工作，我们需要添加一个能够代理从权威机构到后端的"
 "请求的 Location，并且我们需要保存这个文件并重新加载Nginx。你确定要继续吗？"
 
-#: src/views/preference/OpenAISettings.vue:48
+#: src/views/preference/OpenAISettings.vue:36
 msgid ""
 "To use a local large model, deploy it with ollama, vllm or lmdeploy. They "
 "provide an OpenAI-compatible API endpoint, so just set the baseUrl to your "
@@ -2655,7 +2706,7 @@ msgstr ""
 "要使用本地大型模型，可使用 ollama、vllm 或 lmdeploy 进行部署。它们提供了与 "
 "OpenAI 兼容的 API 端点，因此只需将 baseUrl 设置为本地 API 即可。"
 
-#: src/views/preference/OpenAISettings.vue:72
+#: src/views/preference/OpenAISettings.vue:61
 msgid "Token is not valid"
 msgstr "Token 无效"
 
@@ -2664,11 +2715,11 @@ msgid "Total %{total} item"
 msgid_plural "Total %{total} items"
 msgstr[0] "共 %{total} 个项目"
 
-#: src/views/preference/components/TOTP.vue:69
+#: src/views/preference/components/TOTP.vue:66
 msgid "TOTP"
 msgstr "TOTP"
 
-#: src/views/preference/components/TOTP.vue:70
+#: src/views/preference/components/TOTP.vue:67
 msgid ""
 "TOTP is a two-factor authentication method that uses a time-based one-time "
 "password algorithm."
@@ -2736,11 +2787,11 @@ msgstr "运行时间:"
 msgid "URL"
 msgstr "URL"
 
-#: src/components/TwoFA/Authorization.vue:102
+#: src/components/TwoFA/Authorization.vue:121
 msgid "Use OTP"
 msgstr "使用二步验证码"
 
-#: src/components/TwoFA/Authorization.vue:98
+#: src/components/TwoFA/Authorization.vue:117
 msgid "Use recovery code"
 msgstr "使用恢复代码"
 
@@ -2791,6 +2842,14 @@ msgstr "查看详情"
 msgid "View Mode"
 msgstr "预览模式"
 
+#: src/views/preference/components/RecoveryCodes.vue:134
+msgid "View Recovery Codes"
+msgstr "查看恢复代码"
+
+#: src/views/preference/components/RecoveryCodes.vue:70
+msgid "Viewed"
+msgstr "已查看"
+
 #: src/constants/index.ts:17 src/views/config/InspectConfig.vue:33
 #: src/views/notification/notificationColumns.tsx:22
 #: src/views/preference/components/AddPasskey.vue:82
@@ -2811,7 +2870,7 @@ msgid ""
 msgstr ""
 "我们将从这个文件中删除HTTPChallenge的配置，并重新加载Nginx。你确定要继续吗？"
 
-#: src/views/preference/AuthSettings.vue:69
+#: src/views/preference/AuthSettings.vue:97
 msgid "Webauthn"
 msgstr "Webauthn"
 
@@ -2836,6 +2895,12 @@ msgstr ""
 "启用/禁用、删除或保存此站点时，网站分类中设置的节点和下面选择的节点将同步执行"
 "操作。"
 
+#: src/views/preference/components/RecoveryCodes.vue:140
+msgid ""
+"When you generate new recovery codes, you must download or print the new "
+"codes."
+msgstr "当您生成新的恢复代码时，必须下载或打印新的代码。"
+
 #: src/views/dashboard/ServerAnalytic.vue:37
 #: src/views/dashboard/ServerAnalytic.vue:373
 msgid "Writes"
@@ -2849,7 +2914,7 @@ msgstr "正在将证书私钥写入磁盘"
 msgid "Writing certificate to disk"
 msgstr "正在将证书写入磁盘"
 
-#: src/views/preference/AuthSettings.vue:135
+#: src/views/preference/AuthSettings.vue:163
 #: src/views/preference/CertSettings.vue:69
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:96
 #: src/views/site/ngx_conf/LocationEditor.vue:87
@@ -2870,9 +2935,44 @@ msgid ""
 "passkey."
 msgstr "您尚未配置 Webauthn 的设置，因此无法添加 Passkey。"
 
+#: src/views/preference/components/RecoveryCodes.vue:81
+msgid ""
+"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgstr "您尚未启用双重身份验证。请启用双重身份验证以生成恢复代码。"
+
+#: src/views/preference/components/RecoveryCodes.vue:94
+msgid "You have not generated recovery codes yet."
+msgstr "您尚未生成恢复代码。"
+
+#: src/views/preference/components/RecoveryCodes.vue:91
+msgid ""
+"Your current recovery code might be outdated and insecure. Please generate "
+"new recovery codes at your earliest convenience to ensure security."
+msgstr "您的当前恢复代码可能已过期且不安全。请尽快生成新的恢复代码以确保安全。"
+
+#: src/views/preference/components/RecoveryCodes.vue:142
+#: src/views/preference/components/RecoveryCodes.vue:155
+msgid "Your old codes won't work anymore."
+msgstr "您的旧代码将不再有效。"
+
 #: src/views/preference/components/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "你的 Passkeys"
+
+#~ msgid ""
+#~ "If you lose your mobile phone, you can use the recovery code to reset "
+#~ "your 2FA."
+#~ msgstr "如果丢失了手机，可以使用恢复代码重置二步验证。"
+
+#~ msgid "Recovery Code:"
+#~ msgstr "恢复代码："
+
+#~ msgid ""
+#~ "The recovery code is only displayed once, please save it in a safe place."
+#~ msgstr "恢复密码只会显示一次，请妥善保存。"
+
+#~ msgid "Can't scan? Use text key binding"
+#~ msgstr "无法扫描？使用文本密钥绑定"
 
 #~ msgid "Directory"
 #~ msgstr "目录"
@@ -3051,9 +3151,6 @@ msgstr "你的 Passkeys"
 
 #~ msgid "404 Not Found"
 #~ msgstr "404 未找到页面"
-
-#~ msgid "Are you sure you want to restore?"
-#~ msgstr "您确定要反删除？"
 
 #~ msgid "Destroy"
 #~ msgstr "删除"

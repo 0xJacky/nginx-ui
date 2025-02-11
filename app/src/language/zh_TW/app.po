@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-02-08 18:25+0000\n"
+"PO-Revision-Date: 2025-02-11 02:39+0900\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
 "Language-Team: Chinese (Traditional Han script) <https://weblate.nginxui.com/"
 "projects/nginx-ui/frontend/zh_Hant/>\n"
@@ -16,14 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Poedit 3.4.1\n"
 "Generated-By: easygettext\n"
 
 #: src/views/user/userColumns.tsx:32
 msgid "2FA"
 msgstr "雙因素驗證"
 
-#: src/views/preference/AuthSettings.vue:55
+#: src/views/preference/AuthSettings.vue:70
 msgid "2FA Settings"
 msgstr "多重要素驗證設定"
 
@@ -46,7 +46,7 @@ msgstr "ACME 用戶"
 #: src/views/config/configColumns.tsx:42
 #: src/views/environment/envColumns.tsx:97
 #: src/views/notification/notificationColumns.tsx:65
-#: src/views/preference/AuthSettings.vue:26
+#: src/views/preference/AuthSettings.vue:30
 #: src/views/site/site_category/columns.ts:29
 #: src/views/site/site_list/columns.tsx:76 src/views/stream/StreamList.vue:49
 #: src/views/user/userColumns.tsx:60
@@ -112,7 +112,11 @@ msgstr "然後，重新整理此頁面並再次點選新增通行密鑰。"
 msgid "All"
 msgstr "全部"
 
-#: src/views/preference/OpenAISettings.vue:44
+#: src/language/constants.ts:57
+msgid "All Recovery Codes Have Been Used"
+msgstr "所有恢復碼都已使用完畢"
+
+#: src/views/preference/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr "API 基礎網址"
 
@@ -120,15 +124,15 @@ msgstr "API 基礎網址"
 msgid "API Document"
 msgstr "API 文件"
 
-#: src/views/preference/OpenAISettings.vue:57
+#: src/views/preference/OpenAISettings.vue:46
 msgid "API Proxy"
 msgstr "API 代理"
 
-#: src/views/preference/OpenAISettings.vue:69
+#: src/views/preference/OpenAISettings.vue:58
 msgid "API Token"
 msgstr "API Token"
 
-#: src/views/preference/OpenAISettings.vue:78
+#: src/views/preference/OpenAISettings.vue:67
 msgid "API Type"
 msgstr "API 類型"
 
@@ -144,7 +148,7 @@ msgstr "批量操作成功應用"
 msgid "Arch"
 msgstr "架構"
 
-#: src/views/preference/AuthSettings.vue:134
+#: src/views/preference/AuthSettings.vue:162
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "您確定要刪除這個被禁用的 IP 嗎？"
 
@@ -152,10 +156,17 @@ msgstr "您確定要刪除這個被禁用的 IP 嗎？"
 msgid "Are you sure to delete this passkey immediately?"
 msgstr "您確定要刪除這個被禁用的通行密鑰嗎？"
 
+#: src/views/preference/components/RecoveryCodes.vue:154
+msgid "Are you sure to generate new recovery codes?"
+msgstr "您確定要生成新的復原代碼嗎？"
+
+#: src/views/preference/components/TOTP.vue:85
+msgid "Are you sure to reset 2FA?"
+msgstr "您確定要重設 2FA 嗎？"
+
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:96
-#, fuzzy
 msgid "Are you sure you want to apply to all selected?"
-msgstr "您確定要刪除嗎？"
+msgstr "您確定要應用於所有選擇項目嗎？"
 
 #: src/components/Notification/Notification.vue:130
 #: src/views/notification/Notification.vue:39
@@ -204,11 +215,10 @@ msgid "Assistant"
 msgstr "助理"
 
 #: src/views/system/SelfCheck/SelfCheck.vue:54
-#, fuzzy
 msgid "Attempt to fix"
-msgstr "嘗試次數"
+msgstr "嘗試修復"
 
-#: src/views/preference/AuthSettings.vue:17
+#: src/views/preference/AuthSettings.vue:21
 msgid "Attempts"
 msgstr "嘗試次數"
 
@@ -216,11 +226,11 @@ msgstr "嘗試次數"
 msgid "Auth"
 msgstr "身份驗證"
 
-#: src/components/TwoFA/Authorization.vue:121
+#: src/components/TwoFA/Authorization.vue:109
 msgid "Authenticate with a passkey"
 msgstr "使用通行密鑰認證"
 
-#: src/views/preference/AuthSettings.vue:60
+#: src/views/preference/AuthSettings.vue:88
 msgid "Authentication Settings"
 msgstr "認證設定"
 
@@ -257,15 +267,15 @@ msgstr "返回首頁"
 msgid "Back to list"
 msgstr "返回列表"
 
-#: src/views/preference/AuthSettings.vue:101
+#: src/views/preference/AuthSettings.vue:129
 msgid "Ban Threshold Minutes"
 msgstr "封禁閾值分鐘數"
 
-#: src/views/preference/AuthSettings.vue:122
+#: src/views/preference/AuthSettings.vue:150
 msgid "Banned IPs"
 msgstr "被禁止的 IP"
 
-#: src/views/preference/AuthSettings.vue:20
+#: src/views/preference/AuthSettings.vue:24
 msgid "Banned Until"
 msgstr "禁止至"
 
@@ -300,11 +310,11 @@ msgstr "批次升級"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:70
 msgid "Belows are selected items that you want to batch modify"
-msgstr ""
+msgstr "以下是您要批次修改的選定項目"
 
 #: src/constants/errors/nginx.ts:2
 msgid "Block is nil"
-msgstr ""
+msgstr "區塊為 nil"
 
 #: src/views/system/About.vue:55
 msgid "Build with"
@@ -317,10 +327,6 @@ msgstr "CA Dir"
 #: src/views/preference/CertSettings.vue:16
 msgid "CADir"
 msgstr "CADir"
-
-#: src/views/preference/components/TOTP.vue:129
-msgid "Can't scan? Use text key binding"
-msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:246
@@ -338,14 +344,12 @@ msgid "Cancel"
 msgstr "取消"
 
 #: src/constants/errors/user.ts:10
-#, fuzzy
 msgid "Cannot change initial user password in demo mode"
-msgstr "在示範模式中禁止更改 root 密碼"
+msgstr "無法在示範模式下更改初始使用者密碼"
 
 #: src/constants/errors/user.ts:9
-#, fuzzy
 msgid "Cannot remove initial user"
-msgstr "系統初始使用者"
+msgstr "無法移除初始使用者"
 
 #: src/views/site/site_edit/RightSettings.vue:91
 #: src/views/site/site_list/columns.tsx:25
@@ -353,23 +357,20 @@ msgid "Category"
 msgstr "類別"
 
 #: src/views/preference/Preference.vue:158
-#, fuzzy
 msgid "Cert"
-msgstr "自動憑證"
+msgstr "證書"
 
 #: src/constants/errors/cert.ts:3
 msgid "Cert path is not under the nginx conf dir"
-msgstr "簽章路徑不在 Nginx 設定檔資料夾下"
+msgstr "證書路徑不在 Nginx 設定檔資料夾下"
 
 #: src/constants/errors/cert.ts:4
-#, fuzzy
 msgid "Certificate decode error"
-msgstr "同步憑證錯誤"
+msgstr "證書解碼錯誤"
 
 #: src/constants/errors/cert.ts:5
-#, fuzzy
 msgid "Certificate parse error"
-msgstr "此憑證已過期"
+msgstr "證書解析錯誤"
 
 #: src/views/preference/CertSettings.vue:24
 msgid "Certificate Renewal Interval"
@@ -418,27 +419,30 @@ msgstr "再次檢查"
 
 #: src/views/system/SelfCheck/tasks.ts:12
 msgid "Check if the nginx.conf includes the sites-enabled directory."
-msgstr ""
+msgstr "請確認 nginx.conf 是否有包含 sites-enabled 資料夾。"
 
 #: src/views/system/SelfCheck/tasks.ts:16
 msgid "Check if the nginx.conf includes the streams-enabled directory."
-msgstr ""
+msgstr "請確認 nginx.conf 是否有包含 streams-enabled 資料夾。"
 
 #: src/views/system/SelfCheck/tasks.ts:4
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory."
 msgstr ""
+"請確認 sites-available 和 sites-enabled 資料夾是否位於 Nginx 設定資料夾內。"
 
 #: src/views/system/SelfCheck/tasks.ts:8
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
 "nginx configuration directory."
 msgstr ""
+"請確認 streams-available 和 streams-enabled 資料夾是否位於 Nginx 設定資料夾"
+"內。"
 
 #: src/constants/errors/crypto.ts:3
 msgid "Cipher text is too short"
-msgstr ""
+msgstr "加密文本過短"
 
 #: src/language/constants.ts:13
 msgid "Cleaning environment variables"
@@ -454,6 +458,10 @@ msgstr "清除"
 #: src/views/notification/Notification.vue:13
 msgid "Cleared successfully"
 msgstr "清除成功"
+
+#: src/views/preference/components/TOTP.vue:110
+msgid "Click to copy"
+msgstr "點擊複製"
 
 #: src/views/preference/LogrotateSettings.vue:22
 msgid "Command"
@@ -502,12 +510,17 @@ msgstr "內容"
 
 #: src/components/SensitiveString/SensitiveString.vue:37
 #: src/components/StdDesign/StdDataDisplay/StdTableTransformer.tsx:150
+#: src/views/preference/components/RecoveryCodes.vue:121
 msgid "Copied"
 msgstr "已複製"
 
 #: src/components/SensitiveString/SensitiveString.vue:37
 msgid "Copy"
 msgstr "複製"
+
+#: src/views/preference/components/RecoveryCodes.vue:121
+msgid "Copy Codes"
+msgstr "恢復碼"
 
 #: src/views/system/Upgrade.vue:146
 msgid "Core Upgrade"
@@ -559,15 +572,13 @@ msgstr "認證"
 msgid "Credentials"
 msgstr "認證資訊"
 
-#: src/views/preference/components/TOTP.vue:77
-#, fuzzy
+#: src/views/preference/components/TOTP.vue:72
 msgid "Current account is enabled TOTP."
-msgstr "當前帳戶已啟用多因素身份驗證。"
+msgstr "當前帳戶已啟用 TOTP。"
 
-#: src/views/preference/components/TOTP.vue:74
-#, fuzzy
+#: src/views/preference/components/TOTP.vue:70
 msgid "Current account is not enabled TOTP."
-msgstr "當前帳戶未啟用多因素身份驗證。"
+msgstr "當前帳戶未啟用 TOTP。"
 
 #: src/views/system/Upgrade.vue:165
 msgid "Current Version"
@@ -579,11 +590,10 @@ msgid "Custom"
 msgstr "自訂"
 
 #: src/views/preference/BasicSettings.vue:34
-#, fuzzy
 msgid ""
 "Customize the name of local node to be displayed in the environment "
 "indicator."
-msgstr "自訂本地伺服器名稱以顯示在環境指示器中。"
+msgstr "自訂顯示在環境指示器中的本地節點名稱。"
 
 #: src/routes/index.ts:38 src/views/config/ConfigEditor.vue:134
 #: src/views/config/ConfigEditor.vue:97 src/views/config/ConfigList.vue:64
@@ -599,9 +609,8 @@ msgid "Days"
 msgstr "天"
 
 #: src/constants/errors/middleware.ts:3
-#, fuzzy
 msgid "Decryption failed"
-msgstr "描述"
+msgstr "解密失敗"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
@@ -618,14 +627,12 @@ msgid "Delete Permanently"
 msgstr "永久刪除"
 
 #: src/language/constants.ts:49
-#, fuzzy
 msgid "Delete Remote Site Error"
-msgstr "重命名遠端配置錯誤"
+msgstr "刪除遠端網站錯誤"
 
 #: src/language/constants.ts:48
-#, fuzzy
 msgid "Delete Remote Site Success"
-msgstr "重新命名遠端配置成功"
+msgstr "刪除遠端網站成功"
 
 #: src/views/site/site_list/SiteList.vue:67
 msgid "Delete site: %{site_name}"
@@ -680,15 +687,15 @@ msgstr "指令"
 
 #: src/constants/errors/nginx_log.ts:6
 msgid "Directive params is empty"
-msgstr ""
+msgstr "指令參數為空"
 
 #: src/constants/errors/nginx_log.ts:5
 msgid "Directive.Params neither access_log nor error_log"
-msgstr ""
+msgstr "指令參數既不是 access_log 也不是 error_log"
 
 #: src/constants/errors/nginx_log.ts:4
 msgid "DirectiveIdx out of range"
-msgstr ""
+msgstr "指令索引超出範圍"
 
 #: src/views/site/ngx_conf/directive/DirectiveEditor.vue:28
 msgid "Directives"
@@ -704,24 +711,20 @@ msgid "Disable auto-renewal failed for %{name}"
 msgstr "關閉 %{name} 自動續簽失敗"
 
 #: src/language/constants.ts:51
-#, fuzzy
 msgid "Disable Remote Site Error"
-msgstr "重命名遠端配置錯誤"
+msgstr "禁用遠端站点錯誤"
 
 #: src/language/constants.ts:50
-#, fuzzy
 msgid "Disable Remote Site Success"
-msgstr "重新命名遠端配置成功"
+msgstr "禁用遠端站点成功"
 
 #: src/components/Notification/config.ts:82
-#, fuzzy
 msgid "Disable site %{site} on %{node} error, response: %{resp}"
-msgstr "成功在 %{node_name} 啟用 %{conf_name}"
+msgstr "禁用網站 %{site} 在 %{node} 時發生錯誤，回應：%{resp}"
 
 #: src/components/Notification/config.ts:74
-#, fuzzy
 msgid "Disable Site %{site} on %{node} successfully"
-msgstr "成功在 %{node_name} 啟用 %{conf_name}"
+msgstr "成功禁用 %{node} 中的站点 %{site}"
 
 #: src/views/environment/envColumns.tsx:61
 #: src/views/environment/envColumns.tsx:79
@@ -799,10 +802,9 @@ msgstr "您要移除這個 Upstream 嗎？"
 
 #: src/views/site/ngx_conf/directive/DirectiveAdd.vue:105
 #: src/views/site/ngx_conf/directive/DirectiveDocuments.vue:15
-#, fuzzy
 msgid "Document"
 msgid_plural "Documents"
-msgstr[0] "API 文檔"
+msgstr[0] "档案"
 
 #: src/views/certificate/WildcardCertificate.vue:68
 msgid "Domain"
@@ -903,7 +905,7 @@ msgstr "在 %{node_name} 啟用 %{conf_name} 失敗"
 msgid "Enable %{conf_name} in %{node_name} successfully"
 msgstr "成功在 %{node_name} 啟用 %{conf_name}"
 
-#: src/views/preference/components/TOTP.vue:38
+#: src/views/preference/components/TOTP.vue:45
 msgid "Enable 2FA successfully"
 msgstr "啟用多因素身份驗證成功"
 
@@ -916,24 +918,20 @@ msgid "Enable failed"
 msgstr "啟用失敗"
 
 #: src/language/constants.ts:53
-#, fuzzy
 msgid "Enable Remote Site Error"
-msgstr "重命名遠端配置錯誤"
+msgstr "啟用遠端站點錯誤"
 
 #: src/language/constants.ts:52
-#, fuzzy
 msgid "Enable Remote Site Success"
-msgstr "重新命名遠端配置成功"
+msgstr "啟用遠端站點成功"
 
 #: src/components/Notification/config.ts:69
-#, fuzzy
 msgid "Enable site %{site} on %{node} error, response: %{resp}"
-msgstr "成功在 %{node_name} 啟用 %{conf_name}"
+msgstr "啟用站點 %{site} 在 %{node} 時發生錯誤，回應：%{resp}"
 
 #: src/components/Notification/config.ts:61
-#, fuzzy
 msgid "Enable Site %{site} on %{node} successfully"
-msgstr "成功在 %{node_name} 啟用 %{conf_name}"
+msgstr "成功啟用站點 %{site} 在 %{node}"
 
 #: src/views/stream/components/Deploy.vue:41
 msgid "Enable successfully"
@@ -943,10 +941,9 @@ msgstr "啟用成功"
 msgid "Enable TLS"
 msgstr "啟用 TLS"
 
-#: src/views/preference/components/TOTP.vue:103
-#, fuzzy
+#: src/views/preference/components/TOTP.vue:81
 msgid "Enable TOTP"
-msgstr "啟用 TLS"
+msgstr "啟用 TOTP"
 
 #: src/views/environment/envColumns.tsx:70
 #: src/views/environment/envColumns.tsx:76
@@ -1013,9 +1010,8 @@ msgid "Fail to obtain certificate"
 msgstr "獲取憑證失敗"
 
 #: src/constants/errors/self_check.ts:9
-#, fuzzy
 msgid "Failed to create backup"
-msgstr "啟用 %{msg} 失敗"
+msgstr "創建備份失敗"
 
 #: src/views/site/site_edit/RightSettings.vue:45
 #: src/views/site/site_list/SiteList.vue:60
@@ -1037,7 +1033,7 @@ msgstr "取得憑證資訊失敗"
 
 #: src/constants/errors/self_check.ts:4
 msgid "Failed to parse nginx.conf"
-msgstr ""
+msgstr "解析 nginx.conf 失敗"
 
 #: src/constants/errors/self_check.ts:3
 msgid "Failed to read nginx.conf"
@@ -1068,16 +1064,20 @@ msgstr "篩選"
 msgid "Finished"
 msgstr "完成"
 
+#: src/views/preference/components/RecoveryCodes.vue:70
+msgid "First View"
+msgstr "首次檢視"
+
 #: src/views/preference/components/AddPasskey.vue:71
 msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
-msgstr ""
+msgstr "請按照對話框中的指示完成通行密鑰的註冊流程。"
 
 #: src/views/preference/BasicSettings.vue:59
 #: src/views/preference/BasicSettings.vue:71
 msgid "For Chinese user"
-msgstr ""
+msgstr "針對中國大陆用戶"
 
 #: src/views/preference/BasicSettings.vue:47
 msgid "For Chinese user: https://mirror.ghproxy.com/"
@@ -1102,6 +1102,19 @@ msgstr "普通憑證"
 #: src/components/StdDesign/StdDataEntry/components/StdPassword.vue:55
 msgid "Generate"
 msgstr "產生"
+
+#: src/views/preference/components/RecoveryCodes.vue:138
+#: src/views/preference/components/RecoveryCodes.vue:161
+msgid "Generate New Recovery Codes"
+msgstr "生成新的復原代碼"
+
+#: src/views/preference/components/RecoveryCodes.vue:161
+msgid "Generate Recovery Codes"
+msgstr "生成復原代碼"
+
+#: src/views/preference/components/RecoveryCodes.vue:32
+msgid "Generate recovery codes successfully"
+msgstr "成功生成復原代碼"
 
 #: src/language/constants.ts:7
 msgid "Generating private key for registering account"
@@ -1151,7 +1164,7 @@ msgstr "ICP 編號"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "如果留空，將使用默認的 CA Dir。"
 
-#: src/views/preference/AuthSettings.vue:117
+#: src/views/preference/AuthSettings.vue:145
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -1159,15 +1172,9 @@ msgstr ""
 "如果來自某個 IP 的登錄失敗次數在禁止閾值分鐘內達到最大嘗試次數，該 IP 將被禁"
 "止一段時間。"
 
-#: src/views/preference/components/TOTP.vue:89
-msgid ""
-"If you lose your mobile phone, you can use the recovery code to reset your "
-"2FA."
-msgstr "如果您丟失了手機，可以使用恢復碼重置您的多重因素驗證驗證。"
-
 #: src/views/preference/components/AddPasskey.vue:70
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
-msgstr ""
+msgstr "如果您的瀏覽器支援 WebAuthn 通行密鑰，將會顯示一個對話框。"
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:108
 msgid ""
@@ -1196,12 +1203,11 @@ msgstr "初始化核心升級程式錯誤"
 msgid "Initialing core upgrader"
 msgstr "正在初始化核心升級程式"
 
-#: src/views/preference/components/TOTP.vue:136
+#: src/views/preference/components/TOTP.vue:119
 msgid "Input the code from the app:"
 msgstr "請輸入應用程式中的代碼："
 
-#: src/components/TwoFA/Authorization.vue:82
-#: src/views/preference/components/TOTP.vue:149
+#: src/components/TwoFA/Authorization.vue:72
 msgid "Input the recovery code:"
 msgstr "輸入恢復碼："
 
@@ -1231,25 +1237,22 @@ msgid "Invalid folder name"
 msgstr "無效的資料夾名稱"
 
 #: src/constants/errors/user.ts:4
-#, fuzzy
 msgid "Invalid otp code"
-msgstr "無效的多重因素驗證或恢復碼"
+msgstr "無效的 OTP 代碼"
 
 #: src/components/TwoFA/use2FAModal.ts:61
 msgid "Invalid passcode or recovery code"
 msgstr "無效的密碼或恢復碼"
 
 #: src/constants/errors/user.ts:5
-#, fuzzy
 msgid "Invalid recovery code"
-msgstr "無效的多重因素驗證或恢復碼"
+msgstr "無效的恢復碼"
 
 #: src/constants/errors/middleware.ts:2
-#, fuzzy
 msgid "Invalid request format"
-msgstr "無效的多重因素驗證或恢復碼"
+msgstr "無效的請求格式"
 
-#: src/views/preference/AuthSettings.vue:14
+#: src/views/preference/AuthSettings.vue:18
 msgid "IP"
 msgstr "IP"
 
@@ -1273,6 +1276,13 @@ msgstr "發行者：%{issuer}"
 msgid "Jwt Secret"
 msgstr "Jwt Secret"
 
+#: src/views/preference/components/RecoveryCodes.vue:74
+msgid ""
+"Keep your recovery codes as safe as your password. We recommend saving them "
+"with a password manager."
+msgstr ""
+"請將您的復原代碼與密碼同樣妥善保管。我們建議使用密碼管理工具來儲存它們。"
+
 #: src/views/certificate/CertificateList/certColumns.tsx:62
 #: src/views/site/cert/components/AutoCertStepOne.vue:77
 msgid "Key Type"
@@ -1283,27 +1293,24 @@ msgid "Last checked at"
 msgstr "上次檢查時間"
 
 #: src/views/preference/components/Passkey.vue:96
-#, fuzzy
 msgid "Last used at"
-msgstr "上次檢查時間"
+msgstr "最後使用時間"
 
 #: src/views/user/userColumns.tsx:25
 msgid "Leave blank for no change"
 msgstr "留空表示不修改"
 
-#: src/views/preference/OpenAISettings.vue:53
+#: src/views/preference/OpenAISettings.vue:41
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "預設留空：https://api.openai.com/"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:79
-#, fuzzy
 msgid "Leave blank if do not want to modify"
 msgstr "留空表示不修改"
 
 #: src/views/certificate/ACMEUser.vue:59
-#, fuzzy
 msgid "Leave blank if you don't need this."
-msgstr "留空表示不修改"
+msgstr "留空表示不需要此項目。"
 
 #: src/views/certificate/CertificateEditor.vue:220
 #: src/views/certificate/CertificateEditor.vue:233
@@ -1356,7 +1363,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日誌"
 
-#: src/routes/index.ts:318 src/views/other/Login.vue:222
+#: src/routes/index.ts:318 src/views/other/Login.vue:223
 msgid "Login"
 msgstr "登入"
 
@@ -1414,7 +1421,7 @@ msgstr "管理使用者"
 msgid "Managed Certificate"
 msgstr "受管理的憑證"
 
-#: src/views/preference/AuthSettings.vue:107
+#: src/views/preference/AuthSettings.vue:135
 msgid "Max Attempts"
 msgstr "最大嘗試次數"
 
@@ -1431,7 +1438,7 @@ msgstr "記憶體與儲存"
 msgid "Minutes"
 msgstr "分鐘"
 
-#: src/views/preference/OpenAISettings.vue:32
+#: src/views/preference/OpenAISettings.vue:20
 msgid "Model"
 msgstr "模型"
 
@@ -1521,27 +1528,27 @@ msgstr "Nginx 存取日誌路徑"
 
 #: src/views/system/SelfCheck/tasks.ts:11
 msgid "Nginx Conf Include Sites Enabled"
-msgstr ""
+msgstr "Nginx 配置檔包含 sites-enabled"
 
 #: src/views/system/SelfCheck/tasks.ts:15
 msgid "Nginx Conf Include Streams Enabled"
-msgstr ""
+msgstr "Nginx 配置檔包含 streams-enabled"
 
 #: src/constants/errors/self_check.ts:5
 msgid "Nginx conf no http block"
-msgstr ""
+msgstr "Nginx 配置檔中沒有 http 區塊"
 
 #: src/constants/errors/self_check.ts:7
 msgid "Nginx conf no stream block"
-msgstr ""
+msgstr "Nginx 配置檔中沒有 stream 區塊"
 
 #: src/constants/errors/self_check.ts:6
 msgid "Nginx conf not include sites-enabled"
-msgstr ""
+msgstr "Nginx 配置檔未包含 sites-enabled"
 
 #: src/constants/errors/self_check.ts:8
 msgid "Nginx conf not include stream-enabled"
-msgstr ""
+msgstr "Nginx 配置檔未包含 stream-enabled"
 
 #: src/views/site/site_edit/SiteEdit.vue:223
 #: src/views/stream/StreamEdit.vue:207
@@ -1549,9 +1556,8 @@ msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 設定解析錯誤"
 
 #: src/views/preference/NginxSettings.vue:15
-#, fuzzy
 msgid "Nginx Configurations Directory"
-msgstr "Nginx 設定解析錯誤"
+msgstr "Nginx 配置目錄"
 
 #: src/components/NginxControl/NginxControl.vue:64
 msgid "Nginx Control"
@@ -1571,25 +1577,23 @@ msgstr "Nginx 日誌"
 
 #: src/views/preference/NginxSettings.vue:18
 msgid "Nginx Log Directory Whitelist"
-msgstr ""
+msgstr "Nginx 日誌目錄白名單"
 
 #: src/views/preference/NginxSettings.vue:27
-#, fuzzy
 msgid "Nginx PID Path"
-msgstr "Nginx 錯誤日誌路徑"
+msgstr "Nginx PID 路徑"
 
 #: src/views/preference/NginxSettings.vue:30
 msgid "Nginx Reload Command"
-msgstr ""
+msgstr "Nginx 重新載入指令"
 
 #: src/components/NginxControl/NginxControl.vue:26
 msgid "Nginx reloaded successfully"
 msgstr "Nginx 重新載入成功"
 
 #: src/views/preference/NginxSettings.vue:33
-#, fuzzy
 msgid "Nginx Restart Command"
-msgstr "終端機啟動指令"
+msgstr "Nginx 重啟指令"
 
 #: src/components/NginxControl/NginxControl.vue:40
 msgid "Nginx restarted successfully"
@@ -1603,7 +1607,7 @@ msgstr "Nginx 重啟成功"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:524
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:538
 #: src/views/notification/Notification.vue:37
-#: src/views/preference/AuthSettings.vue:136
+#: src/views/preference/AuthSettings.vue:164
 #: src/views/preference/CertSettings.vue:70
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:88
@@ -1613,13 +1617,12 @@ msgid "No"
 msgstr "取消"
 
 #: src/views/preference/BasicSettings.vue:30
-#, fuzzy
 msgid "Node name"
-msgstr "新名稱"
+msgstr "節點名稱"
 
 #: src/views/preference/BasicSettings.vue:23
 msgid "Node Secret"
-msgstr "Node Secret"
+msgstr "節點密鑰"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:91
 msgid "Not After"
@@ -1642,7 +1645,7 @@ msgstr "備註"
 msgid ""
 "Note, if the configuration file include other configurations or "
 "certificates, please synchronize them to the remote nodes in advance."
-msgstr ""
+msgstr "請注意，如果配置檔包含其他配置或憑證，請提前將它們同步到遠端節點。"
 
 #: src/views/notification/Notification.vue:28
 msgid "Notification"
@@ -1715,9 +1718,13 @@ msgstr "線上"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:112 src/views/other/Login.vue:231
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:232
 msgid "Or"
 msgstr "或"
+
+#: src/views/preference/components/TOTP.vue:112
+msgid "Or enter the secret: %{secret}"
+msgstr "或輸入密鑰：%{secret}"
 
 #: src/views/config/components/Rename.vue:68
 msgid "Original name"
@@ -1732,9 +1739,8 @@ msgid "OS:"
 msgstr "作業系統:"
 
 #: src/constants/errors/user.ts:8
-#, fuzzy
 msgid "Otp or recovery code empty"
-msgstr "使用恢復碼"
+msgstr "OTP 或復原代碼為空"
 
 #: src/views/config/ConfigEditor.vue:294
 #: src/views/stream/components/Deploy.vue:84
@@ -1760,6 +1766,8 @@ msgid ""
 "facial recognition, a device password, or a PIN. They can be used as a "
 "password replacement or as a 2FA method."
 msgstr ""
+"通行密鑰是 WebAuthn 認證，通過觸控、面部辨識、裝置密碼或 PIN 碼來驗證您的身"
+"份。它們可以用作密碼替代品或作為雙重身份驗證 (2FA) 方法。"
 
 #: src/views/other/Login.vue:183 src/views/user/userColumns.tsx:18
 msgid "Password"
@@ -1770,9 +1778,8 @@ msgid "Password (*)"
 msgstr "密碼 (*)"
 
 #: src/constants/errors/user.ts:2
-#, fuzzy
 msgid "Password incorrect"
-msgstr "使用者名稱或密碼不正確"
+msgstr "密碼錯誤"
 
 #: src/views/other/Install.vue:48
 msgid "Password length cannot exceed 20 characters"
@@ -1786,11 +1793,11 @@ msgstr "路徑"
 
 #: src/constants/errors/cert.ts:7 src/constants/errors/config.ts:2
 msgid "Path: {0} is not under the nginx conf dir: {1}"
-msgstr ""
+msgstr "路徑：{0} 不在 Nginx 配置目錄：{1} 下"
 
 #: src/constants/errors/cert.ts:6
 msgid "Payload resource is nil"
-msgstr ""
+msgstr "有效載荷資源為空"
 
 #: src/views/environment/BatchUpgrader.vue:232
 msgid "Perform"
@@ -1806,18 +1813,17 @@ msgstr "正在執行核心升級"
 
 #: src/constants/errors/crypto.ts:2
 msgid "Plain text is empty"
-msgstr ""
+msgstr "明文為空"
 
 #: src/views/preference/components/AddPasskey.vue:69
 msgid ""
 "Please enter a name for the passkey you wish to create and click the OK "
 "button below."
-msgstr ""
+msgstr "請輸入您希望創建的通行密鑰名稱，並點擊下面的確定按鈕。"
 
-#: src/components/TwoFA/Authorization.vue:70
-#, fuzzy
+#: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
-msgstr "請輸入多重因素驗證碼："
+msgstr "請輸入 OTP 代碼："
 
 #: src/views/certificate/DNSCredential.vue:53
 msgid ""
@@ -1837,6 +1843,12 @@ msgstr ""
 "請先在「憑證」 > 「DNS 認證」中新增認證，然後選擇以下認證之一以請求 DNS 供應"
 "商的 API。"
 
+#: src/language/constants.ts:58
+msgid ""
+"Please generate new recovery codes in the preferences immediately to prevent "
+"lockout."
+msgstr "請立即在偏好設定中產生新的恢復碼，以免無法訪問您的賬戶。"
+
 #: src/views/config/components/Rename.vue:63
 #: src/views/config/ConfigEditor.vue:249
 msgid "Please input a filename"
@@ -1853,11 +1865,10 @@ msgid ""
 msgstr "請輸入名稱，這將作為新設定的檔名！"
 
 #: src/views/site/site_list/SiteDuplicate.vue:33
-#, fuzzy
 msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration."
-msgstr "請輸入名稱，這將作為新設定的檔名！"
+msgstr "請輸入名稱，此名稱將用作新配置的檔案名稱。"
 
 #: src/views/other/Install.vue:32
 msgid "Please input your E-mail!"
@@ -1877,9 +1888,8 @@ msgid ""
 msgstr "請注意，以下時間配置單位均為秒。"
 
 #: src/views/environment/Environment.vue:58
-#, fuzzy
 msgid "Please select at least one node to upgrade"
-msgstr "請至少選擇一個節點！"
+msgstr "請至少選擇一個節點進行升級"
 
 #: src/views/stream/components/StreamDuplicate.vue:45
 msgid "Please select at least one node!"
@@ -1892,10 +1902,8 @@ msgstr "請至少選擇一個節點！"
 #: src/components/Notification/config.ts:67
 #: src/components/Notification/config.ts:80
 #: src/components/Notification/config.ts:93
-#, fuzzy
 msgid "Please upgrade the remote Nginx UI to the latest version"
-msgstr ""
-"同步配置 %{cert_name} 到 %{env_name} 失敗，請將遠程 Nginx UI 升級到最新版本"
+msgstr "請將遠端 Nginx UI 升級至最新版本"
 
 #: src/views/environment/BatchUpgrader.vue:167
 #: src/views/environment/BatchUpgrader.vue:220 src/views/system/Upgrade.vue:194
@@ -1928,13 +1936,12 @@ msgid "Provider"
 msgstr "供應商"
 
 #: src/views/certificate/ACMEUser.vue:51
-#, fuzzy
 msgid "Proxy"
-msgstr "API 代理"
+msgstr "代理伺服器"
 
 #: src/views/preference/BasicSettings.vue:63
 msgid "Public Security Number"
-msgstr ""
+msgstr "公安編號"
 
 #: src/views/dashboard/ServerAnalytic.vue:37
 #: src/views/dashboard/ServerAnalytic.vue:383
@@ -1948,7 +1955,7 @@ msgstr "接收"
 
 #: src/views/system/SelfCheck/SelfCheck.vue:47
 msgid "Recheck"
-msgstr ""
+msgstr "重新檢查"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:43
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:533
@@ -1959,18 +1966,20 @@ msgstr "恢復"
 msgid "Recovered Successfully"
 msgstr "恢復成功"
 
-#: src/components/TwoFA/Authorization.vue:89
-#: src/views/preference/components/TOTP.vue:156
+#: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
 msgstr "恢復"
 
-#: src/views/preference/components/TOTP.vue:82
-msgid "Recovery Code"
-msgstr "恢復碼"
+#: src/views/preference/components/RecoveryCodes.vue:68
+msgid "Recovery Codes"
+msgstr "復原代碼"
 
-#: src/views/preference/components/TOTP.vue:91
-msgid "Recovery Code:"
-msgstr "恢復碼："
+#: src/views/preference/components/RecoveryCodes.vue:73
+msgid ""
+"Recovery codes are used to access your account when you lose access to your "
+"2FA device. Each code can only be used once."
+msgstr ""
+"復原代碼在您無法使用 2FA 裝置時，用於訪問您的帳戶。每個代碼僅能使用一次。"
 
 #: src/views/preference/CertSettings.vue:37
 msgid "Recursive Nameservers"
@@ -1988,21 +1997,19 @@ msgstr "註冊"
 msgid ""
 "Register a user or use this account to issue a certificate through an HTTP "
 "proxy."
-msgstr ""
+msgstr "註冊一個使用者或使用此帳戶通過 HTTP 代理發行憑證。"
 
 #: src/views/certificate/ACMEUser.vue:106
 msgid "Register failed"
 msgstr "註冊失敗"
 
 #: src/views/certificate/ACMEUser.vue:77
-#, fuzzy
 msgid "Register On Startup"
-msgstr "註冊狀態"
+msgstr "啓動時註冊"
 
 #: src/views/preference/components/AddPasskey.vue:25
-#, fuzzy
 msgid "Register passkey successfully"
-msgstr "註冊成功"
+msgstr "通行密鑰註冊成功"
 
 #: src/views/certificate/ACMEUser.vue:104
 msgid "Register successfully"
@@ -2037,21 +2044,19 @@ msgstr "重新載入中"
 msgid "Reloading nginx"
 msgstr "正在重新載入 Nginx"
 
-#: src/views/preference/AuthSettings.vue:141
+#: src/views/preference/AuthSettings.vue:169
 msgid "Remove"
 msgstr "移除"
 
 #: src/components/Notification/config.ts:56
-#, fuzzy
 msgid "Remove site %{site} from %{node} error, response: %{resp}"
-msgstr "刪除網站：%{site_name}"
+msgstr "從 %{node} 移除站點 %{site} 時發生錯誤，回應：%{resp}"
 
 #: src/components/Notification/config.ts:48
-#, fuzzy
 msgid "Remove Site %{site} from %{node} successfully"
-msgstr "成功複製 %{conf_name} 到 %{node_name}"
+msgstr "成功從 %{node} 移除站點 %{site}"
 
-#: src/views/preference/AuthSettings.vue:47
+#: src/views/preference/AuthSettings.vue:51
 #: src/views/preference/components/Passkey.vue:46
 msgid "Remove successfully"
 msgstr "移除成功"
@@ -2087,24 +2092,21 @@ msgid "Rename Remote Config Success"
 msgstr "重新命名遠端配置成功"
 
 #: src/language/constants.ts:55
-#, fuzzy
 msgid "Rename Remote Site Error"
-msgstr "重命名遠端配置錯誤"
+msgstr "重命名遠端遠端站點時發生錯誤"
 
 #: src/language/constants.ts:54
-#, fuzzy
 msgid "Rename Remote Site Success"
-msgstr "重新命名遠端配置成功"
+msgstr "重新命名遠端站點成功"
 
 #: src/components/Notification/config.ts:95
-#, fuzzy
 msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
-msgstr "成功將 %{env_name} 上的 %{orig_path} 重命名為 %{new_path}"
+msgstr ""
+"將站點 %{site} 重新命名為 %{new_site} 於 %{node} 時發生錯誤，回應：%{resp}"
 
 #: src/components/Notification/config.ts:87
-#, fuzzy
 msgid "Rename Site %{site} to %{new_site} on %{node} successfully"
-msgstr "成功將 %{env_name} 上的 %{orig_path} 重命名為 %{new_path}"
+msgstr "成功將站點 %{site} 重新命名為 %{new_site} 於 %{node}"
 
 #: src/views/config/components/Rename.vue:42
 msgid "Rename successfully"
@@ -2112,9 +2114,8 @@ msgstr "重命名成功"
 
 #: src/views/config/components/ConfigName.vue:30
 #: src/views/site/site_edit/components/ConfigName.vue:27
-#, fuzzy
 msgid "Renamed successfully"
-msgstr "重命名成功"
+msgstr "重新命名成功"
 
 #: src/views/certificate/RenewCert.vue:45
 #: src/views/certificate/RenewCert.vue:49
@@ -2136,7 +2137,7 @@ msgstr "更新成功"
 
 #: src/constants/errors/crypto.ts:4
 msgid "Request timeout"
-msgstr ""
+msgstr "請求逾時"
 
 #: src/language/constants.ts:32
 msgid "Requested with wrong parameters"
@@ -2146,7 +2147,7 @@ msgstr "請求參數錯誤"
 msgid "Reset"
 msgstr "重設"
 
-#: src/views/preference/components/TOTP.vue:111
+#: src/views/preference/components/TOTP.vue:93
 msgid "Reset 2FA"
 msgstr "重置多重因素驗證"
 
@@ -2158,17 +2159,17 @@ msgstr "重新啟動"
 msgid "Restarting"
 msgstr "正在重新啟動"
 
-#: src/views/preference/AuthSettings.vue:79
+#: src/views/preference/AuthSettings.vue:107
 msgid "RP Display Name"
-msgstr ""
+msgstr "RP 顯示名稱"
 
-#: src/views/preference/AuthSettings.vue:85
+#: src/views/preference/AuthSettings.vue:113
 msgid "RP Origins"
-msgstr ""
+msgstr "RP 源站"
 
-#: src/views/preference/AuthSettings.vue:73
+#: src/views/preference/AuthSettings.vue:101
 msgid "RPID"
-msgstr ""
+msgstr "RPID"
 
 #: src/views/preference/BasicSettings.vue:17
 msgid "Run Mode"
@@ -2204,24 +2205,20 @@ msgid "Save error %{msg}"
 msgstr "儲存錯誤 %{msg}"
 
 #: src/language/constants.ts:47
-#, fuzzy
 msgid "Save Remote Site Error"
-msgstr "重命名遠端配置錯誤"
+msgstr "儲存遠端站點時發生錯誤"
 
 #: src/language/constants.ts:46
-#, fuzzy
 msgid "Save Remote Site Success"
-msgstr "重新命名遠端配置成功"
+msgstr "儲存遠端站點成功"
 
 #: src/components/Notification/config.ts:43
-#, fuzzy
 msgid "Save site %{site} to %{node} error, response: %{resp}"
-msgstr "同步憑證 %{cert_name} 到 %{env_name} 失敗，回應：%{resp}"
+msgstr "儲存站點 %{site} 至 %{node} 時發生錯誤，回應：%{resp}"
 
 #: src/components/Notification/config.ts:35
-#, fuzzy
 msgid "Save Site %{site} to %{node} successfully"
-msgstr "成功複製 %{conf_name} 到 %{node_name}"
+msgstr "成功將站點 %{site} 儲存至 %{node}"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
@@ -2237,7 +2234,7 @@ msgstr "儲存成功"
 msgid "Saved successfully"
 msgstr "儲存成功"
 
-#: src/views/preference/components/TOTP.vue:72
+#: src/views/preference/components/TOTP.vue:69
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "用手機掃描二維碼將賬戶添加到應用程序中。"
 
@@ -2245,9 +2242,9 @@ msgstr "用手機掃描二維碼將賬戶添加到應用程序中。"
 msgid "SDK"
 msgstr "SDK"
 
-#: src/views/preference/components/TOTP.vue:128
+#: src/views/preference/components/TOTP.vue:109
 msgid "Secret has been copied"
-msgstr ""
+msgstr "密鑰已複製"
 
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:189
 msgid "Selector"
@@ -2255,7 +2252,7 @@ msgstr "選擇器"
 
 #: src/routes/index.ts:283 src/views/system/SelfCheck/SelfCheck.vue:42
 msgid "Self Check"
-msgstr ""
+msgstr "自我檢測"
 
 #: src/views/dashboard/ServerAnalytic.vue:344
 #: src/views/dashboard/ServerAnalytic.vue:35
@@ -2276,12 +2273,11 @@ msgstr "必須提供 server_name 參數"
 
 #: src/constants/errors/nginx_log.ts:3
 msgid "ServerIdx out of range"
-msgstr ""
+msgstr "伺服器索引超出範圍"
 
 #: src/constants/errors/user.ts:11
-#, fuzzy
 msgid "Session not found"
-msgstr "找不到檔案"
+msgstr "找不到工作階段"
 
 #: src/views/preference/CertSettings.vue:33
 msgid ""
@@ -2303,23 +2299,27 @@ msgstr "使用 HTTP01 挑戰提供者"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
+"Settings.NginxLogSettings.AccessLogPath 為空，請參考 https://nginxui.com/"
+"guide/config-nginx.html 了解更多資訊"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
+"Settings.NginxLogSettings.ErrorLogPath 為空，請參考 https://nginxui.com/"
+"guide/config-nginx.html 了解更多資訊"
 
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Show"
 msgstr "顯示"
 
-#: src/views/other/Login.vue:240
+#: src/views/other/Login.vue:241
 msgid "Sign in with a passkey"
-msgstr ""
+msgstr "使用通行密鑰登入"
 
 #: src/views/site/ngx_conf/directive/DirectiveAdd.vue:65
 msgid "Single Directive"
@@ -2327,26 +2327,23 @@ msgstr "單一指令"
 
 #: src/routes/index.ts:71 src/views/site/site_category/SiteCategory.vue:10
 msgid "Site Categories"
-msgstr ""
+msgstr "網站類別"
 
 #: src/constants/errors/site.ts:4
-#, fuzzy
 msgid "Site is enabled"
-msgstr "自動憑證"
+msgstr "站點已啓用"
 
 #: src/routes/index.ts:224
 msgid "Site Logs"
 msgstr "網站日誌"
 
 #: src/constants/errors/site.ts:2
-#, fuzzy
 msgid "Site not found"
-msgstr "找不到檔案"
+msgstr "站點未找到"
 
 #: src/views/system/SelfCheck/tasks.ts:3
-#, fuzzy
 msgid "Sites Directory"
-msgstr "目錄"
+msgstr "Sites 資料夾"
 
 #: src/routes/index.ts:56
 msgid "Sites List"
@@ -2354,11 +2351,11 @@ msgstr "網站列表"
 
 #: src/constants/errors/self_check.ts:10
 msgid "Sites-available directory not exist"
-msgstr ""
+msgstr "sites-available 資料夾不存在"
 
 #: src/constants/errors/self_check.ts:11
 msgid "Sites-enabled directory not exist"
-msgstr ""
+msgstr "sites-enabled 資料夾不存在"
 
 #: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
@@ -2403,18 +2400,16 @@ msgid "Storage"
 msgstr "儲存空間"
 
 #: src/views/system/SelfCheck/tasks.ts:7
-#, fuzzy
 msgid "Streams Directory"
-msgstr "目錄"
+msgstr "Streams 資料夾"
 
 #: src/constants/errors/self_check.ts:12
 msgid "Streams-available directory not exist"
-msgstr ""
+msgstr "streams-available 資料夾不存在"
 
 #: src/constants/errors/self_check.ts:13
-#, fuzzy
 msgid "Streams-enabled directory not exist"
-msgstr "目錄"
+msgstr "streams-enabled 資料夾不存在"
 
 #: src/constants/index.ts:19 src/views/notification/notificationColumns.tsx:36
 msgid "Success"
@@ -2427,6 +2422,9 @@ msgid ""
 "link to write the corresponding configuration file: https://nginxui.com/"
 "guide/nginx-proxy-example.html"
 msgstr ""
+"支援通過 WebSocket 協議與後端進行通信。如果您的 Nginx UI 是通過 Nginx 反向代"
+"理使用，請參考此鏈接編寫對應的配置文件： https://nginxui.com/guide/nginx-"
+"proxy-example.html"
 
 #: src/views/dashboard/ServerAnalytic.vue:236
 #: src/views/dashboard/ServerAnalytic.vue:237
@@ -2489,15 +2487,13 @@ msgid "Sync Config Success"
 msgstr "同步配置成功"
 
 #: src/views/site/site_category/SiteCategory.vue:17
-#, fuzzy
 msgid "Sync Nodes"
-msgstr "同步到"
+msgstr "同步節點"
 
 #: src/views/site/site_edit/RightSettings.vue:113
 #: src/views/site/site_edit/RightSettings.vue:126
-#, fuzzy
 msgid "Sync strategy"
-msgstr "同步憑證"
+msgstr "同步策略"
 
 #: src/views/certificate/CertificateEditor.vue:204
 msgid "Sync to"
@@ -2505,7 +2501,7 @@ msgstr "同步到"
 
 #: src/views/site/site_edit/RightSettings.vue:110
 msgid "Synchronization"
-msgstr ""
+msgstr "同步"
 
 #: src/routes/index.ts:275
 msgid "System"
@@ -2520,9 +2516,8 @@ msgid "Target"
 msgstr "目標"
 
 #: src/constants/errors/self_check.ts:2
-#, fuzzy
 msgid "Task not found"
-msgstr "找不到檔案"
+msgstr "找不到任務"
 
 #: src/routes/index.ts:194 src/views/terminal/Terminal.vue:114
 msgid "Terminal"
@@ -2546,11 +2541,10 @@ msgid "The filename cannot contain the following characters: %{c}"
 msgstr "檔名不能包含以下字元: %{c}"
 
 #: src/views/preference/BasicSettings.vue:54
-#, fuzzy
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
-msgstr "模型名稱應僅包含字母、Unicode、數字、連字號、破折號和點。"
+msgstr "ICP 編號僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
 
 #: src/views/certificate/CertificateEditor.vue:214
 msgid "The input is not a SSL Certificate"
@@ -2563,21 +2557,19 @@ msgstr "輸入的不是 SSL 憑證金鑰"
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
 "The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
-msgstr ""
+msgstr "日誌路徑不在 settings.NginxSettings.LogDirWhiteList 設定中的路徑範圍內"
 
-#: src/views/preference/OpenAISettings.vue:35
-#, fuzzy
+#: src/views/preference/OpenAISettings.vue:23
 msgid ""
 "The model name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
-msgstr "模型名稱應僅包含字母、Unicode、數字、連字號、破折號和點。"
+msgstr "模型名稱僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
 
 #: src/views/preference/BasicSettings.vue:33
-#, fuzzy
 msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
-msgstr "模型名稱應僅包含字母、Unicode、數字、連字號、破折號和點。"
+msgstr "節點名稱僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
 
 #: src/views/certificate/CertificateEditor.vue:179
 msgid "The path exists, but the file is not a certificate"
@@ -2588,16 +2580,10 @@ msgid "The path exists, but the file is not a private key"
 msgstr "路徑存在，但檔案不是金鑰"
 
 #: src/views/preference/BasicSettings.vue:66
-#, fuzzy
 msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
 "hyphens, dashes, colons, and dots."
-msgstr "伺服器名稱應僅包含字母、Unicode、數字、連字符、破折號和點。"
-
-#: src/views/preference/components/TOTP.vue:90
-msgid ""
-"The recovery code is only displayed once, please save it in a safe place."
-msgstr "恢復碼僅顯示一次，請將其保存在安全的地方。"
+msgstr "公安編號僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
 
 #: src/views/dashboard/Environments.vue:148
 msgid ""
@@ -2619,14 +2605,23 @@ msgstr "當前配置中的 server_name 必須是您需要獲取憑證的網域�
 msgid "The url is invalid"
 msgstr "網址無效"
 
-#: src/views/preference/OpenAISettings.vue:47
-#: src/views/preference/OpenAISettings.vue:60
+#: src/views/preference/OpenAISettings.vue:35
+#: src/views/preference/OpenAISettings.vue:49
 msgid "The url is invalid."
 msgstr "網址無效。"
 
 #: src/language/constants.ts:2
 msgid "The username or password is incorrect"
 msgstr "使用者名稱或密碼不正確"
+
+#: src/views/preference/components/RecoveryCodes.vue:104
+msgid ""
+"These codes are the last resort for accessing your account in case you lose "
+"your password and second factors. If you cannot find these codes, you will "
+"lose access to your account."
+msgstr ""
+"這些代碼是您在丟失密碼和第二重驗證因素時，訪問帳戶的最後手段。如果您找不到這"
+"些代碼，您將無法再訪問您的帳戶。"
 
 #: src/views/certificate/CertificateEditor.vue:102
 msgid "This Auto Cert item is invalid, please remove it."
@@ -2643,14 +2638,12 @@ msgid "This field is required"
 msgstr "此字段為必填項"
 
 #: src/constants/form_errors.ts:3
-#, fuzzy
 msgid "This field should be a valid email address"
-msgstr "此欄位不應為空"
+msgstr "此欄位應為有效的電子郵件地址"
 
 #: src/constants/form_errors.ts:5
-#, fuzzy
 msgid "This field should be a valid hostname"
-msgstr "此欄位不應為空"
+msgstr "此欄位應為有效的主機名稱"
 
 #: src/components/StdDesign/StdDataEntry/StdFormItem.vue:45
 #: src/constants/form_errors.ts:2
@@ -2658,25 +2651,24 @@ msgid "This field should not be empty"
 msgstr "此欄位不應為空"
 
 #: src/constants/form_errors.ts:6
-#, fuzzy
 msgid ""
 "This field should only contain letters, unicode characters, numbers, and -_."
-msgstr "模型名稱應僅包含字母、Unicode、數字、連字號、破折號和點。"
+msgstr "此欄位僅能包含字母、Unicode、數字、連字號、破折號和點"
 
 #: src/constants/form_errors.ts:4
 msgid "This value is already taken"
-msgstr ""
+msgstr "此值已被使用"
 
 #: src/views/environment/BatchUpgrader.vue:182
 msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "這將在 %{nodeNames} 上升級或重新安裝 Nginx UI 到 %{version}。"
 
-#: src/views/preference/AuthSettings.vue:96
+#: src/views/preference/AuthSettings.vue:124
 msgid "Throttle"
-msgstr ""
+msgstr "節流"
 
-#: src/views/preference/AuthSettings.vue:116
+#: src/views/preference/AuthSettings.vue:144
 #: src/views/preference/components/AddPasskey.vue:65
 #: src/views/preference/LogrotateSettings.vue:11
 msgid "Tips"
@@ -2686,7 +2678,7 @@ msgstr "提示"
 msgid "Title"
 msgstr "標題"
 
-#: src/views/preference/components/TOTP.vue:71
+#: src/views/preference/components/TOTP.vue:68
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
@@ -2699,6 +2691,8 @@ msgid ""
 "Please manually configure the following in the app.ini configuration file "
 "and restart Nginx UI."
 msgstr ""
+"為確保安全性，Webauthn 配置無法通過 UI 添加。請在 app.ini 配置檔中手動配置以"
+"下內容，並重新啟動 Nginx UI。"
 
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:45
 msgid ""
@@ -2710,27 +2704,29 @@ msgstr ""
 "為了確保憑證自動續期能夠正常運作，我們需要新增一個 Location 來代理從授權後端"
 "的請求，我們需要儲存這個檔案並重新載入 Nginx。你確定你要繼續嗎？"
 
-#: src/views/preference/OpenAISettings.vue:48
+#: src/views/preference/OpenAISettings.vue:36
 msgid ""
 "To use a local large model, deploy it with ollama, vllm or lmdeploy. They "
 "provide an OpenAI-compatible API endpoint, so just set the baseUrl to your "
 "local API."
 msgstr ""
+"要使用本地大型模型，請使用 ollama、vllm 或 lmdeploy 部署。它們提供與 OpenAI "
+"相容的 API 端點，因此只需將 baseUrl 設定為您的本地 API。"
 
-#: src/views/preference/OpenAISettings.vue:72
+#: src/views/preference/OpenAISettings.vue:61
 msgid "Token is not valid"
 msgstr "令牌無效"
 
 #: src/components/StdDesign/StdDataDisplay/StdPagination.vue:40
 msgid "Total %{total} item"
 msgid_plural "Total %{total} items"
-msgstr[0] ""
+msgstr[0] "總計 %{total} 項"
 
-#: src/views/preference/components/TOTP.vue:69
+#: src/views/preference/components/TOTP.vue:66
 msgid "TOTP"
-msgstr ""
+msgstr "TOTP"
 
-#: src/views/preference/components/TOTP.vue:70
+#: src/views/preference/components/TOTP.vue:67
 msgid ""
 "TOTP is a two-factor authentication method that uses a time-based one-time "
 "password algorithm."
@@ -2750,7 +2746,6 @@ msgid "Type"
 msgstr "類型"
 
 #: src/views/preference/components/Passkey.vue:39
-#, fuzzy
 msgid "Update successfully"
 msgstr "更新成功"
 
@@ -2799,11 +2794,11 @@ msgstr "運作時間:"
 msgid "URL"
 msgstr "URL"
 
-#: src/components/TwoFA/Authorization.vue:102
+#: src/components/TwoFA/Authorization.vue:121
 msgid "Use OTP"
 msgstr "使用一次性密碼"
 
-#: src/components/TwoFA/Authorization.vue:98
+#: src/components/TwoFA/Authorization.vue:117
 msgid "Use recovery code"
 msgstr "使用恢復碼"
 
@@ -2812,13 +2807,12 @@ msgid "User"
 msgstr "使用者名稱"
 
 #: src/constants/errors/user.ts:3
-#, fuzzy
 msgid "User banned"
 msgstr "用戶被禁止"
 
 #: src/constants/errors/user.ts:7
 msgid "User not enabled otp as 2fa"
-msgstr ""
+msgstr "使用者未啟用 OTP 作為雙重身份驗證 (2FA)"
 
 #: src/views/other/Login.vue:173 src/views/user/userColumns.tsx:9
 msgid "Username"
@@ -2855,6 +2849,14 @@ msgstr "查看詳情"
 msgid "View Mode"
 msgstr "查看模式"
 
+#: src/views/preference/components/RecoveryCodes.vue:134
+msgid "View Recovery Codes"
+msgstr "檢視復原代碼"
+
+#: src/views/preference/components/RecoveryCodes.vue:70
+msgid "Viewed"
+msgstr "已檢視"
+
 #: src/constants/index.ts:17 src/views/config/InspectConfig.vue:33
 #: src/views/notification/notificationColumns.tsx:22
 #: src/views/preference/components/AddPasskey.vue:82
@@ -2876,13 +2878,13 @@ msgstr ""
 "我們將從該檔案中刪除 HTTPChallenge 設定並重新載入 Nginx 設定檔案。你確定你要"
 "繼續嗎？"
 
-#: src/views/preference/AuthSettings.vue:69
+#: src/views/preference/AuthSettings.vue:97
 msgid "Webauthn"
-msgstr ""
+msgstr "Webauthn"
 
 #: src/constants/errors/user.ts:6
 msgid "WebAuthn settings are not configured"
-msgstr ""
+msgstr "WebAuthn 設定尚未配置"
 
 #: src/views/certificate/ACMEUser.vue:83
 msgid ""
@@ -2890,12 +2892,22 @@ msgid ""
 "Generally, do not enable this unless you are in a dev environment and using "
 "Pebble as CA."
 msgstr ""
+"啟用後，Nginx UI 將在啟動時自動重新註冊使用者。通常，除非您處於開發環境並使"
+"用 Pebble 作為 CA，否則不建議啟用此功能。"
 
 #: src/views/site/site_edit/RightSettings.vue:116
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "site category and the nodes selected below will be synchronized."
 msgstr ""
+"當您啟用/禁用、刪除或儲存此網站時，網站類別中設定的節點以及下方選擇的節點將會"
+"同步。"
+
+#: src/views/preference/components/RecoveryCodes.vue:140
+msgid ""
+"When you generate new recovery codes, you must download or print the new "
+"codes."
+msgstr "當您生成新的復原代碼時，必須下載或列印新的代碼。"
 
 #: src/views/dashboard/ServerAnalytic.vue:37
 #: src/views/dashboard/ServerAnalytic.vue:373
@@ -2910,7 +2922,7 @@ msgstr "將憑證私鑰寫入磁碟"
 msgid "Writing certificate to disk"
 msgstr "將憑證寫入磁碟"
 
-#: src/views/preference/AuthSettings.vue:135
+#: src/views/preference/AuthSettings.vue:163
 #: src/views/preference/CertSettings.vue:69
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:96
 #: src/views/site/ngx_conf/LocationEditor.vue:87
@@ -2929,11 +2941,43 @@ msgstr "您可以在此頁面檢查 Nginx UI 的升級。"
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
 "passkey."
-msgstr ""
+msgstr "您尚未配置 Webauthn 設定，因此無法新增通行密鑰。"
+
+#: src/views/preference/components/RecoveryCodes.vue:81
+msgid ""
+"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgstr "您尚未啟用雙重身份驗證 (2FA)。請啟用 2FA 以生成復原代碼。"
+
+#: src/views/preference/components/RecoveryCodes.vue:94
+msgid "You have not generated recovery codes yet."
+msgstr "您尚未產生復原代碼。"
+
+#: src/views/preference/components/RecoveryCodes.vue:91
+msgid ""
+"Your current recovery code might be outdated and insecure. Please generate "
+"new recovery codes at your earliest convenience to ensure security."
+msgstr "您目前的復原代碼可能已過時且不安全。請盡早生成新的復原代碼以確保安全。"
+
+#: src/views/preference/components/RecoveryCodes.vue:142
+#: src/views/preference/components/RecoveryCodes.vue:155
+msgid "Your old codes won't work anymore."
+msgstr "您的舊代碼將不再有效。"
 
 #: src/views/preference/components/Passkey.vue:75
 msgid "Your passkeys"
-msgstr ""
+msgstr "您的通行密鑰"
+
+#~ msgid ""
+#~ "If you lose your mobile phone, you can use the recovery code to reset "
+#~ "your 2FA."
+#~ msgstr "如果您丟失了手機，可以使用恢復碼重置您的多重因素驗證驗證。"
+
+#~ msgid "Recovery Code:"
+#~ msgstr "恢復碼："
+
+#~ msgid ""
+#~ "The recovery code is only displayed once, please save it in a safe place."
+#~ msgstr "恢復碼僅顯示一次，請將其保存在安全的地方。"
 
 #~ msgid "Directory"
 #~ msgstr "目錄"

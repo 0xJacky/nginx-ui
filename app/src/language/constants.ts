@@ -53,4 +53,7 @@ export const msg = [
   $gettext('Enable Remote Site Error'),
   $gettext('Rename Remote Site Success'),
   $gettext('Rename Remote Site Error'),
+
+  $gettext('All Recovery Codes Have Been Used'),
+  $gettext('Please generate new recovery codes in the preferences immediately to prevent lockout.'),
 ]
