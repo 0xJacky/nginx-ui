@@ -1,7 +1,5 @@
 # generate gen code
-pushd ./cmd/gen || exit
-go run generate.go -config ../../app.ini
-popd || exit
+go run cmd/gen/generate.go -config app.ini
 
 # generate error definitions
 go run cmd/errdef/generate.go -project . -type ts -output ./app/src/constants/errors -ignore-dirs .devcontainer,app,.github

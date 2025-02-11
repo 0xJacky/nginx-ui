@@ -99,6 +99,7 @@ func PerformCoreUpgrade(c *gin.Context) {
 		Message: "Downloading latest release",
 	})
 	progressChan := make(chan float64)
+	defer close(progressChan)
 	go func() {
 		for progress := range progressChan {
 			_ = ws.WriteJSON(CoreUpgradeResp{
