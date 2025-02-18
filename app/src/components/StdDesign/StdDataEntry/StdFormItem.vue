@@ -21,12 +21,6 @@ const tag = computed(() => {
   return props.error?.[props.dataIndex!.toString()] ?? ''
 })
 
-// const valid_status = computed(() => {
-//   if (tag.value)
-//     return 'error'
-//   else return 'success'
-// })
-
 const help = computed(() => {
   const rules = tag.value.split(',')
 
