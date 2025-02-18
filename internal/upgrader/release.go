@@ -2,10 +2,11 @@ package upgrader
 
 import (
 	"encoding/json"
-	"github.com/pkg/errors"
 	"io"
 	"net/http"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 const (
@@ -98,12 +99,26 @@ func getLatestPrerelease() (data TRelease, err error) {
 }
 
 func GetRelease(channel string) (data TRelease, err error) {
+	stableRelease, err := getLatestRelease()
+	if err != nil {
+		return TRelease{}, err
+	}
+
 	switch channel {
 	default:
 		fallthrough
 	case "stable":
-		return getLatestRelease()
+		return stableRelease, nil
 	case "prerelease":
-		return getLatestPrerelease()
+		preRelease, err := getLatestPrerelease()
+		if err != nil {
+			return TRelease{}, err
+		}
+		// if preRelease is newer than stableRelease, return preRelease
+		// otherwise return stableRelease
+		if preRelease.PublishedAt.After(stableRelease.PublishedAt) {
+			return preRelease, nil
+		}
+		return stableRelease, nil
 	}
 }
