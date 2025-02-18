@@ -13,6 +13,11 @@ const props = defineProps<{
   layout?: 'horizontal' | 'vertical' | 'inline'
 }>()
 
+defineSlots<{
+  // eslint-disable-next-line ts/no-explicit-any
+  action: () => any
+}>()
+
 // eslint-disable-next-line ts/no-explicit-any
 const dataSource = defineModel<Record<string, any>>('dataSource')
 

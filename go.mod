@@ -1,12 +1,12 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.23.6
+go 1.24.0
 
 require (
 	github.com/0xJacky/pofile v0.2.1
 	github.com/BurntSushi/toml v1.4.0
 	github.com/caarlos0/env/v11 v11.3.1
-	github.com/casdoor/casdoor-go-sdk v1.3.0
+	github.com/casdoor/casdoor-go-sdk v1.4.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.1.0
 	github.com/dustin/go-humanize v1.0.1
@@ -14,9 +14,9 @@ require (
 	github.com/gin-contrib/pprof v1.5.2
 	github.com/gin-contrib/static v1.1.3
 	github.com/gin-gonic/gin v1.10.0
-	github.com/go-acme/lego/v4 v4.21.0
+	github.com/go-acme/lego/v4 v4.22.2
 	github.com/go-co-op/gocron/v2 v2.15.0
-	github.com/go-playground/validator/v10 v10.24.0
+	github.com/go-playground/validator/v10 v10.25.0
 	github.com/go-resty/resty/v2 v2.16.5
 	github.com/go-webauthn/webauthn v0.11.2
 	github.com/golang-jwt/jwt/v5 v5.2.1
@@ -187,6 +187,7 @@ require (
 	github.com/nrdcg/desec v0.10.0 // indirect
 	github.com/nrdcg/dnspod-go v0.4.0 // indirect
 	github.com/nrdcg/freemyip v0.3.0 // indirect
+	github.com/nrdcg/goacmedns v0.2.0 // indirect
 	github.com/nrdcg/goinwx v0.10.0 // indirect
 	github.com/nrdcg/mailinabox v0.2.0 // indirect
 	github.com/nrdcg/namesilo v0.2.1 // indirect
