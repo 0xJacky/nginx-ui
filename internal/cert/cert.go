@@ -1,6 +1,10 @@
 package cert
 
 import (
+	"log"
+	"os"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
@@ -13,9 +17,6 @@ import (
 	dnsproviders "github.com/go-acme/lego/v4/providers/dns"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy/logger"
-	"log"
-	"os"
-	"time"
 )
 
 const (
@@ -41,6 +42,10 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 
 	// Hijack the (logger) of lego
 	legolog.Logger = l
+	// Restore the original logger, fix #876
+	defer func() {
+		legolog.Logger = log.New(os.Stderr, "", log.LstdFlags)
+	}()
 
 	l.Println("[INFO] [Nginx UI] Preparing lego configurations")
 	user, err := payload.GetACMEUser()
