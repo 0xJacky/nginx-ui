@@ -13,6 +13,10 @@ import 'dayjs/locale/zh-tw'
 import 'dayjs/locale/pt'
 import 'dayjs/locale/es'
 import 'dayjs/locale/it'
+import 'dayjs/locale/ar'
+import 'dayjs/locale/ru'
+import 'dayjs/locale/tr'
+import 'dayjs/locale/vi'
 
 const settings = useSettingsStore()
 
@@ -61,8 +65,8 @@ function init() {
     case 'de':
       dayjs.locale('de')
       break
-    case 'en':
-      dayjs.locale('en')
+    case 'zh_CN':
+      dayjs.locale('zh-cn')
       break
     case 'zh_TW':
       dayjs.locale('zh-tw')
@@ -76,8 +80,20 @@ function init() {
     case 'it':
       dayjs.locale('it')
       break
+    case 'ar':
+      dayjs.locale('ar')
+      break
+    case 'ru':
+      dayjs.locale('ru')
+      break
+    case 'tr':
+      dayjs.locale('tr')
+      break
+    case 'vi':
+      dayjs.locale('vi')
+      break
     default:
-      dayjs.locale('zh-cn')
+      dayjs.locale('en')
   }
 }
 
