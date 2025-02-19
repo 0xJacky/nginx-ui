@@ -9,11 +9,15 @@ import { NotificationTypeT } from '@/constants'
 import { useUserStore } from '@/pinia'
 import { BellOutlined, CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, InfoCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
 import { message, notification } from 'ant-design-vue'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { SSE } from 'sse.js'
 
 defineProps<{
   headerRef: HTMLElement
 }>()
+
+dayjs.extend(relativeTime)
 
 const loading = ref(false)
 
@@ -145,19 +149,7 @@ function viewAll() {
         >
           <template #renderItem="{ item }">
             <AListItem>
-              <template #actions>
-                <span
-                  key="list-loadmore-remove"
-                  class="cursor-pointer"
-                  @click="remove(item.id)"
-                >
-                  <DeleteOutlined />
-                </span>
-              </template>
-              <AListItemMeta
-                :title="$gettext(item.title)"
-                :description="detailRender({ text: item.details, record: item } as CustomRender)"
-              >
+              <AListItemMeta>
                 <template #avatar>
                   <div>
                     <CloseCircleOutlined
@@ -176,6 +168,28 @@ function viewAll() {
                       v-else-if="item.type === NotificationTypeT.Success"
                       class="text-green-500"
                     />
+                  </div>
+                </template>
+                <template #title>
+                  <div class="flex justify-between items-center">
+                    {{ $gettext(item.title) }}
+                    <span class="text-xs text-trueGray-400 font-normal">
+                      {{ dayjs(item.created_at).fromNow() }}
+                    </span>
+                  </div>
+                </template>
+                <template #description>
+                  <div class="flex justify-between items-center">
+                    <div>
+                      {{ detailRender({ text: item.details, record: item } as CustomRender) }}
+                    </div>
+                    <span
+                      key="list-loadmore-remove"
+                      class="cursor-pointer"
+                      @click="remove(item.id)"
+                    >
+                      <DeleteOutlined />
+                    </span>
                   </div>
                 </template>
               </AListItemMeta>
