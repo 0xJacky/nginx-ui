@@ -103,10 +103,6 @@ const chartOptions = computed(() => ({
       left: 50%;
       transform: translateX(-50%);
     }
-    @media (min-width: 2000px) {
-      left: 50%;
-      transform: translateX(-50%);
-    }
   }
 
   .text {
