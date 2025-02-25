@@ -32,6 +32,12 @@ function newSSE() {
 
   s.onmessage = (e: SSEvent) => {
     data.value = JSON.parse(e.data)
+    nextTick(() => {
+      data_map.value = data.value.reduce((acc, node) => {
+        acc[node.id] = node
+        return acc
+      }, {} as Record<number, Environment>)
+    })
   }
 
   // reconnect

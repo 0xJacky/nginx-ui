@@ -100,7 +100,6 @@ require (
 	github.com/civo/civogo v0.3.94 // indirect
 	github.com/cloudflare/cloudflare-go v0.115.0 // indirect
 	github.com/cloudwego/base64x v0.1.5 // indirect
-	github.com/cpu/goacmedns v0.1.1 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/dimchansky/utfbom v1.1.1 // indirect

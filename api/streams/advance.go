@@ -1,12 +1,13 @@
 package streams
 
 import (
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
-	"net/http"
 )
 
 func AdvancedEdit(c *gin.Context) {
@@ -21,7 +22,7 @@ func AdvancedEdit(c *gin.Context) {
 	name := c.Param("name")
 	path := nginx.GetConfPath("streams-available", name)
 
-	s := query.Site
+	s := query.Stream
 
 	_, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
 	if err != nil {
@@ -39,5 +40,4 @@ func AdvancedEdit(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})
-
 }

@@ -5,18 +5,18 @@ import type { CheckedType } from '@/types'
 import type { Ref } from 'vue'
 import stream from '@/api/stream'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
+import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
-import Deploy from '@/views/stream/components/Deploy.vue'
 import { message, Modal } from 'ant-design-vue'
+import ConfigName from './ConfigName.vue'
 
 const settings = useSettingsStore()
 
 const configText = inject('configText') as Ref<string>
 const enabled = inject('enabled') as Ref<boolean>
 const name = inject('name') as Ref<string>
-const history_chatgpt_record = inject('history_chatgpt_record') as Ref<ChatComplicationMessage[]>
-const filename = inject('filename') as Ref<string>
+const historyChatgptRecord = inject('history_chatgpt_record') as Ref<ChatComplicationMessage[]>
 const filepath = inject('filepath') as Ref<string>
 const data = inject('data') as Ref<Stream>
 
@@ -42,7 +42,7 @@ function disable() {
   })
 }
 
-function on_change_enabled(checked: CheckedType) {
+function onChangeEnabled(checked: CheckedType) {
   modal.confirm({
     title: checked ? $gettext('Do you want to enable this stream?') : $gettext('Do you want to disable this stream?'),
     mask: false,
@@ -76,11 +76,11 @@ function on_change_enabled(checked: CheckedType) {
         <AFormItem :label="$gettext('Enabled')">
           <ASwitch
             :checked="enabled"
-            @change="on_change_enabled"
+            @change="onChangeEnabled"
           />
         </AFormItem>
         <AFormItem :label="$gettext('Name')">
-          <AInput v-model:value="filename" />
+          <ConfigName :name="name" />
         </AFormItem>
         <AFormItem :label="$gettext('Updated at')">
           {{ formatDateTime(data.modified_at) }}
@@ -89,16 +89,20 @@ function on_change_enabled(checked: CheckedType) {
       <ACollapsePanel
         v-if="!settings.is_remote"
         key="2"
-        :header="$gettext('Deploy')"
+        :header="$gettext('Sync')"
       >
-        <Deploy />
+        <NodeSelector
+          v-model:target="data.sync_node_ids"
+          class="mb-4"
+          hidden-local
+        />
       </ACollapsePanel>
       <ACollapsePanel
         key="3"
         header="ChatGPT"
       >
         <ChatGPT
-          v-model:history-messages="history_chatgpt_record"
+          v-model:history-messages="historyChatgptRecord"
           :content="configText"
           :path="filepath"
         />

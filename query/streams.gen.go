@@ -34,6 +34,7 @@ func newStream(db *gorm.DB, opts ...gen.DOOption) stream {
 	_stream.DeletedAt = field.NewField(tableName, "deleted_at")
 	_stream.Path = field.NewString(tableName, "path")
 	_stream.Advanced = field.NewBool(tableName, "advanced")
+	_stream.SyncNodeIDs = field.NewField(tableName, "sync_node_ids")
 
 	_stream.fillFieldMap()
 
@@ -43,13 +44,14 @@ func newStream(db *gorm.DB, opts ...gen.DOOption) stream {
 type stream struct {
 	streamDo
 
-	ALL       field.Asterisk
-	ID        field.Uint64
-	CreatedAt field.Time
-	UpdatedAt field.Time
-	DeletedAt field.Field
-	Path      field.String
-	Advanced  field.Bool
+	ALL         field.Asterisk
+	ID          field.Uint64
+	CreatedAt   field.Time
+	UpdatedAt   field.Time
+	DeletedAt   field.Field
+	Path        field.String
+	Advanced    field.Bool
+	SyncNodeIDs field.Field
 
 	fieldMap map[string]field.Expr
 }
@@ -72,6 +74,7 @@ func (s *stream) updateTableName(table string) *stream {
 	s.DeletedAt = field.NewField(table, "deleted_at")
 	s.Path = field.NewString(table, "path")
 	s.Advanced = field.NewBool(table, "advanced")
+	s.SyncNodeIDs = field.NewField(table, "sync_node_ids")
 
 	s.fillFieldMap()
 
@@ -88,13 +91,14 @@ func (s *stream) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *stream) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 6)
+	s.fieldMap = make(map[string]field.Expr, 7)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["created_at"] = s.CreatedAt
 	s.fieldMap["updated_at"] = s.UpdatedAt
 	s.fieldMap["deleted_at"] = s.DeletedAt
 	s.fieldMap["path"] = s.Path
 	s.fieldMap["advanced"] = s.Advanced
+	s.fieldMap["sync_node_ids"] = s.SyncNodeIDs
 }
 
 func (s stream) clone(db *gorm.DB) stream {

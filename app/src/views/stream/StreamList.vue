@@ -18,7 +18,6 @@ const columns: Column[] = [{
     type: input,
   },
   search: true,
-  width: 200,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'enabled',
@@ -38,17 +37,18 @@ const columns: Column[] = [{
   },
   sorter: true,
   pithy: true,
-  width: 100,
+  width: 200,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'modified_at',
   customRender: datetime,
   sorter: true,
   pithy: true,
+  width: 200,
 }, {
   title: () => $gettext('Action'),
   dataIndex: 'action',
-  width: 120,
+  width: 250,
   fixed: 'right',
 }]
 
@@ -132,7 +132,7 @@ function handleAddStream() {
       disable-view
       :scroll-x="800"
       @click-edit="r => $router.push({
-        path: `/stream/${r}`,
+        path: `/streams/${r}`,
       })"
     >
       <template #actions="{ record }">

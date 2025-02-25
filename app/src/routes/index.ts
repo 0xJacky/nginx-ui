@@ -91,7 +91,7 @@ export const routes: RouteRecordRaw[] = [
         },
       },
       {
-        path: 'stream/:name',
+        path: 'streams/:name',
         name: 'Edit Stream',
         component: () => import('@/views/stream/StreamEdit.vue'),
         meta: {

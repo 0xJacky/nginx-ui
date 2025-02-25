@@ -12,6 +12,7 @@ export interface Stream {
   config: string
   chatgpt_messages: ChatComplicationMessage[]
   tokenized?: NgxConfig
+  sync_node_ids: number[]
 }
 
 class StreamCurd extends Curd<Stream> {
@@ -30,6 +31,10 @@ class StreamCurd extends Curd<Stream> {
 
   advance_mode(name: string, data: { advanced: boolean }) {
     return http.post(`${this.baseUrl}/${name}/advance`, data)
+  }
+
+  rename(name: string, newName: string) {
+    return http.post(`${this.baseUrl}/${name}/rename`, { new_name: newName })
   }
 }
 

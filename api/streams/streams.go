@@ -1,18 +1,19 @@
 package streams
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/gin-gonic/gin"
-	"github.com/sashabaranov/go-openai"
-	"github.com/uozi-tech/cosy"
 	"net/http"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/api"
+	"github.com/0xJacky/Nginx-UI/internal/config"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/stream"
+	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/gin-gonic/gin"
+	"github.com/sashabaranov/go-openai"
+	"github.com/uozi-tech/cosy"
 )
 
 type Stream struct {
@@ -24,6 +25,7 @@ type Stream struct {
 	ChatGPTMessages []openai.ChatCompletionMessage `json:"chatgpt_messages,omitempty"`
 	Tokenized       *nginx.NgxConfig               `json:"tokenized,omitempty"`
 	Filepath        string                         `json:"filepath"`
+	SyncNodeIDs     []uint64                       `json:"sync_node_ids" gorm:"serializer:json"`
 }
 
 func GetStreams(c *gin.Context) {
@@ -32,14 +34,12 @@ func GetStreams(c *gin.Context) {
 	sort := c.DefaultQuery("sort", "desc")
 
 	configFiles, err := os.ReadDir(nginx.GetConfPath("streams-available"))
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
 
 	enabledConfig, err := os.ReadDir(nginx.GetConfPath("streams-enabled"))
-
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
@@ -77,14 +77,7 @@ func GetStreams(c *gin.Context) {
 }
 
 func GetStream(c *gin.Context) {
-	rewriteName, ok := c.Get("rewriteConfigFileName")
-
 	name := c.Param("name")
-
-	// for modify filename
-	if ok {
-		name = rewriteName.(string)
-	}
 
 	path := nginx.GetConfPath("streams-available", name)
 	file, err := os.Stat(path)
@@ -114,14 +107,13 @@ func GetStream(c *gin.Context) {
 	}
 
 	s := query.Stream
-	stream, err := s.Where(s.Path.Eq(path)).FirstOrInit()
-
+	streamModel, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
 
-	if stream.Advanced {
+	if streamModel.Advanced {
 		origContent, err := os.ReadFile(path)
 		if err != nil {
 			api.ErrHandler(c, err)
@@ -130,12 +122,13 @@ func GetStream(c *gin.Context) {
 
 		c.JSON(http.StatusOK, Stream{
 			ModifiedAt:      file.ModTime(),
-			Advanced:        stream.Advanced,
+			Advanced:        streamModel.Advanced,
 			Enabled:         enabled,
 			Name:            name,
 			Config:          string(origContent),
 			ChatGPTMessages: chatgpt.Content,
 			Filepath:        path,
+			SyncNodeIDs:     streamModel.SyncNodeIDs,
 		})
 		return
 	}
@@ -149,148 +142,43 @@ func GetStream(c *gin.Context) {
 
 	c.JSON(http.StatusOK, Stream{
 		ModifiedAt:      file.ModTime(),
-		Advanced:        stream.Advanced,
+		Advanced:        streamModel.Advanced,
 		Enabled:         enabled,
 		Name:            name,
 		Config:          nginxConfig.FmtCode(),
 		Tokenized:       nginxConfig,
 		ChatGPTMessages: chatgpt.Content,
 		Filepath:        path,
+		SyncNodeIDs:     streamModel.SyncNodeIDs,
 	})
 }
 
 func SaveStream(c *gin.Context) {
 	name := c.Param("name")
 
-	if name == "" {
-		c.JSON(http.StatusNotAcceptable, gin.H{
-			"message": "param name is empty",
-		})
-		return
-	}
-
 	var json struct {
-		Name      string `json:"name" binding:"required"`
-		Content   string `json:"content" binding:"required"`
-		Overwrite bool   `json:"overwrite"`
+		Content     string   `json:"content" binding:"required"`
+		SyncNodeIDs []uint64 `json:"sync_node_ids"`
+		Overwrite   bool     `json:"overwrite"`
 	}
 
 	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
-	path := nginx.GetConfPath("streams-available", name)
-
-	if !json.Overwrite && helper.FileExists(path) {
-		c.JSON(http.StatusNotAcceptable, gin.H{
-			"message": "File exists",
-		})
-		return
-	}
-
-	err := os.WriteFile(path, []byte(json.Content), 0644)
+	err := stream.Save(name, json.Content, json.Overwrite, json.SyncNodeIDs)
 	if err != nil {
 		api.ErrHandler(c, err)
 		return
-	}
-	enabledConfigFilePath := nginx.GetConfPath("streams-enabled", name)
-	// rename the config file if needed
-	if name != json.Name {
-		newPath := nginx.GetConfPath("streams-available", json.Name)
-		s := query.Stream
-		_, err = s.Where(s.Path.Eq(path)).Update(s.Path, newPath)
-
-		// check if dst file exists, do not rename
-		if helper.FileExists(newPath) {
-			c.JSON(http.StatusNotAcceptable, gin.H{
-				"message": "File exists",
-			})
-			return
-		}
-		// recreate a soft link
-		if helper.FileExists(enabledConfigFilePath) {
-			_ = os.Remove(enabledConfigFilePath)
-			enabledConfigFilePath = nginx.GetConfPath("streams-enabled", json.Name)
-			err = os.Symlink(newPath, enabledConfigFilePath)
-
-			if err != nil {
-				api.ErrHandler(c, err)
-				return
-			}
-		}
-
-		err = os.Rename(path, newPath)
-		if err != nil {
-			api.ErrHandler(c, err)
-			return
-		}
-
-		name = json.Name
-		c.Set("rewriteConfigFileName", name)
-	}
-
-	enabledConfigFilePath = nginx.GetConfPath("streams-enabled", name)
-	if helper.FileExists(enabledConfigFilePath) {
-		// Test nginx configuration
-		output := nginx.TestConf()
-
-		if nginx.GetLogLevel(output) > nginx.Warn {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": output,
-			})
-			return
-		}
-
-		output = nginx.Reload()
-
-		if nginx.GetLogLevel(output) > nginx.Warn {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"message": output,
-			})
-			return
-		}
 	}
 
 	GetStream(c)
 }
 
 func EnableStream(c *gin.Context) {
-	configFilePath := nginx.GetConfPath("streams-available", c.Param("name"))
-	enabledConfigFilePath := nginx.GetConfPath("streams-enabled", c.Param("name"))
-
-	_, err := os.Stat(configFilePath)
-
+	err := stream.Enable(c.Param("name"))
 	if err != nil {
 		api.ErrHandler(c, err)
-		return
-	}
-
-	if _, err = os.Stat(enabledConfigFilePath); os.IsNotExist(err) {
-		err = os.Symlink(configFilePath, enabledConfigFilePath)
-
-		if err != nil {
-			api.ErrHandler(c, err)
-			return
-		}
-	}
-
-	// Test nginx config, if not pass, then disable the stream.
-	output := nginx.TestConf()
-
-	if nginx.GetLogLevel(output) > nginx.Warn {
-		_ = os.Remove(enabledConfigFilePath)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": output,
-		})
-		return
-	}
-
-	output = nginx.Reload()
-
-	if nginx.GetLogLevel(output) > nginx.Warn {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": output,
-		})
 		return
 	}
 
@@ -300,27 +188,9 @@ func EnableStream(c *gin.Context) {
 }
 
 func DisableStream(c *gin.Context) {
-	enabledConfigFilePath := nginx.GetConfPath("streams-enabled", c.Param("name"))
-
-	_, err := os.Stat(enabledConfigFilePath)
-
+	err := stream.Disable(c.Param("name"))
 	if err != nil {
 		api.ErrHandler(c, err)
-		return
-	}
-
-	err = os.Remove(enabledConfigFilePath)
-
-	if err != nil {
-		api.ErrHandler(c, err)
-		return
-	}
-	output := nginx.Reload()
-
-	if nginx.GetLogLevel(output) > nginx.Warn {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": output,
-		})
 		return
 	}
 
@@ -330,26 +200,28 @@ func DisableStream(c *gin.Context) {
 }
 
 func DeleteStream(c *gin.Context) {
-	var err error
-	name := c.Param("name")
-	availablePath := nginx.GetConfPath("streams-available", name)
-	enabledPath := nginx.GetConfPath("streams-enabled", name)
-
-	if _, err = os.Stat(availablePath); os.IsNotExist(err) {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "stream not found",
-		})
+	err := stream.Delete(c.Param("name"))
+	if err != nil {
+		api.ErrHandler(c, err)
 		return
 	}
 
-	if _, err = os.Stat(enabledPath); err == nil {
-		c.JSON(http.StatusNotAcceptable, gin.H{
-			"message": "stream is enabled",
-		})
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+	})
+}
+
+func RenameStream(c *gin.Context) {
+	oldName := c.Param("name")
+	var json struct {
+		NewName string `json:"new_name"`
+	}
+	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
-	if err = os.Remove(availablePath); err != nil {
+	err := stream.Rename(oldName, json.NewName)
+	if err != nil {
 		api.ErrHandler(c, err)
 		return
 	}
