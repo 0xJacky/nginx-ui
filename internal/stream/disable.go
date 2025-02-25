@@ -66,14 +66,14 @@ func syncDisable(name string) {
 				SetHeader("X-Node-Secret", node.Token).
 				Post(fmt.Sprintf("/api/streams/%s/disable", name))
 			if err != nil {
-				notification.Error("Disable Remote Stream Error", err.Error())
+				notification.Error("Disable Remote Stream Error", err.Error(), nil)
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {
-				notification.Error("Disable Remote Stream Error", NewSyncResult(node.Name, name, resp).String())
+				notification.Error("Disable Remote Stream Error", "Disable stream %{name} from %{node} failed", NewSyncResult(node.Name, name, resp))
 				return
 			}
-			notification.Success("Disable Remote Stream Success", NewSyncResult(node.Name, name, resp).String())
+			notification.Success("Disable Remote Stream Success", "Disable stream %{name} from %{node} successfully", NewSyncResult(node.Name, name, resp))
 		}()
 	}
 

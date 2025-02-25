@@ -89,18 +89,18 @@ func syncRename(oldName, newName string) {
 				}).
 				Post(fmt.Sprintf("/api/streams/%s/rename", oldName))
 			if err != nil {
-				notification.Error("Rename Remote Stream Error", err.Error())
+				notification.Error("Rename Remote Stream Error", err.Error(), nil)
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {
-				notification.Error("Rename Remote Stream Error",
+				notification.Error("Rename Remote Stream Error", "Rename stream %{name} to %{new_name} on %{node} failed",
 					NewSyncResult(node.Name, oldName, resp).
-						SetNewName(newName).String())
+						SetNewName(newName))
 				return
 			}
-			notification.Success("Rename Remote Stream Success",
+			notification.Success("Rename Remote Stream Success", "Rename stream %{name} to %{new_name} on %{node} successfully",
 				NewSyncResult(node.Name, oldName, resp).
-					SetNewName(newName).String())
+					SetNewName(newName))
 		}()
 	}
 

@@ -6,3 +6,6 @@ go run cmd/errdef/generate.go -project . -type ts -output ./app/src/constants/er
 
 # parse nginx directive indexs
 go run cmd/ngx_dir_index/ngx_dir_index.go ./internal/nginx/nginx_directives.json
+
+# generate notification texts
+go run cmd/notification/generate.go

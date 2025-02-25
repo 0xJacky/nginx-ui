@@ -42,14 +42,14 @@ func autoCert(certModel *model.Cert) {
 	if len(certModel.Domains) == 0 {
 		log.Error(errors.New("domains list is empty, " +
 			"try to reopen auto-cert for this config:" + confName))
-		notification.Error("Renew Certificate Error", confName)
+		notification.Error("Renew Certificate Error", confName, nil)
 		return
 	}
 
 	if certModel.SSLCertificatePath == "" {
 		log.Error(errors.New("ssl certificate path is empty, " +
 			"try to reopen auto-cert for this config:" + confName))
-		notification.Error("Renew Certificate Error", confName)
+		notification.Error("Renew Certificate Error", confName, nil)
 		return
 	}
 
@@ -57,7 +57,7 @@ func autoCert(certModel *model.Cert) {
 	if err != nil {
 		// Get certificate info error, ignore this certificate
 		log.Error(errors.Wrap(err, "get certificate info error"))
-		notification.Error("Renew Certificate Error", strings.Join(certModel.Domains, ", "))
+		notification.Error("Renew Certificate Error", strings.Join(certModel.Domains, ", "), nil)
 		return
 	}
 	if int(time.Now().Sub(certInfo.NotBefore).Hours()/24) < settings.CertSettings.GetCertRenewalInterval() {
@@ -103,14 +103,14 @@ func autoCert(certModel *model.Cert) {
 	// block, unless errChan closed
 	for err := range errChan {
 		log.Error(err)
-		notification.Error("Renew Certificate Error", strings.Join(payload.ServerName, ", "))
+		notification.Error("Renew Certificate Error", strings.Join(payload.ServerName, ", "), nil)
 		return
 	}
 
-	notification.Success("Renew Certificate Success", strings.Join(payload.ServerName, ", "))
+	notification.Success("Renew Certificate Success", strings.Join(payload.ServerName, ", "), nil)
 	err = SyncToRemoteServer(certModel)
 	if err != nil {
-		notification.Error("Sync Certificate Error", err.Error())
+		notification.Error("Sync Certificate Error", err.Error(), nil)
 		return
 	}
 

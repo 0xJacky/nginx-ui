@@ -66,14 +66,14 @@ func syncDisable(name string) {
 				SetHeader("X-Node-Secret", node.Token).
 				Post(fmt.Sprintf("/api/sites/%s/disable", name))
 			if err != nil {
-				notification.Error("Disable Remote Site Error", err.Error())
+				notification.Error("Disable Remote Site Error", "", err.Error())
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {
-				notification.Error("Disable Remote Site Error", NewSyncResult(node.Name, name, resp).String())
+				notification.Error("Disable Remote Site Error", "Disable site %{name} from %{node} failed", NewSyncResult(node.Name, name, resp))
 				return
 			}
-			notification.Success("Disable Remote Site Success", NewSyncResult(node.Name, name, resp).String())
+			notification.Success("Disable Remote Site Success", "Disable site %{name} from %{node} successfully", NewSyncResult(node.Name, name, resp))
 		}()
 	}
 

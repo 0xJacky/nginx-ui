@@ -86,14 +86,14 @@ func syncSave(name string, content string) {
 				}).
 				Post(fmt.Sprintf("/api/streams/%s", name))
 			if err != nil {
-				notification.Error("Save Remote Stream Error", err.Error())
+				notification.Error("Save Remote Stream Error", err.Error(), nil)
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {
-				notification.Error("Save Remote Stream Error", NewSyncResult(node.Name, name, resp).String())
+				notification.Error("Save Remote Stream Error", "Save stream %{name} to %{node} failed", NewSyncResult(node.Name, name, resp))
 				return
 			}
-			notification.Success("Save Remote Stream Success", NewSyncResult(node.Name, name, resp).String())
+			notification.Success("Save Remote Stream Success", "Save stream %{name} to %{node} successfully", NewSyncResult(node.Name, name, resp))
 
 			// Check if the site is enabled, if so then enable it on the remote node
 			enabledConfigFilePath := nginx.GetConfPath("streams-enabled", name)

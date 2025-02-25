@@ -89,18 +89,18 @@ func syncRename(oldName, newName string) {
 				}).
 				Post(fmt.Sprintf("/api/sites/%s/rename", oldName))
 			if err != nil {
-				notification.Error("Rename Remote Site Error", err.Error())
+				notification.Error("Rename Remote Site Error", err.Error(), nil)
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {
-				notification.Error("Rename Remote Site Error",
+				notification.Error("Rename Remote Site Error", "Rename site %{name} to %{new_name} on %{node} failed",
 					NewSyncResult(node.Name, oldName, resp).
-						SetNewName(newName).String())
+						SetNewName(newName))
 				return
 			}
-			notification.Success("Rename Remote Site Success",
+			notification.Success("Rename Remote Site Success", "Rename site %{name} to %{new_name} on %{node} successfully",
 				NewSyncResult(node.Name, oldName, resp).
-					SetNewName(newName).String())
+					SetNewName(newName))
 		}()
 	}
 

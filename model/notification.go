@@ -13,5 +13,6 @@ type Notification struct {
 	Model
 	Type    NotificationType `json:"type"`
 	Title   string           `json:"title"`
-	Details string           `json:"details"`
+	Content string           `json:"content"`
+	Details any              `json:"details" gorm:"serializer:json"`
 }

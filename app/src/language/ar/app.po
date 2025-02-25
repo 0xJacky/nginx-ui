@@ -93,7 +93,7 @@ msgid "Additional"
 msgstr "إضافي"
 
 #: src/views/site/site_edit/SiteEdit.vue:205
-#: src/views/stream/StreamEdit.vue:189
+#: src/views/stream/StreamEdit.vue:190
 msgid "Advance Mode"
 msgstr "الوضع المتقدم"
 
@@ -106,6 +106,7 @@ msgstr "بعد ذلك، قم بتحديث هذه الصفحة وانقر فوق 
 msgid "All"
 msgstr "الكل"
 
+#: src/components/Notification/notifications.ts:121
 #: src/language/constants.ts:57
 msgid "All Recovery Codes Have Been Used"
 msgstr ""
@@ -167,7 +168,7 @@ msgstr "هل أنت متأكد أنك تريد الحذف؟"
 msgid "Are you sure you want to apply to all selected?"
 msgstr "هل أنت متأكد أنك تريد الحذف؟"
 
-#: src/components/Notification/Notification.vue:130
+#: src/components/Notification/Notification.vue:135
 #: src/views/notification/Notification.vue:39
 msgid "Are you sure you want to clear all notifications?"
 msgstr "هل أنت متأكد أنك تريد مسح كافة التنبيهات؟"
@@ -255,7 +256,7 @@ msgstr "تم تمكين التجديد التلقائي لـ‏%{name}"
 #: src/views/config/ConfigEditor.vue:213 src/views/config/ConfigList.vue:106
 #: src/views/config/ConfigList.vue:180 src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/SiteEdit.vue:264
-#: src/views/stream/StreamEdit.vue:245
+#: src/views/stream/StreamEdit.vue:246
 msgid "Back"
 msgstr "رجوع"
 
@@ -291,7 +292,7 @@ msgid "Basic"
 msgstr "أساسي"
 
 #: src/views/site/site_edit/SiteEdit.vue:208
-#: src/views/stream/StreamEdit.vue:192
+#: src/views/stream/StreamEdit.vue:193
 msgid "Basic Mode"
 msgstr "الوضع الأساسي"
 
@@ -339,17 +340,16 @@ msgstr "مجلد سلطة التصديق"
 #: src/views/site/ngx_conf/NgxServer.vue:80
 #: src/views/site/ngx_conf/NgxUpstream.vue:34
 #: src/views/site/site_edit/RightSettings.vue:55
-#: src/views/stream/components/Deploy.vue:20
 #: src/views/stream/components/RightSettings.vue:51
 msgid "Cancel"
 msgstr "إلغاء"
 
-#: src/constants/errors/user.ts:10
+#: src/constants/errors/user.ts:11
 #, fuzzy
 msgid "Cannot change initial user password in demo mode"
 msgstr "حظر تغيير كلمة مرور root في العرض التوضيحي"
 
-#: src/constants/errors/user.ts:9
+#: src/constants/errors/user.ts:10
 #, fuzzy
 msgid "Cannot remove initial user"
 msgstr "مستخدم النظام الأولي"
@@ -461,12 +461,12 @@ msgid "Cleaning environment variables"
 msgstr "تنظيف متغيرات البيئة"
 
 #: src/components/ChatGPT/ChatGPT.vue:380
-#: src/components/Notification/Notification.vue:135
+#: src/components/Notification/Notification.vue:140
 #: src/views/notification/Notification.vue:44
 msgid "Clear"
 msgstr "مسح"
 
-#: src/components/Notification/Notification.vue:88
+#: src/components/Notification/Notification.vue:93
 #: src/views/notification/Notification.vue:13
 msgid "Cleared successfully"
 msgstr "تم المسح بنجاح"
@@ -640,17 +640,47 @@ msgstr "حذف"
 msgid "Delete Permanently"
 msgstr "حذف نهائي"
 
-#: src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:37 src/language/constants.ts:49
 msgid "Delete Remote Site Error"
 msgstr "خطأ حذف الموقع البعيد"
 
-#: src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:41 src/language/constants.ts:48
 msgid "Delete Remote Site Success"
 msgstr "نجح حذف الموقع البعيد"
+
+#: src/components/Notification/notifications.ts:79
+#, fuzzy
+msgid "Delete Remote Stream Error"
+msgstr "خطأ حذف الموقع البعيد"
+
+#: src/components/Notification/notifications.ts:83
+#, fuzzy
+msgid "Delete Remote Stream Success"
+msgstr "نجح حذف الموقع البعيد"
+
+#: src/components/Notification/notifications.ts:38
+#, fuzzy
+msgid "Delete site %{name} from %{node} failed"
+msgstr "فشل نشر {conf_name}% إلى {node_name}%"
+
+#: src/components/Notification/notifications.ts:42
+#, fuzzy
+msgid "Delete site %{name} from %{node} successfully"
+msgstr "تمت إزالة الموقع %{site} من %{node} بنجاح"
 
 #: src/views/site/site_list/SiteList.vue:67
 msgid "Delete site: %{site_name}"
 msgstr "حذف الموقع: ‎%{site_name}"
+
+#: src/components/Notification/notifications.ts:80
+#, fuzzy
+msgid "Delete stream %{name} from %{node} failed"
+msgstr "فشل نشر {conf_name}% إلى {node_name}%"
+
+#: src/components/Notification/notifications.ts:84
+#, fuzzy
+msgid "Delete stream %{name} from %{node} successfully"
+msgstr "تمت إزالة الموقع %{site} من %{node} بنجاح"
 
 #: src/views/stream/StreamList.vue:82
 msgid "Delete stream: %{stream_name}"
@@ -661,29 +691,15 @@ msgid "Deleted successfully"
 msgstr "تم الحذف بنجاح"
 
 #: src/views/config/ConfigEditor.vue:285
-#: src/views/stream/components/Deploy.vue:100
-#: src/views/stream/components/RightSettings.vue:92
 msgid "Deploy"
 msgstr "نشر"
-
-#: src/views/stream/components/Deploy.vue:57
-msgid "Deploy %{conf_name} to %{node_name} failed"
-msgstr "فشل نشر {conf_name}% إلى {node_name}%"
-
-#: src/views/stream/components/Deploy.vue:36
-msgid "Deploy %{conf_name} to %{node_name} successfully"
-msgstr "تم نشر %{conf_name} إلى %{node_name} بنجاح"
-
-#: src/views/stream/components/Deploy.vue:34
-msgid "Deploy successfully"
-msgstr "تم النشر بنجاح"
 
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:107
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:121
 msgid "Description"
 msgstr "وصف"
 
-#: src/constants/errors/site.ts:3
+#: src/constants/errors/site.ts:3 src/constants/errors/stream.ts:3
 msgid "Destination file already exists"
 msgstr ""
 
@@ -724,28 +740,50 @@ msgstr "تعطيل"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "فشل تعطيل التجديد التلقائي لـ {name}%"
 
-#: src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:45 src/language/constants.ts:51
 msgid "Disable Remote Site Error"
 msgstr "خطأ في تعطيل الموقع البعيد"
 
-#: src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:50
 msgid "Disable Remote Site Success"
 msgstr "تعطيل الموقع البعيد بنجاح"
 
-#: src/components/Notification/config.ts:82
-msgid "Disable site %{site} on %{node} error, response: %{resp}"
-msgstr "حدث خطأ في تعطيل الموقع %{site} على %{node}، الاستجابة: %{resp}"
+#: src/components/Notification/notifications.ts:87
+#, fuzzy
+msgid "Disable Remote Stream Error"
+msgstr "خطأ في تعطيل الموقع البعيد"
 
-#: src/components/Notification/config.ts:74
-msgid "Disable Site %{site} on %{node} successfully"
+#: src/components/Notification/notifications.ts:91
+#, fuzzy
+msgid "Disable Remote Stream Success"
+msgstr "تعطيل الموقع البعيد بنجاح"
+
+#: src/components/Notification/notifications.ts:46
+#, fuzzy
+msgid "Disable site %{name} from %{node} failed"
+msgstr "تم تعطيل الموقع %{site} على %{node} بنجاح"
+
+#: src/components/Notification/notifications.ts:50
+#, fuzzy
+msgid "Disable site %{name} from %{node} successfully"
+msgstr "تم تعطيل الموقع %{site} على %{node} بنجاح"
+
+#: src/components/Notification/notifications.ts:88
+#, fuzzy
+msgid "Disable stream %{name} from %{node} failed"
+msgstr "فشل تفعيل %{conf_name} في %{node_name}"
+
+#: src/components/Notification/notifications.ts:92
+#, fuzzy
+msgid "Disable stream %{name} from %{node} successfully"
 msgstr "تم تعطيل الموقع %{site} على %{node} بنجاح"
 
 #: src/views/environment/envColumns.tsx:61
 #: src/views/environment/envColumns.tsx:79
 #: src/views/site/site_edit/SiteEdit.vue:190
 #: src/views/site/site_list/columns.tsx:53
-#: src/views/site/site_list/columns.tsx:62 src/views/stream/StreamEdit.vue:175
-#: src/views/stream/StreamList.vue:34 src/views/user/userColumns.tsx:41
+#: src/views/site/site_list/columns.tsx:62 src/views/stream/StreamEdit.vue:176
+#: src/views/stream/StreamList.vue:33 src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr "معطل"
 
@@ -776,16 +814,6 @@ msgstr "DNS01"
 #: src/views/site/cert/components/AutoCertStepOne.vue:98
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr "لا تقم بتمكين هذا الخيار إلا إذا كنت متأكدًا من أنك بحاجة إليه."
-
-#: src/views/stream/components/Deploy.vue:16
-msgid "Do you want to deploy this file to remote server?"
-msgid_plural "Do you want to deploy this file to remote servers?"
-msgstr[0] "صفر؟"
-msgstr[1] "هل تريد نشر هذا الملف إلى خادم بعيد؟"
-msgstr[2] "هل تريد نشر هذا الملف إلى الخادمين البعيدة؟"
-msgstr[3] "هل تريد نشر هذا الملف إلى الخوادم البعيدة؟"
-msgstr[4] "هل تريد نشر هذا الملف إلى الخوادم البعيدة؟"
-msgstr[5] "هل تريد نشر هذا الملف إلى الخوادم البعيدة؟"
 
 #: src/views/site/cert/components/ObtainCert.vue:136
 msgid "Do you want to disable auto-cert renewal?"
@@ -865,25 +893,13 @@ msgstr ""
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:140
-#: src/views/stream/components/StreamDuplicate.vue:121
+#: src/views/stream/components/StreamDuplicate.vue:64
 #: src/views/stream/StreamList.vue:160
 msgid "Duplicate"
 msgstr "مكرر"
 
-#: src/views/stream/components/StreamDuplicate.vue:82
-msgid "Duplicate %{conf_name} to %{node_name} successfully"
-msgstr "تم نسخ %{conf_name} إلى %{node_name} بنجاح"
-
-#: src/views/stream/components/StreamDuplicate.vue:86
-msgid "Duplicate failed"
-msgstr "فشل التكرار"
-
-#: src/views/stream/components/StreamDuplicate.vue:80
-msgid "Duplicate successfully"
-msgstr "تم التكرار بنجاح"
-
 #: src/views/site/site_list/SiteDuplicate.vue:48
-#: src/views/stream/components/StreamDuplicate.vue:63
+#: src/views/stream/components/StreamDuplicate.vue:40
 msgid "Duplicate to local successfully"
 msgstr "تم النسخ إلى المحلي بنجاح"
 
@@ -893,7 +909,7 @@ msgid "Edit"
 msgstr "تعديل %{n}"
 
 #: src/views/site/site_edit/SiteEdit.vue:179
-#: src/views/stream/StreamEdit.vue:164
+#: src/views/stream/StreamEdit.vue:165
 msgid "Edit %{n}"
 msgstr "تعديل %{n}"
 
@@ -918,18 +934,9 @@ msgid "Email (*)"
 msgstr "البريد الإلكتروني (*)"
 
 #: src/views/site/site_list/SiteList.vue:133
-#: src/views/stream/components/Deploy.vue:80
 #: src/views/stream/StreamList.vue:153
 msgid "Enable"
 msgstr "تفعيل"
-
-#: src/views/stream/components/Deploy.vue:47
-msgid "Enable %{conf_name} in %{node_name} failed"
-msgstr "فشل تفعيل %{conf_name} في %{node_name}"
-
-#: src/views/stream/components/Deploy.vue:43
-msgid "Enable %{conf_name} in %{node_name} successfully"
-msgstr "تم تفعيل %{conf_name} في %{node_name} بنجاح"
 
 #: src/views/preference/components/TOTP.vue:45
 msgid "Enable 2FA successfully"
@@ -943,25 +950,43 @@ msgstr "فشل تفعيل التجديد التلقائي لـ %{name}"
 msgid "Enable failed"
 msgstr "فشل التفعيل"
 
-#: src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:53 src/language/constants.ts:53
 msgid "Enable Remote Site Error"
 msgstr "خطأ في تفعيل الموقع البعيد"
 
-#: src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:52
 msgid "Enable Remote Site Success"
 msgstr "نجح تفعيل الموقع البعيد"
 
-#: src/components/Notification/config.ts:69
-msgid "Enable site %{site} on %{node} error, response: %{resp}"
-msgstr "خطأ في تفعيل الموقع %{site} على %{node}، الاستجابة: %{resp}"
+#: src/components/Notification/notifications.ts:95
+#, fuzzy
+msgid "Enable Remote Stream Error"
+msgstr "خطأ في تفعيل الموقع البعيد"
 
-#: src/components/Notification/config.ts:61
-msgid "Enable Site %{site} on %{node} successfully"
+#: src/components/Notification/notifications.ts:99
+#, fuzzy
+msgid "Enable Remote Stream Success"
+msgstr "نجح تفعيل الموقع البعيد"
+
+#: src/components/Notification/notifications.ts:54
+#, fuzzy
+msgid "Enable site %{name} on %{node} failed"
+msgstr "فشل تفعيل %{conf_name} في %{node_name}"
+
+#: src/components/Notification/notifications.ts:58
+#, fuzzy
+msgid "Enable site %{name} on %{node} successfully"
 msgstr "تم تفعيل الموقع %{site} على %{node} بنجاح"
 
-#: src/views/stream/components/Deploy.vue:41
-msgid "Enable successfully"
-msgstr "تم التفعيل بنجاح"
+#: src/components/Notification/notifications.ts:96
+#, fuzzy
+msgid "Enable stream %{name} on %{node} failed"
+msgstr "فشل تفعيل %{conf_name} في %{node_name}"
+
+#: src/components/Notification/notifications.ts:100
+#, fuzzy
+msgid "Enable stream %{name} on %{node} successfully"
+msgstr "تم تفعيل الموقع %{site} على %{node} بنجاح"
 
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:183
 msgid "Enable TLS"
@@ -979,7 +1004,7 @@ msgstr "تفعيل TOTP"
 #: src/views/site/site_list/columns.tsx:49
 #: src/views/site/site_list/columns.tsx:61
 #: src/views/stream/components/RightSettings.vue:76
-#: src/views/stream/StreamEdit.vue:169 src/views/stream/StreamList.vue:30
+#: src/views/stream/StreamEdit.vue:170 src/views/stream/StreamList.vue:29
 #: src/views/user/userColumns.tsx:38
 msgid "Enabled"
 msgstr "مفعل"
@@ -987,7 +1012,6 @@ msgstr "مفعل"
 #: src/views/site/site_edit/RightSettings.vue:33
 #: src/views/site/site_list/SiteList.vue:46 src/views/site/SiteAdd.vue:40
 #: src/views/stream/components/RightSettings.vue:29
-#: src/views/stream/components/StreamDuplicate.vue:93
 #: src/views/stream/StreamList.vue:61
 msgid "Enabled successfully"
 msgstr "تم التفعيل بنجاح"
@@ -1352,6 +1376,10 @@ msgstr "اتركه فارغًا إذا لم تكن بحاجة إلى ذلك."
 msgid "Leave blank will not change anything"
 msgstr "تركه فارغًا لن يغير شيئًا"
 
+#: src/constants/errors/user.ts:6
+msgid "Legacy recovery code not allowed since totp is not enabled"
+msgstr ""
+
 #: src/views/site/cert/components/AutoCertStepOne.vue:105
 msgid "Lego disable CNAME Support"
 msgstr "تعطيل دعم ‏Lego CNAME"
@@ -1382,7 +1410,7 @@ msgid "Load successfully"
 msgstr "تم التحميل بنجاح"
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:80
+#: src/components/NodeSelector/NodeSelector.vue:86
 msgid "Local"
 msgstr "محلي"
 
@@ -1517,7 +1545,7 @@ msgstr "توجيه متعدد الأسطر"
 #: src/views/site/site_list/columns.tsx:15
 #: src/views/site/site_list/SiteDuplicate.vue:79
 #: src/views/stream/components/RightSettings.vue:82
-#: src/views/stream/components/StreamDuplicate.vue:128
+#: src/views/stream/components/StreamDuplicate.vue:71
 #: src/views/stream/StreamList.vue:13 src/views/stream/StreamList.vue:186
 msgid "Name"
 msgstr "اسم"
@@ -1589,7 +1617,7 @@ msgid "Nginx conf not include stream-enabled"
 msgstr ""
 
 #: src/views/site/site_edit/SiteEdit.vue:223
-#: src/views/stream/StreamEdit.vue:207
+#: src/views/stream/StreamEdit.vue:208
 msgid "Nginx Configuration Parse Error"
 msgstr "خطأ في تحليل تكوين Nginx"
 
@@ -1638,7 +1666,7 @@ msgid "Nginx restarted successfully"
 msgstr "تم إعادة تشغيل Nginx بنجاح"
 
 #: src/components/ChatGPT/ChatGPT.vue:374
-#: src/components/Notification/Notification.vue:128
+#: src/components/Notification/Notification.vue:133
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:63
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:94
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:510
@@ -1691,7 +1719,7 @@ msgstr ""
 msgid "Notification"
 msgstr "إشعار"
 
-#: src/components/Notification/Notification.vue:126 src/routes/index.ts:248
+#: src/components/Notification/Notification.vue:131 src/routes/index.ts:248
 msgid "Notifications"
 msgstr "الإشعارات"
 
@@ -1715,7 +1743,7 @@ msgstr ""
 "قد يتسبب وجوب تثبيت OCSP في حدوث أخطاء لبعض المستخدمين عند الوصول لأول مرة "
 "باستخدام Firefox."
 
-#: src/components/NodeSelector/NodeSelector.vue:103
+#: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environment/envColumns.tsx:56
 msgid "Offline"
@@ -1730,7 +1758,7 @@ msgid "Ok"
 msgstr "حسنًا"
 
 #: src/components/ChatGPT/ChatGPT.vue:375
-#: src/components/Notification/Notification.vue:129
+#: src/components/Notification/Notification.vue:134
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:95
 #: src/views/notification/Notification.vue:38
 #: src/views/site/cert/components/ObtainCert.vue:139
@@ -1739,7 +1767,6 @@ msgstr "حسنًا"
 #: src/views/site/ngx_conf/NgxUpstream.vue:33
 #: src/views/site/site_edit/RightSettings.vue:54
 #: src/views/site/site_list/SiteList.vue:144
-#: src/views/stream/components/Deploy.vue:19
 #: src/views/stream/components/RightSettings.vue:50
 #: src/views/stream/StreamList.vue:164
 msgid "OK"
@@ -1749,8 +1776,8 @@ msgstr "حسنًا"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "بمجرد اكتمال التحقق، سيتم إزالة السجلات."
 
-#: src/components/NodeSelector/NodeSelector.vue:83
-#: src/components/NodeSelector/NodeSelector.vue:97
+#: src/components/NodeSelector/NodeSelector.vue:103
+#: src/components/NodeSelector/NodeSelector.vue:89
 #: src/views/dashboard/Environments.vue:100
 #: src/views/environment/envColumns.tsx:52
 msgid "Online"
@@ -1780,18 +1807,16 @@ msgstr "نظام التشغيل"
 msgid "OS:"
 msgstr "نظام التشغيل:"
 
-#: src/constants/errors/user.ts:8
+#: src/constants/errors/user.ts:9
 #, fuzzy
 msgid "Otp or recovery code empty"
 msgstr "استخدم رمز الاسترداد"
 
 #: src/views/config/ConfigEditor.vue:294
-#: src/views/stream/components/Deploy.vue:84
 msgid "Overwrite"
 msgstr "الكتابة فوق"
 
 #: src/views/config/ConfigEditor.vue:298
-#: src/views/stream/components/Deploy.vue:88
 msgid "Overwrite exist file"
 msgstr "الكتابة فوق الملف الموجود"
 
@@ -1889,6 +1914,7 @@ msgstr ""
 "يرجى أولاً إضافة بيانات الاعتماد في الشهادات > بيانات اعتماد DNS، ثم اختيار "
 "أحد بيانات الاعتماد أدناه لطلب API لمزود DNS."
 
+#: src/components/Notification/notifications.ts:122
 #: src/language/constants.ts:58
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -1904,7 +1930,7 @@ msgstr "يرجى إدخال اسم الملف"
 msgid "Please input a folder name"
 msgstr "يرجى إدخال اسم المجلد"
 
-#: src/views/stream/components/StreamDuplicate.vue:38
+#: src/views/stream/components/StreamDuplicate.vue:25
 msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration!"
@@ -1936,20 +1962,6 @@ msgstr "يرجى ملاحظة أن تكوين وحدات الوقت أدناه �
 #: src/views/environment/Environment.vue:58
 msgid "Please select at least one node to upgrade"
 msgstr "يرجى اختيار عقدة واحدة على الأقل للترقية"
-
-#: src/views/stream/components/StreamDuplicate.vue:45
-msgid "Please select at least one node!"
-msgstr "يرجى اختيار عقدة واحدة على الأقل!"
-
-#: src/components/Notification/config.ts:11
-#: src/components/Notification/config.ts:27
-#: src/components/Notification/config.ts:41
-#: src/components/Notification/config.ts:54
-#: src/components/Notification/config.ts:67
-#: src/components/Notification/config.ts:80
-#: src/components/Notification/config.ts:93
-msgid "Please upgrade the remote Nginx UI to the latest version"
-msgstr "يرجى ترقية واجهة Nginx البعيدة إلى أحدث إصدار"
 
 #: src/views/environment/BatchUpgrader.vue:167
 #: src/views/environment/BatchUpgrader.vue:220 src/views/system/Upgrade.vue:194
@@ -2094,20 +2106,12 @@ msgstr "إعادة تحميل nginx"
 msgid "Remove"
 msgstr "إزالة"
 
-#: src/components/Notification/config.ts:56
-msgid "Remove site %{site} from %{node} error, response: %{resp}"
-msgstr "خطأ في إزالة الموقع %{site} من %{node}، الاستجابة: %{resp}"
-
-#: src/components/Notification/config.ts:48
-msgid "Remove Site %{site} from %{node} successfully"
-msgstr "تمت إزالة الموقع %{site} من %{node} بنجاح"
-
 #: src/views/preference/AuthSettings.vue:51
 #: src/views/preference/components/Passkey.vue:46
 msgid "Remove successfully"
 msgstr "إزالة بنجاح"
 
-#: src/components/Notification/Notification.vue:97
+#: src/components/Notification/Notification.vue:102
 msgid "Removed successfully"
 msgstr "تمت الإزالة بنجاح"
 
@@ -2116,44 +2120,63 @@ msgstr "تمت الإزالة بنجاح"
 #: src/views/config/ConfigList.vue:166
 #: src/views/site/ngx_conf/NgxUpstream.vue:125
 #: src/views/site/site_edit/components/ConfigName.vue:44
+#: src/views/stream/components/ConfigName.vue:44
 msgid "Rename"
 msgstr "إعادة تسمية"
 
-#: src/components/Notification/config.ts:30
-msgid ""
-"Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
-msgstr ""
-"فشل إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name}، الاستجابة: "
-"%{resp}"
+#: src/components/Notification/notifications.ts:28
+#, fuzzy
+msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
+msgstr "تم إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name} بنجاح"
 
-#: src/components/Notification/config.ts:20
+#: src/components/Notification/notifications.ts:32
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "تم إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name} بنجاح"
 
-#: src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:27 src/language/constants.ts:41
 msgid "Rename Remote Config Error"
 msgstr "خطأ في إعادة تسمية التكوين البعيد"
 
-#: src/language/constants.ts:40
+#: src/components/Notification/notifications.ts:31 src/language/constants.ts:40
 msgid "Rename Remote Config Success"
 msgstr "إعادة تسمية تكوين البعيد بنجاح"
 
-#: src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:55
 msgid "Rename Remote Site Error"
 msgstr "خطأ في إعادة تسمية الموقع البعيد"
 
-#: src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:54
 msgid "Rename Remote Site Success"
 msgstr "تم إعادة تسمية الموقع البعيد بنجاح"
 
-#: src/components/Notification/config.ts:95
-msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
-msgstr ""
-"خطأ في إعادة تسمية الموقع %{site} إلى %{new_site} على %{node}، الاستجابة: "
-"%{resp}"
+#: src/components/Notification/notifications.ts:103
+#, fuzzy
+msgid "Rename Remote Stream Error"
+msgstr "خطأ في إعادة تسمية الموقع البعيد"
 
-#: src/components/Notification/config.ts:87
-msgid "Rename Site %{site} to %{new_site} on %{node} successfully"
+#: src/components/Notification/notifications.ts:107
+#, fuzzy
+msgid "Rename Remote Stream Success"
+msgstr "تم إعادة تسمية الموقع البعيد بنجاح"
+
+#: src/components/Notification/notifications.ts:62
+#, fuzzy
+msgid "Rename site %{name} to %{new_name} on %{node} failed"
+msgstr "إعادة تسمية الموقع %{site} إلى %{new_site} على %{node} بنجاح"
+
+#: src/components/Notification/notifications.ts:66
+#, fuzzy
+msgid "Rename site %{name} to %{new_name} on %{node} successfully"
+msgstr "إعادة تسمية الموقع %{site} إلى %{new_site} على %{node} بنجاح"
+
+#: src/components/Notification/notifications.ts:104
+#, fuzzy
+msgid "Rename stream %{name} to %{new_name} on %{node} failed"
+msgstr "إعادة تسمية الموقع %{site} إلى %{new_site} على %{node} بنجاح"
+
+#: src/components/Notification/notifications.ts:108
+#, fuzzy
+msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "إعادة تسمية الموقع %{site} إلى %{new_site} على %{node} بنجاح"
 
 #: src/views/config/components/Rename.vue:42
@@ -2162,6 +2185,7 @@ msgstr "إعادة التسمية بنجاح"
 
 #: src/views/config/components/ConfigName.vue:30
 #: src/views/site/site_edit/components/ConfigName.vue:27
+#: src/views/stream/components/ConfigName.vue:27
 msgid "Renamed successfully"
 msgstr "تمت إعادة التسمية بنجاح"
 
@@ -2238,7 +2262,8 @@ msgstr "يعمل"
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
 #: src/views/site/site_edit/components/ConfigName.vue:52
 #: src/views/site/site_edit/SiteEdit.vue:271
-#: src/views/stream/StreamEdit.vue:252
+#: src/views/stream/components/ConfigName.vue:52
+#: src/views/stream/StreamEdit.vue:253
 msgid "Save"
 msgstr "حفظ"
 
@@ -2252,20 +2277,42 @@ msgstr "حفظ التوجيه"
 msgid "Save error %{msg}"
 msgstr "خطأ في الحفظ %{msg}"
 
-#: src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:47
 msgid "Save Remote Site Error"
 msgstr "خطأ في حفظ الموقع البعيد"
 
-#: src/language/constants.ts:46
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:46
 msgid "Save Remote Site Success"
 msgstr "حفظ الموقع البعيد بنجاح"
 
-#: src/components/Notification/config.ts:43
-msgid "Save site %{site} to %{node} error, response: %{resp}"
-msgstr "خطأ في حفظ الموقع %{site} إلى %{node}، الاستجابة: %{resp}"
+#: src/components/Notification/notifications.ts:111
+#, fuzzy
+msgid "Save Remote Stream Error"
+msgstr "خطأ في حفظ الموقع البعيد"
 
-#: src/components/Notification/config.ts:35
-msgid "Save Site %{site} to %{node} successfully"
+#: src/components/Notification/notifications.ts:115
+#, fuzzy
+msgid "Save Remote Stream Success"
+msgstr "حفظ الموقع البعيد بنجاح"
+
+#: src/components/Notification/notifications.ts:70
+#, fuzzy
+msgid "Save site %{name} to %{node} failed"
+msgstr "تم حفظ الموقع %{site} إلى %{node} بنجاح"
+
+#: src/components/Notification/notifications.ts:74
+#, fuzzy
+msgid "Save site %{name} to %{node} successfully"
+msgstr "تم حفظ الموقع %{site} إلى %{node} بنجاح"
+
+#: src/components/Notification/notifications.ts:112
+#, fuzzy
+msgid "Save stream %{name} to %{node} failed"
+msgstr "فشل نشر {conf_name}% إلى {node_name}%"
+
+#: src/components/Notification/notifications.ts:116
+#, fuzzy
+msgid "Save stream %{name} to %{node} successfully"
 msgstr "تم حفظ الموقع %{site} إلى %{node} بنجاح"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
@@ -2278,7 +2325,7 @@ msgstr "تم الحفظ بنجاح"
 #: src/views/config/ConfigEditor.vue:167
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/site/site_edit/SiteEdit.vue:152 src/views/site/SiteAdd.vue:37
-#: src/views/stream/StreamEdit.vue:138
+#: src/views/stream/StreamEdit.vue:139
 msgid "Saved successfully"
 msgstr "تم الحفظ بنجاح"
 
@@ -2323,7 +2370,7 @@ msgstr "عامل server_name مطلوب"
 msgid "ServerIdx out of range"
 msgstr ""
 
-#: src/constants/errors/user.ts:11
+#: src/constants/errors/user.ts:12
 #, fuzzy
 msgid "Session not found"
 msgstr "لم يتم العثور على الملف"
@@ -2438,7 +2485,7 @@ msgstr "مستقر"
 #: src/views/certificate/ACMEUser.vue:65
 #: src/views/certificate/CertificateList/certColumns.tsx:68
 #: src/views/environment/envColumns.tsx:44
-#: src/views/site/site_list/columns.tsx:42 src/views/stream/StreamList.vue:23
+#: src/views/site/site_list/columns.tsx:42 src/views/stream/StreamList.vue:22
 msgid "Status"
 msgstr "الحالة"
 
@@ -2450,6 +2497,16 @@ msgstr "متوقف"
 #: src/views/dashboard/ServerAnalytic.vue:251
 msgid "Storage"
 msgstr "تخزين"
+
+#: src/constants/errors/stream.ts:4
+#, fuzzy
+msgid "Stream is enabled"
+msgstr "معطل"
+
+#: src/constants/errors/stream.ts:2
+#, fuzzy
+msgid "Stream not found"
+msgstr "لم يتم العثور على الملف"
 
 #: src/views/system/SelfCheck/tasks.ts:7
 #, fuzzy
@@ -2492,6 +2549,7 @@ msgid "Switch to light theme"
 msgstr "التبديل إلى الوضع الفاتح"
 
 #: src/views/config/components/Rename.vue:79
+#: src/views/stream/components/RightSettings.vue:92
 msgid "Sync"
 msgstr "مزامنة"
 
@@ -2499,43 +2557,38 @@ msgstr "مزامنة"
 msgid "Sync Certificate"
 msgstr "مزامنة الشهادة"
 
-#: src/components/Notification/cert.ts:11
-msgid ""
-"Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
-"remote Nginx UI to the latest version"
-msgstr ""
-"فشل مزامنة الشهادة %{cert_name} إلى %{env_name}، يرجى ترقية واجهة Nginx "
-"البعيدة إلى أحدث إصدار"
+#: src/components/Notification/notifications.ts:10
+#, fuzzy
+msgid "Sync Certificate %{cert_name} to %{env_name} failed"
+msgstr "نجح مزامنة الشهادة %{cert_name} إلى %{env_name}"
 
-#: src/components/Notification/cert.ts:14
-msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
-msgstr "فشل مزامنة الشهادة %{cert_name} إلى %{env_name}، الاستجابة: %{resp}"
-
-#: src/components/Notification/cert.ts:4
+#: src/components/Notification/notifications.ts:14
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "نجح مزامنة الشهادة %{cert_name} إلى %{env_name}"
 
-#: src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:9 src/language/constants.ts:38
 msgid "Sync Certificate Error"
 msgstr "خطأ في مزامنة الشهادة"
 
-#: src/language/constants.ts:37
+#: src/components/Notification/notifications.ts:13 src/language/constants.ts:37
 msgid "Sync Certificate Success"
 msgstr "تمت مزامنة الشهادة بنجاح"
 
-#: src/components/Notification/config.ts:14
-msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
-msgstr "فشل مزامنة التكوين %{config_name} إلى %{env_name}، الاستجابة: %{resp}"
-
-#: src/components/Notification/config.ts:4
-msgid "Sync Config %{config_name} to %{env_name} successfully"
+#: src/components/Notification/notifications.ts:20
+#, fuzzy
+msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "تمت مزامنة التكوين %{config_name} إلى %{env_name} بنجاح"
 
-#: src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:24
+#, fuzzy
+msgid "Sync config %{config_name} to %{env_name} successfully"
+msgstr "تمت مزامنة التكوين %{config_name} إلى %{env_name} بنجاح"
+
+#: src/components/Notification/notifications.ts:19 src/language/constants.ts:44
 msgid "Sync Config Error"
 msgstr "خطأ في تزامن التكوين"
 
-#: src/language/constants.ts:43
+#: src/components/Notification/notifications.ts:23 src/language/constants.ts:43
 msgid "Sync Config Success"
 msgstr "تمت مزامنة التكوين بنجاح"
 
@@ -2563,10 +2616,6 @@ msgstr "نظام"
 #: src/views/certificate/ACMEUserSelector.vue:88
 msgid "System Initial User"
 msgstr "مستخدم النظام الأولي"
-
-#: src/views/stream/components/StreamDuplicate.vue:135
-msgid "Target"
-msgstr "الهدف"
 
 #: src/constants/errors/self_check.ts:2
 #, fuzzy
@@ -2709,7 +2758,7 @@ msgstr "يجب أن يكون هذا الحقل عنوان بريد إلكترو�
 msgid "This field should be a valid hostname"
 msgstr "يجب أن يكون هذا الحقل اسم مضيف صالحًا"
 
-#: src/components/StdDesign/StdDataEntry/StdFormItem.vue:45
+#: src/components/StdDesign/StdDataEntry/StdFormItem.vue:39
 #: src/constants/form_errors.ts:2
 msgid "This field should not be empty"
 msgstr "يجب ألا يكون هذا الحقل فارغًا"
@@ -2832,7 +2881,7 @@ msgstr "تم التحديث بنجاح"
 #: src/views/site/site_edit/RightSettings.vue:100
 #: src/views/site/site_list/columns.tsx:69
 #: src/views/stream/components/RightSettings.vue:85
-#: src/views/stream/StreamList.vue:43 src/views/user/userColumns.tsx:54
+#: src/views/stream/StreamList.vue:42 src/views/user/userColumns.tsx:54
 msgid "Updated at"
 msgstr "محدث في"
 
@@ -2886,7 +2935,7 @@ msgstr "مستخدم"
 msgid "User banned"
 msgstr "المستخدم محظور"
 
-#: src/constants/errors/user.ts:7
+#: src/constants/errors/user.ts:8
 msgid "User not enabled otp as 2fa"
 msgstr ""
 
@@ -2913,7 +2962,7 @@ msgstr "إصدار"
 msgid "View"
 msgstr "عرض"
 
-#: src/components/Notification/Notification.vue:187
+#: src/components/Notification/Notification.vue:202
 msgid "View all notifications"
 msgstr "عرض جميع التنبيهات"
 
@@ -2960,7 +3009,7 @@ msgstr ""
 msgid "Webauthn"
 msgstr "ويب أوثن"
 
-#: src/constants/errors/user.ts:6
+#: src/constants/errors/user.ts:7
 msgid "WebAuthn settings are not configured"
 msgstr ""
 
@@ -3045,6 +3094,85 @@ msgstr ""
 #: src/views/preference/components/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "مفاتيح المرور الخاصة بك"
+
+#~ msgid "Deploy %{conf_name} to %{node_name} successfully"
+#~ msgstr "تم نشر %{conf_name} إلى %{node_name} بنجاح"
+
+#~ msgid "Deploy successfully"
+#~ msgstr "تم النشر بنجاح"
+
+#~ msgid "Disable site %{site} on %{node} error, response: %{resp}"
+#~ msgstr "حدث خطأ في تعطيل الموقع %{site} على %{node}، الاستجابة: %{resp}"
+
+#~ msgid "Do you want to deploy this file to remote server?"
+#~ msgid_plural "Do you want to deploy this file to remote servers?"
+#~ msgstr[0] "صفر؟"
+#~ msgstr[1] "هل تريد نشر هذا الملف إلى خادم بعيد؟"
+#~ msgstr[2] "هل تريد نشر هذا الملف إلى الخادمين البعيدة؟"
+#~ msgstr[3] "هل تريد نشر هذا الملف إلى الخوادم البعيدة؟"
+#~ msgstr[4] "هل تريد نشر هذا الملف إلى الخوادم البعيدة؟"
+#~ msgstr[5] "هل تريد نشر هذا الملف إلى الخوادم البعيدة؟"
+
+#~ msgid "Duplicate %{conf_name} to %{node_name} successfully"
+#~ msgstr "تم نسخ %{conf_name} إلى %{node_name} بنجاح"
+
+#~ msgid "Duplicate failed"
+#~ msgstr "فشل التكرار"
+
+#~ msgid "Duplicate successfully"
+#~ msgstr "تم التكرار بنجاح"
+
+#~ msgid "Enable %{conf_name} in %{node_name} successfully"
+#~ msgstr "تم تفعيل %{conf_name} في %{node_name} بنجاح"
+
+#~ msgid "Enable site %{site} on %{node} error, response: %{resp}"
+#~ msgstr "خطأ في تفعيل الموقع %{site} على %{node}، الاستجابة: %{resp}"
+
+#~ msgid "Enable successfully"
+#~ msgstr "تم التفعيل بنجاح"
+
+#~ msgid "Please select at least one node!"
+#~ msgstr "يرجى اختيار عقدة واحدة على الأقل!"
+
+#~ msgid "Please upgrade the remote Nginx UI to the latest version"
+#~ msgstr "يرجى ترقية واجهة Nginx البعيدة إلى أحدث إصدار"
+
+#~ msgid "Remove site %{site} from %{node} error, response: %{resp}"
+#~ msgstr "خطأ في إزالة الموقع %{site} من %{node}، الاستجابة: %{resp}"
+
+#~ msgid ""
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
+#~ "%{resp}"
+#~ msgstr ""
+#~ "فشل إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name}، الاستجابة: "
+#~ "%{resp}"
+
+#~ msgid ""
+#~ "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+#~ msgstr ""
+#~ "خطأ في إعادة تسمية الموقع %{site} إلى %{new_site} على %{node}، الاستجابة: "
+#~ "%{resp}"
+
+#~ msgid "Save site %{site} to %{node} error, response: %{resp}"
+#~ msgstr "خطأ في حفظ الموقع %{site} إلى %{node}، الاستجابة: %{resp}"
+
+#~ msgid ""
+#~ "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
+#~ "remote Nginx UI to the latest version"
+#~ msgstr ""
+#~ "فشل مزامنة الشهادة %{cert_name} إلى %{env_name}، يرجى ترقية واجهة Nginx "
+#~ "البعيدة إلى أحدث إصدار"
+
+#~ msgid ""
+#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgstr "فشل مزامنة الشهادة %{cert_name} إلى %{env_name}، الاستجابة: %{resp}"
+
+#~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
+#~ msgstr ""
+#~ "فشل مزامنة التكوين %{config_name} إلى %{env_name}، الاستجابة: %{resp}"
+
+#~ msgid "Target"
+#~ msgstr "الهدف"
 
 #~ msgid ""
 #~ "If you lose your mobile phone, you can use the recovery code to reset "

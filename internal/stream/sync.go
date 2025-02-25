@@ -64,11 +64,3 @@ func (s *SyncResult) SetNewName(name string) *SyncResult {
 	s.NewName = name
 	return s
 }
-
-func (s *SyncResult) String() string {
-	b, err := json.Marshal(s)
-	if err != nil {
-		logger.Error(err)
-	}
-	return string(b)
-}

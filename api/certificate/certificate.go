@@ -133,7 +133,7 @@ func AddCert(c *gin.Context) {
 
 	err = cert.SyncToRemoteServer(certModel)
 	if err != nil {
-		notification.Error("Sync Certificate Error", err.Error())
+		notification.Error("Sync Certificate Error", err.Error(), nil)
 		return
 	}
 
@@ -188,7 +188,7 @@ func ModifyCert(c *gin.Context) {
 
 	err = cert.SyncToRemoteServer(certModel)
 	if err != nil {
-		notification.Error("Sync Certificate Error", err.Error())
+		notification.Error("Sync Certificate Error", err.Error(), nil)
 		return
 	}
 

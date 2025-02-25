@@ -68,7 +68,7 @@ func VerifyOTP(user *model.User, otp, recoveryCode string) (err error) {
 			}
 		}
 		if verified && usedCount == len(user.RecoveryCodes.Codes) {
-			notification.Warning("All Recovery Codes Have Been Used", "Please generate new recovery codes in the preferences immediately to prevent lockout.")
+			notification.Warning("All Recovery Codes Have Been Used", "Please generate new recovery codes in the preferences immediately to prevent lockout.", nil)
 		}
 		return ErrRecoveryCode
 	}

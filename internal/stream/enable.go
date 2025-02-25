@@ -72,14 +72,14 @@ func syncEnable(name string) {
 				SetHeader("X-Node-Secret", node.Token).
 				Post(fmt.Sprintf("/api/streams/%s/enable", name))
 			if err != nil {
-				notification.Error("Enable Remote Stream Error", err.Error())
+				notification.Error("Enable Remote Stream Error", err.Error(), nil)
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {
-				notification.Error("Enable Remote Stream Error", NewSyncResult(node.Name, name, resp).String())
+				notification.Error("Enable Remote Stream Error", "Enable stream %{name} on %{node} failed", NewSyncResult(node.Name, name, resp))
 				return
 			}
-			notification.Success("Enable Remote Stream Success", NewSyncResult(node.Name, name, resp).String())
+			notification.Success("Enable Remote Stream Success", "Enable stream %{name} on %{node} successfully", NewSyncResult(node.Name, name, resp))
 		}()
 	}
 

@@ -12,6 +12,7 @@ import { message, notification } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { SSE } from 'sse.js'
+import notifications from './notifications'
 
 defineProps<{
   headerRef: HTMLElement
@@ -181,7 +182,7 @@ function viewAll() {
                 <template #description>
                   <div class="flex justify-between items-center">
                     <div>
-                      {{ detailRender({ text: item.details, record: item } as CustomRender) }}
+                      {{ notifications[item.title].content(item.details) }}
                     </div>
                     <span
                       key="list-loadmore-remove"

@@ -4,6 +4,12 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
+	"io"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -13,11 +19,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy/logger"
-	"io"
-	"net/http"
-	"os"
-	"path/filepath"
-	"strings"
 )
 
 type SyncConfigPayload struct {
@@ -104,7 +105,7 @@ type SyncNotificationPayload struct {
 	StatusCode int    `json:"status_code"`
 	ConfigName string `json:"config_name"`
 	EnvName    string `json:"env_name"`
-	RespBody   string `json:"resp_body"`
+	Response   string `json:"response"`
 }
 
 func (p *SyncConfigPayload) deploy(env *model.Environment, c *model.Config, payloadBytes []byte) (err error) {
@@ -139,20 +140,15 @@ func (p *SyncConfigPayload) deploy(env *model.Environment, c *model.Config, payl
 		StatusCode: resp.StatusCode,
 		ConfigName: c.Name,
 		EnvName:    env.Name,
-		RespBody:   string(respBody),
-	}
-
-	notificationPayloadBytes, err := json.Marshal(notificationPayload)
-	if err != nil {
-		return
+		Response:   string(respBody),
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		notification.Error("Sync Config Error", string(notificationPayloadBytes))
+		notification.Error("Sync Config Error", "Sync config %{config_name} to %{env_name} failed", notificationPayload)
 		return
 	}
 
-	notification.Success("Sync Config Success", string(notificationPayloadBytes))
+	notification.Success("Sync Config Success", "Sync config %{config_name} to %{env_name} successfully", notificationPayload)
 
 	return
 }
@@ -167,7 +163,7 @@ type SyncRenameNotificationPayload struct {
 	OrigPath   string `json:"orig_path"`
 	NewPath    string `json:"new_path"`
 	EnvName    string `json:"env_name"`
-	RespBody   string `json:"resp_body"`
+	Response   string `json:"response"`
 }
 
 func (p *RenameConfigPayload) rename(env *model.Environment) (err error) {
@@ -215,20 +211,15 @@ func (p *RenameConfigPayload) rename(env *model.Environment) (err error) {
 		OrigPath:   p.Filepath,
 		NewPath:    p.NewFilepath,
 		EnvName:    env.Name,
-		RespBody:   string(respBody),
-	}
-
-	notificationPayloadBytes, err := json.Marshal(notificationPayload)
-	if err != nil {
-		return
+		Response:   string(respBody),
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		notification.Error("Rename Remote Config Error", string(notificationPayloadBytes))
+		notification.Error("Rename Remote Config Error", "Rename %{orig_path} to %{new_path} on %{env_name} failed", notificationPayload)
 		return
 	}
 
-	notification.Success("Rename Remote Config Success", string(notificationPayloadBytes))
+	notification.Success("Rename Remote Config Success", "Rename %{orig_path} to %{new_path} on %{env_name} successfully", notificationPayload)
 
 	return
 }

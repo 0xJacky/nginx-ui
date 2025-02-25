@@ -92,7 +92,7 @@ msgid "Additional"
 msgstr "İlave bilgi"
 
 #: src/views/site/site_edit/SiteEdit.vue:205
-#: src/views/stream/StreamEdit.vue:189
+#: src/views/stream/StreamEdit.vue:190
 msgid "Advance Mode"
 msgstr "Gelişmiş Mod"
 
@@ -106,6 +106,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
+#: src/components/Notification/notifications.ts:121
 #: src/language/constants.ts:57
 msgid "All Recovery Codes Have Been Used"
 msgstr ""
@@ -167,7 +168,7 @@ msgstr "Silmek istediğine emin misin?"
 msgid "Are you sure you want to apply to all selected?"
 msgstr "Silmek istediğine emin misin?"
 
-#: src/components/Notification/Notification.vue:130
+#: src/components/Notification/Notification.vue:135
 #: src/views/notification/Notification.vue:39
 msgid "Are you sure you want to clear all notifications?"
 msgstr "Tüm bildirimleri temizlemek istediğinizden emin misiniz?"
@@ -255,7 +256,7 @@ msgstr "Otomatik yenileme %{name} için etkinleştirildi"
 #: src/views/config/ConfigEditor.vue:213 src/views/config/ConfigList.vue:106
 #: src/views/config/ConfigList.vue:180 src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/SiteEdit.vue:264
-#: src/views/stream/StreamEdit.vue:245
+#: src/views/stream/StreamEdit.vue:246
 msgid "Back"
 msgstr "Geri"
 
@@ -291,7 +292,7 @@ msgid "Basic"
 msgstr "Temel"
 
 #: src/views/site/site_edit/SiteEdit.vue:208
-#: src/views/stream/StreamEdit.vue:192
+#: src/views/stream/StreamEdit.vue:193
 msgid "Basic Mode"
 msgstr "Temel Mod"
 
@@ -339,17 +340,16 @@ msgstr "CADizini"
 #: src/views/site/ngx_conf/NgxServer.vue:80
 #: src/views/site/ngx_conf/NgxUpstream.vue:34
 #: src/views/site/site_edit/RightSettings.vue:55
-#: src/views/stream/components/Deploy.vue:20
 #: src/views/stream/components/RightSettings.vue:51
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/constants/errors/user.ts:10
+#: src/constants/errors/user.ts:11
 #, fuzzy
 msgid "Cannot change initial user password in demo mode"
 msgstr "Demoda kök parolasını değiştirmeyi yasakla"
 
-#: src/constants/errors/user.ts:9
+#: src/constants/errors/user.ts:10
 #, fuzzy
 msgid "Cannot remove initial user"
 msgstr "Sistem İlk Kullanıcısı"
@@ -453,12 +453,12 @@ msgid "Cleaning environment variables"
 msgstr "Ortam değişkenlerini temizleme"
 
 #: src/components/ChatGPT/ChatGPT.vue:380
-#: src/components/Notification/Notification.vue:135
+#: src/components/Notification/Notification.vue:140
 #: src/views/notification/Notification.vue:44
 msgid "Clear"
 msgstr "Temizle"
 
-#: src/components/Notification/Notification.vue:88
+#: src/components/Notification/Notification.vue:93
 #: src/views/notification/Notification.vue:13
 msgid "Cleared successfully"
 msgstr "Başarıyla temizlendi"
@@ -633,19 +633,51 @@ msgstr "Sil"
 msgid "Delete Permanently"
 msgstr "Kalıcı Olarak Sil"
 
-#: src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:37 src/language/constants.ts:49
 #, fuzzy
 msgid "Delete Remote Site Error"
 msgstr "Uzak Yapılandırmayı Yeniden Adlandır Hatası"
 
-#: src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:41 src/language/constants.ts:48
 #, fuzzy
 msgid "Delete Remote Site Success"
 msgstr "Uzak Yapılandırmayı Yeniden Adlandırma Başarılı"
 
+#: src/components/Notification/notifications.ts:79
+#, fuzzy
+msgid "Delete Remote Stream Error"
+msgstr "Uzak Yapılandırmayı Yeniden Adlandır Hatası"
+
+#: src/components/Notification/notifications.ts:83
+#, fuzzy
+msgid "Delete Remote Stream Success"
+msgstr "Uzak Yapılandırmayı Yeniden Adlandırma Başarılı"
+
+#: src/components/Notification/notifications.ts:38
+#, fuzzy
+msgid "Delete site %{name} from %{node} failed"
+msgstr ""
+"%{conf_name} yapılandırmasını %{node_name} düğümüne dağıtma başarısız oldu"
+
+#: src/components/Notification/notifications.ts:42
+#, fuzzy
+msgid "Delete site %{name} from %{node} successfully"
+msgstr "%{conf_name} başarıyla %{node_name} düğümüne kopyalandı"
+
 #: src/views/site/site_list/SiteList.vue:67
 msgid "Delete site: %{site_name}"
 msgstr "Siteyi sil: %{site_name}"
+
+#: src/components/Notification/notifications.ts:80
+#, fuzzy
+msgid "Delete stream %{name} from %{node} failed"
+msgstr ""
+"%{conf_name} yapılandırmasını %{node_name} düğümüne dağıtma başarısız oldu"
+
+#: src/components/Notification/notifications.ts:84
+#, fuzzy
+msgid "Delete stream %{name} from %{node} successfully"
+msgstr "%{conf_name} başarıyla %{node_name} düğümüne kopyalandı"
 
 #: src/views/stream/StreamList.vue:82
 msgid "Delete stream: %{stream_name}"
@@ -656,30 +688,15 @@ msgid "Deleted successfully"
 msgstr "Başarıyla silindi"
 
 #: src/views/config/ConfigEditor.vue:285
-#: src/views/stream/components/Deploy.vue:100
-#: src/views/stream/components/RightSettings.vue:92
 msgid "Deploy"
 msgstr "Yayınla"
-
-#: src/views/stream/components/Deploy.vue:57
-msgid "Deploy %{conf_name} to %{node_name} failed"
-msgstr ""
-"%{conf_name} yapılandırmasını %{node_name} düğümüne dağıtma başarısız oldu"
-
-#: src/views/stream/components/Deploy.vue:36
-msgid "Deploy %{conf_name} to %{node_name} successfully"
-msgstr "%{conf_name} yapılandırması başarıyla %{node_name} düğümüne dağıtıldı"
-
-#: src/views/stream/components/Deploy.vue:34
-msgid "Deploy successfully"
-msgstr "Başarıyla Dağıtıldı"
 
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:107
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:121
 msgid "Description"
 msgstr "Açıklama"
 
-#: src/constants/errors/site.ts:3
+#: src/constants/errors/site.ts:3 src/constants/errors/stream.ts:3
 msgid "Destination file already exists"
 msgstr ""
 
@@ -720,26 +737,50 @@ msgstr "Devre Dışı"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "%{name} için otomatik yenilemeyi devre dışı bırakma başarısız oldu"
 
-#: src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:45 src/language/constants.ts:51
 #, fuzzy
 msgid "Disable Remote Site Error"
 msgstr "Uzak Yapılandırmayı Yeniden Adlandır Hatası"
 
-#: src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:50
 #, fuzzy
 msgid "Disable Remote Site Success"
 msgstr "Uzak Yapılandırmayı Yeniden Adlandırma Başarılı"
 
-#: src/components/Notification/config.ts:82
+#: src/components/Notification/notifications.ts:87
 #, fuzzy
-msgid "Disable site %{site} on %{node} error, response: %{resp}"
+msgid "Disable Remote Stream Error"
+msgstr "Uzak Yapılandırmayı Yeniden Adlandır Hatası"
+
+#: src/components/Notification/notifications.ts:91
+#, fuzzy
+msgid "Disable Remote Stream Success"
+msgstr "Uzak Yapılandırmayı Yeniden Adlandırma Başarılı"
+
+#: src/components/Notification/notifications.ts:46
+#, fuzzy
+msgid "Disable site %{name} from %{node} failed"
 msgstr ""
 "%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme başarılı "
 "oldu"
 
-#: src/components/Notification/config.ts:74
+#: src/components/Notification/notifications.ts:50
 #, fuzzy
-msgid "Disable Site %{site} on %{node} successfully"
+msgid "Disable site %{name} from %{node} successfully"
+msgstr ""
+"%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme başarılı "
+"oldu"
+
+#: src/components/Notification/notifications.ts:88
+#, fuzzy
+msgid "Disable stream %{name} from %{node} failed"
+msgstr ""
+"%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme başarısız "
+"oldu"
+
+#: src/components/Notification/notifications.ts:92
+#, fuzzy
+msgid "Disable stream %{name} from %{node} successfully"
 msgstr ""
 "%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme başarılı "
 "oldu"
@@ -748,8 +789,8 @@ msgstr ""
 #: src/views/environment/envColumns.tsx:79
 #: src/views/site/site_edit/SiteEdit.vue:190
 #: src/views/site/site_list/columns.tsx:53
-#: src/views/site/site_list/columns.tsx:62 src/views/stream/StreamEdit.vue:175
-#: src/views/stream/StreamList.vue:34 src/views/user/userColumns.tsx:41
+#: src/views/site/site_list/columns.tsx:62 src/views/stream/StreamEdit.vue:176
+#: src/views/stream/StreamList.vue:33 src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr "Devre dışı"
 
@@ -780,12 +821,6 @@ msgstr "DNS01"
 #: src/views/site/cert/components/AutoCertStepOne.vue:98
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr "Bu seçeneği, ihtiyacınız olduğundan emin olmadıkça etkinleştirmeyin."
-
-#: src/views/stream/components/Deploy.vue:16
-msgid "Do you want to deploy this file to remote server?"
-msgid_plural "Do you want to deploy this file to remote servers?"
-msgstr[0] "Bu dosyayı uzak sunucuya dağıtmak istiyor musunuz?"
-msgstr[1] "Bu dosyayı uzak sunuculara dağıtmak istiyor musunuz?"
 
 #: src/views/site/cert/components/ObtainCert.vue:136
 msgid "Do you want to disable auto-cert renewal?"
@@ -864,25 +899,13 @@ msgstr ""
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:140
-#: src/views/stream/components/StreamDuplicate.vue:121
+#: src/views/stream/components/StreamDuplicate.vue:64
 #: src/views/stream/StreamList.vue:160
 msgid "Duplicate"
 msgstr "Kopyala"
 
-#: src/views/stream/components/StreamDuplicate.vue:82
-msgid "Duplicate %{conf_name} to %{node_name} successfully"
-msgstr "%{conf_name} başarıyla %{node_name} düğümüne kopyalandı"
-
-#: src/views/stream/components/StreamDuplicate.vue:86
-msgid "Duplicate failed"
-msgstr "Kopyalama başarısız oldu"
-
-#: src/views/stream/components/StreamDuplicate.vue:80
-msgid "Duplicate successfully"
-msgstr "Başarıyla kopyalandı"
-
 #: src/views/site/site_list/SiteDuplicate.vue:48
-#: src/views/stream/components/StreamDuplicate.vue:63
+#: src/views/stream/components/StreamDuplicate.vue:40
 msgid "Duplicate to local successfully"
 msgstr "Başarıyla yerel kopya oluşturuldu"
 
@@ -892,7 +915,7 @@ msgid "Edit"
 msgstr "Düzenle %{n}"
 
 #: src/views/site/site_edit/SiteEdit.vue:179
-#: src/views/stream/StreamEdit.vue:164
+#: src/views/stream/StreamEdit.vue:165
 msgid "Edit %{n}"
 msgstr "Düzenle %{n}"
 
@@ -917,22 +940,9 @@ msgid "Email (*)"
 msgstr "E-posta(*)"
 
 #: src/views/site/site_list/SiteList.vue:133
-#: src/views/stream/components/Deploy.vue:80
 #: src/views/stream/StreamList.vue:153
 msgid "Enable"
 msgstr "Etkinleştir"
-
-#: src/views/stream/components/Deploy.vue:47
-msgid "Enable %{conf_name} in %{node_name} failed"
-msgstr ""
-"%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme başarısız "
-"oldu"
-
-#: src/views/stream/components/Deploy.vue:43
-msgid "Enable %{conf_name} in %{node_name} successfully"
-msgstr ""
-"%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme başarılı "
-"oldu"
 
 #: src/views/preference/components/TOTP.vue:45
 msgid "Enable 2FA successfully"
@@ -946,33 +956,53 @@ msgstr "%{name} için otomatik yenilemeyi etkinleştirme başarısız oldu"
 msgid "Enable failed"
 msgstr "Etkinleştirme başarısız"
 
-#: src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:53 src/language/constants.ts:53
 #, fuzzy
 msgid "Enable Remote Site Error"
 msgstr "Uzak Yapılandırmayı Yeniden Adlandır Hatası"
 
-#: src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:52
 #, fuzzy
 msgid "Enable Remote Site Success"
 msgstr "Uzak Yapılandırmayı Yeniden Adlandırma Başarılı"
 
-#: src/components/Notification/config.ts:69
+#: src/components/Notification/notifications.ts:95
 #, fuzzy
-msgid "Enable site %{site} on %{node} error, response: %{resp}"
+msgid "Enable Remote Stream Error"
+msgstr "Uzak Yapılandırmayı Yeniden Adlandır Hatası"
+
+#: src/components/Notification/notifications.ts:99
+#, fuzzy
+msgid "Enable Remote Stream Success"
+msgstr "Uzak Yapılandırmayı Yeniden Adlandırma Başarılı"
+
+#: src/components/Notification/notifications.ts:54
+#, fuzzy
+msgid "Enable site %{name} on %{node} failed"
+msgstr ""
+"%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme başarısız "
+"oldu"
+
+#: src/components/Notification/notifications.ts:58
+#, fuzzy
+msgid "Enable site %{name} on %{node} successfully"
 msgstr ""
 "%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme başarılı "
 "oldu"
 
-#: src/components/Notification/config.ts:61
+#: src/components/Notification/notifications.ts:96
 #, fuzzy
-msgid "Enable Site %{site} on %{node} successfully"
+msgid "Enable stream %{name} on %{node} failed"
+msgstr ""
+"%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme başarısız "
+"oldu"
+
+#: src/components/Notification/notifications.ts:100
+#, fuzzy
+msgid "Enable stream %{name} on %{node} successfully"
 msgstr ""
 "%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme başarılı "
 "oldu"
-
-#: src/views/stream/components/Deploy.vue:41
-msgid "Enable successfully"
-msgstr "Başarıyla etkinleştirildi"
 
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:183
 msgid "Enable TLS"
@@ -990,7 +1020,7 @@ msgstr "TOTP'yi Etkinleştir"
 #: src/views/site/site_list/columns.tsx:49
 #: src/views/site/site_list/columns.tsx:61
 #: src/views/stream/components/RightSettings.vue:76
-#: src/views/stream/StreamEdit.vue:169 src/views/stream/StreamList.vue:30
+#: src/views/stream/StreamEdit.vue:170 src/views/stream/StreamList.vue:29
 #: src/views/user/userColumns.tsx:38
 msgid "Enabled"
 msgstr "Etkin"
@@ -998,7 +1028,6 @@ msgstr "Etkin"
 #: src/views/site/site_edit/RightSettings.vue:33
 #: src/views/site/site_list/SiteList.vue:46 src/views/site/SiteAdd.vue:40
 #: src/views/stream/components/RightSettings.vue:29
-#: src/views/stream/components/StreamDuplicate.vue:93
 #: src/views/stream/StreamList.vue:61
 msgid "Enabled successfully"
 msgstr "Başarıyla etkinleştirildi"
@@ -1367,6 +1396,10 @@ msgstr "Buna ihtiyacınız yoksa boş bırakın."
 msgid "Leave blank will not change anything"
 msgstr "Boş bırakmak hiçbir şeyi değiştirmeyecektir"
 
+#: src/constants/errors/user.ts:6
+msgid "Legacy recovery code not allowed since totp is not enabled"
+msgstr ""
+
 #: src/views/site/cert/components/AutoCertStepOne.vue:105
 msgid "Lego disable CNAME Support"
 msgstr "Lego CNAME desteğini devre dışı bırak"
@@ -1397,7 +1430,7 @@ msgid "Load successfully"
 msgstr "Başarıyla yüklendi"
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:80
+#: src/components/NodeSelector/NodeSelector.vue:86
 msgid "Local"
 msgstr "Yerel"
 
@@ -1548,7 +1581,7 @@ msgstr "Çok Hatlı Direktif"
 #: src/views/site/site_list/columns.tsx:15
 #: src/views/site/site_list/SiteDuplicate.vue:79
 #: src/views/stream/components/RightSettings.vue:82
-#: src/views/stream/components/StreamDuplicate.vue:128
+#: src/views/stream/components/StreamDuplicate.vue:71
 #: src/views/stream/StreamList.vue:13 src/views/stream/StreamList.vue:186
 #, fuzzy
 msgid "Name"
@@ -1631,7 +1664,7 @@ msgid "Nginx conf not include stream-enabled"
 msgstr ""
 
 #: src/views/site/site_edit/SiteEdit.vue:223
-#: src/views/stream/StreamEdit.vue:207
+#: src/views/stream/StreamEdit.vue:208
 #, fuzzy
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx Yapılandırma Ayrıştırma Hatası"
@@ -1690,7 +1723,7 @@ msgid "Nginx restarted successfully"
 msgstr "Nginx başarıyla yeniden başlatıldı"
 
 #: src/components/ChatGPT/ChatGPT.vue:374
-#: src/components/Notification/Notification.vue:128
+#: src/components/Notification/Notification.vue:133
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:63
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:94
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:510
@@ -1749,7 +1782,7 @@ msgstr ""
 msgid "Notification"
 msgstr "Bildirim"
 
-#: src/components/Notification/Notification.vue:126 src/routes/index.ts:248
+#: src/components/Notification/Notification.vue:131 src/routes/index.ts:248
 #, fuzzy
 msgid "Notifications"
 msgstr "Bildirimler"
@@ -1778,7 +1811,7 @@ msgstr ""
 "OCSP Must Staple, Firefox kullanarak ilk erişimde bazı kullanıcılar için "
 "hatalara neden olabilir."
 
-#: src/components/NodeSelector/NodeSelector.vue:103
+#: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environment/envColumns.tsx:56
 #, fuzzy
@@ -1795,7 +1828,7 @@ msgid "Ok"
 msgstr "Tamam"
 
 #: src/components/ChatGPT/ChatGPT.vue:375
-#: src/components/Notification/Notification.vue:129
+#: src/components/Notification/Notification.vue:134
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:95
 #: src/views/notification/Notification.vue:38
 #: src/views/site/cert/components/ObtainCert.vue:139
@@ -1804,7 +1837,6 @@ msgstr "Tamam"
 #: src/views/site/ngx_conf/NgxUpstream.vue:33
 #: src/views/site/site_edit/RightSettings.vue:54
 #: src/views/site/site_list/SiteList.vue:144
-#: src/views/stream/components/Deploy.vue:19
 #: src/views/stream/components/RightSettings.vue:50
 #: src/views/stream/StreamList.vue:164
 #, fuzzy
@@ -1816,8 +1848,8 @@ msgstr "Tamam"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Doğrulama tamamlandıktan sonra kayıtlar kaldırılacaktır."
 
-#: src/components/NodeSelector/NodeSelector.vue:83
-#: src/components/NodeSelector/NodeSelector.vue:97
+#: src/components/NodeSelector/NodeSelector.vue:103
+#: src/components/NodeSelector/NodeSelector.vue:89
 #: src/views/dashboard/Environments.vue:100
 #: src/views/environment/envColumns.tsx:52
 #, fuzzy
@@ -1853,19 +1885,17 @@ msgstr "OS"
 msgid "OS:"
 msgstr "İŞLETIM SISTEMI:"
 
-#: src/constants/errors/user.ts:8
+#: src/constants/errors/user.ts:9
 #, fuzzy
 msgid "Otp or recovery code empty"
 msgstr "Kurtarma kodunu kullanın"
 
 #: src/views/config/ConfigEditor.vue:294
-#: src/views/stream/components/Deploy.vue:84
 #, fuzzy
 msgid "Overwrite"
 msgstr "Üzerine yaz"
 
 #: src/views/config/ConfigEditor.vue:298
-#: src/views/stream/components/Deploy.vue:88
 #, fuzzy
 msgid "Overwrite exist file"
 msgstr "Mevcut dosyanın üzerine yaz"
@@ -1982,6 +2012,7 @@ msgstr ""
 "ekleyin ve ardından DNS sağlayıcısının API'sini istemek için aşağıdaki "
 "kimlik bilgilerinden birini seçin."
 
+#: src/components/Notification/notifications.ts:122
 #: src/language/constants.ts:58
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -1999,7 +2030,7 @@ msgstr "Lütfen bir dosya adı girin"
 msgid "Please input a folder name"
 msgstr "Lütfen bir klasör adı girin"
 
-#: src/views/stream/components/StreamDuplicate.vue:38
+#: src/views/stream/components/StreamDuplicate.vue:25
 #, fuzzy
 msgid ""
 "Please input name, this will be used as the filename of the new "
@@ -2042,24 +2073,6 @@ msgstr ""
 #, fuzzy
 msgid "Please select at least one node to upgrade"
 msgstr "Lütfen yükseltmek için en az bir düğüm seçin"
-
-#: src/views/stream/components/StreamDuplicate.vue:45
-#, fuzzy
-msgid "Please select at least one node!"
-msgstr "Lütfen en az bir düğüm seçin!"
-
-#: src/components/Notification/config.ts:11
-#: src/components/Notification/config.ts:27
-#: src/components/Notification/config.ts:41
-#: src/components/Notification/config.ts:54
-#: src/components/Notification/config.ts:67
-#: src/components/Notification/config.ts:80
-#: src/components/Notification/config.ts:93
-#, fuzzy
-msgid "Please upgrade the remote Nginx UI to the latest version"
-msgstr ""
-"0] yapılandırmasını %{env_name} ile eşitleme başarısız oldu, lütfen uzak "
-"Nginx kullanıcı arayüzünü en son sürüme yükseltin"
 
 #: src/views/environment/BatchUpgrader.vue:167
 #: src/views/environment/BatchUpgrader.vue:220 src/views/system/Upgrade.vue:194
@@ -2235,23 +2248,13 @@ msgstr "Nginx'i yeniden yükleme"
 msgid "Remove"
 msgstr "Kaldır"
 
-#: src/components/Notification/config.ts:56
-#, fuzzy
-msgid "Remove site %{site} from %{node} error, response: %{resp}"
-msgstr "Siteyi sil: %{site_name}"
-
-#: src/components/Notification/config.ts:48
-#, fuzzy
-msgid "Remove Site %{site} from %{node} successfully"
-msgstr "%{conf_name} başarıyla %{node_name} düğümüne kopyalandı"
-
 #: src/views/preference/AuthSettings.vue:51
 #: src/views/preference/components/Passkey.vue:46
 #, fuzzy
 msgid "Remove successfully"
 msgstr "Başarıyla kaldırıldı"
 
-#: src/components/Notification/Notification.vue:97
+#: src/components/Notification/Notification.vue:102
 #, fuzzy
 msgid "Removed successfully"
 msgstr "Başarıyla kaldırıldı"
@@ -2261,53 +2264,74 @@ msgstr "Başarıyla kaldırıldı"
 #: src/views/config/ConfigList.vue:166
 #: src/views/site/ngx_conf/NgxUpstream.vue:125
 #: src/views/site/site_edit/components/ConfigName.vue:44
+#: src/views/stream/components/ConfigName.vue:44
 #, fuzzy
 msgid "Rename"
 msgstr "Yeniden Adlandır"
 
-#: src/components/Notification/config.ts:30
+#: src/components/Notification/notifications.ts:28
 #, fuzzy
-msgid ""
-"Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
+msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr ""
-"2] üzerinde %{orig_path}'ı %{new_path} olarak yeniden adlandırma başarısız "
-"oldu, yanıt: %{resp}"
+"2] üzerinde %{orig_path}'ı %{new_path} olarak başarıyla yeniden adlandırın"
 
-#: src/components/Notification/config.ts:20
+#: src/components/Notification/notifications.ts:32
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr ""
 "2] üzerinde %{orig_path}'ı %{new_path} olarak başarıyla yeniden adlandırın"
 
-#: src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:27 src/language/constants.ts:41
 #, fuzzy
 msgid "Rename Remote Config Error"
 msgstr "Uzak Yapılandırmayı Yeniden Adlandır Hatası"
 
-#: src/language/constants.ts:40
+#: src/components/Notification/notifications.ts:31 src/language/constants.ts:40
 #, fuzzy
 msgid "Rename Remote Config Success"
 msgstr "Uzak Yapılandırmayı Yeniden Adlandırma Başarılı"
 
-#: src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:55
 #, fuzzy
 msgid "Rename Remote Site Error"
 msgstr "Uzak Yapılandırmayı Yeniden Adlandır Hatası"
 
-#: src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:54
 #, fuzzy
 msgid "Rename Remote Site Success"
 msgstr "Uzak Yapılandırmayı Yeniden Adlandırma Başarılı"
 
-#: src/components/Notification/config.ts:95
+#: src/components/Notification/notifications.ts:103
 #, fuzzy
-msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+msgid "Rename Remote Stream Error"
+msgstr "Uzak Yapılandırmayı Yeniden Adlandır Hatası"
+
+#: src/components/Notification/notifications.ts:107
+#, fuzzy
+msgid "Rename Remote Stream Success"
+msgstr "Uzak Yapılandırmayı Yeniden Adlandırma Başarılı"
+
+#: src/components/Notification/notifications.ts:62
+#, fuzzy
+msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr ""
 "2] üzerinde %{orig_path}'ı %{new_path} olarak başarıyla yeniden adlandırın"
 
-#: src/components/Notification/config.ts:87
+#: src/components/Notification/notifications.ts:66
 #, fuzzy
-msgid "Rename Site %{site} to %{new_site} on %{node} successfully"
+msgid "Rename site %{name} to %{new_name} on %{node} successfully"
+msgstr ""
+"2] üzerinde %{orig_path}'ı %{new_path} olarak başarıyla yeniden adlandırın"
+
+#: src/components/Notification/notifications.ts:104
+#, fuzzy
+msgid "Rename stream %{name} to %{new_name} on %{node} failed"
+msgstr ""
+"2] üzerinde %{orig_path}'ı %{new_path} olarak başarıyla yeniden adlandırın"
+
+#: src/components/Notification/notifications.ts:108
+#, fuzzy
+msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr ""
 "2] üzerinde %{orig_path}'ı %{new_path} olarak başarıyla yeniden adlandırın"
 
@@ -2318,6 +2342,7 @@ msgstr "Yeniden adlandırma başarıyla"
 
 #: src/views/config/components/ConfigName.vue:30
 #: src/views/site/site_edit/components/ConfigName.vue:27
+#: src/views/stream/components/ConfigName.vue:27
 #, fuzzy
 msgid "Renamed successfully"
 msgstr "Yeniden adlandırma başarıyla"
@@ -2406,7 +2431,8 @@ msgstr "Çalışıyor"
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
 #: src/views/site/site_edit/components/ConfigName.vue:52
 #: src/views/site/site_edit/SiteEdit.vue:271
-#: src/views/stream/StreamEdit.vue:252
+#: src/views/stream/components/ConfigName.vue:52
+#: src/views/stream/StreamEdit.vue:253
 #, fuzzy
 msgid "Save"
 msgstr "Kaydet"
@@ -2423,26 +2449,45 @@ msgstr "Direktifi Kaydet"
 msgid "Save error %{msg}"
 msgstr "Hatayı kaydet %{msg}"
 
-#: src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:47
 #, fuzzy
 msgid "Save Remote Site Error"
 msgstr "Uzak Yapılandırmayı Yeniden Adlandır Hatası"
 
-#: src/language/constants.ts:46
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:46
 #, fuzzy
 msgid "Save Remote Site Success"
 msgstr "Uzak Yapılandırmayı Yeniden Adlandırma Başarılı"
 
-#: src/components/Notification/config.ts:43
+#: src/components/Notification/notifications.ts:111
 #, fuzzy
-msgid "Save site %{site} to %{node} error, response: %{resp}"
-msgstr ""
-"Sertifika %{cert_name} ile %{env_name} arasında senkronizasyon başarısız "
-"oldu, yanıt: %{resp}"
+msgid "Save Remote Stream Error"
+msgstr "Uzak Yapılandırmayı Yeniden Adlandır Hatası"
 
-#: src/components/Notification/config.ts:35
+#: src/components/Notification/notifications.ts:115
 #, fuzzy
-msgid "Save Site %{site} to %{node} successfully"
+msgid "Save Remote Stream Success"
+msgstr "Uzak Yapılandırmayı Yeniden Adlandırma Başarılı"
+
+#: src/components/Notification/notifications.ts:70
+#, fuzzy
+msgid "Save site %{name} to %{node} failed"
+msgstr "%{conf_name} başarıyla %{node_name} düğümüne kopyalandı"
+
+#: src/components/Notification/notifications.ts:74
+#, fuzzy
+msgid "Save site %{name} to %{node} successfully"
+msgstr "%{conf_name} başarıyla %{node_name} düğümüne kopyalandı"
+
+#: src/components/Notification/notifications.ts:112
+#, fuzzy
+msgid "Save stream %{name} to %{node} failed"
+msgstr ""
+"%{conf_name} yapılandırmasını %{node_name} düğümüne dağıtma başarısız oldu"
+
+#: src/components/Notification/notifications.ts:116
+#, fuzzy
+msgid "Save stream %{name} to %{node} successfully"
 msgstr "%{conf_name} başarıyla %{node_name} düğümüne kopyalandı"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
@@ -2456,7 +2501,7 @@ msgstr "Başarıyla kaydedin"
 #: src/views/config/ConfigEditor.vue:167
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/site/site_edit/SiteEdit.vue:152 src/views/site/SiteAdd.vue:37
-#: src/views/stream/StreamEdit.vue:138
+#: src/views/stream/StreamEdit.vue:139
 #, fuzzy
 msgid "Saved successfully"
 msgstr "Başarıyla Kaydedildi"
@@ -2510,7 +2555,7 @@ msgstr "server_name parametresi gereklidir"
 msgid "ServerIdx out of range"
 msgstr ""
 
-#: src/constants/errors/user.ts:11
+#: src/constants/errors/user.ts:12
 #, fuzzy
 msgid "Session not found"
 msgstr "Dosya bulunamadı"
@@ -2638,7 +2683,7 @@ msgstr "Stabil"
 #: src/views/certificate/ACMEUser.vue:65
 #: src/views/certificate/CertificateList/certColumns.tsx:68
 #: src/views/environment/envColumns.tsx:44
-#: src/views/site/site_list/columns.tsx:42 src/views/stream/StreamList.vue:23
+#: src/views/site/site_list/columns.tsx:42 src/views/stream/StreamList.vue:22
 #, fuzzy
 msgid "Status"
 msgstr "Durum"
@@ -2653,6 +2698,16 @@ msgstr "Durduruldu"
 #, fuzzy
 msgid "Storage"
 msgstr "Depolama"
+
+#: src/constants/errors/stream.ts:4
+#, fuzzy
+msgid "Stream is enabled"
+msgstr "Devre dışı"
+
+#: src/constants/errors/stream.ts:2
+#, fuzzy
+msgid "Stream not found"
+msgstr "Dosya bulunamadı"
 
 #: src/views/system/SelfCheck/tasks.ts:7
 #, fuzzy
@@ -2698,6 +2753,7 @@ msgid "Switch to light theme"
 msgstr "Işık temasına geçin"
 
 #: src/views/config/components/Rename.vue:79
+#: src/views/stream/components/RightSettings.vue:92
 #, fuzzy
 msgid "Sync"
 msgstr "Eşitle"
@@ -2707,55 +2763,42 @@ msgstr "Eşitle"
 msgid "Sync Certificate"
 msgstr "Senkronizasyon Sertifikası"
 
-#: src/components/Notification/cert.ts:11
+#: src/components/Notification/notifications.ts:10
 #, fuzzy
-msgid ""
-"Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
-"remote Nginx UI to the latest version"
-msgstr ""
-"Sertifika %{cert_name}'dan %{env_name}'e senkronizasyon başarısız oldu, "
-"lütfen uzak Nginx kullanıcı arayüzünü en son sürüme yükseltin"
+msgid "Sync Certificate %{cert_name} to %{env_name} failed"
+msgstr "Sertifika %{cert_name}'ı %{env_name} ile başarıyla senkronize edin"
 
-#: src/components/Notification/cert.ts:14
-#, fuzzy
-msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
-msgstr ""
-"Sertifika %{cert_name} ile %{env_name} arasında senkronizasyon başarısız "
-"oldu, yanıt: %{resp}"
-
-#: src/components/Notification/cert.ts:4
+#: src/components/Notification/notifications.ts:14
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "Sertifika %{cert_name}'ı %{env_name} ile başarıyla senkronize edin"
 
-#: src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:9 src/language/constants.ts:38
 #, fuzzy
 msgid "Sync Certificate Error"
 msgstr "Senkronizasyon Sertifikası Hatası"
 
-#: src/language/constants.ts:37
+#: src/components/Notification/notifications.ts:13 src/language/constants.ts:37
 #, fuzzy
 msgid "Sync Certificate Success"
 msgstr "Senkronizasyon Sertifikası Başarısı"
 
-#: src/components/Notification/config.ts:14
+#: src/components/Notification/notifications.ts:20
 #, fuzzy
-msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
-msgstr ""
-"Yapılandırma %{config_name} ile %{env_name} arasında eşitleme başarısız "
-"oldu, yanıt: %{resp}"
-
-#: src/components/Notification/config.ts:4
-#, fuzzy
-msgid "Sync Config %{config_name} to %{env_name} successfully"
+msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "Config %{config_name} ile %{env_name}'i başarıyla senkronize edin"
 
-#: src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:24
+#, fuzzy
+msgid "Sync config %{config_name} to %{env_name} successfully"
+msgstr "Config %{config_name} ile %{env_name}'i başarıyla senkronize edin"
+
+#: src/components/Notification/notifications.ts:19 src/language/constants.ts:44
 #, fuzzy
 msgid "Sync Config Error"
 msgstr "Senkronizasyon Yapılandırma Hatası"
 
-#: src/language/constants.ts:43
+#: src/components/Notification/notifications.ts:23 src/language/constants.ts:43
 #, fuzzy
 msgid "Sync Config Success"
 msgstr "Senkronizasyon Yapılandırması Başarılı"
@@ -2789,11 +2832,6 @@ msgstr "Sistem"
 #, fuzzy
 msgid "System Initial User"
 msgstr "Sistem İlk Kullanıcısı"
-
-#: src/views/stream/components/StreamDuplicate.vue:135
-#, fuzzy
-msgid "Target"
-msgstr "Hedef"
 
 #: src/constants/errors/self_check.ts:2
 #, fuzzy
@@ -2955,7 +2993,7 @@ msgstr "Bu alan boş bırakılmamalıdır"
 msgid "This field should be a valid hostname"
 msgstr "Bu alan boş bırakılmamalıdır"
 
-#: src/components/StdDesign/StdDataEntry/StdFormItem.vue:45
+#: src/components/StdDesign/StdDataEntry/StdFormItem.vue:39
 #: src/constants/form_errors.ts:2
 #, fuzzy
 msgid "This field should not be empty"
@@ -3094,7 +3132,7 @@ msgstr "Güncellendi"
 #: src/views/site/site_edit/RightSettings.vue:100
 #: src/views/site/site_list/columns.tsx:69
 #: src/views/stream/components/RightSettings.vue:85
-#: src/views/stream/StreamList.vue:43 src/views/user/userColumns.tsx:54
+#: src/views/stream/StreamList.vue:42 src/views/user/userColumns.tsx:54
 #, fuzzy
 msgid "Updated at"
 msgstr "Güncelleme"
@@ -3160,7 +3198,7 @@ msgstr "Kullanıcı"
 msgid "User banned"
 msgstr "Kullanıcı yasaklandı"
 
-#: src/constants/errors/user.ts:7
+#: src/constants/errors/user.ts:8
 msgid "User not enabled otp as 2fa"
 msgstr ""
 
@@ -3192,7 +3230,7 @@ msgstr "Versiyon"
 msgid "View"
 msgstr "Görünüm"
 
-#: src/components/Notification/Notification.vue:187
+#: src/components/Notification/Notification.vue:202
 #, fuzzy
 msgid "View all notifications"
 msgstr "Tüm bildirimleri görüntüle"
@@ -3247,7 +3285,7 @@ msgstr ""
 msgid "Webauthn"
 msgstr ""
 
-#: src/constants/errors/user.ts:6
+#: src/constants/errors/user.ts:7
 msgid "WebAuthn settings are not configured"
 msgstr ""
 
@@ -3341,6 +3379,106 @@ msgstr ""
 #, fuzzy
 msgid "Your passkeys"
 msgstr "Geçiş anahtarlarınız"
+
+#~ msgid "Deploy %{conf_name} to %{node_name} successfully"
+#~ msgstr ""
+#~ "%{conf_name} yapılandırması başarıyla %{node_name} düğümüne dağıtıldı"
+
+#~ msgid "Deploy successfully"
+#~ msgstr "Başarıyla Dağıtıldı"
+
+#, fuzzy
+#~ msgid "Disable site %{site} on %{node} error, response: %{resp}"
+#~ msgstr ""
+#~ "%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme "
+#~ "başarılı oldu"
+
+#~ msgid "Do you want to deploy this file to remote server?"
+#~ msgid_plural "Do you want to deploy this file to remote servers?"
+#~ msgstr[0] "Bu dosyayı uzak sunucuya dağıtmak istiyor musunuz?"
+#~ msgstr[1] "Bu dosyayı uzak sunuculara dağıtmak istiyor musunuz?"
+
+#~ msgid "Duplicate %{conf_name} to %{node_name} successfully"
+#~ msgstr "%{conf_name} başarıyla %{node_name} düğümüne kopyalandı"
+
+#~ msgid "Duplicate failed"
+#~ msgstr "Kopyalama başarısız oldu"
+
+#~ msgid "Duplicate successfully"
+#~ msgstr "Başarıyla kopyalandı"
+
+#~ msgid "Enable %{conf_name} in %{node_name} successfully"
+#~ msgstr ""
+#~ "%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme "
+#~ "başarılı oldu"
+
+#, fuzzy
+#~ msgid "Enable site %{site} on %{node} error, response: %{resp}"
+#~ msgstr ""
+#~ "%{conf_name} yapılandırmasını %{node_name} düğümünde etkinleştirme "
+#~ "başarılı oldu"
+
+#~ msgid "Enable successfully"
+#~ msgstr "Başarıyla etkinleştirildi"
+
+#, fuzzy
+#~ msgid "Please select at least one node!"
+#~ msgstr "Lütfen en az bir düğüm seçin!"
+
+#, fuzzy
+#~ msgid "Please upgrade the remote Nginx UI to the latest version"
+#~ msgstr ""
+#~ "0] yapılandırmasını %{env_name} ile eşitleme başarısız oldu, lütfen uzak "
+#~ "Nginx kullanıcı arayüzünü en son sürüme yükseltin"
+
+#, fuzzy
+#~ msgid "Remove site %{site} from %{node} error, response: %{resp}"
+#~ msgstr "Siteyi sil: %{site_name}"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
+#~ "%{resp}"
+#~ msgstr ""
+#~ "2] üzerinde %{orig_path}'ı %{new_path} olarak yeniden adlandırma "
+#~ "başarısız oldu, yanıt: %{resp}"
+
+#, fuzzy
+#~ msgid ""
+#~ "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+#~ msgstr ""
+#~ "2] üzerinde %{orig_path}'ı %{new_path} olarak başarıyla yeniden adlandırın"
+
+#, fuzzy
+#~ msgid "Save site %{site} to %{node} error, response: %{resp}"
+#~ msgstr ""
+#~ "Sertifika %{cert_name} ile %{env_name} arasında senkronizasyon başarısız "
+#~ "oldu, yanıt: %{resp}"
+
+#, fuzzy
+#~ msgid ""
+#~ "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
+#~ "remote Nginx UI to the latest version"
+#~ msgstr ""
+#~ "Sertifika %{cert_name}'dan %{env_name}'e senkronizasyon başarısız oldu, "
+#~ "lütfen uzak Nginx kullanıcı arayüzünü en son sürüme yükseltin"
+
+#, fuzzy
+#~ msgid ""
+#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgstr ""
+#~ "Sertifika %{cert_name} ile %{env_name} arasında senkronizasyon başarısız "
+#~ "oldu, yanıt: %{resp}"
+
+#, fuzzy
+#~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
+#~ msgstr ""
+#~ "Yapılandırma %{config_name} ile %{env_name} arasında eşitleme başarısız "
+#~ "oldu, yanıt: %{resp}"
+
+#, fuzzy
+#~ msgid "Target"
+#~ msgstr "Hedef"
 
 #~ msgid "Can't scan? Use text key binding"
 #~ msgstr "Tarayamıyor musunuz? Metin anahtar bağlamasını kullanın"

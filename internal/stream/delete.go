@@ -66,14 +66,14 @@ func syncDelete(name string) {
 				SetHeader("X-Node-Secret", node.Token).
 				Delete(fmt.Sprintf("/api/streams/%s", name))
 			if err != nil {
-				notification.Error("Delete Remote Stream Error", err.Error())
+				notification.Error("Delete Remote Stream Error", err.Error(), nil)
 				return
 			}
 			if resp.StatusCode() != http.StatusOK {
-				notification.Error("Delete Remote Stream Error", NewSyncResult(node.Name, name, resp).String())
+				notification.Error("Delete Remote Stream Error", "Delete stream %{name} from %{node} failed", NewSyncResult(node.Name, name, resp))
 				return
 			}
-			notification.Success("Delete Remote Stream Success", NewSyncResult(node.Name, name, resp).String())
+			notification.Success("Delete Remote Stream Success", "Delete stream %{name} from %{node} successfully", NewSyncResult(node.Name, name, resp))
 		}()
 	}
 }

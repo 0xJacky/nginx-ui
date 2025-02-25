@@ -3,6 +3,10 @@ package cert
 import (
 	"bytes"
 	"encoding/json"
+	"io"
+	"net/http"
+	"os"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -11,9 +15,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/uozi-tech/cosy/logger"
-	"io"
-	"net/http"
-	"os"
 )
 
 type SyncCertificatePayload struct {
@@ -80,7 +81,7 @@ type SyncNotificationPayload struct {
 	StatusCode int    `json:"status_code"`
 	CertName   string `json:"cert_name"`
 	EnvName    string `json:"env_name"`
-	RespBody   string `json:"resp_body"`
+	Response   string `json:"response"`
 }
 
 func deploy(env *model.Environment, c *model.Cert, payloadBytes []byte) (err error) {
@@ -115,20 +116,17 @@ func deploy(env *model.Environment, c *model.Cert, payloadBytes []byte) (err err
 		StatusCode: resp.StatusCode,
 		CertName:   c.Name,
 		EnvName:    env.Name,
-		RespBody:   string(respBody),
-	}
-
-	notificationPayloadBytes, err := json.Marshal(notificationPayload)
-	if err != nil {
-		return
+		Response:   string(respBody),
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		notification.Error("Sync Certificate Error", string(notificationPayloadBytes))
+		notification.Error("Sync Certificate Error",
+			"Sync Certificate %{cert_name} to %{env_name} failed", notificationPayload)
 		return
 	}
 
-	notification.Success("Sync Certificate Success", string(notificationPayloadBytes))
+	notification.Success("Sync Certificate Success",
+		"Sync Certificate %{cert_name} to %{env_name} successfully", notificationPayload)
 
 	return
 }
