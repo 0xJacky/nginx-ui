@@ -69,7 +69,7 @@ function newSSE() {
 
 function init() {
   loading.value = true
-  notificationApi.get_list().then(r => {
+  notificationApi.get_list({ sort: 'desc', order_by: 'created_at' }).then(r => {
     data.value = r.data
     unreadCount.value = r.pagination?.total || 0
   }).finally(() => {
@@ -182,7 +182,8 @@ function viewAll() {
                 <template #description>
                   <div class="flex justify-between items-center">
                     <div>
-                      {{ notifications[item.title].content(item.details) }}
+                      {{ notifications[item.title]?.content(item.details)
+                        || item.content || item.details }}
                     </div>
                     <span
                       key="list-loadmore-remove"
