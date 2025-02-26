@@ -205,16 +205,4 @@ body {
 .ant-layout-footer {
   text-align: center;
 }
-
-@media (orientation: landscape) {
-  .full-screen-wrapper {
-    padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
-  }
-}
-
-@media (orientation: portrait) {
-  .full-screen-wrapper {
-    padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
-  }
-}
 </style>
