@@ -15,7 +15,7 @@ require (
 	github.com/gin-contrib/static v1.1.3
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-acme/lego/v4 v4.22.2
-	github.com/go-co-op/gocron/v2 v2.15.0
+	github.com/go-co-op/gocron/v2 v2.16.0
 	github.com/go-playground/validator/v10 v10.25.0
 	github.com/go-resty/resty/v2 v2.16.5
 	github.com/go-webauthn/webauthn v0.12.1
@@ -30,15 +30,15 @@ require (
 	github.com/pquerna/otp v1.4.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.49.1
-	github.com/sashabaranov/go-openai v1.37.0
+	github.com/sashabaranov/go-openai v1.38.0
 	github.com/shirou/gopsutil/v4 v4.25.1
 	github.com/spf13/cast v1.7.1
 	github.com/stretchr/testify v1.10.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250120210832-12a9c7ae0c8a
-	github.com/uozi-tech/cosy v1.14.4
+	github.com/uozi-tech/cosy v1.14.5
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.0.0-beta1
-	golang.org/x/crypto v0.34.0
+	golang.org/x/crypto v0.35.0
 	golang.org/x/net v0.35.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/sqlite v1.5.7
@@ -160,7 +160,7 @@ require (
 	github.com/jpillora/s3 v1.1.4 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/k0kubun/go-ansi v0.0.0-20180517002512-3bf9e2903213 // indirect
-	github.com/klauspost/cpuid/v2 v2.2.9 // indirect
+	github.com/klauspost/cpuid/v2 v2.2.10 // indirect
 	github.com/kolo/xmlrpc v0.0.0-20220921171641-a4b6fa1dd06b // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/labbsr0x/bindman-dns-webhook v1.0.2 // indirect
@@ -203,7 +203,7 @@ require (
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
-	github.com/redis/go-redis/v9 v9.7.0 // indirect
+	github.com/redis/go-redis/v9 v9.7.1 // indirect
 	github.com/regfish/regfish-dnsapi-go v0.1.1 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/sacloud/api-client-go v0.2.10 // indirect
