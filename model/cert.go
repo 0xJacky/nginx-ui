@@ -63,6 +63,11 @@ func FirstOrCreateCert(confName string, keyType certcrypto.KeyType) (c Cert, err
 	return
 }
 
+func FirstOrInit(confName string, keyType certcrypto.KeyType) (c Cert, err error) {
+	err = db.FirstOrInit(&c, &Cert{Name: confName, Filename: confName, KeyType: keyType}).Error
+	return
+}
+
 func (c *Cert) Insert() error {
 	return db.Create(c).Error
 }

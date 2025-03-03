@@ -1,13 +1,16 @@
 package certificate
 
 import (
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/gorilla/websocket"
 	"github.com/uozi-tech/cosy/logger"
-	"net/http"
+	"gorm.io/gen/field"
 )
 
 const (
@@ -46,6 +49,7 @@ func handleIssueCertLogChan(conn *websocket.Conn, log *cert.Logger, logChan chan
 }
 
 func IssueCert(c *gin.Context) {
+	name := c.Param("name")
 	var upGrader = websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {
 			return true
@@ -72,16 +76,18 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
-	certModel, err := model.FirstOrCreateCert(c.Param("name"), payload.GetKeyType())
+	certModel, err := model.FirstOrInit(name, payload.GetKeyType())
 	if err != nil {
 		logger.Error(err)
 		return
 	}
 
-	certInfo, _ := cert.GetCertInfo(certModel.SSLCertificatePath)
-	if certInfo != nil {
-		payload.Resource = certModel.Resource
-		payload.NotBefore = certInfo.NotBefore
+	if certModel.SSLCertificatePath != "" {
+		certInfo, _ := cert.GetCertInfo(certModel.SSLCertificatePath)
+		if certInfo != nil {
+			payload.Resource = certModel.Resource
+			payload.NotBefore = certInfo.NotBefore
+		}
 	}
 
 	logChan := make(chan string, 1)
@@ -109,22 +115,23 @@ func IssueCert(c *gin.Context) {
 			logger.Error(err)
 			return
 		}
-		return
+		return 
 	}
 
-	err = certModel.Updates(&model.Cert{
+	cert := query.Cert
+
+	_, err = cert.Where(cert.Name.Eq(name), cert.Filename.Eq(name), cert.KeyType.Eq(string(payload.KeyType))).
+	Assign(field.Attrs(&model.Cert{
 		Domains:                 payload.ServerName,
 		SSLCertificatePath:      payload.GetCertificatePath(),
 		SSLCertificateKeyPath:   payload.GetCertificateKeyPath(),
 		AutoCert:                model.AutoCertEnabled,
-		KeyType:                 payload.KeyType,
 		ChallengeMethod:         payload.ChallengeMethod,
 		DnsCredentialID:         payload.DNSCredentialID,
 		Resource:                payload.Resource,
 		MustStaple:              payload.MustStaple,
 		LegoDisableCNAMESupport: payload.LegoDisableCNAMESupport,
-	})
-
+	})).FirstOrCreate()
 	if err != nil {
 		logger.Error(err)
 		_ = ws.WriteJSON(IssueCertResponse{
