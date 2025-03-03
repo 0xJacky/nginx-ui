@@ -65,7 +65,7 @@ msgstr "Passkey hinzufügen"
 msgid "Add Configuration"
 msgstr "Konfiguration bearbeiten"
 
-#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:117
+#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:119
 msgid "Add Directive Below"
 msgstr "Anweisung darunter hinzufügen"
 
@@ -110,7 +110,7 @@ msgid "All"
 msgstr "Alle"
 
 #: src/components/Notification/notifications.ts:121
-#: src/language/constants.ts:57
+#: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr ""
 
@@ -399,6 +399,11 @@ msgstr "Certificate has expired"
 msgid "Certificate Renewal Interval"
 msgstr "Zeitifikat ist gültig"
 
+#: src/language/constants.ts:21
+#, fuzzy
+msgid "Certificate renewed successfully"
+msgstr "Erfolgreich deaktiviert"
+
 #: src/views/certificate/CertificateEditor.vue:128
 #: src/views/site/cert/Cert.vue:33
 #, fuzzy
@@ -664,12 +669,12 @@ msgstr "Löschen"
 msgid "Delete Permanently"
 msgstr "Permanent löschen"
 
-#: src/components/Notification/notifications.ts:37 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:37 src/language/constants.ts:50
 #, fuzzy
 msgid "Delete Remote Site Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:41 src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:41 src/language/constants.ts:49
 #, fuzzy
 msgid "Delete Remote Site Success"
 msgstr "Zertifikat ist gültig"
@@ -768,12 +773,12 @@ msgstr "Deaktiviert"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Automatische Verlängerung deaktiviert für %{name}"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:45 src/language/constants.ts:52
 #, fuzzy
 msgid "Disable Remote Site Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:51
 #, fuzzy
 msgid "Disable Remote Site Success"
 msgstr "Zertifikat ist gültig"
@@ -908,11 +913,11 @@ msgstr ""
 "Domänenliste ist leer, versuche Auto-Zertifikat für %{config} erneut zu "
 "öffnen"
 
-#: src/language/constants.ts:26
+#: src/language/constants.ts:27
 msgid "Download latest release error"
 msgstr "Fehler beim Herunterladen der neuesten Version"
 
-#: src/language/constants.ts:25
+#: src/language/constants.ts:26
 msgid "Downloading latest release"
 msgstr "Neueste Version wird heruntergeladen"
 
@@ -993,12 +998,12 @@ msgstr "Aktiviere automatische Verlängerung fehlgeschlagen für %{name}"
 msgid "Enable failed"
 msgstr "Aktivieren fehlgeschlagen"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:53 src/language/constants.ts:54
 #, fuzzy
 msgid "Enable Remote Site Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:53
 #, fuzzy
 msgid "Enable Remote Site Success"
 msgstr "Zertifikat ist gültig"
@@ -1066,7 +1071,7 @@ msgstr "Erfolgreich aktiviert"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Webseite mit Let's Encrypt verschlüsseln"
 
-#: src/language/constants.ts:21
+#: src/language/constants.ts:22
 msgid "Environment variables cleaned"
 msgstr "Umgebungsvariablen gesäubert"
 
@@ -1145,7 +1150,7 @@ msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr ""
 "Fehler beim Speichern, Syntaxfehler wurden in der Konfiguration erkannt."
 
-#: src/language/constants.ts:31
+#: src/language/constants.ts:32
 msgid "File exists"
 msgstr "Datei existiert"
 
@@ -1311,11 +1316,11 @@ msgstr "Zertifikatsstatus"
 msgid "Info"
 msgstr "Information"
 
-#: src/language/constants.ts:24
+#: src/language/constants.ts:25
 msgid "Initial core upgrader error"
 msgstr "Feher beim Initialisieren des Core-Upgraders"
 
-#: src/language/constants.ts:23
+#: src/language/constants.ts:24
 msgid "Initialing core upgrader"
 msgstr "Initialisierung des Core-Upgraders"
 
@@ -1499,7 +1504,7 @@ msgstr "Orte"
 msgid "Log"
 msgstr "Login"
 
-#: src/routes/index.ts:318 src/views/other/Login.vue:223
+#: src/routes/index.ts:318 src/views/other/Login.vue:222
 msgid "Login"
 msgstr "Login"
 
@@ -1881,7 +1886,7 @@ msgstr ""
 msgid "OpenAI"
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:232
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:231
 msgid "Or"
 msgstr "Oder"
 
@@ -1968,11 +1973,11 @@ msgstr ""
 msgid "Perform"
 msgstr "Ausführen"
 
-#: src/language/constants.ts:28
+#: src/language/constants.ts:29
 msgid "Perform core upgrade error"
 msgstr "Führe Core-Upgrade-Fehler aus"
 
-#: src/language/constants.ts:27
+#: src/language/constants.ts:28
 msgid "Performing core upgrade"
 msgstr "Führe Core-Upgrade aus"
 
@@ -2014,7 +2019,7 @@ msgstr ""
 "Anmeldeinformationen aus, um die API des DNS-Anbieters anzufordern."
 
 #: src/components/Notification/notifications.ts:122
-#: src/language/constants.ts:58
+#: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
 "lockout."
@@ -2252,22 +2257,22 @@ msgstr "Speichern erfolgreich"
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:27 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:27 src/language/constants.ts:42
 #, fuzzy
 msgid "Rename Remote Config Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:31 src/language/constants.ts:40
+#: src/components/Notification/notifications.ts:31 src/language/constants.ts:41
 #, fuzzy
 msgid "Rename Remote Config Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:56
 #, fuzzy
 msgid "Rename Remote Site Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:55
 #, fuzzy
 msgid "Rename Remote Site Success"
 msgstr "Zertifikat ist gültig"
@@ -2320,12 +2325,12 @@ msgstr "Aktivierung erfolgreich"
 msgid "Renew Certificate"
 msgstr "Zertifikat ist gültig"
 
-#: src/language/constants.ts:35
+#: src/language/constants.ts:36
 #, fuzzy
 msgid "Renew Certificate Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/language/constants.ts:34
+#: src/language/constants.ts:35
 #, fuzzy
 msgid "Renew Certificate Success"
 msgstr "Zertifikat ist gültig"
@@ -2340,7 +2345,7 @@ msgstr "Aktivierung erfolgreich"
 msgid "Request timeout"
 msgstr ""
 
-#: src/language/constants.ts:32
+#: src/language/constants.ts:33
 msgid "Requested with wrong parameters"
 msgstr "Forderte mit falschen Parametern an"
 
@@ -2397,7 +2402,7 @@ msgstr "Arbeite"
 msgid "Save"
 msgstr "Speichern"
 
-#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:127
+#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:129
 msgid "Save Directive"
 msgstr "Anweisung speichern"
 
@@ -2407,12 +2412,12 @@ msgstr "Anweisung speichern"
 msgid "Save error %{msg}"
 msgstr "Fehler beim Speichern %{msg}"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:48
 #, fuzzy
 msgid "Save Remote Site Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:73 src/language/constants.ts:46
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:47
 #, fuzzy
 msgid "Save Remote Site Success"
 msgstr "Zertifikat ist gültig"
@@ -2545,7 +2550,7 @@ msgstr ""
 msgid "Show"
 msgstr "Zeige"
 
-#: src/views/other/Login.vue:241
+#: src/views/other/Login.vue:240
 msgid "Sign in with a passkey"
 msgstr "Mit einem Passkey anmelden"
 
@@ -2609,7 +2614,7 @@ msgstr "Zertifikatsstatus"
 msgid "SSL Certificate Path"
 msgstr "Zertifikatsstatus"
 
-#: src/views/other/Login.vue:198
+#: src/views/other/Login.vue:197
 #, fuzzy
 msgid "SSO Login"
 msgstr "Login"
@@ -2705,12 +2710,12 @@ msgstr "Speichern erfolgreich"
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:9 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:9 src/language/constants.ts:39
 #, fuzzy
 msgid "Sync Certificate Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:13 src/language/constants.ts:37
+#: src/components/Notification/notifications.ts:13 src/language/constants.ts:38
 #, fuzzy
 msgid "Sync Certificate Success"
 msgstr "Zertifikat ist gültig"
@@ -2725,12 +2730,12 @@ msgstr "Speichern erfolgreich"
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:19 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:19 src/language/constants.ts:45
 #, fuzzy
 msgid "Sync Config Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:23 src/language/constants.ts:43
+#: src/components/Notification/notifications.ts:23 src/language/constants.ts:44
 #, fuzzy
 msgid "Sync Config Success"
 msgstr "Zertifikat ist gültig"
@@ -3047,7 +3052,7 @@ msgstr "Upgrade"
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr "Speichern erfolgreich"
 
-#: src/language/constants.ts:29
+#: src/language/constants.ts:30
 #, fuzzy
 msgid "Upgraded successfully"
 msgstr "Speichern erfolgreich"
@@ -3113,7 +3118,7 @@ msgstr ""
 msgid "View"
 msgstr "Anzeigen"
 
-#: src/components/Notification/Notification.vue:202
+#: src/components/Notification/Notification.vue:203
 #, fuzzy
 msgid "View all notifications"
 msgstr "Zertifikat ist gültig"

@@ -8,10 +8,11 @@ export function detailRender(args: CustomRender) {
       <div>
         <div class="mb-2">
           {
-            notifications[args.record.title].content(args.record.details)
+            notifications[args.record.title]?.content(args.record.details)
+            || args.record.content || args.record.details
           }
         </div>
-        {args.record.type !== NotificationTypeT.Success && (
+        {args.record.details?.response && args.record.type !== NotificationTypeT.Success && (
           <div>
             { JSON.stringify(args.record.details.response) }
           </div>
@@ -19,8 +20,7 @@ export function detailRender(args: CustomRender) {
       </div>
     )
   }
-  // eslint-disable-next-line sonarjs/no-ignored-exceptions,unused-imports/no-unused-vars
-  catch (e) {
+  catch {
     return args.text
   }
 }

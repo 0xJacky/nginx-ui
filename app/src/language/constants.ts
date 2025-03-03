@@ -18,6 +18,7 @@ export const msg = [
   $gettext('Reloading nginx'),
   $gettext('Finished'),
   $gettext('Issued certificate successfully'),
+  $gettext('Certificate renewed successfully'),
   $gettext('Environment variables cleaned'),
 
   $gettext('Initialing core upgrader'),

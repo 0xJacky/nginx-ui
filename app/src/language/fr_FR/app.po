@@ -70,7 +70,7 @@ msgstr "Ajouter une clé d'accès"
 msgid "Add Configuration"
 msgstr "Modifier la configuration"
 
-#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:117
+#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:119
 msgid "Add Directive Below"
 msgstr "Ajouter une directive"
 
@@ -114,7 +114,7 @@ msgid "All"
 msgstr "Tous"
 
 #: src/components/Notification/notifications.ts:121
-#: src/language/constants.ts:57
+#: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "Tous les codes de récupération ont été utilisés"
 
@@ -402,6 +402,11 @@ msgstr "Le certificat a expiré"
 msgid "Certificate Renewal Interval"
 msgstr "Le certificat est valide"
 
+#: src/language/constants.ts:21
+#, fuzzy
+msgid "Certificate renewed successfully"
+msgstr "Désactivé avec succès"
+
 #: src/views/certificate/CertificateEditor.vue:128
 #: src/views/site/cert/Cert.vue:33
 #, fuzzy
@@ -669,12 +674,12 @@ msgstr "Supprimer"
 msgid "Delete Permanently"
 msgstr "Supprimer définitivement"
 
-#: src/components/Notification/notifications.ts:37 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:37 src/language/constants.ts:50
 #, fuzzy
 msgid "Delete Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:41 src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:41 src/language/constants.ts:49
 #, fuzzy
 msgid "Delete Remote Site Success"
 msgstr "Changer de certificat"
@@ -775,12 +780,12 @@ msgstr "Désactivé"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "La désactivation du renouvellement automatique a échoué pour %{name}"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:45 src/language/constants.ts:52
 #, fuzzy
 msgid "Disable Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:51
 #, fuzzy
 msgid "Disable Remote Site Success"
 msgstr "Changer de certificat"
@@ -911,11 +916,11 @@ msgstr ""
 "La liste des domaines est vide, essayez de rouvrir la certification "
 "automatique pour %{config}"
 
-#: src/language/constants.ts:26
+#: src/language/constants.ts:27
 msgid "Download latest release error"
 msgstr "Erreur de téléchargement de la dernière version"
 
-#: src/language/constants.ts:25
+#: src/language/constants.ts:26
 msgid "Downloading latest release"
 msgstr "Téléchargement de la dernière version"
 
@@ -997,12 +1002,12 @@ msgstr "Échec de l'activation du renouvellement automatique pour %{name}"
 msgid "Enable failed"
 msgstr "Échec de l'activation"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:53 src/language/constants.ts:54
 #, fuzzy
 msgid "Enable Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:53
 #, fuzzy
 msgid "Enable Remote Site Success"
 msgstr "Changer de certificat"
@@ -1070,7 +1075,7 @@ msgstr "Activé avec succès"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Crypter le site Web avec Let's Encrypt"
 
-#: src/language/constants.ts:21
+#: src/language/constants.ts:22
 #, fuzzy
 msgid "Environment variables cleaned"
 msgstr "Définition des variables d'environnement"
@@ -1153,7 +1158,7 @@ msgstr ""
 "Échec de l'enregistrement, une ou plusieurs erreurs de syntaxe ont été "
 "détectées dans la configuration."
 
-#: src/language/constants.ts:31
+#: src/language/constants.ts:32
 msgid "File exists"
 msgstr "Le fichier existe"
 
@@ -1319,11 +1324,11 @@ msgstr "État du certificat"
 msgid "Info"
 msgstr "Info"
 
-#: src/language/constants.ts:24
+#: src/language/constants.ts:25
 msgid "Initial core upgrader error"
 msgstr "Erreur du programme de mise à niveau initial du core"
 
-#: src/language/constants.ts:23
+#: src/language/constants.ts:24
 msgid "Initialing core upgrader"
 msgstr "Initialisation du programme de mise à niveau du core"
 
@@ -1507,7 +1512,7 @@ msgstr "Localisations"
 msgid "Log"
 msgstr "Connexion"
 
-#: src/routes/index.ts:318 src/views/other/Login.vue:223
+#: src/routes/index.ts:318 src/views/other/Login.vue:222
 msgid "Login"
 msgstr "Connexion"
 
@@ -1876,7 +1881,7 @@ msgstr ""
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:232
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:231
 msgid "Or"
 msgstr ""
 
@@ -1958,11 +1963,11 @@ msgstr ""
 msgid "Perform"
 msgstr ""
 
-#: src/language/constants.ts:28
+#: src/language/constants.ts:29
 msgid "Perform core upgrade error"
 msgstr "Erreur lors de la mise a niveau du core"
 
-#: src/language/constants.ts:27
+#: src/language/constants.ts:28
 msgid "Performing core upgrade"
 msgstr "Exécution de la mise à niveau du core"
 
@@ -2002,7 +2007,7 @@ msgstr ""
 "fournisseur DNS."
 
 #: src/components/Notification/notifications.ts:122
-#: src/language/constants.ts:58
+#: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
 "lockout."
@@ -2238,22 +2243,22 @@ msgstr "Dupliqué avec succès"
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:27 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:27 src/language/constants.ts:42
 #, fuzzy
 msgid "Rename Remote Config Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:31 src/language/constants.ts:40
+#: src/components/Notification/notifications.ts:31 src/language/constants.ts:41
 #, fuzzy
 msgid "Rename Remote Config Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:56
 #, fuzzy
 msgid "Rename Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:55
 #, fuzzy
 msgid "Rename Remote Site Success"
 msgstr "Changer de certificat"
@@ -2306,12 +2311,12 @@ msgstr "Activé avec succès"
 msgid "Renew Certificate"
 msgstr "Changer de certificat"
 
-#: src/language/constants.ts:35
+#: src/language/constants.ts:36
 #, fuzzy
 msgid "Renew Certificate Error"
 msgstr "Changer de certificat"
 
-#: src/language/constants.ts:34
+#: src/language/constants.ts:35
 #, fuzzy
 msgid "Renew Certificate Success"
 msgstr "Changer de certificat"
@@ -2326,7 +2331,7 @@ msgstr "Activé avec succès"
 msgid "Request timeout"
 msgstr ""
 
-#: src/language/constants.ts:32
+#: src/language/constants.ts:33
 msgid "Requested with wrong parameters"
 msgstr ""
 
@@ -2383,7 +2388,7 @@ msgstr "En cours d'éxécution"
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:127
+#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:129
 msgid "Save Directive"
 msgstr "Enregistrer la directive"
 
@@ -2393,12 +2398,12 @@ msgstr "Enregistrer la directive"
 msgid "Save error %{msg}"
 msgstr "Enregistrer l'erreur %{msg}"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:48
 #, fuzzy
 msgid "Save Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:73 src/language/constants.ts:46
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:47
 #, fuzzy
 msgid "Save Remote Site Success"
 msgstr "Changer de certificat"
@@ -2529,7 +2534,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: src/views/other/Login.vue:241
+#: src/views/other/Login.vue:240
 msgid "Sign in with a passkey"
 msgstr ""
 
@@ -2592,7 +2597,7 @@ msgstr "Chemin de la clé du certificat SSL"
 msgid "SSL Certificate Path"
 msgstr "Chemin du certificat SSL"
 
-#: src/views/other/Login.vue:198
+#: src/views/other/Login.vue:197
 #, fuzzy
 msgid "SSO Login"
 msgstr "Connexion"
@@ -2691,12 +2696,12 @@ msgstr "Dupliqué avec succès"
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:9 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:9 src/language/constants.ts:39
 #, fuzzy
 msgid "Sync Certificate Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:13 src/language/constants.ts:37
+#: src/components/Notification/notifications.ts:13 src/language/constants.ts:38
 #, fuzzy
 msgid "Sync Certificate Success"
 msgstr "Changer de certificat"
@@ -2711,12 +2716,12 @@ msgstr "Dupliqué avec succès"
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:19 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:19 src/language/constants.ts:45
 #, fuzzy
 msgid "Sync Config Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:23 src/language/constants.ts:43
+#: src/components/Notification/notifications.ts:23 src/language/constants.ts:44
 #, fuzzy
 msgid "Sync Config Success"
 msgstr "Changer de certificat"
@@ -3017,7 +3022,7 @@ msgstr "Mettre à niveau"
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr "Mise à niveau réussie"
 
-#: src/language/constants.ts:29
+#: src/language/constants.ts:30
 msgid "Upgraded successfully"
 msgstr "Mise à niveau réussie"
 
@@ -3083,7 +3088,7 @@ msgstr "Version actuelle"
 msgid "View"
 msgstr "Voir"
 
-#: src/components/Notification/Notification.vue:202
+#: src/components/Notification/Notification.vue:203
 #, fuzzy
 msgid "View all notifications"
 msgstr "Certification"

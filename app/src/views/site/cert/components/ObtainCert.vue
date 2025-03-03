@@ -30,7 +30,7 @@ const data = ref({
     credentials: {},
     additional: {},
   },
-  key_type: '2048',
+  key_type: 'P256',
 }) as Ref<AutoCertOptions>
 
 const modalClosable = ref(true)

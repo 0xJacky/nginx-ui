@@ -21,7 +21,7 @@ function open() {
   step.value = 0
   data.value = {
     challenge_method: 'dns01',
-    key_type: '2048',
+    key_type: 'P256',
   } as AutoCertOptions
   domain.value = ''
 }

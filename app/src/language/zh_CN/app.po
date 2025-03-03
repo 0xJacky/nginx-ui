@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-02-25 19:05+0800\n"
+"PO-Revision-Date: 2025-03-03 16:34+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
 "projects/nginx-ui/frontend/zh_Hans/>\n"
@@ -69,7 +69,7 @@ msgstr "添加 Passkey"
 msgid "Add Configuration"
 msgstr "添加配置"
 
-#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:117
+#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:119
 msgid "Add Directive Below"
 msgstr "在下面添加指令"
 
@@ -109,7 +109,7 @@ msgid "All"
 msgstr "全部"
 
 #: src/components/Notification/notifications.ts:121
-#: src/language/constants.ts:57
+#: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "所有恢复码都已被使用"
 
@@ -372,6 +372,10 @@ msgstr "证书解析错误"
 msgid "Certificate Renewal Interval"
 msgstr "证书续期间隔"
 
+#: src/language/constants.ts:21
+msgid "Certificate renewed successfully"
+msgstr "证书更新成功"
+
 #: src/views/certificate/CertificateEditor.vue:128
 #: src/views/site/cert/Cert.vue:33
 msgid "Certificate Status"
@@ -620,11 +624,11 @@ msgstr "删除"
 msgid "Delete Permanently"
 msgstr "彻底删除"
 
-#: src/components/Notification/notifications.ts:37 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:37 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "删除远程站点错误"
 
-#: src/components/Notification/notifications.ts:41 src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:41 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "删除远程站点成功"
 
@@ -714,11 +718,11 @@ msgstr "禁用"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "关闭 %{name} 自动续签失败"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:45 src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "禁用远程站点错误"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "禁用远程站点成功"
 
@@ -833,11 +837,11 @@ msgstr "域名配置文件创建成功"
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr "域名列表为空，请尝试为 %{config} 重新打开证书自动续期"
 
-#: src/language/constants.ts:26
+#: src/language/constants.ts:27
 msgid "Download latest release error"
 msgstr "下载最新版本错误"
 
-#: src/language/constants.ts:25
+#: src/language/constants.ts:26
 msgid "Downloading latest release"
 msgstr "下载最新版本"
 
@@ -911,11 +915,11 @@ msgstr "启用 %{name} 自动续签失败"
 msgid "Enable failed"
 msgstr "启用失败"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:53 src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "启用远程站点错误"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "启用远程站点成功"
 
@@ -975,7 +979,7 @@ msgstr "启用成功"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 对网站进行加密"
 
-#: src/language/constants.ts:21
+#: src/language/constants.ts:22
 msgid "Environment variables cleaned"
 msgstr "环境变量已清理"
 
@@ -1049,7 +1053,7 @@ msgstr "读取 nginx.conf 失败"
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "保存失败，在配置中检测到语法错误。"
 
-#: src/language/constants.ts:31
+#: src/language/constants.ts:32
 msgid "File exists"
 msgstr "文件已存在"
 
@@ -1200,11 +1204,11 @@ msgstr "导入证书"
 msgid "Info"
 msgstr "信息"
 
-#: src/language/constants.ts:24
+#: src/language/constants.ts:25
 msgid "Initial core upgrader error"
 msgstr "初始化核心升级程序错误"
 
-#: src/language/constants.ts:23
+#: src/language/constants.ts:24
 msgid "Initialing core upgrader"
 msgstr "初始化核心升级器"
 
@@ -1372,7 +1376,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日志"
 
-#: src/routes/index.ts:318 src/views/other/Login.vue:223
+#: src/routes/index.ts:318 src/views/other/Login.vue:222
 msgid "Login"
 msgstr "登录"
 
@@ -1727,7 +1731,7 @@ msgstr "在线"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:232
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:231
 msgid "Or"
 msgstr "或"
 
@@ -1810,11 +1814,11 @@ msgstr "有效载荷资源为空"
 msgid "Perform"
 msgstr "执行"
 
-#: src/language/constants.ts:28
+#: src/language/constants.ts:29
 msgid "Perform core upgrade error"
 msgstr "执行核心升级错误"
 
-#: src/language/constants.ts:27
+#: src/language/constants.ts:28
 msgid "Performing core upgrade"
 msgstr "正在进行核心升级"
 
@@ -1851,7 +1855,7 @@ msgstr ""
 "商的 API。"
 
 #: src/components/Notification/notifications.ts:122
-#: src/language/constants.ts:58
+#: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
 "lockout."
@@ -2069,19 +2073,19 @@ msgstr "成功将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path}"
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "成功将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path}"
 
-#: src/components/Notification/notifications.ts:27 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:27 src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr "远程配置重命名错误"
 
-#: src/components/Notification/notifications.ts:31 src/language/constants.ts:40
+#: src/components/Notification/notifications.ts:31 src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr "重命名远程配置成功"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "重命名远程站点错误"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "重命名远程站点成功"
 
@@ -2124,11 +2128,11 @@ msgstr "重命名成功"
 msgid "Renew Certificate"
 msgstr "更新证书"
 
-#: src/language/constants.ts:35
+#: src/language/constants.ts:36
 msgid "Renew Certificate Error"
 msgstr "证书续期错误"
 
-#: src/language/constants.ts:34
+#: src/language/constants.ts:35
 msgid "Renew Certificate Success"
 msgstr "证书续期成功"
 
@@ -2141,7 +2145,7 @@ msgstr "更新成功"
 msgid "Request timeout"
 msgstr "请求超时"
 
-#: src/language/constants.ts:32
+#: src/language/constants.ts:33
 msgid "Requested with wrong parameters"
 msgstr "请求参数错误"
 
@@ -2197,7 +2201,7 @@ msgstr "运行中"
 msgid "Save"
 msgstr "保存"
 
-#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:127
+#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:129
 msgid "Save Directive"
 msgstr "保存指令"
 
@@ -2207,11 +2211,11 @@ msgstr "保存指令"
 msgid "Save error %{msg}"
 msgstr "保存错误 %{msg}"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "保存远程站点错误"
 
-#: src/components/Notification/notifications.ts:73 src/language/constants.ts:46
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "保存远程站点成功"
 
@@ -2336,7 +2340,7 @@ msgstr ""
 msgid "Show"
 msgstr "显示"
 
-#: src/views/other/Login.vue:241
+#: src/views/other/Login.vue:240
 msgid "Sign in with a passkey"
 msgstr "使用 Passkey 登录"
 
@@ -2392,7 +2396,7 @@ msgstr "SSL证书密钥路径"
 msgid "SSL Certificate Path"
 msgstr "SSL证书路径"
 
-#: src/views/other/Login.vue:198
+#: src/views/other/Login.vue:197
 msgid "SSO Login"
 msgstr "SSO 登录"
 
@@ -2482,11 +2486,11 @@ msgstr "证书 %{cert_name} 已成功同步到 %{env_name}"
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "证书 %{cert_name} 已成功同步到 %{env_name}"
 
-#: src/components/Notification/notifications.ts:9 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:9 src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr "同步证书错误"
 
-#: src/components/Notification/notifications.ts:13 src/language/constants.ts:37
+#: src/components/Notification/notifications.ts:13 src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr "同步证书成功"
 
@@ -2498,11 +2502,11 @@ msgstr "配置 %{config_name} 成功同步到 %{env_name}"
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "配置 %{config_name} 成功同步到 %{env_name}"
 
-#: src/components/Notification/notifications.ts:19 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:19 src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr "同步配置错误"
 
-#: src/components/Notification/notifications.ts:23 src/language/constants.ts:43
+#: src/components/Notification/notifications.ts:23 src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr "同步配置成功"
 
@@ -2790,7 +2794,7 @@ msgstr "升级"
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr "成功升级 %{node} 上的 Nginx UI 🎉"
 
-#: src/language/constants.ts:29
+#: src/language/constants.ts:30
 msgid "Upgraded successfully"
 msgstr "升级成功"
 
@@ -2853,7 +2857,7 @@ msgstr "版本"
 msgid "View"
 msgstr "查看"
 
-#: src/components/Notification/Notification.vue:202
+#: src/components/Notification/Notification.vue:203
 msgid "View all notifications"
 msgstr "查看全部通知"
 

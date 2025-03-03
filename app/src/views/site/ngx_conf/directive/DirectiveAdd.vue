@@ -103,9 +103,11 @@ function filterOption(inputValue: string, option: { label: string }) {
         </div>
         <div v-if="nginxDirectivesMap?.[directive.directive]" class="mt-2">
           <div>{{ $ngettext('Document', 'Documents', nginxDirectivesMap[directive.directive].links.length) }}</div>
-          <a v-for="(link, index) in nginxDirectivesMap?.[directive.directive].links" :key="index" :href="link">
-            {{ link }}
-          </a>
+          <div v-for="(link, index) in nginxDirectivesMap?.[directive.directive].links" :key="index" class="overflow-auto">
+            <a :href="link">
+              {{ link }}
+            </a>
+          </div>
         </div>
       </AFormItem>
     </div>

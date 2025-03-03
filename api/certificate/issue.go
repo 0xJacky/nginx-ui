@@ -96,8 +96,6 @@ func IssueCert(c *gin.Context) {
 	log := &cert.Logger{}
 	log.SetCertModel(&certModel)
 
-	payload.CertID = certModel.ID
-
 	go cert.IssueCert(payload, logChan, errChan)
 
 	go handleIssueCertLogChan(ws, log, logChan)
@@ -115,23 +113,24 @@ func IssueCert(c *gin.Context) {
 			logger.Error(err)
 			return
 		}
-		return 
+		return
 	}
 
 	cert := query.Cert
 
 	_, err = cert.Where(cert.Name.Eq(name), cert.Filename.Eq(name), cert.KeyType.Eq(string(payload.KeyType))).
-	Assign(field.Attrs(&model.Cert{
-		Domains:                 payload.ServerName,
-		SSLCertificatePath:      payload.GetCertificatePath(),
-		SSLCertificateKeyPath:   payload.GetCertificateKeyPath(),
-		AutoCert:                model.AutoCertEnabled,
-		ChallengeMethod:         payload.ChallengeMethod,
-		DnsCredentialID:         payload.DNSCredentialID,
-		Resource:                payload.Resource,
-		MustStaple:              payload.MustStaple,
-		LegoDisableCNAMESupport: payload.LegoDisableCNAMESupport,
-	})).FirstOrCreate()
+		Assign(field.Attrs(&model.Cert{
+			Domains:                 payload.ServerName,
+			SSLCertificatePath:      payload.GetCertificatePath(),
+			SSLCertificateKeyPath:   payload.GetCertificateKeyPath(),
+			AutoCert:                model.AutoCertEnabled,
+			ChallengeMethod:         payload.ChallengeMethod,
+			DnsCredentialID:         payload.DNSCredentialID,
+			Resource:                payload.Resource,
+			MustStaple:              payload.MustStaple,
+			LegoDisableCNAMESupport: payload.LegoDisableCNAMESupport,
+			Log:                     log.ToString(),
+		})).FirstOrCreate()
 	if err != nil {
 		logger.Error(err)
 		_ = ws.WriteJSON(IssueCertResponse{

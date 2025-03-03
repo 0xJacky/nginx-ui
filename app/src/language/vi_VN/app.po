@@ -65,7 +65,7 @@ msgstr ""
 msgid "Add Configuration"
 msgstr "Sửa cấu hình"
 
-#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:117
+#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:119
 msgid "Add Directive Below"
 msgstr "Thêm Directive"
 
@@ -108,7 +108,7 @@ msgid "All"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:121
-#: src/language/constants.ts:57
+#: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr ""
 
@@ -397,6 +397,11 @@ msgstr "Chứng chỉ đã hết hạn"
 msgid "Certificate Renewal Interval"
 msgstr "Chứng chỉ SSL hợp lệ"
 
+#: src/language/constants.ts:21
+#, fuzzy
+msgid "Certificate renewed successfully"
+msgstr "Đã xóa thành công"
+
 #: src/views/certificate/CertificateEditor.vue:128
 #: src/views/site/cert/Cert.vue:33
 #, fuzzy
@@ -660,12 +665,12 @@ msgstr "Xoá"
 msgid "Delete Permanently"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:37 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:37 src/language/constants.ts:50
 #, fuzzy
 msgid "Delete Remote Site Error"
 msgstr "Gia hạn chứng chỉ SSL thất bại"
 
-#: src/components/Notification/notifications.ts:41 src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:41 src/language/constants.ts:49
 #, fuzzy
 msgid "Delete Remote Site Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
@@ -765,12 +770,12 @@ msgstr "Tắt"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Tắt tự động gia hạn SSL cho %{name} thất bại"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:45 src/language/constants.ts:52
 #, fuzzy
 msgid "Disable Remote Site Error"
 msgstr "Gia hạn chứng chỉ SSL thất bại"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:51
 #, fuzzy
 msgid "Disable Remote Site Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
@@ -903,11 +908,11 @@ msgstr ""
 "Danh sách tên miền rỗng, hãy thử mở lại chức năng Tạo chứng chỉ tự động cho "
 "%{config}"
 
-#: src/language/constants.ts:26
+#: src/language/constants.ts:27
 msgid "Download latest release error"
 msgstr "Đã có lỗi xảy ra khi tải về phiên bản mới nhất"
 
-#: src/language/constants.ts:25
+#: src/language/constants.ts:26
 msgid "Downloading latest release"
 msgstr "Đang tải phiên bản mới nhất"
 
@@ -985,12 +990,12 @@ msgstr "Không thể bật tự động gia hạn SSL cho %{name}"
 msgid "Enable failed"
 msgstr "Bật không thành công"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:53 src/language/constants.ts:54
 #, fuzzy
 msgid "Enable Remote Site Error"
 msgstr "Gia hạn chứng chỉ SSL thất bại"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:53
 #, fuzzy
 msgid "Enable Remote Site Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
@@ -1058,7 +1063,7 @@ msgstr "Đã bật"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Bảo mật trang web với Let's Encrypt"
 
-#: src/language/constants.ts:21
+#: src/language/constants.ts:22
 #, fuzzy
 msgid "Environment variables cleaned"
 msgstr "Đặt biến môi trường"
@@ -1137,7 +1142,7 @@ msgstr ""
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "Không lưu được, đã phát hiện thấy (các) lỗi cú pháp trong cấu hình."
 
-#: src/language/constants.ts:31
+#: src/language/constants.ts:32
 msgid "File exists"
 msgstr "Tệp tin đã tồn tại"
 
@@ -1294,11 +1299,11 @@ msgstr "Chứng chỉ"
 msgid "Info"
 msgstr "Thông tin"
 
-#: src/language/constants.ts:24
+#: src/language/constants.ts:25
 msgid "Initial core upgrader error"
 msgstr "Không thể khởi tạo trình nâng cấp"
 
-#: src/language/constants.ts:23
+#: src/language/constants.ts:24
 msgid "Initialing core upgrader"
 msgstr "Đang khởi tạo trình nâng cấp"
 
@@ -1482,7 +1487,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Log"
 
-#: src/routes/index.ts:318 src/views/other/Login.vue:223
+#: src/routes/index.ts:318 src/views/other/Login.vue:222
 msgid "Login"
 msgstr "Đăng nhập"
 
@@ -1851,7 +1856,7 @@ msgstr "Trực tuyến"
 msgid "OpenAI"
 msgstr ""
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:232
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:231
 msgid "Or"
 msgstr ""
 
@@ -1934,11 +1939,11 @@ msgstr ""
 msgid "Perform"
 msgstr ""
 
-#: src/language/constants.ts:28
+#: src/language/constants.ts:29
 msgid "Perform core upgrade error"
 msgstr "Nâng cấp core không thành công"
 
-#: src/language/constants.ts:27
+#: src/language/constants.ts:28
 msgid "Performing core upgrade"
 msgstr "Nâng cấp core"
 
@@ -1976,7 +1981,7 @@ msgstr ""
 "thực DNS, sau đó chọn nhà cung cấp DNS"
 
 #: src/components/Notification/notifications.ts:122
-#: src/language/constants.ts:58
+#: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
 "lockout."
@@ -2211,22 +2216,22 @@ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
-#: src/components/Notification/notifications.ts:27 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:27 src/language/constants.ts:42
 #, fuzzy
 msgid "Rename Remote Config Error"
 msgstr "Gia hạn chứng chỉ SSL thất bại"
 
-#: src/components/Notification/notifications.ts:31 src/language/constants.ts:40
+#: src/components/Notification/notifications.ts:31 src/language/constants.ts:41
 #, fuzzy
 msgid "Rename Remote Config Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:56
 #, fuzzy
 msgid "Rename Remote Site Error"
 msgstr "Gia hạn chứng chỉ SSL thất bại"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:55
 #, fuzzy
 msgid "Rename Remote Site Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
@@ -2279,12 +2284,12 @@ msgstr "Gia hạn chứng chỉ SSL"
 msgid "Renew Certificate"
 msgstr "Gia hạn chứng chỉ SSL"
 
-#: src/language/constants.ts:35
+#: src/language/constants.ts:36
 #, fuzzy
 msgid "Renew Certificate Error"
 msgstr "Gia hạn chứng chỉ SSL thất bại"
 
-#: src/language/constants.ts:34
+#: src/language/constants.ts:35
 #, fuzzy
 msgid "Renew Certificate Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
@@ -2299,7 +2304,7 @@ msgstr "Gia hạn chứng chỉ SSL"
 msgid "Request timeout"
 msgstr ""
 
-#: src/language/constants.ts:32
+#: src/language/constants.ts:33
 msgid "Requested with wrong parameters"
 msgstr "Yêu cầu có chứa tham số sai"
 
@@ -2357,7 +2362,7 @@ msgstr "Running"
 msgid "Save"
 msgstr "Lưu"
 
-#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:127
+#: src/views/site/ngx_conf/directive/DirectiveAdd.vue:129
 msgid "Save Directive"
 msgstr "Lưu Directive"
 
@@ -2367,12 +2372,12 @@ msgstr "Lưu Directive"
 msgid "Save error %{msg}"
 msgstr "Đã xảy ra lỗi khi lưu %{msg}"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:48
 #, fuzzy
 msgid "Save Remote Site Error"
 msgstr "Gia hạn chứng chỉ SSL thất bại"
 
-#: src/components/Notification/notifications.ts:73 src/language/constants.ts:46
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:47
 #, fuzzy
 msgid "Save Remote Site Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
@@ -2503,7 +2508,7 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: src/views/other/Login.vue:241
+#: src/views/other/Login.vue:240
 msgid "Sign in with a passkey"
 msgstr ""
 
@@ -2563,7 +2568,7 @@ msgstr ""
 msgid "SSL Certificate Path"
 msgstr ""
 
-#: src/views/other/Login.vue:198
+#: src/views/other/Login.vue:197
 msgid "SSO Login"
 msgstr ""
 
@@ -2659,12 +2664,12 @@ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
-#: src/components/Notification/notifications.ts:9 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:9 src/language/constants.ts:39
 #, fuzzy
 msgid "Sync Certificate Error"
 msgstr "Gia hạn chứng chỉ SSL thất bại"
 
-#: src/components/Notification/notifications.ts:13 src/language/constants.ts:37
+#: src/components/Notification/notifications.ts:13 src/language/constants.ts:38
 #, fuzzy
 msgid "Sync Certificate Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
@@ -2679,12 +2684,12 @@ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
-#: src/components/Notification/notifications.ts:19 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:19 src/language/constants.ts:45
 #, fuzzy
 msgid "Sync Config Error"
 msgstr "Gia hạn chứng chỉ SSL thất bại"
 
-#: src/components/Notification/notifications.ts:23 src/language/constants.ts:43
+#: src/components/Notification/notifications.ts:23 src/language/constants.ts:44
 #, fuzzy
 msgid "Sync Config Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
@@ -2977,7 +2982,7 @@ msgstr "Cập nhật"
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr "Cập nhật thành công"
 
-#: src/language/constants.ts:29
+#: src/language/constants.ts:30
 #, fuzzy
 msgid "Upgraded successfully"
 msgstr "Cập nhật thành công"
@@ -3044,7 +3049,7 @@ msgstr "Phiên bản hiện tại"
 msgid "View"
 msgstr "Xem"
 
-#: src/components/Notification/Notification.vue:202
+#: src/components/Notification/Notification.vue:203
 #, fuzzy
 msgid "View all notifications"
 msgstr "Xem tất cả thông báo"
