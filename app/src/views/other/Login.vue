@@ -190,7 +190,6 @@ async function handlePasskeyLogin() {
               <AButton
                 v-if="has_casdoor"
                 block
-                html-type="submit"
                 :loading="loading"
                 class="mb-5"
                 @click="loginWithCasdoor"
