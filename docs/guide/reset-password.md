@@ -2,6 +2,8 @@
 
 The `reset-password` command allows you to reset the initial administrator account's password to a randomly generated 12-character password that includes uppercase letters, lowercase letters, numbers, and special symbols.
 
+This feature was introduced in `v2.0.0-rc.4`.
+
 ## Usage
 
 To reset the initial user's password, run:
