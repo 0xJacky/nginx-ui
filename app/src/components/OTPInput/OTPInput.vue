@@ -3,7 +3,9 @@ import VOtpInput from 'vue3-otp-input'
 
 const emit = defineEmits(['onComplete'])
 
-const data = defineModel<string>()
+const data = defineModel<string>({
+  default: '',
+})
 
 // eslint-disable-next-line vue/require-typed-ref
 const refOtp = ref()

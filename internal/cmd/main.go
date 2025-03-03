@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/internal/version"
 	"github.com/urfave/cli/v3"
 )
@@ -23,6 +24,11 @@ func NewAppCmd() *cli.Command {
 					serve = true
 					return nil
 				},
+			},
+			{
+				Name:  "reset-password",
+				Usage: "Reset the initial user password",
+				Action: user.ResetInitUserPassword,
 			},
 		},
 		Flags: []cli.Flag{
