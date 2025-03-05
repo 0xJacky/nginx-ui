@@ -1,6 +1,6 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.24.0
+go 1.24.1
 
 require (
 	github.com/0xJacky/pofile v0.2.1
@@ -39,7 +39,7 @@ require (
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.0.0-beta1
 	golang.org/x/crypto v0.35.0
-	golang.org/x/net v0.35.0
+	golang.org/x/net v0.36.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gen v0.3.26
