@@ -26,7 +26,7 @@ watch(route, () => {
   const sub = openSub()
   const p = openKeys.value.indexOf(sub)
   if (p === -1)
-    openKeys.value.push(sub)
+    openKeys.value = [sub]
 })
 
 const sidebars = computed(() => {
