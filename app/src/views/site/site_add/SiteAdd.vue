@@ -50,15 +50,15 @@ async function save() {
 
 const router = useRouter()
 
-function goto_modify() {
+function gotoModify() {
   router.push(`/sites/${ngxConfig.name}`)
 }
 
-function create_another() {
+function createAnother() {
   router.go(0)
 }
 
-const has_server_name = computed(() => {
+const hasServerName = computed(() => {
   const servers = ngxConfig.servers
 
   for (const server of Object.values(servers)) {
@@ -76,12 +76,12 @@ async function next() {
   currentStep.value++
 }
 
-const ngx_directives = computed(() => {
+const ngxDirectives = computed(() => {
   return ngxConfig.servers[0].directives
 })
 
 provide('save_config', save)
-provide('ngx_directives', ngx_directives)
+provide('ngx_directives', ngxDirectives)
 provide('ngx_config', ngxConfig)
 </script>
 
@@ -111,13 +111,13 @@ provide('ngx_config', ngxConfig)
         />
         <br>
         <AAlert
-          v-if="!has_server_name"
+          v-if="!hasServerName"
           :message="$gettext('Warning')"
           type="warning"
           show-icon
         >
           <template #description>
-            <span>{{ $gettext('server_name parameter is required') }}</span>
+            <span>{{ $gettext('The parameter of server_name is required') }}</span>
           </template>
         </AAlert>
         <br>
@@ -135,7 +135,7 @@ provide('ngx_config', ngxConfig)
       <ASpace v-if="currentStep < 2">
         <AButton
           type="primary"
-          :disabled="!ngxConfig.name || !has_server_name"
+          :disabled="!ngxConfig.name || !hasServerName"
           @click="next"
         >
           {{ $gettext('Next') }}
@@ -144,16 +144,16 @@ provide('ngx_config', ngxConfig)
       <AResult
         v-else-if="currentStep === 2"
         status="success"
-        :title="$gettext('Domain Config Created Successfully')"
+        :title="$gettext('Site Config Created Successfully')"
       >
         <template #extra>
           <AButton
             type="primary"
-            @click="goto_modify"
+            @click="gotoModify"
           >
             {{ $gettext('Modify Config') }}
           </AButton>
-          <AButton @click="create_another">
+          <AButton @click="createAnother">
             {{ $gettext('Create Another') }}
           </AButton>
         </template>

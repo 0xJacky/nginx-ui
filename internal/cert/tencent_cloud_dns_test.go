@@ -30,7 +30,7 @@ func TestTencentCloudDNS(t *testing.T) {
 	}
 
 	myUser := model.AcmeUser{
-		Email: settings.ServerSettings.Email,
+		Email: settings.CertSettings.Email,
 		Key: model.PrivateKey{
 			X: privateKey.PublicKey.X,
 			Y: privateKey.PublicKey.Y,
@@ -39,12 +39,12 @@ func TestTencentCloudDNS(t *testing.T) {
 
 	config := lego.NewConfig(&myUser)
 
-	if settings.ServerSettings.Demo {
+	if settings.NodeSettings.Demo {
 		config.CADirURL = "https://acme-staging-v02.api.letsencrypt.org/directory"
 	}
 
-	if settings.ServerSettings.CADir != "" {
-		config.CADirURL = settings.ServerSettings.CADir
+	if settings.CertSettings.CADir != "" {
+		config.CADirURL = settings.CertSettings.CADir
 		if config.HTTPClient != nil {
 			config.HTTPClient.Transport = &http.Transport{
 				Proxy:           http.ProxyFromEnvironment,

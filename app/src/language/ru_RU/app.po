@@ -871,10 +871,6 @@ msgstr[1] "API Документ"
 msgid "Domain"
 msgstr "Домен"
 
-#: src/views/site/SiteAdd.vue:147
-msgid "Domain Config Created Successfully"
-msgstr "Конфигурация домена успешно создана"
-
 #: src/views/certificate/CertificateEditor.vue:112
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
@@ -2396,10 +2392,6 @@ msgstr "Информация о сервере"
 msgid "server_name not found in directives"
 msgstr "server_name не нашел в директивах"
 
-#: src/views/site/SiteAdd.vue:120
-msgid "server_name parameter is required"
-msgstr "server_name параметр обязателен"
-
 #: src/constants/errors/nginx_log.ts:3
 msgid "ServerIdx out of range"
 msgstr ""
@@ -2456,6 +2448,11 @@ msgstr "Одиночная Директива"
 #: src/routes/index.ts:71 src/views/site/site_category/SiteCategory.vue:10
 msgid "Site Categories"
 msgstr ""
+
+#: src/views/site/SiteAdd.vue:147
+#, fuzzy
+msgid "Site Config Created Successfully"
+msgstr "Конфигурация домена успешно создана"
 
 #: src/constants/errors/site.ts:4
 #, fuzzy
@@ -2716,6 +2713,11 @@ msgid ""
 msgstr ""
 "Имя модели должно содержать только буквы, юникод, цифры, дефисы, тире и "
 "точки."
+
+#: src/views/site/SiteAdd.vue:120
+#, fuzzy
+msgid "The parameter of server_name is required"
+msgstr "server_name параметр обязателен"
 
 #: src/views/certificate/CertificateEditor.vue:179
 msgid "The path exists, but the file is not a certificate"

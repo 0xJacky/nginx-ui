@@ -848,10 +848,6 @@ msgstr[0] "档案"
 msgid "Domain"
 msgstr "網域"
 
-#: src/views/site/SiteAdd.vue:147
-msgid "Domain Config Created Successfully"
-msgstr "網域設定檔成功建立"
-
 #: src/views/certificate/CertificateEditor.vue:112
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr "網域列表為空，請嘗試重新開啟 %{config} 的自動憑證"
@@ -2326,10 +2322,6 @@ msgstr "伺服器資訊"
 msgid "server_name not found in directives"
 msgstr "在指令中未找到 server_name"
 
-#: src/views/site/SiteAdd.vue:120
-msgid "server_name parameter is required"
-msgstr "必須提供 server_name 參數"
-
 #: src/constants/errors/nginx_log.ts:3
 msgid "ServerIdx out of range"
 msgstr "伺服器索引超出範圍"
@@ -2387,6 +2379,11 @@ msgstr "單一指令"
 #: src/routes/index.ts:71 src/views/site/site_category/SiteCategory.vue:10
 msgid "Site Categories"
 msgstr "網站類別"
+
+#: src/views/site/SiteAdd.vue:147
+#, fuzzy
+msgid "Site Config Created Successfully"
+msgstr "網域設定檔成功建立"
 
 #: src/constants/errors/site.ts:4
 msgid "Site is enabled"
@@ -2632,6 +2629,11 @@ msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
 msgstr "節點名稱僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
+
+#: src/views/site/SiteAdd.vue:120
+#, fuzzy
+msgid "The parameter of server_name is required"
+msgstr "必須提供 server_name 參數"
 
 #: src/views/certificate/CertificateEditor.vue:179
 msgid "The path exists, but the file is not a certificate"

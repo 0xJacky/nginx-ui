@@ -58,7 +58,7 @@ export const routes: RouteRecordRaw[] = [
         }, {
           path: 'add',
           name: 'Add Site',
-          component: () => import('@/views/site/SiteAdd.vue'),
+          component: () => import('@/views/site/site_add/SiteAdd.vue'),
           meta: {
             name: () => $gettext('Add Site'),
             lastRouteName: 'Sites List',
