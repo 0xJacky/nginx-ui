@@ -1,12 +1,14 @@
 package analytic
 
 import (
+	stdnet "net"
+	"runtime"
+	"time"
+
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/disk"
 	"github.com/shirou/gopsutil/v4/net"
 	"github.com/uozi-tech/cosy/logger"
-	"runtime"
-	"time"
 )
 
 func getTotalDiskIO() (read, write uint64) {
@@ -68,25 +70,90 @@ func recordCpu(now time.Time) {
 }
 
 func recordNetwork(now time.Time) {
-	network, err := net.IOCounters(false)
+	// Get separate statistics for each interface
+	networkStats, err := net.IOCounters(true)
 	if err != nil {
 		logger.Error(err)
 		return
 	}
 
-	if len(network) == 0 {
+	if len(networkStats) == 0 {
 		return
 	}
+
+	// Get all network interfaces
+	interfaces, err := stdnet.Interfaces()
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+
+	var totalBytesRecv uint64
+	var totalBytesSent uint64
+	var externalInterfaceFound bool
+
+	// Iterate through all interfaces to find external ones
+	for _, iface := range interfaces {
+		// Skip interfaces that are down
+		if iface.Flags&stdnet.FlagUp == 0 {
+			continue
+		}
+
+		// Get IP addresses for the interface
+		addrs, err := iface.Addrs()
+		if err != nil {
+			logger.Error(err)
+			continue
+		}
+
+		// Check if this is an external interface
+		for _, addr := range addrs {
+			if ipNet, ok := addr.(*stdnet.IPNet); ok {
+				// Exclude loopback addresses and private IPs
+				if !ipNet.IP.IsLoopback() {
+					// Found external interface, accumulate its statistics
+					for _, stat := range networkStats {
+						if stat.Name == iface.Name {
+							totalBytesRecv += stat.BytesRecv
+							totalBytesSent += stat.BytesSent
+							externalInterfaceFound = true
+							break
+						}
+					}
+					break
+				}
+			}
+		}
+	}
+
+	// If no external interface is found, use fallback option
+	if !externalInterfaceFound {
+		// Fallback: use all non-loopback interfaces
+		for _, iface := range interfaces {
+			if iface.Flags&stdnet.FlagLoopback == 0 && iface.Flags&stdnet.FlagUp != 0 {
+				for _, stat := range networkStats {
+					if stat.Name == iface.Name {
+						totalBytesRecv += stat.BytesRecv
+						totalBytesSent += stat.BytesSent
+						break
+					}
+				}
+			}
+		}
+	}
+
+	LastNetRecv = totalBytesRecv
+	LastNetSent = totalBytesSent
+
 	NetRecvRecord = append(NetRecvRecord, Usage[uint64]{
 		Time:  now,
-		Usage: network[0].BytesRecv - LastNetRecv,
+		Usage: totalBytesRecv - LastNetRecv,
 	})
 	NetSentRecord = append(NetSentRecord, Usage[uint64]{
 		Time:  now,
-		Usage: network[0].BytesSent - LastNetSent,
+		Usage: totalBytesSent - LastNetSent,
 	})
-	LastNetRecv = network[0].BytesRecv
-	LastNetSent = network[0].BytesSent
+
 	if len(NetRecvRecord) > 100 {
 		NetRecvRecord = NetRecvRecord[1:]
 	}
