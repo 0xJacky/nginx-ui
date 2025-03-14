@@ -34,7 +34,7 @@ importers:
         version: 13.0.0(vue@3.5.13(typescript@5.8.2))
       '@vueuse/integrations':
         specifier: ^13.0.0
-        version: 13.0.0(async-validator@4.2.5)(axios@1.8.1)(nprogress@0.2.0)(sortablejs@1.15.6)(universal-cookie@7.2.2)(vue@3.5.13(typescript@5.8.2))
+        version: 13.0.0(async-validator@4.2.5)(axios@1.8.1)(nprogress@0.2.0)(sortablejs@1.15.6)(universal-cookie@8.0.0)(vue@3.5.13(typescript@5.8.2))
       '@xterm/addon-attach':
         specifier: ^0.11.0
         version: 0.11.0(@xterm/xterm@5.5.0)
@@ -90,8 +90,8 @@ importers:
         specifier: ^2.6.0
         version: 2.6.0
       universal-cookie:
-        specifier: ^7.2.2
-        version: 7.2.2
+        specifier: ^8.0.0
+        version: 8.0.0
       unocss:
         specifier: ^66.0.0
         version: 66.0.0(postcss@8.5.3)(vite@6.2.0(@types/node@22.10.2)(jiti@2.4.2)(less@4.2.2)(tsx@4.19.2)(yaml@2.6.1))(vue@3.5.13(typescript@5.8.2))
@@ -1031,9 +1031,6 @@ packages:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
 
-  '@types/cookie@0.6.0':
-    resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
-
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
 
@@ -1707,9 +1704,9 @@ packages:
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
-  cookie@0.7.2:
-    resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
-    engines: {node: '>= 0.6'}
+  cookie@1.0.2:
+    resolution: {integrity: sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==}
+    engines: {node: '>=18'}
 
   copy-anything@2.0.6:
     resolution: {integrity: sha512-1j20GZTsvKNkc4BY3NpMOM8tt///wY3FpIzozTOFO2ffuZcV61nojHXVKIy3WM+7ADCy5FVhdZYHYDdgTU0yJw==}
@@ -3719,8 +3716,8 @@ packages:
   unist-util-visit@5.0.0:
     resolution: {integrity: sha512-MR04uvD+07cwl/yhVuVWAtw+3GOR/knlL55Nd/wAdblk27GCVt3lqpTivy/tkJcZoNPzTwS1Y+KMojlLDhoTzg==}
 
-  universal-cookie@7.2.2:
-    resolution: {integrity: sha512-fMiOcS3TmzP2x5QV26pIH3mvhexLIT0HmPa3V7Q7knRfT9HG6kTwq02HZGLPw0sAOXrAmotElGRvTLCMbJsvxQ==}
+  universal-cookie@8.0.0:
+    resolution: {integrity: sha512-p5D4A9zpJ8Hp798kZJVN5kuzLsXrN/1HKjI5cukRwVNEdOnx0/XXWBgVfWtAvncgnFQwKdlPjyeAp7qdRaqQLQ==}
 
   unocss@66.0.0:
     resolution: {integrity: sha512-SHstiv1s7zGPSjzOsADzlwRhQM+6817+OqQE3Fv+N/nn2QLNx1bi3WXybFfz5tWkzBtyTZlwdPmeecsIs1yOCA==}
@@ -4760,8 +4757,6 @@ snapshots:
 
   '@trysound/sax@0.2.0': {}
 
-  '@types/cookie@0.6.0': {}
-
   '@types/debug@4.1.12':
     dependencies:
       '@types/ms': 0.7.34
@@ -5228,7 +5223,7 @@ snapshots:
       '@vueuse/shared': 13.0.0(vue@3.5.13(typescript@5.8.2))
       vue: 3.5.13(typescript@5.8.2)
 
-  '@vueuse/integrations@13.0.0(async-validator@4.2.5)(axios@1.8.1)(nprogress@0.2.0)(sortablejs@1.15.6)(universal-cookie@7.2.2)(vue@3.5.13(typescript@5.8.2))':
+  '@vueuse/integrations@13.0.0(async-validator@4.2.5)(axios@1.8.1)(nprogress@0.2.0)(sortablejs@1.15.6)(universal-cookie@8.0.0)(vue@3.5.13(typescript@5.8.2))':
     dependencies:
       '@vueuse/core': 13.0.0(vue@3.5.13(typescript@5.8.2))
       '@vueuse/shared': 13.0.0(vue@3.5.13(typescript@5.8.2))
@@ -5238,7 +5233,7 @@ snapshots:
       axios: 1.8.1
       nprogress: 0.2.0
       sortablejs: 1.15.6
-      universal-cookie: 7.2.2
+      universal-cookie: 8.0.0
 
   '@vueuse/metadata@13.0.0': {}
 
@@ -5583,7 +5578,7 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
-  cookie@0.7.2: {}
+  cookie@1.0.2: {}
 
   copy-anything@2.0.6:
     dependencies:
@@ -8011,10 +8006,9 @@ snapshots:
       unist-util-is: 6.0.0
       unist-util-visit-parents: 6.0.1
 
-  universal-cookie@7.2.2:
+  universal-cookie@8.0.0:
     dependencies:
-      '@types/cookie': 0.6.0
-      cookie: 0.7.2
+      cookie: 1.0.2
 
   unocss@66.0.0(postcss@8.5.3)(vite@6.2.0(@types/node@22.10.2)(jiti@2.4.2)(less@4.2.2)(tsx@4.19.2)(yaml@2.6.1))(vue@3.5.13(typescript@5.8.2)):
     dependencies:
