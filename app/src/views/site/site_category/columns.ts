@@ -9,20 +9,19 @@ const columns: Column[] = [{
   edit: {
     type: input,
   },
+  handle: true,
   pithy: true,
   width: 120,
 }, {
   title: () => $gettext('Created at'),
   dataIndex: 'created_at',
   customRender: datetime,
-  sorter: true,
   pithy: true,
   width: 150,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
   customRender: datetime,
-  sorter: true,
   pithy: true,
   width: 150,
 }, {

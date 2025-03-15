@@ -11,6 +11,7 @@ import columns from '@/views/site/site_category/columns'
     :api="site_category"
     :columns="columns"
     :scroll-x="600"
+    sortable
   >
     <template #edit="{ data }">
       <div class="mb-2">

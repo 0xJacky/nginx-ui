@@ -4,6 +4,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
+	"gorm.io/gorm"
 )
 
 func GetCategory(c *gin.Context) {
@@ -11,7 +12,9 @@ func GetCategory(c *gin.Context) {
 }
 
 func GetCategoryList(c *gin.Context) {
-	cosy.Core[model.SiteCategory](c).PagingList()
+	cosy.Core[model.SiteCategory](c).GormScope(func(tx *gorm.DB) *gorm.DB {
+		return tx.Order("order_id ASC")
+	}).PagingList()
 }
 
 func AddCategory(c *gin.Context) {
@@ -38,4 +41,8 @@ func DeleteCategory(c *gin.Context) {
 
 func RecoverCategory(c *gin.Context) {
 	cosy.Core[model.SiteCategory](c).Recover()
+}
+
+func UpdateCategoriesOrder(c *gin.Context) {
+	cosy.Core[model.SiteCategory](c).UpdateOrder()
 }

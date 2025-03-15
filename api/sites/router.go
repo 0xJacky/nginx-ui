@@ -31,4 +31,5 @@ func InitCategoryRouter(r *gin.RouterGroup) {
 	r.POST("site_categories/:id", ModifyCategory)
 	r.DELETE("site_categories/:id", DeleteCategory)
 	r.POST("site_categories/:id/recover", RecoverCategory)
+	r.POST("site_categories/order", UpdateCategoriesOrder)
 }
