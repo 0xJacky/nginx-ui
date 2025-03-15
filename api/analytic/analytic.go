@@ -11,7 +11,6 @@ import (
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/host"
 	"github.com/shirou/gopsutil/v4/load"
-	"github.com/shirou/gopsutil/v4/net"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy/logger"
 
@@ -75,15 +74,13 @@ func Analytic(c *gin.Context) {
 			continue
 		}
 
-		network, err := net.IOCounters(false)
+		network, err := analytic.GetNetworkStat()
 		if err != nil {
 			logger.Error(err)
 			continue
 		}
 
-		if len(network) > 0 {
-			stat.Network = network[0]
-		}
+		stat.Network = *network
 
 		// write
 		err = ws.WriteJSON(stat)
@@ -104,7 +101,7 @@ func GetAnalyticInit(c *gin.Context) {
 		logger.Error(err)
 	}
 
-	network, err := net.IOCounters(false)
+	network, err := analytic.GetNetworkStat()
 	if err != nil {
 		logger.Error(err)
 	}
@@ -117,11 +114,6 @@ func GetAnalyticInit(c *gin.Context) {
 	diskStat, err := analytic.GetDiskStat()
 	if err != nil {
 		logger.Error(err)
-	}
-
-	var _net net.IOCountersStat
-	if len(network) > 0 {
-		_net = network[0]
 	}
 
 	hostInfo, err := host.Info()
@@ -151,7 +143,7 @@ func GetAnalyticInit(c *gin.Context) {
 			Total: analytic.CpuTotalRecord,
 		},
 		Network: NetworkRecords{
-			Init:      _net,
+			Init:      *network,
 			BytesRecv: analytic.NetRecvRecord,
 			BytesSent: analytic.NetSentRecord,
 		},

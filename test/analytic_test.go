@@ -2,14 +2,15 @@ package test
 
 import (
 	"fmt"
+	"runtime"
+	"testing"
+	"time"
+
+	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/disk"
 	"github.com/shirou/gopsutil/v4/load"
 	"github.com/shirou/gopsutil/v4/mem"
-	"github.com/shirou/gopsutil/v4/net"
-	"runtime"
-	"testing"
-	"time"
 )
 
 func TestGoPsutil(t *testing.T) {
@@ -35,9 +36,9 @@ func TestGoPsutil(t *testing.T) {
 	diskUsage, _ := disk.Usage(".")
 	fmt.Println(diskUsage.String())
 
-	network, _ := net.IOCounters(false)
+	network, _ := analytic.GetNetworkStat()
 	fmt.Println(network)
 	time.Sleep(time.Second)
-	network, _ = net.IOCounters(false)
+	network, _ = analytic.GetNetworkStat()
 	fmt.Println(network)
 }

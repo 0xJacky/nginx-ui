@@ -1,9 +1,9 @@
 package analytic
 
 import (
-	"github.com/shirou/gopsutil/v4/net"
-	"github.com/uozi-tech/cosy/logger"
 	"time"
+
+	"github.com/uozi-tech/cosy/logger"
 )
 
 type Usage[T uint64 | float64] struct {
@@ -25,14 +25,12 @@ var (
 )
 
 func init() {
-	network, err := net.IOCounters(false)
+	network, err := GetNetworkStat()
 	if err != nil {
 		logger.Error(err)
 	}
-	if len(network) > 0 {
-		LastNetRecv = network[0].BytesRecv
-		LastNetSent = network[0].BytesSent
-	}
+	LastNetRecv = network.BytesRecv
+	LastNetSent = network.BytesSent
 
 	LastDiskReads, LastDiskWrites = getTotalDiskIO()
 

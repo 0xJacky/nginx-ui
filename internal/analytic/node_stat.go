@@ -1,13 +1,13 @@
 package analytic
 
 import (
-	"github.com/shirou/gopsutil/v4/cpu"
-	"github.com/shirou/gopsutil/v4/load"
-	"github.com/shirou/gopsutil/v4/net"
-	"github.com/uozi-tech/cosy/logger"
 	"math"
 	"runtime"
 	"time"
+
+	"github.com/shirou/gopsutil/v4/cpu"
+	"github.com/shirou/gopsutil/v4/load"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 func GetNodeStat() (data NodeStat) {
@@ -37,15 +37,10 @@ func GetNodeStat() (data NodeStat) {
 		return
 	}
 
-	netIO, err := net.IOCounters(false)
+	network, err := GetNetworkStat()
 	if err != nil {
 		logger.Error(err)
 		return
-	}
-
-	var network net.IOCountersStat
-	if len(netIO) > 0 {
-		network = netIO[0]
 	}
 
 	return NodeStat{
@@ -53,6 +48,6 @@ func GetNodeStat() (data NodeStat) {
 		CPUPercent:    math.Min((cpuUserUsage+cpuSystemUsage)*100, 100),
 		MemoryPercent: memory.Pressure,
 		DiskPercent:   diskStat.Percentage,
-		Network:       network,
+		Network:       *network,
 	}
 }
