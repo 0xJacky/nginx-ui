@@ -2,6 +2,7 @@ package analytic
 
 import (
 	stdnet "net"
+	"strings"
 
 	"github.com/shirou/gopsutil/v4/net"
 	"github.com/uozi-tech/cosy/logger"
@@ -43,6 +44,17 @@ func GetNetworkStat() (data *net.IOCountersStat, err error) {
 		// Skip down or loopback interfaces
 		if iface.Flags&stdnet.FlagUp == 0 ||
 			iface.Flags&stdnet.FlagLoopback != 0 {
+			continue
+		}
+
+		// Skip common virtual interfaces by name pattern
+		if isVirtualInterface(iface.Name) {
+			continue
+		}
+
+		// Handle container main interfaces like eth0 in container environments
+		if isContainerInterface(iface.Name) {
+			externalInterfaces[iface.Name] = true
 			continue
 		}
 
@@ -104,6 +116,50 @@ func GetNetworkStat() (data *net.IOCountersStat, err error) {
 		Fifoin:      totalFifoIn,
 		Fifoout:     totalFifoOut,
 	}, nil
+}
+
+// isVirtualInterface checks if the interface is a virtual one based on name patterns
+func isVirtualInterface(name string) bool {
+	// Common virtual interface name patterns
+	virtualPatterns := []string{
+		"veth", "virbr", "vnet", "vmnet", "vboxnet", "docker",
+		"br-", "bridge", "tun", "tap", "bond", "dummy",
+		"vpn", "ipsec", "gre", "sit", "vlan", "virt",
+		"wg", "vmk", "ib", "vxlan", "geneve", "ovs",
+		"hyperv", "hyper-v", "awdl", "llw", "utun",
+		"vpn", "zt", "zerotier", "wireguard",
+	}
+
+	for _, pattern := range virtualPatterns {
+		if strings.Contains(strings.ToLower(name), pattern) {
+			return true
+		}
+	}
+
+	return false
+}
+
+// isContainerInterface checks if this is a main container interface
+func isContainerInterface(name string) bool {
+	// Common main container interface patterns
+	// eth0 is usually the main interface inside containers
+	// en0, en1 are common physical interfaces on macOS
+	// ens/enp/eno are common physical interfaces on Linux
+	containerPatterns := []string{
+		"eth0", "en0", "en1",
+		"ens", "enp", "eno",
+		"eth1", "eth2", // Potential physical interfaces
+		"wlan", "wifi", "wl", // Wireless interfaces
+		"bond0", // Bonded interfaces that might be external
+	}
+
+	for _, pattern := range containerPatterns {
+		if strings.HasPrefix(strings.ToLower(name), pattern) {
+			return true
+		}
+	}
+
+	return false
 }
 
 // isRealExternalIP checks if an IP is a genuine external (public) IP

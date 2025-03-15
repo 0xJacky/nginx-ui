@@ -15,7 +15,7 @@ func TestCreatesTransportWithDefaultSettings(t *testing.T) {
 	require.NoError(t, err)
 	assert.NotNil(t, transport)
 	assert.ObjectsAreEqual(http.ProxyFromEnvironment, transport.Proxy)
-	assert.Equal(t, settings.ServerSettings.InsecureSkipVerify, transport.TLSClientConfig.InsecureSkipVerify)
+	assert.Equal(t, settings.HTTPSettings.InsecureSkipVerify, transport.TLSClientConfig.InsecureSkipVerify)
 }
 
 func TestCreatesTransportWithCustomProxy(t *testing.T) {

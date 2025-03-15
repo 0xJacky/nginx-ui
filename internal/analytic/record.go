@@ -68,25 +68,32 @@ func recordCpu(now time.Time) {
 }
 
 func recordNetwork(now time.Time) {
-	// Get separate statistics for each interface
+	// Get network statistics using GetNetworkStat which includes Ethernet interfaces
 	networkStats, err := GetNetworkStat()
 	if err != nil {
 		logger.Error(err)
 		return
 	}
 
-	LastNetRecv = networkStats.BytesRecv
-	LastNetSent = networkStats.BytesSent
+	// Calculate usage since last record
+	bytesRecv := networkStats.BytesRecv - LastNetRecv
+	bytesSent := networkStats.BytesSent - LastNetSent
 
+	// Update records
 	NetRecvRecord = append(NetRecvRecord, Usage[uint64]{
 		Time:  now,
-		Usage: networkStats.BytesRecv - LastNetRecv,
+		Usage: bytesRecv,
 	})
 	NetSentRecord = append(NetSentRecord, Usage[uint64]{
 		Time:  now,
-		Usage: networkStats.BytesSent - LastNetSent,
+		Usage: bytesSent,
 	})
 
+	// Update last values
+	LastNetRecv = networkStats.BytesRecv
+	LastNetSent = networkStats.BytesSent
+
+	// Limit record size
 	if len(NetRecvRecord) > 100 {
 		NetRecvRecord = NetRecvRecord[1:]
 	}
