@@ -52,8 +52,8 @@ func GetNetworkStat() (data *net.IOCountersStat, err error) {
 			continue
 		}
 
-		// Handle container main interfaces like eth0 in container environments
-		if isContainerInterface(iface.Name) {
+		// Check if this is a physical network interface
+		if isPhysicalInterface(iface.Name) && len(iface.HardwareAddr) > 0 {
 			externalInterfaces[iface.Name] = true
 			continue
 		}
@@ -139,24 +139,53 @@ func isVirtualInterface(name string) bool {
 	return false
 }
 
-// isContainerInterface checks if this is a main container interface
-func isContainerInterface(name string) bool {
-	// Common main container interface patterns
-	// eth0 is usually the main interface inside containers
-	// en0, en1 are common physical interfaces on macOS
-	// ens/enp/eno are common physical interfaces on Linux
-	containerPatterns := []string{
-		"eth0", "en0", "en1",
-		"ens", "enp", "eno",
-		"eth1", "eth2", // Potential physical interfaces
-		"wlan", "wifi", "wl", // Wireless interfaces
-		"bond0", // Bonded interfaces that might be external
+// isPhysicalInterface checks if the interface is a physical network interface
+// including server, cloud VM, and container physical interfaces
+func isPhysicalInterface(name string) bool {
+	// Common prefixes for physical network interfaces across different platforms
+	physicalPrefixes := []string{
+		"eth",  // Common Linux Ethernet interface
+		"en",   // macOS and some Linux
+		"ens",  // Predictable network interface names in systemd
+		"enp",  // Predictable network interface names in systemd (PCI)
+		"eno",  // Predictable network interface names in systemd (on-board)
+		"wlan", // Wireless interfaces
+		"wifi", // Some wireless interfaces
+		"wl",   // Shortened wireless interfaces
+		"bond", // Bonded interfaces
+		"em",   // Some server network interfaces
+		"p",    // Some specialized network cards
+		"lan",  // Some network interfaces
 	}
 
-	for _, pattern := range containerPatterns {
-		if strings.HasPrefix(strings.ToLower(name), pattern) {
-			return true
+	// Check for exact matches for common primary interfaces
+	if name == "eth0" || name == "en0" || name == "em0" {
+		return true
+	}
+
+	// Check for common physical interface patterns
+	for _, prefix := range physicalPrefixes {
+		if strings.HasPrefix(strings.ToLower(name), prefix) {
+			// Check if the remaining part is numeric or empty
+			suffix := strings.TrimPrefix(strings.ToLower(name), prefix)
+			if suffix == "" || isNumericSuffix(suffix) {
+				return true
+			}
 		}
+	}
+
+	return false
+}
+
+// isNumericSuffix checks if a string is a numeric suffix or starts with a number
+func isNumericSuffix(s string) bool {
+	if len(s) == 0 {
+		return false
+	}
+
+	// Check if the first character is a digit
+	if s[0] >= '0' && s[0] <= '9' {
+		return true
 	}
 
 	return false

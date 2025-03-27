@@ -62,15 +62,6 @@ func (c *ConfigPayload) mkCertificateDir() (err error) {
 		return nil
 	}
 
-	if _, err = os.Stat(c.CertificateDir); os.IsNotExist(err) {
-		err = os.MkdirAll(c.CertificateDir, 0755)
-		if err == nil {
-			return nil
-		}
-	} else {
-		return nil
-	}
-
 	// For windows, replace * with # (issue #403)
 	c.CertificateDir = strings.ReplaceAll(c.CertificateDir, "*", "#")
 	if _, err = os.Stat(c.CertificateDir); os.IsNotExist(err) {
