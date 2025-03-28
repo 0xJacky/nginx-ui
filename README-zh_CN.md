@@ -238,23 +238,37 @@ go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/sett
 
 ### 基本用法
 
+如果您在中国大陆，可能会遇到 GitHub 的网络问题。您可以通过以下命令设置代理服务器下载 Nginx UI，以加快下载速度。
+
+```bash
+export GH_PROXY=https://ghfast.top/
+```
+
+当以上地址不可用时，请检视 [GitHub Proxy](https://ghproxy.link/) 获得最新地址，或根据实际情况选择其他代理。
+
 **安装或升级**
 
 ```shell
-bash -c "$(curl -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install -r https://mirror.ghproxy.com/
+bash -c "$(curl -L ${GH_PROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
 ```
 一键安装脚本默认设置的监听端口为 `9000`，HTTP Challenge 端口默认为 `9180`，如果出现端口冲突请进入 `/usr/local/etc/nginx-ui/app.ini` 修改，并使用 `systemctl restart nginx-ui` 重启 Nginx UI 服务。
 
 **卸载 Nginx UI 但保留配置和数据库文件**
 
 ```shell
-bash -c "$(curl -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
+bash -c "$(curl -L ${GH_PROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
+```
+
+**卸载 Nginx UI 不保留配置和数据库文件**
+
+```shell
+bash -c "$(curl -L ${GH_PROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove --purge
 ```
 
 ### 更多用法
 
 ````shell
-bash -c "$(curl -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
+bash -c "$(curl -L ${GH_PROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
 ````
 
 ## Nginx 反向代理配置示例
