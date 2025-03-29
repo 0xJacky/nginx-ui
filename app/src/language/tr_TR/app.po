@@ -281,7 +281,7 @@ msgstr "Geri"
 msgid "Backup file integrity check failed, it may have been tampered with"
 msgstr ""
 
-#: src/constants/errors/backup.ts:39
+#: src/constants/errors/backup.ts:41
 #, fuzzy
 msgid "Backup file not found: {0}"
 msgstr "Dosya bulunamadı"
@@ -510,7 +510,7 @@ msgstr "Komut"
 msgid "Comments"
 msgstr "Yorumlar"
 
-#: src/constants/errors/backup.ts:13
+#: src/constants/errors/backup.ts:14
 #, fuzzy
 msgid "Config path is empty"
 msgstr "Yapılandırma Şablonları"
@@ -660,7 +660,7 @@ msgstr "Ortam göstergesinde görüntülenecek yerel sunucu adını özelleştir
 msgid "Dashboard"
 msgstr "Kontrol Paneli"
 
-#: src/views/other/Install.vue:119
+#: src/views/other/Install.vue:152
 msgid "Database (Optional, default: database)"
 msgstr "Veritabanı (İsteğe bağlı, varsayılan: database)"
 
@@ -986,7 +986,7 @@ msgstr "Akışı Düzenle"
 msgid "Email"
 msgstr "E-posta"
 
-#: src/views/other/Install.vue:88
+#: src/views/other/Install.vue:121
 msgid "Email (*)"
 msgstr "E-posta(*)"
 
@@ -1136,37 +1136,42 @@ msgstr ""
 msgid "Failed to backup Nginx UI files: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:17
+#: src/constants/errors/backup.ts:18
 #, fuzzy
 msgid "Failed to calculate hash: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:53
+#: src/constants/errors/backup.ts:58
 msgid "Failed to calculate Nginx hash: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:52
+#: src/constants/errors/backup.ts:57
 msgid "Failed to calculate Nginx UI hash: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:14
+#: src/constants/errors/backup.ts:13
+#, fuzzy
+msgid "Failed to cleanup temporary directory: {0}"
+msgstr "Etkinleştirilemedi %{msg}"
+
+#: src/constants/errors/backup.ts:15
 msgid "Failed to copy config file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:15
+#: src/constants/errors/backup.ts:16
 msgid "Failed to copy database directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:16
+#: src/constants/errors/backup.ts:17
 #, fuzzy
 msgid "Failed to copy database file: {0}"
 msgstr "Devre dışı bırakılamadı %{msg}"
 
-#: src/constants/errors/backup.ts:30
+#: src/constants/errors/backup.ts:32
 msgid "Failed to copy file content: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:19
+#: src/constants/errors/backup.ts:20
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr ""
 
@@ -1180,12 +1185,12 @@ msgstr "Etkinleştirilemedi %{msg}"
 msgid "Failed to create backup file: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:44
+#: src/constants/errors/backup.ts:46
 #, fuzzy
 msgid "Failed to create directory: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:46
+#: src/constants/errors/backup.ts:48
 #, fuzzy
 msgid "Failed to create file: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
@@ -1195,14 +1200,19 @@ msgstr "Etkinleştirilemedi %{msg}"
 msgid "Failed to create hash info file: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:45
+#: src/constants/errors/backup.ts:47
 #, fuzzy
 msgid "Failed to create parent directory: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:32
+#: src/constants/errors/backup.ts:34
 msgid "Failed to create restore directory: {0}"
 msgstr ""
+
+#: src/constants/errors/backup.ts:50
+#, fuzzy
+msgid "Failed to create symbolic link: {0}"
+msgstr "Etkinleştirilemedi %{msg}"
 
 #: src/constants/errors/backup.ts:2
 #, fuzzy
@@ -1219,36 +1229,36 @@ msgstr "Etkinleştirilemedi %{msg}"
 msgid "Failed to create zip archive: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:27
+#: src/constants/errors/backup.ts:29
 #, fuzzy
 msgid "Failed to create zip entry: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:26
+#: src/constants/errors/backup.ts:28
 #, fuzzy
 msgid "Failed to create zip file: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:29
+#: src/constants/errors/backup.ts:31
 #, fuzzy
 msgid "Failed to create zip header: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:24
+#: src/constants/errors/backup.ts:26
 #, fuzzy
 msgid "Failed to decrypt data: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:49
+#: src/constants/errors/backup.ts:54
 #, fuzzy
 msgid "Failed to decrypt file: {0}"
 msgstr "Devre dışı bırakılamadı %{msg}"
 
-#: src/constants/errors/backup.ts:35
+#: src/constants/errors/backup.ts:37
 msgid "Failed to decrypt Nginx directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:34
+#: src/constants/errors/backup.ts:36
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr ""
 
@@ -1266,12 +1276,12 @@ msgstr "Devre dışı bırakılamadı %{msg}"
 msgid "Failed to enable %{msg}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:23
+#: src/constants/errors/backup.ts:25
 #, fuzzy
 msgid "Failed to encrypt data: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:21
+#: src/constants/errors/backup.ts:23
 #, fuzzy
 msgid "Failed to encrypt file: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
@@ -1284,7 +1294,12 @@ msgstr ""
 msgid "Failed to encrypt Nginx UI directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:33
+#: src/constants/errors/backup.ts:52
+#, fuzzy
+msgid "Failed to evaluate symbolic links: {0}"
+msgstr "Etkinleştirilemedi %{msg}"
+
+#: src/constants/errors/backup.ts:35
 #, fuzzy
 msgid "Failed to extract archive: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
@@ -1303,17 +1318,17 @@ msgstr "Sertifika bilgileri alınamadı"
 msgid "Failed to get certificate information"
 msgstr "Sertifika bilgileri alınamadı"
 
-#: src/constants/errors/backup.ts:28
+#: src/constants/errors/backup.ts:30
 #, fuzzy
 msgid "Failed to open source file: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:47
+#: src/constants/errors/backup.ts:49
 #, fuzzy
 msgid "Failed to open zip entry: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:43
+#: src/constants/errors/backup.ts:45
 #, fuzzy
 msgid "Failed to open zip file: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
@@ -1322,16 +1337,16 @@ msgstr "Etkinleştirilemedi %{msg}"
 msgid "Failed to parse nginx.conf"
 msgstr ""
 
-#: src/constants/errors/backup.ts:48
+#: src/constants/errors/backup.ts:53
 msgid "Failed to read encrypted file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:20
+#: src/constants/errors/backup.ts:22
 #, fuzzy
 msgid "Failed to read file: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:51
+#: src/constants/errors/backup.ts:56
 msgid "Failed to read hash info file: {0}"
 msgstr ""
 
@@ -1339,11 +1354,16 @@ msgstr ""
 msgid "Failed to read nginx.conf"
 msgstr ""
 
-#: src/constants/errors/backup.ts:37
+#: src/constants/errors/backup.ts:21
+#, fuzzy
+msgid "Failed to read symlink: {0}"
+msgstr "Etkinleştirilemedi %{msg}"
+
+#: src/constants/errors/backup.ts:39
 msgid "Failed to restore Nginx configs: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:38
+#: src/constants/errors/backup.ts:40
 msgid "Failed to restore Nginx UI files: {0}"
 msgstr ""
 
@@ -1352,20 +1372,20 @@ msgstr ""
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "Kaydedilemedi, yapılandırmada sözdizimi hatası(ları) tespit edildi."
 
-#: src/constants/errors/backup.ts:36
+#: src/constants/errors/backup.ts:38
 #, fuzzy
 msgid "Failed to verify hashes: {0}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/constants/errors/backup.ts:50
+#: src/constants/errors/backup.ts:55
 msgid "Failed to write decrypted file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:22
+#: src/constants/errors/backup.ts:24
 msgid "Failed to write encrypted file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:31
+#: src/constants/errors/backup.ts:33
 msgid "Failed to write to zip buffer: {0}"
 msgstr ""
 
@@ -1462,7 +1482,7 @@ msgstr "Sertifika alınıyor, lütfen bekleyin..."
 msgid "Github Proxy"
 msgstr "Github Proxy"
 
-#: src/constants/errors/backup.ts:54
+#: src/constants/errors/backup.ts:59
 msgid "Hash verification failed: file integrity compromised"
 msgstr ""
 
@@ -1551,13 +1571,23 @@ msgstr "Uygulamadan kodu girin:"
 msgid "Input the recovery code:"
 msgstr "Kurtarma kodunu girin:"
 
-#: src/routes/modules/auth.ts:8 src/views/other/Install.vue:134
+#: src/routes/modules/auth.ts:8 src/views/other/Install.vue:168
 msgid "Install"
 msgstr "Yükle"
 
-#: src/views/other/Install.vue:67
+#: src/views/other/Install.vue:89
 msgid "Install successfully"
 msgstr "Başarıyla yüklendi"
+
+#: src/constants/errors/system.ts:3
+msgid "Installation is not allowed after 10 minutes of system startup"
+msgstr ""
+
+#: src/views/other/Install.vue:113
+msgid ""
+"Installation is not allowed after 10 minutes of system startup, please "
+"restart the Nginx UI."
+msgstr ""
 
 #: src/views/preference/LogrotateSettings.vue:25
 msgid "Interval"
@@ -1567,17 +1597,22 @@ msgstr "Aralık"
 msgid "Invalid"
 msgstr "Geçersiz"
 
-#: src/constants/errors/backup.ts:42
+#: src/constants/errors/backup.ts:44
 msgid "Invalid AES IV format: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:41
+#: src/constants/errors/backup.ts:43
 msgid "Invalid AES key format: {0}"
 msgstr ""
 
 #: src/views/system/Backup/SystemRestore.vue:67
 #, fuzzy
 msgid "Invalid file object"
+msgstr "Geçersiz dosya adı"
+
+#: src/constants/errors/backup.ts:51
+#, fuzzy
+msgid "Invalid file path: {0}"
 msgstr "Geçersiz dosya adı"
 
 #: src/views/config/components/Rename.vue:64
@@ -1594,7 +1629,7 @@ msgstr "Geçersiz klasör adı"
 msgid "Invalid otp code"
 msgstr "Geçersiz 2FA veya kurtarma kodu"
 
-#: src/constants/errors/backup.ts:25
+#: src/constants/errors/backup.ts:27
 msgid "Invalid padding in decrypted data"
 msgstr ""
 
@@ -1611,7 +1646,7 @@ msgstr "Geçersiz 2FA veya kurtarma kodu"
 msgid "Invalid request format"
 msgstr ""
 
-#: src/constants/errors/backup.ts:40
+#: src/constants/errors/backup.ts:42
 #, fuzzy
 msgid "Invalid security token format"
 msgstr "Geçersiz 2FA veya kurtarma kodu"
@@ -1949,7 +1984,7 @@ msgstr ""
 msgid "Nginx conf not include stream-enabled"
 msgstr ""
 
-#: src/constants/errors/backup.ts:18
+#: src/constants/errors/backup.ts:19
 #, fuzzy
 msgid "Nginx config directory is not set"
 msgstr "Nginx Yapılandırma Ayrıştırma Hatası"
@@ -2017,6 +2052,10 @@ msgstr "Terminal Başlatma Komutu"
 #, fuzzy
 msgid "Nginx restarted successfully"
 msgstr "Nginx başarıyla yeniden başlatıldı"
+
+#: src/constants/errors/system.ts:2
+msgid "Nginx UI already installed"
+msgstr ""
 
 #: src/views/system/Backup/SystemRestore.vue:88
 #, fuzzy
@@ -2241,7 +2280,7 @@ msgstr ""
 msgid "Password"
 msgstr "Şifre"
 
-#: src/views/other/Install.vue:108
+#: src/views/other/Install.vue:141
 #, fuzzy
 msgid "Password (*)"
 msgstr "Şifre (*)"
@@ -2251,7 +2290,7 @@ msgstr "Şifre (*)"
 msgid "Password incorrect"
 msgstr "Kullanıcı adı veya şifre yanlış"
 
-#: src/views/other/Install.vue:48
+#: src/views/other/Install.vue:70
 msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
@@ -2370,17 +2409,17 @@ msgid ""
 msgstr ""
 "Lütfen isim girin, bu yeni yapılandırmanın dosya adı olarak kullanılacaktır!"
 
-#: src/views/other/Install.vue:32
+#: src/views/other/Install.vue:54
 #, fuzzy
 msgid "Please input your E-mail!"
 msgstr "Lütfen e-postanızı girin!"
 
-#: src/views/other/Install.vue:44 src/views/other/Login.vue:47
+#: src/views/other/Install.vue:66 src/views/other/Login.vue:47
 #, fuzzy
 msgid "Please input your password!"
 msgstr "Lütfen şifrenizi girin!"
 
-#: src/views/other/Install.vue:38 src/views/other/Login.vue:41
+#: src/views/other/Install.vue:60 src/views/other/Login.vue:41
 #, fuzzy
 msgid "Please input your username!"
 msgstr "Lütfen kullanıcı adınızı girin!"
@@ -3236,7 +3275,7 @@ msgstr ""
 "verilmesinden bu yana 1 haftadan veya ayarlarda belirlediğiniz süreden fazla "
 "zaman geçtiyse yenilenecektir."
 
-#: src/views/other/Install.vue:54
+#: src/views/other/Install.vue:76
 #, fuzzy
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "Dosya adı aşağıdaki karakterleri içeremez: %{c}"
@@ -3607,7 +3646,7 @@ msgstr ""
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
-#: src/views/other/Install.vue:98
+#: src/views/other/Install.vue:131
 #, fuzzy
 msgid "Username (*)"
 msgstr "Kullanıcı adı (*)"

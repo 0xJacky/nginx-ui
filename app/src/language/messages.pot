@@ -270,7 +270,7 @@ msgstr ""
 msgid "Backup file integrity check failed, it may have been tampered with"
 msgstr ""
 
-#: src/constants/errors/backup.ts:39
+#: src/constants/errors/backup.ts:41
 msgid "Backup file not found: {0}"
 msgstr ""
 
@@ -488,7 +488,7 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-#: src/constants/errors/backup.ts:13
+#: src/constants/errors/backup.ts:14
 msgid "Config path is empty"
 msgstr ""
 
@@ -633,7 +633,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: src/views/other/Install.vue:119
+#: src/views/other/Install.vue:152
 msgid "Database (Optional, default: database)"
 msgstr ""
 
@@ -932,7 +932,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: src/views/other/Install.vue:88
+#: src/views/other/Install.vue:121
 msgid "Email (*)"
 msgstr ""
 
@@ -1071,35 +1071,39 @@ msgstr ""
 msgid "Failed to backup Nginx UI files: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:17
+#: src/constants/errors/backup.ts:18
 msgid "Failed to calculate hash: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:53
+#: src/constants/errors/backup.ts:58
 msgid "Failed to calculate Nginx hash: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:52
+#: src/constants/errors/backup.ts:57
 msgid "Failed to calculate Nginx UI hash: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:14
-msgid "Failed to copy config file: {0}"
+#: src/constants/errors/backup.ts:13
+msgid "Failed to cleanup temporary directory: {0}"
 msgstr ""
 
 #: src/constants/errors/backup.ts:15
-msgid "Failed to copy database directory: {0}"
+msgid "Failed to copy config file: {0}"
 msgstr ""
 
 #: src/constants/errors/backup.ts:16
+msgid "Failed to copy database directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:17
 msgid "Failed to copy database file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:30
+#: src/constants/errors/backup.ts:32
 msgid "Failed to copy file content: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:19
+#: src/constants/errors/backup.ts:20
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr ""
 
@@ -1111,11 +1115,11 @@ msgstr ""
 msgid "Failed to create backup file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:44
+#: src/constants/errors/backup.ts:46
 msgid "Failed to create directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:46
+#: src/constants/errors/backup.ts:48
 msgid "Failed to create file: {0}"
 msgstr ""
 
@@ -1123,12 +1127,16 @@ msgstr ""
 msgid "Failed to create hash info file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:45
+#: src/constants/errors/backup.ts:47
 msgid "Failed to create parent directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:32
+#: src/constants/errors/backup.ts:34
 msgid "Failed to create restore directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:50
+msgid "Failed to create symbolic link: {0}"
 msgstr ""
 
 #: src/constants/errors/backup.ts:2
@@ -1143,31 +1151,31 @@ msgstr ""
 msgid "Failed to create zip archive: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:27
+#: src/constants/errors/backup.ts:29
 msgid "Failed to create zip entry: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:26
+#: src/constants/errors/backup.ts:28
 msgid "Failed to create zip file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:29
+#: src/constants/errors/backup.ts:31
 msgid "Failed to create zip header: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:24
+#: src/constants/errors/backup.ts:26
 msgid "Failed to decrypt data: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:49
+#: src/constants/errors/backup.ts:54
 msgid "Failed to decrypt file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:35
+#: src/constants/errors/backup.ts:37
 msgid "Failed to decrypt Nginx directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:34
+#: src/constants/errors/backup.ts:36
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr ""
 
@@ -1185,11 +1193,11 @@ msgstr ""
 msgid "Failed to enable %{msg}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:23
+#: src/constants/errors/backup.ts:25
 msgid "Failed to encrypt data: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:21
+#: src/constants/errors/backup.ts:23
 msgid "Failed to encrypt file: {0}"
 msgstr ""
 
@@ -1201,7 +1209,11 @@ msgstr ""
 msgid "Failed to encrypt Nginx UI directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:33
+#: src/constants/errors/backup.ts:52
+msgid "Failed to evaluate symbolic links: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:35
 msgid "Failed to extract archive: {0}"
 msgstr ""
 
@@ -1217,15 +1229,15 @@ msgstr ""
 msgid "Failed to get certificate information"
 msgstr ""
 
-#: src/constants/errors/backup.ts:28
+#: src/constants/errors/backup.ts:30
 msgid "Failed to open source file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:47
+#: src/constants/errors/backup.ts:49
 msgid "Failed to open zip entry: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:43
+#: src/constants/errors/backup.ts:45
 msgid "Failed to open zip file: {0}"
 msgstr ""
 
@@ -1233,15 +1245,15 @@ msgstr ""
 msgid "Failed to parse nginx.conf"
 msgstr ""
 
-#: src/constants/errors/backup.ts:48
+#: src/constants/errors/backup.ts:53
 msgid "Failed to read encrypted file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:20
+#: src/constants/errors/backup.ts:22
 msgid "Failed to read file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:51
+#: src/constants/errors/backup.ts:56
 msgid "Failed to read hash info file: {0}"
 msgstr ""
 
@@ -1249,11 +1261,15 @@ msgstr ""
 msgid "Failed to read nginx.conf"
 msgstr ""
 
-#: src/constants/errors/backup.ts:37
+#: src/constants/errors/backup.ts:21
+msgid "Failed to read symlink: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:39
 msgid "Failed to restore Nginx configs: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:38
+#: src/constants/errors/backup.ts:40
 msgid "Failed to restore Nginx UI files: {0}"
 msgstr ""
 
@@ -1262,19 +1278,19 @@ msgstr ""
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr ""
 
-#: src/constants/errors/backup.ts:36
+#: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:50
+#: src/constants/errors/backup.ts:55
 msgid "Failed to write decrypted file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:22
+#: src/constants/errors/backup.ts:24
 msgid "Failed to write encrypted file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:31
+#: src/constants/errors/backup.ts:33
 msgid "Failed to write to zip buffer: {0}"
 msgstr ""
 
@@ -1366,7 +1382,7 @@ msgstr ""
 msgid "Github Proxy"
 msgstr ""
 
-#: src/constants/errors/backup.ts:54
+#: src/constants/errors/backup.ts:59
 msgid "Hash verification failed: file integrity compromised"
 msgstr ""
 
@@ -1446,12 +1462,20 @@ msgid "Input the recovery code:"
 msgstr ""
 
 #: src/routes/modules/auth.ts:8
-#: src/views/other/Install.vue:134
+#: src/views/other/Install.vue:168
 msgid "Install"
 msgstr ""
 
-#: src/views/other/Install.vue:67
+#: src/views/other/Install.vue:89
 msgid "Install successfully"
+msgstr ""
+
+#: src/constants/errors/system.ts:3
+msgid "Installation is not allowed after 10 minutes of system startup"
+msgstr ""
+
+#: src/views/other/Install.vue:113
+msgid "Installation is not allowed after 10 minutes of system startup, please restart the Nginx UI."
 msgstr ""
 
 #: src/views/preference/LogrotateSettings.vue:25
@@ -1462,16 +1486,20 @@ msgstr ""
 msgid "Invalid"
 msgstr ""
 
-#: src/constants/errors/backup.ts:42
+#: src/constants/errors/backup.ts:44
 msgid "Invalid AES IV format: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:41
+#: src/constants/errors/backup.ts:43
 msgid "Invalid AES key format: {0}"
 msgstr ""
 
 #: src/views/system/Backup/SystemRestore.vue:67
 msgid "Invalid file object"
+msgstr ""
+
+#: src/constants/errors/backup.ts:51
+msgid "Invalid file path: {0}"
 msgstr ""
 
 #: src/views/config/components/Rename.vue:64
@@ -1487,7 +1515,7 @@ msgstr ""
 msgid "Invalid otp code"
 msgstr ""
 
-#: src/constants/errors/backup.ts:25
+#: src/constants/errors/backup.ts:27
 msgid "Invalid padding in decrypted data"
 msgstr ""
 
@@ -1503,7 +1531,7 @@ msgstr ""
 msgid "Invalid request format"
 msgstr ""
 
-#: src/constants/errors/backup.ts:40
+#: src/constants/errors/backup.ts:42
 msgid "Invalid security token format"
 msgstr ""
 
@@ -1803,7 +1831,7 @@ msgstr ""
 msgid "Nginx conf not include stream-enabled"
 msgstr ""
 
-#: src/constants/errors/backup.ts:18
+#: src/constants/errors/backup.ts:19
 msgid "Nginx config directory is not set"
 msgstr ""
 
@@ -1859,6 +1887,10 @@ msgstr ""
 
 #: src/components/NginxControl/NginxControl.vue:40
 msgid "Nginx restarted successfully"
+msgstr ""
+
+#: src/constants/errors/system.ts:2
+msgid "Nginx UI already installed"
 msgstr ""
 
 #: src/views/system/Backup/SystemRestore.vue:88
@@ -2040,7 +2072,7 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: src/views/other/Install.vue:108
+#: src/views/other/Install.vue:141
 msgid "Password (*)"
 msgstr ""
 
@@ -2048,7 +2080,7 @@ msgstr ""
 msgid "Password incorrect"
 msgstr ""
 
-#: src/views/other/Install.vue:48
+#: src/views/other/Install.vue:70
 msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
@@ -2133,16 +2165,16 @@ msgstr ""
 msgid "Please input name, this will be used as the filename of the new configuration."
 msgstr ""
 
-#: src/views/other/Install.vue:32
+#: src/views/other/Install.vue:54
 msgid "Please input your E-mail!"
 msgstr ""
 
-#: src/views/other/Install.vue:44
+#: src/views/other/Install.vue:66
 #: src/views/other/Login.vue:47
 msgid "Please input your password!"
 msgstr ""
 
-#: src/views/other/Install.vue:38
+#: src/views/other/Install.vue:60
 #: src/views/other/Login.vue:41
 msgid "Please input your username!"
 msgstr ""
@@ -2844,7 +2876,7 @@ msgstr ""
 msgid "The certificate for the domain will be checked 30 minutes, and will be renewed if it has been more than 1 week or the period you set in settings since it was last issued."
 msgstr ""
 
-#: src/views/other/Install.vue:54
+#: src/views/other/Install.vue:76
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr ""
 
@@ -3105,7 +3137,7 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: src/views/other/Install.vue:98
+#: src/views/other/Install.vue:131
 msgid "Username (*)"
 msgstr ""
 

@@ -281,7 +281,7 @@ msgstr "返回"
 msgid "Backup file integrity check failed, it may have been tampered with"
 msgstr ""
 
-#: src/constants/errors/backup.ts:39
+#: src/constants/errors/backup.ts:41
 #, fuzzy
 msgid "Backup file not found: {0}"
 msgstr "站點未找到"
@@ -505,7 +505,7 @@ msgstr "命令"
 msgid "Comments"
 msgstr "備註"
 
-#: src/constants/errors/backup.ts:13
+#: src/constants/errors/backup.ts:14
 #, fuzzy
 msgid "Config path is empty"
 msgstr "明文為空"
@@ -653,7 +653,7 @@ msgstr "自訂顯示在環境指示器中的本地節點名稱。"
 msgid "Dashboard"
 msgstr "儀表板"
 
-#: src/views/other/Install.vue:119
+#: src/views/other/Install.vue:152
 msgid "Database (Optional, default: database)"
 msgstr "資料庫 (可選，預設: database)"
 
@@ -950,7 +950,7 @@ msgstr "編輯 Stream"
 msgid "Email"
 msgstr "電子郵件"
 
-#: src/views/other/Install.vue:88
+#: src/views/other/Install.vue:121
 msgid "Email (*)"
 msgstr "電子郵件 (*)"
 
@@ -1091,37 +1091,42 @@ msgstr "讀取 nginx.conf 失敗"
 msgid "Failed to backup Nginx UI files: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:17
+#: src/constants/errors/backup.ts:18
 #, fuzzy
 msgid "Failed to calculate hash: {0}"
 msgstr "創建備份失敗"
 
-#: src/constants/errors/backup.ts:53
+#: src/constants/errors/backup.ts:58
 msgid "Failed to calculate Nginx hash: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:52
+#: src/constants/errors/backup.ts:57
 msgid "Failed to calculate Nginx UI hash: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:14
+#: src/constants/errors/backup.ts:13
+#, fuzzy
+msgid "Failed to cleanup temporary directory: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:15
 msgid "Failed to copy config file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:15
+#: src/constants/errors/backup.ts:16
 msgid "Failed to copy database directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:16
+#: src/constants/errors/backup.ts:17
 #, fuzzy
 msgid "Failed to copy database file: {0}"
 msgstr "停用 %{msg} 失敗"
 
-#: src/constants/errors/backup.ts:30
+#: src/constants/errors/backup.ts:32
 msgid "Failed to copy file content: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:19
+#: src/constants/errors/backup.ts:20
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr ""
 
@@ -1134,12 +1139,12 @@ msgstr "創建備份失敗"
 msgid "Failed to create backup file: {0}"
 msgstr "創建備份失敗"
 
-#: src/constants/errors/backup.ts:44
+#: src/constants/errors/backup.ts:46
 #, fuzzy
 msgid "Failed to create directory: {0}"
 msgstr "創建備份失敗"
 
-#: src/constants/errors/backup.ts:46
+#: src/constants/errors/backup.ts:48
 #, fuzzy
 msgid "Failed to create file: {0}"
 msgstr "創建備份失敗"
@@ -1149,14 +1154,19 @@ msgstr "創建備份失敗"
 msgid "Failed to create hash info file: {0}"
 msgstr "創建備份失敗"
 
-#: src/constants/errors/backup.ts:45
+#: src/constants/errors/backup.ts:47
 #, fuzzy
 msgid "Failed to create parent directory: {0}"
 msgstr "創建備份失敗"
 
-#: src/constants/errors/backup.ts:32
+#: src/constants/errors/backup.ts:34
 msgid "Failed to create restore directory: {0}"
 msgstr ""
+
+#: src/constants/errors/backup.ts:50
+#, fuzzy
+msgid "Failed to create symbolic link: {0}"
+msgstr "創建備份失敗"
 
 #: src/constants/errors/backup.ts:2
 #, fuzzy
@@ -1173,36 +1183,36 @@ msgstr "創建備份失敗"
 msgid "Failed to create zip archive: {0}"
 msgstr "創建備份失敗"
 
-#: src/constants/errors/backup.ts:27
+#: src/constants/errors/backup.ts:29
 #, fuzzy
 msgid "Failed to create zip entry: {0}"
 msgstr "創建備份失敗"
 
-#: src/constants/errors/backup.ts:26
+#: src/constants/errors/backup.ts:28
 #, fuzzy
 msgid "Failed to create zip file: {0}"
 msgstr "創建備份失敗"
 
-#: src/constants/errors/backup.ts:29
+#: src/constants/errors/backup.ts:31
 #, fuzzy
 msgid "Failed to create zip header: {0}"
 msgstr "創建備份失敗"
 
-#: src/constants/errors/backup.ts:24
+#: src/constants/errors/backup.ts:26
 #, fuzzy
 msgid "Failed to decrypt data: {0}"
 msgstr "創建備份失敗"
 
-#: src/constants/errors/backup.ts:49
+#: src/constants/errors/backup.ts:54
 #, fuzzy
 msgid "Failed to decrypt file: {0}"
 msgstr "停用 %{msg} 失敗"
 
-#: src/constants/errors/backup.ts:35
+#: src/constants/errors/backup.ts:37
 msgid "Failed to decrypt Nginx directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:34
+#: src/constants/errors/backup.ts:36
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr ""
 
@@ -1220,12 +1230,12 @@ msgstr "停用 %{msg} 失敗"
 msgid "Failed to enable %{msg}"
 msgstr "啟用 %{msg} 失敗"
 
-#: src/constants/errors/backup.ts:23
+#: src/constants/errors/backup.ts:25
 #, fuzzy
 msgid "Failed to encrypt data: {0}"
 msgstr "啟用 %{msg} 失敗"
 
-#: src/constants/errors/backup.ts:21
+#: src/constants/errors/backup.ts:23
 #, fuzzy
 msgid "Failed to encrypt file: {0}"
 msgstr "啟用 %{msg} 失敗"
@@ -1238,7 +1248,12 @@ msgstr ""
 msgid "Failed to encrypt Nginx UI directory: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:33
+#: src/constants/errors/backup.ts:52
+#, fuzzy
+msgid "Failed to evaluate symbolic links: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:35
 #, fuzzy
 msgid "Failed to extract archive: {0}"
 msgstr "啟用 %{msg} 失敗"
@@ -1257,17 +1272,17 @@ msgstr "取得憑證資訊失敗"
 msgid "Failed to get certificate information"
 msgstr "取得憑證資訊失敗"
 
-#: src/constants/errors/backup.ts:28
+#: src/constants/errors/backup.ts:30
 #, fuzzy
 msgid "Failed to open source file: {0}"
 msgstr "啟用 %{msg} 失敗"
 
-#: src/constants/errors/backup.ts:47
+#: src/constants/errors/backup.ts:49
 #, fuzzy
 msgid "Failed to open zip entry: {0}"
 msgstr "啟用 %{msg} 失敗"
 
-#: src/constants/errors/backup.ts:43
+#: src/constants/errors/backup.ts:45
 #, fuzzy
 msgid "Failed to open zip file: {0}"
 msgstr "啟用 %{msg} 失敗"
@@ -1276,17 +1291,17 @@ msgstr "啟用 %{msg} 失敗"
 msgid "Failed to parse nginx.conf"
 msgstr "解析 nginx.conf 失敗"
 
-#: src/constants/errors/backup.ts:48
+#: src/constants/errors/backup.ts:53
 #, fuzzy
 msgid "Failed to read encrypted file: {0}"
 msgstr "讀取 nginx.conf 失敗"
 
-#: src/constants/errors/backup.ts:20
+#: src/constants/errors/backup.ts:22
 #, fuzzy
 msgid "Failed to read file: {0}"
 msgstr "啟用 %{msg} 失敗"
 
-#: src/constants/errors/backup.ts:51
+#: src/constants/errors/backup.ts:56
 #, fuzzy
 msgid "Failed to read hash info file: {0}"
 msgstr "讀取 nginx.conf 失敗"
@@ -1295,12 +1310,17 @@ msgstr "讀取 nginx.conf 失敗"
 msgid "Failed to read nginx.conf"
 msgstr "讀取 nginx.conf 失敗"
 
-#: src/constants/errors/backup.ts:37
+#: src/constants/errors/backup.ts:21
+#, fuzzy
+msgid "Failed to read symlink: {0}"
+msgstr "啟用 %{msg} 失敗"
+
+#: src/constants/errors/backup.ts:39
 #, fuzzy
 msgid "Failed to restore Nginx configs: {0}"
 msgstr "解析 nginx.conf 失敗"
 
-#: src/constants/errors/backup.ts:38
+#: src/constants/errors/backup.ts:40
 #, fuzzy
 msgid "Failed to restore Nginx UI files: {0}"
 msgstr "解析 nginx.conf 失敗"
@@ -1310,20 +1330,20 @@ msgstr "解析 nginx.conf 失敗"
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "儲存失敗，在設定中檢測到語法錯誤。"
 
-#: src/constants/errors/backup.ts:36
+#: src/constants/errors/backup.ts:38
 #, fuzzy
 msgid "Failed to verify hashes: {0}"
 msgstr "啟用 %{msg} 失敗"
 
-#: src/constants/errors/backup.ts:50
+#: src/constants/errors/backup.ts:55
 msgid "Failed to write decrypted file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:22
+#: src/constants/errors/backup.ts:24
 msgid "Failed to write encrypted file: {0}"
 msgstr ""
 
-#: src/constants/errors/backup.ts:31
+#: src/constants/errors/backup.ts:33
 msgid "Failed to write to zip buffer: {0}"
 msgstr ""
 
@@ -1415,7 +1435,7 @@ msgstr "正在取得憑證，請稍候..."
 msgid "Github Proxy"
 msgstr "Github 代理"
 
-#: src/constants/errors/backup.ts:54
+#: src/constants/errors/backup.ts:59
 msgid "Hash verification failed: file integrity compromised"
 msgstr ""
 
@@ -1499,13 +1519,23 @@ msgstr "請輸入應用程式中的代碼："
 msgid "Input the recovery code:"
 msgstr "輸入恢復碼："
 
-#: src/routes/modules/auth.ts:8 src/views/other/Install.vue:134
+#: src/routes/modules/auth.ts:8 src/views/other/Install.vue:168
 msgid "Install"
 msgstr "安裝"
 
-#: src/views/other/Install.vue:67
+#: src/views/other/Install.vue:89
 msgid "Install successfully"
 msgstr "安裝成功"
+
+#: src/constants/errors/system.ts:3
+msgid "Installation is not allowed after 10 minutes of system startup"
+msgstr ""
+
+#: src/views/other/Install.vue:113
+msgid ""
+"Installation is not allowed after 10 minutes of system startup, please "
+"restart the Nginx UI."
+msgstr ""
 
 #: src/views/preference/LogrotateSettings.vue:25
 msgid "Interval"
@@ -1515,12 +1545,12 @@ msgstr "間隔"
 msgid "Invalid"
 msgstr "無效"
 
-#: src/constants/errors/backup.ts:42
+#: src/constants/errors/backup.ts:44
 #, fuzzy
 msgid "Invalid AES IV format: {0}"
 msgstr "無效的請求格式"
 
-#: src/constants/errors/backup.ts:41
+#: src/constants/errors/backup.ts:43
 #, fuzzy
 msgid "Invalid AES key format: {0}"
 msgstr "無效的請求格式"
@@ -1529,6 +1559,11 @@ msgstr "無效的請求格式"
 #, fuzzy
 msgid "Invalid file object"
 msgstr "無效的檔案名"
+
+#: src/constants/errors/backup.ts:51
+#, fuzzy
+msgid "Invalid file path: {0}"
+msgstr "無效的請求格式"
 
 #: src/views/config/components/Rename.vue:64
 #: src/views/config/ConfigEditor.vue:250
@@ -1543,7 +1578,7 @@ msgstr "無效的資料夾名稱"
 msgid "Invalid otp code"
 msgstr "無效的 OTP 代碼"
 
-#: src/constants/errors/backup.ts:25
+#: src/constants/errors/backup.ts:27
 msgid "Invalid padding in decrypted data"
 msgstr ""
 
@@ -1559,7 +1594,7 @@ msgstr "無效的恢復碼"
 msgid "Invalid request format"
 msgstr "無效的請求格式"
 
-#: src/constants/errors/backup.ts:40
+#: src/constants/errors/backup.ts:42
 #, fuzzy
 msgid "Invalid security token format"
 msgstr "無效的請求格式"
@@ -1867,7 +1902,7 @@ msgstr "Nginx 配置檔未包含 sites-enabled"
 msgid "Nginx conf not include stream-enabled"
 msgstr "Nginx 配置檔未包含 stream-enabled"
 
-#: src/constants/errors/backup.ts:18
+#: src/constants/errors/backup.ts:19
 #, fuzzy
 msgid "Nginx config directory is not set"
 msgstr "Nginx 日誌目錄白名單"
@@ -1925,6 +1960,11 @@ msgstr "Nginx 重啟指令"
 #: src/components/NginxControl/NginxControl.vue:40
 msgid "Nginx restarted successfully"
 msgstr "Nginx 重啟成功"
+
+#: src/constants/errors/system.ts:2
+#, fuzzy
+msgid "Nginx UI already installed"
+msgstr "此值已被使用"
 
 #: src/views/system/Backup/SystemRestore.vue:88
 #, fuzzy
@@ -2116,7 +2156,7 @@ msgstr ""
 msgid "Password"
 msgstr "密碼"
 
-#: src/views/other/Install.vue:108
+#: src/views/other/Install.vue:141
 msgid "Password (*)"
 msgstr "密碼 (*)"
 
@@ -2124,7 +2164,7 @@ msgstr "密碼 (*)"
 msgid "Password incorrect"
 msgstr "密碼錯誤"
 
-#: src/views/other/Install.vue:48
+#: src/views/other/Install.vue:70
 msgid "Password length cannot exceed 20 characters"
 msgstr "密碼長度不能超過 20 個字元"
 
@@ -2223,15 +2263,15 @@ msgid ""
 "configuration."
 msgstr "請輸入名稱，此名稱將用作新配置的檔案名稱。"
 
-#: src/views/other/Install.vue:32
+#: src/views/other/Install.vue:54
 msgid "Please input your E-mail!"
 msgstr "請輸入您的電子郵件！"
 
-#: src/views/other/Install.vue:44 src/views/other/Login.vue:47
+#: src/views/other/Install.vue:66 src/views/other/Login.vue:47
 msgid "Please input your password!"
 msgstr "請輸入您的密碼！"
 
-#: src/views/other/Install.vue:38 src/views/other/Login.vue:41
+#: src/views/other/Install.vue:60 src/views/other/Login.vue:41
 msgid "Please input your username!"
 msgstr "請輸入您的使用者名稱！"
 
@@ -2969,7 +3009,7 @@ msgstr ""
 "網域憑證將在 30 分鐘內接受檢查，如果自上次簽發以來已超過 1 週或您在設置中設定"
 "的時間，憑證將會自動更新。"
 
-#: src/views/other/Install.vue:54
+#: src/views/other/Install.vue:76
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "檔名不能包含以下字元: %{c}"
 
@@ -3274,7 +3314,7 @@ msgstr "使用者未啟用 OTP 作為雙重身份驗證 (2FA)"
 msgid "Username"
 msgstr "使用者名稱"
 
-#: src/views/other/Install.vue:98
+#: src/views/other/Install.vue:131
 msgid "Username (*)"
 msgstr "使用者名稱 (*)"
 

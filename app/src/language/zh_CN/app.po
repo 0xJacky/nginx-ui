@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-29 18:45+0800\n"
+"PO-Revision-Date: 2025-03-29 20:55+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
 "projects/nginx-ui/frontend/zh_Hans/>\n"
@@ -276,7 +276,7 @@ msgstr "备份"
 msgid "Backup file integrity check failed, it may have been tampered with"
 msgstr "备份文件完整性检查失败，可能已被篡改"
 
-#: src/constants/errors/backup.ts:39
+#: src/constants/errors/backup.ts:41
 msgid "Backup file not found: {0}"
 msgstr "未找到备份文件：{0}"
 
@@ -496,7 +496,7 @@ msgstr "命令"
 msgid "Comments"
 msgstr "注释"
 
-#: src/constants/errors/backup.ts:13
+#: src/constants/errors/backup.ts:14
 msgid "Config path is empty"
 msgstr "配置路径为空"
 
@@ -642,7 +642,7 @@ msgstr "自定义显示在环境指示器中的本地服务器名称。"
 msgid "Dashboard"
 msgstr "仪表盘"
 
-#: src/views/other/Install.vue:119
+#: src/views/other/Install.vue:152
 msgid "Database (Optional, default: database)"
 msgstr "数据库 (可选，默认: database)"
 
@@ -935,7 +935,7 @@ msgstr "编辑 Stream"
 msgid "Email"
 msgstr "邮箱"
 
-#: src/views/other/Install.vue:88
+#: src/views/other/Install.vue:121
 msgid "Email (*)"
 msgstr "邮箱 (*)"
 
@@ -1069,35 +1069,39 @@ msgstr "备份 Nginx 配置文件失败：{0}"
 msgid "Failed to backup Nginx UI files: {0}"
 msgstr "备份 Nginx UI 文件失败：{0}"
 
-#: src/constants/errors/backup.ts:17
+#: src/constants/errors/backup.ts:18
 msgid "Failed to calculate hash: {0}"
 msgstr "计算哈希值失败：{0}"
 
-#: src/constants/errors/backup.ts:53
+#: src/constants/errors/backup.ts:58
 msgid "Failed to calculate Nginx hash: {0}"
 msgstr "计算 Nginx 哈希值失败：{0}"
 
-#: src/constants/errors/backup.ts:52
+#: src/constants/errors/backup.ts:57
 msgid "Failed to calculate Nginx UI hash: {0}"
 msgstr "计算 Nginx UI 哈希值失败：{0}"
 
-#: src/constants/errors/backup.ts:14
+#: src/constants/errors/backup.ts:13
+msgid "Failed to cleanup temporary directory: {0}"
+msgstr "清理临时目录失败：{0}"
+
+#: src/constants/errors/backup.ts:15
 msgid "Failed to copy config file: {0}"
 msgstr "复制配置文件失败：{0}"
 
-#: src/constants/errors/backup.ts:15
+#: src/constants/errors/backup.ts:16
 msgid "Failed to copy database directory: {0}"
 msgstr "复制数据库目录失败：{0}"
 
-#: src/constants/errors/backup.ts:16
+#: src/constants/errors/backup.ts:17
 msgid "Failed to copy database file: {0}"
 msgstr "复制数据库文件失败：{0}"
 
-#: src/constants/errors/backup.ts:30
+#: src/constants/errors/backup.ts:32
 msgid "Failed to copy file content: {0}"
 msgstr "复制文件内容失败：{0}"
 
-#: src/constants/errors/backup.ts:19
+#: src/constants/errors/backup.ts:20
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr "复制 Nginx 配置目录失败：{0}"
 
@@ -1109,11 +1113,11 @@ msgstr "创建备份失败"
 msgid "Failed to create backup file: {0}"
 msgstr "创建备份文件失败：{0}"
 
-#: src/constants/errors/backup.ts:44
+#: src/constants/errors/backup.ts:46
 msgid "Failed to create directory: {0}"
 msgstr "创建目录失败：{0}"
 
-#: src/constants/errors/backup.ts:46
+#: src/constants/errors/backup.ts:48
 msgid "Failed to create file: {0}"
 msgstr "创建文件失败：{0}"
 
@@ -1121,13 +1125,17 @@ msgstr "创建文件失败：{0}"
 msgid "Failed to create hash info file: {0}"
 msgstr "创建哈希信息文件失败：{0}"
 
-#: src/constants/errors/backup.ts:45
+#: src/constants/errors/backup.ts:47
 msgid "Failed to create parent directory: {0}"
 msgstr "创建父目录失败：{0}"
 
-#: src/constants/errors/backup.ts:32
+#: src/constants/errors/backup.ts:34
 msgid "Failed to create restore directory: {0}"
 msgstr "创建还原目录失败：{0}"
+
+#: src/constants/errors/backup.ts:50
+msgid "Failed to create symbolic link: {0}"
+msgstr "创建符号链接失败：{0}"
 
 #: src/constants/errors/backup.ts:2
 msgid "Failed to create temporary directory"
@@ -1141,31 +1149,31 @@ msgstr "创建临时子目录失败"
 msgid "Failed to create zip archive: {0}"
 msgstr "创建 zip 压缩包失败：{0}"
 
-#: src/constants/errors/backup.ts:27
+#: src/constants/errors/backup.ts:29
 msgid "Failed to create zip entry: {0}"
 msgstr "创建 zip 条目失败：{0}"
 
-#: src/constants/errors/backup.ts:26
+#: src/constants/errors/backup.ts:28
 msgid "Failed to create zip file: {0}"
 msgstr "创建压缩文件失败：{0}"
 
-#: src/constants/errors/backup.ts:29
+#: src/constants/errors/backup.ts:31
 msgid "Failed to create zip header: {0}"
 msgstr "创建 zip 头失败：{0}"
 
-#: src/constants/errors/backup.ts:24
+#: src/constants/errors/backup.ts:26
 msgid "Failed to decrypt data: {0}"
 msgstr "解密数据失败：{0}"
 
-#: src/constants/errors/backup.ts:49
+#: src/constants/errors/backup.ts:54
 msgid "Failed to decrypt file: {0}"
 msgstr "解密文件失败：{0}"
 
-#: src/constants/errors/backup.ts:35
+#: src/constants/errors/backup.ts:37
 msgid "Failed to decrypt Nginx directory: {0}"
 msgstr "解密 Nginx 目录失败：{0}"
 
-#: src/constants/errors/backup.ts:34
+#: src/constants/errors/backup.ts:36
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr "解密 Nginx UI 目录失败：{0}"
 
@@ -1183,11 +1191,11 @@ msgstr "禁用失败 %{msg}"
 msgid "Failed to enable %{msg}"
 msgstr "启用失败 %{msg}"
 
-#: src/constants/errors/backup.ts:23
+#: src/constants/errors/backup.ts:25
 msgid "Failed to encrypt data: {0}"
 msgstr "加密数据失败：{0}"
 
-#: src/constants/errors/backup.ts:21
+#: src/constants/errors/backup.ts:23
 msgid "Failed to encrypt file: {0}"
 msgstr "加密文件失败：{0}"
 
@@ -1199,7 +1207,11 @@ msgstr "加密 Nginx 目录失败：{0}"
 msgid "Failed to encrypt Nginx UI directory: {0}"
 msgstr "加密 Nginx UI 目录失败：{0}"
 
-#: src/constants/errors/backup.ts:33
+#: src/constants/errors/backup.ts:52
+msgid "Failed to evaluate symbolic links: {0}"
+msgstr "符号链接解析失败：{0}"
+
+#: src/constants/errors/backup.ts:35
 msgid "Failed to extract archive: {0}"
 msgstr "解压缩失败：{0}"
 
@@ -1215,15 +1227,15 @@ msgstr "生成初始化向量失败：{0}"
 msgid "Failed to get certificate information"
 msgstr "获取证书信息失败"
 
-#: src/constants/errors/backup.ts:28
+#: src/constants/errors/backup.ts:30
 msgid "Failed to open source file: {0}"
 msgstr "打开源文件失败：{0}"
 
-#: src/constants/errors/backup.ts:47
+#: src/constants/errors/backup.ts:49
 msgid "Failed to open zip entry: {0}"
 msgstr "打开 zip 条目失败：{0}"
 
-#: src/constants/errors/backup.ts:43
+#: src/constants/errors/backup.ts:45
 msgid "Failed to open zip file: {0}"
 msgstr "打开压缩文件失败：{0}"
 
@@ -1231,15 +1243,15 @@ msgstr "打开压缩文件失败：{0}"
 msgid "Failed to parse nginx.conf"
 msgstr "解析 nginx.conf 失败"
 
-#: src/constants/errors/backup.ts:48
+#: src/constants/errors/backup.ts:53
 msgid "Failed to read encrypted file: {0}"
 msgstr "读取加密文件失败：{0}"
 
-#: src/constants/errors/backup.ts:20
+#: src/constants/errors/backup.ts:22
 msgid "Failed to read file: {0}"
 msgstr "读取文件失败：{0}"
 
-#: src/constants/errors/backup.ts:51
+#: src/constants/errors/backup.ts:56
 msgid "Failed to read hash info file: {0}"
 msgstr "读取哈希信息文件失败：{0}"
 
@@ -1247,11 +1259,15 @@ msgstr "读取哈希信息文件失败：{0}"
 msgid "Failed to read nginx.conf"
 msgstr "读取 nginx.conf 失败"
 
-#: src/constants/errors/backup.ts:37
+#: src/constants/errors/backup.ts:21
+msgid "Failed to read symlink: {0}"
+msgstr "读取符号链接失败：{0}"
+
+#: src/constants/errors/backup.ts:39
 msgid "Failed to restore Nginx configs: {0}"
 msgstr "恢复 Nginx 配置失败：{0}"
 
-#: src/constants/errors/backup.ts:38
+#: src/constants/errors/backup.ts:40
 msgid "Failed to restore Nginx UI files: {0}"
 msgstr "恢复 Nginx UI 文件失败：{0}"
 
@@ -1260,19 +1276,19 @@ msgstr "恢复 Nginx UI 文件失败：{0}"
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "保存失败，在配置中检测到语法错误。"
 
-#: src/constants/errors/backup.ts:36
+#: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
 msgstr "验证哈希值失败：{0}"
 
-#: src/constants/errors/backup.ts:50
+#: src/constants/errors/backup.ts:55
 msgid "Failed to write decrypted file: {0}"
 msgstr "写入解密文件失败：{0}"
 
-#: src/constants/errors/backup.ts:22
+#: src/constants/errors/backup.ts:24
 msgid "Failed to write encrypted file: {0}"
 msgstr "写入加密文件失败：{0}"
 
-#: src/constants/errors/backup.ts:31
+#: src/constants/errors/backup.ts:33
 msgid "Failed to write to zip buffer: {0}"
 msgstr "写入 zip 缓冲区失败：{0}"
 
@@ -1364,7 +1380,7 @@ msgstr "正在获取证书，请稍等..."
 msgid "Github Proxy"
 msgstr "Github代理"
 
-#: src/constants/errors/backup.ts:54
+#: src/constants/errors/backup.ts:59
 msgid "Hash verification failed: file integrity compromised"
 msgstr "哈希验证失败：文件完整性受损"
 
@@ -1448,13 +1464,23 @@ msgstr "输入应用程序中的代码："
 msgid "Input the recovery code:"
 msgstr "输入恢复代码："
 
-#: src/routes/modules/auth.ts:8 src/views/other/Install.vue:134
+#: src/routes/modules/auth.ts:8 src/views/other/Install.vue:168
 msgid "Install"
 msgstr "安装"
 
-#: src/views/other/Install.vue:67
+#: src/views/other/Install.vue:89
 msgid "Install successfully"
 msgstr "安装成功"
+
+#: src/constants/errors/system.ts:3
+msgid "Installation is not allowed after 10 minutes of system startup"
+msgstr "系统启动 10 分钟后不允许安装"
+
+#: src/views/other/Install.vue:113
+msgid ""
+"Installation is not allowed after 10 minutes of system startup, please "
+"restart the Nginx UI."
+msgstr "系统启动 10 分钟后不允许安装，请重启 Nginx UI。"
 
 #: src/views/preference/LogrotateSettings.vue:25
 msgid "Interval"
@@ -1464,17 +1490,21 @@ msgstr "间隔"
 msgid "Invalid"
 msgstr "无效的"
 
-#: src/constants/errors/backup.ts:42
+#: src/constants/errors/backup.ts:44
 msgid "Invalid AES IV format: {0}"
 msgstr "AES IV 格式无效：{0}"
 
-#: src/constants/errors/backup.ts:41
+#: src/constants/errors/backup.ts:43
 msgid "Invalid AES key format: {0}"
 msgstr "AES 密钥格式无效：{0}"
 
 #: src/views/system/Backup/SystemRestore.vue:67
 msgid "Invalid file object"
 msgstr "无效文件对象"
+
+#: src/constants/errors/backup.ts:51
+msgid "Invalid file path: {0}"
+msgstr "文件路径无效：{0}"
 
 #: src/views/config/components/Rename.vue:64
 #: src/views/config/ConfigEditor.vue:250
@@ -1489,7 +1519,7 @@ msgstr "无效文件夹名"
 msgid "Invalid otp code"
 msgstr "无效的 OTP 代码"
 
-#: src/constants/errors/backup.ts:25
+#: src/constants/errors/backup.ts:27
 msgid "Invalid padding in decrypted data"
 msgstr "解密数据中的无效填充"
 
@@ -1505,7 +1535,7 @@ msgstr "无效的恢复代码"
 msgid "Invalid request format"
 msgstr "无效的请求格式"
 
-#: src/constants/errors/backup.ts:40
+#: src/constants/errors/backup.ts:42
 msgid "Invalid security token format"
 msgstr "安全令牌格式无效"
 
@@ -1813,7 +1843,7 @@ msgstr "Nginx Conf 中未引用 sites-enabled"
 msgid "Nginx conf not include stream-enabled"
 msgstr "Nginx Conf 中未引用 stream-enabled"
 
-#: src/constants/errors/backup.ts:18
+#: src/constants/errors/backup.ts:19
 msgid "Nginx config directory is not set"
 msgstr "未设置 Nginx 配置目录"
 
@@ -1869,6 +1899,10 @@ msgstr "Nginx 重启命令"
 #: src/components/NginxControl/NginxControl.vue:40
 msgid "Nginx restarted successfully"
 msgstr "Nginx 重启成功"
+
+#: src/constants/errors/system.ts:2
+msgid "Nginx UI already installed"
+msgstr "Nginx UI 已安装"
 
 #: src/views/system/Backup/SystemRestore.vue:88
 msgid "Nginx UI configuration has been restored"
@@ -2058,7 +2092,7 @@ msgstr ""
 msgid "Password"
 msgstr "密码"
 
-#: src/views/other/Install.vue:108
+#: src/views/other/Install.vue:141
 msgid "Password (*)"
 msgstr "密码 (*)"
 
@@ -2066,7 +2100,7 @@ msgstr "密码 (*)"
 msgid "Password incorrect"
 msgstr "用户名和密码错误"
 
-#: src/views/other/Install.vue:48
+#: src/views/other/Install.vue:70
 msgid "Password length cannot exceed 20 characters"
 msgstr "密码长度不能超过 20 个字符"
 
@@ -2164,15 +2198,15 @@ msgid ""
 "configuration."
 msgstr "请输入名称，这将作为新配置的文件名。"
 
-#: src/views/other/Install.vue:32
+#: src/views/other/Install.vue:54
 msgid "Please input your E-mail!"
 msgstr "请输入您的邮箱！"
 
-#: src/views/other/Install.vue:44 src/views/other/Login.vue:47
+#: src/views/other/Install.vue:66 src/views/other/Login.vue:47
 msgid "Please input your password!"
 msgstr "请输入您的密码！"
 
-#: src/views/other/Install.vue:38 src/views/other/Login.vue:41
+#: src/views/other/Install.vue:60 src/views/other/Login.vue:41
 msgid "Please input your username!"
 msgstr "请输入您的用户名！"
 
@@ -2884,7 +2918,7 @@ msgstr ""
 "域名证书将在 30 分钟内接受检查，如果距离上次签发证书的时间超过 1 周或您在设置"
 "中设定的时间，证书将被更新。"
 
-#: src/views/other/Install.vue:54
+#: src/views/other/Install.vue:76
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "文件名不能包含以下字符: %{c}"
 
@@ -3188,7 +3222,7 @@ msgstr "用户未启用 OTP 作为 2FA"
 msgid "Username"
 msgstr "用户名"
 
-#: src/views/other/Install.vue:98
+#: src/views/other/Install.vue:131
 msgid "Username (*)"
 msgstr "用户名 (*)"
 
