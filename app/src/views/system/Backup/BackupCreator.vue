@@ -165,14 +165,14 @@ function handleCopy(copy) {
   line-height: 1.6;
 }
 
-/* 暗夜模式优化 */
+/* Dark mode optimization */
 :deep(.backup-token-modal) {
-  /* 模态框背景 */
+  /* Modal background */
   .ant-modal-content {
     background-color: #1f1f1f;
   }
 
-  /* 模态框标题 */
+  /* Modal title */
   .ant-modal-header {
     background-color: #1f1f1f;
     border-bottom: 1px solid #303030;
@@ -182,24 +182,24 @@ function handleCopy(copy) {
     color: #e6e6e6;
   }
 
-  /* 模态框内容 */
+  /* Modal content */
   .ant-modal-body {
     color: #e6e6e6;
   }
 
-  /* 模态框底部 */
+  /* Modal footer */
   .ant-modal-footer {
     border-top: 1px solid #303030;
     background-color: #1f1f1f;
   }
 
-  /* 关闭按钮 */
+  /* Close button */
   .ant-modal-close-x {
     color: #e6e6e6;
   }
 }
 
-/* 令牌容器暗夜模式样式 */
+/* Token container dark mode styles */
 .dark {
   .token-container {
     background-color: #262626 !important;
@@ -211,7 +211,7 @@ function handleCopy(copy) {
     color: #d9d9d9;
   }
 
-  /* 警告框暗夜模式 */
+  /* Warning box dark mode */
   .warning-box {
     background-color: rgba(255, 77, 79, 0.1);
     border-color: rgba(255, 77, 79, 0.3);
@@ -222,7 +222,7 @@ function handleCopy(copy) {
   }
 }
 
-/* 媒体查询方式添加暗夜模式支持 */
+/* Dark mode support via media query */
 @media (prefers-color-scheme: dark) {
   .token-container {
     background-color: #262626 !important;

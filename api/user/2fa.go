@@ -81,17 +81,17 @@ func Start2FASecureSessionByOTP(c *gin.Context) {
 	}
 	u := api.CurrentUser(c)
 	if !u.EnabledOTP() {
-		api.ErrHandler(c, user.ErrUserNotEnabledOTPAs2FA)
+		cosy.ErrHandler(c, user.ErrUserNotEnabledOTPAs2FA)
 		return
 	}
 
 	if json.OTP == "" && json.RecoveryCode == "" {
-		api.ErrHandler(c, user.ErrOTPOrRecoveryCodeEmpty)
+		cosy.ErrHandler(c, user.ErrOTPOrRecoveryCodeEmpty)
 		return
 	}
 
 	if err := user.VerifyOTP(u, json.OTP, json.RecoveryCode); err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -104,14 +104,14 @@ func Start2FASecureSessionByOTP(c *gin.Context) {
 
 func BeginStart2FASecureSessionByPasskey(c *gin.Context) {
 	if !passkey.Enabled() {
-		api.ErrHandler(c, user.ErrWebAuthnNotConfigured)
+		cosy.ErrHandler(c, user.ErrWebAuthnNotConfigured)
 		return
 	}
 	webauthnInstance := passkey.GetInstance()
 	u := api.CurrentUser(c)
 	options, sessionData, err := webauthnInstance.BeginLogin(u)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	passkeySessionID := uuid.NewString()
@@ -124,13 +124,13 @@ func BeginStart2FASecureSessionByPasskey(c *gin.Context) {
 
 func FinishStart2FASecureSessionByPasskey(c *gin.Context) {
 	if !passkey.Enabled() {
-		api.ErrHandler(c, user.ErrWebAuthnNotConfigured)
+		cosy.ErrHandler(c, user.ErrWebAuthnNotConfigured)
 		return
 	}
 	passkeySessionID := c.GetHeader("X-Passkey-Session-ID")
 	sessionDataBytes, ok := cache.Get(passkeySessionID)
 	if !ok {
-		api.ErrHandler(c, user.ErrSessionNotFound)
+		cosy.ErrHandler(c, user.ErrSessionNotFound)
 		return
 	}
 	sessionData := sessionDataBytes.(*webauthn.SessionData)
@@ -138,7 +138,7 @@ func FinishStart2FASecureSessionByPasskey(c *gin.Context) {
 	u := api.CurrentUser(c)
 	credential, err := webauthnInstance.FinishLogin(u, *sessionData, c.Request)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	rawID := strings.TrimRight(base64.StdEncoding.EncodeToString(credential.ID), "=")

@@ -1,11 +1,11 @@
 package nginx
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
-	"net/http"
 )
 
 func BuildNginxConfig(c *gin.Context) {
@@ -15,7 +15,7 @@ func BuildNginxConfig(c *gin.Context) {
 	}
 	content, err := ngxConf.BuildConfig()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -34,7 +34,7 @@ func TokenizeNginxConfig(c *gin.Context) {
 
 	ngxConfig, err := nginx.ParseNgxConfigByContent(json.Content)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, ngxConfig)
@@ -50,7 +50,7 @@ func FormatNginxConfig(c *gin.Context) {
 	}
 	content, err := nginx.FmtCode(json.Content)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{

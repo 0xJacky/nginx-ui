@@ -1,14 +1,15 @@
 package config
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/internal/config"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/gin-gonic/gin"
-	"github.com/uozi-tech/cosy/logger"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/0xJacky/Nginx-UI/internal/config"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 func GetConfigs(c *gin.Context) {
@@ -19,7 +20,7 @@ func GetConfigs(c *gin.Context) {
 
 	configFiles, err := os.ReadDir(nginx.GetConfPath(dir))
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

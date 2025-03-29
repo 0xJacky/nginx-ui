@@ -40,7 +40,7 @@ func BeginPasskeyRegistration(c *gin.Context) {
 
 	options, sessionData, err := webauthnInstance.BeginRegistration(u)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	cache.Set(buildCachePasskeyRegKey(u.ID), sessionData, passkeyTimeout)
@@ -53,14 +53,14 @@ func FinishPasskeyRegistration(c *gin.Context) {
 	webauthnInstance := passkey.GetInstance()
 	sessionDataBytes, ok := cache.Get(buildCachePasskeyRegKey(cUser.ID))
 	if !ok {
-		api.ErrHandler(c, user.ErrSessionNotFound)
+		cosy.ErrHandler(c, user.ErrSessionNotFound)
 		return
 	}
 
 	sessionData := sessionDataBytes.(*webauthn.SessionData)
 	credential, err := webauthnInstance.FinishRegistration(cUser, *sessionData, c.Request)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	cache.Del(buildCachePasskeyRegKey(cUser.ID))
@@ -76,7 +76,7 @@ func FinishPasskeyRegistration(c *gin.Context) {
 		LastUsedAt: time.Now().Unix(),
 	})
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -87,13 +87,13 @@ func FinishPasskeyRegistration(c *gin.Context) {
 
 func BeginPasskeyLogin(c *gin.Context) {
 	if !passkey.Enabled() {
-		api.ErrHandler(c, user.ErrWebAuthnNotConfigured)
+		cosy.ErrHandler(c, user.ErrWebAuthnNotConfigured)
 		return
 	}
 	webauthnInstance := passkey.GetInstance()
 	options, sessionData, err := webauthnInstance.BeginDiscoverableLogin()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	sessionID := uuid.NewString()
@@ -107,13 +107,13 @@ func BeginPasskeyLogin(c *gin.Context) {
 
 func FinishPasskeyLogin(c *gin.Context) {
 	if !passkey.Enabled() {
-		api.ErrHandler(c, user.ErrWebAuthnNotConfigured)
+		cosy.ErrHandler(c, user.ErrWebAuthnNotConfigured)
 		return
 	}
 	sessionId := c.GetHeader("X-Passkey-Session-ID")
 	sessionDataBytes, ok := cache.Get(sessionId)
 	if !ok {
-		api.ErrHandler(c, user.ErrSessionNotFound)
+		cosy.ErrHandler(c, user.ErrSessionNotFound)
 		return
 	}
 	webauthnInstance := passkey.GetInstance()
@@ -134,7 +134,7 @@ func FinishPasskeyLogin(c *gin.Context) {
 			return outUser, err
 		}, *sessionData, c.Request)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -167,7 +167,7 @@ func GetPasskeyList(c *gin.Context) {
 	p := query.Passkey
 	passkeys, err := p.Where(p.UserID.Eq(u.ID)).Find()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

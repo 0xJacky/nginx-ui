@@ -9,7 +9,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/backup"
 	"github.com/gin-gonic/gin"
 	"github.com/jpillora/overseer"
@@ -18,9 +17,9 @@ import (
 
 // RestoreResponse contains the response data for restore operation
 type RestoreResponse struct {
-	NginxUIRestored bool   `json:"nginx_ui_restored"`
-	NginxRestored   bool   `json:"nginx_restored"`
-	HashMatch       bool   `json:"hash_match"`
+	NginxUIRestored bool `json:"nginx_ui_restored"`
+	NginxRestored   bool `json:"nginx_restored"`
+	HashMatch       bool `json:"hash_match"`
 }
 
 // CreateBackup creates a backup of nginx-ui and nginx configurations
@@ -28,7 +27,7 @@ type RestoreResponse struct {
 func CreateBackup(c *gin.Context) {
 	result, err := backup.Backup()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -65,20 +64,20 @@ func RestoreBackup(c *gin.Context) {
 	// Get backup file
 	backupFile, err := c.FormFile("backup_file")
 	if err != nil {
-		api.ErrHandler(c, cosy.WrapErrorWithParams(backup.ErrBackupFileNotFound, err.Error()))
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(backup.ErrBackupFileNotFound, err.Error()))
 		return
 	}
 
 	// Validate security token
 	if securityToken == "" {
-		api.ErrHandler(c, backup.ErrInvalidSecurityToken)
+		cosy.ErrHandler(c, backup.ErrInvalidSecurityToken)
 		return
 	}
 
 	// Split security token to get Key and IV
 	parts := strings.Split(securityToken, ":")
 	if len(parts) != 2 {
-		api.ErrHandler(c, backup.ErrInvalidSecurityToken)
+		cosy.ErrHandler(c, backup.ErrInvalidSecurityToken)
 		return
 	}
 
@@ -88,20 +87,20 @@ func RestoreBackup(c *gin.Context) {
 	// Decode Key and IV from base64
 	key, err := base64.StdEncoding.DecodeString(aesKey)
 	if err != nil {
-		api.ErrHandler(c, cosy.WrapErrorWithParams(backup.ErrInvalidAESKey, err.Error()))
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(backup.ErrInvalidAESKey, err.Error()))
 		return
 	}
 
 	iv, err := base64.StdEncoding.DecodeString(aesIv)
 	if err != nil {
-		api.ErrHandler(c, cosy.WrapErrorWithParams(backup.ErrInvalidAESIV, err.Error()))
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(backup.ErrInvalidAESIV, err.Error()))
 		return
 	}
 
 	// Create temporary directory for files
 	tempDir, err := os.MkdirTemp("", "nginx-ui-restore-upload-*")
 	if err != nil {
-		api.ErrHandler(c, cosy.WrapErrorWithParams(backup.ErrCreateTempDir, err.Error()))
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(backup.ErrCreateTempDir, err.Error()))
 		return
 	}
 	defer os.RemoveAll(tempDir)
@@ -109,14 +108,14 @@ func RestoreBackup(c *gin.Context) {
 	// Save backup file
 	backupPath := filepath.Join(tempDir, backupFile.Filename)
 	if err := c.SaveUploadedFile(backupFile, backupPath); err != nil {
-		api.ErrHandler(c, cosy.WrapErrorWithParams(backup.ErrCreateBackupFile, err.Error()))
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(backup.ErrCreateBackupFile, err.Error()))
 		return
 	}
 
 	// Create temporary directory for restore operation
 	restoreDir, err := os.MkdirTemp("", "nginx-ui-restore-*")
 	if err != nil {
-		api.ErrHandler(c, cosy.WrapErrorWithParams(backup.ErrCreateRestoreDir, err.Error()))
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(backup.ErrCreateRestoreDir, err.Error()))
 		return
 	}
 
@@ -136,7 +135,7 @@ func RestoreBackup(c *gin.Context) {
 	if err != nil {
 		// Clean up temporary directory on error
 		os.RemoveAll(restoreDir)
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

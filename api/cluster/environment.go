@@ -27,7 +27,7 @@ func GetEnvironment(c *gin.Context) {
 
 	env, err := envQuery.FirstByID(id)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -161,7 +161,7 @@ func DeleteEnvironment(c *gin.Context) {
 func LoadEnvironmentFromSettings(c *gin.Context) {
 	err := settings.ReloadCluster()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

@@ -1,12 +1,12 @@
 package streams
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
-	"net/http"
 )
 
 func Duplicate(c *gin.Context) {
@@ -35,7 +35,7 @@ func Duplicate(c *gin.Context) {
 	_, err := helper.CopyFile(src, dst)
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

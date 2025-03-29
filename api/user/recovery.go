@@ -10,6 +10,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy"
 )
 
 type RecoveryCodesResponse struct {
@@ -41,7 +42,7 @@ func ViewRecoveryCodes(c *gin.Context) {
 	user.RecoveryCodes.LastViewed = &t
 	_, err := u.Where(u.ID.Eq(user.ID)).Updates(user)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -61,7 +62,7 @@ func GenerateRecoveryCodes(c *gin.Context) {
 	u := query.User
 	_, err := u.Where(u.ID.Eq(user.ID)).Updates(user)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

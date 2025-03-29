@@ -2,14 +2,14 @@ package settings
 
 import (
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 	cSettings "github.com/uozi-tech/cosy/settings"
-	"net/http"
 )
 
 func GetServerName(c *gin.Context) {
@@ -87,7 +87,7 @@ func SaveSettings(c *gin.Context) {
 
 	err := settings.Save()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
