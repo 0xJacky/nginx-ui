@@ -100,18 +100,18 @@ func decryptFile(filePath string, key []byte, iv []byte) error {
 	// Read encrypted file content
 	encryptedData, err := os.ReadFile(filePath)
 	if err != nil {
-		return cosy.WrapErrorWithParams(ErrReadEncryptedFile, filePath)
+		return cosy.WrapErrorWithParams(ErrReadEncryptedFile, err.Error())
 	}
 
 	// Decrypt file content
 	decryptedData, err := AESDecrypt(encryptedData, key, iv)
 	if err != nil {
-		return cosy.WrapErrorWithParams(ErrDecryptFile, filePath)
+		return cosy.WrapErrorWithParams(ErrDecryptFile, err.Error())
 	}
 
 	// Write decrypted content back
 	if err := os.WriteFile(filePath, decryptedData, 0644); err != nil {
-		return cosy.WrapErrorWithParams(ErrWriteDecryptedFile, filePath)
+		return cosy.WrapErrorWithParams(ErrWriteDecryptedFile, err.Error())
 	}
 
 	return nil

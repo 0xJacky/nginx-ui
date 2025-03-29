@@ -49,6 +49,7 @@ const backup = {
       headers: {
         'Content-Type': 'multipart/form-data;charset=UTF-8',
       },
+      crypto: true,
     })
   },
 }

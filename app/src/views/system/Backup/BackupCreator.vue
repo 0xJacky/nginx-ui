@@ -90,7 +90,7 @@ function handleCopy(copy) {
 
     <!-- Security Token Modal Component -->
     <AModal
-      v-model:visible="showSecurityModal"
+      v-model:open="showSecurityModal"
       :title="$gettext('Security Token Information')"
       :mask-closable="false"
       :centered="true"

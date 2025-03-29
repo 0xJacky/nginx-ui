@@ -19,7 +19,7 @@ func InitPrivateRouter(r *gin.RouterGroup) {
 
 	// Backup and restore endpoints
 	r.GET("system/backup", CreateBackup)
-	r.POST("system/backup/restore", RestoreBackup)
+	r.POST("system/backup/restore", middleware.EncryptedForm(), RestoreBackup)
 }
 
 func InitWebSocketRouter(r *gin.RouterGroup) {

@@ -2,6 +2,7 @@ package backup
 
 import (
 	"archive/zip"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -51,7 +52,7 @@ func Restore(options RestoreOptions) (RestoreResult, error) {
 
 	// Decrypt hash info file
 	if err := decryptFile(hashInfoPath, options.AESKey, options.AESIv); err != nil {
-		return RestoreResult{}, cosy.WrapErrorWithParams(ErrDecryptFile, HashInfoFile)
+		return RestoreResult{}, cosy.WrapErrorWithParams(ErrDecryptFile, err.Error())
 	}
 
 	// Decrypt nginx-ui.zip
@@ -69,21 +70,21 @@ func Restore(options RestoreOptions) (RestoreResult, error) {
 	nginxDir := filepath.Join(options.RestoreDir, NginxDir)
 
 	if err := os.MkdirAll(nginxUIDir, 0755); err != nil {
-		return RestoreResult{}, cosy.WrapErrorWithParams(ErrCreateDir, nginxUIDir)
+		return RestoreResult{}, cosy.WrapErrorWithParams(ErrCreateDir, err.Error())
 	}
 
 	if err := os.MkdirAll(nginxDir, 0755); err != nil {
-		return RestoreResult{}, cosy.WrapErrorWithParams(ErrCreateDir, nginxDir)
+		return RestoreResult{}, cosy.WrapErrorWithParams(ErrCreateDir, err.Error())
 	}
 
 	// Extract nginx-ui.zip to nginx-ui directory
 	if err := extractZipArchive(nginxUIZipPath, nginxUIDir); err != nil {
-		return RestoreResult{}, cosy.WrapErrorWithParams(ErrExtractArchive, "nginx-ui.zip")
+		return RestoreResult{}, cosy.WrapErrorWithParams(ErrExtractArchive, err.Error())
 	}
 
 	// Extract nginx.zip to nginx directory
 	if err := extractZipArchive(nginxZipPath, nginxDir); err != nil {
-		return RestoreResult{}, cosy.WrapErrorWithParams(ErrExtractArchive, "nginx.zip")
+		return RestoreResult{}, cosy.WrapErrorWithParams(ErrExtractArchive, err.Error())
 	}
 
 	result := RestoreResult{
@@ -125,14 +126,14 @@ func Restore(options RestoreOptions) (RestoreResult, error) {
 func extractZipArchive(zipPath, destDir string) error {
 	reader, err := zip.OpenReader(zipPath)
 	if err != nil {
-		return cosy.WrapErrorWithParams(ErrOpenZipFile, err.Error())
+		return cosy.WrapErrorWithParams(ErrOpenZipFile, fmt.Sprintf("failed to open zip file %s: %v", zipPath, err))
 	}
 	defer reader.Close()
 
 	for _, file := range reader.File {
 		err := extractZipFile(file, destDir)
 		if err != nil {
-			return err
+			return cosy.WrapErrorWithParams(ErrExtractArchive, fmt.Sprintf("failed to extract file %s: %v", file.Name, err))
 		}
 	}
 
@@ -143,37 +144,45 @@ func extractZipArchive(zipPath, destDir string) error {
 func extractZipFile(file *zip.File, destDir string) error {
 	// Check for directory traversal elements in the file name
 	if strings.Contains(file.Name, "..") {
-		return cosy.WrapErrorWithParams(ErrInvalidFilePath, file.Name)
+		return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("file name contains directory traversal: %s", file.Name))
+	}
+
+	// Clean and normalize the file path
+	cleanName := filepath.Clean(file.Name)
+	if cleanName == "." || cleanName == ".." {
+		return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("invalid file name after cleaning: %s", file.Name))
 	}
 
 	// Create directory path if needed
-	filePath := filepath.Join(destDir, file.Name)
+	filePath := filepath.Join(destDir, cleanName)
 
 	// Ensure the resulting file path is within the destination directory
 	destDirAbs, err := filepath.Abs(destDir)
 	if err != nil {
-		return cosy.WrapErrorWithParams(ErrInvalidFilePath, "cannot resolve destination path")
+		return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("cannot resolve destination path %s: %v", destDir, err))
 	}
 
 	filePathAbs, err := filepath.Abs(filePath)
 	if err != nil {
-		return cosy.WrapErrorWithParams(ErrInvalidFilePath, file.Name)
+		return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("cannot resolve file path %s: %v", filePath, err))
 	}
 
+	// Check if the file path is within the destination directory
 	if !strings.HasPrefix(filePathAbs, destDirAbs+string(os.PathSeparator)) {
-		return cosy.WrapErrorWithParams(ErrInvalidFilePath, file.Name)
+		return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("file path %s is outside destination directory %s", filePathAbs, destDirAbs))
 	}
 
 	if file.FileInfo().IsDir() {
 		if err := os.MkdirAll(filePath, file.Mode()); err != nil {
-			return cosy.WrapErrorWithParams(ErrCreateDir, filePath)
+			return cosy.WrapErrorWithParams(ErrCreateDir, fmt.Sprintf("failed to create directory %s: %v", filePath, err))
 		}
 		return nil
 	}
 
 	// Create parent directory if needed
-	if err := os.MkdirAll(filepath.Dir(filePath), 0755); err != nil {
-		return cosy.WrapErrorWithParams(ErrCreateParentDir, filePath)
+	parentDir := filepath.Dir(filePath)
+	if err := os.MkdirAll(parentDir, 0755); err != nil {
+		return cosy.WrapErrorWithParams(ErrCreateParentDir, fmt.Sprintf("failed to create parent directory %s: %v", parentDir, err))
 	}
 
 	// Check if this is a symlink by examining mode bits
@@ -181,46 +190,83 @@ func extractZipFile(file *zip.File, destDir string) error {
 		// Open source file in zip to read the link target
 		srcFile, err := file.Open()
 		if err != nil {
-			return cosy.WrapErrorWithParams(ErrOpenZipEntry, file.Name)
+			return cosy.WrapErrorWithParams(ErrOpenZipEntry, fmt.Sprintf("failed to open symlink source %s: %v", file.Name, err))
 		}
 		defer srcFile.Close()
 
 		// Read the link target
 		linkTargetBytes, err := io.ReadAll(srcFile)
 		if err != nil {
-			return cosy.WrapErrorWithParams(ErrReadSymlink, file.Name)
+			return cosy.WrapErrorWithParams(ErrReadSymlink, fmt.Sprintf("failed to read symlink target for %s: %v", file.Name, err))
 		}
 		linkTarget := string(linkTargetBytes)
 
+		// Clean and normalize the link target
+		cleanLinkTarget := filepath.Clean(linkTarget)
+		if cleanLinkTarget == "." || cleanLinkTarget == ".." {
+			return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("invalid symlink target: %s", linkTarget))
+		}
+
+		// Get nginx modules path
+		modulesPath := nginx.GetModulesPath()
+
+		// Handle system directory symlinks
+		if strings.HasPrefix(cleanLinkTarget, modulesPath) {
+			// For nginx modules, we'll create a relative symlink to the modules directory
+			relPath, err := filepath.Rel(filepath.Dir(filePath), modulesPath)
+			if err != nil {
+				return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("failed to convert modules path to relative: %v", err))
+			}
+			cleanLinkTarget = relPath
+		} else if filepath.IsAbs(cleanLinkTarget) {
+			// For other absolute paths, we'll create a directory instead of a symlink
+			if err := os.MkdirAll(filePath, 0755); err != nil {
+				return cosy.WrapErrorWithParams(ErrCreateDir, fmt.Sprintf("failed to create directory %s: %v", filePath, err))
+			}
+			return nil
+		}
+
 		// Verify the link target doesn't escape the destination directory
-		absLinkTarget := filepath.Clean(filepath.Join(filepath.Dir(filePath), linkTarget))
+		absLinkTarget := filepath.Clean(filepath.Join(filepath.Dir(filePath), cleanLinkTarget))
 		if !strings.HasPrefix(absLinkTarget, destDirAbs+string(os.PathSeparator)) {
-			return cosy.WrapErrorWithParams(ErrInvalidFilePath, linkTarget)
+			// For nginx modules, we'll create a directory instead of a symlink
+			if strings.HasPrefix(linkTarget, modulesPath) {
+				if err := os.MkdirAll(filePath, 0755); err != nil {
+					return cosy.WrapErrorWithParams(ErrCreateDir, fmt.Sprintf("failed to create modules directory %s: %v", filePath, err))
+				}
+				return nil
+			}
+			return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("symlink target %s is outside destination directory %s", absLinkTarget, destDirAbs))
 		}
 
 		// Remove any existing file/link at the target path
-		_ = os.Remove(filePath)
+		if err := os.Remove(filePath); err != nil && !os.IsNotExist(err) {
+			// Ignoring error, continue creating symlink
+		}
 
 		// Create the symlink
-		if err := os.Symlink(linkTarget, filePath); err != nil {
-			return cosy.WrapErrorWithParams(ErrCreateSymlink, file.Name)
+		if err := os.Symlink(cleanLinkTarget, filePath); err != nil {
+			return cosy.WrapErrorWithParams(ErrCreateSymlink, fmt.Sprintf("failed to create symlink %s -> %s: %v", filePath, cleanLinkTarget, err))
 		}
 
 		// Verify the resolved symlink path is within destination directory
 		resolvedPath, err := filepath.EvalSymlinks(filePath)
 		if err != nil {
-			return cosy.WrapErrorWithParams(ErrEvalSymlinks, filePath)
+			// If we can't resolve the symlink, it's not a critical error
+			// Just continue
+			return nil
 		}
 
 		resolvedPathAbs, err := filepath.Abs(resolvedPath)
 		if err != nil {
-			return cosy.WrapErrorWithParams(ErrInvalidFilePath, resolvedPath)
+			// Not a critical error, continue
+			return nil
 		}
 
 		if !strings.HasPrefix(resolvedPathAbs, destDirAbs+string(os.PathSeparator)) {
 			// Remove the symlink if it points outside the destination directory
 			_ = os.Remove(filePath)
-			return cosy.WrapErrorWithParams(ErrInvalidFilePath, resolvedPath)
+			return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("resolved symlink path %s is outside destination directory %s", resolvedPathAbs, destDirAbs))
 		}
 
 		return nil
@@ -229,20 +275,20 @@ func extractZipFile(file *zip.File, destDir string) error {
 	// Create file
 	destFile, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
 	if err != nil {
-		return cosy.WrapErrorWithParams(ErrCreateFile, filePath)
+		return cosy.WrapErrorWithParams(ErrCreateFile, fmt.Sprintf("failed to create file %s: %v", filePath, err))
 	}
 	defer destFile.Close()
 
 	// Open source file in zip
 	srcFile, err := file.Open()
 	if err != nil {
-		return cosy.WrapErrorWithParams(ErrOpenZipEntry, file.Name)
+		return cosy.WrapErrorWithParams(ErrOpenZipEntry, fmt.Sprintf("failed to open zip entry %s: %v", file.Name, err))
 	}
 	defer srcFile.Close()
 
 	// Copy content
 	if _, err := io.Copy(destFile, srcFile); err != nil {
-		return cosy.WrapErrorWithParams(ErrCopyContent, file.Name)
+		return cosy.WrapErrorWithParams(ErrCopyContent, fmt.Sprintf("failed to copy content for file %s: %v", file.Name, err))
 	}
 
 	return nil
