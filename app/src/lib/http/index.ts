@@ -30,6 +30,19 @@ function registerError(scope: string, record: CosyErrorRecord) {
   errors[scope] = record
 }
 
+export interface HttpConfig extends AxiosRequestConfig {
+  returnFullResponse?: boolean
+  crypto?: boolean
+}
+
+// Extend InternalAxiosRequestConfig type
+declare module 'axios' {
+  interface InternalAxiosRequestConfig {
+    returnFullResponse?: boolean
+    crypto?: boolean
+  }
+}
+
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_ROOT,
   timeout: 50000,
@@ -37,25 +50,25 @@ const instance = axios.create({
 })
 
 const http = {
-  get(url: string, config: AxiosRequestConfig = {}) {
+  get(url: string, config: HttpConfig = {}) {
     // eslint-disable-next-line ts/no-explicit-any
     return instance.get<any, any>(url, config)
   },
   // eslint-disable-next-line ts/no-explicit-any
-  post(url: string, data: any = undefined, config: AxiosRequestConfig = {}) {
+  post(url: string, data: any = undefined, config: HttpConfig = {}) {
     // eslint-disable-next-line ts/no-explicit-any
     return instance.post<any, any>(url, data, config)
   },
   // eslint-disable-next-line ts/no-explicit-any
-  put(url: string, data: any = undefined, config: AxiosRequestConfig = {}) {
+  put(url: string, data: any = undefined, config: HttpConfig = {}) {
     // eslint-disable-next-line ts/no-explicit-any
     return instance.put<any, any>(url, data, config)
   },
-  delete(url: string, config: AxiosRequestConfig = {}) {
+  delete(url: string, config: HttpConfig = {}) {
     // eslint-disable-next-line ts/no-explicit-any
     return instance.delete<any, any>(url, config)
   },
-  patch(url: string, config: AxiosRequestConfig = {}) {
+  patch(url: string, config: HttpConfig = {}) {
     // eslint-disable-next-line ts/no-explicit-any
     return instance.patch<any, any>(url, config)
   },
@@ -127,6 +140,10 @@ const dedupe = useMessageDedupe()
 instance.interceptors.response.use(
   response => {
     nprogress.done()
+    // Check if full response is requested in config
+    if (response.config?.returnFullResponse) {
+      return Promise.resolve(response)
+    }
     return Promise.resolve(response.data)
   },
   // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -142,6 +159,18 @@ instance.interceptors.response.use(
         user.logout()
         await router.push('/login')
         break
+    }
+
+    // Handle JSON error that comes back as Blob for blob request type
+    if (error.response.data instanceof Blob && error.response.data.type === 'application/json') {
+      try {
+        const text = await error.response.data.text()
+        error.response.data = JSON.parse(text)
+      }
+      catch (e) {
+        // If parsing fails, we'll continue with the original error.response.data
+        console.error('Failed to parse blob error response as JSON', e)
+      }
     }
 
     const err = error.response.data as CosyError

@@ -16,6 +16,10 @@ func InitPrivateRouter(r *gin.RouterGroup) {
 	r.GET("upgrade/current", GetCurrentVersion)
 	r.GET("self_check", SelfCheck)
 	r.POST("self_check/:name/fix", SelfCheckFix)
+
+	// Backup and restore endpoints
+	r.GET("system/backup", CreateBackup)
+	r.POST("system/backup/restore", RestoreBackup)
 }
 
 func InitWebSocketRouter(r *gin.RouterGroup) {

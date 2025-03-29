@@ -34,7 +34,8 @@ func newNotification(db *gorm.DB, opts ...gen.DOOption) notification {
 	_notification.DeletedAt = field.NewField(tableName, "deleted_at")
 	_notification.Type = field.NewInt(tableName, "type")
 	_notification.Title = field.NewString(tableName, "title")
-	_notification.Details = field.NewString(tableName, "details")
+	_notification.Content = field.NewString(tableName, "content")
+	_notification.Details = field.NewField(tableName, "details")
 
 	_notification.fillFieldMap()
 
@@ -51,7 +52,8 @@ type notification struct {
 	DeletedAt field.Field
 	Type      field.Int
 	Title     field.String
-	Details   field.String
+	Content   field.String
+	Details   field.Field
 
 	fieldMap map[string]field.Expr
 }
@@ -74,7 +76,8 @@ func (n *notification) updateTableName(table string) *notification {
 	n.DeletedAt = field.NewField(table, "deleted_at")
 	n.Type = field.NewInt(table, "type")
 	n.Title = field.NewString(table, "title")
-	n.Details = field.NewString(table, "details")
+	n.Content = field.NewString(table, "content")
+	n.Details = field.NewField(table, "details")
 
 	n.fillFieldMap()
 
@@ -91,13 +94,14 @@ func (n *notification) GetFieldByName(fieldName string) (field.OrderExpr, bool) 
 }
 
 func (n *notification) fillFieldMap() {
-	n.fieldMap = make(map[string]field.Expr, 7)
+	n.fieldMap = make(map[string]field.Expr, 8)
 	n.fieldMap["id"] = n.ID
 	n.fieldMap["created_at"] = n.CreatedAt
 	n.fieldMap["updated_at"] = n.UpdatedAt
 	n.fieldMap["deleted_at"] = n.DeletedAt
 	n.fieldMap["type"] = n.Type
 	n.fieldMap["title"] = n.Title
+	n.fieldMap["content"] = n.Content
 	n.fieldMap["details"] = n.Details
 }
 
