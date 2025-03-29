@@ -1,11 +1,11 @@
 package sites
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
-	"net/http"
 )
 
 func DuplicateSite(c *gin.Context) {
@@ -23,7 +23,7 @@ func DuplicateSite(c *gin.Context) {
 
 	err := site.Duplicate(src, json.Name)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

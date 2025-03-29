@@ -6,7 +6,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/stream"
@@ -35,13 +34,13 @@ func GetStreams(c *gin.Context) {
 
 	configFiles, err := os.ReadDir(nginx.GetConfPath("streams-available"))
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
 	enabledConfig, err := os.ReadDir(nginx.GetConfPath("streams-enabled"))
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -98,7 +97,7 @@ func GetStream(c *gin.Context) {
 	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -109,14 +108,14 @@ func GetStream(c *gin.Context) {
 	s := query.Stream
 	streamModel, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
 	if streamModel.Advanced {
 		origContent, err := os.ReadFile(path)
 		if err != nil {
-			api.ErrHandler(c, err)
+			cosy.ErrHandler(c, err)
 			return
 		}
 
@@ -136,7 +135,7 @@ func GetStream(c *gin.Context) {
 	nginxConfig, err := nginx.ParseNgxConfig(path)
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -168,7 +167,7 @@ func SaveStream(c *gin.Context) {
 
 	err := stream.Save(name, json.Content, json.Overwrite, json.SyncNodeIDs)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -178,7 +177,7 @@ func SaveStream(c *gin.Context) {
 func EnableStream(c *gin.Context) {
 	err := stream.Enable(c.Param("name"))
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -190,7 +189,7 @@ func EnableStream(c *gin.Context) {
 func DisableStream(c *gin.Context) {
 	err := stream.Disable(c.Param("name"))
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -202,7 +201,7 @@ func DisableStream(c *gin.Context) {
 func DeleteStream(c *gin.Context) {
 	err := stream.Delete(c.Param("name"))
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -222,7 +221,7 @@ func RenameStream(c *gin.Context) {
 
 	err := stream.Rename(oldName, json.NewName)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

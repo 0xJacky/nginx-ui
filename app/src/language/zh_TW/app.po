@@ -27,15 +27,15 @@ msgstr "雙因素驗證"
 msgid "2FA Settings"
 msgstr "多重要素驗證設定"
 
-#: src/routes/index.ts:290
+#: src/routes/modules/system.ts:26
 msgid "About"
 msgstr "關於"
 
-#: src/routes/index.ts:210 src/views/site/ngx_conf/LogEntry.vue:75
+#: src/routes/modules/nginx_log.ts:17 src/views/site/ngx_conf/LogEntry.vue:75
 msgid "Access Logs"
 msgstr "訪問日誌"
 
-#: src/routes/index.ts:148 src/views/certificate/ACMEUser.vue:113
+#: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:113
 #: src/views/certificate/ACMEUserSelector.vue:85
 msgid "ACME User"
 msgstr "ACME 用戶"
@@ -47,7 +47,7 @@ msgstr "ACME 用戶"
 #: src/views/environment/envColumns.tsx:97
 #: src/views/notification/notificationColumns.tsx:65
 #: src/views/preference/AuthSettings.vue:30
-#: src/views/site/site_category/columns.ts:29
+#: src/views/site/site_category/columns.ts:28
 #: src/views/site/site_list/columns.tsx:76 src/views/stream/StreamList.vue:49
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
@@ -68,7 +68,7 @@ msgstr "新增"
 msgid "Add a passkey"
 msgstr "新增通行密鑰"
 
-#: src/routes/index.ts:118 src/views/config/ConfigEditor.vue:144
+#: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:144
 #: src/views/config/ConfigEditor.vue:204
 msgid "Add Configuration"
 msgstr "添加配置"
@@ -82,7 +82,7 @@ msgstr "在下方新增指令"
 msgid "Add Location"
 msgstr "新增 Location"
 
-#: src/routes/index.ts:63 src/views/site/SiteAdd.vue:89
+#: src/routes/modules/sites.ts:26 src/views/site/site_add/SiteAdd.vue:89
 msgid "Add Site"
 msgstr "新增網站"
 
@@ -252,6 +252,10 @@ msgstr "已關閉 %{name} 的自動續簽"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "已啟用 %{name} 的自動續簽"
 
+#: src/views/system/Backup/SystemRestore.vue:92
+msgid "Automatic Restart"
+msgstr ""
+
 #: src/views/certificate/CertificateEditor.vue:255
 #: src/views/config/ConfigEditor.vue:213 src/views/config/ConfigList.vue:106
 #: src/views/config/ConfigList.vue:180 src/views/nginx_log/NginxLog.vue:173
@@ -268,6 +272,25 @@ msgstr "返回首頁"
 msgid "Back to list"
 msgstr "返回列表"
 
+#: src/routes/modules/system.ts:33
+#, fuzzy
+msgid "Backup"
+msgstr "返回"
+
+#: src/views/system/Backup/SystemRestore.vue:100
+msgid "Backup file integrity check failed, it may have been tampered with"
+msgstr ""
+
+#: src/constants/errors/backup.ts:41
+#, fuzzy
+msgid "Backup file not found: {0}"
+msgstr "站點未找到"
+
+#: src/views/system/Backup/BackupCreator.vue:42
+#, fuzzy
+msgid "Backup has been downloaded successfully"
+msgstr "Nginx 重新載入成功"
+
 #: src/views/preference/AuthSettings.vue:129
 msgid "Ban Threshold Minutes"
 msgstr "封禁閾值分鐘數"
@@ -280,7 +303,7 @@ msgstr "被禁止的 IP"
 msgid "Banned Until"
 msgstr "禁止至"
 
-#: src/views/site/SiteAdd.vue:95
+#: src/views/site/site_add/SiteAdd.vue:95
 msgid "Base information"
 msgstr "基本資訊"
 
@@ -386,12 +409,12 @@ msgid "Certificate Status"
 msgid_plural "Certificates Status"
 msgstr[0] "憑證狀態"
 
-#: src/routes/index.ts:139
+#: src/routes/modules/certificates.ts:11
 #: src/views/certificate/CertificateList/Certificate.vue:13
 msgid "Certificates"
 msgstr "憑證"
 
-#: src/routes/index.ts:156
+#: src/routes/modules/certificates.ts:28
 msgid "Certificates List"
 msgstr "憑證清單"
 
@@ -463,6 +486,10 @@ msgstr "清除"
 msgid "Cleared successfully"
 msgstr "清除成功"
 
+#: src/views/system/Backup/SystemRestore.vue:137
+msgid "Click or drag backup file to this area to upload"
+msgstr ""
+
 #: src/views/preference/components/TOTP.vue:110
 msgid "Click to copy"
 msgstr "點擊複製"
@@ -478,6 +505,11 @@ msgstr "命令"
 msgid "Comments"
 msgstr "備註"
 
+#: src/constants/errors/backup.ts:14
+#, fuzzy
+msgid "Config path is empty"
+msgstr "明文為空"
+
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:84
 msgid "Config Templates"
 msgstr "設定模板"
@@ -486,7 +518,7 @@ msgstr "設定模板"
 msgid "Configuration file is test successful"
 msgstr "設定檔案測試成功"
 
-#: src/views/site/SiteAdd.vue:101
+#: src/views/site/site_add/SiteAdd.vue:101
 msgid "Configuration Name"
 msgstr "設定名稱"
 
@@ -494,7 +526,7 @@ msgstr "設定名稱"
 msgid "Configurations"
 msgstr "設定"
 
-#: src/views/site/SiteAdd.vue:96
+#: src/views/site/site_add/SiteAdd.vue:96
 msgid "Configure SSL"
 msgstr "設定 SSL"
 
@@ -518,7 +550,13 @@ msgstr "內容"
 msgid "Copied"
 msgstr "已複製"
 
+#: src/views/system/Backup/BackupCreator.vue:128
+#, fuzzy
+msgid "Copied!"
+msgstr "已複製"
+
 #: src/components/SensitiveString/SensitiveString.vue:37
+#: src/views/system/Backup/BackupCreator.vue:128
 msgid "Copy"
 msgstr "複製"
 
@@ -542,9 +580,14 @@ msgstr "中央處理器:"
 msgid "Create"
 msgstr "創建"
 
-#: src/views/site/SiteAdd.vue:157
+#: src/views/site/site_add/SiteAdd.vue:157
 msgid "Create Another"
 msgstr "再建立一個"
+
+#: src/views/system/Backup/BackupCreator.vue:86
+#, fuzzy
+msgid "Create Backup"
+msgstr "建立時間"
 
 #: src/views/config/ConfigList.vue:116
 msgid "Create File"
@@ -554,9 +597,15 @@ msgstr "創建檔案"
 msgid "Create Folder"
 msgstr "創建資料夾"
 
+#: src/views/system/Backup/BackupCreator.vue:75
+msgid ""
+"Create system backups including Nginx configuration and Nginx UI settings. "
+"Backup files will be automatically downloaded to your computer."
+msgstr ""
+
 #: src/views/notification/notificationColumns.tsx:58
 #: src/views/preference/components/Passkey.vue:95
-#: src/views/site/site_category/columns.ts:15 src/views/user/userColumns.tsx:48
+#: src/views/site/site_category/columns.ts:16 src/views/user/userColumns.tsx:48
 msgid "Created at"
 msgstr "建立時間"
 
@@ -599,12 +648,12 @@ msgid ""
 "indicator."
 msgstr "自訂顯示在環境指示器中的本地節點名稱。"
 
-#: src/routes/index.ts:38 src/views/config/ConfigEditor.vue:134
+#: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:134
 #: src/views/config/ConfigEditor.vue:97 src/views/config/ConfigList.vue:64
 msgid "Dashboard"
 msgstr "儀表板"
 
-#: src/views/other/Install.vue:119
+#: src/views/other/Install.vue:152
 msgid "Database (Optional, default: database)"
 msgstr "資料庫 (可選，預設: database)"
 
@@ -780,7 +829,8 @@ msgstr "成功停用"
 msgid "Disk IO"
 msgstr "磁碟 IO"
 
-#: src/routes/index.ts:184 src/views/certificate/DNSCredential.vue:40
+#: src/routes/modules/certificates.ts:56
+#: src/views/certificate/DNSCredential.vue:40
 msgid "DNS Credentials"
 msgstr "DNS 認證"
 
@@ -884,15 +934,15 @@ msgstr "編輯"
 msgid "Edit %{n}"
 msgstr "編輯 %{n}"
 
-#: src/routes/index.ts:128 src/views/config/ConfigEditor.vue:204
+#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:204
 msgid "Edit Configuration"
 msgstr "編輯設定"
 
-#: src/routes/index.ts:78
+#: src/routes/modules/sites.ts:41
 msgid "Edit Site"
 msgstr "編輯網站"
 
-#: src/routes/index.ts:98
+#: src/routes/modules/streams.ts:19
 msgid "Edit Stream"
 msgstr "編輯 Stream"
 
@@ -900,7 +950,7 @@ msgstr "編輯 Stream"
 msgid "Email"
 msgstr "電子郵件"
 
-#: src/views/other/Install.vue:88
+#: src/views/other/Install.vue:121
 msgid "Email (*)"
 msgstr "電子郵件 (*)"
 
@@ -917,7 +967,7 @@ msgstr "啟用多因素身份驗證成功"
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "啟用 %{name} 自動續簽失敗"
 
-#: src/views/site/SiteAdd.vue:43
+#: src/views/site/site_add/SiteAdd.vue:43
 msgid "Enable failed"
 msgstr "啟用失敗"
 
@@ -980,8 +1030,9 @@ msgstr "啟用 TOTP"
 msgid "Enabled"
 msgstr "已啟用"
 
+#: src/views/site/site_add/SiteAdd.vue:40
 #: src/views/site/site_edit/RightSettings.vue:33
-#: src/views/site/site_list/SiteList.vue:46 src/views/site/SiteAdd.vue:40
+#: src/views/site/site_list/SiteList.vue:46
 #: src/views/stream/components/RightSettings.vue:29
 #: src/views/stream/StreamList.vue:61
 msgid "Enabled successfully"
@@ -995,7 +1046,8 @@ msgstr "用 Let's Encrypt 對網站進行加密"
 msgid "Environment variables cleaned"
 msgstr "環境變數已清理"
 
-#: src/routes/index.ts:234 src/views/dashboard/Environments.vue:83
+#: src/routes/modules/environments.ts:11
+#: src/views/dashboard/Environments.vue:83
 #: src/views/environment/Environment.vue:43
 msgid "Environments"
 msgstr "環境"
@@ -1005,7 +1057,7 @@ msgstr "環境"
 msgid "Error"
 msgstr "錯誤"
 
-#: src/routes/index.ts:217 src/views/site/ngx_conf/LogEntry.vue:83
+#: src/routes/modules/nginx_log.ts:24 src/views/site/ngx_conf/LogEntry.vue:83
 msgid "Error Logs"
 msgstr "錯誤日誌"
 
@@ -1030,9 +1082,139 @@ msgstr "匯出"
 msgid "Fail to obtain certificate"
 msgstr "獲取憑證失敗"
 
+#: src/constants/errors/backup.ts:5
+#, fuzzy
+msgid "Failed to backup Nginx config files: {0}"
+msgstr "讀取 nginx.conf 失敗"
+
+#: src/constants/errors/backup.ts:4
+msgid "Failed to backup Nginx UI files: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:18
+#, fuzzy
+msgid "Failed to calculate hash: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:58
+msgid "Failed to calculate Nginx hash: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:57
+msgid "Failed to calculate Nginx UI hash: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:13
+#, fuzzy
+msgid "Failed to cleanup temporary directory: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:15
+msgid "Failed to copy config file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:16
+msgid "Failed to copy database directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:17
+#, fuzzy
+msgid "Failed to copy database file: {0}"
+msgstr "停用 %{msg} 失敗"
+
+#: src/constants/errors/backup.ts:32
+msgid "Failed to copy file content: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:20
+msgid "Failed to copy Nginx config directory: {0}"
+msgstr ""
+
 #: src/constants/errors/self_check.ts:9
 msgid "Failed to create backup"
 msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:12
+#, fuzzy
+msgid "Failed to create backup file: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:46
+#, fuzzy
+msgid "Failed to create directory: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:48
+#, fuzzy
+msgid "Failed to create file: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:6
+#, fuzzy
+msgid "Failed to create hash info file: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:47
+#, fuzzy
+msgid "Failed to create parent directory: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:34
+msgid "Failed to create restore directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:50
+#, fuzzy
+msgid "Failed to create symbolic link: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:2
+#, fuzzy
+msgid "Failed to create temporary directory"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:3
+#, fuzzy
+msgid "Failed to create temporary subdirectory"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:9
+#, fuzzy
+msgid "Failed to create zip archive: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:29
+#, fuzzy
+msgid "Failed to create zip entry: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:28
+#, fuzzy
+msgid "Failed to create zip file: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:31
+#, fuzzy
+msgid "Failed to create zip header: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:26
+#, fuzzy
+msgid "Failed to decrypt data: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:54
+#, fuzzy
+msgid "Failed to decrypt file: {0}"
+msgstr "停用 %{msg} 失敗"
+
+#: src/constants/errors/backup.ts:37
+msgid "Failed to decrypt Nginx directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:36
+msgid "Failed to decrypt Nginx UI directory: {0}"
+msgstr ""
 
 #: src/views/site/site_edit/RightSettings.vue:45
 #: src/views/site/site_list/SiteList.vue:60
@@ -1048,22 +1230,122 @@ msgstr "停用 %{msg} 失敗"
 msgid "Failed to enable %{msg}"
 msgstr "啟用 %{msg} 失敗"
 
+#: src/constants/errors/backup.ts:25
+#, fuzzy
+msgid "Failed to encrypt data: {0}"
+msgstr "啟用 %{msg} 失敗"
+
+#: src/constants/errors/backup.ts:23
+#, fuzzy
+msgid "Failed to encrypt file: {0}"
+msgstr "啟用 %{msg} 失敗"
+
+#: src/constants/errors/backup.ts:8
+msgid "Failed to encrypt Nginx directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:7
+msgid "Failed to encrypt Nginx UI directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:52
+#, fuzzy
+msgid "Failed to evaluate symbolic links: {0}"
+msgstr "創建備份失敗"
+
+#: src/constants/errors/backup.ts:35
+#, fuzzy
+msgid "Failed to extract archive: {0}"
+msgstr "啟用 %{msg} 失敗"
+
+#: src/constants/errors/backup.ts:10
+#, fuzzy
+msgid "Failed to generate AES key: {0}"
+msgstr "啟用 %{msg} 失敗"
+
+#: src/constants/errors/backup.ts:11
+#, fuzzy
+msgid "Failed to generate initialization vector: {0}"
+msgstr "取得憑證資訊失敗"
+
 #: src/language/constants.ts:5
 msgid "Failed to get certificate information"
 msgstr "取得憑證資訊失敗"
+
+#: src/constants/errors/backup.ts:30
+#, fuzzy
+msgid "Failed to open source file: {0}"
+msgstr "啟用 %{msg} 失敗"
+
+#: src/constants/errors/backup.ts:49
+#, fuzzy
+msgid "Failed to open zip entry: {0}"
+msgstr "啟用 %{msg} 失敗"
+
+#: src/constants/errors/backup.ts:45
+#, fuzzy
+msgid "Failed to open zip file: {0}"
+msgstr "啟用 %{msg} 失敗"
 
 #: src/constants/errors/self_check.ts:4
 msgid "Failed to parse nginx.conf"
 msgstr "解析 nginx.conf 失敗"
 
+#: src/constants/errors/backup.ts:53
+#, fuzzy
+msgid "Failed to read encrypted file: {0}"
+msgstr "讀取 nginx.conf 失敗"
+
+#: src/constants/errors/backup.ts:22
+#, fuzzy
+msgid "Failed to read file: {0}"
+msgstr "啟用 %{msg} 失敗"
+
+#: src/constants/errors/backup.ts:56
+#, fuzzy
+msgid "Failed to read hash info file: {0}"
+msgstr "讀取 nginx.conf 失敗"
+
 #: src/constants/errors/self_check.ts:3
 msgid "Failed to read nginx.conf"
 msgstr "讀取 nginx.conf 失敗"
+
+#: src/constants/errors/backup.ts:21
+#, fuzzy
+msgid "Failed to read symlink: {0}"
+msgstr "啟用 %{msg} 失敗"
+
+#: src/constants/errors/backup.ts:39
+#, fuzzy
+msgid "Failed to restore Nginx configs: {0}"
+msgstr "解析 nginx.conf 失敗"
+
+#: src/constants/errors/backup.ts:40
+#, fuzzy
+msgid "Failed to restore Nginx UI files: {0}"
+msgstr "解析 nginx.conf 失敗"
 
 #: src/views/site/site_edit/SiteEdit.vue:135
 #: src/views/stream/StreamEdit.vue:122
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "儲存失敗，在設定中檢測到語法錯誤。"
+
+#: src/constants/errors/backup.ts:38
+#, fuzzy
+msgid "Failed to verify hashes: {0}"
+msgstr "啟用 %{msg} 失敗"
+
+#: src/constants/errors/backup.ts:55
+msgid "Failed to write decrypted file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:24
+msgid "Failed to write encrypted file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:33
+msgid "Failed to write to zip buffer: {0}"
+msgstr ""
 
 #: src/language/constants.ts:32
 msgid "File exists"
@@ -1081,7 +1363,7 @@ msgstr "檔名空白"
 msgid "Filter"
 msgstr "篩選"
 
-#: src/language/constants.ts:19 src/views/site/SiteAdd.vue:97
+#: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:97
 msgid "Finished"
 msgstr "完成"
 
@@ -1153,11 +1435,15 @@ msgstr "正在取得憑證，請稍候..."
 msgid "Github Proxy"
 msgstr "Github 代理"
 
+#: src/constants/errors/backup.ts:59
+msgid "Hash verification failed: file integrity compromised"
+msgstr ""
+
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Hide"
 msgstr "隱藏"
 
-#: src/routes/index.ts:30
+#: src/routes/index.ts:47
 msgid "Home"
 msgstr "首頁"
 
@@ -1207,7 +1493,8 @@ msgstr "如果您的域名有 CNAME 記錄且無法獲取證書，您需要啟�
 msgid "Import"
 msgstr "導入"
 
-#: src/routes/index.ts:174 src/views/certificate/CertificateEditor.vue:85
+#: src/routes/modules/certificates.ts:46
+#: src/views/certificate/CertificateEditor.vue:85
 msgid "Import Certificate"
 msgstr "導入憑證"
 
@@ -1232,13 +1519,23 @@ msgstr "請輸入應用程式中的代碼："
 msgid "Input the recovery code:"
 msgstr "輸入恢復碼："
 
-#: src/routes/index.ts:312 src/views/other/Install.vue:134
+#: src/routes/modules/auth.ts:8 src/views/other/Install.vue:168
 msgid "Install"
 msgstr "安裝"
 
-#: src/views/other/Install.vue:67
+#: src/views/other/Install.vue:89
 msgid "Install successfully"
 msgstr "安裝成功"
+
+#: src/constants/errors/system.ts:3
+msgid "Installation is not allowed after 10 minutes of system startup"
+msgstr ""
+
+#: src/views/other/Install.vue:113
+msgid ""
+"Installation is not allowed after 10 minutes of system startup, please "
+"restart the Nginx UI."
+msgstr ""
 
 #: src/views/preference/LogrotateSettings.vue:25
 msgid "Interval"
@@ -1247,6 +1544,26 @@ msgstr "間隔"
 #: src/views/certificate/ACMEUser.vue:129
 msgid "Invalid"
 msgstr "無效"
+
+#: src/constants/errors/backup.ts:44
+#, fuzzy
+msgid "Invalid AES IV format: {0}"
+msgstr "無效的請求格式"
+
+#: src/constants/errors/backup.ts:43
+#, fuzzy
+msgid "Invalid AES key format: {0}"
+msgstr "無效的請求格式"
+
+#: src/views/system/Backup/SystemRestore.vue:67
+#, fuzzy
+msgid "Invalid file object"
+msgstr "無效的檔案名"
+
+#: src/constants/errors/backup.ts:51
+#, fuzzy
+msgid "Invalid file path: {0}"
+msgstr "無效的請求格式"
 
 #: src/views/config/components/Rename.vue:64
 #: src/views/config/ConfigEditor.vue:250
@@ -1261,6 +1578,10 @@ msgstr "無效的資料夾名稱"
 msgid "Invalid otp code"
 msgstr "無效的 OTP 代碼"
 
+#: src/constants/errors/backup.ts:27
+msgid "Invalid padding in decrypted data"
+msgstr ""
+
 #: src/components/TwoFA/use2FAModal.ts:61
 msgid "Invalid passcode or recovery code"
 msgstr "無效的密碼或恢復碼"
@@ -1271,6 +1592,11 @@ msgstr "無效的恢復碼"
 
 #: src/constants/errors/middleware.ts:2
 msgid "Invalid request format"
+msgstr "無效的請求格式"
+
+#: src/constants/errors/backup.ts:42
+#, fuzzy
+msgid "Invalid security token format"
 msgstr "無效的請求格式"
 
 #: src/views/preference/AuthSettings.vue:18
@@ -1388,7 +1714,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日誌"
 
-#: src/routes/index.ts:318 src/views/other/Login.vue:222
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:222
 msgid "Login"
 msgstr "登入"
 
@@ -1425,20 +1751,20 @@ msgid ""
 msgstr ""
 "在取得憑證前，請確保您已將 .well-known 目錄反向代理到 HTTPChallengePort。"
 
-#: src/routes/index.ts:108 src/views/config/ConfigEditor.vue:102
+#: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:102
 #: src/views/config/ConfigEditor.vue:139 src/views/config/ConfigList.vue:69
 msgid "Manage Configs"
 msgstr "管理設定"
 
-#: src/routes/index.ts:47 src/views/site/site_list/SiteList.vue:94
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:94
 msgid "Manage Sites"
 msgstr "管理網站"
 
-#: src/routes/index.ts:89 src/views/stream/StreamList.vue:119
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:119
 msgid "Manage Streams"
 msgstr "管理 Stream"
 
-#: src/routes/index.ts:257 src/views/user/User.vue:10
+#: src/routes/modules/user.ts:10 src/views/user/User.vue:10
 msgid "Manage Users"
 msgstr "管理使用者"
 
@@ -1474,11 +1800,12 @@ msgstr "模型"
 msgid "Modify"
 msgstr "修改"
 
-#: src/routes/index.ts:164 src/views/certificate/CertificateEditor.vue:85
+#: src/routes/modules/certificates.ts:36
+#: src/views/certificate/CertificateEditor.vue:85
 msgid "Modify Certificate"
 msgstr "修改憑證"
 
-#: src/views/site/SiteAdd.vue:154
+#: src/views/site/site_add/SiteAdd.vue:154
 msgid "Modify Config"
 msgstr "修改設定"
 
@@ -1539,7 +1866,7 @@ msgstr "新版本發布"
 
 #: src/views/certificate/WildcardCertificate.vue:91
 #: src/views/site/cert/components/ObtainCert.vue:211
-#: src/views/site/SiteAdd.vue:141
+#: src/views/site/site_add/SiteAdd.vue:141
 msgid "Next"
 msgstr "下一步"
 
@@ -1575,6 +1902,16 @@ msgstr "Nginx 配置檔未包含 sites-enabled"
 msgid "Nginx conf not include stream-enabled"
 msgstr "Nginx 配置檔未包含 stream-enabled"
 
+#: src/constants/errors/backup.ts:19
+#, fuzzy
+msgid "Nginx config directory is not set"
+msgstr "Nginx 日誌目錄白名單"
+
+#: src/views/system/Backup/SystemRestore.vue:84
+#, fuzzy
+msgid "Nginx configuration has been restored"
+msgstr "Nginx 設定解析錯誤"
+
 #: src/views/site/site_edit/SiteEdit.vue:223
 #: src/views/stream/StreamEdit.vue:208
 msgid "Nginx Configuration Parse Error"
@@ -1596,7 +1933,7 @@ msgstr "Nginx 錯誤日誌路徑"
 msgid "Nginx is not running"
 msgstr "Nginx 未執行"
 
-#: src/routes/index.ts:202 src/views/nginx_log/NginxLog.vue:148
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:148
 msgid "Nginx Log"
 msgstr "Nginx 日誌"
 
@@ -1623,6 +1960,23 @@ msgstr "Nginx 重啟指令"
 #: src/components/NginxControl/NginxControl.vue:40
 msgid "Nginx restarted successfully"
 msgstr "Nginx 重啟成功"
+
+#: src/constants/errors/system.ts:2
+#, fuzzy
+msgid "Nginx UI already installed"
+msgstr "此值已被使用"
+
+#: src/views/system/Backup/SystemRestore.vue:88
+#, fuzzy
+msgid "Nginx UI configuration has been restored"
+msgstr "Nginx 設定解析錯誤"
+
+#: src/views/system/Backup/SystemRestore.vue:93
+#, fuzzy
+msgid ""
+"Nginx UI configuration has been restored and will restart automatically in a "
+"few seconds."
+msgstr "Nginx 設定解析錯誤"
 
 #: src/components/ChatGPT/ChatGPT.vue:374
 #: src/components/Notification/Notification.vue:133
@@ -1653,7 +2007,7 @@ msgstr "節點密鑰"
 msgid "Not After"
 msgstr "不晚於"
 
-#: src/routes/index.ts:324
+#: src/routes/modules/error.ts:8
 msgid "Not Found"
 msgstr "找不到頁面"
 
@@ -1676,7 +2030,8 @@ msgstr "請注意，如果配置檔包含其他配置或憑證，請提前將它
 msgid "Notification"
 msgstr "通知"
 
-#: src/components/Notification/Notification.vue:131 src/routes/index.ts:248
+#: src/components/Notification/Notification.vue:131
+#: src/routes/modules/notifications.ts:10
 msgid "Notifications"
 msgstr "通知"
 
@@ -1724,6 +2079,8 @@ msgstr "確定"
 #: src/views/site/site_list/SiteList.vue:144
 #: src/views/stream/components/RightSettings.vue:50
 #: src/views/stream/StreamList.vue:164
+#: src/views/system/Backup/BackupCreator.vue:149
+#: src/views/system/Backup/SystemRestore.vue:94
 msgid "OK"
 msgstr "確定"
 
@@ -1737,6 +2094,10 @@ msgstr "驗證完成後，記錄將被刪除。"
 #: src/views/environment/envColumns.tsx:52
 msgid "Online"
 msgstr "線上"
+
+#: src/views/system/Backup/SystemRestore.vue:24
+msgid "Only zip files are allowed"
+msgstr ""
 
 #: src/views/preference/Preference.vue:170
 msgid "OpenAI"
@@ -1795,7 +2156,7 @@ msgstr ""
 msgid "Password"
 msgstr "密碼"
 
-#: src/views/other/Install.vue:108
+#: src/views/other/Install.vue:141
 msgid "Password (*)"
 msgstr "密碼 (*)"
 
@@ -1803,7 +2164,7 @@ msgstr "密碼 (*)"
 msgid "Password incorrect"
 msgstr "密碼錯誤"
 
-#: src/views/other/Install.vue:48
+#: src/views/other/Install.vue:70
 msgid "Password length cannot exceed 20 characters"
 msgstr "密碼長度不能超過 20 個字元"
 
@@ -1846,6 +2207,15 @@ msgstr "請輸入您希望創建的通行密鑰名稱，並點擊下面的確定
 #: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "請輸入 OTP 代碼："
+
+#: src/views/system/Backup/SystemRestore.vue:58
+#, fuzzy
+msgid "Please enter the security token"
+msgstr "請輸入 OTP 代碼："
+
+#: src/views/system/Backup/SystemRestore.vue:153
+msgid "Please enter the security token received during backup"
+msgstr ""
 
 #: src/views/certificate/DNSCredential.vue:53
 msgid ""
@@ -1893,15 +2263,15 @@ msgid ""
 "configuration."
 msgstr "請輸入名稱，此名稱將用作新配置的檔案名稱。"
 
-#: src/views/other/Install.vue:32
+#: src/views/other/Install.vue:54
 msgid "Please input your E-mail!"
 msgstr "請輸入您的電子郵件！"
 
-#: src/views/other/Install.vue:44 src/views/other/Login.vue:47
+#: src/views/other/Install.vue:66 src/views/other/Login.vue:47
 msgid "Please input your password!"
 msgstr "請輸入您的密碼！"
 
-#: src/views/other/Install.vue:38 src/views/other/Login.vue:41
+#: src/views/other/Install.vue:60 src/views/other/Login.vue:41
 msgid "Please input your username!"
 msgstr "請輸入您的使用者名稱！"
 
@@ -1909,6 +2279,15 @@ msgstr "請輸入您的使用者名稱！"
 msgid ""
 "Please note that the unit of time configurations below are all in seconds."
 msgstr "請注意，以下時間配置單位均為秒。"
+
+#: src/views/system/Backup/BackupCreator.vue:107
+msgid "Please save this security token, you will need it for restoration:"
+msgstr ""
+
+#: src/views/system/Backup/SystemRestore.vue:53
+#, fuzzy
+msgid "Please select a backup file"
+msgstr "請至少選擇一個節點！"
 
 #: src/views/environment/Environment.vue:58
 msgid "Please select at least one node to upgrade"
@@ -1920,7 +2299,7 @@ msgstr "請至少選擇一個節點進行升級"
 msgid "Pre-release"
 msgstr "預先發布"
 
-#: src/routes/index.ts:266 src/views/preference/Preference.vue:141
+#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:141
 msgid "Preference"
 msgstr "偏好設定"
 
@@ -2182,6 +2561,21 @@ msgstr "重新啟動"
 msgid "Restarting"
 msgstr "正在重新啟動"
 
+#: src/views/system/Backup/SystemRestore.vue:81
+#, fuzzy
+msgid "Restore completed successfully"
+msgstr "刪除成功"
+
+#: src/views/system/Backup/SystemRestore.vue:165
+#, fuzzy
+msgid "Restore Nginx Configuration"
+msgstr "Nginx 配置目錄"
+
+#: src/views/system/Backup/SystemRestore.vue:176
+#, fuzzy
+msgid "Restore Nginx UI Configuration"
+msgstr "Nginx 配置目錄"
+
 #: src/views/preference/AuthSettings.vue:107
 msgid "RP Display Name"
 msgstr "RP 顯示名稱"
@@ -2224,7 +2618,7 @@ msgstr "儲存指令"
 
 #: src/views/config/ConfigEditor.vue:171
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:41
-#: src/views/site/SiteAdd.vue:46
+#: src/views/site/site_add/SiteAdd.vue:46
 msgid "Save error %{msg}"
 msgstr "儲存錯誤 %{msg}"
 
@@ -2275,7 +2669,8 @@ msgstr "儲存成功"
 
 #: src/views/config/ConfigEditor.vue:167
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:39
-#: src/views/site/site_edit/SiteEdit.vue:152 src/views/site/SiteAdd.vue:37
+#: src/views/site/site_add/SiteAdd.vue:37
+#: src/views/site/site_edit/SiteEdit.vue:152
 #: src/views/stream/StreamEdit.vue:139
 msgid "Saved successfully"
 msgstr "儲存成功"
@@ -2292,11 +2687,20 @@ msgstr "SDK"
 msgid "Secret has been copied"
 msgstr "密鑰已複製"
 
+#: src/views/system/Backup/SystemRestore.vue:150
+msgid "Security Token"
+msgstr ""
+
+#: src/views/system/Backup/BackupCreator.vue:94
+#, fuzzy
+msgid "Security Token Information"
+msgstr "無效的請求格式"
+
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:189
 msgid "Selector"
 msgstr "選擇器"
 
-#: src/routes/index.ts:283 src/views/system/SelfCheck/SelfCheck.vue:42
+#: src/routes/modules/system.ts:19 src/views/system/SelfCheck/SelfCheck.vue:42
 msgid "Self Check"
 msgstr "自我檢測"
 
@@ -2367,11 +2771,12 @@ msgstr "使用通行密鑰登入"
 msgid "Single Directive"
 msgstr "單一指令"
 
-#: src/routes/index.ts:71 src/views/site/site_category/SiteCategory.vue:10
+#: src/routes/modules/sites.ts:34
+#: src/views/site/site_category/SiteCategory.vue:10
 msgid "Site Categories"
 msgstr "網站類別"
 
-#: src/views/site/SiteAdd.vue:147
+#: src/views/site/site_add/SiteAdd.vue:147
 #, fuzzy
 msgid "Site Config Created Successfully"
 msgstr "網域設定檔成功建立"
@@ -2380,7 +2785,7 @@ msgstr "網域設定檔成功建立"
 msgid "Site is enabled"
 msgstr "站點已啓用"
 
-#: src/routes/index.ts:224
+#: src/routes/modules/nginx_log.ts:31
 msgid "Site Logs"
 msgstr "網站日誌"
 
@@ -2392,7 +2797,7 @@ msgstr "站點未找到"
 msgid "Sites Directory"
 msgstr "Sites 資料夾"
 
-#: src/routes/index.ts:56
+#: src/routes/modules/sites.ts:19
 msgid "Sites List"
 msgstr "網站列表"
 
@@ -2429,6 +2834,10 @@ msgstr "SSO 登錄"
 #: src/views/system/Upgrade.vue:239
 msgid "Stable"
 msgstr "穩定"
+
+#: src/views/system/Backup/SystemRestore.vue:187
+msgid "Start Restore"
+msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:65
 #: src/views/certificate/CertificateList/certColumns.tsx:68
@@ -2482,6 +2891,10 @@ msgstr ""
 "支援通過 WebSocket 協議與後端進行通信。如果您的 Nginx UI 是通過 Nginx 反向代"
 "理使用，請參考此鏈接編寫對應的配置文件： https://nginxui.com/guide/nginx-"
 "proxy-example.html"
+
+#: src/views/system/Backup/SystemRestore.vue:140
+msgid "Supported file type: .zip"
+msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:236
 #: src/views/dashboard/ServerAnalytic.vue:237
@@ -2540,7 +2953,7 @@ msgstr "同步配置錯誤"
 msgid "Sync Config Success"
 msgstr "同步配置成功"
 
-#: src/views/site/site_category/SiteCategory.vue:17
+#: src/views/site/site_category/SiteCategory.vue:18
 msgid "Sync Nodes"
 msgstr "同步節點"
 
@@ -2557,19 +2970,29 @@ msgstr "同步到"
 msgid "Synchronization"
 msgstr "同步"
 
-#: src/routes/index.ts:275
+#: src/routes/modules/system.ts:11
 msgid "System"
+msgstr "系統"
+
+#: src/views/system/Backup/BackupCreator.vue:71
+#, fuzzy
+msgid "System Backup"
 msgstr "系統"
 
 #: src/views/certificate/ACMEUserSelector.vue:88
 msgid "System Initial User"
 msgstr "系統初始使用者"
 
+#: src/views/system/Backup/SystemRestore.vue:117
+#, fuzzy
+msgid "System Restore"
+msgstr "系統"
+
 #: src/constants/errors/self_check.ts:2
 msgid "Task not found"
 msgstr "找不到任務"
 
-#: src/routes/index.ts:194 src/views/terminal/Terminal.vue:114
+#: src/routes/modules/terminal.ts:10 src/views/terminal/Terminal.vue:114
 msgid "Terminal"
 msgstr "終端機"
 
@@ -2586,7 +3009,7 @@ msgstr ""
 "網域憑證將在 30 分鐘內接受檢查，如果自上次簽發以來已超過 1 週或您在設置中設定"
 "的時間，憑證將會自動更新。"
 
-#: src/views/other/Install.vue:54
+#: src/views/other/Install.vue:76
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "檔名不能包含以下字元: %{c}"
 
@@ -2621,7 +3044,7 @@ msgid ""
 "dashes, colons, and dots."
 msgstr "節點名稱僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
 
-#: src/views/site/SiteAdd.vue:120
+#: src/views/site/site_add/SiteAdd.vue:120
 #, fuzzy
 msgid "The parameter of server_name is required"
 msgstr "必須提供 server_name 參數"
@@ -2710,9 +3133,27 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "此欄位僅能包含字母、Unicode字元、數字、連字號、破折號和底線。"
 
+#: src/views/system/Backup/BackupCreator.vue:141
+msgid ""
+"This token will only be shown once and cannot be retrieved later. Please "
+"make sure to save it in a secure location."
+msgstr ""
+
 #: src/constants/form_errors.ts:4
 msgid "This value is already taken"
 msgstr "此值已被使用"
+
+#: src/views/system/Backup/SystemRestore.vue:169
+msgid ""
+"This will restore all Nginx configuration files. Nginx will restart after "
+"the restoration is complete."
+msgstr ""
+
+#: src/views/system/Backup/SystemRestore.vue:180
+msgid ""
+"This will restore configuration files and database. Nginx UI will restart "
+"after the restoration is complete."
+msgstr ""
 
 #: src/views/environment/BatchUpgrader.vue:182
 msgid ""
@@ -2820,7 +3261,7 @@ msgstr "更新時間"
 msgid "Updated successfully"
 msgstr "更新成功"
 
-#: src/routes/index.ts:297 src/views/environment/Environment.vue:66
+#: src/routes/modules/system.ts:40 src/views/environment/Environment.vue:66
 #: src/views/system/Upgrade.vue:143 src/views/system/Upgrade.vue:226
 msgid "Upgrade"
 msgstr "升級"
@@ -2873,7 +3314,7 @@ msgstr "使用者未啟用 OTP 作為雙重身份驗證 (2FA)"
 msgid "Username"
 msgstr "使用者名稱"
 
-#: src/views/other/Install.vue:98
+#: src/views/other/Install.vue:131
 msgid "Username (*)"
 msgstr "使用者名稱 (*)"
 
@@ -2882,6 +3323,10 @@ msgstr "使用者名稱 (*)"
 #: src/views/site/cert/CertInfo.vue:24
 msgid "Valid"
 msgstr "有效"
+
+#: src/views/system/Backup/SystemRestore.vue:159
+msgid "Verify Backup File Integrity"
+msgstr ""
 
 #: src/views/environment/envColumns.tsx:31
 msgid "Version"
@@ -2915,9 +3360,17 @@ msgstr "已檢視"
 #: src/constants/index.ts:17 src/views/config/InspectConfig.vue:33
 #: src/views/notification/notificationColumns.tsx:22
 #: src/views/preference/components/AddPasskey.vue:82
-#: src/views/site/SiteAdd.vue:115
+#: src/views/site/site_add/SiteAdd.vue:115
+#: src/views/system/Backup/BackupCreator.vue:138
 msgid "Warning"
 msgstr "警告"
+
+#: src/views/system/Backup/SystemRestore.vue:121
+msgid ""
+"Warning: Restore operation will overwrite current configurations. Make sure "
+"you have a valid backup file and security token, and carefully select what "
+"to restore."
+msgstr ""
 
 #: src/views/certificate/DNSCredential.vue:56
 msgid ""
@@ -3022,6 +3475,10 @@ msgstr "您的舊代碼將不再有效。"
 msgid "Your passkeys"
 msgstr "您的通行密鑰"
 
+#, fuzzy
+#~ msgid "Restart Required"
+#~ msgstr "正在重新啟動"
+
 #~ msgid "Deploy %{conf_name} to %{node_name} successfully"
 #~ msgstr "成功部署 %{conf_name} 至 %{node_name}"
 
@@ -3052,9 +3509,6 @@ msgstr "您的通行密鑰"
 
 #~ msgid "Enable successfully"
 #~ msgstr "啟用成功"
-
-#~ msgid "Please select at least one node!"
-#~ msgstr "請至少選擇一個節點！"
 
 #~ msgid "Please upgrade the remote Nginx UI to the latest version"
 #~ msgstr "請將遠端 Nginx UI 升級至最新版本"

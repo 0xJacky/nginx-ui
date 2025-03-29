@@ -1,14 +1,14 @@
 package certificate
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
-	"net/http"
 )
 
 func GetAcmeUser(c *gin.Context) {
@@ -16,7 +16,7 @@ func GetAcmeUser(c *gin.Context) {
 	id := cast.ToUint64(c.Param("id"))
 	user, err := u.FirstByID(id)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, user)
@@ -83,17 +83,17 @@ func RegisterAcmeUser(c *gin.Context) {
 	u := query.AcmeUser
 	user, err := u.FirstByID(id)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	err = user.Register()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	_, err = u.Where(u.ID.Eq(id)).Updates(user)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, user)

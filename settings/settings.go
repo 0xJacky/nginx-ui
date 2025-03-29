@@ -1,14 +1,15 @@
 package settings
 
 import (
-	"github.com/caarlos0/env/v11"
-	"github.com/elliotchance/orderedmap/v3"
-	"github.com/spf13/cast"
-	"github.com/uozi-tech/cosy/settings"
 	"log"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/caarlos0/env/v11"
+	"github.com/elliotchance/orderedmap/v3"
+	"github.com/spf13/cast"
+	"github.com/uozi-tech/cosy/settings"
 )
 
 var (

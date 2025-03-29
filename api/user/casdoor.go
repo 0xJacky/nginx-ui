@@ -1,18 +1,18 @@
 package user
 
 import (
+	"errors"
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+	"net/url"
+	"os"
+
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/casdoor/casdoor-go-sdk/casdoorsdk"
 	"github.com/gin-gonic/gin"
-	"errors"
 	"github.com/uozi-tech/cosy"
 	"gorm.io/gorm"
-	"net/http"
-	"net/url"
-	"os"
 )
 
 type CasdoorLoginUser struct {
@@ -44,7 +44,7 @@ func CasdoorCallback(c *gin.Context) {
 
 	certBytes, err := os.ReadFile(certificatePath)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -52,13 +52,13 @@ func CasdoorCallback(c *gin.Context) {
 
 	token, err := casdoorsdk.GetOAuthToken(loginUser.Code, loginUser.State)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
 	claims, err := casdoorsdk.ParseJwtToken(token.AccessToken)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -69,14 +69,14 @@ func CasdoorCallback(c *gin.Context) {
 				"message": "User not exist",
 			})
 		} else {
-			api.ErrHandler(c, err)
+			cosy.ErrHandler(c, err)
 		}
 		return
 	}
 
 	userToken, err := user.GenerateJWT(u)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

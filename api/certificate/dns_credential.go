@@ -1,14 +1,14 @@
 package certificate
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
-	"net/http"
 )
 
 func GetDnsCredential(c *gin.Context) {
@@ -18,7 +18,7 @@ func GetDnsCredential(c *gin.Context) {
 
 	dnsCredential, err := d.FirstByID(id)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	type apiDnsCredential struct {
@@ -62,7 +62,7 @@ func AddDnsCredential(c *gin.Context) {
 
 	err := d.Create(&dnsCredential)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -81,7 +81,7 @@ func EditDnsCredential(c *gin.Context) {
 
 	dnsCredential, err := d.FirstByID(id)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -93,7 +93,7 @@ func EditDnsCredential(c *gin.Context) {
 	})
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

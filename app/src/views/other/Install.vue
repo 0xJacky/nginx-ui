@@ -1,20 +1,42 @@
 <script setup lang="ts">
+import type { InstallLockResponse } from '@/api/install'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
 import { DatabaseOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons-vue'
 
 import { Form, message } from 'ant-design-vue'
-import { useRouter } from 'vue-router'
 
 const thisYear = new Date().getFullYear()
 const loading = ref(false)
+const installTimeout = ref(false)
 
 const router = useRouter()
 
-install.get_lock().then(async (r: { lock: boolean }) => {
-  if (r.lock)
-    await router.push('/login')
+function init() {
+  install.get_lock().then(async (r: InstallLockResponse) => {
+    if (r.lock)
+      await router.push('/login')
+
+    if (r.timeout) {
+      installTimeout.value = true
+    }
+  })
+}
+
+onMounted(() => {
+  if (import.meta.env.DEV) {
+    const route = useRoute()
+    if (route.query.install !== 'false') {
+      init()
+    }
+    else {
+      installTimeout.value = route.query.timeout === 'true'
+    }
+  }
+  else {
+    init()
+  }
 })
 
 const modelRef = reactive({
@@ -66,6 +88,10 @@ function onSubmit() {
     install.install_nginx_ui(modelRef).then(async () => {
       message.success($gettext('Install successfully'))
       await router.push('/login')
+    }).catch(error => {
+      if (error && error.code === 40308) {
+        installTimeout.value = true
+      }
     }).finally(() => {
       loading.value = false
     })
@@ -81,7 +107,14 @@ function onSubmit() {
           <div class="project-title">
             <h1>Nginx UI</h1>
           </div>
-          <AForm id="components-form-install">
+          <AAlert
+            v-if="installTimeout"
+            type="warning"
+            :message="$gettext('Installation is not allowed after 10 minutes of system startup, please restart the Nginx UI.')"
+            show-icon
+            style="margin-bottom: 20px;"
+          />
+          <AForm v-else id="components-form-install">
             <AFormItem v-bind="validateInfos.email">
               <AInput
                 v-model:value="modelRef.email"
@@ -129,6 +162,7 @@ function onSubmit() {
                 block
                 html-type="submit"
                 :loading="loading"
+                :disabled="installTimeout"
                 @click="onSubmit"
               >
                 {{ $gettext('Install') }}

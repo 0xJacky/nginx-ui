@@ -34,6 +34,7 @@ func newSiteCategory(db *gorm.DB, opts ...gen.DOOption) siteCategory {
 	_siteCategory.DeletedAt = field.NewField(tableName, "deleted_at")
 	_siteCategory.Name = field.NewString(tableName, "name")
 	_siteCategory.SyncNodeIds = field.NewField(tableName, "sync_node_ids")
+	_siteCategory.OrderID = field.NewInt(tableName, "order_id")
 
 	_siteCategory.fillFieldMap()
 
@@ -50,6 +51,7 @@ type siteCategory struct {
 	DeletedAt   field.Field
 	Name        field.String
 	SyncNodeIds field.Field
+	OrderID     field.Int
 
 	fieldMap map[string]field.Expr
 }
@@ -72,6 +74,7 @@ func (s *siteCategory) updateTableName(table string) *siteCategory {
 	s.DeletedAt = field.NewField(table, "deleted_at")
 	s.Name = field.NewString(table, "name")
 	s.SyncNodeIds = field.NewField(table, "sync_node_ids")
+	s.OrderID = field.NewInt(table, "order_id")
 
 	s.fillFieldMap()
 
@@ -88,13 +91,14 @@ func (s *siteCategory) GetFieldByName(fieldName string) (field.OrderExpr, bool) 
 }
 
 func (s *siteCategory) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 6)
+	s.fieldMap = make(map[string]field.Expr, 7)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["created_at"] = s.CreatedAt
 	s.fieldMap["updated_at"] = s.UpdatedAt
 	s.fieldMap["deleted_at"] = s.DeletedAt
 	s.fieldMap["name"] = s.Name
 	s.fieldMap["sync_node_ids"] = s.SyncNodeIds
+	s.fieldMap["order_id"] = s.OrderID
 }
 
 func (s siteCategory) clone(db *gorm.DB) siteCategory {

@@ -1,13 +1,13 @@
 package config
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+	"os"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
-	"net/http"
-	"os"
 )
 
 func Mkdir(c *gin.Context) {
@@ -28,7 +28,7 @@ func Mkdir(c *gin.Context) {
 	}
 	err := os.Mkdir(fullPath, 0755)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

@@ -1,16 +1,17 @@
 package config
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+	"os"
+	"path/filepath"
+
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/sashabaranov/go-openai"
-	"net/http"
-	"os"
-	"path/filepath"
+	"github.com/uozi-tech/cosy"
 )
 
 type APIConfigResp struct {
@@ -32,20 +33,20 @@ func GetConfig(c *gin.Context) {
 
 	stat, err := os.Stat(absPath)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
 	content, err := os.ReadFile(absPath)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	q := query.Config
 	g := query.ChatGPTLog
 	chatgpt, err := g.Where(g.Name.Eq(absPath)).FirstOrCreate()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -55,7 +56,7 @@ func GetConfig(c *gin.Context) {
 
 	cfg, err := q.Where(q.Filepath.Eq(absPath)).FirstOrInit()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

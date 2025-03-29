@@ -1,7 +1,11 @@
 package config
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+	"os"
+	"path/filepath"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -11,10 +15,6 @@ import (
 	"github.com/sashabaranov/go-openai"
 	"github.com/uozi-tech/cosy"
 	"gorm.io/gen/field"
-	"net/http"
-	"os"
-	"path/filepath"
-	"time"
 )
 
 type EditConfigJson struct {
@@ -43,14 +43,14 @@ func EditConfig(c *gin.Context) {
 	content := json.Content
 	origContent, err := os.ReadFile(absPath)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
 	if content != "" && content != string(origContent) {
 		err = os.WriteFile(absPath, []byte(content), 0644)
 		if err != nil {
-			api.ErrHandler(c, err)
+			cosy.ErrHandler(c, err)
 			return
 		}
 	}
@@ -60,7 +60,7 @@ func EditConfig(c *gin.Context) {
 		Name: filepath.Base(absPath),
 	})).Where(q.Filepath.Eq(absPath)).FirstOrCreate()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -71,7 +71,7 @@ func EditConfig(c *gin.Context) {
 			SyncOverwrite: json.SyncOverwrite,
 		})
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -82,7 +82,7 @@ func EditConfig(c *gin.Context) {
 	g := query.ChatGPTLog
 	err = config.SyncToRemoteServer(cfg)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -96,7 +96,7 @@ func EditConfig(c *gin.Context) {
 
 	chatgpt, err := g.Where(g.Name.Eq(absPath)).FirstOrCreate()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

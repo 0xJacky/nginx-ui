@@ -1,10 +1,12 @@
 package nginx
 
 import (
-	"github.com/0xJacky/Nginx-UI/settings"
 	"os/exec"
+	"strings"
 	"sync"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 var (
@@ -72,6 +74,28 @@ func GetLastOutput() string {
 	mutex.Lock()
 	defer mutex.Unlock()
 	return lastOutput
+}
+
+// GetModulesPath returns the nginx modules path
+func GetModulesPath() string {
+	// First try to get from nginx -V output
+	output := execCommand("nginx", "-V")
+	if output != "" {
+		// Look for --modules-path in the output
+		if strings.Contains(output, "--modules-path=") {
+			parts := strings.Split(output, "--modules-path=")
+			if len(parts) > 1 {
+				// Extract the path
+				path := strings.Split(parts[1], " ")[0]
+				// Remove quotes if present
+				path = strings.Trim(path, "\"")
+				return path
+			}
+		}
+	}
+
+	// Default path if not found
+	return "/usr/lib/nginx/modules"
 }
 
 func execShell(cmd string) (out string) {

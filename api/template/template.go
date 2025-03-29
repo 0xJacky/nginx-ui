@@ -1,11 +1,13 @@
 package template
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/template"
 	"github.com/gin-gonic/gin"
-	"net/http"
+
+	"github.com/uozi-tech/cosy"
 )
 
 func GetDefaultSiteTemplate(c *gin.Context) {
@@ -40,7 +42,7 @@ func GetDefaultSiteTemplate(c *gin.Context) {
 
 	content, err := ngxConfig.BuildConfig()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -55,7 +57,7 @@ func GetTemplateConfList(c *gin.Context) {
 	configList, err := template.GetTemplateList("conf")
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -67,7 +69,7 @@ func GetTemplateConfList(c *gin.Context) {
 func GetTemplateBlockList(c *gin.Context) {
 	configList, err := template.GetTemplateList("block")
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -91,7 +93,7 @@ func GetTemplateBlock(c *gin.Context) {
 
 	detail, err := template.ParseTemplate("block", c.Param("name"), bindData)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	info.Variables = bindData

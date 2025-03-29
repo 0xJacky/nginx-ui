@@ -3,7 +3,6 @@ package streams
 import (
 	"net/http"
 
-	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -26,14 +25,14 @@ func AdvancedEdit(c *gin.Context) {
 
 	_, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
 	_, err = s.Where(s.Path.Eq(path)).Update(s.Advanced, json.Advanced)
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

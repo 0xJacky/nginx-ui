@@ -1,7 +1,11 @@
 package config
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -9,10 +13,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
-	"net/http"
-	"os"
-	"path/filepath"
-	"strings"
 )
 
 func Rename(c *gin.Context) {
@@ -45,7 +45,7 @@ func Rename(c *gin.Context) {
 
 	stat, err := os.Stat(origFullPath)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -58,7 +58,7 @@ func Rename(c *gin.Context) {
 
 	err = os.Rename(origFullPath, newFullPath)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -67,7 +67,7 @@ func Rename(c *gin.Context) {
 	q := query.Config
 	cfg, err := q.Where(q.Filepath.Eq(origFullPath)).FirstOrInit()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	if !stat.IsDir() {
@@ -85,14 +85,14 @@ func Rename(c *gin.Context) {
 		Name:     json.NewName,
 	})
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
 	if len(json.SyncNodeIds) > 0 {
 		err = config.SyncRenameOnRemoteServer(origFullPath, newFullPath, json.SyncNodeIds)
 		if err != nil {
-			api.ErrHandler(c, err)
+			cosy.ErrHandler(c, err)
 			return
 		}
 	}
