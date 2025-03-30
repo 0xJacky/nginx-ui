@@ -265,7 +265,7 @@ msgstr "Automatische Verlängerung deaktiviert für %{name}"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "Automatische Verlängerung aktiviert für %{name}"
 
-#: src/views/system/Backup/SystemRestore.vue:92
+#: src/components/SystemRestore/SystemRestoreContent.vue:111
 msgid "Automatic Restart"
 msgstr ""
 
@@ -291,7 +291,7 @@ msgstr "Zurück zur Liste"
 msgid "Backup"
 msgstr "Zurück"
 
-#: src/views/system/Backup/SystemRestore.vue:100
+#: src/components/SystemRestore/SystemRestoreContent.vue:119
 msgid "Backup file integrity check failed, it may have been tampered with"
 msgstr ""
 
@@ -516,7 +516,8 @@ msgstr "Säubern"
 msgid "Cleared successfully"
 msgstr "Erfolgreich deaktiviert"
 
-#: src/views/system/Backup/SystemRestore.vue:137
+#: src/components/SystemRestore/SystemRestoreContent.vue:164
+#: src/components/SystemRestore/SystemRestoreContent.vue:241
 msgid "Click or drag backup file to this area to upload"
 msgstr ""
 
@@ -691,7 +692,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr "Übersicht"
 
-#: src/views/other/Install.vue:152
+#: src/views/other/Install.vue:165
 msgid "Database (Optional, default: database)"
 msgstr "Datenbank (Optional, Standard: database)"
 
@@ -1021,7 +1022,7 @@ msgstr "Seite bearbeiten"
 msgid "Email"
 msgstr "Email (*)"
 
-#: src/views/other/Install.vue:121
+#: src/views/other/Install.vue:134
 msgid "Email (*)"
 msgstr "Email (*)"
 
@@ -1610,11 +1611,11 @@ msgstr "Füge den Code aus der App ein:"
 msgid "Input the recovery code:"
 msgstr "Füge den Wiederherstellungscode ein:"
 
-#: src/routes/modules/auth.ts:8 src/views/other/Install.vue:168
+#: src/routes/modules/auth.ts:8 src/views/other/Install.vue:181
 msgid "Install"
 msgstr "Installieren"
 
-#: src/views/other/Install.vue:89
+#: src/views/other/Install.vue:94
 #, fuzzy
 msgid "Install successfully"
 msgstr "Aktualisierung erfolgreich"
@@ -1623,7 +1624,7 @@ msgstr "Aktualisierung erfolgreich"
 msgid "Installation is not allowed after 10 minutes of system startup"
 msgstr ""
 
-#: src/views/other/Install.vue:113
+#: src/views/other/Install.vue:123
 msgid ""
 "Installation is not allowed after 10 minutes of system startup, please "
 "restart the Nginx UI."
@@ -1646,7 +1647,7 @@ msgstr ""
 msgid "Invalid AES key format: {0}"
 msgstr ""
 
-#: src/views/system/Backup/SystemRestore.vue:67
+#: src/components/SystemRestore/SystemRestoreContent.vue:86
 #, fuzzy
 msgid "Invalid file object"
 msgstr "Ungültige E-Mail!"
@@ -1969,6 +1970,11 @@ msgstr "Gesamter Netzwerkempfang"
 msgid "Network Total Send"
 msgstr "Gesamter Netzwerkversand"
 
+#: src/views/other/Install.vue:129
+#, fuzzy
+msgid "New Installation"
+msgstr "Installieren"
+
 #: src/views/config/components/Rename.vue:72
 #, fuzzy
 msgid "New name"
@@ -2026,7 +2032,7 @@ msgstr ""
 msgid "Nginx config directory is not set"
 msgstr "Nginx-Log-Verzeichnis-Whitelist"
 
-#: src/views/system/Backup/SystemRestore.vue:84
+#: src/components/SystemRestore/SystemRestoreContent.vue:103
 #, fuzzy
 msgid "Nginx configuration has been restored"
 msgstr "Name der Konfiguration"
@@ -2089,12 +2095,12 @@ msgstr "Speichern erfolgreich"
 msgid "Nginx UI already installed"
 msgstr "Dieser Wert ist bereits vergeben"
 
-#: src/views/system/Backup/SystemRestore.vue:88
+#: src/components/SystemRestore/SystemRestoreContent.vue:107
 #, fuzzy
 msgid "Nginx UI configuration has been restored"
 msgstr "Name der Konfiguration"
 
-#: src/views/system/Backup/SystemRestore.vue:93
+#: src/components/SystemRestore/SystemRestoreContent.vue:112
 #, fuzzy
 msgid ""
 "Nginx UI configuration has been restored and will restart automatically in a "
@@ -2202,6 +2208,7 @@ msgstr "OK"
 #: src/components/ChatGPT/ChatGPT.vue:375
 #: src/components/Notification/Notification.vue:134
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:95
+#: src/components/SystemRestore/SystemRestoreContent.vue:113
 #: src/views/notification/Notification.vue:38
 #: src/views/site/cert/components/ObtainCert.vue:139
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:50
@@ -2212,7 +2219,6 @@ msgstr "OK"
 #: src/views/stream/components/RightSettings.vue:50
 #: src/views/stream/StreamList.vue:164
 #: src/views/system/Backup/BackupCreator.vue:149
-#: src/views/system/Backup/SystemRestore.vue:94
 msgid "OK"
 msgstr "OK"
 
@@ -2228,7 +2234,7 @@ msgstr ""
 msgid "Online"
 msgstr ""
 
-#: src/views/system/Backup/SystemRestore.vue:24
+#: src/components/SystemRestore/SystemRestoreContent.vue:43
 msgid "Only zip files are allowed"
 msgstr ""
 
@@ -2292,7 +2298,7 @@ msgstr ""
 msgid "Password"
 msgstr "Passwort"
 
-#: src/views/other/Install.vue:141
+#: src/views/other/Install.vue:154
 msgid "Password (*)"
 msgstr "Passwort (*)"
 
@@ -2301,7 +2307,7 @@ msgstr "Passwort (*)"
 msgid "Password incorrect"
 msgstr "Benuztername oder Passwort ist falsch"
 
-#: src/views/other/Install.vue:70
+#: src/views/other/Install.vue:75
 msgid "Password length cannot exceed 20 characters"
 msgstr "Passwort darf nicht länger als 20 Zeichen sein"
 
@@ -2347,12 +2353,13 @@ msgstr ""
 msgid "Please enter the OTP code:"
 msgstr "Bitte gib den OTP-Code ein:"
 
-#: src/views/system/Backup/SystemRestore.vue:58
+#: src/components/SystemRestore/SystemRestoreContent.vue:77
 #, fuzzy
 msgid "Please enter the security token"
 msgstr "Bitte gib den OTP-Code ein:"
 
-#: src/views/system/Backup/SystemRestore.vue:153
+#: src/components/SystemRestore/SystemRestoreContent.vue:180
+#: src/components/SystemRestore/SystemRestoreContent.vue:257
 msgid "Please enter the security token received during backup"
 msgstr ""
 
@@ -2411,15 +2418,15 @@ msgstr ""
 "Bitte gib einen Namen ein, der als Dateiname der neuen Konfiguration "
 "verwendet wird."
 
-#: src/views/other/Install.vue:54
+#: src/views/other/Install.vue:59
 msgid "Please input your E-mail!"
 msgstr "Bitte gib deine E-Mail-Adresse ein!"
 
-#: src/views/other/Install.vue:66 src/views/other/Login.vue:47
+#: src/views/other/Install.vue:71 src/views/other/Login.vue:47
 msgid "Please input your password!"
 msgstr "Bitte gib dein Passwort ein!"
 
-#: src/views/other/Install.vue:60 src/views/other/Login.vue:41
+#: src/views/other/Install.vue:65 src/views/other/Login.vue:41
 msgid "Please input your username!"
 msgstr "Bitte gib deinen Benutzernamen ein!"
 
@@ -2434,7 +2441,7 @@ msgstr ""
 msgid "Please save this security token, you will need it for restoration:"
 msgstr ""
 
-#: src/views/system/Backup/SystemRestore.vue:53
+#: src/components/SystemRestore/SystemRestoreContent.vue:72
 #, fuzzy
 msgid "Please select a backup file"
 msgstr "Bitte wähle mindestens einen Knoten aus!"
@@ -2733,17 +2740,24 @@ msgstr "Neustart"
 msgid "Restarting"
 msgstr "Starte neu"
 
-#: src/views/system/Backup/SystemRestore.vue:81
+#: src/components/SystemRestore/SystemRestoreContent.vue:100
 #, fuzzy
 msgid "Restore completed successfully"
 msgstr "Erfolgreich deaktiviert"
 
-#: src/views/system/Backup/SystemRestore.vue:165
+#: src/views/other/Install.vue:186
+#, fuzzy
+msgid "Restore from Backup"
+msgstr "System"
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:193
+#: src/components/SystemRestore/SystemRestoreContent.vue:270
 #, fuzzy
 msgid "Restore Nginx Configuration"
 msgstr "Name der Konfiguration"
 
-#: src/views/system/Backup/SystemRestore.vue:176
+#: src/components/SystemRestore/SystemRestoreContent.vue:204
+#: src/components/SystemRestore/SystemRestoreContent.vue:281
 #, fuzzy
 msgid "Restore Nginx UI Configuration"
 msgstr "Name der Konfiguration"
@@ -2864,7 +2878,8 @@ msgstr "SDK"
 msgid "Secret has been copied"
 msgstr "Schlüssel wurde kopiert"
 
-#: src/views/system/Backup/SystemRestore.vue:150
+#: src/components/SystemRestore/SystemRestoreContent.vue:177
+#: src/components/SystemRestore/SystemRestoreContent.vue:254
 msgid "Security Token"
 msgstr ""
 
@@ -3021,7 +3036,8 @@ msgstr "Login"
 msgid "Stable"
 msgstr "Altiviert"
 
-#: src/views/system/Backup/SystemRestore.vue:187
+#: src/components/SystemRestore/SystemRestoreContent.vue:216
+#: src/components/SystemRestore/SystemRestoreContent.vue:293
 msgid "Start Restore"
 msgstr ""
 
@@ -3076,7 +3092,8 @@ msgid ""
 "guide/nginx-proxy-example.html"
 msgstr ""
 
-#: src/views/system/Backup/SystemRestore.vue:140
+#: src/components/SystemRestore/SystemRestoreContent.vue:167
+#: src/components/SystemRestore/SystemRestoreContent.vue:244
 msgid "Supported file type: .zip"
 msgstr ""
 
@@ -3174,10 +3191,14 @@ msgstr "System"
 msgid "System Initial User"
 msgstr "System-Startbenutzer"
 
-#: src/views/system/Backup/SystemRestore.vue:117
+#: src/components/SystemRestore/SystemRestoreContent.vue:144
 #, fuzzy
 msgid "System Restore"
 msgstr "System"
+
+#: src/views/other/Install.vue:107
+msgid "System restored successfully. Please log in."
+msgstr ""
 
 #: src/constants/errors/self_check.ts:2
 #, fuzzy
@@ -3202,7 +3223,7 @@ msgstr ""
 "Das Zertifikat für die Domain wird alle Stunde überprüft und erneuert, wenn "
 "es seit der letzten Ausstellung vor mehr als 1 Monat ausgestellt wurde."
 
-#: src/views/other/Install.vue:76
+#: src/views/other/Install.vue:81
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "Der Dateiname darf die folgenden Zeichen nicht enthalten: %{c}"
 
@@ -3349,13 +3370,15 @@ msgstr ""
 msgid "This value is already taken"
 msgstr "Dieser Wert ist bereits vergeben"
 
-#: src/views/system/Backup/SystemRestore.vue:169
+#: src/components/SystemRestore/SystemRestoreContent.vue:197
+#: src/components/SystemRestore/SystemRestoreContent.vue:274
 msgid ""
 "This will restore all Nginx configuration files. Nginx will restart after "
 "the restoration is complete."
 msgstr ""
 
-#: src/views/system/Backup/SystemRestore.vue:180
+#: src/components/SystemRestore/SystemRestoreContent.vue:208
+#: src/components/SystemRestore/SystemRestoreContent.vue:285
 msgid ""
 "This will restore configuration files and database. Nginx UI will restart "
 "after the restoration is complete."
@@ -3535,7 +3558,7 @@ msgstr ""
 msgid "Username"
 msgstr "Benutzername"
 
-#: src/views/other/Install.vue:131
+#: src/views/other/Install.vue:144
 msgid "Username (*)"
 msgstr "Benutzername (*)"
 
@@ -3545,7 +3568,8 @@ msgstr "Benutzername (*)"
 msgid "Valid"
 msgstr "Gültig"
 
-#: src/views/system/Backup/SystemRestore.vue:159
+#: src/components/SystemRestore/SystemRestoreContent.vue:186
+#: src/components/SystemRestore/SystemRestoreContent.vue:263
 msgid "Verify Backup File Integrity"
 msgstr ""
 
@@ -3590,7 +3614,8 @@ msgstr "Anzeigen"
 msgid "Warning"
 msgstr "Warnung"
 
-#: src/views/system/Backup/SystemRestore.vue:121
+#: src/components/SystemRestore/SystemRestoreContent.vue:148
+#: src/components/SystemRestore/SystemRestoreContent.vue:225
 msgid ""
 "Warning: Restore operation will overwrite current configurations. Make sure "
 "you have a valid backup file and security token, and carefully select what "

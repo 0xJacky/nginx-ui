@@ -106,6 +106,7 @@ declare module 'vue' {
     SwitchAppearanceIconsVPIconMoon: typeof import('./src/components/SwitchAppearance/icons/VPIconMoon.vue')['default']
     SwitchAppearanceIconsVPIconSun: typeof import('./src/components/SwitchAppearance/icons/VPIconSun.vue')['default']
     SwitchAppearanceSwitchAppearance: typeof import('./src/components/SwitchAppearance/SwitchAppearance.vue')['default']
+    SystemRestoreSystemRestoreContent: typeof import('./src/components/SystemRestore/SystemRestoreContent.vue')['default']
     TwoFAAuthorization: typeof import('./src/components/TwoFA/Authorization.vue')['default']
     VPSwitchVPSwitch: typeof import('./src/components/VPSwitch/VPSwitch.vue')['default']
   }

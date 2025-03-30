@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-29 20:55+0800\n"
+"PO-Revision-Date: 2025-03-30 08:14+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
 "projects/nginx-ui/frontend/zh_Hans/>\n"
@@ -248,7 +248,7 @@ msgstr "成功关闭 %{name} 自动续签"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "成功启用 %{name} 自动续签"
 
-#: src/views/system/Backup/SystemRestore.vue:92
+#: src/components/SystemRestore/SystemRestoreContent.vue:111
 msgid "Automatic Restart"
 msgstr "自动重启"
 
@@ -272,7 +272,7 @@ msgstr "返回列表"
 msgid "Backup"
 msgstr "备份"
 
-#: src/views/system/Backup/SystemRestore.vue:100
+#: src/components/SystemRestore/SystemRestoreContent.vue:119
 msgid "Backup file integrity check failed, it may have been tampered with"
 msgstr "备份文件完整性检查失败，可能已被篡改"
 
@@ -477,7 +477,8 @@ msgstr "清空"
 msgid "Cleared successfully"
 msgstr "清除成功"
 
-#: src/views/system/Backup/SystemRestore.vue:137
+#: src/components/SystemRestore/SystemRestoreContent.vue:164
+#: src/components/SystemRestore/SystemRestoreContent.vue:241
 msgid "Click or drag backup file to this area to upload"
 msgstr "单击或拖动备份文件到此区域上传"
 
@@ -642,7 +643,7 @@ msgstr "自定义显示在环境指示器中的本地服务器名称。"
 msgid "Dashboard"
 msgstr "仪表盘"
 
-#: src/views/other/Install.vue:152
+#: src/views/other/Install.vue:165
 msgid "Database (Optional, default: database)"
 msgstr "数据库 (可选，默认: database)"
 
@@ -935,7 +936,7 @@ msgstr "编辑 Stream"
 msgid "Email"
 msgstr "邮箱"
 
-#: src/views/other/Install.vue:121
+#: src/views/other/Install.vue:134
 msgid "Email (*)"
 msgstr "邮箱 (*)"
 
@@ -1464,11 +1465,11 @@ msgstr "输入应用程序中的代码："
 msgid "Input the recovery code:"
 msgstr "输入恢复代码："
 
-#: src/routes/modules/auth.ts:8 src/views/other/Install.vue:168
+#: src/routes/modules/auth.ts:8 src/views/other/Install.vue:181
 msgid "Install"
 msgstr "安装"
 
-#: src/views/other/Install.vue:89
+#: src/views/other/Install.vue:94
 msgid "Install successfully"
 msgstr "安装成功"
 
@@ -1476,7 +1477,7 @@ msgstr "安装成功"
 msgid "Installation is not allowed after 10 minutes of system startup"
 msgstr "系统启动 10 分钟后不允许安装"
 
-#: src/views/other/Install.vue:113
+#: src/views/other/Install.vue:123
 msgid ""
 "Installation is not allowed after 10 minutes of system startup, please "
 "restart the Nginx UI."
@@ -1498,7 +1499,7 @@ msgstr "AES IV 格式无效：{0}"
 msgid "Invalid AES key format: {0}"
 msgstr "AES 密钥格式无效：{0}"
 
-#: src/views/system/Backup/SystemRestore.vue:67
+#: src/components/SystemRestore/SystemRestoreContent.vue:86
 msgid "Invalid file object"
 msgstr "无效文件对象"
 
@@ -1793,6 +1794,10 @@ msgstr "下载流量"
 msgid "Network Total Send"
 msgstr "上传流量"
 
+#: src/views/other/Install.vue:129
+msgid "New Installation"
+msgstr "新安装"
+
 #: src/views/config/components/Rename.vue:72
 msgid "New name"
 msgstr "新名称"
@@ -1847,7 +1852,7 @@ msgstr "Nginx Conf 中未引用 stream-enabled"
 msgid "Nginx config directory is not set"
 msgstr "未设置 Nginx 配置目录"
 
-#: src/views/system/Backup/SystemRestore.vue:84
+#: src/components/SystemRestore/SystemRestoreContent.vue:103
 msgid "Nginx configuration has been restored"
 msgstr "Nginx 配置已恢复"
 
@@ -1904,11 +1909,11 @@ msgstr "Nginx 重启成功"
 msgid "Nginx UI already installed"
 msgstr "Nginx UI 已安装"
 
-#: src/views/system/Backup/SystemRestore.vue:88
+#: src/components/SystemRestore/SystemRestoreContent.vue:107
 msgid "Nginx UI configuration has been restored"
 msgstr "Nginx 用户界面配置已恢复"
 
-#: src/views/system/Backup/SystemRestore.vue:93
+#: src/components/SystemRestore/SystemRestoreContent.vue:112
 msgid ""
 "Nginx UI configuration has been restored and will restart automatically in a "
 "few seconds."
@@ -2006,6 +2011,7 @@ msgstr "确定"
 #: src/components/ChatGPT/ChatGPT.vue:375
 #: src/components/Notification/Notification.vue:134
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:95
+#: src/components/SystemRestore/SystemRestoreContent.vue:113
 #: src/views/notification/Notification.vue:38
 #: src/views/site/cert/components/ObtainCert.vue:139
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:50
@@ -2016,7 +2022,6 @@ msgstr "确定"
 #: src/views/stream/components/RightSettings.vue:50
 #: src/views/stream/StreamList.vue:164
 #: src/views/system/Backup/BackupCreator.vue:149
-#: src/views/system/Backup/SystemRestore.vue:94
 msgid "OK"
 msgstr "确定"
 
@@ -2031,7 +2036,7 @@ msgstr "一旦验证完成，这些记录将被删除。"
 msgid "Online"
 msgstr "在线"
 
-#: src/views/system/Backup/SystemRestore.vue:24
+#: src/components/SystemRestore/SystemRestoreContent.vue:43
 msgid "Only zip files are allowed"
 msgstr "只允许使用zip文件"
 
@@ -2092,7 +2097,7 @@ msgstr ""
 msgid "Password"
 msgstr "密码"
 
-#: src/views/other/Install.vue:141
+#: src/views/other/Install.vue:154
 msgid "Password (*)"
 msgstr "密码 (*)"
 
@@ -2100,7 +2105,7 @@ msgstr "密码 (*)"
 msgid "Password incorrect"
 msgstr "用户名和密码错误"
 
-#: src/views/other/Install.vue:70
+#: src/views/other/Install.vue:75
 msgid "Password length cannot exceed 20 characters"
 msgstr "密码长度不能超过 20 个字符"
 
@@ -2144,11 +2149,12 @@ msgstr "请为您要创建的 Passkey 输入一个名称，然后单击下面的
 msgid "Please enter the OTP code:"
 msgstr "请输入 OTP："
 
-#: src/views/system/Backup/SystemRestore.vue:58
+#: src/components/SystemRestore/SystemRestoreContent.vue:77
 msgid "Please enter the security token"
 msgstr "请输入安全令牌"
 
-#: src/views/system/Backup/SystemRestore.vue:153
+#: src/components/SystemRestore/SystemRestoreContent.vue:180
+#: src/components/SystemRestore/SystemRestoreContent.vue:257
 msgid "Please enter the security token received during backup"
 msgstr "请输入备份时收到的安全令牌"
 
@@ -2198,15 +2204,15 @@ msgid ""
 "configuration."
 msgstr "请输入名称，这将作为新配置的文件名。"
 
-#: src/views/other/Install.vue:54
+#: src/views/other/Install.vue:59
 msgid "Please input your E-mail!"
 msgstr "请输入您的邮箱！"
 
-#: src/views/other/Install.vue:66 src/views/other/Login.vue:47
+#: src/views/other/Install.vue:71 src/views/other/Login.vue:47
 msgid "Please input your password!"
 msgstr "请输入您的密码！"
 
-#: src/views/other/Install.vue:60 src/views/other/Login.vue:41
+#: src/views/other/Install.vue:65 src/views/other/Login.vue:41
 msgid "Please input your username!"
 msgstr "请输入您的用户名！"
 
@@ -2219,7 +2225,7 @@ msgstr "请注意，下面的时间单位配置均以秒为单位。"
 msgid "Please save this security token, you will need it for restoration:"
 msgstr "请保存此安全令牌，恢复时会用到它："
 
-#: src/views/system/Backup/SystemRestore.vue:53
+#: src/components/SystemRestore/SystemRestoreContent.vue:72
 msgid "Please select a backup file"
 msgstr "请选择备份文件"
 
@@ -2489,15 +2495,21 @@ msgstr "重启"
 msgid "Restarting"
 msgstr "重启中"
 
-#: src/views/system/Backup/SystemRestore.vue:81
+#: src/components/SystemRestore/SystemRestoreContent.vue:100
 msgid "Restore completed successfully"
 msgstr "恢复成功"
 
-#: src/views/system/Backup/SystemRestore.vue:165
+#: src/views/other/Install.vue:186
+msgid "Restore from Backup"
+msgstr "从备份还原"
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:193
+#: src/components/SystemRestore/SystemRestoreContent.vue:270
 msgid "Restore Nginx Configuration"
 msgstr "恢复 Nginx 配置"
 
-#: src/views/system/Backup/SystemRestore.vue:176
+#: src/components/SystemRestore/SystemRestoreContent.vue:204
+#: src/components/SystemRestore/SystemRestoreContent.vue:281
 msgid "Restore Nginx UI Configuration"
 msgstr "恢复 Nginx UI 配置"
 
@@ -2606,7 +2618,8 @@ msgstr "SDK"
 msgid "Secret has been copied"
 msgstr "密钥已复制"
 
-#: src/views/system/Backup/SystemRestore.vue:150
+#: src/components/SystemRestore/SystemRestoreContent.vue:177
+#: src/components/SystemRestore/SystemRestoreContent.vue:254
 msgid "Security Token"
 msgstr "安全 Token"
 
@@ -2752,7 +2765,8 @@ msgstr "SSO 登录"
 msgid "Stable"
 msgstr "稳定"
 
-#: src/views/system/Backup/SystemRestore.vue:187
+#: src/components/SystemRestore/SystemRestoreContent.vue:216
+#: src/components/SystemRestore/SystemRestoreContent.vue:293
 msgid "Start Restore"
 msgstr "开始还原"
 
@@ -2806,7 +2820,8 @@ msgstr ""
 "支持通过 WebSocket 协议与后端通信，如果您正在使用 Nginx 反向代理了 Nginx UI "
 "请参考：https://nginxui.com/guide/nginx-proxy-example.html 编写配置文件"
 
-#: src/views/system/Backup/SystemRestore.vue:140
+#: src/components/SystemRestore/SystemRestoreContent.vue:167
+#: src/components/SystemRestore/SystemRestoreContent.vue:244
 msgid "Supported file type: .zip"
 msgstr "支持的文件类型：.zip"
 
@@ -2893,9 +2908,13 @@ msgstr "系统备份"
 msgid "System Initial User"
 msgstr "系统初始用户"
 
-#: src/views/system/Backup/SystemRestore.vue:117
+#: src/components/SystemRestore/SystemRestoreContent.vue:144
 msgid "System Restore"
 msgstr "系统还原"
+
+#: src/views/other/Install.vue:107
+msgid "System restored successfully. Please log in."
+msgstr "系统恢复成功。请登录。"
 
 #: src/constants/errors/self_check.ts:2
 msgid "Task not found"
@@ -2918,7 +2937,7 @@ msgstr ""
 "域名证书将在 30 分钟内接受检查，如果距离上次签发证书的时间超过 1 周或您在设置"
 "中设定的时间，证书将被更新。"
 
-#: src/views/other/Install.vue:76
+#: src/views/other/Install.vue:81
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "文件名不能包含以下字符: %{c}"
 
@@ -3051,13 +3070,15 @@ msgstr "此 Token 只显示一次，以后无法找回。请确保将其保存�
 msgid "This value is already taken"
 msgstr "该字段的值已经存在"
 
-#: src/views/system/Backup/SystemRestore.vue:169
+#: src/components/SystemRestore/SystemRestoreContent.vue:197
+#: src/components/SystemRestore/SystemRestoreContent.vue:274
 msgid ""
 "This will restore all Nginx configuration files. Nginx will restart after "
 "the restoration is complete."
 msgstr "这将还原所有 Nginx 配置文件。恢复完成后，Nginx 将重新启动。"
 
-#: src/views/system/Backup/SystemRestore.vue:180
+#: src/components/SystemRestore/SystemRestoreContent.vue:208
+#: src/components/SystemRestore/SystemRestoreContent.vue:285
 msgid ""
 "This will restore configuration files and database. Nginx UI will restart "
 "after the restoration is complete."
@@ -3222,7 +3243,7 @@ msgstr "用户未启用 OTP 作为 2FA"
 msgid "Username"
 msgstr "用户名"
 
-#: src/views/other/Install.vue:131
+#: src/views/other/Install.vue:144
 msgid "Username (*)"
 msgstr "用户名 (*)"
 
@@ -3232,7 +3253,8 @@ msgstr "用户名 (*)"
 msgid "Valid"
 msgstr "有效的"
 
-#: src/views/system/Backup/SystemRestore.vue:159
+#: src/components/SystemRestore/SystemRestoreContent.vue:186
+#: src/components/SystemRestore/SystemRestoreContent.vue:263
 msgid "Verify Backup File Integrity"
 msgstr "验证备份文件的完整性"
 
@@ -3273,7 +3295,8 @@ msgstr "已查看"
 msgid "Warning"
 msgstr "警告"
 
-#: src/views/system/Backup/SystemRestore.vue:121
+#: src/components/SystemRestore/SystemRestoreContent.vue:148
+#: src/components/SystemRestore/SystemRestoreContent.vue:225
 msgid ""
 "Warning: Restore operation will overwrite current configurations. Make sure "
 "you have a valid backup file and security token, and carefully select what "

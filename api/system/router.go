@@ -17,9 +17,22 @@ func InitPrivateRouter(r *gin.RouterGroup) {
 	r.GET("self_check", SelfCheck)
 	r.POST("self_check/:name/fix", SelfCheckFix)
 
-	// Backup and restore endpoints
+	// Backup endpoint only
 	r.GET("system/backup", CreateBackup)
-	r.POST("system/backup/restore", middleware.EncryptedForm(), RestoreBackup)
+}
+
+func InitBackupRestoreRouter(r *gin.RouterGroup) {
+	r.POST("system/backup/restore",
+		func(ctx *gin.Context) {
+			// If system is installed, verify user authentication
+			if installLockStatus() {
+				middleware.AuthRequired()(ctx)
+			} else {
+				ctx.Next()
+			}
+		},
+		middleware.EncryptedForm(),
+		RestoreBackup)
 }
 
 func InitWebSocketRouter(r *gin.RouterGroup) {

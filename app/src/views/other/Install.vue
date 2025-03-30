@@ -3,13 +3,17 @@ import type { InstallLockResponse } from '@/api/install'
 import install from '@/api/install'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
+import SystemRestoreContent from '@/components/SystemRestore/SystemRestoreContent.vue'
 import { DatabaseOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons-vue'
 
-import { Form, message } from 'ant-design-vue'
+import { Form, message, Tabs } from 'ant-design-vue'
+
+const TabPane = Tabs.TabPane
 
 const thisYear = new Date().getFullYear()
 const loading = ref(false)
 const installTimeout = ref(false)
+const activeTab = ref('1')
 
 const router = useRouter()
 
@@ -97,6 +101,11 @@ function onSubmit() {
     })
   })
 }
+
+function handleRestoreSuccess(): void {
+  message.success($gettext('System restored successfully. Please log in.'))
+  router.push('/login')
+}
 </script>
 
 <template>
@@ -114,61 +123,73 @@ function onSubmit() {
             show-icon
             style="margin-bottom: 20px;"
           />
-          <AForm v-else id="components-form-install">
-            <AFormItem v-bind="validateInfos.email">
-              <AInput
-                v-model:value="modelRef.email"
-                :placeholder="$gettext('Email (*)')"
-              >
-                <template #prefix>
-                  <MailOutlined />
-                </template>
-              </AInput>
-            </AFormItem>
-            <AFormItem v-bind="validateInfos.username">
-              <AInput
-                v-model:value="modelRef.username"
-                :placeholder="$gettext('Username (*)')"
-              >
-                <template #prefix>
-                  <UserOutlined />
-                </template>
-              </AInput>
-            </AFormItem>
-            <AFormItem v-bind="validateInfos.password">
-              <AInputPassword
-                v-model:value="modelRef.password"
-                :placeholder="$gettext('Password (*)')"
-              >
-                <template #prefix>
-                  <LockOutlined />
-                </template>
-              </AInputPassword>
-            </AFormItem>
-            <AFormItem>
-              <AInput
-                v-bind="validateInfos.database"
-                v-model:value="modelRef.database"
-                :placeholder="$gettext('Database (Optional, default: database)')"
-              >
-                <template #prefix>
-                  <DatabaseOutlined />
-                </template>
-              </AInput>
-            </AFormItem>
-            <AFormItem>
-              <AButton
-                type="primary"
-                block
-                html-type="submit"
-                :loading="loading"
-                :disabled="installTimeout"
-                @click="onSubmit"
-              >
-                {{ $gettext('Install') }}
-              </AButton>
-            </AFormItem>
-          </AForm>
+          <div v-else>
+            <Tabs v-model:active-key="activeTab">
+              <TabPane key="1" :tab="$gettext('New Installation')">
+                <AForm id="components-form-install">
+                  <AFormItem v-bind="validateInfos.email">
+                    <AInput
+                      v-model:value="modelRef.email"
+                      :placeholder="$gettext('Email (*)')"
+                    >
+                      <template #prefix>
+                        <MailOutlined />
+                      </template>
+                    </AInput>
+                  </AFormItem>
+                  <AFormItem v-bind="validateInfos.username">
+                    <AInput
+                      v-model:value="modelRef.username"
+                      :placeholder="$gettext('Username (*)')"
+                    >
+                      <template #prefix>
+                        <UserOutlined />
+                      </template>
+                    </AInput>
+                  </AFormItem>
+                  <AFormItem v-bind="validateInfos.password">
+                    <AInputPassword
+                      v-model:value="modelRef.password"
+                      :placeholder="$gettext('Password (*)')"
+                    >
+                      <template #prefix>
+                        <LockOutlined />
+                      </template>
+                    </AInputPassword>
+                  </AFormItem>
+                  <AFormItem>
+                    <AInput
+                      v-bind="validateInfos.database"
+                      v-model:value="modelRef.database"
+                      :placeholder="$gettext('Database (Optional, default: database)')"
+                    >
+                      <template #prefix>
+                        <DatabaseOutlined />
+                      </template>
+                    </AInput>
+                  </AFormItem>
+                  <AFormItem>
+                    <AButton
+                      type="primary"
+                      block
+                      html-type="submit"
+                      :loading="loading"
+                      :disabled="installTimeout"
+                      @click="onSubmit"
+                    >
+                      {{ $gettext('Install') }}
+                    </AButton>
+                  </AFormItem>
+                </AForm>
+              </TabPane>
+              <TabPane key="2" :tab="$gettext('Restore from Backup')">
+                <SystemRestoreContent
+                  :show-title="false"
+                  :on-restore-success="handleRestoreSuccess"
+                />
+              </TabPane>
+            </Tabs>
+          </div>
           <div class="footer">
             <p>Copyright © 2021 - {{ thisYear }} Nginx UI</p>
             Language

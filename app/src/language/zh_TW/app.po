@@ -252,7 +252,7 @@ msgstr "已關閉 %{name} 的自動續簽"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "已啟用 %{name} 的自動續簽"
 
-#: src/views/system/Backup/SystemRestore.vue:92
+#: src/components/SystemRestore/SystemRestoreContent.vue:111
 msgid "Automatic Restart"
 msgstr ""
 
@@ -277,7 +277,7 @@ msgstr "返回列表"
 msgid "Backup"
 msgstr "返回"
 
-#: src/views/system/Backup/SystemRestore.vue:100
+#: src/components/SystemRestore/SystemRestoreContent.vue:119
 msgid "Backup file integrity check failed, it may have been tampered with"
 msgstr ""
 
@@ -486,7 +486,8 @@ msgstr "清除"
 msgid "Cleared successfully"
 msgstr "清除成功"
 
-#: src/views/system/Backup/SystemRestore.vue:137
+#: src/components/SystemRestore/SystemRestoreContent.vue:164
+#: src/components/SystemRestore/SystemRestoreContent.vue:241
 msgid "Click or drag backup file to this area to upload"
 msgstr ""
 
@@ -653,7 +654,7 @@ msgstr "自訂顯示在環境指示器中的本地節點名稱。"
 msgid "Dashboard"
 msgstr "儀表板"
 
-#: src/views/other/Install.vue:152
+#: src/views/other/Install.vue:165
 msgid "Database (Optional, default: database)"
 msgstr "資料庫 (可選，預設: database)"
 
@@ -950,7 +951,7 @@ msgstr "編輯 Stream"
 msgid "Email"
 msgstr "電子郵件"
 
-#: src/views/other/Install.vue:121
+#: src/views/other/Install.vue:134
 msgid "Email (*)"
 msgstr "電子郵件 (*)"
 
@@ -1519,11 +1520,11 @@ msgstr "請輸入應用程式中的代碼："
 msgid "Input the recovery code:"
 msgstr "輸入恢復碼："
 
-#: src/routes/modules/auth.ts:8 src/views/other/Install.vue:168
+#: src/routes/modules/auth.ts:8 src/views/other/Install.vue:181
 msgid "Install"
 msgstr "安裝"
 
-#: src/views/other/Install.vue:89
+#: src/views/other/Install.vue:94
 msgid "Install successfully"
 msgstr "安裝成功"
 
@@ -1531,7 +1532,7 @@ msgstr "安裝成功"
 msgid "Installation is not allowed after 10 minutes of system startup"
 msgstr ""
 
-#: src/views/other/Install.vue:113
+#: src/views/other/Install.vue:123
 msgid ""
 "Installation is not allowed after 10 minutes of system startup, please "
 "restart the Nginx UI."
@@ -1555,7 +1556,7 @@ msgstr "無效的請求格式"
 msgid "Invalid AES key format: {0}"
 msgstr "無效的請求格式"
 
-#: src/views/system/Backup/SystemRestore.vue:67
+#: src/components/SystemRestore/SystemRestoreContent.vue:86
 #, fuzzy
 msgid "Invalid file object"
 msgstr "無效的檔案名"
@@ -1852,6 +1853,11 @@ msgstr "下載流量"
 msgid "Network Total Send"
 msgstr "上傳流量"
 
+#: src/views/other/Install.vue:129
+#, fuzzy
+msgid "New Installation"
+msgstr "安裝"
+
 #: src/views/config/components/Rename.vue:72
 msgid "New name"
 msgstr "新名稱"
@@ -1907,7 +1913,7 @@ msgstr "Nginx 配置檔未包含 stream-enabled"
 msgid "Nginx config directory is not set"
 msgstr "Nginx 日誌目錄白名單"
 
-#: src/views/system/Backup/SystemRestore.vue:84
+#: src/components/SystemRestore/SystemRestoreContent.vue:103
 #, fuzzy
 msgid "Nginx configuration has been restored"
 msgstr "Nginx 設定解析錯誤"
@@ -1966,12 +1972,12 @@ msgstr "Nginx 重啟成功"
 msgid "Nginx UI already installed"
 msgstr "此值已被使用"
 
-#: src/views/system/Backup/SystemRestore.vue:88
+#: src/components/SystemRestore/SystemRestoreContent.vue:107
 #, fuzzy
 msgid "Nginx UI configuration has been restored"
 msgstr "Nginx 設定解析錯誤"
 
-#: src/views/system/Backup/SystemRestore.vue:93
+#: src/components/SystemRestore/SystemRestoreContent.vue:112
 #, fuzzy
 msgid ""
 "Nginx UI configuration has been restored and will restart automatically in a "
@@ -2070,6 +2076,7 @@ msgstr "確定"
 #: src/components/ChatGPT/ChatGPT.vue:375
 #: src/components/Notification/Notification.vue:134
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:95
+#: src/components/SystemRestore/SystemRestoreContent.vue:113
 #: src/views/notification/Notification.vue:38
 #: src/views/site/cert/components/ObtainCert.vue:139
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:50
@@ -2080,7 +2087,6 @@ msgstr "確定"
 #: src/views/stream/components/RightSettings.vue:50
 #: src/views/stream/StreamList.vue:164
 #: src/views/system/Backup/BackupCreator.vue:149
-#: src/views/system/Backup/SystemRestore.vue:94
 msgid "OK"
 msgstr "確定"
 
@@ -2095,7 +2101,7 @@ msgstr "驗證完成後，記錄將被刪除。"
 msgid "Online"
 msgstr "線上"
 
-#: src/views/system/Backup/SystemRestore.vue:24
+#: src/components/SystemRestore/SystemRestoreContent.vue:43
 msgid "Only zip files are allowed"
 msgstr ""
 
@@ -2156,7 +2162,7 @@ msgstr ""
 msgid "Password"
 msgstr "密碼"
 
-#: src/views/other/Install.vue:141
+#: src/views/other/Install.vue:154
 msgid "Password (*)"
 msgstr "密碼 (*)"
 
@@ -2164,7 +2170,7 @@ msgstr "密碼 (*)"
 msgid "Password incorrect"
 msgstr "密碼錯誤"
 
-#: src/views/other/Install.vue:70
+#: src/views/other/Install.vue:75
 msgid "Password length cannot exceed 20 characters"
 msgstr "密碼長度不能超過 20 個字元"
 
@@ -2208,12 +2214,13 @@ msgstr "請輸入您希望創建的通行密鑰名稱，並點擊下面的確定
 msgid "Please enter the OTP code:"
 msgstr "請輸入 OTP 代碼："
 
-#: src/views/system/Backup/SystemRestore.vue:58
+#: src/components/SystemRestore/SystemRestoreContent.vue:77
 #, fuzzy
 msgid "Please enter the security token"
 msgstr "請輸入 OTP 代碼："
 
-#: src/views/system/Backup/SystemRestore.vue:153
+#: src/components/SystemRestore/SystemRestoreContent.vue:180
+#: src/components/SystemRestore/SystemRestoreContent.vue:257
 msgid "Please enter the security token received during backup"
 msgstr ""
 
@@ -2263,15 +2270,15 @@ msgid ""
 "configuration."
 msgstr "請輸入名稱，此名稱將用作新配置的檔案名稱。"
 
-#: src/views/other/Install.vue:54
+#: src/views/other/Install.vue:59
 msgid "Please input your E-mail!"
 msgstr "請輸入您的電子郵件！"
 
-#: src/views/other/Install.vue:66 src/views/other/Login.vue:47
+#: src/views/other/Install.vue:71 src/views/other/Login.vue:47
 msgid "Please input your password!"
 msgstr "請輸入您的密碼！"
 
-#: src/views/other/Install.vue:60 src/views/other/Login.vue:41
+#: src/views/other/Install.vue:65 src/views/other/Login.vue:41
 msgid "Please input your username!"
 msgstr "請輸入您的使用者名稱！"
 
@@ -2284,7 +2291,7 @@ msgstr "請注意，以下時間配置單位均為秒。"
 msgid "Please save this security token, you will need it for restoration:"
 msgstr ""
 
-#: src/views/system/Backup/SystemRestore.vue:53
+#: src/components/SystemRestore/SystemRestoreContent.vue:72
 #, fuzzy
 msgid "Please select a backup file"
 msgstr "請至少選擇一個節點！"
@@ -2561,17 +2568,24 @@ msgstr "重新啟動"
 msgid "Restarting"
 msgstr "正在重新啟動"
 
-#: src/views/system/Backup/SystemRestore.vue:81
+#: src/components/SystemRestore/SystemRestoreContent.vue:100
 #, fuzzy
 msgid "Restore completed successfully"
 msgstr "刪除成功"
 
-#: src/views/system/Backup/SystemRestore.vue:165
+#: src/views/other/Install.vue:186
+#, fuzzy
+msgid "Restore from Backup"
+msgstr "系統"
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:193
+#: src/components/SystemRestore/SystemRestoreContent.vue:270
 #, fuzzy
 msgid "Restore Nginx Configuration"
 msgstr "Nginx 配置目錄"
 
-#: src/views/system/Backup/SystemRestore.vue:176
+#: src/components/SystemRestore/SystemRestoreContent.vue:204
+#: src/components/SystemRestore/SystemRestoreContent.vue:281
 #, fuzzy
 msgid "Restore Nginx UI Configuration"
 msgstr "Nginx 配置目錄"
@@ -2687,7 +2701,8 @@ msgstr "SDK"
 msgid "Secret has been copied"
 msgstr "密鑰已複製"
 
-#: src/views/system/Backup/SystemRestore.vue:150
+#: src/components/SystemRestore/SystemRestoreContent.vue:177
+#: src/components/SystemRestore/SystemRestoreContent.vue:254
 msgid "Security Token"
 msgstr ""
 
@@ -2835,7 +2850,8 @@ msgstr "SSO 登錄"
 msgid "Stable"
 msgstr "穩定"
 
-#: src/views/system/Backup/SystemRestore.vue:187
+#: src/components/SystemRestore/SystemRestoreContent.vue:216
+#: src/components/SystemRestore/SystemRestoreContent.vue:293
 msgid "Start Restore"
 msgstr ""
 
@@ -2892,7 +2908,8 @@ msgstr ""
 "理使用，請參考此鏈接編寫對應的配置文件： https://nginxui.com/guide/nginx-"
 "proxy-example.html"
 
-#: src/views/system/Backup/SystemRestore.vue:140
+#: src/components/SystemRestore/SystemRestoreContent.vue:167
+#: src/components/SystemRestore/SystemRestoreContent.vue:244
 msgid "Supported file type: .zip"
 msgstr ""
 
@@ -2983,10 +3000,14 @@ msgstr "系統"
 msgid "System Initial User"
 msgstr "系統初始使用者"
 
-#: src/views/system/Backup/SystemRestore.vue:117
+#: src/components/SystemRestore/SystemRestoreContent.vue:144
 #, fuzzy
 msgid "System Restore"
 msgstr "系統"
+
+#: src/views/other/Install.vue:107
+msgid "System restored successfully. Please log in."
+msgstr ""
 
 #: src/constants/errors/self_check.ts:2
 msgid "Task not found"
@@ -3009,7 +3030,7 @@ msgstr ""
 "網域憑證將在 30 分鐘內接受檢查，如果自上次簽發以來已超過 1 週或您在設置中設定"
 "的時間，憑證將會自動更新。"
 
-#: src/views/other/Install.vue:76
+#: src/views/other/Install.vue:81
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "檔名不能包含以下字元: %{c}"
 
@@ -3143,13 +3164,15 @@ msgstr ""
 msgid "This value is already taken"
 msgstr "此值已被使用"
 
-#: src/views/system/Backup/SystemRestore.vue:169
+#: src/components/SystemRestore/SystemRestoreContent.vue:197
+#: src/components/SystemRestore/SystemRestoreContent.vue:274
 msgid ""
 "This will restore all Nginx configuration files. Nginx will restart after "
 "the restoration is complete."
 msgstr ""
 
-#: src/views/system/Backup/SystemRestore.vue:180
+#: src/components/SystemRestore/SystemRestoreContent.vue:208
+#: src/components/SystemRestore/SystemRestoreContent.vue:285
 msgid ""
 "This will restore configuration files and database. Nginx UI will restart "
 "after the restoration is complete."
@@ -3314,7 +3337,7 @@ msgstr "使用者未啟用 OTP 作為雙重身份驗證 (2FA)"
 msgid "Username"
 msgstr "使用者名稱"
 
-#: src/views/other/Install.vue:131
+#: src/views/other/Install.vue:144
 msgid "Username (*)"
 msgstr "使用者名稱 (*)"
 
@@ -3324,7 +3347,8 @@ msgstr "使用者名稱 (*)"
 msgid "Valid"
 msgstr "有效"
 
-#: src/views/system/Backup/SystemRestore.vue:159
+#: src/components/SystemRestore/SystemRestoreContent.vue:186
+#: src/components/SystemRestore/SystemRestoreContent.vue:263
 msgid "Verify Backup File Integrity"
 msgstr ""
 
@@ -3365,7 +3389,8 @@ msgstr "已檢視"
 msgid "Warning"
 msgstr "警告"
 
-#: src/views/system/Backup/SystemRestore.vue:121
+#: src/components/SystemRestore/SystemRestoreContent.vue:148
+#: src/components/SystemRestore/SystemRestoreContent.vue:225
 msgid ""
 "Warning: Restore operation will overwrite current configurations. Make sure "
 "you have a valid backup file and security token, and carefully select what "

@@ -9,13 +9,13 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/certificate"
 	"github.com/0xJacky/Nginx-UI/api/cluster"
 	"github.com/0xJacky/Nginx-UI/api/config"
+	"github.com/0xJacky/Nginx-UI/api/crypto"
 	"github.com/0xJacky/Nginx-UI/api/nginx"
 	nginxLog "github.com/0xJacky/Nginx-UI/api/nginx_log"
 	"github.com/0xJacky/Nginx-UI/api/notification"
 	"github.com/0xJacky/Nginx-UI/api/openai"
 	"github.com/0xJacky/Nginx-UI/api/public"
 	"github.com/0xJacky/Nginx-UI/api/settings"
-	"github.com/0xJacky/Nginx-UI/api/crypto"
 	"github.com/0xJacky/Nginx-UI/api/sites"
 	"github.com/0xJacky/Nginx-UI/api/streams"
 	"github.com/0xJacky/Nginx-UI/api/system"
@@ -45,6 +45,7 @@ func InitRouter() {
 		public.InitRouter(root)
 		crypto.InitPublicRouter(root)
 		system.InitPublicRouter(root)
+		system.InitBackupRestoreRouter(root)
 		user.InitAuthRouter(root)
 
 		// Authorization required and not websocket request
