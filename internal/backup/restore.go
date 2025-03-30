@@ -207,44 +207,61 @@ func extractZipFile(file *zip.File, destDir string) error {
 			return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("invalid symlink target: %s", linkTarget))
 		}
 
-		// Get nginx modules path
+		// Get allowed paths for symlinks
+		confPath := nginx.GetConfPath()
 		modulesPath := nginx.GetModulesPath()
 
-		// Handle system directory symlinks
-		if strings.HasPrefix(cleanLinkTarget, modulesPath) {
-			// For nginx modules, we'll create a relative symlink to the modules directory
-			relPath, err := filepath.Rel(filepath.Dir(filePath), modulesPath)
-			if err != nil {
-				return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("failed to convert modules path to relative: %v", err))
+		// Check if symlink target is to an allowed path (conf path or modules path)
+		isAllowedSymlink := false
+
+		// Check if link points to modules path
+		if filepath.IsAbs(cleanLinkTarget) && (cleanLinkTarget == modulesPath || strings.HasPrefix(cleanLinkTarget, modulesPath+string(filepath.Separator))) {
+			isAllowedSymlink = true
+		}
+
+		// Check if link points to nginx conf path
+		if filepath.IsAbs(cleanLinkTarget) && (cleanLinkTarget == confPath || strings.HasPrefix(cleanLinkTarget, confPath+string(filepath.Separator))) {
+			isAllowedSymlink = true
+		}
+
+		// Handle absolute paths
+		if filepath.IsAbs(cleanLinkTarget) {
+			// Remove any existing file/link at the target path
+			if err := os.RemoveAll(filePath); err != nil && !os.IsNotExist(err) {
+				// Ignoring error, continue creating symlink
 			}
-			cleanLinkTarget = relPath
-		} else if filepath.IsAbs(cleanLinkTarget) {
-			// For other absolute paths, we'll create a directory instead of a symlink
+
+			// If this is a symlink to an allowed path, create it
+			if isAllowedSymlink {
+				if err := os.Symlink(cleanLinkTarget, filePath); err != nil {
+					return cosy.WrapErrorWithParams(ErrCreateSymlink, fmt.Sprintf("failed to create symlink %s -> %s: %v", filePath, cleanLinkTarget, err))
+				}
+				return nil
+			}
+
+			// Otherwise, fallback to creating a directory
 			if err := os.MkdirAll(filePath, 0755); err != nil {
 				return cosy.WrapErrorWithParams(ErrCreateDir, fmt.Sprintf("failed to create directory %s: %v", filePath, err))
 			}
 			return nil
 		}
 
-		// Verify the link target doesn't escape the destination directory
+		// For relative symlinks, verify they don't escape the destination directory
 		absLinkTarget := filepath.Clean(filepath.Join(filepath.Dir(filePath), cleanLinkTarget))
 		if !strings.HasPrefix(absLinkTarget, destDirAbs+string(os.PathSeparator)) {
-			// For nginx modules, we'll create a directory instead of a symlink
-			if strings.HasPrefix(linkTarget, modulesPath) {
-				if err := os.MkdirAll(filePath, 0755); err != nil {
-					return cosy.WrapErrorWithParams(ErrCreateDir, fmt.Sprintf("failed to create modules directory %s: %v", filePath, err))
-				}
-				return nil
+			// Create directory instead of symlink if the target is outside destination
+			if err := os.MkdirAll(filePath, 0755); err != nil {
+				return cosy.WrapErrorWithParams(ErrCreateDir, fmt.Sprintf("failed to create directory %s: %v", filePath, err))
 			}
-			return cosy.WrapErrorWithParams(ErrInvalidFilePath, fmt.Sprintf("symlink target %s is outside destination directory %s", absLinkTarget, destDirAbs))
+			return nil
 		}
 
 		// Remove any existing file/link at the target path
-		if err := os.Remove(filePath); err != nil && !os.IsNotExist(err) {
+		if err := os.RemoveAll(filePath); err != nil && !os.IsNotExist(err) {
 			// Ignoring error, continue creating symlink
 		}
 
-		// Create the symlink
+		// Create the symlink for relative paths within destination
 		if err := os.Symlink(cleanLinkTarget, filePath); err != nil {
 			return cosy.WrapErrorWithParams(ErrCreateSymlink, fmt.Sprintf("failed to create symlink %s -> %s: %v", filePath, cleanLinkTarget, err))
 		}
@@ -361,25 +378,43 @@ func restoreNginxConfigs(nginxBackupDir string) error {
 		return ErrNginxConfigDirEmpty
 	}
 
-	// Remove all contents in the destination directory first
-	// Read directory entries
-	entries, err := os.ReadDir(destDir)
-	if err != nil {
-		return cosy.WrapErrorWithParams(ErrCopyNginxConfigDir, "failed to read directory: "+err.Error())
-	}
-
-	// Remove each entry
-	for _, entry := range entries {
-		entryPath := filepath.Join(destDir, entry.Name())
-		err := os.RemoveAll(entryPath)
-		if err != nil {
-			return cosy.WrapErrorWithParams(ErrCopyNginxConfigDir, "failed to remove: "+err.Error())
-		}
+	// Recursively clean destination directory preserving the directory structure
+	if err := cleanDirectoryPreservingStructure(destDir); err != nil {
+		return cosy.WrapErrorWithParams(ErrCopyNginxConfigDir, "failed to clean directory: "+err.Error())
 	}
 
 	// Copy files from backup to nginx config directory
 	if err := copyDirectory(nginxBackupDir, destDir); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+// cleanDirectoryPreservingStructure removes all files and symlinks in a directory
+// but preserves the directory structure itself
+func cleanDirectoryPreservingStructure(dir string) error {
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return err
+	}
+
+	for _, entry := range entries {
+		path := filepath.Join(dir, entry.Name())
+		info, err := entry.Info()
+		if err != nil {
+			return err
+		}
+
+		// Preserve symlinks - they will be handled separately during restore
+		if info.Mode()&os.ModeSymlink != 0 {
+			continue
+		}
+
+		err = os.RemoveAll(path)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

@@ -102,9 +102,14 @@ function onSubmit() {
   })
 }
 
-function handleRestoreSuccess(): void {
-  message.success($gettext('System restored successfully. Please log in.'))
-  router.push('/login')
+function handleRestoreSuccess(options: { restoreNginx: boolean, restoreNginxUI: boolean }): void {
+  message.success($gettext('System restored successfully.'))
+
+  // Only redirect to login page if Nginx UI was restored
+  if (options.restoreNginxUI) {
+    message.info($gettext('Please log in.'))
+    router.push('/login')
+  }
 }
 </script>
 
@@ -185,7 +190,7 @@ function handleRestoreSuccess(): void {
               <TabPane key="2" :tab="$gettext('Restore from Backup')">
                 <SystemRestoreContent
                   :show-title="false"
-                  :on-restore-success="handleRestoreSuccess"
+                  @restore-success="handleRestoreSuccess"
                 />
               </TabPane>
             </Tabs>

@@ -120,7 +120,7 @@ func RestoreBackup(c *gin.Context) {
 
 	if restoreNginxUI {
 		go func() {
-			time.Sleep(3 * time.Second)
+			time.Sleep(2 * time.Second)
 			// gracefully restart
 			overseer.Restart()
 		}()

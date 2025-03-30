@@ -3,26 +3,25 @@ import type { RestoreOptions, RestoreResponse } from '@/api/backup'
 import type { UploadFile } from 'ant-design-vue'
 import backup from '@/api/backup'
 import { InboxOutlined } from '@ant-design/icons-vue'
-import { message, Modal } from 'ant-design-vue'
+import { message } from 'ant-design-vue'
 
 // Define props using TypeScript interface
 interface SystemRestoreProps {
   showTitle?: boolean
   showNginxOptions?: boolean
-  onRestoreSuccess?: (data: RestoreResponse) => void
 }
 
 // Define emits using TypeScript interface
 interface SystemRestoreEmits {
-  (e: 'restoreSuccess', data: RestoreResponse): void
+  (e: 'restoreSuccess', options: { restoreNginx: boolean, restoreNginxUI: boolean }): void
   (e: 'restoreError', error: Error): void
 }
 
-const props = withDefaults(defineProps<SystemRestoreProps>(), {
+withDefaults(defineProps<SystemRestoreProps>(), {
   showTitle: true,
   showNginxOptions: true,
-  onRestoreSuccess: () => null,
 })
+
 const emit = defineEmits<SystemRestoreEmits>()
 
 // Use UploadFile from ant-design-vue
@@ -35,6 +34,42 @@ const formModel = reactive({
   restoreNginxUI: true,
   verifyHash: true,
 })
+
+// 添加两个变量控制模态框显示和倒计时
+const showRestoreModal = ref(false)
+const countdown = ref(5)
+const countdownTimer = ref<ReturnType<typeof setInterval> | null>(null)
+
+// Reset countdown function
+function resetCountdown() {
+  countdown.value = 5
+  showRestoreModal.value = true
+
+  // Clear any existing timer
+  if (countdownTimer.value) {
+    clearInterval(countdownTimer.value)
+  }
+
+  // Start countdown timer
+  countdownTimer.value = setInterval(() => {
+    countdown.value--
+    if (countdown.value <= 0 && countdownTimer.value) {
+      clearInterval(countdownTimer.value)
+    }
+  }, 1000)
+}
+
+// Handle OK button click
+function handleModalOk() {
+  if (countdownTimer.value) {
+    clearInterval(countdownTimer.value)
+  }
+  // Emit success event with restore options
+  emit('restoreSuccess', {
+    restoreNginx: formModel.restoreNginx,
+    restoreNginxUI: formModel.restoreNginxUI,
+  })
+}
 
 function handleBeforeUpload(file: File) {
   // Check if file type is zip
@@ -105,13 +140,14 @@ async function doRestore() {
 
     if (data.nginx_ui_restored) {
       message.info($gettext('Nginx UI configuration has been restored'))
-
-      // Show warning modal about restart
-      Modal.warning({
-        title: $gettext('Automatic Restart'),
-        content: $gettext('Nginx UI configuration has been restored and will restart automatically in a few seconds.'),
-        okText: $gettext('OK'),
-        maskClosable: false,
+      // If UI was restored, show the countdown modal
+      resetCountdown()
+    }
+    else {
+      // If UI was not restored, emit success event directly
+      emit('restoreSuccess', {
+        restoreNginx: formModel.restoreNginx,
+        restoreNginxUI: formModel.restoreNginxUI,
       })
     }
 
@@ -122,12 +158,6 @@ async function doRestore() {
     // Reset form after successful restore
     uploadFiles.value = []
     formModel.securityToken = ''
-    // Emit success event
-    emit('restoreSuccess', data)
-    // Call the callback function if provided
-    if (props.onRestoreSuccess) {
-      props.onRestoreSuccess(data)
-    }
   }
   catch (error) {
     console.error('Restore failed:', error)
@@ -295,5 +325,31 @@ async function doRestore() {
         </AFormItem>
       </AForm>
     </div>
+
+    <!-- Modal for countdown -->
+    <AModal
+      v-model:open="showRestoreModal"
+      :title="$gettext('Automatic Restart')"
+      :mask-closable="false"
+    >
+      <p>
+        {{ $gettext('Nginx UI configuration has been restored and will restart automatically in a few seconds.') }}
+      </p>
+      <p v-if="countdown > 0">
+        {{ $gettext('You can close this dialog in') }} {{ countdown }} {{ $gettext('seconds') }}
+      </p>
+      <p v-else>
+        {{ $gettext('You can close this dialog now') }}
+      </p>
+      <template #footer>
+        <AButton
+          type="primary"
+          :disabled="countdown > 0"
+          @click="handleModalOk"
+        >
+          {{ countdown > 0 ? `OK (${countdown}s)` : 'OK' }}
+        </AButton>
+      </template>
+    </AModal>
   </div>
 </template>
