@@ -336,7 +336,7 @@ async function doRestore() {
         {{ $gettext('Nginx UI configuration has been restored and will restart automatically in a few seconds.') }}
       </p>
       <p v-if="countdown > 0">
-        {{ $gettext('You can close this dialog in') }} {{ countdown }} {{ $gettext('seconds') }}
+        {{ $gettext('You can close this dialog in %{countdown} seconds', { countdown: countdown.toString() }) }}
       </p>
       <p v-else>
         {{ $gettext('You can close this dialog now') }}

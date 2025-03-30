@@ -12,7 +12,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
-	"github.com/uozi-tech/cosy/logger"
 )
 
 var (
@@ -105,9 +104,6 @@ func EncryptedForm() gin.HandlerFunc {
 			}
 		}
 
-		logger.Debug("newForm values", newForm.Value)
-		logger.Debug("newForm files", newForm.File)
-
 		// Replace the original form with our modified one
 		c.Request.MultipartForm = newForm
 
@@ -126,8 +122,6 @@ func EncryptedForm() gin.HandlerFunc {
 		for k, v := range newForm.Value {
 			c.Request.PostForm[k] = v
 		}
-
-		logger.Debug("PostForm after sync", c.Request.PostForm)
 
 		c.Next()
 	}

@@ -108,7 +108,7 @@ function handleRestoreSuccess(options: { restoreNginx: boolean, restoreNginxUI: 
   // Only redirect to login page if Nginx UI was restored
   if (options.restoreNginxUI) {
     message.info($gettext('Please log in.'))
-    router.push('/login')
+    window.location.reload()
   }
 }
 </script>

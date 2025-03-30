@@ -401,16 +401,6 @@ func cleanDirectoryPreservingStructure(dir string) error {
 
 	for _, entry := range entries {
 		path := filepath.Join(dir, entry.Name())
-		info, err := entry.Info()
-		if err != nil {
-			return err
-		}
-
-		// Preserve symlinks - they will be handled separately during restore
-		if info.Mode()&os.ModeSymlink != 0 {
-			continue
-		}
-
 		err = os.RemoveAll(path)
 		if err != nil {
 			return err

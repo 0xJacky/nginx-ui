@@ -9,10 +9,10 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/backup"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
 	"github.com/jpillora/overseer"
 	"github.com/uozi-tech/cosy"
-	"github.com/uozi-tech/cosy/logger"
 )
 
 // RestoreResponse contains the response data for restore operation
@@ -29,18 +29,12 @@ func RestoreBackup(c *gin.Context) {
 	restoreNginxUI := c.PostForm("restore_nginx_ui") == "true"
 	verifyHash := c.PostForm("verify_hash") == "true"
 	securityToken := c.PostForm("security_token") // Get concatenated key and IV
-	logger.Debug("restoreNginx", restoreNginx)
-	logger.Debug("restoreNginxUI", restoreNginxUI)
-	logger.Debug("verifyHash", verifyHash)
-	logger.Debug("securityToken", securityToken)
 	// Get backup file
 	backupFile, err := c.FormFile("backup_file")
 	if err != nil {
 		cosy.ErrHandler(c, cosy.WrapErrorWithParams(backup.ErrBackupFileNotFound, err.Error()))
 		return
 	}
-
-	logger.Debug("backupFile", backupFile.Size)
 
 	// Validate security token
 	if securityToken == "" {
@@ -116,6 +110,13 @@ func RestoreBackup(c *gin.Context) {
 	// If not actually restoring anything, clean up directory to avoid disk space waste
 	if !restoreNginx && !restoreNginxUI {
 		defer os.RemoveAll(restoreDir)
+	}
+
+	if restoreNginx {
+		go func() {
+			time.Sleep(2 * time.Second)
+			nginx.Restart()
+		}()
 	}
 
 	if restoreNginxUI {
