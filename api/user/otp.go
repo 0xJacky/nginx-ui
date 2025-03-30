@@ -32,7 +32,7 @@ func GenerateTOTP(c *gin.Context) {
 	}
 	otpKey, err := totp.Generate(otpOpts)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -75,14 +75,14 @@ func EnrollTOTP(c *gin.Context) {
 
 	ciphertext, err := crypto.AesEncrypt([]byte(twoFA.Secret))
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
 	u := query.User
 	_, err = u.Where(u.ID.Eq(cUser.ID)).Update(u.OTPSecret, ciphertext)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -91,7 +91,7 @@ func EnrollTOTP(c *gin.Context) {
 	cUser.RecoveryCodes = recoveryCodes
 	_, err = u.Where(u.ID.Eq(cUser.ID)).Updates(cUser)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -106,7 +106,7 @@ func ResetOTP(c *gin.Context) {
 	u := query.User
 	_, err := u.Where(u.ID.Eq(cUser.ID)).UpdateSimple(u.OTPSecret.Null(), u.RecoveryCodes.Null())
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

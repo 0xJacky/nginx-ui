@@ -1,7 +1,9 @@
 package sites
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+	"os"
+
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/site"
@@ -12,8 +14,6 @@ import (
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	"gorm.io/gorm/clause"
-	"net/http"
-	"os"
 )
 
 func GetSite(c *gin.Context) {
@@ -36,7 +36,7 @@ func GetSite(c *gin.Context) {
 	g := query.ChatGPTLog
 	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -47,7 +47,7 @@ func GetSite(c *gin.Context) {
 	s := query.Site
 	siteModel, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -59,7 +59,7 @@ func GetSite(c *gin.Context) {
 	if siteModel.Advanced {
 		origContent, err := os.ReadFile(path)
 		if err != nil {
-			api.ErrHandler(c, err)
+			cosy.ErrHandler(c, err)
 			return
 		}
 
@@ -78,7 +78,7 @@ func GetSite(c *gin.Context) {
 
 	nginxConfig, err := nginx.ParseNgxConfig(path)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -126,7 +126,7 @@ func SaveSite(c *gin.Context) {
 
 	err := site.Save(name, json.Content, json.Overwrite, json.SiteCategoryID, json.SyncNodeIDs)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -144,7 +144,7 @@ func RenameSite(c *gin.Context) {
 
 	err := site.Rename(oldName, json.NewName)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -156,7 +156,7 @@ func RenameSite(c *gin.Context) {
 func EnableSite(c *gin.Context) {
 	err := site.Enable(c.Param("name"))
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -168,7 +168,7 @@ func EnableSite(c *gin.Context) {
 func DisableSite(c *gin.Context) {
 	err := site.Disable(c.Param("name"))
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -180,7 +180,7 @@ func DisableSite(c *gin.Context) {
 func DeleteSite(c *gin.Context) {
 	err := site.Delete(c.Param("name"))
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

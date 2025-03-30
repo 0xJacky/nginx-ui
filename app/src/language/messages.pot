@@ -10,16 +10,16 @@ msgstr ""
 msgid "2FA Settings"
 msgstr ""
 
-#: src/routes/index.ts:290
+#: src/routes/modules/system.ts:26
 msgid "About"
 msgstr ""
 
-#: src/routes/index.ts:210
+#: src/routes/modules/nginx_log.ts:17
 #: src/views/site/ngx_conf/LogEntry.vue:75
 msgid "Access Logs"
 msgstr ""
 
-#: src/routes/index.ts:148
+#: src/routes/modules/certificates.ts:20
 #: src/views/certificate/ACMEUser.vue:113
 #: src/views/certificate/ACMEUserSelector.vue:85
 msgid "ACME User"
@@ -32,7 +32,7 @@ msgstr ""
 #: src/views/environment/envColumns.tsx:97
 #: src/views/notification/notificationColumns.tsx:65
 #: src/views/preference/AuthSettings.vue:30
-#: src/views/site/site_category/columns.ts:29
+#: src/views/site/site_category/columns.ts:28
 #: src/views/site/site_list/columns.tsx:76
 #: src/views/stream/StreamList.vue:49
 #: src/views/user/userColumns.tsx:60
@@ -54,7 +54,7 @@ msgstr ""
 msgid "Add a passkey"
 msgstr ""
 
-#: src/routes/index.ts:118
+#: src/routes/modules/config.ts:20
 #: src/views/config/ConfigEditor.vue:144
 #: src/views/config/ConfigEditor.vue:204
 msgid "Add Configuration"
@@ -69,8 +69,8 @@ msgstr ""
 msgid "Add Location"
 msgstr ""
 
-#: src/routes/index.ts:63
-#: src/views/site/SiteAdd.vue:89
+#: src/routes/modules/sites.ts:26
+#: src/views/site/site_add/SiteAdd.vue:89
 msgid "Add Site"
 msgstr ""
 
@@ -240,6 +240,10 @@ msgstr ""
 msgid "Auto-renewal enabled for %{name}"
 msgstr ""
 
+#: src/components/SystemRestore/SystemRestoreContent.vue:332
+msgid "Automatic Restart"
+msgstr ""
+
 #: src/views/certificate/CertificateEditor.vue:255
 #: src/views/config/ConfigEditor.vue:213
 #: src/views/config/ConfigList.vue:106
@@ -258,6 +262,22 @@ msgstr ""
 msgid "Back to list"
 msgstr ""
 
+#: src/routes/modules/system.ts:33
+msgid "Backup"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:155
+msgid "Backup file integrity check failed, it may have been tampered with"
+msgstr ""
+
+#: src/constants/errors/backup.ts:41
+msgid "Backup file not found: {0}"
+msgstr ""
+
+#: src/views/system/Backup/BackupCreator.vue:42
+msgid "Backup has been downloaded successfully"
+msgstr ""
+
 #: src/views/preference/AuthSettings.vue:129
 msgid "Ban Threshold Minutes"
 msgstr ""
@@ -270,7 +290,7 @@ msgstr ""
 msgid "Banned Until"
 msgstr ""
 
-#: src/views/site/SiteAdd.vue:95
+#: src/views/site/site_add/SiteAdd.vue:95
 msgid "Base information"
 msgstr ""
 
@@ -377,12 +397,12 @@ msgid_plural "Certificates Status"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/routes/index.ts:139
+#: src/routes/modules/certificates.ts:11
 #: src/views/certificate/CertificateList/Certificate.vue:13
 msgid "Certificates"
 msgstr ""
 
-#: src/routes/index.ts:156
+#: src/routes/modules/certificates.ts:28
 msgid "Certificates List"
 msgstr ""
 
@@ -449,6 +469,11 @@ msgstr ""
 msgid "Cleared successfully"
 msgstr ""
 
+#: src/components/SystemRestore/SystemRestoreContent.vue:194
+#: src/components/SystemRestore/SystemRestoreContent.vue:271
+msgid "Click or drag backup file to this area to upload"
+msgstr ""
+
 #: src/views/preference/components/TOTP.vue:110
 msgid "Click to copy"
 msgstr ""
@@ -464,6 +489,10 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
+#: src/constants/errors/backup.ts:14
+msgid "Config path is empty"
+msgstr ""
+
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:84
 msgid "Config Templates"
 msgstr ""
@@ -472,7 +501,7 @@ msgstr ""
 msgid "Configuration file is test successful"
 msgstr ""
 
-#: src/views/site/SiteAdd.vue:101
+#: src/views/site/site_add/SiteAdd.vue:101
 msgid "Configuration Name"
 msgstr ""
 
@@ -480,7 +509,7 @@ msgstr ""
 msgid "Configurations"
 msgstr ""
 
-#: src/views/site/SiteAdd.vue:96
+#: src/views/site/site_add/SiteAdd.vue:96
 msgid "Configure SSL"
 msgstr ""
 
@@ -504,7 +533,12 @@ msgstr ""
 msgid "Copied"
 msgstr ""
 
+#: src/views/system/Backup/BackupCreator.vue:128
+msgid "Copied!"
+msgstr ""
+
 #: src/components/SensitiveString/SensitiveString.vue:37
+#: src/views/system/Backup/BackupCreator.vue:128
 msgid "Copy"
 msgstr ""
 
@@ -528,8 +562,12 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: src/views/site/SiteAdd.vue:157
+#: src/views/site/site_add/SiteAdd.vue:157
 msgid "Create Another"
+msgstr ""
+
+#: src/views/system/Backup/BackupCreator.vue:86
+msgid "Create Backup"
 msgstr ""
 
 #: src/views/config/ConfigList.vue:116
@@ -541,9 +579,13 @@ msgstr ""
 msgid "Create Folder"
 msgstr ""
 
+#: src/views/system/Backup/BackupCreator.vue:75
+msgid "Create system backups including Nginx configuration and Nginx UI settings. Backup files will be automatically downloaded to your computer."
+msgstr ""
+
 #: src/views/notification/notificationColumns.tsx:58
 #: src/views/preference/components/Passkey.vue:95
-#: src/views/site/site_category/columns.ts:15
+#: src/views/site/site_category/columns.ts:16
 #: src/views/user/userColumns.tsx:48
 msgid "Created at"
 msgstr ""
@@ -585,14 +627,14 @@ msgstr ""
 msgid "Customize the name of local node to be displayed in the environment indicator."
 msgstr ""
 
-#: src/routes/index.ts:38
+#: src/routes/modules/dashboard.ts:10
 #: src/views/config/ConfigEditor.vue:134
 #: src/views/config/ConfigEditor.vue:97
 #: src/views/config/ConfigList.vue:64
 msgid "Dashboard"
 msgstr ""
 
-#: src/views/other/Install.vue:119
+#: src/views/other/Install.vue:169
 msgid "Database (Optional, default: database)"
 msgstr ""
 
@@ -771,7 +813,7 @@ msgstr ""
 msgid "Disk IO"
 msgstr ""
 
-#: src/routes/index.ts:184
+#: src/routes/modules/certificates.ts:56
 #: src/views/certificate/DNSCredential.vue:40
 msgid "DNS Credentials"
 msgstr ""
@@ -874,16 +916,16 @@ msgstr ""
 msgid "Edit %{n}"
 msgstr ""
 
-#: src/routes/index.ts:128
+#: src/routes/modules/config.ts:30
 #: src/views/config/ConfigEditor.vue:204
 msgid "Edit Configuration"
 msgstr ""
 
-#: src/routes/index.ts:78
+#: src/routes/modules/sites.ts:41
 msgid "Edit Site"
 msgstr ""
 
-#: src/routes/index.ts:98
+#: src/routes/modules/streams.ts:19
 msgid "Edit Stream"
 msgstr ""
 
@@ -891,7 +933,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: src/views/other/Install.vue:88
+#: src/views/other/Install.vue:138
 msgid "Email (*)"
 msgstr ""
 
@@ -908,7 +950,7 @@ msgstr ""
 msgid "Enable auto-renewal failed for %{name}"
 msgstr ""
 
-#: src/views/site/SiteAdd.vue:43
+#: src/views/site/site_add/SiteAdd.vue:43
 msgid "Enable failed"
 msgstr ""
 
@@ -968,9 +1010,9 @@ msgstr ""
 msgid "Enabled"
 msgstr ""
 
+#: src/views/site/site_add/SiteAdd.vue:40
 #: src/views/site/site_edit/RightSettings.vue:33
 #: src/views/site/site_list/SiteList.vue:46
-#: src/views/site/SiteAdd.vue:40
 #: src/views/stream/components/RightSettings.vue:29
 #: src/views/stream/StreamList.vue:61
 msgid "Enabled successfully"
@@ -984,7 +1026,7 @@ msgstr ""
 msgid "Environment variables cleaned"
 msgstr ""
 
-#: src/routes/index.ts:234
+#: src/routes/modules/environments.ts:11
 #: src/views/dashboard/Environments.vue:83
 #: src/views/environment/Environment.vue:43
 msgid "Environments"
@@ -996,7 +1038,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: src/routes/index.ts:217
+#: src/routes/modules/nginx_log.ts:24
 #: src/views/site/ngx_conf/LogEntry.vue:83
 msgid "Error Logs"
 msgstr ""
@@ -1022,8 +1064,120 @@ msgstr ""
 msgid "Fail to obtain certificate"
 msgstr ""
 
+#: src/constants/errors/backup.ts:5
+msgid "Failed to backup Nginx config files: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:4
+msgid "Failed to backup Nginx UI files: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:18
+msgid "Failed to calculate hash: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:58
+msgid "Failed to calculate Nginx hash: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:57
+msgid "Failed to calculate Nginx UI hash: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:13
+msgid "Failed to cleanup temporary directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:15
+msgid "Failed to copy config file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:16
+msgid "Failed to copy database directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:17
+msgid "Failed to copy database file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:32
+msgid "Failed to copy file content: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:20
+msgid "Failed to copy Nginx config directory: {0}"
+msgstr ""
+
 #: src/constants/errors/self_check.ts:9
 msgid "Failed to create backup"
+msgstr ""
+
+#: src/constants/errors/backup.ts:12
+msgid "Failed to create backup file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:46
+msgid "Failed to create directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:48
+msgid "Failed to create file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:6
+msgid "Failed to create hash info file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:47
+msgid "Failed to create parent directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:34
+msgid "Failed to create restore directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:50
+msgid "Failed to create symbolic link: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:2
+msgid "Failed to create temporary directory"
+msgstr ""
+
+#: src/constants/errors/backup.ts:3
+msgid "Failed to create temporary subdirectory"
+msgstr ""
+
+#: src/constants/errors/backup.ts:9
+msgid "Failed to create zip archive: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:29
+msgid "Failed to create zip entry: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:28
+msgid "Failed to create zip file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:31
+msgid "Failed to create zip header: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:26
+msgid "Failed to decrypt data: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:54
+msgid "Failed to decrypt file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:37
+msgid "Failed to decrypt Nginx directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:36
+msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr ""
 
 #: src/views/site/site_edit/RightSettings.vue:45
@@ -1040,21 +1194,105 @@ msgstr ""
 msgid "Failed to enable %{msg}"
 msgstr ""
 
+#: src/constants/errors/backup.ts:25
+msgid "Failed to encrypt data: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:23
+msgid "Failed to encrypt file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:8
+msgid "Failed to encrypt Nginx directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:7
+msgid "Failed to encrypt Nginx UI directory: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:52
+msgid "Failed to evaluate symbolic links: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:35
+msgid "Failed to extract archive: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:10
+msgid "Failed to generate AES key: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:11
+msgid "Failed to generate initialization vector: {0}"
+msgstr ""
+
 #: src/language/constants.ts:5
 msgid "Failed to get certificate information"
+msgstr ""
+
+#: src/constants/errors/backup.ts:30
+msgid "Failed to open source file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:49
+msgid "Failed to open zip entry: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:45
+msgid "Failed to open zip file: {0}"
 msgstr ""
 
 #: src/constants/errors/self_check.ts:4
 msgid "Failed to parse nginx.conf"
 msgstr ""
 
+#: src/constants/errors/backup.ts:53
+msgid "Failed to read encrypted file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:22
+msgid "Failed to read file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:56
+msgid "Failed to read hash info file: {0}"
+msgstr ""
+
 #: src/constants/errors/self_check.ts:3
 msgid "Failed to read nginx.conf"
+msgstr ""
+
+#: src/constants/errors/backup.ts:21
+msgid "Failed to read symlink: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:39
+msgid "Failed to restore Nginx configs: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:40
+msgid "Failed to restore Nginx UI files: {0}"
 msgstr ""
 
 #: src/views/site/site_edit/SiteEdit.vue:135
 #: src/views/stream/StreamEdit.vue:122
 msgid "Failed to save, syntax error(s) was detected in the configuration."
+msgstr ""
+
+#: src/constants/errors/backup.ts:38
+msgid "Failed to verify hashes: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:55
+msgid "Failed to write decrypted file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:24
+msgid "Failed to write encrypted file: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:33
+msgid "Failed to write to zip buffer: {0}"
 msgstr ""
 
 #: src/language/constants.ts:32
@@ -1074,7 +1312,7 @@ msgid "Filter"
 msgstr ""
 
 #: src/language/constants.ts:19
-#: src/views/site/SiteAdd.vue:97
+#: src/views/site/site_add/SiteAdd.vue:97
 msgid "Finished"
 msgstr ""
 
@@ -1145,11 +1383,15 @@ msgstr ""
 msgid "Github Proxy"
 msgstr ""
 
+#: src/constants/errors/backup.ts:59
+msgid "Hash verification failed: file integrity compromised"
+msgstr ""
+
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Hide"
 msgstr ""
 
-#: src/routes/index.ts:30
+#: src/routes/index.ts:47
 msgid "Home"
 msgstr ""
 
@@ -1193,7 +1435,7 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: src/routes/index.ts:174
+#: src/routes/modules/certificates.ts:46
 #: src/views/certificate/CertificateEditor.vue:85
 msgid "Import Certificate"
 msgstr ""
@@ -1220,13 +1462,21 @@ msgstr ""
 msgid "Input the recovery code:"
 msgstr ""
 
-#: src/routes/index.ts:312
-#: src/views/other/Install.vue:134
+#: src/routes/modules/auth.ts:8
+#: src/views/other/Install.vue:185
 msgid "Install"
 msgstr ""
 
-#: src/views/other/Install.vue:67
+#: src/views/other/Install.vue:93
 msgid "Install successfully"
+msgstr ""
+
+#: src/constants/errors/system.ts:3
+msgid "Installation is not allowed after 10 minutes of system startup"
+msgstr ""
+
+#: src/views/other/Install.vue:127
+msgid "Installation is not allowed after 10 minutes of system startup, please restart the Nginx UI."
 msgstr ""
 
 #: src/views/preference/LogrotateSettings.vue:25
@@ -1235,6 +1485,22 @@ msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:129
 msgid "Invalid"
+msgstr ""
+
+#: src/constants/errors/backup.ts:44
+msgid "Invalid AES IV format: {0}"
+msgstr ""
+
+#: src/constants/errors/backup.ts:43
+msgid "Invalid AES key format: {0}"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:121
+msgid "Invalid file object"
+msgstr ""
+
+#: src/constants/errors/backup.ts:51
+msgid "Invalid file path: {0}"
 msgstr ""
 
 #: src/views/config/components/Rename.vue:64
@@ -1250,6 +1516,10 @@ msgstr ""
 msgid "Invalid otp code"
 msgstr ""
 
+#: src/constants/errors/backup.ts:27
+msgid "Invalid padding in decrypted data"
+msgstr ""
+
 #: src/components/TwoFA/use2FAModal.ts:61
 msgid "Invalid passcode or recovery code"
 msgstr ""
@@ -1260,6 +1530,10 @@ msgstr ""
 
 #: src/constants/errors/middleware.ts:2
 msgid "Invalid request format"
+msgstr ""
+
+#: src/constants/errors/backup.ts:42
+msgid "Invalid security token format"
 msgstr ""
 
 #: src/views/preference/AuthSettings.vue:18
@@ -1374,7 +1648,7 @@ msgstr ""
 msgid "Log"
 msgstr ""
 
-#: src/routes/index.ts:318
+#: src/routes/modules/auth.ts:14
 #: src/views/other/Login.vue:222
 msgid "Login"
 msgstr ""
@@ -1400,24 +1674,24 @@ msgstr ""
 msgid "Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort before obtaining the certificate."
 msgstr ""
 
-#: src/routes/index.ts:108
+#: src/routes/modules/config.ts:10
 #: src/views/config/ConfigEditor.vue:102
 #: src/views/config/ConfigEditor.vue:139
 #: src/views/config/ConfigList.vue:69
 msgid "Manage Configs"
 msgstr ""
 
-#: src/routes/index.ts:47
+#: src/routes/modules/sites.ts:10
 #: src/views/site/site_list/SiteList.vue:94
 msgid "Manage Sites"
 msgstr ""
 
-#: src/routes/index.ts:89
+#: src/routes/modules/streams.ts:10
 #: src/views/stream/StreamList.vue:119
 msgid "Manage Streams"
 msgstr ""
 
-#: src/routes/index.ts:257
+#: src/routes/modules/user.ts:10
 #: src/views/user/User.vue:10
 msgid "Manage Users"
 msgstr ""
@@ -1454,12 +1728,12 @@ msgstr ""
 msgid "Modify"
 msgstr ""
 
-#: src/routes/index.ts:164
+#: src/routes/modules/certificates.ts:36
 #: src/views/certificate/CertificateEditor.vue:85
 msgid "Modify Certificate"
 msgstr ""
 
-#: src/views/site/SiteAdd.vue:154
+#: src/views/site/site_add/SiteAdd.vue:154
 msgid "Modify Config"
 msgstr ""
 
@@ -1508,6 +1782,10 @@ msgstr ""
 msgid "Network Total Send"
 msgstr ""
 
+#: src/views/other/Install.vue:133
+msgid "New Installation"
+msgstr ""
+
 #: src/views/config/components/Rename.vue:72
 msgid "New name"
 msgstr ""
@@ -1522,7 +1800,7 @@ msgstr ""
 
 #: src/views/certificate/WildcardCertificate.vue:91
 #: src/views/site/cert/components/ObtainCert.vue:211
-#: src/views/site/SiteAdd.vue:141
+#: src/views/site/site_add/SiteAdd.vue:141
 msgid "Next"
 msgstr ""
 
@@ -1558,6 +1836,14 @@ msgstr ""
 msgid "Nginx conf not include stream-enabled"
 msgstr ""
 
+#: src/constants/errors/backup.ts:19
+msgid "Nginx config directory is not set"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:138
+msgid "Nginx configuration has been restored"
+msgstr ""
+
 #: src/views/site/site_edit/SiteEdit.vue:223
 #: src/views/stream/StreamEdit.vue:208
 msgid "Nginx Configuration Parse Error"
@@ -1579,7 +1865,7 @@ msgstr ""
 msgid "Nginx is not running"
 msgstr ""
 
-#: src/routes/index.ts:202
+#: src/routes/modules/nginx_log.ts:9
 #: src/views/nginx_log/NginxLog.vue:148
 msgid "Nginx Log"
 msgstr ""
@@ -1606,6 +1892,18 @@ msgstr ""
 
 #: src/components/NginxControl/NginxControl.vue:40
 msgid "Nginx restarted successfully"
+msgstr ""
+
+#: src/constants/errors/system.ts:2
+msgid "Nginx UI already installed"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:142
+msgid "Nginx UI configuration has been restored"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:336
+msgid "Nginx UI configuration has been restored and will restart automatically in a few seconds."
 msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:374
@@ -1637,7 +1935,7 @@ msgstr ""
 msgid "Not After"
 msgstr ""
 
-#: src/routes/index.ts:324
+#: src/routes/modules/error.ts:8
 msgid "Not Found"
 msgstr ""
 
@@ -1659,7 +1957,7 @@ msgid "Notification"
 msgstr ""
 
 #: src/components/Notification/Notification.vue:131
-#: src/routes/index.ts:248
+#: src/routes/modules/notifications.ts:10
 msgid "Notifications"
 msgstr ""
 
@@ -1705,6 +2003,7 @@ msgstr ""
 #: src/views/site/site_list/SiteList.vue:144
 #: src/views/stream/components/RightSettings.vue:50
 #: src/views/stream/StreamList.vue:164
+#: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr ""
 
@@ -1717,6 +2016,10 @@ msgstr ""
 #: src/views/dashboard/Environments.vue:100
 #: src/views/environment/envColumns.tsx:52
 msgid "Online"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:78
+msgid "Only zip files are allowed"
 msgstr ""
 
 #: src/views/preference/Preference.vue:170
@@ -1773,7 +2076,7 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: src/views/other/Install.vue:108
+#: src/views/other/Install.vue:158
 msgid "Password (*)"
 msgstr ""
 
@@ -1781,7 +2084,7 @@ msgstr ""
 msgid "Password incorrect"
 msgstr ""
 
-#: src/views/other/Install.vue:48
+#: src/views/other/Install.vue:74
 msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
@@ -1824,6 +2127,15 @@ msgstr ""
 msgid "Please enter the OTP code:"
 msgstr ""
 
+#: src/components/SystemRestore/SystemRestoreContent.vue:112
+msgid "Please enter the security token"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:210
+#: src/components/SystemRestore/SystemRestoreContent.vue:287
+msgid "Please enter the security token received during backup"
+msgstr ""
+
 #: src/views/certificate/DNSCredential.vue:53
 msgid "Please fill in the API authentication credentials provided by your DNS provider."
 msgstr ""
@@ -1858,22 +2170,35 @@ msgstr ""
 msgid "Please input name, this will be used as the filename of the new configuration."
 msgstr ""
 
-#: src/views/other/Install.vue:32
+#: src/views/other/Install.vue:58
 msgid "Please input your E-mail!"
 msgstr ""
 
-#: src/views/other/Install.vue:44
+#: src/views/other/Install.vue:70
 #: src/views/other/Login.vue:47
 msgid "Please input your password!"
 msgstr ""
 
-#: src/views/other/Install.vue:38
+#: src/views/other/Install.vue:64
 #: src/views/other/Login.vue:41
 msgid "Please input your username!"
 msgstr ""
 
+#: src/views/other/Install.vue:110
+#: src/views/system/Backup/SystemRestore.vue:12
+msgid "Please log in."
+msgstr ""
+
 #: src/views/certificate/DNSCredential.vue:62
 msgid "Please note that the unit of time configurations below are all in seconds."
+msgstr ""
+
+#: src/views/system/Backup/BackupCreator.vue:107
+msgid "Please save this security token, you will need it for restoration:"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:107
+msgid "Please select a backup file"
 msgstr ""
 
 #: src/views/environment/Environment.vue:58
@@ -1887,7 +2212,7 @@ msgstr ""
 msgid "Pre-release"
 msgstr ""
 
-#: src/routes/index.ts:266
+#: src/routes/modules/preference.ts:10
 #: src/views/preference/Preference.vue:141
 msgid "Preference"
 msgstr ""
@@ -2142,6 +2467,24 @@ msgstr ""
 msgid "Restarting"
 msgstr ""
 
+#: src/components/SystemRestore/SystemRestoreContent.vue:135
+msgid "Restore completed successfully"
+msgstr ""
+
+#: src/views/other/Install.vue:190
+msgid "Restore from Backup"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:223
+#: src/components/SystemRestore/SystemRestoreContent.vue:300
+msgid "Restore Nginx Configuration"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:234
+#: src/components/SystemRestore/SystemRestoreContent.vue:311
+msgid "Restore Nginx UI Configuration"
+msgstr ""
+
 #: src/views/preference/AuthSettings.vue:107
 msgid "RP Display Name"
 msgstr ""
@@ -2184,7 +2527,7 @@ msgstr ""
 
 #: src/views/config/ConfigEditor.vue:171
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:41
-#: src/views/site/SiteAdd.vue:46
+#: src/views/site/site_add/SiteAdd.vue:46
 msgid "Save error %{msg}"
 msgstr ""
 
@@ -2231,8 +2574,8 @@ msgstr ""
 
 #: src/views/config/ConfigEditor.vue:167
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:39
+#: src/views/site/site_add/SiteAdd.vue:37
 #: src/views/site/site_edit/SiteEdit.vue:152
-#: src/views/site/SiteAdd.vue:37
 #: src/views/stream/StreamEdit.vue:139
 msgid "Saved successfully"
 msgstr ""
@@ -2249,11 +2592,20 @@ msgstr ""
 msgid "Secret has been copied"
 msgstr ""
 
+#: src/components/SystemRestore/SystemRestoreContent.vue:207
+#: src/components/SystemRestore/SystemRestoreContent.vue:284
+msgid "Security Token"
+msgstr ""
+
+#: src/views/system/Backup/BackupCreator.vue:94
+msgid "Security Token Information"
+msgstr ""
+
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:189
 msgid "Selector"
 msgstr ""
 
-#: src/routes/index.ts:283
+#: src/routes/modules/system.ts:19
 #: src/views/system/SelfCheck/SelfCheck.vue:42
 msgid "Self Check"
 msgstr ""
@@ -2315,12 +2667,12 @@ msgstr ""
 msgid "Single Directive"
 msgstr ""
 
-#: src/routes/index.ts:71
+#: src/routes/modules/sites.ts:34
 #: src/views/site/site_category/SiteCategory.vue:10
 msgid "Site Categories"
 msgstr ""
 
-#: src/views/site/SiteAdd.vue:147
+#: src/views/site/site_add/SiteAdd.vue:147
 msgid "Site Config Created Successfully"
 msgstr ""
 
@@ -2328,7 +2680,7 @@ msgstr ""
 msgid "Site is enabled"
 msgstr ""
 
-#: src/routes/index.ts:224
+#: src/routes/modules/nginx_log.ts:31
 msgid "Site Logs"
 msgstr ""
 
@@ -2340,7 +2692,7 @@ msgstr ""
 msgid "Sites Directory"
 msgstr ""
 
-#: src/routes/index.ts:56
+#: src/routes/modules/sites.ts:19
 msgid "Sites List"
 msgstr ""
 
@@ -2377,6 +2729,11 @@ msgstr ""
 #: src/views/system/Upgrade.vue:191
 #: src/views/system/Upgrade.vue:239
 msgid "Stable"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:246
+#: src/components/SystemRestore/SystemRestoreContent.vue:323
+msgid "Start Restore"
 msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:65
@@ -2423,6 +2780,11 @@ msgstr ""
 
 #: src/views/system/SelfCheck/SelfCheck.vue:78
 msgid "Support communication with the backend through the WebSocket protocol. If your Nginx UI is being used via an Nginx reverse proxy, please refer to this link to write the corresponding configuration file: https://nginxui.com/guide/nginx-proxy-example.html"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:197
+#: src/components/SystemRestore/SystemRestoreContent.vue:274
+msgid "Supported file type: .zip"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:236
@@ -2483,7 +2845,7 @@ msgstr ""
 msgid "Sync Config Success"
 msgstr ""
 
-#: src/views/site/site_category/SiteCategory.vue:17
+#: src/views/site/site_category/SiteCategory.vue:18
 msgid "Sync Nodes"
 msgstr ""
 
@@ -2500,19 +2862,32 @@ msgstr ""
 msgid "Synchronization"
 msgstr ""
 
-#: src/routes/index.ts:275
+#: src/routes/modules/system.ts:11
 msgid "System"
+msgstr ""
+
+#: src/views/system/Backup/BackupCreator.vue:71
+msgid "System Backup"
 msgstr ""
 
 #: src/views/certificate/ACMEUserSelector.vue:88
 msgid "System Initial User"
 msgstr ""
 
+#: src/components/SystemRestore/SystemRestoreContent.vue:174
+msgid "System Restore"
+msgstr ""
+
+#: src/views/other/Install.vue:106
+#: src/views/system/Backup/SystemRestore.vue:8
+msgid "System restored successfully."
+msgstr ""
+
 #: src/constants/errors/self_check.ts:2
 msgid "Task not found"
 msgstr ""
 
-#: src/routes/index.ts:194
+#: src/routes/modules/terminal.ts:10
 #: src/views/terminal/Terminal.vue:114
 msgid "Terminal"
 msgstr ""
@@ -2525,7 +2900,7 @@ msgstr ""
 msgid "The certificate for the domain will be checked 30 minutes, and will be renewed if it has been more than 1 week or the period you set in settings since it was last issued."
 msgstr ""
 
-#: src/views/other/Install.vue:54
+#: src/views/other/Install.vue:80
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr ""
 
@@ -2553,7 +2928,7 @@ msgstr ""
 msgid "The node name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots."
 msgstr ""
 
-#: src/views/site/SiteAdd.vue:120
+#: src/views/site/site_add/SiteAdd.vue:120
 msgid "The parameter of server_name is required"
 msgstr ""
 
@@ -2626,8 +3001,22 @@ msgstr ""
 msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr ""
 
+#: src/views/system/Backup/BackupCreator.vue:141
+msgid "This token will only be shown once and cannot be retrieved later. Please make sure to save it in a secure location."
+msgstr ""
+
 #: src/constants/form_errors.ts:4
 msgid "This value is already taken"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:227
+#: src/components/SystemRestore/SystemRestoreContent.vue:304
+msgid "This will restore all Nginx configuration files. Nginx will restart after the restoration is complete."
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:238
+#: src/components/SystemRestore/SystemRestoreContent.vue:315
+msgid "This will restore configuration files and database. Nginx UI will restart after the restoration is complete."
 msgstr ""
 
 #: src/views/environment/BatchUpgrader.vue:182
@@ -2717,7 +3106,7 @@ msgstr ""
 msgid "Updated successfully"
 msgstr ""
 
-#: src/routes/index.ts:297
+#: src/routes/modules/system.ts:40
 #: src/views/environment/Environment.vue:66
 #: src/views/system/Upgrade.vue:143
 #: src/views/system/Upgrade.vue:226
@@ -2774,7 +3163,7 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: src/views/other/Install.vue:98
+#: src/views/other/Install.vue:148
 msgid "Username (*)"
 msgstr ""
 
@@ -2782,6 +3171,11 @@ msgstr ""
 #: src/views/certificate/CertificateList/certColumns.tsx:81
 #: src/views/site/cert/CertInfo.vue:24
 msgid "Valid"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:216
+#: src/components/SystemRestore/SystemRestoreContent.vue:293
+msgid "Verify Backup File Integrity"
 msgstr ""
 
 #: src/views/environment/envColumns.tsx:31
@@ -2817,8 +3211,14 @@ msgstr ""
 #: src/views/config/InspectConfig.vue:33
 #: src/views/notification/notificationColumns.tsx:22
 #: src/views/preference/components/AddPasskey.vue:82
-#: src/views/site/SiteAdd.vue:115
+#: src/views/site/site_add/SiteAdd.vue:115
+#: src/views/system/Backup/BackupCreator.vue:138
 msgid "Warning"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:178
+#: src/components/SystemRestore/SystemRestoreContent.vue:255
+msgid "Warning: Restore operation will overwrite current configurations. Make sure you have a valid backup file and security token, and carefully select what to restore."
 msgstr ""
 
 #: src/views/certificate/DNSCredential.vue:56
@@ -2875,6 +3275,14 @@ msgstr ""
 
 #: src/views/system/Upgrade.vue:164
 msgid "You can check Nginx UI upgrade at this page."
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:339
+msgid "You can close this dialog in %{countdown} seconds"
+msgstr ""
+
+#: src/components/SystemRestore/SystemRestoreContent.vue:342
+msgid "You can close this dialog now"
 msgstr ""
 
 #: src/views/preference/components/AddPasskey.vue:87

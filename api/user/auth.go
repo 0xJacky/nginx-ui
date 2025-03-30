@@ -1,18 +1,18 @@
 package user
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
-	"github.com/0xJacky/Nginx-UI/internal/user"
-	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/gin-gonic/gin"
 	"errors"
-	"github.com/uozi-tech/cosy"
-	"github.com/uozi-tech/cosy/logger"
 	"math/rand/v2"
 	"net/http"
 	"sync"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/internal/user"
+	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/gin-gonic/gin"
+	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 var mutex = &sync.Mutex{}
@@ -75,7 +75,7 @@ func Login(c *gin.Context) {
 		case errors.Is(err, user.ErrUserBanned):
 			c.JSON(http.StatusForbidden, user.ErrUserBanned)
 		default:
-			api.ErrHandler(c, err)
+			cosy.ErrHandler(c, err)
 		}
 		user.BanIP(clientIP)
 		return

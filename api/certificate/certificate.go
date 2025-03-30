@@ -1,7 +1,9 @@
 package certificate
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+	"os"
+
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -12,8 +14,6 @@ import (
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
-	"net/http"
-	"os"
 )
 
 type APICertificate struct {
@@ -74,7 +74,7 @@ func GetCert(c *gin.Context) {
 	certModel, err := q.FirstByID(cast.ToUint64(c.Param("id")))
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -114,7 +114,7 @@ func AddCert(c *gin.Context) {
 
 	err := certModel.Insert()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -127,7 +127,7 @@ func AddCert(c *gin.Context) {
 
 	err = content.WriteFile()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -153,7 +153,7 @@ func ModifyCert(c *gin.Context) {
 
 	certModel, err := q.FirstByID(id)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -169,7 +169,7 @@ func ModifyCert(c *gin.Context) {
 	})
 
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -182,7 +182,7 @@ func ModifyCert(c *gin.Context) {
 
 	err = content.WriteFile()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -218,7 +218,7 @@ func SyncCertificate(c *gin.Context) {
 
 	err := db.Where(certModel).FirstOrCreate(certModel).Error
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -231,7 +231,7 @@ func SyncCertificate(c *gin.Context) {
 
 	err = content.WriteFile()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

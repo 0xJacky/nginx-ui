@@ -1,7 +1,11 @@
 package sites
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -9,10 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/samber/lo"
 	"github.com/spf13/cast"
-	"net/http"
-	"os"
-	"path/filepath"
-	"strings"
+	"github.com/uozi-tech/cosy"
 )
 
 func GetSiteList(c *gin.Context) {
@@ -24,13 +25,13 @@ func GetSiteList(c *gin.Context) {
 
 	configFiles, err := os.ReadDir(nginx.GetConfPath("sites-available"))
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
 	enabledConfig, err := os.ReadDir(nginx.GetConfPath("sites-enabled"))
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -41,7 +42,7 @@ func GetSiteList(c *gin.Context) {
 	}
 	sites, err := sTx.Find()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	sitesMap := lo.SliceToMap(sites, func(item *model.Site) (string, *model.Site) {

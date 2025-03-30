@@ -1,7 +1,11 @@
 package config
 
 import (
-	"github.com/0xJacky/Nginx-UI/api"
+	"net/http"
+	"os"
+	"path/filepath"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -10,10 +14,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sashabaranov/go-openai"
 	"github.com/uozi-tech/cosy"
-	"net/http"
-	"os"
-	"path/filepath"
-	"time"
 )
 
 func AddConfig(c *gin.Context) {
@@ -48,14 +48,14 @@ func AddConfig(c *gin.Context) {
 	if !helper.FileExists(dir) {
 		err := os.MkdirAll(dir, 0755)
 		if err != nil {
-			api.ErrHandler(c, err)
+			cosy.ErrHandler(c, err)
 			return
 		}
 	}
 
 	err := os.WriteFile(path, []byte(content), 0644)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -70,7 +70,7 @@ func AddConfig(c *gin.Context) {
 	q := query.Config
 	_, err = q.Where(q.Filepath.Eq(path)).Delete()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -83,13 +83,13 @@ func AddConfig(c *gin.Context) {
 
 	err = q.Create(cfg)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
 	err = config.SyncToRemoteServer(cfg)
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 

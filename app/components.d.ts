@@ -70,6 +70,7 @@ declare module 'vue' {
     ATag: typeof import('ant-design-vue/es')['Tag']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
     ATooltip: typeof import('ant-design-vue/es')['Tooltip']
+    AUploadDragger: typeof import('ant-design-vue/es')['UploadDragger']
     BreadcrumbBreadcrumb: typeof import('./src/components/Breadcrumb/Breadcrumb.vue')['default']
     ChartAreaChart: typeof import('./src/components/Chart/AreaChart.vue')['default']
     ChartRadialBarChart: typeof import('./src/components/Chart/RadialBarChart.vue')['default']
@@ -105,6 +106,7 @@ declare module 'vue' {
     SwitchAppearanceIconsVPIconMoon: typeof import('./src/components/SwitchAppearance/icons/VPIconMoon.vue')['default']
     SwitchAppearanceIconsVPIconSun: typeof import('./src/components/SwitchAppearance/icons/VPIconSun.vue')['default']
     SwitchAppearanceSwitchAppearance: typeof import('./src/components/SwitchAppearance/SwitchAppearance.vue')['default']
+    SystemRestoreSystemRestoreContent: typeof import('./src/components/SystemRestore/SystemRestoreContent.vue')['default']
     TwoFAAuthorization: typeof import('./src/components/TwoFA/Authorization.vue')['default']
     VPSwitchVPSwitch: typeof import('./src/components/VPSwitch/VPSwitch.vue')['default']
   }

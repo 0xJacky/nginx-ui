@@ -3,7 +3,6 @@ package cluster
 import (
 	"net/http"
 
-	"github.com/0xJacky/Nginx-UI/api"
 	analytic2 "github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/upgrader"
 	"github.com/0xJacky/Nginx-UI/internal/version"
@@ -11,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/disk"
+	"github.com/uozi-tech/cosy"
 )
 
 func GetCurrentNode(c *gin.Context) {
@@ -23,7 +23,7 @@ func GetCurrentNode(c *gin.Context) {
 
 	runtimeInfo, err := upgrader.GetRuntimeInfo()
 	if err != nil {
-		api.ErrHandler(c, err)
+		cosy.ErrHandler(c, err)
 		return
 	}
 	cpuInfo, _ := cpu.Info()
