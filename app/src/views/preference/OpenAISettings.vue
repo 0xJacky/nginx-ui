@@ -2,7 +2,7 @@
 import type { Settings } from '@/api/settings'
 import { LLM_MODELS, LLM_PROVIDERS } from '@/constants/llm'
 
-const data: Settings = inject('data')!
+const data: Ref<Settings> = inject('data') as Ref<Settings>
 const errors: Record<string, Record<string, string>> = inject('errors') as Record<string, Record<string, string>>
 
 const models = LLM_MODELS.map(model => ({

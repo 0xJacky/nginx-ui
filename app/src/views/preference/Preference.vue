@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import type { Settings } from '@/api/settings'
-import type { Ref } from 'vue'
 import settings from '@/api/settings'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
 import { useSettingsStore } from '@/pinia'
+import AppSettings from '@/views/preference/AppSettings.vue'
 import AuthSettings from '@/views/preference/AuthSettings.vue'
-import BasicSettings from '@/views/preference/BasicSettings.vue'
 import CertSettings from '@/views/preference/CertSettings.vue'
+import HTTPSettings from '@/views/preference/HTTPSettings.vue'
 import LogrotateSettings from '@/views/preference/LogrotateSettings.vue'
 import NginxSettings from '@/views/preference/NginxSettings.vue'
+import NodeSettings from '@/views/preference/NodeSettings.vue'
 import OpenAISettings from '@/views/preference/OpenAISettings.vue'
+import ServerSettings from '@/views/preference/ServerSettings.vue'
+import TerminalSettings from '@/views/preference/TerminalSettings.vue'
 import { message } from 'ant-design-vue'
 import { storeToRefs } from 'pinia'
 
@@ -23,6 +26,9 @@ const data = ref<Settings>({
     host: '0.0.0.0',
     port: 9000,
     run_mode: 'debug',
+    enable_https: false,
+    ssl_cert: '',
+    ssl_key: '',
   },
   database: {
     name: '',
@@ -61,14 +67,18 @@ const data = ref<Settings>({
     access_log_path: '',
     error_log_path: '',
     config_dir: '',
+    config_path: '',
     log_dir_white_list: [],
     pid_path: '',
+    test_config_cmd: '',
     reload_cmd: '',
     restart_cmd: '',
   },
   node: {
     name: '',
     secret: '',
+    skip_installation: false,
+    demo: false,
     icp_number: '',
     public_security_number: '',
   },
@@ -95,7 +105,7 @@ settings.get().then(r => {
 
 const settingsStore = useSettingsStore()
 const { server_name } = storeToRefs(settingsStore)
-const errors = ref({}) as Ref<Record<string, Record<string, string>>>
+const errors = ref<Record<string, Record<string, string>>>({})
 const refAuthSettings = useTemplateRef('refAuthSettings')
 
 async function save() {
@@ -121,7 +131,7 @@ provide('errors', errors)
 
 const router = useRouter()
 const route = useRoute()
-const activeKey = ref('basic')
+const activeKey = ref('server')
 
 watch(activeKey, () => {
   router.push({
@@ -142,10 +152,34 @@ onMounted(() => {
     <div class="preference-container">
       <ATabs v-model:active-key="activeKey">
         <ATabPane
-          key="basic"
-          :tab="$gettext('Basic')"
+          key="server"
+          :tab="$gettext('Server')"
         >
-          <BasicSettings />
+          <ServerSettings />
+        </ATabPane>
+        <ATabPane
+          key="app"
+          :tab="$gettext('App')"
+        >
+          <AppSettings />
+        </ATabPane>
+        <ATabPane
+          key="node"
+          :tab="$gettext('Node')"
+        >
+          <NodeSettings />
+        </ATabPane>
+        <ATabPane
+          key="http"
+          :tab="$gettext('HTTP')"
+        >
+          <HTTPSettings />
+        </ATabPane>
+        <ATabPane
+          key="terminal"
+          :tab="$gettext('Terminal')"
+        >
+          <TerminalSettings />
         </ATabPane>
         <ATabPane
           key="auth"
@@ -193,7 +227,7 @@ onMounted(() => {
 <style lang="less" scoped>
 .preference-container {
   width: 100%;
-  max-width: 600px;
+  max-width: 750px;
   margin: 0 auto;
   padding: 0 10px;
 }

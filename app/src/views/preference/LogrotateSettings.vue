@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Settings } from '@/api/settings'
 
-const data: Settings = inject('data')!
+const data: Ref<Settings> = inject('data') as Ref<Settings>
 </script>
 
 <template>

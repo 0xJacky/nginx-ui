@@ -8,6 +8,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/cmd"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
+	"github.com/0xJacky/Nginx-UI/internal/system"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/router"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -54,7 +55,19 @@ func Program(confPath string) func(state overseer.State) {
 			Addr:    addr,
 			Handler: cRouter.GetEngine(),
 		}
-		if err := srv.Serve(state.Listener); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		var err error
+		if cSettings.ServerSettings.EnableHTTPS {
+			// Convert SSL certificate and key paths to absolute paths if they are relative
+			sslCert := system.GetAbsolutePath(cSettings.ServerSettings.SSLCert)
+			sslKey := system.GetAbsolutePath(cSettings.ServerSettings.SSLKey)
+
+			logger.Info("Starting HTTPS server")
+			err = srv.ServeTLS(state.Listener, sslCert, sslKey)
+		} else {
+			logger.Info("Starting HTTP server")
+			err = srv.Serve(state.Listener)
+		}
+		if err != nil && !errors.Is(err, http.ErrServerClosed) {
 			logger.Fatalf("listen: %s\n", err)
 		}
 	}

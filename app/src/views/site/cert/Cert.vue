@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Cert, CertificateInfo } from '@/api/cert'
+import type { NgxDirective } from '@/api/ngx'
 import CertInfo from '@/views/site/cert/CertInfo.vue'
 import ChangeCert from '@/views/site/cert/components/ChangeCert/ChangeCert.vue'
 import IssueCert from '@/views/site/cert/IssueCert.vue'
@@ -10,6 +11,8 @@ const props = defineProps<{
   certInfo?: CertificateInfo[]
   siteEnabled: boolean
 }>()
+
+const current_server_directives = defineModel<NgxDirective[]>('current_server_directives')
 
 const enabled = defineModel<boolean>('enabled', {
   default: () => false,
@@ -24,6 +27,30 @@ watch(() => props.certInfo, () => {
 
 function handleCertChange(certs: Cert[]) {
   changedCerts.value = certs
+
+  // 更新 NgxDirective
+  if (current_server_directives.value) {
+    // 过滤掉现有的证书配置
+    const filteredDirectives = current_server_directives.value
+      .filter(v => v.directive !== 'ssl_certificate' && v.directive !== 'ssl_certificate_key')
+
+    // 添加新的证书配置
+    const newDirectives = [...filteredDirectives]
+
+    certs.forEach(cert => {
+      newDirectives.push({
+        directive: 'ssl_certificate',
+        params: cert.ssl_certificate_path,
+      })
+      newDirectives.push({
+        directive: 'ssl_certificate_key',
+        params: cert.ssl_certificate_key_path,
+      })
+    })
+
+    // 更新 directives
+    current_server_directives.value = newDirectives
+  }
 }
 </script>
 

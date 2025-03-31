@@ -3,11 +3,14 @@ package settings
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/system"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
+	"github.com/jpillora/overseer"
 	"github.com/uozi-tech/cosy"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
@@ -61,6 +64,8 @@ func GetSettings(c *gin.Context) {
 
 func SaveSettings(c *gin.Context) {
 	var json struct {
+		App       cSettings.App      `json:"app"`
+		Server    cSettings.Server   `json:"server"`
 		Auth      settings.Auth      `json:"auth"`
 		Cert      settings.Cert      `json:"cert"`
 		Http      settings.HTTP      `json:"http"`
@@ -78,6 +83,22 @@ func SaveSettings(c *gin.Context) {
 		go cron.RestartLogrotate()
 	}
 
+	// Validate SSL certificates if HTTPS is enabled
+	needRestart := false
+	if json.Server.EnableHTTPS != cSettings.ServerSettings.EnableHTTPS {
+		needRestart = true
+	}
+
+	if json.Server.EnableHTTPS {
+		err := system.ValidateSSLCertificates(json.Server.SSLCert, json.Server.SSLKey)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
+	cSettings.ProtectedFill(cSettings.AppSettings, &json.App)
+	cSettings.ProtectedFill(cSettings.ServerSettings, &json.Server)
 	cSettings.ProtectedFill(settings.AuthSettings, &json.Auth)
 	cSettings.ProtectedFill(settings.CertSettings, &json.Cert)
 	cSettings.ProtectedFill(settings.HTTPSettings, &json.Http)
@@ -89,6 +110,13 @@ func SaveSettings(c *gin.Context) {
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
+	}
+
+	if needRestart {
+		go func() {
+			time.Sleep(2 * time.Second)
+			overseer.Restart()
+		}()
 	}
 
 	GetSettings(c)
