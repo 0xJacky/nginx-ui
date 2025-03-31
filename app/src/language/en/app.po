@@ -1474,6 +1474,11 @@ msgstr ""
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr ""
 
+#: src/constants/errors/middleware.ts:4
+#, fuzzy
+msgid "Form parse failed"
+msgstr "Enable failed"
+
 #: src/views/config/ConfigEditor.vue:216
 msgid "Format Code"
 msgstr ""
@@ -3027,6 +3032,15 @@ msgstr "Install"
 msgid "SSL Certificate Content"
 msgstr "Certificate Status"
 
+#: src/constants/errors/system.ts:8
+msgid "SSL certificate file must be under Nginx configuration directory: {0}"
+msgstr ""
+
+#: src/constants/errors/system.ts:6
+#, fuzzy
+msgid "SSL certificate file not found"
+msgstr "Certificate Status"
+
 #: src/views/certificate/CertificateEditor.vue:224
 #, fuzzy
 msgid "SSL Certificate Key Content"
@@ -3043,10 +3057,27 @@ msgstr "Certificate Status"
 msgid "SSL Certificate Path"
 msgstr "Certificate Status"
 
+#: src/constants/errors/system.ts:4
+msgid "SSL certificate path is required when HTTPS is enabled"
+msgstr ""
+
+#: src/constants/errors/system.ts:9
+msgid "SSL key file must be under Nginx configuration directory: {0}"
+msgstr ""
+
+#: src/constants/errors/system.ts:7
+#, fuzzy
+msgid "SSL key file not found"
+msgstr "File Not Found"
+
 #: src/views/preference/ServerSettings.vue:40
 #, fuzzy
 msgid "SSL Key Path"
 msgstr "Certificate Status"
+
+#: src/constants/errors/system.ts:5
+msgid "SSL key path is required when HTTPS is enabled"
+msgstr ""
 
 #: src/views/other/Login.vue:197
 #, fuzzy
@@ -3755,10 +3786,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Duplicate %{conf_name} to %{node_name} successfully"
 #~ msgstr "Saved successfully"
-
-#, fuzzy
-#~ msgid "Duplicate failed"
-#~ msgstr "Enable failed"
 
 #, fuzzy
 #~ msgid "Duplicate successfully"

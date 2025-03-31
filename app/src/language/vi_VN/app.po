@@ -1474,6 +1474,11 @@ msgstr ""
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr "Người dùng Trung Quốc: https://mirror.ghproxy.com/"
 
+#: src/constants/errors/middleware.ts:4
+#, fuzzy
+msgid "Form parse failed"
+msgstr "Nhân bản thất bại"
+
 #: src/views/config/ConfigEditor.vue:216
 msgid "Format Code"
 msgstr "Định dạng code"
@@ -3020,6 +3025,15 @@ msgstr "Cài đặt"
 msgid "SSL Certificate Content"
 msgstr ""
 
+#: src/constants/errors/system.ts:8
+msgid "SSL certificate file must be under Nginx configuration directory: {0}"
+msgstr ""
+
+#: src/constants/errors/system.ts:6
+#, fuzzy
+msgid "SSL certificate file not found"
+msgstr "Không tìm thấy tệp tin"
+
 #: src/views/certificate/CertificateEditor.vue:224
 msgid "SSL Certificate Key Content"
 msgstr ""
@@ -3033,10 +3047,27 @@ msgstr ""
 msgid "SSL Certificate Path"
 msgstr ""
 
+#: src/constants/errors/system.ts:4
+msgid "SSL certificate path is required when HTTPS is enabled"
+msgstr ""
+
+#: src/constants/errors/system.ts:9
+msgid "SSL key file must be under Nginx configuration directory: {0}"
+msgstr ""
+
+#: src/constants/errors/system.ts:7
+#, fuzzy
+msgid "SSL key file not found"
+msgstr "Không tìm thấy tệp tin"
+
 #: src/views/preference/ServerSettings.vue:40
 #, fuzzy
 msgid "SSL Key Path"
 msgstr "Đường dẫn"
+
+#: src/constants/errors/system.ts:5
+msgid "SSL key path is required when HTTPS is enabled"
+msgstr ""
 
 #: src/views/other/Login.vue:197
 msgid "SSO Login"
@@ -3748,10 +3779,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Duplicate %{conf_name} to %{node_name} successfully"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
-
-#, fuzzy
-#~ msgid "Duplicate failed"
-#~ msgstr "Nhân bản thất bại"
 
 #, fuzzy
 #~ msgid "Duplicate successfully"

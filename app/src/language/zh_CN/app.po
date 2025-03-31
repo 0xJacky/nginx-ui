@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-31 10:06+0800\n"
+"PO-Revision-Date: 2025-03-31 10:36+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
 "projects/nginx-ui/frontend/zh_Hans/>\n"
@@ -1349,6 +1349,10 @@ msgstr "中国用户"
 #: src/views/preference/HTTPSettings.vue:19
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr "中国用户：https://mirror.ghproxy.com/"
+
+#: src/constants/errors/middleware.ts:4
+msgid "Form parse failed"
+msgstr "表单解析失败"
 
 #: src/views/config/ConfigEditor.vue:216
 msgid "Format Code"
@@ -2796,6 +2800,14 @@ msgstr "跳过安装"
 msgid "SSL Certificate Content"
 msgstr "SSL 证书内容"
 
+#: src/constants/errors/system.ts:8
+msgid "SSL certificate file must be under Nginx configuration directory: {0}"
+msgstr "SSL 证书文件必须位于 Nginx 配置目录下：{0}"
+
+#: src/constants/errors/system.ts:6
+msgid "SSL certificate file not found"
+msgstr "未找到 SSL 证书文件"
+
 #: src/views/certificate/CertificateEditor.vue:224
 msgid "SSL Certificate Key Content"
 msgstr "SSL 证书密钥内容"
@@ -2809,9 +2821,25 @@ msgstr "SSL证书密钥路径"
 msgid "SSL Certificate Path"
 msgstr "SSL证书路径"
 
+#: src/constants/errors/system.ts:4
+msgid "SSL certificate path is required when HTTPS is enabled"
+msgstr "启用 HTTPS 时需要配置 SSL 证书路径"
+
+#: src/constants/errors/system.ts:9
+msgid "SSL key file must be under Nginx configuration directory: {0}"
+msgstr "SSL 密钥文件必须位于 Nginx 配置目录下：{0}"
+
+#: src/constants/errors/system.ts:7
+msgid "SSL key file not found"
+msgstr "未找到 SSL 密钥文件"
+
 #: src/views/preference/ServerSettings.vue:40
 msgid "SSL Key Path"
 msgstr "SSL 密钥路径"
+
+#: src/constants/errors/system.ts:5
+msgid "SSL key path is required when HTTPS is enabled"
+msgstr "启用 HTTPS 时需要 SSL 密钥路径"
 
 #: src/views/other/Login.vue:197
 msgid "SSO Login"
@@ -3492,9 +3520,6 @@ msgstr "你的 Passkeys"
 
 #~ msgid "Duplicate %{conf_name} to %{node_name} successfully"
 #~ msgstr "成功地将%{conf_name}复制到%{node_name}"
-
-#~ msgid "Duplicate failed"
-#~ msgstr "复制失败"
 
 #~ msgid "Duplicate successfully"
 #~ msgstr "复制成功"
