@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 const props = withDefaults(defineProps<{
-  percent: number
+  percent?: number
 }>(), {
   percent: 0,
 })

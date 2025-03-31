@@ -3,12 +3,15 @@ import type { Settings } from '@/api/settings'
 import { DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
 import Draggable from 'vuedraggable'
 
-const data: Settings = inject('data') as Settings
+const data: Ref<Settings> = inject('data') as Ref<Settings>
 const errors: Record<string, Record<string, string>> = inject('errors') as Record<string, Record<string, string>>
 </script>
 
 <template>
   <AForm layout="vertical">
+    <AFormItem :label="$gettext('Email')">
+      <p>{{ data.cert.email }}</p>
+    </AFormItem>
     <AFormItem :label="$gettext('HTTP Challenge Port')">
       <AInputNumber v-model:value="data.cert.http_challenge_port" />
     </AFormItem>

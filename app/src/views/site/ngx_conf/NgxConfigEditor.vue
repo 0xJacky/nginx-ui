@@ -12,7 +12,7 @@ import { Modal } from 'ant-design-vue'
 
 const props = withDefaults(defineProps<{
   autoCert?: boolean
-  enabled: boolean
+  enabled?: boolean
   certInfo?: Record<number, CertificateInfo[]>
   context?: 'http' | 'stream'
 }>(), {

@@ -51,9 +51,9 @@ msgstr "Action"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:151
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:186
-#: src/views/preference/CertSettings.vue:42
+#: src/views/preference/CertSettings.vue:45
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:117
-#: src/views/site/ngx_conf/NgxServer.vue:162
+#: src/views/site/ngx_conf/NgxServer.vue:163
 #: src/views/site/ngx_conf/NgxUpstream.vue:154
 #: src/views/stream/StreamList.vue:121
 msgid "Add"
@@ -140,6 +140,11 @@ msgstr "Jeton d'API"
 msgid "API Type"
 msgstr "Jeton d'API"
 
+#: src/views/preference/Preference.vue:162
+#, fuzzy
+msgid "App"
+msgstr "Appliquer"
+
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:103
 msgid "Apply"
 msgstr "Appliquer"
@@ -213,7 +218,7 @@ msgstr "Voulez-vous vraiment supprimer cette directive ?"
 msgid "Are you sure you want to remove this directive?"
 msgstr "Voulez-vous vraiment supprimer cette directive ?"
 
-#: src/views/preference/CertSettings.vue:68
+#: src/views/preference/CertSettings.vue:71
 #, fuzzy
 msgid "Are you sure you want to remove this item?"
 msgstr "Voulez-vous vraiment supprimer cette directive ?"
@@ -239,7 +244,7 @@ msgstr "Tenter de corriger"
 msgid "Attempts"
 msgstr "Tentatives"
 
-#: src/views/preference/Preference.vue:152
+#: src/views/preference/Preference.vue:186
 #, fuzzy
 msgid "Auth"
 msgstr "Autheur"
@@ -325,7 +330,6 @@ msgid "Base information"
 msgstr "Information générale"
 
 #: src/views/config/ConfigEditor.vue:241
-#: src/views/preference/Preference.vue:146
 #: src/views/site/site_edit/RightSettings.vue:79
 #: src/views/stream/components/RightSettings.vue:74
 msgid "Basic"
@@ -369,7 +373,7 @@ msgstr "Build avec"
 msgid "CA Dir"
 msgstr ""
 
-#: src/views/preference/CertSettings.vue:16
+#: src/views/preference/CertSettings.vue:19
 msgid "CADir"
 msgstr ""
 
@@ -401,7 +405,7 @@ msgstr "Impossible de retirer l'utilisateur initial"
 msgid "Category"
 msgstr "Catégorie"
 
-#: src/views/preference/Preference.vue:158
+#: src/views/preference/Preference.vue:192
 #, fuzzy
 msgid "Cert"
 msgstr "Auto Cert"
@@ -420,7 +424,7 @@ msgstr "Changer de certificat"
 msgid "Certificate parse error"
 msgstr "Le certificat a expiré"
 
-#: src/views/preference/CertSettings.vue:24
+#: src/views/preference/CertSettings.vue:27
 #, fuzzy
 msgid "Certificate Renewal Interval"
 msgstr "Le certificat est valide"
@@ -431,7 +435,7 @@ msgid "Certificate renewed successfully"
 msgstr "Désactivé avec succès"
 
 #: src/views/certificate/CertificateEditor.vue:128
-#: src/views/site/cert/Cert.vue:33
+#: src/views/site/cert/Cert.vue:60
 #, fuzzy
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
@@ -458,7 +462,7 @@ msgstr "Méthode de challenge"
 msgid "Change Certificate"
 msgstr "Changer de certificat"
 
-#: src/views/site/cert/Cert.vue:52
+#: src/views/site/cert/Cert.vue:79
 #, fuzzy
 msgid "Changed Certificate"
 msgid_plural "Changed Certificates"
@@ -539,7 +543,7 @@ msgstr "Commentaires"
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:113
 #: src/views/site/ngx_conf/LocationEditor.vue:103
 #: src/views/site/ngx_conf/LocationEditor.vue:134
-#: src/views/site/ngx_conf/NgxServer.vue:134
+#: src/views/site/ngx_conf/NgxServer.vue:135
 msgid "Comments"
 msgstr "Commentaires"
 
@@ -684,7 +688,7 @@ msgstr "Version actuelle"
 msgid "Custom"
 msgstr "Custom"
 
-#: src/views/preference/BasicSettings.vue:34
+#: src/views/preference/NodeSettings.vue:19
 #, fuzzy
 msgid ""
 "Customize the name of local node to be displayed in the environment "
@@ -701,7 +705,7 @@ msgstr "Dashboard"
 msgid "Database (Optional, default: database)"
 msgstr "Base de données (Facultatif, par défaut : database)"
 
-#: src/views/preference/CertSettings.vue:29
+#: src/views/preference/CertSettings.vue:32
 msgid "Days"
 msgstr "Jours"
 
@@ -777,6 +781,10 @@ msgstr "Supprimer le site : %{site_name}"
 #, fuzzy
 msgid "Deleted successfully"
 msgstr "Désactivé avec succès"
+
+#: src/views/preference/NodeSettings.vue:28
+msgid "Demo"
+msgstr ""
 
 #: src/views/config/ConfigEditor.vue:285
 msgid "Deploy"
@@ -872,6 +880,9 @@ msgstr "Dupliqué avec succès"
 
 #: src/views/environment/envColumns.tsx:61
 #: src/views/environment/envColumns.tsx:79
+#: src/views/preference/HTTPSettings.vue:24
+#: src/views/preference/NodeSettings.vue:25
+#: src/views/preference/NodeSettings.vue:30
 #: src/views/site/site_edit/SiteEdit.vue:190
 #: src/views/site/site_list/columns.tsx:53
 #: src/views/site/site_list/columns.tsx:62 src/views/stream/StreamEdit.vue:176
@@ -1022,6 +1033,7 @@ msgid "Edit Stream"
 msgstr "Modifier le site"
 
 #: src/views/certificate/ACMEUser.vue:25
+#: src/views/preference/CertSettings.vue:12
 #, fuzzy
 msgid "Email"
 msgstr "Email (*)"
@@ -1048,6 +1060,11 @@ msgstr "Échec de l'activation du renouvellement automatique pour %{name}"
 #: src/views/site/site_add/SiteAdd.vue:43
 msgid "Enable failed"
 msgstr "Échec de l'activation"
+
+#: src/views/preference/ServerSettings.vue:29
+#, fuzzy
+msgid "Enable HTTPS"
+msgstr "Activer TLS"
 
 #: src/components/Notification/notifications.ts:53 src/language/constants.ts:54
 #, fuzzy
@@ -1100,7 +1117,10 @@ msgstr "Activer TLS"
 
 #: src/views/environment/envColumns.tsx:70
 #: src/views/environment/envColumns.tsx:76
+#: src/views/preference/HTTPSettings.vue:24
 #: src/views/preference/LogrotateSettings.vue:19
+#: src/views/preference/NodeSettings.vue:25
+#: src/views/preference/NodeSettings.vue:30
 #: src/views/site/site_edit/RightSettings.vue:82
 #: src/views/site/site_edit/SiteEdit.vue:184
 #: src/views/site/site_list/columns.tsx:49
@@ -1470,15 +1490,20 @@ msgstr ""
 "Suivez les instructions dans la boîte de dialogue pour compléter le "
 "processus d'enregistrement de la clé d'accès."
 
-#: src/views/preference/BasicSettings.vue:59
-#: src/views/preference/BasicSettings.vue:71
+#: src/views/preference/NodeSettings.vue:42
+#: src/views/preference/NodeSettings.vue:54
 msgid "For Chinese user"
 msgstr "Pour utilisateur chinois"
 
-#: src/views/preference/BasicSettings.vue:47
+#: src/views/preference/HTTPSettings.vue:19
 #, fuzzy
 msgid "For Chinese user: https://mirror.ghproxy.com/"
 msgstr "Utilisateur chinois : https://mirror.ghproxy.com/"
+
+#: src/constants/errors/middleware.ts:4
+#, fuzzy
+msgid "Form parse failed"
+msgstr "Dupliquer"
 
 #: src/views/config/ConfigEditor.vue:216
 msgid "Format Code"
@@ -1527,7 +1552,7 @@ msgstr "Erreur d'obtention des informations sur la version"
 msgid "Getting the certificate, please wait..."
 msgstr "Obtention du certificat, veuillez patienter..."
 
-#: src/views/preference/BasicSettings.vue:39
+#: src/views/preference/HTTPSettings.vue:11
 msgid "Github Proxy"
 msgstr "Proxy Github"
 
@@ -1543,23 +1568,25 @@ msgstr "Cacher"
 msgid "Home"
 msgstr "Menu principal"
 
-#: src/views/preference/CertSettings.vue:12
-msgid "HTTP Challenge Port"
-msgstr "Port de challenge HTTP"
-
-#: src/views/preference/BasicSettings.vue:11
-msgid "HTTP Host"
+#: src/views/preference/ServerSettings.vue:18
+#, fuzzy
+msgid "Host"
 msgstr "Host HTTP"
 
-#: src/views/preference/BasicSettings.vue:14
-msgid "HTTP Port"
-msgstr "Port HTTP"
+#: src/views/preference/Preference.vue:174
+#, fuzzy
+msgid "HTTP"
+msgstr "HTTP01"
+
+#: src/views/preference/CertSettings.vue:15
+msgid "HTTP Challenge Port"
+msgstr "Port de challenge HTTP"
 
 #: src/views/site/cert/components/AutoCertStepOne.vue:70
 msgid "HTTP01"
 msgstr "HTTP01"
 
-#: src/views/preference/BasicSettings.vue:51
+#: src/views/preference/NodeSettings.vue:34
 msgid "ICP Number"
 msgstr ""
 
@@ -1623,6 +1650,10 @@ msgstr "Entrez le code de l'application :"
 #: src/components/TwoFA/Authorization.vue:72
 msgid "Input the recovery code:"
 msgstr "Entrez le code de récupération :"
+
+#: src/views/preference/HTTPSettings.vue:22
+msgid "Insecure Skip Verify"
+msgstr ""
 
 #: src/routes/modules/auth.ts:8 src/views/other/Install.vue:185
 msgid "Install"
@@ -1727,7 +1758,7 @@ msgstr "Certificat délivré avec succès"
 msgid "Issuer: %{issuer}"
 msgstr "Auteur : %{issuer}"
 
-#: src/views/preference/BasicSettings.vue:20
+#: src/views/preference/AppSettings.vue:10
 msgid "Jwt Secret"
 msgstr "Secret Jwt"
 
@@ -1847,7 +1878,7 @@ msgstr "Connexion réussie"
 msgid "Logout successful"
 msgstr "Déconnexion réussie"
 
-#: src/views/preference/Preference.vue:176
+#: src/views/preference/Preference.vue:210
 msgid "Logrotate"
 msgstr ""
 
@@ -2001,7 +2032,7 @@ msgstr "Nouvelle version publiée"
 msgid "Next"
 msgstr "Suivant"
 
-#: src/views/preference/Preference.vue:164
+#: src/views/preference/Preference.vue:198
 #, fuzzy
 msgid "Nginx"
 msgstr "Journal Nginx"
@@ -2049,6 +2080,11 @@ msgstr "Erreur d'analyse de configuration Nginx"
 msgid "Nginx Configuration Parse Error"
 msgstr "Erreur d'analyse de configuration Nginx"
 
+#: src/views/preference/NginxSettings.vue:18
+#, fuzzy
+msgid "Nginx Configuration Path"
+msgstr "Erreur d'analyse de configuration Nginx"
+
 #: src/views/preference/NginxSettings.vue:15
 #, fuzzy
 msgid "Nginx Configurations Directory"
@@ -2070,17 +2106,17 @@ msgstr ""
 msgid "Nginx Log"
 msgstr "Journal Nginx"
 
-#: src/views/preference/NginxSettings.vue:18
+#: src/views/preference/NginxSettings.vue:21
 #, fuzzy
 msgid "Nginx Log Directory Whitelist"
 msgstr "Erreur d'analyse de configuration Nginx"
 
-#: src/views/preference/NginxSettings.vue:27
+#: src/views/preference/NginxSettings.vue:30
 #, fuzzy
 msgid "Nginx PID Path"
 msgstr "Chemin du journal des erreurs Nginx"
 
-#: src/views/preference/NginxSettings.vue:30
+#: src/views/preference/NginxSettings.vue:36
 #, fuzzy
 msgid "Nginx Reload Command"
 msgstr "Commande de démarrage du terminal"
@@ -2089,7 +2125,7 @@ msgstr "Commande de démarrage du terminal"
 msgid "Nginx reloaded successfully"
 msgstr "Nginx a été rechargé avec succès"
 
-#: src/views/preference/NginxSettings.vue:33
+#: src/views/preference/NginxSettings.vue:39
 #, fuzzy
 msgid "Nginx Restart Command"
 msgstr "Commande de démarrage du terminal"
@@ -2097,6 +2133,11 @@ msgstr "Commande de démarrage du terminal"
 #: src/components/NginxControl/NginxControl.vue:40
 msgid "Nginx restarted successfully"
 msgstr "Nginx a redémarré avec succès"
+
+#: src/views/preference/NginxSettings.vue:33
+#, fuzzy
+msgid "Nginx Test Config Command"
+msgstr "Commande de démarrage du terminal"
 
 #: src/constants/errors/system.ts:2
 msgid "Nginx UI already installed"
@@ -2123,7 +2164,7 @@ msgstr "Erreur d'analyse de configuration Nginx"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:538
 #: src/views/notification/Notification.vue:37
 #: src/views/preference/AuthSettings.vue:164
-#: src/views/preference/CertSettings.vue:70
+#: src/views/preference/CertSettings.vue:73
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:88
 #: src/views/site/site_list/SiteList.vue:143
@@ -2131,12 +2172,17 @@ msgstr "Erreur d'analyse de configuration Nginx"
 msgid "No"
 msgstr "Non"
 
-#: src/views/preference/BasicSettings.vue:30
+#: src/views/preference/Preference.vue:168
+#, fuzzy
+msgid "Node"
+msgstr "Nom d'utilisateur"
+
+#: src/views/preference/NodeSettings.vue:15
 #, fuzzy
 msgid "Node name"
 msgstr "Nom d'utilisateur"
 
-#: src/views/preference/BasicSettings.vue:23
+#: src/views/preference/NodeSettings.vue:11
 #, fuzzy
 msgid "Node Secret"
 msgstr "Secret Jwt"
@@ -2238,7 +2284,7 @@ msgstr ""
 msgid "Only zip files are allowed"
 msgstr ""
 
-#: src/views/preference/Preference.vue:170
+#: src/views/preference/Preference.vue:204
 msgid "OpenAI"
 msgstr "OpenAI"
 
@@ -2273,6 +2319,11 @@ msgstr ""
 #: src/views/config/ConfigEditor.vue:298
 msgid "Overwrite exist file"
 msgstr ""
+
+#: src/views/preference/AppSettings.vue:13
+#, fuzzy
+msgid "Page Size"
+msgstr "Gérer les sites"
 
 #: src/views/site/ngx_conf/directive/DirectiveAdd.vue:94
 msgid "Params"
@@ -2420,7 +2471,7 @@ msgstr "Veuillez saisir votre mot de passe !"
 msgid "Please input your username!"
 msgstr "Veuillez saisir votre nom d'utilisateur !"
 
-#: src/views/other/Install.vue:110 src/views/system/Backup/SystemRestore.vue:12
+#: src/views/other/Install.vue:110 src/views/system/Backup/SystemRestore.vue:10
 msgid "Please log in."
 msgstr ""
 
@@ -2442,13 +2493,18 @@ msgstr "Veuillez renseigner un nom de fichier"
 msgid "Please select at least one node to upgrade"
 msgstr ""
 
+#: src/views/preference/ServerSettings.vue:21
+#, fuzzy
+msgid "Port"
+msgstr "Port HTTP"
+
 #: src/views/environment/BatchUpgrader.vue:167
 #: src/views/environment/BatchUpgrader.vue:220 src/views/system/Upgrade.vue:194
 #: src/views/system/Upgrade.vue:245
 msgid "Pre-release"
 msgstr ""
 
-#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:141
+#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:151
 msgid "Preference"
 msgstr "Préférence"
 
@@ -2478,7 +2534,7 @@ msgstr "Fournisseur"
 msgid "Proxy"
 msgstr "Proxy d'API"
 
-#: src/views/preference/BasicSettings.vue:63
+#: src/views/preference/NodeSettings.vue:46
 msgid "Public Security Number"
 msgstr ""
 
@@ -2522,7 +2578,7 @@ msgid ""
 "2FA device. Each code can only be used once."
 msgstr ""
 
-#: src/views/preference/CertSettings.vue:37
+#: src/views/preference/CertSettings.vue:40
 msgid "Recursive Nameservers"
 msgstr ""
 
@@ -2769,7 +2825,7 @@ msgstr ""
 msgid "RPID"
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:17
+#: src/views/preference/ServerSettings.vue:24
 msgid "Run Mode"
 msgstr "Mode d'exécution"
 
@@ -2784,7 +2840,7 @@ msgstr "En cours d'éxécution"
 #: src/views/config/components/ConfigName.vue:56
 #: src/views/config/ConfigEditor.vue:222
 #: src/views/preference/components/Passkey.vue:130
-#: src/views/preference/Preference.vue:187
+#: src/views/preference/Preference.vue:221
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
 #: src/views/site/site_edit/components/ConfigName.vue:52
 #: src/views/site/site_edit/SiteEdit.vue:271
@@ -2846,7 +2902,7 @@ msgstr "Dupliqué avec succès"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
 #: src/views/certificate/CertificateEditor.vue:49
-#: src/views/preference/Preference.vue:113
+#: src/views/preference/Preference.vue:123
 msgid "Save successfully"
 msgstr "Sauvegarde réussie"
 
@@ -2893,6 +2949,11 @@ msgstr ""
 msgid "Send"
 msgstr "Envoyer"
 
+#: src/views/preference/Preference.vue:156
+#, fuzzy
+msgid "Server"
+msgstr "Informations sur le serveur"
+
 #: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
 msgstr "Informations sur le serveur"
@@ -2910,7 +2971,7 @@ msgstr ""
 msgid "Session not found"
 msgstr "Fichier introuvable"
 
-#: src/views/preference/CertSettings.vue:33
+#: src/views/preference/CertSettings.vue:36
 msgid ""
 "Set the recursive nameservers to override the systems nameservers for the "
 "step of DNS challenge."
@@ -2997,10 +3058,24 @@ msgstr "Directive"
 msgid "Sites-enabled directory not exist"
 msgstr "Directive"
 
+#: src/views/preference/NodeSettings.vue:23
+#, fuzzy
+msgid "Skip Installation"
+msgstr "Installer"
+
 #: src/views/certificate/CertificateEditor.vue:211
 #, fuzzy
 msgid "SSL Certificate Content"
 msgstr "Contenu de la certification SSL"
+
+#: src/constants/errors/system.ts:8
+msgid "SSL certificate file must be under Nginx configuration directory: {0}"
+msgstr ""
+
+#: src/constants/errors/system.ts:6
+#, fuzzy
+msgid "SSL certificate file not found"
+msgstr "Contenu de la clé de certification SSL"
 
 #: src/views/certificate/CertificateEditor.vue:224
 #, fuzzy
@@ -3012,8 +3087,31 @@ msgid "SSL Certificate Key Path"
 msgstr "Chemin de la clé du certificat SSL"
 
 #: src/views/certificate/CertificateEditor.vue:175
+#: src/views/preference/ServerSettings.vue:36
 msgid "SSL Certificate Path"
 msgstr "Chemin du certificat SSL"
+
+#: src/constants/errors/system.ts:4
+msgid "SSL certificate path is required when HTTPS is enabled"
+msgstr ""
+
+#: src/constants/errors/system.ts:9
+msgid "SSL key file must be under Nginx configuration directory: {0}"
+msgstr ""
+
+#: src/constants/errors/system.ts:7
+#, fuzzy
+msgid "SSL key file not found"
+msgstr "Fichier introuvable"
+
+#: src/views/preference/ServerSettings.vue:40
+#, fuzzy
+msgid "SSL Key Path"
+msgstr "Chemin de la clé du certificat SSL"
+
+#: src/constants/errors/system.ts:5
+msgid "SSL key path is required when HTTPS is enabled"
+msgstr ""
 
 #: src/views/other/Login.vue:197
 #, fuzzy
@@ -3191,7 +3289,7 @@ msgstr ""
 msgid "System Restore"
 msgstr "Système"
 
-#: src/views/other/Install.vue:106 src/views/system/Backup/SystemRestore.vue:8
+#: src/views/other/Install.vue:106 src/views/system/Backup/SystemRestore.vue:6
 #, fuzzy
 msgid "System restored successfully."
 msgstr "Nginx a redémarré avec succès"
@@ -3201,11 +3299,12 @@ msgstr "Nginx a redémarré avec succès"
 msgid "Task not found"
 msgstr "Fichier introuvable"
 
-#: src/routes/modules/terminal.ts:10 src/views/terminal/Terminal.vue:114
+#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:180
+#: src/views/terminal/Terminal.vue:114
 msgid "Terminal"
 msgstr "Terminal"
 
-#: src/views/preference/BasicSettings.vue:26
+#: src/views/preference/TerminalSettings.vue:9
 msgid "Terminal Start Command"
 msgstr "Commande de démarrage du terminal"
 
@@ -3223,7 +3322,7 @@ msgstr ""
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "Le nom de fichier ne peut pas contenir les caractères suivants : %{c}"
 
-#: src/views/preference/BasicSettings.vue:54
+#: src/views/preference/NodeSettings.vue:37
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
@@ -3250,7 +3349,7 @@ msgid ""
 "dashes, colons, and dots."
 msgstr ""
 
-#: src/views/preference/BasicSettings.vue:33
+#: src/views/preference/NodeSettings.vue:18
 msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
 "dashes, colons, and dots."
@@ -3271,7 +3370,7 @@ msgstr "Chemin de la clé du certificat SSL"
 msgid "The path exists, but the file is not a private key"
 msgstr "Chemin de la clé du certificat SSL"
 
-#: src/views/preference/BasicSettings.vue:66
+#: src/views/preference/NodeSettings.vue:49
 msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
 "hyphens, dashes, colons, and dots."
@@ -3294,8 +3393,8 @@ msgstr ""
 "dont vous avez besoin pour obtenir le certificat, prendre en charge "
 "plusieurs domaines."
 
-#: src/views/preference/BasicSettings.vue:42
-#: src/views/preference/CertSettings.vue:19
+#: src/views/preference/CertSettings.vue:22
+#: src/views/preference/HTTPSettings.vue:14
 msgid "The url is invalid"
 msgstr ""
 
@@ -3655,7 +3754,7 @@ msgid "Writing certificate to disk"
 msgstr "Écriture du certificat sur le disque"
 
 #: src/views/preference/AuthSettings.vue:163
-#: src/views/preference/CertSettings.vue:69
+#: src/views/preference/CertSettings.vue:72
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:96
 #: src/views/site/ngx_conf/LocationEditor.vue:87
 msgid "Yes"
@@ -3732,10 +3831,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Duplicate %{conf_name} to %{node_name} successfully"
 #~ msgstr "Dupliqué avec succès"
-
-#, fuzzy
-#~ msgid "Duplicate failed"
-#~ msgstr "Dupliquer"
 
 #, fuzzy
 #~ msgid "Duplicate successfully"

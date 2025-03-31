@@ -14,7 +14,7 @@ withDefaults(defineProps<{
   certInfo?: {
     [key: number]: CertificateInfo[]
   }
-  context: 'http' | 'stream'
+  context?: 'http' | 'stream'
 }>(), {
   context: 'http',
 })
@@ -123,6 +123,7 @@ provide('ngx_directives', ngx_directives)
           <Cert
             v-if="current_support_ssl"
             v-model:enabled="autoCert"
+            v-model:current_server_directives="ngx_config.servers[current_server_index].directives"
             class="mb-4"
             :site-enabled="enabled"
             :config-name="ngx_config.name"

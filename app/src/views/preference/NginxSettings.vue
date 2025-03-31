@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Settings } from '@/api/settings'
 
-const data: Settings = inject('data')!
+const data: Ref<Settings> = inject('data') as Ref<Settings>
 </script>
 
 <template>
@@ -15,6 +15,9 @@ const data: Settings = inject('data')!
     <AFormItem :label="$gettext('Nginx Configurations Directory')">
       {{ data.nginx.config_dir }}
     </AFormItem>
+    <AFormItem :label="$gettext('Nginx Configuration Path')">
+      <p>{{ data.nginx.config_path }}</p>
+    </AFormItem>
     <AFormItem :label="$gettext('Nginx Log Directory Whitelist')">
       <div
         v-for="dir in data.nginx.log_dir_white_list"
@@ -26,6 +29,9 @@ const data: Settings = inject('data')!
     </AFormItem>
     <AFormItem :label="$gettext('Nginx PID Path')">
       {{ data.nginx.pid_path }}
+    </AFormItem>
+    <AFormItem :label="$gettext('Nginx Test Config Command')">
+      <p>{{ data.nginx.test_config_cmd }}</p>
     </AFormItem>
     <AFormItem :label="$gettext('Nginx Reload Command')">
       {{ data.nginx.reload_cmd }}

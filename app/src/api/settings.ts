@@ -9,6 +9,9 @@ export interface ServerSettings {
   host: string
   port: number
   run_mode: 'debug' | 'release'
+  enable_https: boolean
+  ssl_cert: string
+  ssl_key: string
 }
 
 export interface DatabaseSettings {
@@ -54,8 +57,10 @@ export interface NginxSettings {
   access_log_path: string
   error_log_path: string
   config_dir: string
+  config_path: string
   log_dir_white_list: string[]
   pid_path: string
+  test_config_cmd: string
   reload_cmd: string
   restart_cmd: string
 }
@@ -63,6 +68,8 @@ export interface NginxSettings {
 export interface NodeSettings {
   name: string
   secret: string
+  skip_installation: boolean
+  demo: boolean
   icp_number: string
   public_security_number: string
 }

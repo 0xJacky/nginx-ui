@@ -12,7 +12,7 @@ import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import PasskeyRegistration from './components/Passkey.vue'
 
-const data: Settings = inject('data') as Settings
+const data: Ref<Settings> = inject('data') as Ref<Settings>
 
 const bannedIPColumns = [{
   title: $gettext('IP'),

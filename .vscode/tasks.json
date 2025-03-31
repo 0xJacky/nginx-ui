@@ -43,6 +43,61 @@
         "isDefault": true
       },
       "problemMatcher": []
+    },
+    {
+      "label": "[App] Gettext Extract",
+      "type": "shell",
+      "command": "cd app && pnpm gettext:extract",
+      "isBackground": true,
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "[App] ESLint Fix",
+      "type": "shell",
+      "command": "cd app && pnpm lint --fix",
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "[App] Typecheck",
+      "type": "shell",
+      "command": "cd app && pnpm typecheck",
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "[App] Build",
+      "type": "shell",
+      "command": "cd app && pnpm build",
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Go Generate",
+      "type": "shell",
+      "command": "./gen.sh",
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Bump Version",
+      "type": "shell",
+      "command": "./version.sh",
+      "presentation": {
+        "panel": "new"
+      },
+      "problemMatcher": []
     }
   ]
 }
