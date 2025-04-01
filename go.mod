@@ -31,13 +31,13 @@ require (
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.49.1
 	github.com/sashabaranov/go-openai v1.38.1
-	github.com/shirou/gopsutil/v4 v4.25.2
+	github.com/shirou/gopsutil/v4 v4.25.3
 	github.com/spf13/cast v1.7.1
 	github.com/stretchr/testify v1.10.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250225174229-c03497ddaef6
 	github.com/uozi-tech/cosy v1.18.0
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
-	github.com/urfave/cli/v3 v3.0.0-beta1
+	github.com/urfave/cli/v3 v3.1.0
 	golang.org/x/crypto v0.36.0
 	golang.org/x/net v0.38.0
 	gopkg.in/ini.v1 v1.67.0
