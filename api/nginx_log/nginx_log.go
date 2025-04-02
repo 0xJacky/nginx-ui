@@ -129,20 +129,20 @@ func GetLogList(c *gin.Context) {
 	filters := []func(*cache.NginxLogCache) bool{}
 
 	if c.Query("type") != "" {
-		filters = append(filters, func(cache *cache.NginxLogCache) bool {
-			return cache.Type == c.Query("type")
+		filters = append(filters, func(entry *cache.NginxLogCache) bool {
+			return entry.Type == c.Query("type")
 		})
 	}
 
 	if c.Query("name") != "" {
-		filters = append(filters, func(cache *cache.NginxLogCache) bool {
-			return strings.Contains(cache.Name, c.Query("name"))
+		filters = append(filters, func(entry *cache.NginxLogCache) bool {
+			return strings.Contains(entry.Name, c.Query("name"))
 		})
 	}
 
 	if c.Query("path") != "" {
-		filters = append(filters, func(cache *cache.NginxLogCache) bool {
-			return strings.Contains(cache.Path, c.Query("path"))
+		filters = append(filters, func(entry *cache.NginxLogCache) bool {
+			return strings.Contains(entry.Path, c.Query("path"))
 		})
 	}
 

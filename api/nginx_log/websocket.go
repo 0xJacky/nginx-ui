@@ -83,7 +83,7 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 
 		stat, err := os.Stat(logPath)
 		if os.IsNotExist(err) {
-			errChan <- errors.New("[error] log path not exists " + logPath)
+			errChan <- errors.New("[error] Log path does not exist: " + logPath)
 			return
 		}
 
