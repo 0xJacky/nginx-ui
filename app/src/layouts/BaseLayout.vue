@@ -9,7 +9,7 @@ import HeaderLayout from './HeaderLayout.vue'
 import SideBar from './SideBar.vue'
 
 const drawerVisible = ref(false)
-const collapsed = ref(collapse())
+const collapsed = ref(false)
 const hideLayoutSidebar = ref(false)
 
 function _init() {

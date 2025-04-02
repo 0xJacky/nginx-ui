@@ -12,34 +12,35 @@ const columns: Column[] = [{
     if (args.text === NotificationTypeT.Error) {
       return (
         <Tag color="error">
-          { $gettext('Error') }
+          {$gettext('Error')}
         </Tag>
       )
     }
     else if (args.text === NotificationTypeT.Warning) {
       return (
         <Tag color="warning">
-          { $gettext('Warning') }
+          {$gettext('Warning')}
         </Tag>
       )
     }
     else if (args.text === NotificationTypeT.Info) {
       return (
         <Tag color="info">
-          { $gettext('Info')}
+          {$gettext('Info')}
         </Tag>
       )
     }
     else if (args.text === NotificationTypeT.Success) {
       return (
         <Tag color="success">
-          { $gettext('Success') }
+          {$gettext('Success')}
         </Tag>
       )
     }
   },
   sorter: true,
   pithy: true,
+  width: 100,
 }, {
   title: () => $gettext('Title'),
   dataIndex: 'title',
@@ -53,7 +54,7 @@ const columns: Column[] = [{
   dataIndex: 'details',
   customRender: detailRender,
   pithy: true,
-  width: 300,
+  width: 500,
 }, {
   title: () => $gettext('Created at'),
   dataIndex: 'created_at',
