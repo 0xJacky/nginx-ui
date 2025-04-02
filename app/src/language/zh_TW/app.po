@@ -31,7 +31,12 @@ msgstr "多重要素驗證設定"
 msgid "About"
 msgstr "關於"
 
-#: src/routes/modules/nginx_log.ts:17 src/views/site/ngx_conf/LogEntry.vue:75
+#: src/views/nginx_log/NginxLogList.vue:29
+#, fuzzy
+msgid "Access Log"
+msgstr "訪問日誌"
+
+#: src/routes/modules/nginx_log.ts:17 src/views/site/ngx_conf/LogEntry.vue:91
 msgid "Access Logs"
 msgstr "訪問日誌"
 
@@ -45,7 +50,8 @@ msgstr "ACME 用戶"
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.tsx:42
 #: src/views/environment/envColumns.tsx:97
-#: src/views/notification/notificationColumns.tsx:65
+#: src/views/nginx_log/NginxLogList.vue:51
+#: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
 #: src/views/site/site_category/columns.ts:28
 #: src/views/site/site_list/columns.tsx:76 src/views/stream/StreamList.vue:49
@@ -245,7 +251,7 @@ msgstr "認證設定"
 msgid "Author"
 msgstr "作者"
 
-#: src/views/nginx_log/NginxLog.vue:152
+#: src/views/nginx_log/NginxLog.vue:149
 msgid "Auto Refresh"
 msgstr "自動重新整理"
 
@@ -259,6 +265,10 @@ msgstr "已啟用 %{name} 的自動續簽"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:332
 msgid "Automatic Restart"
+msgstr ""
+
+#: src/views/nginx_log/NginxLogList.vue:125
+msgid "Automatically indexed from site and stream configurations."
 msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:255
@@ -614,7 +624,7 @@ msgid ""
 "Backup files will be automatically downloaded to your computer."
 msgstr ""
 
-#: src/views/notification/notificationColumns.tsx:58
+#: src/views/notification/notificationColumns.tsx:59
 #: src/views/preference/components/Passkey.vue:95
 #: src/views/site/site_category/columns.ts:16 src/views/user/userColumns.tsx:48
 msgid "Created at"
@@ -751,7 +761,7 @@ msgstr "描述"
 msgid "Destination file already exists"
 msgstr "目的檔案已存在"
 
-#: src/views/notification/notificationColumns.tsx:52
+#: src/views/notification/notificationColumns.tsx:53
 msgid "Details"
 msgstr "詳細資料"
 
@@ -1084,7 +1094,12 @@ msgstr "環境"
 msgid "Error"
 msgstr "錯誤"
 
-#: src/routes/modules/nginx_log.ts:24 src/views/site/ngx_conf/LogEntry.vue:83
+#: src/views/nginx_log/NginxLogList.vue:30
+#, fuzzy
+msgid "Error Log"
+msgstr "錯誤日誌"
+
+#: src/routes/modules/nginx_log.ts:24 src/views/site/ngx_conf/LogEntry.vue:99
 msgid "Error Logs"
 msgstr "錯誤日誌"
 
@@ -1509,6 +1524,12 @@ msgstr "ICP 編號"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "如果留空，將使用默認的 CA Dir。"
 
+#: src/views/nginx_log/NginxLogList.vue:127
+msgid ""
+"If logs are not indexed, please check if the log file is under the directory "
+"in Nginx.LogDirWhiteList."
+msgstr ""
+
 #: src/views/preference/AuthSettings.vue:145
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
@@ -1535,6 +1556,15 @@ msgstr "導入"
 #: src/views/certificate/CertificateEditor.vue:85
 msgid "Import Certificate"
 msgstr "導入憑證"
+
+#: src/views/nginx_log/NginxLogList.vue:135
+#, fuzzy
+msgid "Indexed"
+msgstr "網站首頁 (index)"
+
+#: src/views/nginx_log/NginxLogList.vue:132
+msgid "Indexing..."
+msgstr ""
 
 #: src/components/StdDesign/StdDetail/StdDetail.vue:81
 #: src/constants/index.ts:18 src/views/notification/notificationColumns.tsx:29
@@ -1756,6 +1786,11 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日誌"
 
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:113
+#, fuzzy
+msgid "Log List"
+msgstr "列表"
+
 #: src/routes/modules/auth.ts:14 src/views/other/Login.vue:222
 msgid "Login"
 msgstr "登入"
@@ -1866,6 +1901,7 @@ msgstr "多行指令"
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:256
 #: src/views/environment/envColumns.tsx:9
+#: src/views/nginx_log/NginxLogList.vue:35
 #: src/views/preference/components/AddPasskey.vue:75
 #: src/views/site/ngx_conf/NgxUpstream.vue:177
 #: src/views/site/site_category/columns.ts:7
@@ -1985,7 +2021,7 @@ msgstr "Nginx 錯誤日誌路徑"
 msgid "Nginx is not running"
 msgstr "Nginx 未執行"
 
-#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:148
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:143
 msgid "Nginx Log"
 msgstr "Nginx 日誌"
 
@@ -2235,6 +2271,7 @@ msgid "Password length cannot exceed 20 characters"
 msgstr "密碼長度不能超過 20 個字元"
 
 #: src/views/config/ConfigEditor.vue:263
+#: src/views/nginx_log/NginxLogList.vue:43
 #: src/views/site/ngx_conf/LocationEditor.vue:109
 #: src/views/site/ngx_conf/LocationEditor.vue:137
 msgid "Path"
@@ -3306,7 +3343,7 @@ msgstr "節流"
 msgid "Tips"
 msgstr "提示"
 
-#: src/views/notification/notificationColumns.tsx:44
+#: src/views/notification/notificationColumns.tsx:45
 msgid "Title"
 msgstr "標題"
 
@@ -3373,6 +3410,7 @@ msgid "Two-factor authentication required"
 msgstr "需要多重因素驗證"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:25
+#: src/views/nginx_log/NginxLogList.vue:20
 #: src/views/notification/notificationColumns.tsx:9
 msgid "Type"
 msgstr "類型"
@@ -3474,6 +3512,7 @@ msgid "Version"
 msgstr "版本"
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:488
+#: src/views/nginx_log/NginxLogList.vue:143
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:103
 msgid "View"
 msgstr "檢視"
@@ -3865,9 +3904,6 @@ msgstr "您的通行密鑰"
 
 #~ msgid "HTTPS Listen Port"
 #~ msgstr "HTTPS 監聽埠"
-
-#~ msgid "Index (index)"
-#~ msgstr "網站首頁 (index)"
 
 #~ msgid "Private Key Path (ssl_certificate_key)"
 #~ msgstr "私鑰路徑 (ssl_certificate_key)"

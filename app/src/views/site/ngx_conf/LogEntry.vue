@@ -11,6 +11,8 @@ const props = defineProps<{
 
 const accessIdx = ref<number>()
 const errorIdx = ref<number>()
+const accessLogPath = ref<string>()
+const errorLogPath = ref<string>()
 
 const hasAccessLog = computed(() => {
   let flag = false
@@ -18,6 +20,14 @@ const hasAccessLog = computed(() => {
     if (v.directive === 'access_log') {
       flag = true
       accessIdx.value = k
+
+      // Extract log path from directive params
+      if (v.params) {
+        const params = v.params.split(' ')
+        if (params.length > 0) {
+          accessLogPath.value = params[0]
+        }
+      }
     }
   })
 
@@ -30,6 +40,14 @@ const hasErrorLog = computed(() => {
     if (v.directive === 'error_log') {
       flag = true
       errorIdx.value = k
+
+      // Extract log path from directive params
+      if (v.params) {
+        const params = v.params.split(' ')
+        if (params.length > 0) {
+          errorLogPath.value = params[0]
+        }
+      }
     }
   })
 
@@ -42,9 +60,8 @@ function on_click_access_log() {
   router.push({
     path: '/nginx_log/site',
     query: {
-      server_idx: props.currentServerIdx,
-      directive_idx: accessIdx.value,
-      conf_name: props.name,
+      type: 'site',
+      log_path: accessLogPath.value,
     },
   })
 }
@@ -53,9 +70,8 @@ function on_click_error_log() {
   router.push({
     path: '/nginx_log/site',
     query: {
-      server_idx: props.currentServerIdx,
-      directive_idx: errorIdx.value,
-      conf_name: props.name,
+      type: 'site',
+      log_path: errorLogPath.value,
     },
   })
 }

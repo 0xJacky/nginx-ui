@@ -1,9 +1,10 @@
 package cache
 
 import (
+	"time"
+
 	"github.com/dgraph-io/ristretto/v2"
 	"github.com/uozi-tech/cosy/logger"
-	"time"
 )
 
 var cache *ristretto.Cache[string, any]
@@ -19,6 +20,9 @@ func Init() {
 	if err != nil {
 		logger.Fatal("initializing local cache err", err)
 	}
+
+	// Initialize the nginx log scanner
+	InitNginxLogScanner()
 }
 
 func Set(key string, value interface{}, ttl time.Duration) {
