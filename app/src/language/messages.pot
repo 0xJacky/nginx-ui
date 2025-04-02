@@ -207,7 +207,7 @@ msgstr ""
 msgid "Assistant"
 msgstr ""
 
-#: src/views/system/SelfCheck/SelfCheck.vue:54
+#: src/views/system/SelfCheck/SelfCheck.vue:50
 msgid "Attempt to fix"
 msgstr ""
 
@@ -437,19 +437,23 @@ msgstr ""
 msgid "Check again"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:12
+#: src/views/system/SelfCheck/tasks/frontend/https-check.ts:11
+msgid "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and prevents using Passkeys and clipboard features."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks/backend/index.ts:16
 msgid "Check if the nginx.conf includes the sites-enabled directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:16
+#: src/views/system/SelfCheck/tasks/backend/index.ts:21
 msgid "Check if the nginx.conf includes the streams-enabled directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:4
+#: src/views/system/SelfCheck/tasks/backend/index.ts:6
 msgid "Check if the sites-available and sites-enabled directories are under the nginx configuration directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:8
+#: src/views/system/SelfCheck/tasks/backend/index.ts:11
 msgid "Check if the streams-available and streams-enabled directories are under the nginx configuration directory."
 msgstr ""
 
@@ -1433,6 +1437,10 @@ msgstr ""
 msgid "HTTP01"
 msgstr ""
 
+#: src/views/system/SelfCheck/tasks/frontend/https-check.ts:10
+msgid "HTTPS Protocol"
+msgstr ""
+
 #: src/views/preference/NodeSettings.vue:34
 msgid "ICP Number"
 msgstr ""
@@ -1838,11 +1846,11 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:11
+#: src/views/system/SelfCheck/tasks/backend/index.ts:15
 msgid "Nginx Conf Include Sites Enabled"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:15
+#: src/views/system/SelfCheck/tasks/backend/index.ts:20
 msgid "Nginx Conf Include Streams Enabled"
 msgstr ""
 
@@ -2301,7 +2309,7 @@ msgstr ""
 msgid "Receive"
 msgstr ""
 
-#: src/views/system/SelfCheck/SelfCheck.vue:47
+#: src/views/system/SelfCheck/SelfCheck.vue:43
 msgid "Recheck"
 msgstr ""
 
@@ -2652,7 +2660,7 @@ msgid "Selector"
 msgstr ""
 
 #: src/routes/modules/system.ts:19
-#: src/views/system/SelfCheck/SelfCheck.vue:42
+#: src/views/system/SelfCheck/SelfCheck.vue:38
 msgid "Self Check"
 msgstr ""
 
@@ -2738,7 +2746,7 @@ msgstr ""
 msgid "Site not found"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:3
+#: src/views/system/SelfCheck/tasks/backend/index.ts:5
 msgid "Sites Directory"
 msgstr ""
 
@@ -2844,7 +2852,7 @@ msgstr ""
 msgid "Stream not found"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:7
+#: src/views/system/SelfCheck/tasks/backend/index.ts:10
 msgid "Streams Directory"
 msgstr ""
 
@@ -2861,7 +2869,7 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
-#: src/views/system/SelfCheck/SelfCheck.vue:78
+#: src/views/system/SelfCheck/tasks/frontend/websocket.ts:6
 msgid "Support communication with the backend through the WebSocket protocol. If your Nginx UI is being used via an Nginx reverse proxy, please refer to this link to write the corresponding configuration file: https://nginxui.com/guide/nginx-proxy-example.html"
 msgstr ""
 
@@ -3166,6 +3174,10 @@ msgstr ""
 #: src/views/certificate/CertificateList/certColumns.tsx:25
 #: src/views/notification/notificationColumns.tsx:9
 msgid "Type"
+msgstr ""
+
+#: src/views/system/SelfCheck/SelfCheck.vue:63
+msgid "Unknown issue"
 msgstr ""
 
 #: src/views/preference/components/Passkey.vue:39

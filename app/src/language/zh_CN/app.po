@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-31 10:36+0800\n"
+"PO-Revision-Date: 2025-04-02 11:07+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
 "projects/nginx-ui/frontend/zh_Hans/>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 "Generated-By: easygettext\n"
 
 #: src/views/user/userColumns.tsx:32
@@ -215,7 +215,7 @@ msgstr "与ChatGPT聊天"
 msgid "Assistant"
 msgstr "助手"
 
-#: src/views/system/SelfCheck/SelfCheck.vue:54
+#: src/views/system/SelfCheck/SelfCheck.vue:50
 msgid "Attempt to fix"
 msgstr "尝试修复"
 
@@ -440,21 +440,29 @@ msgstr "通道"
 msgid "Check again"
 msgstr "重新检查"
 
-#: src/views/system/SelfCheck/tasks.ts:12
+#: src/views/system/SelfCheck/tasks/frontend/https-check.ts:11
+msgid ""
+"Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
+"prevents using Passkeys and clipboard features."
+msgstr ""
+"检查是否启用了 HTTPS。在本地主机之外使用 HTTP 是不安全的，这也会导致无法使用 "
+"Passkey 和剪贴板功能。"
+
+#: src/views/system/SelfCheck/tasks/backend/index.ts:16
 msgid "Check if the nginx.conf includes the sites-enabled directory."
 msgstr "检查 nginx.conf 是否包含 sites-enabled 的目录。"
 
-#: src/views/system/SelfCheck/tasks.ts:16
+#: src/views/system/SelfCheck/tasks/backend/index.ts:21
 msgid "Check if the nginx.conf includes the streams-enabled directory."
 msgstr "检查 nginx.conf 是否包含 streams-enabled 的目录。"
 
-#: src/views/system/SelfCheck/tasks.ts:4
+#: src/views/system/SelfCheck/tasks/backend/index.ts:6
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory."
 msgstr "检查 sites-available 和 sites-enabled 目录是否位于 nginx 配置目录下。"
 
-#: src/views/system/SelfCheck/tasks.ts:8
+#: src/views/system/SelfCheck/tasks/backend/index.ts:11
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
 "nginx configuration directory."
@@ -1431,6 +1439,10 @@ msgstr "HTTP Challenge 监听端口"
 msgid "HTTP01"
 msgstr "HTTP01"
 
+#: src/views/system/SelfCheck/tasks/frontend/https-check.ts:10
+msgid "HTTPS Protocol"
+msgstr "HTTPS 协议"
+
 #: src/views/preference/NodeSettings.vue:34
 msgid "ICP Number"
 msgstr "ICP备案号"
@@ -1850,11 +1862,11 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Nginx 访问日志路径"
 
-#: src/views/system/SelfCheck/tasks.ts:11
+#: src/views/system/SelfCheck/tasks/backend/index.ts:15
 msgid "Nginx Conf Include Sites Enabled"
 msgstr "Nginx Conf 中引用启用站点目录"
 
-#: src/views/system/SelfCheck/tasks.ts:15
+#: src/views/system/SelfCheck/tasks/backend/index.ts:20
 msgid "Nginx Conf Include Streams Enabled"
 msgstr "Nginx Conf 中引用启用 Streams 目录"
 
@@ -2330,7 +2342,7 @@ msgstr "读"
 msgid "Receive"
 msgstr "下载"
 
-#: src/views/system/SelfCheck/SelfCheck.vue:47
+#: src/views/system/SelfCheck/SelfCheck.vue:43
 msgid "Recheck"
 msgstr "重新检查"
 
@@ -2680,7 +2692,7 @@ msgstr "安全令牌信息"
 msgid "Selector"
 msgstr "选择器"
 
-#: src/routes/modules/system.ts:19 src/views/system/SelfCheck/SelfCheck.vue:42
+#: src/routes/modules/system.ts:19 src/views/system/SelfCheck/SelfCheck.vue:38
 msgid "Self Check"
 msgstr "自我检查"
 
@@ -2729,19 +2741,19 @@ msgstr "使用 HTTP01 challenge provider"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
+"nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 https://nginxui."
-"com/guide/config-nginx.html"
+"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 https://"
+"nginxui.com/guide/config-nginx.html"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
+"nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.ErrorLogPath为空，更多信息请参阅 https://nginxui."
-"com/guide/config-nginx.html"
+"Settings.NginxLogSettings.ErrorLogPath为空，更多信息请参阅 https://"
+"nginxui.com/guide/config-nginx.html"
 
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Show"
@@ -2776,7 +2788,7 @@ msgstr "站点列表"
 msgid "Site not found"
 msgstr "网站未找到"
 
-#: src/views/system/SelfCheck/tasks.ts:3
+#: src/views/system/SelfCheck/tasks/backend/index.ts:5
 msgid "Sites Directory"
 msgstr "网站目录"
 
@@ -2880,7 +2892,7 @@ msgstr "Stream 已启用"
 msgid "Stream not found"
 msgstr "Stream 未找到"
 
-#: src/views/system/SelfCheck/tasks.ts:7
+#: src/views/system/SelfCheck/tasks/backend/index.ts:10
 msgid "Streams Directory"
 msgstr "Streams 目录"
 
@@ -2896,7 +2908,7 @@ msgstr "Streams-enabled 目录不存在"
 msgid "Success"
 msgstr "成功"
 
-#: src/views/system/SelfCheck/SelfCheck.vue:78
+#: src/views/system/SelfCheck/tasks/frontend/websocket.ts:6
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
 "your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
@@ -3257,6 +3269,10 @@ msgstr "需要两步验证"
 msgid "Type"
 msgstr "类型"
 
+#: src/views/system/SelfCheck/SelfCheck.vue:63
+msgid "Unknown issue"
+msgstr "未知问题"
+
 #: src/views/preference/components/Passkey.vue:39
 msgid "Update successfully"
 msgstr "更新成功"
@@ -3540,8 +3556,8 @@ msgstr "你的 Passkeys"
 #~ msgstr "从 %{node} 中删除站点 %{site} 错误，响应：%{resp}"
 
 #~ msgid ""
-#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
-#~ "%{resp}"
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %"
+#~ "{resp}"
 #~ msgstr ""
 #~ "将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，响应：%{resp}"
 

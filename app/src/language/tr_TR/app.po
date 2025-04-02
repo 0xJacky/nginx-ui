@@ -218,7 +218,7 @@ msgstr "ChatGPT'den Yardım İsteyin"
 msgid "Assistant"
 msgstr "Asistan"
 
-#: src/views/system/SelfCheck/SelfCheck.vue:54
+#: src/views/system/SelfCheck/SelfCheck.vue:50
 #, fuzzy
 msgid "Attempt to fix"
 msgstr "Girişimler"
@@ -455,21 +455,27 @@ msgstr "Kanal"
 msgid "Check again"
 msgstr "Tekrar kontrol et"
 
-#: src/views/system/SelfCheck/tasks.ts:12
+#: src/views/system/SelfCheck/tasks/frontend/https-check.ts:11
+msgid ""
+"Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
+"prevents using Passkeys and clipboard features."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks/backend/index.ts:16
 msgid "Check if the nginx.conf includes the sites-enabled directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:16
+#: src/views/system/SelfCheck/tasks/backend/index.ts:21
 msgid "Check if the nginx.conf includes the streams-enabled directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:4
+#: src/views/system/SelfCheck/tasks/backend/index.ts:6
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:8
+#: src/views/system/SelfCheck/tasks/backend/index.ts:11
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
 "nginx configuration directory."
@@ -1537,6 +1543,10 @@ msgstr "HTTP Doğrulama Bağlantı Noktası"
 msgid "HTTP01"
 msgstr "HTTP01"
 
+#: src/views/system/SelfCheck/tasks/frontend/https-check.ts:10
+msgid "HTTPS Protocol"
+msgstr ""
+
 #: src/views/preference/NodeSettings.vue:34
 msgid "ICP Number"
 msgstr ""
@@ -1996,11 +2006,11 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Nginx Erişim Günlüğü Yolu"
 
-#: src/views/system/SelfCheck/tasks.ts:11
+#: src/views/system/SelfCheck/tasks/backend/index.ts:15
 msgid "Nginx Conf Include Sites Enabled"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:15
+#: src/views/system/SelfCheck/tasks/backend/index.ts:20
 msgid "Nginx Conf Include Streams Enabled"
 msgstr ""
 
@@ -2569,7 +2579,7 @@ msgstr "Okumalar"
 msgid "Receive"
 msgstr "Teslim almak"
 
-#: src/views/system/SelfCheck/SelfCheck.vue:47
+#: src/views/system/SelfCheck/SelfCheck.vue:43
 msgid "Recheck"
 msgstr ""
 
@@ -2996,7 +3006,7 @@ msgstr "Geçersiz 2FA veya kurtarma kodu"
 msgid "Selector"
 msgstr "Selektör"
 
-#: src/routes/modules/system.ts:19 src/views/system/SelfCheck/SelfCheck.vue:42
+#: src/routes/modules/system.ts:19 src/views/system/SelfCheck/SelfCheck.vue:38
 msgid "Self Check"
 msgstr ""
 
@@ -3106,7 +3116,7 @@ msgstr "Site Günlükleri"
 msgid "Site not found"
 msgstr "Dosya bulunamadı"
 
-#: src/views/system/SelfCheck/tasks.ts:3
+#: src/views/system/SelfCheck/tasks/backend/index.ts:5
 #, fuzzy
 msgid "Sites Directory"
 msgstr "Dizin"
@@ -3227,7 +3237,7 @@ msgstr "Devre dışı"
 msgid "Stream not found"
 msgstr "Dosya bulunamadı"
 
-#: src/views/system/SelfCheck/tasks.ts:7
+#: src/views/system/SelfCheck/tasks/backend/index.ts:10
 #, fuzzy
 msgid "Streams Directory"
 msgstr "Dizin"
@@ -3246,7 +3256,7 @@ msgstr "Dizin"
 msgid "Success"
 msgstr "Başarılı"
 
-#: src/views/system/SelfCheck/SelfCheck.vue:78
+#: src/views/system/SelfCheck/tasks/frontend/websocket.ts:6
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
 "your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
@@ -3682,6 +3692,10 @@ msgstr "İki faktörlü kimlik doğrulama gerekiyor"
 #, fuzzy
 msgid "Type"
 msgstr "Tip"
+
+#: src/views/system/SelfCheck/SelfCheck.vue:63
+msgid "Unknown issue"
+msgstr ""
 
 #: src/views/preference/components/Passkey.vue:39
 #, fuzzy

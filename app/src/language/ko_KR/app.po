@@ -220,7 +220,7 @@ msgstr "ChatGPT에게 도움 요청"
 msgid "Assistant"
 msgstr "조수"
 
-#: src/views/system/SelfCheck/SelfCheck.vue:54
+#: src/views/system/SelfCheck/SelfCheck.vue:50
 #, fuzzy
 msgid "Attempt to fix"
 msgstr "시도 횟수"
@@ -459,21 +459,27 @@ msgstr "채널"
 msgid "Check again"
 msgstr "다시 확인"
 
-#: src/views/system/SelfCheck/tasks.ts:12
+#: src/views/system/SelfCheck/tasks/frontend/https-check.ts:11
+msgid ""
+"Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
+"prevents using Passkeys and clipboard features."
+msgstr ""
+
+#: src/views/system/SelfCheck/tasks/backend/index.ts:16
 msgid "Check if the nginx.conf includes the sites-enabled directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:16
+#: src/views/system/SelfCheck/tasks/backend/index.ts:21
 msgid "Check if the nginx.conf includes the streams-enabled directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:4
+#: src/views/system/SelfCheck/tasks/backend/index.ts:6
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:8
+#: src/views/system/SelfCheck/tasks/backend/index.ts:11
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
 "nginx configuration directory."
@@ -1525,6 +1531,10 @@ msgstr "HTTP 검증 포트"
 msgid "HTTP01"
 msgstr "HTTP01"
 
+#: src/views/system/SelfCheck/tasks/frontend/https-check.ts:10
+msgid "HTTPS Protocol"
+msgstr ""
+
 #: src/views/preference/NodeSettings.vue:34
 msgid "ICP Number"
 msgstr ""
@@ -1972,11 +1982,11 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Nginx 접근 로그 경로"
 
-#: src/views/system/SelfCheck/tasks.ts:11
+#: src/views/system/SelfCheck/tasks/backend/index.ts:15
 msgid "Nginx Conf Include Sites Enabled"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks.ts:15
+#: src/views/system/SelfCheck/tasks/backend/index.ts:20
 msgid "Nginx Conf Include Streams Enabled"
 msgstr ""
 
@@ -2478,7 +2488,7 @@ msgstr "읽기"
 msgid "Receive"
 msgstr "수신"
 
-#: src/views/system/SelfCheck/SelfCheck.vue:47
+#: src/views/system/SelfCheck/SelfCheck.vue:43
 msgid "Recheck"
 msgstr ""
 
@@ -2870,7 +2880,7 @@ msgstr ""
 msgid "Selector"
 msgstr "선택"
 
-#: src/routes/modules/system.ts:19 src/views/system/SelfCheck/SelfCheck.vue:42
+#: src/routes/modules/system.ts:19 src/views/system/SelfCheck/SelfCheck.vue:38
 msgid "Self Check"
 msgstr ""
 
@@ -2968,7 +2978,7 @@ msgstr "사이트 로그"
 msgid "Site not found"
 msgstr "파일을 찾을 수 없음"
 
-#: src/views/system/SelfCheck/tasks.ts:3
+#: src/views/system/SelfCheck/tasks/backend/index.ts:5
 #, fuzzy
 msgid "Sites Directory"
 msgstr "디렉토리"
@@ -3084,7 +3094,7 @@ msgstr "비활성화됨"
 msgid "Stream not found"
 msgstr "파일을 찾을 수 없음"
 
-#: src/views/system/SelfCheck/tasks.ts:7
+#: src/views/system/SelfCheck/tasks/backend/index.ts:10
 #, fuzzy
 msgid "Streams Directory"
 msgstr "디렉토리"
@@ -3102,7 +3112,7 @@ msgstr "디렉토리"
 msgid "Success"
 msgstr "성공"
 
-#: src/views/system/SelfCheck/SelfCheck.vue:78
+#: src/views/system/SelfCheck/tasks/frontend/websocket.ts:6
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
 "your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
@@ -3478,6 +3488,10 @@ msgstr ""
 #: src/views/notification/notificationColumns.tsx:9
 msgid "Type"
 msgstr "유형"
+
+#: src/views/system/SelfCheck/SelfCheck.vue:63
+msgid "Unknown issue"
+msgstr ""
 
 #: src/views/preference/components/Passkey.vue:39
 #, fuzzy
