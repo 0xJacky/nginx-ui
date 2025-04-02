@@ -1,21 +1,18 @@
 package nginx_log
 
 import (
-	"encoding/json"
-	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
-	"github.com/gin-gonic/gin"
-	"github.com/gorilla/websocket"
-	"github.com/hpcloud/tail"
-	"github.com/pkg/errors"
-	"github.com/spf13/cast"
-	"github.com/uozi-tech/cosy"
-	"github.com/uozi-tech/cosy/logger"
 	"io"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/0xJacky/Nginx-UI/internal/cache"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
+	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
+	"github.com/spf13/cast"
+	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 const (
@@ -23,10 +20,8 @@ const (
 )
 
 type controlStruct struct {
-	Type         string `json:"type"`
-	ConfName     string `json:"conf_name"`
-	ServerIdx    int    `json:"server_idx"`
-	DirectiveIdx int    `json:"directive_idx"`
+	Type    string `json:"type"`
+	LogPath string `json:"log_path"`
 }
 
 type nginxLogPageResp struct {
@@ -130,200 +125,35 @@ func GetNginxLogPage(c *gin.Context) {
 	})
 }
 
-func getLogPath(control *controlStruct) (logPath string, err error) {
-	switch control.Type {
-	case "site":
-		var config *nginx.NgxConfig
-		path := nginx.GetConfPath("sites-available", control.ConfName)
-		config, err = nginx.ParseNgxConfig(path)
-		if err != nil {
-			err = errors.Wrap(err, "error parsing ngx config")
-			return
-		}
+func GetLogList(c *gin.Context) {
+	filters := []func(*cache.NginxLogCache) bool{}
 
-		if control.ServerIdx >= len(config.Servers) {
-			err = nginx_log.ErrServerIdxOutOfRange
-			return
-		}
-
-		if control.DirectiveIdx >= len(config.Servers[control.ServerIdx].Directives) {
-			err = nginx_log.ErrDirectiveIdxOutOfRange
-			return
-		}
-
-		directive := config.Servers[control.ServerIdx].Directives[control.DirectiveIdx]
-		switch directive.Directive {
-		case "access_log", "error_log":
-			// ok
-		default:
-			err = nginx_log.ErrLogDirective
-			return
-		}
-
-		if directive.Params == "" {
-			err = nginx_log.ErrDirectiveParamsIsEmpty
-			return
-		}
-
-		// fix: access_log /var/log/test.log main;
-		p := strings.Split(directive.Params, " ")
-		if len(p) > 0 {
-			logPath = p[0]
-		}
-
-	case "error":
-		path := nginx.GetErrorLogPath()
-
-		if path == "" {
-			err = nginx_log.ErrErrorLogPathIsEmpty
-			return
-		}
-
-		logPath = path
-	default:
-		path := nginx.GetAccessLogPath()
-
-		if path == "" {
-			err = nginx_log.ErrAccessLogPathIsEmpty
-			return
-		}
-
-		logPath = path
+	if c.Query("type") != "" {
+		filters = append(filters, func(entry *cache.NginxLogCache) bool {
+			return entry.Type == c.Query("type")
+		})
 	}
 
-	// check if logPath is under one of the paths in LogDirWhiteList
-	if !nginx_log.IsLogPathUnderWhiteList(logPath) {
-		return "", nginx_log.ErrLogPathIsNotUnderTheLogDirWhiteList
-	}
-	return
-}
-
-func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan chan error) {
-	defer func() {
-		if err := recover(); err != nil {
-			logger.Error(err)
-			return
-		}
-	}()
-
-	control := <-controlChan
-
-	for {
-		logPath, err := getLogPath(&control)
-
-		if err != nil {
-			errChan <- err
-			return
-		}
-
-		seek := tail.SeekInfo{
-			Offset: 0,
-			Whence: io.SeekEnd,
-		}
-
-		stat, err := os.Stat(logPath)
-		if os.IsNotExist(err) {
-			errChan <- errors.New("[error] log path not exists " + logPath)
-			return
-		}
-
-		if !stat.Mode().IsRegular() {
-			errChan <- errors.New("[error] " + logPath + " is not a regular file. " +
-				"If you are using nginx-ui in docker container, please refer to " +
-				"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information.")
-			return
-		}
-
-		// Create a tail
-		t, err := tail.TailFile(logPath, tail.Config{Follow: true,
-			ReOpen: true, Location: &seek})
-
-		if err != nil {
-			errChan <- errors.Wrap(err, "error tailing log")
-			return
-		}
-
-		for {
-			var next = false
-			select {
-			case line := <-t.Lines:
-				// Print the text of each received line
-				if line == nil {
-					continue
-				}
-
-				err = ws.WriteMessage(websocket.TextMessage, []byte(line.Text))
-				if err != nil {
-					if helper.IsUnexpectedWebsocketError(err) {
-						errChan <- errors.Wrap(err, "error tailNginxLog write message")
-					}
-					return
-				}
-			case control = <-controlChan:
-				next = true
-				break
-			}
-			if next {
-				break
-			}
-		}
-	}
-}
-
-func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errChan chan error) {
-	defer func() {
-		if err := recover(); err != nil {
-			logger.Error(err)
-			return
-		}
-	}()
-
-	for {
-		msgType, payload, err := ws.ReadMessage()
-		if err != nil && websocket.IsUnexpectedCloseError(err, websocket.CloseNormalClosure) {
-			errChan <- errors.Wrap(err, "error handleLogControl read message")
-			return
-		}
-
-		if msgType != websocket.TextMessage {
-			errChan <- errors.New("error handleLogControl message type")
-			return
-		}
-
-		var msg controlStruct
-		err = json.Unmarshal(payload, &msg)
-		if err != nil {
-			errChan <- errors.Wrap(err, "error ReadWsAndWritePty json.Unmarshal")
-			return
-		}
-		controlChan <- msg
-	}
-}
-
-func Log(c *gin.Context) {
-	var upGrader = websocket.Upgrader{
-		CheckOrigin: func(r *http.Request) bool {
-			return true
-		},
-	}
-	// upgrade http to websocket
-	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
-	if err != nil {
-		logger.Error(err)
-		return
+	if c.Query("name") != "" {
+		filters = append(filters, func(entry *cache.NginxLogCache) bool {
+			return strings.Contains(entry.Name, c.Query("name"))
+		})
 	}
 
-	defer ws.Close()
-
-	errChan := make(chan error, 1)
-	controlChan := make(chan controlStruct, 1)
-
-	go tailNginxLog(ws, controlChan, errChan)
-	go handleLogControl(ws, controlChan, errChan)
-
-	if err = <-errChan; err != nil {
-		logger.Error(err)
-		_ = ws.WriteMessage(websocket.TextMessage, []byte(err.Error()))
-		return
+	if c.Query("path") != "" {
+		filters = append(filters, func(entry *cache.NginxLogCache) bool {
+			return strings.Contains(entry.Path, c.Query("path"))
+		})
 	}
+
+	data := cache.GetAllLogPaths(filters...)
+
+	orderBy := c.DefaultQuery("sort_by", "name")
+	sort := c.DefaultQuery("order", "desc")
+
+	data = nginx_log.Sort(orderBy, sort, data)
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": data,
+	})
 }

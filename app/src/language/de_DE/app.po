@@ -21,7 +21,12 @@ msgstr "2FA-Einstellungen"
 msgid "About"
 msgstr "Über"
 
-#: src/routes/modules/nginx_log.ts:17 src/views/site/ngx_conf/LogEntry.vue:75
+#: src/views/nginx_log/NginxLogList.vue:29
+#, fuzzy
+msgid "Access Log"
+msgstr "Zugriffslog"
+
+#: src/routes/modules/nginx_log.ts:17 src/views/site/ngx_conf/LogEntry.vue:91
 msgid "Access Logs"
 msgstr "Zugriffslog"
 
@@ -36,7 +41,8 @@ msgstr "Benutzername"
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.tsx:42
 #: src/views/environment/envColumns.tsx:97
-#: src/views/notification/notificationColumns.tsx:65
+#: src/views/nginx_log/NginxLogList.vue:51
+#: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
 #: src/views/site/site_category/columns.ts:28
 #: src/views/site/site_list/columns.tsx:76 src/views/stream/StreamList.vue:49
@@ -258,7 +264,7 @@ msgstr "Authentifizierungseinstellungen"
 msgid "Author"
 msgstr "Autor"
 
-#: src/views/nginx_log/NginxLog.vue:152
+#: src/views/nginx_log/NginxLog.vue:149
 msgid "Auto Refresh"
 msgstr "Automatische Aktualisierung"
 
@@ -272,6 +278,10 @@ msgstr "Automatische Verlängerung aktiviert für %{name}"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:332
 msgid "Automatic Restart"
+msgstr ""
+
+#: src/views/nginx_log/NginxLogList.vue:125
+msgid "Automatically indexed from site and stream configurations."
 msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:255
@@ -650,7 +660,7 @@ msgid ""
 "Backup files will be automatically downloaded to your computer."
 msgstr ""
 
-#: src/views/notification/notificationColumns.tsx:58
+#: src/views/notification/notificationColumns.tsx:59
 #: src/views/preference/components/Passkey.vue:95
 #: src/views/site/site_category/columns.ts:16 src/views/user/userColumns.tsx:48
 msgid "Created at"
@@ -799,7 +809,7 @@ msgstr "Beschreibung"
 msgid "Destination file already exists"
 msgstr ""
 
-#: src/views/notification/notificationColumns.tsx:52
+#: src/views/notification/notificationColumns.tsx:53
 msgid "Details"
 msgstr "Details"
 
@@ -1161,7 +1171,12 @@ msgstr "Kommentare"
 msgid "Error"
 msgstr "Fehler"
 
-#: src/routes/modules/nginx_log.ts:24 src/views/site/ngx_conf/LogEntry.vue:83
+#: src/views/nginx_log/NginxLogList.vue:30
+#, fuzzy
+msgid "Error Log"
+msgstr "Feherlogs"
+
+#: src/routes/modules/nginx_log.ts:24 src/views/site/ngx_conf/LogEntry.vue:99
 msgid "Error Logs"
 msgstr "Feherlogs"
 
@@ -1592,6 +1607,12 @@ msgstr "ICP-Nummer"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "Wenn leer, wird das Standard-CA-Verzeichnis verwendet."
 
+#: src/views/nginx_log/NginxLogList.vue:127
+msgid ""
+"If logs are not indexed, please check if the log file is under the directory "
+"in Nginx.LogDirWhiteList."
+msgstr ""
+
 #: src/views/preference/AuthSettings.vue:145
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
@@ -1624,6 +1645,14 @@ msgstr "Import"
 #, fuzzy
 msgid "Import Certificate"
 msgstr "Zertifikatsstatus"
+
+#: src/views/nginx_log/NginxLogList.vue:135
+msgid "Indexed"
+msgstr ""
+
+#: src/views/nginx_log/NginxLogList.vue:132
+msgid "Indexing..."
+msgstr ""
 
 #: src/components/StdDesign/StdDetail/StdDetail.vue:81
 #: src/constants/index.ts:18 src/views/notification/notificationColumns.tsx:29
@@ -1859,6 +1888,11 @@ msgstr "Orte"
 msgid "Log"
 msgstr "Login"
 
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:113
+#, fuzzy
+msgid "Log List"
+msgstr "Liste"
+
 #: src/routes/modules/auth.ts:14 src/views/other/Login.vue:222
 msgid "Login"
 msgstr "Login"
@@ -1981,6 +2015,7 @@ msgstr "Einzelne Anweisung"
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:256
 #: src/views/environment/envColumns.tsx:9
+#: src/views/nginx_log/NginxLogList.vue:35
 #: src/views/preference/components/AddPasskey.vue:75
 #: src/views/site/ngx_conf/NgxUpstream.vue:177
 #: src/views/site/site_category/columns.ts:7
@@ -2104,7 +2139,7 @@ msgstr "Nginx Fehlerlog-Pfad"
 msgid "Nginx is not running"
 msgstr "Nginx läuft nicht"
 
-#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:148
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:143
 msgid "Nginx Log"
 msgstr "Nginx-Log"
 
@@ -2370,6 +2405,7 @@ msgid "Password length cannot exceed 20 characters"
 msgstr "Passwort darf nicht länger als 20 Zeichen sein"
 
 #: src/views/config/ConfigEditor.vue:263
+#: src/views/nginx_log/NginxLogList.vue:43
 #: src/views/site/ngx_conf/LocationEditor.vue:109
 #: src/views/site/ngx_conf/LocationEditor.vue:137
 msgid "Path"
@@ -3511,7 +3547,7 @@ msgstr "Begrenzung"
 msgid "Tips"
 msgstr "Tipps"
 
-#: src/views/notification/notificationColumns.tsx:44
+#: src/views/notification/notificationColumns.tsx:45
 msgid "Title"
 msgstr "Titel"
 
@@ -3585,6 +3621,7 @@ msgid "Two-factor authentication required"
 msgstr "Zwei-Faktor-Authentifizierung erforderlich"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:25
+#: src/views/nginx_log/NginxLogList.vue:20
 #: src/views/notification/notificationColumns.tsx:9
 msgid "Type"
 msgstr "Typ"
@@ -3692,6 +3729,7 @@ msgid "Version"
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:488
+#: src/views/nginx_log/NginxLogList.vue:143
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:103
 msgid "View"
 msgstr "Anzeigen"

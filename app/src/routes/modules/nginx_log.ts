@@ -31,6 +31,13 @@ export const nginxLogRoutes: RouteRecordRaw[] = [
         name: () => $gettext('Site Logs'),
         hiddenInSidebar: true,
       },
+    }, {
+      path: 'list',
+      name: 'Log List',
+      component: () => import('@/views/nginx_log/NginxLogList.vue'),
+      meta: {
+        name: () => $gettext('Log List'),
+      },
     }],
   },
 ]
