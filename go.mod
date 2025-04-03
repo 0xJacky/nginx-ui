@@ -1,6 +1,6 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.24.1
+go 1.24.2
 
 require (
 	github.com/0xJacky/pofile v0.2.1
@@ -11,6 +11,7 @@ require (
 	github.com/dgraph-io/ristretto/v2 v2.1.0
 	github.com/dustin/go-humanize v1.0.1
 	github.com/elliotchance/orderedmap/v3 v3.1.0
+	github.com/fsnotify/fsnotify v1.8.0
 	github.com/gin-contrib/pprof v1.5.2
 	github.com/gin-contrib/static v1.1.3
 	github.com/gin-gonic/gin v1.10.0
@@ -18,7 +19,7 @@ require (
 	github.com/go-co-op/gocron/v2 v2.16.1
 	github.com/go-playground/validator/v10 v10.26.0
 	github.com/go-resty/resty/v2 v2.16.5
-	github.com/go-webauthn/webauthn v0.12.2
+	github.com/go-webauthn/webauthn v0.12.3
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
@@ -26,6 +27,7 @@ require (
 	github.com/jpillora/overseer v1.1.6
 	github.com/lib/pq v1.10.9
 	github.com/minio/selfupdate v0.6.0
+	github.com/nxadm/tail v1.4.11
 	github.com/pkg/errors v0.9.1
 	github.com/pquerna/otp v1.4.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
@@ -37,7 +39,7 @@ require (
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250225174229-c03497ddaef6
 	github.com/uozi-tech/cosy v1.18.0
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
-	github.com/urfave/cli/v3 v3.1.0
+	github.com/urfave/cli/v3 v3.1.1
 	golang.org/x/crypto v0.36.0
 	golang.org/x/net v0.38.0
 	gopkg.in/ini.v1 v1.67.0
@@ -109,7 +111,6 @@ require (
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
-	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.8.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -124,7 +125,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-sql-driver/mysql v1.9.1 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
-	github.com/go-webauthn/x v0.1.19 // indirect
+	github.com/go-webauthn/x v0.1.20 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/gofrs/flock v0.12.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
@@ -191,7 +192,6 @@ require (
 	github.com/nrdcg/namesilo v0.2.1 // indirect
 	github.com/nrdcg/nodion v0.1.0 // indirect
 	github.com/nrdcg/porkbun v0.4.0 // indirect
-	github.com/nxadm/tail v1.4.11 // indirect
 	github.com/nzdjb/go-metaname v1.0.0 // indirect
 	github.com/opentracing/opentracing-go v1.2.1-0.20220228012449-10b1cf09e00b // indirect
 	github.com/oracle/oci-go-sdk/v65 v65.88.0 // indirect
