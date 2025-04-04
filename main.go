@@ -1,11 +1,13 @@
 package main
 
 import (
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"net/http"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cmd"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -56,12 +58,23 @@ func Program(confPath string) func(state overseer.State) {
 		}
 		var err error
 		if cSettings.ServerSettings.EnableHTTPS {
-			// Convert SSL certificate and key paths to absolute paths if they are relative
-			sslCert := cSettings.ServerSettings.SSLCert
-			sslKey := cSettings.ServerSettings.SSLKey
+			// Load TLS certificate
+			err = cert.LoadServerTLSCertificate()
+			if err != nil {
+				logger.Fatalf("Failed to load TLS certificate: %v", err)
+				return
+			}
+
+			tlsConfig := &tls.Config{
+				GetCertificate: func(clientHello *tls.ClientHelloInfo) (*tls.Certificate, error) {
+					return cert.GetServerTLSCertificate()
+				},
+			}
+
+			srv.TLSConfig = tlsConfig
 
 			logger.Info("Starting HTTPS server")
-			err = srv.ServeTLS(state.Listener, sslCert, sslKey)
+			err = srv.ServeTLS(state.Listener, "", "")
 		} else {
 			logger.Info("Starting HTTP server")
 			err = srv.Serve(state.Listener)

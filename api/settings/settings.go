@@ -3,14 +3,13 @@ package settings
 import (
 	"fmt"
 	"net/http"
-	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/system"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
-	"github.com/jpillora/overseer"
 	"github.com/uozi-tech/cosy"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
@@ -84,9 +83,9 @@ func SaveSettings(c *gin.Context) {
 	}
 
 	// Validate SSL certificates if HTTPS is enabled
-	needRestart := false
+	needReloadCert := false
 	if json.Server.EnableHTTPS != cSettings.ServerSettings.EnableHTTPS {
-		needRestart = true
+		needReloadCert = true
 	}
 
 	if json.Server.EnableHTTPS {
@@ -112,10 +111,9 @@ func SaveSettings(c *gin.Context) {
 		return
 	}
 
-	if needRestart {
+	if needReloadCert {
 		go func() {
-			time.Sleep(2 * time.Second)
-			overseer.Restart()
+			cert.ReloadServerTLSCertificate()
 		}()
 	}
 

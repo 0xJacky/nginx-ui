@@ -17,6 +17,7 @@ import (
 	dnsproviders "github.com/go-acme/lego/v4/providers/dns"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy/logger"
+	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
 const (
@@ -173,6 +174,11 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 	nginx.Reload()
 
 	l.Println("[INFO] [Nginx UI] Finished")
+
+	if payload.GetCertificatePath() == cSettings.ServerSettings.SSLCert &&
+		payload.GetCertificateKeyPath() == cSettings.ServerSettings.SSLKey {
+		ReloadServerTLSCertificate()
+	}
 
 	// Wait log to be written
 	time.Sleep(2 * time.Second)
