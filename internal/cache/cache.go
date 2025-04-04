@@ -21,8 +21,8 @@ func Init() {
 		logger.Fatal("initializing local cache err", err)
 	}
 
-	// Initialize the nginx log scanner
-	InitNginxLogScanner()
+	// Initialize the config scanner
+	InitScanner()
 }
 
 func Set(key string, value interface{}, ttl time.Duration) {

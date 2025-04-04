@@ -161,6 +161,11 @@
       "https://nginx.org/en/docs/http/ngx_http_auth_jwt_module.html#auth_jwt_type"
     ]
   },
+  "auth_oidc": {
+    "links": [
+      "https://nginx.org/en/docs/http/ngx_http_oidc_module.html#auth_oidc"
+    ]
+  },
   "auth_request": {
     "links": [
       "https://nginx.org/en/docs/http/ngx_http_auth_request_module.html#auth_request"
@@ -251,14 +256,34 @@
       "https://nginx.org/en/docs/http/ngx_http_core_module.html#client_header_timeout"
     ]
   },
+  "client_id": {
+    "links": [
+      "https://nginx.org/en/docs/http/ngx_http_oidc_module.html#client_id"
+    ]
+  },
   "client_max_body_size": {
     "links": [
       "https://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size"
     ]
   },
+  "client_secret": {
+    "links": [
+      "https://nginx.org/en/docs/http/ngx_http_oidc_module.html#client_secret"
+    ]
+  },
+  "config_url": {
+    "links": [
+      "https://nginx.org/en/docs/http/ngx_http_oidc_module.html#config_url"
+    ]
+  },
   "connection_pool_size": {
     "links": [
       "https://nginx.org/en/docs/http/ngx_http_core_module.html#connection_pool_size"
+    ]
+  },
+  "cookie_name": {
+    "links": [
+      "https://nginx.org/en/docs/http/ngx_http_oidc_module.html#cookie_name"
     ]
   },
   "create_full_put_path": {
@@ -355,6 +380,11 @@
   "expires": {
     "links": [
       "https://nginx.org/en/docs/http/ngx_http_headers_module.html#expires"
+    ]
+  },
+  "extra_auth_args": {
+    "links": [
+      "https://nginx.org/en/docs/http/ngx_http_oidc_module.html#extra_auth_args"
     ]
   },
   "f4f": {
@@ -1098,6 +1128,11 @@
       "https://nginx.org/en/docs/http/ngx_http_upstream_module.html#ip_hash"
     ]
   },
+  "issuer": {
+    "links": [
+      "https://nginx.org/en/docs/http/ngx_http_oidc_module.html#issuer"
+    ]
+  },
   "js_access": {
     "links": [
       "https://nginx.org/en/docs/stream/ngx_stream_js_module.html#js_access"
@@ -1639,6 +1674,11 @@
       "https://nginx.org/en/docs/http/ngx_http_upstream_module.html#ntlm"
     ]
   },
+  "oidc_provider": {
+    "links": [
+      "https://nginx.org/en/docs/http/ngx_http_oidc_module.html#oidc_provider"
+    ]
+  },
   "open_file_cache": {
     "links": [
       "https://nginx.org/en/docs/http/ngx_http_core_module.html#open_file_cache"
@@ -1668,6 +1708,11 @@
   "otel_exporter": {
     "links": [
       "https://nginx.org/en/docs/ngx_otel_module.html#otel_exporter"
+    ]
+  },
+  "otel_resource_attr": {
+    "links": [
+      "https://nginx.org/en/docs/ngx_otel_module.html#otel_resource_attr"
     ]
   },
   "otel_service_name": {
@@ -1773,6 +1818,11 @@
   "protocol": {
     "links": [
       "https://nginx.org/en/docs/mail/ngx_mail_core_module.html#protocol"
+    ]
+  },
+  "proxy": {
+    "links": [
+      "https://nginx.org/en/docs/ngx_mgmt_module.html#proxy"
     ]
   },
   "proxy_bind": {
@@ -2027,6 +2077,11 @@
       "https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass_trailers"
     ]
   },
+  "proxy_password": {
+    "links": [
+      "https://nginx.org/en/docs/ngx_mgmt_module.html#proxy_password"
+    ]
+  },
   "proxy_protocol": {
     "links": [
       "https://nginx.org/en/docs/mail/ngx_mail_proxy_module.html#proxy_protocol",
@@ -2225,6 +2280,11 @@
       "https://nginx.org/en/docs/stream/ngx_stream_proxy_module.html#proxy_upload_rate"
     ]
   },
+  "proxy_username": {
+    "links": [
+      "https://nginx.org/en/docs/ngx_mgmt_module.html#proxy_username"
+    ]
+  },
   "queue": {
     "links": [
       "https://nginx.org/en/docs/http/ngx_http_upstream_module.html#queue"
@@ -2284,6 +2344,11 @@
   "recursive_error_pages": {
     "links": [
       "https://nginx.org/en/docs/http/ngx_http_core_module.html#recursive_error_pages"
+    ]
+  },
+  "redirect_uri": {
+    "links": [
+      "https://nginx.org/en/docs/http/ngx_http_oidc_module.html#redirect_uri"
     ]
   },
   "referer_hash_bucket_size": {
@@ -2576,6 +2641,11 @@
       "https://nginx.org/en/docs/http/ngx_http_scgi_module.html#scgi_temp_path"
     ]
   },
+  "scope": {
+    "links": [
+      "https://nginx.org/en/docs/http/ngx_http_oidc_module.html#scope"
+    ]
+  },
   "secure_link": {
     "links": [
       "https://nginx.org/en/docs/http/ngx_http_secure_link_module.html#secure_link"
@@ -2662,6 +2732,16 @@
   "session_log_zone": {
     "links": [
       "https://nginx.org/en/docs/http/ngx_http_session_log_module.html#session_log_zone"
+    ]
+  },
+  "session_store": {
+    "links": [
+      "https://nginx.org/en/docs/http/ngx_http_oidc_module.html#session_store"
+    ]
+  },
+  "session_timeout": {
+    "links": [
+      "https://nginx.org/en/docs/http/ngx_http_oidc_module.html#session_timeout"
     ]
   },
   "set": {
@@ -2802,6 +2882,7 @@
   },
   "ssl_crl": {
     "links": [
+      "https://nginx.org/en/docs/http/ngx_http_oidc_module.html#ssl_crl",
       "https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_crl",
       "https://nginx.org/en/docs/mail/ngx_mail_ssl_module.html#ssl_crl",
       "https://nginx.org/en/docs/stream/ngx_stream_ssl_module.html#ssl_crl",
@@ -2952,6 +3033,7 @@
   },
   "ssl_trusted_certificate": {
     "links": [
+      "https://nginx.org/en/docs/http/ngx_http_oidc_module.html#ssl_trusted_certificate",
       "https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_trusted_certificate",
       "https://nginx.org/en/docs/mail/ngx_mail_ssl_module.html#ssl_trusted_certificate",
       "https://nginx.org/en/docs/stream/ngx_stream_ssl_module.html#ssl_trusted_certificate",

@@ -16,6 +16,8 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
+// getLogPath resolves the log file path based on the provided control parameters
+// It checks if the path is under the whitelist directories
 func getLogPath(control *controlStruct) (logPath string, err error) {
 	// If direct log path is provided, use it
 	if control.LogPath != "" {
@@ -58,6 +60,7 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 	return
 }
 
+// tailNginxLog tails the specified log file and sends each line to the websocket
 func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan chan error) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -130,6 +133,7 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 	}
 }
 
+// handleLogControl processes websocket control messages
 func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errChan chan error) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -160,6 +164,7 @@ func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errCha
 	}
 }
 
+// Log handles websocket connection for real-time log viewing
 func Log(c *gin.Context) {
 	var upGrader = websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {

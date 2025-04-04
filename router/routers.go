@@ -10,6 +10,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/cluster"
 	"github.com/0xJacky/Nginx-UI/api/config"
 	"github.com/0xJacky/Nginx-UI/api/crypto"
+	"github.com/0xJacky/Nginx-UI/api/index"
 	"github.com/0xJacky/Nginx-UI/api/nginx"
 	nginxLog "github.com/0xJacky/Nginx-UI/api/nginx_log"
 	"github.com/0xJacky/Nginx-UI/api/notification"
@@ -82,6 +83,7 @@ func InitRouter() {
 			{
 				terminal.InitRouter(o)
 			}
+			index.InitRouter(w)
 			nginxLog.InitRouter(w)
 			upstream.InitRouter(w)
 			system.InitWebSocketRouter(w)

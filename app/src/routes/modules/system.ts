@@ -19,13 +19,6 @@ export const systemRoutes: RouteRecordRaw[] = [
         name: () => $gettext('Self Check'),
       },
     }, {
-      path: 'about',
-      name: 'About',
-      component: () => import('@/views/system/About.vue'),
-      meta: {
-        name: () => $gettext('About'),
-      },
-    }, {
       path: 'backup',
       name: 'Backup',
       component: () => import('@/views/system/Backup/index.vue'),
@@ -43,6 +36,13 @@ export const systemRoutes: RouteRecordRaw[] = [
 
           return settings.is_remote
         },
+      },
+    }, {
+      path: 'about',
+      name: 'About',
+      component: () => import('@/views/system/About.vue'),
+      meta: {
+        name: () => $gettext('About'),
       },
     }],
   },

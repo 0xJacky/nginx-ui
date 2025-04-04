@@ -1,4 +1,4 @@
-package nginx_log
+package index
 
 import (
 	"io"
@@ -9,8 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetNginxLogsLive is an SSE endpoint that sends real-time log scanning status updates
-func GetNginxLogsLive(c *gin.Context) {
+// GetIndexStatus is an SSE endpoint that sends real-time index status updates
+func GetIndexStatus(c *gin.Context) {
 	api.SetSSEHeaders(c)
 	notify := c.Writer.CloseNotify()
 

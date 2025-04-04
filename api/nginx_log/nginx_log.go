@@ -6,7 +6,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
@@ -16,20 +15,24 @@ import (
 )
 
 const (
+	// PageSize defines the size of log chunks returned by the API
 	PageSize = 128 * 1024
 )
 
+// controlStruct represents the request parameters for getting log content
 type controlStruct struct {
-	Type    string `json:"type"`
-	LogPath string `json:"log_path"`
+	Type    string `json:"type"`     // Type of log: "access" or "error"
+	LogPath string `json:"log_path"` // Path to the log file
 }
 
+// nginxLogPageResp represents the response format for log content
 type nginxLogPageResp struct {
-	Content string `json:"content"`
-	Page    int64  `json:"page"`
-	Error   string `json:"error,omitempty"`
+	Content string `json:"content"`         // Log content
+	Page    int64  `json:"page"`            // Current page number
+	Error   string `json:"error,omitempty"` // Error message if any
 }
 
+// GetNginxLogPage handles retrieving a page of log content from a log file
 func GetNginxLogPage(c *gin.Context) {
 	page := cast.ToInt64(c.Query("page"))
 	if page < 0 {
@@ -84,6 +87,7 @@ func GetNginxLogPage(c *gin.Context) {
 		logger.Error(err)
 		return
 	}
+	defer f.Close()
 
 	totalPage := logFileStat.Size() / PageSize
 
@@ -100,7 +104,7 @@ func GetNginxLogPage(c *gin.Context) {
 	buf = make([]byte, PageSize)
 	offset = (page - 1) * PageSize
 
-	// seek
+	// seek to the correct position in the file
 	_, err = f.Seek(offset, io.SeekStart)
 	if err != nil && err != io.EOF {
 		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
@@ -125,28 +129,29 @@ func GetNginxLogPage(c *gin.Context) {
 	})
 }
 
+// GetLogList returns a list of Nginx log files
 func GetLogList(c *gin.Context) {
-	filters := []func(*cache.NginxLogCache) bool{}
+	filters := []func(*nginx_log.NginxLogCache) bool{}
 
 	if c.Query("type") != "" {
-		filters = append(filters, func(entry *cache.NginxLogCache) bool {
+		filters = append(filters, func(entry *nginx_log.NginxLogCache) bool {
 			return entry.Type == c.Query("type")
 		})
 	}
 
 	if c.Query("name") != "" {
-		filters = append(filters, func(entry *cache.NginxLogCache) bool {
+		filters = append(filters, func(entry *nginx_log.NginxLogCache) bool {
 			return strings.Contains(entry.Name, c.Query("name"))
 		})
 	}
 
 	if c.Query("path") != "" {
-		filters = append(filters, func(entry *cache.NginxLogCache) bool {
+		filters = append(filters, func(entry *nginx_log.NginxLogCache) bool {
 			return strings.Contains(entry.Path, c.Query("path"))
 		})
 	}
 
-	data := cache.GetAllLogPaths(filters...)
+	data := nginx_log.GetAllLogs(filters...)
 
 	orderBy := c.DefaultQuery("sort_by", "name")
 	sort := c.DefaultQuery("order", "desc")

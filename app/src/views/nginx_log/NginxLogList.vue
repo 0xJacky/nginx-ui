@@ -2,6 +2,7 @@
 import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column } from '@/components/StdDesign/types'
 import type { SSE, SSEvent } from 'sse.js'
+import cacheIndex from '@/api/cache_index'
 import nginxLog from '@/api/nginx_log'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import { input, select } from '@/components/StdDesign/StdDataEntry'
@@ -64,12 +65,12 @@ function viewLog(record: { type: string, path: string }) {
 }
 
 // Connect to SSE endpoint and setup handlers
-function setupSSE() {
+async function setupSSE() {
   if (sse.value) {
     sse.value.close()
   }
 
-  sse.value = nginxLog.logs_live()
+  sse.value = cacheIndex.index_status()
 
   // Handle incoming messages
   if (sse.value) {
