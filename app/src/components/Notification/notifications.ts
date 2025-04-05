@@ -10,6 +10,24 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     content: (args: any) => $gettext('Please generate new recovery codes in the preferences immediately to prevent lockout.', args),
   },
 
+  // cluster module notifications
+  'Reload Remote Nginx Error': {
+    title: () => $gettext('Reload Remote Nginx Error'),
+    content: (args: any) => $gettext('Reload Nginx on %{node} failed, response: %{resp}', args),
+  },
+  'Reload Remote Nginx Success': {
+    title: () => $gettext('Reload Remote Nginx Success'),
+    content: (args: any) => $gettext('Reload Nginx on %{node} successfully', args),
+  },
+  'Restart Remote Nginx Error': {
+    title: () => $gettext('Restart Remote Nginx Error'),
+    content: (args: any) => $gettext('Restart Nginx on %{node} failed, response: %{resp}', args),
+  },
+  'Restart Remote Nginx Success': {
+    title: () => $gettext('Restart Remote Nginx Success'),
+    content: (args: any) => $gettext('Restart Nginx on %{node} successfully', args),
+  },
+
   // cert module notifications
   'Sync Certificate Error': {
     title: () => $gettext('Sync Certificate Error'),

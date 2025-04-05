@@ -49,7 +49,7 @@ msgstr "ACME 사용자"
 #: src/views/nginx_log/NginxLogList.vue:53
 #: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
-#: src/views/site/site_list/columns.tsx:76 src/views/stream/StreamList.vue:71
+#: src/views/site/site_list/columns.tsx:76 src/views/stream/StreamList.vue:72
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "작업"
@@ -60,7 +60,7 @@ msgstr "작업"
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/site/ngx_conf/NgxServer.vue:163
 #: src/views/site/ngx_conf/NgxUpstream.vue:154
-#: src/views/stream/StreamList.vue:174
+#: src/views/stream/StreamList.vue:175
 msgid "Add"
 msgstr "추가"
 
@@ -87,11 +87,11 @@ msgstr "위치 추가"
 msgid "Add Site"
 msgstr "사이트 추가"
 
-#: src/views/stream/StreamList.vue:243
+#: src/views/stream/StreamList.vue:241
 msgid "Add Stream"
 msgstr "스트림 추가"
 
-#: src/views/stream/StreamList.vue:155
+#: src/views/stream/StreamList.vue:156
 msgid "Added successfully"
 msgstr "성공적으로 추가됨"
 
@@ -108,8 +108,8 @@ msgstr "고급 모드"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr ""
 
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:135
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
-#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:180
 msgid "All"
 msgstr ""
 
@@ -196,14 +196,19 @@ msgstr "이 항목을 영구적으로 삭제하시겠습니까?"
 msgid "Are you sure you want to delete this item?"
 msgstr "이 항목을 삭제하시겠습니까?"
 
-#: src/views/site/site_list/SiteList.vue:145
-#: src/views/stream/StreamList.vue:227
+#: src/views/site/site_list/SiteList.vue:143
+#: src/views/stream/StreamList.vue:225
 msgid "Are you sure you want to delete?"
 msgstr "정말 삭제하시겠습니까?"
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:526
 msgid "Are you sure you want to recover this item?"
 msgstr "이 항목을 복구하시겠습니까?"
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:149
+#, fuzzy
+msgid "Are you sure you want to reload Nginx on the following sync nodes?"
+msgstr "정말 삭제하시겠습니까?"
 
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:95
 msgid "Are you sure you want to remove this directive?"
@@ -216,6 +221,11 @@ msgstr "이 항목을 제거하시겠습니까?"
 #: src/views/site/ngx_conf/LocationEditor.vue:86
 msgid "Are you sure you want to remove this location?"
 msgstr "이 위치를 제거하시겠습니까?"
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
+#, fuzzy
+msgid "Are you sure you want to restart Nginx on the following sync nodes?"
+msgstr "모든 알림을 지우시겠습니까?"
 
 #: src/components/ChatGPT/ChatGPT.vue:318
 msgid "Ask ChatGPT for Help"
@@ -697,8 +707,8 @@ msgstr "설명"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
 #: src/views/site/ngx_conf/NgxServer.vue:110
 #: src/views/site/ngx_conf/NgxUpstream.vue:128
-#: src/views/site/site_list/SiteList.vue:154
-#: src/views/stream/StreamList.vue:236
+#: src/views/site/site_list/SiteList.vue:152
+#: src/views/stream/StreamList.vue:234
 msgid "Delete"
 msgstr "삭제"
 
@@ -707,51 +717,51 @@ msgstr "삭제"
 msgid "Delete Permanently"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:43 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:50
 #, fuzzy
 msgid "Delete Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:47 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:49
 #, fuzzy
 msgid "Delete Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:85
+#: src/components/Notification/notifications.ts:103
 #, fuzzy
 msgid "Delete Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:89
+#: src/components/Notification/notifications.ts:107
 #, fuzzy
 msgid "Delete Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:44
+#: src/components/Notification/notifications.ts:62
 #, fuzzy
 msgid "Delete site %{name} from %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 배포 실패"
 
-#: src/components/Notification/notifications.ts:48
+#: src/components/Notification/notifications.ts:66
 #, fuzzy
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/views/site/site_list/SiteList.vue:67
+#: src/views/site/site_list/SiteList.vue:68
 msgid "Delete site: %{site_name}"
 msgstr "사이트 삭제: %{site_name}"
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:104
 #, fuzzy
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 배포 실패"
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:108
 #, fuzzy
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/views/stream/StreamList.vue:104
+#: src/views/stream/StreamList.vue:105
 msgid "Delete stream: %{stream_name}"
 msgstr "스트림 삭제: %{stream_name}"
 
@@ -804,8 +814,8 @@ msgstr ""
 msgid "Directives"
 msgstr "지시문들"
 
-#: src/views/site/site_list/SiteList.vue:125
-#: src/views/stream/StreamList.vue:207
+#: src/views/site/site_list/SiteList.vue:123
+#: src/views/stream/StreamList.vue:205
 msgid "Disable"
 msgstr "비활성화"
 
@@ -813,42 +823,42 @@ msgstr "비활성화"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "%{name}의 자동 갱신 비활성화 실패"
 
-#: src/components/Notification/notifications.ts:51 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:52
 #, fuzzy
 msgid "Disable Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:55 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:51
 #, fuzzy
 msgid "Disable Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:93
+#: src/components/Notification/notifications.ts:111
 #, fuzzy
 msgid "Disable Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:97
+#: src/components/Notification/notifications.ts:115
 #, fuzzy
 msgid "Disable Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:52
+#: src/components/Notification/notifications.ts:70
 #, fuzzy
 msgid "Disable site %{name} from %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:56
+#: src/components/Notification/notifications.ts:74
 #, fuzzy
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:112
 #, fuzzy
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:116
 #, fuzzy
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
@@ -861,14 +871,14 @@ msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 #: src/views/site/site_edit/SiteEdit.vue:190
 #: src/views/site/site_list/columns.tsx:53
 #: src/views/site/site_list/columns.tsx:62 src/views/stream/StreamEdit.vue:177
-#: src/views/stream/StreamList.vue:55 src/views/user/userColumns.tsx:41
+#: src/views/stream/StreamList.vue:56 src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr "비활성화됨"
 
 #: src/views/site/site_edit/RightSettings.vue:42
-#: src/views/site/site_list/SiteList.vue:56
+#: src/views/site/site_list/SiteList.vue:57
 #: src/views/stream/components/RightSettings.vue:42
-#: src/views/stream/StreamList.vue:93
+#: src/views/stream/StreamList.vue:94
 msgid "Disabled successfully"
 msgstr "성공적으로 비활성화됨"
 
@@ -963,9 +973,9 @@ msgid ""
 msgstr ""
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:140
+#: src/views/site/site_list/SiteList.vue:138
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:222
+#: src/views/stream/StreamList.vue:220
 msgid "Duplicate"
 msgstr "복제"
 
@@ -1006,8 +1016,8 @@ msgstr "이메일 (*)"
 msgid "Email (*)"
 msgstr "이메일 (*)"
 
-#: src/views/site/site_list/SiteList.vue:133
-#: src/views/stream/StreamList.vue:215
+#: src/views/site/site_list/SiteList.vue:131
+#: src/views/stream/StreamList.vue:213
 msgid "Enable"
 msgstr "활성화"
 
@@ -1029,42 +1039,42 @@ msgstr "활성화 실패"
 msgid "Enable HTTPS"
 msgstr "TLS 활성화"
 
-#: src/components/Notification/notifications.ts:59 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:77 src/language/constants.ts:54
 #, fuzzy
 msgid "Enable Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:63 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:81 src/language/constants.ts:53
 #, fuzzy
 msgid "Enable Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:119
 #, fuzzy
 msgid "Enable Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:123
 #, fuzzy
 msgid "Enable Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:60
+#: src/components/Notification/notifications.ts:78
 #, fuzzy
 msgid "Enable site %{name} on %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:64
+#: src/components/Notification/notifications.ts:82
 #, fuzzy
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:120
 #, fuzzy
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:124
 #, fuzzy
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
@@ -1089,16 +1099,16 @@ msgstr "TLS 활성화"
 #: src/views/site/site_list/columns.tsx:49
 #: src/views/site/site_list/columns.tsx:61
 #: src/views/stream/components/RightSettings.vue:81
-#: src/views/stream/StreamEdit.vue:171 src/views/stream/StreamList.vue:51
+#: src/views/stream/StreamEdit.vue:171 src/views/stream/StreamList.vue:52
 #: src/views/user/userColumns.tsx:38
 msgid "Enabled"
 msgstr "활성화됨"
 
 #: src/views/site/site_add/SiteAdd.vue:40
 #: src/views/site/site_edit/RightSettings.vue:33
-#: src/views/site/site_list/SiteList.vue:46
+#: src/views/site/site_list/SiteList.vue:47
 #: src/views/stream/components/RightSettings.vue:33
-#: src/views/stream/StreamList.vue:83
+#: src/views/stream/StreamList.vue:84
 msgid "Enabled successfully"
 msgstr "성공적으로 활성화됨"
 
@@ -1109,7 +1119,7 @@ msgstr "Let's Encrypt로 웹사이트 암호화"
 #: src/views/site/site_edit/RightSettings.vue:91
 #: src/views/site/site_list/columns.tsx:25
 #: src/views/stream/components/RightSettings.vue:90
-#: src/views/stream/StreamList.vue:27
+#: src/views/stream/StreamList.vue:28
 #, fuzzy
 msgid "Environment Group"
 msgstr "환경"
@@ -1126,7 +1136,7 @@ msgstr "환경 변수 설정"
 
 #: src/routes/modules/environments.ts:11
 #: src/views/dashboard/Environments.vue:83
-#: src/views/environments/list/Environment.vue:43
+#: src/views/environments/list/Environment.vue:74
 msgid "Environments"
 msgstr "환경"
 
@@ -1302,16 +1312,16 @@ msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr ""
 
 #: src/views/site/site_edit/RightSettings.vue:45
-#: src/views/site/site_list/SiteList.vue:60
+#: src/views/site/site_list/SiteList.vue:61
 #: src/views/stream/components/RightSettings.vue:45
-#: src/views/stream/StreamList.vue:97
+#: src/views/stream/StreamList.vue:98
 msgid "Failed to disable %{msg}"
 msgstr "%{msg} 비활성화 실패"
 
 #: src/views/site/site_edit/RightSettings.vue:36
-#: src/views/site/site_list/SiteList.vue:50
+#: src/views/site/site_list/SiteList.vue:51
 #: src/views/stream/components/RightSettings.vue:36
-#: src/views/stream/StreamList.vue:87
+#: src/views/stream/StreamList.vue:88
 msgid "Failed to enable %{msg}"
 msgstr "%{msg} 활성화 실패"
 
@@ -1817,11 +1827,11 @@ msgstr ""
 msgid "Load Average:"
 msgstr "부하 평균:"
 
-#: src/views/environments/list/Environment.vue:49
+#: src/views/environments/list/Environment.vue:80
 msgid "Load from settings"
 msgstr ""
 
-#: src/views/environments/list/Environment.vue:17
+#: src/views/environments/list/Environment.vue:20
 #, fuzzy
 msgid "Load successfully"
 msgstr "성공적으로 저장됨"
@@ -1894,11 +1904,11 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "구성 관리"
 
-#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:94
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:95
 msgid "Manage Sites"
 msgstr "사이트 관리"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:172
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:173
 #, fuzzy
 msgid "Manage Streams"
 msgstr "스트림 관리"
@@ -1978,7 +1988,7 @@ msgstr "단일 지시문"
 #: src/views/site/site_list/SiteDuplicate.vue:79
 #: src/views/stream/components/RightSettings.vue:87
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:18 src/views/stream/StreamList.vue:248
+#: src/views/stream/StreamList.vue:19 src/views/stream/StreamList.vue:246
 msgid "Name"
 msgstr "이름"
 
@@ -2110,6 +2120,10 @@ msgstr "Nginx 오류 로그 경로"
 msgid "Nginx Reload Command"
 msgstr ""
 
+#: src/views/environments/list/Environment.vue:41
+msgid "Nginx reload operations have been dispatched to remote nodes"
+msgstr ""
+
 #: src/components/NginxControl/NginxControl.vue:26
 #, fuzzy
 msgid "Nginx reloaded successfully"
@@ -2119,6 +2133,10 @@ msgstr "Nginx가 성공적으로 리로드됨"
 #, fuzzy
 msgid "Nginx Restart Command"
 msgstr "터미널 시작 명령"
+
+#: src/views/environments/list/Environment.vue:55
+msgid "Nginx restart operations have been dispatched to remote nodes"
+msgstr ""
 
 #: src/components/NginxControl/NginxControl.vue:40
 #, fuzzy
@@ -2147,6 +2165,8 @@ msgid ""
 msgstr "Nginx 구성 오류름"
 
 #: src/components/ChatGPT/ChatGPT.vue:374
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:151
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:163
 #: src/components/Notification/Notification.vue:133
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:63
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:94
@@ -2158,8 +2178,8 @@ msgstr "Nginx 구성 오류름"
 #: src/views/preference/CertSettings.vue:73
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:88
-#: src/views/site/site_list/SiteList.vue:143
-#: src/views/stream/StreamList.vue:225
+#: src/views/site/site_list/SiteList.vue:141
+#: src/views/stream/StreamList.vue:223
 msgid "No"
 msgstr "아니요"
 
@@ -2236,6 +2256,7 @@ msgid ""
 "Firefox."
 msgstr ""
 
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:179
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:56
@@ -2259,9 +2280,9 @@ msgstr ""
 #: src/views/site/ngx_conf/NgxServer.vue:79
 #: src/views/site/ngx_conf/NgxUpstream.vue:33
 #: src/views/site/site_edit/RightSettings.vue:54
-#: src/views/site/site_list/SiteList.vue:144
+#: src/views/site/site_list/SiteList.vue:142
 #: src/views/stream/components/RightSettings.vue:54
-#: src/views/stream/StreamList.vue:226
+#: src/views/stream/StreamList.vue:224
 #: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr "확인"
@@ -2270,6 +2291,7 @@ msgstr "확인"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "검증이 완료되면, 레코드는 제거됩니다."
 
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:179
 #: src/components/NodeSelector/NodeSelector.vue:103
 #: src/components/NodeSelector/NodeSelector.vue:89
 #: src/views/dashboard/Environments.vue:100
@@ -2483,7 +2505,19 @@ msgstr ""
 msgid "Please select a backup file"
 msgstr "적어도 하나의 노드를 선택해주세요!"
 
-#: src/views/environments/list/Environment.vue:58
+#: src/views/environments/list/Environment.vue:112
+#: src/views/environments/list/Environment.vue:35
+#, fuzzy
+msgid "Please select at least one node to reload Nginx"
+msgstr "적어도 하나의 노드를 선택해주세요!"
+
+#: src/views/environments/list/Environment.vue:133
+#: src/views/environments/list/Environment.vue:49
+#, fuzzy
+msgid "Please select at least one node to restart Nginx"
+msgstr "적어도 하나의 노드를 선택해주세요!"
+
+#: src/views/environments/list/Environment.vue:91
 #, fuzzy
 msgid "Please select at least one node to upgrade"
 msgstr "적어도 하나의 노드를 선택해주세요!"
@@ -2633,6 +2667,37 @@ msgstr "릴리스 노트"
 msgid "Reload"
 msgstr "리로드"
 
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
+#: src/views/environments/list/Environment.vue:120
+#: src/views/environments/list/Environment.vue:128
+#, fuzzy
+msgid "Reload Nginx"
+msgstr "Nginx 리로딩 중"
+
+#: src/components/Notification/notifications.ts:16
+#, fuzzy
+msgid "Reload Nginx on %{node} failed, response: %{resp}"
+msgstr "사이트 삭제: %{site_name}"
+
+#: src/components/Notification/notifications.ts:20
+#, fuzzy
+msgid "Reload Nginx on %{node} successfully"
+msgstr "성공적으로 저장되었습니다"
+
+#: src/components/Notification/notifications.ts:15
+#, fuzzy
+msgid "Reload Remote Nginx Error"
+msgstr "인증서 갱신 오류"
+
+#: src/components/Notification/notifications.ts:19
+#, fuzzy
+msgid "Reload Remote Nginx Success"
+msgstr "인증서 갱신 성공"
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
+msgid "Reload request failed, please check your network connection"
+msgstr ""
+
 #: src/components/NginxControl/NginxControl.vue:73
 msgid "Reloading"
 msgstr "리로딩 중"
@@ -2666,62 +2731,62 @@ msgstr "성공적으로 제거됨"
 msgid "Rename"
 msgstr "이름 변경"
 
-#: src/components/Notification/notifications.ts:34
+#: src/components/Notification/notifications.ts:52
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:38
+#: src/components/Notification/notifications.ts:56
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:33 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:51 src/language/constants.ts:42
 #, fuzzy
 msgid "Rename Remote Config Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:37 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:55 src/language/constants.ts:41
 #, fuzzy
 msgid "Rename Remote Config Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:67 src/language/constants.ts:56
+#: src/components/Notification/notifications.ts:85 src/language/constants.ts:56
 #, fuzzy
 msgid "Rename Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:71 src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:89 src/language/constants.ts:55
 #, fuzzy
 msgid "Rename Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:127
 #, fuzzy
 msgid "Rename Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:131
 #, fuzzy
 msgid "Rename Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:68
+#: src/components/Notification/notifications.ts:86
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:72
+#: src/components/Notification/notifications.ts:90
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:128
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:132
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
@@ -2780,6 +2845,37 @@ msgstr "재설정"
 #: src/components/NginxControl/NginxControl.vue:92
 msgid "Restart"
 msgstr "재시작"
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:168
+#: src/views/environments/list/Environment.vue:141
+#: src/views/environments/list/Environment.vue:149
+#, fuzzy
+msgid "Restart Nginx"
+msgstr "재시작 중"
+
+#: src/components/Notification/notifications.ts:24
+#, fuzzy
+msgid "Restart Nginx on %{node} failed, response: %{resp}"
+msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
+
+#: src/components/Notification/notifications.ts:28
+#, fuzzy
+msgid "Restart Nginx on %{node} successfully"
+msgstr "성공적으로 저장되었습니다"
+
+#: src/components/Notification/notifications.ts:23
+#, fuzzy
+msgid "Restart Remote Nginx Error"
+msgstr "인증서 갱신 오류"
+
+#: src/components/Notification/notifications.ts:27
+#, fuzzy
+msgid "Restart Remote Nginx Success"
+msgstr "인증서 갱신 성공"
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:124
+msgid "Restart request failed, please check your network connection"
+msgstr ""
 
 #: src/components/NginxControl/NginxControl.vue:78
 msgid "Restarting"
@@ -2854,42 +2950,42 @@ msgstr "지시문 저장"
 msgid "Save error %{msg}"
 msgstr "저장 오류 %{msg}"
 
-#: src/components/Notification/notifications.ts:75 src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:93 src/language/constants.ts:48
 #, fuzzy
 msgid "Save Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:79 src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:47
 #, fuzzy
 msgid "Save Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:135
 #, fuzzy
 msgid "Save Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:139
 #, fuzzy
 msgid "Save Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:76
+#: src/components/Notification/notifications.ts:94
 #, fuzzy
 msgid "Save site %{name} to %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:80
+#: src/components/Notification/notifications.ts:98
 #, fuzzy
 msgid "Save site %{name} to %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:136
 #, fuzzy
 msgid "Save stream %{name} to %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 배포 실패"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:140
 #, fuzzy
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
@@ -3121,7 +3217,7 @@ msgstr ""
 #: src/views/certificate/ACMEUser.vue:65
 #: src/views/certificate/CertificateList/certColumns.tsx:68
 #: src/views/environments/list/envColumns.tsx:44
-#: src/views/site/site_list/columns.tsx:42 src/views/stream/StreamList.vue:44
+#: src/views/site/site_list/columns.tsx:42 src/views/stream/StreamList.vue:45
 msgid "Status"
 msgstr "상태"
 
@@ -3197,46 +3293,47 @@ msgstr ""
 msgid "Sync Certificate"
 msgstr "인증서 갱신"
 
-#: src/components/Notification/notifications.ts:16
+#: src/components/Notification/notifications.ts:34
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:20
+#: src/components/Notification/notifications.ts:38
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:15 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:33 src/language/constants.ts:39
 #, fuzzy
 msgid "Sync Certificate Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:19 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:37 src/language/constants.ts:38
 #, fuzzy
 msgid "Sync Certificate Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:26
+#: src/components/Notification/notifications.ts:44
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:30
+#: src/components/Notification/notifications.ts:48
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:25 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:43 src/language/constants.ts:45
 #, fuzzy
 msgid "Sync Config Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:29 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:47 src/language/constants.ts:44
 #, fuzzy
 msgid "Sync Config Success"
 msgstr "인증서 갱신 성공"
 
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
 #: src/views/environments/group/EnvGroup.vue:18
 msgid "Sync Nodes"
 msgstr ""
@@ -3559,7 +3656,7 @@ msgstr "성공적으로 저장되었습니다"
 #: src/views/site/site_edit/RightSettings.vue:100
 #: src/views/site/site_list/columns.tsx:69
 #: src/views/stream/components/RightSettings.vue:99
-#: src/views/stream/StreamList.vue:64 src/views/user/userColumns.tsx:54
+#: src/views/stream/StreamList.vue:65 src/views/user/userColumns.tsx:54
 msgid "Updated at"
 msgstr "업데이트됨"
 
@@ -3569,7 +3666,8 @@ msgid "Updated successfully"
 msgstr "성공적으로 저장되었습니다"
 
 #: src/routes/modules/system.ts:33
-#: src/views/environments/list/Environment.vue:66
+#: src/views/environments/list/Environment.vue:107
+#: src/views/environments/list/Environment.vue:99
 #: src/views/system/Upgrade.vue:143 src/views/system/Upgrade.vue:226
 msgid "Upgrade"
 msgstr "업그레이드"
@@ -3755,6 +3853,8 @@ msgstr "인증서 개인 키를 디스크에 쓰기"
 msgid "Writing certificate to disk"
 msgstr "인증서를 디스크에 쓰기"
 
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:150
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
 #: src/views/preference/AuthSettings.vue:163
 #: src/views/preference/CertSettings.vue:72
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:96
@@ -3843,20 +3943,12 @@ msgstr ""
 #~ msgid "Enable %{conf_name} in %{node_name} successfully"
 #~ msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#, fuzzy
-#~ msgid "Enable site %{site} on %{node} error, response: %{resp}"
-#~ msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
-
 #~ msgid "Enable successfully"
 #~ msgstr "성공적으로 활성화"
 
 #, fuzzy
 #~ msgid "Please upgrade the remote Nginx UI to the latest version"
 #~ msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
-
-#, fuzzy
-#~ msgid "Remove site %{site} from %{node} error, response: %{resp}"
-#~ msgstr "사이트 삭제: %{site_name}"
 
 #, fuzzy
 #~ msgid ""

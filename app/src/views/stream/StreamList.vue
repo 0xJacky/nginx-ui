@@ -5,6 +5,7 @@ import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTabl
 import type { Column, JSXElements } from '@/components/StdDesign/types'
 import env_group from '@/api/env_group'
 import stream from '@/api/stream'
+import EnvGroupTabs from '@/components/EnvGroupTabs/EnvGroupTabs.vue'
 import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import { actualValueRender, datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
@@ -176,10 +177,7 @@ function handleBatchUpdated() {
 
     <InspectConfig ref="inspect_config" />
 
-    <ATabs v-model:active-key="envGroupId">
-      <ATabPane :key="0" :tab="$gettext('All')" />
-      <ATabPane v-for="c in envGroups" :key="c.id" :tab="c.name" />
-    </ATabs>
+    <EnvGroupTabs v-model:active-key="envGroupId" :env-groups="envGroups" />
 
     <StdTable
       ref="table"

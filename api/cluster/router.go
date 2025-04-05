@@ -17,6 +17,9 @@ func InitRouter(r *gin.RouterGroup) {
 	// Node
 	r.GET("node", GetCurrentNode)
 
+	r.POST("environments/reload_nginx", ReloadNginx)
+	r.POST("environments/restart_nginx", RestartNginx)
+
 	r.GET("env_groups", GetGroupList)
 	r.GET("env_groups/:id", GetGroup)
 	r.POST("env_groups", AddGroup)

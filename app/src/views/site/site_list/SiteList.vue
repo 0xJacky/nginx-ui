@@ -4,6 +4,7 @@ import type { Site } from '@/api/site'
 import type { Column } from '@/components/StdDesign/types'
 import env_group from '@/api/env_group'
 import site from '@/api/site'
+import EnvGroupTabs from '@/components/EnvGroupTabs/EnvGroupTabs.vue'
 import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import InspectConfig from '@/views/config/InspectConfig.vue'
@@ -94,10 +95,7 @@ function handleBatchUpdated() {
   <ACard :title="$gettext('Manage Sites')">
     <InspectConfig ref="inspect_config" />
 
-    <ATabs v-model:active-key="envGroupId">
-      <ATabPane :key="0" :tab="$gettext('All')" />
-      <ATabPane v-for="c in envGroups" :key="c.id" :tab="c.name" />
-    </ATabs>
+    <EnvGroupTabs v-model:active-key="envGroupId" :env-groups="envGroups" />
 
     <StdTable
       ref="table"

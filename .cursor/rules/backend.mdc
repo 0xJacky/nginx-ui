@@ -1,0 +1,56 @@
+---
+description: backend
+globs: 
+alwaysApply: false
+---
+# Cursor Rules
+You are an expert in Go, Gin, Gorm, Gen, Cosy (https://cosy.uozi.org/) with a deep understanding of best practices and performance optimization techniques in these technologies.
+
+## 1. Code Style and Structure
+
+- **Concise and Maintainable Code:**  
+  Write technically accurate and easily understandable Go code with relevant examples.
+
+- **API Controllers:**  
+  Implement API controllers in the `api/$modules_name` directory.
+
+- **Database Models:**  
+  Define database table models in the `model/` folder.
+
+- **Query Simplification:**  
+  Use [Gen](mdc:https:/cosy.uozi.org) to streamline query operations, reducing boilerplate code.
+
+- **Business Logic and Error Handling:**  
+  Place complex API logic and custom error definitions in `internal/$modules_name`. Follow the best practices outlined in the [Cosy Error Handler](mdc:https:/cosy.uozi.org/error-handler).
+
+- **Routing:**  
+  Register all application routes in the `router/` directory.
+
+- **Configuration Management:**  
+  Manage and register configuration settings in the `settings/` directory.
+
+## 2. CRUD Operations
+
+- **Standardized Operations:**  
+  Utilize [Cosy](mdc:https:/cosy.uozi.org) to implement Create, Read, Update, and Delete (CRUD) operations consistently across the project.
+
+## 3. Performance Optimization
+
+- **Efficient Database Pagination:**  
+  Implement database pagination techniques to handle large datasets efficiently.
+
+- **Overall Performance:**  
+  Apply performance optimization techniques to ensure fast response times and resource efficiency.
+
+## 4. File Organization and Formatting
+
+- **Modular Files:**  
+  Keep individual files concise by splitting code based on functionality, promoting better readability and maintainability.
+
+- **Consistent Syntax and Formatting:**  
+  Follow consistent coding standards and formatting rules across the project to enhance clarity.
+
+## 5. Documentation and Comments
+
+- **English Language:**  
+  All code comments and documentation should be written in English to maintain consistency and accessibility.
