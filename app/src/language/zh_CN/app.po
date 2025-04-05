@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-04-05 10:29+0800\n"
+"PO-Revision-Date: 2025-04-05 10:58+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
 "projects/nginx-ui/frontend/zh_Hans/>\n"
@@ -314,7 +314,7 @@ msgstr "基本信息"
 
 #: src/views/config/ConfigEditor.vue:241
 #: src/views/site/site_edit/RightSettings.vue:79
-#: src/views/stream/components/RightSettings.vue:78
+#: src/views/stream/components/RightSettings.vue:79
 msgid "Basic"
 msgstr "基本"
 
@@ -540,7 +540,7 @@ msgstr "配置 SSL"
 msgid "Connected"
 msgstr "已连接"
 
-#: src/views/terminal/Terminal.vue:120
+#: src/views/terminal/Terminal.vue:142
 msgid "Connection lost, please refresh the page."
 msgstr "连接中断，请刷新页面。"
 
@@ -1036,7 +1036,7 @@ msgstr "启用 TOTP"
 #: src/views/site/site_edit/SiteEdit.vue:184
 #: src/views/site/site_list/columns.tsx:49
 #: src/views/site/site_list/columns.tsx:61
-#: src/views/stream/components/RightSettings.vue:80
+#: src/views/stream/components/RightSettings.vue:81
 #: src/views/stream/StreamEdit.vue:171 src/views/stream/StreamList.vue:51
 #: src/views/user/userColumns.tsx:38
 msgid "Enabled"
@@ -1056,7 +1056,7 @@ msgstr "用 Let's Encrypt 对网站进行加密"
 
 #: src/views/site/site_edit/RightSettings.vue:91
 #: src/views/site/site_list/columns.tsx:25
-#: src/views/stream/components/RightSettings.vue:89
+#: src/views/stream/components/RightSettings.vue:90
 #: src/views/stream/StreamList.vue:27
 msgid "Environment Group"
 msgstr "环境组"
@@ -1856,7 +1856,7 @@ msgstr "多行指令"
 #: src/views/site/site_edit/RightSettings.vue:88
 #: src/views/site/site_list/columns.tsx:15
 #: src/views/site/site_list/SiteDuplicate.vue:79
-#: src/views/stream/components/RightSettings.vue:86
+#: src/views/stream/components/RightSettings.vue:87
 #: src/views/stream/components/StreamDuplicate.vue:71
 #: src/views/stream/StreamList.vue:18 src/views/stream/StreamList.vue:248
 msgid "Name"
@@ -2983,7 +2983,6 @@ msgid "Switch to light theme"
 msgstr "切换到浅色"
 
 #: src/views/config/components/Rename.vue:79
-#: src/views/stream/components/RightSettings.vue:105
 msgid "Sync"
 msgstr "同步"
 
@@ -3068,7 +3067,7 @@ msgid "Task not found"
 msgstr "未找到任务"
 
 #: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:180
-#: src/views/terminal/Terminal.vue:114
+#: src/views/terminal/Terminal.vue:129
 msgid "Terminal"
 msgstr "终端"
 
@@ -3334,7 +3333,7 @@ msgstr "更新成功"
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:100
 #: src/views/site/site_list/columns.tsx:69
-#: src/views/stream/components/RightSettings.vue:98
+#: src/views/stream/components/RightSettings.vue:99
 #: src/views/stream/StreamList.vue:64 src/views/user/userColumns.tsx:54
 msgid "Updated at"
 msgstr "修改时间"
@@ -3532,6 +3531,13 @@ msgstr "正在将证书写入磁盘"
 #: src/views/site/ngx_conf/LocationEditor.vue:87
 msgid "Yes"
 msgstr "是的"
+
+#: src/views/terminal/Terminal.vue:135
+msgid ""
+"You are accessing this terminal over an insecure HTTP connection on a non-"
+"localhost domain. This may expose sensitive information."
+msgstr ""
+"您正在通过非本地主机域上的不安全 HTTP 连接访问此终端。这可能会暴露敏感信息。"
 
 #: src/views/system/Upgrade.vue:202
 msgid "You are using the latest version"

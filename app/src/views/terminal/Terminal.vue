@@ -14,8 +14,23 @@ let ping: undefined | ReturnType<typeof setTimeout>
 const router = useRouter()
 const websocket = shallowRef<ReconnectingWebSocket | WebSocket>()
 const lostConnection = ref(false)
+const insecureConnection = ref(false)
+
+// Check if using HTTP in a non-localhost environment
+function checkSecureConnection() {
+  const hostname = window.location.hostname
+  const protocol = window.location.protocol
+
+  // Check if it's not localhost and not HTTPS
+  if ((hostname !== 'localhost' && hostname !== '127.0.0.1') && protocol !== 'https:') {
+    insecureConnection.value = true
+  }
+}
 
 onMounted(() => {
+  // Check connection security
+  checkSecureConnection()
+
   twoFA.secure_session_status()
 
   const otpModal = use2FAModal()
@@ -112,6 +127,13 @@ onUnmounted(() => {
 
 <template>
   <ACard :title="$gettext('Terminal')">
+    <AAlert
+      v-if="insecureConnection"
+      class="mb-6"
+      type="warning"
+      show-icon
+      :message="$gettext('You are accessing this terminal over an insecure HTTP connection on a non-localhost domain. This may expose sensitive information.')"
+    />
     <AAlert
       v-if="lostConnection"
       class="mb-6"
