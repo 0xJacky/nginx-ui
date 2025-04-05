@@ -11,8 +11,8 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// getSyncNodes returns the nodes that need to be synchronized by site name
-func getSyncNodes(name string) (nodes []*model.Environment) {
+// getSyncData returns the nodes that need to be synchronized by stream name and the post-sync action
+func getSyncData(name string) (nodes []*model.Environment, postSyncAction string) {
 	configFilePath := nginx.GetConfPath("streams-available", name)
 	s := query.Stream
 	stream, err := s.Where(s.Path.Eq(configFilePath)).
@@ -23,9 +23,10 @@ func getSyncNodes(name string) (nodes []*model.Environment) {
 	}
 
 	syncNodeIds := stream.SyncNodeIDs
-	// inherit sync node ids from site category
+	// inherit sync node ids from stream category
 	if stream.EnvGroup != nil {
 		syncNodeIds = append(syncNodeIds, stream.EnvGroup.SyncNodeIds...)
+		postSyncAction = stream.EnvGroup.PostSyncAction
 	}
 
 	e := query.Environment
@@ -34,6 +35,12 @@ func getSyncNodes(name string) (nodes []*model.Environment) {
 		logger.Error(err)
 		return
 	}
+	return
+}
+
+// getSyncNodes returns the nodes that need to be synchronized by stream name (for backward compatibility)
+func getSyncNodes(name string) (nodes []*model.Environment) {
+	nodes, _ = getSyncData(name)
 	return
 }
 

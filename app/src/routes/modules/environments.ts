@@ -30,7 +30,7 @@ export const environmentsRoutes: RouteRecordRaw[] = [
         name: 'env.groups',
         component: () => import('@/views/environments/group/EnvGroup.vue'),
         meta: {
-          name: () => $gettext('Groups'),
+          name: () => $gettext('Node Groups'),
         },
       },
     ],

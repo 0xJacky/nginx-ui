@@ -60,7 +60,7 @@ func GetStreams(c *gin.Context) {
 
 	var configs []config.Config
 
-	// Get all streams map for environment group lookup
+	// Get all streams map for Node Group lookup
 	s := query.Stream
 	var streams []*model.Stream
 	if queryEnvGroupId != 0 {
@@ -73,21 +73,21 @@ func GetStreams(c *gin.Context) {
 		return
 	}
 
-	// Retrieve environment groups data
+	// Retrieve Node Groups data
 	eg := query.EnvGroup
 	envGroups, err := eg.Find()
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
-	// Create a map of environment groups for quick lookup by ID
+	// Create a map of Node Groups for quick lookup by ID
 	envGroupMap := lo.SliceToMap(envGroups, func(item *model.EnvGroup) (uint64, *model.EnvGroup) {
 		return item.ID, item
 	})
 
 	// Convert streams slice to map for efficient lookups
 	streamsMap := lo.SliceToMap(streams, func(item *model.Stream) (string, *model.Stream) {
-		// Associate each stream with its corresponding environment group
+		// Associate each stream with its corresponding Node Group
 		if item.EnvGroupID > 0 {
 			item.EnvGroup = envGroupMap[item.EnvGroupID]
 		}
@@ -121,13 +121,13 @@ func GetStreams(c *gin.Context) {
 			envGroup   *model.EnvGroup
 		)
 
-		// Lookup stream in the streams map to get environment group info
+		// Lookup stream in the streams map to get Node Group info
 		if stream, ok := streamsMap[file.Name()]; ok {
 			envGroupId = stream.EnvGroupID
 			envGroup = stream.EnvGroup
 		}
 
-		// Apply environment group filter if specified
+		// Apply Node Group filter if specified
 		if queryEnvGroupId != 0 && envGroupId != queryEnvGroupId {
 			continue
 		}
@@ -245,6 +245,7 @@ func SaveStream(c *gin.Context) {
 		EnvGroupID  uint64   `json:"env_group_id"`
 		SyncNodeIDs []uint64 `json:"sync_node_ids"`
 		Overwrite   bool     `json:"overwrite"`
+		PostAction  string   `json:"post_action"`
 	}
 
 	// Validate input JSON
@@ -261,7 +262,7 @@ func SaveStream(c *gin.Context) {
 		return
 	}
 
-	// Update environment group ID if provided
+	// Update Node Group ID if provided
 	if json.EnvGroupID > 0 {
 		streamModel.EnvGroupID = json.EnvGroupID
 	}
@@ -279,7 +280,7 @@ func SaveStream(c *gin.Context) {
 	}
 
 	// Save the stream configuration file
-	err = stream.Save(name, json.Content, json.Overwrite, json.SyncNodeIDs)
+	err = stream.Save(name, json.Content, json.Overwrite, json.SyncNodeIDs, json.PostAction)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

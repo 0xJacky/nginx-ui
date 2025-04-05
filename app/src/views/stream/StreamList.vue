@@ -25,7 +25,7 @@ const columns: Column[] = [{
   },
   search: true,
 }, {
-  title: () => $gettext('Environment Group'),
+  title: () => $gettext('Node Group'),
   dataIndex: 'env_group_id',
   customRender: actualValueRender('env_group.name'),
   edit: {

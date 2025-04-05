@@ -41,7 +41,7 @@ msgstr "Username"
 #: src/views/certificate/CertificateList/certColumns.tsx:97
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.tsx:42
-#: src/views/environments/group/columns.ts:28
+#: src/views/environments/group/columns.ts:42
 #: src/views/environments/list/envColumns.tsx:97
 #: src/views/nginx_log/NginxLogList.vue:53
 #: src/views/notification/notificationColumns.tsx:66
@@ -657,7 +657,7 @@ msgid ""
 "Backup files will be automatically downloaded to your computer."
 msgstr ""
 
-#: src/views/environments/group/columns.ts:16
+#: src/views/environments/group/columns.ts:30
 #: src/views/notification/notificationColumns.tsx:59
 #: src/views/preference/components/Passkey.vue:95
 #: src/views/user/userColumns.tsx:48
@@ -1148,19 +1148,6 @@ msgstr "Enabled successfully"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Encrypt website with Let's Encrypt"
 
-#: src/views/site/site_edit/RightSettings.vue:91
-#: src/views/site/site_list/columns.tsx:25
-#: src/views/stream/components/RightSettings.vue:90
-#: src/views/stream/StreamList.vue:28
-#, fuzzy
-msgid "Environment Group"
-msgstr "Comments"
-
-#: src/views/environments/group/EnvGroup.vue:10
-#, fuzzy
-msgid "Environment Groups"
-msgstr "Comments"
-
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
 msgstr ""
@@ -1573,10 +1560,6 @@ msgstr "Getting the certificate, please wait..."
 
 #: src/views/preference/HTTPSettings.vue:11
 msgid "Github Proxy"
-msgstr ""
-
-#: src/routes/modules/environments.ts:33
-msgid "Groups"
 msgstr ""
 
 #: src/constants/errors/backup.ts:59
@@ -2016,7 +1999,7 @@ msgstr "Single Directive"
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:256
-#: src/views/environments/group/columns.ts:7
+#: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:37
 #: src/views/preference/components/AddPasskey.vue:75
@@ -2219,10 +2202,30 @@ msgstr "Configuration Name"
 msgid "No"
 msgstr "No"
 
+#: src/views/environments/group/columns.ts:21
+#: src/views/environments/group/EnvGroup.vue:34
+#, fuzzy
+msgid "No Action"
+msgstr "Action"
+
 #: src/views/preference/Preference.vue:168
 #, fuzzy
 msgid "Node"
 msgstr "Username"
+
+#: src/views/site/site_edit/RightSettings.vue:91
+#: src/views/site/site_list/columns.tsx:25
+#: src/views/stream/components/RightSettings.vue:90
+#: src/views/stream/StreamList.vue:28
+#, fuzzy
+msgid "Node Group"
+msgstr "Comments"
+
+#: src/routes/modules/environments.ts:33
+#: src/views/environments/group/EnvGroup.vue:10
+#, fuzzy
+msgid "Node Groups"
+msgstr "Comments"
 
 #: src/views/preference/NodeSettings.vue:15
 #, fuzzy
@@ -2559,6 +2562,12 @@ msgstr ""
 msgid "Port"
 msgstr ""
 
+#: src/views/environments/group/columns.ts:17
+#: src/views/environments/group/EnvGroup.vue:26
+#, fuzzy
+msgid "Post-sync Action"
+msgstr "Action"
+
 #: src/views/environments/list/BatchUpgrader.vue:167
 #: src/views/environments/list/BatchUpgrader.vue:220
 #: src/views/system/Upgrade.vue:194 src/views/system/Upgrade.vue:245
@@ -2699,6 +2708,8 @@ msgid "Reload"
 msgstr ""
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
+#: src/views/environments/group/columns.ts:23
+#: src/views/environments/group/EnvGroup.vue:37
 #: src/views/environments/list/Environment.vue:120
 #: src/views/environments/list/Environment.vue:128
 msgid "Reload Nginx"
@@ -3055,6 +3066,10 @@ msgstr ""
 #, fuzzy
 msgid "Security Token Information"
 msgstr "Invalid E-mail!"
+
+#: src/views/environments/group/EnvGroup.vue:29
+msgid "Select an action after sync"
+msgstr ""
 
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:189
 #, fuzzy
@@ -3681,7 +3696,7 @@ msgstr "Saved successfully"
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
 #: src/views/config/configColumns.tsx:34 src/views/config/ConfigEditor.vue:276
-#: src/views/environments/group/columns.ts:22
+#: src/views/environments/group/columns.ts:36
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:100
 #: src/views/site/site_list/columns.tsx:69
@@ -3852,13 +3867,13 @@ msgstr ""
 #: src/views/site/site_edit/RightSettings.vue:116
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
-"environment group and the nodes selected below will be synchronized."
+"Node Group and the nodes selected below will be synchronized."
 msgstr ""
 
 #: src/views/stream/components/RightSettings.vue:114
 msgid ""
 "When you enable/disable, delete, or save this stream, the nodes set in the "
-"environment group and the nodes selected below will be synchronized."
+"Node Group and the nodes selected below will be synchronized."
 msgstr ""
 
 #: src/views/preference/components/RecoveryCodes.vue:140

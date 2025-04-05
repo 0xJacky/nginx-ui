@@ -49,7 +49,7 @@ msgstr "ACME 用戶"
 #: src/views/certificate/CertificateList/certColumns.tsx:97
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.tsx:42
-#: src/views/environments/group/columns.ts:28
+#: src/views/environments/group/columns.ts:42
 #: src/views/environments/list/envColumns.tsx:97
 #: src/views/nginx_log/NginxLogList.vue:53
 #: src/views/notification/notificationColumns.tsx:66
@@ -629,7 +629,7 @@ msgid ""
 "Backup files will be automatically downloaded to your computer."
 msgstr ""
 
-#: src/views/environments/group/columns.ts:16
+#: src/views/environments/group/columns.ts:30
 #: src/views/notification/notificationColumns.tsx:59
 #: src/views/preference/components/Passkey.vue:95
 #: src/views/user/userColumns.tsx:48
@@ -1086,19 +1086,6 @@ msgstr "成功啟用"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 對網站進行加密"
 
-#: src/views/site/site_edit/RightSettings.vue:91
-#: src/views/site/site_list/columns.tsx:25
-#: src/views/stream/components/RightSettings.vue:90
-#: src/views/stream/StreamList.vue:28
-#, fuzzy
-msgid "Environment Group"
-msgstr "環境"
-
-#: src/views/environments/group/EnvGroup.vue:10
-#, fuzzy
-msgid "Environment Groups"
-msgstr "環境"
-
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
 msgstr "環境變數已清理"
@@ -1502,10 +1489,6 @@ msgstr "正在取得憑證，請稍候..."
 #: src/views/preference/HTTPSettings.vue:11
 msgid "Github Proxy"
 msgstr "Github 代理"
-
-#: src/routes/modules/environments.ts:33
-msgid "Groups"
-msgstr ""
 
 #: src/constants/errors/backup.ts:59
 msgid "Hash verification failed: file integrity compromised"
@@ -1925,7 +1908,7 @@ msgstr "多行指令"
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:256
-#: src/views/environments/group/columns.ts:7
+#: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:37
 #: src/views/preference/components/AddPasskey.vue:75
@@ -2123,10 +2106,30 @@ msgstr "Nginx 設定解析錯誤"
 msgid "No"
 msgstr "取消"
 
+#: src/views/environments/group/columns.ts:21
+#: src/views/environments/group/EnvGroup.vue:34
+#, fuzzy
+msgid "No Action"
+msgstr "操作"
+
 #: src/views/preference/Preference.vue:168
 #, fuzzy
 msgid "Node"
 msgstr "節點名稱"
+
+#: src/views/site/site_edit/RightSettings.vue:91
+#: src/views/site/site_list/columns.tsx:25
+#: src/views/stream/components/RightSettings.vue:90
+#: src/views/stream/StreamList.vue:28
+#, fuzzy
+msgid "Node Group"
+msgstr "環境"
+
+#: src/routes/modules/environments.ts:33
+#: src/views/environments/group/EnvGroup.vue:10
+#, fuzzy
+msgid "Node Groups"
+msgstr "環境"
 
 #: src/views/preference/NodeSettings.vue:15
 msgid "Node name"
@@ -2460,6 +2463,12 @@ msgstr "請至少選擇一個節點進行升級"
 msgid "Port"
 msgstr "HTTP 監聽埠"
 
+#: src/views/environments/group/columns.ts:17
+#: src/views/environments/group/EnvGroup.vue:26
+#, fuzzy
+msgid "Post-sync Action"
+msgstr "批次操作"
+
 #: src/views/environments/list/BatchUpgrader.vue:167
 #: src/views/environments/list/BatchUpgrader.vue:220
 #: src/views/system/Upgrade.vue:194 src/views/system/Upgrade.vue:245
@@ -2592,6 +2601,8 @@ msgid "Reload"
 msgstr "重新載入"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
+#: src/views/environments/group/columns.ts:23
+#: src/views/environments/group/EnvGroup.vue:37
 #: src/views/environments/list/Environment.vue:120
 #: src/views/environments/list/Environment.vue:128
 #, fuzzy
@@ -2932,6 +2943,10 @@ msgstr ""
 #, fuzzy
 msgid "Security Token Information"
 msgstr "無效的請求格式"
+
+#: src/views/environments/group/EnvGroup.vue:29
+msgid "Select an action after sync"
+msgstr ""
 
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:189
 msgid "Selector"
@@ -3540,7 +3555,7 @@ msgstr "更新成功"
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
 #: src/views/config/configColumns.tsx:34 src/views/config/ConfigEditor.vue:276
-#: src/views/environments/group/columns.ts:22
+#: src/views/environments/group/columns.ts:36
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:100
 #: src/views/site/site_list/columns.tsx:69
@@ -3705,7 +3720,7 @@ msgstr ""
 #, fuzzy
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
-"environment group and the nodes selected below will be synchronized."
+"Node Group and the nodes selected below will be synchronized."
 msgstr ""
 "當您啟用/禁用、刪除或儲存此網站時，網站類別中設定的節點以及下方選擇的節點將會"
 "同步。"
@@ -3714,7 +3729,7 @@ msgstr ""
 #, fuzzy
 msgid ""
 "When you enable/disable, delete, or save this stream, the nodes set in the "
-"environment group and the nodes selected below will be synchronized."
+"Node Group and the nodes selected below will be synchronized."
 msgstr ""
 "當您啟用/禁用、刪除或儲存此網站時，網站類別中設定的節點以及下方選擇的節點將會"
 "同步。"

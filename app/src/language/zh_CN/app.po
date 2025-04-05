@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-04-05 15:35+0800\n"
+"PO-Revision-Date: 2025-04-05 17:43+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
 "projects/nginx-ui/frontend/zh_Hans/>\n"
@@ -44,7 +44,7 @@ msgstr "ACME 用户"
 #: src/views/certificate/CertificateList/certColumns.tsx:97
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.tsx:42
-#: src/views/environments/group/columns.ts:28
+#: src/views/environments/group/columns.ts:42
 #: src/views/environments/list/envColumns.tsx:97
 #: src/views/nginx_log/NginxLogList.vue:53
 #: src/views/notification/notificationColumns.tsx:66
@@ -616,7 +616,7 @@ msgid ""
 msgstr ""
 "创建系统备份，包括 Nginx 配置和 Nginx UI 设置。备份文件将自动下载到你的电脑。"
 
-#: src/views/environments/group/columns.ts:16
+#: src/views/environments/group/columns.ts:30
 #: src/views/notification/notificationColumns.tsx:59
 #: src/views/preference/components/Passkey.vue:95
 #: src/views/user/userColumns.tsx:48
@@ -1062,17 +1062,6 @@ msgstr "启用成功"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 对网站进行加密"
 
-#: src/views/site/site_edit/RightSettings.vue:91
-#: src/views/site/site_list/columns.tsx:25
-#: src/views/stream/components/RightSettings.vue:90
-#: src/views/stream/StreamList.vue:28
-msgid "Environment Group"
-msgstr "环境组"
-
-#: src/views/environments/group/EnvGroup.vue:10
-msgid "Environment Groups"
-msgstr "环境组"
-
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
 msgstr "环境变量已清理"
@@ -1440,10 +1429,6 @@ msgstr "正在获取证书，请稍等..."
 #: src/views/preference/HTTPSettings.vue:11
 msgid "Github Proxy"
 msgstr "Github 代理"
-
-#: src/routes/modules/environments.ts:33
-msgid "Groups"
-msgstr "组"
 
 #: src/constants/errors/backup.ts:59
 msgid "Hash verification failed: file integrity compromised"
@@ -1856,7 +1841,7 @@ msgstr "多行指令"
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:256
-#: src/views/environments/group/columns.ts:7
+#: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:37
 #: src/views/preference/components/AddPasskey.vue:75
@@ -2046,9 +2031,26 @@ msgstr "Nginx UI 配置已恢复，几秒钟后将自动重启。"
 msgid "No"
 msgstr "取消"
 
+#: src/views/environments/group/columns.ts:21
+#: src/views/environments/group/EnvGroup.vue:34
+msgid "No Action"
+msgstr "无操作"
+
 #: src/views/preference/Preference.vue:168
 msgid "Node"
 msgstr "节点"
+
+#: src/views/site/site_edit/RightSettings.vue:91
+#: src/views/site/site_list/columns.tsx:25
+#: src/views/stream/components/RightSettings.vue:90
+#: src/views/stream/StreamList.vue:28
+msgid "Node Group"
+msgstr "节点组"
+
+#: src/routes/modules/environments.ts:33
+#: src/views/environments/group/EnvGroup.vue:10
+msgid "Node Groups"
+msgstr "环境组"
 
 #: src/views/preference/NodeSettings.vue:15
 msgid "Node name"
@@ -2375,6 +2377,11 @@ msgstr "请至少选择一个节点进行升级"
 msgid "Port"
 msgstr "端口"
 
+#: src/views/environments/group/columns.ts:17
+#: src/views/environments/group/EnvGroup.vue:26
+msgid "Post-sync Action"
+msgstr "同步后操作"
+
 #: src/views/environments/list/BatchUpgrader.vue:167
 #: src/views/environments/list/BatchUpgrader.vue:220
 #: src/views/system/Upgrade.vue:194 src/views/system/Upgrade.vue:245
@@ -2508,6 +2515,8 @@ msgid "Reload"
 msgstr "重载"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
+#: src/views/environments/group/columns.ts:23
+#: src/views/environments/group/EnvGroup.vue:37
 #: src/views/environments/list/Environment.vue:120
 #: src/views/environments/list/Environment.vue:128
 msgid "Reload Nginx"
@@ -2821,6 +2830,10 @@ msgstr "安全 Token"
 msgid "Security Token Information"
 msgstr "安全令牌信息"
 
+#: src/views/environments/group/EnvGroup.vue:29
+msgid "Select an action after sync"
+msgstr "选择同步后的操作"
+
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:189
 msgid "Selector"
 msgstr "选择器"
@@ -2874,19 +2887,19 @@ msgstr "使用 HTTP01 challenge provider"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
+"nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 https://nginxui."
-"com/guide/config-nginx.html"
+"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 https://"
+"nginxui.com/guide/config-nginx.html"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
+"nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.ErrorLogPath为空，更多信息请参阅 https://nginxui."
-"com/guide/config-nginx.html"
+"Settings.NginxLogSettings.ErrorLogPath为空，更多信息请参阅 https://"
+"nginxui.com/guide/config-nginx.html"
 
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Show"
@@ -3412,7 +3425,7 @@ msgstr "更新成功"
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
 #: src/views/config/configColumns.tsx:34 src/views/config/ConfigEditor.vue:276
-#: src/views/environments/group/columns.ts:22
+#: src/views/environments/group/columns.ts:36
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:100
 #: src/views/site/site_list/columns.tsx:69
@@ -3577,7 +3590,7 @@ msgstr ""
 #: src/views/site/site_edit/RightSettings.vue:116
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
-"environment group and the nodes selected below will be synchronized."
+"Node Group and the nodes selected below will be synchronized."
 msgstr ""
 "启用/禁用、删除或保存此站点时，环境组中设置的节点和下面选择的节点将同步执行操"
 "作。"
@@ -3585,7 +3598,7 @@ msgstr ""
 #: src/views/stream/components/RightSettings.vue:114
 msgid ""
 "When you enable/disable, delete, or save this stream, the nodes set in the "
-"environment group and the nodes selected below will be synchronized."
+"Node Group and the nodes selected below will be synchronized."
 msgstr ""
 "启用/禁用、删除或保存此站点时，环境组中设置的节点和下面选择的节点将同步执行操"
 "作。"
@@ -3671,6 +3684,9 @@ msgstr "您的旧代码将不再有效。"
 msgid "Your passkeys"
 msgstr "你的 Passkeys"
 
+#~ msgid "Groups"
+#~ msgstr "组"
+
 #~ msgid "Nginx has been reloaded on all sync nodes"
 #~ msgstr "已在所有同步节点上重新加载 Nginx"
 
@@ -3715,8 +3731,8 @@ msgstr "你的 Passkeys"
 #~ msgstr "请将远程 Nginx UI 升级到最新版本"
 
 #~ msgid ""
-#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
-#~ "%{resp}"
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %"
+#~ "{resp}"
 #~ msgstr ""
 #~ "将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，响应：%{resp}"
 

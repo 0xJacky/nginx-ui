@@ -143,6 +143,7 @@ async function save() {
     overwrite: true,
     env_group_id: data.value.env_group_id,
     sync_node_ids: data.value.sync_node_ids,
+    post_action: 'reload_nginx',
   }).then(r => {
     handleResponse(r)
     router.push({

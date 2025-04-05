@@ -46,7 +46,7 @@ msgstr "Usuario ACME"
 #: src/views/certificate/CertificateList/certColumns.tsx:97
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.tsx:42
-#: src/views/environments/group/columns.ts:28
+#: src/views/environments/group/columns.ts:42
 #: src/views/environments/list/envColumns.tsx:97
 #: src/views/nginx_log/NginxLogList.vue:53
 #: src/views/notification/notificationColumns.tsx:66
@@ -641,7 +641,7 @@ msgid ""
 "Backup files will be automatically downloaded to your computer."
 msgstr ""
 
-#: src/views/environments/group/columns.ts:16
+#: src/views/environments/group/columns.ts:30
 #: src/views/notification/notificationColumns.tsx:59
 #: src/views/preference/components/Passkey.vue:95
 #: src/views/user/userColumns.tsx:48
@@ -1118,19 +1118,6 @@ msgstr "Habilitado con éxito"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Encriptar sitio web con Let's Encrypt"
 
-#: src/views/site/site_edit/RightSettings.vue:91
-#: src/views/site/site_list/columns.tsx:25
-#: src/views/stream/components/RightSettings.vue:90
-#: src/views/stream/StreamList.vue:28
-#, fuzzy
-msgid "Environment Group"
-msgstr "Entorno"
-
-#: src/views/environments/group/EnvGroup.vue:10
-#, fuzzy
-msgid "Environment Groups"
-msgstr "Entornos"
-
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
 msgstr "Variables de entorno limpiadas"
@@ -1536,10 +1523,6 @@ msgstr "Obteniendo el certificado, por favor espere..."
 #: src/views/preference/HTTPSettings.vue:11
 msgid "Github Proxy"
 msgstr "Proxy Github"
-
-#: src/routes/modules/environments.ts:33
-msgid "Groups"
-msgstr ""
 
 #: src/constants/errors/backup.ts:59
 msgid "Hash verification failed: file integrity compromised"
@@ -1967,7 +1950,7 @@ msgstr "Directiva multilínea"
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:256
-#: src/views/environments/group/columns.ts:7
+#: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:37
 #: src/views/preference/components/AddPasskey.vue:75
@@ -2168,10 +2151,30 @@ msgstr "Error de análisis de configuración de Nginx"
 msgid "No"
 msgstr "No"
 
+#: src/views/environments/group/columns.ts:21
+#: src/views/environments/group/EnvGroup.vue:34
+#, fuzzy
+msgid "No Action"
+msgstr "Acción"
+
 #: src/views/preference/Preference.vue:168
 #, fuzzy
 msgid "Node"
 msgstr "Nuevo nombre"
+
+#: src/views/site/site_edit/RightSettings.vue:91
+#: src/views/site/site_list/columns.tsx:25
+#: src/views/stream/components/RightSettings.vue:90
+#: src/views/stream/StreamList.vue:28
+#, fuzzy
+msgid "Node Group"
+msgstr "Entorno"
+
+#: src/routes/modules/environments.ts:33
+#: src/views/environments/group/EnvGroup.vue:10
+#, fuzzy
+msgid "Node Groups"
+msgstr "Entornos"
 
 #: src/views/preference/NodeSettings.vue:15
 #, fuzzy
@@ -2527,6 +2530,12 @@ msgstr "Seleccione al menos un nodo para actualizar"
 msgid "Port"
 msgstr "Puerto HTTP"
 
+#: src/views/environments/group/columns.ts:17
+#: src/views/environments/group/EnvGroup.vue:26
+#, fuzzy
+msgid "Post-sync Action"
+msgstr "Acción"
+
 #: src/views/environments/list/BatchUpgrader.vue:167
 #: src/views/environments/list/BatchUpgrader.vue:220
 #: src/views/system/Upgrade.vue:194 src/views/system/Upgrade.vue:245
@@ -2664,6 +2673,8 @@ msgid "Reload"
 msgstr "Recargar"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
+#: src/views/environments/group/columns.ts:23
+#: src/views/environments/group/EnvGroup.vue:37
 #: src/views/environments/list/Environment.vue:120
 #: src/views/environments/list/Environment.vue:128
 #, fuzzy
@@ -3011,6 +3022,10 @@ msgstr ""
 #, fuzzy
 msgid "Security Token Information"
 msgstr "Código 2FA o de recuperación inválido"
+
+#: src/views/environments/group/EnvGroup.vue:29
+msgid "Select an action after sync"
+msgstr ""
 
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:189
 msgid "Selector"
@@ -3655,7 +3670,7 @@ msgstr "Actualización exitosa"
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
 #: src/views/config/configColumns.tsx:34 src/views/config/ConfigEditor.vue:276
-#: src/views/environments/group/columns.ts:22
+#: src/views/environments/group/columns.ts:36
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:100
 #: src/views/site/site_list/columns.tsx:69
@@ -3826,7 +3841,7 @@ msgstr ""
 #, fuzzy
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
-"environment group and the nodes selected below will be synchronized."
+"Node Group and the nodes selected below will be synchronized."
 msgstr ""
 "Cuando habilite/deshabilite, elimine o guarde este sitio, los nodos "
 "configurados en la categoría del sitio y los nodos seleccionados a "
@@ -3836,7 +3851,7 @@ msgstr ""
 #, fuzzy
 msgid ""
 "When you enable/disable, delete, or save this stream, the nodes set in the "
-"environment group and the nodes selected below will be synchronized."
+"Node Group and the nodes selected below will be synchronized."
 msgstr ""
 "Cuando habilite/deshabilite, elimine o guarde este sitio, los nodos "
 "configurados en la categoría del sitio y los nodos seleccionados a "

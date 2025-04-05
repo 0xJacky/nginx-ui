@@ -118,13 +118,14 @@ func SaveSite(c *gin.Context) {
 		EnvGroupID  uint64   `json:"env_group_id"`
 		SyncNodeIDs []uint64 `json:"sync_node_ids"`
 		Overwrite   bool     `json:"overwrite"`
+		PostAction  string   `json:"post_action"`
 	}
 
 	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
-	err := site.Save(name, json.Content, json.Overwrite, json.EnvGroupID, json.SyncNodeIDs)
+	err := site.Save(name, json.Content, json.Overwrite, json.EnvGroupID, json.SyncNodeIDs, json.PostAction)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

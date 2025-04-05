@@ -2,6 +2,7 @@ package site
 
 import (
 	"encoding/json"
+
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -11,8 +12,8 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// getSyncNodes returns the nodes that need to be synchronized by site name
-func getSyncNodes(name string) (nodes []*model.Environment) {
+// getSyncData returns the nodes that need to be synchronized by site name and the post-sync action
+func getSyncData(name string) (nodes []*model.Environment, postSyncAction string) {
 	configFilePath := nginx.GetConfPath("sites-available", name)
 	s := query.Site
 	site, err := s.Where(s.Path.Eq(configFilePath)).
@@ -26,6 +27,7 @@ func getSyncNodes(name string) (nodes []*model.Environment) {
 	// inherit sync node ids from site category
 	if site.EnvGroup != nil {
 		syncNodeIds = append(syncNodeIds, site.EnvGroup.SyncNodeIds...)
+		postSyncAction = site.EnvGroup.PostSyncAction
 	}
 	syncNodeIds = lo.Uniq(syncNodeIds)
 
@@ -35,6 +37,12 @@ func getSyncNodes(name string) (nodes []*model.Environment) {
 		logger.Error(err)
 		return
 	}
+	return
+}
+
+// getSyncNodes returns the nodes that need to be synchronized by site name (for backward compatibility)
+func getSyncNodes(name string) (nodes []*model.Environment) {
+	nodes, _ = getSyncData(name)
 	return
 }
 

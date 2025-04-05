@@ -87,7 +87,7 @@ function onChangeEnabled(checked: CheckedType) {
         <AFormItem :label="$gettext('Name')">
           <ConfigName :name="name" />
         </AFormItem>
-        <AFormItem :label="$gettext('Environment Group')">
+        <AFormItem :label="$gettext('Node Group')">
           <StdSelector
             v-model:selected-key="data.env_group_id"
             :api="envGroup"
@@ -112,7 +112,7 @@ function onChangeEnabled(checked: CheckedType) {
             <template #content>
               <div class="max-w-200px mb-2">
                 {{ $gettext('When you enable/disable, delete, or save this stream, '
-                  + 'the nodes set in the environment group and the nodes selected below will be synchronized.') }}
+                  + 'the nodes set in the Node Group and the nodes selected below will be synchronized.') }}
               </div>
               <div class="max-w-200px">
                 {{ $gettext('Note, if the configuration file include other configurations or certificates, '

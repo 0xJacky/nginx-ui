@@ -54,8 +54,9 @@ func RestartNginx(c *gin.Context) {
 func AddGroup(c *gin.Context) {
 	cosy.Core[model.EnvGroup](c).
 		SetValidRules(gin.H{
-			"name":          "required",
-			"sync_node_ids": "omitempty",
+			"name":             "required",
+			"sync_node_ids":    "omitempty",
+			"post_sync_action": "omitempty,oneof=" + model.PostSyncActionNone + " " + model.PostSyncActionReloadNginx,
 		}).
 		Create()
 }
@@ -63,8 +64,9 @@ func AddGroup(c *gin.Context) {
 func ModifyGroup(c *gin.Context) {
 	cosy.Core[model.EnvGroup](c).
 		SetValidRules(gin.H{
-			"name":          "required",
-			"sync_node_ids": "omitempty",
+			"name":             "required",
+			"sync_node_ids":    "omitempty",
+			"post_sync_action": "omitempty,oneof=" + model.PostSyncActionNone + " " + model.PostSyncActionReloadNginx,
 		}).
 		Modify()
 }

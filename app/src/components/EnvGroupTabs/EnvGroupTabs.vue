@@ -68,7 +68,7 @@ function disconnectSSE() {
   }
 }
 
-// Get the current environment group data
+// Get the current Node Group data
 const currentEnvGroup = computed(() => {
   if (!modelValue.value || modelValue.value === 0)
     return null
