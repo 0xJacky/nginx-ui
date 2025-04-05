@@ -49,13 +49,13 @@ func Rename(oldName string, newName string) (err error) {
 	// test nginx configuration
 	output := nginx.TestConf()
 	if nginx.GetLogLevel(output) > nginx.Warn {
-		return fmt.Errorf(output)
+		return fmt.Errorf("%s", output)
 	}
 
 	// reload nginx
 	output = nginx.Reload()
 	if nginx.GetLogLevel(output) > nginx.Warn {
-		return fmt.Errorf(output)
+		return fmt.Errorf("%s", output)
 	}
 
 	go syncRename(oldName, newName)

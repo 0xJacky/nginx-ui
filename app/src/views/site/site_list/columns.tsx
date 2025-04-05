@@ -22,6 +22,24 @@ const columns: Column[] = [{
   search: true,
   width: 120,
 }, {
+  title: () => $gettext('URLs'),
+  dataIndex: 'urls',
+  customRender: ({ text, record }) => {
+    const template: JSXElements = []
+    if (record.enabled) {
+      text?.forEach((url: string) => {
+        template.push(<a href={url} target="_blank" rel="noopener noreferrer">{url}</a>)
+        template.push(<span>, </span>)
+      })
+      template.pop() // Remove last comma
+    }
+    else {
+      template.push(<span>{text?.join(', ')}</span>)
+    }
+    return h('div', template)
+  },
+  width: 120,
+}, {
   title: () => $gettext('Node Group'),
   dataIndex: 'env_group_id',
   customRender: actualValueRender('env_group.name'),

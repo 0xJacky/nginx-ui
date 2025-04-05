@@ -8,6 +8,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -90,6 +91,8 @@ func GetSiteList(c *gin.Context) {
 			continue
 		}
 
+		indexedSite := site.GetIndexedSite(file.Name())
+
 		configs = append(configs, config.Config{
 			Name:       file.Name(),
 			ModifiedAt: fileInfo.ModTime(),
@@ -98,6 +101,7 @@ func GetSiteList(c *gin.Context) {
 			Enabled:    enabledConfigMap[file.Name()],
 			EnvGroupID: envGroupId,
 			EnvGroup:   envGroup,
+			Urls:       indexedSite.Urls,
 		})
 	}
 

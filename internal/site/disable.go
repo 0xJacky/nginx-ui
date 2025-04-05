@@ -35,7 +35,7 @@ func Disable(name string) (err error) {
 
 	output := nginx.Reload()
 	if nginx.GetLogLevel(output) > nginx.Warn {
-		return fmt.Errorf(output)
+		return fmt.Errorf("%s", output)
 	}
 
 	go syncDisable(name)

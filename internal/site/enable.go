@@ -37,12 +37,12 @@ func Enable(name string) (err error) {
 	output := nginx.TestConf()
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		_ = os.Remove(enabledConfigFilePath)
-		return fmt.Errorf(output)
+		return fmt.Errorf("%s", output)
 	}
 
 	output = nginx.Reload()
 	if nginx.GetLogLevel(output) > nginx.Warn {
-		return fmt.Errorf(output)
+		return fmt.Errorf("%s", output)
 	}
 
 	go syncEnable(name)

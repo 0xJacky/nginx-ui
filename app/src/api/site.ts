@@ -22,6 +22,7 @@ export interface Site extends ModelBase {
   env_group_id: number
   env_group?: EnvGroup
   sync_node_ids: number[]
+  urls?: string[]
 }
 
 export interface AutoCertRequest {

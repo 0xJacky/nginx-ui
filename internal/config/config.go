@@ -19,4 +19,5 @@ type Config struct {
 	EnvGroup        *model.EnvGroup                `json:"env_group,omitempty"`
 	Enabled         bool                           `json:"enabled"`
 	Dir             string                         `json:"dir"`
+	Urls            []string                       `json:"urls,omitempty"`
 }

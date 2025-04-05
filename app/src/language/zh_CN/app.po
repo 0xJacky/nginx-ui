@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-04-05 17:43+0800\n"
+"PO-Revision-Date: 2025-04-05 20:52+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
 "projects/nginx-ui/frontend/zh_Hans/>\n"
@@ -44,12 +44,12 @@ msgstr "ACME 用户"
 #: src/views/certificate/CertificateList/certColumns.tsx:97
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.tsx:42
-#: src/views/environments/group/columns.ts:42
+#: src/views/environments/group/columns.ts:43
 #: src/views/environments/list/envColumns.tsx:97
 #: src/views/nginx_log/NginxLogList.vue:53
 #: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
-#: src/views/site/site_list/columns.tsx:76 src/views/stream/StreamList.vue:72
+#: src/views/site/site_list/columns.tsx:93 src/views/stream/StreamList.vue:72
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "操作"
@@ -99,8 +99,8 @@ msgstr "添加成功"
 msgid "Additional"
 msgstr "额外选项"
 
-#: src/views/site/site_edit/SiteEdit.vue:205
-#: src/views/stream/StreamEdit.vue:191
+#: src/views/site/site_edit/SiteEdit.vue:206
+#: src/views/stream/StreamEdit.vue:192
 msgid "Advance Mode"
 msgstr "高级模式"
 
@@ -275,8 +275,8 @@ msgstr "自动索引站点和 Stream 的配置文件。"
 #: src/views/certificate/CertificateEditor.vue:255
 #: src/views/config/ConfigEditor.vue:213 src/views/config/ConfigList.vue:106
 #: src/views/config/ConfigList.vue:180 src/views/nginx_log/NginxLog.vue:173
-#: src/views/site/site_edit/SiteEdit.vue:264
-#: src/views/stream/StreamEdit.vue:247
+#: src/views/site/site_edit/SiteEdit.vue:265
+#: src/views/stream/StreamEdit.vue:248
 msgid "Back"
 msgstr "返回"
 
@@ -326,8 +326,8 @@ msgstr "基本信息"
 msgid "Basic"
 msgstr "基本"
 
-#: src/views/site/site_edit/SiteEdit.vue:208
-#: src/views/stream/StreamEdit.vue:194
+#: src/views/site/site_edit/SiteEdit.vue:209
+#: src/views/stream/StreamEdit.vue:195
 msgid "Basic Mode"
 msgstr "基本模式"
 
@@ -616,7 +616,7 @@ msgid ""
 msgstr ""
 "创建系统备份，包括 Nginx 配置和 Nginx UI 设置。备份文件将自动下载到你的电脑。"
 
-#: src/views/environments/group/columns.ts:30
+#: src/views/environments/group/columns.ts:31
 #: src/views/notification/notificationColumns.tsx:59
 #: src/views/preference/components/Passkey.vue:95
 #: src/views/user/userColumns.tsx:48
@@ -828,9 +828,9 @@ msgstr "在 %{node} 上禁用 %{name} 成功"
 #: src/views/preference/HTTPSettings.vue:24
 #: src/views/preference/NodeSettings.vue:25
 #: src/views/preference/NodeSettings.vue:30
-#: src/views/site/site_edit/SiteEdit.vue:190
-#: src/views/site/site_list/columns.tsx:53
-#: src/views/site/site_list/columns.tsx:62 src/views/stream/StreamEdit.vue:177
+#: src/views/site/site_edit/SiteEdit.vue:191
+#: src/views/site/site_list/columns.tsx:70
+#: src/views/site/site_list/columns.tsx:79 src/views/stream/StreamEdit.vue:178
 #: src/views/stream/StreamList.vue:56 src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr "禁用"
@@ -947,8 +947,8 @@ msgstr "成功复制到本地"
 msgid "Edit"
 msgstr "编辑"
 
-#: src/views/site/site_edit/SiteEdit.vue:179
-#: src/views/stream/StreamEdit.vue:166
+#: src/views/site/site_edit/SiteEdit.vue:180
+#: src/views/stream/StreamEdit.vue:167
 msgid "Edit %{n}"
 msgstr "编辑 %{n}"
 
@@ -1041,11 +1041,11 @@ msgstr "启用 TOTP"
 #: src/views/preference/NodeSettings.vue:25
 #: src/views/preference/NodeSettings.vue:30
 #: src/views/site/site_edit/RightSettings.vue:82
-#: src/views/site/site_edit/SiteEdit.vue:184
-#: src/views/site/site_list/columns.tsx:49
-#: src/views/site/site_list/columns.tsx:61
+#: src/views/site/site_edit/SiteEdit.vue:185
+#: src/views/site/site_list/columns.tsx:66
+#: src/views/site/site_list/columns.tsx:78
 #: src/views/stream/components/RightSettings.vue:81
-#: src/views/stream/StreamEdit.vue:171 src/views/stream/StreamList.vue:52
+#: src/views/stream/StreamEdit.vue:172 src/views/stream/StreamList.vue:52
 #: src/views/user/userColumns.tsx:38
 msgid "Enabled"
 msgstr "启用"
@@ -1933,8 +1933,8 @@ msgstr "未设置 Nginx 配置目录"
 msgid "Nginx configuration has been restored"
 msgstr "Nginx 配置已恢复"
 
-#: src/views/site/site_edit/SiteEdit.vue:223
-#: src/views/stream/StreamEdit.vue:209
+#: src/views/site/site_edit/SiteEdit.vue:224
+#: src/views/stream/StreamEdit.vue:210
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 配置解析错误"
 
@@ -2041,7 +2041,7 @@ msgid "Node"
 msgstr "节点"
 
 #: src/views/site/site_edit/RightSettings.vue:91
-#: src/views/site/site_list/columns.tsx:25
+#: src/views/site/site_list/columns.tsx:42
 #: src/views/stream/components/RightSettings.vue:90
 #: src/views/stream/StreamList.vue:28
 msgid "Node Group"
@@ -2515,7 +2515,7 @@ msgid "Reload"
 msgstr "重载"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
-#: src/views/environments/group/columns.ts:23
+#: src/views/environments/group/columns.ts:24
 #: src/views/environments/group/EnvGroup.vue:37
 #: src/views/environments/list/Environment.vue:120
 #: src/views/environments/list/Environment.vue:128
@@ -2746,9 +2746,9 @@ msgstr "运行中"
 #: src/views/preference/Preference.vue:221
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
 #: src/views/site/site_edit/components/ConfigName.vue:52
-#: src/views/site/site_edit/SiteEdit.vue:271
+#: src/views/site/site_edit/SiteEdit.vue:272
 #: src/views/stream/components/ConfigName.vue:52
-#: src/views/stream/StreamEdit.vue:254
+#: src/views/stream/StreamEdit.vue:255
 msgid "Save"
 msgstr "保存"
 
@@ -2804,8 +2804,8 @@ msgstr "保存成功"
 #: src/views/config/ConfigEditor.vue:167
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/site/site_add/SiteAdd.vue:37
-#: src/views/site/site_edit/SiteEdit.vue:152
-#: src/views/stream/StreamEdit.vue:140
+#: src/views/site/site_edit/SiteEdit.vue:153
+#: src/views/stream/StreamEdit.vue:141
 msgid "Saved successfully"
 msgstr "保存成功"
 
@@ -3012,7 +3012,7 @@ msgstr "开始还原"
 #: src/views/certificate/ACMEUser.vue:65
 #: src/views/certificate/CertificateList/certColumns.tsx:68
 #: src/views/environments/list/envColumns.tsx:44
-#: src/views/site/site_list/columns.tsx:42 src/views/stream/StreamList.vue:45
+#: src/views/site/site_list/columns.tsx:59 src/views/stream/StreamList.vue:45
 msgid "Status"
 msgstr "状态"
 
@@ -3425,10 +3425,10 @@ msgstr "更新成功"
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
 #: src/views/config/configColumns.tsx:34 src/views/config/ConfigEditor.vue:276
-#: src/views/environments/group/columns.ts:36
+#: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:100
-#: src/views/site/site_list/columns.tsx:69
+#: src/views/site/site_list/columns.tsx:86
 #: src/views/stream/components/RightSettings.vue:99
 #: src/views/stream/StreamList.vue:65 src/views/user/userColumns.tsx:54
 msgid "Updated at"
@@ -3469,6 +3469,10 @@ msgstr "运行时间:"
 #: src/views/environments/list/envColumns.tsx:19
 msgid "URL"
 msgstr "URL"
+
+#: src/views/site/site_list/columns.tsx:25
+msgid "URLs"
+msgstr "链接"
 
 #: src/components/TwoFA/Authorization.vue:121
 msgid "Use OTP"
