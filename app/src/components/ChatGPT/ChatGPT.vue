@@ -36,7 +36,7 @@ let buffer = ''
 // Track last chunk to avoid immediate repeated content
 let lastChunkStr = ''
 
-// 定义一个用于跟踪代码块状态的类型
+// define a type for tracking code block state
 interface CodeBlockState {
   isInCodeBlock: boolean
   backtickCount: number
