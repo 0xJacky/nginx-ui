@@ -1,13 +1,15 @@
 import type { CertificateInfo } from '@/api/cert'
+import type { ModelBase } from '@/api/curd'
+import type { EnvGroup } from '@/api/env_group'
 import type { NgxConfig } from '@/api/ngx'
 import type { ChatComplicationMessage } from '@/api/openai'
-import type { SiteCategory } from '@/api/site_category'
 import type { PrivateKeyType } from '@/constants'
 import Curd from '@/api/curd'
 import http from '@/lib/http'
 
-export interface Site {
+export interface Site extends ModelBase {
   modified_at: string
+  path: string
   advanced: boolean
   enabled: boolean
   name: string
@@ -17,8 +19,8 @@ export interface Site {
   chatgpt_messages: ChatComplicationMessage[]
   tokenized?: NgxConfig
   cert_info?: Record<number, CertificateInfo[]>
-  site_category_id: number
-  site_category?: SiteCategory
+  env_group_id: number
+  env_group?: EnvGroup
   sync_node_ids: number[]
 }
 

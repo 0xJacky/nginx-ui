@@ -1,5 +1,6 @@
 import type { NgxConfig } from '@/api/ngx'
 import type { ChatComplicationMessage } from '@/api/openai'
+import type { EnvGroup } from './env_group'
 import Curd from '@/api/curd'
 import http from '@/lib/http'
 
@@ -12,6 +13,8 @@ export interface Stream {
   config: string
   chatgpt_messages: ChatComplicationMessage[]
   tokenized?: NgxConfig
+  env_group_id: number
+  env_group?: EnvGroup
   sync_node_ids: number[]
 }
 

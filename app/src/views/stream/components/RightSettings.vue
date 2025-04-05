@@ -3,11 +3,15 @@ import type { ChatComplicationMessage } from '@/api/openai'
 import type { Stream } from '@/api/stream'
 import type { CheckedType } from '@/types'
 import type { Ref } from 'vue'
+import envGroup from '@/api/env_group'
 import stream from '@/api/stream'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
+import StdSelector from '@/components/StdDesign/StdDataEntry/components/StdSelector.vue'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
+import envGroupColumns from '@/views/environments/group/columns'
+import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { message, Modal } from 'ant-design-vue'
 import ConfigName from './ConfigName.vue'
 
@@ -68,6 +72,7 @@ function onChangeEnabled(checked: CheckedType) {
     <ACollapse
       v-model:active-key="active_key"
       ghost
+      collapsible="header"
     >
       <ACollapsePanel
         key="1"
@@ -82,6 +87,15 @@ function onChangeEnabled(checked: CheckedType) {
         <AFormItem :label="$gettext('Name')">
           <ConfigName :name="name" />
         </AFormItem>
+        <AFormItem :label="$gettext('Environment Group')">
+          <StdSelector
+            v-model:selected-key="data.env_group_id"
+            :api="envGroup"
+            :columns="envGroupColumns"
+            record-value-index="name"
+            selection-type="radio"
+          />
+        </AFormItem>
         <AFormItem :label="$gettext('Updated at')">
           {{ formatDateTime(data.modified_at) }}
         </AFormItem>
@@ -89,8 +103,28 @@ function onChangeEnabled(checked: CheckedType) {
       <ACollapsePanel
         v-if="!settings.is_remote"
         key="2"
-        :header="$gettext('Sync')"
       >
+        <template #header>
+          {{ $gettext('Synchronization') }}
+        </template>
+        <template #extra>
+          <APopover placement="bottomRight" :title="$gettext('Sync strategy')">
+            <template #content>
+              <div class="max-w-200px mb-2">
+                {{ $gettext('When you enable/disable, delete, or save this stream, '
+                  + 'the nodes set in the environment group and the nodes selected below will be synchronized.') }}
+              </div>
+              <div class="max-w-200px">
+                {{ $gettext('Note, if the configuration file include other configurations or certificates, '
+                  + 'please synchronize them to the remote nodes in advance.') }}
+              </div>
+            </template>
+            <div class="text-trueGray-600">
+              <InfoCircleOutlined class="mr-1" />
+              {{ $gettext('Sync strategy') }}
+            </div>
+          </APopover>
+        </template>
         <NodeSelector
           v-model:target="data.sync_node_ids"
           class="mb-4"

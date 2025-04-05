@@ -41,7 +41,7 @@ type AuthToken struct {
 }
 
 func (u *User) TableName() string {
-	return "auths"
+	return "users"
 }
 
 func (u *User) AfterFind(_ *gorm.DB) error {

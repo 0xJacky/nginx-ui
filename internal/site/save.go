@@ -17,7 +17,7 @@ import (
 )
 
 // Save saves a site configuration file
-func Save(name string, content string, overwrite bool, siteCategoryId uint64, syncNodeIds []uint64) (err error) {
+func Save(name string, content string, overwrite bool, envGroupId uint64, syncNodeIds []uint64) (err error) {
 	path := nginx.GetConfPath("sites-available", name)
 	if !overwrite && helper.FileExists(path) {
 		return ErrDstFileExists
@@ -46,10 +46,10 @@ func Save(name string, content string, overwrite bool, siteCategoryId uint64, sy
 
 	s := query.Site
 	_, err = s.Where(s.Path.Eq(path)).
-		Select(s.SiteCategoryID, s.SyncNodeIDs).
+		Select(s.EnvGroupID, s.SyncNodeIDs).
 		Updates(&model.Site{
-			SiteCategoryID: siteCategoryId,
-			SyncNodeIDs:    syncNodeIds,
+			EnvGroupID:  envGroupId,
+			SyncNodeIDs: syncNodeIds,
 		})
 	if err != nil {
 		return

@@ -142,7 +142,7 @@ func (u userDo) DeleteByID(id uint64) (err error) {
 
 	var generateSQL strings.Builder
 	params = append(params, id)
-	generateSQL.WriteString("update auths set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=? ")
+	generateSQL.WriteString("update users set deleted_at=strftime('%Y-%m-%d %H:%M:%S','now') where id=? ")
 
 	var executeSQL *gorm.DB
 	executeSQL = u.UnderlyingDB().Exec(generateSQL.String(), params...) // ignore_security_alert

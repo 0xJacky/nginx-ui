@@ -16,7 +16,7 @@ func getSyncNodes(name string) (nodes []*model.Environment) {
 	configFilePath := nginx.GetConfPath("sites-available", name)
 	s := query.Site
 	site, err := s.Where(s.Path.Eq(configFilePath)).
-		Preload(s.SiteCategory).First()
+		Preload(s.EnvGroup).First()
 	if err != nil {
 		logger.Error(err)
 		return
@@ -24,8 +24,8 @@ func getSyncNodes(name string) (nodes []*model.Environment) {
 
 	syncNodeIds := site.SyncNodeIDs
 	// inherit sync node ids from site category
-	if site.SiteCategory != nil {
-		syncNodeIds = append(syncNodeIds, site.SiteCategory.SyncNodeIds...)
+	if site.EnvGroup != nil {
+		syncNodeIds = append(syncNodeIds, site.EnvGroup.SyncNodeIds...)
 	}
 	syncNodeIds = lo.Uniq(syncNodeIds)
 

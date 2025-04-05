@@ -24,11 +24,6 @@ func init() {
 
 // scanForLogDirectives scans and parses configuration files for log directives
 func scanForLogDirectives(configPath string, content []byte) error {
-	// Clear previous scan results when scanning the main config
-	if configPath == nginx.GetConfPath("", "nginx.conf") {
-		ClearLogCache()
-	}
-
 	// Find log directives using regex
 	matches := logDirectiveRegex.FindAllSubmatch(content, -1)
 

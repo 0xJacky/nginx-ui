@@ -34,12 +34,12 @@ func newSite(db *gorm.DB, opts ...gen.DOOption) site {
 	_site.DeletedAt = field.NewField(tableName, "deleted_at")
 	_site.Path = field.NewString(tableName, "path")
 	_site.Advanced = field.NewBool(tableName, "advanced")
-	_site.SiteCategoryID = field.NewUint64(tableName, "site_category_id")
+	_site.EnvGroupID = field.NewUint64(tableName, "env_group_id")
 	_site.SyncNodeIDs = field.NewField(tableName, "sync_node_ids")
-	_site.SiteCategory = siteBelongsToSiteCategory{
+	_site.EnvGroup = siteBelongsToEnvGroup{
 		db: db.Session(&gorm.Session{}),
 
-		RelationField: field.NewRelation("SiteCategory", "model.SiteCategory"),
+		RelationField: field.NewRelation("EnvGroup", "model.EnvGroup"),
 	}
 
 	_site.fillFieldMap()
@@ -50,16 +50,16 @@ func newSite(db *gorm.DB, opts ...gen.DOOption) site {
 type site struct {
 	siteDo
 
-	ALL            field.Asterisk
-	ID             field.Uint64
-	CreatedAt      field.Time
-	UpdatedAt      field.Time
-	DeletedAt      field.Field
-	Path           field.String
-	Advanced       field.Bool
-	SiteCategoryID field.Uint64
-	SyncNodeIDs    field.Field
-	SiteCategory   siteBelongsToSiteCategory
+	ALL         field.Asterisk
+	ID          field.Uint64
+	CreatedAt   field.Time
+	UpdatedAt   field.Time
+	DeletedAt   field.Field
+	Path        field.String
+	Advanced    field.Bool
+	EnvGroupID  field.Uint64
+	SyncNodeIDs field.Field
+	EnvGroup    siteBelongsToEnvGroup
 
 	fieldMap map[string]field.Expr
 }
@@ -82,7 +82,7 @@ func (s *site) updateTableName(table string) *site {
 	s.DeletedAt = field.NewField(table, "deleted_at")
 	s.Path = field.NewString(table, "path")
 	s.Advanced = field.NewBool(table, "advanced")
-	s.SiteCategoryID = field.NewUint64(table, "site_category_id")
+	s.EnvGroupID = field.NewUint64(table, "env_group_id")
 	s.SyncNodeIDs = field.NewField(table, "sync_node_ids")
 
 	s.fillFieldMap()
@@ -107,7 +107,7 @@ func (s *site) fillFieldMap() {
 	s.fieldMap["deleted_at"] = s.DeletedAt
 	s.fieldMap["path"] = s.Path
 	s.fieldMap["advanced"] = s.Advanced
-	s.fieldMap["site_category_id"] = s.SiteCategoryID
+	s.fieldMap["env_group_id"] = s.EnvGroupID
 	s.fieldMap["sync_node_ids"] = s.SyncNodeIDs
 
 }
@@ -122,13 +122,13 @@ func (s site) replaceDB(db *gorm.DB) site {
 	return s
 }
 
-type siteBelongsToSiteCategory struct {
+type siteBelongsToEnvGroup struct {
 	db *gorm.DB
 
 	field.RelationField
 }
 
-func (a siteBelongsToSiteCategory) Where(conds ...field.Expr) *siteBelongsToSiteCategory {
+func (a siteBelongsToEnvGroup) Where(conds ...field.Expr) *siteBelongsToEnvGroup {
 	if len(conds) == 0 {
 		return &a
 	}
@@ -141,27 +141,27 @@ func (a siteBelongsToSiteCategory) Where(conds ...field.Expr) *siteBelongsToSite
 	return &a
 }
 
-func (a siteBelongsToSiteCategory) WithContext(ctx context.Context) *siteBelongsToSiteCategory {
+func (a siteBelongsToEnvGroup) WithContext(ctx context.Context) *siteBelongsToEnvGroup {
 	a.db = a.db.WithContext(ctx)
 	return &a
 }
 
-func (a siteBelongsToSiteCategory) Session(session *gorm.Session) *siteBelongsToSiteCategory {
+func (a siteBelongsToEnvGroup) Session(session *gorm.Session) *siteBelongsToEnvGroup {
 	a.db = a.db.Session(session)
 	return &a
 }
 
-func (a siteBelongsToSiteCategory) Model(m *model.Site) *siteBelongsToSiteCategoryTx {
-	return &siteBelongsToSiteCategoryTx{a.db.Model(m).Association(a.Name())}
+func (a siteBelongsToEnvGroup) Model(m *model.Site) *siteBelongsToEnvGroupTx {
+	return &siteBelongsToEnvGroupTx{a.db.Model(m).Association(a.Name())}
 }
 
-type siteBelongsToSiteCategoryTx struct{ tx *gorm.Association }
+type siteBelongsToEnvGroupTx struct{ tx *gorm.Association }
 
-func (a siteBelongsToSiteCategoryTx) Find() (result *model.SiteCategory, err error) {
+func (a siteBelongsToEnvGroupTx) Find() (result *model.EnvGroup, err error) {
 	return result, a.tx.Find(&result)
 }
 
-func (a siteBelongsToSiteCategoryTx) Append(values ...*model.SiteCategory) (err error) {
+func (a siteBelongsToEnvGroupTx) Append(values ...*model.EnvGroup) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -169,7 +169,7 @@ func (a siteBelongsToSiteCategoryTx) Append(values ...*model.SiteCategory) (err 
 	return a.tx.Append(targetValues...)
 }
 
-func (a siteBelongsToSiteCategoryTx) Replace(values ...*model.SiteCategory) (err error) {
+func (a siteBelongsToEnvGroupTx) Replace(values ...*model.EnvGroup) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -177,7 +177,7 @@ func (a siteBelongsToSiteCategoryTx) Replace(values ...*model.SiteCategory) (err
 	return a.tx.Replace(targetValues...)
 }
 
-func (a siteBelongsToSiteCategoryTx) Delete(values ...*model.SiteCategory) (err error) {
+func (a siteBelongsToEnvGroupTx) Delete(values ...*model.EnvGroup) (err error) {
 	targetValues := make([]interface{}, len(values))
 	for i, v := range values {
 		targetValues[i] = v
@@ -185,11 +185,11 @@ func (a siteBelongsToSiteCategoryTx) Delete(values ...*model.SiteCategory) (err 
 	return a.tx.Delete(targetValues...)
 }
 
-func (a siteBelongsToSiteCategoryTx) Clear() error {
+func (a siteBelongsToEnvGroupTx) Clear() error {
 	return a.tx.Clear()
 }
 
-func (a siteBelongsToSiteCategoryTx) Count() int64 {
+func (a siteBelongsToEnvGroupTx) Count() int64 {
 	return a.tx.Count()
 }
 

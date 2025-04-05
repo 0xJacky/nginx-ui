@@ -10,6 +10,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cmd"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
+	"github.com/0xJacky/Nginx-UI/internal/migrate"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/router"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -28,7 +29,12 @@ func Program(confPath string) func(state overseer.State) {
 	return func(state overseer.State) {
 		defer logger.Sync()
 		defer logger.Info("Server exited")
+
+		cosy.RegisterMigrationsBeforeAutoMigrate(migrate.BeforeAutoMigrate)
+
 		cosy.RegisterModels(model.GenerateAllModel()...)
+
+		cosy.RegisterMigration(migrate.Migrations)
 
 		cosy.RegisterInitFunc(kernel.Boot, router.InitRouter)
 

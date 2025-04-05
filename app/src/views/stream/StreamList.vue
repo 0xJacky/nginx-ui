@@ -1,11 +1,16 @@
 <script setup lang="tsx">
+import type { EnvGroup } from '@/api/env_group'
+import type { Stream } from '@/api/stream'
 import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column, JSXElements } from '@/components/StdDesign/types'
+import env_group from '@/api/env_group'
 import stream from '@/api/stream'
+import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
-import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { input } from '@/components/StdDesign/StdDataEntry'
+import { actualValueRender, datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import { input, selector } from '@/components/StdDesign/StdDataEntry'
 import InspectConfig from '@/views/config/InspectConfig.vue'
+import envGroupColumns from '@/views/environments/group/columns'
 import StreamDuplicate from '@/views/stream/components/StreamDuplicate.vue'
 import { Badge, message } from 'ant-design-vue'
 
@@ -18,6 +23,23 @@ const columns: Column[] = [{
     type: input,
   },
   search: true,
+}, {
+  title: () => $gettext('Environment Group'),
+  dataIndex: 'env_group_id',
+  customRender: actualValueRender('env_group.name'),
+  edit: {
+    type: selector,
+    selector: {
+      api: env_group,
+      columns: envGroupColumns,
+      recordValueIndex: 'name',
+      selectionType: 'radio',
+    },
+  },
+  sorter: true,
+  pithy: true,
+  batch: true,
+  width: 150,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'enabled',
@@ -95,6 +117,26 @@ function handle_click_duplicate(name: string) {
 
 const route = useRoute()
 
+const envGroupId = ref(Number.parseInt(route.query.env_group_id as string) || 0)
+const envGroups = ref([]) as Ref<EnvGroup[]>
+
+onMounted(async () => {
+  while (true) {
+    try {
+      const { data, pagination } = await env_group.get_list()
+      if (!data || !pagination)
+        return
+      envGroups.value.push(...data)
+      if (data.length < pagination?.per_page) {
+        return
+      }
+    }
+    catch {
+      return
+    }
+  }
+})
+
 watch(route, () => {
   inspect_config.value?.test()
 })
@@ -113,6 +155,17 @@ function handleAddStream() {
     message.success($gettext('Added successfully'))
   })
 }
+
+const stdBatchEditRef = useTemplateRef('stdBatchEditRef')
+
+async function handleClickBatchEdit(batchColumns: Column[], selectedRowKeys: string[], selectedRows: Stream[]) {
+  stdBatchEditRef.value?.showModal(batchColumns, selectedRowKeys, selectedRows)
+}
+
+function handleBatchUpdated() {
+  table.value?.get_list()
+  table.value?.resetSelection()
+}
 </script>
 
 <template>
@@ -123,6 +176,11 @@ function handleAddStream() {
 
     <InspectConfig ref="inspect_config" />
 
+    <ATabs v-model:active-key="envGroupId">
+      <ATabPane :key="0" :tab="$gettext('All')" />
+      <ATabPane v-for="c in envGroups" :key="c.id" :tab="c.name" />
+    </ATabs>
+
     <StdTable
       ref="table"
       :api="stream"
@@ -131,9 +189,13 @@ function handleAddStream() {
       disable-delete
       disable-view
       :scroll-x="800"
+      :get-params="{
+        env_group_id: envGroupId,
+      }"
       @click-edit="r => $router.push({
         path: `/streams/${r}`,
       })"
+      @click-batch-modify="handleClickBatchEdit"
     >
       <template #actions="{ record }">
         <AButton
@@ -192,6 +254,12 @@ function handleAddStream() {
       v-model:visible="showDuplicator"
       :name="target"
       @duplicated="() => table.get_list()"
+    />
+    <StdBatchEdit
+      ref="stdBatchEditRef"
+      :api="stream"
+      :columns="columns"
+      @save="handleBatchUpdated"
     />
   </ACard>
 </template>

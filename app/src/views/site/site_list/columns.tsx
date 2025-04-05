@@ -2,13 +2,13 @@ import type {
   CustomRender,
 } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column, JSXElements } from '@/components/StdDesign/types'
-import site_category from '@/api/site_category'
+import env_group from '@/api/env_group'
 import {
   actualValueRender,
   datetime,
 } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input, select, selector } from '@/components/StdDesign/StdDataEntry'
-import siteCategoryColumns from '@/views/site/site_category/columns'
+import envGroupColumns from '@/views/environments/group/columns'
 import { Badge } from 'ant-design-vue'
 
 const columns: Column[] = [{
@@ -22,14 +22,14 @@ const columns: Column[] = [{
   search: true,
   width: 120,
 }, {
-  title: () => $gettext('Category'),
-  dataIndex: 'site_category_id',
-  customRender: actualValueRender('site_category.name'),
+  title: () => $gettext('Environment Group'),
+  dataIndex: 'env_group_id',
+  customRender: actualValueRender('env_group.name'),
   edit: {
     type: selector,
     selector: {
-      api: site_category,
-      columns: siteCategoryColumns,
+      api: env_group,
+      columns: envGroupColumns,
       recordValueIndex: 'name',
       selectionType: 'radio',
     },

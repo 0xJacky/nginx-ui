@@ -23,13 +23,3 @@ func InitRouter(r *gin.RouterGroup) {
 	// duplicate site
 	r.POST("sites/:name/duplicate", DuplicateSite)
 }
-
-func InitCategoryRouter(r *gin.RouterGroup) {
-	r.GET("site_categories", GetCategoryList)
-	r.GET("site_categories/:id", GetCategory)
-	r.POST("site_categories", AddCategory)
-	r.POST("site_categories/:id", ModifyCategory)
-	r.DELETE("site_categories/:id", DeleteCategory)
-	r.POST("site_categories/:id/recover", RecoverCategory)
-	r.POST("site_categories/order", UpdateCategoriesOrder)
-}

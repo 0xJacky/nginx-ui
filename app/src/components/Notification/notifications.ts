@@ -4,6 +4,40 @@
 
 const notifications: Record<string, { title: () => string, content: (args: any) => string }> = {
 
+  // user module notifications
+  'All Recovery Codes Have Been Used': {
+    title: () => $gettext('All Recovery Codes Have Been Used'),
+    content: (args: any) => $gettext('Please generate new recovery codes in the preferences immediately to prevent lockout.', args),
+  },
+
+  // cert module notifications
+  'Sync Certificate Error': {
+    title: () => $gettext('Sync Certificate Error'),
+    content: (args: any) => $gettext('Sync Certificate %{cert_name} to %{env_name} failed', args),
+  },
+  'Sync Certificate Success': {
+    title: () => $gettext('Sync Certificate Success'),
+    content: (args: any) => $gettext('Sync Certificate %{cert_name} to %{env_name} successfully', args),
+  },
+
+  // config module notifications
+  'Sync Config Error': {
+    title: () => $gettext('Sync Config Error'),
+    content: (args: any) => $gettext('Sync config %{config_name} to %{env_name} failed', args),
+  },
+  'Sync Config Success': {
+    title: () => $gettext('Sync Config Success'),
+    content: (args: any) => $gettext('Sync config %{config_name} to %{env_name} successfully', args),
+  },
+  'Rename Remote Config Error': {
+    title: () => $gettext('Rename Remote Config Error'),
+    content: (args: any) => $gettext('Rename %{orig_path} to %{new_path} on %{env_name} failed', args),
+  },
+  'Rename Remote Config Success': {
+    title: () => $gettext('Rename Remote Config Success'),
+    content: (args: any) => $gettext('Rename %{orig_path} to %{new_path} on %{env_name} successfully', args),
+  },
+
   // site module notifications
   'Delete Remote Site Error': {
     title: () => $gettext('Delete Remote Site Error'),
@@ -86,40 +120,6 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
   'Save Remote Stream Success': {
     title: () => $gettext('Save Remote Stream Success'),
     content: (args: any) => $gettext('Save stream %{name} to %{node} successfully', args),
-  },
-
-  // user module notifications
-  'All Recovery Codes Have Been Used': {
-    title: () => $gettext('All Recovery Codes Have Been Used'),
-    content: (args: any) => $gettext('Please generate new recovery codes in the preferences immediately to prevent lockout.', args),
-  },
-
-  // cert module notifications
-  'Sync Certificate Error': {
-    title: () => $gettext('Sync Certificate Error'),
-    content: (args: any) => $gettext('Sync Certificate %{cert_name} to %{env_name} failed', args),
-  },
-  'Sync Certificate Success': {
-    title: () => $gettext('Sync Certificate Success'),
-    content: (args: any) => $gettext('Sync Certificate %{cert_name} to %{env_name} successfully', args),
-  },
-
-  // config module notifications
-  'Sync Config Error': {
-    title: () => $gettext('Sync Config Error'),
-    content: (args: any) => $gettext('Sync config %{config_name} to %{env_name} failed', args),
-  },
-  'Sync Config Success': {
-    title: () => $gettext('Sync Config Success'),
-    content: (args: any) => $gettext('Sync config %{config_name} to %{env_name} successfully', args),
-  },
-  'Rename Remote Config Error': {
-    title: () => $gettext('Rename Remote Config Error'),
-    content: (args: any) => $gettext('Rename %{orig_path} to %{new_path} on %{env_name} failed', args),
-  },
-  'Rename Remote Config Success': {
-    title: () => $gettext('Rename Remote Config Success'),
-    content: (args: any) => $gettext('Rename %{orig_path} to %{new_path} on %{env_name} successfully', args),
   },
 }
 

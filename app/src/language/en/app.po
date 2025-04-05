@@ -17,11 +17,11 @@ msgstr ""
 msgid "2FA Settings"
 msgstr ""
 
-#: src/routes/modules/system.ts:26
+#: src/routes/modules/system.ts:45
 msgid "About"
 msgstr "About"
 
-#: src/views/nginx_log/NginxLogList.vue:29
+#: src/views/nginx_log/NginxLogList.vue:30
 #, fuzzy
 msgid "Access Log"
 msgstr "Sites List"
@@ -41,12 +41,12 @@ msgstr "Username"
 #: src/views/certificate/CertificateList/certColumns.tsx:97
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.tsx:42
-#: src/views/environment/envColumns.tsx:97
-#: src/views/nginx_log/NginxLogList.vue:51
+#: src/views/environments/group/columns.ts:28
+#: src/views/environments/list/envColumns.tsx:97
+#: src/views/nginx_log/NginxLogList.vue:53
 #: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
-#: src/views/site/site_category/columns.ts:28
-#: src/views/site/site_list/columns.tsx:76 src/views/stream/StreamList.vue:49
+#: src/views/site/site_list/columns.tsx:76 src/views/stream/StreamList.vue:71
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "Action"
@@ -57,7 +57,7 @@ msgstr "Action"
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/site/ngx_conf/NgxServer.vue:163
 #: src/views/site/ngx_conf/NgxUpstream.vue:154
-#: src/views/stream/StreamList.vue:121
+#: src/views/stream/StreamList.vue:174
 msgid "Add"
 msgstr ""
 
@@ -85,12 +85,12 @@ msgstr "Add Location"
 msgid "Add Site"
 msgstr "Add Site"
 
-#: src/views/stream/StreamList.vue:181
+#: src/views/stream/StreamList.vue:243
 #, fuzzy
 msgid "Add Stream"
 msgstr "Add Site"
 
-#: src/views/stream/StreamList.vue:113
+#: src/views/stream/StreamList.vue:155
 #, fuzzy
 msgid "Added successfully"
 msgstr "Saved successfully"
@@ -101,7 +101,7 @@ msgid "Additional"
 msgstr "Add Location"
 
 #: src/views/site/site_edit/SiteEdit.vue:205
-#: src/views/stream/StreamEdit.vue:190
+#: src/views/stream/StreamEdit.vue:191
 msgid "Advance Mode"
 msgstr "Advance Mode"
 
@@ -110,12 +110,11 @@ msgid "Afterwards, refresh this page and click add passkey again."
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
-#: src/views/site/site_list/SiteList.vue:98
+#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:180
 msgid "All"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:121
-#: src/language/constants.ts:58
+#: src/components/Notification/notifications.ts:9 src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr ""
 
@@ -204,7 +203,7 @@ msgid "Are you sure you want to delete this item?"
 msgstr "Are you sure you want to remove this directive?"
 
 #: src/views/site/site_list/SiteList.vue:145
-#: src/views/stream/StreamList.vue:165
+#: src/views/stream/StreamList.vue:227
 #, fuzzy
 msgid "Are you sure you want to delete?"
 msgstr "Are you sure you want to remove this directive?"
@@ -277,7 +276,7 @@ msgstr "Auto-renewal enabled for %{name}"
 msgid "Automatic Restart"
 msgstr ""
 
-#: src/views/nginx_log/NginxLogList.vue:125
+#: src/views/nginx_log/NginxLogList.vue:127
 msgid "Automatically indexed from site and stream configurations."
 msgstr ""
 
@@ -285,7 +284,7 @@ msgstr ""
 #: src/views/config/ConfigEditor.vue:213 src/views/config/ConfigList.vue:106
 #: src/views/config/ConfigList.vue:180 src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/SiteEdit.vue:264
-#: src/views/stream/StreamEdit.vue:246
+#: src/views/stream/StreamEdit.vue:247
 msgid "Back"
 msgstr "Back"
 
@@ -298,7 +297,7 @@ msgstr "Back"
 msgid "Back to list"
 msgstr ""
 
-#: src/routes/modules/system.ts:33
+#: src/routes/modules/system.ts:26
 #, fuzzy
 msgid "Backup"
 msgstr "Back"
@@ -335,13 +334,13 @@ msgstr "Base information"
 
 #: src/views/config/ConfigEditor.vue:241
 #: src/views/site/site_edit/RightSettings.vue:79
-#: src/views/stream/components/RightSettings.vue:74
+#: src/views/stream/components/RightSettings.vue:78
 #, fuzzy
 msgid "Basic"
 msgstr "Basic Mode"
 
 #: src/views/site/site_edit/SiteEdit.vue:208
-#: src/views/stream/StreamEdit.vue:193
+#: src/views/stream/StreamEdit.vue:194
 msgid "Basic Mode"
 msgstr "Basic Mode"
 
@@ -356,7 +355,7 @@ msgstr "Action"
 msgid "Batch Modify"
 msgstr "Modify Config"
 
-#: src/views/environment/BatchUpgrader.vue:152
+#: src/views/environments/list/BatchUpgrader.vue:152
 msgid "Batch Upgrade"
 msgstr ""
 
@@ -390,7 +389,7 @@ msgstr ""
 #: src/views/site/ngx_conf/NgxServer.vue:80
 #: src/views/site/ngx_conf/NgxUpstream.vue:34
 #: src/views/site/site_edit/RightSettings.vue:55
-#: src/views/stream/components/RightSettings.vue:51
+#: src/views/stream/components/RightSettings.vue:55
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -400,11 +399,6 @@ msgstr ""
 
 #: src/constants/errors/user.ts:10
 msgid "Cannot remove initial user"
-msgstr ""
-
-#: src/views/site/site_edit/RightSettings.vue:91
-#: src/views/site/site_list/columns.tsx:25
-msgid "Category"
 msgstr ""
 
 #: src/views/preference/Preference.vue:192
@@ -476,7 +470,8 @@ msgstr[1] "Certificate is valid"
 msgid "Changed Path"
 msgstr "Certificate is valid"
 
-#: src/views/environment/BatchUpgrader.vue:159 src/views/system/Upgrade.vue:188
+#: src/views/environments/list/BatchUpgrader.vue:159
+#: src/views/system/Upgrade.vue:188
 msgid "Channel"
 msgstr ""
 
@@ -652,9 +647,10 @@ msgid ""
 "Backup files will be automatically downloaded to your computer."
 msgstr ""
 
+#: src/views/environments/group/columns.ts:16
 #: src/views/notification/notificationColumns.tsx:59
 #: src/views/preference/components/Passkey.vue:95
-#: src/views/site/site_category/columns.ts:16 src/views/user/userColumns.tsx:48
+#: src/views/user/userColumns.tsx:48
 msgid "Created at"
 msgstr "Created at"
 
@@ -721,7 +717,7 @@ msgstr "Enable failed"
 #: src/views/site/ngx_conf/NgxServer.vue:110
 #: src/views/site/ngx_conf/NgxUpstream.vue:128
 #: src/views/site/site_list/SiteList.vue:154
-#: src/views/stream/StreamList.vue:174
+#: src/views/stream/StreamList.vue:236
 msgid "Delete"
 msgstr ""
 
@@ -730,32 +726,32 @@ msgstr ""
 msgid "Delete Permanently"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:37 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:43 src/language/constants.ts:50
 #, fuzzy
 msgid "Delete Remote Site Error"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:41 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:47 src/language/constants.ts:49
 #, fuzzy
 msgid "Delete Remote Site Success"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:79
+#: src/components/Notification/notifications.ts:85
 #, fuzzy
 msgid "Delete Remote Stream Error"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:83
+#: src/components/Notification/notifications.ts:89
 #, fuzzy
 msgid "Delete Remote Stream Success"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:38
+#: src/components/Notification/notifications.ts:44
 #, fuzzy
 msgid "Delete site %{name} from %{node} failed"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:42
+#: src/components/Notification/notifications.ts:48
 #, fuzzy
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Saved successfully"
@@ -764,17 +760,17 @@ msgstr "Saved successfully"
 msgid "Delete site: %{site_name}"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:80
+#: src/components/Notification/notifications.ts:86
 #, fuzzy
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:84
+#: src/components/Notification/notifications.ts:90
 #, fuzzy
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Saved successfully"
 
-#: src/views/stream/StreamList.vue:82
+#: src/views/stream/StreamList.vue:104
 msgid "Delete stream: %{stream_name}"
 msgstr ""
 
@@ -829,7 +825,7 @@ msgid "Directives"
 msgstr "Directives"
 
 #: src/views/site/site_list/SiteList.vue:125
-#: src/views/stream/StreamList.vue:145
+#: src/views/stream/StreamList.vue:207
 #, fuzzy
 msgid "Disable"
 msgstr "Disabled"
@@ -838,62 +834,62 @@ msgstr "Disabled"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Disable auto-renewal failed for %{name}"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:51 src/language/constants.ts:52
 #, fuzzy
 msgid "Disable Remote Site Error"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:55 src/language/constants.ts:51
 #, fuzzy
 msgid "Disable Remote Site Success"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:87
+#: src/components/Notification/notifications.ts:93
 #, fuzzy
 msgid "Disable Remote Stream Error"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:91
+#: src/components/Notification/notifications.ts:97
 #, fuzzy
 msgid "Disable Remote Stream Success"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:46
+#: src/components/Notification/notifications.ts:52
 #, fuzzy
 msgid "Disable site %{name} from %{node} failed"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:50
+#: src/components/Notification/notifications.ts:56
 #, fuzzy
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:88
+#: src/components/Notification/notifications.ts:94
 #, fuzzy
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:92
+#: src/components/Notification/notifications.ts:98
 #, fuzzy
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Saved successfully"
 
-#: src/views/environment/envColumns.tsx:61
-#: src/views/environment/envColumns.tsx:79
+#: src/views/environments/list/envColumns.tsx:61
+#: src/views/environments/list/envColumns.tsx:79
 #: src/views/preference/HTTPSettings.vue:24
 #: src/views/preference/NodeSettings.vue:25
 #: src/views/preference/NodeSettings.vue:30
 #: src/views/site/site_edit/SiteEdit.vue:190
 #: src/views/site/site_list/columns.tsx:53
-#: src/views/site/site_list/columns.tsx:62 src/views/stream/StreamEdit.vue:176
-#: src/views/stream/StreamList.vue:33 src/views/user/userColumns.tsx:41
+#: src/views/site/site_list/columns.tsx:62 src/views/stream/StreamEdit.vue:177
+#: src/views/stream/StreamList.vue:55 src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr "Disabled"
 
 #: src/views/site/site_edit/RightSettings.vue:42
 #: src/views/site/site_list/SiteList.vue:56
-#: src/views/stream/components/RightSettings.vue:38
-#: src/views/stream/StreamList.vue:71
+#: src/views/stream/components/RightSettings.vue:42
+#: src/views/stream/StreamList.vue:93
 msgid "Disabled successfully"
 msgstr "Disabled successfully"
 
@@ -929,7 +925,7 @@ msgstr "Are you sure you want to remove this directive?"
 msgid "Do you want to disable this site?"
 msgstr "Are you sure you want to remove this directive?"
 
-#: src/views/stream/components/RightSettings.vue:47
+#: src/views/stream/components/RightSettings.vue:51
 #, fuzzy
 msgid "Do you want to disable this stream?"
 msgstr "Are you sure you want to remove this directive?"
@@ -939,7 +935,7 @@ msgstr "Are you sure you want to remove this directive?"
 msgid "Do you want to enable this site?"
 msgstr "Are you sure you want to remove this directive?"
 
-#: src/views/stream/components/RightSettings.vue:47
+#: src/views/stream/components/RightSettings.vue:51
 #, fuzzy
 msgid "Do you want to enable this stream?"
 msgstr "Are you sure you want to remove this directive?"
@@ -983,7 +979,8 @@ msgstr ""
 msgid "Downloading latest release"
 msgstr ""
 
-#: src/views/environment/BatchUpgrader.vue:188 src/views/system/Upgrade.vue:215
+#: src/views/environments/list/BatchUpgrader.vue:188
+#: src/views/system/Upgrade.vue:215
 msgid "Dry run mode enabled"
 msgstr ""
 
@@ -996,7 +993,7 @@ msgstr ""
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:140
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:160
+#: src/views/stream/StreamList.vue:222
 #, fuzzy
 msgid "Duplicate"
 msgstr "Enable failed"
@@ -1013,7 +1010,7 @@ msgid "Edit"
 msgstr "Edit %{n}"
 
 #: src/views/site/site_edit/SiteEdit.vue:179
-#: src/views/stream/StreamEdit.vue:165
+#: src/views/stream/StreamEdit.vue:166
 msgid "Edit %{n}"
 msgstr "Edit %{n}"
 
@@ -1021,7 +1018,7 @@ msgstr "Edit %{n}"
 msgid "Edit Configuration"
 msgstr "Edit Configuration"
 
-#: src/routes/modules/sites.ts:41
+#: src/routes/modules/sites.ts:34
 msgid "Edit Site"
 msgstr "Edit Site"
 
@@ -1041,7 +1038,7 @@ msgid "Email (*)"
 msgstr "Email (*)"
 
 #: src/views/site/site_list/SiteList.vue:133
-#: src/views/stream/StreamList.vue:153
+#: src/views/stream/StreamList.vue:215
 #, fuzzy
 msgid "Enable"
 msgstr "Enabled"
@@ -1064,42 +1061,42 @@ msgstr "Enable failed"
 msgid "Enable HTTPS"
 msgstr "Enable TLS"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:59 src/language/constants.ts:54
 #, fuzzy
 msgid "Enable Remote Site Error"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:63 src/language/constants.ts:53
 #, fuzzy
 msgid "Enable Remote Site Success"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:95
+#: src/components/Notification/notifications.ts:101
 #, fuzzy
 msgid "Enable Remote Stream Error"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:99
+#: src/components/Notification/notifications.ts:105
 #, fuzzy
 msgid "Enable Remote Stream Success"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:54
+#: src/components/Notification/notifications.ts:60
 #, fuzzy
 msgid "Enable site %{name} on %{node} failed"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:58
+#: src/components/Notification/notifications.ts:64
 #, fuzzy
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:96
+#: src/components/Notification/notifications.ts:102
 #, fuzzy
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:100
+#: src/components/Notification/notifications.ts:106
 #, fuzzy
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Saved successfully"
@@ -1113,8 +1110,8 @@ msgstr "Enable TLS"
 msgid "Enable TOTP"
 msgstr "Enable TLS"
 
-#: src/views/environment/envColumns.tsx:70
-#: src/views/environment/envColumns.tsx:76
+#: src/views/environments/list/envColumns.tsx:70
+#: src/views/environments/list/envColumns.tsx:76
 #: src/views/preference/HTTPSettings.vue:24
 #: src/views/preference/LogrotateSettings.vue:19
 #: src/views/preference/NodeSettings.vue:25
@@ -1123,8 +1120,8 @@ msgstr "Enable TLS"
 #: src/views/site/site_edit/SiteEdit.vue:184
 #: src/views/site/site_list/columns.tsx:49
 #: src/views/site/site_list/columns.tsx:61
-#: src/views/stream/components/RightSettings.vue:76
-#: src/views/stream/StreamEdit.vue:170 src/views/stream/StreamList.vue:29
+#: src/views/stream/components/RightSettings.vue:80
+#: src/views/stream/StreamEdit.vue:171 src/views/stream/StreamList.vue:51
 #: src/views/user/userColumns.tsx:38
 msgid "Enabled"
 msgstr "Enabled"
@@ -1132,8 +1129,8 @@ msgstr "Enabled"
 #: src/views/site/site_add/SiteAdd.vue:40
 #: src/views/site/site_edit/RightSettings.vue:33
 #: src/views/site/site_list/SiteList.vue:46
-#: src/views/stream/components/RightSettings.vue:29
-#: src/views/stream/StreamList.vue:61
+#: src/views/stream/components/RightSettings.vue:33
+#: src/views/stream/StreamList.vue:83
 msgid "Enabled successfully"
 msgstr "Enabled successfully"
 
@@ -1141,13 +1138,26 @@ msgstr "Enabled successfully"
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Encrypt website with Let's Encrypt"
 
+#: src/views/site/site_edit/RightSettings.vue:91
+#: src/views/site/site_list/columns.tsx:25
+#: src/views/stream/components/RightSettings.vue:89
+#: src/views/stream/StreamList.vue:27
+#, fuzzy
+msgid "Environment Group"
+msgstr "Comments"
+
+#: src/views/environments/group/EnvGroup.vue:10
+#, fuzzy
+msgid "Environment Groups"
+msgstr "Comments"
+
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
 msgstr ""
 
 #: src/routes/modules/environments.ts:11
 #: src/views/dashboard/Environments.vue:83
-#: src/views/environment/Environment.vue:43
+#: src/views/environments/list/Environment.vue:43
 #, fuzzy
 msgid "Environments"
 msgstr "Comments"
@@ -1157,7 +1167,7 @@ msgstr "Comments"
 msgid "Error"
 msgstr ""
 
-#: src/views/nginx_log/NginxLogList.vue:30
+#: src/views/nginx_log/NginxLogList.vue:31
 msgid "Error Log"
 msgstr ""
 
@@ -1325,15 +1335,15 @@ msgstr ""
 
 #: src/views/site/site_edit/RightSettings.vue:45
 #: src/views/site/site_list/SiteList.vue:60
-#: src/views/stream/components/RightSettings.vue:41
-#: src/views/stream/StreamList.vue:75
+#: src/views/stream/components/RightSettings.vue:45
+#: src/views/stream/StreamList.vue:97
 msgid "Failed to disable %{msg}"
 msgstr "Failed to disable %{msg}"
 
 #: src/views/site/site_edit/RightSettings.vue:36
 #: src/views/site/site_list/SiteList.vue:50
-#: src/views/stream/components/RightSettings.vue:32
-#: src/views/stream/StreamList.vue:65
+#: src/views/stream/components/RightSettings.vue:36
+#: src/views/stream/StreamList.vue:87
 msgid "Failed to enable %{msg}"
 msgstr "Failed to enable %{msg}"
 
@@ -1541,7 +1551,8 @@ msgstr "Saved successfully"
 msgid "Generating private key for registering account"
 msgstr ""
 
-#: src/views/environment/BatchUpgrader.vue:177 src/views/system/Upgrade.vue:169
+#: src/views/environments/list/BatchUpgrader.vue:177
+#: src/views/system/Upgrade.vue:169
 #, fuzzy
 msgid "Get release information error"
 msgstr "Base information"
@@ -1552,6 +1563,10 @@ msgstr "Getting the certificate, please wait..."
 
 #: src/views/preference/HTTPSettings.vue:11
 msgid "Github Proxy"
+msgstr ""
+
+#: src/routes/modules/environments.ts:33
+msgid "Groups"
 msgstr ""
 
 #: src/constants/errors/backup.ts:59
@@ -1594,7 +1609,7 @@ msgstr ""
 msgid "If left blank, the default CA Dir will be used."
 msgstr ""
 
-#: src/views/nginx_log/NginxLogList.vue:127
+#: src/views/nginx_log/NginxLogList.vue:129
 msgid ""
 "If logs are not indexed, please check if the log file is under the directory "
 "in Nginx.LogDirWhiteList."
@@ -1626,11 +1641,11 @@ msgstr ""
 msgid "Import Certificate"
 msgstr "Certificate Status"
 
-#: src/views/nginx_log/NginxLogList.vue:135
+#: src/views/nginx_log/NginxLogList.vue:137
 msgid "Indexed"
 msgstr ""
 
-#: src/views/nginx_log/NginxLogList.vue:132
+#: src/views/nginx_log/NginxLogList.vue:134
 msgid "Indexing..."
 msgstr ""
 
@@ -1845,11 +1860,11 @@ msgstr ""
 msgid "Load Average:"
 msgstr "Load Averages:"
 
-#: src/views/environment/Environment.vue:49
+#: src/views/environments/list/Environment.vue:49
 msgid "Load from settings"
 msgstr ""
 
-#: src/views/environment/Environment.vue:17
+#: src/views/environments/list/Environment.vue:17
 #, fuzzy
 msgid "Load successfully"
 msgstr "Saved successfully"
@@ -1873,7 +1888,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Login"
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:113
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:115
 msgid "Log List"
 msgstr ""
 
@@ -1921,7 +1936,7 @@ msgstr "Manage Configs"
 msgid "Manage Sites"
 msgstr "Manage Sites"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:119
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:172
 #, fuzzy
 msgid "Manage Streams"
 msgstr "Manage Sites"
@@ -1991,17 +2006,17 @@ msgstr "Single Directive"
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:256
-#: src/views/environment/envColumns.tsx:9
-#: src/views/nginx_log/NginxLogList.vue:35
+#: src/views/environments/group/columns.ts:7
+#: src/views/environments/list/envColumns.tsx:9
+#: src/views/nginx_log/NginxLogList.vue:37
 #: src/views/preference/components/AddPasskey.vue:75
 #: src/views/site/ngx_conf/NgxUpstream.vue:177
-#: src/views/site/site_category/columns.ts:7
 #: src/views/site/site_edit/RightSettings.vue:88
 #: src/views/site/site_list/columns.tsx:15
 #: src/views/site/site_list/SiteDuplicate.vue:79
-#: src/views/stream/components/RightSettings.vue:82
+#: src/views/stream/components/RightSettings.vue:86
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:13 src/views/stream/StreamList.vue:186
+#: src/views/stream/StreamList.vue:18 src/views/stream/StreamList.vue:248
 msgid "Name"
 msgstr "Name"
 
@@ -2089,7 +2104,7 @@ msgid "Nginx configuration has been restored"
 msgstr "Configuration Name"
 
 #: src/views/site/site_edit/SiteEdit.vue:223
-#: src/views/stream/StreamEdit.vue:208
+#: src/views/stream/StreamEdit.vue:209
 #, fuzzy
 msgid "Nginx Configuration Parse Error"
 msgstr "Configuration Name"
@@ -2180,7 +2195,7 @@ msgstr "Configuration Name"
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:88
 #: src/views/site/site_list/SiteList.vue:143
-#: src/views/stream/StreamList.vue:163
+#: src/views/stream/StreamList.vue:225
 msgid "No"
 msgstr "No"
 
@@ -2197,6 +2212,11 @@ msgstr "Username"
 #: src/views/preference/NodeSettings.vue:11
 #, fuzzy
 msgid "Node Secret"
+msgstr "Username"
+
+#: src/routes/modules/environments.ts:25
+#, fuzzy
+msgid "Nodes"
 msgstr "Username"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:91
@@ -2217,6 +2237,7 @@ msgid "Note"
 msgstr ""
 
 #: src/views/site/site_edit/RightSettings.vue:120
+#: src/views/stream/components/RightSettings.vue:118
 msgid ""
 "Note, if the configuration file include other configurations or "
 "certificates, please synchronize them to the remote nodes in advance."
@@ -2255,7 +2276,7 @@ msgstr ""
 
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
-#: src/views/environment/envColumns.tsx:56
+#: src/views/environments/list/envColumns.tsx:56
 msgid "Offline"
 msgstr ""
 
@@ -2277,8 +2298,8 @@ msgstr ""
 #: src/views/site/ngx_conf/NgxUpstream.vue:33
 #: src/views/site/site_edit/RightSettings.vue:54
 #: src/views/site/site_list/SiteList.vue:144
-#: src/views/stream/components/RightSettings.vue:50
-#: src/views/stream/StreamList.vue:164
+#: src/views/stream/components/RightSettings.vue:54
+#: src/views/stream/StreamList.vue:226
 #: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr ""
@@ -2290,7 +2311,7 @@ msgstr ""
 #: src/components/NodeSelector/NodeSelector.vue:103
 #: src/components/NodeSelector/NodeSelector.vue:89
 #: src/views/dashboard/Environments.vue:100
-#: src/views/environment/envColumns.tsx:52
+#: src/views/environments/list/envColumns.tsx:52
 msgid "Online"
 msgstr ""
 
@@ -2373,7 +2394,7 @@ msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
 #: src/views/config/ConfigEditor.vue:263
-#: src/views/nginx_log/NginxLogList.vue:43
+#: src/views/nginx_log/NginxLogList.vue:45
 #: src/views/site/ngx_conf/LocationEditor.vue:109
 #: src/views/site/ngx_conf/LocationEditor.vue:137
 msgid "Path"
@@ -2387,7 +2408,7 @@ msgstr ""
 msgid "Payload resource is nil"
 msgstr ""
 
-#: src/views/environment/BatchUpgrader.vue:232
+#: src/views/environments/list/BatchUpgrader.vue:232
 msgid "Perform"
 msgstr ""
 
@@ -2439,8 +2460,7 @@ msgid ""
 "select one of the credentialsbelow to request the API of the DNS provider."
 msgstr ""
 
-#: src/components/Notification/notifications.ts:122
-#: src/language/constants.ts:59
+#: src/components/Notification/notifications.ts:10 src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
 "lockout."
@@ -2499,7 +2519,7 @@ msgstr ""
 msgid "Please select a backup file"
 msgstr "Please input your username!"
 
-#: src/views/environment/Environment.vue:58
+#: src/views/environments/list/Environment.vue:58
 msgid "Please select at least one node to upgrade"
 msgstr ""
 
@@ -2507,9 +2527,9 @@ msgstr ""
 msgid "Port"
 msgstr ""
 
-#: src/views/environment/BatchUpgrader.vue:167
-#: src/views/environment/BatchUpgrader.vue:220 src/views/system/Upgrade.vue:194
-#: src/views/system/Upgrade.vue:245
+#: src/views/environments/list/BatchUpgrader.vue:167
+#: src/views/environments/list/BatchUpgrader.vue:220
+#: src/views/system/Upgrade.vue:194 src/views/system/Upgrade.vue:245
 msgid "Pre-release"
 msgstr ""
 
@@ -2679,62 +2699,62 @@ msgstr "Saved successfully"
 msgid "Rename"
 msgstr "Username"
 
-#: src/components/Notification/notifications.ts:28
+#: src/components/Notification/notifications.ts:34
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:32
+#: src/components/Notification/notifications.ts:38
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:27 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:33 src/language/constants.ts:42
 #, fuzzy
 msgid "Rename Remote Config Error"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:31 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:37 src/language/constants.ts:41
 #, fuzzy
 msgid "Rename Remote Config Success"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:56
+#: src/components/Notification/notifications.ts:67 src/language/constants.ts:56
 #, fuzzy
 msgid "Rename Remote Site Error"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:71 src/language/constants.ts:55
 #, fuzzy
 msgid "Rename Remote Site Success"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:103
+#: src/components/Notification/notifications.ts:109
 #, fuzzy
 msgid "Rename Remote Stream Error"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:107
+#: src/components/Notification/notifications.ts:113
 #, fuzzy
 msgid "Rename Remote Stream Success"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:62
+#: src/components/Notification/notifications.ts:68
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:66
+#: src/components/Notification/notifications.ts:72
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:104
+#: src/components/Notification/notifications.ts:110
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:108
+#: src/components/Notification/notifications.ts:114
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "Saved successfully"
@@ -2852,7 +2872,7 @@ msgstr ""
 #: src/views/site/site_edit/components/ConfigName.vue:52
 #: src/views/site/site_edit/SiteEdit.vue:271
 #: src/views/stream/components/ConfigName.vue:52
-#: src/views/stream/StreamEdit.vue:253
+#: src/views/stream/StreamEdit.vue:254
 msgid "Save"
 msgstr "Save"
 
@@ -2866,42 +2886,42 @@ msgstr "Save Directive"
 msgid "Save error %{msg}"
 msgstr "Save error %{msg}"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:75 src/language/constants.ts:48
 #, fuzzy
 msgid "Save Remote Site Error"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:73 src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:79 src/language/constants.ts:47
 #, fuzzy
 msgid "Save Remote Site Success"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:111
+#: src/components/Notification/notifications.ts:117
 #, fuzzy
 msgid "Save Remote Stream Error"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:115
+#: src/components/Notification/notifications.ts:121
 #, fuzzy
 msgid "Save Remote Stream Success"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:70
+#: src/components/Notification/notifications.ts:76
 #, fuzzy
 msgid "Save site %{name} to %{node} failed"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:74
+#: src/components/Notification/notifications.ts:80
 #, fuzzy
 msgid "Save site %{name} to %{node} successfully"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:112
+#: src/components/Notification/notifications.ts:118
 #, fuzzy
 msgid "Save stream %{name} to %{node} failed"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:116
+#: src/components/Notification/notifications.ts:122
 #, fuzzy
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Saved successfully"
@@ -2918,7 +2938,7 @@ msgstr "Saved successfully"
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/site/site_add/SiteAdd.vue:37
 #: src/views/site/site_edit/SiteEdit.vue:152
-#: src/views/stream/StreamEdit.vue:139
+#: src/views/stream/StreamEdit.vue:140
 msgid "Saved successfully"
 msgstr "Saved successfully"
 
@@ -3022,11 +3042,6 @@ msgstr ""
 msgid "Single Directive"
 msgstr "Single Directive"
 
-#: src/routes/modules/sites.ts:34
-#: src/views/site/site_category/SiteCategory.vue:10
-msgid "Site Categories"
-msgstr ""
-
 #: src/views/site/site_add/SiteAdd.vue:147
 #, fuzzy
 msgid "Site Config Created Successfully"
@@ -3128,9 +3143,9 @@ msgstr ""
 msgid "SSO Login"
 msgstr "Login"
 
-#: src/views/environment/BatchUpgrader.vue:164
-#: src/views/environment/BatchUpgrader.vue:214 src/views/system/Upgrade.vue:191
-#: src/views/system/Upgrade.vue:239
+#: src/views/environments/list/BatchUpgrader.vue:164
+#: src/views/environments/list/BatchUpgrader.vue:214
+#: src/views/system/Upgrade.vue:191 src/views/system/Upgrade.vue:239
 #, fuzzy
 msgid "Stable"
 msgstr "Enabled"
@@ -3142,8 +3157,8 @@ msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:65
 #: src/views/certificate/CertificateList/certColumns.tsx:68
-#: src/views/environment/envColumns.tsx:44
-#: src/views/site/site_list/columns.tsx:42 src/views/stream/StreamList.vue:22
+#: src/views/environments/list/envColumns.tsx:44
+#: src/views/site/site_list/columns.tsx:42 src/views/stream/StreamList.vue:44
 msgid "Status"
 msgstr "Status"
 
@@ -3212,7 +3227,7 @@ msgid "Switch to light theme"
 msgstr ""
 
 #: src/views/config/components/Rename.vue:79
-#: src/views/stream/components/RightSettings.vue:92
+#: src/views/stream/components/RightSettings.vue:105
 msgid "Sync"
 msgstr ""
 
@@ -3221,52 +3236,54 @@ msgstr ""
 msgid "Sync Certificate"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:10
+#: src/components/Notification/notifications.ts:16
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:14
+#: src/components/Notification/notifications.ts:20
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:9 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:15 src/language/constants.ts:39
 #, fuzzy
 msgid "Sync Certificate Error"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:13 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:19 src/language/constants.ts:38
 #, fuzzy
 msgid "Sync Certificate Success"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:20
+#: src/components/Notification/notifications.ts:26
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:24
+#: src/components/Notification/notifications.ts:30
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "Saved successfully"
 
-#: src/components/Notification/notifications.ts:19 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:25 src/language/constants.ts:45
 #, fuzzy
 msgid "Sync Config Error"
 msgstr "Certificate is valid"
 
-#: src/components/Notification/notifications.ts:23 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:29 src/language/constants.ts:44
 #, fuzzy
 msgid "Sync Config Success"
 msgstr "Certificate is valid"
 
-#: src/views/site/site_category/SiteCategory.vue:18
+#: src/views/environments/group/EnvGroup.vue:18
 msgid "Sync Nodes"
 msgstr ""
 
 #: src/views/site/site_edit/RightSettings.vue:113
 #: src/views/site/site_edit/RightSettings.vue:126
+#: src/views/stream/components/RightSettings.vue:111
+#: src/views/stream/components/RightSettings.vue:124
 #, fuzzy
 msgid "Sync strategy"
 msgstr "Certificate is valid"
@@ -3277,6 +3294,7 @@ msgid "Sync to"
 msgstr "Certificate is valid"
 
 #: src/views/site/site_edit/RightSettings.vue:110
+#: src/views/stream/components/RightSettings.vue:108
 msgid "Synchronization"
 msgstr ""
 
@@ -3477,7 +3495,7 @@ msgid ""
 "after the restoration is complete."
 msgstr ""
 
-#: src/views/environment/BatchUpgrader.vue:182
+#: src/views/environments/list/BatchUpgrader.vue:182
 #, fuzzy
 msgid ""
 "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
@@ -3554,7 +3572,7 @@ msgid "Two-factor authentication required"
 msgstr ""
 
 #: src/views/certificate/CertificateList/certColumns.tsx:25
-#: src/views/nginx_log/NginxLogList.vue:20
+#: src/views/nginx_log/NginxLogList.vue:21
 #: src/views/notification/notificationColumns.tsx:9
 msgid "Type"
 msgstr ""
@@ -3571,12 +3589,12 @@ msgstr "Saved successfully"
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
 #: src/views/config/configColumns.tsx:34 src/views/config/ConfigEditor.vue:276
-#: src/views/environment/envColumns.tsx:90
-#: src/views/site/site_category/columns.ts:22
+#: src/views/environments/group/columns.ts:22
+#: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:100
 #: src/views/site/site_list/columns.tsx:69
-#: src/views/stream/components/RightSettings.vue:85
-#: src/views/stream/StreamList.vue:42 src/views/user/userColumns.tsx:54
+#: src/views/stream/components/RightSettings.vue:98
+#: src/views/stream/StreamList.vue:64 src/views/user/userColumns.tsx:54
 msgid "Updated at"
 msgstr "Updated at"
 
@@ -3585,12 +3603,13 @@ msgstr "Updated at"
 msgid "Updated successfully"
 msgstr "Saved successfully"
 
-#: src/routes/modules/system.ts:40 src/views/environment/Environment.vue:66
+#: src/routes/modules/system.ts:33
+#: src/views/environments/list/Environment.vue:66
 #: src/views/system/Upgrade.vue:143 src/views/system/Upgrade.vue:226
 msgid "Upgrade"
 msgstr ""
 
-#: src/views/environment/BatchUpgrader.vue:137
+#: src/views/environments/list/BatchUpgrader.vue:137
 #, fuzzy
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr "Saved successfully"
@@ -3600,7 +3619,8 @@ msgstr "Saved successfully"
 msgid "Upgraded successfully"
 msgstr "Saved successfully"
 
-#: src/views/environment/BatchUpgrader.vue:88 src/views/system/Upgrade.vue:77
+#: src/views/environments/list/BatchUpgrader.vue:88
+#: src/views/system/Upgrade.vue:77
 msgid "Upgrading Nginx UI, please wait..."
 msgstr ""
 
@@ -3612,7 +3632,7 @@ msgstr ""
 msgid "Uptime:"
 msgstr "Uptime:"
 
-#: src/views/environment/envColumns.tsx:19
+#: src/views/environments/list/envColumns.tsx:19
 msgid "URL"
 msgstr ""
 
@@ -3658,12 +3678,12 @@ msgstr "Invalid E-mail!"
 msgid "Verify Backup File Integrity"
 msgstr ""
 
-#: src/views/environment/envColumns.tsx:31
+#: src/views/environments/list/envColumns.tsx:31
 msgid "Version"
 msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:488
-#: src/views/nginx_log/NginxLogList.vue:143
+#: src/views/nginx_log/NginxLogList.vue:145
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:103
 #, fuzzy
 msgid "View"
@@ -3739,7 +3759,13 @@ msgstr ""
 #: src/views/site/site_edit/RightSettings.vue:116
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
-"site category and the nodes selected below will be synchronized."
+"environment group and the nodes selected below will be synchronized."
+msgstr ""
+
+#: src/views/stream/components/RightSettings.vue:114
+msgid ""
+"When you enable/disable, delete, or save this stream, the nodes set in the "
+"environment group and the nodes selected below will be synchronized."
 msgstr ""
 
 #: src/views/preference/components/RecoveryCodes.vue:140

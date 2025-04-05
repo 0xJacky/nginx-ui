@@ -1,9 +1,9 @@
 <script setup lang="tsx">
+import type { EnvGroup } from '@/api/env_group'
 import type { Site } from '@/api/site'
-import type { SiteCategory } from '@/api/site_category'
 import type { Column } from '@/components/StdDesign/types'
+import env_group from '@/api/env_group'
 import site from '@/api/site'
-import site_category from '@/api/site_category'
 import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import InspectConfig from '@/views/config/InspectConfig.vue'
@@ -17,8 +17,8 @@ const router = useRouter()
 const table = ref()
 const inspect_config = ref()
 
-const siteCategoryId = ref(Number.parseInt(route.query.site_category_id as string) || 0)
-const siteCategories = ref([]) as Ref<SiteCategory[]>
+const envGroupId = ref(Number.parseInt(route.query.env_group_id as string) || 0)
+const envGroups = ref([]) as Ref<EnvGroup[]>
 
 watch(route, () => {
   inspect_config.value?.test()
@@ -27,10 +27,10 @@ watch(route, () => {
 onMounted(async () => {
   while (true) {
     try {
-      const { data, pagination } = await site_category.get_list()
+      const { data, pagination } = await env_group.get_list()
       if (!data || !pagination)
         return
-      siteCategories.value.push(...data)
+      envGroups.value.push(...data)
       if (data.length < pagination?.per_page) {
         return
       }
@@ -94,9 +94,9 @@ function handleBatchUpdated() {
   <ACard :title="$gettext('Manage Sites')">
     <InspectConfig ref="inspect_config" />
 
-    <ATabs v-model:active-key="siteCategoryId">
+    <ATabs v-model:active-key="envGroupId">
       <ATabPane :key="0" :tab="$gettext('All')" />
-      <ATabPane v-for="c in siteCategories" :key="c.id" :tab="c.name" />
+      <ATabPane v-for="c in envGroups" :key="c.id" :tab="c.name" />
     </ATabs>
 
     <StdTable
@@ -107,7 +107,7 @@ function handleBatchUpdated() {
       disable-delete
       disable-view
       :get-params="{
-        site_category_id: siteCategoryId,
+        env_group_id: envGroupId,
       }"
       :scroll-x="1200"
       @click-edit="(r: string) => router.push({

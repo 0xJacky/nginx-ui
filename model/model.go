@@ -1,9 +1,10 @@
 package model
 
 import (
+	"time"
+
 	"gorm.io/gen"
 	"gorm.io/gorm"
-	"time"
 )
 
 var db *gorm.DB
@@ -31,7 +32,7 @@ func GenerateAllModel() []any {
 		BanIP{},
 		Config{},
 		Passkey{},
-		SiteCategory{},
+		EnvGroup{},
 	}
 }
 

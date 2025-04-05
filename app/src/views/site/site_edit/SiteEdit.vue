@@ -141,7 +141,7 @@ async function save() {
   return site.save(name.value, {
     content: configText.value,
     overwrite: true,
-    site_category_id: data.value.site_category_id,
+    env_group_id: data.value.env_group_id,
     sync_node_ids: data.value.sync_node_ids,
   }).then(r => {
     handleResponse(r)

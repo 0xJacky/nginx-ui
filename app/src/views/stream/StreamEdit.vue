@@ -129,6 +129,7 @@ async function save() {
     name: filename.value || name.value,
     content: configText.value,
     overwrite: true,
+    env_group_id: data.value?.env_group_id,
     sync_node_ids: data.value?.sync_node_ids,
   }).then(r => {
     handleResponse(r)

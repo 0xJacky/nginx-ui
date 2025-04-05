@@ -21,7 +21,7 @@ func GetSiteList(c *gin.Context) {
 	enabled := c.Query("enabled")
 	orderBy := c.Query("sort_by")
 	sort := c.DefaultQuery("order", "desc")
-	querySiteCategoryId := cast.ToUint64(c.Query("site_category_id"))
+	queryEnvGroupId := cast.ToUint64(c.Query("env_group_id"))
 
 	configFiles, err := os.ReadDir(nginx.GetConfPath("sites-available"))
 	if err != nil {
@@ -36,9 +36,9 @@ func GetSiteList(c *gin.Context) {
 	}
 
 	s := query.Site
-	sTx := s.Preload(s.SiteCategory)
-	if querySiteCategoryId != 0 {
-		sTx.Where(s.SiteCategoryID.Eq(querySiteCategoryId))
+	sTx := s.Preload(s.EnvGroup)
+	if queryEnvGroupId != 0 {
+		sTx.Where(s.EnvGroupID.Eq(queryEnvGroupId))
 	}
 	sites, err := sTx.Find()
 	if err != nil {
@@ -76,28 +76,28 @@ func GetSiteList(c *gin.Context) {
 			}
 		}
 		var (
-			siteCategoryId uint64
-			siteCategory   *model.SiteCategory
+			envGroupId uint64
+			envGroup   *model.EnvGroup
 		)
 
 		if site, ok := sitesMap[file.Name()]; ok {
-			siteCategoryId = site.SiteCategoryID
-			siteCategory = site.SiteCategory
+			envGroupId = site.EnvGroupID
+			envGroup = site.EnvGroup
 		}
 
-		// site category filter
-		if querySiteCategoryId != 0 && siteCategoryId != querySiteCategoryId {
+		// env group filter
+		if queryEnvGroupId != 0 && envGroupId != queryEnvGroupId {
 			continue
 		}
 
 		configs = append(configs, config.Config{
-			Name:           file.Name(),
-			ModifiedAt:     fileInfo.ModTime(),
-			Size:           fileInfo.Size(),
-			IsDir:          fileInfo.IsDir(),
-			Enabled:        enabledConfigMap[file.Name()],
-			SiteCategoryID: siteCategoryId,
-			SiteCategory:   siteCategory,
+			Name:       file.Name(),
+			ModifiedAt: fileInfo.ModTime(),
+			Size:       fileInfo.Size(),
+			IsDir:      fileInfo.IsDir(),
+			Enabled:    enabledConfigMap[file.Name()],
+			EnvGroupID: envGroupId,
+			EnvGroup:   envGroup,
 		})
 	}
 

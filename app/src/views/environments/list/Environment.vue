@@ -2,9 +2,9 @@
 import environment from '@/api/environment'
 import FooterToolBar from '@/components/FooterToolbar'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
-import BatchUpgrader from '@/views/environment/BatchUpgrader.vue'
-import envColumns from '@/views/environment/envColumns'
 import { message } from 'ant-design-vue'
+import BatchUpgrader from './BatchUpgrader.vue'
+import envColumns from './envColumns'
 
 const route = useRoute()
 const curd = ref()

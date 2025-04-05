@@ -16,4 +16,12 @@ func InitRouter(r *gin.RouterGroup) {
 	}
 	// Node
 	r.GET("node", GetCurrentNode)
+
+	r.GET("env_groups", GetGroupList)
+	r.GET("env_groups/:id", GetGroup)
+	r.POST("env_groups", AddGroup)
+	r.POST("env_groups/:id", ModifyGroup)
+	r.DELETE("env_groups/:id", DeleteGroup)
+	r.POST("env_groups/:id/recover", RecoverGroup)
+	r.POST("env_groups/order", UpdateGroupsOrder)
 }

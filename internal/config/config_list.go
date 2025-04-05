@@ -33,8 +33,8 @@ func (c ConfigsSort) Less(i, j int) bool {
 		flag = boolToInt(c.ConfigList[i].IsDir) > boolToInt(c.ConfigList[j].IsDir)
 	case "enabled":
 		flag = boolToInt(c.ConfigList[i].Enabled) > boolToInt(c.ConfigList[j].Enabled)
-	case "site_category_id":
-		flag = c.ConfigList[i].SiteCategoryID > c.ConfigList[j].SiteCategoryID
+	case "env_group_id":
+		flag = c.ConfigList[i].EnvGroupID > c.ConfigList[j].EnvGroupID
 	}
 
 	if c.Order == "asc" {

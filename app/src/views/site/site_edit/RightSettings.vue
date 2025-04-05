@@ -3,14 +3,14 @@ import type { ChatComplicationMessage } from '@/api/openai'
 import type { Site } from '@/api/site'
 import type { CheckedType } from '@/types'
 import type { Ref } from 'vue'
+import envGroup from '@/api/env_group'
 import site from '@/api/site'
-import site_category from '@/api/site_category'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 import StdSelector from '@/components/StdDesign/StdDataEntry/components/StdSelector.vue'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
-import siteCategoryColumns from '@/views/site/site_category/columns'
+import envGroupColumns from '@/views/environments/group/columns'
 import ConfigName from '@/views/site/site_edit/components/ConfigName.vue'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { message, Modal } from 'ant-design-vue'
@@ -88,11 +88,11 @@ function onChangeEnabled(checked: CheckedType) {
           <AFormItem :label="$gettext('Name')">
             <ConfigName v-if="name" :name />
           </AFormItem>
-          <AFormItem :label="$gettext('Category')">
+          <AFormItem :label="$gettext('Environment Group')">
             <StdSelector
-              v-model:selected-key="data.site_category_id"
-              :api="site_category"
-              :columns="siteCategoryColumns"
+              v-model:selected-key="data.env_group_id"
+              :api="envGroup"
+              :columns="envGroupColumns"
               record-value-index="name"
               selection-type="radio"
             />
@@ -114,7 +114,7 @@ function onChangeEnabled(checked: CheckedType) {
             <template #content>
               <div class="max-w-200px mb-2">
                 {{ $gettext('When you enable/disable, delete, or save this site, '
-                  + 'the nodes set in the site category and the nodes selected below will be synchronized.') }}
+                  + 'the nodes set in the environment group and the nodes selected below will be synchronized.') }}
               </div>
               <div class="max-w-200px">
                 {{ $gettext('Note, if the configuration file include other configurations or certificates, '

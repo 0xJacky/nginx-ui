@@ -15,13 +15,18 @@ import (
 func getSyncNodes(name string) (nodes []*model.Environment) {
 	configFilePath := nginx.GetConfPath("streams-available", name)
 	s := query.Stream
-	stream, err := s.Where(s.Path.Eq(configFilePath)).First()
+	stream, err := s.Where(s.Path.Eq(configFilePath)).
+		Preload(s.EnvGroup).First()
 	if err != nil {
 		logger.Error(err)
 		return
 	}
 
 	syncNodeIds := stream.SyncNodeIDs
+	// inherit sync node ids from site category
+	if stream.EnvGroup != nil {
+		syncNodeIds = append(syncNodeIds, stream.EnvGroup.SyncNodeIds...)
+	}
 
 	e := query.Environment
 	nodes, err = e.Where(e.ID.In(syncNodeIds...)).Find()

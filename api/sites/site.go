@@ -114,17 +114,17 @@ func SaveSite(c *gin.Context) {
 	name := c.Param("name")
 
 	var json struct {
-		Content        string   `json:"content" binding:"required"`
-		SiteCategoryID uint64   `json:"site_category_id"`
-		SyncNodeIDs    []uint64 `json:"sync_node_ids"`
-		Overwrite      bool     `json:"overwrite"`
+		Content     string   `json:"content" binding:"required"`
+		EnvGroupID  uint64   `json:"env_group_id"`
+		SyncNodeIDs []uint64 `json:"sync_node_ids"`
+		Overwrite   bool     `json:"overwrite"`
 	}
 
 	if !cosy.BindAndValid(c, &json) {
 		return
 	}
 
-	err := site.Save(name, json.Content, json.Overwrite, json.SiteCategoryID, json.SyncNodeIDs)
+	err := site.Save(name, json.Content, json.Overwrite, json.EnvGroupID, json.SyncNodeIDs)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -191,7 +191,7 @@ func DeleteSite(c *gin.Context) {
 
 func BatchUpdateSites(c *gin.Context) {
 	cosy.Core[model.Site](c).SetValidRules(gin.H{
-		"site_category_id": "required",
+		"env_group_id": "required",
 	}).SetItemKey("path").
 		BeforeExecuteHook(func(ctx *cosy.Ctx[model.Site]) {
 			effectedPath := make([]string, len(ctx.BatchEffectedIDs))
