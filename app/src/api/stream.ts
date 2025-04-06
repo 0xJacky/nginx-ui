@@ -21,23 +21,23 @@ export interface Stream {
 class StreamCurd extends Curd<Stream> {
   // eslint-disable-next-line ts/no-explicit-any
   enable(name: string, config?: any) {
-    return http.post(`${this.baseUrl}/${name}/enable`, undefined, config)
+    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/enable`, undefined, config)
   }
 
   disable(name: string) {
-    return http.post(`${this.baseUrl}/${name}/disable`)
+    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/disable`)
   }
 
   duplicate(name: string, data: { name: string }): Promise<{ dst: string }> {
-    return http.post(`${this.baseUrl}/${name}/duplicate`, data)
+    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/duplicate`, data)
   }
 
   advance_mode(name: string, data: { advanced: boolean }) {
-    return http.post(`${this.baseUrl}/${name}/advance`, data)
+    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/advance`, data)
   }
 
   rename(name: string, newName: string) {
-    return http.post(`${this.baseUrl}/${name}/rename`, { new_name: newName })
+    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/rename`, { new_name: newName })
   }
 }
 

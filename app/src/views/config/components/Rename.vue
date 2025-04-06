@@ -37,9 +37,11 @@ function ok() {
     const otpModal = use2FAModal()
 
     otpModal.open().then(() => {
-      config.rename(basePath, orig_name, new_name, sync_node_ids).then(() => {
+      // Note: API will handle URL encoding of path segments
+      config.rename(basePath, orig_name, new_name, sync_node_ids).then(r => {
         visible.value = false
         message.success($gettext('Rename successfully'))
+
         emit('renamed')
       })
     })

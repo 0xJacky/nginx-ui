@@ -2,6 +2,7 @@ package config
 
 import (
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"time"
@@ -28,8 +29,22 @@ func AddConfig(c *gin.Context) {
 
 	name := json.Name
 	content := json.Content
-	dir := nginx.GetConfPath(json.BaseDir)
-	path := filepath.Join(dir, json.Name)
+
+	// Decode paths from URL encoding
+	decodedBaseDir, err := url.QueryUnescape(json.BaseDir)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	decodedName, err := url.QueryUnescape(name)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	dir := nginx.GetConfPath(decodedBaseDir)
+	path := filepath.Join(dir, decodedName)
 	if !helper.IsUnderDirectory(path, nginx.GetConfPath()) {
 		c.JSON(http.StatusForbidden, gin.H{
 			"message": "filepath is not under the nginx conf path",
@@ -53,7 +68,7 @@ func AddConfig(c *gin.Context) {
 		}
 	}
 
-	err := os.WriteFile(path, []byte(content), 0644)
+	err = os.WriteFile(path, []byte(content), 0644)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

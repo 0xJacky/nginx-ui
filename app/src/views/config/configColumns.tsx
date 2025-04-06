@@ -22,10 +22,12 @@ const configColumns = [{
       )
     }
 
+    const displayName = args.text || ''
+
     return (
       <div class="flex">
         {renderIcon(args.record.is_dir)}
-        {args.text}
+        {displayName}
       </div>
     )
   },

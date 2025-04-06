@@ -2,6 +2,7 @@ package config
 
 import (
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 
@@ -22,6 +23,19 @@ type APIConfigResp struct {
 
 func GetConfig(c *gin.Context) {
 	relativePath := c.Param("path")
+
+	// Ensure the path is correctly decoded - handle cases where it might be encoded multiple times
+	decodedPath := relativePath
+	var err error
+	// Try decoding until the path no longer changes
+	for {
+		newDecodedPath, decodeErr := url.PathUnescape(decodedPath)
+		if decodeErr != nil || newDecodedPath == decodedPath {
+			break
+		}
+		decodedPath = newDecodedPath
+	}
+	relativePath = decodedPath
 
 	absPath := nginx.GetConfPath(relativePath)
 	if !helper.IsUnderDirectory(absPath, nginx.GetConfPath()) {

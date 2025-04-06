@@ -26,7 +26,7 @@ function save() {
     modify.value = false
     message.success($gettext('Renamed successfully'))
     router.push({
-      path: `/sites/${buffer.value}`,
+      path: `/sites/${encodeURIComponent(buffer.value)}`,
     })
   }).finally(() => {
     loading.value = false

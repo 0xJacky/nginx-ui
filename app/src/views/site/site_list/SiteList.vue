@@ -166,7 +166,7 @@ function handleBatchUpdated() {
       }"
       :scroll-x="1600"
       @click-edit="(r: string) => router.push({
-        path: `/sites/${r}`,
+        path: `/sites/${encodeURIComponent(r)}`,
       })"
       @click-batch-modify="handleClickBatchEdit"
     >

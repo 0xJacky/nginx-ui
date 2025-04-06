@@ -2,6 +2,7 @@ package config
 
 import (
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 
@@ -16,7 +17,31 @@ func GetConfigs(c *gin.Context) {
 	name := c.Query("name")
 	sortBy := c.Query("sort_by")
 	order := c.DefaultQuery("order", "desc")
-	dir := c.DefaultQuery("dir", "/")
+
+	// Get directory parameter
+	encodedDir := c.DefaultQuery("dir", "/")
+
+	// Handle cases where the path might be encoded multiple times
+	dir := encodedDir
+	// Try decoding until the path no longer changes
+	for {
+		newDecodedDir, decodeErr := url.QueryUnescape(dir)
+		if decodeErr != nil {
+			cosy.ErrHandler(c, decodeErr)
+			return
+		}
+
+		if newDecodedDir == dir {
+			break
+		}
+		dir = newDecodedDir
+	}
+
+	// Ensure the directory path format is correct
+	dir = strings.TrimSpace(dir)
+	if dir != "/" && strings.HasSuffix(dir, "/") {
+		dir = strings.TrimSuffix(dir, "/")
+	}
 
 	configFiles, err := os.ReadDir(nginx.GetConfPath(dir))
 	if err != nil {

@@ -29,7 +29,10 @@ function save() {
       modify.value = false
       message.success($gettext('Renamed successfully'))
       router.push({
-        path: `/config/${r.path}/edit`,
+        path: `/config/${encodeURIComponent(buffer.value)}/edit`,
+        query: {
+          basePath: encodeURIComponent(props.dir!),
+        },
       })
     }).finally(() => {
       loading.value = false

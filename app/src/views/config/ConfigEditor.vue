@@ -24,10 +24,8 @@ const router = useRouter()
 
 // eslint-disable-next-line vue/require-typed-ref
 const refForm = ref()
-const refInspectConfig = useTemplateRef('refInspectConfig')
 const origName = ref('')
 const addMode = computed(() => !route.params.name)
-const errors = ref({})
 
 const showHistory = ref(false)
 const basePath = computed(() => {
@@ -52,11 +50,15 @@ const activeKey = ref(['basic', 'deploy', 'chatgpt'])
 const modifiedAt = ref('')
 const nginxConfigBase = ref('')
 
-const newPath = computed(() => [nginxConfigBase.value, basePath.value, data.value.name]
-  .filter(v => v)
-  .join('/'))
+const newPath = computed(() => {
+  // 组合路径后解码显示
+  const path = [nginxConfigBase.value, basePath.value, data.value.name]
+    .filter(v => v)
+    .join('/')
+  return path
+})
 
-const relativePath = computed(() => (route.params.name as string[]).join('/'))
+const relativePath = computed(() => (basePath.value ? `${basePath.value}/${route.params.name}` : route.params.name) as string)
 const breadcrumbs = useBreadcrumbs()
 
 async function init() {
@@ -75,20 +77,26 @@ async function init() {
         .split('/')
         .filter(v => v)
 
-      const path = filteredPath.map((v, k) => {
-        let dir = v
+      // Build accumulated path to maintain original encoding state
+      let accumulatedPath = ''
+      const path = filteredPath.map((segment, index) => {
+        // Decode for display
+        const decodedSegment = decodeURIComponent(segment)
 
-        if (k > 0) {
-          dir = filteredPath.slice(0, k).join('/')
-          dir += `/${v}`
+        // Accumulated path keeps original encoding state
+        if (index === 0) {
+          accumulatedPath = segment
+        }
+        else {
+          accumulatedPath = `${accumulatedPath}/${segment}`
         }
 
         return {
           name: 'Manage Configs',
-          translatedName: () => v,
+          translatedName: () => decodedSegment,
           path: '/config',
           query: {
-            dir,
+            dir: accumulatedPath,
           },
           hasChildren: false,
         }
@@ -116,20 +124,34 @@ async function init() {
     historyChatgptRecord.value = []
     data.value.filepath = ''
 
-    const path = basePath.value
+    const pathSegments = basePath.value
       .split('/')
       .filter(v => v)
-      .map(v => {
-        return {
-          name: 'Manage Configs',
-          translatedName: () => v,
-          path: '/config',
-          query: {
-            dir: v,
-          },
-          hasChildren: false,
-        }
-      })
+
+    // Build accumulated path
+    let accumulatedPath = ''
+    const path = pathSegments.map((segment, index) => {
+      // Decode for display
+      const decodedSegment = decodeURIComponent(segment)
+
+      // Accumulated path keeps original encoding state
+      if (index === 0) {
+        accumulatedPath = segment
+      }
+      else {
+        accumulatedPath = `${accumulatedPath}/${segment}`
+      }
+
+      return {
+        name: 'Manage Configs',
+        translatedName: () => decodedSegment,
+        path: '/config',
+        query: {
+          dir: accumulatedPath,
+        },
+        hasChildren: false,
+      }
+    })
 
     breadcrumbs.value = [{
       name: 'Dashboard',
@@ -167,12 +189,18 @@ function save() {
     }).then(r => {
       data.value.content = r.content
       message.success($gettext('Saved successfully'))
-      router.push(`/config/${r.filepath.replaceAll(`${nginxConfigBase.value}/`, '')}/edit`)
-    }).catch(e => {
-      errors.value = e.errors
-      message.error($gettext('Save error %{msg}', { msg: e.message ?? '' }))
-    }).finally(() => {
-      refInspectConfig.value?.test()
+
+      if (addMode.value) {
+        router.push({
+          path: `/config/${data.value.name}/edit`,
+          query: {
+            basePath: basePath.value,
+          },
+        })
+      }
+      else {
+        data.value = r
+      }
     })
   })
 }
@@ -187,10 +215,13 @@ function formatCode() {
 }
 
 function goBack() {
+  // Keep original path with encoding state
+  const encodedPath = basePath.value || ''
+
   router.push({
     path: '/config',
     query: {
-      dir: basePath.value || undefined,
+      dir: encodedPath || undefined,
     },
   })
 }
@@ -223,7 +254,6 @@ function openHistory() {
 
         <InspectConfig
           v-show="!addMode"
-          ref="refInspectConfig"
         />
         <CodeEditor v-model:content="data.content" />
         <FooterToolBar>
@@ -281,14 +311,14 @@ function openHistory() {
                 v-if="!addMode"
                 :label="$gettext('Path')"
               >
-                {{ data.filepath }}
+                {{ decodeURIComponent(data.filepath) }}
               </AFormItem>
               <AFormItem
                 v-show="data.name !== origName"
                 :label="addMode ? $gettext('New Path') : $gettext('Changed Path')"
                 required
               >
-                {{ newPath }}
+                {{ decodeURIComponent(newPath) }}
               </AFormItem>
               <AFormItem
                 v-if="!addMode"

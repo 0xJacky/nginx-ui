@@ -44,12 +44,12 @@ class Curd<T> {
 
   // eslint-disable-next-line ts/no-explicit-any
   _get(id: any = null, params: any = {}): Promise<T> {
-    return http.get(this.baseUrl + (id ? `/${id}` : ''), { params })
+    return http.get(this.baseUrl + (id ? `/${encodeURIComponent(id)}` : ''), { params })
   }
 
   // eslint-disable-next-line ts/no-explicit-any
   _save(id: any = null, data: any = {}, config: any = undefined): Promise<T> {
-    return http.post(this.baseUrl + (id ? `/${id}` : ''), data, config)
+    return http.post(this.baseUrl + (id ? `/${encodeURIComponent(id)}` : ''), data, config)
   }
 
   // eslint-disable-next-line ts/no-explicit-any
@@ -69,12 +69,12 @@ class Curd<T> {
 
   // eslint-disable-next-line ts/no-explicit-any
   _destroy(id: any = null, params: any = {}) {
-    return http.delete(`${this.baseUrl}/${id}`, { params })
+    return http.delete(`${this.baseUrl}/${encodeURIComponent(id)}`, { params })
   }
 
   // eslint-disable-next-line ts/no-explicit-any
   _recover(id: any = null) {
-    return http.patch(`${this.baseUrl}/${id}`)
+    return http.patch(`${this.baseUrl}/${encodeURIComponent(id)}`)
   }
 
   _update_order(data: { target_id: number, direction: number, affected_ids: number[] }) {

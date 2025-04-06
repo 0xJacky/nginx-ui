@@ -2,6 +2,7 @@ package config
 
 import (
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -32,8 +33,28 @@ func Rename(c *gin.Context) {
 		})
 		return
 	}
-	origFullPath := nginx.GetConfPath(json.BasePath, json.OrigName)
-	newFullPath := nginx.GetConfPath(json.BasePath, json.NewName)
+
+	// Decode paths from URL encoding
+	decodedBasePath, err := url.QueryUnescape(json.BasePath)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	decodedOrigName, err := url.QueryUnescape(json.OrigName)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	decodedNewName, err := url.QueryUnescape(json.NewName)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	origFullPath := nginx.GetConfPath(decodedBasePath, decodedOrigName)
+	newFullPath := nginx.GetConfPath(decodedBasePath, decodedNewName)
 	if !helper.IsUnderDirectory(origFullPath, nginx.GetConfPath()) ||
 		!helper.IsUnderDirectory(newFullPath, nginx.GetConfPath()) {
 		c.JSON(http.StatusForbidden, gin.H{

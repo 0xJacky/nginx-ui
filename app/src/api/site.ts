@@ -35,7 +35,7 @@ export interface AutoCertRequest {
 class SiteCurd extends Curd<Site> {
   // eslint-disable-next-line ts/no-explicit-any
   enable(name: string, config?: any) {
-    return http.post(`${this.baseUrl}/${name}/enable`, undefined, config)
+    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/enable`, undefined, config)
   }
 
   disable(name: string) {
@@ -43,7 +43,7 @@ class SiteCurd extends Curd<Site> {
   }
 
   rename(oldName: string, newName: string) {
-    return http.post(`${this.baseUrl}/${oldName}/rename`, { new_name: newName })
+    return http.post(`${this.baseUrl}/${encodeURIComponent(oldName)}/rename`, { new_name: newName })
   }
 
   get_default_template() {
@@ -51,19 +51,19 @@ class SiteCurd extends Curd<Site> {
   }
 
   add_auto_cert(domain: string, data: AutoCertRequest) {
-    return http.post(`auto_cert/${domain}`, data)
+    return http.post(`auto_cert/${encodeURIComponent(domain)}`, data)
   }
 
   remove_auto_cert(domain: string) {
-    return http.delete(`auto_cert/${domain}`)
+    return http.delete(`auto_cert/${encodeURIComponent(domain)}`)
   }
 
   duplicate(name: string, data: { name: string }): Promise<{ dst: string }> {
-    return http.post(`${this.baseUrl}/${name}/duplicate`, data)
+    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/duplicate`, data)
   }
 
   advance_mode(name: string, data: { advanced: boolean }) {
-    return http.post(`${this.baseUrl}/${name}/advance`, data)
+    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/advance`, data)
   }
 }
 

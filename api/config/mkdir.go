@@ -2,6 +2,7 @@ package config
 
 import (
 	"net/http"
+	"net/url"
 	"os"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -18,7 +19,21 @@ func Mkdir(c *gin.Context) {
 	if !cosy.BindAndValid(c, &json) {
 		return
 	}
-	fullPath := nginx.GetConfPath(json.BasePath, json.FolderName)
+
+	// Ensure paths are properly URL unescaped
+	decodedBasePath, err := url.QueryUnescape(json.BasePath)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	decodedFolderName, err := url.QueryUnescape(json.FolderName)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	fullPath := nginx.GetConfPath(decodedBasePath, decodedFolderName)
 	if !helper.IsUnderDirectory(fullPath, nginx.GetConfPath()) {
 		c.JSON(http.StatusForbidden, gin.H{
 			"message": "You are not allowed to create a folder " +
@@ -26,7 +41,7 @@ func Mkdir(c *gin.Context) {
 		})
 		return
 	}
-	err := os.Mkdir(fullPath, 0755)
+	err = os.Mkdir(fullPath, 0755)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

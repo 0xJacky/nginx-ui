@@ -19,7 +19,7 @@ import { message } from 'ant-design-vue'
 const route = useRoute()
 const router = useRouter()
 
-const name = computed(() => route.params?.name?.toString() ?? '')
+const name = computed(() => decodeURIComponent(route.params?.name?.toString() ?? ''))
 
 const ngx_config: NgxConfig = reactive({
   name: '',
@@ -151,7 +151,7 @@ async function save() {
   }).then(r => {
     handleResponse(r)
     router.push({
-      path: `/sites/${filename.value}`,
+      path: `/sites/${encodeURIComponent(filename.value)}`,
       query: route.query,
     })
     message.success($gettext('Saved successfully'))
