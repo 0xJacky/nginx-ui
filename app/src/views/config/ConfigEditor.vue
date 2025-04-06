@@ -6,6 +6,7 @@ import config from '@/api/config'
 import ngx from '@/api/ngx'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
+import { ConfigHistory } from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
@@ -13,7 +14,7 @@ import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import ConfigName from '@/views/config/components/ConfigName.vue'
 import InspectConfig from '@/views/config/InspectConfig.vue'
-import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { HistoryOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import _ from 'lodash'
 
@@ -28,6 +29,7 @@ const origName = ref('')
 const addMode = computed(() => !route.params.name)
 const errors = ref({})
 
+const showHistory = ref(false)
 const basePath = computed(() => {
   if (route.query.basePath)
     return _.trim(route?.query?.basePath?.toString(), '/')
@@ -192,6 +194,10 @@ function goBack() {
     },
   })
 }
+
+function openHistory() {
+  showHistory.value = true
+}
 </script>
 
 <template>
@@ -202,6 +208,19 @@ function goBack() {
       :md="18"
     >
       <ACard :title="addMode ? $gettext('Add Configuration') : $gettext('Edit Configuration')">
+        <template #extra>
+          <AButton
+            v-if="!addMode && data.filepath"
+            type="link"
+            @click="openHistory"
+          >
+            <template #icon>
+              <HistoryOutlined />
+            </template>
+            {{ $gettext('History') }}
+          </AButton>
+        </template>
+
         <InspectConfig
           v-show="!addMode"
           ref="refInspectConfig"
@@ -315,6 +334,12 @@ function goBack() {
         </ACollapse>
       </ACard>
     </ACol>
+
+    <ConfigHistory
+      v-model:visible="showHistory"
+      :filepath="data.filepath"
+      :current-content="data.content"
+    />
   </ARow>
 </template>
 

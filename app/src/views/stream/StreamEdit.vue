@@ -9,9 +9,11 @@ import config from '@/api/config'
 import ngx from '@/api/ngx'
 import stream from '@/api/stream'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
+import { ConfigHistory } from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import NgxConfigEditor from '@/views/site/ngx_conf/NgxConfigEditor.vue'
 import RightSettings from '@/views/stream/components/RightSettings.vue'
+import { HistoryOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 
 const route = useRoute()
@@ -38,6 +40,8 @@ const filepath = ref('')
 const parseErrorStatus = ref(false)
 const parseErrorMessage = ref('')
 const data = ref<Stream>({} as Stream)
+
+const showHistory = ref(false)
 
 init()
 
@@ -144,6 +148,10 @@ async function save() {
   })
 }
 
+function openHistory() {
+  showHistory.value = true
+}
+
 provide('save_config', save)
 provide('configText', configText)
 provide('ngx_config', ngxConfig)
@@ -179,22 +187,34 @@ provide('data', data)
           </ATag>
         </template>
         <template #extra>
-          <div class="mode-switch">
-            <div class="switch">
-              <ASwitch
-                size="small"
-                :disabled="parseErrorStatus"
-                :checked="advanceMode"
-                @change="onModeChange"
-              />
+          <ASpace>
+            <AButton
+              v-if="filepath"
+              type="link"
+              @click="openHistory"
+            >
+              <template #icon>
+                <HistoryOutlined />
+              </template>
+              {{ $gettext('History') }}
+            </AButton>
+            <div class="mode-switch">
+              <div class="switch">
+                <ASwitch
+                  size="small"
+                  :disabled="parseErrorStatus"
+                  :checked="advanceMode"
+                  @change="onModeChange"
+                />
+              </div>
+              <template v-if="advanceMode">
+                <div>{{ $gettext('Advance Mode') }}</div>
+              </template>
+              <template v-else>
+                <div>{{ $gettext('Basic Mode') }}</div>
+              </template>
             </div>
-            <template v-if="advanceMode">
-              <div>{{ $gettext('Advance Mode') }}</div>
-            </template>
-            <template v-else>
-              <div>{{ $gettext('Basic Mode') }}</div>
-            </template>
-          </div>
+          </ASpace>
         </template>
 
         <Transition name="slide-fade">
@@ -256,16 +276,19 @@ provide('data', data)
         </AButton>
       </ASpace>
     </FooterToolBar>
+
+    <ConfigHistory
+      v-model:visible="showHistory"
+      :filepath="filepath"
+      :current-content="configText"
+    />
   </ARow>
 </template>
 
-<style lang="less">
-
-</style>
-
 <style lang="less" scoped>
 .col-right {
-  position: relative;
+  position: sticky;
+  top: 78px;
 }
 
 .ant-card {

@@ -77,6 +77,8 @@ declare module 'vue' {
     ChartUsageProgressLine: typeof import('./src/components/Chart/UsageProgressLine.vue')['default']
     ChatGPTChatGPT: typeof import('./src/components/ChatGPT/ChatGPT.vue')['default']
     CodeEditorCodeEditor: typeof import('./src/components/CodeEditor/CodeEditor.vue')['default']
+    ConfigHistoryConfigHistory: typeof import('./src/components/ConfigHistory/ConfigHistory.vue')['default']
+    ConfigHistoryDiffViewer: typeof import('./src/components/ConfigHistory/DiffViewer.vue')['default']
     EnvGroupTabsEnvGroupTabs: typeof import('./src/components/EnvGroupTabs/EnvGroupTabs.vue')['default']
     EnvIndicatorEnvIndicator: typeof import('./src/components/EnvIndicator/EnvIndicator.vue')['default']
     FooterToolbarFooterToolBar: typeof import('./src/components/FooterToolbar/FooterToolBar.vue')['default']

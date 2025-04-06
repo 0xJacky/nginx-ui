@@ -18,4 +18,6 @@ func InitRouter(r *gin.RouterGroup) {
 		o.POST("config_mkdir", Mkdir)
 		o.POST("config_rename", Rename)
 	}
+
+	r.GET("config_histories", GetConfigHistory)
 }

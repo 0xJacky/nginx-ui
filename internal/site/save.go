@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"sync"
 
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -21,6 +22,11 @@ func Save(name string, content string, overwrite bool, envGroupId uint64, syncNo
 	path := nginx.GetConfPath("sites-available", name)
 	if !overwrite && helper.FileExists(path) {
 		return ErrDstFileExists
+	}
+
+	err = config.CheckAndCreateHistory(path, content)
+	if err != nil {
+		return
 	}
 
 	err = os.WriteFile(path, []byte(content), 0644)
