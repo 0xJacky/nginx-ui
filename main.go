@@ -75,12 +75,14 @@ func Program(confPath string) func(state overseer.State) {
 				GetCertificate: func(clientHello *tls.ClientHelloInfo) (*tls.Certificate, error) {
 					return cert.GetServerTLSCertificate()
 				},
+				MinVersion: tls.VersionTLS12,
 			}
 
 			srv.TLSConfig = tlsConfig
 
 			logger.Info("Starting HTTPS server")
-			err = srv.ServeTLS(state.Listener, "", "")
+			tlsListener := tls.NewListener(state.Listener, tlsConfig)
+			err = srv.Serve(tlsListener)
 		} else {
 			logger.Info("Starting HTTP server")
 			err = srv.Serve(state.Listener)

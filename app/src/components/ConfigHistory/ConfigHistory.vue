@@ -5,8 +5,8 @@ import type { Key } from 'ant-design-vue/es/_util/type'
 import config from '@/api/config'
 import StdPagination from '@/components/StdDesign/StdDataDisplay/StdPagination.vue'
 import { message } from 'ant-design-vue'
+import { defineAsyncComponent } from 'vue'
 import { datetime } from '../StdDesign/StdDataDisplay/StdTableTransformer'
-import DiffViewer from './DiffViewer.vue'
 
 // Define props for the component
 const props = defineProps<{
@@ -16,6 +16,19 @@ const props = defineProps<{
 // Define modal props using defineModel with boolean type
 const visible = defineModel<boolean>('visible')
 const currentContent = defineModel<string>('currentContent')
+
+// Import DiffViewer asynchronously with loading options
+const DiffViewer = defineAsyncComponent({
+  loader: () => import('./DiffViewer.vue'),
+  loadingComponent: {
+    template: '<div class="async-loading"><ASpin /></div>',
+  },
+  delay: 200,
+  timeout: 10000,
+  errorComponent: {
+    template: '<div class="async-error"><AAlert type="error" message="Failed to load component" /></div>',
+  },
+})
 
 const loading = ref(false)
 const records = ref<ConfigBackup[]>([])
@@ -185,5 +198,14 @@ const compareButtonText = computed(() => {
 .actions {
   display: flex;
   gap: 8px;
+}
+
+.async-loading,
+.async-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  min-height: 200px;
 }
 </style>

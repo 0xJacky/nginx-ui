@@ -17,6 +17,9 @@ const emit = defineEmits<{
   (e: 'restore'): void
 }>()
 
+// Import Range class separately to avoid loading the entire ace package
+const Range = ace.Range
+
 // Define modal visibility using defineModel with boolean type
 const visible = defineModel<boolean>('visible')
 // Define currentContent using defineModel
@@ -253,7 +256,7 @@ function compareAndHighlightLines(leftSession: Ace.EditSession, rightSession: Ac
     if (!matchedLeftLines.has(i)) {
       leftSession.addGutterDecoration(i, 'ace_gutter-active-line')
       leftSession.addMarker(
-        new ace.Range(i, 0, i, leftLines[i].length || 1),
+        new Range(i, 0, i, leftLines[i].length || 1),
         'diff-line-deleted',
         'fullLine',
       )
@@ -265,7 +268,7 @@ function compareAndHighlightLines(leftSession: Ace.EditSession, rightSession: Ac
     if (!matchedRightLines.has(j)) {
       rightSession.addGutterDecoration(j, 'ace_gutter-active-line')
       rightSession.addMarker(
-        new ace.Range(j, 0, j, rightLines[j].length || 1),
+        new Range(j, 0, j, rightLines[j].length || 1),
         'diff-line-added',
         'fullLine',
       )
