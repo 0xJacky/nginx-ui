@@ -37,7 +37,7 @@ msgid "ACME User"
 msgstr "Người dùng"
 
 #: src/views/certificate/ACMEUser.vue:95
-#: src/views/certificate/CertificateList/certColumns.tsx:97
+#: src/views/certificate/CertificateList/certColumns.tsx:94
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.tsx:42
 #: src/views/environments/group/columns.ts:43
@@ -45,7 +45,7 @@ msgstr "Người dùng"
 #: src/views/nginx_log/NginxLogList.vue:53
 #: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
-#: src/views/site/site_list/columns.tsx:93 src/views/stream/StreamList.vue:72
+#: src/views/site/site_list/columns.tsx:100 src/views/stream/StreamList.vue:73
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "Hành động"
@@ -56,7 +56,7 @@ msgstr "Hành động"
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/site/ngx_conf/NgxServer.vue:163
 #: src/views/site/ngx_conf/NgxUpstream.vue:154
-#: src/views/stream/StreamList.vue:175
+#: src/views/stream/StreamList.vue:176
 msgid "Add"
 msgstr "Thêm"
 
@@ -65,8 +65,8 @@ msgstr "Thêm"
 msgid "Add a passkey"
 msgstr ""
 
-#: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:144
-#: src/views/config/ConfigEditor.vue:204
+#: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:146
+#: src/views/config/ConfigEditor.vue:210
 #, fuzzy
 msgid "Add Configuration"
 msgstr "Sửa cấu hình"
@@ -84,12 +84,12 @@ msgstr "Thêm Location"
 msgid "Add Site"
 msgstr "Thêm Website"
 
-#: src/views/stream/StreamList.vue:241
+#: src/views/stream/StreamList.vue:242
 #, fuzzy
 msgid "Add Stream"
 msgstr "Thêm Website"
 
-#: src/views/stream/StreamList.vue:156
+#: src/views/stream/StreamList.vue:157
 #, fuzzy
 msgid "Added successfully"
 msgstr "Cập nhật thành công"
@@ -99,8 +99,8 @@ msgstr "Cập nhật thành công"
 msgid "Additional"
 msgstr "Tùy chọn bổ sung"
 
-#: src/views/site/site_edit/SiteEdit.vue:206
-#: src/views/stream/StreamEdit.vue:192
+#: src/views/site/site_edit/SiteEdit.vue:225
+#: src/views/stream/StreamEdit.vue:211
 msgid "Advance Mode"
 msgstr "Nâng cao"
 
@@ -201,8 +201,8 @@ msgstr "Bạn chắc chắn muốn xóa nó "
 msgid "Are you sure you want to delete this item?"
 msgstr "Bạn chắc chắn muốn xóa nó "
 
-#: src/views/site/site_list/SiteList.vue:143
-#: src/views/stream/StreamList.vue:225
+#: src/views/site/site_list/SiteList.vue:200
+#: src/views/stream/StreamList.vue:226
 #, fuzzy
 msgid "Are you sure you want to delete?"
 msgstr "Bạn chắc chắn muốn xóa nó "
@@ -291,10 +291,10 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:255
-#: src/views/config/ConfigEditor.vue:213 src/views/config/ConfigList.vue:106
+#: src/views/config/ConfigEditor.vue:232 src/views/config/ConfigList.vue:106
 #: src/views/config/ConfigList.vue:180 src/views/nginx_log/NginxLog.vue:173
-#: src/views/site/site_edit/SiteEdit.vue:265
-#: src/views/stream/StreamEdit.vue:248
+#: src/views/site/site_edit/SiteEdit.vue:285
+#: src/views/stream/StreamEdit.vue:268
 msgid "Back"
 msgstr "Quay lại"
 
@@ -342,15 +342,15 @@ msgstr ""
 msgid "Base information"
 msgstr "Thông tin"
 
-#: src/views/config/ConfigEditor.vue:241
+#: src/views/config/ConfigEditor.vue:260
 #: src/views/site/site_edit/RightSettings.vue:79
 #: src/views/stream/components/RightSettings.vue:79
 #, fuzzy
 msgid "Basic"
 msgstr "Cơ bản"
 
-#: src/views/site/site_edit/SiteEdit.vue:209
-#: src/views/stream/StreamEdit.vue:195
+#: src/views/site/site_edit/SiteEdit.vue:228
+#: src/views/stream/StreamEdit.vue:214
 msgid "Basic Mode"
 msgstr "Cơ bản"
 
@@ -408,6 +408,11 @@ msgstr "Huỷ"
 #, fuzzy
 msgid "Cannot change initial user password in demo mode"
 msgstr "Cấm thay đổi mật khẩu root trong demo"
+
+#: src/components/ConfigHistory/DiffViewer.vue:49
+#: src/components/ConfigHistory/DiffViewer.vue:66
+msgid "Cannot compare: Missing content"
+msgstr ""
 
 #: src/constants/errors/user.ts:10
 msgid "Cannot remove initial user"
@@ -478,7 +483,7 @@ msgid_plural "Changed Certificates"
 msgstr[0] "Thay đổi chứng chỉ"
 msgstr[1] "Thay đổi chứng chỉ"
 
-#: src/views/config/ConfigEditor.vue:269
+#: src/views/config/ConfigEditor.vue:288
 #, fuzzy
 msgid "Changed Path"
 msgstr "Thay đổi chứng chỉ"
@@ -547,6 +552,10 @@ msgstr ""
 msgid "Click to copy"
 msgstr ""
 
+#: src/components/ConfigHistory/ConfigHistory.vue:156
+msgid "Close"
+msgstr ""
+
 #: src/views/preference/LogrotateSettings.vue:22
 #, fuzzy
 msgid "Command"
@@ -558,6 +567,23 @@ msgstr "Bình luận"
 #: src/views/site/ngx_conf/NgxServer.vue:135
 msgid "Comments"
 msgstr "Bình luận"
+
+#: src/components/ConfigHistory/ConfigHistory.vue:114
+msgid "Compare"
+msgstr ""
+
+#: src/components/ConfigHistory/DiffViewer.vue:349
+#, fuzzy
+msgid "Compare Configurations"
+msgstr "Cấu hình"
+
+#: src/components/ConfigHistory/ConfigHistory.vue:117
+msgid "Compare Selected"
+msgstr ""
+
+#: src/components/ConfigHistory/ConfigHistory.vue:116
+msgid "Compare with Current"
+msgstr ""
 
 #: src/constants/errors/backup.ts:14
 #, fuzzy
@@ -572,6 +598,11 @@ msgstr "Mẫu Cấu hình"
 #: src/views/config/InspectConfig.vue:27
 msgid "Configuration file is test successful"
 msgstr "Tệp cấu hình được kiểm tra thành công"
+
+#: src/components/ConfigHistory/ConfigHistory.vue:125
+#, fuzzy
+msgid "Configuration History"
+msgstr "Cấu hình"
 
 #: src/views/site/site_add/SiteAdd.vue:101
 msgid "Configuration Name"
@@ -667,6 +698,11 @@ msgstr ""
 msgid "Created at"
 msgstr "Ngày tạo"
 
+#: src/components/ConfigHistory/ConfigHistory.vue:42
+#, fuzzy
+msgid "Created At"
+msgstr "Ngày tạo"
+
 #: src/views/config/components/Mkdir.vue:35
 #, fuzzy
 msgid "Created successfully"
@@ -692,6 +728,11 @@ msgstr ""
 msgid "Current account is not enabled TOTP."
 msgstr ""
 
+#: src/components/ConfigHistory/DiffViewer.vue:54
+#, fuzzy
+msgid "Current Content"
+msgstr "Phiên bản hiện tại"
+
 #: src/views/system/Upgrade.vue:165
 msgid "Current Version"
 msgstr "Phiên bản hiện tại"
@@ -707,8 +748,8 @@ msgid ""
 "indicator."
 msgstr ""
 
-#: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:134
-#: src/views/config/ConfigEditor.vue:97 src/views/config/ConfigList.vue:64
+#: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:136
+#: src/views/config/ConfigEditor.vue:99 src/views/config/ConfigList.vue:64
 msgid "Dashboard"
 msgstr "Bảng điều khiển"
 
@@ -729,8 +770,8 @@ msgstr "Mô tả"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
 #: src/views/site/ngx_conf/NgxServer.vue:110
 #: src/views/site/ngx_conf/NgxUpstream.vue:128
-#: src/views/site/site_list/SiteList.vue:152
-#: src/views/stream/StreamList.vue:234
+#: src/views/site/site_list/SiteList.vue:209
+#: src/views/stream/StreamList.vue:235
 msgid "Delete"
 msgstr "Xoá"
 
@@ -769,7 +810,7 @@ msgstr "Triển khai %{conf_name} tới %{node_name} thất bại"
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
-#: src/views/site/site_list/SiteList.vue:68
+#: src/views/site/site_list/SiteList.vue:115
 msgid "Delete site: %{site_name}"
 msgstr "Xoá trang web: %{site_name}"
 
@@ -783,7 +824,7 @@ msgstr "Triển khai %{conf_name} tới %{node_name} thất bại"
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
-#: src/views/stream/StreamList.vue:105
+#: src/views/stream/StreamList.vue:106
 #, fuzzy
 msgid "Delete stream: %{stream_name}"
 msgstr "Xoá trang web: %{site_name}"
@@ -797,7 +838,7 @@ msgstr "Đã xoá thành công"
 msgid "Demo"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:285
+#: src/views/config/ConfigEditor.vue:304
 msgid "Deploy"
 msgstr "Triển khai"
 
@@ -838,8 +879,8 @@ msgstr ""
 msgid "Directives"
 msgstr "Directives"
 
-#: src/views/site/site_list/SiteList.vue:123
-#: src/views/stream/StreamList.vue:205
+#: src/views/site/site_list/SiteList.vue:180
+#: src/views/stream/StreamList.vue:206
 #, fuzzy
 msgid "Disable"
 msgstr "Tắt"
@@ -893,17 +934,17 @@ msgstr "Đã bật %{conf_name} trên %{node_name}"
 #: src/views/preference/HTTPSettings.vue:24
 #: src/views/preference/NodeSettings.vue:25
 #: src/views/preference/NodeSettings.vue:30
-#: src/views/site/site_edit/SiteEdit.vue:191
-#: src/views/site/site_list/columns.tsx:70
-#: src/views/site/site_list/columns.tsx:79 src/views/stream/StreamEdit.vue:178
-#: src/views/stream/StreamList.vue:56 src/views/user/userColumns.tsx:41
+#: src/views/site/site_edit/SiteEdit.vue:199
+#: src/views/site/site_list/columns.tsx:77
+#: src/views/site/site_list/columns.tsx:86 src/views/stream/StreamEdit.vue:186
+#: src/views/stream/StreamList.vue:57 src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr "Đã tắt"
 
 #: src/views/site/site_edit/RightSettings.vue:42
-#: src/views/site/site_list/SiteList.vue:57
+#: src/views/site/site_list/SiteList.vue:104
 #: src/views/stream/components/RightSettings.vue:42
-#: src/views/stream/StreamList.vue:94
+#: src/views/stream/StreamList.vue:95
 msgid "Disabled successfully"
 msgstr "Đã tắt thành công"
 
@@ -1006,9 +1047,9 @@ msgid ""
 msgstr ""
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:138
+#: src/views/site/site_list/SiteList.vue:195
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:220
+#: src/views/stream/StreamList.vue:221
 msgid "Duplicate"
 msgstr "Nhân bản"
 
@@ -1023,12 +1064,12 @@ msgstr "Đã sao chép thành công vào máy cục bộ"
 msgid "Edit"
 msgstr "Sửa %{n}"
 
-#: src/views/site/site_edit/SiteEdit.vue:180
-#: src/views/stream/StreamEdit.vue:167
+#: src/views/site/site_edit/SiteEdit.vue:188
+#: src/views/stream/StreamEdit.vue:175
 msgid "Edit %{n}"
 msgstr "Sửa %{n}"
 
-#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:204
+#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:210
 msgid "Edit Configuration"
 msgstr "Sửa cấu hình"
 
@@ -1051,8 +1092,8 @@ msgstr "Email (*)"
 msgid "Email (*)"
 msgstr "Email (*)"
 
-#: src/views/site/site_list/SiteList.vue:131
-#: src/views/stream/StreamList.vue:213
+#: src/views/site/site_list/SiteList.vue:188
+#: src/views/stream/StreamList.vue:214
 #, fuzzy
 msgid "Enable"
 msgstr "Đã bật"
@@ -1131,20 +1172,20 @@ msgstr "Bật TLS"
 #: src/views/preference/NodeSettings.vue:25
 #: src/views/preference/NodeSettings.vue:30
 #: src/views/site/site_edit/RightSettings.vue:82
-#: src/views/site/site_edit/SiteEdit.vue:185
-#: src/views/site/site_list/columns.tsx:66
-#: src/views/site/site_list/columns.tsx:78
+#: src/views/site/site_edit/SiteEdit.vue:193
+#: src/views/site/site_list/columns.tsx:73
+#: src/views/site/site_list/columns.tsx:85
 #: src/views/stream/components/RightSettings.vue:81
-#: src/views/stream/StreamEdit.vue:172 src/views/stream/StreamList.vue:52
+#: src/views/stream/StreamEdit.vue:180 src/views/stream/StreamList.vue:53
 #: src/views/user/userColumns.tsx:38
 msgid "Enabled"
 msgstr "Đã bật"
 
 #: src/views/site/site_add/SiteAdd.vue:40
 #: src/views/site/site_edit/RightSettings.vue:33
-#: src/views/site/site_list/SiteList.vue:47
+#: src/views/site/site_list/SiteList.vue:94
 #: src/views/stream/components/RightSettings.vue:33
-#: src/views/stream/StreamList.vue:84
+#: src/views/stream/StreamList.vue:85
 msgid "Enabled successfully"
 msgstr "Đã bật"
 
@@ -1169,6 +1210,10 @@ msgstr "Environments"
 msgid "Error"
 msgstr "Lỗi"
 
+#: src/components/ConfigHistory/DiffViewer.vue:127
+msgid "Error initializing diff viewer"
+msgstr ""
+
 #: src/views/nginx_log/NginxLogList.vue:31
 #, fuzzy
 msgid "Error Log"
@@ -1178,11 +1223,15 @@ msgstr "Log lỗi"
 msgid "Error Logs"
 msgstr "Log lỗi"
 
+#: src/components/ConfigHistory/DiffViewer.vue:79
+msgid "Error processing content"
+msgstr ""
+
 #: src/views/system/Upgrade.vue:177
 msgid "Executable Path"
 msgstr "Đường dẫn thực thi"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:85
+#: src/views/certificate/CertificateList/certColumns.tsx:82
 #: src/views/site/cert/CertInfo.vue:31
 msgid "Expired"
 msgstr "Đã hết hạn"
@@ -1336,16 +1385,16 @@ msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr ""
 
 #: src/views/site/site_edit/RightSettings.vue:45
-#: src/views/site/site_list/SiteList.vue:61
+#: src/views/site/site_list/SiteList.vue:108
 #: src/views/stream/components/RightSettings.vue:45
-#: src/views/stream/StreamList.vue:98
+#: src/views/stream/StreamList.vue:99
 msgid "Failed to disable %{msg}"
 msgstr "Không thể tắt %{msg}"
 
 #: src/views/site/site_edit/RightSettings.vue:36
-#: src/views/site/site_list/SiteList.vue:51
+#: src/views/site/site_list/SiteList.vue:98
 #: src/views/stream/components/RightSettings.vue:36
-#: src/views/stream/StreamList.vue:88
+#: src/views/stream/StreamList.vue:89
 msgid "Failed to enable %{msg}"
 msgstr "Không thể bật %{msg}"
 
@@ -1390,6 +1439,11 @@ msgstr "Không thể truy xuất thông tin chứng chỉ"
 #: src/language/constants.ts:5
 msgid "Failed to get certificate information"
 msgstr "Không thể truy xuất thông tin chứng chỉ"
+
+#: src/components/ConfigHistory/ConfigHistory.vue:65
+#, fuzzy
+msgid "Failed to load history records"
+msgstr "Không thể bật %{msg}"
 
 #: src/constants/errors/backup.ts:30
 #, fuzzy
@@ -1440,8 +1494,8 @@ msgstr ""
 msgid "Failed to restore Nginx UI files: {0}"
 msgstr ""
 
-#: src/views/site/site_edit/SiteEdit.vue:135
-#: src/views/stream/StreamEdit.vue:122
+#: src/views/site/site_edit/SiteEdit.vue:139
+#: src/views/stream/StreamEdit.vue:126
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "Không lưu được, đã phát hiện thấy (các) lỗi cú pháp trong cấu hình."
 
@@ -1507,16 +1561,16 @@ msgstr "Người dùng Trung Quốc: https://mirror.ghproxy.com/"
 msgid "Form parse failed"
 msgstr "Nhân bản thất bại"
 
-#: src/views/config/ConfigEditor.vue:216
+#: src/views/config/ConfigEditor.vue:235
 msgid "Format Code"
 msgstr "Định dạng code"
 
-#: src/views/config/ConfigEditor.vue:183
+#: src/views/config/ConfigEditor.vue:185
 #, fuzzy
 msgid "Format error %{msg}"
 msgstr "Lưu lỗi %{msg}"
 
-#: src/views/config/ConfigEditor.vue:181
+#: src/views/config/ConfigEditor.vue:183
 #, fuzzy
 msgid "Format successfully"
 msgstr "Định dạng thành công"
@@ -1569,6 +1623,13 @@ msgstr ""
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Hide"
 msgstr ""
+
+#: src/views/config/ConfigEditor.vue:220
+#: src/views/site/site_edit/SiteEdit.vue:212
+#: src/views/stream/StreamEdit.vue:199
+#, fuzzy
+msgid "History"
+msgstr "Thư mục"
 
 #: src/routes/index.ts:47
 msgid "Home"
@@ -1636,10 +1697,12 @@ msgid "Import Certificate"
 msgstr "Chứng chỉ"
 
 #: src/views/nginx_log/NginxLogList.vue:137
+#: src/views/site/site_list/SiteList.vue:149
 msgid "Indexed"
 msgstr ""
 
 #: src/views/nginx_log/NginxLogList.vue:134
+#: src/views/site/site_list/SiteList.vue:146
 msgid "Indexing..."
 msgstr ""
 
@@ -1715,7 +1778,7 @@ msgid "Invalid file path: {0}"
 msgstr "E-mail không chính xác!"
 
 #: src/views/config/components/Rename.vue:64
-#: src/views/config/ConfigEditor.vue:250
+#: src/views/config/ConfigEditor.vue:269
 #, fuzzy
 msgid "Invalid filename"
 msgstr "E-mail không chính xác!"
@@ -1782,7 +1845,7 @@ msgid ""
 "with a password manager."
 msgstr ""
 
-#: src/views/certificate/CertificateList/certColumns.tsx:62
+#: src/views/certificate/CertificateList/certColumns.tsx:59
 #: src/views/site/cert/components/AutoCertStepOne.vue:77
 #, fuzzy
 msgid "Key Type"
@@ -1915,16 +1978,16 @@ msgstr ""
 "Đảm bảo rằng bạn đã định cấu hình proxy ngược (reverse proxy) thư mục .well-"
 "known tới HTTPChallengePort (default: 9180) trước khi ký chứng chỉ SSL."
 
-#: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:102
-#: src/views/config/ConfigEditor.vue:139 src/views/config/ConfigList.vue:69
+#: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:104
+#: src/views/config/ConfigEditor.vue:141 src/views/config/ConfigList.vue:69
 msgid "Manage Configs"
 msgstr "Quản lý cấu hình"
 
-#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:95
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:142
 msgid "Manage Sites"
 msgstr "Quản lý Website"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:173
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:174
 #, fuzzy
 msgid "Manage Streams"
 msgstr "Quản lý Website"
@@ -1992,7 +2055,7 @@ msgstr "Single Directive"
 #: src/views/certificate/CertificateList/certColumns.tsx:10
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:256
+#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:275
 #: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:37
@@ -2003,7 +2066,7 @@ msgstr "Single Directive"
 #: src/views/site/site_list/SiteDuplicate.vue:79
 #: src/views/stream/components/RightSettings.vue:87
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:19 src/views/stream/StreamList.vue:246
+#: src/views/stream/StreamList.vue:19 src/views/stream/StreamList.vue:247
 msgid "Name"
 msgstr "Tên"
 
@@ -2033,7 +2096,7 @@ msgstr "Cài đặt"
 msgid "New name"
 msgstr "Username"
 
-#: src/views/config/ConfigEditor.vue:269
+#: src/views/config/ConfigEditor.vue:288
 #, fuzzy
 msgid "New Path"
 msgstr "Đường dẫn"
@@ -2090,8 +2153,8 @@ msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 msgid "Nginx configuration has been restored"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/views/site/site_edit/SiteEdit.vue:224
-#: src/views/stream/StreamEdit.vue:210
+#: src/views/site/site_edit/SiteEdit.vue:244
+#: src/views/stream/StreamEdit.vue:230
 #, fuzzy
 msgid "Nginx Configuration Parse Error"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
@@ -2191,8 +2254,8 @@ msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 #: src/views/preference/CertSettings.vue:73
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:88
-#: src/views/site/site_list/SiteList.vue:141
-#: src/views/stream/StreamList.vue:223
+#: src/views/site/site_list/SiteList.vue:198
+#: src/views/stream/StreamList.vue:224
 msgid "No"
 msgstr "Không"
 
@@ -2202,15 +2265,19 @@ msgstr "Không"
 msgid "No Action"
 msgstr "Hành động"
 
+#: src/components/ConfigHistory/DiffViewer.vue:36
+msgid "No records selected"
+msgstr ""
+
 #: src/views/preference/Preference.vue:168
 #, fuzzy
 msgid "Node"
 msgstr "Username"
 
 #: src/views/site/site_edit/RightSettings.vue:91
-#: src/views/site/site_list/columns.tsx:42
+#: src/views/site/site_list/columns.tsx:49
 #: src/views/stream/components/RightSettings.vue:90
-#: src/views/stream/StreamList.vue:28
+#: src/views/stream/StreamList.vue:29
 #, fuzzy
 msgid "Node Group"
 msgstr "Environment"
@@ -2235,7 +2302,7 @@ msgstr ""
 msgid "Nodes"
 msgstr "Username"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:91
+#: src/views/certificate/CertificateList/certColumns.tsx:88
 msgid "Not After"
 msgstr "Không phải sau khi"
 
@@ -2313,9 +2380,9 @@ msgstr ""
 #: src/views/site/ngx_conf/NgxServer.vue:79
 #: src/views/site/ngx_conf/NgxUpstream.vue:33
 #: src/views/site/site_edit/RightSettings.vue:54
-#: src/views/site/site_list/SiteList.vue:142
+#: src/views/site/site_list/SiteList.vue:199
 #: src/views/stream/components/RightSettings.vue:54
-#: src/views/stream/StreamList.vue:224
+#: src/views/stream/StreamList.vue:225
 #: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr ""
@@ -2365,11 +2432,11 @@ msgstr "Hệ điều hành:"
 msgid "Otp or recovery code empty"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:294
+#: src/views/config/ConfigEditor.vue:313
 msgid "Overwrite"
 msgstr "Ghi đè"
 
-#: src/views/config/ConfigEditor.vue:298
+#: src/views/config/ConfigEditor.vue:317
 msgid "Overwrite exist file"
 msgstr "Ghi đè tập tin đã tồn tại"
 
@@ -2410,7 +2477,7 @@ msgstr "Tên người dùng hoặc mật khẩu không chính xác"
 msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:263
+#: src/views/config/ConfigEditor.vue:282
 #: src/views/nginx_log/NginxLogList.vue:45
 #: src/views/site/ngx_conf/LocationEditor.vue:109
 #: src/views/site/ngx_conf/LocationEditor.vue:137
@@ -2486,7 +2553,7 @@ msgid ""
 msgstr ""
 
 #: src/views/config/components/Rename.vue:63
-#: src/views/config/ConfigEditor.vue:249
+#: src/views/config/ConfigEditor.vue:268
 #, fuzzy
 msgid "Please input a filename"
 msgstr "Vui lòng nhập username!"
@@ -2968,14 +3035,14 @@ msgstr "Running"
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
 #: src/views/certificate/CertificateEditor.vue:262
 #: src/views/config/components/ConfigName.vue:56
-#: src/views/config/ConfigEditor.vue:222
+#: src/views/config/ConfigEditor.vue:241
 #: src/views/preference/components/Passkey.vue:130
 #: src/views/preference/Preference.vue:221
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
 #: src/views/site/site_edit/components/ConfigName.vue:52
-#: src/views/site/site_edit/SiteEdit.vue:272
+#: src/views/site/site_edit/SiteEdit.vue:292
 #: src/views/stream/components/ConfigName.vue:52
-#: src/views/stream/StreamEdit.vue:255
+#: src/views/stream/StreamEdit.vue:275
 msgid "Save"
 msgstr "Lưu"
 
@@ -2983,7 +3050,7 @@ msgstr "Lưu"
 msgid "Save Directive"
 msgstr "Lưu Directive"
 
-#: src/views/config/ConfigEditor.vue:171
+#: src/views/config/ConfigEditor.vue:173
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:41
 #: src/views/site/site_add/SiteAdd.vue:46
 msgid "Save error %{msg}"
@@ -3037,11 +3104,11 @@ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 msgid "Save successfully"
 msgstr "Lưu thành công"
 
-#: src/views/config/ConfigEditor.vue:167
+#: src/views/config/ConfigEditor.vue:169
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/site/site_add/SiteAdd.vue:37
-#: src/views/site/site_edit/SiteEdit.vue:153
-#: src/views/stream/StreamEdit.vue:141
+#: src/views/site/site_edit/SiteEdit.vue:157
+#: src/views/stream/StreamEdit.vue:145
 msgid "Saved successfully"
 msgstr "Lưu thành công"
 
@@ -3255,9 +3322,9 @@ msgid "Start Restore"
 msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:65
-#: src/views/certificate/CertificateList/certColumns.tsx:68
+#: src/views/certificate/CertificateList/certColumns.tsx:65
 #: src/views/environments/list/envColumns.tsx:44
-#: src/views/site/site_list/columns.tsx:59 src/views/stream/StreamList.vue:45
+#: src/views/site/site_list/columns.tsx:66 src/views/stream/StreamList.vue:46
 msgid "Status"
 msgstr "Trạng thái"
 
@@ -3686,13 +3753,13 @@ msgstr "Cập nhật thành công"
 
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
-#: src/views/config/configColumns.tsx:34 src/views/config/ConfigEditor.vue:276
+#: src/views/config/configColumns.tsx:34 src/views/config/ConfigEditor.vue:295
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:100
-#: src/views/site/site_list/columns.tsx:86
+#: src/views/site/site_list/columns.tsx:93
 #: src/views/stream/components/RightSettings.vue:99
-#: src/views/stream/StreamList.vue:65 src/views/user/userColumns.tsx:54
+#: src/views/stream/StreamList.vue:66 src/views/user/userColumns.tsx:54
 msgid "Updated at"
 msgstr "Ngày cập nhật"
 
@@ -3770,7 +3837,7 @@ msgid "Username (*)"
 msgstr "Username (*)"
 
 #: src/views/certificate/ACMEUser.vue:124
-#: src/views/certificate/CertificateList/certColumns.tsx:81
+#: src/views/certificate/CertificateList/certColumns.tsx:78
 #: src/views/site/cert/CertInfo.vue:24
 msgid "Valid"
 msgstr "Hợp lệ"
@@ -4026,10 +4093,6 @@ msgstr ""
 
 #~ msgid "Target"
 #~ msgstr "Mục tiêu"
-
-#, fuzzy
-#~ msgid "Directory"
-#~ msgstr "Thư mục"
 
 #~ msgid "File"
 #~ msgstr "Tệp tin"
