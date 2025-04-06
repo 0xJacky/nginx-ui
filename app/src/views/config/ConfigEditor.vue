@@ -337,8 +337,8 @@ function openHistory() {
 
     <ConfigHistory
       v-model:visible="showHistory"
+      v-model:current-content="data.content"
       :filepath="data.filepath"
-      :current-content="data.content"
     />
   </ARow>
 </template>

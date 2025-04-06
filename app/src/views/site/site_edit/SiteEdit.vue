@@ -296,8 +296,8 @@ provide('data', data)
 
     <ConfigHistory
       v-model:visible="showHistory"
+      v-model:current-content="configText"
       :filepath="filepath"
-      :current-content="configText"
     />
   </ARow>
 </template>

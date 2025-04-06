@@ -11,11 +11,11 @@ import DiffViewer from './DiffViewer.vue'
 // Define props for the component
 const props = defineProps<{
   filepath: string
-  currentContent?: string
 }>()
 
 // Define modal props using defineModel with boolean type
 const visible = defineModel<boolean>('visible')
+const currentContent = defineModel<string>('currentContent')
 
 const loading = ref(false)
 const records = ref<ConfigBackup[]>([])
@@ -39,9 +39,8 @@ watch(() => [visible.value, props.filepath], ([newVisible, newPath]) => {
 // Table column definitions
 const columns = [
   {
-    title: () => $gettext('Created At'),
+    title: () => $gettext('Modified At'),
     dataIndex: 'created_at',
-    key: 'created_at',
     customRender: datetime,
   },
 ]
@@ -80,6 +79,7 @@ function changePage(page: number, pageSize: number) {
 // Row selection handler
 const rowSelection = computed(() => ({
   selectedRowKeys: selectedRowKeys.value,
+  hideSelectAll: true,
   onChange: (keys: Key[], selectedRows: ConfigBackup[]) => {
     // Limit to maximum of two records
     if (keys.length > 2) {
@@ -161,8 +161,9 @@ const compareButtonText = computed(() => {
     </AModal>
     <DiffViewer
       v-model:visible="showDiffViewer"
+      v-model:current-content="currentContent"
       :records="selectedRecords"
-      :current-content="currentContent"
+      @restore="visible = false"
     />
   </div>
 </template>

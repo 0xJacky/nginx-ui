@@ -11,11 +11,16 @@ import 'ace-builds/src-min-noconflict/ext-language_tools'
 
 const props = defineProps<{
   records: ConfigBackup[]
-  currentContent?: string
+}>()
+
+const emit = defineEmits<{
+  (e: 'restore'): void
 }>()
 
 // Define modal visibility using defineModel with boolean type
 const visible = defineModel<boolean>('visible')
+// Define currentContent using defineModel
+const currentContent = defineModel<string>('currentContent')
 
 const originalText = ref('')
 const modifiedText = ref('')
@@ -42,7 +47,7 @@ function setContent() {
     if (props.records.length === 1) {
       // Single record - compare with current content
       originalText.value = props.records[0]?.content || ''
-      modifiedText.value = props.currentContent || ''
+      modifiedText.value = currentContent.value || ''
 
       // Ensure both sides have content for comparison
       if (!originalText.value || !modifiedText.value) {
@@ -341,6 +346,27 @@ function handleClose() {
   visible.value = false
   errorMessage.value = ''
 }
+
+// Add restore functionality
+function restoreContent() {
+  if (originalText.value) {
+    // Update current content with history version
+    currentContent.value = originalText.value
+    // Close dialog
+    handleClose()
+    emit('restore')
+  }
+}
+
+// Add restore functionality for modified content
+function restoreModifiedContent() {
+  if (modifiedText.value && props.records.length === 2) {
+    // Update current content with the modified version
+    currentContent.value = modifiedText.value
+    // Close dialog
+    handleClose()
+  }
+}
 </script>
 
 <template>
@@ -361,11 +387,30 @@ function handleClose() {
 
     <div v-else class="diff-container">
       <div class="diff-header">
-        <div class="diff-title">
-          {{ originalTitle }}
+        <div class="diff-title-container">
+          <div class="diff-title">
+            {{ originalTitle }}
+          </div>
+          <AButton
+            type="link"
+            size="small"
+            @click="restoreContent"
+          >
+            {{ $gettext('Restore this version') }}
+          </AButton>
         </div>
-        <div class="diff-title">
-          {{ modifiedTitle }}
+        <div class="diff-title-container">
+          <div class="diff-title">
+            {{ modifiedTitle }}
+          </div>
+          <AButton
+            v-if="props.records.length === 2"
+            type="link"
+            size="small"
+            @click="restoreModifiedContent"
+          >
+            {{ $gettext('Restore this version') }}
+          </AButton>
         </div>
       </div>
       <div
@@ -393,9 +438,14 @@ function handleClose() {
   margin-bottom: 8px;
 }
 
-.diff-title {
-  font-weight: bold;
+.diff-title-container {
+  display: flex;
+  align-items: center;
   width: 50%;
+  gap: 8px;
+}
+
+.diff-title {
   padding: 0 8px;
 }
 
@@ -405,11 +455,5 @@ function handleClose() {
   border: 1px solid #ddd;
   border-radius: 4px;
   overflow: hidden;
-}
-
-.diff-footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 16px;
 }
 </style>
