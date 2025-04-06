@@ -47,6 +47,12 @@ func EditConfig(c *gin.Context) {
 		return
 	}
 
+	err = config.CheckAndCreateHistory(absPath, content)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
 	if content != "" && content != string(origContent) {
 		err = os.WriteFile(absPath, []byte(content), 0644)
 		if err != nil {

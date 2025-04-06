@@ -22,7 +22,7 @@ func ReloadServerTLSCertificate() error {
 		return err
 	}
 
-	tlsCert.Store(newCert)
+	tlsCert.Store(&newCert)
 	return nil
 }
 

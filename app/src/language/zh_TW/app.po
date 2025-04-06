@@ -46,7 +46,7 @@ msgid "ACME User"
 msgstr "ACME 用戶"
 
 #: src/views/certificate/ACMEUser.vue:95
-#: src/views/certificate/CertificateList/certColumns.tsx:97
+#: src/views/certificate/CertificateList/certColumns.tsx:94
 #: src/views/certificate/DNSCredential.vue:33
 #: src/views/config/configColumns.tsx:42
 #: src/views/environments/group/columns.ts:43
@@ -54,7 +54,7 @@ msgstr "ACME 用戶"
 #: src/views/nginx_log/NginxLogList.vue:53
 #: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
-#: src/views/site/site_list/columns.tsx:93 src/views/stream/StreamList.vue:72
+#: src/views/site/site_list/columns.tsx:100 src/views/stream/StreamList.vue:73
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "操作"
@@ -65,7 +65,7 @@ msgstr "操作"
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/site/ngx_conf/NgxServer.vue:163
 #: src/views/site/ngx_conf/NgxUpstream.vue:154
-#: src/views/stream/StreamList.vue:175
+#: src/views/stream/StreamList.vue:176
 msgid "Add"
 msgstr "新增"
 
@@ -74,8 +74,8 @@ msgstr "新增"
 msgid "Add a passkey"
 msgstr "新增通行密鑰"
 
-#: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:144
-#: src/views/config/ConfigEditor.vue:204
+#: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:146
+#: src/views/config/ConfigEditor.vue:210
 msgid "Add Configuration"
 msgstr "添加配置"
 
@@ -92,11 +92,11 @@ msgstr "新增 Location"
 msgid "Add Site"
 msgstr "新增網站"
 
-#: src/views/stream/StreamList.vue:241
+#: src/views/stream/StreamList.vue:242
 msgid "Add Stream"
 msgstr "新增 Stream"
 
-#: src/views/stream/StreamList.vue:156
+#: src/views/stream/StreamList.vue:157
 msgid "Added successfully"
 msgstr "添加成功"
 
@@ -104,8 +104,8 @@ msgstr "添加成功"
 msgid "Additional"
 msgstr "其他設定"
 
-#: src/views/site/site_edit/SiteEdit.vue:206
-#: src/views/stream/StreamEdit.vue:192
+#: src/views/site/site_edit/SiteEdit.vue:225
+#: src/views/stream/StreamEdit.vue:211
 msgid "Advance Mode"
 msgstr "進階模式"
 
@@ -196,8 +196,8 @@ msgstr "您確定要永久刪除此項目嗎？"
 msgid "Are you sure you want to delete this item?"
 msgstr "您確定要刪除此項目嗎？"
 
-#: src/views/site/site_list/SiteList.vue:143
-#: src/views/stream/StreamList.vue:225
+#: src/views/site/site_list/SiteList.vue:200
+#: src/views/stream/StreamList.vue:226
 msgid "Are you sure you want to delete?"
 msgstr "您確定要刪除嗎？"
 
@@ -281,10 +281,10 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:255
-#: src/views/config/ConfigEditor.vue:213 src/views/config/ConfigList.vue:106
+#: src/views/config/ConfigEditor.vue:232 src/views/config/ConfigList.vue:106
 #: src/views/config/ConfigList.vue:180 src/views/nginx_log/NginxLog.vue:173
-#: src/views/site/site_edit/SiteEdit.vue:265
-#: src/views/stream/StreamEdit.vue:248
+#: src/views/site/site_edit/SiteEdit.vue:285
+#: src/views/stream/StreamEdit.vue:268
 msgid "Back"
 msgstr "返回"
 
@@ -331,14 +331,14 @@ msgstr "禁止至"
 msgid "Base information"
 msgstr "基本資訊"
 
-#: src/views/config/ConfigEditor.vue:241
+#: src/views/config/ConfigEditor.vue:260
 #: src/views/site/site_edit/RightSettings.vue:79
 #: src/views/stream/components/RightSettings.vue:79
 msgid "Basic"
 msgstr "基本"
 
-#: src/views/site/site_edit/SiteEdit.vue:209
-#: src/views/stream/StreamEdit.vue:195
+#: src/views/site/site_edit/SiteEdit.vue:228
+#: src/views/stream/StreamEdit.vue:214
 msgid "Basic Mode"
 msgstr "基本模式"
 
@@ -392,6 +392,11 @@ msgstr "取消"
 #: src/constants/errors/user.ts:11
 msgid "Cannot change initial user password in demo mode"
 msgstr "無法在示範模式下更改初始使用者密碼"
+
+#: src/components/ConfigHistory/DiffViewer.vue:54
+#: src/components/ConfigHistory/DiffViewer.vue:71
+msgid "Cannot compare: Missing content"
+msgstr ""
 
 #: src/constants/errors/user.ts:10
 msgid "Cannot remove initial user"
@@ -450,7 +455,7 @@ msgid "Changed Certificate"
 msgid_plural "Changed Certificates"
 msgstr[0] "變更後憑證"
 
-#: src/views/config/ConfigEditor.vue:269
+#: src/views/config/ConfigEditor.vue:288
 msgid "Changed Path"
 msgstr "變更後路徑"
 
@@ -520,6 +525,10 @@ msgstr ""
 msgid "Click to copy"
 msgstr "點擊複製"
 
+#: src/components/ConfigHistory/ConfigHistory.vue:156
+msgid "Close"
+msgstr ""
+
 #: src/views/preference/LogrotateSettings.vue:22
 msgid "Command"
 msgstr "命令"
@@ -530,6 +539,23 @@ msgstr "命令"
 #: src/views/site/ngx_conf/NgxServer.vue:135
 msgid "Comments"
 msgstr "備註"
+
+#: src/components/ConfigHistory/ConfigHistory.vue:114
+msgid "Compare"
+msgstr ""
+
+#: src/components/ConfigHistory/DiffViewer.vue:375
+#, fuzzy
+msgid "Compare Configurations"
+msgstr "設定"
+
+#: src/components/ConfigHistory/ConfigHistory.vue:117
+msgid "Compare Selected"
+msgstr ""
+
+#: src/components/ConfigHistory/ConfigHistory.vue:116
+msgid "Compare with Current"
+msgstr ""
 
 #: src/constants/errors/backup.ts:14
 #, fuzzy
@@ -543,6 +569,11 @@ msgstr "設定模板"
 #: src/views/config/InspectConfig.vue:27
 msgid "Configuration file is test successful"
 msgstr "設定檔案測試成功"
+
+#: src/components/ConfigHistory/ConfigHistory.vue:125
+#, fuzzy
+msgid "Configuration History"
+msgstr "設定"
 
 #: src/views/site/site_add/SiteAdd.vue:101
 msgid "Configuration Name"
@@ -660,6 +691,11 @@ msgstr "當前帳戶已啟用 TOTP。"
 msgid "Current account is not enabled TOTP."
 msgstr "當前帳戶未啟用 TOTP。"
 
+#: src/components/ConfigHistory/DiffViewer.vue:59
+#, fuzzy
+msgid "Current Content"
+msgstr "目前版本"
+
 #: src/views/system/Upgrade.vue:165
 msgid "Current Version"
 msgstr "目前版本"
@@ -675,8 +711,8 @@ msgid ""
 "indicator."
 msgstr "自訂顯示在環境指示器中的本地節點名稱。"
 
-#: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:134
-#: src/views/config/ConfigEditor.vue:97 src/views/config/ConfigList.vue:64
+#: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:136
+#: src/views/config/ConfigEditor.vue:99 src/views/config/ConfigList.vue:64
 msgid "Dashboard"
 msgstr "儀表板"
 
@@ -696,8 +732,8 @@ msgstr "解密失敗"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
 #: src/views/site/ngx_conf/NgxServer.vue:110
 #: src/views/site/ngx_conf/NgxUpstream.vue:128
-#: src/views/site/site_list/SiteList.vue:152
-#: src/views/stream/StreamList.vue:234
+#: src/views/site/site_list/SiteList.vue:209
+#: src/views/stream/StreamList.vue:235
 msgid "Delete"
 msgstr "刪除"
 
@@ -730,7 +766,7 @@ msgstr "從 %{node} 刪除網站 %{name} 失敗"
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "成功從 %{node} 移除站點 %{name}"
 
-#: src/views/site/site_list/SiteList.vue:68
+#: src/views/site/site_list/SiteList.vue:115
 msgid "Delete site: %{site_name}"
 msgstr "刪除網站：%{site_name}"
 
@@ -742,7 +778,7 @@ msgstr "部署 %{conf_name} 至 %{node} 失敗"
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "成功從 %{node} 移除站點 %{name}"
 
-#: src/views/stream/StreamList.vue:105
+#: src/views/stream/StreamList.vue:106
 msgid "Delete stream: %{stream_name}"
 msgstr "刪除 Stream：%{stream_name}"
 
@@ -754,7 +790,7 @@ msgstr "刪除成功"
 msgid "Demo"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:285
+#: src/views/config/ConfigEditor.vue:304
 msgid "Deploy"
 msgstr "部署"
 
@@ -795,8 +831,8 @@ msgstr "指令索引超出範圍"
 msgid "Directives"
 msgstr "指令"
 
-#: src/views/site/site_list/SiteList.vue:123
-#: src/views/stream/StreamList.vue:205
+#: src/views/site/site_list/SiteList.vue:180
+#: src/views/stream/StreamList.vue:206
 msgid "Disable"
 msgstr "停用"
 
@@ -845,17 +881,17 @@ msgstr "成功禁用 %{node} 中的站点 %{site}"
 #: src/views/preference/HTTPSettings.vue:24
 #: src/views/preference/NodeSettings.vue:25
 #: src/views/preference/NodeSettings.vue:30
-#: src/views/site/site_edit/SiteEdit.vue:191
-#: src/views/site/site_list/columns.tsx:70
-#: src/views/site/site_list/columns.tsx:79 src/views/stream/StreamEdit.vue:178
-#: src/views/stream/StreamList.vue:56 src/views/user/userColumns.tsx:41
+#: src/views/site/site_edit/SiteEdit.vue:199
+#: src/views/site/site_list/columns.tsx:77
+#: src/views/site/site_list/columns.tsx:86 src/views/stream/StreamEdit.vue:186
+#: src/views/stream/StreamList.vue:57 src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr "停用"
 
 #: src/views/site/site_edit/RightSettings.vue:42
-#: src/views/site/site_list/SiteList.vue:57
+#: src/views/site/site_list/SiteList.vue:104
 #: src/views/stream/components/RightSettings.vue:42
-#: src/views/stream/StreamList.vue:94
+#: src/views/stream/StreamList.vue:95
 msgid "Disabled successfully"
 msgstr "成功停用"
 
@@ -949,9 +985,9 @@ msgstr ""
 "通行密鑰。"
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:138
+#: src/views/site/site_list/SiteList.vue:195
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:220
+#: src/views/stream/StreamList.vue:221
 msgid "Duplicate"
 msgstr "複製"
 
@@ -964,12 +1000,12 @@ msgstr "成功複製至本機"
 msgid "Edit"
 msgstr "編輯"
 
-#: src/views/site/site_edit/SiteEdit.vue:180
-#: src/views/stream/StreamEdit.vue:167
+#: src/views/site/site_edit/SiteEdit.vue:188
+#: src/views/stream/StreamEdit.vue:175
 msgid "Edit %{n}"
 msgstr "編輯 %{n}"
 
-#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:204
+#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:210
 msgid "Edit Configuration"
 msgstr "編輯設定"
 
@@ -990,8 +1026,8 @@ msgstr "電子郵件"
 msgid "Email (*)"
 msgstr "電子郵件 (*)"
 
-#: src/views/site/site_list/SiteList.vue:131
-#: src/views/stream/StreamList.vue:213
+#: src/views/site/site_list/SiteList.vue:188
+#: src/views/stream/StreamList.vue:214
 msgid "Enable"
 msgstr "啟用"
 
@@ -1065,20 +1101,20 @@ msgstr "啟用 TOTP"
 #: src/views/preference/NodeSettings.vue:25
 #: src/views/preference/NodeSettings.vue:30
 #: src/views/site/site_edit/RightSettings.vue:82
-#: src/views/site/site_edit/SiteEdit.vue:185
-#: src/views/site/site_list/columns.tsx:66
-#: src/views/site/site_list/columns.tsx:78
+#: src/views/site/site_edit/SiteEdit.vue:193
+#: src/views/site/site_list/columns.tsx:73
+#: src/views/site/site_list/columns.tsx:85
 #: src/views/stream/components/RightSettings.vue:81
-#: src/views/stream/StreamEdit.vue:172 src/views/stream/StreamList.vue:52
+#: src/views/stream/StreamEdit.vue:180 src/views/stream/StreamList.vue:53
 #: src/views/user/userColumns.tsx:38
 msgid "Enabled"
 msgstr "已啟用"
 
 #: src/views/site/site_add/SiteAdd.vue:40
 #: src/views/site/site_edit/RightSettings.vue:33
-#: src/views/site/site_list/SiteList.vue:47
+#: src/views/site/site_list/SiteList.vue:94
 #: src/views/stream/components/RightSettings.vue:33
-#: src/views/stream/StreamList.vue:84
+#: src/views/stream/StreamList.vue:85
 msgid "Enabled successfully"
 msgstr "成功啟用"
 
@@ -1101,6 +1137,10 @@ msgstr "環境"
 msgid "Error"
 msgstr "錯誤"
 
+#: src/components/ConfigHistory/DiffViewer.vue:132
+msgid "Error initializing diff viewer"
+msgstr ""
+
 #: src/views/nginx_log/NginxLogList.vue:31
 #, fuzzy
 msgid "Error Log"
@@ -1110,11 +1150,15 @@ msgstr "錯誤日誌"
 msgid "Error Logs"
 msgstr "錯誤日誌"
 
+#: src/components/ConfigHistory/DiffViewer.vue:84
+msgid "Error processing content"
+msgstr ""
+
 #: src/views/system/Upgrade.vue:177
 msgid "Executable Path"
 msgstr "可執行檔路徑"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:85
+#: src/views/certificate/CertificateList/certColumns.tsx:82
 #: src/views/site/cert/CertInfo.vue:31
 msgid "Expired"
 msgstr "已過期"
@@ -1266,16 +1310,16 @@ msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr ""
 
 #: src/views/site/site_edit/RightSettings.vue:45
-#: src/views/site/site_list/SiteList.vue:61
+#: src/views/site/site_list/SiteList.vue:108
 #: src/views/stream/components/RightSettings.vue:45
-#: src/views/stream/StreamList.vue:98
+#: src/views/stream/StreamList.vue:99
 msgid "Failed to disable %{msg}"
 msgstr "停用 %{msg} 失敗"
 
 #: src/views/site/site_edit/RightSettings.vue:36
-#: src/views/site/site_list/SiteList.vue:51
+#: src/views/site/site_list/SiteList.vue:98
 #: src/views/stream/components/RightSettings.vue:36
-#: src/views/stream/StreamList.vue:88
+#: src/views/stream/StreamList.vue:89
 msgid "Failed to enable %{msg}"
 msgstr "啟用 %{msg} 失敗"
 
@@ -1320,6 +1364,11 @@ msgstr "取得憑證資訊失敗"
 #: src/language/constants.ts:5
 msgid "Failed to get certificate information"
 msgstr "取得憑證資訊失敗"
+
+#: src/components/ConfigHistory/ConfigHistory.vue:64
+#, fuzzy
+msgid "Failed to load history records"
+msgstr "創建備份失敗"
 
 #: src/constants/errors/backup.ts:30
 #, fuzzy
@@ -1374,8 +1423,8 @@ msgstr "解析 nginx.conf 失敗"
 msgid "Failed to restore Nginx UI files: {0}"
 msgstr "解析 nginx.conf 失敗"
 
-#: src/views/site/site_edit/SiteEdit.vue:135
-#: src/views/stream/StreamEdit.vue:122
+#: src/views/site/site_edit/SiteEdit.vue:139
+#: src/views/stream/StreamEdit.vue:126
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr "儲存失敗，在設定中檢測到語法錯誤。"
 
@@ -1440,15 +1489,15 @@ msgstr "中國使用者：https://mirror.ghproxy.com/"
 msgid "Form parse failed"
 msgstr "複製失敗"
 
-#: src/views/config/ConfigEditor.vue:216
+#: src/views/config/ConfigEditor.vue:235
 msgid "Format Code"
 msgstr "格式化程式碼"
 
-#: src/views/config/ConfigEditor.vue:183
+#: src/views/config/ConfigEditor.vue:185
 msgid "Format error %{msg}"
 msgstr "格式錯誤 %{msg}"
 
-#: src/views/config/ConfigEditor.vue:181
+#: src/views/config/ConfigEditor.vue:183
 msgid "Format successfully"
 msgstr "成功格式化"
 
@@ -1497,6 +1546,13 @@ msgstr ""
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Hide"
 msgstr "隱藏"
+
+#: src/views/config/ConfigEditor.vue:220
+#: src/views/site/site_edit/SiteEdit.vue:212
+#: src/views/stream/StreamEdit.vue:199
+#, fuzzy
+msgid "History"
+msgstr "目錄"
 
 #: src/routes/index.ts:47
 msgid "Home"
@@ -1566,11 +1622,13 @@ msgid "Import Certificate"
 msgstr "導入憑證"
 
 #: src/views/nginx_log/NginxLogList.vue:137
+#: src/views/site/site_list/SiteList.vue:149
 #, fuzzy
 msgid "Indexed"
 msgstr "網站首頁 (index)"
 
 #: src/views/nginx_log/NginxLogList.vue:134
+#: src/views/site/site_list/SiteList.vue:146
 msgid "Indexing..."
 msgstr ""
 
@@ -1646,7 +1704,7 @@ msgid "Invalid file path: {0}"
 msgstr "無效的請求格式"
 
 #: src/views/config/components/Rename.vue:64
-#: src/views/config/ConfigEditor.vue:250
+#: src/views/config/ConfigEditor.vue:269
 msgid "Invalid filename"
 msgstr "無效的檔案名"
 
@@ -1710,7 +1768,7 @@ msgid ""
 msgstr ""
 "請將您的復原代碼與密碼同樣妥善保管。我們建議使用密碼管理工具來儲存它們。"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:62
+#: src/views/certificate/CertificateList/certColumns.tsx:59
 #: src/views/site/cert/components/AutoCertStepOne.vue:77
 msgid "Key Type"
 msgstr "密鑰類型"
@@ -1836,16 +1894,16 @@ msgid ""
 msgstr ""
 "在取得憑證前，請確保您已將 .well-known 目錄反向代理到 HTTPChallengePort。"
 
-#: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:102
-#: src/views/config/ConfigEditor.vue:139 src/views/config/ConfigList.vue:69
+#: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:104
+#: src/views/config/ConfigEditor.vue:141 src/views/config/ConfigList.vue:69
 msgid "Manage Configs"
 msgstr "管理設定"
 
-#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:95
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:142
 msgid "Manage Sites"
 msgstr "管理網站"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:173
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:174
 msgid "Manage Streams"
 msgstr "管理 Stream"
 
@@ -1878,6 +1936,10 @@ msgstr "分鐘"
 msgid "Model"
 msgstr "模型"
 
+#: src/components/ConfigHistory/ConfigHistory.vue:42
+msgid "Modified At"
+msgstr ""
+
 #: src/components/ChatGPT/ChatGPT.vue:352
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:151
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:498
@@ -1907,7 +1969,7 @@ msgstr "多行指令"
 #: src/views/certificate/CertificateList/certColumns.tsx:10
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:256
+#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:275
 #: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:37
@@ -1918,7 +1980,7 @@ msgstr "多行指令"
 #: src/views/site/site_list/SiteDuplicate.vue:79
 #: src/views/stream/components/RightSettings.vue:87
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:19 src/views/stream/StreamList.vue:246
+#: src/views/stream/StreamList.vue:19 src/views/stream/StreamList.vue:247
 msgid "Name"
 msgstr "名稱"
 
@@ -1947,7 +2009,7 @@ msgstr "安裝"
 msgid "New name"
 msgstr "新名稱"
 
-#: src/views/config/ConfigEditor.vue:269
+#: src/views/config/ConfigEditor.vue:288
 msgid "New Path"
 msgstr "新路徑"
 
@@ -2003,8 +2065,8 @@ msgstr "Nginx 日誌目錄白名單"
 msgid "Nginx configuration has been restored"
 msgstr "Nginx 設定解析錯誤"
 
-#: src/views/site/site_edit/SiteEdit.vue:224
-#: src/views/stream/StreamEdit.vue:210
+#: src/views/site/site_edit/SiteEdit.vue:244
+#: src/views/stream/StreamEdit.vue:230
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 設定解析錯誤"
 
@@ -2101,8 +2163,8 @@ msgstr "Nginx 設定解析錯誤"
 #: src/views/preference/CertSettings.vue:73
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:88
-#: src/views/site/site_list/SiteList.vue:141
-#: src/views/stream/StreamList.vue:223
+#: src/views/site/site_list/SiteList.vue:198
+#: src/views/stream/StreamList.vue:224
 msgid "No"
 msgstr "取消"
 
@@ -2112,15 +2174,19 @@ msgstr "取消"
 msgid "No Action"
 msgstr "操作"
 
+#: src/components/ConfigHistory/DiffViewer.vue:41
+msgid "No records selected"
+msgstr ""
+
 #: src/views/preference/Preference.vue:168
 #, fuzzy
 msgid "Node"
 msgstr "節點名稱"
 
 #: src/views/site/site_edit/RightSettings.vue:91
-#: src/views/site/site_list/columns.tsx:42
+#: src/views/site/site_list/columns.tsx:49
 #: src/views/stream/components/RightSettings.vue:90
-#: src/views/stream/StreamList.vue:28
+#: src/views/stream/StreamList.vue:29
 #, fuzzy
 msgid "Node Group"
 msgstr "環境"
@@ -2144,7 +2210,7 @@ msgstr "節點密鑰"
 msgid "Nodes"
 msgstr "節點名稱"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:91
+#: src/views/certificate/CertificateList/certColumns.tsx:88
 msgid "Not After"
 msgstr "不晚於"
 
@@ -2219,9 +2285,9 @@ msgstr "確定"
 #: src/views/site/ngx_conf/NgxServer.vue:79
 #: src/views/site/ngx_conf/NgxUpstream.vue:33
 #: src/views/site/site_edit/RightSettings.vue:54
-#: src/views/site/site_list/SiteList.vue:142
+#: src/views/site/site_list/SiteList.vue:199
 #: src/views/stream/components/RightSettings.vue:54
-#: src/views/stream/StreamList.vue:224
+#: src/views/stream/StreamList.vue:225
 #: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr "確定"
@@ -2270,11 +2336,11 @@ msgstr "作業系統:"
 msgid "Otp or recovery code empty"
 msgstr "OTP 或復原代碼為空"
 
-#: src/views/config/ConfigEditor.vue:294
+#: src/views/config/ConfigEditor.vue:313
 msgid "Overwrite"
 msgstr "覆蓋"
 
-#: src/views/config/ConfigEditor.vue:298
+#: src/views/config/ConfigEditor.vue:317
 msgid "Overwrite exist file"
 msgstr "覆蓋現有檔案"
 
@@ -2316,7 +2382,7 @@ msgstr "密碼錯誤"
 msgid "Password length cannot exceed 20 characters"
 msgstr "密碼長度不能超過 20 個字元"
 
-#: src/views/config/ConfigEditor.vue:263
+#: src/views/config/ConfigEditor.vue:282
 #: src/views/nginx_log/NginxLogList.vue:45
 #: src/views/site/ngx_conf/LocationEditor.vue:109
 #: src/views/site/ngx_conf/LocationEditor.vue:137
@@ -2392,7 +2458,7 @@ msgid ""
 msgstr "請立即在偏好設定中產生新的恢復碼，以免無法訪問您的賬戶。"
 
 #: src/views/config/components/Rename.vue:63
-#: src/views/config/ConfigEditor.vue:249
+#: src/views/config/ConfigEditor.vue:268
 msgid "Please input a filename"
 msgstr "請輸入檔案名稱"
 
@@ -2823,6 +2889,11 @@ msgstr "Nginx 配置目錄"
 msgid "Restore Nginx UI Configuration"
 msgstr "Nginx 配置目錄"
 
+#: src/components/ConfigHistory/DiffViewer.vue:399
+#: src/components/ConfigHistory/DiffViewer.vue:412
+msgid "Restore this version"
+msgstr ""
+
 #: src/views/preference/AuthSettings.vue:107
 msgid "RP Display Name"
 msgstr "RP 顯示名稱"
@@ -2848,14 +2919,14 @@ msgstr "執行中"
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
 #: src/views/certificate/CertificateEditor.vue:262
 #: src/views/config/components/ConfigName.vue:56
-#: src/views/config/ConfigEditor.vue:222
+#: src/views/config/ConfigEditor.vue:241
 #: src/views/preference/components/Passkey.vue:130
 #: src/views/preference/Preference.vue:221
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
 #: src/views/site/site_edit/components/ConfigName.vue:52
-#: src/views/site/site_edit/SiteEdit.vue:272
+#: src/views/site/site_edit/SiteEdit.vue:292
 #: src/views/stream/components/ConfigName.vue:52
-#: src/views/stream/StreamEdit.vue:255
+#: src/views/stream/StreamEdit.vue:275
 msgid "Save"
 msgstr "儲存"
 
@@ -2863,7 +2934,7 @@ msgstr "儲存"
 msgid "Save Directive"
 msgstr "儲存指令"
 
-#: src/views/config/ConfigEditor.vue:171
+#: src/views/config/ConfigEditor.vue:173
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:41
 #: src/views/site/site_add/SiteAdd.vue:46
 msgid "Save error %{msg}"
@@ -2914,11 +2985,11 @@ msgstr "成功將站點 %{site} 儲存至 %{node}"
 msgid "Save successfully"
 msgstr "儲存成功"
 
-#: src/views/config/ConfigEditor.vue:167
+#: src/views/config/ConfigEditor.vue:169
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/site/site_add/SiteAdd.vue:37
-#: src/views/site/site_edit/SiteEdit.vue:153
-#: src/views/stream/StreamEdit.vue:141
+#: src/views/site/site_edit/SiteEdit.vue:157
+#: src/views/stream/StreamEdit.vue:145
 msgid "Saved successfully"
 msgstr "儲存成功"
 
@@ -3130,9 +3201,9 @@ msgid "Start Restore"
 msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:65
-#: src/views/certificate/CertificateList/certColumns.tsx:68
+#: src/views/certificate/CertificateList/certColumns.tsx:65
 #: src/views/environments/list/envColumns.tsx:44
-#: src/views/site/site_list/columns.tsx:59 src/views/stream/StreamList.vue:45
+#: src/views/site/site_list/columns.tsx:66 src/views/stream/StreamList.vue:46
 msgid "Status"
 msgstr "狀態"
 
@@ -3554,13 +3625,13 @@ msgstr "更新成功"
 
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
-#: src/views/config/configColumns.tsx:34 src/views/config/ConfigEditor.vue:276
+#: src/views/config/configColumns.tsx:34 src/views/config/ConfigEditor.vue:295
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:100
-#: src/views/site/site_list/columns.tsx:86
+#: src/views/site/site_list/columns.tsx:93
 #: src/views/stream/components/RightSettings.vue:99
-#: src/views/stream/StreamList.vue:65 src/views/user/userColumns.tsx:54
+#: src/views/stream/StreamList.vue:66 src/views/user/userColumns.tsx:54
 msgid "Updated at"
 msgstr "更新時間"
 
@@ -3633,7 +3704,7 @@ msgid "Username (*)"
 msgstr "使用者名稱 (*)"
 
 #: src/views/certificate/ACMEUser.vue:124
-#: src/views/certificate/CertificateList/certColumns.tsx:81
+#: src/views/certificate/CertificateList/certColumns.tsx:78
 #: src/views/site/cert/CertInfo.vue:24
 msgid "Valid"
 msgstr "有效"
@@ -3818,6 +3889,10 @@ msgstr "您的舊代碼將不再有效。"
 msgid "Your passkeys"
 msgstr "您的通行密鑰"
 
+#, fuzzy
+#~ msgid "Created At"
+#~ msgstr "建立時間"
+
 #~ msgid "Category"
 #~ msgstr "類別"
 
@@ -3898,9 +3973,6 @@ msgstr "您的通行密鑰"
 #~ msgid ""
 #~ "The recovery code is only displayed once, please save it in a safe place."
 #~ msgstr "恢復碼僅顯示一次，請將其保存在安全的地方。"
-
-#~ msgid "Directory"
-#~ msgstr "目錄"
 
 #~ msgid "File"
 #~ msgstr "檔案"

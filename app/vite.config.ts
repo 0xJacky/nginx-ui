@@ -103,6 +103,14 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       chunkSizeWarningLimit: 1000,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'ace-editor': ['ace-builds'],
+            'ace-ext': ['ace-builds/src-min-noconflict/ext-language_tools'],
+          },
+        },
+      },
     },
   }
 })

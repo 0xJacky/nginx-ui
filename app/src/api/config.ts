@@ -1,6 +1,13 @@
+import type { GetListResponse } from '@/api/curd'
 import type { ChatComplicationMessage } from '@/api/openai'
 import Curd from '@/api/curd'
 import http from '@/lib/http'
+
+export interface ModelBase {
+  id: number
+  created_at: string
+  updated_at: string
+}
 
 export interface Config {
   name: string
@@ -11,6 +18,12 @@ export interface Config {
   sync_node_ids?: number[]
   sync_overwrite?: false
   dir: string
+}
+
+export interface ConfigBackup extends ModelBase {
+  name: string
+  filepath: string
+  content: string
 }
 
 class ConfigCurd extends Curd<Config> {
@@ -33,6 +46,10 @@ class ConfigCurd extends Curd<Config> {
       new_name: newName,
       sync_node_ids: syncNodeIds,
     })
+  }
+
+  get_history(filepath: string) {
+    return http.get<GetListResponse<ConfigBackup>>('/config_histories', { params: { filepath } })
   }
 }
 
