@@ -14,7 +14,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const isScanning = ref(false)
 const stdCurdRef = ref()
-const sse = ref<SSE | null>(null)
+const sse = ref<SSE>()
 
 const columns: Column[] = [
   {

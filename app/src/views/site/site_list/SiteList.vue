@@ -2,6 +2,8 @@
 import type { EnvGroup } from '@/api/env_group'
 import type { Site } from '@/api/site'
 import type { Column } from '@/components/StdDesign/types'
+import type { SSE, SSEvent } from 'sse.js'
+import cacheIndex from '@/api/cache_index'
 import env_group from '@/api/env_group'
 import site from '@/api/site'
 import EnvGroupTabs from '@/components/EnvGroupTabs/EnvGroupTabs.vue'
@@ -10,6 +12,7 @@ import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import columns from '@/views/site/site_list/columns'
 import SiteDuplicate from '@/views/site/site_list/SiteDuplicate.vue'
+import { CheckCircleOutlined, LoadingOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 
 const route = useRoute()
@@ -20,6 +23,8 @@ const inspect_config = ref()
 
 const envGroupId = ref(Number.parseInt(route.query.env_group_id as string) || 0)
 const envGroups = ref([]) as Ref<EnvGroup[]>
+const isScanning = ref(false)
+const sse = ref<SSE>()
 
 watch(route, () => {
   inspect_config.value?.test()
@@ -39,6 +44,48 @@ onMounted(async () => {
     catch {
       return
     }
+
+    setupSSE()
+  }
+})
+
+// Connect to SSE endpoint and setup handlers
+async function setupSSE() {
+  if (sse.value) {
+    sse.value.close()
+  }
+
+  sse.value = cacheIndex.index_status()
+
+  // Handle incoming messages
+  if (sse.value) {
+    sse.value.onmessage = (e: SSEvent) => {
+      try {
+        if (!e.data)
+          return
+
+        const data = JSON.parse(e.data)
+        isScanning.value = data.scanning
+
+        table.value.get_list()
+      }
+      catch (error) {
+        console.error('Error parsing SSE message:', error)
+      }
+    }
+
+    sse.value.onerror = () => {
+      // Reconnect on error
+      setTimeout(() => {
+        setupSSE()
+      }, 5000)
+    }
+  }
+}
+
+onUnmounted(() => {
+  if (sse.value) {
+    sse.value.close()
   }
 })
 
@@ -93,6 +140,16 @@ function handleBatchUpdated() {
 
 <template>
   <ACard :title="$gettext('Manage Sites')">
+    <template #extra>
+      <div class="flex items-center cursor-default">
+        <template v-if="isScanning">
+          <LoadingOutlined class="mr-2" spin />{{ $gettext('Indexing...') }}
+        </template>
+        <template v-else>
+          <CheckCircleOutlined class="mr-2" />{{ $gettext('Indexed') }}
+        </template>
+      </div>
+    </template>
     <InspectConfig ref="inspect_config" />
 
     <EnvGroupTabs v-model:active-key="envGroupId" :env-groups="envGroups" />

@@ -9,7 +9,7 @@ import {
 } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input, select, selector } from '@/components/StdDesign/StdDataEntry'
 import envGroupColumns from '@/views/environments/group/columns'
-import { Badge } from 'ant-design-vue'
+import { Badge, Tag } from 'ant-design-vue'
 
 const columns: Column[] = [{
   title: () => $gettext('Name'),
@@ -28,15 +28,21 @@ const columns: Column[] = [{
     const template: JSXElements = []
     if (record.enabled) {
       text?.forEach((url: string) => {
-        template.push(<a href={url} target="_blank" rel="noopener noreferrer">{url}</a>)
-        template.push(<span>, </span>)
+        const displayUrl = url.replace(/^https?:\/\//, '')
+        template.push(
+          <Tag style="margin-right: 8px; margin-bottom: 4px;">
+            <a href={url} target="_blank" rel="noopener noreferrer">{displayUrl}</a>
+          </Tag>,
+        )
       })
-      template.pop() // Remove last comma
     }
     else {
-      template.push(<span>{text?.join(', ')}</span>)
+      text?.forEach((url: string) => {
+        const displayUrl = url.replace(/^https?:\/\//, '')
+        template.push(<Tag style="margin-right: 8px; margin-bottom: 4px;">{displayUrl}</Tag>)
+      })
     }
-    return h('div', template)
+    return h('div', { style: { display: 'flex', flexWrap: 'wrap' } }, template)
   },
   width: 120,
 }, {
