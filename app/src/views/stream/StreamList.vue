@@ -24,6 +24,7 @@ const columns: Column[] = [{
     type: input,
   },
   search: true,
+  width: 150,
 }, {
   title: () => $gettext('Node Group'),
   dataIndex: 'env_group_id',

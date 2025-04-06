@@ -131,6 +131,31 @@ func AddCert(c *gin.Context) {
 		return
 	}
 
+	// Detect and set certificate type
+	if len(json.SSLCertificate) > 0 {
+		keyType, err := cert.GetKeyType(json.SSLCertificate)
+		if err == nil && keyType != "" {
+			// Set KeyType based on certificate type
+			switch keyType {
+			case "2048":
+				certModel.KeyType = certcrypto.RSA2048
+			case "3072":
+				certModel.KeyType = certcrypto.RSA3072
+			case "4096":
+				certModel.KeyType = certcrypto.RSA4096
+			case "P256":
+				certModel.KeyType = certcrypto.EC256
+			case "P384":
+				certModel.KeyType = certcrypto.EC384
+			}
+			// Update certificate model
+			err = certModel.Updates(&model.Cert{KeyType: certModel.KeyType})
+			if err != nil {
+				notification.Error("Update Certificate Type Error", err.Error(), nil)
+			}
+		}
+	}
+
 	err = cert.SyncToRemoteServer(certModel)
 	if err != nil {
 		notification.Error("Sync Certificate Error", err.Error(), nil)
@@ -157,7 +182,8 @@ func ModifyCert(c *gin.Context) {
 		return
 	}
 
-	err = certModel.Updates(&model.Cert{
+	// Create update data object
+	updateData := &model.Cert{
 		Name:                  json.Name,
 		SSLCertificatePath:    json.SSLCertificatePath,
 		SSLCertificateKeyPath: json.SSLCertificateKeyPath,
@@ -166,11 +192,6 @@ func ModifyCert(c *gin.Context) {
 		DnsCredentialID:       json.DnsCredentialID,
 		ACMEUserID:            json.ACMEUserID,
 		SyncNodeIds:           json.SyncNodeIds,
-	})
-
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
 	}
 
 	content := &cert.Content{
@@ -181,6 +202,32 @@ func ModifyCert(c *gin.Context) {
 	}
 
 	err = content.WriteFile()
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	// Detect and set certificate type
+	if len(json.SSLCertificate) > 0 {
+		keyType, err := cert.GetKeyType(json.SSLCertificate)
+		if err == nil && keyType != "" {
+			// Set KeyType based on certificate type
+			switch keyType {
+			case "2048":
+				updateData.KeyType = certcrypto.RSA2048
+			case "3072":
+				updateData.KeyType = certcrypto.RSA3072
+			case "4096":
+				updateData.KeyType = certcrypto.RSA4096
+			case "P256":
+				updateData.KeyType = certcrypto.EC256
+			case "P384":
+				updateData.KeyType = certcrypto.EC384
+			}
+		}
+	}
+
+	err = certModel.Updates(updateData)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

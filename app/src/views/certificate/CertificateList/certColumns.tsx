@@ -33,27 +33,24 @@ const columns: Column[] = [{
     if (text === true || text === 1) {
       template.push(
         <Tag bordered={false} color="processing">
-          { managed }
+          {managed}
         </Tag>,
       )
     }
     else if (text === 2) {
       template.push(
         <Tag bordered={false} color="success">
-          { sync }
+          {sync}
         </Tag>,
       )
     }
     else {
       template.push(
         <Tag bordered={false} color="purple">
-          {
-            general
-          }
+          {general}
         </Tag>,
       )
     }
-
     return h('div', template)
   },
   sorter: true,

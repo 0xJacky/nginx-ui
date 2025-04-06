@@ -1,6 +1,8 @@
 package cert
 
 import (
+	"crypto/ecdsa"
+	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
 	"os"
@@ -78,4 +80,68 @@ func IsPrivateKeyPath(path string) bool {
 	}
 
 	return IsPrivateKey(string(bytes))
+}
+
+// GetKeyType determines the key type from a PEM certificate string.
+// Returns "2048", "3072", "4096", "P256", "P384" or empty string.
+func GetKeyType(pemStr string) (string, error) {
+	block, _ := pem.Decode([]byte(pemStr))
+	if block == nil {
+		return "", ErrCertDecode
+	}
+
+	cert, err := x509.ParseCertificate(block.Bytes)
+	if err != nil {
+		return "", ErrCertParse
+	}
+
+	switch cert.PublicKeyAlgorithm {
+	case x509.RSA:
+		rsaKey, ok := cert.PublicKey.(*rsa.PublicKey)
+		if !ok {
+			return "", nil
+		}
+		keySize := rsaKey.Size() * 8 // Size returns size in bytes, convert to bits
+		switch keySize {
+		case 2048:
+			return "2048", nil
+		case 3072:
+			return "3072", nil
+		case 4096:
+			return "4096", nil
+		default:
+			return "", nil
+		}
+	case x509.ECDSA:
+		ecKey, ok := cert.PublicKey.(*ecdsa.PublicKey)
+		if !ok {
+			return "", nil
+		}
+		curve := ecKey.Curve.Params().Name
+		switch curve {
+		case "P-256":
+			return "P256", nil
+		case "P-384":
+			return "P384", nil
+		default:
+			return "", nil
+		}
+	default:
+		return "", nil
+	}
+}
+
+// GetKeyTypeFromPath determines the key type from a certificate file.
+// Returns "2048", "3072", "4096", "P256", "P384" or empty string.
+func GetKeyTypeFromPath(path string) (string, error) {
+	if path == "" {
+		return "", ErrCertPathIsEmpty
+	}
+
+	bytes, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+
+	return GetKeyType(string(bytes))
 }

@@ -164,7 +164,7 @@ function handleBatchUpdated() {
       :get-params="{
         env_group_id: envGroupId,
       }"
-      :scroll-x="1200"
+      :scroll-x="1600"
       @click-edit="(r: string) => router.push({
         path: `/sites/${r}`,
       })"
