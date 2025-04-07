@@ -1,5 +1,11 @@
 export const DATE_FORMAT = 'YYYY-MM-DD'
 
+export enum ConfigStatus {
+  Enabled = 'enabled',
+  Disabled = 'disabled',
+  Maintenance = 'maintenance',
+}
+
 export enum AutoCertState {
   Disable = 0,
   Enable = 1,

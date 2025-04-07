@@ -10,6 +10,7 @@ import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import { actualValueRender, datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input, selector } from '@/components/StdDesign/StdDataEntry'
+import { ConfigStatus } from '@/constants'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import envGroupColumns from '@/views/environments/group/columns'
 import StreamDuplicate from '@/views/stream/components/StreamDuplicate.vue'
@@ -44,15 +45,15 @@ const columns: Column[] = [{
   width: 150,
 }, {
   title: () => $gettext('Status'),
-  dataIndex: 'enabled',
+  dataIndex: 'status',
   customRender: (args: CustomRender) => {
     const template: JSXElements = []
     const { text } = args
-    if (text === true || text > 0) {
+    if (text === ConfigStatus.Enabled) {
       template.push(<Badge status="success" />)
       template.push($gettext('Enabled'))
     }
-    else {
+    else if (text === ConfigStatus.Disabled) {
       template.push(<Badge status="warning" />)
       template.push($gettext('Disabled'))
     }

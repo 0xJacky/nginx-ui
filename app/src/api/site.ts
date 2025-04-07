@@ -23,6 +23,7 @@ export interface Site extends ModelBase {
   env_group?: EnvGroup
   sync_node_ids: number[]
   urls?: string[]
+  status: string
 }
 
 export interface AutoCertRequest {
@@ -64,6 +65,14 @@ class SiteCurd extends Curd<Site> {
 
   advance_mode(name: string, data: { advanced: boolean }) {
     return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/advance`, data)
+  }
+
+  enableMaintenance(name: string) {
+    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/maintenance/enable`)
+  }
+
+  disableMaintenance(name: string) {
+    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/maintenance/disable`)
   }
 }
 

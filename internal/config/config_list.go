@@ -31,8 +31,8 @@ func (c ConfigsSort) Less(i, j int) bool {
 		flag = c.ConfigList[i].ModifiedAt.After(c.ConfigList[j].ModifiedAt)
 	case "is_dir":
 		flag = boolToInt(c.ConfigList[i].IsDir) > boolToInt(c.ConfigList[j].IsDir)
-	case "enabled":
-		flag = boolToInt(c.ConfigList[i].Enabled) > boolToInt(c.ConfigList[j].Enabled)
+	case "status":
+		flag = c.ConfigList[i].Status > c.ConfigList[j].Status
 	case "env_group_id":
 		flag = c.ConfigList[i].EnvGroupID > c.ConfigList[j].EnvGroupID
 	}

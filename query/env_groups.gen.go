@@ -35,6 +35,7 @@ func newEnvGroup(db *gorm.DB, opts ...gen.DOOption) envGroup {
 	_envGroup.Name = field.NewString(tableName, "name")
 	_envGroup.SyncNodeIds = field.NewField(tableName, "sync_node_ids")
 	_envGroup.OrderID = field.NewInt(tableName, "order_id")
+	_envGroup.PostSyncAction = field.NewString(tableName, "post_sync_action")
 
 	_envGroup.fillFieldMap()
 
@@ -44,14 +45,15 @@ func newEnvGroup(db *gorm.DB, opts ...gen.DOOption) envGroup {
 type envGroup struct {
 	envGroupDo
 
-	ALL         field.Asterisk
-	ID          field.Uint64
-	CreatedAt   field.Time
-	UpdatedAt   field.Time
-	DeletedAt   field.Field
-	Name        field.String
-	SyncNodeIds field.Field
-	OrderID     field.Int
+	ALL            field.Asterisk
+	ID             field.Uint64
+	CreatedAt      field.Time
+	UpdatedAt      field.Time
+	DeletedAt      field.Field
+	Name           field.String
+	SyncNodeIds    field.Field
+	OrderID        field.Int
+	PostSyncAction field.String
 
 	fieldMap map[string]field.Expr
 }
@@ -75,6 +77,7 @@ func (e *envGroup) updateTableName(table string) *envGroup {
 	e.Name = field.NewString(table, "name")
 	e.SyncNodeIds = field.NewField(table, "sync_node_ids")
 	e.OrderID = field.NewInt(table, "order_id")
+	e.PostSyncAction = field.NewString(table, "post_sync_action")
 
 	e.fillFieldMap()
 
@@ -91,7 +94,7 @@ func (e *envGroup) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (e *envGroup) fillFieldMap() {
-	e.fieldMap = make(map[string]field.Expr, 7)
+	e.fieldMap = make(map[string]field.Expr, 8)
 	e.fieldMap["id"] = e.ID
 	e.fieldMap["created_at"] = e.CreatedAt
 	e.fieldMap["updated_at"] = e.UpdatedAt
@@ -99,6 +102,7 @@ func (e *envGroup) fillFieldMap() {
 	e.fieldMap["name"] = e.Name
 	e.fieldMap["sync_node_ids"] = e.SyncNodeIds
 	e.fieldMap["order_id"] = e.OrderID
+	e.fieldMap["post_sync_action"] = e.PostSyncAction
 }
 
 func (e envGroup) clone(db *gorm.DB) envGroup {

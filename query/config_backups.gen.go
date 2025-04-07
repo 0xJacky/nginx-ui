@@ -33,7 +33,7 @@ func newConfigBackup(db *gorm.DB, opts ...gen.DOOption) configBackup {
 	_configBackup.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_configBackup.DeletedAt = field.NewField(tableName, "deleted_at")
 	_configBackup.Name = field.NewString(tableName, "name")
-	_configBackup.FilePath = field.NewString(tableName, "file_path")
+	_configBackup.FilePath = field.NewString(tableName, "filepath")
 	_configBackup.Content = field.NewString(tableName, "content")
 
 	_configBackup.fillFieldMap()
@@ -73,7 +73,7 @@ func (c *configBackup) updateTableName(table string) *configBackup {
 	c.UpdatedAt = field.NewTime(table, "updated_at")
 	c.DeletedAt = field.NewField(table, "deleted_at")
 	c.Name = field.NewString(table, "name")
-	c.FilePath = field.NewString(table, "file_path")
+	c.FilePath = field.NewString(table, "filepath")
 	c.Content = field.NewString(table, "content")
 
 	c.fillFieldMap()
@@ -97,7 +97,7 @@ func (c *configBackup) fillFieldMap() {
 	c.fieldMap["updated_at"] = c.UpdatedAt
 	c.fieldMap["deleted_at"] = c.DeletedAt
 	c.fieldMap["name"] = c.Name
-	c.fieldMap["file_path"] = c.FilePath
+	c.fieldMap["filepath"] = c.FilePath
 	c.fieldMap["content"] = c.Content
 }
 

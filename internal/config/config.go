@@ -7,6 +7,14 @@ import (
 	"github.com/sashabaranov/go-openai"
 )
 
+type ConfigStatus string
+
+const (
+	StatusEnabled     ConfigStatus = "enabled"
+	StatusDisabled    ConfigStatus = "disabled"
+	StatusMaintenance ConfigStatus = "maintenance"
+)
+
 type Config struct {
 	Name            string                         `json:"name"`
 	Content         string                         `json:"content"`
@@ -17,7 +25,7 @@ type Config struct {
 	IsDir           bool                           `json:"is_dir"`
 	EnvGroupID      uint64                         `json:"env_group_id"`
 	EnvGroup        *model.EnvGroup                `json:"env_group,omitempty"`
-	Enabled         bool                           `json:"enabled"`
+	Status          ConfigStatus                   `json:"status"`
 	Dir             string                         `json:"dir"`
 	Urls            []string                       `json:"urls,omitempty"`
 }

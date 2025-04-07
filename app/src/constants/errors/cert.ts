@@ -5,4 +5,5 @@ export default {
   50004: () => $gettext('Certificate parse error'),
   50005: () => $gettext('Payload resource is nil'),
   50006: () => $gettext('Path: {0} is not under the nginx conf dir: {1}'),
+  50007: () => $gettext('Certificate path is empty'),
 }

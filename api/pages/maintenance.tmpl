@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>{{.Title}} | Nginx UI</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f4f5f7;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            flex-direction: column;
+        }
+        .maintenance-container {
+            max-width: 600px;
+            padding: 40px;
+            background: white;
+            border-radius: 8px;
+            @media (max-width: 768px) {
+                border-radius: 0;
+            }
+            box-shadow: 0 0 30px #c8c8c840;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color:rgb(0, 128, 247);
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        a {
+            color: #1890ff;
+            text-decoration: none;
+        }
+        p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #888;
+        }
+        .beian-info {
+            font-size: 12px;
+            color: #888;
+            margin-top: 10px;
+        }
+        .beian-info p {
+            margin: 5px 0;
+        }
+        .beian-info img {
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="maintenance-container">
+          <div class="icon">🛠️</div>
+          <h1>{{.Title}}</h1>
+          <p>{{.Message}}</p>
+          <p>{{.Description}}</p>
+          <div class="footer">
+              <p>Powered by <a href="https://nginxui.com" target="_blank">Nginx UI</a></p>
+          </div>
+      </div>
+      <div class="beian-info">
+          {{if .ICPNumber}}
+          <p><a href="https://beian.miit.gov.cn/" target="_blank">{{.ICPNumber}}</a></p>
+          {{end}}
+          {{if .PublicSecurityNumber}}
+          <p><img src="//www.beian.gov.cn/img/new/gongan.png" alt="公安备案"><a href="http://www.beian.gov.cn/portal/index" target="_blank">{{.PublicSecurityNumber}}</a></p>
+          {{end}}
+      </div>
+    </div>
+</body>
+</html>

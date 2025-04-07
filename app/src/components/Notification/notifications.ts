@@ -4,12 +4,6 @@
 
 const notifications: Record<string, { title: () => string, content: (args: any) => string }> = {
 
-  // user module notifications
-  'All Recovery Codes Have Been Used': {
-    title: () => $gettext('All Recovery Codes Have Been Used'),
-    content: (args: any) => $gettext('Please generate new recovery codes in the preferences immediately to prevent lockout.', args),
-  },
-
   // cluster module notifications
   'Reload Remote Nginx Error': {
     title: () => $gettext('Reload Remote Nginx Error'),
@@ -81,6 +75,22 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Enable Remote Site Success'),
     content: (args: any) => $gettext('Enable site %{name} on %{node} successfully', args),
   },
+  'Enable Remote Site Maintenance Error': {
+    title: () => $gettext('Enable Remote Site Maintenance Error'),
+    content: (args: any) => $gettext('Enable site %{name} maintenance on %{node} failed', args),
+  },
+  'Enable Remote Site Maintenance Success': {
+    title: () => $gettext('Enable Remote Site Maintenance Success'),
+    content: (args: any) => $gettext('Enable site %{name} maintenance on %{node} successfully', args),
+  },
+  'Disable Remote Site Maintenance Error': {
+    title: () => $gettext('Disable Remote Site Maintenance Error'),
+    content: (args: any) => $gettext('Disable site %{name} maintenance on %{node} failed', args),
+  },
+  'Disable Remote Site Maintenance Success': {
+    title: () => $gettext('Disable Remote Site Maintenance Success'),
+    content: (args: any) => $gettext('Disable site %{name} maintenance on %{node} successfully', args),
+  },
   'Rename Remote Site Error': {
     title: () => $gettext('Rename Remote Site Error'),
     content: (args: any) => $gettext('Rename site %{name} to %{new_name} on %{node} failed', args),
@@ -138,6 +148,12 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
   'Save Remote Stream Success': {
     title: () => $gettext('Save Remote Stream Success'),
     content: (args: any) => $gettext('Save stream %{name} to %{node} successfully', args),
+  },
+
+  // user module notifications
+  'All Recovery Codes Have Been Used': {
+    title: () => $gettext('All Recovery Codes Have Been Used'),
+    content: (args: any) => $gettext('Please generate new recovery codes in the preferences immediately to prevent lockout.', args),
   },
 }
 
