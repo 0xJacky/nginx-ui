@@ -27,7 +27,7 @@ const columns: Column[] = [{
   dataIndex: 'urls',
   customRender: ({ text, record }) => {
     const template: JSXElements = []
-    if (record.enabled) {
+    if (record.status !== ConfigStatus.Disabled) {
       text?.forEach((url: string) => {
         const displayUrl = url.replace(/^https?:\/\//, '')
         template.push(
