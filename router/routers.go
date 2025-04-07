@@ -15,6 +15,7 @@ import (
 	nginxLog "github.com/0xJacky/Nginx-UI/api/nginx_log"
 	"github.com/0xJacky/Nginx-UI/api/notification"
 	"github.com/0xJacky/Nginx-UI/api/openai"
+	"github.com/0xJacky/Nginx-UI/api/pages"
 	"github.com/0xJacky/Nginx-UI/api/public"
 	"github.com/0xJacky/Nginx-UI/api/settings"
 	"github.com/0xJacky/Nginx-UI/api/sites"
@@ -35,13 +36,15 @@ func InitRouter() {
 
 	initEmbedRoute(r)
 
+	pages.InitRouter(r)
+
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"message": "not found",
 		})
 	})
 
-	root := r.Group("/api")
+	root := r.Group("/api", middleware.IPWhiteList())
 	{
 		public.InitRouter(root)
 		crypto.InitPublicRouter(root)

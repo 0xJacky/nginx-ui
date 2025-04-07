@@ -19,7 +19,7 @@ import (
 
 func GetSiteList(c *gin.Context) {
 	name := c.Query("name")
-	enabled := c.Query("enabled")
+	status := c.Query("status")
 	orderBy := c.Query("sort_by")
 	sort := c.DefaultQuery("order", "desc")
 	queryEnvGroupId := cast.ToUint64(c.Query("env_group_id"))
@@ -50,9 +50,23 @@ func GetSiteList(c *gin.Context) {
 		return filepath.Base(item.Path), item
 	})
 
-	enabledConfigMap := make(map[string]bool)
-	for i := range enabledConfig {
-		enabledConfigMap[enabledConfig[i].Name()] = true
+	configStatusMap := make(map[string]config.ConfigStatus)
+	for _, site := range configFiles {
+		configStatusMap[site.Name()] = config.StatusDisabled
+	}
+
+	// Check for enabled sites and maintenance mode sites
+	for _, enabledSite := range enabledConfig {
+		name := enabledSite.Name()
+
+		// Check if this is a maintenance mode configuration
+		if strings.HasSuffix(name, site.MaintenanceSuffix) {
+			// Extract the original site name by removing maintenance suffix
+			originalName := strings.TrimSuffix(name, site.MaintenanceSuffix)
+			configStatusMap[originalName] = config.StatusMaintenance
+		} else {
+			configStatusMap[name] = config.StatusEnabled
+		}
 	}
 
 	var configs []config.Config
@@ -68,14 +82,10 @@ func GetSiteList(c *gin.Context) {
 			continue
 		}
 		// status filter
-		if enabled != "" {
-			if enabled == "true" && !enabledConfigMap[file.Name()] {
-				continue
-			}
-			if enabled == "false" && enabledConfigMap[file.Name()] {
-				continue
-			}
+		if status != "" && configStatusMap[file.Name()] != config.ConfigStatus(status) {
+			continue
 		}
+
 		var (
 			envGroupId uint64
 			envGroup   *model.EnvGroup
@@ -98,7 +108,7 @@ func GetSiteList(c *gin.Context) {
 			ModifiedAt: fileInfo.ModTime(),
 			Size:       fileInfo.Size(),
 			IsDir:      fileInfo.IsDir(),
-			Enabled:    enabledConfigMap[file.Name()],
+			Status:     configStatusMap[file.Name()],
 			EnvGroupID: envGroupId,
 			EnvGroup:   envGroup,
 			Urls:       indexedSite.Urls,

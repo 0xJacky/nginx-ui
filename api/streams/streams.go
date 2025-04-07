@@ -36,7 +36,7 @@ type Stream struct {
 
 func GetStreams(c *gin.Context) {
 	name := c.Query("name")
-	enabled := c.Query("enabled")
+	status := c.Query("status")
 	orderBy := c.Query("order_by")
 	sort := c.DefaultQuery("sort", "desc")
 	queryEnvGroupId := cast.ToUint64(c.Query("env_group_id"))
@@ -53,9 +53,12 @@ func GetStreams(c *gin.Context) {
 		return
 	}
 
-	enabledConfigMap := make(map[string]bool)
+	enabledConfigMap := make(map[string]config.ConfigStatus)
+	for _, file := range configFiles {
+		enabledConfigMap[file.Name()] = config.StatusDisabled
+	}
 	for i := range enabledConfig {
-		enabledConfigMap[enabledConfig[i].Name()] = true
+		enabledConfigMap[enabledConfig[i].Name()] = config.StatusEnabled
 	}
 
 	var configs []config.Config
@@ -107,13 +110,8 @@ func GetStreams(c *gin.Context) {
 		}
 
 		// Apply enabled status filter if specified
-		if enabled != "" {
-			if enabled == "true" && !enabledConfigMap[file.Name()] {
-				continue
-			}
-			if enabled == "false" && enabledConfigMap[file.Name()] {
-				continue
-			}
+		if status != "" && enabledConfigMap[file.Name()] != config.ConfigStatus(status) {
+			continue
 		}
 
 		var (
@@ -138,7 +136,7 @@ func GetStreams(c *gin.Context) {
 			ModifiedAt: fileInfo.ModTime(),
 			Size:       fileInfo.Size(),
 			IsDir:      fileInfo.IsDir(),
-			Enabled:    enabledConfigMap[file.Name()],
+			Status:     enabledConfigMap[file.Name()],
 			EnvGroupID: envGroupId,
 			EnvGroup:   envGroup,
 		})

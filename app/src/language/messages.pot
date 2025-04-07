@@ -32,14 +32,14 @@ msgstr ""
 #: src/views/certificate/ACMEUser.vue:95
 #: src/views/certificate/CertificateList/certColumns.tsx:94
 #: src/views/certificate/DNSCredential.vue:33
-#: src/views/config/configColumns.tsx:42
+#: src/views/config/configColumns.tsx:44
 #: src/views/environments/group/columns.ts:43
 #: src/views/environments/list/envColumns.tsx:97
 #: src/views/nginx_log/NginxLogList.vue:53
 #: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
-#: src/views/site/site_list/columns.tsx:100
-#: src/views/stream/StreamList.vue:73
+#: src/views/site/site_list/columns.tsx:106
+#: src/views/stream/StreamList.vue:74
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr ""
@@ -50,7 +50,7 @@ msgstr ""
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/site/ngx_conf/NgxServer.vue:163
 #: src/views/site/ngx_conf/NgxUpstream.vue:154
-#: src/views/stream/StreamList.vue:176
+#: src/views/stream/StreamList.vue:177
 msgid "Add"
 msgstr ""
 
@@ -60,8 +60,8 @@ msgid "Add a passkey"
 msgstr ""
 
 #: src/routes/modules/config.ts:20
-#: src/views/config/ConfigEditor.vue:146
-#: src/views/config/ConfigEditor.vue:210
+#: src/views/config/ConfigEditor.vue:168
+#: src/views/config/ConfigEditor.vue:241
 msgid "Add Configuration"
 msgstr ""
 
@@ -79,11 +79,11 @@ msgstr ""
 msgid "Add Site"
 msgstr ""
 
-#: src/views/stream/StreamList.vue:242
+#: src/views/stream/StreamList.vue:243
 msgid "Add Stream"
 msgstr ""
 
-#: src/views/stream/StreamList.vue:157
+#: src/views/stream/StreamList.vue:158
 msgid "Added successfully"
 msgstr ""
 
@@ -92,7 +92,7 @@ msgid "Additional"
 msgstr ""
 
 #: src/views/site/site_edit/SiteEdit.vue:225
-#: src/views/stream/StreamEdit.vue:211
+#: src/views/stream/StreamEdit.vue:207
 msgid "Advance Mode"
 msgstr ""
 
@@ -105,7 +105,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:9
+#: src/components/Notification/notifications.ts:155
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr ""
@@ -183,8 +183,8 @@ msgstr ""
 msgid "Are you sure you want to delete this item?"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:200
-#: src/views/stream/StreamList.vue:226
+#: src/views/site/site_list/SiteList.vue:229
+#: src/views/stream/StreamList.vue:227
 msgid "Are you sure you want to delete?"
 msgstr ""
 
@@ -266,12 +266,12 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:255
-#: src/views/config/ConfigEditor.vue:232
-#: src/views/config/ConfigList.vue:106
-#: src/views/config/ConfigList.vue:180
+#: src/views/config/ConfigEditor.vue:262
+#: src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:195
 #: src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/SiteEdit.vue:285
-#: src/views/stream/StreamEdit.vue:268
+#: src/views/stream/StreamEdit.vue:264
 msgid "Back"
 msgstr ""
 
@@ -315,14 +315,14 @@ msgstr ""
 msgid "Base information"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:260
+#: src/views/config/ConfigEditor.vue:290
 #: src/views/site/site_edit/RightSettings.vue:79
 #: src/views/stream/components/RightSettings.vue:79
 msgid "Basic"
 msgstr ""
 
 #: src/views/site/site_edit/SiteEdit.vue:228
-#: src/views/stream/StreamEdit.vue:214
+#: src/views/stream/StreamEdit.vue:210
 msgid "Basic Mode"
 msgstr ""
 
@@ -377,8 +377,8 @@ msgstr ""
 msgid "Cannot change initial user password in demo mode"
 msgstr ""
 
-#: src/components/ConfigHistory/DiffViewer.vue:54
-#: src/components/ConfigHistory/DiffViewer.vue:71
+#: src/components/ConfigHistory/DiffViewer.vue:57
+#: src/components/ConfigHistory/DiffViewer.vue:74
 msgid "Cannot compare: Missing content"
 msgstr ""
 
@@ -400,6 +400,10 @@ msgstr ""
 
 #: src/constants/errors/cert.ts:5
 msgid "Certificate parse error"
+msgstr ""
+
+#: src/constants/errors/cert.ts:8
+msgid "Certificate path is empty"
 msgstr ""
 
 #: src/views/preference/CertSettings.vue:27
@@ -441,7 +445,7 @@ msgid_plural "Changed Certificates"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/views/config/ConfigEditor.vue:288
+#: src/views/config/ConfigEditor.vue:318
 msgid "Changed Path"
 msgstr ""
 
@@ -502,7 +506,7 @@ msgstr ""
 msgid "Click to copy"
 msgstr ""
 
-#: src/components/ConfigHistory/ConfigHistory.vue:156
+#: src/components/ConfigHistory/ConfigHistory.vue:169
 msgid "Close"
 msgstr ""
 
@@ -517,19 +521,19 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-#: src/components/ConfigHistory/ConfigHistory.vue:114
+#: src/components/ConfigHistory/ConfigHistory.vue:127
 msgid "Compare"
 msgstr ""
 
-#: src/components/ConfigHistory/DiffViewer.vue:375
+#: src/components/ConfigHistory/DiffViewer.vue:378
 msgid "Compare Configurations"
 msgstr ""
 
-#: src/components/ConfigHistory/ConfigHistory.vue:117
+#: src/components/ConfigHistory/ConfigHistory.vue:130
 msgid "Compare Selected"
 msgstr ""
 
-#: src/components/ConfigHistory/ConfigHistory.vue:116
+#: src/components/ConfigHistory/ConfigHistory.vue:129
 msgid "Compare with Current"
 msgstr ""
 
@@ -545,7 +549,7 @@ msgstr ""
 msgid "Configuration file is test successful"
 msgstr ""
 
-#: src/components/ConfigHistory/ConfigHistory.vue:125
+#: src/components/ConfigHistory/ConfigHistory.vue:138
 msgid "Configuration History"
 msgstr ""
 
@@ -553,7 +557,7 @@ msgstr ""
 msgid "Configuration Name"
 msgstr ""
 
-#: src/views/config/ConfigList.vue:98
+#: src/views/config/ConfigList.vue:104
 msgid "Configurations"
 msgstr ""
 
@@ -618,12 +622,12 @@ msgstr ""
 msgid "Create Backup"
 msgstr ""
 
-#: src/views/config/ConfigList.vue:116
+#: src/views/config/ConfigList.vue:122
 msgid "Create File"
 msgstr ""
 
 #: src/views/config/components/Mkdir.vue:47
-#: src/views/config/ConfigList.vue:123
+#: src/views/config/ConfigList.vue:129
 msgid "Create Folder"
 msgstr ""
 
@@ -662,7 +666,7 @@ msgstr ""
 msgid "Current account is not enabled TOTP."
 msgstr ""
 
-#: src/components/ConfigHistory/DiffViewer.vue:59
+#: src/components/ConfigHistory/DiffViewer.vue:62
 msgid "Current Content"
 msgstr ""
 
@@ -680,9 +684,9 @@ msgid "Customize the name of local node to be displayed in the environment indic
 msgstr ""
 
 #: src/routes/modules/dashboard.ts:10
-#: src/views/config/ConfigEditor.vue:136
-#: src/views/config/ConfigEditor.vue:99
-#: src/views/config/ConfigList.vue:64
+#: src/views/config/ConfigEditor.vue:107
+#: src/views/config/ConfigEditor.vue:158
+#: src/views/config/ConfigList.vue:67
 msgid "Dashboard"
 msgstr ""
 
@@ -702,8 +706,8 @@ msgstr ""
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
 #: src/views/site/ngx_conf/NgxServer.vue:110
 #: src/views/site/ngx_conf/NgxUpstream.vue:128
-#: src/views/site/site_list/SiteList.vue:209
-#: src/views/stream/StreamList.vue:235
+#: src/views/site/site_list/SiteList.vue:238
+#: src/views/stream/StreamList.vue:236
 msgid "Delete"
 msgstr ""
 
@@ -712,45 +716,45 @@ msgstr ""
 msgid "Delete Permanently"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:61
+#: src/components/Notification/notifications.ts:55
 #: src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:65
+#: src/components/Notification/notifications.ts:59
 #: src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:103
+#: src/components/Notification/notifications.ts:113
 msgid "Delete Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:107
+#: src/components/Notification/notifications.ts:117
 msgid "Delete Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:62
+#: src/components/Notification/notifications.ts:56
 msgid "Delete site %{name} from %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:66
+#: src/components/Notification/notifications.ts:60
 msgid "Delete site %{name} from %{node} successfully"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:115
+#: src/views/site/site_list/SiteList.vue:128
 msgid "Delete site: %{site_name}"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:104
+#: src/components/Notification/notifications.ts:114
 msgid "Delete stream %{name} from %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:108
+#: src/components/Notification/notifications.ts:118
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr ""
 
-#: src/views/stream/StreamList.vue:106
+#: src/views/stream/StreamList.vue:107
 msgid "Delete stream: %{stream_name}"
 msgstr ""
 
@@ -762,7 +766,7 @@ msgstr ""
 msgid "Demo"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:304
+#: src/views/config/ConfigEditor.vue:334
 msgid "Deploy"
 msgstr ""
 
@@ -804,8 +808,8 @@ msgstr ""
 msgid "Directives"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:180
-#: src/views/stream/StreamList.vue:206
+#: src/views/site/site_list/SiteList.vue:193
+#: src/views/stream/StreamList.vue:207
 msgid "Disable"
 msgstr ""
 
@@ -813,37 +817,53 @@ msgstr ""
 msgid "Disable auto-renewal failed for %{name}"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:69
+#: src/components/Notification/notifications.ts:63
 #: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:73
+#: src/components/Notification/notifications.ts:87
+msgid "Disable Remote Site Maintenance Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:91
+msgid "Disable Remote Site Maintenance Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:67
 #: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:111
+#: src/components/Notification/notifications.ts:121
 msgid "Disable Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:115
+#: src/components/Notification/notifications.ts:125
 msgid "Disable Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:70
+#: src/components/Notification/notifications.ts:64
 msgid "Disable site %{name} from %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:74
+#: src/components/Notification/notifications.ts:68
 msgid "Disable site %{name} from %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:112
+#: src/components/Notification/notifications.ts:88
+msgid "Disable site %{name} maintenance on %{node} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:92
+msgid "Disable site %{name} maintenance on %{node} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:122
 msgid "Disable stream %{name} from %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:116
+#: src/components/Notification/notifications.ts:126
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr ""
 
@@ -853,18 +873,18 @@ msgstr ""
 #: src/views/preference/NodeSettings.vue:25
 #: src/views/preference/NodeSettings.vue:30
 #: src/views/site/site_edit/SiteEdit.vue:199
-#: src/views/site/site_list/columns.tsx:77
-#: src/views/site/site_list/columns.tsx:86
-#: src/views/stream/StreamEdit.vue:186
-#: src/views/stream/StreamList.vue:57
+#: src/views/site/site_list/columns.tsx:78
+#: src/views/site/site_list/columns.tsx:91
+#: src/views/stream/StreamEdit.vue:182
+#: src/views/stream/StreamList.vue:58
 #: src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr ""
 
 #: src/views/site/site_edit/RightSettings.vue:42
-#: src/views/site/site_list/SiteList.vue:104
+#: src/views/site/site_list/SiteList.vue:103
 #: src/views/stream/components/RightSettings.vue:42
-#: src/views/stream/StreamList.vue:95
+#: src/views/stream/StreamList.vue:96
 msgid "Disabled successfully"
 msgstr ""
 
@@ -955,9 +975,9 @@ msgid "Due to the security policies of some browsers, you cannot use passkeys on
 msgstr ""
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:195
+#: src/views/site/site_list/SiteList.vue:224
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:221
+#: src/views/stream/StreamList.vue:222
 msgid "Duplicate"
 msgstr ""
 
@@ -971,12 +991,12 @@ msgid "Edit"
 msgstr ""
 
 #: src/views/site/site_edit/SiteEdit.vue:188
-#: src/views/stream/StreamEdit.vue:175
+#: src/views/stream/StreamEdit.vue:171
 msgid "Edit %{n}"
 msgstr ""
 
 #: src/routes/modules/config.ts:30
-#: src/views/config/ConfigEditor.vue:210
+#: src/views/config/ConfigEditor.vue:241
 msgid "Edit Configuration"
 msgstr ""
 
@@ -997,8 +1017,8 @@ msgstr ""
 msgid "Email (*)"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:188
-#: src/views/stream/StreamList.vue:214
+#: src/views/site/site_list/SiteList.vue:201
+#: src/views/stream/StreamList.vue:215
 msgid "Enable"
 msgstr ""
 
@@ -1018,37 +1038,53 @@ msgstr ""
 msgid "Enable HTTPS"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:77
+#: src/components/Notification/notifications.ts:71
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:81
+#: src/components/Notification/notifications.ts:79
+msgid "Enable Remote Site Maintenance Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:83
+msgid "Enable Remote Site Maintenance Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:75
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:119
+#: src/components/Notification/notifications.ts:129
 msgid "Enable Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:123
+#: src/components/Notification/notifications.ts:133
 msgid "Enable Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:78
+#: src/components/Notification/notifications.ts:80
+msgid "Enable site %{name} maintenance on %{node} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:84
+msgid "Enable site %{name} maintenance on %{node} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:72
 msgid "Enable site %{name} on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:82
+#: src/components/Notification/notifications.ts:76
 msgid "Enable site %{name} on %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:120
+#: src/components/Notification/notifications.ts:130
 msgid "Enable stream %{name} on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:124
+#: src/components/Notification/notifications.ts:134
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr ""
 
@@ -1068,25 +1104,29 @@ msgstr ""
 #: src/views/preference/NodeSettings.vue:30
 #: src/views/site/site_edit/RightSettings.vue:82
 #: src/views/site/site_edit/SiteEdit.vue:193
-#: src/views/site/site_list/columns.tsx:73
-#: src/views/site/site_list/columns.tsx:85
+#: src/views/site/site_list/columns.tsx:74
+#: src/views/site/site_list/columns.tsx:90
 #: src/views/stream/components/RightSettings.vue:81
-#: src/views/stream/StreamEdit.vue:180
-#: src/views/stream/StreamList.vue:53
+#: src/views/stream/StreamEdit.vue:176
+#: src/views/stream/StreamList.vue:54
 #: src/views/user/userColumns.tsx:38
 msgid "Enabled"
 msgstr ""
 
 #: src/views/site/site_add/SiteAdd.vue:40
 #: src/views/site/site_edit/RightSettings.vue:33
-#: src/views/site/site_list/SiteList.vue:94
+#: src/views/site/site_list/SiteList.vue:95
 #: src/views/stream/components/RightSettings.vue:33
-#: src/views/stream/StreamList.vue:85
+#: src/views/stream/StreamList.vue:86
 msgid "Enabled successfully"
 msgstr ""
 
 #: src/views/site/cert/IssueCert.vue:48
 msgid "Encrypt website with Let's Encrypt"
+msgstr ""
+
+#: src/views/site/site_list/SiteList.vue:217
+msgid "Enter Maintenance"
 msgstr ""
 
 #: src/language/constants.ts:22
@@ -1099,13 +1139,13 @@ msgstr ""
 msgid "Environments"
 msgstr ""
 
-#: src/constants/index.ts:16
+#: src/constants/index.ts:22
 #: src/views/config/InspectConfig.vue:44
 #: src/views/notification/notificationColumns.tsx:15
 msgid "Error"
 msgstr ""
 
-#: src/components/ConfigHistory/DiffViewer.vue:132
+#: src/components/ConfigHistory/DiffViewer.vue:135
 msgid "Error initializing diff viewer"
 msgstr ""
 
@@ -1118,12 +1158,16 @@ msgstr ""
 msgid "Error Logs"
 msgstr ""
 
-#: src/components/ConfigHistory/DiffViewer.vue:84
+#: src/components/ConfigHistory/DiffViewer.vue:87
 msgid "Error processing content"
 msgstr ""
 
 #: src/views/system/Upgrade.vue:177
 msgid "Executable Path"
+msgstr ""
+
+#: src/views/site/site_list/SiteList.vue:209
+msgid "Exit Maintenance"
 msgstr ""
 
 #: src/views/certificate/CertificateList/certColumns.tsx:82
@@ -1260,16 +1304,14 @@ msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr ""
 
 #: src/views/site/site_edit/RightSettings.vue:45
-#: src/views/site/site_list/SiteList.vue:108
 #: src/views/stream/components/RightSettings.vue:45
-#: src/views/stream/StreamList.vue:99
+#: src/views/stream/StreamList.vue:100
 msgid "Failed to disable %{msg}"
 msgstr ""
 
 #: src/views/site/site_edit/RightSettings.vue:36
-#: src/views/site/site_list/SiteList.vue:98
 #: src/views/stream/components/RightSettings.vue:36
-#: src/views/stream/StreamList.vue:89
+#: src/views/stream/StreamList.vue:90
 msgid "Failed to enable %{msg}"
 msgstr ""
 
@@ -1309,7 +1351,7 @@ msgstr ""
 msgid "Failed to get certificate information"
 msgstr ""
 
-#: src/components/ConfigHistory/ConfigHistory.vue:64
+#: src/components/ConfigHistory/ConfigHistory.vue:77
 msgid "Failed to load history records"
 msgstr ""
 
@@ -1358,7 +1400,7 @@ msgid "Failed to restore Nginx UI files: {0}"
 msgstr ""
 
 #: src/views/site/site_edit/SiteEdit.vue:139
-#: src/views/stream/StreamEdit.vue:126
+#: src/views/stream/StreamEdit.vue:122
 msgid "Failed to save, syntax error(s) was detected in the configuration."
 msgstr ""
 
@@ -1420,15 +1462,15 @@ msgstr ""
 msgid "Form parse failed"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:235
+#: src/views/config/ConfigEditor.vue:265
 msgid "Format Code"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:185
+#: src/views/config/ConfigEditor.vue:213
 msgid "Format error %{msg}"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:183
+#: src/views/config/ConfigEditor.vue:211
 msgid "Format successfully"
 msgstr ""
 
@@ -1478,9 +1520,9 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:220
+#: src/views/config/ConfigEditor.vue:251
 #: src/views/site/site_edit/SiteEdit.vue:212
-#: src/views/stream/StreamEdit.vue:199
+#: src/views/stream/StreamEdit.vue:195
 msgid "History"
 msgstr ""
 
@@ -1542,17 +1584,17 @@ msgid "Import Certificate"
 msgstr ""
 
 #: src/views/nginx_log/NginxLogList.vue:137
-#: src/views/site/site_list/SiteList.vue:149
+#: src/views/site/site_list/SiteList.vue:162
 msgid "Indexed"
 msgstr ""
 
 #: src/views/nginx_log/NginxLogList.vue:134
-#: src/views/site/site_list/SiteList.vue:146
+#: src/views/site/site_list/SiteList.vue:159
 msgid "Indexing..."
 msgstr ""
 
 #: src/components/StdDesign/StdDetail/StdDetail.vue:81
-#: src/constants/index.ts:18
+#: src/constants/index.ts:24
 #: src/views/notification/notificationColumns.tsx:29
 msgid "Info"
 msgstr ""
@@ -1618,8 +1660,8 @@ msgstr ""
 msgid "Invalid file path: {0}"
 msgstr ""
 
-#: src/views/config/components/Rename.vue:64
-#: src/views/config/ConfigEditor.vue:269
+#: src/views/config/components/Rename.vue:66
+#: src/views/config/ConfigEditor.vue:299
 msgid "Invalid filename"
 msgstr ""
 
@@ -1790,24 +1832,37 @@ msgstr ""
 msgid "Logrotate, by default, is enabled in most mainstream Linux distributions for users who install Nginx UI on the host machine, so you don't need to modify the parameters on this page. For users who install Nginx UI using Docker containers, you can manually enable this option. The crontab task scheduler of Nginx UI will execute the logrotate command at the interval you set in minutes."
 msgstr ""
 
+#: src/views/site/site_list/columns.tsx:82
+#: src/views/site/site_list/columns.tsx:92
+msgid "Maintenance"
+msgstr ""
+
+#: src/views/site/site_list/SiteList.vue:119
+msgid "Maintenance mode disabled successfully"
+msgstr ""
+
+#: src/views/site/site_list/SiteList.vue:111
+msgid "Maintenance mode enabled successfully"
+msgstr ""
+
 #: src/views/site/cert/components/AutoCertStepOne.vue:53
 msgid "Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort before obtaining the certificate."
 msgstr ""
 
 #: src/routes/modules/config.ts:10
-#: src/views/config/ConfigEditor.vue:104
-#: src/views/config/ConfigEditor.vue:141
-#: src/views/config/ConfigList.vue:69
+#: src/views/config/ConfigEditor.vue:112
+#: src/views/config/ConfigEditor.vue:163
+#: src/views/config/ConfigList.vue:72
 msgid "Manage Configs"
 msgstr ""
 
 #: src/routes/modules/sites.ts:10
-#: src/views/site/site_list/SiteList.vue:142
+#: src/views/site/site_list/SiteList.vue:155
 msgid "Manage Sites"
 msgstr ""
 
 #: src/routes/modules/streams.ts:10
-#: src/views/stream/StreamList.vue:174
+#: src/views/stream/StreamList.vue:175
 msgid "Manage Streams"
 msgstr ""
 
@@ -1841,14 +1896,14 @@ msgstr ""
 msgid "Model"
 msgstr ""
 
-#: src/components/ConfigHistory/ConfigHistory.vue:42
+#: src/components/ConfigHistory/ConfigHistory.vue:55
 msgid "Modified At"
 msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:352
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:151
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:498
-#: src/views/config/ConfigList.vue:159
+#: src/views/config/ConfigList.vue:174
 msgid "Modify"
 msgstr ""
 
@@ -1875,19 +1930,19 @@ msgstr ""
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7
-#: src/views/config/ConfigEditor.vue:275
+#: src/views/config/ConfigEditor.vue:305
 #: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:37
 #: src/views/preference/components/AddPasskey.vue:75
 #: src/views/site/ngx_conf/NgxUpstream.vue:177
 #: src/views/site/site_edit/RightSettings.vue:88
-#: src/views/site/site_list/columns.tsx:15
+#: src/views/site/site_list/columns.tsx:16
 #: src/views/site/site_list/SiteDuplicate.vue:79
 #: src/views/stream/components/RightSettings.vue:87
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:19
-#: src/views/stream/StreamList.vue:247
+#: src/views/stream/StreamList.vue:20
+#: src/views/stream/StreamList.vue:248
 msgid "Name"
 msgstr ""
 
@@ -1911,11 +1966,11 @@ msgstr ""
 msgid "New Installation"
 msgstr ""
 
-#: src/views/config/components/Rename.vue:72
+#: src/views/config/components/Rename.vue:74
 msgid "New name"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:288
+#: src/views/config/ConfigEditor.vue:318
 msgid "New Path"
 msgstr ""
 
@@ -1970,7 +2025,7 @@ msgid "Nginx configuration has been restored"
 msgstr ""
 
 #: src/views/site/site_edit/SiteEdit.vue:244
-#: src/views/stream/StreamEdit.vue:230
+#: src/views/stream/StreamEdit.vue:226
 msgid "Nginx Configuration Parse Error"
 msgstr ""
 
@@ -2061,8 +2116,8 @@ msgstr ""
 #: src/views/preference/CertSettings.vue:73
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:88
-#: src/views/site/site_list/SiteList.vue:198
-#: src/views/stream/StreamList.vue:224
+#: src/views/site/site_list/SiteList.vue:227
+#: src/views/stream/StreamList.vue:225
 msgid "No"
 msgstr ""
 
@@ -2071,7 +2126,7 @@ msgstr ""
 msgid "No Action"
 msgstr ""
 
-#: src/components/ConfigHistory/DiffViewer.vue:41
+#: src/components/ConfigHistory/DiffViewer.vue:44
 msgid "No records selected"
 msgstr ""
 
@@ -2080,9 +2135,9 @@ msgid "Node"
 msgstr ""
 
 #: src/views/site/site_edit/RightSettings.vue:91
-#: src/views/site/site_list/columns.tsx:49
+#: src/views/site/site_list/columns.tsx:50
 #: src/views/stream/components/RightSettings.vue:90
-#: src/views/stream/StreamList.vue:29
+#: src/views/stream/StreamList.vue:30
 msgid "Node Group"
 msgstr ""
 
@@ -2174,9 +2229,9 @@ msgstr ""
 #: src/views/site/ngx_conf/NgxServer.vue:79
 #: src/views/site/ngx_conf/NgxUpstream.vue:33
 #: src/views/site/site_edit/RightSettings.vue:54
-#: src/views/site/site_list/SiteList.vue:199
+#: src/views/site/site_list/SiteList.vue:228
 #: src/views/stream/components/RightSettings.vue:54
-#: src/views/stream/StreamList.vue:225
+#: src/views/stream/StreamList.vue:226
 #: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr ""
@@ -2210,7 +2265,7 @@ msgstr ""
 msgid "Or enter the secret: %{secret}"
 msgstr ""
 
-#: src/views/config/components/Rename.vue:68
+#: src/views/config/components/Rename.vue:70
 msgid "Original name"
 msgstr ""
 
@@ -2226,11 +2281,11 @@ msgstr ""
 msgid "Otp or recovery code empty"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:313
+#: src/views/config/ConfigEditor.vue:343
 msgid "Overwrite"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:317
+#: src/views/config/ConfigEditor.vue:347
 msgid "Overwrite exist file"
 msgstr ""
 
@@ -2267,7 +2322,7 @@ msgstr ""
 msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:282
+#: src/views/config/ConfigEditor.vue:312
 #: src/views/nginx_log/NginxLogList.vue:45
 #: src/views/site/ngx_conf/LocationEditor.vue:109
 #: src/views/site/ngx_conf/LocationEditor.vue:137
@@ -2328,13 +2383,13 @@ msgstr ""
 msgid "Please first add credentials in Certification > DNS Credentials, and then select one of the credentialsbelow to request the API of the DNS provider."
 msgstr ""
 
-#: src/components/Notification/notifications.ts:10
+#: src/components/Notification/notifications.ts:156
 #: src/language/constants.ts:59
 msgid "Please generate new recovery codes in the preferences immediately to prevent lockout."
 msgstr ""
 
-#: src/views/config/components/Rename.vue:63
-#: src/views/config/ConfigEditor.vue:268
+#: src/views/config/components/Rename.vue:65
+#: src/views/config/ConfigEditor.vue:298
 msgid "Please input a filename"
 msgstr ""
 
@@ -2540,19 +2595,19 @@ msgstr ""
 msgid "Reload Nginx"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:16
+#: src/components/Notification/notifications.ts:10
 msgid "Reload Nginx on %{node} failed, response: %{resp}"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:20
+#: src/components/Notification/notifications.ts:14
 msgid "Reload Nginx on %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:15
+#: src/components/Notification/notifications.ts:9
 msgid "Reload Remote Nginx Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:19
+#: src/components/Notification/notifications.ts:13
 msgid "Reload Remote Nginx Success"
 msgstr ""
 
@@ -2581,68 +2636,68 @@ msgstr ""
 msgid "Removed successfully"
 msgstr ""
 
-#: src/views/config/components/ConfigName.vue:48
-#: src/views/config/components/Rename.vue:54
-#: src/views/config/ConfigList.vue:166
+#: src/views/config/components/ConfigName.vue:51
+#: src/views/config/components/Rename.vue:56
+#: src/views/config/ConfigList.vue:181
 #: src/views/site/ngx_conf/NgxUpstream.vue:125
 #: src/views/site/site_edit/components/ConfigName.vue:44
 #: src/views/stream/components/ConfigName.vue:44
 msgid "Rename"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:52
+#: src/components/Notification/notifications.ts:46
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:56
+#: src/components/Notification/notifications.ts:50
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:51
+#: src/components/Notification/notifications.ts:45
 #: src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:55
+#: src/components/Notification/notifications.ts:49
 #: src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:85
+#: src/components/Notification/notifications.ts:95
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:89
+#: src/components/Notification/notifications.ts:99
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:127
+#: src/components/Notification/notifications.ts:137
 msgid "Rename Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:131
+#: src/components/Notification/notifications.ts:141
 msgid "Rename Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:96
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:100
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:128
+#: src/components/Notification/notifications.ts:138
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:132
+#: src/components/Notification/notifications.ts:142
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr ""
 
-#: src/views/config/components/Rename.vue:42
+#: src/views/config/components/Rename.vue:43
 msgid "Rename successfully"
 msgstr ""
 
@@ -2696,19 +2751,19 @@ msgstr ""
 msgid "Restart Nginx"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:24
+#: src/components/Notification/notifications.ts:18
 msgid "Restart Nginx on %{node} failed, response: %{resp}"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:28
+#: src/components/Notification/notifications.ts:22
 msgid "Restart Nginx on %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:23
+#: src/components/Notification/notifications.ts:17
 msgid "Restart Remote Nginx Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:27
+#: src/components/Notification/notifications.ts:21
 msgid "Restart Remote Nginx Success"
 msgstr ""
 
@@ -2738,8 +2793,8 @@ msgstr ""
 msgid "Restore Nginx UI Configuration"
 msgstr ""
 
-#: src/components/ConfigHistory/DiffViewer.vue:399
-#: src/components/ConfigHistory/DiffViewer.vue:412
+#: src/components/ConfigHistory/DiffViewer.vue:402
+#: src/components/ConfigHistory/DiffViewer.vue:415
 msgid "Restore this version"
 msgstr ""
 
@@ -2767,15 +2822,15 @@ msgstr ""
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:64
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
 #: src/views/certificate/CertificateEditor.vue:262
-#: src/views/config/components/ConfigName.vue:56
-#: src/views/config/ConfigEditor.vue:241
+#: src/views/config/components/ConfigName.vue:59
+#: src/views/config/ConfigEditor.vue:271
 #: src/views/preference/components/Passkey.vue:130
 #: src/views/preference/Preference.vue:221
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
 #: src/views/site/site_edit/components/ConfigName.vue:52
 #: src/views/site/site_edit/SiteEdit.vue:292
 #: src/views/stream/components/ConfigName.vue:52
-#: src/views/stream/StreamEdit.vue:275
+#: src/views/stream/StreamEdit.vue:271
 msgid "Save"
 msgstr ""
 
@@ -2783,43 +2838,42 @@ msgstr ""
 msgid "Save Directive"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:173
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:41
 #: src/views/site/site_add/SiteAdd.vue:46
 msgid "Save error %{msg}"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:93
+#: src/components/Notification/notifications.ts:103
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:97
+#: src/components/Notification/notifications.ts:107
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:135
+#: src/components/Notification/notifications.ts:145
 msgid "Save Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:139
+#: src/components/Notification/notifications.ts:149
 msgid "Save Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:104
 msgid "Save site %{name} to %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:108
 msgid "Save site %{name} to %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:136
+#: src/components/Notification/notifications.ts:146
 msgid "Save stream %{name} to %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:140
+#: src/components/Notification/notifications.ts:150
 msgid "Save stream %{name} to %{node} successfully"
 msgstr ""
 
@@ -2830,11 +2884,11 @@ msgstr ""
 msgid "Save successfully"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:169
+#: src/views/config/ConfigEditor.vue:191
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/site/site_add/SiteAdd.vue:37
 #: src/views/site/site_edit/SiteEdit.vue:157
-#: src/views/stream/StreamEdit.vue:145
+#: src/views/stream/StreamEdit.vue:141
 msgid "Saved successfully"
 msgstr ""
 
@@ -3033,8 +3087,8 @@ msgstr ""
 #: src/views/certificate/ACMEUser.vue:65
 #: src/views/certificate/CertificateList/certColumns.tsx:65
 #: src/views/environments/list/envColumns.tsx:44
-#: src/views/site/site_list/columns.tsx:66
-#: src/views/stream/StreamList.vue:46
+#: src/views/site/site_list/columns.tsx:67
+#: src/views/stream/StreamList.vue:47
 msgid "Status"
 msgstr ""
 
@@ -3067,7 +3121,7 @@ msgstr ""
 msgid "Streams-enabled directory not exist"
 msgstr ""
 
-#: src/constants/index.ts:19
+#: src/constants/index.ts:25
 #: src/views/notification/notificationColumns.tsx:36
 msgid "Success"
 msgstr ""
@@ -3094,7 +3148,7 @@ msgstr ""
 msgid "Switch to light theme"
 msgstr ""
 
-#: src/views/config/components/Rename.vue:79
+#: src/views/config/components/Rename.vue:81
 msgid "Sync"
 msgstr ""
 
@@ -3102,38 +3156,38 @@ msgstr ""
 msgid "Sync Certificate"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:34
+#: src/components/Notification/notifications.ts:28
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:38
+#: src/components/Notification/notifications.ts:32
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:33
+#: src/components/Notification/notifications.ts:27
 #: src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:37
+#: src/components/Notification/notifications.ts:31
 #: src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:44
+#: src/components/Notification/notifications.ts:38
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:48
+#: src/components/Notification/notifications.ts:42
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:43
+#: src/components/Notification/notifications.ts:37
 #: src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:47
+#: src/components/Notification/notifications.ts:41
 #: src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr ""
@@ -3393,14 +3447,14 @@ msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
-#: src/views/config/configColumns.tsx:34
-#: src/views/config/ConfigEditor.vue:295
+#: src/views/config/configColumns.tsx:36
+#: src/views/config/ConfigEditor.vue:325
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:100
-#: src/views/site/site_list/columns.tsx:93
+#: src/views/site/site_list/columns.tsx:99
 #: src/views/stream/components/RightSettings.vue:99
-#: src/views/stream/StreamList.vue:66
+#: src/views/stream/StreamList.vue:67
 #: src/views/user/userColumns.tsx:54
 msgid "Updated at"
 msgstr ""
@@ -3442,7 +3496,7 @@ msgstr ""
 msgid "URL"
 msgstr ""
 
-#: src/views/site/site_list/columns.tsx:25
+#: src/views/site/site_list/columns.tsx:26
 msgid "URLs"
 msgstr ""
 
@@ -3516,7 +3570,7 @@ msgstr ""
 msgid "Viewed"
 msgstr ""
 
-#: src/constants/index.ts:17
+#: src/constants/index.ts:23
 #: src/views/config/InspectConfig.vue:33
 #: src/views/notification/notificationColumns.tsx:22
 #: src/views/preference/components/AddPasskey.vue:82

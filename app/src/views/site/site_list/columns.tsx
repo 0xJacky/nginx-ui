@@ -8,6 +8,7 @@ import {
   datetime,
 } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input, select, selector } from '@/components/StdDesign/StdDataEntry'
+import { ConfigStatus } from '@/constants'
 import envGroupColumns from '@/views/environments/group/columns'
 import { Badge, Tag } from 'ant-design-vue'
 
@@ -64,17 +65,21 @@ const columns: Column[] = [{
   width: 100,
 }, {
   title: () => $gettext('Status'),
-  dataIndex: 'enabled',
+  dataIndex: 'status',
   customRender: (args: CustomRender) => {
     const template: JSXElements = []
     const { text } = args
-    if (text === true || text > 0) {
+    if (text === ConfigStatus.Enabled) {
       template.push(<Badge status="success" />)
       template.push($gettext('Enabled'))
     }
-    else {
+    else if (text === ConfigStatus.Disabled) {
       template.push(<Badge status="warning" />)
       template.push($gettext('Disabled'))
+    }
+    else if (text === ConfigStatus.Maintenance) {
+      template.push(<Badge color="volcano" />)
+      template.push($gettext('Maintenance'))
     }
 
     return h('div', template)
@@ -82,8 +87,9 @@ const columns: Column[] = [{
   search: {
     type: select,
     mask: {
-      true: $gettext('Enabled'),
-      false: $gettext('Disabled'),
+      [ConfigStatus.Enabled]: $gettext('Enabled'),
+      [ConfigStatus.Disabled]: $gettext('Disabled'),
+      [ConfigStatus.Maintenance]: $gettext('Maintenance'),
     },
   },
   sorter: true,

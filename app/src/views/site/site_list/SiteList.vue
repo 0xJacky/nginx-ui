@@ -9,6 +9,7 @@ import site from '@/api/site'
 import EnvGroupTabs from '@/components/EnvGroupTabs/EnvGroupTabs.vue'
 import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
+import { ConfigStatus } from '@/constants'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import columns from '@/views/site/site_list/columns'
 import SiteDuplicate from '@/views/site/site_list/SiteDuplicate.vue'
@@ -94,8 +95,6 @@ function enable(name: string) {
     message.success($gettext('Enabled successfully'))
     table.value?.get_list()
     inspect_config.value?.test()
-  }).catch(r => {
-    message.error($gettext('Failed to enable %{msg}', { msg: r.message ?? '' }), 10)
   })
 }
 
@@ -104,8 +103,22 @@ function disable(name: string) {
     message.success($gettext('Disabled successfully'))
     table.value?.get_list()
     inspect_config.value?.test()
-  }).catch(r => {
-    message.error($gettext('Failed to disable %{msg}', { msg: r.message ?? '' }))
+  })
+}
+
+function enableMaintenance(name: string) {
+  site.enableMaintenance(name).then(() => {
+    message.success($gettext('Maintenance mode enabled successfully'))
+    table.value?.get_list()
+    inspect_config.value?.test()
+  })
+}
+
+function disableMaintenance(name: string) {
+  site.disableMaintenance(name).then(() => {
+    message.success($gettext('Maintenance mode disabled successfully'))
+    table.value?.get_list()
+    inspect_config.value?.test()
   })
 }
 
@@ -172,7 +185,7 @@ function handleBatchUpdated() {
     >
       <template #actions="{ record }">
         <AButton
-          v-if="record.enabled"
+          v-if="record.status !== ConfigStatus.Disabled"
           type="link"
           size="small"
           @click="disable(record.name)"
@@ -180,12 +193,28 @@ function handleBatchUpdated() {
           {{ $gettext('Disable') }}
         </AButton>
         <AButton
-          v-else
+          v-else-if="record.status !== ConfigStatus.Enabled"
           type="link"
           size="small"
           @click="enable(record.name)"
         >
           {{ $gettext('Enable') }}
+        </AButton>
+        <AButton
+          v-if="record.status === ConfigStatus.Maintenance"
+          type="link"
+          size="small"
+          @click="disableMaintenance(record.name)"
+        >
+          {{ $gettext('Exit Maintenance') }}
+        </AButton>
+        <AButton
+          v-else-if="record.status !== ConfigStatus.Maintenance"
+          type="link"
+          size="small"
+          @click="enableMaintenance(record.name)"
+        >
+          {{ $gettext('Enter Maintenance') }}
         </AButton>
         <AButton
           type="link"

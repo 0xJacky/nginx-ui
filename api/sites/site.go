@@ -215,3 +215,27 @@ func BatchUpdateSites(c *gin.Context) {
 			ctx.BatchEffectedIDs = effectedPath
 		}).BatchModify()
 }
+
+func EnableMaintenanceSite(c *gin.Context) {
+	err := site.EnableMaintenance(c.Param("name"))
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+	})
+}
+
+func DisableMaintenanceSite(c *gin.Context) {
+	err := site.DisableMaintenance(c.Param("name"))
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+	})
+}
