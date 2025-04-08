@@ -13,7 +13,7 @@ const members = [
       { icon: { svg: blogIcon }, link: 'https://jackyu.cn' }
     ]
   },
-{
+  {
     avatar: 'https://www.github.com/Hintay.png',
     name: 'Hintay',
     title: '开发者',
@@ -47,7 +47,10 @@ Nginx UI 是一个全新的 Nginx 网络管理界面，旨在简化 Nginx 服务
 ## 特色
 
 - 在线查看服务器 CPU、内存、系统负载、磁盘使用率等指标
-- 在线 ChatGPT 助理
+- 配置修改后会自动备份，可以对比任意版本或恢复到任意版本
+- 支持镜像操作到多个集群节点，轻松管理多服务器环境
+- 导出加密的 Nginx/NginxUI 配置，方便快速部署和恢复到新环境
+- 增强版在线 ChatGPT 助手，支持多种模型，包括显示 Deepseek-R1 的思考链，帮助您更好地理解和优化配置
 - 一键申请和自动续签 Let's encrypt 证书
 - 在线编辑 Nginx 配置文件，编辑器支持 Nginx 配置语法高亮
 - 在线查看 Nginx 日志

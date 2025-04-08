@@ -24,9 +24,18 @@ features:
     -   icon: 📊
         title: 伺服器指標的在線統計
         details: 實時監控 CPU 使用率、內存使用率、平均負載和磁盤使用情況。
+    -   icon: 💾
+        title: 配置文件自動備份
+        details: 配置修改後會自動備份，可以對比任意版本或恢復到任意版本。
+    -   icon: 🔄
+        title: 集群管理
+        details: 支持鏡像操作到多個集群節點，輕鬆管理多伺服器環境。
+    -   icon: 📤
+        title: 導出加密配置
+        details: 導出加密的 Nginx/NginxUI 配置，方便快速部署和恢復到新環境。
     -   icon: 💬
         title: 在線 ChatGPT 助手
-        details: 在平台內直接獲取 AI 驅動的 ChatGPT 助手的幫助。
+        details: 支持多種模型，包括顯示 Deepseek-R1 的思考鏈，幫助您更好地理解和優化配置。
     -   icon: 🖱️
         title: 一鍵部署和自動續期
         details: 只需一鍵即可輕鬆部署和自動續期 Let's Encrypt 證書。

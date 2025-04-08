@@ -90,7 +90,10 @@ URL：[https://demo.nginxui.com](https://demo.nginxui.com)
 ### Features
 
 - Online statistics for server indicators such as CPU usage, memory usage, load average, and disk usage.
-- Online ChatGPT Assistant
+- Automatic configuration backup after changes, with version comparison and restore capabilities
+- Cluster management supporting mirroring operations to multiple nodes, making multi-server environments easy to manage
+- Export encrypted Nginx/NginxUI configurations for quick deployment and recovery to new environments
+- Enhanced online ChatGPT assistant supporting multiple models, including Deepseek-R1's chain-of-thought display to help you better understand and optimize configurations
 - One-click deployment and automatic renewal Let's Encrypt certificates.
 - Online editing websites configurations with our self-designed **NgxConfigEditor** which is a user-friendly block editor for nginx configurations or **Ace Code Editor** which supports highlighting nginx configuration syntax.
 - Online view Nginx logs
@@ -108,7 +111,7 @@ We proudly offer official support for:
 - Simplified Chinese
 - Traditional Chinese
 
-As non-native English speakers, we strive for accuracy, but we know there’s always room for improvement. If you spot any issues, we’d love your feedback!
+As non-native English speakers, we strive for accuracy, but we know there's always room for improvement. If you spot any issues, we'd love your feedback!
 
 Thanks to our amazing community, additional languages are also available! Explore and contribute to translations on [Weblate](https://weblate.nginxui.com).
 
