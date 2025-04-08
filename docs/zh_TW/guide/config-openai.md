@@ -28,3 +28,13 @@ URL。
 - 預設值：`gpt-3.5-turbo`
 
 此選項用於設定 ChatGPT 模型。如果您的帳戶有許可權訪問 `gpt-4` 模型，可以相應地配置此選項。
+
+## APIType
+
+- 型別：`string`
+- 預設值：`OPEN_AI`
+
+此選項用於設定 API 的類型。
+
+- `OPEN_AI`: 使用 OpenAI API。
+- `AZURE`: 使用 Azure API。

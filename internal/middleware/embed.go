@@ -25,23 +25,6 @@ func mustFs(dir string) (serverFileSystem static.ServeFileSystem) {
 	return
 }
 
-func ServeStatic() []gin.HandlerFunc {
-	const urlPrefix = "/"
-	fs := mustFs(urlPrefix)
-	fileserver := http.FileServer(fs)
-	if urlPrefix != "" {
-		fileserver = http.StripPrefix(urlPrefix, fileserver)
-	}
-	return []gin.HandlerFunc{
-		func(c *gin.Context) {
-			if fs.Exists(urlPrefix, c.Request.URL.Path) {
-				c.Next()
-			}
-		},
-		IPWhiteList(),
-		func(c *gin.Context) {
-			fileserver.ServeHTTP(c.Writer, c.Request)
-			c.Abort()
-		},
-	}
+func ServeStatic() gin.HandlerFunc {
+	return static.Serve("/", mustFs(""))
 }

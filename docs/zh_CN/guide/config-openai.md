@@ -28,3 +28,13 @@ URL。
 - 默认值：`gpt-3.5-turbo`
 
 此选项用于设置 ChatGPT 模型。如果您的帐户有权限访问 `gpt-4` 模型，可以相应地配置此选项。
+
+## APIType
+
+- 类型：`string`
+- 默认值：`OPEN_AI`
+
+此选项用于设置 API 的类型。
+
+- `OPEN_AI`: 使用 OpenAI API。
+- `AZURE`: 使用 Azure API。

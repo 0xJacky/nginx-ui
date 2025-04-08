@@ -30,3 +30,13 @@ region, you can use an HTTP proxy and set this option to the corresponding URL.
 
 This option is used to set the ChatGPT model. If your account has the privilege to access the gpt-4 model, you can
 configure this option accordingly.
+
+## APIType
+
+- Type: `string`
+- Default: `OPEN_AI`
+
+This option is used to set the type of the API.
+
+- `OPEN_AI`: Use the OpenAI API.
+- `AZURE`: Use the Azure API.

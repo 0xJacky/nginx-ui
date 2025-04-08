@@ -10,5 +10,8 @@ import (
 func initEmbedRoute(r *gin.Engine) {
 	r.Use(middleware.CacheJs())
 
-	r.Use(middleware.ServeStatic()...)
+	r.Group("/*")
+	{
+		r.Use(middleware.IPWhiteList(), middleware.ServeStatic())
+	}
 }
