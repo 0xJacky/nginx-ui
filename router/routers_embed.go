@@ -4,12 +4,11 @@ package router
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
-	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
 func initEmbedRoute(r *gin.Engine) {
 	r.Use(middleware.CacheJs())
 
-	r.Use(static.Serve("/", middleware.MustFs("")))
+	r.Use(middleware.ServeStatic()...)
 }
