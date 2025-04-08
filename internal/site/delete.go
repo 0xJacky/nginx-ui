@@ -28,6 +28,7 @@ func Delete(name string) (err error) {
 	}
 
 	enabledPath := nginx.GetConfPath("sites-enabled", name)
+	maintenancePath := nginx.GetConfPath("sites-available", name+MaintenanceSuffix)
 
 	if !helper.FileExists(availablePath) {
 		return ErrSiteNotFound
@@ -35,6 +36,10 @@ func Delete(name string) (err error) {
 
 	if helper.FileExists(enabledPath) {
 		return ErrSiteIsEnabled
+	}
+
+	if helper.FileExists(maintenancePath) {
+		return ErrSiteIsInMaintenance
 	}
 
 	certModel := model.Cert{Filename: name}

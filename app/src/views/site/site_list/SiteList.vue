@@ -45,9 +45,11 @@ onMounted(async () => {
     catch {
       return
     }
-
-    setupSSE()
   }
+})
+
+onMounted(() => {
+  setupSSE()
 })
 
 // Connect to SSE endpoint and setup handlers
@@ -89,38 +91,6 @@ onUnmounted(() => {
     sse.value.close()
   }
 })
-
-function enable(name: string) {
-  site.enable(name).then(() => {
-    message.success($gettext('Enabled successfully'))
-    table.value?.get_list()
-    inspect_config.value?.test()
-  })
-}
-
-function disable(name: string) {
-  site.disable(name).then(() => {
-    message.success($gettext('Disabled successfully'))
-    table.value?.get_list()
-    inspect_config.value?.test()
-  })
-}
-
-function enableMaintenance(name: string) {
-  site.enableMaintenance(name).then(() => {
-    message.success($gettext('Maintenance mode enabled successfully'))
-    table.value?.get_list()
-    inspect_config.value?.test()
-  })
-}
-
-function disableMaintenance(name: string) {
-  site.disableMaintenance(name).then(() => {
-    message.success($gettext('Maintenance mode disabled successfully'))
-    table.value?.get_list()
-    inspect_config.value?.test()
-  })
-}
 
 function destroy(site_name: string) {
   site.destroy(site_name).then(() => {
@@ -185,38 +155,6 @@ function handleBatchUpdated() {
     >
       <template #actions="{ record }">
         <AButton
-          v-if="record.status !== ConfigStatus.Disabled"
-          type="link"
-          size="small"
-          @click="disable(record.name)"
-        >
-          {{ $gettext('Disable') }}
-        </AButton>
-        <AButton
-          v-else-if="record.status !== ConfigStatus.Enabled"
-          type="link"
-          size="small"
-          @click="enable(record.name)"
-        >
-          {{ $gettext('Enable') }}
-        </AButton>
-        <AButton
-          v-if="record.status === ConfigStatus.Maintenance"
-          type="link"
-          size="small"
-          @click="disableMaintenance(record.name)"
-        >
-          {{ $gettext('Exit Maintenance') }}
-        </AButton>
-        <AButton
-          v-else-if="record.status !== ConfigStatus.Maintenance"
-          type="link"
-          size="small"
-          @click="enableMaintenance(record.name)"
-        >
-          {{ $gettext('Enter Maintenance') }}
-        </AButton>
-        <AButton
           type="link"
           size="small"
           @click="handle_click_duplicate(record.name)"
@@ -227,13 +165,13 @@ function handleBatchUpdated() {
           :cancel-text="$gettext('No')"
           :ok-text="$gettext('OK')"
           :title="$gettext('Are you sure you want to delete?')"
-          :disabled="record.enabled"
+          :disabled="record.status !== ConfigStatus.Disabled"
           @confirm="destroy(record.name)"
         >
           <AButton
             type="link"
             size="small"
-            :disabled="record.enabled"
+            :disabled="record.status !== ConfigStatus.Disabled"
           >
             {{ $gettext('Delete') }}
           </AButton>

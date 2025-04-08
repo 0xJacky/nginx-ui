@@ -38,7 +38,7 @@ function ok() {
 
     otpModal.open().then(() => {
       // Note: API will handle URL encoding of path segments
-      config.rename(basePath, orig_name, new_name, sync_node_ids).then(r => {
+      config.rename(basePath, orig_name, new_name, sync_node_ids).then(() => {
         visible.value = false
         message.success($gettext('Rename successfully'))
 

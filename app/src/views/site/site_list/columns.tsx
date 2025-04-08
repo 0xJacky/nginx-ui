@@ -10,7 +10,8 @@ import {
 import { input, select, selector } from '@/components/StdDesign/StdDataEntry'
 import { ConfigStatus } from '@/constants'
 import envGroupColumns from '@/views/environments/group/columns'
-import { Badge, Tag } from 'ant-design-vue'
+import SiteStatusSegmented from '@/views/site/site_edit/components/SiteStatusSegmented.vue'
+import { Tag } from 'ant-design-vue'
 
 const columns: Column[] = [{
   title: () => $gettext('Name'),
@@ -21,31 +22,43 @@ const columns: Column[] = [{
     type: input,
   },
   search: true,
-  width: 120,
-}, {
-  title: () => $gettext('URLs'),
-  dataIndex: 'urls',
+  width: 170,
   customRender: ({ text, record }) => {
     const template: JSXElements = []
-    if (record.status !== ConfigStatus.Disabled) {
-      text?.forEach((url: string) => {
-        const displayUrl = url.replace(/^https?:\/\//, '')
-        template.push(
-          <Tag style="margin-right: 8px; margin-bottom: 4px;">
-            <a href={url} target="_blank" rel="noopener noreferrer">{displayUrl}</a>
-          </Tag>,
-        )
-      })
+
+    // Add site name
+    template.push(
+      <div style="margin-bottom: 8px;">{text}</div>,
+    )
+
+    // Add URLs below the name
+    if (record.urls && record.urls.length > 0) {
+      const urlsContainer: JSXElements = []
+
+      if (record.status !== ConfigStatus.Disabled) {
+        record.urls.forEach((url: string) => {
+          const displayUrl = url.replace(/^https?:\/\//, '')
+          urlsContainer.push(
+            <Tag style="margin-right: 8px; margin-bottom: 4px;">
+              <a href={url} target="_blank" rel="noopener noreferrer">{displayUrl}</a>
+            </Tag>,
+          )
+        })
+      }
+      else {
+        record.urls.forEach((url: string) => {
+          const displayUrl = url.replace(/^https?:\/\//, '')
+          urlsContainer.push(<Tag style="margin-right: 8px; margin-bottom: 4px;">{displayUrl}</Tag>)
+        })
+      }
+
+      template.push(
+        <div style="display: flex; flex-wrap: wrap;">{urlsContainer}</div>,
+      )
     }
-    else {
-      text?.forEach((url: string) => {
-        const displayUrl = url.replace(/^https?:\/\//, '')
-        template.push(<Tag style="margin-right: 8px; margin-bottom: 4px;">{displayUrl}</Tag>)
-      })
-    }
-    return h('div', { style: { display: 'flex', flexWrap: 'wrap' } }, template)
+
+    return h('div', {}, template)
   },
-  width: 120,
 }, {
   title: () => $gettext('Node Group'),
   dataIndex: 'env_group_id',
@@ -62,27 +75,25 @@ const columns: Column[] = [{
   sorter: true,
   pithy: true,
   batch: true,
-  width: 100,
+  width: 120,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'status',
   customRender: (args: CustomRender) => {
-    const template: JSXElements = []
-    const { text } = args
-    if (text === ConfigStatus.Enabled) {
-      template.push(<Badge status="success" />)
-      template.push($gettext('Enabled'))
-    }
-    else if (text === ConfigStatus.Disabled) {
-      template.push(<Badge status="warning" />)
-      template.push($gettext('Disabled'))
-    }
-    else if (text === ConfigStatus.Maintenance) {
-      template.push(<Badge color="volcano" />)
-      template.push($gettext('Maintenance'))
-    }
-
-    return h('div', template)
+    const { text, record } = args
+    return h(SiteStatusSegmented, {
+      'modelValue': text,
+      'siteName': record.name,
+      'enabled': record.status !== ConfigStatus.Disabled,
+      'onUpdate:modelValue': (val: string) => {
+        // This will be handled by the component internal events
+        record.status = val
+      },
+      'onStatusChanged': ({ status, enabled }: { status: string, enabled: boolean }) => {
+        record.status = status
+        record.enabled = enabled
+      },
+    })
   },
   search: {
     type: select,
@@ -94,7 +105,7 @@ const columns: Column[] = [{
   },
   sorter: true,
   pithy: true,
-  width: 80,
+  width: 150,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'modified_at',

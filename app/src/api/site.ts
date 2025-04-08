@@ -68,11 +68,7 @@ class SiteCurd extends Curd<Site> {
   }
 
   enableMaintenance(name: string) {
-    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/maintenance/enable`)
-  }
-
-  disableMaintenance(name: string) {
-    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/maintenance/disable`)
+    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/maintenance`)
   }
 }
 

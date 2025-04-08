@@ -25,7 +25,7 @@ function save() {
   const otpModal = use2FAModal()
 
   otpModal.open().then(() => {
-    config.rename(props.dir!, name.value, buffer.value).then(r => {
+    config.rename(props.dir!, name.value, buffer.value).then(() => {
       modify.value = false
       message.success($gettext('Renamed successfully'))
       router.push({

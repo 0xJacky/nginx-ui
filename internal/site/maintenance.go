@@ -316,7 +316,7 @@ func syncEnableMaintenance(name string) {
 			client.SetBaseURL(node.URL)
 			resp, err := client.R().
 				SetHeader("X-Node-Secret", node.Token).
-				Post(fmt.Sprintf("/api/sites/%s/maintenance/enable", name))
+				Post(fmt.Sprintf("/api/sites/%s/maintenance", name))
 			if err != nil {
 				notification.Error("Enable Remote Site Maintenance Error", err.Error(), nil)
 				return
@@ -354,7 +354,7 @@ func syncDisableMaintenance(name string) {
 			client.SetBaseURL(node.URL)
 			resp, err := client.R().
 				SetHeader("X-Node-Secret", node.Token).
-				Post(fmt.Sprintf("/api/sites/%s/maintenance/disable", name))
+				Post(fmt.Sprintf("/api/sites/%s/enable", name))
 			if err != nil {
 				notification.Error("Disable Remote Site Maintenance Error", err.Error(), nil)
 				return

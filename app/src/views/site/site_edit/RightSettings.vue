@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import type { ChatComplicationMessage } from '@/api/openai'
 import type { Site } from '@/api/site'
-import type { CheckedType } from '@/types'
 import type { Ref } from 'vue'
 import envGroup from '@/api/env_group'
-import site from '@/api/site'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 import StdSelector from '@/components/StdDesign/StdDataEntry/components/StdSelector.vue'
+import { ConfigStatus } from '@/constants'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import envGroupColumns from '@/views/environments/group/columns'
 import ConfigName from '@/views/site/site_edit/components/ConfigName.vue'
+import SiteStatusSegmented from '@/views/site/site_edit/components/SiteStatusSegmented.vue'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
-import { message, Modal } from 'ant-design-vue'
 
 const settings = useSettingsStore()
 
@@ -24,42 +23,17 @@ const filepath = inject('filepath') as Ref<string>
 const historyChatgptRecord = inject('history_chatgpt_record') as Ref<ChatComplicationMessage[]>
 const data = inject('data') as Ref<Site>
 
-const [modal, ContextHolder] = Modal.useModal()
-
 const activeKey = ref(['1', '2', '3'])
+const siteStatus = computed(() => {
+  if (!data.value?.status) {
+    return enabled.value ? ConfigStatus.Enabled : ConfigStatus.Disabled
+  }
+  return data.value.status
+})
 
-function enable() {
-  site.enable(name.value).then(() => {
-    message.success($gettext('Enabled successfully'))
-    enabled.value = true
-  }).catch(r => {
-    message.error($gettext('Failed to enable %{msg}', { msg: r.message ?? '' }), 10)
-  })
-}
-
-function disable() {
-  site.disable(name.value).then(() => {
-    message.success($gettext('Disabled successfully'))
-    enabled.value = false
-  }).catch(r => {
-    message.error($gettext('Failed to disable %{msg}', { msg: r.message ?? '' }))
-  })
-}
-
-function onChangeEnabled(checked: CheckedType) {
-  modal.confirm({
-    title: checked ? $gettext('Do you want to enable this site?') : $gettext('Do you want to disable this site?'),
-    mask: false,
-    centered: true,
-    okText: $gettext('OK'),
-    cancelText: $gettext('Cancel'),
-    async onOk() {
-      if (checked)
-        enable()
-      else
-        disable()
-    },
-  })
+function handleStatusChanged(event: { status: string, enabled: boolean }) {
+  data.value.status = event.status
+  enabled.value = event.enabled
 }
 </script>
 
@@ -68,7 +42,6 @@ function onChangeEnabled(checked: CheckedType) {
     class="right-settings"
     :bordered="false"
   >
-    <ContextHolder />
     <ACollapse
       v-model:active-key="activeKey"
       ghost
@@ -79,10 +52,12 @@ function onChangeEnabled(checked: CheckedType) {
         :header="$gettext('Basic')"
       >
         <AForm layout="vertical">
-          <AFormItem :label="$gettext('Enabled')">
-            <ASwitch
-              :checked="enabled"
-              @change="onChangeEnabled"
+          <AFormItem :label="$gettext('Status')">
+            <SiteStatusSegmented
+              v-model="siteStatus"
+              :site-name="name"
+              :enabled="enabled"
+              @status-changed="handleStatusChanged"
             />
           </AFormItem>
           <AFormItem :label="$gettext('Name')">

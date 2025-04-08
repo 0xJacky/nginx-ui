@@ -23,7 +23,5 @@ func InitRouter(r *gin.RouterGroup) {
 	// duplicate site
 	r.POST("sites/:name/duplicate", DuplicateSite)
 	// enable maintenance mode for site
-	r.POST("sites/:name/maintenance/enable", EnableMaintenanceSite)
-	// disable maintenance mode for site
-	r.POST("sites/:name/maintenance/disable", DisableMaintenanceSite)
+	r.POST("sites/:name/maintenance", EnableMaintenanceSite)
 }

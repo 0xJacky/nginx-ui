@@ -53,7 +53,7 @@ export function arrayToTextRender(args: CustomRender) {
 }
 export function actualValueRender(actualDataIndex: string | string[]) {
   return (args: CustomRender) => {
-    return get(args.record, actualDataIndex) || '/'
+    return get(args.record, actualDataIndex) || ''
   }
 }
 
@@ -126,7 +126,7 @@ export function multiFieldsRender(fields: MultiFieldRenderProps[]) {
       const direction = field.direction ?? 'vertical'
 
       const labelNode = label
-      // eslint-disable-next-line sonarjs/no-nested-conditional
+        // eslint-disable-next-line sonarjs/no-nested-conditional
         ? h(direction === 'vertical' ? 'div' : 'span', { class: 'text-gray-500 my-1 mr-1' }, label)
         : null
 

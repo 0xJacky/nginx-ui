@@ -23,7 +23,7 @@ func CheckAndCreateHistory(path string, content string) error {
 	// Read the current content of the file
 	currentContent, err := os.ReadFile(path)
 	if err != nil {
-		return err
+		return nil
 	}
 
 	// Compare the contents
