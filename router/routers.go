@@ -10,6 +10,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/cluster"
 	"github.com/0xJacky/Nginx-UI/api/config"
 	"github.com/0xJacky/Nginx-UI/api/crypto"
+	"github.com/0xJacky/Nginx-UI/api/external_notify"
 	"github.com/0xJacky/Nginx-UI/api/index"
 	"github.com/0xJacky/Nginx-UI/api/nginx"
 	nginxLog "github.com/0xJacky/Nginx-UI/api/nginx_log"
@@ -74,6 +75,7 @@ func InitRouter() {
 			openai.InitRouter(g)
 			cluster.InitRouter(g)
 			notification.InitRouter(g)
+			external_notify.InitRouter(g)
 		}
 
 		// Authorization required and websocket request

@@ -33,6 +33,7 @@ func GenerateAllModel() []any {
 		Config{},
 		Passkey{},
 		EnvGroup{},
+		ExternalNotify{},
 	}
 }
 

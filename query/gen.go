@@ -16,22 +16,23 @@ import (
 )
 
 var (
-	Q             = new(Query)
-	AcmeUser      *acmeUser
-	AuthToken     *authToken
-	BanIP         *banIP
-	Cert          *cert
-	ChatGPTLog    *chatGPTLog
-	Config        *config
-	ConfigBackup  *configBackup
-	DnsCredential *dnsCredential
-	EnvGroup      *envGroup
-	Environment   *environment
-	Notification  *notification
-	Passkey       *passkey
-	Site          *site
-	Stream        *stream
-	User          *user
+	Q              = new(Query)
+	AcmeUser       *acmeUser
+	AuthToken      *authToken
+	BanIP          *banIP
+	Cert           *cert
+	ChatGPTLog     *chatGPTLog
+	Config         *config
+	ConfigBackup   *configBackup
+	DnsCredential  *dnsCredential
+	EnvGroup       *envGroup
+	Environment    *environment
+	ExternalNotify *externalNotify
+	Notification   *notification
+	Passkey        *passkey
+	Site           *site
+	Stream         *stream
+	User           *user
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
@@ -46,6 +47,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	DnsCredential = &Q.DnsCredential
 	EnvGroup = &Q.EnvGroup
 	Environment = &Q.Environment
+	ExternalNotify = &Q.ExternalNotify
 	Notification = &Q.Notification
 	Passkey = &Q.Passkey
 	Site = &Q.Site
@@ -55,65 +57,68 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:            db,
-		AcmeUser:      newAcmeUser(db, opts...),
-		AuthToken:     newAuthToken(db, opts...),
-		BanIP:         newBanIP(db, opts...),
-		Cert:          newCert(db, opts...),
-		ChatGPTLog:    newChatGPTLog(db, opts...),
-		Config:        newConfig(db, opts...),
-		ConfigBackup:  newConfigBackup(db, opts...),
-		DnsCredential: newDnsCredential(db, opts...),
-		EnvGroup:      newEnvGroup(db, opts...),
-		Environment:   newEnvironment(db, opts...),
-		Notification:  newNotification(db, opts...),
-		Passkey:       newPasskey(db, opts...),
-		Site:          newSite(db, opts...),
-		Stream:        newStream(db, opts...),
-		User:          newUser(db, opts...),
+		db:             db,
+		AcmeUser:       newAcmeUser(db, opts...),
+		AuthToken:      newAuthToken(db, opts...),
+		BanIP:          newBanIP(db, opts...),
+		Cert:           newCert(db, opts...),
+		ChatGPTLog:     newChatGPTLog(db, opts...),
+		Config:         newConfig(db, opts...),
+		ConfigBackup:   newConfigBackup(db, opts...),
+		DnsCredential:  newDnsCredential(db, opts...),
+		EnvGroup:       newEnvGroup(db, opts...),
+		Environment:    newEnvironment(db, opts...),
+		ExternalNotify: newExternalNotify(db, opts...),
+		Notification:   newNotification(db, opts...),
+		Passkey:        newPasskey(db, opts...),
+		Site:           newSite(db, opts...),
+		Stream:         newStream(db, opts...),
+		User:           newUser(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	AcmeUser      acmeUser
-	AuthToken     authToken
-	BanIP         banIP
-	Cert          cert
-	ChatGPTLog    chatGPTLog
-	Config        config
-	ConfigBackup  configBackup
-	DnsCredential dnsCredential
-	EnvGroup      envGroup
-	Environment   environment
-	Notification  notification
-	Passkey       passkey
-	Site          site
-	Stream        stream
-	User          user
+	AcmeUser       acmeUser
+	AuthToken      authToken
+	BanIP          banIP
+	Cert           cert
+	ChatGPTLog     chatGPTLog
+	Config         config
+	ConfigBackup   configBackup
+	DnsCredential  dnsCredential
+	EnvGroup       envGroup
+	Environment    environment
+	ExternalNotify externalNotify
+	Notification   notification
+	Passkey        passkey
+	Site           site
+	Stream         stream
+	User           user
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:            db,
-		AcmeUser:      q.AcmeUser.clone(db),
-		AuthToken:     q.AuthToken.clone(db),
-		BanIP:         q.BanIP.clone(db),
-		Cert:          q.Cert.clone(db),
-		ChatGPTLog:    q.ChatGPTLog.clone(db),
-		Config:        q.Config.clone(db),
-		ConfigBackup:  q.ConfigBackup.clone(db),
-		DnsCredential: q.DnsCredential.clone(db),
-		EnvGroup:      q.EnvGroup.clone(db),
-		Environment:   q.Environment.clone(db),
-		Notification:  q.Notification.clone(db),
-		Passkey:       q.Passkey.clone(db),
-		Site:          q.Site.clone(db),
-		Stream:        q.Stream.clone(db),
-		User:          q.User.clone(db),
+		db:             db,
+		AcmeUser:       q.AcmeUser.clone(db),
+		AuthToken:      q.AuthToken.clone(db),
+		BanIP:          q.BanIP.clone(db),
+		Cert:           q.Cert.clone(db),
+		ChatGPTLog:     q.ChatGPTLog.clone(db),
+		Config:         q.Config.clone(db),
+		ConfigBackup:   q.ConfigBackup.clone(db),
+		DnsCredential:  q.DnsCredential.clone(db),
+		EnvGroup:       q.EnvGroup.clone(db),
+		Environment:    q.Environment.clone(db),
+		ExternalNotify: q.ExternalNotify.clone(db),
+		Notification:   q.Notification.clone(db),
+		Passkey:        q.Passkey.clone(db),
+		Site:           q.Site.clone(db),
+		Stream:         q.Stream.clone(db),
+		User:           q.User.clone(db),
 	}
 }
 
@@ -127,60 +132,63 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:            db,
-		AcmeUser:      q.AcmeUser.replaceDB(db),
-		AuthToken:     q.AuthToken.replaceDB(db),
-		BanIP:         q.BanIP.replaceDB(db),
-		Cert:          q.Cert.replaceDB(db),
-		ChatGPTLog:    q.ChatGPTLog.replaceDB(db),
-		Config:        q.Config.replaceDB(db),
-		ConfigBackup:  q.ConfigBackup.replaceDB(db),
-		DnsCredential: q.DnsCredential.replaceDB(db),
-		EnvGroup:      q.EnvGroup.replaceDB(db),
-		Environment:   q.Environment.replaceDB(db),
-		Notification:  q.Notification.replaceDB(db),
-		Passkey:       q.Passkey.replaceDB(db),
-		Site:          q.Site.replaceDB(db),
-		Stream:        q.Stream.replaceDB(db),
-		User:          q.User.replaceDB(db),
+		db:             db,
+		AcmeUser:       q.AcmeUser.replaceDB(db),
+		AuthToken:      q.AuthToken.replaceDB(db),
+		BanIP:          q.BanIP.replaceDB(db),
+		Cert:           q.Cert.replaceDB(db),
+		ChatGPTLog:     q.ChatGPTLog.replaceDB(db),
+		Config:         q.Config.replaceDB(db),
+		ConfigBackup:   q.ConfigBackup.replaceDB(db),
+		DnsCredential:  q.DnsCredential.replaceDB(db),
+		EnvGroup:       q.EnvGroup.replaceDB(db),
+		Environment:    q.Environment.replaceDB(db),
+		ExternalNotify: q.ExternalNotify.replaceDB(db),
+		Notification:   q.Notification.replaceDB(db),
+		Passkey:        q.Passkey.replaceDB(db),
+		Site:           q.Site.replaceDB(db),
+		Stream:         q.Stream.replaceDB(db),
+		User:           q.User.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	AcmeUser      *acmeUserDo
-	AuthToken     *authTokenDo
-	BanIP         *banIPDo
-	Cert          *certDo
-	ChatGPTLog    *chatGPTLogDo
-	Config        *configDo
-	ConfigBackup  *configBackupDo
-	DnsCredential *dnsCredentialDo
-	EnvGroup      *envGroupDo
-	Environment   *environmentDo
-	Notification  *notificationDo
-	Passkey       *passkeyDo
-	Site          *siteDo
-	Stream        *streamDo
-	User          *userDo
+	AcmeUser       *acmeUserDo
+	AuthToken      *authTokenDo
+	BanIP          *banIPDo
+	Cert           *certDo
+	ChatGPTLog     *chatGPTLogDo
+	Config         *configDo
+	ConfigBackup   *configBackupDo
+	DnsCredential  *dnsCredentialDo
+	EnvGroup       *envGroupDo
+	Environment    *environmentDo
+	ExternalNotify *externalNotifyDo
+	Notification   *notificationDo
+	Passkey        *passkeyDo
+	Site           *siteDo
+	Stream         *streamDo
+	User           *userDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		AcmeUser:      q.AcmeUser.WithContext(ctx),
-		AuthToken:     q.AuthToken.WithContext(ctx),
-		BanIP:         q.BanIP.WithContext(ctx),
-		Cert:          q.Cert.WithContext(ctx),
-		ChatGPTLog:    q.ChatGPTLog.WithContext(ctx),
-		Config:        q.Config.WithContext(ctx),
-		ConfigBackup:  q.ConfigBackup.WithContext(ctx),
-		DnsCredential: q.DnsCredential.WithContext(ctx),
-		EnvGroup:      q.EnvGroup.WithContext(ctx),
-		Environment:   q.Environment.WithContext(ctx),
-		Notification:  q.Notification.WithContext(ctx),
-		Passkey:       q.Passkey.WithContext(ctx),
-		Site:          q.Site.WithContext(ctx),
-		Stream:        q.Stream.WithContext(ctx),
-		User:          q.User.WithContext(ctx),
+		AcmeUser:       q.AcmeUser.WithContext(ctx),
+		AuthToken:      q.AuthToken.WithContext(ctx),
+		BanIP:          q.BanIP.WithContext(ctx),
+		Cert:           q.Cert.WithContext(ctx),
+		ChatGPTLog:     q.ChatGPTLog.WithContext(ctx),
+		Config:         q.Config.WithContext(ctx),
+		ConfigBackup:   q.ConfigBackup.WithContext(ctx),
+		DnsCredential:  q.DnsCredential.WithContext(ctx),
+		EnvGroup:       q.EnvGroup.WithContext(ctx),
+		Environment:    q.Environment.WithContext(ctx),
+		ExternalNotify: q.ExternalNotify.WithContext(ctx),
+		Notification:   q.Notification.WithContext(ctx),
+		Passkey:        q.Passkey.WithContext(ctx),
+		Site:           q.Site.WithContext(ctx),
+		Stream:         q.Stream.WithContext(ctx),
+		User:           q.User.WithContext(ctx),
 	}
 }
 

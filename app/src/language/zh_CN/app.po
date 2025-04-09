@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-04-08 10:49+0800\n"
+"PO-Revision-Date: 2025-04-09 17:11+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
 "projects/nginx-ui/frontend/zh_Hans/>\n"
@@ -35,6 +35,10 @@ msgstr "访问日志"
 msgid "Access Logs"
 msgstr "访问日志"
 
+#: src/views/preference/components/ExternalNotify/dingtalk.ts:9
+msgid "Access Token"
+msgstr "Access Token"
+
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:113
 #: src/views/certificate/ACMEUserSelector.vue:85
 msgid "ACME User"
@@ -49,6 +53,7 @@ msgstr "ACME 用户"
 #: src/views/nginx_log/NginxLogList.vue:53
 #: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
+#: src/views/preference/components/ExternalNotify/columns.ts:46
 #: src/views/site/site_list/columns.tsx:117 src/views/stream/StreamList.vue:74
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
@@ -113,7 +118,7 @@ msgstr "然后，刷新此页面并再次点击添加 Passkey。"
 msgid "All"
 msgstr "全部"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:155
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "所有恢复码都已被使用"
@@ -138,7 +143,7 @@ msgstr "API Token"
 msgid "API Type"
 msgstr "API 类型"
 
-#: src/views/preference/Preference.vue:162
+#: src/views/preference/Preference.vue:163
 msgid "App"
 msgstr "App"
 
@@ -191,7 +196,7 @@ msgstr "您确定要永久删除此项目吗？"
 msgid "Are you sure you want to delete this item?"
 msgstr "你确定要删除这个项目吗?"
 
-#: src/views/site/site_list/SiteList.vue:163
+#: src/views/site/site_list/SiteList.vue:167
 #: src/views/stream/StreamList.vue:227
 msgid "Are you sure you want to delete?"
 msgstr "您确定要删除吗？"
@@ -236,7 +241,7 @@ msgstr "尝试修复"
 msgid "Attempts"
 msgstr "尝试次数"
 
-#: src/views/preference/Preference.vue:186
+#: src/views/preference/Preference.vue:193
 msgid "Auth"
 msgstr "认证"
 
@@ -317,12 +322,16 @@ msgstr "禁止 IP 列表"
 msgid "Banned Until"
 msgstr "禁用至"
 
+#: src/views/preference/components/ExternalNotify/bark.ts:5
+msgid "Bark"
+msgstr "Bark"
+
 #: src/views/site/site_add/SiteAdd.vue:95
 msgid "Base information"
 msgstr "基本信息"
 
 #: src/views/config/ConfigEditor.vue:290
-#: src/views/site/site_edit/RightSettings.vue:53
+#: src/views/site/site_edit/RightSettings.vue:52
 #: src/views/stream/components/RightSettings.vue:79
 msgid "Basic"
 msgstr "基本"
@@ -352,6 +361,10 @@ msgstr "以下是您选定的需要批量修改的项目"
 #: src/constants/errors/nginx.ts:2
 msgid "Block is nil"
 msgstr "区块为空"
+
+#: src/views/preference/components/ExternalNotify/telegram.ts:9
+msgid "Bot Token"
+msgstr "机器人令牌"
 
 #: src/views/system/About.vue:55
 msgid "Build with"
@@ -392,7 +405,7 @@ msgstr "无法比较：内容缺失"
 msgid "Cannot remove initial user"
 msgstr "不可删除初始用户"
 
-#: src/views/preference/Preference.vue:192
+#: src/views/preference/Preference.vue:199
 msgid "Cert"
 msgstr "证书"
 
@@ -457,6 +470,10 @@ msgstr "变更后的路径"
 #: src/views/system/Upgrade.vue:188
 msgid "Channel"
 msgstr "通道"
+
+#: src/views/preference/components/ExternalNotify/telegram.ts:13
+msgid "Chat ID"
+msgstr "聊天 ID"
 
 #: src/views/system/Upgrade.vue:185
 msgid "Check again"
@@ -652,6 +669,7 @@ msgstr ""
 
 #: src/views/environments/group/columns.ts:31
 #: src/views/notification/notificationColumns.tsx:59
+#: src/views/preference/components/ExternalNotify/columns.ts:41
 #: src/views/preference/components/Passkey.vue:95
 #: src/views/user/userColumns.tsx:48
 msgid "Created at"
@@ -721,7 +739,7 @@ msgstr "解密失败"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
 #: src/views/site/ngx_conf/NgxServer.vue:110
 #: src/views/site/ngx_conf/NgxUpstream.vue:128
-#: src/views/site/site_list/SiteList.vue:172
+#: src/views/site/site_list/SiteList.vue:176
 #: src/views/stream/StreamList.vue:236
 msgid "Delete"
 msgstr "删除"
@@ -731,39 +749,39 @@ msgstr "删除"
 msgid "Delete Permanently"
 msgstr "彻底删除"
 
-#: src/components/Notification/notifications.ts:37 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:55 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "删除远程站点错误"
 
-#: src/components/Notification/notifications.ts:41 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:59 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "删除远程站点成功"
 
-#: src/components/Notification/notifications.ts:95
+#: src/components/Notification/notifications.ts:113
 msgid "Delete Remote Stream Error"
 msgstr "删除远程 Stream 错误"
 
-#: src/components/Notification/notifications.ts:99
+#: src/components/Notification/notifications.ts:117
 msgid "Delete Remote Stream Success"
 msgstr "删除远程 Stream 成功"
 
-#: src/components/Notification/notifications.ts:38
+#: src/components/Notification/notifications.ts:56
 msgid "Delete site %{name} from %{node} failed"
 msgstr "部署 %{name} 到 %{node} 失败"
 
-#: src/components/Notification/notifications.ts:42
+#: src/components/Notification/notifications.ts:60
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "成功从 %{node} 中删除站点 %{name}"
 
-#: src/views/site/site_list/SiteList.vue:94
+#: src/views/site/site_list/SiteList.vue:98
 msgid "Delete site: %{site_name}"
 msgstr "删除站点: %{site_name}"
 
-#: src/components/Notification/notifications.ts:96
+#: src/components/Notification/notifications.ts:114
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "部署 %{name} 到 %{node} 失败"
 
-#: src/components/Notification/notifications.ts:100
+#: src/components/Notification/notifications.ts:118
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "成功从 %{node} 中删除站点 %{name}"
 
@@ -800,6 +818,14 @@ msgstr "详情"
 msgid "Development Mode"
 msgstr "开发模式"
 
+#: src/views/preference/components/ExternalNotify/bark.ts:9
+msgid "Device Key"
+msgstr "设备密钥"
+
+#: src/views/preference/components/ExternalNotify/dingtalk.ts:5
+msgid "DingTalk"
+msgstr "钉钉"
+
 #: src/views/site/ngx_conf/directive/DirectiveAdd.vue:89
 msgid "Directive"
 msgstr "指令"
@@ -832,51 +858,51 @@ msgstr "禁用"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "关闭 %{name} 自动续签失败"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:63 src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "禁用远程站点错误"
 
-#: src/components/Notification/notifications.ts:69
+#: src/components/Notification/notifications.ts:87
 msgid "Disable Remote Site Maintenance Error"
 msgstr "禁用远程站点维护错误"
 
-#: src/components/Notification/notifications.ts:73
+#: src/components/Notification/notifications.ts:91
 msgid "Disable Remote Site Maintenance Success"
 msgstr "禁用远程站点维护成功"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:67 src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "禁用远程站点成功"
 
-#: src/components/Notification/notifications.ts:103
+#: src/components/Notification/notifications.ts:121
 msgid "Disable Remote Stream Error"
 msgstr "禁用远程 Stream 错误"
 
-#: src/components/Notification/notifications.ts:107
+#: src/components/Notification/notifications.ts:125
 msgid "Disable Remote Stream Success"
 msgstr "禁用远程 Stream成功"
 
-#: src/components/Notification/notifications.ts:46
+#: src/components/Notification/notifications.ts:64
 msgid "Disable site %{name} from %{node} failed"
 msgstr "在 %{node} 上禁用 %{name} 成功"
 
-#: src/components/Notification/notifications.ts:50
+#: src/components/Notification/notifications.ts:68
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "在 %{node} 上禁用 %{name} 成功"
 
-#: src/components/Notification/notifications.ts:70
+#: src/components/Notification/notifications.ts:88
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "停用站点 %{name} 维护 %{node} 失败"
 
-#: src/components/Notification/notifications.ts:74
+#: src/components/Notification/notifications.ts:92
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "成功停用站点 %{name} 上 %{node} 的维护功能"
 
-#: src/components/Notification/notifications.ts:104
+#: src/components/Notification/notifications.ts:122
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "在 %{node} 中启用 %{name} 失败"
 
-#: src/components/Notification/notifications.ts:108
+#: src/components/Notification/notifications.ts:126
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "在 %{node} 上禁用 %{name} 成功"
 
@@ -984,7 +1010,7 @@ msgstr ""
 "使用 Passkey。"
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:158
+#: src/views/site/site_list/SiteList.vue:162
 #: src/views/stream/components/StreamDuplicate.vue:64
 #: src/views/stream/StreamList.vue:222
 msgid "Duplicate"
@@ -1049,51 +1075,51 @@ msgstr "启用失败"
 msgid "Enable HTTPS"
 msgstr "启用 HTTPS"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:71 src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "启用远程站点错误"
 
-#: src/components/Notification/notifications.ts:61
+#: src/components/Notification/notifications.ts:79
 msgid "Enable Remote Site Maintenance Error"
 msgstr "在 %{node} 上启用 %{site} 失败"
 
-#: src/components/Notification/notifications.ts:65
+#: src/components/Notification/notifications.ts:83
 msgid "Enable Remote Site Maintenance Success"
 msgstr "成功启用远程站点维护"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:75 src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "启用远程站点成功"
 
-#: src/components/Notification/notifications.ts:111
+#: src/components/Notification/notifications.ts:129
 msgid "Enable Remote Stream Error"
 msgstr "启用远程 Steam 错误"
 
-#: src/components/Notification/notifications.ts:115
+#: src/components/Notification/notifications.ts:133
 msgid "Enable Remote Stream Success"
 msgstr "启用远程 Stream 成功"
 
-#: src/components/Notification/notifications.ts:62
+#: src/components/Notification/notifications.ts:80
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "在 %{node} 中为 %{name} 启用维护模式失败"
 
-#: src/components/Notification/notifications.ts:66
+#: src/components/Notification/notifications.ts:84
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "在 %{node} 上成功启用站点 %{name} 维护模式"
 
-#: src/components/Notification/notifications.ts:54
+#: src/components/Notification/notifications.ts:72
 msgid "Enable site %{name} on %{node} failed"
 msgstr "在 %{node} 中启用 %{name} 失败"
 
-#: src/components/Notification/notifications.ts:58
+#: src/components/Notification/notifications.ts:76
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "在 %{node} 上启用 %{name} 成功"
 
-#: src/components/Notification/notifications.ts:112
+#: src/components/Notification/notifications.ts:130
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "在 %{node} 中启用 %{name} 失败"
 
-#: src/components/Notification/notifications.ts:116
+#: src/components/Notification/notifications.ts:134
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "在 %{node} 上启用 %{name} 成功"
 
@@ -1178,6 +1204,11 @@ msgstr "过期时间: %{date}"
 #: src/components/StdDesign/StdDataDisplay/methods/exportCsv.ts:64
 msgid "Export"
 msgstr "导出"
+
+#: src/views/preference/ExternalNotify.vue:10
+#: src/views/preference/Preference.vue:169
+msgid "External Notify"
+msgstr "外部通知"
 
 #: src/views/site/cert/components/ObtainCertLive.vue:94
 msgid "Fail to obtain certificate"
@@ -1539,7 +1570,7 @@ msgstr "首页"
 msgid "Host"
 msgstr "主机"
 
-#: src/views/preference/Preference.vue:174
+#: src/views/preference/Preference.vue:181
 msgid "HTTP"
 msgstr "HTTP"
 
@@ -1598,12 +1629,12 @@ msgid "Import Certificate"
 msgstr "导入证书"
 
 #: src/views/nginx_log/NginxLogList.vue:137
-#: src/views/site/site_list/SiteList.vue:128
+#: src/views/site/site_list/SiteList.vue:132
 msgid "Indexed"
 msgstr "已索引"
 
 #: src/views/nginx_log/NginxLogList.vue:134
-#: src/views/site/site_list/SiteList.vue:125
+#: src/views/site/site_list/SiteList.vue:129
 msgid "Indexing..."
 msgstr "索引中..."
 
@@ -1683,6 +1714,10 @@ msgstr "文件名无效"
 msgid "Invalid folder name"
 msgstr "无效文件夹名"
 
+#: src/constants/errors/notification.ts:3
+msgid "Invalid notifier config"
+msgstr "通知配置无效"
+
 #: src/constants/errors/user.ts:4
 msgid "Invalid otp code"
 msgstr "无效的 OTP 代码"
@@ -1742,6 +1777,10 @@ msgstr ""
 #: src/views/site/cert/components/AutoCertStepOne.vue:77
 msgid "Key Type"
 msgstr "密钥类型"
+
+#: src/views/preference/components/ExternalNotify/columns.ts:29
+msgid "Language"
+msgstr "语言"
 
 #: src/views/system/Upgrade.vue:179
 msgid "Last checked at"
@@ -1838,7 +1877,7 @@ msgstr "登录成功"
 msgid "Logout successful"
 msgstr "登出成功"
 
-#: src/views/preference/Preference.vue:210
+#: src/views/preference/Preference.vue:217
 msgid "Logrotate"
 msgstr "Logrotate"
 
@@ -1882,7 +1921,7 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "配置管理"
 
-#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:121
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:125
 msgid "Manage Sites"
 msgstr "网站管理"
 
@@ -1958,7 +1997,7 @@ msgstr "多行指令"
 #: src/views/nginx_log/NginxLogList.vue:37
 #: src/views/preference/components/AddPasskey.vue:75
 #: src/views/site/ngx_conf/NgxUpstream.vue:177
-#: src/views/site/site_edit/RightSettings.vue:64
+#: src/views/site/site_edit/RightSettings.vue:63
 #: src/views/site/site_list/columns.tsx:17
 #: src/views/site/site_list/SiteDuplicate.vue:79
 #: src/views/stream/components/RightSettings.vue:87
@@ -2005,7 +2044,7 @@ msgstr "新版本发布"
 msgid "Next"
 msgstr "下一步"
 
-#: src/views/preference/Preference.vue:198
+#: src/views/preference/Preference.vue:205
 msgid "Nginx"
 msgstr "Nginx"
 
@@ -2138,7 +2177,7 @@ msgstr "Nginx UI 配置已恢复，几秒钟后将自动重启。"
 #: src/views/preference/CertSettings.vue:73
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:88
-#: src/views/site/site_list/SiteList.vue:161
+#: src/views/site/site_list/SiteList.vue:165
 #: src/views/stream/StreamList.vue:225
 msgid "No"
 msgstr "取消"
@@ -2152,11 +2191,11 @@ msgstr "无操作"
 msgid "No records selected"
 msgstr "未选择记录"
 
-#: src/views/preference/Preference.vue:168
+#: src/views/preference/Preference.vue:175
 msgid "Node"
 msgstr "节点"
 
-#: src/views/site/site_edit/RightSettings.vue:67
+#: src/views/site/site_edit/RightSettings.vue:66
 #: src/views/site/site_list/columns.tsx:63
 #: src/views/stream/components/RightSettings.vue:90
 #: src/views/stream/StreamList.vue:30
@@ -2197,7 +2236,7 @@ msgstr "此前无效: %{date}"
 msgid "Note"
 msgstr "注意"
 
-#: src/views/site/site_edit/RightSettings.vue:96
+#: src/views/site/site_edit/RightSettings.vue:95
 #: src/views/stream/components/RightSettings.vue:118
 msgid ""
 "Note, if the configuration file include other configurations or "
@@ -2212,6 +2251,10 @@ msgstr "通知"
 #: src/routes/modules/notifications.ts:10
 msgid "Notifications"
 msgstr "通知"
+
+#: src/constants/errors/notification.ts:2
+msgid "Notifier not found"
+msgstr "未找到通知程序"
 
 #: src/views/site/cert/components/ObtainCert.vue:182
 msgid "Obtain certificate"
@@ -2255,7 +2298,7 @@ msgstr "确定"
 #: src/views/site/ngx_conf/NgxServer.vue:79
 #: src/views/site/ngx_conf/NgxUpstream.vue:33
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:121
-#: src/views/site/site_list/SiteList.vue:162
+#: src/views/site/site_list/SiteList.vue:166
 #: src/views/stream/components/RightSettings.vue:54
 #: src/views/stream/StreamList.vue:226
 #: src/views/system/Backup/BackupCreator.vue:149
@@ -2278,7 +2321,7 @@ msgstr "在线"
 msgid "Only zip files are allowed"
 msgstr "只允许使用zip文件"
 
-#: src/views/preference/Preference.vue:204
+#: src/views/preference/Preference.vue:211
 msgid "OpenAI"
 msgstr "OpenAI"
 
@@ -2419,7 +2462,7 @@ msgstr ""
 "请首先在 “证书”> “DNS 凭证” 中添加凭证，然后在下方选择一个凭证，请求 DNS 提供"
 "商的 API。"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:156
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -2505,7 +2548,7 @@ msgstr "同步后操作"
 msgid "Pre-release"
 msgstr "预发布"
 
-#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:151
+#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:152
 msgid "Preference"
 msgstr "偏好设置"
 
@@ -2639,19 +2682,19 @@ msgstr "重载"
 msgid "Reload Nginx"
 msgstr "重载 Nginx"
 
-#: src/components/Notification/notifications.ts:144
+#: src/components/Notification/notifications.ts:10
 msgid "Reload Nginx on %{node} failed, response: %{resp}"
 msgstr "在 %{node} 上重载 Nginx 失败，响应：%{resp}"
 
-#: src/components/Notification/notifications.ts:148
+#: src/components/Notification/notifications.ts:14
 msgid "Reload Nginx on %{node} successfully"
 msgstr "在 %{node} 上重载 Nginx 成功"
 
-#: src/components/Notification/notifications.ts:143
+#: src/components/Notification/notifications.ts:9
 msgid "Reload Remote Nginx Error"
 msgstr "重载远程 Nginx 错误"
 
-#: src/components/Notification/notifications.ts:147
+#: src/components/Notification/notifications.ts:13
 msgid "Reload Remote Nginx Success"
 msgstr "重载远程 Nginx 成功"
 
@@ -2689,51 +2732,51 @@ msgstr "删除成功"
 msgid "Rename"
 msgstr "重命名"
 
-#: src/components/Notification/notifications.ts:28
+#: src/components/Notification/notifications.ts:46
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "成功将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path}"
 
-#: src/components/Notification/notifications.ts:32
+#: src/components/Notification/notifications.ts:50
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "成功将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path}"
 
-#: src/components/Notification/notifications.ts:27 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:45 src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr "远程配置重命名错误"
 
-#: src/components/Notification/notifications.ts:31 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr "重命名远程配置成功"
 
-#: src/components/Notification/notifications.ts:77 src/language/constants.ts:56
+#: src/components/Notification/notifications.ts:95 src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "重命名远程站点错误"
 
-#: src/components/Notification/notifications.ts:81 src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:99 src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "重命名远程站点成功"
 
-#: src/components/Notification/notifications.ts:119
+#: src/components/Notification/notifications.ts:137
 msgid "Rename Remote Stream Error"
 msgstr "重命名远程 Stream 错误"
 
-#: src/components/Notification/notifications.ts:123
+#: src/components/Notification/notifications.ts:141
 msgid "Rename Remote Stream Success"
 msgstr "重命名远程 Stream成功"
 
-#: src/components/Notification/notifications.ts:78
+#: src/components/Notification/notifications.ts:96
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
 
-#: src/components/Notification/notifications.ts:82
+#: src/components/Notification/notifications.ts:100
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
 
-#: src/components/Notification/notifications.ts:120
+#: src/components/Notification/notifications.ts:138
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
 
-#: src/components/Notification/notifications.ts:124
+#: src/components/Notification/notifications.ts:142
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
 
@@ -2791,19 +2834,19 @@ msgstr "重启"
 msgid "Restart Nginx"
 msgstr "重启 Nginx"
 
-#: src/components/Notification/notifications.ts:152
+#: src/components/Notification/notifications.ts:18
 msgid "Restart Nginx on %{node} failed, response: %{resp}"
 msgstr "在 %{node} 上重启 Nginx 失败，响应：%{resp}"
 
-#: src/components/Notification/notifications.ts:156
+#: src/components/Notification/notifications.ts:22
 msgid "Restart Nginx on %{node} successfully"
 msgstr "在 %{node} 上重启 Nginx 成功"
 
-#: src/components/Notification/notifications.ts:151
+#: src/components/Notification/notifications.ts:17
 msgid "Restart Remote Nginx Error"
 msgstr "重启远程 Nginx 错误"
 
-#: src/components/Notification/notifications.ts:155
+#: src/components/Notification/notifications.ts:21
 msgid "Restart Remote Nginx Success"
 msgstr "重启远程 Nginx 成功"
 
@@ -2865,7 +2908,7 @@ msgstr "运行中"
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/config/ConfigEditor.vue:271
 #: src/views/preference/components/Passkey.vue:130
-#: src/views/preference/Preference.vue:221
+#: src/views/preference/Preference.vue:228
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
 #: src/views/site/site_edit/components/ConfigName.vue:52
 #: src/views/site/site_edit/SiteEdit.vue:292
@@ -2883,42 +2926,44 @@ msgstr "保存指令"
 msgid "Save error %{msg}"
 msgstr "保存错误 %{msg}"
 
-#: src/components/Notification/notifications.ts:85 src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:103
+#: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "保存远程站点错误"
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:107
+#: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "保存远程站点成功"
 
-#: src/components/Notification/notifications.ts:127
+#: src/components/Notification/notifications.ts:145
 msgid "Save Remote Stream Error"
 msgstr "保存远程 Stream 错误"
 
-#: src/components/Notification/notifications.ts:131
+#: src/components/Notification/notifications.ts:149
 msgid "Save Remote Stream Success"
 msgstr "保存远程 Stream 成功"
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:104
 msgid "Save site %{name} to %{node} failed"
 msgstr "成功将站点 %{name} 保存到 %{node} 中"
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:108
 msgid "Save site %{name} to %{node} successfully"
 msgstr "成功将站点 %{name} 保存到 %{node} 中"
 
-#: src/components/Notification/notifications.ts:128
+#: src/components/Notification/notifications.ts:146
 msgid "Save stream %{name} to %{node} failed"
 msgstr "部署 %{name} 到 %{node} 失败"
 
-#: src/components/Notification/notifications.ts:132
+#: src/components/Notification/notifications.ts:150
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "成功将站点 %{name} 保存到 %{node} 中"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
 #: src/views/certificate/CertificateEditor.vue:49
-#: src/views/preference/Preference.vue:123
+#: src/views/preference/Preference.vue:124
 msgid "Save successfully"
 msgstr "保存成功"
 
@@ -2937,6 +2982,10 @@ msgstr "用手机扫描二维码，将账户添加到应用程序中。"
 #: src/views/certificate/DNSChallenge.vue:90
 msgid "SDK"
 msgstr "SDK"
+
+#: src/views/preference/components/ExternalNotify/dingtalk.ts:13
+msgid "Secret (Optional)"
+msgstr "秘密（可选）"
 
 #: src/views/preference/components/TOTP.vue:109
 msgid "Secret has been copied"
@@ -2968,13 +3017,17 @@ msgstr "自我检查"
 msgid "Send"
 msgstr "上传"
 
-#: src/views/preference/Preference.vue:156
+#: src/views/preference/Preference.vue:157
 msgid "Server"
 msgstr "服务器"
 
 #: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
 msgstr "服务器信息"
+
+#: src/views/preference/components/ExternalNotify/bark.ts:13
+msgid "Server URL"
+msgstr "服务器 URL"
 
 #: src/views/site/cert/components/ObtainCert.vue:107
 msgid "server_name not found in directives"
@@ -3141,7 +3194,7 @@ msgstr "开始还原"
 #: src/views/certificate/ACMEUser.vue:65
 #: src/views/certificate/CertificateList/certColumns.tsx:65
 #: src/views/environments/list/envColumns.tsx:44
-#: src/views/site/site_edit/RightSettings.vue:56
+#: src/views/site/site_edit/RightSettings.vue:55
 #: src/views/site/site_list/columns.tsx:80 src/views/stream/StreamList.vue:47
 msgid "Status"
 msgstr "状态"
@@ -3215,35 +3268,35 @@ msgstr "同步"
 msgid "Sync Certificate"
 msgstr "同步证书"
 
-#: src/components/Notification/notifications.ts:10
+#: src/components/Notification/notifications.ts:28
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "证书 %{cert_name} 已成功同步到 %{env_name}"
 
-#: src/components/Notification/notifications.ts:14
+#: src/components/Notification/notifications.ts:32
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "证书 %{cert_name} 已成功同步到 %{env_name}"
 
-#: src/components/Notification/notifications.ts:9 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:27 src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr "同步证书错误"
 
-#: src/components/Notification/notifications.ts:13 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:31 src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr "同步证书成功"
 
-#: src/components/Notification/notifications.ts:20
+#: src/components/Notification/notifications.ts:38
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "配置 %{config_name} 成功同步到 %{env_name}"
 
-#: src/components/Notification/notifications.ts:24
+#: src/components/Notification/notifications.ts:42
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "配置 %{config_name} 成功同步到 %{env_name}"
 
-#: src/components/Notification/notifications.ts:19 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:37 src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr "同步配置错误"
 
-#: src/components/Notification/notifications.ts:23 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:41 src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr "同步配置成功"
 
@@ -3252,8 +3305,8 @@ msgstr "同步配置成功"
 msgid "Sync Nodes"
 msgstr "同步节点"
 
-#: src/views/site/site_edit/RightSettings.vue:102
-#: src/views/site/site_edit/RightSettings.vue:89
+#: src/views/site/site_edit/RightSettings.vue:101
+#: src/views/site/site_edit/RightSettings.vue:88
 #: src/views/stream/components/RightSettings.vue:111
 #: src/views/stream/components/RightSettings.vue:124
 msgid "Sync strategy"
@@ -3263,7 +3316,7 @@ msgstr "同步策略"
 msgid "Sync to"
 msgstr "同步到"
 
-#: src/views/site/site_edit/RightSettings.vue:86
+#: src/views/site/site_edit/RightSettings.vue:85
 #: src/views/stream/components/RightSettings.vue:108
 msgid "Synchronization"
 msgstr "同步"
@@ -3292,7 +3345,11 @@ msgstr "系统恢复成功。"
 msgid "Task not found"
 msgstr "未找到任务"
 
-#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:180
+#: src/views/preference/components/ExternalNotify/telegram.ts:5
+msgid "Telegram"
+msgstr "Telegram"
+
+#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:187
 #: src/views/terminal/Terminal.vue:129
 msgid "Terminal"
 msgstr "终端"
@@ -3541,6 +3598,7 @@ msgstr "需要两步验证"
 #: src/views/certificate/CertificateList/certColumns.tsx:25
 #: src/views/nginx_log/NginxLogList.vue:21
 #: src/views/notification/notificationColumns.tsx:9
+#: src/views/preference/components/ExternalNotify/columns.ts:17
 msgid "Type"
 msgstr "类型"
 
@@ -3557,7 +3615,7 @@ msgstr "更新成功"
 #: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:325
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
-#: src/views/site/site_edit/RightSettings.vue:76
+#: src/views/site/site_edit/RightSettings.vue:75
 #: src/views/site/site_list/columns.tsx:110
 #: src/views/stream/components/RightSettings.vue:99
 #: src/views/stream/StreamList.vue:67 src/views/user/userColumns.tsx:54
@@ -3717,7 +3775,7 @@ msgstr ""
 "启用后，Nginx UI 将在启动时自动重新注册用户。一般情况下，除非在开发环境中使"
 "用 Pebble 作为 CA，否则不要启用此功能。"
 
-#: src/views/site/site_edit/RightSettings.vue:92
+#: src/views/site/site_edit/RightSettings.vue:91
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "Node Group and the nodes selected below will be synchronized."
@@ -4052,9 +4110,6 @@ msgstr "你的 Passkeys"
 
 #~ msgid "The Operation of Sites, Configs and Certification will redo on this"
 #~ msgstr "网站、配置和证书的操作同步到该环境"
-
-#~ msgid "Token"
-#~ msgstr "Token"
 
 #~ msgid "Git"
 #~ msgstr "Git"
