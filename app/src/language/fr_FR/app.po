@@ -35,6 +35,11 @@ msgstr "Journaux d'accès"
 msgid "Access Logs"
 msgstr "Journaux d'accès"
 
+#: src/views/preference/components/ExternalNotify/dingtalk.ts:9
+#, fuzzy
+msgid "Access Token"
+msgstr "Journaux d'accès"
+
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:113
 #: src/views/certificate/ACMEUserSelector.vue:85
 #, fuzzy
@@ -50,6 +55,7 @@ msgstr "Nom d'utilisateur"
 #: src/views/nginx_log/NginxLogList.vue:53
 #: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
+#: src/views/preference/components/ExternalNotify/columns.ts:46
 #: src/views/site/site_list/columns.tsx:117 src/views/stream/StreamList.vue:74
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
@@ -119,7 +125,7 @@ msgstr ""
 msgid "All"
 msgstr "Tous"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:155
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "Tous les codes de récupération ont été utilisés"
@@ -146,7 +152,7 @@ msgstr "Jeton d'API"
 msgid "API Type"
 msgstr "Jeton d'API"
 
-#: src/views/preference/Preference.vue:162
+#: src/views/preference/Preference.vue:163
 #, fuzzy
 msgid "App"
 msgstr "Appliquer"
@@ -210,7 +216,7 @@ msgstr "Etes-vous sûr que vous voulez supprimer ?"
 msgid "Are you sure you want to delete this item?"
 msgstr "Etes-vous sûr que vous voulez supprimer ?"
 
-#: src/views/site/site_list/SiteList.vue:163
+#: src/views/site/site_list/SiteList.vue:167
 #: src/views/stream/StreamList.vue:227
 msgid "Are you sure you want to delete?"
 msgstr "Etes-vous sûr que vous voulez supprimer ?"
@@ -260,7 +266,7 @@ msgstr "Tenter de corriger"
 msgid "Attempts"
 msgstr "Tentatives"
 
-#: src/views/preference/Preference.vue:186
+#: src/views/preference/Preference.vue:193
 #, fuzzy
 msgid "Auth"
 msgstr "Autheur"
@@ -345,12 +351,16 @@ msgstr "IPs bannies"
 msgid "Banned Until"
 msgstr "Banni durant"
 
+#: src/views/preference/components/ExternalNotify/bark.ts:5
+msgid "Bark"
+msgstr ""
+
 #: src/views/site/site_add/SiteAdd.vue:95
 msgid "Base information"
 msgstr "Information générale"
 
 #: src/views/config/ConfigEditor.vue:290
-#: src/views/site/site_edit/RightSettings.vue:53
+#: src/views/site/site_edit/RightSettings.vue:52
 #: src/views/stream/components/RightSettings.vue:79
 msgid "Basic"
 msgstr "Basique"
@@ -384,6 +394,11 @@ msgstr ""
 #: src/constants/errors/nginx.ts:2
 msgid "Block is nil"
 msgstr ""
+
+#: src/views/preference/components/ExternalNotify/telegram.ts:9
+#, fuzzy
+msgid "Bot Token"
+msgstr "Jeton d'API"
 
 #: src/views/system/About.vue:55
 msgid "Build with"
@@ -425,7 +440,7 @@ msgstr ""
 msgid "Cannot remove initial user"
 msgstr "Impossible de retirer l'utilisateur initial"
 
-#: src/views/preference/Preference.vue:192
+#: src/views/preference/Preference.vue:199
 #, fuzzy
 msgid "Cert"
 msgstr "Auto Cert"
@@ -503,6 +518,10 @@ msgstr "Changer de certificat"
 #: src/views/system/Upgrade.vue:188
 msgid "Channel"
 msgstr "Canal"
+
+#: src/views/preference/components/ExternalNotify/telegram.ts:13
+msgid "Chat ID"
+msgstr ""
 
 #: src/views/system/Upgrade.vue:185
 msgid "Check again"
@@ -708,6 +727,7 @@ msgstr ""
 
 #: src/views/environments/group/columns.ts:31
 #: src/views/notification/notificationColumns.tsx:59
+#: src/views/preference/components/ExternalNotify/columns.ts:41
 #: src/views/preference/components/Passkey.vue:95
 #: src/views/user/userColumns.tsx:48
 msgid "Created at"
@@ -782,7 +802,7 @@ msgstr "Description"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
 #: src/views/site/ngx_conf/NgxServer.vue:110
 #: src/views/site/ngx_conf/NgxUpstream.vue:128
-#: src/views/site/site_list/SiteList.vue:172
+#: src/views/site/site_list/SiteList.vue:176
 #: src/views/stream/StreamList.vue:236
 msgid "Delete"
 msgstr "Supprimer"
@@ -792,46 +812,46 @@ msgstr "Supprimer"
 msgid "Delete Permanently"
 msgstr "Supprimer définitivement"
 
-#: src/components/Notification/notifications.ts:37 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:55 src/language/constants.ts:50
 #, fuzzy
 msgid "Delete Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:41 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:59 src/language/constants.ts:49
 #, fuzzy
 msgid "Delete Remote Site Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:95
+#: src/components/Notification/notifications.ts:113
 #, fuzzy
 msgid "Delete Remote Stream Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:99
+#: src/components/Notification/notifications.ts:117
 #, fuzzy
 msgid "Delete Remote Stream Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:38
+#: src/components/Notification/notifications.ts:56
 #, fuzzy
 msgid "Delete site %{name} from %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:42
+#: src/components/Notification/notifications.ts:60
 #, fuzzy
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/views/site/site_list/SiteList.vue:94
+#: src/views/site/site_list/SiteList.vue:98
 msgid "Delete site: %{site_name}"
 msgstr "Supprimer le site : %{site_name}"
 
-#: src/components/Notification/notifications.ts:96
+#: src/components/Notification/notifications.ts:114
 #, fuzzy
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:100
+#: src/components/Notification/notifications.ts:118
 #, fuzzy
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Dupliqué avec succès"
@@ -871,6 +891,14 @@ msgstr "Détails"
 msgid "Development Mode"
 msgstr "Mode développement"
 
+#: src/views/preference/components/ExternalNotify/bark.ts:9
+msgid "Device Key"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/dingtalk.ts:5
+msgid "DingTalk"
+msgstr ""
+
 #: src/views/site/ngx_conf/directive/DirectiveAdd.vue:89
 msgid "Directive"
 msgstr "Directive"
@@ -906,62 +934,62 @@ msgstr "Désactivé"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "La désactivation du renouvellement automatique a échoué pour %{name}"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:63 src/language/constants.ts:52
 #, fuzzy
 msgid "Disable Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:69
+#: src/components/Notification/notifications.ts:87
 #, fuzzy
 msgid "Disable Remote Site Maintenance Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:73
+#: src/components/Notification/notifications.ts:91
 #, fuzzy
 msgid "Disable Remote Site Maintenance Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:67 src/language/constants.ts:51
 #, fuzzy
 msgid "Disable Remote Site Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:103
+#: src/components/Notification/notifications.ts:121
 #, fuzzy
 msgid "Disable Remote Stream Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:107
+#: src/components/Notification/notifications.ts:125
 #, fuzzy
 msgid "Disable Remote Stream Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:46
+#: src/components/Notification/notifications.ts:64
 #, fuzzy
 msgid "Disable site %{name} from %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:50
+#: src/components/Notification/notifications.ts:68
 #, fuzzy
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:70
+#: src/components/Notification/notifications.ts:88
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:74
+#: src/components/Notification/notifications.ts:92
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:104
+#: src/components/Notification/notifications.ts:122
 #, fuzzy
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:108
+#: src/components/Notification/notifications.ts:126
 #, fuzzy
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Dupliqué avec succès"
@@ -1082,7 +1110,7 @@ msgstr ""
 "exécuté sur localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:158
+#: src/views/site/site_list/SiteList.vue:162
 #: src/views/stream/components/StreamDuplicate.vue:64
 #: src/views/stream/StreamList.vue:222
 msgid "Duplicate"
@@ -1155,62 +1183,62 @@ msgstr "Échec de l'activation"
 msgid "Enable HTTPS"
 msgstr "Activer TLS"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:71 src/language/constants.ts:54
 #, fuzzy
 msgid "Enable Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:61
+#: src/components/Notification/notifications.ts:79
 #, fuzzy
 msgid "Enable Remote Site Maintenance Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:65
+#: src/components/Notification/notifications.ts:83
 #, fuzzy
 msgid "Enable Remote Site Maintenance Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:75 src/language/constants.ts:53
 #, fuzzy
 msgid "Enable Remote Site Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:111
+#: src/components/Notification/notifications.ts:129
 #, fuzzy
 msgid "Enable Remote Stream Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:115
+#: src/components/Notification/notifications.ts:133
 #, fuzzy
 msgid "Enable Remote Stream Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:62
+#: src/components/Notification/notifications.ts:80
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:66
+#: src/components/Notification/notifications.ts:84
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:54
+#: src/components/Notification/notifications.ts:72
 #, fuzzy
 msgid "Enable site %{name} on %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:58
+#: src/components/Notification/notifications.ts:76
 #, fuzzy
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:112
+#: src/components/Notification/notifications.ts:130
 #, fuzzy
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:116
+#: src/components/Notification/notifications.ts:134
 #, fuzzy
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Dupliqué avec succès"
@@ -1301,6 +1329,11 @@ msgstr "Date d'expiration : %{date}"
 #: src/components/StdDesign/StdDataDisplay/methods/exportCsv.ts:64
 msgid "Export"
 msgstr "Exporter"
+
+#: src/views/preference/ExternalNotify.vue:10
+#: src/views/preference/Preference.vue:169
+msgid "External Notify"
+msgstr ""
 
 #: src/views/site/cert/components/ObtainCertLive.vue:94
 #, fuzzy
@@ -1714,7 +1747,7 @@ msgstr "Menu principal"
 msgid "Host"
 msgstr "Host HTTP"
 
-#: src/views/preference/Preference.vue:174
+#: src/views/preference/Preference.vue:181
 #, fuzzy
 msgid "HTTP"
 msgstr "HTTP01"
@@ -1782,12 +1815,12 @@ msgid "Import Certificate"
 msgstr "État du certificat"
 
 #: src/views/nginx_log/NginxLogList.vue:137
-#: src/views/site/site_list/SiteList.vue:128
+#: src/views/site/site_list/SiteList.vue:132
 msgid "Indexed"
 msgstr ""
 
 #: src/views/nginx_log/NginxLogList.vue:134
-#: src/views/site/site_list/SiteList.vue:125
+#: src/views/site/site_list/SiteList.vue:129
 msgid "Indexing..."
 msgstr ""
 
@@ -1871,6 +1904,11 @@ msgstr "Nom de fichier invalide"
 msgid "Invalid folder name"
 msgstr "Nom du répertoire invalide"
 
+#: src/constants/errors/notification.ts:3
+#, fuzzy
+msgid "Invalid notifier config"
+msgstr "Code otp invalide"
+
 #: src/constants/errors/user.ts:4
 msgid "Invalid otp code"
 msgstr "Code otp invalide"
@@ -1936,6 +1974,10 @@ msgstr ""
 #, fuzzy
 msgid "Key Type"
 msgstr "Type"
+
+#: src/views/preference/components/ExternalNotify/columns.ts:29
+msgid "Language"
+msgstr ""
 
 #: src/views/system/Upgrade.vue:179
 msgid "Last checked at"
@@ -2044,7 +2086,7 @@ msgstr "Connexion réussie"
 msgid "Logout successful"
 msgstr "Déconnexion réussie"
 
-#: src/views/preference/Preference.vue:210
+#: src/views/preference/Preference.vue:217
 msgid "Logrotate"
 msgstr ""
 
@@ -2087,7 +2129,7 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "Gérer les configurations"
 
-#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:121
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:125
 msgid "Manage Sites"
 msgstr "Gérer les sites"
 
@@ -2168,7 +2210,7 @@ msgstr "Directive multiligne"
 #: src/views/nginx_log/NginxLogList.vue:37
 #: src/views/preference/components/AddPasskey.vue:75
 #: src/views/site/ngx_conf/NgxUpstream.vue:177
-#: src/views/site/site_edit/RightSettings.vue:64
+#: src/views/site/site_edit/RightSettings.vue:63
 #: src/views/site/site_list/columns.tsx:17
 #: src/views/site/site_list/SiteDuplicate.vue:79
 #: src/views/stream/components/RightSettings.vue:87
@@ -2218,7 +2260,7 @@ msgstr "Nouvelle version publiée"
 msgid "Next"
 msgstr "Suivant"
 
-#: src/views/preference/Preference.vue:198
+#: src/views/preference/Preference.vue:205
 #, fuzzy
 msgid "Nginx"
 msgstr "Journal Nginx"
@@ -2363,7 +2405,7 @@ msgstr "Erreur d'analyse de configuration Nginx"
 #: src/views/preference/CertSettings.vue:73
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:88
-#: src/views/site/site_list/SiteList.vue:161
+#: src/views/site/site_list/SiteList.vue:165
 #: src/views/stream/StreamList.vue:225
 msgid "No"
 msgstr "Non"
@@ -2378,12 +2420,12 @@ msgstr "Action"
 msgid "No records selected"
 msgstr ""
 
-#: src/views/preference/Preference.vue:168
+#: src/views/preference/Preference.vue:175
 #, fuzzy
 msgid "Node"
 msgstr "Nom d'utilisateur"
 
-#: src/views/site/site_edit/RightSettings.vue:67
+#: src/views/site/site_edit/RightSettings.vue:66
 #: src/views/site/site_list/columns.tsx:63
 #: src/views/stream/components/RightSettings.vue:90
 #: src/views/stream/StreamList.vue:30
@@ -2429,7 +2471,7 @@ msgstr "Non valide avant : %{date}"
 msgid "Note"
 msgstr "Note"
 
-#: src/views/site/site_edit/RightSettings.vue:96
+#: src/views/site/site_edit/RightSettings.vue:95
 #: src/views/stream/components/RightSettings.vue:118
 msgid ""
 "Note, if the configuration file include other configurations or "
@@ -2446,6 +2488,11 @@ msgstr "Certification"
 #, fuzzy
 msgid "Notifications"
 msgstr "Certification"
+
+#: src/constants/errors/notification.ts:2
+#, fuzzy
+msgid "Notifier not found"
+msgstr "Fichier introuvable"
 
 #: src/views/site/cert/components/ObtainCert.vue:182
 msgid "Obtain certificate"
@@ -2489,7 +2536,7 @@ msgstr ""
 #: src/views/site/ngx_conf/NgxServer.vue:79
 #: src/views/site/ngx_conf/NgxUpstream.vue:33
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:121
-#: src/views/site/site_list/SiteList.vue:162
+#: src/views/site/site_list/SiteList.vue:166
 #: src/views/stream/components/RightSettings.vue:54
 #: src/views/stream/StreamList.vue:226
 #: src/views/system/Backup/BackupCreator.vue:149
@@ -2512,7 +2559,7 @@ msgstr ""
 msgid "Only zip files are allowed"
 msgstr ""
 
-#: src/views/preference/Preference.vue:204
+#: src/views/preference/Preference.vue:211
 msgid "OpenAI"
 msgstr "OpenAI"
 
@@ -2656,7 +2703,7 @@ msgstr ""
 "des informations d'identification ci-dessous pour demander l'API du "
 "fournisseur DNS."
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:156
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -2749,7 +2796,7 @@ msgstr "Action"
 msgid "Pre-release"
 msgstr ""
 
-#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:151
+#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:152
 msgid "Preference"
 msgstr "Préférence"
 
@@ -2893,22 +2940,22 @@ msgstr "Recharger"
 msgid "Reload Nginx"
 msgstr "Rechargement de nginx"
 
-#: src/components/Notification/notifications.ts:144
+#: src/components/Notification/notifications.ts:10
 #, fuzzy
 msgid "Reload Nginx on %{node} failed, response: %{resp}"
 msgstr "Supprimer le site : %{site_name}"
 
-#: src/components/Notification/notifications.ts:148
+#: src/components/Notification/notifications.ts:14
 #, fuzzy
 msgid "Reload Nginx on %{node} successfully"
 msgstr "Mise à niveau réussie"
 
-#: src/components/Notification/notifications.ts:143
+#: src/components/Notification/notifications.ts:9
 #, fuzzy
 msgid "Reload Remote Nginx Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:147
+#: src/components/Notification/notifications.ts:13
 #, fuzzy
 msgid "Reload Remote Nginx Success"
 msgstr "Changer de certificat"
@@ -2950,62 +2997,62 @@ msgstr "Enregistré avec succès"
 msgid "Rename"
 msgstr "Nom d'utilisateur"
 
-#: src/components/Notification/notifications.ts:28
+#: src/components/Notification/notifications.ts:46
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:32
+#: src/components/Notification/notifications.ts:50
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:27 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:45 src/language/constants.ts:42
 #, fuzzy
 msgid "Rename Remote Config Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:31 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:41
 #, fuzzy
 msgid "Rename Remote Config Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:77 src/language/constants.ts:56
+#: src/components/Notification/notifications.ts:95 src/language/constants.ts:56
 #, fuzzy
 msgid "Rename Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:81 src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:99 src/language/constants.ts:55
 #, fuzzy
 msgid "Rename Remote Site Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:119
+#: src/components/Notification/notifications.ts:137
 #, fuzzy
 msgid "Rename Remote Stream Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:123
+#: src/components/Notification/notifications.ts:141
 #, fuzzy
 msgid "Rename Remote Stream Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:78
+#: src/components/Notification/notifications.ts:96
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:82
+#: src/components/Notification/notifications.ts:100
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:120
+#: src/components/Notification/notifications.ts:138
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:124
+#: src/components/Notification/notifications.ts:142
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "Dupliqué avec succès"
@@ -3072,22 +3119,22 @@ msgstr "Redémarrer"
 msgid "Restart Nginx"
 msgstr "Redémarrage"
 
-#: src/components/Notification/notifications.ts:152
+#: src/components/Notification/notifications.ts:18
 #, fuzzy
 msgid "Restart Nginx on %{node} failed, response: %{resp}"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:156
+#: src/components/Notification/notifications.ts:22
 #, fuzzy
 msgid "Restart Nginx on %{node} successfully"
 msgstr "Mise à niveau réussie"
 
-#: src/components/Notification/notifications.ts:151
+#: src/components/Notification/notifications.ts:17
 #, fuzzy
 msgid "Restart Remote Nginx Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:155
+#: src/components/Notification/notifications.ts:21
 #, fuzzy
 msgid "Restart Remote Nginx Success"
 msgstr "Changer de certificat"
@@ -3154,7 +3201,7 @@ msgstr "En cours d'éxécution"
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/config/ConfigEditor.vue:271
 #: src/views/preference/components/Passkey.vue:130
-#: src/views/preference/Preference.vue:221
+#: src/views/preference/Preference.vue:228
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
 #: src/views/site/site_edit/components/ConfigName.vue:52
 #: src/views/site/site_edit/SiteEdit.vue:292
@@ -3172,42 +3219,44 @@ msgstr "Enregistrer la directive"
 msgid "Save error %{msg}"
 msgstr "Enregistrer l'erreur %{msg}"
 
-#: src/components/Notification/notifications.ts:85 src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:103
+#: src/language/constants.ts:48
 #, fuzzy
 msgid "Save Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:107
+#: src/language/constants.ts:47
 #, fuzzy
 msgid "Save Remote Site Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:127
+#: src/components/Notification/notifications.ts:145
 #, fuzzy
 msgid "Save Remote Stream Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:131
+#: src/components/Notification/notifications.ts:149
 #, fuzzy
 msgid "Save Remote Stream Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:104
 #, fuzzy
 msgid "Save site %{name} to %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:108
 #, fuzzy
 msgid "Save site %{name} to %{node} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:128
+#: src/components/Notification/notifications.ts:146
 #, fuzzy
 msgid "Save stream %{name} to %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:132
+#: src/components/Notification/notifications.ts:150
 #, fuzzy
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Dupliqué avec succès"
@@ -3215,7 +3264,7 @@ msgstr "Dupliqué avec succès"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
 #: src/views/certificate/CertificateEditor.vue:49
-#: src/views/preference/Preference.vue:123
+#: src/views/preference/Preference.vue:124
 msgid "Save successfully"
 msgstr "Sauvegarde réussie"
 
@@ -3233,6 +3282,10 @@ msgstr ""
 
 #: src/views/certificate/DNSChallenge.vue:90
 msgid "SDK"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/dingtalk.ts:13
+msgid "Secret (Optional)"
 msgstr ""
 
 #: src/views/preference/components/TOTP.vue:109
@@ -3266,13 +3319,18 @@ msgstr ""
 msgid "Send"
 msgstr "Envoyer"
 
-#: src/views/preference/Preference.vue:156
+#: src/views/preference/Preference.vue:157
 #, fuzzy
 msgid "Server"
 msgstr "Informations sur le serveur"
 
 #: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
+msgstr "Informations sur le serveur"
+
+#: src/views/preference/components/ExternalNotify/bark.ts:13
+#, fuzzy
+msgid "Server URL"
 msgstr "Informations sur le serveur"
 
 #: src/views/site/cert/components/ObtainCert.vue:107
@@ -3455,7 +3513,7 @@ msgstr ""
 #: src/views/certificate/ACMEUser.vue:65
 #: src/views/certificate/CertificateList/certColumns.tsx:65
 #: src/views/environments/list/envColumns.tsx:44
-#: src/views/site/site_edit/RightSettings.vue:56
+#: src/views/site/site_edit/RightSettings.vue:55
 #: src/views/site/site_list/columns.tsx:80 src/views/stream/StreamList.vue:47
 msgid "Status"
 msgstr "Statut"
@@ -3534,42 +3592,42 @@ msgstr ""
 msgid "Sync Certificate"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:10
+#: src/components/Notification/notifications.ts:28
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:14
+#: src/components/Notification/notifications.ts:32
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:9 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:27 src/language/constants.ts:39
 #, fuzzy
 msgid "Sync Certificate Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:13 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:31 src/language/constants.ts:38
 #, fuzzy
 msgid "Sync Certificate Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:20
+#: src/components/Notification/notifications.ts:38
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:24
+#: src/components/Notification/notifications.ts:42
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:19 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:37 src/language/constants.ts:45
 #, fuzzy
 msgid "Sync Config Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:23 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:41 src/language/constants.ts:44
 #, fuzzy
 msgid "Sync Config Success"
 msgstr "Changer de certificat"
@@ -3579,8 +3637,8 @@ msgstr "Changer de certificat"
 msgid "Sync Nodes"
 msgstr ""
 
-#: src/views/site/site_edit/RightSettings.vue:102
-#: src/views/site/site_edit/RightSettings.vue:89
+#: src/views/site/site_edit/RightSettings.vue:101
+#: src/views/site/site_edit/RightSettings.vue:88
 #: src/views/stream/components/RightSettings.vue:111
 #: src/views/stream/components/RightSettings.vue:124
 #, fuzzy
@@ -3592,7 +3650,7 @@ msgstr "Changer de certificat"
 msgid "Sync to"
 msgstr "Changer de certificat"
 
-#: src/views/site/site_edit/RightSettings.vue:86
+#: src/views/site/site_edit/RightSettings.vue:85
 #: src/views/stream/components/RightSettings.vue:108
 msgid "Synchronization"
 msgstr ""
@@ -3625,7 +3683,11 @@ msgstr "Nginx a redémarré avec succès"
 msgid "Task not found"
 msgstr "Fichier introuvable"
 
-#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:180
+#: src/views/preference/components/ExternalNotify/telegram.ts:5
+msgid "Telegram"
+msgstr ""
+
+#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:187
 #: src/views/terminal/Terminal.vue:129
 msgid "Terminal"
 msgstr "Terminal"
@@ -3882,6 +3944,7 @@ msgstr ""
 #: src/views/certificate/CertificateList/certColumns.tsx:25
 #: src/views/nginx_log/NginxLogList.vue:21
 #: src/views/notification/notificationColumns.tsx:9
+#: src/views/preference/components/ExternalNotify/columns.ts:17
 msgid "Type"
 msgstr "Type"
 
@@ -3899,7 +3962,7 @@ msgstr "Mis à jour avec succés"
 #: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:325
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
-#: src/views/site/site_edit/RightSettings.vue:76
+#: src/views/site/site_edit/RightSettings.vue:75
 #: src/views/site/site_list/columns.tsx:110
 #: src/views/stream/components/RightSettings.vue:99
 #: src/views/stream/StreamList.vue:67 src/views/user/userColumns.tsx:54
@@ -4063,7 +4126,7 @@ msgid ""
 "Pebble as CA."
 msgstr ""
 
-#: src/views/site/site_edit/RightSettings.vue:92
+#: src/views/site/site_edit/RightSettings.vue:91
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "Node Group and the nodes selected below will be synchronized."
@@ -4342,10 +4405,6 @@ msgstr ""
 
 #~ msgid "Theme"
 #~ msgstr "Thème"
-
-#, fuzzy
-#~ msgid "Token"
-#~ msgstr "Jeton d'API"
 
 #~ msgid "Git"
 #~ msgstr "Git"

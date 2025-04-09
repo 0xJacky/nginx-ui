@@ -7,6 +7,7 @@ import { useSettingsStore } from '@/pinia'
 import AppSettings from '@/views/preference/AppSettings.vue'
 import AuthSettings from '@/views/preference/AuthSettings.vue'
 import CertSettings from '@/views/preference/CertSettings.vue'
+import ExternalNotify from '@/views/preference/ExternalNotify.vue'
 import HTTPSettings from '@/views/preference/HTTPSettings.vue'
 import LogrotateSettings from '@/views/preference/LogrotateSettings.vue'
 import NginxSettings from '@/views/preference/NginxSettings.vue'
@@ -164,6 +165,12 @@ onMounted(() => {
           <AppSettings />
         </ATabPane>
         <ATabPane
+          key="external_notify"
+          :tab="$gettext('External Notify')"
+        >
+          <ExternalNotify />
+        </ATabPane>
+        <ATabPane
           key="node"
           :tab="$gettext('Node')"
         >
@@ -213,7 +220,7 @@ onMounted(() => {
         </ATabPane>
       </ATabs>
     </div>
-    <FooterToolBar>
+    <FooterToolBar v-if="activeKey !== 'external_notify'">
       <AButton
         type="primary"
         @click="save"
@@ -227,7 +234,7 @@ onMounted(() => {
 <style lang="less" scoped>
 .preference-container {
   width: 100%;
-  max-width: 750px;
+  max-width: 850px;
   margin: 0 auto;
   padding: 0 10px;
 }
