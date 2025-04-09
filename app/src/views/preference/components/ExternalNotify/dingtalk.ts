@@ -6,11 +6,11 @@ const DingTalkConfig: ExternalNotifyConfig = {
   config: [
     {
       key: 'access_token',
-      label: () => $gettext('Access Token'),
+      label: 'Access Token',
     },
     {
       key: 'secret',
-      label: () => $gettext('Secret (Optional)'),
+      label: 'Secret (Optional)',
     },
   ],
 }

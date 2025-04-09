@@ -1,6 +1,6 @@
 export interface ExternalNotifyConfigItem {
   key: string
-  label: () => string
+  label: string
 }
 
 export interface ExternalNotifyConfig {

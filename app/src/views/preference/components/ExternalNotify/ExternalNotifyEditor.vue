@@ -26,7 +26,6 @@ const columns = computed<Column[]>(() => {
       type: input,
       config: {
         label: item.label,
-        required: true,
       },
     },
   }))

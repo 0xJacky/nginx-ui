@@ -6,11 +6,11 @@ const BarkConfig: ExternalNotifyConfig = {
   config: [
     {
       key: 'device_key',
-      label: () => $gettext('Device Key'),
+      label: 'Device Key',
     },
     {
       key: 'server_url',
-      label: () => $gettext('Server URL'),
+      label: 'Server URL',
     },
   ],
 }

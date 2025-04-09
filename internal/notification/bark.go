@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/nikoksr/notify"
 	"github.com/nikoksr/notify/service/bark"
 	"github.com/uozi-tech/cosy/map2struct"
 )
@@ -26,8 +25,6 @@ func init() {
 			return ErrInvalidNotifierConfig
 		}
 		barkService := bark.NewWithServers(barkConfig.DeviceKey, barkConfig.ServerURL)
-		externalNotify := notify.New()
-		externalNotify.UseServices(barkService)
-		return externalNotify.Send(ctx, msg.GetTitle(n.Language), msg.GetContent(n.Language))
+		return barkService.Send(ctx, msg.GetTitle(n.Language), msg.GetContent(n.Language))
 	})
 }

@@ -7,7 +7,6 @@ import (
 	"strconv"
 
 	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/nikoksr/notify"
 	"github.com/nikoksr/notify/service/telegram"
 	"github.com/uozi-tech/cosy/map2struct"
 )
@@ -46,9 +45,7 @@ func init() {
 		}
 
 		telegramService.AddReceivers(chatIDInt)
-
-		externalNotify := notify.New()
-		externalNotify.UseServices(telegramService)
-		return externalNotify.Send(ctx, msg.GetTitle(n.Language), msg.GetContent(n.Language))
+		
+		return telegramService.Send(ctx, msg.GetTitle(n.Language), msg.GetContent(n.Language))
 	})
 }

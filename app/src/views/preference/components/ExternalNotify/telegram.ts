@@ -6,11 +6,11 @@ const TelegramConfig: ExternalNotifyConfig = {
   config: [
     {
       key: 'bot_token',
-      label: () => $gettext('Bot Token'),
+      label: 'Bot Token',
     },
     {
       key: 'chat_id',
-      label: () => $gettext('Chat ID'),
+      label: 'Chat ID',
     },
   ],
 }

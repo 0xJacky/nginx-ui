@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/nikoksr/notify"
 	"github.com/nikoksr/notify/service/dingding"
 	"github.com/uozi-tech/cosy/map2struct"
 )
@@ -31,9 +30,6 @@ func init() {
 			Token:  dingTalkConfig.AccessToken,
 			Secret: dingTalkConfig.Secret,
 		})
-		// Use the service
-		externalNotify := notify.New()
-		externalNotify.UseServices(dingTalkService)
-		return externalNotify.Send(ctx, msg.GetTitle(n.Language), msg.GetContent(n.Language))
+		return dingTalkService.Send(ctx, msg.GetTitle(n.Language), msg.GetContent(n.Language))
 	})
 }

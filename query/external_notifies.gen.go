@@ -33,6 +33,7 @@ func newExternalNotify(db *gorm.DB, opts ...gen.DOOption) externalNotify {
 	_externalNotify.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_externalNotify.DeletedAt = field.NewField(tableName, "deleted_at")
 	_externalNotify.Type = field.NewString(tableName, "type")
+	_externalNotify.Language = field.NewString(tableName, "language")
 	_externalNotify.Config = field.NewField(tableName, "config")
 
 	_externalNotify.fillFieldMap()
@@ -49,6 +50,7 @@ type externalNotify struct {
 	UpdatedAt field.Time
 	DeletedAt field.Field
 	Type      field.String
+	Language  field.String
 	Config    field.Field
 
 	fieldMap map[string]field.Expr
@@ -71,6 +73,7 @@ func (e *externalNotify) updateTableName(table string) *externalNotify {
 	e.UpdatedAt = field.NewTime(table, "updated_at")
 	e.DeletedAt = field.NewField(table, "deleted_at")
 	e.Type = field.NewString(table, "type")
+	e.Language = field.NewString(table, "language")
 	e.Config = field.NewField(table, "config")
 
 	e.fillFieldMap()
@@ -88,12 +91,13 @@ func (e *externalNotify) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (e *externalNotify) fillFieldMap() {
-	e.fieldMap = make(map[string]field.Expr, 6)
+	e.fieldMap = make(map[string]field.Expr, 7)
 	e.fieldMap["id"] = e.ID
 	e.fieldMap["created_at"] = e.CreatedAt
 	e.fieldMap["updated_at"] = e.UpdatedAt
 	e.fieldMap["deleted_at"] = e.DeletedAt
 	e.fieldMap["type"] = e.Type
+	e.fieldMap["language"] = e.Language
 	e.fieldMap["config"] = e.Config
 }
 

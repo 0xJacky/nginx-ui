@@ -4,6 +4,12 @@
 
 const notifications: Record<string, { title: () => string, content: (args: any) => string }> = {
 
+  // user module notifications
+  'All Recovery Codes Have Been Used': {
+    title: () => $gettext('All Recovery Codes Have Been Used'),
+    content: (args: any) => $gettext('Please generate new recovery codes in the preferences immediately to prevent lockout.', args),
+  },
+
   // cluster module notifications
   'Reload Remote Nginx Error': {
     title: () => $gettext('Reload Remote Nginx Error'),
@@ -148,12 +154,6 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
   'Save Remote Stream Success': {
     title: () => $gettext('Save Remote Stream Success'),
     content: (args: any) => $gettext('Save stream %{name} to %{node} successfully', args),
-  },
-
-  // user module notifications
-  'All Recovery Codes Have Been Used': {
-    title: () => $gettext('All Recovery Codes Have Been Used'),
-    content: (args: any) => $gettext('Please generate new recovery codes in the preferences immediately to prevent lockout.', args),
   },
 }
 
