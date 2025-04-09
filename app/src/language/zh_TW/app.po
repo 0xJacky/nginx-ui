@@ -40,11 +40,6 @@ msgstr "訪問日誌"
 msgid "Access Logs"
 msgstr "訪問日誌"
 
-#: src/views/preference/components/ExternalNotify/dingtalk.ts:9
-#, fuzzy
-msgid "Access Token"
-msgstr "訪問日誌"
-
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:113
 #: src/views/certificate/ACMEUserSelector.vue:85
 msgid "ACME User"
@@ -124,7 +119,7 @@ msgstr "然後，重新整理此頁面並再次點選新增通行密鑰。"
 msgid "All"
 msgstr "全部"
 
-#: src/components/Notification/notifications.ts:155
+#: src/components/Notification/notifications.ts:175
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "所有恢復碼都已使用完畢"
@@ -374,11 +369,6 @@ msgstr "以下是您要批次修改的選定項目"
 msgid "Block is nil"
 msgstr "區塊為 nil"
 
-#: src/views/preference/components/ExternalNotify/telegram.ts:9
-#, fuzzy
-msgid "Bot Token"
-msgstr "Token"
-
 #: src/views/system/About.vue:55
 msgid "Build with"
 msgstr "構建基於"
@@ -426,9 +416,41 @@ msgstr "證書"
 msgid "Cert path is not under the nginx conf dir"
 msgstr "證書路徑不在 Nginx 設定檔資料夾下"
 
+#: src/components/Notification/notifications.ts:28
+#, fuzzy
+msgid "Certificate %{name} has expired"
+msgstr "明文為空"
+
+#: src/components/Notification/notifications.ts:32
+#: src/components/Notification/notifications.ts:36
+#: src/components/Notification/notifications.ts:40
+msgid "Certificate %{name} will expire in %{days} days"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:44
+msgid "Certificate %{name} will expire in 1 day"
+msgstr ""
+
 #: src/constants/errors/cert.ts:4
 msgid "Certificate decode error"
 msgstr "證書解碼錯誤"
+
+#: src/components/Notification/notifications.ts:31
+#, fuzzy
+msgid "Certificate Expiration Notice"
+msgstr "明文為空"
+
+#: src/components/Notification/notifications.ts:27
+#, fuzzy
+msgid "Certificate Expired"
+msgstr "憑證清單"
+
+#: src/components/Notification/notifications.ts:35
+#: src/components/Notification/notifications.ts:39
+#: src/components/Notification/notifications.ts:43
+#, fuzzy
+msgid "Certificate Expiring Soon"
+msgstr "證書解析錯誤"
 
 #: src/constants/errors/cert.ts:5
 msgid "Certificate parse error"
@@ -484,10 +506,6 @@ msgstr "變更後路徑"
 #: src/views/system/Upgrade.vue:188
 msgid "Channel"
 msgstr "通道"
-
-#: src/views/preference/components/ExternalNotify/telegram.ts:13
-msgid "Chat ID"
-msgstr ""
 
 #: src/views/system/Upgrade.vue:185
 msgid "Check again"
@@ -768,27 +786,27 @@ msgstr "刪除"
 msgid "Delete Permanently"
 msgstr "永久刪除"
 
-#: src/components/Notification/notifications.ts:55 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:75 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "刪除遠端網站錯誤"
 
-#: src/components/Notification/notifications.ts:59 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:79 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "刪除遠端網站成功"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:133
 msgid "Delete Remote Stream Error"
 msgstr "刪除遠端串流錯誤"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:137
 msgid "Delete Remote Stream Success"
 msgstr "刪除遠端串流成功"
 
-#: src/components/Notification/notifications.ts:56
+#: src/components/Notification/notifications.ts:76
 msgid "Delete site %{name} from %{node} failed"
 msgstr "從 %{node} 刪除網站 %{name} 失敗"
 
-#: src/components/Notification/notifications.ts:60
+#: src/components/Notification/notifications.ts:80
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "成功從 %{node} 移除站點 %{name}"
 
@@ -796,11 +814,11 @@ msgstr "成功從 %{node} 移除站點 %{name}"
 msgid "Delete site: %{site_name}"
 msgstr "刪除網站：%{site_name}"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:134
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "部署 %{conf_name} 至 %{node} 失敗"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:138
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "成功從 %{node} 移除站點 %{name}"
 
@@ -836,10 +854,6 @@ msgstr "詳細資料"
 #: src/views/system/About.vue:28
 msgid "Development Mode"
 msgstr "開發模式"
-
-#: src/views/preference/components/ExternalNotify/bark.ts:9
-msgid "Device Key"
-msgstr ""
 
 #: src/views/preference/components/ExternalNotify/dingtalk.ts:5
 msgid "DingTalk"
@@ -878,58 +892,58 @@ msgstr "停用"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "關閉 %{name} 自動續簽失敗"
 
-#: src/components/Notification/notifications.ts:63 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:83 src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "禁用遠端站点錯誤"
 
-#: src/components/Notification/notifications.ts:87
+#: src/components/Notification/notifications.ts:107
 #, fuzzy
 msgid "Disable Remote Site Maintenance Error"
 msgstr "禁用遠端站点錯誤"
 
-#: src/components/Notification/notifications.ts:91
+#: src/components/Notification/notifications.ts:111
 #, fuzzy
 msgid "Disable Remote Site Maintenance Success"
 msgstr "禁用遠端站点成功"
 
-#: src/components/Notification/notifications.ts:67 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:87 src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "禁用遠端站点成功"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:141
 msgid "Disable Remote Stream Error"
 msgstr "禁用遠端串流錯誤"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:145
 msgid "Disable Remote Stream Success"
 msgstr "禁用遠端串流成功"
 
-#: src/components/Notification/notifications.ts:64
+#: src/components/Notification/notifications.ts:84
 #, fuzzy
 msgid "Disable site %{name} from %{node} failed"
 msgstr "成功禁用 %{node} 中的站点 %{site}"
 
-#: src/components/Notification/notifications.ts:68
+#: src/components/Notification/notifications.ts:88
 #, fuzzy
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "成功禁用 %{node} 中的站点 %{site}"
 
-#: src/components/Notification/notifications.ts:88
+#: src/components/Notification/notifications.ts:108
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "成功禁用 %{node} 中的站点 %{site}"
 
-#: src/components/Notification/notifications.ts:92
+#: src/components/Notification/notifications.ts:112
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "成功禁用 %{node} 中的站点 %{site}"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:142
 #, fuzzy
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "在 %{node_name} 啟用 %{conf_name} 失敗"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:146
 #, fuzzy
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "成功禁用 %{node} 中的站点 %{site}"
@@ -1106,60 +1120,60 @@ msgstr "啟用失敗"
 msgid "Enable HTTPS"
 msgstr "啟用 TOTP"
 
-#: src/components/Notification/notifications.ts:71 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:91 src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "啟用遠端站點錯誤"
 
-#: src/components/Notification/notifications.ts:79
+#: src/components/Notification/notifications.ts:99
 #, fuzzy
 msgid "Enable Remote Site Maintenance Error"
 msgstr "啟用遠端站點錯誤"
 
-#: src/components/Notification/notifications.ts:83
+#: src/components/Notification/notifications.ts:103
 #, fuzzy
 msgid "Enable Remote Site Maintenance Success"
 msgstr "啟用遠端站點成功"
 
-#: src/components/Notification/notifications.ts:75 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:95 src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "啟用遠端站點成功"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:149
 #, fuzzy
 msgid "Enable Remote Stream Error"
 msgstr "啟用遠端站點錯誤"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:153
 #, fuzzy
 msgid "Enable Remote Stream Success"
 msgstr "啟用遠端站點成功"
 
-#: src/components/Notification/notifications.ts:80
+#: src/components/Notification/notifications.ts:100
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "在 %{node_name} 啟用 %{conf_name} 失敗"
 
-#: src/components/Notification/notifications.ts:84
+#: src/components/Notification/notifications.ts:104
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "成功啟用站點 %{site} 在 %{node}"
 
-#: src/components/Notification/notifications.ts:72
+#: src/components/Notification/notifications.ts:92
 #, fuzzy
 msgid "Enable site %{name} on %{node} failed"
 msgstr "在 %{node_name} 啟用 %{conf_name} 失敗"
 
-#: src/components/Notification/notifications.ts:76
+#: src/components/Notification/notifications.ts:96
 #, fuzzy
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "成功啟用站點 %{site} 在 %{node}"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:150
 #, fuzzy
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "在 %{node_name} 啟用 %{conf_name} 失敗"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:154
 #, fuzzy
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "成功啟用站點 %{site} 在 %{node}"
@@ -1871,6 +1885,15 @@ msgstr "密鑰類型"
 msgid "Language"
 msgstr ""
 
+#: src/views/preference/components/ExternalNotify/lark.ts:5
+msgid "Lark"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/lark_custom.ts:5
+#, fuzzy
+msgid "Lark Custom"
+msgstr "自訂"
+
 #: src/views/system/Upgrade.vue:179
 msgid "Last checked at"
 msgstr "上次檢查時間"
@@ -2569,7 +2592,7 @@ msgstr ""
 "請先在「憑證」 > 「DNS 認證」中新增認證，然後選擇以下認證之一以請求 DNS 供應"
 "商的 API。"
 
-#: src/components/Notification/notifications.ts:156
+#: src/components/Notification/notifications.ts:176
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -2848,57 +2871,59 @@ msgstr "移除成功"
 msgid "Rename"
 msgstr "重命名"
 
-#: src/components/Notification/notifications.ts:46
+#: src/components/Notification/notifications.ts:66
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "成功將 %{env_name} 上的 %{orig_path} 重命名為 %{new_path}"
 
-#: src/components/Notification/notifications.ts:50
+#: src/components/Notification/notifications.ts:70
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "成功將 %{env_name} 上的 %{orig_path} 重命名為 %{new_path}"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr "重命名遠端配置錯誤"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr "重新命名遠端配置成功"
 
-#: src/components/Notification/notifications.ts:95 src/language/constants.ts:56
+#: src/components/Notification/notifications.ts:115
+#: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "重命名遠端遠端站點時發生錯誤"
 
-#: src/components/Notification/notifications.ts:99 src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:119
+#: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "重新命名遠端站點成功"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:157
 #, fuzzy
 msgid "Rename Remote Stream Error"
 msgstr "重命名遠端遠端站點時發生錯誤"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:161
 #, fuzzy
 msgid "Rename Remote Stream Success"
 msgstr "重新命名遠端站點成功"
 
-#: src/components/Notification/notifications.ts:96
+#: src/components/Notification/notifications.ts:116
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "成功將站點 %{site} 重新命名為 %{new_site} 於 %{node}"
 
-#: src/components/Notification/notifications.ts:100
+#: src/components/Notification/notifications.ts:120
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "成功將站點 %{site} 重新命名為 %{new_site} 於 %{node}"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:158
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "成功將站點 %{site} 重新命名為 %{new_site} 於 %{node}"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:162
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "成功將站點 %{site} 重新命名為 %{new_site} 於 %{node}"
@@ -3058,42 +3083,42 @@ msgstr "儲存指令"
 msgid "Save error %{msg}"
 msgstr "儲存錯誤 %{msg}"
 
-#: src/components/Notification/notifications.ts:103
+#: src/components/Notification/notifications.ts:123
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "儲存遠端站點時發生錯誤"
 
-#: src/components/Notification/notifications.ts:107
+#: src/components/Notification/notifications.ts:127
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "儲存遠端站點成功"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:165
 #, fuzzy
 msgid "Save Remote Stream Error"
 msgstr "儲存遠端站點時發生錯誤"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:169
 #, fuzzy
 msgid "Save Remote Stream Success"
 msgstr "儲存遠端站點成功"
 
-#: src/components/Notification/notifications.ts:104
+#: src/components/Notification/notifications.ts:124
 #, fuzzy
 msgid "Save site %{name} to %{node} failed"
 msgstr "成功將站點 %{site} 儲存至 %{node}"
 
-#: src/components/Notification/notifications.ts:108
+#: src/components/Notification/notifications.ts:128
 #, fuzzy
 msgid "Save site %{name} to %{node} successfully"
 msgstr "成功將站點 %{site} 儲存至 %{node}"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:166
 #, fuzzy
 msgid "Save stream %{name} to %{node} failed"
 msgstr "部署 %{conf_name} 至 %{node_name} 失敗"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:170
 #, fuzzy
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "成功將站點 %{site} 儲存至 %{node}"
@@ -3120,10 +3145,6 @@ msgstr "用手機掃描二維碼將賬戶添加到應用程序中。"
 #: src/views/certificate/DNSChallenge.vue:90
 msgid "SDK"
 msgstr "SDK"
-
-#: src/views/preference/components/ExternalNotify/dingtalk.ts:13
-msgid "Secret (Optional)"
-msgstr ""
 
 #: src/views/preference/components/TOTP.vue:109
 msgid "Secret has been copied"
@@ -3163,11 +3184,6 @@ msgstr "伺服器資訊"
 
 #: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
-msgstr "伺服器資訊"
-
-#: src/views/preference/components/ExternalNotify/bark.ts:13
-#, fuzzy
-msgid "Server URL"
 msgstr "伺服器資訊"
 
 #: src/views/site/cert/components/ObtainCert.vue:107
@@ -3419,38 +3435,38 @@ msgstr "同步"
 msgid "Sync Certificate"
 msgstr "同步憑證"
 
-#: src/components/Notification/notifications.ts:28
+#: src/components/Notification/notifications.ts:48
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "同步憑證 %{cert_name} 到 %{env_name} 成功"
 
-#: src/components/Notification/notifications.ts:32
+#: src/components/Notification/notifications.ts:52
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "同步憑證 %{cert_name} 到 %{env_name} 成功"
 
-#: src/components/Notification/notifications.ts:27 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:47 src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr "同步憑證錯誤"
 
-#: src/components/Notification/notifications.ts:31 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:51 src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr "同步憑證成功"
 
-#: src/components/Notification/notifications.ts:38
+#: src/components/Notification/notifications.ts:58
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "同步配置 %{config_name} 到 %{env_name} 成功"
 
-#: src/components/Notification/notifications.ts:42
+#: src/components/Notification/notifications.ts:62
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "同步配置 %{config_name} 到 %{env_name} 成功"
 
-#: src/components/Notification/notifications.ts:37 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr "同步配置錯誤"
 
-#: src/components/Notification/notifications.ts:41 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr "同步配置成功"
 
@@ -4029,6 +4045,18 @@ msgstr "您的舊代碼將不再有效。"
 #: src/views/preference/components/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "您的通行密鑰"
+
+#, fuzzy
+#~ msgid "Access Token"
+#~ msgstr "訪問日誌"
+
+#, fuzzy
+#~ msgid "Bot Token"
+#~ msgstr "Token"
+
+#, fuzzy
+#~ msgid "Server URL"
+#~ msgstr "伺服器資訊"
 
 #~ msgid "Do you want to disable this site?"
 #~ msgstr "您想停用這個網站嗎？"

@@ -1,16 +1,11 @@
 package cron
 
 import (
-	"time"
-
-	"github.com/0xJacky/Nginx-UI/internal/cert"
-	"github.com/0xJacky/Nginx-UI/internal/logrotate"
-	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-co-op/gocron/v2"
 	"github.com/uozi-tech/cosy/logger"
 )
 
+// Global scheduler instance
 var s gocron.Scheduler
 
 func init() {
@@ -21,58 +16,34 @@ func init() {
 	}
 }
 
-var logrotateJob gocron.Job
-
+// InitCronJobs initializes and starts all cron jobs
 func InitCronJobs() {
-	_, err := s.NewJob(gocron.DurationJob(30*time.Minute),
-		gocron.NewTask(cert.AutoCert),
-		gocron.WithSingletonMode(gocron.LimitModeWait),
-		gocron.JobOption(gocron.WithStartImmediately()))
+	// Initialize auto cert job
+	_, err := setupAutoCertJob(s)
 	if err != nil {
 		logger.Fatalf("AutoCert Err: %v\n", err)
 	}
 
-	startLogrotate()
-	cleanExpiredAuthToken()
-
-	s.Start()
-}
-
-func RestartLogrotate() {
-	logger.Debug("Restart Logrotate")
-	if logrotateJob != nil {
-		err := s.RemoveJob(logrotateJob.ID())
-		if err != nil {
-			logger.Error(err)
-			return
-		}
-	}
-
-	startLogrotate()
-}
-
-func startLogrotate() {
-	if !settings.LogrotateSettings.Enabled {
-		return
-	}
-	var err error
-	logrotateJob, err = s.NewJob(
-		gocron.DurationJob(time.Duration(settings.LogrotateSettings.Interval)*time.Minute),
-		gocron.NewTask(logrotate.Exec),
-		gocron.WithSingletonMode(gocron.LimitModeWait))
+	// Initialize certificate expiration check job
+	_, err = setupCertExpiredJob(s)
 	if err != nil {
-		logger.Fatalf("LogRotate Job: Err: %v\n", err)
+		logger.Fatalf("CertExpired Err: %v\n", err)
 	}
-}
 
-func cleanExpiredAuthToken() {
-	_, err := s.NewJob(gocron.DurationJob(5*time.Minute), gocron.NewTask(func() {
-		logger.Debug("clean expired auth tokens")
-		q := query.AuthToken
-		_, _ = q.Where(q.ExpiredAt.Lt(time.Now().Unix())).Delete()
-	}), gocron.WithSingletonMode(gocron.LimitModeWait), gocron.JobOption(gocron.WithStartImmediately()))
+	// Start logrotate job
+	setupLogrotateJob(s)
 
+	// Initialize auth token cleanup job
+	_, err = setupAuthTokenCleanupJob(s)
 	if err != nil {
 		logger.Fatalf("CleanExpiredAuthToken Err: %v\n", err)
 	}
+
+	// Start the scheduler
+	s.Start()
+}
+
+// RestartLogrotate is a public API to restart the logrotate job
+func RestartLogrotate() {
+	restartLogrotateJob(s)
 }

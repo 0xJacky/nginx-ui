@@ -30,11 +30,6 @@ msgstr "Zugriffslog"
 msgid "Access Logs"
 msgstr "Zugriffslog"
 
-#: src/views/preference/components/ExternalNotify/dingtalk.ts:9
-#, fuzzy
-msgid "Access Token"
-msgstr "Zugriffslog"
-
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:113
 #: src/views/certificate/ACMEUserSelector.vue:85
 #, fuzzy
@@ -121,7 +116,7 @@ msgstr ""
 msgid "All"
 msgstr "Alle"
 
-#: src/components/Notification/notifications.ts:155
+#: src/components/Notification/notifications.ts:175
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr ""
@@ -392,11 +387,6 @@ msgstr ""
 msgid "Block is nil"
 msgstr ""
 
-#: src/views/preference/components/ExternalNotify/telegram.ts:9
-#, fuzzy
-msgid "Bot Token"
-msgstr "API-Token"
-
 #: src/views/system/About.vue:55
 msgid "Build with"
 msgstr "Build mit"
@@ -446,10 +436,42 @@ msgstr "Zertifikat"
 msgid "Cert path is not under the nginx conf dir"
 msgstr ""
 
+#: src/components/Notification/notifications.ts:28
+#, fuzzy
+msgid "Certificate %{name} has expired"
+msgstr "Konfigurationen"
+
+#: src/components/Notification/notifications.ts:32
+#: src/components/Notification/notifications.ts:36
+#: src/components/Notification/notifications.ts:40
+msgid "Certificate %{name} will expire in %{days} days"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:44
+msgid "Certificate %{name} will expire in 1 day"
+msgstr ""
+
 #: src/constants/errors/cert.ts:4
 #, fuzzy
 msgid "Certificate decode error"
 msgstr "Zertifikat ist gültig"
+
+#: src/components/Notification/notifications.ts:31
+#, fuzzy
+msgid "Certificate Expiration Notice"
+msgstr "Konfigurationen"
+
+#: src/components/Notification/notifications.ts:27
+#, fuzzy
+msgid "Certificate Expired"
+msgstr "Zertifikat ist gültig"
+
+#: src/components/Notification/notifications.ts:35
+#: src/components/Notification/notifications.ts:39
+#: src/components/Notification/notifications.ts:43
+#, fuzzy
+msgid "Certificate Expiring Soon"
+msgstr "Certificate has expired"
 
 #: src/constants/errors/cert.ts:5
 #, fuzzy
@@ -516,10 +538,6 @@ msgstr "Zertifikat ist gültig"
 #: src/views/system/Upgrade.vue:188
 msgid "Channel"
 msgstr "Kanal"
-
-#: src/views/preference/components/ExternalNotify/telegram.ts:13
-msgid "Chat ID"
-msgstr ""
 
 #: src/views/system/Upgrade.vue:185
 msgid "Check again"
@@ -807,32 +825,32 @@ msgstr "Löschen"
 msgid "Delete Permanently"
 msgstr "Permanent löschen"
 
-#: src/components/Notification/notifications.ts:55 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:75 src/language/constants.ts:50
 #, fuzzy
 msgid "Delete Remote Site Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:59 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:79 src/language/constants.ts:49
 #, fuzzy
 msgid "Delete Remote Site Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:133
 #, fuzzy
 msgid "Delete Remote Stream Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:137
 #, fuzzy
 msgid "Delete Remote Stream Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:56
+#: src/components/Notification/notifications.ts:76
 #, fuzzy
 msgid "Delete site %{name} from %{node} failed"
 msgstr "Ausführen von %{conf_name} auf %{node_name} fehlgeschlagen"
 
-#: src/components/Notification/notifications.ts:60
+#: src/components/Notification/notifications.ts:80
 #, fuzzy
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Speichern erfolgreich"
@@ -841,12 +859,12 @@ msgstr "Speichern erfolgreich"
 msgid "Delete site: %{site_name}"
 msgstr "Seite löschen: %{site_name}"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:134
 #, fuzzy
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "Ausführen von %{conf_name} auf %{node_name} fehlgeschlagen"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:138
 #, fuzzy
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Speichern erfolgreich"
@@ -884,10 +902,6 @@ msgstr "Details"
 #: src/views/system/About.vue:28
 msgid "Development Mode"
 msgstr "Entwicklungsmodus"
-
-#: src/views/preference/components/ExternalNotify/bark.ts:9
-msgid "Device Key"
-msgstr ""
 
 #: src/views/preference/components/ExternalNotify/dingtalk.ts:5
 msgid "DingTalk"
@@ -927,62 +941,62 @@ msgstr "Deaktiviert"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Automatische Verlängerung deaktiviert für %{name}"
 
-#: src/components/Notification/notifications.ts:63 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:83 src/language/constants.ts:52
 #, fuzzy
 msgid "Disable Remote Site Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:87
+#: src/components/Notification/notifications.ts:107
 #, fuzzy
 msgid "Disable Remote Site Maintenance Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:91
+#: src/components/Notification/notifications.ts:111
 #, fuzzy
 msgid "Disable Remote Site Maintenance Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:67 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:87 src/language/constants.ts:51
 #, fuzzy
 msgid "Disable Remote Site Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:141
 #, fuzzy
 msgid "Disable Remote Stream Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:145
 #, fuzzy
 msgid "Disable Remote Stream Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:64
+#: src/components/Notification/notifications.ts:84
 #, fuzzy
 msgid "Disable site %{name} from %{node} failed"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:68
+#: src/components/Notification/notifications.ts:88
 #, fuzzy
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:88
+#: src/components/Notification/notifications.ts:108
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:92
+#: src/components/Notification/notifications.ts:112
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:142
 #, fuzzy
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "Aktivieren von %{conf_name} in %{node_name} fehlgeschlagen"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:146
 #, fuzzy
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Speichern erfolgreich"
@@ -1177,62 +1191,62 @@ msgstr "Aktivieren fehlgeschlagen"
 msgid "Enable HTTPS"
 msgstr "Aktiviere TLS"
 
-#: src/components/Notification/notifications.ts:71 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:91 src/language/constants.ts:54
 #, fuzzy
 msgid "Enable Remote Site Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:79
+#: src/components/Notification/notifications.ts:99
 #, fuzzy
 msgid "Enable Remote Site Maintenance Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:83
+#: src/components/Notification/notifications.ts:103
 #, fuzzy
 msgid "Enable Remote Site Maintenance Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:75 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:95 src/language/constants.ts:53
 #, fuzzy
 msgid "Enable Remote Site Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:149
 #, fuzzy
 msgid "Enable Remote Stream Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:153
 #, fuzzy
 msgid "Enable Remote Stream Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:80
+#: src/components/Notification/notifications.ts:100
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "Aktivieren von %{conf_name} in %{node_name} fehlgeschlagen"
 
-#: src/components/Notification/notifications.ts:84
+#: src/components/Notification/notifications.ts:104
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "Erfolgreich gespeichert"
 
-#: src/components/Notification/notifications.ts:72
+#: src/components/Notification/notifications.ts:92
 #, fuzzy
 msgid "Enable site %{name} on %{node} failed"
 msgstr "Aktivieren von %{conf_name} in %{node_name} fehlgeschlagen"
 
-#: src/components/Notification/notifications.ts:76
+#: src/components/Notification/notifications.ts:96
 #, fuzzy
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "Erfolgreich gespeichert"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:150
 #, fuzzy
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "Aktivieren von %{conf_name} in %{node_name} fehlgeschlagen"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:154
 #, fuzzy
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Erfolgreich gespeichert"
@@ -1960,6 +1974,15 @@ msgstr "Schlüsseltyp"
 #: src/views/preference/components/ExternalNotify/columns.ts:29
 msgid "Language"
 msgstr ""
+
+#: src/views/preference/components/ExternalNotify/lark.ts:5
+msgid "Lark"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/lark_custom.ts:5
+#, fuzzy
+msgid "Lark Custom"
+msgstr "Benutzerdefiniert"
 
 #: src/views/system/Upgrade.vue:179
 msgid "Last checked at"
@@ -2705,7 +2728,7 @@ msgstr ""
 "Anmeldeinformationen hinzu und wähle dann eine der unten aufgeführten "
 "Anmeldeinformationen aus, um die API des DNS-Anbieters anzufordern."
 
-#: src/components/Notification/notifications.ts:156
+#: src/components/Notification/notifications.ts:176
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -3002,62 +3025,64 @@ msgstr "Speichern erfolgreich"
 msgid "Rename"
 msgstr "Benuztername"
 
-#: src/components/Notification/notifications.ts:46
+#: src/components/Notification/notifications.ts:66
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:50
+#: src/components/Notification/notifications.ts:70
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:42
 #, fuzzy
 msgid "Rename Remote Config Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:41
 #, fuzzy
 msgid "Rename Remote Config Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:95 src/language/constants.ts:56
+#: src/components/Notification/notifications.ts:115
+#: src/language/constants.ts:56
 #, fuzzy
 msgid "Rename Remote Site Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:99 src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:119
+#: src/language/constants.ts:55
 #, fuzzy
 msgid "Rename Remote Site Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:157
 #, fuzzy
 msgid "Rename Remote Stream Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:161
 #, fuzzy
 msgid "Rename Remote Stream Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:96
+#: src/components/Notification/notifications.ts:116
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:100
+#: src/components/Notification/notifications.ts:120
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:158
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:162
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "Speichern erfolgreich"
@@ -3224,44 +3249,44 @@ msgstr "Anweisung speichern"
 msgid "Save error %{msg}"
 msgstr "Fehler beim Speichern %{msg}"
 
-#: src/components/Notification/notifications.ts:103
+#: src/components/Notification/notifications.ts:123
 #: src/language/constants.ts:48
 #, fuzzy
 msgid "Save Remote Site Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:107
+#: src/components/Notification/notifications.ts:127
 #: src/language/constants.ts:47
 #, fuzzy
 msgid "Save Remote Site Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:165
 #, fuzzy
 msgid "Save Remote Stream Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:169
 #, fuzzy
 msgid "Save Remote Stream Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:104
+#: src/components/Notification/notifications.ts:124
 #, fuzzy
 msgid "Save site %{name} to %{node} failed"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:108
+#: src/components/Notification/notifications.ts:128
 #, fuzzy
 msgid "Save site %{name} to %{node} successfully"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:166
 #, fuzzy
 msgid "Save stream %{name} to %{node} failed"
 msgstr "Ausführen von %{conf_name} auf %{node_name} fehlgeschlagen"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:170
 #, fuzzy
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Speichern erfolgreich"
@@ -3290,10 +3315,6 @@ msgstr ""
 #: src/views/certificate/DNSChallenge.vue:90
 msgid "SDK"
 msgstr "SDK"
-
-#: src/views/preference/components/ExternalNotify/dingtalk.ts:13
-msgid "Secret (Optional)"
-msgstr ""
 
 #: src/views/preference/components/TOTP.vue:109
 msgid "Secret has been copied"
@@ -3333,11 +3354,6 @@ msgstr "Serverinformationen"
 
 #: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
-msgstr "Serverinformationen"
-
-#: src/views/preference/components/ExternalNotify/bark.ts:13
-#, fuzzy
-msgid "Server URL"
 msgstr "Serverinformationen"
 
 #: src/views/site/cert/components/ObtainCert.vue:107
@@ -3597,42 +3613,42 @@ msgstr "Synchronisieren"
 msgid "Sync Certificate"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:28
+#: src/components/Notification/notifications.ts:48
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:32
+#: src/components/Notification/notifications.ts:52
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:27 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:47 src/language/constants.ts:39
 #, fuzzy
 msgid "Sync Certificate Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:31 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:51 src/language/constants.ts:38
 #, fuzzy
 msgid "Sync Certificate Success"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:38
+#: src/components/Notification/notifications.ts:58
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:42
+#: src/components/Notification/notifications.ts:62
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "Speichern erfolgreich"
 
-#: src/components/Notification/notifications.ts:37 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:45
 #, fuzzy
 msgid "Sync Config Error"
 msgstr "Zertifikat ist gültig"
 
-#: src/components/Notification/notifications.ts:41 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:44
 #, fuzzy
 msgid "Sync Config Success"
 msgstr "Zertifikat ist gültig"
@@ -4253,6 +4269,18 @@ msgstr ""
 #: src/views/preference/components/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Deine Passkeys"
+
+#, fuzzy
+#~ msgid "Access Token"
+#~ msgstr "Zugriffslog"
+
+#, fuzzy
+#~ msgid "Bot Token"
+#~ msgstr "API-Token"
+
+#, fuzzy
+#~ msgid "Server URL"
+#~ msgstr "Serverinformationen"
 
 #, fuzzy
 #~ msgid "Do you want to disable this site?"
