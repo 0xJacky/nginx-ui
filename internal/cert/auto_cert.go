@@ -79,6 +79,7 @@ func autoCert(certModel *model.Cert) {
 		NotBefore:               certInfo.NotBefore,
 		MustStaple:              certModel.MustStaple,
 		LegoDisableCNAMESupport: certModel.LegoDisableCNAMESupport,
+		RevokeOld:               certModel.RevokeOld,
 	}
 
 	if certModel.Resource != nil {

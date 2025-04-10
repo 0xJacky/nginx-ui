@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AutoCertOptions } from '@/api/auto_cert'
 import { PrivateKeyTypeList } from '@/constants'
-import ACMEUserSelector from '@/views/certificate/ACMEUserSelector.vue'
+import ACMEUserSelector from '@/views/certificate/components/ACMEUserSelector.vue'
 import DNSChallenge from '@/views/site/cert/components/DNSChallenge.vue'
 
 const props = defineProps<{
@@ -110,6 +110,14 @@ watch(() => props.forceDnsChallenge, v => {
           </p>
         </template>
         <ASwitch v-model:checked="data.lego_disable_cname_support" />
+      </AFormItem>
+      <AFormItem :label="$gettext('Revoke Old Certificate')">
+        <template #help>
+          <p>
+            {{ $gettext('If you want to automatically revoke the old certificate, please enable this option.') }}
+          </p>
+        </template>
+        <ASwitch v-model:checked="data.revoke_old" />
       </AFormItem>
     </AForm>
   </div>

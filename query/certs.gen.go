@@ -47,6 +47,7 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.SyncNodeIds = field.NewField(tableName, "sync_node_ids")
 	_cert.MustStaple = field.NewBool(tableName, "must_staple")
 	_cert.LegoDisableCNAMESupport = field.NewBool(tableName, "lego_disable_cname_support")
+	_cert.RevokeOld = field.NewBool(tableName, "revoke_old")
 	_cert.DnsCredential = certBelongsToDnsCredential{
 		db: db.Session(&gorm.Session{}),
 
@@ -87,6 +88,7 @@ type cert struct {
 	SyncNodeIds             field.Field
 	MustStaple              field.Bool
 	LegoDisableCNAMESupport field.Bool
+	RevokeOld               field.Bool
 	DnsCredential           certBelongsToDnsCredential
 
 	ACMEUser certBelongsToACMEUser
@@ -125,6 +127,7 @@ func (c *cert) updateTableName(table string) *cert {
 	c.SyncNodeIds = field.NewField(table, "sync_node_ids")
 	c.MustStaple = field.NewBool(table, "must_staple")
 	c.LegoDisableCNAMESupport = field.NewBool(table, "lego_disable_cname_support")
+	c.RevokeOld = field.NewBool(table, "revoke_old")
 
 	c.fillFieldMap()
 
@@ -141,7 +144,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 21)
+	c.fieldMap = make(map[string]field.Expr, 22)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -161,6 +164,7 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["sync_node_ids"] = c.SyncNodeIds
 	c.fieldMap["must_staple"] = c.MustStaple
 	c.fieldMap["lego_disable_cname_support"] = c.LegoDisableCNAMESupport
+	c.fieldMap["revoke_old"] = c.RevokeOld
 
 }
 

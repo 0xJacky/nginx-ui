@@ -40,7 +40,7 @@ msgid "Access Logs"
 msgstr "訪問日誌"
 
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:113
-#: src/views/certificate/ACMEUserSelector.vue:85
+#: src/views/certificate/components/ACMEUserSelector.vue:85
 msgid "ACME User"
 msgstr "ACME 用戶"
 
@@ -54,7 +54,7 @@ msgstr "ACME 用戶"
 #: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
 #: src/views/preference/components/ExternalNotify/columns.ts:46
-#: src/views/site/site_list/columns.tsx:117 src/views/stream/StreamList.vue:74
+#: src/views/site/site_list/columns.tsx:120 src/views/stream/StreamList.vue:74
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "操作"
@@ -278,7 +278,7 @@ msgstr "自動重新啟動"
 msgid "Automatically indexed from site and stream configurations."
 msgstr "自動從網站和串流配置中索引。"
 
-#: src/views/certificate/CertificateEditor.vue:255
+#: src/views/certificate/components/CertificateEditor.vue:257
 #: src/views/config/ConfigEditor.vue:262 src/views/config/ConfigList.vue:112
 #: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/SiteEdit.vue:285
@@ -449,6 +449,12 @@ msgstr "證書解析錯誤"
 msgid "Certificate path is empty"
 msgstr "證書路徑為空"
 
+#: src/views/certificate/components/RemoveCert.vue:41
+#: src/views/certificate/components/RemoveCert.vue:61
+#, fuzzy
+msgid "Certificate removed successfully"
+msgstr "憑證更新成功"
+
 #: src/views/preference/CertSettings.vue:27
 msgid "Certificate Renewal Interval"
 msgstr "憑證更新間隔"
@@ -457,14 +463,14 @@ msgstr "憑證更新間隔"
 msgid "Certificate renewed successfully"
 msgstr "憑證更新成功"
 
-#: src/views/certificate/CertificateEditor.vue:128
+#: src/views/certificate/components/CertificateEditor.vue:128
 #: src/views/site/cert/Cert.vue:60
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
 msgstr[0] "憑證狀態"
 
 #: src/routes/modules/certificates.ts:11
-#: src/views/certificate/CertificateList/Certificate.vue:13
+#: src/views/certificate/CertificateList/Certificate.vue:14
 msgid "Certificates"
 msgstr "憑證"
 
@@ -503,8 +509,9 @@ msgstr "再次檢查"
 msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
 "prevents using Passkeys and clipboard features."
-msgstr "檢查是否啟用了 HTTPS。在本地主機之外使用 HTTP "
-"是不安全的，並且會阻止使用通行證和剪貼簿功能。"
+msgstr ""
+"檢查是否啟用了 HTTPS。在本地主機之外使用 HTTP 是不安全的，並且會阻止使用通行"
+"證和剪貼簿功能。"
 
 #: src/views/system/SelfCheck/tasks/backend/index.ts:16
 msgid "Check if the nginx.conf includes the sites-enabled directory."
@@ -685,7 +692,8 @@ msgstr "創建資料夾"
 msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
 "Backup files will be automatically downloaded to your computer."
-msgstr "建立系統備份，包括 Nginx 配置與 Nginx UI 設定。備份檔案將自動下載至您的電腦。"
+msgstr ""
+"建立系統備份，包括 Nginx 配置與 Nginx UI 設定。備份檔案將自動下載至您的電腦。"
 
 #: src/views/environments/group/columns.ts:31
 #: src/views/notification/notificationColumns.tsx:59
@@ -757,12 +765,18 @@ msgstr "解密失敗"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
+#: src/views/certificate/components/RemoveCert.vue:87
 #: src/views/site/ngx_conf/NgxServer.vue:110
 #: src/views/site/ngx_conf/NgxUpstream.vue:128
 #: src/views/site/site_list/SiteList.vue:176
 #: src/views/stream/StreamList.vue:236
 msgid "Delete"
 msgstr "刪除"
+
+#: src/views/certificate/components/RemoveCert.vue:92
+#, fuzzy
+msgid "Delete Certificate"
+msgstr "更換憑證"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:35
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:547
@@ -929,7 +943,7 @@ msgstr "已成功從 %{node} 停用串流 %{name}"
 #: src/views/preference/NodeSettings.vue:30
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:159
 #: src/views/site/site_edit/SiteEdit.vue:199
-#: src/views/site/site_list/columns.tsx:102 src/views/stream/StreamEdit.vue:182
+#: src/views/site/site_list/columns.tsx:111 src/views/stream/StreamEdit.vue:182
 #: src/views/stream/StreamList.vue:58 src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr "停用"
@@ -996,11 +1010,11 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "档案"
 
-#: src/views/certificate/WildcardCertificate.vue:68
+#: src/views/certificate/components/WildcardCertificate.vue:68
 msgid "Domain"
 msgstr "網域"
 
-#: src/views/certificate/CertificateEditor.vue:112
+#: src/views/certificate/components/CertificateEditor.vue:112
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr "網域列表為空，請嘗試重新開啟 %{config} 的自動憑證"
 
@@ -1155,7 +1169,7 @@ msgstr "啟用 TOTP"
 #: src/views/preference/NodeSettings.vue:30
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:155
 #: src/views/site/site_edit/SiteEdit.vue:193
-#: src/views/site/site_list/columns.tsx:101
+#: src/views/site/site_list/columns.tsx:110
 #: src/views/stream/components/RightSettings.vue:81
 #: src/views/stream/StreamEdit.vue:176 src/views/stream/StreamList.vue:54
 #: src/views/user/userColumns.tsx:38
@@ -1346,6 +1360,11 @@ msgstr "解密Nginx目錄失敗：{0}"
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr "解密Nginx UI目錄失敗：{0}"
 
+#: src/views/certificate/components/RemoveCert.vue:66
+#, fuzzy
+msgid "Failed to delete certificate"
+msgstr "獲取憑證失敗"
+
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:63
 #: src/views/stream/components/RightSettings.vue:45
 #: src/views/stream/StreamList.vue:100
@@ -1449,6 +1468,11 @@ msgstr "恢復Nginx配置失敗：{0}"
 #: src/constants/errors/backup.ts:40
 msgid "Failed to restore Nginx UI files: {0}"
 msgstr "無法恢復Nginx UI文件：{0}"
+
+#: src/views/certificate/components/RemoveCert.vue:48
+#, fuzzy
+msgid "Failed to revoke certificate"
+msgstr "獲取憑證失敗"
 
 #: src/views/site/site_edit/SiteEdit.vue:139
 #: src/views/stream/StreamEdit.vue:122
@@ -1624,6 +1648,13 @@ msgstr ""
 "如果來自某個 IP 的登錄失敗次數在禁止閾值分鐘內達到最大嘗試次數，該 IP 將被禁"
 "止一段時間。"
 
+#: src/views/site/cert/components/AutoCertStepOne.vue:117
+#, fuzzy
+msgid ""
+"If you want to automatically revoke the old certificate, please enable this "
+"option."
+msgstr "如果您的域名有 CNAME 記錄且無法獲取證書，您需要啟用此選項。"
+
 #: src/views/preference/components/AddPasskey.vue:70
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
 msgstr "如果您的瀏覽器支援 WebAuthn 通行密鑰，將會顯示一個對話框。"
@@ -1634,12 +1665,12 @@ msgid ""
 "need to enable this option."
 msgstr "如果您的域名有 CNAME 記錄且無法獲取證書，您需要啟用此選項。"
 
-#: src/views/certificate/CertificateList/Certificate.vue:20
+#: src/views/certificate/CertificateList/Certificate.vue:22
 msgid "Import"
 msgstr "導入"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:85
+#: src/views/certificate/components/CertificateEditor.vue:85
 msgid "Import Certificate"
 msgstr "導入憑證"
 
@@ -1761,11 +1792,11 @@ msgstr "無效的安全令牌格式"
 msgid "IP"
 msgstr "IP"
 
-#: src/views/certificate/CertificateList/Certificate.vue:28
+#: src/views/certificate/CertificateList/Certificate.vue:31
 msgid "Issue wildcard certificate"
 msgstr "發行萬用字元憑證"
 
-#: src/views/certificate/WildcardCertificate.vue:59
+#: src/views/certificate/components/WildcardCertificate.vue:59
 msgid "Issue Wildcard Certificate"
 msgstr "簽發萬用字元憑證"
 
@@ -1829,8 +1860,8 @@ msgstr "留空表示不修改"
 msgid "Leave blank if you don't need this."
 msgstr "留空表示不需要此項目。"
 
-#: src/views/certificate/CertificateEditor.vue:220
-#: src/views/certificate/CertificateEditor.vue:233
+#: src/views/certificate/components/CertificateEditor.vue:222
+#: src/views/certificate/components/CertificateEditor.vue:235
 msgid "Leave blank will not change anything"
 msgstr "留空將不會改變任何內容"
 
@@ -1880,7 +1911,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/views/certificate/CertificateEditor.vue:243
+#: src/views/certificate/components/CertificateEditor.vue:245
 msgid "Log"
 msgstr "日誌"
 
@@ -1919,7 +1950,7 @@ msgstr ""
 "鐘間隔執行 logrotate 命令。"
 
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:163
-#: src/views/site/site_list/columns.tsx:103
+#: src/views/site/site_list/columns.tsx:112
 msgid "Maintenance"
 msgstr "維護"
 
@@ -1992,7 +2023,7 @@ msgid "Modify"
 msgstr "修改"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:85
+#: src/views/certificate/components/CertificateEditor.vue:85
 msgid "Modify Certificate"
 msgstr "修改憑證"
 
@@ -2009,8 +2040,8 @@ msgid "Multi-line Directive"
 msgstr "多行指令"
 
 #: src/views/certificate/ACMEUser.vue:13
-#: src/views/certificate/CertificateEditor.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:10
+#: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:305
@@ -2060,7 +2091,7 @@ msgstr "新路徑"
 msgid "New version released"
 msgstr "新版本發布"
 
-#: src/views/certificate/WildcardCertificate.vue:91
+#: src/views/certificate/components/WildcardCertificate.vue:91
 #: src/views/site/cert/components/ObtainCert.vue:211
 #: src/views/site/site_add/SiteAdd.vue:141
 msgid "Next"
@@ -2218,7 +2249,7 @@ msgid "Node"
 msgstr "節點"
 
 #: src/views/site/site_edit/RightSettings.vue:66
-#: src/views/site/site_list/columns.tsx:63
+#: src/views/site/site_list/columns.tsx:65
 #: src/views/stream/components/RightSettings.vue:90
 #: src/views/stream/StreamList.vue:30
 msgid "Node Group"
@@ -2555,6 +2586,10 @@ msgstr "請至少選擇一個節點以重啟Nginx"
 msgid "Please select at least one node to upgrade"
 msgstr "請至少選擇一個節點進行升級"
 
+#: src/views/certificate/components/RemoveCert.vue:27
+msgid "Please type \"Revoke\" to confirm"
+msgstr ""
+
 #: src/views/preference/ServerSettings.vue:21
 msgid "Port"
 msgstr "監聽埠"
@@ -2813,8 +2848,8 @@ msgstr "重命名成功"
 msgid "Renamed successfully"
 msgstr "重新命名成功"
 
-#: src/views/certificate/RenewCert.vue:45
-#: src/views/certificate/RenewCert.vue:49
+#: src/views/certificate/components/RenewCert.vue:45
+#: src/views/certificate/components/RenewCert.vue:49
 msgid "Renew Certificate"
 msgstr "更換憑證"
 
@@ -2826,8 +2861,8 @@ msgstr "更新憑證錯誤"
 msgid "Renew Certificate Success"
 msgstr "更新憑證成功"
 
-#: src/views/certificate/RenewCert.vue:27
-#: src/views/certificate/WildcardCertificate.vue:48
+#: src/views/certificate/components/RenewCert.vue:27
+#: src/views/certificate/components/WildcardCertificate.vue:48
 msgid "Renew successfully"
 msgstr "更新成功"
 
@@ -2904,6 +2939,27 @@ msgstr "恢復Nginx UI配置"
 msgid "Restore this version"
 msgstr "恢復此版本"
 
+#: src/views/certificate/components/RemoveCert.vue:26
+#: src/views/certificate/components/RemoveCert.vue:95
+msgid "Revoke"
+msgstr ""
+
+#: src/views/site/cert/components/AutoCertStepOne.vue:114
+#, fuzzy
+msgid "Revoke Old Certificate"
+msgstr "更換憑證"
+
+#: src/views/certificate/components/RemoveCert.vue:109
+#, fuzzy
+msgid "Revoke this certificate"
+msgstr "更換憑證"
+
+#: src/views/certificate/components/RemoveCert.vue:117
+msgid ""
+"Revoking a certificate will affect any services currently using it. This "
+"action cannot be undone."
+msgstr ""
+
 #: src/views/preference/AuthSettings.vue:107
 msgid "RP Display Name"
 msgstr "RP 顯示名稱"
@@ -2927,7 +2983,7 @@ msgstr "執行中"
 #: src/components/ChatGPT/ChatGPT.vue:355
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:64
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
-#: src/views/certificate/CertificateEditor.vue:262
+#: src/views/certificate/components/CertificateEditor.vue:264
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/config/ConfigEditor.vue:271
 #: src/views/preference/components/Passkey.vue:130
@@ -2985,7 +3041,7 @@ msgstr "串流 %{name} 成功儲存至 %{node}"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
-#: src/views/certificate/CertificateEditor.vue:49
+#: src/views/certificate/components/CertificateEditor.vue:49
 #: src/views/preference/Preference.vue:124
 msgid "Save successfully"
 msgstr "儲存成功"
@@ -3146,7 +3202,7 @@ msgstr "sites-enabled 資料夾不存在"
 msgid "Skip Installation"
 msgstr "跳過安裝"
 
-#: src/views/certificate/CertificateEditor.vue:211
+#: src/views/certificate/components/CertificateEditor.vue:213
 msgid "SSL Certificate Content"
 msgstr "SSL 憑證內容"
 
@@ -3158,15 +3214,15 @@ msgstr "SSL憑證文件必須位於Nginx配置目錄下：{0}"
 msgid "SSL certificate file not found"
 msgstr "SSL憑證檔案未找到"
 
-#: src/views/certificate/CertificateEditor.vue:224
+#: src/views/certificate/components/CertificateEditor.vue:226
 msgid "SSL Certificate Key Content"
 msgstr "SSL 憑證金鑰內容"
 
-#: src/views/certificate/CertificateEditor.vue:190
+#: src/views/certificate/components/CertificateEditor.vue:192
 msgid "SSL Certificate Key Path"
 msgstr "SSL 憑證金鑰路徑"
 
-#: src/views/certificate/CertificateEditor.vue:175
+#: src/views/certificate/components/CertificateEditor.vue:177
 #: src/views/preference/ServerSettings.vue:36
 msgid "SSL Certificate Path"
 msgstr "SSL 憑證路徑"
@@ -3210,7 +3266,7 @@ msgstr "開始恢復"
 #: src/views/certificate/CertificateList/certColumns.tsx:65
 #: src/views/environments/list/envColumns.tsx:44
 #: src/views/site/site_edit/RightSettings.vue:55
-#: src/views/site/site_list/columns.tsx:80 src/views/stream/StreamList.vue:47
+#: src/views/site/site_list/columns.tsx:89 src/views/stream/StreamList.vue:47
 msgid "Status"
 msgstr "狀態"
 
@@ -3328,7 +3384,7 @@ msgstr "同步節點"
 msgid "Sync strategy"
 msgstr "同步策略"
 
-#: src/views/certificate/CertificateEditor.vue:204
+#: src/views/certificate/components/CertificateEditor.vue:206
 msgid "Sync to"
 msgstr "同步到"
 
@@ -3345,7 +3401,7 @@ msgstr "系統"
 msgid "System Backup"
 msgstr "系統備份"
 
-#: src/views/certificate/ACMEUserSelector.vue:88
+#: src/views/certificate/components/ACMEUserSelector.vue:88
 msgid "System Initial User"
 msgstr "系統初始使用者"
 
@@ -3393,11 +3449,11 @@ msgid ""
 "dashes, colons, and dots."
 msgstr "ICP 編號僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
 
-#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/components/CertificateEditor.vue:216
 msgid "The input is not a SSL Certificate"
 msgstr "輸入的不是 SSL 憑證"
 
-#: src/views/certificate/CertificateEditor.vue:227
+#: src/views/certificate/components/CertificateEditor.vue:229
 msgid "The input is not a SSL Certificate Key"
 msgstr "輸入的不是 SSL 憑證金鑰"
 
@@ -3422,11 +3478,11 @@ msgstr "節點名稱僅能包含字母、Unicode 字元、數字、連字號、�
 msgid "The parameter of server_name is required"
 msgstr "必須提供 server_name 參數"
 
-#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/components/CertificateEditor.vue:181
 msgid "The path exists, but the file is not a certificate"
 msgstr "路徑存在，但檔案不是憑證"
 
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/components/CertificateEditor.vue:196
 msgid "The path exists, but the file is not a private key"
 msgstr "路徑存在，但檔案不是金鑰"
 
@@ -3474,17 +3530,17 @@ msgstr ""
 "這些代碼是您在丟失密碼和第二重驗證因素時，訪問帳戶的最後手段。如果您找不到這"
 "些代碼，您將無法再訪問您的帳戶。"
 
-#: src/views/certificate/CertificateEditor.vue:102
+#: src/views/certificate/components/CertificateEditor.vue:102
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "此自動憑證項目無效，請將其移除。"
 
-#: src/views/certificate/CertificateEditor.vue:92
+#: src/views/certificate/components/CertificateEditor.vue:92
 msgid "This certificate is managed by Nginx UI"
 msgstr "此憑證由 Nginx UI 管理"
 
-#: src/views/certificate/CertificateEditor.vue:163
-#: src/views/certificate/CertificateEditor.vue:177
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/components/CertificateEditor.vue:165
+#: src/views/certificate/components/CertificateEditor.vue:179
+#: src/views/certificate/components/CertificateEditor.vue:194
 msgid "This field is required"
 msgstr "此字段為必填項"
 
@@ -3505,6 +3561,12 @@ msgstr "此欄位不應為空"
 msgid ""
 "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "此欄位僅能包含字母、Unicode字元、數字、連字號、破折號和底線。"
+
+#: src/views/certificate/components/RemoveCert.vue:103
+msgid ""
+"This operation will only remove the certificate from the database. The "
+"certificate files on the file system will not be deleted."
+msgstr ""
 
 #: src/views/system/Backup/BackupCreator.vue:141
 msgid ""
@@ -3548,6 +3610,10 @@ msgstr "提示"
 #: src/views/notification/notificationColumns.tsx:45
 msgid "Title"
 msgstr "標題"
+
+#: src/views/certificate/components/RemoveCert.vue:121
+msgid "To confirm revocation, please type \"Revoke\" in the field below:"
+msgstr ""
 
 #: src/views/preference/components/TOTP.vue:68
 msgid ""
@@ -3632,7 +3698,7 @@ msgstr "更新成功"
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:75
-#: src/views/site/site_list/columns.tsx:110
+#: src/views/site/site_list/columns.tsx:82
 #: src/views/stream/components/RightSettings.vue:99
 #: src/views/stream/StreamList.vue:67 src/views/user/userColumns.tsx:54
 msgid "Updated at"
@@ -3757,7 +3823,8 @@ msgid ""
 "Warning: Restore operation will overwrite current configurations. Make sure "
 "you have a valid backup file and security token, and carefully select what "
 "to restore."
-msgstr "警告：恢復操作將覆蓋當前配置。請確保您擁有有效的備份檔案和安全令牌，並謹慎選"
+msgstr ""
+"警告：恢復操作將覆蓋當前配置。請確保您擁有有效的備份檔案和安全令牌，並謹慎選"
 "擇要恢復的內容。"
 
 #: src/views/certificate/DNSCredential.vue:56
@@ -3782,6 +3849,10 @@ msgstr "Webauthn"
 msgid "WebAuthn settings are not configured"
 msgstr "WebAuthn 設定尚未配置"
 
+#: src/views/certificate/components/RemoveCert.vue:54
+msgid "WebSocket connection error"
+msgstr ""
+
 #: src/views/certificate/ACMEUser.vue:83
 msgid ""
 "When Enabled, Nginx UI will automatically re-register users upon startup. "
@@ -3795,14 +3866,16 @@ msgstr ""
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "Node Group and the nodes selected below will be synchronized."
-msgstr "當您啟用/停用、刪除或保存此網站時，在節點群組中設定的節點及下方選取的節點將同"
+msgstr ""
+"當您啟用/停用、刪除或保存此網站時，在節點群組中設定的節點及下方選取的節點將同"
 "步更新。"
 
 #: src/views/stream/components/RightSettings.vue:114
 msgid ""
 "When you enable/disable, delete, or save this stream, the nodes set in the "
 "Node Group and the nodes selected below will be synchronized."
-msgstr "當您啟用/停用、刪除或儲存此串流時，在節點群組中設定的節點以及下方選取的節點將"
+msgstr ""
+"當您啟用/停用、刪除或儲存此串流時，在節點群組中設定的節點以及下方選取的節點將"
 "會同步更新。"
 
 #: src/views/preference/components/RecoveryCodes.vue:140

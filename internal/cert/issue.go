@@ -8,6 +8,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-acme/lego/v4/challenge/dns01"
@@ -162,6 +163,20 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		}()
 	}
 
+	// Backup current certificate and key if RevokeOld is true
+	var oldResource *model.CertificateResource
+
+	if payload.RevokeOld && payload.Resource != nil && payload.Resource.Certificate != nil {
+		l.Println("[INFO] [Nginx UI] Backing up current certificate for later revocation")
+
+		// Save a copy of the old certificate and key
+		oldResource = &model.CertificateResource{
+			Resource:    payload.Resource.Resource,
+			Certificate: payload.Resource.Certificate,
+			PrivateKey:  payload.Resource.PrivateKey,
+		}
+	}
+
 	if time.Now().Sub(payload.NotBefore).Hours()/24 <= 21 &&
 		payload.Resource != nil && payload.Resource.Certificate != nil {
 		renew(payload, client, l, errChan)
@@ -178,6 +193,25 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 	if payload.GetCertificatePath() == cSettings.ServerSettings.SSLCert &&
 		payload.GetCertificateKeyPath() == cSettings.ServerSettings.SSLKey {
 		ReloadServerTLSCertificate()
+	}
+
+	// Revoke old certificate if requested and we have a backup
+	if payload.RevokeOld && oldResource != nil && len(oldResource.Certificate) > 0 {
+		l.Println("[INFO] [Nginx UI] Revoking old certificate")
+
+		// Create a payload for revocation using old certificate
+		revokePayload := &ConfigPayload{
+			CertID:          payload.CertID,
+			ServerName:      payload.ServerName,
+			ChallengeMethod: payload.ChallengeMethod,
+			DNSCredentialID: payload.DNSCredentialID,
+			ACMEUserID:      payload.ACMEUserID,
+			KeyType:         payload.KeyType,
+			Resource:        oldResource,
+		}
+
+		// Revoke the old certificate
+		revoke(revokePayload, client, l, errChan)
 	}
 
 	// Wait log to be written

@@ -48,6 +48,7 @@ type Cert struct {
 	SyncNodeIds             []uint64             `json:"sync_node_ids" gorm:"serializer:json"`
 	MustStaple              bool                 `json:"must_staple"`
 	LegoDisableCNAMESupport bool                 `json:"lego_disable_cname_support"`
+	RevokeOld               bool                 `json:"revoke_old"`
 }
 
 func FirstCert(confName string) (c Cert, err error) {

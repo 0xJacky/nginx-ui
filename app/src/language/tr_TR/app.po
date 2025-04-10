@@ -35,7 +35,7 @@ msgid "Access Logs"
 msgstr "Erişim Günlükleri"
 
 #: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:113
-#: src/views/certificate/ACMEUserSelector.vue:85
+#: src/views/certificate/components/ACMEUserSelector.vue:85
 msgid "ACME User"
 msgstr "ACME Kullanıcısı"
 
@@ -49,7 +49,7 @@ msgstr "ACME Kullanıcısı"
 #: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
 #: src/views/preference/components/ExternalNotify/columns.ts:46
-#: src/views/site/site_list/columns.tsx:117 src/views/stream/StreamList.vue:74
+#: src/views/site/site_list/columns.tsx:120 src/views/stream/StreamList.vue:74
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "Eylem"
@@ -277,7 +277,7 @@ msgstr ""
 msgid "Automatically indexed from site and stream configurations."
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:255
+#: src/views/certificate/components/CertificateEditor.vue:257
 #: src/views/config/ConfigEditor.vue:262 src/views/config/ConfigList.vue:112
 #: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/SiteEdit.vue:285
@@ -461,6 +461,12 @@ msgstr "Senkronizasyon Sertifikası Hatası"
 msgid "Certificate path is empty"
 msgstr "Yapılandırma Şablonları"
 
+#: src/views/certificate/components/RemoveCert.vue:41
+#: src/views/certificate/components/RemoveCert.vue:61
+#, fuzzy
+msgid "Certificate removed successfully"
+msgstr "Başarıyla temizlendi"
+
 #: src/views/preference/CertSettings.vue:27
 msgid "Certificate Renewal Interval"
 msgstr "Sertifika Yenileme Aralığı"
@@ -470,7 +476,7 @@ msgstr "Sertifika Yenileme Aralığı"
 msgid "Certificate renewed successfully"
 msgstr "Başarıyla temizlendi"
 
-#: src/views/certificate/CertificateEditor.vue:128
+#: src/views/certificate/components/CertificateEditor.vue:128
 #: src/views/site/cert/Cert.vue:60
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
@@ -478,7 +484,7 @@ msgstr[0] "Sertifika Durumu"
 msgstr[1] "Sertifikaların Durumu"
 
 #: src/routes/modules/certificates.ts:11
-#: src/views/certificate/CertificateList/Certificate.vue:13
+#: src/views/certificate/CertificateList/Certificate.vue:14
 msgid "Certificates"
 msgstr "Sertifikalar"
 
@@ -777,12 +783,18 @@ msgstr "Açıklama"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
+#: src/views/certificate/components/RemoveCert.vue:87
 #: src/views/site/ngx_conf/NgxServer.vue:110
 #: src/views/site/ngx_conf/NgxUpstream.vue:128
 #: src/views/site/site_list/SiteList.vue:176
 #: src/views/stream/StreamList.vue:236
 msgid "Delete"
 msgstr "Sil"
+
+#: src/views/certificate/components/RemoveCert.vue:92
+#, fuzzy
+msgid "Delete Certificate"
+msgstr "Sertifika Yenileme"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:35
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:547
@@ -984,7 +996,7 @@ msgstr ""
 #: src/views/preference/NodeSettings.vue:30
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:159
 #: src/views/site/site_edit/SiteEdit.vue:199
-#: src/views/site/site_list/columns.tsx:102 src/views/stream/StreamEdit.vue:182
+#: src/views/site/site_list/columns.tsx:111 src/views/stream/StreamEdit.vue:182
 #: src/views/stream/StreamList.vue:58 src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr "Devre dışı"
@@ -1054,11 +1066,11 @@ msgid_plural "Documents"
 msgstr[0] "API Dökümanı"
 msgstr[1] "API Dökümanı"
 
-#: src/views/certificate/WildcardCertificate.vue:68
+#: src/views/certificate/components/WildcardCertificate.vue:68
 msgid "Domain"
 msgstr "Alan Adı"
 
-#: src/views/certificate/CertificateEditor.vue:112
+#: src/views/certificate/components/CertificateEditor.vue:112
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
 "Alan adları listesi boş, %{config} için Otomatik Sertifikayı yeniden açmayı "
@@ -1243,7 +1255,7 @@ msgstr "TOTP'yi Etkinleştir"
 #: src/views/preference/NodeSettings.vue:30
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:155
 #: src/views/site/site_edit/SiteEdit.vue:193
-#: src/views/site/site_list/columns.tsx:101
+#: src/views/site/site_list/columns.tsx:110
 #: src/views/stream/components/RightSettings.vue:81
 #: src/views/stream/StreamEdit.vue:176 src/views/stream/StreamList.vue:54
 #: src/views/user/userColumns.tsx:38
@@ -1453,6 +1465,11 @@ msgstr ""
 msgid "Failed to decrypt Nginx UI directory: {0}"
 msgstr ""
 
+#: src/views/certificate/components/RemoveCert.vue:66
+#, fuzzy
+msgid "Failed to delete certificate"
+msgstr "Sertifika alınamadı"
+
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:63
 #: src/views/stream/components/RightSettings.vue:45
 #: src/views/stream/StreamList.vue:100
@@ -1570,6 +1587,11 @@ msgstr ""
 #: src/constants/errors/backup.ts:40
 msgid "Failed to restore Nginx UI files: {0}"
 msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:48
+#, fuzzy
+msgid "Failed to revoke certificate"
+msgstr "Sertifika alınamadı"
 
 #: src/views/site/site_edit/SiteEdit.vue:139
 #: src/views/stream/StreamEdit.vue:122
@@ -1756,6 +1778,15 @@ msgstr ""
 "yasaklama eşiği dakikaları içinde maksimum deneme sayısına ulaşırsa, IP "
 "adresi belirli bir süre için yasaklanacaktır."
 
+#: src/views/site/cert/components/AutoCertStepOne.vue:117
+#, fuzzy
+msgid ""
+"If you want to automatically revoke the old certificate, please enable this "
+"option."
+msgstr ""
+"Alan adınızda CNAME kayıtları varsa ve sertifika alamıyorsanız, bu seçeneği "
+"etkinleştirmeniz gerekir."
+
 #: src/views/preference/components/AddPasskey.vue:70
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
 msgstr ""
@@ -1770,12 +1801,12 @@ msgstr ""
 "Alan adınızda CNAME kayıtları varsa ve sertifika alamıyorsanız, bu seçeneği "
 "etkinleştirmeniz gerekir."
 
-#: src/views/certificate/CertificateList/Certificate.vue:20
+#: src/views/certificate/CertificateList/Certificate.vue:22
 msgid "Import"
 msgstr "İçe Aktar"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:85
+#: src/views/certificate/components/CertificateEditor.vue:85
 msgid "Import Certificate"
 msgstr "Sertifika İçe Aktar"
 
@@ -1903,11 +1934,11 @@ msgstr "Geçersiz 2FA veya kurtarma kodu"
 msgid "IP"
 msgstr "IP"
 
-#: src/views/certificate/CertificateList/Certificate.vue:28
+#: src/views/certificate/CertificateList/Certificate.vue:31
 msgid "Issue wildcard certificate"
 msgstr "Wildcard sertifikası düzenle"
 
-#: src/views/certificate/WildcardCertificate.vue:59
+#: src/views/certificate/components/WildcardCertificate.vue:59
 msgid "Issue Wildcard Certificate"
 msgstr "Wildcard Sertifikası Yayınlama"
 
@@ -1972,8 +2003,8 @@ msgstr "Buna ihtiyacınız yoksa boş bırakın."
 msgid "Leave blank if you don't need this."
 msgstr "Buna ihtiyacınız yoksa boş bırakın."
 
-#: src/views/certificate/CertificateEditor.vue:220
-#: src/views/certificate/CertificateEditor.vue:233
+#: src/views/certificate/components/CertificateEditor.vue:222
+#: src/views/certificate/components/CertificateEditor.vue:235
 msgid "Leave blank will not change anything"
 msgstr "Boş bırakmak hiçbir şeyi değiştirmeyecektir"
 
@@ -2023,7 +2054,7 @@ msgstr "Konum"
 msgid "Locations"
 msgstr "Konumlar"
 
-#: src/views/certificate/CertificateEditor.vue:243
+#: src/views/certificate/components/CertificateEditor.vue:245
 msgid "Log"
 msgstr "Günlük"
 
@@ -2065,7 +2096,7 @@ msgstr ""
 "dakika aralığında logrotate komutunu çalıştıracaktır."
 
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:163
-#: src/views/site/site_list/columns.tsx:103
+#: src/views/site/site_list/columns.tsx:112
 msgid "Maintenance"
 msgstr ""
 
@@ -2153,7 +2184,7 @@ msgid "Modify"
 msgstr "Değiştir"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:85
+#: src/views/certificate/components/CertificateEditor.vue:85
 #, fuzzy
 msgid "Modify Certificate"
 msgstr "Sertifika Değiştirme"
@@ -2174,8 +2205,8 @@ msgid "Multi-line Directive"
 msgstr "Çok Hatlı Direktif"
 
 #: src/views/certificate/ACMEUser.vue:13
-#: src/views/certificate/CertificateEditor.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:10
+#: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:305
@@ -2234,7 +2265,7 @@ msgstr "Yeni Yol"
 msgid "New version released"
 msgstr "Yeni sürüm yayınlandı"
 
-#: src/views/certificate/WildcardCertificate.vue:91
+#: src/views/certificate/components/WildcardCertificate.vue:91
 #: src/views/site/cert/components/ObtainCert.vue:211
 #: src/views/site/site_add/SiteAdd.vue:141
 #, fuzzy
@@ -2414,7 +2445,7 @@ msgid "Node"
 msgstr "Yeni Ad"
 
 #: src/views/site/site_edit/RightSettings.vue:66
-#: src/views/site/site_list/columns.tsx:63
+#: src/views/site/site_list/columns.tsx:65
 #: src/views/stream/components/RightSettings.vue:90
 #: src/views/stream/StreamList.vue:30
 #, fuzzy
@@ -2821,6 +2852,10 @@ msgstr "Lütfen yükseltmek için en az bir düğüm seçin"
 msgid "Please select at least one node to upgrade"
 msgstr "Lütfen yükseltmek için en az bir düğüm seçin"
 
+#: src/views/certificate/components/RemoveCert.vue:27
+msgid "Please type \"Revoke\" to confirm"
+msgstr ""
+
 #: src/views/preference/ServerSettings.vue:21
 #, fuzzy
 msgid "Port"
@@ -3140,8 +3175,8 @@ msgstr "Yeniden adlandırma başarıyla"
 msgid "Renamed successfully"
 msgstr "Yeniden adlandırma başarıyla"
 
-#: src/views/certificate/RenewCert.vue:45
-#: src/views/certificate/RenewCert.vue:49
+#: src/views/certificate/components/RenewCert.vue:45
+#: src/views/certificate/components/RenewCert.vue:49
 #, fuzzy
 msgid "Renew Certificate"
 msgstr "Sertifika Yenileme"
@@ -3156,8 +3191,8 @@ msgstr "Sertifika Yenileme Hatası"
 msgid "Renew Certificate Success"
 msgstr "Sertifika Yenileme Başarısı"
 
-#: src/views/certificate/RenewCert.vue:27
-#: src/views/certificate/WildcardCertificate.vue:48
+#: src/views/certificate/components/RenewCert.vue:27
+#: src/views/certificate/components/WildcardCertificate.vue:48
 #, fuzzy
 msgid "Renew successfully"
 msgstr "Başarıyla yenileyin"
@@ -3251,6 +3286,27 @@ msgstr "Nginx Yapılandırma Ayrıştırma Hatası"
 msgid "Restore this version"
 msgstr ""
 
+#: src/views/certificate/components/RemoveCert.vue:26
+#: src/views/certificate/components/RemoveCert.vue:95
+msgid "Revoke"
+msgstr ""
+
+#: src/views/site/cert/components/AutoCertStepOne.vue:114
+#, fuzzy
+msgid "Revoke Old Certificate"
+msgstr "Sertifika Yenileme"
+
+#: src/views/certificate/components/RemoveCert.vue:109
+#, fuzzy
+msgid "Revoke this certificate"
+msgstr "Sertifika Yenileme"
+
+#: src/views/certificate/components/RemoveCert.vue:117
+msgid ""
+"Revoking a certificate will affect any services currently using it. This "
+"action cannot be undone."
+msgstr ""
+
 #: src/views/preference/AuthSettings.vue:107
 msgid "RP Display Name"
 msgstr ""
@@ -3276,7 +3332,7 @@ msgstr "Çalışıyor"
 #: src/components/ChatGPT/ChatGPT.vue:355
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:64
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
-#: src/views/certificate/CertificateEditor.vue:262
+#: src/views/certificate/components/CertificateEditor.vue:264
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/config/ConfigEditor.vue:271
 #: src/views/preference/components/Passkey.vue:130
@@ -3346,7 +3402,7 @@ msgstr "%{conf_name} başarıyla %{node_name} düğümüne kopyalandı"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
-#: src/views/certificate/CertificateEditor.vue:49
+#: src/views/certificate/components/CertificateEditor.vue:49
 #: src/views/preference/Preference.vue:124
 #, fuzzy
 msgid "Save successfully"
@@ -3533,7 +3589,7 @@ msgstr ""
 msgid "Skip Installation"
 msgstr "Yükle"
 
-#: src/views/certificate/CertificateEditor.vue:211
+#: src/views/certificate/components/CertificateEditor.vue:213
 #, fuzzy
 msgid "SSL Certificate Content"
 msgstr "SSL Sertifika İçeriği"
@@ -3547,17 +3603,17 @@ msgstr ""
 msgid "SSL certificate file not found"
 msgstr "SSL Sertifika Anahtarı İçeriği"
 
-#: src/views/certificate/CertificateEditor.vue:224
+#: src/views/certificate/components/CertificateEditor.vue:226
 #, fuzzy
 msgid "SSL Certificate Key Content"
 msgstr "SSL Sertifika Anahtarı İçeriği"
 
-#: src/views/certificate/CertificateEditor.vue:190
+#: src/views/certificate/components/CertificateEditor.vue:192
 #, fuzzy
 msgid "SSL Certificate Key Path"
 msgstr "SSL Sertifikası Anahtar Yolu"
 
-#: src/views/certificate/CertificateEditor.vue:175
+#: src/views/certificate/components/CertificateEditor.vue:177
 #: src/views/preference/ServerSettings.vue:36
 #, fuzzy
 msgid "SSL Certificate Path"
@@ -3606,7 +3662,7 @@ msgstr ""
 #: src/views/certificate/CertificateList/certColumns.tsx:65
 #: src/views/environments/list/envColumns.tsx:44
 #: src/views/site/site_edit/RightSettings.vue:55
-#: src/views/site/site_list/columns.tsx:80 src/views/stream/StreamList.vue:47
+#: src/views/site/site_list/columns.tsx:89 src/views/stream/StreamList.vue:47
 #, fuzzy
 msgid "Status"
 msgstr "Durum"
@@ -3744,7 +3800,7 @@ msgstr "Şununla senkronize et"
 msgid "Sync strategy"
 msgstr "Senkronizasyon Sertifikası"
 
-#: src/views/certificate/CertificateEditor.vue:204
+#: src/views/certificate/components/CertificateEditor.vue:206
 #, fuzzy
 msgid "Sync to"
 msgstr "Şununla senkronize et"
@@ -3764,7 +3820,7 @@ msgstr "Sistem"
 msgid "System Backup"
 msgstr "Sistem"
 
-#: src/views/certificate/ACMEUserSelector.vue:88
+#: src/views/certificate/components/ACMEUserSelector.vue:88
 #, fuzzy
 msgid "System Initial User"
 msgstr "Sistem İlk Kullanıcısı"
@@ -3823,12 +3879,12 @@ msgid ""
 msgstr ""
 "Model adı yalnızca harf, unicode, sayı, tire, çizgi ve nokta içermelidir."
 
-#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/components/CertificateEditor.vue:216
 #, fuzzy
 msgid "The input is not a SSL Certificate"
 msgstr "Giriş bir SSL Sertifikası değil"
 
-#: src/views/certificate/CertificateEditor.vue:227
+#: src/views/certificate/components/CertificateEditor.vue:229
 #, fuzzy
 msgid "The input is not a SSL Certificate Key"
 msgstr "Girdi bir SSL Sertifika Anahtarı değil"
@@ -3859,12 +3915,12 @@ msgstr ""
 msgid "The parameter of server_name is required"
 msgstr "server_name parametresi gereklidir"
 
-#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/components/CertificateEditor.vue:181
 #, fuzzy
 msgid "The path exists, but the file is not a certificate"
 msgstr "Yol var, ancak dosya bir sertifika değil"
 
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/components/CertificateEditor.vue:196
 #, fuzzy
 msgid "The path exists, but the file is not a private key"
 msgstr "Yol var, ancak dosya bir özel anahtar değil"
@@ -3922,19 +3978,19 @@ msgid ""
 "lose access to your account."
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:102
+#: src/views/certificate/components/CertificateEditor.vue:102
 #, fuzzy
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Bu Otomatik Sertifika öğesi geçersizdir, lütfen kaldırın."
 
-#: src/views/certificate/CertificateEditor.vue:92
+#: src/views/certificate/components/CertificateEditor.vue:92
 #, fuzzy
 msgid "This certificate is managed by Nginx UI"
 msgstr "Bu sertifika Nginx UI tarafından yönetilir"
 
-#: src/views/certificate/CertificateEditor.vue:163
-#: src/views/certificate/CertificateEditor.vue:177
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/components/CertificateEditor.vue:165
+#: src/views/certificate/components/CertificateEditor.vue:179
+#: src/views/certificate/components/CertificateEditor.vue:194
 #, fuzzy
 msgid "This field is required"
 msgstr "Bu alan gereklidir"
@@ -3961,6 +4017,12 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr ""
 "Model adı yalnızca harf, unicode, sayı, tire, çizgi ve nokta içermelidir."
+
+#: src/views/certificate/components/RemoveCert.vue:103
+msgid ""
+"This operation will only remove the certificate from the database. The "
+"certificate files on the file system will not be deleted."
+msgstr ""
 
 #: src/views/system/Backup/BackupCreator.vue:141
 msgid ""
@@ -4009,6 +4071,10 @@ msgstr "İpuçları"
 #, fuzzy
 msgid "Title"
 msgstr "Başlık"
+
+#: src/views/certificate/components/RemoveCert.vue:121
+msgid "To confirm revocation, please type \"Revoke\" in the field below:"
+msgstr ""
 
 #: src/views/preference/components/TOTP.vue:68
 #, fuzzy
@@ -4112,7 +4178,7 @@ msgstr "Güncellendi"
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:75
-#: src/views/site/site_list/columns.tsx:110
+#: src/views/site/site_list/columns.tsx:82
 #: src/views/stream/components/RightSettings.vue:99
 #: src/views/stream/StreamList.vue:67 src/views/user/userColumns.tsx:54
 #, fuzzy
@@ -4287,6 +4353,10 @@ msgstr ""
 
 #: src/constants/errors/user.ts:7
 msgid "WebAuthn settings are not configured"
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:54
+msgid "WebSocket connection error"
 msgstr ""
 
 #: src/views/certificate/ACMEUser.vue:83
