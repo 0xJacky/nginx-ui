@@ -2,9 +2,9 @@
 import type { EnvGroup } from '@/api/env_group'
 import type { Environment } from '@/api/environment'
 import nodeApi from '@/api/node'
+import { useSSE } from '@/composables/useSSE'
 import { useUserStore } from '@/pinia'
 import { message } from 'ant-design-vue'
-import { SSE } from 'sse.js'
 
 const props = defineProps<{
   envGroups: EnvGroup[]
@@ -15,11 +15,13 @@ const { token } = storeToRefs(useUserStore())
 
 const environments = ref<Environment[]>([])
 const environmentsMap = ref<Record<number, Environment>>({})
-const sse = shallowRef<SSE>()
 const loading = ref({
   reload: false,
   restart: false,
 })
+
+// 使用SSE composable
+const { connect, disconnect } = useSSE()
 
 // Get node data when tab is not 'All'
 watch(modelValue, newVal => {
@@ -27,45 +29,25 @@ watch(modelValue, newVal => {
     connectSSE()
   }
   else {
-    disconnectSSE()
+    disconnect()
   }
 }, { immediate: true })
 
-onUnmounted(() => {
-  disconnectSSE()
-})
-
 function connectSSE() {
-  disconnectSSE()
-
-  const s = new SSE('api/environments/enabled', {
-    headers: {
-      Authorization: token.value,
+  connect({
+    url: 'api/environments/enabled',
+    token: token.value,
+    onMessage: data => {
+      environments.value = data
+      environmentsMap.value = environments.value.reduce((acc, node) => {
+        acc[node.id] = node
+        return acc
+      }, {} as Record<number, Environment>)
+    },
+    onError: () => {
+      // 错误处理已由useSSE内部实现自动重连
     },
   })
-
-  s.onmessage = e => {
-    environments.value = JSON.parse(e.data)
-    environmentsMap.value = environments.value.reduce((acc, node) => {
-      acc[node.id] = node
-      return acc
-    }, {} as Record<number, Environment>)
-  }
-
-  s.onerror = () => {
-    setTimeout(() => {
-      connectSSE()
-    }, 5000)
-  }
-
-  sse.value = s
-}
-
-function disconnectSSE() {
-  if (sse.value) {
-    sse.value.close()
-    sse.value = undefined
-  }
 }
 
 // Get the current Node Group data
