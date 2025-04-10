@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/shirou/gopsutil/v4/process"
-	"github.com/uozi-tech/cosy/logger"
 )
 
 type NginxProcessInfo struct {
@@ -121,7 +120,6 @@ func GetNginxProcessInfo() (*NginxProcessInfo, error) {
 
 		// Distinguish between worker processes, cache processes, and other processes
 		if ppid == masterPID || strings.Contains(cmdline, "worker process") {
-			logger.Debug(cmdline)
 			workerCount++
 		} else if strings.Contains(cmdline, "cache") {
 			cacheCount++
