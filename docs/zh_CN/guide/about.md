@@ -22,6 +22,14 @@ const members = [
       { icon: { svg: blogIcon }, link: 'https://blog.kugeek.com' }
     ]
   },
+  {
+    avatar: 'https://www.github.com/akinoccc.png',
+    name: 'Akino',
+    title: '开发者',
+    links: [
+      { icon: 'github', link: 'https://github.com/akinoccc' }
+    ]
+  },
 ]
 </script>
 

@@ -4,7 +4,7 @@
 
 # Nginx UI
 
-Yet another Nginx Web UI, được phát triển bởi [0xJacky](https://jackyu.cn/) và [Hintay](https://blog.kugeek.com/).
+Yet another Nginx Web UI, được phát triển bởi [0xJacky](https://jackyu.cn/), [Hintay](https://blog.kugeek.com/) và [Akino](https://github.com/akinoccc).
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 [![GitHub license](https://img.shields.io/github/license/0xJacky/nginx-ui?label=License&logo=github)](https://github.com/0xJacky/nginx-ui "Click to view the repo on Github")

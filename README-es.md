@@ -4,7 +4,7 @@
 
 # Interfaz de usuario (UI) de Nginx
 
-Otra UI web de Nginx, desarrollada por [0xJacky](https://jackyu.cn/) y [Hintay](https://blog.kugeek.com/).
+Otra UI web de Nginx, desarrollada por [0xJacky](https://jackyu.cn/), [Hintay](https://blog.kugeek.com/) y [Akino](https://github.com/akinoccc).
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 

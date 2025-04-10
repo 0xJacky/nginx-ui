@@ -6,7 +6,7 @@
 
 Yet another Nginx Web UI
 
-Nginx 网络管理界面，由  [0xJacky](https://jackyu.cn/) 与 [Hintay](https://blog.kugeek.com/) 开发。
+Nginx 网络管理界面，由 [0xJacky](https://jackyu.cn/)、[Hintay](https://blog.kugeek.com/) 和 [Akino](https://github.com/akinoccc) 开发。
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 
