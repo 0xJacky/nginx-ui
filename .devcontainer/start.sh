@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# install air
+go install github.com/air-verse/air@latest
+
 # install zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 

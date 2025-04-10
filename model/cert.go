@@ -1,13 +1,14 @@
 package model
 
 import (
+	"os"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/go-acme/lego/v4/certificate"
 	"github.com/lib/pq"
 	"gorm.io/gorm/clause"
-	"os"
 )
 
 const (
@@ -127,4 +128,13 @@ func (c *CertificateResource) GetResource() certificate.Resource {
 		IssuerCertificate: c.IssuerCertificate,
 		CSR:               c.CSR,
 	}
+}
+
+// GetCertList returns all certificates
+func GetCertList() (c []*Cert) {
+	if db == nil {
+		return
+	}
+	db.Find(&c)
+	return
 }

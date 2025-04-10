@@ -22,7 +22,7 @@ const columns: Column[] = [{
     type: input,
   },
   search: true,
-  width: 170,
+  width: 150,
   customRender: ({ text, record }) => {
     const template: JSXElements = []
 
@@ -39,16 +39,18 @@ const columns: Column[] = [{
         record.urls.forEach((url: string) => {
           const displayUrl = url.replace(/^https?:\/\//, '')
           urlsContainer.push(
-            <Tag style="margin-right: 8px; margin-bottom: 4px;">
-              <a href={url} target="_blank" rel="noopener noreferrer">{displayUrl}</a>
-            </Tag>,
+            <a href={url} target="_blank" rel="noopener noreferrer">
+              <Tag color="blue" bordered={false} style="margin-right: 8px; margin-bottom: 4px;">
+                {displayUrl}
+              </Tag>
+            </a>,
           )
         })
       }
       else {
         record.urls.forEach((url: string) => {
           const displayUrl = url.replace(/^https?:\/\//, '')
-          urlsContainer.push(<Tag style="margin-right: 8px; margin-bottom: 4px;">{displayUrl}</Tag>)
+          urlsContainer.push(<Tag bordered={false} style="margin-right: 8px; margin-bottom: 4px;">{displayUrl}</Tag>)
         })
       }
 
@@ -75,7 +77,14 @@ const columns: Column[] = [{
   sorter: true,
   pithy: true,
   batch: true,
-  width: 120,
+  width: 100,
+}, {
+  title: () => $gettext('Updated at'),
+  dataIndex: 'modified_at',
+  customRender: datetime,
+  sorter: true,
+  pithy: true,
+  width: 150,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'status',
@@ -105,14 +114,8 @@ const columns: Column[] = [{
   },
   sorter: true,
   pithy: true,
-  width: 150,
-}, {
-  title: () => $gettext('Updated at'),
-  dataIndex: 'modified_at',
-  customRender: datetime,
-  sorter: true,
-  pithy: true,
-  width: 150,
+  width: 110,
+  fixed: 'right',
 }, {
   title: () => $gettext('Action'),
   dataIndex: 'action',

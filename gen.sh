@@ -9,3 +9,6 @@ go run cmd/ngx_dir_index/ngx_dir_index.go ./internal/nginx/nginx_directives.json
 
 # generate notification texts
 go run cmd/notification/generate.go
+
+# generate external notifier configs
+go run cmd/external_notifier/generate.go

@@ -4,7 +4,45 @@
 
 const notifications: Record<string, { title: () => string, content: (args: any) => string }> = {
 
+  // cluster module notifications
+  'Reload Remote Nginx Error': {
+    title: () => $gettext('Reload Remote Nginx Error'),
+    content: (args: any) => $gettext('Reload Nginx on %{node} failed, response: %{resp}', args),
+  },
+  'Reload Remote Nginx Success': {
+    title: () => $gettext('Reload Remote Nginx Success'),
+    content: (args: any) => $gettext('Reload Nginx on %{node} successfully', args),
+  },
+  'Restart Remote Nginx Error': {
+    title: () => $gettext('Restart Remote Nginx Error'),
+    content: (args: any) => $gettext('Restart Nginx on %{node} failed, response: %{resp}', args),
+  },
+  'Restart Remote Nginx Success': {
+    title: () => $gettext('Restart Remote Nginx Success'),
+    content: (args: any) => $gettext('Restart Nginx on %{node} successfully', args),
+  },
+
   // cert module notifications
+  'Certificate Expired': {
+    title: () => $gettext('Certificate Expired'),
+    content: (args: any) => $gettext('Certificate %{name} has expired', args),
+  },
+  'Certificate Expiration Notice': {
+    title: () => $gettext('Certificate Expiration Notice'),
+    content: (args: any) => $gettext('Certificate %{name} will expire in %{days} days', args),
+  },
+  'Certificate Expiring Soon': {
+    title: () => $gettext('Certificate Expiring Soon'),
+    content: (args: any) => $gettext('Certificate %{name} will expire in %{days} days', args),
+  },
+  'Certificate Expiring Soon_1': {
+    title: () => $gettext('Certificate Expiring Soon'),
+    content: (args: any) => $gettext('Certificate %{name} will expire in %{days} days', args),
+  },
+  'Certificate Expiring Soon_2': {
+    title: () => $gettext('Certificate Expiring Soon'),
+    content: (args: any) => $gettext('Certificate %{name} will expire in 1 day', args),
+  },
   'Sync Certificate Error': {
     title: () => $gettext('Sync Certificate Error'),
     content: (args: any) => $gettext('Sync Certificate %{cert_name} to %{env_name} failed', args),
@@ -136,24 +174,6 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
   'All Recovery Codes Have Been Used': {
     title: () => $gettext('All Recovery Codes Have Been Used'),
     content: (args: any) => $gettext('Please generate new recovery codes in the preferences immediately to prevent lockout.', args),
-  },
-
-  // cluster module notifications
-  'Reload Remote Nginx Error': {
-    title: () => $gettext('Reload Remote Nginx Error'),
-    content: (args: any) => $gettext('Reload Nginx on %{node} failed, response: %{resp}', args),
-  },
-  'Reload Remote Nginx Success': {
-    title: () => $gettext('Reload Remote Nginx Success'),
-    content: (args: any) => $gettext('Reload Nginx on %{node} successfully', args),
-  },
-  'Restart Remote Nginx Error': {
-    title: () => $gettext('Restart Remote Nginx Error'),
-    content: (args: any) => $gettext('Restart Nginx on %{node} failed, response: %{resp}', args),
-  },
-  'Restart Remote Nginx Success': {
-    title: () => $gettext('Restart Remote Nginx Success'),
-    content: (args: any) => $gettext('Restart Nginx on %{node} successfully', args),
   },
 }
 

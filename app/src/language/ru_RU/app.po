@@ -51,6 +51,7 @@ msgstr "Пользователь ACME"
 #: src/views/nginx_log/NginxLogList.vue:53
 #: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
+#: src/views/preference/components/ExternalNotify/columns.ts:46
 #: src/views/site/site_list/columns.tsx:117 src/views/stream/StreamList.vue:74
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
@@ -115,7 +116,7 @@ msgstr "Затем, обновите эту страницу и снова на�
 msgid "All"
 msgstr "Все"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:175
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "Все коды восстановления были использованы"
@@ -140,7 +141,7 @@ msgstr "API токен"
 msgid "API Type"
 msgstr "Тип API"
 
-#: src/views/preference/Preference.vue:162
+#: src/views/preference/Preference.vue:163
 #, fuzzy
 msgid "App"
 msgstr "Применить"
@@ -195,7 +196,7 @@ msgstr "Вы уверены, что хотите удалить этот эле�
 msgid "Are you sure you want to delete this item?"
 msgstr "Вы уверены, что хотите удалить этот элемент?"
 
-#: src/views/site/site_list/SiteList.vue:163
+#: src/views/site/site_list/SiteList.vue:167
 #: src/views/stream/StreamList.vue:227
 msgid "Are you sure you want to delete?"
 msgstr "Вы уверены, что хотите удалить?"
@@ -242,7 +243,7 @@ msgstr "Попытка исправить"
 msgid "Attempts"
 msgstr "Попытки"
 
-#: src/views/preference/Preference.vue:186
+#: src/views/preference/Preference.vue:193
 msgid "Auth"
 msgstr "Авторизация"
 
@@ -326,12 +327,16 @@ msgstr "Заблокированные IP-адреса"
 msgid "Banned Until"
 msgstr "Заблокирован до"
 
+#: src/views/preference/components/ExternalNotify/bark.ts:5
+msgid "Bark"
+msgstr ""
+
 #: src/views/site/site_add/SiteAdd.vue:95
 msgid "Base information"
 msgstr "Основная информация"
 
 #: src/views/config/ConfigEditor.vue:290
-#: src/views/site/site_edit/RightSettings.vue:53
+#: src/views/site/site_edit/RightSettings.vue:52
 #: src/views/stream/components/RightSettings.vue:79
 msgid "Basic"
 msgstr "Основные"
@@ -402,7 +407,7 @@ msgstr ""
 msgid "Cannot remove initial user"
 msgstr "Невозможно удалить начального пользователя"
 
-#: src/views/preference/Preference.vue:192
+#: src/views/preference/Preference.vue:199
 #, fuzzy
 msgid "Cert"
 msgstr "Авто Сертификат"
@@ -411,9 +416,41 @@ msgstr "Авто Сертификат"
 msgid "Cert path is not under the nginx conf dir"
 msgstr ""
 
+#: src/components/Notification/notifications.ts:28
+#, fuzzy
+msgid "Certificate %{name} has expired"
+msgstr "Шаблоны конфигурации"
+
+#: src/components/Notification/notifications.ts:32
+#: src/components/Notification/notifications.ts:36
+#: src/components/Notification/notifications.ts:40
+msgid "Certificate %{name} will expire in %{days} days"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:44
+msgid "Certificate %{name} will expire in 1 day"
+msgstr ""
+
 #: src/constants/errors/cert.ts:4
 msgid "Certificate decode error"
 msgstr "Ошибка декодирования сертификата"
+
+#: src/components/Notification/notifications.ts:31
+#, fuzzy
+msgid "Certificate Expiration Notice"
+msgstr "Шаблоны конфигурации"
+
+#: src/components/Notification/notifications.ts:27
+#, fuzzy
+msgid "Certificate Expired"
+msgstr "Список сертификатов"
+
+#: src/components/Notification/notifications.ts:35
+#: src/components/Notification/notifications.ts:39
+#: src/components/Notification/notifications.ts:43
+#, fuzzy
+msgid "Certificate Expiring Soon"
+msgstr "Ошибка анализа сертификата"
 
 #: src/constants/errors/cert.ts:5
 msgid "Certificate parse error"
@@ -667,6 +704,7 @@ msgstr ""
 
 #: src/views/environments/group/columns.ts:31
 #: src/views/notification/notificationColumns.tsx:59
+#: src/views/preference/components/ExternalNotify/columns.ts:41
 #: src/views/preference/components/Passkey.vue:95
 #: src/views/user/userColumns.tsx:48
 msgid "Created at"
@@ -738,7 +776,7 @@ msgstr "Ошибка расшифровки"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
 #: src/views/site/ngx_conf/NgxServer.vue:110
 #: src/views/site/ngx_conf/NgxUpstream.vue:128
-#: src/views/site/site_list/SiteList.vue:172
+#: src/views/site/site_list/SiteList.vue:176
 #: src/views/stream/StreamList.vue:236
 msgid "Delete"
 msgstr "Удалить"
@@ -748,45 +786,45 @@ msgstr "Удалить"
 msgid "Delete Permanently"
 msgstr "Удалить навсегда"
 
-#: src/components/Notification/notifications.ts:37 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:75 src/language/constants.ts:50
 #, fuzzy
 msgid "Delete Remote Site Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:41 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:79 src/language/constants.ts:49
 #, fuzzy
 msgid "Delete Remote Site Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
 
-#: src/components/Notification/notifications.ts:95
+#: src/components/Notification/notifications.ts:133
 #, fuzzy
 msgid "Delete Remote Stream Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:99
+#: src/components/Notification/notifications.ts:137
 #, fuzzy
 msgid "Delete Remote Stream Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
 
-#: src/components/Notification/notifications.ts:38
+#: src/components/Notification/notifications.ts:76
 #, fuzzy
 msgid "Delete site %{name} from %{node} failed"
 msgstr "Не удалось развернуть %{conf_name} на %{node_name}"
 
-#: src/components/Notification/notifications.ts:42
+#: src/components/Notification/notifications.ts:80
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Сайт %{name} успешно удалён с %{node}"
 
-#: src/views/site/site_list/SiteList.vue:94
+#: src/views/site/site_list/SiteList.vue:98
 msgid "Delete site: %{site_name}"
 msgstr "Удалить сайт: %{site_name}"
 
-#: src/components/Notification/notifications.ts:96
+#: src/components/Notification/notifications.ts:134
 #, fuzzy
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "Не удалось развернуть %{conf_name} на %{node_name}"
 
-#: src/components/Notification/notifications.ts:100
+#: src/components/Notification/notifications.ts:138
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Поток %{name} успешно удалён с %{node}"
 
@@ -823,6 +861,10 @@ msgstr "Детали"
 msgid "Development Mode"
 msgstr "Режим разработки"
 
+#: src/views/preference/components/ExternalNotify/dingtalk.ts:5
+msgid "DingTalk"
+msgstr ""
+
 #: src/views/site/ngx_conf/directive/DirectiveAdd.vue:89
 msgid "Directive"
 msgstr "Директива"
@@ -856,62 +898,62 @@ msgstr "Отключить"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Не удалось отключить автоматическое продление для %{name}"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:83 src/language/constants.ts:52
 #, fuzzy
 msgid "Disable Remote Site Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:69
+#: src/components/Notification/notifications.ts:107
 #, fuzzy
 msgid "Disable Remote Site Maintenance Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:73
+#: src/components/Notification/notifications.ts:111
 #, fuzzy
 msgid "Disable Remote Site Maintenance Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:87 src/language/constants.ts:51
 #, fuzzy
 msgid "Disable Remote Site Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
 
-#: src/components/Notification/notifications.ts:103
+#: src/components/Notification/notifications.ts:141
 #, fuzzy
 msgid "Disable Remote Stream Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:107
+#: src/components/Notification/notifications.ts:145
 #, fuzzy
 msgid "Disable Remote Stream Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
 
-#: src/components/Notification/notifications.ts:46
+#: src/components/Notification/notifications.ts:84
 #, fuzzy
 msgid "Disable site %{name} from %{node} failed"
 msgstr "Включение %{conf_name} in %{node_name} успешно"
 
-#: src/components/Notification/notifications.ts:50
+#: src/components/Notification/notifications.ts:88
 #, fuzzy
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "Включение %{conf_name} in %{node_name} успешно"
 
-#: src/components/Notification/notifications.ts:70
+#: src/components/Notification/notifications.ts:108
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "Включение %{conf_name} in %{node_name} успешно"
 
-#: src/components/Notification/notifications.ts:74
+#: src/components/Notification/notifications.ts:112
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "Включение %{conf_name} in %{node_name} успешно"
 
-#: src/components/Notification/notifications.ts:104
+#: src/components/Notification/notifications.ts:142
 #, fuzzy
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "Включение %{conf_name} in %{node_name} нипалучилася"
 
-#: src/components/Notification/notifications.ts:108
+#: src/components/Notification/notifications.ts:146
 #, fuzzy
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Включение %{conf_name} in %{node_name} успешно"
@@ -1026,7 +1068,7 @@ msgstr ""
 "запускаются на localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:158
+#: src/views/site/site_list/SiteList.vue:162
 #: src/views/stream/components/StreamDuplicate.vue:64
 #: src/views/stream/StreamList.vue:222
 msgid "Duplicate"
@@ -1094,61 +1136,61 @@ msgstr "Не удалось включить"
 msgid "Enable HTTPS"
 msgstr "Включить TOTP"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:91 src/language/constants.ts:54
 #, fuzzy
 msgid "Enable Remote Site Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:61
+#: src/components/Notification/notifications.ts:99
 #, fuzzy
 msgid "Enable Remote Site Maintenance Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:65
+#: src/components/Notification/notifications.ts:103
 #, fuzzy
 msgid "Enable Remote Site Maintenance Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:95 src/language/constants.ts:53
 #, fuzzy
 msgid "Enable Remote Site Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
 
-#: src/components/Notification/notifications.ts:111
+#: src/components/Notification/notifications.ts:149
 #, fuzzy
 msgid "Enable Remote Stream Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:115
+#: src/components/Notification/notifications.ts:153
 #, fuzzy
 msgid "Enable Remote Stream Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
 
-#: src/components/Notification/notifications.ts:62
+#: src/components/Notification/notifications.ts:100
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "Включение %{conf_name} in %{node_name} нипалучилася"
 
-#: src/components/Notification/notifications.ts:66
+#: src/components/Notification/notifications.ts:104
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "Сайт %{name} успешно включён на %{node}"
 
-#: src/components/Notification/notifications.ts:54
+#: src/components/Notification/notifications.ts:92
 #, fuzzy
 msgid "Enable site %{name} on %{node} failed"
 msgstr "Включение %{conf_name} in %{node_name} нипалучилася"
 
-#: src/components/Notification/notifications.ts:58
+#: src/components/Notification/notifications.ts:96
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "Сайт %{name} успешно включён на %{node}"
 
-#: src/components/Notification/notifications.ts:112
+#: src/components/Notification/notifications.ts:150
 #, fuzzy
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "Включение %{conf_name} in %{node_name} нипалучилася"
 
-#: src/components/Notification/notifications.ts:116
+#: src/components/Notification/notifications.ts:154
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Поток %{name} успешно включён на %{node}"
 
@@ -1234,6 +1276,11 @@ msgstr "Истекает: %{date}"
 #: src/components/StdDesign/StdDataDisplay/methods/exportCsv.ts:64
 msgid "Export"
 msgstr "Экспорт"
+
+#: src/views/preference/ExternalNotify.vue:10
+#: src/views/preference/Preference.vue:169
+msgid "External Notify"
+msgstr ""
 
 #: src/views/site/cert/components/ObtainCertLive.vue:94
 msgid "Fail to obtain certificate"
@@ -1636,7 +1683,7 @@ msgstr "Главная"
 msgid "Host"
 msgstr "Хостинг HTTP"
 
-#: src/views/preference/Preference.vue:174
+#: src/views/preference/Preference.vue:181
 #, fuzzy
 msgid "HTTP"
 msgstr "HTTP01"
@@ -1699,12 +1746,12 @@ msgid "Import Certificate"
 msgstr "Импортировать сертификат"
 
 #: src/views/nginx_log/NginxLogList.vue:137
-#: src/views/site/site_list/SiteList.vue:128
+#: src/views/site/site_list/SiteList.vue:132
 msgid "Indexed"
 msgstr ""
 
 #: src/views/nginx_log/NginxLogList.vue:134
-#: src/views/site/site_list/SiteList.vue:125
+#: src/views/site/site_list/SiteList.vue:129
 msgid "Indexing..."
 msgstr ""
 
@@ -1786,6 +1833,11 @@ msgstr "Неверное имя файла"
 msgid "Invalid folder name"
 msgstr "Недопустимое имя папки"
 
+#: src/constants/errors/notification.ts:3
+#, fuzzy
+msgid "Invalid notifier config"
+msgstr "Неверный код OTP"
+
 #: src/constants/errors/user.ts:4
 msgid "Invalid otp code"
 msgstr "Неверный код OTP"
@@ -1845,6 +1897,19 @@ msgstr ""
 #: src/views/site/cert/components/AutoCertStepOne.vue:77
 msgid "Key Type"
 msgstr "Тип ключа"
+
+#: src/views/preference/components/ExternalNotify/columns.ts:29
+msgid "Language"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/lark.ts:5
+msgid "Lark"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/lark_custom.ts:5
+#, fuzzy
+msgid "Lark Custom"
+msgstr "Пользовательский"
 
 #: src/views/system/Upgrade.vue:179
 msgid "Last checked at"
@@ -1944,7 +2009,7 @@ msgstr "Авторизация успешна"
 msgid "Logout successful"
 msgstr "Выход выполнен успешно"
 
-#: src/views/preference/Preference.vue:210
+#: src/views/preference/Preference.vue:217
 msgid "Logrotate"
 msgstr "Прокрутка"
 
@@ -1992,7 +2057,7 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "Конфигурации"
 
-#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:121
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:125
 msgid "Manage Sites"
 msgstr "Сайты"
 
@@ -2068,7 +2133,7 @@ msgstr "Многострочная директива"
 #: src/views/nginx_log/NginxLogList.vue:37
 #: src/views/preference/components/AddPasskey.vue:75
 #: src/views/site/ngx_conf/NgxUpstream.vue:177
-#: src/views/site/site_edit/RightSettings.vue:64
+#: src/views/site/site_edit/RightSettings.vue:63
 #: src/views/site/site_list/columns.tsx:17
 #: src/views/site/site_list/SiteDuplicate.vue:79
 #: src/views/stream/components/RightSettings.vue:87
@@ -2116,7 +2181,7 @@ msgstr "Вышла новая версия"
 msgid "Next"
 msgstr "Дальше"
 
-#: src/views/preference/Preference.vue:198
+#: src/views/preference/Preference.vue:205
 msgid "Nginx"
 msgstr "Nginx"
 
@@ -2258,7 +2323,7 @@ msgstr "Ошибка разбора конфигурации Nginx"
 #: src/views/preference/CertSettings.vue:73
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:88
-#: src/views/site/site_list/SiteList.vue:161
+#: src/views/site/site_list/SiteList.vue:165
 #: src/views/stream/StreamList.vue:225
 msgid "No"
 msgstr "Нет"
@@ -2273,12 +2338,12 @@ msgstr "Действие"
 msgid "No records selected"
 msgstr ""
 
-#: src/views/preference/Preference.vue:168
+#: src/views/preference/Preference.vue:175
 #, fuzzy
 msgid "Node"
 msgstr "Имя узла"
 
-#: src/views/site/site_edit/RightSettings.vue:67
+#: src/views/site/site_edit/RightSettings.vue:66
 #: src/views/site/site_list/columns.tsx:63
 #: src/views/stream/components/RightSettings.vue:90
 #: src/views/stream/StreamList.vue:30
@@ -2322,7 +2387,7 @@ msgstr "Недействительно до: %{date}"
 msgid "Note"
 msgstr "Заметка"
 
-#: src/views/site/site_edit/RightSettings.vue:96
+#: src/views/site/site_edit/RightSettings.vue:95
 #: src/views/stream/components/RightSettings.vue:118
 msgid ""
 "Note, if the configuration file include other configurations or "
@@ -2339,6 +2404,11 @@ msgstr "Уведомление"
 #: src/routes/modules/notifications.ts:10
 msgid "Notifications"
 msgstr "Уведомления"
+
+#: src/constants/errors/notification.ts:2
+#, fuzzy
+msgid "Notifier not found"
+msgstr "Файл не найден"
 
 #: src/views/site/cert/components/ObtainCert.vue:182
 msgid "Obtain certificate"
@@ -2384,7 +2454,7 @@ msgstr "Ок"
 #: src/views/site/ngx_conf/NgxServer.vue:79
 #: src/views/site/ngx_conf/NgxUpstream.vue:33
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:121
-#: src/views/site/site_list/SiteList.vue:162
+#: src/views/site/site_list/SiteList.vue:166
 #: src/views/stream/components/RightSettings.vue:54
 #: src/views/stream/StreamList.vue:226
 #: src/views/system/Backup/BackupCreator.vue:149
@@ -2407,7 +2477,7 @@ msgstr "Онлайн"
 msgid "Only zip files are allowed"
 msgstr ""
 
-#: src/views/preference/Preference.vue:204
+#: src/views/preference/Preference.vue:211
 msgid "OpenAI"
 msgstr "OpenAI"
 
@@ -2553,7 +2623,7 @@ msgstr ""
 "Credentials, а затем выберите одну из учетных данных ниже, чтобы запросить "
 "API провайдера DNS."
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:176
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -2650,7 +2720,7 @@ msgstr "Действие"
 msgid "Pre-release"
 msgstr "Предварительный выпуск"
 
-#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:151
+#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:152
 msgid "Preference"
 msgstr "Настройки"
 
@@ -2788,22 +2858,22 @@ msgstr "Перегрузить"
 msgid "Reload Nginx"
 msgstr "Перезагружается nginx"
 
-#: src/components/Notification/notifications.ts:144
+#: src/components/Notification/notifications.ts:10
 #, fuzzy
 msgid "Reload Nginx on %{node} failed, response: %{resp}"
 msgstr "Удалить сайт: %{site_name}"
 
-#: src/components/Notification/notifications.ts:148
+#: src/components/Notification/notifications.ts:14
 #, fuzzy
 msgid "Reload Nginx on %{node} successfully"
 msgstr "Интерфейс Nginx на %{node} успешно обновлен 🎉"
 
-#: src/components/Notification/notifications.ts:143
+#: src/components/Notification/notifications.ts:9
 #, fuzzy
 msgid "Reload Remote Nginx Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:147
+#: src/components/Notification/notifications.ts:13
 #, fuzzy
 msgid "Reload Remote Nginx Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
@@ -2842,58 +2912,60 @@ msgstr "Успешно удалено"
 msgid "Rename"
 msgstr "Переименовать"
 
-#: src/components/Notification/notifications.ts:28
+#: src/components/Notification/notifications.ts:66
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "Переименование %{orig_path} в %{new_path} на %{env_name} успешно"
 
-#: src/components/Notification/notifications.ts:32
+#: src/components/Notification/notifications.ts:70
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "%{orig_path} успешно переименован в %{new_path} на %{env_name}"
 
-#: src/components/Notification/notifications.ts:27 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:31 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
 
-#: src/components/Notification/notifications.ts:77 src/language/constants.ts:56
+#: src/components/Notification/notifications.ts:115
+#: src/language/constants.ts:56
 #, fuzzy
 msgid "Rename Remote Site Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:81 src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:119
+#: src/language/constants.ts:55
 #, fuzzy
 msgid "Rename Remote Site Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
 
-#: src/components/Notification/notifications.ts:119
+#: src/components/Notification/notifications.ts:157
 #, fuzzy
 msgid "Rename Remote Stream Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:123
+#: src/components/Notification/notifications.ts:161
 #, fuzzy
 msgid "Rename Remote Stream Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
 
-#: src/components/Notification/notifications.ts:78
+#: src/components/Notification/notifications.ts:116
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "Переименование %{orig_path} в %{new_path} на %{env_name} успешно"
 
-#: src/components/Notification/notifications.ts:82
+#: src/components/Notification/notifications.ts:120
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "Сайт %{name} успешно переименован в %{new_name} на %{node}"
 
-#: src/components/Notification/notifications.ts:120
+#: src/components/Notification/notifications.ts:158
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "Переименование %{orig_path} в %{new_path} на %{env_name} успешно"
 
-#: src/components/Notification/notifications.ts:124
+#: src/components/Notification/notifications.ts:162
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "Поток %{name} успешно переименован в %{new_name} на %{node}"
 
@@ -2953,22 +3025,22 @@ msgstr "Перезапуск"
 msgid "Restart Nginx"
 msgstr "Перезапускается"
 
-#: src/components/Notification/notifications.ts:152
+#: src/components/Notification/notifications.ts:18
 #, fuzzy
 msgid "Restart Nginx on %{node} failed, response: %{resp}"
 msgstr "Включение %{conf_name} in %{node_name} успешно"
 
-#: src/components/Notification/notifications.ts:156
+#: src/components/Notification/notifications.ts:22
 #, fuzzy
 msgid "Restart Nginx on %{node} successfully"
 msgstr "Интерфейс Nginx на %{node} успешно обновлен 🎉"
 
-#: src/components/Notification/notifications.ts:151
+#: src/components/Notification/notifications.ts:17
 #, fuzzy
 msgid "Restart Remote Nginx Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:155
+#: src/components/Notification/notifications.ts:21
 #, fuzzy
 msgid "Restart Remote Nginx Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
@@ -3035,7 +3107,7 @@ msgstr "Выполняется"
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/config/ConfigEditor.vue:271
 #: src/views/preference/components/Passkey.vue:130
-#: src/views/preference/Preference.vue:221
+#: src/views/preference/Preference.vue:228
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
 #: src/views/site/site_edit/components/ConfigName.vue:52
 #: src/views/site/site_edit/SiteEdit.vue:292
@@ -3053,48 +3125,50 @@ msgstr "Сохранить директиву"
 msgid "Save error %{msg}"
 msgstr "Ошибка сохранения %{msg}"
 
-#: src/components/Notification/notifications.ts:85 src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:123
+#: src/language/constants.ts:48
 #, fuzzy
 msgid "Save Remote Site Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:127
+#: src/language/constants.ts:47
 #, fuzzy
 msgid "Save Remote Site Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
 
-#: src/components/Notification/notifications.ts:127
+#: src/components/Notification/notifications.ts:165
 #, fuzzy
 msgid "Save Remote Stream Error"
 msgstr "Ошибка переименования удаленной конфигурации"
 
-#: src/components/Notification/notifications.ts:131
+#: src/components/Notification/notifications.ts:169
 #, fuzzy
 msgid "Save Remote Stream Success"
 msgstr "Переименование удаленной конфигурации прошло успешно"
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:124
 #, fuzzy
 msgid "Save site %{name} to %{node} failed"
 msgstr "Продублированно %{conf_name} в %{node_name}"
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:128
 msgid "Save site %{name} to %{node} successfully"
 msgstr "Сайт %{name} успешно сохранён на %{node}"
 
-#: src/components/Notification/notifications.ts:128
+#: src/components/Notification/notifications.ts:166
 #, fuzzy
 msgid "Save stream %{name} to %{node} failed"
 msgstr "Не удалось развернуть %{conf_name} на %{node_name}"
 
-#: src/components/Notification/notifications.ts:132
+#: src/components/Notification/notifications.ts:170
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Поток %{name} успешно сохранён на %{node}"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
 #: src/views/certificate/CertificateEditor.vue:49
-#: src/views/preference/Preference.vue:123
+#: src/views/preference/Preference.vue:124
 msgid "Save successfully"
 msgstr "Сохранено успешно"
 
@@ -3147,7 +3221,7 @@ msgstr ""
 msgid "Send"
 msgstr "Отправлено"
 
-#: src/views/preference/Preference.vue:156
+#: src/views/preference/Preference.vue:157
 #, fuzzy
 msgid "Server"
 msgstr "Информация о сервере"
@@ -3329,7 +3403,7 @@ msgstr ""
 #: src/views/certificate/ACMEUser.vue:65
 #: src/views/certificate/CertificateList/certColumns.tsx:65
 #: src/views/environments/list/envColumns.tsx:44
-#: src/views/site/site_edit/RightSettings.vue:56
+#: src/views/site/site_edit/RightSettings.vue:55
 #: src/views/site/site_list/columns.tsx:80 src/views/stream/StreamList.vue:47
 msgid "Status"
 msgstr "Статус"
@@ -3405,38 +3479,38 @@ msgstr "Синхронизация"
 msgid "Sync Certificate"
 msgstr "Синхронизировать сертификат"
 
-#: src/components/Notification/notifications.ts:10
+#: src/components/Notification/notifications.ts:48
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "Сертификат %{cert_name} успешно синхронизирован с %{env_name}"
 
-#: src/components/Notification/notifications.ts:14
+#: src/components/Notification/notifications.ts:52
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "Сертификат %{cert_name} успешно синхронизирован с %{env_name}"
 
-#: src/components/Notification/notifications.ts:9 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:47 src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr "Ошибка синхронизации сертификата"
 
-#: src/components/Notification/notifications.ts:13 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:51 src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr "Сертификат успешно синхронизирован"
 
-#: src/components/Notification/notifications.ts:20
+#: src/components/Notification/notifications.ts:58
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "Конфигурация синхронизирована %{config_name} с %{env_name} успешно"
 
-#: src/components/Notification/notifications.ts:24
+#: src/components/Notification/notifications.ts:62
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "Конфигурация синхронизирована %{config_name} с %{env_name} успешно"
 
-#: src/components/Notification/notifications.ts:19 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr "Ошибка синхронизации конфигурации"
 
-#: src/components/Notification/notifications.ts:23 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr "Синхронизация конфигурации успешна"
 
@@ -3446,8 +3520,8 @@ msgstr "Синхронизация конфигурации успешна"
 msgid "Sync Nodes"
 msgstr "Синхронизировать с"
 
-#: src/views/site/site_edit/RightSettings.vue:102
-#: src/views/site/site_edit/RightSettings.vue:89
+#: src/views/site/site_edit/RightSettings.vue:101
+#: src/views/site/site_edit/RightSettings.vue:88
 #: src/views/stream/components/RightSettings.vue:111
 #: src/views/stream/components/RightSettings.vue:124
 #, fuzzy
@@ -3458,7 +3532,7 @@ msgstr "Синхронизировать сертификат"
 msgid "Sync to"
 msgstr "Синхронизировать с"
 
-#: src/views/site/site_edit/RightSettings.vue:86
+#: src/views/site/site_edit/RightSettings.vue:85
 #: src/views/stream/components/RightSettings.vue:108
 msgid "Synchronization"
 msgstr ""
@@ -3491,7 +3565,11 @@ msgstr "Nginx успешно перезапущен"
 msgid "Task not found"
 msgstr "Файл не найден"
 
-#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:180
+#: src/views/preference/components/ExternalNotify/telegram.ts:5
+msgid "Telegram"
+msgstr ""
+
+#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:187
 #: src/views/terminal/Terminal.vue:129
 msgid "Terminal"
 msgstr "Терминал"
@@ -3764,6 +3842,7 @@ msgstr "Требуется двухфакторная аутентификаци
 #: src/views/certificate/CertificateList/certColumns.tsx:25
 #: src/views/nginx_log/NginxLogList.vue:21
 #: src/views/notification/notificationColumns.tsx:9
+#: src/views/preference/components/ExternalNotify/columns.ts:17
 msgid "Type"
 msgstr "Тип"
 
@@ -3781,7 +3860,7 @@ msgstr "Успешно обновлено"
 #: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:325
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
-#: src/views/site/site_edit/RightSettings.vue:76
+#: src/views/site/site_edit/RightSettings.vue:75
 #: src/views/site/site_list/columns.tsx:110
 #: src/views/stream/components/RightSettings.vue:99
 #: src/views/stream/StreamList.vue:67 src/views/user/userColumns.tsx:54
@@ -3944,7 +4023,7 @@ msgid ""
 "Pebble as CA."
 msgstr ""
 
-#: src/views/site/site_edit/RightSettings.vue:92
+#: src/views/site/site_edit/RightSettings.vue:91
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "Node Group and the nodes selected below will be synchronized."
@@ -4035,6 +4114,18 @@ msgstr "Ваши старые коды больше не будут работа
 #: src/views/preference/components/Passkey.vue:75
 msgid "Your passkeys"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Access Token"
+#~ msgstr "Журналы доступа"
+
+#, fuzzy
+#~ msgid "Bot Token"
+#~ msgstr "API токен"
+
+#, fuzzy
+#~ msgid "Server URL"
+#~ msgstr "Информация о сервере"
 
 #~ msgid "Do you want to disable this site?"
 #~ msgstr "Вы хотите отключить этот сайт?"

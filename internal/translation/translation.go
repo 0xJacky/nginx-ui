@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/0xJacky/Nginx-UI/app"
-	"github.com/0xJacky/pofile/pofile"
+	"github.com/0xJacky/pofile"
 	"github.com/samber/lo"
 	"io"
 	"log"
