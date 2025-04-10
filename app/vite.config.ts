@@ -107,7 +107,6 @@ export default defineConfig(({ mode }) => {
         output: {
           manualChunks: {
             'ace-editor': ['ace-builds'],
-            'ace-ext': ['ace-builds/src-min-noconflict/ext-language_tools'],
           },
         },
       },

@@ -5,6 +5,7 @@ import { onUnmounted, shallowRef } from 'vue'
 export interface SSEOptions {
   url: string
   token: string
+  // eslint-disable-next-line ts/no-explicit-any
   onMessage?: (data: any) => void
   onError?: () => void
   parseData?: boolean
