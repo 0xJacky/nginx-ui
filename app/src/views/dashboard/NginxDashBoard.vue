@@ -12,12 +12,12 @@ import PerformanceTablesCard from './components/PerformanceTablesCard.vue'
 import ProcessDistributionCard from './components/ProcessDistributionCard.vue'
 import ResourceUsageCard from './components/ResourceUsageCard.vue'
 
-// 全局状态
+// Global state
 const global = useGlobalStore()
 const { nginxStatus: status } = storeToRefs(global)
 const { token } = storeToRefs(useUserStore())
 
-// 使用性能数据composable
+// Use performance data composable
 const {
   loading,
   nginxInfo,
@@ -27,10 +27,10 @@ const {
   fetchInitialData,
 } = useNginxPerformance()
 
-// SSE 连接
+// SSE connection
 const { connect, disconnect } = useSSE()
 
-// 连接SSE
+// Connect SSE
 function connectSSE() {
   disconnect()
   loading.value = true
@@ -52,7 +52,7 @@ function connectSSE() {
     onError: () => {
       error.value = $gettext('Connection error, trying to reconnect...')
 
-      // 如果连接失败，尝试使用传统方式获取数据
+      // If the connection fails, try to get data using the traditional method
       setTimeout(() => {
         fetchInitialData()
       }, 5000)
@@ -60,12 +60,12 @@ function connectSSE() {
   })
 }
 
-// 手动刷新数据
+// Manually refresh data
 function refreshData() {
   fetchInitialData().then(connectSSE)
 }
 
-// 组件挂载时初始化连接
+// Initialize connection when the component is mounted
 onMounted(() => {
   fetchInitialData().then(connectSSE)
 })
@@ -73,7 +73,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <!-- 顶部操作栏 -->
+    <!-- Top operation bar -->
     <div class="mb-4 mx-6 md:mx-0 flex flex-wrap justify-between items-center">
       <div class="flex items-center">
         <ABadge :status="status === NginxStatus.Running ? 'success' : 'error'" />
@@ -90,7 +90,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Nginx 状态提示 -->
+    <!-- Nginx status prompt -->
     <AAlert
       v-if="status !== NginxStatus.Running"
       class="mb-4"
@@ -100,7 +100,7 @@ onMounted(() => {
       :description="$gettext('Cannot get performance data in this state')"
     />
 
-    <!-- 错误提示 -->
+    <!-- Error prompt -->
     <AAlert
       v-if="error"
       class="mb-4"
@@ -110,14 +110,14 @@ onMounted(() => {
       :description="error"
     />
 
-    <!-- 加载中状态 -->
+    <!-- Loading state -->
     <ASpin :spinning="loading" :tip="$gettext('Loading data...')">
-      <div v-if="!nginxInfo && !loading && !error" class="text-center py-8">
+      <div v-if="!nginxInfo && !error" class="text-center py-8">
         <AEmpty :description="$gettext('No data')" />
       </div>
 
       <div v-if="nginxInfo" class="performance-dashboard">
-        <!-- 顶部性能指标卡片 -->
+        <!-- Top performance metrics card -->
         <ARow :gutter="[16, 16]" class="mb-4">
           <ACol :span="24">
             <ACard :title="$gettext('Performance Metrics')" :bordered="false">
@@ -126,22 +126,22 @@ onMounted(() => {
           </ACol>
         </ARow>
 
-        <!-- 指标卡片 -->
+        <!-- Metrics card -->
         <ConnectionMetricsCard :nginx-info="nginxInfo" class="mb-4" />
 
-        <!-- 资源监控 -->
+        <!-- Resource monitoring -->
         <ARow :gutter="[16, 16]" class="mb-4">
-          <!-- CPU和内存使用 -->
+          <!-- CPU and memory usage -->
           <ACol :xs="24" :md="12">
             <ResourceUsageCard :nginx-info="nginxInfo" />
           </ACol>
-          <!-- 进程分布 -->
+          <!-- Process distribution -->
           <ACol :xs="24" :md="12">
             <ProcessDistributionCard :nginx-info="nginxInfo" />
           </ACol>
         </ARow>
 
-        <!-- 性能指标表格 -->
+        <!-- Performance metrics table -->
         <ARow :gutter="[16, 16]" class="mb-4">
           <ACol :span="24">
             <PerformanceTablesCard :nginx-info="nginxInfo" />

@@ -12,14 +12,14 @@ export interface SSEOptions {
 }
 
 /**
- * SSE 连接 Composable
- * 提供创建、管理和自动清理 SSE 连接的能力
+ * SSE Composable
+ * Provide the ability to create, manage, and automatically clean up SSE connections
  */
 export function useSSE() {
   const sseInstance = shallowRef<SSE>()
 
   /**
-   * 连接 SSE 服务
+   * Connect to SSE service
    */
   function connect(options: SSEOptions) {
     disconnect()
@@ -39,7 +39,7 @@ export function useSSE() {
       },
     })
 
-    // 处理消息
+    // Handle messages
     sse.onmessage = (e: SSEvent) => {
       if (!e.data) {
         return
@@ -54,11 +54,11 @@ export function useSSE() {
       }
     }
 
-    // 处理错误并重连
+    // Handle errors and reconnect
     sse.onerror = () => {
       onError?.()
 
-      // 重连逻辑
+      // Reconnect logic
       setTimeout(() => {
         connect(options)
       }, reconnectInterval)
@@ -69,7 +69,7 @@ export function useSSE() {
   }
 
   /**
-   * 断开 SSE 连接
+   * Disconnect SSE connection
    */
   function disconnect() {
     if (sseInstance.value) {
@@ -78,7 +78,7 @@ export function useSSE() {
     }
   }
 
-  // 组件卸载时自动断开连接
+  // Automatically disconnect when the component is unmounted
   onUnmounted(() => {
     disconnect()
   })

@@ -8,17 +8,17 @@ export function useNginxPerformance() {
   const error = ref<string>('')
   const lastUpdateTime = ref(new Date())
 
-  // 更新刷新时间
+  // Update refresh time
   function updateLastUpdateTime() {
     lastUpdateTime.value = new Date()
   }
 
-  // 格式化上次更新时间
+  // Format the last update time
   const formattedUpdateTime = computed(() => {
     return lastUpdateTime.value.toLocaleTimeString()
   })
 
-  // 获取Nginx状态数据
+  // Get Nginx status data
   async function fetchInitialData() {
     loading.value = true
     error.value = ''

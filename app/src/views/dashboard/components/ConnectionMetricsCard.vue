@@ -7,18 +7,18 @@ const props = defineProps<{
   nginxInfo: NginxPerformanceInfo
 }>()
 
-// 活跃连接百分比
+// Active connections percentage
 const activeConnectionsPercent = computed(() => {
   const maxConnections = props.nginxInfo.worker_connections * props.nginxInfo.worker_processes
   return Number(((props.nginxInfo.active / maxConnections) * 100).toFixed(2))
 })
 
-// 工作进程使用百分比
+// Worker processes usage percentage
 const workerProcessesPercent = computed(() => {
   return Number(((props.nginxInfo.workers / props.nginxInfo.worker_processes) * 100).toFixed(2))
 })
 
-// 每连接请求数
+// Requests per connection
 const requestsPerConnection = computed(() => {
   if (props.nginxInfo.handled === 0) {
     return '0'
@@ -26,7 +26,7 @@ const requestsPerConnection = computed(() => {
   return (props.nginxInfo.requests / props.nginxInfo.handled).toFixed(2)
 })
 
-// 格式化数值
+// Format numbers
 function formatNumber(num: number): string {
   if (num >= 1000000) {
     return `${(num / 1000000).toFixed(2)}M`
@@ -40,7 +40,7 @@ function formatNumber(num: number): string {
 
 <template>
   <ARow :gutter="[16, 16]">
-    <!-- 当前活跃连接 -->
+    <!-- Current active connections -->
     <ACol :xs="24" :sm="12" :md="12" :lg="6">
       <ACard class="h-full" :bordered="false" :body-style="{ padding: '20px', height: '100%' }">
         <div class="flex flex-col h-full">
@@ -61,7 +61,7 @@ function formatNumber(num: number): string {
       </ACard>
     </ACol>
 
-    <!-- 工作进程 -->
+    <!-- Worker processes -->
     <ACol :xs="24" :sm="12" :md="12" :lg="6">
       <ACard class="h-full" :bordered="false" :body-style="{ padding: '20px', height: '100%' }">
         <div class="flex flex-col h-full">
@@ -87,7 +87,7 @@ function formatNumber(num: number): string {
       </ACard>
     </ACol>
 
-    <!-- 每连接请求数 -->
+    <!-- Requests per connection -->
     <ACol :xs="24" :sm="12" :md="12" :lg="6">
       <ACard class="h-full" :bordered="false" :body-style="{ padding: '20px', height: '100%' }">
         <div class="flex flex-col h-full justify-between">
@@ -114,7 +114,7 @@ function formatNumber(num: number): string {
       </ACard>
     </ACol>
 
-    <!-- 资源利用率 -->
+    <!-- Resource utilization -->
     <ACol :xs="24" :sm="12" :md="12" :lg="6">
       <ACard class="h-full" :bordered="false" :body-style="{ padding: '20px', height: '100%' }">
         <div class="flex flex-col h-full justify-between">

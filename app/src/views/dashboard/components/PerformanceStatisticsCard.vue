@@ -13,7 +13,7 @@ const props = defineProps<{
   nginxInfo: NginxPerformanceInfo
 }>()
 
-// 计算连接效率 - 每连接的请求数
+// Calculate connection efficiency - requests per connection
 const requestsPerConnection = computed(() => {
   if (props.nginxInfo.handled === 0) {
     return '0'
@@ -21,7 +21,7 @@ const requestsPerConnection = computed(() => {
   return (props.nginxInfo.requests / props.nginxInfo.handled).toFixed(2)
 })
 
-// 估算最大每秒请求数
+// Estimate maximum requests per second
 const maxRPS = computed(() => {
   return props.nginxInfo.worker_processes * props.nginxInfo.worker_connections
 })
@@ -29,7 +29,7 @@ const maxRPS = computed(() => {
 
 <template>
   <ARow :gutter="[16, 24]">
-    <!-- 最大RPS -->
+    <!-- Maximum RPS -->
     <ACol :xs="24" :sm="12" :md="8" :lg="6">
       <AStatistic
         :value="maxRPS"
@@ -50,7 +50,7 @@ const maxRPS = computed(() => {
       </div>
     </ACol>
 
-    <!-- 最大并发连接 -->
+    <!-- Maximum concurrent connections -->
     <ACol :xs="24" :sm="12" :md="8" :lg="6">
       <AStatistic
         :title="$gettext('Max Concurrent Connections')"
@@ -66,7 +66,7 @@ const maxRPS = computed(() => {
       </div>
     </ACol>
 
-    <!-- 每连接请求数 -->
+    <!-- Requests per connection -->
     <ACol :xs="24" :sm="12" :md="8" :lg="6">
       <AStatistic
         :title="$gettext('Requests Per Connection')"
@@ -83,7 +83,7 @@ const maxRPS = computed(() => {
       </div>
     </ACol>
 
-    <!-- Nginx进程总数 -->
+    <!-- Total Nginx processes -->
     <ACol :xs="24" :sm="12" :md="8" :lg="6">
       <AStatistic
         :title="$gettext('Total Nginx Processes')"

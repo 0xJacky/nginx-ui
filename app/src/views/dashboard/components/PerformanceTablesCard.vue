@@ -10,7 +10,7 @@ const props = defineProps<{
 
 const activeTabKey = ref('status')
 
-// 表格列定义
+// Table column definition
 const columns: TableColumnType[] = [
   {
     title: $gettext('Indicator'),
@@ -25,7 +25,7 @@ const columns: TableColumnType[] = [
   },
 ]
 
-// 格式化数值
+// Format numbers
 function formatNumber(num: number): string {
   if (num >= 1000000) {
     return `${(num / 1000000).toFixed(2)}M`
@@ -36,7 +36,7 @@ function formatNumber(num: number): string {
   return num.toString()
 }
 
-// 状态数据
+// Status data
 const statusData = computed(() => {
   return [
     {
@@ -77,7 +77,7 @@ const statusData = computed(() => {
   ]
 })
 
-// 工作进程数据
+// Worker processes data
 const workerData = computed(() => {
   return [
     {
@@ -113,7 +113,7 @@ const workerData = computed(() => {
   ]
 })
 
-// 配置数据
+// Configuration data
 const configData = computed(() => {
   return [
     {
@@ -129,7 +129,7 @@ const configData = computed(() => {
   ]
 })
 
-// 最大每秒请求数
+// Maximum requests per second
 const maxRPS = computed(() => {
   return props.nginxInfo.worker_processes * props.nginxInfo.worker_connections
 })
@@ -138,7 +138,7 @@ const maxRPS = computed(() => {
 <template>
   <ACard :bordered="false">
     <ATabs v-model:active-key="activeTabKey">
-      <!-- 请求统计 -->
+      <!-- Request statistics -->
       <ATabPane key="status" :tab="$gettext('Request statistics')">
         <div class="overflow-x-auto">
           <ATable
@@ -151,7 +151,7 @@ const maxRPS = computed(() => {
         </div>
       </ATabPane>
 
-      <!-- 进程信息 -->
+      <!-- Process information -->
       <ATabPane key="workers" :tab="$gettext('Process information')">
         <div class="overflow-x-auto">
           <ATable
@@ -164,7 +164,7 @@ const maxRPS = computed(() => {
         </div>
       </ATabPane>
 
-      <!-- 配置信息 -->
+      <!-- Configuration information -->
       <ATabPane key="config" :tab="$gettext('Configuration information')">
         <div class="overflow-x-auto">
           <ATable

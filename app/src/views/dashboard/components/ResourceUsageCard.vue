@@ -11,7 +11,7 @@ const props = defineProps<{
   nginxInfo: NginxPerformanceInfo
 }>()
 
-// 资源利用率
+// Resource utilization
 const resourceUtilization = computed(() => {
   const cpuFactor = Math.min(props.nginxInfo.cpu_usage / 100, 1)
   const maxConnections = props.nginxInfo.worker_connections * props.nginxInfo.worker_processes
@@ -24,7 +24,7 @@ const resourceUtilization = computed(() => {
 <template>
   <ACard :title="$gettext('Resource Usage of Nginx')" :bordered="false" class="h-full" :body-style="{ padding: '16px', height: 'calc(100% - 58px)' }">
     <div class="flex flex-col h-full">
-      <!-- CPU使用率 -->
+      <!-- CPU usage -->
       <ARow :gutter="[16, 8]" class="mb-2">
         <ACol :span="24">
           <div class="flex items-center">
@@ -47,7 +47,7 @@ const resourceUtilization = computed(() => {
         </ACol>
       </ARow>
 
-      <!-- 内存使用 -->
+      <!-- Memory usage -->
       <ARow :gutter="[16, 8]" class="mb-2">
         <ACol :span="24">
           <div class="flex items-center">
@@ -68,7 +68,7 @@ const resourceUtilization = computed(() => {
         {{ $gettext('Per worker memory') }}: {{ (nginxInfo.memory_usage / (nginxInfo.workers || 1)).toFixed(2) }} MB
       </div>
 
-      <!-- 系统负载 -->
+      <!-- System load -->
       <div class="mt-4 text-xs text-gray-500 border-t border-gray-100 pt-2">
         <div class="flex justify-between mb-1">
           <span>{{ $gettext('System load') }}</span>

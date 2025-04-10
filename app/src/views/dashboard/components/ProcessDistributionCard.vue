@@ -6,7 +6,7 @@ const props = defineProps<{
   nginxInfo: NginxPerformanceInfo
 }>()
 
-// 进程构成数据
+// Process composition data
 const processTypeData = computed(() => {
   return [
     { type: $gettext('Worker Processes'), value: props.nginxInfo.workers, color: '#1890ff' },
@@ -16,7 +16,7 @@ const processTypeData = computed(() => {
   ]
 })
 
-// 总进程数
+// Total processes
 const totalProcesses = computed(() => {
   return props.nginxInfo.workers + props.nginxInfo.master + props.nginxInfo.cache + props.nginxInfo.other
 })

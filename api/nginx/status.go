@@ -313,7 +313,6 @@ func getNginxProcessInfo() (map[string]interface{}, error) {
 				// 转换为 MB
 				memoryUsage := float64(mem.RSS) / 1024 / 1024
 				totalMemory += memoryUsage
-				logger.Debug("Master进程内存使用(MB):", memoryUsage)
 			}
 
 			break

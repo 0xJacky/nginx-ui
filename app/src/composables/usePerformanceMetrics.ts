@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import { computed } from 'vue'
 
 export function usePerformanceMetrics(nginxInfo: Ref<NginxPerformanceInfo | undefined>) {
-  // 格式化数值为可读性更好的形式
+  // Format numbers to a more readable form
   function formatNumber(num: number): string {
     if (num >= 1000000) {
       return `${(num / 1000000).toFixed(2)}M`
@@ -14,7 +14,7 @@ export function usePerformanceMetrics(nginxInfo: Ref<NginxPerformanceInfo | unde
     return num.toString()
   }
 
-  // 活跃连接百分比
+  // Active connections percentage
   const activeConnectionsPercent = computed(() => {
     if (!nginxInfo.value) {
       return 0
@@ -23,7 +23,7 @@ export function usePerformanceMetrics(nginxInfo: Ref<NginxPerformanceInfo | unde
     return Number(((nginxInfo.value.active / maxConnections) * 100).toFixed(2))
   })
 
-  // 工作进程使用百分比
+  // Worker processes usage percentage
   const workerProcessesPercent = computed(() => {
     if (!nginxInfo.value) {
       return 0
@@ -31,7 +31,7 @@ export function usePerformanceMetrics(nginxInfo: Ref<NginxPerformanceInfo | unde
     return Number(((nginxInfo.value.workers / nginxInfo.value.worker_processes) * 100).toFixed(2))
   })
 
-  // 每连接请求数
+  // Requests per connection
   const requestsPerConnection = computed(() => {
     if (!nginxInfo.value || nginxInfo.value.handled === 0) {
       return 0
@@ -39,7 +39,7 @@ export function usePerformanceMetrics(nginxInfo: Ref<NginxPerformanceInfo | unde
     return (nginxInfo.value.requests / nginxInfo.value.handled).toFixed(2)
   })
 
-  // 最大每秒请求数
+  // Maximum requests per second
   const maxRPS = computed(() => {
     if (!nginxInfo.value) {
       return 0
@@ -47,7 +47,7 @@ export function usePerformanceMetrics(nginxInfo: Ref<NginxPerformanceInfo | unde
     return nginxInfo.value.worker_processes * nginxInfo.value.worker_connections
   })
 
-  // 进程构成数据
+  // Process composition data
   const processTypeData = computed(() => {
     if (!nginxInfo.value) {
       return []
@@ -61,7 +61,7 @@ export function usePerformanceMetrics(nginxInfo: Ref<NginxPerformanceInfo | unde
     ]
   })
 
-  // 资源利用率
+  // Resource utilization
   const resourceUtilization = computed(() => {
     if (!nginxInfo.value) {
       return 0
@@ -74,7 +74,7 @@ export function usePerformanceMetrics(nginxInfo: Ref<NginxPerformanceInfo | unde
     return Math.round((cpuFactor * 0.5 + connectionFactor * 0.5) * 100)
   })
 
-  // 表格数据
+  // Table data
   const statusData = computed(() => {
     if (!nginxInfo.value) {
       return []
@@ -119,7 +119,7 @@ export function usePerformanceMetrics(nginxInfo: Ref<NginxPerformanceInfo | unde
     ]
   })
 
-  // 工作进程数据
+  // Worker processes data
   const workerData = computed(() => {
     if (!nginxInfo.value) {
       return []
@@ -159,7 +159,7 @@ export function usePerformanceMetrics(nginxInfo: Ref<NginxPerformanceInfo | unde
     ]
   })
 
-  // 配置数据
+  // Configuration data
   const configData = computed(() => {
     if (!nginxInfo.value) {
       return []
