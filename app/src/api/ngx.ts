@@ -51,6 +51,7 @@ export interface NginxPerformanceInfo {
   memory_usage: number // 内存使用率（MB）
   worker_processes: number // worker_processes 配置
   worker_connections: number // worker_connections 配置
+  process_mode: string // worker进程配置模式：'auto'或'manual'
 }
 
 const ngx = {
@@ -72,6 +73,10 @@ const ngx = {
 
   detail_status(): Promise<{ running: boolean, stub_status_enabled: boolean, info: NginxPerformanceInfo }> {
     return http.get('/nginx/detail_status')
+  },
+
+  toggle_stub_status(enable: boolean): Promise<{ stub_status_enabled: boolean, error: string }> {
+    return http.post('/nginx/stub_status', { enable })
   },
 
   reload() {

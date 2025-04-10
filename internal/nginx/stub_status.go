@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 // StubStatusInfo Store the stub_status module status
@@ -32,7 +33,7 @@ type StubStatusData struct {
 const (
 	StubStatusPort       = 51828
 	StubStatusPath       = "/stub_status"
-	StubStatusHost       = "localhost"
+	StubStatusHost       = "127.0.0.1"
 	StubStatusProtocol   = "http"
 	StubStatusAllow      = "127.0.0.1"
 	StubStatusDeny       = "all"
@@ -53,6 +54,7 @@ func GetStubStatusData() (bool, *StubStatusData, error) {
 
 	// Get the stub_status status information
 	enabled, statusURL := IsStubStatusEnabled()
+	logger.Info("GetStubStatusData", "enabled", enabled, "statusURL", statusURL)
 	if !enabled {
 		return false, result, fmt.Errorf("stub_status is not enabled")
 	}

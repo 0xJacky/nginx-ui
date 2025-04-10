@@ -10,8 +10,9 @@ import (
 )
 
 type NginxConfigInfo struct {
-	WorkerProcesses   int `json:"worker_processes"`
-	WorkerConnections int `json:"worker_connections"`
+	WorkerProcesses   int    `json:"worker_processes"`
+	WorkerConnections int    `json:"worker_connections"`
+	ProcessMode       string `json:"process_mode"`
 }
 
 // GetNginxWorkerConfigInfo Get Nginx config info of worker_processes and worker_connections
@@ -19,6 +20,7 @@ func GetNginxWorkerConfigInfo() (*NginxConfigInfo, error) {
 	result := &NginxConfigInfo{
 		WorkerProcesses:   1,
 		WorkerConnections: 1024,
+		ProcessMode:       "manual",
 	}
 
 	// Get worker_processes config
@@ -33,8 +35,10 @@ func GetNginxWorkerConfigInfo() (*NginxConfigInfo, error) {
 	if matches := wpRe.FindStringSubmatch(string(output)); len(matches) > 1 {
 		if matches[1] == "auto" {
 			result.WorkerProcesses = runtime.NumCPU()
+			result.ProcessMode = "auto"
 		} else {
 			result.WorkerProcesses, _ = strconv.Atoi(matches[1])
+			result.ProcessMode = "manual"
 		}
 	}
 

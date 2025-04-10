@@ -5,13 +5,12 @@ import { NginxStatus } from '@/constants'
 import { useUserStore } from '@/pinia'
 import { useGlobalStore } from '@/pinia/moudule/global'
 import { ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
-import axios from 'axios'
-import { storeToRefs } from 'pinia'
 import ConnectionMetricsCard from './components/ConnectionMetricsCard.vue'
 import PerformanceStatisticsCard from './components/PerformanceStatisticsCard.vue'
 import PerformanceTablesCard from './components/PerformanceTablesCard.vue'
 import ProcessDistributionCard from './components/ProcessDistributionCard.vue'
 import ResourceUsageCard from './components/ResourceUsageCard.vue'
+import ngx from '@/api/ngx'
 
 // Global state
 const global = useGlobalStore()
@@ -39,16 +38,14 @@ async function toggleStubStatus() {
   try {
     stubStatusLoading.value = true
     stubStatusError.value = ''
-    const response = await axios.post('/api/nginx/stub_status', {
-      enable: !stubStatusEnabled.value,
-    })
+    const response = await ngx.toggle_stub_status(!stubStatusEnabled.value)
 
-    if (response.data.stub_status_enabled !== undefined) {
-      stubStatusEnabled.value = response.data.stub_status_enabled
+    if (response.stub_status_enabled !== undefined) {
+      stubStatusEnabled.value = response.stub_status_enabled
     }
 
-    if (response.data.error) {
-      stubStatusError.value = response.data.error
+    if (response.error) {
+      stubStatusError.value = response.error
     }
     else {
       fetchInitialData().then(connectSSE)

@@ -1,6 +1,5 @@
 import type { NginxPerformanceInfo } from '@/api/ngx'
 import ngx from '@/api/ngx'
-import { fromNow } from '@/lib/helper'
 
 export function useNginxPerformance() {
   const loading = ref(false)
@@ -17,7 +16,7 @@ export function useNginxPerformance() {
   const formattedUpdateTime = computed(() => {
     if (!lastUpdateTime.value)
       return $gettext('Unknown')
-    return fromNow(lastUpdateTime.value.toLocaleString())
+    return lastUpdateTime.value.toLocaleString()
   })
 
   // Update the last update time
