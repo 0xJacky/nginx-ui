@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ngx from '@/api/ngx'
 import { useNginxPerformance } from '@/composables/useNginxPerformance'
 import { useSSE } from '@/composables/useSSE'
 import { NginxStatus } from '@/constants'
@@ -10,7 +11,6 @@ import PerformanceStatisticsCard from './components/PerformanceStatisticsCard.vu
 import PerformanceTablesCard from './components/PerformanceTablesCard.vue'
 import ProcessDistributionCard from './components/ProcessDistributionCard.vue'
 import ResourceUsageCard from './components/ResourceUsageCard.vue'
-import ngx from '@/api/ngx'
 
 // Global state
 const global = useGlobalStore()

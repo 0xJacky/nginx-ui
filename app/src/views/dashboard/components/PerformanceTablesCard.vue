@@ -196,9 +196,9 @@ const maxRPS = computed(() => {
                 {{ $gettext('Maximum worker process number:') }}
                 <strong>{{ nginxInfo.worker_processes }}</strong>
                 <span class="text-gray-500 text-xs ml-2">
-                  {{ 
-                    nginxInfo.process_mode === 'auto' 
-                      ? $gettext('auto = CPU cores') 
+                  {{
+                    nginxInfo.process_mode === 'auto'
+                      ? $gettext('auto = CPU cores')
                       : $gettext('manually set')
                   }}
                 </span>
