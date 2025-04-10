@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { NginxPerformanceInfo } from '@/api/ngx'
-import { computed, defineProps } from 'vue'
+import { InfoCircleOutlined } from '@ant-design/icons-vue'
 
 const props = defineProps<{
   nginxInfo: NginxPerformanceInfo
@@ -47,6 +47,13 @@ const totalProcesses = computed(() => {
       <div class="mt-auto text-xs text-gray-500 truncate">
         {{ $gettext('Actual worker to configured ratio') }}:
         <span class="font-medium">{{ nginxInfo.workers }} / {{ nginxInfo.worker_processes }}</span>
+      </div>
+
+      <div class="mt-2 text-xs text-gray-500 overflow-hidden text-ellipsis">
+        {{ $gettext('Total Nginx processes') }}: {{ nginxInfo.workers + nginxInfo.master + nginxInfo.cache + nginxInfo.other }}
+        <ATooltip :title="$gettext('Includes master process, worker processes, cache processes, and other Nginx processes')">
+          <InfoCircleOutlined class="ml-1" />
+        </ATooltip>
       </div>
     </div>
   </ACard>

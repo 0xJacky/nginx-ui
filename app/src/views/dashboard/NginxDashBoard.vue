@@ -5,6 +5,7 @@ import { NginxStatus } from '@/constants'
 import { useUserStore } from '@/pinia'
 import { useGlobalStore } from '@/pinia/moudule/global'
 import { ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
+import axios from 'axios'
 import { storeToRefs } from 'pinia'
 import ConnectionMetricsCard from './components/ConnectionMetricsCard.vue'
 import PerformanceStatisticsCard from './components/PerformanceStatisticsCard.vue'
@@ -25,10 +26,42 @@ const {
   formattedUpdateTime,
   updateLastUpdateTime,
   fetchInitialData,
+  stubStatusEnabled,
+  stubStatusLoading,
+  stubStatusError,
 } = useNginxPerformance()
 
 // SSE connection
 const { connect, disconnect } = useSSE()
+
+// Toggle stub_status module status
+async function toggleStubStatus() {
+  try {
+    stubStatusLoading.value = true
+    stubStatusError.value = ''
+    const response = await axios.post('/api/nginx/stub_status', {
+      enable: !stubStatusEnabled.value,
+    })
+
+    if (response.data.stub_status_enabled !== undefined) {
+      stubStatusEnabled.value = response.data.stub_status_enabled
+    }
+
+    if (response.data.error) {
+      stubStatusError.value = response.data.error
+    }
+    else {
+      fetchInitialData().then(connectSSE)
+    }
+  }
+  catch (err) {
+    console.error('Toggle stub_status failed:', err)
+    stubStatusError.value = $gettext('Toggle failed')
+  }
+  finally {
+    stubStatusLoading.value = false
+  }
+}
 
 // Connect SSE
 function connectSSE() {
@@ -36,7 +69,7 @@ function connectSSE() {
   loading.value = true
 
   connect({
-    url: 'api/nginx/detailed_status/stream',
+    url: 'api/nginx/detail_status/stream',
     token: token.value,
     onMessage: data => {
       loading.value = false
@@ -48,6 +81,7 @@ function connectSSE() {
       else {
         error.value = data.message || $gettext('Nginx is not running')
       }
+      stubStatusEnabled.value = data.stub_status_enabled
     },
     onError: () => {
       error.value = $gettext('Connection error, trying to reconnect...')
@@ -55,7 +89,7 @@ function connectSSE() {
       // If the connection fails, try to get data using the traditional method
       setTimeout(() => {
         fetchInitialData()
-      }, 5000)
+      }, 2000)
     },
   })
 }
@@ -110,6 +144,38 @@ onMounted(() => {
       :description="error"
     />
 
+    <!-- stub_status 开关 -->
+    <ACard class="mb-4" :bordered="false">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="font-medium mb-1">
+            {{ $gettext('Enable stub_status module') }}
+          </div>
+          <div class="text-gray-500 text-sm">
+            {{ $gettext('This module provides Nginx request statistics, connection count, etc. data. After enabling it, you can view performance statistics') }}
+          </div>
+          <div v-if="stubStatusError" class="text-red-500 text-sm mt-1">
+            {{ stubStatusError }}
+          </div>
+        </div>
+        <ASwitch
+          :checked="stubStatusEnabled"
+          :loading="stubStatusLoading"
+          @change="toggleStubStatus"
+        />
+      </div>
+    </ACard>
+
+    <!-- stub_status module is not enabled -->
+    <AAlert
+      v-if="status === NginxStatus.Running && !stubStatusEnabled && !error"
+      class="mb-4"
+      type="info"
+      show-icon
+      :message="$gettext('Need to enable the stub_status module')"
+      :description="$gettext('Please enable the stub_status module to get request statistics, connection count, etc.')"
+    />
+
     <!-- Loading state -->
     <ASpin :spinning="loading" :tip="$gettext('Loading data...')">
       <div v-if="!nginxInfo && !error" class="text-center py-8">
@@ -118,25 +184,26 @@ onMounted(() => {
 
       <div v-if="nginxInfo" class="performance-dashboard">
         <!-- Top performance metrics card -->
+        <ACard class="mb-4" :title="$gettext('Performance Metrics')" :bordered="false">
+          <PerformanceStatisticsCard :nginx-info="nginxInfo" />
+        </ACard>
+
         <ARow :gutter="[16, 16]" class="mb-4">
-          <ACol :span="24">
-            <ACard :title="$gettext('Performance Metrics')" :bordered="false">
-              <PerformanceStatisticsCard :nginx-info="nginxInfo" />
-            </ACard>
+          <!-- Metrics card -->
+          <ACol :sm="24" :lg="12">
+            <ConnectionMetricsCard :nginx-info="nginxInfo" />
+          </ACol>
+
+          <!-- CPU and memory usage -->
+          <ACol :sm="24" :lg="12">
+            <ResourceUsageCard :nginx-info="nginxInfo" />
           </ACol>
         </ARow>
 
-        <!-- Metrics card -->
-        <ConnectionMetricsCard :nginx-info="nginxInfo" class="mb-4" />
-
         <!-- Resource monitoring -->
         <ARow :gutter="[16, 16]" class="mb-4">
-          <!-- CPU and memory usage -->
-          <ACol :xs="24" :md="12">
-            <ResourceUsageCard :nginx-info="nginxInfo" />
-          </ACol>
           <!-- Process distribution -->
-          <ACol :xs="24" :md="12">
+          <ACol :span="24">
             <ProcessDistributionCard :nginx-info="nginxInfo" />
           </ACol>
         </ARow>

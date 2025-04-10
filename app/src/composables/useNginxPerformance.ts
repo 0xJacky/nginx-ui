@@ -2,42 +2,75 @@ import type { NginxPerformanceInfo } from '@/api/ngx'
 import ngx from '@/api/ngx'
 import { computed, ref } from 'vue'
 
-export function useNginxPerformance() {
-  const loading = ref(true)
-  const nginxInfo = ref<NginxPerformanceInfo>()
-  const error = ref<string>('')
-  const lastUpdateTime = ref(new Date())
+// Time formatting helper function
+function formatTimeAgo(date: Date): string {
+  const now = new Date()
+  const diffMs = now.getTime() - date.getTime()
+  const diffSec = Math.round(diffMs / 1000)
 
-  // Update refresh time
+  if (diffSec < 60) {
+    return `${diffSec} ${$gettext('秒前')}`
+  }
+
+  const diffMin = Math.floor(diffSec / 60)
+  if (diffMin < 60) {
+    return `${diffMin} ${$gettext('分钟前')}`
+  }
+
+  return date.toLocaleTimeString()
+}
+
+export function useNginxPerformance() {
+  const loading = ref(false)
+  const error = ref('')
+  const nginxInfo = ref<NginxPerformanceInfo | null>(null)
+  const lastUpdateTime = ref<Date | null>(null)
+
+  // stub_status availability
+  const stubStatusEnabled = ref(false)
+  const stubStatusLoading = ref(false)
+  const stubStatusError = ref('')
+
+  // Format the last update time
+  const formattedUpdateTime = computed(() => {
+    if (!lastUpdateTime.value)
+      return $gettext('Unknown')
+    return formatTimeAgo(lastUpdateTime.value)
+  })
+
+  // Update the last update time
   function updateLastUpdateTime() {
     lastUpdateTime.value = new Date()
   }
 
-  // Format the last update time
-  const formattedUpdateTime = computed(() => {
-    return lastUpdateTime.value.toLocaleTimeString()
-  })
-
-  // Get Nginx status data
+  // Check stub_status availability and get initial data
   async function fetchInitialData() {
-    loading.value = true
-    error.value = ''
-
     try {
-      const result = await ngx.detailed_status()
-      nginxInfo.value = result.info
-      updateLastUpdateTime()
-    }
-    catch (e) {
-      if (e instanceof Error) {
-        error.value = e.message
+      loading.value = true
+      stubStatusLoading.value = true
+      error.value = ''
+
+      // Get performance data
+      const response = await ngx.detail_status()
+
+      if (response.running) {
+        stubStatusEnabled.value = response.stub_status_enabled
+        nginxInfo.value = response.info
+        updateLastUpdateTime()
       }
       else {
-        error.value = $gettext('Get data failed')
+        error.value = $gettext('Nginx is not running')
+        nginxInfo.value = null
       }
+    }
+    catch (err) {
+      console.error('Failed to get Nginx performance data:', err)
+      error.value = $gettext('Failed to get performance data')
+      nginxInfo.value = null
     }
     finally {
       loading.value = false
+      stubStatusLoading.value = false
     }
   }
 
@@ -45,9 +78,11 @@ export function useNginxPerformance() {
     loading,
     nginxInfo,
     error,
-    lastUpdateTime,
     formattedUpdateTime,
     updateLastUpdateTime,
     fetchInitialData,
+    stubStatusEnabled,
+    stubStatusLoading,
+    stubStatusError,
   }
 }

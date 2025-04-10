@@ -70,15 +70,8 @@ const ngx = {
     return http.get('/nginx/status')
   },
 
-  detailed_status(): Promise<{ running: boolean, info: NginxPerformanceInfo }> {
-    return http.get('/nginx/detailed_status')
-  },
-
-  // 创建SSE连接获取实时Nginx性能数据
-  create_detailed_status_stream(): EventSource {
-    const baseUrl = import.meta.env.VITE_API_URL || ''
-    const url = `${baseUrl}/api/nginx/detailed_status/stream`
-    return new EventSource(url)
+  detail_status(): Promise<{ running: boolean, stub_status_enabled: boolean, info: NginxPerformanceInfo }> {
+    return http.get('/nginx/detail_status')
   },
 
   reload() {

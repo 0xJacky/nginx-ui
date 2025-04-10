@@ -40,9 +40,9 @@ const maxRPS = computed(() => {
         </template>
         <template #title>
           {{ $gettext('Max Requests Per Second') }}
-          <Tooltip :title="$gettext('Calculated based on worker_processes * worker_connections. Actual performance depends on hardware, configuration, and workload')">
+          <ATooltip :title="$gettext('Calculated based on worker_processes * worker_connections. Actual performance depends on hardware, configuration, and workload')">
             <InfoCircleOutlined class="ml-1 text-gray-500" />
-          </Tooltip>
+          </ATooltip>
         </template>
       </AStatistic>
       <div class="text-xs text-gray-500 mt-1">
@@ -69,11 +69,16 @@ const maxRPS = computed(() => {
     <!-- Requests per connection -->
     <ACol :xs="24" :sm="12" :md="8" :lg="6">
       <AStatistic
-        :title="$gettext('Requests Per Connection')"
         :value="requestsPerConnection"
         :precision="2"
-        :value-style="{ color: '#f5222d', fontSize: '24px' }"
+        :value-style="{ color: '#3a7f99', fontSize: '24px' }"
       >
+        <template #title>
+          {{ $gettext('Requests Per Connection') }}
+          <ATooltip :title="$gettext('Total Requests / Total Connections')">
+            <InfoCircleOutlined class="ml-1 text-gray-500" />
+          </ATooltip>
+        </template>
         <template #prefix>
           <DashboardOutlined />
         </template>

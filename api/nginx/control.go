@@ -1,10 +1,10 @@
 package nginx
 
 import (
+	"net/http"
+
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"os"
 )
 
 func Reload(c *gin.Context) {
@@ -31,13 +31,9 @@ func Restart(c *gin.Context) {
 }
 
 func Status(c *gin.Context) {
-	pidPath := nginx.GetPIDPath()
 	lastOutput := nginx.GetLastOutput()
 
-	running := true
-	if fileInfo, err := os.Stat(pidPath); err != nil || fileInfo.Size() == 0 { // fileInfo.Size() == 0 no process id
-		running = false
-	}
+	running := nginx.IsNginxRunning()
 
 	c.JSON(http.StatusOK, gin.H{
 		"running": running,

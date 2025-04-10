@@ -109,8 +109,9 @@ export function setupResponseInterceptor() {
   instance.interceptors.response.use(
     response => {
       nprogress.done()
+
       // Check if full response is requested in config
-      if (response.config?.returnFullResponse) {
+      if (response?.config?.returnFullResponse) {
         return Promise.resolve(response)
       }
       return Promise.resolve(response.data)
