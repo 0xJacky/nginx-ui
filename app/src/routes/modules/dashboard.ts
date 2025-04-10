@@ -4,11 +4,29 @@ import { HomeOutlined } from '@ant-design/icons-vue'
 export const dashboardRoutes: RouteRecordRaw[] = [
   {
     path: 'dashboard',
-    component: () => import('@/views/dashboard/DashBoard.vue'),
+    redirect: '/dashboard/server',
     name: 'Dashboard',
     meta: {
       name: () => $gettext('Dashboard'),
       icon: HomeOutlined,
     },
+    children: [
+      {
+        path: 'server',
+        component: () => import('@/views/dashboard/ServerDashBoard.vue'),
+        name: 'Server',
+        meta: {
+          name: () => $gettext('Server'),
+        },
+      },
+      {
+        path: 'nginx',
+        component: () => import('@/views/dashboard/NginxDashBoard.vue'),
+        name: 'NginxPerformance',
+        meta: {
+          name: () => $gettext('Nginx'),
+        },
+      },
+    ],
   },
 ]

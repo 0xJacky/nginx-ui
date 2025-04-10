@@ -109,8 +109,9 @@ export function setupResponseInterceptor() {
   instance.interceptors.response.use(
     response => {
       nprogress.done()
+
       // Check if full response is requested in config
-      if (response.config?.returnFullResponse) {
+      if (response?.config?.returnFullResponse) {
         return Promise.resolve(response)
       }
       return Promise.resolve(response.data)
@@ -121,7 +122,7 @@ export function setupResponseInterceptor() {
       const otpModal = use2FAModal()
 
       // Handle authentication errors
-      if (error.response) {
+      if (error?.response) {
         switch (error.response.status) {
           case 401:
             secureSessionId.value = ''
@@ -135,7 +136,7 @@ export function setupResponseInterceptor() {
       }
 
       // Handle JSON error that comes back as Blob for blob request type
-      if (error.response?.data instanceof Blob && error.response.data.type === 'application/json') {
+      if (error?.response?.data instanceof Blob && error?.response?.data?.type === 'application/json') {
         try {
           const text = await error.response.data.text()
           error.response.data = JSON.parse(text)

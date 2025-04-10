@@ -1,6 +1,7 @@
 package nginx
 
 import (
+	"os"
 	"os/exec"
 	"strings"
 	"sync"
@@ -114,4 +115,12 @@ func execCommand(name string, cmd ...string) (out string) {
 		out += " " + err.Error()
 	}
 	return
+}
+
+func IsNginxRunning() bool {
+	pidPath := GetPIDPath()
+	if fileInfo, err := os.Stat(pidPath); err != nil || fileInfo.Size() == 0 {
+		return false
+	}
+	return true
 }
