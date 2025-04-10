@@ -26,6 +26,7 @@ export interface AutoCertOptions {
   provider?: string
   must_staple?: boolean
   lego_disable_cname_support?: boolean
+  revoke_old?: boolean
 }
 
 const auto_cert = {

@@ -23,6 +23,7 @@ func InitCertificateRouter(r *gin.RouterGroup) {
 
 func InitCertificateWebSocketRouter(r *gin.RouterGroup) {
 	r.GET("domain/:name/cert", IssueCert)
+	r.GET("certs/:id/revoke", RevokeCert)
 }
 
 func InitAcmeUserRouter(r *gin.RouterGroup) {

@@ -82,6 +82,8 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
+	payload.CertID = certModel.ID
+
 	if certModel.SSLCertificatePath != "" {
 		certInfo, _ := cert.GetCertInfo(certModel.SSLCertificatePath)
 		if certInfo != nil {
@@ -130,6 +132,7 @@ func IssueCert(c *gin.Context) {
 			MustStaple:              payload.MustStaple,
 			LegoDisableCNAMESupport: payload.LegoDisableCNAMESupport,
 			Log:                     log.ToString(),
+			RevokeOld:               payload.RevokeOld,
 		})).FirstOrCreate()
 	if err != nil {
 		logger.Error(err)

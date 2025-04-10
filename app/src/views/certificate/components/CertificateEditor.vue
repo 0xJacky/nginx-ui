@@ -6,10 +6,10 @@ import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 import { AutoCertState } from '@/constants'
-import RenewCert from '@/views/certificate/RenewCert.vue'
 import CertInfo from '@/views/site/cert/CertInfo.vue'
 import AutoCertStepOne from '@/views/site/cert/components/AutoCertStepOne.vue'
 import { message } from 'ant-design-vue'
+import RenewCert from './RenewCert.vue'
 
 const route = useRoute()
 
@@ -141,6 +141,8 @@ const isManaged = computed(() => {
               key_type: data.key_type,
               challenge_method: data.challenge_method,
               dns_credential_id: data.dns_credential_id,
+              acme_user_id: data.acme_user_id,
+              revoke_old: data.revoke_old,
             }"
             @renewed="init"
           />

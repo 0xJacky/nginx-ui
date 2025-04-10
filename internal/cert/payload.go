@@ -1,6 +1,12 @@
 package cert
 
 import (
+	"log"
+	"os"
+	"path/filepath"
+	"strings"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -8,11 +14,6 @@ import (
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy/logger"
-	"log"
-	"os"
-	"path/filepath"
-	"strings"
-	"time"
 )
 
 type ConfigPayload struct {
@@ -29,6 +30,7 @@ type ConfigPayload struct {
 	CertificateDir          string                     `json:"-"`
 	SSLCertificatePath      string                     `json:"-"`
 	SSLCertificateKeyPath   string                     `json:"-"`
+	RevokeOld               bool                       `json:"revoke_old"`
 }
 
 func (c *ConfigPayload) GetACMEUser() (user *model.AcmeUser, err error) {
@@ -110,6 +112,7 @@ func (c *ConfigPayload) WriteFile(l *log.Logger, errChan chan error) {
 	db.Where("id = ?", c.CertID).Updates(&model.Cert{
 		SSLCertificatePath:    c.GetCertificatePath(),
 		SSLCertificateKeyPath: c.GetCertificateKeyPath(),
+		Resource:              c.Resource,
 	})
 }
 

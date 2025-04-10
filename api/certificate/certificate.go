@@ -92,6 +92,7 @@ type certJson struct {
 	DnsCredentialID       uint64             `json:"dns_credential_id"`
 	ACMEUserID            uint64             `json:"acme_user_id"`
 	SyncNodeIds           []uint64           `json:"sync_node_ids"`
+	RevokeOld             bool               `json:"revoke_old"`
 }
 
 func AddCert(c *gin.Context) {
@@ -192,6 +193,7 @@ func ModifyCert(c *gin.Context) {
 		DnsCredentialID:       json.DnsCredentialID,
 		ACMEUserID:            json.ACMEUserID,
 		SyncNodeIds:           json.SyncNodeIds,
+		RevokeOld:             json.RevokeOld,
 	}
 
 	content := &cert.Content{
