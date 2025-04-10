@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "build": "vite build",
-    "preview": "vite preview",
+    "preview": "vite preview --host",
     "gettext:extract": "vue-gettext-extract"
   },
   "dependencies": {
@@ -25,6 +25,7 @@
     "@xterm/addon-attach": "^0.11.0",
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/xterm": "^5.5.0",
+    "ace-builds": "^1.39.1",
     "ant-design-vue": "^4.2.6",
     "apexcharts": "^4.5.0",
     "axios": "^1.8.4",
@@ -67,7 +68,6 @@
     "@vitejs/plugin-vue-jsx": "^4.1.2",
     "@vue/compiler-sfc": "^3.5.13",
     "@vue/tsconfig": "^0.7.0",
-    "ace-builds": "^1.39.1",
     "autoprefixer": "^10.4.21",
     "eslint": "9.24.0",
     "eslint-plugin-sonarjs": "^3.0.2",

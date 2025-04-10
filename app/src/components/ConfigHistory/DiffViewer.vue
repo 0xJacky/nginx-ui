@@ -3,11 +3,11 @@ import type { ConfigBackup } from '@/api/config'
 import type { Ace } from 'ace-builds'
 import { formatDateTime } from '@/lib/helper'
 import ace from 'ace-builds'
-import 'ace-builds/src-noconflict/mode-nginx'
-import 'ace-builds/src-noconflict/theme-monokai'
-
 // Import required modules
-import 'ace-builds/src-min-noconflict/ext-language_tools'
+import extLanguageToolsUrl from 'ace-builds/src-min-noconflict/ext-language_tools?url'
+import 'ace-builds/src-noconflict/mode-nginx'
+
+import 'ace-builds/src-noconflict/theme-monokai'
 
 const props = defineProps<{
   records: ConfigBackup[]
@@ -32,6 +32,16 @@ const editors: { left?: Ace.Editor, right?: Ace.Editor } = {}
 const originalTitle = ref('')
 const modifiedTitle = ref('')
 const errorMessage = ref('')
+
+// Initialize ace language tools
+onMounted(() => {
+  try {
+    ace.config.setModuleUrl('ace/ext/language_tools', extLanguageToolsUrl)
+  }
+  catch (error) {
+    console.error('Failed to initialize Ace editor language tools:', error)
+  }
+})
 
 // Check if there is content to display
 function hasContent() {

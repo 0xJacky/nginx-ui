@@ -23,7 +23,14 @@ const value = computed({
   },
 })
 
-ace.config.setModuleUrl('ace/ext/searchbox', extSearchboxUrl)
+onMounted(() => {
+  try {
+    ace.config.setModuleUrl('ace/ext/searchbox', extSearchboxUrl)
+  }
+  catch (error) {
+    console.error('Failed to initialize Ace editor:', error)
+  }
+})
 </script>
 
 <template>
