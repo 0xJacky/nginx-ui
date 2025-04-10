@@ -1,24 +1,6 @@
 import type { NginxPerformanceInfo } from '@/api/ngx'
 import ngx from '@/api/ngx'
-import { computed, ref } from 'vue'
-
-// Time formatting helper function
-function formatTimeAgo(date: Date): string {
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffSec = Math.round(diffMs / 1000)
-
-  if (diffSec < 60) {
-    return `${diffSec} ${$gettext('秒前')}`
-  }
-
-  const diffMin = Math.floor(diffSec / 60)
-  if (diffMin < 60) {
-    return `${diffMin} ${$gettext('分钟前')}`
-  }
-
-  return date.toLocaleTimeString()
-}
+import { fromNow } from '@/lib/helper'
 
 export function useNginxPerformance() {
   const loading = ref(false)
@@ -35,7 +17,7 @@ export function useNginxPerformance() {
   const formattedUpdateTime = computed(() => {
     if (!lastUpdateTime.value)
       return $gettext('Unknown')
-    return formatTimeAgo(lastUpdateTime.value)
+    return fromNow(lastUpdateTime.value.toLocaleString())
   })
 
   // Update the last update time

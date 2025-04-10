@@ -144,7 +144,7 @@ onMounted(() => {
       :description="error"
     />
 
-    <!-- stub_status 开关 -->
+    <!-- stub_status switch -->
     <ACard class="mb-4" :bordered="false">
       <div class="flex items-center justify-between">
         <div>

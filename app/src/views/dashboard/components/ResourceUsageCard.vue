@@ -48,7 +48,7 @@ const cpuUsage = computed(() => {
               <FundProjectionScreenOutlined />
             </div>
             <div class="text-base font-medium">
-              {{ $gettext('Memory Usage(RSS)') }}: <span class="text-blue-500">{{ nginxInfo.memory_usage.toFixed(2) }} MB</span>
+              {{ $gettext('Memory Usage (RSS)') }}: <span class="text-blue-500">{{ nginxInfo.memory_usage.toFixed(2) }} MB</span>
             </div>
             <ATooltip :title="$gettext('Resident Set Size: Actual memory resident in physical memory, including all shared library memory, which will be repeated calculated for multiple processes')">
               <InfoCircleOutlined class="ml-1 text-gray-500" />

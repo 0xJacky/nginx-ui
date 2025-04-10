@@ -51,6 +51,15 @@ msgstr "Người dùng"
 msgid "Action"
 msgstr "Hành động"
 
+#: src/composables/usePerformanceMetrics.ts:86
+#: src/views/dashboard/components/PerformanceTablesCard.vue:44
+msgid "Active connections"
+msgstr ""
+
+#: src/views/dashboard/components/ProcessDistributionCard.vue:48
+msgid "Actual worker to configured ratio"
+msgstr ""
+
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:151
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:186
 #: src/views/preference/CertSettings.vue:45
@@ -109,7 +118,7 @@ msgstr "Nâng cao"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr ""
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:135
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:117
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
 msgid "All"
 msgstr ""
@@ -214,7 +223,7 @@ msgstr "Bạn chắc chắn muốn xóa nó "
 msgid "Are you sure you want to recover this item?"
 msgstr "Bạn chắc chắn muốn xoá directive này ?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:149
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
 #, fuzzy
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "Bạn chắc chắn muốn xóa nó "
@@ -233,7 +242,7 @@ msgstr "Bạn chắc chắn muốn xoá directive này ?"
 msgid "Are you sure you want to remove this location?"
 msgstr "Bạn chắc chắn muốn xoá location này ?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
 #, fuzzy
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "Bạn có chắc chắn muốn xóa tất cả thông báo không ?"
@@ -271,6 +280,10 @@ msgstr ""
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:120
 msgid "Author"
 msgstr "Tác giả"
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:199
+msgid "auto = CPU cores"
+msgstr ""
 
 #: src/views/nginx_log/NginxLog.vue:149
 msgid "Auto Refresh"
@@ -392,8 +405,25 @@ msgstr "Xây dựng với"
 msgid "CA Dir"
 msgstr ""
 
+#: src/composables/usePerformanceMetrics.ts:141
+#: src/views/dashboard/components/PerformanceTablesCard.vue:95
+msgid "Cache manager processes"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:59
+#: src/views/dashboard/components/ProcessDistributionCard.vue:14
+msgid "Cache Processes"
+msgstr ""
+
 #: src/views/preference/CertSettings.vue:19
 msgid "CADir"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:43
+#: src/views/dashboard/components/PerformanceTablesCard.vue:191
+msgid ""
+"Calculated based on worker_processes * worker_connections. Actual "
+"performance depends on hardware, configuration, and workload"
 msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:356
@@ -418,6 +448,10 @@ msgstr "Cấm thay đổi mật khẩu root trong demo"
 #: src/components/ConfigHistory/DiffViewer.vue:57
 #: src/components/ConfigHistory/DiffViewer.vue:74
 msgid "Cannot compare: Missing content"
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:134
+msgid "Cannot get performance data in this state"
 msgstr ""
 
 #: src/constants/errors/user.ts:10
@@ -653,6 +687,11 @@ msgstr "Tệp cấu hình được kiểm tra thành công"
 msgid "Configuration History"
 msgstr "Cấu hình"
 
+#: src/views/dashboard/components/PerformanceTablesCard.vue:168
+#, fuzzy
+msgid "Configuration information"
+msgstr "Cấu hình"
+
 #: src/views/site/site_add/SiteAdd.vue:101
 msgid "Configuration Name"
 msgstr "Tên cấu hình"
@@ -668,6 +707,10 @@ msgstr "Cấu hình SSL"
 #: src/views/dashboard/Environments.vue:141
 msgid "Connected"
 msgstr "Đã kết nối"
+
+#: src/views/dashboard/NginxDashBoard.vue:87
+msgid "Connection error, trying to reconnect..."
+msgstr ""
 
 #: src/views/terminal/Terminal.vue:142
 msgid "Connection lost, please refresh the page."
@@ -705,6 +748,14 @@ msgstr "Cập nhật core"
 #: src/views/dashboard/ServerAnalytic.vue:301
 msgid "CPU Status"
 msgstr "Trạng thái CPU"
+
+#: src/views/dashboard/components/ResourceUsageCard.vue:27
+msgid "CPU Usage"
+msgstr ""
+
+#: src/views/dashboard/components/ResourceUsageCard.vue:38
+msgid "CPU usage is relatively high, consider optimizing Nginx configuration"
+msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:195
 msgid "CPU:"
@@ -773,9 +824,18 @@ msgstr ""
 msgid "Current account is not enabled TOTP."
 msgstr ""
 
+#: src/views/dashboard/components/ConnectionMetricsCard.vue:28
+msgid "Current active connections"
+msgstr ""
+
 #: src/components/ConfigHistory/DiffViewer.vue:62
 #, fuzzy
 msgid "Current Content"
+msgstr "Phiên bản hiện tại"
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:65
+#, fuzzy
+msgid "Current usage"
 msgstr "Phiên bản hiện tại"
 
 #: src/views/system/Upgrade.vue:165
@@ -1253,6 +1313,10 @@ msgstr "Không thể bật %{conf_name} trên %{node_name}"
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Đã bật %{conf_name} trên %{node_name}"
 
+#: src/views/dashboard/NginxDashBoard.vue:152
+msgid "Enable stub_status module"
+msgstr ""
+
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:183
 msgid "Enable TLS"
 msgstr "Bật TLS"
@@ -1553,6 +1617,11 @@ msgstr "Không thể truy xuất thông tin chứng chỉ"
 msgid "Failed to get certificate information"
 msgstr "Không thể truy xuất thông tin chứng chỉ"
 
+#: src/composables/useNginxPerformance.ts:50
+#, fuzzy
+msgid "Failed to get performance data"
+msgstr "Không thể truy xuất thông tin chứng chỉ"
+
 #: src/components/ConfigHistory/ConfigHistory.vue:77
 #, fuzzy
 msgid "Failed to load history records"
@@ -1720,6 +1789,11 @@ msgstr "Xoá thành công"
 msgid "Generating private key for registering account"
 msgstr "Tạo khóa riêng để đăng ký tài khoản"
 
+#: src/views/dashboard/NginxDashBoard.vue:143
+#, fuzzy
+msgid "Get data failed"
+msgstr "Đăng ký người dùng"
+
 #: src/views/environments/list/BatchUpgrader.vue:177
 #: src/views/system/Upgrade.vue:169
 #, fuzzy
@@ -1740,6 +1814,10 @@ msgstr ""
 
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Hide"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:87
+msgid "Higher value means better connection reuse"
 msgstr ""
 
 #: src/views/config/ConfigEditor.vue:251
@@ -1820,6 +1898,12 @@ msgstr "Xuất"
 msgid "Import Certificate"
 msgstr "Chứng chỉ"
 
+#: src/views/dashboard/components/ProcessDistributionCard.vue:54
+msgid ""
+"Includes master process, worker processes, cache processes, and other Nginx "
+"processes"
+msgstr ""
+
 #: src/views/nginx_log/NginxLogList.vue:137
 #: src/views/site/site_list/SiteList.vue:132
 msgid "Indexed"
@@ -1828,6 +1912,10 @@ msgstr ""
 #: src/views/nginx_log/NginxLogList.vue:134
 #: src/views/site/site_list/SiteList.vue:129
 msgid "Indexing..."
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:16
+msgid "Indicator"
 msgstr ""
 
 #: src/components/StdDesign/StdDetail/StdDetail.vue:81
@@ -1997,6 +2085,11 @@ msgstr "Tuỳ chỉnh"
 msgid "Last checked at"
 msgstr "Kiểm tra lần cuối lúc"
 
+#: src/views/dashboard/NginxDashBoard.vue:118
+#, fuzzy
+msgid "Last update"
+msgstr "Kiểm tra lần cuối lúc"
+
 #: src/views/preference/components/Passkey.vue:96
 #, fuzzy
 msgid "Last used at"
@@ -2061,6 +2154,10 @@ msgstr ""
 #, fuzzy
 msgid "Load successfully"
 msgstr "Lưu thành công"
+
+#: src/views/dashboard/NginxDashBoard.vue:180
+msgid "Loading data..."
+msgstr ""
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
 #: src/components/NodeSelector/NodeSelector.vue:86
@@ -2157,8 +2254,44 @@ msgstr "Người dùng"
 msgid "Managed Certificate"
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceTablesCard.vue:199
+msgid "manually set"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:103
+msgid "Master"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:136
+#: src/views/dashboard/components/PerformanceTablesCard.vue:90
+msgid "Master process"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:58
+#: src/views/dashboard/components/ProcessDistributionCard.vue:13
+msgid "Master Process"
+msgstr ""
+
 #: src/views/preference/AuthSettings.vue:135
 msgid "Max Attempts"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:56
+#, fuzzy
+msgid "Max Concurrent Connections"
+msgstr "Phiên bản hiện tại"
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:42
+msgid "Max Requests Per Second"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:176
+#: src/views/dashboard/components/PerformanceTablesCard.vue:126
+msgid "Maximum number of connections per worker process"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:196
+msgid "Maximum worker process number:"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:222
@@ -2169,6 +2302,10 @@ msgstr "Memory"
 #: src/views/dashboard/ServerAnalytic.vue:212
 msgid "Memory and Storage"
 msgstr "Memory và Storage"
+
+#: src/views/dashboard/components/ResourceUsageCard.vue:51
+msgid "Memory Usage (RSS)"
+msgstr ""
 
 #: src/views/preference/LogrotateSettings.vue:29
 msgid "Minutes"
@@ -2231,6 +2368,10 @@ msgstr "Single Directive"
 msgid "Name"
 msgstr "Tên"
 
+#: src/views/dashboard/NginxDashBoard.vue:175
+msgid "Need to enable the stub_status module"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:327
 msgid "Network"
 msgstr "Mạng"
@@ -2272,7 +2413,7 @@ msgstr "Đã có phiên bản mới"
 msgid "Next"
 msgstr "Tiếp theo"
 
-#: src/views/preference/Preference.vue:205
+#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:205
 msgid "Nginx"
 msgstr ""
 
@@ -2334,12 +2475,25 @@ msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 msgid "Nginx Control"
 msgstr ""
 
+#: src/composables/usePerformanceMetrics.ts:151
+#: src/views/dashboard/components/PerformanceTablesCard.vue:105
+msgid "Nginx CPU usage rate"
+msgstr ""
+
 #: src/views/preference/NginxSettings.vue:12
 msgid "Nginx Error Log Path"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
 
+#: src/composables/useNginxPerformance.ts:44
+#: src/views/dashboard/NginxDashBoard.vue:114
+#: src/views/dashboard/NginxDashBoard.vue:133
+#: src/views/dashboard/NginxDashBoard.vue:82
 #: src/views/site/ngx_conf/NginxStatusAlert.vue:15
 msgid "Nginx is not running"
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:114
+msgid "Nginx is running"
 msgstr ""
 
 #: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:143
@@ -2348,6 +2502,11 @@ msgstr ""
 
 #: src/views/preference/NginxSettings.vue:21
 msgid "Nginx Log Directory Whitelist"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:156
+#: src/views/dashboard/components/PerformanceTablesCard.vue:110
+msgid "Nginx Memory usage"
 msgstr ""
 
 #: src/views/preference/NginxSettings.vue:30
@@ -2385,6 +2544,10 @@ msgstr "Restart Nginx thành công"
 msgid "Nginx Test Config Command"
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceTablesCard.vue:181
+msgid "Nginx theoretical maximum performance"
+msgstr ""
+
 #: src/constants/errors/system.ts:2
 msgid "Nginx UI already installed"
 msgstr ""
@@ -2402,8 +2565,8 @@ msgid ""
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
 #: src/components/ChatGPT/ChatGPT.vue:374
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:151
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:163
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:133
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:145
 #: src/components/Notification/Notification.vue:133
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:63
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:94
@@ -2425,6 +2588,10 @@ msgstr "Không"
 #, fuzzy
 msgid "No Action"
 msgstr "Hành động"
+
+#: src/views/dashboard/NginxDashBoard.vue:182
+msgid "No data"
+msgstr ""
 
 #: src/components/ConfigHistory/DiffViewer.vue:44
 msgid "No records selected"
@@ -2503,6 +2670,13 @@ msgstr "Thông báo"
 msgid "Notifier not found"
 msgstr "Không tìm thấy tệp tin"
 
+#: src/composables/usePerformanceMetrics.ts:131
+#: src/composables/usePerformanceMetrics.ts:171
+#: src/views/dashboard/components/PerformanceTablesCard.vue:121
+#: src/views/dashboard/components/PerformanceTablesCard.vue:85
+msgid "Number of worker processes"
+msgstr ""
+
 #: src/views/site/cert/components/ObtainCert.vue:182
 #, fuzzy
 msgid "Obtain certificate"
@@ -2522,7 +2696,7 @@ msgid ""
 "Firefox."
 msgstr ""
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:179
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:56
@@ -2557,7 +2731,7 @@ msgstr ""
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:179
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
 #: src/components/NodeSelector/NodeSelector.vue:103
 #: src/components/NodeSelector/NodeSelector.vue:89
 #: src/views/dashboard/Environments.vue:100
@@ -2593,6 +2767,20 @@ msgstr "Hệ điều hành"
 #: src/views/dashboard/ServerAnalytic.vue:189
 msgid "OS:"
 msgstr "Hệ điều hành:"
+
+#: src/composables/usePerformanceMetrics.ts:146
+#: src/views/dashboard/components/PerformanceTablesCard.vue:100
+msgid "Other Nginx processes"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:60
+#: src/views/dashboard/components/ProcessDistributionCard.vue:15
+msgid "Other Processes"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:103
+msgid "Others"
+msgstr ""
 
 #: src/constants/errors/user.ts:9
 msgid "Otp or recovery code empty"
@@ -2666,12 +2854,22 @@ msgstr ""
 msgid "Perform core upgrade error"
 msgstr "Nâng cấp core không thành công"
 
+#: src/views/dashboard/NginxDashBoard.vue:187
+msgid "Performance Metrics"
+msgstr ""
+
 #: src/language/constants.ts:28
 msgid "Performing core upgrade"
 msgstr "Nâng cấp core"
 
 #: src/constants/errors/crypto.ts:2
 msgid "Plain text is empty"
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:176
+msgid ""
+"Please enable the stub_status module to get request statistics, connection "
+"count, etc."
 msgstr ""
 
 #: src/views/preference/components/AddPasskey.vue:69
@@ -2818,6 +3016,15 @@ msgstr "Cài đặt"
 msgid "Preparing lego configurations"
 msgstr "Chuẩn bị cấu hình Lego"
 
+#: src/views/dashboard/components/ProcessDistributionCard.vue:26
+msgid "Process Distribution"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:155
+#, fuzzy
+msgid "Process information"
+msgstr "Thông tin"
+
 #: src/language/constants.ts:3
 msgid "Prohibit changing root password in demo"
 msgstr "Cấm thay đổi mật khẩu root trong demo"
@@ -2840,6 +3047,11 @@ msgstr ""
 
 #: src/views/preference/NodeSettings.vue:46
 msgid "Public Security Number"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:106
+#: src/views/dashboard/components/PerformanceTablesCard.vue:64
+msgid "Read requests"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:37
@@ -2942,7 +3154,7 @@ msgstr "Ghi chú phát hành"
 msgid "Reload"
 msgstr "Tải lại"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:138
 #: src/views/environments/group/columns.ts:24
 #: src/views/environments/group/EnvGroup.vue:37
 #: src/views/environments/list/Environment.vue:120
@@ -2971,7 +3183,7 @@ msgstr "Gia hạn chứng chỉ SSL thất bại"
 msgid "Reload Remote Nginx Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:86
 msgid "Reload request failed, please check your network connection"
 msgstr ""
 
@@ -3104,6 +3316,11 @@ msgstr "Gia hạn chứng chỉ SSL thành công"
 msgid "Renew successfully"
 msgstr "Gia hạn chứng chỉ SSL"
 
+#: src/views/dashboard/components/PerformanceTablesCard.vue:142
+#, fuzzy
+msgid "Request statistics"
+msgstr "Thống kê mạng"
+
 #: src/constants/errors/crypto.ts:4
 msgid "Request timeout"
 msgstr ""
@@ -3111,6 +3328,10 @@ msgstr ""
 #: src/language/constants.ts:33
 msgid "Requested with wrong parameters"
 msgstr "Yêu cầu có chứa tham số sai"
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:77
+msgid "Requests Per Connection"
+msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:442
 msgid "Reset"
@@ -3121,11 +3342,23 @@ msgstr "Đặt lại"
 msgid "Reset 2FA"
 msgstr "Đặt lại"
 
+#: src/views/dashboard/components/ResourceUsageCard.vue:53
+msgid ""
+"Resident Set Size: Actual memory resident in physical memory, including all "
+"shared library memory, which will be repeated calculated for multiple "
+"processes"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:111
+#: src/views/dashboard/components/PerformanceTablesCard.vue:69
+msgid "Responses"
+msgstr ""
+
 #: src/components/NginxControl/NginxControl.vue:92
 msgid "Restart"
 msgstr "Khởi động lại"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:168
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:150
 #: src/views/environments/list/Environment.vue:141
 #: src/views/environments/list/Environment.vue:149
 #, fuzzy
@@ -3152,7 +3385,7 @@ msgstr "Gia hạn chứng chỉ SSL thất bại"
 msgid "Restart Remote Nginx Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:124
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:106
 msgid "Restart request failed, please check your network connection"
 msgstr ""
 
@@ -3350,7 +3583,7 @@ msgstr ""
 msgid "Send"
 msgstr "Gửi"
 
-#: src/views/preference/Preference.vue:157
+#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:157
 #, fuzzy
 msgid "Server"
 msgstr "Thông tin máy chủ"
@@ -3651,7 +3884,7 @@ msgstr "Gia hạn chứng chỉ SSL thất bại"
 msgid "Sync Config Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:124
 #: src/views/environments/group/EnvGroup.vue:18
 msgid "Sync Nodes"
 msgstr ""
@@ -3807,6 +4040,14 @@ msgstr ""
 msgid "The username or password is incorrect"
 msgstr "Tên người dùng hoặc mật khẩu không chính xác"
 
+#: src/views/dashboard/components/PerformanceTablesCard.vue:185
+msgid "Theoretical maximum concurrent connections:"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:189
+msgid "Theoretical maximum RPS (Requests Per Second):"
+msgstr ""
+
 #: src/views/preference/components/RecoveryCodes.vue:104
 msgid ""
 "These codes are the last resort for accessing your account in case you lose "
@@ -3846,6 +4087,12 @@ msgstr "Trường này không được để trống"
 #: src/constants/form_errors.ts:6
 msgid ""
 "This field should only contain letters, unicode characters, numbers, and -_."
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:155
+msgid ""
+"This module provides Nginx request statistics, connection count, etc. data. "
+"After enabling it, you can view performance statistics"
 msgstr ""
 
 #: src/views/certificate/components/RemoveCert.vue:103
@@ -3893,6 +4140,12 @@ msgstr ""
 msgid "Tips"
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceTablesCard.vue:203
+msgid ""
+"Tips: You can increase the concurrency processing capacity by increasing "
+"worker_processes or worker_connections"
+msgstr ""
+
 #: src/views/notification/notificationColumns.tsx:45
 msgid "Title"
 msgstr "Tiêu đề"
@@ -3933,6 +4186,11 @@ msgid ""
 "local API."
 msgstr ""
 
+#: src/views/dashboard/NginxDashBoard.vue:59
+#, fuzzy
+msgid "Toggle failed"
+msgstr "Bật không thành công"
+
 #: src/views/preference/OpenAISettings.vue:61
 msgid "Token is not valid"
 msgstr ""
@@ -3942,6 +4200,33 @@ msgid "Total %{total} item"
 msgid_plural "Total %{total} items"
 msgstr[0] ""
 msgstr[1] ""
+
+#: src/composables/usePerformanceMetrics.ts:96
+#: src/views/dashboard/components/PerformanceTablesCard.vue:54
+msgid "Total connections"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:91
+#: src/views/dashboard/components/PerformanceTablesCard.vue:49
+msgid "Total handshakes"
+msgstr ""
+
+#: src/views/dashboard/components/ProcessDistributionCard.vue:53
+msgid "Total Nginx processes"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:94
+msgid "Total Nginx Processes"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:101
+#: src/views/dashboard/components/PerformanceTablesCard.vue:59
+msgid "Total requests"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:78
+msgid "Total Requests / Total Connections"
+msgstr ""
 
 #: src/views/preference/components/TOTP.vue:66
 msgid "TOTP"
@@ -3967,6 +4252,10 @@ msgstr ""
 #: src/views/preference/components/ExternalNotify/columns.ts:17
 msgid "Type"
 msgstr "Loại"
+
+#: src/composables/useNginxPerformance.ts:19
+msgid "Unknown"
+msgstr ""
 
 #: src/views/system/SelfCheck/SelfCheck.vue:63
 msgid "Unknown issue"
@@ -4064,6 +4353,10 @@ msgstr "Username (*)"
 msgid "Valid"
 msgstr "Hợp lệ"
 
+#: src/views/dashboard/components/PerformanceTablesCard.vue:22
+msgid "Value"
+msgstr ""
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:216
 #: src/components/SystemRestore/SystemRestoreContent.vue:293
 msgid "Verify Backup File Integrity"
@@ -4103,6 +4396,11 @@ msgstr ""
 #, fuzzy
 msgid "Viewed"
 msgstr "Xem"
+
+#: src/composables/usePerformanceMetrics.ts:116
+#: src/views/dashboard/components/PerformanceTablesCard.vue:74
+msgid "Waiting processes"
+msgstr ""
 
 #: src/constants/index.ts:23 src/views/config/InspectConfig.vue:33
 #: src/views/notification/notificationColumns.tsx:22
@@ -4173,6 +4471,16 @@ msgid ""
 "codes."
 msgstr ""
 
+#: src/composables/usePerformanceMetrics.ts:57
+#: src/views/dashboard/components/ConnectionMetricsCard.vue:49
+#: src/views/dashboard/components/ProcessDistributionCard.vue:12
+msgid "Worker Processes"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:103
+msgid "Workers"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:37
 #: src/views/dashboard/ServerAnalytic.vue:373
 msgid "Writes"
@@ -4186,8 +4494,8 @@ msgstr "Ghi Private Key vào disk"
 msgid "Writing certificate to disk"
 msgstr "Ghi chứng chỉ vào disk"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:150
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:132
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:144
 #: src/views/preference/AuthSettings.vue:163
 #: src/views/preference/CertSettings.vue:72
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:96

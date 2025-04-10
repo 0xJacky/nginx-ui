@@ -59,6 +59,15 @@ msgstr "ACME 用戶"
 msgid "Action"
 msgstr "操作"
 
+#: src/composables/usePerformanceMetrics.ts:86
+#: src/views/dashboard/components/PerformanceTablesCard.vue:44
+msgid "Active connections"
+msgstr ""
+
+#: src/views/dashboard/components/ProcessDistributionCard.vue:48
+msgid "Actual worker to configured ratio"
+msgstr ""
+
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:151
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:186
 #: src/views/preference/CertSettings.vue:45
@@ -113,7 +122,7 @@ msgstr "進階模式"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "然後，重新整理此頁面並再次點選新增通行密鑰。"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:135
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:117
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
 msgid "All"
 msgstr "全部"
@@ -205,7 +214,7 @@ msgstr "您確定要刪除嗎？"
 msgid "Are you sure you want to recover this item?"
 msgstr "您確定要恢復此項目嗎？"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:149
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新載入Nginx嗎？"
 
@@ -221,7 +230,7 @@ msgstr "您確定要刪除此項目嗎？"
 msgid "Are you sure you want to remove this location?"
 msgstr "您確定要刪除此 Location 嗎？"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新啟動Nginx嗎？"
 
@@ -257,6 +266,10 @@ msgstr "認證設定"
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:120
 msgid "Author"
 msgstr "作者"
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:199
+msgid "auto = CPU cores"
+msgstr ""
 
 #: src/views/nginx_log/NginxLog.vue:149
 msgid "Auto Refresh"
@@ -370,9 +383,26 @@ msgstr "構建基於"
 msgid "CA Dir"
 msgstr "CA Dir"
 
+#: src/composables/usePerformanceMetrics.ts:141
+#: src/views/dashboard/components/PerformanceTablesCard.vue:95
+msgid "Cache manager processes"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:59
+#: src/views/dashboard/components/ProcessDistributionCard.vue:14
+msgid "Cache Processes"
+msgstr ""
+
 #: src/views/preference/CertSettings.vue:19
 msgid "CADir"
 msgstr "CADir"
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:43
+#: src/views/dashboard/components/PerformanceTablesCard.vue:191
+msgid ""
+"Calculated based on worker_processes * worker_connections. Actual "
+"performance depends on hardware, configuration, and workload"
+msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:246
@@ -396,6 +426,10 @@ msgstr "無法在示範模式下更改初始使用者密碼"
 #: src/components/ConfigHistory/DiffViewer.vue:74
 msgid "Cannot compare: Missing content"
 msgstr "無法比較：缺少內容"
+
+#: src/views/dashboard/NginxDashBoard.vue:134
+msgid "Cannot get performance data in this state"
+msgstr ""
 
 #: src/constants/errors/user.ts:10
 msgid "Cannot remove initial user"
@@ -611,6 +645,11 @@ msgstr "設定檔案測試成功"
 msgid "Configuration History"
 msgstr "配置歷史"
 
+#: src/views/dashboard/components/PerformanceTablesCard.vue:168
+#, fuzzy
+msgid "Configuration information"
+msgstr "配置歷史"
+
 #: src/views/site/site_add/SiteAdd.vue:101
 msgid "Configuration Name"
 msgstr "設定名稱"
@@ -626,6 +665,10 @@ msgstr "設定 SSL"
 #: src/views/dashboard/Environments.vue:141
 msgid "Connected"
 msgstr "已連結"
+
+#: src/views/dashboard/NginxDashBoard.vue:87
+msgid "Connection error, trying to reconnect..."
+msgstr ""
 
 #: src/views/terminal/Terminal.vue:142
 msgid "Connection lost, please refresh the page."
@@ -663,6 +706,14 @@ msgstr "核心升級"
 #: src/views/dashboard/ServerAnalytic.vue:301
 msgid "CPU Status"
 msgstr "中央處理器狀態"
+
+#: src/views/dashboard/components/ResourceUsageCard.vue:27
+msgid "CPU Usage"
+msgstr ""
+
+#: src/views/dashboard/components/ResourceUsageCard.vue:38
+msgid "CPU usage is relatively high, consider optimizing Nginx configuration"
+msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:195
 msgid "CPU:"
@@ -727,8 +778,17 @@ msgstr "當前帳戶已啟用 TOTP。"
 msgid "Current account is not enabled TOTP."
 msgstr "當前帳戶未啟用 TOTP。"
 
+#: src/views/dashboard/components/ConnectionMetricsCard.vue:28
+msgid "Current active connections"
+msgstr ""
+
 #: src/components/ConfigHistory/DiffViewer.vue:62
 msgid "Current Content"
+msgstr "當前內容"
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:65
+#, fuzzy
+msgid "Current usage"
 msgstr "當前內容"
 
 #: src/views/system/Upgrade.vue:165
@@ -1153,6 +1213,10 @@ msgstr "在 %{node} 上啟用串流 %{name} 失敗"
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "在 %{node} 上成功啟用串流 %{name}"
 
+#: src/views/dashboard/NginxDashBoard.vue:152
+msgid "Enable stub_status module"
+msgstr ""
+
 #: src/views/site/ngx_conf/NgxConfigEditor.vue:183
 msgid "Enable TLS"
 msgstr "啟用 TLS"
@@ -1421,6 +1485,11 @@ msgstr "無法生成初始化向量：{0}"
 msgid "Failed to get certificate information"
 msgstr "取得憑證資訊失敗"
 
+#: src/composables/useNginxPerformance.ts:50
+#, fuzzy
+msgid "Failed to get performance data"
+msgstr "取得憑證資訊失敗"
+
 #: src/components/ConfigHistory/ConfigHistory.vue:77
 msgid "Failed to load history records"
 msgstr "無法載入歷史記錄"
@@ -1575,6 +1644,11 @@ msgstr "成功生成復原代碼"
 msgid "Generating private key for registering account"
 msgstr "產生註冊帳號的私鑰"
 
+#: src/views/dashboard/NginxDashBoard.vue:143
+#, fuzzy
+msgid "Get data failed"
+msgstr "註冊失敗"
+
 #: src/views/environments/list/BatchUpgrader.vue:177
 #: src/views/system/Upgrade.vue:169
 msgid "Get release information error"
@@ -1595,6 +1669,10 @@ msgstr "哈希驗證失敗：檔案完整性受損"
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Hide"
 msgstr "隱藏"
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:87
+msgid "Higher value means better connection reuse"
+msgstr ""
 
 #: src/views/config/ConfigEditor.vue:251
 #: src/views/site/site_edit/SiteEdit.vue:212
@@ -1674,6 +1752,12 @@ msgstr "導入"
 msgid "Import Certificate"
 msgstr "導入憑證"
 
+#: src/views/dashboard/components/ProcessDistributionCard.vue:54
+msgid ""
+"Includes master process, worker processes, cache processes, and other Nginx "
+"processes"
+msgstr ""
+
 #: src/views/nginx_log/NginxLogList.vue:137
 #: src/views/site/site_list/SiteList.vue:132
 msgid "Indexed"
@@ -1683,6 +1767,10 @@ msgstr "已索引"
 #: src/views/site/site_list/SiteList.vue:129
 msgid "Indexing..."
 msgstr "索引中..."
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:16
+msgid "Indicator"
+msgstr ""
 
 #: src/components/StdDesign/StdDetail/StdDetail.vue:81
 #: src/constants/index.ts:24 src/views/notification/notificationColumns.tsx:29
@@ -1840,6 +1928,11 @@ msgstr "Lark 自定義"
 msgid "Last checked at"
 msgstr "上次檢查時間"
 
+#: src/views/dashboard/NginxDashBoard.vue:118
+#, fuzzy
+msgid "Last update"
+msgstr "最後使用時間"
+
 #: src/views/preference/components/Passkey.vue:96
 msgid "Last used at"
 msgstr "最後使用時間"
@@ -1897,6 +1990,10 @@ msgstr "從設置加載"
 #: src/views/environments/list/Environment.vue:20
 msgid "Load successfully"
 msgstr "加載成功"
+
+#: src/views/dashboard/NginxDashBoard.vue:180
+msgid "Loading data..."
+msgstr ""
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
 #: src/components/NodeSelector/NodeSelector.vue:86
@@ -1990,9 +2087,45 @@ msgstr "管理使用者"
 msgid "Managed Certificate"
 msgstr "受管理的憑證"
 
+#: src/views/dashboard/components/PerformanceTablesCard.vue:199
+msgid "manually set"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:103
+msgid "Master"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:136
+#: src/views/dashboard/components/PerformanceTablesCard.vue:90
+msgid "Master process"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:58
+#: src/views/dashboard/components/ProcessDistributionCard.vue:13
+msgid "Master Process"
+msgstr ""
+
 #: src/views/preference/AuthSettings.vue:135
 msgid "Max Attempts"
 msgstr "最大嘗試次數"
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:56
+#, fuzzy
+msgid "Max Concurrent Connections"
+msgstr "當前內容"
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:42
+msgid "Max Requests Per Second"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:176
+#: src/views/dashboard/components/PerformanceTablesCard.vue:126
+msgid "Maximum number of connections per worker process"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:196
+msgid "Maximum worker process number:"
+msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:222
 #: src/views/dashboard/ServerAnalytic.vue:223
@@ -2002,6 +2135,10 @@ msgstr "記憶體"
 #: src/views/dashboard/ServerAnalytic.vue:212
 msgid "Memory and Storage"
 msgstr "記憶體與儲存"
+
+#: src/views/dashboard/components/ResourceUsageCard.vue:51
+msgid "Memory Usage (RSS)"
+msgstr ""
 
 #: src/views/preference/LogrotateSettings.vue:29
 msgid "Minutes"
@@ -2059,6 +2196,10 @@ msgstr "多行指令"
 msgid "Name"
 msgstr "名稱"
 
+#: src/views/dashboard/NginxDashBoard.vue:175
+msgid "Need to enable the stub_status module"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:327
 msgid "Network"
 msgstr "網路"
@@ -2097,7 +2238,7 @@ msgstr "新版本發布"
 msgid "Next"
 msgstr "下一步"
 
-#: src/views/preference/Preference.vue:205
+#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:205
 msgid "Nginx"
 msgstr "Nginx"
 
@@ -2154,12 +2295,26 @@ msgstr "Nginx 配置目錄"
 msgid "Nginx Control"
 msgstr "Nginx 控制元件"
 
+#: src/composables/usePerformanceMetrics.ts:151
+#: src/views/dashboard/components/PerformanceTablesCard.vue:105
+msgid "Nginx CPU usage rate"
+msgstr ""
+
 #: src/views/preference/NginxSettings.vue:12
 msgid "Nginx Error Log Path"
 msgstr "Nginx 錯誤日誌路徑"
 
+#: src/composables/useNginxPerformance.ts:44
+#: src/views/dashboard/NginxDashBoard.vue:114
+#: src/views/dashboard/NginxDashBoard.vue:133
+#: src/views/dashboard/NginxDashBoard.vue:82
 #: src/views/site/ngx_conf/NginxStatusAlert.vue:15
 msgid "Nginx is not running"
+msgstr "Nginx 未執行"
+
+#: src/views/dashboard/NginxDashBoard.vue:114
+#, fuzzy
+msgid "Nginx is running"
 msgstr "Nginx 未執行"
 
 #: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:143
@@ -2169,6 +2324,11 @@ msgstr "Nginx 日誌"
 #: src/views/preference/NginxSettings.vue:21
 msgid "Nginx Log Directory Whitelist"
 msgstr "Nginx 日誌目錄白名單"
+
+#: src/composables/usePerformanceMetrics.ts:156
+#: src/views/dashboard/components/PerformanceTablesCard.vue:110
+msgid "Nginx Memory usage"
+msgstr ""
 
 #: src/views/preference/NginxSettings.vue:30
 msgid "Nginx PID Path"
@@ -2202,6 +2362,10 @@ msgstr "Nginx 重啟成功"
 msgid "Nginx Test Config Command"
 msgstr "Nginx 測試配置指令"
 
+#: src/views/dashboard/components/PerformanceTablesCard.vue:181
+msgid "Nginx theoretical maximum performance"
+msgstr ""
+
 #: src/constants/errors/system.ts:2
 msgid "Nginx UI already installed"
 msgstr "Nginx UI 已安裝"
@@ -2217,8 +2381,8 @@ msgid ""
 msgstr "Nginx UI 設定已恢復，將在幾秒後自動重新啟動。"
 
 #: src/components/ChatGPT/ChatGPT.vue:374
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:151
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:163
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:133
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:145
 #: src/components/Notification/Notification.vue:133
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:63
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:94
@@ -2239,6 +2403,10 @@ msgstr "取消"
 #: src/views/environments/group/EnvGroup.vue:34
 msgid "No Action"
 msgstr "無行動"
+
+#: src/views/dashboard/NginxDashBoard.vue:182
+msgid "No data"
+msgstr ""
 
 #: src/components/ConfigHistory/DiffViewer.vue:44
 msgid "No records selected"
@@ -2309,6 +2477,13 @@ msgstr "通知"
 msgid "Notifier not found"
 msgstr "通知器未找到"
 
+#: src/composables/usePerformanceMetrics.ts:131
+#: src/composables/usePerformanceMetrics.ts:171
+#: src/views/dashboard/components/PerformanceTablesCard.vue:121
+#: src/views/dashboard/components/PerformanceTablesCard.vue:85
+msgid "Number of worker processes"
+msgstr ""
+
 #: src/views/site/cert/components/ObtainCert.vue:182
 msgid "Obtain certificate"
 msgstr "取得憑證"
@@ -2327,7 +2502,7 @@ msgid ""
 "Firefox."
 msgstr "OCSP 必須裝訂可能會導致某些用戶在首次使用 Firefox 訪問時出現錯誤。"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:179
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:56
@@ -2362,7 +2537,7 @@ msgstr "確定"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "驗證完成後，記錄將被刪除。"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:179
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
 #: src/components/NodeSelector/NodeSelector.vue:103
 #: src/components/NodeSelector/NodeSelector.vue:89
 #: src/views/dashboard/Environments.vue:100
@@ -2397,6 +2572,20 @@ msgstr "作業系統"
 #: src/views/dashboard/ServerAnalytic.vue:189
 msgid "OS:"
 msgstr "作業系統:"
+
+#: src/composables/usePerformanceMetrics.ts:146
+#: src/views/dashboard/components/PerformanceTablesCard.vue:100
+msgid "Other Nginx processes"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:60
+#: src/views/dashboard/components/ProcessDistributionCard.vue:15
+msgid "Other Processes"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:103
+msgid "Others"
+msgstr ""
 
 #: src/constants/errors/user.ts:9
 msgid "Otp or recovery code empty"
@@ -2470,6 +2659,10 @@ msgstr "執行"
 msgid "Perform core upgrade error"
 msgstr "執行核心升級錯誤"
 
+#: src/views/dashboard/NginxDashBoard.vue:187
+msgid "Performance Metrics"
+msgstr ""
+
 #: src/language/constants.ts:28
 msgid "Performing core upgrade"
 msgstr "正在執行核心升級"
@@ -2477,6 +2670,12 @@ msgstr "正在執行核心升級"
 #: src/constants/errors/crypto.ts:2
 msgid "Plain text is empty"
 msgstr "明文為空"
+
+#: src/views/dashboard/NginxDashBoard.vue:176
+msgid ""
+"Please enable the stub_status module to get request statistics, connection "
+"count, etc."
+msgstr ""
 
 #: src/views/preference/components/AddPasskey.vue:69
 msgid ""
@@ -2613,6 +2812,15 @@ msgstr "偏好設定"
 msgid "Preparing lego configurations"
 msgstr "準備 Lego 設定"
 
+#: src/views/dashboard/components/ProcessDistributionCard.vue:26
+msgid "Process Distribution"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:155
+#, fuzzy
+msgid "Process information"
+msgstr "基本資訊"
+
 #: src/language/constants.ts:3
 msgid "Prohibit changing root password in demo"
 msgstr "在示範模式中禁止更改 root 密碼"
@@ -2636,6 +2844,11 @@ msgstr "代理伺服器"
 #: src/views/preference/NodeSettings.vue:46
 msgid "Public Security Number"
 msgstr "公安編號"
+
+#: src/composables/usePerformanceMetrics.ts:106
+#: src/views/dashboard/components/PerformanceTablesCard.vue:64
+msgid "Read requests"
+msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:37
 #: src/views/dashboard/ServerAnalytic.vue:383
@@ -2730,7 +2943,7 @@ msgstr "發行公告"
 msgid "Reload"
 msgstr "重新載入"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:138
 #: src/views/environments/group/columns.ts:24
 #: src/views/environments/group/EnvGroup.vue:37
 #: src/views/environments/list/Environment.vue:120
@@ -2754,7 +2967,7 @@ msgstr "重新載入遠端Nginx錯誤"
 msgid "Reload Remote Nginx Success"
 msgstr "遠端Nginx重載成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:86
 msgid "Reload request failed, please check your network connection"
 msgstr "重新載入請求失敗，請檢查您的網路連線"
 
@@ -2866,6 +3079,11 @@ msgstr "更新憑證成功"
 msgid "Renew successfully"
 msgstr "更新成功"
 
+#: src/views/dashboard/components/PerformanceTablesCard.vue:142
+#, fuzzy
+msgid "Request statistics"
+msgstr "網路統計"
+
 #: src/constants/errors/crypto.ts:4
 msgid "Request timeout"
 msgstr "請求逾時"
@@ -2873,6 +3091,10 @@ msgstr "請求逾時"
 #: src/language/constants.ts:33
 msgid "Requested with wrong parameters"
 msgstr "請求參數錯誤"
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:77
+msgid "Requests Per Connection"
+msgstr ""
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:442
 msgid "Reset"
@@ -2882,11 +3104,23 @@ msgstr "重設"
 msgid "Reset 2FA"
 msgstr "重置多重因素驗證"
 
+#: src/views/dashboard/components/ResourceUsageCard.vue:53
+msgid ""
+"Resident Set Size: Actual memory resident in physical memory, including all "
+"shared library memory, which will be repeated calculated for multiple "
+"processes"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:111
+#: src/views/dashboard/components/PerformanceTablesCard.vue:69
+msgid "Responses"
+msgstr ""
+
 #: src/components/NginxControl/NginxControl.vue:92
 msgid "Restart"
 msgstr "重新啟動"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:168
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:150
 #: src/views/environments/list/Environment.vue:141
 #: src/views/environments/list/Environment.vue:149
 msgid "Restart Nginx"
@@ -2908,7 +3142,7 @@ msgstr "遠端Nginx重啟錯誤"
 msgid "Restart Remote Nginx Success"
 msgstr "遠端Nginx重啟成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:124
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:106
 msgid "Restart request failed, please check your network connection"
 msgstr "重新啟動請求失敗，請檢查您的網路連線"
 
@@ -3092,7 +3326,7 @@ msgstr "自我檢測"
 msgid "Send"
 msgstr "傳送"
 
-#: src/views/preference/Preference.vue:157
+#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:157
 msgid "Server"
 msgstr "伺服器"
 
@@ -3372,7 +3606,7 @@ msgstr "同步配置錯誤"
 msgid "Sync Config Success"
 msgstr "同步配置成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:124
 #: src/views/environments/group/EnvGroup.vue:18
 msgid "Sync Nodes"
 msgstr "同步節點"
@@ -3521,6 +3755,14 @@ msgstr "網址無效。"
 msgid "The username or password is incorrect"
 msgstr "使用者名稱或密碼不正確"
 
+#: src/views/dashboard/components/PerformanceTablesCard.vue:185
+msgid "Theoretical maximum concurrent connections:"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:189
+msgid "Theoretical maximum RPS (Requests Per Second):"
+msgstr ""
+
 #: src/views/preference/components/RecoveryCodes.vue:104
 msgid ""
 "These codes are the last resort for accessing your account in case you lose "
@@ -3561,6 +3803,12 @@ msgstr "此欄位不應為空"
 msgid ""
 "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "此欄位僅能包含字母、Unicode字元、數字、連字號、破折號和底線。"
+
+#: src/views/dashboard/NginxDashBoard.vue:155
+msgid ""
+"This module provides Nginx request statistics, connection count, etc. data. "
+"After enabling it, you can view performance statistics"
+msgstr ""
 
 #: src/views/certificate/components/RemoveCert.vue:103
 msgid ""
@@ -3607,6 +3855,12 @@ msgstr "節流"
 msgid "Tips"
 msgstr "提示"
 
+#: src/views/dashboard/components/PerformanceTablesCard.vue:203
+msgid ""
+"Tips: You can increase the concurrency processing capacity by increasing "
+"worker_processes or worker_connections"
+msgstr ""
+
 #: src/views/notification/notificationColumns.tsx:45
 msgid "Title"
 msgstr "標題"
@@ -3650,6 +3904,11 @@ msgstr ""
 "要使用本地大型模型，請使用 ollama、vllm 或 lmdeploy 部署。它們提供與 OpenAI "
 "相容的 API 端點，因此只需將 baseUrl 設定為您的本地 API。"
 
+#: src/views/dashboard/NginxDashBoard.vue:59
+#, fuzzy
+msgid "Toggle failed"
+msgstr "啟用失敗"
+
 #: src/views/preference/OpenAISettings.vue:61
 msgid "Token is not valid"
 msgstr "令牌無效"
@@ -3658,6 +3917,33 @@ msgstr "令牌無效"
 msgid "Total %{total} item"
 msgid_plural "Total %{total} items"
 msgstr[0] "總計 %{total} 項"
+
+#: src/composables/usePerformanceMetrics.ts:96
+#: src/views/dashboard/components/PerformanceTablesCard.vue:54
+msgid "Total connections"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:91
+#: src/views/dashboard/components/PerformanceTablesCard.vue:49
+msgid "Total handshakes"
+msgstr ""
+
+#: src/views/dashboard/components/ProcessDistributionCard.vue:53
+msgid "Total Nginx processes"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:94
+msgid "Total Nginx Processes"
+msgstr ""
+
+#: src/composables/usePerformanceMetrics.ts:101
+#: src/views/dashboard/components/PerformanceTablesCard.vue:59
+msgid "Total requests"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:78
+msgid "Total Requests / Total Connections"
+msgstr ""
 
 #: src/views/preference/components/TOTP.vue:66
 msgid "TOTP"
@@ -3683,6 +3969,11 @@ msgstr "需要多重因素驗證"
 #: src/views/preference/components/ExternalNotify/columns.ts:17
 msgid "Type"
 msgstr "類型"
+
+#: src/composables/useNginxPerformance.ts:19
+#, fuzzy
+msgid "Unknown"
+msgstr "未知問題"
 
 #: src/views/system/SelfCheck/SelfCheck.vue:63
 msgid "Unknown issue"
@@ -3774,6 +4065,10 @@ msgstr "使用者名稱 (*)"
 msgid "Valid"
 msgstr "有效"
 
+#: src/views/dashboard/components/PerformanceTablesCard.vue:22
+msgid "Value"
+msgstr ""
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:216
 #: src/components/SystemRestore/SystemRestoreContent.vue:293
 msgid "Verify Backup File Integrity"
@@ -3808,6 +4103,11 @@ msgstr "檢視復原代碼"
 #: src/views/preference/components/RecoveryCodes.vue:70
 msgid "Viewed"
 msgstr "已檢視"
+
+#: src/composables/usePerformanceMetrics.ts:116
+#: src/views/dashboard/components/PerformanceTablesCard.vue:74
+msgid "Waiting processes"
+msgstr ""
 
 #: src/constants/index.ts:23 src/views/config/InspectConfig.vue:33
 #: src/views/notification/notificationColumns.tsx:22
@@ -3884,6 +4184,16 @@ msgid ""
 "codes."
 msgstr "當您生成新的復原代碼時，必須下載或列印新的代碼。"
 
+#: src/composables/usePerformanceMetrics.ts:57
+#: src/views/dashboard/components/ConnectionMetricsCard.vue:49
+#: src/views/dashboard/components/ProcessDistributionCard.vue:12
+msgid "Worker Processes"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceStatisticsCard.vue:103
+msgid "Workers"
+msgstr ""
+
 #: src/views/dashboard/ServerAnalytic.vue:37
 #: src/views/dashboard/ServerAnalytic.vue:373
 msgid "Writes"
@@ -3897,8 +4207,8 @@ msgstr "將憑證私鑰寫入磁碟"
 msgid "Writing certificate to disk"
 msgstr "將憑證寫入磁碟"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:150
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:132
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:144
 #: src/views/preference/AuthSettings.vue:163
 #: src/views/preference/CertSettings.vue:72
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:96
