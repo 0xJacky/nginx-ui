@@ -10,6 +10,14 @@ type Nginx struct {
 	TestConfigCmd   string   `json:"test_config_cmd" protected:"true"`
 	ReloadCmd       string   `json:"reload_cmd" protected:"true"`
 	RestartCmd      string   `json:"restart_cmd" protected:"true"`
+	StubStatusPort  uint     `json:"stub_status_port" binding:"omitempty,min=1,max=65535"`
 }
 
 var NginxSettings = &Nginx{}
+
+func (n *Nginx) GetStubStatusPort() uint {
+	if n.StubStatusPort == 0 {
+		return 51820
+	}
+	return n.StubStatusPort
+}

@@ -43,7 +43,7 @@ func GetPerformanceData() NginxPerformanceResponse {
 		logger.Warn("Failed to get Nginx config info:", err)
 	}
 
-	// 确保ProcessMode字段能够正确传递
+	// Ensure ProcessMode field is correctly passed
 	perfInfo := NginxPerformanceInfo{
 		StubStatusData:   *statusInfo,
 		NginxProcessInfo: *processInfo,

@@ -74,6 +74,7 @@ const data = ref<Settings>({
     test_config_cmd: '',
     reload_cmd: '',
     restart_cmd: '',
+    stub_status_port: 51820,
   },
   node: {
     name: '',

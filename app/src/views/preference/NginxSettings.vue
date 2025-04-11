@@ -6,6 +6,9 @@ const data: Ref<Settings> = inject('data') as Ref<Settings>
 
 <template>
   <AForm layout="vertical">
+    <AFormItem :label="$gettext('Stub Status Port')">
+      <AInputNumber v-model:value="data.nginx.stub_status_port" />
+    </AFormItem>
     <AFormItem :label="$gettext('Nginx Access Log Path')">
       {{ data.nginx.access_log_path }}
     </AFormItem>

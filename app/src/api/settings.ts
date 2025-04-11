@@ -63,6 +63,7 @@ export interface NginxSettings {
   test_config_cmd: string
   reload_cmd: string
   restart_cmd: string
+  stub_status_port: number
 }
 
 export interface NodeSettings {

@@ -71,6 +71,7 @@ func SaveSettings(c *gin.Context) {
 		Node      settings.Node      `json:"node"`
 		Openai    settings.OpenAI    `json:"openai"`
 		Logrotate settings.Logrotate `json:"logrotate"`
+		Nginx     settings.Nginx     `json:"nginx"`
 	}
 
 	if !cosy.BindAndValid(c, &json) {
@@ -104,6 +105,7 @@ func SaveSettings(c *gin.Context) {
 	cSettings.ProtectedFill(settings.NodeSettings, &json.Node)
 	cSettings.ProtectedFill(settings.OpenAISettings, &json.Openai)
 	cSettings.ProtectedFill(settings.LogrotateSettings, &json.Logrotate)
+	cSettings.ProtectedFill(settings.NginxSettings, &json.Nginx)
 
 	err := settings.Save()
 	if err != nil {

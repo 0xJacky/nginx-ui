@@ -1,6 +1,6 @@
-// GetDetailedStatus API 实现
-// 该功能用于解决 Issue #850，提供类似宝塔面板的 Nginx 负载监控功能
-// 返回详细的 Nginx 状态信息，包括请求统计、连接数、工作进程等数据
+// Implementation of GetDetailedStatus API
+// This feature is designed to address Issue #850, providing Nginx load monitoring functionality similar to BT Panel
+// Returns detailed Nginx status information, including request statistics, connections, worker processes, and other data
 package nginx
 
 import (
@@ -15,79 +15,79 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// NginxPerformanceInfo 存储 Nginx 性能相关信息
+// NginxPerformanceInfo stores Nginx performance-related information
 type NginxPerformanceInfo struct {
-	// 基本状态信息
+	// Basic status information
 	nginx.StubStatusData
 
-	// 进程相关信息
+	// Process-related information
 	nginx.NginxProcessInfo
 
-	// 配置信息
+	// Configuration information
 	nginx.NginxConfigInfo
 }
 
-// GetDetailStatus 获取 Nginx 详细状态信息
+// GetDetailStatus retrieves detailed Nginx status information
 func GetDetailStatus(c *gin.Context) {
 	response := nginx.GetPerformanceData()
 	c.JSON(http.StatusOK, response)
 }
 
-// StreamDetailStatus 使用 SSE 流式推送 Nginx 详细状态信息
+// StreamDetailStatus streams Nginx detailed status information using SSE
 func StreamDetailStatus(c *gin.Context) {
-	// 设置 SSE 的响应头
+	// Set SSE response headers
 	c.Header("Content-Type", "text/event-stream")
 	c.Header("Cache-Control", "no-cache")
 	c.Header("Connection", "keep-alive")
 	c.Header("Access-Control-Allow-Origin", "*")
 
-	// 创建上下文，当客户端断开连接时取消
+	// Create context that cancels when client disconnects
 	ctx := c.Request.Context()
 
-	// 为防止 goroutine 泄漏，创建一个计时器通道
+	// Create a ticker channel to prevent goroutine leaks
 	ticker := time.NewTicker(5 * time.Second)
 	defer ticker.Stop()
 
-	// 立即发送一次初始数据
+	// Send initial data immediately
 	sendPerformanceData(c)
 
-	// 使用 goroutine 定期发送数据
+	// Use goroutine to send data periodically
 	for {
 		select {
 		case <-ticker.C:
-			// 发送性能数据
+			// Send performance data
 			if err := sendPerformanceData(c); err != nil {
 				logger.Warn("Error sending SSE data:", err)
 				return
 			}
 		case <-ctx.Done():
-			// 客户端断开连接或请求被取消
+			// Client closed connection or request canceled
 			logger.Debug("Client closed connection")
 			return
 		}
 	}
 }
 
-// sendPerformanceData 发送一次性能数据
+// sendPerformanceData sends performance data once
 func sendPerformanceData(c *gin.Context) error {
 	response := nginx.GetPerformanceData()
 
-	// 发送 SSE 事件
+	// Send SSE event
 	c.SSEvent("message", response)
 
-	// 刷新缓冲区，确保数据立即发送
+	// Flush buffer to ensure data is sent immediately
 	c.Writer.Flush()
 	return nil
 }
 
-// CheckStubStatus 获取 Nginx stub_status 模块状态
+// CheckStubStatus gets Nginx stub_status module status
 func CheckStubStatus(c *gin.Context) {
 	stubStatus := nginx.GetStubStatus()
 
 	c.JSON(http.StatusOK, stubStatus)
 }
 
-// ToggleStubStatus 启用或禁用 stub_status 模块
+// ToggleStubStatus enables or disables stub_status module
 func ToggleStubStatus(c *gin.Context) {
 	var json struct {
 		Enable bool `json:"enable"`
@@ -99,7 +99,7 @@ func ToggleStubStatus(c *gin.Context) {
 
 	stubStatus := nginx.GetStubStatus()
 
-	// 如果当前状态与期望状态相同，则无需操作
+	// If current status matches desired status, no action needed
 	if stubStatus.Enabled == json.Enable {
 		c.JSON(http.StatusOK, stubStatus)
 		return
@@ -117,7 +117,7 @@ func ToggleStubStatus(c *gin.Context) {
 		return
 	}
 
-	// 重新加载 Nginx 配置
+	// Reload Nginx configuration
 	reloadOutput := nginx.Reload()
 	if len(reloadOutput) > 0 && (strings.Contains(strings.ToLower(reloadOutput), "error") ||
 		strings.Contains(strings.ToLower(reloadOutput), "failed")) {
@@ -125,7 +125,7 @@ func ToggleStubStatus(c *gin.Context) {
 		return
 	}
 
-	// 检查操作后的状态
+	// Check status after operation
 	newStubStatus := nginx.GetStubStatus()
 
 	c.JSON(http.StatusOK, newStubStatus)
