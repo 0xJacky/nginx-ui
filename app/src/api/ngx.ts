@@ -54,6 +54,33 @@ export interface NginxPerformanceInfo {
   process_mode: string // worker进程配置模式：'auto'或'manual'
 }
 
+export interface NginxConfigInfo {
+  worker_processes: number
+  worker_connections: number
+  process_mode: string
+  keepalive_timeout: number
+  gzip: string
+  gzip_min_length: number
+  gzip_comp_level: number
+  client_max_body_size: string
+  server_names_hash_bucket_size: number
+  client_header_buffer_size: string
+  client_body_buffer_size: string
+}
+
+export interface NginxPerfOpt {
+  worker_processes: string
+  worker_connections: string
+  keepalive_timeout: string
+  gzip: string
+  gzip_min_length: string
+  gzip_comp_level: string
+  client_max_body_size: string
+  server_names_hash_bucket_size: string
+  client_header_buffer_size: string
+  client_body_buffer_size: string
+}
+
 const ngx = {
   build_config(ngxConfig: NgxConfig) {
     return http.post('/ngx/build_config', ngxConfig)
@@ -93,6 +120,14 @@ const ngx = {
 
   get_directives(): Promise<DirectiveMap> {
     return http.get('/nginx/directives')
+  },
+
+  get_performance(): Promise<NginxConfigInfo> {
+    return http.get('/nginx/performance')
+  },
+
+  update_performance(params: NginxPerfOpt): Promise<NginxConfigInfo> {
+    return http.post('/nginx/performance', params)
   },
 }
 

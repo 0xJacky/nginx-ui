@@ -55,7 +55,7 @@ msgid "Action"
 msgstr "إجراء"
 
 #: src/composables/usePerformanceMetrics.ts:86
-#: src/views/dashboard/components/PerformanceTablesCard.vue:44
+#: src/views/dashboard/components/PerformanceTablesCard.vue:43
 msgid "Active connections"
 msgstr ""
 
@@ -78,8 +78,8 @@ msgstr "إضافة"
 msgid "Add a passkey"
 msgstr "أضف مفتاح مرور"
 
-#: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:168
-#: src/views/config/ConfigEditor.vue:241
+#: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:171
+#: src/views/config/ConfigEditor.vue:246
 msgid "Add Configuration"
 msgstr "إضافة تكوين"
 
@@ -122,7 +122,7 @@ msgstr "بعد ذلك، قم بتحديث هذه الصفحة وانقر فوق 
 msgid "All"
 msgstr "الكل"
 
-#: src/components/Notification/notifications.ts:175
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr ""
@@ -270,7 +270,12 @@ msgstr "إعدادات المصادقة"
 msgid "Author"
 msgstr "الكاتب"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:201
+#: src/views/dashboard/components/PerformanceOptimization.vue:178
+#: src/views/dashboard/components/PerformanceOptimization.vue:189
+msgid "Auto"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:200
 msgid "auto = CPU cores"
 msgstr ""
 
@@ -295,7 +300,7 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr ""
 
 #: src/views/certificate/components/CertificateEditor.vue:257
-#: src/views/config/ConfigEditor.vue:262 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigEditor.vue:268 src/views/config/ConfigList.vue:112
 #: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/SiteEdit.vue:285
 #: src/views/stream/StreamEdit.vue:264
@@ -349,7 +354,7 @@ msgstr ""
 msgid "Base information"
 msgstr "المعلومات الأساسية"
 
-#: src/views/config/ConfigEditor.vue:290
+#: src/views/config/ConfigEditor.vue:296
 #: src/views/site/site_edit/RightSettings.vue:52
 #: src/views/stream/components/RightSettings.vue:79
 msgid "Basic"
@@ -391,7 +396,7 @@ msgid "CA Dir"
 msgstr "مجلد سلطة التصديق"
 
 #: src/composables/usePerformanceMetrics.ts:141
-#: src/views/dashboard/components/PerformanceTablesCard.vue:95
+#: src/views/dashboard/components/PerformanceTablesCard.vue:94
 msgid "Cache manager processes"
 msgstr ""
 
@@ -405,7 +410,7 @@ msgid "CADir"
 msgstr "مجلد سلطة التصديق"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:43
-#: src/views/dashboard/components/PerformanceTablesCard.vue:191
+#: src/views/dashboard/components/PerformanceTablesCard.vue:190
 msgid ""
 "Calculated based on worker_processes * worker_connections. Actual "
 "performance depends on hardware, configuration, and workload"
@@ -435,7 +440,7 @@ msgstr "حظر تغيير كلمة مرور root في العرض التوضيح�
 msgid "Cannot compare: Missing content"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:131
+#: src/views/dashboard/NginxDashBoard.vue:132
 msgid "Cannot get performance data in this state"
 msgstr ""
 
@@ -452,18 +457,18 @@ msgstr "شهادة"
 msgid "Cert path is not under the nginx conf dir"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:28
+#: src/components/Notification/notifications.ts:134
 #, fuzzy
 msgid "Certificate %{name} has expired"
 msgstr "نماذج التكوين"
 
-#: src/components/Notification/notifications.ts:32
-#: src/components/Notification/notifications.ts:36
-#: src/components/Notification/notifications.ts:40
+#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:146
 msgid "Certificate %{name} will expire in %{days} days"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:44
+#: src/components/Notification/notifications.ts:150
 msgid "Certificate %{name} will expire in 1 day"
 msgstr ""
 
@@ -472,19 +477,19 @@ msgstr ""
 msgid "Certificate decode error"
 msgstr "خطأ في مزامنة الشهادة"
 
-#: src/components/Notification/notifications.ts:31
+#: src/components/Notification/notifications.ts:137
 #, fuzzy
 msgid "Certificate Expiration Notice"
 msgstr "نماذج التكوين"
 
-#: src/components/Notification/notifications.ts:27
+#: src/components/Notification/notifications.ts:133
 #, fuzzy
 msgid "Certificate Expired"
 msgstr "قائمة الشهادات"
 
-#: src/components/Notification/notifications.ts:35
-#: src/components/Notification/notifications.ts:39
-#: src/components/Notification/notifications.ts:43
+#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:149
 #, fuzzy
 msgid "Certificate Expiring Soon"
 msgstr "خطأ في مزامنة الشهادة"
@@ -553,7 +558,7 @@ msgstr[3] "الشهادات المعدلة"
 msgstr[4] "الشهادات المعدلة"
 msgstr[5] "الشهادات المعدلة"
 
-#: src/views/config/ConfigEditor.vue:318
+#: src/views/config/ConfigEditor.vue:324
 msgid "Changed Path"
 msgstr "المسار المتغير"
 
@@ -624,6 +629,26 @@ msgstr ""
 msgid "Click to copy"
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:307
+msgid "Client Body Buffer Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:289
+msgid "Client Header Buffer Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:259
+msgid "Client Max Body Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:308
+msgid "Client request body buffer size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:290
+msgid "Client request header buffer size"
+msgstr ""
+
 #: src/components/ConfigHistory/ConfigHistory.vue:169
 msgid "Close"
 msgstr ""
@@ -656,6 +681,10 @@ msgstr ""
 msgid "Compare with Current"
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:248
+msgid "Compression level, 1 is lowest, 9 is highest"
+msgstr ""
+
 #: src/constants/errors/backup.ts:14
 #, fuzzy
 msgid "Config path is empty"
@@ -674,7 +703,7 @@ msgstr "تم اختبار ملف التكوين بنجاح"
 msgid "Configuration History"
 msgstr "التكوينات"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:168
+#: src/views/dashboard/components/PerformanceTablesCard.vue:167
 #, fuzzy
 msgid "Configuration information"
 msgstr "التكوينات"
@@ -695,13 +724,17 @@ msgstr "تكوين SSL"
 msgid "Connected"
 msgstr "متصل"
 
-#: src/views/dashboard/NginxDashBoard.vue:84
+#: src/views/dashboard/NginxDashBoard.vue:85
 msgid "Connection error, trying to reconnect..."
 msgstr ""
 
 #: src/views/terminal/Terminal.vue:142
 msgid "Connection lost, please refresh the page."
 msgstr "تم فقدان الاتصال، يرجى تحديث الصفحة."
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:207
+msgid "Connection timeout period"
+msgstr ""
 
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:118
 #: src/views/site/ngx_conf/LocationEditor.vue:115
@@ -809,7 +842,7 @@ msgstr "TOTP مفعل للحساب الحالي."
 msgid "Current account is not enabled TOTP."
 msgstr "TOTP معطل للحساب الحالي."
 
-#: src/views/dashboard/components/ConnectionMetricsCard.vue:28
+#: src/views/dashboard/components/ConnectionMetricsCard.vue:27
 msgid "Current active connections"
 msgstr ""
 
@@ -838,8 +871,8 @@ msgid ""
 "indicator."
 msgstr "قم بتخصيص اسم العقدة المحلية ليتم عرضها في مؤشر البيئة."
 
-#: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:107
-#: src/views/config/ConfigEditor.vue:158 src/views/config/ConfigList.vue:67
+#: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:110
+#: src/views/config/ConfigEditor.vue:161 src/views/config/ConfigList.vue:67
 msgid "Dashboard"
 msgstr "لوحة المعلومات"
 
@@ -876,30 +909,30 @@ msgstr "تجديد الشهادة"
 msgid "Delete Permanently"
 msgstr "حذف نهائي"
 
-#: src/components/Notification/notifications.ts:75 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:9 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "خطأ حذف الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:79 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:13 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "نجح حذف الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:67
 #, fuzzy
 msgid "Delete Remote Stream Error"
 msgstr "خطأ حذف الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:71
 #, fuzzy
 msgid "Delete Remote Stream Success"
 msgstr "نجح حذف الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:76
+#: src/components/Notification/notifications.ts:10
 #, fuzzy
 msgid "Delete site %{name} from %{node} failed"
 msgstr "فشل نشر {conf_name}% إلى {node_name}%"
 
-#: src/components/Notification/notifications.ts:80
+#: src/components/Notification/notifications.ts:14
 #, fuzzy
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "تمت إزالة الموقع %{site} من %{node} بنجاح"
@@ -908,12 +941,12 @@ msgstr "تمت إزالة الموقع %{site} من %{node} بنجاح"
 msgid "Delete site: %{site_name}"
 msgstr "حذف الموقع: ‎%{site_name}"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:68
 #, fuzzy
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "فشل نشر {conf_name}% إلى {node_name}%"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:72
 #, fuzzy
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "تمت إزالة الموقع %{site} من %{node} بنجاح"
@@ -930,7 +963,7 @@ msgstr "تم الحذف بنجاح"
 msgid "Demo"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:334
+#: src/views/config/ConfigEditor.vue:340
 msgid "Deploy"
 msgstr "نشر"
 
@@ -988,60 +1021,60 @@ msgstr "تعطيل"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "فشل تعطيل التجديد التلقائي لـ {name}%"
 
-#: src/components/Notification/notifications.ts:83 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:17 src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "خطأ في تعطيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:107
+#: src/components/Notification/notifications.ts:41
 #, fuzzy
 msgid "Disable Remote Site Maintenance Error"
 msgstr "خطأ في تعطيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:111
+#: src/components/Notification/notifications.ts:45
 #, fuzzy
 msgid "Disable Remote Site Maintenance Success"
 msgstr "تعطيل الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:87 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:21 src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "تعطيل الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:75
 #, fuzzy
 msgid "Disable Remote Stream Error"
 msgstr "خطأ في تعطيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:79
 #, fuzzy
 msgid "Disable Remote Stream Success"
 msgstr "تعطيل الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:84
+#: src/components/Notification/notifications.ts:18
 #, fuzzy
 msgid "Disable site %{name} from %{node} failed"
 msgstr "تم تعطيل الموقع %{site} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:88
+#: src/components/Notification/notifications.ts:22
 #, fuzzy
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "تم تعطيل الموقع %{site} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:108
+#: src/components/Notification/notifications.ts:42
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "تم تعطيل الموقع %{site} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:112
+#: src/components/Notification/notifications.ts:46
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "تم تعطيل الموقع %{site} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:76
 #, fuzzy
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "فشل تفعيل %{conf_name} في %{node_name}"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:80
 #, fuzzy
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "تم تعطيل الموقع %{site} على %{node} بنجاح"
@@ -1178,7 +1211,7 @@ msgstr "تعديل %{n}"
 msgid "Edit %{n}"
 msgstr "تعديل %{n}"
 
-#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:241
+#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:246
 msgid "Edit Configuration"
 msgstr "تعديل التكوين"
 
@@ -1216,6 +1249,10 @@ msgstr "تم تفعيل المصادقة الثنائية بنجاح"
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "فشل تفعيل التجديد التلقائي لـ %{name}"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:222
+msgid "Enable compression for content transfer"
+msgstr ""
+
 #: src/views/site/site_add/SiteAdd.vue:43
 msgid "Enable failed"
 msgstr "فشل التفعيل"
@@ -1225,65 +1262,65 @@ msgstr "فشل التفعيل"
 msgid "Enable HTTPS"
 msgstr "تفعيل TOTP"
 
-#: src/components/Notification/notifications.ts:91 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:25 src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "خطأ في تفعيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:99
+#: src/components/Notification/notifications.ts:33
 #, fuzzy
 msgid "Enable Remote Site Maintenance Error"
 msgstr "خطأ في تفعيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:103
+#: src/components/Notification/notifications.ts:37
 #, fuzzy
 msgid "Enable Remote Site Maintenance Success"
 msgstr "نجح تفعيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:95 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:29 src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "نجح تفعيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:83
 #, fuzzy
 msgid "Enable Remote Stream Error"
 msgstr "خطأ في تفعيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:87
 #, fuzzy
 msgid "Enable Remote Stream Success"
 msgstr "نجح تفعيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:100
+#: src/components/Notification/notifications.ts:34
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "فشل تفعيل %{conf_name} في %{node_name}"
 
-#: src/components/Notification/notifications.ts:104
+#: src/components/Notification/notifications.ts:38
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "تم تفعيل الموقع %{site} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:92
+#: src/components/Notification/notifications.ts:26
 #, fuzzy
 msgid "Enable site %{name} on %{node} failed"
 msgstr "فشل تفعيل %{conf_name} في %{node_name}"
 
-#: src/components/Notification/notifications.ts:96
+#: src/components/Notification/notifications.ts:30
 #, fuzzy
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "تم تفعيل الموقع %{site} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:84
 #, fuzzy
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "فشل تفعيل %{conf_name} في %{node_name}"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:88
 #, fuzzy
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "تم تفعيل الموقع %{site} على %{node} بنجاح"
 
-#: src/views/dashboard/NginxDashBoard.vue:149
+#: src/views/dashboard/NginxDashBoard.vue:150
 msgid "Enable stub_status module"
 msgstr ""
 
@@ -1583,6 +1620,11 @@ msgstr "فشل في الحصول على معلومات الشهادة"
 msgid "Failed to get certificate information"
 msgstr "فشل في الحصول على معلومات الشهادة"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:56
+#, fuzzy
+msgid "Failed to get Nginx performance settings"
+msgstr "فشل في الحصول على معلومات الشهادة"
+
 #: src/composables/useNginxPerformance.ts:49
 #, fuzzy
 msgid "Failed to get performance data"
@@ -1651,6 +1693,11 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr "فشل في الحصول على الشهادة"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:126
+#, fuzzy
+msgid "Failed to save Nginx performance settings"
+msgstr "فشل في الحصول على معلومات الشهادة"
+
 #: src/views/site/site_edit/SiteEdit.vue:139
 #: src/views/stream/StreamEdit.vue:122
 msgid "Failed to save, syntax error(s) was detected in the configuration."
@@ -1717,15 +1764,15 @@ msgstr "للمستخدمين الصين: /https://mirror.ghproxy.com"
 msgid "Form parse failed"
 msgstr "فشل التكرار"
 
-#: src/views/config/ConfigEditor.vue:265
+#: src/views/config/ConfigEditor.vue:271
 msgid "Format Code"
 msgstr "تنسيق الكود"
 
-#: src/views/config/ConfigEditor.vue:213
+#: src/views/config/ConfigEditor.vue:218
 msgid "Format error %{msg}"
 msgstr "خطأ في التنسيق %{msg}"
 
-#: src/views/config/ConfigEditor.vue:211
+#: src/views/config/ConfigEditor.vue:216
 msgid "Format successfully"
 msgstr "تم التنسيق بنجاح"
 
@@ -1757,7 +1804,7 @@ msgstr "تم الاسترداد بنجاح"
 msgid "Generating private key for registering account"
 msgstr "توليد مفتاح خاص لتسجيل الحساب"
 
-#: src/views/dashboard/NginxDashBoard.vue:140
+#: src/views/dashboard/NginxDashBoard.vue:141
 #, fuzzy
 msgid "Get data failed"
 msgstr "فشل التسجيل"
@@ -1775,6 +1822,18 @@ msgstr "جارٍ الحصول على الشهادة، يرجى الانتظار.
 msgid "Github Proxy"
 msgstr "وكيل Github"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:221
+msgid "GZIP Compression"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:247
+msgid "GZIP Compression Level"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:233
+msgid "GZIP Min Length"
+msgstr ""
+
 #: src/constants/errors/backup.ts:59
 msgid "Hash verification failed: file integrity compromised"
 msgstr ""
@@ -1787,7 +1846,7 @@ msgstr "إخفاء"
 msgid "Higher value means better connection reuse"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:251
+#: src/views/config/ConfigEditor.vue:256
 #: src/views/site/site_edit/SiteEdit.vue:212
 #: src/views/stream/StreamEdit.vue:195
 #, fuzzy
@@ -1888,7 +1947,7 @@ msgstr ""
 msgid "Indexing..."
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:16
+#: src/views/dashboard/components/PerformanceTablesCard.vue:15
 msgid "Indicator"
 msgstr ""
 
@@ -1964,7 +2023,7 @@ msgid "Invalid file path: {0}"
 msgstr "رمز 2FA أو الاسترداد غير صالح"
 
 #: src/views/config/components/Rename.vue:66
-#: src/views/config/ConfigEditor.vue:299
+#: src/views/config/ConfigEditor.vue:305
 msgid "Invalid filename"
 msgstr "اسم ملف غير صالح"
 
@@ -2029,10 +2088,18 @@ msgstr "المُصدر: %{issuer}"
 msgid "Jwt Secret"
 msgstr "سر JWT"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:242
+msgid "KB"
+msgstr ""
+
 #: src/views/preference/components/RecoveryCodes.vue:74
 msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
 "with a password manager."
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:206
+msgid "Keepalive Timeout"
 msgstr ""
 
 #: src/views/certificate/CertificateList/certColumns.tsx:59
@@ -2057,7 +2124,7 @@ msgstr "مخصص"
 msgid "Last checked at"
 msgstr "آخر فحص في"
 
-#: src/views/dashboard/NginxDashBoard.vue:115
+#: src/views/dashboard/NginxDashBoard.vue:116
 #, fuzzy
 msgid "Last update"
 msgstr "آخر استخدام في"
@@ -2120,7 +2187,7 @@ msgstr "تحميل من الإعدادات"
 msgid "Load successfully"
 msgstr "تم التحميل بنجاح"
 
-#: src/views/dashboard/NginxDashBoard.vue:177
+#: src/views/dashboard/NginxDashBoard.vue:178
 msgid "Loading data..."
 msgstr ""
 
@@ -2201,8 +2268,8 @@ msgstr ""
 "تأكد من تكوين وكيل عكسي لدليل .well-known إلى HTTPChallengePort قبل الحصول "
 "على الشهادة."
 
-#: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:112
-#: src/views/config/ConfigEditor.vue:163 src/views/config/ConfigList.vue:72
+#: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:115
+#: src/views/config/ConfigEditor.vue:166 src/views/config/ConfigList.vue:72
 msgid "Manage Configs"
 msgstr "إدارة التكوينات"
 
@@ -2222,7 +2289,11 @@ msgstr "إدارة المستخدمين"
 msgid "Managed Certificate"
 msgstr "شهادة مُدارة"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:202
+#: src/views/dashboard/components/PerformanceOptimization.vue:179
+msgid "Manual"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:201
 msgid "manually set"
 msgstr ""
 
@@ -2231,7 +2302,7 @@ msgid "Master"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:136
-#: src/views/dashboard/components/PerformanceTablesCard.vue:90
+#: src/views/dashboard/components/PerformanceTablesCard.vue:89
 msgid "Master process"
 msgstr ""
 
@@ -2253,12 +2324,21 @@ msgstr "الإصدار الحالي"
 msgid "Max Requests Per Second"
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:260
+msgid "Maximum client request body size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:195
+#, fuzzy
+msgid "Maximum number of concurrent connections"
+msgstr "الإصدار الحالي"
+
 #: src/composables/usePerformanceMetrics.ts:176
-#: src/views/dashboard/components/PerformanceTablesCard.vue:126
+#: src/views/dashboard/components/PerformanceTablesCard.vue:125
 msgid "Maximum number of connections per worker process"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:196
+#: src/views/dashboard/components/PerformanceTablesCard.vue:195
 msgid "Maximum worker process number:"
 msgstr ""
 
@@ -2273,6 +2353,10 @@ msgstr "الذاكرة والتخزين"
 
 #: src/views/dashboard/components/ResourceUsageCard.vue:51
 msgid "Memory Usage (RSS)"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:234
+msgid "Minimum file size for compression"
 msgstr ""
 
 #: src/views/preference/LogrotateSettings.vue:29
@@ -2316,7 +2400,7 @@ msgstr "توجيه متعدد الأسطر"
 #: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:305
+#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:311
 #: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:37
@@ -2331,7 +2415,7 @@ msgstr "توجيه متعدد الأسطر"
 msgid "Name"
 msgstr "اسم"
 
-#: src/views/dashboard/NginxDashBoard.vue:172
+#: src/views/dashboard/NginxDashBoard.vue:173
 msgid "Need to enable the stub_status module"
 msgstr ""
 
@@ -2360,7 +2444,7 @@ msgstr "تثبيت"
 msgid "New name"
 msgstr "اسم جديد"
 
-#: src/views/config/ConfigEditor.vue:318
+#: src/views/config/ConfigEditor.vue:324
 msgid "New Path"
 msgstr "مسار جديد"
 
@@ -2403,6 +2487,11 @@ msgstr ""
 msgid "Nginx conf no stream block"
 msgstr ""
 
+#: src/constants/errors/self_check.ts:14
+#, fuzzy
+msgid "Nginx conf not include conf.d directory"
+msgstr "أمر إعادة تشغيل Nginx"
+
 #: src/constants/errors/self_check.ts:6
 msgid "Nginx conf not include sites-enabled"
 msgstr ""
@@ -2440,7 +2529,7 @@ msgid "Nginx Control"
 msgstr "التحكم في Nginx"
 
 #: src/composables/usePerformanceMetrics.ts:151
-#: src/views/dashboard/components/PerformanceTablesCard.vue:105
+#: src/views/dashboard/components/PerformanceTablesCard.vue:104
 msgid "Nginx CPU usage rate"
 msgstr ""
 
@@ -2449,14 +2538,14 @@ msgid "Nginx Error Log Path"
 msgstr "مسار سجل أخطاء Nginx"
 
 #: src/composables/useNginxPerformance.ts:43
-#: src/views/dashboard/NginxDashBoard.vue:111
-#: src/views/dashboard/NginxDashBoard.vue:130
-#: src/views/dashboard/NginxDashBoard.vue:79
+#: src/views/dashboard/NginxDashBoard.vue:112
+#: src/views/dashboard/NginxDashBoard.vue:131
+#: src/views/dashboard/NginxDashBoard.vue:80
 #: src/views/site/ngx_conf/NginxStatusAlert.vue:15
 msgid "Nginx is not running"
 msgstr "Nginx لا يعمل"
 
-#: src/views/dashboard/NginxDashBoard.vue:111
+#: src/views/dashboard/NginxDashBoard.vue:112
 #, fuzzy
 msgid "Nginx is running"
 msgstr "Nginx لا يعمل"
@@ -2470,7 +2559,7 @@ msgid "Nginx Log Directory Whitelist"
 msgstr "قائمة السماح لمجلد سجلات Nginx"
 
 #: src/composables/usePerformanceMetrics.ts:156
-#: src/views/dashboard/components/PerformanceTablesCard.vue:110
+#: src/views/dashboard/components/PerformanceTablesCard.vue:109
 msgid "Nginx Memory usage"
 msgstr ""
 
@@ -2507,7 +2596,7 @@ msgstr "تم إعادة تشغيل Nginx بنجاح"
 msgid "Nginx Test Config Command"
 msgstr "أمر إعادة تشغيل Nginx"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:181
+#: src/views/dashboard/components/PerformanceTablesCard.vue:180
 msgid "Nginx theoretical maximum performance"
 msgstr ""
 
@@ -2553,7 +2642,7 @@ msgstr "لا"
 msgid "No Action"
 msgstr "إجراء"
 
-#: src/views/dashboard/NginxDashBoard.vue:179
+#: src/views/dashboard/NginxDashBoard.vue:180
 msgid "No data"
 msgstr ""
 
@@ -2633,10 +2722,14 @@ msgstr "الإشعارات"
 msgid "Notifier not found"
 msgstr "لم يتم العثور على الملف"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:173
+msgid "Number of concurrent worker processes, auto sets to CPU core count"
+msgstr ""
+
 #: src/composables/usePerformanceMetrics.ts:131
 #: src/composables/usePerformanceMetrics.ts:171
-#: src/views/dashboard/components/PerformanceTablesCard.vue:121
-#: src/views/dashboard/components/PerformanceTablesCard.vue:85
+#: src/views/dashboard/components/PerformanceTablesCard.vue:120
+#: src/views/dashboard/components/PerformanceTablesCard.vue:84
 msgid "Number of worker processes"
 msgstr ""
 
@@ -2659,6 +2752,11 @@ msgid ""
 msgstr ""
 "قد يتسبب وجوب تثبيت OCSP في حدوث أخطاء لبعض المستخدمين عند الوصول لأول مرة "
 "باستخدام Firefox."
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:227
+#, fuzzy
+msgid "Off"
+msgstr "غير متصل"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
 #: src/components/NodeSelector/NodeSelector.vue:109
@@ -2691,6 +2789,10 @@ msgstr "حسنًا"
 msgid "OK"
 msgstr "حسنًا"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:226
+msgid "On"
+msgstr ""
+
 #: src/views/certificate/DNSCredential.vue:59
 msgid "Once the verification is complete, the records will be removed."
 msgstr "بمجرد اكتمال التحقق، سيتم إزالة السجلات."
@@ -2710,6 +2812,14 @@ msgstr ""
 #: src/views/preference/Preference.vue:212
 msgid "OpenAI"
 msgstr "أوبن أي آي"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:164
+msgid "Optimize Nginx Performance"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:158
+msgid "Optimize Performance"
+msgstr ""
 
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:231
 msgid "Or"
@@ -2732,7 +2842,7 @@ msgid "OS:"
 msgstr "نظام التشغيل:"
 
 #: src/composables/usePerformanceMetrics.ts:146
-#: src/views/dashboard/components/PerformanceTablesCard.vue:100
+#: src/views/dashboard/components/PerformanceTablesCard.vue:99
 msgid "Other Nginx processes"
 msgstr ""
 
@@ -2750,11 +2860,11 @@ msgstr ""
 msgid "Otp or recovery code empty"
 msgstr "استخدم رمز الاسترداد"
 
-#: src/views/config/ConfigEditor.vue:343
+#: src/views/config/ConfigEditor.vue:349
 msgid "Overwrite"
 msgstr "الكتابة فوق"
 
-#: src/views/config/ConfigEditor.vue:347
+#: src/views/config/ConfigEditor.vue:353
 msgid "Overwrite exist file"
 msgstr "الكتابة فوق الملف الموجود"
 
@@ -2798,7 +2908,7 @@ msgstr "اسم المستخدم أو كلمة المرور غير صحيحة"
 msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:312
+#: src/views/config/ConfigEditor.vue:318
 #: src/views/nginx_log/NginxLogList.vue:45
 #: src/views/site/ngx_conf/LocationEditor.vue:109
 #: src/views/site/ngx_conf/LocationEditor.vue:137
@@ -2821,9 +2931,14 @@ msgstr "نفذ"
 msgid "Perform core upgrade error"
 msgstr "خطأ في تنفيذ ترقية النواة"
 
-#: src/views/dashboard/NginxDashBoard.vue:184
+#: src/views/dashboard/NginxDashBoard.vue:185
 msgid "Performance Metrics"
 msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:122
+#, fuzzy
+msgid "Performance settings saved successfully"
+msgstr "تم التعطيل بنجاح"
 
 #: src/language/constants.ts:28
 msgid "Performing core upgrade"
@@ -2833,7 +2948,7 @@ msgstr "تنفيذ ترقية النواة"
 msgid "Plain text is empty"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:173
+#: src/views/dashboard/NginxDashBoard.vue:174
 msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
@@ -2878,7 +2993,7 @@ msgstr ""
 "يرجى أولاً إضافة بيانات الاعتماد في الشهادات > بيانات اعتماد DNS، ثم اختيار "
 "أحد بيانات الاعتماد أدناه لطلب API لمزود DNS."
 
-#: src/components/Notification/notifications.ts:176
+#: src/components/Notification/notifications.ts:110
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -2886,7 +3001,7 @@ msgid ""
 msgstr ""
 
 #: src/views/config/components/Rename.vue:65
-#: src/views/config/ConfigEditor.vue:298
+#: src/views/config/ConfigEditor.vue:304
 msgid "Please input a filename"
 msgstr "يرجى إدخال اسم الملف"
 
@@ -2985,7 +3100,7 @@ msgstr "تحضير تكوينات Lego"
 msgid "Process Distribution"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:155
+#: src/views/dashboard/components/PerformanceTablesCard.vue:154
 #, fuzzy
 msgid "Process information"
 msgstr "المعلومات الأساسية"
@@ -3015,7 +3130,7 @@ msgid "Public Security Number"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:106
-#: src/views/dashboard/components/PerformanceTablesCard.vue:64
+#: src/views/dashboard/components/PerformanceTablesCard.vue:63
 msgid "Read requests"
 msgstr ""
 
@@ -3121,22 +3236,22 @@ msgstr "إعادة تحميل"
 msgid "Reload Nginx"
 msgstr "إعادة تحميل nginx"
 
-#: src/components/Notification/notifications.ts:10
+#: src/components/Notification/notifications.ts:116
 #, fuzzy
 msgid "Reload Nginx on %{node} failed, response: %{resp}"
 msgstr "خطأ في إزالة الموقع %{site} من %{node}، الاستجابة: %{resp}"
 
-#: src/components/Notification/notifications.ts:14
+#: src/components/Notification/notifications.ts:120
 #, fuzzy
 msgid "Reload Nginx on %{node} successfully"
 msgstr "تمت ترقية Nginx UI على %{node} بنجاح 🎉"
 
-#: src/components/Notification/notifications.ts:9
+#: src/components/Notification/notifications.ts:115
 #, fuzzy
 msgid "Reload Remote Nginx Error"
 msgstr "خطأ في إعادة تسمية الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:13
+#: src/components/Notification/notifications.ts:119
 #, fuzzy
 msgid "Reload Remote Nginx Success"
 msgstr "تم إعادة تسمية الموقع البعيد بنجاح"
@@ -3175,59 +3290,59 @@ msgstr "تمت الإزالة بنجاح"
 msgid "Rename"
 msgstr "إعادة تسمية"
 
-#: src/components/Notification/notifications.ts:66
+#: src/components/Notification/notifications.ts:172
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "تم إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name} بنجاح"
 
-#: src/components/Notification/notifications.ts:70
+#: src/components/Notification/notifications.ts:176
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "تم إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name} بنجاح"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:171
+#: src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr "خطأ في إعادة تسمية التكوين البعيد"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:175
+#: src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr "إعادة تسمية تكوين البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:115
-#: src/language/constants.ts:56
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "خطأ في إعادة تسمية الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:119
-#: src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:53 src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "تم إعادة تسمية الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:91
 #, fuzzy
 msgid "Rename Remote Stream Error"
 msgstr "خطأ في إعادة تسمية الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:95
 #, fuzzy
 msgid "Rename Remote Stream Success"
 msgstr "تم إعادة تسمية الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:116
+#: src/components/Notification/notifications.ts:50
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "إعادة تسمية الموقع %{site} إلى %{new_site} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:120
+#: src/components/Notification/notifications.ts:54
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "إعادة تسمية الموقع %{site} إلى %{new_site} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:92
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "إعادة تسمية الموقع %{site} إلى %{new_site} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:96
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "إعادة تسمية الموقع %{site} إلى %{new_site} على %{node} بنجاح"
@@ -3260,7 +3375,7 @@ msgstr "تجديد الشهادة بنجاح"
 msgid "Renew successfully"
 msgstr "تم التجديد بنجاح"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:142
+#: src/views/dashboard/components/PerformanceTablesCard.vue:141
 #, fuzzy
 msgid "Request statistics"
 msgstr "إحصائيات الشبكة"
@@ -3293,7 +3408,7 @@ msgid ""
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:111
-#: src/views/dashboard/components/PerformanceTablesCard.vue:69
+#: src/views/dashboard/components/PerformanceTablesCard.vue:68
 msgid "Responses"
 msgstr ""
 
@@ -3308,22 +3423,22 @@ msgstr "إعادة تشغيل"
 msgid "Restart Nginx"
 msgstr "إعادة التشغيل"
 
-#: src/components/Notification/notifications.ts:18
+#: src/components/Notification/notifications.ts:124
 #, fuzzy
 msgid "Restart Nginx on %{node} failed, response: %{resp}"
 msgstr "خطأ في تفعيل الموقع %{site} على %{node}، الاستجابة: %{resp}"
 
-#: src/components/Notification/notifications.ts:22
+#: src/components/Notification/notifications.ts:128
 #, fuzzy
 msgid "Restart Nginx on %{node} successfully"
 msgstr "تمت ترقية Nginx UI على %{node} بنجاح 🎉"
 
-#: src/components/Notification/notifications.ts:17
+#: src/components/Notification/notifications.ts:123
 #, fuzzy
 msgid "Restart Remote Nginx Error"
 msgstr "خطأ في إعادة تسمية الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:21
+#: src/components/Notification/notifications.ts:127
 #, fuzzy
 msgid "Restart Remote Nginx Success"
 msgstr "تم إعادة تسمية الموقع البعيد بنجاح"
@@ -3409,7 +3524,7 @@ msgstr "يعمل"
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
 #: src/views/certificate/components/CertificateEditor.vue:264
 #: src/views/config/components/ConfigName.vue:59
-#: src/views/config/ConfigEditor.vue:271
+#: src/views/config/ConfigEditor.vue:277
 #: src/views/preference/components/Passkey.vue:130
 #: src/views/preference/Preference.vue:229
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
@@ -3429,42 +3544,40 @@ msgstr "حفظ التوجيه"
 msgid "Save error %{msg}"
 msgstr "خطأ في الحفظ %{msg}"
 
-#: src/components/Notification/notifications.ts:123
-#: src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "خطأ في حفظ الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:127
-#: src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "حفظ الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:99
 #, fuzzy
 msgid "Save Remote Stream Error"
 msgstr "خطأ في حفظ الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:103
 #, fuzzy
 msgid "Save Remote Stream Success"
 msgstr "حفظ الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:124
+#: src/components/Notification/notifications.ts:58
 #, fuzzy
 msgid "Save site %{name} to %{node} failed"
 msgstr "تم حفظ الموقع %{site} إلى %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:128
+#: src/components/Notification/notifications.ts:62
 #, fuzzy
 msgid "Save site %{name} to %{node} successfully"
 msgstr "تم حفظ الموقع %{site} إلى %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:100
 #, fuzzy
 msgid "Save stream %{name} to %{node} failed"
 msgstr "فشل نشر {conf_name}% إلى {node_name}%"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:104
 #, fuzzy
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "تم حفظ الموقع %{site} إلى %{node} بنجاح"
@@ -3476,7 +3589,7 @@ msgstr "تم حفظ الموقع %{site} إلى %{node} بنجاح"
 msgid "Save successfully"
 msgstr "تم الحفظ بنجاح"
 
-#: src/views/config/ConfigEditor.vue:191
+#: src/views/config/ConfigEditor.vue:194
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/site/site_add/SiteAdd.vue:37
 #: src/views/site/site_edit/SiteEdit.vue:157
@@ -3491,6 +3604,10 @@ msgstr "امسح رمز الاستجابة السريعة بهاتفك المح�
 #: src/views/certificate/DNSChallenge.vue:90
 msgid "SDK"
 msgstr "حزمة تطوير البرمجيات SDK"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:216
+msgid "seconds"
+msgstr ""
 
 #: src/views/preference/components/TOTP.vue:109
 msgid "Secret has been copied"
@@ -3531,6 +3648,14 @@ msgstr "معلومات الخادم"
 #: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
 msgstr "معلومات الخادم"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:277
+msgid "Server Names Hash Bucket Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:278
+msgid "Server names hash table size"
+msgstr ""
 
 #: src/views/site/cert/components/ObtainCert.vue:107
 msgid "server_name not found in directives"
@@ -3789,38 +3914,42 @@ msgstr "مزامنة"
 msgid "Sync Certificate"
 msgstr "مزامنة الشهادة"
 
-#: src/components/Notification/notifications.ts:48
+#: src/components/Notification/notifications.ts:154
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "نجح مزامنة الشهادة %{cert_name} إلى %{env_name}"
 
-#: src/components/Notification/notifications.ts:52
+#: src/components/Notification/notifications.ts:158
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "نجح مزامنة الشهادة %{cert_name} إلى %{env_name}"
 
-#: src/components/Notification/notifications.ts:47 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:153
+#: src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr "خطأ في مزامنة الشهادة"
 
-#: src/components/Notification/notifications.ts:51 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:157
+#: src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr "تمت مزامنة الشهادة بنجاح"
 
-#: src/components/Notification/notifications.ts:58
+#: src/components/Notification/notifications.ts:164
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "تمت مزامنة التكوين %{config_name} إلى %{env_name} بنجاح"
 
-#: src/components/Notification/notifications.ts:62
+#: src/components/Notification/notifications.ts:168
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "تمت مزامنة التكوين %{config_name} إلى %{env_name} بنجاح"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:163
+#: src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr "خطأ في تزامن التكوين"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:167
+#: src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr "تمت مزامنة التكوين بنجاح"
 
@@ -3990,11 +4119,11 @@ msgstr "عنوان URL غير صالح."
 msgid "The username or password is incorrect"
 msgstr "اسم المستخدم أو كلمة المرور غير صحيحة"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:185
+#: src/views/dashboard/components/PerformanceTablesCard.vue:184
 msgid "Theoretical maximum concurrent connections:"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:189
+#: src/views/dashboard/components/PerformanceTablesCard.vue:188
 msgid "Theoretical maximum RPS (Requests Per Second):"
 msgstr ""
 
@@ -4037,7 +4166,7 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "يجب أن يحتوي هذا الحقل على حروف وأحرف يونيكود وأرقام و-_. فقط."
 
-#: src/views/dashboard/NginxDashBoard.vue:152
+#: src/views/dashboard/NginxDashBoard.vue:153
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
@@ -4088,7 +4217,7 @@ msgstr "كبح"
 msgid "Tips"
 msgstr "نصائح"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:207
+#: src/views/dashboard/components/PerformanceTablesCard.vue:206
 msgid ""
 "Tips: You can increase the concurrency processing capacity by increasing "
 "worker_processes or worker_connections"
@@ -4141,7 +4270,7 @@ msgstr ""
 "نهاية API متوافقة مع OpenAI، لذا قم فقط بتعيين baseUrl إلىAPI المحلية الخاصة "
 "بك."
 
-#: src/views/dashboard/NginxDashBoard.vue:56
+#: src/views/dashboard/NginxDashBoard.vue:57
 #, fuzzy
 msgid "Toggle failed"
 msgstr "فشل التفعيل"
@@ -4161,12 +4290,12 @@ msgstr[4] ""
 msgstr[5] ""
 
 #: src/composables/usePerformanceMetrics.ts:96
-#: src/views/dashboard/components/PerformanceTablesCard.vue:54
+#: src/views/dashboard/components/PerformanceTablesCard.vue:53
 msgid "Total connections"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:91
-#: src/views/dashboard/components/PerformanceTablesCard.vue:49
+#: src/views/dashboard/components/PerformanceTablesCard.vue:48
 msgid "Total handshakes"
 msgstr ""
 
@@ -4179,7 +4308,7 @@ msgid "Total Nginx Processes"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:101
-#: src/views/dashboard/components/PerformanceTablesCard.vue:59
+#: src/views/dashboard/components/PerformanceTablesCard.vue:58
 msgid "Total requests"
 msgstr ""
 
@@ -4228,7 +4357,7 @@ msgstr "تم التحديث بنجاح"
 
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
-#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:325
+#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:331
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:75
@@ -4309,7 +4438,7 @@ msgstr "اسم المستخدم (*)"
 msgid "Valid"
 msgstr "صالح"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:22
+#: src/views/dashboard/components/PerformanceTablesCard.vue:21
 msgid "Value"
 msgstr ""
 
@@ -4351,7 +4480,7 @@ msgid "Viewed"
 msgstr "عرض"
 
 #: src/composables/usePerformanceMetrics.ts:116
-#: src/views/dashboard/components/PerformanceTablesCard.vue:74
+#: src/views/dashboard/components/PerformanceTablesCard.vue:73
 msgid "Waiting processes"
 msgstr ""
 
@@ -4431,8 +4560,14 @@ msgid ""
 "codes."
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:194
+#, fuzzy
+msgid "Worker Connections"
+msgstr "الإصدار الحالي"
+
 #: src/composables/usePerformanceMetrics.ts:57
-#: src/views/dashboard/components/ConnectionMetricsCard.vue:49
+#: src/views/dashboard/components/ConnectionMetricsCard.vue:48
+#: src/views/dashboard/components/PerformanceOptimization.vue:172
 #: src/views/dashboard/components/ProcessDistributionCard.vue:12
 msgid "Worker Processes"
 msgstr ""

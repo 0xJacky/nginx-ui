@@ -60,7 +60,7 @@ msgid "Action"
 msgstr "操作"
 
 #: src/composables/usePerformanceMetrics.ts:86
-#: src/views/dashboard/components/PerformanceTablesCard.vue:44
+#: src/views/dashboard/components/PerformanceTablesCard.vue:43
 msgid "Active connections"
 msgstr ""
 
@@ -83,8 +83,8 @@ msgstr "新增"
 msgid "Add a passkey"
 msgstr "新增通行密鑰"
 
-#: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:168
-#: src/views/config/ConfigEditor.vue:241
+#: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:171
+#: src/views/config/ConfigEditor.vue:246
 msgid "Add Configuration"
 msgstr "添加配置"
 
@@ -127,7 +127,7 @@ msgstr "然後，重新整理此頁面並再次點選新增通行密鑰。"
 msgid "All"
 msgstr "全部"
 
-#: src/components/Notification/notifications.ts:175
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "所有恢復碼都已使用完畢"
@@ -267,7 +267,12 @@ msgstr "認證設定"
 msgid "Author"
 msgstr "作者"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:201
+#: src/views/dashboard/components/PerformanceOptimization.vue:178
+#: src/views/dashboard/components/PerformanceOptimization.vue:189
+msgid "Auto"
+msgstr "自動"
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:200
 msgid "auto = CPU cores"
 msgstr ""
 
@@ -292,7 +297,7 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr "自動從網站和串流配置中索引。"
 
 #: src/views/certificate/components/CertificateEditor.vue:257
-#: src/views/config/ConfigEditor.vue:262 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigEditor.vue:268 src/views/config/ConfigList.vue:112
 #: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/SiteEdit.vue:285
 #: src/views/stream/StreamEdit.vue:264
@@ -343,7 +348,7 @@ msgstr "Bark"
 msgid "Base information"
 msgstr "基本資訊"
 
-#: src/views/config/ConfigEditor.vue:290
+#: src/views/config/ConfigEditor.vue:296
 #: src/views/site/site_edit/RightSettings.vue:52
 #: src/views/stream/components/RightSettings.vue:79
 msgid "Basic"
@@ -384,7 +389,7 @@ msgid "CA Dir"
 msgstr "CA Dir"
 
 #: src/composables/usePerformanceMetrics.ts:141
-#: src/views/dashboard/components/PerformanceTablesCard.vue:95
+#: src/views/dashboard/components/PerformanceTablesCard.vue:94
 msgid "Cache manager processes"
 msgstr ""
 
@@ -398,7 +403,7 @@ msgid "CADir"
 msgstr "CADir"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:43
-#: src/views/dashboard/components/PerformanceTablesCard.vue:191
+#: src/views/dashboard/components/PerformanceTablesCard.vue:190
 msgid ""
 "Calculated based on worker_processes * worker_connections. Actual "
 "performance depends on hardware, configuration, and workload"
@@ -427,7 +432,7 @@ msgstr "無法在示範模式下更改初始使用者密碼"
 msgid "Cannot compare: Missing content"
 msgstr "無法比較：缺少內容"
 
-#: src/views/dashboard/NginxDashBoard.vue:131
+#: src/views/dashboard/NginxDashBoard.vue:132
 msgid "Cannot get performance data in this state"
 msgstr ""
 
@@ -443,17 +448,17 @@ msgstr "證書"
 msgid "Cert path is not under the nginx conf dir"
 msgstr "證書路徑不在 Nginx 設定檔資料夾下"
 
-#: src/components/Notification/notifications.ts:28
+#: src/components/Notification/notifications.ts:134
 msgid "Certificate %{name} has expired"
 msgstr "憑證 %{name} 已過期"
 
-#: src/components/Notification/notifications.ts:32
-#: src/components/Notification/notifications.ts:36
-#: src/components/Notification/notifications.ts:40
+#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:146
 msgid "Certificate %{name} will expire in %{days} days"
 msgstr "證書 %{name} 將於 %{days} 天後過期"
 
-#: src/components/Notification/notifications.ts:44
+#: src/components/Notification/notifications.ts:150
 msgid "Certificate %{name} will expire in 1 day"
 msgstr "證書 %{name} 將於 1 天後過期"
 
@@ -461,17 +466,17 @@ msgstr "證書 %{name} 將於 1 天後過期"
 msgid "Certificate decode error"
 msgstr "證書解碼錯誤"
 
-#: src/components/Notification/notifications.ts:31
+#: src/components/Notification/notifications.ts:137
 msgid "Certificate Expiration Notice"
 msgstr "證書到期通知"
 
-#: src/components/Notification/notifications.ts:27
+#: src/components/Notification/notifications.ts:133
 msgid "Certificate Expired"
 msgstr "憑證已過期"
 
-#: src/components/Notification/notifications.ts:35
-#: src/components/Notification/notifications.ts:39
-#: src/components/Notification/notifications.ts:43
+#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:149
 msgid "Certificate Expiring Soon"
 msgstr "證書即將到期"
 
@@ -526,7 +531,7 @@ msgid "Changed Certificate"
 msgid_plural "Changed Certificates"
 msgstr[0] "變更後憑證"
 
-#: src/views/config/ConfigEditor.vue:318
+#: src/views/config/ConfigEditor.vue:324
 msgid "Changed Path"
 msgstr "變更後路徑"
 
@@ -603,6 +608,26 @@ msgstr "點擊或拖曳備份檔案至此區域上傳"
 msgid "Click to copy"
 msgstr "點擊複製"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:307
+msgid "Client Body Buffer Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:289
+msgid "Client Header Buffer Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:259
+msgid "Client Max Body Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:308
+msgid "Client request body buffer size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:290
+msgid "Client request header buffer size"
+msgstr ""
+
 #: src/components/ConfigHistory/ConfigHistory.vue:169
 msgid "Close"
 msgstr "關閉"
@@ -634,6 +659,10 @@ msgstr "比較選定"
 msgid "Compare with Current"
 msgstr "與當前比較"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:248
+msgid "Compression level, 1 is lowest, 9 is highest"
+msgstr ""
+
 #: src/constants/errors/backup.ts:14
 msgid "Config path is empty"
 msgstr "配置路徑為空"
@@ -650,7 +679,7 @@ msgstr "設定檔案測試成功"
 msgid "Configuration History"
 msgstr "配置歷史"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:168
+#: src/views/dashboard/components/PerformanceTablesCard.vue:167
 #, fuzzy
 msgid "Configuration information"
 msgstr "配置歷史"
@@ -671,13 +700,17 @@ msgstr "設定 SSL"
 msgid "Connected"
 msgstr "已連結"
 
-#: src/views/dashboard/NginxDashBoard.vue:84
+#: src/views/dashboard/NginxDashBoard.vue:85
 msgid "Connection error, trying to reconnect..."
 msgstr ""
 
 #: src/views/terminal/Terminal.vue:142
 msgid "Connection lost, please refresh the page."
 msgstr "連接丟失，請重新整理。"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:207
+msgid "Connection timeout period"
+msgstr ""
 
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:118
 #: src/views/site/ngx_conf/LocationEditor.vue:115
@@ -783,7 +816,7 @@ msgstr "當前帳戶已啟用 TOTP。"
 msgid "Current account is not enabled TOTP."
 msgstr "當前帳戶未啟用 TOTP。"
 
-#: src/views/dashboard/components/ConnectionMetricsCard.vue:28
+#: src/views/dashboard/components/ConnectionMetricsCard.vue:27
 msgid "Current active connections"
 msgstr ""
 
@@ -811,8 +844,8 @@ msgid ""
 "indicator."
 msgstr "自訂顯示在環境指示器中的本地節點名稱。"
 
-#: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:107
-#: src/views/config/ConfigEditor.vue:158 src/views/config/ConfigList.vue:67
+#: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:110
+#: src/views/config/ConfigEditor.vue:161 src/views/config/ConfigList.vue:67
 msgid "Dashboard"
 msgstr "儀表板"
 
@@ -848,27 +881,27 @@ msgstr "更換憑證"
 msgid "Delete Permanently"
 msgstr "永久刪除"
 
-#: src/components/Notification/notifications.ts:75 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:9 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "刪除遠端網站錯誤"
 
-#: src/components/Notification/notifications.ts:79 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:13 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "刪除遠端網站成功"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:67
 msgid "Delete Remote Stream Error"
 msgstr "刪除遠端串流錯誤"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:71
 msgid "Delete Remote Stream Success"
 msgstr "刪除遠端串流成功"
 
-#: src/components/Notification/notifications.ts:76
+#: src/components/Notification/notifications.ts:10
 msgid "Delete site %{name} from %{node} failed"
 msgstr "從 %{node} 刪除網站 %{name} 失敗"
 
-#: src/components/Notification/notifications.ts:80
+#: src/components/Notification/notifications.ts:14
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "成功從 %{node} 移除站點 %{name}"
 
@@ -876,11 +909,11 @@ msgstr "成功從 %{node} 移除站點 %{name}"
 msgid "Delete site: %{site_name}"
 msgstr "刪除網站：%{site_name}"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:68
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "部署 %{conf_name} 至 %{node} 失敗"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:72
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "成功從 %{node} 移除站點 %{name}"
 
@@ -896,7 +929,7 @@ msgstr "刪除成功"
 msgid "Demo"
 msgstr "演示"
 
-#: src/views/config/ConfigEditor.vue:334
+#: src/views/config/ConfigEditor.vue:340
 msgid "Deploy"
 msgstr "部署"
 
@@ -953,51 +986,51 @@ msgstr "停用"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "關閉 %{name} 自動續簽失敗"
 
-#: src/components/Notification/notifications.ts:83 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:17 src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "禁用遠端站点錯誤"
 
-#: src/components/Notification/notifications.ts:107
+#: src/components/Notification/notifications.ts:41
 msgid "Disable Remote Site Maintenance Error"
 msgstr "遠端網站維護錯誤已停用"
 
-#: src/components/Notification/notifications.ts:111
+#: src/components/Notification/notifications.ts:45
 msgid "Disable Remote Site Maintenance Success"
 msgstr "遠端網站維護已成功停用"
 
-#: src/components/Notification/notifications.ts:87 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:21 src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "禁用遠端站点成功"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:75
 msgid "Disable Remote Stream Error"
 msgstr "禁用遠端串流錯誤"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:79
 msgid "Disable Remote Stream Success"
 msgstr "禁用遠端串流成功"
 
-#: src/components/Notification/notifications.ts:84
+#: src/components/Notification/notifications.ts:18
 msgid "Disable site %{name} from %{node} failed"
 msgstr "停用 %{node} 上的網站 %{name} 失敗"
 
-#: src/components/Notification/notifications.ts:88
+#: src/components/Notification/notifications.ts:22
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "已成功從%{node}停用網站%{name}"
 
-#: src/components/Notification/notifications.ts:108
+#: src/components/Notification/notifications.ts:42
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "在%{node}上停用網站%{name}的維護模式失敗"
 
-#: src/components/Notification/notifications.ts:112
+#: src/components/Notification/notifications.ts:46
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "網站 %{name} 在 %{node} 上的維護已成功停用"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:76
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "停用來自 %{node} 的串流 %{name} 失敗"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:80
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "已成功從 %{node} 停用串流 %{name}"
 
@@ -1125,7 +1158,7 @@ msgstr "編輯"
 msgid "Edit %{n}"
 msgstr "編輯 %{n}"
 
-#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:241
+#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:246
 msgid "Edit Configuration"
 msgstr "編輯設定"
 
@@ -1162,6 +1195,10 @@ msgstr "啟用多因素身份驗證成功"
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "啟用 %{name} 自動續簽失敗"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:222
+msgid "Enable compression for content transfer"
+msgstr ""
+
 #: src/views/site/site_add/SiteAdd.vue:43
 msgid "Enable failed"
 msgstr "啟用失敗"
@@ -1170,55 +1207,55 @@ msgstr "啟用失敗"
 msgid "Enable HTTPS"
 msgstr "啟用 HTTPS"
 
-#: src/components/Notification/notifications.ts:91 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:25 src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "啟用遠端站點錯誤"
 
-#: src/components/Notification/notifications.ts:99
+#: src/components/Notification/notifications.ts:33
 msgid "Enable Remote Site Maintenance Error"
 msgstr "啟用遠端網站維護錯誤"
 
-#: src/components/Notification/notifications.ts:103
+#: src/components/Notification/notifications.ts:37
 msgid "Enable Remote Site Maintenance Success"
 msgstr "啟用遠端網站維護成功"
 
-#: src/components/Notification/notifications.ts:95 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:29 src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "啟用遠端站點成功"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:83
 msgid "Enable Remote Stream Error"
 msgstr "啟用遠端串流錯誤"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:87
 msgid "Enable Remote Stream Success"
 msgstr "啟用遠端串流成功"
 
-#: src/components/Notification/notifications.ts:100
+#: src/components/Notification/notifications.ts:34
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "啟用網站 %{name} 在 %{node} 上的維護模式失敗"
 
-#: src/components/Notification/notifications.ts:104
+#: src/components/Notification/notifications.ts:38
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "成功在%{node}上啟用網站%{name}的維護模式"
 
-#: src/components/Notification/notifications.ts:92
+#: src/components/Notification/notifications.ts:26
 msgid "Enable site %{name} on %{node} failed"
 msgstr "在%{node}上啟用網站%{name}失敗"
 
-#: src/components/Notification/notifications.ts:96
+#: src/components/Notification/notifications.ts:30
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "成功在%{node}上啟用網站%{name}"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:84
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "在 %{node} 上啟用串流 %{name} 失敗"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:88
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "在 %{node} 上成功啟用串流 %{name}"
 
-#: src/views/dashboard/NginxDashBoard.vue:149
+#: src/views/dashboard/NginxDashBoard.vue:150
 msgid "Enable stub_status module"
 msgstr ""
 
@@ -1490,6 +1527,11 @@ msgstr "無法生成初始化向量：{0}"
 msgid "Failed to get certificate information"
 msgstr "取得憑證資訊失敗"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:56
+#, fuzzy
+msgid "Failed to get Nginx performance settings"
+msgstr "取得憑證資訊失敗"
+
 #: src/composables/useNginxPerformance.ts:49
 #, fuzzy
 msgid "Failed to get performance data"
@@ -1547,6 +1589,11 @@ msgstr "無法恢復Nginx UI文件：{0}"
 #, fuzzy
 msgid "Failed to revoke certificate"
 msgstr "獲取憑證失敗"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:126
+#, fuzzy
+msgid "Failed to save Nginx performance settings"
+msgstr "取得憑證資訊失敗"
 
 #: src/views/site/site_edit/SiteEdit.vue:139
 #: src/views/stream/StreamEdit.vue:122
@@ -1612,15 +1659,15 @@ msgstr "中國使用者：https://mirror.ghproxy.com/"
 msgid "Form parse failed"
 msgstr "表單解析失敗"
 
-#: src/views/config/ConfigEditor.vue:265
+#: src/views/config/ConfigEditor.vue:271
 msgid "Format Code"
 msgstr "格式化程式碼"
 
-#: src/views/config/ConfigEditor.vue:213
+#: src/views/config/ConfigEditor.vue:218
 msgid "Format error %{msg}"
 msgstr "格式錯誤 %{msg}"
 
-#: src/views/config/ConfigEditor.vue:211
+#: src/views/config/ConfigEditor.vue:216
 msgid "Format successfully"
 msgstr "成功格式化"
 
@@ -1649,7 +1696,7 @@ msgstr "成功生成復原代碼"
 msgid "Generating private key for registering account"
 msgstr "產生註冊帳號的私鑰"
 
-#: src/views/dashboard/NginxDashBoard.vue:140
+#: src/views/dashboard/NginxDashBoard.vue:141
 #, fuzzy
 msgid "Get data failed"
 msgstr "註冊失敗"
@@ -1667,6 +1714,18 @@ msgstr "正在取得憑證，請稍候..."
 msgid "Github Proxy"
 msgstr "Github 代理"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:221
+msgid "GZIP Compression"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:247
+msgid "GZIP Compression Level"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:233
+msgid "GZIP Min Length"
+msgstr ""
+
 #: src/constants/errors/backup.ts:59
 msgid "Hash verification failed: file integrity compromised"
 msgstr "哈希驗證失敗：檔案完整性受損"
@@ -1679,7 +1738,7 @@ msgstr "隱藏"
 msgid "Higher value means better connection reuse"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:251
+#: src/views/config/ConfigEditor.vue:256
 #: src/views/site/site_edit/SiteEdit.vue:212
 #: src/views/stream/StreamEdit.vue:195
 msgid "History"
@@ -1773,7 +1832,7 @@ msgstr "已索引"
 msgid "Indexing..."
 msgstr "索引中..."
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:16
+#: src/views/dashboard/components/PerformanceTablesCard.vue:15
 msgid "Indicator"
 msgstr ""
 
@@ -1845,7 +1904,7 @@ msgid "Invalid file path: {0}"
 msgstr "無效的文件路徑：{0}"
 
 #: src/views/config/components/Rename.vue:66
-#: src/views/config/ConfigEditor.vue:299
+#: src/views/config/ConfigEditor.vue:305
 msgid "Invalid filename"
 msgstr "無效的檔案名"
 
@@ -1905,12 +1964,20 @@ msgstr "發行者：%{issuer}"
 msgid "Jwt Secret"
 msgstr "Jwt Secret"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:242
+msgid "KB"
+msgstr ""
+
 #: src/views/preference/components/RecoveryCodes.vue:74
 msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
 "with a password manager."
 msgstr ""
 "請將您的復原代碼與密碼同樣妥善保管。我們建議使用密碼管理工具來儲存它們。"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:206
+msgid "Keepalive Timeout"
+msgstr ""
 
 #: src/views/certificate/CertificateList/certColumns.tsx:59
 #: src/views/site/cert/components/AutoCertStepOne.vue:77
@@ -1933,7 +2000,7 @@ msgstr "Lark 自定義"
 msgid "Last checked at"
 msgstr "上次檢查時間"
 
-#: src/views/dashboard/NginxDashBoard.vue:115
+#: src/views/dashboard/NginxDashBoard.vue:116
 #, fuzzy
 msgid "Last update"
 msgstr "最後使用時間"
@@ -1996,7 +2063,7 @@ msgstr "從設置加載"
 msgid "Load successfully"
 msgstr "加載成功"
 
-#: src/views/dashboard/NginxDashBoard.vue:177
+#: src/views/dashboard/NginxDashBoard.vue:178
 msgid "Loading data..."
 msgstr ""
 
@@ -2071,8 +2138,8 @@ msgid ""
 msgstr ""
 "在取得憑證前，請確保您已將 .well-known 目錄反向代理到 HTTPChallengePort。"
 
-#: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:112
-#: src/views/config/ConfigEditor.vue:163 src/views/config/ConfigList.vue:72
+#: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:115
+#: src/views/config/ConfigEditor.vue:166 src/views/config/ConfigList.vue:72
 msgid "Manage Configs"
 msgstr "管理設定"
 
@@ -2092,7 +2159,11 @@ msgstr "管理使用者"
 msgid "Managed Certificate"
 msgstr "受管理的憑證"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:202
+#: src/views/dashboard/components/PerformanceOptimization.vue:179
+msgid "Manual"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:201
 msgid "manually set"
 msgstr ""
 
@@ -2101,7 +2172,7 @@ msgid "Master"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:136
-#: src/views/dashboard/components/PerformanceTablesCard.vue:90
+#: src/views/dashboard/components/PerformanceTablesCard.vue:89
 msgid "Master process"
 msgstr ""
 
@@ -2123,12 +2194,21 @@ msgstr "當前內容"
 msgid "Max Requests Per Second"
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:260
+msgid "Maximum client request body size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:195
+#, fuzzy
+msgid "Maximum number of concurrent connections"
+msgstr "當前內容"
+
 #: src/composables/usePerformanceMetrics.ts:176
-#: src/views/dashboard/components/PerformanceTablesCard.vue:126
+#: src/views/dashboard/components/PerformanceTablesCard.vue:125
 msgid "Maximum number of connections per worker process"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:196
+#: src/views/dashboard/components/PerformanceTablesCard.vue:195
 msgid "Maximum worker process number:"
 msgstr ""
 
@@ -2143,6 +2223,10 @@ msgstr "記憶體與儲存"
 
 #: src/views/dashboard/components/ResourceUsageCard.vue:51
 msgid "Memory Usage (RSS)"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:234
+msgid "Minimum file size for compression"
 msgstr ""
 
 #: src/views/preference/LogrotateSettings.vue:29
@@ -2186,7 +2270,7 @@ msgstr "多行指令"
 #: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:305
+#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:311
 #: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:37
@@ -2201,7 +2285,7 @@ msgstr "多行指令"
 msgid "Name"
 msgstr "名稱"
 
-#: src/views/dashboard/NginxDashBoard.vue:172
+#: src/views/dashboard/NginxDashBoard.vue:173
 msgid "Need to enable the stub_status module"
 msgstr ""
 
@@ -2229,7 +2313,7 @@ msgstr "新安裝"
 msgid "New name"
 msgstr "新名稱"
 
-#: src/views/config/ConfigEditor.vue:318
+#: src/views/config/ConfigEditor.vue:324
 msgid "New Path"
 msgstr "新路徑"
 
@@ -2272,6 +2356,11 @@ msgstr "Nginx 配置檔中沒有 http 區塊"
 msgid "Nginx conf no stream block"
 msgstr "Nginx 配置檔中沒有 stream 區塊"
 
+#: src/constants/errors/self_check.ts:14
+#, fuzzy
+msgid "Nginx conf not include conf.d directory"
+msgstr "請確認 nginx.conf 是否有包含 sites-enabled 資料夾。"
+
 #: src/constants/errors/self_check.ts:6
 msgid "Nginx conf not include sites-enabled"
 msgstr "Nginx 配置檔未包含 sites-enabled"
@@ -2306,7 +2395,7 @@ msgid "Nginx Control"
 msgstr "Nginx 控制元件"
 
 #: src/composables/usePerformanceMetrics.ts:151
-#: src/views/dashboard/components/PerformanceTablesCard.vue:105
+#: src/views/dashboard/components/PerformanceTablesCard.vue:104
 msgid "Nginx CPU usage rate"
 msgstr ""
 
@@ -2315,14 +2404,14 @@ msgid "Nginx Error Log Path"
 msgstr "Nginx 錯誤日誌路徑"
 
 #: src/composables/useNginxPerformance.ts:43
-#: src/views/dashboard/NginxDashBoard.vue:111
-#: src/views/dashboard/NginxDashBoard.vue:130
-#: src/views/dashboard/NginxDashBoard.vue:79
+#: src/views/dashboard/NginxDashBoard.vue:112
+#: src/views/dashboard/NginxDashBoard.vue:131
+#: src/views/dashboard/NginxDashBoard.vue:80
 #: src/views/site/ngx_conf/NginxStatusAlert.vue:15
 msgid "Nginx is not running"
 msgstr "Nginx 未執行"
 
-#: src/views/dashboard/NginxDashBoard.vue:111
+#: src/views/dashboard/NginxDashBoard.vue:112
 #, fuzzy
 msgid "Nginx is running"
 msgstr "Nginx 未執行"
@@ -2336,7 +2425,7 @@ msgid "Nginx Log Directory Whitelist"
 msgstr "Nginx 日誌目錄白名單"
 
 #: src/composables/usePerformanceMetrics.ts:156
-#: src/views/dashboard/components/PerformanceTablesCard.vue:110
+#: src/views/dashboard/components/PerformanceTablesCard.vue:109
 msgid "Nginx Memory usage"
 msgstr ""
 
@@ -2372,7 +2461,7 @@ msgstr "Nginx 重啟成功"
 msgid "Nginx Test Config Command"
 msgstr "Nginx 測試配置指令"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:181
+#: src/views/dashboard/components/PerformanceTablesCard.vue:180
 msgid "Nginx theoretical maximum performance"
 msgstr ""
 
@@ -2414,7 +2503,7 @@ msgstr "取消"
 msgid "No Action"
 msgstr "無行動"
 
-#: src/views/dashboard/NginxDashBoard.vue:179
+#: src/views/dashboard/NginxDashBoard.vue:180
 msgid "No data"
 msgstr ""
 
@@ -2487,10 +2576,14 @@ msgstr "通知"
 msgid "Notifier not found"
 msgstr "通知器未找到"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:173
+msgid "Number of concurrent worker processes, auto sets to CPU core count"
+msgstr ""
+
 #: src/composables/usePerformanceMetrics.ts:131
 #: src/composables/usePerformanceMetrics.ts:171
-#: src/views/dashboard/components/PerformanceTablesCard.vue:121
-#: src/views/dashboard/components/PerformanceTablesCard.vue:85
+#: src/views/dashboard/components/PerformanceTablesCard.vue:120
+#: src/views/dashboard/components/PerformanceTablesCard.vue:84
 msgid "Number of worker processes"
 msgstr ""
 
@@ -2511,6 +2604,11 @@ msgid ""
 "OCSP Must Staple may cause errors for some users on first access using "
 "Firefox."
 msgstr "OCSP 必須裝訂可能會導致某些用戶在首次使用 Firefox 訪問時出現錯誤。"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:227
+#, fuzzy
+msgid "Off"
+msgstr "離線"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
 #: src/components/NodeSelector/NodeSelector.vue:109
@@ -2543,6 +2641,10 @@ msgstr "確定"
 msgid "OK"
 msgstr "確定"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:226
+msgid "On"
+msgstr ""
+
 #: src/views/certificate/DNSCredential.vue:59
 msgid "Once the verification is complete, the records will be removed."
 msgstr "驗證完成後，記錄將被刪除。"
@@ -2562,6 +2664,14 @@ msgstr "只允許壓縮檔"
 #: src/views/preference/Preference.vue:212
 msgid "OpenAI"
 msgstr "OpenAI"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:164
+msgid "Optimize Nginx Performance"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:158
+msgid "Optimize Performance"
+msgstr ""
 
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:231
 msgid "Or"
@@ -2584,7 +2694,7 @@ msgid "OS:"
 msgstr "作業系統:"
 
 #: src/composables/usePerformanceMetrics.ts:146
-#: src/views/dashboard/components/PerformanceTablesCard.vue:100
+#: src/views/dashboard/components/PerformanceTablesCard.vue:99
 msgid "Other Nginx processes"
 msgstr ""
 
@@ -2601,11 +2711,11 @@ msgstr ""
 msgid "Otp or recovery code empty"
 msgstr "OTP 或復原代碼為空"
 
-#: src/views/config/ConfigEditor.vue:343
+#: src/views/config/ConfigEditor.vue:349
 msgid "Overwrite"
 msgstr "覆蓋"
 
-#: src/views/config/ConfigEditor.vue:347
+#: src/views/config/ConfigEditor.vue:353
 msgid "Overwrite exist file"
 msgstr "覆蓋現有檔案"
 
@@ -2646,7 +2756,7 @@ msgstr "密碼錯誤"
 msgid "Password length cannot exceed 20 characters"
 msgstr "密碼長度不能超過 20 個字元"
 
-#: src/views/config/ConfigEditor.vue:312
+#: src/views/config/ConfigEditor.vue:318
 #: src/views/nginx_log/NginxLogList.vue:45
 #: src/views/site/ngx_conf/LocationEditor.vue:109
 #: src/views/site/ngx_conf/LocationEditor.vue:137
@@ -2669,9 +2779,14 @@ msgstr "執行"
 msgid "Perform core upgrade error"
 msgstr "執行核心升級錯誤"
 
-#: src/views/dashboard/NginxDashBoard.vue:184
+#: src/views/dashboard/NginxDashBoard.vue:185
 msgid "Performance Metrics"
 msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:122
+#, fuzzy
+msgid "Performance settings saved successfully"
+msgstr "維護模式已成功停用"
 
 #: src/language/constants.ts:28
 msgid "Performing core upgrade"
@@ -2681,7 +2796,7 @@ msgstr "正在執行核心升級"
 msgid "Plain text is empty"
 msgstr "明文為空"
 
-#: src/views/dashboard/NginxDashBoard.vue:173
+#: src/views/dashboard/NginxDashBoard.vue:174
 msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
@@ -2724,7 +2839,7 @@ msgstr ""
 "請先在「憑證」 > 「DNS 認證」中新增認證，然後選擇以下認證之一以請求 DNS 供應"
 "商的 API。"
 
-#: src/components/Notification/notifications.ts:176
+#: src/components/Notification/notifications.ts:110
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -2732,7 +2847,7 @@ msgid ""
 msgstr "請立即在偏好設定中產生新的恢復碼，以免無法訪問您的賬戶。"
 
 #: src/views/config/components/Rename.vue:65
-#: src/views/config/ConfigEditor.vue:298
+#: src/views/config/ConfigEditor.vue:304
 msgid "Please input a filename"
 msgstr "請輸入檔案名稱"
 
@@ -2826,7 +2941,7 @@ msgstr "準備 Lego 設定"
 msgid "Process Distribution"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:155
+#: src/views/dashboard/components/PerformanceTablesCard.vue:154
 #, fuzzy
 msgid "Process information"
 msgstr "基本資訊"
@@ -2856,7 +2971,7 @@ msgid "Public Security Number"
 msgstr "公安編號"
 
 #: src/composables/usePerformanceMetrics.ts:106
-#: src/views/dashboard/components/PerformanceTablesCard.vue:64
+#: src/views/dashboard/components/PerformanceTablesCard.vue:63
 msgid "Read requests"
 msgstr ""
 
@@ -2961,19 +3076,19 @@ msgstr "重新載入"
 msgid "Reload Nginx"
 msgstr "重載 Nginx"
 
-#: src/components/Notification/notifications.ts:10
+#: src/components/Notification/notifications.ts:116
 msgid "Reload Nginx on %{node} failed, response: %{resp}"
 msgstr "在節點 %{node} 上重新載入 Nginx 失敗，回應：%{resp}"
 
-#: src/components/Notification/notifications.ts:14
+#: src/components/Notification/notifications.ts:120
 msgid "Reload Nginx on %{node} successfully"
 msgstr "在 %{node} 上成功重新載入 Nginx"
 
-#: src/components/Notification/notifications.ts:9
+#: src/components/Notification/notifications.ts:115
 msgid "Reload Remote Nginx Error"
 msgstr "重新載入遠端Nginx錯誤"
 
-#: src/components/Notification/notifications.ts:13
+#: src/components/Notification/notifications.ts:119
 msgid "Reload Remote Nginx Success"
 msgstr "遠端Nginx重載成功"
 
@@ -3011,53 +3126,53 @@ msgstr "移除成功"
 msgid "Rename"
 msgstr "重命名"
 
-#: src/components/Notification/notifications.ts:66
+#: src/components/Notification/notifications.ts:172
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "將 %{orig_path} 重新命名為 %{new_path} 在 %{env_name} 上失敗"
 
-#: src/components/Notification/notifications.ts:70
+#: src/components/Notification/notifications.ts:176
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "成功將 %{env_name} 上的 %{orig_path} 重命名為 %{new_path}"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:171
+#: src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr "重命名遠端配置錯誤"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:175
+#: src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr "重新命名遠端配置成功"
 
-#: src/components/Notification/notifications.ts:115
-#: src/language/constants.ts:56
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "重命名遠端遠端站點時發生錯誤"
 
-#: src/components/Notification/notifications.ts:119
-#: src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:53 src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "重新命名遠端站點成功"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:91
 msgid "Rename Remote Stream Error"
 msgstr "遠端串流重新命名錯誤"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:95
 msgid "Rename Remote Stream Success"
 msgstr "遠端串流重新命名成功"
 
-#: src/components/Notification/notifications.ts:116
+#: src/components/Notification/notifications.ts:50
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "將網站 %{name} 在 %{node} 上重新命名為 %{new_name} 失敗"
 
-#: src/components/Notification/notifications.ts:120
+#: src/components/Notification/notifications.ts:54
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "將網站 %{name} 在 %{node} 上成功更名為 %{new_name}"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:92
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "將節點 %{node} 上的串流 %{name} 重新命名為 %{new_name} 失敗"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:96
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "將節點 %{node} 上的串流 %{name} 重新命名為 %{new_name} 成功"
 
@@ -3089,7 +3204,7 @@ msgstr "更新憑證成功"
 msgid "Renew successfully"
 msgstr "更新成功"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:142
+#: src/views/dashboard/components/PerformanceTablesCard.vue:141
 #, fuzzy
 msgid "Request statistics"
 msgstr "網路統計"
@@ -3122,7 +3237,7 @@ msgid ""
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:111
-#: src/views/dashboard/components/PerformanceTablesCard.vue:69
+#: src/views/dashboard/components/PerformanceTablesCard.vue:68
 msgid "Responses"
 msgstr ""
 
@@ -3136,19 +3251,19 @@ msgstr "重新啟動"
 msgid "Restart Nginx"
 msgstr "重新啟動 Nginx"
 
-#: src/components/Notification/notifications.ts:18
+#: src/components/Notification/notifications.ts:124
 msgid "Restart Nginx on %{node} failed, response: %{resp}"
 msgstr "在節點 %{node} 上重啟 Nginx 失敗，回應：%{resp}"
 
-#: src/components/Notification/notifications.ts:22
+#: src/components/Notification/notifications.ts:128
 msgid "Restart Nginx on %{node} successfully"
 msgstr "在%{node}上成功重啟Nginx"
 
-#: src/components/Notification/notifications.ts:17
+#: src/components/Notification/notifications.ts:123
 msgid "Restart Remote Nginx Error"
 msgstr "遠端Nginx重啟錯誤"
 
-#: src/components/Notification/notifications.ts:21
+#: src/components/Notification/notifications.ts:127
 msgid "Restart Remote Nginx Success"
 msgstr "遠端Nginx重啟成功"
 
@@ -3229,7 +3344,7 @@ msgstr "執行中"
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
 #: src/views/certificate/components/CertificateEditor.vue:264
 #: src/views/config/components/ConfigName.vue:59
-#: src/views/config/ConfigEditor.vue:271
+#: src/views/config/ConfigEditor.vue:277
 #: src/views/preference/components/Passkey.vue:130
 #: src/views/preference/Preference.vue:229
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
@@ -3249,37 +3364,35 @@ msgstr "儲存指令"
 msgid "Save error %{msg}"
 msgstr "儲存錯誤 %{msg}"
 
-#: src/components/Notification/notifications.ts:123
-#: src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "儲存遠端站點時發生錯誤"
 
-#: src/components/Notification/notifications.ts:127
-#: src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "儲存遠端站點成功"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:99
 msgid "Save Remote Stream Error"
 msgstr "保存遠端串流錯誤"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:103
 msgid "Save Remote Stream Success"
 msgstr "遠端串流儲存成功"
 
-#: src/components/Notification/notifications.ts:124
+#: src/components/Notification/notifications.ts:58
 msgid "Save site %{name} to %{node} failed"
 msgstr "將網站 %{name} 儲存至 %{node} 失敗"
 
-#: src/components/Notification/notifications.ts:128
+#: src/components/Notification/notifications.ts:62
 msgid "Save site %{name} to %{node} successfully"
 msgstr "網站 %{name} 成功儲存至 %{node}"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:100
 msgid "Save stream %{name} to %{node} failed"
 msgstr "儲存串流 %{name} 至 %{node} 失敗"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:104
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "串流 %{name} 成功儲存至 %{node}"
 
@@ -3290,7 +3403,7 @@ msgstr "串流 %{name} 成功儲存至 %{node}"
 msgid "Save successfully"
 msgstr "儲存成功"
 
-#: src/views/config/ConfigEditor.vue:191
+#: src/views/config/ConfigEditor.vue:194
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/site/site_add/SiteAdd.vue:37
 #: src/views/site/site_edit/SiteEdit.vue:157
@@ -3305,6 +3418,10 @@ msgstr "用手機掃描二維碼將賬戶添加到應用程序中。"
 #: src/views/certificate/DNSChallenge.vue:90
 msgid "SDK"
 msgstr "SDK"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:216
+msgid "seconds"
+msgstr ""
 
 #: src/views/preference/components/TOTP.vue:109
 msgid "Secret has been copied"
@@ -3343,6 +3460,14 @@ msgstr "伺服器"
 #: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
 msgstr "伺服器資訊"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:277
+msgid "Server Names Hash Bucket Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:278
+msgid "Server names hash table size"
+msgstr ""
 
 #: src/views/site/cert/components/ObtainCert.vue:107
 msgid "server_name not found in directives"
@@ -3588,35 +3713,39 @@ msgstr "同步"
 msgid "Sync Certificate"
 msgstr "同步憑證"
 
-#: src/components/Notification/notifications.ts:48
+#: src/components/Notification/notifications.ts:154
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "同步憑證 %{cert_name} 至 %{env_name} 失敗"
 
-#: src/components/Notification/notifications.ts:52
+#: src/components/Notification/notifications.ts:158
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "同步憑證 %{cert_name} 到 %{env_name} 成功"
 
-#: src/components/Notification/notifications.ts:47 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:153
+#: src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr "同步憑證錯誤"
 
-#: src/components/Notification/notifications.ts:51 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:157
+#: src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr "同步憑證成功"
 
-#: src/components/Notification/notifications.ts:58
+#: src/components/Notification/notifications.ts:164
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "同步配置 %{config_name} 至 %{env_name} 失敗"
 
-#: src/components/Notification/notifications.ts:62
+#: src/components/Notification/notifications.ts:168
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "同步配置 %{config_name} 到 %{env_name} 成功"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:163
+#: src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr "同步配置錯誤"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:167
+#: src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr "同步配置成功"
 
@@ -3769,11 +3898,11 @@ msgstr "網址無效。"
 msgid "The username or password is incorrect"
 msgstr "使用者名稱或密碼不正確"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:185
+#: src/views/dashboard/components/PerformanceTablesCard.vue:184
 msgid "Theoretical maximum concurrent connections:"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:189
+#: src/views/dashboard/components/PerformanceTablesCard.vue:188
 msgid "Theoretical maximum RPS (Requests Per Second):"
 msgstr ""
 
@@ -3818,7 +3947,7 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "此欄位僅能包含字母、Unicode字元、數字、連字號、破折號和底線。"
 
-#: src/views/dashboard/NginxDashBoard.vue:152
+#: src/views/dashboard/NginxDashBoard.vue:153
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
@@ -3869,7 +3998,7 @@ msgstr "節流"
 msgid "Tips"
 msgstr "提示"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:207
+#: src/views/dashboard/components/PerformanceTablesCard.vue:206
 msgid ""
 "Tips: You can increase the concurrency processing capacity by increasing "
 "worker_processes or worker_connections"
@@ -3918,7 +4047,7 @@ msgstr ""
 "要使用本地大型模型，請使用 ollama、vllm 或 lmdeploy 部署。它們提供與 OpenAI "
 "相容的 API 端點，因此只需將 baseUrl 設定為您的本地 API。"
 
-#: src/views/dashboard/NginxDashBoard.vue:56
+#: src/views/dashboard/NginxDashBoard.vue:57
 #, fuzzy
 msgid "Toggle failed"
 msgstr "啟用失敗"
@@ -3933,12 +4062,12 @@ msgid_plural "Total %{total} items"
 msgstr[0] "總計 %{total} 項"
 
 #: src/composables/usePerformanceMetrics.ts:96
-#: src/views/dashboard/components/PerformanceTablesCard.vue:54
+#: src/views/dashboard/components/PerformanceTablesCard.vue:53
 msgid "Total connections"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:91
-#: src/views/dashboard/components/PerformanceTablesCard.vue:49
+#: src/views/dashboard/components/PerformanceTablesCard.vue:48
 msgid "Total handshakes"
 msgstr ""
 
@@ -3951,7 +4080,7 @@ msgid "Total Nginx Processes"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:101
-#: src/views/dashboard/components/PerformanceTablesCard.vue:59
+#: src/views/dashboard/components/PerformanceTablesCard.vue:58
 msgid "Total requests"
 msgstr ""
 
@@ -3999,7 +4128,7 @@ msgstr "更新成功"
 
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
-#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:325
+#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:331
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:75
@@ -4079,7 +4208,7 @@ msgstr "使用者名稱 (*)"
 msgid "Valid"
 msgstr "有效"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:22
+#: src/views/dashboard/components/PerformanceTablesCard.vue:21
 msgid "Value"
 msgstr ""
 
@@ -4119,7 +4248,7 @@ msgid "Viewed"
 msgstr "已檢視"
 
 #: src/composables/usePerformanceMetrics.ts:116
-#: src/views/dashboard/components/PerformanceTablesCard.vue:74
+#: src/views/dashboard/components/PerformanceTablesCard.vue:73
 msgid "Waiting processes"
 msgstr ""
 
@@ -4198,8 +4327,14 @@ msgid ""
 "codes."
 msgstr "當您生成新的復原代碼時，必須下載或列印新的代碼。"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:194
+#, fuzzy
+msgid "Worker Connections"
+msgstr "當前內容"
+
 #: src/composables/usePerformanceMetrics.ts:57
-#: src/views/dashboard/components/ConnectionMetricsCard.vue:49
+#: src/views/dashboard/components/ConnectionMetricsCard.vue:48
+#: src/views/dashboard/components/PerformanceOptimization.vue:172
 #: src/views/dashboard/components/ProcessDistributionCard.vue:12
 msgid "Worker Processes"
 msgstr ""
@@ -4474,9 +4609,6 @@ msgstr "您的通行密鑰"
 
 #~ msgid "Dir"
 #~ msgstr "目錄"
-
-#~ msgid "Auto"
-#~ msgstr "自動"
 
 #~ msgid "Dark"
 #~ msgstr "深色"

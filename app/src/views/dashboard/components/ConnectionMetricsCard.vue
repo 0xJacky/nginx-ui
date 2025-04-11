@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { NginxPerformanceInfo } from '@/api/ngx'
-import { computed, defineProps } from 'vue'
 
 const props = defineProps<{
   nginxInfo: NginxPerformanceInfo

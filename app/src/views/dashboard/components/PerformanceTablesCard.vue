@@ -2,7 +2,6 @@
 import type { NginxPerformanceInfo } from '@/api/ngx'
 import type { TableColumnType } from 'ant-design-vue'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
-import { computed, defineProps, ref } from 'vue'
 
 const props = defineProps<{
   nginxInfo: NginxPerformanceInfo

@@ -57,7 +57,7 @@ msgid "Action"
 msgstr "Action"
 
 #: src/composables/usePerformanceMetrics.ts:86
-#: src/views/dashboard/components/PerformanceTablesCard.vue:44
+#: src/views/dashboard/components/PerformanceTablesCard.vue:43
 msgid "Active connections"
 msgstr ""
 
@@ -80,8 +80,8 @@ msgstr "Ajouter"
 msgid "Add a passkey"
 msgstr "Ajouter une clé d'accès"
 
-#: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:168
-#: src/views/config/ConfigEditor.vue:241
+#: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:171
+#: src/views/config/ConfigEditor.vue:246
 #, fuzzy
 msgid "Add Configuration"
 msgstr "Modifier la configuration"
@@ -129,7 +129,7 @@ msgstr ""
 msgid "All"
 msgstr "Tous"
 
-#: src/components/Notification/notifications.ts:175
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "Tous les codes de récupération ont été utilisés"
@@ -288,7 +288,12 @@ msgstr "Options d'authentification"
 msgid "Author"
 msgstr "Autheur"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:201
+#: src/views/dashboard/components/PerformanceOptimization.vue:178
+#: src/views/dashboard/components/PerformanceOptimization.vue:189
+msgid "Auto"
+msgstr "Auto"
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:200
 msgid "auto = CPU cores"
 msgstr ""
 
@@ -313,7 +318,7 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr ""
 
 #: src/views/certificate/components/CertificateEditor.vue:257
-#: src/views/config/ConfigEditor.vue:262 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigEditor.vue:268 src/views/config/ConfigList.vue:112
 #: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/SiteEdit.vue:285
 #: src/views/stream/StreamEdit.vue:264
@@ -367,7 +372,7 @@ msgstr ""
 msgid "Base information"
 msgstr "Information générale"
 
-#: src/views/config/ConfigEditor.vue:290
+#: src/views/config/ConfigEditor.vue:296
 #: src/views/site/site_edit/RightSettings.vue:52
 #: src/views/stream/components/RightSettings.vue:79
 msgid "Basic"
@@ -412,7 +417,7 @@ msgid "CA Dir"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:141
-#: src/views/dashboard/components/PerformanceTablesCard.vue:95
+#: src/views/dashboard/components/PerformanceTablesCard.vue:94
 msgid "Cache manager processes"
 msgstr ""
 
@@ -426,7 +431,7 @@ msgid "CADir"
 msgstr ""
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:43
-#: src/views/dashboard/components/PerformanceTablesCard.vue:191
+#: src/views/dashboard/components/PerformanceTablesCard.vue:190
 msgid ""
 "Calculated based on worker_processes * worker_connections. Actual "
 "performance depends on hardware, configuration, and workload"
@@ -456,7 +461,7 @@ msgstr "Interdire la modification du mot de passe root dans la démo"
 msgid "Cannot compare: Missing content"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:131
+#: src/views/dashboard/NginxDashBoard.vue:132
 msgid "Cannot get performance data in this state"
 msgstr ""
 
@@ -473,18 +478,18 @@ msgstr "Auto Cert"
 msgid "Cert path is not under the nginx conf dir"
 msgstr "Le chemin du certificat n'est pas dans le dossier conf de nginx"
 
-#: src/components/Notification/notifications.ts:28
+#: src/components/Notification/notifications.ts:134
 #, fuzzy
 msgid "Certificate %{name} has expired"
 msgstr "Modèles de configuration"
 
-#: src/components/Notification/notifications.ts:32
-#: src/components/Notification/notifications.ts:36
-#: src/components/Notification/notifications.ts:40
+#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:146
 msgid "Certificate %{name} will expire in %{days} days"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:44
+#: src/components/Notification/notifications.ts:150
 msgid "Certificate %{name} will expire in 1 day"
 msgstr ""
 
@@ -493,19 +498,19 @@ msgstr ""
 msgid "Certificate decode error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:31
+#: src/components/Notification/notifications.ts:137
 #, fuzzy
 msgid "Certificate Expiration Notice"
 msgstr "Modèles de configuration"
 
-#: src/components/Notification/notifications.ts:27
+#: src/components/Notification/notifications.ts:133
 #, fuzzy
 msgid "Certificate Expired"
 msgstr "Liste des certifications"
 
-#: src/components/Notification/notifications.ts:35
-#: src/components/Notification/notifications.ts:39
-#: src/components/Notification/notifications.ts:43
+#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:149
 #, fuzzy
 msgid "Certificate Expiring Soon"
 msgstr "Le certificat a expiré"
@@ -571,7 +576,7 @@ msgid_plural "Changed Certificates"
 msgstr[0] "Changer de certificat"
 msgstr[1] "Changer de certificat"
 
-#: src/views/config/ConfigEditor.vue:318
+#: src/views/config/ConfigEditor.vue:324
 #, fuzzy
 msgid "Changed Path"
 msgstr "Changer de certificat"
@@ -649,6 +654,26 @@ msgstr ""
 msgid "Click to copy"
 msgstr "Clique pour copier"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:307
+msgid "Client Body Buffer Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:289
+msgid "Client Header Buffer Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:259
+msgid "Client Max Body Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:308
+msgid "Client request body buffer size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:290
+msgid "Client request header buffer size"
+msgstr ""
+
 #: src/components/ConfigHistory/ConfigHistory.vue:169
 msgid "Close"
 msgstr ""
@@ -682,6 +707,10 @@ msgstr ""
 msgid "Compare with Current"
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:248
+msgid "Compression level, 1 is lowest, 9 is highest"
+msgstr ""
+
 #: src/constants/errors/backup.ts:14
 #, fuzzy
 msgid "Config path is empty"
@@ -700,7 +729,7 @@ msgstr "Le fichier de configuration est testé avec succès"
 msgid "Configuration History"
 msgstr "Configurations"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:168
+#: src/views/dashboard/components/PerformanceTablesCard.vue:167
 #, fuzzy
 msgid "Configuration information"
 msgstr "Configurations"
@@ -721,13 +750,17 @@ msgstr "Configurer SSL"
 msgid "Connected"
 msgstr "Connecté"
 
-#: src/views/dashboard/NginxDashBoard.vue:84
+#: src/views/dashboard/NginxDashBoard.vue:85
 msgid "Connection error, trying to reconnect..."
 msgstr ""
 
 #: src/views/terminal/Terminal.vue:142
 msgid "Connection lost, please refresh the page."
 msgstr "Connexion perdue, merci de recharger la page."
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:207
+msgid "Connection timeout period"
+msgstr ""
 
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:118
 #: src/views/site/ngx_conf/LocationEditor.vue:115
@@ -838,7 +871,7 @@ msgstr "Le compte actuel a le TOTP d'activé."
 msgid "Current account is not enabled TOTP."
 msgstr "Le compte actuel n'a pas le TOTP d'activé."
 
-#: src/views/dashboard/components/ConnectionMetricsCard.vue:28
+#: src/views/dashboard/components/ConnectionMetricsCard.vue:27
 msgid "Current active connections"
 msgstr ""
 
@@ -869,8 +902,8 @@ msgid ""
 msgstr ""
 "Personnaliser le nom du nœud local affiché dans l'indicateur d'environnement"
 
-#: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:107
-#: src/views/config/ConfigEditor.vue:158 src/views/config/ConfigList.vue:67
+#: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:110
+#: src/views/config/ConfigEditor.vue:161 src/views/config/ConfigList.vue:67
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -907,32 +940,32 @@ msgstr "Changer de certificat"
 msgid "Delete Permanently"
 msgstr "Supprimer définitivement"
 
-#: src/components/Notification/notifications.ts:75 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:9 src/language/constants.ts:50
 #, fuzzy
 msgid "Delete Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:79 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:13 src/language/constants.ts:49
 #, fuzzy
 msgid "Delete Remote Site Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:67
 #, fuzzy
 msgid "Delete Remote Stream Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:71
 #, fuzzy
 msgid "Delete Remote Stream Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:76
+#: src/components/Notification/notifications.ts:10
 #, fuzzy
 msgid "Delete site %{name} from %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:80
+#: src/components/Notification/notifications.ts:14
 #, fuzzy
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Dupliqué avec succès"
@@ -941,12 +974,12 @@ msgstr "Dupliqué avec succès"
 msgid "Delete site: %{site_name}"
 msgstr "Supprimer le site : %{site_name}"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:68
 #, fuzzy
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:72
 #, fuzzy
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Dupliqué avec succès"
@@ -965,7 +998,7 @@ msgstr "Désactivé avec succès"
 msgid "Demo"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:334
+#: src/views/config/ConfigEditor.vue:340
 msgid "Deploy"
 msgstr "Déployer"
 
@@ -1025,62 +1058,62 @@ msgstr "Désactivé"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "La désactivation du renouvellement automatique a échoué pour %{name}"
 
-#: src/components/Notification/notifications.ts:83 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:17 src/language/constants.ts:52
 #, fuzzy
 msgid "Disable Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:107
+#: src/components/Notification/notifications.ts:41
 #, fuzzy
 msgid "Disable Remote Site Maintenance Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:111
+#: src/components/Notification/notifications.ts:45
 #, fuzzy
 msgid "Disable Remote Site Maintenance Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:87 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:21 src/language/constants.ts:51
 #, fuzzy
 msgid "Disable Remote Site Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:75
 #, fuzzy
 msgid "Disable Remote Stream Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:79
 #, fuzzy
 msgid "Disable Remote Stream Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:84
+#: src/components/Notification/notifications.ts:18
 #, fuzzy
 msgid "Disable site %{name} from %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:88
+#: src/components/Notification/notifications.ts:22
 #, fuzzy
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:108
+#: src/components/Notification/notifications.ts:42
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:112
+#: src/components/Notification/notifications.ts:46
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:76
 #, fuzzy
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:80
 #, fuzzy
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Dupliqué avec succès"
@@ -1223,7 +1256,7 @@ msgstr "Modifier %{n}"
 msgid "Edit %{n}"
 msgstr "Modifier %{n}"
 
-#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:241
+#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:246
 msgid "Edit Configuration"
 msgstr "Modifier la configuration"
 
@@ -1265,6 +1298,10 @@ msgstr "Activé avec succès"
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "Échec de l'activation du renouvellement automatique pour %{name}"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:222
+msgid "Enable compression for content transfer"
+msgstr ""
+
 #: src/views/site/site_add/SiteAdd.vue:43
 msgid "Enable failed"
 msgstr "Échec de l'activation"
@@ -1274,67 +1311,67 @@ msgstr "Échec de l'activation"
 msgid "Enable HTTPS"
 msgstr "Activer TLS"
 
-#: src/components/Notification/notifications.ts:91 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:25 src/language/constants.ts:54
 #, fuzzy
 msgid "Enable Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:99
+#: src/components/Notification/notifications.ts:33
 #, fuzzy
 msgid "Enable Remote Site Maintenance Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:103
+#: src/components/Notification/notifications.ts:37
 #, fuzzy
 msgid "Enable Remote Site Maintenance Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:95 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:29 src/language/constants.ts:53
 #, fuzzy
 msgid "Enable Remote Site Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:83
 #, fuzzy
 msgid "Enable Remote Stream Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:87
 #, fuzzy
 msgid "Enable Remote Stream Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:100
+#: src/components/Notification/notifications.ts:34
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:104
+#: src/components/Notification/notifications.ts:38
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:92
+#: src/components/Notification/notifications.ts:26
 #, fuzzy
 msgid "Enable site %{name} on %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:96
+#: src/components/Notification/notifications.ts:30
 #, fuzzy
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:84
 #, fuzzy
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:88
 #, fuzzy
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/views/dashboard/NginxDashBoard.vue:149
+#: src/views/dashboard/NginxDashBoard.vue:150
 msgid "Enable stub_status module"
 msgstr ""
 
@@ -1639,6 +1676,11 @@ msgstr "Échec de l'obtention des informations sur le certificat"
 msgid "Failed to get certificate information"
 msgstr "Échec de l'obtention des informations sur le certificat"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:56
+#, fuzzy
+msgid "Failed to get Nginx performance settings"
+msgstr "Échec de l'obtention des informations sur le certificat"
+
 #: src/composables/useNginxPerformance.ts:49
 #, fuzzy
 msgid "Failed to get performance data"
@@ -1708,6 +1750,11 @@ msgstr "Erreur lecture nginx.conf"
 #, fuzzy
 msgid "Failed to revoke certificate"
 msgstr "Obtenir un certificat"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:126
+#, fuzzy
+msgid "Failed to save Nginx performance settings"
+msgstr "Échec de l'obtention des informations sur le certificat"
 
 #: src/views/site/site_edit/SiteEdit.vue:139
 #: src/views/stream/StreamEdit.vue:122
@@ -1781,15 +1828,15 @@ msgstr "Utilisateur chinois : https://mirror.ghproxy.com/"
 msgid "Form parse failed"
 msgstr "Dupliquer"
 
-#: src/views/config/ConfigEditor.vue:265
+#: src/views/config/ConfigEditor.vue:271
 msgid "Format Code"
 msgstr "Code de formatage"
 
-#: src/views/config/ConfigEditor.vue:213
+#: src/views/config/ConfigEditor.vue:218
 msgid "Format error %{msg}"
 msgstr "Erreur de format %{msg}"
 
-#: src/views/config/ConfigEditor.vue:211
+#: src/views/config/ConfigEditor.vue:216
 msgid "Format successfully"
 msgstr "Formaté avec succès"
 
@@ -1820,7 +1867,7 @@ msgstr "Enregistré avec succès"
 msgid "Generating private key for registering account"
 msgstr "Génération de clé privée pour l'enregistrement du compte"
 
-#: src/views/dashboard/NginxDashBoard.vue:140
+#: src/views/dashboard/NginxDashBoard.vue:141
 #, fuzzy
 msgid "Get data failed"
 msgstr "Enregistrement de l'utilisateur"
@@ -1838,6 +1885,18 @@ msgstr "Obtention du certificat, veuillez patienter..."
 msgid "Github Proxy"
 msgstr "Proxy Github"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:221
+msgid "GZIP Compression"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:247
+msgid "GZIP Compression Level"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:233
+msgid "GZIP Min Length"
+msgstr ""
+
 #: src/constants/errors/backup.ts:59
 msgid "Hash verification failed: file integrity compromised"
 msgstr ""
@@ -1850,7 +1909,7 @@ msgstr "Cacher"
 msgid "Higher value means better connection reuse"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:251
+#: src/views/config/ConfigEditor.vue:256
 #: src/views/site/site_edit/SiteEdit.vue:212
 #: src/views/stream/StreamEdit.vue:195
 #, fuzzy
@@ -1958,7 +2017,7 @@ msgstr ""
 msgid "Indexing..."
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:16
+#: src/views/dashboard/components/PerformanceTablesCard.vue:15
 msgid "Indicator"
 msgstr ""
 
@@ -2034,7 +2093,7 @@ msgid "Invalid file path: {0}"
 msgstr "Format de la requête invalide"
 
 #: src/views/config/components/Rename.vue:66
-#: src/views/config/ConfigEditor.vue:299
+#: src/views/config/ConfigEditor.vue:305
 msgid "Invalid filename"
 msgstr "Nom de fichier invalide"
 
@@ -2099,6 +2158,10 @@ msgstr "Auteur : %{issuer}"
 msgid "Jwt Secret"
 msgstr "Secret Jwt"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:242
+msgid "KB"
+msgstr ""
+
 #: src/views/preference/components/RecoveryCodes.vue:74
 msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
@@ -2106,6 +2169,10 @@ msgid ""
 msgstr ""
 "Garder vos codes de récupération sécurisés autant que votre mot de passe. "
 "Nous recommandons de les enregistrer avec un gestionnaire de mots de passe."
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:206
+msgid "Keepalive Timeout"
+msgstr ""
 
 #: src/views/certificate/CertificateList/certColumns.tsx:59
 #: src/views/site/cert/components/AutoCertStepOne.vue:77
@@ -2130,7 +2197,7 @@ msgstr "Custom"
 msgid "Last checked at"
 msgstr "Dernière vérification le"
 
-#: src/views/dashboard/NginxDashBoard.vue:115
+#: src/views/dashboard/NginxDashBoard.vue:116
 #, fuzzy
 msgid "Last update"
 msgstr "Dernière vérification le"
@@ -2200,7 +2267,7 @@ msgstr "Charger à partir des options"
 msgid "Load successfully"
 msgstr "Enregistré avec succès"
 
-#: src/views/dashboard/NginxDashBoard.vue:177
+#: src/views/dashboard/NginxDashBoard.vue:178
 msgid "Loading data..."
 msgstr ""
 
@@ -2280,8 +2347,8 @@ msgstr ""
 "Assurez vous d'avoir configuré un reverse proxy pour le répertoire .well-"
 "known vers HTTPChallengePort avant d'obtenir le certificat."
 
-#: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:112
-#: src/views/config/ConfigEditor.vue:163 src/views/config/ConfigList.vue:72
+#: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:115
+#: src/views/config/ConfigEditor.vue:166 src/views/config/ConfigList.vue:72
 msgid "Manage Configs"
 msgstr "Gérer les configurations"
 
@@ -2303,7 +2370,11 @@ msgstr "Gérer les utilisateurs"
 msgid "Managed Certificate"
 msgstr "Changer de certificat"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:202
+#: src/views/dashboard/components/PerformanceOptimization.vue:179
+msgid "Manual"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:201
 msgid "manually set"
 msgstr ""
 
@@ -2312,7 +2383,7 @@ msgid "Master"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:136
-#: src/views/dashboard/components/PerformanceTablesCard.vue:90
+#: src/views/dashboard/components/PerformanceTablesCard.vue:89
 msgid "Master process"
 msgstr ""
 
@@ -2334,12 +2405,21 @@ msgstr "Version actuelle"
 msgid "Max Requests Per Second"
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:260
+msgid "Maximum client request body size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:195
+#, fuzzy
+msgid "Maximum number of concurrent connections"
+msgstr "Version actuelle"
+
 #: src/composables/usePerformanceMetrics.ts:176
-#: src/views/dashboard/components/PerformanceTablesCard.vue:126
+#: src/views/dashboard/components/PerformanceTablesCard.vue:125
 msgid "Maximum number of connections per worker process"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:196
+#: src/views/dashboard/components/PerformanceTablesCard.vue:195
 msgid "Maximum worker process number:"
 msgstr ""
 
@@ -2354,6 +2434,10 @@ msgstr "Mémoire et stockage"
 
 #: src/views/dashboard/components/ResourceUsageCard.vue:51
 msgid "Memory Usage (RSS)"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:234
+msgid "Minimum file size for compression"
 msgstr ""
 
 #: src/views/preference/LogrotateSettings.vue:29
@@ -2400,7 +2484,7 @@ msgstr "Directive multiligne"
 #: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:305
+#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:311
 #: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:37
@@ -2415,7 +2499,7 @@ msgstr "Directive multiligne"
 msgid "Name"
 msgstr "Nom"
 
-#: src/views/dashboard/NginxDashBoard.vue:172
+#: src/views/dashboard/NginxDashBoard.vue:173
 msgid "Need to enable the stub_status module"
 msgstr ""
 
@@ -2445,7 +2529,7 @@ msgstr "Installer"
 msgid "New name"
 msgstr "Nom d'utilisateur"
 
-#: src/views/config/ConfigEditor.vue:318
+#: src/views/config/ConfigEditor.vue:324
 #, fuzzy
 msgid "New Path"
 msgstr "Chemin"
@@ -2490,6 +2574,11 @@ msgstr ""
 msgid "Nginx conf no stream block"
 msgstr ""
 
+#: src/constants/errors/self_check.ts:14
+#, fuzzy
+msgid "Nginx conf not include conf.d directory"
+msgstr "Vérifie si le nginx.conf inclus le répertoire sites-enabled."
+
 #: src/constants/errors/self_check.ts:6
 msgid "Nginx conf not include sites-enabled"
 msgstr ""
@@ -2528,7 +2617,7 @@ msgid "Nginx Control"
 msgstr "Contrôle Nginx"
 
 #: src/composables/usePerformanceMetrics.ts:151
-#: src/views/dashboard/components/PerformanceTablesCard.vue:105
+#: src/views/dashboard/components/PerformanceTablesCard.vue:104
 msgid "Nginx CPU usage rate"
 msgstr ""
 
@@ -2537,14 +2626,14 @@ msgid "Nginx Error Log Path"
 msgstr "Chemin du journal des erreurs Nginx"
 
 #: src/composables/useNginxPerformance.ts:43
-#: src/views/dashboard/NginxDashBoard.vue:111
-#: src/views/dashboard/NginxDashBoard.vue:130
-#: src/views/dashboard/NginxDashBoard.vue:79
+#: src/views/dashboard/NginxDashBoard.vue:112
+#: src/views/dashboard/NginxDashBoard.vue:131
+#: src/views/dashboard/NginxDashBoard.vue:80
 #: src/views/site/ngx_conf/NginxStatusAlert.vue:15
 msgid "Nginx is not running"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:111
+#: src/views/dashboard/NginxDashBoard.vue:112
 msgid "Nginx is running"
 msgstr ""
 
@@ -2558,7 +2647,7 @@ msgid "Nginx Log Directory Whitelist"
 msgstr "Erreur d'analyse de configuration Nginx"
 
 #: src/composables/usePerformanceMetrics.ts:156
-#: src/views/dashboard/components/PerformanceTablesCard.vue:110
+#: src/views/dashboard/components/PerformanceTablesCard.vue:109
 msgid "Nginx Memory usage"
 msgstr ""
 
@@ -2598,7 +2687,7 @@ msgstr "Nginx a redémarré avec succès"
 msgid "Nginx Test Config Command"
 msgstr "Commande de démarrage du terminal"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:181
+#: src/views/dashboard/components/PerformanceTablesCard.vue:180
 msgid "Nginx theoretical maximum performance"
 msgstr ""
 
@@ -2643,7 +2732,7 @@ msgstr "Non"
 msgid "No Action"
 msgstr "Action"
 
-#: src/views/dashboard/NginxDashBoard.vue:179
+#: src/views/dashboard/NginxDashBoard.vue:180
 msgid "No data"
 msgstr ""
 
@@ -2725,10 +2814,14 @@ msgstr "Certification"
 msgid "Notifier not found"
 msgstr "Fichier introuvable"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:173
+msgid "Number of concurrent worker processes, auto sets to CPU core count"
+msgstr ""
+
 #: src/composables/usePerformanceMetrics.ts:131
 #: src/composables/usePerformanceMetrics.ts:171
-#: src/views/dashboard/components/PerformanceTablesCard.vue:121
-#: src/views/dashboard/components/PerformanceTablesCard.vue:85
+#: src/views/dashboard/components/PerformanceTablesCard.vue:120
+#: src/views/dashboard/components/PerformanceTablesCard.vue:84
 msgid "Number of worker processes"
 msgstr ""
 
@@ -2748,6 +2841,10 @@ msgstr ""
 msgid ""
 "OCSP Must Staple may cause errors for some users on first access using "
 "Firefox."
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:227
+msgid "Off"
 msgstr ""
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
@@ -2781,6 +2878,10 @@ msgstr ""
 msgid "OK"
 msgstr "OK"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:226
+msgid "On"
+msgstr ""
+
 #: src/views/certificate/DNSCredential.vue:59
 msgid "Once the verification is complete, the records will be removed."
 msgstr ""
@@ -2800,6 +2901,14 @@ msgstr ""
 #: src/views/preference/Preference.vue:212
 msgid "OpenAI"
 msgstr "OpenAI"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:164
+msgid "Optimize Nginx Performance"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:158
+msgid "Optimize Performance"
+msgstr ""
 
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:231
 msgid "Or"
@@ -2822,7 +2931,7 @@ msgid "OS:"
 msgstr "OS :"
 
 #: src/composables/usePerformanceMetrics.ts:146
-#: src/views/dashboard/components/PerformanceTablesCard.vue:100
+#: src/views/dashboard/components/PerformanceTablesCard.vue:99
 msgid "Other Nginx processes"
 msgstr ""
 
@@ -2839,11 +2948,11 @@ msgstr ""
 msgid "Otp or recovery code empty"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:343
+#: src/views/config/ConfigEditor.vue:349
 msgid "Overwrite"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:347
+#: src/views/config/ConfigEditor.vue:353
 msgid "Overwrite exist file"
 msgstr ""
 
@@ -2884,7 +2993,7 @@ msgstr "Le pseudo ou mot de passe est incorect"
 msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:312
+#: src/views/config/ConfigEditor.vue:318
 #: src/views/nginx_log/NginxLogList.vue:45
 #: src/views/site/ngx_conf/LocationEditor.vue:109
 #: src/views/site/ngx_conf/LocationEditor.vue:137
@@ -2907,9 +3016,14 @@ msgstr ""
 msgid "Perform core upgrade error"
 msgstr "Erreur lors de la mise a niveau du core"
 
-#: src/views/dashboard/NginxDashBoard.vue:184
+#: src/views/dashboard/NginxDashBoard.vue:185
 msgid "Performance Metrics"
 msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:122
+#, fuzzy
+msgid "Performance settings saved successfully"
+msgstr "Désactivé avec succès"
 
 #: src/language/constants.ts:28
 msgid "Performing core upgrade"
@@ -2919,7 +3033,7 @@ msgstr "Exécution de la mise à niveau du core"
 msgid "Plain text is empty"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:173
+#: src/views/dashboard/NginxDashBoard.vue:174
 msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
@@ -2965,7 +3079,7 @@ msgstr ""
 "des informations d'identification ci-dessous pour demander l'API du "
 "fournisseur DNS."
 
-#: src/components/Notification/notifications.ts:176
+#: src/components/Notification/notifications.ts:110
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -2973,7 +3087,7 @@ msgid ""
 msgstr ""
 
 #: src/views/config/components/Rename.vue:65
-#: src/views/config/ConfigEditor.vue:298
+#: src/views/config/ConfigEditor.vue:304
 msgid "Please input a filename"
 msgstr "Veuillez renseigner un nom de fichier"
 
@@ -3075,7 +3189,7 @@ msgstr "Préparation des configurations de lego"
 msgid "Process Distribution"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:155
+#: src/views/dashboard/components/PerformanceTablesCard.vue:154
 #, fuzzy
 msgid "Process information"
 msgstr "Information générale"
@@ -3106,7 +3220,7 @@ msgid "Public Security Number"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:106
-#: src/views/dashboard/components/PerformanceTablesCard.vue:64
+#: src/views/dashboard/components/PerformanceTablesCard.vue:63
 msgid "Read requests"
 msgstr ""
 
@@ -3220,22 +3334,22 @@ msgstr "Recharger"
 msgid "Reload Nginx"
 msgstr "Rechargement de nginx"
 
-#: src/components/Notification/notifications.ts:10
+#: src/components/Notification/notifications.ts:116
 #, fuzzy
 msgid "Reload Nginx on %{node} failed, response: %{resp}"
 msgstr "Supprimer le site : %{site_name}"
 
-#: src/components/Notification/notifications.ts:14
+#: src/components/Notification/notifications.ts:120
 #, fuzzy
 msgid "Reload Nginx on %{node} successfully"
 msgstr "Mise à niveau réussie"
 
-#: src/components/Notification/notifications.ts:9
+#: src/components/Notification/notifications.ts:115
 #, fuzzy
 msgid "Reload Remote Nginx Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:13
+#: src/components/Notification/notifications.ts:119
 #, fuzzy
 msgid "Reload Remote Nginx Success"
 msgstr "Changer de certificat"
@@ -3277,64 +3391,64 @@ msgstr "Enregistré avec succès"
 msgid "Rename"
 msgstr "Nom d'utilisateur"
 
-#: src/components/Notification/notifications.ts:66
+#: src/components/Notification/notifications.ts:172
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:70
+#: src/components/Notification/notifications.ts:176
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:171
+#: src/language/constants.ts:42
 #, fuzzy
 msgid "Rename Remote Config Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:175
+#: src/language/constants.ts:41
 #, fuzzy
 msgid "Rename Remote Config Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:115
-#: src/language/constants.ts:56
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:56
 #, fuzzy
 msgid "Rename Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:119
-#: src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:53 src/language/constants.ts:55
 #, fuzzy
 msgid "Rename Remote Site Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:91
 #, fuzzy
 msgid "Rename Remote Stream Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:95
 #, fuzzy
 msgid "Rename Remote Stream Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:116
+#: src/components/Notification/notifications.ts:50
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:120
+#: src/components/Notification/notifications.ts:54
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:92
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:96
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "Dupliqué avec succès"
@@ -3373,7 +3487,7 @@ msgstr "Changer de certificat"
 msgid "Renew successfully"
 msgstr "Activé avec succès"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:142
+#: src/views/dashboard/components/PerformanceTablesCard.vue:141
 #, fuzzy
 msgid "Request statistics"
 msgstr "Statistiques du réseau"
@@ -3407,7 +3521,7 @@ msgid ""
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:111
-#: src/views/dashboard/components/PerformanceTablesCard.vue:69
+#: src/views/dashboard/components/PerformanceTablesCard.vue:68
 msgid "Responses"
 msgstr ""
 
@@ -3422,22 +3536,22 @@ msgstr "Redémarrer"
 msgid "Restart Nginx"
 msgstr "Redémarrage"
 
-#: src/components/Notification/notifications.ts:18
+#: src/components/Notification/notifications.ts:124
 #, fuzzy
 msgid "Restart Nginx on %{node} failed, response: %{resp}"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:22
+#: src/components/Notification/notifications.ts:128
 #, fuzzy
 msgid "Restart Nginx on %{node} successfully"
 msgstr "Mise à niveau réussie"
 
-#: src/components/Notification/notifications.ts:17
+#: src/components/Notification/notifications.ts:123
 #, fuzzy
 msgid "Restart Remote Nginx Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:21
+#: src/components/Notification/notifications.ts:127
 #, fuzzy
 msgid "Restart Remote Nginx Success"
 msgstr "Changer de certificat"
@@ -3523,7 +3637,7 @@ msgstr "En cours d'éxécution"
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
 #: src/views/certificate/components/CertificateEditor.vue:264
 #: src/views/config/components/ConfigName.vue:59
-#: src/views/config/ConfigEditor.vue:271
+#: src/views/config/ConfigEditor.vue:277
 #: src/views/preference/components/Passkey.vue:130
 #: src/views/preference/Preference.vue:229
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
@@ -3543,44 +3657,42 @@ msgstr "Enregistrer la directive"
 msgid "Save error %{msg}"
 msgstr "Enregistrer l'erreur %{msg}"
 
-#: src/components/Notification/notifications.ts:123
-#: src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:48
 #, fuzzy
 msgid "Save Remote Site Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:127
-#: src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:47
 #, fuzzy
 msgid "Save Remote Site Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:99
 #, fuzzy
 msgid "Save Remote Stream Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:103
 #, fuzzy
 msgid "Save Remote Stream Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:124
+#: src/components/Notification/notifications.ts:58
 #, fuzzy
 msgid "Save site %{name} to %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:128
+#: src/components/Notification/notifications.ts:62
 #, fuzzy
 msgid "Save site %{name} to %{node} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:100
 #, fuzzy
 msgid "Save stream %{name} to %{node} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:104
 #, fuzzy
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Dupliqué avec succès"
@@ -3592,7 +3704,7 @@ msgstr "Dupliqué avec succès"
 msgid "Save successfully"
 msgstr "Sauvegarde réussie"
 
-#: src/views/config/ConfigEditor.vue:191
+#: src/views/config/ConfigEditor.vue:194
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/site/site_add/SiteAdd.vue:37
 #: src/views/site/site_edit/SiteEdit.vue:157
@@ -3606,6 +3718,10 @@ msgstr ""
 
 #: src/views/certificate/DNSChallenge.vue:90
 msgid "SDK"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:216
+msgid "seconds"
 msgstr ""
 
 #: src/views/preference/components/TOTP.vue:109
@@ -3647,6 +3763,14 @@ msgstr "Informations sur le serveur"
 #: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
 msgstr "Informations sur le serveur"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:277
+msgid "Server Names Hash Bucket Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:278
+msgid "Server names hash table size"
+msgstr ""
 
 #: src/views/site/cert/components/ObtainCert.vue:107
 msgid "server_name not found in directives"
@@ -3911,42 +4035,46 @@ msgstr ""
 msgid "Sync Certificate"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:48
+#: src/components/Notification/notifications.ts:154
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:52
+#: src/components/Notification/notifications.ts:158
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:47 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:153
+#: src/language/constants.ts:39
 #, fuzzy
 msgid "Sync Certificate Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:51 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:157
+#: src/language/constants.ts:38
 #, fuzzy
 msgid "Sync Certificate Success"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:58
+#: src/components/Notification/notifications.ts:164
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:62
+#: src/components/Notification/notifications.ts:168
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "Dupliqué avec succès"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:163
+#: src/language/constants.ts:45
 #, fuzzy
 msgid "Sync Config Error"
 msgstr "Changer de certificat"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:167
+#: src/language/constants.ts:44
 #, fuzzy
 msgid "Sync Config Success"
 msgstr "Changer de certificat"
@@ -4114,11 +4242,11 @@ msgstr ""
 msgid "The username or password is incorrect"
 msgstr "Le pseudo ou mot de passe est incorect"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:185
+#: src/views/dashboard/components/PerformanceTablesCard.vue:184
 msgid "Theoretical maximum concurrent connections:"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:189
+#: src/views/dashboard/components/PerformanceTablesCard.vue:188
 msgid "Theoretical maximum RPS (Requests Per Second):"
 msgstr ""
 
@@ -4164,7 +4292,7 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:152
+#: src/views/dashboard/NginxDashBoard.vue:153
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
@@ -4216,7 +4344,7 @@ msgstr ""
 msgid "Tips"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:207
+#: src/views/dashboard/components/PerformanceTablesCard.vue:206
 msgid ""
 "Tips: You can increase the concurrency processing capacity by increasing "
 "worker_processes or worker_connections"
@@ -4262,7 +4390,7 @@ msgid ""
 "local API."
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:56
+#: src/views/dashboard/NginxDashBoard.vue:57
 #, fuzzy
 msgid "Toggle failed"
 msgstr "Échec de l'activation"
@@ -4278,12 +4406,12 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: src/composables/usePerformanceMetrics.ts:96
-#: src/views/dashboard/components/PerformanceTablesCard.vue:54
+#: src/views/dashboard/components/PerformanceTablesCard.vue:53
 msgid "Total connections"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:91
-#: src/views/dashboard/components/PerformanceTablesCard.vue:49
+#: src/views/dashboard/components/PerformanceTablesCard.vue:48
 msgid "Total handshakes"
 msgstr ""
 
@@ -4296,7 +4424,7 @@ msgid "Total Nginx Processes"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:101
-#: src/views/dashboard/components/PerformanceTablesCard.vue:59
+#: src/views/dashboard/components/PerformanceTablesCard.vue:58
 msgid "Total requests"
 msgstr ""
 
@@ -4344,7 +4472,7 @@ msgstr "Mis à jour avec succés"
 
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
-#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:325
+#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:331
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:75
@@ -4427,7 +4555,7 @@ msgstr "Nom d'utilisateur (*)"
 msgid "Valid"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:22
+#: src/views/dashboard/components/PerformanceTablesCard.vue:21
 msgid "Value"
 msgstr ""
 
@@ -4471,7 +4599,7 @@ msgid "Viewed"
 msgstr "Voir"
 
 #: src/composables/usePerformanceMetrics.ts:116
-#: src/views/dashboard/components/PerformanceTablesCard.vue:74
+#: src/views/dashboard/components/PerformanceTablesCard.vue:73
 msgid "Waiting processes"
 msgstr ""
 
@@ -4542,8 +4670,14 @@ msgid ""
 "codes."
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:194
+#, fuzzy
+msgid "Worker Connections"
+msgstr "Version actuelle"
+
 #: src/composables/usePerformanceMetrics.ts:57
-#: src/views/dashboard/components/ConnectionMetricsCard.vue:49
+#: src/views/dashboard/components/ConnectionMetricsCard.vue:48
+#: src/views/dashboard/components/PerformanceOptimization.vue:172
 #: src/views/dashboard/components/ProcessDistributionCard.vue:12
 msgid "Worker Processes"
 msgstr ""
@@ -4813,9 +4947,6 @@ msgstr ""
 
 #~ msgid "Dir"
 #~ msgstr "Répertoire"
-
-#~ msgid "Auto"
-#~ msgstr "Auto"
 
 #~ msgid "Dark"
 #~ msgstr "Sombre"

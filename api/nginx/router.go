@@ -23,4 +23,8 @@ func InitRouter(r *gin.RouterGroup) {
 	r.POST("nginx/stub_status", ToggleStubStatus)
 	r.POST("nginx_log", nginx_log.GetNginxLogPage)
 	r.GET("nginx/directives", GetDirectives)
+
+	// Performance optimization endpoints
+	r.GET("nginx/performance", GetPerformanceSettings)
+	r.POST("nginx/performance", UpdatePerformanceSettings)
 }

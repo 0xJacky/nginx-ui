@@ -56,7 +56,7 @@ msgid "Action"
 msgstr "작업"
 
 #: src/composables/usePerformanceMetrics.ts:86
-#: src/views/dashboard/components/PerformanceTablesCard.vue:44
+#: src/views/dashboard/components/PerformanceTablesCard.vue:43
 msgid "Active connections"
 msgstr ""
 
@@ -79,8 +79,8 @@ msgstr "추가"
 msgid "Add a passkey"
 msgstr ""
 
-#: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:168
-#: src/views/config/ConfigEditor.vue:241
+#: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:171
+#: src/views/config/ConfigEditor.vue:246
 msgid "Add Configuration"
 msgstr "구성 추가"
 
@@ -123,7 +123,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:175
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr ""
@@ -265,7 +265,12 @@ msgstr "인증 설정"
 msgid "Author"
 msgstr "저자"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:201
+#: src/views/dashboard/components/PerformanceOptimization.vue:178
+#: src/views/dashboard/components/PerformanceOptimization.vue:189
+msgid "Auto"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:200
 msgid "auto = CPU cores"
 msgstr ""
 
@@ -290,7 +295,7 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr "사이트 및 스트림 구성에서 자동으로 색인됩니다."
 
 #: src/views/certificate/components/CertificateEditor.vue:257
-#: src/views/config/ConfigEditor.vue:262 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigEditor.vue:268 src/views/config/ConfigList.vue:112
 #: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/SiteEdit.vue:285
 #: src/views/stream/StreamEdit.vue:264
@@ -344,7 +349,7 @@ msgstr ""
 msgid "Base information"
 msgstr "기본 정보"
 
-#: src/views/config/ConfigEditor.vue:290
+#: src/views/config/ConfigEditor.vue:296
 #: src/views/site/site_edit/RightSettings.vue:52
 #: src/views/stream/components/RightSettings.vue:79
 msgid "Basic"
@@ -386,7 +391,7 @@ msgid "CA Dir"
 msgstr "CA 디렉토리"
 
 #: src/composables/usePerformanceMetrics.ts:141
-#: src/views/dashboard/components/PerformanceTablesCard.vue:95
+#: src/views/dashboard/components/PerformanceTablesCard.vue:94
 msgid "Cache manager processes"
 msgstr ""
 
@@ -400,7 +405,7 @@ msgid "CADir"
 msgstr "CA 디렉토리"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:43
-#: src/views/dashboard/components/PerformanceTablesCard.vue:191
+#: src/views/dashboard/components/PerformanceTablesCard.vue:190
 msgid ""
 "Calculated based on worker_processes * worker_connections. Actual "
 "performance depends on hardware, configuration, and workload"
@@ -430,7 +435,7 @@ msgstr "데모에서 루트 비밀번호 변경 금지"
 msgid "Cannot compare: Missing content"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:131
+#: src/views/dashboard/NginxDashBoard.vue:132
 msgid "Cannot get performance data in this state"
 msgstr ""
 
@@ -447,18 +452,18 @@ msgstr "자동 인증"
 msgid "Cert path is not under the nginx conf dir"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:28
+#: src/components/Notification/notifications.ts:134
 #, fuzzy
 msgid "Certificate %{name} has expired"
 msgstr "구성 템플릿"
 
-#: src/components/Notification/notifications.ts:32
-#: src/components/Notification/notifications.ts:36
-#: src/components/Notification/notifications.ts:40
+#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:146
 msgid "Certificate %{name} will expire in %{days} days"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:44
+#: src/components/Notification/notifications.ts:150
 msgid "Certificate %{name} will expire in 1 day"
 msgstr ""
 
@@ -467,19 +472,19 @@ msgstr ""
 msgid "Certificate decode error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:31
+#: src/components/Notification/notifications.ts:137
 #, fuzzy
 msgid "Certificate Expiration Notice"
 msgstr "구성 템플릿"
 
-#: src/components/Notification/notifications.ts:27
+#: src/components/Notification/notifications.ts:133
 #, fuzzy
 msgid "Certificate Expired"
 msgstr "인증서 목록"
 
-#: src/components/Notification/notifications.ts:35
-#: src/components/Notification/notifications.ts:39
-#: src/components/Notification/notifications.ts:43
+#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:149
 #, fuzzy
 msgid "Certificate Expiring Soon"
 msgstr "인증서가 만료되었습니다"
@@ -541,7 +546,7 @@ msgid_plural "Changed Certificates"
 msgstr[0] "인증서 변경"
 msgstr[1] "인증서 변경"
 
-#: src/views/config/ConfigEditor.vue:318
+#: src/views/config/ConfigEditor.vue:324
 #, fuzzy
 msgid "Changed Path"
 msgstr "인증서 변경"
@@ -613,6 +618,26 @@ msgstr ""
 msgid "Click to copy"
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:307
+msgid "Client Body Buffer Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:289
+msgid "Client Header Buffer Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:259
+msgid "Client Max Body Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:308
+msgid "Client request body buffer size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:290
+msgid "Client request header buffer size"
+msgstr ""
+
 #: src/components/ConfigHistory/ConfigHistory.vue:169
 msgid "Close"
 msgstr ""
@@ -645,6 +670,10 @@ msgstr ""
 msgid "Compare with Current"
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:248
+msgid "Compression level, 1 is lowest, 9 is highest"
+msgstr ""
+
 #: src/constants/errors/backup.ts:14
 #, fuzzy
 msgid "Config path is empty"
@@ -663,7 +692,7 @@ msgstr "구성 파일 테스트 성공"
 msgid "Configuration History"
 msgstr "구성들"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:168
+#: src/views/dashboard/components/PerformanceTablesCard.vue:167
 #, fuzzy
 msgid "Configuration information"
 msgstr "구성들"
@@ -684,13 +713,17 @@ msgstr "SSL 구성하기"
 msgid "Connected"
 msgstr "연결됨"
 
-#: src/views/dashboard/NginxDashBoard.vue:84
+#: src/views/dashboard/NginxDashBoard.vue:85
 msgid "Connection error, trying to reconnect..."
 msgstr ""
 
 #: src/views/terminal/Terminal.vue:142
 msgid "Connection lost, please refresh the page."
 msgstr "연결이 끊어졌습니다. 페이지를 새로 고침하세요."
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:207
+msgid "Connection timeout period"
+msgstr ""
 
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:118
 #: src/views/site/ngx_conf/LocationEditor.vue:115
@@ -799,7 +832,7 @@ msgstr ""
 msgid "Current account is not enabled TOTP."
 msgstr ""
 
-#: src/views/dashboard/components/ConnectionMetricsCard.vue:28
+#: src/views/dashboard/components/ConnectionMetricsCard.vue:27
 msgid "Current active connections"
 msgstr ""
 
@@ -828,8 +861,8 @@ msgid ""
 "indicator."
 msgstr ""
 
-#: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:107
-#: src/views/config/ConfigEditor.vue:158 src/views/config/ConfigList.vue:67
+#: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:110
+#: src/views/config/ConfigEditor.vue:161 src/views/config/ConfigList.vue:67
 msgid "Dashboard"
 msgstr "대시보드"
 
@@ -866,32 +899,32 @@ msgstr "인증서 갱신"
 msgid "Delete Permanently"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:75 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:9 src/language/constants.ts:50
 #, fuzzy
 msgid "Delete Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:79 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:13 src/language/constants.ts:49
 #, fuzzy
 msgid "Delete Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:67
 #, fuzzy
 msgid "Delete Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:71
 #, fuzzy
 msgid "Delete Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:76
+#: src/components/Notification/notifications.ts:10
 #, fuzzy
 msgid "Delete site %{name} from %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 배포 실패"
 
-#: src/components/Notification/notifications.ts:80
+#: src/components/Notification/notifications.ts:14
 #, fuzzy
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
@@ -900,12 +933,12 @@ msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 msgid "Delete site: %{site_name}"
 msgstr "사이트 삭제: %{site_name}"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:68
 #, fuzzy
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 배포 실패"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:72
 #, fuzzy
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
@@ -922,7 +955,7 @@ msgstr "성공적으로 삭제됨"
 msgid "Demo"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:334
+#: src/views/config/ConfigEditor.vue:340
 msgid "Deploy"
 msgstr "배포"
 
@@ -980,62 +1013,62 @@ msgstr "비활성화"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "%{name}의 자동 갱신 비활성화 실패"
 
-#: src/components/Notification/notifications.ts:83 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:17 src/language/constants.ts:52
 #, fuzzy
 msgid "Disable Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:107
+#: src/components/Notification/notifications.ts:41
 #, fuzzy
 msgid "Disable Remote Site Maintenance Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:111
+#: src/components/Notification/notifications.ts:45
 #, fuzzy
 msgid "Disable Remote Site Maintenance Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:87 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:21 src/language/constants.ts:51
 #, fuzzy
 msgid "Disable Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:75
 #, fuzzy
 msgid "Disable Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:79
 #, fuzzy
 msgid "Disable Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:84
+#: src/components/Notification/notifications.ts:18
 #, fuzzy
 msgid "Disable site %{name} from %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:88
+#: src/components/Notification/notifications.ts:22
 #, fuzzy
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:108
+#: src/components/Notification/notifications.ts:42
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:112
+#: src/components/Notification/notifications.ts:46
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:76
 #, fuzzy
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:80
 #, fuzzy
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
@@ -1167,7 +1200,7 @@ msgstr "%{n} 편집"
 msgid "Edit %{n}"
 msgstr "%{n} 편집"
 
-#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:241
+#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:246
 msgid "Edit Configuration"
 msgstr "구성 편집"
 
@@ -1207,6 +1240,10 @@ msgstr "성공적으로 활성화"
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "%{name}에 대한 자동 갱신 활성화 실패"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:222
+msgid "Enable compression for content transfer"
+msgstr ""
+
 #: src/views/site/site_add/SiteAdd.vue:43
 msgid "Enable failed"
 msgstr "활성화 실패"
@@ -1216,67 +1253,67 @@ msgstr "활성화 실패"
 msgid "Enable HTTPS"
 msgstr "TLS 활성화"
 
-#: src/components/Notification/notifications.ts:91 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:25 src/language/constants.ts:54
 #, fuzzy
 msgid "Enable Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:99
+#: src/components/Notification/notifications.ts:33
 #, fuzzy
 msgid "Enable Remote Site Maintenance Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:103
+#: src/components/Notification/notifications.ts:37
 #, fuzzy
 msgid "Enable Remote Site Maintenance Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:95 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:29 src/language/constants.ts:53
 #, fuzzy
 msgid "Enable Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:83
 #, fuzzy
 msgid "Enable Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:87
 #, fuzzy
 msgid "Enable Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:100
+#: src/components/Notification/notifications.ts:34
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:104
+#: src/components/Notification/notifications.ts:38
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:92
+#: src/components/Notification/notifications.ts:26
 #, fuzzy
 msgid "Enable site %{name} on %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:96
+#: src/components/Notification/notifications.ts:30
 #, fuzzy
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:84
 #, fuzzy
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:88
 #, fuzzy
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/views/dashboard/NginxDashBoard.vue:149
+#: src/views/dashboard/NginxDashBoard.vue:150
 msgid "Enable stub_status module"
 msgstr ""
 
@@ -1579,6 +1616,11 @@ msgstr "인증서 정보 가져오기 실패"
 msgid "Failed to get certificate information"
 msgstr "인증서 정보 가져오기 실패"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:56
+#, fuzzy
+msgid "Failed to get Nginx performance settings"
+msgstr "인증서 정보 가져오기 실패"
+
 #: src/composables/useNginxPerformance.ts:49
 #, fuzzy
 msgid "Failed to get performance data"
@@ -1642,6 +1684,11 @@ msgstr ""
 #, fuzzy
 msgid "Failed to revoke certificate"
 msgstr "인증서 획득 실패"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:126
+#, fuzzy
+msgid "Failed to save Nginx performance settings"
+msgstr "인증서 정보 가져오기 실패"
 
 #: src/views/site/site_edit/SiteEdit.vue:139
 #: src/views/stream/StreamEdit.vue:122
@@ -1709,16 +1756,16 @@ msgstr "중국 사용자를 위해: https://mirror.ghproxy.com/"
 msgid "Form parse failed"
 msgstr "복제 실패"
 
-#: src/views/config/ConfigEditor.vue:265
+#: src/views/config/ConfigEditor.vue:271
 msgid "Format Code"
 msgstr "코드 형식"
 
-#: src/views/config/ConfigEditor.vue:213
+#: src/views/config/ConfigEditor.vue:218
 #, fuzzy
 msgid "Format error %{msg}"
 msgstr "형식 오류 %{msg}"
 
-#: src/views/config/ConfigEditor.vue:211
+#: src/views/config/ConfigEditor.vue:216
 #, fuzzy
 msgid "Format successfully"
 msgstr "성공적으로 형식 지정됨"
@@ -1750,7 +1797,7 @@ msgstr "성공적으로 제거됨"
 msgid "Generating private key for registering account"
 msgstr "계정 등록을 위한 개인 키 생성 중"
 
-#: src/views/dashboard/NginxDashBoard.vue:140
+#: src/views/dashboard/NginxDashBoard.vue:141
 #, fuzzy
 msgid "Get data failed"
 msgstr "사용자 등록 중"
@@ -1769,6 +1816,18 @@ msgstr "인증서를 가져오는 중입니다. 잠시 기다려 주세요..."
 msgid "Github Proxy"
 msgstr "Github 프록시"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:221
+msgid "GZIP Compression"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:247
+msgid "GZIP Compression Level"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:233
+msgid "GZIP Min Length"
+msgstr ""
+
 #: src/constants/errors/backup.ts:59
 msgid "Hash verification failed: file integrity compromised"
 msgstr ""
@@ -1781,7 +1840,7 @@ msgstr ""
 msgid "Higher value means better connection reuse"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:251
+#: src/views/config/ConfigEditor.vue:256
 #: src/views/site/site_edit/SiteEdit.vue:212
 #: src/views/stream/StreamEdit.vue:195
 #, fuzzy
@@ -1876,7 +1935,7 @@ msgstr ""
 msgid "Indexing..."
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:16
+#: src/views/dashboard/components/PerformanceTablesCard.vue:15
 msgid "Indicator"
 msgstr ""
 
@@ -1952,7 +2011,7 @@ msgid "Invalid file path: {0}"
 msgstr "Invalid E-mail!"
 
 #: src/views/config/components/Rename.vue:66
-#: src/views/config/ConfigEditor.vue:299
+#: src/views/config/ConfigEditor.vue:305
 #, fuzzy
 msgid "Invalid filename"
 msgstr "Invalid E-mail!"
@@ -2018,10 +2077,18 @@ msgstr ""
 msgid "Jwt Secret"
 msgstr "Jwt 토큰"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:242
+msgid "KB"
+msgstr ""
+
 #: src/views/preference/components/RecoveryCodes.vue:74
 msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
 "with a password manager."
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:206
+msgid "Keepalive Timeout"
 msgstr ""
 
 #: src/views/certificate/CertificateList/certColumns.tsx:59
@@ -2046,7 +2113,7 @@ msgstr "사용자 정의"
 msgid "Last checked at"
 msgstr "마지막 확인 시간"
 
-#: src/views/dashboard/NginxDashBoard.vue:115
+#: src/views/dashboard/NginxDashBoard.vue:116
 #, fuzzy
 msgid "Last update"
 msgstr "마지막 확인 시간"
@@ -2116,7 +2183,7 @@ msgstr ""
 msgid "Load successfully"
 msgstr "성공적으로 저장됨"
 
-#: src/views/dashboard/NginxDashBoard.vue:177
+#: src/views/dashboard/NginxDashBoard.vue:178
 msgid "Loading data..."
 msgstr ""
 
@@ -2198,8 +2265,8 @@ msgstr ""
 "인증서를 획득하기 전에 .well-known 디렉토리에 대한역방향 프록시를 "
 "HTTPChallengePort(기본값: 9180)로 구성했는지 확인하세요."
 
-#: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:112
-#: src/views/config/ConfigEditor.vue:163 src/views/config/ConfigList.vue:72
+#: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:115
+#: src/views/config/ConfigEditor.vue:166 src/views/config/ConfigList.vue:72
 msgid "Manage Configs"
 msgstr "구성 관리"
 
@@ -2221,7 +2288,11 @@ msgstr "사용자 관리"
 msgid "Managed Certificate"
 msgstr "인증서 유효"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:202
+#: src/views/dashboard/components/PerformanceOptimization.vue:179
+msgid "Manual"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceTablesCard.vue:201
 msgid "manually set"
 msgstr ""
 
@@ -2230,7 +2301,7 @@ msgid "Master"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:136
-#: src/views/dashboard/components/PerformanceTablesCard.vue:90
+#: src/views/dashboard/components/PerformanceTablesCard.vue:89
 msgid "Master process"
 msgstr ""
 
@@ -2252,12 +2323,21 @@ msgstr "현재 버전"
 msgid "Max Requests Per Second"
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:260
+msgid "Maximum client request body size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:195
+#, fuzzy
+msgid "Maximum number of concurrent connections"
+msgstr "현재 버전"
+
 #: src/composables/usePerformanceMetrics.ts:176
-#: src/views/dashboard/components/PerformanceTablesCard.vue:126
+#: src/views/dashboard/components/PerformanceTablesCard.vue:125
 msgid "Maximum number of connections per worker process"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:196
+#: src/views/dashboard/components/PerformanceTablesCard.vue:195
 msgid "Maximum worker process number:"
 msgstr ""
 
@@ -2272,6 +2352,10 @@ msgstr "메모리 및 저장소"
 
 #: src/views/dashboard/components/ResourceUsageCard.vue:51
 msgid "Memory Usage (RSS)"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:234
+msgid "Minimum file size for compression"
 msgstr ""
 
 #: src/views/preference/LogrotateSettings.vue:29
@@ -2320,7 +2404,7 @@ msgstr "단일 지시문"
 #: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:305
+#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:311
 #: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:37
@@ -2335,7 +2419,7 @@ msgstr "단일 지시문"
 msgid "Name"
 msgstr "이름"
 
-#: src/views/dashboard/NginxDashBoard.vue:172
+#: src/views/dashboard/NginxDashBoard.vue:173
 msgid "Need to enable the stub_status module"
 msgstr ""
 
@@ -2365,7 +2449,7 @@ msgstr "설치"
 msgid "New name"
 msgstr "이름 변경"
 
-#: src/views/config/ConfigEditor.vue:318
+#: src/views/config/ConfigEditor.vue:324
 #, fuzzy
 msgid "New Path"
 msgstr "경로"
@@ -2409,6 +2493,11 @@ msgstr ""
 msgid "Nginx conf no stream block"
 msgstr ""
 
+#: src/constants/errors/self_check.ts:14
+#, fuzzy
+msgid "Nginx conf not include conf.d directory"
+msgstr "터미널 시작 명령"
+
 #: src/constants/errors/self_check.ts:6
 msgid "Nginx conf not include sites-enabled"
 msgstr ""
@@ -2448,7 +2537,7 @@ msgid "Nginx Control"
 msgstr "Nginx 제어"
 
 #: src/composables/usePerformanceMetrics.ts:151
-#: src/views/dashboard/components/PerformanceTablesCard.vue:105
+#: src/views/dashboard/components/PerformanceTablesCard.vue:104
 msgid "Nginx CPU usage rate"
 msgstr ""
 
@@ -2457,14 +2546,14 @@ msgid "Nginx Error Log Path"
 msgstr "Nginx 오류 로그 경로"
 
 #: src/composables/useNginxPerformance.ts:43
-#: src/views/dashboard/NginxDashBoard.vue:111
-#: src/views/dashboard/NginxDashBoard.vue:130
-#: src/views/dashboard/NginxDashBoard.vue:79
+#: src/views/dashboard/NginxDashBoard.vue:112
+#: src/views/dashboard/NginxDashBoard.vue:131
+#: src/views/dashboard/NginxDashBoard.vue:80
 #: src/views/site/ngx_conf/NginxStatusAlert.vue:15
 msgid "Nginx is not running"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:111
+#: src/views/dashboard/NginxDashBoard.vue:112
 msgid "Nginx is running"
 msgstr ""
 
@@ -2477,7 +2566,7 @@ msgid "Nginx Log Directory Whitelist"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:156
-#: src/views/dashboard/components/PerformanceTablesCard.vue:110
+#: src/views/dashboard/components/PerformanceTablesCard.vue:109
 msgid "Nginx Memory usage"
 msgstr ""
 
@@ -2518,7 +2607,7 @@ msgstr "Nginx가 성공적으로 재시작됨"
 msgid "Nginx Test Config Command"
 msgstr "터미널 시작 명령"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:181
+#: src/views/dashboard/components/PerformanceTablesCard.vue:180
 msgid "Nginx theoretical maximum performance"
 msgstr ""
 
@@ -2563,7 +2652,7 @@ msgstr "아니요"
 msgid "No Action"
 msgstr "작업"
 
-#: src/views/dashboard/NginxDashBoard.vue:179
+#: src/views/dashboard/NginxDashBoard.vue:180
 msgid "No data"
 msgstr ""
 
@@ -2644,10 +2733,14 @@ msgstr "알림"
 msgid "Notifier not found"
 msgstr "파일을 찾을 수 없음"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:173
+msgid "Number of concurrent worker processes, auto sets to CPU core count"
+msgstr ""
+
 #: src/composables/usePerformanceMetrics.ts:131
 #: src/composables/usePerformanceMetrics.ts:171
-#: src/views/dashboard/components/PerformanceTablesCard.vue:121
-#: src/views/dashboard/components/PerformanceTablesCard.vue:85
+#: src/views/dashboard/components/PerformanceTablesCard.vue:120
+#: src/views/dashboard/components/PerformanceTablesCard.vue:84
 msgid "Number of worker processes"
 msgstr ""
 
@@ -2669,6 +2762,11 @@ msgid ""
 "OCSP Must Staple may cause errors for some users on first access using "
 "Firefox."
 msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:227
+#, fuzzy
+msgid "Off"
+msgstr "오프라인"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
 #: src/components/NodeSelector/NodeSelector.vue:109
@@ -2701,6 +2799,10 @@ msgstr ""
 msgid "OK"
 msgstr "확인"
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:226
+msgid "On"
+msgstr ""
+
 #: src/views/certificate/DNSCredential.vue:59
 msgid "Once the verification is complete, the records will be removed."
 msgstr "검증이 완료되면, 레코드는 제거됩니다."
@@ -2720,6 +2822,14 @@ msgstr ""
 #: src/views/preference/Preference.vue:212
 msgid "OpenAI"
 msgstr "오픈AI"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:164
+msgid "Optimize Nginx Performance"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:158
+msgid "Optimize Performance"
+msgstr ""
 
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:231
 msgid "Or"
@@ -2743,7 +2853,7 @@ msgid "OS:"
 msgstr "OS:"
 
 #: src/composables/usePerformanceMetrics.ts:146
-#: src/views/dashboard/components/PerformanceTablesCard.vue:100
+#: src/views/dashboard/components/PerformanceTablesCard.vue:99
 msgid "Other Nginx processes"
 msgstr ""
 
@@ -2760,11 +2870,11 @@ msgstr ""
 msgid "Otp or recovery code empty"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:343
+#: src/views/config/ConfigEditor.vue:349
 msgid "Overwrite"
 msgstr "덮어쓰기"
 
-#: src/views/config/ConfigEditor.vue:347
+#: src/views/config/ConfigEditor.vue:353
 msgid "Overwrite exist file"
 msgstr "기존 파일 덮어쓰기"
 
@@ -2805,7 +2915,7 @@ msgstr "사용자 이름 또는 비밀번호가 올바르지 않습니다"
 msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:312
+#: src/views/config/ConfigEditor.vue:318
 #: src/views/nginx_log/NginxLogList.vue:45
 #: src/views/site/ngx_conf/LocationEditor.vue:109
 #: src/views/site/ngx_conf/LocationEditor.vue:137
@@ -2828,9 +2938,14 @@ msgstr ""
 msgid "Perform core upgrade error"
 msgstr "핵심 업그레이드 오류 수행"
 
-#: src/views/dashboard/NginxDashBoard.vue:184
+#: src/views/dashboard/NginxDashBoard.vue:185
 msgid "Performance Metrics"
 msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:122
+#, fuzzy
+msgid "Performance settings saved successfully"
+msgstr "성공적으로 비활성화됨"
 
 #: src/language/constants.ts:28
 msgid "Performing core upgrade"
@@ -2840,7 +2955,7 @@ msgstr "핵심 업그레이드 수행 중"
 msgid "Plain text is empty"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:173
+#: src/views/dashboard/NginxDashBoard.vue:174
 msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
@@ -2883,7 +2998,7 @@ msgstr ""
 "먼저 인증서 > DNS 자격 증명에 자격 증명을 추가한 다음,DNS 제공자의 API를 요청"
 "하려면 아래 자격 증명 중 하나를 선택해주세요."
 
-#: src/components/Notification/notifications.ts:176
+#: src/components/Notification/notifications.ts:110
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -2891,7 +3006,7 @@ msgid ""
 msgstr ""
 
 #: src/views/config/components/Rename.vue:65
-#: src/views/config/ConfigEditor.vue:298
+#: src/views/config/ConfigEditor.vue:304
 #, fuzzy
 msgid "Please input a filename"
 msgstr "사용자 이름을 입력해주세요!"
@@ -2995,7 +3110,7 @@ msgstr "lego 구성 준비 중"
 msgid "Process Distribution"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:155
+#: src/views/dashboard/components/PerformanceTablesCard.vue:154
 #, fuzzy
 msgid "Process information"
 msgstr "기본 정보"
@@ -3026,7 +3141,7 @@ msgid "Public Security Number"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:106
-#: src/views/dashboard/components/PerformanceTablesCard.vue:64
+#: src/views/dashboard/components/PerformanceTablesCard.vue:63
 msgid "Read requests"
 msgstr ""
 
@@ -3139,22 +3254,22 @@ msgstr "리로드"
 msgid "Reload Nginx"
 msgstr "Nginx 리로딩 중"
 
-#: src/components/Notification/notifications.ts:10
+#: src/components/Notification/notifications.ts:116
 #, fuzzy
 msgid "Reload Nginx on %{node} failed, response: %{resp}"
 msgstr "사이트 삭제: %{site_name}"
 
-#: src/components/Notification/notifications.ts:14
+#: src/components/Notification/notifications.ts:120
 #, fuzzy
 msgid "Reload Nginx on %{node} successfully"
 msgstr "성공적으로 저장되었습니다"
 
-#: src/components/Notification/notifications.ts:9
+#: src/components/Notification/notifications.ts:115
 #, fuzzy
 msgid "Reload Remote Nginx Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:13
+#: src/components/Notification/notifications.ts:119
 #, fuzzy
 msgid "Reload Remote Nginx Success"
 msgstr "인증서 갱신 성공"
@@ -3196,64 +3311,64 @@ msgstr "성공적으로 제거됨"
 msgid "Rename"
 msgstr "이름 변경"
 
-#: src/components/Notification/notifications.ts:66
+#: src/components/Notification/notifications.ts:172
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:70
+#: src/components/Notification/notifications.ts:176
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:171
+#: src/language/constants.ts:42
 #, fuzzy
 msgid "Rename Remote Config Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:175
+#: src/language/constants.ts:41
 #, fuzzy
 msgid "Rename Remote Config Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:115
-#: src/language/constants.ts:56
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:56
 #, fuzzy
 msgid "Rename Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:119
-#: src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:53 src/language/constants.ts:55
 #, fuzzy
 msgid "Rename Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:91
 #, fuzzy
 msgid "Rename Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:95
 #, fuzzy
 msgid "Rename Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:116
+#: src/components/Notification/notifications.ts:50
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:120
+#: src/components/Notification/notifications.ts:54
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:92
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:96
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
@@ -3292,7 +3407,7 @@ msgstr "인증서 갱신 성공"
 msgid "Renew successfully"
 msgstr "성공적으로 갱신됨"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:142
+#: src/views/dashboard/components/PerformanceTablesCard.vue:141
 #, fuzzy
 msgid "Request statistics"
 msgstr "네트워크 통계"
@@ -3326,7 +3441,7 @@ msgid ""
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:111
-#: src/views/dashboard/components/PerformanceTablesCard.vue:69
+#: src/views/dashboard/components/PerformanceTablesCard.vue:68
 msgid "Responses"
 msgstr ""
 
@@ -3341,22 +3456,22 @@ msgstr "재시작"
 msgid "Restart Nginx"
 msgstr "재시작 중"
 
-#: src/components/Notification/notifications.ts:18
+#: src/components/Notification/notifications.ts:124
 #, fuzzy
 msgid "Restart Nginx on %{node} failed, response: %{resp}"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:22
+#: src/components/Notification/notifications.ts:128
 #, fuzzy
 msgid "Restart Nginx on %{node} successfully"
 msgstr "성공적으로 저장되었습니다"
 
-#: src/components/Notification/notifications.ts:17
+#: src/components/Notification/notifications.ts:123
 #, fuzzy
 msgid "Restart Remote Nginx Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:21
+#: src/components/Notification/notifications.ts:127
 #, fuzzy
 msgid "Restart Remote Nginx Success"
 msgstr "인증서 갱신 성공"
@@ -3443,7 +3558,7 @@ msgstr "실행 중"
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
 #: src/views/certificate/components/CertificateEditor.vue:264
 #: src/views/config/components/ConfigName.vue:59
-#: src/views/config/ConfigEditor.vue:271
+#: src/views/config/ConfigEditor.vue:277
 #: src/views/preference/components/Passkey.vue:130
 #: src/views/preference/Preference.vue:229
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
@@ -3463,44 +3578,42 @@ msgstr "지시문 저장"
 msgid "Save error %{msg}"
 msgstr "저장 오류 %{msg}"
 
-#: src/components/Notification/notifications.ts:123
-#: src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:48
 #, fuzzy
 msgid "Save Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:127
-#: src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:47
 #, fuzzy
 msgid "Save Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:99
 #, fuzzy
 msgid "Save Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:103
 #, fuzzy
 msgid "Save Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:124
+#: src/components/Notification/notifications.ts:58
 #, fuzzy
 msgid "Save site %{name} to %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:128
+#: src/components/Notification/notifications.ts:62
 #, fuzzy
 msgid "Save site %{name} to %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:100
 #, fuzzy
 msgid "Save stream %{name} to %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 배포 실패"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:104
 #, fuzzy
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
@@ -3513,7 +3626,7 @@ msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 msgid "Save successfully"
 msgstr "성공적으로 저장됨"
 
-#: src/views/config/ConfigEditor.vue:191
+#: src/views/config/ConfigEditor.vue:194
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:39
 #: src/views/site/site_add/SiteAdd.vue:37
 #: src/views/site/site_edit/SiteEdit.vue:157
@@ -3527,6 +3640,10 @@ msgstr ""
 
 #: src/views/certificate/DNSChallenge.vue:90
 msgid "SDK"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:216
+msgid "seconds"
 msgstr ""
 
 #: src/views/preference/components/TOTP.vue:109
@@ -3567,6 +3684,14 @@ msgstr "서버 정보"
 #: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
 msgstr "서버 정보"
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:277
+msgid "Server Names Hash Bucket Size"
+msgstr ""
+
+#: src/views/dashboard/components/PerformanceOptimization.vue:278
+msgid "Server names hash table size"
+msgstr ""
 
 #: src/views/site/cert/components/ObtainCert.vue:107
 msgid "server_name not found in directives"
@@ -3827,42 +3952,46 @@ msgstr ""
 msgid "Sync Certificate"
 msgstr "인증서 갱신"
 
-#: src/components/Notification/notifications.ts:48
+#: src/components/Notification/notifications.ts:154
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:52
+#: src/components/Notification/notifications.ts:158
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:47 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:153
+#: src/language/constants.ts:39
 #, fuzzy
 msgid "Sync Certificate Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:51 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:157
+#: src/language/constants.ts:38
 #, fuzzy
 msgid "Sync Certificate Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:58
+#: src/components/Notification/notifications.ts:164
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:62
+#: src/components/Notification/notifications.ts:168
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:163
+#: src/language/constants.ts:45
 #, fuzzy
 msgid "Sync Config Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:167
+#: src/language/constants.ts:44
 #, fuzzy
 msgid "Sync Config Success"
 msgstr "인증서 갱신 성공"
@@ -4028,11 +4157,11 @@ msgstr "유효한 URL이 아닙니다"
 msgid "The username or password is incorrect"
 msgstr "사용자 이름 또는 비밀번호가 올바르지 않습니다"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:185
+#: src/views/dashboard/components/PerformanceTablesCard.vue:184
 msgid "Theoretical maximum concurrent connections:"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:189
+#: src/views/dashboard/components/PerformanceTablesCard.vue:188
 msgid "Theoretical maximum RPS (Requests Per Second):"
 msgstr ""
 
@@ -4077,7 +4206,7 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:152
+#: src/views/dashboard/NginxDashBoard.vue:153
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
@@ -4128,7 +4257,7 @@ msgstr ""
 msgid "Tips"
 msgstr "팁"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:207
+#: src/views/dashboard/components/PerformanceTablesCard.vue:206
 msgid ""
 "Tips: You can increase the concurrency processing capacity by increasing "
 "worker_processes or worker_connections"
@@ -4173,7 +4302,7 @@ msgid ""
 "local API."
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:56
+#: src/views/dashboard/NginxDashBoard.vue:57
 #, fuzzy
 msgid "Toggle failed"
 msgstr "활성화 실패"
@@ -4189,12 +4318,12 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: src/composables/usePerformanceMetrics.ts:96
-#: src/views/dashboard/components/PerformanceTablesCard.vue:54
+#: src/views/dashboard/components/PerformanceTablesCard.vue:53
 msgid "Total connections"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:91
-#: src/views/dashboard/components/PerformanceTablesCard.vue:49
+#: src/views/dashboard/components/PerformanceTablesCard.vue:48
 msgid "Total handshakes"
 msgstr ""
 
@@ -4207,7 +4336,7 @@ msgid "Total Nginx Processes"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:101
-#: src/views/dashboard/components/PerformanceTablesCard.vue:59
+#: src/views/dashboard/components/PerformanceTablesCard.vue:58
 msgid "Total requests"
 msgstr ""
 
@@ -4255,7 +4384,7 @@ msgstr "성공적으로 저장되었습니다"
 
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
-#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:325
+#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:331
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/RightSettings.vue:75
@@ -4340,7 +4469,7 @@ msgstr "사용자 이름 (*)"
 msgid "Valid"
 msgstr "유효함"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:22
+#: src/views/dashboard/components/PerformanceTablesCard.vue:21
 msgid "Value"
 msgstr ""
 
@@ -4385,7 +4514,7 @@ msgid "Viewed"
 msgstr "보기"
 
 #: src/composables/usePerformanceMetrics.ts:116
-#: src/views/dashboard/components/PerformanceTablesCard.vue:74
+#: src/views/dashboard/components/PerformanceTablesCard.vue:73
 msgid "Waiting processes"
 msgstr ""
 
@@ -4458,8 +4587,14 @@ msgid ""
 "codes."
 msgstr ""
 
+#: src/views/dashboard/components/PerformanceOptimization.vue:194
+#, fuzzy
+msgid "Worker Connections"
+msgstr "현재 버전"
+
 #: src/composables/usePerformanceMetrics.ts:57
-#: src/views/dashboard/components/ConnectionMetricsCard.vue:49
+#: src/views/dashboard/components/ConnectionMetricsCard.vue:48
+#: src/views/dashboard/components/PerformanceOptimization.vue:172
 #: src/views/dashboard/components/ProcessDistributionCard.vue:12
 msgid "Worker Processes"
 msgstr ""

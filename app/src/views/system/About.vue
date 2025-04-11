@@ -50,7 +50,7 @@ const thisYear = new Date().getFullYear()
     <h3>
       {{ $gettext('Project Team') }}
     </h3>
-    <p><a href="https://jackyu.cn/">@0xJacky</a> <a href="https://blog.kugeek.com/">@Hintay</a></p>
+    <p><a href="https://jackyu.cn/">@0xJacky</a> <a href="https://blog.kugeek.com/">@Hintay</a> <a href="https://github.com/akinoccc">@Akino</a></p>
     <h3>
       {{ $gettext('Build with') }}
     </h3>

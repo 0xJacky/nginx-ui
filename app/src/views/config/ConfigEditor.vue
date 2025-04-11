@@ -61,6 +61,9 @@ const newPath = computed(() => {
 const relativePath = computed(() => (basePath.value ? `${basePath.value}/${route.params.name}` : route.params.name) as string)
 const breadcrumbs = useBreadcrumbs()
 
+// Use Vue 3.4+ useTemplateRef for InspectConfig component
+const inspectConfigRef = useTemplateRef<InstanceType<typeof InspectConfig>>('inspectConfig')
+
 async function init() {
   const { name } = route.params
 
@@ -200,6 +203,8 @@ function save() {
       }
       else {
         data.value = r
+        // Run test after saving to verify configuration
+        inspectConfigRef.value?.test()
       }
     })
   })
@@ -254,6 +259,7 @@ function openHistory() {
 
         <InspectConfig
           v-show="!addMode"
+          ref="inspectConfig"
         />
         <CodeEditor v-model:content="data.content" />
         <FooterToolBar>
