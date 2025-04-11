@@ -133,7 +133,7 @@ func IsStubStatusEnabled() (bool, string) {
 	for _, server := range ngxConfig.Servers {
 		protocol := StubStatusProtocol
 		host := StubStatusHost
-		port := settings.NginxSettings.StubStatusPort
+		port := settings.NginxSettings.GetStubStatusPort()
 
 		for _, location := range server.Locations {
 			// Check if the location content contains stub_status
@@ -200,7 +200,7 @@ server {
 
 	data := StubStatusTemplateData{
 		ModifiedTime: time.Now().Format(time.DateTime),
-		Port:         settings.NginxSettings.StubStatusPort,
+		Port:         settings.NginxSettings.GetStubStatusPort(),
 		ServerName:   "localhost",
 		StatusPath:   StubStatusPath,
 		AllowIP:      StubStatusAllow,
