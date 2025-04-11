@@ -56,9 +56,7 @@ Nginx 日誌對於監控、排查問題和維護您的 Web 伺服器至關重要
 
 此選項用於設置 Nginx 配置文件夾的路徑。
 
-在 v2 版
-
-本中，我們會讀取 `nginx -V` 命令的輸出，以獲取 Nginx 配置文件的默認路徑。
+在 v2 版本中，我們會讀取 `nginx -V` 命令的輸出，以獲取 Nginx 配置文件的默認路徑。
 
 如果您需要覆蓋默認路徑，您可以使用此選項。
 
@@ -102,3 +100,18 @@ start-stop-daemon --stop --quiet --oknodo --retry=TERM/30/KILL/5 --pidfile $PID
 ```bash
 start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 ```
+
+## Stub Status
+
+在本節中，我們將會介紹 Nginx UI 中關於 Nginx stub status 模組的配置選項。
+
+### StubStatusPort
+- 類型：`uint`
+- 默認值：`51820`
+- 版本：`>= v2.0.0-rc.6`
+
+此選項用於設置 Nginx stub status 模組的端口。stub status 模組提供了 Nginx 的基本狀態信息，Nginx UI 使用這些信息來監控伺服器的性能。
+
+::: tip 提示
+請確保您設置的端口未被其他服務佔用。
+:::

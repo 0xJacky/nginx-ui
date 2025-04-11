@@ -108,3 +108,18 @@ If the `--sbin-path` path can be obtained, Nginx UI will use the following comma
 ```bash
 start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 ```
+
+## Stub Status
+
+In this section, we will introduce configuration options in Nginx UI for the Nginx stub status module.
+
+### StubStatusPort
+- Type: `uint`
+- Default: `51820`
+- Version: `>= v2.0.0-rc.6`
+
+This option is used to set the port for the Nginx stub status module. The stub status module provides basic status information about Nginx, which is used by Nginx UI to monitor the server's performance.
+
+::: tip Tip
+Make sure the port you set is not being used by other services.
+:::

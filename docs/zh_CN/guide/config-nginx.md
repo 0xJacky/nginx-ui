@@ -108,4 +108,19 @@ nginx
 start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 ```
 
+## Stub Status
+
+在本节中，我们将会介绍 Nginx UI 中关于 Nginx stub status 模块的配置选项。
+
+### StubStatusPort
+- 类型：`uint`
+- 默认值：`51820`
+- 版本：`>= v2.0.0-rc.6`
+
+此选项用于设置 Nginx stub status 模块的端口。stub status 模块提供了 Nginx 的基本状态信息，Nginx UI 使用这些信息来监控服务器的性能。
+
+::: tip 提示
+请确保您设置的端口未被其他服务占用。
+:::
+
 
