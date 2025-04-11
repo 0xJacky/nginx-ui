@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-04-10 21:06+0800\n"
+"PO-Revision-Date: 2025-04-11 16:41+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
 "projects/nginx-ui/frontend/zh_Hans/>\n"
@@ -148,7 +148,7 @@ msgstr "API Token"
 msgid "API Type"
 msgstr "API 类型"
 
-#: src/views/preference/Preference.vue:163
+#: src/views/preference/Preference.vue:164
 msgid "App"
 msgstr "App"
 
@@ -246,7 +246,7 @@ msgstr "尝试修复"
 msgid "Attempts"
 msgstr "尝试次数"
 
-#: src/views/preference/Preference.vue:193
+#: src/views/preference/Preference.vue:194
 msgid "Auth"
 msgstr "认证"
 
@@ -263,7 +263,7 @@ msgstr "认证设置"
 msgid "Author"
 msgstr "作者"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:199
+#: src/views/dashboard/components/PerformanceTablesCard.vue:201
 msgid "auto = CPU cores"
 msgstr "自动 = CPU 线程数"
 
@@ -420,12 +420,12 @@ msgstr "取消"
 msgid "Cannot change initial user password in demo mode"
 msgstr "不可在 Demo 中修改初始用户的密码"
 
-#: src/components/ConfigHistory/DiffViewer.vue:57
-#: src/components/ConfigHistory/DiffViewer.vue:74
+#: src/components/ConfigHistory/DiffViewer.vue:67
+#: src/components/ConfigHistory/DiffViewer.vue:84
 msgid "Cannot compare: Missing content"
 msgstr "无法比较：内容缺失"
 
-#: src/views/dashboard/NginxDashBoard.vue:134
+#: src/views/dashboard/NginxDashBoard.vue:131
 msgid "Cannot get performance data in this state"
 msgstr "在此状态下无法获取性能数据"
 
@@ -433,7 +433,7 @@ msgstr "在此状态下无法获取性能数据"
 msgid "Cannot remove initial user"
 msgstr "不可删除初始用户"
 
-#: src/views/preference/Preference.vue:199
+#: src/views/preference/Preference.vue:200
 msgid "Cert"
 msgstr "证书"
 
@@ -544,6 +544,10 @@ msgstr ""
 "检查是否启用了 HTTPS。在本地主机之外使用 HTTP 是不安全的，这也会导致无法使用 "
 "Passkey 和剪贴板功能。"
 
+#: src/views/system/SelfCheck/tasks/backend/index.ts:26
+msgid "Check if the nginx.conf includes the conf.d directory."
+msgstr "检查 nginx.conf 是否包含 conf.d 目录。"
+
 #: src/views/system/SelfCheck/tasks/backend/index.ts:16
 msgid "Check if the nginx.conf includes the sites-enabled directory."
 msgstr "检查 nginx.conf 是否包含 sites-enabled 的目录。"
@@ -612,7 +616,7 @@ msgstr "注释"
 msgid "Compare"
 msgstr "比较"
 
-#: src/components/ConfigHistory/DiffViewer.vue:378
+#: src/components/ConfigHistory/DiffViewer.vue:388
 msgid "Compare Configurations"
 msgstr "配置比较"
 
@@ -660,7 +664,7 @@ msgstr "配置 SSL"
 msgid "Connected"
 msgstr "已连接"
 
-#: src/views/dashboard/NginxDashBoard.vue:87
+#: src/views/dashboard/NginxDashBoard.vue:84
 msgid "Connection error, trying to reconnect..."
 msgstr "连接错误，尝试重新连接..."
 
@@ -776,7 +780,7 @@ msgstr "当前用户未启用 TOTP 验证。"
 msgid "Current active connections"
 msgstr "当前活动连接"
 
-#: src/components/ConfigHistory/DiffViewer.vue:62
+#: src/components/ConfigHistory/DiffViewer.vue:72
 msgid "Current Content"
 msgstr "当前内容"
 
@@ -1205,7 +1209,7 @@ msgstr "在 %{node} 中启用 %{name} 失败"
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "在 %{node} 上启用 %{name} 成功"
 
-#: src/views/dashboard/NginxDashBoard.vue:152
+#: src/views/dashboard/NginxDashBoard.vue:149
 msgid "Enable stub_status module"
 msgstr "启用 stub_status 模块"
 
@@ -1258,7 +1262,7 @@ msgstr "环境"
 msgid "Error"
 msgstr "错误"
 
-#: src/components/ConfigHistory/DiffViewer.vue:135
+#: src/components/ConfigHistory/DiffViewer.vue:145
 msgid "Error initializing diff viewer"
 msgstr "差异查看器初始化出错"
 
@@ -1270,7 +1274,7 @@ msgstr "错误日志"
 msgid "Error Logs"
 msgstr "错误日志"
 
-#: src/components/ConfigHistory/DiffViewer.vue:87
+#: src/components/ConfigHistory/DiffViewer.vue:97
 msgid "Error processing content"
 msgstr "内容处理错误"
 
@@ -1292,7 +1296,7 @@ msgid "Export"
 msgstr "导出"
 
 #: src/views/preference/ExternalNotify.vue:10
-#: src/views/preference/Preference.vue:169
+#: src/views/preference/Preference.vue:170
 msgid "External Notify"
 msgstr "外部通知"
 
@@ -1476,7 +1480,7 @@ msgstr "生成初始化向量失败：{0}"
 msgid "Failed to get certificate information"
 msgstr "获取证书信息失败"
 
-#: src/composables/useNginxPerformance.ts:50
+#: src/composables/useNginxPerformance.ts:49
 msgid "Failed to get performance data"
 msgstr "获取性能数据失败"
 
@@ -1633,7 +1637,7 @@ msgstr "成功生成恢复代码"
 msgid "Generating private key for registering account"
 msgstr "正在生成私钥用于注册账户"
 
-#: src/views/dashboard/NginxDashBoard.vue:143
+#: src/views/dashboard/NginxDashBoard.vue:140
 msgid "Get data failed"
 msgstr "获取数据失败"
 
@@ -1676,7 +1680,7 @@ msgstr "首页"
 msgid "Host"
 msgstr "主机"
 
-#: src/views/preference/Preference.vue:181
+#: src/views/preference/Preference.vue:182
 msgid "HTTP"
 msgstr "HTTP"
 
@@ -1916,7 +1920,7 @@ msgstr "Lark 自定义"
 msgid "Last checked at"
 msgstr "最后检查时间"
 
-#: src/views/dashboard/NginxDashBoard.vue:118
+#: src/views/dashboard/NginxDashBoard.vue:115
 msgid "Last update"
 msgstr "上次更新"
 
@@ -1978,7 +1982,7 @@ msgstr "从设置中加载"
 msgid "Load successfully"
 msgstr "加载成功"
 
-#: src/views/dashboard/NginxDashBoard.vue:180
+#: src/views/dashboard/NginxDashBoard.vue:177
 msgid "Loading data..."
 msgstr "正在加载数据..."
 
@@ -2015,7 +2019,7 @@ msgstr "登录成功"
 msgid "Logout successful"
 msgstr "登出成功"
 
-#: src/views/preference/Preference.vue:217
+#: src/views/preference/Preference.vue:218
 msgid "Logrotate"
 msgstr "Logrotate"
 
@@ -2075,7 +2079,7 @@ msgstr "用户管理"
 msgid "Managed Certificate"
 msgstr "托管证书"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:199
+#: src/views/dashboard/components/PerformanceTablesCard.vue:202
 msgid "manually set"
 msgstr "手动设置"
 
@@ -2183,7 +2187,7 @@ msgstr "多行指令"
 msgid "Name"
 msgstr "名称"
 
-#: src/views/dashboard/NginxDashBoard.vue:175
+#: src/views/dashboard/NginxDashBoard.vue:172
 msgid "Need to enable the stub_status module"
 msgstr "需要启用 stub_status 模块"
 
@@ -2225,13 +2229,17 @@ msgstr "新版本发布"
 msgid "Next"
 msgstr "下一步"
 
-#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:205
+#: src/routes/modules/dashboard.ts:27 src/views/preference/Preference.vue:206
 msgid "Nginx"
 msgstr "Nginx"
 
-#: src/views/preference/NginxSettings.vue:9
+#: src/views/preference/NginxSettings.vue:12
 msgid "Nginx Access Log Path"
 msgstr "Nginx 访问日志路径"
+
+#: src/views/system/SelfCheck/tasks/backend/index.ts:25
+msgid "Nginx Conf Include Conf.d"
+msgstr "Nginx Conf 包括 Conf.d"
 
 #: src/views/system/SelfCheck/tasks/backend/index.ts:15
 msgid "Nginx Conf Include Sites Enabled"
@@ -2270,11 +2278,11 @@ msgstr "Nginx 配置已恢复"
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 配置解析错误"
 
-#: src/views/preference/NginxSettings.vue:18
+#: src/views/preference/NginxSettings.vue:21
 msgid "Nginx Configuration Path"
 msgstr "Nginx 配置路径"
 
-#: src/views/preference/NginxSettings.vue:15
+#: src/views/preference/NginxSettings.vue:18
 msgid "Nginx Configurations Directory"
 msgstr "Nginx 配置目录"
 
@@ -2287,19 +2295,19 @@ msgstr "控制 Nginx"
 msgid "Nginx CPU usage rate"
 msgstr "Nginx CPU 使用率"
 
-#: src/views/preference/NginxSettings.vue:12
+#: src/views/preference/NginxSettings.vue:15
 msgid "Nginx Error Log Path"
 msgstr "Nginx 错误日志路径"
 
-#: src/composables/useNginxPerformance.ts:44
-#: src/views/dashboard/NginxDashBoard.vue:114
-#: src/views/dashboard/NginxDashBoard.vue:133
-#: src/views/dashboard/NginxDashBoard.vue:82
+#: src/composables/useNginxPerformance.ts:43
+#: src/views/dashboard/NginxDashBoard.vue:111
+#: src/views/dashboard/NginxDashBoard.vue:130
+#: src/views/dashboard/NginxDashBoard.vue:79
 #: src/views/site/ngx_conf/NginxStatusAlert.vue:15
 msgid "Nginx is not running"
 msgstr "Nginx 未启动"
 
-#: src/views/dashboard/NginxDashBoard.vue:114
+#: src/views/dashboard/NginxDashBoard.vue:111
 msgid "Nginx is running"
 msgstr "Nginx 正在运行"
 
@@ -2307,7 +2315,7 @@ msgstr "Nginx 正在运行"
 msgid "Nginx Log"
 msgstr "Nginx 日志"
 
-#: src/views/preference/NginxSettings.vue:21
+#: src/views/preference/NginxSettings.vue:24
 msgid "Nginx Log Directory Whitelist"
 msgstr "Nginx 日志目录白名单"
 
@@ -2316,11 +2324,11 @@ msgstr "Nginx 日志目录白名单"
 msgid "Nginx Memory usage"
 msgstr "Nginx 内存使用量"
 
-#: src/views/preference/NginxSettings.vue:30
+#: src/views/preference/NginxSettings.vue:33
 msgid "Nginx PID Path"
 msgstr "Nginx PID 路径"
 
-#: src/views/preference/NginxSettings.vue:36
+#: src/views/preference/NginxSettings.vue:39
 msgid "Nginx Reload Command"
 msgstr "Nginx 重载命令"
 
@@ -2332,7 +2340,7 @@ msgstr "Nginx 重载操作已发送到远程节点"
 msgid "Nginx reloaded successfully"
 msgstr "Nginx 重载成功"
 
-#: src/views/preference/NginxSettings.vue:39
+#: src/views/preference/NginxSettings.vue:42
 msgid "Nginx Restart Command"
 msgstr "Nginx 重启命令"
 
@@ -2344,7 +2352,7 @@ msgstr "Nginx 重启操作已发送到远程节点"
 msgid "Nginx restarted successfully"
 msgstr "Nginx 重启成功"
 
-#: src/views/preference/NginxSettings.vue:33
+#: src/views/preference/NginxSettings.vue:36
 msgid "Nginx Test Config Command"
 msgstr "Nginx 测试配置命令"
 
@@ -2390,15 +2398,15 @@ msgstr "取消"
 msgid "No Action"
 msgstr "无操作"
 
-#: src/views/dashboard/NginxDashBoard.vue:182
+#: src/views/dashboard/NginxDashBoard.vue:179
 msgid "No data"
 msgstr "没有数据"
 
-#: src/components/ConfigHistory/DiffViewer.vue:44
+#: src/components/ConfigHistory/DiffViewer.vue:54
 msgid "No records selected"
 msgstr "未选择记录"
 
-#: src/views/preference/Preference.vue:175
+#: src/views/preference/Preference.vue:176
 msgid "Node"
 msgstr "节点"
 
@@ -2535,7 +2543,7 @@ msgstr "在线"
 msgid "Only zip files are allowed"
 msgstr "只允许使用zip文件"
 
-#: src/views/preference/Preference.vue:211
+#: src/views/preference/Preference.vue:212
 msgid "OpenAI"
 msgstr "OpenAI"
 
@@ -2645,7 +2653,7 @@ msgstr "执行"
 msgid "Perform core upgrade error"
 msgstr "执行核心升级错误"
 
-#: src/views/dashboard/NginxDashBoard.vue:187
+#: src/views/dashboard/NginxDashBoard.vue:184
 msgid "Performance Metrics"
 msgstr "性能指标"
 
@@ -2657,7 +2665,7 @@ msgstr "正在进行核心升级"
 msgid "Plain text is empty"
 msgstr "原文为空"
 
-#: src/views/dashboard/NginxDashBoard.vue:176
+#: src/views/dashboard/NginxDashBoard.vue:173
 msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
@@ -2790,7 +2798,7 @@ msgstr "同步后操作"
 msgid "Pre-release"
 msgstr "预发布"
 
-#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:152
+#: src/routes/modules/preference.ts:10 src/views/preference/Preference.vue:153
 msgid "Preference"
 msgstr "偏好设置"
 
@@ -3155,8 +3163,8 @@ msgstr "恢复 Nginx 配置"
 msgid "Restore Nginx UI Configuration"
 msgstr "恢复 Nginx UI 配置"
 
-#: src/components/ConfigHistory/DiffViewer.vue:402
-#: src/components/ConfigHistory/DiffViewer.vue:415
+#: src/components/ConfigHistory/DiffViewer.vue:412
+#: src/components/ConfigHistory/DiffViewer.vue:425
 msgid "Restore this version"
 msgstr "恢复此版本"
 
@@ -3206,7 +3214,7 @@ msgstr "运行中"
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/config/ConfigEditor.vue:271
 #: src/views/preference/components/Passkey.vue:130
-#: src/views/preference/Preference.vue:228
+#: src/views/preference/Preference.vue:229
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:127
 #: src/views/site/site_edit/components/ConfigName.vue:52
 #: src/views/site/site_edit/SiteEdit.vue:292
@@ -3261,7 +3269,7 @@ msgstr "成功将站点 %{name} 保存到 %{node} 中"
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
 #: src/views/certificate/components/CertificateEditor.vue:49
-#: src/views/preference/Preference.vue:124
+#: src/views/preference/Preference.vue:125
 msgid "Save successfully"
 msgstr "保存成功"
 
@@ -3311,7 +3319,7 @@ msgstr "自我检查"
 msgid "Send"
 msgstr "上传"
 
-#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:157
+#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:158
 msgid "Server"
 msgstr "服务器"
 
@@ -3518,6 +3526,10 @@ msgstr "Streams-available 目录不存在"
 msgid "Streams-enabled directory not exist"
 msgstr "Streams-enabled 目录不存在"
 
+#: src/views/preference/NginxSettings.vue:9
+msgid "Stub Status Port"
+msgstr "Stub 状态端口"
+
 #: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:36
 msgid "Success"
 msgstr "成功"
@@ -3639,7 +3651,7 @@ msgstr "未找到任务"
 msgid "Telegram"
 msgstr "Telegram"
 
-#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:187
+#: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:188
 #: src/views/terminal/Terminal.vue:129
 msgid "Terminal"
 msgstr "终端"
@@ -3788,7 +3800,7 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "该字段只能包含字母、unicode 字符、数字和 -_。"
 
-#: src/views/dashboard/NginxDashBoard.vue:155
+#: src/views/dashboard/NginxDashBoard.vue:152
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
@@ -3839,7 +3851,7 @@ msgstr "限流"
 msgid "Tips"
 msgstr "提示"
 
-#: src/views/dashboard/components/PerformanceTablesCard.vue:203
+#: src/views/dashboard/components/PerformanceTablesCard.vue:207
 msgid ""
 "Tips: You can increase the concurrency processing capacity by increasing "
 "worker_processes or worker_connections"
@@ -3889,7 +3901,7 @@ msgstr ""
 "要使用本地大型模型，可使用 ollama、vllm 或 lmdeploy 进行部署。它们提供了与 "
 "OpenAI 兼容的 API 端点，因此只需将 baseUrl 设置为本地 API 即可。"
 
-#: src/views/dashboard/NginxDashBoard.vue:59
+#: src/views/dashboard/NginxDashBoard.vue:56
 msgid "Toggle failed"
 msgstr "切换失败"
 
@@ -3954,7 +3966,7 @@ msgstr "需要两步验证"
 msgid "Type"
 msgstr "类型"
 
-#: src/composables/useNginxPerformance.ts:19
+#: src/composables/useNginxPerformance.ts:18
 msgid "Unknown"
 msgstr "未知"
 
