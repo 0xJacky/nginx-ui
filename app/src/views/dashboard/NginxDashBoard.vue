@@ -104,9 +104,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div class="max-w-full of-x-hidden">
     <!-- Top operation bar -->
-    <div class="mb-4 mx-6 md:mx-0 flex flex-wrap justify-between items-center">
+    <div class="mb-4 mx-6 md:mx-0 flex flex-wrap gap-4 justify-between items-center">
       <div class="flex items-center">
         <ABadge :status="status === NginxStatus.Running ? 'success' : 'error'" />
         <span class="font-medium">{{ status === NginxStatus.Running ? $gettext('Nginx is running') : $gettext('Nginx is not running') }}</span>
@@ -191,12 +191,12 @@ onMounted(() => {
 
         <ARow :gutter="[16, 16]" class="mb-4">
           <!-- Metrics card -->
-          <ACol :sm="24" :lg="12">
+          <ACol :xs="24" :sm="24" :lg="12">
             <ConnectionMetricsCard :nginx-info="nginxInfo" />
           </ACol>
 
           <!-- CPU and memory usage -->
-          <ACol :sm="24" :lg="12">
+          <ACol :xs="24" :sm="24" :lg="12">
             <ResourceUsageCard :nginx-info="nginxInfo" />
           </ACol>
         </ARow>
