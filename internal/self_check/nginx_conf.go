@@ -3,6 +3,7 @@ package self_check
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -118,7 +119,7 @@ func FixNginxConfIncludeSites() error {
 	}
 
 	// if no http block, append http block with include sites-enabled/*
-	content = append(content, []byte(fmt.Sprintf("\nhttp {\n\tinclude %s;\n}\n", nginx.GetConfPath("sites-enabled/*")))...)
+	content = append(content, fmt.Appendf(nil, "\nhttp {\n\tinclude %s;\n}\n", nginx.GetConfPath("sites-enabled/*"))...)
 	return os.WriteFile(path, content, 0644)
 }
 
@@ -162,6 +163,84 @@ func FixNginxConfIncludeStreams() error {
 	}
 
 	// if no stream block, append stream block with include streams-enabled/*
-	content = append(content, []byte(fmt.Sprintf("\nstream {\n\tinclude %s;\n}\n", nginx.GetConfPath("streams-enabled/*")))...)
+	content = append(content, fmt.Appendf(nil, "\nstream {\n\tinclude %s;\n}\n", nginx.GetConfPath("streams-enabled/*"))...)
+	return os.WriteFile(path, content, 0644)
+}
+
+// CheckNginxConfIncludeConfD checks if nginx.conf includes conf.d directory
+func CheckNginxConfIncludeConfD() error {
+	path := nginx.GetConfEntryPath()
+
+	content, err := os.ReadFile(path)
+	if err != nil {
+		return ErrFailedToReadNginxConf
+	}
+
+	// parse nginx.conf
+	p := parser.NewStringParser(string(content), parser.WithSkipValidDirectivesErr())
+	c, err := p.Parse()
+	if err != nil {
+		return ErrParseNginxConf
+	}
+
+	// find http block
+	for _, v := range c.Block.Directives {
+		if v.GetName() == "http" {
+			// find include conf.d
+			for _, directive := range v.GetBlock().GetDirectives() {
+				if directive.GetName() == "include" && len(directive.GetParameters()) > 0 &&
+					strings.HasPrefix(directive.GetParameters()[0].Value, nginx.GetConfPath("conf.d")) {
+					return nil
+				}
+			}
+			return ErrNginxConfNotIncludeConfD
+		}
+	}
+
+	return ErrNginxConfNoHttpBlock
+}
+
+// FixNginxConfIncludeConfD attempts to fix nginx.conf to include conf.d directory
+func FixNginxConfIncludeConfD() error {
+	path := nginx.GetConfEntryPath()
+
+	content, err := os.ReadFile(path)
+	if err != nil {
+		return ErrFailedToReadNginxConf
+	}
+
+	// create a backup file (+.bak.timestamp)
+	backupPath := fmt.Sprintf("%s.bak.%d", path, time.Now().Unix())
+	err = os.WriteFile(backupPath, content, 0644)
+	if err != nil {
+		return ErrFailedToCreateBackup
+	}
+
+	// parse nginx.conf
+	p := parser.NewStringParser(string(content), parser.WithSkipValidDirectivesErr())
+	c, err := p.Parse()
+	if err != nil {
+		return ErrParseNginxConf
+	}
+
+	// find http block
+	for _, v := range c.Block.Directives {
+		if v.GetName() == "http" {
+			// add include conf.d/*.conf to http block
+			includeDirective := &config.Directive{
+				Name:       "include",
+				Parameters: []config.Parameter{{Value: nginx.GetConfPath("conf.d/*.conf")}},
+			}
+
+			realBlock := v.GetBlock().(*config.HTTP)
+			realBlock.Directives = append(realBlock.Directives, includeDirective)
+
+			// write to file
+			return os.WriteFile(path, []byte(dumper.DumpBlock(c.Block, dumper.IndentedStyle)), 0644)
+		}
+	}
+
+	// if no http block, append http block with include conf.d/*.conf
+	content = append(content, fmt.Appendf(nil, "\nhttp {\n\tinclude %s;\n}\n", nginx.GetConfPath("conf.d/*.conf"))...)
 	return os.WriteFile(path, content, 0644)
 }

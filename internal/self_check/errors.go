@@ -16,4 +16,5 @@ var (
 	ErrSitesEnabledNotExist             = e.New(4047, "Sites-enabled directory not exist")
 	ErrStreamAvailableNotExist          = e.New(4048, "Streams-available directory not exist")
 	ErrStreamEnabledNotExist            = e.New(4049, "Streams-enabled directory not exist")
+	ErrNginxConfNotIncludeConfD         = e.New(4050, "Nginx conf not include conf.d directory")
 )

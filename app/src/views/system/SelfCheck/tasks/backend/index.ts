@@ -21,6 +21,11 @@ const backendTasks: Record<string, BackendTask> = {
     description: () => $gettext('Check if the nginx.conf includes the streams-enabled directory.'),
     type: 'backend',
   },
+  'NginxConf-ConfD': {
+    name: () => $gettext('Nginx Conf Include Conf.d'),
+    description: () => $gettext('Check if the nginx.conf includes the conf.d directory.'),
+    type: 'backend',
+  },
 }
 
 export default backendTasks

@@ -40,6 +40,11 @@ var selfCheckTasks = []*Task{
 		CheckFunc: CheckNginxConfIncludeStreams,
 		FixFunc:   FixNginxConfIncludeStreams,
 	},
+	{
+		Name:      "NginxConf-ConfD",
+		CheckFunc: CheckNginxConfIncludeConfD,
+		FixFunc:   FixNginxConfIncludeConfD,
+	},
 }
 
 var selfCheckTaskMap = make(map[string]*Task)
