@@ -96,7 +96,7 @@ jobs:
     needs: build_app
     strategy:
       matrix:
-        goos: [ linux, darwin ]
+        goos: [ linux, darwin, windows ]
         goarch: [ amd64, 386, arm64 ]
         exclude:
           # Exclude i386 on darwin.
@@ -150,12 +150,14 @@ jobs:
           export _ARCH=$(jq ".$GOOS[\"$GOARCH$GOARM\"].arch" -r < .github/build/build_info.json)
           export _ABI=$(jq ".$GOOS[\"$GOARCH$GOARM\"].abi // \"\"" -r < .github/build/build_info.json)
           export _ARTIFACT=nginx-ui-$GOOS-$GOARCH$(if [[ "$GOARM" ]]; then echo "v$GOARM"; fi)
-          echo "GOOS: $GOOS, GOARCH: $GOARCH, GOARM: $GOARM, ABI: $_ABI, RELEASE_NAME: $_NAME, ARTIFACT_NAME: $_ARTIFACT"
+          export _BINARY=nginx-ui$(if [[ "$GOOS" == "windows" ]]; then echo ".exe"; fi)
+          echo "GOOS: $GOOS, GOARCH: $GOARCH, GOARM: $GOARM, ABI: $_ABI, RELEASE_NAME: $_NAME, ARTIFACT_NAME: $_ARTIFACT, BINARY_NAME: $_BINARY"
           echo "CACHE_NAME=$_NAME" >> $GITHUB_ENV
           echo "ARCH_NAME=$_ARCH" >> $GITHUB_ENV
           echo "ABI=$_ABI" >> $GITHUB_ENV
           echo "DIST=nginx-ui-$_NAME" >> $GITHUB_ENV
           echo "ARTIFACT=$_ARTIFACT" >> $GITHUB_ENV
+          echo "BINARY_NAME=$_BINARY" >> $GITHUB_ENV
 
       - name: Setup Go modules cache
         uses: actions/cache@v4
@@ -213,17 +215,50 @@ jobs:
           echo "CC=${{ env.ARCH_NAME }}-clang" >> $GITHUB_ENV
           echo "CXX=${{ env.ARCH_NAME }}-clang++" >> $GITHUB_ENV
           echo "LD_FLAGS=-w" >> $GITHUB_ENV
+          
+      - name: Setup for Windows
+        if: env.GOOS == 'windows'
+        run: |
+          echo "LD_FLAGS=-w" >> $GITHUB_ENV
+          echo "CGO_ENABLED=1" >> $GITHUB_ENV
+
+          # Install cross compilers based on architecture
+          sudo apt-get update
+          if [[ "$GOARCH" == "amd64" ]]; then
+            echo "Installing x86_64 Windows cross compiler"
+            sudo apt-get install -y gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64
+            echo "CC=x86_64-w64-mingw32-gcc" >> $GITHUB_ENV
+            echo "CXX=x86_64-w64-mingw32-g++" >> $GITHUB_ENV
+          elif [[ "$GOARCH" == "386" ]]; then
+            echo "Installing i686 Windows cross compiler"
+            sudo apt-get install -y gcc-mingw-w64-i686 g++-mingw-w64-i686
+            echo "CC=i686-w64-mingw32-gcc" >> $GITHUB_ENV
+            echo "CXX=i686-w64-mingw32-g++" >> $GITHUB_ENV
+          elif [[ "$GOARCH" == "arm64" ]]; then
+            echo "Installing ARM64 Windows cross compiler"
+            # Ubuntu's apt repositories don't have mingw for ARM64
+            # Use llvm-mingw project instead
+            mkdir -p $HOME/llvm-mingw
+            wget -q https://github.com/mstorsjo/llvm-mingw/releases/download/20231128/llvm-mingw-20231128-ucrt-ubuntu-20.04-x86_64.tar.xz
+            tar xf llvm-mingw-20231128-ucrt-ubuntu-20.04-x86_64.tar.xz -C $HOME/llvm-mingw --strip-components=1
+            echo "PATH=$HOME/llvm-mingw/bin:$PATH" >> $GITHUB_ENV
+            echo "CC=aarch64-w64-mingw32-clang" >> $GITHUB_ENV
+            echo "CXX=aarch64-w64-mingw32-clang++" >> $GITHUB_ENV
+          else
+            echo "Unsupported Windows architecture: $GOARCH"
+            exit 1
+          fi
 
       - name: Build
         run: |
           mkdir -p dist
-          go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/nginx-ui -v main.go
+          go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/$BINARY_NAME -v main.go
 
       - name: Archive backend artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ARTIFACT }}
-          path: dist/nginx-ui
+          path: dist/${{ env.BINARY_NAME }}
 
       - name: Prepare publish
         if: github.event_name == 'release'
@@ -269,7 +304,7 @@ jobs:
           path: ./dist
 
       - name: Prepare Artifacts
-        run: chmod +x ./dist/nginx-ui-*/nginx-ui
+        run: chmod +x ./dist/nginx-ui-*/nginx-ui*
 
       - name: Set up Docker Buildx
         id: buildx
