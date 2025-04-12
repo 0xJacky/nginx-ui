@@ -28,4 +28,6 @@ type Config struct {
 	Status          ConfigStatus                   `json:"status"`
 	Dir             string                         `json:"dir"`
 	Urls            []string                       `json:"urls,omitempty"`
+	SyncNodeIds     []uint64                       `json:"sync_node_ids,omitempty"`
+	SyncOverwrite   bool                           `json:"sync_overwrite"`
 }

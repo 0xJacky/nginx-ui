@@ -101,5 +101,7 @@ func EditConfig(c *gin.Context) {
 		FilePath:        absPath,
 		ModifiedAt:      time.Now(),
 		Dir:             filepath.Dir(relativePath),
+		SyncNodeIds:     cfg.SyncNodeIds,
+		SyncOverwrite:   cfg.SyncOverwrite,
 	})
 }

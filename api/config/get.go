@@ -15,12 +15,6 @@ import (
 	"github.com/uozi-tech/cosy"
 )
 
-type APIConfigResp struct {
-	config.Config
-	SyncNodeIds   []uint64 `json:"sync_node_ids" gorm:"serializer:json"`
-	SyncOverwrite bool     `json:"sync_overwrite"`
-}
-
 func GetConfig(c *gin.Context) {
 	relativePath := c.Param("path")
 
@@ -74,16 +68,14 @@ func GetConfig(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, APIConfigResp{
-		Config: config.Config{
-			Name:            stat.Name(),
-			Content:         string(content),
-			ChatGPTMessages: chatgpt.Content,
-			FilePath:        absPath,
-			ModifiedAt:      stat.ModTime(),
-			Dir:             filepath.Dir(relativePath),
-		},
-		SyncNodeIds:   cfg.SyncNodeIds,
-		SyncOverwrite: cfg.SyncOverwrite,
+	c.JSON(http.StatusOK, config.Config{
+		Name:            stat.Name(),
+		Content:         string(content),
+		ChatGPTMessages: chatgpt.Content,
+		FilePath:        absPath,
+		ModifiedAt:      stat.ModTime(),
+		Dir:             filepath.Dir(relativePath),
+		SyncNodeIds:     cfg.SyncNodeIds,
+		SyncOverwrite:   cfg.SyncOverwrite,
 	})
 }
