@@ -55,7 +55,7 @@ func SyncToRemoteServer(c *model.Config) (err error) {
 	}
 
 	q := query.Environment
-	envs, _ := q.Where(q.ID.In(c.SyncNodeIds...)).Find()
+	envs, _ := q.Where(q.ID.In(c.SyncNodeIds...), q.Enabled.Is(true)).Find()
 	for _, env := range envs {
 		go func() {
 			err := payload.deploy(env, c, payloadBytes)

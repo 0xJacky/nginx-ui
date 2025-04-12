@@ -1,11 +1,10 @@
-package nginx
+package config
 
 import (
-	"fmt"
 	"os"
 	"sort"
-	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/pkg/errors"
 	"github.com/tufanbarisyildirim/gonginx/config"
 	"github.com/tufanbarisyildirim/gonginx/dumper"
@@ -28,7 +27,7 @@ type PerfOpt struct {
 
 // UpdatePerfOpt updates the Nginx performance optimization settings
 func UpdatePerfOpt(opt *PerfOpt) error {
-	confPath := GetConfPath("nginx.conf")
+	confPath := nginx.GetConfPath("nginx.conf")
 	if confPath == "" {
 		return errors.New("failed to get nginx.conf path")
 	}
@@ -37,13 +36,6 @@ func UpdatePerfOpt(opt *PerfOpt) error {
 	content, err := os.ReadFile(confPath)
 	if err != nil {
 		return errors.Wrap(err, "failed to read nginx.conf")
-	}
-
-	// Create a backup file
-	backupPath := fmt.Sprintf("%s.backup.%d", confPath, time.Now().Unix())
-	err = os.WriteFile(backupPath, content, 0644)
-	if err != nil {
-		return errors.Wrap(err, "failed to create backup file")
 	}
 
 	// Parse the configuration
@@ -59,13 +51,8 @@ func UpdatePerfOpt(opt *PerfOpt) error {
 	// Dump the updated configuration
 	updatedConf := dumper.DumpBlock(conf.Block, dumper.IndentedStyle)
 
-	// Write the updated configuration
-	err = os.WriteFile(confPath, []byte(updatedConf), 0644)
-	if err != nil {
-		return errors.Wrap(err, "failed to write updated nginx.conf")
-	}
+	return Save(confPath, updatedConf, nil)
 
-	return nil
 }
 
 // updateNginxConfig updates the performance settings in the Nginx configuration

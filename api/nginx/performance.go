@@ -3,6 +3,7 @@ package nginx
 import (
 	"net/http"
 
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
@@ -21,12 +22,12 @@ func GetPerformanceSettings(c *gin.Context) {
 
 // UpdatePerformanceSettings updates Nginx performance settings
 func UpdatePerformanceSettings(c *gin.Context) {
-	var perfOpt nginx.PerfOpt
+	var perfOpt config.PerfOpt
 	if !cosy.BindAndValid(c, &perfOpt) {
 		return
 	}
 
-	err := nginx.UpdatePerfOpt(&perfOpt)
+	err := config.UpdatePerfOpt(&perfOpt)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

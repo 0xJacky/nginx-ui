@@ -3,7 +3,6 @@ package config
 import (
 	"net/http"
 	"net/url"
-	"os"
 	"path/filepath"
 	"time"
 
@@ -55,36 +54,15 @@ func EditConfig(c *gin.Context) {
 		return
 	}
 
-	content := json.Content
-	origContent, err := os.ReadFile(absPath)
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	err = config.CheckAndCreateHistory(absPath, content)
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	if content != "" && content != string(origContent) {
-		err = os.WriteFile(absPath, []byte(content), 0644)
-		if err != nil {
-			cosy.ErrHandler(c, err)
-			return
-		}
-	}
-
 	q := query.Config
 	cfg, err := q.Assign(field.Attrs(&model.Config{
-		Name: filepath.Base(absPath),
+		Filepath: absPath,
 	})).Where(q.Filepath.Eq(absPath)).FirstOrCreate()
 	if err != nil {
-		cosy.ErrHandler(c, err)
 		return
 	}
 
+	// Update database record
 	_, err = q.Where(q.Filepath.Eq(absPath)).
 		Select(q.SyncNodeIds, q.SyncOverwrite).
 		Updates(&model.Config{
@@ -92,29 +70,20 @@ func EditConfig(c *gin.Context) {
 			SyncOverwrite: json.SyncOverwrite,
 		})
 	if err != nil {
-		cosy.ErrHandler(c, err)
 		return
 	}
 
-	// use the new values
 	cfg.SyncNodeIds = json.SyncNodeIds
 	cfg.SyncOverwrite = json.SyncOverwrite
 
-	g := query.ChatGPTLog
-	err = config.SyncToRemoteServer(cfg)
+	content := json.Content
+	err = config.Save(absPath, content, cfg)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
 
-	output := nginx.Reload()
-	if nginx.GetLogLevel(output) >= nginx.Warn {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": output,
-		})
-		return
-	}
-
+	g := query.ChatGPTLog
 	chatgpt, err := g.Where(g.Name.Eq(absPath)).FirstOrCreate()
 	if err != nil {
 		cosy.ErrHandler(c, err)
