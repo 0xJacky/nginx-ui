@@ -28,13 +28,13 @@ watch(() => props.certInfo, () => {
 function handleCertChange(certs: Cert[]) {
   changedCerts.value = certs
 
-  // 更新 NgxDirective
+  // Update NgxDirective
   if (current_server_directives.value) {
-    // 过滤掉现有的证书配置
+    // Filter out existing certificate configurations
     const filteredDirectives = current_server_directives.value
       .filter(v => v.directive !== 'ssl_certificate' && v.directive !== 'ssl_certificate_key')
 
-    // 添加新的证书配置
+    // Add new certificate configuration
     const newDirectives = [...filteredDirectives]
 
     certs.forEach(cert => {
@@ -48,7 +48,7 @@ function handleCertChange(certs: Cert[]) {
       })
     })
 
-    // 更新 directives
+    // Update directives
     current_server_directives.value = newDirectives
   }
 }

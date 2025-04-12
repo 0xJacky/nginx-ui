@@ -124,7 +124,7 @@ msgid "Afterwards, refresh this page and click add passkey again."
 msgstr ""
 "Après, rechargez la page et cliquez de nouveau sur ajouter une clé d'accès."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:117
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:118
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
 msgid "All"
 msgstr "Tous"
@@ -230,7 +230,7 @@ msgstr "Etes-vous sûr que vous voulez supprimer ?"
 msgid "Are you sure you want to recover this item?"
 msgstr "Voulez-vous vraiment supprimer cette directive ?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:132
 #, fuzzy
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "Etes-vous sûr que vous voulez supprimer ?"
@@ -248,7 +248,7 @@ msgstr "Voulez-vous vraiment supprimer cette directive ?"
 msgid "Are you sure you want to remove this location?"
 msgstr "Voulez-vous vraiment supprimer cette localisation ?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:144
 #, fuzzy
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "Voulez-vous vraiment effacer l'historique du chat ?"
@@ -288,8 +288,8 @@ msgstr "Options d'authentification"
 msgid "Author"
 msgstr "Autheur"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:178
-#: src/views/dashboard/components/PerformanceOptimization.vue:189
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:31
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:43
 msgid "Auto"
 msgstr "Auto"
 
@@ -383,6 +383,11 @@ msgstr "Basique"
 msgid "Basic Mode"
 msgstr "Mode simple"
 
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:119
+#, fuzzy
+msgid "Basic Settings"
+msgstr "Options 2FA"
+
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:83
 #, fuzzy
 msgid "Batch Actions"
@@ -416,14 +421,43 @@ msgstr "Build avec"
 msgid "CA Dir"
 msgstr ""
 
+#: src/views/dashboard/components/ParamsOptimization.vue:124
+msgid "Cache"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:178
+msgid "Cache items not accessed within this time will be removed"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:350
+msgid "Cache loader processing time threshold"
+msgstr ""
+
 #: src/composables/usePerformanceMetrics.ts:139
 #: src/views/dashboard/components/PerformanceTablesCard.vue:94
 msgid "Cache manager processes"
 msgstr ""
 
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:288
+msgid "Cache manager processing time threshold"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:246
+msgid "Cache Manager Settings"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:124
+#, fuzzy
+msgid "Cache Path"
+msgstr "Changer de certificat"
+
 #: src/composables/usePerformanceMetrics.ts:57
 #: src/views/dashboard/components/ProcessDistributionCard.vue:14
 msgid "Cache Processes"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:137
+msgid "Cache subdirectory levels structure, e.g. 1:2"
 msgstr ""
 
 #: src/views/preference/CertSettings.vue:19
@@ -654,23 +688,23 @@ msgstr ""
 msgid "Click to copy"
 msgstr "Clique pour copier"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:307
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:120
 msgid "Client Body Buffer Size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:289
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:113
 msgid "Client Header Buffer Size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:259
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Client Max Body Size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:308
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:121
 msgid "Client request body buffer size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:290
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:114
 msgid "Client request header buffer size"
 msgstr ""
 
@@ -707,7 +741,7 @@ msgstr ""
 msgid "Compare with Current"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:248
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:88
 msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr ""
 
@@ -758,7 +792,7 @@ msgstr ""
 msgid "Connection lost, please refresh the page."
 msgstr "Connexion perdue, merci de recharger la page."
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:207
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
 msgid "Connection timeout period"
 msgstr ""
 
@@ -920,6 +954,10 @@ msgstr "Jours"
 msgid "Decryption failed"
 msgstr "Description"
 
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:150
+msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
+msgstr ""
+
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
 #: src/views/certificate/components/RemoveCert.vue:87
@@ -1043,6 +1081,15 @@ msgstr "DirectiveIdx hors limite"
 #: src/views/site/ngx_conf/directive/DirectiveEditor.vue:28
 msgid "Directives"
 msgstr "Directives"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:135
+#, fuzzy
+msgid "Directory Levels"
+msgstr "Directives"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:127
+msgid "Directory path to store cache files"
+msgstr ""
 
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:113
 #, fuzzy
@@ -1298,7 +1345,7 @@ msgstr "Activé avec succès"
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "Échec de l'activation du renouvellement automatique pour %{name}"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:222
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:68
 msgid "Enable compression for content transfer"
 msgstr ""
 
@@ -1310,6 +1357,10 @@ msgstr "Échec de l'activation"
 #, fuzzy
 msgid "Enable HTTPS"
 msgstr "Activer TLS"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:114
+msgid "Enable Proxy Cache"
+msgstr ""
 
 #: src/components/Notification/notifications.ts:25 src/language/constants.ts:54
 #, fuzzy
@@ -1676,7 +1727,7 @@ msgstr "Échec de l'obtention des informations sur le certificat"
 msgid "Failed to get certificate information"
 msgstr "Échec de l'obtention des informations sur le certificat"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:56
+#: src/views/dashboard/components/ParamsOptimization.vue:61
 #, fuzzy
 msgid "Failed to get Nginx performance settings"
 msgstr "Échec de l'obtention des informations sur le certificat"
@@ -1751,7 +1802,7 @@ msgstr "Erreur lecture nginx.conf"
 msgid "Failed to revoke certificate"
 msgstr "Obtenir un certificat"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:126
+#: src/views/dashboard/components/ParamsOptimization.vue:90
 #, fuzzy
 msgid "Failed to save Nginx performance settings"
 msgstr "Échec de l'obtention des informations sur le certificat"
@@ -1885,15 +1936,15 @@ msgstr "Obtention du certificat, veuillez patienter..."
 msgid "Github Proxy"
 msgstr "Proxy Github"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:221
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:67
 msgid "GZIP Compression"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:247
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:87
 msgid "GZIP Compression Level"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:233
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:80
 msgid "GZIP Min Length"
 msgstr ""
 
@@ -2000,6 +2051,10 @@ msgstr "Exporter"
 #, fuzzy
 msgid "Import Certificate"
 msgstr "État du certificat"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:176
+msgid "Inactive Time"
+msgstr ""
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:54
 msgid ""
@@ -2158,10 +2213,6 @@ msgstr "Auteur : %{issuer}"
 msgid "Jwt Secret"
 msgstr "Secret Jwt"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:242
-msgid "KB"
-msgstr ""
-
 #: src/views/preference/components/RecoveryCodes.vue:74
 msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
@@ -2170,7 +2221,7 @@ msgstr ""
 "Garder vos codes de récupération sécurisés autant que votre mot de passe. "
 "Nous recommandons de les enregistrer avec un gestionnaire de mots de passe."
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:206
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:60
 msgid "Keepalive Timeout"
 msgstr ""
 
@@ -2266,6 +2317,24 @@ msgstr "Charger à partir des options"
 #, fuzzy
 msgid "Load successfully"
 msgstr "Enregistré avec succès"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:313
+#, fuzzy
+msgid "Loader Files"
+msgstr "Créé le"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:308
+#, fuzzy
+msgid "Loader Settings"
+msgstr "Charger à partir des options"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:323
+msgid "Loader Sleep"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:348
+msgid "Loader Threshold"
+msgstr ""
 
 #: src/views/dashboard/NginxDashBoard.vue:178
 msgid "Loading data..."
@@ -2370,7 +2439,22 @@ msgstr "Gérer les utilisateurs"
 msgid "Managed Certificate"
 msgstr "Changer de certificat"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:179
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:251
+#, fuzzy
+msgid "Manager Files"
+msgstr "Gérer les sites"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:261
+#, fuzzy
+msgid "Manager Sleep"
+msgstr "Gérer les sites"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:286
+#, fuzzy
+msgid "Manager Threshold"
+msgstr "Gérer les sites"
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:32
 msgid "Manual"
 msgstr ""
 
@@ -2405,11 +2489,15 @@ msgstr "Version actuelle"
 msgid "Max Requests Per Second"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:260
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:199
+msgid "Maximum Cache Size"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
 msgid "Maximum client request body size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:195
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:49
 #, fuzzy
 msgid "Maximum number of concurrent connections"
 msgstr "Version actuelle"
@@ -2417,6 +2505,10 @@ msgstr "Version actuelle"
 #: src/composables/usePerformanceMetrics.ts:174
 #: src/views/dashboard/components/PerformanceTablesCard.vue:125
 msgid "Maximum number of connections per worker process"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:201
+msgid "Maximum total size of the cache"
 msgstr ""
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:195
@@ -2436,8 +2528,16 @@ msgstr "Mémoire et stockage"
 msgid "Memory Usage (RSS)"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:234
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:81
 msgid "Minimum file size for compression"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:224
+msgid "Minimum Free Space"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:226
+msgid "Minimum free space in the cache directory"
 msgstr ""
 
 #: src/views/preference/LogrotateSettings.vue:29
@@ -2708,8 +2808,8 @@ msgid ""
 msgstr "Erreur d'analyse de configuration Nginx"
 
 #: src/components/ChatGPT/ChatGPT.vue:374
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:133
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:145
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:134
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:146
 #: src/components/Notification/Notification.vue:133
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:63
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:94
@@ -2814,8 +2914,16 @@ msgstr "Certification"
 msgid "Notifier not found"
 msgstr "Fichier introuvable"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:173
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:26
 msgid "Number of concurrent worker processes, auto sets to CPU core count"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:315
+msgid "Number of files processed by cache loader at once"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:253
+msgid "Number of files processed by cache manager at once"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:129
@@ -2843,11 +2951,12 @@ msgid ""
 "Firefox."
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:227
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:73
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:165
 msgid "Off"
 msgstr ""
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:56
@@ -2878,7 +2987,8 @@ msgstr ""
 msgid "OK"
 msgstr "OK"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:226
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:72
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:164
 msgid "On"
 msgstr ""
 
@@ -2886,7 +2996,7 @@ msgstr ""
 msgid "Once the verification is complete, the records will be removed."
 msgstr ""
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
 #: src/components/NodeSelector/NodeSelector.vue:103
 #: src/components/NodeSelector/NodeSelector.vue:89
 #: src/views/dashboard/Environments.vue:100
@@ -2901,14 +3011,6 @@ msgstr ""
 #: src/views/preference/Preference.vue:212
 msgid "OpenAI"
 msgstr "OpenAI"
-
-#: src/views/dashboard/components/PerformanceOptimization.vue:164
-msgid "Optimize Nginx Performance"
-msgstr ""
-
-#: src/views/dashboard/components/PerformanceOptimization.vue:158
-msgid "Optimize Performance"
-msgstr ""
 
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:231
 msgid "Or"
@@ -2965,6 +3067,11 @@ msgstr "Gérer les sites"
 msgid "Params"
 msgstr "Paramètres"
 
+#: src/views/dashboard/components/ParamsOptimization.vue:109
+#: src/views/dashboard/components/ParamsOptimization.vue:115
+msgid "Params Optimization"
+msgstr ""
+
 #: src/views/preference/components/Passkey.vue:59
 msgid "Passkey"
 msgstr ""
@@ -3016,11 +3123,15 @@ msgstr ""
 msgid "Perform core upgrade error"
 msgstr "Erreur lors de la mise a niveau du core"
 
+#: src/views/dashboard/components/ParamsOptimization.vue:121
+msgid "Performance"
+msgstr ""
+
 #: src/views/dashboard/NginxDashBoard.vue:185
 msgid "Performance Metrics"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:122
+#: src/views/dashboard/components/ParamsOptimization.vue:86
 #, fuzzy
 msgid "Performance settings saved successfully"
 msgstr "Désactivé avec succès"
@@ -3325,7 +3436,7 @@ msgstr "Note de version"
 msgid "Reload"
 msgstr "Recharger"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:138
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:139
 #: src/views/environments/group/columns.ts:24
 #: src/views/environments/group/EnvGroup.vue:37
 #: src/views/environments/list/Environment.vue:120
@@ -3354,7 +3465,7 @@ msgstr "Changer de certificat"
 msgid "Reload Remote Nginx Success"
 msgstr "Changer de certificat"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:86
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:87
 msgid "Reload request failed, please check your network connection"
 msgstr ""
 
@@ -3529,7 +3640,7 @@ msgstr ""
 msgid "Restart"
 msgstr "Redémarrer"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:150
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:151
 #: src/views/environments/list/Environment.vue:141
 #: src/views/environments/list/Environment.vue:149
 #, fuzzy
@@ -3556,7 +3667,7 @@ msgstr "Changer de certificat"
 msgid "Restart Remote Nginx Success"
 msgstr "Changer de certificat"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:106
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:107
 msgid "Restart request failed, please check your network connection"
 msgstr ""
 
@@ -3720,10 +3831,6 @@ msgstr ""
 msgid "SDK"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:216
-msgid "seconds"
-msgstr ""
-
 #: src/views/preference/components/TOTP.vue:109
 msgid "Secret has been copied"
 msgstr ""
@@ -3764,11 +3871,11 @@ msgstr "Informations sur le serveur"
 msgid "Server Info"
 msgstr "Informations sur le serveur"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:277
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:106
 msgid "Server Names Hash Bucket Size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:278
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:107
 msgid "Server names hash table size"
 msgstr ""
 
@@ -3820,6 +3927,10 @@ msgstr ""
 msgid ""
 "Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
 "com/guide/config-nginx.html for more information"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:147
+msgid "Shared Memory Zone"
 msgstr ""
 
 #: src/components/SensitiveString/SensitiveString.vue:40
@@ -3881,6 +3992,14 @@ msgstr "Directive"
 #, fuzzy
 msgid "Skip Installation"
 msgstr "Installer"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:325
+msgid "Sleep time between cache loader iterations"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:263
+msgid "Sleep time between cache manager iterations"
+msgstr ""
 
 #: src/views/certificate/components/CertificateEditor.vue:213
 #, fuzzy
@@ -4079,7 +4198,7 @@ msgstr "Changer de certificat"
 msgid "Sync Config Success"
 msgstr "Changer de certificat"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:124
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:125
 #: src/views/environments/group/EnvGroup.vue:18
 msgid "Sync Nodes"
 msgstr ""
@@ -4527,6 +4646,10 @@ msgstr ""
 msgid "Use recovery code"
 msgstr ""
 
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:158
+msgid "Use Temporary Path"
+msgstr ""
+
 #: src/components/ChatGPT/ChatGPT.vue:333
 #, fuzzy
 msgid "User"
@@ -4670,14 +4793,18 @@ msgid ""
 "codes."
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:194
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:160
+msgid "Whether to use a temporary path when writing temporary files"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:48
 #, fuzzy
 msgid "Worker Connections"
 msgstr "Version actuelle"
 
 #: src/composables/usePerformanceMetrics.ts:55
 #: src/views/dashboard/components/ConnectionMetricsCard.vue:48
-#: src/views/dashboard/components/PerformanceOptimization.vue:172
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:25
 #: src/views/dashboard/components/ProcessDistributionCard.vue:12
 msgid "Worker Processes"
 msgstr ""
@@ -4699,8 +4826,8 @@ msgstr "Écriture de la clé privée du certificat sur le disque"
 msgid "Writing certificate to disk"
 msgstr "Écriture du certificat sur le disque"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:132
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:144
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:133
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:145
 #: src/views/preference/AuthSettings.vue:163
 #: src/views/preference/CertSettings.vue:72
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:96

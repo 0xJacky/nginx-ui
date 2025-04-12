@@ -35,7 +35,7 @@ const formModel = reactive({
   verifyHash: true,
 })
 
-// 添加两个变量控制模态框显示和倒计时
+// Add two variables to control modal display and countdown
 const showRestoreModal = ref(false)
 const countdown = ref(5)
 const countdownTimer = ref<ReturnType<typeof setInterval> | null>(null)

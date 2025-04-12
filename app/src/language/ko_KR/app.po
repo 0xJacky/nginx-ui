@@ -118,7 +118,7 @@ msgstr "고급 모드"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr ""
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:117
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:118
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
 msgid "All"
 msgstr ""
@@ -212,7 +212,7 @@ msgstr "정말 삭제하시겠습니까?"
 msgid "Are you sure you want to recover this item?"
 msgstr "정말로 이 항목을 복구하시겠습니까?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:132
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "다음 동기화 노드에서 Nginx를 다시 로드하시겠습니까?"
 
@@ -228,7 +228,7 @@ msgstr "이 항목을 제거하시겠습니까?"
 msgid "Are you sure you want to remove this location?"
 msgstr "이 위치를 제거하시겠습니까?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:144
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "다음 동기화 노드에서 Nginx를 다시 시작하시겠습니까?"
 
@@ -265,8 +265,8 @@ msgstr "인증 설정"
 msgid "Author"
 msgstr "저자"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:178
-#: src/views/dashboard/components/PerformanceOptimization.vue:189
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:31
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:43
 msgid "Auto"
 msgstr ""
 
@@ -360,6 +360,11 @@ msgstr "기본"
 msgid "Basic Mode"
 msgstr "기본 모드"
 
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:119
+#, fuzzy
+msgid "Basic Settings"
+msgstr "2FA 설정"
+
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:83
 #, fuzzy
 msgid "Batch Actions"
@@ -390,14 +395,43 @@ msgstr "빌드 환경"
 msgid "CA Dir"
 msgstr "CA 디렉토리"
 
+#: src/views/dashboard/components/ParamsOptimization.vue:124
+msgid "Cache"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:178
+msgid "Cache items not accessed within this time will be removed"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:350
+msgid "Cache loader processing time threshold"
+msgstr ""
+
 #: src/composables/usePerformanceMetrics.ts:139
 #: src/views/dashboard/components/PerformanceTablesCard.vue:94
 msgid "Cache manager processes"
 msgstr ""
 
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:288
+msgid "Cache manager processing time threshold"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:246
+msgid "Cache Manager Settings"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:124
+#, fuzzy
+msgid "Cache Path"
+msgstr "인증서 변경"
+
 #: src/composables/usePerformanceMetrics.ts:57
 #: src/views/dashboard/components/ProcessDistributionCard.vue:14
 msgid "Cache Processes"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:137
+msgid "Cache subdirectory levels structure, e.g. 1:2"
 msgstr ""
 
 #: src/views/preference/CertSettings.vue:19
@@ -618,23 +652,23 @@ msgstr ""
 msgid "Click to copy"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:307
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:120
 msgid "Client Body Buffer Size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:289
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:113
 msgid "Client Header Buffer Size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:259
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Client Max Body Size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:308
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:121
 msgid "Client request body buffer size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:290
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:114
 msgid "Client request header buffer size"
 msgstr ""
 
@@ -670,7 +704,7 @@ msgstr ""
 msgid "Compare with Current"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:248
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:88
 msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr ""
 
@@ -721,7 +755,7 @@ msgstr ""
 msgid "Connection lost, please refresh the page."
 msgstr "연결이 끊어졌습니다. 페이지를 새로 고침하세요."
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:207
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
 msgid "Connection timeout period"
 msgstr ""
 
@@ -879,6 +913,10 @@ msgstr ""
 msgid "Decryption failed"
 msgstr "설명"
 
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:150
+msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
+msgstr ""
+
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
 #: src/views/certificate/components/RemoveCert.vue:87
@@ -999,6 +1037,15 @@ msgstr ""
 #: src/views/site/ngx_conf/directive/DirectiveEditor.vue:28
 msgid "Directives"
 msgstr "지시문들"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:135
+#, fuzzy
+msgid "Directory Levels"
+msgstr "지시문들"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:127
+msgid "Directory path to store cache files"
+msgstr ""
 
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:113
 #, fuzzy
@@ -1240,7 +1287,7 @@ msgstr "성공적으로 활성화"
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "%{name}에 대한 자동 갱신 활성화 실패"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:222
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:68
 msgid "Enable compression for content transfer"
 msgstr ""
 
@@ -1252,6 +1299,10 @@ msgstr "활성화 실패"
 #, fuzzy
 msgid "Enable HTTPS"
 msgstr "TLS 활성화"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:114
+msgid "Enable Proxy Cache"
+msgstr ""
 
 #: src/components/Notification/notifications.ts:25 src/language/constants.ts:54
 #, fuzzy
@@ -1616,7 +1667,7 @@ msgstr "인증서 정보 가져오기 실패"
 msgid "Failed to get certificate information"
 msgstr "인증서 정보 가져오기 실패"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:56
+#: src/views/dashboard/components/ParamsOptimization.vue:61
 #, fuzzy
 msgid "Failed to get Nginx performance settings"
 msgstr "인증서 정보 가져오기 실패"
@@ -1685,7 +1736,7 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr "인증서 획득 실패"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:126
+#: src/views/dashboard/components/ParamsOptimization.vue:90
 #, fuzzy
 msgid "Failed to save Nginx performance settings"
 msgstr "인증서 정보 가져오기 실패"
@@ -1816,15 +1867,15 @@ msgstr "인증서를 가져오는 중입니다. 잠시 기다려 주세요..."
 msgid "Github Proxy"
 msgstr "Github 프록시"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:221
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:67
 msgid "GZIP Compression"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:247
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:87
 msgid "GZIP Compression Level"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:233
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:80
 msgid "GZIP Min Length"
 msgstr ""
 
@@ -1918,6 +1969,10 @@ msgstr "가져오기"
 #, fuzzy
 msgid "Import Certificate"
 msgstr "인증서 상태"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:176
+msgid "Inactive Time"
+msgstr ""
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:54
 msgid ""
@@ -2077,17 +2132,13 @@ msgstr ""
 msgid "Jwt Secret"
 msgstr "Jwt 토큰"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:242
-msgid "KB"
-msgstr ""
-
 #: src/views/preference/components/RecoveryCodes.vue:74
 msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
 "with a password manager."
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:206
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:60
 msgid "Keepalive Timeout"
 msgstr ""
 
@@ -2182,6 +2233,24 @@ msgstr ""
 #, fuzzy
 msgid "Load successfully"
 msgstr "성공적으로 저장됨"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:313
+#, fuzzy
+msgid "Loader Files"
+msgstr "생성"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:308
+#, fuzzy
+msgid "Loader Settings"
+msgstr "2FA 설정"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:323
+msgid "Loader Sleep"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:348
+msgid "Loader Threshold"
+msgstr ""
 
 #: src/views/dashboard/NginxDashBoard.vue:178
 msgid "Loading data..."
@@ -2288,7 +2357,22 @@ msgstr "사용자 관리"
 msgid "Managed Certificate"
 msgstr "인증서 유효"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:179
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:251
+#, fuzzy
+msgid "Manager Files"
+msgstr "사이트 관리"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:261
+#, fuzzy
+msgid "Manager Sleep"
+msgstr "사이트 관리"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:286
+#, fuzzy
+msgid "Manager Threshold"
+msgstr "스트림 관리"
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:32
 msgid "Manual"
 msgstr ""
 
@@ -2323,11 +2407,15 @@ msgstr "현재 버전"
 msgid "Max Requests Per Second"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:260
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:199
+msgid "Maximum Cache Size"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
 msgid "Maximum client request body size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:195
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:49
 #, fuzzy
 msgid "Maximum number of concurrent connections"
 msgstr "현재 버전"
@@ -2335,6 +2423,10 @@ msgstr "현재 버전"
 #: src/composables/usePerformanceMetrics.ts:174
 #: src/views/dashboard/components/PerformanceTablesCard.vue:125
 msgid "Maximum number of connections per worker process"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:201
+msgid "Maximum total size of the cache"
 msgstr ""
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:195
@@ -2354,8 +2446,16 @@ msgstr "메모리 및 저장소"
 msgid "Memory Usage (RSS)"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:234
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:81
 msgid "Minimum file size for compression"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:224
+msgid "Minimum Free Space"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:226
+msgid "Minimum free space in the cache directory"
 msgstr ""
 
 #: src/views/preference/LogrotateSettings.vue:29
@@ -2628,8 +2728,8 @@ msgid ""
 msgstr "Nginx 구성 오류름"
 
 #: src/components/ChatGPT/ChatGPT.vue:374
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:133
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:145
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:134
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:146
 #: src/components/Notification/Notification.vue:133
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:63
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:94
@@ -2733,8 +2833,16 @@ msgstr "알림"
 msgid "Notifier not found"
 msgstr "파일을 찾을 수 없음"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:173
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:26
 msgid "Number of concurrent worker processes, auto sets to CPU core count"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:315
+msgid "Number of files processed by cache loader at once"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:253
+msgid "Number of files processed by cache manager at once"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:129
@@ -2763,12 +2871,13 @@ msgid ""
 "Firefox."
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:227
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:73
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:165
 #, fuzzy
 msgid "Off"
 msgstr "오프라인"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:56
@@ -2799,7 +2908,8 @@ msgstr ""
 msgid "OK"
 msgstr "확인"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:226
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:72
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:164
 msgid "On"
 msgstr ""
 
@@ -2807,7 +2917,7 @@ msgstr ""
 msgid "Once the verification is complete, the records will be removed."
 msgstr "검증이 완료되면, 레코드는 제거됩니다."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
 #: src/components/NodeSelector/NodeSelector.vue:103
 #: src/components/NodeSelector/NodeSelector.vue:89
 #: src/views/dashboard/Environments.vue:100
@@ -2822,14 +2932,6 @@ msgstr ""
 #: src/views/preference/Preference.vue:212
 msgid "OpenAI"
 msgstr "오픈AI"
-
-#: src/views/dashboard/components/PerformanceOptimization.vue:164
-msgid "Optimize Nginx Performance"
-msgstr ""
-
-#: src/views/dashboard/components/PerformanceOptimization.vue:158
-msgid "Optimize Performance"
-msgstr ""
 
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:231
 msgid "Or"
@@ -2887,6 +2989,11 @@ msgstr "사이트 관리"
 msgid "Params"
 msgstr "파라미터"
 
+#: src/views/dashboard/components/ParamsOptimization.vue:109
+#: src/views/dashboard/components/ParamsOptimization.vue:115
+msgid "Params Optimization"
+msgstr ""
+
 #: src/views/preference/components/Passkey.vue:59
 msgid "Passkey"
 msgstr ""
@@ -2938,11 +3045,15 @@ msgstr ""
 msgid "Perform core upgrade error"
 msgstr "핵심 업그레이드 오류 수행"
 
+#: src/views/dashboard/components/ParamsOptimization.vue:121
+msgid "Performance"
+msgstr ""
+
 #: src/views/dashboard/NginxDashBoard.vue:185
 msgid "Performance Metrics"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:122
+#: src/views/dashboard/components/ParamsOptimization.vue:86
 #, fuzzy
 msgid "Performance settings saved successfully"
 msgstr "성공적으로 비활성화됨"
@@ -3245,7 +3356,7 @@ msgstr "릴리스 노트"
 msgid "Reload"
 msgstr "리로드"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:138
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:139
 #: src/views/environments/group/columns.ts:24
 #: src/views/environments/group/EnvGroup.vue:37
 #: src/views/environments/list/Environment.vue:120
@@ -3274,7 +3385,7 @@ msgstr "인증서 갱신 오류"
 msgid "Reload Remote Nginx Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:86
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:87
 msgid "Reload request failed, please check your network connection"
 msgstr ""
 
@@ -3449,7 +3560,7 @@ msgstr ""
 msgid "Restart"
 msgstr "재시작"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:150
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:151
 #: src/views/environments/list/Environment.vue:141
 #: src/views/environments/list/Environment.vue:149
 #, fuzzy
@@ -3476,7 +3587,7 @@ msgstr "인증서 갱신 오류"
 msgid "Restart Remote Nginx Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:106
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:107
 msgid "Restart request failed, please check your network connection"
 msgstr ""
 
@@ -3642,10 +3753,6 @@ msgstr ""
 msgid "SDK"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:216
-msgid "seconds"
-msgstr ""
-
 #: src/views/preference/components/TOTP.vue:109
 msgid "Secret has been copied"
 msgstr ""
@@ -3685,11 +3792,11 @@ msgstr "서버 정보"
 msgid "Server Info"
 msgstr "서버 정보"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:277
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:106
 msgid "Server Names Hash Bucket Size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:278
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:107
 msgid "Server names hash table size"
 msgstr ""
 
@@ -3739,6 +3846,10 @@ msgstr ""
 msgid ""
 "Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
 "com/guide/config-nginx.html for more information"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:147
+msgid "Shared Memory Zone"
 msgstr ""
 
 #: src/components/SensitiveString/SensitiveString.vue:40
@@ -3799,6 +3910,14 @@ msgstr ""
 #, fuzzy
 msgid "Skip Installation"
 msgstr "설치"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:325
+msgid "Sleep time between cache loader iterations"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:263
+msgid "Sleep time between cache manager iterations"
+msgstr ""
 
 #: src/views/certificate/components/CertificateEditor.vue:213
 #, fuzzy
@@ -3996,7 +4115,7 @@ msgstr "인증서 갱신 오류"
 msgid "Sync Config Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:124
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:125
 #: src/views/environments/group/EnvGroup.vue:18
 msgid "Sync Nodes"
 msgstr ""
@@ -4441,6 +4560,10 @@ msgstr ""
 msgid "Use recovery code"
 msgstr ""
 
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:158
+msgid "Use Temporary Path"
+msgstr ""
+
 #: src/components/ChatGPT/ChatGPT.vue:333
 #, fuzzy
 msgid "User"
@@ -4587,14 +4710,18 @@ msgid ""
 "codes."
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:194
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:160
+msgid "Whether to use a temporary path when writing temporary files"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:48
 #, fuzzy
 msgid "Worker Connections"
 msgstr "현재 버전"
 
 #: src/composables/usePerformanceMetrics.ts:55
 #: src/views/dashboard/components/ConnectionMetricsCard.vue:48
-#: src/views/dashboard/components/PerformanceOptimization.vue:172
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:25
 #: src/views/dashboard/components/ProcessDistributionCard.vue:12
 msgid "Worker Processes"
 msgstr ""
@@ -4616,8 +4743,8 @@ msgstr "인증서 개인 키를 디스크에 쓰기"
 msgid "Writing certificate to disk"
 msgstr "인증서를 디스크에 쓰기"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:132
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:144
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:133
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:145
 #: src/views/preference/AuthSettings.vue:163
 #: src/views/preference/CertSettings.vue:72
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:96

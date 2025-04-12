@@ -51,7 +51,7 @@ const modifiedAt = ref('')
 const nginxConfigBase = ref('')
 
 const newPath = computed(() => {
-  // 组合路径后解码显示
+  // Decode and display after combining paths
   const path = [nginxConfigBase.value, basePath.value, data.value.name]
     .filter(v => v)
     .join('/')

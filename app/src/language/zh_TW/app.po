@@ -122,7 +122,7 @@ msgstr "進階模式"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "然後，重新整理此頁面並再次點選新增通行密鑰。"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:117
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:118
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
 msgid "All"
 msgstr "全部"
@@ -214,7 +214,7 @@ msgstr "您確定要刪除嗎？"
 msgid "Are you sure you want to recover this item?"
 msgstr "您確定要恢復此項目嗎？"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:132
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新載入Nginx嗎？"
 
@@ -230,7 +230,7 @@ msgstr "您確定要刪除此項目嗎？"
 msgid "Are you sure you want to remove this location?"
 msgstr "您確定要刪除此 Location 嗎？"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:144
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新啟動Nginx嗎？"
 
@@ -267,8 +267,8 @@ msgstr "認證設定"
 msgid "Author"
 msgstr "作者"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:178
-#: src/views/dashboard/components/PerformanceOptimization.vue:189
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:31
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:43
 msgid "Auto"
 msgstr "自動"
 
@@ -359,6 +359,11 @@ msgstr "基本"
 msgid "Basic Mode"
 msgstr "基本模式"
 
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:119
+#, fuzzy
+msgid "Basic Settings"
+msgstr "多重要素驗證設定"
+
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:83
 msgid "Batch Actions"
 msgstr "批次操作"
@@ -388,14 +393,43 @@ msgstr "構建基於"
 msgid "CA Dir"
 msgstr "CA Dir"
 
+#: src/views/dashboard/components/ParamsOptimization.vue:124
+msgid "Cache"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:178
+msgid "Cache items not accessed within this time will be removed"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:350
+msgid "Cache loader processing time threshold"
+msgstr ""
+
 #: src/composables/usePerformanceMetrics.ts:139
 #: src/views/dashboard/components/PerformanceTablesCard.vue:94
 msgid "Cache manager processes"
 msgstr ""
 
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:288
+msgid "Cache manager processing time threshold"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:246
+msgid "Cache Manager Settings"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:124
+#, fuzzy
+msgid "Cache Path"
+msgstr "變更後路徑"
+
 #: src/composables/usePerformanceMetrics.ts:57
 #: src/views/dashboard/components/ProcessDistributionCard.vue:14
 msgid "Cache Processes"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:137
+msgid "Cache subdirectory levels structure, e.g. 1:2"
 msgstr ""
 
 #: src/views/preference/CertSettings.vue:19
@@ -608,23 +642,23 @@ msgstr "點擊或拖曳備份檔案至此區域上傳"
 msgid "Click to copy"
 msgstr "點擊複製"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:307
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:120
 msgid "Client Body Buffer Size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:289
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:113
 msgid "Client Header Buffer Size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:259
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Client Max Body Size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:308
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:121
 msgid "Client request body buffer size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:290
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:114
 msgid "Client request header buffer size"
 msgstr ""
 
@@ -659,7 +693,7 @@ msgstr "比較選定"
 msgid "Compare with Current"
 msgstr "與當前比較"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:248
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:88
 msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr ""
 
@@ -708,7 +742,7 @@ msgstr ""
 msgid "Connection lost, please refresh the page."
 msgstr "連接丟失，請重新整理。"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:207
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
 msgid "Connection timeout period"
 msgstr ""
 
@@ -861,6 +895,10 @@ msgstr "天"
 msgid "Decryption failed"
 msgstr "解密失敗"
 
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:150
+msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
+msgstr ""
+
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
 #: src/views/certificate/components/RemoveCert.vue:87
@@ -973,6 +1011,15 @@ msgstr "指令索引超出範圍"
 #: src/views/site/ngx_conf/directive/DirectiveEditor.vue:28
 msgid "Directives"
 msgstr "指令"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:135
+#, fuzzy
+msgid "Directory Levels"
+msgstr "指令"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:127
+msgid "Directory path to store cache files"
+msgstr ""
 
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:113
 msgid "disable"
@@ -1195,7 +1242,7 @@ msgstr "啟用多因素身份驗證成功"
 msgid "Enable auto-renewal failed for %{name}"
 msgstr "啟用 %{name} 自動續簽失敗"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:222
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:68
 msgid "Enable compression for content transfer"
 msgstr ""
 
@@ -1206,6 +1253,10 @@ msgstr "啟用失敗"
 #: src/views/preference/ServerSettings.vue:29
 msgid "Enable HTTPS"
 msgstr "啟用 HTTPS"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:114
+msgid "Enable Proxy Cache"
+msgstr ""
 
 #: src/components/Notification/notifications.ts:25 src/language/constants.ts:54
 msgid "Enable Remote Site Error"
@@ -1527,7 +1578,7 @@ msgstr "無法生成初始化向量：{0}"
 msgid "Failed to get certificate information"
 msgstr "取得憑證資訊失敗"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:56
+#: src/views/dashboard/components/ParamsOptimization.vue:61
 #, fuzzy
 msgid "Failed to get Nginx performance settings"
 msgstr "取得憑證資訊失敗"
@@ -1590,7 +1641,7 @@ msgstr "無法恢復Nginx UI文件：{0}"
 msgid "Failed to revoke certificate"
 msgstr "獲取憑證失敗"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:126
+#: src/views/dashboard/components/ParamsOptimization.vue:90
 #, fuzzy
 msgid "Failed to save Nginx performance settings"
 msgstr "取得憑證資訊失敗"
@@ -1714,15 +1765,15 @@ msgstr "正在取得憑證，請稍候..."
 msgid "Github Proxy"
 msgstr "Github 代理"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:221
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:67
 msgid "GZIP Compression"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:247
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:87
 msgid "GZIP Compression Level"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:233
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:80
 msgid "GZIP Min Length"
 msgstr ""
 
@@ -1815,6 +1866,10 @@ msgstr "導入"
 #: src/views/certificate/components/CertificateEditor.vue:85
 msgid "Import Certificate"
 msgstr "導入憑證"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:176
+msgid "Inactive Time"
+msgstr ""
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:54
 msgid ""
@@ -1964,10 +2019,6 @@ msgstr "發行者：%{issuer}"
 msgid "Jwt Secret"
 msgstr "Jwt Secret"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:242
-msgid "KB"
-msgstr ""
-
 #: src/views/preference/components/RecoveryCodes.vue:74
 msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
@@ -1975,7 +2026,7 @@ msgid ""
 msgstr ""
 "請將您的復原代碼與密碼同樣妥善保管。我們建議使用密碼管理工具來儲存它們。"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:206
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:60
 msgid "Keepalive Timeout"
 msgstr ""
 
@@ -2062,6 +2113,24 @@ msgstr "從設置加載"
 #: src/views/environments/list/Environment.vue:20
 msgid "Load successfully"
 msgstr "加載成功"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:313
+#, fuzzy
+msgid "Loader Files"
+msgstr "創建檔案"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:308
+#, fuzzy
+msgid "Loader Settings"
+msgstr "從設置加載"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:323
+msgid "Loader Sleep"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:348
+msgid "Loader Threshold"
+msgstr ""
 
 #: src/views/dashboard/NginxDashBoard.vue:178
 msgid "Loading data..."
@@ -2159,7 +2228,22 @@ msgstr "管理使用者"
 msgid "Managed Certificate"
 msgstr "受管理的憑證"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:179
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:251
+#, fuzzy
+msgid "Manager Files"
+msgstr "管理網站"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:261
+#, fuzzy
+msgid "Manager Sleep"
+msgstr "管理網站"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:286
+#, fuzzy
+msgid "Manager Threshold"
+msgstr "管理 Stream"
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:32
 msgid "Manual"
 msgstr ""
 
@@ -2194,11 +2278,15 @@ msgstr "當前內容"
 msgid "Max Requests Per Second"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:260
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:199
+msgid "Maximum Cache Size"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
 msgid "Maximum client request body size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:195
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:49
 #, fuzzy
 msgid "Maximum number of concurrent connections"
 msgstr "當前內容"
@@ -2206,6 +2294,10 @@ msgstr "當前內容"
 #: src/composables/usePerformanceMetrics.ts:174
 #: src/views/dashboard/components/PerformanceTablesCard.vue:125
 msgid "Maximum number of connections per worker process"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:201
+msgid "Maximum total size of the cache"
 msgstr ""
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:195
@@ -2225,8 +2317,16 @@ msgstr "記憶體與儲存"
 msgid "Memory Usage (RSS)"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:234
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:81
 msgid "Minimum file size for compression"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:224
+msgid "Minimum Free Space"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:226
+msgid "Minimum free space in the cache directory"
 msgstr ""
 
 #: src/views/preference/LogrotateSettings.vue:29
@@ -2480,8 +2580,8 @@ msgid ""
 msgstr "Nginx UI 設定已恢復，將在幾秒後自動重新啟動。"
 
 #: src/components/ChatGPT/ChatGPT.vue:374
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:133
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:145
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:134
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:146
 #: src/components/Notification/Notification.vue:133
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:63
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:94
@@ -2576,8 +2676,16 @@ msgstr "通知"
 msgid "Notifier not found"
 msgstr "通知器未找到"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:173
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:26
 msgid "Number of concurrent worker processes, auto sets to CPU core count"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:315
+msgid "Number of files processed by cache loader at once"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:253
+msgid "Number of files processed by cache manager at once"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:129
@@ -2605,12 +2713,13 @@ msgid ""
 "Firefox."
 msgstr "OCSP 必須裝訂可能會導致某些用戶在首次使用 Firefox 訪問時出現錯誤。"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:227
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:73
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:165
 #, fuzzy
 msgid "Off"
 msgstr "離線"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:56
@@ -2641,7 +2750,8 @@ msgstr "確定"
 msgid "OK"
 msgstr "確定"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:226
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:72
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:164
 msgid "On"
 msgstr ""
 
@@ -2649,7 +2759,7 @@ msgstr ""
 msgid "Once the verification is complete, the records will be removed."
 msgstr "驗證完成後，記錄將被刪除。"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:161
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
 #: src/components/NodeSelector/NodeSelector.vue:103
 #: src/components/NodeSelector/NodeSelector.vue:89
 #: src/views/dashboard/Environments.vue:100
@@ -2664,14 +2774,6 @@ msgstr "只允許壓縮檔"
 #: src/views/preference/Preference.vue:212
 msgid "OpenAI"
 msgstr "OpenAI"
-
-#: src/views/dashboard/components/PerformanceOptimization.vue:164
-msgid "Optimize Nginx Performance"
-msgstr ""
-
-#: src/views/dashboard/components/PerformanceOptimization.vue:158
-msgid "Optimize Performance"
-msgstr ""
 
 #: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:231
 msgid "Or"
@@ -2727,6 +2829,11 @@ msgstr "頁面大小"
 msgid "Params"
 msgstr "參數"
 
+#: src/views/dashboard/components/ParamsOptimization.vue:109
+#: src/views/dashboard/components/ParamsOptimization.vue:115
+msgid "Params Optimization"
+msgstr ""
+
 #: src/views/preference/components/Passkey.vue:59
 msgid "Passkey"
 msgstr "通行密鑰"
@@ -2779,11 +2886,16 @@ msgstr "執行"
 msgid "Perform core upgrade error"
 msgstr "執行核心升級錯誤"
 
+#: src/views/dashboard/components/ParamsOptimization.vue:121
+#, fuzzy
+msgid "Performance"
+msgstr "執行"
+
 #: src/views/dashboard/NginxDashBoard.vue:185
 msgid "Performance Metrics"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:122
+#: src/views/dashboard/components/ParamsOptimization.vue:86
 #, fuzzy
 msgid "Performance settings saved successfully"
 msgstr "維護模式已成功停用"
@@ -3068,7 +3180,7 @@ msgstr "發行公告"
 msgid "Reload"
 msgstr "重新載入"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:138
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:139
 #: src/views/environments/group/columns.ts:24
 #: src/views/environments/group/EnvGroup.vue:37
 #: src/views/environments/list/Environment.vue:120
@@ -3092,7 +3204,7 @@ msgstr "重新載入遠端Nginx錯誤"
 msgid "Reload Remote Nginx Success"
 msgstr "遠端Nginx重載成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:86
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:87
 msgid "Reload request failed, please check your network connection"
 msgstr "重新載入請求失敗，請檢查您的網路連線"
 
@@ -3245,7 +3357,7 @@ msgstr ""
 msgid "Restart"
 msgstr "重新啟動"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:150
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:151
 #: src/views/environments/list/Environment.vue:141
 #: src/views/environments/list/Environment.vue:149
 msgid "Restart Nginx"
@@ -3267,7 +3379,7 @@ msgstr "遠端Nginx重啟錯誤"
 msgid "Restart Remote Nginx Success"
 msgstr "遠端Nginx重啟成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:106
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:107
 msgid "Restart request failed, please check your network connection"
 msgstr "重新啟動請求失敗，請檢查您的網路連線"
 
@@ -3419,10 +3531,6 @@ msgstr "用手機掃描二維碼將賬戶添加到應用程序中。"
 msgid "SDK"
 msgstr "SDK"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:216
-msgid "seconds"
-msgstr ""
-
 #: src/views/preference/components/TOTP.vue:109
 msgid "Secret has been copied"
 msgstr "密鑰已複製"
@@ -3461,11 +3569,11 @@ msgstr "伺服器"
 msgid "Server Info"
 msgstr "伺服器資訊"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:277
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:106
 msgid "Server Names Hash Bucket Size"
 msgstr ""
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:278
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:107
 msgid "Server names hash table size"
 msgstr ""
 
@@ -3519,6 +3627,10 @@ msgstr ""
 "Settings.NginxLogSettings.ErrorLogPath 為空，請參考 https://nginxui.com/"
 "guide/config-nginx.html 了解更多資訊"
 
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:147
+msgid "Shared Memory Zone"
+msgstr ""
+
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Show"
 msgstr "顯示"
@@ -3570,6 +3682,14 @@ msgstr "sites-enabled 資料夾不存在"
 #: src/views/preference/NodeSettings.vue:23
 msgid "Skip Installation"
 msgstr "跳過安裝"
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:325
+msgid "Sleep time between cache loader iterations"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:263
+msgid "Sleep time between cache manager iterations"
+msgstr ""
 
 #: src/views/certificate/components/CertificateEditor.vue:213
 msgid "SSL Certificate Content"
@@ -3749,7 +3869,7 @@ msgstr "同步配置錯誤"
 msgid "Sync Config Success"
 msgstr "同步配置成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:124
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:125
 #: src/views/environments/group/EnvGroup.vue:18
 msgid "Sync Nodes"
 msgstr "同步節點"
@@ -4182,6 +4302,10 @@ msgstr "使用一次性密碼"
 msgid "Use recovery code"
 msgstr "使用恢復碼"
 
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:158
+msgid "Use Temporary Path"
+msgstr ""
+
 #: src/components/ChatGPT/ChatGPT.vue:333
 msgid "User"
 msgstr "使用者名稱"
@@ -4327,14 +4451,18 @@ msgid ""
 "codes."
 msgstr "當您生成新的復原代碼時，必須下載或列印新的代碼。"
 
-#: src/views/dashboard/components/PerformanceOptimization.vue:194
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:160
+msgid "Whether to use a temporary path when writing temporary files"
+msgstr ""
+
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:48
 #, fuzzy
 msgid "Worker Connections"
 msgstr "當前內容"
 
 #: src/composables/usePerformanceMetrics.ts:55
 #: src/views/dashboard/components/ConnectionMetricsCard.vue:48
-#: src/views/dashboard/components/PerformanceOptimization.vue:172
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:25
 #: src/views/dashboard/components/ProcessDistributionCard.vue:12
 msgid "Worker Processes"
 msgstr ""
@@ -4356,8 +4484,8 @@ msgstr "將憑證私鑰寫入磁碟"
 msgid "Writing certificate to disk"
 msgstr "將憑證寫入磁碟"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:132
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:144
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:133
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:145
 #: src/views/preference/AuthSettings.vue:163
 #: src/views/preference/CertSettings.vue:72
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:96

@@ -56,7 +56,8 @@ export default defineConfig({
         // default
         /\.(vue|[jt]sx|ts)($|\?)/,
 
-        // 参考：https://unocss.dev/guide/extracting#extracting-from-build-tools-pipeline
+        // Use utility functions
+        // Reference: https://unocss.dev/guide/extracting#extracting-from-build-tools-pipeline
       ],
 
       // exclude files

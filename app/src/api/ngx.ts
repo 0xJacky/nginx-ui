@@ -35,37 +35,59 @@ export interface NgxLocation {
 
 export type DirectiveMap = Record<string, { links: string[] }>
 
+export interface ProxyCacheConfig {
+  enabled: boolean
+  path: string
+  levels: string
+  use_temp_path: string
+  keys_zone: string
+  inactive: string
+  max_size: string
+  min_free: string
+  manager_files: string
+  manager_sleep: string
+  manager_threshold: string
+  loader_files: string
+  loader_sleep: string
+  loader_threshold: string
+  purger: string
+  purger_files: string
+  purger_sleep: string
+  purger_threshold: string
+}
+
 export interface NginxPerformanceInfo {
-  active: number // 活动连接数
-  accepts: number // 总握手次数
-  handled: number // 总连接次数
-  requests: number // 总请求数
-  reading: number // 读取客户端请求数
-  writing: number // 响应数
-  waiting: number // 驻留进程（等待请求）
-  workers: number // 工作进程数
-  master: number // 主进程数
-  cache: number // 缓存管理进程数
-  other: number // 其他Nginx相关进程数
-  cpu_usage: number // CPU 使用率
-  memory_usage: number // 内存使用率（MB）
-  worker_processes: number // worker_processes 配置
-  worker_connections: number // worker_connections 配置
-  process_mode: string // worker进程配置模式：'auto'或'manual'
+  active: number // Number of active connections
+  accepts: number // Total number of accepted connections
+  handled: number // Total number of handled connections
+  requests: number // Total number of requests
+  reading: number // Number of connections reading request data
+  writing: number // Number of connections writing response data
+  waiting: number // Number of idle connections waiting for requests
+  workers: number // Number of worker processes
+  master: number // Number of master processes
+  cache: number // Number of cache manager processes
+  other: number // Number of other Nginx-related processes
+  cpu_usage: number // CPU usage percentage
+  memory_usage: number // Memory usage in MB
+  worker_processes: number // worker_processes configuration
+  worker_connections: number // worker_connections configuration
+  process_mode: string // Worker process configuration mode: 'auto' or 'manual'
 }
 
 export interface NginxConfigInfo {
-  worker_processes: number
+  worker_processes: string
   worker_connections: number
   process_mode: string
-  keepalive_timeout: number
+  keepalive_timeout: string
   gzip: string
   gzip_min_length: number
   gzip_comp_level: number
   client_max_body_size: string
-  server_names_hash_bucket_size: number
+  server_names_hash_bucket_size: string
   client_header_buffer_size: string
   client_body_buffer_size: string
+  proxy_cache: ProxyCacheConfig
 }
 
 export interface NginxPerfOpt {
@@ -79,6 +101,7 @@ export interface NginxPerfOpt {
   server_names_hash_bucket_size: string
   client_header_buffer_size: string
   client_body_buffer_size: string
+  proxy_cache: ProxyCacheConfig
 }
 
 const ngx = {

@@ -1,6 +1,9 @@
-package nginx
+package performance
 
-import "github.com/uozi-tech/cosy/logger"
+import (
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/uozi-tech/cosy/logger"
+)
 
 type NginxPerformanceInfo struct {
 	StubStatusData
@@ -16,7 +19,7 @@ type NginxPerformanceResponse struct {
 
 func GetPerformanceData() NginxPerformanceResponse {
 	// Check if Nginx is running
-	running := IsNginxRunning()
+	running := nginx.IsNginxRunning()
 	if !running {
 		return NginxPerformanceResponse{
 			StubStatusEnabled: false,

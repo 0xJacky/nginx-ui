@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/performance"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
@@ -18,18 +19,18 @@ import (
 // NginxPerformanceInfo stores Nginx performance-related information
 type NginxPerformanceInfo struct {
 	// Basic status information
-	nginx.StubStatusData
+	performance.StubStatusData
 
 	// Process-related information
-	nginx.NginxProcessInfo
+	performance.NginxProcessInfo
 
 	// Configuration information
-	nginx.NginxConfigInfo
+	performance.NginxConfigInfo
 }
 
 // GetDetailStatus retrieves detailed Nginx status information
 func GetDetailStatus(c *gin.Context) {
-	response := nginx.GetPerformanceData()
+	response := performance.GetPerformanceData()
 	c.JSON(http.StatusOK, response)
 }
 
@@ -70,7 +71,7 @@ func StreamDetailStatus(c *gin.Context) {
 
 // sendPerformanceData sends performance data once
 func sendPerformanceData(c *gin.Context) error {
-	response := nginx.GetPerformanceData()
+	response := performance.GetPerformanceData()
 
 	// Send SSE event
 	c.SSEvent("message", response)
@@ -82,7 +83,7 @@ func sendPerformanceData(c *gin.Context) error {
 
 // CheckStubStatus gets Nginx stub_status module status
 func CheckStubStatus(c *gin.Context) {
-	stubStatus := nginx.GetStubStatus()
+	stubStatus := performance.GetStubStatus()
 
 	c.JSON(http.StatusOK, stubStatus)
 }
@@ -97,7 +98,7 @@ func ToggleStubStatus(c *gin.Context) {
 		return
 	}
 
-	stubStatus := nginx.GetStubStatus()
+	stubStatus := performance.GetStubStatus()
 
 	// If current status matches desired status, no action needed
 	if stubStatus.Enabled == json.Enable {
@@ -107,9 +108,9 @@ func ToggleStubStatus(c *gin.Context) {
 
 	var err error
 	if json.Enable {
-		err = nginx.EnableStubStatus()
+		err = performance.EnableStubStatus()
 	} else {
-		err = nginx.DisableStubStatus()
+		err = performance.DisableStubStatus()
 	}
 
 	if err != nil {
@@ -126,7 +127,7 @@ func ToggleStubStatus(c *gin.Context) {
 	}
 
 	// Check status after operation
-	newStubStatus := nginx.GetStubStatus()
+	newStubStatus := performance.GetStubStatus()
 
 	c.JSON(http.StatusOK, newStubStatus)
 }

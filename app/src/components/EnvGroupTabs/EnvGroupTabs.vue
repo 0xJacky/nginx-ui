@@ -20,7 +20,8 @@ const loading = ref({
   restart: false,
 })
 
-// 使用SSE composable
+// Use SSE composable
+// Error handling is implemented internally by useSSE with automatic reconnection
 const { connect, disconnect } = useSSE()
 
 // Get node data when tab is not 'All'

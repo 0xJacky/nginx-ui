@@ -7,7 +7,7 @@ import { useUserStore } from '@/pinia'
 import { useGlobalStore } from '@/pinia/moudule/global'
 import { ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import ConnectionMetricsCard from './components/ConnectionMetricsCard.vue'
-import PerformanceOptimization from './components/PerformanceOptimization.vue'
+import ParamsOptimization from './components/ParamsOptimization.vue'
 import PerformanceStatisticsCard from './components/PerformanceStatisticsCard.vue'
 import PerformanceTablesCard from './components/PerformanceTablesCard.vue'
 import ProcessDistributionCard from './components/ProcessDistributionCard.vue'
@@ -184,7 +184,7 @@ onMounted(() => {
         <!-- Top performance metrics card -->
         <ACard class="mb-4" :title="$gettext('Performance Metrics')" :bordered="false">
           <template #extra>
-            <PerformanceOptimization />
+            <ParamsOptimization />
           </template>
           <PerformanceStatisticsCard :nginx-info="nginxInfo" />
         </ACard>
