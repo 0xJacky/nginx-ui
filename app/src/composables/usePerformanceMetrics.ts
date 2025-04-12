@@ -1,6 +1,4 @@
 import type { NginxPerformanceInfo } from '@/api/ngx'
-import type { Ref } from 'vue'
-import { computed } from 'vue'
 
 export function usePerformanceMetrics(nginxInfo: Ref<NginxPerformanceInfo | undefined>) {
   // Format numbers to a more readable form

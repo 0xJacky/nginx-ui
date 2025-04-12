@@ -1,20 +1,16 @@
 <script setup lang="tsx">
 import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column } from '@/components/StdDesign/types'
-import type { SSE, SSEvent } from 'sse.js'
-import cacheIndex from '@/api/cache_index'
 import nginxLog from '@/api/nginx_log'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import { input, select } from '@/components/StdDesign/StdDataEntry'
+import { useIndexStatus } from '@/composables/useIndexStatus'
 import { CheckCircleOutlined, LoadingOutlined } from '@ant-design/icons-vue'
 import { Tag } from 'ant-design-vue'
-import { onMounted, onUnmounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const isScanning = ref(false)
+const { isScanning } = useIndexStatus()
 const stdCurdRef = ref()
-const sse = ref<SSE>()
 
 const columns: Column[] = [
   {
@@ -63,50 +59,6 @@ function viewLog(record: { type: string, path: string }) {
     },
   })
 }
-
-// Connect to SSE endpoint and setup handlers
-async function setupSSE() {
-  if (sse.value) {
-    sse.value.close()
-  }
-
-  sse.value = cacheIndex.index_status()
-
-  // Handle incoming messages
-  if (sse.value) {
-    sse.value.onmessage = (e: SSEvent) => {
-      try {
-        if (!e.data)
-          return
-
-        const data = JSON.parse(e.data)
-        isScanning.value = data.scanning
-
-        stdCurdRef.value.get_list()
-      }
-      catch (error) {
-        console.error('Error parsing SSE message:', error)
-      }
-    }
-
-    sse.value.onerror = () => {
-      // Reconnect on error
-      setTimeout(() => {
-        setupSSE()
-      }, 5000)
-    }
-  }
-}
-
-onMounted(() => {
-  setupSSE()
-})
-
-onUnmounted(() => {
-  if (sse.value) {
-    sse.value.close()
-  }
-})
 </script>
 
 <template>

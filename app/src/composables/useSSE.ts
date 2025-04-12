@@ -1,6 +1,5 @@
 import type { SSEvent } from 'sse.js'
 import { SSE } from 'sse.js'
-import { onUnmounted, shallowRef } from 'vue'
 
 export interface SSEOptions {
   url: string

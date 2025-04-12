@@ -2,13 +2,12 @@
 import type { EnvGroup } from '@/api/env_group'
 import type { Site } from '@/api/site'
 import type { Column } from '@/components/StdDesign/types'
-import type { SSE, SSEvent } from 'sse.js'
-import cacheIndex from '@/api/cache_index'
 import env_group from '@/api/env_group'
 import site from '@/api/site'
 import EnvGroupTabs from '@/components/EnvGroupTabs/EnvGroupTabs.vue'
 import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
+import { useIndexStatus } from '@/composables/useIndexStatus'
 import { ConfigStatus } from '@/constants'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import columns from '@/views/site/site_list/columns'
@@ -20,15 +19,15 @@ const route = useRoute()
 const router = useRouter()
 
 const table = ref()
-const inspect_config = ref()
+const inspectConfig = ref()
 
 const envGroupId = ref(Number.parseInt(route.query.env_group_id as string) || 0)
 const envGroups = ref([]) as Ref<EnvGroup[]>
-const isScanning = ref(false)
-const sse = ref<SSE>()
+
+const { isScanning } = useIndexStatus()
 
 watch(route, () => {
-  inspect_config.value?.test()
+  inspectConfig.value?.test()
 })
 
 onMounted(async () => {
@@ -48,55 +47,11 @@ onMounted(async () => {
   }
 })
 
-onMounted(() => {
-  setupSSE()
-})
-
-// Connect to SSE endpoint and setup handlers
-async function setupSSE() {
-  if (sse.value) {
-    sse.value.close()
-  }
-
-  sse.value = cacheIndex.index_status()
-
-  // Handle incoming messages
-  if (sse.value) {
-    sse.value.onmessage = (e: SSEvent) => {
-      try {
-        if (!e.data)
-          return
-
-        const data = JSON.parse(e.data)
-        isScanning.value = data.scanning
-
-        table.value.get_list()
-      }
-      catch (error) {
-        console.error('Error parsing SSE message:', error)
-      }
-    }
-
-    sse.value.onerror = () => {
-      // Reconnect on error
-      setTimeout(() => {
-        setupSSE()
-      }, 5000)
-    }
-  }
-}
-
-onUnmounted(() => {
-  if (sse.value) {
-    sse.value.close()
-  }
-})
-
 function destroy(site_name: string) {
   site.destroy(site_name).then(() => {
     table.value.get_list()
     message.success($gettext('Delete site: %{site_name}', { site_name }))
-    inspect_config.value?.test()
+    inspectConfig.value?.test()
   })
 }
 
@@ -133,7 +88,7 @@ function handleBatchUpdated() {
         </template>
       </div>
     </template>
-    <InspectConfig ref="inspect_config" />
+    <InspectConfig ref="inspectConfig" />
 
     <EnvGroupTabs v-model:active-key="envGroupId" :env-groups="envGroups" />
 

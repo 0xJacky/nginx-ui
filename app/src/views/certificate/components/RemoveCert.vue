@@ -88,7 +88,7 @@ function handleCancel() {
     </AButton>
 
     <AModal
-      v-model:visible="modalVisible"
+      v-model:open="modalVisible"
       :title="$gettext('Delete Certificate')"
       :confirm-loading="confirmLoading"
       :ok-button-props="{
