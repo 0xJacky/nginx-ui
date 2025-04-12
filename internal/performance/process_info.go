@@ -119,9 +119,9 @@ func GetNginxProcessInfo() (*NginxProcessInfo, error) {
 		}
 
 		// Distinguish between worker processes, cache processes, and other processes
-		if ppid == masterPID || strings.Contains(cmdline, "worker process") {
+		if ppid == masterPID && strings.Contains(cmdline, "worker process") {
 			workerCount++
-		} else if strings.Contains(cmdline, "cache") {
+		} else if ppid == masterPID && strings.Contains(cmdline, "cache") {
 			cacheCount++
 		} else {
 			otherCount++
