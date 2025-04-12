@@ -12,11 +12,12 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-resty/resty/v2"
 	"github.com/tufanbarisyildirim/gonginx/config"
 	"github.com/tufanbarisyildirim/gonginx/parser"
 	"github.com/uozi-tech/cosy/logger"
-	"github.com/uozi-tech/cosy/settings"
+	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
 const MaintenanceSuffix = "_nginx_ui_maintenance"
@@ -152,9 +153,9 @@ func DisableMaintenance(name string) (err error) {
 
 // createMaintenanceConfig creates a maintenance configuration based on the original config
 func createMaintenanceConfig(conf *config.Config) string {
-	nginxUIPort := settings.ServerSettings.Port
+	nginxUIPort := cSettings.ServerSettings.Port
 	schema := "http"
-	if settings.ServerSettings.EnableHTTPS {
+	if cSettings.ServerSettings.EnableHTTPS {
 		schema = "https"
 	}
 
@@ -218,13 +219,28 @@ func createMaintenanceConfig(conf *config.Config) string {
 			ngxServer.Directives = append(ngxServer.Directives, ngxDirective)
 		}
 
+		// Add acme-challenge location
+		acmeChallengeLocation := &nginx.NgxLocation{
+			Path: "^~ /.well-known/acme-challenge",
+		}
+
+		// Build location content using string builder
+		var locationContent strings.Builder
+		locationContent.WriteString("proxy_set_header Host $host;\n")
+		locationContent.WriteString("proxy_set_header X-Real-IP $remote_addr;\n")
+		locationContent.WriteString("proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n")
+		locationContent.WriteString(fmt.Sprintf("proxy_pass http://127.0.0.1:%s;\n", settings.CertSettings.HTTPChallengePort))
+		acmeChallengeLocation.Content = locationContent.String()
+
+		ngxServer.Locations = append(ngxServer.Locations, acmeChallengeLocation)
+
 		// Add maintenance mode location
 		location := &nginx.NgxLocation{
 			Path: "~ .*",
 		}
 
+		locationContent.Reset()
 		// Build location content using string builder
-		var locationContent strings.Builder
 		locationContent.WriteString("proxy_set_header Host $host;\n")
 		locationContent.WriteString("proxy_set_header X-Real-IP $remote_addr;\n")
 		locationContent.WriteString("proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n")

@@ -4,3 +4,6 @@ if [ "$(ls -A /etc/nginx)" = "" ]; then
     cp -rp /etc/nginx.orig/* /etc/nginx/
     echo "Initialed Nginx config dir"
 fi
+
+# start nginx
+nginx -g "daemon off;"
