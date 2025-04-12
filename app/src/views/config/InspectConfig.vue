@@ -23,7 +23,7 @@ defineExpose({
 <template>
   <div class="inspect-container">
     <AAlert
-      v-if="data?.level < logLevel.Debug"
+      v-if="data?.level <= logLevel.Info"
       :message="$gettext('Configuration file is test successful')"
       type="success"
       show-icon

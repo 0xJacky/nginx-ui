@@ -31,7 +31,7 @@ msgstr "多重要素驗證設定"
 msgid "About"
 msgstr "關於"
 
-#: src/views/nginx_log/NginxLogList.vue:30
+#: src/views/nginx_log/NginxLogList.vue:26
 msgid "Access Log"
 msgstr "訪問日誌"
 
@@ -50,16 +50,16 @@ msgstr "ACME 用戶"
 #: src/views/config/configColumns.tsx:44
 #: src/views/environments/group/columns.ts:43
 #: src/views/environments/list/envColumns.tsx:97
-#: src/views/nginx_log/NginxLogList.vue:53
+#: src/views/nginx_log/NginxLogList.vue:49
 #: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
 #: src/views/preference/components/ExternalNotify/columns.ts:46
-#: src/views/site/site_list/columns.tsx:120 src/views/stream/StreamList.vue:74
+#: src/views/site/site_list/columns.tsx:120 src/views/stream/StreamList.vue:76
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "操作"
 
-#: src/composables/usePerformanceMetrics.ts:86
+#: src/composables/usePerformanceMetrics.ts:84
 #: src/views/dashboard/components/PerformanceTablesCard.vue:43
 msgid "Active connections"
 msgstr ""
@@ -74,7 +74,7 @@ msgstr ""
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/site/ngx_conf/NgxServer.vue:163
 #: src/views/site/ngx_conf/NgxUpstream.vue:154
-#: src/views/stream/StreamList.vue:177
+#: src/views/stream/StreamList.vue:182
 msgid "Add"
 msgstr "新增"
 
@@ -101,11 +101,11 @@ msgstr "新增 Location"
 msgid "Add Site"
 msgstr "新增網站"
 
-#: src/views/stream/StreamList.vue:243
+#: src/views/stream/StreamList.vue:255
 msgid "Add Stream"
 msgstr "新增 Stream"
 
-#: src/views/stream/StreamList.vue:158
+#: src/views/stream/StreamList.vue:160
 msgid "Added successfully"
 msgstr "添加成功"
 
@@ -205,8 +205,8 @@ msgstr "您確定要永久刪除此項目嗎？"
 msgid "Are you sure you want to delete this item?"
 msgstr "您確定要刪除此項目嗎？"
 
-#: src/views/site/site_list/SiteList.vue:167
-#: src/views/stream/StreamList.vue:227
+#: src/views/site/site_list/SiteList.vue:122
+#: src/views/stream/StreamList.vue:239
 msgid "Are you sure you want to delete?"
 msgstr "您確定要刪除嗎？"
 
@@ -292,7 +292,7 @@ msgstr "已啟用 %{name} 的自動續簽"
 msgid "Automatic Restart"
 msgstr "自動重新啟動"
 
-#: src/views/nginx_log/NginxLogList.vue:127
+#: src/views/nginx_log/NginxLogList.vue:79
 msgid "Automatically indexed from site and stream configurations."
 msgstr "自動從網站和串流配置中索引。"
 
@@ -388,12 +388,12 @@ msgstr "構建基於"
 msgid "CA Dir"
 msgstr "CA Dir"
 
-#: src/composables/usePerformanceMetrics.ts:141
+#: src/composables/usePerformanceMetrics.ts:139
 #: src/views/dashboard/components/PerformanceTablesCard.vue:94
 msgid "Cache manager processes"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:59
+#: src/composables/usePerformanceMetrics.ts:57
 #: src/views/dashboard/components/ProcessDistributionCard.vue:14
 msgid "Cache Processes"
 msgstr ""
@@ -866,8 +866,8 @@ msgstr "解密失敗"
 #: src/views/certificate/components/RemoveCert.vue:87
 #: src/views/site/ngx_conf/NgxServer.vue:110
 #: src/views/site/ngx_conf/NgxUpstream.vue:128
-#: src/views/site/site_list/SiteList.vue:176
-#: src/views/stream/StreamList.vue:236
+#: src/views/site/site_list/SiteList.vue:131
+#: src/views/stream/StreamList.vue:248
 msgid "Delete"
 msgstr "刪除"
 
@@ -905,7 +905,7 @@ msgstr "從 %{node} 刪除網站 %{name} 失敗"
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "成功從 %{node} 移除站點 %{name}"
 
-#: src/views/site/site_list/SiteList.vue:98
+#: src/views/site/site_list/SiteList.vue:53
 msgid "Delete site: %{site_name}"
 msgstr "刪除網站：%{site_name}"
 
@@ -917,7 +917,7 @@ msgstr "部署 %{conf_name} 至 %{node} 失敗"
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "成功從 %{node} 移除站點 %{name}"
 
-#: src/views/stream/StreamList.vue:107
+#: src/views/stream/StreamList.vue:109
 msgid "Delete stream: %{stream_name}"
 msgstr "刪除 Stream：%{stream_name}"
 
@@ -978,7 +978,7 @@ msgstr "指令"
 msgid "disable"
 msgstr "禁用"
 
-#: src/views/stream/StreamList.vue:207
+#: src/views/stream/StreamList.vue:219
 msgid "Disable"
 msgstr "停用"
 
@@ -1042,13 +1042,13 @@ msgstr "已成功從 %{node} 停用串流 %{name}"
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:159
 #: src/views/site/site_edit/SiteEdit.vue:199
 #: src/views/site/site_list/columns.tsx:111 src/views/stream/StreamEdit.vue:182
-#: src/views/stream/StreamList.vue:58 src/views/user/userColumns.tsx:41
+#: src/views/stream/StreamList.vue:60 src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr "停用"
 
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:56
 #: src/views/stream/components/RightSettings.vue:42
-#: src/views/stream/StreamList.vue:96
+#: src/views/stream/StreamList.vue:98
 msgid "Disabled successfully"
 msgstr "成功停用"
 
@@ -1138,9 +1138,9 @@ msgstr ""
 "通行密鑰。"
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:162
+#: src/views/site/site_list/SiteList.vue:117
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:222
+#: src/views/stream/StreamList.vue:234
 msgid "Duplicate"
 msgstr "複製"
 
@@ -1183,7 +1183,7 @@ msgstr "電子郵件 (*)"
 msgid "enable"
 msgstr "啟用"
 
-#: src/views/stream/StreamList.vue:215
+#: src/views/stream/StreamList.vue:227
 msgid "Enable"
 msgstr "啟用"
 
@@ -1277,7 +1277,7 @@ msgstr "啟用 TOTP"
 #: src/views/site/site_edit/SiteEdit.vue:193
 #: src/views/site/site_list/columns.tsx:110
 #: src/views/stream/components/RightSettings.vue:81
-#: src/views/stream/StreamEdit.vue:176 src/views/stream/StreamList.vue:54
+#: src/views/stream/StreamEdit.vue:176 src/views/stream/StreamList.vue:56
 #: src/views/user/userColumns.tsx:38
 msgid "Enabled"
 msgstr "已啟用"
@@ -1285,7 +1285,7 @@ msgstr "已啟用"
 #: src/views/site/site_add/SiteAdd.vue:40
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:40
 #: src/views/stream/components/RightSettings.vue:33
-#: src/views/stream/StreamList.vue:86
+#: src/views/stream/StreamList.vue:88
 msgid "Enabled successfully"
 msgstr "成功啟用"
 
@@ -1312,7 +1312,7 @@ msgstr "錯誤"
 msgid "Error initializing diff viewer"
 msgstr "初始化差異檢視器時發生錯誤"
 
-#: src/views/nginx_log/NginxLogList.vue:31
+#: src/views/nginx_log/NginxLogList.vue:27
 msgid "Error Log"
 msgstr "錯誤日誌"
 
@@ -1473,7 +1473,7 @@ msgstr "獲取憑證失敗"
 
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:63
 #: src/views/stream/components/RightSettings.vue:45
-#: src/views/stream/StreamList.vue:100
+#: src/views/stream/StreamList.vue:102
 msgid "Failed to disable %{msg}"
 msgstr "停用 %{msg} 失敗"
 
@@ -1483,7 +1483,7 @@ msgstr "無法停用維護模式 %{msg}"
 
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:47
 #: src/views/stream/components/RightSettings.vue:36
-#: src/views/stream/StreamList.vue:90
+#: src/views/stream/StreamList.vue:92
 msgid "Failed to enable %{msg}"
 msgstr "啟用 %{msg} 失敗"
 
@@ -1776,7 +1776,7 @@ msgstr "ICP 編號"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "如果留空，將使用默認的 CA Dir。"
 
-#: src/views/nginx_log/NginxLogList.vue:129
+#: src/views/nginx_log/NginxLogList.vue:81
 msgid ""
 "If logs are not indexed, please check if the log file is under the directory "
 "in Nginx.LogDirWhiteList."
@@ -1822,13 +1822,13 @@ msgid ""
 "processes"
 msgstr ""
 
-#: src/views/nginx_log/NginxLogList.vue:137
-#: src/views/site/site_list/SiteList.vue:132
+#: src/views/nginx_log/NginxLogList.vue:89
+#: src/views/site/site_list/SiteList.vue:87 src/views/stream/StreamList.vue:187
 msgid "Indexed"
 msgstr "已索引"
 
-#: src/views/nginx_log/NginxLogList.vue:134
-#: src/views/site/site_list/SiteList.vue:129
+#: src/views/nginx_log/NginxLogList.vue:86
+#: src/views/site/site_list/SiteList.vue:84 src/views/stream/StreamList.vue:184
 msgid "Indexing..."
 msgstr "索引中..."
 
@@ -2084,7 +2084,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日誌"
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:115
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:67
 msgid "Log List"
 msgstr "日誌列表"
 
@@ -2143,11 +2143,11 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "管理設定"
 
-#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:125
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:80
 msgid "Manage Sites"
 msgstr "管理網站"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:175
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:179
 msgid "Manage Streams"
 msgstr "管理 Stream"
 
@@ -2171,12 +2171,12 @@ msgstr ""
 msgid "Master"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:136
+#: src/composables/usePerformanceMetrics.ts:134
 #: src/views/dashboard/components/PerformanceTablesCard.vue:89
 msgid "Master process"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:58
+#: src/composables/usePerformanceMetrics.ts:56
 #: src/views/dashboard/components/ProcessDistributionCard.vue:13
 msgid "Master Process"
 msgstr ""
@@ -2203,7 +2203,7 @@ msgstr ""
 msgid "Maximum number of concurrent connections"
 msgstr "當前內容"
 
-#: src/composables/usePerformanceMetrics.ts:176
+#: src/composables/usePerformanceMetrics.ts:174
 #: src/views/dashboard/components/PerformanceTablesCard.vue:125
 msgid "Maximum number of connections per worker process"
 msgstr ""
@@ -2273,7 +2273,7 @@ msgstr "多行指令"
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:311
 #: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
-#: src/views/nginx_log/NginxLogList.vue:37
+#: src/views/nginx_log/NginxLogList.vue:33
 #: src/views/preference/components/AddPasskey.vue:75
 #: src/views/site/ngx_conf/NgxUpstream.vue:177
 #: src/views/site/site_edit/RightSettings.vue:63
@@ -2281,7 +2281,7 @@ msgstr "多行指令"
 #: src/views/site/site_list/SiteDuplicate.vue:79
 #: src/views/stream/components/RightSettings.vue:87
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:20 src/views/stream/StreamList.vue:248
+#: src/views/stream/StreamList.vue:22 src/views/stream/StreamList.vue:260
 msgid "Name"
 msgstr "名稱"
 
@@ -2394,7 +2394,7 @@ msgstr "Nginx 配置目錄"
 msgid "Nginx Control"
 msgstr "Nginx 控制元件"
 
-#: src/composables/usePerformanceMetrics.ts:151
+#: src/composables/usePerformanceMetrics.ts:149
 #: src/views/dashboard/components/PerformanceTablesCard.vue:104
 msgid "Nginx CPU usage rate"
 msgstr ""
@@ -2424,7 +2424,7 @@ msgstr "Nginx 日誌"
 msgid "Nginx Log Directory Whitelist"
 msgstr "Nginx 日誌目錄白名單"
 
-#: src/composables/usePerformanceMetrics.ts:156
+#: src/composables/usePerformanceMetrics.ts:154
 #: src/views/dashboard/components/PerformanceTablesCard.vue:109
 msgid "Nginx Memory usage"
 msgstr ""
@@ -2493,8 +2493,8 @@ msgstr "Nginx UI 設定已恢復，將在幾秒後自動重新啟動。"
 #: src/views/preference/CertSettings.vue:73
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:88
-#: src/views/site/site_list/SiteList.vue:165
-#: src/views/stream/StreamList.vue:225
+#: src/views/site/site_list/SiteList.vue:120
+#: src/views/stream/StreamList.vue:237
 msgid "No"
 msgstr "取消"
 
@@ -2518,7 +2518,7 @@ msgstr "節點"
 #: src/views/site/site_edit/RightSettings.vue:66
 #: src/views/site/site_list/columns.tsx:65
 #: src/views/stream/components/RightSettings.vue:90
-#: src/views/stream/StreamList.vue:30
+#: src/views/stream/StreamList.vue:32
 msgid "Node Group"
 msgstr "節點群組"
 
@@ -2580,8 +2580,8 @@ msgstr "通知器未找到"
 msgid "Number of concurrent worker processes, auto sets to CPU core count"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:131
-#: src/composables/usePerformanceMetrics.ts:171
+#: src/composables/usePerformanceMetrics.ts:129
+#: src/composables/usePerformanceMetrics.ts:169
 #: src/views/dashboard/components/PerformanceTablesCard.vue:120
 #: src/views/dashboard/components/PerformanceTablesCard.vue:84
 msgid "Number of worker processes"
@@ -2634,9 +2634,9 @@ msgstr "確定"
 #: src/views/site/ngx_conf/NgxServer.vue:79
 #: src/views/site/ngx_conf/NgxUpstream.vue:33
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:121
-#: src/views/site/site_list/SiteList.vue:166
+#: src/views/site/site_list/SiteList.vue:121
 #: src/views/stream/components/RightSettings.vue:54
-#: src/views/stream/StreamList.vue:226
+#: src/views/stream/StreamList.vue:238
 #: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr "確定"
@@ -2693,12 +2693,12 @@ msgstr "作業系統"
 msgid "OS:"
 msgstr "作業系統:"
 
-#: src/composables/usePerformanceMetrics.ts:146
+#: src/composables/usePerformanceMetrics.ts:144
 #: src/views/dashboard/components/PerformanceTablesCard.vue:99
 msgid "Other Nginx processes"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:60
+#: src/composables/usePerformanceMetrics.ts:58
 #: src/views/dashboard/components/ProcessDistributionCard.vue:15
 msgid "Other Processes"
 msgstr ""
@@ -2757,7 +2757,7 @@ msgid "Password length cannot exceed 20 characters"
 msgstr "密碼長度不能超過 20 個字元"
 
 #: src/views/config/ConfigEditor.vue:318
-#: src/views/nginx_log/NginxLogList.vue:45
+#: src/views/nginx_log/NginxLogList.vue:41
 #: src/views/site/ngx_conf/LocationEditor.vue:109
 #: src/views/site/ngx_conf/LocationEditor.vue:137
 msgid "Path"
@@ -2970,7 +2970,7 @@ msgstr "代理伺服器"
 msgid "Public Security Number"
 msgstr "公安編號"
 
-#: src/composables/usePerformanceMetrics.ts:106
+#: src/composables/usePerformanceMetrics.ts:104
 #: src/views/dashboard/components/PerformanceTablesCard.vue:63
 msgid "Read requests"
 msgstr ""
@@ -3236,7 +3236,7 @@ msgid ""
 "processes"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:111
+#: src/composables/usePerformanceMetrics.ts:109
 #: src/views/dashboard/components/PerformanceTablesCard.vue:68
 msgid "Responses"
 msgstr ""
@@ -3635,7 +3635,7 @@ msgstr "開始恢復"
 #: src/views/certificate/CertificateList/certColumns.tsx:65
 #: src/views/environments/list/envColumns.tsx:44
 #: src/views/site/site_edit/RightSettings.vue:55
-#: src/views/site/site_list/columns.tsx:89 src/views/stream/StreamList.vue:47
+#: src/views/site/site_list/columns.tsx:89 src/views/stream/StreamList.vue:49
 msgid "Status"
 msgstr "狀態"
 
@@ -4061,12 +4061,12 @@ msgid "Total %{total} item"
 msgid_plural "Total %{total} items"
 msgstr[0] "總計 %{total} 項"
 
-#: src/composables/usePerformanceMetrics.ts:96
+#: src/composables/usePerformanceMetrics.ts:94
 #: src/views/dashboard/components/PerformanceTablesCard.vue:53
 msgid "Total connections"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:91
+#: src/composables/usePerformanceMetrics.ts:89
 #: src/views/dashboard/components/PerformanceTablesCard.vue:48
 msgid "Total handshakes"
 msgstr ""
@@ -4079,7 +4079,7 @@ msgstr ""
 msgid "Total Nginx Processes"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:101
+#: src/composables/usePerformanceMetrics.ts:99
 #: src/views/dashboard/components/PerformanceTablesCard.vue:58
 msgid "Total requests"
 msgstr ""
@@ -4107,7 +4107,7 @@ msgid "Two-factor authentication required"
 msgstr "需要多重因素驗證"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:25
-#: src/views/nginx_log/NginxLogList.vue:21
+#: src/views/nginx_log/NginxLogList.vue:17
 #: src/views/notification/notificationColumns.tsx:9
 #: src/views/preference/components/ExternalNotify/columns.ts:17
 msgid "Type"
@@ -4134,7 +4134,7 @@ msgstr "更新成功"
 #: src/views/site/site_edit/RightSettings.vue:75
 #: src/views/site/site_list/columns.tsx:82
 #: src/views/stream/components/RightSettings.vue:99
-#: src/views/stream/StreamList.vue:67 src/views/user/userColumns.tsx:54
+#: src/views/stream/StreamList.vue:69 src/views/user/userColumns.tsx:54
 msgid "Updated at"
 msgstr "更新時間"
 
@@ -4222,7 +4222,7 @@ msgid "Version"
 msgstr "版本"
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:488
-#: src/views/nginx_log/NginxLogList.vue:145
+#: src/views/nginx_log/NginxLogList.vue:97
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:103
 msgid "View"
 msgstr "檢視"
@@ -4247,7 +4247,7 @@ msgstr "檢視復原代碼"
 msgid "Viewed"
 msgstr "已檢視"
 
-#: src/composables/usePerformanceMetrics.ts:116
+#: src/composables/usePerformanceMetrics.ts:114
 #: src/views/dashboard/components/PerformanceTablesCard.vue:73
 msgid "Waiting processes"
 msgstr ""
@@ -4332,7 +4332,7 @@ msgstr "當您生成新的復原代碼時，必須下載或列印新的代碼。
 msgid "Worker Connections"
 msgstr "當前內容"
 
-#: src/composables/usePerformanceMetrics.ts:57
+#: src/composables/usePerformanceMetrics.ts:55
 #: src/views/dashboard/components/ConnectionMetricsCard.vue:48
 #: src/views/dashboard/components/PerformanceOptimization.vue:172
 #: src/views/dashboard/components/ProcessDistributionCard.vue:12

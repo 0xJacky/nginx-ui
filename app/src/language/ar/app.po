@@ -25,7 +25,7 @@ msgstr "إعدادات المصادقة الثنائية"
 msgid "About"
 msgstr "عن"
 
-#: src/views/nginx_log/NginxLogList.vue:30
+#: src/views/nginx_log/NginxLogList.vue:26
 #, fuzzy
 msgid "Access Log"
 msgstr "سجلات الدخول"
@@ -45,16 +45,16 @@ msgstr "مستخدم ACME"
 #: src/views/config/configColumns.tsx:44
 #: src/views/environments/group/columns.ts:43
 #: src/views/environments/list/envColumns.tsx:97
-#: src/views/nginx_log/NginxLogList.vue:53
+#: src/views/nginx_log/NginxLogList.vue:49
 #: src/views/notification/notificationColumns.tsx:66
 #: src/views/preference/AuthSettings.vue:30
 #: src/views/preference/components/ExternalNotify/columns.ts:46
-#: src/views/site/site_list/columns.tsx:120 src/views/stream/StreamList.vue:74
+#: src/views/site/site_list/columns.tsx:120 src/views/stream/StreamList.vue:76
 #: src/views/user/userColumns.tsx:60
 msgid "Action"
 msgstr "إجراء"
 
-#: src/composables/usePerformanceMetrics.ts:86
+#: src/composables/usePerformanceMetrics.ts:84
 #: src/views/dashboard/components/PerformanceTablesCard.vue:43
 msgid "Active connections"
 msgstr ""
@@ -69,7 +69,7 @@ msgstr ""
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:117
 #: src/views/site/ngx_conf/NgxServer.vue:163
 #: src/views/site/ngx_conf/NgxUpstream.vue:154
-#: src/views/stream/StreamList.vue:177
+#: src/views/stream/StreamList.vue:182
 msgid "Add"
 msgstr "إضافة"
 
@@ -96,11 +96,11 @@ msgstr "أضف مكان"
 msgid "Add Site"
 msgstr "أضف موقع"
 
-#: src/views/stream/StreamList.vue:243
+#: src/views/stream/StreamList.vue:255
 msgid "Add Stream"
 msgstr "أضف Stream"
 
-#: src/views/stream/StreamList.vue:158
+#: src/views/stream/StreamList.vue:160
 msgid "Added successfully"
 msgstr "تمت الإضافة بنجاح"
 
@@ -205,8 +205,8 @@ msgstr "هل أنت متأكد أنك تريد حذف هذا العنصر نها
 msgid "Are you sure you want to delete this item?"
 msgstr "هل أنت متأكد أنك تريد حذف هذا العنصر؟"
 
-#: src/views/site/site_list/SiteList.vue:167
-#: src/views/stream/StreamList.vue:227
+#: src/views/site/site_list/SiteList.vue:122
+#: src/views/stream/StreamList.vue:239
 msgid "Are you sure you want to delete?"
 msgstr "هل أنت متأكد أنك تريد الحذف؟"
 
@@ -295,7 +295,7 @@ msgstr "تم تمكين التجديد التلقائي لـ‏%{name}"
 msgid "Automatic Restart"
 msgstr ""
 
-#: src/views/nginx_log/NginxLogList.vue:127
+#: src/views/nginx_log/NginxLogList.vue:79
 msgid "Automatically indexed from site and stream configurations."
 msgstr ""
 
@@ -395,12 +395,12 @@ msgstr "بناء مع"
 msgid "CA Dir"
 msgstr "مجلد سلطة التصديق"
 
-#: src/composables/usePerformanceMetrics.ts:141
+#: src/composables/usePerformanceMetrics.ts:139
 #: src/views/dashboard/components/PerformanceTablesCard.vue:94
 msgid "Cache manager processes"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:59
+#: src/composables/usePerformanceMetrics.ts:57
 #: src/views/dashboard/components/ProcessDistributionCard.vue:14
 msgid "Cache Processes"
 msgstr ""
@@ -894,8 +894,8 @@ msgstr "وصف"
 #: src/views/certificate/components/RemoveCert.vue:87
 #: src/views/site/ngx_conf/NgxServer.vue:110
 #: src/views/site/ngx_conf/NgxUpstream.vue:128
-#: src/views/site/site_list/SiteList.vue:176
-#: src/views/stream/StreamList.vue:236
+#: src/views/site/site_list/SiteList.vue:131
+#: src/views/stream/StreamList.vue:248
 msgid "Delete"
 msgstr "حذف"
 
@@ -937,7 +937,7 @@ msgstr "فشل نشر {conf_name}% إلى {node_name}%"
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "تمت إزالة الموقع %{site} من %{node} بنجاح"
 
-#: src/views/site/site_list/SiteList.vue:98
+#: src/views/site/site_list/SiteList.vue:53
 msgid "Delete site: %{site_name}"
 msgstr "حذف الموقع: ‎%{site_name}"
 
@@ -951,7 +951,7 @@ msgstr "فشل نشر {conf_name}% إلى {node_name}%"
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "تمت إزالة الموقع %{site} من %{node} بنجاح"
 
-#: src/views/stream/StreamList.vue:107
+#: src/views/stream/StreamList.vue:109
 msgid "Delete stream: %{stream_name}"
 msgstr "حذف البث: ‎%{stream_name}"
 
@@ -1013,7 +1013,7 @@ msgstr "توجيهات"
 msgid "disable"
 msgstr "تعطيل"
 
-#: src/views/stream/StreamList.vue:207
+#: src/views/stream/StreamList.vue:219
 msgid "Disable"
 msgstr "تعطيل"
 
@@ -1087,13 +1087,13 @@ msgstr "تم تعطيل الموقع %{site} على %{node} بنجاح"
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:159
 #: src/views/site/site_edit/SiteEdit.vue:199
 #: src/views/site/site_list/columns.tsx:111 src/views/stream/StreamEdit.vue:182
-#: src/views/stream/StreamList.vue:58 src/views/user/userColumns.tsx:41
+#: src/views/stream/StreamList.vue:60 src/views/user/userColumns.tsx:41
 msgid "Disabled"
 msgstr "معطل"
 
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:56
 #: src/views/stream/components/RightSettings.vue:42
-#: src/views/stream/StreamList.vue:96
+#: src/views/stream/StreamList.vue:98
 msgid "Disabled successfully"
 msgstr "تم التعطيل بنجاح"
 
@@ -1190,9 +1190,9 @@ msgstr ""
 "الويب غير HTTPS، إلا عند التشغيل على localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:162
+#: src/views/site/site_list/SiteList.vue:117
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:222
+#: src/views/stream/StreamList.vue:234
 msgid "Duplicate"
 msgstr "مكرر"
 
@@ -1237,7 +1237,7 @@ msgstr "البريد الإلكتروني (*)"
 msgid "enable"
 msgstr "تفعيل"
 
-#: src/views/stream/StreamList.vue:215
+#: src/views/stream/StreamList.vue:227
 msgid "Enable"
 msgstr "تفعيل"
 
@@ -1342,7 +1342,7 @@ msgstr "تفعيل TOTP"
 #: src/views/site/site_edit/SiteEdit.vue:193
 #: src/views/site/site_list/columns.tsx:110
 #: src/views/stream/components/RightSettings.vue:81
-#: src/views/stream/StreamEdit.vue:176 src/views/stream/StreamList.vue:54
+#: src/views/stream/StreamEdit.vue:176 src/views/stream/StreamList.vue:56
 #: src/views/user/userColumns.tsx:38
 msgid "Enabled"
 msgstr "مفعل"
@@ -1350,7 +1350,7 @@ msgstr "مفعل"
 #: src/views/site/site_add/SiteAdd.vue:40
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:40
 #: src/views/stream/components/RightSettings.vue:33
-#: src/views/stream/StreamList.vue:86
+#: src/views/stream/StreamList.vue:88
 msgid "Enabled successfully"
 msgstr "تم التفعيل بنجاح"
 
@@ -1377,7 +1377,7 @@ msgstr "خطأ"
 msgid "Error initializing diff viewer"
 msgstr ""
 
-#: src/views/nginx_log/NginxLogList.vue:31
+#: src/views/nginx_log/NginxLogList.vue:27
 #, fuzzy
 msgid "Error Log"
 msgstr "سجلات الأخطاء"
@@ -1558,7 +1558,7 @@ msgstr "فشل في الحصول على الشهادة"
 
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:63
 #: src/views/stream/components/RightSettings.vue:45
-#: src/views/stream/StreamList.vue:100
+#: src/views/stream/StreamList.vue:102
 msgid "Failed to disable %{msg}"
 msgstr "فشل في تعطيل %{msg}"
 
@@ -1569,7 +1569,7 @@ msgstr "فشل في تعطيل %{msg}"
 
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:47
 #: src/views/stream/components/RightSettings.vue:36
-#: src/views/stream/StreamList.vue:90
+#: src/views/stream/StreamList.vue:92
 msgid "Failed to enable %{msg}"
 msgstr "فشل في التفعيل %{msg}"
 
@@ -1887,7 +1887,7 @@ msgstr ""
 msgid "If left blank, the default CA Dir will be used."
 msgstr "إذا تُرك فارغًا، سيتم استخدام دليل CA الافتراضي."
 
-#: src/views/nginx_log/NginxLogList.vue:129
+#: src/views/nginx_log/NginxLogList.vue:81
 msgid ""
 "If logs are not indexed, please check if the log file is under the directory "
 "in Nginx.LogDirWhiteList."
@@ -1937,13 +1937,13 @@ msgid ""
 "processes"
 msgstr ""
 
-#: src/views/nginx_log/NginxLogList.vue:137
-#: src/views/site/site_list/SiteList.vue:132
+#: src/views/nginx_log/NginxLogList.vue:89
+#: src/views/site/site_list/SiteList.vue:87 src/views/stream/StreamList.vue:187
 msgid "Indexed"
 msgstr ""
 
-#: src/views/nginx_log/NginxLogList.vue:134
-#: src/views/site/site_list/SiteList.vue:129
+#: src/views/nginx_log/NginxLogList.vue:86
+#: src/views/site/site_list/SiteList.vue:84 src/views/stream/StreamList.vue:184
 msgid "Indexing..."
 msgstr ""
 
@@ -2208,7 +2208,7 @@ msgstr "أماكن"
 msgid "Log"
 msgstr "سجل"
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:115
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:67
 #, fuzzy
 msgid "Log List"
 msgstr "قائمة"
@@ -2273,11 +2273,11 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "إدارة التكوينات"
 
-#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:125
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:80
 msgid "Manage Sites"
 msgstr "إدارة المواقع"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:175
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:179
 msgid "Manage Streams"
 msgstr "إدارة التدفقات"
 
@@ -2301,12 +2301,12 @@ msgstr ""
 msgid "Master"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:136
+#: src/composables/usePerformanceMetrics.ts:134
 #: src/views/dashboard/components/PerformanceTablesCard.vue:89
 msgid "Master process"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:58
+#: src/composables/usePerformanceMetrics.ts:56
 #: src/views/dashboard/components/ProcessDistributionCard.vue:13
 msgid "Master Process"
 msgstr ""
@@ -2333,7 +2333,7 @@ msgstr ""
 msgid "Maximum number of concurrent connections"
 msgstr "الإصدار الحالي"
 
-#: src/composables/usePerformanceMetrics.ts:176
+#: src/composables/usePerformanceMetrics.ts:174
 #: src/views/dashboard/components/PerformanceTablesCard.vue:125
 msgid "Maximum number of connections per worker process"
 msgstr ""
@@ -2403,7 +2403,7 @@ msgstr "توجيه متعدد الأسطر"
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:311
 #: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
-#: src/views/nginx_log/NginxLogList.vue:37
+#: src/views/nginx_log/NginxLogList.vue:33
 #: src/views/preference/components/AddPasskey.vue:75
 #: src/views/site/ngx_conf/NgxUpstream.vue:177
 #: src/views/site/site_edit/RightSettings.vue:63
@@ -2411,7 +2411,7 @@ msgstr "توجيه متعدد الأسطر"
 #: src/views/site/site_list/SiteDuplicate.vue:79
 #: src/views/stream/components/RightSettings.vue:87
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:20 src/views/stream/StreamList.vue:248
+#: src/views/stream/StreamList.vue:22 src/views/stream/StreamList.vue:260
 msgid "Name"
 msgstr "اسم"
 
@@ -2528,7 +2528,7 @@ msgstr "مجلد تكوينات Nginx"
 msgid "Nginx Control"
 msgstr "التحكم في Nginx"
 
-#: src/composables/usePerformanceMetrics.ts:151
+#: src/composables/usePerformanceMetrics.ts:149
 #: src/views/dashboard/components/PerformanceTablesCard.vue:104
 msgid "Nginx CPU usage rate"
 msgstr ""
@@ -2558,7 +2558,7 @@ msgstr "سجل Nginx"
 msgid "Nginx Log Directory Whitelist"
 msgstr "قائمة السماح لمجلد سجلات Nginx"
 
-#: src/composables/usePerformanceMetrics.ts:156
+#: src/composables/usePerformanceMetrics.ts:154
 #: src/views/dashboard/components/PerformanceTablesCard.vue:109
 msgid "Nginx Memory usage"
 msgstr ""
@@ -2631,8 +2631,8 @@ msgstr "خطأ في تحليل تكوين Nginx"
 #: src/views/preference/CertSettings.vue:73
 #: src/views/site/ngx_conf/directive/DirectiveEditorItem.vue:97
 #: src/views/site/ngx_conf/LocationEditor.vue:88
-#: src/views/site/site_list/SiteList.vue:165
-#: src/views/stream/StreamList.vue:225
+#: src/views/site/site_list/SiteList.vue:120
+#: src/views/stream/StreamList.vue:237
 msgid "No"
 msgstr "لا"
 
@@ -2658,7 +2658,7 @@ msgstr "اسم العقدة"
 #: src/views/site/site_edit/RightSettings.vue:66
 #: src/views/site/site_list/columns.tsx:65
 #: src/views/stream/components/RightSettings.vue:90
-#: src/views/stream/StreamList.vue:30
+#: src/views/stream/StreamList.vue:32
 #, fuzzy
 msgid "Node Group"
 msgstr "بيئة"
@@ -2726,8 +2726,8 @@ msgstr "لم يتم العثور على الملف"
 msgid "Number of concurrent worker processes, auto sets to CPU core count"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:131
-#: src/composables/usePerformanceMetrics.ts:171
+#: src/composables/usePerformanceMetrics.ts:129
+#: src/composables/usePerformanceMetrics.ts:169
 #: src/views/dashboard/components/PerformanceTablesCard.vue:120
 #: src/views/dashboard/components/PerformanceTablesCard.vue:84
 msgid "Number of worker processes"
@@ -2782,9 +2782,9 @@ msgstr "حسنًا"
 #: src/views/site/ngx_conf/NgxServer.vue:79
 #: src/views/site/ngx_conf/NgxUpstream.vue:33
 #: src/views/site/site_edit/components/SiteStatusSegmented.vue:121
-#: src/views/site/site_list/SiteList.vue:166
+#: src/views/site/site_list/SiteList.vue:121
 #: src/views/stream/components/RightSettings.vue:54
-#: src/views/stream/StreamList.vue:226
+#: src/views/stream/StreamList.vue:238
 #: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr "حسنًا"
@@ -2841,12 +2841,12 @@ msgstr "نظام التشغيل"
 msgid "OS:"
 msgstr "نظام التشغيل:"
 
-#: src/composables/usePerformanceMetrics.ts:146
+#: src/composables/usePerformanceMetrics.ts:144
 #: src/views/dashboard/components/PerformanceTablesCard.vue:99
 msgid "Other Nginx processes"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:60
+#: src/composables/usePerformanceMetrics.ts:58
 #: src/views/dashboard/components/ProcessDistributionCard.vue:15
 msgid "Other Processes"
 msgstr ""
@@ -2909,7 +2909,7 @@ msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
 #: src/views/config/ConfigEditor.vue:318
-#: src/views/nginx_log/NginxLogList.vue:45
+#: src/views/nginx_log/NginxLogList.vue:41
 #: src/views/site/ngx_conf/LocationEditor.vue:109
 #: src/views/site/ngx_conf/LocationEditor.vue:137
 msgid "Path"
@@ -3129,7 +3129,7 @@ msgstr "وكيل"
 msgid "Public Security Number"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:106
+#: src/composables/usePerformanceMetrics.ts:104
 #: src/views/dashboard/components/PerformanceTablesCard.vue:63
 msgid "Read requests"
 msgstr ""
@@ -3407,7 +3407,7 @@ msgid ""
 "processes"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:111
+#: src/composables/usePerformanceMetrics.ts:109
 #: src/views/dashboard/components/PerformanceTablesCard.vue:68
 msgid "Responses"
 msgstr ""
@@ -3834,7 +3834,7 @@ msgstr ""
 #: src/views/certificate/CertificateList/certColumns.tsx:65
 #: src/views/environments/list/envColumns.tsx:44
 #: src/views/site/site_edit/RightSettings.vue:55
-#: src/views/site/site_list/columns.tsx:89 src/views/stream/StreamList.vue:47
+#: src/views/site/site_list/columns.tsx:89 src/views/stream/StreamList.vue:49
 msgid "Status"
 msgstr "الحالة"
 
@@ -4289,12 +4289,12 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
-#: src/composables/usePerformanceMetrics.ts:96
+#: src/composables/usePerformanceMetrics.ts:94
 #: src/views/dashboard/components/PerformanceTablesCard.vue:53
 msgid "Total connections"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:91
+#: src/composables/usePerformanceMetrics.ts:89
 #: src/views/dashboard/components/PerformanceTablesCard.vue:48
 msgid "Total handshakes"
 msgstr ""
@@ -4307,7 +4307,7 @@ msgstr ""
 msgid "Total Nginx Processes"
 msgstr ""
 
-#: src/composables/usePerformanceMetrics.ts:101
+#: src/composables/usePerformanceMetrics.ts:99
 #: src/views/dashboard/components/PerformanceTablesCard.vue:58
 msgid "Total requests"
 msgstr ""
@@ -4337,7 +4337,7 @@ msgid "Two-factor authentication required"
 msgstr "يتطلب المصادقة الثنائية"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:25
-#: src/views/nginx_log/NginxLogList.vue:21
+#: src/views/nginx_log/NginxLogList.vue:17
 #: src/views/notification/notificationColumns.tsx:9
 #: src/views/preference/components/ExternalNotify/columns.ts:17
 msgid "Type"
@@ -4363,7 +4363,7 @@ msgstr "تم التحديث بنجاح"
 #: src/views/site/site_edit/RightSettings.vue:75
 #: src/views/site/site_list/columns.tsx:82
 #: src/views/stream/components/RightSettings.vue:99
-#: src/views/stream/StreamList.vue:67 src/views/user/userColumns.tsx:54
+#: src/views/stream/StreamList.vue:69 src/views/user/userColumns.tsx:54
 msgid "Updated at"
 msgstr "محدث في"
 
@@ -4452,7 +4452,7 @@ msgid "Version"
 msgstr "إصدار"
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:488
-#: src/views/nginx_log/NginxLogList.vue:145
+#: src/views/nginx_log/NginxLogList.vue:97
 #: src/views/site/ngx_conf/config_template/ConfigTemplate.vue:103
 msgid "View"
 msgstr "عرض"
@@ -4479,7 +4479,7 @@ msgstr "رمز الاسترداد"
 msgid "Viewed"
 msgstr "عرض"
 
-#: src/composables/usePerformanceMetrics.ts:116
+#: src/composables/usePerformanceMetrics.ts:114
 #: src/views/dashboard/components/PerformanceTablesCard.vue:73
 msgid "Waiting processes"
 msgstr ""
@@ -4565,7 +4565,7 @@ msgstr ""
 msgid "Worker Connections"
 msgstr "الإصدار الحالي"
 
-#: src/composables/usePerformanceMetrics.ts:57
+#: src/composables/usePerformanceMetrics.ts:55
 #: src/views/dashboard/components/ConnectionMetricsCard.vue:48
 #: src/views/dashboard/components/PerformanceOptimization.vue:172
 #: src/views/dashboard/components/ProcessDistributionCard.vue:12
