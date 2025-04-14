@@ -2,7 +2,6 @@
 import type { CertificateInfo } from '@/api/cert'
 import type { NgxConfig } from '@/api/ngx'
 import type { ChatComplicationMessage } from '@/api/openai'
-
 import type { Site } from '@/api/site'
 import type { CheckedType } from '@/types'
 import config from '@/api/config'
@@ -11,6 +10,7 @@ import site from '@/api/site'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import { ConfigHistory } from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
+import { ConfigStatus } from '@/constants'
 import NgxConfigEditor from '@/views/site/ngx_conf/NgxConfigEditor.vue'
 import RightSettings from '@/views/site/site_edit/RightSettings.vue'
 import { HistoryOutlined } from '@ant-design/icons-vue'
@@ -30,7 +30,6 @@ const ngx_config: NgxConfig = reactive({
 const certInfoMap: Ref<Record<number, CertificateInfo[]>> = ref({})
 
 const autoCert = ref(false)
-const enabled = ref(false)
 const filepath = ref('')
 const configText = ref('')
 const advanceModeRef = ref(false)
@@ -64,7 +63,6 @@ async function handleResponse(r: Site) {
   filename.value = r.name
   filepath.value = r.filepath
   configText.value = r.config
-  enabled.value = r.enabled
   autoCert.value = r.auto_cert
   historyChatgptRecord.value = r.chatgpt_messages
   data.value = r
@@ -168,7 +166,6 @@ provide('save_config', save)
 provide('configText', configText)
 provide('ngx_config', ngx_config)
 provide('history_chatgpt_record', historyChatgptRecord)
-provide('enabled', enabled)
 provide('name', name)
 provide('filepath', filepath)
 provide('data', data)
@@ -187,16 +184,22 @@ provide('data', data)
         <template #title>
           <span style="margin-right: 10px">{{ $gettext('Edit %{n}', { n: name }) }}</span>
           <ATag
-            v-if="enabled"
+            v-if="data.status === ConfigStatus.Enabled"
             color="blue"
           >
             {{ $gettext('Enabled') }}
           </ATag>
           <ATag
-            v-else
-            color="orange"
+            v-else-if="data.status === ConfigStatus.Disabled"
+            color="red"
           >
             {{ $gettext('Disabled') }}
+          </ATag>
+          <ATag
+            v-else-if="data.status === ConfigStatus.Maintenance"
+            color="orange"
+          >
+            {{ $gettext('Maintenance') }}
           </ATag>
         </template>
         <template #extra>
@@ -260,7 +263,7 @@ provide('data', data)
             <NgxConfigEditor
               v-model:auto-cert="autoCert"
               :cert-info="certInfoMap"
-              :enabled="enabled"
+              :status="data.status"
               @callback="save"
             />
           </div>

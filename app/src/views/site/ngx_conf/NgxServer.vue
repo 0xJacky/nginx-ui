@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { CertificateInfo } from '@/api/cert'
 import type { NgxConfig, NgxDirective } from '@/api/ngx'
+import type { SiteStatus } from '@/api/site'
+import { ConfigStatus } from '@/constants'
 import Cert from '@/views/site/cert/Cert.vue'
 import ConfigTemplate from '@/views/site/ngx_conf/config_template/ConfigTemplate.vue'
 import DirectiveEditor from '@/views/site/ngx_conf/directive/DirectiveEditor.vue'
@@ -10,13 +12,14 @@ import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { Modal } from 'ant-design-vue'
 
 withDefaults(defineProps<{
-  enabled: boolean
   certInfo?: {
     [key: number]: CertificateInfo[]
   }
   context?: 'http' | 'stream'
+  status?: SiteStatus
 }>(), {
   context: 'http',
+  status: ConfigStatus.Enabled,
 })
 
 const [modal, ContextHolder] = Modal.useModal()
@@ -125,7 +128,7 @@ provide('ngx_directives', ngx_directives)
             v-model:enabled="autoCert"
             v-model:current_server_directives="ngx_config.servers[current_server_index].directives"
             class="mb-4"
-            :site-enabled="enabled"
+            :site-status="status"
             :config-name="ngx_config.name"
             :cert-info="certInfo?.[k]"
             :current-server-index="current_server_index"

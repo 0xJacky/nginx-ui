@@ -1,3 +1,4 @@
+import type { SiteStatus } from '@/api/site'
 import type {
   CustomRender,
 } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
@@ -10,7 +11,7 @@ import {
 import { input, select, selector } from '@/components/StdDesign/StdDataEntry'
 import { ConfigStatus } from '@/constants'
 import envGroupColumns from '@/views/environments/group/columns'
-import SiteStatusSegmented from '@/views/site/site_edit/components/SiteStatusSegmented.vue'
+import SiteStatusSegmented from '@/views/site/components/SiteStatusSegmented.vue'
 import { Tag } from 'ant-design-vue'
 
 const columns: Column[] = [{
@@ -98,9 +99,8 @@ const columns: Column[] = [{
         // This will be handled by the component internal events
         record.status = val
       },
-      'onStatusChanged': ({ status, enabled }: { status: string, enabled: boolean }) => {
+      'onStatusChanged': ({ status }: { status: SiteStatus }) => {
         record.status = status
-        record.enabled = enabled
       },
     })
   },

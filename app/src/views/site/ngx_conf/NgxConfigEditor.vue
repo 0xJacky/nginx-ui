@@ -1,27 +1,27 @@
 <script setup lang="ts">
 import type { CertificateInfo } from '@/api/cert'
 import type { NgxConfig, NgxDirective } from '@/api/ngx'
+import type { SiteStatus } from '@/api/site'
 import type { CheckedType } from '@/types'
 import type { ComputedRef } from 'vue'
 import template from '@/api/template'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
+import { ConfigStatus } from '@/constants'
 import NginxStatusAlert from '@/views/site/ngx_conf/NginxStatusAlert.vue'
 import NgxServer from '@/views/site/ngx_conf/NgxServer.vue'
 import NgxUpstream from '@/views/site/ngx_conf/NgxUpstream.vue'
 import { Modal } from 'ant-design-vue'
 
-const props = withDefaults(defineProps<{
-  autoCert?: boolean
-  enabled?: boolean
+withDefaults(defineProps<{
+  status?: SiteStatus
   certInfo?: Record<number, CertificateInfo[]>
   context?: 'http' | 'stream'
 }>(), {
-  autoCert: false,
-  enabled: false,
+  status: ConfigStatus.Enabled,
   context: 'http',
 })
 
-const emit = defineEmits(['callback', 'update:autoCert'])
+const autoCert = defineModel<boolean>('autoCert')
 
 const save_config = inject('save_config') as () => Promise<void>
 
@@ -158,15 +158,6 @@ const support_ssl = computed(() => {
   return false
 })
 
-const autoCertRef = computed({
-  get() {
-    return props.autoCert
-  },
-  set(value) {
-    emit('update:autoCert', value)
-  },
-})
-
 provide('directivesMap', directivesMap)
 
 const activeKey = ref(['3'])
@@ -211,9 +202,9 @@ const activeKey = ref(['3'])
         header="Server"
       >
         <NgxServer
-          v-model:auto-cert="autoCertRef"
-          :enabled
-          :cert-info="certInfo"
+          v-model:auto-cert="autoCert"
+          :status
+          :cert-info
           :context
         />
       </ACollapsePanel>

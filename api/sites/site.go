@@ -28,11 +28,6 @@ func GetSite(c *gin.Context) {
 		return
 	}
 
-	enabled := true
-	if _, err := os.Stat(nginx.GetConfPath("sites-enabled", name)); os.IsNotExist(err) {
-		enabled = false
-	}
-
 	g := query.ChatGPTLog
 	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
 	if err != nil {
@@ -63,15 +58,15 @@ func GetSite(c *gin.Context) {
 			return
 		}
 
-		c.JSON(http.StatusOK, Site{
+		c.JSON(http.StatusOK, site.Site{
 			ModifiedAt:      file.ModTime(),
 			Site:            siteModel,
-			Enabled:         enabled,
 			Name:            name,
 			Config:          string(origContent),
 			AutoCert:        certModel.AutoCert == model.AutoCertEnabled,
 			ChatGPTMessages: chatgpt.Content,
 			Filepath:        path,
+			Status:          site.GetSiteStatus(name),
 		})
 		return
 	}
@@ -96,10 +91,9 @@ func GetSite(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, Site{
+	c.JSON(http.StatusOK, site.Site{
 		Site:            siteModel,
 		ModifiedAt:      file.ModTime(),
-		Enabled:         enabled,
 		Name:            name,
 		Config:          nginxConfig.FmtCode(),
 		Tokenized:       nginxConfig,
@@ -107,6 +101,7 @@ func GetSite(c *gin.Context) {
 		CertInfo:        certInfoMap,
 		ChatGPTMessages: chatgpt.Content,
 		Filepath:        path,
+		Status:          site.GetSiteStatus(name),
 	})
 }
 

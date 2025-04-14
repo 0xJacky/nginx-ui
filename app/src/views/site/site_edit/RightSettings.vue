@@ -1,39 +1,30 @@
 <script setup lang="ts">
 import type { ChatComplicationMessage } from '@/api/openai'
-import type { Site } from '@/api/site'
+import type { Site, SiteStatus } from '@/api/site'
 import type { Ref } from 'vue'
 import envGroup from '@/api/env_group'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 import StdSelector from '@/components/StdDesign/StdDataEntry/components/StdSelector.vue'
-import { ConfigStatus } from '@/constants'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import envGroupColumns from '@/views/environments/group/columns'
+import SiteStatusSegmented from '@/views/site/components/SiteStatusSegmented.vue'
 import ConfigName from '@/views/site/site_edit/components/ConfigName.vue'
-import SiteStatusSegmented from '@/views/site/site_edit/components/SiteStatusSegmented.vue'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 
 const settings = useSettingsStore()
 
 const configText = inject('configText') as Ref<string>
-const enabled = inject('enabled') as Ref<boolean>
 const name = inject('name') as ComputedRef<string>
 const filepath = inject('filepath') as Ref<string>
 const historyChatgptRecord = inject('history_chatgpt_record') as Ref<ChatComplicationMessage[]>
 const data = inject('data') as Ref<Site>
 
 const activeKey = ref(['1', '2', '3'])
-const siteStatus = computed(() => {
-  if (!data.value?.status) {
-    return enabled.value ? ConfigStatus.Enabled : ConfigStatus.Disabled
-  }
-  return data.value.status
-})
 
-function handleStatusChanged(event: { status: string, enabled: boolean }) {
+function handleStatusChanged(event: { status: SiteStatus }) {
   data.value.status = event.status
-  enabled.value = event.enabled
 }
 </script>
 
@@ -54,9 +45,8 @@ function handleStatusChanged(event: { status: string, enabled: boolean }) {
         <AForm layout="vertical">
           <AFormItem :label="$gettext('Status')">
             <SiteStatusSegmented
-              v-model="siteStatus"
+              v-model="data.status"
               :site-name="name"
-              :enabled="enabled"
               @status-changed="handleStatusChanged"
             />
           </AFormItem>

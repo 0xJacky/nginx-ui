@@ -3,15 +3,16 @@ import type { ModelBase } from '@/api/curd'
 import type { EnvGroup } from '@/api/env_group'
 import type { NgxConfig } from '@/api/ngx'
 import type { ChatComplicationMessage } from '@/api/openai'
-import type { PrivateKeyType } from '@/constants'
+import type { ConfigStatus, PrivateKeyType } from '@/constants'
 import Curd from '@/api/curd'
 import http from '@/lib/http'
+
+export type SiteStatus = ConfigStatus.Enabled | ConfigStatus.Disabled | ConfigStatus.Maintenance
 
 export interface Site extends ModelBase {
   modified_at: string
   path: string
   advanced: boolean
-  enabled: boolean
   name: string
   filepath: string
   config: string
@@ -23,7 +24,7 @@ export interface Site extends ModelBase {
   env_group?: EnvGroup
   sync_node_ids: number[]
   urls?: string[]
-  status: string
+  status: SiteStatus
 }
 
 export interface AutoCertRequest {

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { Cert, CertificateInfo } from '@/api/cert'
 import type { NgxDirective } from '@/api/ngx'
+import type { SiteStatus } from '@/api/site'
+import { ConfigStatus } from '@/constants'
 import CertInfo from '@/views/site/cert/CertInfo.vue'
 import ChangeCert from '@/views/site/cert/components/ChangeCert/ChangeCert.vue'
 import IssueCert from '@/views/site/cert/IssueCert.vue'
@@ -9,7 +11,7 @@ const props = defineProps<{
   configName: string
   currentServerIndex: number
   certInfo?: CertificateInfo[]
-  siteEnabled: boolean
+  siteStatus: SiteStatus
 }>()
 
 const current_server_directives = defineModel<NgxDirective[]>('current_server_directives')
@@ -96,7 +98,7 @@ function handleCertChange(certs: Cert[]) {
     <ChangeCert @change="handleCertChange" />
 
     <IssueCert
-      v-if="siteEnabled"
+      v-if="siteStatus === ConfigStatus.Enabled || siteStatus === ConfigStatus.Maintenance"
       v-model:enabled="enabled"
       :config-name="configName"
     />

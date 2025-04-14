@@ -10,6 +10,7 @@ import (
 	"github.com/tufanbarisyildirim/gonginx/config"
 	"github.com/tufanbarisyildirim/gonginx/dumper"
 	"github.com/tufanbarisyildirim/gonginx/parser"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 type ProxyCacheConfig struct {
@@ -189,7 +190,10 @@ func updateOrRemoveProxyCachePath(block config.IBlock, directives []config.IDire
 	// First parameter is the path (required)
 	if proxyCache.Path != "" {
 		params = append(params, config.Parameter{Value: proxyCache.Path})
-		_ = os.MkdirAll(proxyCache.Path, 0755)
+		err := os.MkdirAll(proxyCache.Path, 0755)
+		if err != nil {
+			logger.Error("failed to create proxy cache path", err)
+		}
 	} else {
 		// No path specified, can't add the directive
 		return

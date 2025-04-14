@@ -1,28 +1,17 @@
 <script setup lang="ts">
+import type { SiteStatus } from '@/api/site'
 import site from '@/api/site'
 import { ConfigStatus } from '@/constants'
 import { message, Modal } from 'ant-design-vue'
 
-/**
- * Component props interface
- */
-interface Props {
-  /**
-   * The name of the site configuration
-   */
-  siteName: string
-  /**
-   * Whether the site is enabled
-   */
-  enabled: boolean
-}
-
 // Define props with TypeScript
-const props = defineProps<Props>()
+const props = defineProps<{
+  siteName: string
+}>()
 
 // Define event for status change notification
 const emit = defineEmits<{
-  statusChanged: [{ status: string, enabled: boolean }]
+  statusChanged: [{ status: SiteStatus }]
 }>()
 
 // Use defineModel for v-model binding
@@ -32,73 +21,59 @@ const status = defineModel<string>({
 
 const [modal, ContextHolder] = Modal.useModal()
 
-/**
- * Enable the site
- */
+// Enable the site
 function enable() {
   site.enable(props.siteName).then(() => {
     message.success($gettext('Enabled successfully'))
     status.value = ConfigStatus.Enabled
     emit('statusChanged', {
       status: ConfigStatus.Enabled,
-      enabled: true,
     })
   }).catch(r => {
     message.error($gettext('Failed to enable %{msg}', { msg: r.message ?? '' }), 10)
   })
 }
 
-/**
- * Disable the site
- */
+// Disable the site
 function disable() {
   site.disable(props.siteName).then(() => {
     message.success($gettext('Disabled successfully'))
     status.value = ConfigStatus.Disabled
     emit('statusChanged', {
       status: ConfigStatus.Disabled,
-      enabled: false,
     })
   }).catch(r => {
     message.error($gettext('Failed to disable %{msg}', { msg: r.message ?? '' }))
   })
 }
 
-/**
- * Enable maintenance mode for the site
- */
+// Enable maintenance mode for the site
 function enableMaintenance() {
   site.enableMaintenance(props.siteName).then(() => {
     message.success($gettext('Maintenance mode enabled successfully'))
     status.value = ConfigStatus.Maintenance
     emit('statusChanged', {
       status: ConfigStatus.Maintenance,
-      enabled: true,
     })
   }).catch(r => {
     message.error($gettext('Failed to enable maintenance mode %{msg}', { msg: r.message ?? '' }))
   })
 }
 
-/**
- * Disable maintenance mode for the site
- */
+// Disable maintenance mode for the site
 function disableMaintenance() {
   site.enable(props.siteName).then(() => {
     message.success($gettext('Maintenance mode disabled successfully'))
     status.value = ConfigStatus.Enabled
     emit('statusChanged', {
       status: ConfigStatus.Enabled,
-      enabled: true,
     })
   }).catch(r => {
     message.error($gettext('Failed to disable maintenance mode %{msg}', { msg: r.message ?? '' }))
   })
 }
 
-/**
- * Handle status change from segmented control
- */
+// Handle status change from segmented control
 function onChangeStatus(value: string | number) {
   const statusValue = value as string
   if (statusValue === status.value) {
@@ -148,7 +123,7 @@ function onChangeStatus(value: string | number) {
   <div class="site-status-segmented">
     <ContextHolder />
     <ASegmented
-      v-model:value="status"
+      :value="status"
       :options="[
         {
           value: ConfigStatus.Enabled,
