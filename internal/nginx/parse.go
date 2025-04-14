@@ -5,6 +5,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/tufanbarisyildirim/gonginx/config"
+	"github.com/tufanbarisyildirim/gonginx/dumper"
 	"github.com/tufanbarisyildirim/gonginx/parser"
 )
 
@@ -52,6 +53,13 @@ func (l *NgxLocation) parseLocation(directive config.IDirective, deep int) {
 	if directive.GetBlock() == nil {
 		return
 	}
+	if directive.GetBlock().GetCodeBlock() != "" {
+		// deep copy
+		style := *dumper.IndentedStyle
+		style.StartIndent = deep * style.Indent
+		l.Content += dumper.DumpLuaBlock(directive.GetBlock(), &style) + "\n"
+		return
+	}
 	for _, location := range directive.GetBlock().GetDirectives() {
 		if len(location.GetComment()) > 0 {
 			for _, c := range location.GetComment() {
@@ -66,7 +74,7 @@ func (l *NgxLocation) parseLocation(directive config.IDirective, deep int) {
 		if location.GetBlock() != nil && location.GetBlock().GetDirectives() != nil {
 			l.Content += " { \n"
 			l.parseLocation(location, deep+1)
-			l.Content += " } \n"
+			l.Content += strings.Repeat("\t", deep) + "} \n"
 		} else {
 			l.Content += ";\n"
 		}
@@ -146,8 +154,14 @@ func (c *NgxConfig) parseCustom(directive config.IDirective) {
 		for _, param := range v.GetParameters() {
 			params = append(params, param.Value)
 		}
+
+		inlineComment := ""
+		for _, inline := range v.GetInlineComment() {
+			inlineComment += inline.Value + " "
+		}
+
 		c.Custom += strings.Join(v.GetComment(), "\n") + "\n" +
-			v.GetName() + " " + strings.Join(params, " ") + ";\n"
+			v.GetName() + " " + strings.Join(params, " ") + ";" + inlineComment + "\n"
 	}
 	c.Custom += "}\n"
 }
@@ -190,6 +204,10 @@ func parse(block config.IBlock, ngxConfig *NgxConfig) (err error) {
 			ngxConfig.parseCustom(v)
 		}
 	}
+	if strings.TrimSpace(ngxConfig.Custom) == "" {
+		return
+	}
+
 	custom, err := FmtCode(ngxConfig.Custom)
 	if err != nil {
 		return

@@ -102,5 +102,6 @@ func main() {
 		Program:          Program(confPath),
 		Address:          fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port),
 		TerminateTimeout: 5 * time.Second,
+		Debug:            cSettings.ServerSettings.RunMode == gin.DebugMode,
 	})
 }

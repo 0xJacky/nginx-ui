@@ -3,7 +3,6 @@ package nginx
 import (
 	"github.com/tufanbarisyildirim/gonginx/dumper"
 	"github.com/tufanbarisyildirim/gonginx/parser"
-	"github.com/uozi-tech/cosy/logger"
 )
 
 func (c *NgxConfig) FmtCode() (fmtContent string) {
@@ -12,7 +11,6 @@ func (c *NgxConfig) FmtCode() (fmtContent string) {
 }
 
 func FmtCode(content string) (fmtContent string, err error) {
-	logger.Debugf("content: %s", content)
 	p := parser.NewStringParser(content, parser.WithSkipValidDirectivesErr())
 	c, err := p.Parse()
 	if err != nil {
