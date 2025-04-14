@@ -1,10 +1,11 @@
 package nginx
 
 import (
+	"strings"
+
 	"github.com/pkg/errors"
 	"github.com/tufanbarisyildirim/gonginx/config"
 	"github.com/tufanbarisyildirim/gonginx/parser"
-	"strings"
 )
 
 const (
@@ -135,9 +136,11 @@ func (u *NgxUpstream) parseUpstream(directive config.IDirective) {
 
 func (c *NgxConfig) parseCustom(directive config.IDirective) {
 	if directive.GetBlock() == nil {
+		// fix #699
+		c.Custom += ";\n"
 		return
 	}
-	c.Custom += "{\n"
+	c.Custom += "\n{\n"
 	for _, v := range directive.GetBlock().GetDirectives() {
 		var params []string
 		for _, param := range v.GetParameters() {
@@ -183,7 +186,7 @@ func parse(block config.IBlock, ngxConfig *NgxConfig) (err error) {
 				params = append(params, param.Value)
 			}
 			ngxConfig.Custom += strings.Join(v.GetComment(), "\n") + "\n" +
-				v.GetName() + " " + strings.Join(params, " ") + "\n"
+				v.GetName() + " " + strings.Join(params, " ")
 			ngxConfig.parseCustom(v)
 		}
 	}
