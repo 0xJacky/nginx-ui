@@ -9,11 +9,11 @@
 
 ## 使用前注意
 
-Nginx UI 遵循 Debian 的網頁伺服器配置檔案標準。建立的網站配置檔案將會放置於 Nginx
-配置資料夾（自動檢測）下的 `sites-available` 中，啟用後的網站將會建立一份配置檔案軟連結檔到 `sites-enabled`
-資料夾。您可能需要提前調整配置檔案的組織方式。
+Nginx UI 遵循 Debian 的網頁伺服器設定檔案標準。建立的網站設定檔案將會放置於 Nginx
+設定資料夾（自動偵測）下的 `sites-available` 中，啟用後的網站將會建立一份設定檔案軟連結檔到 `sites-enabled`
+資料夾。您可能需要提前調整設定檔案的組織方式。
 
-對於非 Debian (及 Ubuntu) 作業系統，您可能需要將 `nginx.conf` 配置檔案中的內容修改為如下所示的 Debian 風格。
+對於非 Debian (及 Ubuntu) 作業系統，您可能需要將 `nginx.conf` 設定檔案中的內容修改為如下所示的 Debian 風格。
 
 ```nginx
 http {
@@ -27,23 +27,23 @@ http {
 
 ## 安裝
 
-我們建議Linux使用者使用 [安裝指令碼](./install-script-linux)，這樣您可以直接控制主機上的 Nginx。您也可以透過 [Docker 安裝](#使用-docker)，
+我們建議 Linux 使用者使用 [安裝指令碼](./install-script-linux)，這樣您可以直接控制主機上的 Nginx。您也可以透過 [Docker 安裝](#使用-docker)，
 我們提供的映象包含 Nginx 並可以直接使用。對於高階使用者，您也可以在 [最新發行 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest)
-中下載最新版本並 [透過執行檔案執行](#透過執行檔案執行)，或者 [手動構建](./build)。
+中下載最新版本並 [透過執行檔案執行](#透過執行檔案執行)，或者 [手動建構](./build)。
 
-第一次執行 Nginx UI 時，請在瀏覽器中訪問 `http://<your_server_ip>:<listen_port>` 完成後續配置。
+第一次執行 Nginx UI 時，請在瀏覽器中存取 `http://<your_server_ip>:<listen_port>` 完成後續設定。
 
-此外，我們提供了一個使用 Nginx 反向代理 Nginx UI 的 [示例](./nginx-proxy-example)，您可在安裝完成後使用。
+此外，我們提供了一個使用 Nginx 反向代理 Nginx UI 的 [範例](./nginx-proxy-example)，您可在安裝完成後使用。
 
 
 ## 使用 Docker
 
 您可以在 docker 中使用我們提供的 `uozi/nginx-ui:latest` [映像檔](https://hub.docker.com/r/uozi/nginx-ui)
-，此映像檔基於 `nginx:latest` 構建。您可以直接將其監聽到 80 和 443 埠以取代宿主機上的 Nginx。
+，此映像檔基於 `nginx:latest` 建構。您可以直接將其監聽到 80 和 443 連接埠以取代宿主機上的 Nginx。
 
 ::: tip 提示
 
-預設情況下，Nginx UI 會被反向代理到容器的 `8080` 埠。
+預設情況下，Nginx UI 會被反向代理到容器的 `8080` 連接埠。
 首次使用時，對映到 `/etc/nginx` 的目錄必須為空資料夾。
 如果你想要託管靜態檔案，可以直接將資料夾對映入容器中。
 
@@ -56,7 +56,7 @@ http {
 
 :::
 
-### Docker 部署示例
+### Docker 部署範例
 
 ```bash
 docker run -dit \
@@ -70,15 +70,15 @@ docker run -dit \
   uozi/nginx-ui:latest
 ```
 
-在這個示例中，容器的`80`埠和`443`埠分別映射到主機的`8080`埠和`8443`埠。
-您需要訪問`http://<your_server_ip>:8080`來訪問 Nginx UI。
+在這個範例中，容器的`80`連接埠和`443`連接埠分別對映到主機的`8080`連接埠和`8443`連接埠。
+您需要存取`http://<your_server_ip>:8080`來存取 Nginx UI。
 
 ## 透過執行檔案執行
 
 不建議直接執行 Nginx UI 可執行檔案用於非測試目的。
-我們建議在 Linux 上將其配置為守護程序或使用 [安裝指令碼](./install-script-linux)。
+我們建議在 Linux 上將其設定為守護程式或使用 [安裝指令碼](./install-script-linux)。
 
-### 配置
+### 設定
 
 ```shell
 echo '[server]\nHttpPort = 9000' > app.ini
@@ -86,7 +86,7 @@ echo '[server]\nHttpPort = 9000' > app.ini
 
 ::: tip 提示
 
-在沒有 `app.ini` 時 Nginx UI 仍然可以啟動，它將使用預設偵聽埠 `9000`。
+在沒有 `app.ini` 時 Nginx UI 仍然可以啟動，它將使用預設偵聽連接埠 `9000`。
 
 :::
 
