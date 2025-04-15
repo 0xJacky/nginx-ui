@@ -76,6 +76,24 @@ const providers = LLM_PROVIDERS.map(provider => ({
         </ASelectOption>
       </ASelect>
     </AFormItem>
+    <AFormItem
+      :label="$gettext('Enable Code Completion')"
+    >
+      <ASwitch v-model:checked="data.openai.enable_code_completion" />
+    </AFormItem>
+    <AFormItem
+      v-if="data.openai.enable_code_completion"
+      :label="$gettext('Code Completion Model')"
+      :validate-status="errors?.openai?.code_completion_model ? 'error' : ''"
+      :help="errors?.openai?.code_completion_model === 'safety_text'
+        ? $gettext('The model name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots.')
+        : $gettext('The model used for code completion, if not set, the chat model will be used.')"
+    >
+      <AAutoComplete
+        v-model:value="data.openai.code_completion_model"
+        :options="models"
+      />
+    </AFormItem>
   </AForm>
 </template>
 

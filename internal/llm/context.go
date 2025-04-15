@@ -1,4 +1,4 @@
-package chatbot
+package llm
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"

@@ -1,4 +1,4 @@
-package chatbot
+package llm
 
 import (
 	"github.com/sashabaranov/go-openai"
