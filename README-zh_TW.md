@@ -75,10 +75,10 @@ Nginx 網路管理介面，由 [0xJacky](https://jackyu.cn/)、[Hintay](https://
 ### 特色
 
 - 線上檢視伺服器 CPU、記憶體、系統負載、磁碟使用率等指標
-- 配置修改後會自動備份，可以對比任意版本或恢復到任意版本
-- 支援鏡像操作到多個集群節點，輕鬆管理多伺服器環境
-- 導出加密的 Nginx / Nginx UI 配置，方便快速部署和恢復到新環境
-- 增強版線上 ChatGPT 助手，支援多種模型，包括顯示 Deepseek-R1 的思考鏈，幫助您更好地理解和優化配置
+- 設定修改後會自動備份，可以對比任意版本或恢復到任意版本
+- 支援鏡像操作到多個叢集節點，輕鬆管理多伺服器環境
+- 匯出加密的 Nginx/NginxUI 設定，方便快速部署和恢復到新環境
+- 增強版線上 ChatGPT 助手，支援多種模型，包括顯示 Deepseek-R1 的思考鏈，幫助您更好地理解和最佳化設定
 - 一鍵申請和自動續簽 Let's encrypt 憑證
 - 線上編輯 Nginx 設定檔，編輯器支援 Nginx 設定語法醒目提示
 - 線上檢視 Nginx 日誌
@@ -114,7 +114,7 @@ Nginx 網路管理介面，由 [0xJacky](https://jackyu.cn/)、[Hintay](https://
 
 ### 使用前注意
 
-Nginx UI 遵循 Debian 的網頁伺服器設定檔標準。建立的網站設定檔將會放置於 Nginx 設定資料夾（自動檢測）下的 `sites-available` 中，啟用後的網站將會建立一份設定檔軟連結檔到 `sites-enabled` 資料夾。您可能需要提前調整設定檔的組織方式。
+Nginx UI 遵循 Debian 的網頁伺服器設定檔標準。建立的網站設定檔將會放置於 Nginx 設定資料夾（自動偵測）下的 `sites-available` 中，啟用後的網站將會建立一份設定檔軟連結檔到 `sites-enabled` 資料夾。您可能需要提前調整設定檔的組織方式。
 
 對於非 Debian (及 Ubuntu) 作業系統，您可能需要將 `nginx.conf` 設定檔中的內容修改為如下所示的 Debian 風格。
 
@@ -144,7 +144,7 @@ Nginx UI 可在以下作業系統中使用：
 
 ### 使用方法
 
-第一次執行 Nginx UI 時，請在網頁瀏覽器中訪問 `http://<your_server_ip>:<listen_port>` 完成後續設定。
+第一次執行 Nginx UI 時，請在網頁瀏覽器中存取 `http://<your_server_ip>:<listen_port>` 完成後續設定。
 
 #### 透過執行檔案執行
 
@@ -153,7 +153,7 @@ Nginx UI 可在以下作業系統中使用：
 ```shell
 nginx-ui -config app.ini
 ```
-在終端使用 `Control+C` 退出 Nginx UI。
+在終端使用 `Control+C` 結束 Nginx UI。
 
 **在背景執行 Nginx UI**
 

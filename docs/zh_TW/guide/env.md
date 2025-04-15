@@ -1,17 +1,17 @@
-# 環境變量
+# 環境變數
 
 適用於 v2.0.0-beta.37 及以上版本。
 
 ## App
 
-| 配置        | 環境變量                    |
+| 設定        | 環境變數                    |
 |-----------|-------------------------|
 | PageSize  | NGINX_UI_APP_PAGE_SIZE  |
 | JwtSecret | NGINX_UI_APP_JWT_SECRET |
 
 ## Server
 
-| 配置      | 環境變量                     |
+| 設定      | 環境變數                     |
 |---------|--------------------------|
 | Host    | NGINX_UI_SERVER_HOST     |
 | Port    | NGINX_UI_SERVER_PORT     |
@@ -19,13 +19,13 @@
 
 ## Database
 
-| 配置   | 環境變量             |
+| 設定   | 環境變數             |
 |------|------------------|
 | Name | NGINX_UI_DB_NAME |
 
 ## Auth
 
-| 配置                  | 環境變量                                |
+| 設定                  | 環境變數                                |
 |---------------------|-------------------------------------|
 | IPWhiteList         | NGINX_UI_AUTH_IP_WHITE_LIST         |
 | BanThresholdMinutes | NGINX_UI_AUTH_BAN_THRESHOLD_MINUTES |
@@ -33,7 +33,7 @@
 
 ## Casdoor
 
-| 配置              | 環境變量                              |
+| 設定              | 環境變數                              |
 |-----------------|-----------------------------------|
 | Endpoint        | NGINX_UI_CASDOOR_ENDPOINT         |
 | ClientId        | NGINX_UI_CASDOOR_CLIENT_ID        |
@@ -45,7 +45,7 @@
 
 ## Cert
 
-| 配置                   | 環境變量                                |
+| 設定                   | 環境變數                                |
 |----------------------|-------------------------------------|
 | Email                | NGINX_UI_CERT_EMAIL                 |
 | CADir                | NGINX_UI_CERT_CA_DIR                |
@@ -55,26 +55,26 @@
 
 ## Cluster
 
-| 配置   | 環境變量                  |
+| 設定   | 環境變數                  |
 |------|-----------------------|
 | Node | NGINX_UI_CLUSTER_NODE |
 
 ## Crypto
 
-| 配置     | 環境變量                   |
+| 設定     | 環境變數                   |
 |--------|------------------------|
 | Secret | NGINX_UI_CRYPTO_SECRET |
 
 ## Http
 
-| 配置                 | 環境變量                               |
+| 設定                 | 環境變數                               |
 |--------------------|------------------------------------|
 | GithubProxy        | NGINX_UI_HTTP_GITHUB_PROXY         |
 | InsecureSkipVerify | NGINX_UI_HTTP_INSECURE_SKIP_VERIFY |
 
 ## Logrotate
 
-| 配置       | 環境變量                        |
+| 設定       | 環境變數                        |
 |----------|-----------------------------|
 | Enabled  | NGINX_UI_LOGROTATE_ENABLED  |
 | CMD      | NGINX_UI_LOGROTATE_CMD      |
@@ -82,7 +82,7 @@
 
 ## Nginx
 
-| 配置              | 環境變量                              |
+| 設定              | 環境變數                              |
 |-----------------|-----------------------------------|
 | AccessLogPath   | NGINX_UI_NGINX_ACCESS_LOG_PATH    |
 | ErrorLogPath    | NGINX_UI_NGINX_ERROR_LOG_PATH     |
@@ -95,7 +95,7 @@
 
 ## Node
 
-| 配置               | 環境變量                            |
+| 設定               | 環境變數                            |
 |------------------|---------------------------------|
 | Name             | NGINX_UI_NODE_NAME              |
 | Secret           | NGINX_UI_NODE_SECRET            |
@@ -103,7 +103,7 @@
 
 ## OpenAI
 
-| 配置      | 環境變量                     |
+| 設定      | 環境變數                     |
 |---------|--------------------------|
 | Model   | NGINX_UI_OPENAI_MODEL    |
 | BaseUrl | NGINX_UI_OPENAI_BASE_URL |
@@ -112,21 +112,21 @@
 
 ## Terminal
 
-| 配置       | 環境變量                        |
+| 設定       | 環境變數                        |
 |----------|-----------------------------|
 | StartCmd | NGINX_UI_TERMINAL_START_CMD |
 
 ## Webauthn
 
-| 配置            | 環境變量                              |
+| 設定            | 環境變數                              |
 |---------------|-----------------------------------|
 | RPDisplayName | NGINX_UI_WEBAUTHN_RP_DISPLAY_NAME |
 | RPID          | NGINX_UI_WEBAUTHN_RPID            |
 | RPOrigins     | NGINX_UI_WEBAUTHN_RP_ORIGINS      |
 
-## 預定義用戶
+## 預定義使用者
 
-在跳過安裝模式下，您可以設定以下環境變量以創建預定義用戶：
+在跳過安裝模式下，您可以設定以下環境變數以建立預定義使用者：
 
 - NGINX_UI_PREDEFINED_USER_NAME
 - NGINX_UI_PREDEFINED_USER_PASSWORD

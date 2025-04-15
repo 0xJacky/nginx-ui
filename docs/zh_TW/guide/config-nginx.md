@@ -1,92 +1,92 @@
 # Nginx
 
-在本節中，我們將介紹 Nginx UI 中關於 Nginx 控制命令、日誌路徑等參數的配置選項。
+在本節中，我們將介紹 Nginx UI 中關於 Nginx 控制命令、日誌路徑等參數的設定選項。
 
 ::: tip 提示
-自 v2.0.0-beta.3 版本起，我們將 `nginx_log` 配置項改名為 `nginx`。
+自 v2.0.0-beta.3 版本起，我們將 `nginx_log` 設定項改名為 `nginx`。
 :::
 
 ## 日誌
-Nginx 日誌對於監控、排查問題和維護您的 Web 伺服器至關重要。它們提供了有關伺服器性能、用戶行為和潛在問題的寶貴見解。
+Nginx 日誌對於監控、排查問題和維護您的 Web 伺服器至關重要。它們提供了有關伺服器效能、使用者行為和潛在問題的寶貴見解。
 
 ### AccessLogPath
 
 - 類型：`string`
 
-此選項用於為 Nginx UI 設置 Nginx 訪問日誌的路徑，以便我們在線查看日誌內容。
+此選項用於為 Nginx UI 設定 Nginx 存取日誌的路徑，以便我們線上檢視日誌內容。
 
 ::: tip 提示
-在 v2 版本中，我們會讀取 `nginx -V` 命令的輸出，以獲取 Nginx 訪問日誌的默認路徑。
+在 v2 版本中，我們會讀取 `nginx -V` 命令的輸出，以取得 Nginx 存取日誌的預設路徑。
 
-如果您需要設置不同的路徑，您可以使用此選項。
+如果您需要設定不同的路徑，您可以使用此選項。
 :::
 
 ### ErrorLogPath
 
 - 類型：`string`
 
-此選項用於為 Nginx UI 設置 Nginx 錯誤日誌的路徑，以便我們在線查看日誌內容。
+此選項用於為 Nginx UI 設定 Nginx 錯誤日誌的路徑，以便我們線上檢視日誌內容。
 
 ::: tip 提示
-在 v2 版本中，我們會讀取 `nginx -V` 命令的輸出，以獲取 Nginx 錯誤日誌的默認路徑。
+在 v2 版本中，我們會讀取 `nginx -V` 命令的輸出，以取得 Nginx 錯誤日誌的預設路徑。
 
-如果您需要設置不同的路徑，您可以使用此選項。
+如果您需要設定不同的路徑，您可以使用此選項。
 :::
 
 ### LogDirWhiteList
 
 - 類型：`[]string`
 - 版本：`>= v2.0.0-beta.36`
-- 示例：`/var/log/nginx,/var/log/sites`
+- 範例：`/var/log/nginx,/var/log/sites`
 
-此選項用於為 Nginx UI 設置日誌查看器的目錄白名單。
+此選項用於為 Nginx UI 設定日誌檢視器的目錄白名單。
 
 ::: warning 警告
-出於安全原因，您必須指定存儲日誌的目錄。
+出於安全原因，您必須指定儲存日誌的目錄。
 
-只有這些目錄中的日誌可以在線查看。
+只有這些目錄中的日誌可以線上檢視。
 :::
 
 ## 服務監控與控制
 
-在本節中，我們將會介紹 Nginx UI 中關於 Nginx 服務的監控和控制命令的配置選項。
+在本節中，我們將會介紹 Nginx UI 中關於 Nginx 服務的監控和控制命令的設定選項。
 
 ### ConfigDir
 - 類型：`string`
 
-此選項用於設置 Nginx 配置文件夾的路徑。
+此選項用於設定 Nginx 設定資料夾的路徑。
 
-在 v2 版本中，我們會讀取 `nginx -V` 命令的輸出，以獲取 Nginx 配置文件的默認路徑。
+在 v2 版本中，我們會讀取 `nginx -V` 命令的輸出，以取得 Nginx 設定檔的預設路徑。
 
-如果您需要覆蓋默認路徑，您可以使用此選項。
+如果您需要覆蓋預設路徑，您可以使用此選項。
 
 ### PIDPath
 - 類型：`string`
 
-此選項用於設置 Nginx PID 文件的路徑。Nginx UI 將通過判斷該文件是否存在來判斷 Nginx 服務的運行狀態。
+此選項用於設定 Nginx PID 文件的路徑。Nginx UI 將透過判斷該文件是否存在來判斷 Nginx 服務的執行狀態。
 
-在 v2 版本中，我們會讀取 `nginx -V` 命令的輸出，以獲取 Nginx PID 文件的默認路徑。
+在 v2 版本中，我們會讀取 `nginx -V` 命令的輸出，以取得 Nginx PID 文件的預設路徑。
 
-如果您需要覆蓋默認路徑，您可以使用此選項。
+如果您需要覆蓋預設路徑，您可以使用此選項。
 
 ### TestConfigCmd
 - 類型：`string`
-- 默認值：`nginx -t`
+- 預設值：`nginx -t`
 
-此選項用於設置 Nginx 測試配置的命令。
+此選項用於設定 Nginx 測試設定的命令。
 
 ### ReloadCmd
 - 類型：`string`
-- 默認值：`nginx -s reload`
+- 預設值：`nginx -s reload`
 
-此選項用於設置 Nginx 重新加載配置的命令。
+此選項用於設定 Nginx 重新載入設定的命令。
 
 ### RestartCmd
 - 類型：`string`
 
 ::: tip 提示
-我們建議使用 systemd 管理 Nginx 的用戶，將這個值設置為 `systemctl restart nginx`。
-否則，當您在 Nginx UI 中重啟 Nginx 後，將無法在 systemctl 中獲取 Nginx 的準確狀態。
+我們建議使用 systemd 管理 Nginx 的使用者，將這個值設定為 `systemctl restart nginx`。
+否則，當您在 Nginx UI 中重啟 Nginx 後，將無法在 systemctl 中取得 Nginx 的準確狀態。
 :::
 
 若此選項為空，則 Nginx UI 將使用以下命令關閉 Nginx 服務：
@@ -103,15 +103,15 @@ start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 
 ## Stub Status
 
-在本節中，我們將會介紹 Nginx UI 中關於 Nginx stub status 模組的配置選項。
+在本節中，我們將會介紹 Nginx UI 中關於 Nginx stub status 模組的設定選項。
 
 ### StubStatusPort
 - 類型：`uint`
-- 默認值：`51820`
+- 預設值：`51820`
 - 版本：`>= v2.0.0-rc.6`
 
-此選項用於設置 Nginx stub status 模組的端口。stub status 模組提供了 Nginx 的基本狀態信息，Nginx UI 使用這些信息來監控伺服器的性能。
+此選項用於設定 Nginx stub status 模組的連接埠。stub status 模組提供了 Nginx 的基本狀態資訊，Nginx UI 使用這些資訊來監控伺服器的效能。
 
 ::: tip 提示
-請確保您設置的端口未被其他服務佔用。
+請確保您設定的連接埠未被其他服務佔用。
 :::

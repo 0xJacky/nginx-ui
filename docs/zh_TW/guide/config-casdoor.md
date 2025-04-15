@@ -1,28 +1,28 @@
 # Casdoor
-本節介紹如何配置 Casdoor 作為 Nginx UI 的身份驗證提供程序，該功能由 @Jraaay 貢獻。
+本節介紹如何設定 Casdoor 作為 Nginx UI 的身份驗證提供程式，該功能由 @Jraaay 貢獻。
 
-Casdoor 是一個強大的、全面的身份認證解決方案，支持 OAuth 2.0、SAML 2.0、LDAP、AD 和多種社交登錄方式。通過集成 Casdoor，Nginx UI 可以利用這些功能來提升安全性和用戶體驗。
+Casdoor 是一個強大的、全面的身份認證解決方案，支援 OAuth 2.0、SAML 2.0、LDAP、AD 和多種社交登入方式。透過整合 Casdoor，Nginx UI 可以利用這些功能來提升安全性和使用者體驗。
 
 ## Endpoint
 - 類型：`string`
 
-這是 Casdoor 服務器的 URL。您需要確保 Nginx UI 可以訪問此 URL。
+這是 Casdoor 伺服器的 URL。您需要確保 Nginx UI 可以存取此 URL。
 
 ## ExternalUrl
 - 種類：`string`
-- 版本: `>= v2.0.0-beta.42`
+- 版本：`>= v2.0.0-beta.42`
 
-這是 Casdoor 伺服器的外部 URL。它用於生成重定向 URI，在未配置此選項的情況下，將使用 Endpoint 作為重定向 URI 的基本 URL。
+這是 Casdoor 伺服器的外部 URL。它用於生成重導向 URI，在未設定此選項的情況下，將使用 Endpoint 作為重導向 URI 的基本 URL。
 
 ## ClientId
 - 類型：`string`
 
-這是 Casdoor 為您的應用生成的客戶端 ID。它用於在身份驗證過程中標識您的應用。
+這是 Casdoor 為您的應用程式生成的客戶端 ID。它用於在身份驗證過程中標識您的應用程式。
 
 ## ClientSecret
 - 類型：`string`
 
-這是 Casdoor 為您的應用生成的客戶端密鑰。它是保持您的應用安全所必需的。
+這是 Casdoor 為您的應用程式生成的客戶端金鑰。它是保持您的應用程式安全所必需的。
 
 ## Certificate
 - 類型：`string`
@@ -32,14 +32,14 @@ Casdoor 是一個強大的、全面的身份認證解決方案，支持 OAuth 2.
 ## Organization
 - 類型：`string`
 
-這是您在 Casdoor 中設置的組織名稱。Casdoor 將使用此信息來處理身份驗證請求。
+這是您在 Casdoor 中設定的組織名稱。Casdoor 將使用此資訊來處理身份驗證請求。
 
 ## Application
 - 類型：`string`
 
-這是您在 Casdoor 中創建的應用名稱。
+這是您在 Casdoor 中建立的應用程式名稱。
 
 ## RedirectUri
 - 類型：`string`
 
-這是用戶在成功登錄或授權後重定向到的 URI。它應與 Casdoor 應用配置中的重定向 URI 一致。
+這是使用者在成功登入或授權後重導向到的 URI。它應與 Casdoor 應用程式設定中的重導向 URI 一致。
