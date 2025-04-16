@@ -38,14 +38,14 @@ require (
 	github.com/spf13/cast v1.7.1
 	github.com/stretchr/testify v1.10.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250225174229-c03497ddaef6
-	github.com/uozi-tech/cosy v1.19.1
+	github.com/uozi-tech/cosy v1.20.0
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.1.1
 	golang.org/x/crypto v0.37.0
 	golang.org/x/net v0.39.0
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/sqlite v1.5.7
-	gorm.io/gen v0.3.26
+	gorm.io/gen v0.3.27
 	gorm.io/gorm v1.25.12
 	gorm.io/plugin/dbresolver v1.5.3
 )
