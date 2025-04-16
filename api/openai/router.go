@@ -6,4 +6,7 @@ func InitRouter(r *gin.RouterGroup) {
 	// ChatGPT
 	r.POST("chatgpt", MakeChatCompletionRequest)
 	r.POST("chatgpt_record", StoreChatGPTRecord)
+	// Code Completion
+	r.GET("code_completion", CodeCompletion)
+	r.GET("code_completion/enabled", GetCodeCompletionEnabledStatus)
 }

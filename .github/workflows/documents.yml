@@ -33,7 +33,7 @@ jobs:
       - name: Set up nodejs
         uses: actions/setup-node@v4
         with:
-          node-version: 21.x
+          node-version: 23.x
 
       - name: Install dependencies
         run: |
@@ -52,8 +52,8 @@ jobs:
           name: dist
           path: docs/.vitepress/dist
 
-      - name: Deploy to server
-        if: github.event_name != 'pull_request'
+      - name: Deploy
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}

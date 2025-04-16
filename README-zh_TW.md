@@ -80,7 +80,7 @@ Nginx 網路管理介面，由 [0xJacky](https://jackyu.cn/)、[Hintay](https://
 - 匯出加密的 Nginx/NginxUI 設定，方便快速部署和恢復到新環境
 - 增強版線上 ChatGPT 助手，支援多種模型，包括顯示 Deepseek-R1 的思考鏈，幫助您更好地理解和最佳化設定
 - 一鍵申請和自動續簽 Let's encrypt 憑證
-- 線上編輯 Nginx 設定檔，編輯器支援 Nginx 設定語法醒目提示
+- 線上編輯 Nginx 設定檔，編輯器支援**大模型代碼補全**和 Nginx 設定語法醒目提示
 - 線上檢視 Nginx 日誌
 - 使用 Go 和 Vue 開發，發行版本為單個可執行檔案
 - 儲存設定後自動測試設定檔並重新載入 Nginx
@@ -133,6 +133,7 @@ http {
 Nginx UI 可在以下作業系統中使用：
 
 - macOS 11 Big Sur 及之後版本（amd64 / arm64）
+- Windows 10 及之後版本（x86 /amd64 / arm64）
 - Linux 2.6.23 及之後版本（x86 / amd64 / arm64 / armv5 / armv6 / armv7 / mips32 / mips64 / riscv64 / loongarch64）
   - 包括但不限於 Debian 7 / 8、Ubuntu 12.04 / 14.04 及後續版本、CentOS 6 / 7、Arch Linux
 - FreeBSD

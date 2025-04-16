@@ -81,6 +81,8 @@ export interface OpenaiSettings {
   proxy: string
   token: string
   api_type: string
+  enable_code_completion: boolean
+  code_completion_model: string
 }
 
 export interface TerminalSettings {

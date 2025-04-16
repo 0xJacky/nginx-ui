@@ -90,6 +90,8 @@ const data = ref<Settings>({
     proxy: '',
     token: '',
     api_type: 'OPEN_AI',
+    enable_code_completion: false,
+    code_completion_model: '',
   },
   terminal: {
     start_cmd: '',

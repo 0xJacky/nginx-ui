@@ -95,7 +95,7 @@ URL：[https://demo.nginxui.com](https://demo.nginxui.com)
 - Export encrypted Nginx / Nginx UI configurations for quick deployment and recovery to new environments
 - Enhanced online ChatGPT assistant supporting multiple models, including Deepseek-R1's chain-of-thought display to help you better understand and optimize configurations
 - One-click deployment and automatic renewal Let's Encrypt certificates.
-- Online editing websites configurations with our self-designed **NgxConfigEditor** which is a user-friendly block editor for nginx configurations or **Ace Code Editor** which supports highlighting nginx configuration syntax.
+- Online editing websites configurations with our self-designed **NgxConfigEditor** which is a user-friendly block editor for nginx configurations or **Ace Code Editor** which supports **LLM Code Completion** and highlighting nginx configuration syntax.
 - Online view Nginx logs
 - Written in Go and Vue, distribution is a single executable binary.
 - Automatically test configuration file and reload nginx after saving configuration.
@@ -152,6 +152,7 @@ For more information: [debian/conf/nginx.conf](https://salsa.debian.org/nginx-te
 Nginx UI is available on the following platforms:
 
 - macOS 11 Big Sur and later (amd64 / arm64)
+- Windows 10 and later (amd64 / arm64)
 - Linux 2.6.23 and later (x86 / amd64 / arm64 / armv5 / armv6 / armv7 / mips32 / mips64 / riscv64 / loongarch64)
   - Including but not limited to Debian 7 / 8, Ubuntu 12.04 / 14.04 and later, CentOS 6 / 7, Arch Linux
 - FreeBSD

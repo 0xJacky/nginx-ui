@@ -4,15 +4,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/internal/chatbot"
+	"io"
+	"strings"
+	"time"
+
+	"github.com/0xJacky/Nginx-UI/internal/llm"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/sashabaranov/go-openai"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
-	"io"
-	"strings"
-	"time"
 )
 
 const ChatGPTInitPrompt = `You are a assistant who can help users write and optimise the configurations of Nginx,
@@ -41,7 +42,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	messages = append(messages, json.Messages...)
 
 	if json.Filepath != "" {
-		messages = chatbot.ChatCompletionWithContext(json.Filepath, messages)
+		messages = llm.ChatCompletionWithContext(json.Filepath, messages)
 	}
 
 	// SSE server
@@ -50,7 +51,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	c.Writer.Header().Set("Connection", "keep-alive")
 	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 
-	openaiClient, err := chatbot.GetClient()
+	openaiClient, err := llm.GetClient()
 	if err != nil {
 		c.Stream(func(w io.Writer) bool {
 			c.SSEvent("message", gin.H{

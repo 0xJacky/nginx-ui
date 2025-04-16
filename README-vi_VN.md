@@ -148,6 +148,7 @@ http {
 Giao diện người dùng Nginx có sẵn trên các nền tảng sau:
 
 - macOS 11 Big Sur and later (amd64 / arm64)
+- Windows 10 and later (x86 /amd64 / arm64)
 - Linux 2.6.23 và sau đó (x86 / amd64 / arm64 / armv5 / armv6 / armv7 / mips32 / mips64 / riscv64 / loongarch64)
   - Bao gồm nhưng không giới hạn Debian 7/8, Ubuntu 12.04/14.04 trở lên, CentOS 6/7, Arch Linux
 - FreeBSD
