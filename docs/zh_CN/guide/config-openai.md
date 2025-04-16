@@ -27,7 +27,7 @@ URL。
 - 类型：`string`
 - 默认值：`gpt-3.5-turbo`
 
-此选项用于设置 ChatGPT 模型。如果您的帐户有权限访问 `gpt-4` 模型，可以相应地配置此选项。
+此选项用于设置对话模型。如果您的帐户有权限访问 `gpt-4` 模型，可以相应地配置此选项。
 
 ## APIType
 
@@ -38,3 +38,17 @@ URL。
 
 - `OPEN_AI`: 使用 OpenAI API。
 - `AZURE`: 使用 Azure API。
+
+## EnableCodeCompletion
+
+- 类型：`boolean`
+- 默认值：`false`
+- 版本：`>=2.0.0-rc.6`
+
+此选项用于启用编辑器代码补全功能。
+
+## CodeCompletionModel
+
+- 类型：`string`
+- 版本：`>=2.0.0-rc.6`
+此选项用于设置代码补全的模型，留空则使用对话模型。

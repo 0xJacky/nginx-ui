@@ -60,7 +60,7 @@ Nginx UI 是一個全新的 Nginx 網路管理介面，目的是簡化 Nginx 伺
 - 匯出加密的 Nginx/NginxUI 設定，方便快速部署和恢復到新環境
 - 增強版線上 ChatGPT 助手，支援多種模型，包括顯示 Deepseek-R1 的思考鏈，幫助您更好地理解和最佳化設定
 - 一鍵申請和自動續簽 Let's encrypt 憑證
-- 線上編輯 Nginx 設定檔案，編輯器支援 Nginx 設定語法突顯
+- 線上編輯 Nginx 配置檔案，編輯器支援 **大模型代碼補全** 和 Nginx 配置語法突顯
 - 線上檢視 Nginx 日誌
 - 使用 Go 和 Vue 開發，發行版本為單個可執行檔案
 - 儲存設定後自動測試設定檔案並過載 Nginx

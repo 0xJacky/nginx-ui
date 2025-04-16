@@ -28,7 +28,7 @@ region, you can use an HTTP proxy and set this option to the corresponding URL.
 - Type: `string`
 - Default: `gpt-3.5-turbo`
 
-This option is used to set the ChatGPT model. If your account has the privilege to access the gpt-4 model, you can
+This option is used to set the chat model. If your account has the privilege to access the gpt-4 model, you can
 configure this option accordingly.
 
 ## APIType
@@ -40,3 +40,18 @@ This option is used to set the type of the API.
 
 - `OPEN_AI`: Use the OpenAI API.
 - `AZURE`: Use the Azure API.
+
+## EnableCodeCompletion
+
+- Type: `boolean`
+- Default: `false`
+- Version: `>=2.0.0-rc.6`
+
+This option is used to enable the code completion feature in the code editor.
+
+## CodeCompletionModel
+
+- Type: `string`
+- Version: `>=2.0.0-rc.6`
+
+This option is used to set the code completion model, leave it blank if you want to use the chat model.

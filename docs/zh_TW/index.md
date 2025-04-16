@@ -8,7 +8,7 @@ titleTemplate: Yet another Nginx Web UI
 hero:
     name: "Nginx UI"
     text: "Nginx 管理介面新選擇"
-    tagline: 簡單、強大、高速
+    tagline: 智能、強大、高速
     image:
         src: /assets/icon.svg
         alt: Nginx UI
@@ -36,6 +36,9 @@ features:
     -   icon: 💬
         title: 線上 ChatGPT 助手
         details: 支援多種模型，包括顯示 Deepseek-R1 的思考鏈，幫助您更好地理解和最佳化設定。
+    -   icon: 🔍
+        title: 代碼補全
+        details: 代碼編輯器支持代碼補全，幫助您更快地編寫配置。
     -   icon: 🖱️
         title: 一鍵部署和自動續期
         details: 只需一鍵即可輕鬆部署和自動續期 Let's Encrypt 證書。
