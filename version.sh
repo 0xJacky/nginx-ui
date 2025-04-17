@@ -47,7 +47,7 @@ cd ..
 
 # Run go generate
 echo "Generating Go code..."
-go generate ./...
+go generate
 if [ $? -ne 0 ]; then
     echo "Error: go generate failed"
     exit 1

@@ -1,24 +1,35 @@
+//go:generate go run .
 package main
 
 import (
 	"flag"
 	"fmt"
+	"path/filepath"
+	"runtime"
+
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gen"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
-	"log"
-	"path"
+	gormlogger "gorm.io/gorm/logger"
 )
 
 func main() {
+	logger.Init("release")
+
+	_, file, _, ok := runtime.Caller(0)
+	if !ok {
+		logger.Error("Unable to get the current file")
+		return
+	}
+	basePath := filepath.Join(filepath.Dir(file), "../../")
 	// specify the output directory (default: "./query")
 	// ### if you want to query without context constrain, set mode gen.WithoutContext ###
 	g := gen.NewGenerator(gen.Config{
-		OutPath: "query",
+		OutPath: filepath.Join(basePath, "query"),
 		Mode:    gen.WithoutContext | gen.WithDefaultQuery,
 		//if you want the nullable field generation property to be pointer type, set FieldNullable true
 		FieldNullable: true,
@@ -41,17 +52,17 @@ func main() {
 	flag.Parse()
 
 	cSettings.Init(confPath)
-	dbPath := path.Join(path.Dir(confPath), fmt.Sprintf("%s.db", settings.DatabaseSettings.Name))
+	dbPath := filepath.Join(filepath.Dir(confPath), fmt.Sprintf("%s.db", settings.DatabaseSettings.Name))
 
 	var err error
 	db, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{
-		Logger:                                   logger.Default.LogMode(logger.Info),
+		Logger:                                   gormlogger.Default.LogMode(gormlogger.Info),
 		PrepareStmt:                              true,
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 
 	if err != nil {
-		log.Fatalln(err)
+		logger.Fatalf("failed to open database: %v", err)
 	}
 
 	g.UseDB(db)

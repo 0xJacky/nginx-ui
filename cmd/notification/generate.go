@@ -1,3 +1,4 @@
+//go:generate go run .
 package main
 
 import (
@@ -7,7 +8,10 @@ import (
 	"go/token"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
+
+	"github.com/uozi-tech/cosy/logger"
 )
 
 // Structure for notification function calls
@@ -21,13 +25,20 @@ type NotificationCall struct {
 // Directories to exclude
 var excludeDirs = []string{
 	".devcontainer", ".github", ".idea", ".pnpm-store",
-	".vscode", "app", "query", "tmp",
+	".vscode", "app", "query", "tmp", "cmd",
 }
 
 // Main function
 func main() {
-	// Start scanning from the current directory
-	root := "."
+	logger.Init("release")
+	// Start scanning from the project root
+	_, file, _, ok := runtime.Caller(0)
+	if !ok {
+		logger.Error("Unable to get the current file")
+		return
+	}
+
+	root := filepath.Join(filepath.Dir(file), "../../")
 	calls := []NotificationCall{}
 
 	// Scan all Go files
@@ -38,7 +49,7 @@ func main() {
 
 		// Skip excluded directories
 		for _, dir := range excludeDirs {
-			if strings.HasPrefix(path, "./"+dir) || strings.HasPrefix(path, dir+"/") {
+			if strings.Contains(path, dir) {
 				if info.IsDir() {
 					return filepath.SkipDir
 				}
@@ -55,14 +66,14 @@ func main() {
 	})
 
 	if err != nil {
-		fmt.Printf("Error walking the path: %v\n", err)
+		logger.Errorf("Error walking the path: %v\n", err)
 		return
 	}
 
 	// Generate a single TS file
-	generateSingleTSFile(calls)
+	generateSingleTSFile(root, calls)
 
-	fmt.Printf("Found %d notification calls\n", len(calls))
+	logger.Infof("Found %d notification calls\n", len(calls))
 }
 
 // Find notification function calls in Go files
@@ -71,7 +82,7 @@ func findNotificationCalls(filePath string, calls *[]NotificationCall) {
 	fset := token.NewFileSet()
 	node, err := parser.ParseFile(fset, filePath, nil, parser.ParseComments)
 	if err != nil {
-		fmt.Printf("Error parsing %s: %v\n", filePath, err)
+		logger.Errorf("Error parsing %s: %v\n", filePath, err)
 		return
 	}
 
@@ -165,12 +176,12 @@ func getStringValue(expr ast.Expr) string {
 }
 
 // Generate a single TypeScript file
-func generateSingleTSFile(calls []NotificationCall) {
+func generateSingleTSFile(root string, calls []NotificationCall) {
 	// Create target directory
-	targetDir := "app/src/components/Notification"
+	targetDir := filepath.Join(root, "app/src/components/Notification")
 	err := os.MkdirAll(targetDir, 0755)
 	if err != nil {
-		fmt.Printf("Error creating directory %s: %v\n", targetDir, err)
+		logger.Errorf("Error creating directory %s: %v\n", targetDir, err)
 		return
 	}
 
@@ -237,9 +248,9 @@ func generateSingleTSFile(calls []NotificationCall) {
 	// Write file
 	err = os.WriteFile(tsFilePath, []byte(content.String()), 0644)
 	if err != nil {
-		fmt.Printf("Error writing TS file %s: %v\n", tsFilePath, err)
+		logger.Errorf("Error writing TS file %s: %v\n", tsFilePath, err)
 		return
 	}
 
-	fmt.Printf("Generated single TS file: %s with %d notifications\n", tsFilePath, len(calls))
+	logger.Infof("Generated single TS file: %s with %d notifications\n", tsFilePath, len(calls))
 }

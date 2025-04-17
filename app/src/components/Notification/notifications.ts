@@ -4,7 +4,7 @@
 
 const notifications: Record<string, { title: () => string, content: (args: any) => string }> = {
 
-  // cluster module notifications
+  // general module notifications
   'Reload Remote Nginx Error': {
     title: () => $gettext('Reload Remote Nginx Error'),
     content: (args: any) => $gettext('Reload Nginx on %{node} failed, response: %{resp}', args),
@@ -21,8 +21,6 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Restart Remote Nginx Success'),
     content: (args: any) => $gettext('Restart Nginx on %{node} successfully', args),
   },
-
-  // cert module notifications
   'Certificate Expired': {
     title: () => $gettext('Certificate Expired'),
     content: (args: any) => $gettext('Certificate %{name} has expired', args),
@@ -51,8 +49,6 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Sync Certificate Success'),
     content: (args: any) => $gettext('Sync Certificate %{cert_name} to %{env_name} successfully', args),
   },
-
-  // config module notifications
   'Sync Config Error': {
     title: () => $gettext('Sync Config Error'),
     content: (args: any) => $gettext('Sync config %{config_name} to %{env_name} failed', args),
@@ -69,8 +65,6 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Rename Remote Config Success'),
     content: (args: any) => $gettext('Rename %{orig_path} to %{new_path} on %{env_name} successfully', args),
   },
-
-  // site module notifications
   'Delete Remote Site Error': {
     title: () => $gettext('Delete Remote Site Error'),
     content: (args: any) => $gettext('Delete site %{name} from %{node} failed', args),
@@ -127,8 +121,6 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Save Remote Site Success'),
     content: (args: any) => $gettext('Save site %{name} to %{node} successfully', args),
   },
-
-  // stream module notifications
   'Delete Remote Stream Error': {
     title: () => $gettext('Delete Remote Stream Error'),
     content: (args: any) => $gettext('Delete stream %{name} from %{node} failed', args),
@@ -169,8 +161,6 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Save Remote Stream Success'),
     content: (args: any) => $gettext('Save stream %{name} to %{node} successfully', args),
   },
-
-  // user module notifications
   'All Recovery Codes Have Been Used': {
     title: () => $gettext('All Recovery Codes Have Been Used'),
     content: (args: any) => $gettext('Please generate new recovery codes in the preferences immediately to prevent lockout.', args),

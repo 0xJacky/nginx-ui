@@ -1,12 +1,16 @@
+//go:generate go run .
 package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"os"
+	"runtime"
 	"strings"
 
+	"path/filepath"
+
+	"github.com/uozi-tech/cosy/logger"
 	"golang.org/x/net/html"
 )
 
@@ -14,15 +18,26 @@ type Directive struct {
 	Links []string `json:"links"`
 }
 
+const (
+	targetPath = "internal/nginx/nginx_directives.json"
+	nginxURL   = "https://nginx.org/en/docs/dirindex.html"
+)
+
 func main() {
-	if len(os.Args) < 2 {
-		log.Println("Usage: go run . <output_file>")
+	logger.Init("release")
+
+	_, file, _, ok := runtime.Caller(0)
+	if !ok {
+		logger.Error("Unable to get the current file")
+		return
 	}
-	outputPath := os.Args[1]
+	basePath := filepath.Join(filepath.Dir(file), "../../")
+
+	outputPath := filepath.Join(basePath, targetPath)
 	// Fetch page content
-	resp, err := http.Get("https://nginx.org/en/docs/dirindex.html")
+	resp, err := http.Get(nginxURL)
 	if err != nil {
-		log.Println("[Error] fetching page:", err)
+		logger.Errorf("fetching page: %v", err)
 		return
 	}
 	defer resp.Body.Close()
@@ -30,7 +45,7 @@ func main() {
 	// Parse HTML
 	doc, err := html.Parse(resp.Body)
 	if err != nil {
-		log.Println("[Error] parsing HTML:", err)
+		logger.Errorf("parsing HTML: %v", err)
 		return
 	}
 
@@ -103,15 +118,15 @@ func main() {
 	// Write results to JSON file
 	jsonData, err := json.MarshalIndent(directives, "", "  ")
 	if err != nil {
-		log.Println("[Error] marshaling JSON:", err)
+		logger.Errorf("marshaling JSON: %v", err)
 		return
 	}
 
 	err = os.WriteFile(outputPath, jsonData, 0644)
 	if err != nil {
-		log.Println("[Error] writing file:", err)
+		logger.Errorf("writing file: %v", err)
 		return
 	}
 
-	log.Printf("[OK] Successfully parsed %d directives and saved to %s\n", len(directives), outputPath)
+	logger.Infof("Successfully parsed %d directives and saved to %s\n", len(directives), targetPath)
 }

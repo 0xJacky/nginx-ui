@@ -1,3 +1,4 @@
+//go:generate go run .
 package main
 
 import (
@@ -8,9 +9,12 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"sort"
 	"strings"
 	"text/template"
+
+	"github.com/uozi-tech/cosy/logger"
 )
 
 // Structure to hold extracted notifier information
@@ -51,18 +55,26 @@ export default {{.Name | replaceSpaces}}Config
 var externalNotifierRegex = regexp.MustCompile(`@external_notifier\(([a-zA-Z0-9 _]+)\)`)
 
 func main() {
-	if err := GenerateExternalNotifiers(); err != nil {
+	logger.Init("release")
+
+	_, file, _, ok := runtime.Caller(0)
+	if !ok {
+		logger.Error("Unable to get the current file")
+		return
+	}
+	basePath := filepath.Join(filepath.Dir(file), "../../")
+	if err := GenerateExternalNotifiers(basePath); err != nil {
 		fmt.Printf("error generating external notifier configs: %v\n", err)
 	}
 }
 
 // GenerateExternalNotifiers generates TypeScript config files for external notifiers
-func GenerateExternalNotifiers() error {
+func GenerateExternalNotifiers(root string) error {
 	fmt.Println("Generating external notifier configs...")
 
 	// Notification package path
-	notificationPkgPath := "internal/notification"
-	outputDir := "app/src/views/preference/components/ExternalNotify"
+	notificationPkgPath := filepath.Join(root, "internal/notification")
+	outputDir := filepath.Join(root, "app/src/views/preference/components/ExternalNotify")
 
 	// Create output directory if it doesn't exist
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
@@ -82,7 +94,7 @@ func GenerateExternalNotifiers() error {
 		notifier, found := extractNotifierInfo(file)
 		if found {
 			notifiers = append(notifiers, notifier)
-			fmt.Printf("Found notifier: %s in %s\n", notifier.Name, file)
+			logger.Infof("Found notifier: %s in %s\n", notifier.Name, file)
 		}
 	}
 
@@ -98,7 +110,7 @@ func GenerateExternalNotifiers() error {
 		return fmt.Errorf("error updating index.ts: %w", err)
 	}
 
-	fmt.Println("Generation completed successfully!")
+	logger.Info("Generation completed successfully!")
 	return nil
 }
 
@@ -110,7 +122,7 @@ func extractNotifierInfo(filePath string) (NotifierInfo, bool) {
 	// Parse the file
 	file, err := parser.ParseFile(fset, filePath, nil, parser.ParseComments)
 	if err != nil {
-		fmt.Printf("Error parsing file %s: %v\n", filePath, err)
+		logger.Errorf("Error parsing file %s: %v\n", filePath, err)
 		return NotifierInfo{}, false
 	}
 
@@ -232,7 +244,7 @@ func generateTSConfig(notifier NotifierInfo, outputDir string) error {
 		return fmt.Errorf("error executing template: %w", err)
 	}
 
-	fmt.Printf("Generated TypeScript config for %s at %s\n", notifier.Name, outputFile)
+	logger.Infof("Generated TypeScript config for %s at %s\n", notifier.Name, outputFile)
 	return nil
 }
 
@@ -272,6 +284,6 @@ func updateIndexFile(notifiers []NotifierInfo, outputDir string) error {
 		return fmt.Errorf("error writing index.ts: %w", err)
 	}
 
-	fmt.Printf("Updated index.ts at %s\n", indexPath)
+	logger.Infof("Updated index.ts at %s\n", indexPath)
 	return nil
 }

@@ -23,8 +23,7 @@ import (
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
-//go:generate go run cmd/version/generate.go
-
+//go:generate go generate ./cmd/...
 func Program(confPath string) func(state overseer.State) {
 	return func(state overseer.State) {
 		defer logger.Sync()
