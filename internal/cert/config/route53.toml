@@ -133,6 +133,7 @@ Replace `Z11111112222222333333` with your hosted zone ID and `example.com` with 
     AWS_EXTERNAL_ID = "Managed by STS AssumeRole API operation (`AWS_EXTERNAL_ID_FILE` is not supported)"
     AWS_WAIT_FOR_RECORD_SETS_CHANGED = "Wait for changes to be INSYNC (it can be unstable)"
   [Configuration.Additional]
+    AWS_PRIVATE_ZONE = "Set to true to use private zones only (default: use public zones only)"
     AWS_SHARED_CREDENTIALS_FILE = "Managed by the AWS client. Shared credentials file."
     AWS_MAX_RETRIES = "The number of maximum returns the service will use to make an individual API request"
     AWS_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 4)"

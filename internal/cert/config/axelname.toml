@@ -1,0 +1,24 @@
+Name = "Axelname"
+Description = ''''''
+URL = "https://axelname.ru"
+Code = "axelname"
+Since = "v4.23.0"
+
+Example = '''
+AXELNAME_NICKNAME="yyy" \
+AXELNAME_TOKEN="xxx" \
+lego --email you@example.com --dns axelname -d '*.example.com' -d example.com run
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    AXELNAME_NICKNAME = "Account nickname"
+    AXELNAME_TOKEN = "API token"
+  [Configuration.Additional]
+    AXELNAME_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 2)"
+    AXELNAME_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 60)"
+    AXELNAME_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 120)"
+    AXELNAME_HTTP_TIMEOUT = "API request timeout in seconds (Default: 30)"
+
+[Links]
+  API = "https://axelname.ru/static/content/files/axelname_api_rest_lite.pdf"

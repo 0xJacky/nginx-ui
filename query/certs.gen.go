@@ -170,11 +170,17 @@ func (c *cert) fillFieldMap() {
 
 func (c cert) clone(db *gorm.DB) cert {
 	c.certDo.ReplaceConnPool(db.Statement.ConnPool)
+	c.DnsCredential.db = db.Session(&gorm.Session{Initialized: true})
+	c.DnsCredential.db.Statement.ConnPool = db.Statement.ConnPool
+	c.ACMEUser.db = db.Session(&gorm.Session{Initialized: true})
+	c.ACMEUser.db.Statement.ConnPool = db.Statement.ConnPool
 	return c
 }
 
 func (c cert) replaceDB(db *gorm.DB) cert {
 	c.certDo.ReplaceDB(db)
+	c.DnsCredential.db = db.Session(&gorm.Session{})
+	c.ACMEUser.db = db.Session(&gorm.Session{})
 	return c
 }
 
@@ -209,6 +215,11 @@ func (a certBelongsToDnsCredential) Session(session *gorm.Session) *certBelongsT
 
 func (a certBelongsToDnsCredential) Model(m *model.Cert) *certBelongsToDnsCredentialTx {
 	return &certBelongsToDnsCredentialTx{a.db.Model(m).Association(a.Name())}
+}
+
+func (a certBelongsToDnsCredential) Unscoped() *certBelongsToDnsCredential {
+	a.db = a.db.Unscoped()
+	return &a
 }
 
 type certBelongsToDnsCredentialTx struct{ tx *gorm.Association }
@@ -249,6 +260,11 @@ func (a certBelongsToDnsCredentialTx) Count() int64 {
 	return a.tx.Count()
 }
 
+func (a certBelongsToDnsCredentialTx) Unscoped() *certBelongsToDnsCredentialTx {
+	a.tx = a.tx.Unscoped()
+	return &a
+}
+
 type certBelongsToACMEUser struct {
 	db *gorm.DB
 
@@ -280,6 +296,11 @@ func (a certBelongsToACMEUser) Session(session *gorm.Session) *certBelongsToACME
 
 func (a certBelongsToACMEUser) Model(m *model.Cert) *certBelongsToACMEUserTx {
 	return &certBelongsToACMEUserTx{a.db.Model(m).Association(a.Name())}
+}
+
+func (a certBelongsToACMEUser) Unscoped() *certBelongsToACMEUser {
+	a.db = a.db.Unscoped()
+	return &a
 }
 
 type certBelongsToACMEUserTx struct{ tx *gorm.Association }
@@ -318,6 +339,11 @@ func (a certBelongsToACMEUserTx) Clear() error {
 
 func (a certBelongsToACMEUserTx) Count() int64 {
 	return a.tx.Count()
+}
+
+func (a certBelongsToACMEUserTx) Unscoped() *certBelongsToACMEUserTx {
+	a.tx = a.tx.Unscoped()
+	return &a
 }
 
 type certDo struct{ gen.DO }

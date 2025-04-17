@@ -114,11 +114,14 @@ func (s *site) fillFieldMap() {
 
 func (s site) clone(db *gorm.DB) site {
 	s.siteDo.ReplaceConnPool(db.Statement.ConnPool)
+	s.EnvGroup.db = db.Session(&gorm.Session{Initialized: true})
+	s.EnvGroup.db.Statement.ConnPool = db.Statement.ConnPool
 	return s
 }
 
 func (s site) replaceDB(db *gorm.DB) site {
 	s.siteDo.ReplaceDB(db)
+	s.EnvGroup.db = db.Session(&gorm.Session{})
 	return s
 }
 
@@ -153,6 +156,11 @@ func (a siteBelongsToEnvGroup) Session(session *gorm.Session) *siteBelongsToEnvG
 
 func (a siteBelongsToEnvGroup) Model(m *model.Site) *siteBelongsToEnvGroupTx {
 	return &siteBelongsToEnvGroupTx{a.db.Model(m).Association(a.Name())}
+}
+
+func (a siteBelongsToEnvGroup) Unscoped() *siteBelongsToEnvGroup {
+	a.db = a.db.Unscoped()
+	return &a
 }
 
 type siteBelongsToEnvGroupTx struct{ tx *gorm.Association }
@@ -191,6 +199,11 @@ func (a siteBelongsToEnvGroupTx) Clear() error {
 
 func (a siteBelongsToEnvGroupTx) Count() int64 {
 	return a.tx.Count()
+}
+
+func (a siteBelongsToEnvGroupTx) Unscoped() *siteBelongsToEnvGroupTx {
+	a.tx = a.tx.Unscoped()
+	return &a
 }
 
 type siteDo struct{ gen.DO }

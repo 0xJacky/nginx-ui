@@ -12,3 +12,6 @@ go run cmd/notification/generate.go
 
 # generate external notifier configs
 go run cmd/external_notifier/generate.go
+
+# generate lego config
+go run cmd/lego_config/main.go

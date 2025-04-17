@@ -877,7 +877,7 @@ msgstr "自定义显示在环境指示器中的本地服务器名称。"
 msgid "Dashboard"
 msgstr "仪表盘"
 
-#: src/views/other/Install.vue:169
+#: src/views/install/Install.vue:169
 msgid "Database (Optional, default: database)"
 msgstr "数据库 (可选，默认: database)"
 
@@ -1214,7 +1214,7 @@ msgstr "编辑 Stream"
 msgid "Email"
 msgstr "邮箱"
 
-#: src/views/other/Install.vue:138
+#: src/views/install/Install.vue:138
 msgid "Email (*)"
 msgstr "邮箱 (*)"
 
@@ -1906,11 +1906,11 @@ msgstr "输入恢复代码："
 msgid "Insecure Skip Verify"
 msgstr "跳过证书认证"
 
-#: src/routes/modules/auth.ts:8 src/views/other/Install.vue:185
+#: src/routes/modules/auth.ts:8 src/views/install/Install.vue:185
 msgid "Install"
 msgstr "安装"
 
-#: src/views/other/Install.vue:93
+#: src/views/install/Install.vue:93
 msgid "Install successfully"
 msgstr "安装成功"
 
@@ -1918,7 +1918,7 @@ msgstr "安装成功"
 msgid "Installation is not allowed after 10 minutes of system startup"
 msgstr "系统启动 10 分钟后不允许安装"
 
-#: src/views/other/Install.vue:127
+#: src/views/install/Install.vue:127
 msgid ""
 "Installation is not allowed after 10 minutes of system startup, please "
 "restart the Nginx UI."
@@ -2389,7 +2389,7 @@ msgstr "下载流量"
 msgid "Network Total Send"
 msgstr "上传流量"
 
-#: src/views/other/Install.vue:133
+#: src/views/install/Install.vue:133
 msgid "New Installation"
 msgstr "新安装"
 
@@ -2831,7 +2831,7 @@ msgstr ""
 msgid "Password"
 msgstr "密码"
 
-#: src/views/other/Install.vue:158
+#: src/views/install/Install.vue:158
 msgid "Password (*)"
 msgstr "密码 (*)"
 
@@ -2839,7 +2839,7 @@ msgstr "密码 (*)"
 msgid "Password incorrect"
 msgstr "用户名和密码错误"
 
-#: src/views/other/Install.vue:74
+#: src/views/install/Install.vue:74
 msgid "Password length cannot exceed 20 characters"
 msgstr "密码长度不能超过 20 个字符"
 
@@ -2957,19 +2957,20 @@ msgid ""
 "configuration."
 msgstr "请输入名称，这将作为新配置的文件名。"
 
-#: src/views/other/Install.vue:58
+#: src/views/install/Install.vue:58
 msgid "Please input your E-mail!"
 msgstr "请输入您的邮箱！"
 
-#: src/views/other/Install.vue:70 src/views/other/Login.vue:47
+#: src/views/install/Install.vue:70 src/views/other/Login.vue:47
 msgid "Please input your password!"
 msgstr "请输入您的密码！"
 
-#: src/views/other/Install.vue:64 src/views/other/Login.vue:41
+#: src/views/install/Install.vue:64 src/views/other/Login.vue:41
 msgid "Please input your username!"
 msgstr "请输入您的用户名！"
 
-#: src/views/other/Install.vue:110 src/views/system/Backup/SystemRestore.vue:10
+#: src/views/install/Install.vue:110
+#: src/views/system/Backup/SystemRestore.vue:10
 msgid "Please log in."
 msgstr "请登录。"
 
@@ -3370,7 +3371,7 @@ msgstr "重启中"
 msgid "Restore completed successfully"
 msgstr "恢复成功"
 
-#: src/views/other/Install.vue:190
+#: src/views/install/Install.vue:190
 msgid "Restore from Backup"
 msgstr "从备份还原"
 
@@ -3590,19 +3591,19 @@ msgstr "使用 HTTP01 challenge provider"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 https://"
-"nginxui.com/guide/config-nginx.html"
+"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 https://nginxui."
+"com/guide/config-nginx.html"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.ErrorLogPath为空，更多信息请参阅 https://"
-"nginxui.com/guide/config-nginx.html"
+"Settings.NginxLogSettings.ErrorLogPath为空，更多信息请参阅 https://nginxui."
+"com/guide/config-nginx.html"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:147
 msgid "Shared Memory Zone"
@@ -3882,7 +3883,8 @@ msgstr "系统初始用户"
 msgid "System Restore"
 msgstr "系统还原"
 
-#: src/views/other/Install.vue:106 src/views/system/Backup/SystemRestore.vue:6
+#: src/views/install/Install.vue:106
+#: src/views/system/Backup/SystemRestore.vue:6
 msgid "System restored successfully."
 msgstr "系统恢复成功。"
 
@@ -3912,7 +3914,7 @@ msgstr ""
 "域名证书将在 30 分钟内接受检查，如果距离上次签发证书的时间超过 1 周或您在设置"
 "中设定的时间，证书将被更新。"
 
-#: src/views/other/Install.vue:80
+#: src/views/install/Install.vue:80
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "文件名不能包含以下字符: %{c}"
 
@@ -4303,7 +4305,7 @@ msgstr "用户未启用 OTP 作为 2FA"
 msgid "Username"
 msgstr "用户名"
 
-#: src/views/other/Install.vue:148
+#: src/views/install/Install.vue:148
 msgid "Username (*)"
 msgstr "用户名 (*)"
 
@@ -4614,8 +4616,8 @@ msgstr "你的 Passkeys"
 #~ msgstr "请将远程 Nginx UI 升级到最新版本"
 
 #~ msgid ""
-#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %"
-#~ "{resp}"
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
+#~ "%{resp}"
 #~ msgstr ""
 #~ "将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，响应：%{resp}"
 

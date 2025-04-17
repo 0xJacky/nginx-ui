@@ -114,11 +114,14 @@ func (s *stream) fillFieldMap() {
 
 func (s stream) clone(db *gorm.DB) stream {
 	s.streamDo.ReplaceConnPool(db.Statement.ConnPool)
+	s.EnvGroup.db = db.Session(&gorm.Session{Initialized: true})
+	s.EnvGroup.db.Statement.ConnPool = db.Statement.ConnPool
 	return s
 }
 
 func (s stream) replaceDB(db *gorm.DB) stream {
 	s.streamDo.ReplaceDB(db)
+	s.EnvGroup.db = db.Session(&gorm.Session{})
 	return s
 }
 
@@ -153,6 +156,11 @@ func (a streamBelongsToEnvGroup) Session(session *gorm.Session) *streamBelongsTo
 
 func (a streamBelongsToEnvGroup) Model(m *model.Stream) *streamBelongsToEnvGroupTx {
 	return &streamBelongsToEnvGroupTx{a.db.Model(m).Association(a.Name())}
+}
+
+func (a streamBelongsToEnvGroup) Unscoped() *streamBelongsToEnvGroup {
+	a.db = a.db.Unscoped()
+	return &a
 }
 
 type streamBelongsToEnvGroupTx struct{ tx *gorm.Association }
@@ -191,6 +199,11 @@ func (a streamBelongsToEnvGroupTx) Clear() error {
 
 func (a streamBelongsToEnvGroupTx) Count() int64 {
 	return a.tx.Count()
+}
+
+func (a streamBelongsToEnvGroupTx) Unscoped() *streamBelongsToEnvGroupTx {
+	a.tx = a.tx.Unscoped()
+	return &a
 }
 
 type streamDo struct{ gen.DO }
