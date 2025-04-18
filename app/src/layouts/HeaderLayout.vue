@@ -5,7 +5,7 @@ import NginxControl from '@/components/NginxControl/NginxControl.vue'
 import Notification from '@/components/Notification/Notification.vue'
 import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
 import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
-import { HomeOutlined, LogoutOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
+import { DesktopOutlined, HomeOutlined, LogoutOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 
@@ -24,6 +24,10 @@ function logout() {
 }
 
 const headerRef = useTemplateRef('headerRef') as Readonly<ShallowRef<HTMLDivElement>>
+
+const isWorkspace = computed(() => {
+  return !!window.inWorkspace
+})
 </script>
 
 <template>
@@ -31,12 +35,19 @@ const headerRef = useTemplateRef('headerRef') as Readonly<ShallowRef<HTMLDivElem
     <div class="tool">
       <MenuUnfoldOutlined @click="emit('clickUnFold')" />
     </div>
+    <div v-if="!isWorkspace" class="workspace-entry">
+      <RouterLink to="/workspace">
+        <ATooltip :title="$gettext('Workspace')">
+          <DesktopOutlined />
+        </ATooltip>
+      </RouterLink>
+    </div>
 
     <ASpace
       class="user-wrapper"
       :size="24"
     >
-      <SetLanguage class="set_lang" />
+      <SetLanguage v-if="!isWorkspace" class="set_lang" />
 
       <SwitchAppearance />
 
@@ -48,7 +59,7 @@ const headerRef = useTemplateRef('headerRef') as Readonly<ShallowRef<HTMLDivElem
         <HomeOutlined />
       </a>
 
-      <a @click="logout">
+      <a v-if="!isWorkspace" @click="logout">
         <LogoutOutlined />
       </a>
     </ASpace>
@@ -82,6 +93,14 @@ const headerRef = useTemplateRef('headerRef') as Readonly<ShallowRef<HTMLDivElem
   position: absolute;
   left: 20px;
   @media (min-width: 600px) {
+    display: none;
+  }
+}
+
+.workspace-entry {
+  position: absolute;
+  left: 20px;
+  @media (max-width: 600px) {
     display: none;
   }
 }

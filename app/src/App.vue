@@ -9,6 +9,7 @@ import zh_TW from 'ant-design-vue/es/locale/zh_TW'
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import { computed, provide } from 'vue'
+import router from './routes'
 
 const route = useRoute()
 
@@ -52,6 +53,14 @@ const settings = useSettingsStore()
 const is_theme_dark = computed(() => settings.theme === 'dark')
 
 loadTranslations(route)
+
+watch(route, () => {
+  settings.route_path = route.path
+})
+
+onMounted(() => {
+  router.push(settings.route_path)
+})
 </script>
 
 <template>
