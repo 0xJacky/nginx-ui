@@ -2538,6 +2538,12 @@ msgstr "Nginx PID 路徑"
 msgid "Nginx Reload Command"
 msgstr "Nginx 重新載入指令"
 
+#: src/constants/errors/config.ts:5 src/constants/errors/site.ts:7
+#: src/constants/errors/stream.ts:6
+#, fuzzy
+msgid "Nginx reload failed: {0}"
+msgstr "讀取檔案失敗：{0}"
+
 #: src/views/environments/list/Environment.vue:41
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr "Nginx 重新載入操作已分發至遠端節點"
@@ -2561,6 +2567,12 @@ msgstr "Nginx 重啟成功"
 #: src/views/preference/NginxSettings.vue:36
 msgid "Nginx Test Config Command"
 msgstr "Nginx 測試設定指令"
+
+#: src/constants/errors/config.ts:4 src/constants/errors/site.ts:6
+#: src/constants/errors/stream.ts:5
+#, fuzzy
+msgid "Nginx test failed: {0}"
+msgstr "無法建立檔案：{0}"
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:180
 msgid "Nginx theoretical maximum performance"
@@ -4471,7 +4483,7 @@ msgstr "worker 行程"
 msgid "Workers"
 msgstr "worker"
 
-#: src/layouts/HeaderLayout.vue:40 src/routes/index.ts:56
+#: src/layouts/HeaderLayout.vue:49 src/routes/index.ts:56
 #: src/views/workspace/WorkSpace.vue:52
 #, fuzzy
 msgid "Workspace"

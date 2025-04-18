@@ -2674,6 +2674,12 @@ msgstr "Путь для Nginx Error Log"
 msgid "Nginx Reload Command"
 msgstr "Команда перезагрузки Nginx"
 
+#: src/constants/errors/config.ts:5 src/constants/errors/site.ts:7
+#: src/constants/errors/stream.ts:6
+#, fuzzy
+msgid "Nginx reload failed: {0}"
+msgstr "Не удалось включить %{msg}"
+
 #: src/views/environments/list/Environment.vue:41
 msgid "Nginx reload operations have been dispatched to remote nodes"
 msgstr ""
@@ -2699,6 +2705,12 @@ msgstr "Nginx успешно перезапущен"
 #, fuzzy
 msgid "Nginx Test Config Command"
 msgstr "Терминальная команда запуска"
+
+#: src/constants/errors/config.ts:4 src/constants/errors/site.ts:6
+#: src/constants/errors/stream.ts:5
+#, fuzzy
+msgid "Nginx test failed: {0}"
+msgstr "Не удалось включить %{msg}"
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:180
 msgid "Nginx theoretical maximum performance"
@@ -4720,7 +4732,7 @@ msgstr ""
 msgid "Workers"
 msgstr ""
 
-#: src/layouts/HeaderLayout.vue:40 src/routes/index.ts:56
+#: src/layouts/HeaderLayout.vue:49 src/routes/index.ts:56
 #: src/views/workspace/WorkSpace.vue:52
 msgid "Workspace"
 msgstr ""

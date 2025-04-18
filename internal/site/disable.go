@@ -2,15 +2,17 @@ package site
 
 import (
 	"fmt"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/internal/notification"
-	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/go-resty/resty/v2"
-	"github.com/uozi-tech/cosy/logger"
 	"net/http"
 	"os"
 	"runtime"
 	"sync"
+
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/notification"
+	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/go-resty/resty/v2"
+	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 // Disable disables a site by removing the symlink in sites-enabled
@@ -35,7 +37,7 @@ func Disable(name string) (err error) {
 
 	output := nginx.Reload()
 	if nginx.GetLogLevel(output) > nginx.Warn {
-		return fmt.Errorf("%s", output)
+		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
 	}
 
 	go syncDisable(name)

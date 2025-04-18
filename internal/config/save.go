@@ -1,13 +1,13 @@
 package config
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/uozi-tech/cosy"
 	"gorm.io/gen/field"
 )
 
@@ -47,7 +47,7 @@ func Save(absPath string, content string, cfg *model.Config) (err error) {
 
 	output := nginx.Reload()
 	if nginx.GetLogLevel(output) >= nginx.Warn {
-		return fmt.Errorf("%s", output)
+		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
 	}
 
 	err = SyncToRemoteServer(cfg)

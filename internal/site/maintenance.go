@@ -16,6 +16,7 @@ import (
 	"github.com/go-resty/resty/v2"
 	"github.com/tufanbarisyildirim/gonginx/config"
 	"github.com/tufanbarisyildirim/gonginx/parser"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
@@ -82,13 +83,13 @@ func EnableMaintenance(name string) (err error) {
 		if helper.FileExists(originalEnabledPath + "_backup") {
 			_ = os.Rename(originalEnabledPath+"_backup", originalEnabledPath)
 		}
-		return fmt.Errorf("%s", output)
+		return cosy.WrapErrorWithParams(ErrNginxTestFailed, output)
 	}
 
 	// Reload nginx
 	output = nginx.Reload()
 	if nginx.GetLogLevel(output) > nginx.Warn {
-		return fmt.Errorf("%s", output)
+		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
 	}
 
 	// Synchronize with other nodes

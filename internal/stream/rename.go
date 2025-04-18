@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/go-resty/resty/v2"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	"net/http"
 	"os"
@@ -49,13 +50,13 @@ func Rename(oldName string, newName string) (err error) {
 	// test nginx configuration
 	output := nginx.TestConf()
 	if nginx.GetLogLevel(output) > nginx.Warn {
-		return fmt.Errorf("%s", output)
+		return cosy.WrapErrorWithParams(ErrNginxTestFailed, output)
 	}
 
 	// reload nginx
 	output = nginx.Reload()
 	if nginx.GetLogLevel(output) > nginx.Warn {
-		return fmt.Errorf("%s", output)
+		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
 	}
 
 	go syncRename(oldName, newName)

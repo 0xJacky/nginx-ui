@@ -76,9 +76,7 @@ func AddConfig(c *gin.Context) {
 
 	output := nginx.Reload()
 	if nginx.GetLogLevel(output) >= nginx.Warn {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": output,
-		})
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(config.ErrNginxReloadFailed, output))
 		return
 	}
 
