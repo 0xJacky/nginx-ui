@@ -1,4 +1,3 @@
-import { Agent } from 'node:http'
 import { fileURLToPath, URL } from 'node:url'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -83,21 +82,6 @@ export default defineConfig(({ mode }) => {
           secure: false,
           ws: true,
           timeout: 60000,
-          agent: new Agent({
-            keepAlive: false,
-          }),
-          onProxyReq(proxyReq, req) {
-            proxyReq.setHeader('Connection', 'keep-alive')
-            if (req.headers.accept === 'text/event-stream') {
-              proxyReq.setHeader('Cache-Control', 'no-cache')
-              proxyReq.setHeader('Content-Type', 'text/event-stream')
-            }
-          },
-          onProxyReqWs(proxyReq, req, socket) {
-            socket.on('close', () => {
-              proxyReq.destroy()
-            })
-          },
         },
       },
     },

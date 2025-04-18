@@ -10,6 +10,7 @@ export const useSettingsStore = defineStore('settings', {
       name: 'Local',
     },
     server_name: '',
+    route_path: '',
   }),
   getters: {
     is_remote(): boolean {
@@ -32,5 +33,15 @@ export const useSettingsStore = defineStore('settings', {
       this.environment.name = 'Local'
     },
   },
-  persist: true,
+  persist: [
+    {
+      key: `LOCAL_${window.name || 'main'}`,
+      storage: localStorage,
+      pick: ['environment', 'server_name', 'route_path'],
+    },
+    {
+      storage: localStorage,
+      pick: ['language', 'theme', 'preference_theme'],
+    },
+  ],
 })

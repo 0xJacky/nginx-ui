@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-04-16 16:16+0800\n"
+"PO-Revision-Date: 2025-04-18 14:05+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
 "projects/nginx-ui/frontend/zh_Hans/>\n"
@@ -123,7 +123,7 @@ msgstr "然后，刷新此页面并再次点击添加 Passkey。"
 msgid "All"
 msgstr "全部"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:165
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "所有恢复码都已被使用"
@@ -478,17 +478,17 @@ msgstr "证书"
 msgid "Cert path is not under the nginx conf dir"
 msgstr "证书路径不在 Nginx 配置目录下"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:26
 msgid "Certificate %{name} has expired"
 msgstr "证书 %{name} 已过期"
 
-#: src/components/Notification/notifications.ts:138
-#: src/components/Notification/notifications.ts:142
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:30
+#: src/components/Notification/notifications.ts:34
+#: src/components/Notification/notifications.ts:38
 msgid "Certificate %{name} will expire in %{days} days"
 msgstr "证书 %{name} 将在 %{days} 天后失效"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} will expire in 1 day"
 msgstr "证书 %{name} 将在 1 天后过期"
 
@@ -496,17 +496,17 @@ msgstr "证书 %{name} 将在 1 天后过期"
 msgid "Certificate decode error"
 msgstr "证书解码错误"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:29
 msgid "Certificate Expiration Notice"
 msgstr "证书到期通知"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:25
 msgid "Certificate Expired"
 msgstr "证书过期"
 
-#: src/components/Notification/notifications.ts:141
-#: src/components/Notification/notifications.ts:145
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:33
+#: src/components/Notification/notifications.ts:37
+#: src/components/Notification/notifications.ts:41
 msgid "Certificate Expiring Soon"
 msgstr "证书即将到期"
 
@@ -657,6 +657,10 @@ msgstr "客户端请求头缓冲区大小"
 #: src/components/ConfigHistory/ConfigHistory.vue:169
 msgid "Close"
 msgstr "关闭"
+
+#: src/constants/errors/llm.ts:2
+msgid "Code completion is not enabled"
+msgstr "未启用代码自动完成功能"
 
 #: src/views/preference/OpenAISettings.vue:86
 msgid "Code Completion Model"
@@ -912,27 +916,27 @@ msgstr "删除证书"
 msgid "Delete Permanently"
 msgstr "彻底删除"
 
-#: src/components/Notification/notifications.ts:9 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "删除远程站点错误"
 
-#: src/components/Notification/notifications.ts:13 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "删除远程站点成功"
 
-#: src/components/Notification/notifications.ts:67
+#: src/components/Notification/notifications.ts:125
 msgid "Delete Remote Stream Error"
 msgstr "删除远程 Stream 错误"
 
-#: src/components/Notification/notifications.ts:71
+#: src/components/Notification/notifications.ts:129
 msgid "Delete Remote Stream Success"
 msgstr "删除远程 Stream 成功"
 
-#: src/components/Notification/notifications.ts:10
+#: src/components/Notification/notifications.ts:70
 msgid "Delete site %{name} from %{node} failed"
 msgstr "部署 %{name} 到 %{node} 失败"
 
-#: src/components/Notification/notifications.ts:14
+#: src/components/Notification/notifications.ts:74
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "成功从 %{node} 中删除站点 %{name}"
 
@@ -940,11 +944,11 @@ msgstr "成功从 %{node} 中删除站点 %{name}"
 msgid "Delete site: %{site_name}"
 msgstr "删除站点: %{site_name}"
 
-#: src/components/Notification/notifications.ts:68
+#: src/components/Notification/notifications.ts:126
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "部署 %{name} 到 %{node} 失败"
 
-#: src/components/Notification/notifications.ts:72
+#: src/components/Notification/notifications.ts:130
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "成功从 %{node} 中删除站点 %{name}"
 
@@ -972,6 +976,10 @@ msgstr "描述"
 #: src/constants/errors/site.ts:3 src/constants/errors/stream.ts:3
 msgid "Destination file already exists"
 msgstr "目标文件已存在"
+
+#: src/constants/errors/config.ts:3
+msgid "Destination file: {0} already exists"
+msgstr "目标文件：{0} 已经存在"
 
 #: src/views/notification/notificationColumns.tsx:53
 msgid "Details"
@@ -1025,51 +1033,51 @@ msgstr "禁用"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "关闭 %{name} 自动续签失败"
 
-#: src/components/Notification/notifications.ts:17 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:77 src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "禁用远程站点错误"
 
-#: src/components/Notification/notifications.ts:41
+#: src/components/Notification/notifications.ts:101
 msgid "Disable Remote Site Maintenance Error"
 msgstr "禁用远程站点维护错误"
 
-#: src/components/Notification/notifications.ts:45
+#: src/components/Notification/notifications.ts:105
 msgid "Disable Remote Site Maintenance Success"
 msgstr "禁用远程站点维护成功"
 
-#: src/components/Notification/notifications.ts:21 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:81 src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "禁用远程站点成功"
 
-#: src/components/Notification/notifications.ts:75
+#: src/components/Notification/notifications.ts:133
 msgid "Disable Remote Stream Error"
 msgstr "禁用远程 Stream 错误"
 
-#: src/components/Notification/notifications.ts:79
+#: src/components/Notification/notifications.ts:137
 msgid "Disable Remote Stream Success"
 msgstr "禁用远程 Stream成功"
 
-#: src/components/Notification/notifications.ts:18
+#: src/components/Notification/notifications.ts:78
 msgid "Disable site %{name} from %{node} failed"
 msgstr "在 %{node} 上禁用 %{name} 成功"
 
-#: src/components/Notification/notifications.ts:22
+#: src/components/Notification/notifications.ts:82
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "在 %{node} 上禁用 %{name} 成功"
 
-#: src/components/Notification/notifications.ts:42
+#: src/components/Notification/notifications.ts:102
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "停用站点 %{name} 维护 %{node} 失败"
 
-#: src/components/Notification/notifications.ts:46
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "成功停用站点 %{name} 上 %{node} 的维护功能"
 
-#: src/components/Notification/notifications.ts:76
+#: src/components/Notification/notifications.ts:134
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "在 %{node} 中启用 %{name} 失败"
 
-#: src/components/Notification/notifications.ts:80
+#: src/components/Notification/notifications.ts:138
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "在 %{node} 上禁用 %{name} 成功"
 
@@ -1254,51 +1262,51 @@ msgstr "启用 HTTPS"
 msgid "Enable Proxy Cache"
 msgstr "启用代理缓存"
 
-#: src/components/Notification/notifications.ts:25 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:85 src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "启用远程站点错误"
 
-#: src/components/Notification/notifications.ts:33
+#: src/components/Notification/notifications.ts:93
 msgid "Enable Remote Site Maintenance Error"
 msgstr "在 %{node} 上启用 %{site} 失败"
 
-#: src/components/Notification/notifications.ts:37
+#: src/components/Notification/notifications.ts:97
 msgid "Enable Remote Site Maintenance Success"
 msgstr "成功启用远程站点维护"
 
-#: src/components/Notification/notifications.ts:29 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:89 src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "启用远程站点成功"
 
-#: src/components/Notification/notifications.ts:83
+#: src/components/Notification/notifications.ts:141
 msgid "Enable Remote Stream Error"
 msgstr "启用远程 Steam 错误"
 
-#: src/components/Notification/notifications.ts:87
+#: src/components/Notification/notifications.ts:145
 msgid "Enable Remote Stream Success"
 msgstr "启用远程 Stream 成功"
 
-#: src/components/Notification/notifications.ts:34
+#: src/components/Notification/notifications.ts:94
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "在 %{node} 中为 %{name} 启用维护模式失败"
 
-#: src/components/Notification/notifications.ts:38
+#: src/components/Notification/notifications.ts:98
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "在 %{node} 上成功启用站点 %{name} 维护模式"
 
-#: src/components/Notification/notifications.ts:26
+#: src/components/Notification/notifications.ts:86
 msgid "Enable site %{name} on %{node} failed"
 msgstr "在 %{node} 中启用 %{name} 失败"
 
-#: src/components/Notification/notifications.ts:30
+#: src/components/Notification/notifications.ts:90
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "在 %{node} 上启用 %{name} 成功"
 
-#: src/components/Notification/notifications.ts:84
+#: src/components/Notification/notifications.ts:142
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "在 %{node} 中启用 %{name} 失败"
 
-#: src/components/Notification/notifications.ts:88
+#: src/components/Notification/notifications.ts:146
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "在 %{node} 上启用 %{name} 成功"
 
@@ -2929,7 +2937,7 @@ msgstr ""
 "请首先在 “证书”> “DNS 凭证” 中添加凭证，然后在下方选择一个凭证，请求 DNS 提供"
 "商的 API。"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:166
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -3167,19 +3175,19 @@ msgstr "重载"
 msgid "Reload Nginx"
 msgstr "重载 Nginx"
 
-#: src/components/Notification/notifications.ts:116
+#: src/components/Notification/notifications.ts:10
 msgid "Reload Nginx on %{node} failed, response: %{resp}"
 msgstr "在 %{node} 上重载 Nginx 失败，响应：%{resp}"
 
-#: src/components/Notification/notifications.ts:120
+#: src/components/Notification/notifications.ts:14
 msgid "Reload Nginx on %{node} successfully"
 msgstr "在 %{node} 上重载 Nginx 成功"
 
-#: src/components/Notification/notifications.ts:115
+#: src/components/Notification/notifications.ts:9
 msgid "Reload Remote Nginx Error"
 msgstr "重载远程 Nginx 错误"
 
-#: src/components/Notification/notifications.ts:119
+#: src/components/Notification/notifications.ts:13
 msgid "Reload Remote Nginx Success"
 msgstr "重载远程 Nginx 成功"
 
@@ -3217,53 +3225,53 @@ msgstr "删除成功"
 msgid "Rename"
 msgstr "重命名"
 
-#: src/components/Notification/notifications.ts:172
+#: src/components/Notification/notifications.ts:62
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "成功将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path}"
 
-#: src/components/Notification/notifications.ts:176
+#: src/components/Notification/notifications.ts:66
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "成功将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path}"
 
-#: src/components/Notification/notifications.ts:171
-#: src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr "远程配置重命名错误"
 
-#: src/components/Notification/notifications.ts:175
-#: src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr "重命名远程配置成功"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:56
+#: src/components/Notification/notifications.ts:109
+#: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "重命名远程站点错误"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:113
+#: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "重命名远程站点成功"
 
-#: src/components/Notification/notifications.ts:91
+#: src/components/Notification/notifications.ts:149
 msgid "Rename Remote Stream Error"
 msgstr "重命名远程 Stream 错误"
 
-#: src/components/Notification/notifications.ts:95
+#: src/components/Notification/notifications.ts:153
 msgid "Rename Remote Stream Success"
 msgstr "重命名远程 Stream成功"
 
-#: src/components/Notification/notifications.ts:50
+#: src/components/Notification/notifications.ts:110
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
 
-#: src/components/Notification/notifications.ts:54
+#: src/components/Notification/notifications.ts:114
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
 
-#: src/components/Notification/notifications.ts:92
+#: src/components/Notification/notifications.ts:150
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
 
-#: src/components/Notification/notifications.ts:96
+#: src/components/Notification/notifications.ts:154
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "在 %{node} 上将站点 %{name} 重命名为 %{new_name} 成功"
 
@@ -3343,19 +3351,19 @@ msgstr "重启"
 msgid "Restart Nginx"
 msgstr "重启 Nginx"
 
-#: src/components/Notification/notifications.ts:124
+#: src/components/Notification/notifications.ts:18
 msgid "Restart Nginx on %{node} failed, response: %{resp}"
 msgstr "在 %{node} 上重启 Nginx 失败，响应：%{resp}"
 
-#: src/components/Notification/notifications.ts:128
+#: src/components/Notification/notifications.ts:22
 msgid "Restart Nginx on %{node} successfully"
 msgstr "在 %{node} 上重启 Nginx 成功"
 
-#: src/components/Notification/notifications.ts:123
+#: src/components/Notification/notifications.ts:17
 msgid "Restart Remote Nginx Error"
 msgstr "重启远程 Nginx 错误"
 
-#: src/components/Notification/notifications.ts:127
+#: src/components/Notification/notifications.ts:21
 msgid "Restart Remote Nginx Success"
 msgstr "重启远程 Nginx 成功"
 
@@ -3454,35 +3462,37 @@ msgstr "保存指令"
 msgid "Save error %{msg}"
 msgstr "保存错误 %{msg}"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:117
+#: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "保存远程站点错误"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:121
+#: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "保存远程站点成功"
 
-#: src/components/Notification/notifications.ts:99
+#: src/components/Notification/notifications.ts:157
 msgid "Save Remote Stream Error"
 msgstr "保存远程 Stream 错误"
 
-#: src/components/Notification/notifications.ts:103
+#: src/components/Notification/notifications.ts:161
 msgid "Save Remote Stream Success"
 msgstr "保存远程 Stream 成功"
 
-#: src/components/Notification/notifications.ts:58
+#: src/components/Notification/notifications.ts:118
 msgid "Save site %{name} to %{node} failed"
 msgstr "成功将站点 %{name} 保存到 %{node} 中"
 
-#: src/components/Notification/notifications.ts:62
+#: src/components/Notification/notifications.ts:122
 msgid "Save site %{name} to %{node} successfully"
 msgstr "成功将站点 %{name} 保存到 %{node} 中"
 
-#: src/components/Notification/notifications.ts:100
+#: src/components/Notification/notifications.ts:158
 msgid "Save stream %{name} to %{node} failed"
 msgstr "部署 %{name} 到 %{node} 失败"
 
-#: src/components/Notification/notifications.ts:104
+#: src/components/Notification/notifications.ts:162
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "成功将站点 %{name} 保存到 %{node} 中"
 
@@ -3591,19 +3601,19 @@ msgstr "使用 HTTP01 challenge provider"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
+"nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 https://nginxui."
-"com/guide/config-nginx.html"
+"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 https://"
+"nginxui.com/guide/config-nginx.html"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
+"nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.ErrorLogPath为空，更多信息请参阅 https://nginxui."
-"com/guide/config-nginx.html"
+"Settings.NginxLogSettings.ErrorLogPath为空，更多信息请参阅 https://"
+"nginxui.com/guide/config-nginx.html"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:147
 msgid "Shared Memory Zone"
@@ -3810,39 +3820,35 @@ msgstr "同步"
 msgid "Sync Certificate"
 msgstr "同步证书"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:46
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "证书 %{cert_name} 已成功同步到 %{env_name}"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:50
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "证书 %{cert_name} 已成功同步到 %{env_name}"
 
-#: src/components/Notification/notifications.ts:153
-#: src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:45 src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr "同步证书错误"
 
-#: src/components/Notification/notifications.ts:157
-#: src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr "同步证书成功"
 
-#: src/components/Notification/notifications.ts:164
+#: src/components/Notification/notifications.ts:54
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "配置 %{config_name} 成功同步到 %{env_name}"
 
-#: src/components/Notification/notifications.ts:168
+#: src/components/Notification/notifications.ts:58
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "配置 %{config_name} 成功同步到 %{env_name}"
 
-#: src/components/Notification/notifications.ts:163
-#: src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:53 src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr "同步配置错误"
 
-#: src/components/Notification/notifications.ts:167
-#: src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr "同步配置成功"
 
@@ -4452,6 +4458,11 @@ msgstr "工作进程"
 msgid "Workers"
 msgstr "Workers"
 
+#: src/layouts/HeaderLayout.vue:40 src/routes/index.ts:56
+#: src/views/workspace/WorkSpace.vue:52
+msgid "Workspace"
+msgstr "工作区"
+
 #: src/views/dashboard/ServerAnalytic.vue:37
 #: src/views/dashboard/ServerAnalytic.vue:373
 msgid "Writes"
@@ -4616,8 +4627,8 @@ msgstr "你的 Passkeys"
 #~ msgstr "请将远程 Nginx UI 升级到最新版本"
 
 #~ msgid ""
-#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
-#~ "%{resp}"
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %"
+#~ "{resp}"
 #~ msgstr ""
 #~ "将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，响应：%{resp}"
 

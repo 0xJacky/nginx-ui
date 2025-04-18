@@ -33,7 +33,7 @@ function getClientWidth() {
 }
 
 function collapse() {
-  return getClientWidth() < 1280
+  return getClientWidth() < 1080
 }
 
 const { server_name } = storeToRefs(useSettingsStore())

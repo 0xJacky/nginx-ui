@@ -15,7 +15,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/pkg/errors"
-	"github.com/uozi-tech/cosy/logger"
 )
 
 // StubStatusInfo Store the stub_status module status
@@ -57,7 +56,6 @@ func GetStubStatusData() (bool, *StubStatusData, error) {
 
 	// Get the stub_status status information
 	enabled, statusURL := IsStubStatusEnabled()
-	logger.Debug("GetStubStatusData", "enabled", enabled, "statusURL", statusURL)
 	if !enabled {
 		return false, result, fmt.Errorf("stub_status is not enabled")
 	}
