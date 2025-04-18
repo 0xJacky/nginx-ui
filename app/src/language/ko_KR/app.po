@@ -123,7 +123,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:165
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr ""
@@ -486,18 +486,18 @@ msgstr "자동 인증"
 msgid "Cert path is not under the nginx conf dir"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:26
 #, fuzzy
 msgid "Certificate %{name} has expired"
 msgstr "구성 템플릿"
 
-#: src/components/Notification/notifications.ts:138
-#: src/components/Notification/notifications.ts:142
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:30
+#: src/components/Notification/notifications.ts:34
+#: src/components/Notification/notifications.ts:38
 msgid "Certificate %{name} will expire in %{days} days"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} will expire in 1 day"
 msgstr ""
 
@@ -506,19 +506,19 @@ msgstr ""
 msgid "Certificate decode error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:29
 #, fuzzy
 msgid "Certificate Expiration Notice"
 msgstr "구성 템플릿"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:25
 #, fuzzy
 msgid "Certificate Expired"
 msgstr "인증서 목록"
 
-#: src/components/Notification/notifications.ts:141
-#: src/components/Notification/notifications.ts:145
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:33
+#: src/components/Notification/notifications.ts:37
+#: src/components/Notification/notifications.ts:41
 #, fuzzy
 msgid "Certificate Expiring Soon"
 msgstr "인증서가 만료되었습니다"
@@ -674,6 +674,10 @@ msgstr ""
 
 #: src/components/ConfigHistory/ConfigHistory.vue:169
 msgid "Close"
+msgstr ""
+
+#: src/constants/errors/llm.ts:2
+msgid "Code completion is not enabled"
 msgstr ""
 
 #: src/views/preference/OpenAISettings.vue:86
@@ -941,32 +945,32 @@ msgstr "인증서 갱신"
 msgid "Delete Permanently"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:9 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:50
 #, fuzzy
 msgid "Delete Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:13 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:49
 #, fuzzy
 msgid "Delete Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:67
+#: src/components/Notification/notifications.ts:125
 #, fuzzy
 msgid "Delete Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:71
+#: src/components/Notification/notifications.ts:129
 #, fuzzy
 msgid "Delete Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:10
+#: src/components/Notification/notifications.ts:70
 #, fuzzy
 msgid "Delete site %{name} from %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 배포 실패"
 
-#: src/components/Notification/notifications.ts:14
+#: src/components/Notification/notifications.ts:74
 #, fuzzy
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
@@ -975,12 +979,12 @@ msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 msgid "Delete site: %{site_name}"
 msgstr "사이트 삭제: %{site_name}"
 
-#: src/components/Notification/notifications.ts:68
+#: src/components/Notification/notifications.ts:126
 #, fuzzy
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 배포 실패"
 
-#: src/components/Notification/notifications.ts:72
+#: src/components/Notification/notifications.ts:130
 #, fuzzy
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
@@ -1008,6 +1012,10 @@ msgstr "설명"
 
 #: src/constants/errors/site.ts:3 src/constants/errors/stream.ts:3
 msgid "Destination file already exists"
+msgstr ""
+
+#: src/constants/errors/config.ts:3
+msgid "Destination file: {0} already exists"
 msgstr ""
 
 #: src/views/notification/notificationColumns.tsx:53
@@ -1064,62 +1072,62 @@ msgstr "비활성화"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "%{name}의 자동 갱신 비활성화 실패"
 
-#: src/components/Notification/notifications.ts:17 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:77 src/language/constants.ts:52
 #, fuzzy
 msgid "Disable Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:41
+#: src/components/Notification/notifications.ts:101
 #, fuzzy
 msgid "Disable Remote Site Maintenance Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:45
+#: src/components/Notification/notifications.ts:105
 #, fuzzy
 msgid "Disable Remote Site Maintenance Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:21 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:81 src/language/constants.ts:51
 #, fuzzy
 msgid "Disable Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:75
+#: src/components/Notification/notifications.ts:133
 #, fuzzy
 msgid "Disable Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:79
+#: src/components/Notification/notifications.ts:137
 #, fuzzy
 msgid "Disable Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:18
+#: src/components/Notification/notifications.ts:78
 #, fuzzy
 msgid "Disable site %{name} from %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:22
+#: src/components/Notification/notifications.ts:82
 #, fuzzy
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:42
+#: src/components/Notification/notifications.ts:102
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:46
+#: src/components/Notification/notifications.ts:106
 #, fuzzy
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:76
+#: src/components/Notification/notifications.ts:134
 #, fuzzy
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:80
+#: src/components/Notification/notifications.ts:138
 #, fuzzy
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
@@ -1312,62 +1320,62 @@ msgstr "TLS 활성화"
 msgid "Enable Proxy Cache"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:25 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:85 src/language/constants.ts:54
 #, fuzzy
 msgid "Enable Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:33
+#: src/components/Notification/notifications.ts:93
 #, fuzzy
 msgid "Enable Remote Site Maintenance Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:37
+#: src/components/Notification/notifications.ts:97
 #, fuzzy
 msgid "Enable Remote Site Maintenance Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:29 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:89 src/language/constants.ts:53
 #, fuzzy
 msgid "Enable Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:83
+#: src/components/Notification/notifications.ts:141
 #, fuzzy
 msgid "Enable Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:87
+#: src/components/Notification/notifications.ts:145
 #, fuzzy
 msgid "Enable Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:34
+#: src/components/Notification/notifications.ts:94
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:38
+#: src/components/Notification/notifications.ts:98
 #, fuzzy
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:26
+#: src/components/Notification/notifications.ts:86
 #, fuzzy
 msgid "Enable site %{name} on %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:30
+#: src/components/Notification/notifications.ts:90
 #, fuzzy
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:84
+#: src/components/Notification/notifications.ts:142
 #, fuzzy
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "%{node_name}에서 %{conf_name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:88
+#: src/components/Notification/notifications.ts:146
 #, fuzzy
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
@@ -3118,7 +3126,7 @@ msgstr ""
 "먼저 인증서 > DNS 자격 증명에 자격 증명을 추가한 다음,DNS 제공자의 API를 요청"
 "하려면 아래 자격 증명 중 하나를 선택해주세요."
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:166
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -3375,22 +3383,22 @@ msgstr "리로드"
 msgid "Reload Nginx"
 msgstr "Nginx 리로딩 중"
 
-#: src/components/Notification/notifications.ts:116
+#: src/components/Notification/notifications.ts:10
 #, fuzzy
 msgid "Reload Nginx on %{node} failed, response: %{resp}"
 msgstr "사이트 삭제: %{site_name}"
 
-#: src/components/Notification/notifications.ts:120
+#: src/components/Notification/notifications.ts:14
 #, fuzzy
 msgid "Reload Nginx on %{node} successfully"
 msgstr "성공적으로 저장되었습니다"
 
-#: src/components/Notification/notifications.ts:115
+#: src/components/Notification/notifications.ts:9
 #, fuzzy
 msgid "Reload Remote Nginx Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:119
+#: src/components/Notification/notifications.ts:13
 #, fuzzy
 msgid "Reload Remote Nginx Success"
 msgstr "인증서 갱신 성공"
@@ -3432,64 +3440,64 @@ msgstr "성공적으로 제거됨"
 msgid "Rename"
 msgstr "이름 변경"
 
-#: src/components/Notification/notifications.ts:172
+#: src/components/Notification/notifications.ts:62
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:176
+#: src/components/Notification/notifications.ts:66
 #, fuzzy
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:171
-#: src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:42
 #, fuzzy
 msgid "Rename Remote Config Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:175
-#: src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:41
 #, fuzzy
 msgid "Rename Remote Config Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:56
+#: src/components/Notification/notifications.ts:109
+#: src/language/constants.ts:56
 #, fuzzy
 msgid "Rename Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:55
+#: src/components/Notification/notifications.ts:113
+#: src/language/constants.ts:55
 #, fuzzy
 msgid "Rename Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:91
+#: src/components/Notification/notifications.ts:149
 #, fuzzy
 msgid "Rename Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:95
+#: src/components/Notification/notifications.ts:153
 #, fuzzy
 msgid "Rename Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:50
+#: src/components/Notification/notifications.ts:110
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:54
+#: src/components/Notification/notifications.ts:114
 #, fuzzy
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:92
+#: src/components/Notification/notifications.ts:150
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:96
+#: src/components/Notification/notifications.ts:154
 #, fuzzy
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
@@ -3577,22 +3585,22 @@ msgstr "재시작"
 msgid "Restart Nginx"
 msgstr "재시작 중"
 
-#: src/components/Notification/notifications.ts:124
+#: src/components/Notification/notifications.ts:18
 #, fuzzy
 msgid "Restart Nginx on %{node} failed, response: %{resp}"
 msgstr "%{node_name}에서 %{conf_name} 성공적으로 활성화됨"
 
-#: src/components/Notification/notifications.ts:128
+#: src/components/Notification/notifications.ts:22
 #, fuzzy
 msgid "Restart Nginx on %{node} successfully"
 msgstr "성공적으로 저장되었습니다"
 
-#: src/components/Notification/notifications.ts:123
+#: src/components/Notification/notifications.ts:17
 #, fuzzy
 msgid "Restart Remote Nginx Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:127
+#: src/components/Notification/notifications.ts:21
 #, fuzzy
 msgid "Restart Remote Nginx Success"
 msgstr "인증서 갱신 성공"
@@ -3699,42 +3707,44 @@ msgstr "지시문 저장"
 msgid "Save error %{msg}"
 msgstr "저장 오류 %{msg}"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:48
+#: src/components/Notification/notifications.ts:117
+#: src/language/constants.ts:48
 #, fuzzy
 msgid "Save Remote Site Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:47
+#: src/components/Notification/notifications.ts:121
+#: src/language/constants.ts:47
 #, fuzzy
 msgid "Save Remote Site Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:99
+#: src/components/Notification/notifications.ts:157
 #, fuzzy
 msgid "Save Remote Stream Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:103
+#: src/components/Notification/notifications.ts:161
 #, fuzzy
 msgid "Save Remote Stream Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:58
+#: src/components/Notification/notifications.ts:118
 #, fuzzy
 msgid "Save site %{name} to %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:62
+#: src/components/Notification/notifications.ts:122
 #, fuzzy
 msgid "Save site %{name} to %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:100
+#: src/components/Notification/notifications.ts:158
 #, fuzzy
 msgid "Save stream %{name} to %{node} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 배포 실패"
 
-#: src/components/Notification/notifications.ts:104
+#: src/components/Notification/notifications.ts:162
 #, fuzzy
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
@@ -4081,46 +4091,42 @@ msgstr ""
 msgid "Sync Certificate"
 msgstr "인증서 갱신"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:46
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:50
 #, fuzzy
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:153
-#: src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:45 src/language/constants.ts:39
 #, fuzzy
 msgid "Sync Certificate Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:157
-#: src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:49 src/language/constants.ts:38
 #, fuzzy
 msgid "Sync Certificate Success"
 msgstr "인증서 갱신 성공"
 
-#: src/components/Notification/notifications.ts:164
+#: src/components/Notification/notifications.ts:54
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:168
+#: src/components/Notification/notifications.ts:58
 #, fuzzy
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
-#: src/components/Notification/notifications.ts:163
-#: src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:53 src/language/constants.ts:45
 #, fuzzy
 msgid "Sync Config Error"
 msgstr "인증서 갱신 오류"
 
-#: src/components/Notification/notifications.ts:167
-#: src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:57 src/language/constants.ts:44
 #, fuzzy
 msgid "Sync Config Success"
 msgstr "인증서 갱신 성공"
@@ -4745,6 +4751,11 @@ msgstr ""
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:103
 msgid "Workers"
+msgstr ""
+
+#: src/layouts/HeaderLayout.vue:40 src/routes/index.ts:56
+#: src/views/workspace/WorkSpace.vue:52
+msgid "Workspace"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:37
