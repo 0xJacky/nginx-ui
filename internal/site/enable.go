@@ -11,6 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/go-resty/resty/v2"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -37,12 +38,12 @@ func Enable(name string) (err error) {
 	output := nginx.TestConf()
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		_ = os.Remove(enabledConfigFilePath)
-		return fmt.Errorf("%s", output)
+		return cosy.WrapErrorWithParams(ErrNginxTestFailed, output)
 	}
 
 	output = nginx.Reload()
 	if nginx.GetLogLevel(output) > nginx.Warn {
-		return fmt.Errorf("%s", output)
+		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
 	}
 
 	go syncEnable(name)

@@ -14,6 +14,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/go-resty/resty/v2"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -40,13 +41,13 @@ func Save(name string, content string, overwrite bool, syncNodeIds []uint64, pos
 		output := nginx.TestConf()
 
 		if nginx.GetLogLevel(output) > nginx.Warn {
-			return fmt.Errorf("%s", output)
+			return cosy.WrapErrorWithParams(ErrNginxTestFailed, output)
 		}
 
 		if postAction == model.PostSyncActionReloadNginx {
 			output = nginx.Reload()
 			if nginx.GetLogLevel(output) > nginx.Warn {
-				return fmt.Errorf("%s", output)
+				return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
 			}
 		}
 	}

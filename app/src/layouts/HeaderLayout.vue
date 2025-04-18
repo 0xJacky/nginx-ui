@@ -35,13 +35,6 @@ const isWorkspace = computed(() => {
     <div class="tool">
       <MenuUnfoldOutlined @click="emit('clickUnFold')" />
     </div>
-    <div v-if="!isWorkspace" class="workspace-entry">
-      <RouterLink to="/workspace">
-        <ATooltip :title="$gettext('Workspace')">
-          <DesktopOutlined />
-        </ATooltip>
-      </RouterLink>
-    </div>
 
     <ASpace
       class="user-wrapper"
@@ -50,6 +43,14 @@ const isWorkspace = computed(() => {
       <SetLanguage v-if="!isWorkspace" class="set_lang" />
 
       <SwitchAppearance />
+
+      <div v-if="!isWorkspace" class="workspace-entry">
+        <RouterLink to="/workspace">
+          <ATooltip :title="$gettext('Workspace')">
+            <DesktopOutlined />
+          </ATooltip>
+        </RouterLink>
+      </div>
 
       <Notification :header-ref="headerRef" />
 
@@ -98,8 +99,6 @@ const isWorkspace = computed(() => {
 }
 
 .workspace-entry {
-  position: absolute;
-  left: 20px;
   @media (max-width: 600px) {
     display: none;
   }
