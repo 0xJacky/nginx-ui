@@ -2,6 +2,11 @@ package stream
 
 import (
 	"fmt"
+	"net/http"
+	"os"
+	"runtime"
+	"sync"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -9,10 +14,6 @@ import (
 	"github.com/go-resty/resty/v2"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
-	"net/http"
-	"os"
-	"runtime"
-	"sync"
 )
 
 func Rename(oldName string, newName string) (err error) {
@@ -58,6 +59,17 @@ func Rename(oldName string, newName string) (err error) {
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
 	}
+
+	// update ChatGPT history
+	g := query.ChatGPTLog
+	_, _ = g.Where(g.Name.Eq(oldName)).Update(g.Name, newName)
+
+	// update config history
+	b := query.ConfigBackup
+	_, _ = b.Where(b.FilePath.Eq(oldPath)).Updates(map[string]interface{}{
+		"filepath": newPath,
+		"name":     newName,
+	})
 
 	go syncRename(oldName, newName)
 

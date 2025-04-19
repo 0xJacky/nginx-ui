@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AutoCertOptions } from '@/api/auto_cert'
-import ObtainCertLive from '@/views/site/cert/components/ObtainCertLive.vue'
+import ObtainCertLive from '@/views/site/site_edit/components/Cert/ObtainCertLive.vue'
 import { message } from 'ant-design-vue'
 
 const props = defineProps<{
@@ -28,10 +28,6 @@ async function issueCert() {
     emit('renewed')
   })
 }
-
-const issuing_cert = ref(false)
-
-provide('issuing_cert', issuing_cert)
 </script>
 
 <template>

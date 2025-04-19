@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
 import type { Settings } from '@/api/settings'
-import ChangeCert from '@/views/site/cert/components/ChangeCert/ChangeCert.vue'
+import ChangeCert from '@/views/site/site_edit/components/Cert/ChangeCert.vue'
 
 const data: Ref<Settings> = inject('data') as Ref<Settings>
 

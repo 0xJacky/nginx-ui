@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { AutoCertOptions } from '@/api/auto_cert'
 import type { Ref } from 'vue'
-import AutoCertStepOne from '@/views/site/cert/components/AutoCertStepOne.vue'
-import ObtainCertLive from '@/views/site/cert/components/ObtainCertLive.vue'
+import AutoCertForm from '@/components/AutoCertForm/AutoCertForm.vue'
+import ObtainCertLive from '@/views/site/site_edit/components/Cert/ObtainCertLive.vue'
 import { message } from 'ant-design-vue'
 
 const emit = defineEmits<{
@@ -12,10 +12,8 @@ const emit = defineEmits<{
 const step = ref(0)
 const visible = ref(false)
 const data = ref({}) as Ref<AutoCertOptions>
-const issuing_cert = ref(false)
 const domain = ref('')
 
-provide('issuing_cert', issuing_cert)
 function open() {
   visible.value = true
   step.value = 0
@@ -73,7 +71,7 @@ function issueCert() {
           </AFormItem>
         </AForm>
 
-        <AutoCertStepOne
+        <AutoCertForm
           v-model:options="data"
           style="max-width: 600px"
           hide-note

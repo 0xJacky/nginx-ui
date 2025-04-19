@@ -1,19 +1,8 @@
 <script setup lang="ts">
-import type { NgxConfig } from '@/api/ngx'
 import ngx from '@/api/ngx'
 import site from '@/api/site'
-import DirectiveEditor from '@/views/site/ngx_conf/directive/DirectiveEditor.vue'
-import LocationEditor from '@/views/site/ngx_conf/LocationEditor.vue'
-import NgxConfigEditor from '@/views/site/ngx_conf/NgxConfigEditor.vue'
+import NgxConfigEditor, { DirectiveEditor, LocationEditor, useNgxConfigStore } from '@/components/NgxConfigEditor'
 import { message } from 'ant-design-vue'
-
-const ngxConfig: NgxConfig = reactive({
-  name: '',
-  servers: [{
-    directives: [],
-    locations: [],
-  }],
-})
 
 const currentStep = ref(0)
 
@@ -25,18 +14,21 @@ onMounted(() => {
   init()
 })
 
+const ngxConfigStore = useNgxConfigStore()
+const { ngxConfig, curServerDirectives, curServerLocations } = storeToRefs(ngxConfigStore)
+
 function init() {
   site.get_default_template().then(r => {
-    Object.assign(ngxConfig, r.tokenized)
+    ngxConfig.value = r.tokenized
   })
 }
 
 async function save() {
-  return ngx.build_config(ngxConfig).then(r => {
-    site.save(ngxConfig.name, { name: ngxConfig.name, content: r.content, overwrite: true }).then(() => {
+  return ngx.build_config(ngxConfig.value).then(r => {
+    site.save(ngxConfig.value.name, { name: ngxConfig.value.name, content: r.content, overwrite: true }).then(() => {
       message.success($gettext('Saved successfully'))
 
-      site.enable(ngxConfig.name).then(() => {
+      site.enable(ngxConfig.value.name).then(() => {
         message.success($gettext('Enabled successfully'))
         window.scroll({ top: 0, left: 0, behavior: 'smooth' })
       }).catch(e => {
@@ -51,7 +43,7 @@ async function save() {
 const router = useRouter()
 
 function gotoModify() {
-  router.push(`/sites/${ngxConfig.name}`)
+  router.push(`/sites/${ngxConfig.value.name}`)
 }
 
 function createAnother() {
@@ -59,7 +51,7 @@ function createAnother() {
 }
 
 const hasServerName = computed(() => {
-  const servers = ngxConfig.servers
+  const servers = ngxConfig.value.servers
 
   for (const server of Object.values(servers)) {
     for (const directive of Object.values(server.directives!)) {
@@ -75,14 +67,6 @@ async function next() {
   await save()
   currentStep.value++
 }
-
-const ngxDirectives = computed(() => {
-  return ngxConfig.servers[0].directives
-})
-
-provide('save_config', save)
-provide('ngx_directives', ngxDirectives)
-provide('ngx_config', ngxConfig)
 </script>
 
 <template>
@@ -96,32 +80,30 @@ provide('ngx_config', ngxConfig)
         <AStep :title="$gettext('Configure SSL')" />
         <AStep :title="$gettext('Finished')" />
       </ASteps>
-      <template v-if="currentStep === 0">
+      <div v-if="currentStep === 0" class="mb-6">
         <AForm layout="vertical">
           <AFormItem :label="$gettext('Configuration Name')">
             <AInput v-model:value="ngxConfig.name" />
           </AFormItem>
         </AForm>
 
-        <DirectiveEditor />
-        <br>
-        <LocationEditor
-          :locations="ngxConfig.servers[0].locations"
-          :current-server-index="0"
-        />
-        <br>
         <AAlert
           v-if="!hasServerName"
-          :message="$gettext('Warning')"
           type="warning"
+          class="mb-4"
           show-icon
-        >
-          <template #description>
-            <span>{{ $gettext('The parameter of server_name is required') }}</span>
-          </template>
-        </AAlert>
-        <br>
-      </template>
+          :message="$gettext('The parameter of server_name is required')"
+        />
+
+        <DirectiveEditor
+          v-model:directives="curServerDirectives"
+          class="mb-4"
+        />
+        <LocationEditor
+          v-model:locations="curServerLocations"
+          :current-server-index="0"
+        />
+      </div>
 
       <template v-else-if="currentStep === 1">
         <NgxConfigEditor

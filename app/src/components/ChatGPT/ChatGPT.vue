@@ -305,7 +305,7 @@ const show = computed(() => !messages.value || messages.value.length === 0)
 <template>
   <div
     v-if="show"
-    class="chat-start"
+    class="chat-start mt-4"
   >
     <AButton
       :loading="loading"

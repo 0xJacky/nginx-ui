@@ -2,12 +2,12 @@
 import type { Cert } from '@/api/cert'
 import type { Ref } from 'vue'
 import cert from '@/api/cert'
+import AutoCertForm from '@/components/AutoCertForm/AutoCertForm.vue'
+import CertInfo from '@/components/CertInfo/CertInfo.vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 import { AutoCertState } from '@/constants'
-import CertInfo from '@/views/site/cert/CertInfo.vue'
-import AutoCertStepOne from '@/views/site/cert/components/AutoCertStepOne.vue'
 import { message } from 'ant-design-vue'
 import RenewCert from './RenewCert.vue'
 
@@ -147,7 +147,7 @@ const isManaged = computed(() => {
             @renewed="init"
           />
 
-          <AutoCertStepOne
+          <AutoCertForm
             v-model:options="data"
             style="max-width: 600px"
             hide-note
@@ -219,6 +219,7 @@ const isManaged = computed(() => {
               v-model:content="data.ssl_certificate"
               default-height="300px"
               :readonly="!notShowInAutoCert"
+              disable-code-completion
               :placeholder="$gettext('Leave blank will not change anything')"
             />
           </AFormItem>
@@ -232,6 +233,7 @@ const isManaged = computed(() => {
               v-model:content="data.ssl_certificate_key"
               default-height="300px"
               :readonly="!notShowInAutoCert"
+              disable-code-completion
               :placeholder="$gettext('Leave blank will not change anything')"
             />
           </AFormItem>

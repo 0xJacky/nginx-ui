@@ -27,7 +27,9 @@ class TemplateApi extends Curd<Template> {
   }
 
   get_block_list() {
-    return http.get('templates/blocks')
+    return http.get<{
+      data: Template[]
+    }>('templates/blocks')
   }
 
   get_config(name: string) {
@@ -35,7 +37,7 @@ class TemplateApi extends Curd<Template> {
   }
 
   get_block(name: string) {
-    return http.get(`templates/block/${name}`)
+    return http.get<Template>(`templates/block/${name}`)
   }
 
   build_block(name: string, data: Variable) {

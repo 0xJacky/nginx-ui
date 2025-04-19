@@ -46,3 +46,11 @@ export const PrivateKeyTypeList
       ({ key, name }))
 
 export type PrivateKeyType = keyof typeof PrivateKeyTypeMask
+export const PrivateKeyTypeEnum = {
+  2048: '2048',
+  3072: '3072',
+  4096: '4096',
+  8192: '8192',
+  P256: 'P256',
+  P384: 'P384',
+} as const

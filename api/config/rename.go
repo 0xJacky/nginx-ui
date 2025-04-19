@@ -110,6 +110,12 @@ func Rename(c *gin.Context) {
 		return
 	}
 
+	b := query.ConfigBackup
+	_, _ = b.Where(b.FilePath.Eq(origFullPath)).Updates(map[string]interface{}{
+		"filepath": newFullPath,
+		"name":     json.NewName,
+	})
+
 	if len(json.SyncNodeIds) > 0 {
 		err = config.SyncRenameOnRemoteServer(origFullPath, newFullPath, json.SyncNodeIds)
 		if err != nil {

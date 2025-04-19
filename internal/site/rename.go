@@ -58,6 +58,17 @@ func Rename(oldName string, newName string) (err error) {
 		return fmt.Errorf("%s", output)
 	}
 
+	// update ChatGPT history
+	g := query.ChatGPTLog
+	_, _ = g.Where(g.Name.Eq(oldName)).Update(g.Name, newName)
+
+	// update config history
+	b := query.ConfigBackup
+	_, _ = b.Where(b.FilePath.Eq(oldPath)).Updates(map[string]interface{}{
+		"filepath": newPath,
+		"name":     newName,
+	})
+
 	go syncRename(oldName, newName)
 
 	return

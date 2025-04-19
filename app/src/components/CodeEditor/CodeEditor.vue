@@ -11,6 +11,7 @@ const props = defineProps<{
   defaultHeight?: string
   readonly?: boolean
   placeholder?: string
+  disableCodeCompletion?: boolean
 }>()
 
 const content = defineModel<string>('content', { default: '' })
@@ -26,8 +27,8 @@ onMounted(() => {
 
 const codeCompletion = useCodeCompletion()
 
-function init(editor: Editor) {
-  if (props.readonly) {
+async function init(editor: Editor) {
+  if (props.readonly || props.disableCodeCompletion) {
     return
   }
   codeCompletion.init(editor)

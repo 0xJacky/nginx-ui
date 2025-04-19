@@ -2,6 +2,7 @@ import type { AcmeUser } from '@/api/acme_user'
 import type { ModelBase } from '@/api/curd'
 import type { DnsCredential } from '@/api/dns_credential'
 import type { PrivateKeyType } from '@/constants'
+import type { AutoCertChallengeMethod } from './auto_cert'
 import Curd from '@/api/curd'
 
 export interface Cert extends ModelBase {
@@ -13,7 +14,7 @@ export interface Cert extends ModelBase {
   ssl_certificate_key_path: string
   ssl_certificate_key: string
   auto_cert: number
-  challenge_method: string
+  challenge_method: keyof typeof AutoCertChallengeMethod
   dns_credential_id: number
   dns_credential?: DnsCredential
   acme_user_id: number

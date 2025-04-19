@@ -12,7 +12,7 @@ const modify = ref(false)
 const buffer = ref('')
 const loading = ref(false)
 
-onMounted(() => {
+watchEffect(() => {
   buffer.value = props.name
 })
 
