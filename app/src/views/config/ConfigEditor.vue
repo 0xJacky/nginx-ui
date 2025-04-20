@@ -214,8 +214,6 @@ function formatCode() {
   ngx.format_code(data.value.content).then(r => {
     data.value.content = r.content
     message.success($gettext('Format successfully'))
-  }).catch(r => {
-    message.error($gettext('Format error %{msg}', { msg: r.message ?? '' }))
   })
 }
 

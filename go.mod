@@ -35,6 +35,7 @@ require (
 	github.com/samber/lo v1.49.1
 	github.com/sashabaranov/go-openai v1.38.2
 	github.com/shirou/gopsutil/v4 v4.25.3
+	github.com/spf13/afero v1.14.0
 	github.com/spf13/cast v1.7.1
 	github.com/stretchr/testify v1.10.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250225174229-c03497ddaef6
@@ -77,7 +78,7 @@ require (
 	github.com/OpenDNS/vegadns2client v0.0.0-20180418235048-a3fa4a771d87 // indirect
 	github.com/StackExchange/wmi v1.2.1 // indirect
 	github.com/akamai/AkamaiOPEN-edgegrid-golang v1.2.2 // indirect
-	github.com/aliyun/alibaba-cloud-sdk-go v1.63.105 // indirect
+	github.com/aliyun/alibaba-cloud-sdk-go v1.63.106 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.36.3 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.29.14 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.67 // indirect
@@ -115,7 +116,7 @@ require (
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/fxamacker/cbor/v2 v2.8.0 // indirect
-	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
+	github.com/gabriel-vasile/mimetype v1.4.9 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gin-contrib/sse v1.1.0 // indirect
 	github.com/go-errors/errors v1.5.1 // indirect
@@ -151,7 +152,6 @@ require (
 	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.145 // indirect
 	github.com/iij/doapi v0.0.0-20190504054126-0bbf12d6d7df // indirect
 	github.com/imega/luaformatter v0.0.0-20211025140405-86b0a68d6bef // indirect
-	github.com/infobloxopen/infoblox-go-client v1.1.1 // indirect
 	github.com/infobloxopen/infoblox-go-client/v2 v2.9.0 // indirect
 	github.com/itchyny/timefmt-go v0.1.6 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
@@ -227,13 +227,12 @@ require (
 	github.com/sony/gobreaker v1.0.0 // indirect
 	github.com/sony/sonyflake v1.2.0 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
-	github.com/spf13/afero v1.14.0 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/spf13/viper v1.20.1 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/technoweenie/multipartstreamer v1.0.1 // indirect
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.1145 // indirect
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.1146 // indirect
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.0.1136 // indirect
 	github.com/timtadh/data-structures v0.6.2 // indirect
 	github.com/timtadh/lexmachine v0.2.3 // indirect
@@ -247,7 +246,7 @@ require (
 	github.com/uozi-tech/cosy-driver-mysql v0.2.2 // indirect
 	github.com/uozi-tech/cosy-driver-postgres v0.2.1 // indirect
 	github.com/vinyldns/go-vinyldns v0.9.16 // indirect
-	github.com/volcengine/volc-sdk-golang v1.0.203 // indirect
+	github.com/volcengine/volc-sdk-golang v1.0.204 // indirect
 	github.com/vultr/govultr/v3 v3.19.1 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	github.com/yandex-cloud/go-genproto v0.0.0-20250415125903-e04f82fce08c // indirect
@@ -297,4 +296,4 @@ require (
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
 
-replace github.com/tufanbarisyildirim/gonginx => github.com/0xJacky/gonginx v0.0.0-20250415011133-af8a79b2217e
+replace github.com/tufanbarisyildirim/gonginx => github.com/0xJacky/gonginx v0.0.0-20250420001451-d120448e89a4
