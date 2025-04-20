@@ -12,11 +12,38 @@ function debug(...args: any[]) {
   }
 }
 
+// Config file patterns and extensions
+const CONFIG_FILE_EXTENSIONS = ['.conf', '.config']
+const SENSITIVE_CONTENT_PATTERNS = [
+  /-----BEGIN [A-Z ]+ PRIVATE KEY-----/,
+  /-----BEGIN CERTIFICATE-----/,
+  /apiKey\s*[:=]\s*["'][a-zA-Z0-9]+["']/,
+  /password\s*[:=]\s*["'][^"']+["']/,
+  /secret\s*[:=]\s*["'][^"']+["']/,
+]
+
 function useCodeCompletion() {
   const editorRef = ref<Editor>()
   const currentGhostText = ref<string>('')
+  const isConfigFile = ref<boolean>(false)
 
   const ws = openai.code_completion()
+
+  // Check if the current file is a configuration file
+  function checkIfConfigFile(filename: string, content: string): boolean {
+    // Check file extension
+    const hasConfigExtension = CONFIG_FILE_EXTENSIONS.some(ext => filename.toLowerCase().endsWith(ext))
+
+    // Check if it's an Nginx configuration file based on common patterns
+    const hasNginxPatterns = /server\s*\{|location\s*\/|http\s*\{|upstream\s*[\w-]+\s*\{/.test(content)
+
+    return hasConfigExtension || hasNginxPatterns
+  }
+
+  // Check if content contains sensitive information that shouldn't be sent
+  function containsSensitiveContent(content: string): boolean {
+    return SENSITIVE_CONTENT_PATTERNS.some(pattern => pattern.test(content))
+  }
 
   function getAISuggestions(code: string, context: string, position: Point, callback: (suggestion: string) => void, language: string = 'nginx', suffix: string = '', requestId: string) {
     if (!ws || ws.readyState !== WebSocket.OPEN) {
@@ -26,6 +53,17 @@ function useCodeCompletion() {
 
     if (!code.trim()) {
       debug('Code is empty')
+      return
+    }
+
+    // Skip if not a config file or contains sensitive content
+    if (!isConfigFile.value) {
+      debug('Skipping AI suggestions for non-config file')
+      return
+    }
+
+    if (containsSensitiveContent(context)) {
+      debug('Skipping AI suggestions due to sensitive content')
       return
     }
 
@@ -57,8 +95,20 @@ function useCodeCompletion() {
       return
     }
 
+    if (!isConfigFile.value) {
+      debug('Skipping ghost text for non-config file')
+      return
+    }
+
     try {
       const currentText = editorRef.value.getValue()
+
+      // Skip if content contains sensitive information
+      if (containsSensitiveContent(currentText)) {
+        debug('Skipping ghost text due to sensitive content')
+        return
+      }
+
       const cursorPosition = editorRef.value.getCursorPosition()
 
       // Get all text before the current cursor position as the code part for the request
@@ -175,7 +225,7 @@ function useCodeCompletion() {
 
   debug('Editor initialized')
 
-  async function init(editor: Editor) {
+  async function init(editor: Editor, filename: string = '') {
     const { enabled } = await openai.get_code_completion_enabled_status()
     if (!enabled) {
       debug('Code completion is not enabled')
@@ -183,6 +233,11 @@ function useCodeCompletion() {
     }
 
     editorRef.value = editor
+
+    // Determine if the current file is a configuration file
+    const content = editor.getValue()
+    isConfigFile.value = checkIfConfigFile(filename, content)
+    debug(`File type check: isConfigFile=${isConfigFile.value}, filename=${filename}`)
 
     // Set up Tab key handler
     setupTabHandler(editor)
@@ -195,7 +250,9 @@ function useCodeCompletion() {
 
         if (e.action === 'insert' || e.action === 'remove') {
           // Clear current ghost text
-          debouncedApplyGhostText()
+          if (isConfigFile.value) {
+            debouncedApplyGhostText()
+          }
         }
       })
 
@@ -203,7 +260,9 @@ function useCodeCompletion() {
       editor.selection.on('changeCursor', () => {
         debug('Cursor changed')
         clearGhostText()
-        debouncedApplyGhostText()
+        if (isConfigFile.value) {
+          debouncedApplyGhostText()
+        }
       })
     }, 2000)
   }
