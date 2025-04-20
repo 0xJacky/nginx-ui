@@ -7,6 +7,7 @@ services:
       - ../..:/workspaces:cached
       - ./go-path:/root/go
       - ./data/nginx:/etc/nginx
+      - /var/run/docker.sock:/var/run/docker.sock
     command: sleep infinity
     environment:
       - NGINX_UI_CERT_CA_DIR=https://pebble:14000/dir
@@ -23,6 +24,28 @@ services:
     command: ./.devcontainer/node-supervisor.sh
     depends_on:
       - nginx-ui
+    networks:
+      nginxui:
+  nginx-ui-3:
+    image: nginx-ui-dev
+    container_name: nginx-ui-3
+    volumes:
+      - ../..:/workspaces:cached
+      - ./data/nginx-ui-3/nginx:/etc/nginx
+      - ./data/nginx-ui-3/nginx-ui:/etc/nginx-ui
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /workspaces/nginx-ui
+    command: ./.devcontainer/node-supervisor.sh
+    depends_on:
+      - nginx-ui
+    networks:
+      nginxui:
+  nginx:
+    image: nginx-ui-dev
+    container_name: nginx
+    volumes:
+      - ./data/nginx-ui-3/nginx:/etc/nginx
+    command: sleep infinity
     networks:
       nginxui:
   pebble:

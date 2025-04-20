@@ -38,14 +38,21 @@ func Save(name string, content string, overwrite bool, envGroupId uint64, syncNo
 	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", name)
 	if helper.FileExists(enabledConfigFilePath) {
 		// Test nginx configuration
-		output := nginx.TestConf()
+		var output string
+		output, err = nginx.TestConfig()
+		if err != nil {
+			return
+		}
 
 		if nginx.GetLogLevel(output) > nginx.Warn {
 			return cosy.WrapErrorWithParams(ErrNginxTestFailed, output)
 		}
 
 		if postAction == model.PostSyncActionReloadNginx {
-			output = nginx.Reload()
+			output, err = nginx.Reload()
+			if err != nil {
+				return
+			}
 			if nginx.GetLogLevel(output) > nginx.Warn {
 				return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
 			}

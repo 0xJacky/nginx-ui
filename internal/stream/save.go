@@ -37,15 +37,22 @@ func Save(name string, content string, overwrite bool, syncNodeIds []uint64, pos
 
 	enabledConfigFilePath := nginx.GetConfPath("streams-enabled", name)
 	if helper.FileExists(enabledConfigFilePath) {
+		var output string
 		// Test nginx configuration
-		output := nginx.TestConf()
+		output, err = nginx.TestConfig()
+		if err != nil {
+			return
+		}
 
 		if nginx.GetLogLevel(output) > nginx.Warn {
 			return cosy.WrapErrorWithParams(ErrNginxTestFailed, output)
 		}
 
 		if postAction == model.PostSyncActionReloadNginx {
-			output = nginx.Reload()
+			output, err = nginx.Reload()
+			if err != nil {
+				return
+			}
 			if nginx.GetLogLevel(output) > nginx.Warn {
 				return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
 			}

@@ -2,46 +2,41 @@ package nginx
 
 import (
 	"os"
-	"os/exec"
 	"strings"
 	"sync"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/docker"
 	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 var (
 	mutex      sync.Mutex
-	lastOutput string
+	lastStdOut string
+	lastStdErr error
 )
 
-func TestConf() (out string) {
+// TestConfig tests the nginx config
+func TestConfig() (stdOut string, stdErr error) {
 	mutex.Lock()
 	defer mutex.Unlock()
 	if settings.NginxSettings.TestConfigCmd != "" {
-		out = execShell(settings.NginxSettings.TestConfigCmd)
-
-		return
+		return execShell(settings.NginxSettings.TestConfigCmd)
 	}
-
-	out = execCommand("nginx", "-t")
-
-	return
+	return execCommand("nginx", "-t")
 }
 
-func Reload() (out string) {
+// Reload reloads the nginx
+func Reload() (stdOut string, stdErr error) {
 	mutex.Lock()
 	defer mutex.Unlock()
 	if settings.NginxSettings.ReloadCmd != "" {
-		out = execShell(settings.NginxSettings.ReloadCmd)
-		return
+		return execShell(settings.NginxSettings.ReloadCmd)
 	}
-
-	out = execCommand("nginx", "-s", "reload")
-
-	return
+	return execCommand("nginx", "-s", "reload")
 }
 
+// Restart restarts the nginx
 func Restart() {
 	mutex.Lock()
 	defer mutex.Unlock()
@@ -50,41 +45,45 @@ func Restart() {
 	time.Sleep(500 * time.Millisecond)
 
 	if settings.NginxSettings.RestartCmd != "" {
-		lastOutput = execShell(settings.NginxSettings.RestartCmd)
-
+		lastStdOut, lastStdErr = execShell(settings.NginxSettings.RestartCmd)
 		return
 	}
 
 	pidPath := GetPIDPath()
 	daemon := GetSbinPath()
 
-	lastOutput = execCommand("start-stop-daemon", "--stop", "--quiet", "--oknodo", "--retry=TERM/30/KILL/5", "--pidfile", pidPath)
-
-	if daemon == "" {
-		lastOutput += execCommand("nginx")
-
+	lastStdOut, lastStdErr = execCommand("start-stop-daemon", "--stop", "--quiet", "--oknodo", "--retry=TERM/30/KILL/5", "--pidfile", pidPath)
+	if lastStdErr != nil {
 		return
 	}
 
-	lastOutput += execCommand("start-stop-daemon", "--start", "--quiet", "--pidfile", pidPath, "--exec", daemon)
+	if daemon == "" {
+		lastStdOut, lastStdErr = execCommand("nginx")
+		return
+	}
 
+	lastStdOut, lastStdErr = execCommand("start-stop-daemon", "--start", "--quiet", "--pidfile", pidPath, "--exec", daemon)
 	return
 }
 
-func GetLastOutput() string {
+// GetLastOutput returns the last output of the nginx command
+func GetLastOutput() (stdOut string, stdErr error) {
 	mutex.Lock()
 	defer mutex.Unlock()
-	return lastOutput
+	return lastStdOut, lastStdErr
 }
 
 // GetModulesPath returns the nginx modules path
 func GetModulesPath() string {
 	// First try to get from nginx -V output
-	output := execCommand("nginx", "-V")
-	if output != "" {
+	stdOut, stdErr := execCommand("nginx", "-V")
+	if stdErr != nil {
+		return ""
+	}
+	if stdOut != "" {
 		// Look for --modules-path in the output
-		if strings.Contains(output, "--modules-path=") {
-			parts := strings.Split(output, "--modules-path=")
+		if strings.Contains(stdOut, "--modules-path=") {
+			parts := strings.Split(stdOut, "--modules-path=")
 			if len(parts) > 1 {
 				// Extract the path
 				path := strings.Split(parts[1], " ")[0]
@@ -99,28 +98,16 @@ func GetModulesPath() string {
 	return "/usr/lib/nginx/modules"
 }
 
-func execShell(cmd string) (out string) {
-	bytes, err := exec.Command("/bin/sh", "-c", cmd).CombinedOutput()
-	out = string(bytes)
-	if err != nil {
-		out += " " + err.Error()
-	}
-	return
-}
-
-func execCommand(name string, cmd ...string) (out string) {
-	bytes, err := exec.Command(name, cmd...).CombinedOutput()
-	out = string(bytes)
-	if err != nil {
-		out += " " + err.Error()
-	}
-	return
-}
-
 func IsNginxRunning() bool {
 	pidPath := GetPIDPath()
-	if fileInfo, err := os.Stat(pidPath); err != nil || fileInfo.Size() == 0 {
-		return false
+	switch settings.NginxSettings.RunningInAnotherContainer() {
+	case true:
+		return docker.StatPath(pidPath)
+	case false:
+		if fileInfo, err := os.Stat(pidPath); err != nil || fileInfo.Size() == 0 {
+			return false
+		}
+		return true
 	}
-	return true
+	return false
 }

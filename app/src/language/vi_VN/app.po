@@ -77,7 +77,7 @@ msgid "Add a passkey"
 msgstr ""
 
 #: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:171
-#: src/views/config/ConfigEditor.vue:246
+#: src/views/config/ConfigEditor.vue:244
 #, fuzzy
 msgid "Add Configuration"
 msgstr "Sửa cấu hình"
@@ -312,7 +312,7 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr ""
 
 #: src/views/certificate/components/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:268 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
 #: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
@@ -367,7 +367,7 @@ msgstr ""
 msgid "Base information"
 msgstr "Thông tin"
 
-#: src/views/config/ConfigEditor.vue:296
+#: src/views/config/ConfigEditor.vue:294
 #: src/views/site/site_edit/components/RightPanel/RightPanel.vue:30
 #: src/views/stream/components/RightPanel/RightPanel.vue:19
 #, fuzzy
@@ -606,7 +606,7 @@ msgid_plural "Changed Certificates"
 msgstr[0] "Thay đổi chứng chỉ"
 msgstr[1] "Thay đổi chứng chỉ"
 
-#: src/views/config/ConfigEditor.vue:324
+#: src/views/config/ConfigEditor.vue:322
 #, fuzzy
 msgid "Changed Path"
 msgstr "Thay đổi chứng chỉ"
@@ -721,6 +721,10 @@ msgstr ""
 msgid "Command"
 msgstr "Bình luận"
 
+#: src/constants/errors/docker.ts:6
+msgid "Command exited with unexpected exit code: {0}, error: {1}"
+msgstr ""
+
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:115
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
 #: src/components/NgxConfigEditor/LocationEditor.vue:135
@@ -799,6 +803,10 @@ msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
 msgid "Connection timeout period"
+msgstr ""
+
+#: src/constants/errors/docker.ts:7
+msgid "Container status unknown"
 msgstr ""
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:120
@@ -1038,7 +1046,7 @@ msgstr "Đã xoá thành công"
 msgid "Demo"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:340
+#: src/views/config/ConfigEditor.vue:338
 msgid "Deploy"
 msgstr "Triển khai"
 
@@ -1246,6 +1254,10 @@ msgstr "Bạn muốn xóa máy chủ này ?"
 msgid "Do you want to remove this upstream?"
 msgstr "Bạn muốn xóa máy chủ này ?"
 
+#: src/constants/errors/docker.ts:2
+msgid "Docker client not initialized"
+msgstr ""
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
 #, fuzzy
@@ -1306,7 +1318,7 @@ msgstr "Sửa %{n}"
 msgid "Edit %{n}"
 msgstr "Sửa %{n}"
 
-#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:246
+#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:244
 msgid "Edit Configuration"
 msgstr "Sửa cấu hình"
 
@@ -1531,6 +1543,11 @@ msgstr ""
 msgid "Fail to obtain certificate"
 msgstr "Nhận chứng chỉ"
 
+#: src/constants/errors/docker.ts:4
+#, fuzzy
+msgid "Failed to attach to exec instance: {0}"
+msgstr "Không thể bật %{msg}"
+
 #: src/constants/errors/backup.ts:5
 msgid "Failed to backup Nginx config files: {0}"
 msgstr ""
@@ -1715,6 +1732,11 @@ msgstr ""
 msgid "Failed to evaluate symbolic links: {0}"
 msgstr "Không thể bật %{msg}"
 
+#: src/constants/errors/docker.ts:3
+#, fuzzy
+msgid "Failed to exec command: {0}"
+msgstr "Không thể bật %{msg}"
+
 #: src/constants/errors/backup.ts:35
 #, fuzzy
 msgid "Failed to extract archive: {0}"
@@ -1743,6 +1765,11 @@ msgstr "Không thể truy xuất thông tin chứng chỉ"
 #, fuzzy
 msgid "Failed to get performance data"
 msgstr "Không thể truy xuất thông tin chứng chỉ"
+
+#: src/constants/errors/docker.ts:8
+#, fuzzy
+msgid "Failed to inspect container: {0}"
+msgstr "Không thể bật %{msg}"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:77
 #, fuzzy
@@ -1784,6 +1811,11 @@ msgstr ""
 #: src/constants/errors/self_check.ts:3
 msgid "Failed to read nginx.conf"
 msgstr ""
+
+#: src/constants/errors/docker.ts:5
+#, fuzzy
+msgid "Failed to read output: {0}"
+msgstr "Không thể bật %{msg}"
 
 #: src/constants/errors/backup.ts:21
 #, fuzzy
@@ -1870,14 +1902,9 @@ msgstr "Người dùng Trung Quốc: https://mirror.ghproxy.com/"
 msgid "Form parse failed"
 msgstr "Nhân bản thất bại"
 
-#: src/views/config/ConfigEditor.vue:271
+#: src/views/config/ConfigEditor.vue:269
 msgid "Format Code"
 msgstr "Định dạng code"
-
-#: src/views/config/ConfigEditor.vue:218
-#, fuzzy
-msgid "Format error %{msg}"
-msgstr "Lưu lỗi %{msg}"
 
 #: src/views/config/ConfigEditor.vue:216
 #, fuzzy
@@ -1954,7 +1981,7 @@ msgstr ""
 msgid "Higher value means better connection reuse"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:256
+#: src/views/config/ConfigEditor.vue:254
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
 #: src/views/stream/components/StreamEditor.vue:43
 #, fuzzy
@@ -2128,7 +2155,7 @@ msgid "Invalid file path: {0}"
 msgstr "E-mail không chính xác!"
 
 #: src/views/config/components/Rename.vue:66
-#: src/views/config/ConfigEditor.vue:305
+#: src/views/config/ConfigEditor.vue:303
 #, fuzzy
 msgid "Invalid filename"
 msgstr "E-mail không chính xác!"
@@ -2562,7 +2589,7 @@ msgstr "Single Directive"
 #: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:311
+#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:309
 #: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:33
@@ -2606,7 +2633,7 @@ msgstr "Cài đặt"
 msgid "New name"
 msgstr "Username"
 
-#: src/views/config/ConfigEditor.vue:324
+#: src/views/config/ConfigEditor.vue:322
 #, fuzzy
 msgid "New Path"
 msgstr "Đường dẫn"
@@ -2707,6 +2734,10 @@ msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
 #: src/views/dashboard/NginxDashBoard.vue:131
 #: src/views/dashboard/NginxDashBoard.vue:80
 msgid "Nginx is not running"
+msgstr ""
+
+#: src/constants/errors/docker.ts:9
+msgid "Nginx is not running in another container"
 msgstr ""
 
 #: src/views/dashboard/NginxDashBoard.vue:112
@@ -3039,11 +3070,11 @@ msgstr ""
 msgid "Otp or recovery code empty"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:349
+#: src/views/config/ConfigEditor.vue:347
 msgid "Overwrite"
 msgstr "Ghi đè"
 
-#: src/views/config/ConfigEditor.vue:353
+#: src/views/config/ConfigEditor.vue:351
 msgid "Overwrite exist file"
 msgstr "Ghi đè tập tin đã tồn tại"
 
@@ -3091,7 +3122,7 @@ msgstr ""
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
-#: src/views/config/ConfigEditor.vue:318
+#: src/views/config/ConfigEditor.vue:316
 #: src/views/nginx_log/NginxLogList.vue:41
 msgid "Path"
 msgstr "Đường dẫn"
@@ -3185,7 +3216,7 @@ msgid ""
 msgstr ""
 
 #: src/views/config/components/Rename.vue:65
-#: src/views/config/ConfigEditor.vue:304
+#: src/views/config/ConfigEditor.vue:302
 #, fuzzy
 msgid "Please input a filename"
 msgstr "Vui lòng nhập username!"
@@ -3430,6 +3461,11 @@ msgstr "Tải lại"
 #, fuzzy
 msgid "Reload Nginx"
 msgstr "Tải lại nginx"
+
+#: src/constants/errors/nginx.ts:3
+#, fuzzy
+msgid "Reload nginx failed: {0}"
+msgstr "Không thể bật %{msg}"
 
 #: src/components/Notification/notifications.ts:10
 #, fuzzy
@@ -3736,7 +3772,7 @@ msgstr "Running"
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
 #: src/views/certificate/components/CertificateEditor.vue:266
 #: src/views/config/components/ConfigName.vue:59
-#: src/views/config/ConfigEditor.vue:277
+#: src/views/config/ConfigEditor.vue:275
 #: src/views/preference/components/Passkey.vue:130
 #: src/views/preference/Preference.vue:231
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -4566,7 +4602,7 @@ msgstr "Cập nhật thành công"
 
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
-#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:331
+#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:329
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:38
@@ -4865,6 +4901,10 @@ msgstr ""
 #: src/views/preference/components/Passkey.vue:75
 msgid "Your passkeys"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Format error %{msg}"
+#~ msgstr "Lưu lỗi %{msg}"
 
 #~ msgid "Failed to save, syntax error(s) was detected in the configuration."
 #~ msgstr "Không lưu được, đã phát hiện thấy (các) lỗi cú pháp trong cấu hình."

@@ -83,7 +83,7 @@ msgid "Add a passkey"
 msgstr "Добавить ключ доступа"
 
 #: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:171
-#: src/views/config/ConfigEditor.vue:246
+#: src/views/config/ConfigEditor.vue:244
 msgid "Add Configuration"
 msgstr "Добавить конфигурацию"
 
@@ -300,7 +300,7 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr ""
 
 #: src/views/certificate/components/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:268 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
 #: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
@@ -354,7 +354,7 @@ msgstr ""
 msgid "Base information"
 msgstr "Основная информация"
 
-#: src/views/config/ConfigEditor.vue:296
+#: src/views/config/ConfigEditor.vue:294
 #: src/views/site/site_edit/components/RightPanel/RightPanel.vue:30
 #: src/views/stream/components/RightPanel/RightPanel.vue:19
 msgid "Basic"
@@ -581,7 +581,7 @@ msgid_plural "Changed Certificates"
 msgstr[0] "Сертификат изменен"
 msgstr[1] "Сертификаты изменены"
 
-#: src/views/config/ConfigEditor.vue:324
+#: src/views/config/ConfigEditor.vue:322
 msgid "Changed Path"
 msgstr "Путь изменён"
 
@@ -694,6 +694,10 @@ msgstr ""
 msgid "Command"
 msgstr "Команда"
 
+#: src/constants/errors/docker.ts:6
+msgid "Command exited with unexpected exit code: {0}, error: {1}"
+msgstr ""
+
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:115
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
 #: src/components/NgxConfigEditor/LocationEditor.vue:135
@@ -772,6 +776,10 @@ msgstr "Соединение потеряно, пожалуйста, обнов�
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
 msgid "Connection timeout period"
+msgstr ""
+
+#: src/constants/errors/docker.ts:7
+msgid "Container status unknown"
 msgstr ""
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:120
@@ -1004,7 +1012,7 @@ msgstr "Удалено успешно"
 msgid "Demo"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:340
+#: src/views/config/ConfigEditor.vue:338
 msgid "Deploy"
 msgstr "Развернуть"
 
@@ -1207,6 +1215,10 @@ msgstr "Хотите удалить этот сервер?"
 msgid "Do you want to remove this upstream?"
 msgstr "Хотите удалить этот сервер?"
 
+#: src/constants/errors/docker.ts:2
+msgid "Docker client not initialized"
+msgstr ""
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
 #, fuzzy
@@ -1268,7 +1280,7 @@ msgstr "Редактировать %{n}"
 msgid "Edit %{n}"
 msgstr "Редактировать %{n}"
 
-#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:246
+#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:244
 msgid "Edit Configuration"
 msgstr "Редактировать Конфигурацию"
 
@@ -1482,6 +1494,11 @@ msgstr ""
 msgid "Fail to obtain certificate"
 msgstr "Не удалось получить сертификат"
 
+#: src/constants/errors/docker.ts:4
+#, fuzzy
+msgid "Failed to attach to exec instance: {0}"
+msgstr "Не удалось включить %{msg}"
+
 #: src/constants/errors/backup.ts:5
 msgid "Failed to backup Nginx config files: {0}"
 msgstr ""
@@ -1666,6 +1683,11 @@ msgstr ""
 msgid "Failed to evaluate symbolic links: {0}"
 msgstr "Не удалось включить %{msg}"
 
+#: src/constants/errors/docker.ts:3
+#, fuzzy
+msgid "Failed to exec command: {0}"
+msgstr "Не удалось включить %{msg}"
+
 #: src/constants/errors/backup.ts:35
 #, fuzzy
 msgid "Failed to extract archive: {0}"
@@ -1694,6 +1716,11 @@ msgstr "Не удалось получить информацию о серти�
 #, fuzzy
 msgid "Failed to get performance data"
 msgstr "Не удалось получить информацию о сертификате"
+
+#: src/constants/errors/docker.ts:8
+#, fuzzy
+msgid "Failed to inspect container: {0}"
+msgstr "Не удалось включить %{msg}"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:77
 #, fuzzy
@@ -1735,6 +1762,11 @@ msgstr ""
 #: src/constants/errors/self_check.ts:3
 msgid "Failed to read nginx.conf"
 msgstr ""
+
+#: src/constants/errors/docker.ts:5
+#, fuzzy
+msgid "Failed to read output: {0}"
+msgstr "Не удалось включить %{msg}"
 
 #: src/constants/errors/backup.ts:21
 #, fuzzy
@@ -1822,13 +1854,9 @@ msgstr "Для китайских пользователей: https://mirror.ghp
 msgid "Form parse failed"
 msgstr "Дублирование не удалось"
 
-#: src/views/config/ConfigEditor.vue:271
+#: src/views/config/ConfigEditor.vue:269
 msgid "Format Code"
 msgstr "Форматировать код"
-
-#: src/views/config/ConfigEditor.vue:218
-msgid "Format error %{msg}"
-msgstr "Ошибка формата %{msg}"
 
 #: src/views/config/ConfigEditor.vue:216
 msgid "Format successfully"
@@ -1904,7 +1932,7 @@ msgstr "Скрыть"
 msgid "Higher value means better connection reuse"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:256
+#: src/views/config/ConfigEditor.vue:254
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
 #: src/views/stream/components/StreamEditor.vue:43
 #, fuzzy
@@ -2085,7 +2113,7 @@ msgid "Invalid file path: {0}"
 msgstr "Неверное имя файла"
 
 #: src/views/config/components/Rename.vue:66
-#: src/views/config/ConfigEditor.vue:305
+#: src/views/config/ConfigEditor.vue:303
 msgid "Invalid filename"
 msgstr "Неверное имя файла"
 
@@ -2508,7 +2536,7 @@ msgstr "Многострочная директива"
 #: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:311
+#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:309
 #: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:33
@@ -2551,7 +2579,7 @@ msgstr "Установить"
 msgid "New name"
 msgstr "Новое имя"
 
-#: src/views/config/ConfigEditor.vue:324
+#: src/views/config/ConfigEditor.vue:322
 msgid "New Path"
 msgstr "Новый путь"
 
@@ -2651,6 +2679,11 @@ msgstr "Путь для Nginx Error Log"
 #: src/views/dashboard/NginxDashBoard.vue:131
 #: src/views/dashboard/NginxDashBoard.vue:80
 msgid "Nginx is not running"
+msgstr "Nginx не работает"
+
+#: src/constants/errors/docker.ts:9
+#, fuzzy
+msgid "Nginx is not running in another container"
 msgstr "Nginx не работает"
 
 #: src/views/dashboard/NginxDashBoard.vue:112
@@ -2983,11 +3016,11 @@ msgstr ""
 msgid "Otp or recovery code empty"
 msgstr "Код OTP или восстановления пуст"
 
-#: src/views/config/ConfigEditor.vue:349
+#: src/views/config/ConfigEditor.vue:347
 msgid "Overwrite"
 msgstr "Перезаписать"
 
-#: src/views/config/ConfigEditor.vue:353
+#: src/views/config/ConfigEditor.vue:351
 msgid "Overwrite exist file"
 msgstr "Перезаписать существующий файл"
 
@@ -3035,7 +3068,7 @@ msgstr ""
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
-#: src/views/config/ConfigEditor.vue:318
+#: src/views/config/ConfigEditor.vue:316
 #: src/views/nginx_log/NginxLogList.vue:41
 msgid "Path"
 msgstr "Путь"
@@ -3134,7 +3167,7 @@ msgid ""
 msgstr ""
 
 #: src/views/config/components/Rename.vue:65
-#: src/views/config/ConfigEditor.vue:304
+#: src/views/config/ConfigEditor.vue:302
 msgid "Please input a filename"
 msgstr "Пожалуйста, введите имя файла"
 
@@ -3379,6 +3412,11 @@ msgstr "Перегрузить"
 #, fuzzy
 msgid "Reload Nginx"
 msgstr "Перезагружается nginx"
+
+#: src/constants/errors/nginx.ts:3
+#, fuzzy
+msgid "Reload nginx failed: {0}"
+msgstr "Не удалось включить %{msg}"
 
 #: src/components/Notification/notifications.ts:10
 #, fuzzy
@@ -3670,7 +3708,7 @@ msgstr "Выполняется"
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
 #: src/views/certificate/components/CertificateEditor.vue:266
 #: src/views/config/components/ConfigName.vue:59
-#: src/views/config/ConfigEditor.vue:277
+#: src/views/config/ConfigEditor.vue:275
 #: src/views/preference/components/Passkey.vue:130
 #: src/views/preference/Preference.vue:231
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -4517,7 +4555,7 @@ msgstr "Успешно обновлено"
 
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
-#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:331
+#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:329
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:38
@@ -4810,6 +4848,9 @@ msgstr "Ваши старые коды больше не будут работа
 #: src/views/preference/components/Passkey.vue:75
 msgid "Your passkeys"
 msgstr ""
+
+#~ msgid "Format error %{msg}"
+#~ msgstr "Ошибка формата %{msg}"
 
 #~ msgid "Failed to save, syntax error(s) was detected in the configuration."
 #~ msgstr ""

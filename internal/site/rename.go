@@ -2,16 +2,17 @@ package site
 
 import (
 	"fmt"
+	"net/http"
+	"os"
+	"runtime"
+	"sync"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/go-resty/resty/v2"
 	"github.com/uozi-tech/cosy/logger"
-	"net/http"
-	"os"
-	"runtime"
-	"sync"
 )
 
 func Rename(oldName string, newName string) (err error) {
@@ -47,13 +48,19 @@ func Rename(oldName string, newName string) (err error) {
 	}
 
 	// test nginx configuration
-	output := nginx.TestConf()
+	output, err := nginx.TestConfig()
+	if err != nil {
+		return
+	}
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		return fmt.Errorf("%s", output)
 	}
 
 	// reload nginx
-	output = nginx.Reload()
+	output, err = nginx.Reload()
+	if err != nil {
+		return
+	}
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		return fmt.Errorf("%s", output)
 	}

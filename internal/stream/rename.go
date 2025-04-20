@@ -49,13 +49,19 @@ func Rename(oldName string, newName string) (err error) {
 	}
 
 	// test nginx configuration
-	output := nginx.TestConf()
+	output, err := nginx.TestConfig()
+	if err != nil {
+		return
+	}
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		return cosy.WrapErrorWithParams(ErrNginxTestFailed, output)
 	}
 
 	// reload nginx
-	output = nginx.Reload()
+	output, err = nginx.Reload()
+	if err != nil {
+		return
+	}
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
 	}
