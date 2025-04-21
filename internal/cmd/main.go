@@ -26,10 +26,11 @@ func NewAppCmd() *cli.Command {
 				},
 			},
 			{
-				Name:  "reset-password",
-				Usage: "Reset the initial user password",
+				Name:   "reset-password",
+				Usage:  "Reset the initial user password",
 				Action: user.ResetInitUserPassword,
 			},
+			UpgradeDockerStep2Command,
 		},
 		Flags: []cli.Flag{
 			&cli.StringFlag{

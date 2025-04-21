@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-04-19 14:14+0800\n"
+"PO-Revision-Date: 2025-04-21 14:19+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
 "Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
 "projects/nginx-ui/frontend/zh_Hans/>\n"
@@ -679,7 +679,7 @@ msgstr "命令"
 
 #: src/constants/errors/docker.ts:6
 msgid "Command exited with unexpected exit code: {0}, error: {1}"
-msgstr ""
+msgstr "命令以意外退出代码退出：{0}，错误：{1}"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:115
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
@@ -758,7 +758,7 @@ msgstr "连接超时时间"
 
 #: src/constants/errors/docker.ts:7
 msgid "Container status unknown"
-msgstr ""
+msgstr "未知容器状态"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:120
 #: src/components/NgxConfigEditor/LocationEditor.vue:116
@@ -1168,7 +1168,7 @@ msgstr "你想删除这个 Upstream 吗？"
 
 #: src/constants/errors/docker.ts:2
 msgid "Docker client not initialized"
-msgstr ""
+msgstr "Docker 客户端未初始化"
 
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
@@ -1428,9 +1428,8 @@ msgid "Fail to obtain certificate"
 msgstr "获取证书失败"
 
 #: src/constants/errors/docker.ts:4
-#, fuzzy
 msgid "Failed to attach to exec instance: {0}"
-msgstr "解压缩失败：{0}"
+msgstr "连接执行实例失败：{0}"
 
 #: src/constants/errors/backup.ts:5
 msgid "Failed to backup Nginx config files: {0}"
@@ -1507,6 +1506,10 @@ msgstr "创建还原目录失败：{0}"
 #: src/constants/errors/backup.ts:50
 msgid "Failed to create symbolic link: {0}"
 msgstr "创建符号链接失败：{0}"
+
+#: src/constants/errors/docker.ts:13
+msgid "Failed to create temp container: {0}"
+msgstr "创建临时容器失败：{0}"
 
 #: src/constants/errors/backup.ts:2
 msgid "Failed to create temporary directory"
@@ -1593,9 +1596,8 @@ msgid "Failed to evaluate symbolic links: {0}"
 msgstr "符号链接解析失败：{0}"
 
 #: src/constants/errors/docker.ts:3
-#, fuzzy
 msgid "Failed to exec command: {0}"
-msgstr "读取文件失败：{0}"
+msgstr "执行命令失败：{0}"
 
 #: src/constants/errors/backup.ts:35
 msgid "Failed to extract archive: {0}"
@@ -1613,6 +1615,10 @@ msgstr "生成初始化向量失败：{0}"
 msgid "Failed to get certificate information"
 msgstr "获取证书信息失败"
 
+#: src/constants/errors/docker.ts:10
+msgid "Failed to get hostname: {0}"
+msgstr "获取主机名失败： {0}"
+
 #: src/views/dashboard/components/ParamsOptimization.vue:61
 msgid "Failed to get Nginx performance settings"
 msgstr "获取 Nginx 性能参数失败"
@@ -1622,9 +1628,12 @@ msgid "Failed to get performance data"
 msgstr "获取性能数据失败"
 
 #: src/constants/errors/docker.ts:8
-#, fuzzy
 msgid "Failed to inspect container: {0}"
-msgstr "复制文件内容失败：{0}"
+msgstr "检查容器失败：{0}"
+
+#: src/constants/errors/docker.ts:12
+msgid "Failed to inspect current container: {0}"
+msgstr "检查当前容器失败：{0}"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:77
 msgid "Failed to load history records"
@@ -1646,6 +1655,10 @@ msgstr "打开压缩文件失败：{0}"
 msgid "Failed to parse nginx.conf"
 msgstr "解析 nginx.conf 失败"
 
+#: src/constants/errors/docker.ts:11
+msgid "Failed to pull image: {0}"
+msgstr "拉取镜像失败：{0}"
+
 #: src/constants/errors/backup.ts:53
 msgid "Failed to read encrypted file: {0}"
 msgstr "读取加密文件失败：{0}"
@@ -1663,9 +1676,8 @@ msgid "Failed to read nginx.conf"
 msgstr "读取 nginx.conf 失败"
 
 #: src/constants/errors/docker.ts:5
-#, fuzzy
 msgid "Failed to read output: {0}"
-msgstr "读取文件失败：{0}"
+msgstr "读取输出失败：{0}"
 
 #: src/constants/errors/backup.ts:21
 msgid "Failed to read symlink: {0}"
@@ -1686,6 +1698,10 @@ msgstr "证书撤销失败"
 #: src/views/dashboard/components/ParamsOptimization.vue:90
 msgid "Failed to save Nginx performance settings"
 msgstr "保存 Nginx 性能参数失败"
+
+#: src/constants/errors/docker.ts:14
+msgid "Failed to start temp container: {0}"
+msgstr "启动临时容器失败：{0}"
 
 #: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
@@ -2535,9 +2551,8 @@ msgid "Nginx is not running"
 msgstr "Nginx 未启动"
 
 #: src/constants/errors/docker.ts:9
-#, fuzzy
 msgid "Nginx is not running in another container"
-msgstr "Nginx 未启动"
+msgstr "Nginx 未在另一个容器中运行"
 
 #: src/views/dashboard/NginxDashBoard.vue:112
 msgid "Nginx is running"
@@ -3225,9 +3240,8 @@ msgid "Reload Nginx"
 msgstr "重载 Nginx"
 
 #: src/constants/errors/nginx.ts:3
-#, fuzzy
 msgid "Reload nginx failed: {0}"
-msgstr "Nginx 重载失败：{0}"
+msgstr "重载 Nginx 失败: {0}"
 
 #: src/components/Notification/notifications.ts:10
 msgid "Reload Nginx on %{node} failed, response: %{resp}"
@@ -3653,19 +3667,19 @@ msgstr "使用 HTTP01 challenge provider"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
+"nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 https://nginxui."
-"com/guide/config-nginx.html"
+"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 https://"
+"nginxui.com/guide/config-nginx.html"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
+"nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.ErrorLogPath为空，更多信息请参阅 https://nginxui."
-"com/guide/config-nginx.html"
+"Settings.NginxLogSettings.ErrorLogPath为空，更多信息请参阅 https://"
+"nginxui.com/guide/config-nginx.html"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:147
 msgid "Shared Memory Zone"
@@ -4682,8 +4696,8 @@ msgstr "你的 Passkeys"
 #~ msgstr "请将远程 Nginx UI 升级到最新版本"
 
 #~ msgid ""
-#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
-#~ "%{resp}"
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %"
+#~ "{resp}"
 #~ msgstr ""
 #~ "将 %{env_name} 上的 %{orig_path} 重命名为 %{new_path} 失败，响应：%{resp}"
 
