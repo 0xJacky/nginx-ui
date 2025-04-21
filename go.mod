@@ -42,7 +42,7 @@ require (
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250225174229-c03497ddaef6
 	github.com/uozi-tech/cosy v1.20.0
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
-	github.com/urfave/cli/v3 v3.1.1
+	github.com/urfave/cli/v3 v3.2.0
 	golang.org/x/crypto v0.37.0
 	golang.org/x/net v0.39.0
 	gopkg.in/ini.v1 v1.67.0
