@@ -101,10 +101,6 @@ start-stop-daemon --stop --quiet --oknodo --retry=TERM/30/KILL/5 --pidfile $PID
 start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 ```
 
-## Stub Status
-
-在本節中，我們將會介紹 Nginx UI 中關於 Nginx stub status 模組的設定選項。
-
 ### StubStatusPort
 - 類型：`uint`
 - 預設值：`51820`
@@ -114,4 +110,24 @@ start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 
 ::: tip 提示
 請確保您設定的連接埠未被其他服務佔用。
+:::
+
+## 容器控制
+
+在本節中，我們將會介紹 Nginx UI 中關於控制運行在另一個 Docker 容器中的 Nginx 服務的設定選項。
+
+### ContainerName
+- 類型：`string`
+- 版本：`>= v2.0.0-rc.6`
+
+此選項用於指定執行 Nginx 的 Docker 容器名稱。
+
+如果此選項為空，Nginx UI 將控制本機或當前容器內的 Nginx 服務。
+
+如果此選項不為空，Nginx UI 將控制執行在指定容器中的 Nginx 服務。
+
+::: tip 提示
+如果使用 Nginx UI 官方容器，想要控制另外一個容器裡的 Nginx，務必將宿主機內的 docker.sock 映射到 Nginx UI 官方容器中。
+
+例如：`-v /var/run/docker.sock:/var/run/docker.sock`
 :::

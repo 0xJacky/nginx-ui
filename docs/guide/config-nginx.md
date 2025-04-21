@@ -101,17 +101,11 @@ If the `--sbin-path` path cannot be obtained from `nginx -V`, Nginx UI will use 
 nginx
 ```
 
-
-
 If the `--sbin-path` path can be obtained, Nginx UI will use the following command to start the Nginx service:
 
 ```bash
 start-stop-daemon --start --quiet --pidfile $PID --exec $SBIN_PATH
 ```
-
-## Stub Status
-
-In this section, we will introduce configuration options in Nginx UI for the Nginx stub status module.
 
 ### StubStatusPort
 - Type: `uint`
@@ -122,4 +116,24 @@ This option is used to set the port for the Nginx stub status module. The stub s
 
 ::: tip Tip
 Make sure the port you set is not being used by other services.
+:::
+
+## Container Control
+
+In this section, we will introduce configuration options in Nginx UI for controlling Nginx services running in another Docker container.
+
+### ContainerName
+- Type: `string`
+- Version: `>= v2.0.0-rc.6`
+
+This option is used to specify the name of the Docker container where Nginx is running.
+
+If this option is empty, Nginx UI will control the Nginx service on the local machine or within the current container.
+
+If this option is not empty, Nginx UI will control the Nginx service running in the specified container.
+
+::: tip Tip
+If you are using the official Nginx UI container and want to control Nginx in another container, you must map the host's docker.sock to the Nginx UI container.
+
+For example: `-v /var/run/docker.sock:/var/run/docker.sock`
 :::
