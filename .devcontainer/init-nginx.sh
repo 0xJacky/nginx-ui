@@ -6,4 +6,4 @@ if [ "$(ls -A /etc/nginx)" = "" ]; then
 fi
 
 # start nginx
-nginx -g "daemon off;"
+nginx

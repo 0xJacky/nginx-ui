@@ -80,7 +80,7 @@ msgid "Add a passkey"
 msgstr "أضف مفتاح مرور"
 
 #: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:171
-#: src/views/config/ConfigEditor.vue:246
+#: src/views/config/ConfigEditor.vue:244
 msgid "Add Configuration"
 msgstr "إضافة تكوين"
 
@@ -301,7 +301,7 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr ""
 
 #: src/views/certificate/components/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:268 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
 #: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
@@ -355,7 +355,7 @@ msgstr ""
 msgid "Base information"
 msgstr "المعلومات الأساسية"
 
-#: src/views/config/ConfigEditor.vue:296
+#: src/views/config/ConfigEditor.vue:294
 #: src/views/site/site_edit/components/RightPanel/RightPanel.vue:30
 #: src/views/stream/components/RightPanel/RightPanel.vue:19
 msgid "Basic"
@@ -594,7 +594,7 @@ msgstr[3] "الشهادات المعدلة"
 msgstr[4] "الشهادات المعدلة"
 msgstr[5] "الشهادات المعدلة"
 
-#: src/views/config/ConfigEditor.vue:324
+#: src/views/config/ConfigEditor.vue:322
 msgid "Changed Path"
 msgstr "المسار المتغير"
 
@@ -707,6 +707,10 @@ msgstr ""
 msgid "Command"
 msgstr "أمر"
 
+#: src/constants/errors/docker.ts:6
+msgid "Command exited with unexpected exit code: {0}, error: {1}"
+msgstr ""
+
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:115
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
 #: src/components/NgxConfigEditor/LocationEditor.vue:135
@@ -785,6 +789,10 @@ msgstr "تم فقدان الاتصال، يرجى تحديث الصفحة."
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
 msgid "Connection timeout period"
+msgstr ""
+
+#: src/constants/errors/docker.ts:7
+msgid "Container status unknown"
 msgstr ""
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:120
@@ -1018,7 +1026,7 @@ msgstr "تم الحذف بنجاح"
 msgid "Demo"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:340
+#: src/views/config/ConfigEditor.vue:338
 msgid "Deploy"
 msgstr "نشر"
 
@@ -1218,6 +1226,10 @@ msgstr "هل تريد إزالة هذا الخادم؟"
 msgid "Do you want to remove this upstream?"
 msgstr "هل تريد إزالة هذا المصدر؟"
 
+#: src/constants/errors/docker.ts:2
+msgid "Docker client not initialized"
+msgstr ""
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
 #, fuzzy
@@ -1281,7 +1293,7 @@ msgstr "تعديل %{n}"
 msgid "Edit %{n}"
 msgstr "تعديل %{n}"
 
-#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:246
+#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:244
 msgid "Edit Configuration"
 msgstr "تعديل التكوين"
 
@@ -1495,6 +1507,11 @@ msgstr ""
 msgid "Fail to obtain certificate"
 msgstr "فشل في الحصول على الشهادة"
 
+#: src/constants/errors/docker.ts:4
+#, fuzzy
+msgid "Failed to attach to exec instance: {0}"
+msgstr "فشل في التفعيل %{msg}"
+
 #: src/constants/errors/backup.ts:5
 #, fuzzy
 msgid "Failed to backup Nginx config files: {0}"
@@ -1580,6 +1597,11 @@ msgstr ""
 #: src/constants/errors/backup.ts:50
 #, fuzzy
 msgid "Failed to create symbolic link: {0}"
+msgstr "فشل في التفعيل %{msg}"
+
+#: src/constants/errors/docker.ts:13
+#, fuzzy
+msgid "Failed to create temp container: {0}"
 msgstr "فشل في التفعيل %{msg}"
 
 #: src/constants/errors/backup.ts:2
@@ -1680,6 +1702,11 @@ msgstr ""
 msgid "Failed to evaluate symbolic links: {0}"
 msgstr "فشل في التفعيل %{msg}"
 
+#: src/constants/errors/docker.ts:3
+#, fuzzy
+msgid "Failed to exec command: {0}"
+msgstr "فشل في التفعيل %{msg}"
+
 #: src/constants/errors/backup.ts:35
 #, fuzzy
 msgid "Failed to extract archive: {0}"
@@ -1699,6 +1726,11 @@ msgstr "فشل في الحصول على معلومات الشهادة"
 msgid "Failed to get certificate information"
 msgstr "فشل في الحصول على معلومات الشهادة"
 
+#: src/constants/errors/docker.ts:10
+#, fuzzy
+msgid "Failed to get hostname: {0}"
+msgstr "فشل في التفعيل %{msg}"
+
 #: src/views/dashboard/components/ParamsOptimization.vue:61
 #, fuzzy
 msgid "Failed to get Nginx performance settings"
@@ -1708,6 +1740,16 @@ msgstr "فشل في الحصول على معلومات الشهادة"
 #, fuzzy
 msgid "Failed to get performance data"
 msgstr "فشل في الحصول على معلومات الشهادة"
+
+#: src/constants/errors/docker.ts:8
+#, fuzzy
+msgid "Failed to inspect container: {0}"
+msgstr "فشل في التفعيل %{msg}"
+
+#: src/constants/errors/docker.ts:12
+#, fuzzy
+msgid "Failed to inspect current container: {0}"
+msgstr "فشل في التفعيل %{msg}"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:77
 #, fuzzy
@@ -1733,6 +1775,11 @@ msgstr "فشل في التفعيل %{msg}"
 msgid "Failed to parse nginx.conf"
 msgstr ""
 
+#: src/constants/errors/docker.ts:11
+#, fuzzy
+msgid "Failed to pull image: {0}"
+msgstr "فشل في التفعيل %{msg}"
+
 #: src/constants/errors/backup.ts:53
 #, fuzzy
 msgid "Failed to read encrypted file: {0}"
@@ -1751,6 +1798,11 @@ msgstr "فشل في التفعيل %{msg}"
 #: src/constants/errors/self_check.ts:3
 #, fuzzy
 msgid "Failed to read nginx.conf"
+msgstr "فشل في التفعيل %{msg}"
+
+#: src/constants/errors/docker.ts:5
+#, fuzzy
+msgid "Failed to read output: {0}"
 msgstr "فشل في التفعيل %{msg}"
 
 #: src/constants/errors/backup.ts:21
@@ -1776,6 +1828,11 @@ msgstr "فشل في الحصول على الشهادة"
 #, fuzzy
 msgid "Failed to save Nginx performance settings"
 msgstr "فشل في الحصول على معلومات الشهادة"
+
+#: src/constants/errors/docker.ts:14
+#, fuzzy
+msgid "Failed to start temp container: {0}"
+msgstr "فشل في التفعيل %{msg}"
 
 #: src/constants/errors/backup.ts:38
 #, fuzzy
@@ -1838,13 +1895,9 @@ msgstr "للمستخدمين الصين: /https://mirror.ghproxy.com"
 msgid "Form parse failed"
 msgstr "فشل التكرار"
 
-#: src/views/config/ConfigEditor.vue:271
+#: src/views/config/ConfigEditor.vue:269
 msgid "Format Code"
 msgstr "تنسيق الكود"
-
-#: src/views/config/ConfigEditor.vue:218
-msgid "Format error %{msg}"
-msgstr "خطأ في التنسيق %{msg}"
 
 #: src/views/config/ConfigEditor.vue:216
 msgid "Format successfully"
@@ -1920,7 +1973,7 @@ msgstr "إخفاء"
 msgid "Higher value means better connection reuse"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:256
+#: src/views/config/ConfigEditor.vue:254
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
 #: src/views/stream/components/StreamEditor.vue:43
 #, fuzzy
@@ -2101,7 +2154,7 @@ msgid "Invalid file path: {0}"
 msgstr "رمز 2FA أو الاسترداد غير صالح"
 
 #: src/views/config/components/Rename.vue:66
-#: src/views/config/ConfigEditor.vue:305
+#: src/views/config/ConfigEditor.vue:303
 msgid "Invalid filename"
 msgstr "اسم ملف غير صالح"
 
@@ -2525,7 +2578,7 @@ msgstr "توجيه متعدد الأسطر"
 #: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:311
+#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:309
 #: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:33
@@ -2568,7 +2621,7 @@ msgstr "تثبيت"
 msgid "New name"
 msgstr "اسم جديد"
 
-#: src/views/config/ConfigEditor.vue:324
+#: src/views/config/ConfigEditor.vue:322
 msgid "New Path"
 msgstr "مسار جديد"
 
@@ -2667,6 +2720,11 @@ msgstr "مسار سجل أخطاء Nginx"
 #: src/views/dashboard/NginxDashBoard.vue:131
 #: src/views/dashboard/NginxDashBoard.vue:80
 msgid "Nginx is not running"
+msgstr "Nginx لا يعمل"
+
+#: src/constants/errors/docker.ts:9
+#, fuzzy
+msgid "Nginx is not running in another container"
 msgstr "Nginx لا يعمل"
 
 #: src/views/dashboard/NginxDashBoard.vue:112
@@ -2999,11 +3057,11 @@ msgstr ""
 msgid "Otp or recovery code empty"
 msgstr "استخدم رمز الاسترداد"
 
-#: src/views/config/ConfigEditor.vue:349
+#: src/views/config/ConfigEditor.vue:347
 msgid "Overwrite"
 msgstr "الكتابة فوق"
 
-#: src/views/config/ConfigEditor.vue:353
+#: src/views/config/ConfigEditor.vue:351
 msgid "Overwrite exist file"
 msgstr "الكتابة فوق الملف الموجود"
 
@@ -3054,7 +3112,7 @@ msgstr ""
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
-#: src/views/config/ConfigEditor.vue:318
+#: src/views/config/ConfigEditor.vue:316
 #: src/views/nginx_log/NginxLogList.vue:41
 msgid "Path"
 msgstr "مسار"
@@ -3150,7 +3208,7 @@ msgid ""
 msgstr ""
 
 #: src/views/config/components/Rename.vue:65
-#: src/views/config/ConfigEditor.vue:304
+#: src/views/config/ConfigEditor.vue:302
 msgid "Please input a filename"
 msgstr "يرجى إدخال اسم الملف"
 
@@ -3385,6 +3443,11 @@ msgstr "إعادة تحميل"
 #, fuzzy
 msgid "Reload Nginx"
 msgstr "إعادة تحميل nginx"
+
+#: src/constants/errors/nginx.ts:3
+#, fuzzy
+msgid "Reload nginx failed: {0}"
+msgstr "فشل في التفعيل %{msg}"
 
 #: src/components/Notification/notifications.ts:10
 #, fuzzy
@@ -3675,7 +3738,7 @@ msgstr "يعمل"
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
 #: src/views/certificate/components/CertificateEditor.vue:266
 #: src/views/config/components/ConfigName.vue:59
-#: src/views/config/ConfigEditor.vue:277
+#: src/views/config/ConfigEditor.vue:275
 #: src/views/preference/components/Passkey.vue:130
 #: src/views/preference/Preference.vue:231
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -4519,7 +4582,7 @@ msgstr "تم التحديث بنجاح"
 
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
-#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:331
+#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:329
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:38
@@ -4815,6 +4878,9 @@ msgstr ""
 #: src/views/preference/components/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "مفاتيح المرور الخاصة بك"
+
+#~ msgid "Format error %{msg}"
+#~ msgstr "خطأ في التنسيق %{msg}"
 
 #~ msgid "Failed to save, syntax error(s) was detected in the configuration."
 #~ msgstr "فشل في الحفظ، تم اكتشاف خطأ(أخطاء) في بناء الجملة في التكوين."

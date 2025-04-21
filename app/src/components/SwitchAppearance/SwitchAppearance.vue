@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Ref } from 'vue'
-import VPSwitch from '@/components/VPSwitch/VPSwitch.vue'
+import VPSwitch from '@/components/VPSwitch'
 import { useSettingsStore } from '@/pinia'
 import VPIconMoon from './icons/VPIconMoon.vue'
 import VPIconSun from './icons/VPIconSun.vue'

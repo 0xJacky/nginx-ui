@@ -76,7 +76,10 @@ func EnableMaintenance(name string) (err error) {
 	}
 
 	// Test nginx config, if not pass, then restore original configuration
-	output := nginx.TestConf()
+	output, err := nginx.TestConfig()
+	if err != nil {
+		return
+	}
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		// Configuration error, cleanup and revert
 		_ = os.Remove(maintenanceConfigPath)
@@ -87,7 +90,10 @@ func EnableMaintenance(name string) (err error) {
 	}
 
 	// Reload nginx
-	output = nginx.Reload()
+	output, err = nginx.Reload()
+	if err != nil {
+		return
+	}
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
 	}
@@ -132,7 +138,10 @@ func DisableMaintenance(name string) (err error) {
 	}
 
 	// Test nginx config, if not pass, then revert
-	output := nginx.TestConf()
+	output, err := nginx.TestConfig()
+	if err != nil {
+		return
+	}
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		// Configuration error, cleanup and revert
 		_ = os.Remove(enabledConfigFilePath)
@@ -141,7 +150,10 @@ func DisableMaintenance(name string) (err error) {
 	}
 
 	// Reload nginx
-	output = nginx.Reload()
+	output, err = nginx.Reload()
+	if err != nil {
+		return
+	}
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		return fmt.Errorf("%s", output)
 	}

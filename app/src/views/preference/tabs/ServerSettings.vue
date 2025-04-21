@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
-import type { Settings } from '@/api/settings'
 import ChangeCert from '@/views/site/site_edit/components/Cert/ChangeCert.vue'
+import useSystemSettingsStore from '../store'
 
-const data: Ref<Settings> = inject('data') as Ref<Settings>
+const systemSettingsStore = useSystemSettingsStore()
+const { data } = storeToRefs(systemSettingsStore)
 
 function handleCertChange(certs: Cert[]) {
   if (certs.length > 0 && data.value?.server) {

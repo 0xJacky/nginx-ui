@@ -2,7 +2,7 @@
 import type { TwoFAStatus } from '@/api/2fa'
 import type { RecoveryCode } from '@/api/recovery'
 import recovery from '@/api/recovery'
-import use2FAModal from '@/components/TwoFA/use2FAModal'
+import { use2FAModal } from '@/components/TwoFA'
 import { CopyOutlined, WarningOutlined } from '@ant-design/icons-vue'
 import { UseClipboard } from '@vueuse/components'
 import { message } from 'ant-design-vue'

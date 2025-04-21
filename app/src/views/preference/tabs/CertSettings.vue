@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Settings } from '@/api/settings'
 import { DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
 import Draggable from 'vuedraggable'
+import useSystemSettingsStore from '../store'
 
-const data: Ref<Settings> = inject('data') as Ref<Settings>
-const errors: Record<string, Record<string, string>> = inject('errors') as Record<string, Record<string, string>>
+const systemSettingsStore = useSystemSettingsStore()
+const { data, errors } = storeToRefs(systemSettingsStore)
 </script>
 
 <template>

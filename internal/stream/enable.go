@@ -35,13 +35,19 @@ func Enable(name string) (err error) {
 	}
 
 	// Test nginx config, if not pass, then disable the site.
-	output := nginx.TestConf()
+	output, err := nginx.TestConfig()
+	if err != nil {
+		return
+	}
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		_ = os.Remove(enabledConfigFilePath)
 		return cosy.WrapErrorWithParams(ErrNginxTestFailed, output)
 	}
 
-	output = nginx.Reload()
+	output, err = nginx.Reload()
+	if err != nil {
+		return
+	}
 	if nginx.GetLogLevel(output) > nginx.Warn {
 		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
 	}

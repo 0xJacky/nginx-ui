@@ -25,6 +25,7 @@ func GetSettings(c *gin.Context) {
 	settings.NginxSettings.ErrorLogPath = nginx.GetErrorLogPath()
 	settings.NginxSettings.ConfigDir = nginx.GetConfPath()
 	settings.NginxSettings.PIDPath = nginx.GetPIDPath()
+	settings.NginxSettings.StubStatusPort = settings.NginxSettings.GetStubStatusPort()
 
 	if settings.NginxSettings.ReloadCmd == "" {
 		settings.NginxSettings.ReloadCmd = "nginx -s reload"

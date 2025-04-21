@@ -4,7 +4,6 @@
 package nginx
 
 import (
-	"errors"
 	"net/http"
 	"strings"
 	"time"
@@ -119,10 +118,14 @@ func ToggleStubStatus(c *gin.Context) {
 	}
 
 	// Reload Nginx configuration
-	reloadOutput := nginx.Reload()
+	reloadOutput, err := nginx.Reload()
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
 	if len(reloadOutput) > 0 && (strings.Contains(strings.ToLower(reloadOutput), "error") ||
 		strings.Contains(strings.ToLower(reloadOutput), "failed")) {
-		cosy.ErrHandler(c, errors.New("Reload Nginx failed"))
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(nginx.ErrReloadFailed, reloadOutput))
 		return
 	}
 

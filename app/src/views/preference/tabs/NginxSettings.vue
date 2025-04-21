@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { Settings } from '@/api/settings'
+import useSystemSettingsStore from '../store'
 
-const data: Ref<Settings> = inject('data') as Ref<Settings>
+const systemSettingsStore = useSystemSettingsStore()
+const { data } = storeToRefs(systemSettingsStore)
 </script>
 
 <template>
@@ -41,6 +42,19 @@ const data: Ref<Settings> = inject('data') as Ref<Settings>
     </AFormItem>
     <AFormItem :label="$gettext('Nginx Restart Command')">
       {{ data.nginx.restart_cmd }}
+    </AFormItem>
+    <AFormItem :label="$gettext('Nginx Control Mode')">
+      <div v-if="data.nginx.container_name">
+        <ATag color="blue" tag>
+          {{ $gettext('External Docker Container') }}
+        </ATag>
+        {{ data.nginx.container_name }}
+      </div>
+      <div v-else>
+        <ATag color="green" tag>
+          {{ $gettext('Local') }}
+        </ATag>
+      </div>
     </AFormItem>
   </AForm>
 </template>

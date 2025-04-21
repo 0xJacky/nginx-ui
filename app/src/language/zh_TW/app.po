@@ -85,7 +85,7 @@ msgid "Add a passkey"
 msgstr "新增通行金鑰"
 
 #: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:171
-#: src/views/config/ConfigEditor.vue:246
+#: src/views/config/ConfigEditor.vue:244
 msgid "Add Configuration"
 msgstr "新增設定"
 
@@ -298,7 +298,7 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr "自動從網站和串流設定中索引。"
 
 #: src/views/certificate/components/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:268 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
 #: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
@@ -349,7 +349,7 @@ msgstr "Bark"
 msgid "Base information"
 msgstr "基本資訊"
 
-#: src/views/config/ConfigEditor.vue:296
+#: src/views/config/ConfigEditor.vue:294
 #: src/views/site/site_edit/components/RightPanel/RightPanel.vue:30
 #: src/views/stream/components/RightPanel/RightPanel.vue:19
 msgid "Basic"
@@ -566,7 +566,7 @@ msgid "Changed Certificate"
 msgid_plural "Changed Certificates"
 msgstr[0] "變更後憑證"
 
-#: src/views/config/ConfigEditor.vue:324
+#: src/views/config/ConfigEditor.vue:322
 msgid "Changed Path"
 msgstr "變更後路徑"
 
@@ -685,6 +685,10 @@ msgstr ""
 msgid "Command"
 msgstr "命令"
 
+#: src/constants/errors/docker.ts:6
+msgid "Command exited with unexpected exit code: {0}, error: {1}"
+msgstr ""
+
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:115
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
 #: src/components/NgxConfigEditor/LocationEditor.vue:135
@@ -760,6 +764,10 @@ msgstr "連線中斷，請重新整理此頁面。"
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
 msgid "Connection timeout period"
 msgstr "連線逾時時間"
+
+#: src/constants/errors/docker.ts:7
+msgid "Container status unknown"
+msgstr ""
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:120
 #: src/components/NgxConfigEditor/LocationEditor.vue:116
@@ -980,7 +988,7 @@ msgstr "刪除成功"
 msgid "Demo"
 msgstr "演示"
 
-#: src/views/config/ConfigEditor.vue:340
+#: src/views/config/ConfigEditor.vue:338
 msgid "Deploy"
 msgstr "部署"
 
@@ -1168,6 +1176,10 @@ msgstr "您要移除此伺服器嗎？"
 msgid "Do you want to remove this upstream?"
 msgstr "您要移除這個 Upstream 嗎？"
 
+#: src/constants/errors/docker.ts:2
+msgid "Docker client not initialized"
+msgstr ""
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
 msgid "Document"
@@ -1224,7 +1236,7 @@ msgstr "編輯"
 msgid "Edit %{n}"
 msgstr "編輯 %{n}"
 
-#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:246
+#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:244
 msgid "Edit Configuration"
 msgstr "編輯設定"
 
@@ -1425,6 +1437,11 @@ msgstr "外部通知"
 msgid "Fail to obtain certificate"
 msgstr "取得憑證失敗"
 
+#: src/constants/errors/docker.ts:4
+#, fuzzy
+msgid "Failed to attach to exec instance: {0}"
+msgstr "無法提取存檔：{0}"
+
 #: src/constants/errors/backup.ts:5
 msgid "Failed to backup Nginx config files: {0}"
 msgstr "備份 Nginx 設定檔案失敗：{0}"
@@ -1500,6 +1517,11 @@ msgstr "無法建立還原目錄：{0}"
 #: src/constants/errors/backup.ts:50
 msgid "Failed to create symbolic link: {0}"
 msgstr "建立符號連結失敗：{0}"
+
+#: src/constants/errors/docker.ts:13
+#, fuzzy
+msgid "Failed to create temp container: {0}"
+msgstr "無法建立壓縮項目：{0}"
 
 #: src/constants/errors/backup.ts:2
 msgid "Failed to create temporary directory"
@@ -1585,6 +1607,11 @@ msgstr "加密 Nginx UI 目錄失敗：{0}"
 msgid "Failed to evaluate symbolic links: {0}"
 msgstr "無法評估符號連結：{0}"
 
+#: src/constants/errors/docker.ts:3
+#, fuzzy
+msgid "Failed to exec command: {0}"
+msgstr "讀取檔案失敗：{0}"
+
 #: src/constants/errors/backup.ts:35
 msgid "Failed to extract archive: {0}"
 msgstr "無法提取存檔：{0}"
@@ -1601,6 +1628,11 @@ msgstr "無法生成初始化向量：{0}"
 msgid "Failed to get certificate information"
 msgstr "取得憑證資訊失敗"
 
+#: src/constants/errors/docker.ts:10
+#, fuzzy
+msgid "Failed to get hostname: {0}"
+msgstr "複製檔案內容失敗：{0}"
+
 #: src/views/dashboard/components/ParamsOptimization.vue:61
 msgid "Failed to get Nginx performance settings"
 msgstr "無法取得 Nginx 效能設定"
@@ -1608,6 +1640,16 @@ msgstr "無法取得 Nginx 效能設定"
 #: src/composables/useNginxPerformance.ts:49
 msgid "Failed to get performance data"
 msgstr "無法取得效能資料"
+
+#: src/constants/errors/docker.ts:8
+#, fuzzy
+msgid "Failed to inspect container: {0}"
+msgstr "複製檔案內容失敗：{0}"
+
+#: src/constants/errors/docker.ts:12
+#, fuzzy
+msgid "Failed to inspect current container: {0}"
+msgstr "複製檔案內容失敗：{0}"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:77
 msgid "Failed to load history records"
@@ -1629,6 +1671,11 @@ msgstr "無法開啟壓縮檔：{0}"
 msgid "Failed to parse nginx.conf"
 msgstr "解析 nginx.conf 失敗"
 
+#: src/constants/errors/docker.ts:11
+#, fuzzy
+msgid "Failed to pull image: {0}"
+msgstr "讀取檔案失敗：{0}"
+
 #: src/constants/errors/backup.ts:53
 msgid "Failed to read encrypted file: {0}"
 msgstr "無法讀取加密檔案：{0}"
@@ -1644,6 +1691,11 @@ msgstr "無法讀取雜湊資訊檔案：{0}"
 #: src/constants/errors/self_check.ts:3
 msgid "Failed to read nginx.conf"
 msgstr "讀取 nginx.conf 失敗"
+
+#: src/constants/errors/docker.ts:5
+#, fuzzy
+msgid "Failed to read output: {0}"
+msgstr "讀取檔案失敗：{0}"
 
 #: src/constants/errors/backup.ts:21
 msgid "Failed to read symlink: {0}"
@@ -1664,6 +1716,11 @@ msgstr "撤銷憑證失敗"
 #: src/views/dashboard/components/ParamsOptimization.vue:90
 msgid "Failed to save Nginx performance settings"
 msgstr "儲存 Nginx 效能設定失敗"
+
+#: src/constants/errors/docker.ts:14
+#, fuzzy
+msgid "Failed to start temp container: {0}"
+msgstr "複製檔案內容失敗：{0}"
 
 #: src/constants/errors/backup.ts:38
 msgid "Failed to verify hashes: {0}"
@@ -1724,13 +1781,9 @@ msgstr "中國使用者：https://mirror.ghproxy.com/"
 msgid "Form parse failed"
 msgstr "表單解析失敗"
 
-#: src/views/config/ConfigEditor.vue:271
+#: src/views/config/ConfigEditor.vue:269
 msgid "Format Code"
 msgstr "格式化代碼"
-
-#: src/views/config/ConfigEditor.vue:218
-msgid "Format error %{msg}"
-msgstr "格式錯誤 %{msg}"
 
 #: src/views/config/ConfigEditor.vue:216
 msgid "Format successfully"
@@ -1802,7 +1855,7 @@ msgstr "隱藏"
 msgid "Higher value means better connection reuse"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:256
+#: src/views/config/ConfigEditor.vue:254
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
 #: src/views/stream/components/StreamEditor.vue:43
 msgid "History"
@@ -1972,7 +2025,7 @@ msgid "Invalid file path: {0}"
 msgstr "無效的檔案路徑：{0}"
 
 #: src/views/config/components/Rename.vue:66
-#: src/views/config/ConfigEditor.vue:305
+#: src/views/config/ConfigEditor.vue:303
 msgid "Invalid filename"
 msgstr "無效的檔案名"
 
@@ -2379,7 +2432,7 @@ msgstr "多行指令"
 #: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:311
+#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:309
 #: src/views/environments/group/columns.ts:8
 #: src/views/environments/list/envColumns.tsx:9
 #: src/views/nginx_log/NginxLogList.vue:33
@@ -2421,7 +2474,7 @@ msgstr "新安裝"
 msgid "New name"
 msgstr "新名稱"
 
-#: src/views/config/ConfigEditor.vue:324
+#: src/views/config/ConfigEditor.vue:322
 msgid "New Path"
 msgstr "新路徑"
 
@@ -2517,6 +2570,11 @@ msgstr "Nginx 錯誤日誌路徑"
 #: src/views/dashboard/NginxDashBoard.vue:131
 #: src/views/dashboard/NginxDashBoard.vue:80
 msgid "Nginx is not running"
+msgstr "Nginx 未執行"
+
+#: src/constants/errors/docker.ts:9
+#, fuzzy
+msgid "Nginx is not running in another container"
 msgstr "Nginx 未執行"
 
 #: src/views/dashboard/NginxDashBoard.vue:112
@@ -2832,11 +2890,11 @@ msgstr "其他"
 msgid "Otp or recovery code empty"
 msgstr "OTP 或復原碼為空"
 
-#: src/views/config/ConfigEditor.vue:349
+#: src/views/config/ConfigEditor.vue:347
 msgid "Overwrite"
 msgstr "覆寫"
 
-#: src/views/config/ConfigEditor.vue:353
+#: src/views/config/ConfigEditor.vue:351
 msgid "Overwrite exist file"
 msgstr "覆寫現有檔案"
 
@@ -2884,7 +2942,7 @@ msgstr "密碼長度不能超過 20 個字元"
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
-#: src/views/config/ConfigEditor.vue:318
+#: src/views/config/ConfigEditor.vue:316
 #: src/views/nginx_log/NginxLogList.vue:41
 msgid "Path"
 msgstr "路徑"
@@ -2976,7 +3034,7 @@ msgid ""
 msgstr "請立即在偏好設定中產生新的恢復碼，以免無法存取您的賬戶。"
 
 #: src/views/config/components/Rename.vue:65
-#: src/views/config/ConfigEditor.vue:304
+#: src/views/config/ConfigEditor.vue:302
 msgid "Please input a filename"
 msgstr "請輸入檔案名稱"
 
@@ -3204,6 +3262,11 @@ msgstr "重新載入"
 #: src/views/environments/list/Environment.vue:128
 msgid "Reload Nginx"
 msgstr "重新載入 Nginx"
+
+#: src/constants/errors/nginx.ts:3
+#, fuzzy
+msgid "Reload nginx failed: {0}"
+msgstr "讀取檔案失敗：{0}"
 
 #: src/components/Notification/notifications.ts:10
 msgid "Reload Nginx on %{node} failed, response: %{resp}"
@@ -3473,7 +3536,7 @@ msgstr "執行中"
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
 #: src/views/certificate/components/CertificateEditor.vue:266
 #: src/views/config/components/ConfigName.vue:59
-#: src/views/config/ConfigEditor.vue:277
+#: src/views/config/ConfigEditor.vue:275
 #: src/views/preference/components/Passkey.vue:130
 #: src/views/preference/Preference.vue:231
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -4266,7 +4329,7 @@ msgstr "更新成功"
 
 #: src/views/certificate/ACMEUser.vue:88
 #: src/views/certificate/DNSCredential.vue:27
-#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:331
+#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:329
 #: src/views/environments/group/columns.ts:37
 #: src/views/environments/list/envColumns.tsx:90
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:38
@@ -4561,6 +4624,9 @@ msgstr "您的舊代碼將不再有效。"
 #: src/views/preference/components/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "您的通行金鑰"
+
+#~ msgid "Format error %{msg}"
+#~ msgstr "格式錯誤 %{msg}"
 
 #~ msgid "Failed to save, syntax error(s) was detected in the configuration."
 #~ msgstr "儲存失敗，在設定中偵測到語法錯誤。"

@@ -45,7 +45,11 @@ func Save(absPath string, content string, cfg *model.Config) (err error) {
 		return
 	}
 
-	output := nginx.Reload()
+	output, err := nginx.Reload()
+	if err != nil {
+		return
+	} 
+
 	if nginx.GetLogLevel(output) >= nginx.Warn {
 		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
 	}
