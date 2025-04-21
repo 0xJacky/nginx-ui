@@ -3,8 +3,7 @@ package cluster
 import (
 	"net/http"
 
-	analytic2 "github.com/0xJacky/Nginx-UI/internal/analytic"
-	"github.com/0xJacky/Nginx-UI/internal/upgrader"
+	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/version"
 	"github.com/dustin/go-humanize"
 	"github.com/gin-gonic/gin"
@@ -21,17 +20,17 @@ func GetCurrentNode(c *gin.Context) {
 		return
 	}
 
-	runtimeInfo, err := upgrader.GetRuntimeInfo()
+	runtimeInfo, err := version.GetRuntimeInfo()
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
 	cpuInfo, _ := cpu.Info()
-	memory, _ := analytic2.GetMemoryStat()
+	memory, _ := analytic.GetMemoryStat()
 	ver := version.GetVersionInfo()
 	diskUsage, _ := disk.Usage(".")
 
-	nodeInfo := analytic2.NodeInfo{
+	nodeInfo := analytic.NodeInfo{
 		NodeRuntimeInfo: runtimeInfo,
 		CPUNum:          len(cpuInfo),
 		MemoryTotal:     memory.Total,
@@ -39,9 +38,9 @@ func GetCurrentNode(c *gin.Context) {
 		Version:         ver.Version,
 	}
 
-	stat := analytic2.GetNodeStat()
+	stat := analytic.GetNodeStat()
 
-	c.JSON(http.StatusOK, analytic2.Node{
+	c.JSON(http.StatusOK, analytic.Node{
 		NodeInfo: nodeInfo,
 		NodeStat: stat,
 	})

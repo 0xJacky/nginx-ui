@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/0xJacky/Nginx-UI/internal/upgrader"
+	"github.com/0xJacky/Nginx-UI/internal/version"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/client"
@@ -58,7 +58,7 @@ func UpgradeStepOne(channel string) (err error) {
 	ctx := context.Background()
 
 	// 1. Get the tag of the latest release
-	release, err := upgrader.GetRelease(channel)
+	release, err := version.GetRelease(channel)
 	if err != nil {
 		return err
 	}

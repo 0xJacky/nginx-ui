@@ -3,25 +3,26 @@ package analytic
 import (
 	"encoding/json"
 	"errors"
-	"github.com/0xJacky/Nginx-UI/internal/transport"
-	"github.com/0xJacky/Nginx-UI/internal/upgrader"
-	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/shirou/gopsutil/v4/load"
-	"github.com/shirou/gopsutil/v4/net"
-	"github.com/uozi-tech/cosy/logger"
 	"io"
 	"net/http"
 	"net/url"
 	"sync"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/internal/transport"
+	"github.com/0xJacky/Nginx-UI/internal/version"
+	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/shirou/gopsutil/v4/load"
+	"github.com/shirou/gopsutil/v4/net"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 type NodeInfo struct {
-	NodeRuntimeInfo upgrader.RuntimeInfo `json:"node_runtime_info"`
-	Version         string               `json:"version"`
-	CPUNum          int                  `json:"cpu_num"`
-	MemoryTotal     string               `json:"memory_total"`
-	DiskTotal       string               `json:"disk_total"`
+	NodeRuntimeInfo version.RuntimeInfo `json:"node_runtime_info"`
+	Version         string              `json:"version"`
+	CPUNum          int                 `json:"cpu_num"`
+	MemoryTotal     string              `json:"memory_total"`
+	DiskTotal       string              `json:"disk_total"`
 }
 
 type NodeStat struct {
@@ -77,7 +78,7 @@ func InitNode(env *model.Environment) (n *Node, err error) {
 
 	u, err := url.JoinPath(env.URL, "/api/node")
 	if err != nil {
-		return 
+		return
 	}
 
 	t, err := transport.NewTransport()
