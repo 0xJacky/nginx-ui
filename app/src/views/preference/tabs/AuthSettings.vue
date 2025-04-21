@@ -1,18 +1,18 @@
 <script setup lang="tsx">
 import type { TwoFAStatus } from '@/api/2fa'
 import type { RecoveryCode } from '@/api/recovery'
-import type { BannedIP, Settings } from '@/api/settings'
+import type { BannedIP } from '@/api/settings'
 import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Ref } from 'vue'
 import twoFA from '@/api/2fa'
 import setting from '@/api/settings'
-import RecoveryCodes from '@/views/preference/components/RecoveryCodes.vue'
-import TOTP from '@/views/preference/components/TOTP.vue'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import PasskeyRegistration from './components/Passkey.vue'
+import { Passkey, RecoveryCodes, TOTP } from '../components/AuthSettings'
+import useSystemSettingsStore from '../store'
 
-const data: Ref<Settings> = inject('data') as Ref<Settings>
+const systemSettingsStore = useSystemSettingsStore()
+const { data } = storeToRefs(systemSettingsStore)
 
 const bannedIPColumns = [{
   title: $gettext('IP'),
@@ -68,7 +68,7 @@ get2FAStatus()
   <div class="flex justify-center">
     <div>
       <h2>{{ $gettext('2FA Settings') }}</h2>
-      <PasskeyRegistration class="mb-4" />
+      <Passkey class="mb-4" />
 
       <TOTP
         v-model:recovery-codes="recoveryCodes"

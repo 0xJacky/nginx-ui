@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { Settings } from '@/api/settings'
-import SensitiveString from '@/components/SensitiveString/SensitiveString.vue'
+import SensitiveString from '@/components/SensitiveString'
+import useSystemSettingsStore from '../store'
 
-const data: Ref<Settings> = inject('data') as Ref<Settings>
+const systemSettingsStore = useSystemSettingsStore()
+const { data } = storeToRefs(systemSettingsStore)
 </script>
 
 <template>

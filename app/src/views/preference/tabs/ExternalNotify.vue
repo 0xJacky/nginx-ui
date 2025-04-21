@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import externalNotify from '@/api/external_notify'
 import { StdCurd } from '@/components/StdDesign/StdDataDisplay'
-import columns from './components/ExternalNotify/columns'
-import ExternalNotifyEditor from './components/ExternalNotify/ExternalNotifyEditor.vue'
+import ExternalNotifyEditor from '../components/ExternalNotify'
+import columns from '../components/ExternalNotify/columns'
 </script>
 
 <template>

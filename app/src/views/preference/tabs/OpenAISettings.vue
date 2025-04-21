@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Settings } from '@/api/settings'
 import { LLM_MODELS, LLM_PROVIDERS } from '@/constants/llm'
+import useSystemSettingsStore from '../store'
 
-const data: Ref<Settings> = inject('data') as Ref<Settings>
-const errors: Record<string, Record<string, string>> = inject('errors') as Record<string, Record<string, string>>
+const systemSettingsStore = useSystemSettingsStore()
+const { data, errors } = storeToRefs(systemSettingsStore)
 
 const models = LLM_MODELS.map(model => ({
   value: model,
