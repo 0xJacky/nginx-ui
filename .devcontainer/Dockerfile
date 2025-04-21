@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/base:jammy
+FROM mcr.microsoft.com/devcontainers/base:noble
 
 # Combine installation steps for Nginx and Go to avoid repetitive update/cleanup commands
 RUN apt-get update && \

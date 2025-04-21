@@ -2,6 +2,7 @@ package docker
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"os"
@@ -54,7 +55,7 @@ func removeAllTempContainers(ctx context.Context, cli *client.Client) (err error
 }
 
 // UpgradeStepOne Trigger in the OTA upgrade
-func UpgradeStepOne(channel string) (err error) {
+func UpgradeStepOne(channel string, progressChan chan<- float64) (err error) {
 	ctx := context.Background()
 
 	// 1. Get the tag of the latest release
@@ -78,8 +79,57 @@ func UpgradeStepOne(channel string) (err error) {
 	}
 	defer out.Close()
 
-	// Wait for pull to complete by reading the output
-	io.Copy(os.Stdout, out)
+	// Parse JSON stream and send progress updates through channel
+	decoder := json.NewDecoder(out)
+	type ProgressDetail struct {
+		Current int64 `json:"current"`
+		Total   int64 `json:"total"`
+	}
+	type PullStatus struct {
+		Status         string         `json:"status"`
+		ProgressDetail ProgressDetail `json:"progressDetail"`
+		ID             string         `json:"id"`
+	}
+
+	layers := make(map[string]float64)
+	var status PullStatus
+	var lastProgress float64
+
+	for {
+		if err := decoder.Decode(&status); err != nil {
+			if err == io.EOF {
+				break
+			}
+			logger.Error("Error decoding Docker pull status:", err)
+			continue
+		}
+
+		// Only process layers with progress information
+		if status.ProgressDetail.Total > 0 {
+			progress := float64(status.ProgressDetail.Current) / float64(status.ProgressDetail.Total) * 100
+			layers[status.ID] = progress
+
+			// Calculate overall progress (average of all layers)
+			var totalProgress float64
+			for _, p := range layers {
+				totalProgress += p
+			}
+			overallProgress := totalProgress / float64(len(layers))
+
+			// Only send progress updates when there's a meaningful change
+			if overallProgress > lastProgress+1 || overallProgress >= 100 {
+				if progressChan != nil {
+					progressChan <- overallProgress
+				}
+				lastProgress = overallProgress
+			}
+		}
+	}
+
+	// Ensure we send 100% at the end
+	if progressChan != nil && lastProgress < 100 {
+		progressChan <- 100
+	}
 
 	// 3. Create a temp container
 	// Clean up any existing temp containers

@@ -13,6 +13,7 @@ type Control struct {
 	Channel string `json:"channel"`
 }
 
+// BinaryUpgrade Upgrade the binary
 func BinaryUpgrade(ws *websocket.Conn, control *Control) {
 	_ = ws.WriteJSON(CoreUpgradeResp{
 		Status:  UpgradeStatusInfo,
