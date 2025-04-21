@@ -2,7 +2,7 @@
 import type { INginxLogData } from '@/api/nginx_log'
 import type ReconnectingWebSocket from 'reconnecting-websocket'
 import nginx_log from '@/api/nginx_log'
-import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
+import FooterToolBar from '@/components/FooterToolbar'
 import ws from '@/lib/websocket'
 import { debounce } from 'lodash'
 

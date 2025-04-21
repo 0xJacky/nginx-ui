@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import type { InstallLockResponse } from '@/api/install'
 import install from '@/api/install'
-import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
-import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
-import SystemRestoreContent from '@/components/SystemRestore/SystemRestoreContent.vue'
+import SetLanguage from '@/components/SetLanguage'
+import SwitchAppearance from '@/components/SwitchAppearance'
+import SystemRestoreContent from '@/components/SystemRestore'
 import { DatabaseOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons-vue'
 
-import { Form, message, Tabs } from 'ant-design-vue'
-
-const TabPane = Tabs.TabPane
+import { Form, message } from 'ant-design-vue'
 
 const thisYear = new Date().getFullYear()
 const loading = ref(false)
@@ -129,8 +127,8 @@ function handleRestoreSuccess(options: { restoreNginx: boolean, restoreNginxUI: 
             style="margin-bottom: 20px;"
           />
           <div v-else>
-            <Tabs v-model:active-key="activeTab">
-              <TabPane key="1" :tab="$gettext('New Installation')">
+            <ATabs v-model:active-key="activeTab">
+              <ATabPane key="1" :tab="$gettext('New Installation')">
                 <AForm id="components-form-install">
                   <AFormItem v-bind="validateInfos.email">
                     <AInput
@@ -186,14 +184,14 @@ function handleRestoreSuccess(options: { restoreNginx: boolean, restoreNginxUI: 
                     </AButton>
                   </AFormItem>
                 </AForm>
-              </TabPane>
-              <TabPane key="2" :tab="$gettext('Restore from Backup')">
+              </ATabPane>
+              <ATabPane key="2" :tab="$gettext('Restore from Backup')">
                 <SystemRestoreContent
                   :show-title="false"
                   @restore-success="handleRestoreSuccess"
                 />
-              </TabPane>
-            </Tabs>
+              </ATabPane>
+            </ATabs>
           </div>
           <div class="footer">
             <p>Copyright © 2021 - {{ thisYear }} Nginx UI</p>

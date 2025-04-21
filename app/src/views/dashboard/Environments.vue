@@ -9,8 +9,8 @@ import pulse from '@/assets/svg/pulse.svg?component'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import { version } from '@/version.json'
-import NodeAnalyticItem from '@/views/dashboard/components/NodeAnalyticItem.vue'
 import Icon, { LinkOutlined, SendOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
+import NodeAnalyticItem from './components/NodeAnalyticItem.vue'
 
 const data = ref([]) as Ref<Node[]>
 

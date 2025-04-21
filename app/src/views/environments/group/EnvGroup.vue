@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import env_group, { PostSyncAction } from '@/api/env_group'
-import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
+import NodeSelector from '@/components/NodeSelector'
 import { StdCurd } from '@/components/StdDesign/StdDataDisplay'
 import columns from '@/views/environments/group/columns'
 </script>
