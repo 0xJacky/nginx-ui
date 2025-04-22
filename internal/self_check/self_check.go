@@ -3,6 +3,7 @@ package self_check
 import (
 	"errors"
 
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/uozi-tech/cosy"
 )
 
@@ -52,6 +53,12 @@ var selfCheckTaskMap = make(map[string]*Task)
 func init() {
 	for _, task := range selfCheckTasks {
 		selfCheckTaskMap[task.Name] = task
+	}
+	if helper.InNginxUIOfficialDocker() {
+		selfCheckTasks = append(selfCheckTasks, &Task{
+			Name:      "Docker-Socket",
+			CheckFunc: CheckDockerSocket,
+		})
 	}
 }
 

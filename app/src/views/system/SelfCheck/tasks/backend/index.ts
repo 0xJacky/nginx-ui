@@ -26,6 +26,14 @@ const backendTasks: Record<string, BackendTask> = {
     description: () => $gettext('Check if the nginx.conf includes the conf.d directory.'),
     type: 'backend',
   },
+  'Docker-Socket': {
+    name: () => $gettext('Docker Socket'),
+    description: () => $gettext('Check if /var/run/docker.sock exists. '
+      + 'If you are using Nginx UI Official Docker Image, '
+      + 'please make sure the docker socket is mounted like this: '
+      + '`-v /var/run/docker.sock:/var/run/docker.sock`.'),
+    type: 'backend',
+  },
 }
 
 export default backendTasks

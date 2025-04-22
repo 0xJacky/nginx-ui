@@ -29,6 +29,8 @@ services:
   nginx-ui-3:
     image: nginx-ui-dev
     container_name: nginx-ui-3
+    environment:
+      - NGINX_UI_OFFICIAL_DOCKER=true
     volumes:
       - ../..:/workspaces:cached
       - ./data/nginx-ui-3/nginx:/etc/nginx

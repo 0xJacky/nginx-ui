@@ -32,7 +32,7 @@ export function handleApiError(err: CosyError, dedupe: MessageDedupe) {
     if (!errors[err.scope]) {
       try {
         // Dynamic import error files
-        import(`@/constants/errors/${err.scope}.ts`)
+        import(/* @vite-ignore */ `@/constants/errors/${err.scope}.ts`)
           .then(error => {
             registerError(err.scope!, error.default)
             displayErrorMessage(err, dedupe)

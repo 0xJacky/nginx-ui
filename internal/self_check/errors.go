@@ -17,4 +17,5 @@ var (
 	ErrStreamAvailableNotExist          = e.New(4048, "Streams-available directory not exist")
 	ErrStreamEnabledNotExist            = e.New(4049, "Streams-enabled directory not exist")
 	ErrNginxConfNotIncludeConfD         = e.New(4050, "Nginx conf not include conf.d directory")
+	ErrDockerSocketNotExist             = e.New(4051, "Docker socket not exist")
 )

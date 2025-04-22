@@ -70,7 +70,7 @@ func PerformCoreUpgrade(c *gin.Context) {
 		logger.Error(err)
 		return
 	}
-	if helper.InNginxUIOfficialDocker() {
+	if helper.InNginxUIOfficialDocker() && helper.DockerSocketExists() {
 		upgrader.DockerUpgrade(ws, &control)
 	} else {
 		upgrader.BinaryUpgrade(ws, &control)
