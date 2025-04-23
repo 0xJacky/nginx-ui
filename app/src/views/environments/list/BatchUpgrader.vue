@@ -3,7 +3,7 @@ import type { Environment } from '@/api/environment'
 import type { RuntimeInfo } from '@/api/upgrade'
 import upgrade from '@/api/upgrade'
 import websocket from '@/lib/websocket'
-import _ from 'lodash'
+import { cloneDeep } from 'lodash'
 import { marked } from 'marked'
 
 const route = useRoute()
@@ -63,7 +63,7 @@ function open(selectedNodeIds: Ref<number[]>, selectedNodes: Ref<Environment[]>)
   showLogContainer.value = false
   visible.value = true
   nodeIds.value = selectedNodeIds.value
-  nodes.value = _.cloneDeep(selectedNodes.value)
+  nodes.value = cloneDeep(selectedNodes.value)
   getLatestRelease()
 }
 

@@ -3,7 +3,7 @@ import type { Column } from '@/components/StdDesign/types'
 import type { ComputedRef } from 'vue'
 import { CustomRender } from '@/components/StdDesign/StdDataDisplay/components/CustomRender'
 import { labelRender } from '@/components/StdDesign/StdDataEntry'
-import _ from 'lodash'
+import { get } from 'lodash'
 
 const props = defineProps<{
   columns: Column[]
@@ -26,7 +26,7 @@ const displayColumns: ComputedRef<Column[]> = computed(() => {
       :key="index"
       :label="labelRender(c.title)"
     >
-      <CustomRender v-bind="{ column: c, record: data, index, text: _.get(data, c.dataIndex!), isDetail: true }" />
+      <CustomRender v-bind="{ column: c, record: data, index, text: get(data, c.dataIndex!), isDetail: true }" />
     </ADescriptionsItem>
   </ADescriptions>
 </template>

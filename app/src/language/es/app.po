@@ -7,11 +7,11 @@ msgstr ""
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-11-06 18:26+0000\n"
 "Last-Translator: Kcho <kcholoren@gmail.com>\n"
-"Language-Team: Spanish "
-"<https://weblate.nginxui.com/projects/nginx-ui/frontend/es/>\n"
+"Language-Team: Spanish <https://weblate.nginxui.com/projects/nginx-ui/"
+"frontend/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.6.2\n"
@@ -250,7 +250,7 @@ msgstr "Preguntar por ayuda a ChatGPT"
 msgid "Assistant"
 msgstr "Asistente"
 
-#: src/components/SelfCheck/SelfCheck.vue:62
+#: src/components/SelfCheck/SelfCheck.vue:31
 #, fuzzy
 msgid "Attempt to fix"
 msgstr "Intentos"
@@ -607,6 +607,12 @@ msgstr "Canal"
 msgid "Chat"
 msgstr ""
 
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:40
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:64
+#, fuzzy
+msgid "Check"
+msgstr "Intentar nuevamente"
+
 #: src/views/system/Upgrade.vue:185
 msgid "Check again"
 msgstr "Intentar nuevamente"
@@ -614,8 +620,8 @@ msgstr "Intentar nuevamente"
 #: src/components/SelfCheck/tasks/backend/index.ts:31
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v "
-"/var/run/docker.sock:/var/run/docker.sock`."
+"Docker Image, please make sure the docker socket is mounted like this: `-v /"
+"var/run/docker.sock:/var/run/docker.sock`."
 msgstr ""
 
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:11
@@ -644,8 +650,8 @@ msgstr ""
 
 #: src/components/SelfCheck/tasks/backend/index.ts:11
 msgid ""
-"Check if the streams-available and streams-enabled directories are under "
-"the nginx configuration directory."
+"Check if the streams-available and streams-enabled directories are under the "
+"nginx configuration directory."
 msgstr ""
 
 #: src/constants/errors/crypto.ts:3
@@ -1257,8 +1263,8 @@ msgstr "Dominio"
 #: src/views/certificate/components/CertificateEditor.vue:112
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
-"La lista de dominios está vacía, intente reabrir la certificación "
-"automática para %{config}"
+"La lista de dominios está vacía, intente reabrir la certificación automática "
+"para %{config}"
 
 #: src/language/constants.ts:27
 msgid "Download latest release error"
@@ -1279,8 +1285,8 @@ msgid ""
 "non-HTTPS websites, except when running on localhost."
 msgstr ""
 "Debido a las políticas de seguridad de algunos navegadores, no es posible "
-"utilizar claves de acceso en sitios web que no sean HTTPS, excepto cuando "
-"se ejecutan en el host local."
+"utilizar claves de acceso en sitios web que no sean HTTPS, excepto cuando se "
+"ejecutan en el host local."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:117
@@ -2031,8 +2037,8 @@ msgstr "Si se deja en blanco, se utilizará el directorio CA predeterminado."
 
 #: src/views/nginx_log/NginxLogList.vue:81
 msgid ""
-"If logs are not indexed, please check if the log file is under the "
-"directory in Nginx.LogDirWhiteList."
+"If logs are not indexed, please check if the log file is under the directory "
+"in Nginx.LogDirWhiteList."
 msgstr ""
 
 #: src/views/preference/tabs/AuthSettings.vue:145
@@ -2055,7 +2061,8 @@ msgstr ""
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:70
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
-msgstr "Si su navegador admite WebAuthn Passkey, aparecerá un cuadro de diálogo."
+msgstr ""
+"Si su navegador admite WebAuthn Passkey, aparecerá un cuadro de diálogo."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:107
 msgid ""
@@ -2133,7 +2140,7 @@ msgstr "Instalar"
 msgid "Install successfully"
 msgstr "Instalación exitosa"
 
-#: src/views/install/components/InstallView.vue:62
+#: src/views/install/components/InstallView.vue:63
 #, fuzzy
 msgid "Installation"
 msgstr "Instalar"
@@ -2389,7 +2396,7 @@ msgstr "Acceso"
 msgid "Login successful"
 msgstr "Acceso exitoso"
 
-#: src/layouts/HeaderLayout.vue:20
+#: src/layouts/HeaderLayout.vue:21
 msgid "Logout successful"
 msgstr "Cierre de sesión exitoso"
 
@@ -2399,20 +2406,20 @@ msgstr "Rotación de logs"
 
 #: src/views/preference/tabs/LogrotateSettings.vue:13
 msgid ""
-"Logrotate, by default, is enabled in most mainstream Linux distributions "
-"for users who install Nginx UI on the host machine, so you don't need to "
-"modify the parameters on this page. For users who install Nginx UI using "
-"Docker containers, you can manually enable this option. The crontab task "
-"scheduler of Nginx UI will execute the logrotate command at the interval "
-"you set in minutes."
+"Logrotate, by default, is enabled in most mainstream Linux distributions for "
+"users who install Nginx UI on the host machine, so you don't need to modify "
+"the parameters on this page. For users who install Nginx UI using Docker "
+"containers, you can manually enable this option. The crontab task scheduler "
+"of Nginx UI will execute the logrotate command at the interval you set in "
+"minutes."
 msgstr ""
 "Logrotate, de forma predeterminada, está habilitado en la mayoría de las "
 "distribuciones de Linux para los usuarios que instalan Nginx UI en la "
 "máquina host, por lo que no es necesario modificar los parámetros en esta "
 "página. Para los usuarios que instalan Nginx UI usando contenedores Docker, "
 "pueden habilitar esta opción manualmente. El programador de tareas crontab "
-"de Nginx UI ejecutará el comando logrotate en el intervalo que establezca "
-"en minutos."
+"de Nginx UI ejecutará el comando logrotate en el intervalo que establezca en "
+"minutos."
 
 #: src/views/site/components/SiteStatusSegmented.vue:138
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
@@ -2435,8 +2442,8 @@ msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort before obtaining the certificate."
 msgstr ""
-"Asegúrese de haber configurado un proxy reverso para el directorio "
-".well-known en HTTPChallengePort antes de obtener el certificado."
+"Asegúrese de haber configurado un proxy reverso para el directorio .well-"
+"known en HTTPChallengePort antes de obtener el certificado."
 
 #: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:115
 #: src/views/config/ConfigEditor.vue:166 src/views/config/ConfigList.vue:72
@@ -2636,7 +2643,7 @@ msgstr "Total recibido por la red"
 msgid "Network Total Send"
 msgstr "Total enviado por la red"
 
-#: src/views/install/components/InstallView.vue:106
+#: src/views/install/components/InstallView.vue:107
 #, fuzzy
 msgid "New Installation"
 msgstr "Instalar"
@@ -2654,7 +2661,7 @@ msgid "New version released"
 msgstr "Se liberó una nueva versión"
 
 #: src/views/certificate/components/WildcardCertificate.vue:89
-#: src/views/install/components/InstallView.vue:93
+#: src/views/install/components/InstallView.vue:94
 #: src/views/site/site_add/SiteAdd.vue:123
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:214
 msgid "Next"
@@ -2840,8 +2847,8 @@ msgstr "Error de análisis de configuración de Nginx"
 #: src/components/SystemRestore/SystemRestoreContent.vue:336
 #, fuzzy
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in "
-"a few seconds."
+"Nginx UI configuration has been restored and will restart automatically in a "
+"few seconds."
 msgstr "Error de análisis de configuración de Nginx"
 
 #: src/components/ChatGPT/ChatGPT.vue:374
@@ -3126,8 +3133,8 @@ msgid ""
 msgstr ""
 "Las llaves de acceso son credenciales de autenticación web que validan su "
 "identidad mediante el tacto, el reconocimiento facial, una contraseña de "
-"dispositivo o un PIN. Se pueden utilizar como reemplazo de contraseña o "
-"como método de autenticación de dos factores."
+"dispositivo o un PIN. Se pueden utilizar como reemplazo de contraseña o como "
+"método de autenticación de dos factores."
 
 #: src/views/other/Login.vue:183 src/views/user/userColumns.tsx:18
 msgid "Password"
@@ -3225,8 +3232,8 @@ msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
 msgstr ""
-"Por favor, complete las credenciales de autenticación API proporcionadas "
-"por su proveedor de DNS."
+"Por favor, complete las credenciales de autenticación API proporcionadas por "
+"su proveedor de DNS."
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:106
 msgid "Please fill in the required fields"
@@ -3238,14 +3245,14 @@ msgid ""
 "select one of the credentialsbelow to request the API of the DNS provider."
 msgstr ""
 "Primero agregue las credenciales en Certificación > Credenciales de DNS y "
-"luego seleccione una de las credenciales de aquí debajo para llamar a la "
-"API del proveedor de DNS."
+"luego seleccione una de las credenciales de aquí debajo para llamar a la API "
+"del proveedor de DNS."
 
 #: src/components/Notification/notifications.ts:166
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to "
-"prevent lockout."
+"Please generate new recovery codes in the preferences immediately to prevent "
+"lockout."
 msgstr ""
 
 #: src/views/config/components/Rename.vue:65
@@ -3285,18 +3292,19 @@ msgstr "¡Por favor ingrese su contraseña!"
 msgid "Please input your username!"
 msgstr "¡Por favor ingrese su nombre de usuario!"
 
-#: src/views/install/components/InstallView.vue:47
+#: src/views/install/components/InstallView.vue:48
 #: src/views/system/Backup/SystemRestore.vue:10
 msgid "Please log in."
 msgstr ""
 
 #: src/views/certificate/DNSCredential.vue:62
-msgid "Please note that the unit of time configurations below are all in seconds."
+msgid ""
+"Please note that the unit of time configurations below are all in seconds."
 msgstr ""
 "Tenga en cuenta que las siguientes configuraciones de unidades de tiempo "
 "están todas en segundos."
 
-#: src/views/install/components/InstallView.vue:99
+#: src/views/install/components/InstallView.vue:100
 msgid "Please resolve all issues before proceeding with installation"
 msgstr ""
 
@@ -3403,7 +3411,7 @@ msgstr "Lecturas"
 msgid "Receive"
 msgstr "Recibido"
 
-#: src/components/SelfCheck/SelfCheck.vue:55
+#: src/components/SelfCheck/SelfCheck.vue:24
 msgid "Recheck"
 msgstr ""
 
@@ -3727,7 +3735,7 @@ msgstr "Reiniciando"
 msgid "Restore completed successfully"
 msgstr "Borrado exitoso"
 
-#: src/views/install/components/InstallView.vue:109
+#: src/views/install/components/InstallView.vue:110
 #, fuzzy
 msgid "Restore from Backup"
 msgstr "Sistema"
@@ -3902,8 +3910,13 @@ msgstr ""
 msgid "Selector"
 msgstr "Seleccionador"
 
-#: src/components/SelfCheck/SelfCheck.vue:50 src/routes/modules/system.ts:19
+#: src/components/SelfCheck/SelfCheck.vue:16 src/routes/modules/system.ts:19
 msgid "Self Check"
+msgstr ""
+
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:37
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:60
+msgid "Self check failed, Nginx UI may not work properly"
 msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:344
@@ -3968,17 +3981,17 @@ msgstr "Usando el proveedor de desafíos HTTP01"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
-#: src/views/install/components/InstallView.vue:63
+#: src/views/install/components/InstallView.vue:64
 msgid "Setup your Nginx UI"
 msgstr ""
 
@@ -4167,9 +4180,9 @@ msgstr "Éxito"
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:6
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to "
-"this link to write the corresponding configuration file: "
-"https://nginxui.com/guide/nginx-proxy-example.html"
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
+"link to write the corresponding configuration file: https://nginxui.com/"
+"guide/nginx-proxy-example.html"
 msgstr ""
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:197
@@ -4265,7 +4278,7 @@ msgstr "Sistema"
 msgid "System Backup"
 msgstr "Sistema"
 
-#: src/views/install/components/InstallView.vue:58
+#: src/views/install/components/InstallView.vue:59
 #, fuzzy
 msgid "System Check"
 msgstr "Sistema"
@@ -4279,7 +4292,7 @@ msgstr "Usuario inicial del sistema"
 msgid "System Restore"
 msgstr "Sistema"
 
-#: src/views/install/components/InstallView.vue:43
+#: src/views/install/components/InstallView.vue:44
 #: src/views/system/Backup/SystemRestore.vue:6
 #, fuzzy
 msgid "System restored successfully."
@@ -4315,7 +4328,8 @@ msgstr ""
 
 #: src/views/install/components/InstallForm.vue:48
 msgid "The filename cannot contain the following characters: %{c}"
-msgstr "El nombre del archivo no puede contener los siguientes caracteres: %{c}"
+msgstr ""
+"El nombre del archivo no puede contener los siguientes caracteres: %{c}"
 
 #: src/views/preference/tabs/NodeSettings.vue:37
 #, fuzzy
@@ -4336,8 +4350,7 @@ msgstr "La entrada no es una clave de certificado SSL"
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in "
-"settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 
 #: src/views/preference/tabs/OpenAISettings.vue:23
@@ -4351,7 +4364,8 @@ msgstr ""
 "rayas y puntos."
 
 #: src/views/preference/tabs/OpenAISettings.vue:90
-msgid "The model used for code completion, if not set, the chat model will be used."
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 
 #: src/views/preference/tabs/NodeSettings.vue:18
@@ -4382,8 +4396,8 @@ msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
 "hyphens, dashes, colons, and dots."
 msgstr ""
-"El nombre del servidor solo debe contener letras, Unicode, números, "
-"guiones, rayas y puntos."
+"El nombre del servidor solo debe contener letras, Unicode, números, guiones, "
+"rayas y puntos."
 
 #: src/views/dashboard/Environments.vue:148
 msgid ""
@@ -4463,7 +4477,8 @@ msgstr "Este campo no debe estar vacío"
 
 #: src/constants/form_errors.ts:6
 #, fuzzy
-msgid "This field should only contain letters, unicode characters, numbers, and -_."
+msgid ""
+"This field should only contain letters, unicode characters, numbers, and -_."
 msgstr ""
 "El nombre del modelo solo debe contener letras, unicode, números, guiones, "
 "rayas y puntos."
@@ -4505,7 +4520,8 @@ msgid ""
 msgstr ""
 
 #: src/views/environments/list/BatchUpgrader.vue:182
-msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid ""
+"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 "Esto actualizará o reinstalará la interfaz de usuario de Nginx en "
 "%{nodeNames} a %{version}."
@@ -4549,21 +4565,21 @@ msgid ""
 "and restart Nginx UI."
 msgstr ""
 "Para garantizar la seguridad, no se puede agregar la configuración de "
-"Webauthn a través de la UI. Configure manualmente lo siguiente en el "
-"archivo de configuración app.ini y reinicie Nginx UI."
+"Webauthn a través de la UI. Configure manualmente lo siguiente en el archivo "
+"de configuración app.ini y reinicie Nginx UI."
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:33
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
-"add a location which can proxy the request from authority to backend, and "
-"we need to save this file and reload the Nginx. Are you sure you want to "
+"add a location which can proxy the request from authority to backend, and we "
+"need to save this file and reload the Nginx. Are you sure you want to "
 "continue?"
 msgstr ""
-"Para garantizar que la renovación automática del certificado pueda "
-"funcionar con normalidad, debemos agregar una ubicación para transmitir la "
-"solicitud de la autoridad al backend, y debemos guardar este archivo y "
-"volver a cargar Nginx. ¿Estás seguro de que quieres continuar?"
+"Para garantizar que la renovación automática del certificado pueda funcionar "
+"con normalidad, debemos agregar una ubicación para transmitir la solicitud "
+"de la autoridad al backend, y debemos guardar este archivo y volver a cargar "
+"Nginx. ¿Estás seguro de que quieres continuar?"
 
 #: src/views/preference/tabs/OpenAISettings.vue:36
 #, fuzzy
@@ -4649,7 +4665,7 @@ msgstr "Tipo"
 msgid "Unknown"
 msgstr ""
 
-#: src/components/SelfCheck/SelfCheck.vue:75
+#: src/components/SelfCheck/SelfCheck.vue:44
 msgid "Unknown issue"
 msgstr ""
 
@@ -4754,7 +4770,7 @@ msgstr ""
 msgid "Verify Backup File Integrity"
 msgstr ""
 
-#: src/views/install/components/InstallView.vue:59
+#: src/views/install/components/InstallView.vue:60
 msgid "Verify system requirements"
 msgstr "Verificar los requisitos del sistema"
 
@@ -4820,8 +4836,8 @@ msgstr ""
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:140
 msgid ""
-"We will remove the HTTPChallenge configuration from this file and reload "
-"the Nginx. Are you sure you want to continue?"
+"We will remove the HTTPChallenge configuration from this file and reload the "
+"Nginx. Are you sure you want to continue?"
 msgstr ""
 "Eliminaremos la configuración de HTTPChallenge de este archivo y "
 "recargaremos Nginx. ¿Estás seguro de que quieres continuar?"
@@ -4885,7 +4901,7 @@ msgstr ""
 msgid "Workers"
 msgstr ""
 
-#: src/layouts/HeaderLayout.vue:49 src/routes/index.ts:56
+#: src/layouts/HeaderLayout.vue:61 src/routes/index.ts:56
 #: src/views/workspace/WorkSpace.vue:52
 msgid "Workspace"
 msgstr ""
@@ -4914,8 +4930,8 @@ msgstr "Si"
 
 #: src/views/terminal/Terminal.vue:135
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a non-"
+"localhost domain. This may expose sensitive information."
 msgstr ""
 
 #: src/views/system/Upgrade.vue:202
@@ -4943,7 +4959,8 @@ msgstr ""
 "llave de acceso."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:81
-msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid ""
+"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:94
@@ -4969,12 +4986,14 @@ msgstr "Sus llaves de acceso"
 #~ msgstr "Error de formato %{msg}"
 
 #~ msgid "Failed to save, syntax error(s) was detected in the configuration."
-#~ msgstr "No se pudo guardar, se detectó un error(es) de sintaxis en la configuración."
+#~ msgstr ""
+#~ "No se pudo guardar, se detectó un error(es) de sintaxis en la "
+#~ "configuración."
 
 #, fuzzy
 #~ msgid ""
-#~ "When you enable/disable, delete, or save this stream, the nodes set in the "
-#~ "Node Group and the nodes selected below will be synchronized."
+#~ "When you enable/disable, delete, or save this stream, the nodes set in "
+#~ "the Node Group and the nodes selected below will be synchronized."
 #~ msgstr ""
 #~ "Cuando habilite/deshabilite, elimine o guarde este sitio, los nodos "
 #~ "configurados en la categoría del sitio y los nodos seleccionados a "
@@ -5016,7 +5035,8 @@ msgstr "Sus llaves de acceso"
 #~ msgstr "Desplegado con éxito"
 
 #~ msgid "Disable site %{site} on %{node} error, response: %{resp}"
-#~ msgstr "Error al deshabilitar el sitio %{site} en %{node}, respuesta: %{resp}"
+#~ msgstr ""
+#~ "Error al deshabilitar el sitio %{site} en %{node}, respuesta: %{resp}"
 
 #~ msgid "Do you want to deploy this file to remote server?"
 #~ msgid_plural "Do you want to deploy this file to remote servers?"
@@ -5039,23 +5059,26 @@ msgstr "Sus llaves de acceso"
 #~ msgid "Please upgrade the remote Nginx UI to the latest version"
 #~ msgstr ""
 #~ "Sincronización de la configuración %{cert_name} a %{env_name} falló, por "
-#~ "favor actualiza la interfaz de usuario de Nginx en el servidor remoto a la "
-#~ "última versión"
+#~ "favor actualiza la interfaz de usuario de Nginx en el servidor remoto a "
+#~ "la última versión"
 
-#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
+#~ "%{resp}"
 #~ msgstr ""
 #~ "Renombrar %{orig_path} a %{new_path} en %{env_name} falló, respuesta: "
 #~ "%{resp}"
 
 #, fuzzy
-#~ msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+#~ msgid ""
+#~ "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
 #~ msgstr "Renombrar %{orig_path} a %{new_path} en %{env_name} con éxito"
 
 #, fuzzy
 #~ msgid "Save site %{site} to %{node} error, response: %{resp}"
 #~ msgstr ""
-#~ "Sincronización del Certificado %{cert_name} a %{env_name} falló, respuesta: "
-#~ "%{resp}"
+#~ "Sincronización del Certificado %{cert_name} a %{env_name} falló, "
+#~ "respuesta: %{resp}"
 
 #~ msgid ""
 #~ "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
@@ -5064,10 +5087,11 @@ msgstr "Sus llaves de acceso"
 #~ "Sincronización del Certificado %{cert_name} a %{env_name} fallida, por "
 #~ "favor actualice la interfaz de Nginx remota a la última versión"
 
-#~ msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr ""
-#~ "Sincronización del Certificado %{cert_name} a %{env_name} falló, respuesta: "
-#~ "%{resp}"
+#~ "Sincronización del Certificado %{cert_name} a %{env_name} falló, "
+#~ "respuesta: %{resp}"
 
 #~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr ""
@@ -5084,8 +5108,8 @@ msgstr "Sus llaves de acceso"
 #~ msgstr "Archivo"
 
 #~ msgid ""
-#~ "If you lose your mobile phone, you can use the recovery code to reset your "
-#~ "2FA."
+#~ "If you lose your mobile phone, you can use the recovery code to reset "
+#~ "your 2FA."
 #~ msgstr ""
 #~ "Si pierde su teléfono móvil, puede usar el código de recuperación para "
 #~ "restablecer su 2FA."
@@ -5099,10 +5123,11 @@ msgstr "Sus llaves de acceso"
 #~ msgid "Server error"
 #~ msgstr "Error del servidor"
 
-#~ msgid "The recovery code is only displayed once, please save it in a safe place."
+#~ msgid ""
+#~ "The recovery code is only displayed once, please save it in a safe place."
 #~ msgstr ""
-#~ "El código de recuperación se muestra solo una vez, por favor guárdalo en un "
-#~ "lugar seguro."
+#~ "El código de recuperación se muestra solo una vez, por favor guárdalo en "
+#~ "un lugar seguro."
 
 #~ msgid "Too many login failed attempts, please try again later"
 #~ msgstr ""
@@ -5183,9 +5208,9 @@ msgstr "Sus llaves de acceso"
 #~ "Once the verification is complete, the records will be removed.\n"
 #~ "Please note that the unit of time configurations below are all in seconds."
 #~ msgstr ""
-#~ "Complete las credenciales de autenticación de la API proporcionadas por su "
-#~ "proveedor de DNS. Agregaremos uno o más registros TXT a los registros DNS "
-#~ "de su dominio para verificar la propiedad. Una vez que se complete la "
+#~ "Complete las credenciales de autenticación de la API proporcionadas por "
+#~ "su proveedor de DNS. Agregaremos uno o más registros TXT a los registros "
+#~ "DNS de su dominio para verificar la propiedad. Una vez que se complete la "
 #~ "verificación, se eliminarán los registros. Tenga en cuenta que las "
 #~ "configuraciones de tiempo que aparecen debajo están todas en segundos."
 
@@ -5208,13 +5233,13 @@ msgstr "Sus llaves de acceso"
 #~ msgstr "Sincronización de operaciones"
 
 #~ msgid ""
-#~ "Such as Reload and Configs, regex can configure as "
-#~ "`/api/nginx/reload|/api/nginx/test|/api/config/.+`, please see system api"
+#~ "Such as Reload and Configs, regex can configure as `/api/nginx/reload|/"
+#~ "api/nginx/test|/api/config/.+`, please see system api"
 #~ msgstr ""
 #~ "Las reglas de sincronización de operación de `Recarga` y `Gestión de "
-#~ "Configuración` se pueden configurar como "
-#~ "`/api/nginx/reload|/api/nginx/test|/api/config/.+`, consulte la API del "
-#~ "sistema para obtener más detalles"
+#~ "Configuración` se pueden configurar como `/api/nginx/reload|/api/nginx/"
+#~ "test|/api/config/.+`, consulte la API del sistema para obtener más "
+#~ "detalles"
 
 #~ msgid "SyncApiRegex"
 #~ msgstr "Expresión Regular de la API"

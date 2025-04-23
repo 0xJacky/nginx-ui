@@ -16,7 +16,7 @@ import ConfigName from '@/views/config/components/ConfigName.vue'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import { HistoryOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
-import _ from 'lodash'
+import { trim, trimEnd } from 'lodash'
 
 const settings = useSettingsStore()
 const route = useRoute()
@@ -30,7 +30,7 @@ const addMode = computed(() => !route.params.name)
 const showHistory = ref(false)
 const basePath = computed(() => {
   if (route.query.basePath)
-    return _.trim(route?.query?.basePath?.toString(), '/')
+    return trim(route?.query?.basePath?.toString(), '/')
   else if (typeof route.params.name === 'object')
     return (route.params.name as string[]).slice(0, -1).join('/')
   else
@@ -75,7 +75,7 @@ async function init() {
       historyChatgptRecord.value = r.chatgpt_messages
       modifiedAt.value = r.modified_at
 
-      const filteredPath = _.trimEnd(data.value.filepath
+      const filteredPath = trimEnd(data.value.filepath
         .replaceAll(`${nginxConfigBase.value}/`, ''), data.value.name)
         .split('/')
         .filter(v => v)

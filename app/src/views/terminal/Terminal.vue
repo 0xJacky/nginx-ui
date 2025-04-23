@@ -5,7 +5,7 @@ import use2FAModal from '@/components/TwoFA/use2FAModal'
 import ws from '@/lib/websocket'
 import { FitAddon } from '@xterm/addon-fit'
 import { Terminal } from '@xterm/xterm'
-import _ from 'lodash'
+import { throttle } from 'lodash'
 import '@xterm/xterm/css/xterm.css'
 
 let term: Terminal | null
@@ -64,7 +64,7 @@ interface Message {
 
 const fitAddon = new FitAddon()
 
-const fit = _.throttle(() => {
+const fit = throttle(() => {
   fitAddon.fit()
 }, 50)
 

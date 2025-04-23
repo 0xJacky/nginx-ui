@@ -7,7 +7,7 @@ import type { DataIndex } from 'ant-design-vue/es/vc-table/interface'
 import { labelRender } from '@/components/StdDesign/StdDataEntry'
 import { message } from 'ant-design-vue'
 
-import _, { get } from 'lodash'
+import { cloneDeep, get } from 'lodash'
 
 const props = defineProps<{
   title?: string
@@ -56,7 +56,7 @@ const route = useRoute()
 
 onMounted(() => {
   if (props?.useOutsideData) {
-    editModel.value = _.cloneDeep(props.dataSource)
+    editModel.value = cloneDeep(props.dataSource)
     return
   }
 
@@ -66,7 +66,7 @@ onMounted(() => {
 })
 
 function clickEdit() {
-  editModel.value = _.cloneDeep(detail.value)
+  editModel.value = cloneDeep(detail.value)
   editStatus.value = true
 }
 </script>

@@ -24,7 +24,7 @@ function logout() {
   })
 }
 
-const headerRef = useTemplateRef('headerRef')
+const headerRef = useTemplateRef('headerRef') as Ref<HTMLElement>
 
 const userWrapperRef = useTemplateRef('userWrapperRef')
 const isWorkspace = computed(() => {

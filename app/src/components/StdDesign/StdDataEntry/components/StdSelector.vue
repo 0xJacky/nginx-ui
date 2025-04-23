@@ -4,7 +4,7 @@ import type { Column } from '@/components/StdDesign/types'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import { CloseCircleFilled } from '@ant-design/icons-vue'
 import { watchOnce } from '@vueuse/core'
-import _ from 'lodash'
+import { clone } from 'lodash'
 
 const props = defineProps<{
   placeholder?: string
@@ -102,7 +102,7 @@ const selectedKeyBuffer = ref()
 const selectedBuffer: Ref<any[]> = ref([])
 
 watch(selectedKey, () => {
-  selectedKeyBuffer.value = _.clone(selectedKey.value)
+  selectedKeyBuffer.value = clone(selectedKey.value)
 })
 
 watch(records, v => {
@@ -111,8 +111,8 @@ watch(records, v => {
 })
 
 onMounted(() => {
-  selectedKeyBuffer.value = _.clone(selectedKey.value)
-  selectedBuffer.value = _.clone(records.value)
+  selectedKeyBuffer.value = clone(selectedKey.value)
+  selectedBuffer.value = clone(records.value)
 })
 
 const computedSelectedKeys = computed({
@@ -132,7 +132,7 @@ async function ok() {
   selectedKey.value = selectedKeyBuffer.value
   records.value = selectedBuffer.value
   await nextTick()
-  M_values.value = _.clone(records.value)
+  M_values.value = clone(records.value)
 }
 
 function clear() {

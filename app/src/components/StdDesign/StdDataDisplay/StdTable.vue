@@ -14,7 +14,7 @@ import StdBulkActions from '@/components/StdDesign/StdDataDisplay/StdBulkActions
 import StdDataEntry, { labelRender } from '@/components/StdDesign/StdDataEntry'
 import { HolderOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
-import _ from 'lodash'
+import { debounce } from 'lodash'
 import StdPagination from './StdPagination.vue'
 
 const props = withDefaults(defineProps<StdTableProps<T>>(), {
@@ -145,7 +145,7 @@ const radioColumns = computed(() => {
   return props.columns?.filter(column => column.radio) || []
 })
 
-const get_list = _.debounce(_get_list, 100, {
+const get_list = debounce(_get_list, 100, {
   leading: false,
   trailing: true,
 })

@@ -3,7 +3,7 @@ import type { Column, StdTableResponse } from '@/components/StdDesign/types'
 import type { ComputedRef } from 'vue'
 import { downloadCsv } from '@/lib/helper'
 import dayjs from 'dayjs'
-import _ from 'lodash'
+import { get, set } from 'lodash'
 
 async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[]>) {
   const header: { title?: string, key: Column['dataIndex'] }[] = []
@@ -52,11 +52,11 @@ async function exportCsv(props: StdTableProps, pithyColumns: ComputedRef<Column[
     const obj: Record<string, any> = {}
 
     headerKeys.forEach(key => {
-      let _data = _.get(row, key)
+      let _data = get(row, key)
       const c = showColumnsMap[key]
 
       _data = c?.customRender?.({ text: _data }) ?? _data
-      _.set(obj, c.dataIndex as string, _data)
+      set(obj, c.dataIndex as string, _data)
     })
     data.push(obj)
   })

@@ -3,7 +3,7 @@ import settings from '@/api/settings'
 import PageHeader from '@/components/PageHeader/PageHeader.vue'
 import { setupIndexStatus } from '@/composables/useIndexStatus'
 import { useSettingsStore } from '@/pinia'
-import _ from 'lodash'
+import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
 import FooterLayout from './FooterLayout.vue'
 import HeaderLayout from './HeaderLayout.vue'
@@ -18,7 +18,7 @@ function _init() {
   hideLayoutSidebar.value = getClientWidth() < 600
 }
 
-const init = _.throttle(_init, 50)
+const init = throttle(_init, 50)
 
 onMounted(init)
 
