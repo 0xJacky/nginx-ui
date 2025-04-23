@@ -221,6 +221,7 @@ docker run -dit \
   -e TZ=Asia/Shanghai \
   -v /mnt/user/appdata/nginx:/etc/nginx \
   -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
+  -v /var/run/docker.sock:/var/run/docker.sock \
   -p 8080:80 -p 8443:443 \
   uozi/nginx-ui:latest
 ```
@@ -248,6 +249,7 @@ services:
             - '/mnt/user/appdata/nginx:/etc/nginx'
             - '/mnt/user/appdata/nginx-ui:/etc/nginx-ui'
             - '/var/www:/var/www'
+            - '/var/run/docker.sock:/var/run/docker.sock'
         ports:
             - 8080:80
             - 8443:443

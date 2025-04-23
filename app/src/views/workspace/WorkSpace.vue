@@ -57,7 +57,7 @@ onMounted(() => {
       <Pane :size="paneSize" :min-size="20">
         <iframe ref="leftFrame" name="split-view-left" :src class="w-full h-full iframe-no-border" />
       </Pane>
-      <Pane :size="100 - paneSize">
+      <Pane :size="100 - paneSize" :min-size="20">
         <iframe ref="rightFrame" name="split-view-right" :src class="w-full h-full iframe-no-border" />
       </Pane>
     </Splitpanes>
