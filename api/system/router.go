@@ -5,6 +5,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func authIfInstalled(ctx *gin.Context) {
+	if installLockStatus() || isInstallTimeoutExceeded() {
+		middleware.AuthRequired()(ctx)
+	} else {
+		ctx.Next()
+	}
+}
+
 func InitPublicRouter(r *gin.RouterGroup) {
 	r.GET("install", InstallLockCheck)
 	r.POST("install", middleware.EncryptedParams(), InstallNginxUI)
@@ -14,23 +22,18 @@ func InitPublicRouter(r *gin.RouterGroup) {
 func InitPrivateRouter(r *gin.RouterGroup) {
 	r.GET("upgrade/release", GetRelease)
 	r.GET("upgrade/current", GetCurrentVersion)
-	r.GET("self_check", SelfCheck)
-	r.POST("self_check/:name/fix", SelfCheckFix)
 
-	// Backup endpoint only
 	r.GET("system/backup", CreateBackup)
+}
+
+func InitSelfCheckRouter(r *gin.RouterGroup) {
+	r.GET("self_check", authIfInstalled, SelfCheck)
+	r.POST("self_check/:name/fix", authIfInstalled, SelfCheckFix)
 }
 
 func InitBackupRestoreRouter(r *gin.RouterGroup) {
 	r.POST("system/backup/restore",
-		func(ctx *gin.Context) {
-			// If system is installed, verify user authentication
-			if installLockStatus() {
-				middleware.AuthRequired()(ctx)
-			} else {
-				ctx.Next()
-			}
-		},
+		authIfInstalled,
 		middleware.EncryptedForm(),
 		RestoreBackup)
 }

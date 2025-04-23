@@ -5,7 +5,7 @@ msgstr ""
 "Language-Team: none\n"
 "Language: vi_VN\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -256,7 +256,7 @@ msgstr "Hỏi ChatGPT"
 msgid "Assistant"
 msgstr "Trợ lý"
 
-#: src/views/system/SelfCheck/SelfCheck.vue:50
+#: src/components/SelfCheck/SelfCheck.vue:62
 msgid "Attempt to fix"
 msgstr ""
 
@@ -625,41 +625,41 @@ msgstr ""
 msgid "Check again"
 msgstr "Kiểm tra lại"
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:31
+#: src/components/SelfCheck/tasks/backend/index.ts:31
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v /"
-"var/run/docker.sock:/var/run/docker.sock`."
+"Docker Image, please make sure the docker socket is mounted like this: `-v "
+"/var/run/docker.sock:/var/run/docker.sock`."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/frontend/https-check.ts:11
+#: src/components/SelfCheck/tasks/frontend/https-check.ts:11
 msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
 "prevents using Passkeys and clipboard features."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:26
+#: src/components/SelfCheck/tasks/backend/index.ts:26
 msgid "Check if the nginx.conf includes the conf.d directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:16
+#: src/components/SelfCheck/tasks/backend/index.ts:16
 msgid "Check if the nginx.conf includes the sites-enabled directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:21
+#: src/components/SelfCheck/tasks/backend/index.ts:21
 msgid "Check if the nginx.conf includes the streams-enabled directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:6
+#: src/components/SelfCheck/tasks/backend/index.ts:6
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:11
+#: src/components/SelfCheck/tasks/backend/index.ts:11
 msgid ""
-"Check if the streams-available and streams-enabled directories are under the "
-"nginx configuration directory."
+"Check if the streams-available and streams-enabled directories are under "
+"the nginx configuration directory."
 msgstr ""
 
 #: src/constants/errors/crypto.ts:3
@@ -958,7 +958,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr "Bảng điều khiển"
 
-#: src/views/install/Install.vue:167
+#: src/views/install/components/InstallForm.vue:109
 msgid "Database (Optional, default: database)"
 msgstr "Tên cơ sở dữ liệu (Tuỳ chọn, Mặc định là: database)"
 
@@ -1265,7 +1265,7 @@ msgstr "Bạn muốn xóa máy chủ này ?"
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:30
+#: src/components/SelfCheck/tasks/backend/index.ts:30
 msgid "Docker Socket"
 msgstr ""
 
@@ -1348,7 +1348,7 @@ msgstr "Sửa trang web"
 msgid "Email"
 msgstr "Email (*)"
 
-#: src/views/install/Install.vue:136
+#: src/views/install/components/InstallForm.vue:78
 msgid "Email (*)"
 msgstr "Email (*)"
 
@@ -2048,7 +2048,7 @@ msgstr ""
 msgid "HTTP01"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/frontend/https-check.ts:10
+#: src/components/SelfCheck/tasks/frontend/https-check.ts:10
 msgid "HTTPS Protocol"
 msgstr ""
 
@@ -2062,8 +2062,8 @@ msgstr ""
 
 #: src/views/nginx_log/NginxLogList.vue:81
 msgid ""
-"If logs are not indexed, please check if the log file is under the directory "
-"in Nginx.LogDirWhiteList."
+"If logs are not indexed, please check if the log file is under the "
+"directory in Nginx.LogDirWhiteList."
 msgstr ""
 
 #: src/views/preference/tabs/AuthSettings.vue:145
@@ -2148,20 +2148,27 @@ msgstr ""
 msgid "Insecure Skip Verify"
 msgstr ""
 
-#: src/routes/modules/auth.ts:8 src/views/install/Install.vue:183
+#: src/routes/modules/auth.ts:8
+#: src/views/install/components/InstallForm.vue:124
+#: src/views/install/components/InstallHeader.vue:9
 msgid "Install"
 msgstr "Cài đặt"
 
-#: src/views/install/Install.vue:91
+#: src/views/install/components/InstallForm.vue:60
 #, fuzzy
 msgid "Install successfully"
 msgstr "Cài đặt thành công"
+
+#: src/views/install/components/InstallView.vue:62
+#, fuzzy
+msgid "Installation"
+msgstr "Cài đặt"
 
 #: src/constants/errors/system.ts:3
 msgid "Installation is not allowed after 10 minutes of system startup"
 msgstr ""
 
-#: src/views/install/Install.vue:125
+#: src/views/install/components/TimeoutAlert.vue:11
 msgid ""
 "Installation is not allowed after 10 minutes of system startup, please "
 "restart the Nginx UI."
@@ -2427,12 +2434,12 @@ msgstr ""
 
 #: src/views/preference/tabs/LogrotateSettings.vue:13
 msgid ""
-"Logrotate, by default, is enabled in most mainstream Linux distributions for "
-"users who install Nginx UI on the host machine, so you don't need to modify "
-"the parameters on this page. For users who install Nginx UI using Docker "
-"containers, you can manually enable this option. The crontab task scheduler "
-"of Nginx UI will execute the logrotate command at the interval you set in "
-"minutes."
+"Logrotate, by default, is enabled in most mainstream Linux distributions "
+"for users who install Nginx UI on the host machine, so you don't need to "
+"modify the parameters on this page. For users who install Nginx UI using "
+"Docker containers, you can manually enable this option. The crontab task "
+"scheduler of Nginx UI will execute the logrotate command at the interval "
+"you set in minutes."
 msgstr ""
 
 #: src/views/site/components/SiteStatusSegmented.vue:138
@@ -2457,8 +2464,9 @@ msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort before obtaining the certificate."
 msgstr ""
-"Đảm bảo rằng bạn đã định cấu hình proxy ngược (reverse proxy) thư mục .well-"
-"known tới HTTPChallengePort (default: 9180) trước khi ký chứng chỉ SSL."
+"Đảm bảo rằng bạn đã định cấu hình proxy ngược (reverse proxy) thư mục "
+".well-known tới HTTPChallengePort (default: 9180) trước khi ký chứng chỉ "
+"SSL."
 
 #: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:115
 #: src/views/config/ConfigEditor.vue:166 src/views/config/ConfigList.vue:72
@@ -2664,7 +2672,7 @@ msgstr "Tổng lưu lượng mạng đã nhận"
 msgid "Network Total Send"
 msgstr "Tổng lưu lượng mạng đã gửi"
 
-#: src/views/install/Install.vue:131
+#: src/views/install/components/InstallView.vue:106
 #, fuzzy
 msgid "New Installation"
 msgstr "Cài đặt"
@@ -2684,6 +2692,7 @@ msgid "New version released"
 msgstr "Đã có phiên bản mới"
 
 #: src/views/certificate/components/WildcardCertificate.vue:89
+#: src/views/install/components/InstallView.vue:93
 #: src/views/site/site_add/SiteAdd.vue:123
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:214
 msgid "Next"
@@ -2697,15 +2706,15 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:25
+#: src/components/SelfCheck/tasks/backend/index.ts:25
 msgid "Nginx Conf Include Conf.d"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:15
+#: src/components/SelfCheck/tasks/backend/index.ts:15
 msgid "Nginx Conf Include Sites Enabled"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:20
+#: src/components/SelfCheck/tasks/backend/index.ts:20
 msgid "Nginx Conf Include Streams Enabled"
 msgstr ""
 
@@ -2865,8 +2874,8 @@ msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 #: src/components/SystemRestore/SystemRestoreContent.vue:336
 #, fuzzy
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in a "
-"few seconds."
+"Nginx UI configuration has been restored and will restart automatically in "
+"a few seconds."
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
 #: src/components/ChatGPT/ChatGPT.vue:374
@@ -3152,7 +3161,7 @@ msgstr ""
 msgid "Password"
 msgstr "Mật khẩu"
 
-#: src/views/install/Install.vue:156
+#: src/views/install/components/InstallForm.vue:98
 msgid "Password (*)"
 msgstr "Mật khẩu (*)"
 
@@ -3161,7 +3170,7 @@ msgstr "Mật khẩu (*)"
 msgid "Password incorrect"
 msgstr "Tên người dùng hoặc mật khẩu không chính xác"
 
-#: src/views/install/Install.vue:72
+#: src/views/install/components/InstallForm.vue:42
 msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
@@ -3238,8 +3247,7 @@ msgstr ""
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
-msgstr ""
-"Vui lòng điền thông tin xác thực API do nhà cung cấp DNS của bạn cung cấp"
+msgstr "Vui lòng điền thông tin xác thực API do nhà cung cấp DNS của bạn cung cấp"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:106
 msgid "Please fill in the required fields"
@@ -3250,14 +3258,14 @@ msgid ""
 "Please first add credentials in Certification > DNS Credentials, and then "
 "select one of the credentialsbelow to request the API of the DNS provider."
 msgstr ""
-"Trước tiên, vui lòng thêm thông tin xác thực trong Chứng chỉ > Thông tin xác "
-"thực DNS, sau đó chọn nhà cung cấp DNS"
+"Trước tiên, vui lòng thêm thông tin xác thực trong Chứng chỉ > Thông tin "
+"xác thực DNS, sau đó chọn nhà cung cấp DNS"
 
 #: src/components/Notification/notifications.ts:166
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to prevent "
-"lockout."
+"Please generate new recovery codes in the preferences immediately to "
+"prevent lockout."
 msgstr ""
 
 #: src/views/config/components/Rename.vue:65
@@ -3275,38 +3283,39 @@ msgstr "Vui lòng nhập username!"
 msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration!"
-msgstr ""
-"Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp của cấu hình mới!"
+msgstr "Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp của cấu hình mới!"
 
 #: src/views/site/site_list/SiteDuplicate.vue:33
 #, fuzzy
 msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration."
-msgstr ""
-"Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp của cấu hình mới!"
+msgstr "Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp của cấu hình mới!"
 
-#: src/views/install/Install.vue:56
+#: src/views/install/components/InstallForm.vue:26
 msgid "Please input your E-mail!"
 msgstr "Vui lòng nhập E-mail của bạn!"
 
-#: src/views/install/Install.vue:68 src/views/other/Login.vue:47
+#: src/views/install/components/InstallForm.vue:38 src/views/other/Login.vue:47
 msgid "Please input your password!"
 msgstr "Vui lòng nhập mật khẩu!"
 
-#: src/views/install/Install.vue:62 src/views/other/Login.vue:41
+#: src/views/install/components/InstallForm.vue:32 src/views/other/Login.vue:41
 msgid "Please input your username!"
 msgstr "Vui lòng nhập username!"
 
-#: src/views/install/Install.vue:108
+#: src/views/install/components/InstallView.vue:47
 #: src/views/system/Backup/SystemRestore.vue:10
 msgid "Please log in."
 msgstr ""
 
 #: src/views/certificate/DNSCredential.vue:62
-msgid ""
-"Please note that the unit of time configurations below are all in seconds."
+msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr "Lưu ý đơn vị cấu hình thời gian bên dưới được tính bằng giây."
+
+#: src/views/install/components/InstallView.vue:99
+msgid "Please resolve all issues before proceeding with installation"
+msgstr ""
 
 #: src/views/system/Backup/BackupCreator.vue:107
 msgid "Please save this security token, you will need it for restoration:"
@@ -3408,7 +3417,7 @@ msgstr "Đọc"
 msgid "Receive"
 msgstr "Nhận"
 
-#: src/views/system/SelfCheck/SelfCheck.vue:43
+#: src/components/SelfCheck/SelfCheck.vue:55
 msgid "Recheck"
 msgstr ""
 
@@ -3747,7 +3756,7 @@ msgstr "Đang khởi động lại"
 msgid "Restore completed successfully"
 msgstr "Đã xoá thành công"
 
-#: src/views/install/Install.vue:188
+#: src/views/install/components/InstallView.vue:109
 #, fuzzy
 msgid "Restore from Backup"
 msgstr "Thông tin"
@@ -3921,7 +3930,7 @@ msgstr ""
 msgid "Selector"
 msgstr "Bộ chọn"
 
-#: src/routes/modules/system.ts:19 src/views/system/SelfCheck/SelfCheck.vue:38
+#: src/components/SelfCheck/SelfCheck.vue:50 src/routes/modules/system.ts:19
 msgid "Self Check"
 msgstr ""
 
@@ -3986,14 +3995,18 @@ msgstr "Sử dụng HTTP01 để xác thực SSL"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
+msgstr ""
+
+#: src/views/install/components/InstallView.vue:63
+msgid "Setup your Nginx UI"
 msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:147
@@ -4037,7 +4050,7 @@ msgstr "Logs"
 msgid "Site not found"
 msgstr "Không tìm thấy tệp tin"
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:5
+#: src/components/SelfCheck/tasks/backend/index.ts:5
 #, fuzzy
 msgid "Sites Directory"
 msgstr "Thư mục"
@@ -4158,7 +4171,7 @@ msgstr "Đã tắt"
 msgid "Stream not found"
 msgstr "Không tìm thấy tệp tin"
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:10
+#: src/components/SelfCheck/tasks/backend/index.ts:10
 #, fuzzy
 msgid "Streams Directory"
 msgstr "Thư mục"
@@ -4180,12 +4193,12 @@ msgstr ""
 msgid "Success"
 msgstr "Thành công"
 
-#: src/views/system/SelfCheck/tasks/frontend/websocket.ts:6
+#: src/components/SelfCheck/tasks/frontend/websocket.ts:6
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
-"link to write the corresponding configuration file: https://nginxui.com/"
-"guide/nginx-proxy-example.html"
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to "
+"this link to write the corresponding configuration file: "
+"https://nginxui.com/guide/nginx-proxy-example.html"
 msgstr ""
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:197
@@ -4286,6 +4299,11 @@ msgstr "Thông tin"
 msgid "System Backup"
 msgstr "Thông tin"
 
+#: src/views/install/components/InstallView.vue:58
+#, fuzzy
+msgid "System Check"
+msgstr "Thông tin"
+
 #: src/views/certificate/components/ACMEUserSelector.vue:88
 msgid "System Initial User"
 msgstr ""
@@ -4295,7 +4313,7 @@ msgstr ""
 msgid "System Restore"
 msgstr "Thông tin"
 
-#: src/views/install/Install.vue:104
+#: src/views/install/components/InstallView.vue:43
 #: src/views/system/Backup/SystemRestore.vue:6
 #, fuzzy
 msgid "System restored successfully."
@@ -4329,7 +4347,7 @@ msgstr ""
 "Chứng chỉ cho miền sẽ được kiểm tra 5 phút / lần và sẽ được gia hạn nếu đã "
 "hơn 1 tuần kể từ lần cuối nó được cấp."
 
-#: src/views/install/Install.vue:78
+#: src/views/install/components/InstallForm.vue:48
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr "Tên tệp không thể chứa các ký tự sau: %{c}"
 
@@ -4349,7 +4367,8 @@ msgstr ""
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in "
+"settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 
 #: src/views/preference/tabs/OpenAISettings.vue:23
@@ -4360,8 +4379,7 @@ msgid ""
 msgstr ""
 
 #: src/views/preference/tabs/OpenAISettings.vue:90
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
+msgid "The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 
 #: src/views/preference/tabs/NodeSettings.vue:18
@@ -4401,8 +4419,7 @@ msgstr ""
 msgid ""
 "The server_name in the current configuration must be the domain name you "
 "need to get the certificate, supportmultiple domains."
-msgstr ""
-"Lưu ý: server_name trong cấu hình hiện tại phải là tên miền bạn muốn ký SSL."
+msgstr "Lưu ý: server_name trong cấu hình hiện tại phải là tên miền bạn muốn ký SSL."
 
 #: src/views/preference/tabs/CertSettings.vue:22
 #: src/views/preference/tabs/HTTPSettings.vue:14
@@ -4463,8 +4480,7 @@ msgid "This field should not be empty"
 msgstr "Trường này không được để trống"
 
 #: src/constants/form_errors.ts:6
-msgid ""
-"This field should only contain letters, unicode characters, numbers, and -_."
+msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr ""
 
 #: src/views/dashboard/NginxDashBoard.vue:153
@@ -4504,8 +4520,7 @@ msgid ""
 msgstr ""
 
 #: src/views/environments/list/BatchUpgrader.vue:182
-msgid ""
-"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 
 #: src/views/preference/tabs/AuthSettings.vue:124
@@ -4549,13 +4564,13 @@ msgstr ""
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
-"add a location which can proxy the request from authority to backend, and we "
-"need to save this file and reload the Nginx. Are you sure you want to "
+"add a location which can proxy the request from authority to backend, and "
+"we need to save this file and reload the Nginx. Are you sure you want to "
 "continue?"
 msgstr ""
-"Để đảm bảo tính năng tự động gia hạn chứng chỉ có thể hoạt động bình thường, "
-"chúng tôi cần thêm một vị trí có thể ủy quyền yêu cầu từ cơ quan có thẩm "
-"quyền đến chương trình phụ trợ và chúng tôi cần lưu tệp này và tải lại "
+"Để đảm bảo tính năng tự động gia hạn chứng chỉ có thể hoạt động bình "
+"thường, chúng tôi cần thêm một vị trí có thể ủy quyền yêu cầu từ cơ quan có "
+"thẩm quyền đến chương trình phụ trợ và chúng tôi cần lưu tệp này và tải lại "
 "Nginx. Bạn có chắc chắn muốn Tiếp tục?"
 
 #: src/views/preference/tabs/OpenAISettings.vue:36
@@ -4636,7 +4651,7 @@ msgstr "Loại"
 msgid "Unknown"
 msgstr ""
 
-#: src/views/system/SelfCheck/SelfCheck.vue:63
+#: src/components/SelfCheck/SelfCheck.vue:75
 msgid "Unknown issue"
 msgstr ""
 
@@ -4726,7 +4741,7 @@ msgstr ""
 msgid "Username"
 msgstr "Username"
 
-#: src/views/install/Install.vue:146
+#: src/views/install/components/InstallForm.vue:88
 msgid "Username (*)"
 msgstr "Username (*)"
 
@@ -4744,6 +4759,10 @@ msgstr ""
 #: src/components/SystemRestore/SystemRestoreContent.vue:293
 msgid "Verify Backup File Integrity"
 msgstr ""
+
+#: src/views/install/components/InstallView.vue:59
+msgid "Verify system requirements"
+msgstr "Xác minh các yêu cầu hệ thống"
 
 #: src/views/environments/list/envColumns.tsx:31
 #, fuzzy
@@ -4773,7 +4792,7 @@ msgstr "Cơ bản"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:134
 msgid "View Recovery Codes"
-msgstr ""
+msgstr "Xem mã phục hồi"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
 #, fuzzy
@@ -4783,7 +4802,7 @@ msgstr "Xem"
 #: src/composables/usePerformanceMetrics.ts:114
 #: src/views/dashboard/components/PerformanceTablesCard.vue:73
 msgid "Waiting processes"
-msgstr ""
+msgstr "Quá trình chờ đợi"
 
 #: src/constants/index.ts:23 src/views/config/InspectConfig.vue:33
 #: src/views/notification/notificationColumns.tsx:22
@@ -4810,8 +4829,8 @@ msgstr ""
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:140
 msgid ""
-"We will remove the HTTPChallenge configuration from this file and reload the "
-"Nginx. Are you sure you want to continue?"
+"We will remove the HTTPChallenge configuration from this file and reload "
+"the Nginx. Are you sure you want to continue?"
 msgstr ""
 "Chúng tôi sẽ xóa cấu hình HTTPChallenge khỏi tệp này và tải lại Nginx. Bạn "
 "có muốn tiếp tục không?"
@@ -4897,8 +4916,8 @@ msgstr "Có"
 
 #: src/views/terminal/Terminal.vue:135
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a non-"
-"localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
 msgstr ""
 
 #: src/views/system/Upgrade.vue:202
@@ -4924,8 +4943,7 @@ msgid ""
 msgstr ""
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:81
-msgid ""
-"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:94
@@ -5011,14 +5029,11 @@ msgstr ""
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
-#~ msgid ""
-#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
-#~ "%{resp}"
+#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
-#~ msgid ""
-#~ "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+#~ msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
@@ -5032,8 +5047,7 @@ msgstr ""
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
-#~ msgid ""
-#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy

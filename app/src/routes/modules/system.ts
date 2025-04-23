@@ -14,7 +14,7 @@ export const systemRoutes: RouteRecordRaw[] = [
     children: [{
       path: 'self_check',
       name: 'Self Check',
-      component: () => import('@/views/system/SelfCheck/SelfCheck.vue'),
+      component: () => import('@/views/system/SelfCheck.vue'),
       meta: {
         name: () => $gettext('Self Check'),
       },

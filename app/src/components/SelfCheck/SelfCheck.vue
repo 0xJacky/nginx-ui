@@ -4,12 +4,16 @@ import { CheckCircleOutlined, CloseCircleOutlined, WarningOutlined } from '@ant-
 import { taskManager } from './tasks'
 
 const data = ref<TaskReport[]>()
+const requestError = ref(false)
 const loading = ref(false)
 
 async function check() {
   loading.value = true
   try {
     data.value = await taskManager.runAllChecks()
+  }
+  catch {
+    requestError.value = true
   }
   finally {
     loading.value = false
@@ -32,6 +36,14 @@ async function fix(taskName: string) {
     fixing[taskName] = false
   }
 }
+
+const hasError = computed(() => {
+  return requestError.value || data.value?.some(item => item.status === 'error')
+})
+
+defineExpose({
+  hasError,
+})
 </script>
 
 <template>

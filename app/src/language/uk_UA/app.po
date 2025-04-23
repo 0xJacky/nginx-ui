@@ -4,11 +4,11 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "PO-Revision-Date: 2025-04-16 15:12+0000\n"
 "Last-Translator: sergio_from_tauri <dedysobr@gmail.com>\n"
-"Language-Team: Ukrainian <https://weblate.nginxui.com/projects/nginx-ui/"
-"frontend/uk/>\n"
+"Language-Team: Ukrainian "
+"<https://weblate.nginxui.com/projects/nginx-ui/frontend/uk/>\n"
 "Language: uk_UA\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
@@ -116,8 +116,7 @@ msgstr "Розширений режим"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:99
 msgid "Afterwards, refresh this page and click add passkey again."
-msgstr ""
-"Після цього оновіть цю сторінку та знову натисніть «Додати ключ доступу»."
+msgstr "Після цього оновіть цю сторінку та знову натисніть «Додати ключ доступу»."
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:118
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
@@ -241,7 +240,7 @@ msgstr "Запитати допомоги у ChatGPT"
 msgid "Assistant"
 msgstr "Помічник"
 
-#: src/views/system/SelfCheck/SelfCheck.vue:50
+#: src/components/SelfCheck/SelfCheck.vue:62
 msgid "Attempt to fix"
 msgstr "Спробувати виправити"
 
@@ -584,41 +583,41 @@ msgstr ""
 msgid "Check again"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:31
+#: src/components/SelfCheck/tasks/backend/index.ts:31
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v /"
-"var/run/docker.sock:/var/run/docker.sock`."
+"Docker Image, please make sure the docker socket is mounted like this: `-v "
+"/var/run/docker.sock:/var/run/docker.sock`."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/frontend/https-check.ts:11
+#: src/components/SelfCheck/tasks/frontend/https-check.ts:11
 msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
 "prevents using Passkeys and clipboard features."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:26
+#: src/components/SelfCheck/tasks/backend/index.ts:26
 msgid "Check if the nginx.conf includes the conf.d directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:16
+#: src/components/SelfCheck/tasks/backend/index.ts:16
 msgid "Check if the nginx.conf includes the sites-enabled directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:21
+#: src/components/SelfCheck/tasks/backend/index.ts:21
 msgid "Check if the nginx.conf includes the streams-enabled directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:6
+#: src/components/SelfCheck/tasks/backend/index.ts:6
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory."
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:11
+#: src/components/SelfCheck/tasks/backend/index.ts:11
 msgid ""
-"Check if the streams-available and streams-enabled directories are under the "
-"nginx configuration directory."
+"Check if the streams-available and streams-enabled directories are under "
+"the nginx configuration directory."
 msgstr ""
 
 #: src/constants/errors/crypto.ts:3
@@ -903,7 +902,7 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: src/views/install/Install.vue:167
+#: src/views/install/components/InstallForm.vue:109
 msgid "Database (Optional, default: database)"
 msgstr ""
 
@@ -1177,7 +1176,7 @@ msgstr ""
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:30
+#: src/components/SelfCheck/tasks/backend/index.ts:30
 msgid "Docker Socket"
 msgstr ""
 
@@ -1254,7 +1253,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: src/views/install/Install.vue:136
+#: src/views/install/components/InstallForm.vue:78
 msgid "Email (*)"
 msgstr ""
 
@@ -1877,7 +1876,7 @@ msgstr ""
 msgid "HTTP01"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/frontend/https-check.ts:10
+#: src/components/SelfCheck/tasks/frontend/https-check.ts:10
 msgid "HTTPS Protocol"
 msgstr ""
 
@@ -1891,8 +1890,8 @@ msgstr ""
 
 #: src/views/nginx_log/NginxLogList.vue:81
 msgid ""
-"If logs are not indexed, please check if the log file is under the directory "
-"in Nginx.LogDirWhiteList."
+"If logs are not indexed, please check if the log file is under the "
+"directory in Nginx.LogDirWhiteList."
 msgstr ""
 
 #: src/views/preference/tabs/AuthSettings.vue:145
@@ -1975,19 +1974,25 @@ msgstr ""
 msgid "Insecure Skip Verify"
 msgstr ""
 
-#: src/routes/modules/auth.ts:8 src/views/install/Install.vue:183
+#: src/routes/modules/auth.ts:8
+#: src/views/install/components/InstallForm.vue:124
+#: src/views/install/components/InstallHeader.vue:9
 msgid "Install"
 msgstr ""
 
-#: src/views/install/Install.vue:91
+#: src/views/install/components/InstallForm.vue:60
 msgid "Install successfully"
+msgstr ""
+
+#: src/views/install/components/InstallView.vue:62
+msgid "Installation"
 msgstr ""
 
 #: src/constants/errors/system.ts:3
 msgid "Installation is not allowed after 10 minutes of system startup"
 msgstr ""
 
-#: src/views/install/Install.vue:125
+#: src/views/install/components/TimeoutAlert.vue:11
 msgid ""
 "Installation is not allowed after 10 minutes of system startup, please "
 "restart the Nginx UI."
@@ -2231,12 +2236,12 @@ msgstr ""
 
 #: src/views/preference/tabs/LogrotateSettings.vue:13
 msgid ""
-"Logrotate, by default, is enabled in most mainstream Linux distributions for "
-"users who install Nginx UI on the host machine, so you don't need to modify "
-"the parameters on this page. For users who install Nginx UI using Docker "
-"containers, you can manually enable this option. The crontab task scheduler "
-"of Nginx UI will execute the logrotate command at the interval you set in "
-"minutes."
+"Logrotate, by default, is enabled in most mainstream Linux distributions "
+"for users who install Nginx UI on the host machine, so you don't need to "
+"modify the parameters on this page. For users who install Nginx UI using "
+"Docker containers, you can manually enable this option. The crontab task "
+"scheduler of Nginx UI will execute the logrotate command at the interval "
+"you set in minutes."
 msgstr ""
 
 #: src/views/site/components/SiteStatusSegmented.vue:138
@@ -2452,7 +2457,7 @@ msgstr ""
 msgid "Network Total Send"
 msgstr ""
 
-#: src/views/install/Install.vue:131
+#: src/views/install/components/InstallView.vue:106
 msgid "New Installation"
 msgstr ""
 
@@ -2469,6 +2474,7 @@ msgid "New version released"
 msgstr ""
 
 #: src/views/certificate/components/WildcardCertificate.vue:89
+#: src/views/install/components/InstallView.vue:93
 #: src/views/site/site_add/SiteAdd.vue:123
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:214
 msgid "Next"
@@ -2482,15 +2488,15 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:25
+#: src/components/SelfCheck/tasks/backend/index.ts:25
 msgid "Nginx Conf Include Conf.d"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:15
+#: src/components/SelfCheck/tasks/backend/index.ts:15
 msgid "Nginx Conf Include Sites Enabled"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:20
+#: src/components/SelfCheck/tasks/backend/index.ts:20
 msgid "Nginx Conf Include Streams Enabled"
 msgstr ""
 
@@ -2637,8 +2643,8 @@ msgstr ""
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:336
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in a "
-"few seconds."
+"Nginx UI configuration has been restored and will restart automatically in "
+"a few seconds."
 msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:374
@@ -2911,7 +2917,7 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: src/views/install/Install.vue:156
+#: src/views/install/components/InstallForm.vue:98
 msgid "Password (*)"
 msgstr ""
 
@@ -2919,7 +2925,7 @@ msgstr ""
 msgid "Password incorrect"
 msgstr ""
 
-#: src/views/install/Install.vue:72
+#: src/views/install/components/InstallForm.vue:42
 msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
@@ -3010,8 +3016,8 @@ msgstr ""
 #: src/components/Notification/notifications.ts:166
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to prevent "
-"lockout."
+"Please generate new recovery codes in the preferences immediately to "
+"prevent lockout."
 msgstr ""
 
 #: src/views/config/components/Rename.vue:65
@@ -3035,26 +3041,29 @@ msgid ""
 "configuration."
 msgstr ""
 
-#: src/views/install/Install.vue:56
+#: src/views/install/components/InstallForm.vue:26
 msgid "Please input your E-mail!"
 msgstr ""
 
-#: src/views/install/Install.vue:68 src/views/other/Login.vue:47
+#: src/views/install/components/InstallForm.vue:38 src/views/other/Login.vue:47
 msgid "Please input your password!"
 msgstr ""
 
-#: src/views/install/Install.vue:62 src/views/other/Login.vue:41
+#: src/views/install/components/InstallForm.vue:32 src/views/other/Login.vue:41
 msgid "Please input your username!"
 msgstr ""
 
-#: src/views/install/Install.vue:108
+#: src/views/install/components/InstallView.vue:47
 #: src/views/system/Backup/SystemRestore.vue:10
 msgid "Please log in."
 msgstr ""
 
 #: src/views/certificate/DNSCredential.vue:62
-msgid ""
-"Please note that the unit of time configurations below are all in seconds."
+msgid "Please note that the unit of time configurations below are all in seconds."
+msgstr ""
+
+#: src/views/install/components/InstallView.vue:99
+msgid "Please resolve all issues before proceeding with installation"
 msgstr ""
 
 #: src/views/system/Backup/BackupCreator.vue:107
@@ -3153,7 +3162,7 @@ msgstr ""
 msgid "Receive"
 msgstr ""
 
-#: src/views/system/SelfCheck/SelfCheck.vue:43
+#: src/components/SelfCheck/SelfCheck.vue:55
 msgid "Recheck"
 msgstr ""
 
@@ -3449,7 +3458,7 @@ msgstr ""
 msgid "Restore completed successfully"
 msgstr ""
 
-#: src/views/install/Install.vue:188
+#: src/views/install/components/InstallView.vue:109
 msgid "Restore from Backup"
 msgstr ""
 
@@ -3608,7 +3617,7 @@ msgstr ""
 msgid "Selector"
 msgstr ""
 
-#: src/routes/modules/system.ts:19 src/views/system/SelfCheck/SelfCheck.vue:38
+#: src/components/SelfCheck/SelfCheck.vue:50 src/routes/modules/system.ts:19
 msgid "Self Check"
 msgstr ""
 
@@ -3669,14 +3678,18 @@ msgstr ""
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
+msgstr ""
+
+#: src/views/install/components/InstallView.vue:63
+msgid "Setup your Nginx UI"
 msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:147
@@ -3715,7 +3728,7 @@ msgstr ""
 msgid "Site not found"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:5
+#: src/components/SelfCheck/tasks/backend/index.ts:5
 msgid "Sites Directory"
 msgstr ""
 
@@ -3828,7 +3841,7 @@ msgstr ""
 msgid "Stream not found"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/backend/index.ts:10
+#: src/components/SelfCheck/tasks/backend/index.ts:10
 msgid "Streams Directory"
 msgstr ""
 
@@ -3848,12 +3861,12 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
-#: src/views/system/SelfCheck/tasks/frontend/websocket.ts:6
+#: src/components/SelfCheck/tasks/frontend/websocket.ts:6
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
-"link to write the corresponding configuration file: https://nginxui.com/"
-"guide/nginx-proxy-example.html"
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to "
+"this link to write the corresponding configuration file: "
+"https://nginxui.com/guide/nginx-proxy-example.html"
 msgstr ""
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:197
@@ -3943,6 +3956,10 @@ msgstr ""
 msgid "System Backup"
 msgstr ""
 
+#: src/views/install/components/InstallView.vue:58
+msgid "System Check"
+msgstr ""
+
 #: src/views/certificate/components/ACMEUserSelector.vue:88
 msgid "System Initial User"
 msgstr ""
@@ -3951,7 +3968,7 @@ msgstr ""
 msgid "System Restore"
 msgstr ""
 
-#: src/views/install/Install.vue:104
+#: src/views/install/components/InstallView.vue:43
 #: src/views/system/Backup/SystemRestore.vue:6
 msgid "System restored successfully."
 msgstr ""
@@ -3980,7 +3997,7 @@ msgid ""
 "since it was last issued."
 msgstr ""
 
-#: src/views/install/Install.vue:78
+#: src/views/install/components/InstallForm.vue:48
 msgid "The filename cannot contain the following characters: %{c}"
 msgstr ""
 
@@ -4000,7 +4017,8 @@ msgstr ""
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in "
+"settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 
 #: src/views/preference/tabs/OpenAISettings.vue:23
@@ -4011,8 +4029,7 @@ msgid ""
 msgstr ""
 
 #: src/views/preference/tabs/OpenAISettings.vue:90
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
+msgid "The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 
 #: src/views/preference/tabs/NodeSettings.vue:18
@@ -4109,8 +4126,7 @@ msgid "This field should not be empty"
 msgstr ""
 
 #: src/constants/form_errors.ts:6
-msgid ""
-"This field should only contain letters, unicode characters, numbers, and -_."
+msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr ""
 
 #: src/views/dashboard/NginxDashBoard.vue:153
@@ -4150,8 +4166,7 @@ msgid ""
 msgstr ""
 
 #: src/views/environments/list/BatchUpgrader.vue:182
-msgid ""
-"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 
 #: src/views/preference/tabs/AuthSettings.vue:124
@@ -4195,8 +4210,8 @@ msgstr ""
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
-"add a location which can proxy the request from authority to backend, and we "
-"need to save this file and reload the Nginx. Are you sure you want to "
+"add a location which can proxy the request from authority to backend, and "
+"we need to save this file and reload the Nginx. Are you sure you want to "
 "continue?"
 msgstr ""
 
@@ -4278,7 +4293,7 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: src/views/system/SelfCheck/SelfCheck.vue:63
+#: src/components/SelfCheck/SelfCheck.vue:75
 msgid "Unknown issue"
 msgstr ""
 
@@ -4362,7 +4377,7 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: src/views/install/Install.vue:146
+#: src/views/install/components/InstallForm.vue:88
 msgid "Username (*)"
 msgstr ""
 
@@ -4381,40 +4396,44 @@ msgstr ""
 msgid "Verify Backup File Integrity"
 msgstr ""
 
+#: src/views/install/components/InstallView.vue:59
+msgid "Verify system requirements"
+msgstr "Перевірте системні вимоги"
+
 #: src/views/environments/list/envColumns.tsx:31
 msgid "Version"
-msgstr ""
+msgstr "Версія"
 
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:488
 #: src/views/nginx_log/NginxLogList.vue:97
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
-msgstr ""
+msgstr "Переглянути"
 
 #: src/components/Notification/Notification.vue:203
 msgid "View all notifications"
-msgstr ""
+msgstr "Переглянути всі сповіщення"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:151
 msgid "View Details"
-msgstr ""
+msgstr "Переглянути деталі"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:262
 msgid "View Mode"
-msgstr ""
+msgstr "Режим перегляду"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:134
 msgid "View Recovery Codes"
-msgstr ""
+msgstr "Переглянути коди відновлення"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
 msgid "Viewed"
-msgstr ""
+msgstr "Переглянутий"
 
 #: src/composables/usePerformanceMetrics.ts:114
 #: src/views/dashboard/components/PerformanceTablesCard.vue:73
 msgid "Waiting processes"
-msgstr ""
+msgstr "Процеси очікування"
 
 #: src/constants/index.ts:23 src/views/config/InspectConfig.vue:33
 #: src/views/notification/notificationColumns.tsx:22
@@ -4439,8 +4458,8 @@ msgstr ""
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:140
 msgid ""
-"We will remove the HTTPChallenge configuration from this file and reload the "
-"Nginx. Are you sure you want to continue?"
+"We will remove the HTTPChallenge configuration from this file and reload "
+"the Nginx. Are you sure you want to continue?"
 msgstr ""
 
 #: src/views/preference/tabs/AuthSettings.vue:97
@@ -4523,8 +4542,8 @@ msgstr ""
 
 #: src/views/terminal/Terminal.vue:135
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a non-"
-"localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
 msgstr ""
 
 #: src/views/system/Upgrade.vue:202
@@ -4550,8 +4569,7 @@ msgid ""
 msgstr ""
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:81
-msgid ""
-"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:94

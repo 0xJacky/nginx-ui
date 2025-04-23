@@ -51,6 +51,7 @@ func InitRouter() {
 		crypto.InitPublicRouter(root)
 		system.InitPublicRouter(root)
 		system.InitBackupRestoreRouter(root)
+		system.InitSelfCheckRouter(root)
 		user.InitAuthRouter(root)
 
 		// Authorization required and not websocket request
