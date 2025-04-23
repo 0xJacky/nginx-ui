@@ -1,48 +1,14 @@
 <script setup lang="ts">
-import type { TaskReport } from './tasks'
 import { CheckCircleOutlined, CloseCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
+import { useSelfCheckStore } from './store'
 import { taskManager } from './tasks'
 
-const data = ref<TaskReport[]>()
-const requestError = ref(false)
-const loading = ref(false)
+const store = useSelfCheckStore()
 
-async function check() {
-  loading.value = true
-  try {
-    data.value = await taskManager.runAllChecks()
-  }
-  catch {
-    requestError.value = true
-  }
-  finally {
-    loading.value = false
-  }
-}
+const { data, loading, fixing } = storeToRefs(store)
 
 onMounted(() => {
-  check()
-})
-
-const fixing = reactive({})
-
-async function fix(taskName: string) {
-  fixing[taskName] = true
-  try {
-    await taskManager.fixTask(taskName)
-    check()
-  }
-  finally {
-    fixing[taskName] = false
-  }
-}
-
-const hasError = computed(() => {
-  return requestError.value || data.value?.some(item => item.status === 'error')
-})
-
-defineExpose({
-  hasError,
+  store.check()
 })
 </script>
 
@@ -50,7 +16,10 @@ defineExpose({
   <ACard :title="$gettext('Self Check')">
     <template #extra>
       <AButton
-        type="link" size="small" :loading="loading" @click="check"
+        type="link"
+        size="small"
+        :loading="loading"
+        @click="store.check"
       >
         {{ $gettext('Recheck') }}
       </AButton>
@@ -58,7 +27,7 @@ defineExpose({
     <AList>
       <AListItem v-for="(item, index) in data" :key="index">
         <template v-if="item.status === 'error'" #actions>
-          <AButton type="link" size="small" :loading="fixing[item.name]" @click="fix(item.name)">
+          <AButton type="link" size="small" :loading="fixing[item.name]" @click="store.fix(item.name)">
             {{ $gettext('Attempt to fix') }}
           </AButton>
         </template>

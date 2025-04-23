@@ -107,6 +107,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SelfCheckSelfCheck: typeof import('./src/components/SelfCheck/SelfCheck.vue')['default']
+    SelfCheckSelfCheckHeaderBanner: typeof import('./src/components/SelfCheck/SelfCheckHeaderBanner.vue')['default']
     SensitiveStringSensitiveString: typeof import('./src/components/SensitiveString/SensitiveString.vue')['default']
     SetLanguageSetLanguage: typeof import('./src/components/SetLanguage/SetLanguage.vue')['default']
     StdDesignStdDataDisplayStdBatchEdit: typeof import('./src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue')['default']

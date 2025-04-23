@@ -18,13 +18,13 @@ func getToken(c *gin.Context) (token string) {
 		return
 	}
 
-	if token, _ = c.Cookie("token"); token != "" {
-		return token
-	}
-
 	if token = c.Query("token"); token != "" {
 		tokenBytes, _ := base64.StdEncoding.DecodeString(token)
 		return string(tokenBytes)
+	}
+
+	if token, _ = c.Cookie("token"); token != "" {
+		return token
 	}
 
 	return ""

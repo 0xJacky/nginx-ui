@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import install from '@/api/install'
-import SelfCheck from '@/components/SelfCheck'
+import SelfCheck, { useSelfCheckStore } from '@/components/SelfCheck'
 import SystemRestoreContent from '@/components/SystemRestore'
 import { message } from 'ant-design-vue'
 import InstallFooter from './InstallFooter.vue'
@@ -11,7 +11,8 @@ import TimeoutAlert from './TimeoutAlert.vue'
 const installTimeout = ref(false)
 const activeTab = ref('1')
 const step = ref(1)
-const selfCheckRef = useTemplateRef('selfCheckRef')
+const selfCheckStore = useSelfCheckStore()
+const { hasError } = storeToRefs(selfCheckStore)
 
 const router = useRouter()
 
@@ -50,7 +51,7 @@ function handleRestoreSuccess(options: { restoreNginx: boolean, restoreNginxUI: 
 }
 
 const canProceed = computed(() => {
-  return !installTimeout.value && !selfCheckRef.value?.hasError
+  return !installTimeout.value && !hasError.value
 })
 
 const steps = [
@@ -87,7 +88,7 @@ const steps = [
           </ASteps>
 
           <div v-if="step === 1">
-            <SelfCheck ref="selfCheckRef" class="mb-4" />
+            <SelfCheck class="mb-4" />
             <div class="flex justify-center">
               <AButton v-if="canProceed" type="primary" @click="step = 2">
                 {{ $gettext('Next') }}

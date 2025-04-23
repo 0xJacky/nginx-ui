@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import type { ShallowRef } from 'vue'
 import auth from '@/api/auth'
-import NginxControl from '@/components/NginxControl/NginxControl.vue'
-import Notification from '@/components/Notification/Notification.vue'
-import SetLanguage from '@/components/SetLanguage/SetLanguage.vue'
-import SwitchAppearance from '@/components/SwitchAppearance/SwitchAppearance.vue'
+import NginxControl from '@/components/NginxControl'
+import Notification from '@/components/Notification'
+import { SelfCheckHeaderBanner } from '@/components/SelfCheck'
+import SetLanguage from '@/components/SetLanguage'
+import SwitchAppearance from '@/components/SwitchAppearance'
 import { DesktopOutlined, HomeOutlined, LogoutOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
+import { useElementSize } from '@vueuse/core'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 
@@ -23,11 +24,16 @@ function logout() {
   })
 }
 
-const headerRef = useTemplateRef('headerRef') as Readonly<ShallowRef<HTMLDivElement>>
+const headerRef = useTemplateRef('headerRef')
 
+const userWrapperRef = useTemplateRef('userWrapperRef')
 const isWorkspace = computed(() => {
   return !!window.inWorkspace
 })
+
+const { width: headerWidth } = useElementSize(headerRef)
+
+const { width: userWrapperWidth } = useElementSize(userWrapperRef)
 </script>
 
 <template>
@@ -36,7 +42,13 @@ const isWorkspace = computed(() => {
       <MenuUnfoldOutlined @click="emit('clickUnFold')" />
     </div>
 
+    <SelfCheckHeaderBanner
+      :header-weight="headerWidth"
+      :user-wrapper-width="userWrapperWidth"
+    />
+
     <ASpace
+      ref="userWrapperRef"
       class="user-wrapper"
       :size="24"
     >
@@ -74,7 +86,7 @@ const isWorkspace = computed(() => {
   background: transparent;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.05);
   width: 100%;
-
+  position: relative;
   a {
     color: #000000;
   }
