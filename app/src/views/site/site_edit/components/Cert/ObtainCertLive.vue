@@ -58,31 +58,14 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
     ws.onmessage = async m => {
       const r = JSON.parse(m.data)
 
-      const regex = /\[Nginx UI\] (.*)/
+      log(T(r))
 
-      const matches = r.message.match(regex)
-
-      if (matches && matches.length > 1) {
-        const extractedText = matches[1]
-
-        r.message = r.message.replaceAll(extractedText, $gettext(extractedText))
-      }
-
-      log(r.message)
-
-      // eslint-disable-next-line sonarjs/no-small-switch
       switch (r.status) {
-        case 'info':
-          // If it is a nginx ui log, increase the percent.
-          if (r.message.includes('[Nginx UI]'))
-            progressPercent.value += 8
-
-          break
-        default:
+        case 'success':
           modalClosable.value = true
           issuingCert.value = false
 
-          if (r.status === 'success' && r.ssl_certificate !== undefined && r.ssl_certificate_key !== undefined) {
+          if (r.ssl_certificate !== undefined && r.ssl_certificate_key !== undefined) {
             progressStatus.value = 'success'
             progressPercent.value = 100
             resolve({
@@ -91,10 +74,15 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
               key_type: r.key_type,
             })
           }
-          else {
-            progressStatus.value = 'exception'
-            reject($gettext('Fail to obtain certificate'))
-          }
+          break
+        case 'error':
+          progressStatus.value = 'exception'
+          reject($gettext('Fail to obtain certificate'))
+          break
+        default:
+          // If it is a nginx ui log, increase the percent.
+          if (r.message.includes('[Nginx UI]'))
+            progressPercent.value += 8
           break
       }
     }

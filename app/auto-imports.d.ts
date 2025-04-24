@@ -11,6 +11,7 @@ declare global {
   const $npgettext: typeof import('@/gettext')['$npgettext']
   const $pgettext: typeof import('@/gettext')['$pgettext']
   const EffectScope: typeof import('vue')['EffectScope']
+  const T: typeof import('@/language')['T']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
@@ -101,6 +102,7 @@ declare module 'vue' {
     readonly $npgettext: UnwrapRef<typeof import('@/gettext')['$npgettext']>
     readonly $pgettext: UnwrapRef<typeof import('@/gettext')['$pgettext']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly T: UnwrapRef<typeof import('@/language')['T']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>

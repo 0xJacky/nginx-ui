@@ -14,6 +14,100 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 5.9.2\n"
 
+#: src/language/generate.ts:19
+msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
+msgstr ""
+"[Nginx UI] Utilisateur ACME : %{name}, Email : %{email}, Répertoire CA : "
+"%{caDir}"
+
+#: src/language/generate.ts:13
+msgid "[Nginx UI] Backing up current certificate for later revocation"
+msgstr "[Nginx UI] Sauvegarde du certificat actuel pour une révocation ultérieure"
+
+#: src/language/generate.ts:28
+#, fuzzy
+msgid "[Nginx UI] Certificate renewed successfully"
+msgstr "Désactivé avec succès"
+
+#: src/language/generate.ts:8
+#, fuzzy
+msgid "[Nginx UI] Certificate successfully revoked"
+msgstr "Nginx a redémarré avec succès"
+
+#: src/language/generate.ts:29
+msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgstr ""
+"[Nginx UI] Le certificat a été utilisé pour le serveur, rechargement du "
+"certificat TLS du serveur"
+
+#: src/language/generate.ts:24
+#, fuzzy
+msgid "[Nginx UI] Creating client facilitates communication with the CA server"
+msgstr "La création du client facilite la communication avec le serveur CA"
+
+#: src/language/generate.ts:12
+#, fuzzy
+msgid "[Nginx UI] Environment variables cleaned"
+msgstr "Définition des variables d'environnement"
+
+#: src/language/generate.ts:21
+msgid "[Nginx UI] Finished"
+msgstr "[Nginx UI] Terminé"
+
+#: src/language/generate.ts:4
+#, fuzzy
+msgid "[Nginx UI] Issued certificate successfully"
+msgstr "Certificat délivré avec succès"
+
+#: src/language/generate.ts:14
+msgid "[Nginx UI] Obtaining certificate"
+msgstr "[Nginx UI] Obtention du certificat"
+
+#: src/language/generate.ts:22
+msgid "[Nginx UI] Preparing for certificate revocation"
+msgstr "[Nginx UI] Préparation de la révocation du certificat"
+
+#: src/language/generate.ts:18
+msgid "[Nginx UI] Preparing lego configurations"
+msgstr "[Nginx UI] Préparation des configurations lego"
+
+#: src/language/generate.ts:25
+msgid "[Nginx UI] Reloading nginx"
+msgstr "[Nginx UI] Rechargement de nginx"
+
+#: src/language/generate.ts:16
+msgid "[Nginx UI] Revocation completed"
+msgstr "[Nginx UI] Révocation terminée"
+
+#: src/language/generate.ts:7
+msgid "[Nginx UI] Revoking certificate"
+msgstr "[Nginx UI] Révoquer le certificat"
+
+#: src/language/generate.ts:26
+msgid "[Nginx UI] Revoking old certificate"
+msgstr "[Nginx UI] Révoquer l'ancien certificat"
+
+#: src/language/generate.ts:20
+msgid "[Nginx UI] Setting DNS01 challenge provider"
+msgstr "[Nginx UI] Configuration du fournisseur de défi DNS01"
+
+#: src/language/generate.ts:6
+#, fuzzy
+msgid "[Nginx UI] Setting environment variables"
+msgstr "Définition des variables d'environnement"
+
+#: src/language/generate.ts:11
+msgid "[Nginx UI] Setting HTTP01 challenge provider"
+msgstr "[Nginx UI] Configuration du fournisseur de défi HTTP01"
+
+#: src/language/generate.ts:15
+msgid "[Nginx UI] Writing certificate private key to disk"
+msgstr "[Nginx UI] Écriture de la clé privée du certificat sur le disque"
+
+#: src/language/generate.ts:27
+msgid "[Nginx UI] Writing certificate to disk"
+msgstr "[Nginx UI] Écriture du certificat sur le disque"
+
 #: src/views/user/userColumns.tsx:32
 msgid "2FA"
 msgstr "2fa"
@@ -110,7 +204,7 @@ msgstr "Ajouter un site"
 msgid "Added successfully"
 msgstr "Mis à jour avec succés"
 
-#: src/views/certificate/DNSChallenge.vue:110
+#: src/views/certificate/components/DNSChallenge.vue:110
 #, fuzzy
 msgid "Additional"
 msgstr "Supplémentaire"
@@ -140,7 +234,7 @@ msgstr "Tous les codes de récupération ont été utilisés"
 msgid "API Base Url"
 msgstr "URL de base de l'API"
 
-#: src/views/certificate/DNSChallenge.vue:83
+#: src/views/certificate/components/DNSChallenge.vue:83
 #, fuzzy
 msgid "API Document"
 msgstr "Jeton d'API"
@@ -297,7 +391,7 @@ msgstr "Auto"
 msgid "auto = CPU cores"
 msgstr "auto = cœurs CPU"
 
-#: src/views/nginx_log/NginxLog.vue:149
+#: src/views/nginx_log/NginxLog.vue:150
 msgid "Auto Refresh"
 msgstr "Actualisation automatique"
 
@@ -317,11 +411,9 @@ msgstr "\"Redémarrage Automatique\""
 msgid "Automatically indexed from site and stream configurations."
 msgstr "\"Indexé automatiquement à partir des configurations de site et de flux.\""
 
-#: src/views/certificate/components/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:266
-#: src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195
-#: src/views/nginx_log/NginxLog.vue:173
+#: src/views/certificate/CertificateEditor.vue:259
+#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:174
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
 msgid "Back"
@@ -533,42 +625,40 @@ msgid "Certificate %{name} will expire in 1 day"
 msgstr "Le certificat %{name} expirera dans 1 jour"
 
 #: src/constants/errors/cert.ts:4
-#, fuzzy
 msgid "Certificate decode error"
-msgstr "Changer de certificat"
+msgstr "Erreur de décodage du certificat"
 
 #: src/components/Notification/notifications.ts:29
-#, fuzzy
 msgid "Certificate Expiration Notice"
-msgstr "Modèles de configuration"
+msgstr "Avis d'expiration du certificat"
 
 #: src/components/Notification/notifications.ts:25
-#, fuzzy
 msgid "Certificate Expired"
-msgstr "Liste des certifications"
+msgstr "Certificat expiré"
 
 #: src/components/Notification/notifications.ts:33
 #: src/components/Notification/notifications.ts:37
 #: src/components/Notification/notifications.ts:41
-#, fuzzy
 msgid "Certificate Expiring Soon"
-msgstr "Le certificat a expiré"
+msgstr "Certificat expirant bientôt"
+
+#: src/language/generate.ts:5
+#, fuzzy
+msgid "Certificate not found: %{error}"
+msgstr "Erreur de décodage du certificat"
 
 #: src/constants/errors/cert.ts:5
-#, fuzzy
 msgid "Certificate parse error"
-msgstr "Le certificat a expiré"
+msgstr "Erreur d'analyse du certificat"
 
 #: src/constants/errors/cert.ts:8
-#, fuzzy
 msgid "Certificate path is empty"
-msgstr "Modèles de configuration"
+msgstr "Le chemin du certificat est vide"
 
 #: src/views/certificate/components/RemoveCert.vue:41
 #: src/views/certificate/components/RemoveCert.vue:61
-#, fuzzy
 msgid "Certificate removed successfully"
-msgstr "Désactivé avec succès"
+msgstr "Certificat supprimé avec succès"
 
 #: src/views/preference/tabs/CertSettings.vue:27
 #, fuzzy
@@ -580,7 +670,12 @@ msgstr "Le certificat est valide"
 msgid "Certificate renewed successfully"
 msgstr "Désactivé avec succès"
 
-#: src/views/certificate/components/CertificateEditor.vue:128
+#: src/language/generate.ts:10
+#, fuzzy
+msgid "Certificate revoked successfully"
+msgstr "Certificat supprimé avec succès"
+
+#: src/views/certificate/CertificateEditor.vue:128
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 #, fuzzy
 msgid "Certificate Status"
@@ -628,7 +723,7 @@ msgstr "Canal"
 #: src/views/site/site_edit/components/RightPanel/RightPanel.vue:40
 #: src/views/stream/components/RightPanel/RightPanel.vue:22
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:40
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:64
@@ -646,12 +741,18 @@ msgid ""
 "Docker Image, please make sure the docker socket is mounted like this: `-v "
 "/var/run/docker.sock:/var/run/docker.sock`."
 msgstr ""
+"Vérifiez si /var/run/docker.sock existe. Si vous utilisez l'image Docker "
+"officielle de Nginx UI, assurez-vous que le socket Docker est monté comme "
+"ceci : `-v /var/run/docker.sock:/var/run/docker.sock`."
 
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:11
 msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
 "prevents using Passkeys and clipboard features."
 msgstr ""
+"Vérifiez si HTTPS est activé. L'utilisation de HTTP en dehors de localhost "
+"est non sécurisée et empêche l'utilisation des fonctionnalités Passkeys et "
+"presse-papiers."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:26
 #, fuzzy
@@ -706,6 +807,8 @@ msgstr "Désactivé avec succès"
 #: src/components/SystemRestore/SystemRestoreContent.vue:271
 msgid "Click or drag backup file to this area to upload"
 msgstr ""
+"Cliquez sur ou faites glisser le fichier de sauvegarde vers cette zone pour "
+"télécharger"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:110
 msgid "Click to copy"
@@ -713,36 +816,35 @@ msgstr "Clique pour copier"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:120
 msgid "Client Body Buffer Size"
-msgstr ""
+msgstr "Taille du tampon du corps client"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:113
 msgid "Client Header Buffer Size"
-msgstr ""
+msgstr "Taille du tampon d'en-tête client"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Client Max Body Size"
-msgstr ""
+msgstr "Taille maximale du corps du client"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:121
 msgid "Client request body buffer size"
-msgstr ""
+msgstr "Taille du tampon du corps de la requête client"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:114
 msgid "Client request header buffer size"
-msgstr ""
+msgstr "Taille du tampon d'en-tête de requête client"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:169
 msgid "Close"
-msgstr ""
+msgstr "Fermer"
 
 #: src/constants/errors/llm.ts:2
-#, fuzzy
 msgid "Code completion is not enabled"
-msgstr "Le compte actuel n'a pas le TOTP d'activé."
+msgstr "La complétion de code n'est pas activée"
 
 #: src/views/preference/tabs/OpenAISettings.vue:86
 msgid "Code Completion Model"
-msgstr ""
+msgstr "Modèle de complétion de code"
 
 #: src/views/preference/tabs/LogrotateSettings.vue:23
 #, fuzzy
@@ -752,6 +854,8 @@ msgstr "Commentaires"
 #: src/constants/errors/docker.ts:6
 msgid "Command exited with unexpected exit code: {0}, error: {1}"
 msgstr ""
+"La commande s'est terminée avec un code de sortie inattendu : {0}, erreur : "
+"{1}"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:115
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
@@ -762,7 +866,7 @@ msgstr "Commentaires"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:127
 msgid "Compare"
-msgstr ""
+msgstr "Comparer"
 
 #: src/components/ConfigHistory/DiffViewer.vue:388
 #, fuzzy
@@ -771,15 +875,15 @@ msgstr "Configurations"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:130
 msgid "Compare Selected"
-msgstr ""
+msgstr "Comparez sélectionné"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:129
 msgid "Compare with Current"
-msgstr ""
+msgstr "Comparez avec le courant"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:88
 msgid "Compression level, 1 is lowest, 9 is highest"
-msgstr ""
+msgstr "Le niveau de compression, 1 est le plus bas, 9 est le plus élevé"
 
 #: src/constants/errors/backup.ts:14
 #, fuzzy
@@ -823,7 +927,7 @@ msgstr "Connecté"
 
 #: src/views/dashboard/NginxDashBoard.vue:85
 msgid "Connection error, trying to reconnect..."
-msgstr ""
+msgstr "Erreur de connexion, tentative de reconnexion..."
 
 #: src/views/terminal/Terminal.vue:142
 msgid "Connection lost, please refresh the page."
@@ -831,11 +935,11 @@ msgstr "Connexion perdue, merci de recharger la page."
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
 msgid "Connection timeout period"
-msgstr ""
+msgstr "Période de délai de connexion"
 
 #: src/constants/errors/docker.ts:7
 msgid "Container status unknown"
-msgstr ""
+msgstr "Statut du conteneur inconnu"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:120
 #: src/components/NgxConfigEditor/LocationEditor.vue:116
@@ -934,7 +1038,7 @@ msgstr "La création du client facilite la communication avec le serveur CA"
 msgid "Credential"
 msgstr "Identifiant"
 
-#: src/views/certificate/DNSChallenge.vue:99
+#: src/views/certificate/components/DNSChallenge.vue:99
 msgid "Credentials"
 msgstr "Identifiants"
 
@@ -1239,7 +1343,7 @@ msgid "DNS Credentials"
 msgstr "Identifiants DNS"
 
 #: src/components/AutoCertForm/DNSChallenge.vue:94
-#: src/views/certificate/DNSChallenge.vue:72
+#: src/views/certificate/components/DNSChallenge.vue:72
 msgid "DNS Provider"
 msgstr "Fournisseur DNS"
 
@@ -1292,6 +1396,10 @@ msgstr ""
 msgid "Docker Socket"
 msgstr ""
 
+#: src/constants/errors/self_check.ts:15
+msgid "Docker socket not exist"
+msgstr ""
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
 #, fuzzy
@@ -1304,7 +1412,7 @@ msgstr[1] "Jeton d'API"
 msgid "Domain"
 msgstr "Domaine"
 
-#: src/views/certificate/components/CertificateEditor.vue:112
+#: src/views/certificate/CertificateEditor.vue:112
 #, fuzzy
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
@@ -1581,7 +1689,7 @@ msgstr ""
 msgid "External Notify"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:96
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
 #, fuzzy
 msgid "Fail to obtain certificate"
 msgstr "Obtenir un certificat"
@@ -1734,6 +1842,11 @@ msgstr ""
 #: src/views/certificate/components/RemoveCert.vue:66
 #, fuzzy
 msgid "Failed to delete certificate"
+msgstr "Obtenir un certificat"
+
+#: src/language/generate.ts:9
+#, fuzzy
+msgid "Failed to delete certificate from database: %{error}"
 msgstr "Obtenir un certificat"
 
 #: src/views/site/components/SiteStatusSegmented.vue:46
@@ -1905,6 +2018,11 @@ msgstr "Erreur lecture nginx.conf"
 msgid "Failed to revoke certificate"
 msgstr "Obtenir un certificat"
 
+#: src/language/generate.ts:17
+#, fuzzy
+msgid "Failed to revoke certificate: %{error}"
+msgstr "Obtenir un certificat"
+
 #: src/views/dashboard/components/ParamsOptimization.vue:90
 #, fuzzy
 msgid "Failed to save Nginx performance settings"
@@ -1944,7 +2062,7 @@ msgstr "Fichier introuvable"
 msgid "Filename is empty"
 msgstr "Nom du fichier vide"
 
-#: src/views/nginx_log/NginxLog.vue:155
+#: src/views/nginx_log/NginxLog.vue:156
 msgid "Filter"
 msgstr "Filtrer"
 
@@ -2144,7 +2262,7 @@ msgid "Import"
 msgstr "Exporter"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/components/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:85
 #, fuzzy
 msgid "Import Certificate"
 msgstr "État du certificat"
@@ -2380,8 +2498,8 @@ msgstr "Laisser vide pour aucun changement"
 msgid "Leave blank if you don't need this."
 msgstr "Laisser vide pour aucun changement"
 
-#: src/views/certificate/components/CertificateEditor.vue:223
-#: src/views/certificate/components/CertificateEditor.vue:237
+#: src/views/certificate/CertificateEditor.vue:223
+#: src/views/certificate/CertificateEditor.vue:237
 #, fuzzy
 msgid "Leave blank will not change anything"
 msgstr "Laisser vide pour aucun changement"
@@ -2461,10 +2579,14 @@ msgstr "Localisation"
 msgid "Locations"
 msgstr "Localisations"
 
-#: src/views/certificate/components/CertificateEditor.vue:247
+#: src/views/certificate/CertificateEditor.vue:247
 #, fuzzy
 msgid "Log"
 msgstr "Connexion"
+
+#: src/language/generate.ts:23
+msgid "Log file %{log_path} is not a regular file. "
+msgstr ""
 
 #: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:67
 #, fuzzy
@@ -2667,7 +2789,7 @@ msgid "Modify"
 msgstr "Modifier"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/components/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:85
 #, fuzzy
 msgid "Modify Certificate"
 msgstr "État du certificat"
@@ -2687,8 +2809,8 @@ msgstr "Directive multiligne"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:178
 #: src/views/certificate/ACMEUser.vue:13
+#: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:10
-#: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:309
@@ -2853,7 +2975,7 @@ msgstr ""
 msgid "Nginx is running"
 msgstr ""
 
-#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:143
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:144
 msgid "Nginx Log"
 msgstr "Journal Nginx"
 
@@ -3885,7 +4007,7 @@ msgstr "En cours d'éxécution"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:64
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
-#: src/views/certificate/components/CertificateEditor.vue:266
+#: src/views/certificate/CertificateEditor.vue:266
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/config/ConfigEditor.vue:275
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -3950,7 +4072,7 @@ msgstr "Dupliqué avec succès"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
-#: src/views/certificate/components/CertificateEditor.vue:49
+#: src/views/certificate/CertificateEditor.vue:49
 #: src/views/preference/store/index.ts:118
 msgid "Save successfully"
 msgstr "Sauvegarde réussie"
@@ -3965,7 +4087,7 @@ msgstr "Enregistré avec succès"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr ""
 
-#: src/views/certificate/DNSChallenge.vue:90
+#: src/views/certificate/components/DNSChallenge.vue:90
 msgid "SDK"
 msgstr ""
 
@@ -4148,7 +4270,7 @@ msgstr ""
 msgid "Sleep time between cache manager iterations"
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:213
+#: src/views/certificate/CertificateEditor.vue:213
 #, fuzzy
 msgid "SSL Certificate Content"
 msgstr "Contenu de la certification SSL"
@@ -4162,16 +4284,16 @@ msgstr ""
 msgid "SSL certificate file not found"
 msgstr "Contenu de la clé de certification SSL"
 
-#: src/views/certificate/components/CertificateEditor.vue:227
+#: src/views/certificate/CertificateEditor.vue:227
 #, fuzzy
 msgid "SSL Certificate Key Content"
 msgstr "Contenu de la clé de certification SSL"
 
-#: src/views/certificate/components/CertificateEditor.vue:192
+#: src/views/certificate/CertificateEditor.vue:192
 msgid "SSL Certificate Key Path"
 msgstr "Chemin de la clé du certificat SSL"
 
-#: src/views/certificate/components/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:177
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "Chemin du certificat SSL"
@@ -4354,7 +4476,7 @@ msgstr ""
 msgid "Sync strategy"
 msgstr "Changer de certificat"
 
-#: src/views/certificate/components/CertificateEditor.vue:206
+#: src/views/certificate/CertificateEditor.vue:206
 #, fuzzy
 msgid "Sync to"
 msgstr "Changer de certificat"
@@ -4431,12 +4553,12 @@ msgid ""
 "dashes, colons, and dots."
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:216
+#: src/views/certificate/CertificateEditor.vue:216
 #, fuzzy
 msgid "The input is not a SSL Certificate"
 msgstr "Chemin de la clé du certificat SSL"
 
-#: src/views/certificate/components/CertificateEditor.vue:230
+#: src/views/certificate/CertificateEditor.vue:230
 #, fuzzy
 msgid "The input is not a SSL Certificate Key"
 msgstr "Chemin de la clé du certificat SSL"
@@ -4469,12 +4591,12 @@ msgstr ""
 msgid "The parameter of server_name is required"
 msgstr "Le paramètre server_name est obligatoire"
 
-#: src/views/certificate/components/CertificateEditor.vue:181
+#: src/views/certificate/CertificateEditor.vue:181
 #, fuzzy
 msgid "The path exists, but the file is not a certificate"
 msgstr "Chemin de la clé du certificat SSL"
 
-#: src/views/certificate/components/CertificateEditor.vue:196
+#: src/views/certificate/CertificateEditor.vue:196
 #, fuzzy
 msgid "The path exists, but the file is not a private key"
 msgstr "Chemin de la clé du certificat SSL"
@@ -4531,20 +4653,20 @@ msgid ""
 "lose access to your account."
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:102
+#: src/views/certificate/CertificateEditor.vue:102
 #, fuzzy
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr ""
 "Cet élément de certification automatique n'est pas valide, veuillez le "
 "supprimer."
 
-#: src/views/certificate/components/CertificateEditor.vue:92
+#: src/views/certificate/CertificateEditor.vue:92
 msgid "This certificate is managed by Nginx UI"
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:165
-#: src/views/certificate/components/CertificateEditor.vue:179
-#: src/views/certificate/components/CertificateEditor.vue:194
+#: src/views/certificate/CertificateEditor.vue:165
+#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/CertificateEditor.vue:194
 msgid "This field is required"
 msgstr ""
 

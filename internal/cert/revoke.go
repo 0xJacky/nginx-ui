@@ -3,8 +3,10 @@ package cert
 import (
 	"log"
 	"os"
+	"runtime"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/go-acme/lego/v4/lego"
 	legolog "github.com/go-acme/lego/v4/log"
@@ -14,9 +16,11 @@ import (
 )
 
 // RevokeCert revokes a certificate and provides log messages through channels
-func RevokeCert(payload *ConfigPayload, logChan chan string, errChan chan error) {
+func RevokeCert(payload *ConfigPayload, certLogger *Logger, logChan chan string, errChan chan error) {
 	defer func() {
 		if err := recover(); err != nil {
+			buf := make([]byte, 1024)
+			runtime.Stack(buf, false)
 			logger.Error(err)
 		}
 	}()
@@ -46,7 +50,7 @@ func RevokeCert(payload *ConfigPayload, logChan chan string, errChan chan error)
 	}()
 
 	// Create client for communication with CA server
-	l.Println("[INFO] [Nginx UI] Preparing for certificate revocation")
+	certLogger.Info(translation.C("[Nginx UI] Preparing for certificate revocation"))
 	user, err := payload.GetACMEUser()
 	if err != nil {
 		errChan <- errors.Wrap(err, "get ACME user error")
@@ -76,30 +80,30 @@ func RevokeCert(payload *ConfigPayload, logChan chan string, errChan chan error)
 		return
 	}
 
-	revoke(payload, client, l, errChan)
+	revoke(payload, client, certLogger, errChan)
 
 	// If the revoked certificate was used for the server itself, reload server TLS certificate
 	if payload.GetCertificatePath() == cSettings.ServerSettings.SSLCert &&
 		payload.GetCertificateKeyPath() == cSettings.ServerSettings.SSLKey {
-		l.Println("[INFO] [Nginx UI] Certificate was used for server, reloading server TLS certificate")
+		certLogger.Info(translation.C("[Nginx UI] Certificate was used for server, reloading server TLS certificate"))
 		ReloadServerTLSCertificate()
 	}
 
-	l.Println("[INFO] [Nginx UI] Revocation completed")
+	certLogger.Info(translation.C("[Nginx UI] Revocation completed"))
 
 	// Wait for logs to be written
 	time.Sleep(2 * time.Second)
 }
 
 // revoke implements the internal certificate revocation logic
-func revoke(payload *ConfigPayload, client *lego.Client, l *log.Logger, errChan chan error) {
-	l.Println("[INFO] [Nginx UI] Revoking certificate")
+func revoke(payload *ConfigPayload, client *lego.Client, l *Logger, errChan chan error) {
+	l.Info(translation.C("[Nginx UI] Revoking certificate"))
 	err := client.Certificate.Revoke(payload.Resource.Certificate)
 	if err != nil {
 		errChan <- errors.Wrap(err, "revoke certificate error")
-		return 
+		return
 	}
 
-	l.Println("[INFO] [Nginx UI] Certificate successfully revoked")
-	return 
+	l.Info(translation.C("[Nginx UI] Certificate successfully revoked"))
+	return
 }

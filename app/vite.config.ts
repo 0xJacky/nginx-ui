@@ -55,6 +55,9 @@ export default defineConfig(({ mode }) => {
               '$npgettext',
             ],
           },
+          {
+            '@/language': ['T'],
+          },
         ],
         vueTemplate: true,
         eslintrc: {

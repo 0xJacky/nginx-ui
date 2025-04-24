@@ -5,7 +5,7 @@ import dns_credential from '@/api/dns_credential'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input } from '@/components/StdDesign/StdDataEntry'
-import DNSChallenge from './DNSChallenge.vue'
+import DNSChallenge from './components/DNSChallenge.vue'
 
 const columns: Column[] = [{
   title: () => $gettext('Name'),

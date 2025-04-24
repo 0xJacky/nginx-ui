@@ -1,14 +1,15 @@
 package cert
 
 import (
+	"runtime"
+	"strings"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy/logger"
-	"runtime"
-	"strings"
-	"time"
 )
 
 func AutoCert() {
@@ -30,9 +31,9 @@ func AutoCert() {
 func autoCert(certModel *model.Cert) {
 	confName := certModel.Filename
 
-	log := &Logger{}
+	log := NewLogger()
 	log.SetCertModel(certModel)
-	defer log.Exit()
+	defer log.Close()
 
 	if len(certModel.Filename) == 0 {
 		log.Error(ErrCertModelFilenameEmpty)
@@ -93,13 +94,7 @@ func autoCert(certModel *model.Cert) {
 	}
 
 	// errChan will be closed inside IssueCert
-	go IssueCert(payload, logChan, errChan)
-
-	go func() {
-		for logString := range logChan {
-			log.Info(strings.TrimSpace(logString))
-		}
-	}()
+	go IssueCert(payload, log, errChan)
 
 	// block, unless errChan closed
 	for err := range errChan {

@@ -19,6 +19,7 @@ export default {
     "Ref": true,
     "Slot": true,
     "Slots": true,
+    "T": true,
     "VNode": true,
     "WritableComputedRef": true,
     "acceptHMRUpdate": true,

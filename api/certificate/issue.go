@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -27,27 +29,6 @@ type IssueCertResponse struct {
 	KeyType           certcrypto.KeyType `json:"key_type"`
 }
 
-func handleIssueCertLogChan(conn *websocket.Conn, log *cert.Logger, logChan chan string) {
-	defer func() {
-		if err := recover(); err != nil {
-			logger.Error(err)
-		}
-	}()
-
-	for logString := range logChan {
-		log.Info(logString)
-
-		err := conn.WriteJSON(IssueCertResponse{
-			Status:  Info,
-			Message: logString,
-		})
-		if err != nil {
-			logger.Error(err)
-			return
-		}
-	}
-}
-
 func IssueCert(c *gin.Context) {
 	name := c.Param("name")
 	var upGrader = websocket.Upgrader{
@@ -63,9 +44,7 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
-	defer func(ws *websocket.Conn) {
-		_ = ws.Close()
-	}(ws)
+	defer ws.Close()
 
 	// read
 	payload := &cert.ConfigPayload{}
@@ -92,30 +71,28 @@ func IssueCert(c *gin.Context) {
 		}
 	}
 
-	logChan := make(chan string, 1)
 	errChan := make(chan error, 1)
 
-	log := &cert.Logger{}
+	log := cert.NewLogger()
 	log.SetCertModel(&certModel)
+	log.SetWebSocket(ws)
+	defer log.Close()
 
-	go cert.IssueCert(payload, logChan, errChan)
-
-	go handleIssueCertLogChan(ws, log, logChan)
+	go cert.IssueCert(payload, log, errChan)
 
 	// block, until errChan closes
-	for err = range errChan {
+	if err := <-errChan; err != nil {
 		log.Error(err)
-		// Save logs to db
-		log.Exit()
 		err = ws.WriteJSON(IssueCertResponse{
 			Status:  Error,
 			Message: err.Error(),
 		})
 		if err != nil {
-			logger.Error(err)
+			if helper.IsUnexpectedWebsocketError(err) {
+				logger.Error(err)
+			}
 			return
 		}
-		return
 	}
 
 	cert := query.Cert
@@ -142,19 +119,17 @@ func IssueCert(c *gin.Context) {
 		})
 		return
 	}
-
-	// Save logs to db
-	log.Exit()
-
 	err = ws.WriteJSON(IssueCertResponse{
 		Status:            Success,
-		Message:           "Issued certificate successfully",
+		Message:           translation.C("[Nginx UI] Issued certificate successfully").ToString(),
 		SSLCertificate:    payload.GetCertificatePath(),
 		SSLCertificateKey: payload.GetCertificateKeyPath(),
 		KeyType:           payload.GetKeyType(),
 	})
 	if err != nil {
-		logger.Error(err)
+		if helper.IsUnexpectedWebsocketError(err) {
+			logger.Error(err)
+		}
 		return
 	}
 }

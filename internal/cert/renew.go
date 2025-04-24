@@ -1,14 +1,14 @@
 package cert
 
 import (
+	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/go-acme/lego/v4/certificate"
 	"github.com/go-acme/lego/v4/lego"
 	"github.com/pkg/errors"
-	"log"
 )
 
-func renew(payload *ConfigPayload, client *lego.Client, l *log.Logger, errChan chan error) {
+func renew(payload *ConfigPayload, client *lego.Client, l *Logger, errChan chan error) {
 	if payload.Resource == nil {
 		errChan <- ErrPayloadResourceIsNil
 		return
@@ -35,5 +35,5 @@ func renew(payload *ConfigPayload, client *lego.Client, l *log.Logger, errChan c
 
 	payload.WriteFile(l, errChan)
 
-	l.Println("[INFO] [Nginx UI] Certificate renewed successfully")
+	l.Info(translation.C("[Nginx UI] Certificate renewed successfully"))
 }

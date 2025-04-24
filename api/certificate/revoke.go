@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -12,8 +13,8 @@ import (
 )
 
 type RevokeCertResponse struct {
-	Status  string `json:"status"`
-	Message string `json:"message"`
+	Status string `json:"status"`
+	*translation.Container
 }
 
 func handleRevokeCertLogChan(conn *websocket.Conn, logChan chan string) {
@@ -25,8 +26,8 @@ func handleRevokeCertLogChan(conn *websocket.Conn, logChan chan string) {
 
 	for logString := range logChan {
 		err := conn.WriteJSON(RevokeCertResponse{
-			Status:  Info,
-			Message: logString,
+			Status:    Info,
+			Container: translation.C(logString),
 		})
 		if err != nil {
 			logger.Error(err)
@@ -62,8 +63,10 @@ func RevokeCert(c *gin.Context) {
 	if err != nil {
 		logger.Error(err)
 		_ = ws.WriteJSON(RevokeCertResponse{
-			Status:  Error,
-			Message: "Certificate not found: " + err.Error(),
+			Status: Error,
+			Container: translation.C("Certificate not found: %{error}", map[string]any{
+				"error": err.Error(),
+			}),
 		})
 		return
 	}
@@ -82,7 +85,10 @@ func RevokeCert(c *gin.Context) {
 	logChan := make(chan string, 1)
 	errChan := make(chan error, 1)
 
-	go cert.RevokeCert(payload, logChan, errChan)
+	certLogger := &cert.Logger{}
+	certLogger.SetWebSocket(ws)
+
+	go cert.RevokeCert(payload, certLogger, logChan, errChan)
 
 	go handleRevokeCertLogChan(ws, logChan)
 
@@ -90,8 +96,10 @@ func RevokeCert(c *gin.Context) {
 	for err = range errChan {
 		logger.Error(err)
 		err = ws.WriteJSON(RevokeCertResponse{
-			Status:  Error,
-			Message: err.Error(),
+			Status: Error,
+			Container: translation.C("Failed to revoke certificate: %{error}", map[string]any{
+				"error": err.Error(),
+			}),
 		})
 		if err != nil {
 			logger.Error(err)
@@ -105,15 +113,17 @@ func RevokeCert(c *gin.Context) {
 	if err != nil {
 		logger.Error(err)
 		_ = ws.WriteJSON(RevokeCertResponse{
-			Status:  Error,
-			Message: "Failed to delete certificate from database: " + err.Error(),
+			Status: Error,
+			Container: translation.C("Failed to delete certificate from database: %{error}", map[string]any{
+				"error": err.Error(),
+			}),
 		})
 		return
 	}
 
 	err = ws.WriteJSON(RevokeCertResponse{
-		Status:  Success,
-		Message: "Certificate revoked successfully",
+		Status:    Success,
+		Container: translation.C("Certificate revoked successfully"),
 	})
 	if err != nil {
 		logger.Error(err)

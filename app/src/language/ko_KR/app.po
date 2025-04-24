@@ -14,6 +14,96 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Weblate 5.10.4\n"
 
+#: src/language/generate.ts:19
+msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
+msgstr "[Nginx UI] ACME 사용자: %{name}, 이메일: %{email}, CA 디렉터리: %{caDir}"
+
+#: src/language/generate.ts:13
+msgid "[Nginx UI] Backing up current certificate for later revocation"
+msgstr "[Nginx UI] 현재 인증서를 나중에 취소하기 위해 백업 중"
+
+#: src/language/generate.ts:28
+#, fuzzy
+msgid "[Nginx UI] Certificate renewed successfully"
+msgstr "성공적으로 제거됨"
+
+#: src/language/generate.ts:8
+#, fuzzy
+msgid "[Nginx UI] Certificate successfully revoked"
+msgstr "Nginx가 성공적으로 재시작됨"
+
+#: src/language/generate.ts:29
+msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgstr "[Nginx UI] 서버에 인증서가 사용되었습니다, 서버 TLS 인증서 다시 불러오는 중"
+
+#: src/language/generate.ts:24
+#, fuzzy
+msgid "[Nginx UI] Creating client facilitates communication with the CA server"
+msgstr "클라이언트 생성은 CA 서버와의 통신을 용이하게 합니다"
+
+#: src/language/generate.ts:12
+#, fuzzy
+msgid "[Nginx UI] Environment variables cleaned"
+msgstr "환경 변수 설정"
+
+#: src/language/generate.ts:21
+msgid "[Nginx UI] Finished"
+msgstr "[Nginx UI] 완료됨"
+
+#: src/language/generate.ts:4
+#, fuzzy
+msgid "[Nginx UI] Issued certificate successfully"
+msgstr "성공적으로 활성화됨"
+
+#: src/language/generate.ts:14
+msgid "[Nginx UI] Obtaining certificate"
+msgstr "[Nginx UI] 인증서 획득 중"
+
+#: src/language/generate.ts:22
+msgid "[Nginx UI] Preparing for certificate revocation"
+msgstr "[Nginx UI] 인증서 해지 준비 중"
+
+#: src/language/generate.ts:18
+msgid "[Nginx UI] Preparing lego configurations"
+msgstr "[Nginx UI] 레고 구성 준비 중"
+
+#: src/language/generate.ts:25
+msgid "[Nginx UI] Reloading nginx"
+msgstr "[Nginx UI] Nginx 다시 로드 중"
+
+#: src/language/generate.ts:16
+msgid "[Nginx UI] Revocation completed"
+msgstr "[Nginx UI] 해지 완료"
+
+#: src/language/generate.ts:7
+msgid "[Nginx UI] Revoking certificate"
+msgstr "[Nginx UI] 인증서 취소 중"
+
+#: src/language/generate.ts:26
+msgid "[Nginx UI] Revoking old certificate"
+msgstr "[Nginx UI] 이전 인증서 취소 중"
+
+#: src/language/generate.ts:20
+msgid "[Nginx UI] Setting DNS01 challenge provider"
+msgstr "[Nginx UI] DNS01 챌린지 공급자 설정 중"
+
+#: src/language/generate.ts:6
+#, fuzzy
+msgid "[Nginx UI] Setting environment variables"
+msgstr "환경 변수 설정"
+
+#: src/language/generate.ts:11
+msgid "[Nginx UI] Setting HTTP01 challenge provider"
+msgstr "[Nginx UI] HTTP01 챌린지 공급자 설정 중"
+
+#: src/language/generate.ts:15
+msgid "[Nginx UI] Writing certificate private key to disk"
+msgstr "[Nginx UI] 인증서 개인 키를 디스크에 기록 중"
+
+#: src/language/generate.ts:27
+msgid "[Nginx UI] Writing certificate to disk"
+msgstr "[Nginx UI] 인증서를 디스크에 작성 중"
+
 #: src/views/user/userColumns.tsx:32
 msgid "2FA"
 msgstr "2FA"
@@ -106,7 +196,7 @@ msgstr "스트림 추가"
 msgid "Added successfully"
 msgstr "성공적으로 추가됨"
 
-#: src/views/certificate/DNSChallenge.vue:110
+#: src/views/certificate/components/DNSChallenge.vue:110
 msgid "Additional"
 msgstr "추가적인"
 
@@ -133,7 +223,7 @@ msgstr "모든 복구 코드가 사용되었습니다"
 msgid "API Base Url"
 msgstr "API 기본 URL"
 
-#: src/views/certificate/DNSChallenge.vue:83
+#: src/views/certificate/components/DNSChallenge.vue:83
 msgid "API Document"
 msgstr "API 문서"
 
@@ -275,7 +365,7 @@ msgstr "자동"
 msgid "auto = CPU cores"
 msgstr "자동 = CPU 코어"
 
-#: src/views/nginx_log/NginxLog.vue:149
+#: src/views/nginx_log/NginxLog.vue:150
 msgid "Auto Refresh"
 msgstr "자동 새로고침"
 
@@ -295,11 +385,9 @@ msgstr "\"자동 재시작\""
 msgid "Automatically indexed from site and stream configurations."
 msgstr "\"사이트 및 스트림 구성에서 자동으로 인덱싱되었습니다.\""
 
-#: src/views/certificate/components/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:266
-#: src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195
-#: src/views/nginx_log/NginxLog.vue:173
+#: src/views/certificate/CertificateEditor.vue:259
+#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:174
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
 msgid "Back"
@@ -506,42 +594,40 @@ msgid "Certificate %{name} will expire in 1 day"
 msgstr "인증서 %{name}의 유효 기간이 1일 남았습니다"
 
 #: src/constants/errors/cert.ts:4
-#, fuzzy
 msgid "Certificate decode error"
-msgstr "인증서 갱신 오류"
+msgstr "인증서 디코드 오류"
 
 #: src/components/Notification/notifications.ts:29
-#, fuzzy
 msgid "Certificate Expiration Notice"
-msgstr "구성 템플릿"
+msgstr "인증서 만료 알림"
 
 #: src/components/Notification/notifications.ts:25
-#, fuzzy
 msgid "Certificate Expired"
-msgstr "인증서 목록"
+msgstr "인증서 만료됨"
 
 #: src/components/Notification/notifications.ts:33
 #: src/components/Notification/notifications.ts:37
 #: src/components/Notification/notifications.ts:41
-#, fuzzy
 msgid "Certificate Expiring Soon"
-msgstr "인증서가 만료되었습니다"
+msgstr "인증서 만료 임박"
+
+#: src/language/generate.ts:5
+#, fuzzy
+msgid "Certificate not found: %{error}"
+msgstr "인증서 디코드 오류"
 
 #: src/constants/errors/cert.ts:5
-#, fuzzy
 msgid "Certificate parse error"
-msgstr "인증서가 만료되었습니다"
+msgstr "인증서 파싱 오류"
 
 #: src/constants/errors/cert.ts:8
-#, fuzzy
 msgid "Certificate path is empty"
-msgstr "구성 템플릿"
+msgstr "인증서 경로가 비어 있습니다"
 
 #: src/views/certificate/components/RemoveCert.vue:41
 #: src/views/certificate/components/RemoveCert.vue:61
-#, fuzzy
 msgid "Certificate removed successfully"
-msgstr "성공적으로 제거됨"
+msgstr "인증서가 성공적으로 제거되었습니다"
 
 #: src/views/preference/tabs/CertSettings.vue:27
 msgid "Certificate Renewal Interval"
@@ -552,7 +638,12 @@ msgstr "인증서 갱신 간격"
 msgid "Certificate renewed successfully"
 msgstr "성공적으로 제거됨"
 
-#: src/views/certificate/components/CertificateEditor.vue:128
+#: src/language/generate.ts:10
+#, fuzzy
+msgid "Certificate revoked successfully"
+msgstr "인증서가 성공적으로 제거되었습니다"
+
+#: src/views/certificate/CertificateEditor.vue:128
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
@@ -597,7 +688,7 @@ msgstr "채널"
 #: src/views/site/site_edit/components/RightPanel/RightPanel.vue:40
 #: src/views/stream/components/RightPanel/RightPanel.vue:22
 msgid "Chat"
-msgstr ""
+msgstr "채팅"
 
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:40
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:64
@@ -615,40 +706,44 @@ msgid ""
 "Docker Image, please make sure the docker socket is mounted like this: `-v "
 "/var/run/docker.sock:/var/run/docker.sock`."
 msgstr ""
+"/var/run/docker.sock이 존재하는지 확인하세요. Nginx UI 공식 Docker 이미지를 사용 중이라면 Docker "
+"소켓이 다음과 같이 마운트되었는지 확인하세요: `-v /var/run/docker.sock:/var/run/docker.sock`."
 
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:11
 msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
 "prevents using Passkeys and clipboard features."
 msgstr ""
+"HTTPS가 활성화되었는지 확인하세요. localhost 외부에서 HTTP를 사용하는 것은 안전하지 않으며 Passkeys 및 클립보드 "
+"기능 사용을 방해요."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:26
 msgid "Check if the nginx.conf includes the conf.d directory."
-msgstr ""
+msgstr "nginx.conf에 conf.d 디렉터리가 포함되어 있는지 확인하세요."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:16
 msgid "Check if the nginx.conf includes the sites-enabled directory."
-msgstr ""
+msgstr "nginx.conf에 sites-enabled 디렉터리가 포함되어 있는지 확인하세요."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:21
 msgid "Check if the nginx.conf includes the streams-enabled directory."
-msgstr ""
+msgstr "nginx.conf에 streams-enabled 디렉터리가 포함되어 있는지 확인하세요."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:6
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory."
-msgstr ""
+msgstr "sites-available 및 sites-enabled 디렉터리가 nginx 구성 디렉터리 아래에 있는지 확인합니다."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:11
 msgid ""
 "Check if the streams-available and streams-enabled directories are under "
 "the nginx configuration directory."
-msgstr ""
+msgstr "streams-available 및 streams-enabled 디렉터리가 nginx 구성 디렉터리 아래에 있는지 확인합니다."
 
 #: src/constants/errors/crypto.ts:3
 msgid "Cipher text is too short"
-msgstr ""
+msgstr "암호문이 너무 짧습니다"
 
 #: src/language/constants.ts:13
 msgid "Cleaning environment variables"
@@ -668,43 +763,43 @@ msgstr "성공적으로 제거됨"
 #: src/components/SystemRestore/SystemRestoreContent.vue:194
 #: src/components/SystemRestore/SystemRestoreContent.vue:271
 msgid "Click or drag backup file to this area to upload"
-msgstr ""
+msgstr "이 영역으로 백업 파일을 클릭하거나 드래그하여 업로드하십시오."
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:110
 msgid "Click to copy"
-msgstr ""
+msgstr "복사하려면 클릭하십시오"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:120
 msgid "Client Body Buffer Size"
-msgstr ""
+msgstr "클라이언트 신체 버퍼 크기"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:113
 msgid "Client Header Buffer Size"
-msgstr ""
+msgstr "클라이언트 헤더 버퍼 크기"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Client Max Body Size"
-msgstr ""
+msgstr "클라이언트 최대 본문 크기"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:121
 msgid "Client request body buffer size"
-msgstr ""
+msgstr "클라이언트 요청 본문 버퍼 크기"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:114
 msgid "Client request header buffer size"
-msgstr ""
+msgstr "클라이언트 요청 헤더 버퍼 크기"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:169
 msgid "Close"
-msgstr ""
+msgstr "닫기"
 
 #: src/constants/errors/llm.ts:2
 msgid "Code completion is not enabled"
-msgstr ""
+msgstr "코드 완성이 활성화되지 않았습니다"
 
 #: src/views/preference/tabs/OpenAISettings.vue:86
 msgid "Code Completion Model"
-msgstr ""
+msgstr "코드 완성 모델"
 
 #: src/views/preference/tabs/LogrotateSettings.vue:23
 msgid "Command"
@@ -712,7 +807,7 @@ msgstr "명령어"
 
 #: src/constants/errors/docker.ts:6
 msgid "Command exited with unexpected exit code: {0}, error: {1}"
-msgstr ""
+msgstr "명령이 예상치 못한 종료 코드로 종료되었습니다: {0}, 오류: {1}"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:115
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
@@ -723,7 +818,7 @@ msgstr "댓글"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:127
 msgid "Compare"
-msgstr ""
+msgstr "비교하다"
 
 #: src/components/ConfigHistory/DiffViewer.vue:388
 #, fuzzy
@@ -732,15 +827,15 @@ msgstr "구성들"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:130
 msgid "Compare Selected"
-msgstr ""
+msgstr "선택된 비교"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:129
 msgid "Compare with Current"
-msgstr ""
+msgstr "현재와 ​​비교하십시오"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:88
 msgid "Compression level, 1 is lowest, 9 is highest"
-msgstr ""
+msgstr "압축 수준, 1은 가장 낮고 9는 가장 높습니다"
 
 #: src/constants/errors/backup.ts:14
 #, fuzzy
@@ -784,7 +879,7 @@ msgstr "연결됨"
 
 #: src/views/dashboard/NginxDashBoard.vue:85
 msgid "Connection error, trying to reconnect..."
-msgstr ""
+msgstr "연결 오류, 다시 연결 시도 중..."
 
 #: src/views/terminal/Terminal.vue:142
 msgid "Connection lost, please refresh the page."
@@ -792,11 +887,11 @@ msgstr "연결이 끊어졌습니다. 페이지를 새로 고침하세요."
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
 msgid "Connection timeout period"
-msgstr ""
+msgstr "연결 시간 초과 기간"
 
 #: src/constants/errors/docker.ts:7
 msgid "Container status unknown"
-msgstr ""
+msgstr "컨테이너 상태를 알 수 없음"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:120
 #: src/components/NgxConfigEditor/LocationEditor.vue:116
@@ -808,20 +903,20 @@ msgstr "내용"
 #: src/components/StdDesign/StdDataDisplay/StdTableTransformer.tsx:150
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:121
 msgid "Copied"
-msgstr ""
+msgstr "복사됨"
 
 #: src/views/system/Backup/BackupCreator.vue:128
 msgid "Copied!"
-msgstr ""
+msgstr "복사 완료!"
 
 #: src/components/SensitiveString/SensitiveString.vue:37
 #: src/views/system/Backup/BackupCreator.vue:128
 msgid "Copy"
-msgstr ""
+msgstr "복사"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:121
 msgid "Copy Codes"
-msgstr ""
+msgstr "코드 복사"
 
 #: src/views/system/Upgrade.vue:146
 msgid "Core Upgrade"
@@ -893,7 +988,7 @@ msgstr "클라이언트 생성은 CA 서버와의 통신을 용이하게 합니�
 msgid "Credential"
 msgstr "인증 정보"
 
-#: src/views/certificate/DNSChallenge.vue:99
+#: src/views/certificate/components/DNSChallenge.vue:99
 msgid "Credentials"
 msgstr "인증 정보들"
 
@@ -1192,7 +1287,7 @@ msgid "DNS Credentials"
 msgstr "DNS 인증 정보"
 
 #: src/components/AutoCertForm/DNSChallenge.vue:94
-#: src/views/certificate/DNSChallenge.vue:72
+#: src/views/certificate/components/DNSChallenge.vue:72
 msgid "DNS Provider"
 msgstr "DNS 제공자"
 
@@ -1242,6 +1337,10 @@ msgstr ""
 msgid "Docker Socket"
 msgstr ""
 
+#: src/constants/errors/self_check.ts:15
+msgid "Docker socket not exist"
+msgstr ""
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
 #, fuzzy
@@ -1254,7 +1353,7 @@ msgstr[1] "API 문서"
 msgid "Domain"
 msgstr "도메인"
 
-#: src/views/certificate/components/CertificateEditor.vue:112
+#: src/views/certificate/CertificateEditor.vue:112
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr "도메인 목록이 비어 있습니다. %{config}에 대한 자동 인증서를 다시 열어보세요"
 
@@ -1520,7 +1619,7 @@ msgstr ""
 msgid "External Notify"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:96
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
 #, fuzzy
 msgid "Fail to obtain certificate"
 msgstr "인증서 획득 실패"
@@ -1672,6 +1771,11 @@ msgstr ""
 #: src/views/certificate/components/RemoveCert.vue:66
 #, fuzzy
 msgid "Failed to delete certificate"
+msgstr "인증서 획득 실패"
+
+#: src/language/generate.ts:9
+#, fuzzy
+msgid "Failed to delete certificate from database: %{error}"
 msgstr "인증서 획득 실패"
 
 #: src/views/site/components/SiteStatusSegmented.vue:46
@@ -1837,6 +1941,11 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr "인증서 획득 실패"
 
+#: src/language/generate.ts:17
+#, fuzzy
+msgid "Failed to revoke certificate: %{error}"
+msgstr "인증서 획득 실패"
+
 #: src/views/dashboard/components/ParamsOptimization.vue:90
 #, fuzzy
 msgid "Failed to save Nginx performance settings"
@@ -1876,7 +1985,7 @@ msgstr "파일을 찾을 수 없음"
 msgid "Filename is empty"
 msgstr ""
 
-#: src/views/nginx_log/NginxLog.vue:155
+#: src/views/nginx_log/NginxLog.vue:156
 msgid "Filter"
 msgstr "필터"
 
@@ -2061,7 +2170,7 @@ msgid "Import"
 msgstr "가져오기"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/components/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:85
 #, fuzzy
 msgid "Import Certificate"
 msgstr "인증서 상태"
@@ -2295,8 +2404,8 @@ msgstr "Leave blank for no change"
 msgid "Leave blank if you don't need this."
 msgstr "Leave blank for no change"
 
-#: src/views/certificate/components/CertificateEditor.vue:223
-#: src/views/certificate/components/CertificateEditor.vue:237
+#: src/views/certificate/CertificateEditor.vue:223
+#: src/views/certificate/CertificateEditor.vue:237
 #, fuzzy
 msgid "Leave blank will not change anything"
 msgstr "변경사항이 없으면 비워두세요"
@@ -2374,10 +2483,14 @@ msgstr "위치"
 msgid "Locations"
 msgstr "위치들"
 
-#: src/views/certificate/components/CertificateEditor.vue:247
+#: src/views/certificate/CertificateEditor.vue:247
 #, fuzzy
 msgid "Log"
 msgstr "로그인"
+
+#: src/language/generate.ts:23
+msgid "Log file %{log_path} is not a regular file. "
+msgstr ""
 
 #: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:67
 msgid "Log List"
@@ -2583,7 +2696,7 @@ msgid "Modify"
 msgstr "설정 수정"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/components/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:85
 #, fuzzy
 msgid "Modify Certificate"
 msgstr "인증서 상태"
@@ -2604,8 +2717,8 @@ msgstr "단일 지시문"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:178
 #: src/views/certificate/ACMEUser.vue:13
+#: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:10
-#: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:309
@@ -2770,7 +2883,7 @@ msgstr ""
 msgid "Nginx is running"
 msgstr ""
 
-#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:143
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:144
 msgid "Nginx Log"
 msgstr "Nginx 로그"
 
@@ -3801,7 +3914,7 @@ msgstr "실행 중"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:64
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
-#: src/views/certificate/components/CertificateEditor.vue:266
+#: src/views/certificate/CertificateEditor.vue:266
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/config/ConfigEditor.vue:275
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -3866,7 +3979,7 @@ msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
-#: src/views/certificate/components/CertificateEditor.vue:49
+#: src/views/certificate/CertificateEditor.vue:49
 #: src/views/preference/store/index.ts:118
 #, fuzzy
 msgid "Save successfully"
@@ -3882,7 +3995,7 @@ msgstr "성공적으로 저장됨"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr ""
 
-#: src/views/certificate/DNSChallenge.vue:90
+#: src/views/certificate/components/DNSChallenge.vue:90
 msgid "SDK"
 msgstr ""
 
@@ -4061,7 +4174,7 @@ msgstr ""
 msgid "Sleep time between cache manager iterations"
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:213
+#: src/views/certificate/CertificateEditor.vue:213
 #, fuzzy
 msgid "SSL Certificate Content"
 msgstr "인증서 상태"
@@ -4075,16 +4188,16 @@ msgstr ""
 msgid "SSL certificate file not found"
 msgstr "SSL 인증서키 콘텐츠"
 
-#: src/views/certificate/components/CertificateEditor.vue:227
+#: src/views/certificate/CertificateEditor.vue:227
 msgid "SSL Certificate Key Content"
 msgstr "SSL 인증서키 콘텐츠"
 
-#: src/views/certificate/components/CertificateEditor.vue:192
+#: src/views/certificate/CertificateEditor.vue:192
 #, fuzzy
 msgid "SSL Certificate Key Path"
 msgstr "SSL 인증서 키 경로"
 
-#: src/views/certificate/components/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:177
 #: src/views/preference/tabs/ServerSettings.vue:37
 #, fuzzy
 msgid "SSL Certificate Path"
@@ -4266,7 +4379,7 @@ msgstr ""
 msgid "Sync strategy"
 msgstr "인증서 갱신"
 
-#: src/views/certificate/components/CertificateEditor.vue:206
+#: src/views/certificate/CertificateEditor.vue:206
 msgid "Sync to"
 msgstr ""
 
@@ -4340,11 +4453,11 @@ msgid ""
 "dashes, colons, and dots."
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:216
+#: src/views/certificate/CertificateEditor.vue:216
 msgid "The input is not a SSL Certificate"
 msgstr "입력이 SSL 인증서가 아닙니다"
 
-#: src/views/certificate/components/CertificateEditor.vue:230
+#: src/views/certificate/CertificateEditor.vue:230
 #, fuzzy
 msgid "The input is not a SSL Certificate Key"
 msgstr "Certificate Status"
@@ -4377,12 +4490,12 @@ msgstr ""
 msgid "The parameter of server_name is required"
 msgstr "server_name 매개변수가 필요합니다"
 
-#: src/views/certificate/components/CertificateEditor.vue:181
+#: src/views/certificate/CertificateEditor.vue:181
 #, fuzzy
 msgid "The path exists, but the file is not a certificate"
 msgstr "Certificate Status"
 
-#: src/views/certificate/components/CertificateEditor.vue:196
+#: src/views/certificate/CertificateEditor.vue:196
 msgid "The path exists, but the file is not a private key"
 msgstr "경로는 존재하지만 파일은 개인 키가 아닙니다"
 
@@ -4439,17 +4552,17 @@ msgid ""
 "lose access to your account."
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:102
+#: src/views/certificate/CertificateEditor.vue:102
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "이 자동 인증 항목이 유효하지 않습니다. 제거해주세요."
 
-#: src/views/certificate/components/CertificateEditor.vue:92
+#: src/views/certificate/CertificateEditor.vue:92
 msgid "This certificate is managed by Nginx UI"
 msgstr "이 인증서는 Nginx UI에서 관리됩니다"
 
-#: src/views/certificate/components/CertificateEditor.vue:165
-#: src/views/certificate/components/CertificateEditor.vue:179
-#: src/views/certificate/components/CertificateEditor.vue:194
+#: src/views/certificate/CertificateEditor.vue:165
+#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/CertificateEditor.vue:194
 msgid "This field is required"
 msgstr "이 필드는 필수입니다"
 

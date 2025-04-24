@@ -19,6 +19,96 @@ msgstr ""
 "X-Generator: Weblate 5.10.4\n"
 "Generated-By: easygettext\n"
 
+#: src/language/generate.ts:19
+msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
+msgstr "[Nginx UI] ACME 使用者：%{name}，電子郵件：%{email}，CA 目錄：%{caDir}"
+
+#: src/language/generate.ts:13
+msgid "[Nginx UI] Backing up current certificate for later revocation"
+msgstr "[Nginx UI] 正在備份當前憑證以便後續撤銷"
+
+#: src/language/generate.ts:28
+#, fuzzy
+msgid "[Nginx UI] Certificate renewed successfully"
+msgstr "憑證更新成功"
+
+#: src/language/generate.ts:8
+#, fuzzy
+msgid "[Nginx UI] Certificate successfully revoked"
+msgstr "Nginx 重啟成功"
+
+#: src/language/generate.ts:29
+msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgstr "[Nginx UI] 憑證已用於伺服器，正在重新載入伺服器 TLS 憑證"
+
+#: src/language/generate.ts:24
+#, fuzzy
+msgid "[Nginx UI] Creating client facilitates communication with the CA server"
+msgstr "建立客戶端方便與 CA 伺服器通訊"
+
+#: src/language/generate.ts:12
+#, fuzzy
+msgid "[Nginx UI] Environment variables cleaned"
+msgstr "環境變數已清理"
+
+#: src/language/generate.ts:21
+msgid "[Nginx UI] Finished"
+msgstr "[Nginx UI] 已完成"
+
+#: src/language/generate.ts:4
+#, fuzzy
+msgid "[Nginx UI] Issued certificate successfully"
+msgstr "憑證簽發成功"
+
+#: src/language/generate.ts:14
+msgid "[Nginx UI] Obtaining certificate"
+msgstr "[Nginx UI] 正在取得憑證"
+
+#: src/language/generate.ts:22
+msgid "[Nginx UI] Preparing for certificate revocation"
+msgstr "[Nginx UI] 準備撤銷憑證"
+
+#: src/language/generate.ts:18
+msgid "[Nginx UI] Preparing lego configurations"
+msgstr "[Nginx UI] 正在準備 lego 配置"
+
+#: src/language/generate.ts:25
+msgid "[Nginx UI] Reloading nginx"
+msgstr "[Nginx UI] 重新載入 Nginx"
+
+#: src/language/generate.ts:16
+msgid "[Nginx UI] Revocation completed"
+msgstr "[Nginx UI] 撤銷完成"
+
+#: src/language/generate.ts:7
+msgid "[Nginx UI] Revoking certificate"
+msgstr "[Nginx UI] 正在撤銷證書"
+
+#: src/language/generate.ts:26
+msgid "[Nginx UI] Revoking old certificate"
+msgstr "[Nginx UI] 正在撤銷舊憑證"
+
+#: src/language/generate.ts:20
+msgid "[Nginx UI] Setting DNS01 challenge provider"
+msgstr "[Nginx UI] 正在設定 DNS01 驗證提供者"
+
+#: src/language/generate.ts:6
+#, fuzzy
+msgid "[Nginx UI] Setting environment variables"
+msgstr "設定環境變數中"
+
+#: src/language/generate.ts:11
+msgid "[Nginx UI] Setting HTTP01 challenge provider"
+msgstr "[Nginx UI] 正在設定 HTTP01 驗證提供者"
+
+#: src/language/generate.ts:15
+msgid "[Nginx UI] Writing certificate private key to disk"
+msgstr "[Nginx UI] 正在將證書私鑰寫入磁碟"
+
+#: src/language/generate.ts:27
+msgid "[Nginx UI] Writing certificate to disk"
+msgstr "[Nginx UI] 正在將憑證寫入磁碟"
+
 #: src/views/user/userColumns.tsx:32
 msgid "2FA"
 msgstr "雙因素驗證"
@@ -110,7 +200,7 @@ msgstr "新增 Stream"
 msgid "Added successfully"
 msgstr "新增成功"
 
-#: src/views/certificate/DNSChallenge.vue:110
+#: src/views/certificate/components/DNSChallenge.vue:110
 msgid "Additional"
 msgstr "其他設定"
 
@@ -137,7 +227,7 @@ msgstr "所有恢復代碼已用完"
 msgid "API Base Url"
 msgstr "API 基礎網址"
 
-#: src/views/certificate/DNSChallenge.vue:83
+#: src/views/certificate/components/DNSChallenge.vue:83
 msgid "API Document"
 msgstr "API 文件"
 
@@ -277,7 +367,7 @@ msgstr "自動"
 msgid "auto = CPU cores"
 msgstr "auto = CPU 核心數"
 
-#: src/views/nginx_log/NginxLog.vue:149
+#: src/views/nginx_log/NginxLog.vue:150
 msgid "Auto Refresh"
 msgstr "自動重新整理"
 
@@ -297,11 +387,9 @@ msgstr "\"自動重啟\""
 msgid "Automatically indexed from site and stream configurations."
 msgstr "\"自動從站點和流配置中索引。\""
 
-#: src/views/certificate/components/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:266
-#: src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195
-#: src/views/nginx_log/NginxLog.vue:173
+#: src/views/certificate/CertificateEditor.vue:259
+#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:174
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
 msgid "Back"
@@ -504,7 +592,7 @@ msgstr "證書解碼錯誤"
 
 #: src/components/Notification/notifications.ts:29
 msgid "Certificate Expiration Notice"
-msgstr "證書到期通知"
+msgstr "憑證到期通知"
 
 #: src/components/Notification/notifications.ts:25
 msgid "Certificate Expired"
@@ -514,20 +602,25 @@ msgstr "憑證已過期"
 #: src/components/Notification/notifications.ts:37
 #: src/components/Notification/notifications.ts:41
 msgid "Certificate Expiring Soon"
-msgstr "證書即將到期"
+msgstr "憑證即將到期"
+
+#: src/language/generate.ts:5
+#, fuzzy
+msgid "Certificate not found: %{error}"
+msgstr "證書解碼錯誤"
 
 #: src/constants/errors/cert.ts:5
 msgid "Certificate parse error"
-msgstr "證書解析錯誤"
+msgstr "憑證解析錯誤"
 
 #: src/constants/errors/cert.ts:8
 msgid "Certificate path is empty"
-msgstr "證書路徑為空"
+msgstr "憑證路徑為空"
 
 #: src/views/certificate/components/RemoveCert.vue:41
 #: src/views/certificate/components/RemoveCert.vue:61
 msgid "Certificate removed successfully"
-msgstr "憑證成功移除"
+msgstr "憑證已成功移除"
 
 #: src/views/preference/tabs/CertSettings.vue:27
 msgid "Certificate Renewal Interval"
@@ -537,7 +630,12 @@ msgstr "憑證更新間隔"
 msgid "Certificate renewed successfully"
 msgstr "憑證更新成功"
 
-#: src/views/certificate/components/CertificateEditor.vue:128
+#: src/language/generate.ts:10
+#, fuzzy
+msgid "Certificate revoked successfully"
+msgstr "憑證已成功移除"
+
+#: src/views/certificate/CertificateEditor.vue:128
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
@@ -578,7 +676,7 @@ msgstr "通道"
 #: src/views/site/site_edit/components/RightPanel/RightPanel.vue:40
 #: src/views/stream/components/RightPanel/RightPanel.vue:22
 msgid "Chat"
-msgstr ""
+msgstr "聊天"
 
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:40
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:64
@@ -596,6 +694,8 @@ msgid ""
 "Docker Image, please make sure the docker socket is mounted like this: `-v "
 "/var/run/docker.sock:/var/run/docker.sock`."
 msgstr ""
+"檢查 /var/run/docker.sock 是否存在。如果您正在使用 Nginx UI 官方 Docker 映像，請確保 Docker "
+"通訊端已掛載如下：`-v /var/run/docker.sock:/var/run/docker.sock`。"
 
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:11
 msgid ""
@@ -681,13 +781,12 @@ msgid "Close"
 msgstr "關閉"
 
 #: src/constants/errors/llm.ts:2
-#, fuzzy
 msgid "Code completion is not enabled"
-msgstr "目前帳戶未啟用 TOTP。"
+msgstr "程式碼補全未啟用"
 
 #: src/views/preference/tabs/OpenAISettings.vue:86
 msgid "Code Completion Model"
-msgstr ""
+msgstr "程式碼補全模型"
 
 #: src/views/preference/tabs/LogrotateSettings.vue:23
 msgid "Command"
@@ -695,7 +794,7 @@ msgstr "命令"
 
 #: src/constants/errors/docker.ts:6
 msgid "Command exited with unexpected exit code: {0}, error: {1}"
-msgstr ""
+msgstr "命令以意外退出代碼結束：{0}，錯誤：{1}"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:115
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
@@ -771,11 +870,11 @@ msgstr "連線中斷，請重新整理此頁面。"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
 msgid "Connection timeout period"
-msgstr "連線逾時時間"
+msgstr "連接逾時期限"
 
 #: src/constants/errors/docker.ts:7
 msgid "Container status unknown"
-msgstr ""
+msgstr "容器狀態未知"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:120
 #: src/components/NgxConfigEditor/LocationEditor.vue:116
@@ -868,7 +967,7 @@ msgstr "建立客戶端方便與 CA 伺服器通訊"
 msgid "Credential"
 msgstr "認證"
 
-#: src/views/certificate/DNSChallenge.vue:99
+#: src/views/certificate/components/DNSChallenge.vue:99
 msgid "Credentials"
 msgstr "認證資訊"
 
@@ -1142,7 +1241,7 @@ msgid "DNS Credentials"
 msgstr "DNS 認證"
 
 #: src/components/AutoCertForm/DNSChallenge.vue:94
-#: src/views/certificate/DNSChallenge.vue:72
+#: src/views/certificate/components/DNSChallenge.vue:72
 msgid "DNS Provider"
 msgstr "DNS 供應商"
 
@@ -1191,6 +1290,10 @@ msgstr ""
 msgid "Docker Socket"
 msgstr ""
 
+#: src/constants/errors/self_check.ts:15
+msgid "Docker socket not exist"
+msgstr ""
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
 msgid "Document"
@@ -1201,7 +1304,7 @@ msgstr[0] "檔案"
 msgid "Domain"
 msgstr "網域"
 
-#: src/views/certificate/components/CertificateEditor.vue:112
+#: src/views/certificate/CertificateEditor.vue:112
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr "網域列表為空，請嘗試重新開啟 %{config} 的自動憑證"
 
@@ -1447,7 +1550,7 @@ msgstr "外部通知"
 msgid "External Notify"
 msgstr "外部通知"
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:96
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
 msgid "Fail to obtain certificate"
 msgstr "取得憑證失敗"
 
@@ -1579,6 +1682,11 @@ msgstr "解密 Nginx UI 目錄失敗：{0}"
 
 #: src/views/certificate/components/RemoveCert.vue:66
 msgid "Failed to delete certificate"
+msgstr "憑證刪除失敗"
+
+#: src/language/generate.ts:9
+#, fuzzy
+msgid "Failed to delete certificate from database: %{error}"
 msgstr "憑證刪除失敗"
 
 #: src/views/site/components/SiteStatusSegmented.vue:46
@@ -1727,6 +1835,11 @@ msgstr "還原 Nginx UI 檔案失敗：{0}"
 msgid "Failed to revoke certificate"
 msgstr "撤銷憑證失敗"
 
+#: src/language/generate.ts:17
+#, fuzzy
+msgid "Failed to revoke certificate: %{error}"
+msgstr "撤銷憑證失敗"
+
 #: src/views/dashboard/components/ParamsOptimization.vue:90
 msgid "Failed to save Nginx performance settings"
 msgstr "儲存 Nginx 效能設定失敗"
@@ -1764,7 +1877,7 @@ msgstr "找不到檔案"
 msgid "Filename is empty"
 msgstr "檔名空白"
 
-#: src/views/nginx_log/NginxLog.vue:155
+#: src/views/nginx_log/NginxLog.vue:156
 msgid "Filter"
 msgstr "篩選"
 
@@ -1940,7 +2053,7 @@ msgid "Import"
 msgstr "匯入"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/components/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:85
 msgid "Import Certificate"
 msgstr "匯入憑證"
 
@@ -2158,8 +2271,8 @@ msgstr "留空表示不修改"
 msgid "Leave blank if you don't need this."
 msgstr "留空表示不需要此項目。"
 
-#: src/views/certificate/components/CertificateEditor.vue:223
-#: src/views/certificate/components/CertificateEditor.vue:237
+#: src/views/certificate/CertificateEditor.vue:223
+#: src/views/certificate/CertificateEditor.vue:237
 msgid "Leave blank will not change anything"
 msgstr "留空將不會改變任何內容"
 
@@ -2232,9 +2345,13 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/views/certificate/components/CertificateEditor.vue:247
+#: src/views/certificate/CertificateEditor.vue:247
 msgid "Log"
 msgstr "日誌"
+
+#: src/language/generate.ts:23
+msgid "Log file %{log_path} is not a regular file. "
+msgstr ""
 
 #: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:67
 msgid "Log List"
@@ -2426,7 +2543,7 @@ msgid "Modify"
 msgstr "修改"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/components/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:85
 msgid "Modify Certificate"
 msgstr "修改憑證"
 
@@ -2444,8 +2561,8 @@ msgstr "多行指令"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:178
 #: src/views/certificate/ACMEUser.vue:13
+#: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:10
-#: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:309
@@ -2603,7 +2720,7 @@ msgstr "Nginx 未執行"
 msgid "Nginx is running"
 msgstr "Nginx 執行中"
 
-#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:143
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:144
 msgid "Nginx Log"
 msgstr "Nginx 日誌"
 
@@ -3554,7 +3671,7 @@ msgstr "執行中"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:64
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
-#: src/views/certificate/components/CertificateEditor.vue:266
+#: src/views/certificate/CertificateEditor.vue:266
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/config/ConfigEditor.vue:275
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -3611,7 +3728,7 @@ msgstr "串流 %{name} 成功儲存至 %{node}"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
-#: src/views/certificate/components/CertificateEditor.vue:49
+#: src/views/certificate/CertificateEditor.vue:49
 #: src/views/preference/store/index.ts:118
 msgid "Save successfully"
 msgstr "儲存成功"
@@ -3626,7 +3743,7 @@ msgstr "儲存成功"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "用手機掃描二維碼將賬戶新增到應用程式中。"
 
-#: src/views/certificate/DNSChallenge.vue:90
+#: src/views/certificate/components/DNSChallenge.vue:90
 msgid "SDK"
 msgstr "SDK"
 
@@ -3799,7 +3916,7 @@ msgstr "快取載入器迭代間的休眠時間"
 msgid "Sleep time between cache manager iterations"
 msgstr "快取管理器迭代間的休眠時間"
 
-#: src/views/certificate/components/CertificateEditor.vue:213
+#: src/views/certificate/CertificateEditor.vue:213
 msgid "SSL Certificate Content"
 msgstr "SSL 憑證內容"
 
@@ -3811,15 +3928,15 @@ msgstr "SSL 憑證檔案必須位於 Nginx 設定目錄下：{0}"
 msgid "SSL certificate file not found"
 msgstr "SSL 憑證檔案未找到"
 
-#: src/views/certificate/components/CertificateEditor.vue:227
+#: src/views/certificate/CertificateEditor.vue:227
 msgid "SSL Certificate Key Content"
 msgstr "SSL 憑證金鑰內容"
 
-#: src/views/certificate/components/CertificateEditor.vue:192
+#: src/views/certificate/CertificateEditor.vue:192
 msgid "SSL Certificate Key Path"
 msgstr "SSL 憑證金鑰路徑"
 
-#: src/views/certificate/components/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:177
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "SSL 憑證路徑"
@@ -3984,7 +4101,7 @@ msgstr "同步節點"
 msgid "Sync strategy"
 msgstr "同步策略"
 
-#: src/views/certificate/components/CertificateEditor.vue:206
+#: src/views/certificate/CertificateEditor.vue:206
 msgid "Sync to"
 msgstr "同步到"
 
@@ -4053,11 +4170,11 @@ msgid ""
 "dashes, colons, and dots."
 msgstr "ICP 編號僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
 
-#: src/views/certificate/components/CertificateEditor.vue:216
+#: src/views/certificate/CertificateEditor.vue:216
 msgid "The input is not a SSL Certificate"
 msgstr "輸入的不是 SSL 憑證"
 
-#: src/views/certificate/components/CertificateEditor.vue:230
+#: src/views/certificate/CertificateEditor.vue:230
 msgid "The input is not a SSL Certificate Key"
 msgstr "輸入的不是 SSL 憑證金鑰"
 
@@ -4088,11 +4205,11 @@ msgstr "節點名稱僅能包含字母、Unicode 字元、數字、連字號、�
 msgid "The parameter of server_name is required"
 msgstr "必須提供 server_name 參數"
 
-#: src/views/certificate/components/CertificateEditor.vue:181
+#: src/views/certificate/CertificateEditor.vue:181
 msgid "The path exists, but the file is not a certificate"
 msgstr "路徑存在，但檔案不是憑證"
 
-#: src/views/certificate/components/CertificateEditor.vue:196
+#: src/views/certificate/CertificateEditor.vue:196
 msgid "The path exists, but the file is not a private key"
 msgstr "路徑存在，但檔案不是金鑰"
 
@@ -4144,17 +4261,17 @@ msgid ""
 "lose access to your account."
 msgstr "這些代碼是您在遺失密碼和第二重驗證因素時，存取帳戶的最後手段。如果您找不到這些代碼，您將無法再存取您的帳戶。"
 
-#: src/views/certificate/components/CertificateEditor.vue:102
+#: src/views/certificate/CertificateEditor.vue:102
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "此自動憑證項目無效，請將其移除。"
 
-#: src/views/certificate/components/CertificateEditor.vue:92
+#: src/views/certificate/CertificateEditor.vue:92
 msgid "This certificate is managed by Nginx UI"
 msgstr "此憑證由 Nginx UI 管理"
 
-#: src/views/certificate/components/CertificateEditor.vue:165
-#: src/views/certificate/components/CertificateEditor.vue:179
-#: src/views/certificate/components/CertificateEditor.vue:194
+#: src/views/certificate/CertificateEditor.vue:165
+#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/CertificateEditor.vue:194
 msgid "This field is required"
 msgstr "此欄位為必填項"
 

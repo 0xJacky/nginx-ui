@@ -14,6 +14,98 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.10.4\n"
 
+#: src/language/generate.ts:19
+msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
+msgstr "[Nginx UI] ACME Kullanıcısı: %{name}, E-posta: %{email}, CA Dizini: %{caDir}"
+
+#: src/language/generate.ts:13
+msgid "[Nginx UI] Backing up current certificate for later revocation"
+msgstr "[Nginx UI] Geçerli sertifika daha sonra iptal edilmek üzere yedekleniyor"
+
+#: src/language/generate.ts:28
+#, fuzzy
+msgid "[Nginx UI] Certificate renewed successfully"
+msgstr "Başarıyla temizlendi"
+
+#: src/language/generate.ts:8
+#, fuzzy
+msgid "[Nginx UI] Certificate successfully revoked"
+msgstr "Nginx başarıyla yeniden başlatıldı"
+
+#: src/language/generate.ts:29
+msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgstr ""
+"[Nginx UI] Sertifika sunucu için kullanıldı, sunucu TLS sertifikası yeniden "
+"yükleniyor"
+
+#: src/language/generate.ts:24
+#, fuzzy
+msgid "[Nginx UI] Creating client facilitates communication with the CA server"
+msgstr "İstemci oluşturmak, CA sunucusuyla iletişimi kolaylaştırır"
+
+#: src/language/generate.ts:12
+#, fuzzy
+msgid "[Nginx UI] Environment variables cleaned"
+msgstr "Ortam değişkenleri temizlendi"
+
+#: src/language/generate.ts:21
+msgid "[Nginx UI] Finished"
+msgstr "[Nginx UI] Tamamlandı"
+
+#: src/language/generate.ts:4
+#, fuzzy
+msgid "[Nginx UI] Issued certificate successfully"
+msgstr "Sertifika başarıyla yayınlandı"
+
+#: src/language/generate.ts:14
+msgid "[Nginx UI] Obtaining certificate"
+msgstr "[Nginx UI] Sertifika alınıyor"
+
+#: src/language/generate.ts:22
+msgid "[Nginx UI] Preparing for certificate revocation"
+msgstr "[Nginx UI] Sertifika iptali için hazırlanıyor"
+
+#: src/language/generate.ts:18
+msgid "[Nginx UI] Preparing lego configurations"
+msgstr "[Nginx UI] Lego yapılandırmaları hazırlanıyor"
+
+#: src/language/generate.ts:25
+msgid "[Nginx UI] Reloading nginx"
+msgstr "[Nginx UI] Nginx yeniden yükleniyor"
+
+#: src/language/generate.ts:16
+msgid "[Nginx UI] Revocation completed"
+msgstr "[Nginx UI] İptal tamamlandı"
+
+#: src/language/generate.ts:7
+msgid "[Nginx UI] Revoking certificate"
+msgstr "[Nginx UI] Sertifika iptal ediliyor"
+
+#: src/language/generate.ts:26
+msgid "[Nginx UI] Revoking old certificate"
+msgstr "[Nginx UI] Eski sertifika iptal ediliyor"
+
+#: src/language/generate.ts:20
+msgid "[Nginx UI] Setting DNS01 challenge provider"
+msgstr "[Nginx UI] DNS01 meydan okuma sağlayıcısı ayarlanıyor"
+
+#: src/language/generate.ts:6
+#, fuzzy
+msgid "[Nginx UI] Setting environment variables"
+msgstr "Ortam değişkenlerini ayarlama"
+
+#: src/language/generate.ts:11
+msgid "[Nginx UI] Setting HTTP01 challenge provider"
+msgstr "[Nginx UI] HTTP01 meydan okuma sağlayıcısı ayarlanıyor"
+
+#: src/language/generate.ts:15
+msgid "[Nginx UI] Writing certificate private key to disk"
+msgstr "[Nginx UI] Sertifika özel anahtarı diske yazılıyor"
+
+#: src/language/generate.ts:27
+msgid "[Nginx UI] Writing certificate to disk"
+msgstr "[Nginx UI] Sertifika diske yazılıyor"
+
 #: src/views/user/userColumns.tsx:32
 msgid "2FA"
 msgstr "İki aşamalı kimlik doğrulaması(2FA)"
@@ -105,7 +197,7 @@ msgstr "Akış Ekle"
 msgid "Added successfully"
 msgstr "Başarıyla eklendi"
 
-#: src/views/certificate/DNSChallenge.vue:110
+#: src/views/certificate/components/DNSChallenge.vue:110
 msgid "Additional"
 msgstr "İlave bilgi"
 
@@ -132,7 +224,7 @@ msgstr "Tüm Kurtarma Kodları Kullanıldı"
 msgid "API Base Url"
 msgstr "API Temel Bağlantı Adresi"
 
-#: src/views/certificate/DNSChallenge.vue:83
+#: src/views/certificate/components/DNSChallenge.vue:83
 msgid "API Document"
 msgstr "API Dökümanı"
 
@@ -275,7 +367,7 @@ msgstr "Otomobil"
 msgid "auto = CPU cores"
 msgstr "Auto = CPU Çekirdekleri"
 
-#: src/views/nginx_log/NginxLog.vue:149
+#: src/views/nginx_log/NginxLog.vue:150
 msgid "Auto Refresh"
 msgstr "Otomatik Yenileme"
 
@@ -295,11 +387,9 @@ msgstr "\"Otomatik Yeniden Başlatma\""
 msgid "Automatically indexed from site and stream configurations."
 msgstr "\"Site ve akış yapılandırmalarından otomatik olarak dizinlendi.\""
 
-#: src/views/certificate/components/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:266
-#: src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195
-#: src/views/nginx_log/NginxLog.vue:173
+#: src/views/certificate/CertificateEditor.vue:259
+#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:174
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
 msgid "Back"
@@ -506,42 +596,40 @@ msgid "Certificate %{name} will expire in 1 day"
 msgstr "%{name} sertifikasının süresi 1 gün sonra dolacak"
 
 #: src/constants/errors/cert.ts:4
-#, fuzzy
 msgid "Certificate decode error"
-msgstr "Senkronizasyon Sertifikası Hatası"
+msgstr "Sertifika çözme hatası"
 
 #: src/components/Notification/notifications.ts:29
-#, fuzzy
 msgid "Certificate Expiration Notice"
-msgstr "Yapılandırma Şablonları"
+msgstr "Sertifika Son Kullanma Bildirimi"
 
 #: src/components/Notification/notifications.ts:25
-#, fuzzy
 msgid "Certificate Expired"
-msgstr "Sertifika Listesi"
+msgstr "Sertifikanın süresi doldu"
 
 #: src/components/Notification/notifications.ts:33
 #: src/components/Notification/notifications.ts:37
 #: src/components/Notification/notifications.ts:41
-#, fuzzy
 msgid "Certificate Expiring Soon"
-msgstr "Senkronizasyon Sertifikası Hatası"
+msgstr "Sertifika Yakında Sona Eriyor"
+
+#: src/language/generate.ts:5
+#, fuzzy
+msgid "Certificate not found: %{error}"
+msgstr "Sertifika çözme hatası"
 
 #: src/constants/errors/cert.ts:5
-#, fuzzy
 msgid "Certificate parse error"
-msgstr "Senkronizasyon Sertifikası Hatası"
+msgstr "Sertifika ayrıştırma hatası"
 
 #: src/constants/errors/cert.ts:8
-#, fuzzy
 msgid "Certificate path is empty"
-msgstr "Yapılandırma Şablonları"
+msgstr "Sertifika yolu boş"
 
 #: src/views/certificate/components/RemoveCert.vue:41
 #: src/views/certificate/components/RemoveCert.vue:61
-#, fuzzy
 msgid "Certificate removed successfully"
-msgstr "Başarıyla temizlendi"
+msgstr "Sertifika başarıyla kaldırıldı"
 
 #: src/views/preference/tabs/CertSettings.vue:27
 msgid "Certificate Renewal Interval"
@@ -552,7 +640,12 @@ msgstr "Sertifika Yenileme Aralığı"
 msgid "Certificate renewed successfully"
 msgstr "Başarıyla temizlendi"
 
-#: src/views/certificate/components/CertificateEditor.vue:128
+#: src/language/generate.ts:10
+#, fuzzy
+msgid "Certificate revoked successfully"
+msgstr "Sertifika başarıyla kaldırıldı"
+
+#: src/views/certificate/CertificateEditor.vue:128
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
@@ -595,7 +688,7 @@ msgstr "Kanal"
 #: src/views/site/site_edit/components/RightPanel/RightPanel.vue:40
 #: src/views/stream/components/RightPanel/RightPanel.vue:22
 msgid "Chat"
-msgstr ""
+msgstr "Sohbet"
 
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:40
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:64
@@ -613,40 +706,54 @@ msgid ""
 "Docker Image, please make sure the docker socket is mounted like this: `-v "
 "/var/run/docker.sock:/var/run/docker.sock`."
 msgstr ""
+"/var/run/docker.sock dosyasının var olup olmadığını kontrol edin. Nginx UI "
+"Resmi Docker Image'ını kullanıyorsanız, docker soketinin şu şekilde "
+"bağlandığından emin olun: `-v /var/run/docker.sock:/var/run/docker.sock`."
 
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:11
 msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
 "prevents using Passkeys and clipboard features."
 msgstr ""
+"HTTPS'nin etkin olup olmadığını kontrol edin. localhost dışında HTTP "
+"kullanmak güvensizdir ve Passkeys ile panosu özelliklerini kullanmayı "
+"engeller."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:26
 msgid "Check if the nginx.conf includes the conf.d directory."
-msgstr ""
+msgstr "nginx.conf dosyasının conf.d dizinini içerip içermediğini kontrol edin."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:16
 msgid "Check if the nginx.conf includes the sites-enabled directory."
 msgstr ""
+"nginx.conf dosyasının sites-enabled dizinini içerip içermediğini kontrol "
+"edin."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:21
 msgid "Check if the nginx.conf includes the streams-enabled directory."
 msgstr ""
+"nginx.conf dosyasının streams-enabled dizinini içerip içermediğini kontrol "
+"edin."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:6
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory."
 msgstr ""
+"sites-available ve sites-enabled dizinlerinin nginx yapılandırma dizini "
+"altında olup olmadığını kontrol edin."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:11
 msgid ""
 "Check if the streams-available and streams-enabled directories are under "
 "the nginx configuration directory."
 msgstr ""
+"streams-available ve streams-enabled dizinlerinin nginx yapılandırma dizini "
+"altında olup olmadığını kontrol edin."
 
 #: src/constants/errors/crypto.ts:3
 msgid "Cipher text is too short"
-msgstr ""
+msgstr "Şifreli metin çok kısa"
 
 #: src/language/constants.ts:13
 msgid "Cleaning environment variables"
@@ -666,44 +773,43 @@ msgstr "Başarıyla temizlendi"
 #: src/components/SystemRestore/SystemRestoreContent.vue:194
 #: src/components/SystemRestore/SystemRestoreContent.vue:271
 msgid "Click or drag backup file to this area to upload"
-msgstr ""
+msgstr "Yüklemek için bu alana yedekleme dosyasını tıklayın veya sürükleyin"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:110
 msgid "Click to copy"
-msgstr ""
+msgstr "Kopyala için tıklayın"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:120
 msgid "Client Body Buffer Size"
-msgstr ""
+msgstr "İstemci gövdesi arabellek boyutu"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:113
 msgid "Client Header Buffer Size"
-msgstr ""
+msgstr "İstemci Başlık Arabellek Boyutu"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Client Max Body Size"
-msgstr ""
+msgstr "İstemci Maksimum Gövde Boyutu"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:121
 msgid "Client request body buffer size"
-msgstr ""
+msgstr "İstemci istek gövdesi tampon boyutu"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:114
 msgid "Client request header buffer size"
-msgstr ""
+msgstr "İstemci istek başlığı arabellek boyutu"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:169
 msgid "Close"
-msgstr ""
+msgstr "Kapat"
 
 #: src/constants/errors/llm.ts:2
-#, fuzzy
 msgid "Code completion is not enabled"
-msgstr "Mevcut hesap için TOTP etkin değil."
+msgstr "Kod tamamlama etkin değil"
 
 #: src/views/preference/tabs/OpenAISettings.vue:86
 msgid "Code Completion Model"
-msgstr ""
+msgstr "Kod Tamamlama Modeli"
 
 #: src/views/preference/tabs/LogrotateSettings.vue:23
 msgid "Command"
@@ -711,7 +817,7 @@ msgstr "Komut"
 
 #: src/constants/errors/docker.ts:6
 msgid "Command exited with unexpected exit code: {0}, error: {1}"
-msgstr ""
+msgstr "Komut beklenmeyen çıkış kodu ile sonlandı: {0}, hata: {1}"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:115
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
@@ -722,7 +828,7 @@ msgstr "Yorumlar"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:127
 msgid "Compare"
-msgstr ""
+msgstr "Karşılaştırmak"
 
 #: src/components/ConfigHistory/DiffViewer.vue:388
 #, fuzzy
@@ -731,15 +837,15 @@ msgstr "Yapılandırmalar"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:130
 msgid "Compare Selected"
-msgstr ""
+msgstr "Seçili karşılaştırın"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:129
 msgid "Compare with Current"
-msgstr ""
+msgstr "Mevcut ile karşılaştırın"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:88
 msgid "Compression level, 1 is lowest, 9 is highest"
-msgstr ""
+msgstr "Sıkıştırma seviyesi, 1 en düşük, 9 en yüksek"
 
 #: src/constants/errors/backup.ts:14
 #, fuzzy
@@ -783,7 +889,7 @@ msgstr "Bağlandı"
 
 #: src/views/dashboard/NginxDashBoard.vue:85
 msgid "Connection error, trying to reconnect..."
-msgstr ""
+msgstr "Bağlantı hatası, yeniden bağlanılmaya çalışılıyor..."
 
 #: src/views/terminal/Terminal.vue:142
 msgid "Connection lost, please refresh the page."
@@ -791,11 +897,11 @@ msgstr "Bağlantı kesildi, lütfen sayfayı yenileyin."
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
 msgid "Connection timeout period"
-msgstr ""
+msgstr "Bağlantı zaman aşımı süresi"
 
 #: src/constants/errors/docker.ts:7
 msgid "Container status unknown"
-msgstr ""
+msgstr "Kapsayıcı durumu bilinmiyor"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:120
 #: src/components/NgxConfigEditor/LocationEditor.vue:116
@@ -891,7 +997,7 @@ msgstr "İstemci oluşturmak, CA sunucusuyla iletişimi kolaylaştırır"
 msgid "Credential"
 msgstr "Kimlik bilgisi"
 
-#: src/views/certificate/DNSChallenge.vue:99
+#: src/views/certificate/components/DNSChallenge.vue:99
 msgid "Credentials"
 msgstr "Kimlik bilgileri"
 
@@ -1203,7 +1309,7 @@ msgid "DNS Credentials"
 msgstr "DNS Kimlik Bilgileri"
 
 #: src/components/AutoCertForm/DNSChallenge.vue:94
-#: src/views/certificate/DNSChallenge.vue:72
+#: src/views/certificate/components/DNSChallenge.vue:72
 msgid "DNS Provider"
 msgstr "DNS Sağlayıcısı"
 
@@ -1253,6 +1359,10 @@ msgstr ""
 msgid "Docker Socket"
 msgstr ""
 
+#: src/constants/errors/self_check.ts:15
+msgid "Docker socket not exist"
+msgstr ""
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
 #, fuzzy
@@ -1265,7 +1375,7 @@ msgstr[1] "API Dökümanı"
 msgid "Domain"
 msgstr "Alan Adı"
 
-#: src/views/certificate/components/CertificateEditor.vue:112
+#: src/views/certificate/CertificateEditor.vue:112
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
 "Alan adları listesi boş, %{config} için Otomatik Sertifikayı yeniden açmayı "
@@ -1543,7 +1653,7 @@ msgstr ""
 msgid "External Notify"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:96
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
 msgid "Fail to obtain certificate"
 msgstr "Sertifika alınamadı"
 
@@ -1694,6 +1804,11 @@ msgstr ""
 #: src/views/certificate/components/RemoveCert.vue:66
 #, fuzzy
 msgid "Failed to delete certificate"
+msgstr "Sertifika alınamadı"
+
+#: src/language/generate.ts:9
+#, fuzzy
+msgid "Failed to delete certificate from database: %{error}"
 msgstr "Sertifika alınamadı"
 
 #: src/views/site/components/SiteStatusSegmented.vue:46
@@ -1859,6 +1974,11 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr "Sertifika alınamadı"
 
+#: src/language/generate.ts:17
+#, fuzzy
+msgid "Failed to revoke certificate: %{error}"
+msgstr "Sertifika alınamadı"
+
 #: src/views/dashboard/components/ParamsOptimization.vue:90
 #, fuzzy
 msgid "Failed to save Nginx performance settings"
@@ -1898,7 +2018,7 @@ msgstr "Dosya Bulunamadı"
 msgid "Filename is empty"
 msgstr ""
 
-#: src/views/nginx_log/NginxLog.vue:155
+#: src/views/nginx_log/NginxLog.vue:156
 msgid "Filter"
 msgstr "Filtre"
 
@@ -2094,7 +2214,7 @@ msgid "Import"
 msgstr "İçe Aktar"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/components/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:85
 msgid "Import Certificate"
 msgstr "Sertifika İçe Aktar"
 
@@ -2321,8 +2441,8 @@ msgstr "Buna ihtiyacınız yoksa boş bırakın."
 msgid "Leave blank if you don't need this."
 msgstr "Buna ihtiyacınız yoksa boş bırakın."
 
-#: src/views/certificate/components/CertificateEditor.vue:223
-#: src/views/certificate/components/CertificateEditor.vue:237
+#: src/views/certificate/CertificateEditor.vue:223
+#: src/views/certificate/CertificateEditor.vue:237
 msgid "Leave blank will not change anything"
 msgstr "Boş bırakmak hiçbir şeyi değiştirmeyecektir"
 
@@ -2395,9 +2515,13 @@ msgstr "Konum"
 msgid "Locations"
 msgstr "Konumlar"
 
-#: src/views/certificate/components/CertificateEditor.vue:247
+#: src/views/certificate/CertificateEditor.vue:247
 msgid "Log"
 msgstr "Günlük"
+
+#: src/language/generate.ts:23
+msgid "Log file %{log_path} is not a regular file. "
+msgstr ""
 
 #: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:67
 #, fuzzy
@@ -2614,7 +2738,7 @@ msgid "Modify"
 msgstr "Değiştir"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/components/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:85
 #, fuzzy
 msgid "Modify Certificate"
 msgstr "Sertifika Değiştirme"
@@ -2636,8 +2760,8 @@ msgstr "Çok Hatlı Direktif"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:178
 #: src/views/certificate/ACMEUser.vue:13
+#: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:10
-#: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:309
@@ -2816,7 +2940,7 @@ msgstr "Nginx çalışmıyor"
 msgid "Nginx is running"
 msgstr "Nginx çalışmıyor"
 
-#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:143
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:144
 #, fuzzy
 msgid "Nginx Log"
 msgstr "Nginx Günlüğü"
@@ -3933,7 +4057,7 @@ msgstr "Çalışıyor"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:64
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
-#: src/views/certificate/components/CertificateEditor.vue:266
+#: src/views/certificate/CertificateEditor.vue:266
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/config/ConfigEditor.vue:275
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -4001,7 +4125,7 @@ msgstr "%{conf_name} başarıyla %{node_name} düğümüne kopyalandı"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
-#: src/views/certificate/components/CertificateEditor.vue:49
+#: src/views/certificate/CertificateEditor.vue:49
 #: src/views/preference/store/index.ts:118
 #, fuzzy
 msgid "Save successfully"
@@ -4019,7 +4143,7 @@ msgstr "Başarıyla Kaydedildi"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "Hesabı uygulamaya eklemek için QR kodunu cep telefonunuzla tarayın."
 
-#: src/views/certificate/DNSChallenge.vue:90
+#: src/views/certificate/components/DNSChallenge.vue:90
 #, fuzzy
 msgid "SDK"
 msgstr "SDK"
@@ -4215,7 +4339,7 @@ msgstr ""
 msgid "Sleep time between cache manager iterations"
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:213
+#: src/views/certificate/CertificateEditor.vue:213
 #, fuzzy
 msgid "SSL Certificate Content"
 msgstr "SSL Sertifika İçeriği"
@@ -4229,17 +4353,17 @@ msgstr ""
 msgid "SSL certificate file not found"
 msgstr "SSL Sertifika Anahtarı İçeriği"
 
-#: src/views/certificate/components/CertificateEditor.vue:227
+#: src/views/certificate/CertificateEditor.vue:227
 #, fuzzy
 msgid "SSL Certificate Key Content"
 msgstr "SSL Sertifika Anahtarı İçeriği"
 
-#: src/views/certificate/components/CertificateEditor.vue:192
+#: src/views/certificate/CertificateEditor.vue:192
 #, fuzzy
 msgid "SSL Certificate Key Path"
 msgstr "SSL Sertifikası Anahtar Yolu"
 
-#: src/views/certificate/components/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:177
 #: src/views/preference/tabs/ServerSettings.vue:37
 #, fuzzy
 msgid "SSL Certificate Path"
@@ -4430,7 +4554,7 @@ msgstr "Şununla senkronize et"
 msgid "Sync strategy"
 msgstr "Senkronizasyon Sertifikası"
 
-#: src/views/certificate/components/CertificateEditor.vue:206
+#: src/views/certificate/CertificateEditor.vue:206
 #, fuzzy
 msgid "Sync to"
 msgstr "Şununla senkronize et"
@@ -4514,12 +4638,12 @@ msgid ""
 "dashes, colons, and dots."
 msgstr "Model adı yalnızca harf, unicode, sayı, tire, çizgi ve nokta içermelidir."
 
-#: src/views/certificate/components/CertificateEditor.vue:216
+#: src/views/certificate/CertificateEditor.vue:216
 #, fuzzy
 msgid "The input is not a SSL Certificate"
 msgstr "Giriş bir SSL Sertifikası değil"
 
-#: src/views/certificate/components/CertificateEditor.vue:230
+#: src/views/certificate/CertificateEditor.vue:230
 #, fuzzy
 msgid "The input is not a SSL Certificate Key"
 msgstr "Girdi bir SSL Sertifika Anahtarı değil"
@@ -4554,12 +4678,12 @@ msgstr "Model adı yalnızca harf, unicode, sayı, tire, çizgi ve nokta içerme
 msgid "The parameter of server_name is required"
 msgstr "server_name parametresi gereklidir"
 
-#: src/views/certificate/components/CertificateEditor.vue:181
+#: src/views/certificate/CertificateEditor.vue:181
 #, fuzzy
 msgid "The path exists, but the file is not a certificate"
 msgstr "Yol var, ancak dosya bir sertifika değil"
 
-#: src/views/certificate/components/CertificateEditor.vue:196
+#: src/views/certificate/CertificateEditor.vue:196
 #, fuzzy
 msgid "The path exists, but the file is not a private key"
 msgstr "Yol var, ancak dosya bir özel anahtar değil"
@@ -4625,19 +4749,19 @@ msgid ""
 "lose access to your account."
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:102
+#: src/views/certificate/CertificateEditor.vue:102
 #, fuzzy
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Bu Otomatik Sertifika öğesi geçersizdir, lütfen kaldırın."
 
-#: src/views/certificate/components/CertificateEditor.vue:92
+#: src/views/certificate/CertificateEditor.vue:92
 #, fuzzy
 msgid "This certificate is managed by Nginx UI"
 msgstr "Bu sertifika Nginx UI tarafından yönetilir"
 
-#: src/views/certificate/components/CertificateEditor.vue:165
-#: src/views/certificate/components/CertificateEditor.vue:179
-#: src/views/certificate/components/CertificateEditor.vue:194
+#: src/views/certificate/CertificateEditor.vue:165
+#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/CertificateEditor.vue:194
 #, fuzzy
 msgid "This field is required"
 msgstr "Bu alan gereklidir"

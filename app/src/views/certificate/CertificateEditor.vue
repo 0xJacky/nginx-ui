@@ -2,14 +2,14 @@
 import type { Cert } from '@/api/cert'
 import type { Ref } from 'vue'
 import cert from '@/api/cert'
-import AutoCertForm from '@/components/AutoCertForm/AutoCertForm.vue'
-import CertInfo from '@/components/CertInfo/CertInfo.vue'
-import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
-import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
-import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
+import AutoCertForm from '@/components/AutoCertForm'
+import CertInfo from '@/components/CertInfo'
+import CodeEditor from '@/components/CodeEditor'
+import FooterToolBar from '@/components/FooterToolbar'
+import NodeSelector from '@/components/NodeSelector'
 import { AutoCertState } from '@/constants'
 import { message } from 'ant-design-vue'
-import RenewCert from './RenewCert.vue'
+import RenewCert from './components/RenewCert.vue'
 
 const route = useRoute()
 
@@ -59,21 +59,21 @@ async function save() {
 provide('saveCert', save)
 
 const log = computed(() => {
-  const logs = data.value.log?.split('\n')
+  if (!data.value.log)
+    return ''
 
-  logs.forEach((line, idx, lines) => {
-    const regex = /\[Nginx UI\] (.*)/
-
-    const matches = line.match(regex)
-
-    if (matches && matches.length > 1) {
-      const extractedText = matches[1]
-
-      lines[idx] = line.replaceAll(extractedText, $gettext(extractedText))
+  return data.value.log.split('\n').map(line => {
+    try {
+      return T(JSON.parse(line))
     }
-  })
-
-  return logs.join('\n')
+    catch {
+      // fallback to legacy log format
+      const matches = line.match(/\[Nginx UI\] (.*)/)
+      if (matches?.[1])
+        return line.replaceAll(matches[1], $gettext(matches[1]))
+      return line
+    }
+  }).join('\n')
 })
 
 const isManaged = computed(() => {

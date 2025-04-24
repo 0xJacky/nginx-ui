@@ -60,7 +60,8 @@ function init() {
     addLog(r.content)
     openWs()
   }).catch(e => {
-    addLog(e.error)
+    if (e.error)
+      addLog(T(e.error))
   })
 }
 

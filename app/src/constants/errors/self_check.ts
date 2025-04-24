@@ -12,4 +12,5 @@ export default {
   4048: () => $gettext('Streams-available directory not exist'),
   4049: () => $gettext('Streams-enabled directory not exist'),
   4050: () => $gettext('Nginx conf not include conf.d directory'),
+  4051: () => $gettext('Docker socket not exist'),
 }

@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"runtime"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -64,6 +65,8 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan chan error) {
 	defer func() {
 		if err := recover(); err != nil {
+			buf := make([]byte, 1024)
+			runtime.Stack(buf, false)
 			logger.Error(err)
 			return
 		}
@@ -91,16 +94,13 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 		}
 
 		if !stat.Mode().IsRegular() {
-			errChan <- errors.New("[error] " + logPath + " is not a regular file. " +
-				"If you are using nginx-ui in docker container, please refer to " +
-				"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information.")
+			errChan <- errors.Errorf("[error] %s is not a regular file. If you are using nginx-ui in docker container, please refer to https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information.", logPath)
 			return
 		}
 
 		// Create a tail
 		t, err := tail.TailFile(logPath, tail.Config{Follow: true,
 			ReOpen: true, Location: &seek})
-
 		if err != nil {
 			errChan <- errors.Wrap(err, "error tailing log")
 			return
@@ -137,6 +137,8 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errChan chan error) {
 	defer func() {
 		if err := recover(); err != nil {
+			buf := make([]byte, 1024)
+			runtime.Stack(buf, false)
 			logger.Error(err)
 			return
 		}

@@ -31,7 +31,7 @@ export const certificatesRoutes: RouteRecordRaw[] = [
       {
         path: ':id',
         name: 'Modify Certificate',
-        component: () => import('@/views/certificate/components/CertificateEditor.vue'),
+        component: () => import('@/views/certificate/CertificateEditor.vue'),
         meta: {
           name: () => $gettext('Modify Certificate'),
           hiddenInSidebar: true,
@@ -41,7 +41,7 @@ export const certificatesRoutes: RouteRecordRaw[] = [
       {
         path: 'import',
         name: 'Import Certificate',
-        component: () => import('@/views/certificate/components/CertificateEditor.vue'),
+        component: () => import('@/views/certificate/CertificateEditor.vue'),
         meta: {
           name: () => $gettext('Import Certificate'),
           hiddenInSidebar: true,

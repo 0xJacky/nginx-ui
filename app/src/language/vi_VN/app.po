@@ -9,6 +9,98 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: src/language/generate.ts:19
+msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
+msgstr "[Nginx UI] Người dùng ACME: %{name}, Email: %{email}, Thư mục CA: %{caDir}"
+
+#: src/language/generate.ts:13
+msgid "[Nginx UI] Backing up current certificate for later revocation"
+msgstr "[Nginx UI] Đang sao lưu chứng chỉ hiện tại để thu hồi sau này"
+
+#: src/language/generate.ts:28
+#, fuzzy
+msgid "[Nginx UI] Certificate renewed successfully"
+msgstr "Đã xóa thành công"
+
+#: src/language/generate.ts:8
+#, fuzzy
+msgid "[Nginx UI] Certificate successfully revoked"
+msgstr "Restart Nginx thành công"
+
+#: src/language/generate.ts:29
+msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgstr ""
+"[Nginx UI] Chứng chỉ đã được sử dụng cho máy chủ, đang tải lại chứng chỉ "
+"TLS của máy chủ"
+
+#: src/language/generate.ts:24
+#, fuzzy
+msgid "[Nginx UI] Creating client facilitates communication with the CA server"
+msgstr "Tạo client để giao tiếp với CA server"
+
+#: src/language/generate.ts:12
+#, fuzzy
+msgid "[Nginx UI] Environment variables cleaned"
+msgstr "Đặt biến môi trường"
+
+#: src/language/generate.ts:21
+msgid "[Nginx UI] Finished"
+msgstr "[Nginx UI] Đã hoàn thành"
+
+#: src/language/generate.ts:4
+#, fuzzy
+msgid "[Nginx UI] Issued certificate successfully"
+msgstr "Cấp chứng chỉ thành công"
+
+#: src/language/generate.ts:14
+msgid "[Nginx UI] Obtaining certificate"
+msgstr "[Nginx UI] Đang lấy chứng chỉ"
+
+#: src/language/generate.ts:22
+msgid "[Nginx UI] Preparing for certificate revocation"
+msgstr "[Nginx UI] Chuẩn bị thu hồi chứng chỉ"
+
+#: src/language/generate.ts:18
+msgid "[Nginx UI] Preparing lego configurations"
+msgstr "[Nginx UI] Đang chuẩn bị cấu hình lego"
+
+#: src/language/generate.ts:25
+msgid "[Nginx UI] Reloading nginx"
+msgstr "[Nginx UI] Đang tải lại nginx"
+
+#: src/language/generate.ts:16
+msgid "[Nginx UI] Revocation completed"
+msgstr "[Nginx UI] Đã hoàn tất thu hồi"
+
+#: src/language/generate.ts:7
+msgid "[Nginx UI] Revoking certificate"
+msgstr "[Nginx UI] Đang thu hồi chứng chỉ"
+
+#: src/language/generate.ts:26
+msgid "[Nginx UI] Revoking old certificate"
+msgstr "[Nginx UI] Đang thu hồi chứng chỉ cũ"
+
+#: src/language/generate.ts:20
+msgid "[Nginx UI] Setting DNS01 challenge provider"
+msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách DNS01"
+
+#: src/language/generate.ts:6
+#, fuzzy
+msgid "[Nginx UI] Setting environment variables"
+msgstr "Đặt biến môi trường"
+
+#: src/language/generate.ts:11
+msgid "[Nginx UI] Setting HTTP01 challenge provider"
+msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách HTTP01"
+
+#: src/language/generate.ts:15
+msgid "[Nginx UI] Writing certificate private key to disk"
+msgstr "[Nginx UI] Đang ghi khóa riêng của chứng chỉ vào ổ đĩa"
+
+#: src/language/generate.ts:27
+msgid "[Nginx UI] Writing certificate to disk"
+msgstr "[Nginx UI] Đang ghi chứng chỉ vào ổ đĩa"
+
 #: src/views/user/userColumns.tsx:32
 msgid "2FA"
 msgstr "2fa"
@@ -105,7 +197,7 @@ msgstr "Thêm Website"
 msgid "Added successfully"
 msgstr "Cập nhật thành công"
 
-#: src/views/certificate/DNSChallenge.vue:110
+#: src/views/certificate/components/DNSChallenge.vue:110
 #, fuzzy
 msgid "Additional"
 msgstr "Tùy chọn bổ sung"
@@ -133,7 +225,7 @@ msgstr "Tất cả mã khôi phục đã được sử dụng"
 msgid "API Base Url"
 msgstr "URL Cơ sở API"
 
-#: src/views/certificate/DNSChallenge.vue:83
+#: src/views/certificate/components/DNSChallenge.vue:83
 msgid "API Document"
 msgstr "Tài liệu API"
 
@@ -291,7 +383,7 @@ msgstr "Tự động"
 msgid "auto = CPU cores"
 msgstr "auto = lõi cpu"
 
-#: src/views/nginx_log/NginxLog.vue:149
+#: src/views/nginx_log/NginxLog.vue:150
 msgid "Auto Refresh"
 msgstr "Tự động làm mới"
 
@@ -311,11 +403,9 @@ msgstr "\"Khởi động lại Tự động\""
 msgid "Automatically indexed from site and stream configurations."
 msgstr "\"Được lập chỉ mục tự động từ cấu hình trang web và luồng.\""
 
-#: src/views/certificate/components/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:266
-#: src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195
-#: src/views/nginx_log/NginxLog.vue:173
+#: src/views/certificate/CertificateEditor.vue:259
+#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:174
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
 msgid "Back"
@@ -525,42 +615,40 @@ msgid "Certificate %{name} will expire in 1 day"
 msgstr "Chứng chỉ %{name} sẽ hết hạn trong 1 ngày"
 
 #: src/constants/errors/cert.ts:4
-#, fuzzy
 msgid "Certificate decode error"
-msgstr "Gia hạn chứng chỉ SSL thất bại"
+msgstr "Lỗi giải mã chứng chỉ"
 
 #: src/components/Notification/notifications.ts:29
-#, fuzzy
 msgid "Certificate Expiration Notice"
-msgstr "Mẫu Cấu hình"
+msgstr "Thông báo hết hạn chứng chỉ"
 
 #: src/components/Notification/notifications.ts:25
-#, fuzzy
 msgid "Certificate Expired"
-msgstr "Danh sách chứng chỉ"
+msgstr "Chứng chỉ đã hết hạn"
 
 #: src/components/Notification/notifications.ts:33
 #: src/components/Notification/notifications.ts:37
 #: src/components/Notification/notifications.ts:41
-#, fuzzy
 msgid "Certificate Expiring Soon"
-msgstr "Chứng chỉ đã hết hạn"
+msgstr "Chứng chỉ sắp hết hạn"
+
+#: src/language/generate.ts:5
+#, fuzzy
+msgid "Certificate not found: %{error}"
+msgstr "Lỗi giải mã chứng chỉ"
 
 #: src/constants/errors/cert.ts:5
-#, fuzzy
 msgid "Certificate parse error"
-msgstr "Chứng chỉ đã hết hạn"
+msgstr "Lỗi phân tích chứng chỉ"
 
 #: src/constants/errors/cert.ts:8
-#, fuzzy
 msgid "Certificate path is empty"
-msgstr "Mẫu Cấu hình"
+msgstr "Đường dẫn chứng chỉ trống"
 
 #: src/views/certificate/components/RemoveCert.vue:41
 #: src/views/certificate/components/RemoveCert.vue:61
-#, fuzzy
 msgid "Certificate removed successfully"
-msgstr "Đã xóa thành công"
+msgstr "Đã xóa chứng chỉ thành công"
 
 #: src/views/preference/tabs/CertSettings.vue:27
 #, fuzzy
@@ -572,7 +660,12 @@ msgstr "Chứng chỉ SSL hợp lệ"
 msgid "Certificate renewed successfully"
 msgstr "Đã xóa thành công"
 
-#: src/views/certificate/components/CertificateEditor.vue:128
+#: src/language/generate.ts:10
+#, fuzzy
+msgid "Certificate revoked successfully"
+msgstr "Đã xóa chứng chỉ thành công"
+
+#: src/views/certificate/CertificateEditor.vue:128
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 #, fuzzy
 msgid "Certificate Status"
@@ -621,7 +714,7 @@ msgstr "Kênh"
 #: src/views/site/site_edit/components/RightPanel/RightPanel.vue:40
 #: src/views/stream/components/RightPanel/RightPanel.vue:22
 msgid "Chat"
-msgstr ""
+msgstr "Trò chuyện"
 
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:40
 #: src/components/SelfCheck/SelfCheckHeaderBanner.vue:64
@@ -639,40 +732,49 @@ msgid ""
 "Docker Image, please make sure the docker socket is mounted like this: `-v "
 "/var/run/docker.sock:/var/run/docker.sock`."
 msgstr ""
+"Kiểm tra xem /var/run/docker.sock có tồn tại không. Nếu bạn đang sử dụng "
+"Docker Image chính thức của Nginx UI, hãy đảm bảo rằng ổ cắm Docker được "
+"gắn như sau: `-v /var/run/docker.sock:/var/run/docker.sock`."
 
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:11
 msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
 "prevents using Passkeys and clipboard features."
 msgstr ""
+"Kiểm tra xem HTTPS đã được bật chưa. Sử dụng HTTP bên ngoài localhost không "
+"an toàn và ngăn chặn việc sử dụng tính năng Passkeys cùng khay nhớ tạm."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:26
 msgid "Check if the nginx.conf includes the conf.d directory."
-msgstr ""
+msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:16
 msgid "Check if the nginx.conf includes the sites-enabled directory."
-msgstr ""
+msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục sites-enabled không."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:21
 msgid "Check if the nginx.conf includes the streams-enabled directory."
-msgstr ""
+msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục streams-enabled không."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:6
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory."
 msgstr ""
+"Kiểm tra xem các thư mục sites-available và sites-enabled có nằm trong thư "
+"mục cấu hình nginx hay không."
 
 #: src/components/SelfCheck/tasks/backend/index.ts:11
 msgid ""
 "Check if the streams-available and streams-enabled directories are under "
 "the nginx configuration directory."
 msgstr ""
+"Kiểm tra xem các thư mục streams-available và streams-enabled có nằm trong "
+"thư mục cấu hình nginx hay không."
 
 #: src/constants/errors/crypto.ts:3
 msgid "Cipher text is too short"
-msgstr ""
+msgstr "Văn bản mã hóa quá ngắn"
 
 #: src/language/constants.ts:13
 msgid "Cleaning environment variables"
@@ -693,43 +795,43 @@ msgstr "Đã xóa thành công"
 #: src/components/SystemRestore/SystemRestoreContent.vue:194
 #: src/components/SystemRestore/SystemRestoreContent.vue:271
 msgid "Click or drag backup file to this area to upload"
-msgstr ""
+msgstr "Nhấp hoặc kéo tệp sao lưu vào khu vực này để tải lên"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:110
 msgid "Click to copy"
-msgstr ""
+msgstr "Bấm để sao chép"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:120
 msgid "Client Body Buffer Size"
-msgstr ""
+msgstr "Kích thước bộ đệm thân máy khách"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:113
 msgid "Client Header Buffer Size"
-msgstr ""
+msgstr "Kích thước bộ đệm tiêu đề máy khách"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Client Max Body Size"
-msgstr ""
+msgstr "Kích thước tối đa của phần thân máy khách"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:121
 msgid "Client request body buffer size"
-msgstr ""
+msgstr "Kích thước bộ đệm nội dung yêu cầu của máy khách"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:114
 msgid "Client request header buffer size"
-msgstr ""
+msgstr "Kích thước bộ đệm tiêu đề yêu cầu của máy khách"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:169
 msgid "Close"
-msgstr ""
+msgstr "Đóng"
 
 #: src/constants/errors/llm.ts:2
 msgid "Code completion is not enabled"
-msgstr ""
+msgstr "Hoàn thành mã không được bật"
 
 #: src/views/preference/tabs/OpenAISettings.vue:86
 msgid "Code Completion Model"
-msgstr ""
+msgstr "Mô hình hoàn thành mã"
 
 #: src/views/preference/tabs/LogrotateSettings.vue:23
 #, fuzzy
@@ -738,7 +840,7 @@ msgstr "Bình luận"
 
 #: src/constants/errors/docker.ts:6
 msgid "Command exited with unexpected exit code: {0}, error: {1}"
-msgstr ""
+msgstr "Lệnh thoát với mã lỗi không mong muốn: {0}, lỗi: {1}"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:115
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
@@ -749,7 +851,7 @@ msgstr "Bình luận"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:127
 msgid "Compare"
-msgstr ""
+msgstr "So sánh"
 
 #: src/components/ConfigHistory/DiffViewer.vue:388
 #, fuzzy
@@ -758,15 +860,15 @@ msgstr "Cấu hình"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:130
 msgid "Compare Selected"
-msgstr ""
+msgstr "So sánh đã chọn"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:129
 msgid "Compare with Current"
-msgstr ""
+msgstr "So sánh với hiện tại"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:88
 msgid "Compression level, 1 is lowest, 9 is highest"
-msgstr ""
+msgstr "Mức nén, 1 là thấp nhất, 9 là cao nhất"
 
 #: src/constants/errors/backup.ts:14
 #, fuzzy
@@ -810,7 +912,7 @@ msgstr "Đã kết nối"
 
 #: src/views/dashboard/NginxDashBoard.vue:85
 msgid "Connection error, trying to reconnect..."
-msgstr ""
+msgstr "Lỗi kết nối, đang thử kết nối lại..."
 
 #: src/views/terminal/Terminal.vue:142
 msgid "Connection lost, please refresh the page."
@@ -818,11 +920,11 @@ msgstr "Kết nối bị mất, xin vui lòng làm mới trang."
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:61
 msgid "Connection timeout period"
-msgstr ""
+msgstr "Khoảng thời gian chờ kết nối"
 
 #: src/constants/errors/docker.ts:7
 msgid "Container status unknown"
-msgstr ""
+msgstr "Trạng thái container không xác định"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:120
 #: src/components/NgxConfigEditor/LocationEditor.vue:116
@@ -834,20 +936,20 @@ msgstr "Nội dung"
 #: src/components/StdDesign/StdDataDisplay/StdTableTransformer.tsx:150
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:121
 msgid "Copied"
-msgstr ""
+msgstr "Đã sao chép"
 
 #: src/views/system/Backup/BackupCreator.vue:128
 msgid "Copied!"
-msgstr ""
+msgstr "Đã sao chép!"
 
 #: src/components/SensitiveString/SensitiveString.vue:37
 #: src/views/system/Backup/BackupCreator.vue:128
 msgid "Copy"
-msgstr ""
+msgstr "Sao chép"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:121
 msgid "Copy Codes"
-msgstr ""
+msgstr "Sao chép mã"
 
 #: src/views/system/Upgrade.vue:146
 msgid "Core Upgrade"
@@ -920,7 +1022,7 @@ msgstr "Tạo client để giao tiếp với CA server"
 msgid "Credential"
 msgstr "Chứng chỉ"
 
-#: src/views/certificate/DNSChallenge.vue:99
+#: src/views/certificate/components/DNSChallenge.vue:99
 msgid "Credentials"
 msgstr "Chứng chỉ"
 
@@ -1222,7 +1324,7 @@ msgid "DNS Credentials"
 msgstr "Xác thực DNS"
 
 #: src/components/AutoCertForm/DNSChallenge.vue:94
-#: src/views/certificate/DNSChallenge.vue:72
+#: src/views/certificate/components/DNSChallenge.vue:72
 msgid "DNS Provider"
 msgstr "Nhà cung cấp DNS"
 
@@ -1277,6 +1379,10 @@ msgstr ""
 msgid "Docker Socket"
 msgstr ""
 
+#: src/constants/errors/self_check.ts:15
+msgid "Docker socket not exist"
+msgstr ""
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
 #, fuzzy
@@ -1289,7 +1395,7 @@ msgstr[1] "Bình luận"
 msgid "Domain"
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:112
+#: src/views/certificate/CertificateEditor.vue:112
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
 "Danh sách tên miền rỗng, hãy thử mở lại chức năng Tạo chứng chỉ tự động cho "
@@ -1561,7 +1667,7 @@ msgstr ""
 msgid "External Notify"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:96
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
 #, fuzzy
 msgid "Fail to obtain certificate"
 msgstr "Nhận chứng chỉ"
@@ -1713,6 +1819,11 @@ msgstr ""
 #: src/views/certificate/components/RemoveCert.vue:66
 #, fuzzy
 msgid "Failed to delete certificate"
+msgstr "Nhận chứng chỉ"
+
+#: src/language/generate.ts:9
+#, fuzzy
+msgid "Failed to delete certificate from database: %{error}"
 msgstr "Nhận chứng chỉ"
 
 #: src/views/site/components/SiteStatusSegmented.vue:46
@@ -1878,6 +1989,11 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr "Nhận chứng chỉ"
 
+#: src/language/generate.ts:17
+#, fuzzy
+msgid "Failed to revoke certificate: %{error}"
+msgstr "Nhận chứng chỉ"
+
 #: src/views/dashboard/components/ParamsOptimization.vue:90
 #, fuzzy
 msgid "Failed to save Nginx performance settings"
@@ -1917,7 +2033,7 @@ msgstr "Không tìm thấy tệp tin"
 msgid "Filename is empty"
 msgstr ""
 
-#: src/views/nginx_log/NginxLog.vue:155
+#: src/views/nginx_log/NginxLog.vue:156
 msgid "Filter"
 msgstr "Lọc"
 
@@ -2102,7 +2218,7 @@ msgid "Import"
 msgstr "Xuất"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/components/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:85
 #, fuzzy
 msgid "Import Certificate"
 msgstr "Chứng chỉ"
@@ -2337,8 +2453,8 @@ msgstr "Bỏ trống nếu không thay đổi"
 msgid "Leave blank if you don't need this."
 msgstr "Bỏ trống nếu không thay đổi"
 
-#: src/views/certificate/components/CertificateEditor.vue:223
-#: src/views/certificate/components/CertificateEditor.vue:237
+#: src/views/certificate/CertificateEditor.vue:223
+#: src/views/certificate/CertificateEditor.vue:237
 #, fuzzy
 msgid "Leave blank will not change anything"
 msgstr "Bỏ trống nếu không thay đổi"
@@ -2415,10 +2531,14 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/views/certificate/components/CertificateEditor.vue:247
+#: src/views/certificate/CertificateEditor.vue:247
 #, fuzzy
 msgid "Log"
 msgstr "Log"
+
+#: src/language/generate.ts:23
+msgid "Log file %{log_path} is not a regular file. "
+msgstr ""
 
 #: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:67
 msgid "Log List"
@@ -2621,7 +2741,7 @@ msgid "Modify"
 msgstr "Sửa"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/components/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:85
 #, fuzzy
 msgid "Modify Certificate"
 msgstr "Sửa chứng chỉ"
@@ -2642,8 +2762,8 @@ msgstr "Single Directive"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:178
 #: src/views/certificate/ACMEUser.vue:13
+#: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:10
-#: src/views/certificate/components/CertificateEditor.vue:162
 #: src/views/certificate/DNSCredential.vue:11
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:309
@@ -2806,7 +2926,7 @@ msgstr ""
 msgid "Nginx is running"
 msgstr ""
 
-#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:143
+#: src/routes/modules/nginx_log.ts:9 src/views/nginx_log/NginxLog.vue:144
 msgid "Nginx Log"
 msgstr ""
 
@@ -3832,7 +3952,7 @@ msgstr "Running"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:64
 #: src/components/StdDesign/StdDetail/StdDetail.vue:93
-#: src/views/certificate/components/CertificateEditor.vue:266
+#: src/views/certificate/CertificateEditor.vue:266
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/config/ConfigEditor.vue:275
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -3897,7 +4017,7 @@ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
-#: src/views/certificate/components/CertificateEditor.vue:49
+#: src/views/certificate/CertificateEditor.vue:49
 #: src/views/preference/store/index.ts:118
 #, fuzzy
 msgid "Save successfully"
@@ -3913,7 +4033,7 @@ msgstr "Lưu thành công"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr ""
 
-#: src/views/certificate/DNSChallenge.vue:90
+#: src/views/certificate/components/DNSChallenge.vue:90
 msgid "SDK"
 msgstr ""
 
@@ -4093,7 +4213,7 @@ msgstr ""
 msgid "Sleep time between cache manager iterations"
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:213
+#: src/views/certificate/CertificateEditor.vue:213
 msgid "SSL Certificate Content"
 msgstr ""
 
@@ -4106,15 +4226,15 @@ msgstr ""
 msgid "SSL certificate file not found"
 msgstr "Không tìm thấy tệp tin"
 
-#: src/views/certificate/components/CertificateEditor.vue:227
+#: src/views/certificate/CertificateEditor.vue:227
 msgid "SSL Certificate Key Content"
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:192
+#: src/views/certificate/CertificateEditor.vue:192
 msgid "SSL Certificate Key Path"
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:177
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr ""
@@ -4294,7 +4414,7 @@ msgstr ""
 msgid "Sync strategy"
 msgstr "Gia hạn chứng chỉ SSL"
 
-#: src/views/certificate/components/CertificateEditor.vue:206
+#: src/views/certificate/CertificateEditor.vue:206
 msgid "Sync to"
 msgstr ""
 
@@ -4370,11 +4490,11 @@ msgid ""
 "dashes, colons, and dots."
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:216
+#: src/views/certificate/CertificateEditor.vue:216
 msgid "The input is not a SSL Certificate"
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:230
+#: src/views/certificate/CertificateEditor.vue:230
 msgid "The input is not a SSL Certificate Key"
 msgstr ""
 
@@ -4406,11 +4526,11 @@ msgstr ""
 msgid "The parameter of server_name is required"
 msgstr "Tham số server_name là bắt buộc"
 
-#: src/views/certificate/components/CertificateEditor.vue:181
+#: src/views/certificate/CertificateEditor.vue:181
 msgid "The path exists, but the file is not a certificate"
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:196
+#: src/views/certificate/CertificateEditor.vue:196
 msgid "The path exists, but the file is not a private key"
 msgstr ""
 
@@ -4463,17 +4583,17 @@ msgid ""
 "lose access to your account."
 msgstr ""
 
-#: src/views/certificate/components/CertificateEditor.vue:102
+#: src/views/certificate/CertificateEditor.vue:102
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Mục Chứng chỉ tự động này không hợp lệ, vui lòng xóa nó"
 
-#: src/views/certificate/components/CertificateEditor.vue:92
+#: src/views/certificate/CertificateEditor.vue:92
 msgid "This certificate is managed by Nginx UI"
 msgstr "Chứng chỉ này được quản lý bởi Nginx UI"
 
-#: src/views/certificate/components/CertificateEditor.vue:165
-#: src/views/certificate/components/CertificateEditor.vue:179
-#: src/views/certificate/components/CertificateEditor.vue:194
+#: src/views/certificate/CertificateEditor.vue:165
+#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/CertificateEditor.vue:194
 msgid "This field is required"
 msgstr ""
 

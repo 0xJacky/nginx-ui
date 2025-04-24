@@ -3,10 +3,12 @@ package cert
 import (
 	"log"
 	"os"
+	"runtime"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -26,9 +28,11 @@ const (
 	DNS01  = "dns01"
 )
 
-func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) {
+func IssueCert(payload *ConfigPayload, certLogger *Logger, errChan chan error) {
 	defer func() {
 		if err := recover(); err != nil {
+			buf := make([]byte, 1024)
+			runtime.Stack(buf, false)
 			logger.Error(err)
 		}
 	}()
@@ -49,18 +53,23 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		legolog.Logger = log.New(os.Stderr, "", log.LstdFlags)
 	}()
 
-	l.Println("[INFO] [Nginx UI] Preparing lego configurations")
+	certLogger.Info(translation.C("[Nginx UI] Preparing lego configurations"))
 	user, err := payload.GetACMEUser()
 	if err != nil {
 		errChan <- errors.Wrap(err, "issue cert get acme user error")
 		return
 	}
-	l.Printf("[INFO] [Nginx UI] ACME User: %s, Email: %s, CA Dir: %s\n", user.Name, user.Email, user.CADir)
+
+	certLogger.Info(translation.C("[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}", map[string]any{
+		"name":  user.Name,
+		"email": user.Email,
+		"caDir": user.CADir,
+	}))
 
 	// Start a goroutine to fetch and process logs from channel
 	go func() {
 		for msg := range cw.Ch {
-			logChan <- string(msg)
+			certLogger.Info(translation.C(string(msg)))
 		}
 	}()
 
@@ -80,7 +89,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 
 	config.Certificate.KeyType = payload.GetKeyType()
 
-	l.Println("[INFO] [Nginx UI] Creating client facilitates communication with the CA server")
+	certLogger.Info(translation.C("[Nginx UI] Creating client facilitates communication with the CA server"))
 	// A client facilitates communication with the CA server.
 	client, err := lego.NewClient(config)
 	if err != nil {
@@ -92,7 +101,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 	default:
 		fallthrough
 	case HTTP01:
-		l.Println("[INFO] [Nginx UI] Setting HTTP01 challenge provider")
+		certLogger.Info(translation.C("[Nginx UI] Setting HTTP01 challenge provider"))
 		err = client.Challenge.SetHTTP01Provider(
 			http01.NewProviderServer("",
 				settings.CertSettings.HTTPChallengePort,
@@ -106,14 +115,14 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 			return
 		}
 
-		l.Println("[INFO] [Nginx UI] Setting DNS01 challenge provider")
+		certLogger.Info(translation.C("[Nginx UI] Setting DNS01 challenge provider"))
 		code := dnsCredential.Config.Code
 		pConfig, ok := dns.GetProvider(code)
 		if !ok {
 			errChan <- errors.Wrap(err, "provider not found")
 			return
 		}
-		l.Println("[INFO] [Nginx UI] Setting environment variables")
+		certLogger.Info(translation.C("[Nginx UI] Setting environment variables"))
 		if dnsCredential.Config.Configuration != nil {
 			err = pConfig.SetEnv(*dnsCredential.Config.Configuration)
 			if err != nil {
@@ -123,7 +132,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 			}
 			defer func() {
 				pConfig.CleanEnv()
-				l.Println("[INFO] [Nginx UI] Environment variables cleaned")
+				certLogger.Info(translation.C("[Nginx UI] Environment variables cleaned"))
 			}()
 			provider, err := dnsproviders.NewDNSChallengeProviderByName(code)
 			if err != nil {
@@ -167,7 +176,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 	var oldResource *model.CertificateResource
 
 	if payload.RevokeOld && payload.Resource != nil && payload.Resource.Certificate != nil {
-		l.Println("[INFO] [Nginx UI] Backing up current certificate for later revocation")
+		certLogger.Info(translation.C("[Nginx UI] Backing up current certificate for later revocation"))
 
 		// Save a copy of the old certificate and key
 		oldResource = &model.CertificateResource{
@@ -179,16 +188,16 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 
 	if time.Now().Sub(payload.NotBefore).Hours()/24 <= 21 &&
 		payload.Resource != nil && payload.Resource.Certificate != nil {
-		renew(payload, client, l, errChan)
+		renew(payload, client, certLogger, errChan)
 	} else {
-		obtain(payload, client, l, errChan)
+		obtain(payload, client, certLogger, errChan)
 	}
 
-	l.Println("[INFO] [Nginx UI] Reloading nginx")
+	certLogger.Info(translation.C("[Nginx UI] Reloading nginx"))
 
 	nginx.Reload()
 
-	l.Println("[INFO] [Nginx UI] Finished")
+	certLogger.Info(translation.C("[Nginx UI] Finished"))
 
 	if payload.GetCertificatePath() == cSettings.ServerSettings.SSLCert &&
 		payload.GetCertificateKeyPath() == cSettings.ServerSettings.SSLKey {
@@ -197,7 +206,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 
 	// Revoke old certificate if requested and we have a backup
 	if payload.RevokeOld && oldResource != nil && len(oldResource.Certificate) > 0 {
-		l.Println("[INFO] [Nginx UI] Revoking old certificate")
+		certLogger.Info(translation.C("[Nginx UI] Revoking old certificate"))
 
 		// Create a payload for revocation using old certificate
 		revokePayload := &ConfigPayload{
@@ -211,7 +220,7 @@ func IssueCert(payload *ConfigPayload, logChan chan string, errChan chan error) 
 		}
 
 		// Revoke the old certificate
-		revoke(revokePayload, client, l, errChan)
+		revoke(revokePayload, client, certLogger, errChan)
 	}
 
 	// Wait log to be written

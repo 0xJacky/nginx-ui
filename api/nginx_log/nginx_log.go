@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
+	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/spf13/cast"
@@ -27,9 +28,9 @@ type controlStruct struct {
 
 // nginxLogPageResp represents the response format for log content
 type nginxLogPageResp struct {
-	Content string `json:"content"`         // Log content
-	Page    int64  `json:"page"`            // Current page number
-	Error   string `json:"error,omitempty"` // Error message if any
+	Content string                 `json:"content"`         // Log content
+	Page    int64                  `json:"page"`            // Current page number
+	Error   *translation.Container `json:"error,omitempty"` // Error message if any
 }
 
 // GetNginxLogPage handles retrieving a page of log content from a log file
@@ -47,7 +48,7 @@ func GetNginxLogPage(c *gin.Context) {
 	logPath, err := getLogPath(&control)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
-			Error: err.Error(),
+			Error: translation.C(err.Error()),
 		})
 		logger.Error(err)
 		return
@@ -56,7 +57,7 @@ func GetNginxLogPage(c *gin.Context) {
 	logFileStat, err := os.Stat(logPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
-			Error: err.Error(),
+			Error: translation.C(err.Error()),
 		})
 		logger.Error(err)
 		return
@@ -64,9 +65,14 @@ func GetNginxLogPage(c *gin.Context) {
 
 	if !logFileStat.Mode().IsRegular() {
 		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
-			Error: "log file is not regular file",
+			Error: translation.C("Log file %{log_path} is not a regular file. "+
+				"If you are using nginx-ui in docker container, please refer to "+
+				"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information.",
+				map[string]any{
+					"log_path": logPath,
+				}),
 		})
-		logger.Errorf("log file is not regular file: %s", logPath)
+		logger.Errorf("log file is not a regular file: %s", logPath)
 		return
 	}
 
@@ -82,7 +88,7 @@ func GetNginxLogPage(c *gin.Context) {
 	f, err := os.Open(logPath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
-			Error: err.Error(),
+			Error: translation.C(err.Error()),
 		})
 		logger.Error(err)
 		return
@@ -108,7 +114,7 @@ func GetNginxLogPage(c *gin.Context) {
 	_, err = f.Seek(offset, io.SeekStart)
 	if err != nil && err != io.EOF {
 		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
-			Error: err.Error(),
+			Error: translation.C(err.Error()),
 		})
 		logger.Error(err)
 		return
@@ -117,7 +123,7 @@ func GetNginxLogPage(c *gin.Context) {
 	n, err := f.Read(buf)
 	if err != nil && !errors.Is(err, io.EOF) {
 		c.JSON(http.StatusInternalServerError, nginxLogPageResp{
-			Error: err.Error(),
+			Error: translation.C(err.Error()),
 		})
 		logger.Error(err)
 		return
@@ -133,21 +139,21 @@ func GetNginxLogPage(c *gin.Context) {
 func GetLogList(c *gin.Context) {
 	filters := []func(*nginx_log.NginxLogCache) bool{}
 
-	if c.Query("type") != "" {
+	if logType := c.Query("type"); logType != "" {
 		filters = append(filters, func(entry *nginx_log.NginxLogCache) bool {
-			return entry.Type == c.Query("type")
+			return entry.Type == logType
 		})
 	}
 
-	if c.Query("name") != "" {
+	if name := c.Query("name"); name != "" {
 		filters = append(filters, func(entry *nginx_log.NginxLogCache) bool {
-			return strings.Contains(entry.Name, c.Query("name"))
+			return strings.Contains(entry.Name, name)
 		})
 	}
 
-	if c.Query("path") != "" {
+	if path := c.Query("path"); path != "" {
 		filters = append(filters, func(entry *nginx_log.NginxLogCache) bool {
-			return strings.Contains(entry.Path, c.Query("path"))
+			return strings.Contains(entry.Path, path)
 		})
 	}
 
