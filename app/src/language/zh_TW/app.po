@@ -63,7 +63,7 @@ msgstr "操作"
 #: src/composables/usePerformanceMetrics.ts:84
 #: src/views/dashboard/components/PerformanceTablesCard.vue:43
 msgid "Active connections"
-msgstr "目前連線數"
+msgstr "活躍連線"
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:48
 msgid "Actual worker to configured ratio"
@@ -298,12 +298,14 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr "\"自動從站點和流配置中索引。\""
 
 #: src/views/certificate/components/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
+#: src/views/config/ConfigEditor.vue:266
+#: src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:195
+#: src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
 msgid "Back"
-msgstr "返回"
+msgstr "\"返回\""
 
 #: src/views/other/Error.vue:22
 msgid "Back Home"
@@ -323,7 +325,7 @@ msgstr "備份檔案完整性檢查失敗，可能已被篡改"
 
 #: src/constants/errors/backup.ts:41
 msgid "Backup file not found: {0}"
-msgstr "備份檔案未找到：{0}"
+msgstr "找不到備份檔案: {0}"
 
 #: src/views/system/Backup/BackupCreator.vue:42
 msgid "Backup has been downloaded successfully"
@@ -383,7 +385,7 @@ msgstr "以下是您要批次修改的選定項目"
 
 #: src/constants/errors/nginx.ts:2
 msgid "Block is nil"
-msgstr "區塊為 nil"
+msgstr "區塊為空"
 
 #: src/views/system/About.vue:55
 msgid "Build with"
@@ -391,7 +393,7 @@ msgstr "建構基於"
 
 #: src/views/certificate/ACMEUser.vue:37
 msgid "CA Dir"
-msgstr "CA 目錄"
+msgstr "\"CA 目錄\""
 
 #: src/views/dashboard/components/ParamsOptimization.vue:124
 msgid "Cache"
@@ -399,7 +401,7 @@ msgstr "快取"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:178
 msgid "Cache items not accessed within this time will be removed"
-msgstr "在此時間內未被存取的快取項目將會被移除"
+msgstr "在此時間內未被存取的快取項目將被移除"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:350
 msgid "Cache loader processing time threshold"
@@ -433,14 +435,14 @@ msgstr "快取子目錄層級結構，例如 1:2"
 
 #: src/views/preference/tabs/CertSettings.vue:19
 msgid "CADir"
-msgstr "CA 目錄"
+msgstr "CADir"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:43
 #: src/views/dashboard/components/PerformanceTablesCard.vue:190
 msgid ""
 "Calculated based on worker_processes * worker_connections. Actual "
 "performance depends on hardware, configuration, and workload"
-msgstr "依據 worker_processes × worker_connections 計算。實際效能取決於硬體、設定與工作負載"
+msgstr "基於 worker_processes * worker_connections 計算得出。實際效能取決於硬體、配置和工作負載"
 
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/NgxConfigEditor/NgxServer.vue:54
@@ -484,17 +486,17 @@ msgstr "證書路徑不在 Nginx 設定檔資料夾下"
 
 #: src/components/Notification/notifications.ts:26
 msgid "Certificate %{name} has expired"
-msgstr "憑證 %{name} 已過期"
+msgstr "證書 %{name} 已過期"
 
 #: src/components/Notification/notifications.ts:30
 #: src/components/Notification/notifications.ts:34
 #: src/components/Notification/notifications.ts:38
 msgid "Certificate %{name} will expire in %{days} days"
-msgstr "證書 %{name} 將於 %{days} 天後過期"
+msgstr "憑證 %{name} 將在 %{days} 天後過期"
 
 #: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} will expire in 1 day"
-msgstr "證書 %{name} 將於 1 天後過期"
+msgstr "證書 %{name} 將在1天後過期"
 
 #: src/constants/errors/cert.ts:4
 msgid "Certificate decode error"

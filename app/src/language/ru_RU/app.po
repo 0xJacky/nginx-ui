@@ -299,12 +299,14 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr "\"Автоматически проиндексировано из конфигураций сайта и потока.\""
 
 #: src/views/certificate/components/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
+#: src/views/config/ConfigEditor.vue:266
+#: src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:195
+#: src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
 msgid "Back"
-msgstr "Назад"
+msgstr "\"Назад\""
 
 #: src/views/other/Error.vue:22
 msgid "Back Home"
@@ -322,11 +324,12 @@ msgstr "Назад"
 #: src/components/SystemRestore/SystemRestoreContent.vue:155
 msgid "Backup file integrity check failed, it may have been tampered with"
 msgstr ""
+"Проверка целостности файла резервной копии не удалась, возможно, он был "
+"изменён"
 
 #: src/constants/errors/backup.ts:41
-#, fuzzy
 msgid "Backup file not found: {0}"
-msgstr "Файл не найден"
+msgstr "Файл резервной копии не найден: {0}"
 
 #: src/views/system/Backup/BackupCreator.vue:42
 #, fuzzy
@@ -347,7 +350,7 @@ msgstr "Заблокирован до"
 
 #: src/views/preference/components/ExternalNotify/bark.ts:5
 msgid "Bark"
-msgstr ""
+msgstr "Bark"
 
 #: src/views/site/site_add/SiteAdd.vue:79
 msgid "Base information"
@@ -389,7 +392,7 @@ msgstr "Ниже приведены выбранные элементы, кот�
 
 #: src/constants/errors/nginx.ts:2
 msgid "Block is nil"
-msgstr ""
+msgstr "Блок равен nil"
 
 #: src/views/system/About.vue:55
 msgid "Build with"
@@ -397,32 +400,34 @@ msgstr "Собрать с"
 
 #: src/views/certificate/ACMEUser.vue:37
 msgid "CA Dir"
-msgstr "Директория корневого сертификата"
+msgstr "\"Каталог CA\""
 
 #: src/views/dashboard/components/ParamsOptimization.vue:124
 msgid "Cache"
-msgstr ""
+msgstr "Кэш"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:178
 msgid "Cache items not accessed within this time will be removed"
 msgstr ""
+"Элементы кэша, к которым не обращались в течение этого времени, будут "
+"удалены"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:350
 msgid "Cache loader processing time threshold"
-msgstr ""
+msgstr "Пороговое время обработки загрузчика кэша"
 
 #: src/composables/usePerformanceMetrics.ts:139
 #: src/views/dashboard/components/PerformanceTablesCard.vue:94
 msgid "Cache manager processes"
-msgstr ""
+msgstr "Процессы менеджера кэша"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:288
 msgid "Cache manager processing time threshold"
-msgstr ""
+msgstr "Пороговое время обработки менеджера кэша"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:246
 msgid "Cache Manager Settings"
-msgstr ""
+msgstr "Настройки менеджера кэша"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:124
 #, fuzzy
@@ -432,15 +437,15 @@ msgstr "Путь изменён"
 #: src/composables/usePerformanceMetrics.ts:57
 #: src/views/dashboard/components/ProcessDistributionCard.vue:14
 msgid "Cache Processes"
-msgstr ""
+msgstr "Кэш-процессы"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:137
 msgid "Cache subdirectory levels structure, e.g. 1:2"
-msgstr ""
+msgstr "Структура уровней подкаталогов кэша, например, 1:2"
 
 #: src/views/preference/tabs/CertSettings.vue:19
 msgid "CADir"
-msgstr ""
+msgstr "CADir"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:43
 #: src/views/dashboard/components/PerformanceTablesCard.vue:190
@@ -448,6 +453,8 @@ msgid ""
 "Calculated based on worker_processes * worker_connections. Actual "
 "performance depends on hardware, configuration, and workload"
 msgstr ""
+"Рассчитывается на основе worker_processes * worker_connections. Фактическая "
+"производительность зависит от оборудования, конфигурации и рабочей нагрузки"
 
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/NgxConfigEditor/NgxServer.vue:54
@@ -471,11 +478,11 @@ msgstr "Невозможно изменить пароль начального 
 #: src/components/ConfigHistory/DiffViewer.vue:67
 #: src/components/ConfigHistory/DiffViewer.vue:84
 msgid "Cannot compare: Missing content"
-msgstr ""
+msgstr "Невозможно сравнить: отсутствующий контент"
 
 #: src/views/dashboard/NginxDashBoard.vue:132
 msgid "Cannot get performance data in this state"
-msgstr ""
+msgstr "Не может получить данные о производительности в этом состоянии"
 
 #: src/constants/errors/user.ts:10
 msgid "Cannot remove initial user"
@@ -488,22 +495,21 @@ msgstr "Авто Сертификат"
 
 #: src/constants/errors/cert.ts:3
 msgid "Cert path is not under the nginx conf dir"
-msgstr ""
+msgstr "Путь к сертификату не находится в директории конфигурации nginx"
 
 #: src/components/Notification/notifications.ts:26
-#, fuzzy
 msgid "Certificate %{name} has expired"
-msgstr "Шаблоны конфигурации"
+msgstr "Срок действия сертификата %{name} истёк"
 
 #: src/components/Notification/notifications.ts:30
 #: src/components/Notification/notifications.ts:34
 #: src/components/Notification/notifications.ts:38
 msgid "Certificate %{name} will expire in %{days} days"
-msgstr ""
+msgstr "Сертификат %{name} истечет через %{days} дней"
 
 #: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} will expire in 1 day"
-msgstr ""
+msgstr "Сертификат %{name} истечет через 1 день"
 
 #: src/constants/errors/cert.ts:4
 msgid "Certificate decode error"

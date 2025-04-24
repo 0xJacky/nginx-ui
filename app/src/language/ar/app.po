@@ -58,7 +58,7 @@ msgstr "إجراء"
 #: src/composables/usePerformanceMetrics.ts:84
 #: src/views/dashboard/components/PerformanceTablesCard.vue:43
 msgid "Active connections"
-msgstr "اتصالات نشطة"
+msgstr "الاتصالات النشطة"
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:48
 msgid "Actual worker to configured ratio"
@@ -301,12 +301,14 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr "\"تمت الفهرسة تلقائيًا من تكوينات الموقع والدفق.\""
 
 #: src/views/certificate/components/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
+#: src/views/config/ConfigEditor.vue:266
+#: src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:195
+#: src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
 msgid "Back"
-msgstr "رجوع"
+msgstr "\"رجوع\""
 
 #: src/views/other/Error.vue:22
 msgid "Back Home"
@@ -323,12 +325,11 @@ msgstr "رجوع"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:155
 msgid "Backup file integrity check failed, it may have been tampered with"
-msgstr ""
+msgstr "فشل التحقق من سلامة ملف النسخ الاحتياطي، ربما تم العبث به"
 
 #: src/constants/errors/backup.ts:41
-#, fuzzy
 msgid "Backup file not found: {0}"
-msgstr "لم يتم العثور على الملف"
+msgstr "لم يتم العثور على ملف النسخ الاحتياطي: {0}"
 
 #: src/views/system/Backup/BackupCreator.vue:42
 #, fuzzy
@@ -349,7 +350,7 @@ msgstr "محظور حتى"
 
 #: src/views/preference/components/ExternalNotify/bark.ts:5
 msgid "Bark"
-msgstr ""
+msgstr "Bark"
 
 #: src/views/site/site_add/SiteAdd.vue:79
 msgid "Base information"
@@ -391,7 +392,7 @@ msgstr "فيما يلي العناصر المحددة التي تريد تعدي
 
 #: src/constants/errors/nginx.ts:2
 msgid "Block is nil"
-msgstr ""
+msgstr "الكتلة فارغة"
 
 #: src/views/system/About.vue:55
 msgid "Build with"
@@ -399,32 +400,32 @@ msgstr "بناء مع"
 
 #: src/views/certificate/ACMEUser.vue:37
 msgid "CA Dir"
-msgstr "مجلد سلطة التصديق"
+msgstr "\"دليل CA\""
 
 #: src/views/dashboard/components/ParamsOptimization.vue:124
 msgid "Cache"
-msgstr ""
+msgstr "ذاكرة التخزين المؤقت"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:178
 msgid "Cache items not accessed within this time will be removed"
-msgstr ""
+msgstr "سيتم إزالة عناصر الذاكرة المؤقتة التي لم يتم الوصول إليها خلال هذا الوقت"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:350
 msgid "Cache loader processing time threshold"
-msgstr ""
+msgstr "عتبة وقت معالجة محمل الذاكرة المؤقتة"
 
 #: src/composables/usePerformanceMetrics.ts:139
 #: src/views/dashboard/components/PerformanceTablesCard.vue:94
 msgid "Cache manager processes"
-msgstr ""
+msgstr "عمليات مدير الذاكرة المؤقتة"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:288
 msgid "Cache manager processing time threshold"
-msgstr ""
+msgstr "عتبة وقت معالجة مدير الذاكرة المؤقتة"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:246
 msgid "Cache Manager Settings"
-msgstr ""
+msgstr "إعدادات مدير الذاكرة المؤقتة"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:124
 #, fuzzy
@@ -434,15 +435,15 @@ msgstr "المسار المتغير"
 #: src/composables/usePerformanceMetrics.ts:57
 #: src/views/dashboard/components/ProcessDistributionCard.vue:14
 msgid "Cache Processes"
-msgstr ""
+msgstr "عمليات التخزين المؤقت"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:137
 msgid "Cache subdirectory levels structure, e.g. 1:2"
-msgstr ""
+msgstr "هيكل مستويات المجلدات الفرعية للذاكرة المؤقتة، على سبيل المثال 1:2"
 
 #: src/views/preference/tabs/CertSettings.vue:19
 msgid "CADir"
-msgstr "مجلد سلطة التصديق"
+msgstr "CADir"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:43
 #: src/views/dashboard/components/PerformanceTablesCard.vue:190
@@ -450,6 +451,8 @@ msgid ""
 "Calculated based on worker_processes * worker_connections. Actual "
 "performance depends on hardware, configuration, and workload"
 msgstr ""
+"يتم الحساب بناءً على worker_processes * worker_connections. يعتمد الأداء "
+"الفعلي على الأجهزة والتكوين وحجم العمل"
 
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/NgxConfigEditor/NgxServer.vue:54
@@ -474,11 +477,11 @@ msgstr "حظر تغيير كلمة مرور root في العرض التوضيح�
 #: src/components/ConfigHistory/DiffViewer.vue:67
 #: src/components/ConfigHistory/DiffViewer.vue:84
 msgid "Cannot compare: Missing content"
-msgstr ""
+msgstr "لا يمكن المقارنة: المحتوى المفقود"
 
 #: src/views/dashboard/NginxDashBoard.vue:132
 msgid "Cannot get performance data in this state"
-msgstr ""
+msgstr "لا يمكن الحصول على بيانات الأداء في هذه الحالة"
 
 #: src/constants/errors/user.ts:10
 #, fuzzy
@@ -491,22 +494,21 @@ msgstr "شهادة"
 
 #: src/constants/errors/cert.ts:3
 msgid "Cert path is not under the nginx conf dir"
-msgstr ""
+msgstr "مسار الشهادة ليس ضمن دليل تكوين nginx"
 
 #: src/components/Notification/notifications.ts:26
-#, fuzzy
 msgid "Certificate %{name} has expired"
-msgstr "نماذج التكوين"
+msgstr "انتهت صلاحية الشهادة %{name}"
 
 #: src/components/Notification/notifications.ts:30
 #: src/components/Notification/notifications.ts:34
 #: src/components/Notification/notifications.ts:38
 msgid "Certificate %{name} will expire in %{days} days"
-msgstr ""
+msgstr "شهادة %{name} ستنتهي خلال %{days} يومًا"
 
 #: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} will expire in 1 day"
-msgstr ""
+msgstr "ستنتهي صلاحية الشهادة %{name} خلال يوم واحد"
 
 #: src/constants/errors/cert.ts:4
 #, fuzzy

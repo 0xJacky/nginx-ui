@@ -281,7 +281,7 @@ msgstr "S'authentifier avec une clé d'accès"
 
 #: src/views/preference/tabs/AuthSettings.vue:88
 msgid "Authentication Settings"
-msgstr "Options d'authentification"
+msgstr "Paramètres d'authentification"
 
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:71
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:97
@@ -318,12 +318,14 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr "\"Indexé automatiquement à partir des configurations de site et de flux.\""
 
 #: src/views/certificate/components/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
+#: src/views/config/ConfigEditor.vue:266
+#: src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:195
+#: src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
 msgid "Back"
-msgstr "Retour"
+msgstr "\"Retour\""
 
 #: src/views/other/Error.vue:22
 msgid "Back Home"
@@ -341,11 +343,12 @@ msgstr "Retour"
 #: src/components/SystemRestore/SystemRestoreContent.vue:155
 msgid "Backup file integrity check failed, it may have been tampered with"
 msgstr ""
+"La vérification de l'intégrité du fichier de sauvegarde a échoué, il a "
+"peut-être été falsifié"
 
 #: src/constants/errors/backup.ts:41
-#, fuzzy
 msgid "Backup file not found: {0}"
-msgstr "Fichier introuvable"
+msgstr "Fichier de sauvegarde introuvable : {0}"
 
 #: src/views/system/Backup/BackupCreator.vue:42
 #, fuzzy
@@ -354,7 +357,7 @@ msgstr "Nginx a été rechargé avec succès"
 
 #: src/views/preference/tabs/AuthSettings.vue:129
 msgid "Ban Threshold Minutes"
-msgstr ""
+msgstr "Minutes seuil de bannissement"
 
 #: src/views/preference/tabs/AuthSettings.vue:150
 msgid "Banned IPs"
@@ -366,7 +369,7 @@ msgstr "Banni durant"
 
 #: src/views/preference/components/ExternalNotify/bark.ts:5
 msgid "Bark"
-msgstr ""
+msgstr "Bark"
 
 #: src/views/site/site_add/SiteAdd.vue:79
 msgid "Base information"
@@ -410,7 +413,7 @@ msgstr "Ci-dessous sont sélectionnés les éléments que vous voulez modifier e
 
 #: src/constants/errors/nginx.ts:2
 msgid "Block is nil"
-msgstr ""
+msgstr "Le bloc est nul"
 
 #: src/views/system/About.vue:55
 msgid "Build with"
@@ -418,32 +421,32 @@ msgstr "Build avec"
 
 #: src/views/certificate/ACMEUser.vue:37
 msgid "CA Dir"
-msgstr ""
+msgstr "\"Répertoire CA\""
 
 #: src/views/dashboard/components/ParamsOptimization.vue:124
 msgid "Cache"
-msgstr ""
+msgstr "Cache"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:178
 msgid "Cache items not accessed within this time will be removed"
-msgstr ""
+msgstr "Les éléments du cache non consultés pendant cette période seront supprimés"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:350
 msgid "Cache loader processing time threshold"
-msgstr ""
+msgstr "Seuil de temps de traitement du chargeur de cache"
 
 #: src/composables/usePerformanceMetrics.ts:139
 #: src/views/dashboard/components/PerformanceTablesCard.vue:94
 msgid "Cache manager processes"
-msgstr ""
+msgstr "Processus de gestion du cache"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:288
 msgid "Cache manager processing time threshold"
-msgstr ""
+msgstr "Seuil de temps de traitement du gestionnaire de cache"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:246
 msgid "Cache Manager Settings"
-msgstr ""
+msgstr "Paramètres du gestionnaire de cache"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:124
 #, fuzzy
@@ -453,15 +456,15 @@ msgstr "Changer de certificat"
 #: src/composables/usePerformanceMetrics.ts:57
 #: src/views/dashboard/components/ProcessDistributionCard.vue:14
 msgid "Cache Processes"
-msgstr ""
+msgstr "Processus de cache"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:137
 msgid "Cache subdirectory levels structure, e.g. 1:2"
-msgstr ""
+msgstr "Structure des niveaux de sous-répertoires du cache, par ex. 1:2"
 
 #: src/views/preference/tabs/CertSettings.vue:19
 msgid "CADir"
-msgstr ""
+msgstr "CADir"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:43
 #: src/views/dashboard/components/PerformanceTablesCard.vue:190
@@ -469,6 +472,9 @@ msgid ""
 "Calculated based on worker_processes * worker_connections. Actual "
 "performance depends on hardware, configuration, and workload"
 msgstr ""
+"Calculé sur la base de worker_processes * worker_connections. Les "
+"performances réelles dépendent du matériel, de la configuration et de la "
+"charge de travail"
 
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/NgxConfigEditor/NgxServer.vue:54
@@ -493,11 +499,11 @@ msgstr "Interdire la modification du mot de passe root dans la démo"
 #: src/components/ConfigHistory/DiffViewer.vue:67
 #: src/components/ConfigHistory/DiffViewer.vue:84
 msgid "Cannot compare: Missing content"
-msgstr ""
+msgstr "Impossible de comparer: contenu manquant"
 
 #: src/views/dashboard/NginxDashBoard.vue:132
 msgid "Cannot get performance data in this state"
-msgstr ""
+msgstr "Impossible d'obtenir des données de performance dans cet état"
 
 #: src/constants/errors/user.ts:10
 msgid "Cannot remove initial user"
@@ -513,19 +519,18 @@ msgid "Cert path is not under the nginx conf dir"
 msgstr "Le chemin du certificat n'est pas dans le dossier conf de nginx"
 
 #: src/components/Notification/notifications.ts:26
-#, fuzzy
 msgid "Certificate %{name} has expired"
-msgstr "Modèles de configuration"
+msgstr "Le certificat %{name} a expiré"
 
 #: src/components/Notification/notifications.ts:30
 #: src/components/Notification/notifications.ts:34
 #: src/components/Notification/notifications.ts:38
 msgid "Certificate %{name} will expire in %{days} days"
-msgstr ""
+msgstr "Le certificat %{name} expirera dans %{days} jours"
 
 #: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} will expire in 1 day"
-msgstr ""
+msgstr "Le certificat %{name} expirera dans 1 jour"
 
 #: src/constants/errors/cert.ts:4
 #, fuzzy

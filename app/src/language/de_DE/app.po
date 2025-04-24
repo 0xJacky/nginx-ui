@@ -314,12 +314,14 @@ msgid "Automatically indexed from site and stream configurations."
 msgstr "\"Automatisch aus Site- und Stream-Konfigurationen indiziert.\""
 
 #: src/views/certificate/components/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:173
+#: src/views/config/ConfigEditor.vue:266
+#: src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigList.vue:195
+#: src/views/nginx_log/NginxLog.vue:173
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
 msgid "Back"
-msgstr "Zurück"
+msgstr "\"Zurück\""
 
 #: src/views/other/Error.vue:22
 #, fuzzy
@@ -338,11 +340,12 @@ msgstr "Zurück"
 #: src/components/SystemRestore/SystemRestoreContent.vue:155
 msgid "Backup file integrity check failed, it may have been tampered with"
 msgstr ""
+"Die Integritätsprüfung der Sicherungsdatei ist fehlgeschlagen, sie könnte "
+"manipuliert worden sein"
 
 #: src/constants/errors/backup.ts:41
-#, fuzzy
 msgid "Backup file not found: {0}"
-msgstr "File Not Found"
+msgstr "Sicherungsdatei nicht gefunden: {0}"
 
 #: src/views/system/Backup/BackupCreator.vue:42
 #, fuzzy
@@ -363,7 +366,7 @@ msgstr "Gesperrt bis"
 
 #: src/views/preference/components/ExternalNotify/bark.ts:5
 msgid "Bark"
-msgstr ""
+msgstr "Bark"
 
 #: src/views/site/site_add/SiteAdd.vue:79
 msgid "Base information"
@@ -407,7 +410,7 @@ msgstr "Hier sind die ausgewählten Elemente, die Sie stapelweise ändern möcht
 
 #: src/constants/errors/nginx.ts:2
 msgid "Block is nil"
-msgstr ""
+msgstr "Block ist nil"
 
 #: src/views/system/About.vue:55
 msgid "Build with"
@@ -415,32 +418,34 @@ msgstr "Build mit"
 
 #: src/views/certificate/ACMEUser.vue:37
 msgid "CA Dir"
-msgstr "CA-Verzeichnis"
+msgstr "\"CA-Verzeichnis\""
 
 #: src/views/dashboard/components/ParamsOptimization.vue:124
 msgid "Cache"
-msgstr ""
+msgstr "Cache"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:178
 msgid "Cache items not accessed within this time will be removed"
 msgstr ""
+"Cache-Elemente, die innerhalb dieser Zeit nicht aufgerufen wurden, werden "
+"entfernt"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:350
 msgid "Cache loader processing time threshold"
-msgstr ""
+msgstr "Schwellenwert für die Verarbeitungszeit des Cache-Loaders"
 
 #: src/composables/usePerformanceMetrics.ts:139
 #: src/views/dashboard/components/PerformanceTablesCard.vue:94
 msgid "Cache manager processes"
-msgstr ""
+msgstr "Cache-Manager-Prozesse"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:288
 msgid "Cache manager processing time threshold"
-msgstr ""
+msgstr "Verarbeitungszeitgrenzwert des Cache-Managers"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:246
 msgid "Cache Manager Settings"
-msgstr ""
+msgstr "Cache-Manager-Einstellungen"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:124
 #, fuzzy
@@ -450,15 +455,15 @@ msgstr "Zertifikat ist gültig"
 #: src/composables/usePerformanceMetrics.ts:57
 #: src/views/dashboard/components/ProcessDistributionCard.vue:14
 msgid "Cache Processes"
-msgstr ""
+msgstr "Cache-Prozesse"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:137
 msgid "Cache subdirectory levels structure, e.g. 1:2"
-msgstr ""
+msgstr "Struktur der Cache-Unterverzeichnisebenen, z.B. 1:2"
 
 #: src/views/preference/tabs/CertSettings.vue:19
 msgid "CADir"
-msgstr "CA-Verzeichnis"
+msgstr "CADir"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:43
 #: src/views/dashboard/components/PerformanceTablesCard.vue:190
@@ -466,6 +471,8 @@ msgid ""
 "Calculated based on worker_processes * worker_connections. Actual "
 "performance depends on hardware, configuration, and workload"
 msgstr ""
+"Berechnet basierend auf worker_processes * worker_connections. Die "
+"tatsächliche Leistung hängt von Hardware, Konfiguration und Arbeitslast ab"
 
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/NgxConfigEditor/NgxServer.vue:54
@@ -490,11 +497,11 @@ msgstr "Verhindere das Ändern des Root-Passworts in der Demo"
 #: src/components/ConfigHistory/DiffViewer.vue:67
 #: src/components/ConfigHistory/DiffViewer.vue:84
 msgid "Cannot compare: Missing content"
-msgstr ""
+msgstr "Kann nicht vergleichen: Fehlende Inhalte"
 
 #: src/views/dashboard/NginxDashBoard.vue:132
 msgid "Cannot get performance data in this state"
-msgstr ""
+msgstr "In diesem Zustand können Leistungsdaten nicht erhalten"
 
 #: src/constants/errors/user.ts:10
 #, fuzzy
@@ -507,22 +514,21 @@ msgstr "Zertifikat"
 
 #: src/constants/errors/cert.ts:3
 msgid "Cert path is not under the nginx conf dir"
-msgstr ""
+msgstr "Der Zertifikatspfad liegt nicht im nginx-Konfigurationsverzeichnis"
 
 #: src/components/Notification/notifications.ts:26
-#, fuzzy
 msgid "Certificate %{name} has expired"
-msgstr "Konfigurationen"
+msgstr "Das Zertifikat %{name} ist abgelaufen"
 
 #: src/components/Notification/notifications.ts:30
 #: src/components/Notification/notifications.ts:34
 #: src/components/Notification/notifications.ts:38
 msgid "Certificate %{name} will expire in %{days} days"
-msgstr ""
+msgstr "Das Zertifikat %{name} läuft in %{days} Tagen ab"
 
 #: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} will expire in 1 day"
-msgstr ""
+msgstr "Das Zertifikat %{name} läuft in 1 Tag ab"
 
 #: src/constants/errors/cert.ts:4
 #, fuzzy
