@@ -50,6 +50,11 @@ func init() {
 
 // InitScanner initializes the config scanner
 func InitScanner() {
+	if nginx.GetConfPath() == "" {
+		logger.Error("Nginx config path is not set")
+		return
+	}
+
 	s := GetScanner()
 	err := s.Initialize()
 	if err != nil {
@@ -154,11 +159,11 @@ func (s *Scanner) Initialize() error {
 	}
 
 	// Setup watcher for config directory
-	configDir := filepath.Dir(nginx.GetConfPath("", ""))
-	availableDir := nginx.GetConfPath("sites-available", "")
-	enabledDir := nginx.GetConfPath("sites-enabled", "")
-	streamAvailableDir := nginx.GetConfPath("stream-available", "")
-	streamEnabledDir := nginx.GetConfPath("stream-enabled", "")
+	configDir := filepath.Dir(nginx.GetConfPath())
+	availableDir := nginx.GetConfPath("sites-available")
+	enabledDir := nginx.GetConfPath("sites-enabled")
+	streamAvailableDir := nginx.GetConfPath("stream-available")
+	streamEnabledDir := nginx.GetConfPath("stream-enabled")
 
 	// Watch the main directories
 	err = s.watcher.Add(configDir)
