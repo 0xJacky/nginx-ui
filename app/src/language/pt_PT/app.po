@@ -4,10 +4,10 @@ msgid ""
 msgstr ""
 "PO-Revision-Date: 2024-08-12 17:09+0000\n"
 "Last-Translator: Kleiser Sarifo <kleiser.sarifo@gmail.com>\n"
-"Language-Team: Portuguese (Portugal) <https://weblate.nginxui.com/projects/"
-"nginx-ui/frontend/pt_PT/>\n"
+"Language-Team: Portuguese (Portugal) "
+"<https://weblate.nginxui.com/projects/nginx-ui/frontend/pt_PT/>\n"
 "Language: pt_PT\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 5.6.2\n"
@@ -107,13 +107,13 @@ msgstr "Documento da API"
 msgid "API Proxy"
 msgstr "API Proxy"
 
-#: src/views/preference/OpenAISettings.vue:68
+#: src/views/preference/tabs/OpenAISettings.vue:58
 msgid "API Token"
-msgstr "API Token"
+msgstr "Token da API"
 
-#: src/views/system/Upgrade.vue:178
+#: src/views/system/Upgrade.vue:176
 msgid "Arch"
-msgstr "Arch"
+msgstr "\"Arquitetura\""
 
 #: src/views/preference/AuthSettings.vue:96
 msgid "Are you sure to delete this banned IP immediately?"
@@ -456,7 +456,9 @@ msgid "Custom"
 msgstr "Personalizado"
 
 #: src/views/preference/BasicSettings.vue:121
-msgid "Customize the name of local server to be displayed in the environment indicator."
+msgid ""
+"Customize the name of local server to be displayed in the environment "
+"indicator."
 msgstr ""
 "Personalize o nome do servidor local a ser apresentado no indicador de "
 "ambiente."
@@ -645,8 +647,7 @@ msgstr "Configuração de Domínio criado com Sucesso"
 
 #: src/views/certificate/CertificateEditor.vue:106
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
-msgstr ""
-"A lista de domínios está vazia, tente reabrir o Auto Cert para %{config}"
+msgstr "A lista de domínios está vazia, tente reabrir o Auto Cert para %{config}"
 
 #: src/language/constants.ts:26
 msgid "Download latest release error"
@@ -849,8 +850,7 @@ msgstr "Busca de informação do certificado falhou"
 #: src/views/domain/DomainEdit.vue:127
 #: src/views/stream/StreamEdit.vue:122
 msgid "Failed to save, syntax error(s) was detected in the configuration."
-msgstr ""
-"Falha ao salvar, erro(s) de sintaxe detectados no ficheiro de configuração."
+msgstr "Falha ao salvar, erro(s) de sintaxe detectados no ficheiro de configuração."
 
 #: src/views/config/configColumns.ts:24
 msgid "File"
@@ -948,20 +948,26 @@ msgid "If left blank, the default CA Dir will be used."
 msgstr "Se for deixado em branco, será utilizado o diretório CA padrão."
 
 #: src/views/preference/AuthSettings.vue:62
-msgid "If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes, the ip will be banned for a period of time."
+msgid ""
+"If the number of login failed attempts from a ip reach the max attempts in "
+"ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
 "Se o número de tentativas de início de sessão falhadas de um IP atingir o "
-"máximo de tentativas em minutos de limite de banimento, o IP será banido por "
-"um período de tempo."
+"máximo de tentativas em minutos de limite de banimento, o IP será banido "
+"por um período de tempo."
 
 #: src/views/preference/components/TOTP.vue:108
-msgid "If you lose your mobile phone, you can use the recovery code to reset your 2FA."
+msgid ""
+"If you lose your mobile phone, you can use the recovery code to reset your "
+"2FA."
 msgstr ""
 "Se perder o seu telemóvel, pode utilizar o código de recuperação para repor "
 "o seu 2FA."
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:109
-msgid "If your domain has CNAME records and you cannot obtain certificates, you need to enable this option."
+msgid ""
+"If your domain has CNAME records and you cannot obtain certificates, you "
+"need to enable this option."
 msgstr ""
 "Se o seu domínio tiver registos CNAME e não conseguir obter certificados, "
 "terá de ativar esta opção."
@@ -1146,7 +1152,13 @@ msgid "Logrotate"
 msgstr "Logrotate"
 
 #: src/views/preference/LogrotateSettings.vue:12
-msgid "Logrotate, by default, is enabled in most mainstream Linux distributions for users who install Nginx UI on the host machine, so you don't need to modify the parameters on this page. For users who install Nginx UI using Docker containers, you can manually enable this option. The crontab task scheduler of Nginx UI will execute the logrotate command at the interval you set in minutes."
+msgid ""
+"Logrotate, by default, is enabled in most mainstream Linux distributions "
+"for users who install Nginx UI on the host machine, so you don't need to "
+"modify the parameters on this page. For users who install Nginx UI using "
+"Docker containers, you can manually enable this option. The crontab task "
+"scheduler of Nginx UI will execute the logrotate command at the interval "
+"you set in minutes."
 msgstr ""
 "O Logrotate, por defeito, está activado na maioria das distribuições Linux "
 "convencionais para utilizadores que instalam o Nginx UI na máquina host, "
@@ -1156,7 +1168,9 @@ msgstr ""
 "executará o comando logrotate no intervalo que definir em minutos."
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:54
-msgid "Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort before obtaining the certificate."
+msgid ""
+"Make sure you have configured a reverse proxy for .well-known directory to "
+"HTTPChallengePort before obtaining the certificate."
 msgstr ""
 "Certifique-se de que configurou um proxy reverso do diretório .well-known "
 "para HTTPChallengePort antes de obter o certificado."
@@ -1377,7 +1391,9 @@ msgid "OCSP Must Staple"
 msgstr "OCSP Must Staple"
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:100
-msgid "OCSP Must Staple may cause errors for some users on first access using Firefox."
+msgid ""
+"OCSP Must Staple may cause errors for some users on first access using "
+"Firefox."
 msgstr ""
 "OCSP Must Staple pode causar erros para alguns utilizadores no primeiro "
 "acesso usando o Firefox."
@@ -1488,7 +1504,9 @@ msgid "Please enter the 2FA code:"
 msgstr "Introduza o código 2FA:"
 
 #: src/views/certificate/DNSCredential.vue:53
-msgid "Please fill in the API authentication credentials provided by your DNS provider."
+msgid ""
+"Please fill in the API authentication credentials provided by your DNS "
+"provider."
 msgstr ""
 "Preencha as credenciais de autenticação da API fornecidas pelo seu "
 "fornecedor de DNS."
@@ -1498,7 +1516,9 @@ msgid "Please fill in the required fields"
 msgstr "Por favor preencha os campos obrigatórios"
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:58
-msgid "Please first add credentials in Certification > DNS Credentials, and then select one of the credentialsbelow to request the API of the DNS provider."
+msgid ""
+"Please first add credentials in Certification > DNS Credentials, and then "
+"select one of the credentialsbelow to request the API of the DNS provider."
 msgstr ""
 "Primeiro adicione as credenciais em Certificação > Credenciais DNS e "
 "selecione uma das credenciais abaixo para solicitar a API do fornecedor DNS."
@@ -1514,7 +1534,9 @@ msgstr "Por favor introduza o nome da pasta"
 
 #: src/views/domain/components/SiteDuplicate.vue:38
 #: src/views/stream/components/StreamDuplicate.vue:38
-msgid "Please input name, this will be used as the filename of the new configuration!"
+msgid ""
+"Please input name, this will be used as the filename of the new "
+"configuration!"
 msgstr ""
 "Por favor insira o nome, este será utilizado como nome do ficheiro da nova "
 "configuração!"
@@ -1535,8 +1557,7 @@ msgstr "Por favor introduza o seu nome de utilizador!"
 
 #: src/views/certificate/DNSCredential.vue:62
 msgid "Please note that the unit of time configurations below are all in seconds."
-msgstr ""
-"Note que as definições da unidade de tempo abaixo estão todas em segundos."
+msgstr "Note que as definições da unidade de tempo abaixo estão todas em segundos."
 
 #: src/views/domain/components/SiteDuplicate.vue:45
 #: src/views/stream/components/StreamDuplicate.vue:45
@@ -1674,7 +1695,9 @@ msgid "Rename"
 msgstr "Renomear"
 
 #: src/components/Notification/config.ts:31
-msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade the remote Nginx UI to the latest version"
+msgid ""
+"Rename %{orig_path} to %{new_path} on %{env_name} failed, please upgrade "
+"the remote Nginx UI to the latest version"
 msgstr ""
 "Erro ao mudar o nome de %{orig_path} para %{new_path} no %{env_name}, por "
 "favor actualize a versão do Nginx UI para a mais recente"
@@ -1844,7 +1867,9 @@ msgid "server_name parameter is required"
 msgstr "Parâmetro server_name é obrigatório"
 
 #: src/views/preference/BasicSettings.vue:64
-msgid "Set the recursive nameservers to override the systems nameservers for the step of DNS challenge."
+msgid ""
+"Set the recursive nameservers to override the systems nameservers for the "
+"step of DNS challenge."
 msgstr ""
 "Configure os nameservers recursivos para substituir os nameservers dos "
 "sistemas na etapa de DNS challenge."
@@ -1948,21 +1973,22 @@ msgid "Sync Certificate"
 msgstr "Sincronizar Certificado"
 
 #: src/components/Notification/cert.ts:12
-msgid "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the remote Nginx UI to the latest version"
+msgid ""
+"Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
+"remote Nginx UI to the latest version"
 msgstr ""
-"Sincronização do Certificado %{cert_name} para %{env_name} falhou, por favor "
-"actualize a versão remota do Nginx UI para a última versão"
+"Sincronização do Certificado %{cert_name} para %{env_name} falhou, por "
+"favor actualize a versão remota do Nginx UI para a última versão"
 
 #: src/components/Notification/cert.ts:16
 msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 msgstr ""
-"Sincronização do Certificado %{cert_name} para %{env_name} falhou, resposta: "
-"%{resp}"
+"Sincronização do Certificado %{cert_name} para %{env_name} falhou, "
+"resposta: %{resp}"
 
 #: src/components/Notification/cert.ts:4
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
-msgstr ""
-"Sincronização do Certificado %{cert_name} para %{env_name} feito com sucesso"
+msgstr "Sincronização do Certificado %{cert_name} para %{env_name} feito com sucesso"
 
 #: src/language/constants.ts:38
 msgid "Sync Certificate Error"
@@ -1973,7 +1999,9 @@ msgid "Sync Certificate Success"
 msgstr "Certificado Sincronizado com Sucesso"
 
 #: src/components/Notification/config.ts:12
-msgid "Sync config %{cert_name} to %{env_name} failed, please upgrade the remote Nginx UI to the latest version"
+msgid ""
+"Sync config %{cert_name} to %{env_name} failed, please upgrade the remote "
+"Nginx UI to the latest version"
 msgstr ""
 "Sincronização de configurações %{cert_name} para %{env_name} falhou, por "
 "favor actualize a versão remota do Nginx UI para a mais recente"
@@ -2025,11 +2053,14 @@ msgid "Terminal Start Command"
 msgstr "Comando de Inicialização do Terminal"
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:50
-msgid "The certificate for the domain will be checked 30 minutes, and will be renewed if it has been more than 1 week or the period you set in settings since it was last issued."
+msgid ""
+"The certificate for the domain will be checked 30 minutes, and will be "
+"renewed if it has been more than 1 week or the period you set in settings "
+"since it was last issued."
 msgstr ""
 "O certificado do domínio será verificado 30 minutos e será renovado se já "
-"tiver passado mais de 1 semana ou o período que definiu nas definições desde "
-"a última emissão."
+"tiver passado mais de 1 semana ou o período que definiu nas definições "
+"desde a última emissão."
 
 #: src/views/other/Install.vue:50
 msgid "The filename cannot contain the following characters: %{c}"
@@ -2044,7 +2075,9 @@ msgid "The input is not a SSL Certificate Key"
 msgstr "O valor introduzido não é uma Chave de Certificado SSL"
 
 #: src/views/preference/OpenAISettings.vue:35
-msgid "The model name should only contain letters, unicode, numbers, hyphens, dashes, and dots."
+msgid ""
+"The model name should only contain letters, unicode, numbers, hyphens, "
+"dashes, and dots."
 msgstr ""
 "O nome do modelo deve conter apenas letras, unicode, números, hífens, "
 "travessões e pontos."
@@ -2064,20 +2097,27 @@ msgstr ""
 "seguro."
 
 #: src/views/dashboard/Environments.vue:148
-msgid "The remote Nginx UI version is not compatible with the local Nginx UI version. To avoid potential errors, please upgrade the remote Nginx UI to match the local version."
+msgid ""
+"The remote Nginx UI version is not compatible with the local Nginx UI "
+"version. To avoid potential errors, please upgrade the remote Nginx UI to "
+"match the local version."
 msgstr ""
-"A versão remota do Nginx UI não é compatível com a versão local do Nginx UI. "
-"Para evitar possíveis erros, atualize a versão remota do Nginx UI para "
+"A versão remota do Nginx UI não é compatível com a versão local do Nginx "
+"UI. Para evitar possíveis erros, atualize a versão remota do Nginx UI para "
 "corresponder à versão local."
 
 #: src/views/preference/BasicSettings.vue:120
-msgid "The server name should only contain letters, unicode, numbers, hyphens, dashes, and dots."
+msgid ""
+"The server name should only contain letters, unicode, numbers, hyphens, "
+"dashes, and dots."
 msgstr ""
 "O nome do servidor deve conter apenas letras, unicode, números, hífens, "
 "travessões e pontos."
 
 #: src/views/domain/cert/components/AutoCertStepOne.vue:45
-msgid "The server_name in the current configuration must be the domain name you need to get the certificate, supportmultiple domains."
+msgid ""
+"The server_name in the current configuration must be the domain name you "
+"need to get the certificate, supportmultiple domains."
 msgstr ""
 "O server_name na configuração atual deve ser o nome de domínio necessário "
 "para obter o certificado, com suporte para vários domínios."
@@ -2117,7 +2157,8 @@ msgstr "Este campo não pode estar vazio"
 #: src/views/environment/BatchUpgrader.vue:184
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
-"Isto vai actualizar ou reinstalar o Nginx UI em %{nodeNames} para %{version}."
+"Isto vai actualizar ou reinstalar o Nginx UI em %{nodeNames} para "
+"%{version}."
 
 #: src/views/preference/AuthSettings.vue:61
 #: src/views/preference/LogrotateSettings.vue:11
@@ -2129,13 +2170,19 @@ msgid "Title"
 msgstr "Título"
 
 #: src/views/preference/components/TOTP.vue:90
-msgid "To enable it, you need to install the Google or Microsoft Authenticator app on your mobile phone."
+msgid ""
+"To enable it, you need to install the Google or Microsoft Authenticator app "
+"on your mobile phone."
 msgstr ""
 "Para habilitar, tem de instalar a app Google ou Microsoft Authenticator no "
 "seu telemóvel."
 
 #: src/views/domain/ngx_conf/NgxConfigEditor.vue:44
-msgid "To make sure the certification auto-renewal can work normally, we need to add a location which can proxy the request from authority to backend, and we need to save this file and reload the Nginx. Are you sure you want to continue?"
+msgid ""
+"To make sure the certification auto-renewal can work normally, we need to "
+"add a location which can proxy the request from authority to backend, and "
+"we need to save this file and reload the Nginx. Are you sure you want to "
+"continue?"
 msgstr ""
 "Para garantir que a renovação automática da certificação funciona "
 "normalmente, precisamos de adicionar um local que possa fazer proxy do "
@@ -2151,7 +2198,9 @@ msgid "Too many login failed attempts, please try again later"
 msgstr "Muitas tentativas de login falharam, por favor tente mais tarde"
 
 #: src/views/preference/components/TOTP.vue:89
-msgid "TOTP is a two-factor authentication method that uses a time-based one-time password algorithm."
+msgid ""
+"TOTP is a two-factor authentication method that uses a time-based one-time "
+"password algorithm."
 msgstr ""
 "O TOTP é um método de autenticação de dois fatores que utiliza um algoritmo "
 "de palavra-passe única baseado no tempo."
@@ -2279,13 +2328,17 @@ msgid "Warning"
 msgstr "Aviso"
 
 #: src/views/certificate/DNSCredential.vue:56
-msgid "We will add one or more TXT records to the DNS records of your domain for ownership verification."
+msgid ""
+"We will add one or more TXT records to the DNS records of your domain for "
+"ownership verification."
 msgstr ""
 "Adicionaremos um ou mais registos TXT aos registos DNS do seu domínio para "
 "verificação de propriedade."
 
 #: src/views/domain/cert/components/ObtainCert.vue:134
-msgid "We will remove the HTTPChallenge configuration from this file and reload the Nginx. Are you sure you want to continue?"
+msgid ""
+"We will remove the HTTPChallenge configuration from this file and reload "
+"the Nginx. Are you sure you want to continue?"
 msgstr ""
 "Removeremos a configuração HTTPChallenge deste ficheiro e reiniciaremos o "
 "Nginx. Tem a certeza de que quer continuar?"
