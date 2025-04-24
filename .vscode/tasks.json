@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Start Backend",
+      "label": "[Go] Start Backend",
       "type": "shell",
       "command": "air",
       "isBackground": true,
@@ -12,16 +12,17 @@
       "problemMatcher": []
     },
     {
-      "label": "Start Frontend",
+      "label": "[App] Start Frontend",
       "type": "shell",
       "command": "cd app && pnpm dev",
       "isBackground": true,
       "presentation": {
         "panel": "new"
-      }
+      },
+      "problemMatcher": []
     },
     {
-      "label": "Start Documentation",
+      "label": "[Docs] Start Documentation",
       "type": "shell",
       "command": "cd docs && pnpm docs:dev",
       "isBackground": true,
@@ -31,12 +32,12 @@
       "problemMatcher": []
     },
     {
-      "label": "Start All Services",
+      "label": "[All] Start All Services",
       "dependsOrder": "parallel",
       "dependsOn": [
-        "Start Backend",
-        "Start Frontend",
-        "Start Documentation"
+        "[Go] Start Backend",
+        "[App] Start Frontend",
+        "[Docs] Start Documentation"
       ],
       "group": {
         "kind": "build",
@@ -82,7 +83,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Go Generate",
+      "label": "[Go] Generate",
       "type": "shell",
       "command": "go generate",
       "presentation": {
@@ -91,7 +92,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Bump Version",
+      "label": "[All] Bump Version",
       "type": "shell",
       "command": "./version.sh",
       "presentation": {
