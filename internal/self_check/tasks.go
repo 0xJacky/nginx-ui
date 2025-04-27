@@ -2,60 +2,123 @@ package self_check
 
 import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/translation"
+	"github.com/elliotchance/orderedmap/v3"
 	"github.com/uozi-tech/cosy"
 )
 
 type Task struct {
-	Name      string
-	CheckFunc func() error
-	FixFunc   func() error
+	Key         string
+	Name        *translation.Container
+	Description *translation.Container
+	CheckFunc   func() error
+	FixFunc     func() error
 }
 
+type ReportStatus string
+
+const (
+	ReportStatusSuccess ReportStatus = "success"
+	ReportStatusWarning ReportStatus = "warning"
+	ReportStatusError   ReportStatus = "error"
+)
+
 type Report struct {
-	Name string      `json:"name"`
-	Err  *cosy.Error `json:"err,omitempty"`
+	Name        *translation.Container `json:"name"`
+	Description *translation.Container `json:"description,omitempty"`
+	Fixable     bool                   `json:"fixable"`
+	Err         *cosy.Error            `json:"err,omitempty"`
+	Status      ReportStatus           `json:"status"`
 }
 
 type Reports []*Report
 
 var selfCheckTasks = []*Task{
 	{
-		Name:      "Directory-Sites",
+		Key:  "Directory-Sites",
+		Name: translation.C("Sites directory exists"),
+		Description: translation.C("Check if the " +
+			"sites-available and sites-enabled directories are " +
+			"under the nginx configuration directory"),
 		CheckFunc: CheckSitesDirectory,
 		FixFunc:   FixSitesDirectory,
 	},
 	{
-		Name:      "Directory-Streams",
+		Key:  "Directory-Streams",
+		Name: translation.C("Streams directory exists"),
+		Description: translation.C("Check if the " +
+			"streams-available and streams-enabled directories are " +
+			"under the nginx configuration directory"),
 		CheckFunc: CheckStreamDirectory,
 		FixFunc:   FixStreamDirectory,
 	},
 	{
-		Name:      "NginxConf-Sites-Enabled",
+		Key:  "NginxConf-Sites-Enabled",
+		Name: translation.C("Nginx.conf includes sites-enabled directory"),
+		Description: translation.C("Check if the nginx.conf includes the " +
+			"sites-enabled directory"),
 		CheckFunc: CheckNginxConfIncludeSites,
 		FixFunc:   FixNginxConfIncludeSites,
 	},
 	{
-		Name:      "NginxConf-Streams-Enabled",
+		Key:  "NginxConf-Streams-Enabled",
+		Name: translation.C("Nginx.conf includes streams-enabled directory"),
+		Description: translation.C("Check if the nginx.conf includes the " +
+			"streams-enabled directory"),
 		CheckFunc: CheckNginxConfIncludeStreams,
 		FixFunc:   FixNginxConfIncludeStreams,
 	},
 	{
-		Name:      "NginxConf-ConfD",
+		Key:  "NginxConf-ConfD",
+		Name: translation.C("Nginx.conf includes conf.d directory"),
+		Description: translation.C("Check if the nginx.conf includes the " +
+			"conf.d directory"),
 		CheckFunc: CheckNginxConfIncludeConfD,
 		FixFunc:   FixNginxConfIncludeConfD,
 	},
+	{
+		Key:         "NginxConf-Directory",
+		Name:        translation.C("Nginx configuration directory exists"),
+		Description: translation.C("Check if the nginx configuration directory exists"),
+		CheckFunc:   CheckConfigDir,
+	},
+	{
+		Key:         "NginxConf-Entry-File",
+		Name:        translation.C("Nginx configuration entry file exists"),
+		Description: translation.C("Check if the nginx configuration entry file exists"),
+		CheckFunc:   CheckConfigEntryFile,
+	},
+	{
+		Key:         "NginxPID-Path",
+		Name:        translation.C("Nginx PID path exists"),
+		Description: translation.C("Check if the nginx PID path exists"),
+		CheckFunc:   CheckPIDPath,
+	},
+	{
+		Key:         "NginxAccessLog-Path",
+		Name:        translation.C("Nginx access log path exists"),
+		Description: translation.C("Check if the nginx access log path exists"),
+		CheckFunc:   CheckAccessLogPath,
+	},
+	{
+		Key:         "NginxErrorLog-Path",
+		Name:        translation.C("Nginx error log path exists"),
+		Description: translation.C("Check if the nginx error log path exists"),
+		CheckFunc:   CheckErrorLogPath,
+	},
 }
 
-var selfCheckTaskMap = make(map[string]*Task)
+var selfCheckTaskMap = orderedmap.NewOrderedMap[string, *Task]()
 
 func init() {
 	for _, task := range selfCheckTasks {
-		selfCheckTaskMap[task.Name] = task
+		selfCheckTaskMap.Set(task.Key, task)
 	}
 	if helper.InNginxUIOfficialDocker() {
 		selfCheckTasks = append(selfCheckTasks, &Task{
-			Name:      "Docker-Socket",
-			CheckFunc: CheckDockerSocket,
+			Name:        translation.C("Docker socket exists"),
+			Description: translation.C("Check if the docker socket exists."),
+			CheckFunc:   CheckDockerSocket,
 		})
 	}
 }

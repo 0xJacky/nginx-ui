@@ -11,7 +11,7 @@ const props = defineProps<{
 
 const router = useRouter()
 const selfCheckStore = useSelfCheckStore()
-const { hasError } = storeToRefs(selfCheckStore)
+const { hasError, loading } = storeToRefs(selfCheckStore)
 
 const alertEl = useTemplateRef('alertEl')
 const { width: alertWidth } = useElementSize(alertEl)
@@ -32,7 +32,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-show="hasError">
+  <div v-show="hasError && !loading">
     <div ref="alertEl" class="self-check-alert" :style="{ visibility: shouldHideAlert ? 'hidden' : 'visible' }">
       <AAlert type="error" show-icon :message="$gettext('Self check failed, Nginx UI may not work properly')">
         <template #action>

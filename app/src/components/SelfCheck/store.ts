@@ -1,6 +1,7 @@
 import type { TaskReport } from './tasks'
+import selfCheck, { ReportStatus } from '@/api/self_check'
 import { debounce } from 'lodash'
-import { taskManager } from './tasks'
+import frontendTasks from './tasks/frontend'
 
 export const useSelfCheckStore = defineStore('selfCheck', () => {
   const data = ref<TaskReport[]>([])
@@ -14,7 +15,30 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
 
     loading.value = true
     try {
-      data.value = await taskManager.runAllChecks()
+      const backendReports = (await selfCheck.run()).map(r => {
+        return {
+          key: r.key,
+          name: () => $gettext(r.name.message, r.name.args),
+          description: () => $gettext(r.description.message, r.description.args),
+          type: 'backend' as const,
+          status: r.status,
+          fixable: r.fixable,
+          err: r.err,
+        }
+      })
+      const frontendReports = await Promise.all(
+        Object.entries(frontendTasks).map(async ([key, task]) => {
+          return {
+            key,
+            name: task.name,
+            description: task.description,
+            type: 'frontend' as const,
+            status: await task.check(),
+            fixable: false,
+          }
+        }),
+      )
+      data.value = [...backendReports, ...frontendReports]
     }
     catch (error) {
       console.error(error)
@@ -38,7 +62,8 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
 
     fixing[taskName] = true
     try {
-      await taskManager.fixTask(taskName)
+      await selfCheck.fix(taskName)
+      await nextTick()
       check()
     }
     finally {
@@ -47,7 +72,7 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
   }
 
   const hasError = computed(() => {
-    return requestError.value || data.value?.some(item => item.status === 'error')
+    return requestError.value || data.value?.some(item => item.status === ReportStatus.Error)
   })
 
   return { data, loading, fixing, hasError, check, fix }

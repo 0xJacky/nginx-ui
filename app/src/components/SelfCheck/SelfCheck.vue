@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { CheckCircleOutlined, CloseCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
 import { useSelfCheckStore } from './store'
-import { taskManager } from './tasks'
 
 const store = useSelfCheckStore()
 
@@ -26,22 +25,22 @@ onMounted(() => {
     </template>
     <AList>
       <AListItem v-for="(item, index) in data" :key="index">
-        <template v-if="item.status === 'error'" #actions>
-          <AButton type="link" size="small" :loading="fixing[item.name]" @click="store.fix(item.name)">
+        <template v-if="item.status === 'error' && item.fixable" #actions>
+          <AButton type="link" size="small" :loading="fixing[item.key]" @click="store.fix(item.key)">
             {{ $gettext('Attempt to fix') }}
           </AButton>
         </template>
         <AListItemMeta>
           <template #title>
-            {{ taskManager.getTask(item.name)?.name?.() }}
+            {{ item.name?.() }}
           </template>
           <template #description>
             <div>
-              {{ taskManager.getTask(item.name)?.description?.() }}
+              {{ item.description?.() }}
             </div>
             <div v-if="item.status !== 'success'" class="mt-1">
               <ATag :color="item.status === 'warning' ? 'warning' : 'error'">
-                {{ item.message || item.err?.message || $gettext('Unknown issue') }}
+                {{ item.err?.message || $gettext('Unknown issue') }}
               </ATag>
             </div>
           </template>

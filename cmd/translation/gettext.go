@@ -1,4 +1,4 @@
-// go run .
+//go:generate go run .
 package main
 
 import (
@@ -88,16 +88,16 @@ func findTranslationC(filePath string, calls map[string]bool) {
 		return
 	}
 
-	// Create regex pattern based on the alias
-	pattern := fmt.Sprintf(`%s\.C\(\s*["']([^"']*(?:\\["'][^"']*)*)["']`, alias)
+	// First pre-process the file content to handle multi-line string concatenation
+	// Replace newlines and spaces between string concatenation to make them easier to parse
+	preprocessed := regexp.MustCompile(`"\s*\+\s*(\r?\n)?\s*"`).ReplaceAllString(fileContent, "")
+
+	// Create regex pattern for translation.C calls
+	pattern := fmt.Sprintf(`%s\.C\(\s*"([^"]+)"`, alias)
 	cCallRegex := regexp.MustCompile(pattern)
 
-	// Handle backtick strings separately (multi-line strings)
-	backtickPattern := fmt.Sprintf(`%s\.C\(\s*\x60([^\x60]*)\x60`, alias)
-	backtickRegex := regexp.MustCompile(backtickPattern)
-
-	// Find all matches with regular quotes
-	matches := cCallRegex.FindAllStringSubmatch(fileContent, -1)
+	// Find all matches
+	matches := cCallRegex.FindAllStringSubmatch(preprocessed, -1)
 	for _, match := range matches {
 		if len(match) >= 2 {
 			message := match[1]
@@ -112,6 +112,10 @@ func findTranslationC(filePath string, calls map[string]bool) {
 		}
 	}
 
+	// Handle backtick strings separately (multi-line strings)
+	backtickPattern := fmt.Sprintf(`%s\.C\(\s*\x60([^\x60]*)\x60`, alias)
+	backtickRegex := regexp.MustCompile(backtickPattern)
+
 	// Find all matches with backticks
 	backtickMatches := backtickRegex.FindAllStringSubmatch(fileContent, -1)
 	for _, match := range backtickMatches {
@@ -121,6 +125,61 @@ func findTranslationC(filePath string, calls map[string]bool) {
 			// Add to the map if not already present
 			if _, exists := calls[message]; !exists {
 				calls[message] = true
+			}
+		}
+	}
+
+	// Use a more direct approach to handle multi-line string concatenation
+	// This regex finds translation.C calls with string concatenation
+	// concatPattern := fmt.Sprintf(`%s\.C\(\s*"(.*?)"\s*(?:\+\s*"(.*?)")+\s*\)`, alias)
+	// concatRegex := regexp.MustCompile(concatPattern)
+
+	// We need to handle this specifically by manually parsing the file
+	translationStart := fmt.Sprintf(`%s\.C\(`, alias)
+	lines := strings.Split(fileContent, "\n")
+
+	for i := 0; i < len(lines); i++ {
+		if strings.Contains(lines[i], translationStart) && strings.Contains(lines[i], `"`) && strings.Contains(lines[i], `+`) {
+			// Potential multi-line concatenated string found
+			// startLine := i
+			var concatenatedParts []string
+			currentLine := lines[i]
+
+			// Extract the first part
+			firstPartMatch := regexp.MustCompile(`C\(\s*"([^"]*)"`)
+			fMatches := firstPartMatch.FindStringSubmatch(currentLine)
+			if len(fMatches) >= 2 {
+				concatenatedParts = append(concatenatedParts, fMatches[1])
+			}
+
+			// Look for continuation lines with string parts
+			for j := i + 1; j < len(lines) && j < i+10; j++ { // Limit to 10 lines
+				if strings.Contains(lines[j], `"`) && !strings.Contains(lines[j], translationStart) {
+					// Extract string parts
+					partMatch := regexp.MustCompile(`"([^"]*)"`)
+					pMatches := partMatch.FindAllStringSubmatch(lines[j], -1)
+					for _, pm := range pMatches {
+						if len(pm) >= 2 {
+							concatenatedParts = append(concatenatedParts, pm[1])
+						}
+					}
+
+					// If we find a closing parenthesis, we've reached the end
+					if strings.Contains(lines[j], `)`) {
+						break
+					}
+				} else if !strings.Contains(lines[j], `+`) {
+					// If the line doesn't contain a +, we've likely reached the end
+					break
+				}
+			}
+
+			// Combine all parts
+			if len(concatenatedParts) > 0 {
+				message := strings.Join(concatenatedParts, "")
+				if _, exists := calls[message]; !exists {
+					calls[message] = true
+				}
 			}
 		}
 	}
@@ -184,8 +243,11 @@ func generateSingleTSFile(root string, calls map[string]bool) {
 
 	// Write each translation message
 	for message := range calls {
-		// Escape single quotes in the message for JavaScript
+		// Escape single quotes and handle newlines in the message for JavaScript
 		escapedMessage := strings.ReplaceAll(message, "'", "\\'")
+		// Replace newlines with space to ensure proper formatting in the generated TS file
+		escapedMessage = strings.ReplaceAll(escapedMessage, "\n", " ")
+		escapedMessage = strings.ReplaceAll(escapedMessage, "\r", "")
 		writer.WriteString(fmt.Sprintf("  $gettext('%s'),\n", escapedMessage))
 	}
 

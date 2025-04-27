@@ -5,54 +5,56 @@ msgstr ""
 "Language-Team: none\n"
 "Language: vi_VN\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:47
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
-msgstr "[Nginx UI] Người dùng ACME: %{name}, Email: %{email}, Thư mục CA: %{caDir}"
+msgstr ""
+"[Nginx UI] Người dùng ACME: %{name}, Email: %{email}, Thư mục CA: %{caDir}"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:49
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] Đang sao lưu chứng chỉ hiện tại để thu hồi sau này"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:6
 #, fuzzy
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "Đã xóa thành công"
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:37
 #, fuzzy
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "Restart Nginx thành công"
 
-#: src/language/generate.ts:29
-msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+#: src/language/generate.ts:13
+msgid ""
+"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
-"[Nginx UI] Chứng chỉ đã được sử dụng cho máy chủ, đang tải lại chứng chỉ "
-"TLS của máy chủ"
+"[Nginx UI] Chứng chỉ đã được sử dụng cho máy chủ, đang tải lại chứng chỉ TLS "
+"của máy chủ"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:35
 #, fuzzy
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "Tạo client để giao tiếp với CA server"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:36
 #, fuzzy
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "Đặt biến môi trường"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:28
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] Đã hoàn thành"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:25
 #, fuzzy
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "Cấp chứng chỉ thành công"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:50
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] Đang lấy chứng chỉ"
 
@@ -60,44 +62,44 @@ msgstr "[Nginx UI] Đang lấy chứng chỉ"
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] Chuẩn bị thu hồi chứng chỉ"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:46
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] Đang chuẩn bị cấu hình lego"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:19
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] Đang tải lại nginx"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:14
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] Đã hoàn tất thu hồi"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:4
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] Đang thu hồi chứng chỉ"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:29
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] Đang thu hồi chứng chỉ cũ"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:18
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách DNS01"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:27
 #, fuzzy
 msgid "[Nginx UI] Setting environment variables"
 msgstr "Đặt biến môi trường"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:48
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách HTTP01"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:12
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] Đang ghi khóa riêng của chứng chỉ vào ổ đĩa"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:51
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Đang ghi chứng chỉ vào ổ đĩa"
 
@@ -117,6 +119,10 @@ msgstr "Tác giả"
 #, fuzzy
 msgid "Access Log"
 msgstr "Log truy cập"
+
+#: src/constants/errors/self_check.ts:21
+msgid "Access log path not exist"
+msgstr ""
 
 #: src/components/NgxConfigEditor/LogEntry.vue:90
 #: src/routes/modules/nginx_log.ts:17
@@ -348,7 +354,7 @@ msgstr "Hỏi ChatGPT"
 msgid "Assistant"
 msgstr "Trợ lý"
 
-#: src/components/SelfCheck/SelfCheck.vue:31
+#: src/components/SelfCheck/SelfCheck.vue:30
 msgid "Attempt to fix"
 msgstr "Cố gắng sửa chữa"
 
@@ -427,7 +433,8 @@ msgstr "Quay lại"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:155
 msgid "Backup file integrity check failed, it may have been tampered with"
-msgstr "Kiểm tra tính toàn vẹn của tập tin sao lưu thất bại, có thể đã bị can thiệp"
+msgstr ""
+"Kiểm tra tính toàn vẹn của tập tin sao lưu thất bại, có thể đã bị can thiệp"
 
 #: src/constants/errors/backup.ts:41
 msgid "Backup file not found: {0}"
@@ -632,7 +639,7 @@ msgstr "Chứng chỉ đã hết hạn"
 msgid "Certificate Expiring Soon"
 msgstr "Chứng chỉ sắp hết hạn"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:33
 #, fuzzy
 msgid "Certificate not found: %{error}"
 msgstr "Lỗi giải mã chứng chỉ"
@@ -660,7 +667,7 @@ msgstr "Chứng chỉ SSL hợp lệ"
 msgid "Certificate renewed successfully"
 msgstr "Đã xóa thành công"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:11
 #, fuzzy
 msgid "Certificate revoked successfully"
 msgstr "Đã xóa chứng chỉ thành công"
@@ -726,48 +733,70 @@ msgstr "Kiểm tra lại"
 msgid "Check again"
 msgstr "Kiểm tra lại"
 
-#: src/components/SelfCheck/tasks/backend/index.ts:31
-msgid ""
-"Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v "
-"/var/run/docker.sock:/var/run/docker.sock`."
-msgstr ""
-"Kiểm tra xem /var/run/docker.sock có tồn tại không. Nếu bạn đang sử dụng "
-"Docker Image chính thức của Nginx UI, hãy đảm bảo rằng ổ cắm Docker được "
-"gắn như sau: `-v /var/run/docker.sock:/var/run/docker.sock`."
-
-#: src/components/SelfCheck/tasks/frontend/https-check.ts:11
+#: src/components/SelfCheck/tasks/frontend/https-check.ts:14
+#, fuzzy
 msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
-"prevents using Passkeys and clipboard features."
+"prevents using Passkeys and clipboard features"
 msgstr ""
 "Kiểm tra xem HTTPS đã được bật chưa. Sử dụng HTTP bên ngoài localhost không "
 "an toàn và ngăn chặn việc sử dụng tính năng Passkeys cùng khay nhớ tạm."
 
-#: src/components/SelfCheck/tasks/backend/index.ts:26
-msgid "Check if the nginx.conf includes the conf.d directory."
+#: src/language/generate.ts:40
+msgid "Check if the docker socket exists."
+msgstr ""
+
+#: src/language/generate.ts:20
+msgid "Check if the nginx access log path exists"
+msgstr ""
+
+#: src/language/generate.ts:44
+#, fuzzy
+msgid "Check if the nginx configuration directory exists"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không."
 
-#: src/components/SelfCheck/tasks/backend/index.ts:16
-msgid "Check if the nginx.conf includes the sites-enabled directory."
+#: src/language/generate.ts:9
+#, fuzzy
+msgid "Check if the nginx configuration entry file exists"
+msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không."
+
+#: src/language/generate.ts:32
+msgid "Check if the nginx error log path exists"
+msgstr ""
+
+#: src/language/generate.ts:24
+msgid "Check if the nginx PID path exists"
+msgstr ""
+
+#: src/language/generate.ts:43
+#, fuzzy
+msgid "Check if the nginx.conf includes the conf.d directory"
+msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không."
+
+#: src/language/generate.ts:23
+#, fuzzy
+msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục sites-enabled không."
 
-#: src/components/SelfCheck/tasks/backend/index.ts:21
-msgid "Check if the nginx.conf includes the streams-enabled directory."
+#: src/language/generate.ts:5
+#, fuzzy
+msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục streams-enabled không."
 
-#: src/components/SelfCheck/tasks/backend/index.ts:6
+#: src/language/generate.ts:30
+#, fuzzy
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
-"nginx configuration directory."
+"nginx configuration directory"
 msgstr ""
 "Kiểm tra xem các thư mục sites-available và sites-enabled có nằm trong thư "
 "mục cấu hình nginx hay không."
 
-#: src/components/SelfCheck/tasks/backend/index.ts:11
+#: src/language/generate.ts:38
+#, fuzzy
 msgid ""
-"Check if the streams-available and streams-enabled directories are under "
-"the nginx configuration directory."
+"Check if the streams-available and streams-enabled directories are under the "
+"nginx configuration directory"
 msgstr ""
 "Kiểm tra xem các thư mục streams-available và streams-enabled có nằm trong "
 "thư mục cấu hình nginx hay không."
@@ -869,6 +898,16 @@ msgstr "So sánh với hiện tại"
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:88
 msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "Mức nén, 1 là thấp nhất, 9 là cao nhất"
+
+#: src/constants/errors/self_check.ts:17
+#, fuzzy
+msgid "Config directory not exist"
+msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
+
+#: src/constants/errors/self_check.ts:18
+#, fuzzy
+msgid "Config entry file not exist"
+msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
 #: src/constants/errors/backup.ts:14
 #, fuzzy
@@ -1000,8 +1039,8 @@ msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
 "Backup files will be automatically downloaded to your computer."
 msgstr ""
-"Tạo bản sao lưu hệ thống bao gồm cấu hình Nginx và cài đặt Nginx UI. Các "
-"tệp sao lưu sẽ tự động được tải xuống máy tính của bạn."
+"Tạo bản sao lưu hệ thống bao gồm cấu hình Nginx và cài đặt Nginx UI. Các tệp "
+"sao lưu sẽ tự động được tải xuống máy tính của bạn."
 
 #: src/views/environments/group/columns.ts:31
 #: src/views/notification/notificationColumns.tsx:59
@@ -1085,7 +1124,8 @@ msgstr "Mô tả"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:150
 msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
-msgstr "Xác định tên và kích thước vùng bộ nhớ dùng chung, ví dụ proxy_cache:10m"
+msgstr ""
+"Xác định tên và kích thước vùng bộ nhớ dùng chung, ví dụ proxy_cache:10m"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:78
 #: src/components/NgxConfigEditor/NgxUpstream.vue:129
@@ -1375,11 +1415,11 @@ msgstr "Bạn muốn xóa máy chủ này ?"
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/components/SelfCheck/tasks/backend/index.ts:30
-msgid "Docker Socket"
+#: src/language/generate.ts:10
+msgid "Docker socket exists"
 msgstr ""
 
-#: src/constants/errors/self_check.ts:15
+#: src/constants/errors/self_check.ts:16
 msgid "Docker socket not exist"
 msgstr ""
 
@@ -1631,6 +1671,10 @@ msgstr ""
 msgid "Error Log"
 msgstr "Log lỗi"
 
+#: src/constants/errors/self_check.ts:22
+msgid "Error log path not exist"
+msgstr ""
+
 #: src/components/NgxConfigEditor/LogEntry.vue:98
 #: src/routes/modules/nginx_log.ts:24
 msgid "Error Logs"
@@ -1724,7 +1768,7 @@ msgstr ""
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr ""
 
-#: src/constants/errors/self_check.ts:9
+#: src/constants/errors/self_check.ts:10
 #, fuzzy
 msgid "Failed to create backup"
 msgstr "Không thể bật %{msg}"
@@ -1821,7 +1865,7 @@ msgstr ""
 msgid "Failed to delete certificate"
 msgstr "Nhận chứng chỉ"
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:26
 #, fuzzy
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Nhận chứng chỉ"
@@ -1940,7 +1984,7 @@ msgstr "Không thể bật %{msg}"
 msgid "Failed to open zip file: {0}"
 msgstr "Không thể bật %{msg}"
 
-#: src/constants/errors/self_check.ts:4
+#: src/constants/errors/self_check.ts:5
 msgid "Failed to parse nginx.conf"
 msgstr ""
 
@@ -1962,7 +2006,7 @@ msgstr "Không thể bật %{msg}"
 msgid "Failed to read hash info file: {0}"
 msgstr ""
 
-#: src/constants/errors/self_check.ts:3
+#: src/constants/errors/self_check.ts:4
 msgid "Failed to read nginx.conf"
 msgstr ""
 
@@ -2172,7 +2216,7 @@ msgstr ""
 msgid "HTTP01"
 msgstr ""
 
-#: src/components/SelfCheck/tasks/frontend/https-check.ts:10
+#: src/components/SelfCheck/tasks/frontend/https-check.ts:13
 msgid "HTTPS Protocol"
 msgstr ""
 
@@ -2186,8 +2230,8 @@ msgstr ""
 
 #: src/views/nginx_log/NginxLogList.vue:81
 msgid ""
-"If logs are not indexed, please check if the log file is under the "
-"directory in Nginx.LogDirWhiteList."
+"If logs are not indexed, please check if the log file is under the directory "
+"in Nginx.LogDirWhiteList."
 msgstr ""
 
 #: src/views/preference/tabs/AuthSettings.vue:145
@@ -2536,8 +2580,11 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Log"
 
-#: src/language/generate.ts:23
-msgid "Log file %{log_path} is not a regular file. "
+#: src/language/generate.ts:34
+msgid ""
+"Log file %{log_path} is not a regular file. If you are using nginx-ui in "
+"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
+"nginx-log.html for more information."
 msgstr ""
 
 #: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:67
@@ -2562,12 +2609,12 @@ msgstr ""
 
 #: src/views/preference/tabs/LogrotateSettings.vue:13
 msgid ""
-"Logrotate, by default, is enabled in most mainstream Linux distributions "
-"for users who install Nginx UI on the host machine, so you don't need to "
-"modify the parameters on this page. For users who install Nginx UI using "
-"Docker containers, you can manually enable this option. The crontab task "
-"scheduler of Nginx UI will execute the logrotate command at the interval "
-"you set in minutes."
+"Logrotate, by default, is enabled in most mainstream Linux distributions for "
+"users who install Nginx UI on the host machine, so you don't need to modify "
+"the parameters on this page. For users who install Nginx UI using Docker "
+"containers, you can manually enable this option. The crontab task scheduler "
+"of Nginx UI will execute the logrotate command at the interval you set in "
+"minutes."
 msgstr ""
 
 #: src/views/site/components/SiteStatusSegmented.vue:138
@@ -2592,9 +2639,8 @@ msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort before obtaining the certificate."
 msgstr ""
-"Đảm bảo rằng bạn đã định cấu hình proxy ngược (reverse proxy) thư mục "
-".well-known tới HTTPChallengePort (default: 9180) trước khi ký chứng chỉ "
-"SSL."
+"Đảm bảo rằng bạn đã định cấu hình proxy ngược (reverse proxy) thư mục .well-"
+"known tới HTTPChallengePort (default: 9180) trước khi ký chứng chỉ SSL."
 
 #: src/routes/modules/config.ts:10 src/views/config/ConfigEditor.vue:115
 #: src/views/config/ConfigEditor.vue:166 src/views/config/ConfigList.vue:72
@@ -2834,42 +2880,45 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
 
-#: src/components/SelfCheck/tasks/backend/index.ts:25
-msgid "Nginx Conf Include Conf.d"
-msgstr ""
+#: src/language/generate.ts:16
+#, fuzzy
+msgid "Nginx access log path exists"
+msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
 
-#: src/components/SelfCheck/tasks/backend/index.ts:15
-msgid "Nginx Conf Include Sites Enabled"
-msgstr ""
-
-#: src/components/SelfCheck/tasks/backend/index.ts:20
-msgid "Nginx Conf Include Streams Enabled"
-msgstr ""
-
-#: src/constants/errors/self_check.ts:5
+#: src/constants/errors/self_check.ts:6
 msgid "Nginx conf no http block"
 msgstr ""
 
-#: src/constants/errors/self_check.ts:7
+#: src/constants/errors/self_check.ts:8
 msgid "Nginx conf no stream block"
 msgstr ""
 
-#: src/constants/errors/self_check.ts:14
+#: src/constants/errors/self_check.ts:15
 #, fuzzy
 msgid "Nginx conf not include conf.d directory"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/constants/errors/self_check.ts:6
+#: src/constants/errors/self_check.ts:7
 msgid "Nginx conf not include sites-enabled"
 msgstr ""
 
-#: src/constants/errors/self_check.ts:8
+#: src/constants/errors/self_check.ts:9
 msgid "Nginx conf not include stream-enabled"
 msgstr ""
 
 #: src/constants/errors/backup.ts:19
 #, fuzzy
 msgid "Nginx config directory is not set"
+msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
+
+#: src/language/generate.ts:31
+#, fuzzy
+msgid "Nginx configuration directory exists"
+msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
+
+#: src/language/generate.ts:15
+#, fuzzy
+msgid "Nginx configuration entry file exists"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:138
@@ -2910,6 +2959,11 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
 
+#: src/language/generate.ts:21
+#, fuzzy
+msgid "Nginx error log path exists"
+msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
+
 #: src/components/NgxConfigEditor/NginxStatusAlert.vue:15
 #: src/composables/useNginxPerformance.ts:43
 #: src/views/dashboard/NginxDashBoard.vue:112
@@ -2942,6 +2996,11 @@ msgstr ""
 #: src/views/preference/tabs/NginxSettings.vue:34
 #, fuzzy
 msgid "Nginx PID Path"
+msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
+
+#: src/language/generate.ts:45
+#, fuzzy
+msgid "Nginx PID path exists"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
 
 #: src/views/preference/tabs/NginxSettings.vue:40
@@ -3002,9 +3061,24 @@ msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 #: src/components/SystemRestore/SystemRestoreContent.vue:336
 #, fuzzy
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in "
-"a few seconds."
+"Nginx UI configuration has been restored and will restart automatically in a "
+"few seconds."
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
+
+#: src/language/generate.ts:8
+#, fuzzy
+msgid "Nginx.conf includes conf.d directory"
+msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
+
+#: src/language/generate.ts:42
+#, fuzzy
+msgid "Nginx.conf includes sites-enabled directory"
+msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục sites-enabled không."
+
+#: src/language/generate.ts:39
+#, fuzzy
+msgid "Nginx.conf includes streams-enabled directory"
+msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục streams-enabled không."
 
 #: src/components/ChatGPT/ChatGPT.vue:374
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:134
@@ -3342,6 +3416,10 @@ msgstr "Đã tắt thành công"
 msgid "Performing core upgrade"
 msgstr "Nâng cấp core"
 
+#: src/constants/errors/self_check.ts:19
+msgid "PID path not exist"
+msgstr ""
+
 #: src/constants/errors/crypto.ts:2
 msgid "Plain text is empty"
 msgstr ""
@@ -3375,7 +3453,8 @@ msgstr ""
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
-msgstr "Vui lòng điền thông tin xác thực API do nhà cung cấp DNS của bạn cung cấp"
+msgstr ""
+"Vui lòng điền thông tin xác thực API do nhà cung cấp DNS của bạn cung cấp"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:106
 msgid "Please fill in the required fields"
@@ -3386,14 +3465,14 @@ msgid ""
 "Please first add credentials in Certification > DNS Credentials, and then "
 "select one of the credentialsbelow to request the API of the DNS provider."
 msgstr ""
-"Trước tiên, vui lòng thêm thông tin xác thực trong Chứng chỉ > Thông tin "
-"xác thực DNS, sau đó chọn nhà cung cấp DNS"
+"Trước tiên, vui lòng thêm thông tin xác thực trong Chứng chỉ > Thông tin xác "
+"thực DNS, sau đó chọn nhà cung cấp DNS"
 
 #: src/components/Notification/notifications.ts:166
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to "
-"prevent lockout."
+"Please generate new recovery codes in the preferences immediately to prevent "
+"lockout."
 msgstr ""
 
 #: src/views/config/components/Rename.vue:65
@@ -3411,14 +3490,16 @@ msgstr "Vui lòng nhập username!"
 msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration!"
-msgstr "Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp của cấu hình mới!"
+msgstr ""
+"Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp của cấu hình mới!"
 
 #: src/views/site/site_list/SiteDuplicate.vue:33
 #, fuzzy
 msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration."
-msgstr "Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp của cấu hình mới!"
+msgstr ""
+"Vui lòng nhập tên, tên này sẽ được sử dụng làm tên tệp của cấu hình mới!"
 
 #: src/views/install/components/InstallForm.vue:26
 msgid "Please input your E-mail!"
@@ -3438,7 +3519,8 @@ msgid "Please log in."
 msgstr ""
 
 #: src/views/certificate/DNSCredential.vue:62
-msgid "Please note that the unit of time configurations below are all in seconds."
+msgid ""
+"Please note that the unit of time configurations below are all in seconds."
 msgstr "Lưu ý đơn vị cấu hình thời gian bên dưới được tính bằng giây."
 
 #: src/views/install/components/InstallView.vue:100
@@ -3545,7 +3627,7 @@ msgstr "Đọc"
 msgid "Receive"
 msgstr "Nhận"
 
-#: src/components/SelfCheck/SelfCheck.vue:24
+#: src/components/SelfCheck/SelfCheck.vue:23
 msgid "Recheck"
 msgstr ""
 
@@ -4029,6 +4111,10 @@ msgstr "Lưu thành công"
 msgid "Saved successfully"
 msgstr "Lưu thành công"
 
+#: src/constants/errors/self_check.ts:20
+msgid "Sbin path not exist"
+msgstr ""
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:69
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr ""
@@ -4058,7 +4144,7 @@ msgstr ""
 msgid "Selector"
 msgstr "Bộ chọn"
 
-#: src/components/SelfCheck/SelfCheck.vue:16 src/routes/modules/system.ts:19
+#: src/components/SelfCheck/SelfCheck.vue:15 src/routes/modules/system.ts:19
 msgid "Self Check"
 msgstr ""
 
@@ -4128,14 +4214,14 @@ msgstr "Sử dụng HTTP01 để xác thực SSL"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/views/install/components/InstallView.vue:64
@@ -4183,20 +4269,20 @@ msgstr "Logs"
 msgid "Site not found"
 msgstr "Không tìm thấy tệp tin"
 
-#: src/components/SelfCheck/tasks/backend/index.ts:5
+#: src/language/generate.ts:7
 #, fuzzy
-msgid "Sites Directory"
+msgid "Sites directory exists"
 msgstr "Thư mục"
 
 #: src/routes/modules/sites.ts:19
 msgid "Sites List"
 msgstr "Danh sách Website"
 
-#: src/constants/errors/self_check.ts:10
+#: src/constants/errors/self_check.ts:11
 msgid "Sites-available directory not exist"
 msgstr ""
 
-#: src/constants/errors/self_check.ts:11
+#: src/constants/errors/self_check.ts:12
 msgid "Sites-enabled directory not exist"
 msgstr ""
 
@@ -4304,16 +4390,16 @@ msgstr "Đã tắt"
 msgid "Stream not found"
 msgstr "Không tìm thấy tệp tin"
 
-#: src/components/SelfCheck/tasks/backend/index.ts:10
+#: src/language/generate.ts:41
 #, fuzzy
-msgid "Streams Directory"
+msgid "Streams directory exists"
 msgstr "Thư mục"
 
-#: src/constants/errors/self_check.ts:12
+#: src/constants/errors/self_check.ts:13
 msgid "Streams-available directory not exist"
 msgstr ""
 
-#: src/constants/errors/self_check.ts:13
+#: src/constants/errors/self_check.ts:14
 #, fuzzy
 msgid "Streams-enabled directory not exist"
 msgstr "Thư mục"
@@ -4326,12 +4412,12 @@ msgstr ""
 msgid "Success"
 msgstr "Thành công"
 
-#: src/components/SelfCheck/tasks/frontend/websocket.ts:6
+#: src/components/SelfCheck/tasks/frontend/websocket.ts:13
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to "
-"this link to write the corresponding configuration file: "
-"https://nginxui.com/guide/nginx-proxy-example.html"
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
+"link to write the corresponding configuration file: https://nginxui.com/"
+"guide/nginx-proxy-example.html"
 msgstr ""
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:197
@@ -4452,6 +4538,11 @@ msgstr "Thông tin"
 msgid "System restored successfully."
 msgstr "Restart Nginx thành công"
 
+#: src/constants/errors/self_check.ts:3
+#, fuzzy
+msgid "Task is not fixable"
+msgstr "Không tìm thấy tệp tin"
+
 #: src/constants/errors/self_check.ts:2
 #, fuzzy
 msgid "Task not found"
@@ -4500,8 +4591,7 @@ msgstr ""
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in "
-"settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr ""
 
 #: src/views/preference/tabs/OpenAISettings.vue:23
@@ -4512,7 +4602,8 @@ msgid ""
 msgstr ""
 
 #: src/views/preference/tabs/OpenAISettings.vue:90
-msgid "The model used for code completion, if not set, the chat model will be used."
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 
 #: src/views/preference/tabs/NodeSettings.vue:18
@@ -4552,7 +4643,8 @@ msgstr ""
 msgid ""
 "The server_name in the current configuration must be the domain name you "
 "need to get the certificate, supportmultiple domains."
-msgstr "Lưu ý: server_name trong cấu hình hiện tại phải là tên miền bạn muốn ký SSL."
+msgstr ""
+"Lưu ý: server_name trong cấu hình hiện tại phải là tên miền bạn muốn ký SSL."
 
 #: src/views/preference/tabs/CertSettings.vue:22
 #: src/views/preference/tabs/HTTPSettings.vue:14
@@ -4613,7 +4705,8 @@ msgid "This field should not be empty"
 msgstr "Trường này không được để trống"
 
 #: src/constants/form_errors.ts:6
-msgid "This field should only contain letters, unicode characters, numbers, and -_."
+msgid ""
+"This field should only contain letters, unicode characters, numbers, and -_."
 msgstr ""
 
 #: src/views/dashboard/NginxDashBoard.vue:153
@@ -4653,7 +4746,8 @@ msgid ""
 msgstr ""
 
 #: src/views/environments/list/BatchUpgrader.vue:182
-msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid ""
+"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 
 #: src/views/preference/tabs/AuthSettings.vue:124
@@ -4697,13 +4791,13 @@ msgstr ""
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
-"add a location which can proxy the request from authority to backend, and "
-"we need to save this file and reload the Nginx. Are you sure you want to "
+"add a location which can proxy the request from authority to backend, and we "
+"need to save this file and reload the Nginx. Are you sure you want to "
 "continue?"
 msgstr ""
-"Để đảm bảo tính năng tự động gia hạn chứng chỉ có thể hoạt động bình "
-"thường, chúng tôi cần thêm một vị trí có thể ủy quyền yêu cầu từ cơ quan có "
-"thẩm quyền đến chương trình phụ trợ và chúng tôi cần lưu tệp này và tải lại "
+"Để đảm bảo tính năng tự động gia hạn chứng chỉ có thể hoạt động bình thường, "
+"chúng tôi cần thêm một vị trí có thể ủy quyền yêu cầu từ cơ quan có thẩm "
+"quyền đến chương trình phụ trợ và chúng tôi cần lưu tệp này và tải lại "
 "Nginx. Bạn có chắc chắn muốn Tiếp tục?"
 
 #: src/views/preference/tabs/OpenAISettings.vue:36
@@ -4784,7 +4878,7 @@ msgstr "Loại"
 msgid "Unknown"
 msgstr ""
 
-#: src/components/SelfCheck/SelfCheck.vue:44
+#: src/components/SelfCheck/SelfCheck.vue:43
 msgid "Unknown issue"
 msgstr ""
 
@@ -4962,8 +5056,8 @@ msgstr ""
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:140
 msgid ""
-"We will remove the HTTPChallenge configuration from this file and reload "
-"the Nginx. Are you sure you want to continue?"
+"We will remove the HTTPChallenge configuration from this file and reload the "
+"Nginx. Are you sure you want to continue?"
 msgstr ""
 "Chúng tôi sẽ xóa cấu hình HTTPChallenge khỏi tệp này và tải lại Nginx. Bạn "
 "có muốn tiếp tục không?"
@@ -5049,8 +5143,8 @@ msgstr "Có"
 
 #: src/views/terminal/Terminal.vue:135
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a non-"
+"localhost domain. This may expose sensitive information."
 msgstr ""
 
 #: src/views/system/Upgrade.vue:202
@@ -5076,7 +5170,8 @@ msgid ""
 msgstr ""
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:81
-msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid ""
+"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:94
@@ -5097,6 +5192,15 @@ msgstr ""
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr ""
+
+#~ msgid ""
+#~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
+#~ "Docker Image, please make sure the docker socket is mounted like this: `-"
+#~ "v /var/run/docker.sock:/var/run/docker.sock`."
+#~ msgstr ""
+#~ "Kiểm tra xem /var/run/docker.sock có tồn tại không. Nếu bạn đang sử dụng "
+#~ "Docker Image chính thức của Nginx UI, hãy đảm bảo rằng ổ cắm Docker được "
+#~ "gắn như sau: `-v /var/run/docker.sock:/var/run/docker.sock`."
 
 #, fuzzy
 #~ msgid "Format error %{msg}"
@@ -5162,11 +5266,14 @@ msgstr ""
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
-#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
+#~ "%{resp}"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
-#~ msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+#~ msgid ""
+#~ "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
@@ -5180,7 +5287,8 @@ msgstr ""
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
-#~ msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy

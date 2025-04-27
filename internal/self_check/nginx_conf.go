@@ -75,7 +75,7 @@ func CheckNginxConfIncludeStreams() error {
 		}
 	}
 
-	return ErrorNginxConfNoStreamBlock
+	return ErrNginxConfNoStreamBlock
 }
 
 // FixNginxConfIncludeSites attempts to fix nginx.conf include sites-enabled

@@ -1,7 +1,7 @@
 export interface Container {
   message: string
   // eslint-disable-next-line ts/no-explicit-any
-  args: Record<string, any>
+  args?: Record<string, any>
 }
 
 function T(container: Container): string {

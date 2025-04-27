@@ -1,14 +1,27 @@
+import type { Container } from '@/language'
 import type { CosyError } from '@/lib/http'
 import http from '@/lib/http'
 import ws from '@/lib/websocket'
 
-export interface Report {
-  name: string
+export const ReportStatus = {
+  Success: 'success',
+  Warning: 'warning',
+  Error: 'error',
+} as const
+
+export type ReportStatusType = typeof ReportStatus[keyof typeof ReportStatus]
+
+export interface TaskReport {
+  key: string
+  name: Container
+  description: Container
+  fixable?: boolean
   err?: CosyError
+  status: ReportStatusType
 }
 
 const selfCheck = {
-  run(): Promise<Report[]> {
+  run(): Promise<TaskReport[]> {
     return http.get('/self_check')
   },
   fix(taskName: string) {

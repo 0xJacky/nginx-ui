@@ -1,17 +1,20 @@
-import type { FrontendTask, TaskReport } from '../types'
-import selfCheck from '@/api/self_check'
+import type { ReportStatusType } from '@/api/self_check'
+import type { FrontendTask } from '../types'
+import selfCheck, { ReportStatus } from '@/api/self_check'
 
+/**
+ * WebSocket Task
+ *
+ * Checks if the application is able to connect to the backend through the WebSocket protocol
+ */
 const WebsocketTask: FrontendTask = {
+  key: 'websocket',
   name: () => 'WebSocket',
   description: () => $gettext('Support communication with the backend through the WebSocket protocol. '
     + 'If your Nginx UI is being used via an Nginx reverse proxy, '
     + 'please refer to this link to write the corresponding configuration file: '
     + 'https://nginxui.com/guide/nginx-proxy-example.html'),
-  type: 'frontend',
-  check: async (): Promise<TaskReport> => {
-    // Task name for the report
-    const name = 'Frontend-Websocket'
-
+  check: async (): Promise<ReportStatusType> => {
     try {
       const connected = await new Promise<boolean>(resolve => {
         const ws = selfCheck.websocket()
@@ -28,31 +31,15 @@ const WebsocketTask: FrontendTask = {
       })
 
       if (connected) {
-        return {
-          name,
-          status: 'success',
-          type: 'frontend',
-          message: 'WebSocket connection successful.',
-        }
+        return ReportStatus.Success
       }
       else {
-        return {
-          name,
-          status: 'error',
-          type: 'frontend',
-          message: 'WebSocket connection failed.',
-          err: new Error('WebSocket connection failed.'),
-        }
+        return ReportStatus.Error
       }
     }
     catch (error) {
-      return {
-        name,
-        status: 'error',
-        type: 'frontend',
-        message: 'WebSocket connection error.',
-        err: error instanceof Error ? error : new Error(String(error)),
-      }
+      console.error(error)
+      return ReportStatus.Error
     }
   },
 }

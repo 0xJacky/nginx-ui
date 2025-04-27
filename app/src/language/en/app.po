@@ -1,41 +1,41 @@
-#: src/language/generate.ts:19
+#: src/language/generate.ts:47
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:49
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr ""
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:6
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr ""
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:37
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr ""
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:13
 msgid ""
 "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:35
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr ""
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:36
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr ""
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:28
 msgid "[Nginx UI] Finished"
 msgstr ""
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:25
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr ""
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:50
 msgid "[Nginx UI] Obtaining certificate"
 msgstr ""
 
@@ -43,43 +43,43 @@ msgstr ""
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr ""
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:46
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr ""
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:19
 msgid "[Nginx UI] Reloading nginx"
 msgstr ""
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:14
 msgid "[Nginx UI] Revocation completed"
 msgstr ""
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:4
 msgid "[Nginx UI] Revoking certificate"
 msgstr ""
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:29
 msgid "[Nginx UI] Revoking old certificate"
 msgstr ""
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:18
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr ""
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:27
 msgid "[Nginx UI] Setting environment variables"
 msgstr ""
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:48
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr ""
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:12
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr ""
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:51
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr ""
 
@@ -97,6 +97,10 @@ msgstr ""
 
 #: src/views/nginx_log/NginxLogList.vue:26
 msgid "Access Log"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:21
+msgid "Access log path not exist"
 msgstr ""
 
 #: src/components/NgxConfigEditor/LogEntry.vue:90
@@ -307,7 +311,7 @@ msgstr ""
 msgid "Assistant"
 msgstr ""
 
-#: src/components/SelfCheck/SelfCheck.vue:31
+#: src/components/SelfCheck/SelfCheck.vue:30
 msgid "Attempt to fix"
 msgstr ""
 
@@ -578,7 +582,7 @@ msgstr ""
 msgid "Certificate Expiring Soon"
 msgstr ""
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:33
 msgid "Certificate not found: %{error}"
 msgstr ""
 
@@ -603,7 +607,7 @@ msgstr ""
 msgid "Certificate renewed successfully"
 msgstr ""
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:11
 msgid "Certificate revoked successfully"
 msgstr ""
 
@@ -661,41 +665,58 @@ msgstr ""
 msgid "Check again"
 msgstr ""
 
-#: src/components/SelfCheck/tasks/backend/index.ts:31
-msgid ""
-"Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v /"
-"var/run/docker.sock:/var/run/docker.sock`."
-msgstr ""
-
-#: src/components/SelfCheck/tasks/frontend/https-check.ts:11
+#: src/components/SelfCheck/tasks/frontend/https-check.ts:14
 msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
-"prevents using Passkeys and clipboard features."
+"prevents using Passkeys and clipboard features"
 msgstr ""
 
-#: src/components/SelfCheck/tasks/backend/index.ts:26
-msgid "Check if the nginx.conf includes the conf.d directory."
+#: src/language/generate.ts:40
+msgid "Check if the docker socket exists."
 msgstr ""
 
-#: src/components/SelfCheck/tasks/backend/index.ts:16
-msgid "Check if the nginx.conf includes the sites-enabled directory."
+#: src/language/generate.ts:20
+msgid "Check if the nginx access log path exists"
 msgstr ""
 
-#: src/components/SelfCheck/tasks/backend/index.ts:21
-msgid "Check if the nginx.conf includes the streams-enabled directory."
+#: src/language/generate.ts:44
+msgid "Check if the nginx configuration directory exists"
 msgstr ""
 
-#: src/components/SelfCheck/tasks/backend/index.ts:6
+#: src/language/generate.ts:9
+msgid "Check if the nginx configuration entry file exists"
+msgstr ""
+
+#: src/language/generate.ts:32
+msgid "Check if the nginx error log path exists"
+msgstr ""
+
+#: src/language/generate.ts:24
+msgid "Check if the nginx PID path exists"
+msgstr ""
+
+#: src/language/generate.ts:43
+msgid "Check if the nginx.conf includes the conf.d directory"
+msgstr ""
+
+#: src/language/generate.ts:23
+msgid "Check if the nginx.conf includes the sites-enabled directory"
+msgstr ""
+
+#: src/language/generate.ts:5
+msgid "Check if the nginx.conf includes the streams-enabled directory"
+msgstr ""
+
+#: src/language/generate.ts:30
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
-"nginx configuration directory."
+"nginx configuration directory"
 msgstr ""
 
-#: src/components/SelfCheck/tasks/backend/index.ts:11
+#: src/language/generate.ts:38
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
-"nginx configuration directory."
+"nginx configuration directory"
 msgstr ""
 
 #: src/constants/errors/crypto.ts:3
@@ -791,6 +812,14 @@ msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:88
 msgid "Compression level, 1 is lowest, 9 is highest"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:17
+msgid "Config directory not exist"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:18
+msgid "Config entry file not exist"
 msgstr ""
 
 #: src/constants/errors/backup.ts:14
@@ -1254,11 +1283,11 @@ msgstr ""
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/components/SelfCheck/tasks/backend/index.ts:30
-msgid "Docker Socket"
+#: src/language/generate.ts:10
+msgid "Docker socket exists"
 msgstr ""
 
-#: src/constants/errors/self_check.ts:15
+#: src/constants/errors/self_check.ts:16
 msgid "Docker socket not exist"
 msgstr ""
 
@@ -1483,6 +1512,10 @@ msgstr ""
 msgid "Error Log"
 msgstr ""
 
+#: src/constants/errors/self_check.ts:22
+msgid "Error log path not exist"
+msgstr ""
+
 #: src/components/NgxConfigEditor/LogEntry.vue:98
 #: src/routes/modules/nginx_log.ts:24
 msgid "Error Logs"
@@ -1570,7 +1603,7 @@ msgstr ""
 msgid "Failed to copy Nginx config directory: {0}"
 msgstr ""
 
-#: src/constants/errors/self_check.ts:9
+#: src/constants/errors/self_check.ts:10
 msgid "Failed to create backup"
 msgstr ""
 
@@ -1650,7 +1683,7 @@ msgstr ""
 msgid "Failed to delete certificate"
 msgstr ""
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:26
 msgid "Failed to delete certificate from database: %{error}"
 msgstr ""
 
@@ -1750,7 +1783,7 @@ msgstr ""
 msgid "Failed to open zip file: {0}"
 msgstr ""
 
-#: src/constants/errors/self_check.ts:4
+#: src/constants/errors/self_check.ts:5
 msgid "Failed to parse nginx.conf"
 msgstr ""
 
@@ -1770,7 +1803,7 @@ msgstr ""
 msgid "Failed to read hash info file: {0}"
 msgstr ""
 
-#: src/constants/errors/self_check.ts:3
+#: src/constants/errors/self_check.ts:4
 msgid "Failed to read nginx.conf"
 msgstr ""
 
@@ -1965,7 +1998,7 @@ msgstr ""
 msgid "HTTP01"
 msgstr ""
 
-#: src/components/SelfCheck/tasks/frontend/https-check.ts:10
+#: src/components/SelfCheck/tasks/frontend/https-check.ts:13
 msgid "HTTPS Protocol"
 msgstr ""
 
@@ -2303,8 +2336,11 @@ msgstr ""
 msgid "Log"
 msgstr ""
 
-#: src/language/generate.ts:23
-msgid "Log file %{log_path} is not a regular file. "
+#: src/language/generate.ts:34
+msgid ""
+"Log file %{log_path} is not a regular file. If you are using nginx-ui in "
+"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
+"nginx-log.html for more information."
 msgstr ""
 
 #: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:67
@@ -2581,40 +2617,40 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr ""
 
-#: src/components/SelfCheck/tasks/backend/index.ts:25
-msgid "Nginx Conf Include Conf.d"
-msgstr ""
-
-#: src/components/SelfCheck/tasks/backend/index.ts:15
-msgid "Nginx Conf Include Sites Enabled"
-msgstr ""
-
-#: src/components/SelfCheck/tasks/backend/index.ts:20
-msgid "Nginx Conf Include Streams Enabled"
-msgstr ""
-
-#: src/constants/errors/self_check.ts:5
-msgid "Nginx conf no http block"
-msgstr ""
-
-#: src/constants/errors/self_check.ts:7
-msgid "Nginx conf no stream block"
-msgstr ""
-
-#: src/constants/errors/self_check.ts:14
-msgid "Nginx conf not include conf.d directory"
+#: src/language/generate.ts:16
+msgid "Nginx access log path exists"
 msgstr ""
 
 #: src/constants/errors/self_check.ts:6
-msgid "Nginx conf not include sites-enabled"
+msgid "Nginx conf no http block"
 msgstr ""
 
 #: src/constants/errors/self_check.ts:8
+msgid "Nginx conf no stream block"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:15
+msgid "Nginx conf not include conf.d directory"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:7
+msgid "Nginx conf not include sites-enabled"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:9
 msgid "Nginx conf not include stream-enabled"
 msgstr ""
 
 #: src/constants/errors/backup.ts:19
 msgid "Nginx config directory is not set"
+msgstr ""
+
+#: src/language/generate.ts:31
+msgid "Nginx configuration directory exists"
+msgstr ""
+
+#: src/language/generate.ts:15
+msgid "Nginx configuration entry file exists"
 msgstr ""
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:138
@@ -2651,6 +2687,10 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr ""
 
+#: src/language/generate.ts:21
+msgid "Nginx error log path exists"
+msgstr ""
+
 #: src/components/NgxConfigEditor/NginxStatusAlert.vue:15
 #: src/composables/useNginxPerformance.ts:43
 #: src/views/dashboard/NginxDashBoard.vue:112
@@ -2682,6 +2722,10 @@ msgstr ""
 
 #: src/views/preference/tabs/NginxSettings.vue:34
 msgid "Nginx PID Path"
+msgstr ""
+
+#: src/language/generate.ts:45
+msgid "Nginx PID path exists"
 msgstr ""
 
 #: src/views/preference/tabs/NginxSettings.vue:40
@@ -2738,6 +2782,18 @@ msgstr ""
 msgid ""
 "Nginx UI configuration has been restored and will restart automatically in a "
 "few seconds."
+msgstr ""
+
+#: src/language/generate.ts:8
+msgid "Nginx.conf includes conf.d directory"
+msgstr ""
+
+#: src/language/generate.ts:42
+msgid "Nginx.conf includes sites-enabled directory"
+msgstr ""
+
+#: src/language/generate.ts:39
+msgid "Nginx.conf includes streams-enabled directory"
 msgstr ""
 
 #: src/components/ChatGPT/ChatGPT.vue:374
@@ -3061,6 +3117,10 @@ msgstr ""
 msgid "Performing core upgrade"
 msgstr ""
 
+#: src/constants/errors/self_check.ts:19
+msgid "PID path not exist"
+msgstr ""
+
 #: src/constants/errors/crypto.ts:2
 msgid "Plain text is empty"
 msgstr ""
@@ -3256,7 +3316,7 @@ msgstr ""
 msgid "Receive"
 msgstr ""
 
-#: src/components/SelfCheck/SelfCheck.vue:24
+#: src/components/SelfCheck/SelfCheck.vue:23
 msgid "Recheck"
 msgstr ""
 
@@ -3682,6 +3742,10 @@ msgstr ""
 msgid "Saved successfully"
 msgstr ""
 
+#: src/constants/errors/self_check.ts:20
+msgid "Sbin path not exist"
+msgstr ""
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:69
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr ""
@@ -3711,7 +3775,7 @@ msgstr ""
 msgid "Selector"
 msgstr ""
 
-#: src/components/SelfCheck/SelfCheck.vue:16 src/routes/modules/system.ts:19
+#: src/components/SelfCheck/SelfCheck.vue:15 src/routes/modules/system.ts:19
 msgid "Self Check"
 msgstr ""
 
@@ -3827,19 +3891,19 @@ msgstr ""
 msgid "Site not found"
 msgstr ""
 
-#: src/components/SelfCheck/tasks/backend/index.ts:5
-msgid "Sites Directory"
+#: src/language/generate.ts:7
+msgid "Sites directory exists"
 msgstr ""
 
 #: src/routes/modules/sites.ts:19
 msgid "Sites List"
 msgstr ""
 
-#: src/constants/errors/self_check.ts:10
+#: src/constants/errors/self_check.ts:11
 msgid "Sites-available directory not exist"
 msgstr ""
 
-#: src/constants/errors/self_check.ts:11
+#: src/constants/errors/self_check.ts:12
 msgid "Sites-enabled directory not exist"
 msgstr ""
 
@@ -3940,15 +4004,15 @@ msgstr ""
 msgid "Stream not found"
 msgstr ""
 
-#: src/components/SelfCheck/tasks/backend/index.ts:10
-msgid "Streams Directory"
-msgstr ""
-
-#: src/constants/errors/self_check.ts:12
-msgid "Streams-available directory not exist"
+#: src/language/generate.ts:41
+msgid "Streams directory exists"
 msgstr ""
 
 #: src/constants/errors/self_check.ts:13
+msgid "Streams-available directory not exist"
+msgstr ""
+
+#: src/constants/errors/self_check.ts:14
 msgid "Streams-enabled directory not exist"
 msgstr ""
 
@@ -3960,7 +4024,7 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
-#: src/components/SelfCheck/tasks/frontend/websocket.ts:6
+#: src/components/SelfCheck/tasks/frontend/websocket.ts:13
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
 "your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
@@ -4070,6 +4134,10 @@ msgstr ""
 #: src/views/install/components/InstallView.vue:44
 #: src/views/system/Backup/SystemRestore.vue:6
 msgid "System restored successfully."
+msgstr ""
+
+#: src/constants/errors/self_check.ts:3
+msgid "Task is not fixable"
 msgstr ""
 
 #: src/constants/errors/self_check.ts:2
@@ -4393,7 +4461,7 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: src/components/SelfCheck/SelfCheck.vue:44
+#: src/components/SelfCheck/SelfCheck.vue:43
 msgid "Unknown issue"
 msgstr ""
 
