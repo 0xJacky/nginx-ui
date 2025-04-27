@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import settings from '@/api/settings'
 import PageHeader from '@/components/PageHeader/PageHeader.vue'
-import { setupIndexStatus } from '@/composables/useIndexStatus'
 import { useSettingsStore } from '@/pinia'
 import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
@@ -41,8 +40,6 @@ const { server_name } = storeToRefs(useSettingsStore())
 settings.get_server_name().then(r => {
   server_name.value = r.name
 })
-
-setupIndexStatus()
 
 const breadList = ref([])
 

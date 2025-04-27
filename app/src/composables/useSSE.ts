@@ -1,9 +1,12 @@
 import type { SSEvent } from 'sse.js'
+import { useUserStore } from '@/pinia'
 import { SSE } from 'sse.js'
+
+const userStore = useUserStore()
+const { token } = storeToRefs(userStore)
 
 export interface SSEOptions {
   url: string
-  token: string
   // eslint-disable-next-line ts/no-explicit-any
   onMessage?: (data: any) => void
   onError?: () => void
@@ -26,7 +29,6 @@ export function useSSE() {
 
     const {
       url,
-      token,
       onMessage,
       onError,
       parseData = true,
@@ -35,7 +37,7 @@ export function useSSE() {
 
     const sse = new SSE(url, {
       headers: {
-        Authorization: token,
+        Authorization: token.value,
       },
     })
 

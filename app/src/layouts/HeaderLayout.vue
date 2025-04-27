@@ -2,6 +2,7 @@
 import auth from '@/api/auth'
 import NginxControl from '@/components/NginxControl'
 import Notification from '@/components/Notification'
+import ProcessingStatus from '@/components/ProcessingStatus'
 import { SelfCheckHeaderBanner } from '@/components/SelfCheck'
 import SetLanguage from '@/components/SetLanguage'
 import SwitchAppearance from '@/components/SwitchAppearance'
@@ -63,6 +64,8 @@ const { width: userWrapperWidth } = useElementSize(userWrapperRef)
           </ATooltip>
         </RouterLink>
       </div>
+
+      <ProcessingStatus />
 
       <Notification :header-ref="headerRef" />
 

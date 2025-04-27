@@ -3,7 +3,6 @@ import type { EnvGroup } from '@/api/env_group'
 import type { Environment } from '@/api/environment'
 import nodeApi from '@/api/node'
 import { useSSE } from '@/composables/useSSE'
-import { useUserStore } from '@/pinia'
 import { message } from 'ant-design-vue'
 
 const props = defineProps<{
@@ -11,7 +10,6 @@ const props = defineProps<{
 }>()
 
 const modelValue = defineModel<string | number>('activeKey')
-const { token } = storeToRefs(useUserStore())
 
 const environments = ref<Environment[]>([])
 const environmentsMap = ref<Record<number, Environment>>({})
@@ -37,7 +35,6 @@ watch(modelValue, newVal => {
 function connectSSE() {
   connect({
     url: 'api/environments/enabled',
-    token: token.value,
     onMessage: data => {
       environments.value = data
       environmentsMap.value = environments.value.reduce((acc, node) => {

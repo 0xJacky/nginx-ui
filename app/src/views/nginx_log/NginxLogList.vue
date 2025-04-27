@@ -4,12 +4,9 @@ import type { Column } from '@/components/StdDesign/types'
 import nginxLog from '@/api/nginx_log'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import { input, select } from '@/components/StdDesign/StdDataEntry'
-import { useIndexStatus } from '@/composables/useIndexStatus'
-import { CheckCircleOutlined, LoadingOutlined } from '@ant-design/icons-vue'
 import { Tag } from 'ant-design-vue'
 
 const router = useRouter()
-const { isScanning } = useIndexStatus()
 const stdCurdRef = ref()
 
 const columns: Column[] = [
@@ -72,26 +69,6 @@ function viewLog(record: { type: string, path: string }) {
     disable-view
     disable-modify
   >
-    <template #extra>
-      <APopover placement="bottomRight">
-        <template #content>
-          <div>
-            {{ $gettext('Automatically indexed from site and stream configurations.') }}
-            <br>
-            {{ $gettext('If logs are not indexed, please check if the log file is under the directory in Nginx.LogDirWhiteList.') }}
-          </div>
-        </template>
-        <div class="flex items-center cursor-pointer">
-          <template v-if="isScanning">
-            <LoadingOutlined class="mr-2" spin />{{ $gettext('Indexing...') }}
-          </template>
-          <template v-else>
-            <CheckCircleOutlined class="mr-2" />{{ $gettext('Indexed') }}
-          </template>
-        </div>
-      </APopover>
-    </template>
-
     <template #actions="{ record }">
       <AButton type="link" size="small" @click="viewLog(record)">
         {{ $gettext('View') }}

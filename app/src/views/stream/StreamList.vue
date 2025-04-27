@@ -5,17 +5,15 @@ import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTabl
 import type { Column, JSXElements } from '@/components/StdDesign/types'
 import env_group from '@/api/env_group'
 import stream from '@/api/stream'
-import EnvGroupTabs from '@/components/EnvGroupTabs/EnvGroupTabs.vue'
+import EnvGroupTabs from '@/components/EnvGroupTabs'
 import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import { actualValueRender, datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input, selector } from '@/components/StdDesign/StdDataEntry'
-import { useIndexStatus } from '@/composables/useIndexStatus'
 import { ConfigStatus } from '@/constants'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import envGroupColumns from '@/views/environments/group/columns'
 import StreamDuplicate from '@/views/stream/components/StreamDuplicate.vue'
-import { CheckCircleOutlined, LoadingOutlined } from '@ant-design/icons-vue'
 import { Badge, message } from 'ant-design-vue'
 
 const columns: Column[] = [{
@@ -171,8 +169,6 @@ function handleBatchUpdated() {
   table.value?.get_list()
   table.value?.resetSelection()
 }
-
-const { isScanning } = useIndexStatus()
 </script>
 
 <template>
@@ -180,12 +176,6 @@ const { isScanning } = useIndexStatus()
     <template #extra>
       <div class="flex items-center cursor-default">
         <a class="mr-4" @click="add">{{ $gettext('Add') }}</a>
-        <template v-if="isScanning">
-          <LoadingOutlined class="mr-2" spin />{{ $gettext('Indexing...') }}
-        </template>
-        <template v-else>
-          <CheckCircleOutlined class="mr-2" />{{ $gettext('Indexed') }}
-        </template>
       </div>
     </template>
 

@@ -3,8 +3,7 @@ import ngx from '@/api/ngx'
 import { useNginxPerformance } from '@/composables/useNginxPerformance'
 import { useSSE } from '@/composables/useSSE'
 import { NginxStatus } from '@/constants'
-import { useUserStore } from '@/pinia'
-import { useGlobalStore } from '@/pinia/moudule/global'
+import { useGlobalStore } from '@/pinia'
 import { ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import ConnectionMetricsCard from './components/ConnectionMetricsCard.vue'
 import ParamsOptimization from './components/ParamsOptimization.vue'
@@ -16,7 +15,6 @@ import ResourceUsageCard from './components/ResourceUsageCard.vue'
 // Global state
 const global = useGlobalStore()
 const { nginxStatus: status } = storeToRefs(global)
-const { token } = storeToRefs(useUserStore())
 
 // Use performance data composable
 const {
@@ -68,7 +66,6 @@ function connectSSE() {
 
   connect({
     url: 'api/nginx/detail_status/stream',
-    token: token.value,
     onMessage: data => {
       loading.value = false
 

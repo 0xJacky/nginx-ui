@@ -24,6 +24,7 @@ func InitPrivateRouter(r *gin.RouterGroup) {
 	r.GET("upgrade/current", GetCurrentVersion)
 
 	r.GET("system/backup", CreateBackup)
+	r.GET("system/processing", GetProcessingStatus)
 }
 
 func InitSelfCheckRouter(r *gin.RouterGroup) {

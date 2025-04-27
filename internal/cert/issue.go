@@ -29,6 +29,8 @@ const (
 )
 
 func IssueCert(payload *ConfigPayload, certLogger *Logger, errChan chan error) {
+	lock()
+	defer unlock()
 	defer func() {
 		if err := recover(); err != nil {
 			buf := make([]byte, 1024)

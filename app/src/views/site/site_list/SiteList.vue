@@ -4,15 +4,13 @@ import type { Site } from '@/api/site'
 import type { Column } from '@/components/StdDesign/types'
 import env_group from '@/api/env_group'
 import site from '@/api/site'
-import EnvGroupTabs from '@/components/EnvGroupTabs/EnvGroupTabs.vue'
+import EnvGroupTabs from '@/components/EnvGroupTabs'
 import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
-import { useIndexStatus } from '@/composables/useIndexStatus'
 import { ConfigStatus } from '@/constants'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import columns from '@/views/site/site_list/columns'
 import SiteDuplicate from '@/views/site/site_list/SiteDuplicate.vue'
-import { CheckCircleOutlined, LoadingOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 
 const route = useRoute()
@@ -23,8 +21,6 @@ const inspectConfig = ref()
 
 const envGroupId = ref(Number.parseInt(route.query.env_group_id as string) || 0)
 const envGroups = ref([]) as Ref<EnvGroup[]>
-
-const { isScanning } = useIndexStatus()
 
 watch(route, () => {
   inspectConfig.value?.test()
@@ -78,16 +74,6 @@ function handleBatchUpdated() {
 
 <template>
   <ACard :title="$gettext('Manage Sites')">
-    <template #extra>
-      <div class="flex items-center cursor-default">
-        <template v-if="isScanning">
-          <LoadingOutlined class="mr-2" spin />{{ $gettext('Indexing...') }}
-        </template>
-        <template v-else>
-          <CheckCircleOutlined class="mr-2" />{{ $gettext('Indexed') }}
-        </template>
-      </div>
-    </template>
     <InspectConfig ref="inspectConfig" />
 
     <EnvGroupTabs v-model:active-key="envGroupId" :env-groups="envGroups" />

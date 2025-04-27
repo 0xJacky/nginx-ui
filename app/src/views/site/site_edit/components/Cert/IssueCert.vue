@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import template from '@/api/template'
+import { useGlobalStore } from '@/pinia'
 import { useSiteEditorStore } from '@/views/site/site_edit/components/SiteEditor/store'
 import { Modal } from 'ant-design-vue'
 import ObtainCert from './ObtainCert.vue'
@@ -56,6 +57,9 @@ async function onchange() {
     },
   })
 }
+
+const globalStore = useGlobalStore()
+const { processingStatus } = storeToRefs(globalStore)
 </script>
 
 <template>
@@ -73,9 +77,12 @@ async function onchange() {
         <ASwitch
           :loading="issuingCert"
           :checked="autoCert"
-          :disabled="noServerName"
+          :disabled="noServerName || processingStatus.auto_cert_processing"
           @change="onchange"
         />
+        <span v-if="processingStatus.auto_cert_processing" class="ml-4">
+          {{ $gettext('AutoCert is running, please wait...') }}
+        </span>
       </AFormItem>
     </div>
   </div>

@@ -17,6 +17,8 @@ import (
 
 // RevokeCert revokes a certificate and provides log messages through channels
 func RevokeCert(payload *ConfigPayload, certLogger *Logger, logChan chan string, errChan chan error) {
+	lock()
+	defer unlock()
 	defer func() {
 		if err := recover(); err != nil {
 			buf := make([]byte, 1024)
