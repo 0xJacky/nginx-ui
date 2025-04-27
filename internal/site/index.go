@@ -4,6 +4,7 @@ import (
 	"net"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
@@ -45,8 +46,12 @@ func scanForSite(configPath string, content []byte) error {
 		Urls:    []string{},
 	}
 
-	// Map to track hosts and their SSL status
-	hostMap := make(map[string]bool)
+	// Map to track hosts, their SSL status and port
+	type hostInfo struct {
+		hasSSL bool
+		port   int
+	}
+	hostMap := make(map[string]hostInfo)
 
 	for _, block := range serverBlocks {
 		serverBlockContent := block[0]
@@ -84,36 +89,67 @@ func scanForSite(configPath string, content []byte) error {
 			continue
 		}
 
-		// Check if SSL is enabled
+		// Check if SSL is enabled and extract port
 		listenMatches := listenRegex.FindAllSubmatch(serverBlockContent, -1)
 		hasSSL := false
+		port := 80 // Default HTTP port
 
 		for _, match := range listenMatches {
 			if len(match) >= 2 {
 				listenValue := string(match[1])
-				if strings.Contains(listenValue, "ssl") || strings.Contains(listenValue, "443") {
+				if strings.Contains(listenValue, "ssl") {
 					hasSSL = true
-					break
+					port = 443 // Default HTTPS port
+				}
+
+				// Extract port number if present
+				portRegex := regexp.MustCompile(`^(?:(\d+)|.*:(\d+))`)
+				portMatches := portRegex.FindStringSubmatch(listenValue)
+				if len(portMatches) > 0 {
+					// Check which capture group has the port
+					portStr := ""
+					if portMatches[1] != "" {
+						portStr = portMatches[1]
+					} else if portMatches[2] != "" {
+						portStr = portMatches[2]
+					}
+
+					if portStr != "" {
+						if extractedPort, err := strconv.Atoi(portStr); err == nil {
+							port = extractedPort
+						}
+					}
 				}
 			}
 		}
 
-		// Update host map with SSL status
+		// Update host map with SSL status and port
 		for _, name := range validServerNames {
-			// Only update if this host doesn't have SSL yet
-			if currentSSL, exists := hostMap[name]; !exists || !currentSSL {
-				hostMap[name] = hasSSL
+			// Only update if this host doesn't have SSL yet or we're adding SSL now
+			info, exists := hostMap[name]
+			if !exists || (!info.hasSSL && hasSSL) {
+				hostMap[name] = hostInfo{hasSSL: hasSSL, port: port}
 			}
 		}
 	}
 
 	// Generate URLs from the host map
-	for host, hasSSL := range hostMap {
+	for host, info := range hostMap {
 		protocol := "http"
-		if hasSSL {
+		defaultPort := 80
+
+		if info.hasSSL {
 			protocol = "https"
+			defaultPort = 443
 		}
+
 		url := protocol + "://" + host
+
+		// Add port to URL if non-standard
+		if info.port != defaultPort {
+			url += ":" + strconv.Itoa(info.port)
+		}
+
 		siteIndex.Urls = append(siteIndex.Urls, url)
 	}
 
