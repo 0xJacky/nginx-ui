@@ -13,7 +13,6 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 	"io"
-	"io/fs"
 	"path/filepath"
 	"strings"
 	"text/template"
@@ -40,14 +39,13 @@ func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
 		Filename:    name,
 	}
 
-	file, _ := templ.DistFS.Open(filepath.Join(path, name))
+	file, err := templ.DistFS.Open(filepath.Join(path, name))
+	if err != nil {
+		logger.Error(err)
+		return
+	}
 
-	defer func(file fs.File) {
-		err := file.Close()
-		if err != nil {
-			logger.Error(err)
-		}
-	}(file)
+	defer file.Close()
 
 	r := bufio.NewReader(file)
 	lineBytes, _, err := r.ReadLine()

@@ -8,8 +8,8 @@ export const useConfigTemplateStore = defineStore('configTemplate', () => {
 
   const variables = computed(() => data.value?.variables ?? {})
 
-  function __buildTemplate(name: string) {
-    template.build_block(name, variables.value).then(r => {
+  function __buildTemplate() {
+    template.build_block(data.value.filename, variables.value).then(r => {
       data.value.directives = r.directives
       data.value.locations = r.locations
       data.value.custom = r.custom

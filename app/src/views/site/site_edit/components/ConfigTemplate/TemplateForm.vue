@@ -3,7 +3,7 @@ import type { Variable } from '@/api/template'
 import TemplateFormItem from './TemplateFormItem.vue'
 
 const data = defineModel<Record<string, Variable>>({
-  default: () => {},
+  default: reactive({}),
 })
 </script>
 
