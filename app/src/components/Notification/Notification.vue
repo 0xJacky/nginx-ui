@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import type { Notification } from '@/api/notification'
 import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { SSEvent } from 'sse.js'
 import type { Ref } from 'vue'
 import notificationApi from '@/api/notification'
 import { detailRender } from '@/components/Notification/detailRender'
+import { useSSE } from '@/composables/useSSE'
 import { NotificationTypeT } from '@/constants'
 import { useUserStore } from '@/pinia'
 import { BellOutlined, CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, InfoCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
 import { message, notification } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { SSE } from 'sse.js'
 import notifications from './notifications'
 
 defineProps<{
@@ -22,32 +21,15 @@ dayjs.extend(relativeTime)
 
 const loading = ref(false)
 
-const { token, unreadCount } = storeToRefs(useUserStore())
+const { unreadCount } = storeToRefs(useUserStore())
 
 const data = ref([]) as Ref<Notification[]>
 
-const sse = shallowRef(newSSE())
+const { connect } = useSSE()
 
-function reconnect() {
-  setTimeout(() => {
-    sse.value = newSSE()
-  }, 5000)
-}
-
-function newSSE() {
-  const s = new SSE('api/notifications/live', {
-    headers: {
-      Authorization: token.value,
-    },
-  })
-
-  s.onmessage = (e: SSEvent) => {
-    const data = JSON.parse(e.data)
-    // data.type may be 0
-    if (data.type === undefined || data.type === null || data.type === '') {
-      return
-    }
-
+connect({
+  url: '/api/notifications/live',
+  onMessage: (data: Notification) => {
     const typeTrans = {
       0: 'error',
       1: 'warning',
@@ -59,13 +41,8 @@ function newSSE() {
       message: $gettext(data.title),
       description: detailRender({ text: data.details, record: data } as CustomRender),
     })
-  }
-
-  // reconnect
-  s.onerror = reconnect
-
-  return s
-}
+  },
+})
 
 function init() {
   loading.value = true

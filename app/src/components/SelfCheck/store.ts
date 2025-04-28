@@ -6,7 +6,6 @@ import frontendTasks from './tasks/frontend'
 export const useSelfCheckStore = defineStore('selfCheck', () => {
   const data = ref<TaskReport[]>([])
 
-  const requestError = ref(false)
   const loading = ref(false)
 
   async function __check() {
@@ -42,7 +41,6 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
     }
     catch (error) {
       console.error(error)
-      requestError.value = true
     }
     finally {
       loading.value = false
@@ -72,7 +70,7 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
   }
 
   const hasError = computed(() => {
-    return requestError.value || data.value?.some(item => item.status === ReportStatus.Error)
+    return data.value?.some(item => item.status === ReportStatus.Error)
   })
 
   return { data, loading, fixing, hasError, check, fix }

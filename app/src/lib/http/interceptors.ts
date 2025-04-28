@@ -131,7 +131,7 @@ export function setupResponseInterceptor() {
           case 403:
             user.logout()
             await router.push('/login')
-            break
+            return
         }
       }
 
