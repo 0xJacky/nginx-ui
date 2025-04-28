@@ -126,7 +126,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <ACard :title="$gettext('Terminal')">
+  <div>
     <AAlert
       v-if="insecureConnection"
       class="mb-6"
@@ -145,7 +145,7 @@ onUnmounted(() => {
       id="terminal"
       class="console"
     />
-  </ACard>
+  </div>
 </template>
 
 <style lang="less" scoped>
@@ -158,6 +158,9 @@ onUnmounted(() => {
 
   :deep(.xterm-viewport) {
     border-radius: 5px;
+    @media (max-width: 512px) {
+      border-radius: 0;
+    }
   }
 }
 </style>
