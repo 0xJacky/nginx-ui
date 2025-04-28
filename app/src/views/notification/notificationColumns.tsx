@@ -42,6 +42,13 @@ const columns: Column[] = [{
   pithy: true,
   width: 100,
 }, {
+  title: () => $gettext('Created at'),
+  dataIndex: 'created_at',
+  sorter: true,
+  customRender: datetime,
+  pithy: true,
+  width: 180,
+}, {
   title: () => $gettext('Title'),
   dataIndex: 'title',
   customRender: (args: CustomRender) => {
@@ -55,13 +62,6 @@ const columns: Column[] = [{
   customRender: detailRender,
   pithy: true,
   width: 500,
-}, {
-  title: () => $gettext('Created at'),
-  dataIndex: 'created_at',
-  sorter: true,
-  customRender: datetime,
-  pithy: true,
-  width: 180,
 }, {
   title: () => $gettext('Action'),
   dataIndex: 'action',

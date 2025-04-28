@@ -25,7 +25,7 @@ export function useSSE() {
    * Connect to SSE service
    */
   function connect(options: SSEOptions) {
-    if (token.value) {
+    if (!token.value) {
       return
     }
 
