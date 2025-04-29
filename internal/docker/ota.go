@@ -340,7 +340,6 @@ func UpgradeStepThree() error {
 	// Get old container name from environment variable, fallback to settings if not available
 	currentContainerName := os.Getenv("NGINX_UI_CONTAINER_NAME")
 	if currentContainerName == "" {
-		logger.Warn("Old container name not found in environment, skipping cleanup")
 		return nil
 	}
 	oldContainerName := currentContainerName + OldSuffix

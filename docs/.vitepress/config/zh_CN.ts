@@ -37,6 +37,15 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ]
         },
         {
+          text: 'MCP',
+          collapsed: false,
+          items: [
+            { text: '概述', link: '/zh_CN/guide/mcp' },
+            { text: '配置文件管理', link: '/zh_CN/guide/mcp-config' },
+            { text: 'Nginx 服务管理', link: '/zh_CN/guide/mcp-nginx' },
+          ]
+        },
+        {
           text: '配置',
           collapsed: false,
           items: [

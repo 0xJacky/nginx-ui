@@ -13,6 +13,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/docker"
+	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -61,6 +62,7 @@ func InitAfterDatabase() {
 		analytic.RetrieveNodesStatus,
 		passkey.Init,
 		RegisterAcmeUser,
+		mcp.Init,
 	}
 
 	for _, v := range syncs {
@@ -138,7 +140,5 @@ func CheckAndCleanupOTAContainers() {
 	err := docker.UpgradeStepThree()
 	if err != nil {
 		logger.Error("Failed to cleanup OTA containers:", err)
-	} else {
-		logger.Info("OTA container cleanup completed successfully")
 	}
 }

@@ -26,6 +26,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/upstream"
 	"github.com/0xJacky/Nginx-UI/api/user"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/0xJacky/Nginx-UI/mcp"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 	cSettings "github.com/uozi-tech/cosy/settings"
@@ -43,6 +44,8 @@ func InitRouter() {
 			"message": "not found",
 		})
 	})
+
+	mcp.InitRouter(r)
 
 	root := r.Group("/api", middleware.IPWhiteList())
 	{

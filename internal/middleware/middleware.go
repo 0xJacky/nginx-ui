@@ -59,6 +59,12 @@ func AuthRequired() gin.HandlerFunc {
 			return
 		}
 
+		if token := c.Query("node_secret"); token != "" && token == settings.NodeSettings.Secret {
+			c.Set("Secret", token)
+			c.Next()
+			return
+		}
+
 		token := getToken(c)
 		if token == "" {
 			abortWithAuthFailure()
