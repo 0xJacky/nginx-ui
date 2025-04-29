@@ -9,43 +9,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:14
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 "[Nginx UI] Người dùng ACME: %{name}, Email: %{email}, Thư mục CA: %{caDir}"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] Đang sao lưu chứng chỉ hiện tại để thu hồi sau này"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:41
 #, fuzzy
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "Đã xóa thành công"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:18
 #, fuzzy
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "Restart Nginx thành công"
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:26
 msgid ""
 "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 "[Nginx UI] Chứng chỉ đã được sử dụng cho máy chủ, đang tải lại chứng chỉ TLS "
 "của máy chủ"
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:33
 #, fuzzy
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "Tạo client để giao tiếp với CA server"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:24
 #, fuzzy
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "Đặt biến môi trường"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:48
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] Đã hoàn thành"
 
@@ -54,11 +54,11 @@ msgstr "[Nginx UI] Đã hoàn thành"
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "Cấp chứng chỉ thành công"
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:4
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] Đang lấy chứng chỉ"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:21
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] Chuẩn bị thu hồi chứng chỉ"
 
@@ -66,23 +66,23 @@ msgstr "[Nginx UI] Chuẩn bị thu hồi chứng chỉ"
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] Đang chuẩn bị cấu hình lego"
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:15
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] Đang tải lại nginx"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:17
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] Đã hoàn tất thu hồi"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:27
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] Đang thu hồi chứng chỉ"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:25
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] Đang thu hồi chứng chỉ cũ"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:34
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách DNS01"
 
@@ -91,15 +91,15 @@ msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách DNS01"
 msgid "[Nginx UI] Setting environment variables"
 msgstr "Đặt biến môi trường"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:10
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách HTTP01"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:16
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] Đang ghi khóa riêng của chứng chỉ vào ổ đĩa"
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:5
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Đang ghi chứng chỉ vào ổ đĩa"
 
@@ -122,7 +122,7 @@ msgstr "Log truy cập"
 
 #: src/constants/errors/self_check.ts:21
 msgid "Access log path not exist"
-msgstr ""
+msgstr "Đường dẫn nhật ký truy cập không tồn tại"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:90
 #: src/routes/modules/nginx_log.ts:17
@@ -217,7 +217,7 @@ msgstr "Nâng cao"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "Sau đó, làm mới trang này và nhấp vào thêm khóa truy cập một lần nữa."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:118
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:115
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
 msgid "All"
 msgstr "Tất cả"
@@ -290,7 +290,7 @@ msgstr "Bạn chắc chắn muốn xóa nó "
 msgid "Are you sure you want to apply to all selected?"
 msgstr "Bạn chắc chắn muốn xóa nó "
 
-#: src/components/Notification/Notification.vue:135
+#: src/components/Notification/Notification.vue:112
 #: src/views/notification/Notification.vue:39
 #, fuzzy
 msgid "Are you sure you want to clear all notifications?"
@@ -322,7 +322,7 @@ msgstr "Bạn chắc chắn muốn xóa nó "
 msgid "Are you sure you want to recover this item?"
 msgstr "Bạn chắc chắn muốn xoá directive này ?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:132
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:129
 #, fuzzy
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "Bạn chắc chắn muốn xóa nó "
@@ -341,7 +341,7 @@ msgstr "Bạn chắc chắn muốn xoá directive này ?"
 msgid "Are you sure you want to remove this location?"
 msgstr "Bạn chắc chắn muốn xoá location này ?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:144
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
 #, fuzzy
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "Bạn có chắc chắn muốn xóa tất cả thông báo không ?"
@@ -403,13 +403,12 @@ msgstr "Đã bật tự động gia hạn SSL cho %{name}"
 
 #: src/views/certificate/components/RenewCert.vue:49
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:84
-#, fuzzy
 msgid "AutoCert is running, please wait..."
-msgstr "Mục Chứng chỉ tự động này không hợp lệ, vui lòng xóa nó"
+msgstr "AutoCert đang chạy, vui lòng chờ..."
 
 #: src/components/ProcessingStatus/ProcessingStatus.vue:39
 msgid "AutoCert is running..."
-msgstr ""
+msgstr "\"AutoCert đang chạy...\""
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:332
 msgid "Automatic Restart"
@@ -645,7 +644,7 @@ msgstr "Chứng chỉ đã hết hạn"
 msgid "Certificate Expiring Soon"
 msgstr "Chứng chỉ sắp hết hạn"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:9
 #, fuzzy
 msgid "Certificate not found: %{error}"
 msgstr "Lỗi giải mã chứng chỉ"
@@ -673,7 +672,7 @@ msgstr "Chứng chỉ SSL hợp lệ"
 msgid "Certificate renewed successfully"
 msgstr "Đã xóa thành công"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:31
 #, fuzzy
 msgid "Certificate revoked successfully"
 msgstr "Đã xóa chứng chỉ thành công"
@@ -687,7 +686,7 @@ msgstr[0] "Trạng thái chứng chỉ"
 msgstr[1] "Trạng thái chứng chỉ"
 
 #: src/routes/modules/certificates.ts:11
-#: src/views/certificate/CertificateList/Certificate.vue:14
+#: src/views/certificate/CertificateList/Certificate.vue:19
 #, fuzzy
 msgid "Certificates"
 msgstr "Chứng chỉ"
@@ -748,48 +747,48 @@ msgstr ""
 "Kiểm tra xem HTTPS đã được bật chưa. Sử dụng HTTP bên ngoài localhost không "
 "an toàn và ngăn chặn việc sử dụng tính năng Passkeys cùng khay nhớ tạm."
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:46
 msgid "Check if the docker socket exists."
-msgstr ""
+msgstr "Kiểm tra xem ổ cắm Docker có tồn tại không."
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:44
 msgid "Check if the nginx access log path exists"
-msgstr ""
+msgstr "Kiểm tra xem đường dẫn nhật ký truy cập nginx có tồn tại không"
 
 #: src/language/generate.ts:29
 #, fuzzy
 msgid "Check if the nginx configuration directory exists"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không."
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:43
 #, fuzzy
 msgid "Check if the nginx configuration entry file exists"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không."
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:8
 msgid "Check if the nginx error log path exists"
-msgstr ""
+msgstr "Kiểm tra xem đường dẫn nhật ký lỗi nginx có tồn tại không"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:50
 msgid "Check if the nginx PID path exists"
-msgstr ""
+msgstr "Kiểm tra xem đường dẫn PID của Nginx có tồn tại không"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:11
 #, fuzzy
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không."
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:22
 #, fuzzy
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục sites-enabled không."
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:36
 #, fuzzy
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục streams-enabled không."
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:6
 #, fuzzy
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
@@ -798,7 +797,7 @@ msgstr ""
 "Kiểm tra xem các thư mục sites-available và sites-enabled có nằm trong thư "
 "mục cấu hình nginx hay không."
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:42
 #, fuzzy
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
@@ -816,12 +815,12 @@ msgid "Cleaning environment variables"
 msgstr "Xoá các biến môi trường"
 
 #: src/components/ChatGPT/ChatGPT.vue:380
-#: src/components/Notification/Notification.vue:140
+#: src/components/Notification/Notification.vue:117
 #: src/views/notification/Notification.vue:44
 msgid "Clear"
 msgstr "Xoá"
 
-#: src/components/Notification/Notification.vue:93
+#: src/components/Notification/Notification.vue:70
 #: src/views/notification/Notification.vue:13
 #, fuzzy
 msgid "Cleared successfully"
@@ -906,14 +905,12 @@ msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "Mức nén, 1 là thấp nhất, 9 là cao nhất"
 
 #: src/constants/errors/self_check.ts:17
-#, fuzzy
 msgid "Config directory not exist"
-msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
+msgstr "Thư mục cấu hình không tồn tại"
 
 #: src/constants/errors/self_check.ts:18
-#, fuzzy
 msgid "Config entry file not exist"
-msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
+msgstr "Tệp nhập cấu hình không tồn tại"
 
 #: src/constants/errors/backup.ts:14
 #, fuzzy
@@ -1049,7 +1046,7 @@ msgstr ""
 "sao lưu sẽ tự động được tải xuống máy tính của bạn."
 
 #: src/views/environments/group/columns.ts:31
-#: src/views/notification/notificationColumns.tsx:59
+#: src/views/notification/notificationColumns.tsx:45
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.ts:41
 #: src/views/user/userColumns.tsx:48
@@ -1220,13 +1217,13 @@ msgstr "Mô tả"
 
 #: src/constants/errors/site.ts:3 src/constants/errors/stream.ts:3
 msgid "Destination file already exists"
-msgstr ""
+msgstr "Tệp đích đã tồn tại"
 
 #: src/constants/errors/config.ts:3
 msgid "Destination file: {0} already exists"
-msgstr ""
+msgstr "Tệp đích: {0} đã tồn tại"
 
-#: src/views/notification/notificationColumns.tsx:53
+#: src/views/notification/notificationColumns.tsx:60
 msgid "Details"
 msgstr "Chi tiết"
 
@@ -1236,7 +1233,7 @@ msgstr "Chế độ phát triển"
 
 #: src/views/preference/components/ExternalNotify/dingtalk.ts:5
 msgid "DingTalk"
-msgstr ""
+msgstr "DingTalk"
 
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:72
 msgid "Directive"
@@ -1244,62 +1241,55 @@ msgstr "Directive"
 
 #: src/constants/errors/nginx_log.ts:6
 msgid "Directive params is empty"
-msgstr ""
+msgstr "Tham số chỉ thị trống"
 
 #: src/constants/errors/nginx_log.ts:5
 msgid "Directive.Params neither access_log nor error_log"
-msgstr ""
+msgstr "Tham số Directive không phải là access_log hoặc error_log"
 
 #: src/constants/errors/nginx_log.ts:4
 msgid "DirectiveIdx out of range"
-msgstr ""
+msgstr "DirectiveIdx nằm ngoài phạm vi"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditor.vue:38
 msgid "Directives"
 msgstr "Directives"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:135
-#, fuzzy
 msgid "Directory Levels"
-msgstr "Directives"
+msgstr "Cấp độ thư mục"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:127
 msgid "Directory path to store cache files"
-msgstr ""
+msgstr "Đường dẫn thư mục để lưu trữ các tệp bộ nhớ đệm"
 
 #: src/views/site/components/SiteStatusSegmented.vue:88
-#, fuzzy
 msgid "disable"
-msgstr "Tắt"
+msgstr "Vô hiệu hóa"
 
 #: src/views/stream/StreamList.vue:209
-#, fuzzy
 msgid "Disable"
-msgstr "Tắt"
+msgstr "Vô hiệu hóa"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:80
 msgid "Disable auto-renewal failed for %{name}"
-msgstr "Tắt tự động gia hạn SSL cho %{name} thất bại"
+msgstr "Vô hiệu hóa gia hạn tự động thất bại cho %{name}"
 
 #: src/components/Notification/notifications.ts:77 src/language/constants.ts:52
-#, fuzzy
 msgid "Disable Remote Site Error"
-msgstr "Gia hạn chứng chỉ SSL thất bại"
+msgstr "Lỗi vô hiệu hóa trang từ xa"
 
 #: src/components/Notification/notifications.ts:101
-#, fuzzy
 msgid "Disable Remote Site Maintenance Error"
-msgstr "Gia hạn chứng chỉ SSL thất bại"
+msgstr "Lỗi tắt bảo trì trang web từ xa"
 
 #: src/components/Notification/notifications.ts:105
-#, fuzzy
 msgid "Disable Remote Site Maintenance Success"
-msgstr "Gia hạn chứng chỉ SSL thành công"
+msgstr "Vô hiệu hóa bảo trì trang web từ xa thành công"
 
 #: src/components/Notification/notifications.ts:81 src/language/constants.ts:51
-#, fuzzy
 msgid "Disable Remote Site Success"
-msgstr "Gia hạn chứng chỉ SSL thành công"
+msgstr "Đã vô hiệu hóa trang web từ xa thành công"
 
 #: src/components/Notification/notifications.ts:133
 #, fuzzy
@@ -1421,7 +1411,7 @@ msgstr "Bạn muốn xóa máy chủ này ?"
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:30
 msgid "Docker socket exists"
 msgstr ""
 
@@ -1871,7 +1861,7 @@ msgstr ""
 msgid "Failed to delete certificate"
 msgstr "Nhận chứng chỉ"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:23
 #, fuzzy
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Nhận chứng chỉ"
@@ -2039,7 +2029,7 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr "Nhận chứng chỉ"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:39
 #, fuzzy
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Nhận chứng chỉ"
@@ -2256,7 +2246,7 @@ msgid ""
 "need to enable this option."
 msgstr ""
 
-#: src/views/certificate/CertificateList/Certificate.vue:22
+#: src/views/certificate/CertificateList/Certificate.vue:27
 #, fuzzy
 msgid "Import"
 msgstr "Xuất"
@@ -2407,7 +2397,7 @@ msgstr ""
 msgid "IP"
 msgstr ""
 
-#: src/views/certificate/CertificateList/Certificate.vue:31
+#: src/views/certificate/CertificateList/Certificate.vue:37
 #, fuzzy
 msgid "Issue wildcard certificate"
 msgstr "Gia hạn SSL"
@@ -2503,7 +2493,7 @@ msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:104
 msgid "Lego disable CNAME Support"
-msgstr ""
+msgstr "Lego tắt hỗ trợ CNAME"
 
 #: src/views/system/About.vue:63
 #, fuzzy
@@ -2574,7 +2564,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Log"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:32
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
@@ -2874,7 +2864,7 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:51
 #, fuzzy
 msgid "Nginx access log path exists"
 msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
@@ -2905,12 +2895,12 @@ msgstr ""
 msgid "Nginx config directory is not set"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:49
 #, fuzzy
 msgid "Nginx configuration directory exists"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:12
 #, fuzzy
 msgid "Nginx configuration entry file exists"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
@@ -2953,7 +2943,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:45
 #, fuzzy
 msgid "Nginx error log path exists"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
@@ -2992,7 +2982,7 @@ msgstr ""
 msgid "Nginx PID Path"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:38
 #, fuzzy
 msgid "Nginx PID path exists"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
@@ -3059,27 +3049,27 @@ msgid ""
 "few seconds."
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:37
 #, fuzzy
 msgid "Nginx.conf includes conf.d directory"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:7
 #, fuzzy
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục sites-enabled không."
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:19
 #, fuzzy
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục streams-enabled không."
 
 #: src/components/ChatGPT/ChatGPT.vue:374
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:134
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:146
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
-#: src/components/Notification/Notification.vue:133
+#: src/components/Notification/Notification.vue:110
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:63
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:94
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:510
@@ -3169,7 +3159,7 @@ msgstr ""
 msgid "Notification"
 msgstr "Thông báo"
 
-#: src/components/Notification/Notification.vue:131
+#: src/components/Notification/Notification.vue:108
 #: src/routes/modules/notifications.ts:10
 #, fuzzy
 msgid "Notifications"
@@ -3224,7 +3214,7 @@ msgstr ""
 msgid "Off"
 msgstr "Ngoại tuyến"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:56
@@ -3242,7 +3232,7 @@ msgstr ""
 #: src/components/ChatGPT/ChatGPT.vue:375
 #: src/components/NgxConfigEditor/NgxServer.vue:53
 #: src/components/NgxConfigEditor/NgxUpstream.vue:36
-#: src/components/Notification/Notification.vue:134
+#: src/components/Notification/Notification.vue:111
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:95
 #: src/views/notification/Notification.vue:38
 #: src/views/site/components/SiteStatusSegmented.vue:96
@@ -3265,7 +3255,7 @@ msgstr ""
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Sau khi quá trình xác minh hoàn tất, bản ghi sẽ bị xóa."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
 #: src/components/NodeSelector/NodeSelector.vue:103
 #: src/components/NodeSelector/NodeSelector.vue:89
 #: src/views/dashboard/Environments.vue:100
@@ -3711,7 +3701,7 @@ msgstr "Ghi chú phát hành"
 msgid "Reload"
 msgstr "Tải lại"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:139
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
 #: src/views/environments/group/columns.ts:24
 #: src/views/environments/group/EnvGroup.vue:37
 #: src/views/environments/list/Environment.vue:120
@@ -3745,7 +3735,7 @@ msgstr "Gia hạn chứng chỉ SSL thất bại"
 msgid "Reload Remote Nginx Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:87
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:84
 msgid "Reload request failed, please check your network connection"
 msgstr ""
 
@@ -3767,7 +3757,7 @@ msgstr ""
 msgid "Remove successfully"
 msgstr "Xoá thành công"
 
-#: src/components/Notification/Notification.vue:102
+#: src/components/Notification/Notification.vue:79
 #, fuzzy
 msgid "Removed successfully"
 msgstr "Xoá thành công"
@@ -3920,7 +3910,7 @@ msgstr ""
 msgid "Restart"
 msgstr "Khởi động lại"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:151
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
 #: src/views/environments/list/Environment.vue:141
 #: src/views/environments/list/Environment.vue:149
 #, fuzzy
@@ -3947,7 +3937,7 @@ msgstr "Gia hạn chứng chỉ SSL thất bại"
 msgid "Restart Remote Nginx Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:107
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
 msgid "Restart request failed, please check your network connection"
 msgstr ""
 
@@ -4263,7 +4253,7 @@ msgstr "Logs"
 msgid "Site not found"
 msgstr "Không tìm thấy tệp tin"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:28
 #, fuzzy
 msgid "Sites directory exists"
 msgstr "Thư mục"
@@ -4384,7 +4374,7 @@ msgstr "Đã tắt"
 msgid "Stream not found"
 msgstr "Không tìm thấy tệp tin"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:35
 #, fuzzy
 msgid "Streams directory exists"
 msgstr "Thư mục"
@@ -4481,7 +4471,7 @@ msgstr "Gia hạn chứng chỉ SSL thất bại"
 msgid "Sync Config Success"
 msgstr "Gia hạn chứng chỉ SSL thành công"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:125
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:122
 #: src/views/environments/group/EnvGroup.vue:18
 msgid "Sync Nodes"
 msgstr ""
@@ -4547,9 +4537,8 @@ msgid "Telegram"
 msgstr ""
 
 #: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:76
-#: src/views/terminal/Terminal.vue:129
 msgid "Terminal"
-msgstr "Terminal"
+msgstr "Thiết bị đầu cuối"
 
 #: src/views/preference/tabs/TerminalSettings.vue:10
 msgid "Terminal Start Command"
@@ -4760,7 +4749,7 @@ msgid ""
 "worker_processes or worker_connections"
 msgstr ""
 
-#: src/views/notification/notificationColumns.tsx:45
+#: src/views/notification/notificationColumns.tsx:52
 msgid "Title"
 msgstr "Tiêu đề"
 
@@ -4996,7 +4985,7 @@ msgstr "Phiên bản hiện tại"
 msgid "View"
 msgstr "Xem"
 
-#: src/components/Notification/Notification.vue:203
+#: src/components/Notification/Notification.vue:180
 #, fuzzy
 msgid "View all notifications"
 msgstr "Xem tất cả thông báo"
@@ -5126,8 +5115,8 @@ msgstr "Ghi Private Key vào disk"
 msgid "Writing certificate to disk"
 msgstr "Ghi chứng chỉ vào disk"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:133
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:145
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:163
@@ -5140,6 +5129,9 @@ msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a non-"
 "localhost domain. This may expose sensitive information."
 msgstr ""
+"Bạn đang truy cập thiết bị đầu cuối này thông qua kết nối HTTP không an toàn "
+"trên một miền không phải localhost. Điều này có thể làm lộ thông tin nhạy "
+"cảm."
 
 #: src/views/system/Upgrade.vue:202
 msgid "You are using the latest version"

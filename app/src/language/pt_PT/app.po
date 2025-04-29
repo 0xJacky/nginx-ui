@@ -12,45 +12,45 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 5.6.2\n"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:14
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 "[Nginx UI] Utilizador ACME: %{name}, Email: %{email}, Diretório CA: %{caDir}"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr ""
 "[Nginx UI] A fazer cópia de segurança do certificado atual para posterior "
 "revogação"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:41
 #, fuzzy
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "Limpo com sucesso"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:18
 #, fuzzy
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "Nginx reiniciado com sucesso"
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:26
 msgid ""
 "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 "[Nginx UI] O certificado foi usado para o servidor, a recarregar o "
 "certificado TLS do servidor"
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:33
 #, fuzzy
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "Criar cliente facilita comunicação com o servidor CA"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:24
 #, fuzzy
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "Variáveis de ambiente limpas"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:48
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] Concluído"
 
@@ -59,11 +59,11 @@ msgstr "[Nginx UI] Concluído"
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "Certificado emitido com sucesso"
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:4
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] A obter certificado"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:21
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] Preparando para a revogação do certificado"
 
@@ -71,23 +71,23 @@ msgstr "[Nginx UI] Preparando para a revogação do certificado"
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] A preparar configurações do lego"
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:15
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] A recarregar o nginx"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:17
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] Revogação concluída"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:27
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] Revogar certificado"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:25
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] Revogar certificado antigo"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:34
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] A configurar o fornecedor de desafio DNS01"
 
@@ -96,15 +96,15 @@ msgstr "[Nginx UI] A configurar o fornecedor de desafio DNS01"
 msgid "[Nginx UI] Setting environment variables"
 msgstr "Definindo variáveis de ambiente"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:10
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] A configurar o fornecedor de desafio HTTP01"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:16
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] A gravar a chave privada do certificado no disco"
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:5
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] A escrever o certificado no disco"
 
@@ -127,7 +127,7 @@ msgstr "Logs de Acesso"
 
 #: src/constants/errors/self_check.ts:21
 msgid "Access log path not exist"
-msgstr ""
+msgstr "O caminho do registo de acesso não existe"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:90
 #: src/routes/modules/nginx_log.ts:17
@@ -218,7 +218,7 @@ msgid "Afterwards, refresh this page and click add passkey again."
 msgstr ""
 "Depois, atualize esta página e clique em adicionar chave de acesso novamente."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:118
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:115
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
 msgid "All"
 msgstr "Todos"
@@ -290,7 +290,7 @@ msgstr "Tem certeza que pretende eliminar?"
 msgid "Are you sure you want to apply to all selected?"
 msgstr "Tem certeza que pretende eliminar?"
 
-#: src/components/Notification/Notification.vue:135
+#: src/components/Notification/Notification.vue:112
 #: src/views/notification/Notification.vue:39
 msgid "Are you sure you want to clear all notifications?"
 msgstr "Tem certeza que pretende limpar todas notificações?"
@@ -316,7 +316,7 @@ msgstr "Tem certeza que pretende eliminar?"
 msgid "Are you sure you want to recover this item?"
 msgstr "Tem certeza que pretende recuperar este item?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:132
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:129
 #, fuzzy
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "Tem certeza que pretende eliminar este item?"
@@ -333,7 +333,7 @@ msgstr "Tem certeza que pretende eliminar este item?"
 msgid "Are you sure you want to remove this location?"
 msgstr "Tem certeza que pretende eliminar este local?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:144
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
 #, fuzzy
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "Tem certeza que pretende eliminar este item?"
@@ -395,13 +395,12 @@ msgstr "Renovação automática activada para %{name}"
 
 #: src/views/certificate/components/RenewCert.vue:49
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:84
-#, fuzzy
 msgid "AutoCert is running, please wait..."
-msgstr "Este item Auto Cert é inválido, por favor remova-o."
+msgstr "O AutoCert está em execução, aguarde..."
 
 #: src/components/ProcessingStatus/ProcessingStatus.vue:39
 msgid "AutoCert is running..."
-msgstr ""
+msgstr "\"AutoCert está em execução...\""
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:332
 msgid "Automatic Restart"
@@ -638,7 +637,7 @@ msgstr "Certificado expirado"
 msgid "Certificate Expiring Soon"
 msgstr "Certificado a expirar em breve"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:9
 #, fuzzy
 msgid "Certificate not found: %{error}"
 msgstr "Erro de descodificação do certificado"
@@ -665,7 +664,7 @@ msgstr "Intervalo de Renovação do Certificado"
 msgid "Certificate renewed successfully"
 msgstr "Limpo com sucesso"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:31
 #, fuzzy
 msgid "Certificate revoked successfully"
 msgstr "Certificado removido com sucesso"
@@ -678,7 +677,7 @@ msgstr[0] "Estado do Certificado"
 msgstr[1] "Estado dos Certificados"
 
 #: src/routes/modules/certificates.ts:11
-#: src/views/certificate/CertificateList/Certificate.vue:14
+#: src/views/certificate/CertificateList/Certificate.vue:19
 msgid "Certificates"
 msgstr "Certificados"
 
@@ -734,48 +733,48 @@ msgstr ""
 "Verifique se o HTTPS está ativado. Usar HTTP fora do localhost é inseguro e "
 "impede a utilização de Passkeys e funcionalidades da área de transferência."
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:46
 msgid "Check if the docker socket exists."
-msgstr ""
+msgstr "Verifique se o socket do Docker existe."
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:44
 msgid "Check if the nginx access log path exists"
-msgstr ""
+msgstr "Verificar se o caminho do registo de acesso do nginx existe"
 
 #: src/language/generate.ts:29
 #, fuzzy
 msgid "Check if the nginx configuration directory exists"
 msgstr "Verifique se o nginx.conf inclui o diretório conf.d."
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:43
 #, fuzzy
 msgid "Check if the nginx configuration entry file exists"
 msgstr "Verifique se o nginx.conf inclui o diretório conf.d."
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:8
 msgid "Check if the nginx error log path exists"
-msgstr ""
+msgstr "Verificar se o caminho do registo de erros do nginx existe"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:50
 msgid "Check if the nginx PID path exists"
-msgstr ""
+msgstr "Verificar se o caminho do PID do Nginx existe"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:11
 #, fuzzy
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "Verifique se o nginx.conf inclui o diretório conf.d."
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:22
 #, fuzzy
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "Verifique se o nginx.conf inclui o diretório sites-enabled."
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:36
 #, fuzzy
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "Verifique se o nginx.conf inclui o diretório streams-enabled."
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:6
 #, fuzzy
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
@@ -784,7 +783,7 @@ msgstr ""
 "Verifique se os diretórios sites-available e sites-enabled estão no "
 "diretório de configuração do nginx."
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:42
 #, fuzzy
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
@@ -802,12 +801,12 @@ msgid "Cleaning environment variables"
 msgstr "Limpando variáveis de ambiente"
 
 #: src/components/ChatGPT/ChatGPT.vue:380
-#: src/components/Notification/Notification.vue:140
+#: src/components/Notification/Notification.vue:117
 #: src/views/notification/Notification.vue:44
 msgid "Clear"
 msgstr "Limpar"
 
-#: src/components/Notification/Notification.vue:93
+#: src/components/Notification/Notification.vue:70
 #: src/views/notification/Notification.vue:13
 msgid "Cleared successfully"
 msgstr "Limpo com sucesso"
@@ -892,11 +891,11 @@ msgstr "O nível de compressão, 1 é mais baixo, 9 é mais alto"
 
 #: src/constants/errors/self_check.ts:17
 msgid "Config directory not exist"
-msgstr ""
+msgstr "O diretório de configuração não existe"
 
 #: src/constants/errors/self_check.ts:18
 msgid "Config entry file not exist"
-msgstr ""
+msgstr "O ficheiro de entrada de configuração não existe"
 
 #: src/constants/errors/backup.ts:14
 #, fuzzy
@@ -1034,7 +1033,7 @@ msgstr ""
 "automaticamente para o seu computador."
 
 #: src/views/environments/group/columns.ts:31
-#: src/views/notification/notificationColumns.tsx:59
+#: src/views/notification/notificationColumns.tsx:45
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.ts:41
 #: src/views/user/userColumns.tsx:48
@@ -1208,13 +1207,13 @@ msgstr "Descrição"
 
 #: src/constants/errors/site.ts:3 src/constants/errors/stream.ts:3
 msgid "Destination file already exists"
-msgstr ""
+msgstr "O ficheiro de destino já existe"
 
 #: src/constants/errors/config.ts:3
 msgid "Destination file: {0} already exists"
-msgstr ""
+msgstr "Ficheiro de destino: {0} já existe"
 
-#: src/views/notification/notificationColumns.tsx:53
+#: src/views/notification/notificationColumns.tsx:60
 msgid "Details"
 msgstr "Detalhes"
 
@@ -1224,7 +1223,7 @@ msgstr "Modo Desenvolvimento"
 
 #: src/views/preference/components/ExternalNotify/dingtalk.ts:5
 msgid "DingTalk"
-msgstr ""
+msgstr "DingTalk"
 
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:72
 msgid "Directive"
@@ -1232,59 +1231,55 @@ msgstr "Directiva"
 
 #: src/constants/errors/nginx_log.ts:6
 msgid "Directive params is empty"
-msgstr ""
+msgstr "Os parâmetros da diretiva estão vazios"
 
 #: src/constants/errors/nginx_log.ts:5
 msgid "Directive.Params neither access_log nor error_log"
-msgstr ""
+msgstr "Os parâmetros da diretiva não são nem access_log nem error_log"
 
 #: src/constants/errors/nginx_log.ts:4
 msgid "DirectiveIdx out of range"
-msgstr ""
+msgstr "DirectiveIdx fora do intervalo"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditor.vue:38
 msgid "Directives"
 msgstr "Directivas"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:135
-#, fuzzy
 msgid "Directory Levels"
-msgstr "Directório"
+msgstr "Níveis de diretório"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:127
 msgid "Directory path to store cache files"
-msgstr ""
+msgstr "Caminho do diretório para armazenar ficheiros de cache"
 
 #: src/views/site/components/SiteStatusSegmented.vue:88
-#, fuzzy
 msgid "disable"
-msgstr "Desabilitar"
+msgstr "Desativar"
 
 #: src/views/stream/StreamList.vue:209
 msgid "Disable"
-msgstr "Desabilitar"
+msgstr "Desativar"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:80
 msgid "Disable auto-renewal failed for %{name}"
-msgstr "Falha na desativação da renovação automática para %{name}"
+msgstr "Falha ao desativar a renovação automática para %{name}"
 
 #: src/components/Notification/notifications.ts:77 src/language/constants.ts:52
-#, fuzzy
 msgid "Disable Remote Site Error"
-msgstr "Erro ao renomear configuração remota"
+msgstr "Erro ao desativar site remoto"
 
 #: src/components/Notification/notifications.ts:101
 msgid "Disable Remote Site Maintenance Error"
-msgstr ""
+msgstr "Erro ao desativar a manutenção do site remoto"
 
 #: src/components/Notification/notifications.ts:105
 msgid "Disable Remote Site Maintenance Success"
-msgstr ""
+msgstr "Desativação da manutenção do site remoto com sucesso"
 
 #: src/components/Notification/notifications.ts:81 src/language/constants.ts:51
-#, fuzzy
 msgid "Disable Remote Site Success"
-msgstr "Configuração remota renomeado com sucesso"
+msgstr "Site remoto desativado com sucesso"
 
 #: src/components/Notification/notifications.ts:133
 #, fuzzy
@@ -1401,7 +1396,7 @@ msgstr "Remover este upstream?"
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:30
 msgid "Docker socket exists"
 msgstr ""
 
@@ -1828,7 +1823,7 @@ msgstr ""
 msgid "Failed to delete certificate"
 msgstr "Obtenção de Certificado Falhou"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:23
 #, fuzzy
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Obtenção de Certificado Falhou"
@@ -1993,7 +1988,7 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr "Obtenção de Certificado Falhou"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:39
 #, fuzzy
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Obtenção de Certificado Falhou"
@@ -2217,7 +2212,7 @@ msgstr ""
 "Se o seu domínio tiver registos CNAME e não conseguir obter certificados, "
 "terá de ativar esta opção."
 
-#: src/views/certificate/CertificateList/Certificate.vue:22
+#: src/views/certificate/CertificateList/Certificate.vue:27
 msgid "Import"
 msgstr "Importar"
 
@@ -2364,7 +2359,7 @@ msgstr ""
 msgid "IP"
 msgstr "IP"
 
-#: src/views/certificate/CertificateList/Certificate.vue:31
+#: src/views/certificate/CertificateList/Certificate.vue:37
 msgid "Issue wildcard certificate"
 msgstr "Emitir certificado wildcard"
 
@@ -2455,7 +2450,7 @@ msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:104
 msgid "Lego disable CNAME Support"
-msgstr "Lego desativa suporte CNAME"
+msgstr "Lego desativar suporte CNAME"
 
 #: src/views/system/About.vue:63
 msgid "License"
@@ -2522,7 +2517,7 @@ msgstr "Localizações"
 msgid "Log"
 msgstr "Log"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:32
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
@@ -2818,7 +2813,7 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Caminho para Logs de Acesso do Nginx"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:51
 #, fuzzy
 msgid "Nginx access log path exists"
 msgstr "Caminho para Logs de Acesso do Nginx"
@@ -2847,12 +2842,12 @@ msgstr ""
 msgid "Nginx config directory is not set"
 msgstr ""
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:49
 #, fuzzy
 msgid "Nginx configuration directory exists"
 msgstr "Erro na análise de configuração do Nginx"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:12
 #, fuzzy
 msgid "Nginx configuration entry file exists"
 msgstr "Erro na análise de configuração do Nginx"
@@ -2895,7 +2890,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr "Caminho para Logs de Erro do Nginx"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:45
 #, fuzzy
 msgid "Nginx error log path exists"
 msgstr "Caminho para Logs de Erro do Nginx"
@@ -2934,7 +2929,7 @@ msgstr ""
 msgid "Nginx PID Path"
 msgstr "Caminho para Logs de Erro do Nginx"
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:38
 #, fuzzy
 msgid "Nginx PID path exists"
 msgstr "Caminho para Logs de Erro do Nginx"
@@ -2997,27 +2992,27 @@ msgid ""
 "few seconds."
 msgstr ""
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:37
 #, fuzzy
 msgid "Nginx.conf includes conf.d directory"
 msgstr "Verifique se o nginx.conf inclui o diretório conf.d."
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:7
 #, fuzzy
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "Verifique se o nginx.conf inclui o diretório sites-enabled."
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:19
 #, fuzzy
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Verifique se o nginx.conf inclui o diretório streams-enabled."
 
 #: src/components/ChatGPT/ChatGPT.vue:374
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:134
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:146
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
-#: src/components/Notification/Notification.vue:133
+#: src/components/Notification/Notification.vue:110
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:63
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:94
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:510
@@ -3102,7 +3097,7 @@ msgstr ""
 msgid "Notification"
 msgstr "Notificação"
 
-#: src/components/Notification/Notification.vue:131
+#: src/components/Notification/Notification.vue:108
 #: src/routes/modules/notifications.ts:10
 msgid "Notifications"
 msgstr "Notificações"
@@ -3157,7 +3152,7 @@ msgstr ""
 msgid "Off"
 msgstr "Off-line"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:56
@@ -3175,7 +3170,7 @@ msgstr "Ok"
 #: src/components/ChatGPT/ChatGPT.vue:375
 #: src/components/NgxConfigEditor/NgxServer.vue:53
 #: src/components/NgxConfigEditor/NgxUpstream.vue:36
-#: src/components/Notification/Notification.vue:134
+#: src/components/Notification/Notification.vue:111
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:95
 #: src/views/notification/Notification.vue:38
 #: src/views/site/components/SiteStatusSegmented.vue:96
@@ -3199,7 +3194,7 @@ msgid "Once the verification is complete, the records will be removed."
 msgstr ""
 "Assim que a verificação estiver concluída, os registos serão removidos."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
 #: src/components/NodeSelector/NodeSelector.vue:103
 #: src/components/NodeSelector/NodeSelector.vue:89
 #: src/views/dashboard/Environments.vue:100
@@ -3648,7 +3643,7 @@ msgstr "Nota de Lançamento"
 msgid "Reload"
 msgstr "Recarregar"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:139
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
 #: src/views/environments/group/columns.ts:24
 #: src/views/environments/group/EnvGroup.vue:37
 #: src/views/environments/list/Environment.vue:120
@@ -3684,7 +3679,7 @@ msgstr "Erro ao renomear configuração remota"
 msgid "Reload Remote Nginx Success"
 msgstr "Configuração remota renomeado com sucesso"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:87
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:84
 msgid "Reload request failed, please check your network connection"
 msgstr ""
 
@@ -3705,7 +3700,7 @@ msgstr "Remover"
 msgid "Remove successfully"
 msgstr "Removido com sucesso"
 
-#: src/components/Notification/Notification.vue:102
+#: src/components/Notification/Notification.vue:79
 msgid "Removed successfully"
 msgstr "Removido com sucesso"
 
@@ -3855,7 +3850,7 @@ msgstr ""
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:151
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
 #: src/views/environments/list/Environment.vue:141
 #: src/views/environments/list/Environment.vue:149
 #, fuzzy
@@ -3884,7 +3879,7 @@ msgstr "Erro ao renomear configuração remota"
 msgid "Restart Remote Nginx Success"
 msgstr "Configuração remota renomeado com sucesso"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:107
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
 msgid "Restart request failed, please check your network connection"
 msgstr ""
 
@@ -4197,7 +4192,7 @@ msgstr "Logs do Site"
 msgid "Site not found"
 msgstr "Ficheiro não encontrado"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:28
 #, fuzzy
 msgid "Sites directory exists"
 msgstr "Directório"
@@ -4315,7 +4310,7 @@ msgstr ""
 msgid "Stream not found"
 msgstr "Ficheiro não encontrado"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:35
 #, fuzzy
 msgid "Streams directory exists"
 msgstr "Directório"
@@ -4411,7 +4406,7 @@ msgstr "Erro de Configuração de Sincronização"
 msgid "Sync Config Success"
 msgstr "Sucesso na configuração da sincronização"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:125
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:122
 #: src/views/environments/group/EnvGroup.vue:18
 #, fuzzy
 msgid "Sync Nodes"
@@ -4478,7 +4473,6 @@ msgid "Telegram"
 msgstr ""
 
 #: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:76
-#: src/views/terminal/Terminal.vue:129
 msgid "Terminal"
 msgstr "Terminal"
 
@@ -4710,7 +4704,7 @@ msgid ""
 "worker_processes or worker_connections"
 msgstr ""
 
-#: src/views/notification/notificationColumns.tsx:45
+#: src/views/notification/notificationColumns.tsx:52
 msgid "Title"
 msgstr "Título"
 
@@ -4945,7 +4939,7 @@ msgstr "Versão"
 msgid "View"
 msgstr "Ver"
 
-#: src/components/Notification/Notification.vue:203
+#: src/components/Notification/Notification.vue:180
 msgid "View all notifications"
 msgstr "Ver todas notificações"
 
@@ -5072,8 +5066,8 @@ msgstr "Escrever chave privada do certificado ao disco"
 msgid "Writing certificate to disk"
 msgstr "Escrevendo certificado no disco"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:133
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:145
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:163
@@ -5086,6 +5080,8 @@ msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a non-"
 "localhost domain. This may expose sensitive information."
 msgstr ""
+"Está a aceder a este terminal através de uma ligação HTTP insegura num "
+"domínio que não é localhost. Isto pode expor informações sensíveis."
 
 #: src/views/system/Upgrade.vue:202
 msgid "You are using the latest version"

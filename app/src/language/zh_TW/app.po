@@ -19,40 +19,40 @@ msgstr ""
 "X-Generator: Weblate 5.10.4\n"
 "Generated-By: easygettext\n"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:14
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr "[Nginx UI] ACME 使用者：%{name}，電子郵件：%{email}，CA 目錄：%{caDir}"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] 正在備份當前憑證以便後續撤銷"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:41
 #, fuzzy
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "憑證更新成功"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:18
 #, fuzzy
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "Nginx 重啟成功"
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:26
 msgid ""
 "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr "[Nginx UI] 憑證已用於伺服器，正在重新載入伺服器 TLS 憑證"
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:33
 #, fuzzy
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "建立客戶端方便與 CA 伺服器通訊"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:24
 #, fuzzy
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "環境變數已清理"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:48
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] 已完成"
 
@@ -61,11 +61,11 @@ msgstr "[Nginx UI] 已完成"
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "憑證簽發成功"
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:4
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] 正在取得憑證"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:21
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] 準備撤銷憑證"
 
@@ -73,23 +73,23 @@ msgstr "[Nginx UI] 準備撤銷憑證"
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] 正在準備 lego 配置"
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:15
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] 重新載入 Nginx"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:17
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] 撤銷完成"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:27
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] 正在撤銷證書"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:25
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] 正在撤銷舊憑證"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:34
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] 正在設定 DNS01 驗證提供者"
 
@@ -98,15 +98,15 @@ msgstr "[Nginx UI] 正在設定 DNS01 驗證提供者"
 msgid "[Nginx UI] Setting environment variables"
 msgstr "設定環境變數中"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:10
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] 正在設定 HTTP01 驗證提供者"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:16
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] 正在將證書私鑰寫入磁碟"
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:5
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] 正在將憑證寫入磁碟"
 
@@ -128,7 +128,7 @@ msgstr "存取日誌"
 
 #: src/constants/errors/self_check.ts:21
 msgid "Access log path not exist"
-msgstr ""
+msgstr "存取記錄路徑不存在"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:90
 #: src/routes/modules/nginx_log.ts:17
@@ -218,7 +218,7 @@ msgstr "進階模式"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "之後，請重新整理此頁面並再次點擊新增通行金鑰。"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:118
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:115
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
 msgid "All"
 msgstr "全部"
@@ -284,7 +284,7 @@ msgstr "您確定要重設 2FA 嗎？"
 msgid "Are you sure you want to apply to all selected?"
 msgstr "您確定要應用於所有選擇項目嗎？"
 
-#: src/components/Notification/Notification.vue:135
+#: src/components/Notification/Notification.vue:112
 #: src/views/notification/Notification.vue:39
 msgid "Are you sure you want to clear all notifications?"
 msgstr "您確定要清除所有通知嗎？"
@@ -310,7 +310,7 @@ msgstr "您確定要刪除嗎？"
 msgid "Are you sure you want to recover this item?"
 msgstr "您確定要恢復此項目嗎？"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:132
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:129
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新載入 Nginx 嗎？"
 
@@ -326,7 +326,7 @@ msgstr "您確定要刪除此項目嗎？"
 msgid "Are you sure you want to remove this location?"
 msgstr "您確定要刪除此 Location 嗎？"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:144
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新啟動 Nginx 嗎？"
 
@@ -386,13 +386,12 @@ msgstr "已啟用 %{name} 的自動續簽"
 
 #: src/views/certificate/components/RenewCert.vue:49
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:84
-#, fuzzy
 msgid "AutoCert is running, please wait..."
-msgstr "此自動憑證項目無效，請將其移除。"
+msgstr "AutoCert 正在執行中，請稍候..."
 
 #: src/components/ProcessingStatus/ProcessingStatus.vue:39
 msgid "AutoCert is running..."
-msgstr ""
+msgstr "\"AutoCert 正在運行...\""
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:332
 msgid "Automatic Restart"
@@ -617,7 +616,7 @@ msgstr "憑證已過期"
 msgid "Certificate Expiring Soon"
 msgstr "憑證即將到期"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:9
 #, fuzzy
 msgid "Certificate not found: %{error}"
 msgstr "證書解碼錯誤"
@@ -643,7 +642,7 @@ msgstr "憑證更新間隔"
 msgid "Certificate renewed successfully"
 msgstr "憑證更新成功"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:31
 #, fuzzy
 msgid "Certificate revoked successfully"
 msgstr "憑證已成功移除"
@@ -655,7 +654,7 @@ msgid_plural "Certificates Status"
 msgstr[0] "憑證狀態"
 
 #: src/routes/modules/certificates.ts:11
-#: src/views/certificate/CertificateList/Certificate.vue:14
+#: src/views/certificate/CertificateList/Certificate.vue:19
 msgid "Certificates"
 msgstr "憑證"
 
@@ -710,48 +709,48 @@ msgstr ""
 "檢查是否啟用了 HTTPS。在本機主機之外使用 HTTP 是不安全的，並且會阻止使用通行"
 "證和剪貼簿功能。"
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:46
 msgid "Check if the docker socket exists."
-msgstr ""
+msgstr "檢查 Docker 通訊端是否存在。"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:44
 msgid "Check if the nginx access log path exists"
-msgstr ""
+msgstr "檢查 Nginx 存取日誌路徑是否存在"
 
 #: src/language/generate.ts:29
 #, fuzzy
 msgid "Check if the nginx configuration directory exists"
 msgstr "請確認 nginx.conf 是否有包含 conf.d 資料夾。"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:43
 #, fuzzy
 msgid "Check if the nginx configuration entry file exists"
 msgstr "請確認 nginx.conf 是否有包含 conf.d 資料夾。"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:8
 msgid "Check if the nginx error log path exists"
-msgstr ""
+msgstr "檢查 Nginx 錯誤日誌路徑是否存在"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:50
 msgid "Check if the nginx PID path exists"
-msgstr ""
+msgstr "檢查 Nginx PID 路徑是否存在"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:11
 #, fuzzy
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "請確認 nginx.conf 是否有包含 conf.d 資料夾。"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:22
 #, fuzzy
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "請確認 nginx.conf 是否有包含 sites-enabled 資料夾。"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:36
 #, fuzzy
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "請確認 nginx.conf 是否有包含 streams-enabled 資料夾。"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:6
 #, fuzzy
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
@@ -759,7 +758,7 @@ msgid ""
 msgstr ""
 "請確認 sites-available 和 sites-enabled 資料夾是否位於 Nginx 設定資料夾內。"
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:42
 #, fuzzy
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
@@ -777,12 +776,12 @@ msgid "Cleaning environment variables"
 msgstr "清理環境變數"
 
 #: src/components/ChatGPT/ChatGPT.vue:380
-#: src/components/Notification/Notification.vue:140
+#: src/components/Notification/Notification.vue:117
 #: src/views/notification/Notification.vue:44
 msgid "Clear"
 msgstr "清除"
 
-#: src/components/Notification/Notification.vue:93
+#: src/components/Notification/Notification.vue:70
 #: src/views/notification/Notification.vue:13
 msgid "Cleared successfully"
 msgstr "清除成功"
@@ -864,14 +863,12 @@ msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "壓縮等級，1 為最低，9 為最高"
 
 #: src/constants/errors/self_check.ts:17
-#, fuzzy
 msgid "Config directory not exist"
-msgstr "Nginx 設定目錄未設定"
+msgstr "配置目錄不存在"
 
 #: src/constants/errors/self_check.ts:18
-#, fuzzy
 msgid "Config entry file not exist"
-msgstr "Nginx 設定目錄未設定"
+msgstr "配置入口文件不存在"
 
 #: src/constants/errors/backup.ts:14
 msgid "Config path is empty"
@@ -999,7 +996,7 @@ msgstr ""
 "建立系統備份，包括 Nginx 設定與 Nginx UI 設定。備份檔案將自動下載至您的電腦。"
 
 #: src/views/environments/group/columns.ts:31
-#: src/views/notification/notificationColumns.tsx:59
+#: src/views/notification/notificationColumns.tsx:45
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.ts:41
 #: src/views/user/userColumns.tsx:48
@@ -1159,13 +1156,12 @@ msgid "Destination file already exists"
 msgstr "目的檔案已存在"
 
 #: src/constants/errors/config.ts:3
-#, fuzzy
 msgid "Destination file: {0} already exists"
-msgstr "目的檔案已存在"
+msgstr "目標檔案: {0} 已存在"
 
-#: src/views/notification/notificationColumns.tsx:53
+#: src/views/notification/notificationColumns.tsx:60
 msgid "Details"
-msgstr "詳細資料"
+msgstr "細節"
 
 #: src/views/system/About.vue:28
 msgid "Development Mode"
@@ -1201,11 +1197,11 @@ msgstr "目錄層級"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:127
 msgid "Directory path to store cache files"
-msgstr "快取檔案儲存路徑"
+msgstr "儲存快取檔案的目錄路徑"
 
 #: src/views/site/components/SiteStatusSegmented.vue:88
 msgid "disable"
-msgstr "停用"
+msgstr "禁用"
 
 #: src/views/stream/StreamList.vue:209
 msgid "Disable"
@@ -1213,23 +1209,23 @@ msgstr "停用"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:80
 msgid "Disable auto-renewal failed for %{name}"
-msgstr "關閉 %{name} 自動續簽失敗"
+msgstr "停用 %{name} 的自動續期失敗"
 
 #: src/components/Notification/notifications.ts:77 src/language/constants.ts:52
 msgid "Disable Remote Site Error"
-msgstr "停用遠端站點錯誤"
+msgstr "禁用遠端站點錯誤"
 
 #: src/components/Notification/notifications.ts:101
 msgid "Disable Remote Site Maintenance Error"
-msgstr "停用遠端網站維護錯誤"
+msgstr "禁用遠端站點維護錯誤"
 
 #: src/components/Notification/notifications.ts:105
 msgid "Disable Remote Site Maintenance Success"
-msgstr "遠端網站維護已成功停用"
+msgstr "遠端站點維護已成功停用"
 
 #: src/components/Notification/notifications.ts:81 src/language/constants.ts:51
 msgid "Disable Remote Site Success"
-msgstr "停用遠端站點成功"
+msgstr "遠端站點停用成功"
 
 #: src/components/Notification/notifications.ts:133
 msgid "Disable Remote Stream Error"
@@ -1337,7 +1333,7 @@ msgstr "您要移除這個 Upstream 嗎？"
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:30
 msgid "Docker socket exists"
 msgstr ""
 
@@ -1741,7 +1737,7 @@ msgstr "解密 Nginx UI 目錄失敗：{0}"
 msgid "Failed to delete certificate"
 msgstr "憑證刪除失敗"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:23
 #, fuzzy
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "憑證刪除失敗"
@@ -1892,7 +1888,7 @@ msgstr "還原 Nginx UI 檔案失敗：{0}"
 msgid "Failed to revoke certificate"
 msgstr "撤銷憑證失敗"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:39
 #, fuzzy
 msgid "Failed to revoke certificate: %{error}"
 msgstr "撤銷憑證失敗"
@@ -2101,7 +2097,7 @@ msgid ""
 "need to enable this option."
 msgstr "如果您的域名有 CNAME 記錄且無法取得證書，您需要啟用此選項。"
 
-#: src/views/certificate/CertificateList/Certificate.vue:22
+#: src/views/certificate/CertificateList/Certificate.vue:27
 msgid "Import"
 msgstr "匯入"
 
@@ -2243,7 +2239,7 @@ msgstr "無效的安全令牌格式"
 msgid "IP"
 msgstr "IP"
 
-#: src/views/certificate/CertificateList/Certificate.vue:31
+#: src/views/certificate/CertificateList/Certificate.vue:37
 msgid "Issue wildcard certificate"
 msgstr "發行萬用字元憑證"
 
@@ -2397,7 +2393,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日誌"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:32
 #, fuzzy
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
@@ -2686,7 +2682,7 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Nginx 存取日誌路徑"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:51
 #, fuzzy
 msgid "Nginx access log path exists"
 msgstr "Nginx 存取日誌路徑"
@@ -2716,12 +2712,12 @@ msgstr "Nginx 設定檔未包含 stream-enabled"
 msgid "Nginx config directory is not set"
 msgstr "Nginx 設定目錄未設定"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:49
 #, fuzzy
 msgid "Nginx configuration directory exists"
 msgstr "Nginx 設定目錄"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:12
 #, fuzzy
 msgid "Nginx configuration entry file exists"
 msgstr "Nginx 設定已恢復"
@@ -2761,7 +2757,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr "Nginx 錯誤日誌路徑"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:45
 #, fuzzy
 msgid "Nginx error log path exists"
 msgstr "Nginx 錯誤日誌路徑"
@@ -2800,7 +2796,7 @@ msgstr ""
 msgid "Nginx PID Path"
 msgstr "Nginx PID 路徑"
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:38
 #, fuzzy
 msgid "Nginx PID path exists"
 msgstr "Nginx PID 路徑"
@@ -2863,27 +2859,27 @@ msgid ""
 "few seconds."
 msgstr "Nginx UI 設定已恢復，將在幾秒後自動重新啟動。"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:37
 #, fuzzy
 msgid "Nginx.conf includes conf.d directory"
 msgstr "請確認 nginx.conf 是否有包含 conf.d 資料夾。"
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:7
 #, fuzzy
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "請確認 nginx.conf 是否有包含 sites-enabled 資料夾。"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:19
 #, fuzzy
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "請確認 nginx.conf 是否有包含 streams-enabled 資料夾。"
 
 #: src/components/ChatGPT/ChatGPT.vue:374
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:134
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:146
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
-#: src/components/Notification/Notification.vue:133
+#: src/components/Notification/Notification.vue:110
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:63
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:94
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:510
@@ -2966,7 +2962,7 @@ msgstr "請注意，如果設定檔包含其他設定或憑證，請提前將它
 msgid "Notification"
 msgstr "通知"
 
-#: src/components/Notification/Notification.vue:131
+#: src/components/Notification/Notification.vue:108
 #: src/routes/modules/notifications.ts:10
 msgid "Notifications"
 msgstr "通知"
@@ -3017,7 +3013,7 @@ msgstr "OCSP 強制裝訂可能會導致部分使用者在首次使用 Firefox �
 msgid "Off"
 msgstr "關"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:56
@@ -3035,7 +3031,7 @@ msgstr "確定"
 #: src/components/ChatGPT/ChatGPT.vue:375
 #: src/components/NgxConfigEditor/NgxServer.vue:53
 #: src/components/NgxConfigEditor/NgxUpstream.vue:36
-#: src/components/Notification/Notification.vue:134
+#: src/components/Notification/Notification.vue:111
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:95
 #: src/views/notification/Notification.vue:38
 #: src/views/site/components/SiteStatusSegmented.vue:96
@@ -3058,7 +3054,7 @@ msgstr ""
 msgid "Once the verification is complete, the records will be removed."
 msgstr "驗證完成後，記錄將被刪除。"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
 #: src/components/NodeSelector/NodeSelector.vue:103
 #: src/components/NodeSelector/NodeSelector.vue:89
 #: src/views/dashboard/Environments.vue:100
@@ -3485,7 +3481,7 @@ msgstr "發行公告"
 msgid "Reload"
 msgstr "重新載入"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:139
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
 #: src/views/environments/group/columns.ts:24
 #: src/views/environments/group/EnvGroup.vue:37
 #: src/views/environments/list/Environment.vue:120
@@ -3514,7 +3510,7 @@ msgstr "重新載入遠端 Nginx 錯誤"
 msgid "Reload Remote Nginx Success"
 msgstr "遠端 Nginx 重新載入成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:87
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:84
 msgid "Reload request failed, please check your network connection"
 msgstr "重新載入請求失敗，請檢查您的網路連線"
 
@@ -3535,7 +3531,7 @@ msgstr "移除"
 msgid "Remove successfully"
 msgstr "移除成功"
 
-#: src/components/Notification/Notification.vue:102
+#: src/components/Notification/Notification.vue:79
 msgid "Removed successfully"
 msgstr "移除成功"
 
@@ -3668,7 +3664,7 @@ msgstr "回應"
 msgid "Restart"
 msgstr "重新啟動"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:151
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
 #: src/views/environments/list/Environment.vue:141
 #: src/views/environments/list/Environment.vue:149
 msgid "Restart Nginx"
@@ -3690,7 +3686,7 @@ msgstr "遠端 Nginx 重啟錯誤"
 msgid "Restart Remote Nginx Success"
 msgstr "遠端 Nginx 重啟成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:107
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
 msgid "Restart request failed, please check your network connection"
 msgstr "重新啟動請求失敗，請檢查您的網路連線"
 
@@ -3985,7 +3981,7 @@ msgstr "網站日誌"
 msgid "Site not found"
 msgstr "站點未找到"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:28
 #, fuzzy
 msgid "Sites directory exists"
 msgstr "sites-enabled 資料夾不存在"
@@ -4099,7 +4095,7 @@ msgstr "串流已啟用"
 msgid "Stream not found"
 msgstr "串流未找到"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:35
 #, fuzzy
 msgid "Streams directory exists"
 msgstr "Streams 資料夾"
@@ -4189,7 +4185,7 @@ msgstr "同步設定錯誤"
 msgid "Sync Config Success"
 msgstr "同步設定成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:125
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:122
 #: src/views/environments/group/EnvGroup.vue:18
 msgid "Sync Nodes"
 msgstr "同步節點"
@@ -4250,9 +4246,8 @@ msgid "Telegram"
 msgstr "Telegram"
 
 #: src/routes/modules/terminal.ts:10 src/views/preference/Preference.vue:76
-#: src/views/terminal/Terminal.vue:129
 msgid "Terminal"
-msgstr "終端機"
+msgstr "終端"
 
 #: src/views/preference/tabs/TerminalSettings.vue:10
 msgid "Terminal Start Command"
@@ -4461,7 +4456,7 @@ msgid ""
 "worker_processes or worker_connections"
 msgstr ""
 
-#: src/views/notification/notificationColumns.tsx:45
+#: src/views/notification/notificationColumns.tsx:52
 msgid "Title"
 msgstr "標題"
 
@@ -4691,7 +4686,7 @@ msgstr "版本"
 msgid "View"
 msgstr "檢視"
 
-#: src/components/Notification/Notification.vue:203
+#: src/components/Notification/Notification.vue:180
 msgid "View all notifications"
 msgstr "檢視所有通知"
 
@@ -4822,8 +4817,8 @@ msgstr "將憑證私鑰寫入磁碟"
 msgid "Writing certificate to disk"
 msgstr "將憑證寫入磁碟"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:133
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:145
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:163
@@ -4836,7 +4831,8 @@ msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a non-"
 "localhost domain. This may expose sensitive information."
 msgstr ""
-"您正在透過非本機網域的不安全 HTTP 連接存取此終端，這可能會洩露敏感資訊。"
+"您正在透過非本地主機域上的不安全 HTTP 連線存取此終端機。這可能會暴露敏感資"
+"訊。"
 
 #: src/views/system/Upgrade.vue:202
 msgid "You are using the latest version"

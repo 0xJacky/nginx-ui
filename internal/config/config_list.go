@@ -1,7 +1,11 @@
 package config
 
 import (
+	"os"
 	"sort"
+
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 type ConfigsSort struct {
@@ -58,4 +62,60 @@ func Sort(key string, order string, configs []Config) []Config {
 	sort.Sort(configsSort)
 
 	return configsSort.ConfigList
+}
+
+func GetConfigList(relativePath string, filter func(file os.FileInfo) bool) ([]Config, error) {
+	configFiles, err := os.ReadDir(nginx.GetConfPath(relativePath))
+	if err != nil {
+		return nil, err
+	}
+
+	configs := make([]Config, 0)
+
+	for i := range configFiles {
+		file := configFiles[i]
+		fileInfo, err := file.Info()
+		if err != nil {
+			logger.Error("Get File Info Error", file.Name(), err)
+			continue
+		}
+
+		if filter != nil && !filter(fileInfo) {
+			continue
+		}
+
+		switch mode := fileInfo.Mode(); {
+		case mode.IsRegular(): // regular file, not a hidden file
+			if "." == file.Name()[0:1] {
+				continue
+			}
+		case mode&os.ModeSymlink != 0: // is a symbol
+			var targetPath string
+			targetPath, err = os.Readlink(nginx.GetConfPath(relativePath, file.Name()))
+			if err != nil {
+				logger.Error("Read Symlink Error", targetPath, err)
+				continue
+			}
+
+			var targetInfo os.FileInfo
+			targetInfo, err = os.Stat(targetPath)
+			if err != nil {
+				logger.Error("Stat Error", targetPath, err)
+				continue
+			}
+			// hide the file if it's target file is a directory
+			if targetInfo.IsDir() {
+				continue
+			}
+		}
+
+		configs = append(configs, Config{
+			Name:       file.Name(),
+			ModifiedAt: fileInfo.ModTime(),
+			Size:       fileInfo.Size(),
+			IsDir:      fileInfo.IsDir(),
+		})
+	}
+
+	return configs, nil
 }

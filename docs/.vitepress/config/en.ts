@@ -32,6 +32,15 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ]
         },
         {
+          text: 'MCP',
+          collapsed: false,
+          items: [
+            { text: 'Overview', link: '/guide/mcp' },
+            { text: 'Configuration Management', link: '/guide/mcp-config' },
+            { text: 'Nginx Service Management', link: '/guide/mcp-nginx' },
+          ]
+        },
+        {
           text: 'Configuration',
           collapsed: false,
           items: [
