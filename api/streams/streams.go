@@ -43,13 +43,13 @@ func GetStreams(c *gin.Context) {
 
 	configFiles, err := os.ReadDir(nginx.GetConfPath("streams-available"))
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(stream.ErrReadDirFailed, err.Error()))
 		return
 	}
 
 	enabledConfig, err := os.ReadDir(nginx.GetConfPath("streams-enabled"))
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(stream.ErrReadDirFailed, err.Error()))
 		return
 	}
 

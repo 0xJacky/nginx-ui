@@ -13,13 +13,13 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.6.2\n"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:11
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 "[Nginx UI] ACME ユーザー: %{name}、メール: %{email}、CA ディレクトリ: "
 "%{caDir}"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:32
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] 現在の証明書を後で失効させるためにバックアップ中"
 
@@ -28,23 +28,23 @@ msgstr "[Nginx UI] 現在の証明書を後で失効させるためにバック�
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "正常に削除しました"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:43
 #, fuzzy
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "証明書の削除に成功しました"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:49
 msgid ""
 "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 "[Nginx UI] サーバーで証明書が使用されました、サーバーのTLS証明書を再読み込み"
 "中"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:4
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] CA サーバーとの通信を容易にするクライアントを作成中"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:5
 #, fuzzy
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "環境変数を削除する"
@@ -53,40 +53,40 @@ msgstr "環境変数を削除する"
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] 完了しました"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:45
 #, fuzzy
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "証明書の削除に成功しました"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:6
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] 証明書を取得中"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:13
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] 証明書の失効準備中"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:26
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] Lego 設定の準備中"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] Nginx を再読み込み中"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:42
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] 失効が完了しました"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:14
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] 証明書を失効中"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:33
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] 古い証明書を失効中"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:19
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] DNS01 チャレンジプロバイダーを設定中"
 
@@ -95,15 +95,15 @@ msgstr "[Nginx UI] DNS01 チャレンジプロバイダーを設定中"
 msgid "[Nginx UI] Setting environment variables"
 msgstr "環境変数を削除する"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:37
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] HTTP01 チャレンジプロバイダーの設定"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:27
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] 証明書の秘密鍵をディスクに書き込んでいます"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:12
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] 証明書をディスクに書き込み中"
 
@@ -629,7 +629,7 @@ msgstr "証明書の有効期限が切れました"
 msgid "Certificate Expiring Soon"
 msgstr "証明書の有効期限が近づいています"
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:46
 #, fuzzy
 msgid "Certificate not found: %{error}"
 msgstr "証明書のデコードエラー"
@@ -656,7 +656,7 @@ msgstr "証明書更新間隔"
 msgid "Certificate renewed successfully"
 msgstr "正常に削除しました"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:18
 #, fuzzy
 msgid "Certificate revoked successfully"
 msgstr "証明書の削除に成功しました"
@@ -723,48 +723,48 @@ msgstr ""
 "HTTPS が有効かどうかを確認します。localhost 以外で HTTP を使用すると安全では"
 "なく、Passkeys やクリップボード機能の使用が妨げられます。"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:9
 msgid "Check if the docker socket exists."
 msgstr "Docker ソケットが存在するか確認してください。"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:36
 msgid "Check if the nginx access log path exists"
 msgstr "Nginx のアクセスログパスが存在するか確認する"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:24
 #, fuzzy
 msgid "Check if the nginx configuration directory exists"
 msgstr "nginx.conf に conf.d ディレクトリが含まれているか確認します。"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:25
 #, fuzzy
 msgid "Check if the nginx configuration entry file exists"
 msgstr "nginx.conf に conf.d ディレクトリが含まれているか確認します。"
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:7
 msgid "Check if the nginx error log path exists"
 msgstr "Nginx のエラーログパスが存在するか確認する"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:35
 msgid "Check if the nginx PID path exists"
 msgstr "Nginx の PID パスが存在するか確認する"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:23
 #, fuzzy
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "nginx.conf に conf.d ディレクトリが含まれているか確認します。"
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:34
 #, fuzzy
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "nginx.conf に sites-enabled ディレクトリが含まれているか確認します。"
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:22
 #, fuzzy
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "nginx.conf に streams-enabled ディレクトリが含まれているか確認します。"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:51
 #, fuzzy
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
@@ -773,7 +773,7 @@ msgstr ""
 "sites-available と sites-enabled ディレクトリが nginx の設定ディレクトリ配下"
 "にあるか確認します。"
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:15
 #, fuzzy
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
@@ -1361,7 +1361,7 @@ msgstr ""
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:8
 msgid "Docker socket exists"
 msgstr ""
 
@@ -1761,7 +1761,7 @@ msgstr ""
 msgid "Failed to delete certificate"
 msgstr ""
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:39
 msgid "Failed to delete certificate from database: %{error}"
 msgstr ""
 
@@ -1905,7 +1905,7 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr ""
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:31
 msgid "Failed to revoke certificate: %{error}"
 msgstr ""
 
@@ -2408,7 +2408,7 @@ msgstr ""
 msgid "Log"
 msgstr ""
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:10
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
@@ -2693,7 +2693,7 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr ""
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:29
 msgid "Nginx access log path exists"
 msgstr ""
 
@@ -2721,12 +2721,12 @@ msgstr ""
 msgid "Nginx config directory is not set"
 msgstr ""
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:44
 #, fuzzy
 msgid "Nginx configuration directory exists"
 msgstr "設定"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:28
 #, fuzzy
 msgid "Nginx configuration entry file exists"
 msgstr "設定"
@@ -2767,7 +2767,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr ""
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:30
 msgid "Nginx error log path exists"
 msgstr ""
 
@@ -2864,17 +2864,17 @@ msgid ""
 "few seconds."
 msgstr ""
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:17
 #, fuzzy
 msgid "Nginx.conf includes conf.d directory"
 msgstr "nginx.conf に conf.d ディレクトリが含まれているか確認します。"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:21
 #, fuzzy
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "nginx.conf に sites-enabled ディレクトリが含まれているか確認します。"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:16
 #, fuzzy
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "nginx.conf に streams-enabled ディレクトリが含まれているか確認します。"
@@ -3387,6 +3387,10 @@ msgstr "APIプロキシ"
 
 #: src/views/preference/tabs/NodeSettings.vue:46
 msgid "Public Security Number"
+msgstr ""
+
+#: src/constants/errors/site.ts:8 src/constants/errors/stream.ts:7
+msgid "Read dir failed: {0}"
 msgstr ""
 
 #: src/composables/usePerformanceMetrics.ts:104
@@ -3985,7 +3989,7 @@ msgstr ""
 msgid "Site not found"
 msgstr ""
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:50
 #, fuzzy
 msgid "Sites directory exists"
 msgstr "ディレクトリ"
@@ -4099,7 +4103,7 @@ msgstr ""
 msgid "Stream not found"
 msgstr ""
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:20
 #, fuzzy
 msgid "Streams directory exists"
 msgstr "ディレクトリ"

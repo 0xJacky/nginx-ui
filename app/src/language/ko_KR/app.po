@@ -14,12 +14,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Weblate 5.10.4\n"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:11
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 "[Nginx UI] ACME 사용자: %{name}, 이메일: %{email}, CA 디렉터리: %{caDir}"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:32
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] 현재 인증서를 나중에 취소하기 위해 백업 중"
 
@@ -28,23 +28,23 @@ msgstr "[Nginx UI] 현재 인증서를 나중에 취소하기 위해 백업 중"
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "성공적으로 제거됨"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:43
 #, fuzzy
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "Nginx가 성공적으로 재시작됨"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:49
 msgid ""
 "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 "[Nginx UI] 서버에 인증서가 사용되었습니다, 서버 TLS 인증서 다시 불러오는 중"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:4
 #, fuzzy
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "클라이언트 생성은 CA 서버와의 통신을 용이하게 합니다"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:5
 #, fuzzy
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "환경 변수 설정"
@@ -53,40 +53,40 @@ msgstr "환경 변수 설정"
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] 완료됨"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:45
 #, fuzzy
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "성공적으로 활성화됨"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:6
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] 인증서 획득 중"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:13
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] 인증서 해지 준비 중"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:26
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] 레고 구성 준비 중"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] Nginx 다시 로드 중"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:42
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] 해지 완료"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:14
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] 인증서 취소 중"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:33
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] 이전 인증서 취소 중"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:19
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] DNS01 챌린지 공급자 설정 중"
 
@@ -95,15 +95,15 @@ msgstr "[Nginx UI] DNS01 챌린지 공급자 설정 중"
 msgid "[Nginx UI] Setting environment variables"
 msgstr "환경 변수 설정"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:37
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] HTTP01 챌린지 공급자 설정 중"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:27
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] 인증서 개인 키를 디스크에 기록 중"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:12
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] 인증서를 디스크에 작성 중"
 
@@ -623,7 +623,7 @@ msgstr "인증서 만료됨"
 msgid "Certificate Expiring Soon"
 msgstr "인증서 만료 임박"
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:46
 #, fuzzy
 msgid "Certificate not found: %{error}"
 msgstr "인증서 디코드 오류"
@@ -650,7 +650,7 @@ msgstr "인증서 갱신 간격"
 msgid "Certificate renewed successfully"
 msgstr "성공적으로 제거됨"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:18
 #, fuzzy
 msgid "Certificate revoked successfully"
 msgstr "인증서가 성공적으로 제거되었습니다"
@@ -721,48 +721,48 @@ msgstr ""
 "HTTPS가 활성화되었는지 확인하세요. localhost 외부에서 HTTP를 사용하는 것은 안"
 "전하지 않으며 Passkeys 및 클립보드 기능 사용을 방해요."
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:9
 msgid "Check if the docker socket exists."
 msgstr "Docker 소켓이 존재하는지 확인하세요."
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:36
 msgid "Check if the nginx access log path exists"
 msgstr "Nginx 액세스 로그 경로가 존재하는지 확인"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:24
 #, fuzzy
 msgid "Check if the nginx configuration directory exists"
 msgstr "nginx.conf에 conf.d 디렉터리가 포함되어 있는지 확인하세요."
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:25
 #, fuzzy
 msgid "Check if the nginx configuration entry file exists"
 msgstr "nginx.conf에 conf.d 디렉터리가 포함되어 있는지 확인하세요."
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:7
 msgid "Check if the nginx error log path exists"
 msgstr "Nginx 오류 로그 경로가 존재하는지 확인"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:35
 msgid "Check if the nginx PID path exists"
 msgstr "Nginx PID 경로가 존재하는지 확인"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:23
 #, fuzzy
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "nginx.conf에 conf.d 디렉터리가 포함되어 있는지 확인하세요."
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:34
 #, fuzzy
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "nginx.conf에 sites-enabled 디렉터리가 포함되어 있는지 확인하세요."
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:22
 #, fuzzy
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "nginx.conf에 streams-enabled 디렉터리가 포함되어 있는지 확인하세요."
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:51
 #, fuzzy
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
@@ -771,7 +771,7 @@ msgstr ""
 "sites-available 및 sites-enabled 디렉터리가 nginx 구성 디렉터리 아래에 있는"
 "지 확인합니다."
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:15
 #, fuzzy
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
@@ -1374,7 +1374,7 @@ msgstr "이 업스트림을 제거하시겠습니까?"
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:8
 msgid "Docker socket exists"
 msgstr ""
 
@@ -1819,7 +1819,7 @@ msgstr ""
 msgid "Failed to delete certificate"
 msgstr "인증서 획득 실패"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:39
 #, fuzzy
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "인증서 획득 실패"
@@ -1987,7 +1987,7 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr "인증서 획득 실패"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:31
 #, fuzzy
 msgid "Failed to revoke certificate: %{error}"
 msgstr "인증서 획득 실패"
@@ -2522,7 +2522,7 @@ msgstr "위치들"
 msgid "Log"
 msgstr "로그인"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:10
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
@@ -2828,7 +2828,7 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Nginx 접근 로그 경로"
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:29
 #, fuzzy
 msgid "Nginx access log path exists"
 msgstr "Nginx 접근 로그 경로"
@@ -2859,12 +2859,12 @@ msgstr ""
 msgid "Nginx config directory is not set"
 msgstr "Nginx 구성 오류름"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:44
 #, fuzzy
 msgid "Nginx configuration directory exists"
 msgstr "Nginx 구성 오류름"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:28
 #, fuzzy
 msgid "Nginx configuration entry file exists"
 msgstr "Nginx 구성 오류름"
@@ -2908,7 +2908,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr "Nginx 오류 로그 경로"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:30
 #, fuzzy
 msgid "Nginx error log path exists"
 msgstr "Nginx 오류 로그 경로"
@@ -3016,17 +3016,17 @@ msgid ""
 "few seconds."
 msgstr "Nginx 구성 오류름"
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:17
 #, fuzzy
 msgid "Nginx.conf includes conf.d directory"
 msgstr "터미널 시작 명령"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:21
 #, fuzzy
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "nginx.conf에 sites-enabled 디렉터리가 포함되어 있는지 확인하세요."
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:16
 #, fuzzy
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "nginx.conf에 streams-enabled 디렉터리가 포함되어 있는지 확인하세요."
@@ -3564,6 +3564,11 @@ msgstr "API 프록시"
 #: src/views/preference/tabs/NodeSettings.vue:46
 msgid "Public Security Number"
 msgstr ""
+
+#: src/constants/errors/site.ts:8 src/constants/errors/stream.ts:7
+#, fuzzy
+msgid "Read dir failed: {0}"
+msgstr "%{msg} 활성화 실패"
 
 #: src/composables/usePerformanceMetrics.ts:104
 #: src/views/dashboard/components/PerformanceTablesCard.vue:63
@@ -4221,7 +4226,7 @@ msgstr "사이트 로그"
 msgid "Site not found"
 msgstr "파일을 찾을 수 없음"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:50
 #, fuzzy
 msgid "Sites directory exists"
 msgstr "디렉토리"
@@ -4346,7 +4351,7 @@ msgstr "비활성화됨"
 msgid "Stream not found"
 msgstr "파일을 찾을 수 없음"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:20
 #, fuzzy
 msgid "Streams directory exists"
 msgstr "디렉토리"

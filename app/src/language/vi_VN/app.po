@@ -9,12 +9,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:11
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 "[Nginx UI] Người dùng ACME: %{name}, Email: %{email}, Thư mục CA: %{caDir}"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:32
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] Đang sao lưu chứng chỉ hiện tại để thu hồi sau này"
 
@@ -23,24 +23,24 @@ msgstr "[Nginx UI] Đang sao lưu chứng chỉ hiện tại để thu hồi sau
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "Đã xóa thành công"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:43
 #, fuzzy
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "Restart Nginx thành công"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:49
 msgid ""
 "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 "[Nginx UI] Chứng chỉ đã được sử dụng cho máy chủ, đang tải lại chứng chỉ TLS "
 "của máy chủ"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:4
 #, fuzzy
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "Tạo client để giao tiếp với CA server"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:5
 #, fuzzy
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "Đặt biến môi trường"
@@ -49,40 +49,40 @@ msgstr "Đặt biến môi trường"
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] Đã hoàn thành"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:45
 #, fuzzy
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "Cấp chứng chỉ thành công"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:6
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] Đang lấy chứng chỉ"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:13
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] Chuẩn bị thu hồi chứng chỉ"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:26
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] Đang chuẩn bị cấu hình lego"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] Đang tải lại nginx"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:42
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] Đã hoàn tất thu hồi"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:14
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] Đang thu hồi chứng chỉ"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:33
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] Đang thu hồi chứng chỉ cũ"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:19
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách DNS01"
 
@@ -91,15 +91,15 @@ msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách DNS01"
 msgid "[Nginx UI] Setting environment variables"
 msgstr "Đặt biến môi trường"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:37
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách HTTP01"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:27
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] Đang ghi khóa riêng của chứng chỉ vào ổ đĩa"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:12
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Đang ghi chứng chỉ vào ổ đĩa"
 
@@ -644,7 +644,7 @@ msgstr "Chứng chỉ đã hết hạn"
 msgid "Certificate Expiring Soon"
 msgstr "Chứng chỉ sắp hết hạn"
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:46
 #, fuzzy
 msgid "Certificate not found: %{error}"
 msgstr "Lỗi giải mã chứng chỉ"
@@ -672,7 +672,7 @@ msgstr "Chứng chỉ SSL hợp lệ"
 msgid "Certificate renewed successfully"
 msgstr "Đã xóa thành công"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:18
 #, fuzzy
 msgid "Certificate revoked successfully"
 msgstr "Đã xóa chứng chỉ thành công"
@@ -747,48 +747,48 @@ msgstr ""
 "Kiểm tra xem HTTPS đã được bật chưa. Sử dụng HTTP bên ngoài localhost không "
 "an toàn và ngăn chặn việc sử dụng tính năng Passkeys cùng khay nhớ tạm."
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:9
 msgid "Check if the docker socket exists."
 msgstr "Kiểm tra xem ổ cắm Docker có tồn tại không."
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:36
 msgid "Check if the nginx access log path exists"
 msgstr "Kiểm tra xem đường dẫn nhật ký truy cập nginx có tồn tại không"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:24
 #, fuzzy
 msgid "Check if the nginx configuration directory exists"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không."
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:25
 #, fuzzy
 msgid "Check if the nginx configuration entry file exists"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không."
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:7
 msgid "Check if the nginx error log path exists"
 msgstr "Kiểm tra xem đường dẫn nhật ký lỗi nginx có tồn tại không"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:35
 msgid "Check if the nginx PID path exists"
 msgstr "Kiểm tra xem đường dẫn PID của Nginx có tồn tại không"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:23
 #, fuzzy
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không."
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:34
 #, fuzzy
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục sites-enabled không."
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:22
 #, fuzzy
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục streams-enabled không."
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:51
 #, fuzzy
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
@@ -797,7 +797,7 @@ msgstr ""
 "Kiểm tra xem các thư mục sites-available và sites-enabled có nằm trong thư "
 "mục cấu hình nginx hay không."
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:15
 #, fuzzy
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
@@ -1411,7 +1411,7 @@ msgstr "Bạn muốn xóa máy chủ này ?"
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:8
 msgid "Docker socket exists"
 msgstr ""
 
@@ -1861,7 +1861,7 @@ msgstr ""
 msgid "Failed to delete certificate"
 msgstr "Nhận chứng chỉ"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:39
 #, fuzzy
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Nhận chứng chỉ"
@@ -2029,7 +2029,7 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr "Nhận chứng chỉ"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:31
 #, fuzzy
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Nhận chứng chỉ"
@@ -2564,7 +2564,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Log"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:10
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
@@ -2864,7 +2864,7 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:29
 #, fuzzy
 msgid "Nginx access log path exists"
 msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
@@ -2895,12 +2895,12 @@ msgstr ""
 msgid "Nginx config directory is not set"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:44
 #, fuzzy
 msgid "Nginx configuration directory exists"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:28
 #, fuzzy
 msgid "Nginx configuration entry file exists"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
@@ -2943,7 +2943,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:30
 #, fuzzy
 msgid "Nginx error log path exists"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
@@ -3049,17 +3049,17 @@ msgid ""
 "few seconds."
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:17
 #, fuzzy
 msgid "Nginx.conf includes conf.d directory"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:21
 #, fuzzy
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục sites-enabled không."
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:16
 #, fuzzy
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục streams-enabled không."
@@ -3595,6 +3595,11 @@ msgstr ""
 #: src/views/preference/tabs/NodeSettings.vue:46
 msgid "Public Security Number"
 msgstr ""
+
+#: src/constants/errors/site.ts:8 src/constants/errors/stream.ts:7
+#, fuzzy
+msgid "Read dir failed: {0}"
+msgstr "Không thể bật %{msg}"
 
 #: src/composables/usePerformanceMetrics.ts:104
 #: src/views/dashboard/components/PerformanceTablesCard.vue:63
@@ -4253,7 +4258,7 @@ msgstr "Logs"
 msgid "Site not found"
 msgstr "Không tìm thấy tệp tin"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:50
 #, fuzzy
 msgid "Sites directory exists"
 msgstr "Thư mục"
@@ -4374,7 +4379,7 @@ msgstr "Đã tắt"
 msgid "Stream not found"
 msgstr "Không tìm thấy tệp tin"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:20
 #, fuzzy
 msgid "Streams directory exists"
 msgstr "Thư mục"

@@ -26,13 +26,13 @@ func GetSiteList(c *gin.Context) {
 
 	configFiles, err := os.ReadDir(nginx.GetConfPath("sites-available"))
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(site.ErrReadDirFailed, err.Error()))
 		return
 	}
 
 	enabledConfig, err := os.ReadDir(nginx.GetConfPath("sites-enabled"))
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		cosy.ErrHandler(c, cosy.WrapErrorWithParams(site.ErrReadDirFailed, err.Error()))
 		return
 	}
 
