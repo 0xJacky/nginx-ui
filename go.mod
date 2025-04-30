@@ -311,4 +311,7 @@ require (
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
 
-replace github.com/tufanbarisyildirim/gonginx => github.com/0xJacky/gonginx v0.0.0-20250420001451-d120448e89a4
+replace (
+	gorm.io/gorm => gorm.io/gorm v1.25.12
+	gorm.io/plugin/dbresolver => gorm.io/plugin/dbresolver v1.5.3
+)
