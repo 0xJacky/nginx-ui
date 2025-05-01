@@ -69,7 +69,7 @@ jobs:
 
       - name: Build
         run: |
-          npx browserslist@latest --update-db
+          npx update-browserslist-db@latest
           pnpm build
         working-directory: app
 
@@ -274,6 +274,14 @@ jobs:
           files: |
             ${{ env.DIST }}.tar.gz
             ${{ env.DIST }}.tar.gz.digest
+
+      - name: Upload to R2
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/dev'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: r2 object put nginx-ui-dev-build/${{ env.ARTIFACT }} --file ./dist/${{ env.BINARY_NAME }}
 
   docker-build:
     if: github.event_name != 'pull_request'

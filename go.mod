@@ -247,8 +247,8 @@ require (
 	github.com/technoweenie/multipartstreamer v1.0.1 // indirect
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.1146 // indirect
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.0.1136 // indirect
-	github.com/timtadh/data-structures v0.6.2 // indirect
-	github.com/timtadh/lexmachine v0.2.3 // indirect
+	github.com/timtadh/data-structures v0.5.3 // indirect
+	github.com/timtadh/lexmachine v0.2.2 // indirect
 	github.com/tjfoc/gmsm v1.4.1 // indirect
 	github.com/tklauser/go-sysconf v0.3.15 // indirect
 	github.com/tklauser/numcpus v0.10.0 // indirect
@@ -312,6 +312,7 @@ require (
 )
 
 replace (
+	github.com/tufanbarisyildirim/gonginx => github.com/0xJacky/gonginx v0.0.0-20250420001451-d120448e89a4
 	gorm.io/gorm => gorm.io/gorm v1.25.12
 	gorm.io/plugin/dbresolver => gorm.io/plugin/dbresolver v1.5.3
 )
