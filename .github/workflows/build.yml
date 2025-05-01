@@ -216,7 +216,7 @@ jobs:
           echo "CC=${{ env.ARCH_NAME }}-clang" >> $GITHUB_ENV
           echo "CXX=${{ env.ARCH_NAME }}-clang++" >> $GITHUB_ENV
           echo "LD_FLAGS=-w" >> $GITHUB_ENV
-
+          
       - name: Setup for Windows
         if: env.GOOS == 'windows'
         run: |
@@ -262,7 +262,6 @@ jobs:
           path: dist/${{ env.BINARY_NAME }}
 
       - name: Prepare publish
-        if: github.event_name == 'release'
         run: |
           cp README*.md ./dist
           find dist -printf '%P\n' | tar -C dist --no-recursion -zcvf ${{ env.DIST }}.tar.gz -T -
@@ -280,9 +279,11 @@ jobs:
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/dev'
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: r2 object put nginx-ui-dev-build/${{ env.COMMIT_HASH }}/${{ env.ARTIFACT }} --file ./dist/${{ env.BINARY_NAME }}
+          apiToken: ${{ secrets.CF_R2_API_TOKEN }}
+          command: |
+            r2 object put nginx-ui-dev-build/${{ env.COMMIT_HASH }}/${{ env.DIST }}.tar.gz --file ./${{ env.DIST }}.tar.gz
+            r2 object put nginx-ui-dev-build/${{ env.COMMIT_HASH }}/${{ env.DIST }}.tar.gz.digest --file ./${{ env.DIST }}.tar.gz.digest
 
   docker-build:
     if: github.event_name != 'pull_request'
