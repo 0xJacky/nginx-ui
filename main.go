@@ -2,14 +2,11 @@ package main
 
 import (
 	"crypto/tls"
-	"errors"
 	"fmt"
 	"net/http"
 
 	"context"
-	"fmt"
 	"net"
-	"net/http"
 	"os/signal"
 	"syscall"
 
@@ -77,7 +74,7 @@ func Program(confPath string) func(l []net.Listener) error {
 			err = cert.LoadServerTLSCertificate()
 			if err != nil {
 				logger.Fatalf("Failed to load TLS certificate: %v", err)
-				return
+				return err
 			}
 
 			tlsConfig := &tls.Config{
@@ -99,6 +96,7 @@ func Program(confPath string) func(l []net.Listener) error {
 		if err != nil && !errors.Is(err, http.ErrServerClosed) {
 			logger.Fatalf("listen: %s\n", err)
 		}
+		return nil
 	}
 }
 
@@ -113,7 +111,6 @@ func main() {
 
 	err := risefront.New(ctx, risefront.Config{
 		Run:       Program(confPath),
-		Debug:     cSettings.ServerSettings.RunMode == gin.DebugMode,
 		Name:      "nginx-ui",
 		Addresses: []string{fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port)},
 		ErrorHandler: func(kind string, err error) {
