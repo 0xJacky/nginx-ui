@@ -7,12 +7,12 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"sync/atomic"
 
+	"code.pfad.fr/risefront"
 	_github "github.com/0xJacky/Nginx-UI/.github"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/version"
@@ -269,8 +269,6 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 	}
 
 	// gracefully restart
-	cmd := exec.Command(os.Args[0])
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Start()
+	risefront.Restart()
+	return
 }
