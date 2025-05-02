@@ -158,7 +158,6 @@ jobs:
           echo "DIST=nginx-ui-$_NAME" >> $GITHUB_ENV
           echo "ARTIFACT=$_ARTIFACT" >> $GITHUB_ENV
           echo "BINARY_NAME=$_BINARY" >> $GITHUB_ENV
-          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Setup Go modules cache
         uses: actions/cache@v4
@@ -282,8 +281,8 @@ jobs:
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           apiToken: ${{ secrets.CF_R2_API_TOKEN }}
           command: |
-            r2 object put nginx-ui-dev-build/${{ env.COMMIT_HASH }}/${{ env.DIST }}.tar.gz --file ./${{ env.DIST }}.tar.gz
-            r2 object put nginx-ui-dev-build/${{ env.COMMIT_HASH }}/${{ env.DIST }}.tar.gz.digest --file ./${{ env.DIST }}.tar.gz.digest
+            r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz --file ./${{ env.DIST }}.tar.gz
+            r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --file ./${{ env.DIST }}.tar.gz.digest
 
   docker-build:
     if: github.event_name != 'pull_request'

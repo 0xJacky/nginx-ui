@@ -47,7 +47,7 @@ func getDevBuild() (data TRelease, err error) {
 	}
 	shortSHA := commit.SHA[:7]
 
-	resp, err = http.Get(fmt.Sprintf("%s/dev-builds/%s", CloudflareWorkerAPI, shortSHA))
+	resp, err = http.Get(fmt.Sprintf("%s/dev-builds", CloudflareWorkerAPI))
 	if err != nil {
 		return
 	}
@@ -66,7 +66,7 @@ func getDevBuild() (data TRelease, err error) {
 
 	data = TRelease{
 		TagName:     "sha-" + shortSHA,
-		Name:        shortSHA,
+		Name:        "sha-" + shortSHA,
 		Body:        commit.Commit.Message,
 		Type:        ReleaseTypeDev,
 		PublishedAt: commit.Commit.Committer.Date,
