@@ -151,7 +151,7 @@ JWT 是一种用于验证用户身份的标准，它可以在用户登录后生�
 ## GithubProxy
 
 - 类型：`string`
-- 建议：`https://mirror.ghproxy.com/`
+- 建议：`https://cloud.nginxui.com/`
 
 ::: warning 警告
 已在 `v2.0.0-beta.37` 中废弃，请使用 `Http.GithubProxy` 替代。

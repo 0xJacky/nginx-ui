@@ -16,7 +16,7 @@ const { data, errors } = storeToRefs(systemSettingsStore)
     >
       <AInput
         v-model:value="data.http.github_proxy"
-        :placeholder="$gettext('For Chinese user: https://mirror.ghproxy.com/')"
+        :placeholder="$gettext('For Chinese user: https://cloud.nginxui.com/')"
       />
     </AFormItem>
     <AFormItem :label="$gettext('Insecure Skip Verify')">

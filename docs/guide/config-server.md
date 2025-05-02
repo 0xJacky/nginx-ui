@@ -162,7 +162,7 @@ CADir needs to comply with the `RFC 8555` standard.
 ## GithubProxy
 
 - Type: `string`
-- Suggestion: `https://mirror.ghproxy.com/`
+- Suggestion: `https://cloud.nginxui.com/`
 
 ::: warning
 Deprecated in `v2.0.0-beta.37`, please use `Http.GithubProxy` instead.

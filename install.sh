@@ -27,7 +27,7 @@ PROXY=''
 
 # --reverse-proxy ?
 # You can set this variable whatever you want in shell session right before running this script by issuing:
-# export GH_PROXY='https://mirror.ghproxy.com/'
+# export GH_PROXY='https://cloud.nginxui.com/'
 RPROXY=$GH_PROXY
 
 # --purge
@@ -382,7 +382,7 @@ show_help() {
     echo '  install:'
     echo '    -l, --local               Install Nginx UI from a local file'
     echo '    -p, --proxy               Download through a proxy server, e.g., -p http://127.0.0.1:8118 or -p socks5://127.0.0.1:1080'
-    echo '    -r, --reverse-proxy       Download through a reverse proxy server, e.g., -r https://mirror.ghproxy.com/'
+    echo '    -r, --reverse-proxy       Download through a reverse proxy server, e.g., -r https://cloud.nginxui.com/'
     echo '  remove:'
     echo '    --purge                   Remove all the Nginx UI files, include logs, configs, etc'
     exit 0

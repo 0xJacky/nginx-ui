@@ -21,7 +21,7 @@ install.sh install [OPTIONS]
 |-----------------------|-----------------------------------------------------------------------------------------------------------------|
 | `-l, --local <file>`  | Install Nginx UI from a local file (`string`)                                                                   |
 | `-p, --proxy <url>`   | Download through a proxy server (`string`)<br/>e.g., `-p http://127.0.0.1:8118` or `-p socks5://127.0.0.1:1080` |
-| `-r, --reverse-proxy` | Download through a reverse proxy server (`string`)<br/>e.g., `-r https://mirror.ghproxy.com/`                          |
+| `-r, --reverse-proxy` | Download through a reverse proxy server (`string`)<br/>e.g., `-r https://cloud.nginxui.com/`                          |
 
 
 ### Quick Usage

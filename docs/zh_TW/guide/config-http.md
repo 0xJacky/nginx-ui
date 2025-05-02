@@ -3,7 +3,7 @@
 ## GithubProxy
 - 版本：`>= v2.0.0-beta.37`
 - 類型：`string`
-- 建議：`https://mirror.ghproxy.com/`
+- 建議：`https://cloud.nginxui.com/`
 
 對於可能在從 Github 下載資源時遇到困難的使用者（如在中國大陸），此選項允許他們為 github.com 設定代理，以提高可存取性。
 

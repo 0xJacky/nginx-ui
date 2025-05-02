@@ -1,10 +1,11 @@
 package settings
 
 import (
-	"github.com/stretchr/testify/assert"
-	"github.com/uozi-tech/cosy/logger"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 func TestDeprecatedEnvMigration(t *testing.T) {
@@ -60,7 +61,7 @@ HTTPChallengePort    = 9181
 StartCmd             = bash
 Database             = database
 CADir                = /test
-GithubProxy          = https://mirror.ghproxy.com/
+GithubProxy          = https://cloud.nginxui.com/
 Secret               = newSecret
 Demo                 = false
 PageSize             = 20

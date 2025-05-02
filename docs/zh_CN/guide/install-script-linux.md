@@ -20,7 +20,7 @@ install.sh install [OPTIONS]
 |-----------------------|---------------------------------------------------------------------------------------|
 | `-l, --local <file>`  | 从本地文件安装 Nginx UI (`string`)                                                           |
 | `-p, --proxy <url>`   | 通过代理服务器下载 (`string`)<br/>例如：`-p http://127.0.0.1:8118` 或 `-p socks5://127.0.0.1:1080` |
-| `-r, --reverse-proxy` | 通过反向代理服务器下载 (`string`)<br/>例如：`-r https://mirror.ghproxy.com/`                               |
+| `-r, --reverse-proxy` | 通过反向代理服务器下载 (`string`)<br/>例如：`-r https://cloud.nginxui.com/`                               |
 
 ### 使用反向代理加速
 

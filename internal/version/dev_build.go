@@ -12,7 +12,7 @@ import (
 
 const (
 	GithubDevCommitAPI  = "https://api.github.com/repos/0xJacky/nginx-ui/commits/dev?per_page=1"
-	CloudflareWorkerAPI = "https://nginx-ui-proxy.langgood.com"
+	CloudflareWorkerAPI = "https://cloud.nginxui.com"
 )
 
 type TCommit struct {

@@ -4,7 +4,7 @@
 
 - Type: `string`
 - Version: `>= v2.0.0-beta.37`
-- Suggestion: `https://mirror.ghproxy.com/`
+- Suggestion: `https://cloud.nginxui.com/`
 
 For users who may experience difficulties downloading resources from GitHub (such as in mainland China), this option
 allows them to set a proxy for github.com to improve accessibility.
