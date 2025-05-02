@@ -16,6 +16,7 @@ func Run() (reports Reports) {
 			status = ReportStatusError
 		}
 		reports = append(reports, &Report{
+			Key:         task.Key,
 			Name:        task.Name,
 			Description: task.Description,
 			Fixable:     task.FixFunc != nil,

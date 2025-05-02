@@ -24,6 +24,7 @@ const (
 )
 
 type Report struct {
+	Key         string                 `json:"key"`
 	Name        *translation.Container `json:"name"`
 	Description *translation.Container `json:"description,omitempty"`
 	Fixable     bool                   `json:"fixable"`
