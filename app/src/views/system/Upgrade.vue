@@ -193,6 +193,9 @@ async function performUpgrade() {
             <ASelectOption key="prerelease">
               {{ $gettext('Pre-release') }}
             </ASelectOption>
+            <ASelectOption key="dev">
+              {{ $gettext('Dev') }}
+            </ASelectOption>
           </ASelect>
         </AFormItem>
         <template v-if="!loading">

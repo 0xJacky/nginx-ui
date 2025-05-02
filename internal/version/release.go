@@ -14,6 +14,14 @@ const (
 	GithubReleasesListAPI  = "https://api.github.com/repos/0xJacky/nginx-ui/releases"
 )
 
+type ReleaseType string
+
+const (
+	ReleaseTypeStable     ReleaseType = "stable"
+	ReleaseTypePrerelease ReleaseType = "prerelease"
+	ReleaseTypeDev        ReleaseType = "dev"
+)
+
 type TReleaseAsset struct {
 	Name               string `json:"name"`
 	BrowserDownloadUrl string `json:"browser_download_url"`
@@ -26,6 +34,7 @@ type TRelease struct {
 	PublishedAt time.Time       `json:"published_at"`
 	Body        string          `json:"body"`
 	Prerelease  bool            `json:"prerelease"`
+	Type        ReleaseType     `json:"type"`
 	Assets      []TReleaseAsset `json:"assets"`
 }
 
@@ -58,6 +67,7 @@ func getLatestRelease() (data TRelease, err error) {
 		err = errors.Wrap(err, "service.getLatestRelease json.Unmarshal err")
 		return
 	}
+	data.Type = ReleaseTypeStable
 	return
 }
 
@@ -92,6 +102,7 @@ func getLatestPrerelease() (data TRelease, err error) {
 		if release.Prerelease && release.PublishedAt.After(latestDate) {
 			data = release
 			latestDate = release.PublishedAt
+			data.Type = ReleaseTypePrerelease
 		}
 	}
 
@@ -104,12 +115,12 @@ func GetRelease(channel string) (data TRelease, err error) {
 		return TRelease{}, err
 	}
 
-	switch channel {
+	switch ReleaseType(channel) {
 	default:
 		fallthrough
-	case "stable":
+	case ReleaseTypeStable:
 		return stableRelease, nil
-	case "prerelease":
+	case ReleaseTypePrerelease:
 		preRelease, err := getLatestPrerelease()
 		if err != nil {
 			return TRelease{}, err
@@ -120,5 +131,11 @@ func GetRelease(channel string) (data TRelease, err error) {
 			return preRelease, nil
 		}
 		return stableRelease, nil
+	case ReleaseTypeDev:
+		devRelease, err := getDevBuild()
+		if err != nil {
+			return TRelease{}, err
+		}
+		return devRelease, nil
 	}
 }
