@@ -154,7 +154,7 @@ func UpgradeStepOne(channel string, progressChan chan<- float64) (err error) {
 	currentContainerName := strings.TrimPrefix(containerInfo.Name, "/")
 
 	// Set up the command for the temp container to execute step 2
-	upgradeCmd := []string{"./nginx-ui", "upgrade-docker-step2"}
+	upgradeCmd := []string{"nginx-ui", "upgrade-docker-step2"}
 
 	// Add old container name as environment variable
 	containerEnv := containerInfo.Config.Env
