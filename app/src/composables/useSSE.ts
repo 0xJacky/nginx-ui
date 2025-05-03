@@ -1,4 +1,5 @@
 import type { SSEvent } from 'sse.js'
+import { urlJoin } from '@/lib/helper'
 import { useUserStore } from '@/pinia'
 import { SSE } from 'sse.js'
 
@@ -37,7 +38,9 @@ export function useSSE() {
       reconnectInterval = 5000,
     } = options
 
-    const sse = new SSE(url, {
+    const fullUrl = urlJoin(window.location.pathname, url)
+
+    const sse = new SSE(fullUrl, {
       headers: {
         Authorization: token.value,
       },

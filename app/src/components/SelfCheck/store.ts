@@ -62,7 +62,9 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
     try {
       await selfCheck.fix(taskName)
       await nextTick()
-      check()
+      setTimeout(() => {
+        check()
+      }, 1000)
     }
     finally {
       fixing[taskName] = false
