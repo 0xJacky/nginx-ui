@@ -169,9 +169,7 @@ func UpgradeStepOne(channel string, progressChan chan<- float64) (err error) {
 			Env:   containerEnv,
 		},
 		&container.HostConfig{
-			Binds:         containerInfo.HostConfig.Binds,
-			PortBindings:  containerInfo.HostConfig.PortBindings,
-			RestartPolicy: containerInfo.HostConfig.RestartPolicy,
+			Binds: containerInfo.HostConfig.Binds,
 		},
 		nil,
 		nil,
