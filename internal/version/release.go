@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	GithubLatestReleaseAPI = "https://api.github.com/repos/0xJacky/nginx-ui/releases/latest"
-	GithubReleasesListAPI  = "https://api.github.com/repos/0xJacky/nginx-ui/releases"
+	GithubLatestReleaseAPI = "https://cloud.nginxui.com/https://api.github.com/repos/0xJacky/nginx-ui/releases/latest"
+	GithubReleasesListAPI  = "https://cloud.nginxui.com/https://api.github.com/repos/0xJacky/nginx-ui/releases"
 )
 
 type ReleaseType string

@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	GithubDevCommitAPI  = "https://api.github.com/repos/0xJacky/nginx-ui/commits/dev?per_page=1"
+	GithubDevCommitAPI  = "https://cloud.nginxui.com/https://api.github.com/repos/0xJacky/nginx-ui/commits/dev?per_page=1"
 	CloudflareWorkerAPI = "https://cloud.nginxui.com"
 )
 
