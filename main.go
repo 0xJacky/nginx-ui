@@ -1,12 +1,11 @@
 package main
 
 import (
+	"context"
 	"crypto/tls"
 	"fmt"
-	"net/http"
-
-	"context"
 	"net"
+	"net/http"
 	"os/signal"
 	"syscall"
 
@@ -61,6 +60,7 @@ func Program(confPath string) func(l []net.Listener) error {
 		srv := &http.Server{
 			Handler: cRouter.GetEngine(),
 		}
+
 		// defer Shutdown to wait for ongoing requests to be served before returning
 		defer func(srv *http.Server, ctx context.Context) {
 			err := srv.Shutdown(ctx)
@@ -68,6 +68,7 @@ func Program(confPath string) func(l []net.Listener) error {
 				logger.Fatal(err)
 			}
 		}(srv, context.Background())
+
 		var err error
 		if cSettings.ServerSettings.EnableHTTPS {
 			// Load TLS certificate
@@ -83,20 +84,15 @@ func Program(confPath string) func(l []net.Listener) error {
 				},
 				MinVersion: tls.VersionTLS12,
 			}
-
 			srv.TLSConfig = tlsConfig
 
 			logger.Info("Starting HTTPS server")
 			tlsListener := tls.NewListener(listener, tlsConfig)
-			err = srv.Serve(tlsListener)
+			return srv.Serve(tlsListener)
 		} else {
 			logger.Info("Starting HTTP server")
-			err = srv.Serve(listener)
+			return srv.Serve(listener)
 		}
-		if err != nil && !errors.Is(err, http.ErrServerClosed) {
-			logger.Fatalf("listen: %s\n", err)
-		}
-		return nil
 	}
 }
 
