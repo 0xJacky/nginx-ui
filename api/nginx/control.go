@@ -5,14 +5,16 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
-	"github.com/uozi-tech/cosy"
 )
 
 // Reload reloads the nginx
 func Reload(c *gin.Context) {
 	output, err := nginx.Reload()
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": output + err.Error(),
+			"level":   nginx.GetLogLevel(output),
+		})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -25,7 +27,10 @@ func Reload(c *gin.Context) {
 func TestConfig(c *gin.Context) {
 	output, err := nginx.TestConfig()
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": output + err.Error(),
+			"level":   nginx.GetLogLevel(output),
+		})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -46,7 +51,10 @@ func Restart(c *gin.Context) {
 func Status(c *gin.Context) {
 	lastOutput, err := nginx.GetLastOutput()
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": lastOutput + err.Error(),
+			"level":   nginx.GetLogLevel(lastOutput),
+		})
 		return
 	}
 

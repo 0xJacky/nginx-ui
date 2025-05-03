@@ -32,8 +32,5 @@ RUN cp -rp /etc/nginx /etc/nginx.orig
 # Set PATH to include Go installation and default go install binary location
 ENV PATH="/usr/local/go/bin:/root/go/bin:${PATH}"
 
-# Install air with go install (requires Go 1.23 or higher)
-RUN go install github.com/air-verse/air@latest
-
 # set zsh as default shell
 RUN chsh -s $(which zsh)
