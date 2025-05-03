@@ -11,6 +11,7 @@ type Info struct {
 	Version    string `json:"version"`
 	BuildId    int    `json:"build_id"`
 	TotalBuild int    `json:"total_build"`
+	ShortHash  string `json:"short_hash"`
 }
 
 var versionInfo *Info
@@ -21,6 +22,7 @@ func GetVersionInfo() *Info {
 			Version:    Version,
 			BuildId:    BuildId,
 			TotalBuild: TotalBuild,
+			ShortHash:  GetShortHash(),
 		}
 	}
 	return versionInfo

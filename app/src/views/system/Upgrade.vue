@@ -137,6 +137,15 @@ async function performUpgrade() {
     }, 2000)
   }
 }
+
+const performUpgradeBtnText = computed(() => {
+  if (channel.value === 'dev')
+    return $gettext('Install')
+  else if (isLatestVer.value)
+    return $gettext('Reinstall')
+  else
+    return $gettext('Upgrade')
+})
 </script>
 
 <template>
@@ -162,7 +171,7 @@ async function performUpgrade() {
     </AModal>
     <div class="upgrade-container">
       <p>{{ $gettext('You can check Nginx UI upgrade at this page.') }}</p>
-      <h3>{{ $gettext('Current Version') }}: v{{ version.version }}</h3>
+      <h3>{{ $gettext('Current Version') }}: v{{ version.version }} <span class="short-hash">({{ data?.cur_version?.short_hash }})</span></h3>
       <template v-if="getReleaseError">
         <AAlert
           type="error"
@@ -200,7 +209,7 @@ async function performUpgrade() {
         </AFormItem>
         <template v-if="!loading">
           <AAlert
-            v-if="isLatestVer"
+            v-if="isLatestVer && channel !== 'dev'"
             type="success"
             :message="$gettext('You are using the latest version')"
             banner
@@ -226,7 +235,7 @@ async function performUpgrade() {
                 ghost
                 @click="performUpgrade"
               >
-                {{ isLatestVer ? $gettext('Reinstall') : $gettext('Upgrade') }}
+                {{ performUpgradeBtnText }}
               </AButton>
             </ASpace>
           </div>

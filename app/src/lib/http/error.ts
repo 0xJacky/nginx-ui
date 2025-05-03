@@ -32,12 +32,13 @@ export function handleApiError(err: CosyError, dedupe: MessageDedupe) {
     if (!errors[err.scope]) {
       try {
         // Dynamic import error files
-        import(/* @vite-ignore */ `@/constants/errors/${err.scope}.ts`)
+        import(`@/constants/errors/${err.scope}.ts`)
           .then(error => {
             registerError(err.scope!, error.default)
             displayErrorMessage(err, dedupe)
           })
-          .catch(() => {
+          .catch(err => {
+            console.error(err)
             dedupe.error($gettext(err?.message ?? 'Server error'))
           })
       }

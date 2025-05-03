@@ -7,6 +7,14 @@ export interface RuntimeInfo {
   ex_path: string
   body: string
   published_at: string
+  cur_version: Info
+}
+
+interface Info {
+  version: string
+  build_id: number
+  total_build: number
+  short_hash: string
 }
 
 const upgrade = {
