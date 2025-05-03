@@ -256,6 +256,12 @@ func UpgradeStepTwo(ctx context.Context) (err error) {
 		return errors.Wrap(err, "failed to rename old container")
 	}
 
+	// Stop the old container
+	err = cli.ContainerStop(ctx, currentContainerName+OldSuffix, container.StopOptions{})
+	if err != nil {
+		return errors.Wrap(err, "failed to stop old container")
+	}
+
 	// 3. Use the old config to create and start a new container with the updated image
 	// Create new container with original config but using the new image
 	newContainerEnv := oldContainerInfo.Config.Env
@@ -302,6 +308,7 @@ func UpgradeStepTwo(ctx context.Context) (err error) {
 	// Start the new container
 	err = cli.ContainerStart(ctx, currentContainerName, container.StartOptions{})
 	if err != nil {
+		logger.Error("Failed to start new container:", err)
 		// If startup fails, try to recover
 		// First remove the failed new container
 		removeErr := cli.ContainerRemove(ctx, currentContainerName, container.RemoveOptions{Force: true})
