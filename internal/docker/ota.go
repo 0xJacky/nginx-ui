@@ -164,9 +164,9 @@ func UpgradeStepOne(channel string, progressChan chan<- float64) (err error) {
 	_, err = cli.ContainerCreate(
 		ctx,
 		&container.Config{
-			Image: fmt.Sprintf("%s:%s", ImageName, tag),
-			Cmd:   upgradeCmd, // Use upgrade command instead of original command
-			Env:   containerEnv,
+			Image:      fmt.Sprintf("%s:%s", ImageName, tag),
+			Entrypoint: upgradeCmd,
+			Env:        containerEnv,
 		},
 		&container.HostConfig{
 			Binds: containerInfo.HostConfig.Binds,
