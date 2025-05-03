@@ -123,16 +123,18 @@ async function performUpgrade() {
       return
 
     const t = setInterval(() => {
+      const interval = data.value.in_docker ? 10000 : 1000
       upgrade.current_version().then(() => {
         clearInterval(t)
-        progressStatus.value = 'success'
-        progressPercent.value = 100
-        modalClosable.value = true
-        log('Upgraded successfully')
-
-        setInterval(() => {
-          location.reload()
-        }, 1000)
+        setTimeout(() => {
+          progressStatus.value = 'success'
+          progressPercent.value = 100
+          modalClosable.value = true
+          log('Upgraded successfully')
+          setTimeout(() => {
+            location.reload()
+          }, 1000)
+        }, interval)
       })
     }, 2000)
   }
@@ -171,7 +173,10 @@ const performUpgradeBtnText = computed(() => {
     </AModal>
     <div class="upgrade-container">
       <p>{{ $gettext('You can check Nginx UI upgrade at this page.') }}</p>
-      <h3>{{ $gettext('Current Version') }}: v{{ version.version }} <span class="short-hash">({{ data?.cur_version?.short_hash }})</span></h3>
+      <h3>
+        {{ $gettext('Current Version') }}: v{{ version.version }}
+        <span v-if="data?.cur_version?.short_hash" class="short-hash">({{ data?.cur_version?.short_hash }})</span>
+      </h3>
       <template v-if="getReleaseError">
         <AAlert
           type="error"

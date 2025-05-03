@@ -8,6 +8,7 @@ export interface RuntimeInfo {
   body: string
   published_at: string
   cur_version: Info
+  in_docker: boolean
 }
 
 interface Info {

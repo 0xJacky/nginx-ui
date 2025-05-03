@@ -13,6 +13,7 @@ type RuntimeInfo struct {
 	Arch       string `json:"arch"`
 	ExPath     string `json:"ex_path"`
 	CurVersion *Info  `json:"cur_version"`
+	InDocker   bool   `json:"in_docker"`
 }
 
 func GetRuntimeInfo() (r RuntimeInfo, err error) {
@@ -32,6 +33,7 @@ func GetRuntimeInfo() (r RuntimeInfo, err error) {
 		Arch:       runtime.GOARCH,
 		ExPath:     realPath,
 		CurVersion: GetVersionInfo(),
+		InDocker:   os.Getenv("NGINX_UI_IN_DOCKER") == "true",
 	}
 
 	return
