@@ -272,6 +272,8 @@ After=network.target
 [Service]
 Type=simple
 ExecStart=/usr/local/bin/nginx-ui -config /usr/local/etc/nginx-ui/app.ini
+RuntimeDirectory=nginx-ui
+WorkingDirectory=/var/run/nginx-ui
 Restart=on-failure
 TimeoutStopSec=5
 KillMode=mixed
