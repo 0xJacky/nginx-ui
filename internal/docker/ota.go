@@ -143,11 +143,11 @@ func UpgradeStepOne(channel string, progressChan chan<- float64) (err error) {
 	tempContainerName := getTimestampedTempName()
 
 	// Get current container name
-	hostname, err := os.Hostname()
+	containerID, err := GetContainerID()
 	if err != nil {
-		return cosy.WrapErrorWithParams(ErrFailedToGetHostname, err.Error())
+		return cosy.WrapErrorWithParams(ErrFailedToGetContainerID, err.Error())
 	}
-	containerInfo, err := cli.ContainerInspect(ctx, hostname)
+	containerInfo, err := cli.ContainerInspect(ctx, containerID)
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrFailedToInspectCurrentContainer, err.Error())
 	}

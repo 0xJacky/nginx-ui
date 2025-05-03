@@ -9,12 +9,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:23
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 "[Nginx UI] ACME-Benutzer: %{name}, E-Mail: %{email}, CA-Verzeichnis: %{caDir}"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:12
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] Aktuelles Zertifikat wird für spätere Widerrufung gesichert"
 
@@ -23,83 +23,83 @@ msgstr "[Nginx UI] Aktuelles Zertifikat wird für spätere Widerrufung gesichert
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "Erfolgreich deaktiviert"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:31
 #, fuzzy
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "Speichern erfolgreich"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:25
 msgid ""
 "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 "[Nginx UI] Zertifikat wurde für den Server verwendet, Server-TLS-Zertifikat "
 "wird neu geladen"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:49
 #, fuzzy
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "Er"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:24
 #, fuzzy
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "Umgebungsvariablen gesäubert"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:51
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] Abgeschlossen"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:37
 #, fuzzy
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "Aktivieren erfolgreich"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:46
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] Zertifikat wird abgerufen"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:42
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] Vorbereitung auf den Widerruf des Zertifikats"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:48
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] Vorbereiten der Lego-Konfigurationen"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:8
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] Nginx wird neu geladen"
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:4
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] Widerruf abgeschlossen"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:5
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] Zertifikat wird widerrufen"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:9
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] Altes Zertifikat wird widerrufen"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] DNS01-Herausforderungsanbieter wird eingerichtet"
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:50
 #, fuzzy
 msgid "[Nginx UI] Setting environment variables"
 msgstr "Setze Umgebungsvariablen"
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:18
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] HTTP01-Herausforderungsanbieter wird eingerichtet"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:30
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] Schreibe privaten Zertifikatsschlüssel auf die Festplatte"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:10
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Zertifikat wird auf die Festplatte geschrieben"
 
@@ -262,7 +262,7 @@ msgstr "Anwenden"
 msgid "Apply bulk action successfully"
 msgstr "Speichern erfolgreich"
 
-#: src/views/system/Upgrade.vue:176
+#: src/views/system/Upgrade.vue:185
 msgid "Arch"
 msgstr "\"Arch\""
 
@@ -650,7 +650,7 @@ msgstr "Zertifikat abgelaufen"
 msgid "Certificate Expiring Soon"
 msgstr "Zertifikat läuft bald ab"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:38
 #, fuzzy
 msgid "Certificate not found: %{error}"
 msgstr "Fehler beim Dekodieren des Zertifikats"
@@ -678,7 +678,7 @@ msgstr "Zeitifikat ist gültig"
 msgid "Certificate renewed successfully"
 msgstr "Erfolgreich deaktiviert"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:39
 #, fuzzy
 msgid "Certificate revoked successfully"
 msgstr "Zertifikat erfolgreich entfernt"
@@ -725,7 +725,7 @@ msgid "Changed Path"
 msgstr "Zertifikat ist gültig"
 
 #: src/views/environments/list/BatchUpgrader.vue:159
-#: src/views/system/Upgrade.vue:188
+#: src/views/system/Upgrade.vue:197
 msgid "Channel"
 msgstr "Kanal"
 
@@ -740,7 +740,7 @@ msgstr "Chat"
 msgid "Check"
 msgstr "Erneut prüfen"
 
-#: src/views/system/Upgrade.vue:185
+#: src/views/system/Upgrade.vue:194
 msgid "Check again"
 msgstr "Erneut prüfen"
 
@@ -754,50 +754,50 @@ msgstr ""
 "von localhost ist unsicher und verhindert die Nutzung von Passkeys und "
 "Zwischenablage-Funktionen."
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:28
 msgid "Check if the docker socket exists."
 msgstr "Überprüfen Sie, ob der Docker-Socket vorhanden ist."
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:44
 msgid "Check if the nginx access log path exists"
 msgstr "Überprüfen Sie, ob der Pfad für das Nginx-Zugriffsprotokoll existiert"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:35
 #, fuzzy
 msgid "Check if the nginx configuration directory exists"
 msgstr "Überprüfen Sie, ob die nginx.conf das conf.d-Verzeichnis enthält."
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:43
 #, fuzzy
 msgid "Check if the nginx configuration entry file exists"
 msgstr "Überprüfen Sie, ob die nginx.conf das conf.d-Verzeichnis enthält."
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:20
 msgid "Check if the nginx error log path exists"
 msgstr "Überprüfen Sie, ob der Pfad für das Nginx-Fehlerprotokoll existiert"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:7
 msgid "Check if the nginx PID path exists"
 msgstr "Überprüfen Sie, ob der Nginx-PID-Pfad existiert"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:34
 #, fuzzy
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "Überprüfen Sie, ob die nginx.conf das conf.d-Verzeichnis enthält."
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:33
 #, fuzzy
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr ""
 "Überprüfen Sie, ob die nginx.conf das Verzeichnis sites-enabled enthält."
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:47
 #, fuzzy
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr ""
 "Überprüfen Sie, ob die nginx.conf das Verzeichnis streams-enabled enthält."
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:13
 #, fuzzy
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
@@ -806,7 +806,7 @@ msgstr ""
 "Überprüfen Sie, ob die Verzeichnisse sites-available und sites-enabled im "
 "nginx-Konfigurationsverzeichnis enthalten sind."
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:32
 #, fuzzy
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
@@ -1006,7 +1006,7 @@ msgstr "Kopieren"
 msgid "Copy Codes"
 msgstr "Wiederherstellungscode"
 
-#: src/views/system/Upgrade.vue:146
+#: src/views/system/Upgrade.vue:155
 msgid "Core Upgrade"
 msgstr "Core-Upgrade"
 
@@ -1108,7 +1108,7 @@ msgstr "Aktuelle Version"
 msgid "Current usage"
 msgstr "Aktuelle Version"
 
-#: src/views/system/Upgrade.vue:165
+#: src/views/system/Upgrade.vue:174
 msgid "Current Version"
 msgstr "Aktuelle Version"
 
@@ -1243,6 +1243,10 @@ msgstr "Zieldatei: {0} existiert bereits"
 #: src/views/notification/notificationColumns.tsx:60
 msgid "Details"
 msgstr "Details"
+
+#: src/views/system/Upgrade.vue:206
+msgid "Dev"
+msgstr ""
 
 #: src/views/system/About.vue:28
 msgid "Development Mode"
@@ -1430,7 +1434,7 @@ msgstr "Bist du sicher, dass du diese Richtlinie löschen möchtest?"
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:17
 msgid "Docker socket exists"
 msgstr ""
 
@@ -1465,7 +1469,7 @@ msgid "Downloading latest release"
 msgstr "Neueste Version wird heruntergeladen"
 
 #: src/views/environments/list/BatchUpgrader.vue:188
-#: src/views/system/Upgrade.vue:215
+#: src/views/system/Upgrade.vue:227
 msgid "Dry run mode enabled"
 msgstr "Dry-Run-Modus aktiviert"
 
@@ -1701,7 +1705,7 @@ msgstr "Feherlogs"
 msgid "Error processing content"
 msgstr ""
 
-#: src/views/system/Upgrade.vue:177
+#: src/views/system/Upgrade.vue:186
 msgid "Executable Path"
 msgstr "Ausführbarer Pfad"
 
@@ -1882,7 +1886,7 @@ msgstr ""
 msgid "Failed to delete certificate"
 msgstr "Zertifikat ist gültig"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:22
 #, fuzzy
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Zertifikat ist gültig"
@@ -1958,7 +1962,7 @@ msgstr "Fehler beim Abrufen von Zertifikatsinformationen"
 
 #: src/constants/errors/docker.ts:10
 #, fuzzy
-msgid "Failed to get hostname: {0}"
+msgid "Failed to get container id: {0}"
 msgstr "Aktiviern von %{msg} fehlgeschlagen"
 
 #: src/views/dashboard/components/ParamsOptimization.vue:61
@@ -2050,7 +2054,7 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr "Zertifikat ist gültig"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:45
 #, fuzzy
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Zertifikat ist gültig"
@@ -2172,7 +2176,7 @@ msgid "Get data failed"
 msgstr "Aktivieren fehlgeschlagen"
 
 #: src/views/environments/list/BatchUpgrader.vue:177
-#: src/views/system/Upgrade.vue:169
+#: src/views/system/Upgrade.vue:178
 #, fuzzy
 msgid "Get release information error"
 msgstr "Basisinformationen"
@@ -2335,6 +2339,7 @@ msgstr ""
 #: src/routes/modules/auth.ts:8
 #: src/views/install/components/InstallForm.vue:124
 #: src/views/install/components/InstallHeader.vue:9
+#: src/views/system/Upgrade.vue:143
 msgid "Install"
 msgstr "Installieren"
 
@@ -2482,7 +2487,7 @@ msgstr ""
 msgid "Lark Custom"
 msgstr "Benutzerdefiniert"
 
-#: src/views/system/Upgrade.vue:179
+#: src/views/system/Upgrade.vue:188
 msgid "Last checked at"
 msgstr "Zuletzt überprüft am"
 
@@ -2598,7 +2603,7 @@ msgstr "Orte"
 msgid "Log"
 msgstr "Login"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:29
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
@@ -2888,7 +2893,7 @@ msgstr "Benutzername"
 msgid "New Path"
 msgstr "Pfad"
 
-#: src/views/system/Upgrade.vue:208
+#: src/views/system/Upgrade.vue:220
 msgid "New version released"
 msgstr "Neue Version veröffentlicht"
 
@@ -2907,7 +2912,7 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr "Nginx Zugriffslog-Pfad"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:27
 #, fuzzy
 msgid "Nginx access log path exists"
 msgstr "Nginx Zugriffslog-Pfad"
@@ -2938,12 +2943,12 @@ msgstr ""
 msgid "Nginx config directory is not set"
 msgstr "Nginx-Log-Verzeichnis-Whitelist"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:16
 #, fuzzy
 msgid "Nginx configuration directory exists"
 msgstr "Name der Konfiguration"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:36
 #, fuzzy
 msgid "Nginx configuration entry file exists"
 msgstr "Name der Konfiguration"
@@ -2987,7 +2992,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr "Nginx Fehlerlog-Pfad"
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:19
 #, fuzzy
 msgid "Nginx error log path exists"
 msgstr "Nginx Fehlerlog-Pfad"
@@ -3027,7 +3032,7 @@ msgstr ""
 msgid "Nginx PID Path"
 msgstr "Nginx PID-Pfad"
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:26
 #, fuzzy
 msgid "Nginx PID path exists"
 msgstr "Nginx PID-Pfad"
@@ -3096,18 +3101,18 @@ msgid ""
 "few seconds."
 msgstr "Name der Konfiguration"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:15
 #, fuzzy
 msgid "Nginx.conf includes conf.d directory"
 msgstr "Beffehl zum Neustarten von Nginx"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:6
 #, fuzzy
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr ""
 "Überprüfen Sie, ob die nginx.conf das Verzeichnis sites-enabled enthält."
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:11
 #, fuzzy
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr ""
@@ -3338,7 +3343,7 @@ msgstr ""
 msgid "Original name"
 msgstr "Originalname"
 
-#: src/views/system/Upgrade.vue:175
+#: src/views/system/Upgrade.vue:184
 #, fuzzy
 msgid "OS"
 msgstr "OS:"
@@ -3620,7 +3625,7 @@ msgstr "Aktionen"
 
 #: src/views/environments/list/BatchUpgrader.vue:167
 #: src/views/environments/list/BatchUpgrader.vue:220
-#: src/views/system/Upgrade.vue:194 src/views/system/Upgrade.vue:245
+#: src/views/system/Upgrade.vue:203 src/views/system/Upgrade.vue:257
 msgid "Pre-release"
 msgstr "Vorabversion"
 
@@ -3762,12 +3767,12 @@ msgstr "Registriere Benutzer"
 msgid "Registration Status"
 msgstr "Registrierungsstatus"
 
-#: src/views/system/Upgrade.vue:226
+#: src/views/system/Upgrade.vue:145
 #, fuzzy
 msgid "Reinstall"
 msgstr "Installieren"
 
-#: src/views/system/Upgrade.vue:249
+#: src/views/system/Upgrade.vue:261
 msgid "Release Note"
 msgstr "Änderungsprotokoll"
 
@@ -4330,7 +4335,7 @@ msgstr "Liste der Seiten"
 msgid "Site not found"
 msgstr "File Not Found"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:21
 #, fuzzy
 msgid "Sites directory exists"
 msgstr "Anweisung"
@@ -4419,7 +4424,7 @@ msgstr "Login"
 
 #: src/views/environments/list/BatchUpgrader.vue:164
 #: src/views/environments/list/BatchUpgrader.vue:214
-#: src/views/system/Upgrade.vue:191 src/views/system/Upgrade.vue:239
+#: src/views/system/Upgrade.vue:200 src/views/system/Upgrade.vue:251
 #, fuzzy
 msgid "Stable"
 msgstr "Altiviert"
@@ -4456,7 +4461,7 @@ msgstr "Deaktiviert"
 msgid "Stream not found"
 msgstr "File Not Found"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:14
 #, fuzzy
 msgid "Streams directory exists"
 msgstr "Anweisung"
@@ -4995,7 +5000,7 @@ msgstr "Speichern erfolgreich"
 #: src/routes/modules/system.ts:33
 #: src/views/environments/list/Environment.vue:107
 #: src/views/environments/list/Environment.vue:99
-#: src/views/system/Upgrade.vue:143 src/views/system/Upgrade.vue:226
+#: src/views/system/Upgrade.vue:147 src/views/system/Upgrade.vue:152
 msgid "Upgrade"
 msgstr "Upgrade"
 
@@ -5243,11 +5248,11 @@ msgstr ""
 "Sie greifen auf dieses Terminal über eine unsichere HTTP-Verbindung in einer "
 "Nicht-Localhost-Domäne zu. Dies könnte sensible Informationen preisgeben."
 
-#: src/views/system/Upgrade.vue:202
+#: src/views/system/Upgrade.vue:214
 msgid "You are using the latest version"
 msgstr "Du verwendest die neueste Version"
 
-#: src/views/system/Upgrade.vue:164
+#: src/views/system/Upgrade.vue:173
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "Du kannst das Nginx UI-Upgrade auf dieser Seite überprüfen."
 
@@ -5290,6 +5295,10 @@ msgstr ""
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Deine Passkeys"
+
+#, fuzzy
+#~ msgid "Failed to get hostname: {0}"
+#~ msgstr "Aktiviern von %{msg} fehlgeschlagen"
 
 #, fuzzy
 #~ msgid "AutoCert is running, please wait"

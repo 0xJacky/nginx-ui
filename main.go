@@ -100,6 +100,7 @@ func Program(confPath string) func(l []net.Listener) error {
 	}
 }
 
+//go:generate go generate ./cmd/...
 func main() {
 	appCmd := cmd.NewAppCmd()
 

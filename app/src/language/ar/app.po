@@ -13,13 +13,13 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Weblate 5.6.2\n"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:23
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 "[Nginx UI] مستخدم ACME: %{name}، البريد الإلكتروني: %{email}، دليل CA: "
 "%{caDir}"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:12
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] يتم إنشاء نسخة احتياطية من الشهادة الحالية لإلغائها لاحقًا"
 
@@ -28,81 +28,81 @@ msgstr "[Nginx UI] يتم إنشاء نسخة احتياطية من الشهاد
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "تم المسح بنجاح"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:31
 #, fuzzy
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "تم إعادة تشغيل Nginx بنجاح"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:25
 msgid ""
 "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr "[Nginx UI] تم استخدام الشهادة للخادم، إعادة تحميل شهادة TLS للخادم"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:49
 #, fuzzy
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "يؤدي إنشاء العميل إلى تسهيل الاتصال بخادم CA"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:24
 #, fuzzy
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "تم تنظيف متغيرات البيئة"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:51
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] تم الانتهاء"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:37
 #, fuzzy
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "تم إصدار الشهادة بنجاح"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:46
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] الحصول على الشهادة"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:42
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] التحضير لإلغاء الشهادة"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:48
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] إعداد تكوينات ليغو"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:8
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] إعادة تحميل nginx"
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:4
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] اكتمال الإلغاء"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:5
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] إلغاء الشهادة"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:9
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] إبطال الشهادة القديمة"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] تعيين موفر تحدي DNS01"
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:50
 #, fuzzy
 msgid "[Nginx UI] Setting environment variables"
 msgstr "تعيين متغيرات البيئة"
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:18
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] تعيين موفر تحدي HTTP01"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:30
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] كتابة مفتاح الشهادة الخاص إلى القرص"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:10
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] كتابة الشهادة على القرص"
 
@@ -259,7 +259,7 @@ msgstr "تطبيق"
 msgid "Apply bulk action successfully"
 msgstr "تم التكرار بنجاح"
 
-#: src/views/system/Upgrade.vue:176
+#: src/views/system/Upgrade.vue:185
 msgid "Arch"
 msgstr "\"أرك\""
 
@@ -629,7 +629,7 @@ msgstr "انتهت صلاحية الشهادة"
 msgid "Certificate Expiring Soon"
 msgstr "شهادة على وشك الانتهاء"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:38
 #, fuzzy
 msgid "Certificate not found: %{error}"
 msgstr "خطأ في فك تشفير الشهادة"
@@ -656,7 +656,7 @@ msgstr "الفاصل الزمني لتجديد الشهادة"
 msgid "Certificate renewed successfully"
 msgstr "تم المسح بنجاح"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:39
 #, fuzzy
 msgid "Certificate revoked successfully"
 msgstr "تمت إزالة الشهادة بنجاح"
@@ -705,7 +705,7 @@ msgid "Changed Path"
 msgstr "المسار المتغير"
 
 #: src/views/environments/list/BatchUpgrader.vue:159
-#: src/views/system/Upgrade.vue:188
+#: src/views/system/Upgrade.vue:197
 msgid "Channel"
 msgstr "القناة"
 
@@ -720,7 +720,7 @@ msgstr "محادثة"
 msgid "Check"
 msgstr "تحقق مرة أخرى"
 
-#: src/views/system/Upgrade.vue:185
+#: src/views/system/Upgrade.vue:194
 msgid "Check again"
 msgstr "تحقق مرة أخرى"
 
@@ -733,48 +733,48 @@ msgstr ""
 "تحقق مما إذا كان HTTPS ممكّنًا. استخدام HTTP خارج localhost غير آمن ويمنع "
 "استخدام ميزات Passkeys والحافظة."
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:28
 msgid "Check if the docker socket exists."
 msgstr "تحقق مما إذا كان مقبس Docker موجودًا."
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:44
 msgid "Check if the nginx access log path exists"
 msgstr "تحقق مما إذا كان مسار سجل الوصول لـ nginx موجودًا"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:35
 #, fuzzy
 msgid "Check if the nginx configuration directory exists"
 msgstr "تحقق مما إذا كان ملف nginx.conf يتضمن دليل conf.d."
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:43
 #, fuzzy
 msgid "Check if the nginx configuration entry file exists"
 msgstr "تحقق مما إذا كان ملف nginx.conf يتضمن دليل conf.d."
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:20
 msgid "Check if the nginx error log path exists"
 msgstr "التحقق مما إذا كان مسار سجل أخطاء nginx موجودًا"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:7
 msgid "Check if the nginx PID path exists"
 msgstr "تحقق مما إذا كان مسار معرف عملية Nginx موجودًا"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:34
 #, fuzzy
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "تحقق مما إذا كان ملف nginx.conf يتضمن دليل conf.d."
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:33
 #, fuzzy
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "تحقق مما إذا كان ملف nginx.conf يتضمن دليل sites-enabled."
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:47
 #, fuzzy
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "تحقق مما إذا كان ملف nginx.conf يتضمن دليل streams-enabled."
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:13
 #, fuzzy
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
@@ -783,7 +783,7 @@ msgstr ""
 "تحقق مما إذا كانت الدلائل sites-available و sites-enabled موجودة ضمن دليل "
 "تكوين nginx."
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:32
 #, fuzzy
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
@@ -979,7 +979,7 @@ msgstr "نسخ"
 msgid "Copy Codes"
 msgstr "رمز الاسترداد"
 
-#: src/views/system/Upgrade.vue:146
+#: src/views/system/Upgrade.vue:155
 msgid "Core Upgrade"
 msgstr "ترقية نواة"
 
@@ -1074,7 +1074,7 @@ msgstr "الإصدار الحالي"
 msgid "Current usage"
 msgstr "الإصدار الحالي"
 
-#: src/views/system/Upgrade.vue:165
+#: src/views/system/Upgrade.vue:174
 msgid "Current Version"
 msgstr "الإصدار الحالي"
 
@@ -1203,6 +1203,10 @@ msgstr "الملف الوجهة: {0} موجود بالفعل"
 #: src/views/notification/notificationColumns.tsx:60
 msgid "Details"
 msgstr "تفاصيل"
+
+#: src/views/system/Upgrade.vue:206
+msgid "Dev"
+msgstr ""
 
 #: src/views/system/About.vue:28
 msgid "Development Mode"
@@ -1383,7 +1387,7 @@ msgstr "هل تريد إزالة هذا المصدر؟"
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:17
 msgid "Docker socket exists"
 msgstr ""
 
@@ -1420,7 +1424,7 @@ msgid "Downloading latest release"
 msgstr "تنزيل الإصدار الأحدث"
 
 #: src/views/environments/list/BatchUpgrader.vue:188
-#: src/views/system/Upgrade.vue:215
+#: src/views/system/Upgrade.vue:227
 msgid "Dry run mode enabled"
 msgstr "تمكين وضع التشغيل التجريبي"
 
@@ -1646,7 +1650,7 @@ msgstr "سجلات الأخطاء"
 msgid "Error processing content"
 msgstr ""
 
-#: src/views/system/Upgrade.vue:177
+#: src/views/system/Upgrade.vue:186
 msgid "Executable Path"
 msgstr "مسار الملف التنفيذي"
 
@@ -1826,7 +1830,7 @@ msgstr ""
 msgid "Failed to delete certificate"
 msgstr "فشل في الحصول على الشهادة"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:22
 #, fuzzy
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "فشل في الحصول على الشهادة"
@@ -1902,7 +1906,7 @@ msgstr "فشل في الحصول على معلومات الشهادة"
 
 #: src/constants/errors/docker.ts:10
 #, fuzzy
-msgid "Failed to get hostname: {0}"
+msgid "Failed to get container id: {0}"
 msgstr "فشل في التفعيل %{msg}"
 
 #: src/views/dashboard/components/ParamsOptimization.vue:61
@@ -1998,7 +2002,7 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr "فشل في الحصول على الشهادة"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:45
 #, fuzzy
 msgid "Failed to revoke certificate: %{error}"
 msgstr "فشل في الحصول على الشهادة"
@@ -2116,7 +2120,7 @@ msgid "Get data failed"
 msgstr "فشل التسجيل"
 
 #: src/views/environments/list/BatchUpgrader.vue:177
-#: src/views/system/Upgrade.vue:169
+#: src/views/system/Upgrade.vue:178
 msgid "Get release information error"
 msgstr "خطأ في الحصول على معلومات الإصدار"
 
@@ -2277,6 +2281,7 @@ msgstr ""
 #: src/routes/modules/auth.ts:8
 #: src/views/install/components/InstallForm.vue:124
 #: src/views/install/components/InstallHeader.vue:9
+#: src/views/system/Upgrade.vue:143
 msgid "Install"
 msgstr "تثبيت"
 
@@ -2421,7 +2426,7 @@ msgstr ""
 msgid "Lark Custom"
 msgstr "مخصص"
 
-#: src/views/system/Upgrade.vue:179
+#: src/views/system/Upgrade.vue:188
 msgid "Last checked at"
 msgstr "آخر فحص في"
 
@@ -2528,7 +2533,7 @@ msgstr "أماكن"
 msgid "Log"
 msgstr "سجل"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:29
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
@@ -2807,7 +2812,7 @@ msgstr "اسم جديد"
 msgid "New Path"
 msgstr "مسار جديد"
 
-#: src/views/system/Upgrade.vue:208
+#: src/views/system/Upgrade.vue:220
 msgid "New version released"
 msgstr "تم إصدار نسخة جديدة"
 
@@ -2826,7 +2831,7 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "مسار سجل الوصول لـ Nginx"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:27
 #, fuzzy
 msgid "Nginx access log path exists"
 msgstr "مسار سجل الوصول لـ Nginx"
@@ -2857,12 +2862,12 @@ msgstr ""
 msgid "Nginx config directory is not set"
 msgstr "قائمة السماح لمجلد سجلات Nginx"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:16
 #, fuzzy
 msgid "Nginx configuration directory exists"
 msgstr "مجلد تكوينات Nginx"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:36
 #, fuzzy
 msgid "Nginx configuration entry file exists"
 msgstr "خطأ في تحليل تكوين Nginx"
@@ -2904,7 +2909,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr "مسار سجل أخطاء Nginx"
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:19
 #, fuzzy
 msgid "Nginx error log path exists"
 msgstr "مسار سجل أخطاء Nginx"
@@ -2944,7 +2949,7 @@ msgstr ""
 msgid "Nginx PID Path"
 msgstr "مسار PID لـ Nginx"
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:26
 #, fuzzy
 msgid "Nginx PID path exists"
 msgstr "مسار PID لـ Nginx"
@@ -3011,17 +3016,17 @@ msgid ""
 "few seconds."
 msgstr "خطأ في تحليل تكوين Nginx"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:15
 #, fuzzy
 msgid "Nginx.conf includes conf.d directory"
 msgstr "أمر إعادة تشغيل Nginx"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:6
 #, fuzzy
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "تحقق مما إذا كان ملف nginx.conf يتضمن دليل sites-enabled."
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:11
 #, fuzzy
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "تحقق مما إذا كان ملف nginx.conf يتضمن دليل streams-enabled."
@@ -3245,7 +3250,7 @@ msgstr ""
 msgid "Original name"
 msgstr "الاسم الأصلي"
 
-#: src/views/system/Upgrade.vue:175
+#: src/views/system/Upgrade.vue:184
 msgid "OS"
 msgstr "نظام التشغيل"
 
@@ -3515,7 +3520,7 @@ msgstr "إجراء"
 
 #: src/views/environments/list/BatchUpgrader.vue:167
 #: src/views/environments/list/BatchUpgrader.vue:220
-#: src/views/system/Upgrade.vue:194 src/views/system/Upgrade.vue:245
+#: src/views/system/Upgrade.vue:203 src/views/system/Upgrade.vue:257
 msgid "Pre-release"
 msgstr "ما قبل الإصدار"
 
@@ -3650,11 +3655,11 @@ msgstr "تسجيل المستخدم"
 msgid "Registration Status"
 msgstr "حالة التسجيل"
 
-#: src/views/system/Upgrade.vue:226
+#: src/views/system/Upgrade.vue:145
 msgid "Reinstall"
 msgstr "إعادة التثبيت"
 
-#: src/views/system/Upgrade.vue:249
+#: src/views/system/Upgrade.vue:261
 msgid "Release Note"
 msgstr "ملاحظة الإصدار"
 
@@ -4197,7 +4202,7 @@ msgstr "سجلات الموقع"
 msgid "Site not found"
 msgstr "لم يتم العثور على الملف"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:21
 #, fuzzy
 msgid "Sites directory exists"
 msgstr "مجلد"
@@ -4283,7 +4288,7 @@ msgstr "تسجيل الدخول عبر SSO"
 
 #: src/views/environments/list/BatchUpgrader.vue:164
 #: src/views/environments/list/BatchUpgrader.vue:214
-#: src/views/system/Upgrade.vue:191 src/views/system/Upgrade.vue:239
+#: src/views/system/Upgrade.vue:200 src/views/system/Upgrade.vue:251
 msgid "Stable"
 msgstr "مستقر"
 
@@ -4319,7 +4324,7 @@ msgstr "معطل"
 msgid "Stream not found"
 msgstr "لم يتم العثور على الملف"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:14
 #, fuzzy
 msgid "Streams directory exists"
 msgstr "مجلد"
@@ -4849,7 +4854,7 @@ msgstr "تم التحديث بنجاح"
 #: src/routes/modules/system.ts:33
 #: src/views/environments/list/Environment.vue:107
 #: src/views/environments/list/Environment.vue:99
-#: src/views/system/Upgrade.vue:143 src/views/system/Upgrade.vue:226
+#: src/views/system/Upgrade.vue:147 src/views/system/Upgrade.vue:152
 msgid "Upgrade"
 msgstr "ترقية"
 
@@ -5089,11 +5094,11 @@ msgstr ""
 "أنت تتصل بهذا الطرف عبر اتصال HTTP غير آمن في نطاق غير محلي. قد يؤدي هذا إلى "
 "كشف معلومات حساسة."
 
-#: src/views/system/Upgrade.vue:202
+#: src/views/system/Upgrade.vue:214
 msgid "You are using the latest version"
 msgstr "أنت تستخدم أحدث إصدار"
 
-#: src/views/system/Upgrade.vue:164
+#: src/views/system/Upgrade.vue:173
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "يمكنك التحقق من ترقية Nginx UI في هذه الصفحة."
 
@@ -5134,6 +5139,10 @@ msgstr ""
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "مفاتيح المرور الخاصة بك"
+
+#, fuzzy
+#~ msgid "Failed to get hostname: {0}"
+#~ msgstr "فشل في التفعيل %{msg}"
 
 #, fuzzy
 #~ msgid "AutoCert is running, please wait"

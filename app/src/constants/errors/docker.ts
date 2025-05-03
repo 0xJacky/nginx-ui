@@ -7,7 +7,7 @@ export default {
   500006: () => $gettext('Container status unknown'),
   500007: () => $gettext('Failed to inspect container: {0}'),
   500008: () => $gettext('Nginx is not running in another container'),
-  500009: () => $gettext('Failed to get hostname: {0}'),
+  500009: () => $gettext('Failed to get container id: {0}'),
   500010: () => $gettext('Failed to pull image: {0}'),
   500011: () => $gettext('Failed to inspect current container: {0}'),
   500012: () => $gettext('Failed to create temp container: {0}'),

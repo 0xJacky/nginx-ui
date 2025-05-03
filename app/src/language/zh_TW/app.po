@@ -19,11 +19,11 @@ msgstr ""
 "X-Generator: Weblate 5.10.4\n"
 "Generated-By: easygettext\n"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:23
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr "[Nginx UI] ACME 使用者：%{name}，電子郵件：%{email}，CA 目錄：%{caDir}"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:12
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] 正在備份當前憑證以便後續撤銷"
 
@@ -32,81 +32,81 @@ msgstr "[Nginx UI] 正在備份當前憑證以便後續撤銷"
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "憑證更新成功"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:31
 #, fuzzy
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "Nginx 重啟成功"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:25
 msgid ""
 "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr "[Nginx UI] 憑證已用於伺服器，正在重新載入伺服器 TLS 憑證"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:49
 #, fuzzy
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "建立客戶端方便與 CA 伺服器通訊"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:24
 #, fuzzy
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "環境變數已清理"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:51
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] 已完成"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:37
 #, fuzzy
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "憑證簽發成功"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:46
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] 正在取得憑證"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:42
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] 準備撤銷憑證"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:48
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] 正在準備 lego 配置"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:8
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] 重新載入 Nginx"
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:4
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] 撤銷完成"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:5
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] 正在撤銷證書"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:9
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] 正在撤銷舊憑證"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] 正在設定 DNS01 驗證提供者"
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:50
 #, fuzzy
 msgid "[Nginx UI] Setting environment variables"
 msgstr "設定環境變數中"
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:18
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] 正在設定 HTTP01 驗證提供者"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:30
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] 正在將證書私鑰寫入磁碟"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:10
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] 正在將憑證寫入磁碟"
 
@@ -260,7 +260,7 @@ msgstr "應用"
 msgid "Apply bulk action successfully"
 msgstr "批次操作成功應用"
 
-#: src/views/system/Upgrade.vue:176
+#: src/views/system/Upgrade.vue:185
 msgid "Arch"
 msgstr "\"架構\""
 
@@ -616,7 +616,7 @@ msgstr "憑證已過期"
 msgid "Certificate Expiring Soon"
 msgstr "憑證即將到期"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:38
 #, fuzzy
 msgid "Certificate not found: %{error}"
 msgstr "證書解碼錯誤"
@@ -642,7 +642,7 @@ msgstr "憑證更新間隔"
 msgid "Certificate renewed successfully"
 msgstr "憑證更新成功"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:39
 #, fuzzy
 msgid "Certificate revoked successfully"
 msgstr "憑證已成功移除"
@@ -681,7 +681,7 @@ msgid "Changed Path"
 msgstr "變更後路徑"
 
 #: src/views/environments/list/BatchUpgrader.vue:159
-#: src/views/system/Upgrade.vue:188
+#: src/views/system/Upgrade.vue:197
 msgid "Channel"
 msgstr "通道"
 
@@ -696,7 +696,7 @@ msgstr "聊天"
 msgid "Check"
 msgstr "自我檢查"
 
-#: src/views/system/Upgrade.vue:185
+#: src/views/system/Upgrade.vue:194
 msgid "Check again"
 msgstr "再次檢查"
 
@@ -709,48 +709,48 @@ msgstr ""
 "檢查是否啟用了 HTTPS。在本機主機之外使用 HTTP 是不安全的，並且會阻止使用通行"
 "證和剪貼簿功能。"
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:28
 msgid "Check if the docker socket exists."
 msgstr "檢查 Docker 通訊端是否存在。"
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:44
 msgid "Check if the nginx access log path exists"
 msgstr "檢查 Nginx 存取日誌路徑是否存在"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:35
 #, fuzzy
 msgid "Check if the nginx configuration directory exists"
 msgstr "請確認 nginx.conf 是否有包含 conf.d 資料夾。"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:43
 #, fuzzy
 msgid "Check if the nginx configuration entry file exists"
 msgstr "請確認 nginx.conf 是否有包含 conf.d 資料夾。"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:20
 msgid "Check if the nginx error log path exists"
 msgstr "檢查 Nginx 錯誤日誌路徑是否存在"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:7
 msgid "Check if the nginx PID path exists"
 msgstr "檢查 Nginx PID 路徑是否存在"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:34
 #, fuzzy
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "請確認 nginx.conf 是否有包含 conf.d 資料夾。"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:33
 #, fuzzy
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "請確認 nginx.conf 是否有包含 sites-enabled 資料夾。"
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:47
 #, fuzzy
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "請確認 nginx.conf 是否有包含 streams-enabled 資料夾。"
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:13
 #, fuzzy
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
@@ -758,7 +758,7 @@ msgid ""
 msgstr ""
 "請確認 sites-available 和 sites-enabled 資料夾是否位於 Nginx 設定資料夾內。"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:32
 #, fuzzy
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
@@ -948,7 +948,7 @@ msgstr "複製"
 msgid "Copy Codes"
 msgstr "恢復碼"
 
-#: src/views/system/Upgrade.vue:146
+#: src/views/system/Upgrade.vue:155
 msgid "Core Upgrade"
 msgstr "核心升級"
 
@@ -1039,7 +1039,7 @@ msgstr "目前內容"
 msgid "Current usage"
 msgstr "目前用量"
 
-#: src/views/system/Upgrade.vue:165
+#: src/views/system/Upgrade.vue:174
 msgid "Current Version"
 msgstr "目前版本"
 
@@ -1162,6 +1162,10 @@ msgstr "目標檔案: {0} 已存在"
 #: src/views/notification/notificationColumns.tsx:60
 msgid "Details"
 msgstr "細節"
+
+#: src/views/system/Upgrade.vue:206
+msgid "Dev"
+msgstr ""
 
 #: src/views/system/About.vue:28
 msgid "Development Mode"
@@ -1333,7 +1337,7 @@ msgstr "您要移除這個 Upstream 嗎？"
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:17
 msgid "Docker socket exists"
 msgstr ""
 
@@ -1364,7 +1368,7 @@ msgid "Downloading latest release"
 msgstr "正在下載最新版本"
 
 #: src/views/environments/list/BatchUpgrader.vue:188
-#: src/views/system/Upgrade.vue:215
+#: src/views/system/Upgrade.vue:227
 msgid "Dry run mode enabled"
 msgstr "試運轉模式已啟用"
 
@@ -1576,7 +1580,7 @@ msgstr "錯誤日誌"
 msgid "Error processing content"
 msgstr "內容處理錯誤"
 
-#: src/views/system/Upgrade.vue:177
+#: src/views/system/Upgrade.vue:186
 msgid "Executable Path"
 msgstr "可執行檔路徑"
 
@@ -1737,7 +1741,7 @@ msgstr "解密 Nginx UI 目錄失敗：{0}"
 msgid "Failed to delete certificate"
 msgstr "憑證刪除失敗"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:22
 #, fuzzy
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "憑證刪除失敗"
@@ -1805,7 +1809,7 @@ msgstr "取得憑證資訊失敗"
 
 #: src/constants/errors/docker.ts:10
 #, fuzzy
-msgid "Failed to get hostname: {0}"
+msgid "Failed to get container id: {0}"
 msgstr "複製檔案內容失敗：{0}"
 
 #: src/views/dashboard/components/ParamsOptimization.vue:61
@@ -1888,7 +1892,7 @@ msgstr "還原 Nginx UI 檔案失敗：{0}"
 msgid "Failed to revoke certificate"
 msgstr "撤銷憑證失敗"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:45
 #, fuzzy
 msgid "Failed to revoke certificate: %{error}"
 msgstr "撤銷憑證失敗"
@@ -1999,7 +2003,7 @@ msgid "Get data failed"
 msgstr "取得資料失敗"
 
 #: src/views/environments/list/BatchUpgrader.vue:177
-#: src/views/system/Upgrade.vue:169
+#: src/views/system/Upgrade.vue:178
 msgid "Get release information error"
 msgstr "取得發佈資訊錯誤"
 
@@ -2152,6 +2156,7 @@ msgstr "不安全跳過驗證"
 #: src/routes/modules/auth.ts:8
 #: src/views/install/components/InstallForm.vue:124
 #: src/views/install/components/InstallHeader.vue:9
+#: src/views/system/Upgrade.vue:143
 msgid "Install"
 msgstr "安裝"
 
@@ -2287,7 +2292,7 @@ msgstr "Lark"
 msgid "Lark Custom"
 msgstr "Lark 自訂"
 
-#: src/views/system/Upgrade.vue:179
+#: src/views/system/Upgrade.vue:188
 msgid "Last checked at"
 msgstr "上次檢查時間"
 
@@ -2393,7 +2398,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日誌"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:29
 #, fuzzy
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
@@ -2663,7 +2668,7 @@ msgstr "新名稱"
 msgid "New Path"
 msgstr "新路徑"
 
-#: src/views/system/Upgrade.vue:208
+#: src/views/system/Upgrade.vue:220
 msgid "New version released"
 msgstr "新版本發布"
 
@@ -2682,7 +2687,7 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Nginx 存取日誌路徑"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:27
 #, fuzzy
 msgid "Nginx access log path exists"
 msgstr "Nginx 存取日誌路徑"
@@ -2712,12 +2717,12 @@ msgstr "Nginx 設定檔未包含 stream-enabled"
 msgid "Nginx config directory is not set"
 msgstr "Nginx 設定目錄未設定"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:16
 #, fuzzy
 msgid "Nginx configuration directory exists"
 msgstr "Nginx 設定目錄"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:36
 #, fuzzy
 msgid "Nginx configuration entry file exists"
 msgstr "Nginx 設定已恢復"
@@ -2757,7 +2762,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr "Nginx 錯誤日誌路徑"
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:19
 #, fuzzy
 msgid "Nginx error log path exists"
 msgstr "Nginx 錯誤日誌路徑"
@@ -2796,7 +2801,7 @@ msgstr ""
 msgid "Nginx PID Path"
 msgstr "Nginx PID 路徑"
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:26
 #, fuzzy
 msgid "Nginx PID path exists"
 msgstr "Nginx PID 路徑"
@@ -2859,17 +2864,17 @@ msgid ""
 "few seconds."
 msgstr "Nginx UI 設定已恢復，將在幾秒後自動重新啟動。"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:15
 #, fuzzy
 msgid "Nginx.conf includes conf.d directory"
 msgstr "請確認 nginx.conf 是否有包含 conf.d 資料夾。"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:6
 #, fuzzy
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "請確認 nginx.conf 是否有包含 sites-enabled 資料夾。"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:11
 #, fuzzy
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "請確認 nginx.conf 是否有包含 streams-enabled 資料夾。"
@@ -3082,7 +3087,7 @@ msgstr "或輸入金鑰：%{secret}"
 msgid "Original name"
 msgstr "原始名稱"
 
-#: src/views/system/Upgrade.vue:175
+#: src/views/system/Upgrade.vue:184
 msgid "OS"
 msgstr "作業系統"
 
@@ -3339,7 +3344,7 @@ msgstr "同步後動作"
 
 #: src/views/environments/list/BatchUpgrader.vue:167
 #: src/views/environments/list/BatchUpgrader.vue:220
-#: src/views/system/Upgrade.vue:194 src/views/system/Upgrade.vue:245
+#: src/views/system/Upgrade.vue:203 src/views/system/Upgrade.vue:257
 msgid "Pre-release"
 msgstr "預先發布"
 
@@ -3473,11 +3478,11 @@ msgstr "註冊使用者中"
 msgid "Registration Status"
 msgstr "註冊狀態"
 
-#: src/views/system/Upgrade.vue:226
+#: src/views/system/Upgrade.vue:145
 msgid "Reinstall"
 msgstr "重新安裝"
 
-#: src/views/system/Upgrade.vue:249
+#: src/views/system/Upgrade.vue:261
 msgid "Release Note"
 msgstr "發行公告"
 
@@ -3986,7 +3991,7 @@ msgstr "網站日誌"
 msgid "Site not found"
 msgstr "站點未找到"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:21
 #, fuzzy
 msgid "Sites directory exists"
 msgstr "sites-enabled 資料夾不存在"
@@ -4066,7 +4071,7 @@ msgstr "SSO 登入"
 
 #: src/views/environments/list/BatchUpgrader.vue:164
 #: src/views/environments/list/BatchUpgrader.vue:214
-#: src/views/system/Upgrade.vue:191 src/views/system/Upgrade.vue:239
+#: src/views/system/Upgrade.vue:200 src/views/system/Upgrade.vue:251
 msgid "Stable"
 msgstr "穩定"
 
@@ -4100,7 +4105,7 @@ msgstr "串流已啟用"
 msgid "Stream not found"
 msgstr "串流未找到"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:14
 #, fuzzy
 msgid "Streams directory exists"
 msgstr "Streams 資料夾"
@@ -4601,7 +4606,7 @@ msgstr "更新成功"
 #: src/routes/modules/system.ts:33
 #: src/views/environments/list/Environment.vue:107
 #: src/views/environments/list/Environment.vue:99
-#: src/views/system/Upgrade.vue:143 src/views/system/Upgrade.vue:226
+#: src/views/system/Upgrade.vue:147 src/views/system/Upgrade.vue:152
 msgid "Upgrade"
 msgstr "升級"
 
@@ -4839,11 +4844,11 @@ msgstr ""
 "您正在透過非本地主機域上的不安全 HTTP 連線存取此終端機。這可能會暴露敏感資"
 "訊。"
 
-#: src/views/system/Upgrade.vue:202
+#: src/views/system/Upgrade.vue:214
 msgid "You are using the latest version"
 msgstr "您正在使用最新版本"
 
-#: src/views/system/Upgrade.vue:164
+#: src/views/system/Upgrade.vue:173
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "您可以在此頁面檢查 Nginx UI 的升級。"
 
@@ -4884,6 +4889,10 @@ msgstr "您的舊代碼將不再有效。"
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "您的通行金鑰"
+
+#, fuzzy
+#~ msgid "Failed to get hostname: {0}"
+#~ msgstr "複製檔案內容失敗：{0}"
 
 #, fuzzy
 #~ msgid "AutoCert is running, please wait"

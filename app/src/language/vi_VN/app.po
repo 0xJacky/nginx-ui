@@ -9,12 +9,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:23
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 "[Nginx UI] Người dùng ACME: %{name}, Email: %{email}, Thư mục CA: %{caDir}"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:12
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] Đang sao lưu chứng chỉ hiện tại để thu hồi sau này"
 
@@ -23,83 +23,83 @@ msgstr "[Nginx UI] Đang sao lưu chứng chỉ hiện tại để thu hồi sau
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "Đã xóa thành công"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:31
 #, fuzzy
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "Restart Nginx thành công"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:25
 msgid ""
 "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 "[Nginx UI] Chứng chỉ đã được sử dụng cho máy chủ, đang tải lại chứng chỉ TLS "
 "của máy chủ"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:49
 #, fuzzy
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "Tạo client để giao tiếp với CA server"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:24
 #, fuzzy
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "Đặt biến môi trường"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:51
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] Đã hoàn thành"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:37
 #, fuzzy
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "Cấp chứng chỉ thành công"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:46
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] Đang lấy chứng chỉ"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:42
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] Chuẩn bị thu hồi chứng chỉ"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:48
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] Đang chuẩn bị cấu hình lego"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:8
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] Đang tải lại nginx"
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:4
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] Đã hoàn tất thu hồi"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:5
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] Đang thu hồi chứng chỉ"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:9
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] Đang thu hồi chứng chỉ cũ"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách DNS01"
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:50
 #, fuzzy
 msgid "[Nginx UI] Setting environment variables"
 msgstr "Đặt biến môi trường"
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:18
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách HTTP01"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:30
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] Đang ghi khóa riêng của chứng chỉ vào ổ đĩa"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:10
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Đang ghi chứng chỉ vào ổ đĩa"
 
@@ -261,7 +261,7 @@ msgstr "Áp dụng"
 msgid "Apply bulk action successfully"
 msgstr "Nhân bản thành công"
 
-#: src/views/system/Upgrade.vue:176
+#: src/views/system/Upgrade.vue:185
 msgid "Arch"
 msgstr "\"Kiến trúc\""
 
@@ -644,7 +644,7 @@ msgstr "Chứng chỉ đã hết hạn"
 msgid "Certificate Expiring Soon"
 msgstr "Chứng chỉ sắp hết hạn"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:38
 #, fuzzy
 msgid "Certificate not found: %{error}"
 msgstr "Lỗi giải mã chứng chỉ"
@@ -672,7 +672,7 @@ msgstr "Chứng chỉ SSL hợp lệ"
 msgid "Certificate renewed successfully"
 msgstr "Đã xóa thành công"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:39
 #, fuzzy
 msgid "Certificate revoked successfully"
 msgstr "Đã xóa chứng chỉ thành công"
@@ -719,7 +719,7 @@ msgid "Changed Path"
 msgstr "Thay đổi chứng chỉ"
 
 #: src/views/environments/list/BatchUpgrader.vue:159
-#: src/views/system/Upgrade.vue:188
+#: src/views/system/Upgrade.vue:197
 msgid "Channel"
 msgstr "Kênh"
 
@@ -734,7 +734,7 @@ msgstr "Trò chuyện"
 msgid "Check"
 msgstr "Kiểm tra lại"
 
-#: src/views/system/Upgrade.vue:185
+#: src/views/system/Upgrade.vue:194
 msgid "Check again"
 msgstr "Kiểm tra lại"
 
@@ -747,48 +747,48 @@ msgstr ""
 "Kiểm tra xem HTTPS đã được bật chưa. Sử dụng HTTP bên ngoài localhost không "
 "an toàn và ngăn chặn việc sử dụng tính năng Passkeys cùng khay nhớ tạm."
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:28
 msgid "Check if the docker socket exists."
 msgstr "Kiểm tra xem ổ cắm Docker có tồn tại không."
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:44
 msgid "Check if the nginx access log path exists"
 msgstr "Kiểm tra xem đường dẫn nhật ký truy cập nginx có tồn tại không"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:35
 #, fuzzy
 msgid "Check if the nginx configuration directory exists"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không."
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:43
 #, fuzzy
 msgid "Check if the nginx configuration entry file exists"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không."
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:20
 msgid "Check if the nginx error log path exists"
 msgstr "Kiểm tra xem đường dẫn nhật ký lỗi nginx có tồn tại không"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:7
 msgid "Check if the nginx PID path exists"
 msgstr "Kiểm tra xem đường dẫn PID của Nginx có tồn tại không"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:34
 #, fuzzy
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không."
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:33
 #, fuzzy
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục sites-enabled không."
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:47
 #, fuzzy
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục streams-enabled không."
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:13
 #, fuzzy
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
@@ -797,7 +797,7 @@ msgstr ""
 "Kiểm tra xem các thư mục sites-available và sites-enabled có nằm trong thư "
 "mục cấu hình nginx hay không."
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:32
 #, fuzzy
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
@@ -993,7 +993,7 @@ msgstr "Sao chép"
 msgid "Copy Codes"
 msgstr "Sao chép mã"
 
-#: src/views/system/Upgrade.vue:146
+#: src/views/system/Upgrade.vue:155
 msgid "Core Upgrade"
 msgstr "Cập nhật core"
 
@@ -1092,7 +1092,7 @@ msgstr "Phiên bản hiện tại"
 msgid "Current usage"
 msgstr "Phiên bản hiện tại"
 
-#: src/views/system/Upgrade.vue:165
+#: src/views/system/Upgrade.vue:174
 msgid "Current Version"
 msgstr "Phiên bản hiện tại"
 
@@ -1226,6 +1226,10 @@ msgstr "Tệp đích: {0} đã tồn tại"
 #: src/views/notification/notificationColumns.tsx:60
 msgid "Details"
 msgstr "Chi tiết"
+
+#: src/views/system/Upgrade.vue:206
+msgid "Dev"
+msgstr ""
 
 #: src/views/system/About.vue:28
 msgid "Development Mode"
@@ -1411,7 +1415,7 @@ msgstr "Bạn muốn xóa máy chủ này ?"
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:17
 msgid "Docker socket exists"
 msgstr ""
 
@@ -1446,7 +1450,7 @@ msgid "Downloading latest release"
 msgstr "Đang tải phiên bản mới nhất"
 
 #: src/views/environments/list/BatchUpgrader.vue:188
-#: src/views/system/Upgrade.vue:215
+#: src/views/system/Upgrade.vue:227
 msgid "Dry run mode enabled"
 msgstr "Đã bật chế độ Dry run"
 
@@ -1680,7 +1684,7 @@ msgstr "Log lỗi"
 msgid "Error processing content"
 msgstr ""
 
-#: src/views/system/Upgrade.vue:177
+#: src/views/system/Upgrade.vue:186
 msgid "Executable Path"
 msgstr "Đường dẫn thực thi"
 
@@ -1861,7 +1865,7 @@ msgstr ""
 msgid "Failed to delete certificate"
 msgstr "Nhận chứng chỉ"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:22
 #, fuzzy
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Nhận chứng chỉ"
@@ -1937,7 +1941,7 @@ msgstr "Không thể truy xuất thông tin chứng chỉ"
 
 #: src/constants/errors/docker.ts:10
 #, fuzzy
-msgid "Failed to get hostname: {0}"
+msgid "Failed to get container id: {0}"
 msgstr "Không thể bật %{msg}"
 
 #: src/views/dashboard/components/ParamsOptimization.vue:61
@@ -2029,7 +2033,7 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr "Nhận chứng chỉ"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:45
 #, fuzzy
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Nhận chứng chỉ"
@@ -2148,7 +2152,7 @@ msgid "Get data failed"
 msgstr "Đăng ký người dùng"
 
 #: src/views/environments/list/BatchUpgrader.vue:177
-#: src/views/system/Upgrade.vue:169
+#: src/views/system/Upgrade.vue:178
 #, fuzzy
 msgid "Get release information error"
 msgstr "Nhận lỗi thông tin phát hành"
@@ -2303,6 +2307,7 @@ msgstr ""
 #: src/routes/modules/auth.ts:8
 #: src/views/install/components/InstallForm.vue:124
 #: src/views/install/components/InstallHeader.vue:9
+#: src/views/system/Upgrade.vue:143
 msgid "Install"
 msgstr "Cài đặt"
 
@@ -2449,7 +2454,7 @@ msgstr ""
 msgid "Lark Custom"
 msgstr "Tuỳ chỉnh"
 
-#: src/views/system/Upgrade.vue:179
+#: src/views/system/Upgrade.vue:188
 msgid "Last checked at"
 msgstr "Kiểm tra lần cuối lúc"
 
@@ -2564,7 +2569,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "Log"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:29
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
@@ -2845,7 +2850,7 @@ msgstr "Username"
 msgid "New Path"
 msgstr "Đường dẫn"
 
-#: src/views/system/Upgrade.vue:208
+#: src/views/system/Upgrade.vue:220
 msgid "New version released"
 msgstr "Đã có phiên bản mới"
 
@@ -2864,7 +2869,7 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:27
 #, fuzzy
 msgid "Nginx access log path exists"
 msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
@@ -2895,12 +2900,12 @@ msgstr ""
 msgid "Nginx config directory is not set"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:16
 #, fuzzy
 msgid "Nginx configuration directory exists"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:36
 #, fuzzy
 msgid "Nginx configuration entry file exists"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
@@ -2943,7 +2948,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:19
 #, fuzzy
 msgid "Nginx error log path exists"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
@@ -2982,7 +2987,7 @@ msgstr ""
 msgid "Nginx PID Path"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:26
 #, fuzzy
 msgid "Nginx PID path exists"
 msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
@@ -3049,17 +3054,17 @@ msgid ""
 "few seconds."
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:15
 #, fuzzy
 msgid "Nginx.conf includes conf.d directory"
 msgstr "Lỗi phân tích cú pháp cấu hình Nginx"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:6
 #, fuzzy
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục sites-enabled không."
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:11
 #, fuzzy
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục streams-enabled không."
@@ -3283,7 +3288,7 @@ msgstr ""
 msgid "Original name"
 msgstr ""
 
-#: src/views/system/Upgrade.vue:175
+#: src/views/system/Upgrade.vue:184
 #, fuzzy
 msgid "OS"
 msgstr "Hệ điều hành"
@@ -3550,7 +3555,7 @@ msgstr "Hành động"
 
 #: src/views/environments/list/BatchUpgrader.vue:167
 #: src/views/environments/list/BatchUpgrader.vue:220
-#: src/views/system/Upgrade.vue:194 src/views/system/Upgrade.vue:245
+#: src/views/system/Upgrade.vue:203 src/views/system/Upgrade.vue:257
 msgid "Pre-release"
 msgstr ""
 
@@ -3692,12 +3697,12 @@ msgstr "Đăng ký người dùng"
 msgid "Registration Status"
 msgstr "Đăng ký người dùng"
 
-#: src/views/system/Upgrade.vue:226
+#: src/views/system/Upgrade.vue:145
 #, fuzzy
 msgid "Reinstall"
 msgstr "Cài lại"
 
-#: src/views/system/Upgrade.vue:249
+#: src/views/system/Upgrade.vue:261
 msgid "Release Note"
 msgstr "Ghi chú phát hành"
 
@@ -4258,7 +4263,7 @@ msgstr "Logs"
 msgid "Site not found"
 msgstr "Không tìm thấy tệp tin"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:21
 #, fuzzy
 msgid "Sites directory exists"
 msgstr "Thư mục"
@@ -4342,7 +4347,7 @@ msgstr ""
 
 #: src/views/environments/list/BatchUpgrader.vue:164
 #: src/views/environments/list/BatchUpgrader.vue:214
-#: src/views/system/Upgrade.vue:191 src/views/system/Upgrade.vue:239
+#: src/views/system/Upgrade.vue:200 src/views/system/Upgrade.vue:251
 #, fuzzy
 msgid "Stable"
 msgstr "Ổn định"
@@ -4379,7 +4384,7 @@ msgstr "Đã tắt"
 msgid "Stream not found"
 msgstr "Không tìm thấy tệp tin"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:14
 #, fuzzy
 msgid "Streams directory exists"
 msgstr "Thư mục"
@@ -4895,7 +4900,7 @@ msgstr "Cập nhật thành công"
 #: src/routes/modules/system.ts:33
 #: src/views/environments/list/Environment.vue:107
 #: src/views/environments/list/Environment.vue:99
-#: src/views/system/Upgrade.vue:143 src/views/system/Upgrade.vue:226
+#: src/views/system/Upgrade.vue:147 src/views/system/Upgrade.vue:152
 msgid "Upgrade"
 msgstr "Cập nhật"
 
@@ -5138,11 +5143,11 @@ msgstr ""
 "trên một miền không phải localhost. Điều này có thể làm lộ thông tin nhạy "
 "cảm."
 
-#: src/views/system/Upgrade.vue:202
+#: src/views/system/Upgrade.vue:214
 msgid "You are using the latest version"
 msgstr "Bạn đang sử dụng phiên bản mới nhất"
 
-#: src/views/system/Upgrade.vue:164
+#: src/views/system/Upgrade.vue:173
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "Bạn có thể kiểm tra nâng cấp Nginx UI tại trang này"
 
@@ -5183,6 +5188,10 @@ msgstr ""
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Failed to get hostname: {0}"
+#~ msgstr "Không thể bật %{msg}"
 
 #, fuzzy
 #~ msgid "AutoCert is running, please wait"
