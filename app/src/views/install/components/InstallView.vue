@@ -54,16 +54,18 @@ const canProceed = computed(() => {
   return !installTimeout.value && !hasError.value
 })
 
-const steps = [
-  {
-    title: $gettext('System Check'),
-    description: $gettext('Verify system requirements'),
-  },
-  {
-    title: $gettext('Installation'),
-    description: $gettext('Setup your Nginx UI'),
-  },
-]
+const steps = computed(() => {
+  return [
+    {
+      title: $gettext('System Check'),
+      description: $gettext('Verify system requirements'),
+    },
+    {
+      title: $gettext('Installation'),
+      description: $gettext('Setup your Nginx UI'),
+    },
+  ]
+})
 </script>
 
 <template>
