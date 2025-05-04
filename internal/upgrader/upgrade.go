@@ -242,7 +242,13 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 		return
 	}
 
-	f, err := os.Open(filepath.Join(tempDir, "nginx-ui"))
+	nginxUIExName := "nginx-ui"
+
+	if u.OS == "windows" {
+		nginxUIExName = "nginx-ui.exe"
+	}
+
+	f, err := os.Open(filepath.Join(tempDir, nginxUIExName))
 	if err != nil {
 		err = errors.Wrap(err, "PerformCoreUpgrade open error")
 		return
