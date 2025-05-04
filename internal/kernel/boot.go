@@ -13,6 +13,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/docker"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
@@ -136,6 +137,9 @@ func InitJsExtensionType() {
 
 // CheckAndCleanupOTAContainers Check and cleanup OTA update temporary containers
 func CheckAndCleanupOTAContainers() {
+	if !helper.InNginxUIOfficialDocker() {
+		return
+	}
 	// Execute the third step cleanup operation at startup
 	err := docker.UpgradeStepThree()
 	if err != nil {
