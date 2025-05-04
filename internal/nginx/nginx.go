@@ -2,7 +2,6 @@ package nginx
 
 import (
 	"os"
-	"strings"
 	"sync"
 	"time"
 
@@ -63,7 +62,6 @@ func Restart() {
 	}
 
 	lastStdOut, lastStdErr = execCommand("start-stop-daemon", "--start", "--quiet", "--pidfile", pidPath, "--exec", daemon)
-	return
 }
 
 // GetLastOutput returns the last output of the nginx command
@@ -71,31 +69,6 @@ func GetLastOutput() (stdOut string, stdErr error) {
 	mutex.Lock()
 	defer mutex.Unlock()
 	return lastStdOut, lastStdErr
-}
-
-// GetModulesPath returns the nginx modules path
-func GetModulesPath() string {
-	// First try to get from nginx -V output
-	stdOut, stdErr := execCommand("nginx", "-V")
-	if stdErr != nil {
-		return ""
-	}
-	if stdOut != "" {
-		// Look for --modules-path in the output
-		if strings.Contains(stdOut, "--modules-path=") {
-			parts := strings.Split(stdOut, "--modules-path=")
-			if len(parts) > 1 {
-				// Extract the path
-				path := strings.Split(parts[1], " ")[0]
-				// Remove quotes if present
-				path = strings.Trim(path, "\"")
-				return path
-			}
-		}
-	}
-
-	// Default path if not found
-	return "/usr/lib/nginx/modules"
 }
 
 func IsNginxRunning() bool {

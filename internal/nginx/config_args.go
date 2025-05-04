@@ -1,21 +1,66 @@
 package nginx
 
 import (
-	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/uozi-tech/cosy/logger"
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"runtime"
+	"strings"
+
+	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/uozi-tech/cosy/logger"
 )
 
+var nginxExePath string
+
+// Returns the path to the nginx executable
+func getNginxExePath() string {
+	if nginxExePath != "" {
+		return nginxExePath
+	}
+
+	var path string
+	var err error
+	if runtime.GOOS == "windows" {
+		path, err = exec.LookPath("nginx.exe")
+	} else {
+		path, err = exec.LookPath("nginx")
+	}
+	if err == nil {
+		nginxExePath = path
+		return nginxExePath
+	}
+	return nginxExePath
+}
+
+// Returns the directory containing the nginx executable
+func getNginxExeDir() string {
+	return filepath.Dir(getNginxExePath())
+}
+
 func getNginxV() string {
-	out, err := exec.Command("nginx", "-V").CombinedOutput()
+	exePath := getNginxExePath()
+	out, err := exec.Command(exePath, "-V").CombinedOutput()
 	if err != nil {
 		logger.Error(err)
 		return ""
 	}
 	return string(out)
+}
+
+// Resolves relative paths by joining them with the nginx executable directory on Windows
+func resolvePath(path string) string {
+	if path == "" {
+		return ""
+	}
+
+	// Handle relative paths on Windows
+	if runtime.GOOS == "windows" && !filepath.IsAbs(path) {
+		return filepath.Join(getNginxExeDir(), path)
+	}
+
+	return path
 }
 
 func GetConfPath(dir ...string) (confPath string) {
@@ -31,6 +76,8 @@ func GetConfPath(dir ...string) (confPath string) {
 	} else {
 		confPath = settings.NginxSettings.ConfigDir
 	}
+
+	confPath = resolvePath(confPath)
 
 	joined := filepath.Clean(filepath.Join(confPath, filepath.Join(dir...)))
 	if !helper.IsUnderDirectory(joined, confPath) {
@@ -53,7 +100,7 @@ func GetConfEntryPath() (path string) {
 		path = settings.NginxSettings.ConfigPath
 	}
 
-	return
+	return resolvePath(path)
 }
 
 func GetPIDPath() (path string) {
@@ -70,7 +117,7 @@ func GetPIDPath() (path string) {
 		path = settings.NginxSettings.PIDPath
 	}
 
-	return
+	return resolvePath(path)
 }
 
 func GetSbinPath() (path string) {
@@ -83,7 +130,7 @@ func GetSbinPath() (path string) {
 	}
 	path = match[1]
 
-	return
+	return resolvePath(path)
 }
 
 func GetAccessLogPath() (path string) {
@@ -100,7 +147,7 @@ func GetAccessLogPath() (path string) {
 		path = settings.NginxSettings.AccessLogPath
 	}
 
-	return
+	return resolvePath(path)
 }
 
 func GetErrorLogPath() string {
@@ -112,8 +159,36 @@ func GetErrorLogPath() string {
 			logger.Error("nginx.GetErrorLogPath len(match) < 1")
 			return ""
 		}
-		return match[1]
+		return resolvePath(match[1])
 	} else {
-		return settings.NginxSettings.ErrorLogPath
+		return resolvePath(settings.NginxSettings.ErrorLogPath)
 	}
+}
+
+// GetModulesPath returns the nginx modules path
+func GetModulesPath() string {
+	// First try to get from nginx -V output
+	stdOut, stdErr := execCommand(getNginxExePath(), "-V")
+	if stdErr != nil {
+		return ""
+	}
+	if stdOut != "" {
+		// Look for --modules-path in the output
+		if strings.Contains(stdOut, "--modules-path=") {
+			parts := strings.Split(stdOut, "--modules-path=")
+			if len(parts) > 1 {
+				// Extract the path
+				path := strings.Split(parts[1], " ")[0]
+				// Remove quotes if present
+				path = strings.Trim(path, "\"")
+				return resolvePath(path)
+			}
+		}
+	}
+
+	// Default path if not found
+	if runtime.GOOS == "windows" {
+		return resolvePath("modules")
+	}
+	return resolvePath("/usr/lib/nginx/modules")
 }
