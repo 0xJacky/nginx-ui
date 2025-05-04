@@ -98,7 +98,6 @@ func downloadRelease(url string, dir string, progressChan chan float64) (tarName
 	multiWriter := io.MultiWriter(progressWriter)
 
 	_, err = io.Copy(multiWriter, resp.Body)
-	close(progressChan)
 
 	tarName = file.Name()
 	return
