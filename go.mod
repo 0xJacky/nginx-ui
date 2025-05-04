@@ -314,7 +314,7 @@ require (
 )
 
 replace (
-	code.pfad.fr/risefront => github.com/nginxui/risefront v1.1.1
+	code.pfad.fr/risefront => github.com/nginxui/risefront v1.1.5
 	github.com/tufanbarisyildirim/gonginx => github.com/0xJacky/gonginx v0.0.0-20250420001451-d120448e89a4
 	gorm.io/gorm => gorm.io/gorm v1.25.12
 	gorm.io/plugin/dbresolver => gorm.io/plugin/dbresolver v1.5.3
