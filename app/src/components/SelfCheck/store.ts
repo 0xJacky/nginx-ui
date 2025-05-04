@@ -52,13 +52,13 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
     trailing: false,
   })
 
-  const fixing = reactive({})
+  const fixing = ref<Record<string, boolean>>({})
 
   async function fix(taskName: string) {
-    if (fixing[taskName])
+    if (fixing.value[taskName])
       return
 
-    fixing[taskName] = true
+    fixing.value[taskName] = true
     try {
       await selfCheck.fix(taskName)
       await nextTick()
@@ -67,7 +67,7 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
       }, 1000)
     }
     finally {
-      fixing[taskName] = false
+      fixing.value[taskName] = false
     }
   }
 
