@@ -64,12 +64,7 @@ func Program(ctx context.Context, confPath string) func(l []net.Listener) error 
 		}
 
 		// defer Shutdown to wait for ongoing requests to be served before returning
-		defer func(srv *http.Server, ctx context.Context) {
-			err := srv.Shutdown(ctx)
-			if err != nil {
-				logger.Fatal(err)
-			}
-		}(srv, ctx)
+		defer srv.Shutdown(ctx)
 
 		var err error
 		if cSettings.ServerSettings.EnableHTTPS {
