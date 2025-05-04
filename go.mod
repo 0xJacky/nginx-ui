@@ -42,7 +42,7 @@ require (
 	github.com/spf13/cast v1.8.0
 	github.com/stretchr/testify v1.10.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250429180229-7e931b1d4276
-	github.com/uozi-tech/cosy v1.20.0
+	github.com/uozi-tech/cosy v1.21.0
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.3.2
 	golang.org/x/crypto v0.37.0
@@ -145,7 +145,6 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.2 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/go-tpm v0.9.4 // indirect
-	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/s2a-go v0.1.9 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.6 // indirect
 	github.com/googleapis/gax-go/v2 v2.14.1 // indirect

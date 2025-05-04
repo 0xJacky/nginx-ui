@@ -1,6 +1,8 @@
 package cron
 
 import (
+	"context"
+
 	"github.com/go-co-op/gocron/v2"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -17,7 +19,7 @@ func init() {
 }
 
 // InitCronJobs initializes and starts all cron jobs
-func InitCronJobs() {
+func InitCronJobs(ctx context.Context) {
 	// Initialize auto cert job
 	_, err := setupAutoCertJob(s)
 	if err != nil {
@@ -41,6 +43,9 @@ func InitCronJobs() {
 
 	// Start the scheduler
 	s.Start()
+
+	<-ctx.Done()
+	s.Shutdown()
 }
 
 // RestartLogrotate is a public API to restart the logrotate job

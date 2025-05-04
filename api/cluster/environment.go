@@ -1,6 +1,7 @@
 package cluster
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
@@ -165,7 +166,8 @@ func LoadEnvironmentFromSettings(c *gin.Context) {
 		return
 	}
 
-	cluster.RegisterPredefinedNodes()
+	ctx := context.Background()
+	cluster.RegisterPredefinedNodes(ctx)
 
 	go analytic.RestartRetrieveNodesStatus()
 

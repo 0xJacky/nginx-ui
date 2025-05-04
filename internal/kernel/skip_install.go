@@ -1,12 +1,14 @@
 package kernel
 
 import (
+	"context"
+	"errors"
+
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/caarlos0/env/v11"
 	"github.com/google/uuid"
-	"errors"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 	"golang.org/x/crypto/bcrypt"
@@ -36,7 +38,7 @@ func skipInstall() {
 	}
 }
 
-func registerPredefinedUser() {
+func registerPredefinedUser(ctx context.Context) {
 	// when skip installation mode is enabled, the predefined user will be created
 	if !settings.NodeSettings.SkipInstallation {
 		return

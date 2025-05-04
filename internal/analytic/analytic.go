@@ -1,6 +1,7 @@
 package analytic
 
 import (
+	"context"
 	"time"
 
 	"github.com/uozi-tech/cosy/logger"
@@ -48,12 +49,18 @@ func init() {
 	}
 }
 
-func RecordServerAnalytic() {
+func RecordServerAnalytic(ctx context.Context) {
 	logger.Info("RecordServerAnalytic Started")
 	for {
-		now := time.Now()
-		recordCpu(now) // this func will spend more than 1 second.
-		recordNetwork(now)
-		recordDiskIO(now)
+		select {
+		case <-ctx.Done():
+			logger.Info("RecordServerAnalytic Stopped")
+			return
+		case <-time.After(1 * time.Second):
+			now := time.Now()
+			recordCpu(now) // this func will spend more than 1 second.
+			recordNetwork(now)
+			recordDiskIO(now)
+		}
 	}
 }

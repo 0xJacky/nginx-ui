@@ -1,11 +1,13 @@
 package kernel
 
 import (
+	"context"
+
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/uozi-tech/cosy/logger"
 )
 
-func RegisterAcmeUser() {
+func RegisterAcmeUser(ctx context.Context) {
 	a := query.AcmeUser
 	users, _ := a.Where(a.RegisterOnStartup.Is(true)).Find()
 	for _, user := range users {

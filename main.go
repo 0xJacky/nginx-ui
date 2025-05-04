@@ -29,9 +29,10 @@ import (
 
 func Program(confPath string) func(l []net.Listener) error {
 	return func(l []net.Listener) error {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
 		listener := l[0]
-		defer logger.Sync()
-		defer logger.Info("Server exited")
 
 		cosy.RegisterMigrationsBeforeAutoMigrate(migrate.BeforeAutoMigrate)
 
@@ -39,7 +40,10 @@ func Program(confPath string) func(l []net.Listener) error {
 
 		cosy.RegisterMigration(migrate.Migrations)
 
-		cosy.RegisterInitFunc(kernel.Boot, router.InitRouter)
+		cosy.RegisterInitFunc(func() {
+			kernel.Boot(ctx)
+			router.InitRouter()
+		})
 
 		// Initialize settings package
 		settings.Init(confPath)
@@ -50,12 +54,13 @@ func Program(confPath string) func(l []net.Listener) error {
 		// Initialize logger package
 		logger.Init(cSettings.ServerSettings.RunMode)
 		defer logger.Sync()
+		defer logger.Info("Server exited")
 
 		// Gin router initialization
 		cRouter.Init()
 
 		// Kernel boot
-		cKernel.Boot()
+		cKernel.Boot(ctx)
 
 		srv := &http.Server{
 			Handler: cRouter.GetEngine(),
@@ -67,7 +72,7 @@ func Program(confPath string) func(l []net.Listener) error {
 			if err != nil {
 				logger.Fatal(err)
 			}
-		}(srv, context.Background())
+		}(srv, ctx)
 
 		var err error
 		if cSettings.ServerSettings.EnableHTTPS {

@@ -12,33 +12,90 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-var (
-	ctx, cancel = context.WithCancel(context.Background())
-	wg          sync.WaitGroup
-	restartMu   sync.Mutex // Add mutex to prevent concurrent restarts
-)
+// NodeRecordManager manages the node status retrieval process
+type NodeRecordManager struct {
+	ctx    context.Context
+	cancel context.CancelFunc
+	wg     sync.WaitGroup
+	mu     sync.Mutex
+}
 
-func RestartRetrieveNodesStatus() {
-	restartMu.Lock() // Acquire lock before modifying shared resources
-	defer restartMu.Unlock()
+// NewNodeRecordManager creates a new NodeRecordManager with the provided context
+func NewNodeRecordManager(parentCtx context.Context) *NodeRecordManager {
+	ctx, cancel := context.WithCancel(parentCtx)
+	return &NodeRecordManager{
+		ctx:    ctx,
+		cancel: cancel,
+	}
+}
 
-	// Cancel previous context to stop all operations
-	cancel()
+// Start begins retrieving node status using the manager's context
+func (m *NodeRecordManager) Start() {
+	m.mu.Lock()
+	defer m.mu.Unlock()
 
-	// Wait for previous goroutines to finish
-	wg.Wait()
-
-	// Create new context for this run
-	ctx, cancel = context.WithCancel(context.Background())
-
-	wg.Add(1)
+	m.wg.Add(1)
 	go func() {
-		defer wg.Done()
-		RetrieveNodesStatus()
+		defer m.wg.Done()
+		RetrieveNodesStatus(m.ctx)
 	}()
 }
 
-func RetrieveNodesStatus() {
+// Stop cancels the current context and waits for operations to complete
+func (m *NodeRecordManager) Stop() {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+
+	m.cancel()
+	m.wg.Wait()
+}
+
+// Restart stops and then restarts the node status retrieval
+func (m *NodeRecordManager) Restart() {
+	m.Stop()
+
+	// Create new context
+	m.ctx, m.cancel = context.WithCancel(context.Background())
+
+	// Start retrieval with new context
+	m.Start()
+}
+
+// For backward compatibility
+var (
+	defaultManager *NodeRecordManager
+	setupOnce      sync.Once
+	restartMu      sync.Mutex
+)
+
+// InitDefaultManager initializes the default NodeRecordManager
+func InitDefaultManager() {
+	setupOnce.Do(func() {
+		defaultManager = NewNodeRecordManager(context.Background())
+	})
+}
+
+// RestartRetrieveNodesStatus restarts the node status retrieval process
+// Kept for backward compatibility
+func RestartRetrieveNodesStatus() {
+	restartMu.Lock()
+	defer restartMu.Unlock()
+
+	if defaultManager == nil {
+		InitDefaultManager()
+	}
+
+	defaultManager.Restart()
+}
+
+// StartRetrieveNodesStatus starts the node status retrieval with a custom context
+func StartRetrieveNodesStatus(ctx context.Context) *NodeRecordManager {
+	manager := NewNodeRecordManager(ctx)
+	manager.Start()
+	return manager
+}
+
+func RetrieveNodesStatus(ctx context.Context) {
 	logger.Info("RetrieveNodesStatus start")
 	defer logger.Info("RetrieveNodesStatus exited")
 
@@ -87,8 +144,6 @@ func RetrieveNodesStatus() {
 			}
 		}(env)
 	}
-
-	<-ctx.Done()
 }
 
 func nodeAnalyticRecord(env *model.Environment, ctx context.Context) error {

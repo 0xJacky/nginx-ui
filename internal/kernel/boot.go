@@ -1,6 +1,7 @@
 package kernel
 
 import (
+	"context"
 	"crypto/rand"
 	"encoding/hex"
 	"mime"
@@ -28,12 +29,11 @@ import (
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
-func Boot() {
+func Boot(ctx context.Context) {
 	defer recovery()
 
 	async := []func(){
 		InitJsExtensionType,
-		InitDatabase,
 		InitNodeSecret,
 		InitCryptoSecret,
 		validation.Init,
@@ -41,8 +41,9 @@ func Boot() {
 		CheckAndCleanupOTAContainers,
 	}
 
-	syncs := []func(){
+	syncs := []func(ctx context.Context){
 		analytic.RecordServerAnalytic,
+		InitDatabase,
 	}
 
 	for _, v := range async {
@@ -50,12 +51,12 @@ func Boot() {
 	}
 
 	for _, v := range syncs {
-		go v()
+		go v(ctx)
 	}
 }
 
-func InitAfterDatabase() {
-	syncs := []func(){
+func InitAfterDatabase(ctx context.Context) {
+	syncs := []func(ctx context.Context){
 		registerPredefinedUser,
 		cert.InitRegister,
 		cron.InitCronJobs,
@@ -67,7 +68,7 @@ func InitAfterDatabase() {
 	}
 
 	for _, v := range syncs {
-		go v()
+		go v(ctx)
 	}
 }
 
@@ -79,20 +80,28 @@ func recovery() {
 	}
 }
 
-func InitDatabase() {
+var installChan = make(chan struct{})
+
+func PostInstall() {
+	installChan <- struct{}{}
+}
+
+func InitDatabase(ctx context.Context) {
 	cModel.ResolvedModels()
 	// Skip install
 	if settings.NodeSettings.SkipInstallation {
 		skipInstall()
 	}
 
-	if cSettings.AppSettings.JwtSecret != "" {
-		db := cosy.InitDB(sqlite.Open(path.Dir(cSettings.ConfPath), settings.DatabaseSettings))
-		model.Use(db)
-		query.Init(db)
-
-		InitAfterDatabase()
+	if cSettings.AppSettings.JwtSecret == "" {
+		<-installChan
 	}
+
+	db := cosy.InitDB(sqlite.Open(path.Dir(cSettings.ConfPath), settings.DatabaseSettings))
+	model.Use(db)
+	query.Init(db)
+
+	InitAfterDatabase(ctx)
 }
 
 func InitNodeSecret() {

@@ -1,6 +1,8 @@
 package passkey
 
 import (
+	"context"
+
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
@@ -9,7 +11,7 @@ import (
 
 var instance *webauthn.WebAuthn
 
-func Init() {
+func Init(ctx context.Context) {
 	options := settings.WebAuthnSettings
 
 	if !Enabled() {

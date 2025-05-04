@@ -40,9 +40,10 @@ type Tool struct {
 }
 
 var (
-	tools         = []Tool{}
-	toolMutex     sync.Mutex
+	tools     = []Tool{}
+	toolMutex sync.Mutex
 )
+
 func AddTool(tool mcp.Tool, handler func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error)) {
 	toolMutex.Lock()
 	defer toolMutex.Unlock()
@@ -53,7 +54,7 @@ func ServeHTTP(c *gin.Context) {
 	sseServer.ServeHTTP(c.Writer, c.Request)
 }
 
-func Init() {
+func Init(ctx context.Context) {
 	for _, tool := range tools {
 		mcpServer.AddTool(tool.Tool, tool.Handler)
 	}

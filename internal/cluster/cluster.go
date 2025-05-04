@@ -1,16 +1,19 @@
 package cluster
 
 import (
+	"context"
+	"net/url"
+
+	"strings"
+
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
 	"gorm.io/gen/field"
-	"net/url"
-	"strings"
 )
 
-func RegisterPredefinedNodes() {
+func RegisterPredefinedNodes(ctx context.Context) {
 	if len(settings.ClusterSettings.Node) == 0 {
 		return
 	}

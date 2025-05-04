@@ -78,7 +78,7 @@ func InstallNginxUI(c *gin.Context) {
 	cSettings.AppSettings.JwtSecret = uuid.New().String()
 	settings.NodeSettings.Secret = uuid.New().String()
 	settings.CertSettings.Email = json.Email
-	if "" != json.Database {
+	if json.Database != "" {
 		settings.DatabaseSettings.Name = json.Database
 	}
 
@@ -89,7 +89,7 @@ func InstallNginxUI(c *gin.Context) {
 	}
 
 	// Init model
-	kernel.InitDatabase()
+	kernel.PostInstall()
 
 	pwd, _ := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
 
