@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"sync/atomic"
+	"time"
 
 	"code.pfad.fr/risefront"
 	_github "github.com/0xJacky/Nginx-UI/.github"
@@ -272,6 +273,9 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 		}
 		return err
 	}
+
+	// wait for the file to be written
+	time.Sleep(1 * time.Second)
 
 	// gracefully restart
 	risefront.Restart()
