@@ -28,8 +28,10 @@ func InitPrivateRouter(r *gin.RouterGroup) {
 }
 
 func InitSelfCheckRouter(r *gin.RouterGroup) {
-	r.GET("self_check", authIfInstalled, SelfCheck)
-	r.POST("self_check/:name/fix", authIfInstalled, SelfCheckFix)
+	g := r.Group("self_check")
+	g.GET("", authIfInstalled, SelfCheck)
+	g.POST("/:name/fix", authIfInstalled, SelfCheckFix)
+	g.GET("websocket", authIfInstalled, CheckWebSocket)
 }
 
 func InitBackupRestoreRouter(r *gin.RouterGroup) {
@@ -41,5 +43,4 @@ func InitBackupRestoreRouter(r *gin.RouterGroup) {
 
 func InitWebSocketRouter(r *gin.RouterGroup) {
 	r.GET("upgrade/perform", PerformCoreUpgrade)
-	r.GET("self_check/websocket", CheckWebSocket)
 }
