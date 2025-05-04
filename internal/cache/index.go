@@ -228,35 +228,51 @@ func (s *Scanner) watchForChanges() {
 				return
 			}
 
-			// Check if this is a relevant event (create, write, rename, remove)
-			if event.Has(fsnotify.Create) || event.Has(fsnotify.Write) ||
-				event.Has(fsnotify.Rename) || event.Has(fsnotify.Remove) {
-				// If it's a directory, add it to the watch list
-				if event.Has(fsnotify.Create) {
-					fi, err := os.Stat(event.Name)
-					if err == nil && fi.IsDir() {
-						_ = s.watcher.Add(event.Name)
-					}
-				}
+			// Skip irrelevant events
+			if !event.Has(fsnotify.Create) && !event.Has(fsnotify.Write) &&
+				!event.Has(fsnotify.Rename) && !event.Has(fsnotify.Remove) {
+				continue
+			}
 
-				// Process file changes
-				if !event.Has(fsnotify.Remove) {
-					logger.Debug("Config file changed:", event.Name)
-					// Give the system a moment to finish writing the file
-					time.Sleep(100 * time.Millisecond)
-					// Only scan the changed file instead of all configs
-					err := s.scanSingleFile(event.Name)
-					if err != nil {
-						logger.Error("Failed to scan changed file:", err)
-					}
-				} else {
-					// For removed files, we need a full rescan
-					err := s.ScanAllConfigs()
-					if err != nil {
-						logger.Error("Failed to rescan configs after file removal:", err)
-					}
+			// Add newly created directories to the watch list
+			if event.Has(fsnotify.Create) {
+				if fi, err := os.Stat(event.Name); err == nil && fi.IsDir() {
+					_ = s.watcher.Add(event.Name)
 				}
 			}
+
+			// For remove events, perform a full scan
+			if event.Has(fsnotify.Remove) {
+				logger.Debug("Config item removed:", event.Name)
+				if err := s.ScanAllConfigs(); err != nil {
+					logger.Error("Failed to rescan configs after removal:", err)
+				}
+				continue
+			}
+
+			// Handle non-remove events
+			fi, err := os.Stat(event.Name)
+			if err != nil {
+				logger.Error("Failed to stat changed path:", err)
+				continue
+			}
+
+			if fi.IsDir() {
+				// Directory change, perform full scan
+				logger.Debug("Config directory changed:", event.Name)
+				if err := s.ScanAllConfigs(); err != nil {
+					logger.Error("Failed to rescan configs after directory change:", err)
+				}
+			} else {
+				// File change, scan only the single file
+				logger.Debug("Config file changed:", event.Name)
+				// Give the system a moment to finish writing the file
+				time.Sleep(100 * time.Millisecond)
+				if err := s.scanSingleFile(event.Name); err != nil {
+					logger.Error("Failed to scan changed file:", err)
+				}
+			}
+
 		case err, ok := <-s.watcher.Errors:
 			if !ok {
 				return
