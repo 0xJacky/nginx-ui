@@ -27,11 +27,8 @@ import (
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
-func Program(confPath string) func(l []net.Listener) error {
+func Program(ctx context.Context, confPath string) func(l []net.Listener) error {
 	return func(l []net.Listener) error {
-		ctx, cancel := context.WithCancel(context.Background())
-		defer cancel()
-
 		listener := l[0]
 
 		cosy.RegisterMigrationsBeforeAutoMigrate(migrate.BeforeAutoMigrate)
@@ -112,7 +109,7 @@ func main() {
 	defer cancel()
 
 	err := risefront.New(ctx, risefront.Config{
-		Run:       Program(confPath),
+		Run:       Program(ctx, confPath),
 		Name:      "nginx-ui",
 		Addresses: []string{fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port)},
 		ErrorHandler: func(kind string, err error) {
