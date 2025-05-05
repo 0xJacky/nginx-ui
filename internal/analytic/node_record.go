@@ -129,11 +129,11 @@ func RetrieveNodesStatus(ctx context.Context) {
 				default:
 					if err := nodeAnalyticRecord(e, ctx); err != nil {
 						logger.Error(err)
+						mutex.Lock()
 						if NodeMap[env.ID] != nil {
-							mutex.Lock()
 							NodeMap[env.ID].Status = false
-							mutex.Unlock()
 						}
+						mutex.Unlock()
 						select {
 						case <-retryTicker.C:
 						case <-ctx.Done():
