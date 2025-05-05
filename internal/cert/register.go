@@ -52,6 +52,8 @@ func InitRegister(ctx context.Context) {
 	}
 
 	logger.Info("ACME Default User registered")
+
+	initBroadcastStatus(ctx)
 }
 
 func GetDefaultACMEUser() (user *model.AcmeUser, err error) {

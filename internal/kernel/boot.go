@@ -38,7 +38,9 @@ func Boot(ctx context.Context) {
 		InitNodeSecret,
 		InitCryptoSecret,
 		validation.Init,
-		cache.Init,
+		func() {
+			cache.Init(ctx)
+		},
 		CheckAndCleanupOTAContainers,
 	}
 

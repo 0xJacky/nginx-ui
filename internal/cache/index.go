@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -19,6 +20,7 @@ type ScanCallback func(configPath string, content []byte) error
 
 // Scanner is responsible for scanning and watching nginx config files
 type Scanner struct {
+	ctx           context.Context        // Context for the scanner
 	watcher       *fsnotify.Watcher      // File system watcher
 	scanTicker    *time.Ticker           // Ticker for periodic scanning
 	initialized   bool                   // Whether the scanner has been initialized
@@ -39,24 +41,19 @@ var (
 	includeRegex = regexp.MustCompile(`include\s+([^;]+);`)
 
 	// Global callbacks that will be executed during config file scanning
-	scanCallbacks      []ScanCallback
+	scanCallbacks      = make([]ScanCallback, 0)
 	scanCallbacksMutex sync.RWMutex
 )
 
-func init() {
-	// Initialize the callbacks slice
-	scanCallbacks = make([]ScanCallback, 0)
-}
-
 // InitScanner initializes the config scanner
-func InitScanner() {
+func InitScanner(ctx context.Context) {
 	if nginx.GetConfPath() == "" {
 		logger.Error("Nginx config path is not set")
 		return
 	}
 
 	s := GetScanner()
-	err := s.Initialize()
+	err := s.Initialize(ctx)
 	if err != nil {
 		logger.Error("Failed to initialize config scanner:", err)
 	}
@@ -140,7 +137,7 @@ func UnsubscribeScanningStatus(ch chan bool) {
 }
 
 // Initialize sets up the scanner and starts watching for file changes
-func (s *Scanner) Initialize() error {
+func (s *Scanner) Initialize(ctx context.Context) error {
 	if s.initialized {
 		return nil
 	}
@@ -151,6 +148,7 @@ func (s *Scanner) Initialize() error {
 		return err
 	}
 	s.watcher = watcher
+	s.ctx = ctx
 
 	// Scan for the first time
 	err = s.ScanAllConfigs()
@@ -207,12 +205,24 @@ func (s *Scanner) Initialize() error {
 	// Setup a ticker for periodic scanning (every 5 minutes)
 	s.scanTicker = time.NewTicker(5 * time.Minute)
 	go func() {
-		for range s.scanTicker.C {
-			err := s.ScanAllConfigs()
-			if err != nil {
-				logger.Error("Periodic config scan failed:", err)
+		for {
+			select {
+			case <-s.ctx.Done():
+				return
+			case <-s.scanTicker.C:
+				err := s.ScanAllConfigs()
+				if err != nil {
+					logger.Error("Periodic config scan failed:", err)
+				}
 			}
 		}
+	}()
+
+	// Start a goroutine to listen for context cancellation
+	go func() {
+		<-s.ctx.Done()
+		logger.Debug("Context cancelled, shutting down scanner")
+		s.Shutdown()
 	}()
 
 	s.initialized = true
@@ -223,6 +233,8 @@ func (s *Scanner) Initialize() error {
 func (s *Scanner) watchForChanges() {
 	for {
 		select {
+		case <-s.ctx.Done():
+			return
 		case event, ok := <-s.watcher.Events:
 			if !ok {
 				return
@@ -470,4 +482,13 @@ func IsScanningInProgress() bool {
 	s.scanMutex.RLock()
 	defer s.scanMutex.RUnlock()
 	return s.scanning
+}
+
+// WithContext sets a context for the scanner that will be used to control its lifecycle
+func (s *Scanner) WithContext(ctx context.Context) *Scanner {
+	// Create a context with cancel if not already done in Initialize
+	if s.ctx == nil {
+		s.ctx = ctx
+	}
+	return s
 }

@@ -13,14 +13,9 @@ type NginxLogCache struct {
 
 var (
 	// logCache is the map to store all found log files
-	logCache   map[string]*NginxLogCache
+	logCache   = make(map[string]*NginxLogCache)
 	cacheMutex sync.RWMutex
 )
-
-func init() {
-	// Initialize the cache
-	logCache = make(map[string]*NginxLogCache)
-}
 
 // AddLogPath adds a log path to the log cache
 func AddLogPath(path, logType, name string) {

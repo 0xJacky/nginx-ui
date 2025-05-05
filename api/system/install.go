@@ -25,7 +25,7 @@ func init() {
 }
 
 func installLockStatus() bool {
-	return settings.NodeSettings.SkipInstallation || "" != cSettings.AppSettings.JwtSecret
+	return settings.NodeSettings.SkipInstallation || cSettings.AppSettings.JwtSecret != ""
 }
 
 // Check if installation time limit (10 minutes) is exceeded

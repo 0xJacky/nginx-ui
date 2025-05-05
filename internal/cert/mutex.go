@@ -1,6 +1,7 @@
 package cert
 
 import (
+	"context"
 	"sync"
 )
 
@@ -24,28 +25,39 @@ var (
 	processingMutex sync.RWMutex
 )
 
-func init() {
+func initBroadcastStatus(ctx context.Context) {
 	// Initialize channels and maps
 	statusChan = make(chan bool, 10) // Buffer to prevent blocking
 	subscribers = make(map[chan bool]struct{})
 
 	// Start broadcasting goroutine
-	go broadcastStatus()
+	go broadcastStatus(ctx)
 }
 
 // broadcastStatus listens for status changes and broadcasts to all subscribers
-func broadcastStatus() {
-	for status := range statusChan {
-		subscriberMux.RLock()
-		for ch := range subscribers {
-			// Non-blocking send to prevent slow subscribers from blocking others
-			select {
-			case ch <- status:
-			default:
-				// Skip if channel buffer is full
+func broadcastStatus(ctx context.Context) {
+	for {
+		select {
+		case <-ctx.Done():
+			// Context cancelled, clean up resources and exit
+			close(statusChan)
+			return
+		case status, ok := <-statusChan:
+			if !ok {
+				// Channel closed, exit
+				return
 			}
+			subscriberMux.RLock()
+			for ch := range subscribers {
+				// Non-blocking send to prevent slow subscribers from blocking others
+				select {
+				case ch <- status:
+				default:
+					// Skip if channel buffer is full
+				}
+			}
+			subscriberMux.RUnlock()
 		}
-		subscriberMux.RUnlock()
 	}
 }
 
