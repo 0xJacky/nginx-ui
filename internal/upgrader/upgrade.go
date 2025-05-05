@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"sync/atomic"
@@ -217,8 +218,10 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 	}
 	defer updateInProgress.Store(false)
 
+	oldExe := filepath.Join(filepath.Dir(u.ExPath), ".nginx-ui.old."+strconv.FormatInt(time.Now().Unix(), 10))
+
 	opts := selfupdate.Options{
-		OldSavePath: fmt.Sprintf(".nginx-ui.old.%d", time.Now().Unix()),
+		OldSavePath: oldExe,
 	}
 
 	if err = opts.CheckPermissions(); err != nil {
@@ -267,6 +270,10 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 			return pathErr.Err
 		}
 		return err
+	}
+
+	if runtime.GOOS != "windows" {
+		_ = os.Remove(oldExe)
 	}
 
 	// wait for the file to be written

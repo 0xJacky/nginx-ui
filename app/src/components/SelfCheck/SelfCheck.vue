@@ -38,9 +38,9 @@ onMounted(() => {
             <div>
               {{ item.description?.() }}
             </div>
-            <div v-if="item.status !== 'success'" class="mt-1">
+            <div v-if="item.status !== 'success' && item.err?.message" class="mt-1">
               <ATag :color="item.status === 'warning' ? 'warning' : 'error'">
-                {{ item.err?.message || $gettext('Unknown issue') }}
+                {{ $gettext(item.err?.message) }}
               </ATag>
             </div>
           </template>

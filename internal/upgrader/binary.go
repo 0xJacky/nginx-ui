@@ -3,7 +3,6 @@ package upgrader
 import (
 	"os"
 
-	"code.pfad.fr/risefront"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gorilla/websocket"
 	"github.com/uozi-tech/cosy/logger"
@@ -71,9 +70,8 @@ func BinaryUpgrade(ws *websocket.Conn, control *Control) {
 		Status:  UpgradeStatusInfo,
 		Message: "Performing core upgrade",
 	})
-	// dry run
-	if control.DryRun || settings.NodeSettings.Demo {
-		risefront.Restart()
+
+	if settings.NodeSettings.Demo {
 		return
 	}
 
