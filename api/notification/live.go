@@ -1,12 +1,14 @@
 package notification
 
 import (
+	"io"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/api"
+	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
-	"io"
-	"time"
 )
 
 func Live(c *gin.Context) {
@@ -37,6 +39,8 @@ func Live(c *gin.Context) {
 			})
 		case <-notify:
 			notification.RemoveClient(c)
+			return
+		case <-kernel.Context.Done():
 			return
 		}
 	}
