@@ -10,10 +10,10 @@ var (
 	mutex sync.Mutex
 
 	// statusChan is the channel to broadcast certificate status changes
-	statusChan chan bool
+	statusChan = make(chan bool, 10)
 
 	// subscribers is a map of channels that are subscribed to certificate status changes
-	subscribers map[chan bool]struct{}
+	subscribers = make(map[chan bool]struct{})
 
 	// subscriberMux protects the subscribers map from concurrent access
 	subscriberMux sync.RWMutex
@@ -26,10 +26,6 @@ var (
 )
 
 func initBroadcastStatus(ctx context.Context) {
-	// Initialize channels and maps
-	statusChan = make(chan bool, 10) // Buffer to prevent blocking
-	subscribers = make(map[chan bool]struct{})
-
 	// Start broadcasting goroutine
 	go broadcastStatus(ctx)
 }
