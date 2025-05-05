@@ -4,13 +4,10 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	"log"
 	"net"
 	"net/http"
 	"os/signal"
 	"syscall"
-
-	_ "net/http/pprof"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cmd"
@@ -108,10 +105,6 @@ func main() {
 
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
-
-	go func() {
-		log.Println(http.ListenAndServe(":6060", nil))
-	}()
 
 	err := risefront.New(ctx, risefront.Config{
 		Run:       Program(ctx, confPath),
