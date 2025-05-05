@@ -39,6 +39,9 @@ features:
     -   icon: 🔍
         title: Code Completion
         details: Code editor supports code completion, help you write configuration faster.
+    -   icon: 🤖
+        title: MCP (Model Context Protocol)
+        details: Provides special interfaces for AI agents to interact with Nginx UI, enabling automated configuration management and service control.
     -   icon: 🖱️
         title: One-Click Deployment and Automatic Renewal
         details: Easily deploy and auto-renew Let's Encrypt certificates with just one click.

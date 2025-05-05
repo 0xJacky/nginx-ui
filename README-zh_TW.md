@@ -79,6 +79,7 @@ Nginx 網路管理介面，由 [0xJacky](https://jackyu.cn/)、[Hintay](https://
 - 支援鏡像操作到多個叢集節點，輕鬆管理多伺服器環境
 - 匯出加密的 Nginx/NginxUI 設定，方便快速部署和恢復到新環境
 - 增強版線上 ChatGPT 助手，支援多種模型，包括顯示 Deepseek-R1 的思考鏈，幫助您更好地理解和最佳化設定
+- MCP (Model Context Protocol) 讓 AI 代理程式與 Nginx UI 互動，實現自動化設定管理和服務控制
 - 一鍵申請和自動續簽 Let's encrypt 憑證
 - 線上編輯 Nginx 設定檔，編輯器支援**大模型代碼補全**和 Nginx 設定語法醒目提示
 - 線上檢視 Nginx 日誌

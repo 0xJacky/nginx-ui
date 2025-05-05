@@ -39,6 +39,9 @@ features:
     -   icon: 🔍
         title: 代码补全
         details: 代码编辑器支持代码补全，帮助您更快地编写配置。
+    -   icon: 🤖
+        title: MCP (Model Context Protocol)
+        details: 提供特殊接口让 AI 代理与 Nginx UI 交互，实现自动化配置管理和服务控制。
     -   icon: 🖱️
         title: 一键部署和自动续期
         details: 只需一键即可轻松部署和自动续期 Let's Encrypt 证书。
