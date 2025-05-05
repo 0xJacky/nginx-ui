@@ -7,6 +7,7 @@ import (
 	"mime"
 	"path"
 	"runtime"
+	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cache"
@@ -80,10 +81,18 @@ func recovery() {
 	}
 }
 
-var installChan = make(chan struct{})
+var (
+	installChan = make(chan struct{})
+	dbInited    = sync.WaitGroup{}
+)
+
+func init() {
+	dbInited.Add(1)
+}
 
 func PostInstall() {
 	installChan <- struct{}{}
+	dbInited.Wait()
 }
 
 func InitDatabase(ctx context.Context) {
@@ -102,6 +111,7 @@ func InitDatabase(ctx context.Context) {
 	query.Init(db)
 
 	InitAfterDatabase(ctx)
+	dbInited.Done()
 }
 
 func InitNodeSecret() {
