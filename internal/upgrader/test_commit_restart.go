@@ -19,7 +19,10 @@ func (u *Upgrader) TestCommitAndRestart() error {
 	testBinaryPath := filepath.Join(exDir, "nginx-ui.test")
 
 	// Create temporary old file path
-	oldExe := filepath.Join(exDir, ".nginx-ui.old."+strconv.FormatInt(time.Now().Unix(), 10))
+	oldExe := ""
+	if runtime.GOOS == "windows" {
+		oldExe = filepath.Join(exDir, ".nginx-ui.old."+strconv.FormatInt(time.Now().Unix(), 10))
+	}
 
 	// Setup update options
 	opts := selfupdate.Options{
@@ -85,10 +88,7 @@ func (u *Upgrader) TestCommitAndRestart() error {
 		return err
 	}
 
-	if runtime.GOOS != "windows" {
-		_ = os.Remove(oldExe)
-		_ = os.Remove(testBinaryPath)
-	}
+	_ = os.Remove(testBinaryPath)
 
 	// Wait for file to be written
 	time.Sleep(1 * time.Second)

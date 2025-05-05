@@ -218,7 +218,10 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 	}
 	defer updateInProgress.Store(false)
 
-	oldExe := filepath.Join(filepath.Dir(u.ExPath), ".nginx-ui.old."+strconv.FormatInt(time.Now().Unix(), 10))
+	oldExe := ""
+	if runtime.GOOS != "windows" {
+		oldExe = filepath.Join(filepath.Dir(u.ExPath), ".nginx-ui.old."+strconv.FormatInt(time.Now().Unix(), 10))
+	}
 
 	opts := selfupdate.Options{
 		OldSavePath: oldExe,
@@ -270,10 +273,6 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 			return pathErr.Err
 		}
 		return err
-	}
-
-	if runtime.GOOS != "windows" {
-		_ = os.Remove(oldExe)
 	}
 
 	// wait for the file to be written
