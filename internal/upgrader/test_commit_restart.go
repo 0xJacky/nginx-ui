@@ -87,11 +87,12 @@ func (u *Upgrader) TestCommitAndRestart() error {
 
 	if runtime.GOOS != "windows" {
 		_ = os.Remove(oldExe)
+		_ = os.Remove(testBinaryPath)
 	}
 
 	// Wait for file to be written
 	time.Sleep(1 * time.Second)
-	
+
 	// Gracefully restart
 	risefront.Restart()
 	return nil
