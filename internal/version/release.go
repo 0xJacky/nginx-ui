@@ -44,6 +44,8 @@ func (t *TRelease) GetAssetsMap() (m map[string]TReleaseAsset) {
 func getLatestRelease() (data TRelease, err error) {
 	resp, err := http.Get(GetGithubLatestReleaseAPIUrl())
 	if err != nil {
+		err = errors.Wrap(err, "service.getLatestRelease http.Get err")
+		return
 	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {

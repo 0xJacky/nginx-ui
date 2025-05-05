@@ -116,6 +116,10 @@ func main() {
 			}
 			logger.Error(kind, err)
 		},
+		LogHandler: func(logLevel risefront.LogLevel, kind string, args ...any) {
+			args = append([]any{kind}, args...)
+			logger.Info(args...)
+		},
 	})
 	if err != nil && !errors.Is(err, context.DeadlineExceeded) &&
 		!errors.Is(err, context.Canceled) &&
