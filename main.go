@@ -32,6 +32,9 @@ import (
 
 func Program(ctx context.Context, confPath string) func(l []net.Listener) error {
 	return func(l []net.Listener) error {
+		ctx, cancel := context.WithCancel(ctx)
+		defer cancel()
+
 		listener := l[0]
 
 		cosy.RegisterMigrationsBeforeAutoMigrate(migrate.BeforeAutoMigrate)
