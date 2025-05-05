@@ -27,15 +27,17 @@ watch(route, () => {
 })
 
 onMounted(async () => {
+  let page = 1
   while (true) {
     try {
-      const { data, pagination } = await env_group.get_list()
+      const { data, pagination } = await env_group.get_list({ page })
       if (!data || !pagination)
         return
       envGroups.value.push(...data)
       if (data.length < pagination?.per_page) {
         return
       }
+      page++
     }
     catch {
       return
