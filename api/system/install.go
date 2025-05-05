@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"code.pfad.fr/risefront"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/0xJacky/Nginx-UI/internal/system"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -89,9 +90,13 @@ func InstallNginxUI(c *gin.Context) {
 	}
 
 	// Init model
-	kernel.PostInstall()
+	kernel.InitDatabase(kernel.Context)
 
-	pwd, _ := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
+	pwd, err := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
 
 	u := query.User
 	err = u.Create(&model.User{
@@ -107,4 +112,6 @@ func InstallNginxUI(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})
+
+	risefront.Restart()
 }

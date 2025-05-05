@@ -42,7 +42,7 @@ require (
 	github.com/spf13/cast v1.8.0
 	github.com/stretchr/testify v1.10.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250429180229-7e931b1d4276
-	github.com/uozi-tech/cosy v1.21.0
+	github.com/uozi-tech/cosy v1.21.1
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.3.2
 	golang.org/x/crypto v0.37.0

@@ -9,7 +9,6 @@ import (
 	"path"
 	"path/filepath"
 	"runtime"
-	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cache"
@@ -45,6 +44,7 @@ func Boot(ctx context.Context) {
 		InitCryptoSecret,
 		validation.Init,
 		func() {
+			InitDatabase(ctx)
 			cache.Init(ctx)
 		},
 		CheckAndCleanupOTA,
@@ -52,7 +52,6 @@ func Boot(ctx context.Context) {
 
 	syncs := []func(ctx context.Context){
 		analytic.RecordServerAnalytic,
-		InitDatabase,
 	}
 
 	for _, v := range async {
@@ -89,20 +88,6 @@ func recovery() {
 	}
 }
 
-var (
-	installChan = make(chan struct{})
-	dbInited    = sync.WaitGroup{}
-)
-
-func init() {
-	dbInited.Add(1)
-}
-
-func PostInstall() {
-	installChan <- struct{}{}
-	dbInited.Wait()
-}
-
 func InitDatabase(ctx context.Context) {
 	cModel.ResolvedModels()
 	// Skip install
@@ -110,16 +95,13 @@ func InitDatabase(ctx context.Context) {
 		skipInstall()
 	}
 
-	if cSettings.AppSettings.JwtSecret == "" {
-		<-installChan
+	if cSettings.AppSettings.JwtSecret != "" {
+		db := cosy.InitDB(sqlite.Open(path.Dir(cSettings.ConfPath), settings.DatabaseSettings))
+		model.Use(db)
+		query.Init(db)
+
+		InitAfterDatabase(ctx)
 	}
-
-	db := cosy.InitDB(sqlite.Open(path.Dir(cSettings.ConfPath), settings.DatabaseSettings))
-	model.Use(db)
-	query.Init(db)
-
-	InitAfterDatabase(ctx)
-	dbInited.Done()
 }
 
 func InitNodeSecret() {
