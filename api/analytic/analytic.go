@@ -8,6 +8,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/host"
 	"github.com/shirou/gopsutil/v4/load"
@@ -91,7 +92,11 @@ func Analytic(c *gin.Context) {
 			break
 		}
 
-		time.Sleep(1 * time.Second)
+		select {
+		case <-kernel.Context.Done():
+			return
+		case <-time.After(1 * time.Second):
+		}
 	}
 }
 

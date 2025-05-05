@@ -30,8 +30,12 @@ import (
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
+var Context context.Context
+
 func Boot(ctx context.Context) {
 	defer recovery()
+
+	Context = ctx
 
 	async := []func(){
 		InitJsExtensionType,

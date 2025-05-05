@@ -6,6 +6,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/uozi-tech/cosy/logger"
@@ -36,7 +37,11 @@ func GetNodeStat(c *gin.Context) {
 			break
 		}
 
-		time.Sleep(10 * time.Second)
+		select {
+		case <-kernel.Context.Done():
+			return
+		case <-time.After(10 * time.Second):
+		}
 	}
 }
 
@@ -65,6 +70,10 @@ func GetNodesAnalytic(c *gin.Context) {
 			break
 		}
 
-		time.Sleep(10 * time.Second)
+		select {
+		case <-kernel.Context.Done():
+			return
+		case <-time.After(10 * time.Second):
+		}
 	}
 }

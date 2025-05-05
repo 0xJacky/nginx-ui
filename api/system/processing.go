@@ -8,6 +8,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/gin-gonic/gin"
 )
 
@@ -58,6 +59,8 @@ func GetProcessingStatus(c *gin.Context) {
 				c.SSEvent("heartbeat", "")
 				return false
 			})
+		case <-kernel.Context.Done():
+			return
 		case <-notify:
 			// Client disconnected
 			return
