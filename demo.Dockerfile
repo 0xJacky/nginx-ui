@@ -10,7 +10,10 @@ ENV NGINX_UI_WORKING_DIR=/var/run/
 
 # copy demo config
 COPY resources/demo/ojbk.me /etc/nginx/sites-available/ojbk.me
+COPY ["resources/demo/Prime Sponsor", "/etc/nginx/sites-available/Prime Sponsor"]
 RUN ln -s /etc/nginx/sites-available/ojbk.me /etc/nginx/sites-enabled/ojbk.me
+RUN ln -s "/etc/nginx/sites-available/Prime Sponsor" \
+          "/etc/nginx/sites-enabled/Prime Sponsor"
 COPY resources/demo/app.ini /etc/nginx-ui/app.ini
 COPY resources/demo/demo.db /etc/nginx-ui/database.db
 
