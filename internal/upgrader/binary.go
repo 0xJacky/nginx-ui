@@ -22,7 +22,6 @@ func BinaryUpgrade(ws *websocket.Conn, control *Control) {
 	})
 
 	u, err := NewUpgrader(control.Channel)
-
 	if err != nil {
 		_ = ws.WriteJSON(CoreUpgradeResp{
 			Status:  UpgradeStatusError,

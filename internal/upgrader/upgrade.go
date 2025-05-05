@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -36,6 +35,7 @@ type CoreUpgradeResp struct {
 }
 
 type Upgrader struct {
+	Channel string
 	Release version.TRelease
 	version.RuntimeInfo
 }
@@ -50,6 +50,7 @@ func NewUpgrader(channel string) (u *Upgrader, err error) {
 		return
 	}
 	u = &Upgrader{
+		Channel:     channel,
 		Release:     data,
 		RuntimeInfo: runtimeInfo,
 	}
@@ -153,12 +154,8 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 	}
 
 	githubProxy := settings.HTTPSettings.GithubProxy
-	if githubProxy != "" {
-		digest.BrowserDownloadUrl, err = url.JoinPath(githubProxy, digest.BrowserDownloadUrl)
-		if err != nil {
-			err = errors.Wrap(err, "service.DownloadLatestRelease url.JoinPath error")
-			return
-		}
+	if githubProxy != "" && u.Channel != string(version.ReleaseTypeDev) {
+		digest.BrowserDownloadUrl = version.GetUrl(digest.BrowserDownloadUrl)
 	}
 
 	resp, err := http.Get(digest.BrowserDownloadUrl)
@@ -171,12 +168,8 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 
 	dir := filepath.Dir(u.ExPath)
 
-	if githubProxy != "" {
-		downloadUrl, err = url.JoinPath(githubProxy, downloadUrl)
-		if err != nil {
-			err = errors.Wrap(err, "service.DownloadLatestRelease url.JoinPath error")
-			return
-		}
+	if githubProxy != "" && u.Channel != string(version.ReleaseTypeDev) {
+		downloadUrl = version.GetUrl(downloadUrl)
 	}
 
 	tarName, err = downloadRelease(downloadUrl, dir, progressChan)

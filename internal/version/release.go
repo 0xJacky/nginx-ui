@@ -9,11 +9,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-const (
-	GithubLatestReleaseAPI = "https://cloud.nginxui.com/https://api.github.com/repos/0xJacky/nginx-ui/releases/latest"
-	GithubReleasesListAPI  = "https://cloud.nginxui.com/https://api.github.com/repos/0xJacky/nginx-ui/releases"
-)
-
 type ReleaseType string
 
 const (
@@ -47,10 +42,8 @@ func (t *TRelease) GetAssetsMap() (m map[string]TReleaseAsset) {
 }
 
 func getLatestRelease() (data TRelease, err error) {
-	resp, err := http.Get(GithubLatestReleaseAPI)
+	resp, err := http.Get(GetGithubLatestReleaseAPIUrl())
 	if err != nil {
-		err = errors.Wrap(err, "service.getLatestRelease http.Get err")
-		return
 	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -72,7 +65,7 @@ func getLatestRelease() (data TRelease, err error) {
 }
 
 func getLatestPrerelease() (data TRelease, err error) {
-	resp, err := http.Get(GithubReleasesListAPI)
+	resp, err := http.Get(GetGithubReleasesListAPIUrl())
 	if err != nil {
 		err = errors.Wrap(err, "service.getLatestPrerelease http.Get err")
 		return

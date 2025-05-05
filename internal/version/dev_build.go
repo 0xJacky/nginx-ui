@@ -10,11 +10,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-const (
-	GithubDevCommitAPI  = "https://cloud.nginxui.com/https://api.github.com/repos/0xJacky/nginx-ui/commits/dev?per_page=1"
-	CloudflareWorkerAPI = "https://cloud.nginxui.com"
-)
-
 type TCommit struct {
 	SHA    string `json:"sha"`
 	Commit struct {
@@ -26,7 +21,7 @@ type TCommit struct {
 }
 
 func getDevBuild() (data TRelease, err error) {
-	resp, err := http.Get(GithubDevCommitAPI)
+	resp, err := http.Get(GetGithubDevCommitAPIUrl())
 	if err != nil {
 		return
 	}
@@ -47,7 +42,7 @@ func getDevBuild() (data TRelease, err error) {
 	}
 	shortSHA := commit.SHA[:7]
 
-	resp, err = http.Get(fmt.Sprintf("%s/dev-builds", CloudflareWorkerAPI))
+	resp, err = http.Get(fmt.Sprintf("%sdev-builds", CloudflareWorkerAPI))
 	if err != nil {
 		return
 	}
