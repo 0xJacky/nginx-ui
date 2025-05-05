@@ -32,5 +32,7 @@ RUN cp -rp /etc/nginx /etc/nginx.orig
 # Set PATH to include Go installation and default go install binary location
 ENV PATH="/usr/local/go/bin:/root/go/bin:${PATH}"
 
+ENV NGINX_UI_WORKING_DIR=/var/run/
+
 # set zsh as default shell
 RUN chsh -s $(which zsh)

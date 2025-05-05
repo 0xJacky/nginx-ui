@@ -6,6 +6,8 @@ ARG TARGETVARIANT
 WORKDIR /app
 EXPOSE 80
 
+ENV NGINX_UI_WORKING_DIR=/var/run/
+
 # copy demo config
 COPY resources/demo/ojbk.me /etc/nginx/sites-available/ojbk.me
 RUN ln -s /etc/nginx/sites-available/ojbk.me /etc/nginx/sites-enabled/ojbk.me
