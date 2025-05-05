@@ -5,7 +5,9 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"mime"
+	"os"
 	"path"
+	"path/filepath"
 	"runtime"
 	"sync"
 
@@ -45,7 +47,7 @@ func Boot(ctx context.Context) {
 		func() {
 			cache.Init(ctx)
 		},
-		CheckAndCleanupOTAContainers,
+		CheckAndCleanupOTA,
 	}
 
 	syncs := []func(ctx context.Context){
@@ -160,9 +162,30 @@ func InitJsExtensionType() {
 	_ = mime.AddExtensionType(".js", "text/javascript; charset=utf-8")
 }
 
-// CheckAndCleanupOTAContainers Check and cleanup OTA update temporary containers
-func CheckAndCleanupOTAContainers() {
+// CheckAndCleanupOTA Check and cleanup OTA update temporary containers
+func CheckAndCleanupOTA() {
 	if !helper.InNginxUIOfficialDocker() {
+		// If running on Windows, clean up .nginx-ui.old.* files
+		if runtime.GOOS == "windows" {
+			execPath, err := os.Executable()
+			if err != nil {
+				logger.Error("Failed to get executable path:", err)
+				return
+			}
+
+			execDir := filepath.Dir(execPath)
+			logger.Info("Cleaning up .nginx-ui.old.* files on Windows in:", execDir)
+
+			pattern := filepath.Join(execDir, ".nginx-ui.old.*")
+			files, err := filepath.Glob(pattern)
+			if err != nil {
+				logger.Error("Failed to list .nginx-ui.old.* files:", err)
+			} else {
+				for _, file := range files {
+					_ = os.Remove(file)
+				}
+			}
+		}
 		return
 	}
 	// Execute the third step cleanup operation at startup

@@ -217,7 +217,9 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 	}
 	defer updateInProgress.Store(false)
 
-	opts := selfupdate.Options{}
+	opts := selfupdate.Options{
+		OldSavePath: fmt.Sprintf(".nginx-ui.old.%d", time.Now().Unix()),
+	}
 
 	if err = opts.CheckPermissions(); err != nil {
 		return err
