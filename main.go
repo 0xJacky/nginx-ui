@@ -103,7 +103,7 @@ func main() {
 	confPath := appCmd.String("config")
 	settings.Init(confPath)
 
-	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
 
 	err := risefront.New(ctx, risefront.Config{
