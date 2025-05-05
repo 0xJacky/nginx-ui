@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"code.pfad.fr/risefront"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -86,7 +87,14 @@ func SaveSettings(c *gin.Context) {
 
 	// Validate SSL certificates if HTTPS is enabled
 	needReloadCert := false
+	needRestartProgram := false
 	if json.Server.EnableHTTPS != cSettings.ServerSettings.EnableHTTPS {
+		needReloadCert = true
+		needRestartProgram = true
+	}
+
+	if json.Server.SSLCert != cSettings.ServerSettings.SSLCert ||
+		json.Server.SSLKey != cSettings.ServerSettings.SSLKey {
 		needReloadCert = true
 	}
 
@@ -114,11 +122,17 @@ func SaveSettings(c *gin.Context) {
 		return
 	}
 
+	GetSettings(c)
+
 	if needReloadCert {
 		go func() {
 			cert.ReloadServerTLSCertificate()
 		}()
 	}
 
-	GetSettings(c)
+	if needRestartProgram {
+		go func() {
+			risefront.Restart()
+		}()
+	}
 }
