@@ -9,8 +9,9 @@ import (
 )
 
 type Control struct {
-	DryRun  bool   `json:"dry_run"`
-	Channel string `json:"channel"`
+	DryRun               bool   `json:"dry_run"`
+	TestCommitAndRestart bool   `json:"test_commit_and_restart"`
+	Channel              string `json:"channel"`
 }
 
 // BinaryUpgrade Upgrade the binary
@@ -48,6 +49,16 @@ func BinaryUpgrade(ws *websocket.Conn, control *Control) {
 		}
 	}()
 
+	if control.TestCommitAndRestart {
+		err = u.TestCommitAndRestart()
+		if err != nil {
+			_ = ws.WriteJSON(CoreUpgradeResp{
+				Status:  UpgradeStatusError,
+				Message: "Test commit and restart error",
+			})
+		}
+	}
+
 	tarName, err := u.DownloadLatestRelease(progressChan)
 	if err != nil {
 		_ = ws.WriteJSON(CoreUpgradeResp{
@@ -71,7 +82,7 @@ func BinaryUpgrade(ws *websocket.Conn, control *Control) {
 		Message: "Performing core upgrade",
 	})
 
-	if settings.NodeSettings.Demo {
+	if control.DryRun || settings.NodeSettings.Demo {
 		return
 	}
 

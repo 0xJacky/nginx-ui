@@ -67,6 +67,10 @@ const dryRun = computed(() => {
   return !!route.query.dry_run
 })
 
+const testCommitAndRestart = computed(() => {
+  return !!route.query.test_commit_and_restart
+})
+
 async function performUpgrade() {
   progressStatus.value = 'active'
   modalClosable.value = false
@@ -84,6 +88,7 @@ async function performUpgrade() {
     ws.send(JSON.stringify({
       dry_run: dryRun.value,
       channel: channel.value,
+      test_commit_and_restart: testCommitAndRestart.value,
     }))
   }
 
