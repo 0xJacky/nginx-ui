@@ -254,7 +254,7 @@ msgstr "Застосувати"
 msgid "Apply bulk action successfully"
 msgstr "Групову дію успішно застосовано"
 
-#: src/views/system/Upgrade.vue:195
+#: src/views/system/Upgrade.vue:190
 msgid "Arch"
 msgstr "\"Архітектура\""
 
@@ -295,7 +295,7 @@ msgstr "Ви впевнені, що хочете остаточно видали
 msgid "Are you sure you want to delete this item?"
 msgstr "Ви впевнені, що хочете видалити цей елемент?"
 
-#: src/views/site/site_list/SiteList.vue:110
+#: src/views/site/site_list/SiteList.vue:108
 #: src/views/stream/StreamList.vue:229
 msgid "Are you sure you want to delete?"
 msgstr "Ви впевнені, що хочете видалити?"
@@ -678,7 +678,7 @@ msgid "Changed Path"
 msgstr "Змінений шлях"
 
 #: src/views/environments/list/BatchUpgrader.vue:159
-#: src/views/system/Upgrade.vue:207
+#: src/views/system/Upgrade.vue:202
 msgid "Channel"
 msgstr "Канал"
 
@@ -692,7 +692,7 @@ msgstr "Чат"
 msgid "Check"
 msgstr "Перевірити"
 
-#: src/views/system/Upgrade.vue:204
+#: src/views/system/Upgrade.vue:199
 msgid "Check again"
 msgstr "Перевірте ще раз"
 
@@ -938,7 +938,7 @@ msgstr "Копіювати"
 msgid "Copy Codes"
 msgstr "Копіювати коди"
 
-#: src/views/system/Upgrade.vue:162
+#: src/views/system/Upgrade.vue:157
 msgid "Core Upgrade"
 msgstr "Оновлення ядра"
 
@@ -1069,7 +1069,7 @@ msgstr ""
 msgid "Current usage"
 msgstr "Поточне використання"
 
-#: src/views/system/Upgrade.vue:182
+#: src/views/system/Upgrade.vue:177
 msgid "Current Version"
 msgstr "Поточна версія"
 
@@ -1110,7 +1110,7 @@ msgstr "Вкажіть назву та розмір зони спільної п
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
 #: src/views/certificate/components/RemoveCert.vue:87
-#: src/views/site/site_list/SiteList.vue:119
+#: src/views/site/site_list/SiteList.vue:117
 #: src/views/stream/StreamList.vue:238
 msgid "Delete"
 msgstr "Видалити"
@@ -1148,7 +1148,7 @@ msgstr "Не вдалося видалити сайт %{name} з %{node}"
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Сайт %{name} успішно видалено з %{node}"
 
-#: src/views/site/site_list/SiteList.vue:51
+#: src/views/site/site_list/SiteList.vue:49
 msgid "Delete site: %{site_name}"
 msgstr "Сайт видалено: %{site_name}"
 
@@ -1229,7 +1229,7 @@ msgstr "Файл призначення: {0} вже існує"
 msgid "Details"
 msgstr "Деталі"
 
-#: src/views/system/Upgrade.vue:216
+#: src/views/system/Upgrade.vue:211
 msgid "Dev"
 msgstr "Розробка"
 
@@ -1340,6 +1340,7 @@ msgstr "Потік %{name} успішно вимкнено з %{node}"
 #: src/views/stream/components/StreamEditor.vue:30
 #: src/views/stream/StreamList.vue:58
 #: src/views/user/userColumns.tsx:41
+#, fuzzy
 msgid "Disabled"
 msgstr "Вимкнено"
 
@@ -1364,7 +1365,6 @@ msgid "DNS Provider"
 msgstr "DNS-провайдер"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:72
-#, fuzzy
 msgid "DNS01"
 msgstr "DNS01"
 
@@ -1425,9 +1425,7 @@ msgstr "Домен"
 
 #: src/views/certificate/CertificateEditor.vue:112
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
-msgstr ""
-"Список доменів порожній, спробуйте повторно відкрити автоматичний "
-"сертифікат для %{config}"
+msgstr "Список доменів порожній, спробуйте знову відкрити Auto Cert для %{config}"
 
 #: src/language/constants.ts:27
 msgid "Download latest release error"
@@ -1438,23 +1436,23 @@ msgid "Downloading latest release"
 msgstr "Завантаження останнього релізу"
 
 #: src/views/environments/list/BatchUpgrader.vue:188
-#: src/views/system/Upgrade.vue:237
+#: src/views/system/Upgrade.vue:232
 msgid "Dry run mode enabled"
-msgstr "Увімкнено режим тестового запуску"
+msgstr "Увімкнено тестовий режим"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:101
 msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
 msgstr ""
-"Через політику безпеки деяких браузерів ви не можете використовувати паскі "
-"на вебсайтах без HTTPS, окрім випадків, коли вони працюють на localhost."
+"Через політику безпеки деяких браузерів ви не можете використовувати "
+"пас-ключі на вебсайтах без HTTPS, окрім випадків, коли сайт працює на "
+"localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:105
+#: src/views/site/site_list/SiteList.vue:103
 #: src/views/stream/components/StreamDuplicate.vue:64
 #: src/views/stream/StreamList.vue:224
-#, fuzzy
 msgid "Duplicate"
 msgstr "Дублювати"
 
@@ -1533,7 +1531,7 @@ msgstr "Увімкнути кеш проксі"
 #: src/components/Notification/notifications.ts:85
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
-msgstr "Помилка ввімкнення віддаленого сайту"
+msgstr "Помилка активації віддаленого сайту"
 
 #: src/components/Notification/notifications.ts:93
 msgid "Enable Remote Site Maintenance Error"
@@ -1546,7 +1544,7 @@ msgstr "Успішне ввімкнення режиму обслуговува�
 #: src/components/Notification/notifications.ts:89
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
-msgstr "Віддалений сайт успішно активовано"
+msgstr "Віддалений сайт успішно увімкнено"
 
 #: src/components/Notification/notifications.ts:141
 msgid "Enable Remote Stream Error"
@@ -1617,7 +1615,7 @@ msgstr "Успішно ввімкнено"
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
-msgstr "Зашифрувати веб-сайт за допомогою Let's Encrypt"
+msgstr "Зашифрувати вебсайт за допомогою Let's Encrypt"
 
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
@@ -1656,7 +1654,7 @@ msgstr "Журнали помилок"
 msgid "Error processing content"
 msgstr "Помилка обробки вмісту"
 
-#: src/views/system/Upgrade.vue:196
+#: src/views/system/Upgrade.vue:191
 msgid "Executable Path"
 msgstr "Шлях до виконуваного файлу"
 
@@ -2063,14 +2061,14 @@ msgstr "Коди відновлення успішно згенеровано"
 
 #: src/language/constants.ts:7
 msgid "Generating private key for registering account"
-msgstr "Генерування приватного ключа для реєстрації облікового запису"
+msgstr "Генерація приватного ключа для реєстрації облікового запису"
 
 #: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Get data failed"
 msgstr "Не вдалося отримати дані"
 
 #: src/views/environments/list/BatchUpgrader.vue:177
-#: src/views/system/Upgrade.vue:188
+#: src/views/system/Upgrade.vue:183
 msgid "Get release information error"
 msgstr "Помилка отримання інформації про реліз"
 
@@ -2126,7 +2124,7 @@ msgstr "HTTP"
 
 #: src/views/preference/tabs/CertSettings.vue:15
 msgid "HTTP Challenge Port"
-msgstr "Порт HTTP-виклику"
+msgstr "Порт HTTP-запиту"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:69
 msgid "HTTP01"
@@ -2142,7 +2140,7 @@ msgstr "Номер ICP"
 
 #: src/views/certificate/ACMEUser.vue:45
 msgid "If left blank, the default CA Dir will be used."
-msgstr "Якщо залишити порожнім, буде використовуватися типове CA Dir."
+msgstr "Якщо залишити порожнім, буде використовуватися стандартний каталог CA."
 
 #: src/views/preference/tabs/AuthSettings.vue:145
 msgid ""
@@ -2150,7 +2148,7 @@ msgid ""
 "ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
 "Якщо кількість невдалих спроб входу з IP-адреси досягає максимальної "
-"кількості спроб за встановлений час блокування, ця IP-адреса буде "
+"кількості спроб у межах встановленого часу блокування, ця IP-адреса буде "
 "заблокована на певний час."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:116
@@ -2212,7 +2210,7 @@ msgstr "Помилка ініціалізації основного засоб�
 
 #: src/language/constants.ts:24
 msgid "Initialing core upgrader"
-msgstr "Ініціалізація оновлювача ядра"
+msgstr "Ініціалізація оновлення ядра"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:119
 msgid "Input the code from the app:"
@@ -2229,7 +2227,7 @@ msgstr "Небезпечне пропускання перевірки"
 #: src/routes/modules/auth.ts:8
 #: src/views/install/components/InstallForm.vue:124
 #: src/views/install/components/InstallHeader.vue:9
-#: src/views/system/Upgrade.vue:150
+#: src/views/system/Upgrade.vue:145
 msgid "Install"
 msgstr "Встановити"
 
@@ -2237,7 +2235,7 @@ msgstr "Встановити"
 msgid "Install successfully"
 msgstr "Успішно встановлено"
 
-#: src/views/install/components/InstallView.vue:64
+#: src/views/install/components/InstallView.vue:63
 msgid "Installation"
 msgstr "Встановлення"
 
@@ -2300,7 +2298,7 @@ msgstr "Недійсне заповнення в розшифрованих да
 
 #: src/components/TwoFA/use2FAModal.ts:61
 msgid "Invalid passcode or recovery code"
-msgstr "Неправильний код доступу або код відновлення"
+msgstr "Невірний код підтвердження або код відновлення"
 
 #: src/constants/errors/user.ts:5
 msgid "Invalid recovery code"
@@ -2320,7 +2318,7 @@ msgstr "IP"
 
 #: src/views/certificate/CertificateList/Certificate.vue:37
 msgid "Issue wildcard certificate"
-msgstr "Видати сертифікат зі шаблоном"
+msgstr "Видати сертифікат з маскою"
 
 #: src/views/certificate/components/WildcardCertificate.vue:57
 msgid "Issue Wildcard Certificate"
@@ -2367,10 +2365,9 @@ msgstr "Ларк"
 msgid "Lark Custom"
 msgstr "Lark Користувацький"
 
-#: src/views/system/Upgrade.vue:198
-#, fuzzy
+#: src/views/system/Upgrade.vue:193
 msgid "Last checked at"
-msgstr "Остання перевірка о"
+msgstr "Остання перевірка"
 
 #: src/views/dashboard/NginxDashBoard.vue:113
 msgid "Last update"
@@ -2415,8 +2412,9 @@ msgstr "Ліцензія"
 
 #: src/views/dashboard/Environments.vue:141
 #: src/views/dashboard/Environments.vue:156
+#, fuzzy
 msgid "Link Start"
-msgstr "Почати зв'язок"
+msgstr "Почати зв’язок"
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:173
 msgid "List"
@@ -2483,7 +2481,8 @@ msgstr ""
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html для отримання "
 "додаткової інформації."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:64
+#: src/routes/modules/nginx_log.ts:39
+#: src/views/nginx_log/NginxLogList.vue:64
 msgid "Log List"
 msgstr "Список журналів"
 
@@ -2515,11 +2514,11 @@ msgid ""
 "you set in minutes."
 msgstr ""
 "Logrotate за замовчуванням увімкнено у більшості популярних дистрибутивів "
-"Linux для користувачів, які встановлюють Nginx UI на основній машині, тому "
-"вам не потрібно змінювати параметри на цій сторінці. Для користувачів, які "
-"встановлюють Nginx UI за допомогою контейнерів Docker, ви можете вручну "
-"активувати цю опцію. Планувальник завдань crontab у Nginx UI виконуватиме "
-"команду logrotate з інтервалом, який ви встановите у хвилинах."
+"Linux для користувачів, які встановлюють Nginx UI безпосередньо на "
+"хост-машині, тому вам не потрібно змінювати параметри на цій сторінці. Для "
+"користувачів, які встановлюють Nginx UI за допомогою контейнерів Docker, ви "
+"можете вручну активувати цю опцію. Планувальник завдань crontab у Nginx UI "
+"виконуватиме команду logrotate з інтервалом, який ви встановите у хвилинах."
 
 #: src/views/site/components/SiteStatusSegmented.vue:138
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
@@ -2540,7 +2539,7 @@ msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort before obtaining the certificate."
 msgstr ""
-"Перед отриманням сертифіката переконайтеся, що ви налаштували зворотній "
+"Перш ніж отримати сертифікат, переконайтеся, що ви налаштували зворотний "
 "проксі для каталогу .well-known на HTTPChallengePort."
 
 #: src/routes/modules/config.ts:10
@@ -2551,7 +2550,7 @@ msgid "Manage Configs"
 msgstr "Керування конфігураціями"
 
 #: src/routes/modules/sites.ts:10
-#: src/views/site/site_list/SiteList.vue:78
+#: src/views/site/site_list/SiteList.vue:76
 msgid "Manage Sites"
 msgstr "Керування сайтами"
 
@@ -2646,7 +2645,6 @@ msgid "Memory"
 msgstr "Пам'ять"
 
 #: src/views/dashboard/ServerAnalytic.vue:212
-#, fuzzy
 msgid "Memory and Storage"
 msgstr "Пам’ять та сховище"
 
@@ -2744,7 +2742,7 @@ msgstr "Загальний обсяг отриманих мережевих да
 msgid "Network Total Send"
 msgstr "Загальна кількість відправлених даних"
 
-#: src/views/install/components/InstallView.vue:109
+#: src/views/install/components/InstallView.vue:107
 msgid "New Installation"
 msgstr "Нове встановлення"
 
@@ -2756,12 +2754,12 @@ msgstr "Нова назва"
 msgid "New Path"
 msgstr "Новий шлях"
 
-#: src/views/system/Upgrade.vue:230
+#: src/views/system/Upgrade.vue:225
 msgid "New version released"
 msgstr "Випущено нову версію"
 
 #: src/views/certificate/components/WildcardCertificate.vue:89
-#: src/views/install/components/InstallView.vue:96
+#: src/views/install/components/InstallView.vue:94
 #: src/views/site/site_add/SiteAdd.vue:123
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:214
 msgid "Next"
@@ -2892,7 +2890,8 @@ msgstr "Шлях PID Nginx існує"
 msgid "Nginx Reload Command"
 msgstr "Команда перезавантаження Nginx"
 
-#: src/constants/errors/config.ts:5 src/constants/errors/site.ts:7
+#: src/constants/errors/config.ts:5
+#: src/constants/errors/site.ts:7
 #: src/constants/errors/stream.ts:6
 msgid "Nginx reload failed: {0}"
 msgstr "Не вдалося перезавантажити Nginx: {0}"
@@ -2921,7 +2920,8 @@ msgstr "Nginx успішно перезапущено"
 msgid "Nginx Test Config Command"
 msgstr "Команда тестування конфігурації Nginx"
 
-#: src/constants/errors/config.ts:4 src/constants/errors/site.ts:6
+#: src/constants/errors/config.ts:4
+#: src/constants/errors/site.ts:6
 #: src/constants/errors/stream.ts:5
 msgid "Nginx test failed: {0}"
 msgstr "Тест Nginx не пройдено: {0}"
@@ -2972,7 +2972,7 @@ msgstr "Nginx.conf включає каталог streams-enabled"
 #: src/views/notification/Notification.vue:37
 #: src/views/preference/tabs/AuthSettings.vue:164
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:108
+#: src/views/site/site_list/SiteList.vue:106
 #: src/views/stream/StreamList.vue:227
 msgid "No"
 msgstr "Ні"
@@ -3019,6 +3019,7 @@ msgid "Nodes"
 msgstr "Вузли"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:88
+#, fuzzy
 msgid "Not After"
 msgstr "Не пізніше"
 
@@ -3028,7 +3029,7 @@ msgstr "Не знайдено"
 
 #: src/components/CertInfo/CertInfo.vue:41
 msgid "Not Valid Before: %{date}"
-msgstr "Не діє до: %{date}"
+msgstr "Не дійсний до: %{date}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:38
 #: src/views/certificate/DNSCredential.vue:49
@@ -3041,8 +3042,8 @@ msgid ""
 "Note, if the configuration file include other configurations or "
 "certificates, please synchronize them to the remote nodes in advance."
 msgstr ""
-"Зауважте, якщо файл конфігурації містить інші налаштування або сертифікати, "
-"будь ласка, синхронізуйте їх із віддаленими вузлами заздалегідь."
+"Примітка: якщо файл конфігурації містить інші налаштування або сертифікати, "
+"будь ласка, синхронізуйте їх з віддаленими вузлами заздалегідь."
 
 #: src/views/notification/Notification.vue:28
 msgid "Notification"
@@ -3115,7 +3116,6 @@ msgstr "Офлайн"
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:525
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:539
 #: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:188
-#, fuzzy
 msgid "Ok"
 msgstr "Гаразд"
 
@@ -3129,11 +3129,10 @@ msgstr "Гаразд"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:109
+#: src/views/site/site_list/SiteList.vue:107
 #: src/views/stream/components/RightPanel/Basic.vue:46
 #: src/views/stream/StreamList.vue:228
 #: src/views/system/Backup/BackupCreator.vue:149
-#, fuzzy
 msgid "OK"
 msgstr "Гаразд"
 
@@ -3175,7 +3174,7 @@ msgstr "Або введіть секрет: %{secret}"
 msgid "Original name"
 msgstr "Оригінальна назва"
 
-#: src/views/system/Upgrade.vue:194
+#: src/views/system/Upgrade.vue:189
 msgid "OS"
 msgstr "ОС"
 
@@ -3232,8 +3231,8 @@ msgid ""
 "facial recognition, a device password, or a PIN. They can be used as a "
 "password replacement or as a 2FA method."
 msgstr ""
-"Пасски — це облікові дані WebAuthn, які підтверджують вашу особу за "
-"допомогою дотику, розпізнавання обличчя, паролю пристрою або PIN-коду. Вони "
+"Пасскі — це облікові дані WebAuthn, які підтверджують вашу особу за "
+"допомогою дотику, розпізнавання обличчя, пароля пристрою або PIN-коду. Вони "
 "можуть використовуватися замість пароля або як метод двофакторної "
 "аутентифікації (2FA)."
 
@@ -3261,7 +3260,8 @@ msgstr "Довжина пароля не може перевищувати 20 с
 msgid "Path"
 msgstr "Шлях"
 
-#: src/constants/errors/cert.ts:7 src/constants/errors/config.ts:2
+#: src/constants/errors/cert.ts:7
+#: src/constants/errors/config.ts:2
 msgid "Path: {0} is not under the nginx conf dir: {1}"
 msgstr "Шлях: {0} не знаходиться в каталозі конфігурації nginx: {1}"
 
@@ -3334,9 +3334,7 @@ msgstr "Будь ласка, введіть токен безпеки, отри�
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
-msgstr ""
-"Будь ласка, заповніть облікові дані API автентифікації, надані вашим "
-"DNS-провайдером."
+msgstr "Будь ласка, заповніть облікові дані API, надані вашим DNS-провайдером."
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:106
 msgid "Please fill in the required fields"
@@ -3347,8 +3345,8 @@ msgid ""
 "Please first add credentials in Certification > DNS Credentials, and then "
 "select one of the credentialsbelow to request the API of the DNS provider."
 msgstr ""
-"Спочатку додайте облікові дані в розділі Сертифікація > DNS Облікові дані, "
-"а потім виберіть один із наведених нижче облікових даних, щоб надіслати "
+"Спочатку додайте облікові дані в розділі Certification > DNS Credentials, а "
+"потім виберіть один із наведених нижче облікових записів, щоб надіслати "
 "запит до API постачальника DNS."
 
 #: src/components/Notification/notifications.ts:166
@@ -3382,12 +3380,12 @@ msgid ""
 "Please input name, this will be used as the filename of the new "
 "configuration."
 msgstr ""
-"Будь ласка, введіть назву, вона буде використовуватися як ім’я файлу нової "
-"конфігурації."
+"Будь ласка, введіть назву, вона буде використовуватися як ім’я файлу для "
+"нової конфігурації."
 
 #: src/views/install/components/InstallForm.vue:26
 msgid "Please input your E-mail!"
-msgstr "Будь ласка, введіть вашу електронну адресу!"
+msgstr "Будь ласка, введіть вашу електронну пошту!"
 
 #: src/views/install/components/InstallForm.vue:38
 #: src/views/other/Login.vue:47
@@ -3410,7 +3408,7 @@ msgstr ""
 "Будь ласка, зверніть увагу, що одиницею виміру часу в наведених нижче "
 "налаштуваннях є секунди."
 
-#: src/views/install/components/InstallView.vue:102
+#: src/views/install/components/InstallView.vue:100
 msgid "Please resolve all issues before proceeding with installation"
 msgstr "Будь ласка, усуньте всі проблеми перед продовженням встановлення"
 
@@ -3453,13 +3451,14 @@ msgstr "Дія після синхронізації"
 
 #: src/views/environments/list/BatchUpgrader.vue:167
 #: src/views/environments/list/BatchUpgrader.vue:220
-#: src/views/system/Upgrade.vue:213
-#: src/views/system/Upgrade.vue:267
+#: src/views/system/Upgrade.vue:208
+#: src/views/system/Upgrade.vue:262
 msgid "Pre-release"
 msgstr "Попередній випуск"
 
 #: src/routes/modules/preference.ts:10
 #: src/views/preference/Preference.vue:41
+#, fuzzy
 msgid "Preference"
 msgstr "Налаштування"
 
@@ -3481,7 +3480,7 @@ msgstr "У демо-версії заборонено змінювати пар�
 
 #: src/language/constants.ts:4
 msgid "Prohibit deleting the default user"
-msgstr "Забороняти видалення типового користувача"
+msgstr "Забороняється видаляти типового користувача"
 
 #: src/views/system/About.vue:51
 msgid "Project Team"
@@ -3499,7 +3498,8 @@ msgstr "Проксі"
 msgid "Public Security Number"
 msgstr "Номер громадської безпеки"
 
-#: src/constants/errors/site.ts:8 src/constants/errors/stream.ts:7
+#: src/constants/errors/site.ts:8
+#: src/constants/errors/stream.ts:7
 msgid "Read dir failed: {0}"
 msgstr "Не вдалося прочитати каталог: {0}"
 
@@ -3558,7 +3558,7 @@ msgstr "Повторити відповідь"
 
 #: src/views/certificate/ACMEUser.vue:137
 msgid "Register"
-msgstr "Реєстрація"
+msgstr "Зареєструватися"
 
 #: src/views/certificate/ACMEUser.vue:56
 msgid ""
@@ -3574,7 +3574,7 @@ msgstr "Не вдалося зареєструвати"
 
 #: src/views/certificate/ACMEUser.vue:77
 msgid "Register On Startup"
-msgstr "Реєстрація під час запуску"
+msgstr "Реєстрація при запуску"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:25
 msgid "Register passkey successfully"
@@ -3590,13 +3590,13 @@ msgstr "Реєстрація користувача"
 
 #: src/views/certificate/ACMEUser.vue:120
 msgid "Registration Status"
-msgstr "Статус реєстрації"
+msgstr "Стан реєстрації"
 
-#: src/views/system/Upgrade.vue:152
+#: src/views/system/Upgrade.vue:147
 msgid "Reinstall"
 msgstr "Перевстановити"
 
-#: src/views/system/Upgrade.vue:271
+#: src/views/system/Upgrade.vue:266
 msgid "Release Note"
 msgstr "Примітки до версії"
 
@@ -3685,7 +3685,7 @@ msgstr "Помилка перейменування віддаленої кон�
 #: src/components/Notification/notifications.ts:65
 #: src/language/constants.ts:41
 msgid "Rename Remote Config Success"
-msgstr "Вдале перейменування конфігурації успішне"
+msgstr "Вдале налаштування успішно перейменовано"
 
 #: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:56
@@ -3742,7 +3742,7 @@ msgstr "Помилка поновлення сертифіката"
 
 #: src/language/constants.ts:35
 msgid "Renew Certificate Success"
-msgstr "Сертифікат успішно поновлено"
+msgstr "Успішне поновлення сертифіката"
 
 #: src/views/certificate/components/RenewCert.vue:28
 #: src/views/certificate/components/WildcardCertificate.vue:46
@@ -3759,7 +3759,7 @@ msgstr "Час запиту вичерпано"
 
 #: src/language/constants.ts:33
 msgid "Requested with wrong parameters"
-msgstr "Запит із неправильними параметрами"
+msgstr "Запит з неправильними параметрами"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:77
 msgid "Requests Per Connection"
@@ -3822,13 +3822,13 @@ msgstr ""
 
 #: src/components/NginxControl/NginxControl.vue:78
 msgid "Restarting"
-msgstr "Перезавантаження"
+msgstr "Перезапуск"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:135
 msgid "Restore completed successfully"
 msgstr "Відновлення успішно завершено"
 
-#: src/views/install/components/InstallView.vue:112
+#: src/views/install/components/InstallView.vue:110
 msgid "Restore from Backup"
 msgstr "Відновити з резервної копії"
 
@@ -3885,6 +3885,7 @@ msgid "Run Mode"
 msgstr "Режим роботи"
 
 #: src/components/NginxControl/NginxControl.vue:68
+#, fuzzy
 msgid "Running"
 msgstr "Працює"
 
@@ -3996,7 +3997,8 @@ msgstr "Виберіть дію після синхронізації"
 msgid "Selector"
 msgstr "Селектор"
 
-#: src/components/SelfCheck/SelfCheck.vue:15 src/routes/modules/system.ts:19
+#: src/components/SelfCheck/SelfCheck.vue:15
+#: src/routes/modules/system.ts:19
 msgid "Self Check"
 msgstr "Самоперевірка"
 
@@ -4010,7 +4012,8 @@ msgstr "Самоперевірка не вдалася, інтерфейс Nginx
 msgid "Send"
 msgstr "Надіслати"
 
-#: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:46
+#: src/routes/modules/dashboard.ts:19
+#: src/views/preference/Preference.vue:46
 msgid "Server"
 msgstr "Сервер"
 
@@ -4060,7 +4063,7 @@ msgstr "Налаштування змінних середовища"
 
 #: src/language/constants.ts:10
 msgid "Setting HTTP01 challenge provider"
-msgstr "Налаштування провайдера HTTP01-запиту"
+msgstr "Налаштування провайдера HTTP01-виклику"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
@@ -4080,7 +4083,7 @@ msgstr ""
 "https://nginxui.com/guide/config-nginx.html для отримання додаткової "
 "інформації"
 
-#: src/views/install/components/InstallView.vue:65
+#: src/views/install/components/InstallView.vue:64
 msgid "Setup your Nginx UI"
 msgstr "Налаштуйте ваш Nginx UI"
 
@@ -4199,10 +4202,10 @@ msgstr "Вхід через SSO"
 
 #: src/views/environments/list/BatchUpgrader.vue:164
 #: src/views/environments/list/BatchUpgrader.vue:214
-#: src/views/system/Upgrade.vue:210
-#: src/views/system/Upgrade.vue:261
+#: src/views/system/Upgrade.vue:205
+#: src/views/system/Upgrade.vue:256
 msgid "Stable"
-msgstr "Стабільний"
+msgstr "Стабільна"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:246
 #: src/components/SystemRestore/SystemRestoreContent.vue:323
@@ -4250,7 +4253,7 @@ msgstr "Каталог streams-enabled не існує"
 #: src/views/preference/tabs/NginxSettings.vue:10
 #, fuzzy
 msgid "Stub Status Port"
-msgstr "Порт статусу stub"
+msgstr "Порт стану заглушки"
 
 #: src/constants/index.ts:25
 #: src/views/notification/notificationColumns.tsx:36
@@ -4293,7 +4296,7 @@ msgstr "Синхронізувати"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "Sync Certificate"
-msgstr "Синхронізований сертифікат"
+msgstr "Синхронізувати сертифікат"
 
 #: src/components/Notification/notifications.ts:46
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
@@ -4311,7 +4314,7 @@ msgstr "Помилка синхронізації сертифіката"
 #: src/components/Notification/notifications.ts:49
 #: src/language/constants.ts:38
 msgid "Sync Certificate Success"
-msgstr "Успішна синхронізація сертифіката"
+msgstr "Сертифікат успішно синхронізовано"
 
 #: src/components/Notification/notifications.ts:54
 msgid "Sync config %{config_name} to %{env_name} failed"
@@ -4360,7 +4363,7 @@ msgstr "Система"
 msgid "System Backup"
 msgstr "Резервне копіювання системи"
 
-#: src/views/install/components/InstallView.vue:60
+#: src/views/install/components/InstallView.vue:59
 msgid "System Check"
 msgstr "Перевірка системи"
 
@@ -4425,7 +4428,7 @@ msgstr "Введені дані не є SSL-сертифікатом"
 
 #: src/views/certificate/CertificateEditor.vue:230
 msgid "The input is not a SSL Certificate Key"
-msgstr "Введений текст не є ключем SSL-сертифікату"
+msgstr "Введений текст не є ключем SSL-сертифіката"
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
@@ -4493,13 +4496,13 @@ msgid ""
 "The server_name in the current configuration must be the domain name you "
 "need to get the certificate, supportmultiple domains."
 msgstr ""
-"Параметр server_name у поточній конфігурації має бути доменним ім’ям, для "
-"якого вам потрібен сертифікат, і підтримувати кілька доменів."
+"Поле server_name у поточній конфігурації має бути доменним ім’ям, для якого "
+"вам потрібен сертифікат, і підтримувати кілька доменів."
 
 #: src/views/preference/tabs/CertSettings.vue:22
 #: src/views/preference/tabs/HTTPSettings.vue:14
 msgid "The url is invalid"
-msgstr "URL-адреса недійсна"
+msgstr "URL недійсний"
 
 #: src/views/preference/tabs/OpenAISettings.vue:35
 #: src/views/preference/tabs/OpenAISettings.vue:49
@@ -4550,7 +4553,7 @@ msgstr "Це поле має містити дійсну електронну а
 
 #: src/constants/form_errors.ts:5
 msgid "This field should be a valid hostname"
-msgstr "Це поле має містити дійсне ім'я хоста"
+msgstr "Це поле має містити дійсну назву хоста"
 
 #: src/components/StdDesign/StdDataEntry/StdFormItem.vue:39
 #: src/constants/form_errors.ts:2
@@ -4604,8 +4607,8 @@ msgid ""
 "This will restore configuration files and database. Nginx UI will restart "
 "after the restoration is complete."
 msgstr ""
-"Це відновить конфігураційні файли та базу даних. Після завершення "
-"відновлення Nginx UI перезапуститься."
+"Це відновить файли конфігурації та базу даних. Nginx UI перезапуститься "
+"після завершення відновлення."
 
 #: src/views/environments/list/BatchUpgrader.vue:182
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
@@ -4618,7 +4621,6 @@ msgstr "Обмеження"
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:65
 #: src/views/preference/tabs/AuthSettings.vue:144
 #: src/views/preference/tabs/LogrotateSettings.vue:12
-#, fuzzy
 msgid "Tips"
 msgstr "Поради"
 
@@ -4628,7 +4630,7 @@ msgid ""
 "worker_processes or worker_connections"
 msgstr ""
 "Порада: Ви можете збільшити потужність обробки паралельних запитів, "
-"збільшивши worker_processes або worker_connections"
+"збільшивши worker_processes або worker_connections."
 
 #: src/views/notification/notificationColumns.tsx:52
 msgid "Title"
@@ -4643,8 +4645,8 @@ msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
 msgstr ""
-"Щоб увімкнути його, вам потрібно встановити додаток Google або Microsoft "
-"Authenticator на свій мобільний телефон."
+"Щоб увімкнути його, вам потрібно встановити додаток Google Authenticator "
+"або Microsoft Authenticator на свій мобільний телефон."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:89
 msgid ""
@@ -4653,7 +4655,7 @@ msgid ""
 "and restart Nginx UI."
 msgstr ""
 "Для забезпечення безпеки конфігурацію WebAuthn не можна додати через "
-"інтерфейс. Будь ласка, вручну налаштуйте наступне у файлі конфігурації "
+"інтерфейс. Будь ласка, налаштуйте вручну наступне у файлі конфігурації "
 "app.ini та перезапустіть Nginx UI."
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:34
@@ -4664,8 +4666,8 @@ msgid ""
 "we need to save this file and reload the Nginx. Are you sure you want to "
 "continue?"
 msgstr ""
-"Щоб гарантувати нормальну роботу автоматичного поновлення сертифіката, нам "
-"потрібно додати розташування, яке може проксіювати запит від "
+"Щоб гарантувати нормальну роботу автоматичного поновлення сертифікатів, нам "
+"потрібно додати розташування, яке може проксіювати запити від "
 "сертифікаційного органу до бекенду, а також зберегти цей файл і "
 "перезавантажити Nginx. Ви впевнені, що хочете продовжити?"
 
@@ -4681,7 +4683,7 @@ msgstr ""
 
 #: src/views/dashboard/NginxDashBoard.vue:55
 msgid "Toggle failed"
-msgstr "Перемикання не вдалося"
+msgstr "Не вдалося перемкнути"
 
 #: src/views/preference/tabs/OpenAISettings.vue:61
 msgid "Token is not valid"
@@ -4700,7 +4702,7 @@ msgstr "Загальна кількість з’єднань"
 #: src/composables/usePerformanceMetrics.ts:89
 #: src/views/dashboard/components/PerformanceTablesCard.vue:48
 msgid "Total handshakes"
-msgstr "Всього рукостискань"
+msgstr "Загальна кількість рукостискань"
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:53
 msgid "Total Nginx processes"
@@ -4728,10 +4730,11 @@ msgid ""
 "TOTP is a two-factor authentication method that uses a time-based one-time "
 "password algorithm."
 msgstr ""
-"TOTP — це метод двофакторної аутентифікації, який використовує алгоритм "
-"одноразового пароля, заснований на часі."
+"TOTP — це двофакторний метод автентифікації, який використовує алгоритм "
+"одноразового пароля на основі часу."
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:197
+#, fuzzy
 msgid "Trash"
 msgstr "Кошик"
 
@@ -4747,9 +4750,12 @@ msgid "Type"
 msgstr "Тип"
 
 #: src/composables/useNginxPerformance.ts:18
-#, fuzzy
 msgid "Unknown"
 msgstr "Невідомо"
+
+#: src/components/SelfCheck/SelfCheck.vue:43
+msgid "Unknown issue"
+msgstr "Невідома проблема"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:39
 msgid "Update successfully"
@@ -4776,10 +4782,10 @@ msgstr "Успішно оновлено"
 #: src/routes/modules/system.ts:33
 #: src/views/environments/list/Environment.vue:107
 #: src/views/environments/list/Environment.vue:99
+#: src/views/system/Upgrade.vue:149
 #: src/views/system/Upgrade.vue:154
-#: src/views/system/Upgrade.vue:159
 msgid "Upgrade"
-msgstr "Оновлення"
+msgstr "Оновити"
 
 #: src/views/environments/list/BatchUpgrader.vue:137
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
@@ -4790,7 +4796,7 @@ msgid "Upgraded successfully"
 msgstr "Успішно оновлено"
 
 #: src/views/environments/list/BatchUpgrader.vue:88
-#: src/views/system/Upgrade.vue:81
+#: src/views/system/Upgrade.vue:77
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Оновлення Nginx UI, зачекайте..."
 
@@ -4853,9 +4859,9 @@ msgstr "Значення"
 #: src/components/SystemRestore/SystemRestoreContent.vue:216
 #: src/components/SystemRestore/SystemRestoreContent.vue:293
 msgid "Verify Backup File Integrity"
-msgstr "Перевірити цілісність файлу резервної копії"
+msgstr "Перевірити цілісність резервної копії"
 
-#: src/views/install/components/InstallView.vue:61
+#: src/views/install/components/InstallView.vue:60
 msgid "Verify system requirements"
 msgstr "Перевірте системні вимоги"
 
@@ -4909,7 +4915,7 @@ msgid ""
 "you have a valid backup file and security token, and carefully select what "
 "to restore."
 msgstr ""
-"Попередження: Операція відновлення перезапише поточні налаштування. "
+"Попередження: Операція відновлення перезапише поточні конфігурації. "
 "Переконайтеся, що у вас є дійсний файл резервної копії та токен безпеки, і "
 "ретельно виберіть, що відновлювати."
 
@@ -4931,9 +4937,10 @@ msgstr ""
 
 #: src/views/preference/tabs/AuthSettings.vue:97
 msgid "Webauthn"
-msgstr "Webauthn"
+msgstr "WebAuthn"
 
 #: src/constants/errors/user.ts:7
+#, fuzzy
 msgid "WebAuthn settings are not configured"
 msgstr "Налаштування WebAuthn не налаштовані"
 
@@ -4948,8 +4955,8 @@ msgid ""
 "Pebble as CA."
 msgstr ""
 "Якщо увімкнено, Nginx UI автоматично перереєструє користувачів під час "
-"запуску. Як правило, не вмикайте це, якщо ви не перебуваєте у середовищі "
-"розробки та не використовуєте Pebble як CA."
+"запуску. Як правило, не вмикайте цю функцію, якщо ви не перебуваєте у "
+"середовищі розробки та використовуєте Pebble як CA."
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:61
 #: src/views/stream/components/RightPanel/Basic.vue:95
@@ -4957,7 +4964,7 @@ msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "Node Group and the nodes selected below will be synchronized."
 msgstr ""
-"Коли ви активуєте/деактивуєте, видаляєте або зберігаєте цей сайт, вузли, "
+"Коли ви вмикаєте/вимикаєте, видаляєте або зберігаєте цей сайт, вузли, "
 "встановлені в Групі вузлів, і вузли, вибрані нижче, будуть синхронізовані."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:140
@@ -5024,17 +5031,17 @@ msgstr ""
 "домені, який не є локальним. Це може призвести до витоку конфіденційної "
 "інформації."
 
-#: src/views/system/Upgrade.vue:224
+#: src/views/system/Upgrade.vue:219
 msgid "You are using the latest version"
 msgstr "Ви використовуєте останню версію"
 
-#: src/views/system/Upgrade.vue:180
+#: src/views/system/Upgrade.vue:175
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "На цій сторінці ви можете перевірити оновлення Nginx UI."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:339
 msgid "You can close this dialog in %{countdown} seconds"
-msgstr "Ви можете закрити це діалогове вікно через %{countdown} секунд"
+msgstr "Ви можете закрити це вікно через %{countdown} секунд"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:342
 msgid "You can close this dialog now"
@@ -5049,12 +5056,12 @@ msgstr "Ви не налаштували параметри WebAuthn, тому �
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:81
 msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
-"Ви ще не ввімкнули двофакторну аутентифікацію (2FA). Будь ласка, увімкніть "
-"2FA, щоб згенерувати коди відновлення."
+"Ви ще не ввімкнули двофакторну аутентифікацію. Будь ласка, увімкніть її, "
+"щоб згенерувати коди відновлення."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:94
 msgid "You have not generated recovery codes yet."
-msgstr "Ви ще не згенерували кодів відновлення."
+msgstr "Ви ще не згенерували коди відновлення."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:91
 msgid ""
@@ -5062,7 +5069,7 @@ msgid ""
 "new recovery codes at your earliest convenience to ensure security."
 msgstr ""
 "Ваш поточний код відновлення може бути застарілим і ненадійним. Будь ласка, "
-"згенеруйте нові коди відновлення якомога швидше, щоб забезпечити безпеку."
+"згенеруйте нові коди відновлення якнайшвидше, щоб забезпечити безпеку."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:142
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:155
