@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import install from '@/api/install'
-import { DatabaseOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { Form, message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 
@@ -15,7 +15,6 @@ const modelRef = reactive({
   email: '',
   username: '',
   password: '',
-  database: '',
 })
 
 const rulesRef = reactive({
@@ -31,6 +30,10 @@ const rulesRef = reactive({
       required: true,
       message: () => $gettext('Please input your username!'),
     },
+    {
+      max: 255,
+      message: () => $gettext('Username length cannot exceed 255 characters'),
+    },
   ],
   password: [
     {
@@ -40,12 +43,6 @@ const rulesRef = reactive({
     {
       max: 20,
       message: () => $gettext('Password length cannot exceed 20 characters'),
-    },
-  ],
-  database: [
-    {
-      message: () =>
-        $gettext('The filename cannot contain the following characters: %{c}', { c: '& &quot; ? < > # {} % ~ / \\' }),
     },
   ],
 })
@@ -101,17 +98,6 @@ function onSubmit() {
           <LockOutlined />
         </template>
       </AInputPassword>
-    </AFormItem>
-    <AFormItem>
-      <AInput
-        v-bind="validateInfos.database"
-        v-model:value="modelRef.database"
-        :placeholder="$gettext('Database (Optional, default: database)')"
-      >
-        <template #prefix>
-          <DatabaseOutlined />
-        </template>
-      </AInput>
     </AFormItem>
     <AFormItem>
       <AButton

@@ -9,5 +9,8 @@ var DatabaseSettings = &Database{
 }
 
 func (d *Database) GetName() string {
+	if d.Name == "" {
+		d.Name = "database"
+	}
 	return d.Name
 }

@@ -95,13 +95,11 @@ func InitDatabase(ctx context.Context) {
 		skipInstall()
 	}
 
-	if cSettings.AppSettings.JwtSecret != "" {
-		db := cosy.InitDB(sqlite.Open(path.Dir(cSettings.ConfPath), settings.DatabaseSettings))
-		model.Use(db)
-		query.Init(db)
+	db := cosy.InitDB(sqlite.Open(path.Dir(cSettings.ConfPath), settings.DatabaseSettings))
+	model.Use(db)
+	query.Init(db)
 
-		InitAfterDatabase(ctx)
-	}
+	InitAfterDatabase(ctx)
 }
 
 func InitNodeSecret() {

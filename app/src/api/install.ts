@@ -4,7 +4,6 @@ export interface InstallRequest {
   email: string
   username: string
   password: string
-  database: string
 }
 
 export interface InstallLockResponse {

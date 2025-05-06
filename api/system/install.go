@@ -4,8 +4,6 @@ import (
 	"net/http"
 	"time"
 
-	"code.pfad.fr/risefront"
-	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/0xJacky/Nginx-UI/internal/system"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -51,8 +49,7 @@ func InstallLockCheck(c *gin.Context) {
 type InstallJson struct {
 	Email    string `json:"email" binding:"required,email"`
 	Username string `json:"username" binding:"required,max=255"`
-	Password string `json:"password" binding:"required,max=255"`
-	Database string `json:"database"`
+	Password string `json:"password" binding:"required,max=20"`
 }
 
 func InstallNginxUI(c *gin.Context) {
@@ -79,18 +76,12 @@ func InstallNginxUI(c *gin.Context) {
 	cSettings.AppSettings.JwtSecret = uuid.New().String()
 	settings.NodeSettings.Secret = uuid.New().String()
 	settings.CertSettings.Email = json.Email
-	if json.Database != "" {
-		settings.DatabaseSettings.Name = json.Database
-	}
 
 	err := settings.Save()
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
-
-	// Init model
-	kernel.InitDatabase(kernel.Context)
 
 	pwd, err := bcrypt.GenerateFromPassword([]byte(json.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -112,6 +103,4 @@ func InstallNginxUI(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})
-
-	risefront.Restart()
 }
