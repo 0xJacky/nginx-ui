@@ -110,15 +110,31 @@ func main() {
 		Run:       Program(ctx, confPath),
 		Name:      "nginx-ui",
 		Addresses: []string{fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port)},
-		ErrorHandler: func(kind string, err error) {
-			if errors.Is(err, net.ErrClosed) {
-				return
+		LogHandler: func(loglevel risefront.LogLevel, kind string, args ...interface{}) {
+			switch loglevel {
+			case risefront.DebugLevel:
+				logger.Debugf(kind, args...)
+			case risefront.InfoLevel:
+				logger.Infof(kind, args...)
+			case risefront.WarnLevel:
+				logger.Warnf(kind, args...)
+			case risefront.ErrorLevel:
+				switch args[0].(type) {
+				case error:
+					if errors.Is(args[0].(error), net.ErrClosed) {
+						return
+					}
+					logger.Errorf(kind, fmt.Errorf("%v", args[0].(error)))
+				default:
+					logger.Errorf(kind, args...)
+				}
+			case risefront.FatalLevel:
+				logger.Fatalf(kind, args...)
+			case risefront.PanicLevel:
+				logger.Panicf(kind, args...)
+			default:
+				logger.Errorf(kind, args...)
 			}
-			logger.Error(kind, err)
-		},
-		LogHandler: func(logLevel risefront.LogLevel, kind string, args ...any) {
-			args = append([]any{kind}, args...)
-			logger.Info(args...)
 		},
 	})
 	if err != nil && !errors.Is(err, context.DeadlineExceeded) &&
