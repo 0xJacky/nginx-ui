@@ -219,7 +219,7 @@ func (u *Upgrader) PerformCoreUpgrade(tarPath string) (err error) {
 	defer updateInProgress.Store(false)
 
 	oldExe := ""
-	if runtime.GOOS != "windows" {
+	if runtime.GOOS == "windows" {
 		oldExe = filepath.Join(filepath.Dir(u.ExPath), ".nginx-ui.old."+strconv.FormatInt(time.Now().Unix(), 10))
 	}
 
