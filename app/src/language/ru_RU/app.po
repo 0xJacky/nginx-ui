@@ -254,7 +254,7 @@ msgstr "Применить"
 msgid "Apply bulk action successfully"
 msgstr "Массовое действие успешно применено"
 
-#: src/views/system/Upgrade.vue:190
+#: src/views/system/Upgrade.vue:195
 msgid "Arch"
 msgstr "\"Архитектура\""
 
@@ -295,7 +295,7 @@ msgstr "Вы уверены, что хотите удалить этот эле�
 msgid "Are you sure you want to delete this item?"
 msgstr "Вы уверены, что хотите удалить этот элемент?"
 
-#: src/views/site/site_list/SiteList.vue:108
+#: src/views/site/site_list/SiteList.vue:110
 #: src/views/stream/StreamList.vue:229
 msgid "Are you sure you want to delete?"
 msgstr "Вы уверены, что хотите удалить?"
@@ -579,9 +579,8 @@ msgid "Cannot remove initial user"
 msgstr "Невозможно удалить начального пользователя"
 
 #: src/views/preference/Preference.vue:88
-#, fuzzy
 msgid "Cert"
-msgstr "Авто Сертификат"
+msgstr "Сертификат"
 
 #: src/constants/errors/cert.ts:3
 msgid "Cert path is not under the nginx conf dir"
@@ -684,7 +683,7 @@ msgid "Changed Path"
 msgstr "Путь изменён"
 
 #: src/views/environments/list/BatchUpgrader.vue:159
-#: src/views/system/Upgrade.vue:202
+#: src/views/system/Upgrade.vue:207
 msgid "Channel"
 msgstr "Канал"
 
@@ -698,7 +697,7 @@ msgstr "Чат"
 msgid "Check"
 msgstr "Проверить"
 
-#: src/views/system/Upgrade.vue:199
+#: src/views/system/Upgrade.vue:204
 msgid "Check again"
 msgstr "Проверить повторно"
 
@@ -944,7 +943,7 @@ msgstr "Копировать"
 msgid "Copy Codes"
 msgstr "Копировать коды"
 
-#: src/views/system/Upgrade.vue:157
+#: src/views/system/Upgrade.vue:162
 msgid "Core Upgrade"
 msgstr "Обновление ядра"
 
@@ -975,9 +974,8 @@ msgid "Create Another"
 msgstr "Создать еще"
 
 #: src/views/system/Backup/BackupCreator.vue:86
-#, fuzzy
 msgid "Create Backup"
-msgstr "Создан в"
+msgstr "Создать резервную копию"
 
 #: src/views/config/ConfigList.vue:122
 msgid "Create File"
@@ -1033,16 +1031,14 @@ msgid "Current active connections"
 msgstr "Текущие активные подключения"
 
 #: src/components/ConfigHistory/DiffViewer.vue:72
-#, fuzzy
 msgid "Current Content"
-msgstr "Текущяя версия"
+msgstr "Текущее содержимое"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:65
-#, fuzzy
 msgid "Current usage"
-msgstr "Текущяя версия"
+msgstr "Текущее использование"
 
-#: src/views/system/Upgrade.vue:177
+#: src/views/system/Upgrade.vue:182
 msgid "Current Version"
 msgstr "Текущяя версия"
 
@@ -1052,11 +1048,10 @@ msgid "Custom"
 msgstr "Пользовательский"
 
 #: src/views/preference/tabs/NodeSettings.vue:19
-#, fuzzy
 msgid ""
 "Customize the name of local node to be displayed in the environment "
 "indicator."
-msgstr "Настройте имя локального сервера для отображения в индикаторе среды."
+msgstr "Настройте имя локального узла для отображения в индикаторе среды."
 
 #: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:110
 #: src/views/config/ConfigEditor.vue:161 src/views/config/ConfigList.vue:67
@@ -1084,51 +1079,47 @@ msgstr "Определите имя и размер зоны общей памя
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
 #: src/views/certificate/components/RemoveCert.vue:87
-#: src/views/site/site_list/SiteList.vue:117
+#: src/views/site/site_list/SiteList.vue:119
 #: src/views/stream/StreamList.vue:238
 msgid "Delete"
 msgstr "Удалить"
 
 #: src/views/certificate/components/RemoveCert.vue:92
-#, fuzzy
 msgid "Delete Certificate"
-msgstr "Обновить сертификат"
+msgstr "Удалить сертификат"
 
 #: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:35
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:547
 msgid "Delete Permanently"
 msgstr "Удалить навсегда"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:50
-#, fuzzy
+#: src/components/Notification/notifications.ts:69
+#: src/language/constants.ts:50
 msgid "Delete Remote Site Error"
-msgstr "Ошибка переименования удаленной конфигурации"
+msgstr "Ошибка удаления удаленного сайта"
 
-#: src/components/Notification/notifications.ts:73 src/language/constants.ts:49
-#, fuzzy
+#: src/components/Notification/notifications.ts:73
+#: src/language/constants.ts:49
 msgid "Delete Remote Site Success"
-msgstr "Переименование удаленной конфигурации прошло успешно"
+msgstr "Удаление удаленного сайта успешно завершено"
 
 #: src/components/Notification/notifications.ts:125
-#, fuzzy
 msgid "Delete Remote Stream Error"
-msgstr "Ошибка переименования удаленной конфигурации"
+msgstr "Ошибка удаления удаленного потока"
 
 #: src/components/Notification/notifications.ts:129
-#, fuzzy
 msgid "Delete Remote Stream Success"
-msgstr "Переименование удаленной конфигурации прошло успешно"
+msgstr "Удаление удаленного потока успешно"
 
 #: src/components/Notification/notifications.ts:70
-#, fuzzy
 msgid "Delete site %{name} from %{node} failed"
-msgstr "Не удалось развернуть %{conf_name} на %{node_name}"
+msgstr "Не удалось удалить сайт %{name} с %{node}"
 
 #: src/components/Notification/notifications.ts:74
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Сайт %{name} успешно удалён с %{node}"
 
-#: src/views/site/site_list/SiteList.vue:49
+#: src/views/site/site_list/SiteList.vue:51
 msgid "Delete site: %{site_name}"
 msgstr "Удалить сайт: %{site_name}"
 
@@ -1173,9 +1164,9 @@ msgstr "Файл назначения: {0} уже существует"
 msgid "Details"
 msgstr "Детали"
 
-#: src/views/system/Upgrade.vue:211
+#: src/views/system/Upgrade.vue:216
 msgid "Dev"
-msgstr ""
+msgstr "Dev"
 
 #: src/views/system/About.vue:28
 msgid "Development Mode"
@@ -1242,44 +1233,36 @@ msgid "Disable Remote Site Success"
 msgstr "Удалённый сайт успешно отключён"
 
 #: src/components/Notification/notifications.ts:133
-#, fuzzy
 msgid "Disable Remote Stream Error"
-msgstr "Ошибка переименования удаленной конфигурации"
+msgstr "Ошибка отключения удаленного потока"
 
 #: src/components/Notification/notifications.ts:137
-#, fuzzy
 msgid "Disable Remote Stream Success"
-msgstr "Переименование удаленной конфигурации прошло успешно"
+msgstr "Удаленный поток успешно отключен"
 
 #: src/components/Notification/notifications.ts:78
-#, fuzzy
 msgid "Disable site %{name} from %{node} failed"
-msgstr "Включение %{conf_name} in %{node_name} успешно"
+msgstr "Не удалось отключить сайт %{name} с %{node}"
 
 #: src/components/Notification/notifications.ts:82
-#, fuzzy
 msgid "Disable site %{name} from %{node} successfully"
-msgstr "Включение %{conf_name} in %{node_name} успешно"
+msgstr "Сайт %{name} успешно отключен на %{node}"
 
 #: src/components/Notification/notifications.ts:102
-#, fuzzy
 msgid "Disable site %{name} maintenance on %{node} failed"
-msgstr "Включение %{conf_name} in %{node_name} успешно"
+msgstr "Не удалось отключить обслуживание сайта %{name} на %{node}"
 
 #: src/components/Notification/notifications.ts:106
-#, fuzzy
 msgid "Disable site %{name} maintenance on %{node} successfully"
-msgstr "Включение %{conf_name} in %{node_name} успешно"
+msgstr "Обслуживание сайта %{name} на %{node} успешно отключено"
 
 #: src/components/Notification/notifications.ts:134
-#, fuzzy
 msgid "Disable stream %{name} from %{node} failed"
-msgstr "Включение %{conf_name} in %{node_name} нипалучилася"
+msgstr "Не удалось отключить поток %{name} с %{node}"
 
 #: src/components/Notification/notifications.ts:138
-#, fuzzy
 msgid "Disable stream %{name} from %{node} successfully"
-msgstr "Включение %{conf_name} in %{node_name} успешно"
+msgstr "Поток %{name} успешно отключен от %{node}"
 
 #: src/views/environments/list/envColumns.tsx:61
 #: src/views/environments/list/envColumns.tsx:79
@@ -1323,9 +1306,8 @@ msgid "Do not enable this option unless you are sure that you need it."
 msgstr "Не включайте эту опцию, если не уверены, что она вам нужна."
 
 #: src/views/site/components/SiteStatusSegmented.vue:93
-#, fuzzy
 msgid "Do you want to %{action} this site?"
-msgstr "Вы хотите включить этот сайт?"
+msgstr "Вы хотите %{action} этот сайт?"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:139
 msgid "Do you want to disable auto-cert renewal?"
@@ -1341,9 +1323,8 @@ msgstr "Хотите включить этот поток?"
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:33
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:14
-#, fuzzy
 msgid "Do you want to enable TLS?"
-msgstr "Включить TLS?"
+msgstr "Вы хотите включить TLS?"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:50
 msgid "Do you want to remove this server?"
@@ -1355,23 +1336,21 @@ msgstr "Хотите удалить этот сервер?"
 
 #: src/constants/errors/docker.ts:2
 msgid "Docker client not initialized"
-msgstr ""
+msgstr "Клиент Docker не инициализирован"
 
 #: src/language/generate.ts:17
 msgid "Docker socket exists"
-msgstr ""
+msgstr "Сокет Docker существует"
 
 #: src/constants/errors/self_check.ts:16
 msgid "Docker socket not exist"
-msgstr ""
+msgstr "Сокет Docker не существует"
 
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:88
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
-#, fuzzy
 msgid "Document"
 msgid_plural "Documents"
-msgstr[0] "API Документ"
-msgstr[1] "API Документ"
+msgstr[0] "Документ"
 
 #: src/views/certificate/components/WildcardCertificate.vue:66
 msgid "Domain"
@@ -1390,7 +1369,7 @@ msgid "Downloading latest release"
 msgstr "Загрузка последней версии"
 
 #: src/views/environments/list/BatchUpgrader.vue:188
-#: src/views/system/Upgrade.vue:232
+#: src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
 msgstr "Включен пробный режим"
 
@@ -1404,7 +1383,7 @@ msgstr ""
 "запускаются на localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:103
+#: src/views/site/site_list/SiteList.vue:105
 #: src/views/stream/components/StreamDuplicate.vue:64
 #: src/views/stream/StreamList.vue:224
 msgid "Duplicate"
@@ -1416,9 +1395,8 @@ msgid "Duplicate to local successfully"
 msgstr "Успешно дублировано на локальный"
 
 #: src/components/StdDesign/StdDetail/StdDetail.vue:110
-#, fuzzy
 msgid "Edit"
-msgstr "Редактировать %{n}"
+msgstr "Редактировать"
 
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:51
 #: src/views/stream/components/StreamEditor.vue:19
@@ -1447,9 +1425,8 @@ msgid "Email (*)"
 msgstr "Email (*)"
 
 #: src/views/site/components/SiteStatusSegmented.vue:87
-#, fuzzy
 msgid "enable"
-msgstr "Включить"
+msgstr "включить"
 
 #: src/views/stream/StreamList.vue:217
 msgid "Enable"
@@ -1465,78 +1442,69 @@ msgstr "Не удалось включить автоматическое про
 
 #: src/views/preference/tabs/OpenAISettings.vue:80
 msgid "Enable Code Completion"
-msgstr ""
+msgstr "Включить автодополнение кода"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:68
 msgid "Enable compression for content transfer"
-msgstr ""
+msgstr "Включить сжатие для передачи контента"
 
 #: src/views/site/site_add/SiteAdd.vue:35
 msgid "Enable failed"
 msgstr "Не удалось включить"
 
 #: src/views/preference/tabs/ServerSettings.vue:30
-#, fuzzy
 msgid "Enable HTTPS"
-msgstr "Включить TOTP"
+msgstr "Включить HTTPS"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:114
 msgid "Enable Proxy Cache"
-msgstr ""
+msgstr "Включить кэш прокси"
 
-#: src/components/Notification/notifications.ts:85 src/language/constants.ts:54
-#, fuzzy
+#: src/components/Notification/notifications.ts:85
+#: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
-msgstr "Ошибка переименования удаленной конфигурации"
+msgstr "Ошибка включения удаленного сайта"
 
 #: src/components/Notification/notifications.ts:93
-#, fuzzy
 msgid "Enable Remote Site Maintenance Error"
-msgstr "Ошибка переименования удаленной конфигурации"
+msgstr "Ошибка включения обслуживания удаленного сайта"
 
 #: src/components/Notification/notifications.ts:97
-#, fuzzy
 msgid "Enable Remote Site Maintenance Success"
-msgstr "Переименование удаленной конфигурации прошло успешно"
+msgstr "Успешное включение обслуживания удаленного сайта"
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:53
-#, fuzzy
+#: src/components/Notification/notifications.ts:89
+#: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
-msgstr "Переименование удаленной конфигурации прошло успешно"
+msgstr "Удалённый сайт успешно включён"
 
 #: src/components/Notification/notifications.ts:141
-#, fuzzy
 msgid "Enable Remote Stream Error"
-msgstr "Ошибка переименования удаленной конфигурации"
+msgstr "Ошибка включения удаленного потока"
 
 #: src/components/Notification/notifications.ts:145
-#, fuzzy
 msgid "Enable Remote Stream Success"
-msgstr "Переименование удаленной конфигурации прошло успешно"
+msgstr "Удаленный поток успешно включен"
 
 #: src/components/Notification/notifications.ts:94
-#, fuzzy
 msgid "Enable site %{name} maintenance on %{node} failed"
-msgstr "Включение %{conf_name} in %{node_name} нипалучилася"
+msgstr "Не удалось включить обслуживание сайта %{name} на %{node}"
 
 #: src/components/Notification/notifications.ts:98
-#, fuzzy
 msgid "Enable site %{name} maintenance on %{node} successfully"
-msgstr "Сайт %{name} успешно включён на %{node}"
+msgstr "Обслуживание сайта %{name} на %{node} успешно включено"
 
 #: src/components/Notification/notifications.ts:86
-#, fuzzy
 msgid "Enable site %{name} on %{node} failed"
-msgstr "Включение %{conf_name} in %{node_name} нипалучилася"
+msgstr "Не удалось включить сайт %{name} на узле %{node}"
 
 #: src/components/Notification/notifications.ts:90
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "Сайт %{name} успешно включён на %{node}"
 
 #: src/components/Notification/notifications.ts:142
-#, fuzzy
 msgid "Enable stream %{name} on %{node} failed"
-msgstr "Включение %{conf_name} in %{node_name} нипалучилася"
+msgstr "Не удалось включить поток %{name} на %{node}"
 
 #: src/components/Notification/notifications.ts:146
 msgid "Enable stream %{name} on %{node} successfully"
@@ -1544,7 +1512,7 @@ msgstr "Поток %{name} успешно включён на %{node}"
 
 #: src/views/dashboard/NginxDashBoard.vue:147
 msgid "Enable stub_status module"
-msgstr ""
+msgstr "Включить модуль stub_status"
 
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:115
 msgid "Enable TLS"
@@ -1597,16 +1565,15 @@ msgstr "Ошибка"
 
 #: src/components/ConfigHistory/DiffViewer.vue:145
 msgid "Error initializing diff viewer"
-msgstr ""
+msgstr "Ошибка инициализации просмотрщика различий"
 
 #: src/views/nginx_log/NginxLogList.vue:24
-#, fuzzy
 msgid "Error Log"
-msgstr "Ошибка логирования"
+msgstr "Журнал ошибок"
 
 #: src/constants/errors/self_check.ts:22
 msgid "Error log path not exist"
-msgstr ""
+msgstr "Путь к журналу ошибок не существует"
 
 #: src/components/NgxConfigEditor/LogEntry.vue:98
 #: src/routes/modules/nginx_log.ts:24
@@ -1615,9 +1582,9 @@ msgstr "Ошибка логирования"
 
 #: src/components/ConfigHistory/DiffViewer.vue:97
 msgid "Error processing content"
-msgstr ""
+msgstr "Ошибка обработки содержимого"
 
-#: src/views/system/Upgrade.vue:191
+#: src/views/system/Upgrade.vue:196
 msgid "Executable Path"
 msgstr "Исполняемый путь"
 
@@ -1636,170 +1603,148 @@ msgstr "Экспорт"
 
 #: src/views/preference/tabs/NginxSettings.vue:49
 msgid "External Docker Container"
-msgstr ""
+msgstr "Внешний Docker-контейнер"
 
 #: src/views/preference/Preference.vue:58
 #: src/views/preference/tabs/ExternalNotify.vue:10
 msgid "External Notify"
-msgstr ""
+msgstr "Внешнее Уведомление"
 
 #: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
 msgid "Fail to obtain certificate"
 msgstr "Не удалось получить сертификат"
 
 #: src/constants/errors/docker.ts:4
-#, fuzzy
 msgid "Failed to attach to exec instance: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось подключиться к экземпляру exec: {0}"
 
 #: src/constants/errors/backup.ts:5
 msgid "Failed to backup Nginx config files: {0}"
-msgstr ""
+msgstr "Не удалось создать резервную копию файлов конфигурации Nginx: {0}"
 
 #: src/constants/errors/backup.ts:4
 msgid "Failed to backup Nginx UI files: {0}"
-msgstr ""
+msgstr "Не удалось создать резервную копию файлов Nginx UI: {0}"
 
 #: src/constants/errors/backup.ts:18
-#, fuzzy
 msgid "Failed to calculate hash: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось вычислить хеш: {0}"
 
 #: src/constants/errors/backup.ts:58
 msgid "Failed to calculate Nginx hash: {0}"
-msgstr ""
+msgstr "Не удалось вычислить хэш Nginx: {0}"
 
 #: src/constants/errors/backup.ts:57
 msgid "Failed to calculate Nginx UI hash: {0}"
-msgstr ""
+msgstr "Не удалось вычислить хеш Nginx UI: {0}"
 
 #: src/constants/errors/backup.ts:13
-#, fuzzy
 msgid "Failed to cleanup temporary directory: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось очистить временную директорию: {0}"
 
 #: src/constants/errors/backup.ts:15
 msgid "Failed to copy config file: {0}"
-msgstr ""
+msgstr "Не удалось скопировать файл конфигурации: {0}"
 
 #: src/constants/errors/backup.ts:16
 msgid "Failed to copy database directory: {0}"
-msgstr ""
+msgstr "Не удалось скопировать каталог базы данных: {0}"
 
 #: src/constants/errors/backup.ts:17
-#, fuzzy
 msgid "Failed to copy database file: {0}"
-msgstr "Не удалось отключить %{msg}"
+msgstr "Не удалось скопировать файл базы данных: {0}"
 
 #: src/constants/errors/backup.ts:32
 msgid "Failed to copy file content: {0}"
-msgstr ""
+msgstr "Не удалось скопировать содержимое файла: {0}"
 
 #: src/constants/errors/backup.ts:20
 msgid "Failed to copy Nginx config directory: {0}"
-msgstr ""
+msgstr "Не удалось скопировать каталог конфигурации Nginx: {0}"
 
 #: src/constants/errors/self_check.ts:10
-#, fuzzy
 msgid "Failed to create backup"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось создать резервную копию"
 
 #: src/constants/errors/backup.ts:12
-#, fuzzy
 msgid "Failed to create backup file: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось создать файл резервной копии: {0}"
 
 #: src/constants/errors/backup.ts:46
-#, fuzzy
 msgid "Failed to create directory: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось создать директорию: {0}"
 
 #: src/constants/errors/backup.ts:48
-#, fuzzy
 msgid "Failed to create file: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось создать файл: {0}"
 
 #: src/constants/errors/backup.ts:6
-#, fuzzy
 msgid "Failed to create hash info file: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось создать файл с информацией о хэше: {0}"
 
 #: src/constants/errors/backup.ts:47
-#, fuzzy
 msgid "Failed to create parent directory: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось создать родительский каталог: {0}"
 
 #: src/constants/errors/backup.ts:34
 msgid "Failed to create restore directory: {0}"
-msgstr ""
+msgstr "Не удалось создать каталог восстановления: {0}"
 
 #: src/constants/errors/backup.ts:50
-#, fuzzy
 msgid "Failed to create symbolic link: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось создать символическую ссылку: {0}"
 
 #: src/constants/errors/docker.ts:13
-#, fuzzy
 msgid "Failed to create temp container: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось создать временный контейнер: {0}"
 
 #: src/constants/errors/backup.ts:2
-#, fuzzy
 msgid "Failed to create temporary directory"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось создать временный каталог"
 
 #: src/constants/errors/backup.ts:3
-#, fuzzy
 msgid "Failed to create temporary subdirectory"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось создать временную поддиректорию"
 
 #: src/constants/errors/backup.ts:9
-#, fuzzy
 msgid "Failed to create zip archive: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось создать ZIP-архив: {0}"
 
 #: src/constants/errors/backup.ts:29
-#, fuzzy
 msgid "Failed to create zip entry: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось создать запись в ZIP: {0}"
 
 #: src/constants/errors/backup.ts:28
-#, fuzzy
 msgid "Failed to create zip file: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось создать ZIP-файл: {0}"
 
 #: src/constants/errors/backup.ts:31
-#, fuzzy
 msgid "Failed to create zip header: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось создать заголовок ZIP: {0}"
 
 #: src/constants/errors/backup.ts:26
-#, fuzzy
 msgid "Failed to decrypt data: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось расшифровать данные: {0}"
 
 #: src/constants/errors/backup.ts:54
-#, fuzzy
 msgid "Failed to decrypt file: {0}"
-msgstr "Не удалось отключить %{msg}"
+msgstr "Не удалось расшифровать файл: {0}"
 
 #: src/constants/errors/backup.ts:37
 msgid "Failed to decrypt Nginx directory: {0}"
-msgstr ""
+msgstr "Не удалось расшифровать каталог Nginx: {0}"
 
 #: src/constants/errors/backup.ts:36
 msgid "Failed to decrypt Nginx UI directory: {0}"
-msgstr ""
+msgstr "Не удалось расшифровать каталог Nginx UI: {0}"
 
 #: src/views/certificate/components/RemoveCert.vue:66
-#, fuzzy
 msgid "Failed to delete certificate"
-msgstr "Не удалось получить сертификат"
+msgstr "Не удалось удалить сертификат"
 
 #: src/language/generate.ts:22
-#, fuzzy
 msgid "Failed to delete certificate from database: %{error}"
-msgstr "Не удалось получить сертификат"
+msgstr "Не удалось удалить сертификат из базы данных: %{error}"
 
 #: src/views/site/components/SiteStatusSegmented.vue:46
 #: src/views/stream/components/RightPanel/Basic.vue:37
@@ -1808,9 +1753,8 @@ msgid "Failed to disable %{msg}"
 msgstr "Не удалось отключить %{msg}"
 
 #: src/views/site/components/SiteStatusSegmented.vue:72
-#, fuzzy
 msgid "Failed to disable maintenance mode %{msg}"
-msgstr "Не удалось отключить %{msg}"
+msgstr "Не удалось отключить режим обслуживания: %{msg}"
 
 #: src/views/site/components/SiteStatusSegmented.vue:33
 #: src/views/stream/components/RightPanel/Basic.vue:28
@@ -1819,182 +1763,156 @@ msgid "Failed to enable %{msg}"
 msgstr "Не удалось включить %{msg}"
 
 #: src/views/site/components/SiteStatusSegmented.vue:59
-#, fuzzy
 msgid "Failed to enable maintenance mode %{msg}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось включить режим обслуживания: %{msg}"
 
 #: src/constants/errors/backup.ts:25
-#, fuzzy
 msgid "Failed to encrypt data: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Ошибка шифрования данных: {0}"
 
 #: src/constants/errors/backup.ts:23
-#, fuzzy
 msgid "Failed to encrypt file: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось зашифровать файл: {0}"
 
 #: src/constants/errors/backup.ts:8
 msgid "Failed to encrypt Nginx directory: {0}"
-msgstr ""
+msgstr "Не удалось зашифровать каталог Nginx: {0}"
 
 #: src/constants/errors/backup.ts:7
 msgid "Failed to encrypt Nginx UI directory: {0}"
-msgstr ""
+msgstr "Не удалось зашифровать каталог Nginx UI: {0}"
 
 #: src/constants/errors/backup.ts:52
-#, fuzzy
 msgid "Failed to evaluate symbolic links: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось оценить символические ссылки: {0}"
 
 #: src/constants/errors/docker.ts:3
-#, fuzzy
 msgid "Failed to exec command: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось выполнить команду: {0}"
 
 #: src/constants/errors/backup.ts:35
-#, fuzzy
 msgid "Failed to extract archive: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось извлечь архив: {0}"
 
 #: src/constants/errors/backup.ts:10
-#, fuzzy
 msgid "Failed to generate AES key: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось сгенерировать ключ AES: {0}"
 
 #: src/constants/errors/backup.ts:11
-#, fuzzy
 msgid "Failed to generate initialization vector: {0}"
-msgstr "Не удалось получить информацию о сертификате"
+msgstr "Не удалось сгенерировать вектор инициализации: {0}"
 
 #: src/language/constants.ts:5
 msgid "Failed to get certificate information"
 msgstr "Не удалось получить информацию о сертификате"
 
 #: src/constants/errors/docker.ts:10
-#, fuzzy
 msgid "Failed to get container id: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось получить идентификатор контейнера: {0}"
 
 #: src/views/dashboard/components/ParamsOptimization.vue:61
-#, fuzzy
 msgid "Failed to get Nginx performance settings"
-msgstr "Не удалось получить информацию о сертификате"
+msgstr "Не удалось получить настройки производительности Nginx"
 
 #: src/composables/useNginxPerformance.ts:49
-#, fuzzy
 msgid "Failed to get performance data"
-msgstr "Не удалось получить информацию о сертификате"
+msgstr "Не удалось получить данные о производительности"
 
 #: src/constants/errors/docker.ts:8
-#, fuzzy
 msgid "Failed to inspect container: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось проверить контейнер: {0}"
 
 #: src/constants/errors/docker.ts:12
-#, fuzzy
 msgid "Failed to inspect current container: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось проверить текущий контейнер: {0}"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:77
-#, fuzzy
 msgid "Failed to load history records"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось загрузить записи истории"
 
 #: src/constants/errors/backup.ts:30
-#, fuzzy
 msgid "Failed to open source file: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось открыть исходный файл: {0}"
 
 #: src/constants/errors/backup.ts:49
-#, fuzzy
 msgid "Failed to open zip entry: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось открыть запись в ZIP: {0}"
 
 #: src/constants/errors/backup.ts:45
-#, fuzzy
 msgid "Failed to open zip file: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось открыть ZIP-файл: {0}"
 
 #: src/constants/errors/self_check.ts:5
 msgid "Failed to parse nginx.conf"
-msgstr ""
+msgstr "Ошибка разбора nginx.conf"
 
 #: src/constants/errors/docker.ts:11
-#, fuzzy
 msgid "Failed to pull image: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось загрузить образ: {0}"
 
 #: src/constants/errors/backup.ts:53
 msgid "Failed to read encrypted file: {0}"
-msgstr ""
+msgstr "Ошибка чтения зашифрованного файла: {0}"
 
 #: src/constants/errors/backup.ts:22
-#, fuzzy
 msgid "Failed to read file: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось прочитать файл: {0}"
 
 #: src/constants/errors/backup.ts:56
 msgid "Failed to read hash info file: {0}"
-msgstr ""
+msgstr "Не удалось прочитать файл с информацией о хеше: {0}"
 
 #: src/constants/errors/self_check.ts:4
 msgid "Failed to read nginx.conf"
-msgstr ""
+msgstr "Не удалось прочитать nginx.conf"
 
 #: src/constants/errors/docker.ts:5
-#, fuzzy
 msgid "Failed to read output: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось прочитать вывод: {0}"
 
 #: src/constants/errors/backup.ts:21
-#, fuzzy
 msgid "Failed to read symlink: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось прочитать символическую ссылку: {0}"
 
 #: src/constants/errors/backup.ts:39
 msgid "Failed to restore Nginx configs: {0}"
-msgstr ""
+msgstr "Не удалось восстановить конфигурации Nginx: {0}"
 
 #: src/constants/errors/backup.ts:40
 msgid "Failed to restore Nginx UI files: {0}"
-msgstr ""
+msgstr "Не удалось восстановить файлы Nginx UI: {0}"
 
 #: src/views/certificate/components/RemoveCert.vue:48
-#, fuzzy
 msgid "Failed to revoke certificate"
-msgstr "Не удалось получить сертификат"
+msgstr "Не удалось отозвать сертификат"
 
 #: src/language/generate.ts:45
-#, fuzzy
 msgid "Failed to revoke certificate: %{error}"
-msgstr "Не удалось получить сертификат"
+msgstr "Не удалось отозвать сертификат: %{error}"
 
 #: src/views/dashboard/components/ParamsOptimization.vue:90
-#, fuzzy
 msgid "Failed to save Nginx performance settings"
-msgstr "Не удалось получить информацию о сертификате"
+msgstr "Не удалось сохранить настройки производительности Nginx"
 
 #: src/constants/errors/docker.ts:14
-#, fuzzy
 msgid "Failed to start temp container: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось запустить временный контейнер: {0}"
 
 #: src/constants/errors/backup.ts:38
-#, fuzzy
 msgid "Failed to verify hashes: {0}"
-msgstr "Не удалось включить %{msg}"
+msgstr "Не удалось проверить хэши: {0}"
 
 #: src/constants/errors/backup.ts:55
 msgid "Failed to write decrypted file: {0}"
-msgstr ""
+msgstr "Не удалось записать расшифрованный файл: {0}"
 
 #: src/constants/errors/backup.ts:24
 msgid "Failed to write encrypted file: {0}"
-msgstr ""
+msgstr "Ошибка записи зашифрованного файла: {0}"
 
 #: src/constants/errors/backup.ts:33
 msgid "Failed to write to zip buffer: {0}"
-msgstr ""
+msgstr "Ошибка записи в ZIP-буфер: {0}"
 
 #: src/language/constants.ts:32
 msgid "File exists"
@@ -2006,7 +1924,7 @@ msgstr "Файл не найден"
 
 #: src/constants/errors/cert.ts:2
 msgid "Filename is empty"
-msgstr ""
+msgstr "Имя файла пустое"
 
 #: src/views/nginx_log/NginxLog.vue:156
 msgid "Filter"
@@ -2018,7 +1936,7 @@ msgstr "Готово"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
 msgid "First View"
-msgstr ""
+msgstr "Первое просмотр"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:71
 msgid ""
@@ -2038,9 +1956,8 @@ msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "Для китайских пользователей: https://cloud.nginxui.com/"
 
 #: src/constants/errors/middleware.ts:4
-#, fuzzy
 msgid "Form parse failed"
-msgstr "Дублирование не удалось"
+msgstr "Ошибка разбора формы"
 
 #: src/views/config/ConfigEditor.vue:269
 msgid "Format Code"
@@ -2060,17 +1977,14 @@ msgstr "Сгенерировать"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:138
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:161
-#, fuzzy
 msgid "Generate New Recovery Codes"
-msgstr "Код восстановления"
+msgstr "Создать новые резервные коды"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:161
-#, fuzzy
 msgid "Generate Recovery Codes"
-msgstr "Код восстановления"
+msgstr "Создать резервные коды"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:32
-#, fuzzy
 msgid "Generate recovery codes successfully"
 msgstr "Коды восстановления успешно сгенерированы"
 
@@ -2079,12 +1993,11 @@ msgid "Generating private key for registering account"
 msgstr "Генерация приватного ключа для регистрации учетной записи"
 
 #: src/views/dashboard/NginxDashBoard.vue:138
-#, fuzzy
 msgid "Get data failed"
-msgstr "Регистрация не удалась"
+msgstr "Не удалось получить данные"
 
 #: src/views/environments/list/BatchUpgrader.vue:177
-#: src/views/system/Upgrade.vue:183
+#: src/views/system/Upgrade.vue:188
 msgid "Get release information error"
 msgstr "Ошибка получения информации о выпуске"
 
@@ -2098,19 +2011,19 @@ msgstr "Прокси Github"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:67
 msgid "GZIP Compression"
-msgstr ""
+msgstr "Сжатие GZIP"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:87
 msgid "GZIP Compression Level"
-msgstr ""
+msgstr "Уровень сжатия GZIP"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:80
 msgid "GZIP Min Length"
-msgstr ""
+msgstr "Минимальная длина GZIP"
 
 #: src/constants/errors/backup.ts:59
 msgid "Hash verification failed: file integrity compromised"
-msgstr ""
+msgstr "Проверка хеша не удалась: целостность файла нарушена"
 
 #: src/components/SensitiveString/SensitiveString.vue:40
 msgid "Hide"
@@ -2118,28 +2031,25 @@ msgstr "Скрыть"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:87
 msgid "Higher value means better connection reuse"
-msgstr ""
+msgstr "Более высокое значение означает лучшее повторное использование соединения"
 
 #: src/views/config/ConfigEditor.vue:254
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
 #: src/views/stream/components/StreamEditor.vue:43
-#, fuzzy
 msgid "History"
-msgstr "Каталог"
+msgstr "История"
 
 #: src/routes/index.ts:47
 msgid "Home"
 msgstr "Главная"
 
 #: src/views/preference/tabs/ServerSettings.vue:19
-#, fuzzy
 msgid "Host"
-msgstr "Хостинг HTTP"
+msgstr "Хост"
 
 #: src/views/preference/Preference.vue:70
-#, fuzzy
 msgid "HTTP"
-msgstr "HTTP01"
+msgstr "HTTP"
 
 #: src/views/preference/tabs/CertSettings.vue:15
 msgid "HTTP Challenge Port"
@@ -2151,7 +2061,7 @@ msgstr "HTTP01"
 
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:13
 msgid "HTTPS Protocol"
-msgstr ""
+msgstr "Протокол HTTPS"
 
 #: src/views/preference/tabs/NodeSettings.vue:34
 msgid "ICP Number"
@@ -2202,7 +2112,7 @@ msgstr "Импортировать сертификат"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:176
 msgid "Inactive Time"
-msgstr ""
+msgstr "Время неактивности"
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:54
 msgid ""
@@ -2212,11 +2122,11 @@ msgstr ""
 
 #: src/components/ProcessingStatus/ProcessingStatus.vue:32
 msgid "Indexing..."
-msgstr ""
+msgstr "Индексация..."
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:15
 msgid "Indicator"
-msgstr ""
+msgstr "Индикатор"
 
 #: src/components/StdDesign/StdDetail/StdDetail.vue:81
 #: src/constants/index.ts:24 src/views/notification/notificationColumns.tsx:29
@@ -2241,12 +2151,12 @@ msgstr "Введите код восстановления:"
 
 #: src/views/preference/tabs/HTTPSettings.vue:22
 msgid "Insecure Skip Verify"
-msgstr ""
+msgstr "Небезопасное пропуск проверки"
 
 #: src/routes/modules/auth.ts:8
 #: src/views/install/components/InstallForm.vue:124
 #: src/views/install/components/InstallHeader.vue:9
-#: src/views/system/Upgrade.vue:145
+#: src/views/system/Upgrade.vue:150
 msgid "Install"
 msgstr "Установить"
 
@@ -2254,10 +2164,9 @@ msgstr "Установить"
 msgid "Install successfully"
 msgstr "Установка прошла успешно"
 
-#: src/views/install/components/InstallView.vue:63
-#, fuzzy
+#: src/views/install/components/InstallView.vue:64
 msgid "Installation"
-msgstr "Установить"
+msgstr "Установка"
 
 #: src/constants/errors/system.ts:3
 msgid "Installation is not allowed after 10 minutes of system startup"
@@ -2279,21 +2188,19 @@ msgstr "Недействительно"
 
 #: src/constants/errors/backup.ts:44
 msgid "Invalid AES IV format: {0}"
-msgstr ""
+msgstr "Неверный формат AES IV: {0}"
 
 #: src/constants/errors/backup.ts:43
 msgid "Invalid AES key format: {0}"
-msgstr ""
+msgstr "Неверный формат AES-ключа: {0}"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:121
-#, fuzzy
 msgid "Invalid file object"
-msgstr "Неверное имя файла"
+msgstr "Неверный объект файла"
 
 #: src/constants/errors/backup.ts:51
-#, fuzzy
 msgid "Invalid file path: {0}"
-msgstr "Неверное имя файла"
+msgstr "Недопустимый путь к файлу: {0}"
 
 #: src/views/config/components/Rename.vue:66
 #: src/views/config/ConfigEditor.vue:303
@@ -2305,9 +2212,8 @@ msgid "Invalid folder name"
 msgstr "Недопустимое имя папки"
 
 #: src/constants/errors/notification.ts:3
-#, fuzzy
 msgid "Invalid notifier config"
-msgstr "Неверный код OTP"
+msgstr "Неверная конфигурация уведомления"
 
 #: src/constants/errors/user.ts:4
 msgid "Invalid otp code"
@@ -2315,7 +2221,7 @@ msgstr "Неверный код OTP"
 
 #: src/constants/errors/backup.ts:27
 msgid "Invalid padding in decrypted data"
-msgstr ""
+msgstr "Некорректное заполнение в расшифрованных данных"
 
 #: src/components/TwoFA/use2FAModal.ts:61
 msgid "Invalid passcode or recovery code"
@@ -2327,12 +2233,11 @@ msgstr "Неверный код восстановления"
 
 #: src/constants/errors/middleware.ts:2
 msgid "Invalid request format"
-msgstr ""
+msgstr "Неверный формат запроса"
 
 #: src/constants/errors/backup.ts:42
-#, fuzzy
 msgid "Invalid security token format"
-msgstr "Неверный код восстановления"
+msgstr "Неверный формат токена безопасности"
 
 #: src/views/preference/tabs/AuthSettings.vue:18
 msgid "IP"
@@ -2366,7 +2271,7 @@ msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:60
 msgid "Keepalive Timeout"
-msgstr ""
+msgstr "Таймаут Keepalive"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:76
 #: src/views/certificate/CertificateList/certColumns.tsx:59
@@ -2375,25 +2280,23 @@ msgstr "Тип ключа"
 
 #: src/views/preference/components/ExternalNotify/columns.ts:29
 msgid "Language"
-msgstr ""
+msgstr "Язык"
 
 #: src/views/preference/components/ExternalNotify/lark.ts:5
 msgid "Lark"
-msgstr ""
+msgstr "Lark"
 
 #: src/views/preference/components/ExternalNotify/lark_custom.ts:5
-#, fuzzy
 msgid "Lark Custom"
-msgstr "Пользовательский"
+msgstr "Lark Пользовательский"
 
-#: src/views/system/Upgrade.vue:193
+#: src/views/system/Upgrade.vue:198
 msgid "Last checked at"
 msgstr "Последняя проверка в"
 
 #: src/views/dashboard/NginxDashBoard.vue:113
-#, fuzzy
 msgid "Last update"
-msgstr "Последняя проверка в"
+msgstr "Последнее обновление"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:96
 #, fuzzy
@@ -2502,10 +2405,10 @@ msgid ""
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
 msgstr ""
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:64
-#, fuzzy
+#: src/routes/modules/nginx_log.ts:39
+#: src/views/nginx_log/NginxLogList.vue:64
 msgid "Log List"
-msgstr "Список"
+msgstr "Список журналов"
 
 #: src/routes/modules/auth.ts:14 src/views/other/Login.vue:222
 msgid "Login"
@@ -2543,7 +2446,7 @@ msgstr ""
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
 #: src/views/site/site_list/columns.tsx:112
 msgid "Maintenance"
-msgstr ""
+msgstr "Техническое обслуживание"
 
 #: src/views/site/components/SiteStatusSegmented.vue:66
 #, fuzzy
@@ -2568,7 +2471,7 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "Конфигурации"
 
-#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:76
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:78
 msgid "Manage Sites"
 msgstr "Сайты"
 
@@ -2601,7 +2504,7 @@ msgstr "Управление потоками"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:32
 msgid "Manual"
-msgstr ""
+msgstr "Вручную"
 
 #: src/views/dashboard/components/PerformanceTablesCard.vue:201
 msgid "manually set"
@@ -2609,7 +2512,7 @@ msgstr ""
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:103
 msgid "Master"
-msgstr ""
+msgstr "Мастер"
 
 #: src/composables/usePerformanceMetrics.ts:134
 #: src/views/dashboard/components/PerformanceTablesCard.vue:89
@@ -2619,7 +2522,7 @@ msgstr ""
 #: src/composables/usePerformanceMetrics.ts:56
 #: src/views/dashboard/components/ProcessDistributionCard.vue:13
 msgid "Master Process"
-msgstr ""
+msgstr "Главный процесс"
 
 #: src/views/preference/tabs/AuthSettings.vue:135
 msgid "Max Attempts"
@@ -2761,7 +2664,7 @@ msgstr "Всего получено"
 msgid "Network Total Send"
 msgstr "Всего отправлено"
 
-#: src/views/install/components/InstallView.vue:107
+#: src/views/install/components/InstallView.vue:109
 #, fuzzy
 msgid "New Installation"
 msgstr "Установить"
@@ -2774,12 +2677,12 @@ msgstr "Новое имя"
 msgid "New Path"
 msgstr "Новый путь"
 
-#: src/views/system/Upgrade.vue:225
+#: src/views/system/Upgrade.vue:230
 msgid "New version released"
 msgstr "Вышла новая версия"
 
 #: src/views/certificate/components/WildcardCertificate.vue:89
-#: src/views/install/components/InstallView.vue:94
+#: src/views/install/components/InstallView.vue:96
 #: src/views/site/site_add/SiteAdd.vue:123
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:214
 msgid "Next"
@@ -3009,7 +2912,7 @@ msgstr "Проверьте, включает ли файл nginx.conf катал
 #: src/views/notification/Notification.vue:37
 #: src/views/preference/tabs/AuthSettings.vue:164
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:106
+#: src/views/site/site_list/SiteList.vue:108
 #: src/views/stream/StreamList.vue:227
 msgid "No"
 msgstr "Нет"
@@ -3170,7 +3073,7 @@ msgstr "Ок"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:107
+#: src/views/site/site_list/SiteList.vue:109
 #: src/views/stream/components/RightPanel/Basic.vue:46
 #: src/views/stream/StreamList.vue:228
 #: src/views/system/Backup/BackupCreator.vue:149
@@ -3214,7 +3117,7 @@ msgstr ""
 msgid "Original name"
 msgstr "Оригинальное имя"
 
-#: src/views/system/Upgrade.vue:189
+#: src/views/system/Upgrade.vue:194
 msgid "OS"
 msgstr "ОС"
 
@@ -3442,7 +3345,7 @@ msgstr ""
 "Обратите внимание, что единица измерения времени в конфигурациях ниже "
 "указана в секундах."
 
-#: src/views/install/components/InstallView.vue:100
+#: src/views/install/components/InstallView.vue:102
 msgid "Please resolve all issues before proceeding with installation"
 msgstr ""
 
@@ -3488,7 +3391,7 @@ msgstr "Действие"
 
 #: src/views/environments/list/BatchUpgrader.vue:167
 #: src/views/environments/list/BatchUpgrader.vue:220
-#: src/views/system/Upgrade.vue:208 src/views/system/Upgrade.vue:262
+#: src/views/system/Upgrade.vue:213 src/views/system/Upgrade.vue:267
 msgid "Pre-release"
 msgstr "Предварительный выпуск"
 
@@ -3627,11 +3530,11 @@ msgstr "Регистрация пользователя"
 msgid "Registration Status"
 msgstr "Статус регистрации"
 
-#: src/views/system/Upgrade.vue:147
+#: src/views/system/Upgrade.vue:152
 msgid "Reinstall"
 msgstr "Переустановить"
 
-#: src/views/system/Upgrade.vue:266
+#: src/views/system/Upgrade.vue:271
 msgid "Release Note"
 msgstr "Что нового"
 
@@ -3875,7 +3778,7 @@ msgstr "Перезапускается"
 msgid "Restore completed successfully"
 msgstr "Удалено успешно"
 
-#: src/views/install/components/InstallView.vue:110
+#: src/views/install/components/InstallView.vue:112
 #, fuzzy
 msgid "Restore from Backup"
 msgstr "Система"
@@ -4132,7 +4035,7 @@ msgid ""
 "https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
 
-#: src/views/install/components/InstallView.vue:64
+#: src/views/install/components/InstallView.vue:65
 msgid "Setup your Nginx UI"
 msgstr ""
 
@@ -4260,7 +4163,7 @@ msgstr "SSO Вход"
 
 #: src/views/environments/list/BatchUpgrader.vue:164
 #: src/views/environments/list/BatchUpgrader.vue:214
-#: src/views/system/Upgrade.vue:205 src/views/system/Upgrade.vue:256
+#: src/views/system/Upgrade.vue:210 src/views/system/Upgrade.vue:261
 msgid "Stable"
 msgstr "Стабильный"
 
@@ -4419,7 +4322,7 @@ msgstr "Система"
 msgid "System Backup"
 msgstr "Система"
 
-#: src/views/install/components/InstallView.vue:59
+#: src/views/install/components/InstallView.vue:60
 #, fuzzy
 msgid "System Check"
 msgstr "Система"
@@ -4800,10 +4703,6 @@ msgstr "Тип"
 msgid "Unknown"
 msgstr ""
 
-#: src/components/SelfCheck/SelfCheck.vue:43
-msgid "Unknown issue"
-msgstr ""
-
 #: src/views/preference/components/AuthSettings/Passkey.vue:39
 #, fuzzy
 msgid "Update successfully"
@@ -4828,7 +4727,7 @@ msgstr "Успешно обновлено"
 #: src/routes/modules/system.ts:33
 #: src/views/environments/list/Environment.vue:107
 #: src/views/environments/list/Environment.vue:99
-#: src/views/system/Upgrade.vue:149 src/views/system/Upgrade.vue:154
+#: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "Обновление"
 
@@ -4841,7 +4740,7 @@ msgid "Upgraded successfully"
 msgstr "Обновлено успешно"
 
 #: src/views/environments/list/BatchUpgrader.vue:88
-#: src/views/system/Upgrade.vue:77
+#: src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Обновление Nginx UI, подождите..."
 
@@ -4905,7 +4804,7 @@ msgstr ""
 msgid "Verify Backup File Integrity"
 msgstr ""
 
-#: src/views/install/components/InstallView.vue:60
+#: src/views/install/components/InstallView.vue:61
 msgid "Verify system requirements"
 msgstr "Проверьте системные требования"
 
@@ -5066,11 +4965,11 @@ msgstr ""
 "домене, отличном от localhost. Это может раскрыть конфиденциальную "
 "информацию."
 
-#: src/views/system/Upgrade.vue:219
+#: src/views/system/Upgrade.vue:224
 msgid "You are using the latest version"
 msgstr "Вы используете последнюю версию"
 
-#: src/views/system/Upgrade.vue:175
+#: src/views/system/Upgrade.vue:180
 msgid "You can check Nginx UI upgrade at this page."
 msgstr "Вы можете проверить обновление Nginx UI на этой странице."
 
