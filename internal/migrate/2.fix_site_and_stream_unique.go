@@ -7,7 +7,7 @@ import (
 )
 
 var FixSiteAndStreamPathUnique = &gormigrate.Migration{
-	ID: "20250405000003",
+	ID: "202505070000001",
 	Migrate: func(tx *gorm.DB) error {
 		// Check if sites table exists
 		if tx.Migrator().HasTable(&model.Site{}) {
@@ -19,36 +19,38 @@ var FixSiteAndStreamPathUnique = &gormigrate.Migration{
 
 			if err := tx.Model(&model.Site{}).
 				Select("path, count(*) as count").
-			Group("path").
-			Having("count(*) > 1").
-			Find(&siteDuplicates).Error; err != nil {
-			return err
-		}
-
-		// For each duplicated path, delete all but the one with max id
-		for _, dup := range siteDuplicates {
-			if err := tx.Exec(`DELETE FROM sites WHERE path = ? AND id NOT IN 
-				(SELECT max(id) FROM sites WHERE path = ?)`, dup.Path, dup.Path).Error; err != nil {
+				Group("path").
+				Having("count(*) > 1").
+				Unscoped().
+				Find(&siteDuplicates).Error; err != nil {
 				return err
 			}
+
+			// For each duplicated path, delete all but the one with max id
+			for _, dup := range siteDuplicates {
+				if err := tx.Exec(`DELETE FROM sites WHERE path = ? AND id NOT IN 
+				(SELECT max(id) FROM sites WHERE path = ?)`, dup.Path, dup.Path).Error; err != nil {
+					return err
+				}
+			}
 		}
-	}
 
 		// Check if streams table exists
 		if tx.Migrator().HasTable(&model.Stream{}) {
 			// Find duplicated paths in streams table
 			var streamDuplicates []struct {
 				Path  string
-			Count int
-		}
+				Count int
+			}
 
-		if err := tx.Model(&model.Stream{}).
-			Select("path, count(*) as count").
-			Group("path").
-			Having("count(*) > 1").
-			Find(&streamDuplicates).Error; err != nil {
-			return err
-		}
+			if err := tx.Model(&model.Stream{}).
+				Select("path, count(*) as count").
+				Group("path").
+				Having("count(*) > 1").
+				Unscoped().
+				Find(&streamDuplicates).Error; err != nil {
+				return err
+			}
 
 			// For each duplicated path, delete all but the one with max id
 			for _, dup := range streamDuplicates {
