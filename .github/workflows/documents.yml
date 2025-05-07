@@ -22,6 +22,12 @@ on:
       - "docs/.env*"
       - "docs/**/*.md"
       - ".github/workflows/doc*.yml"
+  release:
+    types: [published]
+  workflow_run:
+    workflows: ["Sync branch"]
+    types:
+      - completed
 
 jobs:
   build:
@@ -53,7 +59,7 @@ jobs:
           path: docs/.vitepress/dist
 
       - name: Deploy
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/main' || github.event_name == 'release' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'))
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
