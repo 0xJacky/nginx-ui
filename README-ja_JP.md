@@ -164,7 +164,6 @@ Nginx UIは以下のプラットフォームで利用可能です:
 - Dragonfly BSD
 - Openwrt
 
-You can visit [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) to download the latest distribution, or just use [installation scripts for Linux](#script-for-linux).
 
 最新リリースは[リリースページ](https://github.com/0xJacky/nginx-ui/releases/latest)からダウンロード、または[Linux用インストールスクリプト](#script-for-linux)を利用
 
@@ -212,9 +211,6 @@ systemctl restart nginx-ui
 ```
 
 #### Dockerで
-Our docker image [uozi/nginx-ui:latest](https://hub.docker.com/r/uozi/nginx-ui) is based on the latest nginx image and
-can be used to replace the Nginx on the host. By publishing the container's port 80 and 443 to the host,
-you can easily make the switch.
 公式イメージ [uozi/nginx-ui:latest](https://hub.docker.com/r/uozi/nginx-ui) はベースに公式 nginx イメージを利用しています。ホストの Nginx と置き換える形で利用可能です。
 
 ##### 注意
