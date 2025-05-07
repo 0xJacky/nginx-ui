@@ -35,9 +35,6 @@ func CheckPIDPath() error {
 	if path == "" {
 		return ErrPIDPathNotExist
 	}
-	if !helper.FileExists(path) {
-		return ErrPIDPathNotExist
-	}
 	return nil
 }
 
