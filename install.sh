@@ -626,7 +626,7 @@ main() {
             rc-update add nginx-ui default
             sleep 1s
 
-            if rc-service nginx-ui status | grep -q "started"; then
+            if rc-service nginx-ui status | grep -q "running"; then
                 echo "info: Started and added the Nginx UI service to default runlevel."
             else
                 echo -e "${FontYellow}warning: Failed to start the Nginx UI service.${FontSuffix}"
