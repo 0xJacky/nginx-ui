@@ -3,6 +3,7 @@ package main
 
 import (
 	"archive/zip"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -17,9 +18,14 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
+// GitHubRelease represents the structure of GitHub's release API response
+type GitHubRelease struct {
+	TagName string `json:"tag_name"`
+}
+
 const (
-	repoURL   = "https://github.com/go-acme/lego/archive/refs/heads/master.zip"
-	configDir = "internal/cert/config"
+	githubAPIURL = "https://api.github.com/repos/go-acme/lego/releases/latest"
+	configDir    = "internal/cert/config"
 )
 
 func main() {
@@ -32,13 +38,21 @@ func main() {
 	}
 	basePath := filepath.Join(filepath.Dir(file), "../../")
 
-	zipFile, err := downloadAndExtract()
+	// Get the latest release tag
+	tag, err := getLatestReleaseTag()
+	if err != nil {
+		logger.Errorf("Error getting latest release tag: %v\n", err)
+		os.Exit(1)
+	}
+	logger.Infof("Latest release tag: %s", tag)
+
+	zipFile, err := downloadAndExtract(tag)
 	if err != nil {
 		logger.Errorf("Error downloading and extracting: %v\n", err)
 		os.Exit(1)
 	}
 
-	if err := copyTomlFiles(zipFile, basePath); err != nil {
+	if err := copyTomlFiles(zipFile, basePath, tag); err != nil {
 		logger.Errorf("Error copying TOML files: %v\n", err)
 		os.Exit(1)
 	}
@@ -46,11 +60,48 @@ func main() {
 	logger.Info("Successfully updated provider config")
 }
 
-// downloadAndExtract downloads the lego repository and extracts it
-func downloadAndExtract() (string, error) {
+// getLatestReleaseTag fetches the latest release tag from GitHub API
+func getLatestReleaseTag() (string, error) {
+	logger.Info("Fetching latest release tag...")
+
+	req, err := http.NewRequest("GET", githubAPIURL, nil)
+	if err != nil {
+		return "", err
+	}
+
+	// Add User-Agent header to avoid GitHub API limitations
+	req.Header.Set("User-Agent", "NGINX-UI-LegoConfigure")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("bad status from GitHub API: %s", resp.Status)
+	}
+
+	var release GitHubRelease
+	if err := json.NewDecoder(resp.Body).Decode(&release); err != nil {
+		return "", err
+	}
+
+	if release.TagName == "" {
+		return "", fmt.Errorf("no tag name found in the latest release")
+	}
+
+	return release.TagName, nil
+}
+
+// downloadAndExtract downloads the lego repository for a specific tag and extracts it
+func downloadAndExtract(tag string) (string, error) {
+	downloadURL := fmt.Sprintf("https://github.com/go-acme/lego/archive/refs/tags/%s.zip", tag)
+
 	// Download the file
-	logger.Info("Downloading lego repository...")
-	resp, err := http.Get(repoURL)
+	logger.Infof("Downloading lego repository for tag %s...", tag)
+	resp, err := http.Get(downloadURL)
 	if err != nil {
 		return "", err
 	}
@@ -61,7 +112,7 @@ func downloadAndExtract() (string, error) {
 	}
 
 	// Create the file
-	out, err := os.CreateTemp("", "lego-master.zip")
+	out, err := os.CreateTemp("", "lego-"+tag+".zip")
 	if err != nil {
 		return "", err
 	}
@@ -76,7 +127,7 @@ func downloadAndExtract() (string, error) {
 	return out.Name(), nil
 }
 
-func copyTomlFiles(zipFile, basePath string) error {
+func copyTomlFiles(zipFile, basePath, tag string) error {
 	// Open the zip file
 	logger.Info("Extracting files...")
 	zipReader, err := zip.OpenReader(zipFile)
@@ -86,9 +137,10 @@ func copyTomlFiles(zipFile, basePath string) error {
 	defer zipReader.Close()
 
 	// Extract files
+	tag = strings.TrimPrefix(tag, "v")
 	zfs := zipfs.New(&zipReader.Reader)
-	afero.Walk(zfs, "./lego-master/providers", func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() {
+	afero.Walk(zfs, "./lego-"+tag+"/providers", func(path string, info os.FileInfo, err error) error {
+		if info == nil || info.IsDir() {
 			return nil
 		}
 		if !strings.HasSuffix(info.Name(), ".toml") {
