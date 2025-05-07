@@ -50,7 +50,7 @@ require (
 	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/sqlite v1.5.7
 	gorm.io/gen v0.3.27
-	gorm.io/gorm v1.26.0
+	gorm.io/gorm v1.26.1
 	gorm.io/plugin/dbresolver v1.6.0
 )
 
@@ -119,7 +119,7 @@ require (
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/ebitengine/purego v0.8.2 // indirect
-	github.com/exoscale/egoscale/v3 v3.1.16 // indirect
+	github.com/exoscale/egoscale/v3 v3.1.17 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
@@ -245,7 +245,7 @@ require (
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/technoweenie/multipartstreamer v1.0.1 // indirect
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.1158 // indirect
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.1159 // indirect
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/dnspod v1.0.1136 // indirect
 	github.com/timtadh/data-structures v0.6.2 // indirect
 	github.com/timtadh/lexmachine v0.2.3 // indirect
@@ -316,6 +316,4 @@ replace (
 	code.pfad.fr/risefront => github.com/nginxui/risefront v1.2.2
 	github.com/nikoksr/notify => github.com/nginxui/notify v0.0.0-20250331063720-85da6054fae8
 	github.com/tufanbarisyildirim/gonginx => github.com/0xJacky/gonginx v0.0.0-20250420001451-d120448e89a4
-	gorm.io/gorm => gorm.io/gorm v1.25.12
-	gorm.io/plugin/dbresolver => gorm.io/plugin/dbresolver v1.5.3
 )
