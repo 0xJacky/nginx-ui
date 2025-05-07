@@ -4,7 +4,7 @@
 
 # Nginx UI
 
-Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/), [Hintay](https://blog.kugeek.com/) and [Akino](https://github.com/akinoccc).
+もう一つのNginx Web UI [0xJacky](https://jackyu.cn/), [Hintay](https://blog.kugeek.com/), [Akino](https://github.com/akinoccc)によって開発されました。
 
 [![DeepWiki](https://img.shields.io/badge/DeepWiki-0xJacky%2Fnginx--ui-blue.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAAAAXNSR0IArs4c6QAAA05JREFUaEPtmUtyEzEQhtWTQyQLHNak2AB7ZnyXZMEjXMGeK/AIi+QuHrMnbChYY7MIh8g01fJoopFb0uhhEqqcbWTp06/uv1saEDv4O3n3dV60RfP947Mm9/SQc0ICFQgzfc4CYZoTPAswgSJCCUJUnAAoRHOAUOcATwbmVLWdGoH//PB8mnKqScAhsD0kYP3j/Yt5LPQe2KvcXmGvRHcDnpxfL2zOYJ1mFwrryWTz0advv1Ut4CJgf5uhDuDj5eUcAUoahrdY/56ebRWeraTjMt/00Sh3UDtjgHtQNHwcRGOC98BJEAEymycmYcWwOprTgcB6VZ5JK5TAJ+fXGLBm3FDAmn6oPPjR4rKCAoJCal2eAiQp2x0vxTPB3ALO2CRkwmDy5WohzBDwSEFKRwPbknEggCPB/imwrycgxX2NzoMCHhPkDwqYMr9tRcP5qNrMZHkVnOjRMWwLCcr8ohBVb1OMjxLwGCvjTikrsBOiA6fNyCrm8V1rP93iVPpwaE+gO0SsWmPiXB+jikdf6SizrT5qKasx5j8ABbHpFTx+vFXp9EnYQmLx02h1QTTrl6eDqxLnGjporxl3NL3agEvXdT0WmEost648sQOYAeJS9Q7bfUVoMGnjo4AZdUMQku50McDcMWcBPvr0SzbTAFDfvJqwLzgxwATnCgnp4wDl6Aa+Ax283gghmj+vj7feE2KBBRMW3FzOpLOADl0Isb5587h/U4gGvkt5v60Z1VLG8BhYjbzRwyQZemwAd6cCR5/XFWLYZRIMpX39AR0tjaGGiGzLVyhse5C9RKC6ai42ppWPKiBagOvaYk8lO7DajerabOZP46Lby5wKjw1HCRx7p9sVMOWGzb/vA1hwiWc6jm3MvQDTogQkiqIhJV0nBQBTU+3okKCFDy9WwferkHjtxib7t3xIUQtHxnIwtx4mpg26/HfwVNVDb4oI9RHmx5WGelRVlrtiw43zboCLaxv46AZeB3IlTkwouebTr1y2NjSpHz68WNFjHvupy3q8TFn3Hos2IAk4Ju5dCo8B3wP7VPr/FGaKiG+T+v+TQqIrOqMTL1VdWV1DdmcbO8KXBz6esmYWYKPwDL5b5FA1a0hwapHiom0r/cKaoqr+27/XcrS5UwSMbQAAAABJRU5ErkJggg==)](https://deepwiki.com/0xJacky/nginx-ui)
 
@@ -23,104 +23,104 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/), [Hintay](h
 [![Translated Status](https://weblate.nginxui.com/widget/nginx-ui/frontend/svg-badge.svg)](https://weblate.nginxui.com/engage/nginx-ui/)
 [![Featured｜HelloGitHub](https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=86f3a8f779934748a34fe6f1b5cd442f&claim_uid=MOFqadzAShCBeQj&theme=small)](https://hellogithub.com/repository/86f3a8f779934748a34fe6f1b5cd442f)
 
-## Documentation
-To check out docs, visit [nginxui.com](https://nginxui.com).
+## ドキュメント
+公式ドキュメントは [nginxui.com](https://nginxui.com) を参照してください。
 
-## Stargazers over time
+## スター推移
 
 [![Stargazers over time](https://starchart.cc/0xJacky/nginx-ui.svg)](https://starchart.cc/0xJacky/nginx-ui)
 
 English | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md) | [Tiếng Việt](README-vi_VN.md) | [日本語](README-ja_JP.md)
 
 <details>
-  <summary>Table of Contents</summary>
+  <summary>目次</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#about-the-project">プロジェクトについて</a>
       <ul>
-        <li><a href="#demo">Demo</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#internationalization">Internationalization</a></li>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#demo">デモ</a></li>
+        <li><a href="#features">機能</a></li>
+        <li><a href="#internationalization">多言語化</a></li>
+        <li><a href="#built-with">主要技術</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#getting-started">はじめに</a>
       <ul>
-        <li><a href="#before-use">Before Use</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#before-use">使用前の注意</a></li>
+        <li><a href="#installation">インストール</a></li>
         <li>
-          <a href="#usage">Usage</a>
+          <a href="#usage">使い方</a>
           <ul>
-            <li><a href="#from-executable">From Executable</a></li>
-            <li><a href="#with-systemd">With Systemd</a></li>
-            <li><a href="#with-docker">With Docker</a></li>
+            <li><a href="#from-executable">実行ファイルから</a></li>
+            <li><a href="#with-systemd">Systemdで</a></li>
+            <li><a href="#with-docker">Dockerで</a></li>
           </ul>
         </li>
       </ul>
     </li>
     <li>
-      <a href="#manual-build">Manual Build</a>
+      <a href="#manual-build">手動ビルド</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#build-app">Build Frontend</a></li>
-        <li><a href="#build-backend">Build Backend</a></li>
+        <li><a href="#prerequisites">前提条件</a></li>
+        <li><a href="#build-app">フロントエンドのビルド</a></li>
+        <li><a href="#build-backend">バックエンドのビルド</a></li>
       </ul>
     </li>
     <li>
-      <a href="#script-for-linux">Script for Linux</a>
+      <a href="#script-for-linux">Linux用スクリプト</a>
       <ul>
-        <li><a href="#basic-usage">Basic Usage</a></li>
-        <li><a href="#more-usage">More Usage</a></li>
+        <li><a href="#basic-usage">基本的な使い方</a></li>
+        <li><a href="#more-usage">その他の使い方</a></li>
       </ul>
     </li>
-    <li><a href="#example-of-nginx-reverse-proxy-configuration">Example of Nginx Reverse Proxy Configuration</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
+    <li><a href="#example-of-nginx-reverse-proxy-configuration">Nginx リバースプロキシ設定例</a></li>
+    <li><a href="#contributing">貢献方法</a></li>
+    <li><a href="#license">ライセンス</a></li>
   </ol>
 </details>
 
-## About The Project
+## プロジェクトについて
 
-![Dashboard](resources/screenshots/dashboard_en.png)
+![ダッシュボード](resources/screenshots/dashboard_en.png)
 
-### Demo
+### デモ
 URL：[https://demo.nginxui.com](https://demo.nginxui.com)
-- Username：admin
-- Password：admin
+- ユーザー名：admin
+- パスワード：admin
 
-### Features
+### 機能
 
-- Online statistics for server indicators such as CPU usage, memory usage, load average, and disk usage.
-- Automatic configuration backup after changes, with version comparison and restore capabilities
-- Cluster management supporting mirroring operations to multiple nodes, making multi-server environments easy to manage
-- Export encrypted Nginx / Nginx UI configurations for quick deployment and recovery to new environments
-- Enhanced online ChatGPT assistant supporting multiple models, including Deepseek-R1's chain-of-thought display to help you better understand and optimize configurations
-- MCP (Model Context Protocol) provides special interfaces for AI agents to interact with Nginx UI, enabling automated configuration management and service control.
-- One-click deployment and automatic renewal Let's Encrypt certificates.
-- Online editing websites configurations with our self-designed **NgxConfigEditor** which is a user-friendly block editor for nginx configurations or **Ace Code Editor** which supports **LLM Code Completion** and highlighting nginx configuration syntax.
-- Online view Nginx logs
-- Written in Go and Vue, distribution is a single executable binary.
-- Automatically test configuration file and reload nginx after saving configuration.
-- Web Terminal
-- Dark Mode
-- Responsive Web Design
+- サーバーの CPU 使用率、メモリ使用率、ロードアベレージ、ディスク使用率 とかの指標をオンラインで見られるんやで。  
+- 設定変更したら自動でバックアップ作ってくれて、バージョン比較＆復元もできるんやわ。  
+- クラスタ管理で複数ノードへのミラーリング操作もサポートしてるから、大規模環境でも楽勝や。  
+- 暗号化した Nginx / Nginx UI の設定をエクスポートして、新環境へのデプロイ＆復旧がサクッとできるで。  
+- オンライン ChatGPT アシスタント（Deepseek-R1 のチェインオブソート表示付き）で設定の最適化や理解をサポートしてくれるんや。  
+- MCP（Model Context Protocol）で AI エージェントが Nginx UI と連携できる特別インターフェースもあるから、自動化もバッチリや。  
+- ワンクリックで Let’s Encrypt 証明書の発行＆自動更新もしてくれるし。  
+- 自社開発の **NgxConfigEditor**（ブロックエディタ）か、**Ace Code Editor**（LLM コード補完＆シンタックスハイライト付き）で nginx 設定を直感的に編集でけるんや。  
+- Nginx ログのオンライン閲覧機能もあるで。  
+- Go と Vue で書かれとって、配布物は単一バイナリだからセットアップも簡単や。  
+- 保存時に設定テスト→nginx 再読み込みまで自動でやってくれるで。  
+- Web ターミナル  
+- ダークモード対応  
+- レスポンシブデザイン  
 
-### Internationalization
+### 多言語化
 
-We proudly offer official support for:
+公式でサポートしてんのは：  
+- 英語  
+- 簡体字中国語  
+- 繁體字中国語  
 
-- English
-- Simplified Chinese
-- Traditional Chinese
 
-As non-native English speakers, we strive for accuracy, but we know there's always room for improvement. If you spot any issues, we'd love your feedback!
+非ネイティブの英語話者やから完璧ちゃうかもしれへんけど、気づいたことあったらフィードバックしてや！  
 
-Thanks to our amazing community, additional languages are also available! Explore and contribute to translations on [Weblate](https://weblate.nginxui.com).
+コミュニティのおかげで他の言語もいろいろ揃っとるで。翻訳に参加したい人は [Weblate](https://weblate.nginxui.com) 見てみてな。
 
-### Built With
+### 主要技術
 
-- [The Go Programming Language](https://go.dev)
+- [Go言語](https://go.dev)
 - [Gin Web Framework](https://gin-gonic.com)
 - [GORM](http://gorm.io)
 - [Vue 3](https://v3.vuejs.org)
@@ -132,13 +132,14 @@ Thanks to our amazing community, additional languages are also available! Explor
 - [Gonginx](https://github.com/tufanbarisyildirim/gonginx)
 - [lego](https://github.com/go-acme/lego)
 
-## Getting Started
+## はじめに
 
-### Before Use
+### 使用前の注意
 
-The Nginx UI follows the Debian web server configuration file standard. Created site configuration files will be placed in the `sites-available` folder that under the Nginx configuration folder (auto-detected). The configuration files for an enabled site will create a soft link to the `sites-enabled` folder. You may need to adjust the way the configuration files are organised.
+Nginx UIはDebian系Webサーバ設定ファイルの標準に準拠します。
+作成されたサイト設定ファイルは、自動検出されたNginx設定フォルダ内の`sites-available`に配置されます。有効化されたサイトは`sites-enabled`にシンボリックリンクが作成されます。
 
-For non-Debian (and Ubuntu) systems, you may need to change the contents of the `nginx.conf` configuration file to the Debian style as shown below.
+非Debian系（Ubuntu以外）の場合は、以下のように`nginx.conf`をDebianスタイルに変更してください。
 
 ```nginx
 http {
@@ -148,11 +149,11 @@ http {
 }
 ```
 
-For more information: [debian/conf/nginx.conf](https://salsa.debian.org/nginx-team/nginx/-/blob/master/debian/conf/nginx.conf#L59-L60)
+詳細: [debian/conf/nginx.conf](https://salsa.debian.org/nginx-team/nginx/-/blob/master/debian/conf/nginx.conf#L59-L60)
 
-### Installation
+### インストール
 
-Nginx UI is available on the following platforms:
+Nginx UIは以下のプラットフォームで利用可能です:
 
 - macOS 11 Big Sur and later (amd64 / arm64)
 - Windows 10 and later (amd64 / arm64)
@@ -165,64 +166,67 @@ Nginx UI is available on the following platforms:
 
 You can visit [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) to download the latest distribution, or just use [installation scripts for Linux](#script-for-linux).
 
-### Usage
+最新リリースは[リリースページ](https://github.com/0xJacky/nginx-ui/releases/latest)からダウンロード、または[Linux用インストールスクリプト](#script-for-linux)を利用
 
-In the first runtime of Nginx UI, please visit `http://<your_server_ip>:<listen_port>`
-in your browser to complete the follow-up configurations.
 
-#### From Executable
-**Run Nginx UI in Terminal**
+### 使い方
+
+初回起動後、ブラウザで`http://<your_server_ip>:<listen_port>`にアクセスし、初期設定を完了してください。
+
+#### 実行ファイルから
+**ターミナルでNginx UIを動かす**
 
 ```shell
 nginx-ui -config app.ini
 ```
-Press `Control+C` in the terminal to exit Nginx UI.
+`Control+C`で終了します。
 
-**Run Nginx UI in Background**
+**バックグラウンドでNginx UIを動かす**
 
 ```shell
 nohup ./nginx-ui -config app.ini &
 ```
-Stop Nginx UI with the follow command.
+以下のコマンドでNginx UIを停止する。
 
 ```shell
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
 ```
 
-#### With Systemd
-If you are using the [installation script for Linux](#script-for-linux), the Nginx UI will be installed as `nginx-ui` service in systemd. Please use the `systemctl` command to control it.
+#### Systemdで
+[Linuxインストールスクリプト](#script-for-linux)を使うと、`nginx-ui`というsystemdサービスが作成されます。以下コマンドで操作可能:
 
-**Start Nginx UI**
+**起動**
 
 ```shell
 systemctl start nginx-ui
 ```
-**Stop Nginx UI**
+**停止**
 
 ```shell
 systemctl stop nginx-ui
 ```
-**Restart Nginx UI**
+**再起動**
 
 ```shell
 systemctl restart nginx-ui
 ```
 
-#### With Docker
+#### Dockerで
 Our docker image [uozi/nginx-ui:latest](https://hub.docker.com/r/uozi/nginx-ui) is based on the latest nginx image and
 can be used to replace the Nginx on the host. By publishing the container's port 80 and 443 to the host,
 you can easily make the switch.
+公式イメージ [uozi/nginx-ui:latest](https://hub.docker.com/r/uozi/nginx-ui) はベースに公式 nginx イメージを利用しています。ホストの Nginx と置き換える形で利用可能です。
 
-##### Note
-1. When using this container for the first time, ensure that the volume mapped to /etc/nginx is empty.
-2. If you want to host static files, you can map directories to container.
+##### 注意
+1. 初回利用時は `/etc/nginx` にマッピングするボリュームが空であることを確認してください。
+2. 静的ファイルを配信する場合は、適切なディレクトリをマッピングしてください。
 
 <details>
-<summary><b>Deploy with Docker</b></summary>
+<summary><b>Dockerでデプロイ</b></summary>
 
-1. [Install Docker.](https://docs.docker.com/install/)
+1. [Dockerをインストール](https://docs.docker.com/install/)
 
-2. Then deploy nginx-ui like this:
+2. 以下のように実行:
 
 ```bash
 docker run -dit \
@@ -236,15 +240,15 @@ docker run -dit \
   uozi/nginx-ui:latest
 ```
 
-3. When your docker container is running, Log in to nginx-ui panel with `http://<your_server_ip>:8080/install`.
+3. パネルには `[http://<your-ip>:8080/install](http://<your_server_ip>:8080/install)` でアクセスします。
 </details>
 
 <details>
-<summary><b>Deploy with Docker-Compose</b></summary>
+<summary><b>Docker-Composeでデプロイ</b></summary>
 
-1. [Install Docker-Compose.](https://docs.docker.com/compose/install/)
+1. [Docker-Composeをインストール](https://docs.docker.com/compose/install/)
 
-2. Create a docker-compose.yml file like this:
+2. 以下内容の`docker-compose.yml`を作成:
 
 ```yml
 services:
@@ -266,20 +270,20 @@ services:
         image: 'uozi/nginx-ui:latest'
 ```
 
-3. Then creat your container by:
+3. コンテナの起動:
 ```bash
 docker compose up -d
 ```
 
-4. When your docker container is running, Log in to nginx-ui panel with `http://<your_server_ip>:8080/install`.
+4. パネルには `[http://<your-ip>:8080/install](http://<your_server_ip>:8080/install)` でアクセスします。
 
 </details>
 
-## Manual Build
+## 手動ビルド
 
-On platforms that do not have an official build version, they can be built manually.
+公式ビルドがないプラットフォーム向けに、以下の手順でビルドできます。
 
-### Prerequisites
+### 前提条件
 
 - Make
 
@@ -291,50 +295,49 @@ On platforms that do not have an official build version, they can be built manua
   npx browserslist@latest --update-db
   ```
 
-### Build Frontend
+### フロントエンドのビルド
 
-Please execute the following command in `app` directory.
+`app` ディレクトリで以下を実行：
 
 ```shell
 pnpm install
 pnpm build
 ```
 
-### Build Backend
+### バックエンドのビルド
 
-Please build the app first, and then execute the following command in the project root directory.
+フロントエンドビルド後、プロジェクトルートで：
 
 ```shell
 go generate
 go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o nginx-ui -v main.go
 ```
 
-## Script for Linux
+## Linux用スクリプト
 
-### Basic Usage
+### 基本的な使い方
 
-**Install and Upgrade**
+**インストール & アップグレード**
 
 ```shell
 bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
 ```
-The default listening port is `9000`, and the default HTTP Challenge port is `9180`.
-If there is a port conflict, please modify `/usr/local/etc/nginx-ui/app.ini` manually,
-then use `systemctl restart nginx-ui` to reload the Nginx UI service.
+デフォルトのリスニングポートは `9000`、HTTP チャレンジポートは `9180` です。
+競合する場合は `/usr/local/etc/nginx-ui/app.ini` を編集し、`systemctl restart nginx-ui` を実行してください。
 
-**Remove Nginx UI, except configuration and database files**
+**設定・DB を残してアンインストール**
 
 ```shell
 bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
 ```
 
-### More Usage
+### その他の使い方
 
 ````shell
 bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
 ````
 
-## Example of Nginx Reverse Proxy Configuration
+## Nginx リバースプロキシ設定例
 
 ```nginx
 server {
@@ -373,18 +376,19 @@ server {
 }
 ```
 
-## Contributing
+## 貢献方法
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you  make are **greatly appreciated**.
+オープンソースコミュニティへの貢献は**大歓迎**です。
+改善提案がある場合はリポジトリをフォークし、プルリクエストを作成してください。
+Issueに「enhancement」タグをつけて提案することもできます。
+スターもよろしくお願いします！
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
+1. リポジトリをフォーク
+2. フィーチャーブランチ作成 (`git checkout -b feature/AmazingFeature`)
+3. 変更をコミット (`git commit -m 'Add some AmazingFeature'`)
+4. ブランチをプッシュ (`git push origin feature/AmazingFeature`)
+5. プルリクエストを作成
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## ライセンス
 
-## License
-
-This project is provided under a GNU Affero General Public License v3.0 license that can be found in the [LICENSE](LICENSE) file. By using, distributing, or contributing to this project, you agree to the terms and conditions of this license.
+本プロジェクトは GNU Affero General Public License v3.0 に基づき配布されています。ライセンスの詳細は [LICENSE](LICENSE) ファイルをご覧ください。
