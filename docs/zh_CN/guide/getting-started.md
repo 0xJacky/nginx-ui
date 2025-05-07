@@ -82,7 +82,7 @@ docker run -dit \
 ### 配置
 
 ```shell
-echo '[server]\nHttpPort = 9000' > app.ini
+echo '[server]\nPort = 9000' > app.ini
 ```
 
 ::: tip 提示
