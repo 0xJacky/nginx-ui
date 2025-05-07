@@ -16,44 +16,44 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.5\n"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:28
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 "[Nginx UI] Пользователь ACME: %{name}, Email: %{email}, Каталог CA: %{caDir}"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:16
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr ""
 "[Nginx UI] Резервное копирование текущего сертификата для последующего отзыва"
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:41
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "[Nginx UI] Сертификат успешно обновлен"
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:31
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] Сертификат успешно отозван"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:42
 msgid ""
 "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 "[Nginx UI] Сертификат использовался для сервера, перезагрузка TLS-"
 "сертификата сервера"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:47
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] Создание клиента для облегчения связи с сервером CA"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:30
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "[Nginx UI] Переменные окружения очищены"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:34
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] Завершено"
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:4
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "[Nginx UI] Сертификат успешно выдан"
 
@@ -61,39 +61,39 @@ msgstr "[Nginx UI] Сертификат успешно выдан"
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] Получение сертификата"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:8
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] Подготовка к отзыву сертификата"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:39
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] Подготовка конфигураций lego"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] Перезагрузка nginx"
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:17
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] Отзыв завершен"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:9
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] Отзыв сертификата"
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:13
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] Отзыв старого сертификата"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:6
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] Настройка провайдера проверки DNS01"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:48
 msgid "[Nginx UI] Setting environment variables"
 msgstr "[Nginx UI] Установка переменных окружения"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:29
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] Настройка провайдера HTTP01-проверки"
 
@@ -101,7 +101,7 @@ msgstr "[Nginx UI] Настройка провайдера HTTP01-проверк
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] Запись закрытого ключа сертификата на диск"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:24
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Запись сертификата на диск"
 
@@ -619,7 +619,7 @@ msgstr "Сертификат истёк"
 msgid "Certificate Expiring Soon"
 msgstr "Сертификат скоро истекает"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:5
 msgid "Certificate not found: %{error}"
 msgstr "Сертификат не найден: %{error}"
 
@@ -644,7 +644,7 @@ msgstr "Интервал обновления сертификата"
 msgid "Certificate renewed successfully"
 msgstr "Сертификат успешно продлен"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:23
 msgid "Certificate revoked successfully"
 msgstr "Сертификат успешно отозван"
 
@@ -702,7 +702,7 @@ msgstr "Проверить"
 msgid "Check again"
 msgstr "Проверить повторно"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:33
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
 "Docker Image, please make sure the docker socket is mounted like this: `-v /"
@@ -720,39 +720,39 @@ msgstr ""
 "Проверьте, включен ли HTTPS. Использование HTTP вне localhost небезопасно и "
 "препятствует использованию Passkeys и функций буфера обмена"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:21
 msgid "Check if the nginx access log path exists"
 msgstr "Проверить, существует ли путь к журналу доступа nginx"
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:20
 msgid "Check if the nginx configuration directory exists"
 msgstr "Проверить, существует ли каталог конфигурации nginx"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:37
 msgid "Check if the nginx configuration entry file exists"
 msgstr "Проверить, существует ли файл конфигурации nginx"
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:51
 msgid "Check if the nginx error log path exists"
 msgstr "Проверить, существует ли путь к журналу ошибок nginx"
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:14
 msgid "Check if the nginx PID path exists"
 msgstr "Проверить, существует ли путь к PID Nginx"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:27
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "Проверить, включает ли файл nginx.conf директорию conf.d"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:26
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "Проверить, включает ли nginx.conf каталог sites-enabled"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:19
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "Проверить, включает ли nginx.conf каталог streams-enabled"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:50
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory"
@@ -760,7 +760,7 @@ msgstr ""
 "Проверьте, находятся ли каталоги sites-available и sites-enabled в каталоге "
 "конфигурации nginx"
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:35
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
 "nginx configuration directory"
@@ -1339,7 +1339,7 @@ msgstr "Хотите удалить этот сервер?"
 msgid "Docker client not initialized"
 msgstr "Клиент Docker не инициализирован"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:22
 msgid "Docker socket exists"
 msgstr "Сокет Docker существует"
 
@@ -1742,7 +1742,7 @@ msgstr "Не удалось расшифровать каталог Nginx UI: {0
 msgid "Failed to delete certificate"
 msgstr "Не удалось удалить сертификат"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:38
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Не удалось удалить сертификат из базы данных: %{error}"
 
@@ -1886,7 +1886,7 @@ msgstr "Не удалось восстановить файлы пользова
 msgid "Failed to revoke certificate"
 msgstr "Не удалось отозвать сертификат"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:12
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Не удалось отозвать сертификат: %{error}"
 
@@ -2008,6 +2008,10 @@ msgstr "Получение сертификата, пожалуйста, под�
 #: src/views/preference/tabs/HTTPSettings.vue:11
 msgid "Github Proxy"
 msgstr "Прокси Github"
+
+#: src/views/preference/components/ExternalNotify/gotify.ts:5
+msgid "Gotify"
+msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:67
 msgid "GZIP Compression"
@@ -2400,7 +2404,7 @@ msgstr "Локации"
 msgid "Log"
 msgstr "Журнал"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:46
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
@@ -2692,7 +2696,7 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Путь для Nginx Access Log"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:45
 msgid "Nginx access log path exists"
 msgstr "Путь к журналу доступа Nginx существует"
 
@@ -2720,11 +2724,11 @@ msgstr "Конфигурация Nginx не включает stream-enabled"
 msgid "Nginx config directory is not set"
 msgstr "Каталог конфигурации Nginx не задан"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:43
 msgid "Nginx configuration directory exists"
 msgstr "Каталог конфигурации Nginx существует"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:11
 msgid "Nginx configuration entry file exists"
 msgstr "Файл конфигурации Nginx существует"
 
@@ -2762,7 +2766,7 @@ msgstr "Уровень использования CPU Nginx"
 msgid "Nginx Error Log Path"
 msgstr "Путь для Nginx Error Log"
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:15
 msgid "Nginx error log path exists"
 msgstr "Путь к журналу ошибок Nginx существует"
 
@@ -2799,7 +2803,7 @@ msgstr "Использование памяти Nginx"
 msgid "Nginx PID Path"
 msgstr "Путь к PID Nginx"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:44
 msgid "Nginx PID path exists"
 msgstr "Путь PID Nginx существует"
 
@@ -2861,15 +2865,15 @@ msgstr ""
 "Конфигурация Nginx UI была восстановлена и автоматически перезапустится "
 "через несколько секунд."
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:32
 msgid "Nginx.conf includes conf.d directory"
 msgstr "Nginx.conf включает каталог conf.d"
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:36
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "Nginx.conf включает каталог sites-enabled"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:18
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf включает каталог streams-enabled"
 
@@ -3663,7 +3667,7 @@ msgstr "Статистика запросов"
 msgid "Request timeout"
 msgstr "Время запроса истекло"
 
-#: src/language/constants.ts:33
+#: src/constants/errors/validate.ts:2 src/language/constants.ts:33
 msgid "Requested with wrong parameters"
 msgstr "Запрос с неправильными параметрами"
 
@@ -4021,7 +4025,7 @@ msgstr "Журналы сайта"
 msgid "Site not found"
 msgstr "Сайт не найден"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:25
 msgid "Sites directory exists"
 msgstr "Каталог сайтов существует"
 
@@ -4135,7 +4139,7 @@ msgstr "Поток включен"
 msgid "Stream not found"
 msgstr "Поток не найден"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:10
 msgid "Streams directory exists"
 msgstr "Каталог потоков существует"
 
