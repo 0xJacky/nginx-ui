@@ -272,6 +272,11 @@ decompression() {
 
 install_bin() {
     NAME="nginx-ui"
+    
+    if [[ ! -d "/usr/local/bin" ]]; then
+        mkdir -p "/usr/local/bin"
+    fi
+    
     install -m 755 "${TMP_DIRECTORY}/$NAME" "/usr/local/bin/$NAME"
 }
 
