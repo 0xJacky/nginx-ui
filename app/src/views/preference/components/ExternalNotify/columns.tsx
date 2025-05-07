@@ -2,6 +2,7 @@ import type { Column } from '@/components/StdDesign/types'
 import { datetime, mask } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { select } from '@/components/StdDesign/StdDataEntry'
 import gettext from '@/gettext'
+import ExternalNotifyEditor from './ExternalNotifyEditor.vue'
 import configMap from './index'
 
 const languageAvailable = gettext.available
@@ -35,6 +36,18 @@ const columns: Column[] = [
         required: true,
       },
     },
+  },
+  {
+    dataIndex: 'config',
+    edit: {
+      type: (_, record) => {
+        if (!record.config) {
+          record.config = {}
+        }
+        return <ExternalNotifyEditor v-model={record.config} type={record.type} />
+      },
+    },
+    hiddenInTable: true,
   },
   {
     dataIndex: 'created_at',
