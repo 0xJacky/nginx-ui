@@ -90,7 +90,7 @@ We recommend configuring it as a daemon or using the [installation script](./ins
 ### Config
 
 ```shell
-echo '[server]\nHttpPort = 9000' > app.ini
+echo '[server]\nPort = 9000' > app.ini
 ```
 
 ::: tip
