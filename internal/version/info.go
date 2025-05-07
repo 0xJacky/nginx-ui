@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"runtime"
 
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/pkg/errors"
 )
 
@@ -33,7 +34,7 @@ func GetRuntimeInfo() (r RuntimeInfo, err error) {
 		Arch:       runtime.GOARCH,
 		ExPath:     realPath,
 		CurVersion: GetVersionInfo(),
-		InDocker:   os.Getenv("NGINX_UI_IN_DOCKER") == "true",
+		InDocker:   helper.InNginxUIOfficialDocker(),
 	}
 
 	return
