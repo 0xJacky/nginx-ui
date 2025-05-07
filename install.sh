@@ -6,6 +6,13 @@ DataPath=${DATA_PATH:-/usr/local/etc/nginx-ui}
 
 # Service Path
 ServicePath="/etc/systemd/system/nginx-ui.service"
+# Init.d Path
+InitPath="/etc/init.d/nginx-ui"
+# OpenRC Path
+OpenRCPath="/etc/init.d/nginx-ui"
+
+# Service Type (systemd, openrc, initd)
+SERVICE_TYPE=''
 
 # Latest release version
 RELEASE_LATEST=''
@@ -167,13 +174,14 @@ identify_the_operating_system_and_architecture() {
         # Do not combine this judgment condition with the following judgment condition.
         ## Be aware of Linux distribution like Gentoo, which kernel supports switch between Systemd and OpenRC.
         if [[ -f /.dockerenv ]] || grep -q 'docker\|lxc' /proc/1/cgroup && [[ "$(type -P systemctl)" ]]; then
-            true
+            SERVICE_TYPE='systemd'
         elif [[ -d /run/systemd/system ]] || grep -q systemd <(ls -l /sbin/init); then
-            true
+            SERVICE_TYPE='systemd'
+        elif [[ "$(type -P rc-update)" ]]; then
+            SERVICE_TYPE='openrc'
         else
-            echo -e "${FontRed}error: Only Linux distributions using systemd are supported by this script."
-            echo -e "${FontRed}error: Please download the pre-built binary from the release page or build it manually.${FontSuffix}"
-            exit 1
+            SERVICE_TYPE='initd'
+            echo -e "${FontYellow}warning: No systemd or OpenRC detected, falling back to init.d.${FontSuffix}"
         fi
         if [[ "$(type -P apt)" ]]; then
             PACKAGE_MANAGEMENT_INSTALL='apt -y --no-install-recommends install'
@@ -190,6 +198,12 @@ identify_the_operating_system_and_architecture() {
         elif [[ "$(type -P pacman)" ]]; then
             PACKAGE_MANAGEMENT_INSTALL='pacman -Syu --noconfirm'
             PACKAGE_MANAGEMENT_REMOVE='pacman -Rsn'
+        elif [[ "$(type -P opkg)" ]]; then
+            PACKAGE_MANAGEMENT_INSTALL='opkg install'
+            PACKAGE_MANAGEMENT_REMOVE='opkg remove'
+        elif [[ "$(type -P apk)" ]]; then
+            PACKAGE_MANAGEMENT_INSTALL='apk add --no-cache'
+            PACKAGE_MANAGEMENT_REMOVE='apk del'
         else
             echo -e "${FontRed}error: This script does not support the package manager in this operating system.${FontSuffix}"
             exit 1
@@ -262,25 +276,25 @@ install_bin() {
 }
 
 install_service() {
+    if [[ "$SERVICE_TYPE" == "systemd" ]]; then
+        install_systemd_service
+    elif [[ "$SERVICE_TYPE" == "openrc" ]]; then
+        install_openrc_service
+    else
+        install_initd_service
+    fi
+}
+
+install_systemd_service() {
     mkdir -p '/etc/systemd/system/nginx-ui.service.d'
-cat > "$ServicePath" << EOF
-[Unit]
-Description=Yet another WebUI for Nginx
-Documentation=https://github.com/0xJacky/nginx-ui
-After=network.target
+    local service_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/resources/services/nginx-ui.service"
 
-[Service]
-Type=simple
-ExecStart=/usr/local/bin/nginx-ui -config /usr/local/etc/nginx-ui/app.ini
-RuntimeDirectory=nginx-ui
-WorkingDirectory=/var/run/nginx-ui
-Restart=on-failure
-TimeoutStopSec=5
-KillMode=mixed
+    echo "Downloading Nginx UI service file: $service_download_link"
+    if ! curl -x "${PROXY}" -R -H 'Cache-Control: no-cache' -L -o "$ServicePath" "$service_download_link"; then
+        echo -e "${FontRed}error: Download service file failed! Please check your network or try again.${FontSuffix}"
+        return 1
+    fi
 
-[Install]
-WantedBy=multi-user.target
-EOF
     chmod 644 "$ServicePath"
     echo "info: Systemd service files have been installed successfully!"
     echo -e "${FontGreen}note: The following are the actual parameters for the nginx-ui service startup."
@@ -288,6 +302,51 @@ EOF
     systemd_cat_config "$ServicePath"
     systemctl daemon-reload
     SYSTEMD='1'
+}
+
+install_openrc_service() {
+    local openrc_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/resources/services/nginx-ui.rc"
+
+    echo "Downloading Nginx UI OpenRC file: $openrc_download_link"
+    if ! curl -x "${PROXY}" -R -H 'Cache-Control: no-cache' -L -o "$OpenRCPath" "$openrc_download_link"; then
+        echo -e "${FontRed}error: Download OpenRC file failed! Please check your network or try again.${FontSuffix}"
+        return 1
+    fi
+
+    chmod 755 "$OpenRCPath"
+    echo "info: OpenRC service file has been installed successfully!"
+    echo -e "${FontGreen}note: The OpenRC service is installed to '$OpenRCPath'.${FontSuffix}"
+    cat_file_with_name "$OpenRCPath"
+
+    # Add to default runlevel
+    rc-update add nginx-ui default
+
+    OPENRC='1'
+}
+
+install_initd_service() {
+    # Download init.d script
+    local initd_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/resources/services/nginx-ui.init"
+
+    echo "Downloading Nginx UI init.d file: $initd_download_link"
+    if ! curl -x "${PROXY}" -R -H 'Cache-Control: no-cache' -L -o "$InitPath" "$initd_download_link"; then
+        echo -e "${FontRed}error: Download init.d file failed! Please check your network or try again.${FontSuffix}"
+        exit 1
+    fi
+
+    chmod 755 "$InitPath"
+    echo "info: Init.d service file has been installed successfully!"
+    echo -e "${FontGreen}note: The init.d service is installed to '$InitPath'.${FontSuffix}"
+    cat_file_with_name "$InitPath"
+
+    # Add service to startup based on distro
+    if [ -x /sbin/chkconfig ]; then
+        /sbin/chkconfig --add nginx-ui
+    elif [ -x /usr/sbin/update-rc.d ]; then
+        /usr/sbin/update-rc.d nginx-ui defaults
+    fi
+
+    INITD='1'
 }
 
 install_config() {
@@ -317,10 +376,29 @@ EOF
 }
 
 start_nginx_ui() {
-    if [[ -f "$ServicePath" ]]; then
+    if [[ "$SERVICE_TYPE" == "systemd" ]]; then
         systemctl start nginx-ui
         sleep 1s
         if systemctl -q is-active nginx-ui; then
+            echo 'info: Start the Nginx UI service.'
+        else
+            echo -e "${FontRed}error: Failed to start the Nginx UI service.${FontSuffix}"
+            exit 1
+        fi
+    elif [[ "$SERVICE_TYPE" == "openrc" ]]; then
+        rc-service nginx-ui start
+        sleep 1s
+        if rc-service nginx-ui status | grep -q "started"; then
+            echo 'info: Start the Nginx UI service.'
+        else
+            echo -e "${FontRed}error: Failed to start the Nginx UI service.${FontSuffix}"
+            exit 1
+        fi
+    else
+        # init.d
+        $InitPath start
+        sleep 1s
+        if $InitPath status >/dev/null 2>&1; then
             echo 'info: Start the Nginx UI service.'
         else
             echo -e "${FontRed}error: Failed to start the Nginx UI service.${FontSuffix}"
@@ -330,15 +408,28 @@ start_nginx_ui() {
 }
 
 stop_nginx_ui() {
-    if ! systemctl stop nginx-ui; then
-        echo -e "${FontRed}error: Failed to stop the Nginx UI service.${FontSuffix}"
-        exit 1
+    if [[ "$SERVICE_TYPE" == "systemd" ]]; then
+        if ! systemctl stop nginx-ui; then
+            echo -e "${FontRed}error: Failed to stop the Nginx UI service.${FontSuffix}"
+            exit 1
+        fi
+    elif [[ "$SERVICE_TYPE" == "openrc" ]]; then
+        if ! rc-service nginx-ui stop; then
+            echo -e "${FontRed}error: Failed to stop the Nginx UI service.${FontSuffix}"
+            exit 1
+        fi
+    else
+        # init.d
+        if ! $InitPath stop; then
+            echo -e "${FontRed}error: Failed to stop the Nginx UI service.${FontSuffix}"
+            exit 1
+        fi
     fi
     echo "info: Nginx UI service Stopped."
 }
 
 remove_nginx_ui() {
-  if systemctl list-unit-files | grep -qw 'nginx-ui'; then
+  if [[ "$SERVICE_TYPE" == "systemd" && $(systemctl list-unit-files | grep -qw 'nginx-ui') ]]; then
     if [[ -n "$(pidof nginx-ui)" ]]; then
       stop_nginx_ui
     fi
@@ -356,6 +447,66 @@ remove_nginx_ui() {
         echo "removed: ${delete_files[$i]}"
       done
       systemctl daemon-reload
+      echo "You may need to execute a command to remove dependent software: $PACKAGE_MANAGEMENT_REMOVE curl"
+      echo 'info: Nginx UI has been removed.'
+      if [[ "$PURGE" -eq '0' ]]; then
+        echo 'info: If necessary, manually delete the configuration and log files.'
+        echo "info: e.g., $DataPath ..."
+      fi
+      exit 0
+    fi
+  elif [[ "$SERVICE_TYPE" == "openrc" && -f "$OpenRCPath" ]]; then
+    if rc-service nginx-ui status | grep -q "started"; then
+      stop_nginx_ui
+    fi
+    local delete_files=('/usr/local/bin/nginx-ui' "$OpenRCPath")
+    if [[ "$PURGE" -eq '1' ]]; then
+        [[ -d "$DataPath" ]] && delete_files+=("$DataPath")
+    fi
+
+    # Remove from runlevels
+    rc-update del nginx-ui default
+
+    if ! ("rm" -r "${delete_files[@]}"); then
+      echo -e "${FontRed}error: Failed to remove Nginx UI.${FontSuffix}"
+      exit 1
+    else
+      for i in "${!delete_files[@]}"
+      do
+        echo "removed: ${delete_files[$i]}"
+      done
+      echo "You may need to execute a command to remove dependent software: $PACKAGE_MANAGEMENT_REMOVE curl"
+      echo 'info: Nginx UI has been removed.'
+      if [[ "$PURGE" -eq '0' ]]; then
+        echo 'info: If necessary, manually delete the configuration and log files.'
+        echo "info: e.g., $DataPath ..."
+      fi
+      exit 0
+    fi
+  elif [[ "$SERVICE_TYPE" == "initd" && -f "$InitPath" ]]; then
+    if [[ -n "$(pidof nginx-ui)" ]]; then
+      stop_nginx_ui
+    fi
+    local delete_files=('/usr/local/bin/nginx-ui' "$InitPath")
+    if [[ "$PURGE" -eq '1' ]]; then
+        [[ -d "$DataPath" ]] && delete_files+=("$DataPath")
+    fi
+
+    # Remove from startup based on distro
+    if [ -x /sbin/chkconfig ]; then
+        /sbin/chkconfig --del nginx-ui
+    elif [ -x /usr/sbin/update-rc.d ]; then
+        /usr/sbin/update-rc.d -f nginx-ui remove
+    fi
+
+    if ! ("rm" -r "${delete_files[@]}"); then
+      echo -e "${FontRed}error: Failed to remove Nginx UI.${FontSuffix}"
+      exit 1
+    else
+      for i in "${!delete_files[@]}"
+      do
+        echo "removed: ${delete_files[$i]}"
+      done
       echo "You may need to execute a command to remove dependent software: $PACKAGE_MANAGEMENT_REMOVE curl"
       echo 'info: Nginx UI has been removed.'
       if [[ "$PURGE" -eq '0' ]]; then
@@ -421,18 +572,34 @@ main() {
     fi
 
     # Determine if nginx-ui is running
-    if systemctl list-unit-files | grep -qw 'nginx-ui'; then
+    NGINX_UI_RUNNING='0'
+    if [[ "$SERVICE_TYPE" == "systemd" && $(systemctl list-unit-files | grep -qw 'nginx-ui') ]]; then
+        if [[ -n "$(pidof nginx-ui)" ]]; then
+            stop_nginx_ui
+            NGINX_UI_RUNNING='1'
+        fi
+    elif [[ "$SERVICE_TYPE" == "openrc" && -f "$OpenRCPath" ]]; then
+        if rc-service nginx-ui status | grep -q "started"; then
+            stop_nginx_ui
+            NGINX_UI_RUNNING='1'
+        fi
+    elif [[ "$SERVICE_TYPE" == "initd" && -f "$InitPath" ]]; then
         if [[ -n "$(pidof nginx-ui)" ]]; then
             stop_nginx_ui
             NGINX_UI_RUNNING='1'
         fi
     fi
+
     install_bin
     echo 'installed: /usr/local/bin/nginx-ui'
 
     install_service
-    if [[ "$SYSTEMD" -eq '1' ]]; then
+    if [[ "$SERVICE_TYPE" == "systemd" && "$SYSTEMD" -eq '1' ]]; then
         echo "installed: ${ServicePath}"
+    elif [[ "$SERVICE_TYPE" == "openrc" && "$OPENRC" -eq '1' ]]; then
+        echo "installed: ${OpenRCPath}"
+    elif [[ "$SERVICE_TYPE" == "initd" && "$INITD" -eq '1' ]]; then
+        echo "installed: ${InitPath}"
     fi
 
     "rm" -r "$TMP_DIRECTORY"
@@ -444,14 +611,35 @@ main() {
     if [[ "$NGINX_UI_RUNNING" -eq '1' ]]; then
         start_nginx_ui
     else
-        systemctl start nginx-ui
-        systemctl enable nginx-ui
-        sleep 1s
+        if [[ "$SERVICE_TYPE" == "systemd" ]]; then
+            systemctl start nginx-ui
+            systemctl enable nginx-ui
+            sleep 1s
 
-        if systemctl -q is-active nginx-ui; then
-            echo "info: Start and enable the Nginx UI service."
-        else
-            echo -e "${FontYellow}warning: Failed to enable and start the Nginx UI service.${FontSuffix}"
+            if systemctl -q is-active nginx-ui; then
+                echo "info: Start and enable the Nginx UI service."
+            else
+                echo -e "${FontYellow}warning: Failed to enable and start the Nginx UI service.${FontSuffix}"
+            fi
+        elif [[ "$SERVICE_TYPE" == "openrc" ]]; then
+            rc-service nginx-ui start
+            rc-update add nginx-ui default
+            sleep 1s
+
+            if rc-service nginx-ui status | grep -q "started"; then
+                echo "info: Started and added the Nginx UI service to default runlevel."
+            else
+                echo -e "${FontYellow}warning: Failed to start the Nginx UI service.${FontSuffix}"
+            fi
+        elif [[ "$SERVICE_TYPE" == "initd" ]]; then
+            $InitPath start
+            sleep 1s
+
+            if $InitPath status >/dev/null 2>&1; then
+                echo "info: Started the Nginx UI service."
+            else
+                echo -e "${FontYellow}warning: Failed to start the Nginx UI service.${FontSuffix}"
+            fi
         fi
     fi
 }
