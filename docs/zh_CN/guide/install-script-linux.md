@@ -85,7 +85,11 @@ bash -c "$(curl -L -s https://cloud.nginxui.com/https://raw.githubusercontent.co
 
 ## 控制服务
 
-通过此脚本，Nginx UI 将作为 `nginx-ui` 服务安装在 systemd 中。请使用以下 `systemctl` 命令对其进行控制。
+通过此脚本，Nginx UI 将作为服务安装。安装脚本会检测您系统的服务管理器并设置相应的服务控制机制。
+
+### Systemd
+
+如果您的系统使用 systemd，请使用以下 `systemctl` 命令对其进行控制：
 
 ::: code-group
 
@@ -103,6 +107,62 @@ systemctl restart nginx-ui
 
 ```shell [显示状态]
 systemctl status nginx-ui
+```
+
+```shell [开机启动]
+systemctl enable nginx-ui
+```
+
+:::
+
+### OpenRC
+
+如果您的系统使用 OpenRC，请使用以下 `rc-service` 命令对其进行控制：
+
+::: code-group
+
+```shell [启动]
+rc-service nginx-ui start
+```
+
+```shell [停止]
+rc-service nginx-ui stop
+```
+
+```shell [重启]
+rc-service nginx-ui restart
+```
+
+```shell [显示状态]
+rc-service nginx-ui status
+```
+
+```shell [开机启动]
+rc-update add nginx-ui default
+```
+
+:::
+
+### Init.d
+
+如果您的系统使用传统的 init.d 脚本，请使用以下命令对其进行控制：
+
+::: code-group
+
+```shell [启动]
+/etc/init.d/nginx-ui start
+```
+
+```shell [停止]
+/etc/init.d/nginx-ui stop
+```
+
+```shell [重启]
+/etc/init.d/nginx-ui restart
+```
+
+```shell [显示状态]
+/etc/init.d/nginx-ui status
 ```
 
 :::

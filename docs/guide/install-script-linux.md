@@ -90,8 +90,11 @@ bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/insta
 
 ## Control Service
 
-By this script, the Nginx UI will be installed as `nginx-ui` service in systemd.
-Please use the follow `systemctl` command to control it.
+By this script, the Nginx UI will be installed as a service. The installation script detects your system's service manager and sets up the appropriate service control mechanism.
+
+### Systemd
+
+If your system uses systemd, please use the following `systemctl` commands to control it:
 
 ::: code-group
 
@@ -109,6 +112,62 @@ systemctl restart nginx-ui
 
 ```shell [Show Status]
 systemctl status nginx-ui
+```
+
+```shell [Enable at Boot]
+systemctl enable nginx-ui
+```
+
+:::
+
+### OpenRC
+
+If your system uses OpenRC, please use the following `rc-service` commands to control it:
+
+::: code-group
+
+```shell [Start]
+rc-service nginx-ui start
+```
+
+```shell [Stop]
+rc-service nginx-ui stop
+```
+
+```shell [Restart]
+rc-service nginx-ui restart
+```
+
+```shell [Show Status]
+rc-service nginx-ui status
+```
+
+```shell [Enable at Boot]
+rc-update add nginx-ui default
+```
+
+:::
+
+### Init.d
+
+If your system uses traditional init.d scripts, please use the following commands to control it:
+
+::: code-group
+
+```shell [Start]
+/etc/init.d/nginx-ui start
+```
+
+```shell [Stop]
+/etc/init.d/nginx-ui stop
+```
+
+```shell [Restart]
+/etc/init.d/nginx-ui restart
+```
+
+```shell [Show Status]
+/etc/init.d/nginx-ui status
 ```
 
 :::

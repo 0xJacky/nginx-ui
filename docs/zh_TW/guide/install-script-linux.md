@@ -86,7 +86,11 @@ bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/insta
 
 ## 控制服務
 
-透過此指令碼，Nginx UI 將作為 `nginx-ui` 守護行程安裝在 systemd 中。請使用以下 `systemctl` 指令控制。
+透過此指令碼，Nginx UI 將作為服務安裝。安裝指令碼會檢測您系統的服務管理器並設置相應的服務控制機制。
+
+### Systemd
+
+如果您的系統使用 systemd，請使用以下 `systemctl` 指令控制：
 
 ::: code-group
 
@@ -104,6 +108,62 @@ systemctl restart nginx-ui
 
 ```shell [顯示狀態]
 systemctl status nginx-ui
+```
+
+```shell [開機啟動]
+systemctl enable nginx-ui
+```
+
+:::
+
+### OpenRC
+
+如果您的系統使用 OpenRC，請使用以下 `rc-service` 指令控制：
+
+::: code-group
+
+```shell [啟動]
+rc-service nginx-ui start
+```
+
+```shell [停止]
+rc-service nginx-ui stop
+```
+
+```shell [重啟]
+rc-service nginx-ui restart
+```
+
+```shell [顯示狀態]
+rc-service nginx-ui status
+```
+
+```shell [開機啟動]
+rc-update add nginx-ui default
+```
+
+:::
+
+### Init.d
+
+如果您的系統使用傳統的 init.d 指令碼，請使用以下指令控制：
+
+::: code-group
+
+```shell [啟動]
+/etc/init.d/nginx-ui start
+```
+
+```shell [停止]
+/etc/init.d/nginx-ui stop
+```
+
+```shell [重啟]
+/etc/init.d/nginx-ui restart
+```
+
+```shell [顯示狀態]
+/etc/init.d/nginx-ui status
 ```
 
 :::
