@@ -273,11 +273,12 @@ decompression() {
 install_bin() {
     NAME="nginx-ui"
     
-    if [[ ! -d "/usr/local/bin" ]]; then
-        mkdir -p "/usr/local/bin"
+    if command -v install >/dev/null 2>&1; then
+        install -m 755 "${TMP_DIRECTORY}/$NAME" "/usr/local/bin/$NAME"
+    else
+        cp "${TMP_DIRECTORY}/$NAME" "/usr/bin/$NAME"
+        chmod 755 "/usr/bin/$NAME"
     fi
-    
-    install -m 755 "${TMP_DIRECTORY}/$NAME" "/usr/local/bin/$NAME"
 }
 
 install_service() {
