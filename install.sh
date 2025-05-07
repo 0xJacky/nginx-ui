@@ -171,18 +171,7 @@ identify_the_operating_system_and_architecture() {
             echo -e "${FontRed}error: Don't use outdated Linux distributions.${FontSuffix}"
             exit 1
         fi
-        # Do not combine this judgment condition with the following judgment condition.
-        ## Be aware of Linux distribution like Gentoo, which kernel supports switch between Systemd and OpenRC.
-        if [[ -f /.dockerenv ]] || grep -q 'docker\|lxc' /proc/1/cgroup && [[ "$(type -P systemctl)" ]]; then
-            SERVICE_TYPE='systemd'
-        elif [[ -d /run/systemd/system ]] || grep -q systemd <(ls -l /sbin/init); then
-            SERVICE_TYPE='systemd'
-        elif [[ "$(type -P rc-update)" ]]; then
-            SERVICE_TYPE='openrc'
-        else
-            SERVICE_TYPE='initd'
-            echo -e "${FontYellow}warning: No systemd or OpenRC detected, falling back to init.d.${FontSuffix}"
-        fi
+
         if [[ "$(type -P apt)" ]]; then
             PACKAGE_MANAGEMENT_INSTALL='apt -y --no-install-recommends install'
             PACKAGE_MANAGEMENT_REMOVE='apt purge'
@@ -207,6 +196,19 @@ identify_the_operating_system_and_architecture() {
         else
             echo -e "${FontRed}error: This script does not support the package manager in this operating system.${FontSuffix}"
             exit 1
+        fi
+
+        # Do not combine this judgment condition with the following judgment condition.
+        ## Be aware of Linux distribution like Gentoo, which kernel supports switch between Systemd and OpenRC.
+        if [[ -f /.dockerenv ]] || grep -q 'docker\|lxc' /proc/1/cgroup && [[ "$(type -P systemctl)" ]]; then
+            SERVICE_TYPE='systemd'
+        elif [[ -d /run/systemd/system ]] || grep -q systemd <(ls -l /sbin/init); then
+            SERVICE_TYPE='systemd'
+        elif [[ "$(type -P rc-update)" ]] || [[ "$(type -P apk)" ]]; then
+            SERVICE_TYPE='openrc'
+        else
+            SERVICE_TYPE='initd'
+            echo -e "${FontYellow}warning: No systemd or OpenRC detected, falling back to init.d.${FontSuffix}"
         fi
     else
         echo -e "${FontRed}error: This operating system is not supported by this script.${FontSuffix}"
@@ -560,6 +562,10 @@ main() {
     TMP_DIRECTORY="$(mktemp -d)"
     TAR_FILE="${TMP_DIRECTORY}/nginx-ui-linux-$MACHINE.tar.gz"
 
+    # Auto install OpenRC on Alpine Linux if needed
+    if [[ "$(type -P apk)" ]]; then
+        install_software 'openrc' 'openrc'
+    fi
     install_software 'curl' 'curl'
 
     # Install from a local file
