@@ -51,8 +51,8 @@ FontSkyBlue="\033[36m";
 FontWhite="\033[37m";
 FontSuffix="\033[0m";
 
-curl() {
-    $(type -P curl) -L -q --retry 5 --retry-delay 10 --retry-max-time 60 "$@"
+curl_with_retry() {
+    $(type -P curl) -x "${PROXY}" -L -q --retry 5 --retry-delay 10 --retry-max-time 60 "$@"
 }
 
 ## Demo function for processing parameters
@@ -102,9 +102,9 @@ judgment_parameters() {
         esac
         shift
     done
-    if ((INSTALL+HELP+REMOVE==0)); then
+    if [ "$(expr $INSTALL + $HELP + $REMOVE)" -eq 0 ]; then
         INSTALL='1'
-    elif ((INSTALL+HELP+REMOVE>1)); then
+    elif [ "$(expr $INSTALL + $HELP + $REMOVE)" -gt 1 ]; then
         echo 'You can only choose one action.'
         exit 1
     fi
@@ -133,7 +133,7 @@ systemd_cat_config() {
 
 check_if_running_as_root() {
     # If you want to run as another user, please modify $EUID to be owned by this user
-    if [[ "$EUID" -ne '0' ]]; then
+    if [ "$(id -u)" != "0" ]; then
         echo -e "${FontRed}error: You must run this script as root!${FontSuffix}"
         exit 1
     fi
@@ -229,7 +229,7 @@ install_software() {
 get_latest_version() {
     # Get latest release version number
     local latest_release
-    if ! latest_release=$(curl -x "${PROXY}" -sS -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/0xJacky/nginx-ui/releases/latest"); then
+    if ! latest_release=$(curl_with_retry -sS -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/0xJacky/nginx-ui/releases/latest"); then
         echo -e "${FontRed}error: Failed to get release list, please check your network.${FontSuffix}"
         exit 1
     fi
@@ -252,7 +252,7 @@ download_nginx_ui() {
     download_link="${RPROXY}https://github.com/0xJacky/nginx-ui/releases/download/$RELEASE_LATEST/nginx-ui-linux-$MACHINE.tar.gz"
 
     echo "Downloading Nginx UI archive: $download_link"
-    if ! curl -x "${PROXY}" -R -H 'Cache-Control: no-cache' -L -o "$TAR_FILE" "$download_link"; then
+    if ! curl_with_retry -R -H 'Cache-Control: no-cache' -L -o "$TAR_FILE" "$download_link"; then
         echo 'error: Download failed! Please check your network or try again.'
         return 1
     fi
@@ -296,7 +296,7 @@ install_systemd_service() {
     local service_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/resources/services/nginx-ui.service"
 
     echo "Downloading Nginx UI service file: $service_download_link"
-    if ! curl -x "${PROXY}" -R -H 'Cache-Control: no-cache' -L -o "$ServicePath" "$service_download_link"; then
+    if ! curl_with_retry -R -H 'Cache-Control: no-cache' -L -o "$ServicePath" "$service_download_link"; then
         echo -e "${FontRed}error: Download service file failed! Please check your network or try again.${FontSuffix}"
         return 1
     fi
@@ -314,7 +314,7 @@ install_openrc_service() {
     local openrc_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/resources/services/nginx-ui.rc"
 
     echo "Downloading Nginx UI OpenRC file: $openrc_download_link"
-    if ! curl -x "${PROXY}" -R -H 'Cache-Control: no-cache' -L -o "$OpenRCPath" "$openrc_download_link"; then
+    if ! curl_with_retry -R -H 'Cache-Control: no-cache' -L -o "$OpenRCPath" "$openrc_download_link"; then
         echo -e "${FontRed}error: Download OpenRC file failed! Please check your network or try again.${FontSuffix}"
         return 1
     fi
@@ -335,7 +335,7 @@ install_initd_service() {
     local initd_download_link="${RPROXY}https://raw.githubusercontent.com/0xJacky/nginx-ui/main/resources/services/nginx-ui.init"
 
     echo "Downloading Nginx UI init.d file: $initd_download_link"
-    if ! curl -x "${PROXY}" -R -H 'Cache-Control: no-cache' -L -o "$InitPath" "$initd_download_link"; then
+    if ! curl_with_retry -R -H 'Cache-Control: no-cache' -L -o "$InitPath" "$initd_download_link"; then
         echo -e "${FontRed}error: Download init.d file failed! Please check your network or try again.${FontSuffix}"
         exit 1
     fi
@@ -439,18 +439,18 @@ remove_nginx_ui() {
     if [[ -n "$(pidof nginx-ui)" ]]; then
       stop_nginx_ui
     fi
-    local delete_files=('/usr/local/bin/nginx-ui' '/etc/systemd/system/nginx-ui.service' '/etc/systemd/system/nginx-ui.service.d')
+    delete_files="/usr/local/bin/nginx-ui /etc/systemd/system/nginx-ui.service /etc/systemd/system/nginx-ui.service.d"
     if [[ "$PURGE" -eq '1' ]]; then
-        [[ -d "$DataPath" ]] && delete_files+=("$DataPath")
+        [[ -d "$DataPath" ]] && delete_files="$delete_files $DataPath"
     fi
     systemctl disable nginx-ui
-    if ! ("rm" -r "${delete_files[@]}"); then
+    if ! ("rm" -r $delete_files); then
       echo -e "${FontRed}error: Failed to remove Nginx UI.${FontSuffix}"
       exit 1
     else
-      for i in "${!delete_files[@]}"
+      for file in $delete_files
       do
-        echo "removed: ${delete_files[$i]}"
+        echo "removed: $file"
       done
       systemctl daemon-reload
       echo "You may need to execute a command to remove dependent software: $PACKAGE_MANAGEMENT_REMOVE curl"
@@ -465,21 +465,21 @@ remove_nginx_ui() {
     if rc-service nginx-ui status | grep -q "started"; then
       stop_nginx_ui
     fi
-    local delete_files=('/usr/local/bin/nginx-ui' "$OpenRCPath")
+    delete_files="/usr/local/bin/nginx-ui $OpenRCPath"
     if [[ "$PURGE" -eq '1' ]]; then
-        [[ -d "$DataPath" ]] && delete_files+=("$DataPath")
+        [[ -d "$DataPath" ]] && delete_files="$delete_files $DataPath"
     fi
 
     # Remove from runlevels
     rc-update del nginx-ui default
 
-    if ! ("rm" -r "${delete_files[@]}"); then
+    if ! ("rm" -r $delete_files); then
       echo -e "${FontRed}error: Failed to remove Nginx UI.${FontSuffix}"
       exit 1
     else
-      for i in "${!delete_files[@]}"
+      for file in $delete_files
       do
-        echo "removed: ${delete_files[$i]}"
+        echo "removed: $file"
       done
       echo "You may need to execute a command to remove dependent software: $PACKAGE_MANAGEMENT_REMOVE curl"
       echo 'info: Nginx UI has been removed.'
@@ -493,9 +493,9 @@ remove_nginx_ui() {
     if [[ -n "$(pidof nginx-ui)" ]]; then
       stop_nginx_ui
     fi
-    local delete_files=('/usr/local/bin/nginx-ui' "$InitPath")
+    delete_files="/usr/local/bin/nginx-ui $InitPath"
     if [[ "$PURGE" -eq '1' ]]; then
-        [[ -d "$DataPath" ]] && delete_files+=("$DataPath")
+        [[ -d "$DataPath" ]] && delete_files="$delete_files $DataPath"
     fi
 
     # Remove from startup based on distro
@@ -505,13 +505,13 @@ remove_nginx_ui() {
         /usr/sbin/update-rc.d -f nginx-ui remove
     fi
 
-    if ! ("rm" -r "${delete_files[@]}"); then
+    if ! ("rm" -r $delete_files); then
       echo -e "${FontRed}error: Failed to remove Nginx UI.${FontSuffix}"
       exit 1
     else
-      for i in "${!delete_files[@]}"
+      for file in $delete_files
       do
-        echo "removed: ${delete_files[$i]}"
+        echo "removed: $file"
       done
       echo "You may need to execute a command to remove dependent software: $PACKAGE_MANAGEMENT_REMOVE curl"
       echo 'info: Nginx UI has been removed.'
