@@ -53,7 +53,7 @@ type PerfOpt struct {
 
 // UpdatePerfOpt updates the Nginx performance optimization settings
 func UpdatePerfOpt(opt *PerfOpt) error {
-	confPath := nginx.GetConfPath("nginx.conf")
+	confPath := nginx.GetConfEntryPath()
 	if confPath == "" {
 		return errors.New("failed to get nginx.conf path")
 	}
