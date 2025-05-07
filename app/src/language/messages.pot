@@ -2,87 +2,87 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:34
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:18
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr ""
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:37
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr ""
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:42
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr ""
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:29
 msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:28
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr ""
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:6
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr ""
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:12
 msgid "[Nginx UI] Finished"
 msgstr ""
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:47
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr ""
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:49
 msgid "[Nginx UI] Obtaining certificate"
 msgstr ""
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:10
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr ""
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:33
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr ""
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:19
 msgid "[Nginx UI] Reloading nginx"
 msgstr ""
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:41
 msgid "[Nginx UI] Revocation completed"
 msgstr ""
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:31
 msgid "[Nginx UI] Revoking certificate"
 msgstr ""
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:36
 msgid "[Nginx UI] Revoking old certificate"
 msgstr ""
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:39
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr ""
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:35
 msgid "[Nginx UI] Setting environment variables"
 msgstr ""
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:17
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr ""
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:7
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr ""
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr ""
 
@@ -594,7 +594,7 @@ msgstr ""
 msgid "Certificate Expiring Soon"
 msgstr ""
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:32
 msgid "Certificate not found: %{error}"
 msgstr ""
 
@@ -619,7 +619,7 @@ msgstr ""
 msgid "Certificate renewed successfully"
 msgstr ""
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:11
 msgid "Certificate revoked successfully"
 msgstr ""
 
@@ -677,51 +677,51 @@ msgstr ""
 msgid "Check again"
 msgstr ""
 
+#: src/language/generate.ts:27
+msgid "Check if /var/run/docker.sock exists. If you are using Nginx UI Official Docker Image, please make sure the docker socket is mounted like this: `-v /var/run/docker.sock:/var/run/docker.sock`."
+msgstr ""
+
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:14
 msgid "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and prevents using Passkeys and clipboard features"
 msgstr ""
 
-#: src/language/generate.ts:28
-msgid "Check if the docker socket exists."
-msgstr ""
-
-#: src/language/generate.ts:44
+#: src/language/generate.ts:25
 msgid "Check if the nginx access log path exists"
 msgstr ""
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:30
 msgid "Check if the nginx configuration directory exists"
 msgstr ""
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:24
 msgid "Check if the nginx configuration entry file exists"
 msgstr ""
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:9
 msgid "Check if the nginx error log path exists"
 msgstr ""
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:22
 msgid "Check if the nginx PID path exists"
 msgstr ""
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:13
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr ""
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:43
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr ""
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:44
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr ""
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:23
 msgid "Check if the sites-available and sites-enabled directories are under the nginx configuration directory"
 msgstr ""
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:38
 msgid "Check if the streams-available and streams-enabled directories are under the nginx configuration directory"
 msgstr ""
 
@@ -1014,10 +1014,6 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: src/views/install/components/InstallForm.vue:109
-msgid "Database (Optional, default: database)"
-msgstr ""
-
 #: src/views/preference/tabs/CertSettings.vue:32
 msgid "Days"
 msgstr ""
@@ -1298,7 +1294,7 @@ msgstr ""
 msgid "Docker client not initialized"
 msgstr ""
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:26
 msgid "Docker socket exists"
 msgstr ""
 
@@ -1377,7 +1373,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: src/views/install/components/InstallForm.vue:78
+#: src/views/install/components/InstallForm.vue:75
 msgid "Email (*)"
 msgstr ""
 
@@ -1701,7 +1697,7 @@ msgstr ""
 msgid "Failed to delete certificate"
 msgstr ""
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:15
 msgid "Failed to delete certificate from database: %{error}"
 msgstr ""
 
@@ -1845,7 +1841,7 @@ msgstr ""
 msgid "Failed to revoke certificate"
 msgstr ""
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:48
 msgid "Failed to revoke certificate: %{error}"
 msgstr ""
 
@@ -2095,13 +2091,13 @@ msgid "Insecure Skip Verify"
 msgstr ""
 
 #: src/routes/modules/auth.ts:8
-#: src/views/install/components/InstallForm.vue:124
+#: src/views/install/components/InstallForm.vue:110
 #: src/views/install/components/InstallHeader.vue:9
 #: src/views/system/Upgrade.vue:150
 msgid "Install"
 msgstr ""
 
-#: src/views/install/components/InstallForm.vue:60
+#: src/views/install/components/InstallForm.vue:57
 msgid "Install successfully"
 msgstr ""
 
@@ -2331,7 +2327,7 @@ msgstr ""
 msgid "Log"
 msgstr ""
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:16
 msgid "Log file %{log_path} is not a regular file. If you are using nginx-ui in docker container, please refer to https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
 msgstr ""
 
@@ -2612,7 +2608,7 @@ msgstr ""
 msgid "Nginx Access Log Path"
 msgstr ""
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:14
 msgid "Nginx access log path exists"
 msgstr ""
 
@@ -2640,11 +2636,11 @@ msgstr ""
 msgid "Nginx config directory is not set"
 msgstr ""
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:46
 msgid "Nginx configuration directory exists"
 msgstr ""
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:21
 msgid "Nginx configuration entry file exists"
 msgstr ""
 
@@ -2682,7 +2678,7 @@ msgstr ""
 msgid "Nginx Error Log Path"
 msgstr ""
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:8
 msgid "Nginx error log path exists"
 msgstr ""
 
@@ -2720,7 +2716,7 @@ msgstr ""
 msgid "Nginx PID Path"
 msgstr ""
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:5
 msgid "Nginx PID path exists"
 msgstr ""
 
@@ -2780,15 +2776,15 @@ msgstr ""
 msgid "Nginx UI configuration has been restored and will restart automatically in a few seconds."
 msgstr ""
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:45
 msgid "Nginx.conf includes conf.d directory"
 msgstr ""
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:51
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr ""
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:4
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr ""
 
@@ -3057,7 +3053,7 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: src/views/install/components/InstallForm.vue:98
+#: src/views/install/components/InstallForm.vue:95
 msgid "Password (*)"
 msgstr ""
 
@@ -3065,7 +3061,7 @@ msgstr ""
 msgid "Password incorrect"
 msgstr ""
 
-#: src/views/install/components/InstallForm.vue:42
+#: src/views/install/components/InstallForm.vue:45
 msgid "Password length cannot exceed 20 characters"
 msgstr ""
 
@@ -3172,16 +3168,16 @@ msgstr ""
 msgid "Please input name, this will be used as the filename of the new configuration."
 msgstr ""
 
-#: src/views/install/components/InstallForm.vue:26
+#: src/views/install/components/InstallForm.vue:25
 msgid "Please input your E-mail!"
 msgstr ""
 
-#: src/views/install/components/InstallForm.vue:38
+#: src/views/install/components/InstallForm.vue:41
 #: src/views/other/Login.vue:47
 msgid "Please input your password!"
 msgstr ""
 
-#: src/views/install/components/InstallForm.vue:32
+#: src/views/install/components/InstallForm.vue:31
 #: src/views/other/Login.vue:41
 msgid "Please input your username!"
 msgstr ""
@@ -3867,7 +3863,7 @@ msgstr ""
 msgid "Site not found"
 msgstr ""
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:20
 msgid "Sites directory exists"
 msgstr ""
 
@@ -3982,7 +3978,7 @@ msgstr ""
 msgid "Stream not found"
 msgstr ""
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:50
 msgid "Streams directory exists"
 msgstr ""
 
@@ -4138,10 +4134,6 @@ msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:48
 msgid "The certificate for the domain will be checked 30 minutes, and will be renewed if it has been more than 1 week or the period you set in settings since it was last issued."
-msgstr ""
-
-#: src/views/install/components/InstallForm.vue:48
-msgid "The filename cannot contain the following characters: %{c}"
 msgstr ""
 
 #: src/views/preference/tabs/NodeSettings.vue:37
@@ -4475,8 +4467,12 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: src/views/install/components/InstallForm.vue:88
+#: src/views/install/components/InstallForm.vue:85
 msgid "Username (*)"
+msgstr ""
+
+#: src/views/install/components/InstallForm.vue:35
+msgid "Username length cannot exceed 255 characters"
 msgstr ""
 
 #: src/components/CertInfo/CertInfo.vue:24

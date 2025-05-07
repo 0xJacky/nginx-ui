@@ -17,7 +17,6 @@ import (
 	_github "github.com/0xJacky/Nginx-UI/.github"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/version"
-	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/minio/selfupdate"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy/logger"
@@ -154,8 +153,7 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 		return
 	}
 
-	githubProxy := settings.HTTPSettings.GithubProxy
-	if githubProxy != "" && u.Channel != string(version.ReleaseTypeDev) {
+	if u.Channel != string(version.ReleaseTypeDev) {
 		digest.BrowserDownloadUrl = version.GetUrl(digest.BrowserDownloadUrl)
 	}
 
@@ -169,7 +167,7 @@ func (u *Upgrader) DownloadLatestRelease(progressChan chan float64) (tarName str
 
 	dir := filepath.Dir(u.ExPath)
 
-	if githubProxy != "" && u.Channel != string(version.ReleaseTypeDev) {
+	if u.Channel != string(version.ReleaseTypeDev) {
 		downloadUrl = version.GetUrl(downloadUrl)
 	}
 

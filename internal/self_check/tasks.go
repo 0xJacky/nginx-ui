@@ -118,8 +118,10 @@ func init() {
 	if helper.InNginxUIOfficialDocker() {
 		selfCheckTasks = append(selfCheckTasks, &Task{
 			Name:        translation.C("Docker socket exists"),
-			Description: translation.C("Check if the docker socket exists."),
-			CheckFunc:   CheckDockerSocket,
+			Description: translation.C("Check if /var/run/docker.sock exists. If you are using Nginx UI Official " +
+				"Docker Image, please make sure the docker socket is mounted like this: `-" +
+				"v /var/run/docker.sock:/var/run/docker.sock`."),
+			CheckFunc: CheckDockerSocket,
 		})
 	}
 }
