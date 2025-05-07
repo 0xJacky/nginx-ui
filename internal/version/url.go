@@ -14,19 +14,19 @@ const (
 )
 
 func GetGithubDevCommitAPIUrl() string {
-	return GetUrl(GithubDevCommitAPI)
+	return CloudflareWorkerAPI + GithubDevCommitAPI
 }
 
 func GetGithubLatestReleaseAPIUrl() string {
-	return GetUrl(GithubLatestReleaseAPI)
+	return CloudflareWorkerAPI + GithubLatestReleaseAPI
 }
 
 func GetGithubReleasesListAPIUrl() string {
-	return GetUrl(GithubReleasesListAPI)
+	return CloudflareWorkerAPI + GithubReleasesListAPI
 }
 
 func GetCloudflareWorkerAPIUrl() string {
-	return GetUrl(CloudflareWorkerAPI)
+	return CloudflareWorkerAPI
 }
 
 func GetUrl(path string) string {
