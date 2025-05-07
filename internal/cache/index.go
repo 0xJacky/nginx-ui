@@ -348,7 +348,7 @@ func (s *Scanner) scanSingleFile(filePath string) error {
 			if strings.Contains(includePath, "*") {
 				// If it's a relative path, make it absolute based on nginx config dir
 				if !filepath.IsAbs(includePath) {
-					configDir := filepath.Dir(nginx.GetConfPath("", ""))
+					configDir := filepath.Dir(nginx.GetConfPath())
 					includePath = filepath.Join(configDir, includePath)
 				}
 
@@ -373,7 +373,7 @@ func (s *Scanner) scanSingleFile(filePath string) error {
 				// Handle single file include
 				// If it's a relative path, make it absolute based on nginx config dir
 				if !filepath.IsAbs(includePath) {
-					configDir := filepath.Dir(nginx.GetConfPath("", ""))
+					configDir := filepath.Dir(nginx.GetConfPath())
 					includePath = filepath.Join(configDir, includePath)
 				}
 
@@ -413,7 +413,7 @@ func (s *Scanner) ScanAllConfigs() error {
 	}()
 
 	// Get the main config file
-	mainConfigPath := nginx.GetConfPath("", "nginx.conf")
+	mainConfigPath := nginx.GetConfEntryPath()
 	err := s.scanSingleFile(mainConfigPath)
 	if err != nil {
 		logger.Error("Failed to scan main config:", err)

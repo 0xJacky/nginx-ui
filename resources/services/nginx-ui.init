@@ -17,13 +17,15 @@ CONFIG="/usr/local/etc/nginx-ui/app.ini"
 
 start() {
     echo "Starting $NAME..."
-    start-stop-daemon --start --background --pidfile $PIDFILE --make-pidfile --exec $DAEMON -- $CONFIG
+    # BusyBox compatible syntax
+    start-stop-daemon -S -b -p $PIDFILE -m -x $DAEMON -- $CONFIG
     echo "$NAME started"
 }
 
 stop() {
     echo "Stopping $NAME..."
-    start-stop-daemon --stop --pidfile $PIDFILE --retry 10
+    # BusyBox compatible syntax
+    start-stop-daemon -K -p $PIDFILE -R 10
     rm -f $PIDFILE
     echo "$NAME stopped"
 }

@@ -51,7 +51,7 @@ func GetNginxWorkerConfigInfo() (*NginxConfigInfo, error) {
 		},
 	}
 
-	confPath := nginx.GetConfPath("nginx.conf")
+	confPath := nginx.GetConfEntryPath()
 	if confPath == "" {
 		return nil, errors.New("failed to get nginx.conf path")
 	}
