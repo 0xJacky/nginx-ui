@@ -3,9 +3,9 @@
 name="nginx-ui"
 description="Nginx UI - Yet another WebUI for Nginx"
 supervisor=supervise-daemon
-command="/usr/local/bin/nginx-ui"
-command_args="-config /usr/local/etc/nginx-ui/app.ini"
 pidfile="/run/${RC_SVCNAME}.pid"
+command="/usr/local/bin/nginx-ui"
+command_args="serve --config /usr/local/etc/nginx-ui/app.ini --pidfile ${pidfile}"
 command_user="root:root"
 
 extra_commands="status"

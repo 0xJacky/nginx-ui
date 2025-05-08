@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
+	"code.pfad.fr/risefront"
 	"github.com/0xJacky/Nginx-UI/internal/backup"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
-	"github.com/jpillora/overseer"
 	"github.com/uozi-tech/cosy"
 )
 
@@ -123,7 +123,7 @@ func RestoreBackup(c *gin.Context) {
 		go func() {
 			time.Sleep(2 * time.Second)
 			// gracefully restart
-			overseer.Restart()
+			risefront.Restart()
 		}()
 	}
 

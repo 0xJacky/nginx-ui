@@ -24,6 +24,22 @@ func NewAppCmd() *cli.Command {
 					serve = true
 					return nil
 				},
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:  "pidfile",
+						Usage: "`PATH` to the PID file",
+						Action: func(ctx context.Context, command *cli.Command, s string) error {
+							// remove `pidfile` parameter from os.Args
+							for i, arg := range os.Args {
+								if arg == "--pidfile" || arg == "-p" {
+									os.Args = append(os.Args[:i], os.Args[i+2:]...)
+									break
+								}
+							}
+							return nil
+						},
+					},
+				},
 			},
 			{
 				Name:   "reset-password",

@@ -11,6 +11,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cmd"
+	"github.com/0xJacky/Nginx-UI/internal/process"
 
 	"code.pfad.fr/risefront"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
@@ -105,6 +106,14 @@ func main() {
 
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM)
 	defer cancel()
+
+	pidPath := appCmd.String("pidfile")
+	if pidPath != "" {
+		if err := process.WritePIDFile(pidPath); err != nil {
+			logger.Fatalf("Failed to write PID file: %v", err)
+		}
+		defer process.RemovePIDFile(pidPath)
+	}
 
 	err := risefront.New(ctx, risefront.Config{
 		Run:       Program(ctx, confPath),
