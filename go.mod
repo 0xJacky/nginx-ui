@@ -282,4 +282,5 @@ replace (
 	github.com/libdns/tencentcloud => github.com/nginxui/tencentcloud v0.0.0-20250508073945-ca409af99ffd
 	github.com/nikoksr/notify => github.com/nginxui/notify v0.0.0-20250331063720-85da6054fae8
 	github.com/tufanbarisyildirim/gonginx => github.com/0xJacky/gonginx v0.0.0-20250421073240-35877245a353
+	github.com/minio/selfupdate => github.com/nginxui/selfupdate v0.0.0-20250508140228-a7dab39cec4a
 )
