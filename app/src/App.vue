@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import loadTranslations from '@/api/translations'
 import gettext from '@/gettext'
-import { useSettingsStore } from '@/pinia'
+import { useSettingsStore, useUserStore } from '@/pinia'
 import { theme } from 'ant-design-vue'
 import en_US from 'ant-design-vue/es/locale/en_US'
 import zh_CN from 'ant-design-vue/es/locale/zh_CN'
 import zh_TW from 'ant-design-vue/es/locale/zh_TW'
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import { computed, provide } from 'vue'
-import router from './routes'
 
 const route = useRoute()
+const router = useRouter()
 
 const media = window.matchMedia('(prefers-color-scheme: dark)')
 
@@ -50,17 +47,20 @@ const lang = computed(() => {
 })
 
 const settings = useSettingsStore()
+const user = useUserStore()
 const is_theme_dark = computed(() => settings.theme === 'dark')
 
 loadTranslations(route)
 
-watch(route, () => {
-  settings.route_path = route.path
-})
+if (user.isLogin) {
+  watch(route, () => {
+    settings.route_path = route.path
+  })
 
-onMounted(() => {
-  router.push(settings.route_path)
-})
+  onMounted(() => {
+    router.push(settings.route_path)
+  })
+}
 </script>
 
 <template>
