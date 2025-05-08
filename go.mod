@@ -1,6 +1,6 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.24.2
+go 1.24.3
 
 require (
 	code.pfad.fr/risefront v1.0.0
