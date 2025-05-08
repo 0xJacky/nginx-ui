@@ -313,6 +313,8 @@ require (
 )
 
 replace (
+	gorm.io/gorm => gorm.io/gorm v1.25.12
+	gorm.io/plugin/dbresolver => gorm.io/plugin/dbresolver v1.5.3
 	code.pfad.fr/risefront => github.com/nginxui/risefront v1.2.2
 	github.com/nikoksr/notify => github.com/nginxui/notify v0.0.0-20250331063720-85da6054fae8
 	github.com/tufanbarisyildirim/gonginx => github.com/0xJacky/gonginx v0.0.0-20250420001451-d120448e89a4

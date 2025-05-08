@@ -36,6 +36,7 @@ server {
         proxy_set_header    Upgrade             $http_upgrade;
         proxy_set_header    Connection          $connection_upgrade;
         proxy_pass          http://127.0.0.1:9000/;
+        proxy_buffering     off;
     }
 }
 ```
