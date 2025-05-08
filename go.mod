@@ -100,7 +100,7 @@ require (
 	github.com/dnsimple/dnsimple-go v1.7.0 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
-	github.com/ebitengine/purego v0.8.2 // indirect
+	github.com/ebitengine/purego v0.9.0-alpha.3.0.20250507171635-5047c08daa38 // indirect
 	github.com/exoscale/egoscale/v3 v3.1.17 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
@@ -283,5 +283,5 @@ replace (
 	github.com/libdns/cloudflare => github.com/nginxui/cloudflare v0.0.0-20250508084008-f31918fec5ab
 	github.com/libdns/tencentcloud => github.com/nginxui/tencentcloud v0.0.0-20250508073945-ca409af99ffd
 	github.com/nikoksr/notify => github.com/nginxui/notify v0.0.0-20250331063720-85da6054fae8
-	github.com/tufanbarisyildirim/gonginx => github.com/0xJacky/gonginx v0.0.0-20250420001451-d120448e89a4
+	github.com/tufanbarisyildirim/gonginx => github.com/0xJacky/gonginx v0.0.0-20250421073240-35877245a353
 )
