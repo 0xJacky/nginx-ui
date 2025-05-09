@@ -29,6 +29,10 @@ func TestConfig() (stdOut string, stdErr error) {
 func Reload() (stdOut string, stdErr error) {
 	mutex.Lock()
 	defer mutex.Unlock()
+
+	// Clear the modules cache when reloading Nginx
+	clearModulesCache()
+
 	if settings.NginxSettings.ReloadCmd != "" {
 		return execShell(settings.NginxSettings.ReloadCmd)
 	}
@@ -39,6 +43,9 @@ func Reload() (stdOut string, stdErr error) {
 func Restart() {
 	mutex.Lock()
 	defer mutex.Unlock()
+
+	// Clear the modules cache when restarting Nginx
+	clearModulesCache()
 
 	// fix(docker): nginx restart always output network error
 	time.Sleep(500 * time.Millisecond)

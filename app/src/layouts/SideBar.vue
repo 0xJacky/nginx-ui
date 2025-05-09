@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import type { NgxModule } from '@/api/ngx'
 import type { IconComponentProps } from '@ant-design/icons-vue/es/components/Icon'
 import type { AntdIconType } from '@ant-design/icons-vue/lib/components/AntdIcon'
 import type { Key } from 'ant-design-vue/es/_util/type'
-import type { ComputedRef, Ref } from 'vue'
-import EnvIndicator from '@/components/EnvIndicator/EnvIndicator.vue'
-import Logo from '@/components/Logo/Logo.vue'
+import ngx from '@/api/ngx'
+import EnvIndicator from '@/components/EnvIndicator'
+import Logo from '@/components/Logo'
+import { useGlobalStore } from '@/pinia/moudule/global'
 import { routes } from '@/routes'
 
 const route = useRoute()
@@ -47,12 +49,30 @@ interface Sidebar {
   children: Sidebar[]
 }
 
+const globalStore = useGlobalStore()
+const { modules, modulesMap } = storeToRefs(globalStore)
+
+onMounted(() => {
+  ngx.get_modules().then(r => {
+    modules.value = r
+    modulesMap.value = r.reduce((acc, m) => {
+      acc[m.name] = m
+      return acc
+    }, {} as Record<string, NgxModule>)
+  })
+})
+
 const visible: ComputedRef<Sidebar[]> = computed(() => {
   const res: Sidebar[] = [];
 
   (sidebars.value || []).forEach(s => {
     if (s.meta && ((typeof s.meta.hiddenInSidebar === 'boolean' && s.meta.hiddenInSidebar)
       || (typeof s.meta.hiddenInSidebar === 'function' && s.meta.hiddenInSidebar()))) {
+      return
+    }
+
+    if (s.meta && s.meta.modules && s.meta.modules?.length > 0
+      && !s.meta.modules.every(m => modulesMap.value[m]?.loaded)) {
       return
     }
 
@@ -66,6 +86,11 @@ const visible: ComputedRef<Sidebar[]> = computed(() => {
     (s.children || []).forEach(c => {
       if (c.meta && ((typeof c.meta.hiddenInSidebar === 'boolean' && c.meta.hiddenInSidebar)
         || (typeof c.meta.hiddenInSidebar === 'function' && c.meta.hiddenInSidebar()))) {
+        return
+      }
+
+      if (c.meta && c.meta.modules && c.meta.modules?.length > 0
+        && !c.meta.modules.every(m => modulesMap.value[m]?.loaded)) {
         return
       }
 

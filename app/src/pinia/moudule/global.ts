@@ -1,3 +1,4 @@
+import type { NgxModule } from '@/api/ngx'
 import type { NginxStatus } from '@/constants'
 import { defineStore } from 'pinia'
 
@@ -15,8 +16,14 @@ export const useGlobalStore = defineStore('global', () => {
     index_scanning: false,
     auto_cert_processing: false,
   })
+
+  const modules = ref<NgxModule[]>([])
+  const modulesMap = ref<Record<string, NgxModule>>({})
+
   return {
     nginxStatus,
     processingStatus,
+    modules,
+    modulesMap,
   }
 })

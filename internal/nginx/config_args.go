@@ -49,6 +49,17 @@ func getNginxV() string {
 	return string(out)
 }
 
+// getNginxT executes nginx -T and returns the output
+func getNginxT() string {
+	exePath := getNginxExePath()
+	out, err := execCommand(exePath, "-T")
+	if err != nil {
+		logger.Error(err)
+		return ""
+	}
+	return out
+}
+
 // Resolves relative paths by joining them with the nginx executable directory on Windows
 func resolvePath(path string) string {
 	if path == "" {

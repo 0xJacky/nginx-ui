@@ -104,6 +104,13 @@ export interface NginxPerfOpt {
   proxy_cache: ProxyCacheConfig
 }
 
+export interface NgxModule {
+  name: string
+  params?: string
+  dynamic: boolean
+  loaded: boolean
+}
+
 const ngx = {
   build_config(ngxConfig: NgxConfig) {
     return http.post('/ngx/build_config', ngxConfig)
@@ -151,6 +158,10 @@ const ngx = {
 
   update_performance(params: NginxPerfOpt): Promise<NginxConfigInfo> {
     return http.post('/nginx/performance', params)
+  },
+
+  get_modules(): Promise<NgxModule[]> {
+    return http.get('/nginx/modules')
   },
 }
 

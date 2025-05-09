@@ -104,7 +104,7 @@ var selfCheckTasks = []*Task{
 
 var selfCheckTaskMap = orderedmap.NewOrderedMap[string, *Task]()
 
-func init() {
+func Init() {
 	if nginx.IsModuleLoaded(nginx.ModuleStream) {
 		selfCheckTasks = append(selfCheckTasks, &Task{
 			Key:  "Directory-Streams",

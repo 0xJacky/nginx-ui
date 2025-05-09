@@ -17,5 +17,6 @@ declare module 'vue-router' {
     status_code?: number
     error?: () => string
     lastRouteName?: string
+    modules?: string[]
   }
 }

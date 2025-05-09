@@ -19,6 +19,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
+	"github.com/0xJacky/Nginx-UI/internal/self_check"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -43,6 +44,7 @@ func Boot(ctx context.Context) {
 		InitNodeSecret,
 		InitCryptoSecret,
 		validation.Init,
+		self_check.Init,
 		func() {
 			InitDatabase(ctx)
 			cache.Init(ctx)

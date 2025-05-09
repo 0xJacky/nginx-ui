@@ -27,4 +27,6 @@ func InitRouter(r *gin.RouterGroup) {
 	// Performance optimization endpoints
 	r.GET("nginx/performance", GetPerformanceSettings)
 	r.POST("nginx/performance", UpdatePerformanceSettings)
+
+	r.GET("nginx/modules", GetModules)
 }

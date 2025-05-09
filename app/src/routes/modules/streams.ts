@@ -9,6 +9,7 @@ export const streamsRoutes: RouteRecordRaw[] = [
     meta: {
       name: () => $gettext('Manage Streams'),
       icon: ShareAltOutlined,
+      modules: ['stream'],
     },
   },
   {
@@ -19,6 +20,7 @@ export const streamsRoutes: RouteRecordRaw[] = [
       name: () => $gettext('Edit Stream'),
       hiddenInSidebar: true,
       lastRouteName: 'Manage Streams',
+      modules: ['stream'],
     },
   },
 ]
