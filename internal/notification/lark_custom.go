@@ -10,6 +10,7 @@ import (
 
 // @external_notifier(Lark Custom)
 type LarkCustom struct {
+	Domain    string `json:"domain" title:"Domain"`
 	AppID     string `json:"app_id" title:"App ID"`
 	AppSecret string `json:"app_secret" title:"App Secret"`
 	OpenID    string `json:"open_id" title:"Open ID"`
@@ -38,6 +39,13 @@ func init() {
 			lark.Email(larkCustomConfig.Email),
 			lark.ChatID(larkCustomConfig.ChatID),
 		)
+
+		if larkCustomConfig.Domain != "" {
+			larkCustomAppService.AddReceivers(
+				lark.Domain(larkCustomConfig.Domain),
+			)
+		}
+
 		return larkCustomAppService.Send(ctx, msg.GetTitle(n.Language), msg.GetContent(n.Language))
 	})
 }

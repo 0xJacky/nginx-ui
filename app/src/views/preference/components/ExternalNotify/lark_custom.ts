@@ -5,6 +5,10 @@ const LarkCustomConfig: ExternalNotifyConfig = {
   name: () => $gettext('Lark Custom'),
   config: [
     {
+      key: 'domain',
+      label: 'Domain',
+    },
+    {
       key: 'app_id',
       label: 'App ID',
     },

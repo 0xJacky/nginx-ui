@@ -280,7 +280,7 @@ replace (
 	github.com/libdns/alidns => github.com/nginxui/alidns v0.0.0-20250508032037-c002de204856
 	github.com/libdns/cloudflare => github.com/nginxui/cloudflare v0.0.0-20250508084008-f31918fec5ab
 	github.com/libdns/tencentcloud => github.com/nginxui/tencentcloud v0.0.0-20250508073945-ca409af99ffd
-	github.com/nikoksr/notify => github.com/nginxui/notify v0.0.0-20250331063720-85da6054fae8
-	github.com/tufanbarisyildirim/gonginx => github.com/0xJacky/gonginx v0.0.0-20250421073240-35877245a353
 	github.com/minio/selfupdate => github.com/nginxui/selfupdate v0.0.0-20250508140228-a7dab39cec4a
+	github.com/nikoksr/notify => github.com/nginxui/notify v0.0.0-20250509000747-c76622723eb1
+	github.com/tufanbarisyildirim/gonginx => github.com/0xJacky/gonginx v0.0.0-20250421073240-35877245a353
 )
