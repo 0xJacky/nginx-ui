@@ -5,6 +5,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/elliotchance/orderedmap/v3"
 	"github.com/uozi-tech/cosy"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 )
 
 type Task struct {
@@ -45,29 +46,12 @@ var selfCheckTasks = []*Task{
 		FixFunc:   FixSitesDirectory,
 	},
 	{
-		Key:  "Directory-Streams",
-		Name: translation.C("Streams directory exists"),
-		Description: translation.C("Check if the " +
-			"streams-available and streams-enabled directories are " +
-			"under the nginx configuration directory"),
-		CheckFunc: CheckStreamDirectory,
-		FixFunc:   FixStreamDirectory,
-	},
-	{
 		Key:  "NginxConf-Sites-Enabled",
 		Name: translation.C("Nginx.conf includes sites-enabled directory"),
 		Description: translation.C("Check if the nginx.conf includes the " +
 			"sites-enabled directory"),
 		CheckFunc: CheckNginxConfIncludeSites,
 		FixFunc:   FixNginxConfIncludeSites,
-	},
-	{
-		Key:  "NginxConf-Streams-Enabled",
-		Name: translation.C("Nginx.conf includes streams-enabled directory"),
-		Description: translation.C("Check if the nginx.conf includes the " +
-			"streams-enabled directory"),
-		CheckFunc: CheckNginxConfIncludeStreams,
-		FixFunc:   FixNginxConfIncludeStreams,
 	},
 	{
 		Key:  "NginxConf-ConfD",
@@ -112,8 +96,23 @@ var selfCheckTasks = []*Task{
 var selfCheckTaskMap = orderedmap.NewOrderedMap[string, *Task]()
 
 func init() {
-	for _, task := range selfCheckTasks {
-		selfCheckTaskMap.Set(task.Key, task)
+	if nginx.IsModuleLoaded(nginx.ModuleStream) {
+		selfCheckTasks = append(selfCheckTasks, &Task{
+			Key:  "Directory-Streams",
+			Name: translation.C("Streams directory exists"),
+			Description: translation.C("Check if the " +
+				"streams-available and streams-enabled directories are " +
+				"under the nginx configuration directory"),
+			CheckFunc: CheckStreamDirectory,
+			FixFunc:   FixStreamDirectory,
+		}, &Task{
+			Key:  "NginxConf-Streams-Enabled",
+			Name: translation.C("Nginx.conf includes streams-enabled directory"),
+			Description: translation.C("Check if the nginx.conf includes the " +
+			"streams-enabled directory"),
+			CheckFunc: CheckNginxConfIncludeStreams,
+			FixFunc:   FixNginxConfIncludeStreams,
+		})
 	}
 	if helper.InNginxUIOfficialDocker() {
 		selfCheckTasks = append(selfCheckTasks, &Task{
@@ -123,5 +122,9 @@ func init() {
 				"v /var/run/docker.sock:/var/run/docker.sock`."),
 			CheckFunc: CheckDockerSocket,
 		})
+	}
+
+	for _, task := range selfCheckTasks {
+		selfCheckTaskMap.Set(task.Key, task)
 	}
 }

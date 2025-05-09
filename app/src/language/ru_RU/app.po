@@ -7,100 +7,101 @@ msgstr ""
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2025-03-28 02:45+0300\n"
 "Last-Translator: Artyom Isrofilov <artyom@isrofilov.ru>\n"
-"Language-Team: Russian "
-"<https://weblate.nginxui.com/projects/nginx-ui/frontend/ru/>\n"
+"Language-Team: Russian <https://weblate.nginxui.com/projects/nginx-ui/"
+"frontend/ru/>\n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.5\n"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:24
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
-msgstr "[Nginx UI] Пользователь ACME: %{name}, Email: %{email}, Каталог CA: %{caDir}"
+msgstr ""
+"[Nginx UI] Пользователь ACME: %{name}, Email: %{email}, Каталог CA: %{caDir}"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:5
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr ""
-"[Nginx UI] Резервное копирование текущего сертификата для последующего "
-"отзыва"
+"[Nginx UI] Резервное копирование текущего сертификата для последующего отзыва"
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:7
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "[Nginx UI] Сертификат успешно обновлен"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:29
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] Сертификат успешно отозван"
 
-#: src/language/generate.ts:42
-msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+#: src/language/generate.ts:34
+msgid ""
+"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
-"[Nginx UI] Сертификат использовался для сервера, перезагрузка "
-"TLS-сертификата сервера"
+"[Nginx UI] Сертификат использовался для сервера, перезагрузка TLS-"
+"сертификата сервера"
 
 #: src/language/generate.ts:47
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] Создание клиента для облегчения связи с сервером CA"
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:21
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "[Nginx UI] Переменные окружения очищены"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:10
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] Завершено"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:51
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "[Nginx UI] Сертификат успешно выдан"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:26
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] Получение сертификата"
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:27
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] Подготовка к отзыву сертификата"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:20
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] Подготовка конфигураций lego"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:33
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] Перезагрузка nginx"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:28
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] Отзыв завершен"
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:22
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] Отзыв сертификата"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:41
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] Отзыв старого сертификата"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] Настройка провайдера проверки DNS01"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:25
 msgid "[Nginx UI] Setting environment variables"
 msgstr "[Nginx UI] Установка переменных окружения"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:15
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] Настройка провайдера HTTP01-проверки"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:6
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] Запись закрытого ключа сертификата на диск"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:42
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Запись сертификата на диск"
 
@@ -142,7 +143,7 @@ msgstr "Пользователь ACME"
 #: src/views/environments/list/envColumns.tsx:97
 #: src/views/nginx_log/NginxLogList.vue:46
 #: src/views/notification/notificationColumns.tsx:66
-#: src/views/preference/components/ExternalNotify/columns.ts:46
+#: src/views/preference/components/ExternalNotify/columns.tsx:59
 #: src/views/preference/tabs/AuthSettings.vue:30
 #: src/views/site/site_list/columns.tsx:120 src/views/stream/StreamList.vue:74
 #: src/views/user/userColumns.tsx:60
@@ -210,7 +211,8 @@ msgstr "Расширенный режим"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:99
 msgid "Afterwards, refresh this page and click add passkey again."
-msgstr "После этого обновите эту страницу и снова нажмите «Добавить ключ доступа»."
+msgstr ""
+"После этого обновите эту страницу и снова нажмите «Добавить ключ доступа»."
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:115
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
@@ -500,8 +502,7 @@ msgstr "Кэш"
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:178
 msgid "Cache items not accessed within this time will be removed"
 msgstr ""
-"Элементы кэша, к которым не обращались в течение этого времени, будут "
-"удалены"
+"Элементы кэша, к которым не обращались в течение этого времени, будут удалены"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:350
 msgid "Cache loader processing time threshold"
@@ -618,7 +619,7 @@ msgstr "Сертификат истёк"
 msgid "Certificate Expiring Soon"
 msgstr "Сертификат скоро истекает"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:39
 msgid "Certificate not found: %{error}"
 msgstr "Сертификат не найден: %{error}"
 
@@ -643,7 +644,7 @@ msgstr "Интервал обновления сертификата"
 msgid "Certificate renewed successfully"
 msgstr "Сертификат успешно продлен"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:32
 msgid "Certificate revoked successfully"
 msgstr "Сертификат успешно отозван"
 
@@ -701,11 +702,11 @@ msgstr "Проверить"
 msgid "Check again"
 msgstr "Проверить повторно"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:23
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v "
-"/var/run/docker.sock:/var/run/docker.sock`."
+"Docker Image, please make sure the docker socket is mounted like this: `-v /"
+"var/run/docker.sock:/var/run/docker.sock`."
 msgstr ""
 "Проверьте, существует ли /var/run/docker.sock. Если вы используете "
 "официальный образ Docker Nginx UI, убедитесь, что сокет Docker подключен "
@@ -719,11 +720,11 @@ msgstr ""
 "Проверьте, включен ли HTTPS. Использование HTTP вне localhost небезопасно и "
 "препятствует использованию Passkeys и функций буфера обмена"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:38
 msgid "Check if the nginx access log path exists"
 msgstr "Проверить, существует ли путь к журналу доступа nginx"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:31
 msgid "Check if the nginx configuration directory exists"
 msgstr "Проверить, существует ли каталог конфигурации nginx"
 
@@ -731,27 +732,27 @@ msgstr "Проверить, существует ли каталог конфи�
 msgid "Check if the nginx configuration entry file exists"
 msgstr "Проверить, существует ли файл конфигурации nginx"
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:14
 msgid "Check if the nginx error log path exists"
 msgstr "Проверить, существует ли путь к журналу ошибок nginx"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:12
 msgid "Check if the nginx PID path exists"
 msgstr "Проверить, существует ли путь к PID Nginx"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:45
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "Проверить, включает ли файл nginx.conf директорию conf.d"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:48
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "Проверить, включает ли nginx.conf каталог sites-enabled"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:17
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "Проверить, включает ли nginx.conf каталог streams-enabled"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:43
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory"
@@ -761,8 +762,8 @@ msgstr ""
 
 #: src/language/generate.ts:35
 msgid ""
-"Check if the streams-available and streams-enabled directories are under "
-"the nginx configuration directory"
+"Check if the streams-available and streams-enabled directories are under the "
+"nginx configuration directory"
 msgstr ""
 "Проверьте, находятся ли каталоги streams-available и streams-enabled в "
 "каталоге конфигурации nginx"
@@ -1003,7 +1004,7 @@ msgstr ""
 #: src/views/environments/group/columns.ts:31
 #: src/views/notification/notificationColumns.tsx:45
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
-#: src/views/preference/components/ExternalNotify/columns.ts:41
+#: src/views/preference/components/ExternalNotify/columns.tsx:54
 #: src/views/user/userColumns.tsx:48
 msgid "Created at"
 msgstr "Создан в"
@@ -1338,7 +1339,7 @@ msgstr "Хотите удалить этот сервер?"
 msgid "Docker client not initialized"
 msgstr "Клиент Docker не инициализирован"
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:19
 msgid "Docker socket exists"
 msgstr "Сокет Docker существует"
 
@@ -1358,7 +1359,8 @@ msgstr "Домен"
 
 #: src/views/certificate/CertificateEditor.vue:112
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
-msgstr "Список доменов пуст, попробуйте заново создать авто-сертификат для %{config}"
+msgstr ""
+"Список доменов пуст, попробуйте заново создать авто-сертификат для %{config}"
 
 #: src/language/constants.ts:27
 msgid "Download latest release error"
@@ -1604,7 +1606,7 @@ msgid "External Docker Container"
 msgstr "Внешний контейнер Docker"
 
 #: src/views/preference/Preference.vue:58
-#: src/views/preference/tabs/ExternalNotify.vue:10
+#: src/views/preference/tabs/ExternalNotify.vue:9
 msgid "External Notify"
 msgstr "Внешнее уведомление"
 
@@ -1740,7 +1742,7 @@ msgstr "Не удалось расшифровать каталог Nginx UI: {0
 msgid "Failed to delete certificate"
 msgstr "Не удалось удалить сертификат"
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:9
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Не удалось удалить сертификат из базы данных: %{error}"
 
@@ -1884,7 +1886,7 @@ msgstr "Не удалось восстановить файлы пользова
 msgid "Failed to revoke certificate"
 msgstr "Не удалось отозвать сертификат"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:46
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Не удалось отозвать сертификат: %{error}"
 
@@ -1941,8 +1943,8 @@ msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
 msgstr ""
-"Следуйте инструкциям в всплывающем окне, чтобы завершить процесс "
-"регистрации ключа доступа."
+"Следуйте инструкциям в всплывающем окне, чтобы завершить процесс регистрации "
+"ключа доступа."
 
 #: src/views/preference/tabs/NodeSettings.vue:42
 #: src/views/preference/tabs/NodeSettings.vue:54
@@ -2033,7 +2035,8 @@ msgstr "Скрыть"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:87
 msgid "Higher value means better connection reuse"
-msgstr "Более высокое значение означает лучшее повторное использование соединения"
+msgstr ""
+"Более высокое значение означает лучшее повторное использование соединения"
 
 #: src/views/config/ConfigEditor.vue:254
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
@@ -2086,11 +2089,13 @@ msgstr ""
 msgid ""
 "If you want to automatically revoke the old certificate, please enable this "
 "option."
-msgstr "Если вы хотите автоматически отозвать старый сертификат, включите эту опцию."
+msgstr ""
+"Если вы хотите автоматически отозвать старый сертификат, включите эту опцию."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:70
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
-msgstr "Если ваш браузер поддерживает WebAuthn Passkey, появится диалоговое окно."
+msgstr ""
+"Если ваш браузер поддерживает WebAuthn Passkey, появится диалоговое окно."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:107
 msgid ""
@@ -2271,8 +2276,8 @@ msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
 "with a password manager."
 msgstr ""
-"Храните ваши коды восстановления так же безопасно, как и пароль. "
-"Рекомендуем сохранить их в менеджере паролей."
+"Храните ваши коды восстановления так же безопасно, как и пароль. Рекомендуем "
+"сохранить их в менеджере паролей."
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:60
 msgid "Keepalive Timeout"
@@ -2283,7 +2288,7 @@ msgstr "Таймаут Keepalive"
 msgid "Key Type"
 msgstr "Тип ключа"
 
-#: src/views/preference/components/ExternalNotify/columns.ts:29
+#: src/views/preference/components/ExternalNotify/columns.tsx:30
 msgid "Language"
 msgstr "Язык"
 
@@ -2399,16 +2404,15 @@ msgstr "Локации"
 msgid "Log"
 msgstr "Журнал"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:4
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
-"docker container, please refer to "
-"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
+"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
+"nginx-log.html for more information."
 msgstr ""
 "Файл журнала %{log_path} не является обычным файлом. Если вы используете "
-"nginx-ui в контейнере Docker, обратитесь к "
-"https://nginxui.com/zh_CN/guide/config-nginx-log.html для получения "
-"дополнительной информации."
+"nginx-ui в контейнере Docker, обратитесь к https://nginxui.com/zh_CN/guide/"
+"config-nginx-log.html для получения дополнительной информации."
 
 #: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:64
 msgid "Log List"
@@ -2432,18 +2436,18 @@ msgstr "Прокрутка"
 
 #: src/views/preference/tabs/LogrotateSettings.vue:13
 msgid ""
-"Logrotate, by default, is enabled in most mainstream Linux distributions "
-"for users who install Nginx UI on the host machine, so you don't need to "
-"modify the parameters on this page. For users who install Nginx UI using "
-"Docker containers, you can manually enable this option. The crontab task "
-"scheduler of Nginx UI will execute the logrotate command at the interval "
-"you set in minutes."
+"Logrotate, by default, is enabled in most mainstream Linux distributions for "
+"users who install Nginx UI on the host machine, so you don't need to modify "
+"the parameters on this page. For users who install Nginx UI using Docker "
+"containers, you can manually enable this option. The crontab task scheduler "
+"of Nginx UI will execute the logrotate command at the interval you set in "
+"minutes."
 msgstr ""
 "Logrotate по умолчанию включен в большинстве основных дистрибутивов Linux "
 "для пользователей, которые устанавливают Nginx UI на хост-машину, поэтому "
-"вам не нужно изменять параметры на этой странице. Для пользователей, "
-"которые устанавливают Nginx UI с использованием Docker-контейнеров, вы "
-"можете вручную включить эту опцию. Планировщик задач crontab Nginx UI будет "
+"вам не нужно изменять параметры на этой странице. Для пользователей, которые "
+"устанавливают Nginx UI с использованием Docker-контейнеров, вы можете "
+"вручную включить эту опцию. Планировщик задач crontab Nginx UI будет "
 "выполнять команду logrotate с интервалом, который вы установите в минутах."
 
 #: src/views/site/components/SiteStatusSegmented.vue:138
@@ -2692,7 +2696,7 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Путь для Nginx Access Log"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:13
 msgid "Nginx access log path exists"
 msgstr "Путь к журналу доступа Nginx существует"
 
@@ -2720,11 +2724,11 @@ msgstr "Конфигурация Nginx не включает stream-enabled"
 msgid "Nginx config directory is not set"
 msgstr "Каталог конфигурации Nginx не задан"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:36
 msgid "Nginx configuration directory exists"
 msgstr "Каталог конфигурации Nginx существует"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:49
 msgid "Nginx configuration entry file exists"
 msgstr "Файл конфигурации Nginx существует"
 
@@ -2762,7 +2766,7 @@ msgstr "Уровень использования CPU Nginx"
 msgid "Nginx Error Log Path"
 msgstr "Путь для Nginx Error Log"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:8
 msgid "Nginx error log path exists"
 msgstr "Путь к журналу ошибок Nginx существует"
 
@@ -2799,7 +2803,7 @@ msgstr "Использование памяти Nginx"
 msgid "Nginx PID Path"
 msgstr "Путь к PID Nginx"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:50
 msgid "Nginx PID path exists"
 msgstr "Путь PID Nginx существует"
 
@@ -2855,21 +2859,21 @@ msgstr "Конфигурация Nginx UI была восстановлена"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:336
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in "
-"a few seconds."
+"Nginx UI configuration has been restored and will restart automatically in a "
+"few seconds."
 msgstr ""
 "Конфигурация Nginx UI была восстановлена и автоматически перезапустится "
 "через несколько секунд."
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:18
 msgid "Nginx.conf includes conf.d directory"
 msgstr "Nginx.conf включает каталог conf.d"
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:44
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "Nginx.conf включает каталог sites-enabled"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:16
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf включает каталог streams-enabled"
 
@@ -3217,8 +3221,8 @@ msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
 msgstr ""
-"Пожалуйста, включите модуль stub_status, чтобы получать статистику "
-"запросов, количество соединений и т. д."
+"Пожалуйста, включите модуль stub_status, чтобы получать статистику запросов, "
+"количество соединений и т. д."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:69
 msgid ""
@@ -3248,8 +3252,8 @@ msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
 msgstr ""
-"Пожалуйста, заполните учетные данные API, предоставленные вашим "
-"DNS-провайдером."
+"Пожалуйста, заполните учетные данные API, предоставленные вашим DNS-"
+"провайдером."
 
 #: src/components/StdDesign/StdDataDisplay/StdCurd.vue:106
 msgid "Please fill in the required fields"
@@ -3267,8 +3271,8 @@ msgstr ""
 #: src/components/Notification/notifications.ts:166
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to "
-"prevent lockout."
+"Please generate new recovery codes in the preferences immediately to prevent "
+"lockout."
 msgstr ""
 "Пожалуйста, немедленно сгенерируйте новые коды восстановления в настройках, "
 "чтобы избежать блокировки."
@@ -3316,7 +3320,8 @@ msgid "Please log in."
 msgstr "Пожалуйста, войдите в систему."
 
 #: src/views/certificate/DNSCredential.vue:62
-msgid "Please note that the unit of time configurations below are all in seconds."
+msgid ""
+"Please note that the unit of time configurations below are all in seconds."
 msgstr ""
 "Обратите внимание, что единица измерения времени в конфигурациях ниже "
 "указана в секундах."
@@ -3453,8 +3458,8 @@ msgid ""
 "Recovery codes are used to access your account when you lose access to your "
 "2FA device. Each code can only be used once."
 msgstr ""
-"Коды восстановления используются для доступа к аккаунту при утере "
-"2FA-устройства. Каждый код можно использовать только один раз."
+"Коды восстановления используются для доступа к аккаунту при утере 2FA-"
+"устройства. Каждый код можно использовать только один раз."
 
 #: src/views/preference/tabs/CertSettings.vue:40
 msgid "Recursive Nameservers"
@@ -3543,7 +3548,8 @@ msgstr "Удаленная перезагрузка Nginx успешно вып�
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:84
 msgid "Reload request failed, please check your network connection"
-msgstr "Не удалось выполнить запрос на перезагрузку, проверьте подключение к сети"
+msgstr ""
+"Не удалось выполнить запрос на перезагрузку, проверьте подключение к сети"
 
 #: src/components/NginxControl/NginxControl.vue:73
 msgid "Reloading"
@@ -3965,16 +3971,16 @@ msgstr "Настройка провайдера проверки HTTP01"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 "Settings.NginxLogSettings.AccessLogPath пуст, дополнительную информацию см. "
 "на https://nginxui.com/guide/config-nginx.html"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
-"https://nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 "Settings.NginxLogSettings.ErrorLogPath пуст, дополнительную информацию см. "
 "на https://nginxui.com/guide/config-nginx.html"
@@ -4019,7 +4025,7 @@ msgstr "Журналы сайта"
 msgid "Site not found"
 msgstr "Сайт не найден"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:11
 msgid "Sites directory exists"
 msgstr "Каталог сайтов существует"
 
@@ -4053,7 +4059,8 @@ msgstr "Содержимое SSL-сертификата"
 
 #: src/constants/errors/system.ts:8
 msgid "SSL certificate file must be under Nginx configuration directory: {0}"
-msgstr "Файл SSL-сертификата должен находиться в каталоге конфигурации Nginx: {0}"
+msgstr ""
+"Файл SSL-сертификата должен находиться в каталоге конфигурации Nginx: {0}"
 
 #: src/constants/errors/system.ts:6
 msgid "SSL certificate file not found"
@@ -4132,7 +4139,7 @@ msgstr "Поток включен"
 msgid "Stream not found"
 msgstr "Поток не найден"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:30
 msgid "Streams directory exists"
 msgstr "Каталог потоков существует"
 
@@ -4155,14 +4162,14 @@ msgstr "Успех"
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:13
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to "
-"this link to write the corresponding configuration file: "
-"https://nginxui.com/guide/nginx-proxy-example.html"
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
+"link to write the corresponding configuration file: https://nginxui.com/"
+"guide/nginx-proxy-example.html"
 msgstr ""
 "Поддерживает связь с бэкендом через протокол WebSocket. Если ваш Nginx UI "
 "используется через обратный прокси Nginx, обратитесь к этой ссылке, чтобы "
-"написать соответствующий конфигурационный файл: "
-"https://nginxui.com/guide/nginx-proxy-example.html"
+"написать соответствующий конфигурационный файл: https://nginxui.com/guide/"
+"nginx-proxy-example.html"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:197
 #: src/components/SystemRestore/SystemRestoreContent.vue:274
@@ -4316,11 +4323,10 @@ msgstr "Введенные данные не являются ключом SSL �
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in "
-"settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
 msgstr ""
-"Путь к журналу не находится под путями в "
-"settings.NginxSettings.LogDirWhiteList"
+"Путь к журналу не находится под путями в settings.NginxSettings."
+"LogDirWhiteList"
 
 #: src/views/preference/tabs/OpenAISettings.vue:23
 #: src/views/preference/tabs/OpenAISettings.vue:89
@@ -4332,7 +4338,8 @@ msgstr ""
 "двоеточия и точки."
 
 #: src/views/preference/tabs/OpenAISettings.vue:90
-msgid "The model used for code completion, if not set, the chat model will be used."
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 "Модель, используемая для завершения кода. Если не задана, будет "
 "использоваться чат-модель."
@@ -4380,8 +4387,8 @@ msgid ""
 "The server_name in the current configuration must be the domain name you "
 "need to get the certificate, supportmultiple domains."
 msgstr ""
-"server_name в текущей конфигурации должен быть доменным именем, для "
-"которого вам нужно получить сертификат, поддержка нескольких доменов."
+"server_name в текущей конфигурации должен быть доменным именем, для которого "
+"вам нужно получить сертификат, поддержка нескольких доменов."
 
 #: src/views/preference/tabs/CertSettings.vue:22
 #: src/views/preference/tabs/HTTPSettings.vue:14
@@ -4411,8 +4418,8 @@ msgid ""
 "your password and second factors. If you cannot find these codes, you will "
 "lose access to your account."
 msgstr ""
-"Эти коды являются последним средством для доступа к вашему аккаунту, если "
-"вы потеряете пароль и вторые факторы. Если вы не сможете найти эти коды, вы "
+"Эти коды являются последним средством для доступа к вашему аккаунту, если вы "
+"потеряете пароль и вторые факторы. Если вы не сможете найти эти коды, вы "
 "потеряете доступ к своему аккаунту."
 
 #: src/views/certificate/CertificateEditor.vue:102
@@ -4443,7 +4450,8 @@ msgid "This field should not be empty"
 msgstr "Это поле обязательно к заполнению"
 
 #: src/constants/form_errors.ts:6
-msgid "This field should only contain letters, unicode characters, numbers, and -_."
+msgid ""
+"This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "Это поле должно содержать только буквы, символы Юникода, цифры и -_."
 
 #: src/views/dashboard/NginxDashBoard.vue:150
@@ -4451,8 +4459,8 @@ msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
 msgstr ""
-"Этот модуль предоставляет статистику запросов Nginx, количество соединений "
-"и другие данные. После включения вы сможете просматривать статистику "
+"Этот модуль предоставляет статистику запросов Nginx, количество соединений и "
+"другие данные. После включения вы сможете просматривать статистику "
 "производительности."
 
 #: src/views/certificate/components/RemoveCert.vue:103
@@ -4468,8 +4476,8 @@ msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
 msgstr ""
-"Этот токен будет показан только один раз и не может быть восстановлен "
-"позже. Пожалуйста, сохраните его в надежном месте."
+"Этот токен будет показан только один раз и не может быть восстановлен позже. "
+"Пожалуйста, сохраните его в надежном месте."
 
 #: src/constants/form_errors.ts:4
 msgid "This value is already taken"
@@ -4481,8 +4489,8 @@ msgid ""
 "This will restore all Nginx configuration files. Nginx will restart after "
 "the restoration is complete."
 msgstr ""
-"Это восстановит все конфигурационные файлы Nginx. Nginx перезапустится "
-"после завершения восстановления."
+"Это восстановит все конфигурационные файлы Nginx. Nginx перезапустится после "
+"завершения восстановления."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:238
 #: src/components/SystemRestore/SystemRestoreContent.vue:315
@@ -4494,7 +4502,8 @@ msgstr ""
 "после завершения восстановления."
 
 #: src/views/environments/list/BatchUpgrader.vue:182
-msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid ""
+"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 "Это обновит или переустановит интерфейс Nginx на %{nodeNames} до версии "
 "%{version}."
@@ -4540,15 +4549,15 @@ msgid ""
 "and restart Nginx UI."
 msgstr ""
 "Для обеспечения безопасности конфигурацию WebAuthn нельзя добавить через "
-"интерфейс. Пожалуйста, вручную настройте следующее в файле конфигурации "
-"app.ini и перезапустите Nginx UI."
+"интерфейс. Пожалуйста, вручную настройте следующее в файле конфигурации app."
+"ini и перезапустите Nginx UI."
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:34
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
-"add a location which can proxy the request from authority to backend, and "
-"we need to save this file and reload the Nginx. Are you sure you want to "
+"add a location which can proxy the request from authority to backend, and we "
+"need to save this file and reload the Nginx. Are you sure you want to "
 "continue?"
 msgstr ""
 "Чтобы убедиться, что автоматическое обновление сертификата может работать "
@@ -4562,9 +4571,9 @@ msgid ""
 "provide an OpenAI-compatible API endpoint, so just set the baseUrl to your "
 "local API."
 msgstr ""
-"Чтобы использовать локальную большую модель, разверните её с помощью "
-"ollama, vllm или lmdeploy. Они предоставляют API-эндпоинт, совместимый с "
-"OpenAI, поэтому просто установите baseUrl на ваш локальный API."
+"Чтобы использовать локальную большую модель, разверните её с помощью ollama, "
+"vllm или lmdeploy. Они предоставляют API-эндпоинт, совместимый с OpenAI, "
+"поэтому просто установите baseUrl на ваш локальный API."
 
 #: src/views/dashboard/NginxDashBoard.vue:55
 msgid "Toggle failed"
@@ -4629,7 +4638,7 @@ msgstr "Требуется двухфакторная аутентификаци
 #: src/views/certificate/CertificateList/certColumns.tsx:25
 #: src/views/nginx_log/NginxLogList.vue:14
 #: src/views/notification/notificationColumns.tsx:9
-#: src/views/preference/components/ExternalNotify/columns.ts:17
+#: src/views/preference/components/ExternalNotify/columns.tsx:18
 msgid "Type"
 msgstr "Тип"
 
@@ -4807,11 +4816,11 @@ msgstr ""
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:140
 msgid ""
-"We will remove the HTTPChallenge configuration from this file and reload "
-"the Nginx. Are you sure you want to continue?"
+"We will remove the HTTPChallenge configuration from this file and reload the "
+"Nginx. Are you sure you want to continue?"
 msgstr ""
-"Мы удалим конфигурацию HTTPChallenge из этого файла и перезагрузим Nginx. "
-"Вы уверены, что хотите продолжить?"
+"Мы удалим конфигурацию HTTPChallenge из этого файла и перезагрузим Nginx. Вы "
+"уверены, что хотите продолжить?"
 
 #: src/views/preference/tabs/AuthSettings.vue:97
 msgid "Webauthn"
@@ -4832,8 +4841,8 @@ msgid ""
 "Pebble as CA."
 msgstr ""
 "При включении Nginx UI будет автоматически перерегистрировать пользователей "
-"при запуске. Обычно не включайте эту функцию, если только вы не находитесь "
-"в среде разработки и используете Pebble в качестве CA."
+"при запуске. Обычно не включайте эту функцию, если только вы не находитесь в "
+"среде разработки и используете Pebble в качестве CA."
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:61
 #: src/views/stream/components/RightPanel/Basic.vue:95
@@ -4841,8 +4850,8 @@ msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "Node Group and the nodes selected below will be synchronized."
 msgstr ""
-"При включении/отключении, удалении или сохранении этого сайта узлы, "
-"заданные в Группе узлов, и узлы, выбранные ниже, будут синхронизированы."
+"При включении/отключении, удалении или сохранении этого сайта узлы, заданные "
+"в Группе узлов, и узлы, выбранные ниже, будут синхронизированы."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:140
 msgid ""
@@ -4900,8 +4909,8 @@ msgstr "Да"
 
 #: src/views/terminal/Terminal.vue:135
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a non-"
+"localhost domain. This may expose sensitive information."
 msgstr ""
 "Вы обращаетесь к этому терминалу через небезопасное HTTP-соединение в "
 "домене, отличном от localhost. Это может раскрыть конфиденциальную "
@@ -4927,10 +4936,12 @@ msgstr "Теперь вы можете закрыть это диалогово�
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
 "passkey."
-msgstr "Вы не настроили параметры WebAuthn, поэтому не можете добавить ключ доступа."
+msgstr ""
+"Вы не настроили параметры WebAuthn, поэтому не можете добавить ключ доступа."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:81
-msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid ""
+"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
 "Вы еще не включили двухфакторную аутентификацию. Пожалуйста, включите её, "
 "чтобы сгенерировать коды восстановления."
@@ -4988,7 +4999,8 @@ msgstr "Ваши ключи доступа"
 #~ msgstr "Ошибка формата %{msg}"
 
 #~ msgid "Failed to save, syntax error(s) was detected in the configuration."
-#~ msgstr "Не удалось сохранить, обнаружены синтаксические ошибки в конфигурации."
+#~ msgstr ""
+#~ "Не удалось сохранить, обнаружены синтаксические ошибки в конфигурации."
 
 #, fuzzy
 #~ msgid "Access Token"
@@ -5051,13 +5063,16 @@ msgstr "Ваши ключи доступа"
 #~ "Синхронизация конфигурации %{cert_name} с %{env_name} не удалась, "
 #~ "пожалуйста, обновите удаленный Nginx UI до последней версии"
 
-#~ msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: %{resp}"
-#~ msgstr ""
-#~ "Переименование %{orig_path} в %{new_path} на %{env_name} не удалось, ответ: "
+#~ msgid ""
+#~ "Rename %{orig_path} to %{new_path} on %{env_name} failed, response: "
 #~ "%{resp}"
+#~ msgstr ""
+#~ "Переименование %{orig_path} в %{new_path} на %{env_name} не удалось, "
+#~ "ответ: %{resp}"
 
 #, fuzzy
-#~ msgid "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
+#~ msgid ""
+#~ "Rename Site %{site} to %{new_site} on %{node} error, response: %{resp}"
 #~ msgstr "Переименование %{orig_path} в %{new_path} на %{env_name} успешно"
 
 #, fuzzy
@@ -5073,15 +5088,16 @@ msgstr "Ваши ключи доступа"
 #~ "Синхронизация сертификата %{cert_name} с %{env_name} не удалась, "
 #~ "пожалуйста, обновите удаленный интерфейс Nginx до последней версии"
 
-#~ msgid "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
+#~ msgid ""
+#~ "Sync Certificate %{cert_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr ""
 #~ "Синхронизация сертификата %{cert_name} с %{env_name} не удалась, ответ: "
 #~ "%{resp}"
 
 #~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr ""
-#~ "Синхронизация конфигурации %{config_name} с %{env_name} не удалась, ответ: "
-#~ "%{resp}"
+#~ "Синхронизация конфигурации %{config_name} с %{env_name} не удалась, "
+#~ "ответ: %{resp}"
 
 #~ msgid "Target"
 #~ msgstr "Цель"
@@ -5090,8 +5106,8 @@ msgstr "Ваши ключи доступа"
 #~ msgstr "Файл"
 
 #~ msgid ""
-#~ "If you lose your mobile phone, you can use the recovery code to reset your "
-#~ "2FA."
+#~ "If you lose your mobile phone, you can use the recovery code to reset "
+#~ "your 2FA."
 #~ msgstr ""
 #~ "Если вы потеряете свой мобильный телефон, вы можете использовать код "
 #~ "восстановления для сброса 2FA."
@@ -5105,10 +5121,11 @@ msgstr "Ваши ключи доступа"
 #~ msgid "Server error"
 #~ msgstr "Ошибка сервера"
 
-#~ msgid "The recovery code is only displayed once, please save it in a safe place."
+#~ msgid ""
+#~ "The recovery code is only displayed once, please save it in a safe place."
 #~ msgstr ""
-#~ "Код восстановления отображается только один раз, пожалуйста, сохраните его "
-#~ "в безопасном месте."
+#~ "Код восстановления отображается только один раз, пожалуйста, сохраните "
+#~ "его в безопасном месте."
 
 #~ msgid "Too many login failed attempts, please try again later"
 #~ msgstr "Слишком много неудачных попыток входа, попробуйте позже"
