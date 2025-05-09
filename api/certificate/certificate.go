@@ -103,7 +103,7 @@ func AddCert(c *gin.Context) {
 			"revoke_old":                 "omitempty",
 		}).
 		BeforeExecuteHook(func(ctx *cosy.Ctx[model.Cert]) {
-			sslCertificate := ctx.Payload["ssl_certificate"].(string)
+			sslCertificate := cast.ToString(ctx.Payload["ssl_certificate"])
 			// Detect and set certificate type
 			if sslCertificate != "" {
 				keyType, err := cert.GetKeyType(sslCertificate)
@@ -125,18 +125,22 @@ func AddCert(c *gin.Context) {
 			}
 		}).
 		ExecutedHook(func(ctx *cosy.Ctx[model.Cert]) {
-			content := &cert.Content{
-				SSLCertificatePath:    ctx.Model.SSLCertificatePath,
-				SSLCertificateKeyPath: ctx.Model.SSLCertificateKeyPath,
-				SSLCertificate:        ctx.Payload["ssl_certificate"].(string),
-				SSLCertificateKey:     ctx.Payload["ssl_certificate_key"].(string),
+			sslCertificate := cast.ToString(ctx.Payload["ssl_certificate"])
+			sslCertificateKey := cast.ToString(ctx.Payload["ssl_certificate_key"])
+			if sslCertificate != "" && sslCertificateKey != "" {
+				content := &cert.Content{
+					SSLCertificatePath:    ctx.Model.SSLCertificatePath,
+					SSLCertificateKeyPath: ctx.Model.SSLCertificateKeyPath,
+					SSLCertificate:        sslCertificate,
+					SSLCertificateKey:     sslCertificateKey,
+				}
+				err := content.WriteFile()
+				if err != nil {
+					ctx.AbortWithError(err)
+					return
+				}
 			}
-			err := content.WriteFile()
-			if err != nil {
-				ctx.AbortWithError(err)
-				return
-			}
-			err = cert.SyncToRemoteServer(&ctx.Model)
+			err := cert.SyncToRemoteServer(&ctx.Model)
 			if err != nil {
 				notification.Error("Sync Certificate Error", err.Error(), nil)
 				return
@@ -165,7 +169,7 @@ func ModifyCert(c *gin.Context) {
 			"revoke_old":                 "omitempty",
 		}).
 		BeforeExecuteHook(func(ctx *cosy.Ctx[model.Cert]) {
-			sslCertificate := ctx.Payload["ssl_certificate"].(string)
+			sslCertificate := cast.ToString(ctx.Payload["ssl_certificate"])
 			// Detect and set certificate type
 			if sslCertificate != "" {
 				keyType, err := cert.GetKeyType(sslCertificate)
@@ -187,11 +191,14 @@ func ModifyCert(c *gin.Context) {
 			}
 		}).
 		ExecutedHook(func(ctx *cosy.Ctx[model.Cert]) {
+			sslCertificate := cast.ToString(ctx.Payload["ssl_certificate"])
+			sslCertificateKey := cast.ToString(ctx.Payload["ssl_certificate_key"])
+
 			content := &cert.Content{
 				SSLCertificatePath:    ctx.Model.SSLCertificatePath,
 				SSLCertificateKeyPath: ctx.Model.SSLCertificateKeyPath,
-				SSLCertificate:        ctx.Payload["ssl_certificate"].(string),
-				SSLCertificateKey:     ctx.Payload["ssl_certificate_key"].(string),
+				SSLCertificate:        sslCertificate,
+				SSLCertificateKey:     sslCertificateKey,
 			}
 			err := content.WriteFile()
 			if err != nil {
@@ -203,7 +210,6 @@ func ModifyCert(c *gin.Context) {
 				notification.Error("Sync Certificate Error", err.Error(), nil)
 				return
 			}
-
 		}).
 		SetNextHandler(GetCert).
 		Modify()
