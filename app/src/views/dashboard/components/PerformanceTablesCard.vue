@@ -1,7 +1,8 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import type { NginxPerformanceInfo } from '@/api/ngx'
 import type { TableColumnType } from 'ant-design-vue'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import ModulesTable from './ModulesTable.vue'
 
 const props = defineProps<{
   nginxInfo: NginxPerformanceInfo
@@ -209,6 +210,17 @@ const maxRPS = computed(() => {
           </AAlert>
         </div>
       </ATabPane>
+
+      <!-- Modules information -->
+      <ATabPane key="modules" :tab="$gettext('Modules')">
+        <ModulesTable />
+      </ATabPane>
     </ATabs>
   </ACard>
 </template>
+
+<style lang="less" scoped>
+:deep(.ant-tabs-tab) {
+  padding-top: 0;
+}
+</style>

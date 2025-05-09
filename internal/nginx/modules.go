@@ -23,7 +23,7 @@ type Module struct {
 
 // modulesCache stores the cached modules list and related metadata
 var (
-	modulesCache     = orderedmap.NewOrderedMap[string, Module]()
+	modulesCache     = orderedmap.NewOrderedMap[string, *Module]()
 	modulesCacheLock sync.RWMutex
 	lastPIDPath      string
 	lastPIDModTime   time.Time
@@ -35,7 +35,7 @@ func clearModulesCache() {
 	modulesCacheLock.Lock()
 	defer modulesCacheLock.Unlock()
 
-	modulesCache = orderedmap.NewOrderedMap[string, Module]()
+	modulesCache = orderedmap.NewOrderedMap[string, *Module]()
 	lastPIDPath = ""
 	lastPIDModTime = time.Time{}
 	lastPIDSize = 0
@@ -119,16 +119,15 @@ func updateDynamicModulesStatus() {
 	for key := range modulesCache.Keys() {
 		// If the module is already marked as dynamic, check if it's actually loaded
 		if loadedDynamicModules[key] {
-			modulesCache.Set(key, Module{
-				Name:    key,
-				Dynamic: true,
-				Loaded:  true,
-			})
+			module, ok := modulesCache.Get(key)
+			if ok {
+				module.Loaded = true
+			}
 		}
 	}
 }
 
-func GetModules() *orderedmap.OrderedMap[string, Module] {
+func GetModules() *orderedmap.OrderedMap[string, *Module] {
 	modulesCacheLock.RLock()
 	cachedModules := modulesCache
 	modulesCacheLock.RUnlock()
@@ -141,52 +140,61 @@ func GetModules() *orderedmap.OrderedMap[string, Module] {
 	// If PID has changed or we don't have cached modules, get fresh modules
 	out := getNginxV()
 
-	// Regular expression to find built-in modules in nginx -V output
-	builtinRe := regexp.MustCompile(`--with-([a-zA-Z0-9_-]+)(_module)?`)
-	builtinMatches := builtinRe.FindAllStringSubmatch(out, -1)
-
-	// Extract built-in module names from matches and put in map for quick lookup
-	moduleMap := make(map[string]bool)
-	for _, match := range builtinMatches {
-		if len(match) > 1 {
-			module := match[1]
-			moduleMap[module] = true
-		}
-	}
-
-	// Regular expression to find dynamic modules in nginx -V output
-	dynamicRe := regexp.MustCompile(`--with-([a-zA-Z0-9_-]+)(_module)?=dynamic`)
-	dynamicMatches := dynamicRe.FindAllStringSubmatch(out, -1)
-
-	// Extract dynamic module names from matches
-	for _, match := range dynamicMatches {
-		if len(match) > 1 {
-			module := match[1]
-			// Only add if not already in list (to avoid duplicates)
-			if !moduleMap[module] {
-				moduleMap[module] = true
-			}
-		}
-	}
+	// Regular expression to find module parameters with values
+	paramRe := regexp.MustCompile(`--with-([a-zA-Z0-9_-]+)(?:_module)?(?:=([^"'\s]+|"[^"]*"|'[^']*'))?`)
+	paramMatches := paramRe.FindAllStringSubmatch(out, -1)
 
 	// Update cache
 	modulesCacheLock.Lock()
-	modulesCache = orderedmap.NewOrderedMap[string, Module]()
-	for module := range moduleMap {
-		// Mark modules as built-in (loaded) or dynamic (potentially not loaded)
-		if strings.Contains(out, "--with-"+module+"=dynamic") {
-			modulesCache.Set(module, Module{
+	modulesCache = orderedmap.NewOrderedMap[string, *Module]()
+
+	// Extract module names and parameters from matches
+	for _, match := range paramMatches {
+		if len(match) > 1 {
+			module := match[1]
+			var params string
+
+			// Check if there's a parameter value
+			if len(match) > 2 && match[2] != "" {
+				params = match[2]
+				// Remove surrounding quotes if present
+				params = strings.TrimPrefix(params, "'")
+				params = strings.TrimPrefix(params, "\"")
+				params = strings.TrimSuffix(params, "'")
+				params = strings.TrimSuffix(params, "\"")
+			}
+
+			// Special handling for configuration options like cc-opt, not actual modules
+			if module == "cc-opt" || module == "ld-opt" || module == "prefix" {
+				modulesCache.Set(module, &Module{
+					Name:    module,
+					Params:  params,
+					Dynamic: false,
+					Loaded:  true,
+				})
+				continue
+			}
+
+			// Determine if the module is dynamic
+			isDynamic := false
+			if strings.Contains(out, "--with-"+module+"=dynamic") ||
+				strings.Contains(out, "--with-"+module+"_module=dynamic") {
+				isDynamic = true
+			}
+
+			if params == "dynamic" {
+				params = ""
+			}
+
+			modulesCache.Set(module, &Module{
 				Name:    module,
-				Dynamic: true,
-				Loaded:  true,
-			})
-		} else {
-			modulesCache.Set(module, Module{
-				Name:    module,
-				Dynamic: true,
+				Params:  params,
+				Dynamic: isDynamic,
+				Loaded:  !isDynamic || isDynamic, // Static modules are always loaded, dynamic need to be checked
 			})
 		}
 	}
+
 	modulesCacheLock.Unlock()
 
 	// Update dynamic modules status by checking if they're actually loaded

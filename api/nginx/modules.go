@@ -9,7 +9,7 @@ import (
 
 func GetModules(c *gin.Context) {
 	modules := nginx.GetModules()
-	modulesList := make([]nginx.Module, 0, modules.Len())
+	modulesList := make([]*nginx.Module, 0, modules.Len())
 	for _, module := range modules.AllFromFront() {
 		modulesList = append(modulesList, module)
 	}

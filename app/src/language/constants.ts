@@ -57,4 +57,7 @@ export const msg = [
 
   $gettext('All Recovery Codes Have Been Used'),
   $gettext('Please generate new recovery codes in the preferences immediately to prevent lockout.'),
+
+  $gettext('Search module name'),
+  $gettext('Search'),
 ]
