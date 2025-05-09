@@ -38,18 +38,6 @@ func CheckPIDPath() error {
 	return nil
 }
 
-// CheckSbinPath checks if the sbin path exists
-func CheckSbinPath() error {
-	path := nginx.GetSbinPath()
-	if path == "" {
-		return ErrSbinPathNotExist
-	}
-	if !helper.FileExists(path) {
-		return ErrSbinPathNotExist
-	}
-	return nil
-}
-
 // CheckAccessLogPath checks if the access log path exists
 func CheckAccessLogPath() error {
 	path := nginx.GetAccessLogPath()

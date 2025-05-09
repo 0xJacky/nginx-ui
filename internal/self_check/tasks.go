@@ -76,19 +76,28 @@ var selfCheckTasks = []*Task{
 	{
 		Key:         "NginxPID-Path",
 		Name:        translation.C("Nginx PID path exists"),
-		Description: translation.C("Check if the nginx PID path exists"),
+		Description: translation.C("Check if the nginx PID path exists. "+
+		"By default, this path is obtained from 'nginx -V'. If it cannot be obtained, an error will be reported. "+
+		"In this case, you need to modify the configuration file to specify the Nginx PID path." + 
+		"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"),
 		CheckFunc:   CheckPIDPath,
 	},
 	{
 		Key:         "NginxAccessLog-Path",
 		Name:        translation.C("Nginx access log path exists"),
-		Description: translation.C("Check if the nginx access log path exists"),
+		Description: translation.C("Check if the nginx access log path exists. "+
+		"By default, this path is obtained from 'nginx -V'. If it cannot be obtained or the obtained path does not point to a valid, "+
+		"existing file, an error will be reported. In this case, you need to modify the configuration file to specify the access log path." + 
+		"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"),
 		CheckFunc:   CheckAccessLogPath,
 	},
 	{
 		Key:         "NginxErrorLog-Path",
 		Name:        translation.C("Nginx error log path exists"),
-		Description: translation.C("Check if the nginx error log path exists"),
+		Description: translation.C("Check if the nginx error log path exists. "+
+		"By default, this path is obtained from 'nginx -V'. If it cannot be obtained or the obtained path does not point to a valid, "+
+		"existing file, an error will be reported. In this case, you need to modify the configuration file to specify the error log path." + 
+		"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"),
 		CheckFunc:   CheckErrorLogPath,
 	},
 }
@@ -114,12 +123,18 @@ func init() {
 			FixFunc:   FixNginxConfIncludeStreams,
 		})
 	}
+
 	if helper.InNginxUIOfficialDocker() {
 		selfCheckTasks = append(selfCheckTasks, &Task{
 			Name:        translation.C("Docker socket exists"),
-			Description: translation.C("Check if /var/run/docker.sock exists. If you are using Nginx UI Official " +
+			Description: translation.C("Check if /var/run/docker.sock exists. "+
+			"If you are using Nginx UI Official " +
 				"Docker Image, please make sure the docker socket is mounted like this: `-" +
-				"v /var/run/docker.sock:/var/run/docker.sock`."),
+				"v /var/run/docker.sock:/var/run/docker.sock`. "+
+				"Nginx UI official image uses /var/run/docker.sock to communicate with the host Docker Engine via Docker Client API. "+
+				"This feature is used to control Nginx in another container and perform container replacement rather than binary replacement "+
+				"during OTA upgrades of Nginx UI to ensure container dependencies are also upgraded. "+
+				"If you don't need this feature, please add the environment variable NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."),
 			CheckFunc: CheckDockerSocket,
 		})
 	}

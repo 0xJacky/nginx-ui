@@ -51,10 +51,11 @@ func InitRouter() {
 	{
 		public.InitRouter(root)
 		crypto.InitPublicRouter(root)
+		user.InitAuthRouter(root)
+		
 		system.InitPublicRouter(root)
 		system.InitBackupRestoreRouter(root)
 		system.InitSelfCheckRouter(root)
-		user.InitAuthRouter(root)
 
 		// Authorization required and not websocket request
 		g := root.Group("/", middleware.AuthRequired(), middleware.Proxy())

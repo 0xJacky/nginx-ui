@@ -7,7 +7,8 @@ import (
 )
 
 func InNginxUIOfficialDocker() bool {
-	return cast.ToBool(os.Getenv("NGINX_UI_OFFICIAL_DOCKER"))
+	return cast.ToBool(os.Getenv("NGINX_UI_OFFICIAL_DOCKER")) &&
+	!cast.ToBool(os.Getenv("NGINX_UI_IGNORE_DOCKER_SOCKET"))
 }
 
 func DockerSocketExists() bool {
