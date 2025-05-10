@@ -80,6 +80,21 @@ require (
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/OpenDNS/vegadns2client v0.0.0-20180418235048-a3fa4a771d87 // indirect
 	github.com/akamai/AkamaiOPEN-edgegrid-golang v1.2.2 // indirect
+	github.com/aws/aws-sdk-go-v2 v1.36.3 // indirect
+	github.com/aws/aws-sdk-go-v2/config v1.29.14 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.17.67 // indirect
+	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.30 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.34 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.34 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.3 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.12.3 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.12.15 // indirect
+	github.com/aws/aws-sdk-go-v2/service/lightsail v1.43.2 // indirect
+	github.com/aws/aws-sdk-go-v2/service/route53 v1.51.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.25.3 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.30.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sts v1.33.19 // indirect
+	github.com/aws/smithy-go v1.22.2 // indirect
 	github.com/baidubce/bce-sdk-go v0.9.225 // indirect
 	github.com/blinkbean/dingtalk v1.1.3 // indirect
 	github.com/boombuler/barcode v1.0.2 // indirect
@@ -95,7 +110,7 @@ require (
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/dimchansky/utfbom v1.1.1 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
-	github.com/dnsimple/dnsimple-go v1.7.0 // indirect
+	github.com/dnsimple/dnsimple-go/v4 v4.0.0 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/ebitengine/purego v0.9.0-alpha.3.0.20250507171635-5047c08daa38 // indirect
@@ -175,7 +190,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
-	github.com/namedotcom/go v0.0.0-20180403034216-08470befbe04 // indirect
+	github.com/namedotcom/go/v4 v4.0.2 // indirect
 	github.com/nrdcg/auroradns v1.1.0 // indirect
 	github.com/nrdcg/bunny-go v0.0.0-20250327222614-988a091fc7ea // indirect
 	github.com/nrdcg/desec v0.11.0 // indirect
@@ -203,7 +218,7 @@ require (
 	github.com/sagikazarmark/locafero v0.9.0 // indirect
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.33 // indirect
 	github.com/selectel/domains-go v1.1.0 // indirect
-	github.com/selectel/go-selvpcclient/v3 v3.2.1 // indirect
+	github.com/selectel/go-selvpcclient/v4 v4.1.0 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/smartystreets/go-aws-auth v0.0.0-20180515143844-0c1422d1fdb9 // indirect
@@ -232,6 +247,7 @@ require (
 	github.com/vultr/govultr/v3 v3.20.0 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	github.com/yosida95/uritemplate/v3 v3.0.2 // indirect
+	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.60.0 // indirect
@@ -276,10 +292,10 @@ require (
 
 replace (
 	code.pfad.fr/risefront => github.com/nginxui/risefront v1.2.2
-	github.com/go-acme/lego/v4 => github.com/nginxui/lego/v4 v4.0.1-0.20250508102718-fc13964ae843
-	github.com/libdns/alidns => github.com/nginxui/alidns v0.0.0-20250508032037-c002de204856
+	github.com/go-acme/lego/v4 => github.com/nginxui/lego/v4 v4.0.1-0.20250510143905-a6a4dc162d06
+	github.com/libdns/alidns => github.com/nginxui/alidns v0.0.0-20250510034447-7783387a1f8d
 	github.com/libdns/cloudflare => github.com/nginxui/cloudflare v0.0.0-20250508084008-f31918fec5ab
-	github.com/libdns/tencentcloud => github.com/nginxui/tencentcloud v0.0.0-20250508073945-ca409af99ffd
+	github.com/libdns/tencentcloud => github.com/nginxui/tencentcloud v0.0.0-20250510022134-62ee21b1b93a
 	github.com/minio/selfupdate => github.com/nginxui/selfupdate v0.0.0-20250508140228-a7dab39cec4a
 	github.com/nikoksr/notify => github.com/nginxui/notify v0.0.0-20250509000747-c76622723eb1
 	github.com/tufanbarisyildirim/gonginx => github.com/0xJacky/gonginx v0.0.0-20250421073240-35877245a353
