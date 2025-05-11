@@ -22,10 +22,7 @@ onMounted(() => {
 })
 
 function addDirective(directive: NgxDirective) {
-  if (curIdx.value >= 0)
-    ngxDirectives.value.splice(curIdx.value + 1, 0, directive)
-  else
-    ngxDirectives.value.push(directive)
+  ngxDirectives.value.push(directive)
 }
 
 function removeDirective(index: number) {

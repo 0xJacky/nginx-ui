@@ -4,11 +4,11 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "PO-Revision-Date: 2025-04-16 15:12+0000\n"
 "Last-Translator: sergio_from_tauri <dedysobr@gmail.com>\n"
-"Language-Team: Ukrainian <https://weblate.nginxui.com/projects/nginx-ui/"
-"frontend/uk/>\n"
+"Language-Team: Ukrainian "
+"<https://weblate.nginxui.com/projects/nginx-ui/frontend/uk/>\n"
 "Language: uk_UA\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
@@ -17,8 +17,8 @@ msgstr ""
 #: src/language/generate.ts:40
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
-"[Nginx UI] Користувач ACME: %{name}, Електронна пошта: %{email}, Каталог CA: "
-"%{caDir}"
+"[Nginx UI] Користувач ACME: %{name}, Електронна пошта: %{email}, Каталог "
+"CA: %{caDir}"
 
 #: src/language/generate.ts:26
 msgid "[Nginx UI] Backing up current certificate for later revocation"
@@ -35,11 +35,10 @@ msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] Сертифікат успішно відкликано"
 
 #: src/language/generate.ts:27
-msgid ""
-"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
-"[Nginx UI] Сертифікат використовувався для сервера, перезавантаження TLS-"
-"сертифіката сервера"
+"[Nginx UI] Сертифікат використовувався для сервера, перезавантаження "
+"TLS-сертифіката сервера"
 
 #: src/language/generate.ts:41
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
@@ -211,8 +210,7 @@ msgstr "Розширений режим"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:99
 msgid "Afterwards, refresh this page and click add passkey again."
-msgstr ""
-"Після цього оновіть цю сторінку та натисніть «Додати ключ доступу» знову."
+msgstr "Після цього оновіть цю сторінку та натисніть «Додати ключ доступу» знову."
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:115
 #: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
@@ -419,8 +417,7 @@ msgstr "Резервна копія"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:155
 msgid "Backup file integrity check failed, it may have been tampered with"
-msgstr ""
-"Перевірка цілісності резервного файлу не вдалася, можливо, його було змінено"
+msgstr "Перевірка цілісності резервного файлу не вдалася, можливо, його було змінено"
 
 #: src/constants/errors/backup.ts:41
 msgid "Backup file not found: {0}"
@@ -500,8 +497,7 @@ msgstr "Кеш"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:178
 msgid "Cache items not accessed within this time will be removed"
-msgstr ""
-"Елементи кешу, до яких не було звернень протягом цього часу, будуть видалені"
+msgstr "Елементи кешу, до яких не було звернень протягом цього часу, будуть видалені"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:350
 msgid "Cache loader processing time threshold"
@@ -564,8 +560,7 @@ msgstr "Скасувати"
 
 #: src/constants/errors/user.ts:11
 msgid "Cannot change initial user password in demo mode"
-msgstr ""
-"Не вдається змінити початковий пароль користувача в демонстраційному режимі"
+msgstr "Не вдається змінити початковий пароль користувача в демонстраційному режимі"
 
 #: src/components/ConfigHistory/DiffViewer.vue:67
 #: src/components/ConfigHistory/DiffViewer.vue:84
@@ -704,24 +699,24 @@ msgstr "Перевірте ще раз"
 #: src/language/generate.ts:17
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v /"
-"var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/"
-"run/docker.sock to communicate with the host Docker Engine via Docker Client "
-"API. This feature is used to control Nginx in another container and perform "
-"container replacement rather than binary replacement during OTA upgrades of "
-"Nginx UI to ensure container dependencies are also upgraded. If you don't "
-"need this feature, please add the environment variable "
+"Docker Image, please make sure the docker socket is mounted like this: `-v "
+"/var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses "
+"/var/run/docker.sock to communicate with the host Docker Engine via Docker "
+"Client API. This feature is used to control Nginx in another container and "
+"perform container replacement rather than binary replacement during OTA "
+"upgrades of Nginx UI to ensure container dependencies are also upgraded. If "
+"you don't need this feature, please add the environment variable "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
 msgstr ""
 "Перевірте, чи існує /var/run/docker.sock. Якщо ви використовуєте офіційний "
 "образ Docker Nginx UI, переконайтеся, що сокет Docker змонтовано таким "
-"чином: `-v /var/run/docker.sock:/var/run/docker.sock`. Офіційний образ Nginx "
-"UI використовує /var/run/docker.sock для зв’язку з Docker Engine хоста через "
-"API Docker Client. Ця функція використовується для керування Nginx в іншому "
-"контейнері та виконання заміни контейнера замість заміни бінарного файлу під "
-"час OTA-оновлень Nginx UI, щоб гарантувати, що залежності контейнера також "
-"оновлюються. Якщо вам не потрібна ця функція, додайте змінну середовища "
-"NGINX_UI_IGNORE_DOCKER_SOCKET=true до контейнера."
+"чином: `-v /var/run/docker.sock:/var/run/docker.sock`. Офіційний образ "
+"Nginx UI використовує /var/run/docker.sock для зв’язку з Docker Engine "
+"хоста через API Docker Client. Ця функція використовується для керування "
+"Nginx в іншому контейнері та виконання заміни контейнера замість заміни "
+"бінарного файлу під час OTA-оновлень Nginx UI, щоб гарантувати, що "
+"залежності контейнера також оновлюються. Якщо вам не потрібна ця функція, "
+"додайте змінну середовища NGINX_UI_IGNORE_DOCKER_SOCKET=true до контейнера."
 
 #: src/components/SelfCheck/tasks/frontend/https-check.ts:14
 msgid ""
@@ -733,19 +728,19 @@ msgstr ""
 
 #: src/language/generate.ts:45
 msgid ""
-"Check if the nginx access log path exists. By default, this path is obtained "
-"from 'nginx -V'. If it cannot be obtained or the obtained path does not "
-"point to a valid, existing file, an error will be reported. In this case, "
-"you need to modify the configuration file to specify the access log path."
-"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#accesslogpath"
+"Check if the nginx access log path exists. By default, this path is "
+"obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
+"does not point to a valid, existing file, an error will be reported. In "
+"this case, you need to modify the configuration file to specify the access "
+"log path.Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 msgstr ""
-"Перевірте, чи існує шлях до журналу доступу nginx. За замовчуванням цей шлях "
-"отримується з 'nginx -V'. Якщо його не вдається отримати або отриманий шлях "
-"не вказує на дійсний існуючий файл, буде повідомлено про помилку. У цьому "
-"випадку вам потрібно змінити файл конфігурації, щоб вказати шлях до журналу "
-"доступу. Докладніше див. у документації: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#accesslogpath"
+"Перевірте, чи існує шлях до журналу доступу nginx. За замовчуванням цей "
+"шлях отримується з 'nginx -V'. Якщо його не вдається отримати або отриманий "
+"шлях не вказує на дійсний існуючий файл, буде повідомлено про помилку. У "
+"цьому випадку вам потрібно змінити файл конфігурації, щоб вказати шлях до "
+"журналу доступу. Докладніше див. у документації: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
 #: src/language/generate.ts:34
 msgid "Check if the nginx configuration directory exists"
@@ -760,30 +755,30 @@ msgid ""
 "Check if the nginx error log path exists. By default, this path is obtained "
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
-"you need to modify the configuration file to specify the error log path."
-"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#errorlogpath"
+"you need to modify the configuration file to specify the error log "
+"path.Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 msgstr ""
-"Перевірте, чи існує шлях до журналу помилок nginx. За замовчуванням цей шлях "
-"отримується з 'nginx -V'. Якщо його не вдається отримати або отриманий шлях "
-"не вказує на дійсний існуючий файл, буде повідомлено про помилку. У цьому "
-"випадку вам потрібно змінити файл конфігурації, щоб вказати шлях до журналу "
-"помилок. Докладніше див. у документації: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#errorlogpath"
+"Перевірте, чи існує шлях до журналу помилок nginx. За замовчуванням цей "
+"шлях отримується з 'nginx -V'. Якщо його не вдається отримати або отриманий "
+"шлях не вказує на дійсний існуючий файл, буде повідомлено про помилку. У "
+"цьому випадку вам потрібно змінити файл конфігурації, щоб вказати шлях до "
+"журналу помилок. Докладніше див. у документації: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
 #: src/language/generate.ts:10
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
 "case, you need to modify the configuration file to specify the Nginx PID "
-"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#pidpath"
+"path.Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 msgstr ""
-"Перевірте, чи існує шлях до PID Nginx. За замовчуванням цей шлях отримується "
-"з команди 'nginx -V'. Якщо його не вдається отримати, буде повідомлено про "
-"помилку. У цьому випадку вам потрібно змінити конфігураційний файл, щоб "
-"вказати шлях до PID Nginx. Докладніше див. у документації: https://nginxui."
-"com/zh_CN/guide/config-nginx.html#pidpath"
+"Перевірте, чи існує шлях до PID Nginx. За замовчуванням цей шлях "
+"отримується з команди 'nginx -V'. Якщо його не вдається отримати, буде "
+"повідомлено про помилку. У цьому випадку вам потрібно змінити "
+"конфігураційний файл, щоб вказати шлях до PID Nginx. Докладніше див. у "
+"документації: https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
 #: src/language/generate.ts:22
 msgid "Check if the nginx.conf includes the conf.d directory"
@@ -807,8 +802,8 @@ msgstr ""
 
 #: src/language/generate.ts:23
 msgid ""
-"Check if the streams-available and streams-enabled directories are under the "
-"nginx configuration directory"
+"Check if the streams-available and streams-enabled directories are under "
+"the nginx configuration directory"
 msgstr ""
 "Перевірте, чи каталоги streams-available та streams-enabled знаходяться в "
 "каталозі конфігурації nginx"
@@ -1097,8 +1092,8 @@ msgstr ""
 "\"Вірність\" означає точність до змісту та наміру оригінального тексту;\n"
 "\"Плавність\" означає, що переклад має бути зрозумілим та легким для "
 "сприйняття;\n"
-"\"Витонченість\" означає прагнення до культурної естетики перекладу та краси "
-"мови.\n"
+"\"Витонченість\" означає прагнення до культурної естетики перекладу та "
+"краси мови.\n"
 "Мета полягає у створенні перекладу, який був би вірним духу оригіналу,\n"
 "а також відповідав цільовій мові, культурі та естетичним уподобанням "
 "читачів.\n"
@@ -1139,8 +1134,7 @@ msgstr "Користувацький"
 msgid ""
 "Customize the name of local node to be displayed in the environment "
 "indicator."
-msgstr ""
-"Налаштуйте назву локального вузла для відображення в індикаторі середовища."
+msgstr "Налаштуйте назву локального вузла для відображення в індикаторі середовища."
 
 #: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:110
 #: src/views/config/ConfigEditor.vue:161 src/views/config/ConfigList.vue:67
@@ -1157,8 +1151,7 @@ msgstr "Розшифрування не вдалося"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:150
 msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
-msgstr ""
-"Вкажіть назву та розмір зони спільної пам'яті, наприклад proxy_cache:10m"
+msgstr "Вкажіть назву та розмір зони спільної пам'яті, наприклад proxy_cache:10m"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:78
 #: src/components/NgxConfigEditor/NgxUpstream.vue:129
@@ -1478,8 +1471,7 @@ msgstr "Домен"
 
 #: src/views/certificate/CertificateEditor.vue:112
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
-msgstr ""
-"Список доменів порожній, спробуйте знову відкрити Auto Cert для %{config}"
+msgstr "Список доменів порожній, спробуйте знову відкрити Auto Cert для %{config}"
 
 #: src/language/constants.ts:27
 msgid "Download latest release error"
@@ -1499,8 +1491,9 @@ msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
 msgstr ""
-"Через політику безпеки деяких браузерів ви не можете використовувати пас-"
-"ключі на вебсайтах без HTTPS, окрім випадків, коли сайт працює на localhost."
+"Через політику безпеки деяких браузерів ви не можете використовувати "
+"пас-ключі на вебсайтах без HTTPS, окрім випадків, коли сайт працює на "
+"localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:105
@@ -2066,8 +2059,8 @@ msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
 msgstr ""
-"Дотримуйтесь інструкцій у діалоговому вікні, щоб завершити процес реєстрації "
-"ключа доступу."
+"Дотримуйтесь інструкцій у діалоговому вікні, щоб завершити процес "
+"реєстрації ключа доступу."
 
 #: src/views/preference/tabs/NodeSettings.vue:42
 #: src/views/preference/tabs/NodeSettings.vue:54
@@ -2211,13 +2204,11 @@ msgstr ""
 msgid ""
 "If you want to automatically revoke the old certificate, please enable this "
 "option."
-msgstr ""
-"Якщо ви хочете автоматично відкликати старий сертифікат, увімкніть цю опцію."
+msgstr "Якщо ви хочете автоматично відкликати старий сертифікат, увімкніть цю опцію."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:70
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
-msgstr ""
-"Якщо ваш браузер підтримує WebAuthn Passkey, з’явиться діалогове вікно."
+msgstr "Якщо ваш браузер підтримує WebAuthn Passkey, з’явиться діалогове вікно."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:107
 msgid ""
@@ -2398,8 +2389,8 @@ msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
 "with a password manager."
 msgstr ""
-"Зберігайте ваші коди відновлення так само надійно, як і пароль. Рекомендуємо "
-"зберігати їх у менеджері паролів."
+"Зберігайте ваші коди відновлення так само надійно, як і пароль. "
+"Рекомендуємо зберігати їх у менеджері паролів."
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:60
 msgid "Keepalive Timeout"
@@ -2440,8 +2431,7 @@ msgstr "Залиште порожнім, щоб не змінювати"
 
 #: src/views/preference/tabs/OpenAISettings.vue:41
 msgid "Leave blank for the default: https://api.openai.com/"
-msgstr ""
-"Залиште порожнім для значення за замовчуванням: https://api.openai.com/"
+msgstr "Залиште порожнім для значення за замовчуванням: https://api.openai.com/"
 
 #: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:79
 msgid "Leave blank if do not want to modify"
@@ -2535,12 +2525,13 @@ msgstr "Журнал"
 #: src/language/generate.ts:25
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
-"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
-"nginx-log.html for more information."
+"docker container, please refer to "
+"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
 msgstr ""
-"Файл журналу %{log_path} не є звичайним файлом. Якщо ви використовуєте nginx-"
-"ui у контейнері Docker, будь ласка, зверніться до https://nginxui.com/zh_CN/"
-"guide/config-nginx-log.html для отримання додаткової інформації."
+"Файл журналу %{log_path} не є звичайним файлом. Якщо ви використовуєте "
+"nginx-ui у контейнері Docker, будь ласка, зверніться до "
+"https://nginxui.com/zh_CN/guide/config-nginx-log.html для отримання "
+"додаткової інформації."
 
 #: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:64
 msgid "Log List"
@@ -2564,16 +2555,16 @@ msgstr "Logrotate"
 
 #: src/views/preference/tabs/LogrotateSettings.vue:13
 msgid ""
-"Logrotate, by default, is enabled in most mainstream Linux distributions for "
-"users who install Nginx UI on the host machine, so you don't need to modify "
-"the parameters on this page. For users who install Nginx UI using Docker "
-"containers, you can manually enable this option. The crontab task scheduler "
-"of Nginx UI will execute the logrotate command at the interval you set in "
-"minutes."
+"Logrotate, by default, is enabled in most mainstream Linux distributions "
+"for users who install Nginx UI on the host machine, so you don't need to "
+"modify the parameters on this page. For users who install Nginx UI using "
+"Docker containers, you can manually enable this option. The crontab task "
+"scheduler of Nginx UI will execute the logrotate command at the interval "
+"you set in minutes."
 msgstr ""
 "Logrotate за замовчуванням увімкнено у більшості популярних дистрибутивів "
-"Linux для користувачів, які встановлюють Nginx UI безпосередньо на хост-"
-"машині, тому вам не потрібно змінювати параметри на цій сторінці. Для "
+"Linux для користувачів, які встановлюють Nginx UI безпосередньо на "
+"хост-машині, тому вам не потрібно змінювати параметри на цій сторінці. Для "
 "користувачів, які встановлюють Nginx UI за допомогою контейнерів Docker, ви "
 "можете вручну активувати цю опцію. Планувальник завдань crontab у Nginx UI "
 "виконуватиме команду logrotate з інтервалом, який ви встановите у хвилинах."
@@ -2995,8 +2986,8 @@ msgstr "Конфігурацію Nginx UI відновлено"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:336
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in a "
-"few seconds."
+"Nginx UI configuration has been restored and will restart automatically in "
+"a few seconds."
 msgstr ""
 "Конфігурацію Nginx UI відновлено, і вона автоматично перезавантажиться за "
 "кілька секунд."
@@ -3384,8 +3375,7 @@ msgstr "Будь ласка, введіть токен безпеки"
 #: src/components/SystemRestore/SystemRestoreContent.vue:210
 #: src/components/SystemRestore/SystemRestoreContent.vue:287
 msgid "Please enter the security token received during backup"
-msgstr ""
-"Будь ласка, введіть токен безпеки, отриманий під час резервного копіювання"
+msgstr "Будь ласка, введіть токен безпеки, отриманий під час резервного копіювання"
 
 #: src/views/certificate/DNSCredential.vue:53
 msgid ""
@@ -3409,8 +3399,8 @@ msgstr ""
 #: src/components/Notification/notifications.ts:166
 #: src/language/constants.ts:59
 msgid ""
-"Please generate new recovery codes in the preferences immediately to prevent "
-"lockout."
+"Please generate new recovery codes in the preferences immediately to "
+"prevent lockout."
 msgstr ""
 "Будь ласка, негайно згенеруйте нові коди відновлення в налаштуваннях, щоб "
 "уникнути блокування."
@@ -3458,8 +3448,7 @@ msgid "Please log in."
 msgstr "Будь ласка, увійдіть."
 
 #: src/views/certificate/DNSCredential.vue:62
-msgid ""
-"Please note that the unit of time configurations below are all in seconds."
+msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr ""
 "Будь ласка, зверніть увагу, що одиницею виміру часу в наведених нижче "
 "налаштуваннях є секунди."
@@ -3471,7 +3460,8 @@ msgstr "Будь ласка, усуньте всі проблеми перед �
 #: src/views/system/Backup/BackupCreator.vue:107
 msgid "Please save this security token, you will need it for restoration:"
 msgstr ""
-"Будь ласка, збережіть цей токен безпеки, він знадобиться вам для відновлення:"
+"Будь ласка, збережіть цей токен безпеки, він знадобиться вам для "
+"відновлення:"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:107
 msgid "Please select a backup file"
@@ -3828,9 +3818,9 @@ msgid ""
 "shared library memory, which will be repeated calculated for multiple "
 "processes"
 msgstr ""
-"Розмір резидентного набору: Фактична пам'ять, резидентна у фізичній пам'яті, "
-"включаючи всю пам'ять спільних бібліотек, яка буде повторно обчислюватися "
-"для кількох процесів"
+"Розмір резидентного набору: Фактична пам'ять, резидентна у фізичній "
+"пам'яті, включаючи всю пам'ять спільних бібліотек, яка буде повторно "
+"обчислюватися для кількох процесів"
 
 #: src/composables/usePerformanceMetrics.ts:109
 #: src/views/dashboard/components/PerformanceTablesCard.vue:69
@@ -4025,11 +4015,11 @@ msgstr "SDK"
 
 #: src/language/constants.ts:62
 msgid "Search"
-msgstr ""
+msgstr "Пошук"
 
 #: src/language/constants.ts:61
 msgid "Search module name"
-msgstr ""
+msgstr "Назва модуля пошуку"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:109
 msgid "Secret has been copied"
@@ -4120,19 +4110,21 @@ msgstr "Налаштування провайдера HTTP01-виклику"
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.AccessLogPath порожній, див. https://nginxui.com/"
-"guide/config-nginx.html для отримання додаткової інформації"
+"Settings.NginxLogSettings.AccessLogPath порожній, див. "
+"https://nginxui.com/guide/config-nginx.html для отримання додаткової "
+"інформації"
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
-"com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.ErrorLogPath порожній, див. https://nginxui.com/"
-"guide/config-nginx.html для отримання додаткової інформації"
+"Settings.NginxLogSettings.ErrorLogPath порожній, див. "
+"https://nginxui.com/guide/config-nginx.html для отримання додаткової "
+"інформації"
 
 #: src/views/install/components/InstallView.vue:65
 msgid "Setup your Nginx UI"
@@ -4208,8 +4200,7 @@ msgstr "Вміст SSL-сертифіката"
 
 #: src/constants/errors/system.ts:8
 msgid "SSL certificate file must be under Nginx configuration directory: {0}"
-msgstr ""
-"Файл SSL-сертифіката повинен знаходитися в каталозі конфігурації Nginx: {0}"
+msgstr "Файл SSL-сертифіката повинен знаходитися в каталозі конфігурації Nginx: {0}"
 
 #: src/constants/errors/system.ts:6
 msgid "SSL certificate file not found"
@@ -4317,14 +4308,14 @@ msgstr "Успіх"
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:13
 msgid ""
 "Support communication with the backend through the WebSocket protocol. If "
-"your Nginx UI is being used via an Nginx reverse proxy, please refer to this "
-"link to write the corresponding configuration file: https://nginxui.com/"
-"guide/nginx-proxy-example.html"
+"your Nginx UI is being used via an Nginx reverse proxy, please refer to "
+"this link to write the corresponding configuration file: "
+"https://nginxui.com/guide/nginx-proxy-example.html"
 msgstr ""
 "Підтримка зв'язку з бекендом через протокол WebSocket. Якщо ваш Nginx UI "
-"використовується через зворотний проксі Nginx, перегляньте це посилання, щоб "
-"написати відповідний конфігураційний файл: https://nginxui.com/guide/nginx-"
-"proxy-example.html"
+"використовується через зворотний проксі Nginx, перегляньте це посилання, "
+"щоб написати відповідний конфігураційний файл: "
+"https://nginxui.com/guide/nginx-proxy-example.html"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:197
 #: src/components/SystemRestore/SystemRestoreContent.vue:274
@@ -4478,10 +4469,11 @@ msgstr "Введений текст не є ключем SSL-сертифіка�
 
 #: src/constants/errors/nginx_log.ts:2
 msgid ""
-"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in "
+"settings.NginxSettings.LogDirWhiteList"
 msgstr ""
-"Шлях до журналу не знаходиться серед шляхів у settings.NginxSettings."
-"LogDirWhiteList"
+"Шлях до журналу не знаходиться серед шляхів у "
+"settings.NginxSettings.LogDirWhiteList"
 
 #: src/views/preference/tabs/OpenAISettings.vue:23
 #: src/views/preference/tabs/OpenAISettings.vue:89
@@ -4493,8 +4485,7 @@ msgstr ""
 "двокрапки та крапки."
 
 #: src/views/preference/tabs/OpenAISettings.vue:90
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
+msgid "The model used for code completion, if not set, the chat model will be used."
 msgstr ""
 "Модель, яка використовується для завершення коду. Якщо вона не встановлена, "
 "буде використовуватися модель чату."
@@ -4580,7 +4571,8 @@ msgstr ""
 #: src/views/certificate/CertificateEditor.vue:102
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr ""
-"Цей елемент автоматичного сертифікату є недійсним, будь ласка, видаліть його."
+"Цей елемент автоматичного сертифікату є недійсним, будь ласка, видаліть "
+"його."
 
 #: src/views/certificate/CertificateEditor.vue:92
 msgid "This certificate is managed by Nginx UI"
@@ -4606,8 +4598,7 @@ msgid "This field should not be empty"
 msgstr "Це поле не повинно бути порожнім"
 
 #: src/constants/form_errors.ts:6
-msgid ""
-"This field should only contain letters, unicode characters, numbers, and -_."
+msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "Це поле має містити лише літери, символи Unicode, цифри та -_."
 
 #: src/views/dashboard/NginxDashBoard.vue:150
@@ -4657,10 +4648,8 @@ msgstr ""
 "після завершення відновлення."
 
 #: src/views/environments/list/BatchUpgrader.vue:182
-msgid ""
-"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
-msgstr ""
-"Це оновить або перевстановить Nginx UI на %{nodeNames} до версії %{version}."
+msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgstr "Це оновить або перевстановить Nginx UI на %{nodeNames} до версії %{version}."
 
 #: src/views/preference/tabs/AuthSettings.vue:124
 msgid "Throttle"
@@ -4693,8 +4682,8 @@ msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
 msgstr ""
-"Щоб увімкнути його, вам потрібно встановити додаток Google Authenticator або "
-"Microsoft Authenticator на свій мобільний телефон."
+"Щоб увімкнути його, вам потрібно встановити додаток Google Authenticator "
+"або Microsoft Authenticator на свій мобільний телефон."
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:89
 msgid ""
@@ -4703,15 +4692,15 @@ msgid ""
 "and restart Nginx UI."
 msgstr ""
 "Для забезпечення безпеки конфігурацію WebAuthn не можна додати через "
-"інтерфейс. Будь ласка, налаштуйте вручну наступне у файлі конфігурації app."
-"ini та перезапустіть Nginx UI."
+"інтерфейс. Будь ласка, налаштуйте вручну наступне у файлі конфігурації "
+"app.ini та перезапустіть Nginx UI."
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:34
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
 msgid ""
 "To make sure the certification auto-renewal can work normally, we need to "
-"add a location which can proxy the request from authority to backend, and we "
-"need to save this file and reload the Nginx. Are you sure you want to "
+"add a location which can proxy the request from authority to backend, and "
+"we need to save this file and reload the Nginx. Are you sure you want to "
 "continue?"
 msgstr ""
 "Щоб гарантувати нормальну роботу автоматичного поновлення сертифікатів, нам "
@@ -4971,8 +4960,8 @@ msgstr ""
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:140
 msgid ""
-"We will remove the HTTPChallenge configuration from this file and reload the "
-"Nginx. Are you sure you want to continue?"
+"We will remove the HTTPChallenge configuration from this file and reload "
+"the Nginx. Are you sure you want to continue?"
 msgstr ""
 "Ми видалимо конфігурацію HTTPChallenge з цього файлу та перезавантажимо "
 "Nginx. Ви впевнені, що хочете продовжити?"
@@ -5064,8 +5053,8 @@ msgstr "Так"
 
 #: src/views/terminal/Terminal.vue:135
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a non-"
-"localhost domain. This may expose sensitive information."
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
 msgstr ""
 "Ви отримуєте доступ до цього терміналу через незахищене HTTP-з’єднання в "
 "домені, який не є локальним. Це може призвести до витоку конфіденційної "
@@ -5091,15 +5080,13 @@ msgstr "Тепер ви можете закрити це діалогове ві
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
 "passkey."
-msgstr ""
-"Ви не налаштували параметри WebAuthn, тому не можете додати ключ доступу."
+msgstr "Ви не налаштували параметри WebAuthn, тому не можете додати ключ доступу."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:81
-msgid ""
-"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr ""
-"Ви ще не ввімкнули двофакторну аутентифікацію. Будь ласка, увімкніть її, щоб "
-"згенерувати коди відновлення."
+"Ви ще не ввімкнули двофакторну аутентифікацію. Будь ласка, увімкніть її, "
+"щоб згенерувати коди відновлення."
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:94
 msgid "You have not generated recovery codes yet."
@@ -5124,12 +5111,12 @@ msgstr "Ваші ключі доступу"
 
 #~ msgid ""
 #~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-#~ "Docker Image, please make sure the docker socket is mounted like this: `-"
-#~ "v /var/run/docker.sock:/var/run/docker.sock`."
+#~ "Docker Image, please make sure the docker socket is mounted like this: `-v "
+#~ "/var/run/docker.sock:/var/run/docker.sock`."
 #~ msgstr ""
-#~ "Перевірте, чи існує /var/run/docker.sock. Якщо ви використовуєте "
-#~ "офіційний Docker-образ Nginx UI, переконайтеся, що сокет Docker "
-#~ "підключено таким чином: `-v /var/run/docker.sock:/var/run/docker.sock`."
+#~ "Перевірте, чи існує /var/run/docker.sock. Якщо ви використовуєте офіційний "
+#~ "Docker-образ Nginx UI, переконайтеся, що сокет Docker підключено таким "
+#~ "чином: `-v /var/run/docker.sock:/var/run/docker.sock`."
 
 #~ msgid "Check if the nginx access log path exists"
 #~ msgstr "Перевірити, чи існує шлях до журналу доступу nginx"
