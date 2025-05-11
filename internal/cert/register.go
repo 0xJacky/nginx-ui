@@ -13,6 +13,8 @@ import (
 
 // InitRegister init the default user for acme
 func InitRegister(ctx context.Context) {
+	initBroadcastStatus(ctx)
+
 	email := settings.CertSettings.Email
 	if settings.CertSettings.Email == "" {
 		return
@@ -52,8 +54,6 @@ func InitRegister(ctx context.Context) {
 	}
 
 	logger.Info("ACME Default User registered")
-
-	initBroadcastStatus(ctx)
 }
 
 func GetDefaultACMEUser() (user *model.AcmeUser, err error) {
