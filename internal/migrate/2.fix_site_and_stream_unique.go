@@ -7,7 +7,7 @@ import (
 )
 
 var FixSiteAndStreamPathUnique = &gormigrate.Migration{
-	ID: "202505070000001",
+	ID: "202505120000001",
 	Migrate: func(tx *gorm.DB) error {
 		// Check if sites table exists
 		if tx.Migrator().HasTable(&model.Site{}) {
