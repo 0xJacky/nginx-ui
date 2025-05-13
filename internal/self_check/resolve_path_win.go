@@ -9,5 +9,5 @@ import "path/filepath"
 // inclde sites-enabled/*.conf
 
 func resolvePath(path ...string) string {
-	return filepath.Join(path...) + ".conf"
+	return filepath.ToSlash(filepath.Join(path...) + ".conf")
 }
