@@ -109,6 +109,7 @@ async function add() {
       </div>
       <DirectiveEditor
         v-if="data.directives"
+        :directives="data.directives"
         readonly
       />
       <LocationEditor
