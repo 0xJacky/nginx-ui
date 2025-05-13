@@ -65,7 +65,7 @@ func GetSiteList(c *gin.Context) {
 			originalName := strings.TrimSuffix(name, site.MaintenanceSuffix)
 			configStatusMap[originalName] = config.StatusMaintenance
 		} else {
-			configStatusMap[name] = config.StatusEnabled
+			configStatusMap[nginx.GetConfNameBySymlinkName(name)] = config.StatusEnabled
 		}
 	}
 

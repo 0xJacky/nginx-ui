@@ -7,7 +7,7 @@ import (
 
 // GetSiteStatus returns the status of the site
 func GetSiteStatus(name string) SiteStatus {
-	enabledFilePath := nginx.GetConfPath("sites-enabled", name)
+	enabledFilePath := nginx.GetConfSymlinkPath(nginx.GetConfPath("sites-enabled", name))
 	if helper.FileExists(enabledFilePath) {
 		return SiteStatusEnabled
 	}

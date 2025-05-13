@@ -58,7 +58,7 @@ func GetStreams(c *gin.Context) {
 		enabledConfigMap[file.Name()] = config.StatusDisabled
 	}
 	for i := range enabledConfig {
-		enabledConfigMap[enabledConfig[i].Name()] = config.StatusEnabled
+		enabledConfigMap[nginx.GetConfNameBySymlinkName(enabledConfig[i].Name())] = config.StatusEnabled
 	}
 
 	var configs []config.Config

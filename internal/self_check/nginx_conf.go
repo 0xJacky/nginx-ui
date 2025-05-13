@@ -3,8 +3,6 @@ package self_check
 import (
 	"fmt"
 	"os"
-	"path/filepath"
-	"runtime"
 	"strings"
 	"time"
 
@@ -13,15 +11,6 @@ import (
 	"github.com/tufanbarisyildirim/gonginx/dumper"
 	"github.com/tufanbarisyildirim/gonginx/parser"
 )
-
-func resolvePath(path ...string) string {
-	// fix #1046
-	if runtime.GOOS == "windows" {
-		return strings.TrimLeft(filepath.ToSlash(strings.ReplaceAll(nginx.GetConfPath(path...), nginx.GetNginxExeDir(), "")), "/")
-	}
-
-	return nginx.GetConfPath(path...)
-}
 
 // CheckNginxConfIncludeSites checks if nginx.conf include sites-enabled
 func CheckNginxConfIncludeSites() error {
@@ -240,7 +229,7 @@ func FixNginxConfIncludeConfD() error {
 			// add include conf.d/*.conf to http block
 			includeDirective := &config.Directive{
 				Name:       "include",
-				Parameters: []config.Parameter{{Value: resolvePath("conf.d/*.conf")}},
+				Parameters: []config.Parameter{{Value: resolvePath("conf.d/*")}},
 			}
 
 			realBlock := v.GetBlock().(*config.HTTP)
@@ -252,6 +241,6 @@ func FixNginxConfIncludeConfD() error {
 	}
 
 	// if no http block, append http block with include conf.d/*.conf
-	content = append(content, fmt.Appendf(nil, "\nhttp {\n\tinclude %s;\n}\n", resolvePath("conf.d/*.conf"))...)
+	content = append(content, fmt.Appendf(nil, "\nhttp {\n\tinclude %s;\n}\n", resolvePath("conf.d/*"))...)
 	return os.WriteFile(path, content, 0644)
 }
