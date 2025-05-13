@@ -112,14 +112,7 @@ func updateDynamicModulesStatus() {
 			moduleName = strings.TrimPrefix(moduleName, "ngx_")
 			moduleName = strings.TrimSuffix(moduleName, "_module")
 			loadedDynamicModules[moduleName] = true
-		}
-	}
-
-	// Update the status for each module in the cache
-	for key := range modulesCache.Keys() {
-		// If the module is already marked as dynamic, check if it's actually loaded
-		if loadedDynamicModules[key] {
-			module, ok := modulesCache.Get(key)
+			module, ok := modulesCache.Get(moduleName)
 			if ok {
 				module.Loaded = true
 			}
@@ -190,7 +183,7 @@ func GetModules() *orderedmap.OrderedMap[string, *Module] {
 				Name:    module,
 				Params:  params,
 				Dynamic: isDynamic,
-				Loaded:  !isDynamic || isDynamic, // Static modules are always loaded, dynamic need to be checked
+				Loaded:  !isDynamic, // Static modules are always loaded
 			})
 		}
 	}
