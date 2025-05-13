@@ -16,9 +16,9 @@ var nginxRestartTool = mcp.NewTool(
 
 func handleNginxRestart(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	nginx.Restart()
-	output, err := nginx.GetLastOutput()
-	if err != nil {
-		return mcp.NewToolResultError(output + "\n" + err.Error()), err
+	lastResult := nginx.GetLastResult()
+	if lastResult.IsError() {
+		return mcp.NewToolResultError(lastResult.GetOutput()), lastResult.GetError()
 	}
-	return mcp.NewToolResultText(output), nil
+	return mcp.NewToolResultText(lastResult.GetOutput()), nil
 }

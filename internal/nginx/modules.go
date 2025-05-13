@@ -51,7 +51,7 @@ func isPIDFileChanged() bool {
 	}
 
 	// If Nginx is not running, consider PID changed
-	if !IsNginxRunning() {
+	if !IsRunning() {
 		return true
 	}
 
@@ -101,7 +101,7 @@ func updateDynamicModulesStatus() {
 	// Look for lines like "load_module modules/ngx_http_image_filter_module.so;"
 	loadModuleRe := regexp.MustCompile(`load_module\s+(?:modules/|/.*/)([a-zA-Z0-9_-]+)\.so;`)
 	matches := loadModuleRe.FindAllStringSubmatch(out, -1)
-	
+
 	for _, match := range matches {
 		if len(match) > 1 {
 			// Extract the module name without path and suffix

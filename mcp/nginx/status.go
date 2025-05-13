@@ -19,19 +19,15 @@ var statusTool = mcp.NewTool(
 
 // handleNginxStatus handles the Nginx status request
 func handleNginxStatus(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	lastOutput, err := nginx.GetLastOutput()
-	if err != nil {
-		return mcp.NewToolResultError(lastOutput + "\n" + err.Error()), err
+	lastResult := nginx.GetLastResult()
+	if lastResult.IsError() {
+		return mcp.NewToolResultError(lastResult.GetOutput()), lastResult.GetError()
 	}
-
-	running := nginx.IsNginxRunning()
-	level := nginx.GetLogLevel(lastOutput)
-
 	// build result
 	result := gin.H{
-		"running": running,
-		"message": lastOutput,
-		"level":   level,
+		"running": nginx.IsRunning(),
+		"message": lastResult.GetOutput(),
+		"level":   lastResult.GetLevel(),
 	}
 
 	// marshal to json and return text result

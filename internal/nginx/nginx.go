@@ -72,13 +72,16 @@ func Restart() {
 }
 
 // GetLastOutput returns the last output of the nginx command
-func GetLastOutput() (stdOut string, stdErr error) {
+func GetLastResult() *ControlResult {
 	mutex.Lock()
 	defer mutex.Unlock()
-	return lastStdOut, lastStdErr
+	return &ControlResult{
+		stdOut: lastStdOut,
+		stdErr: lastStdErr,
+	}
 }
 
-func IsNginxRunning() bool {
+func IsRunning() bool {
 	pidPath := GetPIDPath()
 	switch settings.NginxSettings.RunningInAnotherContainer() {
 	case true:

@@ -19,7 +19,7 @@ type NginxPerformanceResponse struct {
 
 func GetPerformanceData() NginxPerformanceResponse {
 	// Check if Nginx is running
-	running := nginx.IsNginxRunning()
+	running := nginx.IsRunning()
 	if !running {
 		return NginxPerformanceResponse{
 			StubStatusEnabled: false,

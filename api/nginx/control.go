@@ -9,34 +9,12 @@ import (
 
 // Reload reloads the nginx
 func Reload(c *gin.Context) {
-	output, err := nginx.Reload()
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": output + err.Error(),
-			"level":   nginx.GetLogLevel(output),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": output,
-		"level":   nginx.GetLogLevel(output),
-	})
+	nginx.Control(nginx.Reload).Resp(c)
 }
 
 // TestConfig tests the nginx config
 func TestConfig(c *gin.Context) {
-	output, err := nginx.TestConfig()
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": output + err.Error(),
-			"level":   nginx.GetLogLevel(output),
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": output,
-		"level":   nginx.GetLogLevel(output),
-	})
+	nginx.Control(nginx.TestConfig).Resp(c)
 }
 
 // Restart restarts the nginx
@@ -49,20 +27,17 @@ func Restart(c *gin.Context) {
 
 // Status returns the status of the nginx
 func Status(c *gin.Context) {
-	lastOutput, err := nginx.GetLastOutput()
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": lastOutput + err.Error(),
-			"level":   nginx.GetLogLevel(lastOutput),
-		})
+	lastResult := nginx.GetLastResult()
+	if lastResult.IsError() {
+		lastResult.RespError(c)
 		return
 	}
 
-	running := nginx.IsNginxRunning()
+	running := nginx.IsRunning()
 
 	c.JSON(http.StatusOK, gin.H{
 		"running": running,
-		"message": lastOutput,
-		"level":   nginx.GetLogLevel(lastOutput),
+		"message": lastResult.GetOutput(),
+		"level":   lastResult.GetLevel(),
 	})
 }
