@@ -3,6 +3,8 @@ package self_check
 import (
 	"fmt"
 	"os"
+	"path/filepath"
+	"runtime"
 	"strings"
 	"time"
 
@@ -11,6 +13,15 @@ import (
 	"github.com/tufanbarisyildirim/gonginx/dumper"
 	"github.com/tufanbarisyildirim/gonginx/parser"
 )
+
+func resolvePath(path ...string) string {
+	// fix #1046
+	if runtime.GOOS == "windows" {
+		return strings.TrimLeft(filepath.ToSlash(strings.ReplaceAll(nginx.GetConfPath(path...), nginx.GetNginxExeDir(), "")), "/")
+	}
+
+	return nginx.GetConfPath(path...)
+}
 
 // CheckNginxConfIncludeSites checks if nginx.conf include sites-enabled
 func CheckNginxConfIncludeSites() error {
@@ -34,7 +45,7 @@ func CheckNginxConfIncludeSites() error {
 			// find include sites-enabled
 			for _, directive := range v.GetBlock().GetDirectives() {
 				if directive.GetName() == "include" && len(directive.GetParameters()) > 0 &&
-					directive.GetParameters()[0].Value == nginx.GetConfPath("sites-enabled/*") {
+					strings.Contains(directive.GetParameters()[0].Value, "sites-enabled/*") {
 					return nil
 				}
 			}
@@ -67,7 +78,7 @@ func CheckNginxConfIncludeStreams() error {
 			// find include sites-enabled
 			for _, directive := range v.GetBlock().GetDirectives() {
 				if directive.GetName() == "include" && len(directive.GetParameters()) > 0 &&
-					directive.GetParameters()[0].Value == nginx.GetConfPath("streams-enabled/*") {
+					strings.Contains(directive.GetParameters()[0].Value, "streams-enabled/*") {
 					return nil
 				}
 			}
@@ -107,7 +118,7 @@ func FixNginxConfIncludeSites() error {
 			// add include sites-enabled/* to http block
 			includeDirective := &config.Directive{
 				Name:       "include",
-				Parameters: []config.Parameter{{Value: nginx.GetConfPath("sites-enabled/*")}},
+				Parameters: []config.Parameter{{Value: resolvePath("sites-enabled/*")}},
 			}
 
 			realBlock := v.GetBlock().(*config.HTTP)
@@ -119,7 +130,7 @@ func FixNginxConfIncludeSites() error {
 	}
 
 	// if no http block, append http block with include sites-enabled/*
-	content = append(content, fmt.Appendf(nil, "\nhttp {\n\tinclude %s;\n}\n", nginx.GetConfPath("sites-enabled/*"))...)
+	content = append(content, fmt.Appendf(nil, "\nhttp {\n\tinclude %s;\n}\n", resolvePath("sites-enabled/*"))...)
 	return os.WriteFile(path, content, 0644)
 }
 
@@ -152,7 +163,7 @@ func FixNginxConfIncludeStreams() error {
 			// add include streams-enabled/* to stream block
 			includeDirective := &config.Directive{
 				Name:       "include",
-				Parameters: []config.Parameter{{Value: nginx.GetConfPath("streams-enabled/*")}},
+				Parameters: []config.Parameter{{Value: resolvePath("streams-enabled/*")}},
 			}
 			realBlock := v.GetBlock().(*config.Block)
 			realBlock.Directives = append(realBlock.Directives, includeDirective)
@@ -163,7 +174,7 @@ func FixNginxConfIncludeStreams() error {
 	}
 
 	// if no stream block, append stream block with include streams-enabled/*
-	content = append(content, fmt.Appendf(nil, "\nstream {\n\tinclude %s;\n}\n", nginx.GetConfPath("streams-enabled/*"))...)
+	content = append(content, fmt.Appendf(nil, "\nstream {\n\tinclude %s;\n}\n", resolvePath("streams-enabled/*"))...)
 	return os.WriteFile(path, content, 0644)
 }
 
@@ -189,7 +200,7 @@ func CheckNginxConfIncludeConfD() error {
 			// find include conf.d
 			for _, directive := range v.GetBlock().GetDirectives() {
 				if directive.GetName() == "include" && len(directive.GetParameters()) > 0 &&
-					strings.HasPrefix(directive.GetParameters()[0].Value, nginx.GetConfPath("conf.d")) {
+					strings.Contains(directive.GetParameters()[0].Value, "conf.d/*") {
 					return nil
 				}
 			}
@@ -229,7 +240,7 @@ func FixNginxConfIncludeConfD() error {
 			// add include conf.d/*.conf to http block
 			includeDirective := &config.Directive{
 				Name:       "include",
-				Parameters: []config.Parameter{{Value: nginx.GetConfPath("conf.d/*.conf")}},
+				Parameters: []config.Parameter{{Value: resolvePath("conf.d/*.conf")}},
 			}
 
 			realBlock := v.GetBlock().(*config.HTTP)
@@ -241,6 +252,6 @@ func FixNginxConfIncludeConfD() error {
 	}
 
 	// if no http block, append http block with include conf.d/*.conf
-	content = append(content, fmt.Appendf(nil, "\nhttp {\n\tinclude %s;\n}\n", nginx.GetConfPath("conf.d/*.conf"))...)
+	content = append(content, fmt.Appendf(nil, "\nhttp {\n\tinclude %s;\n}\n", resolvePath("conf.d/*.conf"))...)
 	return os.WriteFile(path, content, 0644)
 }

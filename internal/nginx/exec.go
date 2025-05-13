@@ -20,7 +20,7 @@ func execCommand(name string, cmd ...string) (stdOut string, stdErr error) {
 	case false:
 		execCmd := exec.Command(name, cmd...)
 		// fix #1046
-		execCmd.Dir = getNginxExeDir()
+		execCmd.Dir = GetNginxExeDir()
 		bytes, err := execCmd.CombinedOutput()
 		stdOut = string(bytes)
 		if err != nil {

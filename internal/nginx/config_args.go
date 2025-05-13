@@ -35,7 +35,7 @@ func getNginxExePath() string {
 }
 
 // Returns the directory containing the nginx executable
-func getNginxExeDir() string {
+func GetNginxExeDir() string {
 	return filepath.Dir(getNginxExePath())
 }
 
@@ -68,7 +68,7 @@ func resolvePath(path string) string {
 
 	// Handle relative paths on Windows
 	if runtime.GOOS == "windows" && !filepath.IsAbs(path) {
-		return filepath.Join(getNginxExeDir(), path)
+		return filepath.Join(GetNginxExeDir(), path)
 	}
 
 	return path
