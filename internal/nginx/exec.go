@@ -18,7 +18,10 @@ func execCommand(name string, cmd ...string) (stdOut string, stdErr error) {
 		cmd = append([]string{name}, cmd...)
 		stdOut, stdErr = docker.Exec(context.Background(), cmd)
 	case false:
-		bytes, err := exec.Command(name, cmd...).CombinedOutput()
+		execCmd := exec.Command(name, cmd...)
+		// fix #1046
+		execCmd.Dir = getNginxExeDir()
+		bytes, err := execCmd.CombinedOutput()
 		stdOut = string(bytes)
 		if err != nil {
 			stdErr = err

@@ -41,7 +41,7 @@ func getNginxExeDir() string {
 
 func getNginxV() string {
 	exePath := getNginxExePath()
-	out, err := exec.Command(exePath, "-V").CombinedOutput()
+	out, err := execCommand(exePath, "-V")
 	if err != nil {
 		logger.Error(err)
 		return ""
