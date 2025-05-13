@@ -33,6 +33,7 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: '構建', link: '/zh_TW/guide/build' },
             { text: '專案結構', link: '/zh_TW/guide/project-structure' },
             { text: '配置模板', link: '/zh_TW/guide/nginx-ui-template' },
+            { text: '開發翻譯', link: '/zh_TW/guide/dev-translate' },
             { text: '貢獻程式碼', link: '/zh_TW/guide/contributing' }
           ]
         },

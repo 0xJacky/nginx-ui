@@ -33,6 +33,7 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: '构建', link: '/zh_CN/guide/build' },
             { text: '项目结构', link: '/zh_CN/guide/project-structure' },
             { text: '配置模板', link: '/zh_CN/guide/nginx-ui-template' },
+            { text: '开发翻译', link: '/zh_CN/guide/dev-translate' },
             { text: '贡献代码', link: '/zh_CN/guide/contributing' }
           ]
         },
