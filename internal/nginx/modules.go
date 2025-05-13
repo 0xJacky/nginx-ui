@@ -101,9 +101,7 @@ func updateDynamicModulesStatus() {
 	// Look for lines like "load_module modules/ngx_http_image_filter_module.so;"
 	loadModuleRe := regexp.MustCompile(`load_module\s+(?:modules/|/.*/)([a-zA-Z0-9_-]+)\.so;`)
 	matches := loadModuleRe.FindAllStringSubmatch(out, -1)
-
-	// Create a map of loaded dynamic modules
-	loadedDynamicModules := make(map[string]bool)
+	
 	for _, match := range matches {
 		if len(match) > 1 {
 			// Extract the module name without path and suffix
@@ -111,7 +109,6 @@ func updateDynamicModulesStatus() {
 			// Some normalization to match format in GetModules
 			moduleName = strings.TrimPrefix(moduleName, "ngx_")
 			moduleName = strings.TrimSuffix(moduleName, "_module")
-			loadedDynamicModules[moduleName] = true
 			module, ok := modulesCache.Get(moduleName)
 			if ok {
 				module.Loaded = true

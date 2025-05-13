@@ -92,6 +92,8 @@
 | ReloadCmd       | NGINX_UI_NGINX_RELOAD_CMD         |
 | RestartCmd      | NGINX_UI_NGINX_RESTART_CMD        |
 | LogDirWhiteList | NGINX_UI_NGINX_LOG_DIR_WHITE_LIST |
+| StubStatusPort  | NGINX_UI_NGINX_STUB_STATUS_PORT   |
+| ContainerName   | NGINX_UI_NGINX_CONTAINER_NAME     |
 
 ## Node
 
