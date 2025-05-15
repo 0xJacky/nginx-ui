@@ -82,6 +82,7 @@ function handleCancel() {
     <AButton
       type="link"
       size="small"
+      danger
       @click="handleDelete"
     >
       {{ $gettext('Delete') }}

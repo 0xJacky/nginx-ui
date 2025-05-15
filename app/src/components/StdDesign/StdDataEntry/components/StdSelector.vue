@@ -70,7 +70,7 @@ async function _init() {
     // M_values.value = [props.value]
     // not init value, we need to fetch them from api
     if (!props.value && selectedKey.value && selectedKey.value !== '0') {
-      api.get(selectedKey.value, props.getParams).then(r => {
+      api.getItem(selectedKey.value, props.getParams).then(r => {
         M_values.value = [r]
         records.value = [r]
       })
@@ -80,7 +80,7 @@ async function _init() {
     // M_values.value = props.value || []
     // not init value, we need to fetch them from api
     if (!props.value && (selectedKey.value?.length || 0) > 0) {
-      api.get_list({
+      api.getList({
         ...props.getParams,
         id: selectedKey.value,
       }).then(r => {

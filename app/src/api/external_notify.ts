@@ -1,17 +1,13 @@
 import type { ModelBase } from '@/api/curd'
-import Curd from '@/api/curd'
+import { useCurdApi } from '@uozi-admin/request'
 
 export interface ExternalNotify extends ModelBase {
   type: string
   config: Record<string, string>
 }
 
-class ExternalNotifyCurd extends Curd<ExternalNotify> {
-  constructor() {
-    super('/external_notifies')
-  }
-}
+const baseUrl = '/external_notifies'
 
-const externalNotify: ExternalNotifyCurd = new ExternalNotifyCurd()
+const externalNotify = useCurdApi<ExternalNotify>(baseUrl)
 
 export default externalNotify

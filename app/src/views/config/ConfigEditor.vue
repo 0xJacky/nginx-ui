@@ -70,7 +70,7 @@ async function init() {
   data.value.name = name?.[name?.length - 1] ?? ''
   origName.value = data.value.name
   if (!addMode.value) {
-    config.get(relativePath.value).then(r => {
+    config.getItem(relativePath.value).then(r => {
       data.value = r
       historyChatgptRecord.value = r.chatgpt_messages
       modifiedAt.value = r.modified_at

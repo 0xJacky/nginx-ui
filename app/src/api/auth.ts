@@ -1,6 +1,6 @@
 import type { AuthenticationResponseJSON } from '@simplewebauthn/browser'
-import http from '@/lib/http'
 import { useUserStore } from '@/pinia'
+import { http } from '@uozi-admin/request'
 
 const { login, logout } = useUserStore()
 

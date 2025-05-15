@@ -1,5 +1,5 @@
 import type { AuthenticationResponseJSON } from '@simplewebauthn/browser'
-import http from '@/lib/http'
+import { http } from '@uozi-admin/request'
 
 export interface TwoFAStatus {
   enabled: boolean

@@ -66,7 +66,7 @@ const inTrash = ref(false)
 const getParams = reactive(props.getParams ?? {})
 
 function get_list() {
-  table.value?.get_list()
+  table.value?.getList()
 }
 
 defineExpose({
@@ -137,7 +137,7 @@ function view(id: number | string) {
 
 async function get(id: number | string) {
   return props
-    .api!.get(id, { ...props.overwriteParams }).then(async r => {
+    .api!.getItem(id, { ...props.overwriteParams }).then(async r => {
     Object.keys(data).forEach(k => {
       delete data[k]
     })
@@ -160,7 +160,7 @@ async function handleClickBatchEdit(batchColumns: Column[]) {
 }
 
 function handleBatchUpdated() {
-  table.value?.get_list()
+  table.value?.getList()
   table.value?.resetSelection()
 }
 </script>

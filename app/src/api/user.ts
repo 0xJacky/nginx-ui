@@ -1,11 +1,13 @@
 import type { ModelBase } from '@/api/curd'
-import Curd from '@/api/curd'
+import { useCurdApi } from '@uozi-admin/request'
 
 export interface User extends ModelBase {
   name: string
   password: string
+  enabled_2fa: boolean
+  status: boolean
 }
 
-const user: Curd<User> = new Curd('users')
+const user = useCurdApi<User>('/users')
 
 export default user

@@ -27,7 +27,7 @@ const content = ref('')
 
 function init() {
   if (directive.value.directive === Include) {
-    config.get(directive.value.params).then(r => {
+    config.getItem(directive.value.params).then(r => {
       content.value = r.content
     })
   }

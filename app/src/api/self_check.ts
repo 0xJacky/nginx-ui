@@ -1,7 +1,7 @@
 import type { Container } from '@/language'
 import type { CosyError } from '@/lib/http'
-import http from '@/lib/http'
 import ws from '@/lib/websocket'
+import { http } from '@uozi-admin/request'
 
 export const ReportStatus = {
   Success: 'success',

@@ -1,5 +1,5 @@
-import http from '@/lib/http'
 import ws from '@/lib/websocket'
+import { http } from '@uozi-admin/request'
 
 export interface CPUInfoStat {
   cpu: number

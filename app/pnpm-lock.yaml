@@ -23,6 +23,9 @@ importers:
       '@uozi-admin/curd':
         specifier: ^4.1.4
         version: 4.1.4(@ant-design/icons-vue@7.0.1(vue@3.5.13(typescript@5.8.3)))(ant-design-vue@4.2.6(vue@3.5.13(typescript@5.8.3)))(dayjs@1.11.13)(lodash-es@4.17.21)(vue-router@4.5.1(vue@3.5.13(typescript@5.8.3)))(vue@3.5.13(typescript@5.8.3))
+      '@uozi-admin/request':
+        specifier: ^2.6.0
+        version: 2.6.0(lodash-es@4.17.21)
       '@vue/reactivity':
         specifier: ^3.5.13
         version: 3.5.13
@@ -1338,6 +1341,11 @@ packages:
       lodash-es: '>=4.17.21'
       vue: '>=3.5.13'
       vue-router: '>=4.5.1'
+
+  '@uozi-admin/request@2.6.0':
+    resolution: {integrity: sha512-zNzp1KvTT6tsWC1zPwywmbggsogCd1pHIxCrDEkhPXKE2wryB1ax0hO0Q8E3rP8lFi7DvBViPNXcmi8DRqjj/g==}
+    peerDependencies:
+      lodash-es: '>=4.17.21'
 
   '@vitejs/plugin-vue-jsx@4.1.2':
     resolution: {integrity: sha512-4Rk0GdE0QCdsIkuMmWeg11gmM4x8UmTnZR/LWPm7QJ7+BsK4tq08udrN0isrrWqz5heFy9HLV/7bOLgFS8hUjA==}
@@ -5431,6 +5439,13 @@ snapshots:
       vue-router: 4.5.1(vue@3.5.13(typescript@5.8.3))
       vue-types: 6.0.0(vue@3.5.13(typescript@5.8.3))
       xlsx: https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz
+
+  '@uozi-admin/request@2.6.0(lodash-es@4.17.21)':
+    dependencies:
+      axios: 1.9.0
+      lodash-es: 4.17.21
+    transitivePeerDependencies:
+      - debug
 
   '@vitejs/plugin-vue-jsx@4.1.2(vite@6.3.5(@types/node@22.15.17)(jiti@2.4.2)(less@4.3.0)(tsx@4.19.2)(yaml@2.7.1))(vue@3.5.13(typescript@5.8.3))':
     dependencies:

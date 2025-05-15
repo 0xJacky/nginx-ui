@@ -44,7 +44,7 @@ onMounted(async () => {
   let page = 1
   while (true) {
     try {
-      const r = await acme_user.get_list({ page })
+      const r = await acme_user.getList({ page })
 
       users.value.push(...r.data)
       if (r?.data?.length < (r?.pagination?.per_page ?? 0))

@@ -60,7 +60,7 @@ onMounted(() => {
     return
   }
 
-  props.api.get(route.params.id).then(res => {
+  props.api.getItem(route.params.id).then(res => {
     detail.value = res
   })
 })

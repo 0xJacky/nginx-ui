@@ -46,7 +46,7 @@ connect({
 
 function init() {
   loading.value = true
-  notificationApi.get_list({ sort: 'desc', order_by: 'created_at' }).then(r => {
+  notificationApi.getList({ sort: 'desc', order_by: 'created_at' }).then(r => {
     data.value = r.data
     unreadCount.value = r.pagination?.total || 0
   }).finally(() => {

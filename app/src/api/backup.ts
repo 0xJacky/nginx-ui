@@ -1,4 +1,4 @@
-import http from '@/lib/http'
+import { http } from '@uozi-admin/request'
 
 /**
  * Interface for restore backup response

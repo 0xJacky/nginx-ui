@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import user from '@/api/user'
-import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import userColumns from '@/views/user/userColumns'
+import { StdCurd } from '@uozi-admin/curd'
 </script>
 
 <template>
@@ -9,6 +9,7 @@ import userColumns from '@/views/user/userColumns'
     :scroll-x="1000"
     :title="$gettext('Manage Users')"
     :columns="userColumns"
+    disable-export
     :api="user"
   />
 </template>

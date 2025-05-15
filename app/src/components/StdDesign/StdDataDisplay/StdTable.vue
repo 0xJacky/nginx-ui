@@ -212,7 +212,7 @@ async function _get_list() {
   loading.value = true
 
   // eslint-disable-next-line ts/no-explicit-any
-  await props.api?.get_list({ ...params.value, ...paginationParams.value }).then(async (r: GetListResponse<any>) => {
+  await props.api?.getList({ ...params.value, ...paginationParams.value }).then(async (r: GetListResponse<any>) => {
     dataSource.value = r.data
     rowsKeyIndexMap.value = {}
     if (props.sortable)

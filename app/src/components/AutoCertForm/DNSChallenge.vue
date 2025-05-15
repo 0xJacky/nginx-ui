@@ -42,7 +42,7 @@ watch(current, () => {
   if (mounted.value)
     data.value.dns_credential_id = undefined
 
-  dns_credential.get_list({ provider: data.value.provider }).then(r => {
+  dns_credential.getList({ provider: data.value.provider }).then(r => {
     r.data.forEach(v => {
       credentials.value?.push({
         value: v.id,
@@ -60,7 +60,7 @@ onMounted(async () => {
   })
 
   if (data.value.dns_credential_id) {
-    await dns_credential.get(data.value.dns_credential_id).then(r => {
+    await dns_credential.getItem(data.value.dns_credential_id).then(r => {
       data.value.code = r.code
       data.value.provider = r.provider
       providerIdx.value = providers.value.findIndex(v => v.code === r.code)

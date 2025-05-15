@@ -1,6 +1,6 @@
 import type { DNSProvider } from '@/api/auto_cert'
 import type { ModelBase } from '@/api/curd'
-import Curd from '@/api/curd'
+import { useCurdApi } from '@uozi-admin/request'
 
 export interface DnsCredential extends ModelBase {
   name: string
@@ -17,6 +17,8 @@ export interface DnsCredential extends ModelBase {
   }
 }
 
-const dns_credential: Curd<DnsCredential> = new Curd('/dns_credentials')
+const baseUrl = '/dns_credentials'
+
+const dns_credential = useCurdApi<DnsCredential>(baseUrl)
 
 export default dns_credential

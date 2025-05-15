@@ -1,4 +1,4 @@
-import http from '@/lib/http'
+import { http } from '@uozi-admin/request'
 
 export const AutoCertChallengeMethod = {
   http01: 'http01',
