@@ -1,34 +1,33 @@
 <script setup lang="tsx">
+import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { AcmeUser } from '@/api/acme_user'
-import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { Column } from '@/components/StdDesign/types'
+import { datetimeRender, StdCurd } from '@uozi-admin/curd'
 import { message, Tag } from 'ant-design-vue'
-import acme_user from '@/api/acme_user'
-import { StdCurd } from '@/components/StdDesign/StdDataDisplay'
-import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { input, switcher } from '@/components/StdDesign/StdDataEntry'
 
-const columns: Column[] = [
+import acme_user from '@/api/acme_user'
+
+const columns: StdTableColumn[] = [
   {
     title: () => $gettext('Name'),
     dataIndex: 'name',
     sorter: true,
-    pithy: true,
+    pure: true,
     edit: {
-      type: input,
-      config: {
+      type: 'input',
+      formItem: {
         required: true,
       },
     },
+    search: true,
   },
   {
     title: () => $gettext('Email'),
     dataIndex: 'email',
     sorter: true,
-    pithy: true,
+    pure: true,
     edit: {
-      type: input,
-      config: {
+      type: 'input',
+      formItem: {
         required: true,
       },
     },
@@ -37,13 +36,11 @@ const columns: Column[] = [
     title: () => $gettext('CA Dir'),
     dataIndex: 'ca_dir',
     sorter: true,
-    pithy: true,
+    pure: true,
     edit: {
-      type: input,
-      config: {
-        placeholder() {
-          return $gettext('If left blank, the default CA Dir will be used.')
-        },
+      type: 'input',
+      input: {
+        placeholder: () => $gettext('If left blank, the default CA Dir will be used.'),
       },
     },
   },
@@ -52,26 +49,24 @@ const columns: Column[] = [
     dataIndex: 'proxy',
     hiddenInTable: true,
     edit: {
-      type: input,
+      type: 'input',
       hint: $gettext('Register a user or use this account to issue a certificate through an HTTP proxy.'),
-      config: {
-        placeholder() {
-          return $gettext('Leave blank if you don\'t need this.')
-        },
+      input: {
+        placeholder: $gettext('Leave blank if you don\'t need this.'),
       },
     },
   },
   {
     title: () => $gettext('Status'),
     dataIndex: ['registration', 'body', 'status'],
-    customRender: (args: CustomRender) => {
-      if (args.text === 'valid')
+    customRender: ({ text }: CustomRenderArgs) => {
+      if (text === 'valid')
         return <Tag color="green">{$gettext('Valid')}</Tag>
 
       return <Tag color="red">{$gettext('Invalid')}</Tag>
     },
     sorter: true,
-    pithy: true,
+    pure: true,
   },
   {
     title: () => $gettext('Register On Startup'),
@@ -79,7 +74,7 @@ const columns: Column[] = [
     hiddenInTable: true,
     hiddenInDetail: true,
     edit: {
-      type: switcher,
+      type: 'switch',
       hint: $gettext('When Enabled, Nginx UI will automatically re-register users upon startup. '
         + 'Generally, do not enable this unless you are in a dev environment and using Pebble as CA.'),
     },
@@ -87,13 +82,13 @@ const columns: Column[] = [
   {
     title: () => $gettext('Updated at'),
     dataIndex: 'updated_at',
-    customRender: datetime,
+    customRender: datetimeRender,
     sorter: true,
-    pithy: true,
+    pure: true,
   },
   {
-    title: () => $gettext('Action'),
-    dataIndex: 'action',
+    title: () => $gettext('Actions'),
+    dataIndex: 'actions',
     fixed: 'right',
   },
 ]
@@ -112,6 +107,7 @@ function register(id: number, data: AcmeUser) {
   <StdCurd
     :title="$gettext('ACME User')"
     :columns="columns"
+    disable-export
     :api="acme_user"
   >
     <template #edit="{ data }: {data: AcmeUser}">

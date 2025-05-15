@@ -1,17 +1,16 @@
-import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { Column, JSXElements } from '@/components/StdDesign/types'
+import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
+import type { JSXElements } from '@/types'
+import { datetimeRender, maskRender } from '@uozi-admin/curd'
 import { Badge, Tag } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import { datetime, mask } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { input } from '@/components/StdDesign/StdDataEntry'
 import { PrivateKeyTypeMask } from '@/constants'
 
-const columns: Column[] = [{
+const columns: StdTableColumn[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
   sorter: true,
-  pithy: true,
-  customRender: (args: CustomRender) => {
+  pure: true,
+  customRender: (args: CustomRenderArgs) => {
     const { text, record } = args
     if (!text)
       return h('div', record.domain)
@@ -19,14 +18,13 @@ const columns: Column[] = [{
     return h('div', text)
   },
   search: {
-    type: input,
+    type: 'input',
   },
 }, {
   title: () => $gettext('Type'),
   dataIndex: 'auto_cert',
-  customRender: (args: CustomRender) => {
+  customRender: ({ text }: CustomRenderArgs) => {
     const template: JSXElements = []
-    const { text } = args
     const sync = $gettext('Sync Certificate')
     const managed = $gettext('Managed Certificate')
     const general = $gettext('General Certificate')
@@ -54,18 +52,18 @@ const columns: Column[] = [{
     return h('div', template)
   },
   sorter: true,
-  pithy: true,
+  pure: true,
 }, {
   title: () => $gettext('Key Type'),
   dataIndex: 'key_type',
-  customRender: mask(PrivateKeyTypeMask),
+  customRender: maskRender(PrivateKeyTypeMask),
   sorter: true,
-  pithy: true,
+  pure: true,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'certificate_info',
-  pithy: true,
-  customRender: (args: CustomRender) => {
+  pure: true,
+  customRender: (args: CustomRenderArgs) => {
     const template: JSXElements = []
 
     const text = args.text?.not_before
@@ -75,11 +73,11 @@ const columns: Column[] = [{
 
     if (text) {
       template.push(<Badge status="success" />)
-      template.push($gettext('Valid'))
+      template.push(h('span', $gettext('Valid')))
     }
     else {
       template.push(<Badge status="error" />)
-      template.push($gettext('Expired'))
+      template.push(h('span', $gettext('Expired')))
     }
 
     return h('div', template)
@@ -87,12 +85,12 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('Not After'),
   dataIndex: ['certificate_info', 'not_after'],
-  customRender: datetime,
+  customRender: datetimeRender,
   sorter: true,
-  pithy: true,
+  pure: true,
 }, {
-  title: () => $gettext('Action'),
-  dataIndex: 'action',
+  title: () => $gettext('Actions'),
+  dataIndex: 'actions',
   fixed: 'right',
 }]
 

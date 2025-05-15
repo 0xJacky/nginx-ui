@@ -32,7 +32,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
 
     if (name.value) {
       try {
-        const r = await stream.get(name.value)
+        const r = await stream.getItem(name.value)
         handleResponse(r)
       }
       catch (error) {

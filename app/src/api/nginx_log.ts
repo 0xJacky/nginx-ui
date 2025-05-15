@@ -1,4 +1,4 @@
-import http from '@/lib/http'
+import { http } from '@uozi-admin/request'
 
 export interface INginxLogData {
   type: string
@@ -10,7 +10,7 @@ const nginx_log = {
     return http.post(`/nginx_log?page=${page}`, data)
   },
 
-  get_list(params: {
+  getList(params: {
     type?: string
     name?: string
     path?: string

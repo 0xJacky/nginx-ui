@@ -1,37 +1,35 @@
 <script setup lang="tsx">
-import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { Column } from '@/components/StdDesign/types'
+import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
+import { datetimeRender, StdCurd } from '@uozi-admin/curd'
 import dns_credential from '@/api/dns_credential'
-import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
-import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { input } from '@/components/StdDesign/StdDataEntry'
 import DNSChallenge from './components/DNSChallenge.vue'
 
-const columns: Column[] = [{
+const columns: StdTableColumn[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
   sorter: true,
-  pithy: true,
+  pure: true,
   edit: {
-    type: input,
+    type: 'input',
   },
 }, {
   title: () => $gettext('Provider'),
   dataIndex: ['config', 'name'],
-  customRender: (args: CustomRender) => {
-    return args.record.provider
+  customRender: ({ record }: CustomRenderArgs) => {
+    return record.provider
   },
   sorter: true,
-  pithy: true,
+  pure: true,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
-  customRender: datetime,
+  customRender: datetimeRender,
   sorter: true,
-  pithy: true,
+  pure: true,
 }, {
-  title: () => $gettext('Action'),
-  dataIndex: 'action',
+  title: () => $gettext('Actions'),
+  dataIndex: 'actions',
+  fixed: 'right',
 }]
 </script>
 
@@ -40,8 +38,9 @@ const columns: Column[] = [{
     :title="$gettext('DNS Credentials')"
     :api="dns_credential"
     :columns="columns"
+    disable-export
   >
-    <template #beforeEdit>
+    <template #beforeForm>
       <AAlert
         class="mb-4"
         type="info"

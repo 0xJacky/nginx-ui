@@ -1,30 +1,27 @@
-import type { SiteStatus } from '@/api/site'
 import type {
-  CustomRender,
-} from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { Column, JSXElements } from '@/components/StdDesign/types'
+  CustomRenderArgs,
+  StdTableColumn,
+} from '@uozi-admin/curd'
+import type { SiteStatus } from '@/api/site'
+import type { JSXElements } from '@/types'
+import { actualFieldRender, datetimeRender } from '@uozi-admin/curd'
 import { Tag } from 'ant-design-vue'
 import env_group from '@/api/env_group'
-import {
-  actualValueRender,
-  datetime,
-} from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { input, select, selector } from '@/components/StdDesign/StdDataEntry'
 import { ConfigStatus } from '@/constants'
 import envGroupColumns from '@/views/environments/group/columns'
 import SiteStatusSegmented from '@/views/site/components/SiteStatusSegmented.vue'
 
-const columns: Column[] = [{
+const columns: StdTableColumn[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
   sorter: true,
-  pithy: true,
+  pure: true,
   edit: {
-    type: input,
+    type: 'input',
   },
   search: true,
   width: 150,
-  customRender: ({ text, record }) => {
+  customRender: ({ text, record }: CustomRenderArgs) => {
     const template: JSXElements = []
 
     // Add site name
@@ -65,31 +62,31 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('Node Group'),
   dataIndex: 'env_group_id',
-  customRender: actualValueRender('env_group.name'),
+  customRender: actualFieldRender('env_group.name'),
   edit: {
-    type: selector,
+    type: 'selector',
     selector: {
-      api: env_group,
+      getListApi: env_group.getList,
       columns: envGroupColumns,
-      recordValueIndex: 'name',
+      valueKey: 'id',
+      displayKey: 'name',
       selectionType: 'radio',
     },
   },
   sorter: true,
-  pithy: true,
-  batch: true,
+  pure: true,
   width: 100,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'modified_at',
-  customRender: datetime,
+  customRender: datetimeRender,
   sorter: true,
-  pithy: true,
+  pure: true,
   width: 150,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'status',
-  customRender: (args: CustomRender) => {
+  customRender: (args: CustomRenderArgs) => {
     const { text, record } = args
     return h(SiteStatusSegmented, {
       'modelValue': text,
@@ -105,20 +102,31 @@ const columns: Column[] = [{
     })
   },
   search: {
-    type: select,
-    mask: {
-      [ConfigStatus.Enabled]: $gettext('Enabled'),
-      [ConfigStatus.Disabled]: $gettext('Disabled'),
-      [ConfigStatus.Maintenance]: $gettext('Maintenance'),
+    type: 'select',
+    select: {
+      options: [
+        {
+          label: $gettext('Enabled'),
+          value: ConfigStatus.Enabled,
+        },
+        {
+          label: $gettext('Disabled'),
+          value: ConfigStatus.Disabled,
+        },
+        {
+          label: $gettext('Maintenance'),
+          value: ConfigStatus.Maintenance,
+        },
+      ],
     },
   },
   sorter: true,
-  pithy: true,
+  pure: true,
   width: 110,
   fixed: 'right',
 }, {
-  title: () => $gettext('Action'),
-  dataIndex: 'action',
+  title: () => $gettext('Actions'),
+  dataIndex: 'actions',
   width: 80,
   fixed: 'right',
 }]

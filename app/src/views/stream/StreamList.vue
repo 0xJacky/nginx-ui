@@ -1,78 +1,76 @@
 <script setup lang="tsx">
+import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { EnvGroup } from '@/api/env_group'
 import type { Stream } from '@/api/stream'
-import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { Column, JSXElements } from '@/components/StdDesign/types'
+import type { JSXElements } from '@/types'
+import { actualFieldRender, datetimeRender, StdTable } from '@uozi-admin/curd'
 import { Badge, message } from 'ant-design-vue'
 import env_group from '@/api/env_group'
 import stream from '@/api/stream'
 import EnvGroupTabs from '@/components/EnvGroupTabs'
 import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
-import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
-import { actualValueRender, datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { input, selector } from '@/components/StdDesign/StdDataEntry'
 import { ConfigStatus } from '@/constants'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import envGroupColumns from '@/views/environments/group/columns'
 import StreamDuplicate from '@/views/stream/components/StreamDuplicate.vue'
 
-const columns: Column[] = [{
+const columns: StdTableColumn[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
   sorter: true,
-  pithy: true,
+  pure: true,
   edit: {
-    type: input,
+    type: 'input',
   },
   search: true,
   width: 150,
 }, {
   title: () => $gettext('Node Group'),
   dataIndex: 'env_group_id',
-  customRender: actualValueRender('env_group.name'),
+  customRender: actualFieldRender('env_group.name'),
   edit: {
-    type: selector,
+    type: 'selector',
     selector: {
-      api: env_group,
+      getListApi: env_group.getList,
       columns: envGroupColumns,
-      recordValueIndex: 'name',
+      valueKey: 'id',
+      displayKey: 'name',
       selectionType: 'radio',
     },
   },
   sorter: true,
-  pithy: true,
-  batch: true,
+  pure: true,
   width: 150,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'status',
-  customRender: (args: CustomRender) => {
+  customRender: (args: CustomRenderArgs) => {
     const template: JSXElements = []
     const { text } = args
     if (text === ConfigStatus.Enabled) {
       template.push(<Badge status="success" />)
-      template.push($gettext('Enabled'))
+      template.push(h('span', $gettext('Enabled')))
     }
     else if (text === ConfigStatus.Disabled) {
       template.push(<Badge status="warning" />)
-      template.push($gettext('Disabled'))
+      template.push(h('span', $gettext('Disabled')))
     }
 
     return h('div', template)
   },
   sorter: true,
-  pithy: true,
+  pure: true,
   width: 200,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'modified_at',
-  customRender: datetime,
+  customRender: datetimeRender,
   sorter: true,
-  pithy: true,
+  pure: true,
   width: 200,
 }, {
-  title: () => $gettext('Action'),
-  dataIndex: 'action',
+  title: () => $gettext('Actions'),
+  dataIndex: 'actions',
   width: 250,
   fixed: 'right',
 }]
@@ -127,7 +125,7 @@ onMounted(async () => {
   let page = 1
   while (true) {
     try {
-      const { data, pagination } = await env_group.get_list({ page })
+      const { data, pagination } = await env_group.getList({ page })
       if (!data || !pagination)
         return
       envGroups.value.push(...data)
@@ -163,7 +161,7 @@ function handleAddStream() {
 
 const stdBatchEditRef = useTemplateRef('stdBatchEditRef')
 
-async function handleClickBatchEdit(batchColumns: Column[], selectedRowKeys: string[], selectedRows: Stream[]) {
+async function handleClickBatchEdit(batchColumns: StdTableColumn[], selectedRowKeys: string[], selectedRows: Stream[]) {
   stdBatchEditRef.value?.showModal(batchColumns, selectedRowKeys, selectedRows)
 }
 
@@ -187,21 +185,23 @@ function handleBatchUpdated() {
 
     <StdTable
       ref="table"
-      :api="stream"
+      :get-list-api="stream.getList"
       :columns="columns"
-      row-key="name"
+      :table-props="{
+        rowKey: 'name',
+      }"
       disable-delete
       disable-view
       :scroll-x="800"
       :get-params="{
         env_group_id: envGroupId,
       }"
-      @click-edit="r => $router.push({
-        path: `/streams/${encodeURIComponent(r)}`,
+      @edit-item="record => $router.push({
+        path: `/streams/${encodeURIComponent(record.name)}`,
       })"
       @click-batch-modify="handleClickBatchEdit"
     >
-      <template #actions="{ record }">
+      <template #afterActions="{ record }">
         <AButton
           v-if="record.enabled"
           type="link"

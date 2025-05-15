@@ -3,7 +3,7 @@ import type { AcmeUser } from '@/api/acme_user'
 import type { ModelBase } from '@/api/curd'
 import type { DnsCredential } from '@/api/dns_credential'
 import type { PrivateKeyType } from '@/constants'
-import Curd from '@/api/curd'
+import { useCurdApi } from '@uozi-admin/request'
 
 export interface Cert extends ModelBase {
   name: string
@@ -39,6 +39,6 @@ export interface CertificateResult {
   key_type: PrivateKeyType
 }
 
-const cert: Curd<Cert> = new Curd('/certs')
+const cert = useCurdApi<Cert>('/certs')
 
 export default cert

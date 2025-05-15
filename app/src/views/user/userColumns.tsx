@@ -1,28 +1,26 @@
-import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { Column, JSXElements } from '@/components/StdDesign/types'
+import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
+import type { JSXElements } from '@/types'
+import { datetimeRender } from '@uozi-admin/curd'
 import { Tag } from 'ant-design-vue'
-import { h } from 'vue'
-import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { input, password } from '@/components/StdDesign/StdDataEntry'
 
-const columns: Column[] = [{
+const columns: StdTableColumn[] = [{
   title: () => $gettext('Username'),
   dataIndex: 'name',
   sorter: true,
-  pithy: true,
+  pure: true,
   edit: {
-    type: input,
+    type: 'input',
   },
   search: true,
 }, {
   title: () => $gettext('Password'),
   dataIndex: 'password',
   sorter: true,
-  pithy: true,
+  pure: true,
   edit: {
-    type: password,
-    config: {
-      placeholder: () => $gettext('Leave blank for no change'),
+    type: 'password',
+    password: {
+      placeholder: $gettext('Leave blank for no change'),
       generate: true,
     },
   },
@@ -31,7 +29,7 @@ const columns: Column[] = [{
 }, {
   title: () => $gettext('2FA'),
   dataIndex: 'enabled_2fa',
-  customRender: (args: CustomRender) => {
+  customRender: (args: CustomRenderArgs) => {
     const template: JSXElements = []
     const { text } = args
     if (text === true || text > 0)
@@ -43,23 +41,24 @@ const columns: Column[] = [{
     return h('div', template)
   },
   sorter: true,
-  pithy: true,
+  pure: true,
 }, {
   title: () => $gettext('Created at'),
   dataIndex: 'created_at',
-  customRender: datetime,
+  customRender: datetimeRender,
   sorter: true,
-  pithy: true,
+  pure: true,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
-  customRender: datetime,
+  customRender: datetimeRender,
   sorter: true,
-  pithy: true,
+  pure: true,
 }, {
-  title: () => $gettext('Action'),
-  dataIndex: 'action',
+  title: () => $gettext('Actions'),
+  dataIndex: 'actions',
   fixed: 'right',
+  width: 250,
 }]
 
 export default columns

@@ -32,7 +32,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
 
     if (name.value) {
       try {
-        const r = await site.get(name.value)
+        const r = await site.getItem(name.value)
         handleResponse(r)
       }
       catch (error) {

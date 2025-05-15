@@ -25,7 +25,7 @@ const notShowInAutoCert = computed(() => {
 
 function init() {
   if (id.value > 0) {
-    cert.get(id.value).then(r => {
+    cert.getItem(id.value).then(r => {
       data.value = r
     })
   }

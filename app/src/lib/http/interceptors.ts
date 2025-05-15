@@ -1,17 +1,15 @@
 import type { CosyError } from './types'
+import { http, useAxios } from '@uozi-admin/request'
 import JSEncrypt from 'jsencrypt'
 import { storeToRefs } from 'pinia'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
 import { useNProgress } from '@/lib/nprogress/nprogress'
 import { useSettingsStore, useUserStore } from '@/pinia'
 import router from '@/routes'
-import { http, instance } from './client'
 import { handleApiError, useMessageDedupe } from './error'
 
-// Setup stores and refs
-const user = useUserStore()
-const settings = useSettingsStore()
-const { token, secureSessionId } = storeToRefs(user)
+const { setRequestInterceptor, setResponseInterceptor } = useAxios()
+
 const nprogress = useNProgress()
 const dedupe = useMessageDedupe()
 
@@ -68,7 +66,11 @@ async function handleEncryptedFormData(formData: FormData): Promise<FormData> {
 
 // Setup request interceptor
 export function setupRequestInterceptor() {
-  instance.interceptors.request.use(
+  // Setup stores and refs
+  const user = useUserStore()
+  const settings = useSettingsStore()
+  const { token, secureSessionId } = storeToRefs(user)
+  setRequestInterceptor(
     async config => {
       nprogress.start()
       if (token.value) {
@@ -106,7 +108,7 @@ export function setupRequestInterceptor() {
 
 // Setup response interceptor
 export function setupResponseInterceptor() {
-  instance.interceptors.response.use(
+  setResponseInterceptor(
     response => {
       nprogress.done()
 
@@ -118,6 +120,9 @@ export function setupResponseInterceptor() {
     },
 
     async error => {
+      // Setup stores and refs
+      const user = useUserStore()
+      const { secureSessionId } = storeToRefs(user)
       nprogress.done()
       const otpModal = use2FAModal()
 

@@ -1,4 +1,4 @@
-import http from '@/lib/http'
+import { http } from '@uozi-admin/request'
 import ws from '@/lib/websocket'
 
 export interface CPUInfoStat {

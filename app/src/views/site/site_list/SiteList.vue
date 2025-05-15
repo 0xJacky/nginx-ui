@@ -2,12 +2,12 @@
 import type { EnvGroup } from '@/api/env_group'
 import type { Site } from '@/api/site'
 import type { Column } from '@/components/StdDesign/types'
+import { StdTable } from '@uozi-admin/curd'
 import { message } from 'ant-design-vue'
 import env_group from '@/api/env_group'
 import site from '@/api/site'
 import EnvGroupTabs from '@/components/EnvGroupTabs'
 import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
-import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import { ConfigStatus } from '@/constants'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import columns from '@/views/site/site_list/columns'
@@ -47,7 +47,7 @@ onMounted(async () => {
 
 function destroy(site_name: string) {
   site.destroy(site_name).then(() => {
-    table.value.get_list()
+    table.value.getList()
     message.success($gettext('Delete site: %{site_name}', { site_name }))
     inspectConfig.value?.test()
   })
@@ -82,21 +82,24 @@ function handleBatchUpdated() {
 
     <StdTable
       ref="table"
-      :api="site"
+      :get-list-api="site.getList"
       :columns="columns"
-      row-key="name"
+      :table-props="{
+        rowKey: 'name',
+      }"
       disable-delete
       disable-view
-      :get-params="{
+      row-selection-type="checkbox"
+      :custom-query-params="{
         env_group_id: envGroupId,
       }"
       :scroll-x="1600"
-      @click-edit="(r: string) => router.push({
-        path: `/sites/${encodeURIComponent(r)}`,
+      @edit-item="record => router.push({
+        path: `/sites/${encodeURIComponent(record.name)}`,
       })"
       @click-batch-modify="handleClickBatchEdit"
     >
-      <template #actions="{ record }">
+      <template #afterActions="{ record }">
         <AButton
           type="link"
           size="small"

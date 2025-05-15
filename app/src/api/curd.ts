@@ -1,4 +1,4 @@
-import http from '@/lib/http'
+import { http } from '@uozi-admin/request'
 
 export interface ModelBase {
   id: number
@@ -16,6 +16,12 @@ export interface Pagination {
 export interface GetListResponse<T> {
   data: T[]
   pagination?: Pagination
+}
+
+export interface UpdateOrderRequest {
+  target_id: number
+  direction: number
+  affected_ids: number[]
 }
 
 class Curd<T> {

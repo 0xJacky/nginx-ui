@@ -1,5 +1,5 @@
 import type { RecoveryCodesResponse } from '@/api/recovery'
-import http from '@/lib/http'
+import { http } from '@uozi-admin/request'
 
 export interface OTPGenerateSecretResponse {
   secret: string

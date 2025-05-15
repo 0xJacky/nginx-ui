@@ -1,8 +1,8 @@
 {
   "name": "nginx-ui-app-next",
   "type": "module",
-  "version": "2.0.0",
-  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977",
+  "version": "2.1.0-beta.1",
+  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39",
   "scripts": {
     "dev": "vite --host",
     "typecheck": "vue-tsc --noEmit",
@@ -10,7 +10,7 @@
     "lint:fix": "eslint --fix .",
     "build": "vite build",
     "preview": "vite preview",
-    "gettext:extract": "vue-gettext-extract"
+    "gettext:extract": "generate-curd-translations --output src/language/curd.ts && vue-gettext-extract"
   },
   "dependencies": {
     "@0xjacky/vue-github-button": "^3.1.1",
@@ -18,6 +18,7 @@
     "@formkit/auto-animate": "^0.8.2",
     "@simplewebauthn/browser": "^13.1.0",
     "@uozi-admin/curd": "^4.1.4",
+    "@uozi-admin/request": "^2.6.0",
     "@vue/reactivity": "^3.5.14",
     "@vue/shared": "^3.5.14",
     "@vueuse/components": "^13.2.0",

@@ -51,6 +51,8 @@ export default createConfig(
       'sonarjs/no-nested-template-literals': 'off',
       'sonarjs/pseudo-random': 'warn',
       'sonarjs/no-nested-functions': 'off',
+
+      'eslint-comments/no-unlimited-disable': 'off',
     },
   },
 )

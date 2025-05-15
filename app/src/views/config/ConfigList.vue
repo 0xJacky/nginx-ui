@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { StdTable } from '@uozi-admin/curd'
 import config from '@/api/config'
 import FooterToolBar from '@/components/FooterToolbar'
-import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
 import Mkdir from './components/Mkdir.vue'
 import Rename from './components/Rename.vue'
@@ -133,17 +133,17 @@ const refRename = useTemplateRef('refRename')
     <StdTable
       :key="update"
       ref="table"
-      :api="config"
+      :get-list-api="config.getList"
       :columns="configColumns"
       disable-delete
       disable-view
       row-key="name"
-      :get-params="getParams"
-      disable-query-params
-      disable-modify
+      :custom-query-params="getParams"
+      disable-router-query
+      disable-edit
       :scroll-x="880"
     >
-      <template #actions="{ record }">
+      <template #beforeActions="{ record }">
         <AButton
           type="link"
           size="small"
@@ -184,11 +184,11 @@ const refRename = useTemplateRef('refRename')
     </StdTable>
     <Mkdir
       ref="refMkdir"
-      @created="() => table?.get_list()"
+      @created="() => table?.refresh()"
     />
     <Rename
       ref="refRename"
-      @renamed="() => table?.get_list()"
+      @renamed="() => table?.refresh()"
     />
     <FooterToolBar v-if="basePath">
       <AButton @click="goBack">

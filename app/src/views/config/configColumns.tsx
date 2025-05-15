@@ -1,17 +1,16 @@
-import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import { FileFilled, FolderFilled } from '@ant-design/icons-vue'
-import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { input } from '@/components/StdDesign/StdDataEntry'
+import { datetimeRender } from '@uozi-admin/curd'
 
-const configColumns = [{
+const configColumns: StdTableColumn[] = [{
   title: () => $gettext('Name'),
   dataIndex: 'name',
   sorter: true,
-  pithy: true,
+  pure: true,
   search: {
-    type: input,
+    type: 'input',
   },
-  customRender: (args: CustomRender) => {
+  customRender: ({ text, record }: CustomRenderArgs) => {
     function renderIcon(isDir: boolean) {
       return (
         <div class="mr-2 text-truegray-5">
@@ -22,11 +21,11 @@ const configColumns = [{
       )
     }
 
-    const displayName = args.text || ''
+    const displayName = text || ''
 
     return (
       <div class="flex">
-        {renderIcon(args.record.is_dir)}
+        {renderIcon(record.is_dir)}
         {displayName}
       </div>
     )
@@ -35,14 +34,13 @@ const configColumns = [{
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'modified_at',
-  customRender: datetime,
-  datetime: true,
+  customRender: datetimeRender,
   sorter: true,
-  pithy: true,
+  pure: true,
   width: 200,
 }, {
-  title: () => $gettext('Action'),
-  dataIndex: 'action',
+  title: () => $gettext('Actions'),
+  dataIndex: 'actions',
   fixed: 'right',
   width: 180,
 }]
