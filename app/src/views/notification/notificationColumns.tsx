@@ -25,7 +25,7 @@ const columns: Column[] = [{
     }
     else if (args.text === NotificationTypeT.Info) {
       return (
-        <Tag color="info">
+        <Tag color="blue">
           {$gettext('Info')}
         </Tag>
       )

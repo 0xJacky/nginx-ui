@@ -197,7 +197,7 @@ function handleBatchUpdated() {
         env_group_id: envGroupId,
       }"
       @click-edit="r => $router.push({
-        path: `/streams/${r}`,
+        path: `/streams/${encodeURIComponent(r)}`,
       })"
       @click-batch-modify="handleClickBatchEdit"
     >
