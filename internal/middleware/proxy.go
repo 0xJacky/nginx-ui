@@ -1,14 +1,16 @@
 package middleware
 
 import (
+	"context"
+	"net/http"
+	"net/http/httputil"
+	"net/url"
+
 	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy/logger"
-	"io"
-	"net/http"
-	"net/url"
 )
 
 func Proxy() gin.HandlerFunc {
@@ -46,7 +48,9 @@ func Proxy() gin.HandlerFunc {
 			return
 		}
 
-		proxyUrl, err := baseUrl.Parse(c.Request.RequestURI)
+		proxy := httputil.NewSingleHostReverseProxy(baseUrl)
+
+		customTransport, err := transport.NewTransport()
 		if err != nil {
 			logger.Error(err)
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
@@ -55,56 +59,41 @@ func Proxy() gin.HandlerFunc {
 			return
 		}
 
-		logger.Debug("Proxy request", proxyUrl.String())
+		proxy.Transport = customTransport
 
-		t, err := transport.NewTransport()
-		if err != nil {
+		defaultDirector := proxy.Director
+		proxy.Director = func(req *http.Request) {
+			defaultDirector(req)
+			req.Header.Del("X-Node-ID")
+			req.Header.Set("X-Node-Secret", environment.Token)
+		}
+
+		// fix https://github.com/0xJacky/nginx-ui/issues/342
+		proxy.ModifyResponse = func(resp *http.Response) error {
+			if resp.StatusCode == http.StatusForbidden {
+				resp.StatusCode = http.StatusServiceUnavailable
+			}
+			return nil
+		}
+
+		proxy.ErrorHandler = func(rw http.ResponseWriter, req *http.Request, err error) {
 			logger.Error(err)
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 				"message": err.Error(),
 			})
-			return
 		}
 
-		client := http.Client{
-			Transport: t,
-		}
+		logger.Debug("Proxy request", baseUrl.String()+c.Request.RequestURI)
 
-		req, err := http.NewRequest(c.Request.Method, proxyUrl.String(), c.Request.Body)
-		if err != nil {
-			logger.Error(err)
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-				"message": err.Error(),
-			})
-			return
-		}
+		// fix proxy panic when client disconnect
+		ctx := context.WithValue(
+			c.Request.Context(),
+			http.ServerContextKey,
+			nil,
+		)
+		req := c.Request.Clone(ctx)
 
-		req.Header.Set("X-Node-Secret", environment.Token)
-
-		resp, err := client.Do(req)
-		if err != nil {
-			logger.Error(err)
-			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-				"message": err.Error(),
-			})
-			return
-		}
-
-		defer resp.Body.Close()
-
-		// rewrite status code to fix https://github.com/0xJacky/nginx-ui/issues/342
-		if resp.StatusCode == http.StatusForbidden {
-			resp.StatusCode = http.StatusServiceUnavailable
-		}
-
-		c.Writer.WriteHeader(resp.StatusCode)
-
-		c.Writer.Header().Add("Content-Type", resp.Header.Get("Content-Type"))
-
-		_, err = io.Copy(c.Writer, resp.Body)
-		if err != nil {
-			logger.Error(err)
-			return
-		}
+		proxy.ServeHTTP(c.Writer, req)
+		return
 	}
 }

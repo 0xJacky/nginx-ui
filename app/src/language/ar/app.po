@@ -13,89 +13,89 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Weblate 5.6.2\n"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:13
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 "[Nginx UI] مستخدم ACME: %{name}، البريد الإلكتروني: %{email}، دليل CA: "
 "%{caDir}"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:51
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] يتم إنشاء نسخة احتياطية من الشهادة الحالية لإلغائها لاحقًا"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:18
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "[Nginx UI] تم تجديد الشهادة بنجاح"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:45
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] تم إلغاء الشهادة بنجاح"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:28
 msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr "[Nginx UI] تم استخدام الشهادة للخادم، إعادة تحميل شهادة TLS للخادم"
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:22
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] إنشاء عميل لتسهيل الاتصال مع خادم CA"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:50
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "[Nginx UI] تم تنظيف متغيرات البيئة"
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:17
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] تم الانتهاء"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:49
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "[Nginx UI] تم إصدار الشهادة بنجاح"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:14
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] الحصول على الشهادة"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:37
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] التحضير لإلغاء الشهادة"
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:12
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] إعداد تكوينات ليغو"
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:42
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] إعادة تحميل nginx"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:43
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] اكتمال الإلغاء"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:44
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] إلغاء الشهادة"
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:35
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] إبطال الشهادة القديمة"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:31
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] تعيين موفر تحدي DNS01"
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:9
 msgid "[Nginx UI] Setting environment variables"
 msgstr "[Nginx UI] تعيين متغيرات البيئة"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:41
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] تعيين موفر تحدي HTTP01"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:4
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] كتابة مفتاح الشهادة الخاص إلى القرص"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:36
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] كتابة الشهادة على القرص"
 
@@ -605,7 +605,7 @@ msgstr "انتهت صلاحية الشهادة"
 msgid "Certificate Expiring Soon"
 msgstr "شهادة على وشك الانتهاء"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:10
 msgid "Certificate not found: %{error}"
 msgstr "الشهادة غير موجودة: %{error}"
 
@@ -630,7 +630,7 @@ msgstr "الفاصل الزمني لتجديد الشهادة"
 msgid "Certificate renewed successfully"
 msgstr "تم تجديد الشهادة بنجاح"
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:11
 msgid "Certificate revoked successfully"
 msgstr "تم إلغاء الشهادة بنجاح"
 
@@ -696,7 +696,7 @@ msgstr "تحقق"
 msgid "Check again"
 msgstr "تحقق مرة أخرى"
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:26
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
 "Docker Image, please make sure the docker socket is mounted like this: `-v "
@@ -725,7 +725,7 @@ msgstr ""
 "تحقق مما إذا كان HTTPS مفعلاً. استخدام HTTP خارج localhost غير آمن ويمنع "
 "استخدام ميزات Passkeys والحافظة"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:6
 msgid ""
 "Check if the nginx access log path exists. By default, this path is "
 "obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
@@ -741,15 +741,15 @@ msgstr ""
 "راجع الوثائق لمزيد من التفاصيل: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:24
 msgid "Check if the nginx configuration directory exists"
 msgstr "تحقق مما إذا كان دليل تكوين nginx موجودًا"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:15
 msgid "Check if the nginx configuration entry file exists"
 msgstr "تحقق مما إذا كان ملف إدخال تكوين nginx موجودًا"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:33
 msgid ""
 "Check if the nginx error log path exists. By default, this path is obtained "
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
@@ -765,7 +765,7 @@ msgstr ""
 "لمزيد من التفاصيل: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:29
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
@@ -779,19 +779,19 @@ msgstr ""
 "Nginx. راجع الوثائق لمزيد من التفاصيل: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:47
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "تحقق مما إذا كان ملف nginx.conf يتضمن دليل conf.d"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:19
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "تحقق مما إذا كان ملف nginx.conf يتضمن دليل sites-enabled"
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:21
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "تحقق مما إذا كان ملف nginx.conf يتضمن دليل streams-enabled"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:46
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory"
@@ -799,7 +799,7 @@ msgstr ""
 "تحقق مما إذا كانت الدلائل sites-available و sites-enabled موجودة ضمن دليل "
 "تكوين nginx"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:8
 msgid ""
 "Check if the streams-available and streams-enabled directories are under "
 "the nginx configuration directory"
@@ -1373,7 +1373,7 @@ msgstr "هل تريد إزالة هذا المصدر؟"
 msgid "Docker client not initialized"
 msgstr "عميل Docker غير مهيأ"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:25
 msgid "Docker socket exists"
 msgstr "مقبس Docker موجود"
 
@@ -1779,7 +1779,7 @@ msgstr "فشل فك تشفير دليل Nginx UI: {0}"
 msgid "Failed to delete certificate"
 msgstr "فشل في حذف الشهادة"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:30
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "فشل حذف الشهادة من قاعدة البيانات: %{error}"
 
@@ -1923,7 +1923,7 @@ msgstr "فشل استعادة ملفات واجهة NGINX: {0}"
 msgid "Failed to revoke certificate"
 msgstr "فشل إبطال الشهادة"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:27
 msgid "Failed to revoke certificate: %{error}"
 msgstr "فشل إلغاء الشهادة: %{error}"
 
@@ -2440,7 +2440,7 @@ msgstr "أماكن"
 msgid "Log"
 msgstr "سجل"
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:34
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to "
@@ -2740,7 +2740,7 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "مسار سجل الوصول لـ Nginx"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:16
 msgid "Nginx access log path exists"
 msgstr "مسار سجل الوصول إلى Nginx موجود"
 
@@ -2768,11 +2768,11 @@ msgstr "تكوين Nginx لا يتضمن stream-enabled"
 msgid "Nginx config directory is not set"
 msgstr "لم يتم تعيين دليل تكوين Nginx"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:23
 msgid "Nginx configuration directory exists"
 msgstr "دليل تكوين Nginx موجود"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:48
 msgid "Nginx configuration entry file exists"
 msgstr "ملف إدخال تكوين Nginx موجود"
 
@@ -2810,7 +2810,7 @@ msgstr "معدل استخدام وحدة المعالجة المركزية لـ 
 msgid "Nginx Error Log Path"
 msgstr "مسار سجل أخطاء Nginx"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:7
 msgid "Nginx error log path exists"
 msgstr "مسار سجل أخطاء Nginx موجود"
 
@@ -2851,7 +2851,7 @@ msgstr "استخدام ذاكرة Nginx"
 msgid "Nginx PID Path"
 msgstr "مسار PID لـ Nginx"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:39
 msgid "Nginx PID path exists"
 msgstr "مسار معرف عملية Nginx موجود"
 
@@ -2911,15 +2911,15 @@ msgid ""
 "a few seconds."
 msgstr "تمت استعادة تكوين Nginx UI وسيتم إعادة التشغيل تلقائيًا خلال بضع ثوانٍ."
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:32
 msgid "Nginx.conf includes conf.d directory"
 msgstr "يتضمن Nginx.conf دليل conf.d"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:5
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "يتضمن Nginx.conf دليل sites-enabled"
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:20
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "يتضمن Nginx.conf دليل streams-enabled"
 
@@ -4057,7 +4057,7 @@ msgstr "سجلات الموقع"
 msgid "Site not found"
 msgstr "الموقع غير موجود"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:38
 msgid "Sites directory exists"
 msgstr "دليل المواقع موجود"
 
@@ -4176,7 +4176,7 @@ msgstr "تم تمكين البث"
 msgid "Stream not found"
 msgstr "البث غير موجود"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:40
 msgid "Streams directory exists"
 msgstr "دليل Streams موجود"
 
@@ -4195,6 +4195,17 @@ msgstr "منفذ حالة ستاب"
 #: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:36
 msgid "Success"
 msgstr "نجاح"
+
+#: src/components/SelfCheck/tasks/frontend/sse.ts:14
+msgid ""
+"Support communication with the backend through the Server-Sent Events "
+"protocol. If your Nginx UI is being used via an Nginx reverse proxy, please "
+"refer to this link to write the corresponding configuration file: "
+"https://nginxui.com/guide/nginx-proxy-example.html"
+msgstr ""
+"دعم الاتصال مع الخلفية من خلال بروتوكول Server-Sent Events. إذا كنت تستخدم "
+"واجهة Nginx عبر وكيل عكسي لـ Nginx، يرجى الرجوع إلى هذا الرابط لكتابة ملف "
+"التكوين المقابل: https://nginxui.com/guide/nginx-proxy-example.html"
 
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:13
 msgid ""

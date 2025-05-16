@@ -19,87 +19,87 @@ msgstr ""
 "X-Generator: Weblate 5.10.4\n"
 "Generated-By: easygettext\n"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:13
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr "[Nginx UI] ACME 使用者：%{name}，電子郵件：%{email}，CA 目錄：%{caDir}"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:51
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] 正在備份當前憑證以便後續撤銷"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:18
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "[Nginx UI] 憑證更新成功"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:45
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] 證書已成功撤銷"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:28
 msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr "[Nginx UI] 憑證已用於伺服器，正在重新載入伺服器 TLS 憑證"
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:22
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] 創建客戶端以促進與 CA 伺服器的通信"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:50
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "[Nginx UI] 環境變數已清理"
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:17
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] 已完成"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:49
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "[Nginx UI] 證書簽發成功"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:14
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] 正在取得憑證"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:37
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] 準備撤銷憑證"
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:12
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] 正在準備 lego 配置"
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:42
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] 重新載入 Nginx"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:43
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] 撤銷完成"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:44
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] 正在撤銷證書"
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:35
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] 正在撤銷舊憑證"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:31
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] 正在設定 DNS01 驗證提供者"
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:9
 msgid "[Nginx UI] Setting environment variables"
 msgstr "[Nginx UI] 設定環境變數"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:41
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] 正在設定 HTTP01 驗證提供者"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:4
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] 正在將證書私鑰寫入磁碟"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:36
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] 正在將憑證寫入磁碟"
 
@@ -607,7 +607,7 @@ msgstr "憑證已過期"
 msgid "Certificate Expiring Soon"
 msgstr "憑證即將到期"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:10
 msgid "Certificate not found: %{error}"
 msgstr "找不到證書: %{error}"
 
@@ -632,7 +632,7 @@ msgstr "憑證更新間隔"
 msgid "Certificate renewed successfully"
 msgstr "憑證更新成功"
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:11
 msgid "Certificate revoked successfully"
 msgstr "證書撤銷成功"
 
@@ -688,7 +688,7 @@ msgstr "檢查"
 msgid "Check again"
 msgstr "再次檢查"
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:26
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
 "Docker Image, please make sure the docker socket is mounted like this: `-v "
@@ -713,7 +713,7 @@ msgid ""
 "prevents using Passkeys and clipboard features"
 msgstr "檢查是否啟用了 HTTPS。在 localhost 之外使用 HTTP 不安全，並且會阻止使用 Passkeys 和剪貼簿功能"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:6
 msgid ""
 "Check if the nginx access log path exists. By default, this path is "
 "obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
@@ -726,15 +726,15 @@ msgstr ""
 "獲取。如果無法獲取或獲取的路徑未指向有效的現有文件，將報告錯誤。在這種情況下，您需要修改配置文件以指定訪問日誌路徑。更多詳情請參閱文檔：https://"
 "nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:24
 msgid "Check if the nginx configuration directory exists"
 msgstr "檢查 nginx 配置目錄是否存在"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:15
 msgid "Check if the nginx configuration entry file exists"
 msgstr "檢查 nginx 配置入口文件是否存在"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:33
 msgid ""
 "Check if the nginx error log path exists. By default, this path is obtained "
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
@@ -747,7 +747,7 @@ msgstr ""
 "獲取。如果無法獲取或獲取的路徑未指向有效的現有文件，將報告錯誤。在這種情況下，您需要修改配置文件以指定錯誤日誌路徑。有關更多詳細信息，請參閱文檔：htt"
 "ps://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:29
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
@@ -759,25 +759,25 @@ msgstr ""
 "獲取的。如果無法獲取，將會報錯。在這種情況下，您需要修改設定檔以指定 Nginx PID "
 "路徑。更多詳情請參閱文件：https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:47
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "檢查 nginx.conf 是否包含 conf.d 目錄"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:19
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "檢查 nginx.conf 是否包含 sites-enabled 目錄"
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:21
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "檢查 nginx.conf 是否包含 streams-enabled 目錄"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:46
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory"
 msgstr "檢查 sites-available 和 sites-enabled 目錄是否位於 nginx 配置目錄下"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:8
 msgid ""
 "Check if the streams-available and streams-enabled directories are under "
 "the nginx configuration directory"
@@ -1347,7 +1347,7 @@ msgstr "您要移除這個 Upstream 嗎？"
 msgid "Docker client not initialized"
 msgstr "Docker 客戶端未初始化"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:25
 msgid "Docker socket exists"
 msgstr "Docker 套接字存在"
 
@@ -1751,7 +1751,7 @@ msgstr "解密 Nginx UI 目錄失敗：{0}"
 msgid "Failed to delete certificate"
 msgstr "憑證刪除失敗"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:30
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "從資料庫刪除憑證失敗: %{error}"
 
@@ -1895,7 +1895,7 @@ msgstr "還原 Nginx UI 檔案失敗：{0}"
 msgid "Failed to revoke certificate"
 msgstr "撤銷憑證失敗"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:27
 msgid "Failed to revoke certificate: %{error}"
 msgstr "撤銷憑證失敗: %{error}"
 
@@ -2402,7 +2402,7 @@ msgstr "Locations"
 msgid "Log"
 msgstr "日誌"
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:34
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to "
@@ -2696,7 +2696,7 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Nginx 存取日誌路徑"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:16
 msgid "Nginx access log path exists"
 msgstr "Nginx 訪問日誌路徑存在"
 
@@ -2724,11 +2724,11 @@ msgstr "Nginx 設定檔未包含 stream-enabled"
 msgid "Nginx config directory is not set"
 msgstr "Nginx 設定目錄未設定"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:23
 msgid "Nginx configuration directory exists"
 msgstr "Nginx 配置目錄存在"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:48
 msgid "Nginx configuration entry file exists"
 msgstr "Nginx 設定入口檔案存在"
 
@@ -2766,7 +2766,7 @@ msgstr "Nginx CPU 使用率"
 msgid "Nginx Error Log Path"
 msgstr "Nginx 錯誤日誌路徑"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:7
 msgid "Nginx error log path exists"
 msgstr "Nginx 錯誤日誌路徑存在"
 
@@ -2807,7 +2807,7 @@ msgstr "Nginx 記憶體使用量"
 msgid "Nginx PID Path"
 msgstr "Nginx PID 路徑"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:39
 msgid "Nginx PID path exists"
 msgstr "Nginx PID 路徑存在"
 
@@ -2867,15 +2867,15 @@ msgid ""
 "a few seconds."
 msgstr "Nginx UI 設定已恢復，將在幾秒後自動重新啟動。"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:32
 msgid "Nginx.conf includes conf.d directory"
 msgstr "Nginx.conf 包含 conf.d 目錄"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:5
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "Nginx.conf 包含 sites-enabled 目錄"
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:20
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf 包含 streams-enabled 目錄"
 
@@ -3996,7 +3996,7 @@ msgstr "網站日誌"
 msgid "Site not found"
 msgstr "站點未找到"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:38
 msgid "Sites directory exists"
 msgstr "站點目錄存在"
 
@@ -4115,7 +4115,7 @@ msgstr "串流已啟用"
 msgid "Stream not found"
 msgstr "串流未找到"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:40
 msgid "Streams directory exists"
 msgstr "Streams 目錄存在"
 
@@ -4134,6 +4134,16 @@ msgstr "存根狀態端口"
 #: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:36
 msgid "Success"
 msgstr "成功"
+
+#: src/components/SelfCheck/tasks/frontend/sse.ts:14
+msgid ""
+"Support communication with the backend through the Server-Sent Events "
+"protocol. If your Nginx UI is being used via an Nginx reverse proxy, please "
+"refer to this link to write the corresponding configuration file: "
+"https://nginxui.com/guide/nginx-proxy-example.html"
+msgstr ""
+"支援透過 Server-Sent Events 協定與後端通訊。如果您的 Nginx UI 是透過 Nginx "
+"反向代理使用的，請參考此連結編寫相應的設定檔：https://nginxui.com/guide/nginx-proxy-example.html"
 
 #: src/components/SelfCheck/tasks/frontend/websocket.ts:13
 msgid ""

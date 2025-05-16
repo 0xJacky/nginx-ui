@@ -1,10 +1,12 @@
 import type { SSEvent } from 'sse.js'
 import { urlJoin } from '@/lib/helper'
-import { useUserStore } from '@/pinia'
+import { useSettingsStore, useUserStore } from '@/pinia'
+import { storeToRefs } from 'pinia'
 import { SSE } from 'sse.js'
 
 const userStore = useUserStore()
 const { token } = storeToRefs(userStore)
+const settings = useSettingsStore()
 
 export interface SSEOptions {
   url: string
@@ -40,10 +42,16 @@ export function useSSE() {
 
     const fullUrl = urlJoin(window.location.pathname, url)
 
+    const headers = {
+      Authorization: token.value,
+    }
+
+    if (settings.environment.id) {
+      headers['X-Node-ID'] = settings.environment.id.toString()
+    }
+
     const sse = new SSE(fullUrl, {
-      headers: {
-        Authorization: token.value,
-      },
+      headers,
     })
 
     // Handle messages
@@ -86,9 +94,11 @@ export function useSSE() {
   }
 
   // Automatically disconnect when the component is unmounted
-  onUnmounted(() => {
-    disconnect()
-  })
+  if (getCurrentInstance()) {
+    onUnmounted(() => {
+      disconnect()
+    })
+  }
 
   return {
     connect,

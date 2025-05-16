@@ -31,6 +31,7 @@ func InitSelfCheckRouter(r *gin.RouterGroup) {
 	g := r.Group("self_check", authIfInstalled)
 	g.GET("", middleware.Proxy(), SelfCheck)
 	g.POST("/:name/fix", middleware.Proxy(), SelfCheckFix)
+	g.GET("sse", middleware.Proxy(), CheckSSE)
 	g.GET("websocket", middleware.ProxyWs(), CheckWebSocket)
 }
 
