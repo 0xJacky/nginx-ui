@@ -50,6 +50,9 @@ func (t *ControlResult) RespError(c *gin.Context) {
 }
 
 func (t *ControlResult) GetOutput() string {
+	if t.stdErr == nil {
+		return t.stdOut
+	}
 	return strings.Join([]string{t.stdOut, t.stdErr.Error()}, " ")
 }
 
