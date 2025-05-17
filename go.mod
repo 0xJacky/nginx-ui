@@ -18,7 +18,7 @@ require (
 	github.com/gin-contrib/static v1.1.5
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-acme/lego/v4 v4.23.1
-	github.com/go-co-op/gocron/v2 v2.16.1
+	github.com/go-co-op/gocron/v2 v2.16.2
 	github.com/go-gormigrate/gormigrate/v2 v2.1.4
 	github.com/go-playground/validator/v10 v10.26.0
 	github.com/go-resty/resty/v2 v2.16.5
@@ -27,15 +27,15 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
 	github.com/lib/pq v1.10.9
-	github.com/mark3labs/mcp-go v0.27.0
+	github.com/mark3labs/mcp-go v0.28.0
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.3.0
 	github.com/nxadm/tail v1.4.11
 	github.com/pkg/errors v0.9.1
-	github.com/pquerna/otp v1.4.0
+	github.com/pquerna/otp v1.5.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.50.0
-	github.com/sashabaranov/go-openai v1.39.1
+	github.com/sashabaranov/go-openai v1.40.0
 	github.com/shirou/gopsutil/v4 v4.25.4
 	github.com/spf13/afero v1.14.0
 	github.com/spf13/cast v1.8.0
