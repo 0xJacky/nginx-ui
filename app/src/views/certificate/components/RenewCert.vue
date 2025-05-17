@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { AutoCertOptions } from '@/api/auto_cert'
+import { message } from 'ant-design-vue'
 import { useGlobalStore } from '@/pinia'
 import ObtainCertLive from '@/views/site/site_edit/components/Cert/ObtainCertLive.vue'
-import { message } from 'ant-design-vue'
 
 const props = defineProps<{
   options: AutoCertOptions

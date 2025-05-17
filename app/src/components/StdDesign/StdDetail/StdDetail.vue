@@ -1,13 +1,13 @@
 <script setup lang="ts" generic="T extends ModelBase">
+import type { ButtonProps, FormInstance } from 'ant-design-vue'
+import type { DataIndex } from 'ant-design-vue/es/vc-table/interface'
 import type { ModelBase } from '@/api/curd'
 import type Curd from '@/api/curd'
 import type { Column, StdDesignEdit } from '@/components/StdDesign/types'
-import type { ButtonProps, FormInstance } from 'ant-design-vue'
-import type { DataIndex } from 'ant-design-vue/es/vc-table/interface'
-import { labelRender } from '@/components/StdDesign/StdDataEntry'
 import { message } from 'ant-design-vue'
-
 import { cloneDeep, get } from 'lodash'
+
+import { labelRender } from '@/components/StdDesign/StdDataEntry'
 
 const props = defineProps<{
   title?: string

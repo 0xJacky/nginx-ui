@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import install from '@/api/install'
 import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons-vue'
 import { Form, message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
+import install from '@/api/install'
 
 const emit = defineEmits<{
   (e: 'installSuccess'): void

@@ -1,7 +1,7 @@
 import type { Template } from '@/api/template'
-import template from '@/api/template'
 import { debounce } from 'lodash'
 import { defineStore } from 'pinia'
+import template from '@/api/template'
 
 export const useConfigTemplateStore = defineStore('configTemplate', () => {
   const data = ref<Template>({} as Template)

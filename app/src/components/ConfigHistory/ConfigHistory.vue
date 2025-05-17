@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import type { Key } from 'ant-design-vue/es/_util/type'
 import type { ConfigBackup } from '@/api/config'
 import type { GetListResponse } from '@/api/curd'
-import type { Key } from 'ant-design-vue/es/_util/type'
-import config from '@/api/config'
-import StdPagination from '@/components/StdDesign/StdDataDisplay/StdPagination.vue'
 import { message } from 'ant-design-vue'
 import { defineAsyncComponent } from 'vue'
+import config from '@/api/config'
+import StdPagination from '@/components/StdDesign/StdDataDisplay/StdPagination.vue'
 import { datetime } from '../StdDesign/StdDataDisplay/StdTableTransformer'
 
 // Define props for the component

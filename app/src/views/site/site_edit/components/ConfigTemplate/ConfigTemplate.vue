@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Template } from '@/api/template'
+import { storeToRefs } from 'pinia'
 import template from '@/api/template'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import { DirectiveEditor, LocationEditor, useNgxConfigStore } from '@/components/NgxConfigEditor'
 import { useSettingsStore } from '@/pinia'
-import { storeToRefs } from 'pinia'
 import { useConfigTemplateStore } from './store'
 import TemplateForm from './TemplateForm.vue'
 

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { HistoryOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import ConfigHistory from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar'
@@ -6,8 +8,6 @@ import NgxConfigEditor from '@/components/NgxConfigEditor'
 import { ConfigStatus } from '@/constants'
 import Cert from '@/views/site/site_edit/components/Cert'
 import EnableTLS from '@/views/site/site_edit/components/EnableTLS'
-import { HistoryOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
 import { useSiteEditorStore } from './store'
 
 const route = useRoute()

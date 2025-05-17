@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import stream from '@/api/stream'
-
-import gettext from '@/gettext'
 import { Form, message } from 'ant-design-vue'
+
+import stream from '@/api/stream'
+import gettext from '@/gettext'
 
 const props = defineProps<{
   name: string

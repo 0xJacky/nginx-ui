@@ -1,6 +1,6 @@
 <script setup lang="tsx">
-import type { NginxPerformanceInfo } from '@/api/ngx'
 import type { TableColumnType } from 'ant-design-vue'
+import type { NginxPerformanceInfo } from '@/api/ngx'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import ModulesTable from './ModulesTable.vue'
 

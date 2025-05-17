@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { RestoreOptions, RestoreResponse } from '@/api/backup'
 import type { UploadFile } from 'ant-design-vue'
-import backup from '@/api/backup'
+import type { RestoreOptions, RestoreResponse } from '@/api/backup'
 import { InboxOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
+import backup from '@/api/backup'
 
 // Define props using TypeScript interface
 interface SystemRestoreProps {

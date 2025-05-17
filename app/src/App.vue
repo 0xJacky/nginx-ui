@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import loadTranslations from '@/api/translations'
-import gettext from '@/gettext'
-import { useSettingsStore, useUserStore } from '@/pinia'
 import { theme } from 'ant-design-vue'
 import en_US from 'ant-design-vue/es/locale/en_US'
 import zh_CN from 'ant-design-vue/es/locale/zh_CN'
 import zh_TW from 'ant-design-vue/es/locale/zh_TW'
+import loadTranslations from '@/api/translations'
+import gettext from '@/gettext'
+import { useSettingsStore, useUserStore } from '@/pinia'
 
 const route = useRoute()
 const router = useRouter()

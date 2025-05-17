@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { TwoFAStatus } from '@/api/2fa'
+import { KeyOutlined } from '@ant-design/icons-vue'
+import { startAuthentication } from '@simplewebauthn/browser'
 import twoFA from '@/api/2fa'
 import OTPInput from '@/components/OTPInput/OTPInput.vue'
 import { useUserStore } from '@/pinia'
-import { KeyOutlined } from '@ant-design/icons-vue'
-import { startAuthentication } from '@simplewebauthn/browser'
 
 defineProps<{
   twoFAStatus: TwoFAStatus

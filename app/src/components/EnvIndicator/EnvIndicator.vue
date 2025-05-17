@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useSettingsStore } from '@/pinia'
 import { CloseOutlined, DashboardOutlined, DatabaseOutlined } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
+import { useSettingsStore } from '@/pinia'
 
 const settingsStore = useSettingsStore()
 

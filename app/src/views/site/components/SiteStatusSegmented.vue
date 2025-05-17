@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { SiteStatus } from '@/api/site'
+import { message, Modal } from 'ant-design-vue'
 import site from '@/api/site'
 import { ConfigStatus } from '@/constants'
-import { message, Modal } from 'ant-design-vue'
 
 // Define props with TypeScript
 const props = defineProps<{

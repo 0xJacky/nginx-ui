@@ -1,6 +1,6 @@
 import type { TaskReport } from './tasks'
-import selfCheck, { ReportStatus } from '@/api/self_check'
 import { debounce } from 'lodash'
+import selfCheck, { ReportStatus } from '@/api/self_check'
 import frontendTasks from './tasks/frontend'
 
 export const useSelfCheckStore = defineStore('selfCheck', () => {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { Ref } from 'vue'
 import type { AutoCertOptions } from '@/api/auto_cert'
 import type { CertificateResult } from '@/api/cert'
-import type { Ref } from 'vue'
 import websocket from '@/lib/websocket'
 import { useSiteEditorStore } from '../SiteEditor/store'
 

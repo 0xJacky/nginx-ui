@@ -1,10 +1,10 @@
 import type { CosyError } from './types'
+import JSEncrypt from 'jsencrypt'
+import { storeToRefs } from 'pinia'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
 import { useNProgress } from '@/lib/nprogress/nprogress'
 import { useSettingsStore, useUserStore } from '@/pinia'
 import router from '@/routes'
-import JSEncrypt from 'jsencrypt'
-import { storeToRefs } from 'pinia'
 import { http, instance } from './client'
 import { handleApiError, useMessageDedupe } from './error'
 

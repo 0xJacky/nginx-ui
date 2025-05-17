@@ -1,8 +1,8 @@
+import type { AutoCertChallengeMethod } from './auto_cert'
 import type { AcmeUser } from '@/api/acme_user'
 import type { ModelBase } from '@/api/curd'
 import type { DnsCredential } from '@/api/dns_credential'
 import type { PrivateKeyType } from '@/constants'
-import type { AutoCertChallengeMethod } from './auto_cert'
 import Curd from '@/api/curd'
 
 export interface Cert extends ModelBase {

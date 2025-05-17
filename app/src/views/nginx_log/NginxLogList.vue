@@ -1,10 +1,10 @@
 <script setup lang="tsx">
 import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column } from '@/components/StdDesign/types'
+import { Tag } from 'ant-design-vue'
 import nginxLog from '@/api/nginx_log'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import { input, select } from '@/components/StdDesign/StdDataEntry'
-import { Tag } from 'ant-design-vue'
 
 const router = useRouter()
 const stdCurdRef = ref()

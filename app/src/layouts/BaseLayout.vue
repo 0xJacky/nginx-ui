@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { throttle } from 'lodash'
+import { storeToRefs } from 'pinia'
 import settings from '@/api/settings'
 import PageHeader from '@/components/PageHeader/PageHeader.vue'
 import { useSettingsStore, useUserStore } from '@/pinia'
-import { throttle } from 'lodash'
-import { storeToRefs } from 'pinia'
 import FooterLayout from './FooterLayout.vue'
 import HeaderLayout from './HeaderLayout.vue'
 import SideBar from './SideBar.vue'

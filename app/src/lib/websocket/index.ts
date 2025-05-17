@@ -1,7 +1,7 @@
-import { urlJoin } from '@/lib/helper'
-import { useSettingsStore, useUserStore } from '@/pinia'
 import { storeToRefs } from 'pinia'
 import ReconnectingWebSocket from 'reconnecting-websocket'
+import { urlJoin } from '@/lib/helper'
+import { useSettingsStore, useUserStore } from '@/pinia'
 
 function ws(url: string, reconnect: boolean = true): ReconnectingWebSocket | WebSocket {
   const user = useUserStore()

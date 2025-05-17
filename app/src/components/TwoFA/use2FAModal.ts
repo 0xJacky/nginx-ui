@@ -1,8 +1,8 @@
+import { message, Modal } from 'ant-design-vue'
+import { createVNode, render } from 'vue'
 import twoFA from '@/api/2fa'
 import Authorization from '@/components/TwoFA/Authorization.vue'
 import { useUserStore } from '@/pinia'
-import { message, Modal } from 'ant-design-vue'
-import { createVNode, render } from 'vue'
 
 function use2FAModal() {
   const refOTPAuthorization = ref<typeof Authorization>()

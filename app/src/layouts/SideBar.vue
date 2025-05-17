@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { NgxModule } from '@/api/ngx'
 import type { IconComponentProps } from '@ant-design/icons-vue/es/components/Icon'
 import type { AntdIconType } from '@ant-design/icons-vue/lib/components/AntdIcon'
 import type { Key } from 'ant-design-vue/es/_util/type'
+import type { NgxModule } from '@/api/ngx'
 import ngx from '@/api/ngx'
 import EnvIndicator from '@/components/EnvIndicator'
 import Logo from '@/components/Logo'

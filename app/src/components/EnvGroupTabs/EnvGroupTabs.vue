@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { EnvGroup } from '@/api/env_group'
 import type { Environment } from '@/api/environment'
+import { message } from 'ant-design-vue'
 import nodeApi from '@/api/node'
 import { useSSE } from '@/composables/useSSE'
-import { message } from 'ant-design-vue'
 
 const props = defineProps<{
   envGroups: EnvGroup[]

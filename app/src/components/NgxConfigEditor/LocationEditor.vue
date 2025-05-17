@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { NgxLocation } from '@/api/ngx'
-import CodeEditor from '@/components/CodeEditor'
 import { CopyOutlined, DeleteOutlined, HolderOutlined } from '@ant-design/icons-vue'
 import { cloneDeep } from 'lodash'
 import Draggable from 'vuedraggable'
+import CodeEditor from '@/components/CodeEditor'
 
 defineProps<{
   readonly?: boolean

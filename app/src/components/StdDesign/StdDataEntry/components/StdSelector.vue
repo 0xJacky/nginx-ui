@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type Curd from '@/api/curd'
 import type { Column } from '@/components/StdDesign/types'
-import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import { CloseCircleFilled } from '@ant-design/icons-vue'
 import { watchOnce } from '@vueuse/core'
 import { clone } from 'lodash'
+import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 
 const props = defineProps<{
   placeholder?: string

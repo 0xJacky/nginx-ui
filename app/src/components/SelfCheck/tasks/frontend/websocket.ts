@@ -1,5 +1,5 @@
-import type { ReportStatusType } from '@/api/self_check'
 import type { FrontendTask } from '../types'
+import type { ReportStatusType } from '@/api/self_check'
 import selfCheck, { ReportStatus } from '@/api/self_check'
 
 /**

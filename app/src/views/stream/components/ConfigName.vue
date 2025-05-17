@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import stream from '@/api/stream'
 import { message } from 'ant-design-vue'
+import stream from '@/api/stream'
 
 const props = defineProps<{
   name: string

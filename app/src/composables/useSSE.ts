@@ -1,8 +1,8 @@
 import type { SSEvent } from 'sse.js'
-import { urlJoin } from '@/lib/helper'
-import { useSettingsStore, useUserStore } from '@/pinia'
 import { storeToRefs } from 'pinia'
 import { SSE } from 'sse.js'
+import { urlJoin } from '@/lib/helper'
+import { useSettingsStore, useUserStore } from '@/pinia'
 
 const userStore = useUserStore()
 const { token } = storeToRefs(userStore)

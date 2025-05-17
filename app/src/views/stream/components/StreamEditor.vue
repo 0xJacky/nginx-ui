@@ -1,9 +1,9 @@
 <script lang="ts" setup>
+import { HistoryOutlined } from '@ant-design/icons-vue'
 import CodeEditor from '@/components/CodeEditor'
 import ConfigHistory from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar'
 import NgxConfigEditor from '@/components/NgxConfigEditor'
-import { HistoryOutlined } from '@ant-design/icons-vue'
 import { useStreamEditorStore } from '../store'
 
 const router = useRouter()

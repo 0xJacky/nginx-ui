@@ -1,8 +1,8 @@
 <script setup lang="tsx">
+import { CloudUploadOutlined, SafetyCertificateOutlined } from '@ant-design/icons-vue'
 import cert from '@/api/cert'
 import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import { useGlobalStore } from '@/pinia'
-import { CloudUploadOutlined, SafetyCertificateOutlined } from '@ant-design/icons-vue'
 import RemoveCert from '../components/RemoveCert.vue'
 import WildcardCertificate from '../components/WildcardCertificate.vue'
 import certColumns from './certColumns'

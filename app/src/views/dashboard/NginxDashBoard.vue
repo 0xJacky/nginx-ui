@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import ngx from '@/api/ngx'
 import { useNginxPerformance } from '@/composables/useNginxPerformance'
 import { useSSE } from '@/composables/useSSE'
 import { NginxStatus } from '@/constants'
 import { useGlobalStore } from '@/pinia'
-import { ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import ConnectionMetricsCard from './components/ConnectionMetricsCard.vue'
 import ParamsOptimization from './components/ParamsOptimization.vue'
 import PerformanceStatisticsCard from './components/PerformanceStatisticsCard.vue'

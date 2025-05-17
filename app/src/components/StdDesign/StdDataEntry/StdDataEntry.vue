@@ -1,10 +1,10 @@
 <script setup lang="tsx">
-import type { Column, JSXElements, StdDesignEdit } from '@/components/StdDesign/types'
 import type { FormInstance } from 'ant-design-vue'
 import type { Ref } from 'vue'
+import type { Column, JSXElements, StdDesignEdit } from '@/components/StdDesign/types'
+import { Form } from 'ant-design-vue'
 import { labelRender } from '@/components/StdDesign/StdDataEntry'
 import StdFormItem from '@/components/StdDesign/StdDataEntry/StdFormItem.vue'
-import { Form } from 'ant-design-vue'
 
 const props = defineProps<{
   dataList: Column[]

@@ -1,16 +1,16 @@
 <script setup lang="ts">
+import type { Ref } from 'vue'
 import type { Notification } from '@/api/notification'
 import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { Ref } from 'vue'
+import { BellOutlined, CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, InfoCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
+import { message, notification } from 'ant-design-vue'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import notificationApi from '@/api/notification'
 import { detailRender } from '@/components/Notification/detailRender'
 import { useSSE } from '@/composables/useSSE'
 import { NotificationTypeT } from '@/constants'
 import { useUserStore } from '@/pinia'
-import { BellOutlined, CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, InfoCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
-import { message, notification } from 'ant-design-vue'
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
 import notifications from './notifications'
 
 defineProps<{

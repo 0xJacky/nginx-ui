@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { RecoveryCode } from '@/api/recovery'
-import otp from '@/api/otp'
-import OTPInput from '@/components/OTPInput'
-import { use2FAModal } from '@/components/TwoFA'
 import { CheckCircleOutlined } from '@ant-design/icons-vue'
 import { UseClipboard } from '@vueuse/components'
 import { message } from 'ant-design-vue'
+import otp from '@/api/otp'
+import OTPInput from '@/components/OTPInput'
+import { use2FAModal } from '@/components/TwoFA'
 
 const { status = false } = defineProps<{
   status?: boolean

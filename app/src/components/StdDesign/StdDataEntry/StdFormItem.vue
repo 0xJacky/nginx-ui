@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Column } from '@/components/StdDesign/types'
 import type { Rule } from 'ant-design-vue/es/form'
+import type { Column } from '@/components/StdDesign/types'
 import FormErrors from '@/constants/form_errors'
 
 const props = defineProps<Props>()

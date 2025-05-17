@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Column } from '@/components/StdDesign/types'
 import type { ComputedRef } from 'vue'
+import type { Column } from '@/components/StdDesign/types'
+import { get } from 'lodash'
 import { CustomRender } from '@/components/StdDesign/StdDataDisplay/components/CustomRender'
 import { labelRender } from '@/components/StdDesign/StdDataEntry'
-import { get } from 'lodash'
 
 const props = defineProps<{
   columns: Column[]

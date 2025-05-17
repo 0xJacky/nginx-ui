@@ -1,6 +1,5 @@
-import type { StdDesignEdit } from '@/components/StdDesign/types'
 import type { Dayjs } from 'dayjs'
-import { DATE_FORMAT } from '@/constants'
+import type { StdDesignEdit } from '@/components/StdDesign/types'
 import {
   DatePicker,
   Input,
@@ -10,6 +9,7 @@ import {
 } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { h } from 'vue'
+import { DATE_FORMAT } from '@/constants'
 import StdPassword from './components/StdPassword.vue'
 import StdSelect from './components/StdSelect.vue'
 import StdSelector from './components/StdSelector.vue'

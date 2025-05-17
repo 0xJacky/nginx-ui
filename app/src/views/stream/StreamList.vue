@@ -3,6 +3,7 @@ import type { EnvGroup } from '@/api/env_group'
 import type { Stream } from '@/api/stream'
 import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column, JSXElements } from '@/components/StdDesign/types'
+import { Badge, message } from 'ant-design-vue'
 import env_group from '@/api/env_group'
 import stream from '@/api/stream'
 import EnvGroupTabs from '@/components/EnvGroupTabs'
@@ -14,7 +15,6 @@ import { ConfigStatus } from '@/constants'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import envGroupColumns from '@/views/environments/group/columns'
 import StreamDuplicate from '@/views/stream/components/StreamDuplicate.vue'
-import { Badge, message } from 'ant-design-vue'
 
 const columns: Column[] = [{
   title: () => $gettext('Name'),

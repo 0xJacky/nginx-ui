@@ -1,9 +1,9 @@
 import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column } from '@/components/StdDesign/types'
+import { Tag } from 'ant-design-vue'
 import { detailRender } from '@/components/Notification/detailRender'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { NotificationTypeT } from '@/constants'
-import { Tag } from 'ant-design-vue'
 
 const columns: Column[] = [{
   title: () => $gettext('Type'),

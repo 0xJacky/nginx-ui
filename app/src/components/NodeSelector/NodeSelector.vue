@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Environment } from '@/api/environment'
 import type { SSEvent } from 'sse.js'
-import { useUserStore } from '@/pinia'
+import type { Environment } from '@/api/environment'
 import { SSE } from 'sse.js'
+import { useUserStore } from '@/pinia'
 
 const props = defineProps<{
   hiddenLocal?: boolean

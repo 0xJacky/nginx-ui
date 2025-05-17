@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { CheckedType } from '@/types'
+import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { message, Modal } from 'ant-design-vue'
+import { storeToRefs } from 'pinia'
 import envGroup from '@/api/env_group'
 import stream from '@/api/stream'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
@@ -7,9 +10,6 @@ import StdSelector from '@/components/StdDesign/StdDataEntry/components/StdSelec
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import envGroupColumns from '@/views/environments/group/columns'
-import { InfoCircleOutlined } from '@ant-design/icons-vue'
-import { message, Modal } from 'ant-design-vue'
-import { storeToRefs } from 'pinia'
 import { useStreamEditorStore } from '../../store'
 import ConfigName from '../ConfigName.vue'
 

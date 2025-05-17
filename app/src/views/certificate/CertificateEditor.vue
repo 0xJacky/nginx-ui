@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { Cert } from '@/api/cert'
 import type { Ref } from 'vue'
+import type { Cert } from '@/api/cert'
+import { message } from 'ant-design-vue'
 import cert from '@/api/cert'
 import AutoCertForm from '@/components/AutoCertForm'
 import CertInfo from '@/components/CertInfo'
@@ -8,7 +9,6 @@ import CodeEditor from '@/components/CodeEditor'
 import FooterToolBar from '@/components/FooterToolbar'
 import NodeSelector from '@/components/NodeSelector'
 import { AutoCertState } from '@/constants'
-import { message } from 'ant-design-vue'
 import RenewCert from './components/RenewCert.vue'
 
 const route = useRoute()

@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { message } from 'ant-design-vue'
 import config from '@/api/config'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
-import { message } from 'ant-design-vue'
 
 const emit = defineEmits(['created'])
 const visible = ref(false)

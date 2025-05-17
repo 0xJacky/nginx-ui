@@ -1,9 +1,9 @@
 <script setup lang="tsx">
+import { message } from 'ant-design-vue'
 import environment from '@/api/environment'
 import node from '@/api/node'
 import FooterToolBar from '@/components/FooterToolbar'
 import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
-import { message } from 'ant-design-vue'
 import BatchUpgrader from './BatchUpgrader.vue'
 import envColumns from './envColumns'
 

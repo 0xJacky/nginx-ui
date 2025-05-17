@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import SystemRestoreContent from '@/components/SystemRestore/SystemRestoreContent.vue'
 import { message } from 'ant-design-vue'
+import SystemRestoreContent from '@/components/SystemRestore/SystemRestoreContent.vue'
 
 function handleRestoreSuccess(options: { restoreNginx: boolean, restoreNginxUI: boolean }): void {
   message.success($gettext('System restored successfully.'))

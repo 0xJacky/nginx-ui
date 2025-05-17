@@ -2,6 +2,7 @@
 import type { EnvGroup } from '@/api/env_group'
 import type { Site } from '@/api/site'
 import type { Column } from '@/components/StdDesign/types'
+import { message } from 'ant-design-vue'
 import env_group from '@/api/env_group'
 import site from '@/api/site'
 import EnvGroupTabs from '@/components/EnvGroupTabs'
@@ -11,7 +12,6 @@ import { ConfigStatus } from '@/constants'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import columns from '@/views/site/site_list/columns'
 import SiteDuplicate from '@/views/site/site_list/SiteDuplicate.vue'
-import { message } from 'ant-design-vue'
 
 const route = useRoute()
 const router = useRouter()

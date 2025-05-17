@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { SiteStatus } from '@/api/site'
+import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import envGroup from '@/api/env_group'
 import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
 import StdSelector from '@/components/StdDesign/StdDataEntry/components/StdSelector.vue'
@@ -8,7 +9,6 @@ import { useSettingsStore } from '@/pinia'
 import envGroupColumns from '@/views/environments/group/columns'
 import SiteStatusSegmented from '@/views/site/components/SiteStatusSegmented.vue'
 import ConfigName from '@/views/site/site_edit/components/ConfigName/ConfigName.vue'
-import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { useSiteEditorStore } from '../SiteEditor/store'
 
 const settings = useSettingsStore()

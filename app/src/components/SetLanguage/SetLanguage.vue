@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import dayjs from 'dayjs'
 import loadTranslations from '@/api/translations'
 import gettext from '@/gettext'
 import { useSettingsStore } from '@/pinia'
-import dayjs from 'dayjs'
 
 import 'dayjs/locale/fr'
 import 'dayjs/locale/ja'

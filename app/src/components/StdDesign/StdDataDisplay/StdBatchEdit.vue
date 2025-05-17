@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type Curd from '@/api/curd'
 import type { Column } from '@/components/StdDesign/types'
+import { message } from 'ant-design-vue'
 import { getPithyColumns } from '@/components/StdDesign/StdDataDisplay/methods/columns'
 import StdDataEntry from '@/components/StdDesign/StdDataEntry'
-import { message } from 'ant-design-vue'
 
 const props = defineProps<{
   // eslint-disable-next-line ts/no-explicit-any

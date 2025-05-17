@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { CPUInfoStat, DiskStat, HostInfoStat, LoadStat, MemStat } from '@/api/analytic'
 import type { Series } from '@/components/Chart/types'
-import type ReconnectingWebSocket from 'reconnecting-websocket'
 import analytic from '@/api/analytic'
 import AreaChart from '@/components/Chart/AreaChart.vue'
 import RadialBarChart from '@/components/Chart/RadialBarChart.vue'

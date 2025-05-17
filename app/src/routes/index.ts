@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { useNProgress } from '@/lib/nprogress/nprogress'
 import { useUserStore } from '@/pinia'
-import { createRouter, createWebHashHistory } from 'vue-router'
 import { authRoutes } from './modules/auth'
 
 import { certificatesRoutes } from './modules/certificates'

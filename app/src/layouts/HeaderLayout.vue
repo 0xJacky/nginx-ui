@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { DesktopOutlined, HomeOutlined, LogoutOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
+import { useElementSize } from '@vueuse/core'
+import { message } from 'ant-design-vue'
+import { useRouter } from 'vue-router'
 import auth from '@/api/auth'
 import NginxControl from '@/components/NginxControl'
 import Notification from '@/components/Notification'
@@ -6,10 +10,6 @@ import ProcessingStatus from '@/components/ProcessingStatus'
 import { SelfCheckHeaderBanner } from '@/components/SelfCheck'
 import SetLanguage from '@/components/SetLanguage'
 import SwitchAppearance from '@/components/SwitchAppearance'
-import { DesktopOutlined, HomeOutlined, LogoutOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
-import { useElementSize } from '@vueuse/core'
-import { message } from 'ant-design-vue'
-import { useRouter } from 'vue-router'
 
 const emit = defineEmits<{
   clickUnFold: [void]

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import CodeEditor from '@/components/CodeEditor'
 import { DeleteOutlined } from '@ant-design/icons-vue'
+import CodeEditor from '@/components/CodeEditor'
 import { MultiLineDirective, SingleLineDirective } from '.'
 import { useDirectiveStore } from './store'
 

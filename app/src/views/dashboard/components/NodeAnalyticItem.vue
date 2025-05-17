@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import Icon, { ArrowDownOutlined, ArrowUpOutlined, DatabaseOutlined, LineChartOutlined } from '@ant-design/icons-vue'
 import cpu from '@/assets/svg/cpu.svg?component'
 import memory from '@/assets/svg/memory.svg?component'
 import UsageProgressLine from '@/components/Chart/UsageProgressLine.vue'
 import { bytesToSize } from '@/lib/helper'
-import Icon, { ArrowDownOutlined, ArrowUpOutlined, DatabaseOutlined, LineChartOutlined } from '@ant-design/icons-vue'
 
 defineProps<{
   item: {

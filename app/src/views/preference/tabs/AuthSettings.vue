@@ -1,13 +1,13 @@
 <script setup lang="tsx">
+import type { Ref } from 'vue'
 import type { TwoFAStatus } from '@/api/2fa'
 import type { RecoveryCode } from '@/api/recovery'
 import type { BannedIP } from '@/api/settings'
 import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { Ref } from 'vue'
-import twoFA from '@/api/2fa'
-import setting from '@/api/settings'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
+import twoFA from '@/api/2fa'
+import setting from '@/api/settings'
 import { Passkey, RecoveryCodes, TOTP } from '../components/AuthSettings'
 import useSystemSettingsStore from '../store'
 

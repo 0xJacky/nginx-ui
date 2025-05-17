@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { message } from 'ant-design-vue'
 import cert from '@/api/cert'
 import websocket from '@/lib/websocket'
-import { message } from 'ant-design-vue'
 
 const props = defineProps<{
   id: number

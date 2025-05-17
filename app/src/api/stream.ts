@@ -1,6 +1,6 @@
+import type { EnvGroup } from './env_group'
 import type { NgxConfig } from '@/api/ngx'
 import type { ChatComplicationMessage } from '@/api/openai'
-import type { EnvGroup } from './env_group'
 import Curd from '@/api/curd'
 import http from '@/lib/http'
 

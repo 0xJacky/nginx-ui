@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Column } from '@/components/StdDesign/types'
 import type { ExternalNotifyConfig } from './types'
+import type { Column } from '@/components/StdDesign/types'
 import StdDataEntry, { input } from '@/components/StdDesign/StdDataEntry'
 import configMap from './index'
 

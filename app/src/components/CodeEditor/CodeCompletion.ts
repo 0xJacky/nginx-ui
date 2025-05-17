@@ -1,8 +1,8 @@
 import type { Editor } from 'ace-builds'
 import type { Point } from 'ace-builds-internal/document'
-import openai from '@/api/openai'
 import { debounce } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
+import openai from '@/api/openai'
 
 // eslint-disable-next-line ts/no-explicit-any
 function debug(...args: any[]) {

@@ -1,7 +1,7 @@
 <script setup lang="tsx">
+import { SyncOutlined } from '@ant-design/icons-vue'
 import { useSSE } from '@/composables/useSSE'
 import { useGlobalStore } from '@/pinia'
-import { SyncOutlined } from '@ant-design/icons-vue'
 
 const { connect } = useSSE()
 

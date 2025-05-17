@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { RuntimeInfo } from '@/api/upgrade'
 import type { Ref } from 'vue'
-import upgrade from '@/api/upgrade'
-
-import websocket from '@/lib/websocket'
-import version from '@/version.json'
+import type { RuntimeInfo } from '@/api/upgrade'
 import dayjs from 'dayjs'
+
 import { marked } from 'marked'
 import { useRoute } from 'vue-router'
+import upgrade from '@/api/upgrade'
+import websocket from '@/lib/websocket'
+import version from '@/version.json'
 
 const route = useRoute()
 const data = ref({}) as Ref<RuntimeInfo>

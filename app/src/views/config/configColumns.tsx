@@ -1,7 +1,7 @@
 import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import { FileFilled, FolderFilled } from '@ant-design/icons-vue'
 import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { input } from '@/components/StdDesign/StdDataEntry'
-import { FileFilled, FolderFilled } from '@ant-design/icons-vue'
 
 const configColumns = [{
   title: () => $gettext('Name'),

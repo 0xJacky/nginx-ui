@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import type { Ref } from 'vue'
 import type { Config } from '@/api/config'
 import type { ChatComplicationMessage } from '@/api/openai'
-import type { Ref } from 'vue'
+import { HistoryOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
+import { trim, trimEnd } from 'lodash'
 import config from '@/api/config'
 import ngx from '@/api/ngx'
 import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
@@ -14,9 +17,6 @@ import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import ConfigName from '@/views/config/components/ConfigName.vue'
 import InspectConfig from '@/views/config/InspectConfig.vue'
-import { HistoryOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
-import { trim, trimEnd } from 'lodash'
 
 const settings = useSettingsStore()
 const route = useRoute()

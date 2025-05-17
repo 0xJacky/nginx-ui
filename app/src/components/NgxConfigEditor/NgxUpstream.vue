@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { NgxDirective } from '@/api/ngx'
 import type { UpstreamStatus } from '@/api/upstream'
-import type ReconnectingWebSocket from 'reconnecting-websocket'
-import upstream from '@/api/upstream'
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { Modal } from 'ant-design-vue'
 import { throttle } from 'lodash'
+import upstream from '@/api/upstream'
 import { DirectiveEditor, Server, useNgxConfigStore } from '.'
 
 const [modal, ContextHolder] = Modal.useModal()

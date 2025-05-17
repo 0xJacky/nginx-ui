@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { ConfigBackup } from '@/api/config'
 import type { Ace } from 'ace-builds'
-import { formatDateTime } from '@/lib/helper'
+import type { ConfigBackup } from '@/api/config'
 import ace from 'ace-builds'
 // Import required modules
 import extLanguageToolsUrl from 'ace-builds/src-min-noconflict/ext-language_tools?url'
+import { formatDateTime } from '@/lib/helper'
 import 'ace-builds/src-noconflict/mode-nginx'
 
 import 'ace-builds/src-noconflict/theme-monokai'

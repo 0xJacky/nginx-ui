@@ -1,11 +1,11 @@
 <script setup lang="ts" generic="T=any">
+import type { ComputedRef } from 'vue'
 import type { StdCurdProps, StdTableProps } from '@/components/StdDesign/StdDataDisplay/types'
 import type { Column } from '@/components/StdDesign/types'
-import type { ComputedRef } from 'vue'
+import { message } from 'ant-design-vue'
 import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 import StdCurdDetail from '@/components/StdDesign/StdDataDisplay/StdCurdDetail.vue'
 import StdDataEntry from '@/components/StdDesign/StdDataEntry'
-import { message } from 'ant-design-vue'
 import StdTable from './StdTable.vue'
 
 const props = defineProps<StdTableProps<T> & StdCurdProps<T>>()

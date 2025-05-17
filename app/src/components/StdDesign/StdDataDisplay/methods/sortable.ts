@@ -1,6 +1,6 @@
-import type { StdTableProps } from '@/components/StdDesign/StdDataDisplay/types'
 import type { Key } from 'ant-design-vue/es/_util/type'
 import type { Ref } from 'vue'
+import type { StdTableProps } from '@/components/StdDesign/StdDataDisplay/types'
 import { message } from 'ant-design-vue'
 import sortable from 'sortablejs'
 

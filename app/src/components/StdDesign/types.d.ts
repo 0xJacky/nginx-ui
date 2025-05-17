@@ -1,11 +1,11 @@
 /* eslint-disable ts/no-explicit-any */
 
-import type { Pagination } from '@/api/curd'
-import type Curd from '@/api/curd'
-
 import type { TableColumnType } from 'ant-design-vue'
 import type { RuleObject } from 'ant-design-vue/es/form'
+
 import type { JSX } from 'vue/jsx'
+import type { Pagination } from '@/api/curd'
+import type Curd from '@/api/curd'
 
 export type JSXElements = JSX.Element[]
 

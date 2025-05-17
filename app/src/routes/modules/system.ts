@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { useSettingsStore } from '@/pinia'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { useSettingsStore } from '@/pinia'
 
 export const systemRoutes: RouteRecordRaw[] = [
   {

@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import type { ChatComplicationMessage } from '@/api/openai'
-import openai from '@/api/openai'
-import ChatGPT_logo from '@/assets/svg/ChatGPT_logo.svg?component'
-import { urlJoin } from '@/lib/helper'
-import { useSettingsStore, useUserStore } from '@/pinia'
 import Icon, { SendOutlined } from '@ant-design/icons-vue'
 import hljs from 'highlight.js'
 import nginx from 'highlight.js/lib/languages/nginx'
-
 import { Marked } from 'marked'
 import { markedHighlight } from 'marked-highlight'
 import { storeToRefs } from 'pinia'
+import openai from '@/api/openai'
+
+import ChatGPT_logo from '@/assets/svg/ChatGPT_logo.svg?component'
+import { urlJoin } from '@/lib/helper'
+import { useSettingsStore, useUserStore } from '@/pinia'
 import 'highlight.js/styles/vs2015.css'
 
 const props = defineProps<{

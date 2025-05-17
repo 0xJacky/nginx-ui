@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { KeyOutlined, LockOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { startAuthentication } from '@simplewebauthn/browser'
+import { Form, message } from 'ant-design-vue'
 import auth from '@/api/auth'
 import install from '@/api/install'
 import passkey from '@/api/passkey'
@@ -8,9 +11,6 @@ import SwitchAppearance from '@/components/SwitchAppearance'
 import Authorization from '@/components/TwoFA'
 import gettext from '@/gettext'
 import { useUserStore } from '@/pinia'
-import { KeyOutlined, LockOutlined, UserOutlined } from '@ant-design/icons-vue'
-import { startAuthentication } from '@simplewebauthn/browser'
-import { Form, message } from 'ant-design-vue'
 
 const thisYear = new Date().getFullYear()
 

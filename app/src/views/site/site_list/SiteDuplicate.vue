@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import site from '@/api/site'
-
-import gettext from '@/gettext'
 import { Form, message } from 'ant-design-vue'
+
+import site from '@/api/site'
+import gettext from '@/gettext'
 
 const props = defineProps<{
   visible: boolean

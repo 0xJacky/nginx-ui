@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { message } from 'ant-design-vue'
 import ngx from '@/api/ngx'
 import site from '@/api/site'
 import NgxConfigEditor, { DirectiveEditor, LocationEditor, useNgxConfigStore } from '@/components/NgxConfigEditor'
-import { message } from 'ant-design-vue'
 
 const currentStep = ref(0)
 

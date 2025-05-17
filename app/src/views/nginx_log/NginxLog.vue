@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { INginxLogData } from '@/api/nginx_log'
 import type ReconnectingWebSocket from 'reconnecting-websocket'
+import type { INginxLogData } from '@/api/nginx_log'
+import { debounce } from 'lodash'
 import nginx_log from '@/api/nginx_log'
 import FooterToolBar from '@/components/FooterToolbar'
 import ws from '@/lib/websocket'
-import { debounce } from 'lodash'
 
 const logContainer = useTemplateRef('logContainer')
 let websocket: ReconnectingWebSocket | WebSocket

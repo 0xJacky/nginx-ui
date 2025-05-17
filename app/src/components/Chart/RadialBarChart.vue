@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Series } from '@/components/Chart/types'
 
-import { useSettingsStore } from '@/pinia'
 import { storeToRefs } from 'pinia'
 import VueApexCharts from 'vue3-apexcharts'
+import { useSettingsStore } from '@/pinia'
 
 const props = defineProps<{
   series: Series[] | number[]

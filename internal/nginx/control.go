@@ -45,8 +45,9 @@ func (t *ControlResult) Resp(c *gin.Context) {
 }
 
 func (t *ControlResult) RespError(c *gin.Context) {
+	msg := t.GetOutput()
 	cosy.ErrHandler(c,
-		cosy.WrapErrorWithParams(ErrNginx, strings.Join([]string{t.stdOut, t.stdErr.Error()}, " ")))
+		cosy.WrapErrorWithParams(ErrNginx, msg))
 }
 
 func (t *ControlResult) GetOutput() string {

@@ -1,9 +1,9 @@
 <script setup lang="tsx">
-import backup from '@/api/backup'
 import { CheckOutlined, CopyOutlined, InfoCircleFilled, WarningOutlined } from '@ant-design/icons-vue'
 import { UseClipboard } from '@vueuse/components'
 import { message } from 'ant-design-vue'
 import { ref } from 'vue'
+import backup from '@/api/backup'
 
 const isCreatingBackup = ref(false)
 const showSecurityModal = ref(false)

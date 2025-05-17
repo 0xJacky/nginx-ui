@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { AutoCertOptions } from '@/api/auto_cert'
 import type { Ref } from 'vue'
+import type { AutoCertOptions } from '@/api/auto_cert'
+import { message } from 'ant-design-vue'
 import AutoCertForm from '@/components/AutoCertForm/AutoCertForm.vue'
 import ObtainCertLive from '@/views/site/site_edit/components/Cert/ObtainCertLive.vue'
-import { message } from 'ant-design-vue'
 
 const emit = defineEmits<{
   issued: [void]

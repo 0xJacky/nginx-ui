@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Environment } from '@/api/environment'
 import type { RuntimeInfo } from '@/api/upgrade'
-import upgrade from '@/api/upgrade'
-import websocket from '@/lib/websocket'
 import { cloneDeep } from 'lodash'
 import { marked } from 'marked'
+import upgrade from '@/api/upgrade'
+import websocket from '@/lib/websocket'
 
 const route = useRoute()
 const visible = ref(false)

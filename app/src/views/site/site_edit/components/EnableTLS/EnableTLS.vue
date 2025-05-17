@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { CheckedType } from '@/types'
+import { Modal } from 'ant-design-vue'
 import template from '@/api/template'
 import { useSiteEditorStore } from '@/views/site/site_edit/components/SiteEditor/store'
-import { Modal } from 'ant-design-vue'
 
 const [modal, ContextHolder] = Modal.useModal()
 

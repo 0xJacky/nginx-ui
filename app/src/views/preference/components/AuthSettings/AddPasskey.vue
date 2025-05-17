@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import passkey from '@/api/passkey'
-import { useUserStore } from '@/pinia'
 import { startRegistration } from '@simplewebauthn/browser'
 import { message } from 'ant-design-vue'
+import passkey from '@/api/passkey'
+import { useUserStore } from '@/pinia'
 
 const emit = defineEmits(['created'])
 

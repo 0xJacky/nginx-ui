@@ -3,6 +3,7 @@ import type {
   CustomRender,
 } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import type { Column, JSXElements } from '@/components/StdDesign/types'
+import { Tag } from 'ant-design-vue'
 import env_group from '@/api/env_group'
 import {
   actualValueRender,
@@ -12,7 +13,6 @@ import { input, select, selector } from '@/components/StdDesign/StdDataEntry'
 import { ConfigStatus } from '@/constants'
 import envGroupColumns from '@/views/environments/group/columns'
 import SiteStatusSegmented from '@/views/site/components/SiteStatusSegmented.vue'
-import { Tag } from 'ant-design-vue'
 
 const columns: Column[] = [{
   title: () => $gettext('Name'),

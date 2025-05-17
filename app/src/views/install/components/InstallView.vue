@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { message } from 'ant-design-vue'
 import install from '@/api/install'
 import SelfCheck, { useSelfCheckStore } from '@/components/SelfCheck'
 import SystemRestoreContent from '@/components/SystemRestore'
-import { message } from 'ant-design-vue'
 import InstallFooter from './InstallFooter.vue'
 import InstallForm from './InstallForm.vue'
 import InstallHeader from './InstallHeader.vue'

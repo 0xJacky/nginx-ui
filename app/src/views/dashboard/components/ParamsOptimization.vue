@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { NginxConfigInfo, NginxPerfOpt } from '@/api/ngx'
-import ngx from '@/api/ngx'
 import {
   SettingOutlined,
 } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
+import ngx from '@/api/ngx'
 import PerformanceConfig from './ParamsOpt/PerformanceConfig.vue'
 import ProxyCacheConfig from './ParamsOpt/ProxyCacheConfig.vue'
 // Performance settings modal

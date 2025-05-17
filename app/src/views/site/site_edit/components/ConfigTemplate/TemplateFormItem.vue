@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Variable } from '@/api/template'
-import { useSettingsStore } from '@/pinia'
 import { storeToRefs } from 'pinia'
+import { useSettingsStore } from '@/pinia'
 import { useConfigTemplateStore } from './store'
 
 const data = defineModel<Variable>({
