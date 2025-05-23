@@ -59,12 +59,23 @@ export interface MemStat {
   pressure: number
 }
 
+export interface PartitionStat {
+  mountpoint: string
+  device: string
+  fstype: string
+  total: string
+  used: string
+  free: string
+  percentage: number
+}
+
 export interface DiskStat {
   total: string
   used: string
   percentage: number
   writes: Usage
   reads: Usage
+  partitions: PartitionStat[]
 }
 
 export interface LoadStat {
