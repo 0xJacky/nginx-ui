@@ -1,5 +1,5 @@
 import type { ModelBase } from '@/api/curd'
-import { http, useCurdApi } from '@uozi-admin/request'
+import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
 export interface Environment extends ModelBase {
   name: string
@@ -17,7 +17,7 @@ export interface Node {
 
 const baseUrl = '/environments'
 
-const environment = useCurdApi<Environment>(baseUrl, {
+const environment = extendCurdApi(useCurdApi<Environment>(baseUrl), {
   load_from_settings: () => http.post(`${baseUrl}/load_from_settings`),
 })
 

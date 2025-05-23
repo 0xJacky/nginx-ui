@@ -19,7 +19,7 @@ const passkey = {
       },
     })
   },
-  get_list() {
+  getList() {
     return http.get('/passkeys')
   },
   update(passkeyId: number, data: Passkey) {

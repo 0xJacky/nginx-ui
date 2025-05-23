@@ -2,7 +2,7 @@ import type {
   CustomRenderArgs,
   StdTableColumn,
 } from '@uozi-admin/curd'
-import type { SiteStatus } from '@/api/site'
+import type { Site, SiteStatus } from '@/api/site'
 import type { JSXElements } from '@/types'
 import { actualFieldRender, datetimeRender } from '@uozi-admin/curd'
 import { Tag } from 'ant-design-vue'
@@ -73,6 +73,7 @@ const columns: StdTableColumn[] = [{
       selectionType: 'radio',
     },
   },
+  batchEdit: true,
   sorter: true,
   pure: true,
   width: 100,
@@ -86,7 +87,7 @@ const columns: StdTableColumn[] = [{
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'status',
-  customRender: (args: CustomRenderArgs) => {
+  customRender: (args: CustomRenderArgs<Site>) => {
     const { text, record } = args
     return h(SiteStatusSegmented, {
       'modelValue': text,
@@ -94,7 +95,7 @@ const columns: StdTableColumn[] = [{
       'enabled': record.status !== ConfigStatus.Disabled,
       'onUpdate:modelValue': (val: string) => {
         // This will be handled by the component internal events
-        record.status = val
+        record.status = val as SiteStatus
       },
       'onStatusChanged': ({ status }: { status: SiteStatus }) => {
         record.status = status

@@ -59,7 +59,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
         await buildConfig()
       }
 
-      const response = await stream.save(name.value, {
+      const response = await stream.updateItem(name.value, {
         content: configText.value,
         overwrite: true,
         env_group_id: data.value.env_group_id,
@@ -81,7 +81,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
     console.error(e)
     parseErrorStatus.value = true
     parseErrorMessage.value = e.message
-    config.get(`streams-available/${name.value}`).then(r => {
+    config.getItem(`streams-available/${name.value}`).then(r => {
       configText.value = r.content
     })
   }
@@ -116,7 +116,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
         await buildConfig()
       }
       else {
-        let r = await stream.get(name.value)
+        let r = await stream.getItem(name.value)
         await handleResponse(r)
         r = await ngx.tokenize_config(configText.value)
         Object.assign(ngxConfig, {

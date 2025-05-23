@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
+import ChatGPT from '@/components/ChatGPT'
 import { useStreamEditorStore } from '../../store'
 
 const store = useStreamEditorStore()

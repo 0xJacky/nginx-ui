@@ -1,5 +1,5 @@
 import type { NgxDirective, NgxLocation, NgxServer } from '@/api/ngx'
-import { http, useCurdApi } from '@uozi-admin/request'
+import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
 export interface Variable {
   type?: string
@@ -22,7 +22,7 @@ export interface Template extends NgxServer {
 
 const baseUrl = '/templates'
 
-const template = useCurdApi<Template>(baseUrl, {
+const template = extendCurdApi(useCurdApi<Template>(baseUrl), {
   get_config_list: () => http.get(`${baseUrl}/configs`),
   get_block_list: () => http.get(`${baseUrl}/blocks`),
   get_config: (name: string) => http.get(`${baseUrl}/config/${name}`),

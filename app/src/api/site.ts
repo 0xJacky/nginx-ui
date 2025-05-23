@@ -4,7 +4,7 @@ import type { EnvGroup } from '@/api/env_group'
 import type { NgxConfig } from '@/api/ngx'
 import type { ChatComplicationMessage } from '@/api/openai'
 import type { ConfigStatus, PrivateKeyType } from '@/constants'
-import { http, useCurdApi } from '@uozi-admin/request'
+import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
 export type SiteStatus = ConfigStatus.Enabled | ConfigStatus.Disabled | ConfigStatus.Maintenance
 
@@ -35,7 +35,7 @@ export interface AutoCertRequest {
 
 const baseUrl = '/sites'
 
-const site = useCurdApi<Site>(baseUrl, {
+const site = extendCurdApi(useCurdApi<Site>(baseUrl), {
   enable: (name: string) => http.post(`${baseUrl}/${encodeURIComponent(name)}/enable`),
   disable: (name: string) => http.post(`${baseUrl}/${name}/disable`),
   rename: (oldName: string, newName: string) => http.post(`${baseUrl}/${encodeURIComponent(oldName)}/rename`, { new_name: newName }),

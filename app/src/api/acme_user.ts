@@ -1,5 +1,5 @@
 import type { ModelBase } from '@/api/curd'
-import { http, useCurdApi } from '@uozi-admin/request'
+import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
 export interface AcmeUser extends ModelBase {
   name: string
@@ -10,7 +10,7 @@ export interface AcmeUser extends ModelBase {
 
 const baseUrl = '/acme_users'
 
-const acme_user = useCurdApi<AcmeUser>(baseUrl, {
+const acme_user = extendCurdApi(useCurdApi<AcmeUser>(baseUrl), {
   register: (id: number) => http.post(`${baseUrl}/${id}/register`),
 })
 

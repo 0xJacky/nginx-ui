@@ -1,6 +1,6 @@
 import type { GetListResponse } from '@/api/curd'
 import type { ChatComplicationMessage } from '@/api/openai'
-import { http, useCurdApi } from '@uozi-admin/request'
+import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
 export interface ModelBase {
   id: number
@@ -25,7 +25,7 @@ export interface ConfigBackup extends ModelBase {
   content: string
 }
 
-const config = useCurdApi<Config>('/configs', {
+const config = extendCurdApi(useCurdApi<Config>('/configs'), {
   get_base_path: () => http.get('/config_base_path'),
   mkdir: (basePath: string, name: string) => http.post('/config_mkdir', { base_path: basePath, folder_name: name }),
   rename: (basePath: string, origName: string, newName: string, syncNodeIds?: number[]) => http.post('/config_rename', {

@@ -29,6 +29,13 @@ export const translations = {
   deletedSuccessfully: $gettext('Deleted successfully'),
   restoredSuccessfully: $gettext('Restored successfully'),
   selectAll: $gettext('Select all'),
+  batchEdit: $gettext('Batch Edit'),
+  pleaseSelectAtLeastOneItem: $gettext('Please select at least one item'),
+  batchModify: $gettext('Batch Modify'),
+  saveSuccessfully: $gettext('Save successfully'),
+  belowsAreSelectedItems: $gettext('Belows are selected items that you want to batch modify'),
+  leaveBlankIfDoNotWantToModify: $gettext('Leave blank if do not want to modify'),
+  no: $gettext('No'),
   validate: {
     required: $gettext('This field should not be empty'),
     email: $gettext('This field should be a valid email address'),

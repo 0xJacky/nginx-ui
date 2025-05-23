@@ -2,7 +2,7 @@ import type { CustomRenderArgs } from '@uozi-admin/curd'
 import { NotificationTypeT } from '@/constants'
 import notifications from './notifications'
 
-export function detailRender(args: CustomRenderArgs) {
+export function detailRender(args: Pick<CustomRenderArgs, 'record' | 'text'>) {
   try {
     return (
       <div>

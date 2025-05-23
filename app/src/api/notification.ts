@@ -1,5 +1,5 @@
 import type { ModelBase } from '@/api/curd'
-import { http, useCurdApi } from '@uozi-admin/request'
+import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
 export interface Notification extends ModelBase {
   type: string
@@ -9,7 +9,7 @@ export interface Notification extends ModelBase {
 
 const baseUrl = '/notifications'
 
-const notification = useCurdApi<Notification>(baseUrl, {
+const notification = extendCurdApi(useCurdApi<Notification>(baseUrl), {
   clear: () => http.delete(baseUrl),
 })
 

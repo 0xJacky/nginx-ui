@@ -1,5 +1,5 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
-import type { JSXElements } from '@/components/StdDesign/types'
+import type { JSX } from 'vue/jsx-runtime'
 import { datetimeRender } from '@uozi-admin/curd'
 import { Badge, Tag } from 'ant-design-vue'
 import { h } from 'vue'
@@ -43,21 +43,21 @@ const columns: StdTableColumn[] = [{
   title: () => $gettext('Status'),
   dataIndex: 'status',
   customRender: (args: CustomRenderArgs) => {
-    const template: JSXElements = []
+    const template: JSX.Element[] = []
     const { text } = args
     if (args.record.enabled) {
       if (text === true || text > 0) {
         template.push(<Badge status="success" />)
-        template.push($gettext('Online'))
+        template.push(<span>{$gettext('Online')}</span>)
       }
       else {
         template.push(<Badge status="error" />)
-        template.push($gettext('Offline'))
+        template.push(<span>{$gettext('Offline')}</span>)
       }
     }
     else {
       template.push(<Badge status="default" />)
-      template.push($gettext('Disabled'))
+      template.push(<span>{$gettext('Disabled')}</span>)
     }
 
     return h('div', template)
@@ -69,7 +69,7 @@ const columns: StdTableColumn[] = [{
   title: () => $gettext('Enabled'),
   dataIndex: 'enabled',
   customRender: (args: CustomRenderArgs) => {
-    const template: JSXElements = []
+    const template: JSX.Element[] = []
     const { text } = args
     if (text === true || text > 0)
       template.push(<Tag color="green">{$gettext('Enabled')}</Tag>)

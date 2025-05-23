@@ -1,7 +1,6 @@
 <script setup lang="tsx">
 import type { TableColumnType } from 'ant-design-vue'
 import type { FilterResetProps } from 'ant-design-vue/es/table/interface'
-import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { SearchOutlined } from '@ant-design/icons-vue'
 import { Button as AButton, Input as AInput } from 'ant-design-vue'
 import { useGlobalStore } from '@/pinia'
@@ -71,7 +70,7 @@ const modulesColumns: TableColumnType[] = [
         }, 100)
       }
     },
-    customRender: (args: CustomRender) => {
+    customRender: args => {
       return (
         <div>
           <div>{args.record.name}</div>

@@ -1,13 +1,10 @@
 <script setup lang="tsx">
 import type { EnvGroup } from '@/api/env_group'
-import type { Site } from '@/api/site'
-import type { Column } from '@/components/StdDesign/types'
-import { StdTable } from '@uozi-admin/curd'
+import { StdCurd } from '@uozi-admin/curd'
 import { message } from 'ant-design-vue'
 import env_group from '@/api/env_group'
 import site from '@/api/site'
 import EnvGroupTabs from '@/components/EnvGroupTabs'
-import StdBatchEdit from '@/components/StdDesign/StdDataDisplay/StdBatchEdit.vue'
 import { ConfigStatus } from '@/constants'
 import InspectConfig from '@/views/config/InspectConfig.vue'
 import columns from '@/views/site/site_list/columns'
@@ -16,11 +13,11 @@ import SiteDuplicate from '@/views/site/site_list/SiteDuplicate.vue'
 const route = useRoute()
 const router = useRouter()
 
-const table = ref()
+const curd = ref()
 const inspectConfig = ref()
 
 const envGroupId = ref(Number.parseInt(route.query.env_group_id as string) || 0)
-const envGroups = ref([]) as Ref<EnvGroup[]>
+const envGroups = ref<EnvGroup[]>([])
 
 watch(route, () => {
   inspectConfig.value?.test()
@@ -30,7 +27,7 @@ onMounted(async () => {
   let page = 1
   while (true) {
     try {
-      const { data, pagination } = await env_group.get_list({ page })
+      const { data, pagination } = await env_group.getList({ page })
       if (!data || !pagination)
         return
       envGroups.value.push(...data)
@@ -46,8 +43,8 @@ onMounted(async () => {
 })
 
 function destroy(site_name: string) {
-  site.destroy(site_name).then(() => {
-    table.value.getList()
+  site.deleteItem(site_name).then(() => {
+    curd.value.refresh()
     message.success($gettext('Delete site: %{site_name}', { site_name }))
     inspectConfig.value?.test()
   })
@@ -61,28 +58,14 @@ function handle_click_duplicate(name: string) {
   show_duplicator.value = true
   target.value = name
 }
-
-const stdBatchEditRef = useTemplateRef('stdBatchEditRef')
-
-async function handleClickBatchEdit(batchColumns: Column[], selectedRowKeys: string[], selectedRows: Site[]) {
-  stdBatchEditRef.value?.showModal(batchColumns, selectedRowKeys, selectedRows)
-}
-
-function handleBatchUpdated() {
-  table.value?.get_list()
-  table.value?.resetSelection()
-}
 </script>
 
 <template>
-  <ACard :title="$gettext('Manage Sites')">
-    <InspectConfig ref="inspectConfig" />
-
-    <EnvGroupTabs v-model:active-key="envGroupId" :env-groups="envGroups" />
-
-    <StdTable
-      ref="table"
-      :get-list-api="site.getList"
+  <div>
+    <StdCurd
+      ref="curd"
+      :title="$gettext('Manage Sites')"
+      :api="site"
       :columns="columns"
       :table-props="{
         rowKey: 'name',
@@ -97,8 +80,11 @@ function handleBatchUpdated() {
       @edit-item="record => router.push({
         path: `/sites/${encodeURIComponent(record.name)}`,
       })"
-      @click-batch-modify="handleClickBatchEdit"
     >
+      <template #beforeCardBody>
+        <InspectConfig ref="inspectConfig" />
+        <EnvGroupTabs v-model:active-key="envGroupId" :env-groups="envGroups" />
+      </template>
       <template #afterActions="{ record }">
         <AButton
           type="link"
@@ -123,19 +109,13 @@ function handleBatchUpdated() {
           </AButton>
         </APopconfirm>
       </template>
-    </StdTable>
-    <StdBatchEdit
-      ref="stdBatchEditRef"
-      :api="site"
-      :columns
-      @save="handleBatchUpdated"
-    />
+    </StdCurd>
     <SiteDuplicate
       v-model:visible="show_duplicator"
       :name="target"
-      @duplicated="() => table.get_list()"
+      @duplicated="() => curd.refresh()"
     />
-  </ACard>
+  </div>
 </template>
 
 <style scoped>

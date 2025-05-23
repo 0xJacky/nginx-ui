@@ -3,7 +3,6 @@ import type { Ref } from 'vue'
 import type { TwoFAStatus } from '@/api/2fa'
 import type { RecoveryCode } from '@/api/recovery'
 import type { BannedIP } from '@/api/settings'
-import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import twoFA from '@/api/2fa'
@@ -23,7 +22,7 @@ const bannedIPColumns = [{
 }, {
   title: $gettext('Banned Until'),
   dataIndex: 'expired_at',
-  customRender: (args: CustomRender) => {
+  customRender: args => {
     return dayjs.unix(args.text).format('YYYY-MM-DD HH:mm:ss')
   },
 }, {

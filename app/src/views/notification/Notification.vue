@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { StdCurd } from '@uozi-admin/curd'
 import { message } from 'ant-design-vue'
 import notification from '@/api/notification'
-import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import { useUserStore } from '@/pinia'
 import notificationColumns from '@/views/notification/notificationColumns'
 
@@ -31,6 +31,7 @@ watch(unreadCount, () => {
     disable-modify
     disable-add
     disable-trash
+    disable-export
   >
     <template #extra>
       <APopconfirm

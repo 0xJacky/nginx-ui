@@ -3,7 +3,7 @@ import type { TwoFAStatus } from '@/api/2fa'
 import { KeyOutlined } from '@ant-design/icons-vue'
 import { startAuthentication } from '@simplewebauthn/browser'
 import twoFA from '@/api/2fa'
-import OTPInput from '@/components/OTPInput/OTPInput.vue'
+import OTPInput from '@/components/OTPInput'
 import { useUserStore } from '@/pinia'
 
 defineProps<{

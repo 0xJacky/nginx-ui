@@ -2,7 +2,7 @@
 import type { Ref } from 'vue'
 import type { AutoCertOptions } from '@/api/auto_cert'
 import { message } from 'ant-design-vue'
-import AutoCertForm from '@/components/AutoCertForm/AutoCertForm.vue'
+import AutoCertForm from '@/components/AutoCertForm'
 import ObtainCertLive from '@/views/site/site_edit/components/Cert/ObtainCertLive.vue'
 
 const emit = defineEmits<{

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { CheckedType } from '@/types'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
+import { StdSelector } from '@uozi-admin/curd'
 import { message, Modal } from 'ant-design-vue'
 import { storeToRefs } from 'pinia'
 import envGroup from '@/api/env_group'
 import stream from '@/api/stream'
-import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
-import StdSelector from '@/components/StdDesign/StdDataEntry/components/StdSelector.vue'
+import NodeSelector from '@/components/NodeSelector'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import envGroupColumns from '@/views/environments/group/columns'
@@ -76,10 +76,10 @@ function onChangeEnabled(checked: CheckedType) {
 
     <AFormItem :label="$gettext('Node Group')">
       <StdSelector
-        v-model:selected-key="data.env_group_id"
-        :api="envGroup"
+        v-model:value="data.env_group_id"
+        :get-list-api="envGroup.getList"
         :columns="envGroupColumns"
-        record-value-index="name"
+        display-key="name"
         selection-type="radio"
       />
     </AFormItem>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { StdCurd } from '@uozi-admin/curd'
 import externalNotify from '@/api/external_notify'
-import { StdCurd } from '@/components/StdDesign/StdDataDisplay'
 import columns from '../components/ExternalNotify/columns'
 </script>
 
@@ -10,7 +10,7 @@ import columns from '../components/ExternalNotify/columns'
     :columns="columns"
     :api="externalNotify"
     disable-view
-    disable-query-params
+    disable-export
   />
 </template>
 

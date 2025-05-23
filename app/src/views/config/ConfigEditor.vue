@@ -7,11 +7,11 @@ import { message } from 'ant-design-vue'
 import { trim, trimEnd } from 'lodash'
 import config from '@/api/config'
 import ngx from '@/api/ngx'
-import ChatGPT from '@/components/ChatGPT/ChatGPT.vue'
-import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
+import ChatGPT from '@/components/ChatGPT'
+import CodeEditor from '@/components/CodeEditor'
 import { ConfigHistory } from '@/components/ConfigHistory'
-import FooterToolBar from '@/components/FooterToolbar/FooterToolBar.vue'
-import NodeSelector from '@/components/NodeSelector/NodeSelector.vue'
+import FooterToolBar from '@/components/FooterToolbar'
+import NodeSelector from '@/components/NodeSelector'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
@@ -183,13 +183,19 @@ onMounted(async () => {
 
 function save() {
   refForm.value?.validate().then(() => {
-    config.save(addMode.value ? undefined : relativePath.value, {
+    const payload = {
       name: addMode.value ? data.value.name : undefined,
       base_dir: addMode.value ? basePath.value : undefined,
       content: data.value.content,
       sync_node_ids: data.value.sync_node_ids,
       sync_overwrite: data.value.sync_overwrite,
-    }).then(r => {
+    }
+
+    const api = addMode.value
+      ? config.createItem(payload)
+      : config.updateItem(relativePath.value, payload)
+
+    api.then(r => {
       data.value.content = r.content
       message.success($gettext('Saved successfully'))
 

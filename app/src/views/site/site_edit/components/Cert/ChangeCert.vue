@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
+import { StdTable } from '@uozi-admin/curd'
 import cert from '@/api/cert'
-import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import certColumns from '@/views/certificate/CertificateList/certColumns'
 
 interface Props {
@@ -41,6 +41,8 @@ async function ok() {
   records.value = []
   selectedKeys.value = []
 }
+
+const columns = computed(() => certColumns.filter(item => item.pure))
 </script>
 
 <template>
@@ -58,10 +60,14 @@ async function ok() {
       <StdTable
         v-model:selected-rows="records"
         :selected-row-keys="selectedKeys"
-        :api="cert"
-        pithy
-        :columns="certColumns"
-        :selection-type="selectionType"
+        :get-list-api="cert.getList"
+        only-query
+        disable-router-query
+        :columns
+        :row-selection-type="selectionType"
+        :table-props="{
+          rowKey: 'name',
+        }"
         @update:selected-row-keys="handleSelectionChange"
       />
     </AModal>
