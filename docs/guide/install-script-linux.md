@@ -22,13 +22,36 @@ install.sh install [OPTIONS]
 | `-l, --local <file>`  | Install Nginx UI from a local file (`string`)                                                                   |
 | `-p, --proxy <url>`   | Download through a proxy server (`string`)<br/>e.g., `-p http://127.0.0.1:8118` or `-p socks5://127.0.0.1:1080` |
 | `-r, --reverse-proxy` | Download through a reverse proxy server (`string`)<br/>e.g., `-r https://cloud.nginxui.com/`                          |
+| `-c, --channel <channel>` | Specify the version channel (`string`)<br/>Available channels: `stable` (default), `prerelease`, `dev`
 
+#### Version Channels
+
+| Channel      | Description                                                                                          |
+|--------------|------------------------------------------------------------------------------------------------------|
+| `stable`     | Latest stable release (default) - Recommended for production use                                     |
+| `prerelease` | Latest prerelease version - Contains new features that are being tested before stable release       |
+| `dev`        | Latest development build from dev branch - Contains the newest features but may be unstable         |
 
 ### Quick Usage
 
-```shell
+::: code-group
+
+```shell [Stable (Default)]
+# Install the latest stable version
 bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
 ```
+
+```shell [Prerelease]
+# Install the latest prerelease version
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install --channel prerelease
+```
+
+```shell [Development]
+# Install the latest development build
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install --channel dev
+```
+
+:::
 
 The default listening port is `9000`, and the default HTTP Challenge port is `9180`.
 If there is a port conflict, please modify `/usr/local/etc/nginx-ui/app.ini` manually,
