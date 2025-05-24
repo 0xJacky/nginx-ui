@@ -30,7 +30,6 @@ watch(unreadCount, () => {
     :api="notification"
     disable-modify
     disable-add
-    disable-trash
     disable-export
   >
     <template #extra>

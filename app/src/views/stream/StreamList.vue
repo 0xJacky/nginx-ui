@@ -106,6 +106,7 @@ function handleAddStream() {
       }"
       disable-delete
       disable-view
+      disable-export
       row-selection-type="checkbox"
       :custom-query-params="{
         env_group_id: envGroupId,

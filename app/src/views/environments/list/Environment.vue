@@ -74,6 +74,7 @@ const inTrash = computed(() => {
       :title="$gettext('Environments')"
       :api="environment"
       :columns="envColumns"
+      disable-export
     >
       <template #beforeAdd>
         <AButton size="small" type="link" :loading="loadingFromSettings" @click="loadFromSettings">
