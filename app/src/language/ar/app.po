@@ -103,7 +103,7 @@ msgstr "[Nginx UI] كتابة الشهادة على القرص"
 msgid "2FA"
 msgstr "المصادقة الثنائية"
 
-#: src/views/preference/tabs/AuthSettings.vue:69
+#: src/views/user/UserProfile.vue:151
 msgid "2FA Settings"
 msgstr "إعدادات المصادقة الثنائية"
 
@@ -129,8 +129,7 @@ msgstr "سجلات الدخول"
 msgid "ACME User"
 msgstr "مستخدم ACME"
 
-#: src/views/notification/notificationColumns.tsx:66
-#: src/views/preference/tabs/AuthSettings.vue:29
+#: src/views/preference/tabs/AuthSettings.vue:26
 msgid "Action"
 msgstr "إجراء"
 
@@ -141,9 +140,9 @@ msgstr "إجراء"
 #: src/views/environments/group/columns.ts:41
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:52
+#: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:76
-#: src/views/site/site_list/columns.tsx:129
-#: src/views/stream/columns.tsx:64
+#: src/views/site/site_list/columns.tsx:129 src/views/stream/columns.tsx:64
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "الإجراءات"
@@ -158,10 +157,10 @@ msgid "Actual worker to configured ratio"
 msgstr "النسبة الفعلية للعامل إلى المُهيأ"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:112
-#: src/components/NgxConfigEditor/NgxUpstream.vue:155 src/language/curd.ts:19
+#: src/components/NgxConfigEditor/NgxUpstream.vue:159 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:120
+#: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr "إضافة"
 
@@ -188,7 +187,7 @@ msgstr "أضف مكان"
 msgid "Add Site"
 msgstr "أضف موقع"
 
-#: src/views/stream/StreamList.vue:173
+#: src/views/stream/StreamList.vue:174
 msgid "Add Stream"
 msgstr "أضف Stream"
 
@@ -246,7 +245,7 @@ msgstr "التطبيق"
 msgid "Arch"
 msgstr "\"أرك\""
 
-#: src/views/preference/tabs/AuthSettings.vue:161
+#: src/views/preference/tabs/AuthSettings.vue:130
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "هل أنت متأكد من حذف عنوان IP المحظور هذا على الفور؟"
 
@@ -275,8 +274,8 @@ msgstr "هل أنت متأكد أنك تريد مسح سجل المحادثة؟"
 msgid "Are you sure you want to delete permanently?"
 msgstr "هل أنت متأكد أنك تريد الحذف نهائيًا؟"
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:99
-#: src/views/stream/StreamList.vue:156
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
+#: src/views/stream/StreamList.vue:157
 msgid "Are you sure you want to delete?"
 msgstr "هل أنت متأكد أنك تريد الحذف؟"
 
@@ -316,7 +315,7 @@ msgstr "المساعد"
 msgid "Attempt to fix"
 msgstr "محاولة الإصلاح"
 
-#: src/views/preference/tabs/AuthSettings.vue:20
+#: src/views/preference/tabs/AuthSettings.vue:17
 msgid "Attempts"
 msgstr "محاولات"
 
@@ -328,7 +327,7 @@ msgstr "مصادقة"
 msgid "Authenticate with a passkey"
 msgstr "المصادقة باستخدام مفتاح المرور"
 
-#: src/views/preference/tabs/AuthSettings.vue:87
+#: src/views/preference/tabs/AuthSettings.vue:56
 msgid "Authentication Settings"
 msgstr "إعدادات المصادقة"
 
@@ -403,15 +402,15 @@ msgstr "لم يتم العثور على ملف النسخ الاحتياطي: {0
 msgid "Backup has been downloaded successfully"
 msgstr "تم تنزيل النسخة الاحتياطية بنجاح"
 
-#: src/views/preference/tabs/AuthSettings.vue:128
+#: src/views/preference/tabs/AuthSettings.vue:97
 msgid "Ban Threshold Minutes"
 msgstr "دقائق حد الحظر"
 
-#: src/views/preference/tabs/AuthSettings.vue:149
+#: src/views/preference/tabs/AuthSettings.vue:118
 msgid "Banned IPs"
 msgstr "عناوين IP المحظورة"
 
-#: src/views/preference/tabs/AuthSettings.vue:23
+#: src/views/preference/tabs/AuthSettings.vue:20
 msgid "Banned Until"
 msgstr "محظور حتى"
 
@@ -521,7 +520,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:54
 #: src/components/NgxConfigEditor/NgxUpstream.vue:37
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
-#: src/views/site/components/SiteStatusSegmented.vue:97
+#: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
@@ -643,6 +642,10 @@ msgstr "طريقة التحدي"
 #: src/views/site/site_edit/components/Cert/ChangeCert.vue:55
 msgid "Change Certificate"
 msgstr "تغيير الشهادة"
+
+#: src/views/user/UserProfile.vue:181
+msgid "Change Password"
+msgstr "تغيير كلمة المرور"
 
 #: src/views/site/site_edit/components/Cert/Cert.vue:77
 msgid "Changed Certificate"
@@ -812,13 +815,11 @@ msgstr "تم المسح بنجاح"
 msgid "Click or drag backup file to this area to upload"
 msgstr "انقر فوق أو اسحب ملف النسخ الاحتياطي إلى هذه المنطقة للتحميل"
 
-#: src/language/curd.ts:49
-#: src/language/curd.ts:53
+#: src/language/curd.ts:49 src/language/curd.ts:53
 msgid "Click or drag files to this area to upload"
 msgstr "انقر أو اسحب الملفات إلى هذه المنطقة للتحميل"
 
-#: src/language/curd.ts:50
-#: src/language/curd.ts:54
+#: src/language/curd.ts:50 src/language/curd.ts:54
 msgid "Click or drag folders to this area to upload"
 msgstr "انقر أو اسحب المجلدات إلى هذه المنطقة للتحميل"
 
@@ -938,6 +939,10 @@ msgstr "التكوينات"
 msgid "Configure SSL"
 msgstr "تكوين SSL"
 
+#: src/views/user/UserProfile.vue:204
+msgid "Confirm New Password"
+msgstr "تأكيد كلمة المرور الجديدة"
+
 #: src/views/dashboard/Environments.vue:141
 msgid "Connected"
 msgstr "متصل"
@@ -946,7 +951,7 @@ msgstr "متصل"
 msgid "Connection error, trying to reconnect..."
 msgstr "خطأ في الاتصال، جاري محاولة إعادة الاتصال..."
 
-#: src/views/terminal/Terminal.vue:142
+#: src/views/terminal/Terminal.vue:139
 msgid "Connection lost, please refresh the page."
 msgstr "تم فقدان الاتصال، يرجى تحديث الصفحة."
 
@@ -1002,7 +1007,7 @@ msgstr "استخدام وحدة المعالجة المركزية مرتفع ن�
 msgid "CPU:"
 msgstr "CPU:"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:166
+#: src/components/NgxConfigEditor/NgxUpstream.vue:170
 msgid "Create"
 msgstr "إنشاء"
 
@@ -1031,7 +1036,7 @@ msgstr ""
 "سيتم تنزيل ملفات النسخ الاحتياطي تلقائيًا إلى جهاز الكمبيوتر الخاص بك."
 
 #: src/views/environments/group/columns.ts:29
-#: src/views/notification/notificationColumns.tsx:45
+#: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:71
 #: src/views/user/userColumns.tsx:46
@@ -1069,6 +1074,10 @@ msgstr "الاتصالات النشطة الحالية"
 #: src/components/ConfigHistory/DiffViewer.vue:72
 msgid "Current Content"
 msgstr "المحتوى الحالي"
+
+#: src/views/user/UserProfile.vue:186
+msgid "Current Password"
+msgstr "كلمة المرور الحالية"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:65
 msgid "Current usage"
@@ -1109,8 +1118,8 @@ msgstr "حدد اسم منطقة الذاكرة المشتركة والحجم، 
 #: src/components/NgxConfigEditor/NgxServer.vue:78
 #: src/components/NgxConfigEditor/NgxUpstream.vue:129 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
-#: src/views/site/site_list/SiteList.vue:108
-#: src/views/stream/StreamList.vue:165
+#: src/views/site/site_list/SiteList.vue:109
+#: src/views/stream/StreamList.vue:166
 msgid "Delete"
 msgstr "حذف"
 
@@ -1187,7 +1196,7 @@ msgstr "الملف الوجهة موجود بالفعل"
 msgid "Destination file: {0} already exists"
 msgstr "الملف الوجهة: {0} موجود بالفعل"
 
-#: src/views/notification/notificationColumns.tsx:60
+#: src/views/notification/notificationColumns.tsx:66
 msgid "Details"
 msgstr "تفاصيل"
 
@@ -1231,11 +1240,11 @@ msgstr "مستويات الدليل"
 msgid "Directory path to store cache files"
 msgstr "مسار الدليل لتخزين ملفات الذاكرة المؤقتة"
 
-#: src/views/site/components/SiteStatusSegmented.vue:88
+#: src/views/site/components/SiteStatusSelect.vue:115
 msgid "disable"
 msgstr "تعطيل"
 
-#: src/views/stream/StreamList.vue:136
+#: src/views/stream/StreamList.vue:137
 msgid "Disable"
 msgstr "تعطيل"
 
@@ -1296,7 +1305,7 @@ msgstr "تم تعطيل الدفق %{name} من %{node} بنجاح"
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
-#: src/views/site/components/SiteStatusSegmented.vue:134
+#: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/site/site_list/columns.tsx:114 src/views/stream/columns.tsx:48
 #: src/views/stream/components/StreamEditor.vue:30
@@ -1304,7 +1313,7 @@ msgstr "تم تعطيل الدفق %{name} من %{node} بنجاح"
 msgid "Disabled"
 msgstr "معطل"
 
-#: src/views/site/components/SiteStatusSegmented.vue:40
+#: src/views/site/components/SiteStatusSelect.vue:67
 #: src/views/stream/components/RightPanel/Basic.vue:34
 #: src/views/stream/StreamList.vue:56
 msgid "Disabled successfully"
@@ -1332,7 +1341,7 @@ msgstr "DNS01"
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr "لا تقم بتمكين هذا الخيار إلا إذا كنت متأكدًا من أنك بحاجة إليه."
 
-#: src/views/site/components/SiteStatusSegmented.vue:93
+#: src/views/site/components/SiteStatusSelect.vue:120
 msgid "Do you want to %{action} this site?"
 msgstr "هل تريد %{action} هذا الموقع؟"
 
@@ -1409,9 +1418,9 @@ msgstr ""
 "مواقع الويب غير HTTPS، إلا عند التشغيل على localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:94
+#: src/views/site/site_list/SiteList.vue:95
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:151
+#: src/views/stream/StreamList.vue:152
 msgid "Duplicate"
 msgstr "مكرر"
 
@@ -1455,11 +1464,11 @@ msgstr "بريد إلكتروني"
 msgid "Email (*)"
 msgstr "البريد الإلكتروني (*)"
 
-#: src/views/site/components/SiteStatusSegmented.vue:87
+#: src/views/site/components/SiteStatusSelect.vue:114
 msgid "enable"
 msgstr "تمكين"
 
-#: src/views/stream/StreamList.vue:144
+#: src/views/stream/StreamList.vue:145
 msgid "Enable"
 msgstr "تفعيل"
 
@@ -1557,7 +1566,7 @@ msgstr "تفعيل TOTP"
 #: src/views/preference/tabs/LogrotateSettings.vue:20
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
-#: src/views/site/components/SiteStatusSegmented.vue:130
+#: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
 #: src/views/site/site_list/columns.tsx:110 src/views/stream/columns.tsx:44
 #: src/views/stream/components/RightPanel/Basic.vue:62
@@ -1566,7 +1575,7 @@ msgstr "تفعيل TOTP"
 msgid "Enabled"
 msgstr "مفعل"
 
-#: src/views/site/components/SiteStatusSegmented.vue:27
+#: src/views/site/components/SiteStatusSelect.vue:54
 #: src/views/site/site_add/SiteAdd.vue:32
 #: src/views/stream/components/RightPanel/Basic.vue:25
 #: src/views/stream/StreamList.vue:46
@@ -1775,23 +1784,23 @@ msgstr "فشل في حذف الشهادة"
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "فشل حذف الشهادة من قاعدة البيانات: %{error}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:46
+#: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/RightPanel/Basic.vue:37
 #: src/views/stream/StreamList.vue:60
 msgid "Failed to disable %{msg}"
 msgstr "فشل في تعطيل %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:72
+#: src/views/site/components/SiteStatusSelect.vue:99
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr "فشل تعطيل وضع الصيانة %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:33
+#: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/RightPanel/Basic.vue:28
 #: src/views/stream/StreamList.vue:50
 msgid "Failed to enable %{msg}"
 msgstr "فشل في التفعيل %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:59
+#: src/views/site/components/SiteStatusSelect.vue:86
 msgid "Failed to enable maintenance mode %{msg}"
 msgstr "فشل تمكين وضع الصيانة %{msg}"
 
@@ -2102,7 +2111,7 @@ msgstr "رقم ICP"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "إذا تُرك فارغًا، سيتم استخدام دليل CA الافتراضي."
 
-#: src/views/preference/tabs/AuthSettings.vue:144
+#: src/views/preference/tabs/AuthSettings.vue:113
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -2269,7 +2278,7 @@ msgstr "تنسيق الطلب غير صالح"
 msgid "Invalid security token format"
 msgstr "تنسيق رمز الأمان غير صالح"
 
-#: src/views/preference/tabs/AuthSettings.vue:17
+#: src/views/preference/tabs/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
 
@@ -2384,7 +2393,7 @@ msgstr "قائمة"
 msgid "Load Average:"
 msgstr "متوسط التحميل:"
 
-#: src/views/environments/list/Environment.vue:80
+#: src/views/environments/list/Environment.vue:81
 msgid "Load from settings"
 msgstr "تحميل من الإعدادات"
 
@@ -2481,17 +2490,17 @@ msgstr ""
 "يدويًا. سيقوم مجدول المهام crontab الخاص بواجهة Nginx UI بتنفيذ أمر تدوير "
 "السجلات في الفاصل الزمني الذي تحدده بالدقائق."
 
-#: src/views/site/components/SiteStatusSegmented.vue:138
+#: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
 #: src/views/site/site_list/columns.tsx:118
 msgid "Maintenance"
 msgstr "صيانة"
 
-#: src/views/site/components/SiteStatusSegmented.vue:66
+#: src/views/site/components/SiteStatusSelect.vue:93
 msgid "Maintenance mode disabled successfully"
 msgstr "تم تعطيل وضع الصيانة بنجاح"
 
-#: src/views/site/components/SiteStatusSegmented.vue:53
+#: src/views/site/components/SiteStatusSelect.vue:80
 msgid "Maintenance mode enabled successfully"
 msgstr "تم تمكين وضع الصيانة بنجاح"
 
@@ -2558,7 +2567,7 @@ msgstr "العملية الرئيسية"
 msgid "Master Process"
 msgstr "العملية الرئيسية"
 
-#: src/views/preference/tabs/AuthSettings.vue:134
+#: src/views/preference/tabs/AuthSettings.vue:103
 msgid "Max Attempts"
 msgstr "الحد الأقصى للمحاولات"
 
@@ -2657,7 +2666,7 @@ msgstr "الوحدات"
 msgid "Multi-line Directive"
 msgstr "توجيه متعدد الأسطر"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:178
+#: src/components/NgxConfigEditor/NgxUpstream.vue:182
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:9
@@ -2674,7 +2683,7 @@ msgstr "توجيه متعدد الأسطر"
 #: src/views/stream/columns.tsx:10
 #: src/views/stream/components/RightPanel/Basic.vue:69
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:178
+#: src/views/stream/StreamList.vue:179
 msgid "Name"
 msgstr "اسم"
 
@@ -2705,6 +2714,10 @@ msgstr "تثبيت جديد"
 #: src/views/config/components/Rename.vue:74
 msgid "New name"
 msgstr "اسم جديد"
+
+#: src/views/user/UserProfile.vue:195
+msgid "New Password"
+msgstr "كلمة مرور جديدة"
 
 #: src/views/config/ConfigEditor.vue:328
 msgid "New Path"
@@ -2919,9 +2932,9 @@ msgstr "يتضمن Nginx.conf دليل streams-enabled"
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:38
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/tabs/AuthSettings.vue:163
+#: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:97 src/views/stream/StreamList.vue:154
+#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:155
 msgid "No"
 msgstr "لا"
 
@@ -3054,6 +3067,7 @@ msgid "Off"
 msgstr "إيقاف"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
+#: src/components/NgxConfigEditor/NgxUpstream.vue:145
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:55
@@ -3065,13 +3079,13 @@ msgstr "غير متصل"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:36
 #: src/components/Notification/Notification.vue:110 src/language/curd.ts:15
 #: src/views/notification/Notification.vue:39
-#: src/views/site/components/SiteStatusSegmented.vue:96
+#: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:98
+#: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
-#: src/views/stream/StreamList.vue:155
+#: src/views/stream/StreamList.vue:156
 #: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr "حسنًا"
@@ -3190,6 +3204,14 @@ msgstr "كلمة المرور غير صحيحة"
 msgid "Password length cannot exceed 20 characters"
 msgstr "يجب ألا يتجاوز طول كلمة المرور 20 حرفًا"
 
+#: src/views/user/UserProfile.vue:96
+msgid "Password updated successfully"
+msgstr "تم تحديث كلمة المرور بنجاح"
+
+#: src/views/user/UserProfile.vue:75
+msgid "Passwords do not match"
+msgstr "كلمات المرور غير متطابقة"
+
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
 #: src/language/curd.ts:59 src/views/config/ConfigEditor.vue:322
@@ -3228,6 +3250,10 @@ msgstr "تم حفظ إعدادات الأداء بنجاح"
 #: src/language/constants.ts:28
 msgid "Performing core upgrade"
 msgstr "تنفيذ ترقية النواة"
+
+#: src/views/user/UserProfile.vue:121
+msgid "Personal Information"
+msgstr "المعلومات الشخصية"
 
 #: src/constants/errors/self_check.ts:19
 msgid "PID path not exist"
@@ -3347,17 +3373,17 @@ msgstr "الرجاء تحديد ملف النسخ الاحتياطي"
 msgid "Please select at least one item"
 msgstr "الرجاء تحديد عنصر واحد على الأقل"
 
-#: src/views/environments/list/Environment.vue:112
+#: src/views/environments/list/Environment.vue:113
 #: src/views/environments/list/Environment.vue:35
 msgid "Please select at least one node to reload Nginx"
 msgstr "الرجاء تحديد عقدة واحدة على الأقل لإعادة تحميل Nginx"
 
-#: src/views/environments/list/Environment.vue:133
+#: src/views/environments/list/Environment.vue:134
 #: src/views/environments/list/Environment.vue:49
 msgid "Please select at least one node to restart Nginx"
 msgstr "الرجاء تحديد عقدة واحدة على الأقل لإعادة تشغيل Nginx"
 
-#: src/views/environments/list/Environment.vue:91
+#: src/views/environments/list/Environment.vue:92
 msgid "Please select at least one node to upgrade"
 msgstr "يرجى اختيار عقدة واحدة على الأقل للترقية"
 
@@ -3521,8 +3547,8 @@ msgstr "إعادة تحميل"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
 #: src/views/environments/group/columns.ts:22
 #: src/views/environments/group/EnvGroup.vue:50
-#: src/views/environments/list/Environment.vue:120
-#: src/views/environments/list/Environment.vue:128
+#: src/views/environments/list/Environment.vue:121
+#: src/views/environments/list/Environment.vue:129
 msgid "Reload Nginx"
 msgstr "إعادة تحميل Nginx"
 
@@ -3558,12 +3584,12 @@ msgstr "إعادة التحميل"
 msgid "Reloading nginx"
 msgstr "إعادة تحميل nginx"
 
-#: src/views/preference/tabs/AuthSettings.vue:168
+#: src/views/preference/tabs/AuthSettings.vue:137
 msgid "Remove"
 msgstr "إزالة"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:46
-#: src/views/preference/tabs/AuthSettings.vue:50
+#: src/views/preference/tabs/AuthSettings.vue:47
 msgid "Remove successfully"
 msgstr "إزالة بنجاح"
 
@@ -3701,8 +3727,8 @@ msgid "Restart"
 msgstr "إعادة تشغيل"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
-#: src/views/environments/list/Environment.vue:141
-#: src/views/environments/list/Environment.vue:149
+#: src/views/environments/list/Environment.vue:142
+#: src/views/environments/list/Environment.vue:150
 msgid "Restart Nginx"
 msgstr "إعادة تشغيل Nginx"
 
@@ -3782,15 +3808,15 @@ msgstr ""
 "إلغاء الشهادة سيؤثر على أي خدمات تستخدمها حالياً. لا يمكن التراجع عن هذا "
 "الإجراء."
 
-#: src/views/preference/tabs/AuthSettings.vue:106
+#: src/views/preference/tabs/AuthSettings.vue:75
 msgid "RP Display Name"
 msgstr "اسم العرض RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:112
+#: src/views/preference/tabs/AuthSettings.vue:81
 msgid "RP Origins"
 msgstr "أصول RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:100
+#: src/views/preference/tabs/AuthSettings.vue:69
 msgid "RPID"
 msgstr "معرّف الجهاز عن بُعد"
 
@@ -3895,6 +3921,10 @@ msgstr "اسم وحدة البحث"
 msgid "Secret has been copied"
 msgstr "تم نسخ السر"
 
+#: src/views/user/UserProfile.vue:175
+msgid "Security Settings"
+msgstr "إعدادات الأمان"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:207
 #: src/components/SystemRestore/SystemRestoreContent.vue:284
 msgid "Security Token"
@@ -3970,7 +4000,7 @@ msgstr ""
 "قم بتعيين خوادم الأسماء التكرارية لتجاوز خوادم الأسماء الخاصة بالنظام لخطوة "
 "تحدي DNS."
 
-#: src/views/site/components/SiteStatusSegmented.vue:89
+#: src/views/site/components/SiteStatusSelect.vue:116
 msgid "set to maintenance mode"
 msgstr "تم تعيينه في وضع الصيانة"
 
@@ -4207,13 +4237,11 @@ msgstr ""
 "Nginx عبر وكيل عكسي لـ Nginx، يرجى الرجوع إلى هذا الرابط لكتابة ملف التكوين "
 "المقابل: https://nginxui.com/guide/nginx-proxy-example.html"
 
-#: src/language/curd.ts:51
-#: src/language/curd.ts:55
+#: src/language/curd.ts:51 src/language/curd.ts:55
 msgid "Support single or batch upload of files"
 msgstr "يدعم تحميل ملف واحد أو مجموعة من الملفات"
 
-#: src/language/curd.ts:52
-#: src/language/curd.ts:56
+#: src/language/curd.ts:52 src/language/curd.ts:56
 msgid "Support uploading entire folders"
 msgstr "دعم تحميل المجلدات بأكملها"
 
@@ -4552,12 +4580,12 @@ msgstr ""
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "سيتم ترقية أو إعادة تثبيت Nginx UI على %{nodeNames} إلى %{version}."
 
-#: src/views/preference/tabs/AuthSettings.vue:123
+#: src/views/preference/tabs/AuthSettings.vue:92
 msgid "Throttle"
 msgstr "كبح"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:65
-#: src/views/preference/tabs/AuthSettings.vue:143
+#: src/views/preference/tabs/AuthSettings.vue:112
 #: src/views/preference/tabs/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr "نصائح"
@@ -4570,7 +4598,7 @@ msgstr ""
 "نصيحة: يمكنك زيادة سعة معالجة التزامن عن طريق زيادة worker_processes أو "
 "worker_connections"
 
-#: src/views/notification/notificationColumns.tsx:52
+#: src/views/notification/notificationColumns.tsx:58
 msgid "Title"
 msgstr "عنوان"
 
@@ -4688,6 +4716,14 @@ msgstr "نوع"
 msgid "Unknown"
 msgstr "غير معروف"
 
+#: src/views/user/UserProfile.vue:218
+msgid "Update Password"
+msgstr "تحديث كلمة المرور"
+
+#: src/views/user/UserProfile.vue:142
+msgid "Update Profile"
+msgstr "تحديث الملف الشخصي"
+
 #: src/views/preference/components/AuthSettings/Passkey.vue:39
 msgid "Update successfully"
 msgstr "تم التحديث بنجاح"
@@ -4705,8 +4741,8 @@ msgid "Updated at"
 msgstr "محدث في"
 
 #: src/routes/modules/system.ts:33
-#: src/views/environments/list/Environment.vue:107
-#: src/views/environments/list/Environment.vue:99
+#: src/views/environments/list/Environment.vue:100
+#: src/views/environments/list/Environment.vue:108
 #: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "ترقية"
@@ -4732,7 +4768,7 @@ msgstr "تحميل الملفات"
 msgid "Upload Folders"
 msgstr "تحميل المجلدات"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:173
+#: src/components/NgxConfigEditor/NgxUpstream.vue:177
 msgid "Upstream Name"
 msgstr "اسم المنبع"
 
@@ -4764,11 +4800,20 @@ msgstr "مستخدم"
 msgid "User banned"
 msgstr "تم حظر المستخدم"
 
+#: src/views/user/UserProfile.vue:62
+msgid "User info updated successfully"
+msgstr "تم تحديث معلومات المستخدم بنجاح"
+
 #: src/constants/errors/user.ts:8
 msgid "User not enabled otp as 2fa"
 msgstr "المستخدم لم يتم تفعيل OTP كعامل ثنائي"
 
+#: src/routes/modules/user.ts:19
+msgid "User Profile"
+msgstr "ملف المستخدم"
+
 #: src/views/other/Login.vue:173 src/views/user/userColumns.tsx:7
+#: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "اسم المستخدم"
 
@@ -4856,7 +4901,7 @@ msgstr ""
 "سنقوم بإزالة تكوين HTTPChallenge من هذا الملف وإعادة تحميل Nginx. هل أنت "
 "متأكد أنك تريد المتابعة؟"
 
-#: src/views/preference/tabs/AuthSettings.vue:96
+#: src/views/preference/tabs/AuthSettings.vue:65
 msgid "Webauthn"
 msgstr "ويب أوثن"
 
@@ -4934,12 +4979,12 @@ msgstr "كتابة الشهادة إلى القرص"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
-#: src/views/preference/tabs/AuthSettings.vue:162
+#: src/views/preference/tabs/AuthSettings.vue:131
 #: src/views/preference/tabs/CertSettings.vue:72
 msgid "Yes"
 msgstr "نعم"
 
-#: src/views/terminal/Terminal.vue:135
+#: src/views/terminal/Terminal.vue:132
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a "
 "non-localhost domain. This may expose sensitive information."
@@ -5041,9 +5086,6 @@ msgstr "مفاتيح المرور الخاصة بك"
 #~ msgid "Total %{total} item"
 #~ msgid_plural "Total %{total} items"
 #~ msgstr[0] "إجمالي %{total} عنصر"
-
-#~ msgid "Updated successfully"
-#~ msgstr "تم التحديث بنجاح"
 
 #~ msgid "View Details"
 #~ msgstr "عرض التفاصيل"

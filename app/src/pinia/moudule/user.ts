@@ -1,6 +1,8 @@
 import type { CookieChangeOptions } from 'universal-cookie'
+import type { User } from '@/api/user'
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { defineStore } from 'pinia'
+import user from '@/api/user'
 
 export const useUserStore = defineStore('user', () => {
   const cookies = useCookies(['nginx-ui'])
@@ -27,6 +29,7 @@ export const useUserStore = defineStore('user', () => {
   cookies.addChangeListener(handleCookieChange)
 
   const passkeyRawId = ref('')
+  const info = ref<User>({} as User)
 
   const unreadCount = ref(0)
   const isLogin = computed(() => !!token.value)
@@ -46,6 +49,42 @@ export const useUserStore = defineStore('user', () => {
     passkeyRawId.value = ''
     secureSessionId.value = ''
     unreadCount.value = 0
+    info.value = {} as User
+  }
+
+  async function getCurrentUser() {
+    try {
+      const data = await user.getCurrentUser()
+      info.value = data
+      return data
+    }
+    catch (error) {
+      console.error('Failed to get current user:', error)
+      throw error
+    }
+  }
+
+  async function updateCurrentUser(userData: Partial<User>) {
+    try {
+      const response = await user.updateCurrentUser(userData as User)
+      info.value = { ...info.value, ...userData }
+      return response.data
+    }
+    catch (error) {
+      console.error('Failed to update current user:', error)
+      throw error
+    }
+  }
+
+  async function updateCurrentUserPassword(data: { old_password: string, new_password: string }) {
+    try {
+      const response = await user.updateCurrentUserPassword(data)
+      return response.data
+    }
+    catch (error) {
+      console.error('Failed to update password:', error)
+      throw error
+    }
   }
 
   return {
@@ -53,11 +92,15 @@ export const useUserStore = defineStore('user', () => {
     unreadCount,
     secureSessionId,
     passkeyRawId,
+    info,
     isLogin,
     passkeyLoginAvailable,
     passkeyLogin,
     login,
     logout,
+    getCurrentUser,
+    updateCurrentUser,
+    updateCurrentUserPassword,
   }
 }, {
   persist: true,

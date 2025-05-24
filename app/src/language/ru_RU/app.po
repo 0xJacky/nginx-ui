@@ -108,7 +108,7 @@ msgstr "[Nginx UI] Запись сертификата на диск"
 msgid "2FA"
 msgstr "2FA"
 
-#: src/views/preference/tabs/AuthSettings.vue:69
+#: src/views/user/UserProfile.vue:151
 msgid "2FA Settings"
 msgstr "Настройки 2FA"
 
@@ -134,8 +134,7 @@ msgstr "Журналы доступа"
 msgid "ACME User"
 msgstr "Пользователь ACME"
 
-#: src/views/notification/notificationColumns.tsx:66
-#: src/views/preference/tabs/AuthSettings.vue:29
+#: src/views/preference/tabs/AuthSettings.vue:26
 msgid "Action"
 msgstr "Действие"
 
@@ -146,9 +145,9 @@ msgstr "Действие"
 #: src/views/environments/group/columns.ts:41
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:52
+#: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:76
-#: src/views/site/site_list/columns.tsx:129
-#: src/views/stream/columns.tsx:64
+#: src/views/site/site_list/columns.tsx:129 src/views/stream/columns.tsx:64
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "Действия"
@@ -163,10 +162,10 @@ msgid "Actual worker to configured ratio"
 msgstr "Фактическое соотношение рабочих к настроенным"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:112
-#: src/components/NgxConfigEditor/NgxUpstream.vue:155 src/language/curd.ts:19
+#: src/components/NgxConfigEditor/NgxUpstream.vue:159 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:120
+#: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr "Добавить"
 
@@ -193,7 +192,7 @@ msgstr "Добавить Location"
 msgid "Add Site"
 msgstr "Добавить Сайт"
 
-#: src/views/stream/StreamList.vue:173
+#: src/views/stream/StreamList.vue:174
 msgid "Add Stream"
 msgstr "Добавить поток"
 
@@ -251,7 +250,7 @@ msgstr "Приложение"
 msgid "Arch"
 msgstr "\"Архитектура\""
 
-#: src/views/preference/tabs/AuthSettings.vue:161
+#: src/views/preference/tabs/AuthSettings.vue:130
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Вы уверены, что хотите немедленно удалить этот заблокированный IP?"
 
@@ -280,8 +279,8 @@ msgstr "Вы уверены, что хотите очистить сообщен
 msgid "Are you sure you want to delete permanently?"
 msgstr "Вы уверены, что хотите удалить безвозвратно?"
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:99
-#: src/views/stream/StreamList.vue:156
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
+#: src/views/stream/StreamList.vue:157
 msgid "Are you sure you want to delete?"
 msgstr "Вы уверены, что хотите удалить?"
 
@@ -325,7 +324,7 @@ msgstr "Ассистент"
 msgid "Attempt to fix"
 msgstr "Попытка исправить"
 
-#: src/views/preference/tabs/AuthSettings.vue:20
+#: src/views/preference/tabs/AuthSettings.vue:17
 msgid "Attempts"
 msgstr "Попытки"
 
@@ -337,7 +336,7 @@ msgstr "Авторизация"
 msgid "Authenticate with a passkey"
 msgstr "Аутентификация с помощью ключа доступа"
 
-#: src/views/preference/tabs/AuthSettings.vue:87
+#: src/views/preference/tabs/AuthSettings.vue:56
 msgid "Authentication Settings"
 msgstr "Настройки аутентификации"
 
@@ -414,15 +413,15 @@ msgstr "Файл резервной копии не найден: {0}"
 msgid "Backup has been downloaded successfully"
 msgstr "Резервная копия успешно загружена"
 
-#: src/views/preference/tabs/AuthSettings.vue:128
+#: src/views/preference/tabs/AuthSettings.vue:97
 msgid "Ban Threshold Minutes"
 msgstr "Порог блокировки в минутах"
 
-#: src/views/preference/tabs/AuthSettings.vue:149
+#: src/views/preference/tabs/AuthSettings.vue:118
 msgid "Banned IPs"
 msgstr "Заблокированные IP-адреса"
 
-#: src/views/preference/tabs/AuthSettings.vue:23
+#: src/views/preference/tabs/AuthSettings.vue:20
 msgid "Banned Until"
 msgstr "Заблокирован до"
 
@@ -534,7 +533,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:54
 #: src/components/NgxConfigEditor/NgxUpstream.vue:37
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
-#: src/views/site/components/SiteStatusSegmented.vue:97
+#: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
@@ -652,6 +651,10 @@ msgstr "Метод Challenge"
 #: src/views/site/site_edit/components/Cert/ChangeCert.vue:55
 msgid "Change Certificate"
 msgstr "Изменить сертификат"
+
+#: src/views/user/UserProfile.vue:181
+msgid "Change Password"
+msgstr "Изменить пароль"
 
 #: src/views/site/site_edit/components/Cert/Cert.vue:77
 msgid "Changed Certificate"
@@ -821,13 +824,11 @@ msgstr ""
 "Нажмите или перетащите файл резервного копирования в эту область, чтобы "
 "загрузить"
 
-#: src/language/curd.ts:49
-#: src/language/curd.ts:53
+#: src/language/curd.ts:49 src/language/curd.ts:53
 msgid "Click or drag files to this area to upload"
 msgstr "Нажмите или перетащите файлы в эту область для загрузки"
 
-#: src/language/curd.ts:50
-#: src/language/curd.ts:54
+#: src/language/curd.ts:50 src/language/curd.ts:54
 msgid "Click or drag folders to this area to upload"
 msgstr "Нажмите или перетащите папки в эту область для загрузки"
 
@@ -947,6 +948,10 @@ msgstr "Конфигурации"
 msgid "Configure SSL"
 msgstr "Настроить SSL"
 
+#: src/views/user/UserProfile.vue:204
+msgid "Confirm New Password"
+msgstr "Подтвердите новый пароль"
+
 #: src/views/dashboard/Environments.vue:141
 msgid "Connected"
 msgstr "Подключено"
@@ -955,7 +960,7 @@ msgstr "Подключено"
 msgid "Connection error, trying to reconnect..."
 msgstr "Ошибка соединения, попытка переподключения..."
 
-#: src/views/terminal/Terminal.vue:142
+#: src/views/terminal/Terminal.vue:139
 msgid "Connection lost, please refresh the page."
 msgstr "Соединение потеряно, пожалуйста, обновите страницу."
 
@@ -1013,7 +1018,7 @@ msgstr ""
 msgid "CPU:"
 msgstr "CPU:"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:166
+#: src/components/NgxConfigEditor/NgxUpstream.vue:170
 msgid "Create"
 msgstr "Создать"
 
@@ -1043,7 +1048,7 @@ msgstr ""
 "компьютер."
 
 #: src/views/environments/group/columns.ts:29
-#: src/views/notification/notificationColumns.tsx:45
+#: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:71
 #: src/views/user/userColumns.tsx:46
@@ -1081,6 +1086,10 @@ msgstr "Текущие активные подключения"
 #: src/components/ConfigHistory/DiffViewer.vue:72
 msgid "Current Content"
 msgstr "Текущее содержимое"
+
+#: src/views/user/UserProfile.vue:186
+msgid "Current Password"
+msgstr "Текущий пароль"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:65
 msgid "Current usage"
@@ -1121,8 +1130,8 @@ msgstr "Определите имя и размер зоны общей памя
 #: src/components/NgxConfigEditor/NgxServer.vue:78
 #: src/components/NgxConfigEditor/NgxUpstream.vue:129 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
-#: src/views/site/site_list/SiteList.vue:108
-#: src/views/stream/StreamList.vue:165
+#: src/views/site/site_list/SiteList.vue:109
+#: src/views/stream/StreamList.vue:166
 msgid "Delete"
 msgstr "Удалить"
 
@@ -1199,7 +1208,7 @@ msgstr "Файл назначения уже существует"
 msgid "Destination file: {0} already exists"
 msgstr "Файл назначения: {0} уже существует"
 
-#: src/views/notification/notificationColumns.tsx:60
+#: src/views/notification/notificationColumns.tsx:66
 msgid "Details"
 msgstr "Детали"
 
@@ -1243,11 +1252,11 @@ msgstr "Уровни каталога"
 msgid "Directory path to store cache files"
 msgstr "Путь к каталогу для хранения кэшированных файлов"
 
-#: src/views/site/components/SiteStatusSegmented.vue:88
+#: src/views/site/components/SiteStatusSelect.vue:115
 msgid "disable"
 msgstr "Отключить"
 
-#: src/views/stream/StreamList.vue:136
+#: src/views/stream/StreamList.vue:137
 msgid "Disable"
 msgstr "Отключить"
 
@@ -1308,7 +1317,7 @@ msgstr "Поток %{name} отключен от %{node} успешно"
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
-#: src/views/site/components/SiteStatusSegmented.vue:134
+#: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/site/site_list/columns.tsx:114 src/views/stream/columns.tsx:48
 #: src/views/stream/components/StreamEditor.vue:30
@@ -1316,7 +1325,7 @@ msgstr "Поток %{name} отключен от %{node} успешно"
 msgid "Disabled"
 msgstr "Отключено"
 
-#: src/views/site/components/SiteStatusSegmented.vue:40
+#: src/views/site/components/SiteStatusSelect.vue:67
 #: src/views/stream/components/RightPanel/Basic.vue:34
 #: src/views/stream/StreamList.vue:56
 msgid "Disabled successfully"
@@ -1344,7 +1353,7 @@ msgstr "DNS01"
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr "Не включайте эту опцию, если не уверены, что она вам нужна."
 
-#: src/views/site/components/SiteStatusSegmented.vue:93
+#: src/views/site/components/SiteStatusSelect.vue:120
 msgid "Do you want to %{action} this site?"
 msgstr "Вы хотите %{action} этот сайт?"
 
@@ -1422,9 +1431,9 @@ msgstr ""
 "запускаются на localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:94
+#: src/views/site/site_list/SiteList.vue:95
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:151
+#: src/views/stream/StreamList.vue:152
 msgid "Duplicate"
 msgstr "Дублировать"
 
@@ -1468,11 +1477,11 @@ msgstr "Электронная почта"
 msgid "Email (*)"
 msgstr "Email (*)"
 
-#: src/views/site/components/SiteStatusSegmented.vue:87
+#: src/views/site/components/SiteStatusSelect.vue:114
 msgid "enable"
 msgstr "включить"
 
-#: src/views/stream/StreamList.vue:144
+#: src/views/stream/StreamList.vue:145
 msgid "Enable"
 msgstr "Включить"
 
@@ -1570,7 +1579,7 @@ msgstr "Включить TOTP"
 #: src/views/preference/tabs/LogrotateSettings.vue:20
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
-#: src/views/site/components/SiteStatusSegmented.vue:130
+#: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
 #: src/views/site/site_list/columns.tsx:110 src/views/stream/columns.tsx:44
 #: src/views/stream/components/RightPanel/Basic.vue:62
@@ -1579,7 +1588,7 @@ msgstr "Включить TOTP"
 msgid "Enabled"
 msgstr "Включено"
 
-#: src/views/site/components/SiteStatusSegmented.vue:27
+#: src/views/site/components/SiteStatusSelect.vue:54
 #: src/views/site/site_add/SiteAdd.vue:32
 #: src/views/stream/components/RightPanel/Basic.vue:25
 #: src/views/stream/StreamList.vue:46
@@ -1788,23 +1797,23 @@ msgstr "Не удалось удалить сертификат"
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Не удалось удалить сертификат из базы данных: %{error}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:46
+#: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/RightPanel/Basic.vue:37
 #: src/views/stream/StreamList.vue:60
 msgid "Failed to disable %{msg}"
 msgstr "Не удалось отключить %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:72
+#: src/views/site/components/SiteStatusSelect.vue:99
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr "Не удалось отключить режим обслуживания: %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:33
+#: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/RightPanel/Basic.vue:28
 #: src/views/stream/StreamList.vue:50
 msgid "Failed to enable %{msg}"
 msgstr "Не удалось включить %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:59
+#: src/views/site/components/SiteStatusSelect.vue:86
 msgid "Failed to enable maintenance mode %{msg}"
 msgstr "Не удалось включить режим обслуживания: %{msg}"
 
@@ -2117,7 +2126,7 @@ msgstr "ICP номер"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "Если оставить пустым, будет использоваться каталог CA по умолчанию."
 
-#: src/views/preference/tabs/AuthSettings.vue:144
+#: src/views/preference/tabs/AuthSettings.vue:113
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -2285,7 +2294,7 @@ msgstr "Неверный формат запроса"
 msgid "Invalid security token format"
 msgstr "Неверный формат токена безопасности"
 
-#: src/views/preference/tabs/AuthSettings.vue:17
+#: src/views/preference/tabs/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
 
@@ -2400,7 +2409,7 @@ msgstr "Список"
 msgid "Load Average:"
 msgstr "Средняя нагрузка:"
 
-#: src/views/environments/list/Environment.vue:80
+#: src/views/environments/list/Environment.vue:81
 msgid "Load from settings"
 msgstr "Загрузить из настроек"
 
@@ -2498,17 +2507,17 @@ msgstr ""
 "можете вручную включить эту опцию. Планировщик задач crontab Nginx UI будет "
 "выполнять команду logrotate с интервалом, который вы установите в минутах."
 
-#: src/views/site/components/SiteStatusSegmented.vue:138
+#: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
 #: src/views/site/site_list/columns.tsx:118
 msgid "Maintenance"
 msgstr "Техническое обслуживание"
 
-#: src/views/site/components/SiteStatusSegmented.vue:66
+#: src/views/site/components/SiteStatusSelect.vue:93
 msgid "Maintenance mode disabled successfully"
 msgstr "Режим обслуживания успешно отключен"
 
-#: src/views/site/components/SiteStatusSegmented.vue:53
+#: src/views/site/components/SiteStatusSelect.vue:80
 msgid "Maintenance mode enabled successfully"
 msgstr "Режим обслуживания успешно включен"
 
@@ -2575,7 +2584,7 @@ msgstr "Главный процесс"
 msgid "Master Process"
 msgstr "Главный процесс"
 
-#: src/views/preference/tabs/AuthSettings.vue:134
+#: src/views/preference/tabs/AuthSettings.vue:103
 msgid "Max Attempts"
 msgstr "Максимальное количество попыток"
 
@@ -2674,7 +2683,7 @@ msgstr "Модули"
 msgid "Multi-line Directive"
 msgstr "Многострочная директива"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:178
+#: src/components/NgxConfigEditor/NgxUpstream.vue:182
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:9
@@ -2691,7 +2700,7 @@ msgstr "Многострочная директива"
 #: src/views/stream/columns.tsx:10
 #: src/views/stream/components/RightPanel/Basic.vue:69
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:178
+#: src/views/stream/StreamList.vue:179
 msgid "Name"
 msgstr "Имя"
 
@@ -2722,6 +2731,10 @@ msgstr "Новая установка"
 #: src/views/config/components/Rename.vue:74
 msgid "New name"
 msgstr "Новое имя"
+
+#: src/views/user/UserProfile.vue:195
+msgid "New Password"
+msgstr "Новый пароль"
 
 #: src/views/config/ConfigEditor.vue:328
 msgid "New Path"
@@ -2938,9 +2951,9 @@ msgstr "Nginx.conf включает каталог streams-enabled"
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:38
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/tabs/AuthSettings.vue:163
+#: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:97 src/views/stream/StreamList.vue:154
+#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:155
 msgid "No"
 msgstr "Нет"
 
@@ -3075,6 +3088,7 @@ msgid "Off"
 msgstr "Выкл"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
+#: src/components/NgxConfigEditor/NgxUpstream.vue:145
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:55
@@ -3086,13 +3100,13 @@ msgstr "Оффлайн"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:36
 #: src/components/Notification/Notification.vue:110 src/language/curd.ts:15
 #: src/views/notification/Notification.vue:39
-#: src/views/site/components/SiteStatusSegmented.vue:96
+#: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:98
+#: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
-#: src/views/stream/StreamList.vue:155
+#: src/views/stream/StreamList.vue:156
 #: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr "ОК"
@@ -3212,6 +3226,14 @@ msgstr "Неверный пароль"
 msgid "Password length cannot exceed 20 characters"
 msgstr "Длина пароля не может превышать 20 символов"
 
+#: src/views/user/UserProfile.vue:96
+msgid "Password updated successfully"
+msgstr "Пароль успешно обновлен"
+
+#: src/views/user/UserProfile.vue:75
+msgid "Passwords do not match"
+msgstr "Пароли не совпадают"
+
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
 #: src/language/curd.ts:59 src/views/config/ConfigEditor.vue:322
@@ -3250,6 +3272,10 @@ msgstr "Настройки производительности успешно �
 #: src/language/constants.ts:28
 msgid "Performing core upgrade"
 msgstr "Выполнение обновления ядра"
+
+#: src/views/user/UserProfile.vue:121
+msgid "Personal Information"
+msgstr "Личная информация"
 
 #: src/constants/errors/self_check.ts:19
 msgid "PID path not exist"
@@ -3386,17 +3412,17 @@ msgstr "Пожалуйста, выберите файл резервной ко�
 msgid "Please select at least one item"
 msgstr "Пожалуйста, выберите хотя бы один элемент"
 
-#: src/views/environments/list/Environment.vue:112
+#: src/views/environments/list/Environment.vue:113
 #: src/views/environments/list/Environment.vue:35
 msgid "Please select at least one node to reload Nginx"
 msgstr "Пожалуйста, выберите хотя бы один узел для перезагрузки Nginx"
 
-#: src/views/environments/list/Environment.vue:133
+#: src/views/environments/list/Environment.vue:134
 #: src/views/environments/list/Environment.vue:49
 msgid "Please select at least one node to restart Nginx"
 msgstr "Пожалуйста, выберите хотя бы один узел для перезапуска Nginx"
 
-#: src/views/environments/list/Environment.vue:91
+#: src/views/environments/list/Environment.vue:92
 msgid "Please select at least one node to upgrade"
 msgstr "Пожалуйста, выберите хотя бы один узел"
 
@@ -3562,8 +3588,8 @@ msgstr "Перегрузить"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
 #: src/views/environments/group/columns.ts:22
 #: src/views/environments/group/EnvGroup.vue:50
-#: src/views/environments/list/Environment.vue:120
-#: src/views/environments/list/Environment.vue:128
+#: src/views/environments/list/Environment.vue:121
+#: src/views/environments/list/Environment.vue:129
 msgid "Reload Nginx"
 msgstr "Перезагрузить Nginx"
 
@@ -3599,12 +3625,12 @@ msgstr "Перезагружается"
 msgid "Reloading nginx"
 msgstr "Перезагружается nginx"
 
-#: src/views/preference/tabs/AuthSettings.vue:168
+#: src/views/preference/tabs/AuthSettings.vue:137
 msgid "Remove"
 msgstr "Удалить"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:46
-#: src/views/preference/tabs/AuthSettings.vue:50
+#: src/views/preference/tabs/AuthSettings.vue:47
 msgid "Remove successfully"
 msgstr "Удалено успешно"
 
@@ -3743,8 +3769,8 @@ msgid "Restart"
 msgstr "Перезапуск"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
-#: src/views/environments/list/Environment.vue:141
-#: src/views/environments/list/Environment.vue:149
+#: src/views/environments/list/Environment.vue:142
+#: src/views/environments/list/Environment.vue:150
 msgid "Restart Nginx"
 msgstr "Перезапустить Nginx"
 
@@ -3824,15 +3850,15 @@ msgstr ""
 "Отзыв сертификата затронет все службы, которые его используют в данный "
 "момент. Это действие нельзя отменить."
 
-#: src/views/preference/tabs/AuthSettings.vue:106
+#: src/views/preference/tabs/AuthSettings.vue:75
 msgid "RP Display Name"
 msgstr "Отображаемое имя RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:112
+#: src/views/preference/tabs/AuthSettings.vue:81
 msgid "RP Origins"
 msgstr "Истоки RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:100
+#: src/views/preference/tabs/AuthSettings.vue:69
 msgid "RPID"
 msgstr "RPID"
 
@@ -3939,6 +3965,10 @@ msgstr "Название модуля поиска"
 msgid "Secret has been copied"
 msgstr "Секрет скопирован"
 
+#: src/views/user/UserProfile.vue:175
+msgid "Security Settings"
+msgstr "Настройки безопасности"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:207
 #: src/components/SystemRestore/SystemRestoreContent.vue:284
 msgid "Security Token"
@@ -4014,7 +4044,7 @@ msgstr ""
 "Установите рекурсивные серверы имен, чтобы переопределить системные серверы "
 "имен для шага проверки DNS."
 
-#: src/views/site/components/SiteStatusSegmented.vue:89
+#: src/views/site/components/SiteStatusSelect.vue:116
 msgid "set to maintenance mode"
 msgstr "перевести в режим обслуживания"
 
@@ -4253,13 +4283,11 @@ msgstr ""
 "написать соответствующий конфигурационный файл: "
 "https://nginxui.com/guide/nginx-proxy-example.html"
 
-#: src/language/curd.ts:51
-#: src/language/curd.ts:55
+#: src/language/curd.ts:51 src/language/curd.ts:55
 msgid "Support single or batch upload of files"
 msgstr "Поддержка одиночной или пакетной загрузки файлов"
 
-#: src/language/curd.ts:52
-#: src/language/curd.ts:56
+#: src/language/curd.ts:52 src/language/curd.ts:56
 msgid "Support uploading entire folders"
 msgstr "Поддержка загрузки целых папок"
 
@@ -4603,12 +4631,12 @@ msgstr ""
 "Это обновит или переустановит интерфейс Nginx на %{nodeNames} до версии "
 "%{version}."
 
-#: src/views/preference/tabs/AuthSettings.vue:123
+#: src/views/preference/tabs/AuthSettings.vue:92
 msgid "Throttle"
 msgstr "Ограничение"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:65
-#: src/views/preference/tabs/AuthSettings.vue:143
+#: src/views/preference/tabs/AuthSettings.vue:112
 #: src/views/preference/tabs/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr "Советы"
@@ -4621,7 +4649,7 @@ msgstr ""
 "Совет: Вы можете увеличить пропускную способность обработки параллельных "
 "запросов, увеличив worker_processes или worker_connections."
 
-#: src/views/notification/notificationColumns.tsx:52
+#: src/views/notification/notificationColumns.tsx:58
 msgid "Title"
 msgstr "Заголовок"
 
@@ -4741,6 +4769,14 @@ msgstr "Тип"
 msgid "Unknown"
 msgstr "Неизвестно"
 
+#: src/views/user/UserProfile.vue:218
+msgid "Update Password"
+msgstr "Обновить пароль"
+
+#: src/views/user/UserProfile.vue:142
+msgid "Update Profile"
+msgstr "Обновить профиль"
+
 #: src/views/preference/components/AuthSettings/Passkey.vue:39
 msgid "Update successfully"
 msgstr "Успешно обновлено"
@@ -4758,8 +4794,8 @@ msgid "Updated at"
 msgstr "Обновлено в"
 
 #: src/routes/modules/system.ts:33
-#: src/views/environments/list/Environment.vue:107
-#: src/views/environments/list/Environment.vue:99
+#: src/views/environments/list/Environment.vue:100
+#: src/views/environments/list/Environment.vue:108
 #: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "Обновление"
@@ -4785,7 +4821,7 @@ msgstr "Загрузить файлы"
 msgid "Upload Folders"
 msgstr "Загрузить папки"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:173
+#: src/components/NgxConfigEditor/NgxUpstream.vue:177
 msgid "Upstream Name"
 msgstr "Имя Upstream"
 
@@ -4817,11 +4853,20 @@ msgstr "Пользователь"
 msgid "User banned"
 msgstr "Пользователь заблокирован"
 
+#: src/views/user/UserProfile.vue:62
+msgid "User info updated successfully"
+msgstr "Информация о пользователе успешно обновлена"
+
 #: src/constants/errors/user.ts:8
 msgid "User not enabled otp as 2fa"
 msgstr "Пользователь не включил OTP в качестве 2FA"
 
+#: src/routes/modules/user.ts:19
+msgid "User Profile"
+msgstr "Профиль пользователя"
+
 #: src/views/other/Login.vue:173 src/views/user/userColumns.tsx:7
+#: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "Имя пользователя"
 
@@ -4912,7 +4957,7 @@ msgstr ""
 "Мы удалим конфигурацию HTTPChallenge из этого файла и перезагрузим Nginx. "
 "Вы уверены, что хотите продолжить?"
 
-#: src/views/preference/tabs/AuthSettings.vue:96
+#: src/views/preference/tabs/AuthSettings.vue:65
 msgid "Webauthn"
 msgstr "WebAuthn"
 
@@ -4992,12 +5037,12 @@ msgstr "Запись сертификата на диск"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
-#: src/views/preference/tabs/AuthSettings.vue:162
+#: src/views/preference/tabs/AuthSettings.vue:131
 #: src/views/preference/tabs/CertSettings.vue:72
 msgid "Yes"
 msgstr "Да"
 
-#: src/views/terminal/Terminal.vue:135
+#: src/views/terminal/Terminal.vue:132
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a "
 "non-localhost domain. This may expose sensitive information."
@@ -5092,9 +5137,6 @@ msgstr "Ваши ключи доступа"
 #~ msgid "Total %{total} item"
 #~ msgid_plural "Total %{total} items"
 #~ msgstr[0] "Всего %{total} элемент"
-
-#~ msgid "Updated successfully"
-#~ msgstr "Успешно обновлено"
 
 #~ msgid "View Details"
 #~ msgstr "Подробно"

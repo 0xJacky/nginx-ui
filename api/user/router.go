@@ -42,4 +42,8 @@ func InitUserRouter(r *gin.RouterGroup) {
 		o.GET("/recovery_codes", ViewRecoveryCodes)
 		o.GET("/recovery_codes_generate", GenerateRecoveryCodes)
 	}
+
+	r.GET("/user", GetCurrentUser)
+	r.POST("/user", middleware.RequireSecureSession(), UpdateCurrentUser)
+	r.POST("/user/password", middleware.RequireSecureSession(), UpdateCurrentUserPassword)
 }

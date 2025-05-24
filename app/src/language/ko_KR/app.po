@@ -102,7 +102,7 @@ msgstr "[Nginx UI] 인증서를 디스크에 작성 중"
 msgid "2FA"
 msgstr "2FA"
 
-#: src/views/preference/tabs/AuthSettings.vue:69
+#: src/views/user/UserProfile.vue:151
 msgid "2FA Settings"
 msgstr "2FA 설정"
 
@@ -128,8 +128,7 @@ msgstr "접근 로그"
 msgid "ACME User"
 msgstr "ACME 사용자"
 
-#: src/views/notification/notificationColumns.tsx:66
-#: src/views/preference/tabs/AuthSettings.vue:29
+#: src/views/preference/tabs/AuthSettings.vue:26
 msgid "Action"
 msgstr "작업"
 
@@ -140,9 +139,9 @@ msgstr "작업"
 #: src/views/environments/group/columns.ts:41
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:52
+#: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:76
-#: src/views/site/site_list/columns.tsx:129
-#: src/views/stream/columns.tsx:64
+#: src/views/site/site_list/columns.tsx:129 src/views/stream/columns.tsx:64
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "작업"
@@ -157,10 +156,10 @@ msgid "Actual worker to configured ratio"
 msgstr "실제 작업자 대 구성 비율"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:112
-#: src/components/NgxConfigEditor/NgxUpstream.vue:155 src/language/curd.ts:19
+#: src/components/NgxConfigEditor/NgxUpstream.vue:159 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:120
+#: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr "추가"
 
@@ -187,7 +186,7 @@ msgstr "위치 추가"
 msgid "Add Site"
 msgstr "사이트 추가"
 
-#: src/views/stream/StreamList.vue:173
+#: src/views/stream/StreamList.vue:174
 msgid "Add Stream"
 msgstr "스트림 추가"
 
@@ -245,7 +244,7 @@ msgstr "앱"
 msgid "Arch"
 msgstr "\"아키텍처\""
 
-#: src/views/preference/tabs/AuthSettings.vue:161
+#: src/views/preference/tabs/AuthSettings.vue:130
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "차단된 IP를 즉시 삭제하시겠습니까?"
 
@@ -274,8 +273,8 @@ msgstr "채팅 기록을 지우시겠습니까?"
 msgid "Are you sure you want to delete permanently?"
 msgstr "정말 영구적으로 삭제하시겠습니까?"
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:99
-#: src/views/stream/StreamList.vue:156
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
+#: src/views/stream/StreamList.vue:157
 msgid "Are you sure you want to delete?"
 msgstr "정말 삭제하시겠습니까?"
 
@@ -315,7 +314,7 @@ msgstr "어시스턴트"
 msgid "Attempt to fix"
 msgstr "수정 시도"
 
-#: src/views/preference/tabs/AuthSettings.vue:20
+#: src/views/preference/tabs/AuthSettings.vue:17
 msgid "Attempts"
 msgstr "시도 횟수"
 
@@ -327,7 +326,7 @@ msgstr "인증"
 msgid "Authenticate with a passkey"
 msgstr "패스키로 인증"
 
-#: src/views/preference/tabs/AuthSettings.vue:87
+#: src/views/preference/tabs/AuthSettings.vue:56
 msgid "Authentication Settings"
 msgstr "인증 설정"
 
@@ -402,15 +401,15 @@ msgstr "백업 파일을 찾을 수 없음: {0}"
 msgid "Backup has been downloaded successfully"
 msgstr "백업이 성공적으로 다운로드되었습니다"
 
-#: src/views/preference/tabs/AuthSettings.vue:128
+#: src/views/preference/tabs/AuthSettings.vue:97
 msgid "Ban Threshold Minutes"
 msgstr "차단 시간(분)"
 
-#: src/views/preference/tabs/AuthSettings.vue:149
+#: src/views/preference/tabs/AuthSettings.vue:118
 msgid "Banned IPs"
 msgstr "차단된 IP"
 
-#: src/views/preference/tabs/AuthSettings.vue:23
+#: src/views/preference/tabs/AuthSettings.vue:20
 msgid "Banned Until"
 msgstr "차단될 시간"
 
@@ -520,7 +519,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:54
 #: src/components/NgxConfigEditor/NgxUpstream.vue:37
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
-#: src/views/site/components/SiteStatusSegmented.vue:97
+#: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
@@ -638,6 +637,10 @@ msgstr "인증 방법"
 #: src/views/site/site_edit/components/Cert/ChangeCert.vue:55
 msgid "Change Certificate"
 msgstr "인증서 변경"
+
+#: src/views/user/UserProfile.vue:181
+msgid "Change Password"
+msgstr "비밀번호 변경"
 
 #: src/views/site/site_edit/components/Cert/Cert.vue:77
 msgid "Changed Certificate"
@@ -790,13 +793,11 @@ msgstr "성공적으로 제거됨"
 msgid "Click or drag backup file to this area to upload"
 msgstr "이 영역으로 백업 파일을 클릭하거나 드래그하여 업로드하십시오."
 
-#: src/language/curd.ts:49
-#: src/language/curd.ts:53
+#: src/language/curd.ts:49 src/language/curd.ts:53
 msgid "Click or drag files to this area to upload"
 msgstr "파일을 클릭하거나 이 영역으로 드래그하여 업로드하세요"
 
-#: src/language/curd.ts:50
-#: src/language/curd.ts:54
+#: src/language/curd.ts:50 src/language/curd.ts:54
 msgid "Click or drag folders to this area to upload"
 msgstr "폴더를 클릭하거나 이 영역으로 드래그하여 업로드"
 
@@ -916,6 +917,10 @@ msgstr "구성들"
 msgid "Configure SSL"
 msgstr "SSL 구성하기"
 
+#: src/views/user/UserProfile.vue:204
+msgid "Confirm New Password"
+msgstr "새 비밀번호 확인"
+
 #: src/views/dashboard/Environments.vue:141
 msgid "Connected"
 msgstr "연결됨"
@@ -924,7 +929,7 @@ msgstr "연결됨"
 msgid "Connection error, trying to reconnect..."
 msgstr "연결 오류, 다시 연결 시도 중..."
 
-#: src/views/terminal/Terminal.vue:142
+#: src/views/terminal/Terminal.vue:139
 msgid "Connection lost, please refresh the page."
 msgstr "연결이 끊어졌습니다. 페이지를 새로 고침하세요."
 
@@ -980,7 +985,7 @@ msgstr "CPU 사용률이 비교적 높으므로 Nginx 설정 최적화를 고려
 msgid "CPU:"
 msgstr "CPU:"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:166
+#: src/components/NgxConfigEditor/NgxUpstream.vue:170
 msgid "Create"
 msgstr "생성"
 
@@ -1007,7 +1012,7 @@ msgid ""
 msgstr "Nginx 구성 및 Nginx UI 설정을 포함한 시스템 백업을 생성합니다. 백업 파일은 자동으로 컴퓨터에 다운로드됩니다."
 
 #: src/views/environments/group/columns.ts:29
-#: src/views/notification/notificationColumns.tsx:45
+#: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:71
 #: src/views/user/userColumns.tsx:46
@@ -1045,6 +1050,10 @@ msgstr "현재 활성 연결"
 #: src/components/ConfigHistory/DiffViewer.vue:72
 msgid "Current Content"
 msgstr "현재 내용"
+
+#: src/views/user/UserProfile.vue:186
+msgid "Current Password"
+msgstr "현재 비밀번호"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:65
 msgid "Current usage"
@@ -1085,8 +1094,8 @@ msgstr "공유 메모리 영역 이름과 크기를 정의합니다(예: proxy_c
 #: src/components/NgxConfigEditor/NgxServer.vue:78
 #: src/components/NgxConfigEditor/NgxUpstream.vue:129 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
-#: src/views/site/site_list/SiteList.vue:108
-#: src/views/stream/StreamList.vue:165
+#: src/views/site/site_list/SiteList.vue:109
+#: src/views/stream/StreamList.vue:166
 msgid "Delete"
 msgstr "삭제"
 
@@ -1163,7 +1172,7 @@ msgstr "대상 파일이 이미 존재합니다"
 msgid "Destination file: {0} already exists"
 msgstr "대상 파일: {0} 이미 존재합니다"
 
-#: src/views/notification/notificationColumns.tsx:60
+#: src/views/notification/notificationColumns.tsx:66
 msgid "Details"
 msgstr "세부 사항"
 
@@ -1207,11 +1216,11 @@ msgstr "디렉토리 레벨"
 msgid "Directory path to store cache files"
 msgstr "캐시 파일을 저장할 디렉터리 경로"
 
-#: src/views/site/components/SiteStatusSegmented.vue:88
+#: src/views/site/components/SiteStatusSelect.vue:115
 msgid "disable"
 msgstr "비활성화"
 
-#: src/views/stream/StreamList.vue:136
+#: src/views/stream/StreamList.vue:137
 msgid "Disable"
 msgstr "비활성화"
 
@@ -1272,7 +1281,7 @@ msgstr "스트림 %{name}을(를) %{node}에서 비활성화했습니다"
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
-#: src/views/site/components/SiteStatusSegmented.vue:134
+#: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/site/site_list/columns.tsx:114 src/views/stream/columns.tsx:48
 #: src/views/stream/components/StreamEditor.vue:30
@@ -1280,7 +1289,7 @@ msgstr "스트림 %{name}을(를) %{node}에서 비활성화했습니다"
 msgid "Disabled"
 msgstr "비활성화됨"
 
-#: src/views/site/components/SiteStatusSegmented.vue:40
+#: src/views/site/components/SiteStatusSelect.vue:67
 #: src/views/stream/components/RightPanel/Basic.vue:34
 #: src/views/stream/StreamList.vue:56
 msgid "Disabled successfully"
@@ -1308,7 +1317,7 @@ msgstr "DNS01"
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr "이 옵션은 필요한 경우가 아니라면 활성화하지 마세요."
 
-#: src/views/site/components/SiteStatusSegmented.vue:93
+#: src/views/site/components/SiteStatusSelect.vue:120
 msgid "Do you want to %{action} this site?"
 msgstr "이 사이트를 %{action}하시겠습니까?"
 
@@ -1385,9 +1394,9 @@ msgstr ""
 "없습니다."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:94
+#: src/views/site/site_list/SiteList.vue:95
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:151
+#: src/views/stream/StreamList.vue:152
 msgid "Duplicate"
 msgstr "복제"
 
@@ -1431,11 +1440,11 @@ msgstr "이메일"
 msgid "Email (*)"
 msgstr "이메일 (*)"
 
-#: src/views/site/components/SiteStatusSegmented.vue:87
+#: src/views/site/components/SiteStatusSelect.vue:114
 msgid "enable"
 msgstr "활성화"
 
-#: src/views/stream/StreamList.vue:144
+#: src/views/stream/StreamList.vue:145
 msgid "Enable"
 msgstr "활성화"
 
@@ -1533,7 +1542,7 @@ msgstr "TOTP 활성화"
 #: src/views/preference/tabs/LogrotateSettings.vue:20
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
-#: src/views/site/components/SiteStatusSegmented.vue:130
+#: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
 #: src/views/site/site_list/columns.tsx:110 src/views/stream/columns.tsx:44
 #: src/views/stream/components/RightPanel/Basic.vue:62
@@ -1542,7 +1551,7 @@ msgstr "TOTP 활성화"
 msgid "Enabled"
 msgstr "활성화됨"
 
-#: src/views/site/components/SiteStatusSegmented.vue:27
+#: src/views/site/components/SiteStatusSelect.vue:54
 #: src/views/site/site_add/SiteAdd.vue:32
 #: src/views/stream/components/RightPanel/Basic.vue:25
 #: src/views/stream/StreamList.vue:46
@@ -1751,23 +1760,23 @@ msgstr "인증서 삭제 실패"
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "데이터베이스에서 인증서 삭제 실패: %{error}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:46
+#: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/RightPanel/Basic.vue:37
 #: src/views/stream/StreamList.vue:60
 msgid "Failed to disable %{msg}"
 msgstr "%{msg} 비활성화 실패"
 
-#: src/views/site/components/SiteStatusSegmented.vue:72
+#: src/views/site/components/SiteStatusSelect.vue:99
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr "점검 모드 비활성화 실패: %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:33
+#: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/RightPanel/Basic.vue:28
 #: src/views/stream/StreamList.vue:50
 msgid "Failed to enable %{msg}"
 msgstr "%{msg} 활성화 실패"
 
-#: src/views/site/components/SiteStatusSegmented.vue:59
+#: src/views/site/components/SiteStatusSelect.vue:86
 msgid "Failed to enable maintenance mode %{msg}"
 msgstr "유지 보수 모드 활성화 실패: %{msg}"
 
@@ -2078,7 +2087,7 @@ msgstr "ICP 번호"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "비워 둘 경우 기본 CA 디렉터리가 사용됩니다."
 
-#: src/views/preference/tabs/AuthSettings.vue:144
+#: src/views/preference/tabs/AuthSettings.vue:113
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -2237,7 +2246,7 @@ msgstr "잘못된 요청 형식"
 msgid "Invalid security token format"
 msgstr "잘못된 보안 토큰 형식"
 
-#: src/views/preference/tabs/AuthSettings.vue:17
+#: src/views/preference/tabs/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
 
@@ -2350,7 +2359,7 @@ msgstr "목록"
 msgid "Load Average:"
 msgstr "평균 부하:"
 
-#: src/views/environments/list/Environment.vue:80
+#: src/views/environments/list/Environment.vue:81
 msgid "Load from settings"
 msgstr "설정에서 불러오기"
 
@@ -2443,17 +2452,17 @@ msgstr ""
 "페이지의 매개 변수를 수정할 필요가 없습니다. 도커 컨테이너를 사용하여 Nginx UI를 설치하는사용자는이 옵션을 수동으로 활성화할 수 "
 "있습니다. Nginx UI의 크론탭 작업 스케줄러는설정한 간격 (분 단위)에서 logrotate 명령을 실행합니다."
 
-#: src/views/site/components/SiteStatusSegmented.vue:138
+#: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
 #: src/views/site/site_list/columns.tsx:118
 msgid "Maintenance"
 msgstr "유지보수"
 
-#: src/views/site/components/SiteStatusSegmented.vue:66
+#: src/views/site/components/SiteStatusSelect.vue:93
 msgid "Maintenance mode disabled successfully"
 msgstr "유지 관리 모드가 비활성화되었습니다"
 
-#: src/views/site/components/SiteStatusSegmented.vue:53
+#: src/views/site/components/SiteStatusSelect.vue:80
 msgid "Maintenance mode enabled successfully"
 msgstr "유지 보수 모드가 성공적으로 활성화되었습니다"
 
@@ -2518,7 +2527,7 @@ msgstr "마스터 프로세스"
 msgid "Master Process"
 msgstr "마스터 프로세스"
 
-#: src/views/preference/tabs/AuthSettings.vue:134
+#: src/views/preference/tabs/AuthSettings.vue:103
 msgid "Max Attempts"
 msgstr "최대 시도 횟수"
 
@@ -2617,7 +2626,7 @@ msgstr "모듈"
 msgid "Multi-line Directive"
 msgstr "여러 줄 지시문"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:178
+#: src/components/NgxConfigEditor/NgxUpstream.vue:182
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:9
@@ -2634,7 +2643,7 @@ msgstr "여러 줄 지시문"
 #: src/views/stream/columns.tsx:10
 #: src/views/stream/components/RightPanel/Basic.vue:69
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:178
+#: src/views/stream/StreamList.vue:179
 msgid "Name"
 msgstr "이름"
 
@@ -2665,6 +2674,10 @@ msgstr "새 설치"
 #: src/views/config/components/Rename.vue:74
 msgid "New name"
 msgstr "새 이름"
+
+#: src/views/user/UserProfile.vue:195
+msgid "New Password"
+msgstr "새 비밀번호"
 
 #: src/views/config/ConfigEditor.vue:328
 msgid "New Path"
@@ -2879,9 +2892,9 @@ msgstr "Nginx.conf에는 streams-enabled 디렉토리가 포함됩니다"
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:38
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/tabs/AuthSettings.vue:163
+#: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:97 src/views/stream/StreamList.vue:154
+#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:155
 msgid "No"
 msgstr "아니요"
 
@@ -3010,6 +3023,7 @@ msgid "Off"
 msgstr "끔"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
+#: src/components/NgxConfigEditor/NgxUpstream.vue:145
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:55
@@ -3021,13 +3035,13 @@ msgstr "오프라인"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:36
 #: src/components/Notification/Notification.vue:110 src/language/curd.ts:15
 #: src/views/notification/Notification.vue:39
-#: src/views/site/components/SiteStatusSegmented.vue:96
+#: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:98
+#: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
-#: src/views/stream/StreamList.vue:155
+#: src/views/stream/StreamList.vue:156
 #: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr "확인"
@@ -3145,6 +3159,14 @@ msgstr "잘못된 비밀번호"
 msgid "Password length cannot exceed 20 characters"
 msgstr "비밀번호 길이는 20자를 초과할 수 없습니다"
 
+#: src/views/user/UserProfile.vue:96
+msgid "Password updated successfully"
+msgstr "비밀번호가 성공적으로 업데이트되었습니다"
+
+#: src/views/user/UserProfile.vue:75
+msgid "Passwords do not match"
+msgstr "비밀번호가 일치하지 않습니다"
+
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
 #: src/language/curd.ts:59 src/views/config/ConfigEditor.vue:322
@@ -3183,6 +3205,10 @@ msgstr "성능 설정이 성공적으로 저장되었습니다"
 #: src/language/constants.ts:28
 msgid "Performing core upgrade"
 msgstr "핵심 업그레이드 수행 중"
+
+#: src/views/user/UserProfile.vue:121
+msgid "Personal Information"
+msgstr "개인 정보"
 
 #: src/constants/errors/self_check.ts:19
 msgid "PID path not exist"
@@ -3298,17 +3324,17 @@ msgstr "백업 파일을 선택해 주세요"
 msgid "Please select at least one item"
 msgstr "최소한 하나의 항목을 선택해 주세요"
 
-#: src/views/environments/list/Environment.vue:112
+#: src/views/environments/list/Environment.vue:113
 #: src/views/environments/list/Environment.vue:35
 msgid "Please select at least one node to reload Nginx"
 msgstr "Nginx를 다시 로드하려면 최소한 하나의 노드를 선택하십시오"
 
-#: src/views/environments/list/Environment.vue:133
+#: src/views/environments/list/Environment.vue:134
 #: src/views/environments/list/Environment.vue:49
 msgid "Please select at least one node to restart Nginx"
 msgstr "Nginx를 다시 시작하려면 최소한 하나의 노드를 선택하세요"
 
-#: src/views/environments/list/Environment.vue:91
+#: src/views/environments/list/Environment.vue:92
 msgid "Please select at least one node to upgrade"
 msgstr "업그레이드할 노드를 최소한 하나 이상 선택해 주세요"
 
@@ -3470,8 +3496,8 @@ msgstr "리로드"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
 #: src/views/environments/group/columns.ts:22
 #: src/views/environments/group/EnvGroup.vue:50
-#: src/views/environments/list/Environment.vue:120
-#: src/views/environments/list/Environment.vue:128
+#: src/views/environments/list/Environment.vue:121
+#: src/views/environments/list/Environment.vue:129
 msgid "Reload Nginx"
 msgstr "Nginx 다시 로드"
 
@@ -3507,12 +3533,12 @@ msgstr "리로딩 중"
 msgid "Reloading nginx"
 msgstr "Nginx 리로딩 중"
 
-#: src/views/preference/tabs/AuthSettings.vue:168
+#: src/views/preference/tabs/AuthSettings.vue:137
 msgid "Remove"
 msgstr "제거"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:46
-#: src/views/preference/tabs/AuthSettings.vue:50
+#: src/views/preference/tabs/AuthSettings.vue:47
 msgid "Remove successfully"
 msgstr "성공적으로 제거되었습니다"
 
@@ -3650,8 +3676,8 @@ msgid "Restart"
 msgstr "재시작"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
-#: src/views/environments/list/Environment.vue:141
-#: src/views/environments/list/Environment.vue:149
+#: src/views/environments/list/Environment.vue:142
+#: src/views/environments/list/Environment.vue:150
 msgid "Restart Nginx"
 msgstr "Nginx 다시 시작"
 
@@ -3729,15 +3755,15 @@ msgid ""
 "action cannot be undone."
 msgstr "인증서를 취소하면 현재 이를 사용 중인 모든 서비스에 영향을 미칩니다. 이 작업은 취소할 수 없습니다."
 
-#: src/views/preference/tabs/AuthSettings.vue:106
+#: src/views/preference/tabs/AuthSettings.vue:75
 msgid "RP Display Name"
 msgstr "RP 표시 이름"
 
-#: src/views/preference/tabs/AuthSettings.vue:112
+#: src/views/preference/tabs/AuthSettings.vue:81
 msgid "RP Origins"
 msgstr "RP 오리진"
 
-#: src/views/preference/tabs/AuthSettings.vue:100
+#: src/views/preference/tabs/AuthSettings.vue:69
 msgid "RPID"
 msgstr "RPID"
 
@@ -3842,6 +3868,10 @@ msgstr "모듈 이름 검색"
 msgid "Secret has been copied"
 msgstr "비밀번호가 복사되었습니다"
 
+#: src/views/user/UserProfile.vue:175
+msgid "Security Settings"
+msgstr "보안 설정"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:207
 #: src/components/SystemRestore/SystemRestoreContent.vue:284
 msgid "Security Token"
@@ -3915,7 +3945,7 @@ msgid ""
 "step of DNS challenge."
 msgstr "DNS 챌린지 단계에서 시스템 네임서버를 재정의하기 위해 재귀 네임서버를 설정하세요."
 
-#: src/views/site/components/SiteStatusSegmented.vue:89
+#: src/views/site/components/SiteStatusSelect.vue:116
 msgid "set to maintenance mode"
 msgstr "유지 보수 모드로 설정"
 
@@ -4152,13 +4182,11 @@ msgstr ""
 "링크를 참조하여 해당 구성 파일을 작성하십시오: "
 "https://nginxui.com/guide/nginx-proxy-example.html"
 
-#: src/language/curd.ts:51
-#: src/language/curd.ts:55
+#: src/language/curd.ts:51 src/language/curd.ts:55
 msgid "Support single or batch upload of files"
 msgstr "단일 또는 일괄 파일 업로드 지원"
 
-#: src/language/curd.ts:52
-#: src/language/curd.ts:56
+#: src/language/curd.ts:52 src/language/curd.ts:56
 msgid "Support uploading entire folders"
 msgstr "전체 폴더 업로드 지원"
 
@@ -4470,12 +4498,12 @@ msgstr "이 작업은 구성 파일과 데이터베이스를 복원합니다. �
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "이 작업은 %{nodeNames}의 Nginx UI를 %{version}으로 업그레이드하거나 재설치합니다."
 
-#: src/views/preference/tabs/AuthSettings.vue:123
+#: src/views/preference/tabs/AuthSettings.vue:92
 msgid "Throttle"
 msgstr "제한"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:65
-#: src/views/preference/tabs/AuthSettings.vue:143
+#: src/views/preference/tabs/AuthSettings.vue:112
 #: src/views/preference/tabs/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr "팁"
@@ -4486,7 +4514,7 @@ msgid ""
 "worker_processes or worker_connections"
 msgstr "팁: worker_processes 또는 worker_connections를 증가시켜 동시 처리 능력을 향상시킬 수 있습니다."
 
-#: src/views/notification/notificationColumns.tsx:52
+#: src/views/notification/notificationColumns.tsx:58
 msgid "Title"
 msgstr "제목"
 
@@ -4598,6 +4626,14 @@ msgstr "유형"
 msgid "Unknown"
 msgstr "알 수 없음"
 
+#: src/views/user/UserProfile.vue:218
+msgid "Update Password"
+msgstr "비밀번호 업데이트"
+
+#: src/views/user/UserProfile.vue:142
+msgid "Update Profile"
+msgstr "프로필 업데이트"
+
 #: src/views/preference/components/AuthSettings/Passkey.vue:39
 msgid "Update successfully"
 msgstr "성공적으로 업데이트되었습니다"
@@ -4615,8 +4651,8 @@ msgid "Updated at"
 msgstr "업데이트됨"
 
 #: src/routes/modules/system.ts:33
-#: src/views/environments/list/Environment.vue:107
-#: src/views/environments/list/Environment.vue:99
+#: src/views/environments/list/Environment.vue:100
+#: src/views/environments/list/Environment.vue:108
 #: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "업그레이드"
@@ -4642,7 +4678,7 @@ msgstr "파일 업로드"
 msgid "Upload Folders"
 msgstr "폴더 업로드"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:173
+#: src/components/NgxConfigEditor/NgxUpstream.vue:177
 msgid "Upstream Name"
 msgstr "업스트림 이름"
 
@@ -4674,11 +4710,20 @@ msgstr "사용자"
 msgid "User banned"
 msgstr "사용자가 차단되었습니다"
 
+#: src/views/user/UserProfile.vue:62
+msgid "User info updated successfully"
+msgstr "사용자 정보가 성공적으로 업데이트되었습니다"
+
 #: src/constants/errors/user.ts:8
 msgid "User not enabled otp as 2fa"
 msgstr "사용자가 OTP를 2FA로 활성화하지 않음"
 
+#: src/routes/modules/user.ts:19
+msgid "User Profile"
+msgstr "사용자 프로필"
+
 #: src/views/other/Login.vue:173 src/views/user/userColumns.tsx:7
+#: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "사용자 이름"
 
@@ -4762,7 +4807,7 @@ msgid ""
 "the Nginx. Are you sure you want to continue?"
 msgstr "이 파일에서 HTTPChallenge 구성을 제거하고 Nginx를 다시 로드할 예정입니다. 계속하시겠습니까?"
 
-#: src/views/preference/tabs/AuthSettings.vue:96
+#: src/views/preference/tabs/AuthSettings.vue:65
 msgid "Webauthn"
 msgstr "웹인증"
 
@@ -4837,12 +4882,12 @@ msgstr "인증서를 디스크에 쓰기"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
-#: src/views/preference/tabs/AuthSettings.vue:162
+#: src/views/preference/tabs/AuthSettings.vue:131
 #: src/views/preference/tabs/CertSettings.vue:72
 msgid "Yes"
 msgstr "예"
 
-#: src/views/terminal/Terminal.vue:135
+#: src/views/terminal/Terminal.vue:132
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a "
 "non-localhost domain. This may expose sensitive information."
@@ -4931,9 +4976,6 @@ msgstr "귀하의 패스키"
 #~ msgid "Total %{total} item"
 #~ msgid_plural "Total %{total} items"
 #~ msgstr[0] "총 %{total} 항목"
-
-#~ msgid "Updated successfully"
-#~ msgstr "성공적으로 업데이트되었습니다"
 
 #~ msgid "View Details"
 #~ msgstr "상세 보기"

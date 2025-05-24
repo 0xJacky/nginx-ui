@@ -99,7 +99,7 @@ msgstr "[Nginx UI] Đang ghi chứng chỉ vào ổ đĩa"
 msgid "2FA"
 msgstr "2fa"
 
-#: src/views/preference/tabs/AuthSettings.vue:69
+#: src/views/user/UserProfile.vue:151
 msgid "2FA Settings"
 msgstr "Cài đặt 2FA"
 
@@ -125,8 +125,7 @@ msgstr "Log truy cập"
 msgid "ACME User"
 msgstr "Người dùng ACME"
 
-#: src/views/notification/notificationColumns.tsx:66
-#: src/views/preference/tabs/AuthSettings.vue:29
+#: src/views/preference/tabs/AuthSettings.vue:26
 msgid "Action"
 msgstr "Hành động"
 
@@ -137,9 +136,9 @@ msgstr "Hành động"
 #: src/views/environments/group/columns.ts:41
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:52
+#: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:76
-#: src/views/site/site_list/columns.tsx:129
-#: src/views/stream/columns.tsx:64
+#: src/views/site/site_list/columns.tsx:129 src/views/stream/columns.tsx:64
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "Hành động"
@@ -154,10 +153,10 @@ msgid "Actual worker to configured ratio"
 msgstr "Tỷ lệ công nhân thực tế so với cấu hình"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:112
-#: src/components/NgxConfigEditor/NgxUpstream.vue:155 src/language/curd.ts:19
+#: src/components/NgxConfigEditor/NgxUpstream.vue:159 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:120
+#: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr "Thêm"
 
@@ -184,7 +183,7 @@ msgstr "Thêm Location"
 msgid "Add Site"
 msgstr "Thêm Website"
 
-#: src/views/stream/StreamList.vue:173
+#: src/views/stream/StreamList.vue:174
 msgid "Add Stream"
 msgstr "Thêm luồng"
 
@@ -242,7 +241,7 @@ msgstr "Ứng dụng"
 msgid "Arch"
 msgstr "\"Kiến trúc\""
 
-#: src/views/preference/tabs/AuthSettings.vue:161
+#: src/views/preference/tabs/AuthSettings.vue:130
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Bạn có chắc chắn muốn xóa IP bị cấm này ngay lập tức không?"
 
@@ -271,8 +270,8 @@ msgstr "Bạn có chắc chắn muốn xóa lịch sử trò chuyện không?"
 msgid "Are you sure you want to delete permanently?"
 msgstr "Bạn có chắc chắn muốn xóa vĩnh viễn không?"
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:99
-#: src/views/stream/StreamList.vue:156
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
+#: src/views/stream/StreamList.vue:157
 msgid "Are you sure you want to delete?"
 msgstr "Bạn có chắc chắn muốn xóa không?"
 
@@ -312,7 +311,7 @@ msgstr "Trợ lý"
 msgid "Attempt to fix"
 msgstr "Cố gắng sửa chữa"
 
-#: src/views/preference/tabs/AuthSettings.vue:20
+#: src/views/preference/tabs/AuthSettings.vue:17
 msgid "Attempts"
 msgstr "Nỗ lực"
 
@@ -324,7 +323,7 @@ msgstr "Xác thực"
 msgid "Authenticate with a passkey"
 msgstr "Xác thực với một cô ấy"
 
-#: src/views/preference/tabs/AuthSettings.vue:87
+#: src/views/preference/tabs/AuthSettings.vue:56
 msgid "Authentication Settings"
 msgstr "Cài đặt xác thực"
 
@@ -399,15 +398,15 @@ msgstr "Không tìm thấy tệp sao lưu: {0}"
 msgid "Backup has been downloaded successfully"
 msgstr "Đã tải xuống bản sao lưu thành công"
 
-#: src/views/preference/tabs/AuthSettings.vue:128
+#: src/views/preference/tabs/AuthSettings.vue:97
 msgid "Ban Threshold Minutes"
 msgstr "Phút Ngưỡng Cấm"
 
-#: src/views/preference/tabs/AuthSettings.vue:149
+#: src/views/preference/tabs/AuthSettings.vue:118
 msgid "Banned IPs"
 msgstr "Danh sách IP bị cấm"
 
-#: src/views/preference/tabs/AuthSettings.vue:23
+#: src/views/preference/tabs/AuthSettings.vue:20
 msgid "Banned Until"
 msgstr "Bị cấm đến"
 
@@ -517,7 +516,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:54
 #: src/components/NgxConfigEditor/NgxUpstream.vue:37
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
-#: src/views/site/components/SiteStatusSegmented.vue:97
+#: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
@@ -634,6 +633,10 @@ msgstr "Phương pháp xác thực"
 #: src/views/site/site_edit/components/Cert/ChangeCert.vue:55
 msgid "Change Certificate"
 msgstr "Thay đổi chứng chỉ"
+
+#: src/views/user/UserProfile.vue:181
+msgid "Change Password"
+msgstr "Đổi mật khẩu"
 
 #: src/views/site/site_edit/components/Cert/Cert.vue:77
 msgid "Changed Certificate"
@@ -800,13 +803,11 @@ msgstr "Đã xóa thành công"
 msgid "Click or drag backup file to this area to upload"
 msgstr "Nhấp hoặc kéo tệp sao lưu vào khu vực này để tải lên"
 
-#: src/language/curd.ts:49
-#: src/language/curd.ts:53
+#: src/language/curd.ts:49 src/language/curd.ts:53
 msgid "Click or drag files to this area to upload"
 msgstr "Nhấp hoặc kéo thả tệp vào khu vực này để tải lên"
 
-#: src/language/curd.ts:50
-#: src/language/curd.ts:54
+#: src/language/curd.ts:50 src/language/curd.ts:54
 msgid "Click or drag folders to this area to upload"
 msgstr "Nhấp hoặc kéo thư mục vào khu vực này để tải lên"
 
@@ -926,6 +927,10 @@ msgstr "Cấu hình"
 msgid "Configure SSL"
 msgstr "Cấu hình SSL"
 
+#: src/views/user/UserProfile.vue:204
+msgid "Confirm New Password"
+msgstr "Xác nhận mật khẩu mới"
+
 #: src/views/dashboard/Environments.vue:141
 msgid "Connected"
 msgstr "Đã kết nối"
@@ -934,7 +939,7 @@ msgstr "Đã kết nối"
 msgid "Connection error, trying to reconnect..."
 msgstr "Lỗi kết nối, đang thử kết nối lại..."
 
-#: src/views/terminal/Terminal.vue:142
+#: src/views/terminal/Terminal.vue:139
 msgid "Connection lost, please refresh the page."
 msgstr "Kết nối bị mất, xin vui lòng làm mới trang."
 
@@ -990,7 +995,7 @@ msgstr "Mức sử dụng CPU tương đối cao, hãy cân nhắc tối ưu c�
 msgid "CPU:"
 msgstr "CPU:"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:166
+#: src/components/NgxConfigEditor/NgxUpstream.vue:170
 msgid "Create"
 msgstr "Tạo"
 
@@ -1019,7 +1024,7 @@ msgstr ""
 "tệp sao lưu sẽ tự động được tải xuống máy tính của bạn."
 
 #: src/views/environments/group/columns.ts:29
-#: src/views/notification/notificationColumns.tsx:45
+#: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:71
 #: src/views/user/userColumns.tsx:46
@@ -1057,6 +1062,10 @@ msgstr "Kết nối đang hoạt động hiện tại"
 #: src/components/ConfigHistory/DiffViewer.vue:72
 msgid "Current Content"
 msgstr "Nội dung hiện tại"
+
+#: src/views/user/UserProfile.vue:186
+msgid "Current Password"
+msgstr "Mật khẩu hiện tại"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:65
 msgid "Current usage"
@@ -1097,8 +1106,8 @@ msgstr "Xác định tên và kích thước vùng bộ nhớ dùng chung, ví d
 #: src/components/NgxConfigEditor/NgxServer.vue:78
 #: src/components/NgxConfigEditor/NgxUpstream.vue:129 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
-#: src/views/site/site_list/SiteList.vue:108
-#: src/views/stream/StreamList.vue:165
+#: src/views/site/site_list/SiteList.vue:109
+#: src/views/stream/StreamList.vue:166
 msgid "Delete"
 msgstr "Xoá"
 
@@ -1175,7 +1184,7 @@ msgstr "Tệp đích đã tồn tại"
 msgid "Destination file: {0} already exists"
 msgstr "Tệp đích: {0} đã tồn tại"
 
-#: src/views/notification/notificationColumns.tsx:60
+#: src/views/notification/notificationColumns.tsx:66
 msgid "Details"
 msgstr "Chi tiết"
 
@@ -1219,11 +1228,11 @@ msgstr "Cấp độ thư mục"
 msgid "Directory path to store cache files"
 msgstr "Đường dẫn thư mục để lưu trữ các tệp bộ nhớ đệm"
 
-#: src/views/site/components/SiteStatusSegmented.vue:88
+#: src/views/site/components/SiteStatusSelect.vue:115
 msgid "disable"
 msgstr "Vô hiệu hóa"
 
-#: src/views/stream/StreamList.vue:136
+#: src/views/stream/StreamList.vue:137
 msgid "Disable"
 msgstr "Vô hiệu hóa"
 
@@ -1284,7 +1293,7 @@ msgstr "Đã vô hiệu hóa luồng %{name} từ %{node} thành công"
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
-#: src/views/site/components/SiteStatusSegmented.vue:134
+#: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/site/site_list/columns.tsx:114 src/views/stream/columns.tsx:48
 #: src/views/stream/components/StreamEditor.vue:30
@@ -1292,7 +1301,7 @@ msgstr "Đã vô hiệu hóa luồng %{name} từ %{node} thành công"
 msgid "Disabled"
 msgstr "Đã tắt"
 
-#: src/views/site/components/SiteStatusSegmented.vue:40
+#: src/views/site/components/SiteStatusSelect.vue:67
 #: src/views/stream/components/RightPanel/Basic.vue:34
 #: src/views/stream/StreamList.vue:56
 msgid "Disabled successfully"
@@ -1320,7 +1329,7 @@ msgstr "DNS01"
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr "Không bật tùy chọn này trừ khi bạn chắc chắn cần đến nó."
 
-#: src/views/site/components/SiteStatusSegmented.vue:93
+#: src/views/site/components/SiteStatusSelect.vue:120
 msgid "Do you want to %{action} this site?"
 msgstr "Bạn có muốn %{action} trang web này không?"
 
@@ -1399,9 +1408,9 @@ msgstr ""
 "trên các trang web không phải HTTPS, trừ khi chạy trên localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:94
+#: src/views/site/site_list/SiteList.vue:95
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:151
+#: src/views/stream/StreamList.vue:152
 msgid "Duplicate"
 msgstr "Nhân bản"
 
@@ -1445,11 +1454,11 @@ msgstr "Email"
 msgid "Email (*)"
 msgstr "Email (*)"
 
-#: src/views/site/components/SiteStatusSegmented.vue:87
+#: src/views/site/components/SiteStatusSelect.vue:114
 msgid "enable"
 msgstr "bật"
 
-#: src/views/stream/StreamList.vue:144
+#: src/views/stream/StreamList.vue:145
 msgid "Enable"
 msgstr "Bật"
 
@@ -1547,7 +1556,7 @@ msgstr "Bật TOTP"
 #: src/views/preference/tabs/LogrotateSettings.vue:20
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
-#: src/views/site/components/SiteStatusSegmented.vue:130
+#: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
 #: src/views/site/site_list/columns.tsx:110 src/views/stream/columns.tsx:44
 #: src/views/stream/components/RightPanel/Basic.vue:62
@@ -1556,7 +1565,7 @@ msgstr "Bật TOTP"
 msgid "Enabled"
 msgstr "Đã bật"
 
-#: src/views/site/components/SiteStatusSegmented.vue:27
+#: src/views/site/components/SiteStatusSelect.vue:54
 #: src/views/site/site_add/SiteAdd.vue:32
 #: src/views/stream/components/RightPanel/Basic.vue:25
 #: src/views/stream/StreamList.vue:46
@@ -1765,23 +1774,23 @@ msgstr "Xóa chứng chỉ không thành công"
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Xóa chứng chỉ từ cơ sở dữ liệu thất bại: %{error}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:46
+#: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/RightPanel/Basic.vue:37
 #: src/views/stream/StreamList.vue:60
 msgid "Failed to disable %{msg}"
 msgstr "Không thể tắt %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:72
+#: src/views/site/components/SiteStatusSelect.vue:99
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr "Không thể tắt chế độ bảo trì %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:33
+#: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/RightPanel/Basic.vue:28
 #: src/views/stream/StreamList.vue:50
 msgid "Failed to enable %{msg}"
 msgstr "Không thể bật %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:59
+#: src/views/site/components/SiteStatusSelect.vue:86
 msgid "Failed to enable maintenance mode %{msg}"
 msgstr "Không thể bật chế độ bảo trì %{msg}"
 
@@ -2094,7 +2103,7 @@ msgstr "Số ICP"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "Nếu để trống, thư mục CA mặc định sẽ được sử dụng."
 
-#: src/views/preference/tabs/AuthSettings.vue:144
+#: src/views/preference/tabs/AuthSettings.vue:113
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -2261,7 +2270,7 @@ msgstr "Định dạng yêu cầu không hợp lệ"
 msgid "Invalid security token format"
 msgstr "Định dạng mã bảo mật không hợp lệ"
 
-#: src/views/preference/tabs/AuthSettings.vue:17
+#: src/views/preference/tabs/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
 
@@ -2376,7 +2385,7 @@ msgstr "Danh sách"
 msgid "Load Average:"
 msgstr "Tải trung bình:"
 
-#: src/views/environments/list/Environment.vue:80
+#: src/views/environments/list/Environment.vue:81
 msgid "Load from settings"
 msgstr "Tải từ cài đặt"
 
@@ -2474,17 +2483,17 @@ msgstr ""
 "chọn này. Bộ lập lịch tác vụ crontab của Nginx UI sẽ thực thi lệnh "
 "logrotate theo khoảng thời gian bạn đặt (tính bằng phút)."
 
-#: src/views/site/components/SiteStatusSegmented.vue:138
+#: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
 #: src/views/site/site_list/columns.tsx:118
 msgid "Maintenance"
 msgstr "Bảo trì"
 
-#: src/views/site/components/SiteStatusSegmented.vue:66
+#: src/views/site/components/SiteStatusSelect.vue:93
 msgid "Maintenance mode disabled successfully"
 msgstr "Đã tắt chế độ bảo trì thành công"
 
-#: src/views/site/components/SiteStatusSegmented.vue:53
+#: src/views/site/components/SiteStatusSelect.vue:80
 msgid "Maintenance mode enabled successfully"
 msgstr "Đã bật chế độ bảo trì thành công"
 
@@ -2551,7 +2560,7 @@ msgstr "Tiến trình chính"
 msgid "Master Process"
 msgstr "Tiến trình chính"
 
-#: src/views/preference/tabs/AuthSettings.vue:134
+#: src/views/preference/tabs/AuthSettings.vue:103
 msgid "Max Attempts"
 msgstr "Số lần thử tối đa"
 
@@ -2650,7 +2659,7 @@ msgstr "Mô-đun"
 msgid "Multi-line Directive"
 msgstr "Chỉ thị nhiều dòng"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:178
+#: src/components/NgxConfigEditor/NgxUpstream.vue:182
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:9
@@ -2667,7 +2676,7 @@ msgstr "Chỉ thị nhiều dòng"
 #: src/views/stream/columns.tsx:10
 #: src/views/stream/components/RightPanel/Basic.vue:69
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:178
+#: src/views/stream/StreamList.vue:179
 msgid "Name"
 msgstr "Tên"
 
@@ -2698,6 +2707,10 @@ msgstr "Cài đặt mới"
 #: src/views/config/components/Rename.vue:74
 msgid "New name"
 msgstr "Tên mới"
+
+#: src/views/user/UserProfile.vue:195
+msgid "New Password"
+msgstr "Mật khẩu mới"
 
 #: src/views/config/ConfigEditor.vue:328
 msgid "New Path"
@@ -2914,9 +2927,9 @@ msgstr "Nginx.conf bao gồm thư mục streams-enabled"
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:38
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/tabs/AuthSettings.vue:163
+#: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:97 src/views/stream/StreamList.vue:154
+#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:155
 msgid "No"
 msgstr "Không"
 
@@ -3049,6 +3062,7 @@ msgid "Off"
 msgstr "Tắt"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
+#: src/components/NgxConfigEditor/NgxUpstream.vue:145
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:55
@@ -3060,13 +3074,13 @@ msgstr "Ngoại tuyến"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:36
 #: src/components/Notification/Notification.vue:110 src/language/curd.ts:15
 #: src/views/notification/Notification.vue:39
-#: src/views/site/components/SiteStatusSegmented.vue:96
+#: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:98
+#: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
-#: src/views/stream/StreamList.vue:155
+#: src/views/stream/StreamList.vue:156
 #: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr "Đồng ý"
@@ -3186,6 +3200,14 @@ msgstr "Mật khẩu không đúng"
 msgid "Password length cannot exceed 20 characters"
 msgstr "Độ dài mật khẩu không được vượt quá 20 ký tự"
 
+#: src/views/user/UserProfile.vue:96
+msgid "Password updated successfully"
+msgstr "Cập nhật mật khẩu thành công"
+
+#: src/views/user/UserProfile.vue:75
+msgid "Passwords do not match"
+msgstr "Mật khẩu không khớp"
+
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
 #: src/language/curd.ts:59 src/views/config/ConfigEditor.vue:322
@@ -3224,6 +3246,10 @@ msgstr "Đã lưu cài đặt hiệu suất thành công"
 #: src/language/constants.ts:28
 msgid "Performing core upgrade"
 msgstr "Nâng cấp core"
+
+#: src/views/user/UserProfile.vue:121
+msgid "Personal Information"
+msgstr "Thông tin cá nhân"
 
 #: src/constants/errors/self_check.ts:19
 msgid "PID path not exist"
@@ -3347,17 +3373,17 @@ msgstr "Vui lòng chọn tệp sao lưu"
 msgid "Please select at least one item"
 msgstr "Vui lòng chọn ít nhất một mục"
 
-#: src/views/environments/list/Environment.vue:112
+#: src/views/environments/list/Environment.vue:113
 #: src/views/environments/list/Environment.vue:35
 msgid "Please select at least one node to reload Nginx"
 msgstr "Vui lòng chọn ít nhất một nút để tải lại Nginx"
 
-#: src/views/environments/list/Environment.vue:133
+#: src/views/environments/list/Environment.vue:134
 #: src/views/environments/list/Environment.vue:49
 msgid "Please select at least one node to restart Nginx"
 msgstr "Vui lòng chọn ít nhất một nút để khởi động lại Nginx"
 
-#: src/views/environments/list/Environment.vue:91
+#: src/views/environments/list/Environment.vue:92
 msgid "Please select at least one node to upgrade"
 msgstr "Vui lòng chọn ít nhất một nút để nâng cấp"
 
@@ -3523,8 +3549,8 @@ msgstr "Tải lại"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
 #: src/views/environments/group/columns.ts:22
 #: src/views/environments/group/EnvGroup.vue:50
-#: src/views/environments/list/Environment.vue:120
-#: src/views/environments/list/Environment.vue:128
+#: src/views/environments/list/Environment.vue:121
+#: src/views/environments/list/Environment.vue:129
 msgid "Reload Nginx"
 msgstr "Tải lại Nginx"
 
@@ -3560,12 +3586,12 @@ msgstr "Đang tải lại"
 msgid "Reloading nginx"
 msgstr "Tải lại nginx"
 
-#: src/views/preference/tabs/AuthSettings.vue:168
+#: src/views/preference/tabs/AuthSettings.vue:137
 msgid "Remove"
 msgstr "Xóa"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:46
-#: src/views/preference/tabs/AuthSettings.vue:50
+#: src/views/preference/tabs/AuthSettings.vue:47
 msgid "Remove successfully"
 msgstr "Xóa thành công"
 
@@ -3704,8 +3730,8 @@ msgid "Restart"
 msgstr "Khởi động lại"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
-#: src/views/environments/list/Environment.vue:141
-#: src/views/environments/list/Environment.vue:149
+#: src/views/environments/list/Environment.vue:142
+#: src/views/environments/list/Environment.vue:150
 msgid "Restart Nginx"
 msgstr "Khởi động lại Nginx"
 
@@ -3785,15 +3811,15 @@ msgstr ""
 "Việc thu hồi chứng chỉ sẽ ảnh hưởng đến bất kỳ dịch vụ nào hiện đang sử "
 "dụng nó. Hành động này không thể hoàn tác."
 
-#: src/views/preference/tabs/AuthSettings.vue:106
+#: src/views/preference/tabs/AuthSettings.vue:75
 msgid "RP Display Name"
 msgstr "Tên hiển thị RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:112
+#: src/views/preference/tabs/AuthSettings.vue:81
 msgid "RP Origins"
 msgstr "Nguồn gốc RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:100
+#: src/views/preference/tabs/AuthSettings.vue:69
 msgid "RPID"
 msgstr "RPID"
 
@@ -3898,6 +3924,10 @@ msgstr "Tên mô-đun tìm kiếm"
 msgid "Secret has been copied"
 msgstr "Mật khẩu đã được sao chép"
 
+#: src/views/user/UserProfile.vue:175
+msgid "Security Settings"
+msgstr "Cài đặt bảo mật"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:207
 #: src/components/SystemRestore/SystemRestoreContent.vue:284
 msgid "Security Token"
@@ -3973,7 +4003,7 @@ msgstr ""
 "Đặt các máy chủ tên đệ quy để ghi đè các máy chủ tên hệ thống trong bước "
 "thử thách DNS."
 
-#: src/views/site/components/SiteStatusSegmented.vue:89
+#: src/views/site/components/SiteStatusSelect.vue:116
 msgid "set to maintenance mode"
 msgstr "đặt vào chế độ bảo trì"
 
@@ -4212,13 +4242,11 @@ msgstr ""
 "liên kết này để viết tệp cấu hình tương ứng: "
 "https://nginxui.com/guide/nginx-proxy-example.html"
 
-#: src/language/curd.ts:51
-#: src/language/curd.ts:55
+#: src/language/curd.ts:51 src/language/curd.ts:55
 msgid "Support single or batch upload of files"
 msgstr "Hỗ trợ tải lên một hoặc nhiều tệp"
 
-#: src/language/curd.ts:52
-#: src/language/curd.ts:56
+#: src/language/curd.ts:52 src/language/curd.ts:56
 msgid "Support uploading entire folders"
 msgstr "Hỗ trợ tải lên toàn bộ thư mục"
 
@@ -4561,12 +4589,12 @@ msgstr ""
 "Thao tác này sẽ nâng cấp hoặc cài đặt lại Nginx UI trên %{nodeNames} lên "
 "phiên bản %{version}."
 
-#: src/views/preference/tabs/AuthSettings.vue:123
+#: src/views/preference/tabs/AuthSettings.vue:92
 msgid "Throttle"
 msgstr "Hạn chế"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:65
-#: src/views/preference/tabs/AuthSettings.vue:143
+#: src/views/preference/tabs/AuthSettings.vue:112
 #: src/views/preference/tabs/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr "Mẹo"
@@ -4579,7 +4607,7 @@ msgstr ""
 "Mẹo: Bạn có thể tăng khả năng xử lý đồng thời bằng cách tăng "
 "worker_processes hoặc worker_connections"
 
-#: src/views/notification/notificationColumns.tsx:52
+#: src/views/notification/notificationColumns.tsx:58
 msgid "Title"
 msgstr "Tiêu đề"
 
@@ -4699,6 +4727,14 @@ msgstr "Loại"
 msgid "Unknown"
 msgstr "Không xác định"
 
+#: src/views/user/UserProfile.vue:218
+msgid "Update Password"
+msgstr "Cập nhật mật khẩu"
+
+#: src/views/user/UserProfile.vue:142
+msgid "Update Profile"
+msgstr "Cập nhật hồ sơ"
+
 #: src/views/preference/components/AuthSettings/Passkey.vue:39
 msgid "Update successfully"
 msgstr "Cập nhật thành công"
@@ -4716,8 +4752,8 @@ msgid "Updated at"
 msgstr "Ngày cập nhật"
 
 #: src/routes/modules/system.ts:33
-#: src/views/environments/list/Environment.vue:107
-#: src/views/environments/list/Environment.vue:99
+#: src/views/environments/list/Environment.vue:100
+#: src/views/environments/list/Environment.vue:108
 #: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "Cập nhật"
@@ -4743,7 +4779,7 @@ msgstr "Tải lên tệp"
 msgid "Upload Folders"
 msgstr "Tải lên thư mục"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:173
+#: src/components/NgxConfigEditor/NgxUpstream.vue:177
 msgid "Upstream Name"
 msgstr "Tên Upstream"
 
@@ -4775,11 +4811,20 @@ msgstr "Người dùng"
 msgid "User banned"
 msgstr "Người dùng bị cấm"
 
+#: src/views/user/UserProfile.vue:62
+msgid "User info updated successfully"
+msgstr "Cập nhật thông tin người dùng thành công"
+
 #: src/constants/errors/user.ts:8
 msgid "User not enabled otp as 2fa"
 msgstr "Người dùng chưa bật OTP làm 2FA"
 
+#: src/routes/modules/user.ts:19
+msgid "User Profile"
+msgstr "Hồ sơ người dùng"
+
 #: src/views/other/Login.vue:173 src/views/user/userColumns.tsx:7
+#: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "Username"
 
@@ -4870,7 +4915,7 @@ msgstr ""
 "Chúng tôi sẽ xóa cấu hình HTTPChallenge khỏi tệp này và tải lại Nginx. Bạn "
 "có muốn tiếp tục không?"
 
-#: src/views/preference/tabs/AuthSettings.vue:96
+#: src/views/preference/tabs/AuthSettings.vue:65
 msgid "Webauthn"
 msgstr "WebAuthn"
 
@@ -4948,12 +4993,12 @@ msgstr "Ghi chứng chỉ vào disk"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
-#: src/views/preference/tabs/AuthSettings.vue:162
+#: src/views/preference/tabs/AuthSettings.vue:131
 #: src/views/preference/tabs/CertSettings.vue:72
 msgid "Yes"
 msgstr "Có"
 
-#: src/views/terminal/Terminal.vue:135
+#: src/views/terminal/Terminal.vue:132
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a "
 "non-localhost domain. This may expose sensitive information."
@@ -5047,9 +5092,6 @@ msgstr "Khóa truy cập của bạn"
 #~ msgid "Total %{total} item"
 #~ msgid_plural "Total %{total} items"
 #~ msgstr[0] "Tổng %{total} mục"
-
-#~ msgid "Updated successfully"
-#~ msgstr "Cập nhật thành công"
 
 #~ msgid "View Details"
 #~ msgstr "Xem chi tiết"

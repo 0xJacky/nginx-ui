@@ -104,7 +104,7 @@ msgstr "[Nginx UI] Sertifika diske yazılıyor"
 msgid "2FA"
 msgstr "İki aşamalı kimlik doğrulaması(2FA)"
 
-#: src/views/preference/tabs/AuthSettings.vue:69
+#: src/views/user/UserProfile.vue:151
 msgid "2FA Settings"
 msgstr "2FA Ayarları"
 
@@ -130,8 +130,7 @@ msgstr "Erişim Günlükleri"
 msgid "ACME User"
 msgstr "ACME Kullanıcısı"
 
-#: src/views/notification/notificationColumns.tsx:66
-#: src/views/preference/tabs/AuthSettings.vue:29
+#: src/views/preference/tabs/AuthSettings.vue:26
 msgid "Action"
 msgstr "Eylem"
 
@@ -142,9 +141,9 @@ msgstr "Eylem"
 #: src/views/environments/group/columns.ts:41
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:52
+#: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:76
-#: src/views/site/site_list/columns.tsx:129
-#: src/views/stream/columns.tsx:64
+#: src/views/site/site_list/columns.tsx:129 src/views/stream/columns.tsx:64
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "İşlemler"
@@ -159,10 +158,10 @@ msgid "Actual worker to configured ratio"
 msgstr "Gerçek çalışanın yapılandırılmışa oranı"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:112
-#: src/components/NgxConfigEditor/NgxUpstream.vue:155 src/language/curd.ts:19
+#: src/components/NgxConfigEditor/NgxUpstream.vue:159 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:120
+#: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr "Ekle"
 
@@ -189,7 +188,7 @@ msgstr "Konum ekle"
 msgid "Add Site"
 msgstr "Site Ekle"
 
-#: src/views/stream/StreamList.vue:173
+#: src/views/stream/StreamList.vue:174
 msgid "Add Stream"
 msgstr "Akış Ekle"
 
@@ -247,7 +246,7 @@ msgstr "Uygulama"
 msgid "Arch"
 msgstr "\"Mimari\""
 
-#: src/views/preference/tabs/AuthSettings.vue:161
+#: src/views/preference/tabs/AuthSettings.vue:130
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Bu yasaklı IP'yi hemen sileceğinizden emin misiniz?"
 
@@ -276,8 +275,8 @@ msgstr "Sohbet kaydını silmek istediğinizden emin misiniz?"
 msgid "Are you sure you want to delete permanently?"
 msgstr "Kalıcı olarak silmek istediğinizden emin misiniz?"
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:99
-#: src/views/stream/StreamList.vue:156
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
+#: src/views/stream/StreamList.vue:157
 msgid "Are you sure you want to delete?"
 msgstr "Silmek istediğine emin misin?"
 
@@ -321,7 +320,7 @@ msgstr "Asistan"
 msgid "Attempt to fix"
 msgstr "Düzeltmeyi dene"
 
-#: src/views/preference/tabs/AuthSettings.vue:20
+#: src/views/preference/tabs/AuthSettings.vue:17
 msgid "Attempts"
 msgstr "Girişimler"
 
@@ -333,7 +332,7 @@ msgstr "Kimlik Doğrulama"
 msgid "Authenticate with a passkey"
 msgstr "Geçiş anahtarıyla kimlik doğrulama"
 
-#: src/views/preference/tabs/AuthSettings.vue:87
+#: src/views/preference/tabs/AuthSettings.vue:56
 msgid "Authentication Settings"
 msgstr "Kimlik Doğrulama Ayarları"
 
@@ -408,15 +407,15 @@ msgstr "Yedek dosya bulunamadı: {0}"
 msgid "Backup has been downloaded successfully"
 msgstr "Yedek başarıyla indirildi"
 
-#: src/views/preference/tabs/AuthSettings.vue:128
+#: src/views/preference/tabs/AuthSettings.vue:97
 msgid "Ban Threshold Minutes"
 msgstr "Yasaklama Eşiği Süresi (Dakika)"
 
-#: src/views/preference/tabs/AuthSettings.vue:149
+#: src/views/preference/tabs/AuthSettings.vue:118
 msgid "Banned IPs"
 msgstr "Yasaklı IP'ler"
 
-#: src/views/preference/tabs/AuthSettings.vue:23
+#: src/views/preference/tabs/AuthSettings.vue:20
 msgid "Banned Until"
 msgstr "Şu Zamana Kadar Yasaklı"
 
@@ -526,7 +525,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:54
 #: src/components/NgxConfigEditor/NgxUpstream.vue:37
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
-#: src/views/site/components/SiteStatusSegmented.vue:97
+#: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
@@ -644,6 +643,10 @@ msgstr "Doğrulama Yöntemi"
 #: src/views/site/site_edit/components/Cert/ChangeCert.vue:55
 msgid "Change Certificate"
 msgstr "Sertifika Değiştir"
+
+#: src/views/user/UserProfile.vue:181
+msgid "Change Password"
+msgstr "Şifreyi Değiştir"
 
 #: src/views/site/site_edit/components/Cert/Cert.vue:77
 msgid "Changed Certificate"
@@ -816,13 +819,11 @@ msgstr "Başarıyla temizlendi"
 msgid "Click or drag backup file to this area to upload"
 msgstr "Yüklemek için bu alana yedekleme dosyasını tıklayın veya sürükleyin"
 
-#: src/language/curd.ts:49
-#: src/language/curd.ts:53
+#: src/language/curd.ts:49 src/language/curd.ts:53
 msgid "Click or drag files to this area to upload"
 msgstr "Yüklemek için dosyaları bu alana tıklayın veya sürükleyin"
 
-#: src/language/curd.ts:50
-#: src/language/curd.ts:54
+#: src/language/curd.ts:50 src/language/curd.ts:54
 msgid "Click or drag folders to this area to upload"
 msgstr "Yüklemek için klasörleri bu alana tıklayın veya sürükleyin"
 
@@ -942,6 +943,10 @@ msgstr "Yapılandırmalar"
 msgid "Configure SSL"
 msgstr "SSL'yi Yapılandırma"
 
+#: src/views/user/UserProfile.vue:204
+msgid "Confirm New Password"
+msgstr "Yeni Şifreyi Onayla"
+
 #: src/views/dashboard/Environments.vue:141
 msgid "Connected"
 msgstr "Bağlandı"
@@ -950,7 +955,7 @@ msgstr "Bağlandı"
 msgid "Connection error, trying to reconnect..."
 msgstr "Bağlantı hatası, yeniden bağlanılmaya çalışılıyor..."
 
-#: src/views/terminal/Terminal.vue:142
+#: src/views/terminal/Terminal.vue:139
 msgid "Connection lost, please refresh the page."
 msgstr "Bağlantı kesildi, lütfen sayfayı yenileyin."
 
@@ -1008,7 +1013,7 @@ msgstr ""
 msgid "CPU:"
 msgstr "CPU:"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:166
+#: src/components/NgxConfigEditor/NgxUpstream.vue:170
 msgid "Create"
 msgstr "Oluştur"
 
@@ -1037,7 +1042,7 @@ msgstr ""
 "oluşturun. Yedek dosyaları otomatik olarak bilgisayarınıza indirilecektir."
 
 #: src/views/environments/group/columns.ts:29
-#: src/views/notification/notificationColumns.tsx:45
+#: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:71
 #: src/views/user/userColumns.tsx:46
@@ -1075,6 +1080,10 @@ msgstr "Mevcut aktif bağlantılar"
 #: src/components/ConfigHistory/DiffViewer.vue:72
 msgid "Current Content"
 msgstr "Mevcut İçerik"
+
+#: src/views/user/UserProfile.vue:186
+msgid "Current Password"
+msgstr "Mevcut Şifre"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:65
 msgid "Current usage"
@@ -1117,8 +1126,8 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:78
 #: src/components/NgxConfigEditor/NgxUpstream.vue:129 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
-#: src/views/site/site_list/SiteList.vue:108
-#: src/views/stream/StreamList.vue:165
+#: src/views/site/site_list/SiteList.vue:109
+#: src/views/stream/StreamList.vue:166
 msgid "Delete"
 msgstr "Sil"
 
@@ -1195,7 +1204,7 @@ msgstr "Hedef dosya zaten mevcut"
 msgid "Destination file: {0} already exists"
 msgstr "Hedef dosya: {0} zaten mevcut"
 
-#: src/views/notification/notificationColumns.tsx:60
+#: src/views/notification/notificationColumns.tsx:66
 msgid "Details"
 msgstr "Detaylar"
 
@@ -1239,11 +1248,11 @@ msgstr "Dizin Seviyeleri"
 msgid "Directory path to store cache files"
 msgstr "Önbellek dosyalarını depolamak için dizin yolu"
 
-#: src/views/site/components/SiteStatusSegmented.vue:88
+#: src/views/site/components/SiteStatusSelect.vue:115
 msgid "disable"
 msgstr "Devre dışı bırak"
 
-#: src/views/stream/StreamList.vue:136
+#: src/views/stream/StreamList.vue:137
 msgid "Disable"
 msgstr "Devre Dışı Bırak"
 
@@ -1304,7 +1313,7 @@ msgstr "Akış %{name}, %{node} üzerinden başarıyla devre dışı bırakıld�
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
-#: src/views/site/components/SiteStatusSegmented.vue:134
+#: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/site/site_list/columns.tsx:114 src/views/stream/columns.tsx:48
 #: src/views/stream/components/StreamEditor.vue:30
@@ -1312,7 +1321,7 @@ msgstr "Akış %{name}, %{node} üzerinden başarıyla devre dışı bırakıld�
 msgid "Disabled"
 msgstr "Devre dışı"
 
-#: src/views/site/components/SiteStatusSegmented.vue:40
+#: src/views/site/components/SiteStatusSelect.vue:67
 #: src/views/stream/components/RightPanel/Basic.vue:34
 #: src/views/stream/StreamList.vue:56
 msgid "Disabled successfully"
@@ -1340,7 +1349,7 @@ msgstr "DNS01"
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr "Bu seçeneği, ihtiyacınız olduğundan emin olmadıkça etkinleştirmeyin."
 
-#: src/views/site/components/SiteStatusSegmented.vue:93
+#: src/views/site/components/SiteStatusSelect.vue:120
 msgid "Do you want to %{action} this site?"
 msgstr "Bu siteyi %{action} etmek istiyor musunuz?"
 
@@ -1420,9 +1429,9 @@ msgstr ""
 "kullanamazsınız."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:94
+#: src/views/site/site_list/SiteList.vue:95
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:151
+#: src/views/stream/StreamList.vue:152
 msgid "Duplicate"
 msgstr "Kopyala"
 
@@ -1466,11 +1475,11 @@ msgstr "E-posta"
 msgid "Email (*)"
 msgstr "E-posta(*)"
 
-#: src/views/site/components/SiteStatusSegmented.vue:87
+#: src/views/site/components/SiteStatusSelect.vue:114
 msgid "enable"
 msgstr "etkinleştir"
 
-#: src/views/stream/StreamList.vue:144
+#: src/views/stream/StreamList.vue:145
 msgid "Enable"
 msgstr "Etkinleştir"
 
@@ -1568,7 +1577,7 @@ msgstr "TOTP'yi Etkinleştir"
 #: src/views/preference/tabs/LogrotateSettings.vue:20
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
-#: src/views/site/components/SiteStatusSegmented.vue:130
+#: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
 #: src/views/site/site_list/columns.tsx:110 src/views/stream/columns.tsx:44
 #: src/views/stream/components/RightPanel/Basic.vue:62
@@ -1577,7 +1586,7 @@ msgstr "TOTP'yi Etkinleştir"
 msgid "Enabled"
 msgstr "Etkin"
 
-#: src/views/site/components/SiteStatusSegmented.vue:27
+#: src/views/site/components/SiteStatusSelect.vue:54
 #: src/views/site/site_add/SiteAdd.vue:32
 #: src/views/stream/components/RightPanel/Basic.vue:25
 #: src/views/stream/StreamList.vue:46
@@ -1786,23 +1795,23 @@ msgstr "Sertifika silinemedi"
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Sertifika veritabanından silinemedi: %{error}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:46
+#: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/RightPanel/Basic.vue:37
 #: src/views/stream/StreamList.vue:60
 msgid "Failed to disable %{msg}"
 msgstr "Devre dışı bırakılamadı %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:72
+#: src/views/site/components/SiteStatusSelect.vue:99
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr "Bakım modu devre dışı bırakılamadı: %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:33
+#: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/RightPanel/Basic.vue:28
 #: src/views/stream/StreamList.vue:50
 msgid "Failed to enable %{msg}"
 msgstr "Etkinleştirilemedi %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:59
+#: src/views/site/components/SiteStatusSelect.vue:86
 msgid "Failed to enable maintenance mode %{msg}"
 msgstr "Bakım modu etkinleştirilemedi: %{msg}"
 
@@ -2115,7 +2124,7 @@ msgstr "ICP Numarası"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "Boş bırakılırsa, varsayılan CA Dir kullanılır."
 
-#: src/views/preference/tabs/AuthSettings.vue:144
+#: src/views/preference/tabs/AuthSettings.vue:113
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -2287,7 +2296,7 @@ msgstr "Geçersiz istek biçimi"
 msgid "Invalid security token format"
 msgstr "Geçersiz güvenlik belirteci biçimi"
 
-#: src/views/preference/tabs/AuthSettings.vue:17
+#: src/views/preference/tabs/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
 
@@ -2402,7 +2411,7 @@ msgstr "Liste"
 msgid "Load Average:"
 msgstr "Yük Ortalaması:"
 
-#: src/views/environments/list/Environment.vue:80
+#: src/views/environments/list/Environment.vue:81
 msgid "Load from settings"
 msgstr "Ayarlar'dan yükle"
 
@@ -2499,17 +2508,17 @@ msgstr ""
 "olarak etkinleştirebilir. Nginx UI'nin crontab görev zamanlayıcısı, "
 "belirlediğiniz dakika aralığında logrotate komutunu çalıştıracaktır."
 
-#: src/views/site/components/SiteStatusSegmented.vue:138
+#: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
 #: src/views/site/site_list/columns.tsx:118
 msgid "Maintenance"
 msgstr "Bakım"
 
-#: src/views/site/components/SiteStatusSegmented.vue:66
+#: src/views/site/components/SiteStatusSelect.vue:93
 msgid "Maintenance mode disabled successfully"
 msgstr "Bakım modu başarıyla devre dışı bırakıldı"
 
-#: src/views/site/components/SiteStatusSegmented.vue:53
+#: src/views/site/components/SiteStatusSelect.vue:80
 msgid "Maintenance mode enabled successfully"
 msgstr "Bakım modu başarıyla etkinleştirildi"
 
@@ -2576,7 +2585,7 @@ msgstr "Ana süreç"
 msgid "Master Process"
 msgstr "Ana Süreç"
 
-#: src/views/preference/tabs/AuthSettings.vue:134
+#: src/views/preference/tabs/AuthSettings.vue:103
 msgid "Max Attempts"
 msgstr "Maksimum Deneme Sayısı"
 
@@ -2675,7 +2684,7 @@ msgstr "Modüller"
 msgid "Multi-line Directive"
 msgstr "Çok Satırlı Yönergeler"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:178
+#: src/components/NgxConfigEditor/NgxUpstream.vue:182
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:9
@@ -2692,7 +2701,7 @@ msgstr "Çok Satırlı Yönergeler"
 #: src/views/stream/columns.tsx:10
 #: src/views/stream/components/RightPanel/Basic.vue:69
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:178
+#: src/views/stream/StreamList.vue:179
 msgid "Name"
 msgstr "İsim"
 
@@ -2723,6 +2732,10 @@ msgstr "Yeni Kurulum"
 #: src/views/config/components/Rename.vue:74
 msgid "New name"
 msgstr "Yeni ad"
+
+#: src/views/user/UserProfile.vue:195
+msgid "New Password"
+msgstr "Yeni Şifre"
 
 #: src/views/config/ConfigEditor.vue:328
 msgid "New Path"
@@ -2939,9 +2952,9 @@ msgstr "Nginx.conf, streams-enabled dizinini içerir"
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:38
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/tabs/AuthSettings.vue:163
+#: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:97 src/views/stream/StreamList.vue:154
+#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:155
 msgid "No"
 msgstr "Hayır"
 
@@ -3076,6 +3089,7 @@ msgid "Off"
 msgstr "Kapalı"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
+#: src/components/NgxConfigEditor/NgxUpstream.vue:145
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:55
@@ -3087,13 +3101,13 @@ msgstr "Çevrimdışı"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:36
 #: src/components/Notification/Notification.vue:110 src/language/curd.ts:15
 #: src/views/notification/Notification.vue:39
-#: src/views/site/components/SiteStatusSegmented.vue:96
+#: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:98
+#: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
-#: src/views/stream/StreamList.vue:155
+#: src/views/stream/StreamList.vue:156
 #: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr "Tamam"
@@ -3212,6 +3226,14 @@ msgstr "Yanlış şifre"
 msgid "Password length cannot exceed 20 characters"
 msgstr "Şifre uzunluğu 20 karakteri geçemez"
 
+#: src/views/user/UserProfile.vue:96
+msgid "Password updated successfully"
+msgstr "Şifre başarıyla güncellendi"
+
+#: src/views/user/UserProfile.vue:75
+msgid "Passwords do not match"
+msgstr "Şifreler eşleşmiyor"
+
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
 #: src/language/curd.ts:59 src/views/config/ConfigEditor.vue:322
@@ -3250,6 +3272,10 @@ msgstr "Performans ayarları başarıyla kaydedildi"
 #: src/language/constants.ts:28
 msgid "Performing core upgrade"
 msgstr "Çekirdek yükseltme gerçekleştiriliyor"
+
+#: src/views/user/UserProfile.vue:121
+msgid "Personal Information"
+msgstr "Kişisel Bilgiler"
 
 #: src/constants/errors/self_check.ts:19
 msgid "PID path not exist"
@@ -3382,17 +3408,17 @@ msgstr "Lütfen bir yedekleme dosyası seçin"
 msgid "Please select at least one item"
 msgstr "Lütfen en az bir öğe seçin"
 
-#: src/views/environments/list/Environment.vue:112
+#: src/views/environments/list/Environment.vue:113
 #: src/views/environments/list/Environment.vue:35
 msgid "Please select at least one node to reload Nginx"
 msgstr "Lütfen Nginx'i yeniden yüklemek için en az bir düğüm seçin"
 
-#: src/views/environments/list/Environment.vue:133
+#: src/views/environments/list/Environment.vue:134
 #: src/views/environments/list/Environment.vue:49
 msgid "Please select at least one node to restart Nginx"
 msgstr "Lütfen Nginx'i yeniden başlatmak için en az bir düğüm seçin"
 
-#: src/views/environments/list/Environment.vue:91
+#: src/views/environments/list/Environment.vue:92
 msgid "Please select at least one node to upgrade"
 msgstr "Lütfen yükseltmek için en az bir düğüm seçin"
 
@@ -3558,8 +3584,8 @@ msgstr "Yeniden Yükle"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
 #: src/views/environments/group/columns.ts:22
 #: src/views/environments/group/EnvGroup.vue:50
-#: src/views/environments/list/Environment.vue:120
-#: src/views/environments/list/Environment.vue:128
+#: src/views/environments/list/Environment.vue:121
+#: src/views/environments/list/Environment.vue:129
 msgid "Reload Nginx"
 msgstr "Nginx'i Yeniden Yükle"
 
@@ -3595,12 +3621,12 @@ msgstr "Yeniden Yükleniyor"
 msgid "Reloading nginx"
 msgstr "nginx yeniden yükleniyor"
 
-#: src/views/preference/tabs/AuthSettings.vue:168
+#: src/views/preference/tabs/AuthSettings.vue:137
 msgid "Remove"
 msgstr "Kaldır"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:46
-#: src/views/preference/tabs/AuthSettings.vue:50
+#: src/views/preference/tabs/AuthSettings.vue:47
 msgid "Remove successfully"
 msgstr "Başarıyla kaldırıldı"
 
@@ -3748,8 +3774,8 @@ msgid "Restart"
 msgstr "Yeniden Başlat"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
-#: src/views/environments/list/Environment.vue:141
-#: src/views/environments/list/Environment.vue:149
+#: src/views/environments/list/Environment.vue:142
+#: src/views/environments/list/Environment.vue:150
 msgid "Restart Nginx"
 msgstr "Nginx'i Yeniden Başlat"
 
@@ -3829,15 +3855,15 @@ msgstr ""
 "Bir sertifikanın iptal edilmesi, şu anda onu kullanan tüm hizmetleri "
 "etkileyecektir. Bu işlem geri alınamaz."
 
-#: src/views/preference/tabs/AuthSettings.vue:106
+#: src/views/preference/tabs/AuthSettings.vue:75
 msgid "RP Display Name"
 msgstr "RP Görünen Adı"
 
-#: src/views/preference/tabs/AuthSettings.vue:112
+#: src/views/preference/tabs/AuthSettings.vue:81
 msgid "RP Origins"
 msgstr "RP Kökenleri"
 
-#: src/views/preference/tabs/AuthSettings.vue:100
+#: src/views/preference/tabs/AuthSettings.vue:69
 msgid "RPID"
 msgstr "RPID"
 
@@ -3942,6 +3968,10 @@ msgstr "Modül adı ara"
 msgid "Secret has been copied"
 msgstr "Gizli kod kopyalandı"
 
+#: src/views/user/UserProfile.vue:175
+msgid "Security Settings"
+msgstr "Güvenlik Ayarları"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:207
 #: src/components/SystemRestore/SystemRestoreContent.vue:284
 msgid "Security Token"
@@ -4017,7 +4047,7 @@ msgstr ""
 "DNS sorgulama adımında sistem ad sunucularını geçersiz kılmak için "
 "özyinelemeli ad sunucularını ayarlayın."
 
-#: src/views/site/components/SiteStatusSegmented.vue:89
+#: src/views/site/components/SiteStatusSelect.vue:116
 msgid "set to maintenance mode"
 msgstr "bakım moduna ayarla"
 
@@ -4256,13 +4286,11 @@ msgstr ""
 "dosyasını yazmak için bu bağlantıya bakın: "
 "https://nginxui.com/guide/nginx-proxy-example.html"
 
-#: src/language/curd.ts:51
-#: src/language/curd.ts:55
+#: src/language/curd.ts:51 src/language/curd.ts:55
 msgid "Support single or batch upload of files"
 msgstr "Tek veya toplu dosya yüklemeyi destekler"
 
-#: src/language/curd.ts:52
-#: src/language/curd.ts:56
+#: src/language/curd.ts:52 src/language/curd.ts:56
 msgid "Support uploading entire folders"
 msgstr "Tüm klasörlerin yüklenmesini destekler"
 
@@ -4607,12 +4635,12 @@ msgstr ""
 "Bu işlem, %{nodeNames} üzerindeki Nginx UI'yi %{version} sürümüne "
 "yükseltecek veya yeniden yükleyecektir."
 
-#: src/views/preference/tabs/AuthSettings.vue:123
+#: src/views/preference/tabs/AuthSettings.vue:92
 msgid "Throttle"
 msgstr "Kısıtlama"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:65
-#: src/views/preference/tabs/AuthSettings.vue:143
+#: src/views/preference/tabs/AuthSettings.vue:112
 #: src/views/preference/tabs/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr "İpuçları"
@@ -4625,7 +4653,7 @@ msgstr ""
 "İpucu: worker_processes veya worker_connections değerlerini artırarak "
 "eşzamanlı işleme kapasitesini artırabilirsiniz."
 
-#: src/views/notification/notificationColumns.tsx:52
+#: src/views/notification/notificationColumns.tsx:58
 msgid "Title"
 msgstr "Başlık"
 
@@ -4745,6 +4773,14 @@ msgstr "Tür"
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
+#: src/views/user/UserProfile.vue:218
+msgid "Update Password"
+msgstr "Şifreyi Güncelle"
+
+#: src/views/user/UserProfile.vue:142
+msgid "Update Profile"
+msgstr "Profili Güncelle"
+
 #: src/views/preference/components/AuthSettings/Passkey.vue:39
 msgid "Update successfully"
 msgstr "Başarıyla güncellendi"
@@ -4762,8 +4798,8 @@ msgid "Updated at"
 msgstr "Güncellenme Tarihi"
 
 #: src/routes/modules/system.ts:33
-#: src/views/environments/list/Environment.vue:107
-#: src/views/environments/list/Environment.vue:99
+#: src/views/environments/list/Environment.vue:100
+#: src/views/environments/list/Environment.vue:108
 #: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "Yükselt"
@@ -4789,7 +4825,7 @@ msgstr "Dosyaları Yükle"
 msgid "Upload Folders"
 msgstr "Klasörleri Yükle"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:173
+#: src/components/NgxConfigEditor/NgxUpstream.vue:177
 msgid "Upstream Name"
 msgstr "Yukarı Akış Adı"
 
@@ -4821,11 +4857,20 @@ msgstr "Kullanıcı"
 msgid "User banned"
 msgstr "Kullanıcı yasaklandı"
 
+#: src/views/user/UserProfile.vue:62
+msgid "User info updated successfully"
+msgstr "Kullanıcı bilgileri başarıyla güncellendi"
+
 #: src/constants/errors/user.ts:8
 msgid "User not enabled otp as 2fa"
 msgstr "Kullanıcı OTP'yi 2FA olarak etkinleştirmedi"
 
+#: src/routes/modules/user.ts:19
+msgid "User Profile"
+msgstr "Kullanıcı Profili"
+
 #: src/views/other/Login.vue:173 src/views/user/userColumns.tsx:7
+#: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
@@ -4916,7 +4961,7 @@ msgstr ""
 "Bu dosyadan HTTPChallenge yapılandırmasını kaldıracağız ve Nginx'i yeniden "
 "yükleyeceğiz. Devam etmek istediğinizden emin misiniz?"
 
-#: src/views/preference/tabs/AuthSettings.vue:96
+#: src/views/preference/tabs/AuthSettings.vue:65
 msgid "Webauthn"
 msgstr "WebAuthn"
 
@@ -4997,12 +5042,12 @@ msgstr "Sertifika diske yazılıyor"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
-#: src/views/preference/tabs/AuthSettings.vue:162
+#: src/views/preference/tabs/AuthSettings.vue:131
 #: src/views/preference/tabs/CertSettings.vue:72
 msgid "Yes"
 msgstr "Evet"
 
-#: src/views/terminal/Terminal.vue:135
+#: src/views/terminal/Terminal.vue:132
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a "
 "non-localhost domain. This may expose sensitive information."
@@ -5098,9 +5143,6 @@ msgstr "Geçiş Anahtarlarınız"
 #~ msgid "Total %{total} item"
 #~ msgid_plural "Total %{total} items"
 #~ msgstr[0] "Toplam %{total} öğe"
-
-#~ msgid "Updated successfully"
-#~ msgstr "Başarıyla güncellendi"
 
 #~ msgid "View Details"
 #~ msgstr "Detayları Görüntüle"

@@ -103,7 +103,7 @@ msgstr "[Nginx UI] 正在将证书写入磁盘"
 msgid "2FA"
 msgstr "2FA"
 
-#: src/views/preference/tabs/AuthSettings.vue:69
+#: src/views/user/UserProfile.vue:151
 msgid "2FA Settings"
 msgstr "2FA 设置"
 
@@ -129,8 +129,7 @@ msgstr "访问日志"
 msgid "ACME User"
 msgstr "ACME 用户"
 
-#: src/views/notification/notificationColumns.tsx:66
-#: src/views/preference/tabs/AuthSettings.vue:29
+#: src/views/preference/tabs/AuthSettings.vue:26
 msgid "Action"
 msgstr "操作"
 
@@ -141,9 +140,9 @@ msgstr "操作"
 #: src/views/environments/group/columns.ts:41
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:52
+#: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:76
-#: src/views/site/site_list/columns.tsx:129
-#: src/views/stream/columns.tsx:64
+#: src/views/site/site_list/columns.tsx:129 src/views/stream/columns.tsx:64
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "操作"
@@ -158,10 +157,10 @@ msgid "Actual worker to configured ratio"
 msgstr "实际工作进程与配置比例"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:112
-#: src/components/NgxConfigEditor/NgxUpstream.vue:155 src/language/curd.ts:19
+#: src/components/NgxConfigEditor/NgxUpstream.vue:159 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:120
+#: src/views/stream/StreamList.vue:121
 msgid "Add"
 msgstr "添加"
 
@@ -188,7 +187,7 @@ msgstr "添加 Location"
 msgid "Add Site"
 msgstr "添加站点"
 
-#: src/views/stream/StreamList.vue:173
+#: src/views/stream/StreamList.vue:174
 msgid "Add Stream"
 msgstr "添加 Stream"
 
@@ -246,7 +245,7 @@ msgstr "应用"
 msgid "Arch"
 msgstr "\"架构\""
 
-#: src/views/preference/tabs/AuthSettings.vue:161
+#: src/views/preference/tabs/AuthSettings.vue:130
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "您确定要立即删除这个被禁用的 IP 吗？"
 
@@ -275,8 +274,8 @@ msgstr "你确定你要清除聊天记录吗？"
 msgid "Are you sure you want to delete permanently?"
 msgstr "确定要永久删除吗？"
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:99
-#: src/views/stream/StreamList.vue:156
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
+#: src/views/stream/StreamList.vue:157
 msgid "Are you sure you want to delete?"
 msgstr "您确定要删除吗？"
 
@@ -316,7 +315,7 @@ msgstr "助手"
 msgid "Attempt to fix"
 msgstr "尝试修复"
 
-#: src/views/preference/tabs/AuthSettings.vue:20
+#: src/views/preference/tabs/AuthSettings.vue:17
 msgid "Attempts"
 msgstr "尝试次数"
 
@@ -328,7 +327,7 @@ msgstr "认证"
 msgid "Authenticate with a passkey"
 msgstr "通过 Passkey 认证"
 
-#: src/views/preference/tabs/AuthSettings.vue:87
+#: src/views/preference/tabs/AuthSettings.vue:56
 msgid "Authentication Settings"
 msgstr "认证设置"
 
@@ -403,15 +402,15 @@ msgstr "未找到备份文件: {0}"
 msgid "Backup has been downloaded successfully"
 msgstr "已成功下载备份"
 
-#: src/views/preference/tabs/AuthSettings.vue:128
+#: src/views/preference/tabs/AuthSettings.vue:97
 msgid "Ban Threshold Minutes"
 msgstr "禁止阈值（分钟）"
 
-#: src/views/preference/tabs/AuthSettings.vue:149
+#: src/views/preference/tabs/AuthSettings.vue:118
 msgid "Banned IPs"
 msgstr "禁止 IP 列表"
 
-#: src/views/preference/tabs/AuthSettings.vue:23
+#: src/views/preference/tabs/AuthSettings.vue:20
 msgid "Banned Until"
 msgstr "禁用至"
 
@@ -519,7 +518,7 @@ msgstr "基于 worker_processes * worker_connections 计算得出。实际性能
 #: src/components/NgxConfigEditor/NgxServer.vue:54
 #: src/components/NgxConfigEditor/NgxUpstream.vue:37
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
-#: src/views/site/components/SiteStatusSegmented.vue:97
+#: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
@@ -636,6 +635,10 @@ msgstr "挑战方法"
 #: src/views/site/site_edit/components/Cert/ChangeCert.vue:55
 msgid "Change Certificate"
 msgstr "更改证书"
+
+#: src/views/user/UserProfile.vue:181
+msgid "Change Password"
+msgstr "更改密码"
 
 #: src/views/site/site_edit/components/Cert/Cert.vue:77
 msgid "Changed Certificate"
@@ -784,13 +787,11 @@ msgstr "清除成功"
 msgid "Click or drag backup file to this area to upload"
 msgstr "单击或拖动备份文件到此区域上传"
 
-#: src/language/curd.ts:49
-#: src/language/curd.ts:53
+#: src/language/curd.ts:49 src/language/curd.ts:53
 msgid "Click or drag files to this area to upload"
 msgstr "点击或拖拽文件到此处上传"
 
-#: src/language/curd.ts:50
-#: src/language/curd.ts:54
+#: src/language/curd.ts:50 src/language/curd.ts:54
 msgid "Click or drag folders to this area to upload"
 msgstr "点击或拖拽文件夹到此处上传"
 
@@ -910,6 +911,10 @@ msgstr "配置"
 msgid "Configure SSL"
 msgstr "配置 SSL"
 
+#: src/views/user/UserProfile.vue:204
+msgid "Confirm New Password"
+msgstr "确认新密码"
+
 #: src/views/dashboard/Environments.vue:141
 msgid "Connected"
 msgstr "已连接"
@@ -918,7 +923,7 @@ msgstr "已连接"
 msgid "Connection error, trying to reconnect..."
 msgstr "连接错误，正在尝试重新连接..."
 
-#: src/views/terminal/Terminal.vue:142
+#: src/views/terminal/Terminal.vue:139
 msgid "Connection lost, please refresh the page."
 msgstr "连接中断，请刷新页面。"
 
@@ -974,7 +979,7 @@ msgstr "CPU 使用率相对较高，请考虑优化 Nginx 配置"
 msgid "CPU:"
 msgstr "CPU:"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:166
+#: src/components/NgxConfigEditor/NgxUpstream.vue:170
 msgid "Create"
 msgstr "创建"
 
@@ -1001,7 +1006,7 @@ msgid ""
 msgstr "创建系统备份，包括 Nginx 配置和 Nginx UI 设置。备份文件将自动下载到你的电脑。"
 
 #: src/views/environments/group/columns.ts:29
-#: src/views/notification/notificationColumns.tsx:45
+#: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
 #: src/views/preference/components/ExternalNotify/columns.tsx:71
 #: src/views/user/userColumns.tsx:46
@@ -1039,6 +1044,10 @@ msgstr "当前活动连接"
 #: src/components/ConfigHistory/DiffViewer.vue:72
 msgid "Current Content"
 msgstr "当前内容"
+
+#: src/views/user/UserProfile.vue:186
+msgid "Current Password"
+msgstr "当前密码"
 
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:65
 msgid "Current usage"
@@ -1079,8 +1088,8 @@ msgstr "定义共享内存区名称和大小，例如 proxy_cache:10m"
 #: src/components/NgxConfigEditor/NgxServer.vue:78
 #: src/components/NgxConfigEditor/NgxUpstream.vue:129 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
-#: src/views/site/site_list/SiteList.vue:108
-#: src/views/stream/StreamList.vue:165
+#: src/views/site/site_list/SiteList.vue:109
+#: src/views/stream/StreamList.vue:166
 msgid "Delete"
 msgstr "删除"
 
@@ -1157,7 +1166,7 @@ msgstr "目标文件已存在"
 msgid "Destination file: {0} already exists"
 msgstr "目标文件: {0} 已存在"
 
-#: src/views/notification/notificationColumns.tsx:60
+#: src/views/notification/notificationColumns.tsx:66
 msgid "Details"
 msgstr "详情"
 
@@ -1201,11 +1210,11 @@ msgstr "目录层级"
 msgid "Directory path to store cache files"
 msgstr "存储缓存文件的目录路径"
 
-#: src/views/site/components/SiteStatusSegmented.vue:88
+#: src/views/site/components/SiteStatusSelect.vue:115
 msgid "disable"
 msgstr "禁用"
 
-#: src/views/stream/StreamList.vue:136
+#: src/views/stream/StreamList.vue:137
 msgid "Disable"
 msgstr "禁用"
 
@@ -1266,7 +1275,7 @@ msgstr "在 %{node} 上禁用 %{name} 成功"
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
-#: src/views/site/components/SiteStatusSegmented.vue:134
+#: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/site/site_list/columns.tsx:114 src/views/stream/columns.tsx:48
 #: src/views/stream/components/StreamEditor.vue:30
@@ -1274,7 +1283,7 @@ msgstr "在 %{node} 上禁用 %{name} 成功"
 msgid "Disabled"
 msgstr "禁用"
 
-#: src/views/site/components/SiteStatusSegmented.vue:40
+#: src/views/site/components/SiteStatusSelect.vue:67
 #: src/views/stream/components/RightPanel/Basic.vue:34
 #: src/views/stream/StreamList.vue:56
 msgid "Disabled successfully"
@@ -1302,7 +1311,7 @@ msgstr "DNS01"
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr "除非确定需要，否则不要启用该选项。"
 
-#: src/views/site/components/SiteStatusSegmented.vue:93
+#: src/views/site/components/SiteStatusSelect.vue:120
 msgid "Do you want to %{action} this site?"
 msgstr "您想将这个网站%{action}吗？"
 
@@ -1377,9 +1386,9 @@ msgid ""
 msgstr "由于某些浏览器的安全策略，除非在 localhost 上使用，否则不能在非 HTTPS 网站上使用 Passkey。"
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:94
+#: src/views/site/site_list/SiteList.vue:95
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:151
+#: src/views/stream/StreamList.vue:152
 msgid "Duplicate"
 msgstr "复制"
 
@@ -1423,11 +1432,11 @@ msgstr "邮箱"
 msgid "Email (*)"
 msgstr "邮箱 (*)"
 
-#: src/views/site/components/SiteStatusSegmented.vue:87
+#: src/views/site/components/SiteStatusSelect.vue:114
 msgid "enable"
 msgstr "启用"
 
-#: src/views/stream/StreamList.vue:144
+#: src/views/stream/StreamList.vue:145
 msgid "Enable"
 msgstr "启用"
 
@@ -1525,7 +1534,7 @@ msgstr "启用 TOTP"
 #: src/views/preference/tabs/LogrotateSettings.vue:20
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
-#: src/views/site/components/SiteStatusSegmented.vue:130
+#: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
 #: src/views/site/site_list/columns.tsx:110 src/views/stream/columns.tsx:44
 #: src/views/stream/components/RightPanel/Basic.vue:62
@@ -1534,7 +1543,7 @@ msgstr "启用 TOTP"
 msgid "Enabled"
 msgstr "启用"
 
-#: src/views/site/components/SiteStatusSegmented.vue:27
+#: src/views/site/components/SiteStatusSelect.vue:54
 #: src/views/site/site_add/SiteAdd.vue:32
 #: src/views/stream/components/RightPanel/Basic.vue:25
 #: src/views/stream/StreamList.vue:46
@@ -1743,23 +1752,23 @@ msgstr "删除证书失败"
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "从数据库中删除证书失败：%{error}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:46
+#: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/RightPanel/Basic.vue:37
 #: src/views/stream/StreamList.vue:60
 msgid "Failed to disable %{msg}"
 msgstr "禁用失败 %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:72
+#: src/views/site/components/SiteStatusSelect.vue:99
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr "停用维护模式失败 %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:33
+#: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/RightPanel/Basic.vue:28
 #: src/views/stream/StreamList.vue:50
 msgid "Failed to enable %{msg}"
 msgstr "启用失败 %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:59
+#: src/views/site/components/SiteStatusSelect.vue:86
 msgid "Failed to enable maintenance mode %{msg}"
 msgstr "启用维护模式失败 %{msg}"
 
@@ -2070,7 +2079,7 @@ msgstr "ICP备案号"
 msgid "If left blank, the default CA Dir will be used."
 msgstr "如果留空，则使用默认 CA Dir。"
 
-#: src/views/preference/tabs/AuthSettings.vue:144
+#: src/views/preference/tabs/AuthSettings.vue:113
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -2229,7 +2238,7 @@ msgstr "无效的请求格式"
 msgid "Invalid security token format"
 msgstr "安全令牌格式无效"
 
-#: src/views/preference/tabs/AuthSettings.vue:17
+#: src/views/preference/tabs/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
 
@@ -2342,7 +2351,7 @@ msgstr "列表"
 msgid "Load Average:"
 msgstr "系统负载:"
 
-#: src/views/environments/list/Environment.vue:80
+#: src/views/environments/list/Environment.vue:81
 msgid "Load from settings"
 msgstr "从设置中加载"
 
@@ -2435,17 +2444,17 @@ msgstr ""
 "定时任务，因此您无需修改本页面的参数。对于使用 Docker 容器安装 Nginx 用户界面的用户，您可以手动启用该选项。Nginx UI "
 "的定时任务任务调度器将按照您设置的时间间隔（以分钟为单位）执行 logrotate 命令。"
 
-#: src/views/site/components/SiteStatusSegmented.vue:138
+#: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
 #: src/views/site/site_list/columns.tsx:118
 msgid "Maintenance"
 msgstr "维护模式"
 
-#: src/views/site/components/SiteStatusSegmented.vue:66
+#: src/views/site/components/SiteStatusSelect.vue:93
 msgid "Maintenance mode disabled successfully"
 msgstr "成功禁用维护模式"
 
-#: src/views/site/components/SiteStatusSegmented.vue:53
+#: src/views/site/components/SiteStatusSelect.vue:80
 msgid "Maintenance mode enabled successfully"
 msgstr "成功启用维护模式"
 
@@ -2510,7 +2519,7 @@ msgstr "主进程"
 msgid "Master Process"
 msgstr "主进程"
 
-#: src/views/preference/tabs/AuthSettings.vue:134
+#: src/views/preference/tabs/AuthSettings.vue:103
 msgid "Max Attempts"
 msgstr "最大尝试次数"
 
@@ -2609,7 +2618,7 @@ msgstr "模块"
 msgid "Multi-line Directive"
 msgstr "多行指令"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:178
+#: src/components/NgxConfigEditor/NgxUpstream.vue:182
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:9
@@ -2626,7 +2635,7 @@ msgstr "多行指令"
 #: src/views/stream/columns.tsx:10
 #: src/views/stream/components/RightPanel/Basic.vue:69
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:178
+#: src/views/stream/StreamList.vue:179
 msgid "Name"
 msgstr "名称"
 
@@ -2657,6 +2666,10 @@ msgstr "新安装"
 #: src/views/config/components/Rename.vue:74
 msgid "New name"
 msgstr "新名称"
+
+#: src/views/user/UserProfile.vue:195
+msgid "New Password"
+msgstr "新密码"
 
 #: src/views/config/ConfigEditor.vue:328
 msgid "New Path"
@@ -2871,9 +2884,9 @@ msgstr "检查 nginx.conf 是否包含 streams-enabled 的目录"
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:109 src/language/curd.ts:38
 #: src/views/notification/Notification.vue:38
-#: src/views/preference/tabs/AuthSettings.vue:163
+#: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:97 src/views/stream/StreamList.vue:154
+#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:155
 msgid "No"
 msgstr "取消"
 
@@ -3002,6 +3015,7 @@ msgid "Off"
 msgstr "关闭"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
+#: src/components/NgxConfigEditor/NgxUpstream.vue:145
 #: src/components/NodeSelector/NodeSelector.vue:109
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:55
@@ -3013,13 +3027,13 @@ msgstr "离线"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:36
 #: src/components/Notification/Notification.vue:110 src/language/curd.ts:15
 #: src/views/notification/Notification.vue:39
-#: src/views/site/components/SiteStatusSegmented.vue:96
+#: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:98
+#: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
-#: src/views/stream/StreamList.vue:155
+#: src/views/stream/StreamList.vue:156
 #: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr "确定"
@@ -3135,6 +3149,14 @@ msgstr "用户名和密码错误"
 msgid "Password length cannot exceed 20 characters"
 msgstr "密码长度不能超过 20 个字符"
 
+#: src/views/user/UserProfile.vue:96
+msgid "Password updated successfully"
+msgstr "密码更新成功"
+
+#: src/views/user/UserProfile.vue:75
+msgid "Passwords do not match"
+msgstr "密码不匹配"
+
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
 #: src/language/curd.ts:59 src/views/config/ConfigEditor.vue:322
@@ -3173,6 +3195,10 @@ msgstr "性能调优参数保存成功"
 #: src/language/constants.ts:28
 msgid "Performing core upgrade"
 msgstr "正在进行核心升级"
+
+#: src/views/user/UserProfile.vue:121
+msgid "Personal Information"
+msgstr "个人信息"
 
 #: src/constants/errors/self_check.ts:19
 msgid "PID path not exist"
@@ -3288,17 +3314,17 @@ msgstr "请选择备份文件"
 msgid "Please select at least one item"
 msgstr "请至少选择一项"
 
-#: src/views/environments/list/Environment.vue:112
+#: src/views/environments/list/Environment.vue:113
 #: src/views/environments/list/Environment.vue:35
 msgid "Please select at least one node to reload Nginx"
 msgstr "请至少选择一个节点重载 Nginx"
 
-#: src/views/environments/list/Environment.vue:133
+#: src/views/environments/list/Environment.vue:134
 #: src/views/environments/list/Environment.vue:49
 msgid "Please select at least one node to restart Nginx"
 msgstr "请至少选择一个节点重启 Nginx"
 
-#: src/views/environments/list/Environment.vue:91
+#: src/views/environments/list/Environment.vue:92
 msgid "Please select at least one node to upgrade"
 msgstr "请至少选择一个节点进行升级"
 
@@ -3460,8 +3486,8 @@ msgstr "重载"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
 #: src/views/environments/group/columns.ts:22
 #: src/views/environments/group/EnvGroup.vue:50
-#: src/views/environments/list/Environment.vue:120
-#: src/views/environments/list/Environment.vue:128
+#: src/views/environments/list/Environment.vue:121
+#: src/views/environments/list/Environment.vue:129
 msgid "Reload Nginx"
 msgstr "重载 Nginx"
 
@@ -3497,12 +3523,12 @@ msgstr "重载中"
 msgid "Reloading nginx"
 msgstr "正在重载 Nginx"
 
-#: src/views/preference/tabs/AuthSettings.vue:168
+#: src/views/preference/tabs/AuthSettings.vue:137
 msgid "Remove"
 msgstr "删除"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:46
-#: src/views/preference/tabs/AuthSettings.vue:50
+#: src/views/preference/tabs/AuthSettings.vue:47
 msgid "Remove successfully"
 msgstr "移除成功"
 
@@ -3638,8 +3664,8 @@ msgid "Restart"
 msgstr "重启"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
-#: src/views/environments/list/Environment.vue:141
-#: src/views/environments/list/Environment.vue:149
+#: src/views/environments/list/Environment.vue:142
+#: src/views/environments/list/Environment.vue:150
 msgid "Restart Nginx"
 msgstr "重启 Nginx"
 
@@ -3717,15 +3743,15 @@ msgid ""
 "action cannot be undone."
 msgstr "撤销证书将影响当前使用该证书的任何服务。该操作无法撤销。"
 
-#: src/views/preference/tabs/AuthSettings.vue:106
+#: src/views/preference/tabs/AuthSettings.vue:75
 msgid "RP Display Name"
 msgstr "依赖方显示名称"
 
-#: src/views/preference/tabs/AuthSettings.vue:112
+#: src/views/preference/tabs/AuthSettings.vue:81
 msgid "RP Origins"
 msgstr "依赖方的源"
 
-#: src/views/preference/tabs/AuthSettings.vue:100
+#: src/views/preference/tabs/AuthSettings.vue:69
 msgid "RPID"
 msgstr "依赖方 ID"
 
@@ -3830,6 +3856,10 @@ msgstr "搜索模块名称"
 msgid "Secret has been copied"
 msgstr "密钥已复制"
 
+#: src/views/user/UserProfile.vue:175
+msgid "Security Settings"
+msgstr "安全设置"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:207
 #: src/components/SystemRestore/SystemRestoreContent.vue:284
 msgid "Security Token"
@@ -3903,7 +3933,7 @@ msgid ""
 "step of DNS challenge."
 msgstr "为 DNS 挑战步骤设置递归域名服务器以覆盖操作系统的域名服务器设置。"
 
-#: src/views/site/components/SiteStatusSegmented.vue:89
+#: src/views/site/components/SiteStatusSelect.vue:116
 msgid "set to maintenance mode"
 msgstr "设置为维护模式"
 
@@ -4138,13 +4168,11 @@ msgstr ""
 "支持通过 WebSocket 协议与后端通信，如果您正在使用 Nginx 反向代理了 Nginx UI "
 "请参考：https://nginxui.com/guide/nginx-proxy-example.html 编写配置文件"
 
-#: src/language/curd.ts:51
-#: src/language/curd.ts:55
+#: src/language/curd.ts:51 src/language/curd.ts:55
 msgid "Support single or batch upload of files"
 msgstr "支持单个或多个文件上传"
 
-#: src/language/curd.ts:52
-#: src/language/curd.ts:56
+#: src/language/curd.ts:52 src/language/curd.ts:56
 msgid "Support uploading entire folders"
 msgstr "支持上传整个文件夹"
 
@@ -4452,12 +4480,12 @@ msgstr "这将恢复配置文件和数据库。恢复完成后，Nginx UI 将重
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "将 %{nodeNames} 上的 Nginx UI 升级或重新安装到 %{version} 版本。"
 
-#: src/views/preference/tabs/AuthSettings.vue:123
+#: src/views/preference/tabs/AuthSettings.vue:92
 msgid "Throttle"
 msgstr "限流"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:65
-#: src/views/preference/tabs/AuthSettings.vue:143
+#: src/views/preference/tabs/AuthSettings.vue:112
 #: src/views/preference/tabs/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr "提示"
@@ -4468,7 +4496,7 @@ msgid ""
 "worker_processes or worker_connections"
 msgstr "提示您可以通过增加 worker_processes 或 worker_connections 来提高并发处理能力"
 
-#: src/views/notification/notificationColumns.tsx:52
+#: src/views/notification/notificationColumns.tsx:58
 msgid "Title"
 msgstr "标题"
 
@@ -4578,6 +4606,14 @@ msgstr "类型"
 msgid "Unknown"
 msgstr "未知"
 
+#: src/views/user/UserProfile.vue:218
+msgid "Update Password"
+msgstr "更新密码"
+
+#: src/views/user/UserProfile.vue:142
+msgid "Update Profile"
+msgstr "更新资料"
+
 #: src/views/preference/components/AuthSettings/Passkey.vue:39
 msgid "Update successfully"
 msgstr "更新成功"
@@ -4595,8 +4631,8 @@ msgid "Updated at"
 msgstr "修改时间"
 
 #: src/routes/modules/system.ts:33
-#: src/views/environments/list/Environment.vue:107
-#: src/views/environments/list/Environment.vue:99
+#: src/views/environments/list/Environment.vue:100
+#: src/views/environments/list/Environment.vue:108
 #: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "升级"
@@ -4622,7 +4658,7 @@ msgstr "上传文件"
 msgid "Upload Folders"
 msgstr "上传文件夹"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:173
+#: src/components/NgxConfigEditor/NgxUpstream.vue:177
 msgid "Upstream Name"
 msgstr "Upstream 名称"
 
@@ -4654,11 +4690,20 @@ msgstr "用户"
 msgid "User banned"
 msgstr "用户被禁止"
 
+#: src/views/user/UserProfile.vue:62
+msgid "User info updated successfully"
+msgstr "用户信息更新成功"
+
 #: src/constants/errors/user.ts:8
 msgid "User not enabled otp as 2fa"
 msgstr "用户未启用 OTP 作为 2FA"
 
+#: src/routes/modules/user.ts:19
+msgid "User Profile"
+msgstr "用户资料"
+
 #: src/views/other/Login.vue:173 src/views/user/userColumns.tsx:7
+#: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "用户名"
 
@@ -4742,7 +4787,7 @@ msgid ""
 "the Nginx. Are you sure you want to continue?"
 msgstr "我们将从这个文件中删除HTTPChallenge的配置，并重新加载Nginx。你确定要继续吗？"
 
-#: src/views/preference/tabs/AuthSettings.vue:96
+#: src/views/preference/tabs/AuthSettings.vue:65
 msgid "Webauthn"
 msgstr "Webauthn"
 
@@ -4815,12 +4860,12 @@ msgstr "正在将证书写入磁盘"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
-#: src/views/preference/tabs/AuthSettings.vue:162
+#: src/views/preference/tabs/AuthSettings.vue:131
 #: src/views/preference/tabs/CertSettings.vue:72
 msgid "Yes"
 msgstr "是的"
 
-#: src/views/terminal/Terminal.vue:135
+#: src/views/terminal/Terminal.vue:132
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a "
 "non-localhost domain. This may expose sensitive information."
@@ -4907,9 +4952,6 @@ msgstr "你的 Passkeys"
 #~ msgid "Total %{total} item"
 #~ msgid_plural "Total %{total} items"
 #~ msgstr[0] "共 %{total} 个项目"
-
-#~ msgid "Updated successfully"
-#~ msgstr "更新成功"
 
 #~ msgid "View Details"
 #~ msgstr "查看详情"

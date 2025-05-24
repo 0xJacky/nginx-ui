@@ -1,5 +1,5 @@
 import type { ModelBase } from '@/api/curd'
-import { useCurdApi } from '@uozi-admin/request'
+import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
 export interface User extends ModelBase {
   name: string
@@ -8,6 +8,16 @@ export interface User extends ModelBase {
   status: boolean
 }
 
-const user = useCurdApi<User>('/users')
+const user = extendCurdApi(useCurdApi<User>('/users'), {
+  getCurrentUser: () => {
+    return http.get('/user')
+  },
+  updateCurrentUser: (data: User) => {
+    return http.post('/user', data)
+  },
+  updateCurrentUserPassword: (data: { old_password: string, new_password: string }) => {
+    return http.post('/user/password', data)
+  },
+})
 
 export default user

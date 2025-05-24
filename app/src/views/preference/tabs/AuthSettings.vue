@@ -1,13 +1,10 @@
 <script setup lang="tsx">
 import type { Ref } from 'vue'
-import type { TwoFAStatus } from '@/api/2fa'
-import type { RecoveryCode } from '@/api/recovery'
+
 import type { BannedIP } from '@/api/settings'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import twoFA from '@/api/2fa'
 import setting from '@/api/settings'
-import { Passkey, RecoveryCodes, TOTP } from '../components/AuthSettings'
 import useSystemSettingsStore from '../store'
 
 const systemSettingsStore = useSystemSettingsStore()
@@ -50,39 +47,11 @@ function removeBannedIP(ip: string) {
     message.success($gettext('Remove successfully'))
   })
 }
-
-const twoFAStatus = ref<TwoFAStatus>({} as TwoFAStatus)
-const recoveryCodes = ref<RecoveryCode[]>()
-
-function get2FAStatus() {
-  twoFA.status().then(r => {
-    twoFAStatus.value = r
-  })
-}
-
-get2FAStatus()
 </script>
 
 <template>
   <div class="flex justify-center">
     <div>
-      <h2>{{ $gettext('2FA Settings') }}</h2>
-      <Passkey class="mb-4" />
-
-      <TOTP
-        v-model:recovery-codes="recoveryCodes"
-        class="mb-4"
-        :status="twoFAStatus?.otp_status"
-        @refresh="get2FAStatus"
-      />
-
-      <RecoveryCodes
-        class="mb-4"
-        :two-f-a-status="twoFAStatus"
-        :recovery-codes="recoveryCodes"
-        @refresh="get2FAStatus"
-      />
-
       <h2>
         {{ $gettext('Authentication Settings') }}
       </h2>
