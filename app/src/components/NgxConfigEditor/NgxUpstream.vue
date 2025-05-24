@@ -134,11 +134,15 @@ watch(curUptreamDirectives, () => {
         </template>
 
         <div class="tab-content">
-          <DirectiveEditor>
+          <DirectiveEditor v-model:directives="v.directives">
             <template #directiveSuffix="{ directive }: {directive: NgxDirective}">
               <template v-if="availabilityResult[directive.params]?.online">
                 <ABadge color="green" />
                 {{ availabilityResult[directive.params]?.latency.toFixed(2) }}ms
+              </template>
+              <template v-else>
+                <ABadge color="red" />
+                {{ $gettext('Offline') }}
               </template>
             </template>
           </DirectiveEditor>
