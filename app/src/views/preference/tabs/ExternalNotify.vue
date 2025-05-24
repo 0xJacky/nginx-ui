@@ -11,6 +11,8 @@ import columns from '../components/ExternalNotify/columns'
     :api="externalNotify"
     disable-view
     disable-export
+    disable-trash
+    disable-search
   />
 </template>
 

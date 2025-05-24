@@ -26,7 +26,9 @@ func Get(c *gin.Context) {
 }
 
 func GetList(c *gin.Context) {
-	cosy.Core[model.Notification](c).PagingList()
+	cosy.Core[model.Notification](c).
+		SetEqual("type").
+		PagingList()
 }
 
 func Destroy(c *gin.Context) {

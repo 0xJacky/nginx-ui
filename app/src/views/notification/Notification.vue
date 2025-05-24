@@ -31,6 +31,7 @@ watch(unreadCount, () => {
     disable-modify
     disable-add
     disable-export
+    disable-trash
   >
     <template #extra>
       <APopconfirm

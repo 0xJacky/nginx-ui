@@ -2,7 +2,7 @@ import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import { datetimeRender } from '@uozi-admin/curd'
 import { Tag } from 'ant-design-vue'
 import { detailRender } from '@/components/Notification/detailRender'
-import { NotificationTypeT } from '@/constants'
+import { NotificationType, NotificationTypeT } from '@/constants'
 
 const columns: StdTableColumn[] = [{
   title: () => $gettext('Type'),
@@ -37,6 +37,12 @@ const columns: StdTableColumn[] = [{
       )
     }
     return args.text
+  },
+  search: {
+    type: 'select',
+    select: {
+      mask: NotificationType,
+    },
   },
   sorter: true,
   pure: true,
