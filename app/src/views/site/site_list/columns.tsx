@@ -9,7 +9,7 @@ import { Tag } from 'ant-design-vue'
 import env_group from '@/api/env_group'
 import { ConfigStatus } from '@/constants'
 import envGroupColumns from '@/views/environments/group/columns'
-import SiteStatusSegmented from '@/views/site/components/SiteStatusSegmented.vue'
+import SiteStatusSelect from '@/views/site/components/SiteStatusSelect.vue'
 
 const columns: StdTableColumn[] = [{
   title: () => $gettext('Name'),
@@ -89,7 +89,7 @@ const columns: StdTableColumn[] = [{
   dataIndex: 'status',
   customRender: (args: CustomRenderArgs<Site>) => {
     const { text, record } = args
-    return h(SiteStatusSegmented, {
+    return h(SiteStatusSelect, {
       'modelValue': text,
       'siteName': record.name,
       'enabled': record.status !== ConfigStatus.Disabled,
@@ -123,7 +123,7 @@ const columns: StdTableColumn[] = [{
   },
   sorter: true,
   pure: true,
-  width: 110,
+  width: 50,
   fixed: 'right',
 }, {
   title: () => $gettext('Actions'),

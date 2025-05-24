@@ -7,7 +7,7 @@ import NodeSelector from '@/components/NodeSelector'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import envGroupColumns from '@/views/environments/group/columns'
-import SiteStatusSegmented from '@/views/site/components/SiteStatusSegmented.vue'
+import SiteStatusSelect from '@/views/site/components/SiteStatusSelect.vue'
 import ConfigName from '@/views/site/site_edit/components/ConfigName/ConfigName.vue'
 import { useSiteEditorStore } from '../SiteEditor/store'
 
@@ -26,7 +26,7 @@ function handleStatusChanged(event: { status: SiteStatus }) {
     <div class="mb-6">
       <AForm layout="vertical">
         <AFormItem :label="$gettext('Status')">
-          <SiteStatusSegmented
+          <SiteStatusSelect
             v-model="data.status"
             :site-name="name"
             @status-changed="handleStatusChanged"

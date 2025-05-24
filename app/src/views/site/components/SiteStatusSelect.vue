@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { SelectValue } from 'ant-design-vue/es/select'
 import type { SiteStatus } from '@/api/site'
 import { message, Modal } from 'ant-design-vue'
+import { computed } from 'vue'
 import site from '@/api/site'
 import { ConfigStatus } from '@/constants'
 
@@ -20,6 +22,31 @@ const status = defineModel<string>({
 })
 
 const [modal, ContextHolder] = Modal.useModal()
+
+// Computed property for select style based on current status
+const selectStyle = computed(() => {
+  const statusStyles = {
+    [ConfigStatus.Enabled]: {
+      '--ant-select-bg': '#1890ff',
+      '--ant-select-border': '#1890ff',
+      '--ant-select-color': '#ffffff',
+      'color': '#ffffff',
+    },
+    [ConfigStatus.Disabled]: {
+      '--ant-select-bg': '#ff4d4f',
+      '--ant-select-border': '#ff4d4f',
+      '--ant-select-color': '#ffffff',
+      'color': '#ffffff',
+    },
+    [ConfigStatus.Maintenance]: {
+      '--ant-select-bg': '#faad14',
+      '--ant-select-border': '#faad14',
+      '--ant-select-color': '#ffffff',
+      'color': '#ffffff',
+    },
+  }
+  return statusStyles[status.value] || {}
+})
 
 // Enable the site
 function enable() {
@@ -73,10 +100,10 @@ function disableMaintenance() {
   })
 }
 
-// Handle status change from segmented control
-function onChangeStatus(value: string | number) {
+// Handle status change from select
+function onChangeStatus(value: SelectValue) {
   const statusValue = value as string
-  if (statusValue === status.value) {
+  if (!statusValue || statusValue === status.value) {
     return
   }
 
@@ -120,52 +147,86 @@ function onChangeStatus(value: string | number) {
 </script>
 
 <template>
-  <div class="site-status-segmented">
+  <div class="site-status-select">
     <ContextHolder />
-    <ASegmented
+    <ASelect
       :value="status"
-      :options="[
-        {
-          value: ConfigStatus.Enabled,
-          label: $gettext('Enabled'),
-        },
-        {
-          value: ConfigStatus.Disabled,
-          label: $gettext('Disabled'),
-        },
-        {
-          value: ConfigStatus.Maintenance,
-          label: $gettext('Maintenance'),
-        },
-      ]"
+      class="status-select"
+      :style="selectStyle"
       @change="onChangeStatus"
-    />
+    >
+      <ASelectOption :value="ConfigStatus.Enabled">
+        {{ $gettext('Enabled') }}
+      </ASelectOption>
+      <ASelectOption :value="ConfigStatus.Disabled">
+        {{ $gettext('Disabled') }}
+      </ASelectOption>
+      <ASelectOption :value="ConfigStatus.Maintenance">
+        {{ $gettext('Maintenance') }}
+      </ASelectOption>
+    </ASelect>
   </div>
 </template>
 
 <style scoped>
-.site-status-segmented {
+.site-status-select {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  max-width: 200px;
 }
 
-:deep(.ant-segmented-item:nth-child(1).ant-segmented-item-selected) {
-  background: #1890ff;
-  color: white;
+.status-select {
+  min-width: 120px;
 }
 
-:deep(.ant-segmented-item:nth-child(2).ant-segmented-item-selected) {
-  background: #ff4d4f;
-  color: white;
+:deep(.ant-select-selector) {
+  transition: all 0.3s ease !important;
+  font-weight: 500 !important;
+  border-radius: 6px !important;
 }
 
-:deep(.ant-segmented-item:nth-child(3).ant-segmented-item-selected) {
-  background: #faad14;
-  color: white;
+:deep(.ant-select-selection-item) {
+  font-weight: 500 !important;
 }
 
-:deep(.ant-segmented-item-selected) {
-  border-radius: 6px;
+/* Ensure custom background colors are applied correctly */
+:deep(.status-select .ant-select-selector) {
+  background-color: var(--ant-select-bg) !important;
+  color: var(--ant-select-color) !important;
+}
+
+:deep(.status-select .ant-select-selection-item) {
+  color: var(--ant-select-color) !important;
+}
+
+:deep(.status-select .ant-select-arrow) {
+  color: var(--ant-select-color) !important;
+}
+
+/* Override focus and hover styles to maintain custom colors */
+:deep(.ant-select:not(.ant-select-disabled):hover .ant-select-selector) {
+  border-color: var(--ant-select-border) !important;
+  background-color: var(--ant-select-bg) !important;
+}
+
+:deep(.ant-select-focused .ant-select-selector) {
+  border-color: var(--ant-select-border) !important;
+  background-color: var(--ant-select-bg) !important;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Make sure dropdown options also have appropriate styling */
+:deep(.ant-select-dropdown .ant-select-item-option) {
+  padding: 8px 12px !important;
+}
+
+:deep(.ant-select-dropdown .ant-select-item-option:hover) {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+:deep(.ant-select-dropdown .ant-select-item-option-selected) {
+  background-color: rgba(24, 144, 255, 0.1) !important;
+  font-weight: 600 !important;
 }
 </style>
