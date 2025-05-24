@@ -21,12 +21,36 @@ install.sh install [OPTIONS]
 | `-l, --local <file>`  | 从本地文件安装 Nginx UI (`string`)                                                           |
 | `-p, --proxy <url>`   | 通过代理服务器下载 (`string`)<br/>例如：`-p http://127.0.0.1:8118` 或 `-p socks5://127.0.0.1:1080` |
 | `-r, --reverse-proxy` | 通过反向代理服务器下载 (`string`)<br/>例如：`-r https://cloud.nginxui.com/`                               |
+| `-c, --channel <channel>` | 指定版本通道 (`string`)<br/>可用通道：`stable`（默认）、`prerelease`、`dev`
+
+#### 版本通道
+
+| 通道         | 描述                                                      |
+|------------|-----------------------------------------------------------|
+| `stable`   | 最新稳定版本（默认） - 推荐用于生产环境                                |
+| `prerelease` | 最新预发布版本 - 包含正在测试的新功能，将在稳定版本发布前进行验证                |
+| `dev`      | 来自 dev 分支的最新开发构建 - 包含最新功能但可能不稳定                   |
 
 ### 快速使用
 
-```shell
+::: code-group
+
+```shell [稳定版（默认）]
+# 安装最新稳定版本
 bash -c "$(curl -L https://cloud.nginxui.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install -r https://cloud.nginxui.com/
 ```
+
+```shell [预发布版]
+# 安装最新预发布版本
+bash -c "$(curl -L https://cloud.nginxui.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install --channel prerelease -r https://cloud.nginxui.com/
+```
+
+```shell [开发版]
+# 安装最新开发构建
+bash -c "$(curl -L https://cloud.nginxui.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install --channel dev -r https://cloud.nginxui.com/
+```
+
+:::
 
 一键安装脚本默认设置的监听端口为 `9000`，HTTP Challenge 端口默认为 `9180`。如果有端口冲突，请手动修改 `/usr/local/etc/nginx-ui/app.ini`，
 并使用 `systemctl restart nginx-ui` 重启 Nginx UI 服务。更多有关信息，请查看 [配置参考](./config-server)。

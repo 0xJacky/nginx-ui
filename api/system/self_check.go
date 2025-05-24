@@ -9,6 +9,7 @@ import (
 
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/self_check"
 	"github.com/gin-gonic/gin"
 )
@@ -45,6 +46,7 @@ func CheckWebSocket(c *gin.Context) {
 }
 
 func CheckSSE(c *gin.Context) {
+	api.SetSSEHeaders(c)
 	notify := c.Writer.CloseNotify()
 	for i := 0; i < 10; i++ {
 		select {

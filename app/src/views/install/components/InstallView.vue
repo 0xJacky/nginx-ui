@@ -12,7 +12,7 @@ const installTimeout = ref(false)
 const activeTab = ref('1')
 const step = ref(1)
 const selfCheckStore = useSelfCheckStore()
-const { hasError } = storeToRefs(selfCheckStore)
+const { hasError, loading } = storeToRefs(selfCheckStore)
 
 const router = useRouter()
 
@@ -51,7 +51,7 @@ function handleRestoreSuccess(options: { restoreNginx: boolean, restoreNginxUI: 
 }
 
 const canProceed = computed(() => {
-  return !installTimeout.value && !hasError.value
+  return !installTimeout.value && !hasError.value && !loading.value
 })
 
 const steps = computed(() => {

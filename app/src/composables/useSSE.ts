@@ -28,10 +28,6 @@ export function useSSE() {
    * Connect to SSE service
    */
   function connect(options: SSEOptions) {
-    if (!token.value) {
-      return
-    }
-
     const {
       url,
       onMessage,
@@ -42,8 +38,10 @@ export function useSSE() {
 
     const fullUrl = urlJoin(window.location.pathname, url)
 
-    const headers = {
-      Authorization: token.value,
+    const headers: Record<string, string> = {}
+
+    if (token.value) {
+      headers.Authorization = token.value
     }
 
     if (settings.environment.id) {

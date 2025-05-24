@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"runtime"
+	"sort"
 	"strings"
 
 	"github.com/uozi-tech/cosy/logger"
@@ -241,8 +242,15 @@ func generateSingleTSFile(root string, calls map[string]bool) {
 	writer.WriteString("// This file is auto-generated. DO NOT EDIT MANUALLY.\n\n")
 	writer.WriteString("export const msg = [\n")
 
-	// Write each translation message
+	// Extract and sort the translation messages to ensure stable output
+	var messages []string
 	for message := range calls {
+		messages = append(messages, message)
+	}
+	sort.Strings(messages)
+
+	// Write each translation message in sorted order
+	for _, message := range messages {
 		// Escape single quotes and handle newlines in the message for JavaScript
 		escapedMessage := strings.ReplaceAll(message, "'", "\\'")
 		// Replace newlines with space to ensure proper formatting in the generated TS file

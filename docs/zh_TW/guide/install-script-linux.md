@@ -21,13 +21,36 @@ install.sh install [OPTIONS]
 | `-l, --local <file>`  | 從本機檔案安裝 Nginx UI (`string`)                                                           |
 | `-p, --proxy <url>`   | 透過代理伺服器下載 (`string`)<br/>例如：`-p http://127.0.0.1:8118` 或 `-p socks5://127.0.0.1:1080` |
 | `-r, --reverse-proxy` | 透過反向代理伺服器下載 (`string`)<br/>例如：`-r https://cloud.nginxui.com/`                               |
+| `-c, --channel <channel>` | 指定版本通道 (`string`)<br/>可用通道：`stable`（預設）、`prerelease`、`dev`
 
+#### 版本通道
+
+| 通道         | 說明                                                      |
+|------------|-----------------------------------------------------------|
+| `stable`   | 最新穩定版本（預設） - 建議用於正式環境                                |
+| `prerelease` | 最新預發布版本 - 包含正在測試的新功能，將在穩定版本發布前進行驗證                |
+| `dev`      | 來自 dev 分支的最新開發構建 - 包含最新功能但可能不穩定                   |
 
 ### 快速使用
 
-```shell
+::: code-group
+
+```shell [穩定版（預設）]
+# 安裝最新穩定版本
 bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
 ```
+
+```shell [預發布版]
+# 安裝最新預發布版本
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install --channel prerelease
+```
+
+```shell [開發版]
+# 安裝最新開發構建
+bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install --channel dev
+```
+
+:::
 
 安裝指令碼預設的監聽連接埠為 `9000`，HTTP Challenge 連接埠預設為 `9180`。如果出現連接埠衝突請修改 `/usr/local/etc/nginx-ui/app.ini`，
 並使用 `systemctl restart nginx-ui` 重啟 Nginx UI 守護行程。更多有關資訊，請檢視 [設定參考](./config-server)。
