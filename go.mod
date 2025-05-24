@@ -16,7 +16,7 @@ require (
 	github.com/fsnotify/fsnotify v1.9.0
 	github.com/gin-contrib/pprof v1.5.3
 	github.com/gin-contrib/static v1.1.5
-	github.com/gin-gonic/gin v1.10.0
+	github.com/gin-gonic/gin v1.10.1
 	github.com/go-acme/lego/v4 v4.23.1
 	github.com/go-co-op/gocron/v2 v2.16.2
 	github.com/go-gormigrate/gormigrate/v2 v2.1.4
@@ -27,7 +27,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
 	github.com/lib/pq v1.10.9
-	github.com/mark3labs/mcp-go v0.28.0
+	github.com/mark3labs/mcp-go v0.29.0
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.3.0
 	github.com/nxadm/tail v1.4.11
@@ -41,7 +41,7 @@ require (
 	github.com/spf13/cast v1.8.0
 	github.com/stretchr/testify v1.10.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250429180229-7e931b1d4276
-	github.com/uozi-tech/cosy v1.21.2
+	github.com/uozi-tech/cosy v1.22.0
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.3.3
 	golang.org/x/crypto v0.38.0
