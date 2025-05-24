@@ -5,6 +5,7 @@ export const useNgxConfigStore = defineStore('ngxConfig', () => {
   const ngxConfig = ref<NgxConfig>({
     name: '',
     servers: [],
+    upstreams: [],
   })
 
   const configText = ref('')
