@@ -461,8 +461,8 @@ msgid "Base information"
 msgstr "基本資訊"
 
 #: src/views/config/ConfigEditor.vue:300
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:30
-#: src/views/stream/components/RightPanel/RightPanel.vue:19
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:31
+#: src/views/stream/components/RightPanel/RightPanel.vue:20
 msgid "Basic"
 msgstr "基本"
 
@@ -708,8 +708,8 @@ msgstr "變更後路徑"
 msgid "Channel"
 msgstr "通道"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:40
-#: src/views/stream/components/RightPanel/RightPanel.vue:22
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:41
+#: src/views/stream/components/RightPanel/RightPanel.vue:23
 msgid "Chat"
 msgstr "聊天"
 
@@ -873,9 +873,13 @@ msgstr "Client 請求主體緩衝區大小"
 msgid "Client request header buffer size"
 msgstr "Client 請求標頭緩衝區大小"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:169 src/language/curd.ts:14
+#: src/components/ConfigHistory/ConfigHistory.vue:170 src/language/curd.ts:14
 msgid "Close"
 msgstr "關閉"
+
+#: src/components/PortScanner/PortScannerCompact.vue:45
+msgid "Closed"
+msgstr "已關閉"
 
 #: src/constants/errors/llm.ts:2
 msgid "Code completion is not enabled"
@@ -937,7 +941,7 @@ msgstr "配置入口文件不存在"
 msgid "Config path is empty"
 msgstr "設定路徑為空"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:36
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:37
 msgid "Config Template"
 msgstr "配置模板"
 
@@ -1644,6 +1648,10 @@ msgstr "成功啟用"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
 msgstr "用 Let's Encrypt 對網站進行加密"
+
+#: src/components/PortScanner/PortScannerCompact.vue:164
+msgid "End"
+msgstr "結束"
 
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
@@ -2495,6 +2503,10 @@ msgstr "連結開始"
 msgid "List"
 msgstr "列表"
 
+#: src/components/PortScanner/PortScannerCompact.vue:43
+msgid "Listening"
+msgstr "監聽中"
+
 #: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Load Average:"
 msgstr "負載平均值："
@@ -3241,6 +3253,10 @@ msgstr "線上"
 msgid "Only zip files are allowed"
 msgstr "只允許壓縮檔"
 
+#: src/components/PortScanner/PortScannerCompact.vue:44
+msgid "Open"
+msgstr "開放"
+
 #: src/views/preference/Preference.vue:100
 msgid "OpenAI"
 msgstr "OpenAI"
@@ -3413,6 +3429,10 @@ msgid ""
 "button below."
 msgstr "請輸入您希望建立的通行金鑰名稱，並點選下面的確定按鈕。"
 
+#: src/components/PortScanner/PortScannerCompact.vue:85
+msgid "Please enter a valid port range"
+msgstr "請輸入有效的端口範圍"
+
 #: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "請輸入 OTP 代碼："
@@ -3529,9 +3549,15 @@ msgstr "請至少選擇一個節點進行升級"
 msgid "Please type \"Revoke\" to confirm"
 msgstr "請輸入「撤銷」以確認"
 
+#: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
 msgid "Port"
 msgstr "監聽埠"
+
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:44
+#: src/views/stream/components/RightPanel/RightPanel.vue:26
+msgid "Port Scanner"
+msgstr "端口掃描器"
 
 #: src/views/environments/group/columns.ts:15
 #: src/views/environments/group/EnvGroup.vue:39
@@ -3551,6 +3577,10 @@ msgstr "偏好設定"
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
 msgstr "準備 Lego 設定"
+
+#: src/components/PortScanner/PortScannerCompact.vue:55
+msgid "Process"
+msgstr "進程"
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:26
 msgid "Process Distribution"
@@ -4136,6 +4166,22 @@ msgstr "儲存成功"
 msgid "Sbin path not exist"
 msgstr "sbin 路徑不存在"
 
+#: src/components/PortScanner/PortScannerCompact.vue:94
+msgid "Scan completed"
+msgstr "掃描完成"
+
+#: src/components/PortScanner/PortScannerCompact.vue:98
+msgid "Scan failed"
+msgstr "掃描失敗"
+
+#: src/components/PortScanner/PortScannerCompact.vue:179
+msgid "Scan Ports"
+msgstr "掃描端口"
+
+#: src/components/PortScanner/PortScannerCompact.vue:204
+msgid "Scan Results"
+msgstr "掃描結果"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:69
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "用手機掃描二維碼將賬戶新增到應用程式中。"
@@ -4400,6 +4446,10 @@ msgstr "SSO 登入"
 msgid "Stable"
 msgstr "穩定"
 
+#: src/components/PortScanner/PortScannerCompact.vue:151
+msgid "Start"
+msgstr "開始"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:246
 #: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid "Start Restore"
@@ -4410,6 +4460,7 @@ msgstr "開始恢復"
 msgid "Static"
 msgstr "靜態"
 
+#: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/certificate/ACMEUser.vue:60
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
@@ -4593,6 +4644,7 @@ msgstr "同步到"
 msgid "Synchronization"
 msgstr "同步"
 
+#: src/components/PortScanner/PortScannerCompact.vue:194
 #: src/routes/modules/system.ts:11
 msgid "System"
 msgstr "系統"
@@ -4951,6 +5003,7 @@ msgstr "需要多重因素驗證"
 msgid "Type"
 msgstr "類型"
 
+#: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
 msgid "Unknown"
 msgstr "未知"

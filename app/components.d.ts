@@ -97,6 +97,8 @@ declare module 'vue' {
     NotificationNotification: typeof import('./src/components/Notification/Notification.vue')['default']
     OTPInputOTPInput: typeof import('./src/components/OTPInput/OTPInput.vue')['default']
     PageHeaderPageHeader: typeof import('./src/components/PageHeader/PageHeader.vue')['default']
+    PortScannerPortScanner: typeof import('./src/components/PortScanner/PortScanner.vue')['default']
+    PortScannerPortScannerCompact: typeof import('./src/components/PortScanner/PortScannerCompact.vue')['default']
     ProcessingStatusProcessingStatus: typeof import('./src/components/ProcessingStatus/ProcessingStatus.vue')['default']
     ReactiveFromNowReactiveFromNow: typeof import('./src/components/ReactiveFromNow/ReactiveFromNow.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

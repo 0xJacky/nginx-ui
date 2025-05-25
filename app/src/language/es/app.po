@@ -474,8 +474,8 @@ msgid "Base information"
 msgstr "Información general"
 
 #: src/views/config/ConfigEditor.vue:300
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:30
-#: src/views/stream/components/RightPanel/RightPanel.vue:19
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:31
+#: src/views/stream/components/RightPanel/RightPanel.vue:20
 msgid "Basic"
 msgstr "Básico"
 
@@ -731,8 +731,8 @@ msgstr "Ruta cambiada"
 msgid "Channel"
 msgstr "Canal"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:40
-#: src/views/stream/components/RightPanel/RightPanel.vue:22
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:41
+#: src/views/stream/components/RightPanel/RightPanel.vue:23
 msgid "Chat"
 msgstr "Chat"
 
@@ -916,9 +916,13 @@ msgstr "Tamaño del búfer del cuerpo de la solicitud del cliente"
 msgid "Client request header buffer size"
 msgstr "Tamaño del búfer de cabecera de solicitud del cliente"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:169 src/language/curd.ts:14
+#: src/components/ConfigHistory/ConfigHistory.vue:170 src/language/curd.ts:14
 msgid "Close"
 msgstr "Cerrar"
+
+#: src/components/PortScanner/PortScannerCompact.vue:45
+msgid "Closed"
+msgstr "Cerrado"
 
 #: src/constants/errors/llm.ts:2
 msgid "Code completion is not enabled"
@@ -980,7 +984,7 @@ msgstr "El archivo de entrada de configuración no existe"
 msgid "Config path is empty"
 msgstr "La ruta de configuración está vacía"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:36
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:37
 msgid "Config Template"
 msgstr "Plantilla de configuración"
 
@@ -1701,6 +1705,10 @@ msgstr "Habilitado con éxito"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Encriptar sitio web con Let's Encrypt"
+
+#: src/components/PortScanner/PortScannerCompact.vue:164
+msgid "End"
+msgstr "Fin"
 
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
@@ -2567,6 +2575,10 @@ msgstr "Iniciar conexión"
 msgid "List"
 msgstr "Lista"
 
+#: src/components/PortScanner/PortScannerCompact.vue:43
+msgid "Listening"
+msgstr "Escuchando"
+
 #: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Load Average:"
 msgstr "Promedios de carga:"
@@ -3330,6 +3342,10 @@ msgstr "En línea"
 msgid "Only zip files are allowed"
 msgstr "Solo se permiten archivos ZIP"
 
+#: src/components/PortScanner/PortScannerCompact.vue:44
+msgid "Open"
+msgstr "Abierto"
+
 #: src/views/preference/Preference.vue:100
 msgid "OpenAI"
 msgstr "OpenAI"
@@ -3508,6 +3524,10 @@ msgstr ""
 "Ingrese un nombre para la llave de acceso que desea crear y a continuación "
 "haga clic en el botón Aceptar."
 
+#: src/components/PortScanner/PortScannerCompact.vue:85
+msgid "Please enter a valid port range"
+msgstr "Por favor, introduzca un rango de puertos válido"
+
 #: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "Por favor, ingrese el código OTP:"
@@ -3641,9 +3661,15 @@ msgstr "Seleccione al menos un nodo para actualizar"
 msgid "Please type \"Revoke\" to confirm"
 msgstr "Por favor, escriba \"Revocar\" para confirmar"
 
+#: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
 msgid "Port"
 msgstr "Puerto"
+
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:44
+#: src/views/stream/components/RightPanel/RightPanel.vue:26
+msgid "Port Scanner"
+msgstr "Escáner de puertos"
 
 #: src/views/environments/group/columns.ts:15
 #: src/views/environments/group/EnvGroup.vue:39
@@ -3663,6 +3689,10 @@ msgstr "Configuración"
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
 msgstr "Preparar la configuración de LEGO"
+
+#: src/components/PortScanner/PortScannerCompact.vue:55
+msgid "Process"
+msgstr "Proceso"
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:26
 msgid "Process Distribution"
@@ -4258,6 +4288,22 @@ msgstr "Guardado con éxito"
 msgid "Sbin path not exist"
 msgstr "La ruta de sbin no existe"
 
+#: src/components/PortScanner/PortScannerCompact.vue:94
+msgid "Scan completed"
+msgstr "Escaneo completado"
+
+#: src/components/PortScanner/PortScannerCompact.vue:98
+msgid "Scan failed"
+msgstr "Escaneo fallido"
+
+#: src/components/PortScanner/PortScannerCompact.vue:179
+msgid "Scan Ports"
+msgstr "Escanear puertos"
+
+#: src/components/PortScanner/PortScannerCompact.vue:204
+msgid "Scan Results"
+msgstr "Resultados del escaneo"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:69
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr ""
@@ -4532,6 +4578,10 @@ msgstr "Acceso SSO"
 msgid "Stable"
 msgstr "Estable"
 
+#: src/components/PortScanner/PortScannerCompact.vue:151
+msgid "Start"
+msgstr "Inicio"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:246
 #: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid "Start Restore"
@@ -4542,6 +4592,7 @@ msgstr "Iniciar restauración"
 msgid "Static"
 msgstr "Estático"
 
+#: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/certificate/ACMEUser.vue:60
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
@@ -4730,6 +4781,7 @@ msgstr "Sincronizar con"
 msgid "Synchronization"
 msgstr "Sincronización"
 
+#: src/components/PortScanner/PortScannerCompact.vue:194
 #: src/routes/modules/system.ts:11
 msgid "System"
 msgstr "Sistema"
@@ -5138,6 +5190,7 @@ msgstr "Se requiere autenticación de dos factores"
 msgid "Type"
 msgstr "Tipo"
 
+#: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
 msgid "Unknown"
 msgstr "Desconocido"

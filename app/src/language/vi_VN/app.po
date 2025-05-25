@@ -453,8 +453,8 @@ msgid "Base information"
 msgstr "Thông tin"
 
 #: src/views/config/ConfigEditor.vue:300
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:30
-#: src/views/stream/components/RightPanel/RightPanel.vue:19
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:31
+#: src/views/stream/components/RightPanel/RightPanel.vue:20
 msgid "Basic"
 msgstr "Cơ bản"
 
@@ -702,8 +702,8 @@ msgstr "Đường dẫn đã thay đổi"
 msgid "Channel"
 msgstr "Kênh"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:40
-#: src/views/stream/components/RightPanel/RightPanel.vue:22
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:41
+#: src/views/stream/components/RightPanel/RightPanel.vue:23
 msgid "Chat"
 msgstr "Trò chuyện"
 
@@ -885,9 +885,13 @@ msgstr "Kích thước bộ đệm nội dung yêu cầu của máy khách"
 msgid "Client request header buffer size"
 msgstr "Kích thước bộ đệm tiêu đề yêu cầu của máy khách"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:169 src/language/curd.ts:14
+#: src/components/ConfigHistory/ConfigHistory.vue:170 src/language/curd.ts:14
 msgid "Close"
 msgstr "Đóng"
+
+#: src/components/PortScanner/PortScannerCompact.vue:45
+msgid "Closed"
+msgstr "Đã đóng"
 
 #: src/constants/errors/llm.ts:2
 msgid "Code completion is not enabled"
@@ -949,7 +953,7 @@ msgstr "Tệp nhập cấu hình không tồn tại"
 msgid "Config path is empty"
 msgstr "Đường dẫn cấu hình trống"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:36
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:37
 msgid "Config Template"
 msgstr "Mẫu cấu hình"
 
@@ -1662,6 +1666,10 @@ msgstr "Đã bật"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Bảo mật trang web với Let's Encrypt"
+
+#: src/components/PortScanner/PortScannerCompact.vue:164
+msgid "End"
+msgstr "Kết thúc"
 
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
@@ -2525,6 +2533,10 @@ msgstr "Liên kết bắt đầu"
 msgid "List"
 msgstr "Danh sách"
 
+#: src/components/PortScanner/PortScannerCompact.vue:43
+msgid "Listening"
+msgstr "Đang lắng nghe"
+
 #: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Load Average:"
 msgstr "Tải trung bình:"
@@ -3284,6 +3296,10 @@ msgstr "Trực tuyến"
 msgid "Only zip files are allowed"
 msgstr "Chỉ cho phép tệp zip"
 
+#: src/components/PortScanner/PortScannerCompact.vue:44
+msgid "Open"
+msgstr "Mở"
+
 #: src/views/preference/Preference.vue:100
 msgid "OpenAI"
 msgstr "OpenAI"
@@ -3462,6 +3478,10 @@ msgstr ""
 "Vui lòng nhập tên cho khóa truy cập bạn muốn tạo và nhấp vào nút OK bên "
 "dưới."
 
+#: src/components/PortScanner/PortScannerCompact.vue:85
+msgid "Please enter a valid port range"
+msgstr "Vui lòng nhập một phạm vi cổng hợp lệ"
+
 #: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "Vui lòng nhập mã OTP:"
@@ -3582,9 +3602,15 @@ msgstr "Vui lòng chọn ít nhất một nút để nâng cấp"
 msgid "Please type \"Revoke\" to confirm"
 msgstr "Vui lòng nhập \"Thu hồi\" để xác nhận"
 
+#: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
 msgid "Port"
 msgstr "Cổng"
+
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:44
+#: src/views/stream/components/RightPanel/RightPanel.vue:26
+msgid "Port Scanner"
+msgstr "Trình quét cổng"
 
 #: src/views/environments/group/columns.ts:15
 #: src/views/environments/group/EnvGroup.vue:39
@@ -3604,6 +3630,10 @@ msgstr "Cài đặt"
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
 msgstr "Chuẩn bị cấu hình Lego"
+
+#: src/components/PortScanner/PortScannerCompact.vue:55
+msgid "Process"
+msgstr "Quá trình"
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:26
 msgid "Process Distribution"
@@ -4198,6 +4228,22 @@ msgstr "Lưu thành công"
 msgid "Sbin path not exist"
 msgstr "Đường dẫn sbin không tồn tại"
 
+#: src/components/PortScanner/PortScannerCompact.vue:94
+msgid "Scan completed"
+msgstr "Quét hoàn tất"
+
+#: src/components/PortScanner/PortScannerCompact.vue:98
+msgid "Scan failed"
+msgstr "Quét thất bại"
+
+#: src/components/PortScanner/PortScannerCompact.vue:179
+msgid "Scan Ports"
+msgstr "Quét cổng"
+
+#: src/components/PortScanner/PortScannerCompact.vue:204
+msgid "Scan Results"
+msgstr "Kết quả quét"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:69
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "Quét mã QR bằng điện thoại di động của bạn để thêm tài khoản vào ứng dụng."
@@ -4464,6 +4510,10 @@ msgstr "Đăng nhập SSO"
 msgid "Stable"
 msgstr "Ổn định"
 
+#: src/components/PortScanner/PortScannerCompact.vue:151
+msgid "Start"
+msgstr "Bắt đầu"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:246
 #: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid "Start Restore"
@@ -4474,6 +4524,7 @@ msgstr "Bắt đầu khôi phục"
 msgid "Static"
 msgstr "Tĩnh"
 
+#: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/certificate/ACMEUser.vue:60
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
@@ -4661,6 +4712,7 @@ msgstr "Đồng bộ tới"
 msgid "Synchronization"
 msgstr "Đồng bộ hóa"
 
+#: src/components/PortScanner/PortScannerCompact.vue:194
 #: src/routes/modules/system.ts:11
 msgid "System"
 msgstr "Thông tin"
@@ -5066,6 +5118,7 @@ msgstr "Yêu cầu xác thực hai yếu tố"
 msgid "Type"
 msgstr "Loại"
 
+#: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
 msgid "Unknown"
 msgstr "Không xác định"

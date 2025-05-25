@@ -457,8 +457,8 @@ msgid "Base information"
 msgstr "المعلومات الأساسية"
 
 #: src/views/config/ConfigEditor.vue:300
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:30
-#: src/views/stream/components/RightPanel/RightPanel.vue:19
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:31
+#: src/views/stream/components/RightPanel/RightPanel.vue:20
 msgid "Basic"
 msgstr "أساسي"
 
@@ -716,8 +716,8 @@ msgstr "المسار المتغير"
 msgid "Channel"
 msgstr "القناة"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:40
-#: src/views/stream/components/RightPanel/RightPanel.vue:22
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:41
+#: src/views/stream/components/RightPanel/RightPanel.vue:23
 msgid "Chat"
 msgstr "محادثة"
 
@@ -897,9 +897,13 @@ msgstr "حجم مخزن طلب جسم العميل"
 msgid "Client request header buffer size"
 msgstr "حجم مخزن رأس طلب العميل"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:169 src/language/curd.ts:14
+#: src/components/ConfigHistory/ConfigHistory.vue:170 src/language/curd.ts:14
 msgid "Close"
 msgstr "إغلاق"
+
+#: src/components/PortScanner/PortScannerCompact.vue:45
+msgid "Closed"
+msgstr "مغلق"
 
 #: src/constants/errors/llm.ts:2
 msgid "Code completion is not enabled"
@@ -961,7 +965,7 @@ msgstr "ملف إدخال التكوين غير موجود"
 msgid "Config path is empty"
 msgstr "مسار التكوين فارغ"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:36
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:37
 msgid "Config Template"
 msgstr "قالب التكوين"
 
@@ -1672,6 +1676,10 @@ msgstr "تم التفعيل بنجاح"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
 msgstr "تشفير الموقع باستخدام Let's Encrypt"
+
+#: src/components/PortScanner/PortScannerCompact.vue:164
+msgid "End"
+msgstr "النهاية"
 
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
@@ -2533,6 +2541,10 @@ msgstr "ابدأ الرابط"
 msgid "List"
 msgstr "قائمة"
 
+#: src/components/PortScanner/PortScannerCompact.vue:43
+msgid "Listening"
+msgstr "يستمع"
+
 #: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Load Average:"
 msgstr "متوسط التحميل:"
@@ -3289,6 +3301,10 @@ msgstr "متصل"
 msgid "Only zip files are allowed"
 msgstr "يُسمح فقط بملفات zip"
 
+#: src/components/PortScanner/PortScannerCompact.vue:44
+msgid "Open"
+msgstr "مفتوح"
+
 #: src/views/preference/Preference.vue:100
 msgid "OpenAI"
 msgstr "أوبن أي آي"
@@ -3464,6 +3480,10 @@ msgid ""
 "button below."
 msgstr "يرجى إدخال اسم لمفتاح المرور الذي ترغب في إنشائه ثم انقر على زر موافق أدناه."
 
+#: src/components/PortScanner/PortScannerCompact.vue:85
+msgid "Please enter a valid port range"
+msgstr "الرجاء إدخال نطاق منافذ صالح"
+
 #: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "يرجى إدخال رمز OTP:"
@@ -3582,9 +3602,15 @@ msgstr "يرجى اختيار عقدة واحدة على الأقل للترقي
 msgid "Please type \"Revoke\" to confirm"
 msgstr "يرجى كتابة \"إلغاء\" للتأكيد"
 
+#: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
 msgid "Port"
 msgstr "المنفذ"
+
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:44
+#: src/views/stream/components/RightPanel/RightPanel.vue:26
+msgid "Port Scanner"
+msgstr "ماسح المنافذ"
 
 #: src/views/environments/group/columns.ts:15
 #: src/views/environments/group/EnvGroup.vue:39
@@ -3604,6 +3630,10 @@ msgstr "تفضيل"
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
 msgstr "تحضير تكوينات Lego"
+
+#: src/components/PortScanner/PortScannerCompact.vue:55
+msgid "Process"
+msgstr "العملية"
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:26
 msgid "Process Distribution"
@@ -4195,6 +4225,22 @@ msgstr "تم الحفظ بنجاح"
 msgid "Sbin path not exist"
 msgstr "مسار sbin غير موجود"
 
+#: src/components/PortScanner/PortScannerCompact.vue:94
+msgid "Scan completed"
+msgstr "تم المسح"
+
+#: src/components/PortScanner/PortScannerCompact.vue:98
+msgid "Scan failed"
+msgstr "فشل المسح"
+
+#: src/components/PortScanner/PortScannerCompact.vue:179
+msgid "Scan Ports"
+msgstr "مسح المنافذ"
+
+#: src/components/PortScanner/PortScannerCompact.vue:204
+msgid "Scan Results"
+msgstr "نتائج المسح"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:69
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "امسح رمز الاستجابة السريعة بهاتفك المحمول لإضافة الحساب إلى التطبيق."
@@ -4461,6 +4507,10 @@ msgstr "تسجيل الدخول عبر SSO"
 msgid "Stable"
 msgstr "مستقر"
 
+#: src/components/PortScanner/PortScannerCompact.vue:151
+msgid "Start"
+msgstr "بداية"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:246
 #: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid "Start Restore"
@@ -4471,6 +4521,7 @@ msgstr "بدء الاستعادة"
 msgid "Static"
 msgstr "ثابت"
 
+#: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/certificate/ACMEUser.vue:60
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
@@ -4656,6 +4707,7 @@ msgstr "مزامنة إلى"
 msgid "Synchronization"
 msgstr "مزامنة"
 
+#: src/components/PortScanner/PortScannerCompact.vue:194
 #: src/routes/modules/system.ts:11
 msgid "System"
 msgstr "نظام"
@@ -5055,6 +5107,7 @@ msgstr "يتطلب المصادقة الثنائية"
 msgid "Type"
 msgstr "نوع"
 
+#: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
 msgid "Unknown"
 msgstr "غير معروف"

@@ -468,8 +468,8 @@ msgid "Base information"
 msgstr "Основна інформація"
 
 #: src/views/config/ConfigEditor.vue:300
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:30
-#: src/views/stream/components/RightPanel/RightPanel.vue:19
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:31
+#: src/views/stream/components/RightPanel/RightPanel.vue:20
 msgid "Basic"
 msgstr "Базові"
 
@@ -718,8 +718,8 @@ msgstr "Змінений шлях"
 msgid "Channel"
 msgstr "Канал"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:40
-#: src/views/stream/components/RightPanel/RightPanel.vue:22
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:41
+#: src/views/stream/components/RightPanel/RightPanel.vue:23
 msgid "Chat"
 msgstr "Чат"
 
@@ -902,9 +902,13 @@ msgstr "Розмір буфера тіла запиту клієнта"
 msgid "Client request header buffer size"
 msgstr "Розмір буфера заголовка запиту клієнта"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:169 src/language/curd.ts:14
+#: src/components/ConfigHistory/ConfigHistory.vue:170 src/language/curd.ts:14
 msgid "Close"
 msgstr "Закрити"
+
+#: src/components/PortScanner/PortScannerCompact.vue:45
+msgid "Closed"
+msgstr "Закрито"
 
 #: src/constants/errors/llm.ts:2
 msgid "Code completion is not enabled"
@@ -966,7 +970,7 @@ msgstr "Вхідний файл конфігурації не існує"
 msgid "Config path is empty"
 msgstr "Конфігурація порожній"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:36
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:37
 msgid "Config Template"
 msgstr "Шаблон конфігурації"
 
@@ -1753,6 +1757,10 @@ msgstr "Успішно ввімкнено"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Зашифрувати вебсайт за допомогою Let's Encrypt"
+
+#: src/components/PortScanner/PortScannerCompact.vue:164
+msgid "End"
+msgstr "Кінець"
 
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
@@ -2617,6 +2625,10 @@ msgstr "Почати зв’язок"
 msgid "List"
 msgstr "Список"
 
+#: src/components/PortScanner/PortScannerCompact.vue:43
+msgid "Listening"
+msgstr "Прослуховує"
+
 #: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Load Average:"
 msgstr "Середнє навантаження:"
@@ -3378,6 +3390,10 @@ msgstr "Онлайн"
 msgid "Only zip files are allowed"
 msgstr "Дозволені лише zip-файли"
 
+#: src/components/PortScanner/PortScannerCompact.vue:44
+msgid "Open"
+msgstr "Відкрито"
+
 #: src/views/preference/Preference.vue:100
 msgid "OpenAI"
 msgstr "OpenAI"
@@ -3556,6 +3572,10 @@ msgstr ""
 "Будь ласка, введіть назву для ключа доступу, який ви хочете створити, і "
 "натисніть кнопку OK нижче."
 
+#: src/components/PortScanner/PortScannerCompact.vue:85
+msgid "Please enter a valid port range"
+msgstr "Будь ласка, введіть дійсний діапазон портів"
+
 #: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "Будь ласка, введіть OTP-код:"
@@ -3685,9 +3705,15 @@ msgstr "Будь ласка, виберіть принаймні один вуз
 msgid "Please type \"Revoke\" to confirm"
 msgstr "Будь ласка, введіть \"Скасувати\" для підтвердження"
 
+#: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
 msgid "Port"
 msgstr "Порт"
+
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:44
+#: src/views/stream/components/RightPanel/RightPanel.vue:26
+msgid "Port Scanner"
+msgstr "Сканер портів"
 
 #: src/views/environments/group/columns.ts:15
 #: src/views/environments/group/EnvGroup.vue:39
@@ -3707,6 +3733,10 @@ msgstr "Налаштування"
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
 msgstr "Підготовка конфігурацій Lego"
+
+#: src/components/PortScanner/PortScannerCompact.vue:55
+msgid "Process"
+msgstr "Процес"
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:26
 msgid "Process Distribution"
@@ -4306,6 +4336,22 @@ msgstr "Успішно збережено"
 msgid "Sbin path not exist"
 msgstr "Шлях sbin не існує"
 
+#: src/components/PortScanner/PortScannerCompact.vue:94
+msgid "Scan completed"
+msgstr "Сканування завершено"
+
+#: src/components/PortScanner/PortScannerCompact.vue:98
+msgid "Scan failed"
+msgstr "Сканування не вдалося"
+
+#: src/components/PortScanner/PortScannerCompact.vue:179
+msgid "Scan Ports"
+msgstr "Сканувати порти"
+
+#: src/components/PortScanner/PortScannerCompact.vue:204
+msgid "Scan Results"
+msgstr "Результати сканування"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:69
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr ""
@@ -4576,6 +4622,10 @@ msgstr "Вхід через SSO"
 msgid "Stable"
 msgstr "Стабільна"
 
+#: src/components/PortScanner/PortScannerCompact.vue:151
+msgid "Start"
+msgstr "Початок"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:246
 #: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid "Start Restore"
@@ -4586,6 +4636,7 @@ msgstr "Почати відновлення"
 msgid "Static"
 msgstr "Статичний"
 
+#: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/certificate/ACMEUser.vue:60
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
@@ -4773,6 +4824,7 @@ msgstr "Синхронізувати з"
 msgid "Synchronization"
 msgstr "Синхронізація"
 
+#: src/components/PortScanner/PortScannerCompact.vue:194
 #: src/routes/modules/system.ts:11
 msgid "System"
 msgstr "Система"
@@ -5178,6 +5230,7 @@ msgstr "Потрібна двофакторна аутентифікація"
 msgid "Type"
 msgstr "Тип"
 
+#: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
 msgid "Unknown"
 msgstr "Невідомо"

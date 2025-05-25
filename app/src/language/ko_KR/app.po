@@ -456,8 +456,8 @@ msgid "Base information"
 msgstr "기본 정보"
 
 #: src/views/config/ConfigEditor.vue:300
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:30
-#: src/views/stream/components/RightPanel/RightPanel.vue:19
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:31
+#: src/views/stream/components/RightPanel/RightPanel.vue:20
 msgid "Basic"
 msgstr "기본"
 
@@ -706,8 +706,8 @@ msgstr "변경된 경로"
 msgid "Channel"
 msgstr "채널"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:40
-#: src/views/stream/components/RightPanel/RightPanel.vue:22
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:41
+#: src/views/stream/components/RightPanel/RightPanel.vue:23
 msgid "Chat"
 msgstr "채팅"
 
@@ -875,9 +875,13 @@ msgstr "클라이언트 요청 본문 버퍼 크기"
 msgid "Client request header buffer size"
 msgstr "클라이언트 요청 헤더 버퍼 크기"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:169 src/language/curd.ts:14
+#: src/components/ConfigHistory/ConfigHistory.vue:170 src/language/curd.ts:14
 msgid "Close"
 msgstr "닫기"
+
+#: src/components/PortScanner/PortScannerCompact.vue:45
+msgid "Closed"
+msgstr "닫힘"
 
 #: src/constants/errors/llm.ts:2
 msgid "Code completion is not enabled"
@@ -939,7 +943,7 @@ msgstr "구성 항목 파일이 존재하지 않습니다"
 msgid "Config path is empty"
 msgstr "설정 경로가 비어 있습니다"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:36
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:37
 msgid "Config Template"
 msgstr "설정 템플릿"
 
@@ -1648,6 +1652,10 @@ msgstr "성공적으로 활성화됨"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Let's Encrypt로 웹사이트 암호화"
+
+#: src/components/PortScanner/PortScannerCompact.vue:164
+msgid "End"
+msgstr "끝"
 
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
@@ -2499,6 +2507,10 @@ msgstr "링크 시작"
 msgid "List"
 msgstr "목록"
 
+#: src/components/PortScanner/PortScannerCompact.vue:43
+msgid "Listening"
+msgstr "수신 중"
+
 #: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Load Average:"
 msgstr "평균 부하:"
@@ -3245,6 +3257,10 @@ msgstr "온라인"
 msgid "Only zip files are allowed"
 msgstr "ZIP 파일만 허용됩니다"
 
+#: src/components/PortScanner/PortScannerCompact.vue:44
+msgid "Open"
+msgstr "열림"
+
 #: src/views/preference/Preference.vue:100
 msgid "OpenAI"
 msgstr "오픈AI"
@@ -3417,6 +3433,10 @@ msgid ""
 "button below."
 msgstr "생성하려는 패스키의 이름을 입력하고 아래의 확인 버튼을 클릭하세요."
 
+#: src/components/PortScanner/PortScannerCompact.vue:85
+msgid "Please enter a valid port range"
+msgstr "유효한 포트 범위를 입력하세요"
+
 #: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "OTP 코드를 입력해 주세요:"
@@ -3533,9 +3553,15 @@ msgstr "업그레이드할 노드를 최소한 하나 이상 선택해 주세요
 msgid "Please type \"Revoke\" to confirm"
 msgstr "확인하려면 \"Revoke\"를 입력하세요"
 
+#: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
 msgid "Port"
 msgstr "포트"
+
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:44
+#: src/views/stream/components/RightPanel/RightPanel.vue:26
+msgid "Port Scanner"
+msgstr "포트 스캐너"
 
 #: src/views/environments/group/columns.ts:15
 #: src/views/environments/group/EnvGroup.vue:39
@@ -3555,6 +3581,10 @@ msgstr "환경설정"
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
 msgstr "Lego 설정 준비 중"
+
+#: src/components/PortScanner/PortScannerCompact.vue:55
+msgid "Process"
+msgstr "프로세스"
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:26
 msgid "Process Distribution"
@@ -4142,6 +4172,22 @@ msgstr "성공적으로 저장됨"
 msgid "Sbin path not exist"
 msgstr "sbin 경로가 존재하지 않습니다"
 
+#: src/components/PortScanner/PortScannerCompact.vue:94
+msgid "Scan completed"
+msgstr "스캔 완료"
+
+#: src/components/PortScanner/PortScannerCompact.vue:98
+msgid "Scan failed"
+msgstr "스캔 실패"
+
+#: src/components/PortScanner/PortScannerCompact.vue:179
+msgid "Scan Ports"
+msgstr "포트 스캔"
+
+#: src/components/PortScanner/PortScannerCompact.vue:204
+msgid "Scan Results"
+msgstr "스캔 결과"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:69
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "휴대폰으로 QR 코드를 스캔하여 앱에 계정을 추가하세요."
@@ -4406,6 +4452,10 @@ msgstr "SSO 로그인"
 msgid "Stable"
 msgstr "안정적"
 
+#: src/components/PortScanner/PortScannerCompact.vue:151
+msgid "Start"
+msgstr "시작"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:246
 #: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid "Start Restore"
@@ -4416,6 +4466,7 @@ msgstr "복원 시작"
 msgid "Static"
 msgstr "정적"
 
+#: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/certificate/ACMEUser.vue:60
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
@@ -4601,6 +4652,7 @@ msgstr "동기화 대상"
 msgid "Synchronization"
 msgstr "동기화"
 
+#: src/components/PortScanner/PortScannerCompact.vue:194
 #: src/routes/modules/system.ts:11
 msgid "System"
 msgstr "시스템"
@@ -4965,6 +5017,7 @@ msgstr "2단계 인증이 필요합니다"
 msgid "Type"
 msgstr "유형"
 
+#: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
 msgid "Unknown"
 msgstr "알 수 없음"

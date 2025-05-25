@@ -462,8 +462,8 @@ msgid "Base information"
 msgstr "Temel bilgiler"
 
 #: src/views/config/ConfigEditor.vue:300
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:30
-#: src/views/stream/components/RightPanel/RightPanel.vue:19
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:31
+#: src/views/stream/components/RightPanel/RightPanel.vue:20
 msgid "Basic"
 msgstr "Temel"
 
@@ -713,8 +713,8 @@ msgstr "Değişen Dosya Yolu"
 msgid "Channel"
 msgstr "Kanal"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:40
-#: src/views/stream/components/RightPanel/RightPanel.vue:22
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:41
+#: src/views/stream/components/RightPanel/RightPanel.vue:23
 msgid "Chat"
 msgstr "Sohbet"
 
@@ -901,9 +901,13 @@ msgstr "İstemci istek gövdesi tampon boyutu"
 msgid "Client request header buffer size"
 msgstr "İstemci istek başlığı arabellek boyutu"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:169 src/language/curd.ts:14
+#: src/components/ConfigHistory/ConfigHistory.vue:170 src/language/curd.ts:14
 msgid "Close"
 msgstr "Kapat"
+
+#: src/components/PortScanner/PortScannerCompact.vue:45
+msgid "Closed"
+msgstr "Kapalı"
 
 #: src/constants/errors/llm.ts:2
 msgid "Code completion is not enabled"
@@ -965,7 +969,7 @@ msgstr "Yapılandırma giriş dosyası mevcut değil"
 msgid "Config path is empty"
 msgstr "Yapılandırma yolu boş"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:36
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:37
 msgid "Config Template"
 msgstr "Yapılandırma Şablonu"
 
@@ -1683,6 +1687,10 @@ msgstr "Başarıyla etkinleştirildi"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Let's Encrypt ile web sitesini şifreleyin"
+
+#: src/components/PortScanner/PortScannerCompact.vue:164
+msgid "End"
+msgstr "Son"
 
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
@@ -2551,6 +2559,10 @@ msgstr "Bağlantı Başlat"
 msgid "List"
 msgstr "Liste"
 
+#: src/components/PortScanner/PortScannerCompact.vue:43
+msgid "Listening"
+msgstr "Dinliyor"
+
 #: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Load Average:"
 msgstr "Yük Ortalaması:"
@@ -3311,6 +3323,10 @@ msgstr "Çevrimiçi"
 msgid "Only zip files are allowed"
 msgstr "Sadece ZIP dosyalarına izin verilir"
 
+#: src/components/PortScanner/PortScannerCompact.vue:44
+msgid "Open"
+msgstr "Açık"
+
 #: src/views/preference/Preference.vue:100
 msgid "OpenAI"
 msgstr "OpenAI"
@@ -3488,6 +3504,10 @@ msgstr ""
 "Oluşturmak istediğiniz anahtar için bir ad girin ve aşağıdaki Tamam "
 "butonuna tıklayın."
 
+#: src/components/PortScanner/PortScannerCompact.vue:85
+msgid "Please enter a valid port range"
+msgstr "Lütfen geçerli bir port aralığı girin"
+
 #: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "Lütfen OTP kodunu girin:"
@@ -3617,9 +3637,15 @@ msgstr "Lütfen yükseltmek için en az bir düğüm seçin"
 msgid "Please type \"Revoke\" to confirm"
 msgstr "Onaylamak için \"İptal Et\" yazın"
 
+#: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
 msgid "Port"
 msgstr "Port"
+
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:44
+#: src/views/stream/components/RightPanel/RightPanel.vue:26
+msgid "Port Scanner"
+msgstr "Port Tarayıcı"
 
 #: src/views/environments/group/columns.ts:15
 #: src/views/environments/group/EnvGroup.vue:39
@@ -3639,6 +3665,10 @@ msgstr "Tercih"
 #: src/language/constants.ts:8
 msgid "Preparing lego configurations"
 msgstr "Lego yapılandırmaları hazırlanıyor"
+
+#: src/components/PortScanner/PortScannerCompact.vue:55
+msgid "Process"
+msgstr "Süreç"
 
 #: src/views/dashboard/components/ProcessDistributionCard.vue:26
 msgid "Process Distribution"
@@ -4242,6 +4272,22 @@ msgstr "Başarıyla kaydedildi"
 msgid "Sbin path not exist"
 msgstr "Sbin yolu mevcut değil"
 
+#: src/components/PortScanner/PortScannerCompact.vue:94
+msgid "Scan completed"
+msgstr "Tarama tamamlandı"
+
+#: src/components/PortScanner/PortScannerCompact.vue:98
+msgid "Scan failed"
+msgstr "Tarama başarısız"
+
+#: src/components/PortScanner/PortScannerCompact.vue:179
+msgid "Scan Ports"
+msgstr "Portları Tara"
+
+#: src/components/PortScanner/PortScannerCompact.vue:204
+msgid "Scan Results"
+msgstr "Tarama Sonuçları"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:69
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "Hesabı uygulamaya eklemek için telefonunuzla QR kodunu tarayın."
@@ -4508,6 +4554,10 @@ msgstr "SSO Girişi"
 msgid "Stable"
 msgstr "Kararlı"
 
+#: src/components/PortScanner/PortScannerCompact.vue:151
+msgid "Start"
+msgstr "Başla"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:246
 #: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid "Start Restore"
@@ -4518,6 +4568,7 @@ msgstr "Geri Yüklemeyi Başlat"
 msgid "Static"
 msgstr "Statik"
 
+#: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/certificate/ACMEUser.vue:60
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
@@ -4707,6 +4758,7 @@ msgstr "Senkronize Et"
 msgid "Synchronization"
 msgstr "Senkronizasyon"
 
+#: src/components/PortScanner/PortScannerCompact.vue:194
 #: src/routes/modules/system.ts:11
 msgid "System"
 msgstr "Sistem"
@@ -5112,6 +5164,7 @@ msgstr "İki faktörlü kimlik doğrulama gerekiyor"
 msgid "Type"
 msgstr "Tür"
 
+#: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
 msgid "Unknown"
 msgstr "Bilinmeyen"

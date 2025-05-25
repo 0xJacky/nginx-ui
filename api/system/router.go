@@ -24,6 +24,7 @@ func InitPrivateRouter(r *gin.RouterGroup) {
 	r.GET("upgrade/current", GetCurrentVersion)
 
 	r.GET("system/processing", GetProcessingStatus)
+	r.POST("system/port_scan", PortScan)
 }
 
 func InitSelfCheckRouter(r *gin.RouterGroup) {
