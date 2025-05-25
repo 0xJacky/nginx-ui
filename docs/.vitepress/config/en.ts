@@ -45,18 +45,19 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           collapsed: false,
           items: [
             { text: 'App', link: '/guide/config-app' },
-            { text: 'Server', link: '/guide/config-server' },
-            { text: 'Database', link: '/guide/config-database' },
             { text: 'Auth', link: '/guide/config-auth' },
+            { text: 'Backup', link: '/guide/config-backup' },
             { text: 'Casdoor', link: '/guide/config-casdoor' },
             { text: 'Cert', link: '/guide/config-cert' },
             { text: 'Cluster', link: '/guide/config-cluster' },
             { text: 'Crypto', link: '/guide/config-crypto' },
+            { text: 'Database', link: '/guide/config-database' },
             { text: 'Http', link: '/guide/config-http' },
             { text: 'Logrotate', link: '/guide/config-logrotate' },
             { text: 'Nginx', link: '/guide/config-nginx' },
             { text: 'Node', link: '/guide/config-node' },
             { text: 'Open AI', link: '/guide/config-openai' },
+            { text: 'Server', link: '/guide/config-server' },
             { text: 'Terminal', link: '/guide/config-terminal' },
             { text: 'Webauthn', link: '/guide/config-webauthn' }
           ]

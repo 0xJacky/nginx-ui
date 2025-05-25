@@ -103,7 +103,7 @@ msgstr "2fa"
 msgid "2FA Settings"
 msgstr "Cài đặt 2FA"
 
-#: src/routes/modules/system.ts:45
+#: src/routes/modules/system.ts:38
 msgid "About"
 msgstr "Tác giả"
 
@@ -129,6 +129,7 @@ msgstr "Người dùng ACME"
 msgid "Action"
 msgstr "Hành động"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:241
 #: src/views/certificate/ACMEUser.vue:90
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:30
@@ -341,6 +342,11 @@ msgstr "Tự động"
 msgid "auto = CPU cores"
 msgstr "auto = lõi cpu"
 
+#: src/routes/modules/backup.ts:27
+#: src/views/backup/AutoBackup/AutoBackup.vue:250
+msgid "Auto Backup"
+msgstr "Sao lưu tự động"
+
 #: src/views/nginx_log/NginxLog.vue:150
 msgid "Auto Refresh"
 msgstr "Tự động làm mới"
@@ -382,7 +388,7 @@ msgstr "Trở về trang chủ"
 msgid "Back to List"
 msgstr "Quay lại danh sách"
 
-#: src/routes/modules/system.ts:26
+#: src/routes/modules/backup.ts:11 src/routes/modules/backup.ts:19
 msgid "Backup"
 msgstr "Sao lưu"
 
@@ -394,9 +400,37 @@ msgstr "Kiểm tra tính toàn vẹn của tập tin sao lưu thất bại, có 
 msgid "Backup file not found: {0}"
 msgstr "Không tìm thấy tệp sao lưu: {0}"
 
-#: src/views/system/Backup/BackupCreator.vue:42
+#: src/views/backup/components/BackupCreator.vue:42
 msgid "Backup has been downloaded successfully"
 msgstr "Đã tải xuống bản sao lưu thành công"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:54
+msgid "Backup Path"
+msgstr "Đường dẫn sao lưu"
+
+#: src/constants/errors/backup.ts:75
+msgid "Backup path does not exist: {0}"
+msgstr "Đường dẫn sao lưu không tồn tại: {0}"
+
+#: src/constants/errors/backup.ts:77
+msgid "Backup path is not a directory: {0}"
+msgstr "Đường dẫn sao lưu không phải là thư mục: {0}"
+
+#: src/constants/errors/backup.ts:62
+msgid "Backup path is required for custom directory backup"
+msgstr "Đường dẫn sao lưu là bắt buộc để sao lưu thư mục tùy chỉnh"
+
+#: src/constants/errors/backup.ts:60
+msgid "Backup path not in granted access paths: {0}"
+msgstr "Đường dẫn sao lưu không nằm trong các đường dẫn truy cập được cấp: {0}"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:141
+msgid "Backup Schedule"
+msgstr "Lịch trình sao lưu"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:24
+msgid "Backup Type"
+msgstr "Loại sao lưu"
 
 #: src/views/preference/tabs/AuthSettings.vue:97
 msgid "Ban Threshold Minutes"
@@ -452,6 +486,14 @@ msgstr "Dưới đây là các mục đã chọn mà bạn muốn sửa hàng lo
 #: src/constants/errors/nginx.ts:3
 msgid "Block is nil"
 msgstr "Khối là nil"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:30
+msgid "Both Config"
+msgstr "Cả hai cấu hình"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:44
+msgid "Both Nginx and Nginx UI Config"
+msgstr "Cả cấu hình Nginx và cấu hình giao diện Nginx"
 
 #: src/views/system/About.vue:55
 msgid "Build with"
@@ -523,6 +565,14 @@ msgstr ""
 #: src/views/stream/components/RightPanel/Basic.vue:47
 msgid "Cancel"
 msgstr "Huỷ"
+
+#: src/constants/errors/backup.ts:76
+msgid "Cannot access backup path {0}: {1}"
+msgstr "Không thể truy cập đường dẫn sao lưu {0}: {1}"
+
+#: src/constants/errors/backup.ts:79
+msgid "Cannot access storage path {0}: {1}"
+msgstr "Không thể truy cập đường dẫn lưu trữ {0}: {1}"
 
 #: src/constants/errors/user.ts:11
 msgid "Cannot change initial user password in demo mode"
@@ -962,12 +1012,12 @@ msgstr "Nội dung"
 msgid "Copied"
 msgstr "Đã sao chép"
 
-#: src/views/system/Backup/BackupCreator.vue:128
+#: src/views/backup/components/BackupCreator.vue:128
 msgid "Copied!"
 msgstr "Đã sao chép!"
 
 #: src/components/SensitiveString/SensitiveString.vue:37
-#: src/views/system/Backup/BackupCreator.vue:128
+#: src/views/backup/components/BackupCreator.vue:128
 msgid "Copy"
 msgstr "Sao chép"
 
@@ -1003,7 +1053,7 @@ msgstr "Tạo"
 msgid "Create Another"
 msgstr "Tạo thêm"
 
-#: src/views/system/Backup/BackupCreator.vue:86
+#: src/views/backup/components/BackupCreator.vue:86
 msgid "Create Backup"
 msgstr "Tạo bản sao lưu"
 
@@ -1015,7 +1065,7 @@ msgstr "Tạo tệp"
 msgid "Create Folder"
 msgstr "Tạo thư mục"
 
-#: src/views/system/Backup/BackupCreator.vue:75
+#: src/views/backup/components/BackupCreator.vue:75
 msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
 "Backup files will be automatically downloaded to your computer."
@@ -1023,6 +1073,7 @@ msgstr ""
 "Tạo bản sao lưu hệ thống bao gồm cấu hình Nginx và cài đặt Nginx UI. Các "
 "tệp sao lưu sẽ tự động được tải xuống máy tính của bạn."
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:227
 #: src/views/environments/group/columns.ts:29
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
@@ -1046,6 +1097,10 @@ msgstr "Chứng chỉ"
 #: src/views/certificate/components/DNSChallenge.vue:99
 msgid "Credentials"
 msgstr "Chứng chỉ"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:194
+msgid "Cron Expression"
+msgstr "Biểu thức Cron"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:72
 msgid "Current account is enabled TOTP."
@@ -1080,16 +1135,41 @@ msgstr "Phiên bản hiện tại"
 msgid "Custom"
 msgstr "Tuỳ chỉnh"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:131
+msgid "Custom cron expression"
+msgstr "Biểu thức cron tùy chỉnh"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:31
+#: src/views/backup/AutoBackup/AutoBackup.vue:45
+msgid "Custom Directory"
+msgstr "Thư mục tùy chỉnh"
+
 #: src/views/preference/tabs/NodeSettings.vue:19
 msgid ""
 "Customize the name of local node to be displayed in the environment "
 "indicator."
 msgstr "Tùy chỉnh tên nút cục bộ để hiển thị trong chỉ báo môi trường."
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:19
+msgid "Daily"
+msgstr "Hàng ngày"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:129
+msgid "Daily at %{time}"
+msgstr "Hàng ngày lúc %{time}"
+
 #: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:110
 #: src/views/config/ConfigEditor.vue:161 src/views/config/ConfigList.vue:67
 msgid "Dashboard"
 msgstr "Bảng điều khiển"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:184
+msgid "Day of Month"
+msgstr "Ngày trong tháng"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:180
+msgid "Day of Week"
+msgstr "Ngày trong tuần"
 
 #: src/views/preference/tabs/CertSettings.vue:32
 msgid "Days"
@@ -1288,6 +1368,7 @@ msgstr "Không thể tắt luồng %{name} từ %{node}"
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Đã vô hiệu hóa luồng %{name} từ %{node} thành công"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:173
 #: src/views/environments/list/envColumns.tsx:60
 #: src/views/environments/list/envColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
@@ -1424,6 +1505,10 @@ msgstr "Nhân bản thành công vào bộ nhớ cục bộ"
 msgid "Dynamic"
 msgstr "Động"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:197
+msgid "e.g., 0 0 * * * (daily at midnight)"
+msgstr "vd, 0 0 * * * (hàng ngày vào nửa đêm)"
+
 #: src/language/curd.ts:8
 msgid "Edit"
 msgstr "Chỉnh sửa"
@@ -1550,6 +1635,8 @@ msgstr "Bật TLS"
 msgid "Enable TOTP"
 msgstr "Bật TOTP"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:158
+#: src/views/backup/AutoBackup/AutoBackup.vue:172
 #: src/views/environments/list/envColumns.tsx:69
 #: src/views/environments/list/envColumns.tsx:75
 #: src/views/preference/tabs/HTTPSettings.vue:24
@@ -1616,6 +1703,18 @@ msgstr "Lỗi xử lý nội dung"
 msgid "Executable Path"
 msgstr "Đường dẫn thực thi"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:127
+msgid "Execute on every %{day} at %{time}"
+msgstr "Thực thi vào mỗi %{day} lúc %{time}"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:125
+msgid "Execute on every day at %{time}"
+msgstr "Thực hiện mỗi ngày vào lúc %{time}"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:129
+msgid "Execute on every month on day %{day} at %{time}"
+msgstr "Thực thi vào mỗi tháng vào ngày %{day} lúc %{time}"
+
 #: src/components/CertInfo/CertInfo.vue:31
 #: src/views/certificate/CertificateList/certColumns.tsx:80
 msgid "Expired"
@@ -1641,6 +1740,11 @@ msgstr "Thông báo bên ngoài"
 #: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
 msgid "Fail to obtain certificate"
 msgstr "Không thể lấy chứng chỉ"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:194
+#: src/views/backup/AutoBackup/AutoBackup.vue:219
+msgid "Failed"
+msgstr "Thất bại"
 
 #: src/constants/errors/docker.ts:4
 msgid "Failed to attach to exec instance: {0}"
@@ -1694,6 +1798,10 @@ msgstr "Không thể sao chép thư mục cấu hình Nginx: {0}"
 msgid "Failed to create backup"
 msgstr "Không thể tạo bản sao lưu"
 
+#: src/constants/errors/backup.ts:65
+msgid "Failed to create backup directory: {0}"
+msgstr "Không thể tạo thư mục sao lưu: {0}"
+
 #: src/constants/errors/backup.ts:12
 msgid "Failed to create backup file: {0}"
 msgstr "Không thể tạo tệp sao lưu: {0}"
@@ -1717,6 +1825,10 @@ msgstr "Không thể tạo thư mục cha: {0}"
 #: src/constants/errors/backup.ts:34
 msgid "Failed to create restore directory: {0}"
 msgstr "Không thể tạo thư mục khôi phục: {0}"
+
+#: src/constants/errors/backup.ts:78
+msgid "Failed to create storage directory {0}: {1}"
+msgstr "Không thể tạo thư mục lưu trữ {0}: {1}"
 
 #: src/constants/errors/backup.ts:50
 msgid "Failed to create symbolic link: {0}"
@@ -1930,6 +2042,10 @@ msgstr "Không thể khởi động container tạm thời: {0}"
 msgid "Failed to verify hashes: {0}"
 msgstr "Không thể xác minh băm: {0}"
 
+#: src/constants/errors/backup.ts:66
+msgid "Failed to write backup file: {0}"
+msgstr "Không thể ghi tệp sao lưu: {0}"
+
 #: src/constants/errors/backup.ts:55
 msgid "Failed to write decrypted file: {0}"
 msgstr "Không thể ghi tệp đã giải mã: {0}"
@@ -1937,6 +2053,10 @@ msgstr "Không thể ghi tệp đã giải mã: {0}"
 #: src/constants/errors/backup.ts:24
 msgid "Failed to write encrypted file: {0}"
 msgstr "Không thể ghi tệp đã mã hóa: {0}"
+
+#: src/constants/errors/backup.ts:67
+msgid "Failed to write security key file: {0}"
+msgstr "Không thể ghi tệp khóa bảo mật: {0}"
 
 #: src/constants/errors/backup.ts:33
 msgid "Failed to write to zip buffer: {0}"
@@ -1994,6 +2114,14 @@ msgstr "Định dạng code"
 #: src/views/config/ConfigEditor.vue:222
 msgid "Format successfully"
 msgstr "Định dạng thành công"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:200
+msgid "Format: minute hour day month weekday"
+msgstr "Định dạng: phút giờ ngày tháng thứ_trong_tuần"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:31
+msgid "Friday"
+msgstr "Thứ Sáu"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "General Certificate"
@@ -2071,13 +2199,17 @@ msgstr "Giá trị cao hơn có nghĩa là tái sử dụng kết nối tốt h�
 msgid "History"
 msgstr "Lịch sử"
 
-#: src/routes/index.ts:47
+#: src/routes/index.ts:48
 msgid "Home"
 msgstr "Trang chủ"
 
 #: src/views/preference/tabs/ServerSettings.vue:19
 msgid "Host"
 msgstr "Máy chủ"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:159
+msgid "Hour"
+msgstr "Giờ"
 
 #: src/views/preference/Preference.vue:70
 msgid "HTTP"
@@ -2258,6 +2390,10 @@ msgstr "Đệm không hợp lệ trong dữ liệu đã giải mã"
 msgid "Invalid passcode or recovery code"
 msgstr "Mã xác thực hoặc mã khôi phục không hợp lệ"
 
+#: src/constants/errors/backup.ts:73
+msgid "Invalid path: {0}"
+msgstr "Đường dẫn không hợp lệ: {0}"
+
 #: src/constants/errors/user.ts:5
 msgid "Invalid recovery code"
 msgstr "Mã khôi phục không hợp lệ"
@@ -2326,6 +2462,14 @@ msgstr "Lark"
 #: src/views/preference/components/ExternalNotify/lark_custom.ts:5
 msgid "Lark Custom"
 msgstr "Lark Tùy chỉnh"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:188
+msgid "Last Backup Status"
+msgstr "Trạng thái sao lưu cuối cùng"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:181
+msgid "Last Backup Time"
+msgstr "Thời gian sao lưu cuối cùng"
 
 #: src/views/system/Upgrade.vue:198
 msgid "Last checked at"
@@ -2420,9 +2564,16 @@ msgstr "Đang tải dữ liệu..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
 #: src/components/NodeSelector/NodeSelector.vue:86
+#: src/views/backup/AutoBackup/AutoBackup.vue:78
+#: src/views/backup/AutoBackup/AutoBackup.vue:87
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:46
 #: src/views/preference/tabs/NginxSettings.vue:55
 msgid "Local"
 msgstr "Cục bộ"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:58
+msgid "Local path (e.g., /var/backups)"
+msgstr "Đường dẫn cục bộ (vd: /var/backups)"
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:69
 msgid "Location"
@@ -2622,6 +2773,10 @@ msgstr "Dung lượng trống tối thiểu"
 msgid "Minimum free space in the cache directory"
 msgstr "Dung lượng trống tối thiểu trong thư mục bộ nhớ đệm"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:169
+msgid "Minute"
+msgstr "Phút"
+
 #: src/views/preference/tabs/LogrotateSettings.vue:30
 msgid "Minutes"
 msgstr "Phút"
@@ -2655,11 +2810,24 @@ msgstr "Mô-đun"
 msgid "Modules"
 msgstr "Mô-đun"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:27
+msgid "Monday"
+msgstr "Thứ Hai"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:21
+msgid "Monthly"
+msgstr "Hàng tháng"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:139
+msgid "Monthly on day %{day} at %{time}"
+msgstr "Hàng tháng vào ngày %{day} lúc %{time}"
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:51
 msgid "Multi-line Directive"
 msgstr "Chỉ thị nhiều dòng"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:182
+#: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:9
@@ -2758,6 +2926,11 @@ msgstr "Cấu hình Nginx không bao gồm sites-enabled"
 #: src/constants/errors/self_check.ts:9
 msgid "Nginx conf not include stream-enabled"
 msgstr "Cấu hình Nginx không bao gồm stream-enabled"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:28
+#: src/views/backup/AutoBackup/AutoBackup.vue:42
+msgid "Nginx Config"
+msgstr "Cấu hình Nginx"
 
 #: src/constants/errors/backup.ts:19
 msgid "Nginx config directory is not set"
@@ -2895,6 +3068,11 @@ msgstr "Hiệu suất tối đa lý thuyết của Nginx"
 #: src/constants/errors/system.ts:2
 msgid "Nginx UI already installed"
 msgstr "Nginx UI đã được cài đặt"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:29
+#: src/views/backup/AutoBackup/AutoBackup.vue:43
+msgid "Nginx UI Config"
+msgstr "Cấu hình giao diện Nginx"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:142
 msgid "Nginx UI configuration has been restored"
@@ -3073,6 +3251,7 @@ msgstr "Ngoại tuyến"
 #: src/components/NgxConfigEditor/NgxServer.vue:53
 #: src/components/NgxConfigEditor/NgxUpstream.vue:36
 #: src/components/Notification/Notification.vue:110 src/language/curd.ts:15
+#: src/views/backup/components/BackupCreator.vue:149
 #: src/views/notification/Notification.vue:39
 #: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
@@ -3081,7 +3260,6 @@ msgstr "Ngoại tuyến"
 #: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
 #: src/views/stream/StreamList.vue:156
-#: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr "Đồng ý"
 
@@ -3215,6 +3393,10 @@ msgstr "Mật khẩu không khớp"
 msgid "Path"
 msgstr "Đường dẫn"
 
+#: src/constants/errors/backup.ts:74
+msgid "Path not in granted access paths: {0}"
+msgstr "Đường dẫn không nằm trong các đường dẫn truy cập được cấp: {0}"
+
 #: src/constants/errors/cert.ts:7 src/constants/errors/config.ts:2
 msgid "Path: {0} is not under the nginx conf dir: {1}"
 msgstr "Đường dẫn: {0} không nằm trong thư mục cấu hình nginx: {1}"
@@ -3222,6 +3404,11 @@ msgstr "Đường dẫn: {0} không nằm trong thư mục cấu hình nginx: {1
 #: src/constants/errors/cert.ts:6
 msgid "Payload resource is nil"
 msgstr "Tài nguyên tải trọng là nil"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:192
+#: src/views/backup/AutoBackup/AutoBackup.vue:217
+msgid "Pending"
+msgstr "Đang chờ"
 
 #: src/views/environments/list/BatchUpgrader.vue:232
 msgid "Perform"
@@ -3292,6 +3479,10 @@ msgstr "Vui lòng nhập mã bảo mật nhận được trong quá trình sao l
 msgid "Please fill all fields correctly"
 msgstr "Vui lòng điền đầy đủ và chính xác tất cả các trường"
 
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:21
+msgid "Please fill in required S3 configuration fields"
+msgstr "Vui lòng điền vào các trường cấu hình S3 bắt buộc"
+
 #: src/views/certificate/DNSCredential.vue:52
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
@@ -3348,8 +3539,8 @@ msgstr "Vui lòng nhập mật khẩu!"
 msgid "Please input your username!"
 msgstr "Vui lòng nhập username!"
 
+#: src/views/backup/components/SystemRestore.vue:8
 #: src/views/install/components/InstallView.vue:48
-#: src/views/system/Backup/SystemRestore.vue:10
 msgid "Please log in."
 msgstr "Vui lòng đăng nhập."
 
@@ -3361,7 +3552,7 @@ msgstr "Lưu ý đơn vị cấu hình thời gian bên dưới được tính b
 msgid "Please resolve all issues before proceeding with installation"
 msgstr "Vui lòng giải quyết tất cả các vấn đề trước khi tiến hành cài đặt"
 
-#: src/views/system/Backup/BackupCreator.vue:107
+#: src/views/backup/components/BackupCreator.vue:107
 msgid "Please save this security token, you will need it for restoration:"
 msgstr "Vui lòng lưu token bảo mật này, bạn sẽ cần nó để khôi phục:"
 
@@ -3831,6 +4022,109 @@ msgstr "Chế độ chạy"
 msgid "Running"
 msgstr "Running"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:79
+#: src/views/backup/AutoBackup/AutoBackup.vue:88
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:47
+msgid "S3"
+msgstr "S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:81
+msgid "S3 access key ID"
+msgstr "ID khóa truy cập S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:75
+msgid "S3 Access Key ID"
+msgstr "ID khóa truy cập S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:77
+msgid "S3 access key ID is required"
+msgstr "Yêu cầu ID khóa truy cập S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:97
+msgid "S3 Bucket"
+msgstr "Thùng S3"
+
+#: src/constants/errors/backup.ts:70
+msgid "S3 bucket access denied: {0}"
+msgstr "Truy cập vào bộ chứa S3 bị từ chối: {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:99
+msgid "S3 bucket is required"
+msgstr "Yêu cầu phải có S3 bucket"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:103
+msgid "S3 bucket name"
+msgstr "Tên bucket S3"
+
+#: src/constants/errors/backup.ts:63
+msgid "S3 configuration is incomplete: missing {0}"
+msgstr "Cấu hình S3 không đầy đủ: thiếu {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:32
+msgid "S3 connection test failed"
+msgstr "Kiểm tra kết nối S3 thất bại"
+
+#: src/constants/errors/backup.ts:69
+msgid "S3 connection test failed: {0}"
+msgstr "Kiểm tra kết nối S3 thất bại: {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:28
+msgid "S3 connection test successful"
+msgstr "Kiểm tra kết nối S3 thành công"
+
+#: src/constants/errors/backup.ts:71
+msgid "S3 credentials are invalid: {0}"
+msgstr "Thông tin xác thực S3 không hợp lệ: {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:64
+msgid "S3 Endpoint"
+msgstr "Điểm cuối S3"
+
+#: src/constants/errors/backup.ts:72
+msgid "S3 endpoint is invalid: {0}"
+msgstr "Điểm cuối S3 không hợp lệ: {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:66
+msgid "S3 endpoint is required"
+msgstr "Yêu cầu điểm cuối S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:70
+msgid "S3 endpoint URL"
+msgstr "URL điểm cuối S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:124
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:58
+msgid "S3 path (e.g., backups/)"
+msgstr "Đường dẫn S3 (vd: backups/)"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:108
+msgid "S3 Region"
+msgstr "Vùng S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:113
+msgid "S3 region (e.g., us-east-1)"
+msgstr "Vùng S3 (vd: us-east-1)"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:92
+msgid "S3 secret access key"
+msgstr "Khóa truy cập bí mật S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:86
+msgid "S3 Secret Access Key"
+msgstr "Khóa truy cập bí mật S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:88
+msgid "S3 secret access key is required"
+msgstr "Yêu cầu khóa truy cập bí mật S3"
+
+#: src/constants/errors/backup.ts:68
+msgid "S3 upload failed: {0}"
+msgstr "Tải lên S3 thất bại: {0}"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:32
+msgid "Saturday"
+msgstr "Thứ Bảy"
+
 #: src/components/ChatGPT/ChatGPT.vue:355
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
 #: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:266
@@ -3908,6 +4202,14 @@ msgstr "Đường dẫn sbin không tồn tại"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "Quét mã QR bằng điện thoại di động của bạn để thêm tài khoản vào ứng dụng."
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:114
+msgid "Schedule"
+msgstr "Lịch trình"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:144
+msgid "Schedule Type"
+msgstr "Loại lịch trình"
+
 #: src/views/certificate/components/DNSChallenge.vue:90
 msgid "SDK"
 msgstr "SDK"
@@ -3933,7 +4235,7 @@ msgstr "Cài đặt bảo mật"
 msgid "Security Token"
 msgstr "Mã bảo mật"
 
-#: src/views/system/Backup/BackupCreator.vue:94
+#: src/views/backup/components/BackupCreator.vue:94
 msgid "Security Token Information"
 msgstr "Thông tin mã bảo mật"
 
@@ -4190,6 +4492,29 @@ msgstr "Đã dừng"
 msgid "Storage"
 msgstr "Storage"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:96
+msgid "Storage Configuration"
+msgstr "Cấu hình lưu trữ"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:118
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:52
+msgid "Storage Path"
+msgstr "Đường dẫn lưu trữ"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:120
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:54
+msgid "Storage path is required"
+msgstr "Đường dẫn lưu trữ là bắt buộc"
+
+#: src/constants/errors/backup.ts:61
+msgid "Storage path not in granted access paths: {0}"
+msgstr "Đường dẫn lưu trữ không nằm trong các đường dẫn truy cập được cấp: {0}"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:74
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:43
+msgid "Storage Type"
+msgstr "Loại lưu trữ"
+
 #: src/constants/errors/stream.ts:4
 msgid "Stream is enabled"
 msgstr "Luồng đã được bật"
@@ -4214,9 +4539,16 @@ msgstr "Thư mục streams-enabled không tồn tại"
 msgid "Stub Status Port"
 msgstr "Cổng trạng thái stub"
 
-#: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:35
+#: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:193
+#: src/views/backup/AutoBackup/AutoBackup.vue:218
+#: src/views/notification/notificationColumns.tsx:35
 msgid "Success"
 msgstr "Thành công"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:121
+#: src/views/backup/AutoBackup/components/CronEditor.vue:26
+msgid "Sunday"
+msgstr "Chủ nhật"
 
 #: src/components/SelfCheck/tasks/frontend/sse.ts:14
 msgid ""
@@ -4333,7 +4665,7 @@ msgstr "Đồng bộ hóa"
 msgid "System"
 msgstr "Thông tin"
 
-#: src/views/system/Backup/BackupCreator.vue:71
+#: src/views/backup/components/BackupCreator.vue:71
 msgid "System Backup"
 msgstr "Sao lưu hệ thống"
 
@@ -4350,7 +4682,6 @@ msgid "System Restore"
 msgstr "Khôi phục hệ thống"
 
 #: src/views/install/components/InstallView.vue:44
-#: src/views/system/Backup/SystemRestore.vue:6
 msgid "System restored successfully."
 msgstr "Hệ thống đã được khôi phục thành công."
 
@@ -4373,6 +4704,10 @@ msgstr "Thiết bị đầu cuối"
 #: src/views/preference/tabs/TerminalSettings.vue:10
 msgid "Terminal Start Command"
 msgstr "Lệnh Khởi động Terminal"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:139
+msgid "Test S3 Connection"
+msgstr "Kiểm tra kết nối S3"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:48
 msgid ""
@@ -4553,7 +4888,7 @@ msgstr ""
 "Thao tác này sẽ chỉ xóa chứng chỉ khỏi cơ sở dữ liệu. Các tệp chứng chỉ "
 "trên hệ thống tệp sẽ không bị xóa."
 
-#: src/views/system/Backup/BackupCreator.vue:141
+#: src/views/backup/components/BackupCreator.vue:141
 msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
@@ -4592,6 +4927,10 @@ msgstr ""
 #: src/views/preference/tabs/AuthSettings.vue:92
 msgid "Throttle"
 msgstr "Hạn chế"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:30
+msgid "Thursday"
+msgstr "Thứ Năm"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:65
 #: src/views/preference/tabs/AuthSettings.vue:112
@@ -4711,6 +5050,10 @@ msgstr ""
 msgid "Trash"
 msgstr "Thùng rác"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:28
+msgid "Tuesday"
+msgstr "Thứ Ba"
+
 #: src/components/TwoFA/use2FAModal.ts:67
 msgid "Two-factor authentication required"
 msgstr "Yêu cầu xác thực hai yếu tố"
@@ -4727,6 +5070,10 @@ msgstr "Loại"
 msgid "Unknown"
 msgstr "Không xác định"
 
+#: src/constants/errors/backup.ts:64
+msgid "Unsupported backup type: {0}"
+msgstr "Loại sao lưu không được hỗ trợ: {0}"
+
 #: src/views/user/UserProfile.vue:218
 msgid "Update Password"
 msgstr "Cập nhật mật khẩu"
@@ -4739,6 +5086,7 @@ msgstr "Cập nhật hồ sơ"
 msgid "Update successfully"
 msgstr "Cập nhật thành công"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:234
 #: src/views/certificate/ACMEUser.vue:83
 #: src/views/certificate/DNSCredential.vue:24
 #: src/views/config/configColumns.tsx:35 src/views/config/ConfigEditor.vue:335
@@ -4751,7 +5099,7 @@ msgstr "Cập nhật thành công"
 msgid "Updated at"
 msgstr "Ngày cập nhật"
 
-#: src/routes/modules/system.ts:33
+#: src/routes/modules/system.ts:26
 #: src/views/environments/list/Environment.vue:100
 #: src/views/environments/list/Environment.vue:108
 #: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
@@ -4881,10 +5229,10 @@ msgstr "Đã xem"
 msgid "Waiting processes"
 msgstr "Quá trình chờ đợi"
 
-#: src/constants/index.ts:23 src/views/config/InspectConfig.vue:33
+#: src/constants/index.ts:23 src/views/backup/components/BackupCreator.vue:138
+#: src/views/config/InspectConfig.vue:33
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:82
-#: src/views/system/Backup/BackupCreator.vue:138
 msgid "Warning"
 msgstr "Lưu ý"
 
@@ -4926,6 +5274,18 @@ msgstr "Cài đặt WebAuthn chưa được cấu hình"
 #: src/views/certificate/components/RemoveCert.vue:54
 msgid "WebSocket connection error"
 msgstr "Lỗi kết nối WebSocket"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:29
+msgid "Wednesday"
+msgstr "Thứ Tư"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:20
+msgid "Weekly"
+msgstr "Hàng tuần"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:135
+msgid "Weekly on %{day} at %{time}"
+msgstr "Hàng tuần vào %{day} lúc %{time}"
 
 #: src/views/certificate/ACMEUser.vue:78
 msgid ""
@@ -4971,7 +5331,7 @@ msgstr "Tiến trình công nhân"
 msgid "Workers"
 msgstr "Công nhân"
 
-#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:56
+#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:57
 #: src/views/workspace/WorkSpace.vue:52
 msgid "Workspace"
 msgstr "Không gian làm việc"
@@ -5056,6 +5416,9 @@ msgstr "Mã cũ của bạn sẽ không còn hoạt động nữa."
 msgid "Your passkeys"
 msgstr "Khóa truy cập của bạn"
 
+#~ msgid "Last Backup Error"
+#~ msgstr "Lỗi sao lưu cuối cùng"
+
 #~ msgid "Apply"
 #~ msgstr "Áp dụng"
 
@@ -5079,9 +5442,6 @@ msgstr "Khóa truy cập của bạn"
 
 #~ msgid "Ok"
 #~ msgstr "Đồng ý"
-
-#~ msgid "Please fill in the required fields"
-#~ msgstr "Vui lòng điền vào các trường bắt buộc"
 
 #~ msgid "Recover"
 #~ msgstr "Khôi phục"

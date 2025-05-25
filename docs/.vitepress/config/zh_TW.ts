@@ -50,18 +50,19 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           collapsed: false,
           items: [
             { text: 'App', link: '/zh_TW/guide/config-app' },
-            { text: 'Server', link: '/zh_TW/guide/config-server' },
-            { text: 'Database', link: '/zh_TW/guide/config-database' },
             { text: 'Auth', link: '/zh_TW/guide/config-auth' },
+            { text: 'Backup', link: '/zh_TW/guide/config-backup' },
             { text: 'Casdoor', link: '/zh_TW/guide/config-casdoor' },
             { text: 'Cert', link: '/zh_TW/guide/config-cert' },
             { text: 'Cluster', link: '/zh_TW/guide/config-cluster' },
             { text: 'Crypto', link: '/zh_TW/guide/config-crypto' },
+            { text: 'Database', link: '/zh_TW/guide/config-database' },
             { text: 'Http', link: '/zh_TW/guide/config-http' },
             { text: 'Logrotate', link: '/zh_TW/guide/config-logrotate' },
             { text: 'Nginx', link: '/zh_TW/guide/config-nginx' },
             { text: 'Node', link: '/zh_TW/guide/config-node' },
             { text: 'Open AI', link: '/zh_TW/guide/config-openai' },
+            { text: 'Server', link: '/zh_TW/guide/config-server' },
             { text: 'Terminal', link: '/zh_TW/guide/config-terminal' },
             { text: 'Webauthn', link: '/zh_TW/guide/config-webauthn' }
           ]

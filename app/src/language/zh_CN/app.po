@@ -107,7 +107,7 @@ msgstr "2FA"
 msgid "2FA Settings"
 msgstr "2FA 设置"
 
-#: src/routes/modules/system.ts:45
+#: src/routes/modules/system.ts:38
 msgid "About"
 msgstr "关于"
 
@@ -133,6 +133,7 @@ msgstr "ACME 用户"
 msgid "Action"
 msgstr "操作"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:241
 #: src/views/certificate/ACMEUser.vue:90
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:30
@@ -345,6 +346,11 @@ msgstr "自动"
 msgid "auto = CPU cores"
 msgstr "自动 = CPU 线程数"
 
+#: src/routes/modules/backup.ts:27
+#: src/views/backup/AutoBackup/AutoBackup.vue:250
+msgid "Auto Backup"
+msgstr "自动备份"
+
 #: src/views/nginx_log/NginxLog.vue:150
 msgid "Auto Refresh"
 msgstr "自动刷新"
@@ -386,7 +392,7 @@ msgstr "返回首页"
 msgid "Back to List"
 msgstr "返回列表"
 
-#: src/routes/modules/system.ts:26
+#: src/routes/modules/backup.ts:11 src/routes/modules/backup.ts:19
 msgid "Backup"
 msgstr "备份"
 
@@ -398,9 +404,37 @@ msgstr "备份文件完整性检查失败，可能已被篡改"
 msgid "Backup file not found: {0}"
 msgstr "未找到备份文件: {0}"
 
-#: src/views/system/Backup/BackupCreator.vue:42
+#: src/views/backup/components/BackupCreator.vue:42
 msgid "Backup has been downloaded successfully"
 msgstr "已成功下载备份"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:54
+msgid "Backup Path"
+msgstr "备份路径"
+
+#: src/constants/errors/backup.ts:75
+msgid "Backup path does not exist: {0}"
+msgstr "备份路径不存在: {0}"
+
+#: src/constants/errors/backup.ts:77
+msgid "Backup path is not a directory: {0}"
+msgstr "备份路径不是目录: {0}"
+
+#: src/constants/errors/backup.ts:62
+msgid "Backup path is required for custom directory backup"
+msgstr "自定义目录备份需要备份路径"
+
+#: src/constants/errors/backup.ts:60
+msgid "Backup path not in granted access paths: {0}"
+msgstr "备份路径不在授予的访问路径中: {0}"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:141
+msgid "Backup Schedule"
+msgstr "备份计划"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:24
+msgid "Backup Type"
+msgstr "备份类型"
 
 #: src/views/preference/tabs/AuthSettings.vue:97
 msgid "Ban Threshold Minutes"
@@ -456,6 +490,14 @@ msgstr "以下是您选定的需要批量修改的项目"
 #: src/constants/errors/nginx.ts:3
 msgid "Block is nil"
 msgstr "区块为空"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:30
+msgid "Both Config"
+msgstr "两者配置"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:44
+msgid "Both Nginx and Nginx UI Config"
+msgstr "Nginx 和 Nginx UI 配置"
 
 #: src/views/system/About.vue:55
 msgid "Build with"
@@ -525,6 +567,14 @@ msgstr "基于 worker_processes * worker_connections 计算得出。实际性能
 #: src/views/stream/components/RightPanel/Basic.vue:47
 msgid "Cancel"
 msgstr "取消"
+
+#: src/constants/errors/backup.ts:76
+msgid "Cannot access backup path {0}: {1}"
+msgstr "无法访问备份路径 {0}：{1}"
+
+#: src/constants/errors/backup.ts:79
+msgid "Cannot access storage path {0}: {1}"
+msgstr "无法访问存储路径 {0}：{1}"
 
 #: src/constants/errors/user.ts:11
 msgid "Cannot change initial user password in demo mode"
@@ -946,12 +996,12 @@ msgstr "内容"
 msgid "Copied"
 msgstr "已拷贝"
 
-#: src/views/system/Backup/BackupCreator.vue:128
+#: src/views/backup/components/BackupCreator.vue:128
 msgid "Copied!"
 msgstr "已拷贝!"
 
 #: src/components/SensitiveString/SensitiveString.vue:37
-#: src/views/system/Backup/BackupCreator.vue:128
+#: src/views/backup/components/BackupCreator.vue:128
 msgid "Copy"
 msgstr "拷贝"
 
@@ -987,7 +1037,7 @@ msgstr "创建"
 msgid "Create Another"
 msgstr "再创建一个"
 
-#: src/views/system/Backup/BackupCreator.vue:86
+#: src/views/backup/components/BackupCreator.vue:86
 msgid "Create Backup"
 msgstr "创建备份"
 
@@ -999,12 +1049,13 @@ msgstr "创建文件"
 msgid "Create Folder"
 msgstr "创建文件夹"
 
-#: src/views/system/Backup/BackupCreator.vue:75
+#: src/views/backup/components/BackupCreator.vue:75
 msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
 "Backup files will be automatically downloaded to your computer."
 msgstr "创建系统备份，包括 Nginx 配置和 Nginx UI 设置。备份文件将自动下载到你的电脑。"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:227
 #: src/views/environments/group/columns.ts:29
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
@@ -1028,6 +1079,10 @@ msgstr "DNS 凭证"
 #: src/views/certificate/components/DNSChallenge.vue:99
 msgid "Credentials"
 msgstr "凭证"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:194
+msgid "Cron Expression"
+msgstr "Cron 表达式"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:72
 msgid "Current account is enabled TOTP."
@@ -1062,16 +1117,41 @@ msgstr "当前版本"
 msgid "Custom"
 msgstr "自定义"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:131
+msgid "Custom cron expression"
+msgstr "自定义 cron 表达式"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:31
+#: src/views/backup/AutoBackup/AutoBackup.vue:45
+msgid "Custom Directory"
+msgstr "自定义目录"
+
 #: src/views/preference/tabs/NodeSettings.vue:19
 msgid ""
 "Customize the name of local node to be displayed in the environment "
 "indicator."
 msgstr "自定义显示在环境指示器中的本地服务器名称。"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:19
+msgid "Daily"
+msgstr "每日"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:129
+msgid "Daily at %{time}"
+msgstr "每天 %{time}"
+
 #: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:110
 #: src/views/config/ConfigEditor.vue:161 src/views/config/ConfigList.vue:67
 msgid "Dashboard"
 msgstr "仪表盘"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:184
+msgid "Day of Month"
+msgstr "月中的某天"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:180
+msgid "Day of Week"
+msgstr "星期几"
 
 #: src/views/preference/tabs/CertSettings.vue:32
 msgid "Days"
@@ -1270,6 +1350,7 @@ msgstr "在 %{node} 中启用 %{name} 失败"
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "在 %{node} 上禁用 %{name} 成功"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:173
 #: src/views/environments/list/envColumns.tsx:60
 #: src/views/environments/list/envColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
@@ -1402,6 +1483,10 @@ msgstr "成功复制到本地"
 msgid "Dynamic"
 msgstr "动态"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:197
+msgid "e.g., 0 0 * * * (daily at midnight)"
+msgstr "例如：0 0 * * *（每天午夜）"
+
 #: src/language/curd.ts:8
 msgid "Edit"
 msgstr "编辑"
@@ -1528,6 +1613,8 @@ msgstr "启用 TLS"
 msgid "Enable TOTP"
 msgstr "启用 TOTP"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:158
+#: src/views/backup/AutoBackup/AutoBackup.vue:172
 #: src/views/environments/list/envColumns.tsx:69
 #: src/views/environments/list/envColumns.tsx:75
 #: src/views/preference/tabs/HTTPSettings.vue:24
@@ -1594,6 +1681,18 @@ msgstr "内容处理错误"
 msgid "Executable Path"
 msgstr "可执行文件路径"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:127
+msgid "Execute on every %{day} at %{time}"
+msgstr "每周%{day}的%{time}执行"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:125
+msgid "Execute on every day at %{time}"
+msgstr "每天 %{time} 执行"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:129
+msgid "Execute on every month on day %{day} at %{time}"
+msgstr "每月 %{day} 日 %{time} 执行"
+
 #: src/components/CertInfo/CertInfo.vue:31
 #: src/views/certificate/CertificateList/certColumns.tsx:80
 msgid "Expired"
@@ -1619,6 +1718,11 @@ msgstr "外部通知"
 #: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
 msgid "Fail to obtain certificate"
 msgstr "获取证书失败"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:194
+#: src/views/backup/AutoBackup/AutoBackup.vue:219
+msgid "Failed"
+msgstr "失败"
 
 #: src/constants/errors/docker.ts:4
 msgid "Failed to attach to exec instance: {0}"
@@ -1672,6 +1776,10 @@ msgstr "复制 Nginx 配置目录失败：{0}"
 msgid "Failed to create backup"
 msgstr "创建备份失败"
 
+#: src/constants/errors/backup.ts:65
+msgid "Failed to create backup directory: {0}"
+msgstr "创建备份目录失败：{0}"
+
 #: src/constants/errors/backup.ts:12
 msgid "Failed to create backup file: {0}"
 msgstr "创建备份文件失败：{0}"
@@ -1695,6 +1803,10 @@ msgstr "创建父目录失败：{0}"
 #: src/constants/errors/backup.ts:34
 msgid "Failed to create restore directory: {0}"
 msgstr "创建还原目录失败：{0}"
+
+#: src/constants/errors/backup.ts:78
+msgid "Failed to create storage directory {0}: {1}"
+msgstr "创建存储目录失败 {0}：{1}"
 
 #: src/constants/errors/backup.ts:50
 msgid "Failed to create symbolic link: {0}"
@@ -1908,6 +2020,10 @@ msgstr "启动临时容器失败：{0}"
 msgid "Failed to verify hashes: {0}"
 msgstr "验证哈希值失败：{0}"
 
+#: src/constants/errors/backup.ts:66
+msgid "Failed to write backup file: {0}"
+msgstr "写入备份文件失败: {0}"
+
 #: src/constants/errors/backup.ts:55
 msgid "Failed to write decrypted file: {0}"
 msgstr "写入解密文件失败：{0}"
@@ -1915,6 +2031,10 @@ msgstr "写入解密文件失败：{0}"
 #: src/constants/errors/backup.ts:24
 msgid "Failed to write encrypted file: {0}"
 msgstr "写入加密文件失败：{0}"
+
+#: src/constants/errors/backup.ts:67
+msgid "Failed to write security key file: {0}"
+msgstr "无法写入安全密钥文件：{0}"
 
 #: src/constants/errors/backup.ts:33
 msgid "Failed to write to zip buffer: {0}"
@@ -1970,6 +2090,14 @@ msgstr "代码格式化"
 #: src/views/config/ConfigEditor.vue:222
 msgid "Format successfully"
 msgstr "格式化成功"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:200
+msgid "Format: minute hour day month weekday"
+msgstr "格式：分钟 小时 日 月 星期"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:31
+msgid "Friday"
+msgstr "星期五"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "General Certificate"
@@ -2047,13 +2175,17 @@ msgstr "更高的值意味着更好的连接再利用"
 msgid "History"
 msgstr "历史"
 
-#: src/routes/index.ts:47
+#: src/routes/index.ts:48
 msgid "Home"
 msgstr "首页"
 
 #: src/views/preference/tabs/ServerSettings.vue:19
 msgid "Host"
 msgstr "主机"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:159
+msgid "Hour"
+msgstr "小时"
 
 #: src/views/preference/Preference.vue:70
 msgid "HTTP"
@@ -2226,6 +2358,10 @@ msgstr "解密数据中的无效填充"
 msgid "Invalid passcode or recovery code"
 msgstr "二次验证码或恢复代码无效"
 
+#: src/constants/errors/backup.ts:73
+msgid "Invalid path: {0}"
+msgstr "无效路径: {0}"
+
 #: src/constants/errors/user.ts:5
 msgid "Invalid recovery code"
 msgstr "无效的恢复代码"
@@ -2292,6 +2428,14 @@ msgstr "Lark"
 #: src/views/preference/components/ExternalNotify/lark_custom.ts:5
 msgid "Lark Custom"
 msgstr "Lark 自定义"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:188
+msgid "Last Backup Status"
+msgstr "上次备份状态"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:181
+msgid "Last Backup Time"
+msgstr "上次备份时间"
 
 #: src/views/system/Upgrade.vue:198
 msgid "Last checked at"
@@ -2386,9 +2530,16 @@ msgstr "正在加载数据..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
 #: src/components/NodeSelector/NodeSelector.vue:86
+#: src/views/backup/AutoBackup/AutoBackup.vue:78
+#: src/views/backup/AutoBackup/AutoBackup.vue:87
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:46
 #: src/views/preference/tabs/NginxSettings.vue:55
 msgid "Local"
 msgstr "本地"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:58
+msgid "Local path (e.g., /var/backups)"
+msgstr "本地路径（例如：/var/backups）"
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:69
 msgid "Location"
@@ -2581,6 +2732,10 @@ msgstr "最小可用空间"
 msgid "Minimum free space in the cache directory"
 msgstr "缓存目录中的最小可用空间"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:169
+msgid "Minute"
+msgstr "分钟"
+
 #: src/views/preference/tabs/LogrotateSettings.vue:30
 msgid "Minutes"
 msgstr "分钟"
@@ -2614,11 +2769,24 @@ msgstr "模块"
 msgid "Modules"
 msgstr "模块"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:27
+msgid "Monday"
+msgstr "星期一"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:21
+msgid "Monthly"
+msgstr "每月"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:139
+msgid "Monthly on day %{day} at %{time}"
+msgstr "每月%{day}日%{time}"
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:51
 msgid "Multi-line Directive"
 msgstr "多行指令"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:182
+#: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:9
@@ -2717,6 +2885,11 @@ msgstr "Nginx Conf 中未引用 sites-enabled"
 #: src/constants/errors/self_check.ts:9
 msgid "Nginx conf not include stream-enabled"
 msgstr "Nginx Conf 中未引用 stream-enabled"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:28
+#: src/views/backup/AutoBackup/AutoBackup.vue:42
+msgid "Nginx Config"
+msgstr "Nginx配置"
 
 #: src/constants/errors/backup.ts:19
 msgid "Nginx config directory is not set"
@@ -2854,6 +3027,11 @@ msgstr "Nginx 理论最高性能"
 #: src/constants/errors/system.ts:2
 msgid "Nginx UI already installed"
 msgstr "Nginx UI 已安装"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:29
+#: src/views/backup/AutoBackup/AutoBackup.vue:43
+msgid "Nginx UI Config"
+msgstr "Nginx 界面配置"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:142
 msgid "Nginx UI configuration has been restored"
@@ -3026,6 +3204,7 @@ msgstr "离线"
 #: src/components/NgxConfigEditor/NgxServer.vue:53
 #: src/components/NgxConfigEditor/NgxUpstream.vue:36
 #: src/components/Notification/Notification.vue:110 src/language/curd.ts:15
+#: src/views/backup/components/BackupCreator.vue:149
 #: src/views/notification/Notification.vue:39
 #: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
@@ -3034,7 +3213,6 @@ msgstr "离线"
 #: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
 #: src/views/stream/StreamList.vue:156
-#: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr "确定"
 
@@ -3164,6 +3342,10 @@ msgstr "密码不匹配"
 msgid "Path"
 msgstr "路径"
 
+#: src/constants/errors/backup.ts:74
+msgid "Path not in granted access paths: {0}"
+msgstr "路径不在授予的访问路径中：{0}"
+
 #: src/constants/errors/cert.ts:7 src/constants/errors/config.ts:2
 msgid "Path: {0} is not under the nginx conf dir: {1}"
 msgstr "路径：{0} 不在 nginx 配置目录下：{1}"
@@ -3171,6 +3353,11 @@ msgstr "路径：{0} 不在 nginx 配置目录下：{1}"
 #: src/constants/errors/cert.ts:6
 msgid "Payload resource is nil"
 msgstr "有效载荷资源为空"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:192
+#: src/views/backup/AutoBackup/AutoBackup.vue:217
+msgid "Pending"
+msgstr "待处理"
 
 #: src/views/environments/list/BatchUpgrader.vue:232
 msgid "Perform"
@@ -3237,6 +3424,10 @@ msgstr "请输入备份时收到的安全令牌"
 msgid "Please fill all fields correctly"
 msgstr "请正确填写所有字段"
 
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:21
+msgid "Please fill in required S3 configuration fields"
+msgstr "请填写必填的 S3 配置字段"
+
 #: src/views/certificate/DNSCredential.vue:52
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
@@ -3289,8 +3480,8 @@ msgstr "请输入您的密码！"
 msgid "Please input your username!"
 msgstr "请输入您的用户名！"
 
+#: src/views/backup/components/SystemRestore.vue:8
 #: src/views/install/components/InstallView.vue:48
-#: src/views/system/Backup/SystemRestore.vue:10
 msgid "Please log in."
 msgstr "请登录。"
 
@@ -3302,7 +3493,7 @@ msgstr "请注意，下面的时间单位配置均以秒为单位。"
 msgid "Please resolve all issues before proceeding with installation"
 msgstr "请在安装前解决所有问题"
 
-#: src/views/system/Backup/BackupCreator.vue:107
+#: src/views/backup/components/BackupCreator.vue:107
 msgid "Please save this security token, you will need it for restoration:"
 msgstr "请保存此安全令牌，恢复时会用到它："
 
@@ -3763,6 +3954,109 @@ msgstr "运行模式"
 msgid "Running"
 msgstr "运行中"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:79
+#: src/views/backup/AutoBackup/AutoBackup.vue:88
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:47
+msgid "S3"
+msgstr "S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:81
+msgid "S3 access key ID"
+msgstr "S3访问密钥ID"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:75
+msgid "S3 Access Key ID"
+msgstr "S3 访问密钥 ID"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:77
+msgid "S3 access key ID is required"
+msgstr "必须提供 S3 访问密钥 ID"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:97
+msgid "S3 Bucket"
+msgstr "S3 存储桶"
+
+#: src/constants/errors/backup.ts:70
+msgid "S3 bucket access denied: {0}"
+msgstr "S3存储桶访问被拒绝：{0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:99
+msgid "S3 bucket is required"
+msgstr "必须填写 S3 存储桶"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:103
+msgid "S3 bucket name"
+msgstr "S3 存储桶名称"
+
+#: src/constants/errors/backup.ts:63
+msgid "S3 configuration is incomplete: missing {0}"
+msgstr "S3 配置不完整：缺少 {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:32
+msgid "S3 connection test failed"
+msgstr "S3连接测试失败"
+
+#: src/constants/errors/backup.ts:69
+msgid "S3 connection test failed: {0}"
+msgstr "S3连接测试失败: {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:28
+msgid "S3 connection test successful"
+msgstr "S3连接测试成功"
+
+#: src/constants/errors/backup.ts:71
+msgid "S3 credentials are invalid: {0}"
+msgstr "S3 凭证无效: {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:64
+msgid "S3 Endpoint"
+msgstr "S3 终端节点"
+
+#: src/constants/errors/backup.ts:72
+msgid "S3 endpoint is invalid: {0}"
+msgstr "S3终端节点无效：{0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:66
+msgid "S3 endpoint is required"
+msgstr "必须提供 S3 端点"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:70
+msgid "S3 endpoint URL"
+msgstr "S3 终端节点 URL"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:124
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:58
+msgid "S3 path (e.g., backups/)"
+msgstr "S3 路径（例如 backups/）"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:108
+msgid "S3 Region"
+msgstr "S3 区域"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:113
+msgid "S3 region (e.g., us-east-1)"
+msgstr "S3 区域（例如 us-east-1）"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:92
+msgid "S3 secret access key"
+msgstr "S3 秘密访问密钥"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:86
+msgid "S3 Secret Access Key"
+msgstr "S3 秘密访问密钥"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:88
+msgid "S3 secret access key is required"
+msgstr "必须提供S3秘密访问密钥"
+
+#: src/constants/errors/backup.ts:68
+msgid "S3 upload failed: {0}"
+msgstr "S3上传失败：{0}"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:32
+msgid "Saturday"
+msgstr "星期六"
+
 #: src/components/ChatGPT/ChatGPT.vue:355
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
 #: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:266
@@ -3840,6 +4134,14 @@ msgstr "Sbin 路径不存在"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "用手机扫描二维码，将账户添加到应用程序中。"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:114
+msgid "Schedule"
+msgstr "计划"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:144
+msgid "Schedule Type"
+msgstr "计划类型"
+
 #: src/views/certificate/components/DNSChallenge.vue:90
 msgid "SDK"
 msgstr "SDK"
@@ -3865,7 +4167,7 @@ msgstr "安全设置"
 msgid "Security Token"
 msgstr "安全 Token"
 
-#: src/views/system/Backup/BackupCreator.vue:94
+#: src/views/backup/components/BackupCreator.vue:94
 msgid "Security Token Information"
 msgstr "安全令牌信息"
 
@@ -4120,6 +4422,29 @@ msgstr "已停止"
 msgid "Storage"
 msgstr "存储"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:96
+msgid "Storage Configuration"
+msgstr "存储配置"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:118
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:52
+msgid "Storage Path"
+msgstr "存储路径"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:120
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:54
+msgid "Storage path is required"
+msgstr "存储路径是必填项"
+
+#: src/constants/errors/backup.ts:61
+msgid "Storage path not in granted access paths: {0}"
+msgstr "存储路径不在授予的访问路径中: {0}"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:74
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:43
+msgid "Storage Type"
+msgstr "存储类型"
+
 #: src/constants/errors/stream.ts:4
 msgid "Stream is enabled"
 msgstr "Stream 已启用"
@@ -4144,9 +4469,16 @@ msgstr "Streams-enabled 目录不存在"
 msgid "Stub Status Port"
 msgstr "Stub 状态端口"
 
-#: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:35
+#: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:193
+#: src/views/backup/AutoBackup/AutoBackup.vue:218
+#: src/views/notification/notificationColumns.tsx:35
 msgid "Success"
 msgstr "成功"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:121
+#: src/views/backup/AutoBackup/components/CronEditor.vue:26
+msgid "Sunday"
+msgstr "星期日"
 
 #: src/components/SelfCheck/tasks/frontend/sse.ts:14
 msgid ""
@@ -4259,7 +4591,7 @@ msgstr "同步"
 msgid "System"
 msgstr "系统"
 
-#: src/views/system/Backup/BackupCreator.vue:71
+#: src/views/backup/components/BackupCreator.vue:71
 msgid "System Backup"
 msgstr "系统备份"
 
@@ -4276,7 +4608,6 @@ msgid "System Restore"
 msgstr "系统还原"
 
 #: src/views/install/components/InstallView.vue:44
-#: src/views/system/Backup/SystemRestore.vue:6
 msgid "System restored successfully."
 msgstr "系统恢复成功。"
 
@@ -4299,6 +4630,10 @@ msgstr "终端"
 #: src/views/preference/tabs/TerminalSettings.vue:10
 msgid "Terminal Start Command"
 msgstr "终端启动命令"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:139
+msgid "Test S3 Connection"
+msgstr "测试 S3 连接"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:48
 msgid ""
@@ -4452,7 +4787,7 @@ msgid ""
 "certificate files on the file system will not be deleted."
 msgstr "此操作只会从数据库中删除证书。文件系统中的证书文件不会被删除。"
 
-#: src/views/system/Backup/BackupCreator.vue:141
+#: src/views/backup/components/BackupCreator.vue:141
 msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
@@ -4483,6 +4818,10 @@ msgstr "将 %{nodeNames} 上的 Nginx UI 升级或重新安装到 %{version} 版
 #: src/views/preference/tabs/AuthSettings.vue:92
 msgid "Throttle"
 msgstr "限流"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:30
+msgid "Thursday"
+msgstr "星期四"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:65
 #: src/views/preference/tabs/AuthSettings.vue:112
@@ -4590,6 +4929,10 @@ msgstr "TOTP 是一种使用基于时间的一次性密码算法的双因素身�
 msgid "Trash"
 msgstr "回收站"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:28
+msgid "Tuesday"
+msgstr "星期二"
+
 #: src/components/TwoFA/use2FAModal.ts:67
 msgid "Two-factor authentication required"
 msgstr "需要两步验证"
@@ -4606,6 +4949,10 @@ msgstr "类型"
 msgid "Unknown"
 msgstr "未知"
 
+#: src/constants/errors/backup.ts:64
+msgid "Unsupported backup type: {0}"
+msgstr "不支持的备份类型: {0}"
+
 #: src/views/user/UserProfile.vue:218
 msgid "Update Password"
 msgstr "更新密码"
@@ -4618,6 +4965,7 @@ msgstr "更新资料"
 msgid "Update successfully"
 msgstr "更新成功"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:234
 #: src/views/certificate/ACMEUser.vue:83
 #: src/views/certificate/DNSCredential.vue:24
 #: src/views/config/configColumns.tsx:35 src/views/config/ConfigEditor.vue:335
@@ -4630,7 +4978,7 @@ msgstr "更新成功"
 msgid "Updated at"
 msgstr "修改时间"
 
-#: src/routes/modules/system.ts:33
+#: src/routes/modules/system.ts:26
 #: src/views/environments/list/Environment.vue:100
 #: src/views/environments/list/Environment.vue:108
 #: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
@@ -4760,10 +5108,10 @@ msgstr "已查看"
 msgid "Waiting processes"
 msgstr "等待处理"
 
-#: src/constants/index.ts:23 src/views/config/InspectConfig.vue:33
+#: src/constants/index.ts:23 src/views/backup/components/BackupCreator.vue:138
+#: src/views/config/InspectConfig.vue:33
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:82
-#: src/views/system/Backup/BackupCreator.vue:138
 msgid "Warning"
 msgstr "警告"
 
@@ -4798,6 +5146,18 @@ msgstr "WebAuthn 未配置"
 #: src/views/certificate/components/RemoveCert.vue:54
 msgid "WebSocket connection error"
 msgstr "WebSocket 连接错误"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:29
+msgid "Wednesday"
+msgstr "星期三"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:20
+msgid "Weekly"
+msgstr "每周"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:135
+msgid "Weekly on %{day} at %{time}"
+msgstr "每周%{day}的%{time}"
 
 #: src/views/certificate/ACMEUser.vue:78
 msgid ""
@@ -4838,7 +5198,7 @@ msgstr "工作进程"
 msgid "Workers"
 msgstr "Workers"
 
-#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:56
+#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:57
 #: src/views/workspace/WorkSpace.vue:52
 msgid "Workspace"
 msgstr "工作区"
@@ -4916,6 +5276,9 @@ msgstr "您的旧代码将不再有效。"
 msgid "Your passkeys"
 msgstr "你的 Passkeys"
 
+#~ msgid "Last Backup Error"
+#~ msgstr "最后一次备份错误"
+
 #~ msgid "Apply"
 #~ msgstr "应用"
 
@@ -4939,9 +5302,6 @@ msgstr "你的 Passkeys"
 
 #~ msgid "Ok"
 #~ msgstr "确定"
-
-#~ msgid "Please fill in the required fields"
-#~ msgstr "请填写必填字段"
 
 #~ msgid "Recover"
 #~ msgstr "恢复"
@@ -5016,9 +5376,6 @@ msgstr "你的 Passkeys"
 
 #~ msgid "Nginx Conf Include Streams Enabled"
 #~ msgstr "Nginx Conf 中引用启用 Streams 目录"
-
-#~ msgid "Sites Directory"
-#~ msgstr "网站目录"
 
 #~ msgid "Format error %{msg}"
 #~ msgstr "保存错误 %{msg}"

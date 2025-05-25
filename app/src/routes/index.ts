@@ -4,9 +4,9 @@ import { useNProgress } from '@/lib/nprogress/nprogress'
 import { useUserStore } from '@/pinia'
 import { authRoutes } from './modules/auth'
 
+import { backupRoutes } from './modules/backup'
 import { certificatesRoutes } from './modules/certificates'
 import { configRoutes } from './modules/config'
-// Import module routes
 import { dashboardRoutes } from './modules/dashboard'
 import { environmentsRoutes } from './modules/environments'
 import { errorRoutes } from './modules/error'
@@ -33,6 +33,7 @@ const mainLayoutChildren: RouteRecordRaw[] = [
   ...notificationsRoutes,
   ...userRoutes,
   ...preferenceRoutes,
+  ...backupRoutes,
   ...systemRoutes,
 ]
 

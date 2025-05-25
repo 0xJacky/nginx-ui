@@ -34,6 +34,7 @@ func GenerateAllModel() []any {
 		Passkey{},
 		EnvGroup{},
 		ExternalNotify{},
+		AutoBackup{},
 	}
 }
 

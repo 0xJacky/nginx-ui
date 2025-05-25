@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import BackupCreator from './BackupCreator.vue'
-import SystemRestore from './SystemRestore.vue'
+import BackupCreator from './components/BackupCreator.vue'
+import SystemRestore from './components/SystemRestore.vue'
 </script>
 
 <template>

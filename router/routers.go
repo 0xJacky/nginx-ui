@@ -6,6 +6,7 @@ import (
 	"github.com/gin-contrib/pprof"
 
 	"github.com/0xJacky/Nginx-UI/api/analytic"
+	"github.com/0xJacky/Nginx-UI/api/backup"
 	"github.com/0xJacky/Nginx-UI/api/certificate"
 	"github.com/0xJacky/Nginx-UI/api/cluster"
 	"github.com/0xJacky/Nginx-UI/api/config"
@@ -52,10 +53,11 @@ func InitRouter() {
 		public.InitRouter(root)
 		crypto.InitPublicRouter(root)
 		user.InitAuthRouter(root)
-		
+
 		system.InitPublicRouter(root)
 		system.InitBackupRestoreRouter(root)
 		system.InitSelfCheckRouter(root)
+		backup.InitRouter(root)
 
 		// Authorization required and not websocket request
 		g := root.Group("/", middleware.AuthRequired(), middleware.Proxy())
@@ -80,6 +82,7 @@ func InitRouter() {
 			cluster.InitRouter(g)
 			notification.InitRouter(g)
 			external_notify.InitRouter(g)
+			backup.InitAutoBackupRouter(g)
 		}
 
 		// Authorization required and websocket request

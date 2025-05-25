@@ -107,7 +107,7 @@ msgstr "2FA"
 msgid "2FA Settings"
 msgstr "2FA-Einstellungen"
 
-#: src/routes/modules/system.ts:45
+#: src/routes/modules/system.ts:38
 msgid "About"
 msgstr "Über"
 
@@ -133,6 +133,7 @@ msgstr "ACME-Benutzer"
 msgid "Action"
 msgstr "Aktion"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:241
 #: src/views/certificate/ACMEUser.vue:90
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:30
@@ -351,6 +352,11 @@ msgstr "Auto"
 msgid "auto = CPU cores"
 msgstr "Auto = CPU -Kerne"
 
+#: src/routes/modules/backup.ts:27
+#: src/views/backup/AutoBackup/AutoBackup.vue:250
+msgid "Auto Backup"
+msgstr "Automatische Sicherung"
+
 #: src/views/nginx_log/NginxLog.vue:150
 msgid "Auto Refresh"
 msgstr "Automatische Aktualisierung"
@@ -392,7 +398,7 @@ msgstr "Zurück zur Startseite"
 msgid "Back to List"
 msgstr "Zurück zur Liste"
 
-#: src/routes/modules/system.ts:26
+#: src/routes/modules/backup.ts:11 src/routes/modules/backup.ts:19
 msgid "Backup"
 msgstr "Sicherung"
 
@@ -406,9 +412,39 @@ msgstr ""
 msgid "Backup file not found: {0}"
 msgstr "Sicherungsdatei nicht gefunden: {0}"
 
-#: src/views/system/Backup/BackupCreator.vue:42
+#: src/views/backup/components/BackupCreator.vue:42
 msgid "Backup has been downloaded successfully"
 msgstr "Die Sicherung wurde erfolgreich heruntergeladen"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:54
+msgid "Backup Path"
+msgstr "Sicherungspfad"
+
+#: src/constants/errors/backup.ts:75
+msgid "Backup path does not exist: {0}"
+msgstr "Sicherungspfad existiert nicht: {0}"
+
+#: src/constants/errors/backup.ts:77
+msgid "Backup path is not a directory: {0}"
+msgstr "Der Sicherungspfad ist kein Verzeichnis: {0}"
+
+#: src/constants/errors/backup.ts:62
+msgid "Backup path is required for custom directory backup"
+msgstr ""
+"Der Sicherungspfad ist für die benutzerdefinierte Verzeichnissicherung "
+"erforderlich"
+
+#: src/constants/errors/backup.ts:60
+msgid "Backup path not in granted access paths: {0}"
+msgstr "Sicherungspfad nicht in den gewährten Zugriffspfaden: {0}"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:141
+msgid "Backup Schedule"
+msgstr "Sicherungszeitplan"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:24
+msgid "Backup Type"
+msgstr "Sicherungstyp"
 
 #: src/views/preference/tabs/AuthSettings.vue:97
 msgid "Ban Threshold Minutes"
@@ -464,6 +500,14 @@ msgstr "Hier sind die ausgewählten Elemente, die Sie stapelweise ändern möcht
 #: src/constants/errors/nginx.ts:3
 msgid "Block is nil"
 msgstr "Block ist nil"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:30
+msgid "Both Config"
+msgstr "Beide Konfigurationen"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:44
+msgid "Both Nginx and Nginx UI Config"
+msgstr "Sowohl Nginx- als auch Nginx-UI-Konfiguration"
 
 #: src/views/system/About.vue:55
 msgid "Build with"
@@ -537,6 +581,14 @@ msgstr ""
 #: src/views/stream/components/RightPanel/Basic.vue:47
 msgid "Cancel"
 msgstr "Abbrechen"
+
+#: src/constants/errors/backup.ts:76
+msgid "Cannot access backup path {0}: {1}"
+msgstr "Auf den Sicherungspfad {0} kann nicht zugegriffen werden: {1}"
+
+#: src/constants/errors/backup.ts:79
+msgid "Cannot access storage path {0}: {1}"
+msgstr "Auf den Speicherpfad {0} kann nicht zugegriffen werden: {1}"
 
 #: src/constants/errors/user.ts:11
 msgid "Cannot change initial user password in demo mode"
@@ -982,12 +1034,12 @@ msgstr "Inhalt"
 msgid "Copied"
 msgstr "Kopiert"
 
-#: src/views/system/Backup/BackupCreator.vue:128
+#: src/views/backup/components/BackupCreator.vue:128
 msgid "Copied!"
 msgstr "Kopiert!"
 
 #: src/components/SensitiveString/SensitiveString.vue:37
-#: src/views/system/Backup/BackupCreator.vue:128
+#: src/views/backup/components/BackupCreator.vue:128
 msgid "Copy"
 msgstr "Kopieren"
 
@@ -1025,7 +1077,7 @@ msgstr "Erstellen"
 msgid "Create Another"
 msgstr "Weiteres erstellen"
 
-#: src/views/system/Backup/BackupCreator.vue:86
+#: src/views/backup/components/BackupCreator.vue:86
 msgid "Create Backup"
 msgstr "Backup erstellen"
 
@@ -1037,7 +1089,7 @@ msgstr "Datei erstellen"
 msgid "Create Folder"
 msgstr "Ordner erstellen"
 
-#: src/views/system/Backup/BackupCreator.vue:75
+#: src/views/backup/components/BackupCreator.vue:75
 msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
 "Backup files will be automatically downloaded to your computer."
@@ -1046,6 +1098,7 @@ msgstr ""
 "der Nginx-UI-Einstellungen. Die Backup-Dateien werden automatisch auf Ihren "
 "Computer heruntergeladen."
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:227
 #: src/views/environments/group/columns.ts:29
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
@@ -1069,6 +1122,10 @@ msgstr "Zugangsdaten"
 #: src/views/certificate/components/DNSChallenge.vue:99
 msgid "Credentials"
 msgstr "Zugangsdaten"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:194
+msgid "Cron Expression"
+msgstr "Cron-Ausdruck"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:72
 msgid "Current account is enabled TOTP."
@@ -1103,16 +1160,41 @@ msgstr "Aktuelle Version"
 msgid "Custom"
 msgstr "Benutzerdefiniert"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:131
+msgid "Custom cron expression"
+msgstr "Benutzerdefinierter Cron-Ausdruck"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:31
+#: src/views/backup/AutoBackup/AutoBackup.vue:45
+msgid "Custom Directory"
+msgstr "Benutzerdefiniertes Verzeichnis"
+
 #: src/views/preference/tabs/NodeSettings.vue:19
 msgid ""
 "Customize the name of local node to be displayed in the environment "
 "indicator."
 msgstr "Name des lokalen Knotens anpassen, der im Umgebungsindikator angezeigt wird."
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:19
+msgid "Daily"
+msgstr "Täglich"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:129
+msgid "Daily at %{time}"
+msgstr "Täglich um %{time}"
+
 #: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:110
 #: src/views/config/ConfigEditor.vue:161 src/views/config/ConfigList.vue:67
 msgid "Dashboard"
 msgstr "Übersicht"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:184
+msgid "Day of Month"
+msgstr "Tag des Monats"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:180
+msgid "Day of Week"
+msgstr "Wochentag"
 
 #: src/views/preference/tabs/CertSettings.vue:32
 msgid "Days"
@@ -1313,6 +1395,7 @@ msgstr "Deaktivieren des Streams %{name} von %{node} fehlgeschlagen"
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Stream %{name} von %{node} erfolgreich deaktiviert"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:173
 #: src/views/environments/list/envColumns.tsx:60
 #: src/views/environments/list/envColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
@@ -1452,6 +1535,10 @@ msgstr "Erfolgreich lokal dupliziert"
 msgid "Dynamic"
 msgstr "Dynamisch"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:197
+msgid "e.g., 0 0 * * * (daily at midnight)"
+msgstr "z. B. 0 0 * * * (täglich um Mitternacht)"
+
 #: src/language/curd.ts:8
 msgid "Edit"
 msgstr "Bearbeiten"
@@ -1578,6 +1665,8 @@ msgstr "Aktiviere TLS"
 msgid "Enable TOTP"
 msgstr "TOTP aktivieren"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:158
+#: src/views/backup/AutoBackup/AutoBackup.vue:172
 #: src/views/environments/list/envColumns.tsx:69
 #: src/views/environments/list/envColumns.tsx:75
 #: src/views/preference/tabs/HTTPSettings.vue:24
@@ -1644,6 +1733,18 @@ msgstr "Fehler bei der Verarbeitung des Inhalts"
 msgid "Executable Path"
 msgstr "Ausführbarer Pfad"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:127
+msgid "Execute on every %{day} at %{time}"
+msgstr "Ausführen an jedem %{day} um %{time}"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:125
+msgid "Execute on every day at %{time}"
+msgstr "Täglich um %{time} ausführen"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:129
+msgid "Execute on every month on day %{day} at %{time}"
+msgstr "Ausführen an jedem Tag %{day} des Monats um %{time}"
+
 #: src/components/CertInfo/CertInfo.vue:31
 #: src/views/certificate/CertificateList/certColumns.tsx:80
 msgid "Expired"
@@ -1669,6 +1770,11 @@ msgstr "Externe Benachrichtigung"
 #: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
 msgid "Fail to obtain certificate"
 msgstr "Zertifikat konnte nicht abgerufen werden"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:194
+#: src/views/backup/AutoBackup/AutoBackup.vue:219
+msgid "Failed"
+msgstr "Fehlgeschlagen"
 
 #: src/constants/errors/docker.ts:4
 msgid "Failed to attach to exec instance: {0}"
@@ -1722,6 +1828,10 @@ msgstr "Fehler beim Kopieren des Nginx-Konfigurationsverzeichnisses: {0}"
 msgid "Failed to create backup"
 msgstr "Sicherungskopie konnte nicht erstellt werden"
 
+#: src/constants/errors/backup.ts:65
+msgid "Failed to create backup directory: {0}"
+msgstr "Fehler beim Erstellen des Backup-Verzeichnisses: {0}"
+
 #: src/constants/errors/backup.ts:12
 msgid "Failed to create backup file: {0}"
 msgstr "Fehler beim Erstellen der Sicherungsdatei: {0}"
@@ -1745,6 +1855,10 @@ msgstr "Fehler beim Erstellen des übergeordneten Verzeichnisses: {0}"
 #: src/constants/errors/backup.ts:34
 msgid "Failed to create restore directory: {0}"
 msgstr "Fehler beim Erstellen des Wiederherstellungsverzeichnisses: {0}"
+
+#: src/constants/errors/backup.ts:78
+msgid "Failed to create storage directory {0}: {1}"
+msgstr "Fehler beim Erstellen des Speicherverzeichnisses {0}: {1}"
 
 #: src/constants/errors/backup.ts:50
 msgid "Failed to create symbolic link: {0}"
@@ -1958,6 +2072,10 @@ msgstr "Fehler beim Starten des temporären Containers: {0}"
 msgid "Failed to verify hashes: {0}"
 msgstr "Hash-Überprüfung fehlgeschlagen: {0}"
 
+#: src/constants/errors/backup.ts:66
+msgid "Failed to write backup file: {0}"
+msgstr "Fehler beim Schreiben der Sicherungsdatei: {0}"
+
 #: src/constants/errors/backup.ts:55
 msgid "Failed to write decrypted file: {0}"
 msgstr "Fehler beim Schreiben der entschlüsselten Datei: {0}"
@@ -1965,6 +2083,10 @@ msgstr "Fehler beim Schreiben der entschlüsselten Datei: {0}"
 #: src/constants/errors/backup.ts:24
 msgid "Failed to write encrypted file: {0}"
 msgstr "Fehler beim Schreiben der verschlüsselten Datei: {0}"
+
+#: src/constants/errors/backup.ts:67
+msgid "Failed to write security key file: {0}"
+msgstr "Fehler beim Schreiben der Sicherheitsschlüsseldatei: {0}"
 
 #: src/constants/errors/backup.ts:33
 msgid "Failed to write to zip buffer: {0}"
@@ -2022,6 +2144,14 @@ msgstr "Formatcode"
 #: src/views/config/ConfigEditor.vue:222
 msgid "Format successfully"
 msgstr "Erfolgreich formatiert"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:200
+msgid "Format: minute hour day month weekday"
+msgstr "Format: Minute Stunde Tag Monat Wochentag"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:31
+msgid "Friday"
+msgstr "Freitag"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "General Certificate"
@@ -2099,13 +2229,17 @@ msgstr "Ein höherer Wert bedeutet eine bessere Wiederverwendung der Verbindung"
 msgid "History"
 msgstr "Verlauf"
 
-#: src/routes/index.ts:47
+#: src/routes/index.ts:48
 msgid "Home"
 msgstr "Startseite"
 
 #: src/views/preference/tabs/ServerSettings.vue:19
 msgid "Host"
 msgstr "Host"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:159
+msgid "Hour"
+msgstr "Stunde"
 
 #: src/views/preference/Preference.vue:70
 msgid "HTTP"
@@ -2291,6 +2425,10 @@ msgstr "Ungültige Auffüllung in entschlüsselten Daten"
 msgid "Invalid passcode or recovery code"
 msgstr "Ungültiger Passcode oder Wiederherstellungscode"
 
+#: src/constants/errors/backup.ts:73
+msgid "Invalid path: {0}"
+msgstr "Ungültiger Pfad: {0}"
+
 #: src/constants/errors/user.ts:5
 msgid "Invalid recovery code"
 msgstr "Ungültiger Wiederherstellungscode"
@@ -2359,6 +2497,14 @@ msgstr "Lark"
 #: src/views/preference/components/ExternalNotify/lark_custom.ts:5
 msgid "Lark Custom"
 msgstr "Lark Benutzerdefiniert"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:188
+msgid "Last Backup Status"
+msgstr "Letzter Backup-Status"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:181
+msgid "Last Backup Time"
+msgstr "Letzter Sicherungszeitpunkt"
 
 #: src/views/system/Upgrade.vue:198
 msgid "Last checked at"
@@ -2453,9 +2599,16 @@ msgstr "Daten werden geladen..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
 #: src/components/NodeSelector/NodeSelector.vue:86
+#: src/views/backup/AutoBackup/AutoBackup.vue:78
+#: src/views/backup/AutoBackup/AutoBackup.vue:87
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:46
 #: src/views/preference/tabs/NginxSettings.vue:55
 msgid "Local"
 msgstr "Lokal"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:58
+msgid "Local path (e.g., /var/backups)"
+msgstr "Lokaler Pfad (z. B. /var/backups)"
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:69
 msgid "Location"
@@ -2655,6 +2808,10 @@ msgstr "Mindestfreier Speicherplatz"
 msgid "Minimum free space in the cache directory"
 msgstr "Mindestfreier Speicherplatz im Cache-Verzeichnis"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:169
+msgid "Minute"
+msgstr "Minute"
+
 #: src/views/preference/tabs/LogrotateSettings.vue:30
 msgid "Minutes"
 msgstr "Minuten"
@@ -2688,11 +2845,24 @@ msgstr "Modul"
 msgid "Modules"
 msgstr "Module"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:27
+msgid "Monday"
+msgstr "Montag"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:21
+msgid "Monthly"
+msgstr "Monatlich"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:139
+msgid "Monthly on day %{day} at %{time}"
+msgstr "Monatlich am %{day}. um %{time}"
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:51
 msgid "Multi-line Directive"
 msgstr "Mehrzeilige Direktive"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:182
+#: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:9
@@ -2791,6 +2961,11 @@ msgstr "Nginx-Konfiguration enthält keine sites-enabled"
 #: src/constants/errors/self_check.ts:9
 msgid "Nginx conf not include stream-enabled"
 msgstr "Nginx-Konfiguration enthält keinen stream-enabled-Ordner"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:28
+#: src/views/backup/AutoBackup/AutoBackup.vue:42
+msgid "Nginx Config"
+msgstr "Nginx-Konfiguration"
 
 #: src/constants/errors/backup.ts:19
 msgid "Nginx config directory is not set"
@@ -2928,6 +3103,11 @@ msgstr "Theoretische maximale Leistung von Nginx"
 #: src/constants/errors/system.ts:2
 msgid "Nginx UI already installed"
 msgstr "Nginx UI ist bereits installiert"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:29
+#: src/views/backup/AutoBackup/AutoBackup.vue:43
+msgid "Nginx UI Config"
+msgstr "Nginx-UI-Konfiguration"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:142
 msgid "Nginx UI configuration has been restored"
@@ -3109,6 +3289,7 @@ msgstr "Offline"
 #: src/components/NgxConfigEditor/NgxServer.vue:53
 #: src/components/NgxConfigEditor/NgxUpstream.vue:36
 #: src/components/Notification/Notification.vue:110 src/language/curd.ts:15
+#: src/views/backup/components/BackupCreator.vue:149
 #: src/views/notification/Notification.vue:39
 #: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
@@ -3117,7 +3298,6 @@ msgstr "Offline"
 #: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
 #: src/views/stream/StreamList.vue:156
-#: src/views/system/Backup/BackupCreator.vue:149
 msgid "OK"
 msgstr "OK"
 
@@ -3250,6 +3430,10 @@ msgstr "Passwörter stimmen nicht überein"
 msgid "Path"
 msgstr "Pfad"
 
+#: src/constants/errors/backup.ts:74
+msgid "Path not in granted access paths: {0}"
+msgstr "Pfad nicht in den gewährten Zugriffspfaden: {0}"
+
 #: src/constants/errors/cert.ts:7 src/constants/errors/config.ts:2
 msgid "Path: {0} is not under the nginx conf dir: {1}"
 msgstr "Pfad: {0} befindet sich nicht unter dem nginx-Konfigurationsverzeichnis: {1}"
@@ -3257,6 +3441,11 @@ msgstr "Pfad: {0} befindet sich nicht unter dem nginx-Konfigurationsverzeichnis:
 #: src/constants/errors/cert.ts:6
 msgid "Payload resource is nil"
 msgstr "Die Nutzlast-Ressource ist null"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:192
+#: src/views/backup/AutoBackup/AutoBackup.vue:217
+msgid "Pending"
+msgstr "Ausstehend"
 
 #: src/views/environments/list/BatchUpgrader.vue:232
 msgid "Perform"
@@ -3327,6 +3516,10 @@ msgstr "Bitte geben Sie das während der Sicherung erhaltene Sicherheitstoken ei
 msgid "Please fill all fields correctly"
 msgstr "Bitte füllen Sie alle Felder korrekt aus"
 
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:21
+msgid "Please fill in required S3 configuration fields"
+msgstr "Bitte füllen Sie die erforderlichen S3-Konfigurationsfelder aus"
+
 #: src/views/certificate/DNSCredential.vue:52
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
@@ -3390,8 +3583,8 @@ msgstr "Bitte gib dein Passwort ein!"
 msgid "Please input your username!"
 msgstr "Bitte gib deinen Benutzernamen ein!"
 
+#: src/views/backup/components/SystemRestore.vue:8
 #: src/views/install/components/InstallView.vue:48
-#: src/views/system/Backup/SystemRestore.vue:10
 msgid "Please log in."
 msgstr "Bitte melden Sie sich an."
 
@@ -3405,7 +3598,7 @@ msgstr ""
 msgid "Please resolve all issues before proceeding with installation"
 msgstr "Bitte beheben Sie alle Probleme, bevor Sie mit der Installation fortfahren"
 
-#: src/views/system/Backup/BackupCreator.vue:107
+#: src/views/backup/components/BackupCreator.vue:107
 msgid "Please save this security token, you will need it for restoration:"
 msgstr ""
 "Bitte speichern Sie dieses Sicherheitstoken, Sie benötigen es für die "
@@ -3882,6 +4075,109 @@ msgstr "Betriebsmodus"
 msgid "Running"
 msgstr "Arbeite"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:79
+#: src/views/backup/AutoBackup/AutoBackup.vue:88
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:47
+msgid "S3"
+msgstr "S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:81
+msgid "S3 access key ID"
+msgstr "S3-Zugriffsschlüssel-ID"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:75
+msgid "S3 Access Key ID"
+msgstr "S3-Zugriffsschlüssel-ID"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:77
+msgid "S3 access key ID is required"
+msgstr "S3-Zugriffsschlüssel-ID ist erforderlich"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:97
+msgid "S3 Bucket"
+msgstr "S3-Bucket"
+
+#: src/constants/errors/backup.ts:70
+msgid "S3 bucket access denied: {0}"
+msgstr "Zugriff auf S3-Bucket verweigert: {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:99
+msgid "S3 bucket is required"
+msgstr "S3-Bucket ist erforderlich"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:103
+msgid "S3 bucket name"
+msgstr "S3-Bucket-Name"
+
+#: src/constants/errors/backup.ts:63
+msgid "S3 configuration is incomplete: missing {0}"
+msgstr "S3-Konfiguration ist unvollständig: Fehlend {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:32
+msgid "S3 connection test failed"
+msgstr "S3-Verbindungstest fehlgeschlagen"
+
+#: src/constants/errors/backup.ts:69
+msgid "S3 connection test failed: {0}"
+msgstr "S3-Verbindungstest fehlgeschlagen: {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:28
+msgid "S3 connection test successful"
+msgstr "S3-Verbindungstest erfolgreich"
+
+#: src/constants/errors/backup.ts:71
+msgid "S3 credentials are invalid: {0}"
+msgstr "S3-Anmeldeinformationen sind ungültig: {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:64
+msgid "S3 Endpoint"
+msgstr "S3-Endpunkt"
+
+#: src/constants/errors/backup.ts:72
+msgid "S3 endpoint is invalid: {0}"
+msgstr "S3-Endpunkt ist ungültig: {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:66
+msgid "S3 endpoint is required"
+msgstr "S3-Endpunkt ist erforderlich"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:70
+msgid "S3 endpoint URL"
+msgstr "S3-Endpunkt-URL"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:124
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:58
+msgid "S3 path (e.g., backups/)"
+msgstr "S3-Pfad (z. B. backups/)"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:108
+msgid "S3 Region"
+msgstr "S3-Region"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:113
+msgid "S3 region (e.g., us-east-1)"
+msgstr "S3-Region (z. B. us-east-1)"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:92
+msgid "S3 secret access key"
+msgstr "S3 geheimer Zugriffsschlüssel"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:86
+msgid "S3 Secret Access Key"
+msgstr "S3 Secret Access Key"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:88
+msgid "S3 secret access key is required"
+msgstr "Der geheime S3-Zugangsschlüssel ist erforderlich"
+
+#: src/constants/errors/backup.ts:68
+msgid "S3 upload failed: {0}"
+msgstr "S3-Upload fehlgeschlagen: {0}"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:32
+msgid "Saturday"
+msgstr "Samstag"
+
 #: src/components/ChatGPT/ChatGPT.vue:355
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
 #: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:266
@@ -3959,6 +4255,14 @@ msgstr "Sbin-Pfad existiert nicht"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "Scanne den QR-Code mit deinem Handy, um das Konto zur App hinzuzufügen."
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:114
+msgid "Schedule"
+msgstr "Zeitplan"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:144
+msgid "Schedule Type"
+msgstr "Zeitplantyp"
+
 #: src/views/certificate/components/DNSChallenge.vue:90
 msgid "SDK"
 msgstr "SDK"
@@ -3984,7 +4288,7 @@ msgstr "Sicherheitseinstellungen"
 msgid "Security Token"
 msgstr "Sicherheitstoken"
 
-#: src/views/system/Backup/BackupCreator.vue:94
+#: src/views/backup/components/BackupCreator.vue:94
 msgid "Security Token Information"
 msgstr "Sicherheitstoken-Informationen"
 
@@ -4247,6 +4551,29 @@ msgstr "Gestoppt"
 msgid "Storage"
 msgstr "Speicher"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:96
+msgid "Storage Configuration"
+msgstr "Speicherkonfiguration"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:118
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:52
+msgid "Storage Path"
+msgstr "Speicherpfad"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:120
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:54
+msgid "Storage path is required"
+msgstr "Speicherpfad ist erforderlich"
+
+#: src/constants/errors/backup.ts:61
+msgid "Storage path not in granted access paths: {0}"
+msgstr "Speicherpfad nicht in den gewährten Zugriffspfaden: {0}"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:74
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:43
+msgid "Storage Type"
+msgstr "Speichertyp"
+
 #: src/constants/errors/stream.ts:4
 msgid "Stream is enabled"
 msgstr "Stream ist aktiviert"
@@ -4271,9 +4598,16 @@ msgstr "Streams-enabled-Verzeichnis existiert nicht"
 msgid "Stub Status Port"
 msgstr "Stub-Status-Port"
 
-#: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:35
+#: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:193
+#: src/views/backup/AutoBackup/AutoBackup.vue:218
+#: src/views/notification/notificationColumns.tsx:35
 msgid "Success"
 msgstr "Erfolg"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:121
+#: src/views/backup/AutoBackup/components/CronEditor.vue:26
+msgid "Sunday"
+msgstr "Sonntag"
 
 #: src/components/SelfCheck/tasks/frontend/sse.ts:14
 msgid ""
@@ -4393,7 +4727,7 @@ msgstr "Synchronisation"
 msgid "System"
 msgstr "System"
 
-#: src/views/system/Backup/BackupCreator.vue:71
+#: src/views/backup/components/BackupCreator.vue:71
 msgid "System Backup"
 msgstr "System-Backup"
 
@@ -4410,7 +4744,6 @@ msgid "System Restore"
 msgstr "Systemwiederherstellung"
 
 #: src/views/install/components/InstallView.vue:44
-#: src/views/system/Backup/SystemRestore.vue:6
 msgid "System restored successfully."
 msgstr "System erfolgreich wiederhergestellt."
 
@@ -4433,6 +4766,10 @@ msgstr "Terminal"
 #: src/views/preference/tabs/TerminalSettings.vue:10
 msgid "Terminal Start Command"
 msgstr "Terminal-Startbefehl"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:139
+msgid "Test S3 Connection"
+msgstr "S3-Verbindung testen"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:48
 msgid ""
@@ -4613,7 +4950,7 @@ msgstr ""
 "Diese Aktion entfernt das Zertifikat nur aus der Datenbank. Die "
 "Zertifikatsdateien im Dateisystem werden nicht gelöscht."
 
-#: src/views/system/Backup/BackupCreator.vue:141
+#: src/views/backup/components/BackupCreator.vue:141
 msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
@@ -4653,6 +4990,10 @@ msgstr ""
 #: src/views/preference/tabs/AuthSettings.vue:92
 msgid "Throttle"
 msgstr "Begrenzung"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:30
+msgid "Thursday"
+msgstr "Donnerstag"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:65
 #: src/views/preference/tabs/AuthSettings.vue:112
@@ -4773,6 +5114,10 @@ msgstr ""
 msgid "Trash"
 msgstr "Mülleimer"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:28
+msgid "Tuesday"
+msgstr "Dienstag"
+
 #: src/components/TwoFA/use2FAModal.ts:67
 msgid "Two-factor authentication required"
 msgstr "Zwei-Faktor-Authentifizierung erforderlich"
@@ -4789,6 +5134,10 @@ msgstr "Typ"
 msgid "Unknown"
 msgstr "Unbekannt"
 
+#: src/constants/errors/backup.ts:64
+msgid "Unsupported backup type: {0}"
+msgstr "Nicht unterstützter Sicherungstyp: {0}"
+
 #: src/views/user/UserProfile.vue:218
 msgid "Update Password"
 msgstr "Passwort aktualisieren"
@@ -4801,6 +5150,7 @@ msgstr "Profil aktualisieren"
 msgid "Update successfully"
 msgstr "Erfolgreich aktualisiert"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:234
 #: src/views/certificate/ACMEUser.vue:83
 #: src/views/certificate/DNSCredential.vue:24
 #: src/views/config/configColumns.tsx:35 src/views/config/ConfigEditor.vue:335
@@ -4813,7 +5163,7 @@ msgstr "Erfolgreich aktualisiert"
 msgid "Updated at"
 msgstr "Aktualisiert am"
 
-#: src/routes/modules/system.ts:33
+#: src/routes/modules/system.ts:26
 #: src/views/environments/list/Environment.vue:100
 #: src/views/environments/list/Environment.vue:108
 #: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
@@ -4943,10 +5293,10 @@ msgstr "Angesehen"
 msgid "Waiting processes"
 msgstr "Warteverfahren"
 
-#: src/constants/index.ts:23 src/views/config/InspectConfig.vue:33
+#: src/constants/index.ts:23 src/views/backup/components/BackupCreator.vue:138
+#: src/views/config/InspectConfig.vue:33
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:82
-#: src/views/system/Backup/BackupCreator.vue:138
 msgid "Warning"
 msgstr "Warnung"
 
@@ -4989,6 +5339,18 @@ msgstr "WebAuthn-Einstellungen sind nicht konfiguriert"
 #: src/views/certificate/components/RemoveCert.vue:54
 msgid "WebSocket connection error"
 msgstr "WebSocket-Verbindungsfehler"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:29
+msgid "Wednesday"
+msgstr "Mittwoch"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:20
+msgid "Weekly"
+msgstr "Wöchentlich"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:135
+msgid "Weekly on %{day} at %{time}"
+msgstr "Wöchentlich am %{day} um %{time}"
 
 #: src/views/certificate/ACMEUser.vue:78
 msgid ""
@@ -5040,7 +5402,7 @@ msgstr "Worker-Prozesse"
 msgid "Workers"
 msgstr "Worker"
 
-#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:56
+#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:57
 #: src/views/workspace/WorkSpace.vue:52
 msgid "Workspace"
 msgstr "Arbeitsplatz"
@@ -5128,6 +5490,9 @@ msgstr "Ihre alten Codes funktionieren nicht mehr."
 msgid "Your passkeys"
 msgstr "Deine Passkeys"
 
+#~ msgid "Last Backup Error"
+#~ msgstr "Letzter Sicherungsfehler"
+
 #~ msgid "Apply"
 #~ msgstr "Anwenden"
 
@@ -5160,9 +5525,6 @@ msgstr "Deine Passkeys"
 
 #~ msgid "Ok"
 #~ msgstr "OK"
-
-#~ msgid "Please fill in the required fields"
-#~ msgstr "Bitte fülle die erforderlichen Felder aus"
 
 #~ msgid "Recover"
 #~ msgstr "Wiederherstellen"
