@@ -122,5 +122,11 @@ async function add() {
 </template>
 
 <style lang="less" scoped>
+:deep(.ant-list-item) {
+  padding: 12px;
+}
 
+:deep(.ant-list-item:first-child) {
+  padding-top: 0;
+}
 </style>

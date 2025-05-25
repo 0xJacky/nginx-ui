@@ -152,6 +152,7 @@ const compareButtonText = computed(() => {
 
         <div class="history-footer">
           <StdPagination
+            size="small"
             :pagination
             :loading
             @change="changePage"
