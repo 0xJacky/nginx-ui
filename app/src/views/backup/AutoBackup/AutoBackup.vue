@@ -161,7 +161,7 @@ const columns: StdTableColumn[] = [
     pure: true,
   },
   {
-    title: () => $gettext('Enabled'),
+    title: () => $gettext('Status'),
     dataIndex: 'enabled',
     customRender: ({ text }: CustomRenderArgs) => {
       return text
@@ -247,26 +247,31 @@ const columns: StdTableColumn[] = [
     title: () => $gettext('S3 Endpoint'),
     dataIndex: 's3_endpoint',
     hiddenInTable: true,
+    hiddenInEdit: true,
   },
   {
     title: () => $gettext('S3 Access Key ID'),
     dataIndex: 's3_access_key_id',
     hiddenInTable: true,
+    hiddenInEdit: true,
   },
   {
     title: () => $gettext('S3 Secret Access Key'),
     dataIndex: 's3_secret_access_key',
     hiddenInTable: true,
+    hiddenInEdit: true,
   },
   {
     title: () => $gettext('S3 Bucket'),
     dataIndex: 's3_bucket',
     hiddenInTable: true,
+    hiddenInEdit: true,
   },
   {
     title: () => $gettext('S3 Region'),
     dataIndex: 's3_region',
     hiddenInTable: true,
+    hiddenInEdit: true,
   },
   {
     title: () => $gettext('Actions'),
