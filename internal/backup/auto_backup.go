@@ -460,7 +460,7 @@ func ValidateAutoBackupConfig(config *model.AutoBackup) error {
 	}
 
 	// Validate storage path using centralized validation
-	if config.StoragePath != "" {
+	if config.StorageType == model.StorageTypeLocal && config.StoragePath != "" {
 		if err := ValidateStoragePath(config.StoragePath); err != nil {
 			return err
 		}
