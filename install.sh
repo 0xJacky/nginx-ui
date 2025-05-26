@@ -446,13 +446,18 @@ start_nginx_ui() {
             exit 1
         fi
     elif [[ "$SERVICE_TYPE" == "openrc" ]]; then
-        rc-service nginx-ui start
-        sleep 1s
-        if rc-service nginx-ui status | grep -q "started"; then
-            echo 'info: Start the Nginx UI service.'
+        # Check if service is already running
+        if rc-service nginx-ui status | grep -qE "(started|running)"; then
+            echo 'info: Nginx UI service is already running.'
         else
-            echo -e "${FontRed}error: Failed to start the Nginx UI service.${FontSuffix}"
-            exit 1
+            rc-service nginx-ui start
+            sleep 1s
+            if rc-service nginx-ui status | grep -qE "(started|running)"; then
+                echo 'info: Start the Nginx UI service.'
+            else
+                echo -e "${FontRed}error: Failed to start the Nginx UI service.${FontSuffix}"
+                exit 1
+            fi
         fi
     else
         # init.d
@@ -480,7 +485,8 @@ check_nginx_ui_status() {
         fi
     elif [[ "$SERVICE_TYPE" == "openrc" ]]; then
         if [[ -f "$OpenRCPath" ]]; then
-            if rc-service nginx-ui status | grep -q "started"; then
+            # Check if service is running using multiple methods
+            if rc-service nginx-ui status | grep -qE "(started|running)" || [[ -n "$(pidof nginx-ui)" ]]; then
                 return 0  # running
             else
                 return 1  # not running
@@ -515,7 +521,7 @@ restart_nginx_ui() {
     elif [[ "$SERVICE_TYPE" == "openrc" ]]; then
         rc-service nginx-ui restart
         sleep 1s
-        if rc-service nginx-ui status | grep -q "started"; then
+        if rc-service nginx-ui status | grep -qE "(started|running)"; then
             echo 'info: Restart the Nginx UI service.'
         else
             echo -e "${FontRed}error: Failed to restart the Nginx UI service.${FontSuffix}"
@@ -556,7 +562,7 @@ stop_nginx_ui() {
 }
 
 remove_nginx_ui() {
-  if [[ "$SERVICE_TYPE" == "systemd" && $(systemctl list-unit-files | grep -qw 'nginx-ui') ]]; then
+  if [[ "$SERVICE_TYPE" == "systemd" ]] && (systemctl list-unit-files | grep -qw 'nginx-ui' || [[ -f "/usr/local/bin/nginx-ui" ]]); then
     if [[ -n "$(pidof nginx-ui)" ]]; then
       stop_nginx_ui
     fi
@@ -564,14 +570,14 @@ remove_nginx_ui() {
     if [[ "$PURGE" -eq '1' ]]; then
         [[ -d "$DataPath" ]] && delete_files="$delete_files $DataPath"
     fi
-    systemctl disable nginx-ui
-    if ! ("rm" -r $delete_files); then
+    systemctl disable nginx-ui 2>/dev/null || true
+    if ! ("rm" -r $delete_files 2>/dev/null); then
       echo -e "${FontRed}error: Failed to remove Nginx UI.${FontSuffix}"
       exit 1
     else
       for file in $delete_files
       do
-        echo "removed: $file"
+        [[ -e "$file" ]] && echo "removed: $file"
       done
       systemctl daemon-reload
       echo "You may need to execute a command to remove dependent software: $PACKAGE_MANAGEMENT_REMOVE curl"
@@ -582,8 +588,8 @@ remove_nginx_ui() {
       fi
       exit 0
     fi
-  elif [[ "$SERVICE_TYPE" == "openrc" && -f "$OpenRCPath" ]]; then
-    if rc-service nginx-ui status | grep -q "started"; then
+  elif [[ "$SERVICE_TYPE" == "openrc" ]] && ([[ -f "$OpenRCPath" ]] || [[ -f "/usr/local/bin/nginx-ui" ]]); then
+    if rc-service nginx-ui status | grep -qE "(started|running)"; then
       stop_nginx_ui
     fi
     delete_files="/usr/local/bin/nginx-ui $OpenRCPath"
@@ -592,15 +598,15 @@ remove_nginx_ui() {
     fi
 
     # Remove from runlevels
-    rc-update del nginx-ui default
+    rc-update del nginx-ui default 2>/dev/null || true
 
-    if ! ("rm" -r $delete_files); then
+    if ! ("rm" -r $delete_files 2>/dev/null); then
       echo -e "${FontRed}error: Failed to remove Nginx UI.${FontSuffix}"
       exit 1
     else
       for file in $delete_files
       do
-        echo "removed: $file"
+        [[ -e "$file" ]] && echo "removed: $file"
       done
       echo "You may need to execute a command to remove dependent software: $PACKAGE_MANAGEMENT_REMOVE curl"
       echo 'info: Nginx UI has been removed.'
@@ -610,7 +616,7 @@ remove_nginx_ui() {
       fi
       exit 0
     fi
-  elif [[ "$SERVICE_TYPE" == "initd" && -f "$InitPath" ]]; then
+  elif [[ "$SERVICE_TYPE" == "initd" ]] && ([[ -f "$InitPath" ]] || [[ -f "/usr/local/bin/nginx-ui" ]]); then
     if [[ -n "$(pidof nginx-ui)" ]]; then
       stop_nginx_ui
     fi
@@ -621,18 +627,18 @@ remove_nginx_ui() {
 
     # Remove from startup based on distro
     if [ -x /sbin/chkconfig ]; then
-        /sbin/chkconfig --del nginx-ui
+        /sbin/chkconfig --del nginx-ui 2>/dev/null || true
     elif [ -x /usr/sbin/update-rc.d ]; then
-        /usr/sbin/update-rc.d -f nginx-ui remove
+        /usr/sbin/update-rc.d -f nginx-ui remove 2>/dev/null || true
     fi
 
-    if ! ("rm" -r $delete_files); then
+    if ! ("rm" -r $delete_files 2>/dev/null); then
       echo -e "${FontRed}error: Failed to remove Nginx UI.${FontSuffix}"
       exit 1
     else
       for file in $delete_files
       do
-        echo "removed: $file"
+        [[ -e "$file" ]] && echo "removed: $file"
       done
       echo "You may need to execute a command to remove dependent software: $PACKAGE_MANAGEMENT_REMOVE curl"
       echo 'info: Nginx UI has been removed.'
@@ -758,7 +764,7 @@ main() {
             rc-service nginx-ui start
             rc-update add nginx-ui default
             sleep 1s
-            if rc-service nginx-ui status | grep -q "started"; then
+            if rc-service nginx-ui status | grep -qE "(started|running)"; then
                 echo "info: Started and added the Nginx UI service to default runlevel."
             else
                 echo -e "${FontYellow}warning: Failed to start the Nginx UI service.${FontSuffix}"
