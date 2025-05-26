@@ -47,8 +47,8 @@ type AutoBackup struct {
 
 	// S3 Configuration (only used when StorageType is S3)
 	S3Endpoint        string `json:"s3_endpoint" gorm:"comment:S3 endpoint URL"`
-	S3AccessKeyID     string `json:"s3_access_key_id" gorm:"comment:S3 access key ID"`
-	S3SecretAccessKey string `json:"s3_secret_access_key" gorm:"comment:S3 secret access key"`
+	S3AccessKeyID     string `json:"s3_access_key_id" gorm:"comment:S3 access key ID;serializer:json[aes]"`
+	S3SecretAccessKey string `json:"s3_secret_access_key" gorm:"comment:S3 secret access key;serializer:json[aes]"`
 	S3Bucket          string `json:"s3_bucket" gorm:"comment:S3 bucket name"`
 	S3Region          string `json:"s3_region" gorm:"comment:S3 region"`
 }
