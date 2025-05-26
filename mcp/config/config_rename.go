@@ -27,7 +27,7 @@ var nginxConfigRenameTool = mcp.NewTool(
 )
 
 func handleNginxConfigRename(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	args := request.Params.Arguments
+	args := request.GetArguments()
 	basePath := args["base_path"].(string)
 	origName := args["orig_name"].(string)
 	newName := args["new_name"].(string)

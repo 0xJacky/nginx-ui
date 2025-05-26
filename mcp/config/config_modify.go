@@ -30,7 +30,7 @@ var nginxConfigModifyTool = mcp.NewTool(
 )
 
 func handleNginxConfigModify(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	args := request.Params.Arguments
+	args := request.GetArguments()
 	relativePath := args["relative_path"].(string)
 	content := args["content"].(string)
 	syncOverwrite := args["sync_overwrite"].(bool)

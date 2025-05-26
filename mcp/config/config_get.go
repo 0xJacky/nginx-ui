@@ -22,7 +22,8 @@ var nginxConfigGetTool = mcp.NewTool(
 )
 
 func handleNginxConfigGet(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	relativePath := request.Params.Arguments["relative_path"].(string)
+	args := request.GetArguments()
+	relativePath := args["relative_path"].(string)
 
 	absPath := nginx.GetConfPath(relativePath)
 	if !helper.IsUnderDirectory(absPath, nginx.GetConfPath()) {

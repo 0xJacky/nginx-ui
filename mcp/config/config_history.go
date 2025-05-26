@@ -17,7 +17,8 @@ var nginxConfigHistoryTool = mcp.NewTool(
 )
 
 func handleNginxConfigHistory(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	filepath := request.Params.Arguments["filepath"].(string)
+	args := request.GetArguments()
+	filepath := args["filepath"].(string)
 
 	q := query.ConfigBackup
 	var histories, err = q.Where(q.FilePath.Eq(filepath)).Order(q.ID.Desc()).Find()

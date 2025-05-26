@@ -31,7 +31,7 @@ var nginxConfigAddTool = mcp.NewTool(
 )
 
 func handleNginxConfigAdd(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	args := request.Params.Arguments
+	args := request.GetArguments()
 	name := args["name"].(string)
 	content := args["content"].(string)
 	baseDir := args["base_dir"].(string)

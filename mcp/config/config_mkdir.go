@@ -21,7 +21,7 @@ var nginxConfigMkdirTool = mcp.NewTool(
 )
 
 func handleNginxConfigMkdir(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	args := request.Params.Arguments
+	args := request.GetArguments()
 	basePath := args["base_path"].(string)
 	folderName := args["folder_name"].(string)
 

@@ -20,8 +20,9 @@ var nginxConfigListTool = mcp.NewTool(
 )
 
 func handleNginxConfigList(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	relativePath := request.Params.Arguments["relative_path"].(string)
-	filterByName := request.Params.Arguments["filter_by_name"].(string)
+	args := request.GetArguments()
+	relativePath := args["relative_path"].(string)
+	filterByName := args["filter_by_name"].(string)
 	configs, err := config.GetConfigList(relativePath, func(file os.FileInfo) bool {
 		return filterByName == "" || strings.Contains(file.Name(), filterByName)
 	})
