@@ -60,7 +60,7 @@ const columns: StdTableColumn[] = [
 
         return (
           <FormItem class="mb-0" required={true} label={$gettext('Backup Path')}>
-            <Input v-model={formData.backup_path} />
+            <Input v-model:value={formData.backup_path} />
           </FormItem>
         )
       },
