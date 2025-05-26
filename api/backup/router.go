@@ -13,8 +13,8 @@ func InitAutoBackupRouter(r *gin.RouterGroup) {
 	r.GET("/auto_backup", GetAutoBackupList)
 	r.POST("/auto_backup", CreateAutoBackup)
 	r.GET("/auto_backup/:id", GetAutoBackup)
-	r.PUT("/auto_backup/:id", ModifyAutoBackup)
+	r.POST("/auto_backup/:id", ModifyAutoBackup)
 	r.DELETE("/auto_backup/:id", DestroyAutoBackup)
-	r.POST("/auto_backup/:id/restore", RestoreAutoBackup)
+	r.PATCH("/auto_backup/:id", RestoreAutoBackup)
 	r.POST("/auto_backup/test_s3", TestS3Connection)
 }
