@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/performance"
 	"github.com/gin-gonic/gin"
@@ -36,11 +37,8 @@ func GetDetailStatus(c *gin.Context) {
 // StreamDetailStatus streams Nginx detailed status information using SSE
 func StreamDetailStatus(c *gin.Context) {
 	// Set SSE response headers
-	c.Header("Content-Type", "text/event-stream")
-	c.Header("Cache-Control", "no-cache")
-	c.Header("Connection", "keep-alive")
-	c.Header("Access-Control-Allow-Origin", "*")
-
+	api.SetSSEHeaders(c)
+	
 	// Create context that cancels when client disconnects
 	ctx := c.Request.Context()
 
