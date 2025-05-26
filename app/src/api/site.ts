@@ -8,6 +8,12 @@ import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
 export type SiteStatus = ConfigStatus.Enabled | ConfigStatus.Disabled | ConfigStatus.Maintenance
 
+export interface ProxyTarget {
+  host: string
+  port: string
+  type: string // "proxy_pass" or "upstream"
+}
+
 export interface Site extends ModelBase {
   modified_at: string
   path: string
@@ -23,6 +29,7 @@ export interface Site extends ModelBase {
   env_group?: EnvGroup
   sync_node_ids: number[]
   urls?: string[]
+  proxy_targets?: ProxyTarget[]
   status: SiteStatus
 }
 

@@ -148,7 +148,7 @@ msgstr "Action"
 #: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:76
-#: src/views/site/site_list/columns.tsx:129 src/views/stream/columns.tsx:64
+#: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:105
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "Actions"
@@ -166,7 +166,7 @@ msgstr "Ratio réel des travailleurs par rapport à la configuration"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:159 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:121
+#: src/views/stream/StreamList.vue:101
 msgid "Add"
 msgstr "Ajouter"
 
@@ -193,11 +193,11 @@ msgstr "Ajouter une localisation"
 msgid "Add Site"
 msgstr "Ajouter un site"
 
-#: src/views/stream/StreamList.vue:174
+#: src/views/stream/StreamList.vue:138
 msgid "Add Stream"
 msgstr "Ajouter un flux"
 
-#: src/views/stream/StreamList.vue:92
+#: src/views/stream/StreamList.vue:72
 msgid "Added successfully"
 msgstr "Ajouté avec succès"
 
@@ -283,7 +283,7 @@ msgid "Are you sure you want to delete permanently?"
 msgstr "Êtes-vous sûr de vouloir supprimer définitivement ?"
 
 #: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
-#: src/views/stream/StreamList.vue:157
+#: src/views/stream/StreamList.vue:121
 msgid "Are you sure you want to delete?"
 msgstr "Etes-vous sûr que vous voulez supprimer ?"
 
@@ -583,6 +583,7 @@ msgstr ""
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
 #: src/views/stream/components/RightPanel/Basic.vue:47
+#: src/views/stream/components/StreamStatusSelect.vue:65
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -1225,7 +1226,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxUpstream.vue:129 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
 #: src/views/site/site_list/SiteList.vue:109
-#: src/views/stream/StreamList.vue:166
+#: src/views/stream/StreamList.vue:130
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -1273,7 +1274,7 @@ msgstr "Échec de la suppression du flux %{name} de %{node}"
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Le flux %{name} a été supprimé de %{node} avec succès"
 
-#: src/views/stream/StreamList.vue:67
+#: src/views/stream/StreamList.vue:47
 msgid "Delete stream: %{stream_name}"
 msgstr "Supprimer le flux : %{stream_name}"
 
@@ -1347,11 +1348,8 @@ msgid "Directory path to store cache files"
 msgstr "Chemin du répertoire pour stocker les fichiers de cache"
 
 #: src/views/site/components/SiteStatusSelect.vue:115
+#: src/views/stream/components/StreamStatusSelect.vue:58
 msgid "disable"
-msgstr "Désactiver"
-
-#: src/views/stream/StreamList.vue:137
-msgid "Disable"
 msgstr "Désactiver"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:80
@@ -1414,15 +1412,16 @@ msgstr "Désactivation du flux %{name} depuis %{node} réussie"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:114 src/views/stream/columns.tsx:48
+#: src/views/site/site_list/columns.tsx:127 src/views/stream/columns.tsx:94
 #: src/views/stream/components/StreamEditor.vue:30
+#: src/views/stream/components/StreamStatusSelect.vue:89
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr "Désactivé"
 
 #: src/views/site/components/SiteStatusSelect.vue:67
 #: src/views/stream/components/RightPanel/Basic.vue:34
-#: src/views/stream/StreamList.vue:56
+#: src/views/stream/components/StreamStatusSelect.vue:39
 msgid "Disabled successfully"
 msgstr "Désactivé avec succès"
 
@@ -1451,6 +1450,10 @@ msgstr "N'activez pas cette option sauf si vous êtes sûr d'en avoir avez besoi
 #: src/views/site/components/SiteStatusSelect.vue:120
 msgid "Do you want to %{action} this site?"
 msgstr "Voulez-vous %{action} ce site ?"
+
+#: src/views/stream/components/StreamStatusSelect.vue:61
+msgid "Do you want to %{action} this stream?"
+msgstr "Voulez-vous %{action} ce flux ?"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:139
 msgid "Do you want to disable auto-cert renewal?"
@@ -1528,7 +1531,7 @@ msgstr ""
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:95
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:152
+#: src/views/stream/StreamList.vue:116
 msgid "Duplicate"
 msgstr "Dupliquer"
 
@@ -1577,12 +1580,9 @@ msgid "Email (*)"
 msgstr "Email (*)"
 
 #: src/views/site/components/SiteStatusSelect.vue:114
+#: src/views/stream/components/StreamStatusSelect.vue:58
 msgid "enable"
 msgstr "activer"
-
-#: src/views/stream/StreamList.vue:145
-msgid "Enable"
-msgstr "Activer"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:45
 msgid "Enable 2FA successfully"
@@ -1682,9 +1682,10 @@ msgstr "Activer TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:110 src/views/stream/columns.tsx:44
+#: src/views/site/site_list/columns.tsx:123 src/views/stream/columns.tsx:90
 #: src/views/stream/components/RightPanel/Basic.vue:62
 #: src/views/stream/components/StreamEditor.vue:24
+#: src/views/stream/components/StreamStatusSelect.vue:88
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
 msgstr "Activé"
@@ -1692,7 +1693,7 @@ msgstr "Activé"
 #: src/views/site/components/SiteStatusSelect.vue:54
 #: src/views/site/site_add/SiteAdd.vue:32
 #: src/views/stream/components/RightPanel/Basic.vue:25
-#: src/views/stream/StreamList.vue:46
+#: src/views/stream/components/StreamStatusSelect.vue:26
 msgid "Enabled successfully"
 msgstr "Activé avec succès"
 
@@ -1929,7 +1930,7 @@ msgstr "Échec de la suppression du certificat de la base de données : %{error}
 
 #: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/RightPanel/Basic.vue:37
-#: src/views/stream/StreamList.vue:60
+#: src/views/stream/components/StreamStatusSelect.vue:45
 msgid "Failed to disable %{msg}"
 msgstr "Impossible de désactiver %{msg}"
 
@@ -1939,7 +1940,7 @@ msgstr "Échec de la désactivation du mode maintenance : %{msg}"
 
 #: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/RightPanel/Basic.vue:28
-#: src/views/stream/StreamList.vue:50
+#: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
 msgstr "Impossible d'activer %{msg}"
 
@@ -2689,7 +2690,7 @@ msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:118
+#: src/views/site/site_list/columns.tsx:131
 msgid "Maintenance"
 msgstr "Maintenance"
 
@@ -2718,7 +2719,7 @@ msgstr "Gérer les configurations"
 msgid "Manage Sites"
 msgstr "Gérer les sites"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:101
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:81
 msgid "Manage Streams"
 msgstr "Gérer les flux"
 
@@ -2892,12 +2893,12 @@ msgstr "Directive multiligne"
 #: src/views/nginx_log/NginxLogList.vue:36
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:35
-#: src/views/site/site_list/columns.tsx:15
+#: src/views/site/site_list/columns.tsx:16
 #: src/views/site/site_list/SiteDuplicate.vue:79
-#: src/views/stream/columns.tsx:10
+#: src/views/stream/columns.tsx:12
 #: src/views/stream/components/RightPanel/Basic.vue:69
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:179
+#: src/views/stream/StreamList.vue:143
 msgid "Name"
 msgstr "Nom"
 
@@ -3160,7 +3161,7 @@ msgstr "Nginx.conf inclut le répertoire streams-enabled"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:155
+#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:119
 msgid "No"
 msgstr "Non"
 
@@ -3182,7 +3183,7 @@ msgid "Node"
 msgstr "Nœud"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:41
-#: src/views/site/site_list/columns.tsx:63 src/views/stream/columns.tsx:20
+#: src/views/site/site_list/columns.tsx:76 src/views/stream/columns.tsx:44
 #: src/views/stream/components/RightPanel/Basic.vue:77
 msgid "Node Group"
 msgstr "Groupe de nœuds"
@@ -3297,6 +3298,7 @@ msgstr "Désactivé"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
 #: src/components/NgxConfigEditor/NgxUpstream.vue:145
 #: src/components/NodeSelector/NodeSelector.vue:109
+#: src/components/ProxyTargets/ProxyTargets.vue:43
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3314,7 +3316,8 @@ msgstr "Hors ligne"
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
 #: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
-#: src/views/stream/StreamList.vue:156
+#: src/views/stream/components/StreamStatusSelect.vue:64
+#: src/views/stream/StreamList.vue:120
 msgid "OK"
 msgstr "OK"
 
@@ -3722,6 +3725,15 @@ msgstr "Fournisseur"
 #: src/views/certificate/ACMEUser.vue:48
 msgid "Proxy"
 msgstr "Proxy"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+msgid "Proxy Pass"
+msgstr "Passe de Proxy"
+
+#: src/views/site/site_list/columns.tsx:64
+#: src/views/stream/columns.tsx:32
+msgid "Proxy Targets"
+msgstr "Cibles du proxy"
 
 #: src/views/preference/tabs/NodeSettings.vue:46
 msgid "Public Security Number"
@@ -4597,7 +4609,7 @@ msgstr "Statique"
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:28
-#: src/views/site/site_list/columns.tsx:88 src/views/stream/columns.tsx:37
+#: src/views/site/site_list/columns.tsx:101 src/views/stream/columns.tsx:69
 msgid "Status"
 msgstr "Statut"
 
@@ -5190,6 +5202,7 @@ msgstr "Mardi"
 msgid "Two-factor authentication required"
 msgstr "Authentification à deux facteurs requise"
 
+#: src/components/ProxyTargets/ProxyTargets.vue:48
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/dashboard/components/ModulesTable.vue:83
 #: src/views/nginx_log/NginxLogList.vue:12
@@ -5226,7 +5239,7 @@ msgstr "Mise à jour réussie"
 #: src/views/environments/group/columns.ts:35
 #: src/views/environments/list/envColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:38
-#: src/views/site/site_list/columns.tsx:81 src/views/stream/columns.tsx:57
+#: src/views/site/site_list/columns.tsx:94 src/views/stream/columns.tsx:62
 #: src/views/stream/components/RightPanel/Basic.vue:73
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
@@ -5259,6 +5272,10 @@ msgstr "Téléverser des fichiers"
 #: src/language/curd.ts:48
 msgid "Upload Folders"
 msgstr "Télécharger des dossiers"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+msgid "Upstream"
+msgstr "Amont"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:177
 msgid "Upstream Name"
@@ -5556,6 +5573,12 @@ msgstr "Vos anciens codes ne fonctionneront plus."
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Vos clés d'accès"
+
+#~ msgid "Disable"
+#~ msgstr "Désactiver"
+
+#~ msgid "Enable"
+#~ msgstr "Activer"
 
 #~ msgid "Last Backup Error"
 #~ msgstr "Dernière erreur de sauvegarde"

@@ -6,6 +6,7 @@ import config from '@/api/config'
 import ngx from '@/api/ngx'
 import stream from '@/api/stream'
 import { useNgxConfigStore } from '@/components/NgxConfigEditor'
+import { ConfigStatus } from '@/constants'
 
 export const useStreamEditorStore = defineStore('streamEditor', () => {
   const name = ref('')
@@ -20,7 +21,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
   const certInfoMap = ref({}) as Ref<Record<number, CertificateInfo[]>>
   const filename = ref('')
   const filepath = ref('')
-  const enabled = ref(false)
+  const status = ref(ConfigStatus.Disabled)
 
   const ngxConfigStore = useNgxConfigStore()
   const { ngxConfig, configText, curServerIdx, curServer, curServerDirectives, curDirectivesMap } = storeToRefs(ngxConfigStore)
@@ -90,7 +91,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
     if (r.advanced)
       advanceMode.value = true
 
-    enabled.value = r.enabled
+    status.value = r.status
     parseErrorStatus.value = false
     parseErrorMessage.value = ''
     filename.value = r.name
@@ -152,7 +153,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
     filename,
     filepath,
     configText,
-    enabled,
+    status,
     init,
     save,
     handleModeChange,

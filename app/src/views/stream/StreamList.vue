@@ -41,26 +41,6 @@ watch(route, () => {
   inspect_config.value?.test()
 })
 
-function enable(name: string) {
-  stream.enable(name).then(() => {
-    message.success($gettext('Enabled successfully'))
-    curd.value?.refresh()
-    inspect_config.value?.test()
-  }).catch(r => {
-    message.error($gettext('Failed to enable %{msg}', { msg: r.message ?? '' }), 10)
-  })
-}
-
-function disable(name: string) {
-  stream.disable(name).then(() => {
-    message.success($gettext('Disabled successfully'))
-    curd.value?.refresh()
-    inspect_config.value?.test()
-  }).catch(r => {
-    message.error($gettext('Failed to disable %{msg}', { msg: r.message ?? '' }))
-  })
-}
-
 function destroy(stream_name: string) {
   stream.deleteItem(stream_name).then(() => {
     curd.value.refresh()
@@ -128,22 +108,6 @@ function handleAddStream() {
       </template>
 
       <template #afterActions="{ record }">
-        <AButton
-          v-if="record.enabled"
-          type="link"
-          size="small"
-          @click="disable(record.name)"
-        >
-          {{ $gettext('Disable') }}
-        </AButton>
-        <AButton
-          v-else
-          type="link"
-          size="small"
-          @click="enable(record.name)"
-        >
-          {{ $gettext('Enable') }}
-        </AButton>
         <AButton
           type="link"
           size="small"

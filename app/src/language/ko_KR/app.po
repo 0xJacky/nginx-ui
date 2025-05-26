@@ -142,7 +142,7 @@ msgstr "작업"
 #: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:76
-#: src/views/site/site_list/columns.tsx:129 src/views/stream/columns.tsx:64
+#: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:105
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "작업"
@@ -160,7 +160,7 @@ msgstr "실제 작업자 대 구성 비율"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:159 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:121
+#: src/views/stream/StreamList.vue:101
 msgid "Add"
 msgstr "추가"
 
@@ -187,11 +187,11 @@ msgstr "위치 추가"
 msgid "Add Site"
 msgstr "사이트 추가"
 
-#: src/views/stream/StreamList.vue:174
+#: src/views/stream/StreamList.vue:138
 msgid "Add Stream"
 msgstr "스트림 추가"
 
-#: src/views/stream/StreamList.vue:92
+#: src/views/stream/StreamList.vue:72
 msgid "Added successfully"
 msgstr "성공적으로 추가됨"
 
@@ -275,7 +275,7 @@ msgid "Are you sure you want to delete permanently?"
 msgstr "정말 영구적으로 삭제하시겠습니까?"
 
 #: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
-#: src/views/stream/StreamList.vue:157
+#: src/views/stream/StreamList.vue:121
 msgid "Are you sure you want to delete?"
 msgstr "정말 삭제하시겠습니까?"
 
@@ -566,6 +566,7 @@ msgstr ""
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
 #: src/views/stream/components/RightPanel/Basic.vue:47
+#: src/views/stream/components/StreamStatusSelect.vue:65
 msgid "Cancel"
 msgstr "취소"
 
@@ -1179,7 +1180,7 @@ msgstr "공유 메모리 영역 이름과 크기를 정의합니다(예: proxy_c
 #: src/components/NgxConfigEditor/NgxUpstream.vue:129 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
 #: src/views/site/site_list/SiteList.vue:109
-#: src/views/stream/StreamList.vue:166
+#: src/views/stream/StreamList.vue:130
 msgid "Delete"
 msgstr "삭제"
 
@@ -1227,7 +1228,7 @@ msgstr "%{node}에서 스트림 %{name} 삭제 실패"
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "스트림 %{name}을(를) %{node}에서 성공적으로 삭제했습니다"
 
-#: src/views/stream/StreamList.vue:67
+#: src/views/stream/StreamList.vue:47
 msgid "Delete stream: %{stream_name}"
 msgstr "스트림 삭제: %{stream_name}"
 
@@ -1301,11 +1302,8 @@ msgid "Directory path to store cache files"
 msgstr "캐시 파일을 저장할 디렉터리 경로"
 
 #: src/views/site/components/SiteStatusSelect.vue:115
+#: src/views/stream/components/StreamStatusSelect.vue:58
 msgid "disable"
-msgstr "비활성화"
-
-#: src/views/stream/StreamList.vue:137
-msgid "Disable"
 msgstr "비활성화"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:80
@@ -1368,15 +1366,16 @@ msgstr "스트림 %{name}을(를) %{node}에서 비활성화했습니다"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:114 src/views/stream/columns.tsx:48
+#: src/views/site/site_list/columns.tsx:127 src/views/stream/columns.tsx:94
 #: src/views/stream/components/StreamEditor.vue:30
+#: src/views/stream/components/StreamStatusSelect.vue:89
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr "비활성화됨"
 
 #: src/views/site/components/SiteStatusSelect.vue:67
 #: src/views/stream/components/RightPanel/Basic.vue:34
-#: src/views/stream/StreamList.vue:56
+#: src/views/stream/components/StreamStatusSelect.vue:39
 msgid "Disabled successfully"
 msgstr "성공적으로 비활성화됨"
 
@@ -1405,6 +1404,10 @@ msgstr "이 옵션은 필요한 경우가 아니라면 활성화하지 마세요
 #: src/views/site/components/SiteStatusSelect.vue:120
 msgid "Do you want to %{action} this site?"
 msgstr "이 사이트를 %{action}하시겠습니까?"
+
+#: src/views/stream/components/StreamStatusSelect.vue:61
+msgid "Do you want to %{action} this stream?"
+msgstr "이 스트림을 %{action}하시겠습니까?"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:139
 msgid "Do you want to disable auto-cert renewal?"
@@ -1481,7 +1484,7 @@ msgstr ""
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:95
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:152
+#: src/views/stream/StreamList.vue:116
 msgid "Duplicate"
 msgstr "복제"
 
@@ -1530,11 +1533,8 @@ msgid "Email (*)"
 msgstr "이메일 (*)"
 
 #: src/views/site/components/SiteStatusSelect.vue:114
+#: src/views/stream/components/StreamStatusSelect.vue:58
 msgid "enable"
-msgstr "활성화"
-
-#: src/views/stream/StreamList.vue:145
-msgid "Enable"
 msgstr "활성화"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:45
@@ -1635,9 +1635,10 @@ msgstr "TOTP 활성화"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:110 src/views/stream/columns.tsx:44
+#: src/views/site/site_list/columns.tsx:123 src/views/stream/columns.tsx:90
 #: src/views/stream/components/RightPanel/Basic.vue:62
 #: src/views/stream/components/StreamEditor.vue:24
+#: src/views/stream/components/StreamStatusSelect.vue:88
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
 msgstr "활성화됨"
@@ -1645,7 +1646,7 @@ msgstr "활성화됨"
 #: src/views/site/components/SiteStatusSelect.vue:54
 #: src/views/site/site_add/SiteAdd.vue:32
 #: src/views/stream/components/RightPanel/Basic.vue:25
-#: src/views/stream/StreamList.vue:46
+#: src/views/stream/components/StreamStatusSelect.vue:26
 msgid "Enabled successfully"
 msgstr "성공적으로 활성화됨"
 
@@ -1882,7 +1883,7 @@ msgstr "데이터베이스에서 인증서 삭제 실패: %{error}"
 
 #: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/RightPanel/Basic.vue:37
-#: src/views/stream/StreamList.vue:60
+#: src/views/stream/components/StreamStatusSelect.vue:45
 msgid "Failed to disable %{msg}"
 msgstr "%{msg} 비활성화 실패"
 
@@ -1892,7 +1893,7 @@ msgstr "점검 모드 비활성화 실패: %{msg}"
 
 #: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/RightPanel/Basic.vue:28
-#: src/views/stream/StreamList.vue:50
+#: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
 msgstr "%{msg} 활성화 실패"
 
@@ -2617,7 +2618,7 @@ msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:118
+#: src/views/site/site_list/columns.tsx:131
 msgid "Maintenance"
 msgstr "유지보수"
 
@@ -2644,7 +2645,7 @@ msgstr "구성 관리"
 msgid "Manage Sites"
 msgstr "사이트 관리"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:101
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:81
 msgid "Manage Streams"
 msgstr "스트림 관리"
 
@@ -2818,12 +2819,12 @@ msgstr "여러 줄 지시문"
 #: src/views/nginx_log/NginxLogList.vue:36
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:35
-#: src/views/site/site_list/columns.tsx:15
+#: src/views/site/site_list/columns.tsx:16
 #: src/views/site/site_list/SiteDuplicate.vue:79
-#: src/views/stream/columns.tsx:10
+#: src/views/stream/columns.tsx:12
 #: src/views/stream/components/RightPanel/Basic.vue:69
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:179
+#: src/views/stream/StreamList.vue:143
 msgid "Name"
 msgstr "이름"
 
@@ -3084,7 +3085,7 @@ msgstr "Nginx.conf에는 streams-enabled 디렉토리가 포함됩니다"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:155
+#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:119
 msgid "No"
 msgstr "아니요"
 
@@ -3106,7 +3107,7 @@ msgid "Node"
 msgstr "노드"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:41
-#: src/views/site/site_list/columns.tsx:63 src/views/stream/columns.tsx:20
+#: src/views/site/site_list/columns.tsx:76 src/views/stream/columns.tsx:44
 #: src/views/stream/components/RightPanel/Basic.vue:77
 msgid "Node Group"
 msgstr "노드 그룹"
@@ -3215,6 +3216,7 @@ msgstr "끔"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
 #: src/components/NgxConfigEditor/NgxUpstream.vue:145
 #: src/components/NodeSelector/NodeSelector.vue:109
+#: src/components/ProxyTargets/ProxyTargets.vue:43
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3232,7 +3234,8 @@ msgstr "오프라인"
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
 #: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
-#: src/views/stream/StreamList.vue:156
+#: src/views/stream/components/StreamStatusSelect.vue:64
+#: src/views/stream/StreamList.vue:120
 msgid "OK"
 msgstr "확인"
 
@@ -3617,6 +3620,15 @@ msgstr "제공자"
 #: src/views/certificate/ACMEUser.vue:48
 msgid "Proxy"
 msgstr "프록시"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+msgid "Proxy Pass"
+msgstr "프록시 패스"
+
+#: src/views/site/site_list/columns.tsx:64
+#: src/views/stream/columns.tsx:32
+msgid "Proxy Targets"
+msgstr "프록시 대상"
 
 #: src/views/preference/tabs/NodeSettings.vue:46
 msgid "Public Security Number"
@@ -4472,7 +4484,7 @@ msgstr "정적"
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:28
-#: src/views/site/site_list/columns.tsx:88 src/views/stream/columns.tsx:37
+#: src/views/site/site_list/columns.tsx:101 src/views/stream/columns.tsx:69
 msgid "Status"
 msgstr "상태"
 
@@ -5009,6 +5021,7 @@ msgstr "화요일"
 msgid "Two-factor authentication required"
 msgstr "2단계 인증이 필요합니다"
 
+#: src/components/ProxyTargets/ProxyTargets.vue:48
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/dashboard/components/ModulesTable.vue:83
 #: src/views/nginx_log/NginxLogList.vue:12
@@ -5045,7 +5058,7 @@ msgstr "성공적으로 업데이트되었습니다"
 #: src/views/environments/group/columns.ts:35
 #: src/views/environments/list/envColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:38
-#: src/views/site/site_list/columns.tsx:81 src/views/stream/columns.tsx:57
+#: src/views/site/site_list/columns.tsx:94 src/views/stream/columns.tsx:62
 #: src/views/stream/components/RightPanel/Basic.vue:73
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
@@ -5078,6 +5091,10 @@ msgstr "파일 업로드"
 #: src/language/curd.ts:48
 msgid "Upload Folders"
 msgstr "폴더 업로드"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+msgid "Upstream"
+msgstr "업스트림"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:177
 msgid "Upstream Name"
@@ -5353,6 +5370,12 @@ msgstr "이전 코드는 더 이상 작동하지 않습니다."
 msgid "Your passkeys"
 msgstr "귀하의 패스키"
 
+#~ msgid "Disable"
+#~ msgstr "비활성화"
+
+#~ msgid "Enable"
+#~ msgstr "활성화"
+
 #~ msgid "Last Backup Error"
 #~ msgstr "마지막 백업 오류"
 
@@ -5527,9 +5550,6 @@ msgstr "귀하의 패스키"
 #, fuzzy
 #~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
-
-#~ msgid "Target"
-#~ msgstr "대상"
 
 #~ msgid "File"
 #~ msgstr "파일"

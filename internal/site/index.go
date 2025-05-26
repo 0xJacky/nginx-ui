@@ -8,12 +8,14 @@ import (
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
+	"github.com/0xJacky/Nginx-UI/internal/upstream"
 )
 
 type SiteIndex struct {
-	Path    string
-	Content string
-	Urls    []string
+	Path         string
+	Content      string
+	Urls         []string
+	ProxyTargets []ProxyTarget
 }
 
 var (
@@ -41,9 +43,10 @@ func scanForSite(configPath string, content []byte) error {
 	serverBlocks := serverBlockRegex.FindAllSubmatch(content, -1)
 
 	siteIndex := SiteIndex{
-		Path:    configPath,
-		Content: string(content),
-		Urls:    []string{},
+		Path:         configPath,
+		Content:      string(content),
+		Urls:         []string{},
+		ProxyTargets: []ProxyTarget{},
 	}
 
 	// Map to track hosts, their SSL status and port
@@ -153,8 +156,11 @@ func scanForSite(configPath string, content []byte) error {
 		siteIndex.Urls = append(siteIndex.Urls, url)
 	}
 
-	// Only store if we found valid URLs
-	if len(siteIndex.Urls) > 0 {
+	// Parse proxy targets from the configuration content
+	siteIndex.ProxyTargets = upstream.ParseProxyTargetsFromRawContent(string(content))
+
+	// Only store if we found valid URLs or proxy targets
+	if len(siteIndex.Urls) > 0 || len(siteIndex.ProxyTargets) > 0 {
 		IndexedSites[filepath.Base(configPath)] = &siteIndex
 	}
 

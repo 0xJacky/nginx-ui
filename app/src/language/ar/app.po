@@ -143,7 +143,7 @@ msgstr "إجراء"
 #: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:76
-#: src/views/site/site_list/columns.tsx:129 src/views/stream/columns.tsx:64
+#: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:105
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "الإجراءات"
@@ -161,7 +161,7 @@ msgstr "النسبة الفعلية للعامل إلى المُهيأ"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:159 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:121
+#: src/views/stream/StreamList.vue:101
 msgid "Add"
 msgstr "إضافة"
 
@@ -188,11 +188,11 @@ msgstr "أضف مكان"
 msgid "Add Site"
 msgstr "أضف موقع"
 
-#: src/views/stream/StreamList.vue:174
+#: src/views/stream/StreamList.vue:138
 msgid "Add Stream"
 msgstr "أضف Stream"
 
-#: src/views/stream/StreamList.vue:92
+#: src/views/stream/StreamList.vue:72
 msgid "Added successfully"
 msgstr "تمت الإضافة بنجاح"
 
@@ -276,7 +276,7 @@ msgid "Are you sure you want to delete permanently?"
 msgstr "هل أنت متأكد أنك تريد الحذف نهائيًا؟"
 
 #: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
-#: src/views/stream/StreamList.vue:157
+#: src/views/stream/StreamList.vue:121
 msgid "Are you sure you want to delete?"
 msgstr "هل أنت متأكد أنك تريد الحذف؟"
 
@@ -567,6 +567,7 @@ msgstr ""
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
 #: src/views/stream/components/RightPanel/Basic.vue:47
+#: src/views/stream/components/StreamStatusSelect.vue:65
 msgid "Cancel"
 msgstr "إلغاء"
 
@@ -1203,7 +1204,7 @@ msgstr "حدد اسم منطقة الذاكرة المشتركة والحجم، 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:129 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
 #: src/views/site/site_list/SiteList.vue:109
-#: src/views/stream/StreamList.vue:166
+#: src/views/stream/StreamList.vue:130
 msgid "Delete"
 msgstr "حذف"
 
@@ -1251,7 +1252,7 @@ msgstr "فشل حذف الدفق %{name} من %{node}"
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "تم حذف الدفق %{name} من %{node} بنجاح"
 
-#: src/views/stream/StreamList.vue:67
+#: src/views/stream/StreamList.vue:47
 msgid "Delete stream: %{stream_name}"
 msgstr "حذف البث: ‎%{stream_name}"
 
@@ -1325,11 +1326,8 @@ msgid "Directory path to store cache files"
 msgstr "مسار الدليل لتخزين ملفات الذاكرة المؤقتة"
 
 #: src/views/site/components/SiteStatusSelect.vue:115
+#: src/views/stream/components/StreamStatusSelect.vue:58
 msgid "disable"
-msgstr "تعطيل"
-
-#: src/views/stream/StreamList.vue:137
-msgid "Disable"
 msgstr "تعطيل"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:80
@@ -1392,15 +1390,16 @@ msgstr "تم تعطيل الدفق %{name} من %{node} بنجاح"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:114 src/views/stream/columns.tsx:48
+#: src/views/site/site_list/columns.tsx:127 src/views/stream/columns.tsx:94
 #: src/views/stream/components/StreamEditor.vue:30
+#: src/views/stream/components/StreamStatusSelect.vue:89
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr "معطل"
 
 #: src/views/site/components/SiteStatusSelect.vue:67
 #: src/views/stream/components/RightPanel/Basic.vue:34
-#: src/views/stream/StreamList.vue:56
+#: src/views/stream/components/StreamStatusSelect.vue:39
 msgid "Disabled successfully"
 msgstr "تم التعطيل بنجاح"
 
@@ -1429,6 +1428,10 @@ msgstr "لا تقم بتمكين هذا الخيار إلا إذا كنت متأ
 #: src/views/site/components/SiteStatusSelect.vue:120
 msgid "Do you want to %{action} this site?"
 msgstr "هل تريد %{action} هذا الموقع؟"
+
+#: src/views/stream/components/StreamStatusSelect.vue:61
+msgid "Do you want to %{action} this stream?"
+msgstr "هل تريد %{action} هذا البث؟"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:139
 msgid "Do you want to disable auto-cert renewal?"
@@ -1505,7 +1508,7 @@ msgstr ""
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:95
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:152
+#: src/views/stream/StreamList.vue:116
 msgid "Duplicate"
 msgstr "مكرر"
 
@@ -1554,12 +1557,9 @@ msgid "Email (*)"
 msgstr "البريد الإلكتروني (*)"
 
 #: src/views/site/components/SiteStatusSelect.vue:114
+#: src/views/stream/components/StreamStatusSelect.vue:58
 msgid "enable"
 msgstr "تمكين"
-
-#: src/views/stream/StreamList.vue:145
-msgid "Enable"
-msgstr "تفعيل"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:45
 msgid "Enable 2FA successfully"
@@ -1659,9 +1659,10 @@ msgstr "تفعيل TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:110 src/views/stream/columns.tsx:44
+#: src/views/site/site_list/columns.tsx:123 src/views/stream/columns.tsx:90
 #: src/views/stream/components/RightPanel/Basic.vue:62
 #: src/views/stream/components/StreamEditor.vue:24
+#: src/views/stream/components/StreamStatusSelect.vue:88
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
 msgstr "مفعل"
@@ -1669,7 +1670,7 @@ msgstr "مفعل"
 #: src/views/site/components/SiteStatusSelect.vue:54
 #: src/views/site/site_add/SiteAdd.vue:32
 #: src/views/stream/components/RightPanel/Basic.vue:25
-#: src/views/stream/StreamList.vue:46
+#: src/views/stream/components/StreamStatusSelect.vue:26
 msgid "Enabled successfully"
 msgstr "تم التفعيل بنجاح"
 
@@ -1906,7 +1907,7 @@ msgstr "فشل حذف الشهادة من قاعدة البيانات: %{error}"
 
 #: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/RightPanel/Basic.vue:37
-#: src/views/stream/StreamList.vue:60
+#: src/views/stream/components/StreamStatusSelect.vue:45
 msgid "Failed to disable %{msg}"
 msgstr "فشل في تعطيل %{msg}"
 
@@ -1916,7 +1917,7 @@ msgstr "فشل تعطيل وضع الصيانة %{msg}"
 
 #: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/RightPanel/Basic.vue:28
-#: src/views/stream/StreamList.vue:50
+#: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
 msgstr "فشل في التفعيل %{msg}"
 
@@ -2655,7 +2656,7 @@ msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:118
+#: src/views/site/site_list/columns.tsx:131
 msgid "Maintenance"
 msgstr "صيانة"
 
@@ -2684,7 +2685,7 @@ msgstr "إدارة التكوينات"
 msgid "Manage Sites"
 msgstr "إدارة المواقع"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:101
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:81
 msgid "Manage Streams"
 msgstr "إدارة التدفقات"
 
@@ -2858,12 +2859,12 @@ msgstr "توجيه متعدد الأسطر"
 #: src/views/nginx_log/NginxLogList.vue:36
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:35
-#: src/views/site/site_list/columns.tsx:15
+#: src/views/site/site_list/columns.tsx:16
 #: src/views/site/site_list/SiteDuplicate.vue:79
-#: src/views/stream/columns.tsx:10
+#: src/views/stream/columns.tsx:12
 #: src/views/stream/components/RightPanel/Basic.vue:69
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:179
+#: src/views/stream/StreamList.vue:143
 msgid "Name"
 msgstr "اسم"
 
@@ -3124,7 +3125,7 @@ msgstr "يتضمن Nginx.conf دليل streams-enabled"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:155
+#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:119
 msgid "No"
 msgstr "لا"
 
@@ -3146,7 +3147,7 @@ msgid "Node"
 msgstr "العقدة"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:41
-#: src/views/site/site_list/columns.tsx:63 src/views/stream/columns.tsx:20
+#: src/views/site/site_list/columns.tsx:76 src/views/stream/columns.tsx:44
 #: src/views/stream/components/RightPanel/Basic.vue:77
 msgid "Node Group"
 msgstr "مجموعة العقد"
@@ -3259,6 +3260,7 @@ msgstr "إيقاف"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
 #: src/components/NgxConfigEditor/NgxUpstream.vue:145
 #: src/components/NodeSelector/NodeSelector.vue:109
+#: src/components/ProxyTargets/ProxyTargets.vue:43
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3276,7 +3278,8 @@ msgstr "غير متصل"
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
 #: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
-#: src/views/stream/StreamList.vue:156
+#: src/views/stream/components/StreamStatusSelect.vue:64
+#: src/views/stream/StreamList.vue:120
 msgid "OK"
 msgstr "حسنًا"
 
@@ -3666,6 +3669,15 @@ msgstr "مزود"
 #: src/views/certificate/ACMEUser.vue:48
 msgid "Proxy"
 msgstr "وكيل"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+msgid "Proxy Pass"
+msgstr "تمرير الوكيل"
+
+#: src/views/site/site_list/columns.tsx:64
+#: src/views/stream/columns.tsx:32
+msgid "Proxy Targets"
+msgstr "أهداف الوكيل"
 
 #: src/views/preference/tabs/NodeSettings.vue:46
 msgid "Public Security Number"
@@ -4527,7 +4539,7 @@ msgstr "ثابت"
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:28
-#: src/views/site/site_list/columns.tsx:88 src/views/stream/columns.tsx:37
+#: src/views/site/site_list/columns.tsx:101 src/views/stream/columns.tsx:69
 msgid "Status"
 msgstr "الحالة"
 
@@ -5099,6 +5111,7 @@ msgstr "الثلاثاء"
 msgid "Two-factor authentication required"
 msgstr "يتطلب المصادقة الثنائية"
 
+#: src/components/ProxyTargets/ProxyTargets.vue:48
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/dashboard/components/ModulesTable.vue:83
 #: src/views/nginx_log/NginxLogList.vue:12
@@ -5135,7 +5148,7 @@ msgstr "تم التحديث بنجاح"
 #: src/views/environments/group/columns.ts:35
 #: src/views/environments/list/envColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:38
-#: src/views/site/site_list/columns.tsx:81 src/views/stream/columns.tsx:57
+#: src/views/site/site_list/columns.tsx:94 src/views/stream/columns.tsx:62
 #: src/views/stream/components/RightPanel/Basic.vue:73
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
@@ -5168,6 +5181,10 @@ msgstr "تحميل الملفات"
 #: src/language/curd.ts:48
 msgid "Upload Folders"
 msgstr "تحميل المجلدات"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+msgid "Upstream"
+msgstr "أعلى التيار"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:177
 msgid "Upstream Name"
@@ -5454,6 +5471,12 @@ msgstr "رموزك القديمة لن تعمل بعد الآن."
 msgid "Your passkeys"
 msgstr "مفاتيح المرور الخاصة بك"
 
+#~ msgid "Disable"
+#~ msgstr "تعطيل"
+
+#~ msgid "Enable"
+#~ msgstr "تفعيل"
+
 #~ msgid "Last Backup Error"
 #~ msgstr "خطأ آخر نسخة احتياطية"
 
@@ -5652,9 +5675,6 @@ msgstr "مفاتيح المرور الخاصة بك"
 
 #~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "فشل مزامنة التكوين %{config_name} إلى %{env_name}، الاستجابة: %{resp}"
-
-#~ msgid "Target"
-#~ msgstr "الهدف"
 
 #~ msgid ""
 #~ "If you lose your mobile phone, you can use the recovery code to reset your "

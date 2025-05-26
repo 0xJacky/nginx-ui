@@ -143,7 +143,7 @@ msgstr "操作"
 #: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:76
-#: src/views/site/site_list/columns.tsx:129 src/views/stream/columns.tsx:64
+#: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:105
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "操作"
@@ -161,7 +161,7 @@ msgstr "实际工作进程与配置比例"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:159 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:121
+#: src/views/stream/StreamList.vue:101
 msgid "Add"
 msgstr "添加"
 
@@ -188,11 +188,11 @@ msgstr "添加 Location"
 msgid "Add Site"
 msgstr "添加站点"
 
-#: src/views/stream/StreamList.vue:174
+#: src/views/stream/StreamList.vue:138
 msgid "Add Stream"
 msgstr "添加 Stream"
 
-#: src/views/stream/StreamList.vue:92
+#: src/views/stream/StreamList.vue:72
 msgid "Added successfully"
 msgstr "添加成功"
 
@@ -276,7 +276,7 @@ msgid "Are you sure you want to delete permanently?"
 msgstr "确定要永久删除吗？"
 
 #: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
-#: src/views/stream/StreamList.vue:157
+#: src/views/stream/StreamList.vue:121
 msgid "Are you sure you want to delete?"
 msgstr "您确定要删除吗？"
 
@@ -565,6 +565,7 @@ msgstr "基于 worker_processes * worker_connections 计算得出。实际性能
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
 #: src/views/stream/components/RightPanel/Basic.vue:47
+#: src/views/stream/components/StreamStatusSelect.vue:65
 msgid "Cancel"
 msgstr "取消"
 
@@ -1173,7 +1174,7 @@ msgstr "定义共享内存区名称和大小，例如 proxy_cache:10m"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:129 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
 #: src/views/site/site_list/SiteList.vue:109
-#: src/views/stream/StreamList.vue:166
+#: src/views/stream/StreamList.vue:130
 msgid "Delete"
 msgstr "删除"
 
@@ -1221,7 +1222,7 @@ msgstr "从 %{node} 删除 Stream %{name} 失败"
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "已成功从 %{node} 删除 Stream %{name}"
 
-#: src/views/stream/StreamList.vue:67
+#: src/views/stream/StreamList.vue:47
 msgid "Delete stream: %{stream_name}"
 msgstr "删除 Stream: %{stream_name}"
 
@@ -1295,11 +1296,8 @@ msgid "Directory path to store cache files"
 msgstr "存储缓存文件的目录路径"
 
 #: src/views/site/components/SiteStatusSelect.vue:115
+#: src/views/stream/components/StreamStatusSelect.vue:58
 msgid "disable"
-msgstr "禁用"
-
-#: src/views/stream/StreamList.vue:137
-msgid "Disable"
 msgstr "禁用"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:80
@@ -1362,15 +1360,16 @@ msgstr "在 %{node} 上禁用 %{name} 成功"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:114 src/views/stream/columns.tsx:48
+#: src/views/site/site_list/columns.tsx:127 src/views/stream/columns.tsx:94
 #: src/views/stream/components/StreamEditor.vue:30
+#: src/views/stream/components/StreamStatusSelect.vue:89
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr "禁用"
 
 #: src/views/site/components/SiteStatusSelect.vue:67
 #: src/views/stream/components/RightPanel/Basic.vue:34
-#: src/views/stream/StreamList.vue:56
+#: src/views/stream/components/StreamStatusSelect.vue:39
 msgid "Disabled successfully"
 msgstr "禁用成功"
 
@@ -1399,6 +1398,10 @@ msgstr "除非确定需要，否则不要启用该选项。"
 #: src/views/site/components/SiteStatusSelect.vue:120
 msgid "Do you want to %{action} this site?"
 msgstr "您想将这个网站%{action}吗？"
+
+#: src/views/stream/components/StreamStatusSelect.vue:61
+msgid "Do you want to %{action} this stream?"
+msgstr "您要%{action}此流吗？"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:139
 msgid "Do you want to disable auto-cert renewal?"
@@ -1473,7 +1476,7 @@ msgstr "由于某些浏览器的安全策略，除非在 localhost 上使用，�
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:95
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:152
+#: src/views/stream/StreamList.vue:116
 msgid "Duplicate"
 msgstr "复制"
 
@@ -1522,11 +1525,8 @@ msgid "Email (*)"
 msgstr "邮箱 (*)"
 
 #: src/views/site/components/SiteStatusSelect.vue:114
+#: src/views/stream/components/StreamStatusSelect.vue:58
 msgid "enable"
-msgstr "启用"
-
-#: src/views/stream/StreamList.vue:145
-msgid "Enable"
 msgstr "启用"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:45
@@ -1627,9 +1627,10 @@ msgstr "启用 TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:110 src/views/stream/columns.tsx:44
+#: src/views/site/site_list/columns.tsx:123 src/views/stream/columns.tsx:90
 #: src/views/stream/components/RightPanel/Basic.vue:62
 #: src/views/stream/components/StreamEditor.vue:24
+#: src/views/stream/components/StreamStatusSelect.vue:88
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
 msgstr "启用"
@@ -1637,7 +1638,7 @@ msgstr "启用"
 #: src/views/site/components/SiteStatusSelect.vue:54
 #: src/views/site/site_add/SiteAdd.vue:32
 #: src/views/stream/components/RightPanel/Basic.vue:25
-#: src/views/stream/StreamList.vue:46
+#: src/views/stream/components/StreamStatusSelect.vue:26
 msgid "Enabled successfully"
 msgstr "启用成功"
 
@@ -1874,7 +1875,7 @@ msgstr "从数据库中删除证书失败：%{error}"
 
 #: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/RightPanel/Basic.vue:37
-#: src/views/stream/StreamList.vue:60
+#: src/views/stream/components/StreamStatusSelect.vue:45
 msgid "Failed to disable %{msg}"
 msgstr "禁用失败 %{msg}"
 
@@ -1884,7 +1885,7 @@ msgstr "停用维护模式失败 %{msg}"
 
 #: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/RightPanel/Basic.vue:28
-#: src/views/stream/StreamList.vue:50
+#: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
 msgstr "启用失败 %{msg}"
 
@@ -2609,7 +2610,7 @@ msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:118
+#: src/views/site/site_list/columns.tsx:131
 msgid "Maintenance"
 msgstr "维护模式"
 
@@ -2636,7 +2637,7 @@ msgstr "配置管理"
 msgid "Manage Sites"
 msgstr "网站管理"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:101
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:81
 msgid "Manage Streams"
 msgstr "管理 Stream"
 
@@ -2810,12 +2811,12 @@ msgstr "多行指令"
 #: src/views/nginx_log/NginxLogList.vue:36
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:35
-#: src/views/site/site_list/columns.tsx:15
+#: src/views/site/site_list/columns.tsx:16
 #: src/views/site/site_list/SiteDuplicate.vue:79
-#: src/views/stream/columns.tsx:10
+#: src/views/stream/columns.tsx:12
 #: src/views/stream/components/RightPanel/Basic.vue:69
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:179
+#: src/views/stream/StreamList.vue:143
 msgid "Name"
 msgstr "名称"
 
@@ -3076,7 +3077,7 @@ msgstr "检查 nginx.conf 是否包含 streams-enabled 的目录"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:155
+#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:119
 msgid "No"
 msgstr "取消"
 
@@ -3098,7 +3099,7 @@ msgid "Node"
 msgstr "节点"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:41
-#: src/views/site/site_list/columns.tsx:63 src/views/stream/columns.tsx:20
+#: src/views/site/site_list/columns.tsx:76 src/views/stream/columns.tsx:44
 #: src/views/stream/components/RightPanel/Basic.vue:77
 msgid "Node Group"
 msgstr "节点组"
@@ -3207,6 +3208,7 @@ msgstr "关闭"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
 #: src/components/NgxConfigEditor/NgxUpstream.vue:145
 #: src/components/NodeSelector/NodeSelector.vue:109
+#: src/components/ProxyTargets/ProxyTargets.vue:43
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3224,7 +3226,8 @@ msgstr "离线"
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
 #: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
-#: src/views/stream/StreamList.vue:156
+#: src/views/stream/components/StreamStatusSelect.vue:64
+#: src/views/stream/StreamList.vue:120
 msgid "OK"
 msgstr "确定"
 
@@ -3607,6 +3610,15 @@ msgstr "提供商"
 #: src/views/certificate/ACMEUser.vue:48
 msgid "Proxy"
 msgstr "代理"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+msgid "Proxy Pass"
+msgstr "代理传递"
+
+#: src/views/site/site_list/columns.tsx:64
+#: src/views/stream/columns.tsx:32
+msgid "Proxy Targets"
+msgstr "代理目标"
 
 #: src/views/preference/tabs/NodeSettings.vue:46
 msgid "Public Security Number"
@@ -4460,7 +4472,7 @@ msgstr "静态"
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:28
-#: src/views/site/site_list/columns.tsx:88 src/views/stream/columns.tsx:37
+#: src/views/site/site_list/columns.tsx:101 src/views/stream/columns.tsx:69
 msgid "Status"
 msgstr "状态"
 
@@ -4989,6 +5001,7 @@ msgstr "星期二"
 msgid "Two-factor authentication required"
 msgstr "需要两步验证"
 
+#: src/components/ProxyTargets/ProxyTargets.vue:48
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/dashboard/components/ModulesTable.vue:83
 #: src/views/nginx_log/NginxLogList.vue:12
@@ -5025,7 +5038,7 @@ msgstr "更新成功"
 #: src/views/environments/group/columns.ts:35
 #: src/views/environments/list/envColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:38
-#: src/views/site/site_list/columns.tsx:81 src/views/stream/columns.tsx:57
+#: src/views/site/site_list/columns.tsx:94 src/views/stream/columns.tsx:62
 #: src/views/stream/components/RightPanel/Basic.vue:73
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
@@ -5058,6 +5071,10 @@ msgstr "上传文件"
 #: src/language/curd.ts:48
 msgid "Upload Folders"
 msgstr "上传文件夹"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+msgid "Upstream"
+msgstr "上游"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:177
 msgid "Upstream Name"
@@ -5329,6 +5346,12 @@ msgstr "您的旧代码将不再有效。"
 msgid "Your passkeys"
 msgstr "你的 Passkeys"
 
+#~ msgid "Disable"
+#~ msgstr "禁用"
+
+#~ msgid "Enable"
+#~ msgstr "启用"
+
 #~ msgid "Last Backup Error"
 #~ msgstr "最后一次备份错误"
 
@@ -5545,9 +5568,6 @@ msgstr "你的 Passkeys"
 
 #~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "同步配置 %{config_name} 到 %{env_name} 失败，响应：%{resp}"
-
-#~ msgid "Target"
-#~ msgstr "目标"
 
 #~ msgid ""
 #~ "If you lose your mobile phone, you can use the recovery code to reset your "

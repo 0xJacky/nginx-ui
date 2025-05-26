@@ -103,15 +103,26 @@ func GetSiteList(c *gin.Context) {
 
 		indexedSite := site.GetIndexedSite(file.Name())
 
+		// Convert site.ProxyTarget to config.ProxyTarget
+		var proxyTargets []config.ProxyTarget
+		for _, target := range indexedSite.ProxyTargets {
+			proxyTargets = append(proxyTargets, config.ProxyTarget{
+				Host: target.Host,
+				Port: target.Port,
+				Type: target.Type,
+			})
+		}
+
 		configs = append(configs, config.Config{
-			Name:       file.Name(),
-			ModifiedAt: fileInfo.ModTime(),
-			Size:       fileInfo.Size(),
-			IsDir:      fileInfo.IsDir(),
-			Status:     configStatusMap[file.Name()],
-			EnvGroupID: envGroupId,
-			EnvGroup:   envGroup,
-			Urls:       indexedSite.Urls,
+			Name:         file.Name(),
+			ModifiedAt:   fileInfo.ModTime(),
+			Size:         fileInfo.Size(),
+			IsDir:        fileInfo.IsDir(),
+			Status:       configStatusMap[file.Name()],
+			EnvGroupID:   envGroupId,
+			EnvGroup:     envGroup,
+			Urls:         indexedSite.Urls,
+			ProxyTargets: proxyTargets,
 		})
 	}
 

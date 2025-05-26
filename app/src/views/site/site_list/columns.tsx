@@ -7,6 +7,7 @@ import type { JSXElements } from '@/types'
 import { actualFieldRender, datetimeRender } from '@uozi-admin/curd'
 import { Tag } from 'ant-design-vue'
 import env_group from '@/api/env_group'
+import ProxyTargets from '@/components/ProxyTargets'
 import { ConfigStatus } from '@/constants'
 import envGroupColumns from '@/views/environments/group/columns'
 import SiteStatusSelect from '@/views/site/components/SiteStatusSelect.vue'
@@ -53,11 +54,23 @@ const columns: StdTableColumn[] = [{
       }
 
       template.push(
-        <div style="display: flex; flex-wrap: wrap;">{urlsContainer}</div>,
+        <div style="display: flex; flex-wrap: wrap; margin-bottom: 4px;">{urlsContainer}</div>,
       )
     }
 
     return h('div', {}, template)
+  },
+}, {
+  title: () => $gettext('Proxy Targets'),
+  dataIndex: 'proxy_targets',
+  width: 200,
+  customRender: ({ record }: CustomRenderArgs) => {
+    if (record.proxy_targets && record.proxy_targets.length > 0) {
+      return h(ProxyTargets, {
+        targets: record.proxy_targets,
+      })
+    }
+    return h('span', '-')
   },
 }, {
   title: () => $gettext('Node Group'),
@@ -123,7 +136,7 @@ const columns: StdTableColumn[] = [{
   },
   sorter: true,
   pure: true,
-  width: 50,
+  width: 100,
   fixed: 'right',
 }, {
   title: () => $gettext('Actions'),

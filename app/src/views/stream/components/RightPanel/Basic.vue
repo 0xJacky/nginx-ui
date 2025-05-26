@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CheckedType } from '@/types'
+import type { SiteStatus } from '@/api/site'
 import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { StdSelector } from '@uozi-admin/curd'
 import { message, Modal } from 'ant-design-vue'
@@ -7,15 +7,17 @@ import { storeToRefs } from 'pinia'
 import envGroup from '@/api/env_group'
 import stream from '@/api/stream'
 import NodeSelector from '@/components/NodeSelector'
+import { ConfigStatus } from '@/constants'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import envGroupColumns from '@/views/environments/group/columns'
 import { useStreamEditorStore } from '../../store'
 import ConfigName from '../ConfigName.vue'
+import StreamStatusSelect from '../StreamStatusSelect.vue'
 
 const settings = useSettingsStore()
 const store = useStreamEditorStore()
-const { name, enabled, data } = storeToRefs(store)
+const { name, status, data } = storeToRefs(store)
 
 const [modal, ContextHolder] = Modal.useModal()
 const showSync = computed(() => !settings.is_remote)
@@ -23,7 +25,7 @@ const showSync = computed(() => !settings.is_remote)
 function enable() {
   stream.enable(name.value).then(() => {
     message.success($gettext('Enabled successfully'))
-    enabled.value = true
+    status.value = ConfigStatus.Enabled
   }).catch(r => {
     message.error($gettext('Failed to enable %{msg}', { msg: r.message ?? '' }), 10)
   })
@@ -32,21 +34,21 @@ function enable() {
 function disable() {
   stream.disable(name.value).then(() => {
     message.success($gettext('Disabled successfully'))
-    enabled.value = false
+    status.value = ConfigStatus.Disabled
   }).catch(r => {
     message.error($gettext('Failed to disable %{msg}', { msg: r.message ?? '' }))
   })
 }
 
-function onChangeEnabled(checked: CheckedType) {
+function onChangeEnabled({ status }: { status: SiteStatus }) {
   modal.confirm({
-    title: checked ? $gettext('Do you want to enable this stream?') : $gettext('Do you want to disable this stream?'),
+    title: status === ConfigStatus.Enabled ? $gettext('Do you want to enable this stream?') : $gettext('Do you want to disable this stream?'),
     mask: false,
     centered: true,
     okText: $gettext('OK'),
     cancelText: $gettext('Cancel'),
     async onOk() {
-      if (checked)
+      if (status === ConfigStatus.Enabled)
         enable()
       else
         disable()
@@ -60,9 +62,10 @@ function onChangeEnabled(checked: CheckedType) {
     <ContextHolder />
 
     <AFormItem :label="$gettext('Enabled')">
-      <ASwitch
-        :checked="enabled"
-        @change="onChangeEnabled"
+      <StreamStatusSelect
+        v-model:status="status"
+        :stream-name="name"
+        @status-changed="onChangeEnabled"
       />
     </AFormItem>
 

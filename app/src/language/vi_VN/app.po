@@ -139,7 +139,7 @@ msgstr "Hành động"
 #: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:76
-#: src/views/site/site_list/columns.tsx:129 src/views/stream/columns.tsx:64
+#: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:105
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "Hành động"
@@ -157,7 +157,7 @@ msgstr "Tỷ lệ công nhân thực tế so với cấu hình"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:159 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:121
+#: src/views/stream/StreamList.vue:101
 msgid "Add"
 msgstr "Thêm"
 
@@ -184,11 +184,11 @@ msgstr "Thêm Location"
 msgid "Add Site"
 msgstr "Thêm Website"
 
-#: src/views/stream/StreamList.vue:174
+#: src/views/stream/StreamList.vue:138
 msgid "Add Stream"
 msgstr "Thêm luồng"
 
-#: src/views/stream/StreamList.vue:92
+#: src/views/stream/StreamList.vue:72
 msgid "Added successfully"
 msgstr "Đã thêm thành công"
 
@@ -272,7 +272,7 @@ msgid "Are you sure you want to delete permanently?"
 msgstr "Bạn có chắc chắn muốn xóa vĩnh viễn không?"
 
 #: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
-#: src/views/stream/StreamList.vue:157
+#: src/views/stream/StreamList.vue:121
 msgid "Are you sure you want to delete?"
 msgstr "Bạn có chắc chắn muốn xóa không?"
 
@@ -563,6 +563,7 @@ msgstr ""
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
 #: src/views/stream/components/RightPanel/Basic.vue:47
+#: src/views/stream/components/StreamStatusSelect.vue:65
 msgid "Cancel"
 msgstr "Huỷ"
 
@@ -1191,7 +1192,7 @@ msgstr "Xác định tên và kích thước vùng bộ nhớ dùng chung, ví d
 #: src/components/NgxConfigEditor/NgxUpstream.vue:129 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
 #: src/views/site/site_list/SiteList.vue:109
-#: src/views/stream/StreamList.vue:166
+#: src/views/stream/StreamList.vue:130
 msgid "Delete"
 msgstr "Xoá"
 
@@ -1239,7 +1240,7 @@ msgstr "Xóa luồng %{name} từ %{node} thất bại"
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Đã xóa luồng %{name} từ %{node} thành công"
 
-#: src/views/stream/StreamList.vue:67
+#: src/views/stream/StreamList.vue:47
 msgid "Delete stream: %{stream_name}"
 msgstr "Xóa luồng: %{stream_name}"
 
@@ -1313,11 +1314,8 @@ msgid "Directory path to store cache files"
 msgstr "Đường dẫn thư mục để lưu trữ các tệp bộ nhớ đệm"
 
 #: src/views/site/components/SiteStatusSelect.vue:115
+#: src/views/stream/components/StreamStatusSelect.vue:58
 msgid "disable"
-msgstr "Vô hiệu hóa"
-
-#: src/views/stream/StreamList.vue:137
-msgid "Disable"
 msgstr "Vô hiệu hóa"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:80
@@ -1380,15 +1378,16 @@ msgstr "Đã vô hiệu hóa luồng %{name} từ %{node} thành công"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:114 src/views/stream/columns.tsx:48
+#: src/views/site/site_list/columns.tsx:127 src/views/stream/columns.tsx:94
 #: src/views/stream/components/StreamEditor.vue:30
+#: src/views/stream/components/StreamStatusSelect.vue:89
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr "Đã tắt"
 
 #: src/views/site/components/SiteStatusSelect.vue:67
 #: src/views/stream/components/RightPanel/Basic.vue:34
-#: src/views/stream/StreamList.vue:56
+#: src/views/stream/components/StreamStatusSelect.vue:39
 msgid "Disabled successfully"
 msgstr "Đã tắt thành công"
 
@@ -1417,6 +1416,10 @@ msgstr "Không bật tùy chọn này trừ khi bạn chắc chắn cần đến
 #: src/views/site/components/SiteStatusSelect.vue:120
 msgid "Do you want to %{action} this site?"
 msgstr "Bạn có muốn %{action} trang web này không?"
+
+#: src/views/stream/components/StreamStatusSelect.vue:61
+msgid "Do you want to %{action} this stream?"
+msgstr "Bạn có muốn %{action} luồng này không?"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:139
 msgid "Do you want to disable auto-cert renewal?"
@@ -1495,7 +1498,7 @@ msgstr ""
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:95
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:152
+#: src/views/stream/StreamList.vue:116
 msgid "Duplicate"
 msgstr "Nhân bản"
 
@@ -1544,12 +1547,9 @@ msgid "Email (*)"
 msgstr "Email (*)"
 
 #: src/views/site/components/SiteStatusSelect.vue:114
+#: src/views/stream/components/StreamStatusSelect.vue:58
 msgid "enable"
 msgstr "bật"
-
-#: src/views/stream/StreamList.vue:145
-msgid "Enable"
-msgstr "Bật"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:45
 msgid "Enable 2FA successfully"
@@ -1649,9 +1649,10 @@ msgstr "Bật TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:110 src/views/stream/columns.tsx:44
+#: src/views/site/site_list/columns.tsx:123 src/views/stream/columns.tsx:90
 #: src/views/stream/components/RightPanel/Basic.vue:62
 #: src/views/stream/components/StreamEditor.vue:24
+#: src/views/stream/components/StreamStatusSelect.vue:88
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
 msgstr "Đã bật"
@@ -1659,7 +1660,7 @@ msgstr "Đã bật"
 #: src/views/site/components/SiteStatusSelect.vue:54
 #: src/views/site/site_add/SiteAdd.vue:32
 #: src/views/stream/components/RightPanel/Basic.vue:25
-#: src/views/stream/StreamList.vue:46
+#: src/views/stream/components/StreamStatusSelect.vue:26
 msgid "Enabled successfully"
 msgstr "Đã bật"
 
@@ -1896,7 +1897,7 @@ msgstr "Xóa chứng chỉ từ cơ sở dữ liệu thất bại: %{error}"
 
 #: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/RightPanel/Basic.vue:37
-#: src/views/stream/StreamList.vue:60
+#: src/views/stream/components/StreamStatusSelect.vue:45
 msgid "Failed to disable %{msg}"
 msgstr "Không thể tắt %{msg}"
 
@@ -1906,7 +1907,7 @@ msgstr "Không thể tắt chế độ bảo trì %{msg}"
 
 #: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/RightPanel/Basic.vue:28
-#: src/views/stream/StreamList.vue:50
+#: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
 msgstr "Không thể bật %{msg}"
 
@@ -2648,7 +2649,7 @@ msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:118
+#: src/views/site/site_list/columns.tsx:131
 msgid "Maintenance"
 msgstr "Bảo trì"
 
@@ -2677,7 +2678,7 @@ msgstr "Quản lý cấu hình"
 msgid "Manage Sites"
 msgstr "Quản lý Website"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:101
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:81
 msgid "Manage Streams"
 msgstr "Quản lý luồng"
 
@@ -2851,12 +2852,12 @@ msgstr "Chỉ thị nhiều dòng"
 #: src/views/nginx_log/NginxLogList.vue:36
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:35
-#: src/views/site/site_list/columns.tsx:15
+#: src/views/site/site_list/columns.tsx:16
 #: src/views/site/site_list/SiteDuplicate.vue:79
-#: src/views/stream/columns.tsx:10
+#: src/views/stream/columns.tsx:12
 #: src/views/stream/components/RightPanel/Basic.vue:69
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:179
+#: src/views/stream/StreamList.vue:143
 msgid "Name"
 msgstr "Tên"
 
@@ -3119,7 +3120,7 @@ msgstr "Nginx.conf bao gồm thư mục streams-enabled"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:155
+#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:119
 msgid "No"
 msgstr "Không"
 
@@ -3141,7 +3142,7 @@ msgid "Node"
 msgstr "Nút"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:41
-#: src/views/site/site_list/columns.tsx:63 src/views/stream/columns.tsx:20
+#: src/views/site/site_list/columns.tsx:76 src/views/stream/columns.tsx:44
 #: src/views/stream/components/RightPanel/Basic.vue:77
 msgid "Node Group"
 msgstr "Nhóm nút"
@@ -3254,6 +3255,7 @@ msgstr "Tắt"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
 #: src/components/NgxConfigEditor/NgxUpstream.vue:145
 #: src/components/NodeSelector/NodeSelector.vue:109
+#: src/components/ProxyTargets/ProxyTargets.vue:43
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3271,7 +3273,8 @@ msgstr "Ngoại tuyến"
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
 #: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
-#: src/views/stream/StreamList.vue:156
+#: src/views/stream/components/StreamStatusSelect.vue:64
+#: src/views/stream/StreamList.vue:120
 msgid "OK"
 msgstr "Đồng ý"
 
@@ -3666,6 +3669,15 @@ msgstr "Nhà cung cấp"
 #: src/views/certificate/ACMEUser.vue:48
 msgid "Proxy"
 msgstr "Proxy"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+msgid "Proxy Pass"
+msgstr "Chuyển tiếp Proxy"
+
+#: src/views/site/site_list/columns.tsx:64
+#: src/views/stream/columns.tsx:32
+msgid "Proxy Targets"
+msgstr "Mục tiêu proxy"
 
 #: src/views/preference/tabs/NodeSettings.vue:46
 msgid "Public Security Number"
@@ -4530,7 +4542,7 @@ msgstr "Tĩnh"
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:28
-#: src/views/site/site_list/columns.tsx:88 src/views/stream/columns.tsx:37
+#: src/views/site/site_list/columns.tsx:101 src/views/stream/columns.tsx:69
 msgid "Status"
 msgstr "Trạng thái"
 
@@ -5110,6 +5122,7 @@ msgstr "Thứ Ba"
 msgid "Two-factor authentication required"
 msgstr "Yêu cầu xác thực hai yếu tố"
 
+#: src/components/ProxyTargets/ProxyTargets.vue:48
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/dashboard/components/ModulesTable.vue:83
 #: src/views/nginx_log/NginxLogList.vue:12
@@ -5146,7 +5159,7 @@ msgstr "Cập nhật thành công"
 #: src/views/environments/group/columns.ts:35
 #: src/views/environments/list/envColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:38
-#: src/views/site/site_list/columns.tsx:81 src/views/stream/columns.tsx:57
+#: src/views/site/site_list/columns.tsx:94 src/views/stream/columns.tsx:62
 #: src/views/stream/components/RightPanel/Basic.vue:73
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
@@ -5179,6 +5192,10 @@ msgstr "Tải lên tệp"
 #: src/language/curd.ts:48
 msgid "Upload Folders"
 msgstr "Tải lên thư mục"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+msgid "Upstream"
+msgstr "Ngược dòng"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:177
 msgid "Upstream Name"
@@ -5469,6 +5486,12 @@ msgstr "Mã cũ của bạn sẽ không còn hoạt động nữa."
 msgid "Your passkeys"
 msgstr "Khóa truy cập của bạn"
 
+#~ msgid "Disable"
+#~ msgstr "Vô hiệu hóa"
+
+#~ msgid "Enable"
+#~ msgstr "Bật"
+
 #~ msgid "Last Backup Error"
 #~ msgstr "Lỗi sao lưu cuối cùng"
 
@@ -5641,9 +5664,6 @@ msgstr "Khóa truy cập của bạn"
 #, fuzzy
 #~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
-
-#~ msgid "Target"
-#~ msgstr "Mục tiêu"
 
 #~ msgid "File"
 #~ msgstr "Tệp tin"

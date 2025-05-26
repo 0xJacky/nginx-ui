@@ -3,6 +3,7 @@ package config
 import (
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/sashabaranov/go-openai"
 )
@@ -14,6 +15,9 @@ const (
 	StatusDisabled    ConfigStatus = "disabled"
 	StatusMaintenance ConfigStatus = "maintenance"
 )
+
+// ProxyTarget is an alias for upstream.ProxyTarget
+type ProxyTarget = upstream.ProxyTarget
 
 type Config struct {
 	Name            string                         `json:"name"`
@@ -28,6 +32,7 @@ type Config struct {
 	Status          ConfigStatus                   `json:"status"`
 	Dir             string                         `json:"dir"`
 	Urls            []string                       `json:"urls,omitempty"`
+	ProxyTargets    []ProxyTarget                  `json:"proxy_targets,omitempty"`
 	SyncNodeIds     []uint64                       `json:"sync_node_ids,omitempty"`
 	SyncOverwrite   bool                           `json:"sync_overwrite"`
 }

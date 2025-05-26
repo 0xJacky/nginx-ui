@@ -35,7 +35,7 @@ func GetAutoBackupList(c *gin.Context) {
 // Request Body: AutoBackup model with required fields
 // Response: Created auto backup configuration
 func CreateAutoBackup(c *gin.Context) {
-	ctx := cosy.Core[model.AutoBackup](c).SetValidRules(gin.H{
+	cosy.Core[model.AutoBackup](c).SetValidRules(gin.H{
 		"name":                 "required",
 		"backup_type":          "required",
 		"storage_type":         "required",
@@ -54,16 +54,15 @@ func CreateAutoBackup(c *gin.Context) {
 			ctx.AbortWithError(err)
 			return
 		}
-	})
-
-	ctx.Create()
-
-	// Register cron job only if the backup is enabled
-	if ctx.Model.Enabled {
-		if err := cron.AddAutoBackupJob(ctx.Model.ID, ctx.Model.CronExpression); err != nil {
-			logger.Errorf("Failed to add auto backup job %d: %v", ctx.Model.ID, err)
+	}).ExecutedHook(func(ctx *cosy.Ctx[model.AutoBackup]) {
+		// Register cron job only if the backup is enabled
+		if ctx.Model.Enabled {
+			if err := cron.AddAutoBackupJob(ctx.Model.ID, ctx.Model.CronExpression); err != nil {
+				ctx.AbortWithError(err)
+				return
+			}
 		}
-	}
+	}).Create()
 }
 
 // GetAutoBackup retrieves a single auto backup configuration by ID.
@@ -85,7 +84,7 @@ func GetAutoBackup(c *gin.Context) {
 // Request Body: Partial AutoBackup model with fields to update
 // Response: Updated auto backup configuration
 func ModifyAutoBackup(c *gin.Context) {
-	ctx := cosy.Core[model.AutoBackup](c).SetValidRules(gin.H{
+	cosy.Core[model.AutoBackup](c).SetValidRules(gin.H{
 		"name":                 "omitempty",
 		"backup_type":          "omitempty",
 		"storage_type":         "omitempty",
@@ -104,20 +103,20 @@ func ModifyAutoBackup(c *gin.Context) {
 			ctx.AbortWithError(err)
 			return
 		}
-	})
-
-	ctx.Modify()
-
-	// Update cron job based on enabled status
-	if ctx.Model.Enabled {
-		if err := cron.UpdateAutoBackupJob(ctx.Model.ID, ctx.Model.CronExpression); err != nil {
-			logger.Errorf("Failed to update auto backup job %d: %v", ctx.Model.ID, err)
+	}).ExecutedHook(func(ctx *cosy.Ctx[model.AutoBackup]) {
+		// Update cron job based on enabled status
+		if ctx.Model.Enabled {
+			if err := cron.UpdateAutoBackupJob(ctx.Model.ID, ctx.Model.CronExpression); err != nil {
+				ctx.AbortWithError(err)
+				return
+			}
+		} else {
+			if err := cron.RemoveAutoBackupJob(ctx.Model.ID); err != nil {
+				ctx.AbortWithError(err)
+				return
+			}
 		}
-	} else {
-		if err := cron.RemoveAutoBackupJob(ctx.Model.ID); err != nil {
-			logger.Errorf("Failed to remove auto backup job %d: %v", ctx.Model.ID, err)
-		}
-	}
+	}).Modify()
 }
 
 // DestroyAutoBackup deletes an auto backup configuration and removes its cron job.

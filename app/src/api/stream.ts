@@ -1,12 +1,13 @@
 import type { EnvGroup } from './env_group'
 import type { NgxConfig } from '@/api/ngx'
 import type { ChatComplicationMessage } from '@/api/openai'
+import type { ProxyTarget, SiteStatus } from '@/api/site'
 import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
 export interface Stream {
   modified_at: string
   advanced: boolean
-  enabled: boolean
+  status: SiteStatus
   name: string
   filepath: string
   config: string
@@ -15,6 +16,7 @@ export interface Stream {
   env_group_id: number
   env_group?: EnvGroup
   sync_node_ids: number[]
+  proxy_targets?: ProxyTarget[]
 }
 
 const baseUrl = '/streams'

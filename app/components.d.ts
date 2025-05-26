@@ -100,6 +100,8 @@ declare module 'vue' {
     PortScannerPortScanner: typeof import('./src/components/PortScanner/PortScanner.vue')['default']
     PortScannerPortScannerCompact: typeof import('./src/components/PortScanner/PortScannerCompact.vue')['default']
     ProcessingStatusProcessingStatus: typeof import('./src/components/ProcessingStatus/ProcessingStatus.vue')['default']
+    ProxyTargets: typeof import('./src/components/ProxyTargets.vue')['default']
+    ProxyTargetsProxyTargets: typeof import('./src/components/ProxyTargets/ProxyTargets.vue')['default']
     ReactiveFromNowReactiveFromNow: typeof import('./src/components/ReactiveFromNow/ReactiveFromNow.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

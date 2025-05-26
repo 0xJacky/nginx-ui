@@ -148,7 +148,7 @@ msgstr "Действие"
 #: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:76
-#: src/views/site/site_list/columns.tsx:129 src/views/stream/columns.tsx:64
+#: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:105
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "Действия"
@@ -166,7 +166,7 @@ msgstr "Фактическое соотношение рабочих к наст
 #: src/components/NgxConfigEditor/NgxUpstream.vue:159 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:121
+#: src/views/stream/StreamList.vue:101
 msgid "Add"
 msgstr "Добавить"
 
@@ -193,11 +193,11 @@ msgstr "Добавить Location"
 msgid "Add Site"
 msgstr "Добавить Сайт"
 
-#: src/views/stream/StreamList.vue:174
+#: src/views/stream/StreamList.vue:138
 msgid "Add Stream"
 msgstr "Добавить поток"
 
-#: src/views/stream/StreamList.vue:92
+#: src/views/stream/StreamList.vue:72
 msgid "Added successfully"
 msgstr "Добавлено успешно"
 
@@ -281,7 +281,7 @@ msgid "Are you sure you want to delete permanently?"
 msgstr "Вы уверены, что хотите удалить безвозвратно?"
 
 #: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
-#: src/views/stream/StreamList.vue:157
+#: src/views/stream/StreamList.vue:121
 msgid "Are you sure you want to delete?"
 msgstr "Вы уверены, что хотите удалить?"
 
@@ -582,6 +582,7 @@ msgstr ""
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
 #: src/views/stream/components/RightPanel/Basic.vue:47
+#: src/views/stream/components/StreamStatusSelect.vue:65
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -1217,7 +1218,7 @@ msgstr "Определите имя и размер зоны общей памя
 #: src/components/NgxConfigEditor/NgxUpstream.vue:129 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
 #: src/views/site/site_list/SiteList.vue:109
-#: src/views/stream/StreamList.vue:166
+#: src/views/stream/StreamList.vue:130
 msgid "Delete"
 msgstr "Удалить"
 
@@ -1265,7 +1266,7 @@ msgstr "Не удалось удалить поток %{name} с %{node}"
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Поток %{name} успешно удален с %{node}"
 
-#: src/views/stream/StreamList.vue:67
+#: src/views/stream/StreamList.vue:47
 msgid "Delete stream: %{stream_name}"
 msgstr "Удалить поток: %{stream_name}"
 
@@ -1339,11 +1340,8 @@ msgid "Directory path to store cache files"
 msgstr "Путь к каталогу для хранения кэшированных файлов"
 
 #: src/views/site/components/SiteStatusSelect.vue:115
+#: src/views/stream/components/StreamStatusSelect.vue:58
 msgid "disable"
-msgstr "Отключить"
-
-#: src/views/stream/StreamList.vue:137
-msgid "Disable"
 msgstr "Отключить"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:80
@@ -1406,15 +1404,16 @@ msgstr "Поток %{name} отключен от %{node} успешно"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:114 src/views/stream/columns.tsx:48
+#: src/views/site/site_list/columns.tsx:127 src/views/stream/columns.tsx:94
 #: src/views/stream/components/StreamEditor.vue:30
+#: src/views/stream/components/StreamStatusSelect.vue:89
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr "Отключено"
 
 #: src/views/site/components/SiteStatusSelect.vue:67
 #: src/views/stream/components/RightPanel/Basic.vue:34
-#: src/views/stream/StreamList.vue:56
+#: src/views/stream/components/StreamStatusSelect.vue:39
 msgid "Disabled successfully"
 msgstr "Отключено успешно"
 
@@ -1443,6 +1442,10 @@ msgstr "Не включайте эту опцию, если не уверены,
 #: src/views/site/components/SiteStatusSelect.vue:120
 msgid "Do you want to %{action} this site?"
 msgstr "Вы хотите %{action} этот сайт?"
+
+#: src/views/stream/components/StreamStatusSelect.vue:61
+msgid "Do you want to %{action} this stream?"
+msgstr "Вы хотите %{action} этот поток?"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:139
 msgid "Do you want to disable auto-cert renewal?"
@@ -1520,7 +1523,7 @@ msgstr ""
 #: src/views/site/site_list/SiteDuplicate.vue:72
 #: src/views/site/site_list/SiteList.vue:95
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:152
+#: src/views/stream/StreamList.vue:116
 msgid "Duplicate"
 msgstr "Дублировать"
 
@@ -1569,12 +1572,9 @@ msgid "Email (*)"
 msgstr "Email (*)"
 
 #: src/views/site/components/SiteStatusSelect.vue:114
+#: src/views/stream/components/StreamStatusSelect.vue:58
 msgid "enable"
 msgstr "включить"
-
-#: src/views/stream/StreamList.vue:145
-msgid "Enable"
-msgstr "Включить"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:45
 msgid "Enable 2FA successfully"
@@ -1674,9 +1674,10 @@ msgstr "Включить TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:110 src/views/stream/columns.tsx:44
+#: src/views/site/site_list/columns.tsx:123 src/views/stream/columns.tsx:90
 #: src/views/stream/components/RightPanel/Basic.vue:62
 #: src/views/stream/components/StreamEditor.vue:24
+#: src/views/stream/components/StreamStatusSelect.vue:88
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
 msgstr "Включено"
@@ -1684,7 +1685,7 @@ msgstr "Включено"
 #: src/views/site/components/SiteStatusSelect.vue:54
 #: src/views/site/site_add/SiteAdd.vue:32
 #: src/views/stream/components/RightPanel/Basic.vue:25
-#: src/views/stream/StreamList.vue:46
+#: src/views/stream/components/StreamStatusSelect.vue:26
 msgid "Enabled successfully"
 msgstr "Активировано успешно"
 
@@ -1921,7 +1922,7 @@ msgstr "Не удалось удалить сертификат из базы д
 
 #: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/RightPanel/Basic.vue:37
-#: src/views/stream/StreamList.vue:60
+#: src/views/stream/components/StreamStatusSelect.vue:45
 msgid "Failed to disable %{msg}"
 msgstr "Не удалось отключить %{msg}"
 
@@ -1931,7 +1932,7 @@ msgstr "Не удалось отключить режим обслуживани
 
 #: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/RightPanel/Basic.vue:28
-#: src/views/stream/StreamList.vue:50
+#: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
 msgstr "Не удалось включить %{msg}"
 
@@ -2674,7 +2675,7 @@ msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:118
+#: src/views/site/site_list/columns.tsx:131
 msgid "Maintenance"
 msgstr "Техническое обслуживание"
 
@@ -2703,7 +2704,7 @@ msgstr "Конфигурации"
 msgid "Manage Sites"
 msgstr "Сайты"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:101
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:81
 msgid "Manage Streams"
 msgstr "Управление потоками"
 
@@ -2877,12 +2878,12 @@ msgstr "Многострочная директива"
 #: src/views/nginx_log/NginxLogList.vue:36
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:35
-#: src/views/site/site_list/columns.tsx:15
+#: src/views/site/site_list/columns.tsx:16
 #: src/views/site/site_list/SiteDuplicate.vue:79
-#: src/views/stream/columns.tsx:10
+#: src/views/stream/columns.tsx:12
 #: src/views/stream/components/RightPanel/Basic.vue:69
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:179
+#: src/views/stream/StreamList.vue:143
 msgid "Name"
 msgstr "Имя"
 
@@ -3145,7 +3146,7 @@ msgstr "Nginx.conf включает каталог streams-enabled"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:155
+#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:119
 msgid "No"
 msgstr "Нет"
 
@@ -3167,7 +3168,7 @@ msgid "Node"
 msgstr "Узел"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:41
-#: src/views/site/site_list/columns.tsx:63 src/views/stream/columns.tsx:20
+#: src/views/site/site_list/columns.tsx:76 src/views/stream/columns.tsx:44
 #: src/views/stream/components/RightPanel/Basic.vue:77
 msgid "Node Group"
 msgstr "Группа узлов"
@@ -3282,6 +3283,7 @@ msgstr "Выкл"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
 #: src/components/NgxConfigEditor/NgxUpstream.vue:145
 #: src/components/NodeSelector/NodeSelector.vue:109
+#: src/components/ProxyTargets/ProxyTargets.vue:43
 #: src/views/dashboard/Environments.vue:107
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3299,7 +3301,8 @@ msgstr "Оффлайн"
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
 #: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
-#: src/views/stream/StreamList.vue:156
+#: src/views/stream/components/StreamStatusSelect.vue:64
+#: src/views/stream/StreamList.vue:120
 msgid "OK"
 msgstr "ОК"
 
@@ -3707,6 +3710,15 @@ msgstr "Провайдер"
 #: src/views/certificate/ACMEUser.vue:48
 msgid "Proxy"
 msgstr "Прокси"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+msgid "Proxy Pass"
+msgstr "Прокси-передача"
+
+#: src/views/site/site_list/columns.tsx:64
+#: src/views/stream/columns.tsx:32
+msgid "Proxy Targets"
+msgstr "Цели прокси"
 
 #: src/views/preference/tabs/NodeSettings.vue:46
 msgid "Public Security Number"
@@ -4573,7 +4585,7 @@ msgstr "Статический"
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:28
-#: src/views/site/site_list/columns.tsx:88 src/views/stream/columns.tsx:37
+#: src/views/site/site_list/columns.tsx:101 src/views/stream/columns.tsx:69
 msgid "Status"
 msgstr "Статус"
 
@@ -5154,6 +5166,7 @@ msgstr "Вторник"
 msgid "Two-factor authentication required"
 msgstr "Требуется двухфакторная аутентификация"
 
+#: src/components/ProxyTargets/ProxyTargets.vue:48
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/dashboard/components/ModulesTable.vue:83
 #: src/views/nginx_log/NginxLogList.vue:12
@@ -5190,7 +5203,7 @@ msgstr "Успешно обновлено"
 #: src/views/environments/group/columns.ts:35
 #: src/views/environments/list/envColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:38
-#: src/views/site/site_list/columns.tsx:81 src/views/stream/columns.tsx:57
+#: src/views/site/site_list/columns.tsx:94 src/views/stream/columns.tsx:62
 #: src/views/stream/components/RightPanel/Basic.vue:73
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
@@ -5223,6 +5236,10 @@ msgstr "Загрузить файлы"
 #: src/language/curd.ts:48
 msgid "Upload Folders"
 msgstr "Загрузить папки"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+msgid "Upstream"
+msgstr "Восходящий поток"
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:177
 msgid "Upstream Name"
@@ -5516,6 +5533,12 @@ msgstr "Ваши старые коды больше не будут работа
 msgid "Your passkeys"
 msgstr "Ваши ключи доступа"
 
+#~ msgid "Disable"
+#~ msgstr "Отключить"
+
+#~ msgid "Enable"
+#~ msgstr "Включить"
+
 #~ msgid "Last Backup Error"
 #~ msgstr "Ошибка последнего резервного копирования"
 
@@ -5702,9 +5725,6 @@ msgstr "Ваши ключи доступа"
 #~ msgstr ""
 #~ "Синхронизация конфигурации %{config_name} с %{env_name} не удалась, ответ: "
 #~ "%{resp}"
-
-#~ msgid "Target"
-#~ msgstr "Цель"
 
 #~ msgid "File"
 #~ msgstr "Файл"
