@@ -96,8 +96,8 @@ URL：[https://demo.nginxui.com](https://demo.nginxui.com)
 - Automatic configuration backup after changes, with version comparison and restore capabilities
 - Cluster management supporting mirroring operations to multiple nodes, making multi-server environments easy to manage
 - Export encrypted Nginx / Nginx UI configurations for quick deployment and recovery to new environments
-- Enhanced online ChatGPT assistant supporting multiple models, including Deepseek-R1's chain-of-thought display to help you better understand and optimize configurations
-- MCP (Model Context Protocol) provides special interfaces for AI agents to interact with Nginx UI, enabling automated configuration management and service control.
+- Enhanced online **ChatGPT** assistant supporting multiple models, including Deepseek-R1's chain-of-thought display to help you better understand and optimize configurations
+- **MCP** (Model Context Protocol) provides special interfaces for AI agents to interact with Nginx UI, enabling automated configuration management and service control.
 - One-click deployment and automatic renewal Let's Encrypt certificates.
 - Online editing websites configurations with our self-designed **NgxConfigEditor** which is a user-friendly block editor for nginx configurations or **Ace Code Editor** which supports **LLM Code Completion** and highlighting nginx configuration syntax.
 - Online view Nginx logs
