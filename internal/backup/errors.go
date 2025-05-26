@@ -80,4 +80,28 @@ var (
 	ErrCalculateUIHash    = errScope.New(4802, "Failed to calculate Nginx UI hash: {0}")
 	ErrCalculateNginxHash = errScope.New(4803, "Failed to calculate Nginx hash: {0}")
 	ErrHashMismatch       = errScope.New(4804, "Hash verification failed: file integrity compromised")
+
+	// Auto backup errors
+	ErrAutoBackupPathNotAllowed        = errScope.New(4901, "Backup path not in granted access paths: {0}")
+	ErrAutoBackupStoragePathNotAllowed = errScope.New(4902, "Storage path not in granted access paths: {0}")
+	ErrAutoBackupPathRequired          = errScope.New(4903, "Backup path is required for custom directory backup")
+	ErrAutoBackupS3ConfigIncomplete    = errScope.New(4904, "S3 configuration is incomplete: missing {0}")
+	ErrAutoBackupUnsupportedType       = errScope.New(4905, "Unsupported backup type: {0}")
+	ErrAutoBackupCreateDir             = errScope.New(4906, "Failed to create backup directory: {0}")
+	ErrAutoBackupWriteFile             = errScope.New(4907, "Failed to write backup file: {0}")
+	ErrAutoBackupWriteKeyFile          = errScope.New(4908, "Failed to write security key file: {0}")
+	ErrAutoBackupS3Upload              = errScope.New(4909, "S3 upload failed: {0}")
+	ErrAutoBackupS3Connection          = errScope.New(4920, "S3 connection test failed: {0}")
+	ErrAutoBackupS3BucketAccess        = errScope.New(4921, "S3 bucket access denied: {0}")
+	ErrAutoBackupS3InvalidCredentials  = errScope.New(4922, "S3 credentials are invalid: {0}")
+	ErrAutoBackupS3InvalidEndpoint     = errScope.New(4923, "S3 endpoint is invalid: {0}")
+
+	// Path validation errors
+	ErrInvalidPath            = errScope.New(4910, "Invalid path: {0}")
+	ErrPathNotInGrantedAccess = errScope.New(4911, "Path not in granted access paths: {0}")
+	ErrBackupPathNotExist     = errScope.New(4912, "Backup path does not exist: {0}")
+	ErrBackupPathAccess       = errScope.New(4913, "Cannot access backup path {0}: {1}")
+	ErrBackupPathNotDirectory = errScope.New(4914, "Backup path is not a directory: {0}")
+	ErrCreateStorageDir       = errScope.New(4915, "Failed to create storage directory {0}: {1}")
+	ErrStoragePathAccess      = errScope.New(4916, "Cannot access storage path {0}: {1}")
 )

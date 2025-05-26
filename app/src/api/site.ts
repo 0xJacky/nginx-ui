@@ -4,10 +4,15 @@ import type { EnvGroup } from '@/api/env_group'
 import type { NgxConfig } from '@/api/ngx'
 import type { ChatComplicationMessage } from '@/api/openai'
 import type { ConfigStatus, PrivateKeyType } from '@/constants'
-import Curd from '@/api/curd'
-import http from '@/lib/http'
+import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
 export type SiteStatus = ConfigStatus.Enabled | ConfigStatus.Disabled | ConfigStatus.Maintenance
+
+export interface ProxyTarget {
+  host: string
+  port: string
+  type: string // "proxy_pass" or "upstream"
+}
 
 export interface Site extends ModelBase {
   modified_at: string
@@ -24,6 +29,7 @@ export interface Site extends ModelBase {
   env_group?: EnvGroup
   sync_node_ids: number[]
   urls?: string[]
+  proxy_targets?: ProxyTarget[]
   status: SiteStatus
 }
 
@@ -34,45 +40,18 @@ export interface AutoCertRequest {
   key_type: PrivateKeyType
 }
 
-class SiteCurd extends Curd<Site> {
-  // eslint-disable-next-line ts/no-explicit-any
-  enable(name: string, config?: any) {
-    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/enable`, undefined, config)
-  }
+const baseUrl = '/sites'
 
-  disable(name: string) {
-    return http.post(`${this.baseUrl}/${name}/disable`)
-  }
-
-  rename(oldName: string, newName: string) {
-    return http.post(`${this.baseUrl}/${encodeURIComponent(oldName)}/rename`, { new_name: newName })
-  }
-
-  get_default_template() {
-    return http.get('default_site_template')
-  }
-
-  add_auto_cert(domain: string, data: AutoCertRequest) {
-    return http.post(`auto_cert/${encodeURIComponent(domain)}`, data)
-  }
-
-  remove_auto_cert(domain: string) {
-    return http.delete(`auto_cert/${encodeURIComponent(domain)}`)
-  }
-
-  duplicate(name: string, data: { name: string }): Promise<{ dst: string }> {
-    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/duplicate`, data)
-  }
-
-  advance_mode(name: string, data: { advanced: boolean }) {
-    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/advance`, data)
-  }
-
-  enableMaintenance(name: string) {
-    return http.post(`${this.baseUrl}/${encodeURIComponent(name)}/maintenance`)
-  }
-}
-
-const site = new SiteCurd('/sites')
+const site = extendCurdApi(useCurdApi<Site>(baseUrl), {
+  enable: (name: string) => http.post(`${baseUrl}/${encodeURIComponent(name)}/enable`),
+  disable: (name: string) => http.post(`${baseUrl}/${name}/disable`),
+  rename: (oldName: string, newName: string) => http.post(`${baseUrl}/${encodeURIComponent(oldName)}/rename`, { new_name: newName }),
+  get_default_template: () => http.get('default_site_template'),
+  add_auto_cert: (domain: string, data: AutoCertRequest) => http.post(`auto_cert/${encodeURIComponent(domain)}`, data),
+  remove_auto_cert: (domain: string) => http.delete(`auto_cert/${encodeURIComponent(domain)}`),
+  duplicate: (name: string, data: { name: string }) => http.post(`${baseUrl}/${encodeURIComponent(name)}/duplicate`, data),
+  advance_mode: (name: string, data: { advanced: boolean }) => http.post(`${baseUrl}/${encodeURIComponent(name)}/advance`, data),
+  enableMaintenance: (name: string) => http.post(`${baseUrl}/${encodeURIComponent(name)}/maintenance`),
+})
 
 export default site

@@ -23,8 +23,8 @@ func InitPrivateRouter(r *gin.RouterGroup) {
 	r.GET("upgrade/release", GetRelease)
 	r.GET("upgrade/current", GetCurrentVersion)
 
-	r.GET("system/backup", CreateBackup)
 	r.GET("system/processing", GetProcessingStatus)
+	r.POST("system/port_scan", PortScan)
 }
 
 func InitSelfCheckRouter(r *gin.RouterGroup) {
@@ -36,11 +36,7 @@ func InitSelfCheckRouter(r *gin.RouterGroup) {
 }
 
 func InitBackupRestoreRouter(r *gin.RouterGroup) {
-	r.POST("system/backup/restore",
-		authIfInstalled,
-		middleware.Proxy(),
-		middleware.EncryptedForm(),
-		RestoreBackup)
+	// Backup and restore routes moved to api/backup package
 }
 
 func InitWebSocketRouter(r *gin.RouterGroup) {

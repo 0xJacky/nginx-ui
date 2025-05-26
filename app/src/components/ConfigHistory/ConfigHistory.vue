@@ -1,12 +1,10 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import type { Key } from 'ant-design-vue/es/_util/type'
 import type { ConfigBackup } from '@/api/config'
 import type { GetListResponse } from '@/api/curd'
+import { datetimeRender, StdPagination } from '@uozi-admin/curd'
 import { message } from 'ant-design-vue'
-import { defineAsyncComponent } from 'vue'
 import config from '@/api/config'
-import StdPagination from '@/components/StdDesign/StdDataDisplay/StdPagination.vue'
-import { datetime } from '../StdDesign/StdDataDisplay/StdTableTransformer'
 
 // Define props for the component
 const props = defineProps<{
@@ -54,7 +52,9 @@ const columns = [
   {
     title: () => $gettext('Modified At'),
     dataIndex: 'created_at',
-    customRender: datetime,
+    customRender: args => {
+      return <span>{datetimeRender(args)}</span>
+    },
   },
 ]
 
@@ -152,8 +152,9 @@ const compareButtonText = computed(() => {
 
         <div class="history-footer">
           <StdPagination
-            :pagination="pagination"
-            :loading="loading"
+            size="small"
+            :pagination
+            :loading
             @change="changePage"
           />
 

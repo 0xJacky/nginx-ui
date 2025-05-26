@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { StdTableColumn } from '@uozi-admin/curd'
 import type { ExternalNotifyConfig } from './types'
-import type { Column } from '@/components/StdDesign/types'
-import StdDataEntry, { input } from '@/components/StdDesign/StdDataEntry'
+import { StdForm } from '@uozi-admin/curd'
 import configMap from './index'
 
 const props = defineProps<{
@@ -14,7 +14,7 @@ const currentConfig = computed<ExternalNotifyConfig | undefined>(() => {
   return configMap[props.type?.toLowerCase() ?? '']
 })
 
-const columns = computed<Column[]>(() => {
+const columns = computed<StdTableColumn[]>(() => {
   if (!currentConfig.value)
     return []
 
@@ -23,8 +23,8 @@ const columns = computed<Column[]>(() => {
     dataIndex: item.key,
     key: item.key,
     edit: {
-      type: input,
-      config: {
+      type: 'input',
+      formItem: {
         label: item.label,
       },
     },
@@ -33,10 +33,10 @@ const columns = computed<Column[]>(() => {
 </script>
 
 <template>
-  <StdDataEntry
+  <StdForm
     v-if="currentConfig"
-    v-model:data-source="modelValue"
-    :data-list="columns"
+    v-model:data="modelValue"
+    :columns
   />
 </template>
 

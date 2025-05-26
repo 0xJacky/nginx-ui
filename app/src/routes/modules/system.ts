@@ -19,13 +19,6 @@ export const systemRoutes: RouteRecordRaw[] = [
         name: () => $gettext('Self Check'),
       },
     }, {
-      path: 'backup',
-      name: 'Backup',
-      component: () => import('@/views/system/Backup/index.vue'),
-      meta: {
-        name: () => $gettext('Backup'),
-      },
-    }, {
       path: 'upgrade',
       name: 'Upgrade',
       component: () => import('@/views/system/Upgrade.vue'),

@@ -2,7 +2,7 @@
 import type { Template } from '@/api/template'
 import { storeToRefs } from 'pinia'
 import template from '@/api/template'
-import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
+import CodeEditor from '@/components/CodeEditor'
 import { DirectiveEditor, LocationEditor, useNgxConfigStore } from '@/components/NgxConfigEditor'
 import { useSettingsStore } from '@/pinia'
 import { useConfigTemplateStore } from './store'
@@ -122,5 +122,11 @@ async function add() {
 </template>
 
 <style lang="less" scoped>
+:deep(.ant-list-item) {
+  padding: 12px;
+}
 
+:deep(.ant-list-item:first-child) {
+  padding-top: 0;
+}
 </style>

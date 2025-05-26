@@ -41,6 +41,12 @@ func InitCronJobs(ctx context.Context) {
 		logger.Fatalf("CleanExpiredAuthToken Err: %v\n", err)
 	}
 
+	// Initialize auto backup jobs
+	err = setupAutoBackupJobs(s)
+	if err != nil {
+		logger.Fatalf("AutoBackup Err: %v\n", err)
+	}
+
 	// Start the scheduler
 	s.Start()
 

@@ -19,6 +19,7 @@ var (
 	Q              = new(Query)
 	AcmeUser       *acmeUser
 	AuthToken      *authToken
+	AutoBackup     *autoBackup
 	BanIP          *banIP
 	Cert           *cert
 	ChatGPTLog     *chatGPTLog
@@ -39,6 +40,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
 	AcmeUser = &Q.AcmeUser
 	AuthToken = &Q.AuthToken
+	AutoBackup = &Q.AutoBackup
 	BanIP = &Q.BanIP
 	Cert = &Q.Cert
 	ChatGPTLog = &Q.ChatGPTLog
@@ -60,6 +62,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		db:             db,
 		AcmeUser:       newAcmeUser(db, opts...),
 		AuthToken:      newAuthToken(db, opts...),
+		AutoBackup:     newAutoBackup(db, opts...),
 		BanIP:          newBanIP(db, opts...),
 		Cert:           newCert(db, opts...),
 		ChatGPTLog:     newChatGPTLog(db, opts...),
@@ -82,6 +85,7 @@ type Query struct {
 
 	AcmeUser       acmeUser
 	AuthToken      authToken
+	AutoBackup     autoBackup
 	BanIP          banIP
 	Cert           cert
 	ChatGPTLog     chatGPTLog
@@ -105,6 +109,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		db:             db,
 		AcmeUser:       q.AcmeUser.clone(db),
 		AuthToken:      q.AuthToken.clone(db),
+		AutoBackup:     q.AutoBackup.clone(db),
 		BanIP:          q.BanIP.clone(db),
 		Cert:           q.Cert.clone(db),
 		ChatGPTLog:     q.ChatGPTLog.clone(db),
@@ -135,6 +140,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		db:             db,
 		AcmeUser:       q.AcmeUser.replaceDB(db),
 		AuthToken:      q.AuthToken.replaceDB(db),
+		AutoBackup:     q.AutoBackup.replaceDB(db),
 		BanIP:          q.BanIP.replaceDB(db),
 		Cert:           q.Cert.replaceDB(db),
 		ChatGPTLog:     q.ChatGPTLog.replaceDB(db),
@@ -155,6 +161,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 type queryCtx struct {
 	AcmeUser       *acmeUserDo
 	AuthToken      *authTokenDo
+	AutoBackup     *autoBackupDo
 	BanIP          *banIPDo
 	Cert           *certDo
 	ChatGPTLog     *chatGPTLogDo
@@ -175,6 +182,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
 		AcmeUser:       q.AcmeUser.WithContext(ctx),
 		AuthToken:      q.AuthToken.WithContext(ctx),
+		AutoBackup:     q.AutoBackup.WithContext(ctx),
 		BanIP:          q.BanIP.WithContext(ctx),
 		Cert:           q.Cert.WithContext(ctx),
 		ChatGPTLog:     q.ChatGPTLog.WithContext(ctx),

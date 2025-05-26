@@ -23,7 +23,7 @@ import (
 type Stream struct {
 	ModifiedAt      time.Time                      `json:"modified_at"`
 	Advanced        bool                           `json:"advanced"`
-	Enabled         bool                           `json:"enabled"`
+	Status          config.ConfigStatus            `json:"status"`
 	Name            string                         `json:"name"`
 	Config          string                         `json:"config"`
 	ChatGPTMessages []openai.ChatCompletionMessage `json:"chatgpt_messages,omitempty"`
@@ -32,6 +32,7 @@ type Stream struct {
 	EnvGroupID      uint64                         `json:"env_group_id"`
 	EnvGroup        *model.EnvGroup                `json:"env_group,omitempty"`
 	SyncNodeIDs     []uint64                       `json:"sync_node_ids" gorm:"serializer:json"`
+	ProxyTargets    []config.ProxyTarget           `json:"proxy_targets,omitempty"`
 }
 
 func GetStreams(c *gin.Context) {
@@ -130,15 +131,29 @@ func GetStreams(c *gin.Context) {
 			continue
 		}
 
+		// Get indexed stream for proxy targets
+		indexedStream := stream.GetIndexedStream(file.Name())
+
+		// Convert stream.ProxyTarget to config.ProxyTarget
+		var proxyTargets []config.ProxyTarget
+		for _, target := range indexedStream.ProxyTargets {
+			proxyTargets = append(proxyTargets, config.ProxyTarget{
+				Host: target.Host,
+				Port: target.Port,
+				Type: target.Type,
+			})
+		}
+
 		// Add the config to the result list after passing all filters
 		configs = append(configs, config.Config{
-			Name:       file.Name(),
-			ModifiedAt: fileInfo.ModTime(),
-			Size:       fileInfo.Size(),
-			IsDir:      fileInfo.IsDir(),
-			Status:     enabledConfigMap[file.Name()],
-			EnvGroupID: envGroupId,
-			EnvGroup:   envGroup,
+			Name:         file.Name(),
+			ModifiedAt:   fileInfo.ModTime(),
+			Size:         fileInfo.Size(),
+			IsDir:        fileInfo.IsDir(),
+			Status:       enabledConfigMap[file.Name()],
+			EnvGroupID:   envGroupId,
+			EnvGroup:     envGroup,
+			ProxyTargets: proxyTargets,
 		})
 	}
 
@@ -164,9 +179,9 @@ func GetStream(c *gin.Context) {
 	}
 
 	// Check if the stream is enabled
-	enabled := true
+	status := config.StatusEnabled
 	if _, err := os.Stat(nginx.GetConfPath("streams-enabled", name)); os.IsNotExist(err) {
-		enabled = false
+		status = config.StatusDisabled
 	}
 
 	// Retrieve or create ChatGPT log for this stream
@@ -201,7 +216,7 @@ func GetStream(c *gin.Context) {
 		c.JSON(http.StatusOK, Stream{
 			ModifiedAt:      file.ModTime(),
 			Advanced:        streamModel.Advanced,
-			Enabled:         enabled,
+			Status:          status,
 			Name:            name,
 			Config:          string(origContent),
 			ChatGPTMessages: chatgpt.Content,
@@ -223,7 +238,7 @@ func GetStream(c *gin.Context) {
 	c.JSON(http.StatusOK, Stream{
 		ModifiedAt:      file.ModTime(),
 		Advanced:        streamModel.Advanced,
-		Enabled:         enabled,
+		Status:          status,
 		Name:            name,
 		Config:          nginxConfig.FmtCode(),
 		Tokenized:       nginxConfig,

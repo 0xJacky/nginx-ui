@@ -14,105 +14,105 @@ msgstr ""
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.11\n"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:31
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 "[Nginx UI] Користувач ACME: %{name}, Електронна пошта: %{email}, Каталог "
 "CA: %{caDir}"
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:32
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr ""
 "[Nginx UI] Резервне копіювання поточного сертифіката для подальшого "
 "відкликання"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:33
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "[Nginx UI] Сертифікат успішно оновлено"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:34
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] Сертифікат успішно відкликано"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:35
 msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 "[Nginx UI] Сертифікат використовувався для сервера, перезавантаження "
 "TLS-сертифіката сервера"
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:36
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] Створення клієнта для спрощення зв’язку з сервером CA"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:37
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "[Nginx UI] Змінні середовища очищено"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:38
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] Завершено"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:39
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "[Nginx UI] Сертифікат успішно видано"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:40
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] Отримання сертифіката"
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:41
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] Підготовка до відкликання сертифіката"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:42
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] Підготовка конфігурацій lego"
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:43
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] Перезавантаження nginx"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:44
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] Відкликання завершено"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:45
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] Відкликання сертифіката"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:46
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] Відкликання старого сертифіката"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:47
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] Налаштування провайдера виклику DNS01"
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:49
 msgid "[Nginx UI] Setting environment variables"
 msgstr "[Nginx UI] Налаштування змінних середовища"
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:48
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] Налаштування провайдера HTTP01-виклику"
 
-#: src/language/generate.ts:4
+#: src/language/generate.ts:50
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] Запис приватного ключа сертифіката на диск"
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:51
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Запис сертифіката на диск"
 
-#: src/views/user/userColumns.tsx:32
+#: src/views/user/userColumns.tsx:30
 msgid "2FA"
 msgstr "2FA"
 
-#: src/views/preference/tabs/AuthSettings.vue:70
+#: src/views/user/UserProfile.vue:151
 msgid "2FA Settings"
 msgstr "2FA Налаштування"
 
-#: src/routes/modules/system.ts:45
+#: src/routes/modules/system.ts:38
 msgid "About"
 msgstr "Про программу"
 
@@ -129,25 +129,29 @@ msgstr "Шлях до журналу доступу не існує"
 msgid "Access Logs"
 msgstr "Логи доступу"
 
-#: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:113
+#: src/routes/modules/certificates.ts:20 src/views/certificate/ACMEUser.vue:108
 #: src/views/certificate/components/ACMEUserSelector.vue:85
 msgid "ACME User"
 msgstr "ACME Логін"
 
-#: src/views/certificate/ACMEUser.vue:95
-#: src/views/certificate/CertificateList/certColumns.tsx:94
-#: src/views/certificate/DNSCredential.vue:33
-#: src/views/config/configColumns.tsx:44
-#: src/views/environments/group/columns.ts:43
-#: src/views/environments/list/envColumns.tsx:97
-#: src/views/nginx_log/NginxLogList.vue:46
-#: src/views/notification/notificationColumns.tsx:66
-#: src/views/preference/components/ExternalNotify/columns.tsx:59
-#: src/views/preference/tabs/AuthSettings.vue:30
-#: src/views/site/site_list/columns.tsx:120 src/views/stream/StreamList.vue:74
-#: src/views/user/userColumns.tsx:60
+#: src/views/preference/tabs/AuthSettings.vue:26
 msgid "Action"
 msgstr "Дія"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:241
+#: src/views/certificate/ACMEUser.vue:90
+#: src/views/certificate/CertificateList/certColumns.tsx:92
+#: src/views/certificate/DNSCredential.vue:30
+#: src/views/config/configColumns.tsx:42
+#: src/views/environments/group/columns.ts:41
+#: src/views/environments/list/envColumns.tsx:96
+#: src/views/nginx_log/NginxLogList.vue:52
+#: src/views/notification/notificationColumns.tsx:72
+#: src/views/preference/components/ExternalNotify/columns.tsx:76
+#: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:105
+#: src/views/user/userColumns.tsx:58
+msgid "Actions"
+msgstr "Дії"
 
 #: src/composables/usePerformanceMetrics.ts:84
 #: src/views/dashboard/components/PerformanceTablesCard.vue:44
@@ -159,12 +163,10 @@ msgid "Actual worker to configured ratio"
 msgstr "Фактичне співвідношення робочих до налаштованих"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:112
-#: src/components/NgxConfigEditor/NgxUpstream.vue:155
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:151
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:186
+#: src/components/NgxConfigEditor/NgxUpstream.vue:159 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:180
+#: src/views/stream/StreamList.vue:101
 msgid "Add"
 msgstr "Додати"
 
@@ -174,7 +176,7 @@ msgid "Add a passkey"
 msgstr "Додати ключ доступу"
 
 #: src/routes/modules/config.ts:20 src/views/config/ConfigEditor.vue:171
-#: src/views/config/ConfigEditor.vue:244
+#: src/views/config/ConfigEditor.vue:250
 msgid "Add Configuration"
 msgstr "Додати конфігурацію"
 
@@ -191,11 +193,11 @@ msgstr "Додати локацію"
 msgid "Add Site"
 msgstr "Додати сайт"
 
-#: src/views/stream/StreamList.vue:247
+#: src/views/stream/StreamList.vue:138
 msgid "Add Stream"
 msgstr "Додати стрім"
 
-#: src/views/stream/StreamList.vue:160
+#: src/views/stream/StreamList.vue:72
 msgid "Added successfully"
 msgstr "Успішно додано"
 
@@ -213,7 +215,6 @@ msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "Після цього оновіть цю сторінку та натисніть «Додати ключ доступу» знову."
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:115
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:419
 msgid "All"
 msgstr "Усі"
 
@@ -246,19 +247,11 @@ msgstr "API Тип"
 msgid "App"
 msgstr "Додаток"
 
-#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:103
-msgid "Apply"
-msgstr "Застосувати"
-
-#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:67
-msgid "Apply bulk action successfully"
-msgstr "Групову дію успішно застосовано"
-
 #: src/views/system/Upgrade.vue:195
 msgid "Arch"
 msgstr "\"Архітектура\""
 
-#: src/views/preference/tabs/AuthSettings.vue:162
+#: src/views/preference/tabs/AuthSettings.vue:130
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Ви впевнені, що хочите видалити цю заборонену IP-адресу?"
 
@@ -274,12 +267,8 @@ msgstr "Підтверджуєте генерацію нових кодів ві
 msgid "Are you sure to reset 2FA?"
 msgstr "Ви впевнені, що хочете скинути 2FA?"
 
-#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:96
-msgid "Are you sure you want to apply to all selected?"
-msgstr "Ви впевнені, що бажаєте застосувати до всіх вибраних?"
-
-#: src/components/Notification/Notification.vue:112
-#: src/views/notification/Notification.vue:39
+#: src/components/Notification/Notification.vue:111
+#: src/views/notification/Notification.vue:40
 msgid "Are you sure you want to clear all notifications?"
 msgstr "Ви впевнені, що бажаєте очистити всі сповіщення?"
 
@@ -287,22 +276,14 @@ msgstr "Ви впевнені, що бажаєте очистити всі сп�
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "Ви впевнені, що бажаєте очистити запис чату?"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:540
-msgid "Are you sure you want to delete this item permanently?"
-msgstr "Ви впевнені, що хочете остаточно видалити цей елемент?"
+#: src/language/curd.ts:27
+msgid "Are you sure you want to delete permanently?"
+msgstr "Ви впевнені, що хочете видалити назавжди?"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:512
-msgid "Are you sure you want to delete this item?"
-msgstr "Ви впевнені, що хочете видалити цей елемент?"
-
-#: src/views/site/site_list/SiteList.vue:110
-#: src/views/stream/StreamList.vue:231
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
+#: src/views/stream/StreamList.vue:121
 msgid "Are you sure you want to delete?"
 msgstr "Ви впевнені, що хочете видалити?"
-
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:526
-msgid "Are you sure you want to recover this item?"
-msgstr "Ви впевнені, що бажаєте відновити цей елемент?"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:129
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
@@ -328,6 +309,10 @@ msgstr ""
 "Ви впевнені, що хочете перезавантажити Nginx на вказаних синхронізованих "
 "вузлах?"
 
+#: src/language/curd.ts:26
+msgid "Are you sure you want to restore?"
+msgstr "Ви впевнені, що хочете відновити?"
+
 #: src/components/ChatGPT/ChatGPT.vue:318
 msgid "Ask ChatGPT for Help"
 msgstr "Запитати допомоги у ChatGPT"
@@ -340,7 +325,7 @@ msgstr "Помічник"
 msgid "Attempt to fix"
 msgstr "Спробувати виправити"
 
-#: src/views/preference/tabs/AuthSettings.vue:21
+#: src/views/preference/tabs/AuthSettings.vue:17
 msgid "Attempts"
 msgstr "Спроби"
 
@@ -352,7 +337,7 @@ msgstr "Авторизація"
 msgid "Authenticate with a passkey"
 msgstr "Автентифікація пасоком"
 
-#: src/views/preference/tabs/AuthSettings.vue:88
+#: src/views/preference/tabs/AuthSettings.vue:56
 msgid "Authentication Settings"
 msgstr "Налаштування аутентифікації"
 
@@ -369,6 +354,11 @@ msgstr "Автоматичний"
 #: src/views/dashboard/components/PerformanceTablesCard.vue:201
 msgid "auto = CPU cores"
 msgstr "Auto = CPU ядра"
+
+#: src/routes/modules/backup.ts:27
+#: src/views/backup/AutoBackup/AutoBackup.vue:250
+msgid "Auto Backup"
+msgstr "Автоматичне резервне копіювання"
 
 #: src/views/nginx_log/NginxLog.vue:150
 msgid "Auto Refresh"
@@ -396,7 +386,7 @@ msgid "Automatic Restart"
 msgstr "\"Автоматичний перезапуск\""
 
 #: src/views/certificate/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:266 src/views/config/ConfigList.vue:112
+#: src/views/config/ConfigEditor.vue:272 src/views/config/ConfigList.vue:112
 #: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:174
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/stream/components/StreamEditor.vue:106
@@ -407,11 +397,11 @@ msgstr "\"Назад\""
 msgid "Back Home"
 msgstr "На головну"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:206
-msgid "Back to list"
+#: src/language/curd.ts:21
+msgid "Back to List"
 msgstr "Повернутися до списку"
 
-#: src/routes/modules/system.ts:26
+#: src/routes/modules/backup.ts:11 src/routes/modules/backup.ts:19
 msgid "Backup"
 msgstr "Резервна копія"
 
@@ -423,19 +413,49 @@ msgstr "Перевірка цілісності резервного файлу 
 msgid "Backup file not found: {0}"
 msgstr "Файл резервної копії не знайдено: {0}"
 
-#: src/views/system/Backup/BackupCreator.vue:42
+#: src/views/backup/components/BackupCreator.vue:42
 msgid "Backup has been downloaded successfully"
 msgstr "Резервну копію успішно завантажено"
 
-#: src/views/preference/tabs/AuthSettings.vue:129
+#: src/views/backup/AutoBackup/AutoBackup.vue:54
+msgid "Backup Path"
+msgstr "Шлях резервного копіювання"
+
+#: src/constants/errors/backup.ts:75
+msgid "Backup path does not exist: {0}"
+msgstr "Шлях резервного копіювання не існує: {0}"
+
+#: src/constants/errors/backup.ts:77
+msgid "Backup path is not a directory: {0}"
+msgstr "Шлях резервного копіювання не є директорією: {0}"
+
+#: src/constants/errors/backup.ts:62
+msgid "Backup path is required for custom directory backup"
+msgstr ""
+"Шлях резервного копіювання необхідний для резервного копіювання "
+"спеціального каталогу"
+
+#: src/constants/errors/backup.ts:60
+msgid "Backup path not in granted access paths: {0}"
+msgstr "Шлях резервного копіювання не входить до наданих шляхів доступу: {0}"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:141
+msgid "Backup Schedule"
+msgstr "Розклад резервного копіювання"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:24
+msgid "Backup Type"
+msgstr "Тип резервної копії"
+
+#: src/views/preference/tabs/AuthSettings.vue:97
 msgid "Ban Threshold Minutes"
 msgstr "Хвилини до блокування"
 
-#: src/views/preference/tabs/AuthSettings.vue:150
+#: src/views/preference/tabs/AuthSettings.vue:118
 msgid "Banned IPs"
 msgstr "Заблоковані IP-адреси"
 
-#: src/views/preference/tabs/AuthSettings.vue:24
+#: src/views/preference/tabs/AuthSettings.vue:20
 msgid "Banned Until"
 msgstr "Заблоковано до"
 
@@ -447,9 +467,9 @@ msgstr "Bark"
 msgid "Base information"
 msgstr "Основна інформація"
 
-#: src/views/config/ConfigEditor.vue:294
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:30
-#: src/views/stream/components/RightPanel/RightPanel.vue:19
+#: src/views/config/ConfigEditor.vue:300
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:31
+#: src/views/stream/components/RightPanel/RightPanel.vue:20
 msgid "Basic"
 msgstr "Базові"
 
@@ -462,12 +482,11 @@ msgstr "Базовий режим"
 msgid "Basic Settings"
 msgstr "Основні налаштування"
 
-#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:83
-msgid "Batch Actions"
-msgstr "Масові дії"
+#: src/language/curd.ts:32
+msgid "Batch Edit"
+msgstr "Групове редагування"
 
-#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:62
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:448
+#: src/language/curd.ts:34
 msgid "Batch Modify"
 msgstr "Масове редагування"
 
@@ -475,7 +494,7 @@ msgstr "Масове редагування"
 msgid "Batch Upgrade"
 msgstr "Групове оновлення"
 
-#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:70
+#: src/language/curd.ts:36
 msgid "Belows are selected items that you want to batch modify"
 msgstr "Нижче наведені елементи, які ви обрали для групового редагування"
 
@@ -483,11 +502,19 @@ msgstr "Нижче наведені елементи, які ви обрали �
 msgid "Block is nil"
 msgstr "Блок є nil"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:30
+msgid "Both Config"
+msgstr "Обидві конфігурації"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:44
+msgid "Both Nginx and Nginx UI Config"
+msgstr "І конфігурація Nginx, і конфігурація Nginx UI"
+
 #: src/views/system/About.vue:55
 msgid "Build with"
 msgstr "Створено за допомогою"
 
-#: src/views/certificate/ACMEUser.vue:37
+#: src/views/certificate/ACMEUser.vue:36
 msgid "CA Dir"
 msgstr "\"Каталог CA\""
 
@@ -546,17 +573,23 @@ msgstr ""
 #: src/components/ChatGPT/ChatGPT.vue:356
 #: src/components/NgxConfigEditor/NgxServer.vue:54
 #: src/components/NgxConfigEditor/NgxUpstream.vue:37
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:246
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:187
-#: src/components/StdDesign/StdDetail/StdDetail.vue:101
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
-#: src/views/site/components/SiteStatusSegmented.vue:97
+#: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
 #: src/views/stream/components/RightPanel/Basic.vue:47
+#: src/views/stream/components/StreamStatusSelect.vue:65
 msgid "Cancel"
 msgstr "Скасувати"
+
+#: src/constants/errors/backup.ts:76
+msgid "Cannot access backup path {0}: {1}"
+msgstr "Не вдається отримати доступ до шляху резервної копії {0}: {1}"
+
+#: src/constants/errors/backup.ts:79
+msgid "Cannot access storage path {0}: {1}"
+msgstr "Неможливо отримати доступ до шляху зберігання {0}: {1}"
 
 #: src/constants/errors/user.ts:11
 msgid "Cannot change initial user password in demo mode"
@@ -615,7 +648,7 @@ msgstr "Термін дії сертифіката закінчився"
 msgid "Certificate Expiring Soon"
 msgstr "Сертифікат незабаром закінчується"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:4
 msgid "Certificate not found: %{error}"
 msgstr "Сертифікат не знайдено: %{error}"
 
@@ -640,7 +673,7 @@ msgstr "Інтервал оновлення сертифіката"
 msgid "Certificate renewed successfully"
 msgstr "Сертифікат успішно поновлено"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:5
 msgid "Certificate revoked successfully"
 msgstr "Сертифікат успішно відкликано"
 
@@ -663,17 +696,21 @@ msgstr "Список сертифікатів"
 msgid "Challenge Method"
 msgstr "Метод перевірки"
 
-#: src/views/site/site_edit/components/Cert/ChangeCert.vue:49
-#: src/views/site/site_edit/components/Cert/ChangeCert.vue:53
+#: src/views/site/site_edit/components/Cert/ChangeCert.vue:51
+#: src/views/site/site_edit/components/Cert/ChangeCert.vue:55
 msgid "Change Certificate"
 msgstr "Змінити сертифікат"
+
+#: src/views/user/UserProfile.vue:181
+msgid "Change Password"
+msgstr "Змінити пароль"
 
 #: src/views/site/site_edit/components/Cert/Cert.vue:77
 msgid "Changed Certificate"
 msgid_plural "Changed Certificates"
 msgstr[0] "Змінено сертифікат"
 
-#: src/views/config/ConfigEditor.vue:322
+#: src/views/config/ConfigEditor.vue:328
 msgid "Changed Path"
 msgstr "Змінений шлях"
 
@@ -682,8 +719,8 @@ msgstr "Змінений шлях"
 msgid "Channel"
 msgstr "Канал"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:40
-#: src/views/stream/components/RightPanel/RightPanel.vue:22
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:41
+#: src/views/stream/components/RightPanel/RightPanel.vue:23
 msgid "Chat"
 msgstr "Чат"
 
@@ -696,7 +733,7 @@ msgstr "Перевірити"
 msgid "Check again"
 msgstr "Перевірте ще раз"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:6
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
 "Docker Image, please make sure the docker socket is mounted like this: `-v "
@@ -726,7 +763,7 @@ msgstr ""
 "Перевірте, чи увімкнено HTTPS. Використання HTTP за межами localhost є "
 "небезпечним і перешкоджає використанню Passkeys та функцій буфера обміну"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:8
 msgid ""
 "Check if the nginx access log path exists. By default, this path is "
 "obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
@@ -742,15 +779,15 @@ msgstr ""
 "журналу доступу. Докладніше див. у документації: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:9
 msgid "Check if the nginx configuration directory exists"
 msgstr "Перевірити, чи існує каталог конфігурації nginx"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:10
 msgid "Check if the nginx configuration entry file exists"
 msgstr "Перевірити, чи існує файл конфігурації nginx"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:11
 msgid ""
 "Check if the nginx error log path exists. By default, this path is obtained "
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
@@ -766,7 +803,7 @@ msgstr ""
 "журналу помилок. Докладніше див. у документації: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:7
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
@@ -780,19 +817,19 @@ msgstr ""
 "конфігураційний файл, щоб вказати шлях до PID Nginx. Докладніше див. у "
 "документації: https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:12
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "Перевірити, чи включає файл nginx.conf директорію conf.d"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:13
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "Перевірити, чи nginx.conf включає каталог sites-enabled"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:14
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "Перевірити, чи включає nginx.conf каталог streams-enabled"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:15
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory"
@@ -800,7 +837,7 @@ msgstr ""
 "Перевірте, чи каталоги sites-available та sites-enabled знаходяться в "
 "каталозі конфігурації nginx"
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:16
 msgid ""
 "Check if the streams-available and streams-enabled directories are under "
 "the nginx configuration directory"
@@ -817,12 +854,12 @@ msgid "Cleaning environment variables"
 msgstr "Змінні навколишнього середовища очищення"
 
 #: src/components/ChatGPT/ChatGPT.vue:380
-#: src/components/Notification/Notification.vue:117
-#: src/views/notification/Notification.vue:44
+#: src/components/Notification/Notification.vue:116
+#: src/views/notification/Notification.vue:45
 msgid "Clear"
 msgstr "Чіткий"
 
-#: src/components/Notification/Notification.vue:70
+#: src/components/Notification/Notification.vue:69
 #: src/views/notification/Notification.vue:13
 msgid "Cleared successfully"
 msgstr "Успішно очищено"
@@ -833,6 +870,14 @@ msgid "Click or drag backup file to this area to upload"
 msgstr ""
 "Клацніть або перетягніть файл резервного копіювання в цю область, щоб "
 "завантажити"
+
+#: src/language/curd.ts:49 src/language/curd.ts:53
+msgid "Click or drag files to this area to upload"
+msgstr "Натисніть або перетягніть файли в цю область для завантаження"
+
+#: src/language/curd.ts:50 src/language/curd.ts:54
+msgid "Click or drag folders to this area to upload"
+msgstr "Натисніть або перетягніть папки в цю область для завантаження"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:110
 msgid "Click to copy"
@@ -858,9 +903,13 @@ msgstr "Розмір буфера тіла запиту клієнта"
 msgid "Client request header buffer size"
 msgstr "Розмір буфера заголовка запиту клієнта"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:169
+#: src/components/ConfigHistory/ConfigHistory.vue:170 src/language/curd.ts:14
 msgid "Close"
 msgstr "Закрити"
+
+#: src/components/PortScanner/PortScannerCompact.vue:45
+msgid "Closed"
+msgstr "Закрито"
 
 #: src/constants/errors/llm.ts:2
 msgid "Code completion is not enabled"
@@ -905,6 +954,11 @@ msgstr "Порівняйте з струмом"
 msgid "Compression level, 1 is lowest, 9 is highest"
 msgstr "Рівень стиснення, 1 найнижчий, 9 - найвищий"
 
+#: src/views/preference/components/ExternalNotify/columns.tsx:46
+#: src/views/preference/components/ExternalNotify/columns.tsx:58
+msgid "Config"
+msgstr "Конфігурація"
+
 #: src/constants/errors/self_check.ts:17
 msgid "Config directory not exist"
 msgstr "Каталог конфігурації не існує"
@@ -917,7 +971,7 @@ msgstr "Вхідний файл конфігурації не існує"
 msgid "Config path is empty"
 msgstr "Конфігурація порожній"
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:36
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:37
 msgid "Config Template"
 msgstr "Шаблон конфігурації"
 
@@ -945,6 +999,10 @@ msgstr "Конфігурації"
 msgid "Configure SSL"
 msgstr "Налаштувати SSL"
 
+#: src/views/user/UserProfile.vue:204
+msgid "Confirm New Password"
+msgstr "Підтвердити новий пароль"
+
 #: src/views/dashboard/Environments.vue:141
 msgid "Connected"
 msgstr "Підключено"
@@ -953,7 +1011,7 @@ msgstr "Підключено"
 msgid "Connection error, trying to reconnect..."
 msgstr "Помилка з'єднання, спроба повторного підключення..."
 
-#: src/views/terminal/Terminal.vue:142
+#: src/views/terminal/Terminal.vue:139
 msgid "Connection lost, please refresh the page."
 msgstr "З'єднання, будь ласка, оновіть сторінку."
 
@@ -972,17 +1030,16 @@ msgid "Content"
 msgstr "Вміст"
 
 #: src/components/SensitiveString/SensitiveString.vue:37
-#: src/components/StdDesign/StdDataDisplay/StdTableTransformer.tsx:150
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:121
 msgid "Copied"
 msgstr "Скопійовано"
 
-#: src/views/system/Backup/BackupCreator.vue:128
+#: src/views/backup/components/BackupCreator.vue:128
 msgid "Copied!"
 msgstr "Скопійовано!"
 
 #: src/components/SensitiveString/SensitiveString.vue:37
-#: src/views/system/Backup/BackupCreator.vue:128
+#: src/views/backup/components/BackupCreator.vue:128
 msgid "Copy"
 msgstr "Копіювати"
 
@@ -1012,7 +1069,7 @@ msgstr ""
 msgid "CPU:"
 msgstr "CPU:"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:166
+#: src/components/NgxConfigEditor/NgxUpstream.vue:170
 msgid "Create"
 msgstr "Створити"
 
@@ -1020,7 +1077,7 @@ msgstr "Створити"
 msgid "Create Another"
 msgstr "Створити ще один"
 
-#: src/views/system/Backup/BackupCreator.vue:86
+#: src/views/backup/components/BackupCreator.vue:86
 msgid "Create Backup"
 msgstr "Створити резервну копію"
 
@@ -1032,7 +1089,7 @@ msgstr "Створити файл"
 msgid "Create Folder"
 msgstr "Створити папку"
 
-#: src/views/system/Backup/BackupCreator.vue:75
+#: src/views/backup/components/BackupCreator.vue:75
 msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
 "Backup files will be automatically downloaded to your computer."
@@ -1041,11 +1098,12 @@ msgstr ""
 "налаштування Nginx UI. Резервні файли будуть автоматично завантажені на ваш "
 "комп’ютер."
 
-#: src/views/environments/group/columns.ts:31
-#: src/views/notification/notificationColumns.tsx:45
+#: src/views/backup/AutoBackup/AutoBackup.vue:227
+#: src/views/environments/group/columns.ts:29
+#: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
-#: src/views/preference/components/ExternalNotify/columns.tsx:54
-#: src/views/user/userColumns.tsx:48
+#: src/views/preference/components/ExternalNotify/columns.tsx:71
+#: src/views/user/userColumns.tsx:46
 msgid "Created at"
 msgstr "Створено"
 
@@ -1064,6 +1122,10 @@ msgstr "Облікові дані"
 #: src/views/certificate/components/DNSChallenge.vue:99
 msgid "Credentials"
 msgstr "Повноваження"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:194
+msgid "Cron Expression"
+msgstr "Вираз Cron"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:72
 msgid "Current account is enabled TOTP."
@@ -1117,6 +1179,10 @@ msgstr ""
 "  - Без будь-яких пояснень, коментарів чи іншого тексту\n"
 "  - Чисте форматування"
 
+#: src/views/user/UserProfile.vue:186
+msgid "Current Password"
+msgstr "Поточний пароль"
+
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:65
 msgid "Current usage"
 msgstr "Поточне використання"
@@ -1130,16 +1196,41 @@ msgstr "Поточна версія"
 msgid "Custom"
 msgstr "Користувацький"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:131
+msgid "Custom cron expression"
+msgstr "Спеціальний cron вираз"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:31
+#: src/views/backup/AutoBackup/AutoBackup.vue:45
+msgid "Custom Directory"
+msgstr "Спеціальний каталог"
+
 #: src/views/preference/tabs/NodeSettings.vue:19
 msgid ""
 "Customize the name of local node to be displayed in the environment "
 "indicator."
 msgstr "Налаштуйте назву локального вузла для відображення в індикаторі середовища."
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:19
+msgid "Daily"
+msgstr "Щоденно"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:129
+msgid "Daily at %{time}"
+msgstr "Щодня о %{time}"
+
 #: src/routes/modules/dashboard.ts:10 src/views/config/ConfigEditor.vue:110
 #: src/views/config/ConfigEditor.vue:161 src/views/config/ConfigList.vue:67
 msgid "Dashboard"
 msgstr "Панель керування"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:184
+msgid "Day of Month"
+msgstr "День місяця"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:180
+msgid "Day of Week"
+msgstr "День тижня"
 
 #: src/views/preference/tabs/CertSettings.vue:32
 msgid "Days"
@@ -1154,21 +1245,18 @@ msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
 msgstr "Вкажіть назву та розмір зони спільної пам'яті, наприклад proxy_cache:10m"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:78
-#: src/components/NgxConfigEditor/NgxUpstream.vue:129
-#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:21
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:519
-#: src/views/certificate/components/RemoveCert.vue:87
-#: src/views/site/site_list/SiteList.vue:119
-#: src/views/stream/StreamList.vue:240
+#: src/components/NgxConfigEditor/NgxUpstream.vue:129 src/language/curd.ts:9
+#: src/views/certificate/components/RemoveCert.vue:88
+#: src/views/site/site_list/SiteList.vue:109
+#: src/views/stream/StreamList.vue:130
 msgid "Delete"
 msgstr "Видалити"
 
-#: src/views/certificate/components/RemoveCert.vue:92
+#: src/views/certificate/components/RemoveCert.vue:93
 msgid "Delete Certificate"
 msgstr "Видалити сертифікат"
 
-#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:35
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:547
+#: src/language/curd.ts:11
 msgid "Delete Permanently"
 msgstr "Видалити назавжди"
 
@@ -1196,7 +1284,7 @@ msgstr "Не вдалося видалити сайт %{name} з %{node}"
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Сайт %{name} успішно видалено з %{node}"
 
-#: src/views/site/site_list/SiteList.vue:51
+#: src/views/site/site_list/SiteList.vue:48
 msgid "Delete site: %{site_name}"
 msgstr "Сайт видалено: %{site_name}"
 
@@ -1208,11 +1296,11 @@ msgstr "Не вдалося видалити потік %{name} з %{node}"
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Потік %{name} успішно видалено з %{node}"
 
-#: src/views/stream/StreamList.vue:107
+#: src/views/stream/StreamList.vue:47
 msgid "Delete stream: %{stream_name}"
 msgstr "Видалити потік: %{stream_name}"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:183
+#: src/language/curd.ts:29
 msgid "Deleted successfully"
 msgstr "Видалено успішно"
 
@@ -1220,7 +1308,7 @@ msgstr "Видалено успішно"
 msgid "Demo"
 msgstr "Демо"
 
-#: src/views/config/ConfigEditor.vue:338
+#: src/views/config/ConfigEditor.vue:344
 msgid "Deploy"
 msgstr "Розгорнути"
 
@@ -1273,7 +1361,7 @@ msgstr "Файл призначення вже існує"
 msgid "Destination file: {0} already exists"
 msgstr "Файл призначення: {0} вже існує"
 
-#: src/views/notification/notificationColumns.tsx:60
+#: src/views/notification/notificationColumns.tsx:66
 msgid "Details"
 msgstr "Деталі"
 
@@ -1317,12 +1405,9 @@ msgstr "Рівні каталогу"
 msgid "Directory path to store cache files"
 msgstr "Шлях до каталогу для зберігання файлів кешу"
 
-#: src/views/site/components/SiteStatusSegmented.vue:88
+#: src/views/site/components/SiteStatusSelect.vue:115
+#: src/views/stream/components/StreamStatusSelect.vue:58
 msgid "disable"
-msgstr "Вимкнути"
-
-#: src/views/stream/StreamList.vue:211
-msgid "Disable"
 msgstr "Вимкнути"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:80
@@ -1377,22 +1462,24 @@ msgstr "Не вдалося вимкнути потік %{name} з %{node}"
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Потік %{name} успішно вимкнено з %{node}"
 
-#: src/views/environments/list/envColumns.tsx:61
-#: src/views/environments/list/envColumns.tsx:79
+#: src/views/backup/AutoBackup/AutoBackup.vue:173
+#: src/views/environments/list/envColumns.tsx:60
+#: src/views/environments/list/envColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
-#: src/views/site/components/SiteStatusSegmented.vue:134
+#: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:111
+#: src/views/site/site_list/columns.tsx:127 src/views/stream/columns.tsx:94
 #: src/views/stream/components/StreamEditor.vue:30
-#: src/views/stream/StreamList.vue:58 src/views/user/userColumns.tsx:41
+#: src/views/stream/components/StreamStatusSelect.vue:89
+#: src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr "Вимкнено"
 
-#: src/views/site/components/SiteStatusSegmented.vue:40
+#: src/views/site/components/SiteStatusSelect.vue:67
 #: src/views/stream/components/RightPanel/Basic.vue:34
-#: src/views/stream/StreamList.vue:96
+#: src/views/stream/components/StreamStatusSelect.vue:39
 msgid "Disabled successfully"
 msgstr "Успішно вимкнено"
 
@@ -1401,7 +1488,7 @@ msgid "Disk IO"
 msgstr "Дисковий ввід/вивід"
 
 #: src/routes/modules/certificates.ts:56
-#: src/views/certificate/DNSCredential.vue:40
+#: src/views/certificate/DNSCredential.vue:38
 msgid "DNS Credentials"
 msgstr "DNS облікові дані"
 
@@ -1418,9 +1505,13 @@ msgstr "DNS01"
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr "Не вмикайте цю опцію, якщо ви не впевнені, що вона вам потрібна."
 
-#: src/views/site/components/SiteStatusSegmented.vue:93
+#: src/views/site/components/SiteStatusSelect.vue:120
 msgid "Do you want to %{action} this site?"
 msgstr "Ви хочете %{action} цей сайт?"
+
+#: src/views/stream/components/StreamStatusSelect.vue:61
+msgid "Do you want to %{action} this stream?"
+msgstr "Ви хочете %{action} цей потік?"
 
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:139
 msgid "Do you want to disable auto-cert renewal?"
@@ -1451,7 +1542,7 @@ msgstr "Ви хочете видалити цей апстрім?"
 msgid "Docker client not initialized"
 msgstr "Клієнт Docker не ініціалізовано"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:17
 msgid "Docker socket exists"
 msgstr "Сокет Docker існує"
 
@@ -1496,9 +1587,9 @@ msgstr ""
 "localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:105
+#: src/views/site/site_list/SiteList.vue:95
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:226
+#: src/views/stream/StreamList.vue:116
 msgid "Duplicate"
 msgstr "Дублювати"
 
@@ -1507,12 +1598,16 @@ msgstr "Дублювати"
 msgid "Duplicate to local successfully"
 msgstr "Успішно дубльовано локально"
 
-#: src/views/dashboard/components/ModulesTable.vue:88
-#: src/views/dashboard/components/ModulesTable.vue:93
+#: src/views/dashboard/components/ModulesTable.vue:87
+#: src/views/dashboard/components/ModulesTable.vue:92
 msgid "Dynamic"
 msgstr "Динамічний"
 
-#: src/components/StdDesign/StdDetail/StdDetail.vue:110
+#: src/views/backup/AutoBackup/components/CronEditor.vue:197
+msgid "e.g., 0 0 * * * (daily at midnight)"
+msgstr "напр., 0 0 * * * (щодня о півночі)"
+
+#: src/language/curd.ts:8
 msgid "Edit"
 msgstr "Редагувати"
 
@@ -1521,7 +1616,7 @@ msgstr "Редагувати"
 msgid "Edit %{n}"
 msgstr "Редагувати %{n}"
 
-#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:244
+#: src/routes/modules/config.ts:30 src/views/config/ConfigEditor.vue:250
 msgid "Edit Configuration"
 msgstr "Редагувати конфігурацію"
 
@@ -1533,7 +1628,7 @@ msgstr "Редагувати сайт"
 msgid "Edit Stream"
 msgstr "Редагувати потік"
 
-#: src/views/certificate/ACMEUser.vue:25
+#: src/views/certificate/ACMEUser.vue:24
 #: src/views/preference/tabs/CertSettings.vue:12
 msgid "Email"
 msgstr "Електронна пошта"
@@ -1542,13 +1637,10 @@ msgstr "Електронна пошта"
 msgid "Email (*)"
 msgstr "Електронна пошта (*)"
 
-#: src/views/site/components/SiteStatusSegmented.vue:87
+#: src/views/site/components/SiteStatusSelect.vue:114
+#: src/views/stream/components/StreamStatusSelect.vue:58
 msgid "enable"
 msgstr "увімкнути"
-
-#: src/views/stream/StreamList.vue:219
-msgid "Enable"
-msgstr "Увімкнути"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:45
 msgid "Enable 2FA successfully"
@@ -1638,31 +1730,38 @@ msgstr "Увімкнути TLS"
 msgid "Enable TOTP"
 msgstr "Увімкнути TOTP"
 
-#: src/views/environments/list/envColumns.tsx:70
-#: src/views/environments/list/envColumns.tsx:76
+#: src/views/backup/AutoBackup/AutoBackup.vue:158
+#: src/views/backup/AutoBackup/AutoBackup.vue:172
+#: src/views/environments/list/envColumns.tsx:69
+#: src/views/environments/list/envColumns.tsx:75
 #: src/views/preference/tabs/HTTPSettings.vue:24
 #: src/views/preference/tabs/LogrotateSettings.vue:20
 #: src/views/preference/tabs/NodeSettings.vue:25
 #: src/views/preference/tabs/NodeSettings.vue:30
-#: src/views/site/components/SiteStatusSegmented.vue:130
+#: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:110
+#: src/views/site/site_list/columns.tsx:123 src/views/stream/columns.tsx:90
 #: src/views/stream/components/RightPanel/Basic.vue:62
 #: src/views/stream/components/StreamEditor.vue:24
-#: src/views/stream/StreamList.vue:54 src/views/user/userColumns.tsx:38
+#: src/views/stream/components/StreamStatusSelect.vue:88
+#: src/views/user/userColumns.tsx:36
 msgid "Enabled"
 msgstr "Увімкнено"
 
-#: src/views/site/components/SiteStatusSegmented.vue:27
+#: src/views/site/components/SiteStatusSelect.vue:54
 #: src/views/site/site_add/SiteAdd.vue:32
 #: src/views/stream/components/RightPanel/Basic.vue:25
-#: src/views/stream/StreamList.vue:86
+#: src/views/stream/components/StreamStatusSelect.vue:26
 msgid "Enabled successfully"
 msgstr "Успішно ввімкнено"
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
 msgstr "Зашифрувати вебсайт за допомогою Let's Encrypt"
+
+#: src/components/PortScanner/PortScannerCompact.vue:164
+msgid "End"
+msgstr "Кінець"
 
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
@@ -1675,7 +1774,7 @@ msgid "Environments"
 msgstr "Середовища"
 
 #: src/constants/index.ts:22 src/views/config/InspectConfig.vue:44
-#: src/views/notification/notificationColumns.tsx:15
+#: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr "Помилка"
 
@@ -1683,7 +1782,7 @@ msgstr "Помилка"
 msgid "Error initializing diff viewer"
 msgstr "Помилка ініціалізації переглядача різниць"
 
-#: src/views/nginx_log/NginxLogList.vue:24
+#: src/views/nginx_log/NginxLogList.vue:27
 msgid "Error Log"
 msgstr "Журнал помилок"
 
@@ -1704,8 +1803,20 @@ msgstr "Помилка обробки вмісту"
 msgid "Executable Path"
 msgstr "Шлях до виконуваного файлу"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:127
+msgid "Execute on every %{day} at %{time}"
+msgstr "Виконувати кожен %{day} о %{time}"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:125
+msgid "Execute on every day at %{time}"
+msgstr "Виконувати щодня о %{time}"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:129
+msgid "Execute on every month on day %{day} at %{time}"
+msgstr "Виконувати щомісяця %{day} числа о %{time}"
+
 #: src/components/CertInfo/CertInfo.vue:31
-#: src/views/certificate/CertificateList/certColumns.tsx:82
+#: src/views/certificate/CertificateList/certColumns.tsx:80
 msgid "Expired"
 msgstr "Термін дії закінчився"
 
@@ -1713,9 +1824,9 @@ msgstr "Термін дії закінчився"
 msgid "Expired At: %{date}"
 msgstr "Термін дії закінчився: %{date}"
 
-#: src/components/StdDesign/StdDataDisplay/methods/exportCsv.ts:64
-msgid "Export"
-msgstr "Експорт"
+#: src/language/curd.ts:22
+msgid "Export Excel"
+msgstr "Експорт у Excel"
 
 #: src/views/preference/tabs/NginxSettings.vue:49
 msgid "External Docker Container"
@@ -1729,6 +1840,11 @@ msgstr "Зовнішнє сповіщення"
 #: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
 msgid "Fail to obtain certificate"
 msgstr "Не вдалося отримати сертифікат"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:194
+#: src/views/backup/AutoBackup/AutoBackup.vue:219
+msgid "Failed"
+msgstr "Не вдалося"
 
 #: src/constants/errors/docker.ts:4
 msgid "Failed to attach to exec instance: {0}"
@@ -1782,6 +1898,10 @@ msgstr "Не вдалося скопіювати каталог конфігур
 msgid "Failed to create backup"
 msgstr "Не вдалося створити резервну копію"
 
+#: src/constants/errors/backup.ts:65
+msgid "Failed to create backup directory: {0}"
+msgstr "Не вдалося створити директорію для резервних копій: {0}"
+
 #: src/constants/errors/backup.ts:12
 msgid "Failed to create backup file: {0}"
 msgstr "Не вдалося створити резервний файл: {0}"
@@ -1805,6 +1925,10 @@ msgstr "Не вдалося створити батьківський катал
 #: src/constants/errors/backup.ts:34
 msgid "Failed to create restore directory: {0}"
 msgstr "Не вдалося створити директорію відновлення: {0}"
+
+#: src/constants/errors/backup.ts:78
+msgid "Failed to create storage directory {0}: {1}"
+msgstr "Не вдалося створити каталог сховища {0}: {1}"
 
 #: src/constants/errors/backup.ts:50
 msgid "Failed to create symbolic link: {0}"
@@ -1858,27 +1982,27 @@ msgstr "Не вдалося розшифрувати каталог Nginx UI: {0
 msgid "Failed to delete certificate"
 msgstr "Не вдалося видалити сертифікат"
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:18
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Не вдалося видалити сертифікат з бази даних: %{error}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:46
+#: src/views/site/components/SiteStatusSelect.vue:73
 #: src/views/stream/components/RightPanel/Basic.vue:37
-#: src/views/stream/StreamList.vue:100
+#: src/views/stream/components/StreamStatusSelect.vue:45
 msgid "Failed to disable %{msg}"
 msgstr "Не вдалося вимкнути %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:72
+#: src/views/site/components/SiteStatusSelect.vue:99
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr "Не вдалося вимкнути режим обслуговування %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:33
+#: src/views/site/components/SiteStatusSelect.vue:60
 #: src/views/stream/components/RightPanel/Basic.vue:28
-#: src/views/stream/StreamList.vue:90
+#: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
 msgstr "Не вдалося увімкнути %{msg}"
 
-#: src/views/site/components/SiteStatusSegmented.vue:59
+#: src/views/site/components/SiteStatusSelect.vue:86
 msgid "Failed to enable maintenance mode %{msg}"
 msgstr "Не вдалося увімкнути режим обслуговування %{msg}"
 
@@ -2002,7 +2126,7 @@ msgstr "Не вдалося відновити файли Nginx UI: {0}"
 msgid "Failed to revoke certificate"
 msgstr "Не вдалося відкликати сертифікат"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:19
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Не вдалося відкликати сертифікат: %{error}"
 
@@ -2018,6 +2142,10 @@ msgstr "Не вдалося запустити тимчасовий контей
 msgid "Failed to verify hashes: {0}"
 msgstr "Не вдалося перевірити хеші: {0}"
 
+#: src/constants/errors/backup.ts:66
+msgid "Failed to write backup file: {0}"
+msgstr "Не вдалося записати резервний файл: {0}"
+
 #: src/constants/errors/backup.ts:55
 msgid "Failed to write decrypted file: {0}"
 msgstr "Не вдалося записати розшифрований файл: {0}"
@@ -2025,6 +2153,10 @@ msgstr "Не вдалося записати розшифрований файл
 #: src/constants/errors/backup.ts:24
 msgid "Failed to write encrypted file: {0}"
 msgstr "Не вдалося записати зашифрований файл: {0}"
+
+#: src/constants/errors/backup.ts:67
+msgid "Failed to write security key file: {0}"
+msgstr "Не вдалося записати файл ключа безпеки: {0}"
 
 #: src/constants/errors/backup.ts:33
 msgid "Failed to write to zip buffer: {0}"
@@ -2075,19 +2207,27 @@ msgstr "Для китайських користувачів: https://cloud.ngin
 msgid "Form parse failed"
 msgstr "Не вдалося розібрати форму"
 
-#: src/views/config/ConfigEditor.vue:269
+#: src/views/config/ConfigEditor.vue:275
 msgid "Format Code"
 msgstr "Форматувати код"
 
-#: src/views/config/ConfigEditor.vue:216
+#: src/views/config/ConfigEditor.vue:222
 msgid "Format successfully"
 msgstr "Успішно відформатовано"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:32
+#: src/views/backup/AutoBackup/components/CronEditor.vue:200
+msgid "Format: minute hour day month weekday"
+msgstr "Формат: хвилина година день місяць день_тижня"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:31
+msgid "Friday"
+msgstr "П'ятниця"
+
+#: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "General Certificate"
 msgstr "Загальний сертифікат"
 
-#: src/components/StdDesign/StdDataEntry/components/StdPassword.vue:55
+#: src/language/curd.ts:17
 msgid "Generate"
 msgstr "Згенерувати"
 
@@ -2153,19 +2293,23 @@ msgstr "Приховати"
 msgid "Higher value means better connection reuse"
 msgstr "Вище значення означає краще повторне використання з’єднання"
 
-#: src/views/config/ConfigEditor.vue:254
+#: src/views/config/ConfigEditor.vue:260
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
 #: src/views/stream/components/StreamEditor.vue:43
 msgid "History"
 msgstr "Історія"
 
-#: src/routes/index.ts:47
+#: src/routes/index.ts:48
 msgid "Home"
 msgstr "Головна"
 
 #: src/views/preference/tabs/ServerSettings.vue:19
 msgid "Host"
 msgstr "Хост"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:159
+msgid "Hour"
+msgstr "Година"
 
 #: src/views/preference/Preference.vue:70
 msgid "HTTP"
@@ -2187,11 +2331,11 @@ msgstr "Протокол HTTPS"
 msgid "ICP Number"
 msgstr "Номер ICP"
 
-#: src/views/certificate/ACMEUser.vue:45
+#: src/views/certificate/ACMEUser.vue:43
 msgid "If left blank, the default CA Dir will be used."
 msgstr "Якщо залишити порожнім, буде використовуватися стандартний каталог CA."
 
-#: src/views/preference/tabs/AuthSettings.vue:145
+#: src/views/preference/tabs/AuthSettings.vue:113
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
@@ -2247,8 +2391,7 @@ msgstr "Індексація..."
 msgid "Indicator"
 msgstr "Індикатор"
 
-#: src/components/StdDesign/StdDetail/StdDetail.vue:81
-#: src/constants/index.ts:24 src/views/notification/notificationColumns.tsx:29
+#: src/constants/index.ts:24 src/views/notification/notificationColumns.tsx:28
 msgid "Info"
 msgstr "Інформація"
 
@@ -2303,7 +2446,7 @@ msgstr ""
 msgid "Interval"
 msgstr "Інтервал"
 
-#: src/views/certificate/ACMEUser.vue:129
+#: src/views/certificate/ACMEUser.vue:125
 msgid "Invalid"
 msgstr "Недійсний"
 
@@ -2324,7 +2467,7 @@ msgid "Invalid file path: {0}"
 msgstr "Недійсний шлях до файлу: {0}"
 
 #: src/views/config/components/Rename.vue:66
-#: src/views/config/ConfigEditor.vue:303
+#: src/views/config/ConfigEditor.vue:309
 msgid "Invalid filename"
 msgstr "Неправильна назва файлу"
 
@@ -2348,6 +2491,10 @@ msgstr "Недійсне заповнення в розшифрованих да
 msgid "Invalid passcode or recovery code"
 msgstr "Невірний код підтвердження або код відновлення"
 
+#: src/constants/errors/backup.ts:73
+msgid "Invalid path: {0}"
+msgstr "Недійсний шлях: {0}"
+
 #: src/constants/errors/user.ts:5
 msgid "Invalid recovery code"
 msgstr "Недійсний код відновлення"
@@ -2360,7 +2507,7 @@ msgstr "Недійсний формат запиту"
 msgid "Invalid security token format"
 msgstr "Недійсний формат токена безпеки"
 
-#: src/views/preference/tabs/AuthSettings.vue:18
+#: src/views/preference/tabs/AuthSettings.vue:14
 msgid "IP"
 msgstr "IP"
 
@@ -2380,6 +2527,10 @@ msgstr "Сертифікат успішно видано"
 msgid "Issuer: %{issuer}"
 msgstr "Видавець: %{issuer}"
 
+#: src/language/curd.ts:6
+msgid "item(s)"
+msgstr "елемент(и)"
+
 #: src/views/preference/tabs/AppSettings.vue:11
 msgid "Jwt Secret"
 msgstr "JWT Секрет"
@@ -2397,11 +2548,11 @@ msgid "Keepalive Timeout"
 msgstr "Таймаут Keepalive"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:76
-#: src/views/certificate/CertificateList/certColumns.tsx:59
+#: src/views/certificate/CertificateList/certColumns.tsx:57
 msgid "Key Type"
 msgstr "Тип ключа"
 
-#: src/views/preference/components/ExternalNotify/columns.tsx:30
+#: src/views/preference/components/ExternalNotify/columns.tsx:32
 msgid "Language"
 msgstr "Мова"
 
@@ -2412,6 +2563,14 @@ msgstr "Ларк"
 #: src/views/preference/components/ExternalNotify/lark_custom.ts:5
 msgid "Lark Custom"
 msgstr "Lark Користувацький"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:188
+msgid "Last Backup Status"
+msgstr "Статус останнього резервного копіювання"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:181
+msgid "Last Backup Time"
+msgstr "Час останньої резервної копії"
 
 #: src/views/system/Upgrade.vue:198
 msgid "Last checked at"
@@ -2425,7 +2584,7 @@ msgstr "Останнє оновлення"
 msgid "Last used at"
 msgstr "Востаннє використано"
 
-#: src/views/user/userColumns.tsx:25
+#: src/views/user/userColumns.tsx:23
 msgid "Leave blank for no change"
 msgstr "Залиште порожнім, щоб не змінювати"
 
@@ -2433,11 +2592,11 @@ msgstr "Залиште порожнім, щоб не змінювати"
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Залиште порожнім для значення за замовчуванням: https://api.openai.com/"
 
-#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:79
+#: src/language/curd.ts:37
 msgid "Leave blank if do not want to modify"
 msgstr "Залиште порожнім, якщо не хочете змінювати"
 
-#: src/views/certificate/ACMEUser.vue:59
+#: src/views/certificate/ACMEUser.vue:55
 msgid "Leave blank if you don't need this."
 msgstr "Залиште порожнім, якщо вам це не потрібно."
 
@@ -2463,15 +2622,19 @@ msgstr "Ліцензія"
 msgid "Link Start"
 msgstr "Почати зв’язок"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:173
+#: src/language/curd.ts:23
 msgid "List"
 msgstr "Список"
+
+#: src/components/PortScanner/PortScannerCompact.vue:43
+msgid "Listening"
+msgstr "Прослуховує"
 
 #: src/views/dashboard/ServerAnalytic.vue:183
 msgid "Load Average:"
 msgstr "Середнє навантаження:"
 
-#: src/views/environments/list/Environment.vue:80
+#: src/views/environments/list/Environment.vue:81
 msgid "Load from settings"
 msgstr "Завантажити з налаштувань"
 
@@ -2479,8 +2642,8 @@ msgstr "Завантажити з налаштувань"
 msgid "Load successfully"
 msgstr "Успішно завантажено"
 
-#: src/views/dashboard/components/ModulesTable.vue:101
-#: src/views/dashboard/components/ModulesTable.vue:106
+#: src/views/dashboard/components/ModulesTable.vue:100
+#: src/views/dashboard/components/ModulesTable.vue:105
 msgid "Loaded"
 msgstr "Завантажено"
 
@@ -2506,9 +2669,16 @@ msgstr "Завантаження даних..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
 #: src/components/NodeSelector/NodeSelector.vue:86
+#: src/views/backup/AutoBackup/AutoBackup.vue:78
+#: src/views/backup/AutoBackup/AutoBackup.vue:87
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:46
 #: src/views/preference/tabs/NginxSettings.vue:55
 msgid "Local"
 msgstr "Локальний"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:58
+msgid "Local path (e.g., /var/backups)"
+msgstr "Локальний шлях (напр., /var/backups)"
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:69
 msgid "Location"
@@ -2522,7 +2692,7 @@ msgstr "Розташування"
 msgid "Log"
 msgstr "Журнал"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:20
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to "
@@ -2533,7 +2703,7 @@ msgstr ""
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html для отримання "
 "додаткової інформації."
 
-#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:64
+#: src/routes/modules/nginx_log.ts:39 src/views/nginx_log/NginxLogList.vue:72
 msgid "Log List"
 msgstr "Список журналів"
 
@@ -2569,17 +2739,17 @@ msgstr ""
 "можете вручну активувати цю опцію. Планувальник завдань crontab у Nginx UI "
 "виконуватиме команду logrotate з інтервалом, який ви встановите у хвилинах."
 
-#: src/views/site/components/SiteStatusSegmented.vue:138
+#: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:112
+#: src/views/site/site_list/columns.tsx:131
 msgid "Maintenance"
 msgstr "Технічне обслуговування"
 
-#: src/views/site/components/SiteStatusSegmented.vue:66
+#: src/views/site/components/SiteStatusSelect.vue:93
 msgid "Maintenance mode disabled successfully"
 msgstr "Режим обслуговування успішно вимкнено"
 
-#: src/views/site/components/SiteStatusSegmented.vue:53
+#: src/views/site/components/SiteStatusSelect.vue:80
 msgid "Maintenance mode enabled successfully"
 msgstr "Режим обслуговування успішно ввімкнено"
 
@@ -2596,11 +2766,11 @@ msgstr ""
 msgid "Manage Configs"
 msgstr "Керування конфігураціями"
 
-#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:78
+#: src/routes/modules/sites.ts:10 src/views/site/site_list/SiteList.vue:67
 msgid "Manage Sites"
 msgstr "Керування сайтами"
 
-#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:177
+#: src/routes/modules/streams.ts:10 src/views/stream/StreamList.vue:81
 msgid "Manage Streams"
 msgstr "Керування потоками"
 
@@ -2608,7 +2778,7 @@ msgstr "Керування потоками"
 msgid "Manage Users"
 msgstr "Керування користувачами"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:31
+#: src/views/certificate/CertificateList/certColumns.tsx:29
 msgid "Managed Certificate"
 msgstr "Керований сертифікат"
 
@@ -2646,7 +2816,7 @@ msgstr "Головний процес"
 msgid "Master Process"
 msgstr "Головний процес"
 
-#: src/views/preference/tabs/AuthSettings.vue:135
+#: src/views/preference/tabs/AuthSettings.vue:103
 msgid "Max Attempts"
 msgstr "Максимальна кількість спроб"
 
@@ -2708,6 +2878,10 @@ msgstr "Мінімальний вільний простір"
 msgid "Minimum free space in the cache directory"
 msgstr "Мінімальний вільний простір у кеш-директорії"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:169
+msgid "Minute"
+msgstr "Хвилина"
+
 #: src/views/preference/tabs/LogrotateSettings.vue:30
 msgid "Minutes"
 msgstr "Хвилини"
@@ -2716,14 +2890,11 @@ msgstr "Хвилини"
 msgid "Model"
 msgstr "Модель"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:55
+#: src/components/ConfigHistory/ConfigHistory.vue:53
 msgid "Modified At"
 msgstr "Змінено"
 
-#: src/components/ChatGPT/ChatGPT.vue:352
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:151
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:498
-#: src/views/config/ConfigList.vue:174
+#: src/components/ChatGPT/ChatGPT.vue:352 src/views/config/ConfigList.vue:174
 msgid "Modify"
 msgstr "Змінити"
 
@@ -2736,11 +2907,7 @@ msgstr "Редагувати сертифікат"
 msgid "Modify Config"
 msgstr "Змінити конфігурацію"
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:262
-msgid "Modify Mode"
-msgstr "Режим редагування"
-
-#: src/views/dashboard/components/ModulesTable.vue:28
+#: src/views/dashboard/components/ModulesTable.vue:27
 msgid "Module"
 msgstr "Модуль"
 
@@ -2748,27 +2915,41 @@ msgstr "Модуль"
 msgid "Modules"
 msgstr "Модулі"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:27
+msgid "Monday"
+msgstr "Понеділок"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:21
+msgid "Monthly"
+msgstr "Щомісяця"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:139
+msgid "Monthly on day %{day} at %{time}"
+msgstr "Щомісяця %{day} числа о %{time}"
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:51
 msgid "Multi-line Directive"
 msgstr "Багаторядкова директива"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:178
-#: src/views/certificate/ACMEUser.vue:13
+#: src/components/NgxConfigEditor/NgxUpstream.vue:182
+#: src/views/backup/AutoBackup/AutoBackup.vue:11
+#: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateEditor.vue:162
-#: src/views/certificate/CertificateList/certColumns.tsx:10
-#: src/views/certificate/DNSCredential.vue:11
+#: src/views/certificate/CertificateList/certColumns.tsx:9
+#: src/views/certificate/DNSCredential.vue:8
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:7 src/views/config/ConfigEditor.vue:309
-#: src/views/environments/group/columns.ts:8
-#: src/views/environments/list/envColumns.tsx:9
-#: src/views/nginx_log/NginxLogList.vue:30
+#: src/views/config/configColumns.tsx:6 src/views/config/ConfigEditor.vue:315
+#: src/views/environments/group/columns.ts:7
+#: src/views/environments/list/envColumns.tsx:8
+#: src/views/nginx_log/NginxLogList.vue:36
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:35
-#: src/views/site/site_list/columns.tsx:18
+#: src/views/site/site_list/columns.tsx:16
 #: src/views/site/site_list/SiteDuplicate.vue:79
+#: src/views/stream/columns.tsx:12
 #: src/views/stream/components/RightPanel/Basic.vue:69
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:20 src/views/stream/StreamList.vue:252
+#: src/views/stream/StreamList.vue:143
 msgid "Name"
 msgstr "Ім'я"
 
@@ -2800,7 +2981,11 @@ msgstr "Нове встановлення"
 msgid "New name"
 msgstr "Нова назва"
 
-#: src/views/config/ConfigEditor.vue:322
+#: src/views/user/UserProfile.vue:195
+msgid "New Password"
+msgstr "Новий пароль"
+
+#: src/views/config/ConfigEditor.vue:328
 msgid "New Path"
 msgstr "Новий шлях"
 
@@ -2823,7 +3008,7 @@ msgstr "Nginx"
 msgid "Nginx Access Log Path"
 msgstr "Шлях до журналу доступу Nginx"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:22
 msgid "Nginx access log path exists"
 msgstr "Шлях до журналу доступу Nginx існує"
 
@@ -2847,6 +3032,11 @@ msgstr "Конфігурація Nginx не містить sites-enabled"
 msgid "Nginx conf not include stream-enabled"
 msgstr "Конфігурація Nginx не містить stream-enabled"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:28
+#: src/views/backup/AutoBackup/AutoBackup.vue:42
+msgid "Nginx Config"
+msgstr "Конфігурація Nginx"
+
 #: src/constants/errors/backup.ts:19
 msgid "Nginx config directory is not set"
 msgstr "Каталог конфігурації Nginx не встановлено"
@@ -2855,7 +3045,7 @@ msgstr "Каталог конфігурації Nginx не встановлен�
 msgid "Nginx configuration directory exists"
 msgstr "Каталог конфігурації Nginx існує"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:24
 msgid "Nginx configuration entry file exists"
 msgstr "Файл входу конфігурації Nginx існує"
 
@@ -2893,7 +3083,7 @@ msgstr "Рівень використання CPU Nginx"
 msgid "Nginx Error Log Path"
 msgstr "Шлях до журналу помилок Nginx"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:25
 msgid "Nginx error log path exists"
 msgstr "Шлях до журналу помилок Nginx існує"
 
@@ -2934,7 +3124,7 @@ msgstr "Використання пам'яті Nginx"
 msgid "Nginx PID Path"
 msgstr "Шлях до PID Nginx"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:21
 msgid "Nginx PID path exists"
 msgstr "Шлях PID Nginx існує"
 
@@ -2984,6 +3174,11 @@ msgstr "Теоретична максимальна продуктивність
 msgid "Nginx UI already installed"
 msgstr "Nginx UI вже встановлено"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:29
+#: src/views/backup/AutoBackup/AutoBackup.vue:43
+msgid "Nginx UI Config"
+msgstr "Конфігурація інтерфейсу Nginx"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:142
 msgid "Nginx UI configuration has been restored"
 msgstr "Конфігурацію Nginx UI відновлено"
@@ -2996,15 +3191,15 @@ msgstr ""
 "Конфігурацію Nginx UI відновлено, і вона автоматично перезавантажиться за "
 "кілька секунд."
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:26
 msgid "Nginx.conf includes conf.d directory"
 msgstr "Nginx.conf включає каталог conf.d"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:27
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "Nginx.conf включає каталог sites-enabled"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:28
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf включає каталог streams-enabled"
 
@@ -3013,22 +3208,16 @@ msgstr "Nginx.conf включає каталог streams-enabled"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
-#: src/components/Notification/Notification.vue:110
-#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:63
-#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:94
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:510
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:524
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:538
-#: src/views/notification/Notification.vue:37
-#: src/views/preference/tabs/AuthSettings.vue:164
+#: src/components/Notification/Notification.vue:109 src/language/curd.ts:38
+#: src/views/notification/Notification.vue:38
+#: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:108
-#: src/views/stream/StreamList.vue:229
+#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:119
 msgid "No"
 msgstr "Ні"
 
-#: src/views/environments/group/columns.ts:21
-#: src/views/environments/group/EnvGroup.vue:34
+#: src/views/environments/group/columns.ts:19
+#: src/views/environments/group/EnvGroup.vue:47
 msgid "No Action"
 msgstr "Без дії"
 
@@ -3045,14 +3234,13 @@ msgid "Node"
 msgstr "Вузол"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:41
-#: src/views/site/site_list/columns.tsx:66
+#: src/views/site/site_list/columns.tsx:76 src/views/stream/columns.tsx:44
 #: src/views/stream/components/RightPanel/Basic.vue:77
-#: src/views/stream/StreamList.vue:30
 msgid "Node Group"
 msgstr "Група вузлів"
 
 #: src/routes/modules/environments.ts:33
-#: src/views/environments/group/EnvGroup.vue:10
+#: src/views/environments/group/EnvGroup.vue:19
 msgid "Node Groups"
 msgstr "Групи вузлів"
 
@@ -3068,7 +3256,7 @@ msgstr "Секрет вузла"
 msgid "Nodes"
 msgstr "Вузли"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:88
+#: src/views/certificate/CertificateList/certColumns.tsx:86
 msgid "Not After"
 msgstr "Не пізніше"
 
@@ -3076,8 +3264,8 @@ msgstr "Не пізніше"
 msgid "Not Found"
 msgstr "Не знайдено"
 
-#: src/views/dashboard/components/ModulesTable.vue:102
-#: src/views/dashboard/components/ModulesTable.vue:106
+#: src/views/dashboard/components/ModulesTable.vue:101
+#: src/views/dashboard/components/ModulesTable.vue:105
 msgid "Not Loaded"
 msgstr "Не завантажено"
 
@@ -3086,7 +3274,7 @@ msgid "Not Valid Before: %{date}"
 msgstr "Не дійсний до: %{date}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:38
-#: src/views/certificate/DNSCredential.vue:49
+#: src/views/certificate/DNSCredential.vue:48
 msgid "Note"
 msgstr "Примітка"
 
@@ -3103,7 +3291,7 @@ msgstr ""
 msgid "Notification"
 msgstr "Сповіщення"
 
-#: src/components/Notification/Notification.vue:108
+#: src/components/Notification/Notification.vue:107
 #: src/routes/modules/notifications.ts:10
 msgid "Notifications"
 msgstr "Сповіщення"
@@ -3159,34 +3347,28 @@ msgid "Off"
 msgstr "Вимкнено"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
+#: src/components/NgxConfigEditor/NgxUpstream.vue:145
 #: src/components/NodeSelector/NodeSelector.vue:109
+#: src/components/ProxyTargets/ProxyTargets.vue:43
 #: src/views/dashboard/Environments.vue:107
-#: src/views/environments/list/envColumns.tsx:56
+#: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
 msgstr "Офлайн"
-
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:247
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:511
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:525
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:539
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:188
-msgid "Ok"
-msgstr "Гаразд"
 
 #: src/components/ChatGPT/ChatGPT.vue:375
 #: src/components/NgxConfigEditor/NgxServer.vue:53
 #: src/components/NgxConfigEditor/NgxUpstream.vue:36
-#: src/components/Notification/Notification.vue:111
-#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:95
-#: src/views/notification/Notification.vue:38
-#: src/views/site/components/SiteStatusSegmented.vue:96
+#: src/components/Notification/Notification.vue:110 src/language/curd.ts:15
+#: src/views/backup/components/BackupCreator.vue:149
+#: src/views/notification/Notification.vue:39
+#: src/views/site/components/SiteStatusSelect.vue:123
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:109
+#: src/views/site/site_list/SiteList.vue:99
 #: src/views/stream/components/RightPanel/Basic.vue:46
-#: src/views/stream/StreamList.vue:230
-#: src/views/system/Backup/BackupCreator.vue:149
+#: src/views/stream/components/StreamStatusSelect.vue:64
+#: src/views/stream/StreamList.vue:120
 msgid "OK"
 msgstr "Гаразд"
 
@@ -3195,7 +3377,7 @@ msgstr "Гаразд"
 msgid "On"
 msgstr "Увімкнено"
 
-#: src/views/certificate/DNSCredential.vue:59
+#: src/views/certificate/DNSCredential.vue:58
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Після завершення перевірки записи будуть видалені."
 
@@ -3203,13 +3385,17 @@ msgstr "Після завершення перевірки записи буду
 #: src/components/NodeSelector/NodeSelector.vue:103
 #: src/components/NodeSelector/NodeSelector.vue:89
 #: src/views/dashboard/Environments.vue:100
-#: src/views/environments/list/envColumns.tsx:52
+#: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
 msgstr "Онлайн"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:78
 msgid "Only zip files are allowed"
 msgstr "Дозволені лише zip-файли"
+
+#: src/components/PortScanner/PortScannerCompact.vue:44
+msgid "Open"
+msgstr "Відкрито"
 
 #: src/views/preference/Preference.vue:100
 msgid "OpenAI"
@@ -3253,11 +3439,11 @@ msgstr "Інші"
 msgid "Otp or recovery code empty"
 msgstr "OTP або код відновлення порожній"
 
-#: src/views/config/ConfigEditor.vue:347
+#: src/views/config/ConfigEditor.vue:353
 msgid "Overwrite"
 msgstr "Перезаписати"
 
-#: src/views/config/ConfigEditor.vue:351
+#: src/views/config/ConfigEditor.vue:357
 msgid "Overwrite exist file"
 msgstr "Перезаписати існуючий файл"
 
@@ -3289,7 +3475,7 @@ msgstr ""
 "можуть використовуватися замість пароля або як метод двофакторної "
 "аутентифікації (2FA)."
 
-#: src/views/other/Login.vue:183 src/views/user/userColumns.tsx:18
+#: src/views/other/Login.vue:183 src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr "Пароль"
 
@@ -3305,12 +3491,24 @@ msgstr "Невірний пароль"
 msgid "Password length cannot exceed 20 characters"
 msgstr "Довжина пароля не може перевищувати 20 символів"
 
+#: src/views/user/UserProfile.vue:96
+msgid "Password updated successfully"
+msgstr "Пароль успішно оновлено"
+
+#: src/views/user/UserProfile.vue:75
+msgid "Passwords do not match"
+msgstr "Паролі не збігаються"
+
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
-#: src/views/config/ConfigEditor.vue:316
-#: src/views/nginx_log/NginxLogList.vue:38
+#: src/language/curd.ts:59 src/views/config/ConfigEditor.vue:322
+#: src/views/nginx_log/NginxLogList.vue:44
 msgid "Path"
 msgstr "Шлях"
+
+#: src/constants/errors/backup.ts:74
+msgid "Path not in granted access paths: {0}"
+msgstr "Шлях не входить до наданих шляхів доступу: {0}"
 
 #: src/constants/errors/cert.ts:7 src/constants/errors/config.ts:2
 msgid "Path: {0} is not under the nginx conf dir: {1}"
@@ -3319,6 +3517,11 @@ msgstr "Шлях: {0} не знаходиться в каталозі конфі
 #: src/constants/errors/cert.ts:6
 msgid "Payload resource is nil"
 msgstr "Ресурс навантаження є nil"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:192
+#: src/views/backup/AutoBackup/AutoBackup.vue:217
+msgid "Pending"
+msgstr "Очікується"
 
 #: src/views/environments/list/BatchUpgrader.vue:232
 msgid "Perform"
@@ -3344,6 +3547,10 @@ msgstr "Налаштування продуктивності успішно з�
 msgid "Performing core upgrade"
 msgstr "Виконується оновлення ядра"
 
+#: src/views/user/UserProfile.vue:121
+msgid "Personal Information"
+msgstr "Особиста інформація"
+
 #: src/constants/errors/self_check.ts:19
 msgid "PID path not exist"
 msgstr "Шлях PID не існує"
@@ -3368,6 +3575,10 @@ msgstr ""
 "Будь ласка, введіть назву для ключа доступу, який ви хочете створити, і "
 "натисніть кнопку OK нижче."
 
+#: src/components/PortScanner/PortScannerCompact.vue:85
+msgid "Please enter a valid port range"
+msgstr "Будь ласка, введіть дійсний діапазон портів"
+
 #: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "Будь ласка, введіть OTP-код:"
@@ -3381,15 +3592,19 @@ msgstr "Будь ласка, введіть токен безпеки"
 msgid "Please enter the security token received during backup"
 msgstr "Будь ласка, введіть токен безпеки, отриманий під час резервного копіювання"
 
-#: src/views/certificate/DNSCredential.vue:53
+#: src/language/curd.ts:24
+msgid "Please fill all fields correctly"
+msgstr "Будь ласка, заповніть усі поля правильно"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:21
+msgid "Please fill in required S3 configuration fields"
+msgstr "Будь ласка, заповніть обов’язкові поля конфігурації S3"
+
+#: src/views/certificate/DNSCredential.vue:52
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
 msgstr "Будь ласка, заповніть облікові дані API, надані вашим DNS-провайдером."
-
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:106
-msgid "Please fill in the required fields"
-msgstr "Будь ласка, заповніть обов’язкові поля"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:56
 msgid ""
@@ -3410,7 +3625,7 @@ msgstr ""
 "уникнути блокування."
 
 #: src/views/config/components/Rename.vue:65
-#: src/views/config/ConfigEditor.vue:302
+#: src/views/config/ConfigEditor.vue:308
 msgid "Please input a filename"
 msgstr "Будь ласка, введіть назву файлу"
 
@@ -3446,12 +3661,12 @@ msgstr "Будь ласка, введіть ваш пароль!"
 msgid "Please input your username!"
 msgstr "Будь ласка, введіть ваше ім'я користувача!"
 
+#: src/views/backup/components/SystemRestore.vue:8
 #: src/views/install/components/InstallView.vue:48
-#: src/views/system/Backup/SystemRestore.vue:10
 msgid "Please log in."
 msgstr "Будь ласка, увійдіть."
 
-#: src/views/certificate/DNSCredential.vue:62
+#: src/views/certificate/DNSCredential.vue:61
 msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr ""
 "Будь ласка, зверніть увагу, що одиницею виміру часу в наведених нижче "
@@ -3461,7 +3676,7 @@ msgstr ""
 msgid "Please resolve all issues before proceeding with installation"
 msgstr "Будь ласка, усуньте всі проблеми перед продовженням встановлення"
 
-#: src/views/system/Backup/BackupCreator.vue:107
+#: src/views/backup/components/BackupCreator.vue:107
 msgid "Please save this security token, you will need it for restoration:"
 msgstr ""
 "Будь ласка, збережіть цей токен безпеки, він знадобиться вам для "
@@ -3471,17 +3686,21 @@ msgstr ""
 msgid "Please select a backup file"
 msgstr "Будь ласка, виберіть файл резервної копії"
 
-#: src/views/environments/list/Environment.vue:112
+#: src/language/curd.ts:33
+msgid "Please select at least one item"
+msgstr "Будь ласка, виберіть хоча б один елемент"
+
+#: src/views/environments/list/Environment.vue:113
 #: src/views/environments/list/Environment.vue:35
 msgid "Please select at least one node to reload Nginx"
 msgstr "Будь ласка, виберіть принаймні один вузол для перезавантаження Nginx"
 
-#: src/views/environments/list/Environment.vue:133
+#: src/views/environments/list/Environment.vue:134
 #: src/views/environments/list/Environment.vue:49
 msgid "Please select at least one node to restart Nginx"
 msgstr "Будь ласка, виберіть принаймні один вузол для перезапуску Nginx"
 
-#: src/views/environments/list/Environment.vue:91
+#: src/views/environments/list/Environment.vue:92
 msgid "Please select at least one node to upgrade"
 msgstr "Будь ласка, виберіть принаймні один вузол для оновлення"
 
@@ -3489,12 +3708,18 @@ msgstr "Будь ласка, виберіть принаймні один вуз
 msgid "Please type \"Revoke\" to confirm"
 msgstr "Будь ласка, введіть \"Скасувати\" для підтвердження"
 
+#: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
 msgid "Port"
 msgstr "Порт"
 
-#: src/views/environments/group/columns.ts:17
-#: src/views/environments/group/EnvGroup.vue:26
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:44
+#: src/views/stream/components/RightPanel/RightPanel.vue:26
+msgid "Port Scanner"
+msgstr "Сканер портів"
+
+#: src/views/environments/group/columns.ts:15
+#: src/views/environments/group/EnvGroup.vue:39
 msgid "Post-sync Action"
 msgstr "Дія після синхронізації"
 
@@ -3512,6 +3737,10 @@ msgstr "Налаштування"
 msgid "Preparing lego configurations"
 msgstr "Підготовка конфігурацій Lego"
 
+#: src/components/PortScanner/PortScannerCompact.vue:55
+msgid "Process"
+msgstr "Процес"
+
 #: src/views/dashboard/components/ProcessDistributionCard.vue:26
 msgid "Process Distribution"
 msgstr "Розподіл процесів"
@@ -3519,6 +3748,10 @@ msgstr "Розподіл процесів"
 #: src/views/dashboard/components/PerformanceTablesCard.vue:155
 msgid "Process information"
 msgstr "Інформація про процес"
+
+#: src/language/curd.ts:58
+msgid "Processing {count}/{total}"
+msgstr "Обробка {count}/{total}"
 
 #: src/language/constants.ts:3
 msgid "Prohibit changing root password in demo"
@@ -3532,13 +3765,22 @@ msgstr "Забороняється видаляти типового корис�
 msgid "Project Team"
 msgstr "Команда проекту"
 
-#: src/views/certificate/DNSCredential.vue:19
+#: src/views/certificate/DNSCredential.vue:16
 msgid "Provider"
 msgstr "Провайдер"
 
-#: src/views/certificate/ACMEUser.vue:51
+#: src/views/certificate/ACMEUser.vue:48
 msgid "Proxy"
 msgstr "Проксі"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+msgid "Proxy Pass"
+msgstr "Проксі-передача"
+
+#: src/views/site/site_list/columns.tsx:64
+#: src/views/stream/columns.tsx:32
+msgid "Proxy Targets"
+msgstr "Цілі проксі"
 
 #: src/views/preference/tabs/NodeSettings.vue:46
 msgid "Public Security Number"
@@ -3567,15 +3809,6 @@ msgstr "Отримання"
 msgid "Recheck"
 msgstr "Перевірити знову"
 
-#: src/components/StdDesign/StdDataDisplay/StdBulkActions.vue:43
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:533
-msgid "Recover"
-msgstr "Відновити"
-
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:189
-msgid "Recovered Successfully"
-msgstr "Успішно відновлено"
-
 #: src/components/TwoFA/Authorization.vue:79
 msgid "Recovery"
 msgstr "Відновлення"
@@ -3601,11 +3834,11 @@ msgstr "Рекурсивні сервери імен"
 msgid "Regenerate response"
 msgstr "Повторити відповідь"
 
-#: src/views/certificate/ACMEUser.vue:137
+#: src/views/certificate/ACMEUser.vue:133
 msgid "Register"
 msgstr "Зареєструватися"
 
-#: src/views/certificate/ACMEUser.vue:56
+#: src/views/certificate/ACMEUser.vue:53
 msgid ""
 "Register a user or use this account to issue a certificate through an HTTP "
 "proxy."
@@ -3613,11 +3846,11 @@ msgstr ""
 "Зареєструйте користувача або використовуйте цей обліковий запис для видачі "
 "сертифіката через HTTP-проксі."
 
-#: src/views/certificate/ACMEUser.vue:106
+#: src/views/certificate/ACMEUser.vue:101
 msgid "Register failed"
 msgstr "Не вдалося зареєструвати"
 
-#: src/views/certificate/ACMEUser.vue:77
+#: src/views/certificate/ACMEUser.vue:72
 msgid "Register On Startup"
 msgstr "Реєстрація при запуску"
 
@@ -3625,7 +3858,7 @@ msgstr "Реєстрація при запуску"
 msgid "Register passkey successfully"
 msgstr "Ключ доступу успішно зареєстровано"
 
-#: src/views/certificate/ACMEUser.vue:104
+#: src/views/certificate/ACMEUser.vue:99
 msgid "Register successfully"
 msgstr "Успішно зареєстровано"
 
@@ -3633,7 +3866,7 @@ msgstr "Успішно зареєстровано"
 msgid "Registering user"
 msgstr "Реєстрація користувача"
 
-#: src/views/certificate/ACMEUser.vue:120
+#: src/views/certificate/ACMEUser.vue:116
 msgid "Registration Status"
 msgstr "Стан реєстрації"
 
@@ -3651,10 +3884,10 @@ msgid "Reload"
 msgstr "Перезавантажити"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
-#: src/views/environments/group/columns.ts:24
-#: src/views/environments/group/EnvGroup.vue:37
-#: src/views/environments/list/Environment.vue:120
-#: src/views/environments/list/Environment.vue:128
+#: src/views/environments/group/columns.ts:22
+#: src/views/environments/group/EnvGroup.vue:50
+#: src/views/environments/list/Environment.vue:121
+#: src/views/environments/list/Environment.vue:129
 msgid "Reload Nginx"
 msgstr "Перезавантажити Nginx"
 
@@ -3692,16 +3925,16 @@ msgstr "Перезавантаження"
 msgid "Reloading nginx"
 msgstr "Перезавантаження nginx"
 
-#: src/views/preference/tabs/AuthSettings.vue:169
+#: src/views/preference/tabs/AuthSettings.vue:137
 msgid "Remove"
 msgstr "Видалити"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:46
-#: src/views/preference/tabs/AuthSettings.vue:51
+#: src/views/preference/tabs/AuthSettings.vue:47
 msgid "Remove successfully"
 msgstr "Успішно видалено"
 
-#: src/components/Notification/Notification.vue:79
+#: src/components/Notification/Notification.vue:78
 msgid "Removed successfully"
 msgstr "Успішно видалено"
 
@@ -3808,7 +4041,7 @@ msgstr "Запит з неправильними параметрами"
 msgid "Requests Per Connection"
 msgstr "Запитів на зʼєднання"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:442
+#: src/language/curd.ts:13
 msgid "Reset"
 msgstr "Скинути"
 
@@ -3836,8 +4069,8 @@ msgid "Restart"
 msgstr "Перезавантажити"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
-#: src/views/environments/list/Environment.vue:141
-#: src/views/environments/list/Environment.vue:149
+#: src/views/environments/list/Environment.vue:142
+#: src/views/environments/list/Environment.vue:150
 msgid "Restart Nginx"
 msgstr "Перезапустити Nginx"
 
@@ -3867,6 +4100,10 @@ msgstr ""
 msgid "Restarting"
 msgstr "Перезапуск"
 
+#: src/language/curd.ts:10
+msgid "Restore"
+msgstr "Відновити"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:135
 msgid "Restore completed successfully"
 msgstr "Відновлення успішно завершено"
@@ -3890,8 +4127,12 @@ msgstr "Відновити конфігурацію Nginx UI"
 msgid "Restore this version"
 msgstr "Відновити цю версію"
 
+#: src/language/curd.ts:30
+msgid "Restored successfully"
+msgstr "Успішно відновлено"
+
 #: src/views/certificate/components/RemoveCert.vue:26
-#: src/views/certificate/components/RemoveCert.vue:95
+#: src/views/certificate/components/RemoveCert.vue:96
 msgid "Revoke"
 msgstr "Анулювати"
 
@@ -3899,11 +4140,11 @@ msgstr "Анулювати"
 msgid "Revoke Old Certificate"
 msgstr "Відкликати старий сертифікат"
 
-#: src/views/certificate/components/RemoveCert.vue:109
+#: src/views/certificate/components/RemoveCert.vue:110
 msgid "Revoke this certificate"
 msgstr "Відкликати цей сертифікат"
 
-#: src/views/certificate/components/RemoveCert.vue:117
+#: src/views/certificate/components/RemoveCert.vue:118
 msgid ""
 "Revoking a certificate will affect any services currently using it. This "
 "action cannot be undone."
@@ -3911,15 +4152,15 @@ msgstr ""
 "Відкликання сертифіката вплине на всі служби, які його використовують. Цю "
 "дію не можна скасувати."
 
-#: src/views/preference/tabs/AuthSettings.vue:107
+#: src/views/preference/tabs/AuthSettings.vue:75
 msgid "RP Display Name"
 msgstr "Відображуване ім’я RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:113
+#: src/views/preference/tabs/AuthSettings.vue:81
 msgid "RP Origins"
 msgstr "Джерела RP"
 
-#: src/views/preference/tabs/AuthSettings.vue:101
+#: src/views/preference/tabs/AuthSettings.vue:69
 msgid "RPID"
 msgstr "RPID"
 
@@ -3931,13 +4172,114 @@ msgstr "Режим роботи"
 msgid "Running"
 msgstr "Біг"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:79
+#: src/views/backup/AutoBackup/AutoBackup.vue:88
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:47
+msgid "S3"
+msgstr "S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:81
+msgid "S3 access key ID"
+msgstr "Ідентифікатор ключа доступу S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:75
+msgid "S3 Access Key ID"
+msgstr "Ідентифікатор ключа доступу S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:77
+msgid "S3 access key ID is required"
+msgstr "Потрібен ідентифікатор ключа доступу S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:97
+msgid "S3 Bucket"
+msgstr "S3-відро"
+
+#: src/constants/errors/backup.ts:70
+msgid "S3 bucket access denied: {0}"
+msgstr "Доступ до сховища S3 заборонено: {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:99
+msgid "S3 bucket is required"
+msgstr "Потрібен S3-відро"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:103
+msgid "S3 bucket name"
+msgstr "Назва S3-відра"
+
+#: src/constants/errors/backup.ts:63
+msgid "S3 configuration is incomplete: missing {0}"
+msgstr "Конфігурація S3 неповна: відсутній {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:32
+msgid "S3 connection test failed"
+msgstr "Тест підключення S3 не вдався"
+
+#: src/constants/errors/backup.ts:69
+msgid "S3 connection test failed: {0}"
+msgstr "Тест підключення S3 не вдався: {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:28
+msgid "S3 connection test successful"
+msgstr "Тест підключення S3 успішний"
+
+#: src/constants/errors/backup.ts:71
+msgid "S3 credentials are invalid: {0}"
+msgstr "Облікові дані S3 недійсні: {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:64
+msgid "S3 Endpoint"
+msgstr "Кінцева точка S3"
+
+#: src/constants/errors/backup.ts:72
+msgid "S3 endpoint is invalid: {0}"
+msgstr "Кінцева точка S3 недійсна: {0}"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:66
+msgid "S3 endpoint is required"
+msgstr "Потрібна кінцева точка S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:70
+msgid "S3 endpoint URL"
+msgstr "URL-адреса кінцевої точки S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:124
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:58
+msgid "S3 path (e.g., backups/)"
+msgstr "Шлях S3 (напр., backups/)"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:108
+msgid "S3 Region"
+msgstr "Регіон S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:113
+msgid "S3 region (e.g., us-east-1)"
+msgstr "Регіон S3 (напр., us-east-1)"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:92
+msgid "S3 secret access key"
+msgstr "Секретний ключ доступу S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:86
+msgid "S3 Secret Access Key"
+msgstr "Секретний ключ доступу S3"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:88
+msgid "S3 secret access key is required"
+msgstr "Потрібен секретний ключ доступу S3"
+
+#: src/constants/errors/backup.ts:68
+msgid "S3 upload failed: {0}"
+msgstr "Помилка завантаження в S3: {0}"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:32
+msgid "Saturday"
+msgstr "Субота"
+
 #: src/components/ChatGPT/ChatGPT.vue:355
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
-#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:64
-#: src/components/StdDesign/StdDetail/StdDetail.vue:93
-#: src/views/certificate/CertificateEditor.vue:266
+#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:266
 #: src/views/config/components/ConfigName.vue:59
-#: src/views/config/ConfigEditor.vue:275
+#: src/views/config/ConfigEditor.vue:281
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
 #: src/views/preference/Preference.vue:117
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
@@ -3990,15 +4332,14 @@ msgstr "Не вдалося зберегти потік %{name} на %{node}"
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Потік %{name} успішно збережено на %{node}"
 
-#: src/components/StdDesign/StdDataDisplay/StdBatchEdit.vue:47
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:97
-#: src/views/certificate/CertificateEditor.vue:49
+#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:49
 #: src/views/preference/store/index.ts:118
 msgid "Save successfully"
 msgstr "Успішно збережено"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:43
-#: src/views/config/ConfigEditor.vue:194 src/views/site/site_add/SiteAdd.vue:29
+#: src/language/curd.ts:28 src/views/config/ConfigEditor.vue:200
+#: src/views/site/site_add/SiteAdd.vue:29
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:40
 msgid "Saved successfully"
 msgstr "Успішно збережено"
@@ -4007,17 +4348,41 @@ msgstr "Успішно збережено"
 msgid "Sbin path not exist"
 msgstr "Шлях sbin не існує"
 
+#: src/components/PortScanner/PortScannerCompact.vue:94
+msgid "Scan completed"
+msgstr "Сканування завершено"
+
+#: src/components/PortScanner/PortScannerCompact.vue:98
+msgid "Scan failed"
+msgstr "Сканування не вдалося"
+
+#: src/components/PortScanner/PortScannerCompact.vue:179
+msgid "Scan Ports"
+msgstr "Сканувати порти"
+
+#: src/components/PortScanner/PortScannerCompact.vue:204
+msgid "Scan Results"
+msgstr "Результати сканування"
+
 #: src/views/preference/components/AuthSettings/TOTP.vue:69
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr ""
 "Відскануйте QR-код за допомогою мобільного телефону, щоб додати обліковий "
 "запис до програми."
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:114
+msgid "Schedule"
+msgstr "Розклад"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:144
+msgid "Schedule Type"
+msgstr "Тип розкладу"
+
 #: src/views/certificate/components/DNSChallenge.vue:90
 msgid "SDK"
 msgstr "SDK"
 
-#: src/language/constants.ts:62
+#: src/language/constants.ts:62 src/language/curd.ts:12
 msgid "Search"
 msgstr "Пошук"
 
@@ -4029,20 +4394,32 @@ msgstr "Назва модуля пошуку"
 msgid "Secret has been copied"
 msgstr "Секрет скопійовано"
 
+#: src/views/user/UserProfile.vue:175
+msgid "Security Settings"
+msgstr "Налаштування безпеки"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:207
 #: src/components/SystemRestore/SystemRestoreContent.vue:284
 msgid "Security Token"
 msgstr "Токен безпеки"
 
-#: src/views/system/Backup/BackupCreator.vue:94
+#: src/views/backup/components/BackupCreator.vue:94
 msgid "Security Token Information"
 msgstr "Інформація про токен безпеки"
 
-#: src/views/environments/group/EnvGroup.vue:29
+#: src/language/curd.ts:31
+msgid "Select all"
+msgstr "Вибрати все"
+
+#: src/views/environments/group/EnvGroup.vue:42
 msgid "Select an action after sync"
 msgstr "Виберіть дію після синхронізації"
 
-#: src/components/StdDesign/StdDataEntry/components/StdSelector.vue:189
+#: src/language/curd.ts:57
+msgid "Selected {count} files"
+msgstr "Вибрано {count} файлів"
+
+#: src/language/curd.ts:16
 msgid "Selector"
 msgstr "Селектор"
 
@@ -4096,7 +4473,7 @@ msgstr ""
 "Встановіть рекурсивні сервери імен, щоб перевизначити системні сервери імен "
 "на етапі DNS-виклику."
 
-#: src/views/site/components/SiteStatusSegmented.vue:89
+#: src/views/site/components/SiteStatusSelect.vue:116
 msgid "set to maintenance mode"
 msgstr "перевести в режим обслуговування"
 
@@ -4170,7 +4547,7 @@ msgstr "Журнали сайту"
 msgid "Site not found"
 msgstr "Сайт не знайдено"
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:29
 msgid "Sites directory exists"
 msgstr "Каталог сайтів існує"
 
@@ -4185,6 +4562,10 @@ msgstr "Каталог Sites-available не існує"
 #: src/constants/errors/self_check.ts:12
 msgid "Sites-enabled directory not exist"
 msgstr "Каталог sites-enabled не існує"
+
+#: src/language/curd.ts:60
+msgid "Size"
+msgstr "Розмір"
 
 #: src/views/preference/tabs/NodeSettings.vue:23
 msgid "Skip Installation"
@@ -4253,22 +4634,27 @@ msgstr "Вхід через SSO"
 msgid "Stable"
 msgstr "Стабільна"
 
+#: src/components/PortScanner/PortScannerCompact.vue:151
+msgid "Start"
+msgstr "Початок"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:246
 #: src/components/SystemRestore/SystemRestoreContent.vue:323
 msgid "Start Restore"
 msgstr "Почати відновлення"
 
-#: src/views/dashboard/components/ModulesTable.vue:89
-#: src/views/dashboard/components/ModulesTable.vue:93
+#: src/views/dashboard/components/ModulesTable.vue:88
+#: src/views/dashboard/components/ModulesTable.vue:92
 msgid "Static"
 msgstr "Статичний"
 
-#: src/views/certificate/ACMEUser.vue:65
-#: src/views/certificate/CertificateList/certColumns.tsx:65
-#: src/views/dashboard/components/ModulesTable.vue:97
-#: src/views/environments/list/envColumns.tsx:44
+#: src/components/PortScanner/PortScannerCompact.vue:37
+#: src/views/certificate/ACMEUser.vue:60
+#: src/views/certificate/CertificateList/certColumns.tsx:63
+#: src/views/dashboard/components/ModulesTable.vue:96
+#: src/views/environments/list/envColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:28
-#: src/views/site/site_list/columns.tsx:90 src/views/stream/StreamList.vue:47
+#: src/views/site/site_list/columns.tsx:101 src/views/stream/columns.tsx:69
 msgid "Status"
 msgstr "Статус"
 
@@ -4281,6 +4667,29 @@ msgstr "Зупинено"
 msgid "Storage"
 msgstr "Сховище"
 
+#: src/views/backup/AutoBackup/AutoBackup.vue:96
+msgid "Storage Configuration"
+msgstr "Конфігурація сховища"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:118
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:52
+msgid "Storage Path"
+msgstr "Шлях зберігання"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:120
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:54
+msgid "Storage path is required"
+msgstr "Шлях до сховища обов’язковий"
+
+#: src/constants/errors/backup.ts:61
+msgid "Storage path not in granted access paths: {0}"
+msgstr "Шлях зберігання не входить до наданих шляхів доступу: {0}"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:74
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:43
+msgid "Storage Type"
+msgstr "Тип сховища"
+
 #: src/constants/errors/stream.ts:4
 msgid "Stream is enabled"
 msgstr "Потік увімкнено"
@@ -4289,7 +4698,7 @@ msgstr "Потік увімкнено"
 msgid "Stream not found"
 msgstr "Потік не знайдено"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:30
 msgid "Streams directory exists"
 msgstr "Каталог Streams існує"
 
@@ -4305,9 +4714,16 @@ msgstr "Каталог streams-enabled не існує"
 msgid "Stub Status Port"
 msgstr "Порт статусу Stub"
 
-#: src/constants/index.ts:25 src/views/notification/notificationColumns.tsx:36
+#: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:193
+#: src/views/backup/AutoBackup/AutoBackup.vue:218
+#: src/views/notification/notificationColumns.tsx:35
 msgid "Success"
 msgstr "Успіх"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:121
+#: src/views/backup/AutoBackup/components/CronEditor.vue:26
+msgid "Sunday"
+msgstr "Неділя"
 
 #: src/components/SelfCheck/tasks/frontend/sse.ts:14
 msgid ""
@@ -4333,6 +4749,14 @@ msgstr ""
 "щоб написати відповідний конфігураційний файл: "
 "https://nginxui.com/guide/nginx-proxy-example.html"
 
+#: src/language/curd.ts:51 src/language/curd.ts:55
+msgid "Support single or batch upload of files"
+msgstr "Підтримка одиночного або пакетного завантаження файлів"
+
+#: src/language/curd.ts:52 src/language/curd.ts:56
+msgid "Support uploading entire folders"
+msgstr "Підтримка завантаження цілих папок"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:197
 #: src/components/SystemRestore/SystemRestoreContent.vue:274
 msgid "Supported file type: .zip"
@@ -4355,7 +4779,7 @@ msgstr "Перейти на світлу тему"
 msgid "Sync"
 msgstr "Синхронізувати"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:30
+#: src/views/certificate/CertificateList/certColumns.tsx:28
 msgid "Sync Certificate"
 msgstr "Синхронізувати сертифікат"
 
@@ -4392,7 +4816,7 @@ msgid "Sync Config Success"
 msgstr "Успішна синхронізація конфігурації"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:122
-#: src/views/environments/group/EnvGroup.vue:18
+#: src/views/environments/group/EnvGroup.vue:31
 msgid "Sync Nodes"
 msgstr "Синхронізовані вузли"
 
@@ -4412,11 +4836,12 @@ msgstr "Синхронізувати з"
 msgid "Synchronization"
 msgstr "Синхронізація"
 
+#: src/components/PortScanner/PortScannerCompact.vue:194
 #: src/routes/modules/system.ts:11
 msgid "System"
 msgstr "Система"
 
-#: src/views/system/Backup/BackupCreator.vue:71
+#: src/views/backup/components/BackupCreator.vue:71
 msgid "System Backup"
 msgstr "Резервне копіювання системи"
 
@@ -4433,7 +4858,6 @@ msgid "System Restore"
 msgstr "Відновлення системи"
 
 #: src/views/install/components/InstallView.vue:44
-#: src/views/system/Backup/SystemRestore.vue:6
 msgid "System restored successfully."
 msgstr "Систему успішно відновлено."
 
@@ -4456,6 +4880,10 @@ msgstr "Термінал"
 #: src/views/preference/tabs/TerminalSettings.vue:10
 msgid "Terminal Start Command"
 msgstr "Команда запуску терміналу"
+
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:139
+msgid "Test S3 Connection"
+msgstr "Перевірити підключення S3"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:48
 msgid ""
@@ -4600,22 +5028,27 @@ msgstr "Цей сертифікат керується Nginx UI"
 msgid "This field is required"
 msgstr "Це поле обов'язкове"
 
-#: src/constants/form_errors.ts:3
+#: src/constants/form_errors.ts:3 src/language/curd.ts:41
 msgid "This field should be a valid email address"
 msgstr "Це поле має містити дійсну електронну адресу"
 
-#: src/constants/form_errors.ts:5
+#: src/constants/form_errors.ts:5 src/language/curd.ts:43
 msgid "This field should be a valid hostname"
 msgstr "Це поле має містити дійсну назву хоста"
 
-#: src/components/StdDesign/StdDataEntry/StdFormItem.vue:39
-#: src/constants/form_errors.ts:2
+#: src/constants/form_errors.ts:2 src/language/curd.ts:40
 msgid "This field should not be empty"
 msgstr "Це поле не повинно бути порожнім"
 
 #: src/constants/form_errors.ts:6
 msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "Це поле має містити лише літери, символи Unicode, цифри та -_."
+
+#: src/language/curd.ts:44
+msgid ""
+"This field should only contain letters, unicode characters, numbers, and "
+"-_./:"
+msgstr "Це поле має містити лише літери, символи Unicode, цифри та -_./:"
 
 #: src/views/dashboard/NginxDashBoard.vue:150
 msgid ""
@@ -4625,7 +5058,7 @@ msgstr ""
 "Цей модуль надає дані, такі як статистика запитів Nginx, кількість з’єднань "
 "тощо. Після ввімкнення ви зможете переглядати статистику продуктивності"
 
-#: src/views/certificate/components/RemoveCert.vue:103
+#: src/views/certificate/components/RemoveCert.vue:104
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
@@ -4633,7 +5066,7 @@ msgstr ""
 "Ця операція лише видалить сертифікат із бази даних. Файли сертифіката у "
 "файловій системі не будуть видалені."
 
-#: src/views/system/Backup/BackupCreator.vue:141
+#: src/views/backup/components/BackupCreator.vue:141
 msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
@@ -4641,7 +5074,7 @@ msgstr ""
 "Цей токен буде показано лише один раз, і його не можна буде отримати "
 "пізніше. Будь ласка, збережіть його в безпечному місці."
 
-#: src/constants/form_errors.ts:4
+#: src/constants/form_errors.ts:4 src/language/curd.ts:42
 msgid "This value is already taken"
 msgstr "Це значення вже використовується"
 
@@ -4667,12 +5100,16 @@ msgstr ""
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "Це оновить або перевстановить Nginx UI на %{nodeNames} до версії %{version}."
 
-#: src/views/preference/tabs/AuthSettings.vue:124
+#: src/views/preference/tabs/AuthSettings.vue:92
 msgid "Throttle"
 msgstr "Обмеження"
 
+#: src/views/backup/AutoBackup/components/CronEditor.vue:30
+msgid "Thursday"
+msgstr "Четвер"
+
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:65
-#: src/views/preference/tabs/AuthSettings.vue:144
+#: src/views/preference/tabs/AuthSettings.vue:112
 #: src/views/preference/tabs/LogrotateSettings.vue:12
 msgid "Tips"
 msgstr "Поради"
@@ -4685,11 +5122,11 @@ msgstr ""
 "Порада: Ви можете збільшити потужність обробки паралельних запитів, "
 "збільшивши worker_processes або worker_connections."
 
-#: src/views/notification/notificationColumns.tsx:52
+#: src/views/notification/notificationColumns.tsx:58
 msgid "Title"
 msgstr "Назва"
 
-#: src/views/certificate/components/RemoveCert.vue:121
+#: src/views/certificate/components/RemoveCert.vue:122
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
 msgstr "Щоб підтвердити анулювання, введіть \"Анулювати\" у поле нижче:"
 
@@ -4742,10 +5179,9 @@ msgstr "Не вдалося перемкнути"
 msgid "Token is not valid"
 msgstr "Токен недійсний"
 
-#: src/components/StdDesign/StdDataDisplay/StdPagination.vue:40
-msgid "Total %{total} item"
-msgid_plural "Total %{total} items"
-msgstr[0] "Всього %{total} елемент"
+#: src/language/curd.ts:5
+msgid "Total"
+msgstr "Всього"
 
 #: src/composables/usePerformanceMetrics.ts:94
 #: src/views/dashboard/components/PerformanceTablesCard.vue:54
@@ -4786,49 +5222,64 @@ msgstr ""
 "TOTP — це двофакторний метод автентифікації, який використовує алгоритм "
 "одноразового пароля на основі часу."
 
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:197
+#: src/language/curd.ts:20
 msgid "Trash"
 msgstr "Кошик"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:28
+msgid "Tuesday"
+msgstr "Вівторок"
 
 #: src/components/TwoFA/use2FAModal.ts:67
 msgid "Two-factor authentication required"
 msgstr "Потрібна двофакторна аутентифікація"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:25
-#: src/views/dashboard/components/ModulesTable.vue:84
-#: src/views/nginx_log/NginxLogList.vue:14
-#: src/views/notification/notificationColumns.tsx:9
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+#: src/views/certificate/CertificateList/certColumns.tsx:24
+#: src/views/dashboard/components/ModulesTable.vue:83
+#: src/views/nginx_log/NginxLogList.vue:12
+#: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:18
 msgid "Type"
 msgstr "Тип"
 
+#: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
 msgid "Unknown"
 msgstr "Невідомо"
+
+#: src/constants/errors/backup.ts:64
+msgid "Unsupported backup type: {0}"
+msgstr "Тип резервної копії не підтримується: {0}"
+
+#: src/views/user/UserProfile.vue:218
+msgid "Update Password"
+msgstr "Оновити пароль"
+
+#: src/views/user/UserProfile.vue:142
+msgid "Update Profile"
+msgstr "Оновити профіль"
 
 #: src/views/preference/components/AuthSettings/Passkey.vue:39
 msgid "Update successfully"
 msgstr "Успішно оновлено"
 
-#: src/views/certificate/ACMEUser.vue:88
-#: src/views/certificate/DNSCredential.vue:27
-#: src/views/config/configColumns.tsx:36 src/views/config/ConfigEditor.vue:329
-#: src/views/environments/group/columns.ts:37
-#: src/views/environments/list/envColumns.tsx:90
+#: src/views/backup/AutoBackup/AutoBackup.vue:234
+#: src/views/certificate/ACMEUser.vue:83
+#: src/views/certificate/DNSCredential.vue:24
+#: src/views/config/configColumns.tsx:35 src/views/config/ConfigEditor.vue:335
+#: src/views/environments/group/columns.ts:35
+#: src/views/environments/list/envColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:38
-#: src/views/site/site_list/columns.tsx:83
+#: src/views/site/site_list/columns.tsx:94 src/views/stream/columns.tsx:62
 #: src/views/stream/components/RightPanel/Basic.vue:73
-#: src/views/stream/StreamList.vue:67 src/views/user/userColumns.tsx:54
+#: src/views/user/userColumns.tsx:52
 msgid "Updated at"
 msgstr "Оновлено"
 
-#: src/components/StdDesign/StdDataDisplay/methods/sortable.ts:121
-msgid "Updated successfully"
-msgstr "Успішно оновлено"
-
-#: src/routes/modules/system.ts:33
-#: src/views/environments/list/Environment.vue:107
-#: src/views/environments/list/Environment.vue:99
+#: src/routes/modules/system.ts:26
+#: src/views/environments/list/Environment.vue:100
+#: src/views/environments/list/Environment.vue:108
 #: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "Оновити"
@@ -4846,7 +5297,19 @@ msgstr "Успішно оновлено"
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Оновлення Nginx UI, зачекайте..."
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:173
+#: src/language/curd.ts:47
+msgid "Upload Files"
+msgstr "Завантажити файли"
+
+#: src/language/curd.ts:48
+msgid "Upload Folders"
+msgstr "Завантажити папки"
+
+#: src/components/ProxyTargets/ProxyTargets.vue:48
+msgid "Upstream"
+msgstr "Вгору за течією"
+
+#: src/components/NgxConfigEditor/NgxUpstream.vue:177
 msgid "Upstream Name"
 msgstr "Назва апстріму"
 
@@ -4854,7 +5317,7 @@ msgstr "Назва апстріму"
 msgid "Uptime:"
 msgstr "Час роботи:"
 
-#: src/views/environments/list/envColumns.tsx:19
+#: src/views/environments/list/envColumns.tsx:18
 msgid "URL"
 msgstr "URL"
 
@@ -4878,11 +5341,20 @@ msgstr "Користувач"
 msgid "User banned"
 msgstr "Користувача заблоковано"
 
+#: src/views/user/UserProfile.vue:62
+msgid "User info updated successfully"
+msgstr "Інформацію про користувача успішно оновлено"
+
 #: src/constants/errors/user.ts:8
 msgid "User not enabled otp as 2fa"
 msgstr "Користувач не увімкнув OTP як 2FA"
 
-#: src/views/other/Login.vue:173 src/views/user/userColumns.tsx:9
+#: src/routes/modules/user.ts:19
+msgid "User Profile"
+msgstr "Профіль користувача"
+
+#: src/views/other/Login.vue:173 src/views/user/userColumns.tsx:7
+#: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "Ім’я користувача"
 
@@ -4895,8 +5367,8 @@ msgid "Username length cannot exceed 255 characters"
 msgstr "Довжина імені користувача не може перевищувати 255 символів"
 
 #: src/components/CertInfo/CertInfo.vue:24
-#: src/views/certificate/ACMEUser.vue:124
-#: src/views/certificate/CertificateList/certColumns.tsx:78
+#: src/views/certificate/ACMEUser.vue:120
+#: src/views/certificate/CertificateList/certColumns.tsx:76
 msgid "Valid"
 msgstr "Дійсний"
 
@@ -4913,27 +5385,18 @@ msgstr "Перевірити цілісність резервної копії"
 msgid "Verify system requirements"
 msgstr "Перевірте системні вимоги"
 
-#: src/views/environments/list/envColumns.tsx:31
+#: src/views/environments/list/envColumns.tsx:30
 msgid "Version"
 msgstr "Версія"
 
-#: src/components/StdDesign/StdDataDisplay/StdTable.vue:488
-#: src/views/nginx_log/NginxLogList.vue:74
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:83
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "Переглянути"
 
-#: src/components/Notification/Notification.vue:180
+#: src/components/Notification/Notification.vue:179
 msgid "View all notifications"
 msgstr "Переглянути всі сповіщення"
-
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:151
-msgid "View Details"
-msgstr "Переглянути деталі"
-
-#: src/components/StdDesign/StdDataDisplay/StdCurd.vue:262
-msgid "View Mode"
-msgstr "Режим перегляду"
 
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:134
 msgid "View Recovery Codes"
@@ -4948,10 +5411,10 @@ msgstr "Переглянутий"
 msgid "Waiting processes"
 msgstr "Процеси очікування"
 
-#: src/constants/index.ts:23 src/views/config/InspectConfig.vue:33
-#: src/views/notification/notificationColumns.tsx:22
+#: src/constants/index.ts:23 src/views/backup/components/BackupCreator.vue:138
+#: src/views/config/InspectConfig.vue:33
+#: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:82
-#: src/views/system/Backup/BackupCreator.vue:138
 msgid "Warning"
 msgstr "Попередження"
 
@@ -4966,7 +5429,7 @@ msgstr ""
 "Переконайтеся, що у вас є дійсний файл резервної копії та токен безпеки, і "
 "ретельно виберіть, що відновлювати."
 
-#: src/views/certificate/DNSCredential.vue:56
+#: src/views/certificate/DNSCredential.vue:55
 msgid ""
 "We will add one or more TXT records to the DNS records of your domain for "
 "ownership verification."
@@ -4982,7 +5445,7 @@ msgstr ""
 "Ми видалимо конфігурацію HTTPChallenge з цього файлу та перезавантажимо "
 "Nginx. Ви впевнені, що хочете продовжити?"
 
-#: src/views/preference/tabs/AuthSettings.vue:97
+#: src/views/preference/tabs/AuthSettings.vue:65
 msgid "Webauthn"
 msgstr "WebAuthn"
 
@@ -4994,7 +5457,19 @@ msgstr "Налаштування WebAuthn не налаштовані"
 msgid "WebSocket connection error"
 msgstr "Помилка підключення WebSocket"
 
-#: src/views/certificate/ACMEUser.vue:83
+#: src/views/backup/AutoBackup/components/CronEditor.vue:29
+msgid "Wednesday"
+msgstr "середа"
+
+#: src/views/backup/AutoBackup/components/CronEditor.vue:20
+msgid "Weekly"
+msgstr "Щотижня"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:135
+msgid "Weekly on %{day} at %{time}"
+msgstr "Щотижня в %{day} о %{time}"
+
+#: src/views/certificate/ACMEUser.vue:78
 msgid ""
 "When Enabled, Nginx UI will automatically re-register users upon startup. "
 "Generally, do not enable this unless you are in a dev environment and using "
@@ -5040,7 +5515,7 @@ msgstr "Робочі процеси"
 msgid "Workers"
 msgstr "Робочі процеси"
 
-#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:56
+#: src/layouts/HeaderLayout.vue:62 src/routes/index.ts:57
 #: src/views/workspace/WorkSpace.vue:52
 msgid "Workspace"
 msgstr "Робоча область"
@@ -5062,12 +5537,12 @@ msgstr "Запис сертифіката на диск"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
-#: src/views/preference/tabs/AuthSettings.vue:163
+#: src/views/preference/tabs/AuthSettings.vue:131
 #: src/views/preference/tabs/CertSettings.vue:72
 msgid "Yes"
 msgstr "Так"
 
-#: src/views/terminal/Terminal.vue:135
+#: src/views/terminal/Terminal.vue:132
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a "
 "non-localhost domain. This may expose sensitive information."
@@ -5124,6 +5599,55 @@ msgstr "Ваші старі коди більше не працюватимут�
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Ваші ключі доступу"
+
+#~ msgid "Disable"
+#~ msgstr "Вимкнути"
+
+#~ msgid "Enable"
+#~ msgstr "Увімкнути"
+
+#~ msgid "Last Backup Error"
+#~ msgstr "Помилка останнього резервного копіювання"
+
+#~ msgid "Apply"
+#~ msgstr "Застосувати"
+
+#~ msgid "Apply bulk action successfully"
+#~ msgstr "Групову дію успішно застосовано"
+
+#~ msgid "Are you sure you want to apply to all selected?"
+#~ msgstr "Ви впевнені, що бажаєте застосувати до всіх вибраних?"
+
+#~ msgid "Are you sure you want to delete this item?"
+#~ msgstr "Ви впевнені, що хочете видалити цей елемент?"
+
+#~ msgid "Are you sure you want to recover this item?"
+#~ msgstr "Ви впевнені, що бажаєте відновити цей елемент?"
+
+#~ msgid "Batch Actions"
+#~ msgstr "Масові дії"
+
+#~ msgid "Modify Mode"
+#~ msgstr "Режим редагування"
+
+#~ msgid "Ok"
+#~ msgstr "Гаразд"
+
+#~ msgid "Recover"
+#~ msgstr "Відновити"
+
+#~ msgid "Recovered Successfully"
+#~ msgstr "Успішно відновлено"
+
+#~ msgid "Total %{total} item"
+#~ msgid_plural "Total %{total} items"
+#~ msgstr[0] "Всього %{total} елемент"
+
+#~ msgid "View Details"
+#~ msgstr "Переглянути деталі"
+
+#~ msgid "View Mode"
+#~ msgstr "Режим перегляду"
 
 #~ msgid ""
 #~ "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "

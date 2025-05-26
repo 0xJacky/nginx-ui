@@ -57,7 +57,7 @@ function handleConfirm() {
   }
   else {
     // Only remove certificate from database
-    cert.destroy(props.id).then(() => {
+    cert.deleteItem(props.id).then(() => {
       message.success($gettext('Certificate removed successfully'))
       modalVisible.value = false
       confirmLoading.value = false
@@ -82,6 +82,7 @@ function handleCancel() {
     <AButton
       type="link"
       size="small"
+      danger
       @click="handleDelete"
     >
       {{ $gettext('Delete') }}

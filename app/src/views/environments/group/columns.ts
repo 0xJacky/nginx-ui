@@ -1,17 +1,15 @@
-import type { Column } from '@/components/StdDesign/types'
+import type { StdTableColumn } from '@uozi-admin/curd'
+import { datetimeRender } from '@uozi-admin/curd'
 import { PostSyncAction } from '@/api/env_group'
-import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { input } from '@/components/StdDesign/StdDataEntry'
 
-const columns: Column[] = [{
+const columns: StdTableColumn[] = [{
   dataIndex: 'name',
   title: () => $gettext('Name'),
   search: true,
   edit: {
-    type: input,
+    type: 'input',
   },
-  handle: true,
-  pithy: true,
+  pure: true,
   width: 120,
 }, {
   title: () => $gettext('Post-sync Action'),
@@ -25,23 +23,23 @@ const columns: Column[] = [{
     }
     return text
   },
-  pithy: true,
+  pure: true,
   width: 150,
 }, {
   title: () => $gettext('Created at'),
   dataIndex: 'created_at',
-  customRender: datetime,
-  pithy: true,
+  customRender: datetimeRender,
+  pure: true,
   width: 150,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
-  customRender: datetime,
-  pithy: true,
+  customRender: datetimeRender,
+  pure: true,
   width: 150,
 }, {
-  title: () => $gettext('Action'),
-  dataIndex: 'action',
+  title: () => $gettext('Actions'),
+  dataIndex: 'actions',
   fixed: 'right',
   width: 150,
 }]

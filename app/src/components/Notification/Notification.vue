@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import type { Notification } from '@/api/notification'
-import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
 import { BellOutlined, CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, InfoCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
 import { message, notification } from 'ant-design-vue'
 import dayjs from 'dayjs'
@@ -39,14 +38,14 @@ connect({
 
     notification[typeTrans[data.type]]({
       message: $gettext(data.title),
-      description: detailRender({ text: data.details, record: data } as CustomRender),
+      description: detailRender({ text: data.details, record: data }),
     })
   },
 })
 
 function init() {
   loading.value = true
-  notificationApi.get_list({ sort: 'desc', order_by: 'created_at' }).then(r => {
+  notificationApi.getList({ sort: 'desc', order_by: 'created_at' }).then(r => {
     data.value = r.data
     unreadCount.value = r.pagination?.total || 0
   }).finally(() => {
@@ -75,7 +74,7 @@ function clear() {
 }
 
 function remove(id: number) {
-  notificationApi.destroy(id).then(() => {
+  notificationApi.deleteItem(id).then(() => {
     message.success($gettext('Removed successfully'))
     init()
   })

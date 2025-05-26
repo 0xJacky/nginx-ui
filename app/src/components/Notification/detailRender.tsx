@@ -1,8 +1,8 @@
-import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
+import type { CustomRenderArgs } from '@uozi-admin/curd'
 import { NotificationTypeT } from '@/constants'
 import notifications from './notifications'
 
-export function detailRender(args: CustomRender) {
+export function detailRender(args: Pick<CustomRenderArgs, 'record' | 'text'>) {
   try {
     return (
       <div>

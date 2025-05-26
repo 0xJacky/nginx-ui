@@ -18,7 +18,7 @@ export interface HttpConfig extends AxiosRequestConfig {
 
 // Extend InternalAxiosRequestConfig type
 declare module 'axios' {
-  interface InternalAxiosRequestConfig {
+  interface AxiosRequestConfig {
     returnFullResponse?: boolean
     crypto?: boolean
   }

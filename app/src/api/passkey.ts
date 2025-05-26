@@ -1,6 +1,6 @@
 import type { RegistrationResponseJSON } from '@simplewebauthn/browser'
 import type { ModelBase } from '@/api/curd'
-import http from '@/lib/http'
+import { http } from '@uozi-admin/request'
 
 export interface Passkey extends ModelBase {
   name: string
@@ -19,7 +19,7 @@ const passkey = {
       },
     })
   },
-  get_list() {
+  getList() {
     return http.get('/passkeys')
   },
   update(passkeyId: number, data: Passkey) {

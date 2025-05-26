@@ -1,6 +1,6 @@
-import type { Column } from '@/components/StdDesign/types'
-import { datetime, mask } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { select } from '@/components/StdDesign/StdDataEntry'
+import type { StdTableColumn } from '@uozi-admin/curd'
+import type { ExternalNotify } from '@/api/external_notify'
+import { datetimeRender, maskRender } from '@uozi-admin/curd'
 import gettext from '@/gettext'
 import ExternalNotifyEditor from './ExternalNotifyEditor.vue'
 import configMap from './index'
@@ -12,15 +12,17 @@ const configTypeMask = Object.keys(configMap).reduce((acc, key) => {
   return acc
 }, {})
 
-const columns: Column[] = [
+const columns: StdTableColumn[] = [
   {
     dataIndex: 'type',
     title: () => $gettext('Type'),
-    customRender: mask(configTypeMask),
+    customRender: maskRender(configTypeMask),
     edit: {
-      type: select,
-      mask: configTypeMask,
-      config: {
+      type: 'select',
+      select: {
+        mask: configTypeMask,
+      },
+      formItem: {
         required: true,
       },
     },
@@ -28,23 +30,38 @@ const columns: Column[] = [
   {
     dataIndex: 'language',
     title: () => $gettext('Language'),
-    customRender: mask(languageAvailable),
+    customRender: maskRender(languageAvailable),
     edit: {
-      type: select,
-      mask: languageAvailable,
-      config: {
+      type: 'select',
+      select: {
+        mask: languageAvailable,
+      },
+      formItem: {
         required: true,
       },
     },
   },
   {
     dataIndex: 'config',
+    title: () => $gettext('Config'),
     edit: {
-      type: (_, record) => {
-        if (!record.config) {
-          record.config = {}
+      type: (formData: ExternalNotify) => {
+        if (!formData.type) {
+          return <div />
         }
-        return <ExternalNotifyEditor v-model={record.config} type={record.type} />
+
+        if (!formData.config) {
+          formData.config = {}
+        }
+        return (
+          <div>
+            <div>{$gettext('Config')}</div>
+            <ExternalNotifyEditor v-model={formData.config} type={formData.type} />
+          </div>
+        )
+      },
+      formItem: {
+        hiddenLabelInEdit: true,
       },
     },
     hiddenInTable: true,
@@ -52,11 +69,11 @@ const columns: Column[] = [
   {
     dataIndex: 'created_at',
     title: () => $gettext('Created at'),
-    customRender: datetime,
+    customRender: datetimeRender,
   },
   {
-    dataIndex: 'action',
-    title: () => $gettext('Action'),
+    dataIndex: 'actions',
+    title: () => $gettext('Actions'),
   },
 ]
 

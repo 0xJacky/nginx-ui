@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { CloudUploadOutlined, SafetyCertificateOutlined } from '@ant-design/icons-vue'
+import { StdTable } from '@uozi-admin/curd'
 import cert from '@/api/cert'
-import StdTable from '@/components/StdDesign/StdDataDisplay/StdTable.vue'
 import { useGlobalStore } from '@/pinia'
 import RemoveCert from '../components/RemoveCert.vue'
 import WildcardCertificate from '../components/WildcardCertificate.vue'
@@ -41,15 +41,16 @@ const { processingStatus } = storeToRefs(globalStore)
       ref="refTable"
       :api="cert"
       :columns="certColumns"
+      :get-list-api="cert.getList"
       disable-view
       :scroll-x="1000"
       disable-delete
-      @click-edit="id => $router.push(`/certificates/${id}`)"
+      @edit-item="record => $router.push(`/certificates/${record.id}`)"
     >
-      <template #actions="{ record }">
+      <template #afterActions="{ record }">
         <RemoveCert
           :id="record.id"
-          @removed="() => refTable.get_list()"
+          @removed="() => refTable.refresh()"
         />
       </template>
     </StdTable>

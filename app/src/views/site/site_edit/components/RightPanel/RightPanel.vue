@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PortScannerCompact } from '@/components/PortScanner'
 import { useSiteEditorStore } from '../SiteEditor/store'
 import Basic from './Basic.vue'
 import Chat from './Chat.vue'
@@ -39,6 +40,9 @@ watch(advanceMode, val => {
         </ATabPane>
         <ATabPane key="chat" :tab="$gettext('Chat')">
           <Chat />
+        </ATabPane>
+        <ATabPane key="port-scanner" :tab="$gettext('Port Scanner')">
+          <PortScannerCompact />
         </ATabPane>
       </ATabs>
     </ACard>

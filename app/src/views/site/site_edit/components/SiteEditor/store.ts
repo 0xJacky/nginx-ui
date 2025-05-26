@@ -32,7 +32,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
 
     if (name.value) {
       try {
-        const r = await site.get(name.value)
+        const r = await site.getItem(name.value)
         handleResponse(r)
       }
       catch (error) {
@@ -59,7 +59,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
         await buildConfig()
       }
 
-      const response = await site.save(name.value, {
+      const response = await site.updateItem(name.value, {
         content: configText.value,
         overwrite: true,
         env_group_id: data.value.env_group_id,
@@ -81,7 +81,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     console.error(e)
     parseErrorStatus.value = true
     parseErrorMessage.value = e.message
-    config.get(`sites-available/${name.value}`).then(r => {
+    config.getItem(`sites-available/${name.value}`).then(r => {
       configText.value = r.content
     })
   }
@@ -118,7 +118,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
         await buildConfig()
       }
       else {
-        let r = await site.get(name.value)
+        let r = await site.getItem(name.value)
         await handleResponse(r)
         r = await ngx.tokenize_config(configText.value)
         Object.assign(ngxConfig, {

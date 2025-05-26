@@ -160,8 +160,8 @@ func (s *Scanner) Initialize(ctx context.Context) error {
 	configDir := filepath.Dir(nginx.GetConfPath())
 	availableDir := nginx.GetConfPath("sites-available")
 	enabledDir := nginx.GetConfPath("sites-enabled")
-	streamAvailableDir := nginx.GetConfPath("stream-available")
-	streamEnabledDir := nginx.GetConfPath("stream-enabled")
+	streamAvailableDir := nginx.GetConfPath("streams-available")
+	streamEnabledDir := nginx.GetConfPath("streams-enabled")
 
 	// Watch the main directories
 	err = s.watcher.Add(configDir)
@@ -184,18 +184,18 @@ func (s *Scanner) Initialize(ctx context.Context) error {
 		}
 	}
 
-	// Watch stream-available and stream-enabled if they exist
+	// Watch streams-available and streams-enabled if they exist
 	if _, err := os.Stat(streamAvailableDir); err == nil {
 		err = s.watcher.Add(streamAvailableDir)
 		if err != nil {
-			logger.Error("Failed to watch stream-available directory:", err)
+			logger.Error("Failed to watch streams-available directory:", err)
 		}
 	}
 
 	if _, err := os.Stat(streamEnabledDir); err == nil {
 		err = s.watcher.Add(streamEnabledDir)
 		if err != nil {
-			logger.Error("Failed to watch stream-enabled directory:", err)
+			logger.Error("Failed to watch streams-enabled directory:", err)
 		}
 	}
 
@@ -434,8 +434,8 @@ func (s *Scanner) ScanAllConfigs() error {
 		}
 	}
 
-	// Scan stream-available directory if it exists
-	streamAvailablePath := nginx.GetConfPath("stream-available", "")
+	// Scan streams-available directory if it exists
+	streamAvailablePath := nginx.GetConfPath("streams-available", "")
 	streamAvailableFiles, err := os.ReadDir(streamAvailablePath)
 	if err == nil {
 		for _, file := range streamAvailableFiles {

@@ -27,7 +27,7 @@ const content = ref('')
 
 function init() {
   if (directive.value.directive === Include) {
-    config.get(directive.value.params).then(r => {
+    config.getItem(directive.value.params).then(r => {
       content.value = r.content
     })
   }
@@ -38,7 +38,7 @@ init()
 watch(props, init)
 
 function save() {
-  config.save(directive.value.params, { content: content.value }).then(r => {
+  config.updateItem(directive.value.params, { content: content.value }).then(r => {
     content.value = r.content
     message.success($gettext('Saved successfully'))
   }).catch(r => {

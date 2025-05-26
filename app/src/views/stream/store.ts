@@ -6,6 +6,7 @@ import config from '@/api/config'
 import ngx from '@/api/ngx'
 import stream from '@/api/stream'
 import { useNgxConfigStore } from '@/components/NgxConfigEditor'
+import { ConfigStatus } from '@/constants'
 
 export const useStreamEditorStore = defineStore('streamEditor', () => {
   const name = ref('')
@@ -20,7 +21,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
   const certInfoMap = ref({}) as Ref<Record<number, CertificateInfo[]>>
   const filename = ref('')
   const filepath = ref('')
-  const enabled = ref(false)
+  const status = ref(ConfigStatus.Disabled)
 
   const ngxConfigStore = useNgxConfigStore()
   const { ngxConfig, configText, curServerIdx, curServer, curServerDirectives, curDirectivesMap } = storeToRefs(ngxConfigStore)
@@ -32,7 +33,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
 
     if (name.value) {
       try {
-        const r = await stream.get(name.value)
+        const r = await stream.getItem(name.value)
         handleResponse(r)
       }
       catch (error) {
@@ -59,7 +60,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
         await buildConfig()
       }
 
-      const response = await stream.save(name.value, {
+      const response = await stream.updateItem(name.value, {
         content: configText.value,
         overwrite: true,
         env_group_id: data.value.env_group_id,
@@ -81,7 +82,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
     console.error(e)
     parseErrorStatus.value = true
     parseErrorMessage.value = e.message
-    config.get(`streams-available/${name.value}`).then(r => {
+    config.getItem(`streams-available/${name.value}`).then(r => {
       configText.value = r.content
     })
   }
@@ -90,7 +91,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
     if (r.advanced)
       advanceMode.value = true
 
-    enabled.value = r.enabled
+    status.value = r.status
     parseErrorStatus.value = false
     parseErrorMessage.value = ''
     filename.value = r.name
@@ -116,7 +117,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
         await buildConfig()
       }
       else {
-        let r = await stream.get(name.value)
+        let r = await stream.getItem(name.value)
         await handleResponse(r)
         r = await ngx.tokenize_config(configText.value)
         Object.assign(ngxConfig, {
@@ -152,7 +153,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
     filename,
     filepath,
     configText,
-    enabled,
+    status,
     init,
     save,
     handleModeChange,

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PortScannerCompact } from '@/components/PortScanner'
 import Basic from './Basic.vue'
 import Chat from './Chat.vue'
 
@@ -21,6 +22,9 @@ const activeKey = ref('basic')
         </ATabPane>
         <ATabPane key="chat" :tab="$gettext('Chat')">
           <Chat />
+        </ATabPane>
+        <ATabPane key="port-scanner" :tab="$gettext('Port Scanner')">
+          <PortScannerCompact />
         </ATabPane>
       </ATabs>
     </ACard>

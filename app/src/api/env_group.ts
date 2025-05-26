@@ -1,6 +1,5 @@
-import type { ModelBase } from '@/api/curd'
-import Curd from '@/api/curd'
-
+import type { ModelBase, UpdateOrderRequest } from '@/api/curd'
+import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 // Post-sync action types
 export const PostSyncAction = {
   None: 'none',
@@ -13,4 +12,12 @@ export interface EnvGroup extends ModelBase {
   post_sync_action?: string
 }
 
-export default new Curd<EnvGroup>('/env_groups')
+const baseUrl = '/env_groups'
+
+const env_group = extendCurdApi(useCurdApi<EnvGroup>(baseUrl), {
+  updateOrder(data: UpdateOrderRequest) {
+    return http.post('/env_groups/order', data)
+  },
+})
+
+export default env_group

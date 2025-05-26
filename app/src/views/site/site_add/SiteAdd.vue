@@ -25,7 +25,7 @@ function init() {
 
 async function save() {
   return ngx.build_config(ngxConfig.value).then(r => {
-    site.save(ngxConfig.value.name, { name: ngxConfig.value.name, content: r.content, overwrite: true }).then(() => {
+    site.updateItem(ngxConfig.value.name, { name: ngxConfig.value.name, content: r.content, overwrite: true }).then(() => {
       message.success($gettext('Saved successfully'))
 
       site.enable(ngxConfig.value.name).then(() => {

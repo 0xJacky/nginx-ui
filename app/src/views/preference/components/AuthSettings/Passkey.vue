@@ -20,7 +20,7 @@ const passkeyName = ref('')
 
 function getList() {
   getListLoading.value = true
-  passkey.get_list().then(r => {
+  passkey.getList().then(r => {
     data.value = r
   }).finally(() => {
     getListLoading.value = false

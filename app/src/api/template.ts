@@ -1,6 +1,5 @@
 import type { NgxDirective, NgxLocation, NgxServer } from '@/api/ngx'
-import Curd from '@/api/curd'
-import http from '@/lib/http'
+import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
 export interface Variable {
   type?: string
@@ -21,30 +20,14 @@ export interface Template extends NgxServer {
   directives?: NgxDirective[]
 }
 
-class TemplateApi extends Curd<Template> {
-  get_config_list() {
-    return http.get('templates/configs')
-  }
+const baseUrl = '/templates'
 
-  get_block_list() {
-    return http.get<{
-      data: Template[]
-    }>('templates/blocks')
-  }
-
-  get_config(name: string) {
-    return http.get(`templates/config/${name}`)
-  }
-
-  get_block(name: string) {
-    return http.get<Template>(`templates/block/${name}`)
-  }
-
-  build_block(name: string, data: Variable) {
-    return http.post(`templates/block/${name}`, data)
-  }
-}
-
-const template = new TemplateApi('/templates')
+const template = extendCurdApi(useCurdApi<Template>(baseUrl), {
+  get_config_list: () => http.get(`${baseUrl}/configs`),
+  get_block_list: () => http.get(`${baseUrl}/blocks`),
+  get_config: (name: string) => http.get(`${baseUrl}/config/${name}`),
+  get_block: (name: string) => http.get(`${baseUrl}/block/${name}`),
+  build_block: (name: string, data: Variable) => http.post(`${baseUrl}/block/${name}`, data),
+})
 
 export default template

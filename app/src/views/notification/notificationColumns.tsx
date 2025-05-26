@@ -1,14 +1,13 @@
-import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { Column } from '@/components/StdDesign/types'
+import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
+import { datetimeRender } from '@uozi-admin/curd'
 import { Tag } from 'ant-design-vue'
 import { detailRender } from '@/components/Notification/detailRender'
-import { datetime } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import { NotificationTypeT } from '@/constants'
+import { NotificationType, NotificationTypeT } from '@/constants'
 
-const columns: Column[] = [{
+const columns: StdTableColumn[] = [{
   title: () => $gettext('Type'),
   dataIndex: 'type',
-  customRender: (args: CustomRender) => {
+  customRender: (args: CustomRenderArgs) => {
     if (args.text === NotificationTypeT.Error) {
       return (
         <Tag color="error">
@@ -37,35 +36,43 @@ const columns: Column[] = [{
         </Tag>
       )
     }
+    return args.text
+  },
+  search: {
+    type: 'select',
+    select: {
+      mask: NotificationType,
+    },
   },
   sorter: true,
-  pithy: true,
+  pure: true,
   width: 100,
 }, {
   title: () => $gettext('Created at'),
   dataIndex: 'created_at',
   sorter: true,
-  customRender: datetime,
-  pithy: true,
+  customRender: datetimeRender,
+  pure: true,
   width: 180,
 }, {
   title: () => $gettext('Title'),
   dataIndex: 'title',
-  customRender: (args: CustomRender) => {
+  customRender: (args: CustomRenderArgs) => {
     return h('span', $gettext(args.text))
   },
-  pithy: true,
+  pure: true,
   width: 250,
 }, {
   title: () => $gettext('Details'),
   dataIndex: 'details',
   customRender: detailRender,
-  pithy: true,
+  pure: true,
   width: 500,
 }, {
-  title: () => $gettext('Action'),
-  dataIndex: 'action',
+  title: () => $gettext('Actions'),
+  dataIndex: 'actions',
   fixed: 'right',
+  width: 200,
 }]
 
 export default columns

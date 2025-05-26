@@ -1,27 +1,33 @@
 <script setup lang="tsx">
-import type { CustomRender } from '@/components/StdDesign/StdDataDisplay/StdTableTransformer'
-import type { Column } from '@/components/StdDesign/types'
+import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
+import { StdCurd } from '@uozi-admin/curd'
 import { Tag } from 'ant-design-vue'
 import nginxLog from '@/api/nginx_log'
-import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
-import { input, select } from '@/components/StdDesign/StdDataEntry'
 
 const router = useRouter()
 const stdCurdRef = ref()
 
-const columns: Column[] = [
+const columns: StdTableColumn[] = [
   {
     title: () => $gettext('Type'),
     dataIndex: 'type',
-    customRender: (args: CustomRender) => {
+    customRender: (args: CustomRenderArgs) => {
       return args.record?.type === 'access' ? <Tag color="success">{ $gettext('Access Log') }</Tag> : <Tag color="orange">{ $gettext('Error Log') }</Tag>
     },
     sorter: true,
     search: {
-      type: select,
-      mask: {
-        access: () => $gettext('Access Log'),
-        error: () => $gettext('Error Log'),
+      type: 'select',
+      select: {
+        options: [
+          {
+            label: () => $gettext('Access Log'),
+            value: 'access',
+          },
+          {
+            label: () => $gettext('Error Log'),
+            value: 'error',
+          },
+        ],
       },
     },
     width: 200,
@@ -31,7 +37,7 @@ const columns: Column[] = [
     dataIndex: 'name',
     sorter: true,
     search: {
-      type: input,
+      type: 'input',
     },
   },
   {
@@ -39,12 +45,14 @@ const columns: Column[] = [
     dataIndex: 'path',
     sorter: true,
     search: {
-      type: input,
+      type: 'input',
     },
   },
   {
-    title: () => $gettext('Action'),
-    dataIndex: 'action',
+    title: () => $gettext('Actions'),
+    dataIndex: 'actions',
+    fixed: 'right',
+    width: 200,
   },
 ]
 
@@ -65,11 +73,12 @@ function viewLog(record: { type: string, path: string }) {
     :columns="columns"
     :api="nginxLog"
     disable-add
+    disable-export
     disable-delete
     disable-view
-    disable-modify
+    disable-edit
   >
-    <template #actions="{ record }">
+    <template #beforeActions="{ record }">
       <AButton type="link" size="small" @click="viewLog(record)">
         {{ $gettext('View') }}
       </AButton>

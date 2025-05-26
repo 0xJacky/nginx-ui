@@ -1,9 +1,9 @@
 <script setup lang="tsx">
+import { StdCurd } from '@uozi-admin/curd'
 import { message } from 'ant-design-vue'
 import environment from '@/api/environment'
 import node from '@/api/node'
 import FooterToolBar from '@/components/FooterToolbar'
-import StdCurd from '@/components/StdDesign/StdDataDisplay/StdCurd.vue'
 import BatchUpgrader from './BatchUpgrader.vue'
 import envColumns from './envColumns'
 
@@ -16,7 +16,7 @@ const loadingRestart = ref(false)
 function loadFromSettings() {
   loadingFromSettings.value = true
   environment.load_from_settings().then(() => {
-    curd.value.get_list()
+    curd.value.getList()
     message.success($gettext('Load successfully'))
   }).finally(() => {
     loadingFromSettings.value = false
@@ -70,10 +70,11 @@ const inTrash = computed(() => {
       v-model:selected-row-keys="selectedNodeIds"
       v-model:selected-rows="selectedNodes"
       :scroll-x="1000"
-      selection-type="checkbox"
+      row-selection-type="checkbox"
       :title="$gettext('Environments')"
       :api="environment"
       :columns="envColumns"
+      disable-export
     >
       <template #beforeAdd>
         <AButton size="small" type="link" :loading="loadingFromSettings" @click="loadFromSettings">

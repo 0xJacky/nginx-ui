@@ -4,12 +4,13 @@ import CodeEditor from '@/components/CodeEditor'
 import ConfigHistory from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar'
 import NgxConfigEditor from '@/components/NgxConfigEditor'
+import { ConfigStatus } from '@/constants'
 import { useStreamEditorStore } from '../store'
 
 const router = useRouter()
 
 const store = useStreamEditorStore()
-const { name, enabled, configText, filepath, saving, parseErrorStatus, parseErrorMessage, advanceMode } = storeToRefs(store)
+const { name, status, configText, filepath, saving, parseErrorStatus, parseErrorMessage, advanceMode } = storeToRefs(store)
 const showHistory = ref(false)
 </script>
 
@@ -18,7 +19,7 @@ const showHistory = ref(false)
     <template #title>
       <span style="margin-right: 10px">{{ $gettext('Edit %{n}', { n: name }) }}</span>
       <ATag
-        v-if="enabled"
+        v-if="status === ConfigStatus.Enabled"
         color="blue"
       >
         {{ $gettext('Enabled') }}
@@ -88,7 +89,7 @@ const showHistory = ref(false)
         class="domain-edit-container"
       >
         <NgxConfigEditor
-          :enabled="enabled"
+          :enabled="status === ConfigStatus.Enabled"
           context="stream"
         />
       </div>
