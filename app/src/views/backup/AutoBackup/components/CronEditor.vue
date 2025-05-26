@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const modelValue = defineModel<string>({ default: '' })
+const modelValue = defineModel<string>({ default: '0 0 * * *' })
 
 interface CronConfig {
   type: 'daily' | 'weekly' | 'monthly' | 'custom'

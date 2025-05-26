@@ -94,13 +94,16 @@ const columns: StdTableColumn[] = [
   },
   {
     title: () => $gettext('Storage Configuration'),
-    dataIndex: 'storage_config',
+    dataIndex: 'storage_type',
     edit: {
       type: (formData: AutoBackup) => {
+        if (!formData.storage_type) {
+          formData.storage_type = 'local'
+        }
         return (
           <div>
             <div class="font-500 mb-4">{$gettext('Storage Configuration')}</div>
-            <StorageConfigEditor v-model={formData} storageType={formData.storage_type} />
+            <StorageConfigEditor v-model={formData} />
           </div>
         )
       },
@@ -143,6 +146,9 @@ const columns: StdTableColumn[] = [
     },
     edit: {
       type: (formData: AutoBackup) => {
+        if (!formData.cron_expression) {
+          formData.cron_expression = '0 0 * * *'
+        }
         return (
           <CronEditor v-model={formData.cron_expression} />
         )
@@ -236,6 +242,31 @@ const columns: StdTableColumn[] = [
     customRender: datetimeRender,
     sorter: true,
     pure: true,
+  },
+  {
+    title: () => $gettext('S3 Endpoint'),
+    dataIndex: 's3_endpoint',
+    hiddenInTable: true,
+  },
+  {
+    title: () => $gettext('S3 Access Key ID'),
+    dataIndex: 's3_access_key_id',
+    hiddenInTable: true,
+  },
+  {
+    title: () => $gettext('S3 Secret Access Key'),
+    dataIndex: 's3_secret_access_key',
+    hiddenInTable: true,
+  },
+  {
+    title: () => $gettext('S3 Bucket'),
+    dataIndex: 's3_bucket',
+    hiddenInTable: true,
+  },
+  {
+    title: () => $gettext('S3 Region'),
+    dataIndex: 's3_region',
+    hiddenInTable: true,
   },
   {
     title: () => $gettext('Actions'),
