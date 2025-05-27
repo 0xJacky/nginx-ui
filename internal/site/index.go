@@ -37,6 +37,7 @@ func scanForSite(configPath string, content []byte) error {
 	// Regular expressions for server_name and listen directives
 	serverNameRegex := regexp.MustCompile(`(?m)server_name\s+([^;]+);`)
 	listenRegex := regexp.MustCompile(`(?m)listen\s+([^;]+);`)
+	returnRegex := regexp.MustCompile(`(?m)return\s+30[1-8]\s+https://`)
 
 	// Find server blocks
 	serverBlockRegex := regexp.MustCompile(`(?ms)server\s*\{[^\{]*((.*?\{.*?\})*?[^\}]*)\}`)
@@ -51,8 +52,11 @@ func scanForSite(configPath string, content []byte) error {
 
 	// Map to track hosts, their SSL status and port
 	type hostInfo struct {
-		hasSSL bool
-		port   int
+		hasSSL      bool
+		port        int
+		isPublic    bool // Whether this is a public-facing port
+		priority    int  // Higher priority for public ports
+		hasRedirect bool // Whether this server block has HTTPS redirect
 	}
 	hostMap := make(map[string]hostInfo)
 
@@ -92,56 +96,112 @@ func scanForSite(configPath string, content []byte) error {
 			continue
 		}
 
+		// Check if this server block has HTTPS redirect
+		hasRedirect := returnRegex.Match(serverBlockContent)
+
 		// Check if SSL is enabled and extract port
 		listenMatches := listenRegex.FindAllSubmatch(serverBlockContent, -1)
-		hasSSL := false
-		port := 80 // Default HTTP port
 
 		for _, match := range listenMatches {
 			if len(match) >= 2 {
-				listenValue := string(match[1])
-				if strings.Contains(listenValue, "ssl") {
-					hasSSL = true
-					port = 443 // Default HTTPS port
+				listenValue := strings.TrimSpace(string(match[1]))
+				hasSSL := strings.Contains(listenValue, "ssl")
+				port := 80 // Default HTTP port
+				isPublic := true
+				priority := 1
+
+				if hasSSL {
+					port = 443   // Default HTTPS port
+					priority = 3 // SSL has highest priority
+				} else if hasRedirect {
+					priority = 2 // HTTP with redirect has medium priority
 				}
 
-				// Extract port number if present
-				portRegex := regexp.MustCompile(`^(?:(\d+)|.*:(\d+))`)
-				portMatches := portRegex.FindStringSubmatch(listenValue)
-				if len(portMatches) > 0 {
-					// Check which capture group has the port
-					portStr := ""
-					if portMatches[1] != "" {
-						portStr = portMatches[1]
-					} else if portMatches[2] != "" {
-						portStr = portMatches[2]
+				// Parse different listen directive formats
+				// Format examples:
+				// - 80
+				// - 443 ssl
+				// - [::]:80
+				// - 127.0.0.1:8443 ssl
+				// - *:80
+
+				// Remove extra parameters (ssl, http2, etc.) for parsing
+				listenParts := strings.Fields(listenValue)
+				if len(listenParts) > 0 {
+					addressPart := listenParts[0]
+
+					// Check if it's bound to a specific IP (not public)
+					if strings.Contains(addressPart, "127.0.0.1") ||
+						strings.Contains(addressPart, "localhost") {
+						isPublic = false
+						priority = 0 // Internal ports have lowest priority
 					}
 
-					if portStr != "" {
-						if extractedPort, err := strconv.Atoi(portStr); err == nil {
-							port = extractedPort
+					// Extract port from various formats
+					var extractedPort int
+					var err error
+
+					if strings.Contains(addressPart, ":") {
+						// Handle IPv6 format [::]:port or IPv4 format ip:port
+						if strings.HasPrefix(addressPart, "[") {
+							// IPv6 format: [::]:80
+							if colonIndex := strings.LastIndex(addressPart, ":"); colonIndex != -1 {
+								portStr := addressPart[colonIndex+1:]
+								extractedPort, err = strconv.Atoi(portStr)
+							}
+						} else {
+							// IPv4 format: 127.0.0.1:8443 or *:80
+							if colonIndex := strings.LastIndex(addressPart, ":"); colonIndex != -1 {
+								portStr := addressPart[colonIndex+1:]
+								extractedPort, err = strconv.Atoi(portStr)
+							}
+						}
+					} else {
+						// Just a port number: 80, 443
+						extractedPort, err = strconv.Atoi(addressPart)
+					}
+
+					if err == nil && extractedPort > 0 {
+						port = extractedPort
+					}
+				}
+
+				// Update host map with SSL status and port, prioritizing public ports
+				for _, name := range validServerNames {
+					info, exists := hostMap[name]
+
+					// Update if:
+					// 1. Host doesn't exist yet
+					// 2. New entry has higher priority (SSL > redirect > plain HTTP, public > private)
+					// 3. Same priority but adding SSL
+					if !exists ||
+						priority > info.priority ||
+						(priority == info.priority && hasSSL && !info.hasSSL) {
+						hostMap[name] = hostInfo{
+							hasSSL:      hasSSL,
+							port:        port,
+							isPublic:    isPublic,
+							priority:    priority,
+							hasRedirect: hasRedirect,
 						}
 					}
 				}
-			}
-		}
-
-		// Update host map with SSL status and port
-		for _, name := range validServerNames {
-			// Only update if this host doesn't have SSL yet or we're adding SSL now
-			info, exists := hostMap[name]
-			if !exists || (!info.hasSSL && hasSSL) {
-				hostMap[name] = hostInfo{hasSSL: hasSSL, port: port}
 			}
 		}
 	}
 
 	// Generate URLs from the host map
 	for host, info := range hostMap {
+		// Skip internal/private addresses for URL generation
+		if !info.isPublic {
+			continue
+		}
+
 		protocol := "http"
 		defaultPort := 80
 
-		if info.hasSSL {
+		// If we have a redirect to HTTPS, prefer HTTPS URL
+		if info.hasSSL || info.hasRedirect {
 			protocol = "https"
 			defaultPort = 443
 		}
@@ -149,7 +209,11 @@ func scanForSite(configPath string, content []byte) error {
 		url := protocol + "://" + host
 
 		// Add port to URL if non-standard
-		if info.port != defaultPort {
+		if info.port != defaultPort && info.hasSSL {
+			// Only add port for SSL if it's not the default SSL port
+			url += ":" + strconv.Itoa(info.port)
+		} else if info.port != defaultPort && !info.hasSSL && !info.hasRedirect {
+			// Add port for non-SSL, non-redirect cases
 			url += ":" + strconv.Itoa(info.port)
 		}
 

@@ -65,7 +65,13 @@ async function fetchHistoryList() {
 
   loading.value = true
   try {
-    const response = await config.get_history(props.filepath)
+    const response = await config.get_history(
+      props.filepath,
+      {
+        page: pagination.value.current_page,
+        page_size: pagination.value.per_page,
+      },
+    )
     const data = response as GetListResponse<ConfigBackup>
     records.value = data.data || []
 
@@ -83,9 +89,12 @@ async function fetchHistoryList() {
 }
 
 // Handle pagination changes
-function changePage(page: number, pageSize: number) {
+async function changePage(page: number, pageSize: number) {
   pagination.value.current_page = page
   pagination.value.per_page = pageSize
+
+  await nextTick()
+
   fetchHistoryList()
 }
 

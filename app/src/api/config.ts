@@ -34,7 +34,9 @@ const config = extendCurdApi(useCurdApi<Config>('/configs'), {
     new_name: newName,
     sync_node_ids: syncNodeIds,
   }),
-  get_history: (filepath: string) => http.get<GetListResponse<ConfigBackup>>('/config_histories', { params: { filepath } }),
+  get_history: (filepath: string, params?: { page: number, page_size: number }) => {
+    return http.get<GetListResponse<ConfigBackup>>('/config_histories', { params: { filepath, ...params } })
+  },
 })
 
 export default config
