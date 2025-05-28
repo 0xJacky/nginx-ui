@@ -14,7 +14,7 @@
 [![GitHub Star](https://img.shields.io/github/stars/0xJacky/nginx-ui?label=Stars&logo=github)](https://github.com/0xJacky/nginx-ui "Click to view the repo on Github")
 [![GitHub Fork](https://img.shields.io/github/forks/0xJacky/nginx-ui?label=Forks&logo=github)](https://github.com/0xJacky/nginx-ui "Click to view the repo on Github")
 [![Repo Size](https://img.shields.io/github/repo-size/0xJacky/nginx-ui?label=Size&logo=github)](https://github.com/0xJacky/nginx-ui "Click to view the repo on Github")
-[![GitHub Fork](https://img.shields.io/github/issues-closed-raw/0xJacky/nginx-ui?label=Closed%20Issue&logo=github)](https://github.com/0xJacky/nginx-ui/issue "Click to view the repo on Github")
+[![GitHub Fork](https://img.shields.io/github/issues-closed-raw/0xJacky/nginx-ui?label=Closed%20Issue&logo=github)](https://github.com/0xJacky/nginx-ui/issues "Click to view the repo on Github")
 
 [![Docker Stars](https://img.shields.io/docker/stars/uozi/nginx-ui?label=Stars&logo=docker)](https://hub.docker.com/r/uozi/nginx-ui "Click to view the image on Docker Hub")
 [![Docker Pulls](https://img.shields.io/docker/pulls/uozi/nginx-ui?label=Pulls&logo=docker)](https://hub.docker.com/r/uozi/nginx-ui "Click to view the image on Docker Hub")
