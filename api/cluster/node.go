@@ -5,10 +5,8 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/version"
-	"github.com/dustin/go-humanize"
 	"github.com/gin-gonic/gin"
 	"github.com/shirou/gopsutil/v4/cpu"
-	"github.com/shirou/gopsutil/v4/disk"
 	"github.com/uozi-tech/cosy"
 )
 
@@ -28,13 +26,13 @@ func GetCurrentNode(c *gin.Context) {
 	cpuInfo, _ := cpu.Info()
 	memory, _ := analytic.GetMemoryStat()
 	ver := version.GetVersionInfo()
-	diskUsage, _ := disk.Usage(".")
+	diskUsage, _ := analytic.GetDiskStat()
 
 	nodeInfo := analytic.NodeInfo{
 		NodeRuntimeInfo: runtimeInfo,
 		CPUNum:          len(cpuInfo),
 		MemoryTotal:     memory.Total,
-		DiskTotal:       humanize.Bytes(diskUsage.Total),
+		DiskTotal:       diskUsage.Total,
 		Version:         ver.Version,
 	}
 
