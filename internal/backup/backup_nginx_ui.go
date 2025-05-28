@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
@@ -50,7 +51,7 @@ func backupNginxUIFiles(destDir string) error {
 // backupNginxFiles backs up the nginx configuration directory
 func backupNginxFiles(destDir string) error {
 	// Get nginx config directory
-	nginxConfigDir := settings.NginxSettings.ConfigDir
+	nginxConfigDir := nginx.GetConfPath()
 	if nginxConfigDir == "" {
 		return ErrNginxConfigDirEmpty
 	}
