@@ -24,16 +24,7 @@ func Save(absPath string, content string, cfg *model.Config) (err error) {
 	if !helper.IsUnderDirectory(absPath, nginx.GetConfPath()) {
 		return ErrPathIsNotUnderTheNginxConfDir
 	}
-
-	origContent, err := os.ReadFile(absPath)
-	if err != nil {
-		return
-	}
-
-	if content == string(origContent) {
-		return
-	}
-
+	
 	err = CheckAndCreateHistory(absPath, content)
 	if err != nil {
 		return
