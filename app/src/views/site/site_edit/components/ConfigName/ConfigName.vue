@@ -12,9 +12,9 @@ const modify = ref(false)
 const buffer = ref('')
 const loading = ref(false)
 
-onMounted(() => {
-  buffer.value = props.name
-})
+watch(() => props.name, v => {
+  buffer.value = v
+}, { immediate: true })
 
 function clickModify() {
   modify.value = true
@@ -22,7 +22,7 @@ function clickModify() {
 
 function save() {
   loading.value = true
-  site.rename(props.name, buffer.value).then(() => {
+  site.rename(props.name, buffer.value).then(async () => {
     modify.value = false
     message.success($gettext('Renamed successfully'))
     router.push({

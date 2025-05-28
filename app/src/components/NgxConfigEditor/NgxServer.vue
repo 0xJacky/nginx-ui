@@ -19,7 +19,7 @@ const name = computed(() => route.params.name) as ComputedRef<string>
 const router = useRouter()
 
 const serversLength = computed(() => {
-  return ngxConfig.value.servers.length
+  return ngxConfig.value.servers?.length ?? 0
 })
 
 watch(serversLength, () => {
