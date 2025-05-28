@@ -32,7 +32,7 @@ type BackupExecutionResult struct {
 //   - error: CosyError if backup execution fails, nil if successful
 func ExecuteAutoBackup(autoBackup *model.AutoBackup) error {
 	logger.Infof("Starting auto backup task: %s (ID: %d, Type: %s, Storage: %s)",
-		autoBackup.Name, autoBackup.ID, autoBackup.BackupType, autoBackup.StorageType)
+		autoBackup.GetName(), autoBackup.ID, autoBackup.BackupType, autoBackup.StorageType)
 
 	// Validate storage configuration before starting backup
 	if err := validateStorageConfiguration(autoBackup); err != nil {
@@ -158,7 +158,7 @@ func executeBackupByType(autoBackup *model.AutoBackup) (*BackupExecutionResult, 
 //   - error: CosyError if backup creation fails
 func createEncryptedBackup(autoBackup *model.AutoBackup, backupPrefix string) (*BackupExecutionResult, error) {
 	// Generate unique filename with timestamp
-	filename := fmt.Sprintf("%s_%s_%d.zip", backupPrefix, autoBackup.Name, time.Now().Unix())
+	filename := fmt.Sprintf("%s_%s_%d.zip", backupPrefix, autoBackup.GetName(), time.Now().Unix())
 
 	// Determine output path based on storage type
 	var outputPath string
@@ -215,7 +215,7 @@ func createCustomDirectoryBackup(autoBackup *model.AutoBackup) (*BackupExecution
 	}
 
 	// Generate unique filename with timestamp
-	filename := fmt.Sprintf("custom_dir_%s_%d.zip", autoBackup.Name, time.Now().Unix())
+	filename := fmt.Sprintf("custom_dir_%s_%d.zip", autoBackup.GetName(), time.Now().Unix())
 
 	// Determine output path based on storage type
 	var outputPath string
@@ -266,7 +266,7 @@ func writeBackupFile(filePath string, content []byte) error {
 // Returns:
 //   - error: CosyError if key file writing fails
 func writeKeyFile(keyPath, aesKey, aesIv string) error {
-	keyContent := fmt.Sprintf("AES_KEY=%s\nAES_IV=%s\n", aesKey, aesIv)
+	keyContent := fmt.Sprintf("%s:%s", aesKey, aesIv)
 	if err := os.WriteFile(keyPath, []byte(keyContent), 0600); err != nil {
 		return cosy.WrapErrorWithParams(ErrAutoBackupWriteKeyFile, err.Error())
 	}

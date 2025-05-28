@@ -5,7 +5,7 @@ import (
 )
 
 func InitRouter(r *gin.RouterGroup) {
-	r.POST("/backup", CreateBackup)
+	r.GET("/backup", CreateBackup)
 	r.POST("/restore", RestoreBackup)
 }
 

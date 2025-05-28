@@ -1,6 +1,7 @@
 package model
 
 import (
+	"strings"
 	"time"
 )
 
@@ -51,4 +52,8 @@ type AutoBackup struct {
 	S3SecretAccessKey string `json:"s3_secret_access_key" gorm:"comment:S3 secret access key;serializer:json[aes]"`
 	S3Bucket          string `json:"s3_bucket" gorm:"comment:S3 bucket name"`
 	S3Region          string `json:"s3_region" gorm:"comment:S3 region"`
+}
+
+func (a *AutoBackup) GetName() string {
+	return strings.ReplaceAll(a.Name, " ", "_")
 }
