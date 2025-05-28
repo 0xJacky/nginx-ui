@@ -209,7 +209,7 @@ msgstr "Sau đó, làm mới trang này và nhấp vào thêm khóa truy cập m
 msgid "All"
 msgstr "Tất cả"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:181
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "Tất cả mã khôi phục đã được sử dụng"
@@ -347,6 +347,22 @@ msgstr "auto = lõi cpu"
 msgid "Auto Backup"
 msgstr "Sao lưu tự động"
 
+#: src/components/Notification/notifications.ts:37
+msgid "Auto Backup Completed"
+msgstr "Sao lưu tự động hoàn tất"
+
+#: src/components/Notification/notifications.ts:25
+msgid "Auto Backup Configuration Error"
+msgstr "Lỗi cấu hình sao lưu tự động"
+
+#: src/components/Notification/notifications.ts:29
+msgid "Auto Backup Failed"
+msgstr "Sao lưu tự động thất bại"
+
+#: src/components/Notification/notifications.ts:33
+msgid "Auto Backup Storage Failed"
+msgstr "Lưu trữ sao lưu tự động thất bại"
+
 #: src/views/nginx_log/NginxLog.vue:150
 msgid "Auto Refresh"
 msgstr "Tự động làm mới"
@@ -427,6 +443,20 @@ msgstr "Đường dẫn sao lưu không nằm trong các đường dẫn truy c�
 #: src/views/backup/AutoBackup/components/CronEditor.vue:141
 msgid "Backup Schedule"
 msgstr "Lịch trình sao lưu"
+
+#: src/components/Notification/notifications.ts:38
+msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
+msgstr "Tác vụ sao lưu %{backup_name} đã hoàn thành thành công, tệp: %{file_path}"
+
+#: src/components/Notification/notifications.ts:34
+msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
+msgstr ""
+"Tác vụ sao lưu %{backup_name} thất bại trong quá trình tải lên lưu trữ, "
+"lỗi: %{error}"
+
+#: src/components/Notification/notifications.ts:30
+msgid "Backup task %{backup_name} failed to execute, error: %{error}"
+msgstr "Tác vụ sao lưu %{backup_name} không thể thực thi, lỗi: %{error}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:24
 msgid "Backup Type"
@@ -592,17 +622,17 @@ msgstr "Chứng chỉ"
 msgid "Cert path is not under the nginx conf dir"
 msgstr "Đường dẫn chứng chỉ không nằm trong thư mục cấu hình nginx"
 
-#: src/components/Notification/notifications.ts:26
+#: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} has expired"
 msgstr "Chứng chỉ %{name} đã hết hạn"
 
-#: src/components/Notification/notifications.ts:30
-#: src/components/Notification/notifications.ts:34
-#: src/components/Notification/notifications.ts:38
+#: src/components/Notification/notifications.ts:46
+#: src/components/Notification/notifications.ts:50
+#: src/components/Notification/notifications.ts:54
 msgid "Certificate %{name} will expire in %{days} days"
 msgstr "Chứng chỉ %{name} sẽ hết hạn sau %{days} ngày"
 
-#: src/components/Notification/notifications.ts:42
+#: src/components/Notification/notifications.ts:58
 msgid "Certificate %{name} will expire in 1 day"
 msgstr "Chứng chỉ %{name} sẽ hết hạn trong 1 ngày"
 
@@ -610,17 +640,17 @@ msgstr "Chứng chỉ %{name} sẽ hết hạn trong 1 ngày"
 msgid "Certificate decode error"
 msgstr "Lỗi giải mã chứng chỉ"
 
-#: src/components/Notification/notifications.ts:29
+#: src/components/Notification/notifications.ts:45
 msgid "Certificate Expiration Notice"
 msgstr "Thông báo hết hạn chứng chỉ"
 
-#: src/components/Notification/notifications.ts:25
+#: src/components/Notification/notifications.ts:41
 msgid "Certificate Expired"
 msgstr "Chứng chỉ đã hết hạn"
 
-#: src/components/Notification/notifications.ts:33
-#: src/components/Notification/notifications.ts:37
-#: src/components/Notification/notifications.ts:41
+#: src/components/Notification/notifications.ts:49
+#: src/components/Notification/notifications.ts:53
+#: src/components/Notification/notifications.ts:57
 msgid "Certificate Expiring Soon"
 msgstr "Chứng chỉ sắp hết hạn"
 
@@ -1196,27 +1226,27 @@ msgstr "Xóa chứng chỉ"
 msgid "Delete Permanently"
 msgstr "Xóa Vĩnh Viễn"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:85 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "Lỗi xóa trang web từ xa"
 
-#: src/components/Notification/notifications.ts:73 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:89 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "Xóa trang web từ xa thành công"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:141
 msgid "Delete Remote Stream Error"
 msgstr "Lỗi xóa luồng từ xa"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:145
 msgid "Delete Remote Stream Success"
 msgstr "Xóa luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:70
+#: src/components/Notification/notifications.ts:86
 msgid "Delete site %{name} from %{node} failed"
 msgstr "Xóa trang %{name} từ %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:74
+#: src/components/Notification/notifications.ts:90
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Đã xóa trang web %{name} từ %{node} thành công"
 
@@ -1224,11 +1254,11 @@ msgstr "Đã xóa trang web %{name} từ %{node} thành công"
 msgid "Delete site: %{site_name}"
 msgstr "Xoá trang web: %{site_name}"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:142
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "Xóa luồng %{name} từ %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:146
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Đã xóa luồng %{name} từ %{node} thành công"
 
@@ -1314,51 +1344,51 @@ msgstr "Vô hiệu hóa"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Vô hiệu hóa gia hạn tự động thất bại cho %{name}"
 
-#: src/components/Notification/notifications.ts:77 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:93 src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "Lỗi vô hiệu hóa trang từ xa"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:117
 msgid "Disable Remote Site Maintenance Error"
 msgstr "Lỗi tắt bảo trì trang web từ xa"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:121
 msgid "Disable Remote Site Maintenance Success"
 msgstr "Vô hiệu hóa bảo trì trang web từ xa thành công"
 
-#: src/components/Notification/notifications.ts:81 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "Đã vô hiệu hóa trang web từ xa thành công"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:149
 msgid "Disable Remote Stream Error"
 msgstr "Lỗi tắt luồng từ xa"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:153
 msgid "Disable Remote Stream Success"
 msgstr "Vô hiệu hóa luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:78
+#: src/components/Notification/notifications.ts:94
 msgid "Disable site %{name} from %{node} failed"
 msgstr "Không thể vô hiệu hóa trang web %{name} từ %{node}"
 
-#: src/components/Notification/notifications.ts:82
+#: src/components/Notification/notifications.ts:98
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "Đã vô hiệu hóa trang %{name} từ %{node} thành công"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:118
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "Không thể tắt bảo trì trang web %{name} trên %{node}"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:122
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "Đã tắt bảo trì trang web %{name} trên %{node} thành công"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:150
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "Không thể tắt luồng %{name} từ %{node}"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:154
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Đã vô hiệu hóa luồng %{name} từ %{node} thành công"
 
@@ -1571,51 +1601,53 @@ msgstr "Bật HTTPS"
 msgid "Enable Proxy Cache"
 msgstr "Bật bộ nhớ đệm proxy"
 
-#: src/components/Notification/notifications.ts:85 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "Lỗi kích hoạt trang từ xa"
 
-#: src/components/Notification/notifications.ts:93
+#: src/components/Notification/notifications.ts:109
 msgid "Enable Remote Site Maintenance Error"
 msgstr "Lỗi bật bảo trì trang web từ xa"
 
-#: src/components/Notification/notifications.ts:97
+#: src/components/Notification/notifications.ts:113
 msgid "Enable Remote Site Maintenance Success"
 msgstr "Kích hoạt chế độ bảo trì trang web từ xa thành công"
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:105
+#: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "Kích hoạt trang từ xa thành công"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:157
 msgid "Enable Remote Stream Error"
 msgstr "Lỗi bật luồng từ xa"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:161
 msgid "Enable Remote Stream Success"
 msgstr "Bật luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:110
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "Không thể bật chế độ bảo trì cho trang web %{name} trên %{node}"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "Đã bật chế độ bảo trì trang web %{name} trên %{node} thành công"
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:102
 msgid "Enable site %{name} on %{node} failed"
 msgstr "Không thể kích hoạt trang web %{name} trên %{node}"
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:106
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "Đã bật trang web %{name} trên %{node} thành công"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:158
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "Không thể bật luồng %{name} trên %{node}"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:162
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Đã bật luồng %{name} trên %{node} thành công"
 
@@ -3506,7 +3538,7 @@ msgstr ""
 "Trước tiên, vui lòng thêm thông tin xác thực trong Chứng chỉ > Thông tin "
 "xác thực DNS, sau đó chọn nhà cung cấp DNS"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:182
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -3826,53 +3858,53 @@ msgstr "Đã xóa thành công"
 msgid "Rename"
 msgstr "Đổi tên"
 
-#: src/components/Notification/notifications.ts:62
+#: src/components/Notification/notifications.ts:78
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "Đổi tên %{orig_path} thành %{new_path} trên %{env_name} thất bại"
 
-#: src/components/Notification/notifications.ts:66
+#: src/components/Notification/notifications.ts:82
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "Đã đổi tên %{orig_path} thành %{new_path} trên %{env_name} thành công"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:77 src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr "Lỗi đổi tên cấu hình từ xa"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:81 src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr "Đổi tên cấu hình từ xa thành công"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:125
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "Lỗi đổi tên trang từ xa"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:129
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "Đổi tên trang từ xa thành công"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:165
 msgid "Rename Remote Stream Error"
 msgstr "Lỗi đổi tên luồng từ xa"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:169
 msgid "Rename Remote Stream Success"
 msgstr "Đổi tên luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:126
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "Đổi tên trang web %{name} thành %{new_name} trên %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:130
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "Đã đổi tên trang web %{name} thành %{new_name} trên %{node} thành công"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:166
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "Đổi tên luồng %{name} thành %{new_name} trên %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:170
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "Đổi tên luồng %{name} thành %{new_name} trên %{node} thành công"
 
@@ -4180,37 +4212,37 @@ msgstr "Lưu Directive"
 msgid "Save error %{msg}"
 msgstr "Đã xảy ra lỗi khi lưu %{msg}"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:133
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "Lỗi lưu trang từ xa"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "Lưu trang từ xa thành công"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:173
 msgid "Save Remote Stream Error"
 msgstr "Lỗi lưu luồng từ xa"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:177
 msgid "Save Remote Stream Success"
 msgstr "Lưu luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:134
 msgid "Save site %{name} to %{node} failed"
 msgstr "Lưu trang %{name} vào %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:138
 msgid "Save site %{name} to %{node} successfully"
 msgstr "Đã lưu trang %{name} vào %{node} thành công"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:174
 msgid "Save stream %{name} to %{node} failed"
 msgstr "Lưu luồng %{name} vào %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:178
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Đã lưu luồng %{name} vào %{node} thành công"
 
@@ -4550,6 +4582,14 @@ msgstr "Storage"
 msgid "Storage Configuration"
 msgstr "Cấu hình lưu trữ"
 
+#: src/components/Notification/notifications.ts:26
+msgid ""
+"Storage configuration validation failed for backup task %{backup_name}, "
+"error: %{error}"
+msgstr ""
+"Xác thực cấu hình lưu trữ cho tác vụ sao lưu %{backup_name} thất bại, lỗi: "
+"%{error}"
+
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:120
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:54
 msgid "Storage Path"
@@ -4662,35 +4702,35 @@ msgstr "Đồng bộ"
 msgid "Sync Certificate"
 msgstr "Đồng bộ chứng chỉ"
 
-#: src/components/Notification/notifications.ts:46
+#: src/components/Notification/notifications.ts:62
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "Đồng bộ chứng chỉ %{cert_name} tới %{env_name} thất bại"
 
-#: src/components/Notification/notifications.ts:50
+#: src/components/Notification/notifications.ts:66
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "Đồng bộ chứng chỉ %{cert_name} tới %{env_name} thành công"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr "Lỗi đồng bộ chứng chỉ"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr "Đồng bộ chứng chỉ thành công"
 
-#: src/components/Notification/notifications.ts:54
+#: src/components/Notification/notifications.ts:70
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "Đồng bộ cấu hình %{config_name} tới %{env_name} thất bại"
 
-#: src/components/Notification/notifications.ts:58
+#: src/components/Notification/notifications.ts:74
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "Đồng bộ cấu hình %{config_name} tới %{env_name} thành công"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr "Lỗi đồng bộ cấu hình"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr "Đồng bộ cấu hình thành công"
 

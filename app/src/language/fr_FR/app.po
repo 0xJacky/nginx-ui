@@ -220,7 +220,7 @@ msgstr ""
 msgid "All"
 msgstr "Tous"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:181
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "Tous les codes de récupération ont été utilisés"
@@ -362,6 +362,22 @@ msgstr "auto = cœurs CPU"
 msgid "Auto Backup"
 msgstr "Sauvegarde automatique"
 
+#: src/components/Notification/notifications.ts:37
+msgid "Auto Backup Completed"
+msgstr "Sauvegarde automatique terminée"
+
+#: src/components/Notification/notifications.ts:25
+msgid "Auto Backup Configuration Error"
+msgstr "Erreur de configuration de sauvegarde automatique"
+
+#: src/components/Notification/notifications.ts:29
+msgid "Auto Backup Failed"
+msgstr "Échec de la sauvegarde automatique"
+
+#: src/components/Notification/notifications.ts:33
+msgid "Auto Backup Storage Failed"
+msgstr "Échec du stockage de sauvegarde automatique"
+
 #: src/views/nginx_log/NginxLog.vue:150
 msgid "Auto Refresh"
 msgstr "Actualisation automatique"
@@ -446,6 +462,24 @@ msgstr "Le chemin de sauvegarde n'est pas dans les chemins d'accès accordés : 
 #: src/views/backup/AutoBackup/components/CronEditor.vue:141
 msgid "Backup Schedule"
 msgstr "Planification de sauvegarde"
+
+#: src/components/Notification/notifications.ts:38
+msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
+msgstr ""
+"Tâche de sauvegarde %{backup_name} terminée avec succès, fichier : "
+"%{file_path}"
+
+#: src/components/Notification/notifications.ts:34
+msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
+msgstr ""
+"La tâche de sauvegarde %{backup_name} a échoué lors du téléchargement vers "
+"le stockage, erreur : %{error}"
+
+#: src/components/Notification/notifications.ts:30
+msgid "Backup task %{backup_name} failed to execute, error: %{error}"
+msgstr ""
+"La tâche de sauvegarde %{backup_name} n'a pas pu s'exécuter, erreur : "
+"%{error}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:24
 msgid "Backup Type"
@@ -612,17 +646,17 @@ msgstr "Certificat"
 msgid "Cert path is not under the nginx conf dir"
 msgstr "Le chemin du certificat n'est pas dans le dossier conf de nginx"
 
-#: src/components/Notification/notifications.ts:26
+#: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} has expired"
 msgstr "Le certificat %{name} a expiré"
 
-#: src/components/Notification/notifications.ts:30
-#: src/components/Notification/notifications.ts:34
-#: src/components/Notification/notifications.ts:38
+#: src/components/Notification/notifications.ts:46
+#: src/components/Notification/notifications.ts:50
+#: src/components/Notification/notifications.ts:54
 msgid "Certificate %{name} will expire in %{days} days"
 msgstr "Le certificat %{name} expirera dans %{days} jours"
 
-#: src/components/Notification/notifications.ts:42
+#: src/components/Notification/notifications.ts:58
 msgid "Certificate %{name} will expire in 1 day"
 msgstr "Le certificat %{name} expirera dans 1 jour"
 
@@ -630,17 +664,17 @@ msgstr "Le certificat %{name} expirera dans 1 jour"
 msgid "Certificate decode error"
 msgstr "Erreur de décodage du certificat"
 
-#: src/components/Notification/notifications.ts:29
+#: src/components/Notification/notifications.ts:45
 msgid "Certificate Expiration Notice"
 msgstr "Avis d'expiration du certificat"
 
-#: src/components/Notification/notifications.ts:25
+#: src/components/Notification/notifications.ts:41
 msgid "Certificate Expired"
 msgstr "Certificat expiré"
 
-#: src/components/Notification/notifications.ts:33
-#: src/components/Notification/notifications.ts:37
-#: src/components/Notification/notifications.ts:41
+#: src/components/Notification/notifications.ts:49
+#: src/components/Notification/notifications.ts:53
+#: src/components/Notification/notifications.ts:57
 msgid "Certificate Expiring Soon"
 msgstr "Certificat expirant bientôt"
 
@@ -1230,27 +1264,27 @@ msgstr "Supprimer le certificat"
 msgid "Delete Permanently"
 msgstr "Supprimer définitivement"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:85 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "Erreur de suppression du site distant"
 
-#: src/components/Notification/notifications.ts:73 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:89 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "Suppression du site distant réussie"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:141
 msgid "Delete Remote Stream Error"
 msgstr "Erreur de suppression du flux distant"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:145
 msgid "Delete Remote Stream Success"
 msgstr "Suppression du flux distant réussie"
 
-#: src/components/Notification/notifications.ts:70
+#: src/components/Notification/notifications.ts:86
 msgid "Delete site %{name} from %{node} failed"
 msgstr "Échec de la suppression du site %{name} de %{node}"
 
-#: src/components/Notification/notifications.ts:74
+#: src/components/Notification/notifications.ts:90
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Suppression du site %{name} de %{node} réussie"
 
@@ -1258,11 +1292,11 @@ msgstr "Suppression du site %{name} de %{node} réussie"
 msgid "Delete site: %{site_name}"
 msgstr "Supprimer le site : %{site_name}"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:142
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "Échec de la suppression du flux %{name} de %{node}"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:146
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Le flux %{name} a été supprimé de %{node} avec succès"
 
@@ -1348,51 +1382,51 @@ msgstr "Désactiver"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Échec de la désactivation du renouvellement automatique pour %{name}"
 
-#: src/components/Notification/notifications.ts:77 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:93 src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "Erreur de désactivation du site distant"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:117
 msgid "Disable Remote Site Maintenance Error"
 msgstr "Erreur de désactivation de la maintenance du site distant"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:121
 msgid "Disable Remote Site Maintenance Success"
 msgstr "Désactivation de la maintenance du site distant réussie"
 
-#: src/components/Notification/notifications.ts:81 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "Site distant désactivé avec succès"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:149
 msgid "Disable Remote Stream Error"
 msgstr "Erreur de désactivation du flux à distance"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:153
 msgid "Disable Remote Stream Success"
 msgstr "Désactivation du flux distant réussie"
 
-#: src/components/Notification/notifications.ts:78
+#: src/components/Notification/notifications.ts:94
 msgid "Disable site %{name} from %{node} failed"
 msgstr "Désactivation du site %{name} depuis %{node} a échoué"
 
-#: src/components/Notification/notifications.ts:82
+#: src/components/Notification/notifications.ts:98
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "Site %{name} désactivé sur %{node} avec succès"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:118
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "Échec de la désactivation de la maintenance du site %{name} sur %{node}"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:122
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "Désactivation de la maintenance du site %{name} sur %{node} réussie"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:150
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "Échec de la désactivation du flux %{name} depuis %{node}"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:154
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Désactivation du flux %{name} depuis %{node} réussie"
 
@@ -1604,51 +1638,53 @@ msgstr "Activer HTTPS"
 msgid "Enable Proxy Cache"
 msgstr "Activer le cache du proxy"
 
-#: src/components/Notification/notifications.ts:85 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "Erreur d'activation du site distant"
 
-#: src/components/Notification/notifications.ts:93
+#: src/components/Notification/notifications.ts:109
 msgid "Enable Remote Site Maintenance Error"
 msgstr "Erreur d'activation de la maintenance du site distant"
 
-#: src/components/Notification/notifications.ts:97
+#: src/components/Notification/notifications.ts:113
 msgid "Enable Remote Site Maintenance Success"
 msgstr "Activation de la maintenance du site distant réussie"
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:105
+#: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "Activation du site distant réussie"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:157
 msgid "Enable Remote Stream Error"
 msgstr "Erreur d'activation du flux distant"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:161
 msgid "Enable Remote Stream Success"
 msgstr "Activation du flux distant réussie"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:110
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "Échec de l'activation de la maintenance du site %{name} sur %{node}"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "Activation de la maintenance du site %{name} sur %{node} réussie"
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:102
 msgid "Enable site %{name} on %{node} failed"
 msgstr "Échec de l'activation du site %{name} sur %{node}"
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:106
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "Site %{name} activé sur %{node} avec succès"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:158
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "Échec de l'activation du flux %{name} sur %{node}"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:162
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Activation du flux %{name} sur %{node} réussie"
 
@@ -3554,7 +3590,7 @@ msgstr ""
 "DNS, puis sélectionner l'un des identifiants ci-dessous pour demander l'API "
 "du fournisseur DNS."
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:182
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -3885,53 +3921,53 @@ msgstr "Supprimé avec succès"
 msgid "Rename"
 msgstr "Renommer"
 
-#: src/components/Notification/notifications.ts:62
+#: src/components/Notification/notifications.ts:78
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "Échec du renommage de %{orig_path} en %{new_path} sur %{env_name}"
 
-#: src/components/Notification/notifications.ts:66
+#: src/components/Notification/notifications.ts:82
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "%{orig_path} renommé en %{new_path} sur %{env_name} avec succès"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:77 src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr "Erreur lors du renommage de la configuration distante"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:81 src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr "Renommage de la configuration distante réussi"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:125
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "Erreur de renommage du site distant"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:129
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "Renommage du site distant réussi"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:165
 msgid "Rename Remote Stream Error"
 msgstr "Erreur de renommage du flux distant"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:169
 msgid "Rename Remote Stream Success"
 msgstr "Renommage du flux distant réussi"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:126
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "Échec du renommage du site %{name} en %{new_name} sur %{node}"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:130
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "Le site %{name} a été renommé en %{new_name} sur %{node} avec succès"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:166
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "Échec du renommage du flux %{name} en %{new_name} sur %{node}"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:170
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "Flux %{name} renommé en %{new_name} sur %{node} avec succès"
 
@@ -4239,37 +4275,37 @@ msgstr "Enregistrer la directive"
 msgid "Save error %{msg}"
 msgstr "Enregistrer l'erreur %{msg}"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:133
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "Erreur lors de l'enregistrement du site distant"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "Enregistrement du site distant réussi"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:173
 msgid "Save Remote Stream Error"
 msgstr "Erreur lors de l'enregistrement du flux distant"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:177
 msgid "Save Remote Stream Success"
 msgstr "Enregistrement du flux distant réussi"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:134
 msgid "Save site %{name} to %{node} failed"
 msgstr "Échec de l'enregistrement du site %{name} sur %{node}"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:138
 msgid "Save site %{name} to %{node} successfully"
 msgstr "Site %{name} enregistré sur %{node} avec succès"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:174
 msgid "Save stream %{name} to %{node} failed"
 msgstr "Échec de l'enregistrement du flux %{name} sur %{node}"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:178
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Flux %{name} enregistré sur %{node} avec succès"
 
@@ -4617,6 +4653,14 @@ msgstr "Stockage"
 msgid "Storage Configuration"
 msgstr "Configuration du stockage"
 
+#: src/components/Notification/notifications.ts:26
+msgid ""
+"Storage configuration validation failed for backup task %{backup_name}, "
+"error: %{error}"
+msgstr ""
+"La validation de la configuration de stockage pour la tâche de sauvegarde "
+"%{backup_name} a échoué, erreur : %{error}"
+
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:120
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:54
 msgid "Storage Path"
@@ -4730,37 +4774,37 @@ msgstr "Synchroniser"
 msgid "Sync Certificate"
 msgstr "Certificat synchronisé"
 
-#: src/components/Notification/notifications.ts:46
+#: src/components/Notification/notifications.ts:62
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "Échec de la synchronisation du certificat %{cert_name} vers %{env_name}"
 
-#: src/components/Notification/notifications.ts:50
+#: src/components/Notification/notifications.ts:66
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "Certificat %{cert_name} synchronisé avec succès vers %{env_name}"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr "Erreur de synchronisation du certificat"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr "Certificat synchronisé avec succès"
 
-#: src/components/Notification/notifications.ts:54
+#: src/components/Notification/notifications.ts:70
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr ""
 "Échec de la synchronisation de la configuration %{config_name} vers "
 "%{env_name}"
 
-#: src/components/Notification/notifications.ts:58
+#: src/components/Notification/notifications.ts:74
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "Configuration %{config_name} synchronisée avec succès vers %{env_name}"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr "Erreur de synchronisation de la configuration"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr "Synchronisation de la configuration réussie"
 

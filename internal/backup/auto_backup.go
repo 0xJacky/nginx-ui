@@ -39,14 +39,12 @@ func ExecuteAutoBackup(autoBackup *model.AutoBackup) error {
 		logger.Errorf("Storage configuration validation failed for task %s: %v", autoBackup.Name, err)
 		updateBackupStatus(autoBackup.ID, model.BackupStatusFailed, err.Error())
 		// Send validation failure notification
-		notification.Error(
-			fmt.Sprintf("Auto Backup Configuration Error: %s", autoBackup.Name),
-			fmt.Sprintf("Storage configuration validation failed for backup task '%s'", autoBackup.Name),
+		notification.Error("Auto Backup Configuration Error",
+			"Storage configuration validation failed for backup task %{backup_name}, error: %{error}",
 			map[string]interface{}{
 				"backup_id":   autoBackup.ID,
 				"backup_name": autoBackup.Name,
 				"error":       err.Error(),
-				"timestamp":   time.Now(),
 			},
 		)
 		return err
@@ -69,14 +67,12 @@ func ExecuteAutoBackup(autoBackup *model.AutoBackup) error {
 			logger.Errorf("Failed to update backup status to failed: %v", updateErr)
 		}
 		// Send failure notification
-		notification.Error(
-			fmt.Sprintf("Auto Backup Failed: %s", autoBackup.Name),
-			fmt.Sprintf("Backup task '%s' failed to execute", autoBackup.Name),
+		notification.Error("Auto Backup Failed",
+			"Backup task %{backup_name} failed to execute, error: %{error}",
 			map[string]interface{}{
 				"backup_id":   autoBackup.ID,
 				"backup_name": autoBackup.Name,
 				"error":       backupErr.Error(),
-				"timestamp":   now,
 			},
 		)
 		return backupErr
@@ -89,9 +85,8 @@ func ExecuteAutoBackup(autoBackup *model.AutoBackup) error {
 			logger.Errorf("Failed to update backup status to failed: %v", updateErr)
 		}
 		// Send storage failure notification
-		notification.Error(
-			fmt.Sprintf("Auto Backup Storage Failed: %s", autoBackup.Name),
-			fmt.Sprintf("Backup task '%s' failed during storage upload", autoBackup.Name),
+		notification.Error("Auto Backup Storage Failed",
+			"Backup task %{backup_name} failed during storage upload, error: %{error}",
 			map[string]interface{}{
 				"backup_id":   autoBackup.ID,
 				"backup_name": autoBackup.Name,
@@ -108,14 +103,12 @@ func ExecuteAutoBackup(autoBackup *model.AutoBackup) error {
 	}
 
 	// Send success notification
-	notification.Success(
-		fmt.Sprintf("Auto Backup Completed: %s", autoBackup.Name),
-		fmt.Sprintf("Backup task '%s' completed successfully", autoBackup.Name),
+	notification.Success("Auto Backup Completed",
+		"Backup task %{backup_name} completed successfully, file: %{file_path}",
 		map[string]interface{}{
 			"backup_id":   autoBackup.ID,
 			"backup_name": autoBackup.Name,
 			"file_path":   result.FilePath,
-			"timestamp":   now,
 		},
 	)
 

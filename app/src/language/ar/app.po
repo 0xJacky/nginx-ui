@@ -213,7 +213,7 @@ msgstr "بعد ذلك، قم بتحديث هذه الصفحة وانقر على 
 msgid "All"
 msgstr "الكل"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:181
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "تم استخدام جميع رموز الاسترداد"
@@ -351,6 +351,22 @@ msgstr "Auto = CPU Cores"
 msgid "Auto Backup"
 msgstr "النسخ الاحتياطي التلقائي"
 
+#: src/components/Notification/notifications.ts:37
+msgid "Auto Backup Completed"
+msgstr "اكتمل النسخ الاحتياطي التلقائي"
+
+#: src/components/Notification/notifications.ts:25
+msgid "Auto Backup Configuration Error"
+msgstr "خطأ في تكوين النسخ الاحتياطي التلقائي"
+
+#: src/components/Notification/notifications.ts:29
+msgid "Auto Backup Failed"
+msgstr "فشل النسخ الاحتياطي التلقائي"
+
+#: src/components/Notification/notifications.ts:33
+msgid "Auto Backup Storage Failed"
+msgstr "فشل تخزين النسخ الاحتياطي التلقائي"
+
 #: src/views/nginx_log/NginxLog.vue:150
 msgid "Auto Refresh"
 msgstr "التحديث التلقائي"
@@ -431,6 +447,20 @@ msgstr "مسار النسخ الاحتياطي غير موجود في مسارا
 #: src/views/backup/AutoBackup/components/CronEditor.vue:141
 msgid "Backup Schedule"
 msgstr "جدول النسخ الاحتياطي"
+
+#: src/components/Notification/notifications.ts:38
+msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
+msgstr "تم إنجاز مهمة النسخ الاحتياطي %{backup_name} بنجاح، الملف: %{file_path}"
+
+#: src/components/Notification/notifications.ts:34
+msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
+msgstr ""
+"فشلت مهمة النسخ الاحتياطي %{backup_name} أثناء تحميل التخزين، الخطأ: "
+"%{error}"
+
+#: src/components/Notification/notifications.ts:30
+msgid "Backup task %{backup_name} failed to execute, error: %{error}"
+msgstr "فشل تنفيذ مهمة النسخ الاحتياطي %{backup_name}، الخطأ: %{error}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:24
 msgid "Backup Type"
@@ -596,17 +626,17 @@ msgstr "شهادة"
 msgid "Cert path is not under the nginx conf dir"
 msgstr "مسار الشهادة ليس ضمن دليل تكوين nginx"
 
-#: src/components/Notification/notifications.ts:26
+#: src/components/Notification/notifications.ts:42
 msgid "Certificate %{name} has expired"
 msgstr "انتهت صلاحية الشهادة %{name}"
 
-#: src/components/Notification/notifications.ts:30
-#: src/components/Notification/notifications.ts:34
-#: src/components/Notification/notifications.ts:38
+#: src/components/Notification/notifications.ts:46
+#: src/components/Notification/notifications.ts:50
+#: src/components/Notification/notifications.ts:54
 msgid "Certificate %{name} will expire in %{days} days"
 msgstr "شهادة %{name} ستنتهي خلال %{days} يومًا"
 
-#: src/components/Notification/notifications.ts:42
+#: src/components/Notification/notifications.ts:58
 msgid "Certificate %{name} will expire in 1 day"
 msgstr "ستنتهي صلاحية الشهادة %{name} خلال يوم واحد"
 
@@ -614,17 +644,17 @@ msgstr "ستنتهي صلاحية الشهادة %{name} خلال يوم واح�
 msgid "Certificate decode error"
 msgstr "خطأ في فك تشفير الشهادة"
 
-#: src/components/Notification/notifications.ts:29
+#: src/components/Notification/notifications.ts:45
 msgid "Certificate Expiration Notice"
 msgstr "إشعار انتهاء صلاحية الشهادة"
 
-#: src/components/Notification/notifications.ts:25
+#: src/components/Notification/notifications.ts:41
 msgid "Certificate Expired"
 msgstr "انتهت صلاحية الشهادة"
 
-#: src/components/Notification/notifications.ts:33
-#: src/components/Notification/notifications.ts:37
-#: src/components/Notification/notifications.ts:41
+#: src/components/Notification/notifications.ts:49
+#: src/components/Notification/notifications.ts:53
+#: src/components/Notification/notifications.ts:57
 msgid "Certificate Expiring Soon"
 msgstr "شهادة على وشك الانتهاء"
 
@@ -1208,27 +1238,27 @@ msgstr "حذف الشهادة"
 msgid "Delete Permanently"
 msgstr "حذف نهائي"
 
-#: src/components/Notification/notifications.ts:69 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:85 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "خطأ حذف الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:73 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:89 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "نجح حذف الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:141
 msgid "Delete Remote Stream Error"
 msgstr "خطأ في حذف البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:145
 msgid "Delete Remote Stream Success"
 msgstr "نجاح حذف البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:70
+#: src/components/Notification/notifications.ts:86
 msgid "Delete site %{name} from %{node} failed"
 msgstr "فشل حذف الموقع %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:74
+#: src/components/Notification/notifications.ts:90
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "تم حذف الموقع %{name} من %{node} بنجاح"
 
@@ -1236,11 +1266,11 @@ msgstr "تم حذف الموقع %{name} من %{node} بنجاح"
 msgid "Delete site: %{site_name}"
 msgstr "حذف الموقع: ‎%{site_name}"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:142
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "فشل حذف الدفق %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:146
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "تم حذف الدفق %{name} من %{node} بنجاح"
 
@@ -1326,51 +1356,51 @@ msgstr "تعطيل"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "فشل تعطيل التجديد التلقائي لـ %{name}"
 
-#: src/components/Notification/notifications.ts:77 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:93 src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "خطأ تعطيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:117
 msgid "Disable Remote Site Maintenance Error"
 msgstr "خطأ في تعطيل صيانة الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:121
 msgid "Disable Remote Site Maintenance Success"
 msgstr "تعطيل صيانة الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:81 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "تم تعطيل الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:149
 msgid "Disable Remote Stream Error"
 msgstr "خطأ في تعطيل البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:153
 msgid "Disable Remote Stream Success"
 msgstr "تعطيل البث عن بُعد بنجاح"
 
-#: src/components/Notification/notifications.ts:78
+#: src/components/Notification/notifications.ts:94
 msgid "Disable site %{name} from %{node} failed"
 msgstr "فشل تعطيل الموقع %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:82
+#: src/components/Notification/notifications.ts:98
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "تم تعطيل الموقع %{name} من %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:118
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "فشل تعطيل صيانة الموقع %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:122
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "تم تعطيل صيانة الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:150
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "فشل تعطيل الدفق %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:154
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "تم تعطيل الدفق %{name} من %{node} بنجاح"
 
@@ -1581,51 +1611,53 @@ msgstr "تمكين HTTPS"
 msgid "Enable Proxy Cache"
 msgstr "تمكين ذاكرة التخزين المؤقت للوكيل"
 
-#: src/components/Notification/notifications.ts:85 src/language/constants.ts:54
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "خطأ في تفعيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:93
+#: src/components/Notification/notifications.ts:109
 msgid "Enable Remote Site Maintenance Error"
 msgstr "خطأ في تمكين صيانة الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:97
+#: src/components/Notification/notifications.ts:113
 msgid "Enable Remote Site Maintenance Success"
 msgstr "تمكين صيانة الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:53
+#: src/components/Notification/notifications.ts:105
+#: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "نجح تفعيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:157
 msgid "Enable Remote Stream Error"
 msgstr "خطأ في تمكين البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:161
 msgid "Enable Remote Stream Success"
 msgstr "تمكين البث عن بُعد بنجاح"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:110
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "فشل تمكين الصيانة للموقع %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "تم تمكين صيانة الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:102
 msgid "Enable site %{name} on %{node} failed"
 msgstr "فشل تمكين الموقع %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:106
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "تم تمكين الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:158
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "فشل تمكين الدفق %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:162
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "تم تمكين الدفق %{name} على %{node} بنجاح"
 
@@ -3508,7 +3540,7 @@ msgstr ""
 "يرجى أولاً إضافة بيانات الاعتماد في الشهادات > بيانات اعتماد DNS، ثم اختيار "
 "أحد بيانات الاعتماد أدناه لطلب API لمزود DNS."
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:182
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -3824,53 +3856,53 @@ msgstr "تمت الإزالة بنجاح"
 msgid "Rename"
 msgstr "إعادة تسمية"
 
-#: src/components/Notification/notifications.ts:62
+#: src/components/Notification/notifications.ts:78
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} failed"
 msgstr "فشل إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name}"
 
-#: src/components/Notification/notifications.ts:66
+#: src/components/Notification/notifications.ts:82
 msgid "Rename %{orig_path} to %{new_path} on %{env_name} successfully"
 msgstr "تم إعادة تسمية %{orig_path} إلى %{new_path} على %{env_name} بنجاح"
 
-#: src/components/Notification/notifications.ts:61 src/language/constants.ts:42
+#: src/components/Notification/notifications.ts:77 src/language/constants.ts:42
 msgid "Rename Remote Config Error"
 msgstr "خطأ في إعادة تسمية التكوين البعيد"
 
-#: src/components/Notification/notifications.ts:65 src/language/constants.ts:41
+#: src/components/Notification/notifications.ts:81 src/language/constants.ts:41
 msgid "Rename Remote Config Success"
 msgstr "إعادة تسمية تكوين البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:125
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "خطأ في إعادة تسمية الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:129
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "تم إعادة تسمية الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:165
 msgid "Rename Remote Stream Error"
 msgstr "خطأ في إعادة تسمية البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:169
 msgid "Rename Remote Stream Success"
 msgstr "تمت إعادة تسمية الدفق البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:126
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "فشل إعادة تسمية الموقع %{name} إلى %{new_name} على %{node}"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:130
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "تمت إعادة تسمية الموقع %{name} إلى %{new_name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:166
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "فشل إعادة تسمية الدفق %{name} إلى %{new_name} على %{node}"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:170
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "تمت إعادة تسمية الدفق %{name} إلى %{new_name} على %{node} بنجاح"
 
@@ -4177,37 +4209,37 @@ msgstr "حفظ التوجيه"
 msgid "Save error %{msg}"
 msgstr "خطأ في الحفظ %{msg}"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:133
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "خطأ في حفظ الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "حفظ الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:173
 msgid "Save Remote Stream Error"
 msgstr "خطأ في حفظ البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:177
 msgid "Save Remote Stream Success"
 msgstr "حفظ البث عن بُعد بنجاح"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:134
 msgid "Save site %{name} to %{node} failed"
 msgstr "فشل حفظ الموقع %{name} إلى %{node}"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:138
 msgid "Save site %{name} to %{node} successfully"
 msgstr "تم حفظ الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:174
 msgid "Save stream %{name} to %{node} failed"
 msgstr "فشل حفظ الدفق %{name} إلى %{node}"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:178
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "تم حفظ الدفق %{name} في %{node} بنجاح"
 
@@ -4547,6 +4579,14 @@ msgstr "تخزين"
 msgid "Storage Configuration"
 msgstr "تكوين التخزين"
 
+#: src/components/Notification/notifications.ts:26
+msgid ""
+"Storage configuration validation failed for backup task %{backup_name}, "
+"error: %{error}"
+msgstr ""
+"فشل التحقق من تكوين التخزين لمهمة النسخ الاحتياطي %{backup_name}، الخطأ: "
+"%{error}"
+
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:120
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:54
 msgid "Storage Path"
@@ -4657,35 +4697,35 @@ msgstr "مزامنة"
 msgid "Sync Certificate"
 msgstr "مزامنة الشهادة"
 
-#: src/components/Notification/notifications.ts:46
+#: src/components/Notification/notifications.ts:62
 msgid "Sync Certificate %{cert_name} to %{env_name} failed"
 msgstr "فشل مزامنة الشهادة %{cert_name} إلى %{env_name}"
 
-#: src/components/Notification/notifications.ts:50
+#: src/components/Notification/notifications.ts:66
 msgid "Sync Certificate %{cert_name} to %{env_name} successfully"
 msgstr "نجح مزامنة الشهادة %{cert_name} إلى %{env_name}"
 
-#: src/components/Notification/notifications.ts:45 src/language/constants.ts:39
+#: src/components/Notification/notifications.ts:61 src/language/constants.ts:39
 msgid "Sync Certificate Error"
 msgstr "خطأ في مزامنة الشهادة"
 
-#: src/components/Notification/notifications.ts:49 src/language/constants.ts:38
+#: src/components/Notification/notifications.ts:65 src/language/constants.ts:38
 msgid "Sync Certificate Success"
 msgstr "تمت مزامنة الشهادة بنجاح"
 
-#: src/components/Notification/notifications.ts:54
+#: src/components/Notification/notifications.ts:70
 msgid "Sync config %{config_name} to %{env_name} failed"
 msgstr "فشل مزامنة التكوين %{config_name} إلى %{env_name}"
 
-#: src/components/Notification/notifications.ts:58
+#: src/components/Notification/notifications.ts:74
 msgid "Sync config %{config_name} to %{env_name} successfully"
 msgstr "تم مزامنة التكوين %{config_name} إلى %{env_name} بنجاح"
 
-#: src/components/Notification/notifications.ts:53 src/language/constants.ts:45
+#: src/components/Notification/notifications.ts:69 src/language/constants.ts:45
 msgid "Sync Config Error"
 msgstr "خطأ في تزامن التكوين"
 
-#: src/components/Notification/notifications.ts:57 src/language/constants.ts:44
+#: src/components/Notification/notifications.ts:73 src/language/constants.ts:44
 msgid "Sync Config Success"
 msgstr "تمت مزامنة التكوين بنجاح"
 

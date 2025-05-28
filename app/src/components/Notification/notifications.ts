@@ -21,6 +21,22 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Restart Remote Nginx Success'),
     content: (args: any) => $gettext('Restart Nginx on %{node} successfully', args),
   },
+  'Auto Backup Configuration Error': {
+    title: () => $gettext('Auto Backup Configuration Error'),
+    content: (args: any) => $gettext('Storage configuration validation failed for backup task %{backup_name}, error: %{error}', args),
+  },
+  'Auto Backup Failed': {
+    title: () => $gettext('Auto Backup Failed'),
+    content: (args: any) => $gettext('Backup task %{backup_name} failed to execute, error: %{error}', args),
+  },
+  'Auto Backup Storage Failed': {
+    title: () => $gettext('Auto Backup Storage Failed'),
+    content: (args: any) => $gettext('Backup task %{backup_name} failed during storage upload, error: %{error}', args),
+  },
+  'Auto Backup Completed': {
+    title: () => $gettext('Auto Backup Completed'),
+    content: (args: any) => $gettext('Backup task %{backup_name} completed successfully, file: %{file_path}', args),
+  },
   'Certificate Expired': {
     title: () => $gettext('Certificate Expired'),
     content: (args: any) => $gettext('Certificate %{name} has expired', args),
