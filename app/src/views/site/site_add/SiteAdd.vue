@@ -3,19 +3,21 @@ import { message } from 'ant-design-vue'
 import ngx from '@/api/ngx'
 import site from '@/api/site'
 import NgxConfigEditor, { DirectiveEditor, LocationEditor, useNgxConfigStore } from '@/components/NgxConfigEditor'
+import { ConfigStatus } from '@/constants'
+import Cert from '../site_edit/components/Cert'
+import EnableTLS from '../site_edit/components/EnableTLS'
+import { useSiteEditorStore } from '../site_edit/components/SiteEditor/store'
 
 const currentStep = ref(0)
-
-const enabled = ref(true)
-
-const autoCert = ref(false)
 
 onMounted(() => {
   init()
 })
 
 const ngxConfigStore = useNgxConfigStore()
+const editorStore = useSiteEditorStore()
 const { ngxConfig, curServerDirectives, curServerLocations } = storeToRefs(ngxConfigStore)
+const { curSupportSSL } = storeToRefs(editorStore)
 
 function init() {
   site.get_default_template().then(r => {
@@ -106,10 +108,17 @@ async function next() {
       </div>
 
       <template v-else-if="currentStep === 1">
-        <NgxConfigEditor
-          v-model:auto-cert="autoCert"
-          :enabled="enabled"
-        />
+        <EnableTLS />
+
+        <NgxConfigEditor>
+          <template v-if="curSupportSSL" #tab-content>
+            <Cert
+              class="mb-4"
+              :site-status="ConfigStatus.Enabled"
+              :config-name="ngxConfig.name"
+            />
+          </template>
+        </NgxConfigEditor>
 
         <br>
       </template>

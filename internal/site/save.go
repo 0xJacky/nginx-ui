@@ -14,7 +14,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/go-resty/resty/v2"
-	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -38,23 +37,15 @@ func Save(name string, content string, overwrite bool, envGroupId uint64, syncNo
 	enabledConfigFilePath := nginx.GetConfPath("sites-enabled", name)
 	if helper.FileExists(enabledConfigFilePath) {
 		// Test nginx configuration
-		var output string
-		output, err = nginx.TestConfig()
-		if err != nil {
-			return
-		}
-
-		if nginx.GetLogLevel(output) > nginx.Warn {
-			return cosy.WrapErrorWithParams(ErrNginxTestFailed, output)
+		c := nginx.Control(nginx.TestConfig)
+		if c.IsError() {
+			return c.GetError()
 		}
 
 		if postAction == model.PostSyncActionReloadNginx {
-			output, err = nginx.Reload()
-			if err != nil {
-				return
-			}
-			if nginx.GetLogLevel(output) > nginx.Warn {
-				return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
+			c := nginx.Control(nginx.Reload)
+			if c.IsError() {
+				return c.GetError()
 			}
 		}
 	}

@@ -11,7 +11,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/go-resty/resty/v2"
-	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -35,12 +34,9 @@ func Disable(name string) (err error) {
 		return
 	}
 
-	output, err := nginx.Reload()
-	if err != nil {
-		return
-	}
-	if nginx.GetLogLevel(output) > nginx.Warn {
-		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
+	res := nginx.Control(nginx.Reload)
+	if res.IsError() {
+		return res.GetError()
 	}
 
 	go syncDisable(name)

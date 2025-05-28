@@ -16,7 +16,6 @@ import (
 	"github.com/go-resty/resty/v2"
 	"github.com/tufanbarisyildirim/gonginx/config"
 	"github.com/tufanbarisyildirim/gonginx/parser"
-	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
@@ -76,26 +75,20 @@ func EnableMaintenance(name string) (err error) {
 	}
 
 	// Test nginx config, if not pass, then restore original configuration
-	output, err := nginx.TestConfig()
-	if err != nil {
-		return
-	}
-	if nginx.GetLogLevel(output) > nginx.Warn {
+	res := nginx.Control(nginx.TestConfig)
+	if res.IsError() {
 		// Configuration error, cleanup and revert
 		_ = os.Remove(maintenanceConfigPath)
 		if helper.FileExists(originalEnabledPath + "_backup") {
 			_ = os.Rename(originalEnabledPath+"_backup", originalEnabledPath)
 		}
-		return cosy.WrapErrorWithParams(ErrNginxTestFailed, output)
+		return res.GetError()
 	}
 
 	// Reload nginx
-	output, err = nginx.Reload()
-	if err != nil {
-		return
-	}
-	if nginx.GetLogLevel(output) > nginx.Warn {
-		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
+	res = nginx.Control(nginx.Reload)
+	if res.IsError() {
+		return res.GetError()
 	}
 
 	// Synchronize with other nodes
@@ -138,24 +131,18 @@ func DisableMaintenance(name string) (err error) {
 	}
 
 	// Test nginx config, if not pass, then revert
-	output, err := nginx.TestConfig()
-	if err != nil {
-		return
-	}
-	if nginx.GetLogLevel(output) > nginx.Warn {
+	res := nginx.Control(nginx.TestConfig)
+	if res.IsError() {
 		// Configuration error, cleanup and revert
 		_ = os.Remove(enabledConfigFilePath)
 		_ = os.Symlink(configFilePath, maintenanceConfigPath)
-		return fmt.Errorf("%s", output)
+		return res.GetError()
 	}
 
 	// Reload nginx
-	output, err = nginx.Reload()
-	if err != nil {
-		return
-	}
-	if nginx.GetLogLevel(output) > nginx.Warn {
-		return fmt.Errorf("%s", output)
+	res = nginx.Control(nginx.Reload)
+	if res.IsError() {
+		return res.GetError()
 	}
 
 	// Synchronize with other nodes

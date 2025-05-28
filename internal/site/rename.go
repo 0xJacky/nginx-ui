@@ -48,21 +48,15 @@ func Rename(oldName string, newName string) (err error) {
 	}
 
 	// test nginx configuration
-	output, err := nginx.TestConfig()
-	if err != nil {
-		return
-	}
-	if nginx.GetLogLevel(output) > nginx.Warn {
-		return fmt.Errorf("%s", output)
+	res := nginx.Control(nginx.TestConfig)
+	if res.IsError() {
+		return res.GetError()
 	}
 
 	// reload nginx
-	output, err = nginx.Reload()
-	if err != nil {
-		return
-	}
-	if nginx.GetLogLevel(output) > nginx.Warn {
-		return fmt.Errorf("%s", output)
+	res = nginx.Control(nginx.Reload)
+	if res.IsError() {
+		return res.GetError()
 	}
 
 	// update ChatGPT history

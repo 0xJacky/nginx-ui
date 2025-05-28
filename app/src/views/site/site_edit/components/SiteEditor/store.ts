@@ -8,7 +8,6 @@ import site from '@/api/site'
 import { useNgxConfigStore } from '@/components/NgxConfigEditor'
 
 export const useSiteEditorStore = defineStore('siteEditor', () => {
-  const name = ref('')
   const advanceMode = ref(false)
   const parseErrorStatus = ref(false)
   const parseErrorMessage = ref('')
@@ -25,10 +24,19 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
   const ngxConfigStore = useNgxConfigStore()
   const { ngxConfig, configText, curServerIdx, curServer, curServerDirectives, curDirectivesMap } = storeToRefs(ngxConfigStore)
 
+  const name = computed({
+    get() {
+      return ngxConfig.value.name
+    },
+    set(v) {
+      ngxConfig.value.name = v
+    },
+  })
+
   async function init(_name: string) {
     loading.value = true
-    name.value = _name
     await nextTick()
+    name.value = _name
 
     if (name.value) {
       try {

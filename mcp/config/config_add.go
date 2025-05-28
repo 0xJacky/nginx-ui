@@ -71,13 +71,9 @@ func handleNginxConfigAdd(ctx context.Context, request mcp.CallToolRequest) (*mc
 		return nil, err
 	}
 
-	output, err := nginx.Reload()
-	if err != nil {
-		return nil, err
-	}
-
-	if nginx.GetLogLevel(output) >= nginx.Warn {
-		return nil, config.ErrNginxReloadFailed
+	res := nginx.Control(nginx.Reload)
+	if res.IsError() {
+		return nil, res.GetError()
 	}
 
 	q := query.Config

@@ -11,7 +11,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/go-resty/resty/v2"
-	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -35,21 +34,14 @@ func Enable(name string) (err error) {
 	}
 
 	// Test nginx config, if not pass, then disable the site.
-	output, err := nginx.TestConfig()
-	if err != nil {
-		return
-	}
-	if nginx.GetLogLevel(output) > nginx.Warn {
-		_ = os.Remove(enabledConfigFilePath)
-		return cosy.WrapErrorWithParams(ErrNginxTestFailed, output)
+	res := nginx.Control(nginx.TestConfig)
+	if res.IsError() {
+		return res.GetError()
 	}
 
-	output, err = nginx.Reload()
-	if err != nil {
-		return
-	}
-	if nginx.GetLogLevel(output) > nginx.Warn {
-		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
+	res = nginx.Control(nginx.Reload)
+	if res.IsError() {
+		return res.GetError()
 	}
 
 	go syncEnable(name)

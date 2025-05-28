@@ -7,7 +7,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
-	"github.com/uozi-tech/cosy"
 	"gorm.io/gen/field"
 )
 
@@ -45,13 +44,9 @@ func Save(absPath string, content string, cfg *model.Config) (err error) {
 		return
 	}
 
-	output, err := nginx.Reload()
-	if err != nil {
-		return
-	} 
-
-	if nginx.GetLogLevel(output) >= nginx.Warn {
-		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
+	res := nginx.Control(nginx.Reload)
+	if res.IsError() {
+		return res.GetError()
 	}
 
 	err = SyncToRemoteServer(cfg)

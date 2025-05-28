@@ -12,7 +12,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/go-resty/resty/v2"
-	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -49,21 +48,15 @@ func Rename(oldName string, newName string) (err error) {
 	}
 
 	// test nginx configuration
-	output, err := nginx.TestConfig()
-	if err != nil {
-		return
-	}
-	if nginx.GetLogLevel(output) > nginx.Warn {
-		return cosy.WrapErrorWithParams(ErrNginxTestFailed, output)
+	res := nginx.Control(nginx.TestConfig)
+	if res.IsError() {
+		return res.GetError()
 	}
 
 	// reload nginx
-	output, err = nginx.Reload()
-	if err != nil {
-		return
-	}
-	if nginx.GetLogLevel(output) > nginx.Warn {
-		return cosy.WrapErrorWithParams(ErrNginxReloadFailed, output)
+	res = nginx.Control(nginx.Reload)
+	if res.IsError() {
+		return res.GetError()
 	}
 
 	// update ChatGPT history

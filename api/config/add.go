@@ -74,14 +74,9 @@ func AddConfig(c *gin.Context) {
 		return
 	}
 
-	output, err := nginx.Reload()
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	if nginx.GetLogLevel(output) >= nginx.Warn {
-		cosy.ErrHandler(c, cosy.WrapErrorWithParams(config.ErrNginxReloadFailed, output))
+	res := nginx.Control(nginx.Reload)
+	if res.IsError() {
+		res.RespError(c)
 		return
 	}
 
