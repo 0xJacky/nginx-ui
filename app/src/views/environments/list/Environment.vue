@@ -70,7 +70,14 @@ const inTrash = computed(() => {
       v-model:selected-row-keys="selectedNodeIds"
       v-model:selected-rows="selectedNodes"
       :scroll-x="1000"
-      row-selection-type="checkbox"
+      :table-props="{
+        rowSelection: {
+          type: 'checkbox',
+          getCheckboxProps: (record) => ({
+            disabled: !record.status,
+          }),
+        },
+      }"
       :title="$gettext('Environments')"
       :api="environment"
       :columns="envColumns"
