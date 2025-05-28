@@ -9,10 +9,8 @@ import (
 type BackupType string
 
 const (
-	BackupTypeNginxConfig   BackupType = "nginx_config"
-	BackupTypeNginxUIConfig BackupType = "nginx_ui_config"
-	BackupTypeBothConfig    BackupType = "both_config"
-	BackupTypeCustomDir     BackupType = "custom_dir"
+	BackupTypeNginxAndNginxUI BackupType = "nginx_and_nginx_ui"
+	BackupTypeCustomDir       BackupType = "custom_dir"
 )
 
 // StorageType represents where the backup is stored
@@ -55,5 +53,5 @@ type AutoBackup struct {
 }
 
 func (a *AutoBackup) GetName() string {
-	return strings.ReplaceAll(a.Name, " ", "_")
+	return strings.ReplaceAll(strings.TrimSpace(a.Name), " ", "_")
 }

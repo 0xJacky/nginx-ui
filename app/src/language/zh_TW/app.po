@@ -137,7 +137,7 @@ msgstr "ACME 使用者"
 msgid "Action"
 msgstr "操作"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:241
+#: src/views/backup/AutoBackup/AutoBackup.vue:273
 #: src/views/certificate/ACMEUser.vue:90
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:30
@@ -147,7 +147,7 @@ msgstr "操作"
 #: src/views/nginx_log/NginxLogList.vue:52
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:76
-#: src/views/site/site_list/columns.tsx:142 src/views/stream/columns.tsx:105
+#: src/views/site/site_list/columns.tsx:141 src/views/stream/columns.tsx:105
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "操作"
@@ -188,7 +188,7 @@ msgstr "在下方新增指令"
 msgid "Add Location"
 msgstr "新增 Location"
 
-#: src/routes/modules/sites.ts:26 src/views/site/site_add/SiteAdd.vue:73
+#: src/routes/modules/sites.ts:26 src/views/site/site_add/SiteAdd.vue:75
 msgid "Add Site"
 msgstr "新增網站"
 
@@ -205,7 +205,7 @@ msgid "Additional"
 msgstr "其他設定"
 
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:94
-#: src/views/stream/components/StreamEditor.vue:55
+#: src/views/stream/components/StreamEditor.vue:56
 msgid "Advance Mode"
 msgstr "進階模式"
 
@@ -351,7 +351,7 @@ msgid "auto = CPU cores"
 msgstr "auto = CPU 核心數"
 
 #: src/routes/modules/backup.ts:27
-#: src/views/backup/AutoBackup/AutoBackup.vue:250
+#: src/views/backup/AutoBackup/AutoBackup.vue:282
 msgid "Auto Backup"
 msgstr "自動備份"
 
@@ -384,7 +384,7 @@ msgstr "\"自動重啟\""
 #: src/views/config/ConfigEditor.vue:272 src/views/config/ConfigList.vue:112
 #: src/views/config/ConfigList.vue:195 src/views/nginx_log/NginxLog.vue:174
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
-#: src/views/stream/components/StreamEditor.vue:106
+#: src/views/stream/components/StreamEditor.vue:107
 msgid "Back"
 msgstr "\"返回\""
 
@@ -412,7 +412,7 @@ msgstr "找不到備份檔案: {0}"
 msgid "Backup has been downloaded successfully"
 msgstr "備份已成功下載"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:54
+#: src/views/backup/AutoBackup/AutoBackup.vue:50
 msgid "Backup Path"
 msgstr "備份路徑"
 
@@ -456,7 +456,7 @@ msgstr "禁止至"
 msgid "Bark"
 msgstr "Bark"
 
-#: src/views/site/site_add/SiteAdd.vue:79
+#: src/views/site/site_add/SiteAdd.vue:81
 msgid "Base information"
 msgstr "基本資訊"
 
@@ -467,7 +467,7 @@ msgid "Basic"
 msgstr "基本"
 
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:97
-#: src/views/stream/components/StreamEditor.vue:58
+#: src/views/stream/components/StreamEditor.vue:59
 msgid "Basic Mode"
 msgstr "基本模式"
 
@@ -494,14 +494,6 @@ msgstr "以下是您要批次修改的選定項目"
 #: src/constants/errors/nginx.ts:3
 msgid "Block is nil"
 msgstr "區塊為空"
-
-#: src/views/backup/AutoBackup/AutoBackup.vue:30
-msgid "Both Config"
-msgstr "兩者配置"
-
-#: src/views/backup/AutoBackup/AutoBackup.vue:44
-msgid "Both Nginx and Nginx UI Config"
-msgstr "Nginx 和 Nginx UI 配置"
 
 #: src/views/system/About.vue:55
 msgid "Build with"
@@ -568,8 +560,8 @@ msgstr "基於 worker_processes * worker_connections 計算得出。實際效能
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
-#: src/views/stream/components/RightPanel/Basic.vue:47
-#: src/views/stream/components/StreamStatusSelect.vue:65
+#: src/views/stream/components/RightPanel/Basic.vue:49
+#: src/views/stream/components/StreamStatusSelect.vue:61
 msgid "Cancel"
 msgstr "取消"
 
@@ -874,7 +866,7 @@ msgstr "Client 請求主體緩衝區大小"
 msgid "Client request header buffer size"
 msgstr "Client 請求標頭緩衝區大小"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:170 src/language/curd.ts:14
+#: src/components/ConfigHistory/ConfigHistory.vue:179 src/language/curd.ts:14
 msgid "Close"
 msgstr "關閉"
 
@@ -905,7 +897,7 @@ msgstr "命令以意外退出代碼結束：{0}，錯誤：{1}"
 msgid "Comments"
 msgstr "備註"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:127
+#: src/components/ConfigHistory/ConfigHistory.vue:136
 msgid "Compare"
 msgstr "比較"
 
@@ -913,11 +905,11 @@ msgstr "比較"
 msgid "Compare Configurations"
 msgstr "比較設定"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:130
+#: src/components/ConfigHistory/ConfigHistory.vue:139
 msgid "Compare Selected"
 msgstr "比較所選項目"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:129
+#: src/components/ConfigHistory/ConfigHistory.vue:138
 msgid "Compare with Current"
 msgstr "與目前設定比較"
 
@@ -950,7 +942,7 @@ msgstr "配置模板"
 msgid "Configuration file is test successful"
 msgstr "設定檔案測試成功"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:138
+#: src/components/ConfigHistory/ConfigHistory.vue:147
 msgid "Configuration History"
 msgstr "設定歷史記錄"
 
@@ -958,7 +950,7 @@ msgstr "設定歷史記錄"
 msgid "Configuration information"
 msgstr "設定資訊"
 
-#: src/views/site/site_add/SiteAdd.vue:85
+#: src/views/site/site_add/SiteAdd.vue:87
 msgid "Configuration Name"
 msgstr "設定名稱"
 
@@ -966,7 +958,7 @@ msgstr "設定名稱"
 msgid "Configurations"
 msgstr "設定"
 
-#: src/views/site/site_add/SiteAdd.vue:80
+#: src/views/site/site_add/SiteAdd.vue:82
 msgid "Configure SSL"
 msgstr "設定 SSL"
 
@@ -1042,7 +1034,7 @@ msgstr "CPU:"
 msgid "Create"
 msgstr "建立"
 
-#: src/views/site/site_add/SiteAdd.vue:139
+#: src/views/site/site_add/SiteAdd.vue:148
 msgid "Create Another"
 msgstr "再建立一個"
 
@@ -1064,7 +1056,7 @@ msgid ""
 "Backup files will be automatically downloaded to your computer."
 msgstr "建立系統備份，包括 Nginx 設定與 Nginx UI 設定。備份檔案將自動下載至您的電腦。"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:227
+#: src/views/backup/AutoBackup/AutoBackup.vue:229
 #: src/views/environments/group/columns.ts:29
 #: src/views/notification/notificationColumns.tsx:51
 #: src/views/preference/components/AuthSettings/Passkey.vue:95
@@ -1130,8 +1122,8 @@ msgstr "自訂"
 msgid "Custom cron expression"
 msgstr "自訂 cron 表達式"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:31
-#: src/views/backup/AutoBackup/AutoBackup.vue:45
+#: src/views/backup/AutoBackup/AutoBackup.vue:29
+#: src/views/backup/AutoBackup/AutoBackup.vue:41
 msgid "Custom Directory"
 msgstr "自訂目錄"
 
@@ -1145,7 +1137,7 @@ msgstr "自訂顯示在環境指示器中的本機節點名稱。"
 msgid "Daily"
 msgstr "每日"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:129
+#: src/views/backup/AutoBackup/AutoBackup.vue:128
 msgid "Daily at %{time}"
 msgstr "每天 %{time}"
 
@@ -1300,7 +1292,7 @@ msgid "Directory path to store cache files"
 msgstr "儲存快取檔案的目錄路徑"
 
 #: src/views/site/components/SiteStatusSelect.vue:115
-#: src/views/stream/components/StreamStatusSelect.vue:58
+#: src/views/stream/components/StreamStatusSelect.vue:54
 msgid "disable"
 msgstr "禁用"
 
@@ -1356,7 +1348,7 @@ msgstr "停用來自 %{node} 的串流 %{name} 失敗"
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "已成功從 %{node} 停用串流 %{name}"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:173
+#: src/views/backup/AutoBackup/AutoBackup.vue:175
 #: src/views/environments/list/envColumns.tsx:60
 #: src/views/environments/list/envColumns.tsx:78
 #: src/views/preference/tabs/HTTPSettings.vue:24
@@ -1365,14 +1357,14 @@ msgstr "已成功從 %{node} 停用串流 %{name}"
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/site/site_list/columns.tsx:127 src/views/stream/columns.tsx:94
-#: src/views/stream/components/StreamEditor.vue:30
-#: src/views/stream/components/StreamStatusSelect.vue:89
+#: src/views/stream/components/StreamEditor.vue:31
+#: src/views/stream/components/StreamStatusSelect.vue:85
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr "停用"
 
 #: src/views/site/components/SiteStatusSelect.vue:67
-#: src/views/stream/components/RightPanel/Basic.vue:34
+#: src/views/stream/components/RightPanel/Basic.vue:36
 #: src/views/stream/components/StreamStatusSelect.vue:39
 msgid "Disabled successfully"
 msgstr "成功停用"
@@ -1403,7 +1395,7 @@ msgstr "除非您確定需要，否則不要啟用此選項。"
 msgid "Do you want to %{action} this site?"
 msgstr "您想要%{action}這個網站嗎？"
 
-#: src/views/stream/components/StreamStatusSelect.vue:61
+#: src/views/stream/components/StreamStatusSelect.vue:57
 msgid "Do you want to %{action} this stream?"
 msgstr "您要%{action}此串流嗎？"
 
@@ -1411,11 +1403,11 @@ msgstr "您要%{action}此串流嗎？"
 msgid "Do you want to disable auto-cert renewal?"
 msgstr "您要停用自動憑證續訂嗎？"
 
-#: src/views/stream/components/RightPanel/Basic.vue:43
+#: src/views/stream/components/RightPanel/Basic.vue:45
 msgid "Do you want to disable this stream?"
 msgstr "您要停用此 Stream 嗎？"
 
-#: src/views/stream/components/RightPanel/Basic.vue:43
+#: src/views/stream/components/RightPanel/Basic.vue:45
 msgid "Do you want to enable this stream?"
 msgstr "您要啟用此 Stream 嗎？"
 
@@ -1503,7 +1495,7 @@ msgid "Edit"
 msgstr "編輯"
 
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:51
-#: src/views/stream/components/StreamEditor.vue:19
+#: src/views/stream/components/StreamEditor.vue:20
 msgid "Edit %{n}"
 msgstr "編輯 %{n}"
 
@@ -1529,7 +1521,7 @@ msgid "Email (*)"
 msgstr "電子郵件 (*)"
 
 #: src/views/site/components/SiteStatusSelect.vue:114
-#: src/views/stream/components/StreamStatusSelect.vue:58
+#: src/views/stream/components/StreamStatusSelect.vue:54
 msgid "enable"
 msgstr "啟用"
 
@@ -1549,7 +1541,7 @@ msgstr "啟用代碼補全"
 msgid "Enable compression for content transfer"
 msgstr "啟用內容傳輸壓縮"
 
-#: src/views/site/site_add/SiteAdd.vue:35
+#: src/views/site/site_add/SiteAdd.vue:37
 msgid "Enable failed"
 msgstr "啟用失敗"
 
@@ -1621,8 +1613,7 @@ msgstr "啟用 TLS"
 msgid "Enable TOTP"
 msgstr "啟用 TOTP"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:158
-#: src/views/backup/AutoBackup/AutoBackup.vue:172
+#: src/views/backup/AutoBackup/AutoBackup.vue:174
 #: src/views/environments/list/envColumns.tsx:69
 #: src/views/environments/list/envColumns.tsx:75
 #: src/views/preference/tabs/HTTPSettings.vue:24
@@ -1632,16 +1623,16 @@ msgstr "啟用 TOTP"
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
 #: src/views/site/site_list/columns.tsx:123 src/views/stream/columns.tsx:90
-#: src/views/stream/components/RightPanel/Basic.vue:62
-#: src/views/stream/components/StreamEditor.vue:24
-#: src/views/stream/components/StreamStatusSelect.vue:88
+#: src/views/stream/components/RightPanel/Basic.vue:64
+#: src/views/stream/components/StreamEditor.vue:25
+#: src/views/stream/components/StreamStatusSelect.vue:84
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
 msgstr "已啟用"
 
 #: src/views/site/components/SiteStatusSelect.vue:54
-#: src/views/site/site_add/SiteAdd.vue:32
-#: src/views/stream/components/RightPanel/Basic.vue:25
+#: src/views/site/site_add/SiteAdd.vue:34
+#: src/views/stream/components/RightPanel/Basic.vue:27
 #: src/views/stream/components/StreamStatusSelect.vue:26
 msgid "Enabled successfully"
 msgstr "成功啟用"
@@ -1660,7 +1651,7 @@ msgstr "環境變數已清理"
 
 #: src/routes/modules/environments.ts:11
 #: src/views/dashboard/Environments.vue:83
-#: src/views/environments/list/Environment.vue:74
+#: src/views/environments/list/Environment.vue:81
 msgid "Environments"
 msgstr "環境"
 
@@ -1732,8 +1723,8 @@ msgstr "外部通知"
 msgid "Fail to obtain certificate"
 msgstr "取得憑證失敗"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:194
-#: src/views/backup/AutoBackup/AutoBackup.vue:219
+#: src/views/backup/AutoBackup/AutoBackup.vue:196
+#: src/views/backup/AutoBackup/AutoBackup.vue:221
 msgid "Failed"
 msgstr "失敗"
 
@@ -1878,7 +1869,7 @@ msgid "Failed to delete certificate from database: %{error}"
 msgstr "從資料庫刪除憑證失敗: %{error}"
 
 #: src/views/site/components/SiteStatusSelect.vue:73
-#: src/views/stream/components/RightPanel/Basic.vue:37
+#: src/views/stream/components/RightPanel/Basic.vue:39
 #: src/views/stream/components/StreamStatusSelect.vue:45
 msgid "Failed to disable %{msg}"
 msgstr "停用 %{msg} 失敗"
@@ -1888,7 +1879,7 @@ msgid "Failed to disable maintenance mode %{msg}"
 msgstr "無法停用維護模式 %{msg}"
 
 #: src/views/site/components/SiteStatusSelect.vue:60
-#: src/views/stream/components/RightPanel/Basic.vue:28
+#: src/views/stream/components/RightPanel/Basic.vue:30
 #: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
 msgstr "啟用 %{msg} 失敗"
@@ -1957,7 +1948,7 @@ msgstr "檢查容器失敗: {0}"
 msgid "Failed to inspect current container: {0}"
 msgstr "檢查目前容器失敗: {0}"
 
-#: src/components/ConfigHistory/ConfigHistory.vue:77
+#: src/components/ConfigHistory/ConfigHistory.vue:83
 msgid "Failed to load history records"
 msgstr "無法載入歷史記錄"
 
@@ -2069,7 +2060,7 @@ msgstr "檔名空白"
 msgid "Filter"
 msgstr "篩選"
 
-#: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:81
+#: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:83
 msgid "Finished"
 msgstr "完成"
 
@@ -2184,7 +2175,7 @@ msgstr "數值越高表示連線重複使用率越好"
 
 #: src/views/config/ConfigEditor.vue:260
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
-#: src/views/stream/components/StreamEditor.vue:43
+#: src/views/stream/components/StreamEditor.vue:44
 msgid "History"
 msgstr "歷史"
 
@@ -2442,11 +2433,11 @@ msgstr "Lark"
 msgid "Lark Custom"
 msgstr "Lark 自訂"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:188
+#: src/views/backup/AutoBackup/AutoBackup.vue:190
 msgid "Last Backup Status"
 msgstr "上次備份狀態"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:181
+#: src/views/backup/AutoBackup/AutoBackup.vue:183
 msgid "Last Backup Time"
 msgstr "上次備份時間"
 
@@ -2512,7 +2503,7 @@ msgstr "監聽中"
 msgid "Load Average:"
 msgstr "負載平均值："
 
-#: src/views/environments/list/Environment.vue:81
+#: src/views/environments/list/Environment.vue:88
 msgid "Load from settings"
 msgstr "從設定載入"
 
@@ -2547,14 +2538,14 @@ msgstr "資料載入中…"
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
 #: src/components/NodeSelector/NodeSelector.vue:86
-#: src/views/backup/AutoBackup/AutoBackup.vue:78
-#: src/views/backup/AutoBackup/AutoBackup.vue:87
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:46
+#: src/views/backup/AutoBackup/AutoBackup.vue:74
+#: src/views/backup/AutoBackup/AutoBackup.vue:83
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
 #: src/views/preference/tabs/NginxSettings.vue:55
 msgid "Local"
 msgstr "本機"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:58
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:60
 msgid "Local path (e.g., /var/backups)"
 msgstr "本地路徑（例如：/var/backups）"
 
@@ -2774,7 +2765,7 @@ msgstr "修改"
 msgid "Modify Certificate"
 msgstr "修改憑證"
 
-#: src/views/site/site_add/SiteAdd.vue:136
+#: src/views/site/site_add/SiteAdd.vue:145
 msgid "Modify Config"
 msgstr "修改設定"
 
@@ -2794,7 +2785,7 @@ msgstr "星期一"
 msgid "Monthly"
 msgstr "每月"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:139
+#: src/views/backup/AutoBackup/AutoBackup.vue:138
 msgid "Monthly on day %{day} at %{time}"
 msgstr "每月%{day}日%{time}"
 
@@ -2818,7 +2809,7 @@ msgstr "多行指令"
 #: src/views/site/site_list/columns.tsx:16
 #: src/views/site/site_list/SiteDuplicate.vue:79
 #: src/views/stream/columns.tsx:12
-#: src/views/stream/components/RightPanel/Basic.vue:69
+#: src/views/stream/components/RightPanel/Basic.vue:72
 #: src/views/stream/components/StreamDuplicate.vue:71
 #: src/views/stream/StreamList.vue:143
 msgid "Name"
@@ -2866,7 +2857,7 @@ msgstr "新版本發布"
 
 #: src/views/certificate/components/WildcardCertificate.vue:89
 #: src/views/install/components/InstallView.vue:96
-#: src/views/site/site_add/SiteAdd.vue:123
+#: src/views/site/site_add/SiteAdd.vue:132
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:214
 msgid "Next"
 msgstr "下一步"
@@ -2882,6 +2873,11 @@ msgstr "Nginx 存取日誌路徑"
 #: src/language/generate.ts:22
 msgid "Nginx access log path exists"
 msgstr "Nginx 訪問日誌路徑存在"
+
+#: src/views/backup/AutoBackup/AutoBackup.vue:28
+#: src/views/backup/AutoBackup/AutoBackup.vue:40
+msgid "Nginx and Nginx UI Config"
+msgstr "Nginx 和 Nginx UI 配置"
 
 #: src/constants/errors/self_check.ts:6
 msgid "Nginx conf no http block"
@@ -2903,11 +2899,6 @@ msgstr "Nginx 設定檔未包含 sites-enabled"
 msgid "Nginx conf not include stream-enabled"
 msgstr "Nginx 設定檔未包含 stream-enabled"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:28
-#: src/views/backup/AutoBackup/AutoBackup.vue:42
-msgid "Nginx Config"
-msgstr "Nginx 配置"
-
 #: src/constants/errors/backup.ts:19
 msgid "Nginx config directory is not set"
 msgstr "Nginx 設定目錄未設定"
@@ -2925,7 +2916,7 @@ msgid "Nginx configuration has been restored"
 msgstr "Nginx 設定已恢復"
 
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:113
-#: src/views/stream/components/StreamEditor.vue:74
+#: src/views/stream/components/StreamEditor.vue:75
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 設定解析錯誤"
 
@@ -3045,11 +3036,6 @@ msgstr "Nginx 理論最大效能"
 msgid "Nginx UI already installed"
 msgstr "Nginx UI 已安裝"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:29
-#: src/views/backup/AutoBackup/AutoBackup.vue:43
-msgid "Nginx UI Config"
-msgstr "Nginx 介面配置"
-
 #: src/components/SystemRestore/SystemRestoreContent.vue:142
 msgid "Nginx UI configuration has been restored"
 msgstr "Nginx UI 設定已恢復"
@@ -3104,7 +3090,7 @@ msgstr "節點"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:41
 #: src/views/site/site_list/columns.tsx:76 src/views/stream/columns.tsx:44
-#: src/views/stream/components/RightPanel/Basic.vue:77
+#: src/views/stream/components/RightPanel/Basic.vue:80
 msgid "Node Group"
 msgstr "節點群組"
 
@@ -3148,7 +3134,7 @@ msgid "Note"
 msgstr "備註"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:65
-#: src/views/stream/components/RightPanel/Basic.vue:99
+#: src/views/stream/components/RightPanel/Basic.vue:102
 msgid ""
 "Note, if the configuration file include other configurations or "
 "certificates, please synchronize them to the remote nodes in advance."
@@ -3229,8 +3215,8 @@ msgstr "離線"
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
 #: src/views/site/site_list/SiteList.vue:99
-#: src/views/stream/components/RightPanel/Basic.vue:46
-#: src/views/stream/components/StreamStatusSelect.vue:64
+#: src/views/stream/components/RightPanel/Basic.vue:48
+#: src/views/stream/components/StreamStatusSelect.vue:60
 #: src/views/stream/StreamList.vue:120
 msgid "OK"
 msgstr "確定"
@@ -3379,8 +3365,8 @@ msgstr "路徑：{0} 不在 Nginx 設定目錄：{1} 下"
 msgid "Payload resource is nil"
 msgstr "有效載荷資源為空"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:192
-#: src/views/backup/AutoBackup/AutoBackup.vue:217
+#: src/views/backup/AutoBackup/AutoBackup.vue:194
+#: src/views/backup/AutoBackup/AutoBackup.vue:219
 msgid "Pending"
 msgstr "待處理"
 
@@ -3453,7 +3439,7 @@ msgstr "請輸入備份時收到的安全令牌"
 msgid "Please fill all fields correctly"
 msgstr "請正確填寫所有欄位"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:21
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:23
 msgid "Please fill in required S3 configuration fields"
 msgstr "請填寫必填的 S3 配置欄位"
 
@@ -3534,17 +3520,17 @@ msgstr "請選擇備份檔案"
 msgid "Please select at least one item"
 msgstr "請至少選擇一項"
 
-#: src/views/environments/list/Environment.vue:113
+#: src/views/environments/list/Environment.vue:120
 #: src/views/environments/list/Environment.vue:35
 msgid "Please select at least one node to reload Nginx"
 msgstr "請至少選擇一個節點以重新載入 Nginx"
 
-#: src/views/environments/list/Environment.vue:134
+#: src/views/environments/list/Environment.vue:141
 #: src/views/environments/list/Environment.vue:49
 msgid "Please select at least one node to restart Nginx"
 msgstr "請至少選擇一個節點以重啟 Nginx"
 
-#: src/views/environments/list/Environment.vue:92
+#: src/views/environments/list/Environment.vue:99
 msgid "Please select at least one node to upgrade"
 msgstr "請至少選擇一個節點進行升級"
 
@@ -3621,8 +3607,7 @@ msgstr "代理伺服器"
 msgid "Proxy Pass"
 msgstr "代理傳遞"
 
-#: src/views/site/site_list/columns.tsx:64
-#: src/views/stream/columns.tsx:32
+#: src/views/site/site_list/columns.tsx:64 src/views/stream/columns.tsx:32
 msgid "Proxy Targets"
 msgstr "代理目標"
 
@@ -3725,8 +3710,8 @@ msgstr "重新載入"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
 #: src/views/environments/group/columns.ts:22
 #: src/views/environments/group/EnvGroup.vue:50
-#: src/views/environments/list/Environment.vue:121
-#: src/views/environments/list/Environment.vue:129
+#: src/views/environments/list/Environment.vue:128
+#: src/views/environments/list/Environment.vue:136
 msgid "Reload Nginx"
 msgstr "重新載入 Nginx"
 
@@ -3903,8 +3888,8 @@ msgid "Restart"
 msgstr "重新啟動"
 
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
-#: src/views/environments/list/Environment.vue:142
-#: src/views/environments/list/Environment.vue:150
+#: src/views/environments/list/Environment.vue:149
+#: src/views/environments/list/Environment.vue:157
 msgid "Restart Nginx"
 msgstr "重新啟動 Nginx"
 
@@ -4002,25 +3987,27 @@ msgstr "執行模式"
 msgid "Running"
 msgstr "執行中"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:79
-#: src/views/backup/AutoBackup/AutoBackup.vue:88
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:47
+#: src/views/backup/AutoBackup/AutoBackup.vue:75
+#: src/views/backup/AutoBackup/AutoBackup.vue:84
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:49
 msgid "S3"
 msgstr "S3"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:81
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:83
 msgid "S3 access key ID"
 msgstr "S3存取金鑰ID"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:75
+#: src/views/backup/AutoBackup/AutoBackup.vue:249
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:77
 msgid "S3 Access Key ID"
 msgstr "S3 存取金鑰 ID"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:77
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:79
 msgid "S3 access key ID is required"
 msgstr "必須提供 S3 存取金鑰 ID"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:97
+#: src/views/backup/AutoBackup/AutoBackup.vue:261
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:99
 msgid "S3 Bucket"
 msgstr "S3 儲存桶"
 
@@ -4028,11 +4015,11 @@ msgstr "S3 儲存桶"
 msgid "S3 bucket access denied: {0}"
 msgstr "S3儲存桶存取被拒絕：{0}"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:99
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:101
 msgid "S3 bucket is required"
 msgstr "必須填寫 S3 儲存桶"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:103
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:105
 msgid "S3 bucket name"
 msgstr "S3 儲存貯體名稱"
 
@@ -4040,7 +4027,7 @@ msgstr "S3 儲存貯體名稱"
 msgid "S3 configuration is incomplete: missing {0}"
 msgstr "S3 配置不完整：缺少 {0}"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:32
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:34
 msgid "S3 connection test failed"
 msgstr "S3連接測試失敗"
 
@@ -4048,7 +4035,7 @@ msgstr "S3連接測試失敗"
 msgid "S3 connection test failed: {0}"
 msgstr "S3連接測試失敗: {0}"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:28
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:30
 msgid "S3 connection test successful"
 msgstr "S3連接測試成功"
 
@@ -4056,7 +4043,8 @@ msgstr "S3連接測試成功"
 msgid "S3 credentials are invalid: {0}"
 msgstr "S3 憑證無效: {0}"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:64
+#: src/views/backup/AutoBackup/AutoBackup.vue:243
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:66
 msgid "S3 Endpoint"
 msgstr "S3 終端節點"
 
@@ -4064,36 +4052,38 @@ msgstr "S3 終端節點"
 msgid "S3 endpoint is invalid: {0}"
 msgstr "S3終端節點無效：{0}"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:66
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:68
 msgid "S3 endpoint is required"
 msgstr "必須提供 S3 端點"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:70
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:72
 msgid "S3 endpoint URL"
 msgstr "S3 端點 URL"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:124
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:58
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:126
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:60
 msgid "S3 path (e.g., backups/)"
 msgstr "S3 路徑（例如 backups/）"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:108
+#: src/views/backup/AutoBackup/AutoBackup.vue:267
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:110
 msgid "S3 Region"
 msgstr "S3 區域"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:113
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:115
 msgid "S3 region (e.g., us-east-1)"
 msgstr "S3 區域（例如 us-east-1）"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:92
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:94
 msgid "S3 secret access key"
 msgstr "S3 秘密存取金鑰"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:86
+#: src/views/backup/AutoBackup/AutoBackup.vue:255
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:88
 msgid "S3 Secret Access Key"
 msgstr "S3 秘密存取金鑰"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:88
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:90
 msgid "S3 secret access key is required"
 msgstr "必須提供S3秘密存取金鑰"
 
@@ -4115,7 +4105,7 @@ msgstr "星期六"
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:157
 #: src/views/stream/components/ConfigName.vue:52
-#: src/views/stream/components/StreamEditor.vue:113
+#: src/views/stream/components/StreamEditor.vue:114
 msgid "Save"
 msgstr "儲存"
 
@@ -4124,7 +4114,7 @@ msgid "Save Directive"
 msgstr "儲存指令"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:45
-#: src/views/site/site_add/SiteAdd.vue:38
+#: src/views/site/site_add/SiteAdd.vue:40
 msgid "Save error %{msg}"
 msgstr "儲存錯誤 %{msg}"
 
@@ -4169,7 +4159,7 @@ msgstr "儲存成功"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:43
 #: src/language/curd.ts:28 src/views/config/ConfigEditor.vue:200
-#: src/views/site/site_add/SiteAdd.vue:29
+#: src/views/site/site_add/SiteAdd.vue:31
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:40
 msgid "Saved successfully"
 msgstr "儲存成功"
@@ -4198,7 +4188,7 @@ msgstr "掃描結果"
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "用手機掃描二維碼將賬戶新增到應用程式中。"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:114
+#: src/views/backup/AutoBackup/AutoBackup.vue:113
 msgid "Schedule"
 msgstr "計劃"
 
@@ -4351,7 +4341,7 @@ msgstr "使用通行金鑰登入"
 msgid "Single Directive"
 msgstr "單一指令"
 
-#: src/views/site/site_add/SiteAdd.vue:129
+#: src/views/site/site_add/SiteAdd.vue:138
 msgid "Site Config Created Successfully"
 msgstr "網站設定建立成功"
 
@@ -4473,6 +4463,7 @@ msgid "Static"
 msgstr "靜態"
 
 #: src/components/PortScanner/PortScannerCompact.vue:37
+#: src/views/backup/AutoBackup/AutoBackup.vue:160
 #: src/views/certificate/ACMEUser.vue:60
 #: src/views/certificate/CertificateList/certColumns.tsx:63
 #: src/views/dashboard/components/ModulesTable.vue:96
@@ -4491,17 +4482,17 @@ msgstr "已停止"
 msgid "Storage"
 msgstr "儲存空間"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:96
+#: src/views/backup/AutoBackup/AutoBackup.vue:92
 msgid "Storage Configuration"
 msgstr "儲存配置"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:118
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:52
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:120
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:54
 msgid "Storage Path"
 msgstr "儲存路徑"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:120
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:54
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:122
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:56
 msgid "Storage path is required"
 msgstr "儲存路徑是必填項"
 
@@ -4509,8 +4500,8 @@ msgstr "儲存路徑是必填項"
 msgid "Storage path not in granted access paths: {0}"
 msgstr "儲存路徑不在授予的存取路徑中: {0}"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:74
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:43
+#: src/views/backup/AutoBackup/AutoBackup.vue:70
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:45
 msgid "Storage Type"
 msgstr "儲存類型"
 
@@ -4538,8 +4529,8 @@ msgstr "streams-enabled 資料夾不存在"
 msgid "Stub Status Port"
 msgstr "存根狀態端口"
 
-#: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:193
-#: src/views/backup/AutoBackup/AutoBackup.vue:218
+#: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:195
+#: src/views/backup/AutoBackup/AutoBackup.vue:220
 #: src/views/notification/notificationColumns.tsx:35
 msgid "Success"
 msgstr "成功"
@@ -4642,8 +4633,8 @@ msgstr "同步節點"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:58
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:71
-#: src/views/stream/components/RightPanel/Basic.vue:105
-#: src/views/stream/components/RightPanel/Basic.vue:92
+#: src/views/stream/components/RightPanel/Basic.vue:108
+#: src/views/stream/components/RightPanel/Basic.vue:95
 msgid "Sync strategy"
 msgstr "同步策略"
 
@@ -4652,7 +4643,7 @@ msgid "Sync to"
 msgstr "同步到"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:56
-#: src/views/stream/components/RightPanel/Basic.vue:90
+#: src/views/stream/components/RightPanel/Basic.vue:93
 msgid "Synchronization"
 msgstr "同步"
 
@@ -4701,7 +4692,7 @@ msgstr "終端"
 msgid "Terminal Start Command"
 msgstr "終端機啟動指令"
 
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:139
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:141
 msgid "Test S3 Connection"
 msgstr "測試 S3 連接"
 
@@ -4749,7 +4740,7 @@ msgid ""
 "dashes, colons, and dots."
 msgstr "節點名稱僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
 
-#: src/views/site/site_add/SiteAdd.vue:95
+#: src/views/site/site_add/SiteAdd.vue:97
 msgid "The parameter of server_name is required"
 msgstr "必須提供 server_name 參數"
 
@@ -5037,7 +5028,7 @@ msgstr "更新資料"
 msgid "Update successfully"
 msgstr "更新成功"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:234
+#: src/views/backup/AutoBackup/AutoBackup.vue:236
 #: src/views/certificate/ACMEUser.vue:83
 #: src/views/certificate/DNSCredential.vue:24
 #: src/views/config/configColumns.tsx:35 src/views/config/ConfigEditor.vue:335
@@ -5045,14 +5036,14 @@ msgstr "更新成功"
 #: src/views/environments/list/envColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:38
 #: src/views/site/site_list/columns.tsx:94 src/views/stream/columns.tsx:62
-#: src/views/stream/components/RightPanel/Basic.vue:73
+#: src/views/stream/components/RightPanel/Basic.vue:76
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
 msgstr "更新時間"
 
 #: src/routes/modules/system.ts:26
-#: src/views/environments/list/Environment.vue:100
-#: src/views/environments/list/Environment.vue:108
+#: src/views/environments/list/Environment.vue:107
+#: src/views/environments/list/Environment.vue:115
 #: src/views/system/Upgrade.vue:154 src/views/system/Upgrade.vue:159
 msgid "Upgrade"
 msgstr "升級"
@@ -5231,7 +5222,7 @@ msgstr "星期三"
 msgid "Weekly"
 msgstr "每週"
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:135
+#: src/views/backup/AutoBackup/AutoBackup.vue:134
 msgid "Weekly on %{day} at %{time}"
 msgstr "每週%{day}的%{time}"
 
@@ -5243,7 +5234,7 @@ msgid ""
 msgstr "啟用後，Nginx UI 將在啟動時自動重新註冊使用者。通常，除非您處於開發環境並使用 Pebble 作為 CA，否則不建議啟用此功能。"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:61
-#: src/views/stream/components/RightPanel/Basic.vue:95
+#: src/views/stream/components/RightPanel/Basic.vue:98
 msgid ""
 "When you enable/disable, delete, or save this site, the nodes set in the "
 "Node Group and the nodes selected below will be synchronized."
@@ -5351,6 +5342,15 @@ msgstr "您的舊代碼將不再有效。"
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "您的通行金鑰"
+
+#~ msgid "Both Config"
+#~ msgstr "兩者配置"
+
+#~ msgid "Nginx Config"
+#~ msgstr "Nginx 配置"
+
+#~ msgid "Nginx UI Config"
+#~ msgstr "Nginx 介面配置"
 
 #~ msgid "Disable"
 #~ msgstr "停用"

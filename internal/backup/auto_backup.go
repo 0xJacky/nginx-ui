@@ -133,12 +133,8 @@ func ExecuteAutoBackup(autoBackup *model.AutoBackup) error {
 //   - error: CosyError if backup fails
 func executeBackupByType(autoBackup *model.AutoBackup) (*BackupExecutionResult, error) {
 	switch autoBackup.BackupType {
-	case model.BackupTypeNginxConfig:
-		return createEncryptedBackup(autoBackup, "nginx_config")
-	case model.BackupTypeNginxUIConfig:
-		return createEncryptedBackup(autoBackup, "nginx_ui_config")
-	case model.BackupTypeBothConfig:
-		return createEncryptedBackup(autoBackup, "both_config")
+	case model.BackupTypeNginxAndNginxUI:
+		return createEncryptedBackup(autoBackup)
 	case model.BackupTypeCustomDir:
 		return createCustomDirectoryBackup(autoBackup)
 	default:
@@ -156,9 +152,9 @@ func executeBackupByType(autoBackup *model.AutoBackup) (*BackupExecutionResult, 
 // Returns:
 //   - BackupExecutionResult: Result containing file paths
 //   - error: CosyError if backup creation fails
-func createEncryptedBackup(autoBackup *model.AutoBackup, backupPrefix string) (*BackupExecutionResult, error) {
+func createEncryptedBackup(autoBackup *model.AutoBackup) (*BackupExecutionResult, error) {
 	// Generate unique filename with timestamp
-	filename := fmt.Sprintf("%s_%s_%d.zip", backupPrefix, autoBackup.GetName(), time.Now().Unix())
+	filename := fmt.Sprintf("%s_%d.zip", autoBackup.GetName(), time.Now().Unix())
 
 	// Determine output path based on storage type
 	var outputPath string

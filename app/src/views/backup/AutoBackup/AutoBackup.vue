@@ -25,9 +25,7 @@ const columns: StdTableColumn[] = [
     dataIndex: 'backup_type',
     customRender: ({ text }: CustomRenderArgs) => {
       const typeMap = {
-        nginx_config: $gettext('Nginx Config'),
-        nginx_ui_config: $gettext('Nginx UI Config'),
-        both_config: $gettext('Both Config'),
+        nginx_and_nginx_ui: $gettext('Nginx and Nginx UI Config'),
         custom_dir: $gettext('Custom Directory'),
       }
       return typeMap[text as keyof typeof typeMap] || text
@@ -39,9 +37,7 @@ const columns: StdTableColumn[] = [
       },
       select: {
         options: [
-          { label: $gettext('Nginx Config'), value: 'nginx_config' },
-          { label: $gettext('Nginx UI Config'), value: 'nginx_ui_config' },
-          { label: $gettext('Both Nginx and Nginx UI Config'), value: 'both_config' },
+          { label: $gettext('Nginx and Nginx UI Config'), value: 'nginx_and_nginx_ui' },
           { label: $gettext('Custom Directory'), value: 'custom_dir' },
         ],
       },
