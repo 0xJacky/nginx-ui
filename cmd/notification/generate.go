@@ -237,7 +237,7 @@ func generateSingleTSFile(root string, calls []NotificationCall) {
 			// Write record with both title and content as functions
 			content.WriteString(fmt.Sprintf("  '%s': {\n", uniqueKey))
 			content.WriteString(fmt.Sprintf("    title: () => $gettext('%s'),\n", escapedTitle))
-			content.WriteString(fmt.Sprintf("    content: (args: any) => $gettext('%s', args),\n", escapedContent))
+			content.WriteString(fmt.Sprintf("    content: (args: any) => $gettext('%s', args, true),\n", escapedContent))
 			content.WriteString("  },\n")
 		}
 	}
