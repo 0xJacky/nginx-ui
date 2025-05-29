@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 // ProxyTarget represents a proxy destination
@@ -166,6 +167,11 @@ func parseProxyPassURL(proxyPass string) ProxyTarget {
 				}
 			}
 
+			// Skip if this is the HTTP challenge port used by Let's Encrypt
+			if host == "127.0.0.1" && port == settings.CertSettings.HTTPChallengePort {
+				return ProxyTarget{}
+			}
+
 			return ProxyTarget{
 				Host: host,
 				Port: port,
@@ -177,7 +183,14 @@ func parseProxyPassURL(proxyPass string) ProxyTarget {
 	// Handle direct address format for stream module (e.g., "127.0.0.1:8080", "backend.example.com:12345")
 	// This is used in stream configurations where proxy_pass doesn't require a protocol
 	if !strings.Contains(proxyPass, "://") {
-		return parseServerAddress(proxyPass, "proxy_pass")
+		target := parseServerAddress(proxyPass, "proxy_pass")
+
+		// Skip if this is the HTTP challenge port used by Let's Encrypt
+		if target.Host == "127.0.0.1" && target.Port == settings.CertSettings.HTTPChallengePort {
+			return ProxyTarget{}
+		}
+
+		return target
 	}
 
 	return ProxyTarget{}
@@ -201,6 +214,12 @@ func parseServerAddress(serverAddr string, targetType string) ProxyTarget {
 		if idx := strings.LastIndex(addr, "]:"); idx != -1 {
 			host := addr[1:idx]
 			port := addr[idx+2:]
+
+			// Skip if this is the HTTP challenge port used by Let's Encrypt
+			if host == "::1" && port == settings.CertSettings.HTTPChallengePort {
+				return ProxyTarget{}
+			}
+
 			return ProxyTarget{
 				Host: host,
 				Port: port,
@@ -220,6 +239,11 @@ func parseServerAddress(serverAddr string, targetType string) ProxyTarget {
 	if strings.Contains(addr, ":") {
 		parts := strings.Split(addr, ":")
 		if len(parts) == 2 {
+			// Skip if this is the HTTP challenge port used by Let's Encrypt
+			if parts[0] == "127.0.0.1" && parts[1] == settings.CertSettings.HTTPChallengePort {
+				return ProxyTarget{}
+			}
+
 			return ProxyTarget{
 				Host: parts[0],
 				Port: parts[1],
