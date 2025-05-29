@@ -1,5 +1,6 @@
 import type { Editor } from 'ace-builds'
 import type { Point } from 'ace-builds-internal/document'
+import type ReconnectingWebSocket from 'reconnecting-websocket'
 import { debounce } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 import openai from '@/api/openai'
@@ -27,7 +28,7 @@ function useCodeCompletion() {
   const currentGhostText = ref<string>('')
   const isConfigFile = ref<boolean>(false)
 
-  const ws = openai.code_completion()
+  const ws = shallowRef<ReconnectingWebSocket>()
 
   // Check if the current file is a configuration file
   function checkIfConfigFile(filename: string, content: string): boolean {
@@ -46,7 +47,7 @@ function useCodeCompletion() {
   }
 
   function getAISuggestions(code: string, context: string, position: Point, callback: (suggestion: string) => void, language: string = 'nginx', suffix: string = '', requestId: string) {
-    if (!ws || ws.readyState !== WebSocket.OPEN) {
+    if (!ws.value || ws.value.readyState !== WebSocket.OPEN) {
       debug('WebSocket is not open')
       return
     }
@@ -78,9 +79,9 @@ function useCodeCompletion() {
 
     debug('Sending message', message)
 
-    ws.send(JSON.stringify(message))
+    ws.value.send(JSON.stringify(message))
 
-    ws.onmessage = event => {
+    ws.value.onmessage = event => {
       const data = JSON.parse(event.data)
       debug(`Received message`, data, requestId)
       if (data.request_id === requestId) {
@@ -232,6 +233,8 @@ function useCodeCompletion() {
       return
     }
 
+    ws.value = openai.code_completion()
+
     editorRef.value = editor
 
     // Determine if the current file is a configuration file
@@ -268,8 +271,8 @@ function useCodeCompletion() {
   }
 
   function cleanUp() {
-    if (ws) {
-      ws.close()
+    if (ws.value) {
+      ws.value.close()
     }
     debug('CodeCompletion unmounted')
   }

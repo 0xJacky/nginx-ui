@@ -1,3 +1,4 @@
+import type ReconnectingWebSocket from 'reconnecting-websocket'
 import { http } from '@uozi-admin/request'
 import ws from '@/lib/websocket'
 
@@ -27,7 +28,7 @@ const openai = {
     return http.post('/chatgpt_record', data)
   },
   code_completion() {
-    return ws('/api/code_completion')
+    return ws('/api/code_completion') as ReconnectingWebSocket
   },
   get_code_completion_enabled_status() {
     return http.get<{ enabled: boolean }>('/code_completion/enabled')
