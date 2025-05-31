@@ -103,6 +103,11 @@ const restartTest = throttle(_restartTest, 5000)
 watch(curUptreamDirectives, () => {
   restartTest()
 }, { deep: true })
+
+function getAvailabilityResult(directive: NgxDirective) {
+  const params = directive.params.split(' ')
+  return availabilityResult.value[params?.[0]]
+}
 </script>
 
 <template>
@@ -133,16 +138,18 @@ watch(curUptreamDirectives, () => {
           </ADropdown>
         </template>
 
-        <div class="tab-content">
+        <div class="tab-content"> 
           <DirectiveEditor v-model:directives="v.directives">
             <template #directiveSuffix="{ directive }: {directive: NgxDirective}">
-              <template v-if="availabilityResult[directive.params]?.online">
+              <template v-if="directive.directive === Server">
+              <template v-if="getAvailabilityResult(directive)?.online">
                 <ABadge color="green" />
-                {{ availabilityResult[directive.params]?.latency.toFixed(2) }}ms
+                {{ getAvailabilityResult(directive)?.latency?.toFixed(2) }}ms
               </template>
               <template v-else>
                 <ABadge color="red" />
-                {{ $gettext('Offline') }}
+                  {{ $gettext('Offline') }}
+                </template>
               </template>
             </template>
           </DirectiveEditor>
