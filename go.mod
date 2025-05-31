@@ -14,7 +14,7 @@ require (
 	github.com/casdoor/casdoor-go-sdk v1.5.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.2.0
-	github.com/docker/docker v28.2.1+incompatible
+	github.com/docker/docker v28.2.2+incompatible
 	github.com/dustin/go-humanize v1.0.1
 	github.com/elliotchance/orderedmap/v3 v3.1.0
 	github.com/fsnotify/fsnotify v1.9.0
@@ -31,7 +31,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
 	github.com/lib/pq v1.10.9
-	github.com/mark3labs/mcp-go v0.30.1
+	github.com/mark3labs/mcp-go v0.31.0
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.3.0
 	github.com/nxadm/tail v1.4.11
