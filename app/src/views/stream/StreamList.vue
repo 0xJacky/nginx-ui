@@ -84,6 +84,7 @@ function handleAddStream() {
       :table-props="{
         rowKey: 'name',
       }"
+      disable-add
       disable-delete
       disable-view
       disable-export
@@ -96,7 +97,7 @@ function handleAddStream() {
         path: `/streams/${encodeURIComponent(record.name)}`,
       })"
     >
-      <template #extra>
+      <template #beforeListActions>
         <div class="flex items-center cursor-default">
           <a class="mr-4" @click="add">{{ $gettext('Add') }}</a>
         </div>
