@@ -10,7 +10,7 @@ const {
 </script>
 
 <template>
-  <div class="mt--4">
+  <div class="mt--6">
     <ChatGPT
       :content="configText"
       :path="filepath"

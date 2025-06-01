@@ -80,9 +80,7 @@ function onChangeStatus(checked: CheckedType) {
     <ContextHolder />
     <div class="status-display">
       <ASwitch
-        :checked="status === 'enabled'"
-        :checked-children="$gettext('Enabled')"
-        :un-checked-children="$gettext('Disabled')"
+        :checked="status === ConfigStatus.Enabled"
         @change="onChangeStatus"
       />
     </div>

@@ -7,7 +7,7 @@ const { configText, filepath } = storeToRefs(store)
 </script>
 
 <template>
-  <div>
+  <div class="mt--6">
     <ChatGPT
       :content="configText"
       :path="filepath"

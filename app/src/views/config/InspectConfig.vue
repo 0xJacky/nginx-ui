@@ -2,6 +2,10 @@
 import ngx from '@/api/ngx'
 import { logLevel } from '@/views/config/constants'
 
+defineProps<{
+  banner?: boolean
+}>()
+
 const data = ref({
   level: 0,
   message: '',
@@ -24,6 +28,7 @@ defineExpose({
   <div class="inspect-container">
     <AAlert
       v-if="data?.level <= logLevel.Info"
+      :banner
       :message="$gettext('Configuration file is test successful')"
       type="success"
       show-icon

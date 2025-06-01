@@ -1,4 +1,3 @@
-import type { ChatMessageList } from '.'
 import type { ChatComplicationMessage } from '@/api/openai'
 import { defineStore } from 'pinia'
 import { computed, nextTick, ref } from 'vue'
@@ -9,7 +8,7 @@ export const useChatGPTStore = defineStore('chatgpt', () => {
   // State
   const path = ref<string>('') // Path to the chat record file
   const messages = ref<ChatComplicationMessage[]>([])
-  const messageListRef = ref<InstanceType<typeof ChatMessageList>>()
+  const messageContainerRef = ref<HTMLDivElement>()
   const loading = ref(false)
   const editingIdx = ref(-1)
   const editValue = ref('')
@@ -154,7 +153,10 @@ export const useChatGPTStore = defineStore('chatgpt', () => {
 
   // scroll to bottom
   function scrollToBottom() {
-    messageListRef.value?.scrollToBottom()
+    messageContainerRef.value?.scrollTo({
+      top: messageContainerRef.value.scrollHeight,
+      behavior: 'smooth',
+    })
   }
 
   // Set streaming message index
@@ -234,6 +236,9 @@ export const useChatGPTStore = defineStore('chatgpt', () => {
     await request()
   }
 
+  watch(messages, () => {
+    scrollToBottom()
+  }, { immediate: true })
   // Return all state, getters, and actions
   return {
     // State
@@ -242,7 +247,7 @@ export const useChatGPTStore = defineStore('chatgpt', () => {
     editingIdx,
     editValue,
     askBuffer,
-    messageListRef,
+    messageContainerRef,
     streamingMessageIndex,
 
     // Getters
@@ -271,5 +276,6 @@ export const useChatGPTStore = defineStore('chatgpt', () => {
     request,
     send,
     regenerate,
+    scrollToBottom,
   }
 })

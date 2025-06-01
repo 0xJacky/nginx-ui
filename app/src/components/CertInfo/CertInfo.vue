@@ -44,5 +44,7 @@ const isValid = computed(() => dayjs().isAfter(props.cert?.not_before) && dayjs(
 </template>
 
 <style lang="less" scoped>
-
+:deep(.ant-card-body) {
+  padding: 12px !important;
+}
 </style>

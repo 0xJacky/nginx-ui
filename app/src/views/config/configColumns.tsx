@@ -1,5 +1,4 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
-import { FileFilled, FolderFilled } from '@ant-design/icons-vue'
 import { datetimeRender } from '@uozi-admin/curd'
 
 const configColumns: StdTableColumn[] = [{
@@ -15,8 +14,8 @@ const configColumns: StdTableColumn[] = [{
       return (
         <div class="mr-2 text-truegray-5">
           {isDir
-            ? <FolderFilled />
-            : <FileFilled />}
+            ? <div class="i-tabler-folder-filled" />
+            : <div class="i-tabler-file" />}
         </div>
       )
     }

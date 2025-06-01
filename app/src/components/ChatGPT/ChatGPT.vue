@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Icon from '@ant-design/icons-vue'
+import { useElementVisibility } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import ChatGPT_logo from '@/assets/svg/ChatGPT_logo.svg?component'
 import { useSettingsStore } from '@/pinia'
@@ -16,7 +17,7 @@ const { language: current } = storeToRefs(useSettingsStore())
 
 // Use ChatGPT store
 const chatGPTStore = useChatGPTStore()
-const { messageListRef, loading, shouldShowStartButton } = storeToRefs(chatGPTStore)
+const { messageContainerRef, loading, shouldShowStartButton } = storeToRefs(chatGPTStore)
 
 // Initialize messages when path changes
 watch(() => props.path, async () => {
@@ -28,6 +29,14 @@ watch(() => props.path, async () => {
 async function handleSend() {
   await chatGPTStore.send(props.content, current.value)
 }
+
+const isVisible = useElementVisibility(messageContainerRef)
+
+watch(isVisible, visible => {
+  if (visible) {
+    chatGPTStore.scrollToBottom()
+  }
+}, { immediate: true })
 </script>
 
 <template>
@@ -49,17 +58,20 @@ async function handleSend() {
 
   <div
     v-else
-    class="chatgpt-container"
+    ref="messageContainerRef"
+    class="message-container"
   >
-    <ChatMessageList ref="messageListRef" />
+    <ChatMessageList />
 
     <ChatMessageInput />
   </div>
 </template>
 
 <style lang="less" scoped>
-.chatgpt-container {
+.message-container {
   margin: 0 auto;
   max-width: 800px;
+  max-height: calc(100vh - 260px);
+  overflow-y: auto;
 }
 </style>

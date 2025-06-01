@@ -46,7 +46,7 @@ async function save() {
 </script>
 
 <template>
-  <ACard class="mb-4 site-edit-container" :bordered="false">
+  <ACard class="site-edit-container" :bordered="false">
     <template #title>
       <span style="margin-right: 10px">{{ $gettext('Edit %{n}', { n: name }) }}</span>
       <ATag
@@ -111,6 +111,7 @@ async function save() {
             class="parse-error-alert-wrapper"
           >
             <AAlert
+              banner
               :message="$gettext('Nginx Configuration Parse Error')"
               :description="parseErrorMessage"
               type="error"
@@ -189,10 +190,6 @@ async function save() {
   padding: 24px 0;
 }
 
-.parse-error-alert-wrapper {
-  margin-bottom: 20px;
-}
-
 .site-edit-container {
   height: 100%;
   :deep(.ant-card-body) {
@@ -218,5 +215,9 @@ async function save() {
 .slide-fade-enter-from, .slide-fade-enter-to, .slide-fade-leave-to {
   transform: translateX(10px);
   opacity: 0;
+}
+
+:deep(.tab-content) {
+  padding-bottom: 24px;
 }
 </style>

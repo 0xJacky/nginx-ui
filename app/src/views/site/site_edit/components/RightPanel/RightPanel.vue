@@ -8,7 +8,7 @@ import ConfigTemplate from './ConfigTemplate.vue'
 const activeKey = ref('basic')
 
 const editorStore = useSiteEditorStore()
-const { advanceMode } = storeToRefs(editorStore)
+const { advanceMode, loading } = storeToRefs(editorStore)
 
 watch(advanceMode, val => {
   if (val) {
@@ -22,10 +22,10 @@ watch(advanceMode, val => {
     <ACard
       class="right-settings"
       :bordered="false"
+      :loading
     >
       <ATabs
         v-model:active-key="activeKey"
-        class="mb-24px"
         size="small"
       >
         <ATabPane key="basic" :tab="$gettext('Basic')">
@@ -54,31 +54,22 @@ watch(advanceMode, val => {
   position: relative;
 
   .right-settings {
-    overflow-y: auto;
     position: relative;
   }
 
   :deep(.ant-card-body) {
     padding: 0;
-    position: relative;
   }
 
   :deep(.ant-tabs-nav) {
     margin: 0;
+    padding: 0 24px;
+    height: 55px;
   }
 }
 
-:deep(.ant-tabs) {
-  margin-bottom: 0;
-
-  .ant-tabs-nav-wrap {
-    height: 55px;
-    padding: 0 24px;
-  }
-
-  .ant-tabs-content {
-    padding-top: 24px;
-    overflow-y: auto;
-  }
+:deep(.ant-tabs-content) {
+  padding-top: 24px;
+  overflow-y: auto;
 }
 </style>

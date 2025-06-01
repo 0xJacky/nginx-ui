@@ -22,6 +22,10 @@ const serversLength = computed(() => {
   return ngxConfig.value.servers?.length ?? 0
 })
 
+const hasServers = computed(() => {
+  return serversLength.value > 0
+})
+
 watch(serversLength, () => {
   if (curServerIdx.value >= serversLength.value)
     curServerIdx.value = serversLength.value - 1
@@ -38,6 +42,9 @@ watch(curServerIdx, () => {
 })
 
 function addServer() {
+  if (!ngxConfig.value.servers)
+    ngxConfig.value.servers = []
+
   ngxConfig.value.servers.push({
     comments: '',
     locations: [],
@@ -63,7 +70,32 @@ function removeServer(index: number) {
 <template>
   <div>
     <ContextHolder />
-    <ATabs v-model:active-key="curServerIdx">
+
+    <!-- Empty State -->
+    <div v-if="!hasServers" class="empty-state">
+      <AEmpty
+        :description="$gettext('No servers configured')"
+        class="mb-6"
+      >
+        <template #image>
+          <div class="text-6xl mb-4 text-gray-300">
+            🖥️
+          </div>
+        </template>
+      </AEmpty>
+      <div class="text-center">
+        <AButton
+          type="primary"
+          @click="addServer"
+        >
+          <PlusOutlined />
+          {{ $gettext('Add Server') }}
+        </AButton>
+      </div>
+    </div>
+
+    <!-- Server Tabs -->
+    <ATabs v-else v-model:active-key="curServerIdx">
       <ATabPane
         v-for="(v, k) in ngxConfig.servers"
         :key="k"
@@ -117,5 +149,12 @@ function removeServer(index: number) {
 </template>
 
 <style scoped lang="less">
-
+.empty-state {
+  @apply px-8 text-center;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 </style>

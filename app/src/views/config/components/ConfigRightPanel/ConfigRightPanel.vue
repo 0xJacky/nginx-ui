@@ -1,7 +1,17 @@
 <script setup lang="ts">
-import { PortScannerCompact } from '@/components/PortScanner'
+import type { Config } from '@/api/config'
 import Basic from './Basic.vue'
 import Chat from './Chat.vue'
+
+interface ConfigRightPanelProps {
+  addMode: boolean
+  newPath: string
+  modifiedAt: string
+  origName: string
+}
+
+const props = defineProps<ConfigRightPanelProps>()
+const data = defineModel<Config>('data', { required: true })
 
 const activeKey = ref('basic')
 </script>
@@ -17,13 +27,16 @@ const activeKey = ref('basic')
         size="small"
       >
         <ATabPane key="basic" :tab="$gettext('Basic')">
-          <Basic />
+          <Basic
+            v-model:data="data"
+            :add-mode="props.addMode"
+            :new-path="props.newPath"
+            :modified-at="props.modifiedAt"
+            :orig-name="props.origName"
+          />
         </ATabPane>
         <ATabPane key="chat" :tab="$gettext('Chat')">
-          <Chat />
-        </ATabPane>
-        <ATabPane key="port-scanner" :tab="$gettext('Port Scanner')">
-          <PortScannerCompact />
+          <Chat v-model:data="data" />
         </ATabPane>
       </ATabs>
     </ACard>
@@ -48,5 +61,13 @@ const activeKey = ref('basic')
 :deep(.ant-tabs-content) {
   padding-top: 24px;
   overflow-y: auto;
+}
+
+:deep(.ant-card) {
+  box-shadow: unset;
+
+  .ant-tabs-content {
+    max-height: calc(100vh - 260px);
+  }
 }
 </style>

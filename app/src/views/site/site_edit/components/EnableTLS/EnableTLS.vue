@@ -7,7 +7,7 @@ import { useSiteEditorStore } from '@/views/site/site_edit/components/SiteEditor
 const [modal, ContextHolder] = Modal.useModal()
 
 const editorStore = useSiteEditorStore()
-const { ngxConfig, curServerIdx, curDirectivesMap } = storeToRefs(editorStore)
+const { ngxConfig, curServerIdx, curDirectivesMap, hasServers } = storeToRefs(editorStore)
 
 function confirmChangeTLS(status: CheckedType) {
   modal.confirm({
@@ -107,7 +107,7 @@ const supportSSL = computed(() => {
 </script>
 
 <template>
-  <div>
+  <div v-if="hasServers">
     <ContextHolder />
 
     <AFormItem

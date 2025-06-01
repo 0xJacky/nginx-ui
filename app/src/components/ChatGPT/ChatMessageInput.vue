@@ -59,7 +59,7 @@ const messagesLength = computed(() => messages.value?.length ?? 0)
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0 0 8px 8px;
 
   .control-btn {
     display: flex;
@@ -76,7 +76,6 @@ const messagesLength = computed(() => messages.value?.length ?? 0)
 .dark {
   .input-msg {
     background: rgba(30, 30, 30, 0.8);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
 </style>

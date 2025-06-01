@@ -1,6 +1,7 @@
 import type { CertificateInfo } from '@/api/cert'
 import type { Stream } from '@/api/stream'
 import type { CheckedType } from '@/types'
+import { message } from 'ant-design-vue'
 import config from '@/api/config'
 import ngx from '@/api/ngx'
 import stream from '@/api/stream'
@@ -65,6 +66,8 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
       })
 
       handleResponse(response)
+
+      message.success($gettext('Saved successfully'))
     }
     catch (error) {
       handleParseError(error as { error?: string, message: string })

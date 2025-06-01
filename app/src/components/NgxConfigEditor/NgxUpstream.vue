@@ -167,14 +167,24 @@ function getAvailabilityResult(directive: NgxDirective) {
         </AButton>
       </template>
     </ATabs>
-    <div v-else>
-      <AEmpty />
-      <div class="flex justify-center">
+    <div v-else class="empty-state">
+      <AEmpty
+        :description="$gettext('No upstreams configured')"
+        class="mb-6"
+      >
+        <template #image>
+          <div class="text-6xl mb-4 text-gray-300">
+            ⚖️
+          </div>
+        </template>
+      </AEmpty>
+      <div class="text-center">
         <AButton
           type="primary"
           @click="addUpstream"
         >
-          {{ $gettext('Create') }}
+          <PlusOutlined />
+          {{ $gettext('Add Upstream') }}
         </AButton>
       </div>
     </div>
@@ -195,5 +205,12 @@ function getAvailabilityResult(directive: NgxDirective) {
 </template>
 
 <style scoped lang="less">
-
+.empty-state {
+  @apply px-8 text-center;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 </style>

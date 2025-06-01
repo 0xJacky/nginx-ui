@@ -31,6 +31,10 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     },
   })
 
+  const hasServers = computed(() => {
+    return ngxConfig.value.servers && ngxConfig.value.servers.length > 0
+  })
+
   async function init(_name: string) {
     loading.value = true
     await nextTick()
@@ -168,6 +172,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     configText,
     issuingCert,
     curSupportSSL,
+    hasServers,
     init,
     save,
     handleModeChange,
