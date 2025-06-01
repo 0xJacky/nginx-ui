@@ -2,7 +2,6 @@ package config
 
 import (
 	"net/http"
-	"net/url"
 	"os"
 	"path/filepath"
 	"time"
@@ -13,7 +12,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
-	"github.com/sashabaranov/go-openai"
 	"github.com/uozi-tech/cosy"
 )
 
@@ -31,17 +29,8 @@ func AddConfig(c *gin.Context) {
 	content := json.Content
 
 	// Decode paths from URL encoding
-	decodedBaseDir, err := url.QueryUnescape(json.BaseDir)
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	decodedName, err := url.QueryUnescape(name)
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
+	decodedBaseDir := helper.UnescapeURL(json.BaseDir)
+	decodedName := helper.UnescapeURL(name)
 
 	dir := nginx.GetConfPath(decodedBaseDir)
 	path := filepath.Join(dir, decodedName)
@@ -68,7 +57,7 @@ func AddConfig(c *gin.Context) {
 		}
 	}
 
-	err = os.WriteFile(path, []byte(content), 0644)
+	err := os.WriteFile(path, []byte(content), 0644)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -107,10 +96,9 @@ func AddConfig(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, config.Config{
-		Name:            name,
-		Content:         content,
-		ChatGPTMessages: make([]openai.ChatCompletionMessage, 0),
-		FilePath:        path,
-		ModifiedAt:      time.Now(),
+		Name:       name,
+		Content:    content,
+		FilePath:   path,
+		ModifiedAt: time.Now(),
 	})
 }

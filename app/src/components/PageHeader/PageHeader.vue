@@ -56,7 +56,7 @@ const name = computed(() => {
     margin-bottom: 16px;
   }
 
-  @media (max-height: 768px) {
+  @media (max-height: 800px) {
     display: none;
   }
 

@@ -2,11 +2,11 @@ package config
 
 import (
 	"net/http"
-	"net/url"
 	"os"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
 )
@@ -20,20 +20,7 @@ func GetConfigs(c *gin.Context) {
 	encodedDir := c.DefaultQuery("dir", "/")
 
 	// Handle cases where the path might be encoded multiple times
-	dir := encodedDir
-	// Try decoding until the path no longer changes
-	for {
-		newDecodedDir, decodeErr := url.QueryUnescape(dir)
-		if decodeErr != nil {
-			cosy.ErrHandler(c, decodeErr)
-			return
-		}
-
-		if newDecodedDir == dir {
-			break
-		}
-		dir = newDecodedDir
-	}
+	dir := helper.UnescapeURL(encodedDir)
 
 	// Ensure the directory path format is correct
 	dir = strings.TrimSpace(dir)

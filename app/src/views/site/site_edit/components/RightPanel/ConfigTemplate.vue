@@ -3,7 +3,7 @@ import ConfigTemplate from '../ConfigTemplate'
 </script>
 
 <template>
-  <div>
+  <div class="px-6">
     <ConfigTemplate />
   </div>
 </template>

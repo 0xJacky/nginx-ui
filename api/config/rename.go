@@ -35,17 +35,9 @@ func Rename(c *gin.Context) {
 	}
 
 	// Decode paths from URL encoding
-	decodedBasePath, err := url.QueryUnescape(json.BasePath)
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
+	decodedBasePath := helper.UnescapeURL(json.BasePath)
 
-	decodedOrigName, err := url.QueryUnescape(json.OrigName)
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
+	decodedOrigName := helper.UnescapeURL(json.OrigName)
 
 	decodedNewName, err := url.QueryUnescape(json.NewName)
 	if err != nil {

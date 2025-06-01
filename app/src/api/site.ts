@@ -2,7 +2,6 @@ import type { CertificateInfo } from '@/api/cert'
 import type { ModelBase } from '@/api/curd'
 import type { EnvGroup } from '@/api/env_group'
 import type { NgxConfig } from '@/api/ngx'
-import type { ChatComplicationMessage } from '@/api/openai'
 import type { ConfigStatus, PrivateKeyType } from '@/constants'
 import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
@@ -22,7 +21,6 @@ export interface Site extends ModelBase {
   filepath: string
   config: string
   auto_cert: boolean
-  chatgpt_messages: ChatComplicationMessage[]
   tokenized?: NgxConfig
   cert_info?: Record<number, CertificateInfo[]>
   env_group_id: number

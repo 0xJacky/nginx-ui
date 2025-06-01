@@ -139,7 +139,7 @@ function quickScan(start: number, end: number) {
 </script>
 
 <template>
-  <div class="port-scanner-compact">
+  <div class="port-scanner-compact px-6 mb-6">
     <div class="scan-form">
       <ASpace direction="vertical" size="small" style="width: 100%">
         <ARow :gutter="8">

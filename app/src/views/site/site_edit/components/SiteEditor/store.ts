@@ -1,5 +1,4 @@
 import type { CertificateInfo } from '@/api/cert'
-import type { ChatComplicationMessage } from '@/api/openai'
 import type { Site } from '@/api/site'
 import type { CheckedType } from '@/types'
 import config from '@/api/config'
@@ -12,7 +11,6 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
   const parseErrorStatus = ref(false)
   const parseErrorMessage = ref('')
   const data = ref({}) as Ref<Site>
-  const historyChatgptRecord = ref([]) as Ref<ChatComplicationMessage[]>
   const loading = ref(true)
   const saving = ref(false)
   const autoCert = ref(false)
@@ -40,15 +38,12 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
 
     if (name.value) {
       try {
-        const r = await site.getItem(name.value)
+        const r = await site.getItem(encodeURIComponent(name.value))
         handleResponse(r)
       }
       catch (error) {
         handleParseError(error as { error?: string, message: string })
       }
-    }
-    else {
-      historyChatgptRecord.value = []
     }
     loading.value = false
   }
@@ -67,7 +62,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
         await buildConfig()
       }
 
-      const response = await site.updateItem(name.value, {
+      const response = await site.updateItem(encodeURIComponent(name.value), {
         content: configText.value,
         overwrite: true,
         env_group_id: data.value.env_group_id,
@@ -89,7 +84,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     console.error(e)
     parseErrorStatus.value = true
     parseErrorMessage.value = e.message
-    config.getItem(`sites-available/${name.value}`).then(r => {
+    config.getItem(`sites-available/${encodeURIComponent(name.value)}`).then(r => {
       configText.value = r.content
     })
   }
@@ -104,7 +99,6 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     filepath.value = r.filepath
     configText.value = r.config
     autoCert.value = r.auto_cert
-    historyChatgptRecord.value = r.chatgpt_messages
     data.value = r
     autoCert.value = r.auto_cert
     certInfoMap.value = r.cert_info || {}
@@ -120,13 +114,13 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     loading.value = true
 
     try {
-      await site.advance_mode(name.value, { advanced: advanced as boolean })
+      await site.advance_mode(encodeURIComponent(name.value), { advanced: advanced as boolean })
       advanceMode.value = advanced as boolean
       if (advanced) {
         await buildConfig()
       }
       else {
-        let r = await site.getItem(name.value)
+        let r = await site.getItem(encodeURIComponent(name.value))
         await handleResponse(r)
         r = await ngx.tokenize_config(configText.value)
         Object.assign(ngxConfig, {
@@ -160,7 +154,6 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     parseErrorStatus,
     parseErrorMessage,
     data,
-    historyChatgptRecord,
     loading,
     saving,
     autoCert,

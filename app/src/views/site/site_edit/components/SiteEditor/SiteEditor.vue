@@ -100,49 +100,54 @@ async function save() {
       </ASpace>
     </template>
 
-    <Transition name="slide-fade">
-      <div
-        v-if="advanceMode"
-        key="advance"
-      >
+    <div class="card-body">
+      <Transition name="slide-fade">
         <div
-          v-if="parseErrorStatus"
-          class="parse-error-alert-wrapper"
+          v-if="advanceMode"
+          key="advance"
         >
-          <AAlert
-            :message="$gettext('Nginx Configuration Parse Error')"
-            :description="parseErrorMessage"
-            type="error"
-            show-icon
-          />
-        </div>
-        <div>
-          <CodeEditor v-model:content="configText" />
-        </div>
-      </div>
-
-      <div
-        v-else
-        key="basic"
-        class="domain-edit-container"
-      >
-        <EnableTLS />
-        <NgxConfigEditor
-          :cert-info="certInfoMap"
-          :status="data.status"
-        >
-          <template #tab-content="{ tabIdx }">
-            <Cert
-              v-if="curSupportSSL"
-              class="mb-4"
-              :site-status="data.status"
-              :config-name="name"
-              :cert-info="certInfoMap?.[tabIdx]"
+          <div
+            v-if="parseErrorStatus"
+            class="parse-error-alert-wrapper"
+          >
+            <AAlert
+              :message="$gettext('Nginx Configuration Parse Error')"
+              :description="parseErrorMessage"
+              type="error"
+              show-icon
             />
-          </template>
-        </NgxConfigEditor>
-      </div>
-    </Transition>
+          </div>
+          <div>
+            <CodeEditor
+              v-model:content="configText"
+              no-border-radius
+            />
+          </div>
+        </div>
+
+        <div
+          v-else
+          key="basic"
+          class="domain-edit-container"
+        >
+          <EnableTLS />
+          <NgxConfigEditor
+            :cert-info="certInfoMap"
+            :status="data.status"
+          >
+            <template #tab-content="{ tabIdx }">
+              <Cert
+                v-if="curSupportSSL"
+                class="mb-4"
+                :site-status="data.status"
+                :config-name="name"
+                :cert-info="certInfoMap?.[tabIdx]"
+              />
+            </template>
+          </NgxConfigEditor>
+        </div>
+      </Transition>
+    </div>
 
     <FooterToolBar>
       <ASpace>
@@ -179,8 +184,9 @@ async function save() {
 }
 
 .domain-edit-container {
-    max-width: 800px;
-    margin: 0 auto;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 0;
 }
 
 .parse-error-alert-wrapper {
@@ -188,9 +194,11 @@ async function save() {
 }
 
 .site-edit-container {
+  height: 100%;
   :deep(.ant-card-body) {
-    max-height: calc(100vh - 375px);
+    max-height: 100%;
     overflow-y: scroll;
+    padding: 0;
   }
 }
 

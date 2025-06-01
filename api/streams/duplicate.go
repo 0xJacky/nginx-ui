@@ -11,7 +11,7 @@ import (
 
 func Duplicate(c *gin.Context) {
 	// Source name
-	name := c.Param("name")
+	name := helper.UnescapeURL(c.Param("name"))
 
 	// Destination name
 	var json struct {

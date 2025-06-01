@@ -5,19 +5,19 @@ import (
 	"os"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
-	"github.com/sashabaranov/go-openai"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	"gorm.io/gorm/clause"
 )
 
 func GetSite(c *gin.Context) {
-	name := c.Param("name")
+	name := helper.UnescapeURL(c.Param("name"))
 
 	path := nginx.GetConfPath("sites-available", name)
 	file, err := os.Stat(path)
@@ -26,17 +26,6 @@ func GetSite(c *gin.Context) {
 			"message": "file not found",
 		})
 		return
-	}
-
-	g := query.ChatGPTLog
-	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	if chatgpt.Content == nil {
-		chatgpt.Content = make([]openai.ChatCompletionMessage, 0)
 	}
 
 	s := query.Site
@@ -59,14 +48,13 @@ func GetSite(c *gin.Context) {
 		}
 
 		c.JSON(http.StatusOK, site.Site{
-			ModifiedAt:      file.ModTime(),
-			Site:            siteModel,
-			Name:            name,
-			Config:          string(origContent),
-			AutoCert:        certModel.AutoCert == model.AutoCertEnabled,
-			ChatGPTMessages: chatgpt.Content,
-			Filepath:        path,
-			Status:          site.GetSiteStatus(name),
+			ModifiedAt: file.ModTime(),
+			Site:       siteModel,
+			Name:       name,
+			Config:     string(origContent),
+			AutoCert:   certModel.AutoCert == model.AutoCertEnabled,
+			Filepath:   path,
+			Status:     site.GetSiteStatus(name),
 		})
 		return
 	}
@@ -92,21 +80,20 @@ func GetSite(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, site.Site{
-		Site:            siteModel,
-		ModifiedAt:      file.ModTime(),
-		Name:            name,
-		Config:          nginxConfig.FmtCode(),
-		Tokenized:       nginxConfig,
-		AutoCert:        certModel.AutoCert == model.AutoCertEnabled,
-		CertInfo:        certInfoMap,
-		ChatGPTMessages: chatgpt.Content,
-		Filepath:        path,
-		Status:          site.GetSiteStatus(name),
+		Site:       siteModel,
+		ModifiedAt: file.ModTime(),
+		Name:       name,
+		Config:     nginxConfig.FmtCode(),
+		Tokenized:  nginxConfig,
+		AutoCert:   certModel.AutoCert == model.AutoCertEnabled,
+		CertInfo:   certInfoMap,
+		Filepath:   path,
+		Status:     site.GetSiteStatus(name),
 	})
 }
 
 func SaveSite(c *gin.Context) {
-	name := c.Param("name")
+	name := helper.UnescapeURL(c.Param("name"))
 
 	var json struct {
 		Content     string   `json:"content" binding:"required"`
@@ -130,7 +117,7 @@ func SaveSite(c *gin.Context) {
 }
 
 func RenameSite(c *gin.Context) {
-	oldName := c.Param("name")
+	oldName := helper.UnescapeURL(c.Param("name"))
 	var json struct {
 		NewName string `json:"new_name"`
 	}
@@ -150,7 +137,7 @@ func RenameSite(c *gin.Context) {
 }
 
 func EnableSite(c *gin.Context) {
-	name := c.Param("name")
+	name := helper.UnescapeURL(c.Param("name"))
 
 	// Check if the site is in maintenance mode, if yes, disable maintenance mode first
 	maintenanceConfigPath := nginx.GetConfPath("sites-enabled", name+site.MaintenanceSuffix)
@@ -176,7 +163,7 @@ func EnableSite(c *gin.Context) {
 }
 
 func DisableSite(c *gin.Context) {
-	name := c.Param("name")
+	name := helper.UnescapeURL(c.Param("name"))
 
 	// Check if the site is in maintenance mode, if yes, disable maintenance mode first
 	maintenanceConfigPath := nginx.GetConfPath("sites-enabled", name+site.MaintenanceSuffix)
@@ -202,7 +189,7 @@ func DisableSite(c *gin.Context) {
 }
 
 func DeleteSite(c *gin.Context) {
-	err := site.Delete(c.Param("name"))
+	err := site.Delete(helper.UnescapeURL(c.Param("name")))
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -240,7 +227,7 @@ func BatchUpdateSites(c *gin.Context) {
 }
 
 func EnableMaintenanceSite(c *gin.Context) {
-	name := c.Param("name")
+	name := helper.UnescapeURL(c.Param("name"))
 
 	// If site is already enabled, disable the normal site first
 	enabledConfigPath := nginx.GetConfPath("sites-enabled", name)

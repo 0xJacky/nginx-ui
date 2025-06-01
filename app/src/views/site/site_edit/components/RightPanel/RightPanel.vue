@@ -54,13 +54,13 @@ watch(advanceMode, val => {
   position: relative;
 
   .right-settings {
-    max-height: calc(100vh - 323px);
-    overflow-y: scroll;
+    overflow-y: auto;
     position: relative;
   }
 
   :deep(.ant-card-body) {
-    padding: 19.5px 24px;
+    padding: 0;
+    position: relative;
   }
 
   :deep(.ant-tabs-nav) {
@@ -68,9 +68,17 @@ watch(advanceMode, val => {
   }
 }
 
-:deep(.ant-tabs-content) {
-  padding-top: 24px;
-  max-height: calc(100vh - 425px);
-  overflow-y: scroll;
+:deep(.ant-tabs) {
+  margin-bottom: 0;
+
+  .ant-tabs-nav-wrap {
+    height: 55px;
+    padding: 0 24px;
+  }
+
+  .ant-tabs-content {
+    padding-top: 24px;
+    overflow-y: auto;
+  }
 }
 </style>

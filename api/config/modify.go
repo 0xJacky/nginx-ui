@@ -2,7 +2,6 @@ package config
 
 import (
 	"net/http"
-	"net/url"
 	"path/filepath"
 	"time"
 
@@ -12,7 +11,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
-	"github.com/sashabaranov/go-openai"
 	"github.com/uozi-tech/cosy"
 	"gorm.io/gen/field"
 )
@@ -22,20 +20,7 @@ type EditConfigJson struct {
 }
 
 func EditConfig(c *gin.Context) {
-	relativePath := c.Param("path")
-
-	// Ensure the path is correctly decoded - handle cases where it might be encoded multiple times
-	decodedPath := relativePath
-	var err error
-	// Try decoding until the path no longer changes
-	for {
-		newDecodedPath, decodeErr := url.PathUnescape(decodedPath)
-		if decodeErr != nil || newDecodedPath == decodedPath {
-			break
-		}
-		decodedPath = newDecodedPath
-	}
-	relativePath = decodedPath
+	relativePath := helper.UnescapeURL(c.Param("path"))
 
 	var json struct {
 		Content       string   `json:"content"`
@@ -83,25 +68,13 @@ func EditConfig(c *gin.Context) {
 		return
 	}
 
-	g := query.ChatGPTLog
-	chatgpt, err := g.Where(g.Name.Eq(absPath)).FirstOrCreate()
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	if chatgpt.Content == nil {
-		chatgpt.Content = make([]openai.ChatCompletionMessage, 0)
-	}
-
 	c.JSON(http.StatusOK, config.Config{
-		Name:            filepath.Base(absPath),
-		Content:         content,
-		ChatGPTMessages: chatgpt.Content,
-		FilePath:        absPath,
-		ModifiedAt:      time.Now(),
-		Dir:             filepath.Dir(relativePath),
-		SyncNodeIds:     cfg.SyncNodeIds,
-		SyncOverwrite:   cfg.SyncOverwrite,
+		Name:          filepath.Base(absPath),
+		Content:       content,
+		FilePath:      absPath,
+		ModifiedAt:    time.Now(),
+		Dir:           filepath.Dir(relativePath),
+		SyncNodeIds:   cfg.SyncNodeIds,
+		SyncOverwrite: cfg.SyncOverwrite,
 	})
 }

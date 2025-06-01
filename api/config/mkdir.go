@@ -2,7 +2,6 @@ package config
 
 import (
 	"net/http"
-	"net/url"
 	"os"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -21,17 +20,9 @@ func Mkdir(c *gin.Context) {
 	}
 
 	// Ensure paths are properly URL unescaped
-	decodedBasePath, err := url.QueryUnescape(json.BasePath)
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
+	decodedBasePath := helper.UnescapeURL(json.BasePath)
 
-	decodedFolderName, err := url.QueryUnescape(json.FolderName)
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
+	decodedFolderName := helper.UnescapeURL(json.FolderName)
 
 	fullPath := nginx.GetConfPath(decodedBasePath, decodedFolderName)
 	if !helper.IsUnderDirectory(fullPath, nginx.GetConfPath()) {
@@ -41,7 +32,7 @@ func Mkdir(c *gin.Context) {
 		})
 		return
 	}
-	err = os.Mkdir(fullPath, 0755)
+	err := os.Mkdir(fullPath, 0755)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

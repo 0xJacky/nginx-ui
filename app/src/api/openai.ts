@@ -24,6 +24,9 @@ export interface CodeCompletionResponse {
 }
 
 const openai = {
+  get_record(path: string) {
+    return http.get(`/chatgpt/history`, { params: { path } })
+  },
   store_record(data: { file_name?: string, messages?: ChatComplicationMessage[] }) {
     return http.post('/chatgpt_record', data)
   },

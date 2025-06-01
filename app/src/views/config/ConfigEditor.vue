@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import type { Ref } from 'vue'
 import type { Config } from '@/api/config'
-import type { ChatComplicationMessage } from '@/api/openai'
 import { HistoryOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { trim, trimEnd } from 'lodash'
@@ -45,7 +43,6 @@ const data = ref({
   sync_overwrite: false,
 } as Config)
 
-const historyChatgptRecord = ref([]) as Ref<ChatComplicationMessage[]>
 const activeKey = ref(['basic', 'deploy', 'chatgpt'])
 const modifiedAt = ref('')
 const nginxConfigBase = ref('')
@@ -72,7 +69,6 @@ async function init() {
   if (!addMode.value) {
     config.getItem(relativePath.value).then(r => {
       data.value = r
-      historyChatgptRecord.value = r.chatgpt_messages
       modifiedAt.value = r.modified_at
 
       const filteredPath = trimEnd(data.value.filepath
@@ -124,7 +120,6 @@ async function init() {
   }
   else {
     data.value.content = ''
-    historyChatgptRecord.value = []
     data.value.filepath = ''
 
     const pathSegments = basePath.value
@@ -366,7 +361,6 @@ function openHistory() {
             header="ChatGPT"
           >
             <ChatGPT
-              v-model:history-messages="historyChatgptRecord"
               :content="data.content"
               :path="data.filepath"
             />

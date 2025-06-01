@@ -6,14 +6,12 @@ const editorStore = useSiteEditorStore()
 const {
   configText,
   filepath,
-  historyChatgptRecord,
 } = storeToRefs(editorStore)
 </script>
 
 <template>
   <div class="mt--4">
     <ChatGPT
-      v-model:history-messages="historyChatgptRecord"
       :content="configText"
       :path="filepath"
     />

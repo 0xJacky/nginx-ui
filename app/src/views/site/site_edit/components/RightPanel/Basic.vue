@@ -22,7 +22,7 @@ function handleStatusChanged(event: { status: SiteStatus }) {
 </script>
 
 <template>
-  <div>
+  <div class="px-6">
     <div class="mb-6">
       <AForm layout="vertical">
         <AFormItem :label="$gettext('Status')">

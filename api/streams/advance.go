@@ -3,6 +3,7 @@ package streams
 import (
 	"net/http"
 
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -18,7 +19,7 @@ func AdvancedEdit(c *gin.Context) {
 		return
 	}
 
-	name := c.Param("name")
+	name := helper.UnescapeURL(c.Param("name"))
 	path := nginx.GetConfPath("streams-available", name)
 
 	s := query.Stream

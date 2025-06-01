@@ -12,6 +12,7 @@ const props = defineProps<{
   readonly?: boolean
   placeholder?: string
   disableCodeCompletion?: boolean
+  noBorderRadius?: boolean
 }>()
 
 const content = defineModel<string>('content', { default: '' })
@@ -46,7 +47,7 @@ onUnmounted(() => {
     theme="monokai"
     :style="{
       minHeight: defaultHeight || '100vh',
-      borderRadius: '5px',
+      borderRadius: props.noBorderRadius ? '0' : '5px',
     }"
     :readonly
     :placeholder

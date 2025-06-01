@@ -33,12 +33,11 @@ import SiteEditor from '@/views/site/site_edit/components/SiteEditor'
 </template>
 
 <style lang="less" scoped>
-.site-container {
-  max-height: calc(100vh - 267px);
-  overflow-y: auto;
-}
-
 :deep(.ant-card) {
   box-shadow: unset;
+
+  .card-body, .ant-tabs-content {
+    max-height: calc(100vh - 260px);
+  }
 }
 </style>

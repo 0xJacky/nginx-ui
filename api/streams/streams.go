@@ -8,31 +8,30 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/stream"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/samber/lo"
-	"github.com/sashabaranov/go-openai"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
 	"gorm.io/gorm/clause"
 )
 
 type Stream struct {
-	ModifiedAt      time.Time                      `json:"modified_at"`
-	Advanced        bool                           `json:"advanced"`
-	Status          config.ConfigStatus            `json:"status"`
-	Name            string                         `json:"name"`
-	Config          string                         `json:"config"`
-	ChatGPTMessages []openai.ChatCompletionMessage `json:"chatgpt_messages,omitempty"`
-	Tokenized       *nginx.NgxConfig               `json:"tokenized,omitempty"`
-	Filepath        string                         `json:"filepath"`
-	EnvGroupID      uint64                         `json:"env_group_id"`
-	EnvGroup        *model.EnvGroup                `json:"env_group,omitempty"`
-	SyncNodeIDs     []uint64                       `json:"sync_node_ids" gorm:"serializer:json"`
-	ProxyTargets    []config.ProxyTarget           `json:"proxy_targets,omitempty"`
+	ModifiedAt   time.Time            `json:"modified_at"`
+	Advanced     bool                 `json:"advanced"`
+	Status       config.ConfigStatus  `json:"status"`
+	Name         string               `json:"name"`
+	Config       string               `json:"config"`
+	Tokenized    *nginx.NgxConfig     `json:"tokenized,omitempty"`
+	Filepath     string               `json:"filepath"`
+	EnvGroupID   uint64               `json:"env_group_id"`
+	EnvGroup     *model.EnvGroup      `json:"env_group,omitempty"`
+	SyncNodeIDs  []uint64             `json:"sync_node_ids" gorm:"serializer:json"`
+	ProxyTargets []config.ProxyTarget `json:"proxy_targets,omitempty"`
 }
 
 func GetStreams(c *gin.Context) {
@@ -166,7 +165,7 @@ func GetStreams(c *gin.Context) {
 }
 
 func GetStream(c *gin.Context) {
-	name := c.Param("name")
+	name := helper.UnescapeURL(c.Param("name"))
 
 	// Get the absolute path to the stream configuration file
 	path := nginx.GetConfPath("streams-available", name)
@@ -182,19 +181,6 @@ func GetStream(c *gin.Context) {
 	status := config.StatusEnabled
 	if _, err := os.Stat(nginx.GetConfPath("streams-enabled", name)); os.IsNotExist(err) {
 		status = config.StatusDisabled
-	}
-
-	// Retrieve or create ChatGPT log for this stream
-	g := query.ChatGPTLog
-	chatgpt, err := g.Where(g.Name.Eq(path)).FirstOrCreate()
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	// Initialize empty content if nil
-	if chatgpt.Content == nil {
-		chatgpt.Content = make([]openai.ChatCompletionMessage, 0)
 	}
 
 	// Retrieve or create stream model from database
@@ -214,16 +200,15 @@ func GetStream(c *gin.Context) {
 		}
 
 		c.JSON(http.StatusOK, Stream{
-			ModifiedAt:      file.ModTime(),
-			Advanced:        streamModel.Advanced,
-			Status:          status,
-			Name:            name,
-			Config:          string(origContent),
-			ChatGPTMessages: chatgpt.Content,
-			Filepath:        path,
-			EnvGroupID:      streamModel.EnvGroupID,
-			EnvGroup:        streamModel.EnvGroup,
-			SyncNodeIDs:     streamModel.SyncNodeIDs,
+			ModifiedAt:  file.ModTime(),
+			Advanced:    streamModel.Advanced,
+			Status:      status,
+			Name:        name,
+			Config:      string(origContent),
+			Filepath:    path,
+			EnvGroupID:  streamModel.EnvGroupID,
+			EnvGroup:    streamModel.EnvGroup,
+			SyncNodeIDs: streamModel.SyncNodeIDs,
 		})
 		return
 	}
@@ -236,22 +221,21 @@ func GetStream(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, Stream{
-		ModifiedAt:      file.ModTime(),
-		Advanced:        streamModel.Advanced,
-		Status:          status,
-		Name:            name,
-		Config:          nginxConfig.FmtCode(),
-		Tokenized:       nginxConfig,
-		ChatGPTMessages: chatgpt.Content,
-		Filepath:        path,
-		EnvGroupID:      streamModel.EnvGroupID,
-		EnvGroup:        streamModel.EnvGroup,
-		SyncNodeIDs:     streamModel.SyncNodeIDs,
+		ModifiedAt:  file.ModTime(),
+		Advanced:    streamModel.Advanced,
+		Status:      status,
+		Name:        name,
+		Config:      nginxConfig.FmtCode(),
+		Tokenized:   nginxConfig,
+		Filepath:    path,
+		EnvGroupID:  streamModel.EnvGroupID,
+		EnvGroup:    streamModel.EnvGroup,
+		SyncNodeIDs: streamModel.SyncNodeIDs,
 	})
 }
 
 func SaveStream(c *gin.Context) {
-	name := c.Param("name")
+	name := helper.UnescapeURL(c.Param("name"))
 
 	var json struct {
 		Content     string   `json:"content" binding:"required"`
@@ -305,7 +289,7 @@ func SaveStream(c *gin.Context) {
 
 func EnableStream(c *gin.Context) {
 	// Enable the stream by creating a symlink in streams-enabled directory
-	err := stream.Enable(c.Param("name"))
+	err := stream.Enable(helper.UnescapeURL(c.Param("name")))
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -318,7 +302,7 @@ func EnableStream(c *gin.Context) {
 
 func DisableStream(c *gin.Context) {
 	// Disable the stream by removing the symlink from streams-enabled directory
-	err := stream.Disable(c.Param("name"))
+	err := stream.Disable(helper.UnescapeURL(c.Param("name")))
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -331,7 +315,7 @@ func DisableStream(c *gin.Context) {
 
 func DeleteStream(c *gin.Context) {
 	// Delete the stream configuration file and its symbolic link if exists
-	err := stream.Delete(c.Param("name"))
+	err := stream.Delete(helper.UnescapeURL(c.Param("name")))
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -343,7 +327,7 @@ func DeleteStream(c *gin.Context) {
 }
 
 func RenameStream(c *gin.Context) {
-	oldName := c.Param("name")
+	oldName := helper.UnescapeURL(c.Param("name"))
 	var json struct {
 		NewName string `json:"new_name"`
 	}

@@ -1,5 +1,4 @@
 import type { CertificateInfo } from '@/api/cert'
-import type { ChatComplicationMessage } from '@/api/openai'
 import type { Stream } from '@/api/stream'
 import type { CheckedType } from '@/types'
 import config from '@/api/config'
@@ -14,7 +13,6 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
   const parseErrorStatus = ref(false)
   const parseErrorMessage = ref('')
   const data = ref({}) as Ref<Stream>
-  const historyChatgptRecord = ref([]) as Ref<ChatComplicationMessage[]>
   const loading = ref(true)
   const saving = ref(false)
   const autoCert = ref(false)
@@ -33,16 +31,14 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
 
     if (name.value) {
       try {
-        const r = await stream.getItem(name.value)
+        const r = await stream.getItem(encodeURIComponent(name.value))
         handleResponse(r)
       }
       catch (error) {
         handleParseError(error as { error?: string, message: string })
       }
     }
-    else {
-      historyChatgptRecord.value = []
-    }
+
     loading.value = false
   }
 
@@ -60,7 +56,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
         await buildConfig()
       }
 
-      const response = await stream.updateItem(name.value, {
+      const response = await stream.updateItem(encodeURIComponent(name.value), {
         content: configText.value,
         overwrite: true,
         env_group_id: data.value.env_group_id,
@@ -82,7 +78,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
     console.error(e)
     parseErrorStatus.value = true
     parseErrorMessage.value = e.message
-    config.getItem(`streams-available/${name.value}`).then(r => {
+    config.getItem(`streams-available/${encodeURIComponent(name.value)}`).then(r => {
       configText.value = r.content
     })
   }
@@ -97,7 +93,6 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
     filename.value = r.name
     filepath.value = r.filepath
     configText.value = r.config
-    historyChatgptRecord.value = r.chatgpt_messages
     data.value = r
     Object.assign(ngxConfig, r.tokenized)
 
@@ -111,13 +106,13 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
     loading.value = true
 
     try {
-      await stream.advance_mode(name.value, { advanced: advanced as boolean })
+      await stream.advance_mode(encodeURIComponent(name.value), { advanced: advanced as boolean })
       advanceMode.value = advanced as boolean
       if (advanced) {
         await buildConfig()
       }
       else {
-        let r = await stream.getItem(name.value)
+        let r = await stream.getItem(encodeURIComponent(name.value))
         await handleResponse(r)
         r = await ngx.tokenize_config(configText.value)
         Object.assign(ngxConfig, {
@@ -140,7 +135,6 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
     parseErrorStatus,
     parseErrorMessage,
     data,
-    historyChatgptRecord,
     loading,
     saving,
     autoCert,
