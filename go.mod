@@ -40,7 +40,7 @@ require (
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.50.0
 	github.com/sashabaranov/go-openai v1.40.1
-	github.com/shirou/gopsutil/v4 v4.25.4
+	github.com/shirou/gopsutil/v4 v4.25.5
 	github.com/spf13/afero v1.14.0
 	github.com/spf13/cast v1.8.0
 	github.com/stretchr/testify v1.10.0
