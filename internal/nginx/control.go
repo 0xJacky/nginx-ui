@@ -1,7 +1,6 @@
 package nginx
 
 import (
-	"errors"
 	"net/http"
 	"strings"
 
@@ -58,7 +57,7 @@ func (t *ControlResult) GetOutput() string {
 }
 
 func (t *ControlResult) GetError() error {
-	return errors.New(t.GetOutput())
+	return cosy.WrapErrorWithParams(ErrNginx, t.GetOutput())
 }
 
 func (t *ControlResult) GetLevel() int {
