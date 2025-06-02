@@ -65,7 +65,7 @@ const loading = computed(() =>
 
 :deep(.card-body) {
   max-height: calc(100vh - 260px);
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: 0;
 }
 

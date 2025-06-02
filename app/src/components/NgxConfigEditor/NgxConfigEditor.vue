@@ -45,19 +45,24 @@ const activeKey = ref(['3'])
       >
         <NgxUpstream />
       </ACollapsePanel>
-    </ACollapse>
-    <NgxServer :context>
-      <template
-        v-for="(_, key) in $slots"
-        :key="key"
-        #[key]="slotProps"
+      <ACollapsePanel
+        key="3"
+        header="Server"
       >
-        <slot
-          :name="key"
-          v-bind="slotProps"
-        />
-      </template>
-    </NgxServer>
+        <NgxServer :context>
+          <template
+            v-for="(_, key) in $slots"
+            :key="key"
+            #[key]="slotProps"
+          >
+            <slot
+              :name="key"
+              v-bind="slotProps"
+            />
+          </template>
+        </NgxServer>
+      </ACollapsePanel>
+    </ACollapse>
   </div>
 </template>
 
