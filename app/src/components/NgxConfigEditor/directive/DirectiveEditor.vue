@@ -22,7 +22,7 @@ onMounted(() => {
 })
 
 function addDirective(directive: NgxDirective) {
-  ngxDirectives.value.push(directive)
+  ngxDirectives.value.push({ ...directive })
 }
 
 function removeDirective(index: number) {
