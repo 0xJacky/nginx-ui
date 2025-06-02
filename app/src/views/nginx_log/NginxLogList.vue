@@ -12,7 +12,7 @@ const columns: StdTableColumn[] = [
     title: () => $gettext('Type'),
     dataIndex: 'type',
     customRender: (args: CustomRenderArgs) => {
-      return args.record?.type === 'access' ? <Tag color="success">{ $gettext('Access Log') }</Tag> : <Tag color="orange">{ $gettext('Error Log') }</Tag>
+      return args.record?.type === 'access' ? <Tag color="green">{ $gettext('Access Log') }</Tag> : <Tag color="orange">{ $gettext('Error Log') }</Tag>
     },
     sorter: true,
     search: {
