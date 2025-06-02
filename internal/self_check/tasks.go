@@ -96,7 +96,7 @@ var selfCheckTasks = []*Task{
 		Name:        translation.C("Nginx error log path exists"),
 		Description: translation.C("Check if the nginx error log path exists. "+
 		"By default, this path is obtained from 'nginx -V'. If it cannot be obtained or the obtained path does not point to a valid, "+
-		"existing file, an error will be reported. In this case, you need to modify the configuration file to specify the error log path." + 
+		"existing file, an error will be reported. In this case, you need to modify the configuration file to specify the error log path. " + 
 		"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"),
 		CheckFunc:   CheckErrorLogPath,
 	},

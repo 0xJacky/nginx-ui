@@ -125,7 +125,7 @@ msgstr ""
 #: src/views/certificate/ACMEUser.vue:90
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:30
-#: src/views/config/configColumns.tsx:42
+#: src/views/config/configColumns.tsx:41
 #: src/views/environments/group/columns.ts:41
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:52
@@ -146,7 +146,7 @@ msgstr ""
 msgid "Actual worker to configured ratio"
 msgstr ""
 
-#: src/components/NgxConfigEditor/NgxServer.vue:112
+#: src/components/NgxConfigEditor/NgxServer.vue:144
 #: src/components/NgxConfigEditor/NgxUpstream.vue:166
 #: src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
@@ -161,8 +161,8 @@ msgid "Add a passkey"
 msgstr ""
 
 #: src/routes/modules/config.ts:20
-#: src/views/config/ConfigEditor.vue:171
-#: src/views/config/ConfigEditor.vue:250
+#: src/views/config/components/ConfigLeftPanel.vue:169
+#: src/views/config/components/ConfigLeftPanel.vue:242
 msgid "Add Configuration"
 msgstr ""
 
@@ -175,6 +175,10 @@ msgstr ""
 msgid "Add Location"
 msgstr ""
 
+#: src/components/NgxConfigEditor/NgxServer.vue:92
+msgid "Add Server"
+msgstr ""
+
 #: src/routes/modules/sites.ts:26
 #: src/views/site/site_add/SiteAdd.vue:75
 msgid "Add Site"
@@ -182,6 +186,10 @@ msgstr ""
 
 #: src/views/stream/StreamList.vue:139
 msgid "Add Stream"
+msgstr ""
+
+#: src/components/NgxConfigEditor/NgxUpstream.vue:187
+msgid "Add Upstream"
 msgstr ""
 
 #: src/views/stream/StreamList.vue:72
@@ -193,7 +201,7 @@ msgid "Additional"
 msgstr ""
 
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:94
-#: src/views/stream/components/StreamEditor.vue:56
+#: src/views/stream/components/StreamEditor.vue:57
 msgid "Advance Mode"
 msgstr ""
 
@@ -259,7 +267,7 @@ msgstr ""
 msgid "Are you sure you want to clear all notifications?"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:376
+#: src/components/ChatGPT/ChatMessageInput.vue:19
 msgid "Are you sure you want to clear the record of chat?"
 msgstr ""
 
@@ -297,11 +305,11 @@ msgstr ""
 msgid "Are you sure you want to restore?"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:318
+#: src/components/ChatGPT/ChatGPT.vue:55
 msgid "Ask ChatGPT for Help"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:333
+#: src/components/ChatGPT/ChatMessage.vue:187
 msgid "Assistant"
 msgstr ""
 
@@ -386,12 +394,12 @@ msgid "Automatic Restart"
 msgstr ""
 
 #: src/views/certificate/CertificateEditor.vue:259
-#: src/views/config/ConfigEditor.vue:272
+#: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:112
 #: src/views/config/ConfigList.vue:195
 #: src/views/nginx_log/NginxLog.vue:174
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
-#: src/views/stream/components/StreamEditor.vue:107
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:156
+#: src/views/stream/components/StreamEditor.vue:111
 msgid "Back"
 msgstr ""
 
@@ -480,14 +488,14 @@ msgstr ""
 msgid "Base information"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:300
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:32
-#: src/views/stream/components/RightPanel/RightPanel.vue:20
+#: src/views/config/components/ConfigRightPanel/ConfigRightPanel.vue:29
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:31
+#: src/views/stream/components/RightPanel/RightPanel.vue:19
 msgid "Basic"
 msgstr ""
 
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:97
-#: src/views/stream/components/StreamEditor.vue:59
+#: src/views/stream/components/StreamEditor.vue:60
 msgid "Basic Mode"
 msgstr ""
 
@@ -570,15 +578,14 @@ msgstr ""
 msgid "Calculated based on worker_processes * worker_connections. Actual performance depends on hardware, configuration, and workload"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:356
-#: src/components/NgxConfigEditor/NgxServer.vue:54
+#: src/components/ChatGPT/ChatMessage.vue:216
+#: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:37
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:143
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
-#: src/views/stream/components/RightPanel/Basic.vue:49
 #: src/views/stream/components/StreamStatusSelect.vue:61
 msgid "Cancel"
 msgstr ""
@@ -712,7 +719,7 @@ msgid_plural "Changed Certificates"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/views/config/ConfigEditor.vue:328
+#: src/views/config/components/ConfigRightPanel/Basic.vue:47
 msgid "Changed Path"
 msgstr ""
 
@@ -721,8 +728,9 @@ msgstr ""
 msgid "Channel"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:42
-#: src/views/stream/components/RightPanel/RightPanel.vue:23
+#: src/views/config/components/ConfigRightPanel/ConfigRightPanel.vue:38
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:41
+#: src/views/stream/components/RightPanel/RightPanel.vue:22
 msgid "Chat"
 msgstr ""
 
@@ -756,7 +764,7 @@ msgid "Check if the nginx configuration entry file exists"
 msgstr ""
 
 #: src/language/generate.ts:11
-msgid "Check if the nginx error log path exists. By default, this path is obtained from 'nginx -V'. If it cannot be obtained or the obtained path does not point to a valid, existing file, an error will be reported. In this case, you need to modify the configuration file to specify the error log path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
+msgid "Check if the nginx error log path exists. By default, this path is obtained from 'nginx -V'. If it cannot be obtained or the obtained path does not point to a valid, existing file, an error will be reported. In this case, you need to modify the configuration file to specify the error log path. Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 msgstr ""
 
 #: src/language/generate.ts:7
@@ -791,7 +799,7 @@ msgstr ""
 msgid "Cleaning environment variables"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:380
+#: src/components/ChatGPT/ChatMessageInput.vue:23
 #: src/components/Notification/Notification.vue:116
 #: src/views/notification/Notification.vue:45
 msgid "Clear"
@@ -869,7 +877,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:115
 #: src/components/NgxConfigEditor/LocationEditor.vue:104
 #: src/components/NgxConfigEditor/LocationEditor.vue:135
-#: src/components/NgxConfigEditor/NgxServer.vue:91
+#: src/components/NgxConfigEditor/NgxServer.vue:123
 msgid "Comments"
 msgstr ""
 
@@ -910,11 +918,11 @@ msgstr ""
 msgid "Config path is empty"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:38
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:37
 msgid "Config Template"
 msgstr ""
 
-#: src/views/config/InspectConfig.vue:27
+#: src/views/config/InspectConfig.vue:32
 msgid "Configuration file is test successful"
 msgstr ""
 
@@ -1004,10 +1012,6 @@ msgstr ""
 
 #: src/views/dashboard/ServerAnalytic.vue:195
 msgid "CPU:"
-msgstr ""
-
-#: src/components/NgxConfigEditor/NgxUpstream.vue:177
-msgid "Create"
 msgstr ""
 
 #: src/views/site/site_add/SiteAdd.vue:148
@@ -1115,8 +1119,8 @@ msgid "Daily at %{time}"
 msgstr ""
 
 #: src/routes/modules/dashboard.ts:10
-#: src/views/config/ConfigEditor.vue:110
-#: src/views/config/ConfigEditor.vue:161
+#: src/views/config/components/ConfigLeftPanel.vue:109
+#: src/views/config/components/ConfigLeftPanel.vue:159
 #: src/views/config/ConfigList.vue:67
 msgid "Dashboard"
 msgstr ""
@@ -1141,7 +1145,7 @@ msgstr ""
 msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
 msgstr ""
 
-#: src/components/NgxConfigEditor/NgxServer.vue:78
+#: src/components/NgxConfigEditor/NgxServer.vue:110
 #: src/components/NgxConfigEditor/NgxUpstream.vue:134
 #: src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
@@ -1208,7 +1212,7 @@ msgstr ""
 msgid "Demo"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:344
+#: src/views/config/components/ConfigRightPanel/Basic.vue:60
 msgid "Deploy"
 msgstr ""
 
@@ -1339,14 +1343,12 @@ msgstr ""
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/site/site_list/columns.tsx:127
 #: src/views/stream/columns.tsx:94
-#: src/views/stream/components/StreamEditor.vue:31
-#: src/views/stream/components/StreamStatusSelect.vue:85
+#: src/views/stream/components/StreamEditor.vue:32
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:67
-#: src/views/stream/components/RightPanel/Basic.vue:36
 #: src/views/stream/components/StreamStatusSelect.vue:39
 msgid "Disabled successfully"
 msgstr ""
@@ -1385,20 +1387,12 @@ msgstr ""
 msgid "Do you want to disable auto-cert renewal?"
 msgstr ""
 
-#: src/views/stream/components/RightPanel/Basic.vue:45
-msgid "Do you want to disable this stream?"
-msgstr ""
-
-#: src/views/stream/components/RightPanel/Basic.vue:45
-msgid "Do you want to enable this stream?"
-msgstr ""
-
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:33
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:14
 msgid "Do you want to enable TLS?"
 msgstr ""
 
-#: src/components/NgxConfigEditor/NgxServer.vue:50
+#: src/components/NgxConfigEditor/NgxServer.vue:57
 msgid "Do you want to remove this server?"
 msgstr ""
 
@@ -1476,12 +1470,12 @@ msgid "Edit"
 msgstr ""
 
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:51
-#: src/views/stream/components/StreamEditor.vue:20
+#: src/views/stream/components/StreamEditor.vue:21
 msgid "Edit %{n}"
 msgstr ""
 
 #: src/routes/modules/config.ts:30
-#: src/views/config/ConfigEditor.vue:250
+#: src/views/config/components/ConfigLeftPanel.vue:242
 msgid "Edit Configuration"
 msgstr ""
 
@@ -1608,16 +1602,14 @@ msgstr ""
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
 #: src/views/site/site_list/columns.tsx:123
 #: src/views/stream/columns.tsx:90
-#: src/views/stream/components/RightPanel/Basic.vue:64
-#: src/views/stream/components/StreamEditor.vue:25
-#: src/views/stream/components/StreamStatusSelect.vue:84
+#: src/views/stream/components/RightPanel/Basic.vue:23
+#: src/views/stream/components/StreamEditor.vue:26
 #: src/views/user/userColumns.tsx:36
 msgid "Enabled"
 msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:54
 #: src/views/site/site_add/SiteAdd.vue:34
-#: src/views/stream/components/RightPanel/Basic.vue:27
 #: src/views/stream/components/StreamStatusSelect.vue:26
 msgid "Enabled successfully"
 msgstr ""
@@ -1641,7 +1633,7 @@ msgid "Environments"
 msgstr ""
 
 #: src/constants/index.ts:22
-#: src/views/config/InspectConfig.vue:44
+#: src/views/config/InspectConfig.vue:49
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr ""
@@ -1855,7 +1847,6 @@ msgid "Failed to delete certificate from database: %{error}"
 msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:73
-#: src/views/stream/components/RightPanel/Basic.vue:39
 #: src/views/stream/components/StreamStatusSelect.vue:45
 msgid "Failed to disable %{msg}"
 msgstr ""
@@ -1865,7 +1856,6 @@ msgid "Failed to disable maintenance mode %{msg}"
 msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:60
-#: src/views/stream/components/RightPanel/Basic.vue:30
 #: src/views/stream/components/StreamStatusSelect.vue:32
 msgid "Failed to enable %{msg}"
 msgstr ""
@@ -2072,11 +2062,11 @@ msgstr ""
 msgid "Form parse failed"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:275
+#: src/views/config/components/ConfigLeftPanel.vue:276
 msgid "Format Code"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:222
+#: src/views/config/components/ConfigLeftPanel.vue:219
 msgid "Format successfully"
 msgstr ""
 
@@ -2158,9 +2148,9 @@ msgstr ""
 msgid "Higher value means better connection reuse"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:260
+#: src/views/config/components/ConfigLeftPanel.vue:254
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:81
-#: src/views/stream/components/StreamEditor.vue:44
+#: src/views/stream/components/StreamEditor.vue:45
 msgid "History"
 msgstr ""
 
@@ -2313,8 +2303,8 @@ msgstr ""
 msgid "Invalid file path: {0}"
 msgstr ""
 
+#: src/views/config/components/ConfigRightPanel/Basic.vue:28
 #: src/views/config/components/Rename.vue:66
-#: src/views/config/ConfigEditor.vue:309
 msgid "Invalid filename"
 msgstr ""
 
@@ -2585,8 +2575,8 @@ msgid "Make sure you have configured a reverse proxy for .well-known directory t
 msgstr ""
 
 #: src/routes/modules/config.ts:10
-#: src/views/config/ConfigEditor.vue:115
-#: src/views/config/ConfigEditor.vue:166
+#: src/views/config/components/ConfigLeftPanel.vue:114
+#: src/views/config/components/ConfigLeftPanel.vue:164
 #: src/views/config/ConfigList.vue:72
 msgid "Manage Configs"
 msgstr ""
@@ -2722,7 +2712,7 @@ msgstr ""
 msgid "Modified At"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:352
+#: src/components/ChatGPT/ChatMessage.vue:212
 #: src/views/config/ConfigList.vue:174
 msgid "Modify"
 msgstr ""
@@ -2760,15 +2750,15 @@ msgstr ""
 msgid "Multi-line Directive"
 msgstr ""
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:189
+#: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/DNSCredential.vue:8
+#: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:6
-#: src/views/config/ConfigEditor.vue:315
+#: src/views/config/configColumns.tsx:5
 #: src/views/environments/group/columns.ts:7
 #: src/views/environments/list/envColumns.tsx:8
 #: src/views/nginx_log/NginxLogList.vue:36
@@ -2777,7 +2767,7 @@ msgstr ""
 #: src/views/site/site_list/columns.tsx:16
 #: src/views/site/site_list/SiteDuplicate.vue:79
 #: src/views/stream/columns.tsx:12
-#: src/views/stream/components/RightPanel/Basic.vue:72
+#: src/views/stream/components/RightPanel/Basic.vue:30
 #: src/views/stream/components/StreamDuplicate.vue:71
 #: src/views/stream/StreamList.vue:144
 msgid "Name"
@@ -2815,7 +2805,7 @@ msgstr ""
 msgid "New Password"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:328
+#: src/views/config/components/ConfigRightPanel/Basic.vue:47
 msgid "New Path"
 msgstr ""
 
@@ -2884,7 +2874,7 @@ msgstr ""
 msgid "Nginx configuration has been restored"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:113
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:115
 #: src/views/stream/components/StreamEditor.vue:75
 msgid "Nginx Configuration Parse Error"
 msgstr ""
@@ -3028,7 +3018,7 @@ msgstr ""
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:374
+#: src/components/ChatGPT/ChatMessageInput.vue:17
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
@@ -3056,6 +3046,14 @@ msgstr ""
 msgid "No records selected"
 msgstr ""
 
+#: src/components/NgxConfigEditor/NgxServer.vue:77
+msgid "No servers configured"
+msgstr ""
+
+#: src/components/NgxConfigEditor/NgxUpstream.vue:172
+msgid "No upstreams configured"
+msgstr ""
+
 #: src/views/preference/Preference.vue:64
 msgid "Node"
 msgstr ""
@@ -3063,7 +3061,7 @@ msgstr ""
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:41
 #: src/views/site/site_list/columns.tsx:76
 #: src/views/stream/columns.tsx:44
-#: src/views/stream/components/RightPanel/Basic.vue:80
+#: src/views/stream/components/RightPanel/Basic.vue:38
 msgid "Node Group"
 msgstr ""
 
@@ -3107,7 +3105,7 @@ msgid "Note"
 msgstr ""
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:65
-#: src/views/stream/components/RightPanel/Basic.vue:102
+#: src/views/stream/components/RightPanel/Basic.vue:60
 msgid "Note, if the configuration file include other configurations or certificates, please synchronize them to the remote nodes in advance."
 msgstr ""
 
@@ -3173,8 +3171,8 @@ msgstr ""
 msgid "Offline"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:375
-#: src/components/NgxConfigEditor/NgxServer.vue:53
+#: src/components/ChatGPT/ChatMessageInput.vue:18
+#: src/components/NgxConfigEditor/NgxServer.vue:60
 #: src/components/NgxConfigEditor/NgxUpstream.vue:36
 #: src/components/Notification/Notification.vue:110
 #: src/language/curd.ts:15
@@ -3185,7 +3183,6 @@ msgstr ""
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
 #: src/views/site/site_list/SiteList.vue:99
-#: src/views/stream/components/RightPanel/Basic.vue:48
 #: src/views/stream/components/StreamStatusSelect.vue:60
 #: src/views/stream/StreamList.vue:121
 msgid "OK"
@@ -3259,11 +3256,11 @@ msgstr ""
 msgid "Otp or recovery code empty"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:353
+#: src/views/config/components/ConfigRightPanel/Deploy.vue:18
 msgid "Overwrite"
 msgstr ""
 
-#: src/views/config/ConfigEditor.vue:357
+#: src/views/config/components/ConfigRightPanel/Deploy.vue:22
 msgid "Overwrite exist file"
 msgstr ""
 
@@ -3316,7 +3313,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
 #: src/language/curd.ts:59
-#: src/views/config/ConfigEditor.vue:322
+#: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/nginx_log/NginxLogList.vue:44
 msgid "Path"
 msgstr ""
@@ -3421,8 +3418,8 @@ msgstr ""
 msgid "Please generate new recovery codes in the preferences immediately to prevent lockout."
 msgstr ""
 
+#: src/views/config/components/ConfigRightPanel/Basic.vue:27
 #: src/views/config/components/Rename.vue:65
-#: src/views/config/ConfigEditor.vue:308
 msgid "Please input a filename"
 msgstr ""
 
@@ -3500,8 +3497,8 @@ msgstr ""
 msgid "Port"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:45
-#: src/views/stream/components/RightPanel/RightPanel.vue:26
+#: src/views/site/site_edit/components/RightPanel/RightPanel.vue:44
+#: src/views/stream/components/RightPanel/RightPanel.vue:25
 msgid "Port Scanner"
 msgstr ""
 
@@ -3615,7 +3612,7 @@ msgstr ""
 msgid "Recursive Nameservers"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:387
+#: src/components/ChatGPT/ChatMessageInput.vue:30
 msgid "Regenerate response"
 msgstr ""
 
@@ -3659,7 +3656,7 @@ msgstr ""
 msgid "Release Note"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:362
+#: src/components/ChatGPT/ChatMessage.vue:222
 #: src/components/NginxControl/NginxControl.vue:99
 msgid "Reload"
 msgstr ""
@@ -4050,18 +4047,18 @@ msgstr ""
 msgid "Saturday"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:355
+#: src/components/ChatGPT/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
 #: src/language/curd.ts:18
 #: src/views/certificate/CertificateEditor.vue:266
+#: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
-#: src/views/config/ConfigEditor.vue:281
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
 #: src/views/preference/Preference.vue:117
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:157
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:163
 #: src/views/stream/components/ConfigName.vue:52
-#: src/views/stream/components/StreamEditor.vue:114
+#: src/views/stream/components/StreamEditor.vue:118
 msgid "Save"
 msgstr ""
 
@@ -4116,9 +4113,10 @@ msgstr ""
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:43
 #: src/language/curd.ts:28
-#: src/views/config/ConfigEditor.vue:200
+#: src/views/config/components/ConfigLeftPanel.vue:198
 #: src/views/site/site_add/SiteAdd.vue:31
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:40
+#: src/views/stream/store.ts:70
 msgid "Saved successfully"
 msgstr ""
 
@@ -4585,8 +4583,8 @@ msgstr ""
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:58
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:71
-#: src/views/stream/components/RightPanel/Basic.vue:108
-#: src/views/stream/components/RightPanel/Basic.vue:95
+#: src/views/stream/components/RightPanel/Basic.vue:53
+#: src/views/stream/components/RightPanel/Basic.vue:66
 msgid "Sync strategy"
 msgstr ""
 
@@ -4595,7 +4593,7 @@ msgid "Sync to"
 msgstr ""
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:56
-#: src/views/stream/components/RightPanel/Basic.vue:93
+#: src/views/stream/components/RightPanel/Basic.vue:51
 msgid "Synchronization"
 msgstr ""
 
@@ -4935,14 +4933,14 @@ msgstr ""
 #: src/views/backup/AutoBackup/AutoBackup.vue:236
 #: src/views/certificate/ACMEUser.vue:83
 #: src/views/certificate/DNSCredential.vue:24
-#: src/views/config/configColumns.tsx:35
-#: src/views/config/ConfigEditor.vue:335
+#: src/views/config/components/ConfigRightPanel/Basic.vue:54
+#: src/views/config/configColumns.tsx:34
 #: src/views/environments/group/columns.ts:35
 #: src/views/environments/list/envColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:38
 #: src/views/site/site_list/columns.tsx:94
 #: src/views/stream/columns.tsx:62
-#: src/views/stream/components/RightPanel/Basic.vue:76
+#: src/views/stream/components/RightPanel/Basic.vue:34
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
 msgstr ""
@@ -4980,7 +4978,7 @@ msgstr ""
 msgid "Upstream"
 msgstr ""
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:184
+#: src/components/NgxConfigEditor/NgxUpstream.vue:194
 msgid "Upstream Name"
 msgstr ""
 
@@ -5004,7 +5002,7 @@ msgstr ""
 msgid "Use Temporary Path"
 msgstr ""
 
-#: src/components/ChatGPT/ChatGPT.vue:333
+#: src/components/ChatGPT/ChatMessage.vue:187
 msgid "User"
 msgstr ""
 
@@ -5087,7 +5085,7 @@ msgstr ""
 
 #: src/constants/index.ts:23
 #: src/views/backup/components/BackupCreator.vue:138
-#: src/views/config/InspectConfig.vue:33
+#: src/views/config/InspectConfig.vue:38
 #: src/views/notification/notificationColumns.tsx:21
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:82
 msgid "Warning"
@@ -5135,7 +5133,7 @@ msgid "When Enabled, Nginx UI will automatically re-register users upon startup.
 msgstr ""
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:61
-#: src/views/stream/components/RightPanel/Basic.vue:98
+#: src/views/stream/components/RightPanel/Basic.vue:56
 msgid "When you enable/disable, delete, or save this site, the nodes set in the Node Group and the nodes selected below will be synchronized."
 msgstr ""
 

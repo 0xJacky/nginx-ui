@@ -14,8 +14,6 @@ import InspectConfig from '@/views/config/InspectConfig.vue'
 const route = useRoute()
 const router = useRouter()
 
-// eslint-disable-next-line vue/require-typed-ref
-const refForm = ref()
 const origName = ref('')
 const addMode = computed(() => !route.params.name)
 const showHistory = ref(false)
@@ -58,7 +56,6 @@ const inspectConfigRef = useTemplateRef<InstanceType<typeof InspectConfig>>('ins
 // Expose data for right panel
 defineExpose({
   data,
-  refForm,
   addMode,
   newPath,
   modifiedAt,
@@ -184,37 +181,35 @@ onMounted(async () => {
 })
 
 function save() {
-  refForm.value?.validate().then(() => {
-    const payload = {
-      name: addMode.value ? data.value.name : undefined,
-      base_dir: addMode.value ? basePath.value : undefined,
-      content: data.value.content,
-      sync_node_ids: data.value.sync_node_ids,
-      sync_overwrite: data.value.sync_overwrite,
+  const payload = {
+    name: addMode.value ? data.value.name : undefined,
+    base_dir: addMode.value ? basePath.value : undefined,
+    content: data.value.content,
+    sync_node_ids: data.value.sync_node_ids,
+    sync_overwrite: data.value.sync_overwrite,
+  }
+
+  const api = addMode.value
+    ? config.createItem(payload)
+    : config.updateItem(relativePath.value, payload)
+
+  api.then(r => {
+    data.value.content = r.content
+    message.success($gettext('Saved successfully'))
+
+    if (addMode.value) {
+      router.push({
+        path: `/config/${data.value.name}/edit`,
+        query: {
+          basePath: basePath.value,
+        },
+      })
     }
-
-    const api = addMode.value
-      ? config.createItem(payload)
-      : config.updateItem(relativePath.value, payload)
-
-    api.then(r => {
-      data.value.content = r.content
-      message.success($gettext('Saved successfully'))
-
-      if (addMode.value) {
-        router.push({
-          path: `/config/${data.value.name}/edit`,
-          query: {
-            basePath: basePath.value,
-          },
-        })
-      }
-      else {
-        data.value = r
-        // Run test after saving to verify configuration
-        inspectConfigRef.value?.test()
-      }
-    })
+    else {
+      data.value = r
+      // Run test after saving to verify configuration
+      inspectConfigRef.value?.test()
+    }
   })
 }
 
