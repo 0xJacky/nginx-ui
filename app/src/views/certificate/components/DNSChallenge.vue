@@ -2,30 +2,22 @@
 import type { SelectProps } from 'ant-design-vue'
 import type { Ref } from 'vue'
 import type { DNSProvider } from '@/api/auto_cert'
+import type { DnsCredential } from '@/api/dns_credential'
 import auto_cert from '@/api/auto_cert'
 
 const providers = ref([]) as Ref<DNSProvider[]>
 
 // This data is provided by the Top StdCurd component,
 // is the object that you are trying to modify it
-const data = inject('data') as DNSProvider
+const data = defineModel<DnsCredential>('data', { default: reactive({}) })
 
-const code = computed(() => {
-  return data.code
-})
-
-const providerIdx = ref<number>()
-function init() {
-  if (!data.configuration) {
-    data.configuration = {
+async function init() {
+  if (!data.value.configuration) {
+    data.value.configuration = {
       credentials: {},
       additional: {},
     }
   }
-  providers.value?.forEach((v: { code?: string }, k: number) => {
-    if (v?.code === code.value)
-      providerIdx.value = k
-  })
 }
 
 auto_cert.get_dns_providers().then(r => {
@@ -35,31 +27,25 @@ auto_cert.get_dns_providers().then(r => {
 })
 
 const current = computed(() => {
-  return providers.value?.[providerIdx.value || -1]
+  return providers.value?.find(v => v.code === data.value.code)
 })
-
-watch(code, init)
 
 watch(current, () => {
-  data.code = current.value.code
-  data.provider = current.value.name
+  if (current.value) {
+    data.value.code = current.value.code!
+    data.value.provider = current.value.name!
 
-  auto_cert.get_dns_provider(current.value.code!).then(r => {
-    Object.assign(current.value, r)
-  })
-})
+    auto_cert.get_dns_provider(data.value.code).then(r => {
+      Object.assign(current.value!, r)
+    })
+  }
+}, { immediate: true })
 
 const options = computed<SelectProps['options']>(() => {
-  const list: SelectProps['options'] = []
-
-  providers.value.forEach((v: DNSProvider, k: number) => {
-    list!.push({
-      value: k,
-      label: v.name,
-    })
-  })
-
-  return list
+  return providers.value.map(v => ({
+    value: v.code,
+    label: v.name,
+  }))
 })
 
 function filterOption(input: string, option: { label: string }) {
@@ -71,7 +57,7 @@ function filterOption(input: string, option: { label: string }) {
   <AForm layout="vertical">
     <AFormItem :label="$gettext('DNS Provider')">
       <ASelect
-        v-model:value="providerIdx"
+        v-model:value="data.code"
         show-search
         :options="options"
         :filter-option="filterOption"

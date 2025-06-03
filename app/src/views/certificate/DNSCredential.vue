@@ -1,5 +1,6 @@
 <script setup lang="tsx">
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
+import type { DnsCredential } from '@/api/dns_credential'
 import { datetimeRender, StdCurd } from '@uozi-admin/curd'
 import dns_credential from '@/api/dns_credential'
 import DNSChallenge from './components/DNSChallenge.vue'
@@ -20,6 +21,19 @@ const columns: StdTableColumn[] = [{
   },
   sorter: true,
   pure: true,
+}, {
+  title: () => $gettext('Configuration'),
+  dataIndex: 'code',
+  edit: {
+    type: (formData: DnsCredential) => {
+      return <DNSChallenge v-model:data={formData} />
+    },
+    formItem: {
+      hiddenLabelInEdit: true,
+    },
+  },
+  hiddenInTable: true,
+  hiddenInDetail: true,
 }, {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
@@ -62,9 +76,6 @@ const columns: StdTableColumn[] = [{
           </p>
         </template>
       </AAlert>
-    </template>
-    <template #edit>
-      <DNSChallenge />
     </template>
   </StdCurd>
 </template>

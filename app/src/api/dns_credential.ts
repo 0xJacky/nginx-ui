@@ -7,14 +7,7 @@ export interface DnsCredential extends ModelBase {
   config?: DNSProvider
   provider: string
   code: string
-  configuration: {
-    credentials: {
-      [key: string]: string
-    }
-    additional: {
-      [key: string]: string
-    }
-  }
+  configuration: DNSProvider['configuration']
 }
 
 const baseUrl = '/dns_credentials'
