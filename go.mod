@@ -4,7 +4,7 @@ go 1.24.3
 
 require (
 	code.pfad.fr/risefront v1.0.0
-	github.com/0xJacky/pofile v1.0.0
+	github.com/0xJacky/pofile v1.1.0
 	github.com/BurntSushi/toml v1.5.0
 	github.com/aws/aws-sdk-go-v2 v1.36.3
 	github.com/aws/aws-sdk-go-v2/config v1.29.14
@@ -51,7 +51,7 @@ require (
 	golang.org/x/crypto v0.38.0
 	golang.org/x/net v0.40.0
 	gopkg.in/ini.v1 v1.67.0
-	gorm.io/driver/sqlite v1.5.7
+	gorm.io/driver/sqlite v1.6.0
 	gorm.io/gen v0.3.27
 	gorm.io/gorm v1.30.0
 	gorm.io/plugin/dbresolver v1.6.0
@@ -100,15 +100,15 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.30.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.33.19 // indirect
 	github.com/aws/smithy-go v1.22.3 // indirect
-	github.com/baidubce/bce-sdk-go v0.9.228 // indirect
+	github.com/baidubce/bce-sdk-go v0.9.229 // indirect
 	github.com/blinkbean/dingtalk v1.1.3 // indirect
 	github.com/boombuler/barcode v1.0.2 // indirect
 	github.com/bsm/redislock v0.9.4 // indirect
-	github.com/bytedance/sonic v1.13.2 // indirect
+	github.com/bytedance/sonic v1.13.3 // indirect
 	github.com/bytedance/sonic/loader v0.2.4 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/civo/civogo v0.5.3 // indirect
+	github.com/civo/civogo v0.5.4 // indirect
 	github.com/cloudwego/base64x v0.1.5 // indirect
 	github.com/containerd/errdefs v1.0.0 // indirect
 	github.com/containerd/errdefs/pkg v0.3.0 // indirect
@@ -121,7 +121,7 @@ require (
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/ebitengine/purego v0.9.0-alpha.6 // indirect
-	github.com/exoscale/egoscale/v3 v3.1.18 // indirect
+	github.com/exoscale/egoscale/v3 v3.1.20 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
@@ -131,7 +131,7 @@ require (
 	github.com/go-errors/errors v1.5.1 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.0 // indirect
 	github.com/go-lark/lark v1.16.0 // indirect
-	github.com/go-logr/logr v1.4.2 // indirect
+	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
@@ -180,7 +180,7 @@ require (
 	github.com/libdns/huaweicloud v1.0.0-beta.2 // indirect
 	github.com/libdns/libdns v1.1.0 // indirect
 	github.com/libdns/tencentcloud v1.4.1 // indirect
-	github.com/linode/linodego v1.51.0 // indirect
+	github.com/linode/linodego v1.52.1 // indirect
 	github.com/liquidweb/liquidweb-cli v0.7.0 // indirect
 	github.com/liquidweb/liquidweb-go v1.6.4 // indirect
 	github.com/lufia/plan9stats v0.0.0-20250317134145-8bc96cf8fc35 // indirect
@@ -219,7 +219,7 @@ require (
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
-	github.com/redis/go-redis/v9 v9.8.0 // indirect
+	github.com/redis/go-redis/v9 v9.9.0 // indirect
 	github.com/regfish/regfish-dnsapi-go v0.1.1 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/sagikazarmark/locafero v0.9.0 // indirect
@@ -245,12 +245,12 @@ require (
 	github.com/tklauser/numcpus v0.10.0 // indirect
 	github.com/transip/gotransip/v6 v6.26.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
-	github.com/ugorji/go/codec v1.2.12 // indirect
+	github.com/ugorji/go/codec v1.2.14 // indirect
 	github.com/ultradns/ultradns-go-sdk v1.8.0-20241010134910-243eeec // indirect
 	github.com/uozi-tech/cosy-driver-mysql v0.2.2 // indirect
 	github.com/uozi-tech/cosy-driver-postgres v0.2.1 // indirect
 	github.com/vinyldns/go-vinyldns v0.9.16 // indirect
-	github.com/volcengine/volc-sdk-golang v1.0.209 // indirect
+	github.com/volcengine/volc-sdk-golang v1.0.210 // indirect
 	github.com/vultr/govultr/v3 v3.20.0 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	github.com/yosida95/uritemplate/v3 v3.0.2 // indirect
@@ -272,10 +272,10 @@ require (
 	golang.org/x/text v0.25.0 // indirect
 	golang.org/x/time v0.11.0 // indirect
 	golang.org/x/tools v0.33.0 // indirect
-	google.golang.org/api v0.234.0 // indirect
+	google.golang.org/api v0.236.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250505200425-f936aa4a68b2 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250519155744-55703ea1f237 // indirect
-	google.golang.org/grpc v1.72.1 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250603155806-513f23925822 // indirect
+	google.golang.org/grpc v1.72.2 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
@@ -284,7 +284,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/datatypes v1.2.5 // indirect
-	gorm.io/driver/mysql v1.5.7 // indirect
+	gorm.io/driver/mysql v1.6.0 // indirect
 	gorm.io/driver/postgres v1.5.9 // indirect
 	gorm.io/hints v1.1.2 // indirect
 	k8s.io/api v0.33.1 // indirect
