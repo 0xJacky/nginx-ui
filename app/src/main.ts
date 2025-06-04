@@ -1,6 +1,6 @@
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 import { createCurdConfig } from '@uozi-admin/curd'
-import { setRequestConfig } from '@uozi-admin/request'
+import { createRequestConfig } from '@uozi-admin/request'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { createApp } from 'vue'
@@ -25,7 +25,7 @@ function setupTranslations() {
   }, {})
 }
 
-setRequestConfig({
+createRequestConfig({
   baseURL: './api',
 })
 

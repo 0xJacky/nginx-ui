@@ -79,7 +79,6 @@ declare module 'vue' {
     ChatGPTChatMessageInput: typeof import('./src/components/ChatGPT/ChatMessageInput.vue')['default']
     ChatGPTChatMessageList: typeof import('./src/components/ChatGPT/ChatMessageList.vue')['default']
     CodeEditorCodeEditor: typeof import('./src/components/CodeEditor/CodeEditor.vue')['default']
-    CommonEditorCommonEditor: typeof import('./src/components/CommonEditor/CommonEditor.vue')['default']
     ConfigHistoryConfigHistory: typeof import('./src/components/ConfigHistory/ConfigHistory.vue')['default']
     ConfigHistoryDiffViewer: typeof import('./src/components/ConfigHistory/DiffViewer.vue')['default']
     EnvGroupTabsEnvGroupTabs: typeof import('./src/components/EnvGroupTabs/EnvGroupTabs.vue')['default']
