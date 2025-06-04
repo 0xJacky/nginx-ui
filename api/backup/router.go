@@ -1,12 +1,13 @@
 package backup
 
 import (
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func InitRouter(r *gin.RouterGroup) {
 	r.GET("/backup", CreateBackup)
-	r.POST("/restore", RestoreBackup)
+	r.POST("/restore", middleware.EncryptedForm(), RestoreBackup)
 }
 
 func InitAutoBackupRouter(r *gin.RouterGroup) {
