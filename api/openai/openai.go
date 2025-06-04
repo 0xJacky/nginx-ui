@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/llm"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
@@ -46,10 +47,7 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	}
 
 	// SSE server
-	c.Writer.Header().Set("Content-Type", "text/event-stream; charset=utf-8")
-	c.Writer.Header().Set("Cache-Control", "no-cache")
-	c.Writer.Header().Set("Connection", "keep-alive")
-	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	api.SetSSEHeaders(c)
 
 	openaiClient, err := llm.GetClient()
 	if err != nil {
