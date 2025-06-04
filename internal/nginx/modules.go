@@ -1,6 +1,7 @@
 package nginx
 
 import (
+	"fmt"
 	"os"
 	"regexp"
 	"strings"
@@ -97,24 +98,112 @@ func updateDynamicModulesStatus() {
 		return
 	}
 
-	// Regular expression to find loaded dynamic modules in nginx -T output
-	// Look for lines like "load_module modules/ngx_http_image_filter_module.so;"
-	loadModuleRe := regexp.MustCompile(`load_module\s+(?:modules/|/.*/)([a-zA-Z0-9_-]+)\.so;`)
+	// Use the shared regex function to find loaded dynamic modules
+	loadModuleRe := GetLoadModuleRegex()
 	matches := loadModuleRe.FindAllStringSubmatch(out, -1)
 
 	for _, match := range matches {
 		if len(match) > 1 {
-			// Extract the module name without path and suffix
-			moduleName := match[1]
-			// Some normalization to match format in GetModules
-			moduleName = strings.TrimPrefix(moduleName, "ngx_")
-			moduleName = strings.TrimSuffix(moduleName, "_module")
-			module, ok := modulesCache.Get(moduleName)
+			// Extract the module name from load_module statement and normalize it
+			loadModuleName := match[1]
+			normalizedName := normalizeModuleNameFromLoadModule(loadModuleName)
+
+			// Try to find the module in our cache using the normalized name
+			module, ok := modulesCache.Get(normalizedName)
 			if ok {
 				module.Loaded = true
 			}
 		}
 	}
+}
+
+// GetLoadModuleRegex returns a compiled regular expression to match nginx load_module statements.
+// It matches both quoted and unquoted module paths:
+//   - load_module "/usr/local/nginx/modules/ngx_stream_module.so";
+//   - load_module modules/ngx_http_upstream_fair_module.so;
+//
+// The regex captures the module name (without path and extension).
+func GetLoadModuleRegex() *regexp.Regexp {
+	// Pattern explanation:
+	// load_module\s+ - matches "load_module" followed by whitespace
+	// "? - optional opening quote
+	// (?:[^"\s]+/)? - non-capturing group for optional path (any non-quote, non-space chars ending with /)
+	// ([a-zA-Z0-9_-]+) - capturing group for module name
+	// \.so - matches ".so" extension
+	// "? - optional closing quote
+	// \s*; - optional whitespace followed by semicolon
+	return regexp.MustCompile(`load_module\s+"?(?:[^"\s]+/)?([a-zA-Z0-9_-]+)\.so"?\s*;`)
+}
+
+// normalizeModuleNameFromLoadModule converts a module name from load_module statement
+// to match the format used in configure arguments.
+// Examples:
+//   - "ngx_stream_module" -> "stream"
+//   - "ngx_http_geoip_module" -> "http_geoip"
+//   - "ngx_stream_geoip_module" -> "stream_geoip"
+//   - "ngx_http_image_filter_module" -> "http_image_filter"
+func normalizeModuleNameFromLoadModule(moduleName string) string {
+	// Remove "ngx_" prefix if present
+	normalized := strings.TrimPrefix(moduleName, "ngx_")
+
+	// Remove "_module" suffix if present
+	normalized = strings.TrimSuffix(normalized, "_module")
+
+	return normalized
+}
+
+// normalizeModuleNameFromConfigure converts a module name from configure arguments
+// to a consistent format for internal use.
+// Examples:
+//   - "stream" -> "stream"
+//   - "http_geoip_module" -> "http_geoip"
+//   - "http_image_filter_module" -> "http_image_filter"
+func normalizeModuleNameFromConfigure(moduleName string) string {
+	// Remove "_module" suffix if present to keep consistent format
+	normalized := strings.TrimSuffix(moduleName, "_module")
+
+	return normalized
+}
+
+// getExpectedLoadModuleName converts a configure argument module name
+// to the expected load_module statement module name.
+// Examples:
+//   - "stream" -> "ngx_stream_module"
+//   - "http_geoip" -> "ngx_http_geoip_module"
+//   - "stream_geoip" -> "ngx_stream_geoip_module"
+func getExpectedLoadModuleName(configureModuleName string) string {
+	normalized := normalizeModuleNameFromConfigure(configureModuleName)
+	return "ngx_" + normalized + "_module"
+}
+
+// GetModuleMapping returns a map showing the relationship between different module name formats.
+// This is useful for debugging and understanding how module names are processed.
+// Returns a map with normalized names as keys and mapping info as values.
+func GetModuleMapping() map[string]map[string]string {
+	modules := GetModules()
+	mapping := make(map[string]map[string]string)
+
+	modulesCacheLock.RLock()
+	defer modulesCacheLock.RUnlock()
+
+	// Use AllFromFront() to iterate through the ordered map
+	for normalizedName, module := range modules.AllFromFront() {
+		if module == nil {
+			continue
+		}
+
+		expectedLoadName := getExpectedLoadModuleName(normalizedName)
+
+		mapping[normalizedName] = map[string]string{
+			"normalized":           normalizedName,
+			"expected_load_module": expectedLoadName,
+			"dynamic":              fmt.Sprintf("%t", module.Dynamic),
+			"loaded":               fmt.Sprintf("%t", module.Loaded),
+			"params":               module.Params,
+		}
+	}
+
+	return mapping
 }
 
 func GetModules() *orderedmap.OrderedMap[string, *Module] {
@@ -165,6 +254,9 @@ func GetModules() *orderedmap.OrderedMap[string, *Module] {
 				continue
 			}
 
+			// Normalize the module name for consistent internal representation
+			normalizedModuleName := normalizeModuleNameFromConfigure(module)
+
 			// Determine if the module is dynamic
 			isDynamic := false
 			if strings.Contains(out, "--with-"+module+"=dynamic") ||
@@ -176,8 +268,8 @@ func GetModules() *orderedmap.OrderedMap[string, *Module] {
 				params = ""
 			}
 
-			modulesCache.Set(module, &Module{
-				Name:    module,
+			modulesCache.Set(normalizedModuleName, &Module{
+				Name:    normalizedModuleName,
 				Params:  params,
 				Dynamic: isDynamic,
 				Loaded:  !isDynamic, // Static modules are always loaded
