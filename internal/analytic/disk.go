@@ -2,64 +2,12 @@ package analytic
 
 import (
 	"fmt"
-	"math"
 
 	"github.com/dustin/go-humanize"
 	"github.com/pkg/errors"
 	"github.com/shirou/gopsutil/v4/disk"
-	"github.com/shirou/gopsutil/v4/mem"
 	"github.com/spf13/cast"
 )
-
-type MemStat struct {
-	Total       string  `json:"total"`
-	Used        string  `json:"used"`
-	Cached      string  `json:"cached"`
-	Free        string  `json:"free"`
-	SwapUsed    string  `json:"swap_used"`
-	SwapTotal   string  `json:"swap_total"`
-	SwapCached  string  `json:"swap_cached"`
-	SwapPercent float64 `json:"swap_percent"`
-	Pressure    float64 `json:"pressure"`
-}
-
-type PartitionStat struct {
-	Mountpoint string  `json:"mountpoint"`
-	Device     string  `json:"device"`
-	Fstype     string  `json:"fstype"`
-	Total      string  `json:"total"`
-	Used       string  `json:"used"`
-	Free       string  `json:"free"`
-	Percentage float64 `json:"percentage"`
-}
-
-type DiskStat struct {
-	Total      string          `json:"total"`
-	Used       string          `json:"used"`
-	Percentage float64         `json:"percentage"`
-	Writes     Usage[uint64]   `json:"writes"`
-	Reads      Usage[uint64]   `json:"reads"`
-	Partitions []PartitionStat `json:"partitions"`
-}
-
-func GetMemoryStat() (MemStat, error) {
-	memoryStat, err := mem.VirtualMemory()
-	if err != nil {
-		return MemStat{}, errors.Wrap(err, "error analytic getMemoryStat")
-	}
-	return MemStat{
-		Total:      humanize.Bytes(memoryStat.Total),
-		Used:       humanize.Bytes(memoryStat.Used),
-		Cached:     humanize.Bytes(memoryStat.Cached),
-		Free:       humanize.Bytes(memoryStat.Free),
-		SwapUsed:   humanize.Bytes(memoryStat.SwapTotal - memoryStat.SwapFree),
-		SwapTotal:  humanize.Bytes(memoryStat.SwapTotal),
-		SwapCached: humanize.Bytes(memoryStat.SwapCached),
-		SwapPercent: cast.ToFloat64(fmt.Sprintf("%.2f",
-			100*float64(memoryStat.SwapTotal-memoryStat.SwapFree)/math.Max(float64(memoryStat.SwapTotal), 1))),
-		Pressure: cast.ToFloat64(fmt.Sprintf("%.2f", memoryStat.UsedPercent)),
-	}, nil
-}
 
 func GetDiskStat() (DiskStat, error) {
 	// Get all partitions
@@ -71,6 +19,8 @@ func GetDiskStat() (DiskStat, error) {
 	var totalSize uint64
 	var totalUsed uint64
 	var partitionStats []PartitionStat
+	// Track partitions to avoid double counting same partition with multiple mount points
+	partitionUsage := make(map[string]*disk.UsageStat)
 
 	// Get usage for each partition
 	for _, partition := range partitions {
@@ -85,6 +35,7 @@ func GetDiskStat() (DiskStat, error) {
 			continue
 		}
 
+		// Create partition stat for display purposes
 		partitionStat := PartitionStat{
 			Mountpoint: partition.Mountpoint,
 			Device:     partition.Device,
@@ -94,10 +45,15 @@ func GetDiskStat() (DiskStat, error) {
 			Free:       humanize.Bytes(usage.Free),
 			Percentage: cast.ToFloat64(fmt.Sprintf("%.2f", usage.UsedPercent)),
 		}
-
 		partitionStats = append(partitionStats, partitionStat)
-		totalSize += usage.Total
-		totalUsed += usage.Used
+
+		// Only count each partition device once for total calculation
+		// This handles cases where same partition is mounted multiple times (e.g., bind mounts, overlayfs)
+		if _, exists := partitionUsage[partition.Device]; !exists {
+			partitionUsage[partition.Device] = usage
+			totalSize += usage.Total
+			totalUsed += usage.Used
+		}
 	}
 
 	// Calculate overall percentage
