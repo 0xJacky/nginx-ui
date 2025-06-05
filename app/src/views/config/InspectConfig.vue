@@ -36,6 +36,7 @@ defineExpose({
     <AAlert
       v-else-if="data?.level === logLevel.Warn"
       :message="$gettext('Warning')"
+      :banner
       type="warning"
       show-icon
     >
@@ -47,6 +48,7 @@ defineExpose({
     <AAlert
       v-else-if="data?.level > logLevel.Warn"
       :message="$gettext('Error')"
+      :banner
       type="error"
       show-icon
     >
@@ -64,5 +66,9 @@ defineExpose({
 
 :deep(.ant-alert-description) {
   white-space: pre-line;
+}
+
+:deep(.ant-alert-banner) {
+  padding: 8px 24px;
 }
 </style>

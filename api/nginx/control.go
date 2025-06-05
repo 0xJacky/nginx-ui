@@ -14,7 +14,11 @@ func Reload(c *gin.Context) {
 
 // TestConfig tests the nginx config
 func TestConfig(c *gin.Context) {
-	nginx.Control(nginx.TestConfig).Resp(c)
+	lastResult := nginx.Control(nginx.TestConfig)
+	c.JSON(http.StatusOK, gin.H{
+		"message": lastResult.GetOutput(),
+		"level":   lastResult.GetLevel(),
+	})
 }
 
 // Restart restarts the nginx
@@ -28,10 +32,6 @@ func Restart(c *gin.Context) {
 // Status returns the status of the nginx
 func Status(c *gin.Context) {
 	lastResult := nginx.GetLastResult()
-	if lastResult.IsError() {
-		lastResult.RespError(c)
-		return
-	}
 
 	running := nginx.IsRunning()
 
