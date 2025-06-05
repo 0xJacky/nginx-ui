@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -15,6 +16,7 @@ func Save(absPath string, content string, cfg *model.Config) (err error) {
 	if cfg == nil {
 		cfg, err = q.Assign(field.Attrs(&model.Config{
 			Filepath: absPath,
+			Name:     filepath.Base(absPath),
 		})).Where(q.Filepath.Eq(absPath)).FirstOrCreate()
 		if err != nil {
 			return
@@ -24,7 +26,7 @@ func Save(absPath string, content string, cfg *model.Config) (err error) {
 	if !helper.IsUnderDirectory(absPath, nginx.GetConfPath()) {
 		return ErrPathIsNotUnderTheNginxConfDir
 	}
-	
+
 	err = CheckAndCreateHistory(absPath, content)
 	if err != nil {
 		return
