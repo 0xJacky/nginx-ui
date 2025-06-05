@@ -184,7 +184,7 @@ msgstr "新增設定"
 msgid "Add Directive Below"
 msgstr "在下方新增指令"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:151
+#: src/views/certificate/components/DNSIssueCertificate.vue:153
 msgid "Add Domain"
 msgstr "添加域名"
 
@@ -235,7 +235,7 @@ msgstr "全部"
 msgid "All Recovery Codes Have Been Used"
 msgstr "所有恢復代碼已用完"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:156
+#: src/views/certificate/components/DNSIssueCertificate.vue:158
 msgid ""
 "All selected subdomains must belong to the same DNS Provider, otherwise the "
 "certificate application will fail."
@@ -415,7 +415,7 @@ msgstr "\"AutoCert 正在運行...\""
 msgid "Automatic Restart"
 msgstr "\"自動重啟\""
 
-#: src/views/certificate/CertificateEditor.vue:257
+#: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:112 src/views/config/ConfigList.vue:195
 #: src/views/nginx_log/NginxLog.vue:174
@@ -706,13 +706,13 @@ msgstr "憑證更新成功"
 msgid "Certificate revoked successfully"
 msgstr "證書撤銷成功"
 
-#: src/views/certificate/CertificateEditor.vue:126
+#: src/views/certificate/CertificateEditor.vue:125
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
 msgstr[0] "憑證狀態"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:104
+#: src/views/certificate/components/DNSIssueCertificate.vue:106
 msgid "Certificate Type"
 msgstr "證書類型"
 
@@ -724,6 +724,10 @@ msgstr "憑證"
 #: src/routes/modules/certificates.ts:28
 msgid "Certificates List"
 msgstr "憑證列表"
+
+#: src/constants/errors/cert.ts:17
+msgid "Challenge error: {0}"
+msgstr "驗證錯誤：{0}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:65
 msgid "Challenge Method"
@@ -1179,11 +1183,11 @@ msgstr "自訂 cron 表達式"
 msgid "Custom Directory"
 msgstr "自訂目錄"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:126
+#: src/views/certificate/components/DNSIssueCertificate.vue:128
 msgid "Custom Domains"
 msgstr "自訂網域"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:110
+#: src/views/certificate/components/DNSIssueCertificate.vue:112
 msgid "Custom Domains Certificate"
 msgstr "自訂網域證書"
 
@@ -1494,11 +1498,11 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "檔案"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:116
+#: src/views/certificate/components/DNSIssueCertificate.vue:118
 msgid "Domain"
 msgstr "網域"
 
-#: src/views/certificate/CertificateEditor.vue:110
+#: src/views/certificate/CertificateEditor.vue:109
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr "網域列表為空，請嘗試重新開啟 %{config} 的自動憑證"
 
@@ -1698,13 +1702,17 @@ msgstr "用 Let's Encrypt 對網站進行加密"
 msgid "End"
 msgstr "結束"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:135
+#: src/views/certificate/components/DNSIssueCertificate.vue:137
 msgid "Enter domain name"
 msgstr "輸入網域名稱"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:120
+#: src/views/certificate/components/DNSIssueCertificate.vue:122
 msgid "Enter your domain"
 msgstr "輸入您的域名"
+
+#: src/constants/errors/cert.ts:16
+msgid "Environment configuration is empty"
+msgstr "環境配置為空"
 
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
@@ -1716,7 +1724,7 @@ msgstr "環境變數已清理"
 msgid "Environments"
 msgstr "環境"
 
-#: src/constants/index.ts:22 src/views/config/InspectConfig.vue:49
+#: src/constants/index.ts:22 src/views/config/InspectConfig.vue:50
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr "錯誤"
@@ -2187,9 +2195,17 @@ msgstr "成功生成復原代碼"
 msgid "Generating private key for registering account"
 msgstr "產生註冊帳號的私鑰"
 
+#: src/constants/errors/cert.ts:9
+msgid "Get acme user error: {0}"
+msgstr "獲取 ACME 用戶錯誤: {0}"
+
 #: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Get data failed"
 msgstr "取得資料失敗"
+
+#: src/constants/errors/cert.ts:12
+msgid "Get dns credential error: {0}"
+msgstr "獲取 DNS 憑證錯誤：{0}"
 
 #: src/views/environments/list/BatchUpgrader.vue:177
 #: src/views/system/Upgrade.vue:188
@@ -2301,7 +2317,7 @@ msgid "Import"
 msgstr "匯入"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:83
+#: src/views/certificate/CertificateEditor.vue:82
 msgid "Import Certificate"
 msgstr "匯入憑證"
 
@@ -2445,7 +2461,7 @@ msgstr "IP"
 msgid "Issue certificate"
 msgstr "簽發證書"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:95
+#: src/views/certificate/components/DNSIssueCertificate.vue:97
 msgid "Issue Certificate"
 msgstr "簽發證書"
 
@@ -2528,8 +2544,8 @@ msgstr "留空表示不修改"
 msgid "Leave blank if you don't need this."
 msgstr "留空表示不需要此項目。"
 
-#: src/views/certificate/CertificateEditor.vue:221
-#: src/views/certificate/CertificateEditor.vue:235
+#: src/views/certificate/CertificateEditor.vue:220
+#: src/views/certificate/CertificateEditor.vue:234
 msgid "Leave blank will not change anything"
 msgstr "留空將不會改變任何內容"
 
@@ -2616,7 +2632,7 @@ msgstr "Location"
 msgid "Locations"
 msgstr "Locations"
 
-#: src/views/certificate/CertificateEditor.vue:245
+#: src/views/certificate/CertificateEditor.vue:244
 msgid "Log"
 msgstr "日誌"
 
@@ -2675,6 +2691,10 @@ msgstr "維護模式已成功停用"
 #: src/views/site/components/SiteStatusSelect.vue:80
 msgid "Maintenance mode enabled successfully"
 msgstr "維護模式已成功啟用"
+
+#: src/constants/errors/cert.ts:20
+msgid "Make certificate dir error: {0}"
+msgstr "建立憑證目錄錯誤：{0}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:52
 msgid ""
@@ -2823,7 +2843,7 @@ msgid "Modify"
 msgstr "修改"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:83
+#: src/views/certificate/CertificateEditor.vue:82
 msgid "Modify Certificate"
 msgstr "修改憑證"
 
@@ -2858,7 +2878,7 @@ msgstr "多行指令"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
-#: src/views/certificate/CertificateEditor.vue:160
+#: src/views/certificate/CertificateEditor.vue:159
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
@@ -2898,9 +2918,17 @@ msgstr "下載流量"
 msgid "Network Total Send"
 msgstr "上傳流量"
 
+#: src/constants/errors/cert.ts:15
+msgid "New dns challenge provider error: {0}"
+msgstr "新建DNS驗證提供程序錯誤：{0}"
+
 #: src/views/install/components/InstallView.vue:109
 msgid "New Installation"
 msgstr "新安裝"
+
+#: src/constants/errors/cert.ts:11
+msgid "New lego client error: {0}"
+msgstr "新建 lego 客戶端錯誤：{0}"
 
 #: src/views/config/components/Rename.vue:74
 msgid "New name"
@@ -2914,11 +2942,15 @@ msgstr "新密碼"
 msgid "New Path"
 msgstr "新路徑"
 
+#: src/constants/errors/cert.ts:10
+msgid "New transport error: {0}"
+msgstr "新建傳輸錯誤：{0}"
+
 #: src/views/system/Upgrade.vue:230
 msgid "New version released"
 msgstr "新版本發布"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:181
+#: src/views/certificate/components/DNSIssueCertificate.vue:183
 #: src/views/install/components/InstallView.vue:96
 #: src/views/site/site_add/SiteAdd.vue:132
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:214
@@ -3243,6 +3275,10 @@ msgstr "快取管理器每次處理的檔案數量"
 msgid "Number of worker processes"
 msgstr "worker 行程數"
 
+#: src/constants/errors/cert.ts:23
+msgid "Obtain cert error: {0}"
+msgstr "獲取證書錯誤：{0}"
+
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:185
 msgid "Obtain certificate"
 msgstr "取得憑證"
@@ -3493,7 +3529,7 @@ msgstr "請輸入您希望建立的通行金鑰名稱，並點選下面的確定
 msgid "Please enter a valid port range"
 msgstr "請輸入有效的端口範圍"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:74
+#: src/views/certificate/components/DNSIssueCertificate.vue:76
 msgid "Please enter at least one domain"
 msgstr "請輸入至少一個域名"
 
@@ -3674,6 +3710,10 @@ msgstr "專案團隊"
 msgid "Provider"
 msgstr "供應商"
 
+#: src/constants/errors/cert.ts:13
+msgid "Provider not found: {0}"
+msgstr "未找到提供者：{0}"
+
 #: src/views/certificate/ACMEUser.vue:48
 msgid "Proxy"
 msgstr "代理伺服器"
@@ -3822,7 +3862,7 @@ msgstr "重新載入中"
 msgid "Reloading nginx"
 msgstr "正在重新載入 Nginx"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:144
+#: src/views/certificate/components/DNSIssueCertificate.vue:146
 #: src/views/preference/tabs/AuthSettings.vue:137
 msgid "Remove"
 msgstr "移除"
@@ -3905,6 +3945,10 @@ msgstr "重新命名成功"
 msgid "Renamed successfully"
 msgstr "重新命名成功"
 
+#: src/constants/errors/cert.ts:19
+msgid "Renew cert error: {0}"
+msgstr "續簽證書錯誤：{0}"
+
 #: src/views/certificate/components/RenewCert.vue:48
 #: src/views/certificate/components/RenewCert.vue:55
 msgid "Renew Certificate"
@@ -3918,7 +3962,7 @@ msgstr "更新憑證錯誤"
 msgid "Renew Certificate Success"
 msgstr "更新憑證成功"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:84
+#: src/views/certificate/components/DNSIssueCertificate.vue:86
 #: src/views/certificate/components/RenewCert.vue:30
 msgid "Renew successfully"
 msgstr "更新成功"
@@ -4028,6 +4072,10 @@ msgstr "恢復成功"
 #: src/views/certificate/components/RemoveCert.vue:96
 msgid "Revoke"
 msgstr "撤銷"
+
+#: src/constants/errors/cert.ts:24
+msgid "Revoke cert error: {0}"
+msgstr "吊銷證書錯誤：{0}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:113
 msgid "Revoke Old Certificate"
@@ -4173,7 +4221,7 @@ msgstr "星期六"
 
 #: src/components/ChatGPT/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
-#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:264
+#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:263
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -4228,7 +4276,7 @@ msgstr "儲存串流 %{name} 至 %{node} 失敗"
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "串流 %{name} 成功儲存至 %{node}"
 
-#: src/language/curd.ts:35 src/views/certificate/store.ts:13
+#: src/language/curd.ts:35 src/views/certificate/store.ts:14
 #: src/views/preference/store/index.ts:118
 msgid "Save successfully"
 msgstr "儲存成功"
@@ -4336,7 +4384,7 @@ msgstr "傳送"
 msgid "Server"
 msgstr "伺服器"
 
-#: src/views/certificate/CertificateEditor.vue:55
+#: src/views/certificate/CertificateEditor.vue:54
 msgid "Server error"
 msgstr "伺服器錯誤"
 
@@ -4363,6 +4411,14 @@ msgstr "伺服器索引超出範圍"
 #: src/constants/errors/user.ts:12
 msgid "Session not found"
 msgstr "找不到工作階段"
+
+#: src/constants/errors/cert.ts:14
+msgid "Set env error: {0}"
+msgstr "設定環境錯誤：{0}"
+
+#: src/constants/errors/cert.ts:18
+msgid "Set env flag to disable lego CNAME support error: {0}"
+msgstr "設定環境標誌以停用 lego CNAME 支援錯誤：{0}"
 
 #: src/views/preference/tabs/CertSettings.vue:36
 msgid ""
@@ -4474,7 +4530,7 @@ msgstr "快取載入器迭代間的休眠時間"
 msgid "Sleep time between cache manager iterations"
 msgstr "快取管理器迭代間的休眠時間"
 
-#: src/views/certificate/CertificateEditor.vue:211
+#: src/views/certificate/CertificateEditor.vue:210
 msgid "SSL Certificate Content"
 msgstr "SSL 憑證內容"
 
@@ -4486,15 +4542,15 @@ msgstr "SSL 憑證檔案必須位於 Nginx 設定目錄下：{0}"
 msgid "SSL certificate file not found"
 msgstr "SSL 憑證檔案未找到"
 
-#: src/views/certificate/CertificateEditor.vue:225
+#: src/views/certificate/CertificateEditor.vue:224
 msgid "SSL Certificate Key Content"
 msgstr "SSL 憑證金鑰內容"
 
-#: src/views/certificate/CertificateEditor.vue:190
+#: src/views/certificate/CertificateEditor.vue:189
 msgid "SSL Certificate Key Path"
 msgstr "SSL 憑證金鑰路徑"
 
-#: src/views/certificate/CertificateEditor.vue:175
+#: src/views/certificate/CertificateEditor.vue:174
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "SSL 憑證路徑"
@@ -4725,7 +4781,7 @@ msgstr "同步節點"
 msgid "Sync strategy"
 msgstr "同步策略"
 
-#: src/views/certificate/CertificateEditor.vue:204
+#: src/views/certificate/CertificateEditor.vue:203
 msgid "Sync to"
 msgstr "同步到"
 
@@ -4796,11 +4852,11 @@ msgid ""
 "dashes, colons, and dots."
 msgstr "ICP 編號僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
 
-#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/CertificateEditor.vue:213
 msgid "The input is not a SSL Certificate"
 msgstr "輸入的不是 SSL 憑證"
 
-#: src/views/certificate/CertificateEditor.vue:228
+#: src/views/certificate/CertificateEditor.vue:227
 msgid "The input is not a SSL Certificate Key"
 msgstr "輸入的不是 SSL 憑證金鑰"
 
@@ -4831,11 +4887,11 @@ msgstr "節點名稱僅能包含字母、Unicode 字元、數字、連字號、�
 msgid "The parameter of server_name is required"
 msgstr "必須提供 server_name 參數"
 
-#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/CertificateEditor.vue:178
 msgid "The path exists, but the file is not a certificate"
 msgstr "路徑存在，但檔案不是憑證"
 
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/CertificateEditor.vue:193
 msgid "The path exists, but the file is not a private key"
 msgstr "路徑存在，但檔案不是金鑰"
 
@@ -4887,17 +4943,17 @@ msgid ""
 "lose access to your account."
 msgstr "這些代碼是您在遺失密碼和第二重驗證因素時，存取帳戶的最後手段。如果您找不到這些代碼，您將無法再存取您的帳戶。"
 
-#: src/views/certificate/CertificateEditor.vue:100
+#: src/views/certificate/CertificateEditor.vue:99
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "此自動憑證項目無效，請將其移除。"
 
-#: src/views/certificate/CertificateEditor.vue:90
+#: src/views/certificate/CertificateEditor.vue:89
 msgid "This certificate is managed by Nginx UI"
 msgstr "此憑證由 Nginx UI 管理"
 
-#: src/views/certificate/CertificateEditor.vue:163
-#: src/views/certificate/CertificateEditor.vue:177
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/CertificateEditor.vue:162
+#: src/views/certificate/CertificateEditor.vue:176
+#: src/views/certificate/CertificateEditor.vue:191
 msgid "This field is required"
 msgstr "此欄位為必填項"
 
@@ -5338,7 +5394,7 @@ msgstr "當您產生新的復原碼時，必須下載或列印新的代碼。"
 msgid "Whether to use a temporary path when writing temporary files"
 msgstr "寫入暫存檔案時是否使用暫存路徑"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:107
+#: src/views/certificate/components/DNSIssueCertificate.vue:109
 msgid "Wildcard Certificate"
 msgstr "萬用字元憑證"
 
@@ -5361,6 +5417,14 @@ msgstr "worker"
 #: src/views/workspace/WorkSpace.vue:52
 msgid "Workspace"
 msgstr "工作區"
+
+#: src/constants/errors/cert.ts:21
+msgid "Write fullchain.cer error: {0}"
+msgstr "寫入 fullchain.cer 錯誤：{0}"
+
+#: src/constants/errors/cert.ts:22
+msgid "Write private.key error: {0}"
+msgstr "寫入 private.key 錯誤：{0}"
 
 #: src/views/dashboard/ServerAnalytic.vue:37
 #: src/views/dashboard/ServerAnalytic.vue:373
@@ -5810,9 +5874,6 @@ msgstr "您的通行金鑰"
 
 #~ msgid "Do you want to change the template to support the TLS?"
 #~ msgstr "你想要改變範本以支援 TLS 嗎？"
-
-#~ msgid "Edit Configuration File"
-#~ msgstr "編輯設定檔案"
 
 #~ msgid "Getting Certificate from Let's Encrypt"
 #~ msgstr "從 Let's Encrypt 取得憑證"

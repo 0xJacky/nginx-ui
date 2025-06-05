@@ -181,7 +181,7 @@ msgstr "Yapılandırma Ekle"
 msgid "Add Directive Below"
 msgstr "Direktifi Aşağıya Ekleyin"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:151
+#: src/views/certificate/components/DNSIssueCertificate.vue:153
 msgid "Add Domain"
 msgstr "Alan Adı Ekle"
 
@@ -232,7 +232,7 @@ msgstr "Tümü"
 msgid "All Recovery Codes Have Been Used"
 msgstr "Tüm Kurtarma Kodları Kullanıldı"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:156
+#: src/views/certificate/components/DNSIssueCertificate.vue:158
 msgid ""
 "All selected subdomains must belong to the same DNS Provider, otherwise the "
 "certificate application will fail."
@@ -418,7 +418,7 @@ msgstr "\"AutoCert çalışıyor...\""
 msgid "Automatic Restart"
 msgstr "\"Otomatik Yeniden Başlatma\""
 
-#: src/views/certificate/CertificateEditor.vue:257
+#: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:112 src/views/config/ConfigList.vue:195
 #: src/views/nginx_log/NginxLog.vue:174
@@ -713,14 +713,14 @@ msgstr "Sertifika başarıyla yenilendi"
 msgid "Certificate revoked successfully"
 msgstr "Sertifika başarıyla iptal edildi"
 
-#: src/views/certificate/CertificateEditor.vue:126
+#: src/views/certificate/CertificateEditor.vue:125
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
 msgstr[0] "Sertifika Durumu"
 msgstr[1] "Sertifikaların Durumu"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:104
+#: src/views/certificate/components/DNSIssueCertificate.vue:106
 msgid "Certificate Type"
 msgstr "Sertifika Türü"
 
@@ -732,6 +732,10 @@ msgstr "Sertifikalar"
 #: src/routes/modules/certificates.ts:28
 msgid "Certificates List"
 msgstr "Sertifika Listesi"
+
+#: src/constants/errors/cert.ts:17
+msgid "Challenge error: {0}"
+msgstr "Sorgulama hatası: {0}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:65
 msgid "Challenge Method"
@@ -1215,11 +1219,11 @@ msgstr "Özel cron ifadesi"
 msgid "Custom Directory"
 msgstr "Özel Dizin"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:126
+#: src/views/certificate/components/DNSIssueCertificate.vue:128
 msgid "Custom Domains"
 msgstr "Özel Alan Adları"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:110
+#: src/views/certificate/components/DNSIssueCertificate.vue:112
 msgid "Custom Domains Certificate"
 msgstr "Özel Alan Adı Sertifikası"
 
@@ -1532,11 +1536,11 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "Belge"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:116
+#: src/views/certificate/components/DNSIssueCertificate.vue:118
 msgid "Domain"
 msgstr "Alan Adı"
 
-#: src/views/certificate/CertificateEditor.vue:110
+#: src/views/certificate/CertificateEditor.vue:109
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
 "Alan adları listesi boş, %{config} için Otomatik Sertifikayı yeniden açmayı "
@@ -1741,13 +1745,17 @@ msgstr "Let's Encrypt ile web sitesini şifreleyin"
 msgid "End"
 msgstr "Son"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:135
+#: src/views/certificate/components/DNSIssueCertificate.vue:137
 msgid "Enter domain name"
 msgstr "Alan adını girin"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:120
+#: src/views/certificate/components/DNSIssueCertificate.vue:122
 msgid "Enter your domain"
 msgstr "Alan adınızı girin"
+
+#: src/constants/errors/cert.ts:16
+msgid "Environment configuration is empty"
+msgstr "Ortam yapılandırması boş"
 
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
@@ -1759,7 +1767,7 @@ msgstr "Ortam değişkenleri temizlendi"
 msgid "Environments"
 msgstr "Ortamlar"
 
-#: src/constants/index.ts:22 src/views/config/InspectConfig.vue:49
+#: src/constants/index.ts:22 src/views/config/InspectConfig.vue:50
 #: src/views/notification/notificationColumns.tsx:14
 msgid "Error"
 msgstr "Hata"
@@ -2232,9 +2240,17 @@ msgstr "Kurtarma kodları başarıyla oluşturuldu"
 msgid "Generating private key for registering account"
 msgstr "Hesap kaydı için özel anahtar oluşturuluyor"
 
+#: src/constants/errors/cert.ts:9
+msgid "Get acme user error: {0}"
+msgstr "ACME kullanıcısı alınırken hata: {0}"
+
 #: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Get data failed"
 msgstr "Veri alınamadı"
+
+#: src/constants/errors/cert.ts:12
+msgid "Get dns credential error: {0}"
+msgstr "DNS kimlik bilgisi alınırken hata: {0}"
 
 #: src/views/environments/list/BatchUpgrader.vue:177
 #: src/views/system/Upgrade.vue:188
@@ -2355,7 +2371,7 @@ msgid "Import"
 msgstr "İçe Aktar"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:83
+#: src/views/certificate/CertificateEditor.vue:82
 msgid "Import Certificate"
 msgstr "Sertifika İçe Aktar"
 
@@ -2503,7 +2519,7 @@ msgstr "IP"
 msgid "Issue certificate"
 msgstr "Sertifika ver"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:95
+#: src/views/certificate/components/DNSIssueCertificate.vue:97
 msgid "Issue Certificate"
 msgstr "Sertifika Düzenle"
 
@@ -2588,8 +2604,8 @@ msgstr "Değiştirmek istemiyorsanız boş bırakın"
 msgid "Leave blank if you don't need this."
 msgstr "Buna ihtiyacınız yoksa boş bırakın."
 
-#: src/views/certificate/CertificateEditor.vue:221
-#: src/views/certificate/CertificateEditor.vue:235
+#: src/views/certificate/CertificateEditor.vue:220
+#: src/views/certificate/CertificateEditor.vue:234
 msgid "Leave blank will not change anything"
 msgstr "Boş bırakmak hiçbir şeyi değiştirmeyecektir"
 
@@ -2676,7 +2692,7 @@ msgstr "Konum"
 msgid "Locations"
 msgstr "Konumlar"
 
-#: src/views/certificate/CertificateEditor.vue:245
+#: src/views/certificate/CertificateEditor.vue:244
 msgid "Log"
 msgstr "Günlük"
 
@@ -2739,6 +2755,10 @@ msgstr "Bakım modu başarıyla devre dışı bırakıldı"
 #: src/views/site/components/SiteStatusSelect.vue:80
 msgid "Maintenance mode enabled successfully"
 msgstr "Bakım modu başarıyla etkinleştirildi"
+
+#: src/constants/errors/cert.ts:20
+msgid "Make certificate dir error: {0}"
+msgstr "Sertifika dizini oluşturma hatası: {0}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:52
 msgid ""
@@ -2889,7 +2909,7 @@ msgid "Modify"
 msgstr "Değiştir"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:83
+#: src/views/certificate/CertificateEditor.vue:82
 msgid "Modify Certificate"
 msgstr "Sertifikayı Düzenle"
 
@@ -2924,7 +2944,7 @@ msgstr "Çok Satırlı Yönergeler"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
-#: src/views/certificate/CertificateEditor.vue:160
+#: src/views/certificate/CertificateEditor.vue:159
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
@@ -2964,9 +2984,17 @@ msgstr "Toplam Ağ Alımı"
 msgid "Network Total Send"
 msgstr "Toplam Ağ Gönderimi"
 
+#: src/constants/errors/cert.ts:15
+msgid "New dns challenge provider error: {0}"
+msgstr "Yeni DNS sorgulama sağlayıcı hatası: {0}"
+
 #: src/views/install/components/InstallView.vue:109
 msgid "New Installation"
 msgstr "Yeni Kurulum"
+
+#: src/constants/errors/cert.ts:11
+msgid "New lego client error: {0}"
+msgstr "Yeni lego istemci hatası: {0}"
 
 #: src/views/config/components/Rename.vue:74
 msgid "New name"
@@ -2980,11 +3008,15 @@ msgstr "Yeni Şifre"
 msgid "New Path"
 msgstr "Yeni Yol"
 
+#: src/constants/errors/cert.ts:10
+msgid "New transport error: {0}"
+msgstr "Yeni taşıma hatası: {0}"
+
 #: src/views/system/Upgrade.vue:230
 msgid "New version released"
 msgstr "Yeni sürüm yayınlandı"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:181
+#: src/views/certificate/components/DNSIssueCertificate.vue:183
 #: src/views/install/components/InstallView.vue:96
 #: src/views/site/site_add/SiteAdd.vue:132
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:214
@@ -3315,6 +3347,10 @@ msgstr "Önbellek yöneticisi tarafından bir seferde işlenen dosya sayısı"
 msgid "Number of worker processes"
 msgstr "Çalışan işlem sayısı"
 
+#: src/constants/errors/cert.ts:23
+msgid "Obtain cert error: {0}"
+msgstr "Sertifika alma hatası: {0}"
+
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:185
 msgid "Obtain certificate"
 msgstr "Sertifika al"
@@ -3572,7 +3608,7 @@ msgstr ""
 msgid "Please enter a valid port range"
 msgstr "Lütfen geçerli bir port aralığı girin"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:74
+#: src/views/certificate/components/DNSIssueCertificate.vue:76
 msgid "Please enter at least one domain"
 msgstr "Lütfen en az bir alan adı girin"
 
@@ -3766,6 +3802,10 @@ msgstr "Proje Ekibi"
 msgid "Provider"
 msgstr "Sağlayıcı"
 
+#: src/constants/errors/cert.ts:13
+msgid "Provider not found: {0}"
+msgstr "Sağlayıcı bulunamadı: {0}"
+
 #: src/views/certificate/ACMEUser.vue:48
 msgid "Proxy"
 msgstr "Proxy"
@@ -3918,7 +3958,7 @@ msgstr "Yeniden Yükleniyor"
 msgid "Reloading nginx"
 msgstr "nginx yeniden yükleniyor"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:144
+#: src/views/certificate/components/DNSIssueCertificate.vue:146
 #: src/views/preference/tabs/AuthSettings.vue:137
 msgid "Remove"
 msgstr "Kaldır"
@@ -4011,6 +4051,10 @@ msgstr "Başarıyla yeniden adlandırıldı"
 msgid "Renamed successfully"
 msgstr "Başarıyla yeniden adlandırıldı"
 
+#: src/constants/errors/cert.ts:19
+msgid "Renew cert error: {0}"
+msgstr "Sertifika yenileme hatası: {0}"
+
 #: src/views/certificate/components/RenewCert.vue:48
 #: src/views/certificate/components/RenewCert.vue:55
 msgid "Renew Certificate"
@@ -4024,7 +4068,7 @@ msgstr "Sertifika Yenileme Hatası"
 msgid "Renew Certificate Success"
 msgstr "Sertifika Yenileme Başarılı"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:84
+#: src/views/certificate/components/DNSIssueCertificate.vue:86
 #: src/views/certificate/components/RenewCert.vue:30
 msgid "Renew successfully"
 msgstr "Başarıyla yenilendi"
@@ -4136,6 +4180,10 @@ msgstr "Başarıyla geri yüklendi"
 #: src/views/certificate/components/RemoveCert.vue:96
 msgid "Revoke"
 msgstr "İptal et"
+
+#: src/constants/errors/cert.ts:24
+msgid "Revoke cert error: {0}"
+msgstr "Sertifika iptal hatası: {0}"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:113
 msgid "Revoke Old Certificate"
@@ -4283,7 +4331,7 @@ msgstr "Cumartesi"
 
 #: src/components/ChatGPT/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
-#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:264
+#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:263
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -4338,7 +4386,7 @@ msgstr "Akış %{name}, %{node} üzerine kaydedilemedi"
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Akış %{name}, %{node} üzerine başarıyla kaydedildi"
 
-#: src/language/curd.ts:35 src/views/certificate/store.ts:13
+#: src/language/curd.ts:35 src/views/certificate/store.ts:14
 #: src/views/preference/store/index.ts:118
 msgid "Save successfully"
 msgstr "Başarıyla kaydedildi"
@@ -4446,7 +4494,7 @@ msgstr "Gönder"
 msgid "Server"
 msgstr "Sunucu"
 
-#: src/views/certificate/CertificateEditor.vue:55
+#: src/views/certificate/CertificateEditor.vue:54
 msgid "Server error"
 msgstr "Sunucu hatası"
 
@@ -4473,6 +4521,16 @@ msgstr "ServerIdx aralık dışında"
 #: src/constants/errors/user.ts:12
 msgid "Session not found"
 msgstr "Oturum bulunamadı"
+
+#: src/constants/errors/cert.ts:14
+msgid "Set env error: {0}"
+msgstr "Ortam ayarlama hatası: {0}"
+
+#: src/constants/errors/cert.ts:18
+msgid "Set env flag to disable lego CNAME support error: {0}"
+msgstr ""
+"Lego CNAME desteğini devre dışı bırakmak için ortam bayrağı ayarlama "
+"hatası: {0}"
 
 #: src/views/preference/tabs/CertSettings.vue:36
 msgid ""
@@ -4586,7 +4644,7 @@ msgstr "Önbellek yükleyici tekrarları arasındaki bekleme süresi"
 msgid "Sleep time between cache manager iterations"
 msgstr "Önbellek yöneticisi yinelemeleri arasındaki bekleme süresi"
 
-#: src/views/certificate/CertificateEditor.vue:211
+#: src/views/certificate/CertificateEditor.vue:210
 msgid "SSL Certificate Content"
 msgstr "SSL Sertifika İçeriği"
 
@@ -4598,15 +4656,15 @@ msgstr "SSL sertifika dosyası Nginx yapılandırma dizini altında olmalıdır:
 msgid "SSL certificate file not found"
 msgstr "SSL sertifika dosyası bulunamadı"
 
-#: src/views/certificate/CertificateEditor.vue:225
+#: src/views/certificate/CertificateEditor.vue:224
 msgid "SSL Certificate Key Content"
 msgstr "SSL Sertifika Anahtarı İçeriği"
 
-#: src/views/certificate/CertificateEditor.vue:190
+#: src/views/certificate/CertificateEditor.vue:189
 msgid "SSL Certificate Key Path"
 msgstr "SSL Sertifika Anahtar Yolu"
 
-#: src/views/certificate/CertificateEditor.vue:175
+#: src/views/certificate/CertificateEditor.vue:174
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "SSL Sertifika Yolu"
@@ -4845,7 +4903,7 @@ msgstr "Senkronizasyon Düğümleri"
 msgid "Sync strategy"
 msgstr "Senkronizasyon stratejisi"
 
-#: src/views/certificate/CertificateEditor.vue:204
+#: src/views/certificate/CertificateEditor.vue:203
 msgid "Sync to"
 msgstr "Senkronize Et"
 
@@ -4921,11 +4979,11 @@ msgstr ""
 "ICP Numarası yalnızca harfler, unicode, sayılar, kısa çizgiler, uzun "
 "çizgiler, iki nokta üst üste ve noktalar içermelidir."
 
-#: src/views/certificate/CertificateEditor.vue:214
+#: src/views/certificate/CertificateEditor.vue:213
 msgid "The input is not a SSL Certificate"
 msgstr "Girdi bir SSL Sertifikası değil"
 
-#: src/views/certificate/CertificateEditor.vue:228
+#: src/views/certificate/CertificateEditor.vue:227
 msgid "The input is not a SSL Certificate Key"
 msgstr "Girdi bir SSL Sertifika Anahtarı değil"
 
@@ -4964,11 +5022,11 @@ msgstr ""
 msgid "The parameter of server_name is required"
 msgstr "server_name parametresi gereklidir"
 
-#: src/views/certificate/CertificateEditor.vue:179
+#: src/views/certificate/CertificateEditor.vue:178
 msgid "The path exists, but the file is not a certificate"
 msgstr "Yol mevcut, ancak dosya bir sertifika değil"
 
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/CertificateEditor.vue:193
 msgid "The path exists, but the file is not a private key"
 msgstr "Yol mevcut, ancak dosya bir özel anahtar değil"
 
@@ -5030,17 +5088,17 @@ msgstr ""
 "hesabınıza erişmek için son çaredir. Bu kodları bulamazsanız, hesabınıza "
 "erişimi kaybedersiniz."
 
-#: src/views/certificate/CertificateEditor.vue:100
+#: src/views/certificate/CertificateEditor.vue:99
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Bu Otomatik Sertifika öğesi geçersiz, lütfen kaldırın."
 
-#: src/views/certificate/CertificateEditor.vue:90
+#: src/views/certificate/CertificateEditor.vue:89
 msgid "This certificate is managed by Nginx UI"
 msgstr "Bu sertifika Nginx UI tarafından yönetilmektedir"
 
-#: src/views/certificate/CertificateEditor.vue:163
-#: src/views/certificate/CertificateEditor.vue:177
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/CertificateEditor.vue:162
+#: src/views/certificate/CertificateEditor.vue:176
+#: src/views/certificate/CertificateEditor.vue:191
 msgid "This field is required"
 msgstr "Bu alan zorunludur"
 
@@ -5520,7 +5578,7 @@ msgstr ""
 msgid "Whether to use a temporary path when writing temporary files"
 msgstr "Geçici dosyalar yazılırken geçici bir yol kullanılıp kullanılmayacağı"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:107
+#: src/views/certificate/components/DNSIssueCertificate.vue:109
 msgid "Wildcard Certificate"
 msgstr "Wildcard Sertifikası"
 
@@ -5543,6 +5601,14 @@ msgstr "Çalışanlar"
 #: src/views/workspace/WorkSpace.vue:52
 msgid "Workspace"
 msgstr "Çalışma alanı"
+
+#: src/constants/errors/cert.ts:21
+msgid "Write fullchain.cer error: {0}"
+msgstr "fullchain.cer yazma hatası: {0}"
+
+#: src/constants/errors/cert.ts:22
+msgid "Write private.key error: {0}"
+msgstr "private.key yazma hatası: {0}"
 
 #: src/views/dashboard/ServerAnalytic.vue:37
 #: src/views/dashboard/ServerAnalytic.vue:373
