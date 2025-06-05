@@ -43,7 +43,9 @@ const errors = ref({}) as Ref<Record<string, string>>
 
 async function save() {
   try {
-    const r = await cert.updateItem(data.value.id, data.value)
+    const r = data.value.id
+      ? await cert.updateItem(data.value.id, data.value)
+      : await cert.createItem(data.value)
     data.value = r
     errors.value = {}
     message.success($gettext('Save successfully'))
