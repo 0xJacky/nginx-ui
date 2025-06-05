@@ -179,6 +179,10 @@ msgstr "구성 추가"
 msgid "Add Directive Below"
 msgstr "아래에 지시문 추가"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:151
+msgid "Add Domain"
+msgstr "도메인 추가"
+
 #: src/components/NgxConfigEditor/LocationEditor.vue:131
 #: src/components/NgxConfigEditor/LocationEditor.vue:158
 msgid "Add Location"
@@ -226,6 +230,12 @@ msgstr "모두"
 msgid "All Recovery Codes Have Been Used"
 msgstr "모든 복구 코드가 사용되었습니다"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:156
+msgid ""
+"All selected subdomains must belong to the same DNS Provider, otherwise the "
+"certificate application will fail."
+msgstr "선택한 모든 서브도메인은 동일한 DNS 공급자에 속해야 합니다. 그렇지 않으면 인증서 신청이 실패합니다."
+
 #: src/views/preference/tabs/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr "API 기본 URL"
@@ -252,7 +262,7 @@ msgstr "앱"
 
 #: src/views/system/Upgrade.vue:195
 msgid "Arch"
-msgstr "\"아키텍처\""
+msgstr "아키텍처"
 
 #: src/views/preference/tabs/AuthSettings.vue:130
 msgid "Are you sure to delete this banned IP immediately?"
@@ -387,7 +397,7 @@ msgstr "%{name}에 대한 자동 갱신 비활성화됨"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "%{name}에 대한 자동 갱신 활성화됨"
 
-#: src/views/certificate/components/RenewCert.vue:49
+#: src/views/certificate/components/RenewCert.vue:51
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:84
 msgid "AutoCert is running, please wait..."
 msgstr "AutoCert가 실행 중입니다. 잠시 기다려 주세요..."
@@ -400,7 +410,7 @@ msgstr "\"AutoCert 실행 중...\""
 msgid "Automatic Restart"
 msgstr "\"자동 재시작\""
 
-#: src/views/certificate/CertificateEditor.vue:259
+#: src/views/certificate/CertificateEditor.vue:257
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:112 src/views/config/ConfigList.vue:195
 #: src/views/nginx_log/NginxLog.vue:174
@@ -693,12 +703,16 @@ msgstr "인증서 갱신 성공"
 msgid "Certificate revoked successfully"
 msgstr "인증서가 성공적으로 취소되었습니다"
 
-#: src/views/certificate/CertificateEditor.vue:128
+#: src/views/certificate/CertificateEditor.vue:126
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
 msgstr[0] "인증서 상태"
 msgstr[1] "인증서 상태"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:104
+msgid "Certificate Type"
+msgstr "인증서 유형"
 
 #: src/routes/modules/certificates.ts:11
 #: src/views/certificate/CertificateList/Certificate.vue:19
@@ -1167,6 +1181,14 @@ msgstr "사용자 정의 cron 표현식"
 msgid "Custom Directory"
 msgstr "사용자 지정 디렉토리"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:126
+msgid "Custom Domains"
+msgstr "사용자 정의 도메인"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:110
+msgid "Custom Domains Certificate"
+msgstr "사용자 정의 도메인 인증서"
+
 #: src/views/preference/tabs/NodeSettings.vue:19
 msgid ""
 "Customize the name of local node to be displayed in the environment "
@@ -1474,11 +1496,11 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "문서"
 
-#: src/views/certificate/components/WildcardCertificate.vue:66
+#: src/views/certificate/components/DNSIssueCertificate.vue:116
 msgid "Domain"
 msgstr "도메인"
 
-#: src/views/certificate/CertificateEditor.vue:112
+#: src/views/certificate/CertificateEditor.vue:110
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr "도메인 목록이 비어 있습니다. %{config}에 대한 자동 인증서를 다시 열어보세요"
 
@@ -1680,6 +1702,14 @@ msgstr "Let's Encrypt로 웹사이트 암호화"
 msgid "End"
 msgstr "끝"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:135
+msgid "Enter domain name"
+msgstr "도메인 이름 입력"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:120
+msgid "Enter your domain"
+msgstr "도메인을 입력하세요"
+
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
 msgstr "환경 변수가 정리되었습니다"
@@ -1754,7 +1784,7 @@ msgstr "외부 Docker 컨테이너"
 msgid "External Notify"
 msgstr "외부 알림"
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:81
 msgid "Fail to obtain certificate"
 msgstr "인증서 획득 실패"
 
@@ -2275,7 +2305,7 @@ msgid "Import"
 msgstr "가져오기"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:83
 msgid "Import Certificate"
 msgstr "인증서 가져오기"
 
@@ -2416,12 +2446,12 @@ msgid "IP"
 msgstr "IP"
 
 #: src/views/certificate/CertificateList/Certificate.vue:37
-msgid "Issue wildcard certificate"
-msgstr "와일드카드 인증서 발급"
+msgid "Issue certificate"
+msgstr "인증서 발급"
 
-#: src/views/certificate/components/WildcardCertificate.vue:57
-msgid "Issue Wildcard Certificate"
-msgstr "와일드카드 인증서 발급"
+#: src/views/certificate/components/DNSIssueCertificate.vue:95
+msgid "Issue Certificate"
+msgstr "인증서 발급"
 
 #: src/language/constants.ts:20
 msgid "Issued certificate successfully"
@@ -2502,8 +2532,8 @@ msgstr "수정하지 않으려면 비워 두세요"
 msgid "Leave blank if you don't need this."
 msgstr "필요하지 않으면 비워 두세요."
 
-#: src/views/certificate/CertificateEditor.vue:223
-#: src/views/certificate/CertificateEditor.vue:237
+#: src/views/certificate/CertificateEditor.vue:221
+#: src/views/certificate/CertificateEditor.vue:235
 msgid "Leave blank will not change anything"
 msgstr "비워 두면 아무것도 변경되지 않습니다"
 
@@ -2590,7 +2620,7 @@ msgstr "위치"
 msgid "Locations"
 msgstr "위치들"
 
-#: src/views/certificate/CertificateEditor.vue:247
+#: src/views/certificate/CertificateEditor.vue:245
 msgid "Log"
 msgstr "로그"
 
@@ -2797,7 +2827,7 @@ msgid "Modify"
 msgstr "수정"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:83
 msgid "Modify Certificate"
 msgstr "인증서 수정"
 
@@ -2832,7 +2862,7 @@ msgstr "여러 줄 지시문"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
-#: src/views/certificate/CertificateEditor.vue:162
+#: src/views/certificate/CertificateEditor.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
@@ -2892,7 +2922,7 @@ msgstr "새 경로"
 msgid "New version released"
 msgstr "새 버전 출시"
 
-#: src/views/certificate/components/WildcardCertificate.vue:89
+#: src/views/certificate/components/DNSIssueCertificate.vue:181
 #: src/views/install/components/InstallView.vue:96
 #: src/views/site/site_add/SiteAdd.vue:132
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:214
@@ -3467,6 +3497,10 @@ msgstr "생성하려는 패스키의 이름을 입력하고 아래의 확인 버
 msgid "Please enter a valid port range"
 msgstr "유효한 포트 범위를 입력하세요"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:74
+msgid "Please enter at least one domain"
+msgstr "최소 하나의 도메인을 입력해 주세요"
+
 #: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "OTP 코드를 입력해 주세요:"
@@ -3792,6 +3826,7 @@ msgstr "리로딩 중"
 msgid "Reloading nginx"
 msgstr "Nginx 리로딩 중"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:144
 #: src/views/preference/tabs/AuthSettings.vue:137
 msgid "Remove"
 msgstr "제거"
@@ -3874,8 +3909,8 @@ msgstr "이름 변경 성공"
 msgid "Renamed successfully"
 msgstr "이름 변경 성공"
 
-#: src/views/certificate/components/RenewCert.vue:46
-#: src/views/certificate/components/RenewCert.vue:53
+#: src/views/certificate/components/RenewCert.vue:48
+#: src/views/certificate/components/RenewCert.vue:55
 msgid "Renew Certificate"
 msgstr "인증서 갱신"
 
@@ -3887,8 +3922,8 @@ msgstr "인증서 갱신 오류"
 msgid "Renew Certificate Success"
 msgstr "인증서 갱신 성공"
 
-#: src/views/certificate/components/RenewCert.vue:28
-#: src/views/certificate/components/WildcardCertificate.vue:46
+#: src/views/certificate/components/DNSIssueCertificate.vue:84
+#: src/views/certificate/components/RenewCert.vue:30
 msgid "Renew successfully"
 msgstr "성공적으로 갱신됨"
 
@@ -4144,7 +4179,7 @@ msgstr "토요일"
 
 #: src/components/ChatGPT/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
-#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:266
+#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:264
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -4199,7 +4234,7 @@ msgstr "스트림 %{name}을(를) %{node}에 저장하지 못했습니다"
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "스트림 %{name}을(를) %{node}에 성공적으로 저장했습니다"
 
-#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:49
+#: src/language/curd.ts:35 src/views/certificate/store.ts:13
 #: src/views/preference/store/index.ts:118
 msgid "Save successfully"
 msgstr "성공적으로 저장되었습니다"
@@ -4306,6 +4341,10 @@ msgstr "보내기"
 #: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:46
 msgid "Server"
 msgstr "서버"
+
+#: src/views/certificate/CertificateEditor.vue:55
+msgid "Server error"
+msgstr "서버 오류"
 
 #: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
@@ -4441,7 +4480,7 @@ msgstr "캐시 로더 반복 사이의 대기 시간"
 msgid "Sleep time between cache manager iterations"
 msgstr "캐시 관리자 반복 간 대기 시간"
 
-#: src/views/certificate/CertificateEditor.vue:213
+#: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
 msgstr "SSL 인증서 내용"
 
@@ -4453,15 +4492,15 @@ msgstr "SSL 인증서 파일은 Nginx 구성 디렉터리 아래에 있어야 �
 msgid "SSL certificate file not found"
 msgstr "SSL 인증서 파일을 찾을 수 없음"
 
-#: src/views/certificate/CertificateEditor.vue:227
+#: src/views/certificate/CertificateEditor.vue:225
 msgid "SSL Certificate Key Content"
 msgstr "SSL 인증서키 콘텐츠"
 
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/CertificateEditor.vue:190
 msgid "SSL Certificate Key Path"
 msgstr "SSL 인증서 키 경로"
 
-#: src/views/certificate/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:175
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "SSL 인증서 경로"
@@ -4694,7 +4733,7 @@ msgstr "동기화 노드"
 msgid "Sync strategy"
 msgstr "동기화 전략"
 
-#: src/views/certificate/CertificateEditor.vue:206
+#: src/views/certificate/CertificateEditor.vue:204
 msgid "Sync to"
 msgstr "동기화 대상"
 
@@ -4765,11 +4804,11 @@ msgid ""
 "dashes, colons, and dots."
 msgstr "ICP 번호는 문자, 유니코드, 숫자, 하이픈, 대시, 콜론 및 점만 포함해야 합니다."
 
-#: src/views/certificate/CertificateEditor.vue:216
+#: src/views/certificate/CertificateEditor.vue:214
 msgid "The input is not a SSL Certificate"
 msgstr "입력이 SSL 인증서가 아닙니다"
 
-#: src/views/certificate/CertificateEditor.vue:230
+#: src/views/certificate/CertificateEditor.vue:228
 msgid "The input is not a SSL Certificate Key"
 msgstr "입력한 내용이 SSL 인증서 키가 아닙니다"
 
@@ -4800,11 +4839,11 @@ msgstr "노드 이름에는 문자, 유니코드, 숫자, 하이픈, 대시, 콜
 msgid "The parameter of server_name is required"
 msgstr "server_name 매개변수가 필요합니다"
 
-#: src/views/certificate/CertificateEditor.vue:181
+#: src/views/certificate/CertificateEditor.vue:179
 msgid "The path exists, but the file is not a certificate"
 msgstr "경로는 존재하지만, 파일이 인증서가 아닙니다"
 
-#: src/views/certificate/CertificateEditor.vue:196
+#: src/views/certificate/CertificateEditor.vue:194
 msgid "The path exists, but the file is not a private key"
 msgstr "경로는 존재하지만 파일은 개인 키가 아닙니다"
 
@@ -4860,17 +4899,17 @@ msgstr ""
 "이 코드들은 비밀번호와 두 번째 요소를 잃어버린 경우 계정에 접근할 수 있는 최후의 수단입니다. 이 코드들을 찾을 수 없다면 계정에 "
 "대한 접근 권한을 잃게 됩니다."
 
-#: src/views/certificate/CertificateEditor.vue:102
+#: src/views/certificate/CertificateEditor.vue:100
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "이 자동 인증 항목이 유효하지 않습니다. 제거해주세요."
 
-#: src/views/certificate/CertificateEditor.vue:92
+#: src/views/certificate/CertificateEditor.vue:90
 msgid "This certificate is managed by Nginx UI"
 msgstr "이 인증서는 Nginx UI에서 관리됩니다"
 
-#: src/views/certificate/CertificateEditor.vue:165
-#: src/views/certificate/CertificateEditor.vue:179
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/CertificateEditor.vue:163
+#: src/views/certificate/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:192
 msgid "This field is required"
 msgstr "이 필드는 필수입니다"
 
@@ -5315,6 +5354,10 @@ msgstr "새로운 복구 코드를 생성할 때는 반드시 새 코드를 다�
 msgid "Whether to use a temporary path when writing temporary files"
 msgstr "임시 파일을 작성할 때 임시 경로를 사용할지 여부"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:107
+msgid "Wildcard Certificate"
+msgstr "와일드카드 인증서"
+
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:48
 msgid "Worker Connections"
 msgstr "작업자 연결"
@@ -5615,9 +5658,6 @@ msgstr "귀하의 패스키"
 #, fuzzy
 #~ msgid "Incorrect username or password"
 #~ msgstr "사용자 이름 또는 비밀번호가 올바르지 않습니다"
-
-#~ msgid "Server error"
-#~ msgstr "서버 오류"
 
 #, fuzzy
 #~ msgid ""

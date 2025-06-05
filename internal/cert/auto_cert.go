@@ -17,7 +17,7 @@ func AutoCert() {
 		if err := recover(); err != nil {
 			buf := make([]byte, 1024)
 			runtime.Stack(buf, false)
-			logger.Error("AutoCert Recover", err, string(buf))
+			logger.Errorf("%s\n%s", err, buf)
 		}
 	}()
 	logger.Info("AutoCert Worker Started")
@@ -67,9 +67,6 @@ func autoCert(certModel *model.Cert) {
 	}
 
 	// after 1 mo, reissue certificate
-	logChan := make(chan string, 1)
-	errChan := make(chan error, 1)
-
 	// support SAN certification
 	payload := &ConfigPayload{
 		CertID:                  certModel.ID,
@@ -93,11 +90,8 @@ func autoCert(certModel *model.Cert) {
 		}
 	}
 
-	// errChan will be closed inside IssueCert
-	go IssueCert(payload, log, errChan)
-
-	// block, unless errChan closed
-	for err := range errChan {
+	err = IssueCert(payload, log)
+	if err != nil {
 		log.Error(err)
 		notification.Error("Renew Certificate Error", strings.Join(payload.ServerName, ", "), nil)
 		return
@@ -109,6 +103,4 @@ func autoCert(certModel *model.Cert) {
 		notification.Error("Sync Certificate Error", err.Error(), nil)
 		return
 	}
-
-	close(logChan)
 }

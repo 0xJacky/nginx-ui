@@ -12,7 +12,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/go-acme/lego/v4/certcrypto"
-	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -76,11 +76,10 @@ func (c *ConfigPayload) mkCertificateDir() (err error) {
 	return
 }
 
-func (c *ConfigPayload) WriteFile(l *Logger, errChan chan error) {
+func (c *ConfigPayload) WriteFile(l *Logger) error {
 	err := c.mkCertificateDir()
 	if err != nil {
-		errChan <- errors.Wrap(err, "make certificate dir error")
-		return
+		return cosy.WrapErrorWithParams(ErrMakeCertificateDir, err.Error())
 	}
 
 	// Each certificate comes back with the cert bytes, the bytes of the client's
@@ -90,8 +89,7 @@ func (c *ConfigPayload) WriteFile(l *Logger, errChan chan error) {
 		c.Resource.Certificate, 0644)
 
 	if err != nil {
-		errChan <- errors.Wrap(err, "write fullchain.cer error")
-		return
+		return cosy.WrapErrorWithParams(ErrWriteFullchainCer, err.Error())
 	}
 
 	l.Info(translation.C("[Nginx UI] Writing certificate private key to disk"))
@@ -99,13 +97,12 @@ func (c *ConfigPayload) WriteFile(l *Logger, errChan chan error) {
 		c.Resource.PrivateKey, 0644)
 
 	if err != nil {
-		errChan <- errors.Wrap(err, "write private.key error")
-		return
+		return cosy.WrapErrorWithParams(ErrWritePrivateKey, err.Error())
 	}
 
 	// update database
 	if c.CertID <= 0 {
-		return
+		return nil
 	}
 
 	db := model.UseDB()
@@ -114,6 +111,8 @@ func (c *ConfigPayload) WriteFile(l *Logger, errChan chan error) {
 		SSLCertificateKeyPath: c.GetCertificateKeyPath(),
 		Resource:              c.Resource,
 	})
+
+	return nil
 }
 
 func (c *ConfigPayload) getCertificateDirPath() string {

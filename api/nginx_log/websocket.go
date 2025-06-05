@@ -67,7 +67,7 @@ func tailNginxLog(ws *websocket.Conn, controlChan chan controlStruct, errChan ch
 		if err := recover(); err != nil {
 			buf := make([]byte, 1024)
 			runtime.Stack(buf, false)
-			logger.Error(err)
+			logger.Errorf("%s\n%s", err, buf)
 			return
 		}
 	}()
@@ -139,7 +139,7 @@ func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errCha
 		if err := recover(); err != nil {
 			buf := make([]byte, 1024)
 			runtime.Stack(buf, false)
-			logger.Error(err)
+			logger.Errorf("%s\n%s", err, buf)
 			return
 		}
 	}()

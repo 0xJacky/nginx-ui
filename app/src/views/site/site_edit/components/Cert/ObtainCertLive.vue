@@ -76,6 +76,7 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
           }
           break
         case 'error':
+          modalClosable.value = true
           progressStatus.value = 'exception'
           reject($gettext('Fail to obtain certificate'))
           break

@@ -5,10 +5,10 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/go-acme/lego/v4/certificate"
 	"github.com/go-acme/lego/v4/lego"
-	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy"
 )
 
-func obtain(payload *ConfigPayload, client *lego.Client, l *Logger, errChan chan error) {
+func obtain(payload *ConfigPayload, client *lego.Client, l *Logger) error {
 	request := certificate.ObtainRequest{
 		Domains:    payload.ServerName,
 		Bundle:     true,
@@ -18,9 +18,9 @@ func obtain(payload *ConfigPayload, client *lego.Client, l *Logger, errChan chan
 	l.Info(translation.C("[Nginx UI] Obtaining certificate"))
 	certificates, err := client.Certificate.Obtain(request)
 	if err != nil {
-		errChan <- errors.Wrap(err, "obtain certificate error")
-		return
+		return cosy.WrapErrorWithParams(ErrObtainCert, err.Error())
 	}
+
 	payload.Resource = &model.CertificateResource{
 		Resource:          certificates,
 		PrivateKey:        certificates.PrivateKey,
@@ -29,5 +29,10 @@ func obtain(payload *ConfigPayload, client *lego.Client, l *Logger, errChan chan
 		CSR:               certificates.CSR,
 	}
 
-	payload.WriteFile(l, errChan)
+	err = payload.WriteFile(l)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

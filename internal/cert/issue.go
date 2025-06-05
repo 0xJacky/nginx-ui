@@ -18,7 +18,7 @@ import (
 	"github.com/go-acme/lego/v4/lego"
 	legolog "github.com/go-acme/lego/v4/log"
 	dnsproviders "github.com/go-acme/lego/v4/providers/dns"
-	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
@@ -28,20 +28,19 @@ const (
 	DNS01  = "dns01"
 )
 
-func IssueCert(payload *ConfigPayload, certLogger *Logger, errChan chan error) {
+func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 	lock()
 	defer unlock()
 	defer func() {
 		if err := recover(); err != nil {
 			buf := make([]byte, 1024)
 			runtime.Stack(buf, false)
-			logger.Error(err)
+			logger.Errorf("%s\n%s", err, buf)
 		}
 	}()
 
 	// initial a channelWriter to receive logs
 	cw := NewChannelWriter()
-	defer close(errChan)
 	defer close(cw.Ch)
 
 	// initial a logger
@@ -58,8 +57,7 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger, errChan chan error) {
 	certLogger.Info(translation.C("[Nginx UI] Preparing lego configurations"))
 	user, err := payload.GetACMEUser()
 	if err != nil {
-		errChan <- errors.Wrap(err, "issue cert get acme user error")
-		return
+		return cosy.WrapErrorWithParams(ErrGetACMEUser, err.Error())
 	}
 
 	certLogger.Info(translation.C("[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}", map[string]any{
@@ -84,7 +82,7 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger, errChan chan error) {
 		t, err := transport.NewTransport(
 			transport.WithProxy(user.Proxy))
 		if err != nil {
-			return
+			return cosy.WrapErrorWithParams(ErrNewTransport, err.Error())
 		}
 		config.HTTPClient.Transport = t
 	}
@@ -95,8 +93,7 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger, errChan chan error) {
 	// A client facilitates communication with the CA server.
 	client, err := lego.NewClient(config)
 	if err != nil {
-		errChan <- errors.Wrap(err, "issue cert new client error")
-		return
+		return cosy.WrapErrorWithParams(ErrNewLegoClient, err.Error())
 	}
 
 	switch payload.ChallengeMethod {
@@ -113,24 +110,20 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger, errChan chan error) {
 		d := query.DnsCredential
 		dnsCredential, err := d.FirstByID(payload.DNSCredentialID)
 		if err != nil {
-			errChan <- errors.Wrap(err, "get dns credential error")
-			return
+			return cosy.WrapErrorWithParams(ErrGetDNSCredential, err.Error())
 		}
 
 		certLogger.Info(translation.C("[Nginx UI] Setting DNS01 challenge provider"))
 		code := dnsCredential.Config.Code
 		pConfig, ok := dns.GetProvider(code)
 		if !ok {
-			errChan <- errors.Wrap(err, "provider not found")
-			return
+			return cosy.WrapErrorWithParams(ErrProviderNotFound, err.Error())
 		}
 		certLogger.Info(translation.C("[Nginx UI] Setting environment variables"))
 		if dnsCredential.Config.Configuration != nil {
 			err = pConfig.SetEnv(*dnsCredential.Config.Configuration)
 			if err != nil {
-				errChan <- errors.Wrap(err, "set env error")
-				logger.Error(err)
-				break
+				return cosy.WrapErrorWithParams(ErrSetEnv, err.Error())
 			}
 			defer func() {
 				pConfig.CleanEnv()
@@ -138,9 +131,7 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger, errChan chan error) {
 			}()
 			provider, err := dnsproviders.NewDNSChallengeProviderByName(code)
 			if err != nil {
-				errChan <- errors.Wrap(err, "new dns challenge provider error")
-				logger.Error(err)
-				break
+				return cosy.WrapErrorWithParams(ErrNewDNSChallengeProvider, err.Error())
 			}
 			challengeOptions := make([]dns01.ChallengeOption, 0)
 
@@ -152,26 +143,21 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger, errChan chan error) {
 
 			err = client.Challenge.SetDNS01Provider(provider, challengeOptions...)
 		} else {
-			errChan <- errors.Wrap(err, "environment configuration is empty")
-			return
+			return cosy.WrapErrorWithParams(ErrEnvironmentConfigurationIsEmpty, err.Error())
 		}
 	}
 
 	if err != nil {
-		errChan <- errors.Wrap(err, "challenge error")
-		return
+		return cosy.WrapErrorWithParams(ErrChallengeError, err.Error())
 	}
 
 	// fix #407
 	if payload.LegoDisableCNAMESupport {
 		err = os.Setenv("LEGO_DISABLE_CNAME_SUPPORT", "true")
 		if err != nil {
-			errChan <- errors.Wrap(err, "set env flag to disable lego CNAME support error")
-			return
+			return cosy.WrapErrorWithParams(ErrSetEnvFlagToDisableLegoCNAME, err.Error())
 		}
-		defer func() {
-			_ = os.Unsetenv("LEGO_DISABLE_CNAME_SUPPORT")
-		}()
+		defer os.Unsetenv("LEGO_DISABLE_CNAME_SUPPORT")
 	}
 
 	// Backup current certificate and key if RevokeOld is true
@@ -190,9 +176,15 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger, errChan chan error) {
 
 	if time.Now().Sub(payload.NotBefore).Hours()/24 <= 21 &&
 		payload.Resource != nil && payload.Resource.Certificate != nil {
-		renew(payload, client, certLogger, errChan)
+		err = renew(payload, client, certLogger)
+		if err != nil {
+			return err
+		}
 	} else {
-		obtain(payload, client, certLogger, errChan)
+		err = obtain(payload, client, certLogger)
+		if err != nil {
+			return err
+		}
 	}
 
 	certLogger.Info(translation.C("[Nginx UI] Reloading nginx"))
@@ -222,9 +214,14 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger, errChan chan error) {
 		}
 
 		// Revoke the old certificate
-		revoke(revokePayload, client, certLogger, errChan)
+		err = revoke(revokePayload, client, certLogger)
+		if err != nil {
+			return err
+		}
 	}
 
 	// Wait log to be written
 	time.Sleep(2 * time.Second)
+
+	return nil
 }

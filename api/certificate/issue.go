@@ -26,7 +26,7 @@ type IssueCertResponse struct {
 	Message           string             `json:"message"`
 	SSLCertificate    string             `json:"ssl_certificate,omitempty"`
 	SSLCertificateKey string             `json:"ssl_certificate_key,omitempty"`
-	KeyType           certcrypto.KeyType `json:"key_type"`
+	KeyType           certcrypto.KeyType `json:"key_type,omitempty"`
 }
 
 func IssueCert(c *gin.Context) {
@@ -71,28 +71,19 @@ func IssueCert(c *gin.Context) {
 		}
 	}
 
-	errChan := make(chan error, 1)
-
 	log := cert.NewLogger()
 	log.SetCertModel(&certModel)
 	log.SetWebSocket(ws)
 	defer log.Close()
 
-	go cert.IssueCert(payload, log, errChan)
-
-	// block, until errChan closes
-	if err := <-errChan; err != nil {
+	err = cert.IssueCert(payload, log)
+	if err != nil {
 		log.Error(err)
-		err = ws.WriteJSON(IssueCertResponse{
+		_ = ws.WriteJSON(IssueCertResponse{
 			Status:  Error,
 			Message: err.Error(),
 		})
-		if err != nil {
-			if helper.IsUnexpectedWebsocketError(err) {
-				logger.Error(err)
-			}
-			return
-		}
+		return
 	}
 
 	cert := query.Cert

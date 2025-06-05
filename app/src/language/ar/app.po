@@ -180,6 +180,10 @@ msgstr "إضافة تكوين"
 msgid "Add Directive Below"
 msgstr "أضف التوجيه أدناه"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:151
+msgid "Add Domain"
+msgstr "إضافة نطاق"
+
 #: src/components/NgxConfigEditor/LocationEditor.vue:131
 #: src/components/NgxConfigEditor/LocationEditor.vue:158
 msgid "Add Location"
@@ -227,6 +231,14 @@ msgstr "الكل"
 msgid "All Recovery Codes Have Been Used"
 msgstr "تم استخدام جميع رموز الاسترداد"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:156
+msgid ""
+"All selected subdomains must belong to the same DNS Provider, otherwise the "
+"certificate application will fail."
+msgstr ""
+"يجب أن تنتمي جميع النطاقات الفرعية المحددة إلى نفس موفر DNS، وإلا فشل طلب "
+"الشهادة."
+
 #: src/views/preference/tabs/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr "عنوان URL الأساسي لAPI"
@@ -253,7 +265,7 @@ msgstr "التطبيق"
 
 #: src/views/system/Upgrade.vue:195
 msgid "Arch"
-msgstr "\"أرك\""
+msgstr "أرك"
 
 #: src/views/preference/tabs/AuthSettings.vue:130
 msgid "Are you sure to delete this banned IP immediately?"
@@ -388,7 +400,7 @@ msgstr "تم تعطيل التجديد التلقائي لـ‎%{name}"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "تم تمكين التجديد التلقائي لـ‏%{name}"
 
-#: src/views/certificate/components/RenewCert.vue:49
+#: src/views/certificate/components/RenewCert.vue:51
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:84
 msgid "AutoCert is running, please wait..."
 msgstr "AutoCert قيد التشغيل، يرجى الانتظار..."
@@ -401,7 +413,7 @@ msgstr "\"AutoCert قيد التشغيل...\""
 msgid "Automatic Restart"
 msgstr "\"إعادة التشغيل التلقائي\""
 
-#: src/views/certificate/CertificateEditor.vue:259
+#: src/views/certificate/CertificateEditor.vue:257
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:112 src/views/config/ConfigList.vue:195
 #: src/views/nginx_log/NginxLog.vue:174
@@ -696,7 +708,7 @@ msgstr "تم تجديد الشهادة بنجاح"
 msgid "Certificate revoked successfully"
 msgstr "تم إلغاء الشهادة بنجاح"
 
-#: src/views/certificate/CertificateEditor.vue:128
+#: src/views/certificate/CertificateEditor.vue:126
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
@@ -706,6 +718,10 @@ msgstr[2] "حالة الشهادتين"
 msgstr[3] "حالة الشهادات"
 msgstr[4] "حالة الشهادات"
 msgstr[5] "حالة الشهادة"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:104
+msgid "Certificate Type"
+msgstr "نوع الشهادة"
 
 #: src/routes/modules/certificates.ts:11
 #: src/views/certificate/CertificateList/Certificate.vue:19
@@ -1193,6 +1209,14 @@ msgstr "تعبير كرون مخصص"
 msgid "Custom Directory"
 msgstr "دليل مخصص"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:126
+msgid "Custom Domains"
+msgstr "نطاقات مخصصة"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:110
+msgid "Custom Domains Certificate"
+msgstr "شهادة النطاقات المخصصة"
+
 #: src/views/preference/tabs/NodeSettings.vue:19
 msgid ""
 "Customize the name of local node to be displayed in the environment "
@@ -1500,11 +1524,11 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "وثيقة"
 
-#: src/views/certificate/components/WildcardCertificate.vue:66
+#: src/views/certificate/components/DNSIssueCertificate.vue:116
 msgid "Domain"
 msgstr "نطاق"
 
-#: src/views/certificate/CertificateEditor.vue:112
+#: src/views/certificate/CertificateEditor.vue:110
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr "قائمة النطاقات فارغة، حاول إعادة فتح Auto Cert لـ %{config}"
 
@@ -1706,6 +1730,14 @@ msgstr "تشفير الموقع باستخدام Let's Encrypt"
 msgid "End"
 msgstr "النهاية"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:135
+msgid "Enter domain name"
+msgstr "أدخل اسم النطاق"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:120
+msgid "Enter your domain"
+msgstr "أدخل نطاقك"
+
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
 msgstr "تم تنظيف متغيرات البيئة"
@@ -1780,7 +1812,7 @@ msgstr "حاوية Docker خارجية"
 msgid "External Notify"
 msgstr "إشعار خارجي"
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:81
 msgid "Fail to obtain certificate"
 msgstr "فشل في الحصول على الشهادة"
 
@@ -2305,7 +2337,7 @@ msgid "Import"
 msgstr "استيراد"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:83
 msgid "Import Certificate"
 msgstr "استيراد شهادة"
 
@@ -2450,12 +2482,12 @@ msgid "IP"
 msgstr "IP"
 
 #: src/views/certificate/CertificateList/Certificate.vue:37
-msgid "Issue wildcard certificate"
-msgstr "إصدار شهادة wildcard"
+msgid "Issue certificate"
+msgstr "إصدار شهادة"
 
-#: src/views/certificate/components/WildcardCertificate.vue:57
-msgid "Issue Wildcard Certificate"
-msgstr "إصدار شهادة Wildcard"
+#: src/views/certificate/components/DNSIssueCertificate.vue:95
+msgid "Issue Certificate"
+msgstr "إصدار الشهادة"
 
 #: src/language/constants.ts:20
 msgid "Issued certificate successfully"
@@ -2538,8 +2570,8 @@ msgstr "اتركه فارغًا إذا كنت لا تريد التعديل"
 msgid "Leave blank if you don't need this."
 msgstr "اتركه فارغًا إذا لم تكن بحاجة إلى ذلك."
 
-#: src/views/certificate/CertificateEditor.vue:223
-#: src/views/certificate/CertificateEditor.vue:237
+#: src/views/certificate/CertificateEditor.vue:221
+#: src/views/certificate/CertificateEditor.vue:235
 msgid "Leave blank will not change anything"
 msgstr "تركه فارغًا لن يغير شيئًا"
 
@@ -2626,7 +2658,7 @@ msgstr "مكان"
 msgid "Locations"
 msgstr "أماكن"
 
-#: src/views/certificate/CertificateEditor.vue:247
+#: src/views/certificate/CertificateEditor.vue:245
 msgid "Log"
 msgstr "سجل"
 
@@ -2839,7 +2871,7 @@ msgid "Modify"
 msgstr "تعديل"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:83
 msgid "Modify Certificate"
 msgstr "تعديل الشهادة"
 
@@ -2874,7 +2906,7 @@ msgstr "توجيه متعدد الأسطر"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
-#: src/views/certificate/CertificateEditor.vue:162
+#: src/views/certificate/CertificateEditor.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
@@ -2934,7 +2966,7 @@ msgstr "مسار جديد"
 msgid "New version released"
 msgstr "تم إصدار نسخة جديدة"
 
-#: src/views/certificate/components/WildcardCertificate.vue:89
+#: src/views/certificate/components/DNSIssueCertificate.vue:181
 #: src/views/install/components/InstallView.vue:96
 #: src/views/site/site_add/SiteAdd.vue:132
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:214
@@ -3516,6 +3548,10 @@ msgstr "يرجى إدخال اسم لمفتاح المرور الذي ترغب �
 msgid "Please enter a valid port range"
 msgstr "الرجاء إدخال نطاق منافذ صالح"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:74
+msgid "Please enter at least one domain"
+msgstr "الرجاء إدخال مجال واحد على الأقل"
+
 #: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "يرجى إدخال رمز OTP:"
@@ -3845,6 +3881,7 @@ msgstr "إعادة التحميل"
 msgid "Reloading nginx"
 msgstr "إعادة تحميل nginx"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:144
 #: src/views/preference/tabs/AuthSettings.vue:137
 msgid "Remove"
 msgstr "إزالة"
@@ -3927,8 +3964,8 @@ msgstr "إعادة التسمية بنجاح"
 msgid "Renamed successfully"
 msgstr "تمت إعادة التسمية بنجاح"
 
-#: src/views/certificate/components/RenewCert.vue:46
-#: src/views/certificate/components/RenewCert.vue:53
+#: src/views/certificate/components/RenewCert.vue:48
+#: src/views/certificate/components/RenewCert.vue:55
 msgid "Renew Certificate"
 msgstr "تجديد الشهادة"
 
@@ -3940,8 +3977,8 @@ msgstr "خطأ في تجديد الشهادة"
 msgid "Renew Certificate Success"
 msgstr "تجديد الشهادة بنجاح"
 
-#: src/views/certificate/components/RenewCert.vue:28
-#: src/views/certificate/components/WildcardCertificate.vue:46
+#: src/views/certificate/components/DNSIssueCertificate.vue:84
+#: src/views/certificate/components/RenewCert.vue:30
 msgid "Renew successfully"
 msgstr "تم التجديد بنجاح"
 
@@ -4199,7 +4236,7 @@ msgstr "السبت"
 
 #: src/components/ChatGPT/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
-#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:266
+#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:264
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -4254,7 +4291,7 @@ msgstr "فشل حفظ الدفق %{name} إلى %{node}"
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "تم حفظ الدفق %{name} في %{node} بنجاح"
 
-#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:49
+#: src/language/curd.ts:35 src/views/certificate/store.ts:13
 #: src/views/preference/store/index.ts:118
 msgid "Save successfully"
 msgstr "تم الحفظ بنجاح"
@@ -4361,6 +4398,10 @@ msgstr "إرسال"
 #: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:46
 msgid "Server"
 msgstr "الخادم"
+
+#: src/views/certificate/CertificateEditor.vue:55
+msgid "Server error"
+msgstr "خطأ في الخادم"
 
 #: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
@@ -4498,7 +4539,7 @@ msgstr "وقت الانتظار بين تكرارات محمل ذاكرة الت
 msgid "Sleep time between cache manager iterations"
 msgstr "وقت الانتظار بين تكرارات مدير الذاكرة المؤقتة"
 
-#: src/views/certificate/CertificateEditor.vue:213
+#: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
 msgstr "محتوى شهادة SSL"
 
@@ -4510,15 +4551,15 @@ msgstr "يجب أن يكون ملف شهادة SSL ضمن دليل تكوين Ng
 msgid "SSL certificate file not found"
 msgstr "لم يتم العثور على ملف شهادة SSL"
 
-#: src/views/certificate/CertificateEditor.vue:227
+#: src/views/certificate/CertificateEditor.vue:225
 msgid "SSL Certificate Key Content"
 msgstr "محتوى مفتاح شهادة SSL"
 
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/CertificateEditor.vue:190
 msgid "SSL Certificate Key Path"
 msgstr "مسار مفتاح شهادة SSL"
 
-#: src/views/certificate/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:175
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "مسار شهادة SSL"
@@ -4753,7 +4794,7 @@ msgstr "مزامنة العقد"
 msgid "Sync strategy"
 msgstr "استراتيجية المزامنة"
 
-#: src/views/certificate/CertificateEditor.vue:206
+#: src/views/certificate/CertificateEditor.vue:204
 msgid "Sync to"
 msgstr "مزامنة إلى"
 
@@ -4828,11 +4869,11 @@ msgstr ""
 "يجب أن يحتوي رقم ICP فقط على أحرف، وunicode، وأرقام، وشرطات، وشرطات طويلة، "
 "ونقطتين، ونقاط."
 
-#: src/views/certificate/CertificateEditor.vue:216
+#: src/views/certificate/CertificateEditor.vue:214
 msgid "The input is not a SSL Certificate"
 msgstr "الإدخال ليس شهادة SSL"
 
-#: src/views/certificate/CertificateEditor.vue:230
+#: src/views/certificate/CertificateEditor.vue:228
 msgid "The input is not a SSL Certificate Key"
 msgstr "المدخل ليس مفتاح شهادة SSL"
 
@@ -4871,11 +4912,11 @@ msgstr ""
 msgid "The parameter of server_name is required"
 msgstr "معلمة server_name مطلوبة"
 
-#: src/views/certificate/CertificateEditor.vue:181
+#: src/views/certificate/CertificateEditor.vue:179
 msgid "The path exists, but the file is not a certificate"
 msgstr "المسار موجود، لكن الملف ليس شهادة"
 
-#: src/views/certificate/CertificateEditor.vue:196
+#: src/views/certificate/CertificateEditor.vue:194
 msgid "The path exists, but the file is not a private key"
 msgstr "المسار موجود، لكن الملف ليس مفتاحًا خاصًا"
 
@@ -4936,17 +4977,17 @@ msgstr ""
 "والعوامل الثانية. إذا لم تتمكن من العثور على هذه الرموز، فستفقد الوصول إلى "
 "حسابك."
 
-#: src/views/certificate/CertificateEditor.vue:102
+#: src/views/certificate/CertificateEditor.vue:100
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "هذا العنصر في الشهادة التلقائية غير صالح، يرجى إزالته."
 
-#: src/views/certificate/CertificateEditor.vue:92
+#: src/views/certificate/CertificateEditor.vue:90
 msgid "This certificate is managed by Nginx UI"
 msgstr "يتم إدارة هذه الشهادة بواسطة Nginx UI"
 
-#: src/views/certificate/CertificateEditor.vue:165
-#: src/views/certificate/CertificateEditor.vue:179
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/CertificateEditor.vue:163
+#: src/views/certificate/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:192
 msgid "This field is required"
 msgstr "هذا الحقل مطلوب"
 
@@ -5416,6 +5457,10 @@ msgstr "عند إنشاء رموز استرداد جديدة، يجب عليك �
 msgid "Whether to use a temporary path when writing temporary files"
 msgstr "ما إذا كان سيتم استخدام مسار مؤقت عند كتابة الملفات المؤقتة"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:107
+msgid "Wildcard Certificate"
+msgstr "شهادة البدل"
+
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:48
 msgid "Worker Connections"
 msgstr "اتصالات العامل"
@@ -5756,9 +5801,6 @@ msgstr "مفاتيح المرور الخاصة بك"
 
 #~ msgid "File"
 #~ msgstr "ملف"
-
-#~ msgid "Server error"
-#~ msgstr "خطأ في الخادم"
 
 #~ msgid "Incorrect username or password"
 #~ msgstr "اسم المستخدم أو كلمة المرور غير صحيحة"

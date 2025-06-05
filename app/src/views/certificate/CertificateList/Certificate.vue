@@ -3,8 +3,8 @@ import { CloudUploadOutlined, SafetyCertificateOutlined } from '@ant-design/icon
 import { StdTable } from '@uozi-admin/curd'
 import cert from '@/api/cert'
 import { useGlobalStore } from '@/pinia'
+import WildcardCertificate from '../components/DNSIssueCertificate.vue'
 import RemoveCert from '../components/RemoveCert.vue'
-import WildcardCertificate from '../components/WildcardCertificate.vue'
 import certColumns from './certColumns'
 
 const refWildcard = ref()
@@ -34,7 +34,7 @@ const { processingStatus } = storeToRefs(globalStore)
         @click="() => refWildcard.open()"
       >
         <SafetyCertificateOutlined />
-        {{ $gettext('Issue wildcard certificate') }}
+        {{ $gettext('Issue certificate') }}
       </AButton>
     </template>
     <StdTable
@@ -56,7 +56,7 @@ const { processingStatus } = storeToRefs(globalStore)
     </StdTable>
     <WildcardCertificate
       ref="refWildcard"
-      @issued="() => refTable.get_list()"
+      @issued="() => refTable.refresh()"
     />
   </ACard>
 </template>

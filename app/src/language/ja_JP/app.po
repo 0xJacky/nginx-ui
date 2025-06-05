@@ -181,6 +181,10 @@ msgstr "設定を追加"
 msgid "Add Directive Below"
 msgstr "ディレクティブを追加"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:151
+msgid "Add Domain"
+msgstr "ドメインを追加"
+
 #: src/components/NgxConfigEditor/LocationEditor.vue:131
 #: src/components/NgxConfigEditor/LocationEditor.vue:158
 msgid "Add Location"
@@ -228,6 +232,12 @@ msgstr "すべて"
 msgid "All Recovery Codes Have Been Used"
 msgstr "すべてのリカバリーコードが使用済みです"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:156
+msgid ""
+"All selected subdomains must belong to the same DNS Provider, otherwise the "
+"certificate application will fail."
+msgstr "選択したすべてのサブドメインは同じ DNS プロバイダーに属している必要があります。そうでない場合、証明書の申請は失敗します。"
+
 #: src/views/preference/tabs/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr "APIベースURL"
@@ -254,7 +264,7 @@ msgstr "アプリ"
 
 #: src/views/system/Upgrade.vue:195
 msgid "Arch"
-msgstr "\"アーキテクチャ\""
+msgstr "アーキテクチャ"
 
 #: src/views/preference/tabs/AuthSettings.vue:130
 msgid "Are you sure to delete this banned IP immediately?"
@@ -389,7 +399,7 @@ msgstr "%{name}の自動更新が無効になっています"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "%{name}の自動更新が有効になっています"
 
-#: src/views/certificate/components/RenewCert.vue:49
+#: src/views/certificate/components/RenewCert.vue:51
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:84
 msgid "AutoCert is running, please wait..."
 msgstr "AutoCert が実行中です。お待ちください..."
@@ -402,7 +412,7 @@ msgstr "AutoCert が実行中..."
 msgid "Automatic Restart"
 msgstr "自動再起動"
 
-#: src/views/certificate/CertificateEditor.vue:259
+#: src/views/certificate/CertificateEditor.vue:257
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:112 src/views/config/ConfigList.vue:195
 #: src/views/nginx_log/NginxLog.vue:174
@@ -695,11 +705,15 @@ msgstr "証明書の更新に成功しました"
 msgid "Certificate revoked successfully"
 msgstr "証明書の失効に成功しました"
 
-#: src/views/certificate/CertificateEditor.vue:128
+#: src/views/certificate/CertificateEditor.vue:126
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
 msgstr[0] "証明書のステータス"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:104
+msgid "Certificate Type"
+msgstr "証明書の種類"
 
 #: src/routes/modules/certificates.ts:11
 #: src/views/certificate/CertificateList/Certificate.vue:19
@@ -1170,6 +1184,14 @@ msgstr "カスタム cron 式"
 msgid "Custom Directory"
 msgstr "カスタムディレクトリ"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:126
+msgid "Custom Domains"
+msgstr "カスタムドメイン"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:110
+msgid "Custom Domains Certificate"
+msgstr "カスタムドメイン証明書"
+
 #: src/views/preference/tabs/NodeSettings.vue:19
 msgid ""
 "Customize the name of local node to be displayed in the environment "
@@ -1477,11 +1499,11 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "ドキュメント"
 
-#: src/views/certificate/components/WildcardCertificate.vue:66
+#: src/views/certificate/components/DNSIssueCertificate.vue:116
 msgid "Domain"
 msgstr "ドメイン"
 
-#: src/views/certificate/CertificateEditor.vue:112
+#: src/views/certificate/CertificateEditor.vue:110
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr "ドメインリストが空です。%{config} の自動証明書を再度開いてみてください"
 
@@ -1681,6 +1703,14 @@ msgstr "Let's Encryptでウェブサイトを暗号化"
 msgid "End"
 msgstr "終了"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:135
+msgid "Enter domain name"
+msgstr "ドメイン名を入力"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:120
+msgid "Enter your domain"
+msgstr "ドメインを入力してください"
+
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
 msgstr "環境変数をクリーンアップしました"
@@ -1755,7 +1785,7 @@ msgstr "外部 Docker コンテナ"
 msgid "External Notify"
 msgstr "外部通知"
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:81
 msgid "Fail to obtain certificate"
 msgstr "証明書の取得に失敗しました"
 
@@ -2276,7 +2306,7 @@ msgid "Import"
 msgstr "インポート"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:83
 msgid "Import Certificate"
 msgstr "証明書をインポート"
 
@@ -2417,12 +2447,12 @@ msgid "IP"
 msgstr "IP"
 
 #: src/views/certificate/CertificateList/Certificate.vue:37
-msgid "Issue wildcard certificate"
-msgstr "ワイルドカード証明書を発行"
+msgid "Issue certificate"
+msgstr "証明書を発行"
 
-#: src/views/certificate/components/WildcardCertificate.vue:57
-msgid "Issue Wildcard Certificate"
-msgstr "ワイルドカード証明書を発行"
+#: src/views/certificate/components/DNSIssueCertificate.vue:95
+msgid "Issue Certificate"
+msgstr "証明書を発行"
 
 #: src/language/constants.ts:20
 msgid "Issued certificate successfully"
@@ -2503,8 +2533,8 @@ msgstr "変更しない場合は空白のままにしてください"
 msgid "Leave blank if you don't need this."
 msgstr "必要なければ空白のままにしてください。"
 
-#: src/views/certificate/CertificateEditor.vue:223
-#: src/views/certificate/CertificateEditor.vue:237
+#: src/views/certificate/CertificateEditor.vue:221
+#: src/views/certificate/CertificateEditor.vue:235
 msgid "Leave blank will not change anything"
 msgstr "空白のままにすると何も変更されません"
 
@@ -2591,7 +2621,7 @@ msgstr "ロケーション"
 msgid "Locations"
 msgstr "ロケーション"
 
-#: src/views/certificate/CertificateEditor.vue:247
+#: src/views/certificate/CertificateEditor.vue:245
 msgid "Log"
 msgstr "ログ"
 
@@ -2801,7 +2831,7 @@ msgid "Modify"
 msgstr "変更"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:83
 msgid "Modify Certificate"
 msgstr "証明書を変更"
 
@@ -2836,7 +2866,7 @@ msgstr "複数行ディレクティブ"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
-#: src/views/certificate/CertificateEditor.vue:162
+#: src/views/certificate/CertificateEditor.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
@@ -2896,7 +2926,7 @@ msgstr "新しいパス"
 msgid "New version released"
 msgstr "新しいバージョンがリリースされました"
 
-#: src/views/certificate/components/WildcardCertificate.vue:89
+#: src/views/certificate/components/DNSIssueCertificate.vue:181
 #: src/views/install/components/InstallView.vue:96
 #: src/views/site/site_add/SiteAdd.vue:132
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:214
@@ -3471,6 +3501,10 @@ msgstr "作成したいパスキーの名前を入力し、下のOKボタンを�
 msgid "Please enter a valid port range"
 msgstr "有効なポート範囲を入力してください"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:74
+msgid "Please enter at least one domain"
+msgstr "少なくとも1つのドメインを入力してください"
+
 #: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "OTPコードを入力してください："
@@ -3798,6 +3832,7 @@ msgstr "再読み込み中"
 msgid "Reloading nginx"
 msgstr "nginx をリロード中"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:144
 #: src/views/preference/tabs/AuthSettings.vue:137
 msgid "Remove"
 msgstr "削除"
@@ -3880,8 +3915,8 @@ msgstr "名前の変更に成功しました"
 msgid "Renamed successfully"
 msgstr "名前の変更に成功しました"
 
-#: src/views/certificate/components/RenewCert.vue:46
-#: src/views/certificate/components/RenewCert.vue:53
+#: src/views/certificate/components/RenewCert.vue:48
+#: src/views/certificate/components/RenewCert.vue:55
 msgid "Renew Certificate"
 msgstr "証明書を更新"
 
@@ -3893,8 +3928,8 @@ msgstr "証明書の更新エラー"
 msgid "Renew Certificate Success"
 msgstr "証明書の更新に成功しました"
 
-#: src/views/certificate/components/RenewCert.vue:28
-#: src/views/certificate/components/WildcardCertificate.vue:46
+#: src/views/certificate/components/DNSIssueCertificate.vue:84
+#: src/views/certificate/components/RenewCert.vue:30
 msgid "Renew successfully"
 msgstr "証明書の更新に成功しました"
 
@@ -4148,7 +4183,7 @@ msgstr "土曜日"
 
 #: src/components/ChatGPT/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
-#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:266
+#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:264
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -4203,7 +4238,7 @@ msgstr "ストリーム %{name} を %{node} に保存できませんでした"
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "ストリーム %{name} を %{node} に正常に保存しました"
 
-#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:49
+#: src/language/curd.ts:35 src/views/certificate/store.ts:13
 #: src/views/preference/store/index.ts:118
 msgid "Save successfully"
 msgstr "保存に成功しました"
@@ -4310,6 +4345,10 @@ msgstr "送信"
 #: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:46
 msgid "Server"
 msgstr "サーバー"
+
+#: src/views/certificate/CertificateEditor.vue:55
+msgid "Server error"
+msgstr "サーバーエラー"
 
 #: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
@@ -4445,7 +4484,7 @@ msgstr "キャッシュローダーの反復処理間の待機時間"
 msgid "Sleep time between cache manager iterations"
 msgstr "キャッシュマネージャーの反復処理間の待機時間"
 
-#: src/views/certificate/CertificateEditor.vue:213
+#: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
 msgstr "SSL証明書の内容"
 
@@ -4457,15 +4496,15 @@ msgstr "SSL証明書ファイルはNginx設定ディレクトリの下にある�
 msgid "SSL certificate file not found"
 msgstr "SSL証明書ファイルが見つかりません"
 
-#: src/views/certificate/CertificateEditor.vue:227
+#: src/views/certificate/CertificateEditor.vue:225
 msgid "SSL Certificate Key Content"
 msgstr "SSL証明書キーの内容"
 
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/CertificateEditor.vue:190
 msgid "SSL Certificate Key Path"
 msgstr "SSL証明書キーパス"
 
-#: src/views/certificate/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:175
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "SSL証明書のパス"
@@ -4698,7 +4737,7 @@ msgstr "同期ノード"
 msgid "Sync strategy"
 msgstr "同期戦略"
 
-#: src/views/certificate/CertificateEditor.vue:206
+#: src/views/certificate/CertificateEditor.vue:204
 msgid "Sync to"
 msgstr "同期先"
 
@@ -4769,11 +4808,11 @@ msgid ""
 "dashes, colons, and dots."
 msgstr "ICP番号には、文字、Unicode、数字、ハイフン、ダッシュ、コロン、およびドットのみを含める必要があります。"
 
-#: src/views/certificate/CertificateEditor.vue:216
+#: src/views/certificate/CertificateEditor.vue:214
 msgid "The input is not a SSL Certificate"
 msgstr "入力はSSL証明書ではありません"
 
-#: src/views/certificate/CertificateEditor.vue:230
+#: src/views/certificate/CertificateEditor.vue:228
 msgid "The input is not a SSL Certificate Key"
 msgstr "入力はSSL証明書キーではありません"
 
@@ -4804,11 +4843,11 @@ msgstr "ノード名には、文字、Unicode、数字、ハイフン、ダッ�
 msgid "The parameter of server_name is required"
 msgstr "server_name のパラメーターが必要です"
 
-#: src/views/certificate/CertificateEditor.vue:181
+#: src/views/certificate/CertificateEditor.vue:179
 msgid "The path exists, but the file is not a certificate"
 msgstr "パスは存在しますが、ファイルは証明書ではありません"
 
-#: src/views/certificate/CertificateEditor.vue:196
+#: src/views/certificate/CertificateEditor.vue:194
 msgid "The path exists, but the file is not a private key"
 msgstr "パスは存在しますが、ファイルは秘密鍵ではありません"
 
@@ -4864,17 +4903,17 @@ msgstr ""
 "これらのコードは、パスワードと第二要素を失った場合にアカウントにアクセスするための最後の手段です。これらのコードが見つからない場合、アカウントにアクセス"
 "できなくなります。"
 
-#: src/views/certificate/CertificateEditor.vue:102
+#: src/views/certificate/CertificateEditor.vue:100
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "この自動証明書項目は無効です。削除してください。"
 
-#: src/views/certificate/CertificateEditor.vue:92
+#: src/views/certificate/CertificateEditor.vue:90
 msgid "This certificate is managed by Nginx UI"
 msgstr "この証明書はNginx UIによって管理されています"
 
-#: src/views/certificate/CertificateEditor.vue:165
-#: src/views/certificate/CertificateEditor.vue:179
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/CertificateEditor.vue:163
+#: src/views/certificate/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:192
 msgid "This field is required"
 msgstr "このフィールドは必須です"
 
@@ -5320,6 +5359,10 @@ msgstr "新しいリカバリーコードを生成するときは、新しいコ
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:160
 msgid "Whether to use a temporary path when writing temporary files"
 msgstr "一時ファイルを書き込む際に一時パスを使用するかどうか"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:107
+msgid "Wildcard Certificate"
+msgstr "ワイルドカード証明書"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:48
 msgid "Worker Connections"

@@ -11,6 +11,7 @@ import (
 	"github.com/go-acme/lego/v4/lego"
 	legolog "github.com/go-acme/lego/v4/log"
 	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
@@ -23,7 +24,7 @@ func RevokeCert(payload *ConfigPayload, certLogger *Logger, logChan chan string,
 		if err := recover(); err != nil {
 			buf := make([]byte, 1024)
 			runtime.Stack(buf, false)
-			logger.Error(err)
+			logger.Errorf("%s\n%s", err, buf)
 		}
 	}()
 
@@ -82,7 +83,10 @@ func RevokeCert(payload *ConfigPayload, certLogger *Logger, logChan chan string,
 		return
 	}
 
-	revoke(payload, client, certLogger, errChan)
+	err = revoke(payload, client, certLogger)
+	if err != nil {
+		return
+	}
 
 	// If the revoked certificate was used for the server itself, reload server TLS certificate
 	if payload.GetCertificatePath() == cSettings.ServerSettings.SSLCert &&
@@ -98,14 +102,13 @@ func RevokeCert(payload *ConfigPayload, certLogger *Logger, logChan chan string,
 }
 
 // revoke implements the internal certificate revocation logic
-func revoke(payload *ConfigPayload, client *lego.Client, l *Logger, errChan chan error) {
+func revoke(payload *ConfigPayload, client *lego.Client, l *Logger) error {
 	l.Info(translation.C("[Nginx UI] Revoking certificate"))
 	err := client.Certificate.Revoke(payload.Resource.Certificate)
 	if err != nil {
-		errChan <- errors.Wrap(err, "revoke certificate error")
-		return
+		return cosy.WrapErrorWithParams(ErrRevokeCert, err.Error())
 	}
 
 	l.Info(translation.C("[Nginx UI] Certificate successfully revoked"))
-	return
+	return nil
 }

@@ -10,14 +10,18 @@ import FooterToolBar from '@/components/FooterToolbar'
 import NodeSelector from '@/components/NodeSelector'
 import { AutoCertState } from '@/constants'
 import RenewCert from './components/RenewCert.vue'
+import { useCertStore } from './store'
 
 const route = useRoute()
+const certStore = useCertStore()
+const router = useRouter()
+const errors = ref({}) as Ref<Record<string, string>>
 
 const id = computed(() => {
   return Number.parseInt(route.params.id as string)
 })
 
-const data = ref({}) as Ref<Cert>
+const { data } = storeToRefs(certStore)
 
 const notShowInAutoCert = computed(() => {
   return data.value.auto_cert !== AutoCertState.Enable
@@ -38,27 +42,18 @@ onMounted(() => {
   init()
 })
 
-const router = useRouter()
-const errors = ref({}) as Ref<Record<string, string>>
-
 async function save() {
   try {
-    const r = data.value.id
-      ? await cert.updateItem(data.value.id, data.value)
-      : await cert.createItem(data.value)
-    data.value = r
+    await certStore.save()
     errors.value = {}
-    message.success($gettext('Save successfully'))
-    await router.push(`/certificates/${r.id}`)
+    await router.push(`/certificates/${certStore.data.id}`)
   }
   // eslint-disable-next-line ts/no-explicit-any
   catch (e: any) {
     errors.value = e.errors
-    throw e
+    message.error(e.message ?? $gettext('Server error'))
   }
 }
-
-provide('saveCert', save)
 
 const log = computed(() => {
   if (!data.value.log)

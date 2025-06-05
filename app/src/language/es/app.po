@@ -187,6 +187,10 @@ msgstr "Agregar configuración"
 msgid "Add Directive Below"
 msgstr "Añadir directiva a continuación"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:151
+msgid "Add Domain"
+msgstr "Agregar dominio"
+
 #: src/components/NgxConfigEditor/LocationEditor.vue:131
 #: src/components/NgxConfigEditor/LocationEditor.vue:158
 msgid "Add Location"
@@ -236,6 +240,14 @@ msgstr "Todos"
 msgid "All Recovery Codes Have Been Used"
 msgstr "Todos los códigos de recuperación han sido utilizados"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:156
+msgid ""
+"All selected subdomains must belong to the same DNS Provider, otherwise the "
+"certificate application will fail."
+msgstr ""
+"Todos los subdominios seleccionados deben pertenecer al mismo proveedor de "
+"DNS, de lo contrario, la solicitud de certificado fallará."
+
 #: src/views/preference/tabs/OpenAISettings.vue:32
 msgid "API Base Url"
 msgstr "URL Base de la API"
@@ -262,7 +274,7 @@ msgstr "Aplicación"
 
 #: src/views/system/Upgrade.vue:195
 msgid "Arch"
-msgstr "\"Arquitectura\""
+msgstr "Arquitectura"
 
 #: src/views/preference/tabs/AuthSettings.vue:130
 msgid "Are you sure to delete this banned IP immediately?"
@@ -401,7 +413,7 @@ msgstr "Renovación automática deshabilitada por %{name}"
 msgid "Auto-renewal enabled for %{name}"
 msgstr "Renovación automática habilitada por %{name}"
 
-#: src/views/certificate/components/RenewCert.vue:49
+#: src/views/certificate/components/RenewCert.vue:51
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:84
 msgid "AutoCert is running, please wait..."
 msgstr "AutoCert se está ejecutando, por favor espere..."
@@ -414,7 +426,7 @@ msgstr "\"AutoCert se está ejecutando...\""
 msgid "Automatic Restart"
 msgstr "\"Reinicio Automático\""
 
-#: src/views/certificate/CertificateEditor.vue:259
+#: src/views/certificate/CertificateEditor.vue:257
 #: src/views/config/components/ConfigLeftPanel.vue:273
 #: src/views/config/ConfigList.vue:112 src/views/config/ConfigList.vue:195
 #: src/views/nginx_log/NginxLog.vue:174
@@ -723,12 +735,16 @@ msgstr "Certificado renovado con éxito"
 msgid "Certificate revoked successfully"
 msgstr "Certificado revocado con éxito"
 
-#: src/views/certificate/CertificateEditor.vue:128
+#: src/views/certificate/CertificateEditor.vue:126
 #: src/views/site/site_edit/components/Cert/Cert.vue:58
 msgid "Certificate Status"
 msgid_plural "Certificates Status"
 msgstr[0] "Estado del Certificado"
 msgstr[1] "Estado de los Certificados"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:104
+msgid "Certificate Type"
+msgstr "Tipo de certificado"
 
 #: src/routes/modules/certificates.ts:11
 #: src/views/certificate/CertificateList/Certificate.vue:19
@@ -1219,6 +1235,14 @@ msgstr "Expresión cron personalizada"
 msgid "Custom Directory"
 msgstr "Directorio personalizado"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:126
+msgid "Custom Domains"
+msgstr "Dominios personalizados"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:110
+msgid "Custom Domains Certificate"
+msgstr "Certificado de Dominios Personalizados"
+
 #: src/views/preference/tabs/NodeSettings.vue:19
 msgid ""
 "Customize the name of local node to be displayed in the environment "
@@ -1530,11 +1554,11 @@ msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "Documento"
 
-#: src/views/certificate/components/WildcardCertificate.vue:66
+#: src/views/certificate/components/DNSIssueCertificate.vue:116
 msgid "Domain"
 msgstr "Dominio"
 
-#: src/views/certificate/CertificateEditor.vue:112
+#: src/views/certificate/CertificateEditor.vue:110
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
 "La lista de dominios está vacía, intente reabrir la certificación "
@@ -1739,6 +1763,14 @@ msgstr "Encriptar sitio web con Let's Encrypt"
 msgid "End"
 msgstr "Fin"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:135
+msgid "Enter domain name"
+msgstr "Ingresar nombre de dominio"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:120
+msgid "Enter your domain"
+msgstr "Ingrese su dominio"
+
 #: src/language/constants.ts:22
 msgid "Environment variables cleaned"
 msgstr "Variables de entorno limpiadas"
@@ -1813,7 +1845,7 @@ msgstr "Contenedor Docker externo"
 msgid "External Notify"
 msgstr "Notificación Externa"
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:80
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:81
 msgid "Fail to obtain certificate"
 msgstr "Falla al obtener el certificado"
 
@@ -2343,7 +2375,7 @@ msgid "Import"
 msgstr "Importar"
 
 #: src/routes/modules/certificates.ts:46
-#: src/views/certificate/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:83
 msgid "Import Certificate"
 msgstr "Importar Certificado"
 
@@ -2488,12 +2520,12 @@ msgid "IP"
 msgstr "IP"
 
 #: src/views/certificate/CertificateList/Certificate.vue:37
-msgid "Issue wildcard certificate"
-msgstr "Obtener certificado comodín"
+msgid "Issue certificate"
+msgstr "Emitir certificado"
 
-#: src/views/certificate/components/WildcardCertificate.vue:57
-msgid "Issue Wildcard Certificate"
-msgstr "Obtener certificado Comodín"
+#: src/views/certificate/components/DNSIssueCertificate.vue:95
+msgid "Issue Certificate"
+msgstr "Emitir certificado"
 
 #: src/language/constants.ts:20
 msgid "Issued certificate successfully"
@@ -2576,8 +2608,8 @@ msgstr "Dejar en blanco si no desea modificar"
 msgid "Leave blank if you don't need this."
 msgstr "Déjelo en blanco si no lo necesita."
 
-#: src/views/certificate/CertificateEditor.vue:223
-#: src/views/certificate/CertificateEditor.vue:237
+#: src/views/certificate/CertificateEditor.vue:221
+#: src/views/certificate/CertificateEditor.vue:235
 msgid "Leave blank will not change anything"
 msgstr "Dejarlo en blanco no cambiará nada"
 
@@ -2664,7 +2696,7 @@ msgstr "Ubicación"
 msgid "Locations"
 msgstr "Ubicaciones"
 
-#: src/views/certificate/CertificateEditor.vue:247
+#: src/views/certificate/CertificateEditor.vue:245
 msgid "Log"
 msgstr "Registro"
 
@@ -2879,7 +2911,7 @@ msgid "Modify"
 msgstr "Modificar"
 
 #: src/routes/modules/certificates.ts:36
-#: src/views/certificate/CertificateEditor.vue:85
+#: src/views/certificate/CertificateEditor.vue:83
 msgid "Modify Certificate"
 msgstr "Modificar Certificado"
 
@@ -2914,7 +2946,7 @@ msgstr "Directiva multilínea"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:199
 #: src/views/backup/AutoBackup/AutoBackup.vue:11
 #: src/views/certificate/ACMEUser.vue:11
-#: src/views/certificate/CertificateEditor.vue:162
+#: src/views/certificate/CertificateEditor.vue:160
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
@@ -2974,7 +3006,7 @@ msgstr "Nueva ruta"
 msgid "New version released"
 msgstr "Se liberó una nueva versión"
 
-#: src/views/certificate/components/WildcardCertificate.vue:89
+#: src/views/certificate/components/DNSIssueCertificate.vue:181
 #: src/views/install/components/InstallView.vue:96
 #: src/views/site/site_add/SiteAdd.vue:132
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:214
@@ -3564,6 +3596,10 @@ msgstr ""
 msgid "Please enter a valid port range"
 msgstr "Por favor, introduzca un rango de puertos válido"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:74
+msgid "Please enter at least one domain"
+msgstr "Por favor, ingrese al menos un dominio"
+
 #: src/components/TwoFA/Authorization.vue:85
 msgid "Please enter the OTP code:"
 msgstr "Por favor, ingrese el código OTP:"
@@ -3911,6 +3947,7 @@ msgstr "Recargando"
 msgid "Reloading nginx"
 msgstr "Recargando Nginx"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:144
 #: src/views/preference/tabs/AuthSettings.vue:137
 msgid "Remove"
 msgstr "Eliminar"
@@ -3993,8 +4030,8 @@ msgstr "Renombrado con éxito"
 msgid "Renamed successfully"
 msgstr "Renombrado con éxito"
 
-#: src/views/certificate/components/RenewCert.vue:46
-#: src/views/certificate/components/RenewCert.vue:53
+#: src/views/certificate/components/RenewCert.vue:48
+#: src/views/certificate/components/RenewCert.vue:55
 msgid "Renew Certificate"
 msgstr "Renovar Certificado"
 
@@ -4006,8 +4043,8 @@ msgstr "Error al renovar el Certificado"
 msgid "Renew Certificate Success"
 msgstr "Renovado de Certificado exitoso"
 
-#: src/views/certificate/components/RenewCert.vue:28
-#: src/views/certificate/components/WildcardCertificate.vue:46
+#: src/views/certificate/components/DNSIssueCertificate.vue:84
+#: src/views/certificate/components/RenewCert.vue:30
 msgid "Renew successfully"
 msgstr "Renovado con éxito"
 
@@ -4266,7 +4303,7 @@ msgstr "Sábado"
 
 #: src/components/ChatGPT/ChatMessage.vue:215
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:129
-#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:266
+#: src/language/curd.ts:18 src/views/certificate/CertificateEditor.vue:264
 #: src/views/config/components/ConfigLeftPanel.vue:282
 #: src/views/config/components/ConfigName.vue:59
 #: src/views/preference/components/AuthSettings/Passkey.vue:130
@@ -4321,7 +4358,7 @@ msgstr "Error al guardar el flujo %{name} en %{node}"
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Flujo %{name} guardado en %{node} correctamente"
 
-#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:49
+#: src/language/curd.ts:35 src/views/certificate/store.ts:13
 #: src/views/preference/store/index.ts:118
 msgid "Save successfully"
 msgstr "Guardado con éxito"
@@ -4432,6 +4469,10 @@ msgstr "Enviado"
 #: src/routes/modules/dashboard.ts:19 src/views/preference/Preference.vue:46
 msgid "Server"
 msgstr "Servidor"
+
+#: src/views/certificate/CertificateEditor.vue:55
+msgid "Server error"
+msgstr "Error del servidor"
 
 #: src/views/dashboard/ServerAnalytic.vue:175
 msgid "Server Info"
@@ -4569,7 +4610,7 @@ msgstr "Tiempo de espera entre iteraciones del cargador de caché"
 msgid "Sleep time between cache manager iterations"
 msgstr "Tiempo de espera entre iteraciones del administrador de caché"
 
-#: src/views/certificate/CertificateEditor.vue:213
+#: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
 msgstr "Contenido de certificado SSL"
 
@@ -4583,15 +4624,15 @@ msgstr ""
 msgid "SSL certificate file not found"
 msgstr "Archivo de certificado SSL no encontrado"
 
-#: src/views/certificate/CertificateEditor.vue:227
+#: src/views/certificate/CertificateEditor.vue:225
 msgid "SSL Certificate Key Content"
 msgstr "Contenido de la llave del certificado SSL"
 
-#: src/views/certificate/CertificateEditor.vue:192
+#: src/views/certificate/CertificateEditor.vue:190
 msgid "SSL Certificate Key Path"
 msgstr "Ruta de la llave del certificado SSL"
 
-#: src/views/certificate/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:175
 #: src/views/preference/tabs/ServerSettings.vue:37
 msgid "SSL Certificate Path"
 msgstr "Ruta del certificado SSL"
@@ -4831,7 +4872,7 @@ msgstr "Nodos de sincronización"
 msgid "Sync strategy"
 msgstr "Estrategia de sincronización"
 
-#: src/views/certificate/CertificateEditor.vue:206
+#: src/views/certificate/CertificateEditor.vue:204
 msgid "Sync to"
 msgstr "Sincronizar con"
 
@@ -4907,11 +4948,11 @@ msgstr ""
 "El número ICP solo debe contener letras, unicode, números, guiones, guiones "
 "bajos, dos puntos y puntos."
 
-#: src/views/certificate/CertificateEditor.vue:216
+#: src/views/certificate/CertificateEditor.vue:214
 msgid "The input is not a SSL Certificate"
 msgstr "La entrada no es un Certificado SSL"
 
-#: src/views/certificate/CertificateEditor.vue:230
+#: src/views/certificate/CertificateEditor.vue:228
 msgid "The input is not a SSL Certificate Key"
 msgstr "La entrada no es una clave de certificado SSL"
 
@@ -4950,11 +4991,11 @@ msgstr ""
 msgid "The parameter of server_name is required"
 msgstr "El parámetro de server_name es obligatorio"
 
-#: src/views/certificate/CertificateEditor.vue:181
+#: src/views/certificate/CertificateEditor.vue:179
 msgid "The path exists, but the file is not a certificate"
 msgstr "La ruta existe, pero el archivo no es un certificado"
 
-#: src/views/certificate/CertificateEditor.vue:196
+#: src/views/certificate/CertificateEditor.vue:194
 msgid "The path exists, but the file is not a private key"
 msgstr "La ruta existe, pero el archivo no es una clave privada"
 
@@ -5016,17 +5057,17 @@ msgstr ""
 "pierda su contraseña y los segundos factores. Si no puede encontrar estos "
 "códigos, perderá el acceso a su cuenta."
 
-#: src/views/certificate/CertificateEditor.vue:102
+#: src/views/certificate/CertificateEditor.vue:100
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Este elemento de Auto Cert es inválido, elimínelo por favor."
 
-#: src/views/certificate/CertificateEditor.vue:92
+#: src/views/certificate/CertificateEditor.vue:90
 msgid "This certificate is managed by Nginx UI"
 msgstr "Este certificado es administrado por Nginx UI"
 
-#: src/views/certificate/CertificateEditor.vue:165
-#: src/views/certificate/CertificateEditor.vue:179
-#: src/views/certificate/CertificateEditor.vue:194
+#: src/views/certificate/CertificateEditor.vue:163
+#: src/views/certificate/CertificateEditor.vue:177
+#: src/views/certificate/CertificateEditor.vue:192
 msgid "This field is required"
 msgstr "Este campo es obligatorio"
 
@@ -5509,6 +5550,10 @@ msgstr ""
 msgid "Whether to use a temporary path when writing temporary files"
 msgstr "Si se debe usar una ruta temporal al escribir archivos temporales"
 
+#: src/views/certificate/components/DNSIssueCertificate.vue:107
+msgid "Wildcard Certificate"
+msgstr "Certificado comodín"
+
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:48
 msgid "Worker Connections"
 msgstr "Conexiones de trabajador"
@@ -5850,9 +5895,6 @@ msgstr "Sus llaves de acceso"
 
 #~ msgid "Recovery Code:"
 #~ msgstr "Código de Recuperación:"
-
-#~ msgid "Server error"
-#~ msgstr "Error del servidor"
 
 #~ msgid "The recovery code is only displayed once, please save it in a safe place."
 #~ msgstr ""

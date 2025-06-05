@@ -59,14 +59,15 @@ func (t *Logger) SetWebSocket(ws *websocket.Conn) {
 }
 
 func (t *Logger) Info(c *translation.Container) {
+	t.mu.Lock()
+	defer t.mu.Unlock()
+
 	result, err := c.ToJSON()
 	if err != nil {
 		return
 	}
 
-	t.mu.Lock()
 	t.buffer = append(t.buffer, string(result))
-	t.mu.Unlock()
 
 	logger.Info("AutoCert", c.ToString())
 
@@ -75,11 +76,11 @@ func (t *Logger) Info(c *translation.Container) {
 
 func (t *Logger) Error(err error) {
 	t.mu.Lock()
+	defer t.mu.Unlock()
 	t.buffer = append(t.buffer, fmt.Sprintf("%s [Error] %s",
 		time.Now().Format(time.DateTime),
 		strings.TrimSpace(err.Error()),
 	))
-	t.mu.Unlock()
 
 	logger.Error("AutoCert", err)
 }
@@ -100,10 +101,6 @@ func (t *Logger) Close() {
 	})
 }
 
-func (t *Logger) ToString() (content string) {
-	t.mu.Lock()
-	defer t.mu.Unlock()
-
-	content = strings.Join(t.buffer, "\n")
-	return
+func (t *Logger) ToString() string {
+	return strings.Join(t.buffer, "\n")
 }

@@ -81,7 +81,7 @@ func syncSave(name string, content string) {
 				if err := recover(); err != nil {
 					buf := make([]byte, 1024)
 					runtime.Stack(buf, false)
-					logger.Error(err)
+					logger.Errorf("%s\n%s", err, buf)
 				}
 			}()
 			defer wg.Done()
