@@ -72,6 +72,7 @@ function handle_click_duplicate(name: string) {
       }"
       disable-add
       disable-delete
+      disable-trash
       disable-view
       disable-export
       row-selection-type="checkbox"

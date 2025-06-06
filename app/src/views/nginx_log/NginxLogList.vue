@@ -75,6 +75,7 @@ function viewLog(record: { type: string, path: string }) {
     disable-add
     disable-export
     disable-delete
+    disable-trash
     disable-view
     disable-edit
   >

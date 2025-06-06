@@ -86,6 +86,7 @@ function handleAddStream() {
       }"
       disable-add
       disable-delete
+      disable-trash
       disable-view
       disable-export
       row-selection-type="checkbox"

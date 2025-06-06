@@ -5,10 +5,9 @@ import zh_CN from 'ant-design-vue/es/locale/zh_CN'
 import zh_TW from 'ant-design-vue/es/locale/zh_TW'
 import loadTranslations from '@/api/translations'
 import gettext from '@/gettext'
-import { useSettingsStore, useUserStore } from '@/pinia'
+import { useSettingsStore } from '@/pinia'
 
 const route = useRoute()
-const router = useRouter()
 
 const media = window.matchMedia('(prefers-color-scheme: dark)')
 
@@ -47,20 +46,9 @@ const lang = computed(() => {
 })
 
 const settings = useSettingsStore()
-const user = useUserStore()
 const is_theme_dark = computed(() => settings.theme === 'dark')
 
 loadTranslations(route)
-
-if (user.isLogin) {
-  watch(route, () => {
-    settings.route_path = route.path
-  })
-
-  onMounted(() => {
-    router.push(settings.route_path)
-  })
-}
 </script>
 
 <template>
