@@ -70,6 +70,7 @@ function handle_click_duplicate(name: string) {
       :table-props="{
         rowKey: 'name',
       }"
+      disable-add
       disable-delete
       disable-view
       disable-export
@@ -82,6 +83,17 @@ function handle_click_duplicate(name: string) {
         path: `/sites/${encodeURIComponent(record.name)}`,
       })"
     >
+      <template #beforeListActions>
+        <AButton
+          type="link"
+          size="small"
+          @click="router.push({
+            path: '/sites/add',
+          })"
+        >
+          {{ $gettext('Add') }}
+        </AButton>
+      </template>
       <template #beforeCardBody>
         <InspectConfig ref="inspectConfig" />
         <EnvGroupTabs v-model:active-key="envGroupId" :env-groups="envGroups" />

@@ -107,14 +107,14 @@ const supportSSL = computed(() => {
 </script>
 
 <template>
-  <div v-if="hasServers">
+  <div v-if="hasServers" class="px-6">
     <ContextHolder />
 
     <AFormItem
       v-if="!supportSSL"
       :label="$gettext('Enable TLS')"
     >
-      <ASwitch @change="confirmChangeTLS" />
+      <ASwitch class="<sm:ml-2" @change="confirmChangeTLS" />
     </AFormItem>
   </div>
 </template>

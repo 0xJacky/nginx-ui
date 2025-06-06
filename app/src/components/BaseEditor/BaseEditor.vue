@@ -26,7 +26,7 @@ const loading = computed(() =>
 
 <template>
   <ASpin class="h-full base-editor-spin" :spinning="loading" :indicator="indicator">
-    <ARow :gutter="{ xs: 0, sm: 16 }">
+    <ARow :gutter="[16, 16]">
       <ACol
         :xs="24"
         :sm="24"
@@ -39,7 +39,7 @@ const loading = computed(() =>
       </ACol>
 
       <ACol
-        :class="props.colRightClass"
+        :class="colRightClass"
         :xs="24"
         :sm="24"
         :md="24"
