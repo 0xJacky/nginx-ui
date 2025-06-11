@@ -34,6 +34,11 @@ const config = extendCurdApi(useCurdApi<Config>('/configs'), {
     new_name: newName,
     sync_node_ids: syncNodeIds,
   }),
+  delete: (basePath: string, name: string, syncNodeIds?: number[]) => http.post('/config_delete', {
+    base_path: basePath,
+    name,
+    sync_node_ids: syncNodeIds,
+  }),
   get_history: (filepath: string, params?: { page: number, page_size: number }) => {
     return http.get<GetListResponse<ConfigBackup>>('/config_histories', { params: { filepath, ...params } })
   },

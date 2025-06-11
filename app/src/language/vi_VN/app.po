@@ -157,7 +157,7 @@ msgstr "Tỷ lệ công nhân thực tế so với cấu hình"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:166 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:102
+#: src/views/site/site_list/SiteList.vue:95 src/views/stream/StreamList.vue:103
 msgid "Add"
 msgstr "Thêm"
 
@@ -193,7 +193,7 @@ msgstr "Thêm máy chủ"
 msgid "Add Site"
 msgstr "Thêm Website"
 
-#: src/views/stream/StreamList.vue:139
+#: src/views/stream/StreamList.vue:140
 msgid "Add Stream"
 msgstr "Thêm luồng"
 
@@ -292,8 +292,8 @@ msgstr "Bạn có chắc chắn muốn xóa lịch sử trò chuyện không?"
 msgid "Are you sure you want to delete permanently?"
 msgstr "Bạn có chắc chắn muốn xóa vĩnh viễn không?"
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
-#: src/views/stream/StreamList.vue:122
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:113
+#: src/views/stream/StreamList.vue:123
 msgid "Are you sure you want to delete?"
 msgstr "Bạn có chắc chắn muốn xóa không?"
 
@@ -411,8 +411,7 @@ msgstr "Khởi động lại tự động"
 
 #: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/components/ConfigLeftPanel.vue:273
-#: src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195
+#: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:156
 #: src/views/stream/components/StreamEditor.vue:111
@@ -602,6 +601,7 @@ msgstr ""
 #: src/components/ChatGPT/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:37
+#: src/views/config/components/Delete.vue:98
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
@@ -1031,7 +1031,7 @@ msgstr "Thông tin cấu hình"
 msgid "Configuration Name"
 msgstr "Tên cấu hình"
 
-#: src/views/config/ConfigList.vue:104
+#: src/views/config/ConfigList.vue:112
 msgid "Configurations"
 msgstr "Cấu hình"
 
@@ -1115,11 +1115,11 @@ msgstr "Tạo thêm"
 msgid "Create Backup"
 msgstr "Tạo bản sao lưu"
 
-#: src/views/config/ConfigList.vue:122
+#: src/views/config/ConfigList.vue:130
 msgid "Create File"
 msgstr "Tạo tệp"
 
-#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:129
+#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:137
 msgid "Create Folder"
 msgstr "Tạo thư mục"
 
@@ -1227,7 +1227,7 @@ msgstr "Hàng ngày lúc %{time}"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:67
+#: src/views/config/ConfigList.vue:69
 msgid "Dashboard"
 msgstr "Bảng điều khiển"
 
@@ -1254,14 +1254,21 @@ msgstr "Xác định tên và kích thước vùng bộ nhớ dùng chung, ví d
 #: src/components/NgxConfigEditor/NgxServer.vue:110
 #: src/components/NgxConfigEditor/NgxUpstream.vue:134 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
-#: src/views/site/site_list/SiteList.vue:109
-#: src/views/stream/StreamList.vue:131
+#: src/views/config/components/Delete.vue:65
+#: src/views/config/components/Delete.vue:97
+#: src/views/config/ConfigList.vue:199
+#: src/views/site/site_list/SiteList.vue:122
+#: src/views/stream/StreamList.vue:132
 msgid "Delete"
 msgstr "Xoá"
 
 #: src/views/certificate/components/RemoveCert.vue:93
 msgid "Delete Certificate"
 msgstr "Xóa chứng chỉ"
+
+#: src/views/config/components/Delete.vue:96
+msgid "Delete Confirmation"
+msgstr "Xác nhận xóa"
 
 #: src/language/curd.ts:11
 msgid "Delete Permanently"
@@ -1307,7 +1314,7 @@ msgstr "Đã xóa luồng %{name} từ %{node} thành công"
 msgid "Delete stream: %{stream_name}"
 msgstr "Xóa luồng: %{stream_name}"
 
-#: src/language/curd.ts:29
+#: src/language/curd.ts:29 src/views/config/components/Delete.vue:80
 msgid "Deleted successfully"
 msgstr "Đã xóa thành công"
 
@@ -1549,9 +1556,9 @@ msgstr ""
 "trên các trang web không phải HTTPS, trừ khi chạy trên localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:95
+#: src/views/site/site_list/SiteList.vue:108
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:117
+#: src/views/stream/StreamList.vue:118
 msgid "Duplicate"
 msgstr "Nhân bản"
 
@@ -2134,6 +2141,15 @@ msgstr "Không thể ghi tệp khóa bảo mật: {0}"
 msgid "Failed to write to zip buffer: {0}"
 msgstr "Không thể ghi vào bộ đệm zip: {0}"
 
+#: src/views/config/components/Delete.vue:116
+#, fuzzy
+msgid "file"
+msgstr "tệp"
+
+#: src/views/config/components/Delete.vue:122
+msgid "File"
+msgstr "Tệp tin"
+
 #: src/language/constants.ts:32
 msgid "File exists"
 msgstr "Tệp tin đã tồn tại"
@@ -2157,6 +2173,14 @@ msgstr "Đã hoàn thành"
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
 msgid "First View"
 msgstr "Xem lần đầu"
+
+#: src/views/config/components/Delete.vue:116
+msgid "folder"
+msgstr "thư mục"
+
+#: src/views/config/components/Delete.vue:122
+msgid "Folder"
+msgstr "Thư mục"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:71
 msgid ""
@@ -2747,7 +2771,7 @@ msgstr ""
 #: src/routes/modules/config.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:114
 #: src/views/config/components/ConfigLeftPanel.vue:164
-#: src/views/config/ConfigList.vue:72
+#: src/views/config/ConfigList.vue:74
 msgid "Manage Configs"
 msgstr "Quản lý cấu hình"
 
@@ -2880,7 +2904,7 @@ msgid "Modified At"
 msgstr "Đã sửa đổi lúc"
 
 #: src/components/ChatGPT/ChatMessage.vue:212
-#: src/views/config/ConfigList.vue:174
+#: src/views/config/ConfigList.vue:182
 msgid "Modify"
 msgstr "Sửa đổi"
 
@@ -2924,6 +2948,7 @@ msgstr "Chỉ thị nhiều dòng"
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
+#: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:5
 #: src/views/environments/group/columns.ts:7
@@ -2936,7 +2961,7 @@ msgstr "Chỉ thị nhiều dòng"
 #: src/views/stream/columns.tsx:12
 #: src/views/stream/components/RightPanel/Basic.vue:30
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:144
+#: src/views/stream/StreamList.vue:145
 msgid "Name"
 msgstr "Tên"
 
@@ -3206,7 +3231,8 @@ msgstr "Nginx.conf bao gồm thư mục streams-enabled"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:120
+#: src/views/site/site_list/SiteList.vue:111
+#: src/views/stream/StreamList.vue:121
 msgid "No"
 msgstr "Không"
 
@@ -3369,9 +3395,9 @@ msgstr "Ngoại tuyến"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:99
+#: src/views/site/site_list/SiteList.vue:112
 #: src/views/stream/components/StreamStatusSelect.vue:60
-#: src/views/stream/StreamList.vue:121
+#: src/views/stream/StreamList.vue:122
 msgid "OK"
 msgstr "Đồng ý"
 
@@ -3506,6 +3532,7 @@ msgstr "Mật khẩu không khớp"
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
 #: src/language/curd.ts:59
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
+#: src/views/config/components/Delete.vue:124
 #: src/views/nginx_log/NginxLogList.vue:44
 msgid "Path"
 msgstr "Đường dẫn"
@@ -3707,6 +3734,10 @@ msgstr "Vui lòng chọn ít nhất một nút để nâng cấp"
 msgid "Please type \"Revoke\" to confirm"
 msgstr "Vui lòng nhập \"Thu hồi\" để xác nhận"
 
+#: src/views/config/components/Delete.vue:70
+msgid "Please type the exact confirmation text"
+msgstr "Vui lòng nhập chính xác văn bản xác nhận"
+
 #: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
 msgid "Port"
@@ -3763,6 +3794,10 @@ msgstr "Cấm xóa người dùng mặc định"
 #: src/views/system/About.vue:51
 msgid "Project Team"
 msgstr "Đội ngũ phát triển"
+
+#: src/views/config/components/Delete.vue:107
+msgid "Protected Directory"
+msgstr "Thư mục được bảo vệ"
 
 #: src/views/certificate/DNSCredential.vue:17
 msgid "Provider"
@@ -3941,7 +3976,7 @@ msgstr "Đã xóa thành công"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:131
 #: src/views/config/components/ConfigName.vue:51
 #: src/views/config/components/Rename.vue:56
-#: src/views/config/ConfigList.vue:181
+#: src/views/config/ConfigList.vue:190
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:44
 #: src/views/stream/components/ConfigName.vue:44
 msgid "Rename"
@@ -4804,6 +4839,7 @@ msgstr "Sử dụng Dark theme"
 msgid "Switch to light theme"
 msgstr "Sử dụng Light theme"
 
+#: src/views/config/components/Delete.vue:141
 #: src/views/config/components/Rename.vue:81
 msgid "Sync"
 msgstr "Đồng bộ"
@@ -5049,6 +5085,10 @@ msgstr "Mục Chứng chỉ tự động này không hợp lệ, vui lòng xóa 
 msgid "This certificate is managed by Nginx UI"
 msgstr "Chứng chỉ này được quản lý bởi Nginx UI"
 
+#: src/views/config/components/Delete.vue:108
+msgid "This directory is protected and cannot be deleted for system safety."
+msgstr "Thư mục này được bảo vệ và không thể xóa vì lý do an toàn hệ thống."
+
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateEditor.vue:176
 #: src/views/certificate/CertificateEditor.vue:191
@@ -5104,6 +5144,10 @@ msgstr ""
 #: src/constants/form_errors.ts:4 src/language/curd.ts:42
 msgid "This value is already taken"
 msgstr "Giá trị này đã được sử dụng"
+
+#: src/views/config/components/Delete.vue:116
+msgid "This will permanently delete the %{type}."
+msgstr "Hành động này sẽ xóa vĩnh viễn %{type}."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:227
 #: src/components/SystemRestore/SystemRestoreContent.vue:304
@@ -5265,12 +5309,17 @@ msgstr "Yêu cầu xác thực hai yếu tố"
 
 #: src/components/ProxyTargets/ProxyTargets.vue:48
 #: src/views/certificate/CertificateList/certColumns.tsx:24
+#: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
 #: src/views/nginx_log/NginxLogList.vue:12
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:18
 msgid "Type"
 msgstr "Loại"
+
+#: src/views/config/components/Delete.vue:129
+msgid "Type %{delete} to confirm"
+msgstr "Nhập %{delete} để xác nhận"
 
 #: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
@@ -5419,7 +5468,7 @@ msgstr "Xác minh các yêu cầu hệ thống"
 msgid "Version"
 msgstr "Phiên bản"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:83
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:84
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "Xem"
@@ -5836,9 +5885,6 @@ msgstr "Khóa truy cập của bạn"
 #, fuzzy
 #~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
-
-#~ msgid "File"
-#~ msgstr "Tệp tin"
 
 #, fuzzy
 #~ msgid "Incorrect username or password"

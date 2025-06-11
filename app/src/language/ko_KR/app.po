@@ -160,7 +160,7 @@ msgstr "실제 작업자 대 구성 비율"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:166 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:102
+#: src/views/site/site_list/SiteList.vue:95 src/views/stream/StreamList.vue:103
 msgid "Add"
 msgstr "추가"
 
@@ -196,7 +196,7 @@ msgstr "서버 추가"
 msgid "Add Site"
 msgstr "사이트 추가"
 
-#: src/views/stream/StreamList.vue:139
+#: src/views/stream/StreamList.vue:140
 msgid "Add Stream"
 msgstr "스트림 추가"
 
@@ -293,8 +293,8 @@ msgstr "채팅 기록을 지우시겠습니까?"
 msgid "Are you sure you want to delete permanently?"
 msgstr "정말 영구적으로 삭제하시겠습니까?"
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
-#: src/views/stream/StreamList.vue:122
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:113
+#: src/views/stream/StreamList.vue:123
 msgid "Are you sure you want to delete?"
 msgstr "정말 삭제하시겠습니까?"
 
@@ -412,8 +412,7 @@ msgstr "자동 재시작"
 
 #: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/components/ConfigLeftPanel.vue:273
-#: src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195
+#: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:156
 #: src/views/stream/components/StreamEditor.vue:111
@@ -601,6 +600,7 @@ msgstr ""
 #: src/components/ChatGPT/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:37
+#: src/views/config/components/Delete.vue:98
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
@@ -1017,7 +1017,7 @@ msgstr "구성 정보"
 msgid "Configuration Name"
 msgstr "구성 이름"
 
-#: src/views/config/ConfigList.vue:104
+#: src/views/config/ConfigList.vue:112
 msgid "Configurations"
 msgstr "구성들"
 
@@ -1101,11 +1101,11 @@ msgstr "다른 것 생성하기"
 msgid "Create Backup"
 msgstr "백업 생성"
 
-#: src/views/config/ConfigList.vue:122
+#: src/views/config/ConfigList.vue:130
 msgid "Create File"
 msgstr "파일 생성"
 
-#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:129
+#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:137
 msgid "Create Folder"
 msgstr "폴더 생성"
 
@@ -1211,7 +1211,7 @@ msgstr "매일 %{time}"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:67
+#: src/views/config/ConfigList.vue:69
 msgid "Dashboard"
 msgstr "대시보드"
 
@@ -1238,14 +1238,21 @@ msgstr "공유 메모리 영역 이름과 크기를 정의합니다(예: proxy_c
 #: src/components/NgxConfigEditor/NgxServer.vue:110
 #: src/components/NgxConfigEditor/NgxUpstream.vue:134 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
-#: src/views/site/site_list/SiteList.vue:109
-#: src/views/stream/StreamList.vue:131
+#: src/views/config/components/Delete.vue:65
+#: src/views/config/components/Delete.vue:97
+#: src/views/config/ConfigList.vue:199
+#: src/views/site/site_list/SiteList.vue:122
+#: src/views/stream/StreamList.vue:132
 msgid "Delete"
 msgstr "삭제"
 
 #: src/views/certificate/components/RemoveCert.vue:93
 msgid "Delete Certificate"
 msgstr "인증서 삭제"
+
+#: src/views/config/components/Delete.vue:96
+msgid "Delete Confirmation"
+msgstr "삭제 확인"
 
 #: src/language/curd.ts:11
 msgid "Delete Permanently"
@@ -1291,7 +1298,7 @@ msgstr "스트림 %{name}을(를) %{node}에서 성공적으로 삭제했습니�
 msgid "Delete stream: %{stream_name}"
 msgstr "스트림 삭제: %{stream_name}"
 
-#: src/language/curd.ts:29
+#: src/language/curd.ts:29 src/views/config/components/Delete.vue:80
 msgid "Deleted successfully"
 msgstr "성공적으로 삭제됨"
 
@@ -1531,9 +1538,9 @@ msgstr ""
 "없습니다."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:95
+#: src/views/site/site_list/SiteList.vue:108
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:117
+#: src/views/stream/StreamList.vue:118
 msgid "Duplicate"
 msgstr "복제"
 
@@ -2116,6 +2123,14 @@ msgstr "보안 키 파일 쓰기 실패: {0}"
 msgid "Failed to write to zip buffer: {0}"
 msgstr "ZIP 버퍼에 쓰기 실패: {0}"
 
+#: src/views/config/components/Delete.vue:116
+msgid "file"
+msgstr "파일"
+
+#: src/views/config/components/Delete.vue:122
+msgid "File"
+msgstr "파일"
+
 #: src/language/constants.ts:32
 msgid "File exists"
 msgstr "파일이 존재함"
@@ -2139,6 +2154,14 @@ msgstr "완료됨"
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
 msgid "First View"
 msgstr "첫 번째 보기"
+
+#: src/views/config/components/Delete.vue:116
+msgid "folder"
+msgstr "폴더"
+
+#: src/views/config/components/Delete.vue:122
+msgid "Folder"
+msgstr "폴더"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:71
 msgid ""
@@ -2710,7 +2733,7 @@ msgstr "인증서를 받기 전에 .well-known 디렉터리에 대한 역방향 
 #: src/routes/modules/config.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:114
 #: src/views/config/components/ConfigLeftPanel.vue:164
-#: src/views/config/ConfigList.vue:72
+#: src/views/config/ConfigList.vue:74
 msgid "Manage Configs"
 msgstr "구성 관리"
 
@@ -2843,7 +2866,7 @@ msgid "Modified At"
 msgstr "수정일시"
 
 #: src/components/ChatGPT/ChatMessage.vue:212
-#: src/views/config/ConfigList.vue:174
+#: src/views/config/ConfigList.vue:182
 msgid "Modify"
 msgstr "수정"
 
@@ -2887,6 +2910,7 @@ msgstr "여러 줄 지시문"
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
+#: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:5
 #: src/views/environments/group/columns.ts:7
@@ -2899,7 +2923,7 @@ msgstr "여러 줄 지시문"
 #: src/views/stream/columns.tsx:12
 #: src/views/stream/components/RightPanel/Basic.vue:30
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:144
+#: src/views/stream/StreamList.vue:145
 msgid "Name"
 msgstr "이름"
 
@@ -3167,7 +3191,8 @@ msgstr "Nginx.conf에는 streams-enabled 디렉토리가 포함됩니다"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:120
+#: src/views/site/site_list/SiteList.vue:111
+#: src/views/stream/StreamList.vue:121
 msgid "No"
 msgstr "아니요"
 
@@ -3326,9 +3351,9 @@ msgstr "오프라인"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:99
+#: src/views/site/site_list/SiteList.vue:112
 #: src/views/stream/components/StreamStatusSelect.vue:60
-#: src/views/stream/StreamList.vue:121
+#: src/views/stream/StreamList.vue:122
 msgid "OK"
 msgstr "확인"
 
@@ -3461,6 +3486,7 @@ msgstr "비밀번호가 일치하지 않습니다"
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
 #: src/language/curd.ts:59
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
+#: src/views/config/components/Delete.vue:124
 #: src/views/nginx_log/NginxLogList.vue:44
 msgid "Path"
 msgstr "경로"
@@ -3654,6 +3680,10 @@ msgstr "업그레이드할 노드를 최소한 하나 이상 선택해 주세요
 msgid "Please type \"Revoke\" to confirm"
 msgstr "확인하려면 \"Revoke\"를 입력하세요"
 
+#: src/views/config/components/Delete.vue:70
+msgid "Please type the exact confirmation text"
+msgstr "정확한 확인 텍스트를 입력하세요"
+
 #: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
 msgid "Port"
@@ -3710,6 +3740,10 @@ msgstr "기본 사용자 삭제 금지"
 #: src/views/system/About.vue:51
 msgid "Project Team"
 msgstr "프로젝트 팀"
+
+#: src/views/config/components/Delete.vue:107
+msgid "Protected Directory"
+msgstr "보호된 디렉터리"
 
 #: src/views/certificate/DNSCredential.vue:17
 msgid "Provider"
@@ -3884,7 +3918,7 @@ msgstr "성공적으로 제거됨"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:131
 #: src/views/config/components/ConfigName.vue:51
 #: src/views/config/components/Rename.vue:56
-#: src/views/config/ConfigList.vue:181
+#: src/views/config/ConfigList.vue:190
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:44
 #: src/views/stream/components/ConfigName.vue:44
 msgid "Rename"
@@ -4738,6 +4772,7 @@ msgstr "다크 테마로 변경"
 msgid "Switch to light theme"
 msgstr "라이트 테마로 변경"
 
+#: src/views/config/components/Delete.vue:141
 #: src/views/config/components/Rename.vue:81
 msgid "Sync"
 msgstr "동기화"
@@ -4964,6 +4999,10 @@ msgstr "이 자동 인증 항목이 유효하지 않습니다. 제거해주세�
 msgid "This certificate is managed by Nginx UI"
 msgstr "이 인증서는 Nginx UI에서 관리됩니다"
 
+#: src/views/config/components/Delete.vue:108
+msgid "This directory is protected and cannot be deleted for system safety."
+msgstr "이 디렉터리는 보호되어 있으며 시스템 안전을 위해 삭제할 수 없습니다."
+
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateEditor.vue:176
 #: src/views/certificate/CertificateEditor.vue:191
@@ -5013,6 +5052,10 @@ msgstr "이 토큰은 한 번만 표시되며 나중에 다시 가져올 수 없
 #: src/constants/form_errors.ts:4 src/language/curd.ts:42
 msgid "This value is already taken"
 msgstr "이 값은 이미 사용 중입니다"
+
+#: src/views/config/components/Delete.vue:116
+msgid "This will permanently delete the %{type}."
+msgstr "이 작업으로 %{type}이(가) 영구적으로 삭제됩니다."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:227
 #: src/components/SystemRestore/SystemRestoreContent.vue:304
@@ -5158,12 +5201,17 @@ msgstr "2단계 인증이 필요합니다"
 
 #: src/components/ProxyTargets/ProxyTargets.vue:48
 #: src/views/certificate/CertificateList/certColumns.tsx:24
+#: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
 #: src/views/nginx_log/NginxLogList.vue:12
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:18
 msgid "Type"
 msgstr "유형"
+
+#: src/views/config/components/Delete.vue:129
+msgid "Type %{delete} to confirm"
+msgstr "확인하려면 %{delete}를 입력하세요"
 
 #: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
@@ -5312,7 +5360,7 @@ msgstr "시스템 요구 사항을 확인하십시오"
 msgid "Version"
 msgstr "버전"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:83
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:84
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "보기"
@@ -5716,9 +5764,6 @@ msgstr "귀하의 패스키"
 #, fuzzy
 #~ msgid "Sync config %{config_name} to %{env_name} failed, response: %{resp}"
 #~ msgstr "%{conf_name}을(를) %{node_name}(으)로 성공적으로 복제함"
-
-#~ msgid "File"
-#~ msgstr "파일"
 
 #, fuzzy
 #~ msgid "Incorrect username or password"

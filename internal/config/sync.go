@@ -223,3 +223,95 @@ func (p *RenameConfigPayload) rename(env *model.Environment) (err error) {
 
 	return
 }
+
+func SyncDeleteOnRemoteServer(deletePath string, syncNodeIds []uint64) (err error) {
+	if deletePath == "" || len(syncNodeIds) == 0 {
+		return
+	}
+
+	nginxConfPath := nginx.GetConfPath()
+	if !helper.IsUnderDirectory(deletePath, nginxConfPath) {
+		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), deletePath, nginxConfPath)
+	}
+
+	payload := &DeleteConfigPayload{
+		Filepath: deletePath,
+	}
+
+	q := query.Environment
+	envs, _ := q.Where(q.ID.In(syncNodeIds...)).Find()
+	for _, env := range envs {
+		go func() {
+			err := payload.delete(env)
+			if err != nil {
+				logger.Error(err)
+			}
+		}()
+	}
+
+	return
+}
+
+type DeleteConfigPayload struct {
+	Filepath string `json:"filepath"`
+}
+
+type SyncDeleteNotificationPayload struct {
+	StatusCode int    `json:"status_code"`
+	Path       string `json:"path"`
+	EnvName    string `json:"env_name"`
+	Response   string `json:"response"`
+}
+
+func (p *DeleteConfigPayload) delete(env *model.Environment) (err error) {
+	client := http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: settings.HTTPSettings.InsecureSkipVerify},
+		},
+	}
+
+	payloadBytes, err := json.Marshal(gin.H{
+		"base_path": strings.ReplaceAll(filepath.Dir(p.Filepath), nginx.GetConfPath(), ""),
+		"name":      filepath.Base(p.Filepath),
+	})
+	if err != nil {
+		return
+	}
+
+	url, err := env.GetUrl("/api/config_delete")
+	if err != nil {
+		return
+	}
+
+	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(payloadBytes))
+	if err != nil {
+		return
+	}
+	req.Header.Set("X-Node-Secret", env.Token)
+	resp, err := client.Do(req)
+	if err != nil {
+		return
+	}
+	defer resp.Body.Close()
+
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+
+	notificationPayload := &SyncDeleteNotificationPayload{
+		StatusCode: resp.StatusCode,
+		Path:       p.Filepath,
+		EnvName:    env.Name,
+		Response:   string(respBody),
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		notification.Error("Delete Remote Config Error", "Delete %{path} on %{env_name} failed", notificationPayload)
+		return
+	}
+
+	notification.Success("Delete Remote Config Success", "Delete %{path} on %{env_name} successfully", notificationPayload)
+
+	return
+}

@@ -17,6 +17,7 @@ func InitRouter(r *gin.RouterGroup) {
 	{
 		o.POST("config_mkdir", Mkdir)
 		o.POST("config_rename", Rename)
+		o.POST("config_delete", DeleteConfig)
 	}
 
 	r.GET("config_histories", GetConfigHistory)

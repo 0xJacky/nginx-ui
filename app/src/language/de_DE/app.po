@@ -161,7 +161,7 @@ msgstr "Tatsächliches Verhältnis von Arbeitern zu konfigurierten"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:166 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:102
+#: src/views/site/site_list/SiteList.vue:95 src/views/stream/StreamList.vue:103
 msgid "Add"
 msgstr "Hinzufügen"
 
@@ -197,7 +197,7 @@ msgstr "Server hinzufügen"
 msgid "Add Site"
 msgstr "Seite hinzufügen"
 
-#: src/views/stream/StreamList.vue:139
+#: src/views/stream/StreamList.vue:140
 msgid "Add Stream"
 msgstr "Stream hinzufügen"
 
@@ -298,8 +298,8 @@ msgstr "Sind Sie sicher, dass Sie den Chatverlauf löschen möchten?"
 msgid "Are you sure you want to delete permanently?"
 msgstr "Sind Sie sicher, dass Sie dauerhaft löschen möchten?"
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
-#: src/views/stream/StreamList.vue:122
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:113
+#: src/views/stream/StreamList.vue:123
 msgid "Are you sure you want to delete?"
 msgstr "Sind Sie sicher, dass Sie löschen möchten?"
 
@@ -421,8 +421,7 @@ msgstr "Automatischer Neustart"
 
 #: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/components/ConfigLeftPanel.vue:273
-#: src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195
+#: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:156
 #: src/views/stream/components/StreamEditor.vue:111
@@ -622,6 +621,7 @@ msgstr ""
 #: src/components/ChatGPT/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:37
+#: src/views/config/components/Delete.vue:98
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
@@ -1057,7 +1057,7 @@ msgstr "Konfigurationsinformationen"
 msgid "Configuration Name"
 msgstr "Konf"
 
-#: src/views/config/ConfigList.vue:104
+#: src/views/config/ConfigList.vue:112
 msgid "Configurations"
 msgstr "Konfigurationen"
 
@@ -1143,11 +1143,11 @@ msgstr "Weiteres erstellen"
 msgid "Create Backup"
 msgstr "Backup erstellen"
 
-#: src/views/config/ConfigList.vue:122
+#: src/views/config/ConfigList.vue:130
 msgid "Create File"
 msgstr "Datei erstellen"
 
-#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:129
+#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:137
 msgid "Create Folder"
 msgstr "Ordner erstellen"
 
@@ -1256,7 +1256,7 @@ msgstr "Täglich um %{time}"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:67
+#: src/views/config/ConfigList.vue:69
 msgid "Dashboard"
 msgstr "Übersicht"
 
@@ -1285,14 +1285,21 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:110
 #: src/components/NgxConfigEditor/NgxUpstream.vue:134 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
-#: src/views/site/site_list/SiteList.vue:109
-#: src/views/stream/StreamList.vue:131
+#: src/views/config/components/Delete.vue:65
+#: src/views/config/components/Delete.vue:97
+#: src/views/config/ConfigList.vue:199
+#: src/views/site/site_list/SiteList.vue:122
+#: src/views/stream/StreamList.vue:132
 msgid "Delete"
 msgstr "Löschen"
 
 #: src/views/certificate/components/RemoveCert.vue:93
 msgid "Delete Certificate"
 msgstr "Zertifikat löschen"
+
+#: src/views/config/components/Delete.vue:96
+msgid "Delete Confirmation"
+msgstr "Löschbestätigung"
 
 #: src/language/curd.ts:11
 msgid "Delete Permanently"
@@ -1338,7 +1345,7 @@ msgstr "Stream %{name} wurde erfolgreich von %{node} gelöscht"
 msgid "Delete stream: %{stream_name}"
 msgstr "Stream löschen: %{stream_name}"
 
-#: src/language/curd.ts:29
+#: src/language/curd.ts:29 src/views/config/components/Delete.vue:80
 msgid "Deleted successfully"
 msgstr "Erfolgreich gelöscht"
 
@@ -1583,9 +1590,9 @@ msgstr ""
 "ausgeführt werden."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:95
+#: src/views/site/site_list/SiteList.vue:108
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:117
+#: src/views/stream/StreamList.vue:118
 msgid "Duplicate"
 msgstr "Duplizieren"
 
@@ -2168,6 +2175,14 @@ msgstr "Fehler beim Schreiben der Sicherheitsschlüsseldatei: {0}"
 msgid "Failed to write to zip buffer: {0}"
 msgstr "Fehler beim Schreiben in den Zip-Puffer: {0}"
 
+#: src/views/config/components/Delete.vue:116
+msgid "file"
+msgstr "Datei"
+
+#: src/views/config/components/Delete.vue:122
+msgid "File"
+msgstr "Datei"
+
 #: src/language/constants.ts:32
 msgid "File exists"
 msgstr "Datei existiert"
@@ -2191,6 +2206,14 @@ msgstr "Erledigt"
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
 msgid "First View"
 msgstr "Erste Ansicht"
+
+#: src/views/config/components/Delete.vue:116
+msgid "folder"
+msgstr "Ordner"
+
+#: src/views/config/components/Delete.vue:122
+msgid "Folder"
+msgstr "Ordner"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:71
 msgid ""
@@ -2786,7 +2809,7 @@ msgstr ""
 #: src/routes/modules/config.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:114
 #: src/views/config/components/ConfigLeftPanel.vue:164
-#: src/views/config/ConfigList.vue:72
+#: src/views/config/ConfigList.vue:74
 msgid "Manage Configs"
 msgstr "Verwalte Konfigurationen"
 
@@ -2919,7 +2942,7 @@ msgid "Modified At"
 msgstr "Geändert am"
 
 #: src/components/ChatGPT/ChatMessage.vue:212
-#: src/views/config/ConfigList.vue:174
+#: src/views/config/ConfigList.vue:182
 msgid "Modify"
 msgstr "Ändern"
 
@@ -2963,6 +2986,7 @@ msgstr "Mehrzeilige Direktive"
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
+#: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:5
 #: src/views/environments/group/columns.ts:7
@@ -2975,7 +2999,7 @@ msgstr "Mehrzeilige Direktive"
 #: src/views/stream/columns.tsx:12
 #: src/views/stream/components/RightPanel/Basic.vue:30
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:144
+#: src/views/stream/StreamList.vue:145
 msgid "Name"
 msgstr "Name"
 
@@ -3245,7 +3269,8 @@ msgstr "Nginx.conf enthält das streams-enabled-Verzeichnis"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:120
+#: src/views/site/site_list/SiteList.vue:111
+#: src/views/stream/StreamList.vue:121
 msgid "No"
 msgstr "Nein"
 
@@ -3411,9 +3436,9 @@ msgstr "Offline"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:99
+#: src/views/site/site_list/SiteList.vue:112
 #: src/views/stream/components/StreamStatusSelect.vue:60
-#: src/views/stream/StreamList.vue:121
+#: src/views/stream/StreamList.vue:122
 msgid "OK"
 msgstr "OK"
 
@@ -3547,6 +3572,7 @@ msgstr "Passwörter stimmen nicht überein"
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
 #: src/language/curd.ts:59
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
+#: src/views/config/components/Delete.vue:124
 #: src/views/nginx_log/NginxLogList.vue:44
 msgid "Path"
 msgstr "Pfad"
@@ -3759,6 +3785,10 @@ msgstr "Bitte wähle mindestens einen Knoten zum Upgrade aus"
 msgid "Please type \"Revoke\" to confirm"
 msgstr "Bitte geben Sie \"Widerrufen\" ein, um zu bestätigen"
 
+#: src/views/config/components/Delete.vue:70
+msgid "Please type the exact confirmation text"
+msgstr "Bitte geben Sie den genauen Bestätigungstext ein"
+
 #: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
 msgid "Port"
@@ -3815,6 +3845,10 @@ msgstr "Verhindere das Löschen des Standardbenutzers"
 #: src/views/system/About.vue:51
 msgid "Project Team"
 msgstr "Projektteam"
+
+#: src/views/config/components/Delete.vue:107
+msgid "Protected Directory"
+msgstr "Geschützter Ordner"
 
 #: src/views/certificate/DNSCredential.vue:17
 msgid "Provider"
@@ -3996,7 +4030,7 @@ msgstr "Erfolgreich entfernt"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:131
 #: src/views/config/components/ConfigName.vue:51
 #: src/views/config/components/Rename.vue:56
-#: src/views/config/ConfigList.vue:181
+#: src/views/config/ConfigList.vue:190
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:44
 #: src/views/stream/components/ConfigName.vue:44
 msgid "Rename"
@@ -4870,6 +4904,7 @@ msgstr "Zum dunklen Thema wechseln"
 msgid "Switch to light theme"
 msgstr "Zum hellen Thema wechseln"
 
+#: src/views/config/components/Delete.vue:141
 #: src/views/config/components/Rename.vue:81
 msgid "Sync"
 msgstr "Synchronisieren"
@@ -5117,6 +5152,12 @@ msgstr "Dieses Auto-Zertifikatselement ist ungültig, bitte entferne es."
 msgid "This certificate is managed by Nginx UI"
 msgstr "Dieses Zertifikat wird von Nginx UI verwaltet"
 
+#: src/views/config/components/Delete.vue:108
+msgid "This directory is protected and cannot be deleted for system safety."
+msgstr ""
+"Dieses Verzeichnis ist geschützt und kann aus Sicherheitsgründen nicht "
+"gelöscht werden."
+
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateEditor.vue:176
 #: src/views/certificate/CertificateEditor.vue:191
@@ -5173,6 +5214,10 @@ msgstr ""
 #: src/constants/form_errors.ts:4 src/language/curd.ts:42
 msgid "This value is already taken"
 msgstr "Dieser Wert ist bereits vergeben"
+
+#: src/views/config/components/Delete.vue:116
+msgid "This will permanently delete the %{type}."
+msgstr "Dadurch wird %{type} dauerhaft gelöscht."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:227
 #: src/components/SystemRestore/SystemRestoreContent.vue:304
@@ -5335,12 +5380,17 @@ msgstr "Zwei-Faktor-Authentifizierung erforderlich"
 
 #: src/components/ProxyTargets/ProxyTargets.vue:48
 #: src/views/certificate/CertificateList/certColumns.tsx:24
+#: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
 #: src/views/nginx_log/NginxLogList.vue:12
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:18
 msgid "Type"
 msgstr "Typ"
+
+#: src/views/config/components/Delete.vue:129
+msgid "Type %{delete} to confirm"
+msgstr "Geben Sie %{delete} zur Bestätigung ein"
 
 #: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
@@ -5489,7 +5539,7 @@ msgstr "Überprüfen Sie die Systemanforderungen"
 msgid "Version"
 msgstr "Version"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:83
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:84
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "Anzeigen"
@@ -5955,9 +6005,6 @@ msgstr "Deine Passkeys"
 
 #~ msgid "Can't scan? Use text key binding"
 #~ msgstr "Scannt nicht möglich? Verwenden Sie die Texttastenbindung"
-
-#~ msgid "File"
-#~ msgstr "Datei"
 
 #~ msgid ""
 #~ "If you lose your mobile phone, you can use the recovery code to reset your "

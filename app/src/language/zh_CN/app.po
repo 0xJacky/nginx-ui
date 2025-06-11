@@ -161,7 +161,7 @@ msgstr "实际工作进程与配置比例"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:166 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:102
+#: src/views/site/site_list/SiteList.vue:95 src/views/stream/StreamList.vue:103
 msgid "Add"
 msgstr "添加"
 
@@ -197,7 +197,7 @@ msgstr "添加服务器"
 msgid "Add Site"
 msgstr "添加站点"
 
-#: src/views/stream/StreamList.vue:139
+#: src/views/stream/StreamList.vue:140
 msgid "Add Stream"
 msgstr "添加 Stream"
 
@@ -294,8 +294,8 @@ msgstr "你确定你要清除聊天记录吗？"
 msgid "Are you sure you want to delete permanently?"
 msgstr "确定要永久删除吗？"
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
-#: src/views/stream/StreamList.vue:122
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:113
+#: src/views/stream/StreamList.vue:123
 msgid "Are you sure you want to delete?"
 msgstr "您确定要删除吗？"
 
@@ -413,8 +413,7 @@ msgstr "自动重启"
 
 #: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/components/ConfigLeftPanel.vue:273
-#: src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195
+#: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:156
 #: src/views/stream/components/StreamEditor.vue:111
@@ -600,6 +599,7 @@ msgstr "基于 worker_processes * worker_connections 计算得出。实际性能
 #: src/components/ChatGPT/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:37
+#: src/views/config/components/Delete.vue:98
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
@@ -1011,7 +1011,7 @@ msgstr "配置信息"
 msgid "Configuration Name"
 msgstr "配置名称"
 
-#: src/views/config/ConfigList.vue:104
+#: src/views/config/ConfigList.vue:112
 msgid "Configurations"
 msgstr "配置"
 
@@ -1095,11 +1095,11 @@ msgstr "再创建一个"
 msgid "Create Backup"
 msgstr "创建备份"
 
-#: src/views/config/ConfigList.vue:122
+#: src/views/config/ConfigList.vue:130
 msgid "Create File"
 msgstr "创建文件"
 
-#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:129
+#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:137
 msgid "Create Folder"
 msgstr "创建文件夹"
 
@@ -1205,7 +1205,7 @@ msgstr "每天 %{time}"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:67
+#: src/views/config/ConfigList.vue:69
 msgid "Dashboard"
 msgstr "仪表盘"
 
@@ -1232,14 +1232,21 @@ msgstr "定义共享内存区名称和大小，例如 proxy_cache:10m"
 #: src/components/NgxConfigEditor/NgxServer.vue:110
 #: src/components/NgxConfigEditor/NgxUpstream.vue:134 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
-#: src/views/site/site_list/SiteList.vue:109
-#: src/views/stream/StreamList.vue:131
+#: src/views/config/components/Delete.vue:65
+#: src/views/config/components/Delete.vue:97
+#: src/views/config/ConfigList.vue:199
+#: src/views/site/site_list/SiteList.vue:122
+#: src/views/stream/StreamList.vue:132
 msgid "Delete"
 msgstr "删除"
 
 #: src/views/certificate/components/RemoveCert.vue:93
 msgid "Delete Certificate"
 msgstr "删除证书"
+
+#: src/views/config/components/Delete.vue:96
+msgid "Delete Confirmation"
+msgstr "删除确认"
 
 #: src/language/curd.ts:11
 msgid "Delete Permanently"
@@ -1285,7 +1292,7 @@ msgstr "已成功从 %{node} 删除 Stream %{name}"
 msgid "Delete stream: %{stream_name}"
 msgstr "删除 Stream: %{stream_name}"
 
-#: src/language/curd.ts:29
+#: src/language/curd.ts:29 src/views/config/components/Delete.vue:80
 msgid "Deleted successfully"
 msgstr "删除成功"
 
@@ -1523,9 +1530,9 @@ msgid ""
 msgstr "由于某些浏览器的安全策略，除非在 localhost 上使用，否则不能在非 HTTPS 网站上使用 Passkey。"
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:95
+#: src/views/site/site_list/SiteList.vue:108
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:117
+#: src/views/stream/StreamList.vue:118
 msgid "Duplicate"
 msgstr "复制"
 
@@ -2108,6 +2115,14 @@ msgstr "无法写入安全密钥文件：{0}"
 msgid "Failed to write to zip buffer: {0}"
 msgstr "写入 zip 缓冲区失败：{0}"
 
+#: src/views/config/components/Delete.vue:116
+msgid "file"
+msgstr "文件"
+
+#: src/views/config/components/Delete.vue:122
+msgid "File"
+msgstr "文件"
+
 #: src/language/constants.ts:32
 msgid "File exists"
 msgstr "文件已存在"
@@ -2131,6 +2146,14 @@ msgstr "完成"
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
 msgid "First View"
 msgstr "首次查看"
+
+#: src/views/config/components/Delete.vue:116
+msgid "folder"
+msgstr "文件夹"
+
+#: src/views/config/components/Delete.vue:122
+msgid "Folder"
+msgstr "文件夹"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:71
 msgid ""
@@ -2702,7 +2725,7 @@ msgstr "在获取签发证书前，请确保配置文件中已将 .well-known �
 #: src/routes/modules/config.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:114
 #: src/views/config/components/ConfigLeftPanel.vue:164
-#: src/views/config/ConfigList.vue:72
+#: src/views/config/ConfigList.vue:74
 msgid "Manage Configs"
 msgstr "配置管理"
 
@@ -2835,7 +2858,7 @@ msgid "Modified At"
 msgstr "修改时间"
 
 #: src/components/ChatGPT/ChatMessage.vue:212
-#: src/views/config/ConfigList.vue:174
+#: src/views/config/ConfigList.vue:182
 msgid "Modify"
 msgstr "修改"
 
@@ -2879,6 +2902,7 @@ msgstr "多行指令"
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
+#: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:5
 #: src/views/environments/group/columns.ts:7
@@ -2891,7 +2915,7 @@ msgstr "多行指令"
 #: src/views/stream/columns.tsx:12
 #: src/views/stream/components/RightPanel/Basic.vue:30
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:144
+#: src/views/stream/StreamList.vue:145
 msgid "Name"
 msgstr "名称"
 
@@ -3159,7 +3183,8 @@ msgstr "检查 nginx.conf 是否包含 streams-enabled 的目录"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:120
+#: src/views/site/site_list/SiteList.vue:111
+#: src/views/stream/StreamList.vue:121
 msgid "No"
 msgstr "取消"
 
@@ -3318,9 +3343,9 @@ msgstr "离线"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:99
+#: src/views/site/site_list/SiteList.vue:112
 #: src/views/stream/components/StreamStatusSelect.vue:60
-#: src/views/stream/StreamList.vue:121
+#: src/views/stream/StreamList.vue:122
 msgid "OK"
 msgstr "确定"
 
@@ -3451,6 +3476,7 @@ msgstr "密码不匹配"
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
 #: src/language/curd.ts:59
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
+#: src/views/config/components/Delete.vue:124
 #: src/views/nginx_log/NginxLogList.vue:44
 msgid "Path"
 msgstr "路径"
@@ -3644,6 +3670,10 @@ msgstr "请至少选择一个节点进行升级"
 msgid "Please type \"Revoke\" to confirm"
 msgstr "请键入 \"撤销 \"确认"
 
+#: src/views/config/components/Delete.vue:70
+msgid "Please type the exact confirmation text"
+msgstr "请输入确切的确认文本"
+
 #: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
 msgid "Port"
@@ -3700,6 +3730,10 @@ msgstr "禁止删除默认用户"
 #: src/views/system/About.vue:51
 msgid "Project Team"
 msgstr "项目团队"
+
+#: src/views/config/components/Delete.vue:107
+msgid "Protected Directory"
+msgstr "受保护目录"
 
 #: src/views/certificate/DNSCredential.vue:17
 msgid "Provider"
@@ -3874,7 +3908,7 @@ msgstr "删除成功"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:131
 #: src/views/config/components/ConfigName.vue:51
 #: src/views/config/components/Rename.vue:56
-#: src/views/config/ConfigList.vue:181
+#: src/views/config/ConfigList.vue:190
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:44
 #: src/views/stream/components/ConfigName.vue:44
 msgid "Rename"
@@ -4724,6 +4758,7 @@ msgstr "切换到深色主题"
 msgid "Switch to light theme"
 msgstr "切换到浅色"
 
+#: src/views/config/components/Delete.vue:141
 #: src/views/config/components/Rename.vue:81
 msgid "Sync"
 msgstr "同步"
@@ -4946,6 +4981,10 @@ msgstr "这个证书自动续期项目是无效的，请删除。"
 msgid "This certificate is managed by Nginx UI"
 msgstr "该证书由 Nginx UI 托管"
 
+#: src/views/config/components/Delete.vue:108
+msgid "This directory is protected and cannot be deleted for system safety."
+msgstr "此目录受保护，为确保系统安全无法删除。"
+
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateEditor.vue:176
 #: src/views/certificate/CertificateEditor.vue:191
@@ -4995,6 +5034,10 @@ msgstr "此 Token 只显示一次，以后无法找回。请确保将其保存�
 #: src/constants/form_errors.ts:4 src/language/curd.ts:42
 msgid "This value is already taken"
 msgstr "该字段的值已经存在"
+
+#: src/views/config/components/Delete.vue:116
+msgid "This will permanently delete the %{type}."
+msgstr "这将永久删除%{type}。"
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:227
 #: src/components/SystemRestore/SystemRestoreContent.vue:304
@@ -5138,12 +5181,17 @@ msgstr "需要两步验证"
 
 #: src/components/ProxyTargets/ProxyTargets.vue:48
 #: src/views/certificate/CertificateList/certColumns.tsx:24
+#: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
 #: src/views/nginx_log/NginxLogList.vue:12
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:18
 msgid "Type"
 msgstr "类型"
+
+#: src/views/config/components/Delete.vue:129
+msgid "Type %{delete} to confirm"
+msgstr "输入 %{delete} 以确认"
 
 #: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
@@ -5292,7 +5340,7 @@ msgstr "验证系统要求"
 msgid "Version"
 msgstr "版本"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:83
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:84
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "查看"
@@ -5745,9 +5793,6 @@ msgstr "你的 Passkeys"
 
 #~ msgid "Can't scan? Use text key binding"
 #~ msgstr "无法扫描？使用文本密钥绑定"
-
-#~ msgid "File"
-#~ msgstr "文件"
 
 #~ msgid "Incorrect username or password"
 #~ msgstr "用户名或密码错误"

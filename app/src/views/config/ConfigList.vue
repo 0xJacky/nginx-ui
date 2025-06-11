@@ -3,6 +3,8 @@ import { StdTable } from '@uozi-admin/curd'
 import config from '@/api/config'
 import FooterToolBar from '@/components/FooterToolbar'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
+import { isProtectedPath } from '@/views/config/configUtils'
+import Delete from './components/Delete.vue'
 import Mkdir from './components/Mkdir.vue'
 import Rename from './components/Rename.vue'
 import configColumns from './configColumns'
@@ -98,6 +100,12 @@ function goBack() {
 
 const refMkdir = useTemplateRef('refMkdir')
 const refRename = useTemplateRef('refRename')
+const refDelete = useTemplateRef('refDelete')
+
+// Check if a file/directory is protected
+function isProtected(name: string) {
+  return isProtectedPath(name)
+}
 </script>
 
 <template>
@@ -174,11 +182,21 @@ const refRename = useTemplateRef('refRename')
           {{ $gettext('Modify') }}
         </AButton>
         <AButton
+          v-if="!isProtected(record.name)"
           type="link"
           size="small"
           @click="() => refRename?.open(basePath, record.name, record.is_dir)"
         >
           {{ $gettext('Rename') }}
+        </AButton>
+        <AButton
+          v-if="!isProtected(record.name)"
+          type="link"
+          size="small"
+          danger
+          @click="() => refDelete?.open(basePath, record.name, record.is_dir)"
+        >
+          {{ $gettext('Delete') }}
         </AButton>
       </template>
     </StdTable>
@@ -189,6 +207,10 @@ const refRename = useTemplateRef('refRename')
     <Rename
       ref="refRename"
       @renamed="() => table?.refresh()"
+    />
+    <Delete
+      ref="refDelete"
+      @deleted="() => table?.refresh()"
     />
     <FooterToolBar v-if="basePath">
       <AButton @click="goBack">

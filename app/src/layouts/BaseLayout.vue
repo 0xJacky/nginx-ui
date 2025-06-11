@@ -8,9 +8,6 @@ import FooterLayout from './FooterLayout.vue'
 import HeaderLayout from './HeaderLayout.vue'
 import SideBar from './SideBar.vue'
 
-const route = useRoute()
-const router = useRouter()
-
 const drawerVisible = ref(false)
 const collapsed = ref(false)
 const hideLayoutSidebar = ref(false)
@@ -50,17 +47,6 @@ provide('breadList', breadList)
 
 const userStore = useUserStore()
 const { token } = storeToRefs(userStore)
-
-const settingsStore = useSettingsStore()
-const { route_path } = storeToRefs(settingsStore)
-
-watch(route, () => {
-  route_path.value = route.path
-})
-
-onMounted(() => {
-  router.push(route_path.value)
-})
 </script>
 
 <template>

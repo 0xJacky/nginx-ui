@@ -166,7 +166,7 @@ msgstr "Фактическое соотношение рабочих к наст
 #: src/components/NgxConfigEditor/NgxUpstream.vue:166 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:45
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:94
-#: src/views/stream/StreamList.vue:102
+#: src/views/site/site_list/SiteList.vue:95 src/views/stream/StreamList.vue:103
 msgid "Add"
 msgstr "Добавить"
 
@@ -202,7 +202,7 @@ msgstr "Добавить сервер"
 msgid "Add Site"
 msgstr "Добавить Сайт"
 
-#: src/views/stream/StreamList.vue:139
+#: src/views/stream/StreamList.vue:140
 msgid "Add Stream"
 msgstr "Добавить поток"
 
@@ -301,8 +301,8 @@ msgstr "Вы уверены, что хотите очистить сообщен
 msgid "Are you sure you want to delete permanently?"
 msgstr "Вы уверены, что хотите удалить безвозвратно?"
 
-#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:100
-#: src/views/stream/StreamList.vue:122
+#: src/language/curd.ts:25 src/views/site/site_list/SiteList.vue:113
+#: src/views/stream/StreamList.vue:123
 msgid "Are you sure you want to delete?"
 msgstr "Вы уверены, что хотите удалить?"
 
@@ -424,8 +424,7 @@ msgstr "Автоматическая перезагрузка"
 
 #: src/views/certificate/CertificateEditor.vue:256
 #: src/views/config/components/ConfigLeftPanel.vue:273
-#: src/views/config/ConfigList.vue:112
-#: src/views/config/ConfigList.vue:195
+#: src/views/config/ConfigList.vue:120 src/views/config/ConfigList.vue:217
 #: src/views/nginx_log/NginxLog.vue:174
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:156
 #: src/views/stream/components/StreamEditor.vue:111
@@ -625,6 +624,7 @@ msgstr ""
 #: src/components/ChatGPT/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
 #: src/components/NgxConfigEditor/NgxUpstream.vue:37
+#: src/views/config/components/Delete.vue:98
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:40
@@ -1058,7 +1058,7 @@ msgstr "Информация о конфигурации"
 msgid "Configuration Name"
 msgstr "Название конфигурации"
 
-#: src/views/config/ConfigList.vue:104
+#: src/views/config/ConfigList.vue:112
 msgid "Configurations"
 msgstr "Конфигурации"
 
@@ -1144,11 +1144,11 @@ msgstr "Создать еще"
 msgid "Create Backup"
 msgstr "Создать резервную копию"
 
-#: src/views/config/ConfigList.vue:122
+#: src/views/config/ConfigList.vue:130
 msgid "Create File"
 msgstr "Создать файл"
 
-#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:129
+#: src/views/config/components/Mkdir.vue:47 src/views/config/ConfigList.vue:137
 msgid "Create Folder"
 msgstr "Создать папку"
 
@@ -1257,7 +1257,7 @@ msgstr "Ежедневно в %{time}"
 #: src/routes/modules/dashboard.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
-#: src/views/config/ConfigList.vue:67
+#: src/views/config/ConfigList.vue:69
 msgid "Dashboard"
 msgstr "Доска"
 
@@ -1284,14 +1284,21 @@ msgstr "Определите имя и размер зоны общей памя
 #: src/components/NgxConfigEditor/NgxServer.vue:110
 #: src/components/NgxConfigEditor/NgxUpstream.vue:134 src/language/curd.ts:9
 #: src/views/certificate/components/RemoveCert.vue:88
-#: src/views/site/site_list/SiteList.vue:109
-#: src/views/stream/StreamList.vue:131
+#: src/views/config/components/Delete.vue:65
+#: src/views/config/components/Delete.vue:97
+#: src/views/config/ConfigList.vue:199
+#: src/views/site/site_list/SiteList.vue:122
+#: src/views/stream/StreamList.vue:132
 msgid "Delete"
 msgstr "Удалить"
 
 #: src/views/certificate/components/RemoveCert.vue:93
 msgid "Delete Certificate"
 msgstr "Удалить сертификат"
+
+#: src/views/config/components/Delete.vue:96
+msgid "Delete Confirmation"
+msgstr "Подтверждение удаления"
 
 #: src/language/curd.ts:11
 msgid "Delete Permanently"
@@ -1337,7 +1344,7 @@ msgstr "Поток %{name} успешно удален с %{node}"
 msgid "Delete stream: %{stream_name}"
 msgstr "Удалить поток: %{stream_name}"
 
-#: src/language/curd.ts:29
+#: src/language/curd.ts:29 src/views/config/components/Delete.vue:80
 msgid "Deleted successfully"
 msgstr "Удалено успешно"
 
@@ -1578,9 +1585,9 @@ msgstr ""
 "запускаются на localhost."
 
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:95
+#: src/views/site/site_list/SiteList.vue:108
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:117
+#: src/views/stream/StreamList.vue:118
 msgid "Duplicate"
 msgstr "Дублировать"
 
@@ -2163,6 +2170,14 @@ msgstr "Не удалось записать файл ключа безопас�
 msgid "Failed to write to zip buffer: {0}"
 msgstr "Ошибка записи в ZIP-буфер: {0}"
 
+#: src/views/config/components/Delete.vue:116
+msgid "file"
+msgstr "файл"
+
+#: src/views/config/components/Delete.vue:122
+msgid "File"
+msgstr "Файл"
+
 #: src/language/constants.ts:32
 msgid "File exists"
 msgstr "Файл существует"
@@ -2186,6 +2201,14 @@ msgstr "Готово"
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:70
 msgid "First View"
 msgstr "Первое отображение"
+
+#: src/views/config/components/Delete.vue:116
+msgid "folder"
+msgstr "папка"
+
+#: src/views/config/components/Delete.vue:122
+msgid "Folder"
+msgstr "Папка"
 
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:71
 msgid ""
@@ -2777,7 +2800,7 @@ msgstr ""
 #: src/routes/modules/config.ts:10
 #: src/views/config/components/ConfigLeftPanel.vue:114
 #: src/views/config/components/ConfigLeftPanel.vue:164
-#: src/views/config/ConfigList.vue:72
+#: src/views/config/ConfigList.vue:74
 msgid "Manage Configs"
 msgstr "Конфигурации"
 
@@ -2910,7 +2933,7 @@ msgid "Modified At"
 msgstr "Изменено"
 
 #: src/components/ChatGPT/ChatMessage.vue:212
-#: src/views/config/ConfigList.vue:174
+#: src/views/config/ConfigList.vue:182
 msgid "Modify"
 msgstr "Изменить"
 
@@ -2954,6 +2977,7 @@ msgstr "Многострочная директива"
 #: src/views/certificate/CertificateList/certColumns.tsx:9
 #: src/views/certificate/DNSCredential.vue:9
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
+#: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
 #: src/views/config/configColumns.tsx:5
 #: src/views/environments/group/columns.ts:7
@@ -2966,7 +2990,7 @@ msgstr "Многострочная директива"
 #: src/views/stream/columns.tsx:12
 #: src/views/stream/components/RightPanel/Basic.vue:30
 #: src/views/stream/components/StreamDuplicate.vue:71
-#: src/views/stream/StreamList.vue:144
+#: src/views/stream/StreamList.vue:145
 msgid "Name"
 msgstr "Имя"
 
@@ -3236,7 +3260,8 @@ msgstr "Nginx.conf включает каталог streams-enabled"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
-#: src/views/site/site_list/SiteList.vue:98 src/views/stream/StreamList.vue:120
+#: src/views/site/site_list/SiteList.vue:111
+#: src/views/stream/StreamList.vue:121
 msgid "No"
 msgstr "Нет"
 
@@ -3401,9 +3426,9 @@ msgstr "Оффлайн"
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:39
 #: src/views/site/site_edit/components/Cert/ObtainCert.vue:142
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
-#: src/views/site/site_list/SiteList.vue:99
+#: src/views/site/site_list/SiteList.vue:112
 #: src/views/stream/components/StreamStatusSelect.vue:60
-#: src/views/stream/StreamList.vue:121
+#: src/views/stream/StreamList.vue:122
 msgid "OK"
 msgstr "ОК"
 
@@ -3538,6 +3563,7 @@ msgstr "Пароли не совпадают"
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
 #: src/language/curd.ts:59
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
+#: src/views/config/components/Delete.vue:124
 #: src/views/nginx_log/NginxLogList.vue:44
 msgid "Path"
 msgstr "Путь"
@@ -3752,6 +3778,10 @@ msgstr "Пожалуйста, выберите хотя бы один узел"
 msgid "Please type \"Revoke\" to confirm"
 msgstr "Пожалуйста, введите \"Отозвать\" для подтверждения"
 
+#: src/views/config/components/Delete.vue:70
+msgid "Please type the exact confirmation text"
+msgstr "Пожалуйста, введите точный текст подтверждения"
+
 #: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/tabs/ServerSettings.vue:22
 msgid "Port"
@@ -3808,6 +3838,10 @@ msgstr "Запретить удаление пользователя по умо
 #: src/views/system/About.vue:51
 msgid "Project Team"
 msgstr "Команда проекта"
+
+#: src/views/config/components/Delete.vue:107
+msgid "Protected Directory"
+msgstr "Защищённая директория"
 
 #: src/views/certificate/DNSCredential.vue:17
 msgid "Provider"
@@ -3986,7 +4020,7 @@ msgstr "Успешно удалено"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:131
 #: src/views/config/components/ConfigName.vue:51
 #: src/views/config/components/Rename.vue:56
-#: src/views/config/ConfigList.vue:181
+#: src/views/config/ConfigList.vue:190
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:44
 #: src/views/stream/components/ConfigName.vue:44
 msgid "Rename"
@@ -4851,6 +4885,7 @@ msgstr "Переключиться на темную тему"
 msgid "Switch to light theme"
 msgstr "Переключиться на светлую тему"
 
+#: src/views/config/components/Delete.vue:141
 #: src/views/config/components/Rename.vue:81
 msgid "Sync"
 msgstr "Синхронизация"
@@ -5096,6 +5131,10 @@ msgstr "Этот элемент автосертификата недейств�
 msgid "This certificate is managed by Nginx UI"
 msgstr "Этот сертификат под управлением Nginx UI"
 
+#: src/views/config/components/Delete.vue:108
+msgid "This directory is protected and cannot be deleted for system safety."
+msgstr "Этот каталог защищен и не может быть удален для безопасности системы."
+
 #: src/views/certificate/CertificateEditor.vue:162
 #: src/views/certificate/CertificateEditor.vue:176
 #: src/views/certificate/CertificateEditor.vue:191
@@ -5152,6 +5191,10 @@ msgstr ""
 #: src/constants/form_errors.ts:4 src/language/curd.ts:42
 msgid "This value is already taken"
 msgstr "Это значение уже занято"
+
+#: src/views/config/components/Delete.vue:116
+msgid "This will permanently delete the %{type}."
+msgstr "Это приведет к безвозвратному удалению %{type}."
 
 #: src/components/SystemRestore/SystemRestoreContent.vue:227
 #: src/components/SystemRestore/SystemRestoreContent.vue:304
@@ -5313,12 +5356,17 @@ msgstr "Требуется двухфакторная аутентификаци
 
 #: src/components/ProxyTargets/ProxyTargets.vue:48
 #: src/views/certificate/CertificateList/certColumns.tsx:24
+#: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
 #: src/views/nginx_log/NginxLogList.vue:12
 #: src/views/notification/notificationColumns.tsx:8
 #: src/views/preference/components/ExternalNotify/columns.tsx:18
 msgid "Type"
 msgstr "Тип"
+
+#: src/views/config/components/Delete.vue:129
+msgid "Type %{delete} to confirm"
+msgstr "Введите %{delete} для подтверждения"
 
 #: src/components/PortScanner/PortScannerCompact.vue:47
 #: src/composables/useNginxPerformance.ts:18
@@ -5467,7 +5515,7 @@ msgstr "Проверьте системные требования"
 msgid "Version"
 msgstr "Версия"
 
-#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:83
+#: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:84
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:83
 msgid "View"
 msgstr "Просмотр"
@@ -5901,9 +5949,6 @@ msgstr "Ваши ключи доступа"
 #~ msgstr ""
 #~ "Синхронизация конфигурации %{config_name} с %{env_name} не удалась, ответ: "
 #~ "%{resp}"
-
-#~ msgid "File"
-#~ msgstr "Файл"
 
 #~ msgid ""
 #~ "If you lose your mobile phone, you can use the recovery code to reset your "
