@@ -225,7 +225,7 @@ msgstr "이후에 이 페이지를 새로 고치고 패스키 추가를 다시 �
 msgid "All"
 msgstr "모두"
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:189
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "모든 복구 코드가 사용되었습니다"
@@ -526,7 +526,7 @@ msgstr "일괄 편집"
 msgid "Batch Modify"
 msgstr "일괄 수정"
 
-#: src/views/environments/list/BatchUpgrader.vue:152
+#: src/views/environments/list/BatchUpgrader.vue:150
 msgid "Batch Upgrade"
 msgstr "배치 업그레이드"
 
@@ -546,7 +546,7 @@ msgstr "빌드 환경"
 msgid "CA Dir"
 msgstr "CA 디렉토리"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:124
+#: src/views/dashboard/components/ParamsOptimization.vue:125
 msgid "Cache"
 msgstr "캐시"
 
@@ -626,6 +626,10 @@ msgstr "데모 모드에서는 초기 사용자 비밀번호를 변경할 수 �
 #: src/components/ConfigHistory/DiffViewer.vue:84
 msgid "Cannot compare: Missing content"
 msgstr "비교할 수 없습니다 : 내용 누락"
+
+#: src/constants/errors/config.ts:6
+msgid "Cannot delete protected path: {0}"
+msgstr "보호된 경로를 삭제할 수 없습니다: {0}"
 
 #: src/views/dashboard/NginxDashBoard.vue:129
 msgid "Cannot get performance data in this state"
@@ -750,7 +754,7 @@ msgstr[0] "변경된 인증서"
 msgid "Changed Path"
 msgstr "변경된 경로"
 
-#: src/views/environments/list/BatchUpgrader.vue:159
+#: src/views/environments/list/BatchUpgrader.vue:157
 #: src/views/system/Upgrade.vue:207
 msgid "Channel"
 msgstr "채널"
@@ -1246,6 +1250,14 @@ msgstr "공유 메모리 영역 이름과 크기를 정의합니다(예: proxy_c
 msgid "Delete"
 msgstr "삭제"
 
+#: src/components/Notification/notifications.ts:86
+msgid "Delete %{path} on %{env_name} failed"
+msgstr "%{env_name}에서 %{path} 삭제 실패"
+
+#: src/components/Notification/notifications.ts:90
+msgid "Delete %{path} on %{env_name} successfully"
+msgstr "%{env_name}에서 %{path} 삭제 완료"
+
 #: src/views/certificate/components/RemoveCert.vue:93
 msgid "Delete Certificate"
 msgstr "인증서 삭제"
@@ -1258,27 +1270,35 @@ msgstr "삭제 확인"
 msgid "Delete Permanently"
 msgstr "영구 삭제"
 
-#: src/components/Notification/notifications.ts:85 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:85
+msgid "Delete Remote Config Error"
+msgstr "원격 구성 삭제 오류"
+
+#: src/components/Notification/notifications.ts:89
+msgid "Delete Remote Config Success"
+msgstr "원격 구성 삭제 성공"
+
+#: src/components/Notification/notifications.ts:93 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "원격 사이트 삭제 오류"
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "원격 사이트 삭제 성공"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:149
 msgid "Delete Remote Stream Error"
 msgstr "원격 스트림 삭제 오류"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:153
 msgid "Delete Remote Stream Success"
 msgstr "원격 스트림 삭제 성공"
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:94
 msgid "Delete site %{name} from %{node} failed"
 msgstr "%{node}에서 사이트 %{name} 삭제 실패"
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:98
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "%{node}에서 사이트 %{name} 삭제 성공"
 
@@ -1286,11 +1306,11 @@ msgstr "%{node}에서 사이트 %{name} 삭제 성공"
 msgid "Delete site: %{site_name}"
 msgstr "사이트 삭제: %{site_name}"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:150
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "%{node}에서 스트림 %{name} 삭제 실패"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:154
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "스트림 %{name}을(를) %{node}에서 성공적으로 삭제했습니다"
 
@@ -1376,51 +1396,53 @@ msgstr "비활성화"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "%{name}의 자동 갱신 비활성화 실패"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "원격 사이트 비활성화 오류"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:125
 msgid "Disable Remote Site Maintenance Error"
 msgstr "원격 사이트 유지 관리 비활성화 오류"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:129
 msgid "Disable Remote Site Maintenance Success"
 msgstr "원격 사이트 유지 관리 비활성화 성공"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:105
+#: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "원격 사이트 비활성화 성공"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:157
 msgid "Disable Remote Stream Error"
 msgstr "원격 스트림 비활성화 오류"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:161
 msgid "Disable Remote Stream Success"
 msgstr "원격 스트림 비활성화 성공"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:102
 msgid "Disable site %{name} from %{node} failed"
 msgstr "%{node}에서 사이트 %{name} 비활성화 실패"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "%{node}에서 사이트 %{name} 비활성화 성공"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:126
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "%{node}에서 사이트 %{name} 유지 관리를 비활성화하지 못했습니다"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:130
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "%{node}에서 %{name} 사이트 유지 관리 비활성화 성공"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:158
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "%{node}에서 스트림 %{name} 비활성화 실패"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:162
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "스트림 %{name}을(를) %{node}에서 비활성화했습니다"
 
@@ -1524,7 +1546,7 @@ msgstr "최신 릴리스 다운로드 오류"
 msgid "Downloading latest release"
 msgstr "최신 릴리스 다운로드 중"
 
-#: src/views/environments/list/BatchUpgrader.vue:188
+#: src/views/environments/list/BatchUpgrader.vue:186
 #: src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
 msgstr "드라이런 모드 활성화됨"
@@ -1622,53 +1644,53 @@ msgstr "HTTPS 활성화"
 msgid "Enable Proxy Cache"
 msgstr "프록시 캐시 활성화"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "원격 사이트 활성화 오류"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:117
 msgid "Enable Remote Site Maintenance Error"
 msgstr "원격 사이트 유지 관리 활성화 오류"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:121
 msgid "Enable Remote Site Maintenance Success"
 msgstr "원격 사이트 유지 관리 활성화 성공"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "원격 사이트 활성화 성공"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:165
 msgid "Enable Remote Stream Error"
 msgstr "원격 스트림 활성화 오류"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:169
 msgid "Enable Remote Stream Success"
 msgstr "원격 스트림 활성화 성공"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:118
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "%{node}에서 사이트 %{name} 유지 관리 활성화 실패"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:122
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "%{node}에서 사이트 %{name} 유지 관리 활성화 성공"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:110
 msgid "Enable site %{name} on %{node} failed"
 msgstr "%{node}에서 사이트 %{name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "%{node}에서 사이트 %{name} 활성화 성공"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:166
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "%{node}에서 스트림 %{name} 활성화 실패"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:170
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "%{node}에서 스트림 %{name} 활성화 성공"
 
@@ -2011,7 +2033,7 @@ msgstr "인증서 정보 가져오기 실패"
 msgid "Failed to get container id: {0}"
 msgstr "컨테이너 ID를 가져오지 못했습니다: {0}"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:61
+#: src/views/dashboard/components/ParamsOptimization.vue:62
 msgid "Failed to get Nginx performance settings"
 msgstr "Nginx 성능 설정을 가져오지 못했습니다"
 
@@ -2091,7 +2113,7 @@ msgstr "인증서 취소에 실패했습니다"
 msgid "Failed to revoke certificate: %{error}"
 msgstr "인증서 취소 실패: %{error}"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:90
+#: src/views/dashboard/components/ParamsOptimization.vue:91
 msgid "Failed to save Nginx performance settings"
 msgstr "Nginx 성능 설정 저장 실패"
 
@@ -2138,6 +2160,10 @@ msgstr "파일이 존재함"
 #: src/views/other/Error.vue:8
 msgid "File Not Found"
 msgstr "파일을 찾을 수 없음"
+
+#: src/constants/errors/config.ts:7
+msgid "File or directory not found: {0}"
+msgstr "파일 또는 디렉터리를 찾을 수 없음: {0}"
 
 #: src/constants/errors/cert.ts:2
 msgid "Filename is empty"
@@ -2235,7 +2261,7 @@ msgstr "데이터 가져오기 실패"
 msgid "Get dns credential error: {0}"
 msgstr "DNS 자격 증명 가져오기 오류: {0}"
 
-#: src/views/environments/list/BatchUpgrader.vue:177
+#: src/views/environments/list/BatchUpgrader.vue:175
 #: src/views/system/Upgrade.vue:188
 msgid "Get release information error"
 msgstr "릴리스 정보 가져오기 오류"
@@ -3440,8 +3466,8 @@ msgstr "페이지 크기"
 msgid "Params"
 msgstr "파라미터"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:109
-#: src/views/dashboard/components/ParamsOptimization.vue:115
+#: src/views/dashboard/components/ParamsOptimization.vue:110
+#: src/views/dashboard/components/ParamsOptimization.vue:116
 msgid "Params Optimization"
 msgstr "매개변수 최적화"
 
@@ -3508,7 +3534,7 @@ msgstr "페이로드 리소스가 nil입니다"
 msgid "Pending"
 msgstr "대기 중"
 
-#: src/views/environments/list/BatchUpgrader.vue:232
+#: src/views/environments/list/BatchUpgrader.vue:239
 msgid "Perform"
 msgstr "실행"
 
@@ -3516,7 +3542,7 @@ msgstr "실행"
 msgid "Perform core upgrade error"
 msgstr "핵심 업그레이드 오류 수행"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:121
+#: src/views/dashboard/components/ParamsOptimization.vue:122
 msgid "Performance"
 msgstr "성능"
 
@@ -3524,7 +3550,7 @@ msgstr "성능"
 msgid "Performance Metrics"
 msgstr "성능 메트릭"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:86
+#: src/views/dashboard/components/ParamsOptimization.vue:87
 msgid "Performance settings saved successfully"
 msgstr "성능 설정이 성공적으로 저장되었습니다"
 
@@ -3597,7 +3623,7 @@ msgid ""
 "select one of the credentialsbelow to request the API of the DNS provider."
 msgstr "먼저 인증서 > DNS 자격 증명에 자격 증명을 추가한 다음,DNS 제공자의 API를 요청하려면 아래 자격 증명 중 하나를 선택해주세요."
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:190
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -3699,8 +3725,8 @@ msgstr "포트 스캐너"
 msgid "Post-sync Action"
 msgstr "동기화 후 작업"
 
-#: src/views/environments/list/BatchUpgrader.vue:167
-#: src/views/environments/list/BatchUpgrader.vue:220
+#: src/views/environments/list/BatchUpgrader.vue:165
+#: src/views/environments/list/BatchUpgrader.vue:218
 #: src/views/system/Upgrade.vue:213 src/views/system/Upgrade.vue:267
 msgid "Pre-release"
 msgstr "사전 출시"
@@ -3940,37 +3966,37 @@ msgstr "원격 구성 이름 변경 오류"
 msgid "Rename Remote Config Success"
 msgstr "원격 구성 이름 변경 성공"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:133
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "원격 사이트 이름 변경 오류"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "원격 사이트 이름 변경 성공"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:173
 msgid "Rename Remote Stream Error"
 msgstr "원격 스트림 이름 변경 오류"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:177
 msgid "Rename Remote Stream Success"
 msgstr "원격 스트림 이름 변경 성공"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:134
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "%{node}에서 사이트 %{name}을(를) %{new_name}(으)로 이름 변경하는 데 실패했습니다"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:138
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "사이트 %{name}을(를) %{new_name}(으)로 이름 변경했습니다 (%{node})"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:174
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "%{node}에서 스트림 %{name}을(를) %{new_name}(으)로 이름 변경하는 데 실패했습니다"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:178
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "스트림 %{name}을(를) %{new_name}(으)로 이름 변경했습니다 (%{node})"
 
@@ -4283,37 +4309,37 @@ msgstr "지시문 저장"
 msgid "Save error %{msg}"
 msgstr "저장 오류 %{msg}"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "원격 사이트 저장 오류"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "원격 사이트 저장 성공"
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:181
 msgid "Save Remote Stream Error"
 msgstr "원격 스트림 저장 오류"
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:185
 msgid "Save Remote Stream Success"
 msgstr "원격 스트림 저장 성공"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:142
 msgid "Save site %{name} to %{node} failed"
 msgstr "%{name} 사이트를 %{node}에 저장하지 못했습니다"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:146
 msgid "Save site %{name} to %{node} successfully"
 msgstr "사이트 %{name}을(를) %{node}에 성공적으로 저장했습니다"
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:182
 msgid "Save stream %{name} to %{node} failed"
 msgstr "스트림 %{name}을(를) %{node}에 저장하지 못했습니다"
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:186
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "스트림 %{name}을(를) %{node}에 성공적으로 저장했습니다"
 
@@ -4620,8 +4646,8 @@ msgstr "HTTPS가 활성화된 경우 SSL 키 경로가 필요합니다"
 msgid "SSO Login"
 msgstr "SSO 로그인"
 
-#: src/views/environments/list/BatchUpgrader.vue:164
-#: src/views/environments/list/BatchUpgrader.vue:214
+#: src/views/environments/list/BatchUpgrader.vue:162
+#: src/views/environments/list/BatchUpgrader.vue:212
 #: src/views/system/Upgrade.vue:210 src/views/system/Upgrade.vue:261
 msgid "Stable"
 msgstr "안정적"
@@ -5071,7 +5097,7 @@ msgid ""
 "after the restoration is complete."
 msgstr "이 작업은 구성 파일과 데이터베이스를 복원합니다. 복원이 완료되면 Nginx UI가 재시작됩니다."
 
-#: src/views/environments/list/BatchUpgrader.vue:182
+#: src/views/environments/list/BatchUpgrader.vue:180
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "이 작업은 %{nodeNames}의 Nginx UI를 %{version}으로 업그레이드하거나 재설치합니다."
 
@@ -5255,7 +5281,7 @@ msgstr "업데이트됨"
 msgid "Upgrade"
 msgstr "업그레이드"
 
-#: src/views/environments/list/BatchUpgrader.vue:137
+#: src/views/environments/list/BatchUpgrader.vue:135
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr "%{node}에서 Nginx UI 업그레이드 성공 🎉"
 
@@ -5263,7 +5289,7 @@ msgstr "%{node}에서 Nginx UI 업그레이드 성공 🎉"
 msgid "Upgraded successfully"
 msgstr "성공적으로 업그레이드됨"
 
-#: src/views/environments/list/BatchUpgrader.vue:88
+#: src/views/environments/list/BatchUpgrader.vue:86
 #: src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Nginx UI를 업그레이드하는 중입니다. 잠시 기다려주세요..."
@@ -5369,6 +5395,7 @@ msgstr "보기"
 msgid "View all notifications"
 msgstr "모든 알림 보기"
 
+#: src/views/environments/list/BatchUpgrader.vue:229
 #: src/views/system/Upgrade.vue:279
 msgid "View on GitHub"
 msgstr "GitHub에서 보기"
@@ -5524,6 +5551,10 @@ msgid ""
 msgstr ""
 "비 로컬호스트 도메인에서 안전하지 않은 HTTP 연결을 통해 이 터미널에 접속하고 있습니다. 이로 인해 민감한 정보가 노출될 수 "
 "있습니다."
+
+#: src/constants/errors/config.ts:8
+msgid "You are not allowed to delete a file outside of the nginx config path"
+msgstr "nginx 구성 경로 외부에 있는 파일은 삭제할 수 없습니다"
 
 #: src/views/system/Upgrade.vue:224
 msgid "You are using the latest version"

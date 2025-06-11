@@ -81,6 +81,14 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Rename Remote Config Success'),
     content: (args: any) => $gettext('Rename %{orig_path} to %{new_path} on %{env_name} successfully', args, true),
   },
+  'Delete Remote Config Error': {
+    title: () => $gettext('Delete Remote Config Error'),
+    content: (args: any) => $gettext('Delete %{path} on %{env_name} failed', args, true),
+  },
+  'Delete Remote Config Success': {
+    title: () => $gettext('Delete Remote Config Success'),
+    content: (args: any) => $gettext('Delete %{path} on %{env_name} successfully', args, true),
+  },
   'Delete Remote Site Error': {
     title: () => $gettext('Delete Remote Site Error'),
     content: (args: any) => $gettext('Delete site %{name} from %{node} failed', args, true),

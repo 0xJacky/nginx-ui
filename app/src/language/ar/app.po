@@ -226,7 +226,7 @@ msgstr "بعد ذلك، قم بتحديث هذه الصفحة وانقر على 
 msgid "All"
 msgstr "الكل"
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:189
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "تم استخدام جميع رموز الاسترداد"
@@ -531,7 +531,7 @@ msgstr "تحرير المجموعة"
 msgid "Batch Modify"
 msgstr "تعديل متعدد"
 
-#: src/views/environments/list/BatchUpgrader.vue:152
+#: src/views/environments/list/BatchUpgrader.vue:150
 msgid "Batch Upgrade"
 msgstr "ترقية متعددة"
 
@@ -551,7 +551,7 @@ msgstr "بناء مع"
 msgid "CA Dir"
 msgstr "دليل CA"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:124
+#: src/views/dashboard/components/ParamsOptimization.vue:125
 msgid "Cache"
 msgstr "ذاكرة التخزين المؤقت"
 
@@ -631,6 +631,10 @@ msgstr "لا يمكن تغيير كلمة مرور المستخدم الأولي
 #: src/components/ConfigHistory/DiffViewer.vue:84
 msgid "Cannot compare: Missing content"
 msgstr "لا يمكن المقارنة: المحتوى المفقود"
+
+#: src/constants/errors/config.ts:6
+msgid "Cannot delete protected path: {0}"
+msgstr "لا يمكن حذف المسار المحمي: {0}"
 
 #: src/views/dashboard/NginxDashBoard.vue:129
 msgid "Cannot get performance data in this state"
@@ -764,7 +768,7 @@ msgstr[5] "الشهادات المعدلة"
 msgid "Changed Path"
 msgstr "المسار المتغير"
 
-#: src/views/environments/list/BatchUpgrader.vue:159
+#: src/views/environments/list/BatchUpgrader.vue:157
 #: src/views/system/Upgrade.vue:207
 msgid "Channel"
 msgstr "القناة"
@@ -1274,6 +1278,14 @@ msgstr "حدد اسم منطقة الذاكرة المشتركة والحجم، 
 msgid "Delete"
 msgstr "حذف"
 
+#: src/components/Notification/notifications.ts:86
+msgid "Delete %{path} on %{env_name} failed"
+msgstr "فشل حذف %{path} على %{env_name}"
+
+#: src/components/Notification/notifications.ts:90
+msgid "Delete %{path} on %{env_name} successfully"
+msgstr "تم حذف %{path} على %{env_name} بنجاح"
+
 #: src/views/certificate/components/RemoveCert.vue:93
 msgid "Delete Certificate"
 msgstr "حذف الشهادة"
@@ -1286,27 +1298,35 @@ msgstr "تأكيد الحذف"
 msgid "Delete Permanently"
 msgstr "حذف نهائي"
 
-#: src/components/Notification/notifications.ts:85 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:85
+msgid "Delete Remote Config Error"
+msgstr "خطأ في حذف التكوين البعيد"
+
+#: src/components/Notification/notifications.ts:89
+msgid "Delete Remote Config Success"
+msgstr "نجاح حذف التكوين البعيد"
+
+#: src/components/Notification/notifications.ts:93 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "خطأ حذف الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "نجح حذف الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:149
 msgid "Delete Remote Stream Error"
 msgstr "خطأ في حذف البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:153
 msgid "Delete Remote Stream Success"
 msgstr "نجاح حذف البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:94
 msgid "Delete site %{name} from %{node} failed"
 msgstr "فشل حذف الموقع %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:98
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "تم حذف الموقع %{name} من %{node} بنجاح"
 
@@ -1314,11 +1334,11 @@ msgstr "تم حذف الموقع %{name} من %{node} بنجاح"
 msgid "Delete site: %{site_name}"
 msgstr "حذف الموقع: ‎%{site_name}"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:150
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "فشل حذف الدفق %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:154
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "تم حذف الدفق %{name} من %{node} بنجاح"
 
@@ -1404,51 +1424,53 @@ msgstr "تعطيل"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "فشل تعطيل التجديد التلقائي لـ %{name}"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "خطأ تعطيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:125
 msgid "Disable Remote Site Maintenance Error"
 msgstr "خطأ في تعطيل صيانة الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:129
 msgid "Disable Remote Site Maintenance Success"
 msgstr "تعطيل صيانة الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:105
+#: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "تم تعطيل الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:157
 msgid "Disable Remote Stream Error"
 msgstr "خطأ في تعطيل البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:161
 msgid "Disable Remote Stream Success"
 msgstr "تعطيل البث عن بُعد بنجاح"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:102
 msgid "Disable site %{name} from %{node} failed"
 msgstr "فشل تعطيل الموقع %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "تم تعطيل الموقع %{name} من %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:126
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "فشل تعطيل صيانة الموقع %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:130
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "تم تعطيل صيانة الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:158
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "فشل تعطيل الدفق %{name} من %{node}"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:162
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "تم تعطيل الدفق %{name} من %{node} بنجاح"
 
@@ -1552,7 +1574,7 @@ msgstr "خطأ في تنزيل الإصدار الأخير"
 msgid "Downloading latest release"
 msgstr "تنزيل الإصدار الأحدث"
 
-#: src/views/environments/list/BatchUpgrader.vue:188
+#: src/views/environments/list/BatchUpgrader.vue:186
 #: src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
 msgstr "تمكين وضع التشغيل التجريبي"
@@ -1650,53 +1672,53 @@ msgstr "تمكين HTTPS"
 msgid "Enable Proxy Cache"
 msgstr "تمكين ذاكرة التخزين المؤقت للوكيل"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "خطأ في تفعيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:117
 msgid "Enable Remote Site Maintenance Error"
 msgstr "خطأ في تمكين صيانة الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:121
 msgid "Enable Remote Site Maintenance Success"
 msgstr "تمكين صيانة الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "نجح تفعيل الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:165
 msgid "Enable Remote Stream Error"
 msgstr "خطأ في تمكين البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:169
 msgid "Enable Remote Stream Success"
 msgstr "تمكين البث عن بُعد بنجاح"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:118
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "فشل تمكين الصيانة للموقع %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:122
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "تم تمكين صيانة الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:110
 msgid "Enable site %{name} on %{node} failed"
 msgstr "فشل تمكين الموقع %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "تم تمكين الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:166
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "فشل تمكين الدفق %{name} على %{node}"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:170
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "تم تمكين الدفق %{name} على %{node} بنجاح"
 
@@ -2039,7 +2061,7 @@ msgstr "فشل في الحصول على معلومات الشهادة"
 msgid "Failed to get container id: {0}"
 msgstr "فشل في الحصول على معرف الحاوية: {0}"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:61
+#: src/views/dashboard/components/ParamsOptimization.vue:62
 msgid "Failed to get Nginx performance settings"
 msgstr "فشل في الحصول على إعدادات أداء Nginx"
 
@@ -2119,7 +2141,7 @@ msgstr "فشل إبطال الشهادة"
 msgid "Failed to revoke certificate: %{error}"
 msgstr "فشل إلغاء الشهادة: %{error}"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:90
+#: src/views/dashboard/components/ParamsOptimization.vue:91
 msgid "Failed to save Nginx performance settings"
 msgstr "فشل حفظ إعدادات أداء Nginx"
 
@@ -2166,6 +2188,10 @@ msgstr "الملف موجود"
 #: src/views/other/Error.vue:8
 msgid "File Not Found"
 msgstr "لم يتم العثور على الملف"
+
+#: src/constants/errors/config.ts:7
+msgid "File or directory not found: {0}"
+msgstr "الملف أو الدليل غير موجود: {0}"
 
 #: src/constants/errors/cert.ts:2
 msgid "Filename is empty"
@@ -2263,7 +2289,7 @@ msgstr "فشل الحصول على البيانات"
 msgid "Get dns credential error: {0}"
 msgstr "خطأ في الحصول على بيانات اعتماد DNS: {0}"
 
-#: src/views/environments/list/BatchUpgrader.vue:177
+#: src/views/environments/list/BatchUpgrader.vue:175
 #: src/views/system/Upgrade.vue:188
 msgid "Get release information error"
 msgstr "خطأ في الحصول على معلومات الإصدار"
@@ -3488,8 +3514,8 @@ msgstr "حجم الصفحة"
 msgid "Params"
 msgstr "عوامل"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:109
-#: src/views/dashboard/components/ParamsOptimization.vue:115
+#: src/views/dashboard/components/ParamsOptimization.vue:110
+#: src/views/dashboard/components/ParamsOptimization.vue:116
 msgid "Params Optimization"
 msgstr "تحسين المعلمات"
 
@@ -3557,7 +3583,7 @@ msgstr "مورد الحمولة فارغ"
 msgid "Pending"
 msgstr "قيد الانتظار"
 
-#: src/views/environments/list/BatchUpgrader.vue:232
+#: src/views/environments/list/BatchUpgrader.vue:239
 msgid "Perform"
 msgstr "نفذ"
 
@@ -3565,7 +3591,7 @@ msgstr "نفذ"
 msgid "Perform core upgrade error"
 msgstr "خطأ في تنفيذ ترقية النواة"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:121
+#: src/views/dashboard/components/ParamsOptimization.vue:122
 msgid "Performance"
 msgstr "الأداء"
 
@@ -3573,7 +3599,7 @@ msgstr "الأداء"
 msgid "Performance Metrics"
 msgstr "مقاييس الأداء"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:86
+#: src/views/dashboard/components/ParamsOptimization.vue:87
 msgid "Performance settings saved successfully"
 msgstr "تم حفظ إعدادات الأداء بنجاح"
 
@@ -3650,7 +3676,7 @@ msgstr ""
 "يرجى أولاً إضافة بيانات الاعتماد في الشهادات > بيانات اعتماد DNS، ثم اختيار "
 "أحد بيانات الاعتماد أدناه لطلب API لمزود DNS."
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:190
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -3752,8 +3778,8 @@ msgstr "ماسح المنافذ"
 msgid "Post-sync Action"
 msgstr "إجراء ما بعد المزامنة"
 
-#: src/views/environments/list/BatchUpgrader.vue:167
-#: src/views/environments/list/BatchUpgrader.vue:220
+#: src/views/environments/list/BatchUpgrader.vue:165
+#: src/views/environments/list/BatchUpgrader.vue:218
 #: src/views/system/Upgrade.vue:213 src/views/system/Upgrade.vue:267
 msgid "Pre-release"
 msgstr "ما قبل الإصدار"
@@ -3995,37 +4021,37 @@ msgstr "خطأ في إعادة تسمية التكوين البعيد"
 msgid "Rename Remote Config Success"
 msgstr "إعادة تسمية تكوين البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:133
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "خطأ في إعادة تسمية الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "تم إعادة تسمية الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:173
 msgid "Rename Remote Stream Error"
 msgstr "خطأ في إعادة تسمية البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:177
 msgid "Rename Remote Stream Success"
 msgstr "تمت إعادة تسمية الدفق البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:134
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "فشل إعادة تسمية الموقع %{name} إلى %{new_name} على %{node}"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:138
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "تمت إعادة تسمية الموقع %{name} إلى %{new_name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:174
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "فشل إعادة تسمية الدفق %{name} إلى %{new_name} على %{node}"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:178
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "تمت إعادة تسمية الدفق %{name} إلى %{new_name} على %{node} بنجاح"
 
@@ -4340,37 +4366,37 @@ msgstr "حفظ التوجيه"
 msgid "Save error %{msg}"
 msgstr "خطأ في الحفظ %{msg}"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "خطأ في حفظ الموقع البعيد"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "حفظ الموقع البعيد بنجاح"
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:181
 msgid "Save Remote Stream Error"
 msgstr "خطأ في حفظ البث عن بُعد"
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:185
 msgid "Save Remote Stream Success"
 msgstr "حفظ البث عن بُعد بنجاح"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:142
 msgid "Save site %{name} to %{node} failed"
 msgstr "فشل حفظ الموقع %{name} إلى %{node}"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:146
 msgid "Save site %{name} to %{node} successfully"
 msgstr "تم حفظ الموقع %{name} على %{node} بنجاح"
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:182
 msgid "Save stream %{name} to %{node} failed"
 msgstr "فشل حفظ الدفق %{name} إلى %{node}"
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:186
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "تم حفظ الدفق %{name} في %{node} بنجاح"
 
@@ -4679,8 +4705,8 @@ msgstr "مسار مفتاح SSL مطلوب عند تمكين HTTPS"
 msgid "SSO Login"
 msgstr "تسجيل الدخول عبر SSO"
 
-#: src/views/environments/list/BatchUpgrader.vue:164
-#: src/views/environments/list/BatchUpgrader.vue:214
+#: src/views/environments/list/BatchUpgrader.vue:162
+#: src/views/environments/list/BatchUpgrader.vue:212
 #: src/views/system/Upgrade.vue:210 src/views/system/Upgrade.vue:261
 msgid "Stable"
 msgstr "مستقر"
@@ -5159,7 +5185,7 @@ msgstr ""
 "سيؤدي هذا إلى استعادة ملفات التكوين وقاعدة البيانات. سيعاد تشغيل واجهة "
 "Nginx بعد اكتمال الاستعادة."
 
-#: src/views/environments/list/BatchUpgrader.vue:182
+#: src/views/environments/list/BatchUpgrader.vue:180
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "سيتم ترقية أو إعادة تثبيت Nginx UI على %{nodeNames} إلى %{version}."
 
@@ -5351,7 +5377,7 @@ msgstr "محدث في"
 msgid "Upgrade"
 msgstr "ترقية"
 
-#: src/views/environments/list/BatchUpgrader.vue:137
+#: src/views/environments/list/BatchUpgrader.vue:135
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr "تمت ترقية Nginx UI على %{node} بنجاح 🎉"
 
@@ -5359,7 +5385,7 @@ msgstr "تمت ترقية Nginx UI على %{node} بنجاح 🎉"
 msgid "Upgraded successfully"
 msgstr "تم الترقية بنجاح"
 
-#: src/views/environments/list/BatchUpgrader.vue:88
+#: src/views/environments/list/BatchUpgrader.vue:86
 #: src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "جارٍ ترقية Nginx UI، يرجى الانتظار..."
@@ -5465,6 +5491,7 @@ msgstr "عرض"
 msgid "View all notifications"
 msgstr "عرض جميع التنبيهات"
 
+#: src/views/environments/list/BatchUpgrader.vue:229
 #: src/views/system/Upgrade.vue:279
 msgid "View on GitHub"
 msgstr "عرض على GitHub"
@@ -5627,6 +5654,10 @@ msgid ""
 msgstr ""
 "أنت تتصل بهذا الطرف عبر اتصال HTTP غير آمن في نطاق غير محلي. قد يؤدي هذا "
 "إلى كشف معلومات حساسة."
+
+#: src/constants/errors/config.ts:8
+msgid "You are not allowed to delete a file outside of the nginx config path"
+msgstr "غير مسموح لك بحذف ملف خارج مسار تكوين nginx"
 
 #: src/views/system/Upgrade.vue:224
 msgid "You are using the latest version"

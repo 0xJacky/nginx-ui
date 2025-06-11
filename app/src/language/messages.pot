@@ -218,7 +218,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:189
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr ""
@@ -520,7 +520,7 @@ msgstr ""
 msgid "Batch Modify"
 msgstr ""
 
-#: src/views/environments/list/BatchUpgrader.vue:152
+#: src/views/environments/list/BatchUpgrader.vue:150
 msgid "Batch Upgrade"
 msgstr ""
 
@@ -540,7 +540,7 @@ msgstr ""
 msgid "CA Dir"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOptimization.vue:124
+#: src/views/dashboard/components/ParamsOptimization.vue:125
 msgid "Cache"
 msgstr ""
 
@@ -615,6 +615,10 @@ msgstr ""
 #: src/components/ConfigHistory/DiffViewer.vue:67
 #: src/components/ConfigHistory/DiffViewer.vue:84
 msgid "Cannot compare: Missing content"
+msgstr ""
+
+#: src/constants/errors/config.ts:6
+msgid "Cannot delete protected path: {0}"
 msgstr ""
 
 #: src/views/dashboard/NginxDashBoard.vue:129
@@ -741,7 +745,7 @@ msgstr[1] ""
 msgid "Changed Path"
 msgstr ""
 
-#: src/views/environments/list/BatchUpgrader.vue:159
+#: src/views/environments/list/BatchUpgrader.vue:157
 #: src/views/system/Upgrade.vue:207
 msgid "Channel"
 msgstr ""
@@ -1187,6 +1191,14 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+#: src/components/Notification/notifications.ts:86
+msgid "Delete %{path} on %{env_name} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:90
+msgid "Delete %{path} on %{env_name} successfully"
+msgstr ""
+
 #: src/views/certificate/components/RemoveCert.vue:93
 msgid "Delete Certificate"
 msgstr ""
@@ -1200,28 +1212,36 @@ msgid "Delete Permanently"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:85
+msgid "Delete Remote Config Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:89
+msgid "Delete Remote Config Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:93
 #: src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:89
+#: src/components/Notification/notifications.ts:97
 #: src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:149
 msgid "Delete Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:153
 msgid "Delete Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:94
 msgid "Delete site %{name} from %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:98
 msgid "Delete site %{name} from %{node} successfully"
 msgstr ""
 
@@ -1229,11 +1249,11 @@ msgstr ""
 msgid "Delete site: %{site_name}"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:150
 msgid "Delete stream %{name} from %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:154
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr ""
 
@@ -1321,53 +1341,53 @@ msgstr ""
 msgid "Disable auto-renewal failed for %{name}"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:93
+#: src/components/Notification/notifications.ts:101
 #: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:125
 msgid "Disable Remote Site Maintenance Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:129
 msgid "Disable Remote Site Maintenance Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:97
+#: src/components/Notification/notifications.ts:105
 #: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:157
 msgid "Disable Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:161
 msgid "Disable Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:102
 msgid "Disable site %{name} from %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} from %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:126
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:130
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:158
 msgid "Disable stream %{name} from %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:162
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr ""
 
@@ -1473,7 +1493,7 @@ msgstr ""
 msgid "Downloading latest release"
 msgstr ""
 
-#: src/views/environments/list/BatchUpgrader.vue:188
+#: src/views/environments/list/BatchUpgrader.vue:186
 #: src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
 msgstr ""
@@ -1567,53 +1587,53 @@ msgstr ""
 msgid "Enable Proxy Cache"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:117
 msgid "Enable Remote Site Maintenance Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:121
 msgid "Enable Remote Site Maintenance Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:165
 msgid "Enable Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:169
 msgid "Enable Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:118
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:122
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:110
 msgid "Enable site %{name} on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} on %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:166
 msgid "Enable stream %{name} on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:170
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr ""
 
@@ -1958,7 +1978,7 @@ msgstr ""
 msgid "Failed to get container id: {0}"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOptimization.vue:61
+#: src/views/dashboard/components/ParamsOptimization.vue:62
 msgid "Failed to get Nginx performance settings"
 msgstr ""
 
@@ -2038,7 +2058,7 @@ msgstr ""
 msgid "Failed to revoke certificate: %{error}"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOptimization.vue:90
+#: src/views/dashboard/components/ParamsOptimization.vue:91
 msgid "Failed to save Nginx performance settings"
 msgstr ""
 
@@ -2084,6 +2104,10 @@ msgstr ""
 
 #: src/views/other/Error.vue:8
 msgid "File Not Found"
+msgstr ""
+
+#: src/constants/errors/config.ts:7
+msgid "File or directory not found: {0}"
 msgstr ""
 
 #: src/constants/errors/cert.ts:2
@@ -2181,7 +2205,7 @@ msgstr ""
 msgid "Get dns credential error: {0}"
 msgstr ""
 
-#: src/views/environments/list/BatchUpgrader.vue:177
+#: src/views/environments/list/BatchUpgrader.vue:175
 #: src/views/system/Upgrade.vue:188
 msgid "Get release information error"
 msgstr ""
@@ -3367,8 +3391,8 @@ msgstr ""
 msgid "Params"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOptimization.vue:109
-#: src/views/dashboard/components/ParamsOptimization.vue:115
+#: src/views/dashboard/components/ParamsOptimization.vue:110
+#: src/views/dashboard/components/ParamsOptimization.vue:116
 msgid "Params Optimization"
 msgstr ""
 
@@ -3432,7 +3456,7 @@ msgstr ""
 msgid "Pending"
 msgstr ""
 
-#: src/views/environments/list/BatchUpgrader.vue:232
+#: src/views/environments/list/BatchUpgrader.vue:239
 msgid "Perform"
 msgstr ""
 
@@ -3440,7 +3464,7 @@ msgstr ""
 msgid "Perform core upgrade error"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOptimization.vue:121
+#: src/views/dashboard/components/ParamsOptimization.vue:122
 msgid "Performance"
 msgstr ""
 
@@ -3448,7 +3472,7 @@ msgstr ""
 msgid "Performance Metrics"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOptimization.vue:86
+#: src/views/dashboard/components/ParamsOptimization.vue:87
 msgid "Performance settings saved successfully"
 msgstr ""
 
@@ -3513,7 +3537,7 @@ msgstr ""
 msgid "Please first add credentials in Certification > DNS Credentials, and then select one of the credentialsbelow to request the API of the DNS provider."
 msgstr ""
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:190
 #: src/language/constants.ts:59
 msgid "Please generate new recovery codes in the preferences immediately to prevent lockout."
 msgstr ""
@@ -3611,8 +3635,8 @@ msgstr ""
 msgid "Post-sync Action"
 msgstr ""
 
-#: src/views/environments/list/BatchUpgrader.vue:167
-#: src/views/environments/list/BatchUpgrader.vue:220
+#: src/views/environments/list/BatchUpgrader.vue:165
+#: src/views/environments/list/BatchUpgrader.vue:218
 #: src/views/system/Upgrade.vue:213
 #: src/views/system/Upgrade.vue:267
 msgid "Pre-release"
@@ -3854,37 +3878,37 @@ msgstr ""
 msgid "Rename Remote Config Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:133
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:173
 msgid "Rename Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:177
 msgid "Rename Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:134
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:138
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:174
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:178
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr ""
 
@@ -4192,37 +4216,37 @@ msgstr ""
 msgid "Save error %{msg}"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:181
 msgid "Save Remote Stream Error"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:185
 msgid "Save Remote Stream Success"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:142
 msgid "Save site %{name} to %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:146
 msgid "Save site %{name} to %{node} successfully"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:182
 msgid "Save stream %{name} to %{node} failed"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:186
 msgid "Save stream %{name} to %{node} successfully"
 msgstr ""
 
@@ -4524,8 +4548,8 @@ msgstr ""
 msgid "SSO Login"
 msgstr ""
 
-#: src/views/environments/list/BatchUpgrader.vue:164
-#: src/views/environments/list/BatchUpgrader.vue:214
+#: src/views/environments/list/BatchUpgrader.vue:162
+#: src/views/environments/list/BatchUpgrader.vue:212
 #: src/views/system/Upgrade.vue:210
 #: src/views/system/Upgrade.vue:261
 msgid "Stable"
@@ -4936,7 +4960,7 @@ msgstr ""
 msgid "This will restore configuration files and database. Nginx UI will restart after the restoration is complete."
 msgstr ""
 
-#: src/views/environments/list/BatchUpgrader.vue:182
+#: src/views/environments/list/BatchUpgrader.vue:180
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 
@@ -5100,7 +5124,7 @@ msgstr ""
 msgid "Upgrade"
 msgstr ""
 
-#: src/views/environments/list/BatchUpgrader.vue:137
+#: src/views/environments/list/BatchUpgrader.vue:135
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr ""
 
@@ -5108,7 +5132,7 @@ msgstr ""
 msgid "Upgraded successfully"
 msgstr ""
 
-#: src/views/environments/list/BatchUpgrader.vue:88
+#: src/views/environments/list/BatchUpgrader.vue:86
 #: src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr ""
@@ -5217,6 +5241,7 @@ msgstr ""
 msgid "View all notifications"
 msgstr ""
 
+#: src/views/environments/list/BatchUpgrader.vue:229
 #: src/views/system/Upgrade.vue:279
 msgid "View on GitHub"
 msgstr ""
@@ -5353,6 +5378,10 @@ msgstr ""
 
 #: src/views/terminal/Terminal.vue:132
 msgid "You are accessing this terminal over an insecure HTTP connection on a non-localhost domain. This may expose sensitive information."
+msgstr ""
+
+#: src/constants/errors/config.ts:8
+msgid "You are not allowed to delete a file outside of the nginx config path"
 msgstr ""
 
 #: src/views/system/Upgrade.vue:224

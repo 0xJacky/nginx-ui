@@ -231,7 +231,7 @@ msgstr "Після цього оновіть цю сторінку та нати
 msgid "All"
 msgstr "Усі"
 
-#: src/components/Notification/notifications.ts:181
+#: src/components/Notification/notifications.ts:189
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "Усі коди відновлення використано"
@@ -546,7 +546,7 @@ msgstr "Групове редагування"
 msgid "Batch Modify"
 msgstr "Масове редагування"
 
-#: src/views/environments/list/BatchUpgrader.vue:152
+#: src/views/environments/list/BatchUpgrader.vue:150
 msgid "Batch Upgrade"
 msgstr "Групове оновлення"
 
@@ -566,7 +566,7 @@ msgstr "Створено за допомогою"
 msgid "CA Dir"
 msgstr "Каталог CA"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:124
+#: src/views/dashboard/components/ParamsOptimization.vue:125
 msgid "Cache"
 msgstr "Кеш"
 
@@ -647,6 +647,10 @@ msgstr "Не вдається змінити початковий пароль �
 #: src/components/ConfigHistory/DiffViewer.vue:84
 msgid "Cannot compare: Missing content"
 msgstr "Не вдається порівняти: відсутній вміст"
+
+#: src/constants/errors/config.ts:6
+msgid "Cannot delete protected path: {0}"
+msgstr "Неможливо видалити захищений шлях: {0}"
 
 #: src/views/dashboard/NginxDashBoard.vue:129
 msgid "Cannot get performance data in this state"
@@ -770,7 +774,7 @@ msgstr[0] "Змінено сертифікат"
 msgid "Changed Path"
 msgstr "Змінений шлях"
 
-#: src/views/environments/list/BatchUpgrader.vue:159
+#: src/views/environments/list/BatchUpgrader.vue:157
 #: src/views/system/Upgrade.vue:207
 msgid "Channel"
 msgstr "Канал"
@@ -1322,6 +1326,14 @@ msgstr "Вкажіть назву та розмір зони спільної п
 msgid "Delete"
 msgstr "Видалити"
 
+#: src/components/Notification/notifications.ts:86
+msgid "Delete %{path} on %{env_name} failed"
+msgstr "Не вдалося видалити %{path} на %{env_name}"
+
+#: src/components/Notification/notifications.ts:90
+msgid "Delete %{path} on %{env_name} successfully"
+msgstr "%{path} на %{env_name} успішно видалено"
+
 #: src/views/certificate/components/RemoveCert.vue:93
 msgid "Delete Certificate"
 msgstr "Видалити сертифікат"
@@ -1334,27 +1346,35 @@ msgstr "Підтвердження видалення"
 msgid "Delete Permanently"
 msgstr "Видалити назавжди"
 
-#: src/components/Notification/notifications.ts:85 src/language/constants.ts:50
+#: src/components/Notification/notifications.ts:85
+msgid "Delete Remote Config Error"
+msgstr "Помилка видалення віддаленої конфігурації"
+
+#: src/components/Notification/notifications.ts:89
+msgid "Delete Remote Config Success"
+msgstr "Віддалена конфігурація успішно видалена"
+
+#: src/components/Notification/notifications.ts:93 src/language/constants.ts:50
 msgid "Delete Remote Site Error"
 msgstr "Помилка видалення віддаленого сайту"
 
-#: src/components/Notification/notifications.ts:89 src/language/constants.ts:49
+#: src/components/Notification/notifications.ts:97 src/language/constants.ts:49
 msgid "Delete Remote Site Success"
 msgstr "Віддалений сайт успішно видалено"
 
-#: src/components/Notification/notifications.ts:141
+#: src/components/Notification/notifications.ts:149
 msgid "Delete Remote Stream Error"
 msgstr "Помилка видалення віддаленого потоку"
 
-#: src/components/Notification/notifications.ts:145
+#: src/components/Notification/notifications.ts:153
 msgid "Delete Remote Stream Success"
 msgstr "Віддалений потік успішно видалено"
 
-#: src/components/Notification/notifications.ts:86
+#: src/components/Notification/notifications.ts:94
 msgid "Delete site %{name} from %{node} failed"
 msgstr "Не вдалося видалити сайт %{name} з %{node}"
 
-#: src/components/Notification/notifications.ts:90
+#: src/components/Notification/notifications.ts:98
 msgid "Delete site %{name} from %{node} successfully"
 msgstr "Сайт %{name} успішно видалено з %{node}"
 
@@ -1362,11 +1382,11 @@ msgstr "Сайт %{name} успішно видалено з %{node}"
 msgid "Delete site: %{site_name}"
 msgstr "Сайт видалено: %{site_name}"
 
-#: src/components/Notification/notifications.ts:142
+#: src/components/Notification/notifications.ts:150
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "Не вдалося видалити потік %{name} з %{node}"
 
-#: src/components/Notification/notifications.ts:146
+#: src/components/Notification/notifications.ts:154
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Потік %{name} успішно видалено з %{node}"
 
@@ -1488,51 +1508,53 @@ msgstr "Вимкнути"
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Не вдалося вимкнути автоматичне поновлення для %{name}"
 
-#: src/components/Notification/notifications.ts:93 src/language/constants.ts:52
+#: src/components/Notification/notifications.ts:101
+#: src/language/constants.ts:52
 msgid "Disable Remote Site Error"
 msgstr "Помилка вимкнення віддаленого сайту"
 
-#: src/components/Notification/notifications.ts:117
+#: src/components/Notification/notifications.ts:125
 msgid "Disable Remote Site Maintenance Error"
 msgstr "Помилка вимкнення технічного обслуговування віддаленого сайту"
 
-#: src/components/Notification/notifications.ts:121
+#: src/components/Notification/notifications.ts:129
 msgid "Disable Remote Site Maintenance Success"
 msgstr "Вимкнення технічного обслуговування віддаленого сайту успішне"
 
-#: src/components/Notification/notifications.ts:97 src/language/constants.ts:51
+#: src/components/Notification/notifications.ts:105
+#: src/language/constants.ts:51
 msgid "Disable Remote Site Success"
 msgstr "Віддалений сайт успішно вимкнено"
 
-#: src/components/Notification/notifications.ts:149
+#: src/components/Notification/notifications.ts:157
 msgid "Disable Remote Stream Error"
 msgstr "Помилка вимкнення віддаленого потоку"
 
-#: src/components/Notification/notifications.ts:153
+#: src/components/Notification/notifications.ts:161
 msgid "Disable Remote Stream Success"
 msgstr "Віддалений потік успішно вимкнено"
 
-#: src/components/Notification/notifications.ts:94
+#: src/components/Notification/notifications.ts:102
 msgid "Disable site %{name} from %{node} failed"
 msgstr "Не вдалося вимкнути сайт %{name} з %{node}"
 
-#: src/components/Notification/notifications.ts:98
+#: src/components/Notification/notifications.ts:106
 msgid "Disable site %{name} from %{node} successfully"
 msgstr "Сайт %{name} успішно вимкнено з %{node}"
 
-#: src/components/Notification/notifications.ts:118
+#: src/components/Notification/notifications.ts:126
 msgid "Disable site %{name} maintenance on %{node} failed"
 msgstr "Не вдалося вимкнути обслуговування сайту %{name} на %{node}"
 
-#: src/components/Notification/notifications.ts:122
+#: src/components/Notification/notifications.ts:130
 msgid "Disable site %{name} maintenance on %{node} successfully"
 msgstr "Обслуговування сайту %{name} на %{node} успішно вимкнено"
 
-#: src/components/Notification/notifications.ts:150
+#: src/components/Notification/notifications.ts:158
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "Не вдалося вимкнути потік %{name} з %{node}"
 
-#: src/components/Notification/notifications.ts:154
+#: src/components/Notification/notifications.ts:162
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Потік %{name} успішно вимкнено з %{node}"
 
@@ -1636,7 +1658,7 @@ msgstr "Помилка завантаження останнього реліз�
 msgid "Downloading latest release"
 msgstr "Завантаження останнього релізу"
 
-#: src/views/environments/list/BatchUpgrader.vue:188
+#: src/views/environments/list/BatchUpgrader.vue:186
 #: src/views/system/Upgrade.vue:237
 msgid "Dry run mode enabled"
 msgstr "Увімкнено тестовий режим"
@@ -1735,53 +1757,53 @@ msgstr "Увімкнути HTTPS"
 msgid "Enable Proxy Cache"
 msgstr "Увімкнути кеш проксі"
 
-#: src/components/Notification/notifications.ts:101
+#: src/components/Notification/notifications.ts:109
 #: src/language/constants.ts:54
 msgid "Enable Remote Site Error"
 msgstr "Помилка активації віддаленого сайту"
 
-#: src/components/Notification/notifications.ts:109
+#: src/components/Notification/notifications.ts:117
 msgid "Enable Remote Site Maintenance Error"
 msgstr "Помилка увімкнення технічного обслуговування віддаленого сайту"
 
-#: src/components/Notification/notifications.ts:113
+#: src/components/Notification/notifications.ts:121
 msgid "Enable Remote Site Maintenance Success"
 msgstr "Успішне ввімкнення режиму обслуговування віддаленого сайту"
 
-#: src/components/Notification/notifications.ts:105
+#: src/components/Notification/notifications.ts:113
 #: src/language/constants.ts:53
 msgid "Enable Remote Site Success"
 msgstr "Віддалений сайт успішно увімкнено"
 
-#: src/components/Notification/notifications.ts:157
+#: src/components/Notification/notifications.ts:165
 msgid "Enable Remote Stream Error"
 msgstr "Помилка ввімкнення віддаленого потоку"
 
-#: src/components/Notification/notifications.ts:161
+#: src/components/Notification/notifications.ts:169
 msgid "Enable Remote Stream Success"
 msgstr "Віддалений потік успішно ввімкнено"
 
-#: src/components/Notification/notifications.ts:110
+#: src/components/Notification/notifications.ts:118
 msgid "Enable site %{name} maintenance on %{node} failed"
 msgstr "Не вдалося увімкнути технічне обслуговування сайту %{name} на %{node}"
 
-#: src/components/Notification/notifications.ts:114
+#: src/components/Notification/notifications.ts:122
 msgid "Enable site %{name} maintenance on %{node} successfully"
 msgstr "Обслуговування сайту %{name} на %{node} успішно ввімкнено"
 
-#: src/components/Notification/notifications.ts:102
+#: src/components/Notification/notifications.ts:110
 msgid "Enable site %{name} on %{node} failed"
 msgstr "Не вдалося увімкнути сайт %{name} на %{node}"
 
-#: src/components/Notification/notifications.ts:106
+#: src/components/Notification/notifications.ts:114
 msgid "Enable site %{name} on %{node} successfully"
 msgstr "Сайт %{name} успішно увімкнено на %{node}"
 
-#: src/components/Notification/notifications.ts:158
+#: src/components/Notification/notifications.ts:166
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "Не вдалося увімкнути потік %{name} на %{node}"
 
-#: src/components/Notification/notifications.ts:162
+#: src/components/Notification/notifications.ts:170
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Потік %{name} успішно ввімкнено на %{node}"
 
@@ -2124,7 +2146,7 @@ msgstr "Не вдалося отримати інформацію про сер�
 msgid "Failed to get container id: {0}"
 msgstr "Не вдалося отримати ідентифікатор контейнера: {0}"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:61
+#: src/views/dashboard/components/ParamsOptimization.vue:62
 msgid "Failed to get Nginx performance settings"
 msgstr "Не вдалося отримати налаштування продуктивності Nginx"
 
@@ -2204,7 +2226,7 @@ msgstr "Не вдалося відкликати сертифікат"
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Не вдалося відкликати сертифікат: %{error}"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:90
+#: src/views/dashboard/components/ParamsOptimization.vue:91
 msgid "Failed to save Nginx performance settings"
 msgstr "Не вдалося зберегти налаштування продуктивності Nginx"
 
@@ -2251,6 +2273,10 @@ msgstr "Файл існує"
 #: src/views/other/Error.vue:8
 msgid "File Not Found"
 msgstr "Файл не знайдено"
+
+#: src/constants/errors/config.ts:7
+msgid "File or directory not found: {0}"
+msgstr "Файл або каталог не знайдено: {0}"
 
 #: src/constants/errors/cert.ts:2
 msgid "Filename is empty"
@@ -2350,7 +2376,7 @@ msgstr "Не вдалося отримати дані"
 msgid "Get dns credential error: {0}"
 msgstr "Помилка отримання облікових даних DNS: {0}"
 
-#: src/views/environments/list/BatchUpgrader.vue:177
+#: src/views/environments/list/BatchUpgrader.vue:175
 #: src/views/system/Upgrade.vue:188
 msgid "Get release information error"
 msgstr "Помилка отримання інформації про реліз"
@@ -3581,8 +3607,8 @@ msgstr "Розмір сторінки"
 msgid "Params"
 msgstr "Параметри"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:109
-#: src/views/dashboard/components/ParamsOptimization.vue:115
+#: src/views/dashboard/components/ParamsOptimization.vue:110
+#: src/views/dashboard/components/ParamsOptimization.vue:116
 msgid "Params Optimization"
 msgstr "Оптимізація параметрів"
 
@@ -3651,7 +3677,7 @@ msgstr "Ресурс навантаження є nil"
 msgid "Pending"
 msgstr "Очікується"
 
-#: src/views/environments/list/BatchUpgrader.vue:232
+#: src/views/environments/list/BatchUpgrader.vue:239
 msgid "Perform"
 msgstr "Виконати"
 
@@ -3659,7 +3685,7 @@ msgstr "Виконати"
 msgid "Perform core upgrade error"
 msgstr "Помилка виконання оновлення ядра"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:121
+#: src/views/dashboard/components/ParamsOptimization.vue:122
 msgid "Performance"
 msgstr "Продуктивність"
 
@@ -3667,7 +3693,7 @@ msgstr "Продуктивність"
 msgid "Performance Metrics"
 msgstr "Метрики продуктивності"
 
-#: src/views/dashboard/components/ParamsOptimization.vue:86
+#: src/views/dashboard/components/ParamsOptimization.vue:87
 msgid "Performance settings saved successfully"
 msgstr "Налаштування продуктивності успішно збережено"
 
@@ -3747,7 +3773,7 @@ msgstr ""
 "потім виберіть один із наведених нижче облікових записів, щоб надіслати "
 "запит до API постачальника DNS."
 
-#: src/components/Notification/notifications.ts:182
+#: src/components/Notification/notifications.ts:190
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -3859,8 +3885,8 @@ msgstr "Сканер портів"
 msgid "Post-sync Action"
 msgstr "Дія після синхронізації"
 
-#: src/views/environments/list/BatchUpgrader.vue:167
-#: src/views/environments/list/BatchUpgrader.vue:220
+#: src/views/environments/list/BatchUpgrader.vue:165
+#: src/views/environments/list/BatchUpgrader.vue:218
 #: src/views/system/Upgrade.vue:213 src/views/system/Upgrade.vue:267
 msgid "Pre-release"
 msgstr "Попередній випуск"
@@ -4107,37 +4133,37 @@ msgstr "Помилка перейменування віддаленої кон�
 msgid "Rename Remote Config Success"
 msgstr "Вдале налаштування успішно перейменовано"
 
-#: src/components/Notification/notifications.ts:125
+#: src/components/Notification/notifications.ts:133
 #: src/language/constants.ts:56
 msgid "Rename Remote Site Error"
 msgstr "Помилка перейменування віддаленого сайту"
 
-#: src/components/Notification/notifications.ts:129
+#: src/components/Notification/notifications.ts:137
 #: src/language/constants.ts:55
 msgid "Rename Remote Site Success"
 msgstr "Успішне перейменування віддаленого сайту"
 
-#: src/components/Notification/notifications.ts:165
+#: src/components/Notification/notifications.ts:173
 msgid "Rename Remote Stream Error"
 msgstr "Помилка перейменування віддаленого потоку"
 
-#: src/components/Notification/notifications.ts:169
+#: src/components/Notification/notifications.ts:177
 msgid "Rename Remote Stream Success"
 msgstr "Вдале потік успішно перейменовано"
 
-#: src/components/Notification/notifications.ts:126
+#: src/components/Notification/notifications.ts:134
 msgid "Rename site %{name} to %{new_name} on %{node} failed"
 msgstr "Не вдалося перейменувати сайт %{name} на %{new_name} у %{node}"
 
-#: src/components/Notification/notifications.ts:130
+#: src/components/Notification/notifications.ts:138
 msgid "Rename site %{name} to %{new_name} on %{node} successfully"
 msgstr "Сайт %{name} успішно перейменовано на %{new_name} на %{node}"
 
-#: src/components/Notification/notifications.ts:166
+#: src/components/Notification/notifications.ts:174
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "Не вдалося перейменувати потік %{name} на %{new_name} на %{node}"
 
-#: src/components/Notification/notifications.ts:170
+#: src/components/Notification/notifications.ts:178
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "Потік %{name} успішно перейменовано на %{new_name} на %{node}"
 
@@ -4455,37 +4481,37 @@ msgstr "Зберегти директиву"
 msgid "Save error %{msg}"
 msgstr "Помилка збереження %{msg}"
 
-#: src/components/Notification/notifications.ts:133
+#: src/components/Notification/notifications.ts:141
 #: src/language/constants.ts:48
 msgid "Save Remote Site Error"
 msgstr "Помилка збереження віддаленого сайту"
 
-#: src/components/Notification/notifications.ts:137
+#: src/components/Notification/notifications.ts:145
 #: src/language/constants.ts:47
 msgid "Save Remote Site Success"
 msgstr "Віддалений сайт успішно збережено"
 
-#: src/components/Notification/notifications.ts:173
+#: src/components/Notification/notifications.ts:181
 msgid "Save Remote Stream Error"
 msgstr "Помилка збереження віддаленого потоку"
 
-#: src/components/Notification/notifications.ts:177
+#: src/components/Notification/notifications.ts:185
 msgid "Save Remote Stream Success"
 msgstr "Віддалений потік успішно збережено"
 
-#: src/components/Notification/notifications.ts:134
+#: src/components/Notification/notifications.ts:142
 msgid "Save site %{name} to %{node} failed"
 msgstr "Не вдалося зберегти сайт %{name} на %{node}"
 
-#: src/components/Notification/notifications.ts:138
+#: src/components/Notification/notifications.ts:146
 msgid "Save site %{name} to %{node} successfully"
 msgstr "Сайт %{name} успішно збережено на %{node}"
 
-#: src/components/Notification/notifications.ts:174
+#: src/components/Notification/notifications.ts:182
 msgid "Save stream %{name} to %{node} failed"
 msgstr "Не вдалося зберегти потік %{name} на %{node}"
 
-#: src/components/Notification/notifications.ts:178
+#: src/components/Notification/notifications.ts:186
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Потік %{name} успішно збережено на %{node}"
 
@@ -4800,8 +4826,8 @@ msgstr "Шлях до SSL-ключа обов’язковий при ввімк
 msgid "SSO Login"
 msgstr "Вхід через SSO"
 
-#: src/views/environments/list/BatchUpgrader.vue:164
-#: src/views/environments/list/BatchUpgrader.vue:214
+#: src/views/environments/list/BatchUpgrader.vue:162
+#: src/views/environments/list/BatchUpgrader.vue:212
 #: src/views/system/Upgrade.vue:210 src/views/system/Upgrade.vue:261
 msgid "Stable"
 msgstr "Стабільна"
@@ -5286,7 +5312,7 @@ msgstr ""
 "Це відновить файли конфігурації та базу даних. Nginx UI перезапуститься "
 "після завершення відновлення."
 
-#: src/views/environments/list/BatchUpgrader.vue:182
+#: src/views/environments/list/BatchUpgrader.vue:180
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "Це оновить або перевстановить Nginx UI на %{nodeNames} до версії %{version}."
 
@@ -5480,7 +5506,7 @@ msgstr "Оновлено"
 msgid "Upgrade"
 msgstr "Оновити"
 
-#: src/views/environments/list/BatchUpgrader.vue:137
+#: src/views/environments/list/BatchUpgrader.vue:135
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
 msgstr "Nginx UI на %{node} успішно оновлено 🎉"
 
@@ -5488,7 +5514,7 @@ msgstr "Nginx UI на %{node} успішно оновлено 🎉"
 msgid "Upgraded successfully"
 msgstr "Успішно оновлено"
 
-#: src/views/environments/list/BatchUpgrader.vue:88
+#: src/views/environments/list/BatchUpgrader.vue:86
 #: src/views/system/Upgrade.vue:81
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Оновлення Nginx UI, зачекайте..."
@@ -5594,6 +5620,7 @@ msgstr "Переглянути"
 msgid "View all notifications"
 msgstr "Переглянути всі сповіщення"
 
+#: src/views/environments/list/BatchUpgrader.vue:229
 #: src/views/system/Upgrade.vue:279
 msgid "View on GitHub"
 msgstr "Переглянути на GitHub"
@@ -5762,6 +5789,10 @@ msgstr ""
 "Ви отримуєте доступ до цього терміналу через незахищене HTTP-з’єднання в "
 "домені, який не є локальним. Це може призвести до витоку конфіденційної "
 "інформації."
+
+#: src/constants/errors/config.ts:8
+msgid "You are not allowed to delete a file outside of the nginx config path"
+msgstr "Вам не дозволено видаляти файл за межами шляху конфігурації nginx"
 
 #: src/views/system/Upgrade.vue:224
 msgid "You are using the latest version"
