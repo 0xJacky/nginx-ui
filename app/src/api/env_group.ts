@@ -1,5 +1,6 @@
 import type { ModelBase, UpdateOrderRequest } from '@/api/curd'
 import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
+
 // Post-sync action types
 export const PostSyncAction = {
   None: 'none',

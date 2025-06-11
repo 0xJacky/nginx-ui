@@ -7,6 +7,7 @@ import { message } from 'ant-design-vue'
 import ngx from '@/api/ngx'
 import PerformanceConfig from './ParamsOpt/PerformanceConfig.vue'
 import ProxyCacheConfig from './ParamsOpt/ProxyCacheConfig.vue'
+
 // Performance settings modal
 const visible = ref(false)
 const loading = ref(false)
