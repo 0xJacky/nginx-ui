@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import type { RuntimeInfo } from '@/api/upgrade'
+import type { ReleaseInfo } from '@/api/upgrade'
 import dayjs from 'dayjs'
 
 import { marked } from 'marked'
@@ -10,7 +10,7 @@ import websocket from '@/lib/websocket'
 import version from '@/version.json'
 
 const route = useRoute()
-const data = ref({}) as Ref<RuntimeInfo>
+const data = ref<ReleaseInfo>({} as ReleaseInfo)
 const lastCheck = ref('')
 const loading = ref(false)
 const channel = ref('stable')
@@ -270,6 +270,14 @@ const performUpgradeBtnText = computed(() => {
 
         <h3>{{ $gettext('Release Note') }}</h3>
         <div v-dompurify-html="marked.parse(data.body)" />
+
+        <a
+          v-if="data.html_url"
+          :href="data.html_url"
+          target="_blank"
+        >
+          {{ $gettext('View on GitHub') }}
+        </a>
       </template>
     </div>
   </ACard>

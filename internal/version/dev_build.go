@@ -66,6 +66,7 @@ func getDevBuild() (data TRelease, err error) {
 		Type:        ReleaseTypeDev,
 		PublishedAt: commit.Commit.Committer.Date,
 		Assets:      assets,
+		HTMLURL:     fmt.Sprintf("https://github.com/0xJacky/Nginx-UI/commit/%s", commit.SHA),
 	}
 
 	return

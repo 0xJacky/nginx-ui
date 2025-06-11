@@ -30,6 +30,7 @@ type TRelease struct {
 	Body        string          `json:"body"`
 	Prerelease  bool            `json:"prerelease"`
 	Type        ReleaseType     `json:"type"`
+	HTMLURL     string          `json:"html_url"`
 	Assets      []TReleaseAsset `json:"assets"`
 }
 

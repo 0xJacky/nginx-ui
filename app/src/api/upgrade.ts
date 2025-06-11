@@ -5,8 +5,6 @@ export interface RuntimeInfo {
   os: string
   arch: string
   ex_path: string
-  body: string
-  published_at: string
   cur_version: Info
   in_docker: boolean
 }
@@ -16,6 +14,12 @@ interface Info {
   build_id: number
   total_build: number
   short_hash: string
+}
+
+export interface ReleaseInfo extends RuntimeInfo {
+  html_url: string
+  published_at: string
+  body: string
 }
 
 const upgrade = {

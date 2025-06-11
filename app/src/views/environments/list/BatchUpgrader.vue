@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Environment } from '@/api/environment'
-import type { RuntimeInfo } from '@/api/upgrade'
+import type { ReleaseInfo } from '@/api/upgrade'
 import { cloneDeep } from 'lodash'
 import { marked } from 'marked'
 import upgrade from '@/api/upgrade'
@@ -14,9 +14,7 @@ const channel = ref('stable')
 const nodeNames = computed(() => nodes.value.map(v => v.name).join(', '))
 const loading = ref(false)
 
-const data = ref<RuntimeInfo>({
-  name: '',
-} as RuntimeInfo)
+const data = ref<ReleaseInfo>({} as ReleaseInfo)
 
 const modalVisible = ref(false)
 const modalClosable = ref(false)
@@ -220,7 +218,16 @@ async function performUpgrade() {
               {{ $gettext('Pre-release') }}
             </ATag>
           </h1>
+
           <div v-dompurify-html="marked.parse(data.body)" />
+
+          <a
+            v-if="data.html_url"
+            :href="data.html_url"
+            target="_blank"
+          >
+            {{ $gettext('View on GitHub') }}
+          </a>
         </div>
 
         <div class="flex justify-end">

@@ -16,4 +16,4 @@ export function isProtectedPath(name: string): boolean {
  */
 export function getProtectedDirs(): string[] {
   return [...PROTECTED_DIRS]
-} 
+}
