@@ -125,6 +125,7 @@ func TestIsUpstreamReference(t *testing.T) {
 		"api-1":   true,
 		"api-2":   true,
 		"backend": true,
+		"myUpStr": true,
 	}
 
 	tests := []struct {
@@ -138,6 +139,15 @@ func TestIsUpstreamReference(t *testing.T) {
 		{"http://127.0.0.1:8080", false},
 		{"https://example.com", false},
 		{"http://unknown-upstream", false},
+		// Test cases for nginx variables
+		{"https://myUpStr$request_uri", true},
+		{"http://api-1$request_uri", true},
+		{"https://backend$server_name", true},
+		{"http://unknown-upstream$request_uri", false},
+		{"https://example.com$request_uri", false},
+		// Test cases for URLs with variables and paths
+		{"https://myUpStr/api$request_uri", true},
+		{"http://api-1:8080$request_uri", true},
 	}
 
 	for _, test := range tests {
@@ -362,6 +372,150 @@ server {
 
 	if len(targets) != len(expectedTargets) {
 		t.Errorf("Expected %d targets, got %d", len(expectedTargets), len(targets))
+		return
+	}
+
+	// Create a map for easier comparison
+	targetMap := make(map[string]ProxyTarget)
+	for _, target := range targets {
+		key := target.Host + ":" + target.Port + ":" + target.Type
+		targetMap[key] = target
+	}
+
+	for _, expected := range expectedTargets {
+		key := expected.Host + ":" + expected.Port + ":" + expected.Type
+		if _, found := targetMap[key]; !found {
+			t.Errorf("Expected target not found: %+v", expected)
+		}
+	}
+}
+
+func TestParseProxyTargetsWithNginxVariables(t *testing.T) {
+	config := `map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+upstream myUpStr {
+    keepalive 32;
+    keepalive_timeout 600s;
+    server 192.168.1.100:8080;
+}
+server {
+    listen 80;
+    listen [::]:80;
+    server_name my.domain.tld;
+    return 307 https://$server_name$request_uri;
+}
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name my.domain.tld;
+    ssl_certificate /path/to/cert;
+    ssl_certificate_key /path/to/key;
+    location / {
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        client_max_body_size 1000m;
+        proxy_redirect off;
+        add_header X-Served-By $host;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Scheme $scheme;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Host $host:$server_port;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_pass https://myUpStr$request_uri;
+    }
+}`
+
+	targets := ParseProxyTargetsFromRawContent(config)
+
+	// Expected targets:
+	// - 1 upstream server from myUpStr
+	// - proxy_pass https://myUpStr$request_uri should be ignored since it references an upstream
+	expectedTargets := []ProxyTarget{
+		{Host: "192.168.1.100", Port: "8080", Type: "upstream"},
+	}
+
+	if len(targets) != len(expectedTargets) {
+		t.Errorf("Expected %d targets, got %d", len(expectedTargets), len(targets))
+		for i, target := range targets {
+			t.Logf("Target %d: %+v", i, target)
+		}
+		return
+	}
+
+	// Create a map for easier comparison
+	targetMap := make(map[string]ProxyTarget)
+	for _, target := range targets {
+		key := target.Host + ":" + target.Port + ":" + target.Type
+		targetMap[key] = target
+	}
+
+	for _, expected := range expectedTargets {
+		key := expected.Host + ":" + expected.Port + ":" + expected.Type
+		if _, found := targetMap[key]; !found {
+			t.Errorf("Expected target not found: %+v", expected)
+		}
+	}
+}
+
+func TestParseProxyTargetsWithComplexNginxVariables(t *testing.T) {
+	config := `upstream backend_api {
+    server api1.example.com:8080;
+    server api2.example.com:8080;
+}
+
+upstream backend_ws {
+    server ws1.example.com:9000;
+    server ws2.example.com:9000;
+}
+
+server {
+    listen 80;
+    server_name example.com;
+
+    location /api/ {
+        proxy_pass http://backend_api$request_uri;
+    }
+
+    location /ws/ {
+        proxy_pass http://backend_ws/websocket$request_uri;
+    }
+
+    location /external/ {
+        proxy_pass https://external.example.com:8443$request_uri;
+    }
+
+    location /static/ {
+        proxy_pass http://static.example.com$uri;
+    }
+}`
+
+	targets := ParseProxyTargetsFromRawContent(config)
+
+	// Expected targets:
+	// - 2 upstream servers from backend_api
+	// - 2 upstream servers from backend_ws
+	// - 1 direct proxy_pass (external.example.com:8443)
+	// - 1 direct proxy_pass (static.example.com:80)
+	// - proxy_pass with upstream references should be ignored
+	expectedTargets := []ProxyTarget{
+		{Host: "api1.example.com", Port: "8080", Type: "upstream"},
+		{Host: "api2.example.com", Port: "8080", Type: "upstream"},
+		{Host: "ws1.example.com", Port: "9000", Type: "upstream"},
+		{Host: "ws2.example.com", Port: "9000", Type: "upstream"},
+		{Host: "external.example.com", Port: "8443", Type: "proxy_pass"},
+		{Host: "static.example.com", Port: "80", Type: "proxy_pass"},
+	}
+
+	if len(targets) != len(expectedTargets) {
+		t.Errorf("Expected %d targets, got %d", len(expectedTargets), len(targets))
+		for i, target := range targets {
+			t.Logf("Target %d: %+v", i, target)
+		}
 		return
 	}
 

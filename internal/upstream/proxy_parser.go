@@ -154,7 +154,13 @@ func parseProxyPassURL(proxyPass string) ProxyTarget {
 
 	// Handle HTTP/HTTPS URLs (e.g., "http://backend")
 	if strings.HasPrefix(proxyPass, "http://") || strings.HasPrefix(proxyPass, "https://") {
-		if parsedURL, err := url.Parse(proxyPass); err == nil {
+		// Handle URLs with nginx variables by extracting the base URL before variables
+		baseURL := proxyPass
+		if dollarIndex := strings.Index(proxyPass, "$"); dollarIndex != -1 {
+			baseURL = proxyPass[:dollarIndex]
+		}
+
+		if parsedURL, err := url.Parse(baseURL); err == nil {
 			host := parsedURL.Hostname()
 			port := parsedURL.Port()
 
@@ -282,9 +288,40 @@ func isUpstreamReference(proxyPass string, upstreamNames map[string]bool) bool {
 
 	// For HTTP/HTTPS URLs, parse the URL to extract the hostname
 	if strings.HasPrefix(proxyPass, "http://") || strings.HasPrefix(proxyPass, "https://") {
-		if parsedURL, err := url.Parse(proxyPass); err == nil {
+		// Handle URLs with nginx variables (e.g., "https://myUpStr$request_uri")
+		// Extract the scheme and hostname part before any nginx variables
+		schemeAndHost := proxyPass
+		if dollarIndex := strings.Index(proxyPass, "$"); dollarIndex != -1 {
+			schemeAndHost = proxyPass[:dollarIndex]
+		}
+
+		// Try to parse the URL, if it fails, try manual extraction
+		if parsedURL, err := url.Parse(schemeAndHost); err == nil {
 			hostname := parsedURL.Hostname()
 			// Check if the hostname matches any upstream name
+			return upstreamNames[hostname]
+		} else {
+			// Fallback: manually extract hostname for URLs with variables
+			// Remove scheme prefix
+			withoutScheme := proxyPass
+			if strings.HasPrefix(proxyPass, "https://") {
+				withoutScheme = strings.TrimPrefix(proxyPass, "https://")
+			} else if strings.HasPrefix(proxyPass, "http://") {
+				withoutScheme = strings.TrimPrefix(proxyPass, "http://")
+			}
+
+			// Extract hostname before any path, port, or variable
+			hostname := withoutScheme
+			if slashIndex := strings.Index(hostname, "/"); slashIndex != -1 {
+				hostname = hostname[:slashIndex]
+			}
+			if colonIndex := strings.Index(hostname, ":"); colonIndex != -1 {
+				hostname = hostname[:colonIndex]
+			}
+			if dollarIndex := strings.Index(hostname, "$"); dollarIndex != -1 {
+				hostname = hostname[:dollarIndex]
+			}
+
 			return upstreamNames[hostname]
 		}
 	}
