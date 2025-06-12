@@ -16,6 +16,7 @@ jobs:
           fetch-depth: 0
           ref: dev
           clean: false
+          token: ${{ secrets.PAT_TOKEN }}
 
       - name: Configure Git
         run: |
