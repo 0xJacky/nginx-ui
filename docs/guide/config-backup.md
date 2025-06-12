@@ -84,7 +84,6 @@ For S3-compatible object storage:
 
 - **Required Fields**: Bucket name, access key ID, and secret access key are mandatory
 - **Optional Fields**: Endpoint URL and region can be configured for custom S3 providers
-- **Future Enhancement**: S3 upload functionality is planned for future releases
 
 ## Automatic Backup Scheduling
 
@@ -101,4 +100,4 @@ Automatic backups use a visual cron editor interface that allows you to:
 - **Status Tracking**: Each backup task tracks execution status (pending, success, failed)
 - **Error Logging**: Failed backups include detailed error messages for troubleshooting
 
-This configuration enables backup operations while maintaining strict security boundaries, ensuring that backup functionality cannot be misused to access unauthorized system areas. 
+This configuration enables backup operations while maintaining strict security boundaries, ensuring that backup functionality cannot be misused to access unauthorized system areas.
