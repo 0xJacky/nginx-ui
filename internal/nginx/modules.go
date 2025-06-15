@@ -42,6 +42,11 @@ func clearModulesCache() {
 	lastPIDSize = 0
 }
 
+// ClearModulesCache clears the modules cache (public version for external use)
+func ClearModulesCache() {
+	clearModulesCache()
+}
+
 // isPIDFileChanged checks if the PID file has changed since the last check
 func isPIDFileChanged() bool {
 	pidPath := GetPIDPath()
@@ -79,6 +84,43 @@ func updatePIDFileInfo() {
 		lastPIDPath = pidPath
 		lastPIDModTime = fileInfo.ModTime()
 		lastPIDSize = fileInfo.Size()
+	}
+}
+
+// addLoadedDynamicModules discovers modules loaded via load_module statements
+// that might not be present in the configure arguments (e.g., externally installed modules)
+func addLoadedDynamicModules() {
+	// Get nginx -T output to find load_module statements
+	out := getNginxT()
+	if out == "" {
+		return
+	}
+
+	// Use the shared regex function to find loaded dynamic modules
+	loadModuleRe := GetLoadModuleRegex()
+	matches := loadModuleRe.FindAllStringSubmatch(out, -1)
+
+	modulesCacheLock.Lock()
+	defer modulesCacheLock.Unlock()
+
+	for _, match := range matches {
+		if len(match) > 1 {
+			// Extract the module name from load_module statement and normalize it
+			loadModuleName := match[1]
+			normalizedName := normalizeModuleNameFromLoadModule(loadModuleName)
+
+			// Check if this module is already in our cache
+			if _, exists := modulesCache.Get(normalizedName); !exists {
+				// This is a module that's loaded but not in configure args
+				// Add it as a dynamic module that's loaded
+				modulesCache.Set(normalizedName, &Module{
+					Name:    normalizedName,
+					Params:  "",
+					Dynamic: true, // Loaded via load_module, so it's dynamic
+					Loaded:  true, // We found it in load_module statements, so it's loaded
+				})
+			}
+		}
 	}
 }
 
@@ -279,6 +321,9 @@ func GetModules() *orderedmap.OrderedMap[string, *Module] {
 
 	modulesCacheLock.Unlock()
 
+	// Also check for modules loaded via load_module statements that might not be in configure args
+	addLoadedDynamicModules()
+
 	// Update dynamic modules status by checking if they're actually loaded
 	updateDynamicModulesStatus()
 
@@ -290,10 +335,8 @@ func GetModules() *orderedmap.OrderedMap[string, *Module] {
 
 // IsModuleLoaded checks if a module is loaded in Nginx
 func IsModuleLoaded(module string) bool {
-	// Ensure modules are in the cache
-	if modulesCache.Len() == 0 {
-		GetModules()
-	}
+	// Get fresh modules to ensure we have the latest state
+	GetModules()
 
 	modulesCacheLock.RLock()
 	defer modulesCacheLock.RUnlock()

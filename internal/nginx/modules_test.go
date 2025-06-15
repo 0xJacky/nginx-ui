@@ -284,6 +284,97 @@ func TestRealWorldModuleMapping(t *testing.T) {
 	}
 }
 
+func TestAddLoadedDynamicModules(t *testing.T) {
+	// Test scenario: modules loaded via load_module but not in configure args
+	// This simulates the real-world case where external modules are installed
+	// and loaded dynamically without being compiled into nginx
+
+	// We can't directly test addLoadedDynamicModules since it depends on getNginxT()
+	// But we can test the logic by simulating the behavior
+
+	testLoadModuleOutput := `
+# Configuration file /etc/nginx/modules-enabled/50-mod-stream.conf:
+load_module modules/ngx_stream_module.so;
+# Configuration file /etc/nginx/modules-enabled/70-mod-stream-geoip2.conf:
+load_module modules/ngx_stream_geoip2_module.so;
+load_module "modules/ngx_http_geoip2_module.so";
+`
+
+	// Test the regex and normalization logic
+	loadModuleRe := GetLoadModuleRegex()
+	matches := loadModuleRe.FindAllStringSubmatch(testLoadModuleOutput, -1)
+
+	expectedModules := map[string]bool{
+		"stream":        false,
+		"stream_geoip2": false,
+		"http_geoip2":   false,
+	}
+
+	t.Logf("Found %d load_module matches", len(matches))
+
+	for _, match := range matches {
+		if len(match) > 1 {
+			loadModuleName := match[1]
+			normalizedName := normalizeModuleNameFromLoadModule(loadModuleName)
+
+			t.Logf("Load module: %s -> normalized: %s", loadModuleName, normalizedName)
+
+			if _, expected := expectedModules[normalizedName]; expected {
+				expectedModules[normalizedName] = true
+			} else {
+				t.Errorf("Unexpected module found: %s (from %s)", normalizedName, loadModuleName)
+			}
+		}
+	}
+
+	// Check that all expected modules were found
+	for moduleName, found := range expectedModules {
+		if !found {
+			t.Errorf("Expected module %s was not found", moduleName)
+		}
+	}
+}
+
+func TestExternalModuleDiscovery(t *testing.T) {
+	// Test the complete normalization pipeline for external modules
+	testCases := []struct {
+		name           string
+		loadModuleName string
+		expectedResult string
+	}{
+		{
+			name:           "stream_geoip2 module",
+			loadModuleName: "ngx_stream_geoip2_module",
+			expectedResult: "stream_geoip2",
+		},
+		{
+			name:           "http_geoip2 module",
+			loadModuleName: "ngx_http_geoip2_module",
+			expectedResult: "http_geoip2",
+		},
+		{
+			name:           "custom third-party module",
+			loadModuleName: "ngx_http_custom_module",
+			expectedResult: "http_custom",
+		},
+		{
+			name:           "simple module name",
+			loadModuleName: "ngx_custom_module",
+			expectedResult: "custom",
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			result := normalizeModuleNameFromLoadModule(tc.loadModuleName)
+			if result != tc.expectedResult {
+				t.Errorf("normalizeModuleNameFromLoadModule(%s) = %s, expected %s",
+					tc.loadModuleName, result, tc.expectedResult)
+			}
+		})
+	}
+}
+
 func TestGetModuleMapping(t *testing.T) {
 	// This test verifies that GetModuleMapping function works without errors
 	// Since it depends on nginx being available, we'll just test that it doesn't panic

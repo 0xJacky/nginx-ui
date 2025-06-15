@@ -274,6 +274,16 @@ jobs:
           files: |
             ${{ env.DIST }}.tar.gz
             ${{ env.DIST }}.tar.gz.digest
+      
+      - name: Set up nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: current
+    
+      - name: Install dependencies
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
 
       - name: Upload to R2
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/dev'

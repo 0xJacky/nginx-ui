@@ -5,7 +5,7 @@ RUN apt-get update && \
   apt-get install -y --no-install-recommends curl gnupg2 ca-certificates lsb-release ubuntu-keyring jq cloc software-properties-common && \
   \
   # Add PPA repository for nginx-extras
-  add-apt-repository -y ppa:ondrej/nginx-mainline && \
+  add-apt-repository -y ppa:ondrej/nginx && \
   \
   # Update package information and install Nginx-extras
   apt-get update && \
