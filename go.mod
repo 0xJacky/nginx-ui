@@ -31,14 +31,14 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
 	github.com/lib/pq v1.10.9
-	github.com/mark3labs/mcp-go v0.31.0
+	github.com/mark3labs/mcp-go v0.32.0
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.3.0
 	github.com/nxadm/tail v1.4.11
 	github.com/pkg/errors v0.9.1
 	github.com/pquerna/otp v1.5.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
-	github.com/samber/lo v1.50.0
+	github.com/samber/lo v1.51.0
 	github.com/sashabaranov/go-openai v1.40.1
 	github.com/shirou/gopsutil/v4 v4.25.5
 	github.com/spf13/afero v1.14.0
@@ -47,7 +47,7 @@ require (
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250429180229-7e931b1d4276
 	github.com/uozi-tech/cosy v1.22.0
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
-	github.com/urfave/cli/v3 v3.3.3
+	github.com/urfave/cli/v3 v3.3.8
 	golang.org/x/crypto v0.39.0
 	golang.org/x/net v0.41.0
 	gopkg.in/ini.v1 v1.67.0
