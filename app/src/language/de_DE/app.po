@@ -949,23 +949,23 @@ msgstr "Klicken Sie oder ziehen Sie Ordner in diesen Bereich zum Hochladen"
 msgid "Click to copy"
 msgstr "Klicken Sie hier, um zu kopieren"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:120
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:124
 msgid "Client Body Buffer Size"
 msgstr "Client Body Puffer Größe"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:113
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "Client-Header-Puffergröße"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:110
 msgid "Client Max Body Size"
 msgstr "Maximale Client-Körpergröße"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:121
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:125
 msgid "Client request body buffer size"
 msgstr "Puffergröße für den Anforderungskörper des Clients"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:114
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:118
 msgid "Client request header buffer size"
 msgstr "Größe des Puffers für Client-Anfrageheader"
 
@@ -1895,6 +1895,10 @@ msgstr "Fehler beim Sichern der Nginx-Konfigurationsdateien: {0}"
 msgid "Failed to backup Nginx UI files: {0}"
 msgstr "Fehler beim Sichern der Nginx-UI-Dateien: {0}"
 
+#: src/constants/errors/performance.ts:8
+msgid "Failed to build nginx config: {0}"
+msgstr "Fehler beim Erstellen der nginx-Konfiguration: {0}"
+
 #: src/constants/errors/backup.ts:18
 msgid "Failed to calculate hash: {0}"
 msgstr "Hash-Berechnung fehlgeschlagen: {0}"
@@ -2065,6 +2069,10 @@ msgstr "Fehler beim Auswerten der symbolischen Links: {0}"
 msgid "Failed to exec command: {0}"
 msgstr "Befehl konnte nicht ausgeführt werden: {0}"
 
+#: src/constants/errors/performance.ts:6
+msgid "Failed to execute template: {0}"
+msgstr "Fehler beim Ausführen der Vorlage: {0}"
+
 #: src/constants/errors/backup.ts:35
 msgid "Failed to extract archive: {0}"
 msgstr "Fehler beim Entpacken des Archivs: {0}"
@@ -2093,6 +2101,10 @@ msgstr "Fehler beim Abrufen der Nginx-Leistungseinstellungen"
 msgid "Failed to get performance data"
 msgstr "Fehler beim Abrufen der Leistungsdaten"
 
+#: src/constants/errors/performance.ts:3
+msgid "Failed to get stub status: {0}"
+msgstr "Fehler beim Abrufen des Stub-Status: {0}"
+
 #: src/constants/errors/docker.ts:8
 msgid "Failed to inspect container: {0}"
 msgstr "Fehler beim Untersuchen des Containers: {0}"
@@ -2117,9 +2129,17 @@ msgstr "Fehler beim Öffnen des ZIP-Eintrags: {0}"
 msgid "Failed to open zip file: {0}"
 msgstr "Fehler beim Öffnen der ZIP-Datei: {0}"
 
+#: src/constants/errors/performance.ts:7
+msgid "Failed to parse nginx config: {0}"
+msgstr "Fehler beim Parsen der nginx-Konfiguration: {0}"
+
 #: src/constants/errors/self_check.ts:5
 msgid "Failed to parse nginx.conf"
 msgstr "Fehler beim Parsen von nginx.conf"
+
+#: src/constants/errors/performance.ts:5
+msgid "Failed to parse template: {0}"
+msgstr "Fehler beim Parsen der Vorlage: {0}"
 
 #: src/constants/errors/docker.ts:11
 msgid "Failed to pull image: {0}"
@@ -2144,6 +2164,10 @@ msgstr "Fehler beim Lesen von nginx.conf"
 #: src/constants/errors/docker.ts:5
 msgid "Failed to read output: {0}"
 msgstr "Fehler beim Lesen der Ausgabe: {0}"
+
+#: src/constants/errors/performance.ts:4
+msgid "Failed to read response body: {0}"
+msgstr "Fehler beim Lesen des Antworttextes: {0}"
 
 #: src/constants/errors/backup.ts:21
 msgid "Failed to read symlink: {0}"
@@ -2905,7 +2929,7 @@ msgstr "Maximale Anfragen pro Sekunde"
 msgid "Maximum Cache Size"
 msgstr "Maximale Cache-Größe"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:111
 msgid "Maximum client request body size"
 msgstr "Maximale Größe des Client-Anfragekörpers"
 
@@ -4578,11 +4602,11 @@ msgstr "Serverfehler"
 msgid "Server Info"
 msgstr "Serverinformationen"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:106
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Server Names Hash Bucket Size"
 msgstr "Server-Namen-Hash-Bucket-Größe"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:107
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
 msgid "Server names hash table size"
 msgstr "Größe der Server-Namen-Hash-Tabelle"
 
@@ -4867,6 +4891,10 @@ msgstr "Streams-enabled-Verzeichnis existiert nicht"
 #: src/views/preference/tabs/NginxSettings.vue:10
 msgid "Stub Status Port"
 msgstr "Stub-Status-Port"
+
+#: src/constants/errors/performance.ts:2
+msgid "Stub_status is not enabled"
+msgstr "Stub_status ist nicht aktiviert"
 
 #: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:195
 #: src/views/backup/AutoBackup/AutoBackup.vue:220
@@ -5911,10 +5939,6 @@ msgstr "Deine Passkeys"
 
 #~ msgid "Unknown issue"
 #~ msgstr "Unbekanntes Problem"
-
-#, fuzzy
-#~ msgid "Failed to get hostname: {0}"
-#~ msgstr "Aktiviern von %{msg} fehlgeschlagen"
 
 #, fuzzy
 #~ msgid "AutoCert is running, please wait"

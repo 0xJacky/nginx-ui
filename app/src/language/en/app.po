@@ -783,9 +783,9 @@ msgid ""
 "Check if the nginx access log path exists. By default, this path is obtained "
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
-"you need to modify the configuration file to specify the access log "
-"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#accesslogpath"
+"you need to modify the configuration file to specify the access log path."
+"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
+"nginx.html#accesslogpath"
 msgstr ""
 
 #: src/language/generate.ts:9
@@ -875,23 +875,23 @@ msgstr ""
 msgid "Click to copy"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:120
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:124
 msgid "Client Body Buffer Size"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:113
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:110
 msgid "Client Max Body Size"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:121
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:125
 msgid "Client request body buffer size"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:114
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:118
 msgid "Client request header buffer size"
 msgstr ""
 
@@ -1808,6 +1808,10 @@ msgstr ""
 msgid "Failed to backup Nginx UI files: {0}"
 msgstr ""
 
+#: src/constants/errors/performance.ts:8
+msgid "Failed to build nginx config: {0}"
+msgstr ""
+
 #: src/constants/errors/backup.ts:18
 msgid "Failed to calculate hash: {0}"
 msgstr ""
@@ -1978,6 +1982,10 @@ msgstr ""
 msgid "Failed to exec command: {0}"
 msgstr ""
 
+#: src/constants/errors/performance.ts:6
+msgid "Failed to execute template: {0}"
+msgstr ""
+
 #: src/constants/errors/backup.ts:35
 msgid "Failed to extract archive: {0}"
 msgstr ""
@@ -2006,6 +2014,10 @@ msgstr ""
 msgid "Failed to get performance data"
 msgstr ""
 
+#: src/constants/errors/performance.ts:3
+msgid "Failed to get stub status: {0}"
+msgstr ""
+
 #: src/constants/errors/docker.ts:8
 msgid "Failed to inspect container: {0}"
 msgstr ""
@@ -2030,8 +2042,16 @@ msgstr ""
 msgid "Failed to open zip file: {0}"
 msgstr ""
 
+#: src/constants/errors/performance.ts:7
+msgid "Failed to parse nginx config: {0}"
+msgstr ""
+
 #: src/constants/errors/self_check.ts:5
 msgid "Failed to parse nginx.conf"
+msgstr ""
+
+#: src/constants/errors/performance.ts:5
+msgid "Failed to parse template: {0}"
 msgstr ""
 
 #: src/constants/errors/docker.ts:11
@@ -2056,6 +2076,10 @@ msgstr ""
 
 #: src/constants/errors/docker.ts:5
 msgid "Failed to read output: {0}"
+msgstr ""
+
+#: src/constants/errors/performance.ts:4
+msgid "Failed to read response body: {0}"
 msgstr ""
 
 #: src/constants/errors/backup.ts:21
@@ -2789,7 +2813,7 @@ msgstr ""
 msgid "Maximum Cache Size"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:111
 msgid "Maximum client request body size"
 msgstr ""
 
@@ -4416,11 +4440,11 @@ msgstr ""
 msgid "Server Info"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:106
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Server Names Hash Bucket Size"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:107
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
 msgid "Server names hash table size"
 msgstr ""
 
@@ -4468,14 +4492,14 @@ msgstr ""
 
 #: src/constants/errors/nginx_log.ts:8
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/constants/errors/nginx_log.ts:7
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://nginxui."
+"com/guide/config-nginx.html for more information"
 msgstr ""
 
 #: src/views/install/components/InstallView.vue:65
@@ -4690,6 +4714,10 @@ msgstr ""
 
 #: src/views/preference/tabs/NginxSettings.vue:10
 msgid "Stub Status Port"
+msgstr ""
+
+#: src/constants/errors/performance.ts:2
+msgid "Stub_status is not enabled"
 msgstr ""
 
 #: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:195
@@ -4997,8 +5025,8 @@ msgstr ""
 
 #: src/language/curd.ts:44
 msgid ""
-"This field should only contain letters, unicode characters, numbers, and "
-"-_./:"
+"This field should only contain letters, unicode characters, numbers, and -"
+"_./:"
 msgstr ""
 
 #: src/views/dashboard/NginxDashBoard.vue:150

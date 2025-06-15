@@ -903,23 +903,23 @@ msgstr "点击或拖拽文件夹到此处上传"
 msgid "Click to copy"
 msgstr "点击复制"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:120
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:124
 msgid "Client Body Buffer Size"
 msgstr "客户端请求体缓冲区大小"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:113
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "客户端请求头缓冲区大小"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:110
 msgid "Client Max Body Size"
 msgstr "客户端最大请求体大小"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:121
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:125
 msgid "Client request body buffer size"
 msgstr "客户端请求体缓冲区大小"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:114
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:118
 msgid "Client request header buffer size"
 msgstr "客户端请求头缓冲区大小"
 
@@ -1835,6 +1835,10 @@ msgstr "备份 Nginx 配置文件失败：{0}"
 msgid "Failed to backup Nginx UI files: {0}"
 msgstr "备份 Nginx UI 文件失败：{0}"
 
+#: src/constants/errors/performance.ts:8
+msgid "Failed to build nginx config: {0}"
+msgstr "构建 nginx 配置失败: {0}"
+
 #: src/constants/errors/backup.ts:18
 msgid "Failed to calculate hash: {0}"
 msgstr "计算哈希值失败：{0}"
@@ -2005,6 +2009,10 @@ msgstr "符号链接解析失败：{0}"
 msgid "Failed to exec command: {0}"
 msgstr "执行命令失败：{0}"
 
+#: src/constants/errors/performance.ts:6
+msgid "Failed to execute template: {0}"
+msgstr "执行模板失败: {0}"
+
 #: src/constants/errors/backup.ts:35
 msgid "Failed to extract archive: {0}"
 msgstr "解压缩失败：{0}"
@@ -2033,6 +2041,10 @@ msgstr "获取 Nginx 性能参数失败"
 msgid "Failed to get performance data"
 msgstr "获取性能数据失败"
 
+#: src/constants/errors/performance.ts:3
+msgid "Failed to get stub status: {0}"
+msgstr "获取存根状态失败: {0}"
+
 #: src/constants/errors/docker.ts:8
 msgid "Failed to inspect container: {0}"
 msgstr "检查容器失败：{0}"
@@ -2057,9 +2069,17 @@ msgstr "打开 zip 条目失败：{0}"
 msgid "Failed to open zip file: {0}"
 msgstr "打开压缩文件失败：{0}"
 
+#: src/constants/errors/performance.ts:7
+msgid "Failed to parse nginx config: {0}"
+msgstr "解析 nginx 配置失败: {0}"
+
 #: src/constants/errors/self_check.ts:5
 msgid "Failed to parse nginx.conf"
 msgstr "解析 nginx.conf 失败"
+
+#: src/constants/errors/performance.ts:5
+msgid "Failed to parse template: {0}"
+msgstr "解析模板失败: {0}"
 
 #: src/constants/errors/docker.ts:11
 msgid "Failed to pull image: {0}"
@@ -2084,6 +2104,10 @@ msgstr "读取 nginx.conf 失败"
 #: src/constants/errors/docker.ts:5
 msgid "Failed to read output: {0}"
 msgstr "读取输出失败：{0}"
+
+#: src/constants/errors/performance.ts:4
+msgid "Failed to read response body: {0}"
+msgstr "读取响应正文失败: {0}"
 
 #: src/constants/errors/backup.ts:21
 msgid "Failed to read symlink: {0}"
@@ -2821,7 +2845,7 @@ msgstr "每秒最大请求次数"
 msgid "Maximum Cache Size"
 msgstr "最大缓存大小"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:111
 msgid "Maximum client request body size"
 msgstr "客户端请求体的最大尺寸"
 
@@ -4447,11 +4471,11 @@ msgstr "服务器错误"
 msgid "Server Info"
 msgstr "服务器信息"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:106
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Server Names Hash Bucket Size"
 msgstr "服务器名称哈希桶大小"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:107
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
 msgid "Server names hash table size"
 msgstr "服务器名称哈希表大小"
 
@@ -4726,6 +4750,10 @@ msgstr "Streams-enabled 目录不存在"
 #: src/views/preference/tabs/NginxSettings.vue:10
 msgid "Stub Status Port"
 msgstr "Stub 状态端口"
+
+#: src/constants/errors/performance.ts:2
+msgid "Stub_status is not enabled"
+msgstr "未启用 stub_status"
 
 #: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:195
 #: src/views/backup/AutoBackup/AutoBackup.vue:220
@@ -5672,9 +5700,6 @@ msgstr "你的 Passkeys"
 
 #~ msgid "Unknown issue"
 #~ msgstr "未知问题"
-
-#~ msgid "Failed to get hostname: {0}"
-#~ msgstr "获取主机名失败： {0}"
 
 #~ msgid "Automatically indexed from site and stream configurations."
 #~ msgstr "自动从站点和流配置中索引。"

@@ -14,7 +14,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/pkg/errors"
+	"github.com/uozi-tech/cosy"
 )
 
 // StubStatusInfo Store the stub_status module status
@@ -57,7 +57,7 @@ func GetStubStatusData() (bool, *StubStatusData, error) {
 	// Get the stub_status status information
 	enabled, statusURL := IsStubStatusEnabled()
 	if !enabled {
-		return false, result, fmt.Errorf("stub_status is not enabled")
+		return false, result, ErrStubStatusDisabled
 	}
 
 	// Create an HTTP client
@@ -68,14 +68,14 @@ func GetStubStatusData() (bool, *StubStatusData, error) {
 	// Send a request to get the stub_status data
 	resp, err := client.Get(statusURL)
 	if err != nil {
-		return enabled, result, fmt.Errorf("failed to get stub status: %v", err)
+		return enabled, result, cosy.WrapErrorWithParams(ErrStubStatusRequest, err.Error())
 	}
 	defer resp.Body.Close()
 
 	// Read the response content
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return enabled, result, fmt.Errorf("failed to read response body: %v", err)
+		return enabled, result, cosy.WrapErrorWithParams(ErrResponseRead, err.Error())
 	}
 
 	// Parse the response content
@@ -208,25 +208,25 @@ server {
 
 	tmpl, err := template.New("stub_status").Parse(stubStatusTemplate)
 	if err != nil {
-		return errors.Wrap(err, "failed to parse template")
+		return cosy.WrapErrorWithParams(ErrTemplateParseError, err.Error())
 	}
 
 	var buf bytes.Buffer
 	if err := tmpl.Execute(&buf, data); err != nil {
-		return errors.Wrap(err, "failed to execute template")
+		return cosy.WrapErrorWithParams(ErrTemplateExecError, err.Error())
 	}
 
 	stubStatusConfig := buf.String()
 
 	ngxConfig, err := nginx.ParseNgxConfigByContent(stubStatusConfig)
 	if err != nil {
-		return errors.Wrap(err, "failed to parse new nginx config")
+		return cosy.WrapErrorWithParams(ErrConfigParseError, err.Error())
 	}
 
 	ngxConfig.FileName = httpConfPath
 	configText, err := ngxConfig.BuildConfig()
 	if err != nil {
-		return errors.Wrap(err, "failed to build nginx config")
+		return cosy.WrapErrorWithParams(ErrConfigBuildError, err.Error())
 	}
 
 	return os.WriteFile(httpConfPath, []byte(configText), 0644)

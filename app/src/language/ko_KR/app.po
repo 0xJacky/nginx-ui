@@ -909,23 +909,23 @@ msgstr "폴더를 클릭하거나 이 영역으로 드래그하여 업로드"
 msgid "Click to copy"
 msgstr "복사하려면 클릭하십시오"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:120
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:124
 msgid "Client Body Buffer Size"
 msgstr "클라이언트 신체 버퍼 크기"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:113
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "클라이언트 헤더 버퍼 크기"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:110
 msgid "Client Max Body Size"
 msgstr "클라이언트 최대 본문 크기"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:121
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:125
 msgid "Client request body buffer size"
 msgstr "클라이언트 요청 본문 버퍼 크기"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:114
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:118
 msgid "Client request header buffer size"
 msgstr "클라이언트 요청 헤더 버퍼 크기"
 
@@ -1843,6 +1843,10 @@ msgstr "Nginx 설정 파일 백업 실패: {0}"
 msgid "Failed to backup Nginx UI files: {0}"
 msgstr "Nginx UI 파일 백업 실패: {0}"
 
+#: src/constants/errors/performance.ts:8
+msgid "Failed to build nginx config: {0}"
+msgstr "nginx 구성 빌드 실패: {0}"
+
 #: src/constants/errors/backup.ts:18
 msgid "Failed to calculate hash: {0}"
 msgstr "해시 계산 실패: {0}"
@@ -2013,6 +2017,10 @@ msgstr "심볼릭 링크 평가 실패: {0}"
 msgid "Failed to exec command: {0}"
 msgstr "명령 실행 실패: {0}"
 
+#: src/constants/errors/performance.ts:6
+msgid "Failed to execute template: {0}"
+msgstr "템플릿 실행 실패: {0}"
+
 #: src/constants/errors/backup.ts:35
 msgid "Failed to extract archive: {0}"
 msgstr "아카이브 추출 실패: {0}"
@@ -2041,6 +2049,10 @@ msgstr "Nginx 성능 설정을 가져오지 못했습니다"
 msgid "Failed to get performance data"
 msgstr "성능 데이터를 가져오지 못했습니다"
 
+#: src/constants/errors/performance.ts:3
+msgid "Failed to get stub status: {0}"
+msgstr "스텁 상태를 가져오지 못했습니다: {0}"
+
 #: src/constants/errors/docker.ts:8
 msgid "Failed to inspect container: {0}"
 msgstr "컨테이너 검사 실패: {0}"
@@ -2065,9 +2077,17 @@ msgstr "ZIP 항목 열기 실패: {0}"
 msgid "Failed to open zip file: {0}"
 msgstr "ZIP 파일 열기 실패: {0}"
 
+#: src/constants/errors/performance.ts:7
+msgid "Failed to parse nginx config: {0}"
+msgstr "nginx 설정 파싱 실패: {0}"
+
 #: src/constants/errors/self_check.ts:5
 msgid "Failed to parse nginx.conf"
 msgstr "nginx.conf 구문 분석 실패"
+
+#: src/constants/errors/performance.ts:5
+msgid "Failed to parse template: {0}"
+msgstr "템플릿 구문 분석 실패: {0}"
 
 #: src/constants/errors/docker.ts:11
 msgid "Failed to pull image: {0}"
@@ -2092,6 +2112,10 @@ msgstr "nginx.conf 읽기 실패"
 #: src/constants/errors/docker.ts:5
 msgid "Failed to read output: {0}"
 msgstr "출력 읽기 실패: {0}"
+
+#: src/constants/errors/performance.ts:4
+msgid "Failed to read response body: {0}"
+msgstr "응답 본문을 읽는 데 실패했습니다: {0}"
 
 #: src/constants/errors/backup.ts:21
 msgid "Failed to read symlink: {0}"
@@ -2829,7 +2853,7 @@ msgstr "초당 최대 요청 수"
 msgid "Maximum Cache Size"
 msgstr "최대 캐시 크기"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:111
 msgid "Maximum client request body size"
 msgstr "클라이언트 요청 본문 최대 크기"
 
@@ -4459,11 +4483,11 @@ msgstr "서버 오류"
 msgid "Server Info"
 msgstr "서버 정보"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:106
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Server Names Hash Bucket Size"
 msgstr "서버 이름 해시 버킷 크기"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:107
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
 msgid "Server names hash table size"
 msgstr "서버 이름 해시 테이블 크기"
 
@@ -4738,6 +4762,10 @@ msgstr "streams-enabled 디렉터리가 존재하지 않습니다"
 #: src/views/preference/tabs/NginxSettings.vue:10
 msgid "Stub Status Port"
 msgstr "스텁 상태 포트"
+
+#: src/constants/errors/performance.ts:2
+msgid "Stub_status is not enabled"
+msgstr "Stub_status가 활성화되지 않았습니다"
 
 #: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:195
 #: src/views/backup/AutoBackup/AutoBackup.vue:220
@@ -5696,10 +5724,6 @@ msgstr "귀하의 패스키"
 
 #~ msgid "Unknown issue"
 #~ msgstr "알 수 없는 문제"
-
-#, fuzzy
-#~ msgid "Failed to get hostname: {0}"
-#~ msgstr "%{msg} 활성화 실패"
 
 #, fuzzy
 #~ msgid "AutoCert is running, please wait"

@@ -944,23 +944,23 @@ msgstr "Натисніть або перетягніть папки в цю об
 msgid "Click to copy"
 msgstr "Клацніть, щоб скопіювати"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:120
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:124
 msgid "Client Body Buffer Size"
 msgstr "Розмір буфера кузова клієнта"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:113
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "Розмір буфера заголовків клієнта"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:110
 msgid "Client Max Body Size"
 msgstr "Максимальний розмір тіла клієнта"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:121
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:125
 msgid "Client request body buffer size"
 msgstr "Розмір буфера тіла запиту клієнта"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:114
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:118
 msgid "Client request header buffer size"
 msgstr "Розмір буфера заголовка запиту клієнта"
 
@@ -1956,6 +1956,10 @@ msgstr "Не вдалося створити резервну копію фай�
 msgid "Failed to backup Nginx UI files: {0}"
 msgstr "Не вдалося створити резервну копію файлів Nginx UI: {0}"
 
+#: src/constants/errors/performance.ts:8
+msgid "Failed to build nginx config: {0}"
+msgstr "Не вдалося створити конфігурацію nginx: {0}"
+
 #: src/constants/errors/backup.ts:18
 msgid "Failed to calculate hash: {0}"
 msgstr "Не вдалося обчислити хеш: {0}"
@@ -2126,6 +2130,10 @@ msgstr "Не вдалося оцінити символічні посиланн
 msgid "Failed to exec command: {0}"
 msgstr "Не вдалося виконати команду: {0}"
 
+#: src/constants/errors/performance.ts:6
+msgid "Failed to execute template: {0}"
+msgstr "Не вдалося виконати шаблон: {0}"
+
 #: src/constants/errors/backup.ts:35
 msgid "Failed to extract archive: {0}"
 msgstr "Не вдалося розпакувати архів: {0}"
@@ -2154,6 +2162,10 @@ msgstr "Не вдалося отримати налаштування проду
 msgid "Failed to get performance data"
 msgstr "Не вдалося отримати дані про продуктивність"
 
+#: src/constants/errors/performance.ts:3
+msgid "Failed to get stub status: {0}"
+msgstr "Не вдалося отримати статус заглушки: {0}"
+
 #: src/constants/errors/docker.ts:8
 msgid "Failed to inspect container: {0}"
 msgstr "Не вдалося перевірити контейнер: {0}"
@@ -2178,9 +2190,17 @@ msgstr "Не вдалося відкрити запис у ZIP: {0}"
 msgid "Failed to open zip file: {0}"
 msgstr "Не вдалося відкрити ZIP-файл: {0}"
 
+#: src/constants/errors/performance.ts:7
+msgid "Failed to parse nginx config: {0}"
+msgstr "Не вдалося проаналізувати конфігурацію nginx: {0}"
+
 #: src/constants/errors/self_check.ts:5
 msgid "Failed to parse nginx.conf"
 msgstr "Не вдалося проаналізувати nginx.conf"
+
+#: src/constants/errors/performance.ts:5
+msgid "Failed to parse template: {0}"
+msgstr "Не вдалося розібрати шаблон: {0}"
 
 #: src/constants/errors/docker.ts:11
 msgid "Failed to pull image: {0}"
@@ -2205,6 +2225,10 @@ msgstr "Не вдалося прочитати nginx.conf"
 #: src/constants/errors/docker.ts:5
 msgid "Failed to read output: {0}"
 msgstr "Не вдалося прочитати вивід: {0}"
+
+#: src/constants/errors/performance.ts:4
+msgid "Failed to read response body: {0}"
+msgstr "Не вдалося прочитати тіло відповіді: {0}"
 
 #: src/constants/errors/backup.ts:21
 msgid "Failed to read symlink: {0}"
@@ -2962,7 +2986,7 @@ msgstr "Максимальна кількість запитів за секун
 msgid "Maximum Cache Size"
 msgstr "Максимальний розмір кешу"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:111
 msgid "Maximum client request body size"
 msgstr "Максимальний розмір тіла запиту клієнта"
 
@@ -4633,11 +4657,11 @@ msgstr "Помилка сервера"
 msgid "Server Info"
 msgstr "Інформація про сервер"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:106
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Server Names Hash Bucket Size"
 msgstr "Розмір хеш-таблиці імен серверів"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:107
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
 msgid "Server names hash table size"
 msgstr "Розмір хеш-таблиці імен серверів"
 
@@ -4920,6 +4944,10 @@ msgstr "Каталог streams-enabled не існує"
 #: src/views/preference/tabs/NginxSettings.vue:10
 msgid "Stub Status Port"
 msgstr "Порт статусу Stub"
+
+#: src/constants/errors/performance.ts:2
+msgid "Stub_status is not enabled"
+msgstr "Stub_status не увімкнено"
 
 #: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:195
 #: src/views/backup/AutoBackup/AutoBackup.vue:220

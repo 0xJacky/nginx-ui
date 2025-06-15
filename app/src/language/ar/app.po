@@ -935,23 +935,23 @@ msgstr "انقر أو اسحب المجلدات إلى هذه المنطقة ل�
 msgid "Click to copy"
 msgstr "انقر لنسخ"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:120
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:124
 msgid "Client Body Buffer Size"
 msgstr "حجم العميل العازلة للعميل"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:113
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:117
 msgid "Client Header Buffer Size"
 msgstr "حجم مخزن رأس العميل"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:110
 msgid "Client Max Body Size"
 msgstr "الحد الأقصى لحجم جسم العميل"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:121
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:125
 msgid "Client request body buffer size"
 msgstr "حجم مخزن طلب جسم العميل"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:114
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:118
 msgid "Client request header buffer size"
 msgstr "حجم مخزن رأس طلب العميل"
 
@@ -1871,6 +1871,10 @@ msgstr "فشل في إنشاء نسخة احتياطية لملفات تكوين
 msgid "Failed to backup Nginx UI files: {0}"
 msgstr "فشل في إنشاء نسخة احتياطية لملفات واجهة NGINX: {0}"
 
+#: src/constants/errors/performance.ts:8
+msgid "Failed to build nginx config: {0}"
+msgstr "فشل في بناء تكوين nginx: {0}"
+
 #: src/constants/errors/backup.ts:18
 msgid "Failed to calculate hash: {0}"
 msgstr "فشل في حساب التجزئة: {0}"
@@ -2041,6 +2045,10 @@ msgstr "فشل في تقييم الروابط الرمزية: {0}"
 msgid "Failed to exec command: {0}"
 msgstr "فشل تنفيذ الأمر: {0}"
 
+#: src/constants/errors/performance.ts:6
+msgid "Failed to execute template: {0}"
+msgstr "فشل تنفيذ القالب: {0}"
+
 #: src/constants/errors/backup.ts:35
 msgid "Failed to extract archive: {0}"
 msgstr "فشل استخراج الأرشيف: {0}"
@@ -2069,6 +2077,10 @@ msgstr "فشل في الحصول على إعدادات أداء Nginx"
 msgid "Failed to get performance data"
 msgstr "فشل في الحصول على بيانات الأداء"
 
+#: src/constants/errors/performance.ts:3
+msgid "Failed to get stub status: {0}"
+msgstr "فشل في الحصول على حالة الحالة المزيفة: {0}"
+
 #: src/constants/errors/docker.ts:8
 msgid "Failed to inspect container: {0}"
 msgstr "فشل في فحص الحاوية: {0}"
@@ -2093,9 +2105,17 @@ msgstr "فشل في فتح مدخل الأرشيف: {0}"
 msgid "Failed to open zip file: {0}"
 msgstr "فشل في فتح ملف ZIP: {0}"
 
+#: src/constants/errors/performance.ts:7
+msgid "Failed to parse nginx config: {0}"
+msgstr "فشل تحليل تكوين nginx: {0}"
+
 #: src/constants/errors/self_check.ts:5
 msgid "Failed to parse nginx.conf"
 msgstr "فشل تحليل ملف nginx.conf"
+
+#: src/constants/errors/performance.ts:5
+msgid "Failed to parse template: {0}"
+msgstr "فشل تحليل القالب: {0}"
 
 #: src/constants/errors/docker.ts:11
 msgid "Failed to pull image: {0}"
@@ -2120,6 +2140,10 @@ msgstr "فشل قراءة ملف nginx.conf"
 #: src/constants/errors/docker.ts:5
 msgid "Failed to read output: {0}"
 msgstr "فشل قراءة المخرجات: {0}"
+
+#: src/constants/errors/performance.ts:4
+msgid "Failed to read response body: {0}"
+msgstr "فشل في قراءة نص الاستجابة: {0}"
 
 #: src/constants/errors/backup.ts:21
 msgid "Failed to read symlink: {0}"
@@ -2873,7 +2897,7 @@ msgstr "الحد الأقصى للطلبات في الثانية"
 msgid "Maximum Cache Size"
 msgstr "الحد الأقصى لحجم الذاكرة المؤقتة"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:111
 msgid "Maximum client request body size"
 msgstr "الحد الأقصى لحجم طلب العميل"
 
@@ -4516,11 +4540,11 @@ msgstr "خطأ في الخادم"
 msgid "Server Info"
 msgstr "معلومات الخادم"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:106
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:99
 msgid "Server Names Hash Bucket Size"
 msgstr "حجم جدول تجزئة أسماء الخوادم"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:107
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:100
 msgid "Server names hash table size"
 msgstr "حجم جدول تجزئة أسماء الخوادم"
 
@@ -4799,6 +4823,10 @@ msgstr "دليل Streams-enabled غير موجود"
 #: src/views/preference/tabs/NginxSettings.vue:10
 msgid "Stub Status Port"
 msgstr "منفذ حالة ستاب"
+
+#: src/constants/errors/performance.ts:2
+msgid "Stub_status is not enabled"
+msgstr "لم يتم تمكين Stub_status"
 
 #: src/constants/index.ts:25 src/views/backup/AutoBackup/AutoBackup.vue:195
 #: src/views/backup/AutoBackup/AutoBackup.vue:220
@@ -5813,10 +5841,6 @@ msgstr "مفاتيح المرور الخاصة بك"
 
 #~ msgid "Unknown issue"
 #~ msgstr "مشكلة غير معروفة"
-
-#, fuzzy
-#~ msgid "Failed to get hostname: {0}"
-#~ msgstr "فشل في التفعيل %{msg}"
 
 #, fuzzy
 #~ msgid "AutoCert is running, please wait"
