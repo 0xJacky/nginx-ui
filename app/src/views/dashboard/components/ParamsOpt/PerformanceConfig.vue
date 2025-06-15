@@ -96,17 +96,21 @@ function handleWorkerProcessAutoModeChange(checked: CheckedType) {
     </AFormItem>
 
     <AFormItem
+      :label="$gettext('Server Names Hash Bucket Size')"
+      :help="$gettext('Server names hash table size')"
+    >
+      <AInputNumber
+        v-model:value="performanceConfig.server_names_hash_bucket_size"
+        :step="1"
+        class="w-30"
+      />
+    </AFormItem>
+
+    <AFormItem
       :label="$gettext('Client Max Body Size')"
       :help="$gettext('Maximum client request body size')"
     >
       <SizeInput v-model="performanceConfig.client_max_body_size" />
-    </AFormItem>
-
-    <AFormItem
-      :label="$gettext('Server Names Hash Bucket Size')"
-      :help="$gettext('Server names hash table size')"
-    >
-      <SizeInput v-model="performanceConfig.server_names_hash_bucket_size" />
     </AFormItem>
 
     <AFormItem
