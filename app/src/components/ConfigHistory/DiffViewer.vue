@@ -6,7 +6,6 @@ import ace from 'ace-builds'
 import extLanguageToolsUrl from 'ace-builds/src-min-noconflict/ext-language_tools?url'
 import { formatDateTime } from '@/lib/helper'
 import 'ace-builds/src-noconflict/mode-nginx'
-
 import 'ace-builds/src-noconflict/theme-monokai'
 
 const props = defineProps<{
@@ -20,9 +19,8 @@ const emit = defineEmits<{
 // Import Range class separately to avoid loading the entire ace package
 const Range = ace.Range
 
-// Define modal visibility using defineModel with boolean type
+// Define modal visibility and current content using defineModel
 const visible = defineModel<boolean>('visible')
-// Define currentContent using defineModel
 const currentContent = defineModel<string>('currentContent')
 
 const originalText = ref('')
@@ -43,31 +41,18 @@ onMounted(() => {
   }
 })
 
-// Check if there is content to display
-function hasContent() {
-  return originalText.value && modifiedText.value
-}
-
 // Set editor content based on selected records
 function setContent() {
-  if (!props.records || props.records.length === 0) {
+  if (!props.records?.length) {
     errorMessage.value = $gettext('No records selected')
     return false
   }
 
   try {
-    // Set content based on number of selected records
     if (props.records.length === 1) {
-      // Single record - compare with current content
+      // Compare single record with current content
       originalText.value = props.records[0]?.content || ''
       modifiedText.value = currentContent.value || ''
-
-      // Ensure both sides have content for comparison
-      if (!originalText.value || !modifiedText.value) {
-        errorMessage.value = $gettext('Cannot compare: Missing content')
-        return false
-      }
-
       originalTitle.value = `${props.records[0]?.name || ''} (${formatDateTime(props.records[0]?.created_at || '')})`
       modifiedTitle.value = $gettext('Current Content')
     }
@@ -78,19 +63,18 @@ function setContent() {
       )
       originalText.value = sorted[0]?.content || ''
       modifiedText.value = sorted[1]?.content || ''
-
-      // Ensure both sides have content for comparison
-      if (!originalText.value || !modifiedText.value) {
-        errorMessage.value = $gettext('Cannot compare: Missing content')
-        return false
-      }
-
       originalTitle.value = `${sorted[0]?.name || ''} (${formatDateTime(sorted[0]?.created_at || '')})`
       modifiedTitle.value = `${sorted[1]?.name || ''} (${formatDateTime(sorted[1]?.created_at || '')})`
     }
 
+    // Ensure both sides have content for comparison
+    if (!originalText.value || !modifiedText.value) {
+      errorMessage.value = $gettext('Cannot compare: Missing content')
+      return false
+    }
+
     errorMessage.value = ''
-    return hasContent()
+    return true
   }
   catch (error) {
     console.error('Error setting content:', error)
@@ -99,44 +83,53 @@ function setContent() {
   }
 }
 
-// Create editors
+// Create side-by-side editors
 function createEditors() {
   if (!diffEditorRef.value)
     return false
 
   try {
-    // Clear editor area
     diffEditorRef.value.innerHTML = ''
 
-    // Create left and right editor containers
+    // Create containers for left and right editors
     const leftContainer = document.createElement('div')
-    leftContainer.style.width = '50%'
-    leftContainer.style.height = '100%'
-    leftContainer.style.float = 'left'
-    leftContainer.style.position = 'relative'
-
     const rightContainer = document.createElement('div')
-    rightContainer.style.width = '50%'
-    rightContainer.style.height = '100%'
-    rightContainer.style.float = 'right'
-    rightContainer.style.position = 'relative'
 
-    // Add to DOM
+    Object.assign(leftContainer.style, {
+      width: '50%',
+      height: '100%',
+      float: 'left',
+      position: 'relative',
+    })
+
+    Object.assign(rightContainer.style, {
+      width: '50%',
+      height: '100%',
+      float: 'right',
+      position: 'relative',
+    })
+
     diffEditorRef.value.appendChild(leftContainer)
     diffEditorRef.value.appendChild(rightContainer)
 
-    // Create editors
-    editors.left = ace.edit(leftContainer)
-    editors.left.setTheme('ace/theme/monokai')
-    editors.left.getSession().setMode('ace/mode/nginx')
-    editors.left.setReadOnly(true)
-    editors.left.setOption('showPrintMargin', false)
+    // Initialize editors with common settings
+    const editorConfig = {
+      theme: 'ace/theme/monokai',
+      mode: 'ace/mode/nginx',
+      readOnly: true,
+      showPrintMargin: false,
+    }
 
+    editors.left = ace.edit(leftContainer)
     editors.right = ace.edit(rightContainer)
-    editors.right.setTheme('ace/theme/monokai')
-    editors.right.getSession().setMode('ace/mode/nginx')
-    editors.right.setReadOnly(true)
-    editors.right.setOption('showPrintMargin', false)
+
+    // Apply settings to both editors
+    ;[editors.left, editors.right].forEach(editor => {
+      editor.setTheme(editorConfig.theme)
+      editor.getSession().setMode(editorConfig.mode)
+      editor.setReadOnly(editorConfig.readOnly)
+      editor.setOption('showPrintMargin', editorConfig.showPrintMargin)
+    })
 
     return true
   }
@@ -147,7 +140,7 @@ function createEditors() {
   }
 }
 
-// Update editor content
+// Update editor content and setup highlighting
 function updateEditors() {
   if (!editors.left || !editors.right) {
     console.error('Editors not available')
@@ -155,27 +148,19 @@ function updateEditors() {
   }
 
   try {
-    // Check if content is empty
-    if (!originalText.value || !modifiedText.value) {
-      console.error('Empty content detected', {
-        originalLength: originalText.value?.length,
-        modifiedLength: modifiedText.value?.length,
-      })
-      return false
-    }
-
     // Set content
     editors.left.setValue(originalText.value, -1)
     editors.right.setValue(modifiedText.value, -1)
 
-    // Scroll to top
-    editors.left.scrollToLine(0, false, false)
-    editors.right.scrollToLine(0, false, false)
+    // Scroll to top and clear selection
+    ;[editors.left, editors.right].forEach(editor => {
+      editor.scrollToLine(0, false, false)
+      editor.clearSelection()
+    })
 
-    // Highlight differences
+    // Balance heights and setup features
+    balanceEditorHeights()
     highlightDiffs()
-
-    // Setup sync scroll
     setupSyncScroll()
 
     return true
@@ -186,7 +171,68 @@ function updateEditors() {
   }
 }
 
-// Highlight differences
+// Balance editor heights by padding shorter content
+function balanceEditorHeights() {
+  if (!editors.left || !editors.right)
+    return
+
+  try {
+    const leftSession = editors.left.getSession()
+    const rightSession = editors.right.getSession()
+    const leftLineCount = leftSession.getLength()
+    const rightLineCount = rightSession.getLength()
+
+    if (leftLineCount === rightLineCount)
+      return
+
+    // Add padding lines to make editors same height
+    const maxLines = Math.max(leftLineCount, rightLineCount)
+    const leftPadding = maxLines - leftLineCount
+    const rightPadding = maxLines - rightLineCount
+
+    if (leftPadding > 0) {
+      const content = leftSession.getValue()
+      leftSession.setValue(content + '\n'.repeat(leftPadding))
+      leftSession.selection.clearSelection()
+    }
+
+    if (rightPadding > 0) {
+      const content = rightSession.getValue()
+      rightSession.setValue(content + '\n'.repeat(rightPadding))
+      rightSession.selection.clearSelection()
+    }
+  }
+  catch (error) {
+    console.warn('Error balancing editor heights:', error)
+  }
+}
+
+// Add diff highlighting styles
+function addHighlightStyles() {
+  const styleId = 'diff-highlight-style'
+  if (document.getElementById(styleId))
+    return
+
+  const style = document.createElement('style')
+  style.id = styleId
+  style.textContent = `
+    .diff-line-deleted {
+      position: absolute;
+      background: rgba(255, 100, 100, 0.3);
+      z-index: 5;
+      width: 100% !important;
+    }
+    .diff-line-added {
+      position: absolute;
+      background: rgba(100, 255, 100, 0.3);
+      z-index: 5;
+      width: 100% !important;
+    }
+  `
+  document.head.appendChild(style)
+}
+
+// Highlight differences between editors
 function highlightDiffs() {
   if (!editors.left || !editors.right)
     return
@@ -195,149 +241,93 @@ function highlightDiffs() {
     const leftSession = editors.left.getSession()
     const rightSession = editors.right.getSession()
 
-    // Clear previous all marks
+    // Clear previous highlights
     leftSession.clearBreakpoints()
     rightSession.clearBreakpoints()
 
-    // Add CSS styles
     addHighlightStyles()
 
-    // Compare lines
+    // Compare lines and highlight differences
     const leftLines = originalText.value.split('\n')
     const rightLines = modifiedText.value.split('\n')
+    const matchedLeft = new Set<number>()
+    const matchedRight = new Set<number>()
 
-    // Use difference comparison algorithm
-    compareAndHighlightLines(leftSession, rightSession, leftLines, rightLines)
+    // Mark identical lines
+    leftLines.forEach((leftLine, i) => {
+      const rightIndex = rightLines.findIndex((rightLine, j) =>
+        rightLine === leftLine && !matchedRight.has(j),
+      )
+      if (rightIndex !== -1) {
+        matchedLeft.add(i)
+        matchedRight.add(rightIndex)
+      }
+    })
+
+    // Highlight unmatched lines
+    leftLines.forEach((line, i) => {
+      if (!matchedLeft.has(i)) {
+        leftSession.addGutterDecoration(i, 'ace_gutter-active-line')
+        leftSession.addMarker(new Range(i, 0, i, line.length || 1), 'diff-line-deleted', 'fullLine')
+      }
+    })
+
+    rightLines.forEach((line, j) => {
+      if (!matchedRight.has(j)) {
+        rightSession.addGutterDecoration(j, 'ace_gutter-active-line')
+        rightSession.addMarker(new Range(j, 0, j, line.length || 1), 'diff-line-added', 'fullLine')
+      }
+    })
   }
   catch (error) {
     console.error('Error highlighting diffs:', error)
   }
 }
 
-// Add highlight styles
-function addHighlightStyles() {
-  const styleId = 'diff-highlight-style'
-  if (!document.getElementById(styleId)) {
-    const style = document.createElement('style')
-    style.id = styleId
-    style.textContent = `
-      .diff-line-deleted {
-        position: absolute;
-        background: rgba(255, 100, 100, 0.3);
-        z-index: 5;
-        width: 100% !important;
-      }
-      .diff-line-added {
-        position: absolute;
-        background: rgba(100, 255, 100, 0.3);
-        z-index: 5;
-        width: 100% !important;
-      }
-      .diff-line-changed {
-        position: absolute;
-        background: rgba(255, 255, 100, 0.3);
-        z-index: 5;
-        width: 100% !important;
-      }
-    `
-    document.head.appendChild(style)
-  }
-}
-
-// Compare and highlight lines
-function compareAndHighlightLines(leftSession: Ace.EditSession, rightSession: Ace.EditSession, leftLines: string[], rightLines: string[]) {
-  // Create a mapping table to track which lines have been matched
-  const matchedLeftLines = new Set<number>()
-  const matchedRightLines = new Set<number>()
-
-  // 1. First mark completely identical lines
-  for (let i = 0; i < leftLines.length; i++) {
-    for (let j = 0; j < rightLines.length; j++) {
-      if (leftLines[i] === rightLines[j] && !matchedLeftLines.has(i) && !matchedRightLines.has(j)) {
-        matchedLeftLines.add(i)
-        matchedRightLines.add(j)
-        break
-      }
-    }
-  }
-
-  // 2. Mark lines left deleted
-  for (let i = 0; i < leftLines.length; i++) {
-    if (!matchedLeftLines.has(i)) {
-      leftSession.addGutterDecoration(i, 'ace_gutter-active-line')
-      leftSession.addMarker(
-        new Range(i, 0, i, leftLines[i].length || 1),
-        'diff-line-deleted',
-        'fullLine',
-      )
-    }
-  }
-
-  // 3. Mark lines right added
-  for (let j = 0; j < rightLines.length; j++) {
-    if (!matchedRightLines.has(j)) {
-      rightSession.addGutterDecoration(j, 'ace_gutter-active-line')
-      rightSession.addMarker(
-        new Range(j, 0, j, rightLines[j].length || 1),
-        'diff-line-added',
-        'fullLine',
-      )
-    }
-  }
-}
-
-// Setup sync scroll
+// Setup synchronized scrolling
 function setupSyncScroll() {
   if (!editors.left || !editors.right)
     return
 
-  // Sync scroll
   const leftSession = editors.left.getSession()
   const rightSession = editors.right.getSession()
+  let isScrolling = false
 
-  leftSession.on('changeScrollTop', (scrollTop: number) => {
-    rightSession.setScrollTop(scrollTop)
-  })
+  const syncScroll = (source: Ace.EditSession, target: Ace.EditSession) => (scrollTop: number) => {
+    if (isScrolling)
+      return
+    isScrolling = true
+    target.setScrollTop(scrollTop)
+    setTimeout(() => {
+      isScrolling = false
+    }, 10)
+  }
 
-  rightSession.on('changeScrollTop', (scrollTop: number) => {
-    leftSession.setScrollTop(scrollTop)
-  })
+  leftSession.on('changeScrollTop', syncScroll(leftSession, rightSession))
+  rightSession.on('changeScrollTop', syncScroll(rightSession, leftSession))
 }
 
-// Initialize difference comparator
+// Initialize diff viewer
 async function initDiffViewer() {
   if (!diffEditorRef.value)
     return
 
-  // Reset error message
   errorMessage.value = ''
 
-  // Set content
-  const hasValidContent = setContent()
-  if (!hasValidContent) {
-    console.error('No valid content to compare')
+  if (!setContent() || !createEditors()) {
+    console.error('Failed to initialize diff viewer')
     return
   }
 
-  // Create editors
-  const editorsCreated = createEditors()
-  if (!editorsCreated) {
-    console.error('Failed to create editors')
-    return
-  }
-
-  // Wait for DOM update
   await nextTick()
 
-  // Update editor content
-  const editorsUpdated = updateEditors()
-  if (!editorsUpdated) {
+  if (!updateEditors()) {
     console.error('Failed to update editors')
     return
   }
 
-  // Adjust size to ensure full display
-  window.setTimeout(() => {
+  // Resize editors after a short delay
+  setTimeout(() => {
     if (editors.left && editors.right) {
       editors.left.resize()
       editors.right.resize()
@@ -345,38 +335,33 @@ async function initDiffViewer() {
   }, 200)
 }
 
-// Listen for records change
+// Watch for changes and reinitialize
 watch(() => [props.records, visible.value], async () => {
   if (visible.value) {
-    // When selected records change, update content
     await nextTick()
     initDiffViewer()
   }
 })
 
-// Close dialog handler
+// Close dialog
 function handleClose() {
   visible.value = false
   errorMessage.value = ''
 }
 
-// Add restore functionality
+// Restore original content
 function restoreContent() {
   if (originalText.value) {
-    // Update current content with history version
     currentContent.value = originalText.value
-    // Close dialog
     handleClose()
     emit('restore')
   }
 }
 
-// Add restore functionality for modified content
+// Restore modified content
 function restoreModifiedContent() {
   if (modifiedText.value && props.records.length === 2) {
-    // Update current content with the modified version
     currentContent.value = modifiedText.value
-    // Close dialog
     handleClose()
   }
 }
@@ -386,50 +371,55 @@ function restoreModifiedContent() {
   <AModal
     v-model:open="visible"
     :title="$gettext('Compare Configurations')"
-    width="100%"
+    width="100vw"
+    :style="{ height: '90vh' }"
     :footer="null"
+    :destroy-on-close="true"
+    centered
     @cancel="handleClose"
   >
-    <div v-if="errorMessage" class="diff-error">
+    <div class="diff-container">
       <AAlert
+        v-if="errorMessage"
         :message="errorMessage"
         type="warning"
         show-icon
+        class="diff-error"
       />
-    </div>
 
-    <div v-else class="diff-container">
-      <div class="diff-header">
-        <div class="diff-title-container">
-          <div class="diff-title">
-            {{ originalTitle }}
+      <template v-else>
+        <div class="diff-header">
+          <div class="diff-title-container">
+            <div class="diff-title">
+              {{ originalTitle }}
+            </div>
+            <AButton
+              type="link"
+              size="small"
+              @click="restoreContent"
+            >
+              {{ $gettext('Restore this version') }}
+            </AButton>
           </div>
-          <AButton
-            type="link"
-            size="small"
-            @click="restoreContent"
-          >
-            {{ $gettext('Restore this version') }}
-          </AButton>
-        </div>
-        <div class="diff-title-container">
-          <div class="diff-title">
-            {{ modifiedTitle }}
+          <div class="diff-title-container">
+            <div class="diff-title">
+              {{ modifiedTitle }}
+            </div>
+            <AButton
+              v-if="props.records.length === 2"
+              type="link"
+              size="small"
+              @click="restoreModifiedContent"
+            >
+              {{ $gettext('Restore this version') }}
+            </AButton>
           </div>
-          <AButton
-            v-if="props.records.length === 2"
-            type="link"
-            size="small"
-            @click="restoreModifiedContent"
-          >
-            {{ $gettext('Restore this version') }}
-          </AButton>
         </div>
-      </div>
-      <div
-        ref="diffEditorRef"
-        class="diff-editor"
-      />
+        <div
+          ref="diffEditorRef"
+          class="diff-editor"
+        />
+      </template>
     </div>
   </AModal>
 </template>
@@ -438,7 +428,7 @@ function restoreModifiedContent() {
 .diff-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(90vh - 120px);
 }
 
 .diff-error {
@@ -449,6 +439,7 @@ function restoreModifiedContent() {
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
+  flex-shrink: 0;
 }
 
 .diff-title-container {
@@ -460,13 +451,15 @@ function restoreModifiedContent() {
 
 .diff-title {
   padding: 0 8px;
+  font-weight: 500;
 }
 
 .diff-editor {
-  height: 500px;
+  flex: 1;
   width: 100%;
   border: 1px solid #ddd;
   border-radius: 4px;
   overflow: hidden;
+  min-height: 0;
 }
 </style>
