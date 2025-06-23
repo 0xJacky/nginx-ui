@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import type { SSEvent } from 'sse.js'
 import type { Environment } from '@/api/environment'
-import { SSE } from 'sse.js'
-import { useUserStore } from '@/pinia'
+import { useSSE } from '@/composables/useSSE'
 
 const props = defineProps<{
   hiddenLocal?: boolean
@@ -10,41 +8,28 @@ const props = defineProps<{
 
 const target = defineModel<number[]>('target')
 const map = defineModel<Record<number, string>>('map')
-const { token } = storeToRefs(useUserStore())
 
 const data = ref<Environment[]>([])
 const data_map = ref<Record<number, Environment>>({})
 
-const sse = shallowRef(newSSE())
+const { connect } = useSSE()
 
-function reconnect() {
-  setTimeout(() => {
-    sse.value = newSSE()
-  }, 5000)
-}
-
-function newSSE() {
-  const s = new SSE('api/environments/enabled', {
-    headers: {
-      Authorization: token.value,
-    },
-  })
-
-  s.onmessage = (e: SSEvent) => {
-    data.value = JSON.parse(e.data)
+// connect SSE and handle messages
+connect({
+  url: 'api/environments/enabled',
+  onMessage: (environments: Environment[]) => {
+    data.value = environments
     nextTick(() => {
       data_map.value = data.value.reduce((acc, node) => {
         acc[node.id] = node
         return acc
       }, {} as Record<number, Environment>)
     })
-  }
-
-  // reconnect
-  s.onerror = reconnect
-
-  return s
-}
+  },
+  onError: () => {
+    console.warn('Failed to connect to environments SSE endpoint')
+  },
+})
 
 const value = computed({
   get() {
