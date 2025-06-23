@@ -87,6 +87,17 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  async function updateCurrentUserLanguage(language: string) {
+    try {
+      await user.updateCurrentUserLanguage({ language })
+      info.value.language = language
+    }
+    catch (error) {
+      console.error('Failed to update language:', error)
+      throw error
+    }
+  }
+
   return {
     token,
     unreadCount,
@@ -101,6 +112,7 @@ export const useUserStore = defineStore('user', () => {
     getCurrentUser,
     updateCurrentUser,
     updateCurrentUserPassword,
+    updateCurrentUserLanguage,
   }
 }, {
   persist: true,

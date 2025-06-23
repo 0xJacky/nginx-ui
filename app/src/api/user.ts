@@ -6,17 +6,21 @@ export interface User extends ModelBase {
   password: string
   enabled_2fa: boolean
   status: boolean
+  language: string
 }
 
 const user = extendCurdApi(useCurdApi<User>('/users'), {
   getCurrentUser: () => {
     return http.get('/user')
   },
-  updateCurrentUser: (data: User) => {
+  updateCurrentUser: (data: Partial<User>) => {
     return http.post('/user', data)
   },
   updateCurrentUserPassword: (data: { old_password: string, new_password: string }) => {
     return http.post('/user/password', data)
+  },
+  updateCurrentUserLanguage: (data: { language: string }) => {
+    return http.post('/user/language', data)
   },
 })
 

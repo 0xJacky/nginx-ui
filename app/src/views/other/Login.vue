@@ -66,6 +66,8 @@ function onSubmit() {
           login(r.token)
           await nextTick()
           secureSessionId.value = r.secure_session_id
+          await userStore.getCurrentUser()
+          await nextTick()
           await router.push(next)
           break
         case 199:
@@ -115,6 +117,8 @@ if (route.query?.code !== undefined && route.query?.state !== undefined) {
 
     const next = (route.query?.next || '').toString() || '/'
 
+    await userStore.getCurrentUser()
+    await nextTick()
     await router.push(next)
   })
   loading.value = false
@@ -150,6 +154,8 @@ async function handlePasskeyLogin() {
 
     passkeyLogin(asseResp.rawId, r.token)
     secureSessionId.value = r.secure_session_id
+    await userStore.getCurrentUser()
+    await nextTick()
     await router.push(next)
   }
 

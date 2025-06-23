@@ -32,6 +32,7 @@ type User struct {
 	OTPSecret     []byte        `json:"-" gorm:"type:blob"`
 	RecoveryCodes RecoveryCodes `json:"-" gorm:"serializer:json[aes]"`
 	EnabledTwoFA  bool          `json:"enabled_2fa" gorm:"-"`
+	Language      string        `json:"language" gorm:"default:en"`
 }
 
 type AuthToken struct {

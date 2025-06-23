@@ -18,11 +18,13 @@ func GetCurrentUser(c *gin.Context) {
 func UpdateCurrentUser(c *gin.Context) {
 	cosy.Core[model.User](c).
 		SetValidRules(gin.H{
-			"name": "required",
+			"name":     "omitempty",
+			"language": "omitempty",
 		}).
 		Custom(func(c *cosy.Ctx[model.User]) {
 			user := api.CurrentUser(c.Context)
 			user.Name = c.Model.Name
+			user.Language = c.Model.Language
 
 			db := cosy.UseDB()
 			err := db.Where("id = ?", user.ID).Updates(user).Error
@@ -70,5 +72,31 @@ func UpdateCurrentUserPassword(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
+	})
+}
+
+func UpdateCurrentUserLanguage(c *gin.Context) {
+	var json struct {
+		Language string `json:"language" binding:"required"`
+	}
+
+	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+
+	user := api.CurrentUser(c)
+	user.Language = json.Language
+
+	db := cosy.UseDB()
+	err := db.Where("id = ?", user.ID).Updates(&model.User{
+		Language: json.Language,
+	}).Error
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"language": json.Language,
 	})
 }

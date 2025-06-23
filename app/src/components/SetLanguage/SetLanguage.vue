@@ -2,23 +2,11 @@
 import dayjs from 'dayjs'
 import loadTranslations from '@/api/translations'
 import gettext from '@/gettext'
-import { useSettingsStore } from '@/pinia'
-
-import 'dayjs/locale/fr'
-import 'dayjs/locale/ja'
-import 'dayjs/locale/ko'
-import 'dayjs/locale/de'
-import 'dayjs/locale/zh-cn'
-import 'dayjs/locale/zh-tw'
-import 'dayjs/locale/pt'
-import 'dayjs/locale/es'
-import 'dayjs/locale/it'
-import 'dayjs/locale/ar'
-import 'dayjs/locale/ru'
-import 'dayjs/locale/tr'
-import 'dayjs/locale/vi'
+import { useSettingsStore, useUserStore } from '@/pinia'
 
 const settings = useSettingsStore()
+const userStore = useUserStore()
+const { info } = storeToRefs(userStore)
 
 const route = useRoute()
 
@@ -43,6 +31,7 @@ watch(current, v => {
   loadTranslations(route)
   settings.set_language(v)
   gettext.current = v
+  userStore.updateCurrentUserLanguage(v)
 
   updateTitle()
 })
@@ -51,54 +40,80 @@ onMounted(() => {
   updateTitle()
 })
 
-function init() {
-  switch (current.value) {
-    case 'fr':
-      dayjs.locale('fr')
-      break
-    case 'ja':
-      dayjs.locale('ja')
-      break
-    case 'ko':
-      dayjs.locale('ko')
-      break
-    case 'de':
-      dayjs.locale('de')
-      break
-    case 'zh_CN':
-      dayjs.locale('zh-cn')
-      break
-    case 'zh_TW':
-      dayjs.locale('zh-tw')
-      break
-    case 'pt':
-      dayjs.locale('pt')
-      break
-    case 'es':
-      dayjs.locale('es')
-      break
-    case 'it':
-      dayjs.locale('it')
-      break
-    case 'ar':
-      dayjs.locale('ar')
-      break
-    case 'ru':
-      dayjs.locale('ru')
-      break
-    case 'tr':
-      dayjs.locale('tr')
-      break
-    case 'vi':
-      dayjs.locale('vi')
-      break
-    default:
+// Language mapping configuration
+const localeMap: Record<string, string> = {
+  fr: 'fr',
+  ja: 'ja',
+  ko: 'ko',
+  de: 'de',
+  zh_CN: 'zh-cn',
+  zh_TW: 'zh-tw',
+  pt: 'pt',
+  es: 'es',
+  it: 'it',
+  ar: 'ar',
+  ru: 'ru',
+  tr: 'tr',
+  vi: 'vi',
+}
+
+// Predefined locale importers for dynamic loading
+// This approach works with Vite's static analysis requirements
+const localeImporters = {
+  'fr': () => import('dayjs/locale/fr'),
+  'ja': () => import('dayjs/locale/ja'),
+  'ko': () => import('dayjs/locale/ko'),
+  'de': () => import('dayjs/locale/de'),
+  'zh-cn': () => import('dayjs/locale/zh-cn'),
+  'zh-tw': () => import('dayjs/locale/zh-tw'),
+  'pt': () => import('dayjs/locale/pt'),
+  'es': () => import('dayjs/locale/es'),
+  'it': () => import('dayjs/locale/it'),
+  'ar': () => import('dayjs/locale/ar'),
+  'ru': () => import('dayjs/locale/ru'),
+  'tr': () => import('dayjs/locale/tr'),
+  'vi': () => import('dayjs/locale/vi'),
+}
+
+// Dynamically load dayjs locale files
+async function loadDayjsLocale(locale: string) {
+  const dayjsLocale = localeMap[locale]
+
+  if (!dayjsLocale) {
+    dayjs.locale('en')
+    return
+  }
+
+  try {
+    // Use predefined importer function
+    const importer = localeImporters[dayjsLocale]
+    if (importer) {
+      await importer()
+      dayjs.locale(dayjsLocale)
+    }
+    else {
+      // Fallback to English if locale not found
       dayjs.locale('en')
+    }
+  }
+  catch (error) {
+    console.warn(`Failed to load dayjs locale: ${dayjsLocale}`, error)
+    // Graceful fallback to English
+    dayjs.locale('en')
   }
 }
 
-init()
+// Initialize current language
+async function init() {
+  await loadDayjsLocale(current.value)
+}
 
+// Reactive initialization and watch
+onMounted(async () => {
+  current.value = info.value.language || 'en'
+  await nextTick()
+  await init()
+})
 watch(current, init)
 </script>
 
