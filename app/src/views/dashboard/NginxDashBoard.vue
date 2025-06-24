@@ -76,6 +76,11 @@ function connectSSE() {
       else {
         error.value = data.message || $gettext('Nginx is not running')
       }
+
+      if (data.error) {
+        error.value = data.error
+      }
+
       stubStatusEnabled.value = data.stub_status_enabled
     },
     onError: () => {

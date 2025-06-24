@@ -1,7 +1,6 @@
 package nginx
 
 import (
-	"fmt"
 	"os"
 	"regexp"
 	"strings"
@@ -216,36 +215,6 @@ func normalizeModuleNameFromConfigure(moduleName string) string {
 func getExpectedLoadModuleName(configureModuleName string) string {
 	normalized := normalizeModuleNameFromConfigure(configureModuleName)
 	return "ngx_" + normalized + "_module"
-}
-
-// GetModuleMapping returns a map showing the relationship between different module name formats.
-// This is useful for debugging and understanding how module names are processed.
-// Returns a map with normalized names as keys and mapping info as values.
-func GetModuleMapping() map[string]map[string]string {
-	modules := GetModules()
-	mapping := make(map[string]map[string]string)
-
-	modulesCacheLock.RLock()
-	defer modulesCacheLock.RUnlock()
-
-	// Use AllFromFront() to iterate through the ordered map
-	for normalizedName, module := range modules.AllFromFront() {
-		if module == nil {
-			continue
-		}
-
-		expectedLoadName := getExpectedLoadModuleName(normalizedName)
-
-		mapping[normalizedName] = map[string]string{
-			"normalized":           normalizedName,
-			"expected_load_module": expectedLoadName,
-			"dynamic":              fmt.Sprintf("%t", module.Dynamic),
-			"loaded":               fmt.Sprintf("%t", module.Loaded),
-			"params":               module.Params,
-		}
-	}
-
-	return mapping
 }
 
 // normalizeAddModuleName converts a module name from --add-module arguments

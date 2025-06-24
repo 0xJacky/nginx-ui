@@ -376,40 +376,6 @@ func TestExternalModuleDiscovery(t *testing.T) {
 	}
 }
 
-func TestGetModuleMapping(t *testing.T) {
-	// This test verifies that GetModuleMapping function works without errors
-	// Since it depends on nginx being available, we'll just test that it doesn't panic
-	defer func() {
-		if r := recover(); r != nil {
-			t.Errorf("GetModuleMapping panicked: %v", r)
-		}
-	}()
-
-	mapping := GetModuleMapping()
-
-	// The mapping should be a valid map (could be empty if nginx is not available)
-	if mapping == nil {
-		t.Error("GetModuleMapping returned nil")
-	}
-
-	t.Logf("GetModuleMapping returned %d entries", len(mapping))
-
-	// If there are entries, verify they have the expected structure
-	for moduleName, moduleInfo := range mapping {
-		if moduleInfo == nil {
-			t.Errorf("Module %s has nil info", moduleName)
-			continue
-		}
-
-		requiredFields := []string{"normalized", "expected_load_module", "dynamic", "loaded", "params"}
-		for _, field := range requiredFields {
-			if _, exists := moduleInfo[field]; !exists {
-				t.Errorf("Module %s missing field %s", moduleName, field)
-			}
-		}
-	}
-}
-
 func TestOpenRestyModuleParsing(t *testing.T) {
 	// Test case based on real OpenResty nginx -V output
 	openRestyOutput := `nginx version: openresty/1.25.3.1

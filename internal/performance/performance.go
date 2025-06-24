@@ -15,6 +15,7 @@ type NginxPerformanceResponse struct {
 	StubStatusEnabled bool                 `json:"stub_status_enabled"`
 	Running           bool                 `json:"running"`
 	Info              NginxPerformanceInfo `json:"info"`
+	Error             string               `json:"error"`
 }
 
 func GetPerformanceData() NginxPerformanceResponse {
@@ -32,18 +33,36 @@ func GetPerformanceData() NginxPerformanceResponse {
 	stubStatusEnabled, statusInfo, err := GetStubStatusData()
 	if err != nil {
 		logger.Warn("Failed to get Nginx status:", err)
+		return NginxPerformanceResponse{
+			StubStatusEnabled: false,
+			Running:           running,
+			Info:              NginxPerformanceInfo{},
+			Error:             err.Error(),
+		}
 	}
 
 	// Get Nginx process information
 	processInfo, err := GetNginxProcessInfo()
 	if err != nil {
 		logger.Warn("Failed to get Nginx process info:", err)
+		return NginxPerformanceResponse{
+			StubStatusEnabled: stubStatusEnabled,
+			Running:           running,
+			Info:              NginxPerformanceInfo{},
+			Error:             err.Error(),
+		}
 	}
 
 	// Get Nginx config information
 	configInfo, err := GetNginxWorkerConfigInfo()
 	if err != nil {
 		logger.Warn("Failed to get Nginx config info:", err)
+		return NginxPerformanceResponse{
+			StubStatusEnabled: stubStatusEnabled,
+			Running:           running,
+			Info:              NginxPerformanceInfo{},
+			Error:             err.Error(),
+		}
 	}
 
 	// Ensure ProcessMode field is correctly passed

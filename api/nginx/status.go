@@ -38,7 +38,7 @@ func GetDetailStatus(c *gin.Context) {
 func StreamDetailStatus(c *gin.Context) {
 	// Set SSE response headers
 	api.SetSSEHeaders(c)
-	
+
 	// Create context that cancels when client disconnects
 	ctx := c.Request.Context()
 
@@ -54,10 +54,7 @@ func StreamDetailStatus(c *gin.Context) {
 		select {
 		case <-ticker.C:
 			// Send performance data
-			if err := sendPerformanceData(c); err != nil {
-				logger.Warn("Error sending SSE data:", err)
-				return
-			}
+			sendPerformanceData(c)
 		case <-ctx.Done():
 			// Client closed connection or request canceled
 			logger.Debug("Client closed connection")
@@ -67,7 +64,7 @@ func StreamDetailStatus(c *gin.Context) {
 }
 
 // sendPerformanceData sends performance data once
-func sendPerformanceData(c *gin.Context) error {
+func sendPerformanceData(c *gin.Context) {
 	response := performance.GetPerformanceData()
 
 	// Send SSE event
@@ -75,7 +72,6 @@ func sendPerformanceData(c *gin.Context) error {
 
 	// Flush buffer to ensure data is sent immediately
 	c.Writer.Flush()
-	return nil
 }
 
 // CheckStubStatus gets Nginx stub_status module status

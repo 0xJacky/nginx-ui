@@ -26,36 +26,8 @@ export function useMessageDedupe(interval = 5000): MessageDedupe {
   }
 }
 
-export function handleApiError(err: CosyError, dedupe: MessageDedupe) {
-  if (err?.scope) {
-    // check if already register
-    if (!errors[err.scope]) {
-      try {
-        // Dynamic import error files
-        import(`@/constants/errors/${err.scope}.ts`)
-          .then(error => {
-            registerError(err.scope!, error.default)
-            displayErrorMessage(err, dedupe)
-          })
-          .catch(err => {
-            console.error(err)
-            dedupe.error($gettext(err?.message ?? 'Server error'))
-          })
-      }
-      catch {
-        dedupe.error($gettext(err?.message ?? 'Server error'))
-      }
-    }
-    else {
-      displayErrorMessage(err, dedupe)
-    }
-  }
-  else {
-    dedupe.error($gettext(err?.message ?? 'Server error'))
-  }
-}
-
-function displayErrorMessage(err: CosyError, dedupe: MessageDedupe) {
+// Synchronous version for already registered errors
+function translateErrorSync(err: CosyError): string {
   const msg = errors?.[err.scope ?? '']?.[err.code ?? '']
 
   if (msg) {
@@ -67,13 +39,36 @@ function displayErrorMessage(err: CosyError, dedupe: MessageDedupe) {
         res = res.replaceAll(`{${index}}`, param)
       })
 
-      dedupe.error(res)
+      return res
     }
     else {
-      dedupe.error(msg())
+      return msg()
     }
   }
   else {
-    dedupe.error($gettext(err?.message ?? 'Server error'))
+    return $gettext(err?.message ?? 'Server error')
   }
+}
+
+// Asynchronous version that handles dynamic loading
+export async function translateError(err: CosyError): Promise<string> {
+  // If scope exists, use sync version
+  if (!err?.scope || errors[err.scope]) {
+    return translateErrorSync(err)
+  }
+
+  // Need to dynamically load error definitions
+  try {
+    const errorModule = await import(`@/constants/errors/${err.scope}.ts`)
+    registerError(err.scope, errorModule.default)
+    return translateErrorSync(err)
+  }
+  catch (error) {
+    console.error(error)
+    return $gettext(err?.message ?? 'Server error')
+  }
+}
+
+export async function handleApiError(err: CosyError, dedupe: MessageDedupe) {
+  dedupe.error(await translateError(err))
 }

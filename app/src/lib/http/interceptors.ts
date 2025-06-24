@@ -153,7 +153,7 @@ export function setupResponseInterceptor() {
       }
 
       const err = error.response?.data as CosyError
-      handleApiError(err, dedupe)
+      await handleApiError(err, dedupe)
 
       return Promise.reject(error.response?.data)
     },
