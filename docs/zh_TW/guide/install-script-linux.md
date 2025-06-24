@@ -37,17 +37,17 @@ install.sh install [OPTIONS]
 
 ```shell [穩定版（預設）]
 # 安裝最新穩定版本
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install
 ```
 
 ```shell [預發布版]
 # 安裝最新預發布版本
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install --channel prerelease
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install --channel prerelease
 ```
 
 ```shell [開發版]
 # 安裝最新開發構建
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install --channel dev
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install --channel dev
 ```
 
 :::
@@ -79,12 +79,12 @@ install.sh remove [OPTIONS]
 
 ```shell [移除]
 # 解除安裝 Nginx UI 但保留設定和資料庫檔案
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ remove
 ```
 
 ```shell [清除]
 # 解除安裝並刪除所有 Nginx UI 檔案，包括設定和資料庫檔案
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove --purge
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ remove --purge
 ```
 
 :::
@@ -104,7 +104,7 @@ install.sh help
 ### 快速使用
 
 ```shell
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ help
 ```
 
 ## 控制服務

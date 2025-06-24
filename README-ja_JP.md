@@ -316,7 +316,7 @@ go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/sett
 **インストール & アップグレード**
 
 ```shell
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install
 ```
 デフォルトのリスニングポートは `9000`、HTTP チャレンジポートは `9180` です。
 競合する場合は `/usr/local/etc/nginx-ui/app.ini` を編集し、`systemctl restart nginx-ui` を実行してください。
@@ -324,13 +324,13 @@ bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/insta
 **設定・DB を残してアンインストール**
 
 ```shell
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ remove
 ```
 
 ### その他の使い方
 
 ````shell
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ help
 ````
 
 ## Nginx リバースプロキシ設定例

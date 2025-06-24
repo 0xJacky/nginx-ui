@@ -37,17 +37,17 @@ install.sh install [OPTIONS]
 
 ```shell [稳定版（默认）]
 # 安装最新稳定版本
-bash -c "$(curl -L https://cloud.nginxui.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install -r https://cloud.nginxui.com/
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install -r https://cloud.nginxui.com/
 ```
 
 ```shell [预发布版]
 # 安装最新预发布版本
-bash -c "$(curl -L https://cloud.nginxui.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install --channel prerelease -r https://cloud.nginxui.com/
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install --channel prerelease -r https://cloud.nginxui.com/
 ```
 
 ```shell [开发版]
 # 安装最新开发构建
-bash -c "$(curl -L https://cloud.nginxui.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install --channel dev -r https://cloud.nginxui.com/
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install --channel dev -r https://cloud.nginxui.com/
 ```
 
 :::
@@ -79,12 +79,12 @@ install.sh remove [OPTIONS]
 
 ```shell [移除]
 # 删除 Nginx UI，但不包括配置和数据库文件
-bash -c "$(curl -L https://cloud.nginxui.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ remove
 ```
 
 ```shell [清除]
 # 删除所有 Nginx UI 文件，包括配置和数据库文件
-bash -c "$(curl -L https://cloud.nginxui.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove --purge
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ remove --purge
 ```
 
 :::
@@ -104,7 +104,7 @@ install.sh help
 ### 快速使用
 
 ```shell
-bash -c "$(curl -L -s https://cloud.nginxui.com/https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
+bash -c "$(curl -L -s https://cloud.nginxui.com/install.sh)" @ help
 ```
 
 ## 控制服务

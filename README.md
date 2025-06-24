@@ -317,7 +317,7 @@ go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/sett
 **Install and Upgrade**
 
 ```shell
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install
 ```
 The default listening port is `9000`, and the default HTTP Challenge port is `9180`.
 If there is a port conflict, please modify `/usr/local/etc/nginx-ui/app.ini` manually,
@@ -326,13 +326,13 @@ then use `systemctl restart nginx-ui` to reload the Nginx UI service.
 **Remove Nginx UI, except configuration and database files**
 
 ```shell
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ remove
 ```
 
 ### More Usage
 
 ````shell
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ help
 ````
 
 ## Example of Nginx Reverse Proxy Configuration

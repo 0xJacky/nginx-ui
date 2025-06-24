@@ -38,17 +38,17 @@ install.sh install [OPTIONS]
 
 ```shell [Stable (Default)]
 # Install the latest stable version
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install
 ```
 
 ```shell [Prerelease]
 # Install the latest prerelease version
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install --channel prerelease
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install --channel prerelease
 ```
 
 ```shell [Development]
 # Install the latest development build
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ install --channel dev
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install --channel dev
 ```
 
 :::
@@ -83,12 +83,12 @@ install.sh remove [OPTIONS]
 
 ```shell [Remove]
 # Remove Nginx UI, except configuration and database files
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ remove
 ```
 
 ```shell [Purge]
 # Remove all the Nginx UI file, include configuration and database files
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ remove --purge
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ remove --purge
 ```
 
 :::
@@ -108,7 +108,7 @@ install.sh help
 ### Quick Usage
 
 ```shell
-bash -c "$(curl -L https://raw.githubusercontent.com/0xJacky/nginx-ui/main/install.sh)" @ help
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ help
 ```
 
 ## Control Service
