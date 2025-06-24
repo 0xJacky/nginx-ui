@@ -8,6 +8,7 @@ import DNSChallenge from './DNSChallenge.vue'
 const props = defineProps<{
   hideNote?: boolean
   forceDnsChallenge?: boolean
+  keyTypeReadOnly?: boolean
 }>()
 
 const data = defineModel<AutoCertOptions>('options', {
@@ -73,8 +74,13 @@ watch(() => props.forceDnsChallenge, v => {
           </ASelectOption>
         </ASelect>
       </AFormItem>
-      <AFormItem :label="$gettext('Key Type')">
-        <ASelect v-model:value="data.key_type">
+      <AFormItem
+        :label="$gettext('Key Type')"
+      >
+        <ASelect
+          v-model:value="data.key_type"
+          :disabled="keyTypeReadOnly"
+        >
           <ASelectOption
             v-for="t in PrivateKeyTypeList"
             :key="t.key"

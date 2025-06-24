@@ -146,6 +146,7 @@ const isManaged = computed(() => {
 
           <AutoCertForm
             v-model:options="data"
+            key-type-read-only
             style="max-width: 600px"
             hide-note
           />

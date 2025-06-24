@@ -94,6 +94,5 @@ func Proxy() gin.HandlerFunc {
 		req := c.Request.Clone(ctx)
 
 		proxy.ServeHTTP(c.Writer, req)
-		return
 	}
 }
