@@ -248,6 +248,33 @@ func GetModuleMapping() map[string]map[string]string {
 	return mapping
 }
 
+// normalizeAddModuleName converts a module name from --add-module arguments
+// to a consistent format for internal use.
+// Examples:
+//   - "ngx_devel_kit" -> "devel_kit"
+//   - "echo-nginx-module" -> "echo_nginx"
+//   - "headers-more-nginx-module" -> "headers_more_nginx"
+//   - "ngx_lua" -> "lua"
+//   - "set-misc-nginx-module" -> "set_misc_nginx"
+//   - "ngx_stream_lua" -> "stream_lua"
+func normalizeAddModuleName(addModuleName string) string {
+	// Convert dashes to underscores
+	normalized := strings.ReplaceAll(addModuleName, "-", "_")
+
+	// Remove common prefixes
+	normalized = strings.TrimPrefix(normalized, "ngx_")
+
+	// Remove common suffixes - prioritize longer suffixes first
+	if strings.HasSuffix(normalized, "_nginx_module") {
+		// For modules ending with "_nginx_module", remove only "_module" to keep "_nginx"
+		normalized = strings.TrimSuffix(normalized, "_module")
+	} else if strings.HasSuffix(normalized, "_module") {
+		normalized = strings.TrimSuffix(normalized, "_module")
+	}
+
+	return normalized
+}
+
 func GetModules() *orderedmap.OrderedMap[string, *Module] {
 	modulesCacheLock.RLock()
 	cachedModules := modulesCache
@@ -261,15 +288,15 @@ func GetModules() *orderedmap.OrderedMap[string, *Module] {
 	// If PID has changed or we don't have cached modules, get fresh modules
 	out := getNginxV()
 
-	// Regular expression to find module parameters with values
-	paramRe := regexp.MustCompile(`--with-([a-zA-Z0-9_-]+)(?:_module)?(?:=([^"'\s]+|"[^"]*"|'[^']*'))?`)
-	paramMatches := paramRe.FindAllStringSubmatch(out, -1)
-
 	// Update cache
 	modulesCacheLock.Lock()
 	modulesCache = orderedmap.NewOrderedMap[string, *Module]()
 
-	// Extract module names and parameters from matches
+	// Regular expression to find --with- module parameters with values
+	paramRe := regexp.MustCompile(`--with-([a-zA-Z0-9_-]+)(?:_module)?(?:=([^"'\s]+|"[^"]*"|'[^']*'))?`)
+	paramMatches := paramRe.FindAllStringSubmatch(out, -1)
+
+	// Extract module names and parameters from --with- matches
 	for _, match := range paramMatches {
 		if len(match) > 1 {
 			module := match[1]
@@ -315,6 +342,30 @@ func GetModules() *orderedmap.OrderedMap[string, *Module] {
 				Params:  params,
 				Dynamic: isDynamic,
 				Loaded:  !isDynamic, // Static modules are always loaded
+			})
+		}
+	}
+
+	// Regular expression to find --add-module parameters
+	// Matches patterns like: --add-module=../ngx_devel_kit-0.3.3 or --add-module=../echo-nginx-module-0.63
+	addModuleRe := regexp.MustCompile(`--add-module=(?:[^/\s]+/)?([^/\s-]+(?:-[^/\s-]+)*)-[0-9.]+`)
+	addModuleMatches := addModuleRe.FindAllStringSubmatch(out, -1)
+
+	// Extract module names from --add-module matches
+	for _, match := range addModuleMatches {
+		if len(match) > 1 {
+			moduleName := match[1]
+			// Convert dashes to underscores for consistency
+			normalizedName := strings.ReplaceAll(moduleName, "-", "_")
+			// Further normalize the name
+			finalNormalizedName := normalizeAddModuleName(normalizedName)
+
+			// Add-modules are statically compiled, so they're always loaded but not dynamic
+			modulesCache.Set(finalNormalizedName, &Module{
+				Name:    finalNormalizedName,
+				Params:  "",
+				Dynamic: false, // --add-module creates static modules
+				Loaded:  true,  // Static modules are always loaded
 			})
 		}
 	}

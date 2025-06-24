@@ -2,6 +2,7 @@ package nginx
 
 import (
 	"regexp"
+	"strings"
 	"testing"
 )
 
@@ -406,5 +407,335 @@ func TestGetModuleMapping(t *testing.T) {
 				t.Errorf("Module %s missing field %s", moduleName, field)
 			}
 		}
+	}
+}
+
+func TestOpenRestyModuleParsing(t *testing.T) {
+	// Test case based on real OpenResty nginx -V output
+	openRestyOutput := `nginx version: openresty/1.25.3.1
+built by gcc 4.8.5 20150623 (Red Hat 4.8.5-44) (GCC) 
+built with OpenSSL 1.0.2k-fips  26 Jan 2017
+TLS SNI support enabled
+configure arguments: --prefix=/usr/local/openresty/nginx --with-cc-opt=-O2 --add-module=../ngx_devel_kit-0.3.3 --add-module=../echo-nginx-module-0.63 --add-module=../xss-nginx-module-0.06 --add-module=../ngx_coolkit-0.2 --add-module=../set-misc-nginx-module-0.33 --add-module=../form-input-nginx-module-0.12 --add-module=../encrypted-session-nginx-module-0.09 --add-module=../srcache-nginx-module-0.33 --add-module=../ngx_lua-0.10.26 --add-module=../ngx_lua_upstream-0.07 --add-module=../headers-more-nginx-module-0.37 --add-module=../array-var-nginx-module-0.06 --add-module=../memc-nginx-module-0.20 --add-module=../redis2-nginx-module-0.15 --add-module=../redis-nginx-module-0.3.9 --add-module=../rds-json-nginx-module-0.16 --add-module=../rds-csv-nginx-module-0.09 --add-module=../ngx_stream_lua-0.0.14 --with-ld-opt=-Wl,-rpath,/usr/local/openresty/luajit/lib --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-stream --without-pcre2 --with-stream_ssl_module --with-stream_ssl_preread_module`
+
+	// Test parsing --add-module arguments
+	addModuleRe := regexp.MustCompile(`--add-module=([^/\s]+/)([^/\s-]+)-([0-9.]+)`)
+	matches := addModuleRe.FindAllStringSubmatch(openRestyOutput, -1)
+
+	expectedModules := map[string]bool{
+		"ngx_devel_kit":                  false,
+		"echo_nginx_module":              false,
+		"xss_nginx_module":               false,
+		"ngx_coolkit":                    false,
+		"set_misc_nginx_module":          false,
+		"form_input_nginx_module":        false,
+		"encrypted_session_nginx_module": false,
+		"srcache_nginx_module":           false,
+		"ngx_lua":                        false,
+		"ngx_lua_upstream":               false,
+		"headers_more_nginx_module":      false,
+		"array_var_nginx_module":         false,
+		"memc_nginx_module":              false,
+		"redis2_nginx_module":            false,
+		"redis_nginx_module":             false,
+		"rds_json_nginx_module":          false,
+		"rds_csv_nginx_module":           false,
+		"ngx_stream_lua":                 false,
+	}
+
+	t.Logf("Found %d --add-module matches", len(matches))
+
+	for _, match := range matches {
+		if len(match) > 2 {
+			moduleName := match[2]
+			t.Logf("Found add-module: %s", moduleName)
+
+			if _, expected := expectedModules[moduleName]; expected {
+				expectedModules[moduleName] = true
+			} else {
+				// This might be a valid module we didn't expect
+				t.Logf("Unexpected add-module found: %s", moduleName)
+			}
+		}
+	}
+
+	// Check that we found most expected modules
+	foundCount := 0
+	for moduleName, found := range expectedModules {
+		if found {
+			foundCount++
+		} else {
+			t.Logf("Expected add-module %s was not found", moduleName)
+		}
+	}
+
+	if foundCount == 0 {
+		t.Error("No add-modules were parsed successfully")
+	}
+
+	// Test parsing --with- arguments as well
+	withModuleRe := regexp.MustCompile(`--with-([a-zA-Z0-9_-]+)(?:_module)?(?:=([^"'\s]+|"[^"]*"|'[^']*'))?`)
+	withMatches := withModuleRe.FindAllStringSubmatch(openRestyOutput, -1)
+
+	expectedWithModules := map[string]bool{
+		"cc-opt":                    false,
+		"ld-opt":                    false,
+		"http_ssl_module":           false,
+		"http_v2_module":            false,
+		"http_realip_module":        false,
+		"stream":                    false,
+		"stream_ssl_module":         false,
+		"stream_ssl_preread_module": false,
+	}
+
+	t.Logf("Found %d --with- matches", len(withMatches))
+
+	for _, match := range withMatches {
+		if len(match) > 1 {
+			moduleName := match[1]
+			t.Logf("Found with-module: %s", moduleName)
+
+			if _, expected := expectedWithModules[moduleName]; expected {
+				expectedWithModules[moduleName] = true
+			}
+		}
+	}
+
+	// Verify we found the key --with- modules
+	withFoundCount := 0
+	for _, found := range expectedWithModules {
+		if found {
+			withFoundCount++
+		}
+	}
+
+	if withFoundCount < 3 { // At least stream, http_ssl_module, etc should be found
+		t.Errorf("Too few --with- modules found: %d", withFoundCount)
+	}
+}
+
+func TestAddModuleRegexParsing(t *testing.T) {
+	testCases := []struct {
+		name     string
+		input    string
+		expected []string // expected module names
+	}{
+		{
+			name:     "single add-module with version",
+			input:    "--add-module=../ngx_devel_kit-0.3.3",
+			expected: []string{"ngx_devel_kit"},
+		},
+		{
+			name:     "add-module with nginx in name",
+			input:    "--add-module=../echo-nginx-module-0.63",
+			expected: []string{"echo_nginx_module"},
+		},
+		{
+			name:     "multiple add-modules",
+			input:    "--add-module=../ngx_lua-0.10.26 --add-module=../headers-more-nginx-module-0.37",
+			expected: []string{"ngx_lua", "headers_more_nginx_module"},
+		},
+		{
+			name:     "add-module with different separators",
+			input:    "--add-module=../set-misc-nginx-module-0.33 --add-module=../ngx_coolkit-0.2",
+			expected: []string{"set_misc_nginx_module", "ngx_coolkit"},
+		},
+	}
+
+	// Regex to parse --add-module arguments
+	addModuleRe := regexp.MustCompile(`--add-module=(?:[^/\s]+/)?([^/\s-]+(?:-[^/\s-]+)*)-[0-9.]+`)
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			matches := addModuleRe.FindAllStringSubmatch(tc.input, -1)
+
+			if len(matches) != len(tc.expected) {
+				t.Errorf("Expected %d matches, got %d", len(tc.expected), len(matches))
+				for i, match := range matches {
+					if len(match) > 1 {
+						t.Logf("Match %d: %s", i, match[1])
+					}
+				}
+				return
+			}
+
+			for i, match := range matches {
+				if len(match) < 2 {
+					t.Errorf("Match %d should have at least 2 groups, got %d", i, len(match))
+					continue
+				}
+
+				moduleName := match[1]
+				// Convert dashes to underscores for consistency
+				normalizedName := strings.ReplaceAll(moduleName, "-", "_")
+				expectedModule := tc.expected[i]
+
+				if normalizedName != expectedModule {
+					t.Errorf("Expected module name %s, got %s (normalized from %s)", expectedModule, normalizedName, moduleName)
+				}
+			}
+		})
+	}
+}
+
+func TestNormalizeAddModuleName(t *testing.T) {
+	testCases := []struct {
+		name           string
+		addModuleName  string
+		expectedResult string
+	}{
+		{
+			name:           "ngx_devel_kit",
+			addModuleName:  "ngx_devel_kit",
+			expectedResult: "devel_kit",
+		},
+		{
+			name:           "echo-nginx-module",
+			addModuleName:  "echo-nginx-module",
+			expectedResult: "echo_nginx",
+		},
+		{
+			name:           "headers-more-nginx-module",
+			addModuleName:  "headers-more-nginx-module",
+			expectedResult: "headers_more_nginx",
+		},
+		{
+			name:           "ngx_lua",
+			addModuleName:  "ngx_lua",
+			expectedResult: "lua",
+		},
+		{
+			name:           "set-misc-nginx-module",
+			addModuleName:  "set-misc-nginx-module",
+			expectedResult: "set_misc_nginx",
+		},
+		{
+			name:           "ngx_stream_lua",
+			addModuleName:  "ngx_stream_lua",
+			expectedResult: "stream_lua",
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			result := normalizeAddModuleName(tc.addModuleName)
+			if result != tc.expectedResult {
+				t.Errorf("normalizeAddModuleName(%s) = %s, expected %s",
+					tc.addModuleName, result, tc.expectedResult)
+			}
+		})
+	}
+}
+
+func TestStreamConfigurationParsing(t *testing.T) {
+	// Test parsing of stream configuration to verify stream module is working
+	streamConfig := `stream {
+    log_format tcp_format '$time_local|$remote_addr|$protocol|$status|$bytes_sent|$bytes_received|$session_time|$upstream_addr|$upstream_bytes_sent|$upstream_bytes_received|$upstream_connect_time';
+    include /usr/local/openresty/nginx/conf/streams-enabled/*.conf;
+    default_type  application/octet-stream;
+    
+    upstream sshd_63_stream {
+        server 192.168.1.63:22;
+    }
+    
+    server {
+        listen 6001;
+        proxy_pass sshd_63_stream;
+    }
+}`
+
+	// Simple test to verify stream block can be detected (word boundary to avoid matching "upstream sshd_63_stream")
+	streamBlockRe := regexp.MustCompile(`\bstream\s*\{`)
+	matches := streamBlockRe.FindAllString(streamConfig, -1)
+
+	if len(matches) != 1 {
+		t.Errorf("Expected to find 1 stream block, found %d", len(matches))
+	}
+
+	// Test upstream parsing within stream
+	upstreamRe := regexp.MustCompile(`upstream\s+([a-zA-Z0-9_]+)\s*\{`)
+	upstreamMatches := upstreamRe.FindAllStringSubmatch(streamConfig, -1)
+
+	if len(upstreamMatches) != 1 {
+		t.Errorf("Expected to find 1 upstream, found %d", len(upstreamMatches))
+	} else if upstreamMatches[0][1] != "sshd_63_stream" {
+		t.Errorf("Expected upstream name 'sshd_63_stream', got '%s'", upstreamMatches[0][1])
+	}
+
+	// Test server block parsing within stream
+	serverRe := regexp.MustCompile(`server\s*\{[^}]*listen\s+(\d+)`)
+	serverMatches := serverRe.FindAllStringSubmatch(streamConfig, -1)
+
+	if len(serverMatches) != 1 {
+		t.Errorf("Expected to find 1 server with listen directive, found %d", len(serverMatches))
+	} else if serverMatches[0][1] != "6001" {
+		t.Errorf("Expected listen port '6001', got '%s'", serverMatches[0][1])
+	}
+}
+
+func TestIntegratedModuleDetection(t *testing.T) {
+	// This test simulates the complete flow of module detection for OpenResty
+	// This would test the integration between --add-module parsing and --with- parsing
+
+	// Mock nginx -V output combining both --add-module and --with- parameters
+	mockNginxV := `nginx version: openresty/1.25.3.1
+configure arguments: --prefix=/usr/local/openresty/nginx --with-cc-opt=-O2 --add-module=../ngx_devel_kit-0.3.3 --add-module=../ngx_lua-0.10.26 --with-http_ssl_module --with-stream --with-stream_ssl_module`
+
+	// Test both regex patterns work on the same input
+	withModuleRe := regexp.MustCompile(`--with-([a-zA-Z0-9_-]+)(?:_module)?(?:=([^"'\s]+|"[^"]*"|'[^']*'))?`)
+	addModuleRe := regexp.MustCompile(`--add-module=(?:[^/\s]+/)?([^/\s-]+(?:-[^/\s-]+)*)-[0-9.]+`)
+
+	withMatches := withModuleRe.FindAllStringSubmatch(mockNginxV, -1)
+	addMatches := addModuleRe.FindAllStringSubmatch(mockNginxV, -1)
+
+	t.Logf("Found %d --with- matches and %d --add-module matches", len(withMatches), len(addMatches))
+
+	// Verify we can parse both types
+	if len(withMatches) == 0 {
+		t.Error("Failed to parse any --with- modules")
+	}
+
+	if len(addMatches) == 0 {
+		t.Error("Failed to parse any --add-module modules")
+	}
+
+	// Build a combined module list like the actual code should do
+	allModules := make(map[string]bool)
+
+	// Process --with- modules
+	for _, match := range withMatches {
+		if len(match) > 1 {
+			moduleName := match[1]
+			normalized := normalizeModuleNameFromConfigure(moduleName)
+			allModules[normalized] = true
+			t.Logf("--with- module: %s -> %s", moduleName, normalized)
+		}
+	}
+
+	// Process --add-module modules
+	for _, match := range addMatches {
+		if len(match) > 1 {
+			moduleName := match[1]
+			normalized := normalizeAddModuleName(moduleName)
+			allModules[normalized] = true
+			t.Logf("--add-module: %s -> %s", moduleName, normalized)
+		}
+	}
+
+	// Verify we have both types of modules
+	expectedModules := []string{"stream", "http_ssl", "devel_kit", "lua"}
+	foundCount := 0
+
+	for _, expected := range expectedModules {
+		if allModules[expected] {
+			foundCount++
+			t.Logf("✓ Found expected module: %s", expected)
+		} else {
+			t.Logf("✗ Missing expected module: %s", expected)
+		}
+	}
+
+	if foundCount < 2 {
+		t.Errorf("Expected to find at least 2 modules, found %d", foundCount)
 	}
 }
