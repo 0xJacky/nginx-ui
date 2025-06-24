@@ -6,6 +6,8 @@ import { marked } from 'marked'
 import upgrade from '@/api/upgrade'
 import websocket from '@/lib/websocket'
 
+const emit = defineEmits(['success'])
+
 const route = useRoute()
 const visible = ref(false)
 const nodeIds = ref<number[]>([])
@@ -137,6 +139,7 @@ async function performUpgrade() {
         if (i + 1 === nodesNum) {
           progressStatus.value = 'success'
           modalClosable.value = true
+          emit('success')
         }
       }
     })

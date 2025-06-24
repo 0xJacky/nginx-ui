@@ -91,7 +91,7 @@ const inTrash = computed(() => {
       </template>
     </StdCurd>
 
-    <BatchUpgrader ref="refUpgrader" />
+    <BatchUpgrader ref="refUpgrader" @success="curd.refresh()" />
 
     <FooterToolBar v-if="!inTrash">
       <ASpace>
