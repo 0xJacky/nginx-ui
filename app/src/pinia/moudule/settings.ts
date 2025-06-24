@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import gettext from '@/gettext'
 
 export const useSettingsStore = defineStore('settings', {
   state: () => ({
@@ -20,6 +21,7 @@ export const useSettingsStore = defineStore('settings', {
   actions: {
     set_language(lang: string) {
       this.language = lang
+      gettext.current = lang
     },
     set_theme(t: string) {
       this.theme = t

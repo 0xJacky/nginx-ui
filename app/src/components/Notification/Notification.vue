@@ -26,21 +26,23 @@ const data = ref([]) as Ref<Notification[]>
 
 const { connect } = useSSE()
 
-connect({
-  url: '/api/notifications/live',
-  onMessage: (data: Notification) => {
-    const typeTrans = {
-      0: 'error',
-      1: 'warning',
-      2: 'info',
-      3: 'success',
-    }
+onMounted(() => {
+  connect({
+    url: '/api/notifications/live',
+    onMessage: (data: Notification) => {
+      const typeTrans = {
+        0: 'error',
+        1: 'warning',
+        2: 'info',
+        3: 'success',
+      }
 
-    notification[typeTrans[data.type]]({
-      message: $gettext(data.title),
-      description: detailRender({ text: data.details, record: data }),
-    })
-  },
+      notification[typeTrans[data.type]]({
+        message: $gettext(data.title),
+        description: detailRender({ text: data.details, record: data }),
+      })
+    },
+  })
 })
 
 function init() {

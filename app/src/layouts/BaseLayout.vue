@@ -3,7 +3,7 @@ import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
 import settings from '@/api/settings'
 import PageHeader from '@/components/PageHeader'
-import { useSettingsStore, useUserStore } from '@/pinia'
+import { useSettingsStore } from '@/pinia'
 import FooterLayout from './FooterLayout.vue'
 import HeaderLayout from './HeaderLayout.vue'
 import SideBar from './SideBar.vue'
@@ -44,13 +44,10 @@ settings.get_server_name().then(r => {
 const breadList = ref([])
 
 provide('breadList', breadList)
-
-const userStore = useUserStore()
-const { token } = storeToRefs(userStore)
 </script>
 
 <template>
-  <ALayout :key="token" class="full-screen-wrapper min-h-screen">
+  <ALayout class="full-screen-wrapper min-h-screen">
     <div class="drawer-sidebar">
       <ADrawer
         v-model:open="drawerVisible"

@@ -8,11 +8,13 @@ const { connect } = useSSE()
 const globalStore = useGlobalStore()
 const { processingStatus } = storeToRefs(globalStore)
 
-connect({
-  url: '/api/system/processing',
-  onMessage: data => {
-    processingStatus.value = data
-  },
+onMounted(() => {
+  connect({
+    url: '/api/system/processing',
+    onMessage: data => {
+      processingStatus.value = data
+    },
+  })
 })
 
 const isProcessing = computed(() => {

@@ -5,8 +5,7 @@ import gettext from '@/gettext'
 import { useSettingsStore, useUserStore } from '@/pinia'
 
 const settings = useSettingsStore()
-const userStore = useUserStore()
-const { info } = storeToRefs(userStore)
+const user = useUserStore()
 
 const route = useRoute()
 
@@ -30,8 +29,9 @@ function updateTitle() {
 watch(current, v => {
   loadTranslations(route)
   settings.set_language(v)
-  gettext.current = v
-  userStore.updateCurrentUserLanguage(v)
+  if (user.isLogin) {
+    user.updateCurrentUserLanguage(v)
+  }
 
   updateTitle()
 })
@@ -109,11 +109,7 @@ async function init() {
 }
 
 // Reactive initialization and watch
-onMounted(async () => {
-  current.value = info.value.language || 'en'
-  await nextTick()
-  await init()
-})
+onMounted(init)
 watch(current, init)
 </script>
 

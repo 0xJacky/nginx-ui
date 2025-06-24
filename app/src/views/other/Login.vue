@@ -10,7 +10,7 @@ import SetLanguage from '@/components/SetLanguage'
 import SwitchAppearance from '@/components/SwitchAppearance'
 import Authorization from '@/components/TwoFA'
 import gettext from '@/gettext'
-import { useUserStore } from '@/pinia'
+import { useSettingsStore, useUserStore } from '@/pinia'
 
 const thisYear = new Date().getFullYear()
 
@@ -51,24 +51,69 @@ const rulesRef = reactive({
 
 const { validate, validateInfos, clearValidate } = Form.useForm(modelRef, rulesRef)
 const userStore = useUserStore()
+const settingsStore = useSettingsStore()
 const { login, passkeyLogin } = userStore
 const { secureSessionId } = storeToRefs(userStore)
+
+interface LoginSuccessOptions {
+  token?: string
+  secureSessionId?: string
+  loginType?: 'normal' | 'passkey'
+  passkeyRawId?: string
+  showSuccessMessage?: boolean
+}
+
+async function handleLoginSuccess(options: LoginSuccessOptions = {}) {
+  const {
+    token,
+    secureSessionId: sessionId,
+    loginType = 'normal',
+    passkeyRawId,
+    showSuccessMessage = true,
+  } = options
+
+  if (showSuccessMessage) {
+    message.success($gettext('Login successful'), 1)
+  }
+
+  // Handle different login types
+  if (loginType === 'passkey' && passkeyRawId && token) {
+    passkeyLogin(passkeyRawId, token)
+  }
+  else if (token) {
+    login(token)
+  }
+
+  await nextTick()
+
+  if (sessionId) {
+    secureSessionId.value = sessionId
+  }
+
+  await userStore.getCurrentUser()
+  await nextTick()
+  if (gettext.current !== 'en' && gettext.current !== userStore.info?.language) {
+    await userStore.updateCurrentUserLanguage(gettext.current)
+  }
+  else {
+    await settingsStore.set_language(userStore.info?.language)
+  }
+
+  const next = (route.query?.next || '').toString() || '/'
+  await router.push(next)
+}
 
 function onSubmit() {
   validate().then(async () => {
     loading.value = true
 
     await auth.login(modelRef.username, modelRef.password, passcode.value, recoveryCode.value).then(async r => {
-      const next = (route.query?.next || '').toString() || '/'
       switch (r.code) {
         case 200:
-          message.success($gettext('Login successful'), 1)
-          login(r.token)
-          await nextTick()
-          secureSessionId.value = r.secure_session_id
-          await userStore.getCurrentUser()
-          await nextTick()
-          await router.push(next)
+          await handleLoginSuccess({
+            token: r.token,
+            secureSessionId: r.secure_session_id,
+          })
           break
         case 199:
           enabled2FA.value = true
@@ -113,13 +158,7 @@ function loginWithCasdoor() {
 if (route.query?.code !== undefined && route.query?.state !== undefined) {
   loading.value = true
   auth.casdoor_login(route.query?.code?.toString(), route.query?.state?.toString()).then(async () => {
-    message.success($gettext('Login successful'), 1)
-
-    const next = (route.query?.next || '').toString() || '/'
-
-    await userStore.getCurrentUser()
-    await nextTick()
-    await router.push(next)
+    await handleLoginSuccess()
   })
   loading.value = false
 }
@@ -150,13 +189,13 @@ async function handlePasskeyLogin() {
   })
 
   if (r.token) {
-    const next = (route.query?.next || '').toString() || '/'
-
-    passkeyLogin(asseResp.rawId, r.token)
-    secureSessionId.value = r.secure_session_id
-    await userStore.getCurrentUser()
-    await nextTick()
-    await router.push(next)
+    await handleLoginSuccess({
+      token: r.token,
+      secureSessionId: r.secure_session_id,
+      loginType: 'passkey',
+      passkeyRawId: asseResp.rawId,
+      showSuccessMessage: false,
+    })
   }
 
   passkeyLoginLoading.value = false
