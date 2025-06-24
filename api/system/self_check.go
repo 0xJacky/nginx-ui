@@ -61,3 +61,10 @@ func CheckSSE(c *gin.Context) {
 		}
 	}
 }
+
+func TimeoutCheck(c *gin.Context) {
+	time.Sleep(time.Minute)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "ok",
+	})
+}

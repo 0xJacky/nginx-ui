@@ -33,6 +33,7 @@ func InitSelfCheckRouter(r *gin.RouterGroup) {
 	g.POST("/:name/fix", middleware.Proxy(), SelfCheckFix)
 	g.GET("sse", middleware.Proxy(), CheckSSE)
 	g.GET("websocket", middleware.ProxyWs(), CheckWebSocket)
+	g.GET("timeout", middleware.Proxy(), TimeoutCheck)
 }
 
 func InitBackupRestoreRouter(r *gin.RouterGroup) {

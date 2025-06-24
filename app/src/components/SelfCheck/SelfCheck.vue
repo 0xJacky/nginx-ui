@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CheckCircleOutlined, CloseCircleOutlined, WarningOutlined } from '@ant-design/icons-vue'
+import selfCheck from '@/api/self_check'
 import { useSelfCheckStore } from './store'
 
 const store = useSelfCheckStore()
@@ -8,6 +9,8 @@ const { data, loading, fixing } = storeToRefs(store)
 
 onMounted(() => {
   store.check()
+  // 调用 timeout check API，不等待返回
+  selfCheck.timeoutCheck().catch(console.error)
 })
 </script>
 

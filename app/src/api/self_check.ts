@@ -30,6 +30,9 @@ const selfCheck = {
   websocket() {
     return ws('/api/self_check/websocket', false)
   },
+  timeoutCheck() {
+    return http.get('/self_check/timeout')
+  },
 }
 
 export default selfCheck
