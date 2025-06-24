@@ -74,6 +74,19 @@ func resolvePath(path string) string {
 	return path
 }
 
+// GetPrefix returns the prefix of the nginx executable
+func GetPrefix() string {
+	out := getNginxV()
+	r, _ := regexp.Compile(`--prefix=(\S+)`)
+	match := r.FindStringSubmatch(out)
+	if len(match) < 1 {
+		logger.Error("nginx.GetPrefix len(match) < 1")
+		return "/usr/local/nginx"
+	}
+	return resolvePath(match[1])
+}
+
+// GetConfPath returns the path to the nginx configuration file
 func GetConfPath(dir ...string) (confPath string) {
 	if settings.NginxSettings.ConfigDir == "" {
 		out := getNginxV()
@@ -97,6 +110,7 @@ func GetConfPath(dir ...string) (confPath string) {
 	return joined
 }
 
+// GetConfEntryPath returns the path to the nginx configuration file
 func GetConfEntryPath() (path string) {
 	if settings.NginxSettings.ConfigPath == "" {
 		out := getNginxV()
@@ -114,6 +128,7 @@ func GetConfEntryPath() (path string) {
 	return resolvePath(path)
 }
 
+// GetPIDPath returns the path to the nginx PID file
 func GetPIDPath() (path string) {
 	if settings.NginxSettings.PIDPath == "" {
 		out := getNginxV()
@@ -131,9 +146,10 @@ func GetPIDPath() (path string) {
 	return resolvePath(path)
 }
 
+// GetSbinPath returns the path to the nginx executable
 func GetSbinPath() (path string) {
 	out := getNginxV()
-	r, _ := regexp.Compile("--sbin-path=(\\S+)")
+	r, _ := regexp.Compile(`--sbin-path=(\S+)`)
 	match := r.FindStringSubmatch(out)
 	if len(match) < 1 {
 		logger.Error("nginx.GetPIDPath len(match) < 1")
@@ -144,10 +160,11 @@ func GetSbinPath() (path string) {
 	return resolvePath(path)
 }
 
+// GetAccessLogPath returns the path to the nginx access log file
 func GetAccessLogPath() (path string) {
 	if settings.NginxSettings.AccessLogPath == "" {
 		out := getNginxV()
-		r, _ := regexp.Compile("--http-log-path=(\\S+)")
+		r, _ := regexp.Compile(`--http-log-path=(\S+)`)
 		match := r.FindStringSubmatch(out)
 		if len(match) < 1 {
 			logger.Error("nginx.GetAccessLogPath len(match) < 1")
@@ -161,10 +178,11 @@ func GetAccessLogPath() (path string) {
 	return resolvePath(path)
 }
 
+// GetErrorLogPath returns the path to the nginx error log file
 func GetErrorLogPath() string {
 	if settings.NginxSettings.ErrorLogPath == "" {
 		out := getNginxV()
-		r, _ := regexp.Compile("--error-log-path=(\\S+)")
+		r, _ := regexp.Compile(`--error-log-path=(\S+)`)
 		match := r.FindStringSubmatch(out)
 		if len(match) < 1 {
 			logger.Error("nginx.GetErrorLogPath len(match) < 1")
