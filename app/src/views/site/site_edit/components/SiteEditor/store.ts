@@ -1,10 +1,12 @@
 import type { CertificateInfo } from '@/api/cert'
 import type { Site } from '@/api/site'
+import type { CosyError } from '@/lib/http/types'
 import type { CheckedType } from '@/types'
 import config from '@/api/config'
 import ngx from '@/api/ngx'
 import site from '@/api/site'
 import { useNgxConfigStore } from '@/components/NgxConfigEditor'
+import { translateError } from '@/lib/http/error'
 
 export const useSiteEditorStore = defineStore('siteEditor', () => {
   const advanceMode = ref(false)
@@ -46,7 +48,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
         handleResponse(r)
       }
       catch (error) {
-        handleParseError(error as { error?: string, message: string })
+        handleParseError(error as CosyError)
       }
     }
     loading.value = false
@@ -77,17 +79,17 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
       handleResponse(response)
     }
     catch (error) {
-      handleParseError(error as { error?: string, message: string })
+      handleParseError(error as CosyError)
     }
     finally {
       saving.value = false
     }
   }
 
-  function handleParseError(e: { error?: string, message: string }) {
+  async function handleParseError(e: CosyError) {
     console.error(e)
     parseErrorStatus.value = true
-    parseErrorMessage.value = e.message
+    parseErrorMessage.value = await translateError(e)
     config.getItem(`sites-available/${encodeURIComponent(name.value)}`).then(r => {
       configText.value = r.content
     })

@@ -1,21 +1,34 @@
 <script setup lang="ts">
+import type { CosyError } from '@/lib/http/types'
 import ngx from '@/api/ngx'
+import { translateError } from '@/lib/http/error'
 import { logLevel } from '@/views/config/constants'
 
 defineProps<{
   banner?: boolean
 }>()
 
-const data = ref({
-  level: 0,
-  message: '',
-})
+interface TestResult extends CosyError {
+  message: string
+  level: number
+}
+
+const data = ref<TestResult>()
+const translatedError = ref<string>('')
 
 test()
 
 function test() {
   ngx.test().then(r => {
     data.value = r
+    if (r && r.level > logLevel.Warn) {
+      const cosyError: CosyError = {
+        ...r,
+      }
+      translateError(cosyError).then(translated => {
+        translatedError.value = translated
+      })
+    }
   })
 }
 
@@ -27,7 +40,7 @@ defineExpose({
 <template>
   <div class="inspect-container">
     <AAlert
-      v-if="data?.level <= logLevel.Info"
+      v-if="data && data.level <= logLevel.Info"
       :banner
       :message="$gettext('Configuration file is test successful')"
       type="success"
@@ -41,19 +54,19 @@ defineExpose({
       show-icon
     >
       <template #description>
-        {{ data.message }}
+        {{ data?.message }}
       </template>
     </AAlert>
 
     <AAlert
-      v-else-if="data?.level > logLevel.Warn"
+      v-else-if="data && data.level > logLevel.Warn"
       :message="$gettext('Error')"
       :banner
       type="error"
       show-icon
     >
       <template #description>
-        {{ data.message }}
+        {{ translatedError }}
       </template>
     </AAlert>
   </div>
