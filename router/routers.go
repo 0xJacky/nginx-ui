@@ -36,6 +36,9 @@ import (
 func InitRouter() {
 	r := cosy.GetEngine()
 
+	// Add CORS middleware to allow all origins
+	r.Use(middleware.CORS())
+
 	initEmbedRoute(r)
 
 	pages.InitRouter(r)

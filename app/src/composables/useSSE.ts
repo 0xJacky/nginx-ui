@@ -18,11 +18,39 @@ export interface SSEOptions {
 }
 
 /**
+ * Build SSE URL based on environment
+ */
+function buildSSEUrl(url: string): string {
+  // In development mode, connect directly to backend server
+  if (import.meta.env.DEV) {
+    const proxyTarget = import.meta.env.VITE_PROXY_TARGET || 'http://localhost:9000'
+
+    return urlJoin(proxyTarget, url)
+  }
+
+  // In production mode, use relative path
+  return urlJoin(window.location.pathname, url)
+}
+
+/**
  * SSE Composable
  * Provide the ability to create, manage, and automatically clean up SSE connections
  */
 export function useSSE() {
   const sseInstance = shallowRef<SSE>()
+  const reconnectTimer = shallowRef<ReturnType<typeof setTimeout>>()
+  const isReconnecting = ref(false)
+  const currentOptions = shallowRef<SSEOptions>()
+
+  /**
+   * Clear reconnect timer
+   */
+  function clearReconnectTimer() {
+    if (reconnectTimer.value) {
+      clearTimeout(reconnectTimer.value)
+      reconnectTimer.value = undefined
+    }
+  }
 
   /**
    * Connect to SSE service
@@ -36,7 +64,18 @@ export function useSSE() {
       reconnectInterval = 5000,
     } = options
 
-    const fullUrl = urlJoin(window.location.pathname, url)
+    // Store current options for reconnection
+    currentOptions.value = options
+
+    // Clear any existing reconnect timer
+    clearReconnectTimer()
+
+    // Disconnect existing connection before creating new one
+    if (sseInstance.value) {
+      sseInstance.value.close()
+    }
+
+    const fullUrl = buildSSEUrl(url)
 
     const headers: Record<string, string> = {}
 
@@ -58,6 +97,9 @@ export function useSSE() {
         return
       }
 
+      // Reset reconnecting state on successful message
+      isReconnecting.value = false
+
       try {
         const parsedData = parseData ? JSON.parse(e.data) : e.data
         onMessage?.(parsedData)
@@ -71,10 +113,19 @@ export function useSSE() {
     sse.onerror = () => {
       onError?.()
 
-      // Reconnect logic
-      setTimeout(() => {
-        connect(options)
-      }, reconnectInterval)
+      // Only attempt reconnection if not already reconnecting and we have current options
+      if (!isReconnecting.value && currentOptions.value) {
+        isReconnecting.value = true
+
+        // Clear any existing timer before setting new one
+        clearReconnectTimer()
+
+        reconnectTimer.value = setTimeout(() => {
+          if (currentOptions.value && isReconnecting.value) {
+            connect(currentOptions.value)
+          }
+        }, reconnectInterval)
+      }
     }
 
     sseInstance.value = sse
@@ -85,6 +136,11 @@ export function useSSE() {
    * Disconnect SSE connection
    */
   function disconnect() {
+    // Clear reconnect timer and state
+    clearReconnectTimer()
+    isReconnecting.value = false
+    currentOptions.value = undefined
+
     if (sseInstance.value) {
       sseInstance.value.close()
       sseInstance.value = undefined
@@ -102,5 +158,6 @@ export function useSSE() {
     connect,
     disconnect,
     sseInstance,
+    isReconnecting: readonly(isReconnecting),
   }
 }
