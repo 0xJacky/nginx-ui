@@ -27,7 +27,8 @@ const members = [
     name: 'Akino',
     title: '開發者',
     links: [
-      { icon: 'github', link: 'https://github.com/akinoccc' }
+      { icon: 'github', link: 'https://github.com/akinoccc' },
+      { icon: { svg: blogIcon }, link: 'https://akino.icu' }
     ]
   },
   {
