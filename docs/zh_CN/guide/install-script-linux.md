@@ -47,7 +47,7 @@ bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install --channel pr
 
 ```shell [开发版]
 # 安装最新开发构建
-bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install --channel dev -r https://cloud.nginxui.com/
+bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install --channel dev
 ```
 
 :::
