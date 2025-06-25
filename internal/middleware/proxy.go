@@ -73,6 +73,15 @@ func Proxy() gin.HandlerFunc {
 			if resp.StatusCode == http.StatusForbidden {
 				resp.StatusCode = http.StatusServiceUnavailable
 			}
+
+			// fix CORS header duplication issue
+			resp.Header.Del("Access-Control-Allow-Origin")
+			resp.Header.Del("Access-Control-Allow-Methods")
+			resp.Header.Del("Access-Control-Allow-Headers")
+			resp.Header.Del("Access-Control-Expose-Headers")
+			resp.Header.Del("Access-Control-Max-Age")
+			resp.Header.Del("Access-Control-Allow-Credentials")
+
 			return nil
 		}
 
