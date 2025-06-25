@@ -64,15 +64,16 @@ func (m *NodeRecordManager) Restart() {
 // For backward compatibility
 var (
 	defaultManager *NodeRecordManager
-	setupOnce      sync.Once
 	restartMu      sync.Mutex
 )
 
 // InitDefaultManager initializes the default NodeRecordManager
 func InitDefaultManager() {
-	setupOnce.Do(func() {
-		defaultManager = NewNodeRecordManager(context.Background())
-	})
+	if defaultManager != nil {
+		defaultManager.Stop()
+	}
+	defaultManager = NewNodeRecordManager(context.Background())
+	defaultManager.Start()
 }
 
 // RestartRetrieveNodesStatus restarts the node status retrieval process
@@ -83,6 +84,7 @@ func RestartRetrieveNodesStatus() {
 
 	if defaultManager == nil {
 		InitDefaultManager()
+		return
 	}
 
 	defaultManager.Restart()
@@ -93,6 +95,22 @@ func StartRetrieveNodesStatus(ctx context.Context) *NodeRecordManager {
 	manager := NewNodeRecordManager(ctx)
 	manager.Start()
 	return manager
+}
+
+// StartDefaultManager starts the default node status retrieval manager
+// This should be called at system startup
+func StartDefaultManager() {
+	restartMu.Lock()
+	defer restartMu.Unlock()
+
+	if defaultManager != nil {
+		logger.Info("DefaultManager already running, restarting...")
+		defaultManager.Restart()
+		return
+	}
+
+	logger.Info("Starting default NodeRecordManager...")
+	InitDefaultManager()
 }
 
 func RetrieveNodesStatus(ctx context.Context) {
@@ -130,8 +148,8 @@ func RetrieveNodesStatus(ctx context.Context) {
 					if err := nodeAnalyticRecord(e, ctx); err != nil {
 						logger.Error(err)
 						mutex.Lock()
-						if NodeMap[env.ID] != nil {
-							NodeMap[env.ID].Status = false
+						if NodeMap[e.ID] != nil {
+							NodeMap[e.ID].Status = false
 						}
 						mutex.Unlock()
 						select {
