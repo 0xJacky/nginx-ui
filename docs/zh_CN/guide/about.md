@@ -30,6 +30,15 @@ const members = [
       { icon: 'github', link: 'https://github.com/akinoccc' }
     ]
   },
+  {
+    avatar: 'https://avatars.githubusercontent.com/u/126759922?s=200&v=4',
+    name: 'Cursor',
+    title: '开发者',
+    links: [
+      { icon: 'github', link: "https://github.com/cursor/cursor" },
+      { icon: { svg: blogIcon }, link: 'https://www.cursor.com/cn/blog' }
+    ]
+  }
 ]
 </script>
 
