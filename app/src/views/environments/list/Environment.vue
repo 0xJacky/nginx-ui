@@ -13,6 +13,54 @@ const loadingFromSettings = ref(false)
 const loadingReload = ref(false)
 const loadingRestart = ref(false)
 
+// Auto refresh logic
+const isAutoRefresh = ref(true)
+const autoRefreshInterval = ref(5) // seconds
+const autoRefreshTimer = ref<NodeJS.Timeout | null>(null)
+
+function startAutoRefresh() {
+  if (autoRefreshTimer.value) {
+    clearInterval(autoRefreshTimer.value)
+  }
+
+  autoRefreshTimer.value = setInterval(() => {
+    if (curd.value) {
+      curd.value.refresh()
+    }
+  }, autoRefreshInterval.value * 1000)
+}
+
+function stopAutoRefresh() {
+  if (autoRefreshTimer.value) {
+    clearInterval(autoRefreshTimer.value)
+    autoRefreshTimer.value = null
+  }
+}
+
+// Watch for auto refresh state changes
+watch(isAutoRefresh, newValue => {
+  if (newValue) {
+    startAutoRefresh()
+    message.success($gettext('Auto refresh enabled'))
+  }
+  else {
+    stopAutoRefresh()
+    message.success($gettext('Auto refresh disabled'))
+  }
+})
+
+// Initialize auto refresh on mount if enabled
+onMounted(() => {
+  if (isAutoRefresh.value) {
+    startAutoRefresh()
+  }
+})
+
+// Clean up timer on component unmount
+onBeforeUnmount(() => {
+  stopAutoRefresh()
+})
+
 function loadFromSettings() {
   loadingFromSettings.value = true
   environment.load_from_settings().then(() => {
@@ -78,6 +126,7 @@ const inTrash = computed(() => {
             disabled: !record.status,
           }),
         },
+        pagination: false,
       }"
       :title="$gettext('Environments')"
       :api="environment"
@@ -88,6 +137,37 @@ const inTrash = computed(() => {
         <AButton size="small" type="link" :loading="loadingFromSettings" @click="loadFromSettings">
           {{ $gettext('Load from settings') }}
         </AButton>
+      </template>
+
+      <template #afterListActions>
+        <div class="flex items-center gap-2">
+          <ASelect
+            v-model:value="autoRefreshInterval"
+            size="small"
+            class="w-16"
+            :disabled="isAutoRefresh"
+            @change="isAutoRefresh && startAutoRefresh()"
+          >
+            <ASelectOption :value="5">
+              5s
+            </ASelectOption>
+            <ASelectOption :value="10">
+              10s
+            </ASelectOption>
+            <ASelectOption :value="30">
+              30s
+            </ASelectOption>
+            <ASelectOption :value="60">
+              60s
+            </ASelectOption>
+          </ASelect>
+
+          <span>{{ $gettext('Auto Refresh') }}</span>
+          <ASwitch
+            v-model:checked="isAutoRefresh"
+            size="small"
+          />
+        </div>
       </template>
     </StdCurd>
 

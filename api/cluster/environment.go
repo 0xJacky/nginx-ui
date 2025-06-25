@@ -48,7 +48,16 @@ func GetEnvironmentList(c *gin.Context) {
 
 	core.SetTransformer(func(m *model.Environment) any {
 		return analytic.GetNode(m)
-	}).PagingList()
+	})
+
+	data, ok := core.ListAllData()
+	if !ok {
+		return
+	}
+
+	c.JSON(http.StatusOK, model.DataList{
+		Data: data,
+	})
 }
 
 func GetAllEnabledEnvironment(c *gin.Context) {
