@@ -26,20 +26,19 @@ function init() {
 }
 
 async function save() {
-  return ngx.build_config(ngxConfig.value).then(r => {
-    site.updateItem(ngxConfig.value.name, { name: ngxConfig.value.name, content: r.content, overwrite: false }).then(() => {
-      message.success($gettext('Saved successfully'))
-
-      site.enable(ngxConfig.value.name).then(() => {
-        message.success($gettext('Enabled successfully'))
-        window.scroll({ top: 0, left: 0, behavior: 'smooth' })
-      }).catch(e => {
-        message.error(e.message ?? $gettext('Enable failed'), 5)
-      })
-    }).catch(e => {
-      message.error($gettext('Save error %{msg}', { msg: $gettext(e.message) ?? '' }), 5)
-    })
+  const r = await ngx.build_config(ngxConfig.value)
+  await site.updateItem(ngxConfig.value.name, {
+    name: ngxConfig.value.name,
+    content: r.content,
+    overwrite: currentStep.value === 1, // only overwrite when step 2 is completed
   })
+
+  message.success($gettext('Saved successfully'))
+
+  await site.enable(ngxConfig.value.name)
+  message.success($gettext('Enabled successfully'))
+
+  window.scroll({ top: 0, left: 0, behavior: 'smooth' })
 }
 
 const router = useRouter()
