@@ -9,9 +9,9 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.36.5
 	github.com/aws/aws-sdk-go-v2/config v1.29.17
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.70
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.81.0
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.82.0
 	github.com/caarlos0/env/v11 v11.3.1
-	github.com/casdoor/casdoor-go-sdk v1.5.0
+	github.com/casdoor/casdoor-go-sdk v1.7.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.2.0
 	github.com/docker/docker v28.3.0+incompatible
@@ -40,13 +40,13 @@ require (
 	github.com/pquerna/otp v1.5.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.51.0
-	github.com/sashabaranov/go-openai v1.40.2
+	github.com/sashabaranov/go-openai v1.40.3
 	github.com/shirou/gopsutil/v4 v4.25.5
 	github.com/spf13/afero v1.14.0
 	github.com/spf13/cast v1.9.2
 	github.com/stretchr/testify v1.10.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250429180229-7e931b1d4276
-	github.com/uozi-tech/cosy v1.22.1
+	github.com/uozi-tech/cosy v1.22.2
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.3.8
 	golang.org/x/crypto v0.39.0
