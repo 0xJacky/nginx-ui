@@ -118,20 +118,18 @@ func isValidLogPath(logPath string) bool {
 		return true
 	}
 
-	// If it's a symlink, follow it
+	// If it's a symlink, follow it safely
 	if fileInfo.Mode()&os.ModeSymlink != 0 {
-		linkTarget, err := os.Readlink(logPath)
+		// Use EvalSymlinks to safely resolve the entire symlink chain
+		// This function detects circular symlinks and returns an error
+		resolvedPath, err := filepath.EvalSymlinks(logPath)
 		if err != nil {
+			logger.Warn("Failed to resolve symlink (possible circular reference):", logPath, "error:", err)
 			return false
 		}
 
-		// Make the link target path absolute if it's relative
-		if !filepath.IsAbs(linkTarget) {
-			linkTarget = filepath.Join(filepath.Dir(logPath), linkTarget)
-		}
-
-		// Check the target file
-		targetInfo, err := os.Stat(linkTarget)
+		// Check the resolved target file
+		targetInfo, err := os.Stat(resolvedPath)
 		if err != nil {
 			return false
 		}
@@ -149,7 +147,12 @@ func IsLogPathUnderWhiteList(path string) bool {
 	cacheKey := fmt.Sprintf("isLogPathUnderWhiteList:%s", path)
 	res, ok := cache.Get(cacheKey)
 
-	// Deep copy the whitelist
+	// If cached, return the result directly
+	if ok {
+		return res.(bool)
+	}
+
+	// Only build the whitelist when cache miss occurs
 	logDirWhiteList := append([]string{}, settings.NginxSettings.LogDirWhiteList...)
 
 	accessLogPath := nginx.GetAccessLogPath()
@@ -165,15 +168,15 @@ func IsLogPathUnderWhiteList(path string) bool {
 		logDirWhiteList = append(logDirWhiteList, nginx.GetPrefix())
 	}
 
-	// No cache, check it
-	if !ok {
-		for _, whitePath := range logDirWhiteList {
-			if helper.IsUnderDirectory(path, whitePath) {
-				cache.Set(cacheKey, true, 0)
-				return true
-			}
+	// Check if path is under any whitelist directory
+	for _, whitePath := range logDirWhiteList {
+		if helper.IsUnderDirectory(path, whitePath) {
+			cache.Set(cacheKey, true, 0)
+			return true
 		}
-		return false
 	}
-	return res.(bool)
+
+	// Cache negative result as well to avoid repeated checks
+	cache.Set(cacheKey, false, 0)
+	return false
 }
