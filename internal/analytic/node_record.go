@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gorilla/websocket"
@@ -209,7 +210,10 @@ func nodeAnalyticRecord(env *model.Environment, ctx context.Context) error {
 	for {
 		err = c.ReadJSON(&nodeStat)
 		if err != nil {
-			return err
+			if helper.IsUnexpectedWebsocketError(err) {
+				return err
+			}
+			return nil
 		}
 
 		// set online
