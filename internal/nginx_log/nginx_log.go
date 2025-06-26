@@ -15,10 +15,14 @@ import (
 )
 
 // Regular expression for log directives - matches access_log or error_log
-var logDirectiveRegex = regexp.MustCompile(`(?m)(access_log|error_log)\s+([^\s;]+)(?:\s+[^;]+)?;`)
+var (
+	logDirectiveRegex = regexp.MustCompile(`(?m)(access_log|error_log)\s+([^\s;]+)(?:\s+[^;]+)?;`)
+	prefix            = ""
+)
 
 // Use init function to automatically register callback
 func init() {
+	prefix = nginx.GetPrefix()
 	// Register the callback directly with the global registry
 	cache.RegisterCallback(scanForLogDirectives)
 }
@@ -32,7 +36,6 @@ func scanForLogDirectives(configPath string, content []byte) error {
 	// Find log directives using regex
 	matches := logDirectiveRegex.FindAllSubmatch(content, -1)
 
-	prefix := nginx.GetPrefix()
 	// Parse log paths
 	for _, match := range matches {
 		if len(match) >= 3 {
