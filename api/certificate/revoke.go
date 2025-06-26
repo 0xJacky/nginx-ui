@@ -85,8 +85,9 @@ func RevokeCert(c *gin.Context) {
 	logChan := make(chan string, 1)
 	errChan := make(chan error, 1)
 
-	certLogger := &cert.Logger{}
+	certLogger := cert.NewLogger()
 	certLogger.SetWebSocket(ws)
+	defer certLogger.Close()
 
 	go cert.RevokeCert(payload, certLogger, logChan, errChan)
 
@@ -105,7 +106,6 @@ func RevokeCert(c *gin.Context) {
 			logger.Error(err)
 			return
 		}
-		return
 	}
 
 	// Update certificate status in database

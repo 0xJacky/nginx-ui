@@ -5,6 +5,7 @@ import websocket from '@/lib/websocket'
 
 const props = defineProps<{
   id: number
+  disabled?: boolean
 }>()
 
 const emit = defineEmits(['removed'])
@@ -83,6 +84,7 @@ function handleCancel() {
       type="link"
       size="small"
       danger
+      :disabled
       @click="handleDelete"
     >
       {{ $gettext('Delete') }}

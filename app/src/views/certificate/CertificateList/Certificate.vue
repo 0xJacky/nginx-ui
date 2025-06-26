@@ -50,6 +50,7 @@ const { processingStatus } = storeToRefs(globalStore)
       <template #afterActions="{ record }">
         <RemoveCert
           :id="record.id"
+          :disabled="processingStatus.auto_cert_processing"
           @removed="() => refTable.refresh()"
         />
       </template>
