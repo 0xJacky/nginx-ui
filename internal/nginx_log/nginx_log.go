@@ -167,8 +167,8 @@ func IsLogPathUnderWhiteList(path string) bool {
 	if errorLogPath != "" {
 		logDirWhiteList = append(logDirWhiteList, filepath.Dir(errorLogPath))
 	}
-	if nginx.GetPrefix() != "" {
-		logDirWhiteList = append(logDirWhiteList, nginx.GetPrefix())
+	if prefix != "" {
+		logDirWhiteList = append(logDirWhiteList, prefix)
 	}
 
 	// Check if path is under any whitelist directory

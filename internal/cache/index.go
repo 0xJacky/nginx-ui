@@ -296,13 +296,14 @@ func (s *Scanner) watchForChanges() {
 
 // scanSingleFile scans a single file and executes all registered callbacks
 func (s *Scanner) scanSingleFile(filePath string) error {
-	return s.scanSingleFileWithDepth(filePath, make(map[string]bool), 0)
+	visited := make(map[string]bool)
+	return s.scanSingleFileWithDepth(filePath, visited, 0)
 }
 
 // scanSingleFileWithDepth scans a single file with recursion protection
 func (s *Scanner) scanSingleFileWithDepth(filePath string, visited map[string]bool, depth int) error {
 	// Maximum recursion depth to prevent infinite recursion
-	const maxDepth = 10
+	const maxDepth = 5
 
 	if depth > maxDepth {
 		logger.Warn("Maximum recursion depth reached for file:", filePath)
