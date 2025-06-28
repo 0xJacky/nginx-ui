@@ -293,8 +293,8 @@ jobs:
           apiToken: ${{ secrets.CF_R2_API_TOKEN }}
           wranglerVersion: "4.21.1"
           command: |
-            r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz --file ./${{ env.DIST }}.tar.gz
-            r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --file ./${{ env.DIST }}.tar.gz.digest
+            r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz --file ./${{ env.DIST }}.tar.gz --remote
+            r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --file ./${{ env.DIST }}.tar.gz.digest --remote
 
   docker-build:
     if: github.event_name != 'pull_request'
