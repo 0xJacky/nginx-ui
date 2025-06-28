@@ -11,6 +11,10 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
+var (
+	nginxPrefix string
+)
+
 // Returns the directory containing the nginx executable
 func GetNginxExeDir() string {
 	return filepath.Dir(getNginxSbinPath())
@@ -32,14 +36,21 @@ func resolvePath(path string) string {
 
 // GetPrefix returns the prefix of the nginx executable
 func GetPrefix() string {
+	if nginxPrefix != "" {
+		return nginxPrefix
+	}
+
 	out := getNginxV()
 	r, _ := regexp.Compile(`--prefix=(\S+)`)
 	match := r.FindStringSubmatch(out)
 	if len(match) < 1 {
 		logger.Error("nginx.GetPrefix len(match) < 1")
-		return "/usr/local/nginx"
+		nginxPrefix = "/usr/local/nginx"
+		return nginxPrefix
 	}
-	return resolvePath(match[1])
+
+	nginxPrefix = resolvePath(match[1])
+	return nginxPrefix
 }
 
 // GetConfPath returns the path of the nginx configuration file

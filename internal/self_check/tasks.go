@@ -83,6 +83,12 @@ var selfCheckTasks = []*Task{
 		CheckFunc:   CheckPIDPath,
 	},
 	{
+		Key:         "NginxSbin-Path",
+		Name:        translation.C("Nginx sbin path exists"),
+		Description: translation.C("Check if the nginx sbin path exists"),
+		CheckFunc:   CheckSbinPath,
+	},
+	{
 		Key:         "NginxAccessLog-Path",
 		Name:        translation.C("Nginx access log path exists"),
 		Description: translation.C("Check if the nginx access log path exists. "+

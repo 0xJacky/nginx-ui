@@ -17,18 +17,17 @@ import (
 // Regular expression for log directives - matches access_log or error_log
 var (
 	logDirectiveRegex = regexp.MustCompile(`(?m)(access_log|error_log)\s+([^\s;]+)(?:\s+[^;]+)?;`)
-	prefix            = ""
 )
 
 // Use init function to automatically register callback
 func init() {
-	prefix = nginx.GetPrefix()
 	// Register the callback directly with the global registry
 	cache.RegisterCallback(scanForLogDirectives)
 }
 
 // scanForLogDirectives scans and parses configuration files for log directives
 func scanForLogDirectives(configPath string, content []byte) error {
+	prefix := nginx.GetPrefix()
 	// First, remove all log paths that came from this config file
 	// This ensures that removed log directives are properly cleaned up
 	RemoveLogPathsFromConfig(configPath)
@@ -147,6 +146,7 @@ func isValidLogPath(logPath string) bool {
 
 // IsLogPathUnderWhiteList checks if a log path is under one of the paths in LogDirWhiteList
 func IsLogPathUnderWhiteList(path string) bool {
+	prefix := nginx.GetPrefix()
 	cacheKey := fmt.Sprintf("isLogPathUnderWhiteList:%s", path)
 	res, ok := cache.Get(cacheKey)
 
