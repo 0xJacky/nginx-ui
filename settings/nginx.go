@@ -7,6 +7,7 @@ type Nginx struct {
 	ConfigDir       string   `json:"config_dir" protected:"true"`
 	ConfigPath      string   `json:"config_path" protected:"true"`
 	PIDPath         string   `json:"pid_path" protected:"true"`
+	SbinPath        string   `json:"sbin_path" protected:"true"`
 	TestConfigCmd   string   `json:"test_config_cmd" protected:"true"`
 	ReloadCmd       string   `json:"reload_cmd" protected:"true"`
 	RestartCmd      string   `json:"restart_cmd" protected:"true"`

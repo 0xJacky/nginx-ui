@@ -69,6 +69,16 @@ In Nginx UI v2, we parse the output of the `nginx -V` command to get the default
 
 If you need to override the default path, you can use this option.
 
+### SbinPath
+- Type: `string`
+- Version: `>= v2.1.10`
+
+This option is used to set the path for the Nginx executable file.
+
+By default, Nginx UI will try to find the Nginx executable file in `$PATH`.
+
+If you need to override the default path, you can use this option.
+
 ### TestConfigCmd
 - Type: `string`
 - Default: `nginx -t`
