@@ -290,6 +290,7 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         env:
           WRANGLER_LOG: debug
+          WRANGLER_LOG_SANITIZE: false
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           apiToken: ${{ secrets.CF_R2_API_TOKEN }}
