@@ -293,8 +293,35 @@ jobs:
           apiToken: ${{ secrets.CF_R2_API_TOKEN }}
           wranglerVersion: "4.21.1"
           command: |
-            r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz --file ./${{ env.DIST }}.tar.gz --remote
-            r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --file ./${{ env.DIST }}.tar.gz.digest --remote
+            # Define retry function
+            retry_upload() {
+              local file_path="$1"
+              local remote_path="$2"
+              local max_attempts=3
+              local attempt=1
+              
+              while [ $attempt -le $max_attempts ]; do
+                echo "Attempt $attempt of $max_attempts: Uploading $file_path to $remote_path"
+                if r2 object put "$remote_path" --file "$file_path" --remote; then
+                  echo "Successfully uploaded $file_path on attempt $attempt"
+                  return 0
+                else
+                  echo "Failed to upload $file_path on attempt $attempt"
+                  if [ $attempt -lt $max_attempts ]; then
+                    echo "Waiting 5 seconds before retry..."
+                    sleep 5
+                  fi
+                  attempt=$((attempt + 1))
+                fi
+              done
+              
+              echo "Failed to upload $file_path after $max_attempts attempts"
+              return 1
+            }
+            
+            # Upload files with retry
+            retry_upload ./${{ env.DIST }}.tar.gz nginx-ui-dev-build/${{ env.DIST }}.tar.gz
+            retry_upload ./${{ env.DIST }}.tar.gz.digest nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest
 
   docker-build:
     if: github.event_name != 'pull_request'
