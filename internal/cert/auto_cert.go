@@ -61,8 +61,17 @@ func autoCert(certModel *model.Cert) {
 		notification.Error("Renew Certificate Error", strings.Join(certModel.Domains, ", "), nil)
 		return
 	}
-	if int(time.Now().Sub(certInfo.NotBefore).Hours()/24) < settings.CertSettings.GetCertRenewalInterval() {
-		// not after settings.ServerSettings.RenewalInterval, ignore
+
+	// Calculate certificate age (days since NotBefore)
+	certAge := int(time.Since(certInfo.NotBefore).Hours() / 24)
+	// Calculate days until expiration
+	daysUntilExpiration := int(time.Until(certInfo.NotAfter).Hours() / 24)
+
+	// Skip renewal only if:
+	// 1. Certificate age is less than renewal interval AND
+	// 2. Certificate has more than 6 days remaining before expiration
+	if certAge < settings.CertSettings.GetCertRenewalInterval() && daysUntilExpiration > 6 {
+		// Certificate is too young and not expiring soon, ignore
 		return
 	}
 
