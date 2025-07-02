@@ -1,9 +1,10 @@
 package nginx
 
 import (
-	"github.com/tufanbarisyildirim/gonginx/config"
-	"path"
+	"path/filepath"
 	"strings"
+
+	"github.com/tufanbarisyildirim/gonginx/config"
 )
 
 type NgxConfig struct {
@@ -45,7 +46,6 @@ func (d *NgxDirective) Orig() string {
 
 func (d *NgxDirective) TrimParams() {
 	d.Params = strings.TrimRight(strings.TrimSpace(d.Params), ";")
-	return
 }
 
 func NewNgxServer() *NgxServer {
@@ -59,6 +59,6 @@ func NewNgxConfig(filename string) *NgxConfig {
 	return &NgxConfig{
 		FileName:  filename,
 		Upstreams: make([]*NgxUpstream, 0),
-		Name:      path.Base(filename),
+		Name:      filepath.Base(filename),
 	}
 }
