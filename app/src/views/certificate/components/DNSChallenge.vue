@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { SelectProps } from 'ant-design-vue'
+import type { DefaultOptionType } from 'ant-design-vue/es/select'
 import type { Ref } from 'vue'
 import type { DNSProvider } from '@/api/auto_cert'
 import type { DnsCredential } from '@/api/dns_credential'
@@ -48,8 +49,8 @@ const options = computed<SelectProps['options']>(() => {
   }))
 })
 
-function filterOption(input: string, option: { label: string }) {
-  return option.label.toLowerCase().includes(input.toLowerCase())
+function filterOption(input: string, option?: DefaultOptionType) {
+  return option?.label.toLowerCase().includes(input.toLowerCase())
 }
 </script>
 

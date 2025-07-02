@@ -1,11 +1,12 @@
 package user
 
 import (
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"golang.org/x/crypto/bcrypt"
-	"time"
 )
 
 func Login(name string, password string) (user *model.User, err error) {
@@ -13,6 +14,11 @@ func Login(name string, password string) (user *model.User, err error) {
 
 	user, err = u.Where(u.Name.Eq(name)).First()
 	if err != nil {
+		return nil, ErrPasswordIncorrect
+	}
+
+	// if the user is not initialized, return error
+	if user.Password == "" {
 		return nil, ErrPasswordIncorrect
 	}
 

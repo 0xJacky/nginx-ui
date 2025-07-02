@@ -26,7 +26,7 @@ func UpdateCurrentUser(c *gin.Context) {
 			user.Name = c.Model.Name
 			user.Language = c.Model.Language
 
-			db := cosy.UseDB()
+			db := cosy.UseDB(c)
 			err := db.Where("id = ?", user.ID).Updates(user).Error
 			if err != nil {
 				cosy.ErrHandler(c.Context, err)
@@ -61,7 +61,7 @@ func UpdateCurrentUserPassword(c *gin.Context) {
 		return
 	}
 
-	db := cosy.UseDB()
+	db := cosy.UseDB(c)
 	err = db.Where("id = ?", user.ID).Updates(&model.User{
 		Password: string(pwdBytes),
 	}).Error
@@ -87,7 +87,7 @@ func UpdateCurrentUserLanguage(c *gin.Context) {
 	user := api.CurrentUser(c)
 	user.Language = json.Language
 
-	db := cosy.UseDB()
+	db := cosy.UseDB(c)
 	err := db.Where("id = ?", user.ID).Updates(&model.User{
 		Language: json.Language,
 	}).Error

@@ -66,7 +66,7 @@ func registerPredefinedUser(ctx context.Context) {
 	// Create a new user with the predefined name and password
 	pwd, _ := bcrypt.GenerateFromPassword([]byte(pUser.Password), bcrypt.DefaultCost)
 
-	err = u.Create(&model.User{
+	_, err = u.Where(u.ID.Eq(1)).Updates(&model.User{
 		Name:     pUser.Name,
 		Password: string(pwd),
 	})

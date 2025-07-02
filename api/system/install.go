@@ -90,7 +90,7 @@ func InstallNginxUI(c *gin.Context) {
 	}
 
 	u := query.User
-	err = u.Create(&model.User{
+	_, err = u.Where(u.ID.Eq(1)).Updates(&model.User{
 		Name:     json.Username,
 		Password: string(pwd),
 	})
