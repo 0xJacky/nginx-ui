@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import type ReconnectingWebSocket from 'reconnecting-websocket'
 import { ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
 import ngx from '@/api/ngx'
 import { useNginxPerformance } from '@/composables/useNginxPerformance'
-import { useNginxWebSocket } from '@/composables/useNginxWebSocket'
 import { NginxStatus } from '@/constants'
+import ws from '@/lib/websocket'
 import { useGlobalStore } from '@/pinia'
 import ConnectionMetricsCard from './components/ConnectionMetricsCard.vue'
 import ParamsOptimization from './components/ParamsOptimization.vue'
@@ -31,7 +32,7 @@ const {
 } = useNginxPerformance()
 
 // WebSocket connection
-const { connect, disconnect } = useNginxWebSocket()
+const wsInstance = shallowRef<WebSocket | ReconnectingWebSocket | null>(null)
 
 // Toggle stub_status module status
 async function toggleStubStatus() {
@@ -62,37 +63,50 @@ async function toggleStubStatus() {
 
 // Connect WebSocket
 function connectWebSocket() {
-  disconnect()
+  disconnectWebSocket()
   loading.value = true
 
-  connect({
-    url: 'api/nginx/detail_status/ws',
-    onMessage: data => {
+  try {
+    const wsConnection = ws('api/nginx/detail_status/ws')
+    wsInstance.value = wsConnection
+
+    wsConnection.onmessage = event => {
       loading.value = false
 
-      if (data.running) {
-        nginxInfo.value = data.info
-        updateLastUpdateTime()
-      }
-      else {
-        error.value = data.message || $gettext('Nginx is not running')
-      }
+      try {
+        const data = JSON.parse(event.data)
 
-      if (data.error) {
-        error.value = data.error
+        if (data.running) {
+          nginxInfo.value = data.info
+          updateLastUpdateTime()
+        }
+        else {
+          error.value = data.message || $gettext('Nginx is not running')
+        }
+
+        if (data.error) {
+          error.value = data.error
+        }
+
+        stubStatusEnabled.value = data.stub_status_enabled
       }
+      catch (parseError) {
+        console.error('Error parsing WebSocket message:', parseError)
+      }
+    }
+  }
+  catch (err) {
+    console.error('Failed to create WebSocket connection:', err)
+    error.value = $gettext('Connection error, trying to reconnect...')
+  }
+}
 
-      stubStatusEnabled.value = data.stub_status_enabled
-    },
-    onError: () => {
-      error.value = $gettext('Connection error, trying to reconnect...')
-
-      // If the connection fails, try to get data using the traditional method
-      setTimeout(() => {
-        fetchInitialData()
-      }, 2000)
-    },
-  })
+// Disconnect WebSocket
+function disconnectWebSocket() {
+  if (wsInstance.value) {
+    wsInstance.value.close()
+    wsInstance.value = null
+  }
 }
 
 // Manually refresh data
@@ -103,6 +117,11 @@ function refreshData() {
 // Initialize connection when the component is mounted
 onMounted(() => {
   fetchInitialData().then(connectWebSocket)
+})
+
+// Clean up WebSocket connection when component is unmounted
+onUnmounted(() => {
+  disconnectWebSocket()
 })
 </script>
 
