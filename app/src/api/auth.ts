@@ -7,6 +7,7 @@ const { login, logout } = useUserStore()
 export interface AuthResponse {
   message: string
   token: string
+  short_token: string
   code: number
   error: string
   secure_session_id: string
@@ -27,7 +28,7 @@ const auth = {
       state,
     })
       .then((r: AuthResponse) => {
-        login(r.token)
+        login(r.token, r.short_token)
       })
   },
   async logout() {

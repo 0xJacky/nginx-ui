@@ -8,9 +8,14 @@ export const useUserStore = defineStore('user', () => {
   const cookies = useCookies(['nginx-ui'])
 
   const token = ref('')
+  const shortToken = ref('')
 
   watch(token, v => {
     cookies.set('token', v, { maxAge: 86400 })
+  })
+
+  watch(shortToken, v => {
+    cookies.set('short_token', v, { maxAge: 86400 })
   })
 
   const secureSessionId = ref('')
@@ -22,6 +27,8 @@ export const useUserStore = defineStore('user', () => {
   function handleCookieChange({ name, value }: CookieChangeOptions) {
     if (name === 'token')
       token.value = value
+    else if (name === 'short_token')
+      shortToken.value = value
     else if (name === 'secure_session_id')
       secureSessionId.value = value
   }
@@ -35,17 +42,21 @@ export const useUserStore = defineStore('user', () => {
   const isLogin = computed(() => !!token.value)
   const passkeyLoginAvailable = computed(() => !!passkeyRawId.value)
 
-  function passkeyLogin(rawId: string, tokenValue: string) {
+  function passkeyLogin(rawId: string, tokenValue: string, shortTokenValue?: string) {
     passkeyRawId.value = rawId
-    login(tokenValue)
+    login(tokenValue, shortTokenValue)
   }
 
-  function login(tokenValue: string) {
+  function login(tokenValue: string, shortTokenValue?: string) {
     token.value = tokenValue
+    if (shortTokenValue) {
+      shortToken.value = shortTokenValue
+    }
   }
 
   function logout() {
     token.value = ''
+    shortToken.value = ''
     passkeyRawId.value = ''
     secureSessionId.value = ''
     unreadCount.value = 0
@@ -100,6 +111,7 @@ export const useUserStore = defineStore('user', () => {
 
   return {
     token,
+    shortToken,
     unreadCount,
     secureSessionId,
     passkeyRawId,

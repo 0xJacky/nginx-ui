@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/user"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy/logger"
@@ -19,8 +20,13 @@ func getToken(c *gin.Context) (token string) {
 	}
 
 	if token = c.Query("token"); token != "" {
-		tokenBytes, _ := base64.StdEncoding.DecodeString(token)
-		return string(tokenBytes)
+		if len(token) > 16 {
+			// Long token (base64 encoded JWT)
+			tokenBytes, _ := base64.StdEncoding.DecodeString(token)
+			return string(tokenBytes)
+		}
+		// Short token (16 characters)
+		return token
 	}
 
 	if token, _ = c.Cookie("token"); token != "" {
@@ -75,10 +81,25 @@ func AuthRequired() gin.HandlerFunc {
 			return
 		}
 
-		u, ok := user.GetTokenUser(token)
-		if !ok {
-			abortWithAuthFailure()
-			return
+		var (
+			u  *model.User
+			ok bool
+		)
+
+		if len(token) <= 16 {
+			// Short token (16 characters)
+			u, ok = user.GetTokenUserByShortToken(token)
+			if !ok {
+				abortWithAuthFailure()
+				return
+			}
+		} else {
+			// Long JWT token
+			u, ok = user.GetTokenUser(token)
+			if !ok {
+				abortWithAuthFailure()
+				return
+			}
 		}
 
 		c.Set("user", u)

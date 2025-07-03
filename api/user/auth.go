@@ -1,7 +1,6 @@
 package user
 
 import (
-	"errors"
 	"math/rand/v2"
 	"net/http"
 	"sync"
@@ -32,10 +31,10 @@ const (
 )
 
 type LoginResponse struct {
-	Message         string `json:"message"`
-	Error           string `json:"error,omitempty"`
-	Code            int    `json:"code"`
-	Token           string `json:"token,omitempty"`
+	Message string `json:"message"`
+	Error   string `json:"error,omitempty"`
+	Code    int    `json:"code"`
+	*user.AccessTokenPayload
 	SecureSessionID string `json:"secure_session_id,omitempty"`
 }
 
@@ -67,17 +66,10 @@ func Login(c *gin.Context) {
 
 	u, err := user.Login(json.Name, json.Password)
 	if err != nil {
+		user.BanIP(clientIP)
 		random := time.Duration(rand.Int() % 10)
 		time.Sleep(random * time.Second)
-		switch {
-		case errors.Is(err, user.ErrPasswordIncorrect):
-			c.JSON(http.StatusForbidden, user.ErrPasswordIncorrect)
-		case errors.Is(err, user.ErrUserBanned):
-			c.JSON(http.StatusForbidden, user.ErrUserBanned)
-		default:
-			cosy.ErrHandler(c, err)
-		}
-		user.BanIP(clientIP)
+		cosy.ErrHandler(c, err)
 		return
 	}
 
@@ -95,10 +87,7 @@ func Login(c *gin.Context) {
 		}
 
 		if err = user.VerifyOTP(u, json.OTP, json.RecoveryCode); err != nil {
-			c.JSON(http.StatusForbidden, LoginResponse{
-				Message: "Invalid 2FA or recovery code",
-				Code:    Error2FACode,
-			})
+			cosy.ErrHandler(c, err)
 			user.BanIP(clientIP)
 			return
 		}
@@ -110,19 +99,17 @@ func Login(c *gin.Context) {
 	_, _ = b.Where(b.IP.Eq(clientIP)).Delete()
 
 	logger.Info("[User Login]", u.Name)
-	token, err := user.GenerateJWT(u)
+	accessToken, err := user.GenerateJWT(u)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, LoginResponse{
-			Message: err.Error(),
-		})
+		cosy.ErrHandler(c, err)
 		return
 	}
 
 	c.JSON(http.StatusOK, LoginResponse{
-		Code:            LoginSuccess,
-		Message:         "ok",
-		Token:           token,
-		SecureSessionID: secureSessionID,
+		Code:               LoginSuccess,
+		Message:            "ok",
+		AccessTokenPayload: accessToken,
+		SecureSessionID:    secureSessionID,
 	})
 }
 

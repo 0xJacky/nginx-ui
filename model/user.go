@@ -36,9 +36,10 @@ type User struct {
 }
 
 type AuthToken struct {
-	UserID    uint64 `json:"user_id"`
-	Token     string `json:"token"`
-	ExpiredAt int64  `json:"expired_at" gorm:"default:0"`
+	UserID     uint64 `json:"user_id"`
+	Token      string `json:"token"`
+	ShortToken string `json:"short_token"`
+	ExpiredAt  int64  `json:"expired_at" gorm:"default:0"`
 }
 
 func (u *User) TableName() string {

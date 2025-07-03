@@ -1,14 +1,16 @@
 package user
 
 import (
+	"crypto/rand"
+	"encoding/base64"
+	"time"
+
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/pkg/errors"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
-	"time"
 )
 
 const ExpiredTime = 24 * time.Hour
@@ -57,7 +59,34 @@ func GetTokenUser(token string) (*model.User, bool) {
 	return user, err == nil
 }
 
-func GenerateJWT(user *model.User) (string, error) {
+func GetTokenUserByShortToken(shortToken string) (*model.User, bool) {
+	if shortToken == "" {
+		return nil, false
+	}
+
+	db := model.UseDB()
+	var authToken model.AuthToken
+	err := db.Where("short_token = ?", shortToken).First(&authToken).Error
+	if err != nil {
+		return nil, false
+	}
+
+	if authToken.ExpiredAt < time.Now().Unix() {
+		DeleteToken(authToken.Token)
+		return nil, false
+	}
+
+	u := query.User
+	user, err := u.FirstByID(authToken.UserID)
+	return user, err == nil
+}
+
+type AccessTokenPayload struct {
+	Token      string `json:"token,omitempty"`
+	ShortToken string `json:"short_token,omitempty"`
+}
+
+func GenerateJWT(user *model.User) (*AccessTokenPayload, error) {
 	now := time.Now()
 	claims := JWTClaims{
 		Name:   user.Name,
@@ -75,26 +104,39 @@ func GenerateJWT(user *model.User) (string, error) {
 	unsignedToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, err := unsignedToken.SignedString([]byte(cSettings.AppSettings.JwtSecret))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
+
+	// Generate 16-byte short token (16 characters)
+	shortTokenBytes := make([]byte, 16)
+	_, err = rand.Read(shortTokenBytes)
+	if err != nil {
+		return nil, err
+	}
+	// Use base64 URL encoding to get a 16-character string
+	shortToken := base64.URLEncoding.EncodeToString(shortTokenBytes)[:16]
 
 	q := query.AuthToken
 	err = q.Create(&model.AuthToken{
-		UserID:    user.ID,
-		Token:     signedToken,
-		ExpiredAt: now.Add(ExpiredTime).Unix(),
+		UserID:     user.ID,
+		Token:      signedToken,
+		ShortToken: shortToken,
+		ExpiredAt:  now.Add(ExpiredTime).Unix(),
 	})
 
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return signedToken, err
+	return &AccessTokenPayload{
+		Token:      signedToken,
+		ShortToken: shortToken,
+	}, nil
 }
 
 func ValidateJWT(tokenStr string) (claims *JWTClaims, err error) {
 	if tokenStr == "" {
-		err = errors.New("token is empty")
+		err = ErrTokenIsEmpty
 		return
 	}
 	token, err := jwt.ParseWithClaims(tokenStr, &JWTClaims{}, func(token *jwt.Token) (interface{}, error) {
@@ -107,5 +149,5 @@ func ValidateJWT(tokenStr string) (claims *JWTClaims, err error) {
 	if claims, ok = token.Claims.(*JWTClaims); ok && token.Valid {
 		return claims, nil
 	}
-	return nil, errors.New("invalid claims type")
+	return nil, ErrInvalidClaimsType
 }

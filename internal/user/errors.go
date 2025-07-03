@@ -15,4 +15,6 @@ var (
 	ErrCannotRemoveInitUser    = e.New(50003, "cannot remove initial user")
 	ErrChangeInitUserPwdInDemo = e.New(50004, "cannot change initial user password in demo mode")
 	ErrSessionNotFound         = e.New(40401, "session not found")
+	ErrTokenIsEmpty            = e.New(40402, "token is empty")
+	ErrInvalidClaimsType       = e.New(50005, "invalid claims type")
 )

@@ -41,6 +41,7 @@ function downloadCsv(header: any, data: any[], fileName: string) {
 
 function urlJoin(...args: string[]) {
   return args
+    .filter(arg => arg)
     .join('/')
     .replace(/\/+/g, '/')
     .replace(/^(.+):\//, '$1://')

@@ -157,8 +157,8 @@ func FinishPasskeyLogin(c *gin.Context) {
 	c.JSON(http.StatusOK, LoginResponse{
 		Code:            LoginSuccess,
 		Message:         "ok",
-		Token:           token,
-		SecureSessionID: secureSessionID,
+		AccessTokenPayload: token,
+		SecureSessionID:    secureSessionID,
 	})
 }
 

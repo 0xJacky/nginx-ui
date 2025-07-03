@@ -57,6 +57,7 @@ const { secureSessionId } = storeToRefs(userStore)
 
 interface LoginSuccessOptions {
   token?: string
+  shortToken?: string
   secureSessionId?: string
   loginType?: 'normal' | 'passkey'
   passkeyRawId?: string
@@ -66,6 +67,7 @@ interface LoginSuccessOptions {
 async function handleLoginSuccess(options: LoginSuccessOptions = {}) {
   const {
     token,
+    shortToken,
     secureSessionId: sessionId,
     loginType = 'normal',
     passkeyRawId,
@@ -78,10 +80,10 @@ async function handleLoginSuccess(options: LoginSuccessOptions = {}) {
 
   // Handle different login types
   if (loginType === 'passkey' && passkeyRawId && token) {
-    passkeyLogin(passkeyRawId, token)
+    passkeyLogin(passkeyRawId, token, shortToken)
   }
   else if (token) {
-    login(token)
+    login(token, shortToken)
   }
 
   await nextTick()
@@ -112,6 +114,7 @@ function onSubmit() {
         case 200:
           await handleLoginSuccess({
             token: r.token,
+            shortToken: r.short_token,
             secureSessionId: r.secure_session_id,
           })
           break
@@ -191,6 +194,7 @@ async function handlePasskeyLogin() {
   if (r.token) {
     await handleLoginSuccess({
       token: r.token,
+      shortToken: r.short_token,
       secureSessionId: r.secure_session_id,
       loginType: 'passkey',
       passkeyRawId: asseResp.rawId,

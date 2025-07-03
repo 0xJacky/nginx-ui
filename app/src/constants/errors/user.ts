@@ -10,4 +10,6 @@ export default {
   50003: () => $gettext('Cannot remove initial user'),
   50004: () => $gettext('Cannot change initial user password in demo mode'),
   40401: () => $gettext('Session not found'),
+  40402: () => $gettext('Token is empty'),
+  50005: () => $gettext('Invalid claims type'),
 }

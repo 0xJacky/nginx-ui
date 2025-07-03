@@ -81,8 +81,8 @@ func CasdoorCallback(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, LoginResponse{
-		Message: "ok",
-		Token:   userToken,
+		Message:            "ok",
+		AccessTokenPayload: userToken,
 	})
 }
 
