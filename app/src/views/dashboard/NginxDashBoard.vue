@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ClockCircleOutlined, ReloadOutlined } from '@ant-design/icons-vue'
+import { storeToRefs } from 'pinia'
 import ngx from '@/api/ngx'
 import { useNginxPerformance } from '@/composables/useNginxPerformance'
-import { useSSE } from '@/composables/useSSE'
+import { useNginxWebSocket } from '@/composables/useNginxWebSocket'
 import { NginxStatus } from '@/constants'
 import { useGlobalStore } from '@/pinia'
 import ConnectionMetricsCard from './components/ConnectionMetricsCard.vue'
@@ -29,8 +30,8 @@ const {
   stubStatusError,
 } = useNginxPerformance()
 
-// SSE connection
-const { connect, disconnect } = useSSE()
+// WebSocket connection
+const { connect, disconnect } = useNginxWebSocket()
 
 // Toggle stub_status module status
 async function toggleStubStatus() {
@@ -47,7 +48,7 @@ async function toggleStubStatus() {
       stubStatusError.value = response.error
     }
     else {
-      fetchInitialData().then(connectSSE)
+      fetchInitialData().then(connectWebSocket)
     }
   }
   catch (err) {
@@ -59,13 +60,13 @@ async function toggleStubStatus() {
   }
 }
 
-// Connect SSE
-function connectSSE() {
+// Connect WebSocket
+function connectWebSocket() {
   disconnect()
   loading.value = true
 
   connect({
-    url: 'api/nginx/detail_status/stream',
+    url: 'api/nginx/detail_status/ws',
     onMessage: data => {
       loading.value = false
 
@@ -96,12 +97,12 @@ function connectSSE() {
 
 // Manually refresh data
 function refreshData() {
-  fetchInitialData().then(connectSSE)
+  fetchInitialData().then(connectWebSocket)
 }
 
 // Initialize connection when the component is mounted
 onMounted(() => {
-  fetchInitialData().then(connectSSE)
+  fetchInitialData().then(connectWebSocket)
 })
 </script>
 

@@ -16,7 +16,8 @@ func InitRouter(r *gin.RouterGroup) {
 	// Get detailed Nginx status information, including connection count, process information, etc. (Issue #850)
 	r.GET("nginx/detail_status", GetDetailStatus)
 	// Use SSE to push detailed Nginx status information
-	r.GET("nginx/detail_status/stream", StreamDetailStatus)
+	// Use WebSocket to push detailed Nginx status information
+	r.GET("nginx/detail_status/ws", StreamDetailStatusWS)
 	// Get stub_status module status
 	r.GET("nginx/stub_status", CheckStubStatus)
 	// Enable or disable stub_status module
