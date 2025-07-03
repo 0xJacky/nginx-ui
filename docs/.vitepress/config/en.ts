@@ -6,6 +6,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Guide', link: '/guide/about' },
+      { text: 'Sponsor', link: '/sponsor' },
       { text: 'Demo', link: demoUrl }
     ],
 

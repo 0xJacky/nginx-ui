@@ -6,6 +6,7 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     nav: [
       { text: '首页', link: '/zh_CN/' },
       { text: '手册', link: '/zh_CN/guide/about' },
+      { text: '赞助', link: '/zh_CN/sponsor' },
       { text: '演示', link: demoUrl }
     ],
 

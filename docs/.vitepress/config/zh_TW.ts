@@ -6,6 +6,7 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     nav: [
       { text: '首頁', link: '/zh_TW/' },
       { text: '手冊', link: '/zh_TW/guide/about' },
+      { text: '贊助', link: '/zh_TW/sponsor' },
       { text: '演示', link: demoUrl }
     ],
 
