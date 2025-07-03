@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { EnvGroup } from '@/api/env_group'
 import type { Environment } from '@/api/environment'
 import { message } from 'ant-design-vue'
@@ -19,7 +20,7 @@ const loading = ref({
 })
 
 // WebSocket connection for environment monitoring
-let socket: WebSocket | null = null
+let socket: ReconnectingWebSocket | WebSocket | null = null
 
 // Get node data when tab is not 'All'
 watch(modelValue, newVal => {
@@ -38,10 +39,10 @@ function connectWebSocket() {
 
   socket = ws('/api/cluster/environments/enabled/ws', true)
 
-  socket.onmessage = (event) => {
+  socket.onmessage = event => {
     try {
       const message = JSON.parse(event.data)
-      
+
       if (message.event === 'message') {
         const data: Environment[] = message.data
         environments.value = data
@@ -50,12 +51,13 @@ function connectWebSocket() {
           return acc
         }, {} as Record<number, Environment>)
       }
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error parsing WebSocket message:', error)
     }
   }
 
-  socket.onerror = (error) => {
+  socket.onerror = error => {
     console.warn('Failed to connect to environments WebSocket endpoint', error)
   }
 }
