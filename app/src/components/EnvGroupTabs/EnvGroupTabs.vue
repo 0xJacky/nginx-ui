@@ -3,7 +3,7 @@ import type { EnvGroup } from '@/api/env_group'
 import type { Environment } from '@/api/environment'
 import { message } from 'ant-design-vue'
 import nodeApi from '@/api/node'
-import { useSSE } from '@/composables/useSSE'
+import ws from '@/lib/websocket'
 
 const props = defineProps<{
   envGroups: EnvGroup[]
@@ -18,35 +18,59 @@ const loading = ref({
   restart: false,
 })
 
-// Use SSE composable
-// Error handling is implemented internally by useSSE with automatic reconnection
-const { connect, disconnect } = useSSE()
+// WebSocket connection for environment monitoring
+let socket: WebSocket | null = null
 
 // Get node data when tab is not 'All'
 watch(modelValue, newVal => {
   if (newVal && newVal !== 0) {
-    connectSSE()
+    connectWebSocket()
   }
   else {
-    disconnect()
+    disconnectWebSocket()
   }
 }, { immediate: true })
 
-function connectSSE() {
-  connect({
-    url: 'api/environments/enabled',
-    onMessage: data => {
-      environments.value = data
-      environmentsMap.value = environments.value.reduce((acc, node) => {
-        acc[node.id] = node
-        return acc
-      }, {} as Record<number, Environment>)
-    },
-    onError: () => {
-      // 错误处理已由useSSE内部实现自动重连
-    },
-  })
+function connectWebSocket() {
+  if (socket) {
+    socket.close()
+  }
+
+  socket = ws('/api/cluster/environments/enabled/ws', true)
+
+  socket.onmessage = (event) => {
+    try {
+      const message = JSON.parse(event.data)
+      
+      if (message.event === 'message') {
+        const data: Environment[] = message.data
+        environments.value = data
+        environmentsMap.value = environments.value.reduce((acc, node) => {
+          acc[node.id] = node
+          return acc
+        }, {} as Record<number, Environment>)
+      }
+    } catch (error) {
+      console.error('Error parsing WebSocket message:', error)
+    }
+  }
+
+  socket.onerror = (error) => {
+    console.warn('Failed to connect to environments WebSocket endpoint', error)
+  }
 }
+
+function disconnectWebSocket() {
+  if (socket) {
+    socket.close()
+    socket = null
+  }
+}
+
+// Cleanup on unmount
+onUnmounted(() => {
+  disconnectWebSocket()
+})
 
 // Get the current Node Group data
 const currentEnvGroup = computed(() => {

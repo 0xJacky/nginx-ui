@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Environment } from '@/api/environment'
-import { useSSE } from '@/composables/useSSE'
+import ws from '@/lib/websocket'
 
 const props = defineProps<{
   hiddenLocal?: boolean
@@ -12,23 +12,36 @@ const map = defineModel<Record<number, string>>('map')
 const data = ref<Environment[]>([])
 const data_map = ref<Record<number, Environment>>({})
 
-const { connect } = useSSE()
+// WebSocket connection for environment monitoring
+const socket = ws('/api/environments/enabled', true)
 
-// connect SSE and handle messages
-connect({
-  url: 'api/environments/enabled',
-  onMessage: (environments: Environment[]) => {
-    data.value = environments
-    nextTick(() => {
-      data_map.value = data.value.reduce((acc, node) => {
-        acc[node.id] = node
-        return acc
-      }, {} as Record<number, Environment>)
-    })
-  },
-  onError: () => {
-    console.warn('Failed to connect to environments SSE endpoint')
-  },
+socket.onmessage = event => {
+  try {
+    const message = JSON.parse(event.data)
+
+    if (message.event === 'message') {
+      const environments: Environment[] = message.data
+      data.value = environments
+      nextTick(() => {
+        data_map.value = data.value.reduce((acc, node) => {
+          acc[node.id] = node
+          return acc
+        }, {} as Record<number, Environment>)
+      })
+    }
+  }
+  catch (error) {
+    console.error('Error parsing WebSocket message:', error)
+  }
+}
+
+socket.onerror = error => {
+  console.warn('Failed to connect to environments WebSocket endpoint', error)
+}
+
+// Cleanup on unmount
+onUnmounted(() => {
+  socket.close()
 })
 
 const value = computed({

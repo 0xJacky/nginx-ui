@@ -5,7 +5,7 @@ import "github.com/gin-gonic/gin"
 func InitRouter(r *gin.RouterGroup) {
 	// Environment
 	r.GET("environments", GetEnvironmentList)
-	r.GET("environments/enabled", GetAllEnabledEnvironment)
+	r.GET("environments/enabled", GetAllEnabledEnvironmentWS)
 	r.POST("environments/load_from_settings", LoadEnvironmentFromSettings)
 	envGroup := r.Group("environments")
 	{

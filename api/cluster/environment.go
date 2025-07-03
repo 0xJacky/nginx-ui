@@ -2,14 +2,8 @@ package cluster
 
 import (
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
-	"encoding/json"
-	"io"
 	"net/http"
-	"time"
 
-	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -58,85 +52,6 @@ func GetEnvironmentList(c *gin.Context) {
 	c.JSON(http.StatusOK, model.DataList{
 		Data: data,
 	})
-}
-
-func GetAllEnabledEnvironment(c *gin.Context) {
-	api.SetSSEHeaders(c)
-	notify := c.Writer.CloseNotify()
-
-	interval := 10
-
-	type respEnvironment struct {
-		*model.Environment
-		Status bool `json:"status"`
-	}
-
-	f := func() (any, bool) {
-		return cosy.Core[model.Environment](c).
-			SetFussy("name").
-			SetTransformer(func(m *model.Environment) any {
-				resp := respEnvironment{
-					Environment: m,
-					Status:      analytic.GetNode(m).Status,
-				}
-				return resp
-			}).ListAllData()
-	}
-
-	getHash := func(data any) string {
-		bytes, _ := json.Marshal(data)
-		hash := sha256.New()
-		hash.Write(bytes)
-		hashSum := hash.Sum(nil)
-		return hex.EncodeToString(hashSum)
-	}
-
-	dataHash := ""
-
-	{
-		data, ok := f()
-		if !ok {
-			return
-		}
-
-		c.Stream(func(w io.Writer) bool {
-			c.SSEvent("message", data)
-			dataHash = getHash(data)
-			return false
-		})
-	}
-
-	for {
-		select {
-		case <-time.After(time.Duration(interval) * time.Second):
-			data, ok := f()
-			if !ok {
-				return
-			}
-			// if data is not changed, send heartbeat
-			if dataHash == getHash(data) {
-				c.Stream(func(w io.Writer) bool {
-					c.SSEvent("heartbeat", "")
-					return false
-				})
-				return
-			}
-
-			dataHash = getHash(data)
-
-			c.Stream(func(w io.Writer) bool {
-				c.SSEvent("message", data)
-				return false
-			})
-		case <-time.After(30 * time.Second):
-			c.Stream(func(w io.Writer) bool {
-				c.SSEvent("heartbeat", "")
-				return false
-			})
-		case <-notify:
-			return
-		}
-	}
 }
 
 func AddEnvironment(c *gin.Context) {
