@@ -216,11 +216,12 @@ function wsOnMessage(m: MessageEvent) {
           :title="$gettext('Memory and Storage')"
           :bordered="false"
         >
-          <ARow :gutter="[0, 16]">
+          <ARow :gutter="[0, 32]">
             <ACol
               :xs="24"
               :sm="24"
               :md="8"
+              :lg="8"
             >
               <RadialBarChart
                 :key="$gettext('Memory')"
@@ -233,8 +234,9 @@ function wsOnMessage(m: MessageEvent) {
             </ACol>
             <ACol
               :xs="24"
-              :sm="12"
+              :sm="24"
               :md="8"
+              :lg="8"
             >
               <RadialBarChart
                 :key="$gettext('Swap')"
@@ -247,8 +249,9 @@ function wsOnMessage(m: MessageEvent) {
             </ACol>
             <ACol
               :xs="24"
-              :sm="12"
+              :sm="24"
               :md="8"
+              :lg="8"
             >
               <RadialBarChart
                 :key="$gettext('Storage')"
