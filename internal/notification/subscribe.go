@@ -26,9 +26,13 @@ func RemoveClient(c *gin.Context) {
 }
 
 func broadcast(data *model.Notification) {
+	// Broadcast to SSE clients
 	mutex.RLock()
 	defer mutex.RUnlock()
 	for _, evtChan := range clientMap {
 		evtChan <- data
 	}
+
+	// Broadcast to WebSocket clients
+	BroadcastToWebSocket(data)
 }

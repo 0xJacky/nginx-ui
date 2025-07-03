@@ -12,5 +12,27 @@
     "batch": {
       "pageSize": 100
     }
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/vendor": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/out": true,
+    "**/tmp": true,
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/database.db": true,
+    "**/.pnpm-store": true,
+    "**/nginx-ui": true
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/tmp/**": true,
+    "**/.pnpm-store/**": true
   }
 }

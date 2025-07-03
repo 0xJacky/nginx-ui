@@ -1,19 +1,16 @@
 <script setup lang="tsx">
 import { SyncOutlined } from '@ant-design/icons-vue'
-import { useSSE } from '@/composables/useSSE'
+import { useWebSocketEventBus } from '@/composables/useWebSocketEventBus'
 import { useGlobalStore } from '@/pinia'
 
-const { connect } = useSSE()
+const { subscribe } = useWebSocketEventBus()
 
 const globalStore = useGlobalStore()
 const { processingStatus } = storeToRefs(globalStore)
 
 onMounted(() => {
-  connect({
-    url: '/api/system/processing',
-    onMessage: data => {
-      processingStatus.value = data
-    },
+  subscribe('processing_status', data => {
+    processingStatus.value = data
   })
 })
 

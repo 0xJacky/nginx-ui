@@ -7,6 +7,10 @@ interface ProcessingStatus {
   auto_cert_processing: boolean
 }
 
+interface NginxLogStatus {
+  scanning: boolean
+}
+
 type NginxStatusType = NginxStatus.Reloading | NginxStatus.Restarting | NginxStatus.Running | NginxStatus.Stopped
 
 export const useGlobalStore = defineStore('global', () => {
@@ -17,12 +21,17 @@ export const useGlobalStore = defineStore('global', () => {
     auto_cert_processing: false,
   })
 
+  const nginxLogStatus = ref<NginxLogStatus>({
+    scanning: false,
+  })
+
   const modules = ref<NgxModule[]>([])
   const modulesMap = ref<Record<string, NgxModule>>({})
 
   return {
     nginxStatus,
     processingStatus,
+    nginxLogStatus,
     modules,
     modulesMap,
   }

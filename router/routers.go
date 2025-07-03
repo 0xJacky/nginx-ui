@@ -11,6 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/cluster"
 	"github.com/0xJacky/Nginx-UI/api/config"
 	"github.com/0xJacky/Nginx-UI/api/crypto"
+	"github.com/0xJacky/Nginx-UI/api/event"
 	"github.com/0xJacky/Nginx-UI/api/external_notify"
 	"github.com/0xJacky/Nginx-UI/api/nginx"
 	nginxLog "github.com/0xJacky/Nginx-UI/api/nginx_log"
@@ -93,6 +94,7 @@ func InitRouter() {
 		{
 			analytic.InitWebSocketRouter(w)
 			certificate.InitCertificateWebSocketRouter(w)
+			event.InitRouter(w)
 			o := w.Group("", middleware.RequireSecureSession())
 			{
 				terminal.InitRouter(o)

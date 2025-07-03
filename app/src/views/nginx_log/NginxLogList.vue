@@ -1,11 +1,26 @@
 <script setup lang="tsx">
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
+import { SyncOutlined } from '@ant-design/icons-vue'
 import { StdCurd } from '@uozi-admin/curd'
 import { Tag } from 'ant-design-vue'
 import nginxLog from '@/api/nginx_log'
+import { useWebSocketEventBus } from '@/composables/useWebSocketEventBus'
+import { useGlobalStore } from '@/pinia'
 
 const router = useRouter()
 const stdCurdRef = ref()
+
+// WebSocket event bus and global store
+const { subscribe } = useWebSocketEventBus()
+const globalStore = useGlobalStore()
+const { nginxLogStatus } = storeToRefs(globalStore)
+
+// Subscribe to nginx log status events
+onMounted(() => {
+  subscribe('nginx_log_status', data => {
+    nginxLogStatus.value = data
+  })
+})
 
 const columns: StdTableColumn[] = [
   {
@@ -79,6 +94,12 @@ function viewLog(record: { type: string, path: string }) {
     disable-view
     disable-edit
   >
+    <template #beforeListActions>
+      <div v-if="nginxLogStatus.scanning" class="flex items-center text-blue-500">
+        <SyncOutlined spin class="mr-2" />
+        <span>{{ $gettext('Scanning logs...') }}</span>
+      </div>
+    </template>
     <template #beforeActions="{ record }">
       <AButton type="link" size="small" @click="viewLog(record)">
         {{ $gettext('View') }}
