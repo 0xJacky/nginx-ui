@@ -7,8 +7,8 @@ import (
 	"github.com/uozi-tech/cosy"
 )
 
-func InitUser() {
-	db := cosy.UseDB(context.Background())
+func InitUser(ctx context.Context) {
+	db := cosy.UseDB(ctx)
 	user := &model.User{}
 	db.Unscoped().Where("id = ?", 1).Find(user)
 
@@ -20,7 +20,7 @@ func InitUser() {
 			},
 			Name: "admin",
 		})
-		return 
+		return
 	}
 
 	// if user is found, check if the user is deleted

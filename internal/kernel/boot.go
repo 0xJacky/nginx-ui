@@ -67,17 +67,25 @@ func Boot(ctx context.Context) {
 
 func InitAfterDatabase(ctx context.Context) {
 	syncs := []func(ctx context.Context){
+		InitUser,
 		registerPredefinedUser,
-		cert.InitRegister,
-		cron.InitCronJobs,
 		cluster.RegisterPredefinedNodes,
-		analytic.RetrieveNodesStatus,
-		passkey.Init,
 		RegisterAcmeUser,
-		mcp.Init,
 	}
 
 	for _, v := range syncs {
+		v(ctx)
+	}
+
+	asyncs := []func(ctx context.Context){
+		cert.InitRegister,
+		cron.InitCronJobs,
+		analytic.RetrieveNodesStatus,
+		passkey.Init,
+		mcp.Init,
+	}
+
+	for _, v := range asyncs {
 		go v(ctx)
 	}
 }
