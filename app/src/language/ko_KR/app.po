@@ -221,7 +221,7 @@ msgstr "고급 모드"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "이후에 이 페이지를 새로 고치고 패스키 추가를 다시 클릭하세요."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:115
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
 msgid "All"
 msgstr "모두"
 
@@ -298,7 +298,7 @@ msgstr "정말 영구적으로 삭제하시겠습니까?"
 msgid "Are you sure you want to delete?"
 msgstr "정말 삭제하시겠습니까?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:129
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:155
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "다음 동기화 노드에서 Nginx를 다시 로드하시겠습니까?"
 
@@ -314,7 +314,7 @@ msgstr "이 항목을 제거하시겠습니까?"
 msgid "Are you sure you want to remove this location?"
 msgstr "이 위치를 제거하시겠습니까?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:167
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "다음 동기화 노드에서 Nginx를 다시 시작하시겠습니까?"
 
@@ -547,7 +547,7 @@ msgstr "아래에는 일괄 수정하려는 선택된 항목이 있습니다"
 msgid "Block is nil"
 msgstr "블록이 nil입니다"
 
-#: src/views/system/About.vue:55
+#: src/views/system/About.vue:75
 msgid "Build with"
 msgstr "빌드 환경"
 
@@ -639,7 +639,7 @@ msgstr "비교할 수 없습니다 : 내용 누락"
 msgid "Cannot delete protected path: {0}"
 msgstr "보호된 경로를 삭제할 수 없습니다: {0}"
 
-#: src/views/dashboard/NginxDashBoard.vue:134
+#: src/views/dashboard/NginxDashBoard.vue:154
 msgid "Cannot get performance data in this state"
 msgstr "이 상태에서 성능 데이터를 얻을 수 없습니다"
 
@@ -1049,7 +1049,7 @@ msgstr "새 비밀번호 확인"
 msgid "Connected"
 msgstr "연결됨"
 
-#: src/views/dashboard/NginxDashBoard.vue:87
+#: src/views/dashboard/NginxDashBoard.vue:100
 msgid "Connection error, trying to reconnect..."
 msgstr "연결 오류, 다시 연결 시도 중..."
 
@@ -1702,7 +1702,7 @@ msgstr "%{node}에서 스트림 %{name} 활성화 실패"
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "%{node}에서 스트림 %{name} 활성화 성공"
 
-#: src/views/dashboard/NginxDashBoard.vue:152
+#: src/views/dashboard/NginxDashBoard.vue:172
 msgid "Enable stub_status module"
 msgstr "stub_status 모듈 활성화"
 
@@ -2285,7 +2285,7 @@ msgstr "계정 등록을 위한 개인 키 생성 중"
 msgid "Get acme user error: {0}"
 msgstr "ACME 사용자 가져오기 오류: {0}"
 
-#: src/views/dashboard/NginxDashBoard.vue:143
+#: src/views/dashboard/NginxDashBoard.vue:163
 msgid "Get data failed"
 msgstr "데이터 가져오기 실패"
 
@@ -2490,6 +2490,10 @@ msgstr "잘못된 AES IV 형식: {0}"
 msgid "Invalid AES key format: {0}"
 msgstr "잘못된 AES 키 형식: {0}"
 
+#: src/constants/errors/user.ts:14
+msgid "Invalid claims type"
+msgstr "유효하지 않은 클레임 유형"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:121
 msgid "Invalid file object"
 msgstr "잘못된 파일 객체"
@@ -2606,7 +2610,7 @@ msgstr "마지막 백업 시간"
 msgid "Last checked at"
 msgstr "마지막 확인 시간"
 
-#: src/views/dashboard/NginxDashBoard.vue:118
+#: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Last update"
 msgstr "마지막 업데이트"
 
@@ -2643,7 +2647,7 @@ msgstr "TOTP가 활성화되지 않았기 때문에 레거시 복구 코드는 �
 msgid "Lego disable CNAME Support"
 msgstr "Lego CNAME 지원 비활성화"
 
-#: src/views/system/About.vue:63
+#: src/views/system/About.vue:83
 msgid "License"
 msgstr "라이선스"
 
@@ -2693,12 +2697,12 @@ msgstr "로더 슬립"
 msgid "Loader Threshold"
 msgstr "로더 임계값"
 
-#: src/views/dashboard/NginxDashBoard.vue:180
+#: src/views/dashboard/NginxDashBoard.vue:200
 msgid "Loading data..."
 msgstr "데이터를 불러오는 중..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:71
+#: src/components/NodeSelector/NodeSelector.vue:84
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2735,11 +2739,11 @@ msgstr ""
 msgid "Log List"
 msgstr "로그 목록"
 
-#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:267
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:271
 msgid "Login"
 msgstr "로그인"
 
-#: src/views/other/Login.vue:76
+#: src/views/other/Login.vue:78
 msgid "Login successful"
 msgstr "로그인 성공"
 
@@ -2985,7 +2989,7 @@ msgstr "여러 줄 지시문"
 msgid "Name"
 msgstr "이름"
 
-#: src/views/dashboard/NginxDashBoard.vue:175
+#: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
 msgstr "stub_status 모듈을 활성화해야 합니다"
 
@@ -3141,9 +3145,9 @@ msgstr "Nginx 오류: {0}"
 
 #: src/components/NgxConfigEditor/NginxStatusAlert.vue:15
 #: src/composables/useNginxPerformance.ts:43
-#: src/views/dashboard/NginxDashBoard.vue:114
-#: src/views/dashboard/NginxDashBoard.vue:133
-#: src/views/dashboard/NginxDashBoard.vue:77
+#: src/views/dashboard/NginxDashBoard.vue:134
+#: src/views/dashboard/NginxDashBoard.vue:153
+#: src/views/dashboard/NginxDashBoard.vue:84
 msgid "Nginx is not running"
 msgstr "Nginx가 실행 중이 아닙니다"
 
@@ -3151,7 +3155,7 @@ msgstr "Nginx가 실행 중이 아닙니다"
 msgid "Nginx is not running in another container"
 msgstr "Nginx가 다른 컨테이너에서 실행되고 있지 않습니다"
 
-#: src/views/dashboard/NginxDashBoard.vue:114
+#: src/views/dashboard/NginxDashBoard.vue:134
 msgid "Nginx is running"
 msgstr "Nginx가 실행 중입니다"
 
@@ -3249,8 +3253,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf에는 streams-enabled 디렉토리가 포함됩니다"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:157
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:169
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:38
@@ -3267,7 +3271,7 @@ msgstr "아니요"
 msgid "No Action"
 msgstr "작업 없음"
 
-#: src/views/dashboard/NginxDashBoard.vue:182
+#: src/views/dashboard/NginxDashBoard.vue:202
 msgid "No data"
 msgstr "데이터 없음"
 
@@ -3398,9 +3402,13 @@ msgstr "OCSP Must Staple은 Firefox를 사용한 첫 접속 시 일부 사용자
 msgid "Off"
 msgstr "끔"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
+#: src/views/system/About.vue:31
+msgid "Official Document"
+msgstr "공식 문서"
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
-#: src/components/NodeSelector/NodeSelector.vue:94
+#: src/components/NodeSelector/NodeSelector.vue:107
 #: src/components/ProxyTargets/ProxyTargets.vue:43
 #: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:55
@@ -3432,9 +3440,9 @@ msgstr "켜짐"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "검증이 완료되면, 레코드는 제거됩니다."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
-#: src/components/NodeSelector/NodeSelector.vue:74
-#: src/components/NodeSelector/NodeSelector.vue:88
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
+#: src/components/NodeSelector/NodeSelector.vue:101
+#: src/components/NodeSelector/NodeSelector.vue:87
 #: src/views/dashboard/Environments.vue:92
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
@@ -3452,7 +3460,7 @@ msgstr "열림"
 msgid "OpenAI"
 msgstr "오픈AI"
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:276
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:280
 msgid "Or"
 msgstr "또는"
 
@@ -3524,7 +3532,7 @@ msgstr ""
 "패스키는 터치, 얼굴 인식, 기기 비밀번호 또는 PIN을 사용하여 신원을 확인하는 웹인증(WebAuthn) 자격 증명입니다. 비밀번호 "
 "대체 또는 2FA 방법으로 사용할 수 있습니다."
 
-#: src/views/other/Login.vue:228 src/views/user/userColumns.tsx:16
+#: src/views/other/Login.vue:232 src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr "비밀번호"
 
@@ -3586,7 +3594,7 @@ msgstr "핵심 업그레이드 오류 수행"
 msgid "Performance"
 msgstr "성능"
 
-#: src/views/dashboard/NginxDashBoard.vue:187
+#: src/views/dashboard/NginxDashBoard.vue:207
 msgid "Performance Metrics"
 msgstr "성능 메트릭"
 
@@ -3610,7 +3618,7 @@ msgstr "PID 경로가 존재하지 않습니다"
 msgid "Plain text is empty"
 msgstr "평문이 비어 있습니다"
 
-#: src/views/dashboard/NginxDashBoard.vue:176
+#: src/views/dashboard/NginxDashBoard.vue:196
 msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
@@ -3803,7 +3811,7 @@ msgstr "데모에서 루트 비밀번호 변경 금지"
 msgid "Prohibit deleting the default user"
 msgstr "기본 사용자 삭제 금지"
 
-#: src/views/system/About.vue:51
+#: src/views/system/About.vue:71
 msgid "Project Team"
 msgstr "프로젝트 팀"
 
@@ -3927,7 +3935,7 @@ msgstr "릴리스 노트"
 msgid "Reload"
 msgstr "리로드"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
 #: src/views/environments/group/columns.ts:22
 #: src/views/environments/group/EnvGroup.vue:50
 #: src/views/environments/list/Environment.vue:209
@@ -3955,7 +3963,7 @@ msgstr "원격 Nginx 다시 로드 오류"
 msgid "Reload Remote Nginx Success"
 msgstr "원격 Nginx 다시 로드 성공"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:84
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
 msgid "Reload request failed, please check your network connection"
 msgstr "다시 로드 요청이 실패했습니다. 네트워크 연결을 확인하세요"
 
@@ -4114,7 +4122,7 @@ msgstr "응답"
 msgid "Restart"
 msgstr "재시작"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:174
 #: src/views/environments/list/Environment.vue:230
 #: src/views/environments/list/Environment.vue:238
 msgid "Restart Nginx"
@@ -4136,7 +4144,7 @@ msgstr "원격 Nginx 재시작 오류"
 msgid "Restart Remote Nginx Success"
 msgstr "원격 Nginx 재시작 성공"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
 msgid "Restart request failed, please check your network connection"
 msgstr "재시작 요청이 실패했습니다. 네트워크 연결을 확인해 주세요"
 
@@ -4580,7 +4588,7 @@ msgstr "공유 메모리 영역"
 msgid "Show"
 msgstr "표시"
 
-#: src/views/other/Login.vue:285
+#: src/views/other/Login.vue:289
 msgid "Sign in with a passkey"
 msgstr "패스키로 로그인"
 
@@ -4640,6 +4648,10 @@ msgstr "캐시 로더 반복 사이의 대기 시간"
 msgid "Sleep time between cache manager iterations"
 msgstr "캐시 관리자 반복 간 대기 시간"
 
+#: src/views/system/About.vue:46
+msgid "Sponsor"
+msgstr "스폰서"
+
 #: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
 msgstr "SSL 인증서 내용"
@@ -4685,7 +4697,7 @@ msgstr "SSL 키 경로"
 msgid "SSL key path is required when HTTPS is enabled"
 msgstr "HTTPS가 활성화된 경우 SSL 키 경로가 필요합니다"
 
-#: src/views/other/Login.vue:242
+#: src/views/other/Login.vue:246
 msgid "SSO Login"
 msgstr "SSO 로그인"
 
@@ -4886,7 +4898,7 @@ msgstr "구성 동기화 오류"
 msgid "Sync Config Success"
 msgstr "구성 동기화 성공"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:122
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
 #: src/views/environments/group/EnvGroup.vue:31
 msgid "Sync Nodes"
 msgstr "동기화 노드"
@@ -5104,7 +5116,7 @@ msgid ""
 "-_./:"
 msgstr "이 필드에는 문자, 유니코드 문자, 숫자 및 -_./: 만 포함되어야 합니다"
 
-#: src/views/dashboard/NginxDashBoard.vue:155
+#: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
@@ -5211,9 +5223,13 @@ msgstr ""
 "로컬 대형 모델을 사용하려면 ollama, vllm 또는 lmdeploy로 배포하세요. 이들은 OpenAI 호환 API 엔드포인트를 "
 "제공하므로 baseUrl을 로컬 API로 설정하기만 하면 됩니다."
 
-#: src/views/dashboard/NginxDashBoard.vue:55
+#: src/views/dashboard/NginxDashBoard.vue:57
 msgid "Toggle failed"
 msgstr "전환 실패"
+
+#: src/constants/errors/user.ts:13
+msgid "Token is empty"
+msgstr "토큰이 비어 있습니다"
 
 #: src/views/preference/tabs/OpenAISettings.vue:61
 msgid "Token is not valid"
@@ -5397,7 +5413,7 @@ msgstr "사용자가 OTP를 2FA로 활성화하지 않음"
 msgid "User Profile"
 msgstr "사용자 프로필"
 
-#: src/views/other/Login.vue:218 src/views/user/userColumns.tsx:7
+#: src/views/other/Login.vue:222 src/views/user/userColumns.tsx:7
 #: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "사용자 이름"
@@ -5582,8 +5598,8 @@ msgstr "인증서 개인 키를 디스크에 쓰기"
 msgid "Writing certificate to disk"
 msgstr "인증서를 디스크에 쓰기"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:168
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:131

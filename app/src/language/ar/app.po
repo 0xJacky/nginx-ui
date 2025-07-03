@@ -222,7 +222,7 @@ msgstr "الوضع المتقدم"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "بعد ذلك، قم بتحديث هذه الصفحة وانقر على إضافة مفتاح مرور مرة أخرى."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:115
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
 msgid "All"
 msgstr "الكل"
 
@@ -301,7 +301,7 @@ msgstr "هل أنت متأكد أنك تريد الحذف نهائيًا؟"
 msgid "Are you sure you want to delete?"
 msgstr "هل أنت متأكد أنك تريد الحذف؟"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:129
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:155
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "هل أنت متأكد أنك تريد إعادة تحميل Nginx على عقد المزامنة التالية؟"
 
@@ -317,7 +317,7 @@ msgstr "هل أنت متأكد أنك تريد إزالة هذا العنصر؟"
 msgid "Are you sure you want to remove this location?"
 msgstr "هل أنت متأكد أنك تريد إزالة هذا المكان؟"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:167
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "هل أنت متأكد أنك تريد إعادة تشغيل Nginx على عقد المزامنة التالية؟"
 
@@ -552,7 +552,7 @@ msgstr "فيما يلي العناصر المحددة التي تريد تعدي
 msgid "Block is nil"
 msgstr "الكتلة فارغة"
 
-#: src/views/system/About.vue:55
+#: src/views/system/About.vue:75
 msgid "Build with"
 msgstr "بناء مع"
 
@@ -644,7 +644,7 @@ msgstr "لا يمكن المقارنة: المحتوى المفقود"
 msgid "Cannot delete protected path: {0}"
 msgstr "لا يمكن حذف المسار المحمي: {0}"
 
-#: src/views/dashboard/NginxDashBoard.vue:134
+#: src/views/dashboard/NginxDashBoard.vue:154
 msgid "Cannot get performance data in this state"
 msgstr "لا يمكن الحصول على بيانات الأداء في هذه الحالة"
 
@@ -1075,7 +1075,7 @@ msgstr "تأكيد كلمة المرور الجديدة"
 msgid "Connected"
 msgstr "متصل"
 
-#: src/views/dashboard/NginxDashBoard.vue:87
+#: src/views/dashboard/NginxDashBoard.vue:100
 msgid "Connection error, trying to reconnect..."
 msgstr "خطأ في الاتصال، جاري محاولة إعادة الاتصال..."
 
@@ -1730,7 +1730,7 @@ msgstr "فشل تمكين الدفق %{name} على %{node}"
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "تم تمكين الدفق %{name} على %{node} بنجاح"
 
-#: src/views/dashboard/NginxDashBoard.vue:152
+#: src/views/dashboard/NginxDashBoard.vue:172
 msgid "Enable stub_status module"
 msgstr "تمكين وحدة stub_status"
 
@@ -2313,7 +2313,7 @@ msgstr "توليد مفتاح خاص لتسجيل الحساب"
 msgid "Get acme user error: {0}"
 msgstr "خطأ في الحصول على مستخدم ACME: {0}"
 
-#: src/views/dashboard/NginxDashBoard.vue:143
+#: src/views/dashboard/NginxDashBoard.vue:163
 msgid "Get data failed"
 msgstr "فشل الحصول على البيانات"
 
@@ -2526,6 +2526,10 @@ msgstr "تنسيق AES IV غير صالح: {0}"
 msgid "Invalid AES key format: {0}"
 msgstr "تنسيق مفتاح AES غير صالح: {0}"
 
+#: src/constants/errors/user.ts:14
+msgid "Invalid claims type"
+msgstr "نوع المطالبات غير صالح"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:121
 msgid "Invalid file object"
 msgstr "كائن ملف غير صالح"
@@ -2644,7 +2648,7 @@ msgstr "وقت آخر نسخة احتياطية"
 msgid "Last checked at"
 msgstr "آخر فحص في"
 
-#: src/views/dashboard/NginxDashBoard.vue:118
+#: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Last update"
 msgstr "آخر تحديث"
 
@@ -2681,7 +2685,7 @@ msgstr "لا يُسمح برمز الاسترداد القديم نظرًا لع
 msgid "Lego disable CNAME Support"
 msgstr "تعطيل دعم CNAME في Lego"
 
-#: src/views/system/About.vue:63
+#: src/views/system/About.vue:83
 msgid "License"
 msgstr "رخصة"
 
@@ -2731,12 +2735,12 @@ msgstr "وقت توقف المحمل"
 msgid "Loader Threshold"
 msgstr "عتبة المحمل"
 
-#: src/views/dashboard/NginxDashBoard.vue:180
+#: src/views/dashboard/NginxDashBoard.vue:200
 msgid "Loading data..."
 msgstr "جارٍ تحميل البيانات..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:71
+#: src/components/NodeSelector/NodeSelector.vue:84
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2774,11 +2778,11 @@ msgstr ""
 msgid "Log List"
 msgstr "قائمة السجلات"
 
-#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:267
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:271
 msgid "Login"
 msgstr "تسجيل الدخول"
 
-#: src/views/other/Login.vue:76
+#: src/views/other/Login.vue:78
 msgid "Login successful"
 msgstr "تم تسجيل الدخول بنجاح"
 
@@ -3029,7 +3033,7 @@ msgstr "توجيه متعدد الأسطر"
 msgid "Name"
 msgstr "اسم"
 
-#: src/views/dashboard/NginxDashBoard.vue:175
+#: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
 msgstr "يجب تمكين وحدة stub_status"
 
@@ -3185,9 +3189,9 @@ msgstr "خطأ في Nginx: {0}"
 
 #: src/components/NgxConfigEditor/NginxStatusAlert.vue:15
 #: src/composables/useNginxPerformance.ts:43
-#: src/views/dashboard/NginxDashBoard.vue:114
-#: src/views/dashboard/NginxDashBoard.vue:133
-#: src/views/dashboard/NginxDashBoard.vue:77
+#: src/views/dashboard/NginxDashBoard.vue:134
+#: src/views/dashboard/NginxDashBoard.vue:153
+#: src/views/dashboard/NginxDashBoard.vue:84
 msgid "Nginx is not running"
 msgstr "Nginx لا يعمل"
 
@@ -3195,7 +3199,7 @@ msgstr "Nginx لا يعمل"
 msgid "Nginx is not running in another container"
 msgstr "إن Nginx لا يعمل في حاوية أخرى"
 
-#: src/views/dashboard/NginxDashBoard.vue:114
+#: src/views/dashboard/NginxDashBoard.vue:134
 msgid "Nginx is running"
 msgstr "إن Nginx يعمل"
 
@@ -3293,8 +3297,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "يتضمن Nginx.conf دليل streams-enabled"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:157
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:169
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:38
@@ -3311,7 +3315,7 @@ msgstr "لا"
 msgid "No Action"
 msgstr "لا إجراء"
 
-#: src/views/dashboard/NginxDashBoard.vue:182
+#: src/views/dashboard/NginxDashBoard.vue:202
 msgid "No data"
 msgstr "لا توجد بيانات"
 
@@ -3446,9 +3450,13 @@ msgstr ""
 msgid "Off"
 msgstr "إيقاف"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
+#: src/views/system/About.vue:31
+msgid "Official Document"
+msgstr "الوثيقة الرسمية"
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
-#: src/components/NodeSelector/NodeSelector.vue:94
+#: src/components/NodeSelector/NodeSelector.vue:107
 #: src/components/ProxyTargets/ProxyTargets.vue:43
 #: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:55
@@ -3480,9 +3488,9 @@ msgstr "تشغيل"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "بمجرد اكتمال التحقق، سيتم إزالة السجلات."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
-#: src/components/NodeSelector/NodeSelector.vue:74
-#: src/components/NodeSelector/NodeSelector.vue:88
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
+#: src/components/NodeSelector/NodeSelector.vue:101
+#: src/components/NodeSelector/NodeSelector.vue:87
 #: src/views/dashboard/Environments.vue:92
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
@@ -3500,7 +3508,7 @@ msgstr "مفتوح"
 msgid "OpenAI"
 msgstr "أوبن أي آي"
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:276
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:280
 msgid "Or"
 msgstr "أو"
 
@@ -3573,7 +3581,7 @@ msgstr ""
 "التعرف على الوجه أو كلمة مرور الجهاز أو رقم التعريف الشخصي. يمكن استخدامها "
 "كبديل لكلمة المرور أو كطريقة للمصادقة الثنائية."
 
-#: src/views/other/Login.vue:228 src/views/user/userColumns.tsx:16
+#: src/views/other/Login.vue:232 src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr "كلمة المرور"
 
@@ -3635,7 +3643,7 @@ msgstr "خطأ في تنفيذ ترقية النواة"
 msgid "Performance"
 msgstr "الأداء"
 
-#: src/views/dashboard/NginxDashBoard.vue:187
+#: src/views/dashboard/NginxDashBoard.vue:207
 msgid "Performance Metrics"
 msgstr "مقاييس الأداء"
 
@@ -3659,7 +3667,7 @@ msgstr "مسار PID غير موجود"
 msgid "Plain text is empty"
 msgstr "النص العادي فارغ"
 
-#: src/views/dashboard/NginxDashBoard.vue:176
+#: src/views/dashboard/NginxDashBoard.vue:196
 msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
@@ -3856,7 +3864,7 @@ msgstr "حظر تغيير كلمة مرور root في العرض التوضيح�
 msgid "Prohibit deleting the default user"
 msgstr "حظر حذف المستخدم الافتراضي"
 
-#: src/views/system/About.vue:51
+#: src/views/system/About.vue:71
 msgid "Project Team"
 msgstr "فريق المشروع"
 
@@ -3982,7 +3990,7 @@ msgstr "ملاحظة الإصدار"
 msgid "Reload"
 msgstr "إعادة تحميل"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
 #: src/views/environments/group/columns.ts:22
 #: src/views/environments/group/EnvGroup.vue:50
 #: src/views/environments/list/Environment.vue:209
@@ -4010,7 +4018,7 @@ msgstr "خطأ في إعادة تحميل Nginx البعيد"
 msgid "Reload Remote Nginx Success"
 msgstr "إعادة تحميل Nginx البعيد بنجاح"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:84
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
 msgid "Reload request failed, please check your network connection"
 msgstr "فشل طلب إعادة التحميل، يرجى التحقق من اتصال الشبكة لديك"
 
@@ -4169,7 +4177,7 @@ msgstr "الردود"
 msgid "Restart"
 msgstr "إعادة تشغيل"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:174
 #: src/views/environments/list/Environment.vue:230
 #: src/views/environments/list/Environment.vue:238
 msgid "Restart Nginx"
@@ -4191,7 +4199,7 @@ msgstr "خطأ في إعادة تشغيل Nginx البعيد"
 msgid "Restart Remote Nginx Success"
 msgstr "إعادة تشغيل Nginx البعيد بنجاح"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
 msgid "Restart request failed, please check your network connection"
 msgstr "فشل طلب إعادة التشغيل، يرجى التحقق من اتصال الشبكة لديك"
 
@@ -4639,7 +4647,7 @@ msgstr "منطقة الذاكرة المشتركة"
 msgid "Show"
 msgstr "عرض"
 
-#: src/views/other/Login.vue:285
+#: src/views/other/Login.vue:289
 msgid "Sign in with a passkey"
 msgstr "تسجيل الدخول باستخدام مفتاح المرور"
 
@@ -4699,6 +4707,10 @@ msgstr "وقت الانتظار بين تكرارات محمل ذاكرة الت
 msgid "Sleep time between cache manager iterations"
 msgstr "وقت الانتظار بين تكرارات مدير الذاكرة المؤقتة"
 
+#: src/views/system/About.vue:46
+msgid "Sponsor"
+msgstr "راعي"
+
 #: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
 msgstr "محتوى شهادة SSL"
@@ -4744,7 +4756,7 @@ msgstr "مسار مفتاح SSL"
 msgid "SSL key path is required when HTTPS is enabled"
 msgstr "مسار مفتاح SSL مطلوب عند تمكين HTTPS"
 
-#: src/views/other/Login.vue:242
+#: src/views/other/Login.vue:246
 msgid "SSO Login"
 msgstr "تسجيل الدخول عبر SSO"
 
@@ -4947,7 +4959,7 @@ msgstr "خطأ في تزامن التكوين"
 msgid "Sync Config Success"
 msgstr "تمت مزامنة التكوين بنجاح"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:122
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
 #: src/views/environments/group/EnvGroup.vue:31
 msgid "Sync Nodes"
 msgstr "مزامنة العقد"
@@ -5182,7 +5194,7 @@ msgid ""
 "-_./:"
 msgstr "يجب أن يحتوي هذا الحقل على أحرف وأحرف يونيكود وأرقام و -_./: فقط"
 
-#: src/views/dashboard/NginxDashBoard.vue:155
+#: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
@@ -5305,9 +5317,13 @@ msgstr ""
 "توفر هذه الأدوات نقطة نهاية API متوافقة مع OpenAI، لذا ما عليك سوى تعيين "
 "baseUrl إلى API المحلي الخاص بك."
 
-#: src/views/dashboard/NginxDashBoard.vue:55
+#: src/views/dashboard/NginxDashBoard.vue:57
 msgid "Toggle failed"
 msgstr "فشل التبديل"
+
+#: src/constants/errors/user.ts:13
+msgid "Token is empty"
+msgstr "الرمز فارغ"
 
 #: src/views/preference/tabs/OpenAISettings.vue:61
 msgid "Token is not valid"
@@ -5493,7 +5509,7 @@ msgstr "المستخدم لم يتم تفعيل OTP كعامل ثنائي"
 msgid "User Profile"
 msgstr "ملف المستخدم"
 
-#: src/views/other/Login.vue:218 src/views/user/userColumns.tsx:7
+#: src/views/other/Login.vue:222 src/views/user/userColumns.tsx:7
 #: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "اسم المستخدم"
@@ -5685,8 +5701,8 @@ msgstr "كتابة مفتاح الشهادة الخاص إلى القرص"
 msgid "Writing certificate to disk"
 msgstr "كتابة الشهادة إلى القرص"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:168
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:131

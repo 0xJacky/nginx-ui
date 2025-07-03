@@ -226,7 +226,7 @@ msgstr "進階模式"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "之後，請重新整理此頁面並再次點擊新增通行金鑰。"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:115
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
 msgid "All"
 msgstr "全部"
 
@@ -303,7 +303,7 @@ msgstr "確定要永久刪除嗎？"
 msgid "Are you sure you want to delete?"
 msgstr "您確定要刪除嗎？"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:129
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:155
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新載入 Nginx 嗎？"
 
@@ -319,7 +319,7 @@ msgstr "您確定要刪除此項目嗎？"
 msgid "Are you sure you want to remove this location?"
 msgstr "您確定要刪除此 Location 嗎？"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:167
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr "您確定要在以下同步節點上重新啟動 Nginx 嗎？"
 
@@ -552,7 +552,7 @@ msgstr "以下是您要批次修改的選定項目"
 msgid "Block is nil"
 msgstr "區塊為空"
 
-#: src/views/system/About.vue:55
+#: src/views/system/About.vue:75
 msgid "Build with"
 msgstr "建構基於"
 
@@ -642,7 +642,7 @@ msgstr "無法比較：缺少內容"
 msgid "Cannot delete protected path: {0}"
 msgstr "無法刪除受保護的路徑：{0}"
 
-#: src/views/dashboard/NginxDashBoard.vue:134
+#: src/views/dashboard/NginxDashBoard.vue:154
 msgid "Cannot get performance data in this state"
 msgstr "目前狀態無法取得效能資料"
 
@@ -1047,7 +1047,7 @@ msgstr "確認新密碼"
 msgid "Connected"
 msgstr "已連線"
 
-#: src/views/dashboard/NginxDashBoard.vue:87
+#: src/views/dashboard/NginxDashBoard.vue:100
 msgid "Connection error, trying to reconnect..."
 msgstr "連線錯誤，正在嘗試重新連線..."
 
@@ -1698,7 +1698,7 @@ msgstr "在 %{node} 上啟用串流 %{name} 失敗"
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "在 %{node} 上成功啟用串流 %{name}"
 
-#: src/views/dashboard/NginxDashBoard.vue:152
+#: src/views/dashboard/NginxDashBoard.vue:172
 msgid "Enable stub_status module"
 msgstr "啟用stub_status模組"
 
@@ -2281,7 +2281,7 @@ msgstr "產生註冊帳號的私鑰"
 msgid "Get acme user error: {0}"
 msgstr "獲取 ACME 用戶錯誤: {0}"
 
-#: src/views/dashboard/NginxDashBoard.vue:143
+#: src/views/dashboard/NginxDashBoard.vue:163
 msgid "Get data failed"
 msgstr "取得資料失敗"
 
@@ -2486,6 +2486,10 @@ msgstr "無效的 AES IV 格式：{0}"
 msgid "Invalid AES key format: {0}"
 msgstr "無效的 AES 金鑰格式：{0}"
 
+#: src/constants/errors/user.ts:14
+msgid "Invalid claims type"
+msgstr "無效的聲明類型"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:121
 msgid "Invalid file object"
 msgstr "無效的檔案物件"
@@ -2602,7 +2606,7 @@ msgstr "上次備份時間"
 msgid "Last checked at"
 msgstr "上次檢查時間"
 
-#: src/views/dashboard/NginxDashBoard.vue:118
+#: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Last update"
 msgstr "最後更新時間"
 
@@ -2639,7 +2643,7 @@ msgstr "不允許使用舊版恢復代碼，因為未啟用 TOTP 功能"
 msgid "Lego disable CNAME Support"
 msgstr "Lego 停用 CNAME 支援"
 
-#: src/views/system/About.vue:63
+#: src/views/system/About.vue:83
 msgid "License"
 msgstr "開源授權"
 
@@ -2689,12 +2693,12 @@ msgstr "載入器休眠時間"
 msgid "Loader Threshold"
 msgstr "載入器門檻值"
 
-#: src/views/dashboard/NginxDashBoard.vue:180
+#: src/views/dashboard/NginxDashBoard.vue:200
 msgid "Loading data..."
 msgstr "資料載入中…"
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:71
+#: src/components/NodeSelector/NodeSelector.vue:84
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2731,11 +2735,11 @@ msgstr ""
 msgid "Log List"
 msgstr "日誌列表"
 
-#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:267
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:271
 msgid "Login"
 msgstr "登入"
 
-#: src/views/other/Login.vue:76
+#: src/views/other/Login.vue:78
 msgid "Login successful"
 msgstr "登入成功"
 
@@ -2981,7 +2985,7 @@ msgstr "多行指令"
 msgid "Name"
 msgstr "名稱"
 
-#: src/views/dashboard/NginxDashBoard.vue:175
+#: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
 msgstr "需要啟用 stub_status 模組"
 
@@ -3137,9 +3141,9 @@ msgstr "Nginx 錯誤：{0}"
 
 #: src/components/NgxConfigEditor/NginxStatusAlert.vue:15
 #: src/composables/useNginxPerformance.ts:43
-#: src/views/dashboard/NginxDashBoard.vue:114
-#: src/views/dashboard/NginxDashBoard.vue:133
-#: src/views/dashboard/NginxDashBoard.vue:77
+#: src/views/dashboard/NginxDashBoard.vue:134
+#: src/views/dashboard/NginxDashBoard.vue:153
+#: src/views/dashboard/NginxDashBoard.vue:84
 msgid "Nginx is not running"
 msgstr "Nginx 未執行"
 
@@ -3147,7 +3151,7 @@ msgstr "Nginx 未執行"
 msgid "Nginx is not running in another container"
 msgstr "Nginx 未在另一個容器中運行"
 
-#: src/views/dashboard/NginxDashBoard.vue:114
+#: src/views/dashboard/NginxDashBoard.vue:134
 msgid "Nginx is running"
 msgstr "Nginx 執行中"
 
@@ -3245,8 +3249,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf 包含 streams-enabled 目錄"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:157
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:169
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:38
@@ -3263,7 +3267,7 @@ msgstr "取消"
 msgid "No Action"
 msgstr "無行動"
 
-#: src/views/dashboard/NginxDashBoard.vue:182
+#: src/views/dashboard/NginxDashBoard.vue:202
 msgid "No data"
 msgstr "無數據"
 
@@ -3394,9 +3398,13 @@ msgstr "OCSP 強制裝訂可能會導致部分使用者在首次使用 Firefox �
 msgid "Off"
 msgstr "關"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
+#: src/views/system/About.vue:31
+msgid "Official Document"
+msgstr "官方文件"
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
-#: src/components/NodeSelector/NodeSelector.vue:94
+#: src/components/NodeSelector/NodeSelector.vue:107
 #: src/components/ProxyTargets/ProxyTargets.vue:43
 #: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:55
@@ -3428,9 +3436,9 @@ msgstr "開啟"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "驗證完成後，記錄將被刪除。"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
-#: src/components/NodeSelector/NodeSelector.vue:74
-#: src/components/NodeSelector/NodeSelector.vue:88
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
+#: src/components/NodeSelector/NodeSelector.vue:101
+#: src/components/NodeSelector/NodeSelector.vue:87
 #: src/views/dashboard/Environments.vue:92
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
@@ -3448,7 +3456,7 @@ msgstr "開放"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:276
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:280
 msgid "Or"
 msgstr "或"
 
@@ -3520,7 +3528,7 @@ msgstr ""
 "通行金鑰是 WebAuthn 認證，透過觸控、面部辨識、裝置密碼或 PIN 碼來驗證您的身份。它們可以用作密碼替代品或作為雙重身份驗證 (2FA) "
 "方法。"
 
-#: src/views/other/Login.vue:228 src/views/user/userColumns.tsx:16
+#: src/views/other/Login.vue:232 src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr "密碼"
 
@@ -3582,7 +3590,7 @@ msgstr "執行核心升級錯誤"
 msgid "Performance"
 msgstr "效能"
 
-#: src/views/dashboard/NginxDashBoard.vue:187
+#: src/views/dashboard/NginxDashBoard.vue:207
 msgid "Performance Metrics"
 msgstr "效能指標"
 
@@ -3606,7 +3614,7 @@ msgstr "PID 路徑不存在"
 msgid "Plain text is empty"
 msgstr "純文字為空"
 
-#: src/views/dashboard/NginxDashBoard.vue:176
+#: src/views/dashboard/NginxDashBoard.vue:196
 msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
@@ -3799,7 +3807,7 @@ msgstr "在示範模式中禁止更改 root 密碼"
 msgid "Prohibit deleting the default user"
 msgstr "禁止刪除預設使用者"
 
-#: src/views/system/About.vue:51
+#: src/views/system/About.vue:71
 msgid "Project Team"
 msgstr "專案團隊"
 
@@ -3923,7 +3931,7 @@ msgstr "發行公告"
 msgid "Reload"
 msgstr "重新載入"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
 #: src/views/environments/group/columns.ts:22
 #: src/views/environments/group/EnvGroup.vue:50
 #: src/views/environments/list/Environment.vue:209
@@ -3951,7 +3959,7 @@ msgstr "重新載入遠端 Nginx 錯誤"
 msgid "Reload Remote Nginx Success"
 msgstr "遠端 Nginx 重新載入成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:84
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
 msgid "Reload request failed, please check your network connection"
 msgstr "重新載入請求失敗，請檢查您的網路連線"
 
@@ -4108,7 +4116,7 @@ msgstr "回應"
 msgid "Restart"
 msgstr "重新啟動"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:174
 #: src/views/environments/list/Environment.vue:230
 #: src/views/environments/list/Environment.vue:238
 msgid "Restart Nginx"
@@ -4130,7 +4138,7 @@ msgstr "遠端 Nginx 重啟錯誤"
 msgid "Restart Remote Nginx Success"
 msgstr "遠端 Nginx 重啟成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
 msgid "Restart request failed, please check your network connection"
 msgstr "重新啟動請求失敗，請檢查您的網路連線"
 
@@ -4574,7 +4582,7 @@ msgstr "共享記憶體區域"
 msgid "Show"
 msgstr "顯示"
 
-#: src/views/other/Login.vue:285
+#: src/views/other/Login.vue:289
 msgid "Sign in with a passkey"
 msgstr "使用通行金鑰登入"
 
@@ -4634,6 +4642,10 @@ msgstr "快取載入器迭代間的休眠時間"
 msgid "Sleep time between cache manager iterations"
 msgstr "快取管理器迭代間的休眠時間"
 
+#: src/views/system/About.vue:46
+msgid "Sponsor"
+msgstr "贊助"
+
 #: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
 msgstr "SSL 憑證內容"
@@ -4679,7 +4691,7 @@ msgstr "SSL 金鑰路徑"
 msgid "SSL key path is required when HTTPS is enabled"
 msgstr "啟用 HTTPS 時必須提供 SSL 金鑰路徑"
 
-#: src/views/other/Login.vue:242
+#: src/views/other/Login.vue:246
 msgid "SSO Login"
 msgstr "SSO 登入"
 
@@ -4878,7 +4890,7 @@ msgstr "同步設定錯誤"
 msgid "Sync Config Success"
 msgstr "同步設定成功"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:122
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
 #: src/views/environments/group/EnvGroup.vue:31
 msgid "Sync Nodes"
 msgstr "同步節點"
@@ -5092,7 +5104,7 @@ msgid ""
 "-_./:"
 msgstr "此欄位應僅包含字母、Unicode字符、數字和 -_./:"
 
-#: src/views/dashboard/NginxDashBoard.vue:155
+#: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
@@ -5197,9 +5209,13 @@ msgstr ""
 "要使用本機大型語言模型，請使用 ollama、vllm 或 lmdeploy 部署。它們提供與 OpenAI 相容的 API 端點，因此只需將 "
 "baseUrl 設定為您的本機 API。"
 
-#: src/views/dashboard/NginxDashBoard.vue:55
+#: src/views/dashboard/NginxDashBoard.vue:57
 msgid "Toggle failed"
 msgstr "切換失敗"
+
+#: src/constants/errors/user.ts:13
+msgid "Token is empty"
+msgstr "令牌為空"
 
 #: src/views/preference/tabs/OpenAISettings.vue:61
 msgid "Token is not valid"
@@ -5383,7 +5399,7 @@ msgstr "使用者未啟用 OTP 作為雙重身份驗證 (2FA)"
 msgid "User Profile"
 msgstr "用戶資料"
 
-#: src/views/other/Login.vue:218 src/views/user/userColumns.tsx:7
+#: src/views/other/Login.vue:222 src/views/user/userColumns.tsx:7
 #: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "使用者名稱"
@@ -5566,8 +5582,8 @@ msgstr "將憑證私鑰寫入磁碟"
 msgid "Writing certificate to disk"
 msgstr "將憑證寫入磁碟"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:168
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:131

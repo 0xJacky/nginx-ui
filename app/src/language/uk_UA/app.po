@@ -227,7 +227,7 @@ msgstr "Розширений режим"
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "Після цього оновіть цю сторінку та натисніть «Додати ключ доступу» знову."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:115
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
 msgid "All"
 msgstr "Усі"
 
@@ -306,7 +306,7 @@ msgstr "Ви впевнені, що хочете видалити назавжд
 msgid "Are you sure you want to delete?"
 msgstr "Ви впевнені, що хочете видалити?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:129
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:155
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr ""
 "Ви впевнені, що бажаєте перезавантажити Nginx на наступних вузлах "
@@ -324,7 +324,7 @@ msgstr "Ви впевнені, що хочете видалити цей еле�
 msgid "Are you sure you want to remove this location?"
 msgstr "Ви впевнені, що хочете видалити цю локацію?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:167
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr ""
 "Ви впевнені, що хочете перезавантажити Nginx на вказаних синхронізованих "
@@ -567,7 +567,7 @@ msgstr "Нижче наведені елементи, які ви обрали �
 msgid "Block is nil"
 msgstr "Блок є nil"
 
-#: src/views/system/About.vue:55
+#: src/views/system/About.vue:75
 msgid "Build with"
 msgstr "Створено за допомогою"
 
@@ -660,7 +660,7 @@ msgstr "Не вдається порівняти: відсутній вміст"
 msgid "Cannot delete protected path: {0}"
 msgstr "Неможливо видалити захищений шлях: {0}"
 
-#: src/views/dashboard/NginxDashBoard.vue:134
+#: src/views/dashboard/NginxDashBoard.vue:154
 msgid "Cannot get performance data in this state"
 msgstr "Не вдається отримати дані про ефективність у цьому стані"
 
@@ -1084,7 +1084,7 @@ msgstr "Підтвердити новий пароль"
 msgid "Connected"
 msgstr "Підключено"
 
-#: src/views/dashboard/NginxDashBoard.vue:87
+#: src/views/dashboard/NginxDashBoard.vue:100
 msgid "Connection error, trying to reconnect..."
 msgstr "Помилка з'єднання, спроба повторного підключення..."
 
@@ -1815,7 +1815,7 @@ msgstr "Не вдалося увімкнути потік %{name} на %{node}"
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Потік %{name} успішно ввімкнено на %{node}"
 
-#: src/views/dashboard/NginxDashBoard.vue:152
+#: src/views/dashboard/NginxDashBoard.vue:172
 msgid "Enable stub_status module"
 msgstr "Увімкнути модуль stub_status"
 
@@ -2400,7 +2400,7 @@ msgstr "Генерація приватного ключа для реєстра
 msgid "Get acme user error: {0}"
 msgstr "Помилка отримання користувача ACME: {0}"
 
-#: src/views/dashboard/NginxDashBoard.vue:143
+#: src/views/dashboard/NginxDashBoard.vue:163
 msgid "Get data failed"
 msgstr "Не вдалося отримати дані"
 
@@ -2614,6 +2614,10 @@ msgstr "Невірний формат AES IV: {0}"
 msgid "Invalid AES key format: {0}"
 msgstr "Невірний формат ключа AES: {0}"
 
+#: src/constants/errors/user.ts:14
+msgid "Invalid claims type"
+msgstr "Недійсний тип вимог"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:121
 msgid "Invalid file object"
 msgstr "Недійсний об’єкт файлу"
@@ -2732,7 +2736,7 @@ msgstr "Час останньої резервної копії"
 msgid "Last checked at"
 msgstr "Остання перевірка"
 
-#: src/views/dashboard/NginxDashBoard.vue:118
+#: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Last update"
 msgstr "Останнє оновлення"
 
@@ -2769,7 +2773,7 @@ msgstr "Застарілий код відновлення не дозволяє
 msgid "Lego disable CNAME Support"
 msgstr "Lego вимкнути підтримку CNAME"
 
-#: src/views/system/About.vue:63
+#: src/views/system/About.vue:83
 msgid "License"
 msgstr "Ліцензія"
 
@@ -2819,12 +2823,12 @@ msgstr "Час очікування завантажувача"
 msgid "Loader Threshold"
 msgstr "Поріг завантажувача"
 
-#: src/views/dashboard/NginxDashBoard.vue:180
+#: src/views/dashboard/NginxDashBoard.vue:200
 msgid "Loading data..."
 msgstr "Завантаження даних..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:71
+#: src/components/NodeSelector/NodeSelector.vue:84
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2863,11 +2867,11 @@ msgstr ""
 msgid "Log List"
 msgstr "Список журналів"
 
-#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:267
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:271
 msgid "Login"
 msgstr "Увійти"
 
-#: src/views/other/Login.vue:76
+#: src/views/other/Login.vue:78
 msgid "Login successful"
 msgstr "Успішний вхід"
 
@@ -3118,7 +3122,7 @@ msgstr "Багаторядкова директива"
 msgid "Name"
 msgstr "Ім'я"
 
-#: src/views/dashboard/NginxDashBoard.vue:175
+#: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
 msgstr "Потрібно активувати модуль stub_status"
 
@@ -3274,9 +3278,9 @@ msgstr "Помилка Nginx: {0}"
 
 #: src/components/NgxConfigEditor/NginxStatusAlert.vue:15
 #: src/composables/useNginxPerformance.ts:43
-#: src/views/dashboard/NginxDashBoard.vue:114
-#: src/views/dashboard/NginxDashBoard.vue:133
-#: src/views/dashboard/NginxDashBoard.vue:77
+#: src/views/dashboard/NginxDashBoard.vue:134
+#: src/views/dashboard/NginxDashBoard.vue:153
+#: src/views/dashboard/NginxDashBoard.vue:84
 msgid "Nginx is not running"
 msgstr "Nginx не працює"
 
@@ -3284,7 +3288,7 @@ msgstr "Nginx не працює"
 msgid "Nginx is not running in another container"
 msgstr "Nginx не працює в іншому контейнері"
 
-#: src/views/dashboard/NginxDashBoard.vue:114
+#: src/views/dashboard/NginxDashBoard.vue:134
 msgid "Nginx is running"
 msgstr "Nginx працює"
 
@@ -3384,8 +3388,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf включає каталог streams-enabled"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:157
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:169
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:38
@@ -3402,7 +3406,7 @@ msgstr "Ні"
 msgid "No Action"
 msgstr "Без дії"
 
-#: src/views/dashboard/NginxDashBoard.vue:182
+#: src/views/dashboard/NginxDashBoard.vue:202
 msgid "No data"
 msgstr "Немає даних"
 
@@ -3539,9 +3543,13 @@ msgstr ""
 msgid "Off"
 msgstr "Вимкнено"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
+#: src/views/system/About.vue:31
+msgid "Official Document"
+msgstr "Офіційна документація"
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
-#: src/components/NodeSelector/NodeSelector.vue:94
+#: src/components/NodeSelector/NodeSelector.vue:107
 #: src/components/ProxyTargets/ProxyTargets.vue:43
 #: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:55
@@ -3573,9 +3581,9 @@ msgstr "Увімкнено"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Після завершення перевірки записи будуть видалені."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
-#: src/components/NodeSelector/NodeSelector.vue:74
-#: src/components/NodeSelector/NodeSelector.vue:88
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
+#: src/components/NodeSelector/NodeSelector.vue:101
+#: src/components/NodeSelector/NodeSelector.vue:87
 #: src/views/dashboard/Environments.vue:92
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
@@ -3593,7 +3601,7 @@ msgstr "Відкрито"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:276
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:280
 msgid "Or"
 msgstr "Або"
 
@@ -3667,7 +3675,7 @@ msgstr ""
 "можуть використовуватися замість пароля або як метод двофакторної "
 "аутентифікації (2FA)."
 
-#: src/views/other/Login.vue:228 src/views/user/userColumns.tsx:16
+#: src/views/other/Login.vue:232 src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr "Пароль"
 
@@ -3729,7 +3737,7 @@ msgstr "Помилка виконання оновлення ядра"
 msgid "Performance"
 msgstr "Продуктивність"
 
-#: src/views/dashboard/NginxDashBoard.vue:187
+#: src/views/dashboard/NginxDashBoard.vue:207
 msgid "Performance Metrics"
 msgstr "Метрики продуктивності"
 
@@ -3753,7 +3761,7 @@ msgstr "Шлях PID не існує"
 msgid "Plain text is empty"
 msgstr "Звичайний текст порожній"
 
-#: src/views/dashboard/NginxDashBoard.vue:176
+#: src/views/dashboard/NginxDashBoard.vue:196
 msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
@@ -3963,7 +3971,7 @@ msgstr "У демо-версії заборонено змінювати пар�
 msgid "Prohibit deleting the default user"
 msgstr "Забороняється видаляти типового користувача"
 
-#: src/views/system/About.vue:51
+#: src/views/system/About.vue:71
 msgid "Project Team"
 msgstr "Команда проекту"
 
@@ -4092,7 +4100,7 @@ msgstr "Примітки до версії"
 msgid "Reload"
 msgstr "Перезавантажити"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
 #: src/views/environments/group/columns.ts:22
 #: src/views/environments/group/EnvGroup.vue:50
 #: src/views/environments/list/Environment.vue:209
@@ -4120,7 +4128,7 @@ msgstr "Помилка перезавантаження віддаленого N
 msgid "Reload Remote Nginx Success"
 msgstr "Успішне перезавантаження віддаленого Nginx"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:84
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
 msgid "Reload request failed, please check your network connection"
 msgstr ""
 "Не вдалося виконати запит на перезавантаження, будь ласка, перевірте "
@@ -4282,7 +4290,7 @@ msgstr "Відповіді"
 msgid "Restart"
 msgstr "Перезавантажити"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:174
 #: src/views/environments/list/Environment.vue:230
 #: src/views/environments/list/Environment.vue:238
 msgid "Restart Nginx"
@@ -4304,7 +4312,7 @@ msgstr "Помилка перезапуску віддаленого Nginx"
 msgid "Restart Remote Nginx Success"
 msgstr "Віддалений перезапуск Nginx успішний"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
 msgid "Restart request failed, please check your network connection"
 msgstr ""
 "Не вдалося виконати запит на перезавантаження, будь ласка, перевірте "
@@ -4760,7 +4768,7 @@ msgstr "Зона спільної пам'яті"
 msgid "Show"
 msgstr "Показати"
 
-#: src/views/other/Login.vue:285
+#: src/views/other/Login.vue:289
 msgid "Sign in with a passkey"
 msgstr "Увійти за допомогою ключа доступу"
 
@@ -4820,6 +4828,10 @@ msgstr "Час очікування між ітераціями завантаж
 msgid "Sleep time between cache manager iterations"
 msgstr "Час очікування між ітераціями менеджера кешу"
 
+#: src/views/system/About.vue:46
+msgid "Sponsor"
+msgstr "Спонсор"
+
 #: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
 msgstr "Вміст SSL-сертифіката"
@@ -4865,7 +4877,7 @@ msgstr "Шлях до SSL-ключа"
 msgid "SSL key path is required when HTTPS is enabled"
 msgstr "Шлях до SSL-ключа обов’язковий при ввімкненні HTTPS"
 
-#: src/views/other/Login.vue:242
+#: src/views/other/Login.vue:246
 msgid "SSO Login"
 msgstr "Вхід через SSO"
 
@@ -5070,7 +5082,7 @@ msgstr "Помилка синхронізації конфігурації"
 msgid "Sync Config Success"
 msgstr "Успішна синхронізація конфігурації"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:122
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
 #: src/views/environments/group/EnvGroup.vue:31
 msgid "Sync Nodes"
 msgstr "Синхронізовані вузли"
@@ -5309,7 +5321,7 @@ msgid ""
 "-_./:"
 msgstr "Це поле має містити лише літери, символи Unicode, цифри та -_./:"
 
-#: src/views/dashboard/NginxDashBoard.vue:155
+#: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
@@ -5434,9 +5446,13 @@ msgstr ""
 "ollama, vllm або lmdeploy. Вони надають API-ендпоінт, сумісний з OpenAI, "
 "тому просто встановіть baseUrl на вашу локальну API."
 
-#: src/views/dashboard/NginxDashBoard.vue:55
+#: src/views/dashboard/NginxDashBoard.vue:57
 msgid "Toggle failed"
 msgstr "Не вдалося перемкнути"
+
+#: src/constants/errors/user.ts:13
+msgid "Token is empty"
+msgstr "Токен порожній"
 
 #: src/views/preference/tabs/OpenAISettings.vue:61
 msgid "Token is not valid"
@@ -5622,7 +5638,7 @@ msgstr "Користувач не увімкнув OTP як 2FA"
 msgid "User Profile"
 msgstr "Профіль користувача"
 
-#: src/views/other/Login.vue:218 src/views/user/userColumns.tsx:7
+#: src/views/other/Login.vue:222 src/views/user/userColumns.tsx:7
 #: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "Ім’я користувача"
@@ -5819,8 +5835,8 @@ msgstr "Запис приватного ключа сертифіката на �
 msgid "Writing certificate to disk"
 msgstr "Запис сертифіката на диск"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:168
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:131

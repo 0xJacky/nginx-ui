@@ -224,7 +224,7 @@ msgstr ""
 "Aktualisieren Sie anschließend diese Seite und klicken Sie erneut auf "
 "\"Passkey hinzufügen\"."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:115
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
 msgid "All"
 msgstr "Alle"
 
@@ -303,7 +303,7 @@ msgstr "Sind Sie sicher, dass Sie dauerhaft löschen möchten?"
 msgid "Are you sure you want to delete?"
 msgstr "Sind Sie sicher, dass Sie löschen möchten?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:129
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:155
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr ""
 "Sind Sie sicher, dass Sie Nginx auf den folgenden Sync-Knoten neu laden "
@@ -321,7 +321,7 @@ msgstr "Möchten Sie dieses Element wirklich entfernen?"
 msgid "Are you sure you want to remove this location?"
 msgstr "Sind Sie sicher, dass Sie diesen Standort entfernen möchten?"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:141
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:167
 msgid "Are you sure you want to restart Nginx on the following sync nodes?"
 msgstr ""
 "Sind Sie sicher, dass Sie Nginx auf den folgenden Synchronisationsknoten "
@@ -566,7 +566,7 @@ msgstr "Hier sind die ausgewählten Elemente, die Sie stapelweise ändern möcht
 msgid "Block is nil"
 msgstr "Block ist nil"
 
-#: src/views/system/About.vue:55
+#: src/views/system/About.vue:75
 msgid "Build with"
 msgstr "Build mit"
 
@@ -660,7 +660,7 @@ msgstr "Kann nicht vergleichen: Fehlende Inhalte"
 msgid "Cannot delete protected path: {0}"
 msgstr "Geschützter Pfad kann nicht gelöscht werden: {0}"
 
-#: src/views/dashboard/NginxDashBoard.vue:134
+#: src/views/dashboard/NginxDashBoard.vue:154
 msgid "Cannot get performance data in this state"
 msgstr "In diesem Zustand können Leistungsdaten nicht erhalten"
 
@@ -1089,7 +1089,7 @@ msgstr "Neues Passwort bestätigen"
 msgid "Connected"
 msgstr "Verbunden"
 
-#: src/views/dashboard/NginxDashBoard.vue:87
+#: src/views/dashboard/NginxDashBoard.vue:100
 msgid "Connection error, trying to reconnect..."
 msgstr "Verbindungsfehler, versuche erneut zu verbinden..."
 
@@ -1754,7 +1754,7 @@ msgstr "Aktivierung des Streams %{name} auf %{node} fehlgeschlagen"
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Stream %{name} auf %{node} erfolgreich aktiviert"
 
-#: src/views/dashboard/NginxDashBoard.vue:152
+#: src/views/dashboard/NginxDashBoard.vue:172
 msgid "Enable stub_status module"
 msgstr "Aktiviere stub_status-Modul"
 
@@ -2339,7 +2339,7 @@ msgstr "Generiere privaten Schlüssel zur Registrierung des Kontos"
 msgid "Get acme user error: {0}"
 msgstr "Fehler beim Abrufen des ACME-Benutzers: {0}"
 
-#: src/views/dashboard/NginxDashBoard.vue:143
+#: src/views/dashboard/NginxDashBoard.vue:163
 msgid "Get data failed"
 msgstr "Datenabruf fehlgeschlagen"
 
@@ -2557,6 +2557,10 @@ msgstr "Ungültiges AES-IV-Format: {0}"
 msgid "Invalid AES key format: {0}"
 msgstr "Ungültiges AES-Schlüsselformat: {0}"
 
+#: src/constants/errors/user.ts:14
+msgid "Invalid claims type"
+msgstr "Ungültiger Anspruchstyp"
+
 #: src/components/SystemRestore/SystemRestoreContent.vue:121
 msgid "Invalid file object"
 msgstr "Ungültiges Dateiobjekt"
@@ -2675,7 +2679,7 @@ msgstr "Letzter Sicherungszeitpunkt"
 msgid "Last checked at"
 msgstr "Zuletzt überprüft am"
 
-#: src/views/dashboard/NginxDashBoard.vue:118
+#: src/views/dashboard/NginxDashBoard.vue:138
 msgid "Last update"
 msgstr "Letzte Aktualisierung"
 
@@ -2712,7 +2716,7 @@ msgstr "Alter Wiederherstellungscode nicht erlaubt, da TOTP nicht aktiviert ist"
 msgid "Lego disable CNAME Support"
 msgstr "Lego deaktiviert CNAME-Unterstützung"
 
-#: src/views/system/About.vue:63
+#: src/views/system/About.vue:83
 msgid "License"
 msgstr "Lizenz"
 
@@ -2762,12 +2766,12 @@ msgstr "Loader-Pause"
 msgid "Loader Threshold"
 msgstr "Laderschwelle"
 
-#: src/views/dashboard/NginxDashBoard.vue:180
+#: src/views/dashboard/NginxDashBoard.vue:200
 msgid "Loading data..."
 msgstr "Daten werden geladen..."
 
 #: src/components/EnvIndicator/EnvIndicator.vue:39
-#: src/components/NodeSelector/NodeSelector.vue:71
+#: src/components/NodeSelector/NodeSelector.vue:84
 #: src/views/backup/AutoBackup/AutoBackup.vue:74
 #: src/views/backup/AutoBackup/AutoBackup.vue:83
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:48
@@ -2805,11 +2809,11 @@ msgstr ""
 msgid "Log List"
 msgstr "Protokollliste"
 
-#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:267
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:271
 msgid "Login"
 msgstr "Login"
 
-#: src/views/other/Login.vue:76
+#: src/views/other/Login.vue:78
 msgid "Login successful"
 msgstr "Login erfolgreich"
 
@@ -3061,7 +3065,7 @@ msgstr "Mehrzeilige Direktive"
 msgid "Name"
 msgstr "Name"
 
-#: src/views/dashboard/NginxDashBoard.vue:175
+#: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
 msgstr "Das stub_status-Modul muss aktiviert werden"
 
@@ -3217,9 +3221,9 @@ msgstr "Nginx-Fehler: {0}"
 
 #: src/components/NgxConfigEditor/NginxStatusAlert.vue:15
 #: src/composables/useNginxPerformance.ts:43
-#: src/views/dashboard/NginxDashBoard.vue:114
-#: src/views/dashboard/NginxDashBoard.vue:133
-#: src/views/dashboard/NginxDashBoard.vue:77
+#: src/views/dashboard/NginxDashBoard.vue:134
+#: src/views/dashboard/NginxDashBoard.vue:153
+#: src/views/dashboard/NginxDashBoard.vue:84
 msgid "Nginx is not running"
 msgstr "Nginx läuft nicht"
 
@@ -3227,7 +3231,7 @@ msgstr "Nginx läuft nicht"
 msgid "Nginx is not running in another container"
 msgstr "Nginx läuft nicht in einem anderen Container"
 
-#: src/views/dashboard/NginxDashBoard.vue:114
+#: src/views/dashboard/NginxDashBoard.vue:134
 msgid "Nginx is running"
 msgstr "Nginx läuft"
 
@@ -3327,8 +3331,8 @@ msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf enthält das streams-enabled-Verzeichnis"
 
 #: src/components/ChatGPT/ChatMessageInput.vue:17
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:131
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:143
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:157
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:169
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
 #: src/components/Notification/Notification.vue:108 src/language/curd.ts:38
@@ -3345,7 +3349,7 @@ msgstr "Nein"
 msgid "No Action"
 msgstr "Keine Aktion"
 
-#: src/views/dashboard/NginxDashBoard.vue:182
+#: src/views/dashboard/NginxDashBoard.vue:202
 msgid "No data"
 msgstr "Keine Daten"
 
@@ -3483,9 +3487,13 @@ msgstr ""
 msgid "Off"
 msgstr "Aus"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
+#: src/views/system/About.vue:31
+msgid "Official Document"
+msgstr "Offizielle Dokumentation"
+
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
-#: src/components/NodeSelector/NodeSelector.vue:94
+#: src/components/NodeSelector/NodeSelector.vue:107
 #: src/components/ProxyTargets/ProxyTargets.vue:43
 #: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:55
@@ -3517,9 +3525,9 @@ msgstr "Ein"
 msgid "Once the verification is complete, the records will be removed."
 msgstr "Sobaöd die Überprüfung abgeschlossen ist, werden die Einträge entfernt."
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:159
-#: src/components/NodeSelector/NodeSelector.vue:74
-#: src/components/NodeSelector/NodeSelector.vue:88
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
+#: src/components/NodeSelector/NodeSelector.vue:101
+#: src/components/NodeSelector/NodeSelector.vue:87
 #: src/views/dashboard/Environments.vue:92
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
@@ -3537,7 +3545,7 @@ msgstr "Offen"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:276
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:280
 msgid "Or"
 msgstr "Oder"
 
@@ -3610,7 +3618,7 @@ msgstr ""
 "Berührung, Gesichtserkennung, ein Gerätepasswort oder eine PIN validieren. "
 "Sie können als Passwortersatz oder als 2FA-Methode verwendet werden."
 
-#: src/views/other/Login.vue:228 src/views/user/userColumns.tsx:16
+#: src/views/other/Login.vue:232 src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr "Passwort"
 
@@ -3672,7 +3680,7 @@ msgstr "Führe Core-Upgrade-Fehler aus"
 msgid "Performance"
 msgstr "Leistung"
 
-#: src/views/dashboard/NginxDashBoard.vue:187
+#: src/views/dashboard/NginxDashBoard.vue:207
 msgid "Performance Metrics"
 msgstr "Leistungsmetriken"
 
@@ -3696,7 +3704,7 @@ msgstr "PID-Pfad existiert nicht"
 msgid "Plain text is empty"
 msgstr "Klartext ist leer"
 
-#: src/views/dashboard/NginxDashBoard.vue:176
+#: src/views/dashboard/NginxDashBoard.vue:196
 msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
@@ -3908,7 +3916,7 @@ msgstr "Verhindere das Ändern des Root-Passworts in der Demo"
 msgid "Prohibit deleting the default user"
 msgstr "Verhindere das Löschen des Standardbenutzers"
 
-#: src/views/system/About.vue:51
+#: src/views/system/About.vue:71
 msgid "Project Team"
 msgstr "Projektteam"
 
@@ -4037,7 +4045,7 @@ msgstr "Änderungsprotokoll"
 msgid "Reload"
 msgstr "Neu laden"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:136
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:162
 #: src/views/environments/group/columns.ts:22
 #: src/views/environments/group/EnvGroup.vue:50
 #: src/views/environments/list/Environment.vue:209
@@ -4065,7 +4073,7 @@ msgstr "Fehler beim Neuladen von Remote-Nginx"
 msgid "Reload Remote Nginx Success"
 msgstr "Neustart von Remote-Nginx erfolgreich"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:84
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:110
 msgid "Reload request failed, please check your network connection"
 msgstr ""
 "Die Neulade-Anfrage ist fehlgeschlagen, bitte überprüfen Sie Ihre "
@@ -4227,7 +4235,7 @@ msgstr "Antworten"
 msgid "Restart"
 msgstr "Neustart"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:174
 #: src/views/environments/list/Environment.vue:230
 #: src/views/environments/list/Environment.vue:238
 msgid "Restart Nginx"
@@ -4249,7 +4257,7 @@ msgstr "Fehler beim Neustart von Remote-Nginx"
 msgid "Restart Remote Nginx Success"
 msgstr "Neustart von Remote-Nginx erfolgreich"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:104
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
 msgid "Restart request failed, please check your network connection"
 msgstr ""
 "Neustart-Anforderung fehlgeschlagen, bitte überprüfen Sie Ihre "
@@ -4703,7 +4711,7 @@ msgstr "Gemeinsamer Speicherbereich"
 msgid "Show"
 msgstr "Zeige"
 
-#: src/views/other/Login.vue:285
+#: src/views/other/Login.vue:289
 msgid "Sign in with a passkey"
 msgstr "Mit einem Passkey anmelden"
 
@@ -4763,6 +4771,10 @@ msgstr "Wartezeit zwischen den Iterationen des Cache-Loaders"
 msgid "Sleep time between cache manager iterations"
 msgstr "Wartezeit zwischen den Iterationen des Cache-Managers"
 
+#: src/views/system/About.vue:46
+msgid "Sponsor"
+msgstr "Sponsor"
+
 #: src/views/certificate/CertificateEditor.vue:211
 msgid "SSL Certificate Content"
 msgstr "SSL-Zertifikatsinhalt"
@@ -4812,7 +4824,7 @@ msgstr "SSL-Schlüsselpfad"
 msgid "SSL key path is required when HTTPS is enabled"
 msgstr "Der SSL-Schlüsselpfad ist erforderlich, wenn HTTPS aktiviert ist"
 
-#: src/views/other/Login.vue:242
+#: src/views/other/Login.vue:246
 msgid "SSO Login"
 msgstr "SSO-Anmeldung"
 
@@ -5020,7 +5032,7 @@ msgstr "Fehler beim Synchronisieren der Konfiguration"
 msgid "Sync Config Success"
 msgstr "Konfiguration erfolgreich synchronisiert"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:122
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:148
 #: src/views/environments/group/EnvGroup.vue:31
 msgid "Sync Nodes"
 msgstr "Synchrone Knoten"
@@ -5259,7 +5271,7 @@ msgid ""
 "-_./:"
 msgstr "Dieses Feld darf nur Buchstaben, Unicode-Zeichen, Zahlen und -_./: enthalten"
 
-#: src/views/dashboard/NginxDashBoard.vue:155
+#: src/views/dashboard/NginxDashBoard.vue:175
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
@@ -5388,9 +5400,13 @@ msgstr ""
 "vllm oder lmdeploy. Sie bieten einen OpenAI-kompatiblen API-Endpunkt, also "
 "setze die baseUrl auf deine lokale API."
 
-#: src/views/dashboard/NginxDashBoard.vue:55
+#: src/views/dashboard/NginxDashBoard.vue:57
 msgid "Toggle failed"
 msgstr "Umschalten fehlgeschlagen"
+
+#: src/constants/errors/user.ts:13
+msgid "Token is empty"
+msgstr "Token ist leer"
 
 #: src/views/preference/tabs/OpenAISettings.vue:61
 msgid "Token is not valid"
@@ -5576,7 +5592,7 @@ msgstr "Benutzer hat OTP nicht als 2FA aktiviert"
 msgid "User Profile"
 msgstr "Benutzerprofil"
 
-#: src/views/other/Login.vue:218 src/views/user/userColumns.tsx:7
+#: src/views/other/Login.vue:222 src/views/user/userColumns.tsx:7
 #: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "Benutzername"
@@ -5778,8 +5794,8 @@ msgstr "Scrheibe Zertifikat-Privatschlüssel auf die Festplatte"
 msgid "Writing certificate to disk"
 msgstr "Schreibe Zertifikat auf die Festplatte"
 
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:130
-#: src/components/EnvGroupTabs/EnvGroupTabs.vue:142
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:156
+#: src/components/EnvGroupTabs/EnvGroupTabs.vue:168
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:98
 #: src/components/NgxConfigEditor/LocationEditor.vue:88
 #: src/views/preference/tabs/AuthSettings.vue:131

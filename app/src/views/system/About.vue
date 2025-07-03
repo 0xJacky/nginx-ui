@@ -26,6 +26,11 @@ const thisYear = new Date().getFullYear()
     <h2>Nginx UI</h2>
     <p>Yet another WebUI for Nginx</p>
     <p>Version: {{ ver.version }} ({{ ver.total_build || $gettext('Development Mode') }})</p>
+    <p>
+      <a href="https://nginxui.com" target="_blank" rel="noopener noreferrer">
+        {{ $gettext('Official Document') }}
+      </a>
+    </p>
     <div class="mb-2">
       <GithubButton
         href="https://github.com/0xJacky/nginx-ui"
@@ -37,7 +42,10 @@ const thisYear = new Date().getFullYear()
         Star
       </GithubButton>
     </div>
-    <div class="mb-2">
+    <h3 class="mb-4">
+      {{ $gettext('Sponsor') }}
+    </h3>
+    <div class="mb-4">
       <GithubButton
         href="https://github.com/sponsors/nginxui"
         data-color-scheme="no-preference: light; light: light; dark: dark;"
@@ -47,7 +55,19 @@ const thisYear = new Date().getFullYear()
         Sponsor
       </GithubButton>
     </div>
-    <h3>
+    <div class="mb-4">
+      <a
+        href="https://afdian.com/a/nginxui"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          src="https://img.shields.io/badge/爱发电-Support-946ce6?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K"
+          alt="Support on Afdian"
+        >
+      </a>
+    </div>
+    <h3 class="mb-4">
       {{ $gettext('Project Team') }}
     </h3>
     <p><a href="https://jackyu.cn/">@0xJacky</a> <a href="https://blog.kugeek.com/">@Hintay</a> <a href="https://github.com/akinoccc">@Akino</a></p>
@@ -62,7 +82,7 @@ const thisYear = new Date().getFullYear()
     <h3>
       {{ $gettext('License') }}
     </h3>
-    <p>GNU General Public License v3.0</p>
+    <p>GNU Affero General Public License v3.0</p>
     <p>Copyright © 2021 - {{ thisYear }} Nginx UI Team</p>
   </ACard>
 </template>
