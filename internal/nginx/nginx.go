@@ -25,7 +25,11 @@ func TestConfig() (stdOut string, stdErr error) {
 	if settings.NginxSettings.TestConfigCmd != "" {
 		return execShell(settings.NginxSettings.TestConfigCmd)
 	}
-	return execCommand("nginx", "-t")
+	sbin := GetSbinPath()
+	if sbin == "" {
+		return execCommand("nginx", "-t")
+	}
+	return execCommand(sbin, "-t")
 }
 
 // Reload reloads the nginx
@@ -44,7 +48,13 @@ func Reload() (stdOut string, stdErr error) {
 	if settings.NginxSettings.ReloadCmd != "" {
 		return execShell(settings.NginxSettings.ReloadCmd)
 	}
-	return execCommand("nginx", "-s", "reload")
+
+	sbin := GetSbinPath()
+
+	if sbin == "" {
+		return execCommand("nginx", "-s", "reload")
+	}
+	return execCommand(sbin, "-s", "reload")
 }
 
 func restart() {
