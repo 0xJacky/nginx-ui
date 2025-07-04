@@ -128,6 +128,17 @@ func GetAccessLogPath() (path string) {
 		match := r.FindStringSubmatch(out)
 		if len(match) > 1 {
 			path = match[1]
+			resolvedPath := resolvePath(path)
+
+			// Check if the matched path exists but is not a regular file
+			if !isValidRegularFile(resolvedPath) {
+				logger.Debug("access log path from nginx -V exists but is not a regular file, try to get from nginx -T output", "path", resolvedPath)
+				fallbackPath := getAccessLogPathFromNginxT()
+				if fallbackPath != "" {
+					path = fallbackPath
+					return path // Already resolved in getAccessLogPathFromNginxT
+				}
+			}
 		}
 		if path == "" {
 			logger.Debug("access log path not found in nginx -V output, try to get from nginx -T output")
@@ -148,6 +159,17 @@ func GetErrorLogPath() string {
 		match := r.FindStringSubmatch(out)
 		if len(match) > 1 {
 			path = match[1]
+			resolvedPath := resolvePath(path)
+
+			// Check if the matched path exists but is not a regular file
+			if !isValidRegularFile(resolvedPath) {
+				logger.Debug("error log path from nginx -V exists but is not a regular file, try to get from nginx -T output", "path", resolvedPath)
+				fallbackPath := getErrorLogPathFromNginxT()
+				if fallbackPath != "" {
+					path = fallbackPath
+					return path // Already resolved in getErrorLogPathFromNginxT
+				}
+			}
 		}
 		if path == "" {
 			logger.Debug("error log path not found in nginx -V output, try to get from nginx -T output")
