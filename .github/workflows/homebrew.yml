@@ -1,10 +1,6 @@
 name: Update Homebrew Formula
 
 on:
-  workflow_run:
-    workflows: ["Build"]
-    types:
-      - completed
   release:
     types:
       - published
@@ -12,7 +8,7 @@ on:
 jobs:
   update-homebrew:
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'release')
+    if: github.event_name == 'release'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,17 +16,65 @@ jobs:
       - name: Get release info
         id: release
         run: |
-          if [[ "${{ github.event_name }}" == "release" ]]; then
-            echo "tag_name=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
-            echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-          else
-            # Get latest release info
-            LATEST_RELEASE=$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases/latest")
-            TAG_NAME=$(echo "$LATEST_RELEASE" | jq -r '.tag_name')
-            VERSION=${TAG_NAME#v}
-            echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
-            echo "version=$VERSION" >> $GITHUB_OUTPUT
-          fi
+          echo "tag_name=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+          echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Wait for release assets to be available
+        run: |
+          TAG_NAME="${{ steps.release.outputs.tag_name }}"
+
+          # Function to check if a file exists
+          check_file() {
+            local url="$1"
+            local filename="$2"
+            echo "Checking if $filename is available..."
+            if curl --output /dev/null --silent --head --fail "$url"; then
+              echo "✓ $filename is available"
+              return 0
+            else
+              echo "✗ $filename is not yet available"
+              return 1
+            fi
+          }
+
+          # List of files to check
+          declare -a files=(
+            "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/nginx-ui-macos-64.tar.gz"
+            "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/nginx-ui-macos-arm64-v8a.tar.gz"
+            "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/nginx-ui-linux-64.tar.gz"
+            "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/nginx-ui-linux-arm64-v8a.tar.gz"
+          )
+
+          # Wait for all files to be available (max 10 minutes)
+          max_attempts=60
+          attempt=1
+
+          while [ $attempt -le $max_attempts ]; do
+            echo "Attempt $attempt/$max_attempts - Checking release assets..."
+            all_available=true
+
+            for url in "${files[@]}"; do
+              filename=$(basename "$url")
+              if ! check_file "$url" "$filename"; then
+                all_available=false
+                break
+              fi
+            done
+
+            if [ "$all_available" = true ]; then
+              echo "All release assets are available!"
+              break
+            fi
+
+            if [ $attempt -eq $max_attempts ]; then
+              echo "Timeout: Not all release assets are available after $max_attempts attempts"
+              exit 1
+            fi
+
+            echo "Waiting 10 seconds before next check..."
+            sleep 10
+            ((attempt++))
+          done
 
       - name: Download release assets and calculate SHA256 checksums
         id: checksums
@@ -98,6 +142,45 @@ jobs:
 
             def install
               bin.install "nginx-ui"
+
+              # Create configuration directory
+              (etc/"nginx-ui").mkpath
+
+              # Create default configuration file if it doesn't exist
+              config_file = etc/"nginx-ui/app.ini"
+              unless config_file.exist?
+                config_file.write <<~EOS
+                  [app]
+                  PageSize = 10
+
+                  [server]
+                  Host = 0.0.0.0
+                  Port = 9000
+                  RunMode = release
+
+                  [cert]
+                  HTTPChallengePort = 9180
+
+                  [terminal]
+                  StartCmd = login
+                EOS
+              end
+
+              # Create data directory
+              (var/"nginx-ui").mkpath
+            end
+
+            def post_install
+              # Ensure correct permissions
+              (var/"nginx-ui").chmod 0755
+            end
+
+            service do
+              run [opt_bin/"nginx-ui", "serve", "--config", etc/"nginx-ui/app.ini"]
+              keep_alive true
+              working_dir var/"nginx-ui"
+              log_path var/"log/nginx-ui.log"
+              error_log_path var/"log/nginx-ui.err.log"
             end
 
             test do

@@ -216,7 +216,7 @@ jobs:
           echo "CC=${{ env.ARCH_NAME }}-clang" >> $GITHUB_ENV
           echo "CXX=${{ env.ARCH_NAME }}-clang++" >> $GITHUB_ENV
           echo "LD_FLAGS=-w" >> $GITHUB_ENV
-          
+
       - name: Setup for Windows
         if: env.GOOS == 'windows'
         run: |
@@ -225,6 +225,7 @@ jobs:
 
           # Install cross compilers based on architecture
           sudo apt-get update
+          sudo apt-get install -y zip
           if [[ "$GOARCH" == "amd64" ]]; then
             echo "Installing x86_64 Windows cross compiler"
             sudo apt-get install -y gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64
@@ -267,6 +268,14 @@ jobs:
           find dist -printf '%P\n' | tar -C dist --no-recursion -zcvf ${{ env.DIST }}.tar.gz -T -
           openssl dgst -sha512 ${{ env.DIST }}.tar.gz | sed 's/([^)]*)//g' | awk '{print $NF}' >> ${{ env.DIST }}.tar.gz.digest
 
+          # Create zip for Windows builds (for winget compatibility)
+          if [[ "$GOOS" == "windows" ]]; then
+            cd dist
+            zip -r ../${{ env.DIST }}.zip .
+            cd ..
+            openssl dgst -sha512 ${{ env.DIST }}.zip | sed 's/([^)]*)//g' | awk '{print $NF}' >> ${{ env.DIST }}.zip.digest
+          fi
+
       - name: Publish
         uses: softprops/action-gh-release@v2
         if: github.event_name == 'release'
@@ -274,12 +283,14 @@ jobs:
           files: |
             ${{ env.DIST }}.tar.gz
             ${{ env.DIST }}.tar.gz.digest
-      
+            ${{ env.GOOS == 'windows' && format('{0}.zip', env.DIST) || '' }}
+            ${{ env.GOOS == 'windows' && format('{0}.zip.digest', env.DIST) || '' }}
+
       - name: Set up nodejs
         uses: actions/setup-node@v4
         with:
           node-version: current
-    
+
       - name: Install dependencies
         run: |
           corepack enable
@@ -298,6 +309,10 @@ jobs:
           command: |
             r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz --file ./${{ env.DIST }}.tar.gz --remote
             r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --file ./${{ env.DIST }}.tar.gz.digest --remote
+            if [[ "$GOOS" == "windows" ]]; then
+              r2 object put nginx-ui-dev-build/${{ env.DIST }}.zip --file ./${{ env.DIST }}.zip --remote
+              r2 object put nginx-ui-dev-build/${{ env.DIST }}.zip.digest --file ./${{ env.DIST }}.zip.digest --remote
+            fi
 
   docker-build:
     if: github.event_name != 'pull_request'
