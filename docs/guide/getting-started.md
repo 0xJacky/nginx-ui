@@ -30,10 +30,12 @@ information: [debian/conf/nginx.conf](https://salsa.debian.org/nginx-team/nginx/
 
 ## Installation
 
-We recommend using the [installation script](./install-script-linux) for Linux users, in which case you can directly
-control the host machine's Nginx. You can also [install via Docker](#install-with-docker), where our provided image
-includes Nginx and can be used bundled. For advanced users, you may also visit the [latest release](https://github.com/0xJacky/nginx-ui/releases/latest)
-to download the latest distribution and [run executable directly](#run-executable-directly), or [manually build it](./build).
+We provide several installation methods to suit different needs:
+
+- **macOS/Linux**: Use [Homebrew](./install-homebrew) for the easiest installation
+- **Linux**: Use the [installation script](./install-script-linux) to directly control the host machine's Nginx
+- **Docker**: [Install via Docker](#install-with-docker) with our bundled image that includes Nginx
+- **Advanced**: Download from [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) and [run executable directly](#run-executable-directly), or [manually build it](./build)
 
 In the first runtime of Nginx UI, please visit `http://<your_server_ip>:<listen_port>`
 in your browser to complete the follow-up configurations.
@@ -41,6 +43,66 @@ in your browser to complete the follow-up configurations.
 In addition, we provide [an example](./nginx-proxy-example) of using Nginx to reverse proxy Nginx UI,
 which can be used after installation is complete.
 
+## Install with Homebrew
+
+For macOS and Linux users, you can install Nginx UI using Homebrew, which provides the easiest installation experience.
+
+::: tip
+
+This installation method is available for macOS and Linux. For other operating systems, please use alternative installation methods.
+
+:::
+
+### Install
+
+```bash
+brew install 0xjacky/tools/nginx-ui
+```
+
+### Start Service
+
+```bash
+# Start the service
+brew services start nginx-ui
+
+# Or run in foreground
+nginx-ui
+```
+
+### Stop Service
+
+```bash
+brew services stop nginx-ui
+```
+
+### Upgrade
+
+```bash
+brew upgrade nginx-ui
+```
+
+### Uninstall
+
+```bash
+# Stop the service first
+brew services stop nginx-ui
+
+# Uninstall the package
+brew uninstall nginx-ui
+
+# Optionally remove the tap
+brew untap 0xjacky/tools
+```
+
+::: warning
+
+After uninstalling, configuration files and data will be preserved in:
+- **macOS**: `~/Library/Application Support/nginx-ui/`
+- **Linux**: `~/.local/share/nginx-ui/` or `~/.config/nginx-ui/`
+
+If you want to completely remove all data, please delete these directories manually.
+
+:::
 
 ## Install with Docker
 

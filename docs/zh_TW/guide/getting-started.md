@@ -27,14 +27,77 @@ http {
 
 ## 安裝
 
-我們建議 Linux 使用者使用 [安裝指令碼](./install-script-linux)，這樣您可以直接控制主機上的 Nginx。您也可以透過 [Docker 安裝](#使用-docker)，
-我們提供的映象包含 Nginx 並可以直接使用。對於高階使用者，您也可以在 [最新發行 (latest release)](https://github.com/0xJacky/nginx-ui/releases/latest)
-中下載最新版本並 [透過執行檔案執行](#透過執行檔案執行)，或者 [手動建構](./build)。
+我們提供多種安裝方式以滿足不同需求：
+
+- **macOS/Linux**: 使用 [Homebrew](./install-homebrew) 最簡單的安裝方式
+- **Linux**: 使用 [安裝指令碼](./install-script-linux) 直接控制主機上的 Nginx
+- **Docker**: 透過 [Docker 安裝](#使用-docker) 使用我們提供的包含 Nginx 的映象
+- **高階使用者**: 從 [最新發行版](https://github.com/0xJacky/nginx-ui/releases/latest) 下載並 [透過執行檔案執行](#透過執行檔案執行)，或者 [手動建構](./build)
 
 第一次執行 Nginx UI 時，請在瀏覽器中存取 `http://<your_server_ip>:<listen_port>` 完成後續設定。
 
 此外，我們提供了一個使用 Nginx 反向代理 Nginx UI 的 [範例](./nginx-proxy-example)，您可在安裝完成後使用。
 
+## 使用 Homebrew 安裝
+
+對於 macOS 和 Linux 使用者，您可以使用 Homebrew 安裝 Nginx UI，這是最簡單的安裝方式。
+
+::: tip 提示
+
+此安裝方式適用於 macOS 和 Linux。對於其他作業系統，請使用其他安裝方式。
+
+:::
+
+### 安裝
+
+```bash
+brew install 0xjacky/tools/nginx-ui
+```
+
+### 啟動服務
+
+```bash
+# 啟動服務
+brew services start nginx-ui
+
+# 或者在前台執行
+nginx-ui
+```
+
+### 停止服務
+
+```bash
+brew services stop nginx-ui
+```
+
+### 升級
+
+```bash
+brew upgrade nginx-ui
+```
+
+### 解除安裝
+
+```bash
+# 首先停止服務
+brew services stop nginx-ui
+
+# 解除安裝軟體包
+brew uninstall nginx-ui
+
+# 可選：移除 tap
+brew untap 0xjacky/tools
+```
+
+::: warning 警告
+
+解除安裝後，設定檔案和資料將保留在：
+- **macOS**: `~/Library/Application Support/nginx-ui/`
+- **Linux**: `~/.local/share/nginx-ui/` 或 `~/.config/nginx-ui/`
+
+如果您想要完全刪除所有資料，請手動刪除這些目錄。
+
+:::
 
 ## 使用 Docker
 

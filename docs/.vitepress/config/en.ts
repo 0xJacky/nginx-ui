@@ -18,6 +18,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           items: [
             { text: 'What is Nginx UI?', link: '/guide/about' },
             { text: 'Getting Started', link: '/guide/getting-started' },
+            { text: 'Install with Homebrew', link: '/guide/install-homebrew' },
             { text: 'Install Script', link: '/guide/install-script-linux' }
           ]
         },
