@@ -1,0 +1,160 @@
+name: Update Homebrew Formula
+
+on:
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
+  release:
+    types:
+      - published
+
+jobs:
+  update-homebrew:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'release')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get release info
+        id: release
+        run: |
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            echo "tag_name=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+            echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          else
+            # Get latest release info
+            LATEST_RELEASE=$(curl -s "https://api.github.com/repos/${{ github.repository }}/releases/latest")
+            TAG_NAME=$(echo "$LATEST_RELEASE" | jq -r '.tag_name')
+            VERSION=${TAG_NAME#v}
+            echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download release assets and calculate SHA256 checksums
+        id: checksums
+        run: |
+          VERSION="${{ steps.release.outputs.version }}"
+          TAG_NAME="${{ steps.release.outputs.tag_name }}"
+
+          # Download binary files from releases and calculate SHA256
+          mkdir -p downloads
+
+          # macOS Intel
+          wget -O downloads/nginx-ui-macos-64.tar.gz "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/nginx-ui-macos-64.tar.gz"
+          MACOS_INTEL_SHA256=$(sha256sum downloads/nginx-ui-macos-64.tar.gz | cut -d' ' -f1)
+
+          # macOS ARM
+          wget -O downloads/nginx-ui-macos-arm64-v8a.tar.gz "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/nginx-ui-macos-arm64-v8a.tar.gz"
+          MACOS_ARM_SHA256=$(sha256sum downloads/nginx-ui-macos-arm64-v8a.tar.gz | cut -d' ' -f1)
+
+          # Linux Intel
+          wget -O downloads/nginx-ui-linux-64.tar.gz "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/nginx-ui-linux-64.tar.gz"
+          LINUX_INTEL_SHA256=$(sha256sum downloads/nginx-ui-linux-64.tar.gz | cut -d' ' -f1)
+
+          # Linux ARM
+          wget -O downloads/nginx-ui-linux-arm64-v8a.tar.gz "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/nginx-ui-linux-arm64-v8a.tar.gz"
+          LINUX_ARM_SHA256=$(sha256sum downloads/nginx-ui-linux-arm64-v8a.tar.gz | cut -d' ' -f1)
+
+          echo "macos_intel_sha256=$MACOS_INTEL_SHA256" >> $GITHUB_OUTPUT
+          echo "macos_arm_sha256=$MACOS_ARM_SHA256" >> $GITHUB_OUTPUT
+          echo "linux_intel_sha256=$LINUX_INTEL_SHA256" >> $GITHUB_OUTPUT
+          echo "linux_arm_sha256=$LINUX_ARM_SHA256" >> $GITHUB_OUTPUT
+
+      - name: Generate Homebrew Formula
+        id: formula
+        run: |
+          VERSION="${{ steps.release.outputs.version }}"
+
+          cat > nginx-ui.rb << 'EOF'
+          class NginxUi < Formula
+            desc     "Yet another Nginx Web UI"
+            homepage "https://github.com/0xJacky/nginx-ui"
+            version  "${{ steps.release.outputs.version }}"
+            license  "AGPL-3.0"
+
+            on_macos do
+              on_intel do
+                url     "https://github.com/0xJacky/nginx-ui/releases/download/v#{version}/nginx-ui-macos-64.tar.gz"
+                sha256  "${{ steps.checksums.outputs.macos_intel_sha256 }}"
+              end
+              on_arm do
+                url     "https://github.com/0xJacky/nginx-ui/releases/download/v#{version}/nginx-ui-macos-arm64-v8a.tar.gz"
+                sha256  "${{ steps.checksums.outputs.macos_arm_sha256 }}"
+              end
+            end
+
+            on_linux do
+              on_intel do
+                url     "https://github.com/0xJacky/nginx-ui/releases/download/v#{version}/nginx-ui-linux-64.tar.gz"
+                sha256  "${{ steps.checksums.outputs.linux_intel_sha256 }}"
+              end
+              on_arm do
+                url     "https://github.com/0xJacky/nginx-ui/releases/download/v#{version}/nginx-ui-linux-arm64-v8a.tar.gz"
+                sha256  "${{ steps.checksums.outputs.linux_arm_sha256 }}"
+              end
+            end
+
+            def install
+              bin.install "nginx-ui"
+            end
+
+            test do
+              assert_match version.to_s, shell_output("#{bin}/nginx-ui --version")
+            end
+          end
+          EOF
+
+          echo "Generated Homebrew Formula:"
+          cat nginx-ui.rb
+
+      - name: Checkout homebrew-tools repository
+        uses: actions/checkout@v4
+        with:
+          repository: 0xJacky/homebrew-tools
+          path: homebrew-tools
+          token: ${{ secrets.HOMEBREW_GITHUB_TOKEN }}
+
+      - name: Update Formula file
+        run: |
+          # Copy the generated formula to the correct location
+          mkdir -p homebrew-tools/Formula/
+          cp nginx-ui.rb homebrew-tools/Formula/nginx-ui.rb
+
+      - name: Verify Formula
+        run: |
+          cd homebrew-tools
+          # Basic syntax check
+          ruby -c Formula/nginx-ui.rb
+          echo "Formula syntax is valid"
+
+      - name: Create Pull Request to homebrew-tools
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.HOMEBREW_GITHUB_TOKEN }}
+          path: homebrew-tools
+          branch: update-nginx-ui-${{ steps.release.outputs.version }}
+          delete-branch: true
+          title: 'nginx-ui ${{ steps.release.outputs.version }}'
+          body: |
+            Update nginx-ui to version ${{ steps.release.outputs.version }}
+
+            **Release Notes:**
+            - Version: ${{ steps.release.outputs.version }}
+            - Release URL: https://github.com/${{ github.repository }}/releases/tag/${{ steps.release.outputs.tag_name }}
+
+            **Checksums (SHA256):**
+            - macOS Intel: ${{ steps.checksums.outputs.macos_intel_sha256 }}
+            - macOS ARM: ${{ steps.checksums.outputs.macos_arm_sha256 }}
+            - Linux Intel: ${{ steps.checksums.outputs.linux_intel_sha256 }}
+            - Linux ARM: ${{ steps.checksums.outputs.linux_arm_sha256 }}
+
+            ---
+
+            This PR was automatically generated by GitHub Actions.
+          commit-message: 'nginx-ui ${{ steps.release.outputs.version }}'
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          add-paths: |
+            Formula/nginx-ui.rb
