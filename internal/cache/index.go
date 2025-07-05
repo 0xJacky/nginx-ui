@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/fsnotify/fsnotify"
 	"github.com/uozi-tech/cosy/logger"
@@ -20,15 +21,12 @@ type ScanCallback func(configPath string, content []byte) error
 
 // Scanner is responsible for scanning and watching nginx config files
 type Scanner struct {
-	ctx           context.Context        // Context for the scanner
-	watcher       *fsnotify.Watcher      // File system watcher
-	scanTicker    *time.Ticker           // Ticker for periodic scanning
-	initialized   bool                   // Whether the scanner has been initialized
-	scanning      bool                   // Whether a scan is currently in progress
-	scanMutex     sync.RWMutex           // Mutex for protecting the scanning state
-	statusChan    chan bool              // Channel to broadcast scanning status changes
-	subscribers   map[chan bool]struct{} // Set of subscribers
-	subscriberMux sync.RWMutex           // Mutex for protecting the subscribers map
+	ctx         context.Context   // Context for the scanner
+	watcher     *fsnotify.Watcher // File system watcher
+	scanTicker  *time.Ticker      // Ticker for periodic scanning
+	initialized bool              // Whether the scanner has been initialized
+	scanning    bool              // Whether a scan is currently in progress
+	scanMutex   sync.RWMutex      // Mutex for protecting the scanning state
 }
 
 // Global variables
@@ -65,13 +63,7 @@ func GetScanner() *Scanner {
 	defer configScannerInitMux.Unlock()
 
 	if scanner == nil {
-		scanner = &Scanner{
-			statusChan:  make(chan bool, 10), // Buffer to prevent blocking
-			subscribers: make(map[chan bool]struct{}),
-		}
-
-		// Start broadcaster goroutine
-		go scanner.broadcastStatus()
+		scanner = &Scanner{}
 	}
 	return scanner
 }
@@ -84,56 +76,12 @@ func RegisterCallback(callback ScanCallback) {
 	scanCallbacks = append(scanCallbacks, callback)
 }
 
-// broadcastStatus listens for status changes and broadcasts to all subscribers
-func (s *Scanner) broadcastStatus() {
-	for status := range s.statusChan {
-		s.subscriberMux.RLock()
-		for ch := range s.subscribers {
-			// Non-blocking send to prevent slow subscribers from blocking others
-			select {
-			case ch <- status:
-			default:
-				// Skip if channel buffer is full
-			}
-		}
-		s.subscriberMux.RUnlock()
-	}
-}
-
-// SubscribeScanningStatus allows a client to subscribe to scanning status changes
-func SubscribeScanningStatus() chan bool {
-	s := GetScanner()
-	ch := make(chan bool, 5) // Buffer to prevent blocking
-
-	// Add to subscribers
-	s.subscriberMux.Lock()
-	s.subscribers[ch] = struct{}{}
-	s.subscriberMux.Unlock()
-
-	// Send current status immediately
-	s.scanMutex.RLock()
-	currentStatus := s.scanning
-	s.scanMutex.RUnlock()
-
-	// Non-blocking send
-	select {
-	case ch <- currentStatus:
-	default:
-	}
-
-	return ch
-}
-
-// UnsubscribeScanningStatus removes a subscriber from receiving status updates
-func UnsubscribeScanningStatus(ch chan bool) {
-	s := GetScanner()
-
-	s.subscriberMux.Lock()
-	delete(s.subscribers, ch)
-	s.subscriberMux.Unlock()
-
-	// Close the channel so the client knows it's unsubscribed
-	close(ch)
+// publishScanningStatus publishes the scanning status to the event bus
+func (s *Scanner) publishScanningStatus(scanning bool) {
+	event.Publish(event.Event{
+		Type: event.EventTypeIndexScanning,
+		Data: scanning,
+	})
 }
 
 // Initialize sets up the scanner and starts watching for file changes
@@ -333,8 +281,8 @@ func (s *Scanner) scanSingleFileWithDepth(filePath string, visited map[string]bo
 		wasScanning = s.scanning
 		s.scanning = true
 		if !wasScanning {
-			// Only broadcast if status changed from not scanning to scanning
-			s.statusChan <- true
+			// Only publish if status changed from not scanning to scanning
+			s.publishScanningStatus(true)
 		}
 		s.scanMutex.Unlock()
 
@@ -342,8 +290,8 @@ func (s *Scanner) scanSingleFileWithDepth(filePath string, visited map[string]bo
 		defer func() {
 			s.scanMutex.Lock()
 			s.scanning = false
-			// Broadcast the completion
-			s.statusChan <- false
+			// Publish the completion
+			s.publishScanningStatus(false)
 			s.scanMutex.Unlock()
 		}()
 	}
@@ -431,8 +379,8 @@ func (s *Scanner) ScanAllConfigs() error {
 	wasScanning := s.scanning
 	s.scanning = true
 	if !wasScanning {
-		// Only broadcast if status changed from not scanning to scanning
-		s.statusChan <- true
+		// Only publish if status changed from not scanning to scanning
+		s.publishScanningStatus(true)
 	}
 	s.scanMutex.Unlock()
 
@@ -440,8 +388,8 @@ func (s *Scanner) ScanAllConfigs() error {
 	defer func() {
 		s.scanMutex.Lock()
 		s.scanning = false
-		// Broadcast the completion
-		s.statusChan <- false
+		// Publish the completion
+		s.publishScanningStatus(false)
 		s.scanMutex.Unlock()
 	}()
 
@@ -494,19 +442,6 @@ func (s *Scanner) Shutdown() {
 	if s.scanTicker != nil {
 		s.scanTicker.Stop()
 	}
-
-	// Clean up subscriber resources
-	s.subscriberMux.Lock()
-	// Close all subscriber channels
-	for ch := range s.subscribers {
-		close(ch)
-	}
-	// Clear the map
-	s.subscribers = make(map[chan bool]struct{})
-	s.subscriberMux.Unlock()
-
-	// Close the status channel
-	close(s.statusChan)
 }
 
 // IsScanningInProgress returns whether a scan is currently in progress

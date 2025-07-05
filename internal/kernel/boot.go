@@ -16,6 +16,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/docker"
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
@@ -54,6 +55,7 @@ func Boot(ctx context.Context) {
 
 	syncs := []func(ctx context.Context){
 		analytic.RecordServerAnalytic,
+		event.InitEventSystem,
 	}
 
 	for _, v := range async {

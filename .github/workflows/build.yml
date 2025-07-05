@@ -305,14 +305,10 @@ jobs:
         with:
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           apiToken: ${{ secrets.CF_R2_API_TOKEN }}
-          wranglerVersion: "4.21.1"
+          wranglerVersion: "4.23.0"
           command: |
             r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz --file ./${{ env.DIST }}.tar.gz --remote
             r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --file ./${{ env.DIST }}.tar.gz.digest --remote
-            if [[ "$GOOS" == "windows" ]]; then
-              r2 object put nginx-ui-dev-build/${{ env.DIST }}.zip --file ./${{ env.DIST }}.zip --remote
-              r2 object put nginx-ui-dev-build/${{ env.DIST }}.zip.digest --file ./${{ env.DIST }}.zip.digest --remote
-            fi
 
   docker-build:
     if: github.event_name != 'pull_request'

@@ -7,12 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/0xJacky/Nginx-UI/internal/cache"
-	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
-	"github.com/0xJacky/Nginx-UI/internal/notification"
-	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"github.com/uozi-tech/cosy/logger"
@@ -57,8 +54,24 @@ func GetHub() *Hub {
 			unregister: make(chan *Client),
 		}
 		go hub.run()
+
+		// Register this hub directly with the event bus
+		event.SetWebSocketHub(hub)
 	})
 	return hub
+}
+
+// BroadcastMessage implements the WebSocketHub interface
+func (h *Hub) BroadcastMessage(event string, data interface{}) {
+	message := WebSocketMessage{
+		Event: event,
+		Data:  data,
+	}
+	select {
+	case h.broadcast <- message:
+	default:
+		logger.Warn("Broadcast channel full, message dropped")
+	}
 }
 
 // run handles the main hub loop
@@ -95,19 +108,6 @@ func (h *Hub) run() {
 	}
 }
 
-// BroadcastMessage sends a message to all connected clients
-func (h *Hub) BroadcastMessage(event string, data interface{}) {
-	message := WebSocketMessage{
-		Event: event,
-		Data:  data,
-	}
-	select {
-	case h.broadcast <- message:
-	default:
-		logger.Warn("Broadcast channel full, message dropped")
-	}
-}
-
 // WebSocket upgrader configuration
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
@@ -139,90 +139,9 @@ func EventBus(c *gin.Context) {
 	hub := GetHub()
 	hub.register <- client
 
-	// Start goroutines for handling subscriptions
-	go client.handleNotifications()
-	go client.handleProcessingStatus()
-	go client.handleNginxLogStatus()
-
-	// Start write and read pumps
+	// Start write and read pumps - no manual event subscriptions needed
 	go client.writePump()
 	client.readPump()
-}
-
-// handleNotifications subscribes to notification events
-func (c *Client) handleNotifications() {
-	evtChan := make(chan *model.Notification, 10)
-	wsManager := notification.GetWebSocketManager()
-	wsManager.Subscribe(evtChan)
-
-	defer func() {
-		wsManager.Unsubscribe(evtChan)
-	}()
-
-	for {
-		select {
-		case n := <-evtChan:
-			hub.BroadcastMessage("notification", n)
-		case <-c.ctx.Done():
-			return
-		}
-	}
-}
-
-// handleProcessingStatus subscribes to processing status events
-func (c *Client) handleProcessingStatus() {
-	indexScanning := cache.SubscribeScanningStatus()
-	defer cache.UnsubscribeScanningStatus(indexScanning)
-
-	autoCert := cert.SubscribeProcessingStatus()
-	defer cert.UnsubscribeProcessingStatus(autoCert)
-
-	status := struct {
-		IndexScanning      bool `json:"index_scanning"`
-		AutoCertProcessing bool `json:"auto_cert_processing"`
-	}{
-		IndexScanning:      false,
-		AutoCertProcessing: false,
-	}
-
-	for {
-		select {
-		case indexStatus, ok := <-indexScanning:
-			if !ok {
-				return
-			}
-			status.IndexScanning = indexStatus
-			// Send processing status event
-			hub.BroadcastMessage("processing_status", status)
-			// Also send nginx log status event for backward compatibility
-			hub.BroadcastMessage("nginx_log_status", gin.H{
-				"scanning": indexStatus,
-			})
-
-		case certStatus, ok := <-autoCert:
-			if !ok {
-				return
-			}
-			status.AutoCertProcessing = certStatus
-			hub.BroadcastMessage("processing_status", status)
-
-		case <-c.ctx.Done():
-			return
-		}
-	}
-}
-
-// handleNginxLogStatus subscribes to nginx log scanning status events
-// Note: This uses the same cache.SubscribeScanningStatus as handleProcessingStatus
-// but sends different event types for different purposes
-func (c *Client) handleNginxLogStatus() {
-	// We don't need a separate subscription here since handleProcessingStatus
-	// already handles the index scanning status. This function is kept for
-	// potential future nginx-specific log status that might be different
-	// from the general index scanning status.
-
-	// For now, this is handled by handleProcessingStatus
-	<-c.ctx.Done()
 }
 
 // writePump pumps messages from the hub to the websocket connection
