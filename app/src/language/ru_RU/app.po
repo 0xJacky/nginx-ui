@@ -142,13 +142,13 @@ msgstr "Действие"
 #: src/views/certificate/ACMEUser.vue:90
 #: src/views/certificate/CertificateList/certColumns.tsx:92
 #: src/views/certificate/DNSCredential.vue:44
-#: src/views/config/configColumns.tsx:41
+#: src/views/config/configColumns.tsx:50
 #: src/views/environments/group/columns.ts:41
 #: src/views/environments/list/envColumns.tsx:96
 #: src/views/nginx_log/NginxLogList.vue:67
 #: src/views/notification/notificationColumns.tsx:72
 #: src/views/preference/components/ExternalNotify/columns.tsx:76
-#: src/views/site/site_list/columns.tsx:141 src/views/stream/columns.tsx:105
+#: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:117
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "Действия"
@@ -660,8 +660,8 @@ msgid "Cannot compare: Missing content"
 msgstr "Невозможно сравнить: отсутствующий контент"
 
 #: src/constants/errors/config.ts:6
-msgid "Cannot delete protected path: {0}"
-msgstr "Невозможно удалить защищенный путь: {0}"
+msgid "Cannot delete protected path"
+msgstr "Нельзя удалить защищенный путь"
 
 #: src/views/dashboard/NginxDashBoard.vue:154
 msgid "Cannot get performance data in this state"
@@ -1512,7 +1512,7 @@ msgstr "Поток %{name} отключен от %{node} успешно"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:162
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
-#: src/views/site/site_list/columns.tsx:127 src/views/stream/columns.tsx:94
+#: src/views/site/site_list/columns.tsx:139 src/views/stream/columns.tsx:106
 #: src/views/stream/components/StreamEditor.vue:32
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
@@ -1770,7 +1770,7 @@ msgstr "Включить TOTP"
 #: src/views/preference/tabs/NodeSettings.vue:30
 #: src/views/site/components/SiteStatusSelect.vue:159
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:56
-#: src/views/site/site_list/columns.tsx:123 src/views/stream/columns.tsx:90
+#: src/views/site/site_list/columns.tsx:135 src/views/stream/columns.tsx:102
 #: src/views/stream/components/RightPanel/Basic.vue:23
 #: src/views/stream/components/StreamEditor.vue:26
 #: src/views/user/userColumns.tsx:36
@@ -2835,7 +2835,7 @@ msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:165
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:68
-#: src/views/site/site_list/columns.tsx:131
+#: src/views/site/site_list/columns.tsx:143
 msgid "Maintenance"
 msgstr "Техническое обслуживание"
 
@@ -3041,20 +3041,26 @@ msgstr "Многострочная директива"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:123
 #: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:5
+#: src/views/config/configColumns.tsx:17
 #: src/views/environments/group/columns.ts:7
 #: src/views/environments/list/envColumns.tsx:8
 #: src/views/nginx_log/NginxLogList.vue:51
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:35
-#: src/views/site/site_list/columns.tsx:16
+#: src/views/site/site_list/columns.tsx:29
 #: src/views/site/site_list/SiteDuplicate.vue:79
-#: src/views/stream/columns.tsx:12
+#: src/views/stream/columns.tsx:25
 #: src/views/stream/components/RightPanel/Basic.vue:30
 #: src/views/stream/components/StreamDuplicate.vue:71
 #: src/views/stream/StreamList.vue:145
 msgid "Name"
 msgstr "Имя"
+
+#: src/views/config/configColumns.tsx:10
+#: src/views/site/site_list/columns.tsx:21
+#: src/views/stream/columns.tsx:17
+msgid "Name or content"
+msgstr "Имя или содержание"
 
 #: src/views/dashboard/NginxDashBoard.vue:195
 msgid "Need to enable the stub_status module"
@@ -3361,7 +3367,7 @@ msgid "Node"
 msgstr "Узел"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:41
-#: src/views/site/site_list/columns.tsx:76 src/views/stream/columns.tsx:44
+#: src/views/site/site_list/columns.tsx:88 src/views/stream/columns.tsx:56
 #: src/views/stream/components/RightPanel/Basic.vue:38
 msgid "Node Group"
 msgstr "Группа узлов"
@@ -3484,7 +3490,7 @@ msgstr "Официальная документация"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
 #: src/components/NodeSelector/NodeSelector.vue:107
-#: src/components/ProxyTargets/ProxyTargets.vue:43
+#: src/components/ProxyTargets/ProxyTargets.vue:29
 #: src/views/dashboard/Environments.vue:99
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
@@ -3929,11 +3935,11 @@ msgstr "Поставщик не найден: {0}"
 msgid "Proxy"
 msgstr "Прокси"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:48
+#: src/components/ProxyTargets/ProxyTargets.vue:34
 msgid "Proxy Pass"
 msgstr "Прокси-передача"
 
-#: src/views/site/site_list/columns.tsx:64 src/views/stream/columns.tsx:32
+#: src/views/site/site_list/columns.tsx:76 src/views/stream/columns.tsx:44
 msgid "Proxy Targets"
 msgstr "Цели прокси"
 
@@ -4551,6 +4557,8 @@ msgid "SDK"
 msgstr "SDK"
 
 #: src/language/constants.ts:62 src/language/curd.ts:12
+#: src/views/config/configColumns.tsx:5 src/views/site/site_list/columns.tsx:16
+#: src/views/stream/columns.tsx:12
 msgid "Search"
 msgstr "Поиск"
 
@@ -4837,7 +4845,7 @@ msgstr "Статический"
 #: src/views/dashboard/components/ModulesTable.vue:96
 #: src/views/environments/list/envColumns.tsx:43
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:28
-#: src/views/site/site_list/columns.tsx:101 src/views/stream/columns.tsx:69
+#: src/views/site/site_list/columns.tsx:113 src/views/stream/columns.tsx:81
 msgid "Status"
 msgstr "Статус"
 
@@ -5443,7 +5451,7 @@ msgstr "Вторник"
 msgid "Two-factor authentication required"
 msgstr "Требуется двухфакторная аутентификация"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:48
+#: src/components/ProxyTargets/ProxyTargets.vue:34
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/config/components/Delete.vue:122
 #: src/views/dashboard/components/ModulesTable.vue:83
@@ -5482,11 +5490,11 @@ msgstr "Успешно обновлено"
 #: src/views/certificate/ACMEUser.vue:83
 #: src/views/certificate/DNSCredential.vue:38
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
-#: src/views/config/configColumns.tsx:34
+#: src/views/config/configColumns.tsx:43
 #: src/views/environments/group/columns.ts:35
 #: src/views/environments/list/envColumns.tsx:89
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:38
-#: src/views/site/site_list/columns.tsx:94 src/views/stream/columns.tsx:62
+#: src/views/site/site_list/columns.tsx:106 src/views/stream/columns.tsx:74
 #: src/views/stream/components/RightPanel/Basic.vue:34
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
@@ -5520,7 +5528,7 @@ msgstr "Загрузить файлы"
 msgid "Upload Folders"
 msgstr "Загрузить папки"
 
-#: src/components/ProxyTargets/ProxyTargets.vue:48
+#: src/components/ProxyTargets/ProxyTargets.vue:34
 msgid "Upstream"
 msgstr "Восходящий поток"
 
