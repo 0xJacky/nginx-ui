@@ -2,13 +2,22 @@ import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import { datetimeRender } from '@uozi-admin/curd'
 
 const configColumns: StdTableColumn[] = [{
+  title: () => $gettext('Search'),
+  dataIndex: 'search',
+  search: {
+    type: 'input',
+    input: {
+      placeholder: $gettext('Name or content'),
+    },
+  },
+  hiddenInEdit: true,
+  hiddenInTable: true,
+  hiddenInDetail: true,
+}, {
   title: () => $gettext('Name'),
   dataIndex: 'name',
   sorter: true,
   pure: true,
-  search: {
-    type: 'input',
-  },
   customRender: ({ text, record }: CustomRenderArgs) => {
     function renderIcon(isDir: boolean) {
       return (

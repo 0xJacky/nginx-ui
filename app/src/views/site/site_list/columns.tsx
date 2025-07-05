@@ -13,6 +13,19 @@ import envGroupColumns from '@/views/environments/group/columns'
 import SiteStatusSelect from '@/views/site/components/SiteStatusSelect.vue'
 
 const columns: StdTableColumn[] = [{
+  title: () => $gettext('Search'),
+  dataIndex: 'search',
+  search: {
+    type: 'input',
+    input: {
+      placeholder: $gettext('Name or content'),
+    },
+  },
+  width: 150,
+  hiddenInEdit: true,
+  hiddenInTable: true,
+  hiddenInDetail: true,
+}, {
   title: () => $gettext('Name'),
   dataIndex: 'name',
   sorter: true,
@@ -20,7 +33,6 @@ const columns: StdTableColumn[] = [{
   edit: {
     type: 'input',
   },
-  search: true,
   width: 150,
   customRender: ({ text, record }: CustomRenderArgs) => {
     const template: JSXElements = []
