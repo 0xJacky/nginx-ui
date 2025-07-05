@@ -222,8 +222,8 @@ func (si *SearchIndexer) IndexDocument(doc SearchDocument) error {
 		return fmt.Errorf("search index not initialized")
 	}
 
-	logger.Debugf("Indexing document: ID=%s, Type=%s, Name=%s, Path=%s",
-		doc.ID, doc.Type, doc.Name, doc.Path)
+	// logger.Debugf("Indexing document: ID=%s, Type=%s, Name=%s, Path=%s",
+	// 	doc.ID, doc.Type, doc.Name, doc.Path)
 
 	return si.index.Index(doc.ID, doc)
 }

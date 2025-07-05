@@ -6,23 +6,9 @@ interface Props {
   targets: ProxyTarget[]
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const proxyStore = useProxyAvailabilityStore()
-let componentId = ''
-
-// Register component and watch for target changes
-watch(() => props.targets, newTargets => {
-  componentId = proxyStore.registerComponent(newTargets)
-}, {
-  immediate: true,
-  deep: true,
-})
-
-// Cleanup when component unmounts
-onBeforeUnmount(() => {
-  proxyStore.unregisterComponent(componentId)
-})
 
 function getTargetColor(target: ProxyTarget): string {
   const result = proxyStore.getAvailabilityResult(target)

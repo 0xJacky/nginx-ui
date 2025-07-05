@@ -3,7 +3,7 @@ import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
 import settings from '@/api/settings'
 import PageHeader from '@/components/PageHeader'
-import { useSettingsStore } from '@/pinia'
+import { useSettingsStore, useProxyAvailabilityStore } from '@/pinia'
 import FooterLayout from './FooterLayout.vue'
 import HeaderLayout from './HeaderLayout.vue'
 import SideBar from './SideBar.vue'
@@ -19,13 +19,7 @@ function _init() {
 
 const init = throttle(_init, 50)
 
-onMounted(init)
-
 addEventListener('resize', init)
-
-onUnmounted(() => {
-  removeEventListener('resize', init)
-})
 
 function getClientWidth() {
   return document.body.clientWidth
@@ -39,6 +33,25 @@ const { server_name } = storeToRefs(useSettingsStore())
 
 settings.get_server_name().then(r => {
   server_name.value = r.name
+})
+
+// Initialize proxy availability monitoring after user is logged in and layout is mounted
+const proxyAvailabilityStore = useProxyAvailabilityStore()
+
+onMounted(() => {
+  // Initialize layout
+  init()
+  
+  // Start monitoring for upstream availability
+  proxyAvailabilityStore.startMonitoring()
+})
+
+onUnmounted(() => {
+  // Remove resize listener
+  removeEventListener('resize', init)
+  
+  // Stop monitoring when layout is unmounted
+  proxyAvailabilityStore.stopMonitoring()
 })
 
 const breadList = ref([])

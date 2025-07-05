@@ -47,6 +47,12 @@ func InitCronJobs(ctx context.Context) {
 		logger.Fatalf("AutoBackup Err: %v\n", err)
 	}
 
+	// Initialize upstream availability testing job
+	_, err = setupUpstreamAvailabilityJob(s)
+	if err != nil {
+		logger.Fatalf("UpstreamAvailability Err: %v\n", err)
+	}
+
 	// Start the scheduler
 	s.Start()
 

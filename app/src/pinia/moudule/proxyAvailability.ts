@@ -1,43 +1,46 @@
 import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { ProxyTarget } from '@/api/site'
-import { debounce } from 'lodash'
 import { defineStore } from 'pinia'
-import upstream from '@/api/upstream'
+import upstream, { type UpstreamStatus, type UpstreamAvailabilityResponse } from '@/api/upstream'
 
-export interface ProxyAvailabilityResult {
-  online: boolean
-  latency: number
-}
+// Alias for consistency with existing code
+export type ProxyAvailabilityResult = UpstreamStatus
 
 export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => {
   const availabilityResults = ref<Record<string, ProxyAvailabilityResult>>({})
   const websocket = shallowRef<ReconnectingWebSocket | WebSocket>()
   const isConnected = ref(false)
-
-  // Map to store targets for each component instance
-  const componentTargets = ref<Map<string, string[]>>(new Map())
-
-  // Computed property to get unique targets from all components
-  const allTargets = computed(() => {
-    const allTargetsList: string[] = []
-    componentTargets.value.forEach(targets => {
-      allTargetsList.push(...targets)
-    })
-    return [...new Set(allTargetsList)]
-  })
+  const isInitialized = ref(false)
+  const lastUpdateTime = ref<string>('')
+  const targetCount = ref(0)
 
   function getTargetKey(target: ProxyTarget): string {
     return `${target.host}:${target.port}`
   }
 
-  // Debounced function to update targets on server
-  const debouncedUpdateTargets = debounce(() => {
-    if (websocket.value && isConnected.value) {
-      websocket.value.send(JSON.stringify(allTargets.value))
+  // Initialize availability data from HTTP API
+  async function initialize() {
+    if (isInitialized.value) {
+      return
     }
-  }, 300)
 
-  function ensureWebSocketConnection() {
+    try {
+      const response = await upstream.getAvailability()
+      const data = response as UpstreamAvailabilityResponse
+      
+      availabilityResults.value = data.results || {}
+      lastUpdateTime.value = data.last_update_time || ''
+      targetCount.value = data.target_count || 0
+      isInitialized.value = true
+      
+      console.log(`Initialized proxy availability with ${targetCount.value} targets`)
+    } catch (error) {
+      console.error('Failed to initialize proxy availability:', error)
+    }
+  }
+
+  // Connect to WebSocket for real-time updates
+  function connectWebSocket() {
     if (websocket.value && isConnected.value) {
       return
     }
@@ -47,96 +50,93 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
       websocket.value.close()
     }
 
-    // Create new WebSocket connection
-    websocket.value = upstream.availability_test()
+         try {
+       // Create new WebSocket connection
+       const ws = upstream.availabilityWebSocket()
+       websocket.value = ws
 
-    websocket.value.onopen = () => {
-      isConnected.value = true
-      // Send current targets immediately after connection
-      debouncedUpdateTargets()
-    }
+       ws.onopen = () => {
+         isConnected.value = true
+         console.log('Proxy availability WebSocket connected')
+       }
 
-    websocket.value.onmessage = (e: MessageEvent) => {
-      const results = JSON.parse(e.data) as Record<string, ProxyAvailabilityResult>
-      // Update availability results
-      Object.assign(availabilityResults.value, results)
-    }
+       ws.onmessage = (e: MessageEvent) => {
+         try {
+           const results = JSON.parse(e.data) as Record<string, ProxyAvailabilityResult>
+           // Update availability results with latest data
+           availabilityResults.value = { ...results }
+           lastUpdateTime.value = new Date().toISOString()
+         } catch (error) {
+           console.error('Failed to parse WebSocket message:', error)
+         }
+       }
 
-    websocket.value.onclose = () => {
+       ws.onclose = () => {
+         isConnected.value = false
+         console.log('Proxy availability WebSocket disconnected')
+       }
+
+       ws.onerror = error => {
+         console.error('Proxy availability WebSocket error:', error)
+         isConnected.value = false
+       }
+     } catch (error) {
+       console.error('Failed to create WebSocket connection:', error)
+     }
+  }
+
+  // Start monitoring (initialize + WebSocket)
+  async function startMonitoring() {
+    await initialize()
+    connectWebSocket()
+  }
+
+  // Stop monitoring and cleanup
+  function stopMonitoring() {
+    if (websocket.value) {
+      websocket.value.close()
+      websocket.value = undefined
       isConnected.value = false
     }
-
-    websocket.value.onerror = error => {
-      console.error('WebSocket error:', error)
-      isConnected.value = false
-    }
   }
 
-  function registerComponent(targets: ProxyTarget[]): string {
-    const componentId = useId()
-    const targetKeys = targets.map(getTargetKey)
-
-    componentTargets.value.set(componentId, targetKeys)
-
-    // Ensure WebSocket connection exists
-    ensureWebSocketConnection()
-
-    // Update targets on server (debounced)
-    debouncedUpdateTargets()
-
-    return componentId
-  }
-
-  function updateComponentTargets(componentId: string, targets: ProxyTarget[]) {
-    const targetKeys = targets.map(getTargetKey)
-    componentTargets.value.set(componentId, targetKeys)
-
-    // Update targets on server (debounced)
-    debouncedUpdateTargets()
-  }
-
-  function unregisterComponent(componentId: string) {
-    componentTargets.value.delete(componentId)
-
-    // Update targets on server (debounced)
-    debouncedUpdateTargets()
-
-    // Close WebSocket if no components are registered
-    if (componentTargets.value.size === 0) {
-      // Cancel pending debounced calls
-      debouncedUpdateTargets.cancel()
-
-      if (websocket.value) {
-        websocket.value.close()
-        websocket.value = undefined
-        isConnected.value = false
-      }
-    }
-  }
-
+  // Get availability result for a specific target
   function getAvailabilityResult(target: ProxyTarget): ProxyAvailabilityResult | undefined {
     const key = getTargetKey(target)
     return availabilityResults.value[key]
   }
 
-  function isTargetTesting(target: ProxyTarget): boolean {
+  // Check if target has availability data
+  function hasAvailabilityData(target: ProxyTarget): boolean {
     const key = getTargetKey(target)
-    return allTargets.value.includes(key)
+    return key in availabilityResults.value
   }
 
-  // Watch for changes in allTargets and update server (debounced)
-  watch(allTargets, () => {
-    debouncedUpdateTargets()
-  })
+  // Get all available targets
+  function getAllTargets(): string[] {
+    return Object.keys(availabilityResults.value)
+  }
+
+  // Auto-cleanup WebSocket on page unload
+  if (typeof window !== 'undefined') {
+    window.addEventListener('beforeunload', () => {
+      stopMonitoring()
+    })
+  }
 
   return {
     availabilityResults: readonly(availabilityResults),
     isConnected: readonly(isConnected),
-    registerComponent,
-    updateComponentTargets,
-    unregisterComponent,
+    isInitialized: readonly(isInitialized),
+    lastUpdateTime: readonly(lastUpdateTime),
+    targetCount: readonly(targetCount),
+    initialize,
+    startMonitoring,
+    stopMonitoring,
+    connectWebSocket,
     getAvailabilityResult,
-    isTargetTesting,
+    hasAvailabilityData,
+    getAllTargets,
     getTargetKey,
   }
 })

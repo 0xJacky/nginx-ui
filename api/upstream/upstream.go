@@ -13,171 +13,128 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-type wsMessage struct {
-	data interface{}
-	done chan error
+// GetAvailability returns cached upstream availability results via HTTP GET
+func GetAvailability(c *gin.Context) {
+	service := upstream.GetUpstreamService()
+
+	result := gin.H{
+		"results":          service.GetAvailabilityMap(),
+		"targets":          service.GetTargetInfos(),
+		"last_update_time": service.GetLastUpdateTime(),
+		"target_count":     service.GetTargetCount(),
+	}
+
+	c.JSON(http.StatusOK, result)
 }
 
-func AvailabilityTest(c *gin.Context) {
+// AvailabilityWebSocket handles WebSocket connections for real-time availability monitoring
+func AvailabilityWebSocket(c *gin.Context) {
 	var upGrader = websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {
 			return true
 		},
 	}
-	// upgrade http to websocket
+
+	// Upgrade HTTP to WebSocket
 	ws, err := upGrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		logger.Error(err)
 		return
 	}
-
 	defer ws.Close()
-
-	var currentTargets []string
-	var targetsMutex sync.RWMutex
 
 	// Use context to manage goroutine lifecycle
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// Use channel to serialize WebSocket write operations, avoiding concurrent conflicts
-	writeChan := make(chan wsMessage, 10)
-	testChan := make(chan bool, 1) // Immediate test signal
+	// Register this connection and increase check frequency
+	registerWebSocketConnection()
+	defer unregisterWebSocketConnection()
 
-	// Create debouncer for test execution
-	testDebouncer := helper.NewDebouncer(300 * time.Millisecond)
-
-	// WebSocket writer goroutine - serialize all write operations
-	go func() {
-		defer logger.Debug("WebSocket writer goroutine stopped")
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case msg := <-writeChan:
-				err := ws.WriteJSON(msg.data)
-				if msg.done != nil {
-					msg.done <- err
-					close(msg.done)
-				}
-				if err != nil {
-					logger.Error("Failed to send WebSocket message:", err)
-					if helper.IsUnexpectedWebsocketError(err) {
-						cancel() // Cancel all goroutines
-					}
-				}
-			}
-		}
-	}()
-
-	// Safe WebSocket write function
-	writeJSON := func(data interface{}) error {
-		done := make(chan error, 1)
-		msg := wsMessage{data: data, done: done}
-
-		select {
-		case writeChan <- msg:
-			return <-done
-		case <-ctx.Done():
-			return ctx.Err()
-		case <-time.After(5 * time.Second): // Prevent write blocking
-			return context.DeadlineExceeded
-		}
+	// Send initial results immediately
+	service := upstream.GetUpstreamService()
+	initialResults := service.GetAvailabilityMap()
+	if err := ws.WriteJSON(initialResults); err != nil {
+		logger.Error("Failed to send initial results:", err)
+		return
 	}
 
-	// Function to perform availability test
-	performTest := func() {
-		targetsMutex.RLock()
-		targets := make([]string, len(currentTargets))
-		copy(targets, currentTargets)
-		targetsMutex.RUnlock()
-
-		logger.Debug("Performing availability test for targets:", targets)
-
-		if len(targets) > 0 {
-			logger.Debug("Starting upstream.AvailabilityTest...")
-			result := upstream.AvailabilityTest(targets)
-			logger.Debug("Test completed, results:", result)
-
-			logger.Debug("Sending results via WebSocket...")
-			if err := writeJSON(result); err != nil {
-				logger.Error("Failed to send WebSocket message:", err)
-				if helper.IsUnexpectedWebsocketError(err) {
-					cancel() // Cancel all goroutines
-				}
-			} else {
-				logger.Debug("Results sent successfully")
-			}
-		} else {
-			logger.Debug("No targets to test")
-			// Send empty result even if no targets
-			emptyResult := make(map[string]interface{})
-			if err := writeJSON(emptyResult); err != nil {
-				logger.Error("Failed to send empty result:", err)
-			} else {
-				logger.Debug("Empty result sent successfully")
-			}
-		}
-	}
-
-	// Goroutine to handle incoming messages (target updates)
-	go func() {
-		defer logger.Debug("WebSocket reader goroutine stopped")
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			default:
-			}
-
-			var newTargets []string
-			// Set read timeout to avoid blocking
-			ws.SetReadDeadline(time.Now().Add(30 * time.Second))
-			err := ws.ReadJSON(&newTargets)
-			ws.SetReadDeadline(time.Time{}) // Clear deadline
-
-			if err != nil {
-				if helper.IsUnexpectedWebsocketError(err) {
-					logger.Error(err)
-				}
-				cancel() // Cancel all goroutines
-				return
-			}
-
-			logger.Debug("Received targets from frontend:", newTargets)
-
-			targetsMutex.Lock()
-			currentTargets = newTargets
-			targetsMutex.Unlock()
-
-			// Use debouncer to trigger test execution
-			testDebouncer.Trigger(func() {
-				select {
-				case testChan <- true:
-				default:
-				}
-			})
-		}
-	}()
-
-	// Main testing loop
-	ticker := time.NewTicker(10 * time.Second)
+	// Create ticker for periodic updates (every 5 seconds when WebSocket is connected)
+	ticker := time.NewTicker(5 * time.Second)
 	defer ticker.Stop()
 
-	logger.Debug("WebSocket connection established, waiting for messages...")
+	// Monitor for incoming messages (ping/pong or close)
+	go func() {
+		defer cancel()
+		for {
+			// Read message (we don't expect any specific data, just use it for connection health)
+			_, _, err := ws.ReadMessage()
+			if err != nil {
+				if helper.IsUnexpectedWebsocketError(err) {
+					logger.Error("WebSocket read error:", err)
+				}
+				return
+			}
+		}
+	}()
 
+	// Main loop to send periodic updates
 	for {
 		select {
 		case <-ctx.Done():
-			testDebouncer.Stop()
 			logger.Debug("WebSocket connection closed")
 			return
-		case <-testChan:
-			// Debounce triggered test or first test
-			go performTest() // Execute asynchronously to avoid blocking main loop
+
 		case <-ticker.C:
-			// Periodic test execution
-			go performTest() // Execute asynchronously to avoid blocking main loop
+			// Get latest results from service
+			results := service.GetAvailabilityMap()
+
+			// Send results via WebSocket
+			if err := ws.WriteJSON(results); err != nil {
+				logger.Error("Failed to send WebSocket update:", err)
+				if helper.IsUnexpectedWebsocketError(err) {
+					return
+				}
+			}
 		}
 	}
+}
+
+// WebSocket connection tracking for managing check frequency
+var (
+	wsConnections     int
+	wsConnectionMutex sync.Mutex
+)
+
+// registerWebSocketConnection increments the WebSocket connection counter
+func registerWebSocketConnection() {
+	wsConnectionMutex.Lock()
+	defer wsConnectionMutex.Unlock()
+
+	wsConnections++
+	logger.Debug("WebSocket connection registered, total connections:", wsConnections)
+
+	// Trigger immediate check when first connection is established
+	if wsConnections == 1 {
+		service := upstream.GetUpstreamService()
+		go service.PerformAvailabilityTest()
+	}
+}
+
+// unregisterWebSocketConnection decrements the WebSocket connection counter
+func unregisterWebSocketConnection() {
+	wsConnectionMutex.Lock()
+	defer wsConnectionMutex.Unlock()
+
+	if wsConnections > 0 {
+		wsConnections--
+	}
+	logger.Debug("WebSocket connection unregistered, remaining connections:", wsConnections)
+}
+
+// HasActiveWebSocketConnections returns true if there are active WebSocket connections
+func HasActiveWebSocketConnections() bool {
+	wsConnectionMutex.Lock()
+	defer wsConnectionMutex.Unlock()
+	return wsConnections > 0
 }

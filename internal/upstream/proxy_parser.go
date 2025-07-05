@@ -16,29 +16,6 @@ type ProxyTarget struct {
 	Type string `json:"type"` // "proxy_pass" or "upstream"
 }
 
-// ParseProxyTargets extracts proxy targets from nginx configuration
-func ParseProxyTargets(config *nginx.NgxConfig) []ProxyTarget {
-	var targets []ProxyTarget
-
-	if config == nil {
-		return targets
-	}
-
-	// Parse upstream servers
-	for _, upstream := range config.Upstreams {
-		upstreamTargets := parseUpstreamServers(upstream)
-		targets = append(targets, upstreamTargets...)
-	}
-
-	// Parse proxy_pass directives in servers
-	for _, server := range config.Servers {
-		proxyTargets := parseServerProxyPass(server)
-		targets = append(targets, proxyTargets...)
-	}
-
-	return deduplicateTargets(targets)
-}
-
 // ParseProxyTargetsFromRawContent parses proxy targets from raw nginx configuration content
 func ParseProxyTargetsFromRawContent(content string) []ProxyTarget {
 	var targets []ProxyTarget
@@ -100,29 +77,6 @@ func parseUpstreamServers(upstream *nginx.NgxUpstream) []ProxyTarget {
 				targets = append(targets, target)
 			}
 		}
-	}
-
-	return targets
-}
-
-// parseServerProxyPass extracts proxy_pass targets from server blocks
-func parseServerProxyPass(server *nginx.NgxServer) []ProxyTarget {
-	var targets []ProxyTarget
-
-	// Check directives in server block
-	for _, directive := range server.Directives {
-		if directive.Directive == "proxy_pass" {
-			target := parseProxyPassURL(directive.Params)
-			if target.Host != "" {
-				targets = append(targets, target)
-			}
-		}
-	}
-
-	// Check directives in location blocks
-	for _, location := range server.Locations {
-		locationTargets := parseLocationProxyPass(location.Content)
-		targets = append(targets, locationTargets...)
 	}
 
 	return targets
