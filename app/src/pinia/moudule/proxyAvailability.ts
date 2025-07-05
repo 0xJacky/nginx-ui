@@ -1,7 +1,8 @@
 import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { ProxyTarget } from '@/api/site'
+import type { UpstreamAvailabilityResponse, UpstreamStatus } from '@/api/upstream'
 import { defineStore } from 'pinia'
-import upstream, { type UpstreamStatus, type UpstreamAvailabilityResponse } from '@/api/upstream'
+import upstream from '@/api/upstream'
 
 // Alias for consistency with existing code
 export type ProxyAvailabilityResult = UpstreamStatus
@@ -27,14 +28,13 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
     try {
       const response = await upstream.getAvailability()
       const data = response as UpstreamAvailabilityResponse
-      
+
       availabilityResults.value = data.results || {}
       lastUpdateTime.value = data.last_update_time || ''
       targetCount.value = data.target_count || 0
       isInitialized.value = true
-      
-      console.log(`Initialized proxy availability with ${targetCount.value} targets`)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Failed to initialize proxy availability:', error)
     }
   }
@@ -50,39 +50,39 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
       websocket.value.close()
     }
 
-         try {
-       // Create new WebSocket connection
-       const ws = upstream.availabilityWebSocket()
-       websocket.value = ws
+    try {
+      // Create new WebSocket connection
+      const ws = upstream.availabilityWebSocket()
+      websocket.value = ws
 
-       ws.onopen = () => {
-         isConnected.value = true
-         console.log('Proxy availability WebSocket connected')
-       }
+      ws.onopen = () => {
+        isConnected.value = true
+      }
 
-       ws.onmessage = (e: MessageEvent) => {
-         try {
-           const results = JSON.parse(e.data) as Record<string, ProxyAvailabilityResult>
-           // Update availability results with latest data
-           availabilityResults.value = { ...results }
-           lastUpdateTime.value = new Date().toISOString()
-         } catch (error) {
-           console.error('Failed to parse WebSocket message:', error)
-         }
-       }
+      ws.onmessage = (e: MessageEvent) => {
+        try {
+          const results = JSON.parse(e.data) as Record<string, ProxyAvailabilityResult>
+          // Update availability results with latest data
+          availabilityResults.value = { ...results }
+          lastUpdateTime.value = new Date().toISOString()
+        }
+        catch (error) {
+          console.error('Failed to parse WebSocket message:', error)
+        }
+      }
 
-       ws.onclose = () => {
-         isConnected.value = false
-         console.log('Proxy availability WebSocket disconnected')
-       }
+      ws.onclose = () => {
+        isConnected.value = false
+      }
 
-       ws.onerror = error => {
-         console.error('Proxy availability WebSocket error:', error)
-         isConnected.value = false
-       }
-     } catch (error) {
-       console.error('Failed to create WebSocket connection:', error)
-     }
+      ws.onerror = error => {
+        console.error('Proxy availability WebSocket error:', error)
+        isConnected.value = false
+      }
+    }
+    catch (error) {
+      console.error('Failed to create WebSocket connection:', error)
+    }
   }
 
   // Start monitoring (initialize + WebSocket)

@@ -3,7 +3,7 @@ import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
 import settings from '@/api/settings'
 import PageHeader from '@/components/PageHeader'
-import { useSettingsStore, useProxyAvailabilityStore } from '@/pinia'
+import { useProxyAvailabilityStore, useSettingsStore } from '@/pinia'
 import FooterLayout from './FooterLayout.vue'
 import HeaderLayout from './HeaderLayout.vue'
 import SideBar from './SideBar.vue'
@@ -41,7 +41,7 @@ const proxyAvailabilityStore = useProxyAvailabilityStore()
 onMounted(() => {
   // Initialize layout
   init()
-  
+
   // Start monitoring for upstream availability
   proxyAvailabilityStore.startMonitoring()
 })
@@ -49,7 +49,7 @@ onMounted(() => {
 onUnmounted(() => {
   // Remove resize listener
   removeEventListener('resize', init)
-  
+
   // Stop monitoring when layout is unmounted
   proxyAvailabilityStore.stopMonitoring()
 })
