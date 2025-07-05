@@ -35,6 +35,11 @@ func GetDiskStat() (DiskStat, error) {
 			continue
 		}
 
+		// Skip OS-specific paths that shouldn't be counted
+		if shouldSkipPath(partition.Mountpoint, partition.Device) {
+			continue
+		}
+
 		// Create partition stat for display purposes
 		partitionStat := PartitionStat{
 			Mountpoint: partition.Mountpoint,
@@ -75,6 +80,7 @@ func GetDiskStat() (DiskStat, error) {
 // isVirtualFilesystem checks if the filesystem type is virtual
 func isVirtualFilesystem(fstype string) bool {
 	virtualFSTypes := map[string]bool{
+		// Common virtual filesystems
 		"proc":        true,
 		"sysfs":       true,
 		"devfs":       true,
@@ -98,7 +104,24 @@ func isVirtualFilesystem(fstype string) bool {
 		"selinuxfs":   true,
 		"systemd-1":   true,
 		"none":        true,
+
+		// Network filesystems (should be excluded from total disk calculation)
+		"nfs":    true,
+		"nfs4":   true,
+		"cifs":   true,
+		"smb":    true,
+		"smbfs":  true,
+		"afpfs":  true,
+		"webdav": true,
+		"ftpfs":  true,
 	}
 
-	return virtualFSTypes[fstype]
+	// Check common virtual filesystems first
+	if virtualFSTypes[fstype] {
+		return true
+	}
+
+	// Check OS-specific additional virtual filesystems
+	additionalFS := getAdditionalVirtualFilesystems()
+	return additionalFS[fstype]
 }

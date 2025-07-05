@@ -75,7 +75,7 @@ function availabilityTest() {
   }
 
   if (sockets.length > 0) {
-    websocket.value = upstream.availability_test()
+    websocket.value = upstream.availabilityWebSocket()
     websocket.value.onopen = () => {
       websocket.value!.send(JSON.stringify(sockets))
     }
