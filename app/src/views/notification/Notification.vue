@@ -11,13 +11,13 @@ const curd = useTemplateRef('curd')
 function clear() {
   notification.clear().then(() => {
     message.success($gettext('Cleared successfully'))
-    curd.value?.get_list()
+    curd.value?.refresh()
     unreadCount.value = 0
   })
 }
 
 watch(unreadCount, () => {
-  curd.value?.get_list()
+  curd.value?.refresh()
 })
 </script>
 
@@ -33,7 +33,7 @@ watch(unreadCount, () => {
     disable-export
     disable-trash
   >
-    <template #extra>
+    <template #beforeListActions>
       <APopconfirm
         :cancel-text="$gettext('No')"
         :ok-text="$gettext('OK')"
