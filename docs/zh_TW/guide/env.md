@@ -88,6 +88,7 @@
 | ErrorLogPath    | NGINX_UI_NGINX_ERROR_LOG_PATH     |
 | ConfigDir       | NGINX_UI_NGINX_CONFIG_DIR         |
 | PIDPath         | NGINX_UI_NGINX_PID_PATH           |
+| SbinPath        | NGINX_UI_NGINX_SBIN_PATH          |
 | TestConfigCmd   | NGINX_UI_NGINX_TEST_CONFIG_CMD    |
 | ReloadCmd       | NGINX_UI_NGINX_RELOAD_CMD         |
 | RestartCmd      | NGINX_UI_NGINX_RESTART_CMD        |
