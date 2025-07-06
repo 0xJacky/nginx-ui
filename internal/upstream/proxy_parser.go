@@ -106,15 +106,14 @@ func parseLocationProxyPass(content string) []ProxyTarget {
 func parseProxyPassURL(proxyPass string) ProxyTarget {
 	proxyPass = strings.TrimSpace(proxyPass)
 
+	// Skip URLs that contain Nginx variables
+	if strings.Contains(proxyPass, "$") {
+		return ProxyTarget{}
+	}
+
 	// Handle HTTP/HTTPS URLs (e.g., "http://backend")
 	if strings.HasPrefix(proxyPass, "http://") || strings.HasPrefix(proxyPass, "https://") {
-		// Handle URLs with nginx variables by extracting the base URL before variables
-		baseURL := proxyPass
-		if dollarIndex := strings.Index(proxyPass, "$"); dollarIndex != -1 {
-			baseURL = proxyPass[:dollarIndex]
-		}
-
-		if parsedURL, err := url.Parse(baseURL); err == nil {
+		if parsedURL, err := url.Parse(proxyPass); err == nil {
 			host := parsedURL.Hostname()
 			port := parsedURL.Port()
 
@@ -167,6 +166,11 @@ func parseServerAddress(serverAddr string, targetType string) ProxyTarget {
 	}
 
 	addr := parts[0]
+
+	// Check if the address contains Nginx variables - skip if it does
+	if strings.Contains(addr, "$") {
+		return ProxyTarget{}
+	}
 
 	// Handle IPv6 addresses
 	if strings.HasPrefix(addr, "[") {
