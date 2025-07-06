@@ -32,7 +32,6 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
-	github.com/lib/pq v1.10.9
 	github.com/mark3labs/mcp-go v0.32.0
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.3.0
@@ -206,6 +205,7 @@ require (
 	github.com/labbsr0x/bindman-dns-webhook v1.0.2 // indirect
 	github.com/labbsr0x/goh v1.0.1 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
+	github.com/lib/pq v1.10.9 // indirect
 	github.com/libdns/alidns v1.0.4 // indirect
 	github.com/libdns/cloudflare v0.2.1 // indirect
 	github.com/libdns/huaweicloud v1.0.0-beta.2 // indirect

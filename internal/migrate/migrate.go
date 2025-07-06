@@ -7,6 +7,7 @@ import (
 var Migrations = []*gormigrate.Migration{
 	SiteCategoryToEnvGroup,
 	RenameAuthsToUsers,
+	UpdateCertDomains,
 }
 
 var BeforeAutoMigrate = []*gormigrate.Migration{

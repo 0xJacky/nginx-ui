@@ -7,7 +7,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/go-acme/lego/v4/certificate"
-	"github.com/lib/pq"
 	"gorm.io/gorm/clause"
 )
 
@@ -32,7 +31,7 @@ type CertificateResource struct {
 type Cert struct {
 	Model
 	Name                    string               `json:"name"`
-	Domains                 pq.StringArray       `json:"domains" gorm:"type:text[]"`
+	Domains                 []string             `json:"domains" gorm:"serializer:json"`
 	Filename                string               `json:"filename"`
 	SSLCertificatePath      string               `json:"ssl_certificate_path"`
 	SSLCertificateKeyPath   string               `json:"ssl_certificate_key_path"`
