@@ -84,21 +84,6 @@ require (
 	github.com/RoaringBitmap/roaring/v2 v2.4.5 // indirect
 	github.com/akamai/AkamaiOPEN-edgegrid-golang v1.2.2 // indirect
 	github.com/aliyun/aliyun-log-go-sdk v0.1.101 // indirect
-	github.com/aws/aws-sdk-go-v2 v1.36.5 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.29.17 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.17.70 // indirect
-	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.32 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.36 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.36 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.12.4 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.12.17 // indirect
-	github.com/aws/aws-sdk-go-v2/service/lightsail v1.43.4 // indirect
-	github.com/aws/aws-sdk-go-v2/service/route53 v1.52.2 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.25.5 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.30.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.34.0 // indirect
-	github.com/aws/smithy-go v1.22.4 // indirect
 	github.com/baidubce/bce-sdk-go v0.9.233 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bits-and-blooms/bitset v1.22.0 // indirect
@@ -340,7 +325,7 @@ require (
 
 replace (
 	code.pfad.fr/risefront => github.com/nginxui/risefront v1.2.3
-	github.com/go-acme/lego/v4 => github.com/nginxui/lego/v4 v4.0.1-0.20250510143905-a6a4dc162d06
+	github.com/go-acme/lego/v4 => github.com/nginxui/lego/v4 v4.0.1-0.20250706105036-5f0180f31871
 	github.com/libdns/alidns => github.com/nginxui/alidns v0.0.0-20250510034447-7783387a1f8d
 	github.com/libdns/cloudflare => github.com/nginxui/cloudflare v0.0.0-20250508084008-f31918fec5ab
 	github.com/libdns/tencentcloud => github.com/nginxui/tencentcloud v0.0.0-20250510022134-62ee21b1b93a
