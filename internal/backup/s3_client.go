@@ -6,25 +6,24 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/credentials"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/minio/minio-go/v7"
+	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// S3Client wraps the AWS S3 client with backup-specific functionality
+// S3Client wraps the MinIO client with backup-specific functionality
 type S3Client struct {
-	client *s3.Client
+	client *minio.Client
 	bucket string
 }
 
 // NewS3Client creates a new S3 client from auto backup configuration.
-// This function initializes the AWS S3 client with the provided credentials and configuration.
+// This function initializes the MinIO client with the provided credentials and configuration.
 //
 // Parameters:
 //   - autoBackup: The auto backup configuration containing S3 settings
@@ -33,32 +32,28 @@ type S3Client struct {
 //   - *S3Client: Configured S3 client wrapper
 //   - error: CosyError if client creation fails
 func NewS3Client(autoBackup *model.AutoBackup) (*S3Client, error) {
-	// Create AWS configuration with static credentials
-	cfg, err := config.LoadDefaultConfig(context.TODO(),
-		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(
-			autoBackup.S3AccessKeyID,
-			autoBackup.S3SecretAccessKey,
-			"", // session token (not used for static credentials)
-		)),
-		config.WithRegion(getS3Region(autoBackup.S3Region)),
-	)
-	if err != nil {
-		return nil, cosy.WrapErrorWithParams(ErrAutoBackupS3Upload, fmt.Sprintf("failed to load AWS config: %v", err))
+	// Determine endpoint and SSL settings
+	endpoint := autoBackup.S3Endpoint
+	if endpoint == "" {
+		endpoint = "s3.amazonaws.com"
 	}
 
-	// Create S3 client with custom endpoint if provided
-	var s3Client *s3.Client
-	if autoBackup.S3Endpoint != "" {
-		s3Client = s3.NewFromConfig(cfg, func(o *s3.Options) {
-			o.BaseEndpoint = aws.String(autoBackup.S3Endpoint)
-			o.UsePathStyle = true // Use path-style addressing for custom endpoints
-		})
-	} else {
-		s3Client = s3.NewFromConfig(cfg)
+	// Remove protocol prefix if present
+	endpoint = strings.ReplaceAll(endpoint, "https://", "")
+	endpoint = strings.ReplaceAll(endpoint, "http://", "")
+
+	// Initialize MinIO client
+	minioClient, err := minio.New(endpoint, &minio.Options{
+		Creds:  credentials.NewStaticV4(autoBackup.S3AccessKeyID, autoBackup.S3SecretAccessKey, ""),
+		Secure: true, // Use SSL by default
+		Region: getS3Region(autoBackup.S3Region),
+	})
+	if err != nil {
+		return nil, cosy.WrapErrorWithParams(ErrAutoBackupS3Upload, fmt.Sprintf("failed to create MinIO client: %v", err))
 	}
 
 	return &S3Client{
-		client: s3Client,
+		client: minioClient,
 		bucket: autoBackup.S3Bucket,
 	}, nil
 }
@@ -77,13 +72,10 @@ func NewS3Client(autoBackup *model.AutoBackup) (*S3Client, error) {
 func (s3c *S3Client) UploadFile(ctx context.Context, key string, data []byte, contentType string) error {
 	logger.Infof("Uploading file to S3: bucket=%s, key=%s, size=%d bytes", s3c.bucket, key, len(data))
 
-	// Create upload input
-	input := &s3.PutObjectInput{
-		Bucket:      aws.String(s3c.bucket),
-		Key:         aws.String(key),
-		Body:        bytes.NewReader(data),
-		ContentType: aws.String(contentType),
-		Metadata: map[string]string{
+	// Create upload options
+	opts := minio.PutObjectOptions{
+		ContentType: contentType,
+		UserMetadata: map[string]string{
 			"uploaded-by":    "nginx-ui",
 			"upload-time":    time.Now().UTC().Format(time.RFC3339),
 			"content-length": fmt.Sprintf("%d", len(data)),
@@ -91,7 +83,7 @@ func (s3c *S3Client) UploadFile(ctx context.Context, key string, data []byte, co
 	}
 
 	// Perform the upload
-	_, err := s3c.client.PutObject(ctx, input)
+	_, err := s3c.client.PutObject(ctx, s3c.bucket, key, bytes.NewReader(data), int64(len(data)), opts)
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrAutoBackupS3Upload, fmt.Sprintf("failed to upload to S3: %v", err))
 	}
@@ -155,12 +147,14 @@ func (s3c *S3Client) UploadBackupFiles(ctx context.Context, result *BackupExecut
 func (s3c *S3Client) TestS3Connection(ctx context.Context) error {
 	logger.Infof("Testing S3 connection: bucket=%s", s3c.bucket)
 
-	// Try to head the bucket to verify access
-	_, err := s3c.client.HeadBucket(ctx, &s3.HeadBucketInput{
-		Bucket: aws.String(s3c.bucket),
-	})
+	// Try to check if the bucket exists and is accessible
+	exists, err := s3c.client.BucketExists(ctx, s3c.bucket)
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrAutoBackupS3Upload, fmt.Sprintf("S3 connection test failed: %v", err))
+	}
+
+	if !exists {
+		return cosy.WrapErrorWithParams(ErrAutoBackupS3Upload, fmt.Sprintf("S3 bucket does not exist: %s", s3c.bucket))
 	}
 
 	logger.Infof("S3 connection test successful: bucket=%s", s3c.bucket)
@@ -168,7 +162,7 @@ func (s3c *S3Client) TestS3Connection(ctx context.Context) error {
 }
 
 // getS3Region returns the S3 region, defaulting to us-east-1 if not specified.
-// This function ensures a valid region is always provided to the AWS SDK.
+// This function ensures a valid region is always provided to the MinIO client.
 //
 // Parameters:
 //   - region: The configured S3 region

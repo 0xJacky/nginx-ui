@@ -138,11 +138,11 @@ func TestNewS3Client_ValidationErrors(t *testing.T) {
 				assert.Error(t, err)
 				assert.Nil(t, client)
 			} else {
-				// Note: This will fail in CI/test environment without AWS credentials
+				// Note: This will fail in CI/test environment without MinIO credentials
 				// but the client creation itself should succeed
 				if err != nil {
-					// Allow AWS credential errors in test environment
-					assert.Contains(t, err.Error(), "failed to load AWS config")
+					// Allow MinIO client creation errors in test environment
+					assert.Contains(t, err.Error(), "failed to create MinIO client")
 				} else {
 					assert.NotNil(t, client)
 					assert.Equal(t, tt.autoBackup.S3Bucket, client.bucket)
