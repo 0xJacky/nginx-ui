@@ -1662,6 +1662,14 @@ msgstr "Bật hoàn thành mã"
 msgid "Enable compression for content transfer"
 msgstr "Bật nén để chuyển nội dung"
 
+#: src/views/preference/tabs/ServerSettings.vue:52
+msgid "Enable HTTP/2"
+msgstr "Bật HTTP/2"
+
+#: src/views/preference/tabs/ServerSettings.vue:56
+msgid "Enable HTTP/3"
+msgstr "Bật HTTP/3"
+
 #: src/views/preference/tabs/ServerSettings.vue:30
 msgid "Enable HTTPS"
 msgstr "Bật HTTPS"
@@ -1753,6 +1761,14 @@ msgstr "Đã bật"
 #: src/views/stream/components/StreamStatusSelect.vue:26
 msgid "Enabled successfully"
 msgstr "Đã bật"
+
+#: src/views/preference/tabs/ServerSettings.vue:52
+msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
+msgstr "Bật hỗ trợ HTTP/2 với khả năng ghép kênh và đẩy dữ liệu từ máy chủ"
+
+#: src/views/preference/tabs/ServerSettings.vue:56
+msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgstr "Bật hỗ trợ HTTP/3 dựa trên giao thức QUIC để có hiệu suất tốt nhất"
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
@@ -3027,8 +3043,7 @@ msgid "Name"
 msgstr "Tên"
 
 #: src/views/config/configColumns.tsx:10
-#: src/views/site/site_list/columns.tsx:21
-#: src/views/stream/columns.tsx:17
+#: src/views/site/site_list/columns.tsx:21 src/views/stream/columns.tsx:17
 msgid "Name or content"
 msgstr "Tên hoặc nội dung"
 
@@ -3878,6 +3893,15 @@ msgstr "Đội ngũ phát triển"
 msgid "Protected Directory"
 msgstr "Thư mục được bảo vệ"
 
+#: src/views/preference/tabs/ServerSettings.vue:47
+msgid ""
+"Protocol configuration only takes effect when directly connecting. If using "
+"reverse proxy, please configure the protocol separately in the reverse "
+"proxy."
+msgstr ""
+"Cấu hình giao thức chỉ có hiệu lực khi kết nối trực tiếp. Nếu sử dụng proxy "
+"ngược, vui lòng cấu hình giao thức riêng trong proxy ngược."
+
 #: src/views/certificate/DNSCredential.vue:17
 msgid "Provider"
 msgstr "Nhà cung cấp"
@@ -4457,7 +4481,7 @@ msgid "Save stream %{name} to %{node} successfully"
 msgstr "Đã lưu luồng %{name} vào %{node} thành công"
 
 #: src/language/curd.ts:35 src/views/certificate/store.ts:14
-#: src/views/preference/store/index.ts:118
+#: src/views/preference/store/index.ts:120
 msgid "Save successfully"
 msgstr "Lưu thành công"
 

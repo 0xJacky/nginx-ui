@@ -1645,6 +1645,14 @@ msgstr "コード補完を有効にする"
 msgid "Enable compression for content transfer"
 msgstr "コンテンツ転送の圧縮を有効にする"
 
+#: src/views/preference/tabs/ServerSettings.vue:52
+msgid "Enable HTTP/2"
+msgstr "HTTP/2 を有効にする"
+
+#: src/views/preference/tabs/ServerSettings.vue:56
+msgid "Enable HTTP/3"
+msgstr "HTTP/3 を有効にする"
+
 #: src/views/preference/tabs/ServerSettings.vue:30
 msgid "Enable HTTPS"
 msgstr "HTTPS を有効にする"
@@ -1736,6 +1744,14 @@ msgstr "有効"
 #: src/views/stream/components/StreamStatusSelect.vue:26
 msgid "Enabled successfully"
 msgstr "有効化に成功しました"
+
+#: src/views/preference/tabs/ServerSettings.vue:52
+msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
+msgstr "多重化とサーバープッシュ機能を備えたHTTP/2サポートを有効にします"
+
+#: src/views/preference/tabs/ServerSettings.vue:56
+msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgstr "最高のパフォーマンスを得るためにQUICプロトコルに基づくHTTP/3サポートを有効にします"
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
@@ -2994,8 +3010,7 @@ msgid "Name"
 msgstr "名前"
 
 #: src/views/config/configColumns.tsx:10
-#: src/views/site/site_list/columns.tsx:21
-#: src/views/stream/columns.tsx:17
+#: src/views/site/site_list/columns.tsx:21 src/views/stream/columns.tsx:17
 msgid "Name or content"
 msgstr "名前または内容"
 
@@ -3831,6 +3846,13 @@ msgstr "プロジェクトチーム"
 msgid "Protected Directory"
 msgstr "保護されたディレクトリ"
 
+#: src/views/preference/tabs/ServerSettings.vue:47
+msgid ""
+"Protocol configuration only takes effect when directly connecting. If using "
+"reverse proxy, please configure the protocol separately in the reverse "
+"proxy."
+msgstr "プロトコル設定は直接接続時にのみ有効です。リバースプロキシを使用している場合は、リバースプロキシで個別にプロトコルを設定してください。"
+
 #: src/views/certificate/DNSCredential.vue:17
 msgid "Provider"
 msgstr "プロバイダー"
@@ -4401,7 +4423,7 @@ msgid "Save stream %{name} to %{node} successfully"
 msgstr "ストリーム %{name} を %{node} に正常に保存しました"
 
 #: src/language/curd.ts:35 src/views/certificate/store.ts:14
-#: src/views/preference/store/index.ts:118
+#: src/views/preference/store/index.ts:120
 msgid "Save successfully"
 msgstr "保存に成功しました"
 

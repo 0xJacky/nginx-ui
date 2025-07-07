@@ -1696,6 +1696,14 @@ msgstr "Code-Vervollständigung aktivieren"
 msgid "Enable compression for content transfer"
 msgstr "Komprimierung für die Inhaltsübertragung aktivieren"
 
+#: src/views/preference/tabs/ServerSettings.vue:52
+msgid "Enable HTTP/2"
+msgstr "HTTP/2 aktivieren"
+
+#: src/views/preference/tabs/ServerSettings.vue:56
+msgid "Enable HTTP/3"
+msgstr "HTTP/3 aktivieren"
+
 #: src/views/preference/tabs/ServerSettings.vue:30
 msgid "Enable HTTPS"
 msgstr "HTTPS aktivieren"
@@ -1787,6 +1795,16 @@ msgstr "Aktiviert"
 #: src/views/stream/components/StreamStatusSelect.vue:26
 msgid "Enabled successfully"
 msgstr "Erfolgreich aktiviert"
+
+#: src/views/preference/tabs/ServerSettings.vue:52
+msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
+msgstr "Aktiviert HTTP/2-Unterstützung mit Multiplexing und Server-Push-Funktionen"
+
+#: src/views/preference/tabs/ServerSettings.vue:56
+msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgstr ""
+"Aktiviert HTTP/3-Unterstützung basierend auf dem QUIC-Protokoll für beste "
+"Leistung"
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
@@ -3066,8 +3084,7 @@ msgid "Name"
 msgstr "Name"
 
 #: src/views/config/configColumns.tsx:10
-#: src/views/site/site_list/columns.tsx:21
-#: src/views/stream/columns.tsx:17
+#: src/views/site/site_list/columns.tsx:21 src/views/stream/columns.tsx:17
 msgid "Name or content"
 msgstr "Name oder Inhalt"
 
@@ -3930,6 +3947,16 @@ msgstr "Projektteam"
 msgid "Protected Directory"
 msgstr "Geschützter Ordner"
 
+#: src/views/preference/tabs/ServerSettings.vue:47
+msgid ""
+"Protocol configuration only takes effect when directly connecting. If using "
+"reverse proxy, please configure the protocol separately in the reverse "
+"proxy."
+msgstr ""
+"Die Protokollkonfiguration gilt nur bei direkter Verbindung. Bei Verwendung "
+"eines Reverse Proxys konfigurieren Sie das Protokoll bitte separat im "
+"Reverse Proxy."
+
 #: src/views/certificate/DNSCredential.vue:17
 msgid "Provider"
 msgstr "Anbieter"
@@ -4514,7 +4541,7 @@ msgid "Save stream %{name} to %{node} successfully"
 msgstr "Stream %{name} erfolgreich auf %{node} gespeichert"
 
 #: src/language/curd.ts:35 src/views/certificate/store.ts:14
-#: src/views/preference/store/index.ts:118
+#: src/views/preference/store/index.ts:120
 msgid "Save successfully"
 msgstr "Erfolgreich gespeichert"
 

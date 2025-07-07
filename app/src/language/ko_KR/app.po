@@ -1644,6 +1644,14 @@ msgstr "코드 완성 활성화"
 msgid "Enable compression for content transfer"
 msgstr "콘텐츠 전송 압축 활성화"
 
+#: src/views/preference/tabs/ServerSettings.vue:52
+msgid "Enable HTTP/2"
+msgstr "HTTP/2 활성화"
+
+#: src/views/preference/tabs/ServerSettings.vue:56
+msgid "Enable HTTP/3"
+msgstr "HTTP/3 활성화"
+
 #: src/views/preference/tabs/ServerSettings.vue:30
 msgid "Enable HTTPS"
 msgstr "HTTPS 활성화"
@@ -1735,6 +1743,14 @@ msgstr "활성화됨"
 #: src/views/stream/components/StreamStatusSelect.vue:26
 msgid "Enabled successfully"
 msgstr "성공적으로 활성화됨"
+
+#: src/views/preference/tabs/ServerSettings.vue:52
+msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
+msgstr "멀티플렉싱 및 서버 푸시 기능을 갖춘 HTTP/2 지원을 활성화합니다"
+
+#: src/views/preference/tabs/ServerSettings.vue:56
+msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgstr "최상의 성능을 위해 QUIC 프로토콜 기반의 HTTP/3 지원을 활성화합니다"
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
@@ -2990,8 +3006,7 @@ msgid "Name"
 msgstr "이름"
 
 #: src/views/config/configColumns.tsx:10
-#: src/views/site/site_list/columns.tsx:21
-#: src/views/stream/columns.tsx:17
+#: src/views/site/site_list/columns.tsx:21 src/views/stream/columns.tsx:17
 msgid "Name or content"
 msgstr "이름 또는 내용"
 
@@ -3825,6 +3840,13 @@ msgstr "프로젝트 팀"
 msgid "Protected Directory"
 msgstr "보호된 디렉터리"
 
+#: src/views/preference/tabs/ServerSettings.vue:47
+msgid ""
+"Protocol configuration only takes effect when directly connecting. If using "
+"reverse proxy, please configure the protocol separately in the reverse "
+"proxy."
+msgstr "프로토콜 설정은 직접 연결할 때만 적용됩니다. 리버스 프록시를 사용하는 경우 리버스 프록시에서 별도로 프로토콜을 구성하세요."
+
 #: src/views/certificate/DNSCredential.vue:17
 msgid "Provider"
 msgstr "제공자"
@@ -4397,7 +4419,7 @@ msgid "Save stream %{name} to %{node} successfully"
 msgstr "스트림 %{name}을(를) %{node}에 성공적으로 저장했습니다"
 
 #: src/language/curd.ts:35 src/views/certificate/store.ts:14
-#: src/views/preference/store/index.ts:118
+#: src/views/preference/store/index.ts:120
 msgid "Save successfully"
 msgstr "성공적으로 저장되었습니다"
 

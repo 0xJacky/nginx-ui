@@ -1636,6 +1636,14 @@ msgstr "启动代码补全"
 msgid "Enable compression for content transfer"
 msgstr "启用内容传输压缩"
 
+#: src/views/preference/tabs/ServerSettings.vue:52
+msgid "Enable HTTP/2"
+msgstr "启用 HTTP/2"
+
+#: src/views/preference/tabs/ServerSettings.vue:56
+msgid "Enable HTTP/3"
+msgstr "启用 HTTP/3"
+
 #: src/views/preference/tabs/ServerSettings.vue:30
 msgid "Enable HTTPS"
 msgstr "启用 HTTPS"
@@ -1727,6 +1735,14 @@ msgstr "启用"
 #: src/views/stream/components/StreamStatusSelect.vue:26
 msgid "Enabled successfully"
 msgstr "启用成功"
+
+#: src/views/preference/tabs/ServerSettings.vue:52
+msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
+msgstr "启用HTTP/2支持，具备多路复用和服务器推送能力"
+
+#: src/views/preference/tabs/ServerSettings.vue:56
+msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgstr "基于QUIC协议启用HTTP/3支持以获得最佳性能"
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:76
 msgid "Encrypt website with Let's Encrypt"
@@ -2982,8 +2998,7 @@ msgid "Name"
 msgstr "名称"
 
 #: src/views/config/configColumns.tsx:10
-#: src/views/site/site_list/columns.tsx:21
-#: src/views/stream/columns.tsx:17
+#: src/views/site/site_list/columns.tsx:21 src/views/stream/columns.tsx:17
 msgid "Name or content"
 msgstr "名称或内容"
 
@@ -3815,6 +3830,13 @@ msgstr "项目团队"
 msgid "Protected Directory"
 msgstr "受保护目录"
 
+#: src/views/preference/tabs/ServerSettings.vue:47
+msgid ""
+"Protocol configuration only takes effect when directly connecting. If using "
+"reverse proxy, please configure the protocol separately in the reverse "
+"proxy."
+msgstr "协议配置仅在直接连接时生效。如果使用反向代理，请在反向代理中单独配置协议。"
+
 #: src/views/certificate/DNSCredential.vue:17
 msgid "Provider"
 msgstr "提供商"
@@ -4385,7 +4407,7 @@ msgid "Save stream %{name} to %{node} successfully"
 msgstr "成功将站点 %{name} 保存到 %{node} 中"
 
 #: src/language/curd.ts:35 src/views/certificate/store.ts:14
-#: src/views/preference/store/index.ts:118
+#: src/views/preference/store/index.ts:120
 msgid "Save successfully"
 msgstr "保存成功"
 
