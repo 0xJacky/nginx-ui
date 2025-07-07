@@ -11,11 +11,14 @@
 
 ## Server
 
-| 設定      | 環境變數                     |
-|---------|--------------------------|
-| Host    | NGINX_UI_SERVER_HOST     |
-| Port    | NGINX_UI_SERVER_PORT     |
-| RunMode | NGINX_UI_SERVER_RUN_MODE |
+| 設定        | 環境變數                         |
+|-----------|------------------------------|
+| Host      | NGINX_UI_SERVER_HOST         |
+| Port      | NGINX_UI_SERVER_PORT         |
+| RunMode   | NGINX_UI_SERVER_RUN_MODE     |
+| EnableHTTPS | NGINX_UI_SERVER_ENABLE_HTTPS |
+| EnableH2  | NGINX_UI_SERVER_ENABLE_H2    |
+| EnableH3  | NGINX_UI_SERVER_ENABLE_H3    |
 
 ## Database
 

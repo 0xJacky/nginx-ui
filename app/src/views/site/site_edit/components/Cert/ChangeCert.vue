@@ -66,7 +66,7 @@ const columns = computed(() => certColumns.filter(item => item.pure))
         :columns
         :row-selection-type="selectionType"
         :table-props="{
-          rowKey: 'name',
+          rowKey: 'id',
         }"
         @update:selected-row-keys="handleSelectionChange"
       />

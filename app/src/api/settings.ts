@@ -12,6 +12,9 @@ export interface ServerSettings {
   enable_https: boolean
   ssl_cert: string
   ssl_key: string
+  // HTTP/2 and HTTP/3 protocol support (fixed priority: h3->h2->h1)
+  enable_h2: boolean
+  enable_h3: boolean
 }
 
 export interface DatabaseSettings {

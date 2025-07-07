@@ -33,6 +33,35 @@ When using the `debug` mode, Nginx UI will print SQL and its execution time and 
 
 When using the `release` mode, Nginx UI will not print the execution time and caller of SQL on the console, and only the log of `Info` level or higher will be printed.
 
+## EnableHTTPS
+
+- Type: `bool`
+- Default: `false`
+
+This option is used to enable HTTPS support for the Nginx UI server. When enabled, the server will listen for HTTPS requests in addition to HTTP requests.
+
+## EnableH2
+
+- Type: `bool`
+- Default: `false`
+
+This option is used to enable HTTP/2 support for the Nginx UI server. 
+
+::: warning
+HTTP/2 requires HTTPS to be enabled. If you enable HTTP/2 without enabling HTTPS, the server will return an error during startup.
+:::
+
+## EnableH3
+
+- Type: `bool`
+- Default: `false`
+
+This option is used to enable HTTP/3 support for the Nginx UI server.
+
+::: warning
+HTTP/3 requires HTTPS to be enabled. If you enable HTTP/3 without enabling HTTPS, the server will return an error during startup.
+:::
+
 ## HttpHost
 - Type: `string`
 - Default：`0.0.0.0`

@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
-	"github.com/uozi-tech/cosy/logger"
 )
 
 // TargetInfo contains proxy target information with source config
@@ -89,9 +88,9 @@ func (s *UpstreamService) updateTargetsFromConfig(configPath string, targets []P
 				if isOnlyConfig {
 					delete(s.targets, key)
 					delete(s.availabilityMap, key)
-					logger.Debug("Removed proxy target:", key, "from config:", configPath)
+					// logger.Debug("Removed proxy target:", key, "from config:", configPath)
 				} else {
-					logger.Debug("Keeping proxy target:", key, "still used by other configs")
+					// logger.Debug("Keeping proxy target:", key, "still used by other configs")
 				}
 			}
 		}
@@ -178,7 +177,7 @@ func (s *UpstreamService) PerformAvailabilityTest() {
 	s.testMutex.Lock()
 	if s.testInProgress {
 		s.testMutex.Unlock()
-		logger.Debug("Availability test already in progress, skipping")
+		// logger.Debug("Availability test already in progress, skipping")
 		return
 	}
 	s.testInProgress = true
@@ -196,11 +195,11 @@ func (s *UpstreamService) PerformAvailabilityTest() {
 	s.targetsMutex.RUnlock()
 
 	if targetCount == 0 {
-		logger.Debug("No targets to test")
+		// logger.Debug("No targets to test")
 		return
 	}
 
-	logger.Debug("Performing availability test for", targetCount, "unique targets")
+	// logger.Debug("Performing availability test for", targetCount, "unique targets")
 
 	// Get target keys for testing
 	s.targetsMutex.RLock()
@@ -218,7 +217,7 @@ func (s *UpstreamService) PerformAvailabilityTest() {
 	s.availabilityMap = results
 	s.targetsMutex.Unlock()
 
-	logger.Debug("Availability test completed for", len(results), "targets")
+	// logger.Debug("Availability test completed for", len(results), "targets")
 }
 
 // ClearTargets clears all targets (useful for testing or reloading)
@@ -231,7 +230,7 @@ func (s *UpstreamService) ClearTargets() {
 	s.configTargets = make(map[string][]string)
 	s.lastUpdateTime = time.Now()
 
-	logger.Debug("Cleared all proxy targets")
+	// logger.Debug("Cleared all proxy targets")
 }
 
 // GetLastUpdateTime returns the last time targets were updated
@@ -274,11 +273,11 @@ func (s *UpstreamService) RemoveConfigTargets(configPath string) {
 			if !isUsedByOthers {
 				delete(s.targets, key)
 				delete(s.availabilityMap, key)
-				logger.Debug("Removed proxy target:", key, "after config removal:", configPath)
+				// logger.Debug("Removed proxy target:", key, "after config removal:", configPath)
 			}
 		}
 		delete(s.configTargets, configPath)
 		s.lastUpdateTime = time.Now()
-		logger.Debug("Removed config targets for:", configPath)
+		// logger.Debug("Removed config targets for:", configPath)
 	}
 }

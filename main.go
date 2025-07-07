@@ -5,7 +5,6 @@ import (
 	"crypto/tls"
 	"fmt"
 	"net"
-	"net/http"
 	"os/signal"
 	"syscall"
 
@@ -63,37 +62,64 @@ func Program(ctx context.Context, confPath string) func(l []net.Listener) error 
 		// Kernel boot
 		cKernel.Boot(ctx)
 
-		srv := &http.Server{
-			Handler: cRouter.GetEngine(),
-		}
+		// Get the HTTP handler from Cosy router
+		handler := cRouter.GetEngine()
 
-		// defer Shutdown to wait for ongoing requests to be served before returning
-		defer srv.Shutdown(ctx)
-
-		var err error
+		// Configure TLS if HTTPS is enabled
+		var tlsConfig *tls.Config
 		if cSettings.ServerSettings.EnableHTTPS {
 			// Load TLS certificate
-			err = cert.LoadServerTLSCertificate()
+			err := cert.LoadServerTLSCertificate()
 			if err != nil {
 				logger.Fatalf("Failed to load TLS certificate: %v", err)
 				return err
 			}
 
-			tlsConfig := &tls.Config{
+			// Configure ALPN protocols based on settings
+			// Protocol negotiation priority is fixed: h3 -> h2 -> h1
+			var nextProtos []string
+			if cSettings.ServerSettings.EnableH3 {
+				nextProtos = append(nextProtos, "h3")
+			}
+			if cSettings.ServerSettings.EnableH2 {
+				nextProtos = append(nextProtos, "h2")
+			}
+			// HTTP/1.1 is always supported as fallback
+			nextProtos = append(nextProtos, "http/1.1")
+
+			tlsConfig = &tls.Config{
 				GetCertificate: func(clientHello *tls.ClientHelloInfo) (*tls.Certificate, error) {
 					return cert.GetServerTLSCertificate()
 				},
 				MinVersion: tls.VersionTLS12,
+				NextProtos: nextProtos,
 			}
-			srv.TLSConfig = tlsConfig
-
-			logger.Info("Starting HTTPS server")
-			tlsListener := tls.NewListener(listener, tlsConfig)
-			return srv.Serve(tlsListener)
-		} else {
-			logger.Info("Starting HTTP server")
-			return srv.Serve(listener)
 		}
+
+		// Create and initialize the server factory
+		serverFactory := cKernel.NewServerFactory(handler, tlsConfig)
+		if err := serverFactory.Initialize(); err != nil {
+			logger.Fatalf("Failed to initialize server factory: %v", err)
+			return err
+		}
+
+		// Start the servers
+		if err := serverFactory.Start(ctx, listener); err != nil {
+			logger.Fatalf("Failed to start servers: %v", err)
+			return err
+		}
+
+		// Wait for context cancellation
+		<-ctx.Done()
+
+		// Graceful shutdown
+		logger.Info("Shutting down servers...")
+		if err := serverFactory.Shutdown(ctx); err != nil {
+			logger.Errorf("Error during server shutdown: %v", err)
+			return err
+		}
+
+		return nil
 	}
 }
 

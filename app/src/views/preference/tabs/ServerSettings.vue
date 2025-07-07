@@ -41,6 +41,21 @@ function handleCertChange(certs: Cert[]) {
       <AFormItem :label="$gettext('SSL Key Path')">
         <p>{{ data.server.ssl_key }}</p>
       </AFormItem>
+
+      <AAlert
+        type="info"
+        :message="$gettext('Protocol configuration only takes effect when directly connecting. If using reverse proxy, please configure the protocol separately in the reverse proxy.')"
+        show-icon
+        class="mb-4"
+      />
+
+      <AFormItem :label="$gettext('Enable HTTP/2')" :help="$gettext('Enables HTTP/2 support with multiplexing and server push capabilities')">
+        <ASwitch v-model:checked="data.server.enable_h2" />
+      </AFormItem>
+
+      <AFormItem :label="$gettext('Enable HTTP/3')" :help="$gettext('Enables HTTP/3 support based on QUIC protocol for best performance')">
+        <ASwitch v-model:checked="data.server.enable_h3" />
+      </AFormItem>
     </div>
   </AForm>
 </template>

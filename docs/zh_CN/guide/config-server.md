@@ -30,6 +30,35 @@ Nginx UI 的日志分为 6 个级别，分别为 `Debug`、`Info`、`Warn`、`Er
 
 当使用 `release` 模式时，Nginx UI 将不会在控制台打印 SQL 的执行时间和调用者， 只有 `Info` 级别或更高等级的日志才会被打印。
 
+## EnableHTTPS
+
+- 类型：`bool`
+- 默认值：`false`
+
+此选项用于启用 Nginx UI 服务器的 HTTPS 支持。启用后，服务器将同时监听 HTTPS 和 HTTP 请求。
+
+## EnableH2
+
+- 类型：`bool`
+- 默认值：`false`
+
+此选项用于启用 Nginx UI 服务器的 HTTP/2 支持。
+
+::: warning 警告
+HTTP/2 需要启用 HTTPS。如果在未启用 HTTPS 的情况下启用 HTTP/2，服务器将在启动时返回错误。
+:::
+
+## EnableH3
+
+- 类型：`bool`
+- 默认值：`false`
+
+此选项用于启用 Nginx UI 服务器的 HTTP/3 支持。
+
+::: warning 警告
+HTTP/3 需要启用 HTTPS。如果在未启用 HTTPS 的情况下启用 HTTP/3，服务器将在启动时返回错误。
+:::
+
 ## HttpHost
 - 类型: `string`
 - Default：`0.0.0.0`

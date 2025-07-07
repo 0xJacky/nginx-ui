@@ -112,7 +112,7 @@ func (s *Scanner) watchAllDirectories() error {
 				logger.Error("Failed to watch directory:", path, err)
 				return err
 			}
-			logger.Debug("Watching directory:", path)
+			// logger.Debug("Watching directory:", path)
 		}
 		return nil
 	})
@@ -138,7 +138,7 @@ func (s *Scanner) periodicScan() {
 // handleShutdown listens for context cancellation and shuts down gracefully
 func (s *Scanner) handleShutdown() {
 	<-s.ctx.Done()
-	logger.Debug("Shutting down scanner")
+	logger.Info("Shutting down Index Scanner")
 	s.Shutdown()
 }
 

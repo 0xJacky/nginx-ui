@@ -18,6 +18,8 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       enable_https: false,
       ssl_cert: '',
       ssl_key: '',
+      enable_h2: false,
+      enable_h3: false,
     },
     database: {
       name: '',

@@ -106,6 +106,21 @@ func SaveSettings(c *gin.Context) {
 		}
 	}
 
+	// Validate HTTP/2 and HTTP/3 configuration
+	if json.Server.EnableH2 && !json.Server.EnableHTTPS {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "HTTP/2 requires HTTPS to be enabled",
+		})
+		return
+	}
+
+	if json.Server.EnableH3 && !json.Server.EnableHTTPS {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "HTTP/3 requires HTTPS to be enabled",
+		})
+		return
+	}
+
 	cSettings.ProtectedFill(cSettings.AppSettings, &json.App)
 	cSettings.ProtectedFill(cSettings.ServerSettings, &json.Server)
 	cSettings.ProtectedFill(settings.AuthSettings, &json.Auth)

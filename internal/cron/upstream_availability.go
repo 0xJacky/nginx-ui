@@ -3,6 +3,7 @@ package cron
 import (
 	"time"
 
+	apiUpstream "github.com/0xJacky/Nginx-UI/api/upstream"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/go-co-op/gocron/v2"
 	"github.com/uozi-tech/cosy/logger"
@@ -36,32 +37,29 @@ func executeUpstreamAvailabilityTest() {
 
 	targetCount := service.GetTargetCount()
 	if targetCount == 0 {
-		logger.Debug("No upstream targets to test")
+		// logger.Debug("No upstream targets to test")
 		return
 	}
 
 	// Check if we should skip this test due to active WebSocket connections
 	// (WebSocket connections trigger more frequent checks)
 	if hasActiveWebSocketConnections() {
-		logger.Debug("Skipping scheduled test due to active WebSocket connections")
+		// logger.Debug("Skipping scheduled test due to active WebSocket connections")
 		return
 	}
 
-	start := time.Now()
-	logger.Debug("Starting scheduled upstream availability test for", targetCount, "targets")
+	// start := time.Now()
+	// logger.Debug("Starting scheduled upstream availability test for", targetCount, "targets")
 
-	service.PerformAvailabilityTest()
+	// service.PerformAvailabilityTest()
 
-	duration := time.Since(start)
-	logger.Debug("Upstream availability test completed in", duration)
+	// duration := time.Since(start)
+	// logger.Debug("Upstream availability test completed in", duration)
 }
 
 // hasActiveWebSocketConnections checks if there are active WebSocket connections
-// This is a placeholder - the actual implementation should check the API package
 func hasActiveWebSocketConnections() bool {
-	// TODO: This should check api/upstream.HasActiveWebSocketConnections()
-	// but we need to avoid circular dependencies
-	return false
+	return apiUpstream.HasActiveWebSocketConnections()
 }
 
 // RestartUpstreamAvailabilityJob restarts the upstream availability job
