@@ -16,13 +16,13 @@ func GetMemoryStat() (MemStat, error) {
 		return MemStat{}, errors.Wrap(err, "error analytic getMemoryStat")
 	}
 	return MemStat{
-		Total:      humanize.Bytes(memoryStat.Total),
-		Used:       humanize.Bytes(memoryStat.Used),
-		Cached:     humanize.Bytes(memoryStat.Cached),
-		Free:       humanize.Bytes(memoryStat.Free),
-		SwapUsed:   humanize.Bytes(memoryStat.SwapTotal - memoryStat.SwapFree),
-		SwapTotal:  humanize.Bytes(memoryStat.SwapTotal),
-		SwapCached: humanize.Bytes(memoryStat.SwapCached),
+		Total:      humanize.IBytes(memoryStat.Total),
+		Used:       humanize.IBytes(memoryStat.Used),
+		Cached:     humanize.IBytes(memoryStat.Cached),
+		Free:       humanize.IBytes(memoryStat.Free),
+		SwapUsed:   humanize.IBytes(memoryStat.SwapTotal - memoryStat.SwapFree),
+		SwapTotal:  humanize.IBytes(memoryStat.SwapTotal),
+		SwapCached: humanize.IBytes(memoryStat.SwapCached),
 		SwapPercent: cast.ToFloat64(fmt.Sprintf("%.2f",
 			100*float64(memoryStat.SwapTotal-memoryStat.SwapFree)/math.Max(float64(memoryStat.SwapTotal), 1))),
 		Pressure: cast.ToFloat64(fmt.Sprintf("%.2f", memoryStat.UsedPercent)),

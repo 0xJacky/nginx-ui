@@ -45,9 +45,9 @@ func GetDiskStat() (DiskStat, error) {
 			Mountpoint: partition.Mountpoint,
 			Device:     partition.Device,
 			Fstype:     partition.Fstype,
-			Total:      humanize.Bytes(usage.Total),
-			Used:       humanize.Bytes(usage.Used),
-			Free:       humanize.Bytes(usage.Free),
+			Total:      humanize.IBytes(usage.Total),
+			Used:       humanize.IBytes(usage.Used),
+			Free:       humanize.IBytes(usage.Free),
 			Percentage: cast.ToFloat64(fmt.Sprintf("%.2f", usage.UsedPercent)),
 		}
 		partitionStats = append(partitionStats, partitionStat)
