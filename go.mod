@@ -84,6 +84,7 @@ require (
 	github.com/RoaringBitmap/roaring/v2 v2.6.0 // indirect
 	github.com/akamai/AkamaiOPEN-edgegrid-golang v1.2.2 // indirect
 	github.com/aliyun/aliyun-log-go-sdk v0.1.102 // indirect
+	github.com/aziontech/azionapi-go-sdk v0.142.0 // indirect
 	github.com/baidubce/bce-sdk-go v0.9.233 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bits-and-blooms/bitset v1.22.0 // indirect
@@ -149,6 +150,7 @@ require (
 	github.com/go-viper/mapstructure/v2 v2.3.0 // indirect
 	github.com/go-webauthn/x v0.1.22 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
+	github.com/gofrs/flock v0.12.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.2 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
@@ -224,6 +226,8 @@ require (
 	github.com/nrdcg/mailinabox v0.2.0 // indirect
 	github.com/nrdcg/namesilo v0.2.1 // indirect
 	github.com/nrdcg/nodion v0.1.0 // indirect
+	github.com/nrdcg/oci-go-sdk/common/v1065 v1065.95.0 // indirect
+	github.com/nrdcg/oci-go-sdk/dns/v1065 v1065.95.0 // indirect
 	github.com/nrdcg/porkbun v0.4.0 // indirect
 	github.com/nzdjb/go-metaname v1.0.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
@@ -258,6 +262,7 @@ require (
 	github.com/smartystreets/gunit v1.1.3 // indirect
 	github.com/softlayer/softlayer-go v1.1.7 // indirect
 	github.com/softlayer/xmlrpc v0.0.0-20200409220501-5f089df7cb7e // indirect
+	github.com/sony/gobreaker v1.0.0 // indirect
 	github.com/sony/sonyflake/v2 v2.2.0 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
@@ -328,9 +333,9 @@ require (
 
 replace (
 	code.pfad.fr/risefront => github.com/nginxui/risefront v1.2.3
-	github.com/go-acme/lego/v4 => github.com/nginxui/lego/v4 v4.0.1-0.20250706105036-5f0180f31871
-	github.com/libdns/alidns => github.com/nginxui/alidns v0.0.0-20250510034447-7783387a1f8d
-	github.com/libdns/cloudflare => github.com/nginxui/cloudflare v0.0.0-20250508084008-f31918fec5ab
+	github.com/go-acme/lego/v4 => github.com/nginxui/lego/v4 v4.0.1-0.20250711080916-db2f7bf33bf7
+	github.com/libdns/alidns => github.com/nginxui/alidns v0.0.0-20250710121130-078ef8f94363
+	github.com/libdns/cloudflare => github.com/nginxui/cloudflare v0.0.0-20250710120913-9a0967becf83
 	github.com/libdns/tencentcloud => github.com/nginxui/tencentcloud v0.0.0-20250510022134-62ee21b1b93a
 	github.com/minio/selfupdate => github.com/nginxui/selfupdate v0.0.0-20250508140228-a7dab39cec4a
 	github.com/nikoksr/notify => github.com/nginxui/notify v0.0.0-20250509000747-c76622723eb1

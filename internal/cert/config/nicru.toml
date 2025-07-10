@@ -1,0 +1,41 @@
+Name = "RU CENTER"
+Description = ''''''
+URL = "https://nic.ru/"
+Code = "nicru"
+Since = "v4.24.0"
+
+Example = '''
+NICRU_USER="<your_user>" \
+NICRU_PASSWORD="<your_password>" \
+NICRU_SERVICE_ID="<service_id>" \
+NICRU_SECRET="<service_secret>" \
+lego --dns nicru --domains "*.example.com" --email you@example.com run
+'''
+
+Additional = '''
+## Credential information
+
+You can find information about service ID and secret https://www.nic.ru/manager/oauth.cgi?step=oauth.app_list
+
+| ENV Variable        | Parameter from page            | Example           |
+|---------------------|--------------------------------|-------------------|
+| NICRU_USER          | Username (Number of agreement) | NNNNNNN/NIC-D     |
+| NICRU_PASSWORD      | Password account               |                   |
+| NICRU_SERVICE_ID    | Application ID                 | hex-based, len 32 |
+| NICRU_SECRET        | Identity endpoint              | string len 91     |
+'''
+
+[Configuration]
+  [Configuration.Credentials]
+    NICRU_USER = "Agreement for an account in RU CENTER"
+    NICRU_PASSWORD = "Password for an account in RU CENTER"
+    NICRU_SERVICE_ID = "Service ID for application in DNS-hosting RU CENTER"
+    NICRU_SECRET = "Secret for application in DNS-hosting RU CENTER"
+    NICRU_SERVICE_NAME = "Service Name for DNS-hosting RU CENTER"
+  [Configuration.Additional]
+    NICRU_POLLING_INTERVAL = "Time between DNS propagation check in seconds (Default: 60)"
+    NICRU_PROPAGATION_TIMEOUT = "Maximum waiting time for DNS propagation in seconds (Default: 600)"
+    NICRU_TTL = "The TTL of the TXT record used for the DNS challenge in seconds (Default: 30)"
+
+[Links]
+  API = "https://www.nic.ru/help/api-dns-hostinga_3643.html"
