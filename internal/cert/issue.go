@@ -117,7 +117,7 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 		code := dnsCredential.Config.Code
 		pConfig, ok := dns.GetProvider(code)
 		if !ok {
-			return cosy.WrapErrorWithParams(ErrProviderNotFound, err.Error())
+			return ErrProviderNotFound
 		}
 		certLogger.Info(translation.C("[Nginx UI] Setting environment variables"))
 		if dnsCredential.Config.Configuration != nil {
@@ -143,7 +143,7 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 
 			err = client.Challenge.SetDNS01Provider(provider, challengeOptions...)
 		} else {
-			return cosy.WrapErrorWithParams(ErrEnvironmentConfigurationIsEmpty, err.Error())
+			return ErrEnvironmentConfigurationIsEmpty
 		}
 	}
 
@@ -174,7 +174,7 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 		}
 	}
 
-	if time.Now().Sub(payload.NotBefore).Hours()/24 <= 21 &&
+	if time.Since(payload.NotBefore).Hours()/24 <= 21 &&
 		payload.Resource != nil && payload.Resource.Certificate != nil {
 		err = renew(payload, client, certLogger)
 		if err != nil {
