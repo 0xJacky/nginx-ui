@@ -310,6 +310,41 @@ jobs:
             r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz --file ./${{ env.DIST }}.tar.gz --remote
             r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --file ./${{ env.DIST }}.tar.gz.digest --remote
 
+      - name: Print Wrangler logs for debugging
+        if: always() && (github.event_name != 'pull_request' && github.ref == 'refs/heads/dev')
+        run: |
+          echo "=== Searching for Wrangler log files ==="
+          LOG_DIR="$HOME/.config/.wrangler/logs"
+          if [ -d "$LOG_DIR" ]; then
+            echo "Found Wrangler logs directory: $LOG_DIR"
+            echo "Files in logs directory:"
+            ls -la "$LOG_DIR"
+            
+            echo ""
+            echo "=== Printing content of all log files ==="
+            for log_file in "$LOG_DIR"/wrangler-*.log; do
+              if [ -f "$log_file" ]; then
+                echo "--- Content of $log_file ---"
+                cat "$log_file"
+                echo ""
+              fi
+            done
+          else
+            echo "Wrangler logs directory not found at $LOG_DIR"
+            echo "Checking alternative locations..."
+            find $HOME -name "wrangler-*.log" -type f 2>/dev/null || echo "No wrangler log files found"
+          fi
+          
+          echo ""
+          echo "=== Environment and system info ==="
+          echo "Current user: $(whoami)"
+          echo "Home directory: $HOME"
+          echo "Current working directory: $(pwd)"
+          echo "Disk usage:"
+          df -h
+          echo "Available space in home:"
+          du -sh $HOME 2>/dev/null || echo "Cannot check home directory size"
+
   docker-build:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
@@ -382,3 +417,199 @@ jobs:
           push: 'true'
           tags: |
             uozi/nginx-ui-demo:latest
+
+  update-homebrew:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'release'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get release info
+        id: release
+        run: |
+          echo "tag_name=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+          echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Download release assets and calculate SHA256 checksums
+        id: checksums
+        run: |
+          VERSION="${{ steps.release.outputs.version }}"
+          TAG_NAME="${{ steps.release.outputs.tag_name }}"
+
+          # Download binary files from releases and calculate SHA256
+          mkdir -p downloads
+
+          # macOS Intel
+          wget -O downloads/nginx-ui-macos-64.tar.gz "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/nginx-ui-macos-64.tar.gz"
+          MACOS_INTEL_SHA256=$(sha256sum downloads/nginx-ui-macos-64.tar.gz | cut -d' ' -f1)
+
+          # macOS ARM
+          wget -O downloads/nginx-ui-macos-arm64-v8a.tar.gz "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/nginx-ui-macos-arm64-v8a.tar.gz"
+          MACOS_ARM_SHA256=$(sha256sum downloads/nginx-ui-macos-arm64-v8a.tar.gz | cut -d' ' -f1)
+
+          # Linux Intel
+          wget -O downloads/nginx-ui-linux-64.tar.gz "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/nginx-ui-linux-64.tar.gz"
+          LINUX_INTEL_SHA256=$(sha256sum downloads/nginx-ui-linux-64.tar.gz | cut -d' ' -f1)
+
+          # Linux ARM
+          wget -O downloads/nginx-ui-linux-arm64-v8a.tar.gz "https://github.com/${{ github.repository }}/releases/download/$TAG_NAME/nginx-ui-linux-arm64-v8a.tar.gz"
+          LINUX_ARM_SHA256=$(sha256sum downloads/nginx-ui-linux-arm64-v8a.tar.gz | cut -d' ' -f1)
+
+          echo "macos_intel_sha256=$MACOS_INTEL_SHA256" >> $GITHUB_OUTPUT
+          echo "macos_arm_sha256=$MACOS_ARM_SHA256" >> $GITHUB_OUTPUT
+          echo "linux_intel_sha256=$LINUX_INTEL_SHA256" >> $GITHUB_OUTPUT
+          echo "linux_arm_sha256=$LINUX_ARM_SHA256" >> $GITHUB_OUTPUT
+
+      - name: Generate Homebrew Formula
+        id: formula
+        run: |
+          VERSION="${{ steps.release.outputs.version }}"
+
+          cat > nginx-ui.rb << 'EOF'
+          class NginxUi < Formula
+            desc     "Yet another Nginx Web UI"
+            homepage "https://github.com/0xJacky/nginx-ui"
+            version  "${{ steps.release.outputs.version }}"
+            license  "AGPL-3.0"
+
+            on_macos do
+              on_intel do
+                url     "https://github.com/0xJacky/nginx-ui/releases/download/v#{version}/nginx-ui-macos-64.tar.gz"
+                sha256  "${{ steps.checksums.outputs.macos_intel_sha256 }}"
+              end
+              on_arm do
+                url     "https://github.com/0xJacky/nginx-ui/releases/download/v#{version}/nginx-ui-macos-arm64-v8a.tar.gz"
+                sha256  "${{ steps.checksums.outputs.macos_arm_sha256 }}"
+              end
+            end
+
+            on_linux do
+              on_intel do
+                url     "https://github.com/0xJacky/nginx-ui/releases/download/v#{version}/nginx-ui-linux-64.tar.gz"
+                sha256  "${{ steps.checksums.outputs.linux_intel_sha256 }}"
+              end
+              on_arm do
+                url     "https://github.com/0xJacky/nginx-ui/releases/download/v#{version}/nginx-ui-linux-arm64-v8a.tar.gz"
+                sha256  "${{ steps.checksums.outputs.linux_arm_sha256 }}"
+              end
+            end
+
+            def install
+              bin.install "nginx-ui"
+
+              # Create configuration directory
+              (etc/"nginx-ui").mkpath
+
+              # Create default configuration file if it doesn't exist
+              config_file = etc/"nginx-ui/app.ini"
+              unless config_file.exist?
+                config_file.write <<~EOS
+                  [app]
+                  PageSize = 10
+
+                  [server]
+                  Host = 0.0.0.0
+                  Port = 9000
+                  RunMode = release
+
+                  [cert]
+                  HTTPChallengePort = 9180
+
+                  [terminal]
+                  StartCmd = login
+                EOS
+              end
+
+              # Create data directory
+              (var/"nginx-ui").mkpath
+            end
+
+            def post_install
+              # Ensure correct permissions
+              (var/"nginx-ui").chmod 0755
+            end
+
+            service do
+              run [opt_bin/"nginx-ui", "serve", "--config", etc/"nginx-ui/app.ini"]
+              keep_alive true
+              working_dir var/"nginx-ui"
+              log_path var/"log/nginx-ui.log"
+              error_log_path var/"log/nginx-ui.err.log"
+            end
+
+            test do
+              assert_match version.to_s, shell_output("#{bin}/nginx-ui --version")
+            end
+          end
+          EOF
+
+          echo "Generated Homebrew Formula:"
+          cat nginx-ui.rb
+
+      - name: Checkout homebrew-tools repository
+        uses: actions/checkout@v4
+        with:
+          repository: 0xJacky/homebrew-tools
+          path: homebrew-tools
+          token: ${{ secrets.HOMEBREW_GITHUB_TOKEN }}
+
+      - name: Update Formula file
+        run: |
+          # Copy the generated formula to the correct location
+          mkdir -p homebrew-tools/Formula/
+          cp nginx-ui.rb homebrew-tools/Formula/nginx-ui.rb
+
+      - name: Verify Formula
+        run: |
+          cd homebrew-tools
+          # Basic syntax check
+          ruby -c Formula/nginx-ui.rb
+          echo "Formula syntax is valid"
+
+      - name: Create Pull Request to homebrew-tools
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.HOMEBREW_GITHUB_TOKEN }}
+          path: homebrew-tools
+          branch: update-nginx-ui-${{ steps.release.outputs.version }}
+          delete-branch: true
+          title: 'nginx-ui ${{ steps.release.outputs.version }}'
+          body: |
+            Update nginx-ui to version ${{ steps.release.outputs.version }}
+
+            **Release Notes:**
+            - Version: ${{ steps.release.outputs.version }}
+            - Release URL: https://github.com/${{ github.repository }}/releases/tag/${{ steps.release.outputs.tag_name }}
+
+            **Checksums (SHA256):**
+            - macOS Intel: ${{ steps.checksums.outputs.macos_intel_sha256 }}
+            - macOS ARM: ${{ steps.checksums.outputs.macos_arm_sha256 }}
+            - Linux Intel: ${{ steps.checksums.outputs.linux_intel_sha256 }}
+            - Linux ARM: ${{ steps.checksums.outputs.linux_arm_sha256 }}
+
+            ---
+
+            This PR was automatically generated by GitHub Actions.
+          commit-message: 'nginx-ui ${{ steps.release.outputs.version }}'
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          add-paths: |
+            Formula/nginx-ui.rb
+
+  publish-winget:
+    runs-on: windows-latest
+    needs: build
+    if: github.event_name == 'release'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Publish to WinGet
+        uses: vedantmgoyal9/winget-releaser@v2
+        with:
+          identifier: 0xJacky.nginx-ui
+          max-versions-to-keep: 5
+          token: ${{ secrets.HOMEBREW_GITHUB_TOKEN }}
+          installers-regex: 'nginx-ui-windows.*\.zip$'
