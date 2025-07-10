@@ -1,6 +1,6 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.24.4
+go 1.24.5
 
 require (
 	code.pfad.fr/risefront v1.0.0
@@ -11,7 +11,7 @@ require (
 	github.com/casdoor/casdoor-go-sdk v1.7.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.2.0
-	github.com/docker/docker v28.3.1+incompatible
+	github.com/docker/docker v28.3.2+incompatible
 	github.com/dustin/go-humanize v1.0.1
 	github.com/elliotchance/orderedmap/v3 v3.1.0
 	github.com/fsnotify/fsnotify v1.9.0
@@ -19,7 +19,7 @@ require (
 	github.com/gin-contrib/pprof v1.5.3
 	github.com/gin-contrib/static v1.1.5
 	github.com/gin-gonic/gin v1.10.1
-	github.com/go-acme/lego/v4 v4.23.1
+	github.com/go-acme/lego/v4 v4.24.0
 	github.com/go-co-op/gocron/v2 v2.16.2
 	github.com/go-gormigrate/gormigrate/v2 v2.1.4
 	github.com/go-playground/validator/v10 v10.27.0
@@ -28,7 +28,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
-	github.com/mark3labs/mcp-go v0.32.0
+	github.com/mark3labs/mcp-go v0.33.0
 	github.com/minio/minio-go/v7 v7.0.94
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.3.0
@@ -37,13 +37,13 @@ require (
 	github.com/pquerna/otp v1.5.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.51.0
-	github.com/sashabaranov/go-openai v1.40.3
+	github.com/sashabaranov/go-openai v1.40.4
 	github.com/shirou/gopsutil/v4 v4.25.6
 	github.com/spf13/afero v1.14.0
 	github.com/spf13/cast v1.9.2
 	github.com/stretchr/testify v1.10.0
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20250620092546-c3e307e36701
-	github.com/uozi-tech/cosy v1.24.0
+	github.com/uozi-tech/cosy v1.24.2
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.1
 	github.com/urfave/cli/v3 v3.3.8
 	golang.org/x/crypto v0.39.0
