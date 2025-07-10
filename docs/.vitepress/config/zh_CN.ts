@@ -24,6 +24,7 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: '何为 Nginx UI?', link: '/zh_CN/guide/about' },
             { text: '即刻开始', link: '/zh_CN/guide/getting-started' },
             { text: '使用 Homebrew 安装', link: '/zh_CN/guide/install-homebrew' },
+            { text: '使用 Winget 安装', link: '/zh_CN/guide/install-winget' },
             { text: '安装脚本', link: '/zh_CN/guide/install-script-linux' }
           ]
         },

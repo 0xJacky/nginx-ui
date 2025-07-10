@@ -33,6 +33,7 @@ information: [debian/conf/nginx.conf](https://salsa.debian.org/nginx-team/nginx/
 We provide several installation methods to suit different needs:
 
 - **macOS/Linux**: Use [Homebrew](./install-homebrew) for the easiest installation
+- **Windows**: Use [Winget](./install-winget) for Windows package management
 - **Linux**: Use the [installation script](./install-script-linux) to directly control the host machine's Nginx
 - **Docker**: [Install via Docker](#install-with-docker) with our bundled image that includes Nginx
 - **Advanced**: Download from [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) and [run executable directly](#run-executable-directly), or [manually build it](./build)

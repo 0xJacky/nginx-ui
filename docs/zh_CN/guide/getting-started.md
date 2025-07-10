@@ -30,6 +30,7 @@ http {
 我们提供多种安装方式以满足不同需求：
 
 - **macOS/Linux**: 使用 [Homebrew](./install-homebrew) 最简单的安装方式
+- **Windows**: 使用 [Winget](./install-winget) Windows 包管理器安装
 - **Linux**: 使用 [安装脚本](./install-script-linux) 直接控制主机上的 Nginx
 - **Docker**: 通过 [Docker 安装](#使用-docker) 使用我们提供的包含 Nginx 的镜像
 - **高级用户**: 从 [最新发行版](https://github.com/0xJacky/nginx-ui/releases/latest) 下载并 [通过执行文件运行](#通过执行文件运行)，或者 [手动构建](./build)
