@@ -183,26 +183,32 @@ const passkeyLoginLoading = ref(false)
 async function handlePasskeyLogin() {
   passkeyLoginLoading.value = true
 
-  const begin = await auth.begin_passkey_login()
-  const asseResp = await startAuthentication({ optionsJSON: begin.options.publicKey })
+  try {
+    const begin = await auth.begin_passkey_login()
+    const asseResp = await startAuthentication({ optionsJSON: begin.options.publicKey })
 
-  const r = await auth.finish_passkey_login({
-    session_id: begin.session_id,
-    options: asseResp,
-  })
-
-  if (r.token) {
-    await handleLoginSuccess({
-      token: r.token,
-      shortToken: r.short_token,
-      secureSessionId: r.secure_session_id,
-      loginType: 'passkey',
-      passkeyRawId: asseResp.rawId,
-      showSuccessMessage: false,
+    const r = await auth.finish_passkey_login({
+      session_id: begin.session_id,
+      options: asseResp,
     })
-  }
 
-  passkeyLoginLoading.value = false
+    if (r.token) {
+      await handleLoginSuccess({
+        token: r.token,
+        shortToken: r.short_token,
+        secureSessionId: r.secure_session_id,
+        loginType: 'passkey',
+        passkeyRawId: asseResp.rawId,
+        showSuccessMessage: false,
+      })
+    }
+  }
+  catch (e) {
+    console.error(e)
+  }
+  finally {
+    passkeyLoginLoading.value = false
+  }
 }
 </script>
 

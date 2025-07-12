@@ -51,6 +51,10 @@ watch(visible, v => {
   if (v)
     getStatus()
 })
+
+onMounted(() => {
+  getStatus()
+})
 </script>
 
 <template>
