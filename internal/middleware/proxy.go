@@ -68,13 +68,13 @@ func Proxy() gin.HandlerFunc {
 			req.Header.Set("X-Node-Secret", environment.Token)
 		}
 
-		// fix https://github.com/0xJacky/nginx-ui/issues/342
+		// resolve https://github.com/0xJacky/nginx-ui/issues/342
 		proxy.ModifyResponse = func(resp *http.Response) error {
 			if resp.StatusCode == http.StatusForbidden {
 				resp.StatusCode = http.StatusServiceUnavailable
 			}
 
-			// fix CORS header duplication issue
+			// resolve CORS header duplication issue
 			resp.Header.Del("Access-Control-Allow-Origin")
 			resp.Header.Del("Access-Control-Allow-Methods")
 			resp.Header.Del("Access-Control-Allow-Headers")
@@ -94,7 +94,7 @@ func Proxy() gin.HandlerFunc {
 
 		logger.Debug("Proxy request", baseUrl.String()+c.Request.RequestURI)
 
-		// fix proxy panic when client disconnect
+		// resolve proxy panic when client disconnect
 		ctx := context.WithValue(
 			c.Request.Context(),
 			http.ServerContextKey,
