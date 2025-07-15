@@ -254,7 +254,7 @@ jobs:
       - name: Build
         run: |
           mkdir -p dist
-          go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/$BINARY_NAME -v main.go
+          go build -trimpath -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/$BINARY_NAME -v main.go
 
       - name: Archive backend artifacts
         uses: actions/upload-artifact@v4

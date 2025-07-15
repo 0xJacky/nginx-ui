@@ -12,6 +12,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 var (
@@ -36,6 +37,7 @@ func EncryptedParams() gin.HandlerFunc {
 		// decrypt the parameters
 		decryptedData, err := crypto.Decrypt(encryptedReq.EncryptedParams)
 		if err != nil {
+			logger.Error(err)
 			c.AbortWithStatusJSON(http.StatusBadRequest, ErrDecryptionFailed)
 			return
 		}
@@ -75,6 +77,7 @@ func EncryptedForm() gin.HandlerFunc {
 		// Decrypt the parameters
 		params, err := crypto.Decrypt(encryptedParams)
 		if err != nil {
+			logger.Error(err)
 			c.AbortWithStatusJSON(http.StatusBadRequest, ErrDecryptionFailed)
 			return
 		}
