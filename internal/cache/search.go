@@ -182,7 +182,33 @@ func (si *SearchIndexer) createIndexMapping() mapping.IndexMapping {
 }
 
 // handleConfigScan processes scanned config files and indexes them
-func (si *SearchIndexer) handleConfigScan(configPath string, content []byte) error {
+func (si *SearchIndexer) handleConfigScan(configPath string, content []byte) (err error) {
+	// Add panic recovery to prevent the entire application from crashing
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("panic during config scan: %v", r)
+			logger.Error("Panic occurred while scanning config", "config_path", configPath, "content_size", len(content), "error", err)
+		}
+	}()
+
+	// File size limit: 10MB to prevent memory overflow
+	const maxFileSize = 10 * 1024 * 1024 // 10MB
+	if len(content) > maxFileSize {
+		logger.Warn("Skipping file due to size limit", "path", configPath, "size", len(content), "limit", maxFileSize)
+		return nil
+	}
+
+	// Skip empty files
+	if len(content) == 0 {
+		return nil
+	}
+
+	// Basic content validation: check if it's text content
+	if !isTextContent(content) {
+		logger.Warn("Skipping non-text file", "path", configPath)
+		return nil
+	}
+
 	docType := si.determineConfigType(configPath)
 	if docType == "" {
 		return nil // Skip unsupported file types
@@ -214,12 +240,25 @@ func (si *SearchIndexer) determineConfigType(configPath string) string {
 }
 
 // IndexDocument indexes a single document
-func (si *SearchIndexer) IndexDocument(doc SearchDocument) error {
+func (si *SearchIndexer) IndexDocument(doc SearchDocument) (err error) {
+	// Add panic recovery to prevent the entire application from crashing
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("panic during indexing: %v", r)
+			logger.Error("Panic occurred while indexing document", "document_id", doc.ID, "error", err)
+		}
+	}()
+
 	si.indexMutex.RLock()
 	defer si.indexMutex.RUnlock()
 
 	if si.index == nil {
 		return fmt.Errorf("search index not initialized")
+	}
+
+	// Additional size check as a safety measure
+	if len(doc.Content) > 50*1024*1024 { // 50MB absolute limit
+		return fmt.Errorf("document content too large: %d bytes", len(doc.Content))
 	}
 
 	// logger.Debugf("Indexing document: ID=%s, Type=%s, Name=%s, Path=%s",
@@ -496,4 +535,51 @@ func SearchConfigs(ctx context.Context, query string, limit int) ([]SearchResult
 // SearchAll searches across all configuration types
 func SearchAll(ctx context.Context, query string, limit int) ([]SearchResult, error) {
 	return GetSearchIndexer().Search(ctx, query, limit)
+}
+
+// isTextContent checks if the content appears to be text-based
+// This helps prevent indexing binary files that might have been misidentified
+func isTextContent(content []byte) bool {
+	if len(content) == 0 {
+		return true // Empty content is considered text
+	}
+
+	// Check for common binary file signatures
+	if len(content) >= 4 {
+		// Check for some common binary file headers
+		switch {
+		case content[0] == 0x7F && content[1] == 0x45 && content[2] == 0x4C && content[3] == 0x46: // ELF
+			return false
+		case content[0] == 0x89 && content[1] == 0x50 && content[2] == 0x4E && content[3] == 0x47: // PNG
+			return false
+		case content[0] == 0xFF && content[1] == 0xD8 && content[2] == 0xFF: // JPEG
+			return false
+		case content[0] == 0x50 && content[1] == 0x4B && content[2] == 0x03 && content[3] == 0x04: // ZIP
+			return false
+		case content[0] == 0x50 && content[1] == 0x4B && content[2] == 0x05 && content[3] == 0x06: // ZIP (empty)
+			return false
+		case content[0] == 0x50 && content[1] == 0x4B && content[2] == 0x07 && content[3] == 0x08: // ZIP (spanned)
+			return false
+		}
+	}
+
+	// Check if the first part of the content contains mostly printable characters
+	// Sample up to 8KB for performance
+	sampleSize := len(content)
+	if sampleSize > 8192 {
+		sampleSize = 8192
+	}
+
+	nonPrintableCount := 0
+	for i := 0; i < sampleSize; i++ {
+		b := content[i]
+		// Allow printable ASCII characters, newlines, tabs, and carriage returns
+		if (b < 32 && b != 9 && b != 10 && b != 13) || b > 126 {
+			nonPrintableCount++
+		}
+	}
+
+	// If more than 30% of the sampled content is non-printable, consider it binary
+	threshold := float64(sampleSize) * 0.3
+	return float64(nonPrintableCount) <= threshold
 }
