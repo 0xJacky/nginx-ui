@@ -286,64 +286,20 @@ jobs:
             ${{ env.GOOS == 'windows' && format('{0}.zip', env.DIST) || '' }}
             ${{ env.GOOS == 'windows' && format('{0}.zip.digest', env.DIST) || '' }}
 
-      - name: Set up nodejs
-        uses: actions/setup-node@v4
-        with:
-          node-version: current
-
-      - name: Install dependencies
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
-
-      - name: Upload to R2
+      - name: Upload to R2 using S3 API
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/dev'
-        uses: cloudflare/wrangler-action@v3
         env:
-          WRANGLER_LOG: debug
-          WRANGLER_LOG_SANITIZE: false
-        with:
-          accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          apiToken: ${{ secrets.CF_R2_API_TOKEN }}
-          wranglerVersion: "4.23.0"
-          command: |
-            r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz --file ./${{ env.DIST }}.tar.gz --remote
-            r2 object put nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --file ./${{ env.DIST }}.tar.gz.digest --remote
-
-      - name: Print Wrangler logs for debugging
-        if: always() && (github.event_name != 'pull_request' && github.ref == 'refs/heads/dev')
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
         run: |
-          echo "=== Searching for Wrangler log files ==="
-          LOG_DIR="$HOME/.config/.wrangler/logs"
-          if [ -d "$LOG_DIR" ]; then
-            echo "Found Wrangler logs directory: $LOG_DIR"
-            echo "Files in logs directory:"
-            ls -la "$LOG_DIR"
-            
-            echo ""
-            echo "=== Printing content of all log files ==="
-            for log_file in "$LOG_DIR"/wrangler-*.log; do
-              if [ -f "$log_file" ]; then
-                echo "--- Content of $log_file ---"
-                cat "$log_file"
-                echo ""
-              fi
-            done
-          else
-            echo "Wrangler logs directory not found at $LOG_DIR"
-            echo "Checking alternative locations..."
-            find $HOME -name "wrangler-*.log" -type f 2>/dev/null || echo "No wrangler log files found"
-          fi
+          echo "Uploading ${{ env.DIST }}.tar.gz to R2..."
+          aws s3 cp ./${{ env.DIST }}.tar.gz s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
           
-          echo ""
-          echo "=== Environment and system info ==="
-          echo "Current user: $(whoami)"
-          echo "Home directory: $HOME"
-          echo "Current working directory: $(pwd)"
-          echo "Disk usage:"
-          df -h
-          echo "Available space in home:"
-          du -sh $HOME 2>/dev/null || echo "Cannot check home directory size"
+          echo "Uploading ${{ env.DIST }}.tar.gz.digest to R2..."
+          aws s3 cp ./${{ env.DIST }}.tar.gz.digest s3://nginx-ui-dev-build/${{ env.DIST }}.tar.gz.digest --endpoint-url=${{ secrets.R2_S3_API_ENDPOINT }}
+          
+          echo "Upload completed successfully"
 
   docker-build:
     if: github.event_name != 'pull_request'
