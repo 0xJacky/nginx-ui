@@ -73,3 +73,5 @@ export {
   fromNow,
   urlJoin,
 }
+
+export { clearFingerprintCache, getBrowserFingerprint } from './fingerprint'

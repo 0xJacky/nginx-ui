@@ -1,8 +1,10 @@
 import type { CosyError } from './types'
 import { http, useAxios } from '@uozi-admin/request'
+import dayjs from 'dayjs'
 import JSEncrypt from 'jsencrypt'
 import { storeToRefs } from 'pinia'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
+import { getBrowserFingerprint } from '@/lib/helper'
 import { useNProgress } from '@/lib/nprogress/nprogress'
 import { useSettingsStore, useUserStore } from '@/pinia'
 import router from '@/routes'
@@ -16,7 +18,11 @@ const dedupe = useMessageDedupe()
 // Helper function for encrypting JSON data
 // eslint-disable-next-line ts/no-explicit-any
 async function encryptJsonData(data: any): Promise<string> {
-  const cryptoParams = await http.get('/crypto/public_key')
+  const fingerprint = await getBrowserFingerprint()
+  const cryptoParams = await http.post('/crypto/public_key', {
+    timestamp: dayjs().unix(),
+    fingerprint,
+  })
   const { public_key } = await cryptoParams
 
   // Encrypt data with RSA public key
