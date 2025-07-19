@@ -47,6 +47,31 @@ func InitScanner(ctx context.Context) {
 	}
 }
 
+// shouldSkipPath checks if a path should be skipped during scanning or watching
+func shouldSkipPath(path string) bool {
+	// Define directories to exclude from scanning/watching
+	excludedDirs := []string{
+		nginx.GetConfPath("ssl"),              // SSL certificates and keys
+		nginx.GetConfPath("cache"),            // Nginx cache files
+		nginx.GetConfPath("logs"),             // Log files directory
+		nginx.GetConfPath("temp"),             // Temporary files directory
+		nginx.GetConfPath("proxy_temp"),       // Proxy temporary files
+		nginx.GetConfPath("client_body_temp"), // Client body temporary files
+		nginx.GetConfPath("fastcgi_temp"),     // FastCGI temporary files
+		nginx.GetConfPath("uwsgi_temp"),       // uWSGI temporary files
+		nginx.GetConfPath("scgi_temp"),        // SCGI temporary files
+	}
+
+	// Check if path starts with any excluded directory
+	for _, excludedDir := range excludedDirs {
+		if excludedDir != "" && strings.HasPrefix(path, excludedDir) {
+			return true
+		}
+	}
+
+	return false
+}
+
 // GetScanner returns the singleton scanner instance
 func GetScanner() *Scanner {
 	scannerInitMutex.Lock()
@@ -95,7 +120,6 @@ func (s *Scanner) Initialize(ctx context.Context) error {
 // watchAllDirectories recursively adds all directories under nginx config path to watcher
 func (s *Scanner) watchAllDirectories() error {
 	root := nginx.GetConfPath()
-	sslDir := nginx.GetConfPath("ssl")
 
 	return filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -103,8 +127,8 @@ func (s *Scanner) watchAllDirectories() error {
 		}
 
 		if d.IsDir() {
-			// Skip ssl directory
-			if path == sslDir {
+			// Skip excluded directories (ssl, cache, logs, temp, etc.)
+			if shouldSkipPath(path) {
 				return filepath.SkipDir
 			}
 
@@ -170,9 +194,8 @@ func (s *Scanner) handleFileEvent(event fsnotify.Event) {
 		return
 	}
 
-	// Skip ssl directory
-	sslDir := nginx.GetConfPath("ssl")
-	if strings.HasPrefix(event.Name, sslDir) {
+	// Skip excluded directories (ssl, cache, etc.)
+	if shouldSkipPath(event.Name) {
 		return
 	}
 
@@ -211,6 +234,41 @@ func (s *Scanner) handleFileEvent(event fsnotify.Event) {
 func (s *Scanner) scanSingleFile(filePath string) error {
 	s.setScanningState(true)
 	defer s.setScanningState(false)
+
+	// Check if path should be skipped
+	if shouldSkipPath(filePath) {
+		return nil
+	}
+
+	// Get file info to check type and size
+	fileInfo, err := os.Lstat(filePath) // Use Lstat to avoid following symlinks
+	if err != nil {
+		return err
+	}
+
+	// Skip directories
+	if fileInfo.IsDir() {
+		logger.Debugf("Skipping directory: %s", filePath)
+		return nil
+	}
+
+	// Skip symlinks to avoid potential issues
+	if fileInfo.Mode()&os.ModeSymlink != 0 {
+		logger.Debugf("Skipping symlink: %s", filePath)
+		return nil
+	}
+
+	// Skip non-regular files (devices, pipes, sockets, etc.)
+	if !fileInfo.Mode().IsRegular() {
+		logger.Debugf("Skipping non-regular file: %s (mode: %s)", filePath, fileInfo.Mode())
+		return nil
+	}
+
+	// Skip files larger than 1MB before reading
+	if fileInfo.Size() > 1024*1024 {
+		logger.Debugf("Skipping large file: %s (size: %d bytes)", filePath, fileInfo.Size())
+		return nil
+	}
 
 	// Read file content
 	content, err := os.ReadFile(filePath)
@@ -256,7 +314,6 @@ func (s *Scanner) ScanAllConfigs() error {
 	defer s.setScanningState(false)
 
 	root := nginx.GetConfPath()
-	sslDir := nginx.GetConfPath("ssl")
 
 	// Scan all files in the config directory and subdirectories
 	return filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
@@ -264,8 +321,8 @@ func (s *Scanner) ScanAllConfigs() error {
 			return err
 		}
 
-		// Skip ssl directory
-		if d.IsDir() && path == sslDir {
+		// Skip excluded directories (ssl, cache, logs, temp, etc.)
+		if d.IsDir() && shouldSkipPath(path) {
 			return filepath.SkipDir
 		}
 
