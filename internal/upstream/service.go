@@ -201,16 +201,42 @@ func (s *UpstreamService) PerformAvailabilityTest() {
 
 	// logger.Debug("Performing availability test for", targetCount, "unique targets")
 
-	// Get target keys for testing
+	// Separate targets into traditional and consul groups from the start
 	s.targetsMutex.RLock()
-	testTargets := make([]string, 0, len(s.targets))
-	for key := range s.targets {
-		testTargets = append(testTargets, key)
+	regularTargetKeys := make([]string, 0, len(s.targets))
+	consulTargets := make([]ProxyTarget, 0, len(s.targets))
+
+	for _, targetInfo := range s.targets {
+		if targetInfo.ProxyTarget.IsConsul {
+			consulTargets = append(consulTargets, targetInfo.ProxyTarget)
+		} else {
+			// Traditional target - use host:port key format
+			key := targetInfo.ProxyTarget.Host + ":" + targetInfo.ProxyTarget.Port
+			regularTargetKeys = append(regularTargetKeys, key)
+		}
 	}
 	s.targetsMutex.RUnlock()
 
-	// Perform the actual availability test
-	results := AvailabilityTest(testTargets)
+	// Initialize results map
+	results := make(map[string]*Status)
+
+	// Test traditional targets using the original AvailabilityTest
+	if len(regularTargetKeys) > 0 {
+		// logger.Debug("Testing", len(regularTargetKeys), "traditional targets")
+		regularResults := AvailabilityTest(regularTargetKeys)
+		for k, v := range regularResults {
+			results[k] = v
+		}
+	}
+
+	// Test consul targets using consul-specific logic
+	if len(consulTargets) > 0 {
+		// logger.Debug("Testing", len(consulTargets), "consul targets")
+		consulResults := TestConsulTargets(consulTargets)
+		for k, v := range consulResults {
+			results[k] = v
+		}
+	}
 
 	// Update availability map
 	s.targetsMutex.Lock()
