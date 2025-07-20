@@ -170,8 +170,8 @@ msgstr "Ratio réel des travailleurs par rapport à la configuration"
 msgid "Add"
 msgstr "Ajouter"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:45
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:49
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:53
 msgid "Add a passkey"
 msgstr "Ajouter une clé d'accès"
 
@@ -223,7 +223,7 @@ msgstr "Supplémentaire"
 msgid "Advance Mode"
 msgstr "Mode avancé"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:99
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:104
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr ""
 "Ensuite, rafraîchissez cette page et cliquez à nouveau sur ajouter une clé "
@@ -563,7 +563,7 @@ msgstr "Modification par lot"
 msgid "Batch Upgrade"
 msgstr "Mise à jour par lot"
 
-#: src/language/curd.ts:36
+#: src/language/curd.ts:38
 msgid "Belows are selected items that you want to batch modify"
 msgstr "Ci-dessous sont sélectionnés les éléments que vous voulez modifier en masse"
 
@@ -633,7 +633,7 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
-#: src/components/NgxConfigEditor/NgxUpstream.vue:37
+#: src/components/NgxConfigEditor/NgxUpstream.vue:37 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
@@ -952,11 +952,11 @@ msgstr ""
 "Cliquez sur ou faites glisser le fichier de sauvegarde vers cette zone pour "
 "télécharger"
 
-#: src/language/curd.ts:49 src/language/curd.ts:53
+#: src/language/curd.ts:51 src/language/curd.ts:55
 msgid "Click or drag files to this area to upload"
 msgstr "Cliquez ou faites glisser des fichiers dans cette zone pour les télécharger"
 
-#: src/language/curd.ts:50 src/language/curd.ts:54
+#: src/language/curd.ts:52 src/language/curd.ts:56
 msgid "Click or drag folders to this area to upload"
 msgstr "Cliquez ou faites glisser des dossiers dans cette zone pour télécharger"
 
@@ -1090,7 +1090,7 @@ msgstr "Configurer SSL"
 msgid "Confirm New Password"
 msgstr "Confirmer le nouveau mot de passe"
 
-#: src/views/dashboard/Environments.vue:133
+#: src/views/dashboard/components/NodeAnalyticItem.vue:99
 msgid "Connected"
 msgstr "Connecté"
 
@@ -1617,7 +1617,7 @@ msgstr "Téléchargement de la dernière version"
 msgid "Dry run mode enabled"
 msgstr "Mode de simulation activé"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:101
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:106
 msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
@@ -2298,7 +2298,7 @@ msgstr "dossier"
 msgid "Folder"
 msgstr "Dossier"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:71
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:76
 msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
@@ -2472,7 +2472,7 @@ msgstr ""
 "Si vous souhaitez révoquer automatiquement l'ancien certificat, veuillez "
 "activer cette option."
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:70
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
 msgstr ""
 "Si votre navigateur prend en charge la clé d'accès WebAuthn, une boîte de "
@@ -2720,7 +2720,7 @@ msgstr "Laisser vide pour aucun changement"
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Laissez vide pour la valeur par défaut : https://api.openai.com/"
 
-#: src/language/curd.ts:37
+#: src/language/curd.ts:39
 msgid "Leave blank if do not want to modify"
 msgstr "Laisser vide si vous ne souhaitez pas modifier"
 
@@ -2745,10 +2745,10 @@ msgstr "Lego désactiver la prise en charge CNAME"
 msgid "License"
 msgstr "Licence"
 
-#: src/views/dashboard/Environments.vue:133
-#: src/views/dashboard/Environments.vue:148
-msgid "Link Start"
-msgstr "Démarrer la liaison"
+#: src/views/dashboard/components/NodeAnalyticItem.vue:116
+#: src/views/dashboard/components/NodeAnalyticItem.vue:99
+msgid "Link"
+msgstr "Lien"
 
 #: src/language/curd.ts:23
 msgid "List"
@@ -2835,7 +2835,7 @@ msgstr ""
 msgid "Log List"
 msgstr "Liste des journaux"
 
-#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:271
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:277
 msgid "Login"
 msgstr "Connexion"
 
@@ -3080,7 +3080,7 @@ msgstr "Directive multiligne"
 #: src/views/environments/group/columns.ts:7
 #: src/views/environments/list/envColumns.tsx:8
 #: src/views/nginx_log/NginxLogList.vue:51
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:75
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:35
 #: src/views/site/site_list/columns.tsx:29
 #: src/views/site/site_list/SiteDuplicate.vue:79
@@ -3107,14 +3107,6 @@ msgstr "Réseau"
 #: src/views/dashboard/ServerAnalytic.vue:276
 msgid "Network Statistics"
 msgstr "Statistiques du réseau"
-
-#: src/views/dashboard/ServerAnalytic.vue:283
-msgid "Network Total Receive"
-msgstr "Réception totale du réseau"
-
-#: src/views/dashboard/ServerAnalytic.vue:289
-msgid "Network Total Send"
-msgstr "Envoi total réseau"
 
 #: src/constants/errors/cert.ts:15
 msgid "New dns challenge provider error: {0}"
@@ -3225,7 +3217,7 @@ msgstr "Chemin de configuration de Nginx"
 msgid "Nginx Configurations Directory"
 msgstr "Répertoire des configurations Nginx"
 
-#: src/components/NginxControl/NginxControl.vue:64
+#: src/components/NginxControl/NginxControl.vue:68
 msgid "Nginx Control"
 msgstr "Contrôle Nginx"
 
@@ -3366,7 +3358,7 @@ msgstr "Nginx.conf inclut le répertoire streams-enabled"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:169
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
-#: src/components/Notification/Notification.vue:108 src/language/curd.ts:38
+#: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
@@ -3525,7 +3517,7 @@ msgstr "Documentation officielle"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
 #: src/components/NodeSelector/NodeSelector.vue:107
 #: src/components/ProxyTargets/ProxyTargets.vue:29
-#: src/views/dashboard/Environments.vue:99
+#: src/views/dashboard/Environments.vue:101
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
 msgstr "Hors ligne"
@@ -3558,7 +3550,7 @@ msgstr "Une fois la vérification terminée, les enregistrements seront supprim�
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
 #: src/components/NodeSelector/NodeSelector.vue:101
 #: src/components/NodeSelector/NodeSelector.vue:87
-#: src/views/dashboard/Environments.vue:92
+#: src/views/dashboard/Environments.vue:94
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
 msgstr "En ligne"
@@ -3575,7 +3567,7 @@ msgstr "Ouvert"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:280
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:286
 msgid "Or"
 msgstr "Ou"
 
@@ -3649,7 +3641,7 @@ msgstr ""
 "ou un code PIN. Elles peuvent être utilisées comme remplacement d'un mot de "
 "passe ou comme méthode d'authentification à deux facteurs (2FA)."
 
-#: src/views/other/Login.vue:232 src/views/user/userColumns.tsx:16
+#: src/views/other/Login.vue:238 src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -3675,7 +3667,7 @@ msgstr "Les mots de passe ne correspondent pas"
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
-#: src/language/curd.ts:59
+#: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
 #: src/views/nginx_log/NginxLogList.vue:59
@@ -3745,7 +3737,7 @@ msgstr ""
 "Veuillez activer le module stub_status pour obtenir des statistiques de "
 "requêtes, le nombre de connexions, etc."
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:69
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:74
 msgid ""
 "Please enter a name for the passkey you wish to create and click the OK "
 "button below."
@@ -3937,7 +3929,7 @@ msgstr "Répartition des processus"
 msgid "Process information"
 msgstr "Informations sur le processus"
 
-#: src/language/curd.ts:58
+#: src/language/curd.ts:60
 msgid "Processing {count}/{total}"
 msgstr "Traitement en cours {count}/{total}"
 
@@ -4059,7 +4051,7 @@ msgstr "Échec de l'enregistrement"
 msgid "Register On Startup"
 msgstr "Enregistrer au démarrage"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:25
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:26
 msgid "Register passkey successfully"
 msgstr "Clé d'accès enregistrée avec succès"
 
@@ -4084,7 +4076,7 @@ msgid "Release Note"
 msgstr "Note de version"
 
 #: src/components/ChatGPT/ChatMessage.vue:222
-#: src/components/NginxControl/NginxControl.vue:99
+#: src/components/NginxControl/NginxControl.vue:103
 msgid "Reload"
 msgstr "Recharger"
 
@@ -4122,7 +4114,7 @@ msgstr ""
 "La demande de rechargement a échoué, veuillez vérifier votre connexion "
 "réseau"
 
-#: src/components/NginxControl/NginxControl.vue:73
+#: src/components/NginxControl/NginxControl.vue:77
 msgid "Reloading"
 msgstr "Rechargement"
 
@@ -4274,7 +4266,7 @@ msgstr ""
 msgid "Responses"
 msgstr "Réponses"
 
-#: src/components/NginxControl/NginxControl.vue:92
+#: src/components/NginxControl/NginxControl.vue:96
 msgid "Restart"
 msgstr "Redémarrer"
 
@@ -4304,7 +4296,7 @@ msgstr "Redémarrage distant de Nginx réussi"
 msgid "Restart request failed, please check your network connection"
 msgstr "La demande de redémarrage a échoué, veuillez vérifier votre connexion réseau"
 
-#: src/components/NginxControl/NginxControl.vue:78
+#: src/components/NginxControl/NginxControl.vue:82
 msgid "Restarting"
 msgstr "Redémarrage"
 
@@ -4380,7 +4372,7 @@ msgstr "RPID"
 msgid "Run Mode"
 msgstr "Mode d'exécution"
 
-#: src/components/NginxControl/NginxControl.vue:68
+#: src/components/NginxControl/NginxControl.vue:72
 msgid "Running"
 msgstr "En cours d'éxécution"
 
@@ -4548,6 +4540,10 @@ msgstr "Échec de l'enregistrement du flux %{name} sur %{node}"
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Flux %{name} enregistré sur %{node} avec succès"
 
+#: src/language/curd.ts:36
+msgid "Save successful"
+msgstr "Enregistrement réussi"
+
 #: src/language/curd.ts:35 src/views/certificate/store.ts:14
 #: src/views/preference/store/index.ts:120
 msgid "Save successfully"
@@ -4638,7 +4634,7 @@ msgstr "Tout sélectionner"
 msgid "Select an action after sync"
 msgstr "Sélectionner une action après la synchronisation"
 
-#: src/language/curd.ts:57
+#: src/language/curd.ts:59
 msgid "Selected {count} files"
 msgstr "{count} fichiers sélectionnés"
 
@@ -4756,7 +4752,7 @@ msgstr "Zone de Mémoire Partagée"
 msgid "Show"
 msgstr "Afficher"
 
-#: src/views/other/Login.vue:289
+#: src/views/other/Login.vue:295
 msgid "Sign in with a passkey"
 msgstr "Se connecter avec une clé d'accès"
 
@@ -4800,7 +4796,7 @@ msgstr "Le répertoire sites-available n'existe pas"
 msgid "Sites-enabled directory not exist"
 msgstr "Le répertoire sites-enabled n'existe pas"
 
-#: src/language/curd.ts:60
+#: src/language/curd.ts:62
 msgid "Size"
 msgstr "Taille"
 
@@ -4869,7 +4865,7 @@ msgstr "Chemin de la clé SSL"
 msgid "SSL key path is required when HTTPS is enabled"
 msgstr "Le chemin de la clé SSL est requis lorsque HTTPS est activé"
 
-#: src/views/other/Login.vue:246
+#: src/views/other/Login.vue:252
 msgid "SSO Login"
 msgstr "Connexion SSO"
 
@@ -4904,7 +4900,7 @@ msgstr "Statique"
 msgid "Status"
 msgstr "Statut"
 
-#: src/components/NginxControl/NginxControl.vue:83
+#: src/components/NginxControl/NginxControl.vue:87
 msgid "Stopped"
 msgstr "Arrêté"
 
@@ -5008,11 +5004,11 @@ msgstr ""
 "Nginx, veuillez consulter ce lien pour écrire le fichier de configuration "
 "correspondant : https://nginxui.com/guide/nginx-proxy-example.html"
 
-#: src/language/curd.ts:51 src/language/curd.ts:55
+#: src/language/curd.ts:53 src/language/curd.ts:57
 msgid "Support single or batch upload of files"
 msgstr "Prise en charge du téléchargement unique ou en lot de fichiers"
 
-#: src/language/curd.ts:52 src/language/curd.ts:56
+#: src/language/curd.ts:54 src/language/curd.ts:58
 msgid "Support uploading entire folders"
 msgstr "Prend en charge le téléchargement de dossiers entiers"
 
@@ -5224,7 +5220,7 @@ msgstr ""
 "Le numéro de sécurité publique ne doit contenir que des lettres, unicode, "
 "des chiffres, des traits d'union, des tirets, des deux-points et des points."
 
-#: src/views/dashboard/Environments.vue:140
+#: src/views/dashboard/components/NodeAnalyticItem.vue:107
 msgid ""
 "The remote Nginx UI version is not compatible with the local Nginx UI "
 "version. To avoid potential errors, please upgrade the remote Nginx UI to "
@@ -5295,15 +5291,15 @@ msgstr ""
 msgid "This field is required"
 msgstr "Ce champ est obligatoire"
 
-#: src/constants/form_errors.ts:3 src/language/curd.ts:41
+#: src/constants/form_errors.ts:3 src/language/curd.ts:43
 msgid "This field should be a valid email address"
 msgstr "Ce champ doit être une adresse email valide"
 
-#: src/constants/form_errors.ts:5 src/language/curd.ts:43
+#: src/constants/form_errors.ts:5 src/language/curd.ts:45
 msgid "This field should be a valid hostname"
 msgstr "Ce champ doit être un nom d'hôte valide"
 
-#: src/constants/form_errors.ts:2 src/language/curd.ts:40
+#: src/constants/form_errors.ts:2 src/language/curd.ts:42
 msgid "This field should not be empty"
 msgstr "Ce champ ne doit pas être vide"
 
@@ -5313,7 +5309,7 @@ msgstr ""
 "Ce champ ne doit contenir que des lettres, des caractères Unicode, des "
 "chiffres et -_."
 
-#: src/language/curd.ts:44
+#: src/language/curd.ts:46
 msgid ""
 "This field should only contain letters, unicode characters, numbers, and "
 "-_./:"
@@ -5347,7 +5343,7 @@ msgstr ""
 "ultérieurement. Veuillez vous assurer de le sauvegarder dans un endroit "
 "sécurisé."
 
-#: src/constants/form_errors.ts:4 src/language/curd.ts:42
+#: src/constants/form_errors.ts:4 src/language/curd.ts:44
 msgid "This value is already taken"
 msgstr "Cette valeur est déjà utilisée"
 
@@ -5387,7 +5383,7 @@ msgstr "Limitation"
 msgid "Thursday"
 msgstr "Jeudi"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:65
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:70
 #: src/views/preference/tabs/AuthSettings.vue:112
 #: src/views/preference/tabs/LogrotateSettings.vue:12
 msgid "Tips"
@@ -5419,7 +5415,7 @@ msgstr ""
 "Pour l'activer, vous devez installer l'application Google Authenticator ou "
 "Microsoft Authenticator sur votre téléphone portable."
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:89
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:94
 msgid ""
 "To ensure security, Webauthn configuration cannot be added through the UI. "
 "Please manually configure the following in the app.ini configuration file "
@@ -5487,6 +5483,10 @@ msgstr "Total des processus Nginx"
 msgid "Total Nginx Processes"
 msgstr "Total des processus Nginx"
 
+#: src/views/dashboard/ServerAnalytic.vue:283
+msgid "Total Receive"
+msgstr "Réception totale"
+
 #: src/composables/usePerformanceMetrics.ts:99
 #: src/views/dashboard/components/PerformanceTablesCard.vue:59
 msgid "Total requests"
@@ -5495,6 +5495,10 @@ msgstr "Requêtes totales"
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:78
 msgid "Total Requests / Total Connections"
 msgstr "Requêtes totales / Connexions totales"
+
+#: src/views/dashboard/ServerAnalytic.vue:289
+msgid "Total Send"
+msgstr "Total envoyé"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:66
 msgid "TOTP"
@@ -5589,11 +5593,11 @@ msgstr "Mise à niveau réussie"
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Mise à jour de Nginx UI, veuillez patienter..."
 
-#: src/language/curd.ts:47
+#: src/language/curd.ts:49
 msgid "Upload Files"
 msgstr "Téléverser des fichiers"
 
-#: src/language/curd.ts:48
+#: src/language/curd.ts:50
 msgid "Upload Folders"
 msgstr "Télécharger des dossiers"
 
@@ -5645,7 +5649,7 @@ msgstr "L'utilisateur n'a pas activé l'OTP comme 2FA"
 msgid "User Profile"
 msgstr "Profil utilisateur"
 
-#: src/views/other/Login.vue:222 src/views/user/userColumns.tsx:7
+#: src/views/other/Login.vue:228 src/views/user/userColumns.tsx:7
 #: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "Nom d'utilisateur"
@@ -5711,7 +5715,7 @@ msgstr "Processus d'attente"
 #: src/constants/index.ts:23 src/views/backup/components/BackupCreator.vue:138
 #: src/views/config/InspectConfig.vue:51
 #: src/views/notification/notificationColumns.tsx:21
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:82
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:87
 msgid "Warning"
 msgstr "Avertissement"
 
@@ -5885,7 +5889,7 @@ msgstr "Vous pouvez fermer cette boîte de dialogue dans %{countdown} secondes"
 msgid "You can close this dialog now"
 msgstr "Vous pouvez maintenant fermer cette boîte de dialogue"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:87
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:92
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
 "passkey."
@@ -5920,6 +5924,9 @@ msgstr "Vos anciens codes ne fonctionneront plus."
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Vos clés d'accès"
+
+#~ msgid "Link Start"
+#~ msgstr "Démarrer la liaison"
 
 #~ msgid "Enable failed"
 #~ msgstr "Échec de l'activation"

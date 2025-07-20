@@ -23,12 +23,12 @@ const fixed_percent = computed(() => {
 
 <template>
   <div>
-    <div>
+    <div class="flex items-center">
       <span class="slot-icon"><slot name="icon" /></span>
       <span class="slot">
         <slot />
       </span>
-      <span class="dot"> ·</span> {{ `${fixed_percent}%` }}
+      <span class="dot mx-2">·</span>{{ `${fixed_percent}%` }}
     </div>
     <AProgress
       :percent="fixed_percent"
@@ -41,15 +41,7 @@ const fixed_percent = computed(() => {
 <style scoped lang="less">
 .slot-icon {
   margin-right: 5px;
-}
-
-@media (max-width: 1000px) and  (min-width: 600px) {
-  .dot {
-    display: none;
-  }
-
-  .slot {
-    display: none;
-  }
+  display: flex;
+  align-items: center;
 }
 </style>

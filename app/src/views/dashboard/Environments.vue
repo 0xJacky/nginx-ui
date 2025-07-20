@@ -2,7 +2,7 @@
 import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { Ref } from 'vue'
 import type { Node } from '@/api/environment'
-import Icon, { LinkOutlined, SendOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
+import Icon, { LinkOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
 import analytic from '@/api/analytic'
 import environment from '@/api/environment'
 import logo from '@/assets/img/logo.png'
@@ -71,83 +71,68 @@ const visible = computed(() => {
 <template>
   <ACard
     v-if="visible"
-    class="env-list-card"
+    class="env-list-card w-full max-w-none"
     :title="$gettext('Environments')"
+    :bordered="false"
   >
     <AList
       item-layout="horizontal"
       :data-source="data"
+      class="env-list"
     >
       <template #renderItem="{ item }">
-        <AListItem>
+        <AListItem class="env-list-item">
           <AListItemMeta>
             <template #title>
-              <div class="mb-1">
-                {{ item.name }}
-                <ATag
-                  v-if="item.status"
-                  color="blue"
-                  class="ml-2"
-                >
-                  {{ $gettext('Online') }}
-                </ATag>
-                <ATag
-                  v-else
-                  color="error"
-                  class="ml-2"
-                >
-                  {{ $gettext('Offline') }}
-                </ATag>
+              <div class="env-title-wrapper">
+                <div class="env-tags">
+                  <ATag
+                    v-if="item.status"
+                    color="blue"
+                    :bordered="false"
+                  >
+                    {{ $gettext('Online') }}
+                  </ATag>
+                  <ATag
+                    v-else
+                    color="error"
+                    :bordered="false"
+                  >
+                    {{ $gettext('Offline') }}
+                  </ATag>
+                </div>
+                <span class="env-name">{{ item.name }}</span>
               </div>
 
-              <template v-if="item.status">
-                <div class="runtime-meta mr-2 mb-1">
-                  <Icon :component="pulse" /> {{ formatDateTime(item.response_at) }}
+              <div class="env-meta-wrapper">
+                <template v-if="item.status">
+                  <div class="runtime-meta">
+                    <Icon :component="pulse" />
+                    <span>{{ formatDateTime(item.response_at) }}</span>
+                  </div>
+                  <div class="runtime-meta">
+                    <ThunderboltOutlined />
+                    <span>{{ item.version }}</span>
+                  </div>
+                </template>
+                <div class="runtime-meta">
+                  <LinkOutlined />
+                  <span class="truncate">{{ item.url }}</span>
                 </div>
-                <div class="runtime-meta mr-2 mb-1">
-                  <ThunderboltOutlined />{{ item.version }}
-                </div>
-              </template>
-              <div class="runtime-meta">
-                <LinkOutlined />{{ item.url }}
               </div>
             </template>
             <template #avatar>
-              <AAvatar :src="logo" />
+              <AAvatar :src="logo" class="flex-shrink-0" />
             </template>
             <template #description>
-              <div class="md:flex lg:flex justify-between md:items-center">
+              <div class="env-description">
                 <NodeAnalyticItem
                   :item="item"
-                  class="mt-1 mb-1"
+                  :current-env-id="env.id"
+                  :local-version="version"
+                  :on-link-start="linkStart"
+                  class="node-analytic"
                 />
-
-                <AButton
-                  v-if="item.version === version"
-                  type="primary"
-                  :disabled="!item.status || env.id === item.id"
-                  ghost
-                  @click="linkStart(item)"
-                >
-                  <SendOutlined />
-                  {{ env.id !== item.id ? $gettext('Link Start') : $gettext('Connected') }}
-                </AButton>
-                <ATooltip
-                  v-else
-                  placement="topLeft"
-                >
-                  <template #title>
-                    {{ $gettext('The remote Nginx UI version is not compatible with the local Nginx UI version. '
-                      + 'To avoid potential errors, please upgrade the remote Nginx UI to match the local version.') }}
-                  </template>
-                  <AButton
-                    ghost
-                    disabled
-                  >
-                    <SendOutlined />
-                    {{ $gettext('Link Start') }}
-                  </AButton>
-                </ATooltip>
               </div>
             </template>
           </AListItemMeta>
@@ -158,34 +143,162 @@ const visible = computed(() => {
 </template>
 
 <style scoped lang="less">
-:deep(.ant-list-item-meta-title) {
-  display: flex;
-  align-items: center;
-  @media (max-width: 700px) {
-    display: block;
-  }
-}
-
 .env-list-card {
   margin-top: 16px;
 
-  .runtime-meta {
-    display: inline-flex;
-    @media (max-width: 700px) {
-      align-items: center;
-    }
-    font-weight: 400;
-    color: #9b9b9b;
+  // Ensure card doesn't overflow on small screens
+  @media (max-width: 768px) {
+    margin-left: -8px;
+    margin-right: -8px;
+    border-radius: 0;
+  }
+}
 
-    .anticon {
-      margin-right: 4px;
+.env-list {
+  // Responsive handling for list container
+  .env-list-item {
+    padding: 16px 0;
+
+    @media (max-width: 576px) {
+      padding: 12px 0;
     }
   }
 }
 
-:deep(.ant-list-item-action) {
-  @media(max-width: 500px) {
-    display: none;
+// Title area styles
+.env-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-right: 8px;
+
+  .env-name {
+    font-weight: 500;
+    line-height: 1.4;
+  }
+}
+
+// Metadata area styles
+.env-meta-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  @media (max-width: 768px) {
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 576px) {
+    gap: 8px;
+  }
+}
+
+.runtime-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 400;
+  color: #9b9b9b;
+  font-size: 14px;
+  line-height: 1.4;
+  max-width: 100%;
+
+  .anticon {
+    flex-shrink: 0;
+  }
+
+  span {
+    min-width: 0; // Allow text truncation
+  }
+
+  @media (max-width: 576px) {
+    font-size: 12px;
+  }
+}
+
+// Description area styles
+.env-description {
+  margin-top: 8px;
+
+  .node-analytic {
+    width: 100%;
+  }
+}
+
+// Global dark mode class adaptation
+.dark {
+  .ant-list-item-meta-avatar .ant-avatar {
+    border: 1px solid #303030 !important;
+  }
+}
+
+// Deep selector optimizations
+:deep(.ant-list-item-meta) {
+  width: 100%;
+  display: flex;
+
+  .ant-list-item-meta-content {
+    width: 100%;
+    min-width: 0; // Allow content to shrink
+  }
+
+  .ant-list-item-meta-title {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 768px) {
+      display: block;
+    }
+  }
+
+  .ant-list-item-meta-avatar {
+    display: flex;
+    align-items: center;
+    align-self: center; // Vertically center relative to the entire meta container
+
+    .ant-avatar {
+      border: 1px solid #f0f0f0;
+      border-radius: 8px; // Square with rounded corners
+      padding: 2px; // Add padding
+      transition: border-color 0.2s ease;
+    }
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+}
+
+// Responsive breakpoint optimizations
+@media (max-width: 1200px) {
+  .env-meta-wrapper {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 992px) {
+  .env-title-wrapper .env-name {
+    font-size: 15px;
+  }
+
+  .runtime-meta {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .env-title-wrapper {
+    margin-bottom: 6px;
+  }
+
+  .env-meta-wrapper {
+    gap: 6px;
+  }
+
+  .runtime-meta {
+    font-size: 11px;
   }
 }
 </style>

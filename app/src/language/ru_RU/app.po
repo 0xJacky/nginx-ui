@@ -170,8 +170,8 @@ msgstr "Фактическое соотношение рабочих к наст
 msgid "Add"
 msgstr "Добавить"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:45
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:49
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:53
 msgid "Add a passkey"
 msgstr "Добавить ключ доступа"
 
@@ -223,7 +223,7 @@ msgstr "Дополнительно"
 msgid "Advance Mode"
 msgstr "Расширенный режим"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:99
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:104
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "После этого обновите эту страницу и снова нажмите «Добавить ключ доступа»."
 
@@ -561,7 +561,7 @@ msgstr "Массовое изменение"
 msgid "Batch Upgrade"
 msgstr "Пакетное обновление"
 
-#: src/language/curd.ts:36
+#: src/language/curd.ts:38
 msgid "Belows are selected items that you want to batch modify"
 msgstr "Ниже приведены выбранные элементы, которые вы хотите изменить"
 
@@ -632,7 +632,7 @@ msgstr ""
 
 #: src/components/ChatGPT/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
-#: src/components/NgxConfigEditor/NgxUpstream.vue:37
+#: src/components/NgxConfigEditor/NgxUpstream.vue:37 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
@@ -950,11 +950,11 @@ msgstr ""
 "Нажмите или перетащите файл резервного копирования в эту область, чтобы "
 "загрузить"
 
-#: src/language/curd.ts:49 src/language/curd.ts:53
+#: src/language/curd.ts:51 src/language/curd.ts:55
 msgid "Click or drag files to this area to upload"
 msgstr "Нажмите или перетащите файлы в эту область для загрузки"
 
-#: src/language/curd.ts:50 src/language/curd.ts:54
+#: src/language/curd.ts:52 src/language/curd.ts:56
 msgid "Click or drag folders to this area to upload"
 msgstr "Нажмите или перетащите папки в эту область для загрузки"
 
@@ -1086,7 +1086,7 @@ msgstr "Настроить SSL"
 msgid "Confirm New Password"
 msgstr "Подтвердите новый пароль"
 
-#: src/views/dashboard/Environments.vue:133
+#: src/views/dashboard/components/NodeAnalyticItem.vue:99
 msgid "Connected"
 msgstr "Подключено"
 
@@ -1609,7 +1609,7 @@ msgstr "Загрузка последней версии"
 msgid "Dry run mode enabled"
 msgstr "Включен пробный режим"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:101
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:106
 msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
@@ -2288,7 +2288,7 @@ msgstr "папка"
 msgid "Folder"
 msgstr "Папка"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:71
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:76
 msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
@@ -2460,7 +2460,7 @@ msgid ""
 "option."
 msgstr "Если вы хотите автоматически отозвать старый сертификат, включите эту опцию."
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:70
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
 msgstr "Если ваш браузер поддерживает WebAuthn Passkey, появится диалоговое окно."
 
@@ -2706,7 +2706,7 @@ msgstr "Оставьте пустым без изменений"
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "Оставьте пустым для значения по умолчанию: https://api.openai.com/"
 
-#: src/language/curd.ts:37
+#: src/language/curd.ts:39
 msgid "Leave blank if do not want to modify"
 msgstr "Оставьте пустым, если не хотите изменять"
 
@@ -2731,10 +2731,10 @@ msgstr "Lego отключить поддержку CNAME"
 msgid "License"
 msgstr "Лицензия"
 
-#: src/views/dashboard/Environments.vue:133
-#: src/views/dashboard/Environments.vue:148
-msgid "Link Start"
-msgstr "Начало ссылки"
+#: src/views/dashboard/components/NodeAnalyticItem.vue:116
+#: src/views/dashboard/components/NodeAnalyticItem.vue:99
+msgid "Link"
+msgstr "Связь"
 
 #: src/language/curd.ts:23
 msgid "List"
@@ -2821,7 +2821,7 @@ msgstr ""
 msgid "Log List"
 msgstr "Список журналов"
 
-#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:271
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:277
 msgid "Login"
 msgstr "Логин"
 
@@ -3065,7 +3065,7 @@ msgstr "Многострочная директива"
 #: src/views/environments/group/columns.ts:7
 #: src/views/environments/list/envColumns.tsx:8
 #: src/views/nginx_log/NginxLogList.vue:51
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:75
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:35
 #: src/views/site/site_list/columns.tsx:29
 #: src/views/site/site_list/SiteDuplicate.vue:79
@@ -3092,14 +3092,6 @@ msgstr "Сеть"
 #: src/views/dashboard/ServerAnalytic.vue:276
 msgid "Network Statistics"
 msgstr "Статистика сети"
-
-#: src/views/dashboard/ServerAnalytic.vue:283
-msgid "Network Total Receive"
-msgstr "Всего получено"
-
-#: src/views/dashboard/ServerAnalytic.vue:289
-msgid "Network Total Send"
-msgstr "Всего отправлено"
 
 #: src/constants/errors/cert.ts:15
 msgid "New dns challenge provider error: {0}"
@@ -3210,7 +3202,7 @@ msgstr "Путь к конфигурации Nginx"
 msgid "Nginx Configurations Directory"
 msgstr "Каталог конфигураций Nginx"
 
-#: src/components/NginxControl/NginxControl.vue:64
+#: src/components/NginxControl/NginxControl.vue:68
 msgid "Nginx Control"
 msgstr "Управление Nginx"
 
@@ -3351,7 +3343,7 @@ msgstr "Nginx.conf включает каталог streams-enabled"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:169
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
-#: src/components/Notification/Notification.vue:108 src/language/curd.ts:38
+#: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
@@ -3510,7 +3502,7 @@ msgstr "Официальная документация"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
 #: src/components/NodeSelector/NodeSelector.vue:107
 #: src/components/ProxyTargets/ProxyTargets.vue:29
-#: src/views/dashboard/Environments.vue:99
+#: src/views/dashboard/Environments.vue:101
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
 msgstr "Оффлайн"
@@ -3543,7 +3535,7 @@ msgstr "После завершения проверки записи будут
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
 #: src/components/NodeSelector/NodeSelector.vue:101
 #: src/components/NodeSelector/NodeSelector.vue:87
-#: src/views/dashboard/Environments.vue:92
+#: src/views/dashboard/Environments.vue:94
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
 msgstr "Онлайн"
@@ -3560,7 +3552,7 @@ msgstr "Открыт"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:280
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:286
 msgid "Or"
 msgstr "Или"
 
@@ -3634,7 +3626,7 @@ msgstr ""
 "могут использоваться вместо пароля или в качестве метода двухфакторной "
 "аутентификации (2FA)."
 
-#: src/views/other/Login.vue:232 src/views/user/userColumns.tsx:16
+#: src/views/other/Login.vue:238 src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr "Пароль"
 
@@ -3660,7 +3652,7 @@ msgstr "Пароли не совпадают"
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
-#: src/language/curd.ts:59
+#: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
 #: src/views/nginx_log/NginxLogList.vue:59
@@ -3728,7 +3720,7 @@ msgstr ""
 "Пожалуйста, включите модуль stub_status, чтобы получать статистику "
 "запросов, количество соединений и т. д."
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:69
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:74
 msgid ""
 "Please enter a name for the passkey you wish to create and click the OK "
 "button below."
@@ -3922,7 +3914,7 @@ msgstr "Распределение процессов"
 msgid "Process information"
 msgstr "Информация о процессе"
 
-#: src/language/curd.ts:58
+#: src/language/curd.ts:60
 msgid "Processing {count}/{total}"
 msgstr "Обработка {count}/{total}"
 
@@ -4043,7 +4035,7 @@ msgstr "Регистрация не удалась"
 msgid "Register On Startup"
 msgstr "Регистрация при запуске"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:25
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:26
 msgid "Register passkey successfully"
 msgstr "Ключ доступа успешно зарегистрирован"
 
@@ -4068,7 +4060,7 @@ msgid "Release Note"
 msgstr "Что нового"
 
 #: src/components/ChatGPT/ChatMessage.vue:222
-#: src/components/NginxControl/NginxControl.vue:99
+#: src/components/NginxControl/NginxControl.vue:103
 msgid "Reload"
 msgstr "Перегрузить"
 
@@ -4104,7 +4096,7 @@ msgstr "Удаленная перезагрузка Nginx успешно вып�
 msgid "Reload request failed, please check your network connection"
 msgstr "Не удалось выполнить запрос на перезагрузку, проверьте подключение к сети"
 
-#: src/components/NginxControl/NginxControl.vue:73
+#: src/components/NginxControl/NginxControl.vue:77
 msgid "Reloading"
 msgstr "Перезагружается"
 
@@ -4256,7 +4248,7 @@ msgstr ""
 msgid "Responses"
 msgstr "Ответы"
 
-#: src/components/NginxControl/NginxControl.vue:92
+#: src/components/NginxControl/NginxControl.vue:96
 msgid "Restart"
 msgstr "Перезапуск"
 
@@ -4286,7 +4278,7 @@ msgstr "Удалённая перезагрузка Nginx успешно вып�
 msgid "Restart request failed, please check your network connection"
 msgstr "Запрос на перезапуск не выполнен, проверьте подключение к сети"
 
-#: src/components/NginxControl/NginxControl.vue:78
+#: src/components/NginxControl/NginxControl.vue:82
 msgid "Restarting"
 msgstr "Перезапускается"
 
@@ -4362,7 +4354,7 @@ msgstr "RPID"
 msgid "Run Mode"
 msgstr "Режим работы"
 
-#: src/components/NginxControl/NginxControl.vue:68
+#: src/components/NginxControl/NginxControl.vue:72
 msgid "Running"
 msgstr "Выполняется"
 
@@ -4530,6 +4522,10 @@ msgstr "Не удалось сохранить поток %{name} на %{node}"
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Поток %{name} успешно сохранён на %{node}"
 
+#: src/language/curd.ts:36
+msgid "Save successful"
+msgstr "Сохранено успешно"
+
 #: src/language/curd.ts:35 src/views/certificate/store.ts:14
 #: src/views/preference/store/index.ts:120
 msgid "Save successfully"
@@ -4620,7 +4616,7 @@ msgstr "Выбрать все"
 msgid "Select an action after sync"
 msgstr "Выберите действие после синхронизации"
 
-#: src/language/curd.ts:57
+#: src/language/curd.ts:59
 msgid "Selected {count} files"
 msgstr "Выбрано {count} файлов"
 
@@ -4734,7 +4730,7 @@ msgstr "Зона общей памяти"
 msgid "Show"
 msgstr "Показать"
 
-#: src/views/other/Login.vue:289
+#: src/views/other/Login.vue:295
 msgid "Sign in with a passkey"
 msgstr "Войти с помощью ключа доступа"
 
@@ -4778,7 +4774,7 @@ msgstr "Каталог sites-available не существует"
 msgid "Sites-enabled directory not exist"
 msgstr "Каталог sites-enabled не существует"
 
-#: src/language/curd.ts:60
+#: src/language/curd.ts:62
 msgid "Size"
 msgstr "Размер"
 
@@ -4843,7 +4839,7 @@ msgstr "Путь к SSL-ключу"
 msgid "SSL key path is required when HTTPS is enabled"
 msgstr "Путь к SSL-ключу обязателен при включении HTTPS"
 
-#: src/views/other/Login.vue:246
+#: src/views/other/Login.vue:252
 msgid "SSO Login"
 msgstr "SSO Вход"
 
@@ -4878,7 +4874,7 @@ msgstr "Статический"
 msgid "Status"
 msgstr "Статус"
 
-#: src/components/NginxControl/NginxControl.vue:83
+#: src/components/NginxControl/NginxControl.vue:87
 msgid "Stopped"
 msgstr "Остановлен"
 
@@ -4981,11 +4977,11 @@ msgstr ""
 "написать соответствующий конфигурационный файл: "
 "https://nginxui.com/guide/nginx-proxy-example.html"
 
-#: src/language/curd.ts:51 src/language/curd.ts:55
+#: src/language/curd.ts:53 src/language/curd.ts:57
 msgid "Support single or batch upload of files"
 msgstr "Поддержка одиночной или пакетной загрузки файлов"
 
-#: src/language/curd.ts:52 src/language/curd.ts:56
+#: src/language/curd.ts:54 src/language/curd.ts:58
 msgid "Support uploading entire folders"
 msgstr "Поддержка загрузки целых папок"
 
@@ -5195,7 +5191,7 @@ msgstr ""
 "Номер общественной безопасности должен содержать только буквы, юникод, "
 "цифры, дефисы, тире, двоеточия и точки."
 
-#: src/views/dashboard/Environments.vue:140
+#: src/views/dashboard/components/NodeAnalyticItem.vue:107
 msgid ""
 "The remote Nginx UI version is not compatible with the local Nginx UI "
 "version. To avoid potential errors, please upgrade the remote Nginx UI to "
@@ -5263,15 +5259,15 @@ msgstr "Этот каталог защищен и не может быть уд�
 msgid "This field is required"
 msgstr "Это поле обязательно для заполнения"
 
-#: src/constants/form_errors.ts:3 src/language/curd.ts:41
+#: src/constants/form_errors.ts:3 src/language/curd.ts:43
 msgid "This field should be a valid email address"
 msgstr "Это поле должно содержать действительный адрес электронной почты"
 
-#: src/constants/form_errors.ts:5 src/language/curd.ts:43
+#: src/constants/form_errors.ts:5 src/language/curd.ts:45
 msgid "This field should be a valid hostname"
 msgstr "Это поле должно содержать допустимое имя хоста"
 
-#: src/constants/form_errors.ts:2 src/language/curd.ts:40
+#: src/constants/form_errors.ts:2 src/language/curd.ts:42
 msgid "This field should not be empty"
 msgstr "Это поле обязательно к заполнению"
 
@@ -5279,7 +5275,7 @@ msgstr "Это поле обязательно к заполнению"
 msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "Это поле должно содержать только буквы, символы Юникода, цифры и -_."
 
-#: src/language/curd.ts:44
+#: src/language/curd.ts:46
 msgid ""
 "This field should only contain letters, unicode characters, numbers, and "
 "-_./:"
@@ -5310,7 +5306,7 @@ msgstr ""
 "Этот токен будет показан только один раз и не может быть восстановлен "
 "позже. Пожалуйста, сохраните его в надежном месте."
 
-#: src/constants/form_errors.ts:4 src/language/curd.ts:42
+#: src/constants/form_errors.ts:4 src/language/curd.ts:44
 msgid "This value is already taken"
 msgstr "Это значение уже занято"
 
@@ -5350,7 +5346,7 @@ msgstr "Ограничение"
 msgid "Thursday"
 msgstr "Четверг"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:65
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:70
 #: src/views/preference/tabs/AuthSettings.vue:112
 #: src/views/preference/tabs/LogrotateSettings.vue:12
 msgid "Tips"
@@ -5380,7 +5376,7 @@ msgstr ""
 "Чтобы включить это, вам нужно установить приложение Google или Microsoft "
 "Authenticator на свой мобильный телефон."
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:89
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:94
 msgid ""
 "To ensure security, Webauthn configuration cannot be added through the UI. "
 "Please manually configure the following in the app.ini configuration file "
@@ -5447,6 +5443,10 @@ msgstr "Всего процессов Nginx"
 msgid "Total Nginx Processes"
 msgstr "Общее количество процессов Nginx"
 
+#: src/views/dashboard/ServerAnalytic.vue:283
+msgid "Total Receive"
+msgstr "Всего получено"
+
 #: src/composables/usePerformanceMetrics.ts:99
 #: src/views/dashboard/components/PerformanceTablesCard.vue:59
 msgid "Total requests"
@@ -5455,6 +5455,10 @@ msgstr "Всего запросов"
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:78
 msgid "Total Requests / Total Connections"
 msgstr "Всего запросов / Всего соединений"
+
+#: src/views/dashboard/ServerAnalytic.vue:289
+msgid "Total Send"
+msgstr "Всего отправлено"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:66
 msgid "TOTP"
@@ -5549,11 +5553,11 @@ msgstr "Обновлено успешно"
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "Обновление Nginx UI, подождите..."
 
-#: src/language/curd.ts:47
+#: src/language/curd.ts:49
 msgid "Upload Files"
 msgstr "Загрузить файлы"
 
-#: src/language/curd.ts:48
+#: src/language/curd.ts:50
 msgid "Upload Folders"
 msgstr "Загрузить папки"
 
@@ -5605,7 +5609,7 @@ msgstr "Пользователь не включил OTP в качестве 2FA
 msgid "User Profile"
 msgstr "Профиль пользователя"
 
-#: src/views/other/Login.vue:222 src/views/user/userColumns.tsx:7
+#: src/views/other/Login.vue:228 src/views/user/userColumns.tsx:7
 #: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "Имя пользователя"
@@ -5671,7 +5675,7 @@ msgstr "Процессы ожидания"
 #: src/constants/index.ts:23 src/views/backup/components/BackupCreator.vue:138
 #: src/views/config/InspectConfig.vue:51
 #: src/views/notification/notificationColumns.tsx:21
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:82
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:87
 msgid "Warning"
 msgstr "Внимание"
 
@@ -5840,7 +5844,7 @@ msgstr "Вы можете закрыть это окно через %{countdown}
 msgid "You can close this dialog now"
 msgstr "Теперь вы можете закрыть это диалоговое окно"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:87
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:92
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
 "passkey."
@@ -5873,6 +5877,9 @@ msgstr "Ваши старые коды больше не будут работа
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "Ваши ключи доступа"
+
+#~ msgid "Link Start"
+#~ msgstr "Начало ссылки"
 
 #~ msgid "Enable failed"
 #~ msgstr "Не удалось включить"

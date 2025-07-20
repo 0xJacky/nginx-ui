@@ -280,13 +280,13 @@ function wsOnMessage(m: MessageEvent) {
             <ACol :span="12">
               <AStatistic
                 :value="bytesToSize(net.last_recv)"
-                :title="$gettext('Network Total Receive')"
+                :title="$gettext('Total Receive')"
               />
             </ACol>
             <ACol :span="12">
               <AStatistic
                 :value="bytesToSize(net.last_sent)"
-                :title="$gettext('Network Total Send')"
+                :title="$gettext('Total Send')"
               />
             </ACol>
           </ARow>

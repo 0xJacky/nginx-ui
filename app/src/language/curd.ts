@@ -33,6 +33,8 @@ export const translations = {
   pleaseSelectAtLeastOneItem: $gettext('Please select at least one item'),
   batchModify: $gettext('Batch Modify'),
   saveSuccessfully: $gettext('Save successfully'),
+  saveSuccess: $gettext('Save successful'),
+  cancel: $gettext('Cancel'),
   belowsAreSelectedItems: $gettext('Belows are selected items that you want to batch modify'),
   leaveBlankIfDoNotWantToModify: $gettext('Leave blank if do not want to modify'),
   no: $gettext('No'),

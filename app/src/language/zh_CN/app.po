@@ -165,8 +165,8 @@ msgstr "实际工作进程与配置比例"
 msgid "Add"
 msgstr "添加"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:45
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:49
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:53
 msgid "Add a passkey"
 msgstr "添加通行密钥"
 
@@ -218,7 +218,7 @@ msgstr "额外选项"
 msgid "Advance Mode"
 msgstr "高级模式"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:99
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:104
 msgid "Afterwards, refresh this page and click add passkey again."
 msgstr "之后，请刷新此页面并再次点击添加通行密钥。"
 
@@ -540,7 +540,7 @@ msgstr "批量修改"
 msgid "Batch Upgrade"
 msgstr "批量升级"
 
-#: src/language/curd.ts:36
+#: src/language/curd.ts:38
 msgid "Belows are selected items that you want to batch modify"
 msgstr "以下是您选定的需要批量修改的项目"
 
@@ -607,7 +607,7 @@ msgstr "基于 worker_processes * worker_connections 计算得出。实际性能
 
 #: src/components/ChatGPT/ChatMessage.vue:216
 #: src/components/NgxConfigEditor/NgxServer.vue:61
-#: src/components/NgxConfigEditor/NgxUpstream.vue:37
+#: src/components/NgxConfigEditor/NgxUpstream.vue:37 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:98
 #: src/views/preference/components/AuthSettings/Passkey.vue:141
 #: src/views/site/components/SiteStatusSelect.vue:124
@@ -903,11 +903,11 @@ msgstr "清除成功"
 msgid "Click or drag backup file to this area to upload"
 msgstr "单击或拖动备份文件到此区域上传"
 
-#: src/language/curd.ts:49 src/language/curd.ts:53
+#: src/language/curd.ts:51 src/language/curd.ts:55
 msgid "Click or drag files to this area to upload"
 msgstr "点击或拖拽文件到此处上传"
 
-#: src/language/curd.ts:50 src/language/curd.ts:54
+#: src/language/curd.ts:52 src/language/curd.ts:56
 msgid "Click or drag folders to this area to upload"
 msgstr "点击或拖拽文件夹到此处上传"
 
@@ -1039,7 +1039,7 @@ msgstr "配置 SSL"
 msgid "Confirm New Password"
 msgstr "确认新密码"
 
-#: src/views/dashboard/Environments.vue:133
+#: src/views/dashboard/components/NodeAnalyticItem.vue:99
 msgid "Connected"
 msgstr "已连接"
 
@@ -1557,7 +1557,7 @@ msgstr "下载最新版本"
 msgid "Dry run mode enabled"
 msgstr "试运行模式已启动"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:101
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:106
 msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
@@ -2229,7 +2229,7 @@ msgstr "文件夹"
 msgid "Folder"
 msgstr "文件夹"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:71
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:76
 msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
@@ -2396,7 +2396,7 @@ msgid ""
 "option."
 msgstr "如果要自动撤销旧证书，请启用此选项。"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:70
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:75
 msgid "If your browser supports WebAuthn Passkey, a dialog box will appear."
 msgstr "如果您的浏览器支持 WebAuthn Passkey，则会出现一个对话框。"
 
@@ -2634,7 +2634,7 @@ msgstr "留空表示不修改"
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "留空为默认：https://api.openai.com/"
 
-#: src/language/curd.ts:37
+#: src/language/curd.ts:39
 msgid "Leave blank if do not want to modify"
 msgstr "如果不想修改，请留空"
 
@@ -2659,10 +2659,10 @@ msgstr "Lego 禁用 CNAME 支持"
 msgid "License"
 msgstr "开源许可"
 
-#: src/views/dashboard/Environments.vue:133
-#: src/views/dashboard/Environments.vue:148
-msgid "Link Start"
-msgstr "链接"
+#: src/views/dashboard/components/NodeAnalyticItem.vue:116
+#: src/views/dashboard/components/NodeAnalyticItem.vue:99
+msgid "Link"
+msgstr "连接"
 
 #: src/language/curd.ts:23
 msgid "List"
@@ -2747,7 +2747,7 @@ msgstr ""
 msgid "Log List"
 msgstr "日志列表"
 
-#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:271
+#: src/routes/modules/auth.ts:14 src/views/other/Login.vue:277
 msgid "Login"
 msgstr "登录"
 
@@ -2986,7 +2986,7 @@ msgstr "多行指令"
 #: src/views/environments/group/columns.ts:7
 #: src/views/environments/list/envColumns.tsx:8
 #: src/views/nginx_log/NginxLogList.vue:51
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:75
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:80
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:35
 #: src/views/site/site_list/columns.tsx:29
 #: src/views/site/site_list/SiteDuplicate.vue:79
@@ -3013,14 +3013,6 @@ msgstr "网络"
 #: src/views/dashboard/ServerAnalytic.vue:276
 msgid "Network Statistics"
 msgstr "流量统计"
-
-#: src/views/dashboard/ServerAnalytic.vue:283
-msgid "Network Total Receive"
-msgstr "下载流量"
-
-#: src/views/dashboard/ServerAnalytic.vue:289
-msgid "Network Total Send"
-msgstr "上传流量"
 
 #: src/constants/errors/cert.ts:15
 msgid "New dns challenge provider error: {0}"
@@ -3131,7 +3123,7 @@ msgstr "Nginx 配置路径"
 msgid "Nginx Configurations Directory"
 msgstr "Nginx 配置目录"
 
-#: src/components/NginxControl/NginxControl.vue:64
+#: src/components/NginxControl/NginxControl.vue:68
 msgid "Nginx Control"
 msgstr "控制 Nginx"
 
@@ -3270,7 +3262,7 @@ msgstr "检查 nginx.conf 是否包含 streams-enabled 的目录"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:169
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:99
 #: src/components/NgxConfigEditor/LocationEditor.vue:89
-#: src/components/Notification/Notification.vue:108 src/language/curd.ts:38
+#: src/components/Notification/Notification.vue:108 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:132
 #: src/views/preference/tabs/CertSettings.vue:73
@@ -3423,7 +3415,7 @@ msgstr "官方文档"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:151
 #: src/components/NodeSelector/NodeSelector.vue:107
 #: src/components/ProxyTargets/ProxyTargets.vue:29
-#: src/views/dashboard/Environments.vue:99
+#: src/views/dashboard/Environments.vue:101
 #: src/views/environments/list/envColumns.tsx:55
 msgid "Offline"
 msgstr "离线"
@@ -3456,7 +3448,7 @@ msgstr "一旦验证完成，这些记录将被删除。"
 #: src/components/EnvGroupTabs/EnvGroupTabs.vue:185
 #: src/components/NodeSelector/NodeSelector.vue:101
 #: src/components/NodeSelector/NodeSelector.vue:87
-#: src/views/dashboard/Environments.vue:92
+#: src/views/dashboard/Environments.vue:94
 #: src/views/environments/list/envColumns.tsx:51
 msgid "Online"
 msgstr "在线"
@@ -3473,7 +3465,7 @@ msgstr "开放"
 msgid "OpenAI"
 msgstr "OpenAI"
 
-#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:280
+#: src/components/TwoFA/Authorization.vue:100 src/views/other/Login.vue:286
 msgid "Or"
 msgstr "或"
 
@@ -3543,7 +3535,7 @@ msgid ""
 "password replacement or as a 2FA method."
 msgstr "Passkey 是一种网络认证凭据，可通过指纹、面部识别、设备密码或 PIN 码验证身份。它们可用作密码替代品或二步验证方法。"
 
-#: src/views/other/Login.vue:232 src/views/user/userColumns.tsx:16
+#: src/views/other/Login.vue:238 src/views/user/userColumns.tsx:16
 msgid "Password"
 msgstr "密码"
 
@@ -3569,7 +3561,7 @@ msgstr "密码不匹配"
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:110
 #: src/components/NgxConfigEditor/LocationEditor.vue:138
-#: src/language/curd.ts:59
+#: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:124
 #: src/views/nginx_log/NginxLogList.vue:59
@@ -3635,7 +3627,7 @@ msgid ""
 "count, etc."
 msgstr "请启用 stub_status 模块，以获取请求统计信息、连接数等。"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:69
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:74
 msgid ""
 "Please enter a name for the passkey you wish to create and click the OK "
 "button below."
@@ -3810,7 +3802,7 @@ msgstr "进程分布"
 msgid "Process information"
 msgstr "进程信息"
 
-#: src/language/curd.ts:58
+#: src/language/curd.ts:60
 msgid "Processing {count}/{total}"
 msgstr "处理中 {count}/{total}"
 
@@ -3924,7 +3916,7 @@ msgstr "注册失败"
 msgid "Register On Startup"
 msgstr "启动时注册"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:25
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:26
 msgid "Register passkey successfully"
 msgstr "Passkey 注册成功"
 
@@ -3949,7 +3941,7 @@ msgid "Release Note"
 msgstr "发行日志"
 
 #: src/components/ChatGPT/ChatMessage.vue:222
-#: src/components/NginxControl/NginxControl.vue:99
+#: src/components/NginxControl/NginxControl.vue:103
 msgid "Reload"
 msgstr "重载"
 
@@ -3985,7 +3977,7 @@ msgstr "重载远程 Nginx 成功"
 msgid "Reload request failed, please check your network connection"
 msgstr "重载请求失败，请检查网络连接"
 
-#: src/components/NginxControl/NginxControl.vue:73
+#: src/components/NginxControl/NginxControl.vue:77
 msgid "Reloading"
 msgstr "重载中"
 
@@ -4134,7 +4126,7 @@ msgstr "驻留集大小：实际驻留在物理内存中的内存，包括所有
 msgid "Responses"
 msgstr "响应"
 
-#: src/components/NginxControl/NginxControl.vue:92
+#: src/components/NginxControl/NginxControl.vue:96
 msgid "Restart"
 msgstr "重启"
 
@@ -4164,7 +4156,7 @@ msgstr "重启远程 Nginx 成功"
 msgid "Restart request failed, please check your network connection"
 msgstr "重启请求失败，请检查网络连接"
 
-#: src/components/NginxControl/NginxControl.vue:78
+#: src/components/NginxControl/NginxControl.vue:82
 msgid "Restarting"
 msgstr "重启中"
 
@@ -4238,7 +4230,7 @@ msgstr "依赖方 ID"
 msgid "Run Mode"
 msgstr "运行模式"
 
-#: src/components/NginxControl/NginxControl.vue:68
+#: src/components/NginxControl/NginxControl.vue:72
 msgid "Running"
 msgstr "运行中"
 
@@ -4406,6 +4398,10 @@ msgstr "部署 %{name} 到 %{node} 失败"
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "成功将站点 %{name} 保存到 %{node} 中"
 
+#: src/language/curd.ts:36
+msgid "Save successful"
+msgstr "保存成功"
+
 #: src/language/curd.ts:35 src/views/certificate/store.ts:14
 #: src/views/preference/store/index.ts:120
 msgid "Save successfully"
@@ -4494,7 +4490,7 @@ msgstr "全选"
 msgid "Select an action after sync"
 msgstr "选择同步后的操作"
 
-#: src/language/curd.ts:57
+#: src/language/curd.ts:59
 msgid "Selected {count} files"
 msgstr "已选择 {count} 个文件"
 
@@ -4606,7 +4602,7 @@ msgstr "共享内存区"
 msgid "Show"
 msgstr "显示"
 
-#: src/views/other/Login.vue:289
+#: src/views/other/Login.vue:295
 msgid "Sign in with a passkey"
 msgstr "使用 Passkey 登录"
 
@@ -4650,7 +4646,7 @@ msgstr "Sites-available 目录不存在"
 msgid "Sites-enabled directory not exist"
 msgstr "Sites-enabled 目录不存在"
 
-#: src/language/curd.ts:60
+#: src/language/curd.ts:62
 msgid "Size"
 msgstr "大小"
 
@@ -4715,7 +4711,7 @@ msgstr "SSL 密钥路径"
 msgid "SSL key path is required when HTTPS is enabled"
 msgstr "启用 HTTPS 时需要 SSL 密钥路径"
 
-#: src/views/other/Login.vue:246
+#: src/views/other/Login.vue:252
 msgid "SSO Login"
 msgstr "SSO 登录"
 
@@ -4750,7 +4746,7 @@ msgstr "静态"
 msgid "Status"
 msgstr "状态"
 
-#: src/components/NginxControl/NginxControl.vue:83
+#: src/components/NginxControl/NginxControl.vue:87
 msgid "Stopped"
 msgstr "已停止"
 
@@ -4847,11 +4843,11 @@ msgstr ""
 "支持通过 WebSocket 协议与后端通信，如果您正在使用 Nginx 反向代理了 Nginx UI "
 "请参考：https://nginxui.com/guide/nginx-proxy-example.html 编写配置文件"
 
-#: src/language/curd.ts:51 src/language/curd.ts:55
+#: src/language/curd.ts:53 src/language/curd.ts:57
 msgid "Support single or batch upload of files"
 msgstr "支持单个或多个文件上传"
 
-#: src/language/curd.ts:52 src/language/curd.ts:56
+#: src/language/curd.ts:54 src/language/curd.ts:58
 msgid "Support uploading entire folders"
 msgstr "支持上传整个文件夹"
 
@@ -5046,7 +5042,7 @@ msgid ""
 "hyphens, dashes, colons, and dots."
 msgstr "公安备案号只能包含字母、单码、数字、连字符、破折号、冒号和点。"
 
-#: src/views/dashboard/Environments.vue:140
+#: src/views/dashboard/components/NodeAnalyticItem.vue:107
 msgid ""
 "The remote Nginx UI version is not compatible with the local Nginx UI "
 "version. To avoid potential errors, please upgrade the remote Nginx UI to "
@@ -5106,15 +5102,15 @@ msgstr "此目录受保护，为确保系统安全无法删除。"
 msgid "This field is required"
 msgstr "此字段必填"
 
-#: src/constants/form_errors.ts:3 src/language/curd.ts:41
+#: src/constants/form_errors.ts:3 src/language/curd.ts:43
 msgid "This field should be a valid email address"
 msgstr "该字段应是有效的电子邮件地址"
 
-#: src/constants/form_errors.ts:5 src/language/curd.ts:43
+#: src/constants/form_errors.ts:5 src/language/curd.ts:45
 msgid "This field should be a valid hostname"
 msgstr "该字段应是有效的主机名"
 
-#: src/constants/form_errors.ts:2 src/language/curd.ts:40
+#: src/constants/form_errors.ts:2 src/language/curd.ts:42
 msgid "This field should not be empty"
 msgstr "该字段不能为空"
 
@@ -5122,7 +5118,7 @@ msgstr "该字段不能为空"
 msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "该字段只能包含字母、unicode 字符、数字和 -_。"
 
-#: src/language/curd.ts:44
+#: src/language/curd.ts:46
 msgid ""
 "This field should only contain letters, unicode characters, numbers, and "
 "-_./:"
@@ -5146,7 +5142,7 @@ msgid ""
 "make sure to save it in a secure location."
 msgstr "此 Token 只显示一次，以后无法找回。请确保将其保存在安全位置。"
 
-#: src/constants/form_errors.ts:4 src/language/curd.ts:42
+#: src/constants/form_errors.ts:4 src/language/curd.ts:44
 msgid "This value is already taken"
 msgstr "该字段的值已经存在"
 
@@ -5180,7 +5176,7 @@ msgstr "限流"
 msgid "Thursday"
 msgstr "星期四"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:65
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:70
 #: src/views/preference/tabs/AuthSettings.vue:112
 #: src/views/preference/tabs/LogrotateSettings.vue:12
 msgid "Tips"
@@ -5206,7 +5202,7 @@ msgid ""
 "on your mobile phone."
 msgstr "要启用该功能，您需要在手机上安装 Google 或 Microsoft Authenticator 应用程序。"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:89
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:94
 msgid ""
 "To ensure security, Webauthn configuration cannot be added through the UI. "
 "Please manually configure the following in the app.ini configuration file "
@@ -5267,6 +5263,10 @@ msgstr "Nginx 进程总数"
 msgid "Total Nginx Processes"
 msgstr "Nginx 进程总数"
 
+#: src/views/dashboard/ServerAnalytic.vue:283
+msgid "Total Receive"
+msgstr "总接收量"
+
 #: src/composables/usePerformanceMetrics.ts:99
 #: src/views/dashboard/components/PerformanceTablesCard.vue:59
 msgid "Total requests"
@@ -5275,6 +5275,10 @@ msgstr "总请求数"
 #: src/views/dashboard/components/PerformanceStatisticsCard.vue:78
 msgid "Total Requests / Total Connections"
 msgstr "请求总数/连接总数"
+
+#: src/views/dashboard/ServerAnalytic.vue:289
+msgid "Total Send"
+msgstr "总发送"
 
 #: src/views/preference/components/AuthSettings/TOTP.vue:66
 msgid "TOTP"
@@ -5367,11 +5371,11 @@ msgstr "升级成功"
 msgid "Upgrading Nginx UI, please wait..."
 msgstr "正在升级 Nginx UI，请等待..."
 
-#: src/language/curd.ts:47
+#: src/language/curd.ts:49
 msgid "Upload Files"
 msgstr "上传文件"
 
-#: src/language/curd.ts:48
+#: src/language/curd.ts:50
 msgid "Upload Folders"
 msgstr "上传文件夹"
 
@@ -5423,7 +5427,7 @@ msgstr "用户未启用 OTP 作为 2FA"
 msgid "User Profile"
 msgstr "用户资料"
 
-#: src/views/other/Login.vue:222 src/views/user/userColumns.tsx:7
+#: src/views/other/Login.vue:228 src/views/user/userColumns.tsx:7
 #: src/views/user/UserProfile.vue:127 src/views/user/UserProfile.vue:131
 msgid "Username"
 msgstr "用户名"
@@ -5489,7 +5493,7 @@ msgstr "等待处理"
 #: src/constants/index.ts:23 src/views/backup/components/BackupCreator.vue:138
 #: src/views/config/InspectConfig.vue:51
 #: src/views/notification/notificationColumns.tsx:21
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:82
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:87
 msgid "Warning"
 msgstr "警告"
 
@@ -5641,7 +5645,7 @@ msgstr "您可以在 %{countdown} 秒后关闭此对话框"
 msgid "You can close this dialog now"
 msgstr "现在可以关闭此对话框"
 
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:87
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:92
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
 "passkey."
@@ -5669,6 +5673,9 @@ msgstr "您的旧代码将不再有效。"
 #: src/views/preference/components/AuthSettings/Passkey.vue:75
 msgid "Your passkeys"
 msgstr "你的 Passkeys"
+
+#~ msgid "Link Start"
+#~ msgstr "链接"
 
 #~ msgid "Enable failed"
 #~ msgstr "启用失败"

@@ -68,8 +68,8 @@ func GetDiskStat() (DiskStat, error) {
 	}
 
 	return DiskStat{
-		Used:       humanize.Bytes(totalUsed),
-		Total:      humanize.Bytes(totalSize),
+		Used:       humanize.IBytes(totalUsed),
+		Total:      humanize.IBytes(totalSize),
 		Percentage: overallPercentage,
 		Writes:     DiskWriteRecord[len(DiskWriteRecord)-1],
 		Reads:      DiskReadRecord[len(DiskReadRecord)-1],
