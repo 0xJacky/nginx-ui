@@ -255,8 +255,14 @@ func parseServerAddress(serverAddr string, targetType string, ctx *UpstreamConte
 	return target
 }
 
-// isConsulServiceDiscovery checks if the server address is a consul service discovery configuration
+// isConsulServiceDiscovery checks if the server address is a dynamic service discovery configuration
+// This includes both Consul and standard nginx service= configurations
 func isConsulServiceDiscovery(serverAddr string) bool {
+	// Standard nginx service= format: "hostname service=name resolve"
+	if strings.Contains(serverAddr, "service=") && strings.Contains(serverAddr, "resolve") {
+		return true
+	}
+	// Legacy consul format: "service.consul service=name resolve" 
 	return strings.Contains(serverAddr, "service.consul") &&
 		(strings.Contains(serverAddr, "service=") || strings.Contains(serverAddr, "resolve"))
 }

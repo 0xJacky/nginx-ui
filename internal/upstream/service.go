@@ -232,7 +232,7 @@ func (s *UpstreamService) PerformAvailabilityTest() {
 	// Test consul targets using consul-specific logic
 	if len(consulTargets) > 0 {
 		// logger.Debug("Testing", len(consulTargets), "consul targets")
-		consulResults := TestConsulTargets(consulTargets)
+		consulResults := TestDynamicTargets(consulTargets)
 		for k, v := range consulResults {
 			results[k] = v
 		}
