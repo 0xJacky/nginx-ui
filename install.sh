@@ -299,7 +299,7 @@ download_nginx_ui() {
     local download_link
     if [[ "$VERSION_CHANNEL" == "dev" ]]; then
         # For dev builds, use the CloudflareWorkerAPI dev-builds endpoint
-        download_link="${RPROXY}https://cloud.nginxui.com/dev-builds/nginx-ui-linux-$MACHINE.tar.gz"
+        download_link="https://cloud.nginxui.com/dev-builds/nginx-ui-linux-$MACHINE.tar.gz"
     else
         # For stable and prerelease versions
         download_link="${RPROXY}https://github.com/0xJacky/nginx-ui/releases/download/$RELEASE_LATEST/nginx-ui-linux-$MACHINE.tar.gz"
