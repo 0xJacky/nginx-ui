@@ -1,26 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8"/>
-	<link href="/favicon.ico" rel="icon">
-	<meta content="width=device-width,initial-scale=1.0,user-scalable=0" name="viewport">
-	<style>
+  <meta charset="UTF-8" />
+  <link href="/favicon.ico" rel="icon">
+  <link href="/favicon-32x32.png" rel="icon" type="image/png" sizes="32x32">
+  <meta content="width=device-width,initial-scale=1.0,user-scalable=0" name="viewport">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Nginx UI">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-config" content="/browserconfig.xml">
+
+  <!-- Apple Touch Icons -->
+  <link rel="apple-touch-icon" sizes="192x192" href="/pwa-192x192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="/pwa-512x512.png">
+
+  <style>
     body {
       height: auto !important;
       min-height: 100%;
     }
+
     body.dark {
       background-color: #141414;
       color: #fff;
     }
+
     #app {
       height: 100vh;
     }
-	</style>
-	<title>Nginx UI</title>
+  </style>
+  <title>Nginx UI</title>
 </head>
+
 <body>
-<div id="app"></div>
-<script type="module" src="/src/main.ts"></script>
+  <div id="app"></div>
+  <script type="module" src="/src/main.ts"></script>
 </body>
+
 </html>

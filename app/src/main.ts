@@ -6,6 +6,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { createApp } from 'vue'
 import VueDOMPurifyHTML from 'vue-dompurify-html'
 import { setupInterceptors } from '@/lib/http/interceptors'
+import { initPWAThemeColor, watchThemeChanges } from '@/lib/pwa'
 import { useSettingsStore } from '@/pinia'
 import i18n from '../i18n.json'
 import App from './App.vue'
@@ -78,5 +79,11 @@ const settings = useSettingsStore()
 gettext.current = settings.language || 'en'
 
 app.use(router).use(autoAnimatePlugin).mount('#app')
+
+// Initialize PWA theme color functionality after app is mounted
+nextTick(() => {
+  initPWAThemeColor()
+  watchThemeChanges()
+})
 
 export default app
