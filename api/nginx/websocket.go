@@ -106,9 +106,17 @@ func (h *NginxPerformanceHub) sendPerformanceDataToClient(client *NginxPerforman
 
 // broadcastPerformanceData sends performance data to all connected clients
 func (h *NginxPerformanceHub) broadcastPerformanceData() {
+	h.mutex.RLock()
+
+	// Check if there are any connected clients
+	if len(h.clients) == 0 {
+		h.mutex.RUnlock()
+		return
+	}
+
+	// Only get performance data if there are connected clients
 	response := performance.GetPerformanceData()
 
-	h.mutex.RLock()
 	for client := range h.clients {
 		select {
 		case client.send <- response:
