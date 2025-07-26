@@ -2,6 +2,7 @@ package analytic
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"sync"
@@ -650,11 +651,12 @@ func nodeAnalyticRecord(env *model.Environment, ctx context.Context) error {
 		_ = c.Close()
 	}()
 
-	var nodeStat NodeStat
 	messageCount := 0
 
 	for {
-		err = c.ReadJSON(&nodeStat)
+		// Use json.RawMessage to handle both NodeStat and Node types
+		var rawMsg json.RawMessage
+		err = c.ReadJSON(&rawMsg)
 		if err != nil {
 			if helper.IsUnexpectedWebsocketError(err) {
 				logger.Debugf("nodeAnalyticRecord: Unexpected WebSocket error for environment ID: %d, error: %v", env.ID, err)
@@ -667,15 +669,42 @@ func nodeAnalyticRecord(env *model.Environment, ctx context.Context) error {
 		messageCount++
 		logger.Debugf("nodeAnalyticRecord: Received message #%d from environment ID: %d", messageCount, env.ID)
 
-		// set online
-		nodeStat.Status = true
-		nodeStat.ResponseAt = time.Now()
-
 		mutex.Lock()
 		if NodeMap[env.ID] != nil {
-			NodeMap[env.ID].NodeStat = nodeStat
-			logger.Debugf("nodeAnalyticRecord: Updated NodeStat for environment ID: %d, Status: %t, ResponseAt: %v",
-				env.ID, nodeStat.Status, nodeStat.ResponseAt)
+			// Try to unmarshal as complete Node first (contains both NodeInfo and NodeStat)
+			var fullNode Node
+			if err := json.Unmarshal(rawMsg, &fullNode); err == nil && fullNode.Version != "" {
+				// Check if version has changed
+				oldVersion := NodeMap[env.ID].Version
+				if oldVersion != "" && oldVersion != fullNode.Version {
+					logger.Infof("nodeAnalyticRecord: Version updated for environment ID: %d, from %s to %s",
+						env.ID, oldVersion, fullNode.Version)
+				}
+
+				// This is a complete Node with version info - update everything
+				NodeMap[env.ID].NodeInfo = fullNode.NodeInfo
+				NodeMap[env.ID].NodeStat = fullNode.NodeStat
+				// Ensure status and response time are set
+				NodeMap[env.ID].NodeStat.Status = true
+				NodeMap[env.ID].NodeStat.ResponseAt = time.Now()
+
+				logger.Debugf("nodeAnalyticRecord: Updated complete Node info for environment ID: %d, Version: %s, Status: %t, ResponseAt: %v",
+					env.ID, fullNode.Version, NodeMap[env.ID].NodeStat.Status, NodeMap[env.ID].NodeStat.ResponseAt)
+			} else {
+				// Fall back to NodeStat only
+				var nodeStat NodeStat
+				if err := json.Unmarshal(rawMsg, &nodeStat); err == nil {
+					// set online
+					nodeStat.Status = true
+					nodeStat.ResponseAt = time.Now()
+
+					NodeMap[env.ID].NodeStat = nodeStat
+					logger.Debugf("nodeAnalyticRecord: Updated NodeStat for environment ID: %d, Status: %t, ResponseAt: %v",
+						env.ID, nodeStat.Status, nodeStat.ResponseAt)
+				} else {
+					logger.Debugf("nodeAnalyticRecord: Failed to unmarshal message for environment ID: %d, error: %v", env.ID, err)
+				}
+			}
 		} else {
 			logger.Debugf("nodeAnalyticRecord: Warning - Node not found in NodeMap for environment ID: %d", env.ID)
 		}
