@@ -25,20 +25,42 @@ type UpstreamContext struct {
 }
 
 // ParseProxyTargetsFromRawContent parses proxy targets from raw nginx configuration content
+// It performs two passes to handle cases where proxy_pass/grpc_pass directives appear before upstream definitions
+//
+// Problem: In nginx configuration files, the order of directives can vary. A proxy_pass directive
+// might reference an upstream block that is defined later in the file. Without two-pass parsing,
+// the parser would incorrectly treat such proxy_pass directives as direct targets instead of
+// upstream references.
+//
+// Solution:
+//  1. First pass: Scan the entire content to collect all upstream names
+//  2. Second pass: Parse upstream blocks and proxy_pass/grpc_pass directives with full knowledge
+//     of all upstream names, allowing proper identification of upstream references regardless of order
 func ParseProxyTargetsFromRawContent(content string) []ProxyTarget {
 	var targets []ProxyTarget
 
-	// First, collect all upstream names and their contexts
+	// First pass: collect all upstream names to handle forward references
+	// This ensures we know about all upstreams before processing proxy_pass directives
 	upstreamNames := make(map[string]bool)
-	upstreamContexts := make(map[string]*UpstreamContext)
-	upstreamRegex := regexp.MustCompile(`(?s)upstream\s+([^\s]+)\s*\{([^}]+)\}`)
+	upstreamRegex := regexp.MustCompile(`(?s)upstream\s+([^\s]+)\s*\{`)
 	upstreamMatches := upstreamRegex.FindAllStringSubmatch(content, -1)
 
-	// Parse upstream blocks and collect upstream names
 	for _, match := range upstreamMatches {
-		if len(match) >= 3 {
+		if len(match) >= 2 {
 			upstreamName := match[1]
 			upstreamNames[upstreamName] = true
+		}
+	}
+
+	// Second pass: parse upstream blocks with full context and collect upstream names
+	upstreamContexts := make(map[string]*UpstreamContext)
+	upstreamFullRegex := regexp.MustCompile(`(?s)upstream\s+([^\s]+)\s*\{([^}]+)\}`)
+	upstreamFullMatches := upstreamFullRegex.FindAllStringSubmatch(content, -1)
+
+	// Parse upstream blocks and collect upstream names
+	for _, match := range upstreamFullMatches {
+		if len(match) >= 3 {
+			upstreamName := match[1]
 			upstreamContent := match[2]
 
 			// Create upstream context

@@ -753,3 +753,172 @@ func TestGrpcPassPortDefaults(t *testing.T) {
 		})
 	}
 }
+
+func TestParseProxyTargetsWithForwardReferences(t *testing.T) {
+	// Test case where proxy_pass appears before upstream definition
+	config := `server {
+    listen 80;
+    server_name example.com;
+
+    # This proxy_pass appears BEFORE the upstream definition
+    location /api/ {
+        proxy_pass http://api-backend/;
+    }
+
+    location /grpc/ {
+        grpc_pass grpc://grpc-backend;
+    }
+
+    # Direct proxy_pass that should be included
+    location /external/ {
+        proxy_pass http://external.example.com:8080/;
+    }
+}
+
+# Upstream definitions appear AFTER the proxy_pass directives
+upstream api-backend {
+    server 127.0.0.1:9000;
+    server 127.0.0.1:9001;
+}
+
+upstream grpc-backend {
+    server 127.0.0.1:9090;
+    server 127.0.0.1:9091;
+}`
+
+	targets := ParseProxyTargetsFromRawContent(config)
+
+	// Print actual results for debugging
+	t.Logf("Found %d targets:", len(targets))
+	for i, target := range targets {
+		t.Logf("Target %d: Host=%s, Port=%s, Type=%s", i+1, target.Host, target.Port, target.Type)
+	}
+
+	// Expected targets:
+	// - 4 upstream servers (2 from api-backend, 2 from grpc-backend)
+	// - 1 direct proxy_pass target (external.example.com:8080)
+	// - proxy_pass to api-backend and grpc_pass to grpc-backend should be ignored since they reference upstreams
+	expectedTargets := []ProxyTarget{
+		{Host: "127.0.0.1", Port: "9000", Type: "upstream"},
+		{Host: "127.0.0.1", Port: "9001", Type: "upstream"},
+		{Host: "127.0.0.1", Port: "9090", Type: "upstream"},
+		{Host: "127.0.0.1", Port: "9091", Type: "upstream"},
+		{Host: "external.example.com", Port: "8080", Type: "proxy_pass"},
+	}
+
+	if len(targets) != len(expectedTargets) {
+		t.Errorf("Expected %d targets, got %d", len(expectedTargets), len(targets))
+		return
+	}
+
+	// Create a map for easier comparison
+	targetMap := make(map[string]ProxyTarget)
+	for _, target := range targets {
+		key := target.Host + ":" + target.Port + ":" + target.Type
+		targetMap[key] = target
+	}
+
+	for _, expected := range expectedTargets {
+		key := expected.Host + ":" + expected.Port + ":" + expected.Type
+		if _, found := targetMap[key]; !found {
+			t.Errorf("Expected target not found: %+v", expected)
+		}
+	}
+}
+
+func TestParseProxyTargetsWithMixedOrderReferences(t *testing.T) {
+	// Test case with mixed order: some proxy_pass before upstream, some after
+	config := `# First server block with forward references
+server {
+    listen 80;
+    server_name app1.example.com;
+
+    # These proxy_pass directives appear BEFORE upstream definitions
+    location /api/ {
+        proxy_pass http://api-backend/;
+    }
+
+    location /grpc/ {
+        grpc_pass grpc://grpc-backend;
+    }
+}
+
+# First upstream definition
+upstream api-backend {
+    server 127.0.0.1:9000;
+    server 127.0.0.1:9001;
+}
+
+# Second server block with backward references
+server {
+    listen 443 ssl;
+    server_name app2.example.com;
+
+    # These proxy_pass directives appear AFTER the first upstream definition
+    # but BEFORE the second upstream definition
+    location /api/ {
+        proxy_pass https://api-backend/;  # References already defined upstream
+    }
+
+    location /cache/ {
+        proxy_pass http://cache-backend/;  # Forward reference to upcoming upstream
+    }
+
+    # Direct proxy_pass that should be included
+    location /external/ {
+        proxy_pass https://external.example.com:8443/;
+    }
+}
+
+# Second upstream definition
+upstream cache-backend {
+    server 127.0.0.1:6379;
+    server 127.0.0.1:6380;
+}
+
+upstream grpc-backend {
+    server 127.0.0.1:9090;
+    server 127.0.0.1:9091;
+}`
+
+	targets := ParseProxyTargetsFromRawContent(config)
+
+	// Print actual results for debugging
+	t.Logf("Found %d targets:", len(targets))
+	for i, target := range targets {
+		t.Logf("Target %d: Host=%s, Port=%s, Type=%s", i+1, target.Host, target.Port, target.Type)
+	}
+
+	// Expected targets:
+	// - 6 upstream servers (2 from api-backend, 2 from cache-backend, 2 from grpc-backend)
+	// - 1 direct proxy_pass target (external.example.com:8443)
+	// - All proxy_pass/grpc_pass to upstreams should be ignored
+	expectedTargets := []ProxyTarget{
+		{Host: "127.0.0.1", Port: "9000", Type: "upstream"},
+		{Host: "127.0.0.1", Port: "9001", Type: "upstream"},
+		{Host: "127.0.0.1", Port: "6379", Type: "upstream"},
+		{Host: "127.0.0.1", Port: "6380", Type: "upstream"},
+		{Host: "127.0.0.1", Port: "9090", Type: "upstream"},
+		{Host: "127.0.0.1", Port: "9091", Type: "upstream"},
+		{Host: "external.example.com", Port: "8443", Type: "proxy_pass"},
+	}
+
+	if len(targets) != len(expectedTargets) {
+		t.Errorf("Expected %d targets, got %d", len(expectedTargets), len(targets))
+		return
+	}
+
+	// Create a map for easier comparison
+	targetMap := make(map[string]ProxyTarget)
+	for _, target := range targets {
+		key := target.Host + ":" + target.Port + ":" + target.Type
+		targetMap[key] = target
+	}
+
+	for _, expected := range expectedTargets {
+		key := expected.Host + ":" + expected.Port + ":" + expected.Type
+		if _, found := targetMap[key]; !found {
+			t.Errorf("Expected target not found: %+v", expected)
+		}
+	}
+}
