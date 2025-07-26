@@ -605,3 +605,151 @@ server {
 		}
 	}
 }
+
+func TestParseGrpcPassDirectives(t *testing.T) {
+	config := `
+upstream grpc-backend {
+    server 127.0.0.1:9090;
+    server 127.0.0.1:9091;
+}
+
+server {
+    listen 80 http2;
+    server_name grpc.example.com;
+
+    location /api.v1.Service/ {
+        grpc_pass grpc://127.0.0.1:9090;
+    }
+
+    location /api.v2.Service/ {
+        grpc_pass grpcs://secure-grpc.example.com:443;
+    }
+
+    location /upstream-service/ {
+        grpc_pass grpc://grpc-backend;
+    }
+
+    location /direct-service/ {
+        grpc_pass 192.168.1.100:9090;
+    }
+}
+`
+
+	targets := ParseProxyTargetsFromRawContent(config)
+
+	// Verify we found the expected targets
+	expected := []struct {
+		host string
+		port string
+		typ  string
+	}{
+		{"127.0.0.1", "9090", "upstream"},
+		{"127.0.0.1", "9091", "upstream"},
+		{"127.0.0.1", "9090", "grpc_pass"},
+		{"secure-grpc.example.com", "443", "grpc_pass"},
+		{"192.168.1.100", "9090", "grpc_pass"},
+	}
+
+	if len(targets) < len(expected) {
+		t.Errorf("Expected at least %d targets, got %d", len(expected), len(targets))
+		for i, target := range targets {
+			t.Logf("Target %d: Host=%s, Port=%s, Type=%s", i+1, target.Host, target.Port, target.Type)
+		}
+		return
+	}
+
+	// Count targets by type
+	grpcPassCount := 0
+	upstreamCount := 0
+	for _, target := range targets {
+		switch target.Type {
+		case "grpc_pass":
+			grpcPassCount++
+		case "upstream":
+			upstreamCount++
+		}
+	}
+
+	if grpcPassCount != 3 {
+		t.Errorf("Expected 3 grpc_pass targets, got %d", grpcPassCount)
+	}
+	if upstreamCount != 2 {
+		t.Errorf("Expected 2 upstream targets, got %d", upstreamCount)
+	}
+
+	// Verify specific targets exist
+	found := make(map[string]bool)
+	for _, target := range targets {
+		key := target.Host + ":" + target.Port + ":" + target.Type
+		found[key] = true
+	}
+
+	expectedKeys := []string{
+		"127.0.0.1:9090:upstream",
+		"127.0.0.1:9091:upstream",
+		"127.0.0.1:9090:grpc_pass",
+		"secure-grpc.example.com:443:grpc_pass",
+		"192.168.1.100:9090:grpc_pass",
+	}
+
+	for _, key := range expectedKeys {
+		if !found[key] {
+			t.Errorf("Expected to find target: %s", key)
+		}
+	}
+}
+
+func TestGrpcPassPortDefaults(t *testing.T) {
+	tests := []struct {
+		name         string
+		grpcPassURL  string
+		expectedHost string
+		expectedPort string
+		expectedType string
+	}{
+		{
+			name:         "grpc:// without port should default to 80",
+			grpcPassURL:  "grpc://api.example.com",
+			expectedHost: "api.example.com",
+			expectedPort: "80",
+			expectedType: "grpc_pass",
+		},
+		{
+			name:         "grpcs:// without port should default to 443",
+			grpcPassURL:  "grpcs://secure-api.example.com",
+			expectedHost: "secure-api.example.com",
+			expectedPort: "443",
+			expectedType: "grpc_pass",
+		},
+		{
+			name:         "grpc:// with explicit port",
+			grpcPassURL:  "grpc://api.example.com:9090",
+			expectedHost: "api.example.com",
+			expectedPort: "9090",
+			expectedType: "grpc_pass",
+		},
+		{
+			name:         "grpcs:// with explicit port",
+			grpcPassURL:  "grpcs://secure-api.example.com:9443",
+			expectedHost: "secure-api.example.com",
+			expectedPort: "9443",
+			expectedType: "grpc_pass",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			target := parseProxyPassURL(tt.grpcPassURL, "grpc_pass")
+
+			if target.Host != tt.expectedHost {
+				t.Errorf("Expected host %s, got %s", tt.expectedHost, target.Host)
+			}
+			if target.Port != tt.expectedPort {
+				t.Errorf("Expected port %s, got %s", tt.expectedPort, target.Port)
+			}
+			if target.Type != tt.expectedType {
+				t.Errorf("Expected type %s, got %s", tt.expectedType, target.Type)
+			}
+		})
+	}
+}

@@ -37,24 +37,24 @@ func executeUpstreamAvailabilityTest() {
 
 	targetCount := service.GetTargetCount()
 	if targetCount == 0 {
-		// logger.Debug("No upstream targets to test")
+		logger.Debug("No upstream targets to test")
 		return
 	}
 
 	// Check if we should skip this test due to active WebSocket connections
 	// (WebSocket connections trigger more frequent checks)
 	if hasActiveWebSocketConnections() {
-		// logger.Debug("Skipping scheduled test due to active WebSocket connections")
+		logger.Debug("Skipping scheduled test due to active WebSocket connections")
 		return
 	}
 
-	// start := time.Now()
-	// logger.Debug("Starting scheduled upstream availability test for", targetCount, "targets")
+	start := time.Now()
+	logger.Debug("Starting scheduled upstream availability test for", targetCount, "targets")
 
-	// service.PerformAvailabilityTest()
+	service.PerformAvailabilityTest()
 
-	// duration := time.Since(start)
-	// logger.Debug("Upstream availability test completed in", duration)
+	duration := time.Since(start)
+	logger.Debug("Upstream availability test completed in", duration)
 }
 
 // hasActiveWebSocketConnections checks if there are active WebSocket connections

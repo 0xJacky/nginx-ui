@@ -5,7 +5,6 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
 )
 
@@ -13,7 +12,7 @@ import (
 type ProxyTarget struct {
 	Host       string `json:"host"`
 	Port       string `json:"port"`
-	Type       string `json:"type"`        // "proxy_pass" or "upstream"
+	Type       string `json:"type"`        // "proxy_pass", "grpc_pass" or "upstream"
 	Resolver   string `json:"resolver"`    // DNS resolver address (e.g., "127.0.0.1:8600")
 	IsConsul   bool   `json:"is_consul"`   // Whether this is a consul service discovery target
 	ServiceURL string `json:"service_url"` // Full service URL for consul (e.g., "service.consul service=redacted-net resolve")
@@ -82,7 +81,24 @@ func ParseProxyTargetsFromRawContent(content string) []ProxyTarget {
 			proxyPassURL := strings.TrimSpace(match[1])
 			// Skip if this proxy_pass references an upstream
 			if !isUpstreamReference(proxyPassURL, upstreamNames) {
-				target := parseProxyPassURL(proxyPassURL)
+				target := parseProxyPassURL(proxyPassURL, "proxy_pass")
+				if target.Host != "" {
+					targets = append(targets, target)
+				}
+			}
+		}
+	}
+
+	// Parse grpc_pass directives, but skip upstream references
+	grpcPassRegex := regexp.MustCompile(`(?m)^\s*grpc_pass\s+([^;]+);`)
+	grpcMatches := grpcPassRegex.FindAllStringSubmatch(content, -1)
+
+	for _, match := range grpcMatches {
+		if len(match) >= 2 {
+			grpcPassURL := strings.TrimSpace(match[1])
+			// Skip if this grpc_pass references an upstream
+			if !isUpstreamReference(grpcPassURL, upstreamNames) {
+				target := parseProxyPassURL(grpcPassURL, "grpc_pass")
 				if target.Host != "" {
 					targets = append(targets, target)
 				}
@@ -93,77 +109,31 @@ func ParseProxyTargetsFromRawContent(content string) []ProxyTarget {
 	return deduplicateTargets(targets)
 }
 
-// parseUpstreamServers extracts server addresses from upstream blocks
-func parseUpstreamServers(upstream *nginx.NgxUpstream) []ProxyTarget {
-	var targets []ProxyTarget
-
-	// Create upstream context for this upstream block
-	ctx := &UpstreamContext{
-		Name: upstream.Name,
-	}
-
-	// Extract resolver from upstream directives
-	for _, directive := range upstream.Directives {
-		if directive.Directive == "resolver" {
-			resolverParts := strings.Fields(directive.Params)
-			if len(resolverParts) > 0 {
-				ctx.Resolver = resolverParts[0]
-			}
-		}
-	}
-
-	for _, directive := range upstream.Directives {
-		if directive.Directive == "server" {
-			target := parseServerAddress(directive.Params, "upstream", ctx)
-			if target.Host != "" {
-				targets = append(targets, target)
-			}
-		}
-	}
-
-	return targets
-}
-
-// parseLocationProxyPass extracts proxy_pass from location content
-func parseLocationProxyPass(content string) []ProxyTarget {
-	var targets []ProxyTarget
-
-	// Use regex to find proxy_pass directives
-	proxyPassRegex := regexp.MustCompile(`(?m)^\s*proxy_pass\s+([^;]+);`)
-	matches := proxyPassRegex.FindAllStringSubmatch(content, -1)
-
-	for _, match := range matches {
-		if len(match) >= 2 {
-			target := parseProxyPassURL(strings.TrimSpace(match[1]))
-			if target.Host != "" {
-				targets = append(targets, target)
-			}
-		}
-	}
-
-	return targets
-}
-
-// parseProxyPassURL parses a proxy_pass URL and extracts host and port
-func parseProxyPassURL(proxyPass string) ProxyTarget {
-	proxyPass = strings.TrimSpace(proxyPass)
+// parseProxyPassURL parses a proxy_pass or grpc_pass URL and extracts host and port
+func parseProxyPassURL(passURL, passType string) ProxyTarget {
+	passURL = strings.TrimSpace(passURL)
 
 	// Skip URLs that contain Nginx variables
-	if strings.Contains(proxyPass, "$") {
+	if strings.Contains(passURL, "$") {
 		return ProxyTarget{}
 	}
 
-	// Handle HTTP/HTTPS URLs (e.g., "http://backend")
-	if strings.HasPrefix(proxyPass, "http://") || strings.HasPrefix(proxyPass, "https://") {
-		if parsedURL, err := url.Parse(proxyPass); err == nil {
+	// Handle HTTP/HTTPS/gRPC URLs (e.g., "http://backend", "grpc://backend")
+	if strings.HasPrefix(passURL, "http://") || strings.HasPrefix(passURL, "https://") || strings.HasPrefix(passURL, "grpc://") || strings.HasPrefix(passURL, "grpcs://") {
+		if parsedURL, err := url.Parse(passURL); err == nil {
 			host := parsedURL.Hostname()
 			port := parsedURL.Port()
 
 			// Set default ports if not specified
 			if port == "" {
-				if parsedURL.Scheme == "https" {
+				switch parsedURL.Scheme {
+				case "https":
 					port = "443"
-				} else {
+				case "grpcs":
+					port = "443"
+				case "grpc":
+					port = "80"
+				default: // http
 					port = "80"
 				}
 			}
@@ -176,15 +146,15 @@ func parseProxyPassURL(proxyPass string) ProxyTarget {
 			return ProxyTarget{
 				Host: host,
 				Port: port,
-				Type: "proxy_pass",
+				Type: passType,
 			}
 		}
 	}
 
 	// Handle direct address format for stream module (e.g., "127.0.0.1:8080", "backend.example.com:12345")
-	// This is used in stream configurations where proxy_pass doesn't require a protocol
-	if !strings.Contains(proxyPass, "://") {
-		target := parseServerAddress(proxyPass, "proxy_pass", nil) // No upstream context for this function
+	// This is used in stream configurations where proxy_pass/grpc_pass doesn't require a protocol
+	if !strings.Contains(passURL, "://") {
+		target := parseServerAddress(passURL, passType, nil) // No upstream context for this function
 
 		// Skip if this is the HTTP challenge port used by Let's Encrypt
 		if target.Host == "127.0.0.1" && target.Port == settings.CertSettings.HTTPChallengePort {
@@ -262,7 +232,7 @@ func isConsulServiceDiscovery(serverAddr string) bool {
 	if strings.Contains(serverAddr, "service=") && strings.Contains(serverAddr, "resolve") {
 		return true
 	}
-	// Legacy consul format: "service.consul service=name resolve" 
+	// Legacy consul format: "service.consul service=name resolve"
 	return strings.Contains(serverAddr, "service.consul") &&
 		(strings.Contains(serverAddr, "service=") || strings.Contains(serverAddr, "resolve"))
 }
@@ -327,17 +297,17 @@ func deduplicateTargets(targets []ProxyTarget) []ProxyTarget {
 	return result
 }
 
-// isUpstreamReference checks if a proxy_pass URL references an upstream block
-func isUpstreamReference(proxyPass string, upstreamNames map[string]bool) bool {
-	proxyPass = strings.TrimSpace(proxyPass)
+// isUpstreamReference checks if a proxy_pass or grpc_pass URL references an upstream block
+func isUpstreamReference(passURL string, upstreamNames map[string]bool) bool {
+	passURL = strings.TrimSpace(passURL)
 
-	// For HTTP/HTTPS URLs, parse the URL to extract the hostname
-	if strings.HasPrefix(proxyPass, "http://") || strings.HasPrefix(proxyPass, "https://") {
+	// For HTTP/HTTPS/gRPC URLs, parse the URL to extract the hostname
+	if strings.HasPrefix(passURL, "http://") || strings.HasPrefix(passURL, "https://") || strings.HasPrefix(passURL, "grpc://") || strings.HasPrefix(passURL, "grpcs://") {
 		// Handle URLs with nginx variables (e.g., "https://myUpStr$request_uri")
 		// Extract the scheme and hostname part before any nginx variables
-		schemeAndHost := proxyPass
-		if dollarIndex := strings.Index(proxyPass, "$"); dollarIndex != -1 {
-			schemeAndHost = proxyPass[:dollarIndex]
+		schemeAndHost := passURL
+		if dollarIndex := strings.Index(passURL, "$"); dollarIndex != -1 {
+			schemeAndHost = passURL[:dollarIndex]
 		}
 
 		// Try to parse the URL, if it fails, try manual extraction
@@ -348,11 +318,15 @@ func isUpstreamReference(proxyPass string, upstreamNames map[string]bool) bool {
 		} else {
 			// Fallback: manually extract hostname for URLs with variables
 			// Remove scheme prefix
-			withoutScheme := proxyPass
-			if strings.HasPrefix(proxyPass, "https://") {
-				withoutScheme = strings.TrimPrefix(proxyPass, "https://")
-			} else if strings.HasPrefix(proxyPass, "http://") {
-				withoutScheme = strings.TrimPrefix(proxyPass, "http://")
+			withoutScheme := passURL
+			if strings.HasPrefix(passURL, "https://") {
+				withoutScheme = strings.TrimPrefix(passURL, "https://")
+			} else if strings.HasPrefix(passURL, "http://") {
+				withoutScheme = strings.TrimPrefix(passURL, "http://")
+			} else if strings.HasPrefix(passURL, "grpc://") {
+				withoutScheme = strings.TrimPrefix(passURL, "grpc://")
+			} else if strings.HasPrefix(passURL, "grpcs://") {
+				withoutScheme = strings.TrimPrefix(passURL, "grpcs://")
 			}
 
 			// Extract hostname before any path, port, or variable
@@ -371,10 +345,10 @@ func isUpstreamReference(proxyPass string, upstreamNames map[string]bool) bool {
 		}
 	}
 
-	// For stream module, proxy_pass can directly reference upstream name without protocol
-	// Check if the proxy_pass value directly matches an upstream name
-	if !strings.Contains(proxyPass, "://") && !strings.Contains(proxyPass, ":") {
-		return upstreamNames[proxyPass]
+	// For stream module, proxy_pass/grpc_pass can directly reference upstream name without protocol
+	// Check if the pass value directly matches an upstream name
+	if !strings.Contains(passURL, "://") && !strings.Contains(passURL, ":") {
+		return upstreamNames[passURL]
 	}
 
 	return false
