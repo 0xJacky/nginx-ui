@@ -3,7 +3,6 @@ package cron
 import (
 	"time"
 
-	apiUpstream "github.com/0xJacky/Nginx-UI/api/upstream"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/go-co-op/gocron/v2"
 	"github.com/uozi-tech/cosy/logger"
@@ -41,13 +40,6 @@ func executeUpstreamAvailabilityTest() {
 		return
 	}
 
-	// Check if we should skip this test due to active WebSocket connections
-	// (WebSocket connections trigger more frequent checks)
-	if hasActiveWebSocketConnections() {
-		logger.Debug("Skipping scheduled test due to active WebSocket connections")
-		return
-	}
-
 	start := time.Now()
 	logger.Debug("Starting scheduled upstream availability test for", targetCount, "targets")
 
@@ -55,11 +47,6 @@ func executeUpstreamAvailabilityTest() {
 
 	duration := time.Since(start)
 	logger.Debug("Upstream availability test completed in", duration)
-}
-
-// hasActiveWebSocketConnections checks if there are active WebSocket connections
-func hasActiveWebSocketConnections() bool {
-	return apiUpstream.HasActiveWebSocketConnections()
 }
 
 // RestartUpstreamAvailabilityJob restarts the upstream availability job

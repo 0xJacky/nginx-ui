@@ -86,6 +86,7 @@ func GetNodeStat(c *gin.Context) {
 
 		select {
 		case <-kernel.Context.Done():
+			logger.Debug("GetNodeStat: Context cancelled, closing WebSocket")
 			return
 		case <-time.After(10 * time.Second):
 		}
@@ -119,6 +120,7 @@ func GetNodesAnalytic(c *gin.Context) {
 
 		select {
 		case <-kernel.Context.Done():
+			logger.Debug("GetNodesAnalytic: Context cancelled, closing WebSocket")
 			return
 		case <-time.After(10 * time.Second):
 		}

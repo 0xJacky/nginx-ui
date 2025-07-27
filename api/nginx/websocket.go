@@ -80,6 +80,7 @@ func (h *NginxPerformanceHub) run() {
 			h.broadcastPerformanceData()
 
 		case <-kernel.Context.Done():
+			logger.Debug("NginxPerformanceHub: Context cancelled, closing WebSocket")
 			// Shutdown all clients
 			h.mutex.Lock()
 			for client := range h.clients {
@@ -200,6 +201,7 @@ func (c *NginxPerformanceClient) writePump() {
 			return
 
 		case <-kernel.Context.Done():
+			logger.Debug("NginxPerformanceClient: Context cancelled, closing WebSocket")
 			return
 		}
 	}

@@ -2,6 +2,7 @@ package cache
 
 import (
 	"context"
+	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -132,11 +133,24 @@ func (s *Scanner) watchAllDirectories() error {
 				return filepath.SkipDir
 			}
 
-			if err := s.watcher.Add(path); err != nil {
-				logger.Error("Failed to watch directory:", path, err)
+			// Resolve symlinks to get the actual directory path to watch
+			actualPath := path
+			if d.Type()&os.ModeSymlink != 0 {
+				// This is a symlink, resolve it to get the target path
+				if resolvedPath, err := filepath.EvalSymlinks(path); err == nil {
+					actualPath = resolvedPath
+					logger.Debug("Resolved symlink for watching:", path, "->", actualPath)
+				} else {
+					logger.Debug("Failed to resolve symlink, skipping:", path, err)
+					return filepath.SkipDir
+				}
+			}
+
+			if err := s.watcher.Add(actualPath); err != nil {
+				logger.Error("Failed to watch directory:", actualPath, err)
 				return err
 			}
-			// logger.Debug("Watching directory:", path)
+			logger.Debug("Watching directory:", actualPath)
 		}
 		return nil
 	})
@@ -216,12 +230,28 @@ func (s *Scanner) handleFileEvent(event fsnotify.Event) {
 		return
 	}
 
-	fi, err := os.Stat(event.Name)
+	// Use Lstat to get symlink info without following it
+	fi, err := os.Lstat(event.Name)
 	if err != nil {
 		return
 	}
 
-	if fi.IsDir() {
+	// If it's a symlink, we need to check what it points to
+	var targetIsDir bool
+	if fi.Mode()&os.ModeSymlink != 0 {
+		// For symlinks, check the target
+		targetFi, err := os.Stat(event.Name)
+		if err != nil {
+			logger.Debug("Symlink target not accessible:", event.Name, err)
+			return
+		}
+		targetIsDir = targetFi.IsDir()
+		logger.Debug("Symlink changed:", event.Name, "-> target is dir:", targetIsDir)
+	} else {
+		targetIsDir = fi.IsDir()
+	}
+
+	if targetIsDir {
 		logger.Debug("Directory changed:", event.Name)
 	} else {
 		logger.Debug("File changed:", event.Name)
@@ -252,10 +282,24 @@ func (s *Scanner) scanSingleFile(filePath string) error {
 		return nil
 	}
 
-	// Skip symlinks to avoid potential issues
+	// Handle symlinks carefully
 	if fileInfo.Mode()&os.ModeSymlink != 0 {
-		logger.Debugf("Skipping symlink: %s", filePath)
-		return nil
+		// Check what the symlink points to
+		targetInfo, err := os.Stat(filePath)
+		if err != nil {
+			logger.Debugf("Skipping symlink with inaccessible target: %s (%v)", filePath, err)
+			return nil
+		}
+
+		// Skip symlinks to directories
+		if targetInfo.IsDir() {
+			logger.Debugf("Skipping symlink to directory: %s", filePath)
+			return nil
+		}
+
+		// Process symlinks to files, but use the target's info for size check
+		fileInfo = targetInfo
+		logger.Debugf("Processing symlink to file: %s", filePath)
 	}
 
 	// Skip non-regular files (devices, pipes, sockets, etc.)
@@ -326,13 +370,67 @@ func (s *Scanner) ScanAllConfigs() error {
 			return filepath.SkipDir
 		}
 
-		// Only process regular files
+		// Handle symlinks to directories specially
+		if d.Type()&os.ModeSymlink != 0 {
+			if targetInfo, err := os.Stat(path); err == nil && targetInfo.IsDir() {
+				// This is a symlink to a directory, we should traverse its contents
+				// but not process the symlink itself as a file
+				logger.Debug("Found symlink to directory, will traverse contents:", path)
+
+				// Manually scan the symlink target directory since WalkDir doesn't follow symlinks
+				if err := s.scanSymlinkDirectory(path); err != nil {
+					logger.Error("Failed to scan symlink directory:", path, err)
+				}
+				return nil
+			}
+		}
+
+		// Only process regular files (not directories, not symlinks to directories)
 		if !d.IsDir() {
 			if err := s.scanSingleFile(path); err != nil {
 				logger.Error("Failed to scan config:", path, err)
 			}
 		}
 
+		return nil
+	})
+}
+
+// scanSymlinkDirectory recursively scans a symlink directory and its contents
+func (s *Scanner) scanSymlinkDirectory(symlinkPath string) error {
+	// Resolve the symlink to get the actual target path
+	targetPath, err := filepath.EvalSymlinks(symlinkPath)
+	if err != nil {
+		return fmt.Errorf("failed to resolve symlink %s: %w", symlinkPath, err)
+	}
+
+	logger.Debug("Scanning symlink directory contents:", symlinkPath, "->", targetPath)
+
+	// Use WalkDir on the resolved target path
+	return filepath.WalkDir(targetPath, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// Skip excluded directories
+		if d.IsDir() && shouldSkipPath(path) {
+			return filepath.SkipDir
+		}
+
+		// Only process regular files (not directories, not symlinks to directories)
+		if !d.IsDir() {
+			// Handle symlinks to directories (skip them)
+			if d.Type()&os.ModeSymlink != 0 {
+				if targetInfo, err := os.Stat(path); err == nil && targetInfo.IsDir() {
+					logger.Debug("Skipping symlink to directory in symlink scan:", path)
+					return nil
+				}
+			}
+
+			if err := s.scanSingleFile(path); err != nil {
+				logger.Error("Failed to scan config in symlink directory:", path, err)
+			}
+		}
 		return nil
 	})
 }

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -108,6 +109,9 @@ func AvailabilityWebSocket(c *gin.Context) {
 					return
 				}
 			}
+		case <-kernel.Context.Done():
+			logger.Debug("AvailabilityWebSocket: Context cancelled, closing WebSocket")
+			return
 		}
 	}
 }
@@ -142,11 +146,4 @@ func unregisterWebSocketConnection() {
 		wsConnections--
 	}
 	logger.Debug("WebSocket connection unregistered, remaining connections:", wsConnections)
-}
-
-// HasActiveWebSocketConnections returns true if there are active WebSocket connections
-func HasActiveWebSocketConnections() bool {
-	wsConnectionMutex.Lock()
-	defer wsConnectionMutex.Unlock()
-	return wsConnections > 0
 }

@@ -179,6 +179,7 @@ func (c *Client) writePump() {
 			return
 
 		case <-kernel.Context.Done():
+			logger.Debug("EventBus: Context cancelled, closing WebSocket")
 			return
 		}
 	}

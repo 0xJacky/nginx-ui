@@ -94,6 +94,7 @@ func Analytic(c *gin.Context) {
 
 		select {
 		case <-kernel.Context.Done():
+			logger.Debug("Analytic: Context cancelled, closing WebSocket")
 			return
 		case <-time.After(1 * time.Second):
 		}
