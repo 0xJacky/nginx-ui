@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
+	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/model"
 )
 
@@ -47,13 +48,28 @@ func GetSiteConfigs(ctx context.Context, options *ListOptions, sites []*model.Si
 func buildConfig(fileName string, fileInfo os.FileInfo, status config.ConfigStatus, envGroupID uint64, envGroup *model.EnvGroup) config.Config {
 	indexedSite := GetIndexedSite(fileName)
 
-	// Convert proxy targets
-	proxyTargets := make([]config.ProxyTarget, len(indexedSite.ProxyTargets))
-	for i, target := range indexedSite.ProxyTargets {
-		proxyTargets[i] = config.ProxyTarget{
-			Host: target.Host,
-			Port: target.Port,
-			Type: target.Type,
+	// Convert proxy targets, expanding upstream references
+	var proxyTargets []config.ProxyTarget
+	upstreamService := upstream.GetUpstreamService()
+
+	for _, target := range indexedSite.ProxyTargets {
+		// Check if target.Host is an upstream name
+		if upstreamDef, exists := upstreamService.GetUpstreamDefinition(target.Host); exists {
+			// Replace with upstream servers
+			for _, server := range upstreamDef.Servers {
+				proxyTargets = append(proxyTargets, config.ProxyTarget{
+					Host: server.Host,
+					Port: server.Port,
+					Type: server.Type,
+				})
+			}
+		} else {
+			// Regular proxy target
+			proxyTargets = append(proxyTargets, config.ProxyTarget{
+				Host: target.Host,
+				Port: target.Port,
+				Type: target.Type,
+			})
 		}
 	}
 

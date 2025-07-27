@@ -24,9 +24,22 @@ type UpstreamContext struct {
 	Resolver string
 }
 
+// ParseResult contains the results of parsing nginx configuration
+type ParseResult struct {
+	ProxyTargets []ProxyTarget
+	Upstreams    map[string][]ProxyTarget // upstream name -> servers
+}
+
 // ParseProxyTargetsFromRawContent parses proxy targets from raw nginx configuration content
 func ParseProxyTargetsFromRawContent(content string) []ProxyTarget {
+	result := ParseProxyTargetsAndUpstreamsFromRawContent(content)
+	return result.ProxyTargets
+}
+
+// ParseProxyTargetsAndUpstreamsFromRawContent parses both proxy targets and upstream definitions from raw nginx configuration content
+func ParseProxyTargetsAndUpstreamsFromRawContent(content string) *ParseResult {
 	var targets []ProxyTarget
+	upstreams := make(map[string][]ProxyTarget)
 
 	// First, collect all upstream names and their contexts
 	upstreamNames := make(map[string]bool)
@@ -61,13 +74,20 @@ func ParseProxyTargetsFromRawContent(content string) []ProxyTarget {
 			serverRegex := regexp.MustCompile(`(?m)^\s*server\s+([^;]+);`)
 			serverMatches := serverRegex.FindAllStringSubmatch(upstreamContent, -1)
 
+			var upstreamServers []ProxyTarget
 			for _, serverMatch := range serverMatches {
 				if len(serverMatch) >= 2 {
 					target := parseServerAddress(strings.TrimSpace(serverMatch[1]), "upstream", ctx)
 					if target.Host != "" {
 						targets = append(targets, target)
+						upstreamServers = append(upstreamServers, target)
 					}
 				}
+			}
+
+			// Store upstream definition
+			if len(upstreamServers) > 0 {
+				upstreams[upstreamName] = upstreamServers
 			}
 		}
 	}
@@ -106,7 +126,10 @@ func ParseProxyTargetsFromRawContent(content string) []ProxyTarget {
 		}
 	}
 
-	return deduplicateTargets(targets)
+	return &ParseResult{
+		ProxyTargets: deduplicateTargets(targets),
+		Upstreams:    upstreams,
+	}
 }
 
 // parseProxyPassURL parses a proxy_pass or grpc_pass URL and extracts host and port
@@ -238,10 +261,11 @@ func isConsulServiceDiscovery(serverAddr string) bool {
 }
 
 // parseAddressOnly parses just the address portion without consul-specific logic
+// Supports both IPv4 and IPv6 addresses
 func parseAddressOnly(addr string) ProxyTarget {
-	// Handle IPv6 addresses
+	// Handle IPv6 addresses with brackets
 	if strings.HasPrefix(addr, "[") {
-		// IPv6 format: [::1]:8080
+		// IPv6 format: [::1]:8080 or [2001:db8::1]:8080
 		if idx := strings.LastIndex(addr, "]:"); idx != -1 {
 			host := addr[1:idx]
 			port := addr[idx+2:]
@@ -250,7 +274,7 @@ func parseAddressOnly(addr string) ProxyTarget {
 				Port: port,
 			}
 		}
-		// IPv6 without port: [::1]
+		// IPv6 without port: [::1] or [2001:db8::1]
 		host := strings.Trim(addr, "[]")
 		return ProxyTarget{
 			Host: host,
@@ -258,7 +282,19 @@ func parseAddressOnly(addr string) ProxyTarget {
 		}
 	}
 
-	// Handle IPv4 addresses and hostnames
+	// Check if this might be an IPv6 address without brackets
+	// IPv6 addresses contain multiple colons
+	colonCount := strings.Count(addr, ":")
+	if colonCount > 1 {
+		// This is likely an IPv6 address without brackets and without port
+		// e.g., ::1, 2001:db8::1, fe80::1%eth0
+		return ProxyTarget{
+			Host: addr,
+			Port: "80",
+		}
+	}
+
+	// Handle IPv4 addresses and hostnames with port
 	if strings.Contains(addr, ":") {
 		parts := strings.Split(addr, ":")
 		if len(parts) == 2 {

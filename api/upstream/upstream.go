@@ -27,6 +27,18 @@ func GetAvailability(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
+// GetUpstreamDefinitions returns all upstream definitions for debugging
+func GetUpstreamDefinitions(c *gin.Context) {
+	service := upstream.GetUpstreamService()
+
+	result := gin.H{
+		"upstreams":        service.GetAllUpstreamDefinitions(),
+		"last_update_time": service.GetLastUpdateTime(),
+	}
+
+	c.JSON(http.StatusOK, result)
+}
+
 // AvailabilityWebSocket handles WebSocket connections for real-time availability monitoring
 func AvailabilityWebSocket(c *gin.Context) {
 	var upGrader = websocket.Upgrader{

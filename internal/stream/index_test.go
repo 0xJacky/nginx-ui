@@ -39,7 +39,7 @@ func TestScanForStream(t *testing.T) {
 server {
     listen 1234-1236;
     resolver 8.8.8.8 valid=1s;
-    proxy_pass example.com:$server_port;
+    proxy_pass example.com:8080;
 }`
 
 	// Test with a valid stream config path
