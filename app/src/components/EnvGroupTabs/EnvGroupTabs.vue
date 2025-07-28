@@ -1,77 +1,19 @@
 <script setup lang="ts">
-import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { EnvGroup } from '@/api/env_group'
-import type { Environment } from '@/api/environment'
 import { message } from 'ant-design-vue'
 import nodeApi from '@/api/node'
-import ws from '@/lib/websocket'
+import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 
 const props = defineProps<{
   envGroups: EnvGroup[]
 }>()
 
 const modelValue = defineModel<string | number>('activeKey')
+const nodeStore = useNodeAvailabilityStore()
 
-const environments = ref<Environment[]>([])
-const environmentsMap = ref<Record<number, Environment>>({})
 const loading = ref({
   reload: false,
   restart: false,
-})
-
-// WebSocket connection for environment monitoring
-let socket: ReconnectingWebSocket | WebSocket | null = null
-
-// Get node data when tab is not 'All'
-watch(modelValue, newVal => {
-  if (newVal && newVal !== 0) {
-    connectWebSocket()
-  }
-  else {
-    disconnectWebSocket()
-  }
-}, { immediate: true })
-
-function connectWebSocket() {
-  if (socket) {
-    socket.close()
-  }
-
-  socket = ws('/api/cluster/environments/enabled/ws', true)
-
-  socket.onmessage = event => {
-    try {
-      const message = JSON.parse(event.data)
-
-      if (message.event === 'message') {
-        const data: Environment[] = message.data
-        environments.value = data
-        environmentsMap.value = environments.value.reduce((acc, node) => {
-          acc[node.id] = node
-          return acc
-        }, {} as Record<number, Environment>)
-      }
-    }
-    catch (error) {
-      console.error('Error parsing WebSocket message:', error)
-    }
-  }
-
-  socket.onerror = error => {
-    console.warn('Failed to connect to environments WebSocket endpoint', error)
-  }
-}
-
-function disconnectWebSocket() {
-  if (socket) {
-    socket.close()
-    socket = null
-  }
-}
-
-// Cleanup on unmount
-onUnmounted(() => {
-  disconnectWebSocket()
 })
 
 // Get the current Node Group data
@@ -90,8 +32,8 @@ const syncNodes = computed(() => {
     return []
 
   return currentEnvGroup.value.sync_node_ids
-    .map(id => environmentsMap.value[id])
-    .filter(Boolean)
+    .map(id => nodeStore.getNodeStatus(id))
+    .filter((node): node is NonNullable<typeof node> => Boolean(node))
 })
 
 // Handle reload Nginx on all sync nodes

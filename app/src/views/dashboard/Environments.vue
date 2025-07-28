@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type ReconnectingWebSocket from 'reconnecting-websocket'
 import type { Ref } from 'vue'
 import type { Node } from '@/api/environment'
 import Icon, { LinkOutlined, ThunderboltOutlined } from '@ant-design/icons-vue'
@@ -9,9 +8,11 @@ import logo from '@/assets/img/logo.png'
 import pulse from '@/assets/svg/pulse.svg?component'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
+import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 import { version } from '@/version.json'
 import NodeAnalyticItem from './components/NodeAnalyticItem.vue'
 
+const nodeStore = useNodeAvailabilityStore()
 const data = ref([]) as Ref<Node[]>
 
 const nodeMap = computed(() => {
@@ -24,8 +25,6 @@ const nodeMap = computed(() => {
   return o
 })
 
-let websocket: ReconnectingWebSocket | WebSocket
-
 onMounted(() => {
   environment.getList({ enabled: true }).then(r => {
     data.value.push(...r.data)
@@ -33,7 +32,7 @@ onMounted(() => {
 })
 
 onMounted(() => {
-  websocket = analytic.nodes()
+  const websocket = analytic.nodes()
   websocket.onmessage = async m => {
     const nodes = JSON.parse(m.data)
 
@@ -44,13 +43,19 @@ onMounted(() => {
       if (nodeMap.value[key]) {
         Object.assign(nodeMap.value[key], nodes[key])
         nodeMap.value[key].response_at = new Date()
+
+        // Also update global store
+        const nodeStatus = nodeStore.getNodeStatus(key)
+        if (nodeStatus) {
+          nodeStatus.status = nodes[key].status ?? false
+        }
       }
     })
   }
-})
 
-onUnmounted(() => {
-  websocket.close()
+  onUnmounted(() => {
+    websocket.close()
+  })
 })
 
 const { environment: env } = useSettingsStore()

@@ -4,6 +4,7 @@ import { InfoCircleOutlined } from '@ant-design/icons-vue'
 import { StdSelector } from '@uozi-admin/curd'
 import envGroup from '@/api/env_group'
 import NodeSelector from '@/components/NodeSelector'
+import SyncNodesPreview from '@/components/SyncNodesPreview'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import envGroupColumns from '@/views/environments/group/columns'
@@ -76,6 +77,12 @@ function handleStatusChanged(event: { status: SiteStatus }) {
         v-model:target="data.sync_node_ids"
         class="mb-4"
         hidden-local
+      />
+
+      <!-- Sync nodes preview -->
+      <SyncNodesPreview
+        :env-group-id="data.env_group_id"
+        :sync-node-ids="data.sync_node_ids"
       />
     </div>
   </div>

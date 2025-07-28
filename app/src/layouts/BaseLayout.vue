@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import settings from '@/api/settings'
 import PageHeader from '@/components/PageHeader'
 import { useProxyAvailabilityStore, useSettingsStore } from '@/pinia'
+import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 import FooterLayout from './FooterLayout.vue'
 import HeaderLayout from './HeaderLayout.vue'
 import SideBar from './SideBar.vue'
@@ -35,8 +36,9 @@ settings.get_server_name().then(r => {
   server_name.value = r.name
 })
 
-// Initialize proxy availability monitoring after user is logged in and layout is mounted
+// Initialize stores monitoring after user is logged in and layout is mounted
 const proxyAvailabilityStore = useProxyAvailabilityStore()
+const nodeAvailabilityStore = useNodeAvailabilityStore()
 
 onMounted(() => {
   // Initialize layout
@@ -44,6 +46,9 @@ onMounted(() => {
 
   // Start monitoring for upstream availability
   proxyAvailabilityStore.startMonitoring()
+
+  // Start monitoring for node availability
+  nodeAvailabilityStore.startMonitoring()
 })
 
 onUnmounted(() => {
@@ -52,6 +57,7 @@ onUnmounted(() => {
 
   // Stop monitoring when layout is unmounted
   proxyAvailabilityStore.stopMonitoring()
+  nodeAvailabilityStore.stopMonitoring()
 })
 
 const breadList = ref([])

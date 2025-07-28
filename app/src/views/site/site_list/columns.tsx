@@ -4,9 +4,10 @@ import type {
 } from '@uozi-admin/curd'
 import type { Site, SiteStatus } from '@/api/site'
 import type { JSXElements } from '@/types'
-import { actualFieldRender, datetimeRender } from '@uozi-admin/curd'
+import { datetimeRender } from '@uozi-admin/curd'
 import { Tag } from 'ant-design-vue'
 import env_group from '@/api/env_group'
+import EnvGroupRender from '@/components/EnvGroupRender'
 import ProxyTargets from '@/components/ProxyTargets'
 import { ConfigStatus } from '@/constants'
 import envGroupColumns from '@/views/environments/group/columns'
@@ -88,7 +89,11 @@ const columns: StdTableColumn[] = [{
 }, {
   title: () => $gettext('Node Group'),
   dataIndex: 'env_group_id',
-  customRender: actualFieldRender('env_group.name'),
+  customRender: ({ record }: CustomRenderArgs<Site>) => {
+    return h(EnvGroupRender, {
+      envGroup: record.env_group || null,
+    })
+  },
   edit: {
     type: 'selector',
     selector: {

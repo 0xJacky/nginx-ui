@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Environment } from '@/api/environment'
-import ws from '@/lib/websocket'
+import type { NodeStatus } from '@/pinia/moudule/nodeAvailability'
+import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 
 const props = defineProps<{
   hiddenLocal?: boolean
@@ -9,39 +9,16 @@ const props = defineProps<{
 const target = defineModel<number[]>('target')
 const map = defineModel<Record<number, string>>('map')
 
-const data = ref<Environment[]>([])
-const data_map = ref<Record<number, Environment>>({})
+const nodeStore = useNodeAvailabilityStore()
 
-// WebSocket connection for environment monitoring
-const socket = ws('/api/environments/enabled', true)
-
-socket.onmessage = event => {
-  try {
-    const message = JSON.parse(event.data)
-
-    if (message.event === 'message') {
-      const environments: Environment[] = message.data
-      data.value = environments
-      nextTick(() => {
-        data_map.value = data.value.reduce((acc, node) => {
-          acc[node.id] = node
-          return acc
-        }, {} as Record<number, Environment>)
-      })
-    }
-  }
-  catch (error) {
-    console.error('Error parsing WebSocket message:', error)
-  }
-}
-
-socket.onerror = error => {
-  console.warn('Failed to connect to environments WebSocket endpoint', error)
-}
-
-// Cleanup on unmount
-onUnmounted(() => {
-  socket.close()
+// Computed data based on store
+const data = computed(() => nodeStore.getAllNodes())
+const data_map = computed(() => {
+  const nodes = nodeStore.getAllNodes()
+  return nodes.reduce((acc, node) => {
+    acc[node.id] = node
+    return acc
+  }, {} as Record<number, NodeStatus>)
 })
 
 const value = computed({

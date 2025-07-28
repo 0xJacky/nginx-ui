@@ -2,8 +2,9 @@ import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { SiteStatus } from '@/api/site'
 import type { Stream } from '@/api/stream'
 import type { JSXElements } from '@/types'
-import { actualFieldRender, datetimeRender } from '@uozi-admin/curd'
+import { datetimeRender } from '@uozi-admin/curd'
 import env_group from '@/api/env_group'
+import EnvGroupRender from '@/components/EnvGroupRender'
 import ProxyTargets from '@/components/ProxyTargets'
 import envGroupColumns from '@/views/environments/group/columns'
 import StreamStatusSelect from '@/views/stream/components/StreamStatusSelect.vue'
@@ -56,7 +57,11 @@ const columns: StdTableColumn[] = [{
 }, {
   title: () => $gettext('Node Group'),
   dataIndex: 'env_group_id',
-  customRender: actualFieldRender('env_group.name'),
+  customRender: ({ record }: CustomRenderArgs<Stream>) => {
+    return h(EnvGroupRender, {
+      envGroup: record.env_group || null,
+    })
+  },
   edit: {
     type: 'selector',
     selector: {

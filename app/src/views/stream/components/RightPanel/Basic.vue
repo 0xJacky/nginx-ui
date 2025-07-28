@@ -4,6 +4,7 @@ import { StdSelector } from '@uozi-admin/curd'
 import { storeToRefs } from 'pinia'
 import envGroup from '@/api/env_group'
 import NodeSelector from '@/components/NodeSelector'
+import SyncNodesPreview from '@/components/SyncNodesPreview'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import envGroupColumns from '@/views/environments/group/columns'
@@ -71,6 +72,12 @@ const showSync = computed(() => !settings.is_remote)
         v-model:target="data.sync_node_ids"
         class="mb-4"
         hidden-local
+      />
+
+      <!-- Sync nodes preview -->
+      <SyncNodesPreview
+        :env-group-id="data.env_group_id"
+        :sync-node-ids="data.sync_node_ids"
       />
     </div>
   </div>
